@@ -6647,8 +6647,11 @@ async def search_unified_ai_overview(req: UnifiedAiOverviewRequest) -> Any:
     manual_state = (deterministic.get("manualEvidence") or {}).get("status", "not_queried")
 
     if not evidence_lines:
+        # `blocked` in the design vocabulary: no summary was produced, and the
+        # reason is stated rather than left as an empty card.
         return {
-            "status": "no_evidence",
+            "status": "blocked",
+            "reason": ("검색된 근거 0건" if lang == "ko" else "no grounded evidence"),
             "requestId": request_id,
             "overview": None,
             "fallbackAvailable": True,
@@ -6722,12 +6725,72 @@ async def search_unified_ai_overview(req: UnifiedAiOverviewRequest) -> Any:
             "directEvidenceCount": len(evidence_lines),
             "law": "not_queried",
         },
+        "sources": _unified_overview_sources(deterministic),
+        "evidenceLabel": _unified_evidence_label(deterministic, lang),
         "requiresOfficialConfirmation": True,
         "provider": attempt_meta.get("provider", "") if isinstance(attempt_meta, dict) else "",
         "model": attempt_meta.get("model", "") if isinstance(attempt_meta, dict) else "",
         "fallbackAvailable": True,
         "latency": {"totalMs": elapsed_ms},
     }
+
+
+def _unified_overview_sources(deterministic: Dict[str, Any]) -> List[Dict[str, Any]]:
+    """Source chips for the overview card (Figma UX-03 `SourceChips`).
+
+    A source that could not be retrieved is included with ``unavailable: true``
+    rather than omitted — the frontend dims it, so the evidence set never looks
+    larger or cleaner than it actually is.
+    """
+    chips: List[Dict[str, Any]] = []
+    for card in deterministic.get("organicResults", []):
+        if card.get("kind") == _unified_search.RESULT_MANUAL_CARD:
+            page = card.get("page")
+            label = card.get("title") or "매뉴얼 본문"
+            chips.append({
+                "label": f"{label} p.{page}" if page else label,
+                "kind": "manual",
+                # Review-pending manual text is real evidence but not approved,
+                # so it is shown dimmed rather than as a settled source.
+                "unavailable": not card.get("usableAsDirectEvidence", False),
+            })
+        elif card.get("code"):
+            chips.append({"label": f"{card['code']} {card.get('title', '')}".strip(),
+                          "kind": "structured", "unavailable": False})
+    manual = deterministic.get("manualEvidence") or {}
+    if manual.get("status") == "index_unavailable":
+        chips.append({"label": "매뉴얼 색인", "kind": "manual", "unavailable": True})
+    # De-duplicate on label, keep first occurrence.
+    seen: set = set()
+    out: List[Dict[str, Any]] = []
+    for chip in chips:
+        if chip["label"] and chip["label"] not in seen:
+            seen.add(chip["label"])
+            out.append(chip)
+    return out[:8]
+
+
+def _unified_evidence_label(deterministic: Dict[str, Any], lang: str) -> str:
+    """One-line evidence tally, mirroring the design's '매뉴얼 직접 근거 N · …' line."""
+    manual = deterministic.get("manualEvidence") or {}
+    approved = int(manual.get("approvedCount") or 0)
+    pending = int(manual.get("reviewPendingCount") or 0)
+    structured = sum(1 for c in deterministic.get("organicResults", []) if c.get("code"))
+    if lang == "ko":
+        parts = [f"구조화 데이터 {structured}건"]
+        if approved:
+            parts.append(f"매뉴얼 직접 근거 {approved}건")
+        if pending:
+            parts.append(f"검토 전 매뉴얼 {pending}건")
+        parts.append("공식 확인 필요")
+        return " · ".join(parts)
+    parts = [f"{structured} structured records"]
+    if approved:
+        parts.append(f"{approved} approved manual")
+    if pending:
+        parts.append(f"{pending} unreviewed manual")
+    parts.append("official confirmation required")
+    return " · ".join(parts)
 
 
 class EmploymentInterpretRequest(BaseModel):

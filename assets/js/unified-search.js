@@ -55,9 +55,16 @@
       intentUnknown: '해석하지 못함',
       aiOverviewTitle: 'AI 요약',
       aiOverviewLoading: 'AI 요약을 만드는 중입니다. 아래 결과는 이미 확인할 수 있어요.',
+      aiOverviewStreaming: '작성 중이에요',
       aiOverviewUnavailable: 'AI 요약을 사용할 수 없습니다. 아래 검색 결과와 공식 출처를 확인하세요.',
       aiOverviewNoEvidence: '근거를 찾지 못해 요약을 만들지 않았습니다.',
       aiRefLabel: '참고용 요약',
+      nextSteps: '다음에 할 일',
+      retry: '다시 시도',
+      reasonLabel: '사유 ·',
+      officialConfirmTitle: '공식 확인이 필요해요',
+      officialConfirmHelp: '이 내용은 개별 심사에 따라 달라질 수 있습니다. 신청 전에 관할 관서에서 확인하세요.',
+      partialSourcesHelp: '일부 출처를 확인하지 못했습니다. 회색 표시된 출처는 이번 검색에서 조회되지 않았어요.',
       moreInWaymaker: 'Waymaker에서 더 자세히',
       analyzeLegal: '법령·판례 기준으로 분석',
       sourcesTitle: '공식 출처',
@@ -86,9 +93,16 @@
       intentUnknown: 'Could not interpret',
       aiOverviewTitle: 'AI overview',
       aiOverviewLoading: 'Generating an AI overview. The results below are already available.',
+      aiOverviewStreaming: 'Writing…',
       aiOverviewUnavailable: 'The AI overview is unavailable. Please use the results and official sources below.',
       aiOverviewNoEvidence: 'No grounded evidence was found, so no overview was generated.',
       aiRefLabel: 'Reference summary',
+      nextSteps: 'What to do next',
+      retry: 'Try again',
+      reasonLabel: 'Reason ·',
+      officialConfirmTitle: 'Official confirmation needed',
+      officialConfirmHelp: 'This can differ case by case. Confirm with the competent office before applying.',
+      partialSourcesHelp: 'Some sources could not be checked. Dimmed sources were not retrieved in this search.',
       moreInWaymaker: 'Ask Waymaker for detail',
       analyzeLegal: 'Analyze against law and precedent',
       sourcesTitle: 'Official sources',
@@ -185,49 +199,150 @@
   }
 
   /**
-   * AI Overview card. `state` is one of:
-   *   loading | ok | unavailable | no_evidence | hidden
-   * `unavailable` renders a quiet failure card — it is never silently dropped,
-   * because a user who saw a spinner deserves to know it stopped.
+   * Resolve the render state of the AI Overview from the backend payload.
+   *
+   * The backend reports a coarse `status`; the Figma design distinguishes finer
+   * presentation states on top of it (UX-03 `AI Overview`, node 406:92). The
+   * refinement is deliberately one-way — it never upgrades a failure into a
+   * success, only splits a success into the specific caution it warrants.
+   *
+   * Precedence matters: an unverified citation outranks a partial source set,
+   * because an unconfirmable legal reference is a stronger caution than a
+   * source list with a gap in it.
+   */
+  function resolveAiOverviewState(state, data) {
+    if (state !== 'ok') return state;
+    var d = data || {};
+    var verification = d.citationVerification || {};
+    if (verification.failureCount > 0 || verification.unverifiableCount > 0) {
+      return 'citation_failed';
+    }
+    var evidence = d.evidenceState || {};
+    var degraded = ['unavailable', 'forbidden', 'timeout', 'parse_failed', 'index_unavailable'];
+    if (degraded.indexOf(evidence.law) !== -1 || degraded.indexOf(evidence.manual) !== -1 ||
+        evidence.manual === 'review_pending_only') {
+      return 'partial_sources';
+    }
+    if (d.requiresOfficialConfirmation) return 'official_confirm_required';
+    return 'ready';
+  }
+
+  function aiSourceChipsHtml(sources) {
+    if (!sources || !sources.length) return '';
+    var chips = sources.slice(0, 8).map(function (src) {
+      var label = typeof src === 'string' ? src : (src && src.label) || '';
+      if (!label) return '';
+      // A source the backend could not confirm is rendered dimmed rather than
+      // dropped — a missing chip would silently shrink the apparent evidence set.
+      var muted = typeof src === 'object' && src && src.unavailable ? ' is-muted' : '';
+      return '<span class="us-ai-src' + muted + '">' +
+        '<span class="us-ai-src-dot" aria-hidden="true"></span>' +
+        escapeHtml(label) + '</span>';
+    }).join('');
+    return chips ? '<div class="us-ai-srcs">' + chips + '</div>' : '';
+  }
+
+  function aiNextStepsHtml(steps) {
+    if (!steps || !steps.length) return '';
+    var rows = steps.slice(0, 5).map(function (step, i) {
+      var label = typeof step === 'string' ? step : (step && step.label) || '';
+      if (!label) return '';
+      return '<li class="us-ai-step">' +
+        '<span class="us-ai-step-num" aria-hidden="true">' + (i + 1) + '</span>' +
+        '<span class="us-ai-step-label">' + escapeHtml(label) + '</span></li>';
+    }).join('');
+    if (!rows) return '';
+    return '<div class="us-ai-steps">' +
+      '<p class="us-ai-sublabel">' + escapeHtml(t('nextSteps')) + '</p>' +
+      '<ol class="us-ai-step-list">' + rows + '</ol></div>';
+  }
+
+  function aiBannerHtml(kind, title, bodyText) {
+    return '<div class="us-ai-banner us-ai-banner--' + kind + '" role="note">' +
+      '<strong class="us-ai-banner-title">' + escapeHtml(title) + '</strong> ' +
+      '<span class="us-ai-banner-body">' + escapeHtml(bodyText) + '</span></div>';
+  }
+
+  /**
+   * AI Overview card — the 8 states specified in Figma UX-03 (node 406:92):
+   *   loading · streaming · ready · partial_sources · official_confirm_required
+   *   · citation_failed · unavailable · blocked   (plus `hidden` = render nothing)
+   *
+   * Legacy state names from the first implementation still work so existing
+   * callers and tests keep passing: `ok` is refined via resolveAiOverviewState,
+   * and `no_evidence` maps onto `blocked` ("요약 미제공 + 사유").
+   *
+   * A failure is never silently dropped: every non-hidden state renders a card,
+   * because a user who watched a spinner is owed the news that it stopped.
    */
   function buildAiOverviewHtml(state, data) {
     if (state === 'hidden') return '';
-    var body, cls, extra = '';
+    if (state === 'no_evidence') state = 'blocked';
+    var resolved = resolveAiOverviewState(state, data);
+    var d = data || {};
+    var text = String(d.overview || '').trim();
+    var parts = [];
+    var cls;
 
-    if (state === 'loading') {
+    if (resolved === 'loading') {
       cls = 'is-loading';
-      body = '<p class="us-ai-body">' + escapeHtml(t('aiOverviewLoading')) + '</p>' +
-        '<div class="us-ai-skeleton" aria-hidden="true"><span></span><span></span><span></span></div>';
-    } else if (state === 'ok') {
-      cls = 'is-ok';
-      var text = String((data && data.overview) || '').trim();
-      body = '<p class="us-ai-body">' + escapeHtml(text).replace(/\n+/g, '<br>') + '</p>';
-      var verification = (data && data.citationVerification) || {};
-      if (verification.failureCount > 0 || verification.unverifiableCount > 0) {
-        extra = '<div class="us-warn us-warn--citation" role="note">' +
-          '<strong>' + escapeHtml(t('citationUnverified')) + '</strong> ' +
-          escapeHtml(t('citationUnverifiedHelp')) + '</div>';
+      parts.push('<p class="us-ai-body">' + escapeHtml(t('aiOverviewLoading')) + '</p>');
+      parts.push('<div class="us-ai-skeleton" aria-hidden="true"><span></span><span></span><span></span></div>');
+    } else if (resolved === 'streaming') {
+      cls = 'is-streaming';
+      parts.push('<p class="us-ai-body">' + escapeHtml(text).replace(/\n+/g, '<br>') +
+        '<span class="us-ai-caret" aria-hidden="true"></span></p>');
+      parts.push('<p class="us-ai-sublabel">' + escapeHtml(t('aiOverviewStreaming')) + '</p>');
+    } else if (resolved === 'unavailable') {
+      cls = 'is-unavailable';
+      parts.push('<p class="us-ai-body">' +
+        escapeHtml(d.message || t('aiOverviewUnavailable')) + '</p>');
+      parts.push('<div class="us-ai-actions">' +
+        '<button type="button" class="us-ai-action" data-us-action="retry-overview">' +
+        escapeHtml(t('retry')) + '</button></div>');
+    } else if (resolved === 'blocked') {
+      cls = 'is-blocked';
+      parts.push('<p class="us-ai-body">' +
+        escapeHtml(d.message || t('aiOverviewNoEvidence')) + '</p>');
+      if (d.reason) {
+        parts.push('<p class="us-ai-sublabel">' + escapeHtml(t('reasonLabel')) + ' ' +
+          escapeHtml(d.reason) + '</p>');
       }
-      extra += '<div class="us-ai-actions">' +
-        '<button type="button" class="us-ai-action" data-us-action="open-waymaker">' +
+    } else {
+      // ready / partial_sources / official_confirm_required / citation_failed
+      cls = 'is-' + resolved.replace(/_/g, '-');
+      if (resolved === 'citation_failed') {
+        parts.push(aiBannerHtml('citation', t('citationUnverified'), t('citationUnverifiedHelp')));
+      } else if (resolved === 'official_confirm_required') {
+        parts.push(aiBannerHtml('confirm', t('officialConfirmTitle'), t('officialConfirmHelp')));
+      }
+      parts.push('<p class="us-ai-body">' + escapeHtml(text).replace(/\n+/g, '<br>') + '</p>');
+      parts.push(aiNextStepsHtml(d.nextSteps));
+      parts.push('<div class="us-ai-divider" aria-hidden="true"></div>');
+      parts.push('<div class="us-ai-sources"><p class="us-ai-sublabel">' +
+        escapeHtml(t('sourcesTitle')) + '</p>' + aiSourceChipsHtml(d.sources) + '</div>');
+      if (resolved === 'partial_sources') {
+        parts.push('<p class="us-ai-sublabel us-ai-sublabel--warn">' +
+          escapeHtml(t('partialSourcesHelp')) + '</p>');
+      }
+      if (d.evidenceLabel) {
+        parts.push('<p class="us-ai-sublabel">' + escapeHtml(d.evidenceLabel) + '</p>');
+      }
+      parts.push('<div class="us-ai-actions">' +
+        '<button type="button" class="us-ai-action us-ai-action--cta" data-us-action="open-waymaker">' +
         escapeHtml(t('moreInWaymaker')) + '</button>' +
         '<button type="button" class="us-ai-action" data-us-action="open-legal">' +
-        escapeHtml(t('analyzeLegal')) + '</button></div>' +
-        '<p class="us-ai-confirm">' + escapeHtml(t('confirmOfficial')) + '</p>';
-    } else if (state === 'no_evidence') {
-      cls = 'is-empty';
-      body = '<p class="us-ai-body">' + escapeHtml(t('aiOverviewNoEvidence')) + '</p>';
-    } else {
-      cls = 'is-unavailable';
-      var message = (data && data.message) || t('aiOverviewUnavailable');
-      body = '<p class="us-ai-body">' + escapeHtml(message) + '</p>';
+        escapeHtml(t('analyzeLegal')) + '</button></div>');
     }
 
-    return '<section class="us-ai ' + cls + '" aria-labelledby="usAiTitle">' +
+    parts.push('<p class="us-ai-confirm">' + escapeHtml(t('confirmOfficial')) + '</p>');
+
+    return '<section class="us-ai ' + cls + '" aria-labelledby="usAiTitle" data-us-ai-state="' +
+      escapeHtml(resolved) + '">' +
       '<div class="us-ai-head">' +
       '<h3 class="us-ai-title" id="usAiTitle">' + escapeHtml(t('aiOverviewTitle')) + '</h3>' +
       '<span class="us-badge us-badge--ref">' + escapeHtml(t('aiRefLabel')) + '</span>' +
-      '</div>' + body + extra + '</section>';
+      '</div>' + parts.join('') + '</section>';
   }
 
   /** Official source panel. Non-allow-listed URLs degrade to plain text. */
@@ -310,7 +425,11 @@
   /** Classify a fetch outcome into an AI Overview render state. */
   function classifyAiResponse(body, httpOk) {
     if (!httpOk || !body) return 'unavailable';
+    // A partial overview still arriving renders as `streaming`, so the reader
+    // sees words appear instead of an opaque spinner.
+    if (body.status === 'streaming') return body.overview ? 'streaming' : 'loading';
     if (body.status === 'ok' && body.overview) return 'ok';
+    if (body.status === 'blocked') return 'blocked';
     if (body.status === 'no_evidence') return 'no_evidence';
     if (body.status === 'not_applicable') return 'hidden';
     return 'unavailable';
@@ -344,6 +463,7 @@
     buildExtraResultsHtml: buildExtraResultsHtml,
     buildUnifiedLayerHtml: buildUnifiedLayerHtml,
     classifyAiResponse: classifyAiResponse,
+    resolveAiOverviewState: resolveAiOverviewState,
     readQueryFromUrl: readQueryFromUrl,
     buildShareableUrl: buildShareableUrl,
     OFFICIAL_HOSTS: OFFICIAL_HOSTS,

@@ -13475,23 +13475,120 @@ body:not(.searched) .us-layer { display: none; }
   color: var(--t1);
 }
 
+/* AI Overview — implements Figma UX-03 `AI Overview` (node 406:92).
+   That page uses a newer emerald/neutral palette than `01 Design System`, so the
+   values below are the design's own tokens, mapped to --us-ai-* custom
+   properties. Dark mode re-points the same properties rather than duplicating
+   the rules. */
 .us-ai {
-  padding: 1rem 1.1rem; margin-bottom: 0.9rem;
-  background: var(--bg1); border: 1px solid var(--bd);
-  border-radius: 16px; box-shadow: var(--sh1);
+  --us-ai-surface: #f2f6f0;
+  --us-ai-accent: #177361;
+  --us-ai-accent-soft: #e5f5ed;
+  --us-ai-ink: #1c1f29;
+  --us-ai-muted: #4d5261;
+  --us-ai-line: #e5e5ed;
+  --us-ai-chip: #fffcf5;
+  --us-ai-link: #0e8a6b;
+  --us-ai-amber: #b45309;
+  --us-ai-coral: #c2410c;
+  padding: 20px 24px 18px 26px; margin-bottom: 0.9rem;
+  background: var(--us-ai-surface);
+  border-left: 3px solid var(--us-ai-accent);
+  border-radius: 18px;
+  display: flex; flex-direction: column; gap: 14px;
 }
-.us-ai.is-unavailable, .us-ai.is-empty { background: var(--bg2); opacity: 0.92; }
-.us-ai-head { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; flex-wrap: wrap; }
-.us-ai-title { margin: 0; font-size: 0.98rem; font-weight: 800; color: var(--t1); }
-.us-ai-body { margin: 0 0 0.6rem; font-size: 0.92rem; line-height: 1.65; color: var(--t1); overflow-wrap: anywhere; }
-.us-ai-confirm { margin: 0.5rem 0 0; font-size: 0.78rem; color: var(--t3); }
-.us-ai-actions { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 0.6rem; }
+body[data-theme="dark"] .us-ai {
+  --us-ai-surface: #10322b;
+  --us-ai-accent: #7dd8b8;
+  --us-ai-accent-soft: #16463b;
+  --us-ai-ink: #f3eedf;
+  --us-ai-muted: #9db5ad;
+  --us-ai-line: #23564a;
+  --us-ai-chip: #0b2a24;
+  --us-ai-link: #7dd8b8;
+  --us-ai-amber: #fbbf24;
+  --us-ai-coral: #fb923c;
+}
+.us-ai.is-unavailable, .us-ai.is-blocked { opacity: 0.94; }
+.us-ai-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 0.5rem; flex-wrap: wrap;
+}
+.us-ai-title {
+  margin: 0; font-size: 12.5px; font-weight: 700; letter-spacing: 0.75px;
+  color: var(--us-ai-muted);
+}
+.us-ai-body {
+  margin: 0; font-size: 14.5px; line-height: 1.5; color: var(--us-ai-ink);
+  overflow-wrap: anywhere;
+}
+.us-ai-sublabel {
+  margin: 0; font-size: 11.5px; font-weight: 700; letter-spacing: 0.46px;
+  color: var(--us-ai-muted);
+}
+.us-ai-sublabel--warn { font-weight: 400; color: var(--us-ai-amber); }
+.us-ai-confirm {
+  margin: 0; font-size: 11px; line-height: 1.45; color: var(--us-ai-muted);
+}
+.us-ai-divider { height: 1px; background: var(--us-ai-line); }
+
+/* Next steps — numbered circles per the design's `NextSteps` block. */
+.us-ai-steps { display: flex; flex-direction: column; gap: 8px; }
+.us-ai-step-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.us-ai-step { display: flex; align-items: center; gap: 9px; }
+.us-ai-step-num {
+  flex: 0 0 auto; width: 18px; height: 18px; border-radius: 999px;
+  background: var(--us-ai-accent-soft); color: var(--us-ai-accent);
+  font-size: 10.5px; font-weight: 700;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.us-ai-step-label { font-size: 13.5px; color: var(--us-ai-ink); overflow-wrap: anywhere; }
+
+/* Source chips. `is-muted` marks a source that could not be retrieved — it is
+   dimmed, never removed, so the evidence set never looks larger than it is. */
+.us-ai-sources { display: flex; flex-direction: column; gap: 9px; }
+.us-ai-srcs { display: flex; flex-wrap: wrap; gap: 8px; }
+.us-ai-src {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 6px 12px 6px 11px; border-radius: 999px;
+  background: var(--us-ai-chip); border: 1px solid var(--us-ai-line);
+  font-size: 12px; font-weight: 500; color: var(--us-ai-ink);
+  max-width: 100%; overflow-wrap: anywhere;
+}
+.us-ai-src-dot {
+  width: 6px; height: 6px; border-radius: 999px; background: var(--us-ai-accent);
+  flex: 0 0 auto;
+}
+.us-ai-src.is-muted { opacity: 0.55; }
+.us-ai-src.is-muted .us-ai-src-dot { background: var(--us-ai-muted); }
+
+/* State banners: amber = official confirmation, coral = citation failure. */
+.us-ai-banner {
+  padding: 10px 12px; border-radius: 10px; font-size: 12.5px; line-height: 1.5;
+  border: 1px solid currentColor;
+}
+.us-ai-banner-title { font-weight: 700; }
+.us-ai-banner-body { font-weight: 400; color: var(--us-ai-ink); }
+.us-ai-banner--confirm { color: var(--us-ai-amber); background: color-mix(in srgb, currentColor 8%, transparent); }
+.us-ai-banner--citation { color: var(--us-ai-coral); background: color-mix(in srgb, currentColor 8%, transparent); }
+
+.us-ai-actions { display: flex; flex-wrap: wrap; gap: 0.45rem; }
 .us-ai-action {
-  min-height: 38px; padding: 0 0.9rem; border-radius: 10px;
-  border: 1px solid var(--bd); background: var(--bg2); color: var(--t1);
-  font-size: 0.83rem; font-weight: 700; cursor: pointer;
+  min-height: 40px; padding: 11px 16px 11px 18px; border-radius: 999px;
+  border: 1px solid var(--us-ai-line); background: transparent;
+  color: var(--us-ai-ink); font-size: 13.5px; font-weight: 700; cursor: pointer;
 }
-.us-ai-action:hover { border-color: var(--ac); color: var(--ac); }
+.us-ai-action--cta { border: 1.5px solid var(--us-ai-accent); color: var(--us-ai-accent); }
+.us-ai-action:hover { border-color: var(--us-ai-accent); color: var(--us-ai-accent); }
+
+/* Streaming caret — the design's "작성중·커서" affordance. */
+.us-ai-caret {
+  display: inline-block; width: 2px; height: 1em; margin-left: 2px;
+  vertical-align: text-bottom; background: var(--us-ai-accent);
+  animation: usCaret 1s step-end infinite;
+}
+@keyframes usCaret { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .us-ai-caret { animation: none; } }
 .us-ai-skeleton { display: flex; flex-direction: column; gap: 0.45rem; }
 .us-ai-skeleton span {
   display: block; height: 12px; border-radius: 6px;

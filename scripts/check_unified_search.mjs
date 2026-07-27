@@ -157,7 +157,8 @@ check('an unverified citation raises a visible warning on the overview', () => {
     overview: '출입국관리법 제20조에 따릅니다.',
     citationVerification: { failureCount: 0, unverifiableCount: 1 }
   });
-  assert(html.includes('us-warn--citation'), 'expected a citation warning block');
+  assert(html.includes('us-ai-banner--citation'), 'expected a citation warning banner');
+  assert(html.includes('data-us-ai-state="citation_failed"'), 'expected the citation_failed state');
 });
 
 check('a fully verified overview shows no citation warning', () => {
@@ -165,7 +166,105 @@ check('a fully verified overview shows no citation warning', () => {
     overview: 'text',
     citationVerification: { failureCount: 0, unverifiableCount: 0 }
   });
-  assert(!html.includes('us-warn--citation'), 'unexpected citation warning');
+  assert(!html.includes('us-ai-banner--citation'), 'unexpected citation warning');
+});
+
+/* ------------------------------------------ Figma UX-03 AI Overview states -- */
+check('streaming renders the partial text with a caret', () => {
+  const html = US.buildAiOverviewHtml('streaming', { overview: '작성 중인 문장' });
+  assert(html.includes('us-ai-caret'), 'expected a streaming caret');
+  assert(html.includes('작성 중인 문장'), 'expected the partial text');
+  assert(html.includes('data-us-ai-state="streaming"'));
+});
+
+check('blocked states the reason instead of pretending to answer', () => {
+  const html = US.buildAiOverviewHtml('blocked', {
+    message: '요약을 제공하지 않았습니다.', reason: '근거 부족'
+  });
+  assert(html.includes('data-us-ai-state="blocked"'));
+  assert(html.includes('근거 부족'), 'expected the reason to be shown');
+});
+
+check('legacy no_evidence maps onto the blocked state', () => {
+  const html = US.buildAiOverviewHtml('no_evidence', {});
+  assert(html.includes('data-us-ai-state="blocked"'), 'no_evidence should render as blocked');
+});
+
+check('a degraded law lookup downgrades ready to partial_sources', () => {
+  const html = US.buildAiOverviewHtml('ok', {
+    overview: 'text', evidenceState: { law: 'timeout', manual: 'approved_direct' }
+  });
+  assert(html.includes('data-us-ai-state="partial_sources"'));
+});
+
+check('review-pending-only manual evidence is a partial source set', () => {
+  const html = US.buildAiOverviewHtml('ok', {
+    overview: 'text', evidenceState: { law: 'verified', manual: 'review_pending_only' }
+  });
+  assert(html.includes('data-us-ai-state="partial_sources"'));
+});
+
+check('official confirmation raises the amber banner', () => {
+  const html = US.buildAiOverviewHtml('ok', {
+    overview: 'text', requiresOfficialConfirmation: true
+  });
+  assert(html.includes('us-ai-banner--confirm'), 'expected the confirm banner');
+  assert(html.includes('data-us-ai-state="official_confirm_required"'));
+});
+
+check('an unverified citation outranks a partial source set', () => {
+  // Both conditions true: the citation caution is the stronger claim and wins.
+  const html = US.buildAiOverviewHtml('ok', {
+    overview: 'text',
+    citationVerification: { unverifiableCount: 1 },
+    evidenceState: { law: 'timeout' },
+    requiresOfficialConfirmation: true
+  });
+  assert(html.includes('data-us-ai-state="citation_failed"'));
+});
+
+check('state refinement never upgrades a failure into a success', () => {
+  for (const failing of ['unavailable', 'blocked', 'loading']) {
+    assertEqual(US.resolveAiOverviewState(failing, { overview: 'x' }), failing);
+  }
+});
+
+check('unretrieved sources are dimmed, never dropped', () => {
+  const html = US.buildAiOverviewHtml('ok', {
+    overview: 'text',
+    sources: [{ label: '체류매뉴얼 p.412' }, { label: '판례', unavailable: true }]
+  });
+  assert(html.includes('is-muted'), 'expected the unavailable source to be dimmed');
+  assert(html.includes('판례'), 'the unavailable source must still be listed');
+});
+
+check('next steps render as a numbered list', () => {
+  const html = US.buildAiOverviewHtml('ok', {
+    overview: 'text', nextSteps: ['D-10 변경 서류 확인', 'HiKorea 방문 예약']
+  });
+  assert(html.includes('us-ai-step-num'), 'expected numbered step badges');
+  assert(html.includes('HiKorea 방문 예약'));
+});
+
+check('unavailable offers a retry action', () => {
+  const html = US.buildAiOverviewHtml('unavailable', null);
+  assert(html.includes('data-us-action="retry-overview"'), 'expected a retry affordance');
+});
+
+check('every non-hidden state keeps the official-confirmation line', () => {
+  for (const state of ['loading', 'streaming', 'ok', 'unavailable', 'blocked']) {
+    const html = US.buildAiOverviewHtml(state, { overview: 'text' });
+    assert(html.includes('us-ai-confirm'), `missing confirm line in ${state}`);
+  }
+});
+
+check('streaming status with no text yet falls back to loading', () => {
+  assertEqual(US.classifyAiResponse({ status: 'streaming' }, true), 'loading');
+  assertEqual(US.classifyAiResponse({ status: 'streaming', overview: 'partial' }, true), 'streaming');
+});
+
+check('blocked status is classified, not collapsed into unavailable', () => {
+  assertEqual(US.classifyAiResponse({ status: 'blocked' }, true), 'blocked');
 });
 
 /* ------------------------------------------------- evidence labelling ---- */
