@@ -144,6 +144,20 @@ subcode-specific rules as universal (`CLAUDE.md` code hierarchy).
 | `Kind` | `Status` (2 segments) · `Subcode` (3+ segments) |
 | `MatchReason` | `ExactCode` · `ParentOfExactCode` · `Keyword` |
 
+**`ParentOfExactCode` carries a scoping notice** (`renderParentScopeNotice` in
+`index.html`; the Figma variant is 222px against the others' 120px because of
+it). Searching `D-2-1` renders the `D-2` card — sub-codes live inside their
+parent record — and lifts the sub-code into a "내 상황과 관련" group. Everything
+above that group is the *parent's* common requirements. Without the notice a
+user who searched a specific sub-code can read the parent's universal rules as
+that sub-code's own, which is the code-hierarchy rule failing in the direction
+the rule does not literally name.
+
+The notice renders **only when the sub-code resolves against
+`visa_data.json`**. `D-2-99` is not a sub-code we hold, so naming it back
+("`D-2-99` 전용 요건은 아래에서") would assert a sub-code that does not exist —
+nothing renders instead.
+
 ### 3.5 `Evidence / Source Card` (S2, S3)
 
 | Property | Values |
