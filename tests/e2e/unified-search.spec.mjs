@@ -42,14 +42,37 @@ function unifiedBody(overrides = {}) {
   };
 }
 
-async function search(page, query) {
-  await page.goto('/index.html');
+// The hero search form starts hidden (`#searchForm{display:none}`) and is only
+// revealed by the gateway toggle, so every UI-driven test has to open it first.
+async function openSearch(page, url = '/index.html') {
+  await page.goto(url);
+  await page.waitForFunction(
+    () => {
+      try {
+        return typeof VISA_DATA !== 'undefined' && VISA_DATA.length > 10
+          && typeof renderResults === 'function';
+      } catch (e) { return false; }
+    },
+    null, { timeout: 30_000 });
   const input = page.locator('#q');
-  await expect(input).toBeEnabled({ timeout: 20_000 });
-  await input.fill(query);
+  if (!(await input.isVisible())) {
+    await page.locator('#searchToggleBtn').click();
+  }
+  await expect(input).toBeVisible({ timeout: 10_000 });
+  await expect(input).toBeEnabled({ timeout: 10_000 });
+  return input;
+}
+
+async function submitSearch(page) {
   await page.locator('#searchForm').evaluate((f) =>
     f.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true })));
   await expect(page.locator('body')).toHaveClass(/searched/, { timeout: 20_000 });
+}
+
+async function search(page, query) {
+  const input = await openSearch(page);
+  await input.fill(query);
+  await submitSearch(page);
 }
 
 test.describe('organic results never depend on AI', () => {
@@ -61,7 +84,7 @@ test.describe('organic results never depend on AI', () => {
 
     await search(page, 'D-2-1');
 
-    await expect(page.locator('#rlist .rc, #rlist .es').first()).toBeVisible();
+    await expect(page.locator('#rlist article.vc, #rlist .es').first()).toBeVisible();
     await expect(page.locator('#unifiedSearchLayer .us-ai.is-loading')).toBeVisible();
   });
 
@@ -79,7 +102,7 @@ test.describe('organic results never depend on AI', () => {
     await search(page, 'D-2-1');
 
     await expect(page.locator('#unifiedSearchLayer .us-ai.is-unavailable')).toBeVisible();
-    await expect(page.locator('#rlist .rc, #rlist .es').first()).toBeVisible();
+    await expect(page.locator('#rlist article.vc, #rlist .es').first()).toBeVisible();
   });
 
   test('a backend outage removes the layer without breaking search', async ({ page }) => {
@@ -88,7 +111,7 @@ test.describe('organic results never depend on AI', () => {
 
     await search(page, 'D-2-1');
 
-    await expect(page.locator('#rlist .rc, #rlist .es').first()).toBeVisible();
+    await expect(page.locator('#rlist article.vc, #rlist .es').first()).toBeVisible();
     await expect(page.locator('#unifiedSearchLayer .us-ai')).toHaveCount(0);
   });
 
@@ -97,7 +120,7 @@ test.describe('organic results never depend on AI', () => {
     await page.route(AI_OVERVIEW, (route) => route.abort());
 
     await search(page, 'E-7-4');
-    await expect(page.locator('#rlist .rc, #rlist .es').first()).toBeVisible();
+    await expect(page.locator('#rlist article.vc, #rlist .es').first()).toBeVisible();
   });
 });
 
@@ -187,7 +210,7 @@ test.describe('URL state', () => {
     await page.route(UNIFIED, (route) => route.fulfill({ json: unifiedBody() }));
     await page.route(AI_OVERVIEW, (route) => route.abort());
 
-    await page.goto('/index.html?q=D-2-1');
+    await openSearch(page, '/index.html?q=D-2-1');
     await expect(page.locator('body')).toHaveClass(/searched/, { timeout: 20_000 });
     await expect(page.locator('#q')).toHaveValue('D-2-1');
   });
@@ -198,8 +221,7 @@ test.describe('URL state', () => {
 
     await search(page, 'D-2-1');
     await page.locator('#q').fill('E-7-4');
-    await page.locator('#searchForm').evaluate((f) =>
-      f.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true })));
+    await submitSearch(page);
     await expect(page).toHaveURL(/[?&]q=E-7-4/);
 
     await page.goBack();
@@ -239,12 +261,10 @@ test.describe('layout, a11y and console hygiene', () => {
     await page.route(UNIFIED, (route) => route.fulfill({ json: unifiedBody() }));
     await page.route(AI_OVERVIEW, (route) => route.abort());
 
-    await page.goto('/index.html');
-    const input = page.locator('#q');
-    await expect(input).toBeEnabled({ timeout: 20_000 });
+    const input = await openSearch(page);
     await input.focus();
     await expect(input).toBeFocused();
-    await input.type('D-2-1');
+    await input.pressSequentially('D-2-1');
     await input.press('Enter');
     await expect(page.locator('body')).toHaveClass(/searched/, { timeout: 20_000 });
   });
@@ -279,13 +299,10 @@ test.describe('layout, a11y and console hygiene', () => {
     await page.route(UNIFIED, (route) => route.fulfill({ json: unifiedBody() }));
     await page.route(AI_OVERVIEW, (route) => route.abort());
 
-    await page.goto('/index.html');
+    const input = await openSearch(page);
     await page.evaluate(() => document.body.setAttribute('data-theme', 'dark'));
-    const input = page.locator('#q');
-    await expect(input).toBeEnabled({ timeout: 20_000 });
     await input.fill('D-2-1');
-    await page.locator('#searchForm').evaluate((f) =>
-      f.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true })));
+    await submitSearch(page);
 
     const strip = page.locator('#unifiedSearchLayer .us-interpret');
     await expect(strip).toBeVisible();
