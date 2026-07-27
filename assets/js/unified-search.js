@@ -539,24 +539,21 @@
     });
   }
 
-  function fetchAiOverview(query, payload) {
-    if (!payload || !payload.query) return;
-    var token = currentToken;
-    if (aiController) { try { aiController.abort(); } catch (e) { /* ignore */ } }
-    aiController = (typeof AbortController !== 'undefined') ? new AbortController() : null;
-    var timer = setTimeout(function () {
-      if (aiController) { try { aiController.abort(); } catch (e) { /* ignore */ } }
-    }, AI_OVERVIEW_TIMEOUT_MS);
+  function aiRequestBody(query, payload) {
+    return JSON.stringify({
+      query: query,
+      lang: usLang(),
+      intent: payload.intent,
+      detectedVisaCodes: payload.detectedVisaCodes || []
+    });
+  }
 
-    fetch(apiBase() + '/api/search/unified/ai-overview', {
+  /** Buffered overview — the fallback whenever streaming is not usable. */
+  function fetchAiOverviewBuffered(query, payload, token, timer) {
+    return fetch(apiBase() + '/api/search/unified/ai-overview', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        query: query,
-        lang: usLang(),
-        intent: payload.intent,
-        detectedVisaCodes: payload.detectedVisaCodes || []
-      }),
+      body: aiRequestBody(query, payload),
       signal: aiController ? aiController.signal : undefined
     }).then(function (res) {
       return res.json().then(function (body) { return { ok: res.ok, body: body }; });
@@ -570,6 +567,99 @@
       // Quiet failure card — the organic results below are untouched.
       render('unavailable', null);
     });
+  }
+
+  /**
+   * Streamed overview. Renders `streaming` deltas as they arrive so the reader
+   * sees words instead of a spinner, then swaps to the verified final payload on
+   * `done` — the citation guard only runs on the complete text, so nothing is
+   * presented as verified until then.
+   *
+   * Any failure before the first delta falls back to the buffered endpoint; a
+   * failure mid-stream keeps whatever text arrived and marks it unavailable
+   * rather than blanking the card.
+   */
+  function fetchAiOverviewStreamed(query, payload, token, timer) {
+    if (typeof ReadableStream === 'undefined' || typeof TextDecoder === 'undefined') {
+      return fetchAiOverviewBuffered(query, payload, token, timer);
+    }
+    return fetch(apiBase() + '/api/search/unified/ai-overview/stream', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: aiRequestBody(query, payload),
+      signal: aiController ? aiController.signal : undefined
+    }).then(function (res) {
+      if (!res.ok || !res.body) throw new Error('stream unavailable');
+      var reader = res.body.getReader();
+      var decoder = new TextDecoder();
+      var buffer = '';
+      var accumulated = '';
+      var settled = false;
+
+      function handleFrame(frame) {
+        var lines = frame.split('\n');
+        var event = '';
+        var dataText = '';
+        for (var i = 0; i < lines.length; i++) {
+          if (lines[i].indexOf('event:') === 0) event = lines[i].slice(6).trim();
+          else if (lines[i].indexOf('data:') === 0) dataText += lines[i].slice(5).trim();
+        }
+        if (!dataText) return;
+        var data;
+        try { data = JSON.parse(dataText); } catch (e) { return; }
+
+        if (event === 'delta' && data.text) {
+          accumulated += data.text;
+          render('streaming', { overview: accumulated });
+        } else if (event === 'done') {
+          settled = true;
+          clearTimeout(timer);
+          if (token !== currentToken) return;
+          if (data.status === 'unavailable' && data.reason === 'streaming_not_available') {
+            fetchAiOverviewBuffered(query, payload, token, timer);
+            return;
+          }
+          render(classifyAiResponse(data, true), data);
+        }
+      }
+
+      function pump() {
+        return reader.read().then(function (chunk) {
+          if (chunk.done) {
+            if (!settled && token === currentToken) {
+              // Stream ended without a `done` frame: keep the partial text but
+              // stop claiming it is finished.
+              clearTimeout(timer);
+              render('unavailable', accumulated ? { message: accumulated } : null);
+            }
+            return;
+          }
+          buffer += decoder.decode(chunk.value, { stream: true });
+          var frames = buffer.split('\n\n');
+          buffer = frames.pop();
+          for (var i = 0; i < frames.length; i++) handleFrame(frames[i]);
+          if (token !== currentToken) { try { reader.cancel(); } catch (e) { /* ignore */ } return; }
+          return pump();
+        });
+      }
+      return pump();
+    }).catch(function () {
+      if (token !== currentToken) return;
+      // Nothing streamed — fall back rather than showing a failure the buffered
+      // endpoint might not have.
+      return fetchAiOverviewBuffered(query, payload, token, timer);
+    });
+  }
+
+  function fetchAiOverview(query, payload) {
+    if (!payload || !payload.query) return;
+    var token = currentToken;
+    if (aiController) { try { aiController.abort(); } catch (e) { /* ignore */ } }
+    aiController = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+    var timer = setTimeout(function () {
+      if (aiController) { try { aiController.abort(); } catch (e) { /* ignore */ } }
+    }, AI_OVERVIEW_TIMEOUT_MS);
+    fetchAiOverviewStreamed(query, payload, token, timer);
   }
 
   function runUnified(query) {
@@ -657,6 +747,13 @@
             detail: { query: (lastPayload && lastPayload.query) || '', kind: 'laws' }
           }));
         } catch (e) { /* ignore */ }
+      } else if (name === 'retry-overview') {
+        // Retry only the overview. The organic results below are already correct
+        // and must not be refetched or cleared.
+        if (lastPayload && lastPayload.query) {
+          render('loading', null);
+          fetchAiOverview(lastPayload.query, lastPayload);
+        }
       }
       return;
     }

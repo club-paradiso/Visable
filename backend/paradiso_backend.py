@@ -6660,26 +6660,7 @@ async def search_unified_ai_overview(req: UnifiedAiOverviewRequest) -> Any:
                         "No grounded evidence was retrieved, so no overview was generated."),
         }
 
-    language_line = ("Write in natural Korean." if lang == "ko"
-                     else "Write in natural English.")
-    prompt = (
-        "You summarize Korean immigration/status-of-stay search results for a "
-        "public information site. You are NOT giving legal advice.\n\n"
-        f"User query: {query}\n"
-        f"Detected intent: {deterministic.get('intent')}\n"
-        f"Retrieved evidence (the ONLY facts you may use):\n"
-        + "\n".join(evidence_lines[:8]) + "\n\n"
-        "HARD RULES:\n"
-        "1. Use ONLY the retrieved evidence above. Do not add requirements, "
-        "deadlines, fees or eligibility rules that are not present in it.\n"
-        "2. NEVER write a statute name, article number, case number, visa code, "
-        "occupation code or industry code that does not appear above.\n"
-        "3. Do not state whether the user is eligible or will be approved.\n"
-        "4. 2-5 sentences. Then one short line naming the single most useful "
-        "next action.\n"
-        "5. End by telling the reader to confirm with HiKorea or 1345.\n\n"
-        f"{language_line}"
-    )
+    prompt = _unified_overview_prompt(query, deterministic, evidence_lines, lang)
 
     try:
         text, attempt_meta = await _openrouter_complete_with_candidates(prompt)
@@ -6733,6 +6714,144 @@ async def search_unified_ai_overview(req: UnifiedAiOverviewRequest) -> Any:
         "fallbackAvailable": True,
         "latency": {"totalMs": elapsed_ms},
     }
+
+
+def _unified_overview_prompt(
+    query: str,
+    deterministic: Dict[str, Any],
+    evidence_lines: List[str],
+    lang: str,
+) -> str:
+    """Prompt shared by the buffered and streaming AI Overview endpoints.
+
+    Shared deliberately: two copies would drift, and the hard rules here are the
+    only thing stopping the model from inventing a statute or a visa code.
+    """
+    language_line = ("Write in natural Korean." if lang == "ko"
+                     else "Write in natural English.")
+    return (
+        "You summarize Korean immigration/status-of-stay search results for a "
+        "public information site. You are NOT giving legal advice.\n\n"
+        f"User query: {query}\n"
+        f"Detected intent: {deterministic.get('intent')}\n"
+        f"Retrieved evidence (the ONLY facts you may use):\n"
+        + "\n".join(evidence_lines[:8]) + "\n\n"
+        "HARD RULES:\n"
+        "1. Use ONLY the retrieved evidence above. Do not add requirements, "
+        "deadlines, fees or eligibility rules that are not present in it.\n"
+        "2. NEVER write a statute name, article number, case number, visa code, "
+        "occupation code or industry code that does not appear above.\n"
+        "3. Do not state whether the user is eligible or will be approved.\n"
+        "4. 2-5 sentences. Then one short line naming the single most useful "
+        "next action.\n"
+        "5. End by telling the reader to confirm with HiKorea or 1345.\n\n"
+        f"{language_line}"
+    )
+
+
+@app.post(
+    "/api/search/unified/ai-overview/stream",
+    dependencies=[Depends(rate_limit("search_unified_ai", per_minute=10, per_day=200))],
+)
+async def search_unified_ai_overview_stream(req: UnifiedAiOverviewRequest) -> Any:
+    """SSE variant of the AI Overview — emits `streaming` deltas, then `done`.
+
+    Exists so the design's `Streaming` state (Figma UX-03, node 406:92) is a real
+    state and not decoration: without a producer the frontend could render it but
+    nothing would ever trigger it.
+
+    The citation guard runs on the ACCUMULATED text at the end, never per delta —
+    a half-written statute reference would otherwise be judged incomplete and
+    wrongly flagged. Until `done` arrives the client shows the text as provisional.
+    """
+    query = (req.query or "").strip()[:_UNIFIED_SEARCH_MAX_QUERY]
+    lang = "en" if str(req.lang or "ko").lower().startswith("en") else "ko"
+    request_id = uuid.uuid4().hex[:16]
+
+    async def event_stream():
+        if not query:
+            yield _sse("done", {"status": "not_applicable", "requestId": request_id})
+            return
+        if not _providers_configured().get("openrouter"):
+            # Non-streaming providers cannot satisfy this endpoint; the client
+            # falls back to the buffered endpoint rather than showing nothing.
+            yield _sse("done", {
+                "status": "unavailable", "reason": "streaming_not_available",
+                "requestId": request_id, "fallbackAvailable": True,
+                "message": ("실시간 요약을 사용할 수 없습니다. 일반 요약으로 대체합니다."
+                            if lang == "ko" else
+                            "Live summary is unavailable; falling back to the buffered summary."),
+            })
+            return
+
+        cached = _load_visas()
+        deterministic = _unified_search.run_unified_search(
+            query, visa_data=cached.get("visas") or [],
+            valid_main_codes=set(_VALID_MAIN_CODES),
+            manual_search=_unified_manual_search, limit=8,
+        )
+        evidence_lines = [
+            f"- [{c['code']}] {c.get('title', '')}: {c.get('summary', '')[:180]}"
+            for c in deterministic.get("organicResults", []) if c.get("code")
+        ]
+        if not evidence_lines:
+            yield _sse("done", {
+                "status": "blocked",
+                "reason": ("검색된 근거 0건" if lang == "ko" else "no grounded evidence"),
+                "requestId": request_id, "fallbackAvailable": True,
+            })
+            return
+
+        prompt = _unified_overview_prompt(query, deterministic, evidence_lines, lang)
+        yield _sse("start", {"status": "streaming", "requestId": request_id})
+
+        accumulated = ""
+        try:
+            candidates = _resolve_openrouter_candidates()
+            model = candidates[0] if candidates else OPENROUTER_MODEL
+            async for delta in _stream_openrouter_text(prompt, model):
+                if not delta:
+                    continue
+                accumulated += delta
+                yield _sse("delta", {"text": delta})
+        except Exception:
+            yield _sse("done", {
+                "status": "unavailable", "reason": "provider_error",
+                "requestId": request_id, "fallbackAvailable": True,
+                "message": ("AI 요약을 불러오지 못했습니다. 아래 검색 결과는 정상입니다."
+                            if lang == "ko" else
+                            "The AI overview could not be loaded."),
+            })
+            return
+
+        verification = _statute_guard.verify_statute_citations(
+            accumulated, [], evidence_available=False)
+        safe_text = _statute_guard.strip_failed_statute_citations(accumulated, verification)
+        yield _sse("done", {
+            "status": "ok",
+            "requestId": request_id,
+            "overview": safe_text,
+            "citationVerification": {
+                "status": verification["status"],
+                "unverifiableCount": verification["unverifiable_count"],
+                "failureCount": verification["failure_count"],
+            },
+            "evidenceState": {
+                "manual": (deterministic.get("manualEvidence") or {}).get("status", "not_queried"),
+                "directEvidenceCount": len(evidence_lines),
+                "law": "not_queried",
+            },
+            "sources": _unified_overview_sources(deterministic),
+            "evidenceLabel": _unified_evidence_label(deterministic, lang),
+            "requiresOfficialConfirmation": True,
+            "fallbackAvailable": True,
+        })
+
+    return StreamingResponse(
+        event_stream(),
+        media_type="text/event-stream",
+        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+    )
 
 
 def _unified_overview_sources(deterministic: Dict[str, Any]) -> List[Dict[str, Any]]:

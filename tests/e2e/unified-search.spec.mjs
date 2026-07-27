@@ -18,6 +18,19 @@ import { test, expect } from '@playwright/test';
 
 const UNIFIED = '**/api/search/unified';
 const AI_OVERVIEW = '**/api/search/unified/ai-overview';
+const AI_STREAM = '**/api/search/unified/ai-overview/stream';
+
+// The frontend tries the SSE endpoint first and falls back to the buffered one.
+// Unless a test is specifically exercising streaming it aborts the stream, so the
+// fallback path is what gets tested — which is also the path most users hit when
+// the provider cannot stream.
+function stubStream(page) {
+  return page.route(AI_STREAM, (route) => route.abort());
+}
+
+function sseBody(frames) {
+  return frames.map((f) => `event: ${f.event}\ndata: ${JSON.stringify(f.data)}\n\n`).join('');
+}
 
 function unifiedBody(overrides = {}) {
   return {
@@ -80,6 +93,7 @@ test.describe('organic results never depend on AI', () => {
     await page.route(UNIFIED, (route) =>
       route.fulfill({ json: unifiedBody() }));
     // Hang the overview for the whole test: results must not wait for it.
+    await stubStream(page);
     await page.route(AI_OVERVIEW, () => { /* never resolves */ });
 
     await search(page, 'D-2-1');
@@ -90,6 +104,7 @@ test.describe('organic results never depend on AI', () => {
 
   test('an AI failure leaves a visible card and intact results', async ({ page }) => {
     await page.route(UNIFIED, (route) => route.fulfill({ json: unifiedBody() }));
+    await stubStream(page);
     await page.route(AI_OVERVIEW, (route) => route.fulfill({
       status: 200,
       json: {
@@ -107,6 +122,7 @@ test.describe('organic results never depend on AI', () => {
 
   test('a backend outage removes the layer without breaking search', async ({ page }) => {
     await page.route(UNIFIED, (route) => route.abort());
+    await stubStream(page);
     await page.route(AI_OVERVIEW, (route) => route.abort());
 
     await search(page, 'D-2-1');
@@ -117,6 +133,7 @@ test.describe('organic results never depend on AI', () => {
 
   test('a 500 from the unified endpoint is survivable', async ({ page }) => {
     await page.route(UNIFIED, (route) => route.fulfill({ status: 500, body: 'boom' }));
+    await stubStream(page);
     await page.route(AI_OVERVIEW, (route) => route.abort());
 
     await search(page, 'E-7-4');
@@ -124,9 +141,94 @@ test.describe('organic results never depend on AI', () => {
   });
 });
 
+test.describe('streamed AI Overview', () => {
+  test('deltas render as they arrive, then the verified payload replaces them', async ({ page }) => {
+    await page.route(UNIFIED, (route) => route.fulfill({ json: unifiedBody() }));
+    await page.route(AI_STREAM, (route) => route.fulfill({
+      status: 200,
+      contentType: 'text/event-stream',
+      body: sseBody([
+        { event: 'start', data: { status: 'streaming', requestId: 't' } },
+        { event: 'delta', data: { text: 'D-2 자격으로 ' } },
+        { event: 'delta', data: { text: '졸업 후에는 D-10으로 변경할 수 있어요.' } },
+        { event: 'done', data: {
+          status: 'ok', overview: 'D-2 자격으로 졸업 후에는 D-10으로 변경할 수 있어요.',
+          citationVerification: { failureCount: 0, unverifiableCount: 0 },
+          sources: [{ label: '체류매뉴얼 p.412' }]
+        } }
+      ])
+    }));
+    // If the stream works the buffered endpoint must never be called.
+    let bufferedCalls = 0;
+    await page.route(AI_OVERVIEW, (route) => { bufferedCalls += 1; route.abort(); });
+
+    await search(page, 'D-2-1');
+
+    const card = page.locator('#unifiedSearchLayer .us-ai');
+    await expect(card).toHaveAttribute('data-us-ai-state', 'ready', { timeout: 15_000 });
+    await expect(card).toContainText('D-10으로 변경할 수 있어요');
+    expect(bufferedCalls, 'a working stream must not also hit the buffered endpoint')
+      .toBe(0);
+  });
+
+  test('a stream that reports streaming_not_available falls back to buffered', async ({ page }) => {
+    await page.route(UNIFIED, (route) => route.fulfill({ json: unifiedBody() }));
+    await page.route(AI_STREAM, (route) => route.fulfill({
+      status: 200,
+      contentType: 'text/event-stream',
+      body: sseBody([{ event: 'done', data: {
+        status: 'unavailable', reason: 'streaming_not_available', fallbackAvailable: true
+      } }])
+    }));
+    await page.route(AI_OVERVIEW, (route) => route.fulfill({
+      status: 200,
+      json: { status: 'ok', overview: '버퍼드 요약입니다.',
+              citationVerification: { failureCount: 0, unverifiableCount: 0 } }
+    }));
+
+    await search(page, 'D-2-1');
+    await expect(page.locator('#unifiedSearchLayer .us-ai')).toContainText('버퍼드 요약입니다.');
+  });
+
+  test('a stream that dies mid-flight keeps the partial text visible', async ({ page }) => {
+    await page.route(UNIFIED, (route) => route.fulfill({ json: unifiedBody() }));
+    // Frames arrive, then the body ends with no `done` — the card must not blank.
+    await page.route(AI_STREAM, (route) => route.fulfill({
+      status: 200,
+      contentType: 'text/event-stream',
+      body: sseBody([
+        { event: 'start', data: { status: 'streaming' } },
+        { event: 'delta', data: { text: '중간까지 도착한 문장' } }
+      ])
+    }));
+    await page.route(AI_OVERVIEW, (route) => route.abort());
+
+    await search(page, 'D-2-1');
+    await expect(page.locator('#unifiedSearchLayer .us-ai')).toContainText('중간까지 도착한 문장');
+  });
+
+  test('a blocked stream states the reason', async ({ page }) => {
+    await page.route(UNIFIED, (route) => route.fulfill({ json: unifiedBody() }));
+    await page.route(AI_STREAM, (route) => route.fulfill({
+      status: 200,
+      contentType: 'text/event-stream',
+      body: sseBody([{ event: 'done', data: {
+        status: 'blocked', reason: '검색된 근거 0건', fallbackAvailable: true
+      } }])
+    }));
+    await page.route(AI_OVERVIEW, (route) => route.abort());
+
+    await search(page, 'ㅁㄴㅇㄹ');
+    const card = page.locator('#unifiedSearchLayer .us-ai');
+    await expect(card).toHaveAttribute('data-us-ai-state', 'blocked', { timeout: 15_000 });
+    await expect(card).toContainText('검색된 근거 0건');
+  });
+});
+
 test.describe('interpretation and evidence labelling', () => {
   test('the interpretation strip shows the detected code', async ({ page }) => {
     await page.route(UNIFIED, (route) => route.fulfill({ json: unifiedBody() }));
+    await stubStream(page);
     await page.route(AI_OVERVIEW, (route) => route.abort());
 
     await search(page, 'D-2-1');
@@ -147,6 +249,7 @@ test.describe('interpretation and evidence labelling', () => {
         }
       })
     }));
+    await stubStream(page);
     await page.route(AI_OVERVIEW, (route) => route.abort());
 
     await search(page, 'D-2-99');
@@ -164,6 +267,7 @@ test.describe('interpretation and evidence labelling', () => {
         manualEvidence: { status: 'ok', approvedCount: 0, reviewPendingCount: 1 }
       })
     }));
+    await stubStream(page);
     await page.route(AI_OVERVIEW, (route) => route.abort());
 
     await search(page, '체류자격 변경');
@@ -172,6 +276,7 @@ test.describe('interpretation and evidence labelling', () => {
 
   test('official source links are safe anchors', async ({ page }) => {
     await page.route(UNIFIED, (route) => route.fulfill({ json: unifiedBody() }));
+    await stubStream(page);
     await page.route(AI_OVERVIEW, (route) => route.abort());
 
     await search(page, 'D-2-1');
@@ -189,6 +294,7 @@ test.describe('interpretation and evidence labelling', () => {
                         url: 'javascript:alert(1)', sourceType: 'official_portal' }]
       })
     }));
+    await stubStream(page);
     await page.route(AI_OVERVIEW, (route) => route.abort());
 
     await search(page, 'D-2-1');
@@ -200,6 +306,7 @@ test.describe('interpretation and evidence labelling', () => {
 test.describe('URL state', () => {
   test('a search is shareable through ?q=', async ({ page }) => {
     await page.route(UNIFIED, (route) => route.fulfill({ json: unifiedBody() }));
+    await stubStream(page);
     await page.route(AI_OVERVIEW, (route) => route.abort());
 
     await search(page, 'D-2-1');
@@ -208,6 +315,7 @@ test.describe('URL state', () => {
 
   test('a shared ?q= URL reproduces the search on load', async ({ page }) => {
     await page.route(UNIFIED, (route) => route.fulfill({ json: unifiedBody() }));
+    await stubStream(page);
     await page.route(AI_OVERVIEW, (route) => route.abort());
 
     await openSearch(page, '/index.html?q=D-2-1');
@@ -217,6 +325,7 @@ test.describe('URL state', () => {
 
   test('back navigation restores the previous query', async ({ page }) => {
     await page.route(UNIFIED, (route) => route.fulfill({ json: unifiedBody() }));
+    await stubStream(page);
     await page.route(AI_OVERVIEW, (route) => route.abort());
 
     await search(page, 'D-2-1');
@@ -243,6 +352,7 @@ test.describe('layout, a11y and console hygiene', () => {
         }]
       })
     }));
+    await stubStream(page);
     await page.route(AI_OVERVIEW, (route) => route.fulfill({
       status: 200,
       json: { status: 'ok', overview: '요약 '.repeat(120),
@@ -259,6 +369,7 @@ test.describe('layout, a11y and console hygiene', () => {
 
   test('the search input is keyboard reachable and submits with Enter', async ({ page }) => {
     await page.route(UNIFIED, (route) => route.fulfill({ json: unifiedBody() }));
+    await stubStream(page);
     await page.route(AI_OVERVIEW, (route) => route.abort());
 
     const input = await openSearch(page);
@@ -281,6 +392,7 @@ test.describe('layout, a11y and console hygiene', () => {
     page.on('pageerror', (err) => errors.push(String(err)));
 
     await page.route(UNIFIED, (route) => route.fulfill({ json: unifiedBody() }));
+    await stubStream(page);
     await page.route(AI_OVERVIEW, (route) => route.fulfill({
       status: 200,
       json: { status: 'ok', overview: '요약입니다.',
@@ -288,7 +400,10 @@ test.describe('layout, a11y and console hygiene', () => {
     }));
 
     await search(page, 'D-2-1');
-    await expect(page.locator('#unifiedSearchLayer .us-ai.is-ok')).toBeVisible();
+    // `ok` is refined into a specific presentation state, so assert on the
+    // state attribute rather than a class that the refinement can change.
+    await expect(page.locator('#unifiedSearchLayer .us-ai[data-us-ai-state="ready"]'))
+      .toBeVisible();
 
     // Static-server 404s for optional assets are not app errors.
     const appErrors = errors.filter((e) => !/404|Failed to load resource/i.test(e));
@@ -297,6 +412,7 @@ test.describe('layout, a11y and console hygiene', () => {
 
   test('the layer renders in dark theme', async ({ page }) => {
     await page.route(UNIFIED, (route) => route.fulfill({ json: unifiedBody() }));
+    await stubStream(page);
     await page.route(AI_OVERVIEW, (route) => route.abort());
 
     const input = await openSearch(page);
