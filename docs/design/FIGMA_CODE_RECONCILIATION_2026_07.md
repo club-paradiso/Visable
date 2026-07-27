@@ -99,6 +99,30 @@ Figma 는 이를 한 세트의 `Type=VisaStatus | SubCode` 변형으로 합쳐 �
 
 `MatchReason(ExactCode · ParentOfExactCode · Keyword)` 는 계약 §3.4 가 요구한 속성이다.
 
+### 2.7 `Employment / *` 컴포넌트 5종 (계약 §3.7–3.10)
+
+`UX-08` 에 **화면**으로만 있던 것을 재사용 가능한 컴포넌트로 뽑아 `UX-03` 에 모았다.
+계약 §10 의 빌드 순서 6번 항목이다.
+
+| 컴포넌트 | 속성 | 코드 |
+|---|---|---|
+| `Employment / Editable Interpretation Card` | `State(Reading·Editing·Reanalyzing)` × `HasAmbiguity` | `employment_nl.validate_extraction` · `to_analyzer_input` |
+| `Employment / Clarification Card` | 단일 · 질문 1개 · 선택지 2~4개 | `employment_nl.contains_determination` |
+| `Employment / Occupation Candidate` | `Rank` × `Selection` × `Certainty` | `employment_code_analyzer.mjs › searchTrack` (직종) |
+| `Employment / Industry Candidate` | `Rank` × `Selection` × `Certainty` | `employment_code_analyzer.mjs › searchTrack` (업종) |
+| `Employment / Final Checklist` | 단일 · HiKorea 행 고정 | — |
+
+계약이 "절대 같게 보이면 안 된다"고 한 두 쌍을 형태로 갈라 뒀다.
+
+- **직종 ↔ 업종** — 컴포넌트 자체가 다르고, EMERALD ↔ PERI 로 색도 다르다.
+  하나의 `Track` 스위치를 둔 단일 컴포넌트로 만들지 않았다.
+- **가장 가까운 후보 ↔ 확정 코드** — `NearestCandidate` 는 앰버 테두리 태그
+  ("가장 가까운 후보 — 확정 아님") + 중립 카드 보더, `ConfirmedCode` 는 채운 태그
+  ("HiKorea 확인 완료") + 2px 강조 보더다. 확정은 HiKorea 만 해줄 수 있기 때문이다.
+
+`Final Checklist` 의 HiKorea 행은 다른 행과 달리 **속이 빈 링**으로 표시되고
+"여기서만 확정돼요 — 이 화면에서는 완료로 표시하지 않아요" 문구를 항상 달고 있다.
+
 ---
 
 ## 3. 대조 중에 발견한 시안 결함 (수정 완료)
@@ -115,7 +139,8 @@ Figma 는 이를 한 세트의 `Type=VisaStatus | SubCode` 변형으로 합쳐 �
 
 ### 4.1 Component Contract
 
-10개 블록의 코드 매핑을 **실제 심볼**로 교체하고, 새로 만든 컴포넌트 5개 블록을 추가했다.
+10개 블록의 코드 매핑을 **실제 심볼**로 교체하고, 새로 만든 컴포넌트 10개 블록을 추가했다
+(`Search / Intent Pill`, `Result / Subcode Card`, 근거 배지 3종, `Employment / *` 5종).
 
 | 컴포넌트 | 실제 코드 |
 |---|---|
@@ -162,10 +187,11 @@ Figma 는 이를 한 세트의 `Type=VisaStatus | SubCode` 변형으로 합쳐 �
 
 ---
 
-## 5. 아직 안 한 것
+## 5. 남은 차이 · 판단이 필요한 것
 
-- **`Employment / *` 컴포넌트 5종** (계약 §3.7–3.10) 은 `UX-08` 에 **화면**으로만 존재하고
-  재사용 가능한 컴포넌트로는 아직 추출하지 않았다. 다음 차례다.
+- **`UX-08` 확인 질문 화면의 선택지가 5개다.** 계약 §3.8 은 2~4개로 못박는다.
+  컴포넌트는 4개(실제 답 3 + "잘 모르겠어요")로 만들었지만, 화면 쪽 5번째 선택지
+  "직접 입력"은 사용자의 탈출 경로라서 임의로 지우지 않았다. **정리 여부는 판단이 필요하다.**
 - `Search / Interpretation Strip` 의 `HasUnknownCode` 는 불리언 속성이 아니라
   `State=UnknownCode` 변형으로 표현했다. 계약 문구와 형태가 다르므로 여기에 적어 둔다.
 - 계약 §3.5 의 `SourceType` 열거값(`OfficialPortal` · `OfficialLaw` · `OfficialHelpline` ·
