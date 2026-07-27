@@ -360,15 +360,99 @@ check('review-pending manual cards are labelled, never shown as settled', () => 
     { kind: 'manual_card', title: '체류자격 변경', summary: '…',
       approvalState: 'parsed', usableAsDirectEvidence: false, page: 42 }
   ]);
-  assert(html.includes('us-badge--review'), 'missing the 검토 전 badge');
+  assert(html.includes('is-needsreview'), 'missing the needs-review state');
+  assert(!html.includes('is-verified'), 'unreviewed content must not read as verified');
 });
 
-check('approved manual cards carry no review badge', () => {
+check('approved manual cards read as verified', () => {
   const html = US.buildExtraResultsHtml([
     { kind: 'manual_card', title: 'x', summary: 'y',
       approvalState: 'approved', usableAsDirectEvidence: true }
   ]);
-  assert(!html.includes('us-badge--review'), 'approved content must not be badged 검토 전');
+  assert(html.includes('is-verified'), 'approved content should read as verified');
+  assert(!html.includes('is-needsreview'));
+});
+
+/* ------------------------------- Figma UX-03 Source / Evidence Card ------- */
+check('every backend evidence state maps to a visual bucket', () => {
+  const expected = {
+    approved: 'verified', parsed: 'needsreview', needs_review: 'needsreview',
+    draft: 'needsreview', superseded: 'superseded', rejected: 'unavailable',
+    verified: 'verified', repealed: 'superseded', scheduled: 'scheduled',
+    ambiguous: 'needsreview', not_found: 'unavailable', unavailable: 'unavailable',
+    forbidden: 'unavailable', timeout: 'unavailable', parse_failed: 'unavailable',
+    related: 'related', background: 'background'
+  };
+  for (const [backend, visual] of Object.entries(expected)) {
+    assertEqual(US.evidenceVisualState(backend), visual, `mapping for ${backend}`);
+  }
+});
+
+check('a repealed statute is never shown as verified', () => {
+  // Coral "superseded" is the design's "no longer the operative authority".
+  assertEqual(US.evidenceVisualState('repealed'), 'superseded');
+  const html = US.buildEvidenceCardHtml({
+    type: 'statute', title: '출입국관리법', state: 'repealed' });
+  assert(html.includes('is-superseded'));
+  assert(!html.includes('is-verified'));
+});
+
+check('a lookup failure never reads as "not found"', () => {
+  for (const failure of ['forbidden', 'timeout', 'parse_failed', 'unavailable']) {
+    assertEqual(US.evidenceVisualState(failure), 'unavailable', failure);
+  }
+});
+
+check('the precise backend state is preserved on the element', () => {
+  const html = US.buildEvidenceCardHtml({
+    type: 'statute', title: '출입국관리법', state: 'forbidden' });
+  assert(html.includes('data-us-evidence-state="forbidden"'),
+    'the exact reason must survive the visual bucketing');
+});
+
+check('an unknown state falls back to related, not verified', () => {
+  assertEqual(US.evidenceVisualState('brand_new_state'), 'related');
+  assertEqual(US.evidenceVisualState(undefined), 'related');
+});
+
+check('an evidence card with an official URL becomes a safe anchor', () => {
+  const html = US.buildEvidenceCardHtml({
+    type: 'statute', title: '출입국관리법', state: 'verified',
+    url: 'https://www.law.go.kr/x' });
+  assert(html.includes('<a '), 'expected an anchor');
+  assert(html.includes('rel="noopener noreferrer"'));
+  assert(html.includes('us-ev-ext'), 'expected the external-link mark');
+});
+
+check('an evidence card with a disallowed URL is not an anchor', () => {
+  const html = US.buildEvidenceCardHtml({
+    type: 'manual', title: 'x', state: 'parsed', url: 'javascript:alert(1)' });
+  assert(!html.includes('<a '), 'a disallowed URL must not become an anchor');
+  assert(!html.includes('us-ev-ext'), 'no external mark without a usable link');
+});
+
+check('evidence card content is escaped', () => {
+  const html = US.buildEvidenceCardHtml({
+    type: 'manual', title: '<img src=x onerror=alert(1)>',
+    subtitle: '<b>s</b>', state: 'parsed' });
+  assert(!html.includes('<img'), 'title must be escaped');
+  assert(!html.includes('<b>s</b>'), 'subtitle must be escaped');
+});
+
+check('an evidence card with no title renders nothing', () => {
+  assertEqual(US.buildEvidenceCardHtml({ type: 'manual', state: 'parsed' }), '');
+  assertEqual(US.buildEvidenceCardHtml(null), '');
+});
+
+check('each source type gets its own avatar glyph', () => {
+  const seen = new Set();
+  for (const type of ['manual', 'statute', 'decree', 'rule', 'precedent']) {
+    const html = US.buildEvidenceCardHtml({ type, title: 't', state: 'verified' });
+    const m = html.match(/us-ev-avatar"[^>]*>([^<]+)</);
+    assert(m, `no avatar for ${type}`);
+    seen.add(m[1]);
+  }
+  assertEqual(seen.size, 5, 'each type should be visually distinguishable');
 });
 
 check('unrecognized code-like tokens are surfaced as not-found', () => {

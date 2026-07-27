@@ -77,7 +77,13 @@
       sourcesTitle: '공식 출처',
       unknownCodeTitle: '확인되지 않은 코드',
       unknownCodeBody: '입력하신 %s 은(는) 저희 데이터에 없는 코드입니다. 오타가 아닌지 확인해 주세요.',
-      reviewPending: '검토 전',
+      reviewPending: '검토 필요',
+      evVerified: '확인됨',
+      evSuperseded: '대체됨',
+      evScheduled: '시행예정',
+      evUnavailable: '조회 불가',
+      evRelated: '관련',
+      evBackground: '배경',
       reviewPendingHelp: '사람이 원문과 대조·승인하기 전 상태입니다. 확정 내용은 공식 출처에서 확인하세요.',
       officialKorean: '공식 원문 (한국어)',
       confirmOfficial: '최종 확인은 하이코리아 또는 1345에서 하세요.',
@@ -122,7 +128,13 @@
       sourcesTitle: 'Official sources',
       unknownCodeTitle: 'Unrecognized code',
       unknownCodeBody: '%s is not a code in our dataset. Please check for a typo.',
-      reviewPending: 'Not yet reviewed',
+      reviewPending: 'Needs review',
+      evVerified: 'Verified',
+      evSuperseded: 'Superseded',
+      evScheduled: 'Not yet in force',
+      evUnavailable: 'Could not retrieve',
+      evRelated: 'Related',
+      evBackground: 'Background',
       reviewPendingHelp: 'This manual text has not been checked against the original by a human. Confirm with an official source.',
       officialKorean: 'Official text (Korean)',
       confirmOfficial: 'Confirm with HiKorea or 1345.',
@@ -401,6 +413,107 @@
       '</div>' + parts.join('') + '</section>';
   }
 
+  /* ------------------------------------------- Source / Evidence Card ----- */
+
+  /**
+   * Map a backend evidence state onto one of the design's visual states
+   * (Figma UX-03 `Source / Evidence Card`, node 408:12).
+   *
+   * The design has 7 states; the backend distinguishes more, because the reason
+   * a source is unusable matters operationally (a rejected credential is not the
+   * same problem as a parser break). The visual state is therefore a *bucket*,
+   * and the precise backend state is preserved in `data-us-evidence-state` so the
+   * distinction is never lost — only condensed for display.
+   *
+   * `repealed` maps onto `superseded`: both mean "no longer the operative
+   * authority", which is what the coral treatment communicates.
+   */
+  var EVIDENCE_STATE_MAP = {
+    // manual approval states
+    approved: 'verified',
+    parsed: 'needsreview',
+    needs_review: 'needsreview',
+    draft: 'needsreview',
+    superseded: 'superseded',
+    rejected: 'unavailable',
+    // law lifecycle / lookup states
+    verified: 'verified',
+    repealed: 'superseded',
+    scheduled: 'scheduled',
+    ambiguous: 'needsreview',
+    not_found: 'unavailable',
+    unavailable: 'unavailable',
+    forbidden: 'unavailable',
+    timeout: 'unavailable',
+    parse_failed: 'unavailable',
+    // relevance grades
+    related: 'related',
+    background: 'background'
+  };
+
+  function evidenceVisualState(state) {
+    var key = String(state || '').toLowerCase();
+    return EVIDENCE_STATE_MAP[key] || 'related';
+  }
+
+  // Type avatar initial. Korean single glyph, matching the design's "매" sample.
+  var EVIDENCE_TYPE_INITIAL = {
+    manual: '매', statute: '법', decree: '령', rule: '칙',
+    precedent: '판', hikorea: 'H', embassy: '공', structured: 'P', paradiso: 'P'
+  };
+
+  function evidenceStateLabel(visual) {
+    switch (visual) {
+      case 'verified': return t('evVerified');
+      case 'needsreview': return t('reviewPending');
+      case 'superseded': return t('evSuperseded');
+      case 'scheduled': return t('evScheduled');
+      case 'unavailable': return t('evUnavailable');
+      case 'background': return t('evBackground');
+      default: return t('evRelated');
+    }
+  }
+
+  /**
+   * One evidence row: type avatar · title + subtitle · state chip · external link.
+   *
+   * A URL that fails the government-host allow-list renders the row as plain
+   * text rather than as an anchor — the same rule as the source panel.
+   */
+  function buildEvidenceCardHtml(item) {
+    if (!item) return '';
+    var title = item.title || item.label || '';
+    if (!title) return '';
+    var type = String(item.type || item.kind || 'manual').toLowerCase();
+    var visual = evidenceVisualState(item.state || item.approvalState);
+    var url = safeOfficialUrl(item.url);
+    var initial = EVIDENCE_TYPE_INITIAL[type] || '·';
+
+    var meta = '<span class="us-ev-meta">' +
+      '<span class="us-ev-title">' + escapeHtml(title) + '</span>' +
+      (item.subtitle
+        ? '<span class="us-ev-sub">' + escapeHtml(item.subtitle) + '</span>'
+        : '') +
+      '</span>';
+
+    var chip = '<span class="us-ev-state is-' + escapeHtml(visual) + '">' +
+      escapeHtml(evidenceStateLabel(visual)) + '</span>';
+
+    var inner =
+      '<span class="us-ev-avatar" aria-hidden="true">' + escapeHtml(initial) + '</span>' +
+      meta + '<span class="us-ev-status">' + chip +
+      (url ? '<span class="us-ev-ext" aria-hidden="true">↗</span>' : '') + '</span>';
+
+    var attrs = ' class="us-ev" data-us-evidence-state="' +
+      escapeHtml(String(item.state || item.approvalState || '')) + '"';
+
+    return url
+      ? '<a' + attrs.replace('class="us-ev"', 'class="us-ev us-ev--link"') +
+        ' href="' + escapeHtml(url) + '" target="_blank" rel="noopener noreferrer">' +
+        inner + '</a>'
+      : '<div' + attrs + '>' + inner + '</div>';
+  }
+
   /** Official source panel. Non-allow-listed URLs degrade to plain text. */
   function buildSourceCardsHtml(cards) {
     if (!cards || !cards.length) return '';
@@ -448,19 +561,22 @@
     if (!extras.length) return '';
 
     var items = extras.map(function (card) {
-      var badge = '';
-      if (card.kind === 'manual_card' && !card.usableAsDirectEvidence) {
-        badge = '<span class="us-badge us-badge--review" title="' +
-          escapeHtml(t('reviewPendingHelp')) + '">' + escapeHtml(t('reviewPending')) + '</span>';
+      // Retrieved manual text is evidence, so it uses the Evidence Card with its
+      // real approval state — not a generic card with a badge bolted on.
+      if (card.kind === 'manual_card') {
+        return '<li>' + buildEvidenceCardHtml({
+          type: 'manual',
+          title: card.title,
+          subtitle: [card.sourceId, card.page ? 'p.' + card.page : '']
+            .filter(Boolean).join(' · '),
+          state: card.approvalState,
+          url: card.url
+        }) + '</li>';
       }
-      var action = '';
-      if (card.toolId) {
-        action = ' data-us-tool="' + escapeHtml(card.toolId) + '"';
-      }
-      var page = card.page ? '<span class="us-card-page">p.' + escapeHtml(String(card.page)) + '</span>' : '';
+      var action = card.toolId ? ' data-us-tool="' + escapeHtml(card.toolId) + '"' : '';
       return '<li class="us-card us-card--' + escapeHtml(card.kind) + '"' + action + '>' +
         '<div class="us-card-head"><span class="us-card-title">' +
-        escapeHtml(card.title || '') + '</span>' + badge + page + '</div>' +
+        escapeHtml(card.title || '') + '</span></div>' +
         (card.summary ? '<p class="us-card-summary">' + escapeHtml(card.summary) + '</p>' : '') +
         '</li>';
     }).join('');
@@ -516,6 +632,8 @@
     buildConfidenceHtml: buildConfidenceHtml,
     buildAiOverviewHtml: buildAiOverviewHtml,
     buildSourceCardsHtml: buildSourceCardsHtml,
+    buildEvidenceCardHtml: buildEvidenceCardHtml,
+    evidenceVisualState: evidenceVisualState,
     buildSuggestionsHtml: buildSuggestionsHtml,
     buildExtraResultsHtml: buildExtraResultsHtml,
     buildUnifiedLayerHtml: buildUnifiedLayerHtml,

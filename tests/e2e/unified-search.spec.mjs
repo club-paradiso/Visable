@@ -256,7 +256,7 @@ test.describe('interpretation and evidence labelling', () => {
     await expect(page.locator('#unifiedSearchLayer .us-warn')).toContainText('D-2-99');
   });
 
-  test('review-pending manual evidence is badged 검토 전', async ({ page }) => {
+  test('review-pending manual evidence is never shown as settled', async ({ page }) => {
     await page.route(UNIFIED, (route) => route.fulfill({
       json: unifiedBody({
         organicResults: [{
@@ -271,7 +271,35 @@ test.describe('interpretation and evidence labelling', () => {
     await page.route(AI_OVERVIEW, (route) => route.abort());
 
     await search(page, '체류자격 변경');
-    await expect(page.locator('#unifiedSearchLayer .us-badge--review').first()).toBeVisible();
+
+    const card = page.locator('#unifiedSearchLayer .us-ev').first();
+    await expect(card).toBeVisible();
+    // The visual bucket says "not settled"…
+    await expect(card.locator('.us-ev-state.is-needsreview')).toBeVisible();
+    // …and the exact backend state survives the bucketing.
+    await expect(card).toHaveAttribute('data-us-evidence-state', 'parsed');
+    await expect(card.locator('.us-ev-state.is-verified')).toHaveCount(0);
+  });
+
+  test('a repealed statute is not bucketed with verified evidence', async ({ page }) => {
+    await page.route(UNIFIED, (route) => route.fulfill({
+      json: unifiedBody({
+        organicResults: [{
+          kind: 'manual_card', title: '구 출입국관리법 제10조', summary: '발췌…',
+          approvalState: 'repealed', usableAsDirectEvidence: false,
+          matchReason: 'manual_index', score: 300
+        }]
+      })
+    }));
+    await stubStream(page);
+    await page.route(AI_OVERVIEW, (route) => route.abort());
+
+    await search(page, '출입국관리법 제10조');
+
+    const card = page.locator('#unifiedSearchLayer .us-ev').first();
+    await expect(card).toHaveAttribute('data-us-evidence-state', 'repealed');
+    await expect(card.locator('.us-ev-state.is-superseded')).toBeVisible();
+    await expect(card.locator('.us-ev-state.is-verified')).toHaveCount(0);
   });
 
   test('official source links are safe anchors', async ({ page }) => {

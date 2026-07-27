@@ -13664,6 +13664,47 @@ body:not(.searched) .us-layer { display: none; }
 }
 .us-badge--official { border-color: var(--us-line); color: var(--us-muted); }
 
+/* Source / Evidence Card — Figma UX-03 (node 408:12).
+   Type avatar · title + subtitle · state chip · external-link mark.
+   The state chip is a *bucket*: the precise backend state stays on
+   data-us-evidence-state so the reason a source is unusable is never lost. */
+.us-ev {
+  display: flex; align-items: center; gap: 12px;
+  min-height: 72px; padding: 12px 16px;
+  background: var(--us-surface); border: 1px solid var(--us-line);
+  border-radius: 14px; text-decoration: none; color: inherit;
+}
+.us-ev--link:hover { border-color: var(--us-accent); }
+.us-ev-avatar {
+  flex: 0 0 auto; width: 32px; height: 32px; border-radius: 8px;
+  background: #e0f0eb; color: var(--us-accent);
+  font-size: 13px; font-weight: 700;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+body[data-theme="dark"] .us-ev-avatar { background: var(--us-accent-soft); }
+.us-ev-meta { display: flex; flex-direction: column; gap: 3px; min-width: 0; flex: 1; }
+.us-ev-title { font-size: 14px; font-weight: 500; color: var(--us-ink); overflow-wrap: anywhere; }
+.us-ev-sub { font-size: 12px; color: var(--us-muted); overflow-wrap: anywhere; }
+.us-ev-status { display: flex; align-items: center; gap: 8px; flex: 0 0 auto; }
+.us-ev-ext { font-size: 12px; color: var(--us-muted); }
+.us-ev-state {
+  padding: 6px 11px; border-radius: 999px;
+  font-size: 12px; font-weight: 500; white-space: nowrap;
+}
+/* State colours per the design: verified emerald · needsreview amber ·
+   unavailable grey · superseded coral · scheduled periwinkle. */
+.us-ev-state.is-verified { background: var(--us-accent-soft); color: var(--us-accent); }
+.us-ev-state.is-needsreview { background: #f7edd1; color: #9e730d; }
+.us-ev-state.is-superseded { background: #fbe4dc; color: #b23c17; }
+.us-ev-state.is-scheduled { background: #e5e8fb; color: #4453a6; }
+.us-ev-state.is-unavailable { background: #ececed; color: #6b7280; }
+.us-ev-state.is-related,
+.us-ev-state.is-background { background: var(--us-chip); color: var(--us-muted); border: 1px solid var(--us-line); }
+body[data-theme="dark"] .us-ev-state.is-needsreview { background: color-mix(in srgb, var(--us-amber) 18%, transparent); color: var(--us-amber); }
+body[data-theme="dark"] .us-ev-state.is-superseded { background: color-mix(in srgb, var(--us-coral) 18%, transparent); color: var(--us-coral); }
+body[data-theme="dark"] .us-ev-state.is-scheduled { background: color-mix(in srgb, #8b9cf5 18%, transparent); color: #b3bef8; }
+body[data-theme="dark"] .us-ev-state.is-unavailable { background: color-mix(in srgb, var(--us-muted) 18%, transparent); color: var(--us-muted); }
+
 .us-extra { margin-bottom: 0.9rem; }
 .us-card-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.55rem; }
 .us-card {
