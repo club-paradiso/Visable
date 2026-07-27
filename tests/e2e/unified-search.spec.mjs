@@ -366,6 +366,181 @@ test.describe('URL state', () => {
   });
 });
 
+test.describe('search input states', () => {
+  test('a failed unified search is reported, not silently blank', async ({ page }) => {
+    await page.route(UNIFIED, (route) => route.abort());
+    await stubStream(page);
+    await page.route(AI_OVERVIEW, (route) => route.abort());
+
+    await search(page, 'D-2-1');
+
+    const form = page.locator('#searchForm');
+    await expect(form).toHaveAttribute('data-us-search-state', 'error', { timeout: 15_000 });
+
+    const note = page.locator('#usSearchNote');
+    await expect(note).toBeVisible();
+    // It names the failure, and says the results below still stand — a search
+    // that could not run must never read as a search that found nothing.
+    await expect(note).toContainText('불러오지 못');
+    await expect(note).toContainText('기본 검색 결과');
+    // Organic results are unaffected and still on screen.
+    await expect(page.locator('#rlist article.vc').first()).toBeVisible();
+  });
+
+  test('a successful search leaves no error state behind', async ({ page }) => {
+    await page.route(UNIFIED, (route) => route.fulfill({ json: unifiedBody() }));
+    await stubStream(page);
+    await page.route(AI_OVERVIEW, (route) => route.abort());
+
+    await search(page, 'D-2-1');
+
+    await expect(page.locator('#searchForm'))
+      .toHaveAttribute('data-us-search-state', 'results', { timeout: 15_000 });
+    await expect(page.locator('#usSearchNote')).toBeHidden();
+  });
+
+  test('retrying after a failure clears the error state', async ({ page }) => {
+    let fail = true;
+    await page.route(UNIFIED, async (route) => {
+      if (fail) { await route.abort(); return; }
+      await route.fulfill({ json: unifiedBody() });
+    });
+    await stubStream(page);
+    await page.route(AI_OVERVIEW, (route) => route.abort());
+
+    const input = await openSearch(page);
+    await input.fill('D-2-1');
+    await submitSearch(page);
+    await expect(page.locator('#searchForm'))
+      .toHaveAttribute('data-us-search-state', 'error', { timeout: 15_000 });
+
+    fail = false;
+    await input.fill('E-7-4');
+    await page.locator('#searchForm').evaluate((f) =>
+      f.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true })));
+
+    await expect(page.locator('#searchForm'))
+      .toHaveAttribute('data-us-search-state', 'results', { timeout: 15_000 });
+    await expect(page.locator('#usSearchNote')).toBeHidden();
+  });
+});
+
+test.describe('suggestion rows', () => {
+  test('typed rows render with their category, not as bare chips', async ({ page }) => {
+    await page.route(UNIFIED, (route) => route.fulfill({
+      json: unifiedBody({
+        suggestionRows: [
+          { type: 'legal_source', query: '출입국관리법 제20조',
+            label: '출입국관리법 제20조', sublabel: '법령 원문으로 확인', badge: '법령 출처' },
+          { type: 'procedure', query: 'D-2-1 체류기간 연장',
+            label: 'D-2-1 체류기간 연장', sublabel: '연장 신청 요건과 제출 서류', badge: '절차' }
+        ],
+        suggestions: ['출입국관리법 제20조', 'D-2-1 체류기간 연장']
+      })
+    }));
+    await stubStream(page);
+    await page.route(AI_OVERVIEW, (route) => route.abort());
+
+    await search(page, 'D-2-1');
+
+    const rows = page.locator('#unifiedSearchLayer .us-sug');
+    await expect(rows).toHaveCount(2);
+    await expect(rows.first()).toHaveAttribute('data-us-suggest-type', 'legal_source');
+    await expect(rows.first().locator('.us-sug-sub')).toContainText('법령 원문으로 확인');
+    await expect(rows.first().locator('.us-sug-badge')).toBeVisible();
+  });
+
+  test('a correction row names the token we do not have', async ({ page }) => {
+    await page.route(UNIFIED, (route) => route.fulfill({
+      json: unifiedBody({
+        query: 'D-2-99',
+        interpretation: {
+          intent: 'exact_visa_code', intentRule: 'code_only', confidence: 'high',
+          signals: [], recognizedVisaCodes: ['D-2'],
+          unrecognizedCodeLikeTokens: ['D-2-99'], editable: true
+        },
+        suggestionRows: [{
+          type: 'correction', query: 'D-2',
+          label: '혹시 “D-2” 을(를) 찾으셨나요?',
+          sublabel: '입력하신 “D-2-99” 은(는) 보유한 체류자격 목록에 없습니다',
+          badge: '추천 검색어'
+        }],
+        suggestions: ['D-2']
+      })
+    }));
+    await stubStream(page);
+    await page.route(AI_OVERVIEW, (route) => route.abort());
+
+    await search(page, 'D-2-99');
+
+    const row = page.locator('#unifiedSearchLayer .us-sug').first();
+    await expect(row).toHaveAttribute('data-us-suggest-type', 'correction');
+    await expect(row).toContainText('D-2-99');
+    // The row runs the code that exists, not the one that does not.
+    await expect(row).toHaveAttribute('data-us-query', 'D-2');
+    // And it stays a suggestion — never a result card.
+    await expect(row.locator('.us-card')).toHaveCount(0);
+  });
+
+  test('clicking a suggestion row runs that query', async ({ page }) => {
+    const queries = [];
+    await page.route(UNIFIED, async (route) => {
+      queries.push(JSON.parse(route.request().postData() || '{}').query);
+      await route.fulfill({
+        json: unifiedBody({
+          suggestionRows: [{
+            type: 'procedure', query: 'D-2-1 필요 서류',
+            label: 'D-2-1 필요 서류', sublabel: '신청 유형별 제출 서류', badge: '절차'
+          }],
+          suggestions: ['D-2-1 필요 서류']
+        })
+      });
+    });
+    await stubStream(page);
+    await page.route(AI_OVERVIEW, (route) => route.abort());
+
+    await search(page, 'D-2-1');
+    await page.locator('#unifiedSearchLayer .us-sug').first().click();
+    await expect(page.locator('#q')).toHaveValue('D-2-1 필요 서류');
+    await expect.poll(() => queries).toContain('D-2-1 필요 서류');
+  });
+
+  test('the autocomplete dropdown uses the same row, typed by what matched',
+    async ({ page }) => {
+      const input = await openSearch(page);
+      await input.fill('D-2');
+
+      const list = page.locator('#auto-list');
+      await expect(list).toHaveClass(/active/, { timeout: 10_000 });
+
+      const rows = list.locator('.auto-item.us-sug');
+      await expect(rows.first()).toBeVisible();
+      // Every rendered row declares a category rather than defaulting to one.
+      const types = await rows.evaluateAll((els) =>
+        els.map((el) => el.getAttribute('data-us-suggest-type')));
+      expect(types.length).toBeGreaterThan(0);
+      for (const type of types) {
+        expect(['visa_code', 'visa_status', 'procedure', 'legal_source',
+                'employment_tool', 'recent_query', 'correction']).toContain(type);
+      }
+      // The search contract the click handler relies on is unchanged.
+      await expect(rows.first()).toHaveAttribute('data-action', 'search-hint');
+      expect(await rows.first().getAttribute('data-query')).toBeTruthy();
+    });
+
+  test('a subcode suggestion always names its parent', async ({ page }) => {
+    const input = await openSearch(page);
+    await input.fill('D-2-1');
+    const list = page.locator('#auto-list');
+    await expect(list).toHaveClass(/active/, { timeout: 10_000 });
+
+    const sub = list.locator('.auto-item[data-us-suggest-type="visa_status"]').first();
+    await expect(sub).toBeVisible();
+    // CLAUDE.md: a subcode is never presented as a standalone top-level status.
+    await expect(sub.locator('.us-sug-sub')).toContainText('D-2');
+  });
+});
+
 test.describe('layout, a11y and console hygiene', () => {
   test('390px never scrolls horizontally', async ({ page }) => {
     test.skip(test.info().project.name !== 'mobile-390', 'viewport-specific');

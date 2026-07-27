@@ -527,6 +527,122 @@ check('suggestion chips carry their query as data, not as markup', () => {
   assert(html.includes('data-us-query='), 'suggestion missing its data attribute');
 });
 
+/* -------------------------------------------- UX-03 Search / Suggestion Row */
+check('a bare string suggestion still renders as a row', () => {
+  const html = US.buildSuggestionsHtml(['D-2 체류기간 연장']);
+  assert(html.includes('us-sug'), 'string suggestion did not render a row');
+  assert(html.includes('data-us-query="D-2 체류기간 연장"'), 'query attribute lost');
+});
+
+check('a typed suggestion keeps its type and both text lines', () => {
+  const html = US.buildSuggestionRowHtml({
+    type: 'legal_source', query: '출입국관리법 제20조',
+    label: '출입국관리법 제20조', sublabel: '법령 원문으로 확인'
+  });
+  assert(html.includes('data-us-suggest-type="legal_source"'), 'type attribute missing');
+  assert(html.includes('us-sug-title'), 'primary line missing');
+  assert(html.includes('us-sug-sub'), 'secondary line missing');
+  assert(html.includes('법령 원문으로 확인'), 'secondary text lost');
+});
+
+check('a row with no sublabel renders no empty secondary line', () => {
+  const html = US.buildSuggestionRowHtml({ type: 'procedure', query: '체류기간 연장' });
+  assert(html.includes('us-sug-title'), 'primary line missing');
+  assert(!html.includes('us-sug-sub'), 'empty secondary line rendered anyway');
+});
+
+check('an unknown suggestion type claims no category at all', () => {
+  assertEqual(US.suggestionType('legal_source'), 'legal_source');
+  for (const input of ['made_up_kind', '', undefined, null, 42]) {
+    assertEqual(US.suggestionType(input), US.SUGGEST_UNTYPED);
+  }
+  const html = US.buildSuggestionRowHtml({ type: 'made_up_kind', query: 'x' });
+  assert(!html.includes('legal_source'), 'unknown type borrowed a real category');
+  assert(!html.includes('recent_query'), 'unknown type was filed under history');
+  // No chip rather than a guessed one.
+  assert(!html.includes('us-sug-badge'), 'unknown type rendered a category chip');
+  assert(html.includes('<svg'), 'unknown type lost its glyph');
+});
+
+check('a bare string suggestion claims no category either', () => {
+  const html = US.buildSuggestionRowHtml('체류기간 연장');
+  assert(html.includes(`data-us-suggest-type="${US.SUGGEST_UNTYPED}"`),
+    'a plain string was assigned a category it never declared');
+  assert(!html.includes('us-sug-badge'), 'a plain string got a category chip');
+});
+
+check('every design suggestion type has a glyph and a distinct badge label', () => {
+  const labels = new Set();
+  for (const type of US.SUGGEST_TYPES) {
+    const html = US.buildSuggestionRowHtml({ type, query: 'q', label: 'q' });
+    assert(html.includes('<svg'), `${type} row has no glyph`);
+    assert(html.includes('us-sug-badge'), `${type} row has no badge`);
+    const label = US.suggestionBadgeLabel(type);
+    assert(label && label !== type, `${type} badge fell through to the raw key`);
+    labels.add(label);
+  }
+  // visa_code and visa_status intentionally share the 체류자격 chip.
+  assertEqual(labels.size, US.SUGGEST_TYPES.length - 1);
+  assertEqual(US.suggestionBadgeLabel(US.SUGGEST_UNTYPED), '');
+});
+
+check('a correction row is a suggestion, never a status card', () => {
+  const html = US.buildSuggestionRowHtml({
+    type: 'correction', query: 'D-2',
+    label: '혹시 “D-2” 을(를) 찾으셨나요?',
+    sublabel: '입력하신 “D-2-99” 은(는) 보유한 체류자격 목록에 없습니다'
+  });
+  assert(html.includes('data-us-suggest-type="correction"'), 'correction type lost');
+  assert(!html.includes('us-card'), 'correction rendered as a result card');
+  assert(html.includes('D-2-99'), 'the typed token is not named back to the user');
+});
+
+check('suggestion text is escaped in both lines', () => {
+  const html = US.buildSuggestionRowHtml({
+    type: 'procedure', query: 'q',
+    label: '<img src=x onerror=alert(1)>',
+    sublabel: '"><script>bad()</script>'
+  });
+  assert(!html.includes('<img'), 'primary line injected raw markup');
+  assert(!html.includes('<script>'), 'secondary line injected raw markup');
+});
+
+check('inner mode omits the button so it can nest in an existing one', () => {
+  const row = { type: 'visa_code', query: 'D-2', label: 'D-2' };
+  const inner = US.buildSuggestionRowHtml(row, { inner: true });
+  assert(!inner.includes('<button'), 'inner mode still emitted a button');
+  assert(inner.includes('us-sug-avatar'), 'inner mode dropped the row content');
+  assert(US.buildSuggestionRowHtml(row).includes('<button'), 'default mode lost its button');
+});
+
+check('inner mode accepts pre-escaped highlight markup for the title only', () => {
+  const inner = US.buildSuggestionRowHtml(
+    { type: 'visa_code', query: 'D-2', label: 'D-2 유학', sublabel: '<b>x</b>' },
+    { inner: true, labelHtml: '<mark class="h">D-2</mark> 유학' }
+  );
+  assert(inner.includes('<mark class="h">'), 'highlight markup was escaped away');
+  assert(!inner.includes('<b>x</b>'), 'sublabel bypassed escaping');
+});
+
+check('a suggestion with no query is dropped rather than rendered blank', () => {
+  assertEqual(US.buildSuggestionRowHtml({ type: 'procedure', query: '' }), '');
+  assertEqual(US.buildSuggestionRowHtml(''), '');
+  assertEqual(US.buildSuggestionRowHtml(null), '');
+  assertEqual(US.buildSuggestionsHtml([null, '', { query: '' }]), '');
+});
+
+check('the composed layer prefers typed rows over the string list', () => {
+  const html = US.buildUnifiedLayerHtml({
+    query: 'D-2', intent: 'exact_visa_code', detectedVisaCodes: ['D-2'],
+    interpretation: { unrecognizedCodeLikeTokens: [] },
+    organicResults: [],
+    suggestionRows: [{ type: 'legal_source', query: '출입국관리법 제20조', label: '출입국관리법 제20조' }],
+    suggestions: ['ignored fallback']
+  }, 'hidden', null);
+  assert(html.includes('data-us-suggest-type="legal_source"'), 'typed rows were not used');
+  assert(!html.includes('ignored fallback'), 'string list rendered alongside typed rows');
+});
+
 /* ----------------------------------------------------------- report ------ */
 if (failures.length) {
   console.error(`\nFAIL — ${failures.length} check(s) failed, ${passed} passed:\n`);

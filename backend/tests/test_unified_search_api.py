@@ -52,9 +52,19 @@ class UnifiedSearchApiTests(unittest.TestCase):
     def test_response_carries_the_documented_schema(self):
         body = self._search("D-2-1")
         for key in ("query", "intent", "detectedVisaCodes", "interpretation",
-                    "organicResults", "suggestions", "sourceCards", "aiOverview",
-                    "aiOverviewStatus", "fallbackAvailable", "requestId", "latency"):
+                    "organicResults", "suggestions", "suggestionRows", "sourceCards",
+                    "aiOverview", "aiOverviewStatus", "fallbackAvailable",
+                    "requestId", "latency"):
             self.assertIn(key, body, f"missing `{key}` in unified search response")
+
+    def test_suggestion_rows_are_typed_and_match_the_string_list(self):
+        body = self._search("D-2-1")
+        rows = body["suggestionRows"]
+        self.assertTrue(rows)
+        self.assertEqual([row["query"] for row in rows], body["suggestions"])
+        for row in rows:
+            for key in ("type", "query", "label", "sublabel", "badge"):
+                self.assertIn(key, row)
 
     def test_ai_overview_is_null_and_pending_on_the_organic_endpoint(self):
         body = self._search("D-2-1")

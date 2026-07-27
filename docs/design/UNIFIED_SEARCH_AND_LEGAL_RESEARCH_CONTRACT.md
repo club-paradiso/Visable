@@ -79,9 +79,19 @@ never reserve blocking space: in `loading` it renders a bounded skeleton, and in
 
 | Property | Values |
 | --- | --- |
-| `State` | `Idle` · `Focused` · `Typing` · `Loading` · `Disabled` |
+| `State` | `Idle` · `Focused` · `Typing` · `Loading` · `Results` · `Error` · `Disabled` |
 | `Theme` | `Light` · `Dark` |
 | `Size` | `Hero` (landing) · `Compact` (sticky, post-search) |
+
+`Loading`, `Results` and `Error` are driven from code by
+`data-us-search-state` on `#searchForm`, set by `fetchUnified`.
+
+**`Error` is not "no results".** It fires when the unified request itself
+failed — network, 5xx, malformed body — and renders a helper line under the bar
+naming the failure and confirming the organic results below are unaffected. A
+search that returned zero matches is a different thing entirely and never
+reaches this state. Before this existed, a failed unified search rendered
+nothing at all, which read to the user as "there is nothing here".
 
 Accessibility contract (already implemented in markup):
 `role="search"` on the form; input `type="search"` with `aria-label`;
@@ -325,6 +335,50 @@ machine-translated.
 | Approval badge | `backend/services/manual_registry.py` | `evidence_gate` |
 | Employment extraction | `backend/services/employment_nl.py` | `validate_extraction` |
 | Occupation/industry candidates | `scripts/employment_code_analyzer.mjs` | `searchTrack` |
+
+---
+
+## 9b. Figma node inventory (as built)
+
+File `pInhK8Oyg04lpL4PMSCB4l` · page **UX-03 Unified Search · Components**
+(`389:4`) — 82 components in 8 sets.
+
+> `get_metadata` with no `nodeId` returns a **stale two-page view** of this
+> file. It is not authoritative. Read `figma.root.children` through `use_figma`
+> instead — that is where the UX-0x pages actually are.
+
+| Set | Node | Variants | Code owner |
+| --- | --- | --- | --- |
+| `Search / Unified Input` | `394:203` | 16 | `index.html` `#searchForm` |
+| `Search / Suggestion Row` | `400:12` | 14 | `unified-search.js` `buildSuggestionRowHtml` |
+| `Search / Interpretation Strip` | `397:93` | 4 | `unified-search.js` `buildInterpretationHtml` |
+| `Search / AI Overview` | `406:92` | 9 | `unified-search.js` `buildAiOverviewHtml` |
+| `Result / Status Card` | `405:66` | 8 | `index.html` `#rlist` renderer |
+| `Evidence / Source Card` | `408:12` | 16 | `unified-search.js` `buildEvidenceCardHtml` |
+| `Evidence / Confidence Badge` | `392:13` | 3 | `unified-search.js` `buildConfidenceHtml` |
+| `Evidence / Relevance Badge` | `392:26` | 4 | evidence-card `related` / `background` states |
+
+Palette: the UX-0x pages use the **emerald** system (`#177361` accent), not the
+indigo of `01 Design System`. Emerald is the agreed reconciliation target. The
+`.us-*` layer defines it as `--us-*` custom properties; the global `--ac` token
+is still indigo and is a separate, site-wide migration.
+
+Category tints used by the Suggestion Row: visa/procedure `#177361`, legal
+`#7f89ce`, employment `#d95c47`, recent/correction `#4d5261` — avatar at 14%,
+category chip at 10%.
+
+### Still design-only / code-only
+
+Code has safety states the design does not: `forbidden` (403 / OC rejected),
+`repealed`, `ambiguous`, `parse_failed`, the unrecognized-code warning, and
+`manual_card`. The evidence card buckets these for display while keeping the
+exact backend state on `data-us-evidence-state`.
+
+The design has one row the backend deliberately cannot produce:
+`Type=RecentQuery`. Search history is client-side only — the backend keeps no
+record of what anyone searched for, so it never emits that row. The renderer
+supports the type; nothing populates it yet, and adding storage for it is a
+data-retention decision, not a styling one.
 
 ---
 

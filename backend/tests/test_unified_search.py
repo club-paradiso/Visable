@@ -262,5 +262,88 @@ class InterpretationTests(unittest.TestCase):
                         self.assertIn(token, KNOWN_CODES)
 
 
+class SuggestionRowTests(unittest.TestCase):
+    """Typed rows for the UX-03 `Search / Suggestion Row` component."""
+
+    def test_rows_and_strings_cannot_drift(self):
+        for query in ("D-2-1", "출입국관리법 제20조", "ㅁㄴㅇㄹ"):
+            result = _run(query)
+            self.assertEqual(
+                [row["query"] for row in result["suggestionRows"]],
+                result["suggestions"],
+            )
+
+    def test_every_row_declares_a_known_type(self):
+        for query in ("D-2-1", "D-2-99", "출입국관리법 제20조", "ㅁㄴㅇㄹ"):
+            for row in _run(query)["suggestionRows"]:
+                self.assertIn(row["type"], us.SUGGESTION_TYPES)
+                self.assertTrue(row["label"])
+                self.assertTrue(row["query"])
+
+    def test_backend_never_emits_recent_query_rows(self):
+        # Search history is a client-side concern; the backend keeps no record
+        # of what anyone searched for, so it cannot produce this row.
+        for query in ("D-2-1", "출입국관리법 제20조", "ㅁㄴㅇㄹ", ""):
+            for row in _run(query)["suggestionRows"]:
+                self.assertNotEqual(row["type"], us.SUGGEST_RECENT_QUERY)
+
+    def test_an_unrecognized_code_yields_a_correction_row_naming_both(self):
+        rows = _run("D-2-99")["suggestionRows"]
+        corrections = [r for r in rows if r["type"] == us.SUGGEST_CORRECTION]
+        self.assertEqual(len(corrections), 1)
+        row = corrections[0]
+        # It names what was typed and what we actually have — and the query it
+        # would run is the code that exists, never the one that does not.
+        self.assertIn("D-2-99", row["sublabel"])
+        self.assertIn("D-2", row["label"])
+        self.assertEqual(row["query"], "D-2")
+
+    def test_no_correction_row_when_nothing_resolved(self):
+        # "Z-9-9" resolves to nothing, so there is no corrected code to offer.
+        # Inventing one would turn "we do not have this" into "here it is".
+        rows = _run("Z-9-9")["suggestionRows"]
+        self.assertFalse([r for r in rows if r["type"] == us.SUGGEST_CORRECTION])
+
+    def test_row_queries_never_contain_unknown_codes(self):
+        for query in ("D-2-1", "D-2-99", "Z-9-9", "ㅁㄴㅇㄹ"):
+            for row in _run(query)["suggestionRows"]:
+                for field in ("query", "label", "sublabel"):
+                    for token in str(row[field]).split():
+                        if us._CODE_TOKEN_RE.fullmatch(token):
+                            # The correction row quotes the typed token on
+                            # purpose; everywhere else a code must be real.
+                            if row["type"] == us.SUGGEST_CORRECTION and field == "sublabel":
+                                continue
+                            self.assertIn(token, KNOWN_CODES)
+
+    def test_a_subcode_row_is_typed_as_a_subcode_and_names_its_parent(self):
+        rows = _run("D-2-1")["suggestionRows"]
+        first = rows[0]
+        self.assertEqual(first["type"], us.SUGGEST_VISA_STATUS)
+        self.assertIn("D-2-1", first["label"])
+        # CLAUDE.md: a subcode is never presented as a standalone top-level
+        # status, so the row states which parent it sits under.
+        self.assertIn("D-2", first["sublabel"])
+
+    def test_sublabel_is_omitted_rather_than_faked(self):
+        # A record whose only label is its own code carries no description, so
+        # the row must not manufacture one.
+        rows = us.build_suggestion_rows(
+            "X-1",
+            {"intent": us.INTENT_EXACT_VISA_CODE},
+            {"recognized": ["X-1"], "unrecognized": []},
+            {"X-1": {"code": "X-1"}},
+        )
+        code_rows = [r for r in rows if r["type"] == us.SUGGEST_VISA_CODE]
+        self.assertEqual(code_rows[0]["label"], "X-1")
+
+    def test_rows_are_deduplicated_and_bounded(self):
+        for query in ("D-2-1", "출입국관리법 제20조", "ㅁㄴㅇㄹ"):
+            rows = _run(query)["suggestionRows"]
+            queries = [r["query"] for r in rows]
+            self.assertEqual(len(queries), len(set(queries)))
+            self.assertLessEqual(len(rows), 6)
+
+
 if __name__ == "__main__":
     unittest.main()

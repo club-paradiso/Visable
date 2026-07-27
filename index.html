@@ -11018,6 +11018,73 @@ button[data-keyword]:focus-visible {
   font-weight: 700 !important;
 }
 
+/* Search / Unified Input states — Figma UX-03 (node 394:203).
+   Loading swaps the submit arrow for spinner dots; Error adds a helper line
+   under the bar. `error` is distinct from "no results" on purpose. */
+#searchForm[data-us-search-state="loading"] .sbar-go svg { opacity: 0; }
+#searchForm[data-us-search-state="loading"] .sbar-go::after {
+  content: ""; position: absolute; inset: 0; margin: auto;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: currentColor;
+  animation: usSbarPulse 1s ease-in-out infinite;
+}
+#searchForm[data-us-search-state="loading"] .sbar-go { position: relative; }
+@keyframes usSbarPulse {
+  0%, 100% { opacity: 0.25; transform: scale(0.7); }
+  50% { opacity: 1; transform: scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  #searchForm[data-us-search-state="loading"] .sbar-go::after { animation: none; opacity: 0.8; }
+}
+/* The note sits in #searchForm, outside `.us-layer`, so the layer's --us-amber
+   is not in scope here; the literal is the fallback, not a second source of
+   truth. Keep it in step with --us-amber if that token changes. */
+.us-sbar-note {
+  margin: 0.4rem 0 0; padding: 0 0.2rem;
+  font-size: 12.5px; line-height: 1.5;
+  color: var(--us-amber, #b45309); word-break: keep-all;
+}
+#searchForm[data-us-search-state="error"] .sbar {
+  border-color: color-mix(in srgb, var(--us-amber, #b45309) 45%, transparent);
+}
+body[data-theme="dark"] .us-sbar-note { color: #f0b357; }
+
+/* Suggestion Row inside the autocomplete dropdown.
+   The dropdown is a translucent dark surface over the hero, so it takes the
+   design's Dark theme rather than the light `.us-layer` palette. The rules
+   above set `.auto-item * { background: transparent !important }` to force
+   contrast; the avatar and category chip have to opt back out of that, which
+   is why these declarations carry `!important` too. */
+.auto-item.us-sug {
+  --us-sug-tint: rgba(244, 238, 224, 0.62);
+  position: relative !important;
+  min-height: 56px !important;
+  gap: 12px !important;
+}
+.auto-item.us-sug[data-us-suggest-type="visa_code"],
+.auto-item.us-sug[data-us-suggest-type="visa_status"],
+.auto-item.us-sug[data-us-suggest-type="procedure"] { --us-sug-tint: #7dd8b8; }
+.auto-item.us-sug[data-us-suggest-type="legal_source"] { --us-sug-tint: #b3bef8; }
+.auto-item.us-sug[data-us-suggest-type="employment_tool"] { --us-sug-tint: #f0a08c; }
+.auto-item.us-sug .us-sug-avatar {
+  background: color-mix(in srgb, var(--us-sug-tint) 18%, transparent) !important;
+  color: var(--us-sug-tint) !important;
+}
+.auto-item.us-sug .us-sug-avatar svg { color: var(--us-sug-tint) !important; }
+.auto-item.us-sug .us-sug-badge {
+  background: color-mix(in srgb, var(--us-sug-tint) 14%, transparent) !important;
+  color: var(--us-sug-tint) !important;
+  font-weight: 600 !important;
+}
+.auto-item.us-sug .us-sug-title { font-weight: 700 !important; }
+.auto-item.us-sug .us-sug-sub {
+  color: rgba(244, 238, 224, 0.66) !important;
+  font-weight: 400 !important;
+}
+@media (max-width: 560px) {
+  .auto-item.us-sug .us-sug-badge { display: none !important; }
+}
+
 /* Keep recommended keyword chips readable without turning them into radioactive buttons. */
 .lh,
 .qb,
@@ -13718,8 +13785,61 @@ body[data-theme="dark"] .us-ev-state.is-unavailable { background: color-mix(in s
 .us-card-page { font-size: 11.5px; color: var(--us-muted); font-variant-numeric: tabular-nums; }
 .us-card-summary { margin: 6px 0 0; font-size: 13px; line-height: 1.55; color: var(--us-muted); overflow-wrap: anywhere; }
 
-.us-suggest { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; margin-bottom: 0.9rem; }
+.us-suggest { display: flex; flex-direction: column; gap: 0.45rem; margin-bottom: 0.9rem; }
 .us-suggest-label { font-size: 11.5px; font-weight: 700; letter-spacing: 0.46px; color: var(--us-muted); }
+
+/* Search / Suggestion Row — Figma UX-03 (node 400:12).
+   Category avatar · primary + secondary text · category chip.
+   The design's KeyboardActive=Yes variant is real keyboard focus here, so it
+   is styled with :focus-visible rather than a class the renderer has to guess. */
+.us-sug-list { display: flex; flex-direction: column; gap: 2px; }
+.us-sug {
+  --us-sug-tint: var(--us-muted);
+  position: relative; display: flex; align-items: center; gap: 12px;
+  width: 100%; min-height: 56px; padding: 14px 16px;
+  border: 0; border-radius: 12px; background: var(--us-surface-alt);
+  text-align: left; cursor: pointer; font: inherit; color: inherit;
+}
+.us-sug[data-us-suggest-type="visa_code"],
+.us-sug[data-us-suggest-type="visa_status"],
+.us-sug[data-us-suggest-type="procedure"] { --us-sug-tint: var(--us-accent); }
+.us-sug[data-us-suggest-type="legal_source"] { --us-sug-tint: #7f89ce; }
+.us-sug[data-us-suggest-type="employment_tool"] { --us-sug-tint: var(--us-coral); }
+.us-sug:hover { background: color-mix(in srgb, var(--us-sug-tint) 7%, var(--us-surface-alt)); }
+.us-sug:focus-visible {
+  outline: none;
+  background: color-mix(in srgb, var(--us-sug-tint) 12%, var(--us-surface-alt));
+}
+/* 2px left accent bar, per the design's keyboard-active variant. The fallback
+   keeps the bar visible where the row is used outside `.us-layer` (the
+   autocomplete dropdown), which does not define the layer tokens. */
+.us-sug:focus-visible::before {
+  content: ""; position: absolute; inset: 0 auto 0 0; width: 2px;
+  border-radius: 12px 0 0 12px;
+  background: var(--us-accent, var(--us-sug-tint));
+}
+.us-sug-avatar {
+  flex: 0 0 auto; width: 28px; height: 28px; border-radius: 8px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: color-mix(in srgb, var(--us-sug-tint) 14%, transparent);
+  color: var(--us-sug-tint);
+}
+.us-sug-avatar svg { width: 15px; height: 15px; }
+.us-sug-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
+.us-sug-title { font-size: 14.5px; font-weight: 500; color: var(--us-ink); overflow-wrap: anywhere; }
+.us-sug-sub { font-size: 12.5px; color: var(--us-muted); overflow-wrap: anywhere; }
+.us-sug-badge {
+  flex: 0 0 auto; padding: 6px 11px; border-radius: 20px;
+  font-size: 12.5px; font-weight: 500; white-space: nowrap;
+  background: color-mix(in srgb, var(--us-sug-tint) 10%, transparent);
+  color: var(--us-sug-tint);
+}
+@media (max-width: 560px) {
+  /* The chip is a redundant label on a narrow screen — the avatar already
+     carries the category — so it is dropped rather than allowed to squeeze
+     the title it is supposed to be describing. */
+  .us-sug-badge { display: none; }
+}
 
 .us-sources { padding: 18px 20px; border: 1px solid var(--us-line); border-radius: 18px; background: var(--us-surface-alt); }
 .us-sources-title { margin: 0 0 10px; font-size: 11.5px; font-weight: 700; letter-spacing: 0.46px; color: var(--us-muted); }
@@ -14020,6 +14140,11 @@ body[data-theme="dark"] .us-ev-state.is-unavailable { background: color-mix(in s
                 </button>
             </div>
             <div class="auto-list" id="auto-list" role="listbox" aria-label="검색 제안"></div>
+            <!-- Search / Unified Input `State=Error` helper line (UX-03, node
+                 394:203). Text is filled from the i18n pack at runtime. It
+                 reports that the *unified* layer failed — never that the search
+                 found nothing, which is a different state. -->
+            <p class="us-sbar-note" id="usSearchNote" role="status" aria-live="polite" hidden></p>
             <div class="smeta"><span id="rc">데이터 로딩 중…</span><span id="rh"></span></div>
         </form>
         <p class="reference-disclaimer">본 서비스는 공개 법령·매뉴얼 기반 참고용 정보 제공 도구이며, 법적 상담이나 민원 대행이 아닙니다. 최종 판단은 출입국·외국인청, 하이코리아, 또는 자격 있는 전문가에게 확인하세요.</p>
@@ -21906,40 +22031,73 @@ const PREDEF_KEYWORDS = [
 "D-2 유학", "영주권(F-5)", "E-9 이직", "점수제 비자"
 ];
 
+// A predefined keyword that names a real 체류자격 code is a status suggestion,
+// not a procedure one. The code has to resolve against VISA_DATA — a
+// code-shaped substring alone never promotes a keyword.
+function suggestionTypeForKeyword(keyword) {
+    const match = String(keyword || '').match(/([A-Za-z]-\d+(?:-\d+)?)/);
+    if (!match) return 'procedure';
+    const norm = normalizeVisaCode(match[1]);
+    const known = VISA_DATA.some(v => normalizeVisaCode(v.code) === norm ||
+        getVisaSubcodes(v).some(s => normalizeVisaCode(s.code) === norm));
+    return known ? 'visa_code' : 'procedure';
+}
+
 function showSuggestions(val) {
     if(!dataReady) return;
     const list = document.getElementById('auto-list'); list.innerHTML = '';
     if(!val) { list.classList.remove('active'); return; }
     const lowerVal = val.toLowerCase(), valNorm = normalizeVisaCode(val);
     const matches = [];
-    const pushMatch = (text) => {
-        if (text && !matches.includes(text)) matches.push(text);
+    const seen = new Set();
+    // `query` stays exactly the string the search already understood; `type`
+    // and `sublabel` only add description around it.
+    const pushMatch = (query, type, sublabel) => {
+        if (!query || seen.has(query)) return;
+        seen.add(query);
+        matches.push({ type: type, query: query, label: query, sublabel: sublabel || '' });
     };
     const primaryCode = getPrimaryCodeLikeQuery(val);
     if (primaryCode) {
         VISA_DATA
             .filter(v => normalizeVisaCode(v.code) === normalizeVisaCode(primaryCode))
-            .forEach(v => pushMatch(`${v.code} ${getVisaNameKo(v)}`));
+            .forEach(v => pushMatch(`${v.code} ${getVisaNameKo(v)}`, 'visa_code', ''));
     }
-    PREDEF_KEYWORDS.filter(k => k.toLowerCase().includes(lowerVal)).forEach(pushMatch);
+    PREDEF_KEYWORDS.filter(k => k.toLowerCase().includes(lowerVal))
+        .forEach(k => pushMatch(k, suggestionTypeForKeyword(k), ''));
     VISA_DATA.forEach(v => {
         const codeMatch = (v.code||'').toLowerCase().includes(lowerVal) || (valNorm && normalizeVisaCode(v.code).includes(valNorm));
         if(codeMatch || getVisaNameKo(v).toLowerCase().includes(lowerVal)) {
-            const str = `${v.code} ${getVisaNameKo(v)}`; if(!matches.includes(str)) matches.push(str);
+            pushMatch(`${v.code} ${getVisaNameKo(v)}`, 'visa_code', '');
         }
         getVisaSubcodes(v).forEach(s => {
             const subCodeMatch = (s.code || '').toLowerCase().includes(lowerVal) || (valNorm && normalizeVisaCode(s.code).includes(valNorm));
             if (subCodeMatch || (s.nameKo || s.name || '').toLowerCase().includes(lowerVal)) {
-                const str = `${s.code} ${s.nameKo || s.name || ''}`; if(!matches.includes(str)) matches.push(str);
+                // A subcode always names its parent, so the row can never be
+                // read as a standalone top-level 체류자격.
+                pushMatch(`${s.code} ${s.nameKo || s.name || ''}`, 'visa_status',
+                    `${v.code} ${getVisaNameKo(v)}`);
             }
         });
     });
     if(matches.length > 0) {
+        const rows = window.ParadisoUnifiedSearch;
         matches.slice(0, 7).forEach(m => {
             const item = document.createElement('button'); item.className = 'auto-item'; item.type = 'button';
             item.setAttribute('role', 'option');
-            item.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg> <span>${hl(m, [val])}</span>`;
-            item.setAttribute('data-action', 'search-hint'); item.setAttribute('data-query', m);
+            if (rows && typeof rows.buildSuggestionRowHtml === 'function') {
+                // The shared UX-03 row markup in inner mode — this element
+                // already is the button, so the renderer must not add one.
+                item.innerHTML = rows.buildSuggestionRowHtml(m, {
+                    inner: true,
+                    labelHtml: hl(m.label, [val])
+                });
+                item.classList.add('us-sug');
+                item.setAttribute('data-us-suggest-type', m.type);
+            } else {
+                item.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg> <span>${hl(m.label, [val])}</span>`;
+            }
+            item.setAttribute('data-action', 'search-hint'); item.setAttribute('data-query', m.query);
             list.appendChild(item);
         });
         list.classList.add('active');

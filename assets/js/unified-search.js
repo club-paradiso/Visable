@@ -88,6 +88,13 @@
       officialKorean: '공식 원문 (한국어)',
       confirmOfficial: '최종 확인은 하이코리아 또는 1345에서 하세요.',
       suggestionsLabel: '이어서 찾아보기',
+      sugVisa: '체류자격',
+      sugProcedure: '절차',
+      sugLegal: '법령 출처',
+      sugEmployment: '취업 도구',
+      sugRecent: '최근 검색',
+      sugCorrection: '추천 검색어',
+      searchLayerFailed: '통합 검색을 불러오지 못했습니다. 아래 기본 검색 결과는 그대로 사용할 수 있어요.',
       citationUnverified: '인용 확인 실패',
       citationUnverifiedHelp: '요약에 인용된 법령 조문을 확인하지 못했습니다. 공식 원문을 확인하세요.',
       parentCodeBadge: '상위 자격',
@@ -139,6 +146,13 @@
       officialKorean: 'Official text (Korean)',
       confirmOfficial: 'Confirm with HiKorea or 1345.',
       suggestionsLabel: 'Try next',
+      sugVisa: 'Status',
+      sugProcedure: 'Procedure',
+      sugLegal: 'Legal source',
+      sugEmployment: 'Employment tool',
+      sugRecent: 'Recent',
+      sugCorrection: 'Suggested',
+      searchLayerFailed: 'Unified search could not be loaded. The basic results below are unaffected.',
       citationUnverified: 'Citation not verified',
       citationUnverifiedHelp: 'A statute reference in this summary could not be verified. Check the official text.',
       parentCodeBadge: 'Parent status',
@@ -539,16 +553,135 @@
       '<ul class="us-source-list">' + items + '</ul></section>';
   }
 
-  /** Follow-up suggestion chips. */
+  /* ---------------- UX-03 Search / Suggestion Row (node 400:12) ------------ */
+
+  /**
+   * Category glyphs. Stroke-only 24-grid paths so they inherit `currentColor`
+   * and stay legible at the design's 11px render size.
+   */
+  var SUGGEST_GLYPH = {
+    visa_code: '<rect x="3" y="5" width="18" height="14" rx="3"/><path d="M7 10h4M7 14h7"/>',
+    visa_status: '<rect x="3" y="5" width="18" height="14" rx="3"/><path d="M7 10h4M7 14h7"/>',
+    procedure: '<path d="M4 7h11M4 12h11M4 17h7"/><path d="M17.5 15.5l2 2 3-4"/>',
+    legal_source: '<path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/>',
+    employment_tool: '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5h6v2M3 12h18"/>',
+    recent_query: '<circle cx="12" cy="12" r="8"/><path d="M12 7.5V12l3 2"/>',
+    correction: '<circle cx="11" cy="11" r="6.5"/><path d="M15.8 15.8L21 21"/><path d="M8.5 11h5M11 8.5v5"/>',
+    // Not a design variant — the neutral shape used when we have no basis for
+    // claiming a category. Plain magnifier, no chip.
+    query: '<circle cx="11" cy="11" r="6.5"/><path d="M15.8 15.8L21 21"/>'
+  };
+
+  // The seven variants of the design component.
+  var SUGGEST_TYPES = [
+    'visa_code', 'visa_status', 'procedure', 'legal_source',
+    'employment_tool', 'recent_query', 'correction'
+  ];
+
+  var SUGGEST_UNTYPED = 'query';
+
+  function suggestionType(type) {
+    var key = String(type || '').toLowerCase();
+    // An unrecognised type gets the neutral treatment and no category chip.
+    // It must not be filed under a real category — a row that is actually a
+    // legal source must not read as "최근 검색", and vice versa.
+    return SUGGEST_TYPES.indexOf(key) === -1 ? SUGGEST_UNTYPED : key;
+  }
+
+  function suggestionBadgeLabel(type) {
+    switch (type) {
+      case 'visa_code':
+      case 'visa_status': return t('sugVisa');
+      case 'procedure': return t('sugProcedure');
+      case 'legal_source': return t('sugLegal');
+      case 'employment_tool': return t('sugEmployment');
+      case 'recent_query': return t('sugRecent');
+      case 'correction': return t('sugCorrection');
+      // No label — the chip is omitted rather than filled with a guess.
+      default: return '';
+    }
+  }
+
+  /**
+   * Normalise one suggestion into the row shape.
+   *
+   * A bare string still works — older payloads (and `showSuggestions` in
+   * `index.html`) send those. It carries no category, so it renders neutral
+   * and unchipped rather than being assigned one.
+   */
+  function normalizeSuggestion(item) {
+    if (typeof item === 'string') {
+      return item
+        ? { type: SUGGEST_UNTYPED, query: item, label: item, sublabel: '' }
+        : null;
+    }
+    if (!item || typeof item !== 'object') return null;
+    var query = item.query || item.label || '';
+    if (!query) return null;
+    return {
+      type: suggestionType(item.type),
+      query: query,
+      label: item.label || query,
+      sublabel: item.sublabel || ''
+    };
+  }
+
+  /**
+   * The inside of a suggestion row: avatar · primary/secondary text · chip.
+   *
+   * Split out so a caller that already owns the button element — the
+   * autocomplete list in `index.html` — can reuse the same markup without
+   * nesting a button inside a button.
+   *
+   * `labelHtml` is the one place HTML is accepted rather than escaped: the
+   * autocomplete passes match-highlighted text. It must already be escaped by
+   * the caller (`hl()` escapes before inserting `<mark>`).
+   */
+  function buildSuggestionInnerHtml(row, labelHtml) {
+    var glyph = SUGGEST_GLYPH[row.type] || SUGGEST_GLYPH[SUGGEST_UNTYPED];
+    var badge = suggestionBadgeLabel(row.type);
+    return '<span class="us-sug-avatar" aria-hidden="true">' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+      'stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">' +
+      glyph + '</svg></span>' +
+      '<span class="us-sug-text">' +
+      '<span class="us-sug-title">' +
+      (labelHtml || escapeHtml(row.label)) + '</span>' +
+      (row.sublabel
+        ? '<span class="us-sug-sub">' + escapeHtml(row.sublabel) + '</span>'
+        : '') +
+      '</span>' +
+      (badge
+        ? '<span class="us-sug-badge">' + escapeHtml(badge) + '</span>'
+        : '');
+  }
+
+  /** One suggestion row: category avatar · primary/secondary text · type chip. */
+  function buildSuggestionRowHtml(item, options) {
+    var row = normalizeSuggestion(item);
+    if (!row) return '';
+    var opts = options || {};
+    var inner = buildSuggestionInnerHtml(row, opts.labelHtml);
+    if (opts.inner) return inner;
+
+    return '<button type="button" class="us-sug' +
+      (opts.extraClass ? ' ' + opts.extraClass : '') +
+      '" data-us-suggest-type="' + escapeHtml(row.type) + '"' +
+      (opts.role ? ' role="' + escapeHtml(opts.role) + '"' : '') +
+      ' data-us-query="' + escapeHtml(row.query) + '"' +
+      (opts.extraAttrs || '') + '>' + inner + '</button>';
+  }
+
+  /** Follow-up suggestions, rendered as the UX-03 suggestion row list. */
   function buildSuggestionsHtml(suggestions) {
     if (!suggestions || !suggestions.length) return '';
-    var chips = suggestions.map(function (s) {
-      return '<button type="button" class="us-chip us-chip--suggest" data-us-query="' +
-        escapeHtml(s) + '">' + escapeHtml(s) + '</button>';
-    }).join('');
+    var rows = suggestions.map(function (s) {
+      return buildSuggestionRowHtml(s);
+    }).filter(Boolean);
+    if (!rows.length) return '';
     return '<section class="us-suggest" aria-label="' + escapeHtml(t('suggestionsLabel')) + '">' +
       '<span class="us-suggest-label">' + escapeHtml(t('suggestionsLabel')) + '</span>' +
-      chips + '</section>';
+      '<div class="us-sug-list">' + rows.join('') + '</div></section>';
   }
 
   /** Manual/tool cards the base result list does not render itself. */
@@ -590,7 +723,9 @@
     return buildInterpretationHtml(payload) +
       buildAiOverviewHtml(aiState, aiData) +
       buildExtraResultsHtml(payload.organicResults) +
-      buildSuggestionsHtml(payload.suggestions) +
+      // Typed rows when the backend sends them; the string list is the
+      // compatibility path for older payloads.
+      buildSuggestionsHtml(payload.suggestionRows || payload.suggestions) +
       buildSourceCardsHtml(payload.sourceCards);
   }
 
@@ -635,6 +770,12 @@
     buildEvidenceCardHtml: buildEvidenceCardHtml,
     evidenceVisualState: evidenceVisualState,
     buildSuggestionsHtml: buildSuggestionsHtml,
+    buildSuggestionRowHtml: buildSuggestionRowHtml,
+    suggestionBadgeLabel: suggestionBadgeLabel,
+    normalizeSuggestion: normalizeSuggestion,
+    suggestionType: suggestionType,
+    SUGGEST_TYPES: SUGGEST_TYPES,
+    SUGGEST_UNTYPED: SUGGEST_UNTYPED,
     buildExtraResultsHtml: buildExtraResultsHtml,
     buildUnifiedLayerHtml: buildUnifiedLayerHtml,
     classifyAiResponse: classifyAiResponse,
@@ -690,9 +831,34 @@
     host.innerHTML = buildUnifiedLayerHtml(lastPayload, aiState, aiData);
   }
 
+  /* ------------- UX-03 Search / Unified Input state (node 394:203) -------- */
+
+  /**
+   * Drive the search bar's visible state.
+   *
+   * `error` is a state of its own on purpose: a unified search that *failed* is
+   * not a search that found *nothing*. Collapsing the two would tell a user
+   * "there is nothing here" when the truth is "we could not look".
+   */
+  function setSearchBarState(state, message) {
+    if (typeof document === 'undefined') return;
+    var form = document.getElementById('searchForm');
+    if (form) form.setAttribute('data-us-search-state', state);
+    var note = document.getElementById('usSearchNote');
+    if (!note) return;
+    if (message) {
+      note.textContent = message;
+      note.removeAttribute('hidden');
+    } else {
+      note.textContent = '';
+      note.setAttribute('hidden', '');
+    }
+  }
+
   function fetchUnified(query) {
     var token = ++currentToken;
     var base = apiBase();
+    setSearchBarState('loading', '');
     return fetch(base + '/api/search/unified', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -703,12 +869,16 @@
     }).then(function (body) {
       if (token !== currentToken) return null;   // a newer query superseded this
       lastPayload = body;
+      setSearchBarState('results', '');
       render('loading', null);
       return body;
     }).catch(function () {
       if (token !== currentToken) return null;
       // The deterministic layer is an enhancement; #rlist already has results.
+      // Say so explicitly rather than disappearing: the note names what failed
+      // and confirms the results below are unaffected.
       lastPayload = null;
+      setSearchBarState('error', t('searchLayerFailed'));
       render('hidden', null);
       return null;
     });
@@ -839,7 +1009,12 @@
 
   function runUnified(query) {
     var q = String(query || '').trim().slice(0, MAX_QUERY);
-    if (!q) { lastPayload = null; render('hidden', null); return; }
+    if (!q) {
+      lastPayload = null;
+      setSearchBarState('idle', '');
+      render('hidden', null);
+      return;
+    }
     fetchUnified(q).then(function (payload) {
       if (payload) fetchAiOverview(q, payload);
     });
