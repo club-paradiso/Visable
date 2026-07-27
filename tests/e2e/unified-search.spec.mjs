@@ -366,6 +366,45 @@ test.describe('URL state', () => {
   });
 });
 
+test.describe('parent-of-subcode scoping', () => {
+  test('a parent card searched by sub-code says whose requirements these are',
+    async ({ page }) => {
+      await page.route(UNIFIED, (route) => route.fulfill({ json: unifiedBody() }));
+      await stubStream(page);
+      await page.route(AI_OVERVIEW, (route) => route.abort());
+
+      await search(page, 'D-2-1');
+
+      const notice = page.locator('#rlist .parent-scope-notice').first();
+      await expect(notice).toBeVisible();
+      // It names both codes, so the scope of what follows is unambiguous.
+      await expect(notice).toHaveAttribute('data-parent-scope', 'D-2');
+      await expect(notice).toHaveAttribute('data-sub-scope', 'D-2-1');
+      await expect(notice).toContainText('D-2-1');
+    });
+
+  test('a parent-code search shows no scoping notice', async ({ page }) => {
+    await page.route(UNIFIED, (route) => route.fulfill({ json: unifiedBody() }));
+    await stubStream(page);
+    await page.route(AI_OVERVIEW, (route) => route.abort());
+
+    await search(page, 'D-2');
+    // Nothing is being narrowed, so there is nothing to scope.
+    await expect(page.locator('#rlist .parent-scope-notice')).toHaveCount(0);
+  });
+
+  test('an unrecognized sub-code is never named as if it existed', async ({ page }) => {
+    await page.route(UNIFIED, (route) => route.fulfill({ json: unifiedBody() }));
+    await stubStream(page);
+    await page.route(AI_OVERVIEW, (route) => route.abort());
+
+    await search(page, 'D-2-99');
+    // D-2-99 is not in visa_data.json. Saying "D-2-99 전용 요건은 아래에서" would
+    // assert a sub-code we do not have, so the notice does not render at all.
+    await expect(page.locator('#rlist .parent-scope-notice')).toHaveCount(0);
+  });
+});
+
 test.describe('search input states', () => {
   test('a failed unified search is reported, not silently blank', async ({ page }) => {
     await page.route(UNIFIED, (route) => route.abort());

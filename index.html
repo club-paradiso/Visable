@@ -11018,6 +11018,26 @@ button[data-keyword]:focus-visible {
   font-weight: 700 !important;
 }
 
+/* Result / Status Card `MatchReason=ParentOfExactCode` — Figma UX-03 (405:66).
+   Scopes the card: everything below belongs to the PARENT code, not to the
+   sub-code the user typed. Uses the global card tokens rather than the emerald
+   --us-* set, because this lives inside #rlist, not inside .us-layer. */
+.parent-scope-notice {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 0.35rem;
+  margin: 0 0 0.85rem; padding: 0.7rem 0.9rem;
+  border: 1px solid var(--bd2); border-left: 3px solid var(--ac);
+  border-radius: 10px; background: var(--bg2);
+}
+.parent-scope-badge {
+  padding: 0.15rem 0.5rem; border-radius: 999px;
+  font-size: 0.7rem; font-weight: 800; letter-spacing: 0.02em;
+  background: var(--ac); color: var(--bg1);
+}
+.parent-scope-body {
+  margin: 0; font-size: 0.82rem; line-height: 1.55; color: var(--t2);
+  word-break: keep-all; overflow-wrap: anywhere;
+}
+
 /* Search / Unified Input states — Figma UX-03 (node 394:203).
    Loading swaps the submit arrow for spinner dots; Error adds a helper line
    under the bar. `error` is distinct from "no results" on purpose. */
@@ -20953,6 +20973,39 @@ function renderSubcodes(v, keywords, matchingSubcodes, opts) {
     return `<div class="manual-section" data-subcode-section>${title}${matchedHtml}${restHtml}${restInactiveHtml}</div>`;
 }
 
+/* Result / Status Card `MatchReason=ParentOfExactCode` — Figma UX-03 (node
+   405:66). When the query names a sub-code but this card is its PARENT, every
+   requirement rendered below belongs to the parent, not to the sub-code the
+   user actually asked about. Saying so is a CLAUDE.md non-negotiable: a parent
+   record must never read as though it carried the sub-code's specific rules.
+
+   The notice appears only when the sub-code resolves against visa_data.json.
+   A code-shaped token we do not have ("D-2-99") is never named back as if it
+   were real. */
+function renderParentScopeNotice(v, primaryCodeQuery) {
+    const query = normalizeVisaCode(primaryCodeQuery || '');
+    const parent = normalizeVisaCode(v.code || '');
+    if (!query || !parent || query === parent) return '';
+    const segments = query.split('-');
+    if (segments.length < 3) return '';
+    if (`${segments[0]}-${segments[1]}` !== parent) return '';
+    const sub = getVisaSubcodes(v).find(s => normalizeVisaCode(s.code) === query);
+    if (!sub) return '';
+
+    const en = currentLanguage === 'en';
+    const zh = currentLanguage === 'zh-CN';
+    const label = zh ? '输入的细分代码的上级'
+        : en ? 'Parent of the code you entered'
+        : '입력한 세부코드의 상위';
+    const body = zh
+        ? `此处列出的是 ${parent} 的共同要件。${query} 的专属要件请在下方细分代码中确认。`
+        : en
+        ? `The requirements shown here are common to ${parent}. Requirements specific to ${query} are in the sub-code section below.`
+        : `여기에 적힌 요건은 ${parent} 공통 요건이에요. ${query} 전용 요건은 아래 세부코드에서 확인하세요.`;
+
+    return `<div class="parent-scope-notice" data-parent-scope="${escapeHtml(parent)}" data-sub-scope="${escapeHtml(query)}"><span class="parent-scope-badge">${escapeHtml(label)}</span><p class="parent-scope-body">${escapeHtml(body)}</p></div>`;
+}
+
 function renderCommonWarnings(v) {
     const warnings = Array.isArray(v.commonWarnings) && v.commonWarnings.length ? v.commonWarnings : COMMON_MANUAL_WARNINGS;
     return `<div class="manual-warning-box"><strong>${escapeHtml(tx('commonWarningsTitle'))}</strong><ul>${warnings.map(w => `<li>${escapeHtml(w)}</li>`).join('')}</ul></div>`;
@@ -22345,6 +22398,7 @@ function renderResults(query){
                 ${v.cat === 'scn' ? `<div class="ai-cta" style="flex-direction:column; align-items:center; text-align:center; padding:2.5rem 1rem; background:var(--bg0);"><h4 style="color:var(--t1); font-weight:800; font-size:1.1rem; margin-bottom:0.5rem;">${tx('specialCaseTitle')}</h4><p style="font-size:0.85rem; color:var(--t3); margin-bottom:1.5rem; word-break:keep-all; max-width:400px;">${tx('specialCaseBody')}</p><button type="button" class="ai-btn" style="width:100%; max-width:320px; justify-content:center; box-shadow:var(--shD);" data-action="open-ai-modal" data-visa-code="${escapeHtml(v.code)}">${tx('specialCaseButton')}</button></div>` : `
                 <div class="manual-layout">
                     ${renderViewModeToggle(v, isVisaCode)}
+                    ${renderParentScopeNotice(v, primaryCodeQuery)}
                     ${renderNextActionArea(v, isVisaCode)}
                     ${renderCardSummary(v, kw)}
                     <div class="external-guide-slot" data-guide-slot="${escapeHtml(v.code || '')}"></div>
