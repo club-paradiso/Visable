@@ -447,7 +447,15 @@ test.describe('suggestion rows', () => {
     await expect(rows).toHaveCount(2);
     await expect(rows.first()).toHaveAttribute('data-us-suggest-type', 'legal_source');
     await expect(rows.first().locator('.us-sug-sub')).toContainText('법령 원문으로 확인');
-    await expect(rows.first().locator('.us-sug-badge')).toBeVisible();
+
+    // The category chip is always in the markup, but it is deliberately hidden
+    // below 560px: the avatar already carries the category there, and the chip
+    // would otherwise squeeze the title it exists to describe.
+    const badge = rows.first().locator('.us-sug-badge');
+    await expect(badge).toHaveCount(1);
+    const width = page.viewportSize()?.width ?? 0;
+    if (width > 560) await expect(badge).toBeVisible();
+    else await expect(badge).toBeHidden();
   });
 
   test('a correction row names the token we do not have', async ({ page }) => {
