@@ -383,9 +383,24 @@ nowhere in the repo. The blue accents in `index.html` (`--ac: #2F5EFC`,
 deliberately their own palettes. So the indigo is a **Figma-side staleness** on
 `01 Design System`, not a pending code migration.
 
-What is genuinely unreconciled is smaller: `.us-layer` uses `--us-accent:
-#177361` (the UX-0x value) while the global default uses `#0B7357`. Two
-emeralds, one token unification — not a site-wide repaint.
+**Resolved:** `.us-layer` no longer carries its own emerald. `--us-accent` is
+now an alias of the site accent (`var(--ac, #0B7357)`), and `--us-accent-soft` /
+`--us-accent-chip` derive from it with `color-mix`.
+
+The small side moved: `--us-accent` had 26 references, `--ac` has 267. The two
+emeralds are the same colour to the eye, and the site value is marginally better
+on contrast in both themes (5.69 vs 5.60 on `--us-surface`; 9.46 vs 9.04 in
+dark). Tint percentages were tuned to 8% / 6% (light) and 16% / 12% (dark) so
+accent-on-soft keeps the ≥5:1 headroom the hand-picked `#e5f5ed` had — a heavier
+mix still passes AA but thins it.
+
+Aliasing rather than copying the hex has a second effect worth stating: the
+layer now follows alternate themes (`data-theme="archive_diary"` and friends)
+instead of staying emerald inside a palette that is deliberately not. Those
+themes are their own systems, and a hard-coded emerald island in them would read
+as a bug.
+
+`#177361` is therefore the value that should move — on the Figma side.
 
 Category tints used by the Suggestion Row: visa/procedure `#177361`, legal
 `#7f89ce`, employment `#d95c47`, recent/correction `#4d5261` — avatar at 14%,

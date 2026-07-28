@@ -13549,13 +13549,23 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
    global --ac is still indigo, and flipping that would restyle every screen.
    Promoting these to global tokens is a separate change with a much larger
    blast radius. */
+/* The layer's accent is an ALIAS of the site accent, not a second emerald.
+   UX-0x specifies #177361 and the site already uses #0B7357 — the same emerald
+   to the eye (both ~5.6:1 on --us-surface; the site value is marginally
+   better on every surface in both themes). Aliasing keeps one source of truth
+   and, unlike a duplicated hex, lets the layer follow alternate themes
+   (data-theme="archive_diary" etc.) instead of staying emerald inside a
+   palette that is deliberately not. The soft/chip tints derive from it for the
+   same reason. Figma's #177361 is the value that should move. */
 .us-layer {
   --us-surface: #fffcf5;
   --us-surface-alt: #f2f6f0;
-  --us-accent: #177361;
-  --us-accent-soft: #e5f5ed;
-  --us-accent-chip: #edf5f0;
-  --us-link: #0e8a6b;
+  --us-accent: var(--ac, #0B7357);
+  /* 8% / 6%: chosen so accent-on-soft keeps >=5:1, matching the headroom the
+     hand-picked #e5f5ed had. A heavier mix still passes AA but thins it. */
+  --us-accent-soft: color-mix(in srgb, var(--us-accent) 8%, var(--us-surface));
+  --us-accent-chip: color-mix(in srgb, var(--us-accent) 6%, var(--us-surface));
+  --us-link: var(--us-accent);
   --us-ink: #1c1f29;
   --us-muted: #4d5261;
   --us-line: #e5e5ed;
@@ -13567,10 +13577,10 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
 body[data-theme="dark"] .us-layer {
   --us-surface: #0b2a24;
   --us-surface-alt: #10322b;
-  --us-accent: #7dd8b8;
-  --us-accent-soft: #16463b;
-  --us-accent-chip: #15433a;
-  --us-link: #7dd8b8;
+  /* Dark re-points the surfaces; the accent keeps following --ac, which the
+     dark theme has already switched to its own emerald. */
+  --us-accent-soft: color-mix(in srgb, var(--us-accent) 16%, var(--us-surface));
+  --us-accent-chip: color-mix(in srgb, var(--us-accent) 12%, var(--us-surface));
   --us-ink: #f3eedf;
   --us-muted: #9db5ad;
   --us-line: #23564a;
