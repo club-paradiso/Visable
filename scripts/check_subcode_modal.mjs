@@ -61,7 +61,7 @@ check('detail view moves focus to its heading on open',
 check('subcode modal doc checklist renders single-column (no tiny-cards-in-cards)',
   /#subcodeModalBody\s+\.doc-checklist\s*\{[^}]*grid-template-columns:\s*1fr/.test(html));
 
-const i18nKeys = ['subcodeModalEyebrow', 'subcodeModalParentLabel', 'subcodeModalAbout', 'subcodeModalDocsTitle', 'subcodeModalProcTitle', 'subcodeModalWarnTitle', 'subcodeModalSourceTitle', 'subcodeModalNoDocs', 'subcodeModalSourceGap', 'subcodeModalParentCta', 'subcodeModalOpenAria'];
+const i18nKeys = ['subcodeModalEyebrow', 'subcodeModalParentLabel', 'subcodeModalParentScope', 'subcodeModalAbout', 'subcodeModalDocsTitle', 'subcodeModalProcTitle', 'subcodeModalWarnTitle', 'subcodeModalSourceTitle', 'subcodeModalNoDocs', 'subcodeModalSourceGap', 'subcodeModalParentCta', 'subcodeModalOpenAria'];
 for (const loc of ['ko', 'en', 'zh-CN']) {
   const pack = JSON.parse(fs.readFileSync(path.join(repoRoot, 'data', 'i18n', loc + '.json'), 'utf8'));
   const missing = i18nKeys.filter(k => !(k in pack));
@@ -139,6 +139,12 @@ if (typeof buildSubcodeModalView === 'function' && typeof renderSubcodeProcedure
       if (!view.body.includes(`data-query="${escapeHtml(v.code)}"`)) failures.push(`${v.code}/${sub.code} missing parent CTA`);
       // Header references the parent status code.
       if (!view.parentHtml.includes(escapeHtml(v.code))) failures.push(`${v.code}/${sub.code} header missing parent code`);
+      // UX-03 Result / Subcode Card (473:96): naming the parent is not enough.
+      // This view shows only sub-code-specific requirements, so it must say
+      // where the common ones live — otherwise a reader takes it as complete.
+      if (!view.parentHtml.includes('subcode-modal-parent-scope')) {
+        failures.push(`${v.code}/${sub.code} missing the parent-scope statement`);
+      }
       if (view.body.includes(tx('subcodeModalSourceGap'))) gapSource++; else refSource++;
       if (renderSubcodeProcedureVariants(v, sub)) variantRendered++;
     }

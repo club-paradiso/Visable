@@ -669,6 +669,7 @@
   "subcodePreviewAria": "Vista previa de los principales subtipos",
   "subcodeModalEyebrow": "Detalle del subestatus",
   "subcodeModalParentLabel": "Estatus de residencia principal",
+  "subcodeModalParentScope": "Esta vista solo incluye los requisitos propios de este subcódigo. Los requisitos comunes están en la página del código principal {code}.",
   "subcodeModalAbout": "¿En qué caso se aplica este subestatus?",
   "subcodeModalDocsTitle": "Documentos adicionales a verificar por subestatus",
   "subcodeModalProcTitle": "Procedimientos relacionados con este subestatus",

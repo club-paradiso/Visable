@@ -669,6 +669,7 @@
   "subcodePreviewAria": "Aperçu des principaux sous-types",
   "subcodeModalEyebrow": "Détail du sous-statut",
   "subcodeModalParentLabel": "Statut de séjour parent",
+  "subcodeModalParentScope": "Cette vue ne contient que les conditions propres à ce sous-code. Les conditions communes figurent sur la page du code parent {code}.",
   "subcodeModalAbout": "Dans quels cas ce sous-statut s'applique-t-il ?",
   "subcodeModalDocsTitle": "Documents supplémentaires à vérifier par sous-statut",
   "subcodeModalProcTitle": "Procédures liées à ce sous-statut",
