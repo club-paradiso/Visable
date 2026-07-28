@@ -60,12 +60,36 @@
     idleBody: '예: 출입국관리법, 체류자격 변경, 강제퇴거. 아래 빠른 검색을 눌러도 됩니다.',
     loadingLaws: '법령 검색 중입니다',
     loadingPrec: '판례 검색 중입니다',
-    emptyTitle: '검색 결과가 없습니다',
-    emptyBody: '검색어를 바꾸거나, 공식 자료에서 직접 확인해 보세요.',
     errorTitle: '검색에 실패했습니다',
     errorBody: '잠시 후 다시 시도하거나, 하이코리아·1345 또는 공식 자료에서 확인하세요.',
-    missingKeyTitle: 'API 설정이 필요합니다',
-    missingKeyBody: '법령 검색 서비스가 아직 설정되지 않았습니다. 공식 자료(law.go.kr·하이코리아·1345)에서 직접 확인하세요.',
+    /* UX-07 `Legal / Failure States` (node 438:37). Seven distinct failure
+       states, each with at least one next action the reader can actually take.
+       The states are kept apart because the recovery differs: a timeout is
+       retryable, an unconfigured credential is not, and "no result" is not a
+       failure at all. */
+    stNotConfiguredTitle: '법령 API 미설정',
+    stNotConfiguredBody: '법령 원문 연결이 아직 준비 중이에요. 매뉴얼 근거로 먼저 정리해 드릴게요.',
+    stNotConfiguredCta: '매뉴얼 근거만 보기',
+    stTimeoutTitle: '법령 API 응답 지연',
+    stTimeoutBody: '법령 검색이 오래 걸리고 있어요. 기본 리서치로 바꾸면 더 빨리 볼 수 있어요.',
+    stTimeoutCta: '기본 리서치로 전환',
+    stNoResultTitle: '법령 검색 결과 없음',
+    stNoResultBody: '이 질문에 딱 맞는 조문을 찾지 못했어요. 표현을 바꾸면 찾을 수 있어요.',
+    stNoResultCta: '질문 다시 쓰기',
+    stNoPrecedentTitle: '판례 없음',
+    stNoPrecedentBody: '비슷한 판례를 찾지 못했어요. 법령과 매뉴얼 근거로 정리했어요.',
+    stNoPrecedentCta: '법령 근거 보기',
+    stAiFailedTitle: 'AI 요약 실패',
+    stAiFailedBody: '요약을 만들지 못했어요. 찾은 근거는 그대로 확인할 수 있어요.',
+    stAiFailedCta: '근거 목록 보기',
+    stCitationFailedTitle: '인용 검증 실패',
+    stCitationFailedBody: '인용한 문장을 원문에서 확인하지 못했어요. 원문을 직접 확인해 주세요.',
+    stCitationFailedCta: '원문 열기',
+    stNoDirectManualTitle: '매뉴얼 직접 근거 없음',
+    stNoDirectManualBody: '매뉴얼에서 직접 근거를 찾지 못했어요. 관할 관서 확인이 필요해요.',
+    stNoDirectManualCta: '1345 안내 보기',
+    official1345Title: '관할 관서에서 확인해 주세요',
+    official1345Body: '외국인종합안내센터 1345 (평일 09:00–18:00, 다국어 상담) 또는 하이코리아(hikorea.go.kr)에서 확인할 수 있어요. 개별 사정에 따라 판단이 달라질 수 있어 여기서는 결론을 드리지 않아요.',
     precNote: '판례는 개별 사건 판단이며 결과를 보장하지 않습니다. 자세한 내용은 공식 원문을 확인하세요.',
     tabResearch: '리걸 리서치',
     researchDepthLabel: '리서치 깊이',
@@ -147,12 +171,31 @@
     idleBody: 'e.g. Immigration Act, status change, deportation. You can also tap a quick search below.',
     loadingLaws: 'Searching legal sources',
     loadingPrec: 'Searching precedents',
-    emptyTitle: 'No results found',
-    emptyBody: 'Try a different term, or check the official source directly.',
     errorTitle: 'Search failed',
     errorBody: 'Please try again shortly, or check with HiKorea / 1345 or the official source.',
-    missingKeyTitle: 'API configuration required',
-    missingKeyBody: 'The legal search service is not configured yet. Please check official sources (law.go.kr / HiKorea / 1345) directly.',
+    stNotConfiguredTitle: 'Legal API not configured',
+    stNotConfiguredBody: 'The statute-text connection is not ready yet. We will start from manual-based sources.',
+    stNotConfiguredCta: 'Show manual sources only',
+    stTimeoutTitle: 'Legal API is slow to respond',
+    stTimeoutBody: 'The legal search is taking a while. Switching to standard research will be faster.',
+    stTimeoutCta: 'Switch to standard research',
+    stNoResultTitle: 'No matching statute found',
+    stNoResultBody: 'We could not find a provision that matches this question. Rewording may help.',
+    stNoResultCta: 'Reword the question',
+    stNoPrecedentTitle: 'No precedent found',
+    stNoPrecedentBody: 'We could not find a similar precedent. The summary uses statute and manual sources.',
+    stNoPrecedentCta: 'See statute sources',
+    stAiFailedTitle: 'AI summary failed',
+    stAiFailedBody: 'The summary could not be generated. The sources we found are still available.',
+    stAiFailedCta: 'See the source list',
+    stCitationFailedTitle: 'Citation not verified',
+    stCitationFailedBody: 'We could not confirm the quoted sentence against the original text. Please check it directly.',
+    stCitationFailedCta: 'Open the original text',
+    stNoDirectManualTitle: 'No direct manual source',
+    stNoDirectManualBody: 'We could not find direct manual authority. Confirmation with the competent office is needed.',
+    stNoDirectManualCta: 'See 1345 guidance',
+    official1345Title: 'Please confirm with the competent office',
+    official1345Body: 'Call the Immigration Contact Center at 1345 (weekdays 09:00-18:00, multilingual) or check HiKorea (hikorea.go.kr). The outcome can differ case by case, so no conclusion is given here.',
     precNote: 'Precedents are individual case decisions and do not guarantee any outcome. See the official text for details.',
     tabResearch: 'Legal Research',
     researchDepthLabel: 'Research depth',
@@ -366,12 +409,61 @@
       + '</article>';
   }
 
-  function stateBlock(icon, title, body) {
-    return '<div class="lss-state">'
+  function stateBlock(icon, title, body, action, stateName) {
+    return '<div class="lss-state"'
+      + (stateName ? ' data-lss-state="' + escapeHtml(stateName) + '"' : '') + '>'
       + '<div class="lss-state-ic" aria-hidden="true">' + icon + '</div>'
       + '<p class="lss-state-title">' + escapeHtml(title) + '</p>'
       + (body ? '<p class="lss-state-body">' + escapeHtml(body) + '</p>' : '')
+      + (action
+        ? '<button type="button" class="lss-state-cta" data-lss-recover="'
+          + escapeHtml(action.act) + '">' + escapeHtml(action.label) + ' →</button>'
+        : '')
       + '</div>';
+  }
+
+  /* ------------- UX-07 Legal / Failure States (node 438:37) ---------------- */
+
+  /**
+   * The seven failure states, each paired with the one recovery action the
+   * design specifies. They are deliberately NOT collapsed into a single
+   * "error": the right next step differs per cause. A timeout is worth
+   * retrying at a lower depth; an unconfigured credential never is; and
+   * "no result" is not a failure at all, only an empty answer.
+   */
+  var FAILURE_STATES = {
+    'not-configured':  { ic: '🔧', k: 'stNotConfigured',  act: 'manual-only' },
+    'timeout':         { ic: '⏳', k: 'stTimeout',         act: 'lower-depth' },
+    'no-result':       { ic: '📭', k: 'stNoResult',        act: 'reword' },
+    'no-precedent':    { ic: '⚖️', k: 'stNoPrecedent',     act: 'show-laws' },
+    'ai-failed':       { ic: '📝', k: 'stAiFailed',        act: 'show-sources' },
+    'citation-failed': { ic: '🔍', k: 'stCitationFailed',  act: 'open-original' },
+    'no-direct-manual':{ ic: '📌', k: 'stNoDirectManual',  act: 'show-1345' }
+  };
+
+  function failureStateHtml(state, lang) {
+    var spec = FAILURE_STATES[state];
+    if (!spec) return '';
+    return stateBlock(spec.ic, S(spec.k + 'Title', lang), S(spec.k + 'Body', lang),
+      { act: spec.act, label: S(spec.k + 'Cta', lang) }, state);
+  }
+
+  /**
+   * Map a backend `reason` / `error_type` onto a failure state.
+   *
+   * Only reasons the backend actually emits are mapped. Anything else falls
+   * through to the generic error state rather than being guessed into a
+   * specific one — telling a user their query "found nothing" when the real
+   * cause was a 403 would be a lie about our own coverage.
+   */
+  function failureStateForReason(reason, kind) {
+    var r = String(reason || '').toLowerCase();
+    if (r === 'not_configured' || r === 'law_api_not_configured') return 'not-configured';
+    if (r === 'law_api_timeout' || r === 'timeout') return 'timeout';
+    if (r === 'law_api_no_results' || r === 'no_results') {
+      return kind === 'precedents' ? 'no-precedent' : 'no-result';
+    }
+    return '';
   }
   // state: 'idle' | 'loading' | 'empty' | 'error' | 'missing-key' | 'results'
   function buildResultsHtml(state, kind, data, lang) {
@@ -379,11 +471,18 @@
       return '<div class="lss-state lss-loading"><div class="lss-spinner" aria-hidden="true"></div>'
         + '<p class="lss-state-title">' + escapeHtml(kind === 'precedents' ? S('loadingPrec', lang) : S('loadingLaws', lang)) + '</p></div>';
     }
-    if (state === 'missing-key') return stateBlock('🔧', S('missingKeyTitle', lang), S('missingKeyBody', lang));
-    if (state === 'error') return stateBlock('⚠️', S('errorTitle', lang), S('errorBody', lang));
-    if (state === 'idle') return stateBlock('🔎', S('idleTitle', lang), S('idleBody', lang));
+    // A named failure state wins: it carries the specific cause and the one
+    // recovery action for it.
+    if (FAILURE_STATES[state]) return failureStateHtml(state, lang);
+    // `missing-key` is the legacy name for `not-configured`; keep it working.
+    if (state === 'missing-key') return failureStateHtml('not-configured', lang);
+    if (state === 'error') return stateBlock('⚠️', S('errorTitle', lang), S('errorBody', lang), null, 'error');
+    if (state === 'idle') return stateBlock('🔎', S('idleTitle', lang), S('idleBody', lang), null, 'idle');
     var list = data || [];
-    if (state === 'empty' || !list.length) return stateBlock('📭', S('emptyTitle', lang), S('emptyBody', lang));
+    if (state === 'empty' || !list.length) {
+      // Empty is not an error, but it still owes the reader a next step.
+      return failureStateHtml(kind === 'precedents' ? 'no-precedent' : 'no-result', lang);
+    }
     var cards = list.map(function (r) {
       return kind === 'precedents' ? buildPrecedentCardHtml(r, lang) : buildLawCardHtml(r, lang);
     }).join('');
@@ -394,15 +493,22 @@
   }
 
   // Map a backend JSON envelope to a UI state. Pure → unit-testable.
-  function classifyResponse(json) {
+  // `kind` decides whether an empty statute search reads as `no-result` or an
+  // empty precedent search reads as `no-precedent` — different states because
+  // "no precedent exists" is a normal, informative answer while "no statute
+  // matched" usually means the query needs rewording.
+  function classifyResponse(json, kind) {
     if (!json || typeof json !== 'object') return { state: 'error', results: [] };
     if (json.ok) {
       var results = Array.isArray(json.results) ? json.results : [];
-      return { state: results.length ? 'results' : 'empty', results: results };
+      if (results.length) return { state: 'results', results: results };
+      return { state: kind === 'precedents' ? 'no-precedent' : 'no-result', results: [] };
     }
     if (json.error === 'LAW_API_OC is not configured' || json.reason === 'not_configured') {
-      return { state: 'missing-key', results: [] };
+      return { state: 'not-configured', results: [] };
     }
+    var mapped = failureStateForReason(json.reason, kind);
+    if (mapped) return { state: mapped, results: [] };
     return { state: 'error', results: [] };
   }
 
@@ -644,16 +750,51 @@
   }
 
   // Top-level research render: status badge + (synthesis | deterministic) view.
+  /**
+   * Research-side failure states (UX-07 438:37).
+   *
+   * These sit *above* a successful research payload rather than replacing it:
+   * a failed summary or an unverified citation does not invalidate the sources
+   * that were retrieved, and hiding them would throw away the useful part of
+   * the answer. Only a wholesale request failure replaces the output.
+   */
+  function researchNoticeHtml(result, lang) {
+    if (!result || result.ok === false) return '';
+    var notices = [];
+    // The summary was requested but could not be produced.
+    if (result.synthesisStatus === 'failed'
+      || (result.synthesisRequested && result.synthesisStatus === 'llm' && !result.synthesis)) {
+      notices.push('ai-failed');
+    }
+    // A statute reference in the summary could not be matched to the evidence.
+    var cv = result.citationVerification || {};
+    if (Number(cv.failureCount || 0) > 0 || Number(cv.unverifiableCount || 0) > 0) {
+      notices.push('citation-failed');
+    }
+    // Nothing in the approved manual set directly answers the question.
+    if (result.missingDirectAuthority === true
+      || Number(result.directEvidenceCount) === 0) {
+      notices.push('no-direct-manual');
+    }
+    return notices.map(function (n) { return failureStateHtml(n, lang); }).join('');
+  }
+
   function buildResearchHtml(result, lang) {
     if (!result || result.ok === false) {
-      var st = (result && result.error === 'LAW_API_OC is not configured') ? 'missing-key'
-        : (result && result.error === 'empty_question') ? 'idle' : 'error';
+      var reason = result && (result.reason || result.error);
+      var mapped = failureStateForReason(reason, 'laws');
+      var st = (result && result.error === 'LAW_API_OC is not configured') ? 'not-configured'
+        : (result && result.error === 'empty_question') ? 'idle'
+        : (mapped || 'error');
       return buildResultsHtml(st, 'laws', [], lang);
     }
     var status = result.synthesisStatus || 'deterministic';
     var badge = _badgeHtml(status, lang, result.synthesisWarning);
-    if (status === 'llm' && result.synthesis) return badge + buildSynthesisHtml(result, lang);
-    return badge + buildDeterministicResearchHtml(result, lang);
+    var notices = researchNoticeHtml(result, lang);
+    if (status === 'llm' && result.synthesis) {
+      return badge + notices + buildSynthesisHtml(result, lang);
+    }
+    return badge + notices + buildDeterministicResearchHtml(result, lang);
   }
 
   /* ------------------------------------------------------ panel markup ---- */
@@ -715,6 +856,10 @@
     buildPrecedentCardHtml: buildPrecedentCardHtml,
     buildResultsHtml: buildResultsHtml,
     classifyResponse: classifyResponse,
+    failureStateHtml: failureStateHtml,
+    failureStateForReason: failureStateForReason,
+    researchNoticeHtml: researchNoticeHtml,
+    FAILURE_STATES: FAILURE_STATES,
     panelHtml: panelHtml,
     buildDepthSelectorHtml: buildDepthSelectorHtml,
     buildResearchHtml: buildResearchHtml,
@@ -880,6 +1025,17 @@
       + '.lss-state-ic{font-size:1.6rem;margin-bottom:.4rem;}'
       + '.lss-state-title{font-size:.92rem;font-weight:750;color:var(--t1,#F3EEDF);margin:0 0 .25rem;word-break:keep-all;}'
       + '.lss-state-body{font-size:.8rem;line-height:1.55;color:var(--t2,#C7BFA8);margin:0;word-break:keep-all;}'
+      // UX-07: the recovery action every failure state carries.
+      + '.lss-state-cta{margin-top:.7rem;padding:.42rem .9rem;border:1px solid var(--ac,#0B7357);'
+      + 'border-radius:999px;background:transparent;color:var(--ac,#0B7357);'
+      + 'font-size:.8rem;font-weight:750;cursor:pointer;font-family:inherit;}'
+      + '.lss-state-cta:hover,.lss-state-cta:focus-visible{background:var(--ac,#0B7357);color:var(--bg1,#0C3A30);}'
+      // Research notices stack above the result rather than replacing it, so
+      // they read as inline warnings, not as an empty state.
+      + '.lss-results + .lss-state,.lss-rsec .lss-state{text-align:left;}'
+      + '.lss-state[data-lss-state="citation-failed"],.lss-state[data-lss-state="ai-failed"],'
+      + '.lss-state[data-lss-state="no-direct-manual"]{text-align:left;padding:.9rem 1rem;'
+      + 'border:1px solid var(--bd2,#224A41);border-radius:12px;margin:0 0 .7rem;}'
       + '.lss-spinner{width:30px;height:30px;margin:.2rem auto .5rem;border:3px solid var(--bd,#2D5A50);border-top-color:var(--ac,#34D4A8);border-radius:50%;animation:lss-spin .8s linear infinite;}'
       + '.lss-rsteps{list-style:none;margin:.4rem 0 0;padding:0;display:inline-block;text-align:left;}'
       + '.lss-rsteps li{font-size:.8rem;color:var(--t2,#C7BFA8);margin:.2rem 0;}'
@@ -946,6 +1102,66 @@
         doSearch(term);
       });
     });
+    // UX-07: every failure state offers a next action, so each one has to
+    // actually do something. Wired here (not at mount) because the state block
+    // is re-rendered into the output area on every request.
+    o.querySelectorAll('[data-lss-recover]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        runRecovery(btn.getAttribute('data-lss-recover'));
+      });
+    });
+  }
+
+  /** Perform the recovery action a failure state offered. */
+  function runRecovery(act) {
+    var lang = lssLang();
+    if (act === 'manual-only') {
+      // Statute lookup is unavailable, so move to the research tab, which is
+      // grounded on manuals and does not depend on the law API.
+      setTab('research');
+      focusInput('[data-lss-rinput]');
+      return;
+    }
+    if (act === 'lower-depth') {
+      // Deep research is what timed out; standard depth runs fewer lookups.
+      state.researchDepth = 'basic';
+      state.depthManual = true;
+      syncDepthUI();
+      if (state.lastResearch) doResearch(state.lastResearch);
+      return;
+    }
+    if (act === 'reword') {
+      focusInput(state.kind === 'research' ? '[data-lss-rinput]' : '[data-lss-input]', true);
+      return;
+    }
+    if (act === 'show-laws' || act === 'open-original') {
+      // Both land on the statute tab: its cards carry the official law.go.kr
+      // links, which is where "open the original" actually goes.
+      setTab('laws');
+      var q = state.lastQuery || state.lastResearch;
+      if (q) doSearch(q);
+      return;
+    }
+    if (act === 'show-sources') {
+      // The summary failed but the retrieved sources are intact — re-render
+      // the research result with synthesis off instead of discarding it.
+      state.useSynthesis = false;
+      syncSynthToggle();
+      if (state.lastResearchJson) setOut(buildResearchHtml(state.lastResearchJson, lang));
+      else if (state.lastResearch) doResearch(state.lastResearch);
+      return;
+    }
+    if (act === 'show-1345') {
+      setOut(stateBlock('☎️', S('official1345Title', lang), S('official1345Body', lang),
+        null, 'official-1345'));
+    }
+  }
+
+  function focusInput(selector, select) {
+    var el = root && root.querySelector(selector);
+    if (!el) return;
+    el.focus();
+    if (select && typeof el.select === 'function') el.select();
   }
 
   function doSearch(query) {
@@ -964,7 +1180,7 @@
       .then(function (json) {
         // Ignore a stale response if the user moved on to a newer query.
         if (state.lastQuery !== q) return;
-        var c = classifyResponse(json);
+        var c = classifyResponse(json, kind);
         setOut(buildResultsHtml(c.state, kind, c.results, lssLang()));
       })
       .catch(function () {

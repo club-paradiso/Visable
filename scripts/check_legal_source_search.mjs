@@ -77,19 +77,61 @@ section('results state machine');
 ok(L.buildResultsHtml('idle', 'laws', [], 'ko').indexOf(L.S('idleTitle', 'ko')) !== -1, 'idle state renders');
 ok(L.buildResultsHtml('loading', 'precedents', [], 'ko').indexOf('lss-spinner') !== -1, 'loading state renders spinner');
 ok(L.buildResultsHtml('loading', 'precedents', [], 'ko').indexOf(L.S('loadingPrec', 'ko')) !== -1, 'loading precedent label');
-ok(L.buildResultsHtml('missing-key', 'laws', [], 'ko').indexOf('API 설정이 필요합니다') !== -1, 'missing-key state renders');
+ok(L.buildResultsHtml('missing-key', 'laws', [], 'ko').indexOf('법령 API 미설정') !== -1, 'legacy missing-key maps to the not-configured state');
 ok(L.buildResultsHtml('error', 'laws', [], 'ko').indexOf('검색에 실패했습니다') !== -1, 'error state renders');
-ok(L.buildResultsHtml('empty', 'laws', [], 'ko').indexOf('검색 결과가 없습니다') !== -1, 'empty state renders');
-ok(L.buildResultsHtml('results', 'laws', [], 'ko').indexOf('검색 결과가 없습니다') !== -1, 'results with no data falls back to empty');
+ok(L.buildResultsHtml('empty', 'laws', [], 'ko').indexOf('법령 검색 결과 없음') !== -1, 'empty laws → no-result state');
+ok(L.buildResultsHtml('empty', 'precedents', [], 'ko').indexOf('판례 없음') !== -1, 'empty precedents → no-precedent state');
+ok(L.buildResultsHtml('results', 'laws', [], 'ko').indexOf('법령 검색 결과 없음') !== -1, 'results with no data falls back to no-result');
 ok(L.buildResultsHtml('results', 'laws', [{ title: '출입국관리법', sourceUrl: 'https://www.law.go.kr/법령/x' }], 'ko').indexOf('lss-results') !== -1, 'results state renders cards');
+
+section('UX-07 failure states (node 438:37)');
+// Every failure state must offer at least one action the reader can take.
+for (const [name, spec] of Object.entries(L.FAILURE_STATES)) {
+  const html = L.failureStateHtml(name, 'ko');
+  ok(html.indexOf('data-lss-state="' + name + '"') !== -1, `${name} carries its state name`);
+  ok(html.indexOf('data-lss-recover="' + spec.act + '"') !== -1, `${name} offers a recovery action`);
+  ok(html.indexOf('lss-state-title') !== -1 && html.indexOf('lss-state-body') !== -1,
+    `${name} states both what happened and what it means`);
+  const en = L.failureStateHtml(name, 'en');
+  ok(en.indexOf('lss-state-cta') !== -1, `${name} has an English recovery label`);
+}
+ok(Object.keys(L.FAILURE_STATES).length === 7, 'all seven design failure states exist');
+// Distinct causes must not collapse into one state.
+const distinct = new Set(Object.values(L.FAILURE_STATES).map((s) => s.act));
+ok(distinct.size === 7, 'each failure state has its own recovery action');
+
+section('failure reason mapping');
+ok(L.failureStateForReason('not_configured') === 'not-configured', 'not_configured → not-configured');
+ok(L.failureStateForReason('law_api_not_configured') === 'not-configured', 'law_api_not_configured → not-configured');
+ok(L.failureStateForReason('law_api_timeout') === 'timeout', 'law_api_timeout → timeout');
+ok(L.failureStateForReason('law_api_no_results', 'laws') === 'no-result', 'no results (laws) → no-result');
+ok(L.failureStateForReason('law_api_no_results', 'precedents') === 'no-precedent', 'no results (precedents) → no-precedent');
+// An unrecognised reason must NOT be guessed into a specific state — telling a
+// user their query "found nothing" when the cause was a 403 misstates coverage.
+ok(L.failureStateForReason('law_api_http_error') === '', 'http error is not reported as "no result"');
+ok(L.failureStateForReason('law_api_parse_error') === '', 'parse error is not reported as "no result"');
+ok(L.failureStateForReason('') === '', 'empty reason maps to nothing');
 
 section('response classifier');
 ok(L.classifyResponse({ ok: true, results: [1, 2] }).state === 'results', 'ok + results → results');
-ok(L.classifyResponse({ ok: true, results: [] }).state === 'empty', 'ok + no results → empty');
-ok(L.classifyResponse({ ok: false, error: 'LAW_API_OC is not configured' }).state === 'missing-key', 'not-configured error → missing-key');
-ok(L.classifyResponse({ ok: false, reason: 'not_configured' }).state === 'missing-key', 'not_configured reason → missing-key');
+ok(L.classifyResponse({ ok: true, results: [] }, 'laws').state === 'no-result', 'ok + no laws → no-result');
+ok(L.classifyResponse({ ok: true, results: [] }, 'precedents').state === 'no-precedent', 'ok + no precedents → no-precedent');
+ok(L.classifyResponse({ ok: false, error: 'LAW_API_OC is not configured' }).state === 'not-configured', 'not-configured error → not-configured');
+ok(L.classifyResponse({ ok: false, reason: 'not_configured' }).state === 'not-configured', 'not_configured reason → not-configured');
+ok(L.classifyResponse({ ok: false, reason: 'law_api_timeout' }).state === 'timeout', 'timeout reason → timeout state');
 ok(L.classifyResponse({ ok: false, error: 'search_failed' }).state === 'error', 'other failure → error');
 ok(L.classifyResponse(null).state === 'error', 'null → error');
+
+section('research notices sit above results, never replace them');
+const okResult = { ok: true, synthesisStatus: 'deterministic', directEvidenceCount: 2 };
+ok(L.researchNoticeHtml(okResult, 'ko') === '', 'a clean result shows no notice');
+ok(L.researchNoticeHtml({ ...okResult, citationVerification: { failureCount: 1 } }, 'ko')
+  .indexOf('citation-failed') !== -1, 'an unverified citation raises a notice');
+ok(L.researchNoticeHtml({ ...okResult, directEvidenceCount: 0 }, 'ko')
+  .indexOf('no-direct-manual') !== -1, 'no direct manual authority raises a notice');
+ok(L.researchNoticeHtml({ ...okResult, synthesisStatus: 'failed' }, 'ko')
+  .indexOf('ai-failed') !== -1, 'a failed summary raises a notice');
+ok(L.researchNoticeHtml({ ok: false }, 'ko') === '', 'a failed request produces no inline notice');
 
 section('i18n parity + required labels');
 const koKeys = Object.keys(L.STR_KO).sort();
@@ -104,8 +146,8 @@ const required = {
   searchBtn: ['검색', 'Search'],
   viewSource: ['공식 원문 보기', 'View official source'],
   checkOfficial: ['원문 확인 필요', 'Check official text'],
-  emptyTitle: ['검색 결과가 없습니다', 'No results found'],
-  missingKeyTitle: ['API 설정이 필요합니다', 'API configuration required'],
+  stNoResultTitle: ['법령 검색 결과 없음', 'No matching statute found'],
+  stNotConfiguredTitle: ['법령 API 미설정', 'Legal API not configured'],
   loadingLaws: ['법령 검색 중입니다', 'Searching legal sources'],
   loadingPrec: ['판례 검색 중입니다', 'Searching precedents'],
   errorTitle: ['검색에 실패했습니다', 'Search failed']
@@ -182,7 +224,7 @@ const fastResult = { ok: true, depth: 'fast', depthLabel: '빠른 확인', local
 const fastHtml = L.buildResearchHtml(fastResult, 'ko');
 ok(fastHtml.indexOf('리서치 메모') === -1, 'fast render omits the memo title');
 ok(fastHtml.indexOf('위험 신호') === -1, 'fast render omits risk-flag section');
-ok(L.buildResearchHtml({ ok: false, error: 'LAW_API_OC is not configured' }, 'ko').indexOf('API 설정이 필요합니다') !== -1, 'research missing-key → config state');
+ok(L.buildResearchHtml({ ok: false, error: 'LAW_API_OC is not configured' }, 'ko').indexOf('법령 API 미설정') !== -1, 'research not-configured → not-configured state');
 ok(L.buildResearchHtml({ ok: false, error: 'search_failed' }, 'ko').indexOf('검색에 실패했습니다') !== -1, 'research failure → error state');
 
 section('AI synthesis — labels, status badges, synthesis render');

@@ -106,11 +106,13 @@ async function run() {
   ok(!dom.window.__pwned, 'no injected handler executed');
   ok(root.querySelector('.lss-card-title').textContent.indexOf('<img') !== -1, 'malicious title rendered as inert text');
 
-  // missing-key envelope → config state
+  // not-configured envelope → the UX-07 not-configured state, with its action
   nextResponse = { ok: false, error: 'LAW_API_OC is not configured', reason: 'not_configured', results: [] };
   L.doSearch('국적법');
   await sleep(25);
-  ok(root.querySelector('[data-lss-out]').textContent.indexOf('API 설정이 필요합니다') !== -1, 'missing-key state rendered');
+  ok(root.querySelector('[data-lss-out]').textContent.indexOf('법령 API 미설정') !== -1, 'not-configured state rendered');
+  ok(root.querySelector('[data-lss-state="not-configured"]') !== null, 'state is machine-identifiable');
+  ok(root.querySelector('[data-lss-recover="manual-only"]') !== null, 'not-configured offers a next action');
 
   // rejected fetch → error state
   nextReject = true;
@@ -119,11 +121,33 @@ async function run() {
   nextReject = false;
   ok(root.querySelector('[data-lss-out]').textContent.indexOf('검색에 실패했습니다') !== -1, 'network error state rendered');
 
-  // empty results → empty state
+  // timeout reason → its own state, not the generic error
+  nextResponse = { ok: false, error: 'search_failed', reason: 'law_api_timeout', results: [] };
+  L.doSearch('출입국관리법');
+  await sleep(25);
+  ok(root.querySelector('[data-lss-state="timeout"]') !== null, 'timeout is distinct from a generic error');
+  ok(root.querySelector('[data-lss-recover="lower-depth"]') !== null, 'timeout offers a lower-depth action');
+
+  // empty results → no-result (not an error), with a reword action
   nextResponse = { ok: true, kind: 'laws', results: [] };
   L.doSearch('존재하지않는zzz');
   await sleep(25);
-  ok(root.querySelector('[data-lss-out]').textContent.indexOf('검색 결과가 없습니다') !== -1, 'empty state rendered');
+  ok(root.querySelector('[data-lss-out]').textContent.indexOf('법령 검색 결과 없음') !== -1, 'empty laws → no-result state');
+  ok(root.querySelector('[data-lss-recover="reword"]') !== null, 'no-result offers a reword action');
+  // A search that found nothing must not be dressed as a failure.
+  ok(root.querySelector('[data-lss-out]').textContent.indexOf('검색에 실패') === -1,
+    'no-result is not reported as a failure');
+
+  // The recovery action must actually do something: manual-only moves to the
+  // research tab, which does not depend on the law API at all.
+  nextResponse = { ok: false, error: 'LAW_API_OC is not configured', reason: 'not_configured', results: [] };
+  L.doSearch('국적법');
+  await sleep(25);
+  root.querySelector('[data-lss-recover="manual-only"]').dispatchEvent(
+    new dom.window.Event('click', { bubbles: true }));
+  await sleep(10);
+  ok(root.querySelector('[data-lss-tab="research"]').getAttribute('aria-selected') === 'true',
+    'the not-configured action switches to the manual-grounded research tab');
 
   // switching to Precedents tab queries the precedents endpoint
   nextResponse = { ok: true, kind: 'precedents', results: [{ title: '판례', court: '대법원', caseNumber: '2020두1', sourceUrl: 'https://www.law.go.kr/precInfoP.do?precSeq=1' }] };
