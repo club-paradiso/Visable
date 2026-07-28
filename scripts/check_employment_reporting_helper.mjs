@@ -28,6 +28,20 @@ has('취업정보 신고용 직종·업종 찾기', 'header title microcopy miss
 has('HiKorea 신고 전에 내 일과 사업장 분야를 미리 정리', 'hero subtitle missing');
 has('기준: KSCO8 · KSIC11', 'trust badge missing');
 has('최종 신고 전 HiKorea에서 재확인', 'caution badge missing');
+// UX-08 (442:99) "신고 대상 ≠ 취업 가능 — AMBER 경고 필수". A reporting code is
+// not a work permission; conflating the two is the most consequential
+// misreading this tool can produce, so the warning is asserted structurally and
+// must be present for EVERY input, not only legally sensitive ones.
+has('id="jcScopeWarn"', 'reportable-is-not-permitted warning element missing');
+has('jobCodeScopeWarning', 'scope warning is not i18n-bound');
+ok(!/id="jcScopeWarn"[^>]*\shidden/.test(html),
+  'the scope warning must not be hidden by default');
+ok(/class="jc2-scope-warn"/.test(html), 'scope warning missing its amber styling hook');
+const koScope = ko.jobCodeScopeWarning || '';
+ok(koScope.includes('신고 대상') || koScope.includes('취업이 허용'),
+  'KO scope warning does not actually distinguish reporting from permission');
+ok(/1345|하이코리아|출입국/.test(koScope),
+  'KO scope warning does not point at an official channel');
 // guided checklist (dynamic; copy lives in scripts/employment_checklist.mjs) +
 // plain-language pane labels before the official classification terms
 has('id="jcChecklist"', 'guided checklist container missing');

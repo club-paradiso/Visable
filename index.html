@@ -865,6 +865,17 @@ body.searched .ft { opacity: 1; }
 .jc2-badge { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.74rem; font-weight: 700; padding: 0.32rem 0.65rem; border-radius: var(--radius-full); border: 1px solid var(--bd); }
 .jc2-badge--trust { background: var(--acL); color: var(--ac2); border-color: var(--ac); }
 .jc2-badge--caution { background: color-mix(in srgb, var(--color-warning) 14%, var(--bg1)); color: var(--color-warning); border-color: color-mix(in srgb, var(--color-warning) 42%, var(--bd)); }
+/* UX-08 (442:99): "신고 대상 ≠ 취업 가능" — amber, always visible, never
+   dismissible. A reporting code is not a work permission. */
+.jc2-scope-warn {
+  margin: var(--sp-3) 0 0; padding: 0.7rem 0.85rem;
+  border: 1px solid color-mix(in srgb, var(--color-warning) 42%, var(--bd));
+  border-left-width: 4px;
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--color-warning) 10%, var(--bg1));
+  color: var(--t2); font-size: 0.82rem; line-height: 1.55;
+  word-break: keep-all; overflow-wrap: anywhere;
+}
 
 /* Guided checklist — 직종 → 업종 → 연간소득 → 하이코리아 최종 확인 */
 .jc2-checklist { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr; gap: var(--sp-2); }
@@ -14879,6 +14890,13 @@ body[data-theme="dark"] .us-ev-state.is-unavailable { background: color-mix(in s
                     <span class="jc2-badge jc2-badge--caution" id="jcBadgeCaution" data-i18n="jobCodeBadgeCaution">⚠ 최종 신고 전 HiKorea에서 재확인</span>
                 </div>
                 <p class="jc2-hero-sub" id="jcHeroSub" data-i18n="jobCodeHeroSub" hidden>HiKorea 신고 전에 내 일과 사업장 분야를 미리 정리해보세요.</p>
+                <!-- UX-08 `Annotation / Employment` (node 442:99): "신고 대상 ≠ 취업
+                     가능 — AMBER 경고 필수". Finding a code tells you how to
+                     *report* work, never that the work is permitted for your
+                     status. That needs 체류자격외활동허가 or an equivalent, which
+                     this tool does not assess. Shown always, not only for
+                     legally sensitive inputs. -->
+                <p class="jc2-scope-warn" id="jcScopeWarn" role="note" data-i18n="jobCodeScopeWarning">⚠ 코드를 찾았다고 해서 그 일을 할 수 있다는 뜻은 아니에요. 신고 대상인지와 취업이 허용되는지는 서로 다른 문제이며, 체류자격에 따라 별도 허가가 필요할 수 있어요. 반드시 관할 출입국·외국인관서나 1345에서 확인하세요.</p>
             </div>
 
             <!-- 3 · Search panel -->
