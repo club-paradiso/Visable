@@ -100,6 +100,33 @@ ok(Object.keys(L.FAILURE_STATES).length === 7, 'all seven design failure states 
 const distinct = new Set(Object.values(L.FAILURE_STATES).map((s) => s.act));
 ok(distinct.size === 7, 'each failure state has its own recovery action');
 
+section('UX-07 Legal / Progress (node 435:8)');
+{
+  const ko = L.buildResearchProgressHtml({ lang: 'ko', includePrecedents: true, elapsedMs: 0 });
+  ok((ko.match(/lss-prog-step/g) || []).length === 6, 'six steps rendered');
+  ok(L.RESEARCH_STEPS.length === 6, 'six steps defined');
+  // The endpoint has no progress stream, so the client cannot know what a step
+  // found while it is running. Claiming otherwise would invent findings.
+  ok(!/찾았어요|건을 찾/.test(ko), 'progress must not claim per-step findings');
+  ok(!/✓/.test(ko), 'progress must not mark steps complete');
+  ok(ko.includes('예정'), 'steps are labelled as planned');
+  ok(ko.includes('마지막 단계에서'), 'states that citations are verified at the end');
+
+  // The skipped step IS real — it comes from the client's own option.
+  const skipped = L.buildResearchProgressHtml({ lang: 'ko', includePrecedents: false, elapsedMs: 0 });
+  ok(skipped.includes('data-lss-step-skipped="1"'), 'precedent step marked skipped when the option is off');
+  ok(skipped.includes('건너뜀'), 'skipped step labelled');
+  ok(skipped.includes('판례 포함'), 'skipped step explains how to turn it back on');
+  ok(!ko.includes('data-lss-step-skipped'), 'nothing is skipped when precedents are included');
+
+  // Elapsed time is measured, so it is shown.
+  ok(/경과 12초/.test(L.buildResearchProgressHtml({ lang: 'ko', includePrecedents: true, elapsedMs: 12400 })),
+    'elapsed seconds rendered from the measured value');
+  const en = L.buildResearchProgressHtml({ lang: 'en', includePrecedents: false, elapsedMs: 0 });
+  ok(en.includes('Skipped') && en.includes('Planned'), 'EN progress labels present');
+  ok((en.match(/lss-prog-step/g) || []).length === 6, 'EN renders six steps too');
+}
+
 section('failure reason mapping');
 ok(L.failureStateForReason('not_configured') === 'not-configured', 'not_configured → not-configured');
 ok(L.failureStateForReason('law_api_not_configured') === 'not-configured', 'law_api_not_configured → not-configured');

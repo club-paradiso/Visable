@@ -119,6 +119,20 @@
     secLimits: '한계',
     applyNote: '아래 근거를 본인 사실관계에 직접 대입해 확인하세요. 이 정리는 결론이 아닙니다.',
     proSteps: ['쟁점 추출 중', '법령 검색 중', '판례 검색 중', '공식자료 대조 중', '리서치 메모 작성 중'],
+    progTitle: '리서치 중이에요',
+    progSub: '아래 순서로 확인해요.',
+    progStep1: '쟁점 파악',
+    progStep2: '매뉴얼 확인',
+    progStep3: '법령 검색',
+    progStep4: '판례 검색',
+    progStep5: '인용 검증',
+    progStep6: '리서치 메모 생성',
+    progPlanned: '예정',
+    progSkipped: '건너뜀',
+    progSkippedWhy: '‘판례 포함’이 꺼져 있어 이 단계는 건너뛰어요. 켜면 다시 확인해요.',
+    progElapsed: '경과 %s초',
+    progCitationNote: '인용은 마지막 단계에서 한 번에 검증해요.',
+    progNoLiveDetail: '단계별 결과는 완료 후에 함께 보여드려요.',
     synthToggle: 'AI 리서치 요약 사용',
     badgeStandard: '기본 리서치 결과',
     badgeAI: 'AI 리서치 요약',
@@ -225,6 +239,20 @@
     secLimits: 'Limitations',
     applyNote: 'Apply the sources below to your own facts and verify. This is not a conclusion.',
     proSteps: ['Spotting issues', 'Searching laws', 'Searching precedents', 'Cross-checking official materials', 'Drafting research memo'],
+    progTitle: 'Researching',
+    progSub: 'We check these in order.',
+    progStep1: 'Identify the issues',
+    progStep2: 'Check the manuals',
+    progStep3: 'Search statutes',
+    progStep4: 'Search precedents',
+    progStep5: 'Verify citations',
+    progStep6: 'Draft the research memo',
+    progPlanned: 'Planned',
+    progSkipped: 'Skipped',
+    progSkippedWhy: '"Include precedents" is off, so this step is skipped. Turn it on to include it.',
+    progElapsed: '%ss elapsed',
+    progCitationNote: 'Citations are verified once, at the final step.',
+    progNoLiveDetail: 'Per-step results are shown together once the run finishes.',
     synthToggle: 'Use AI research synthesis',
     badgeStandard: 'Standard research result',
     badgeAI: 'AI research synthesis',
@@ -848,6 +876,61 @@
       + '</div>';
   }
 
+  /* ------------- UX-07 Legal / Progress (node 435:8) ---------------------
+   * A six-step indicator for a wait that can run tens of seconds.
+   *
+   * The design shows per-step findings ("근거 2건을 찾았어요 · 11초").
+   * `/api/legal/research` is a single request with no progress stream, so the
+   * client cannot know what any step found while it is in flight. Rendering
+   * those lines would be inventing findings, which is the one thing this
+   * codebase must not do — so the steps are shown as the *planned sequence*
+   * and labelled `예정`, never as completed with results.
+   *
+   * What IS real here and therefore shown:
+   *   - the step list and its order (fixed by the pipeline);
+   *   - which step is skipped, from the client's own includePrecedents flag;
+   *   - elapsed time, measured.
+   *
+   * Per-step findings need the endpoint to emit progress events, the way
+   * /ai-overview/stream does. Until then the honest surface is a plan.
+   */
+  var RESEARCH_STEPS = ['progStep1', 'progStep2', 'progStep3', 'progStep4', 'progStep5', 'progStep6'];
+  var PRECEDENT_STEP_INDEX = 3;
+
+  function buildResearchProgressHtml(opts) {
+    var o = opts || {};
+    var lang = o.lang || 'ko';
+    var skipPrecedents = o.includePrecedents === false;
+    var seconds = Math.max(0, Math.round((o.elapsedMs || 0) / 1000));
+
+    var items = RESEARCH_STEPS.map(function (key, i) {
+      var skipped = skipPrecedents && i === PRECEDENT_STEP_INDEX;
+      var note = skipped ? S('progSkipped', lang) : S('progPlanned', lang);
+      return '<li class="lss-prog-step' + (skipped ? ' is-skipped' : '') + '"' +
+        ' data-lss-step="' + (i + 1) + '"' + (skipped ? ' data-lss-step-skipped="1"' : '') + '>' +
+        '<span class="lss-prog-n" aria-hidden="true">' + (skipped ? '—' : (i + 1)) + '</span>' +
+        '<span class="lss-prog-label">' + escapeHtml(S(key, lang)) + '</span>' +
+        '<span class="lss-prog-note">' + escapeHtml(note) + '</span>' +
+        '</li>';
+    }).join('');
+
+    return '<div class="lss-state lss-loading lss-prog" aria-busy="true" data-lss-progress="1">' +
+      '<div class="lss-spinner" aria-hidden="true"></div>' +
+      '<p class="lss-state-title">' + escapeHtml(S('progTitle', lang)) + '</p>' +
+      '<p class="lss-state-body">' + escapeHtml(S('progSub', lang)) + '</p>' +
+      '<ol class="lss-prog-list">' + items + '</ol>' +
+      (skipPrecedents
+        ? '<p class="lss-prog-skip-why">' + escapeHtml(S('progSkippedWhy', lang)) + '</p>'
+        : '') +
+      '<p class="lss-prog-meta">' +
+      '<span class="lss-prog-elapsed" data-lss-elapsed>' +
+      escapeHtml(S('progElapsed', lang).replace('%s', String(seconds))) + '</span>' +
+      '</p>' +
+      '<p class="lss-prog-note-cite">' + escapeHtml(S('progCitationNote', lang)) + '</p>' +
+      '<p class="lss-prog-note-cite">' + escapeHtml(S('progNoLiveDetail', lang)) + '</p>' +
+      '</div>';
+  }
+
   /* --------------------------------------------------------- public API --- */
   var api = {
     escapeHtml: escapeHtml,
@@ -857,6 +940,8 @@
     buildResultsHtml: buildResultsHtml,
     classifyResponse: classifyResponse,
     failureStateHtml: failureStateHtml,
+    buildResearchProgressHtml: buildResearchProgressHtml,
+    RESEARCH_STEPS: RESEARCH_STEPS,
     failureStateForReason: failureStateForReason,
     researchNoticeHtml: researchNoticeHtml,
     FAILURE_STATES: FAILURE_STATES,
@@ -1037,6 +1122,19 @@
       + '.lss-state[data-lss-state="no-direct-manual"]{text-align:left;padding:.9rem 1rem;'
       + 'border:1px solid var(--bd2,#224A41);border-radius:12px;margin:0 0 .7rem;}'
       + '.lss-spinner{width:30px;height:30px;margin:.2rem auto .5rem;border:3px solid var(--bd,#2D5A50);border-top-color:var(--ac,#34D4A8);border-radius:50%;animation:lss-spin .8s linear infinite;}'
+      // UX-07 Legal / Progress (435:8). Steps read as a plan, not a scoreboard:
+      // no tick marks, because we do not know what any step found while the
+      // single request is in flight.
+      + '.lss-prog-list{list-style:none;margin:.7rem 0 0;padding:0;display:flex;flex-direction:column;gap:.3rem;text-align:left;}'
+      + '.lss-prog-step{display:flex;align-items:center;gap:.55rem;font-size:.82rem;color:var(--t1,#F3EEDF);}'
+      + '.lss-prog-n{flex:none;width:1.35rem;height:1.35rem;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;'
+      + 'font-size:.72rem;font-weight:750;border:1px solid var(--bd2,#224A41);color:var(--t2,#C7BFA8);}'
+      + '.lss-prog-label{flex:1;min-width:0;}'
+      + '.lss-prog-note{flex:none;font-size:.74rem;color:var(--t3,#8C8572);}'
+      + '.lss-prog-step.is-skipped .lss-prog-label,.lss-prog-step.is-skipped .lss-prog-note{opacity:.6;text-decoration:line-through;}'
+      + '.lss-prog-step.is-skipped .lss-prog-n{border-style:dashed;}'
+      + '.lss-prog-skip-why,.lss-prog-note-cite{margin:.5rem 0 0;font-size:.74rem;line-height:1.5;color:var(--t3,#8C8572);}'
+      + '.lss-prog-meta{margin:.6rem 0 0;font-size:.76rem;color:var(--t2,#C7BFA8);font-variant-numeric:tabular-nums;}'
       + '.lss-rsteps{list-style:none;margin:.4rem 0 0;padding:0;display:inline-block;text-align:left;}'
       + '.lss-rsteps li{font-size:.8rem;color:var(--t2,#C7BFA8);margin:.2rem 0;}'
       + '.lss-rsteps li::before{content:"· ";color:var(--ac,#34D4A8);}'
@@ -1227,6 +1325,22 @@
       + '<p class="lss-state-body">' + escapeHtml(S('researchIdleBody', lang)) + '</p></div>';
   }
 
+  // Elapsed time is the only live number we honestly have, so it is the only
+  // thing that ticks.
+  var _progTimer = null;
+  function startProgressTimer(startedAt, lang) {
+    stopProgressTimer();
+    _progTimer = setInterval(function () {
+      var el = root && root.querySelector('[data-lss-elapsed]');
+      if (!el) { stopProgressTimer(); return; }
+      var secs = Math.max(0, Math.round((Date.now() - startedAt) / 1000));
+      el.textContent = S('progElapsed', lang).replace('%s', String(secs));
+    }, 1000);
+  }
+  function stopProgressTimer() {
+    if (_progTimer) { clearInterval(_progTimer); _progTimer = null; }
+  }
+
   function doResearch(question) {
     var q = String(question == null ? '' : question).trim().slice(0, 800);
     if (!q) return;
@@ -1236,12 +1350,13 @@
     // staged work so the wait is legible (§8).
     var effectiveDepth = state.depthManual ? state.researchDepth : clientAutoDepth(q);
     // Surface the staged work so the wait is legible and trustworthy (§2/§8).
-    var steps = (effectiveDepth === 'pro') ? (S('proSteps', lang) || []) : (S('basicSteps', lang) || []);
-    var stepsHtml = steps.length
-      ? '<ul class="lss-rsteps">' + steps.map(function (s) { return '<li>' + escapeHtml(s) + '</li>'; }).join('') + '</ul>'
-      : '';
-    setOut('<div class="lss-state lss-loading" aria-busy="true"><div class="lss-spinner" aria-hidden="true"></div>'
-      + '<p class="lss-state-title">' + escapeHtml(S('researchLoading', lang)) + '</p>' + stepsHtml + '</div>');
+    var startedAt = Date.now();
+    setOut(buildResearchProgressHtml({
+      lang: lang,
+      includePrecedents: !!state.includePrecedents,
+      elapsedMs: 0
+    }));
+    startProgressTimer(startedAt, lang);
     var payload = { question: q, locale: lang, includePrecedents: !!state.includePrecedents };
     // Only pin depth when the user manually chose one; otherwise let the backend
     // auto-select and reflect its choice back into the selector.
@@ -1254,6 +1369,7 @@
     })
       .then(function (r) { return r.json().catch(function () { return null; }); })
       .then(function (json) {
+        stopProgressTimer();
         if (state.lastResearch !== q) return;
         state.lastResearchJson = json;
         if (json && json.ok && !state.depthManual && json.depth) { state.researchDepth = json.depth; syncDepthUI(); }
@@ -1265,6 +1381,7 @@
         setOut(buildResearchHtml(json, lssLang()));
       })
       .catch(function () {
+        stopProgressTimer();
         if (state.lastResearch !== q) return;
         setOut(buildResearchHtml({ ok: false, error: 'search_failed' }, lssLang()));
       });
