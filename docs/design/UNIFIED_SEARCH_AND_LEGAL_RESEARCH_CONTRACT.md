@@ -221,6 +221,49 @@ The HiKorea confirmation step. The HiKorea row can never render as complete.
 
 ---
 
+### 3.11 `Legal / Progress` (S3) — what the client may honestly claim
+
+UX-07 `Legal / Progress` (node `435:8`) shows per-step findings —
+"매뉴얼 확인 ✓ 체류매뉴얼에서 근거 2건을 찾았어요 · 11초".
+
+`POST /api/legal/research` is a **single request with no progress stream**, so
+while it is in flight the client cannot know what any step found. Rendering
+those lines would be inventing findings. The implemented component therefore
+shows the steps as the *planned sequence*, labelled `예정`, and never ticks one.
+
+Real, and therefore shown:
+
+| Signal | Why it is real |
+| --- | --- |
+| step list and order | fixed by the pipeline |
+| skipped precedent step | the client owns `includePrecedents` |
+| elapsed seconds | measured locally |
+
+**To complete this component**, `/api/legal/research` needs to emit progress
+events the way `/api/search/unified/ai-overview/stream` already does — a
+`step` event per stage carrying `{index, status, foundCount, elapsedMs}`. Until
+then, a plan is the honest surface and a scoreboard is not.
+
+### 3.12 `Emp / Special States` (S4)
+
+Ten states (node `442:39`), each with exactly one next action. All are derived
+in `buildSpecialStates()` from signals the analyzer already emitted — it
+re-reads nothing, so a state cannot contradict the extraction it describes.
+
+Two rules the copy must not break, both from the annotation (`442:99`):
+
+- **민감 직종은 가치판단·합법성 단정 금지 → 관할 확인 안내만.** These states say a
+  separate permit or licence *may* apply and name the office. They never say an
+  activity is legal or illegal. Asserted by the check.
+- **신고 대상 ≠ 취업 가능.** Finding a code is never a work permission; the amber
+  warning is unconditional, not limited to legally sensitive inputs.
+
+All applicable states render, not just the highest-priority one: they are
+independent facts about one input, and a trainee in an entertainment role
+genuinely is both.
+
+---
+
 ## 4. Data contract
 
 `POST /api/search/unified` → organic, deterministic, no AI, no outbound HTTP:
