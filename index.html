@@ -873,6 +873,39 @@ body.searched .ft { opacity: 1; }
 .jc2-badge { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.74rem; font-weight: 700; padding: 0.32rem 0.65rem; border-radius: var(--radius-full); border: 1px solid var(--bd); }
 .jc2-badge--trust { background: var(--acL); color: var(--ac2); border-color: var(--ac); }
 .jc2-badge--caution { background: color-mix(in srgb, var(--color-warning) 14%, var(--bg1)); color: var(--color-warning); border-color: color-mix(in srgb, var(--color-warning) 42%, var(--bd)); }
+/* UX-08 `Emp / Special States` (442:39). Advisory, not alarming: these are
+   "worth checking", not failures — so neutral surface with a per-item accent,
+   and each row carries its own next action. */
+.jc2-special { margin: var(--sp-3) 0 0; }
+.jc2-special[hidden] { display: none; }
+.jc2-special-h { margin: 0 0 var(--sp-2); font-size: 0.78rem; font-weight: 800; letter-spacing: 0.02em; color: var(--t3); }
+.jc2-special-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--sp-2); }
+.jc2-special-item {
+  display: flex; align-items: flex-start; gap: var(--sp-3);
+  padding: 0.7rem 0.85rem;
+  border: 1px solid var(--bd2); border-left: 3px solid var(--ac);
+  border-radius: var(--radius-md); background: var(--bg1);
+}
+/* Legally sensitive and arts/entertainment take the caution accent — they point
+   at an office rather than at a candidate list. */
+.jc2-special-item[data-jc-special="legally_sensitive"],
+.jc2-special-item[data-jc-special="arts_entertainment"] { border-left-color: var(--color-warning); }
+.jc2-special-ic { font-size: 1rem; line-height: 1.4; flex: none; }
+.jc2-special-tx { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; flex: 1; }
+.jc2-special-title { font-size: 0.85rem; font-weight: 750; color: var(--t1); word-break: keep-all; }
+.jc2-special-body { font-size: 0.78rem; line-height: 1.5; color: var(--t2); word-break: keep-all; overflow-wrap: anywhere; }
+.jc2-special-cta {
+  flex: none; align-self: center; padding: 0.35rem 0.7rem;
+  border: 1px solid var(--ac); border-radius: var(--radius-full);
+  background: transparent; color: var(--ac);
+  font-size: 0.76rem; font-weight: 750; cursor: pointer; font-family: inherit; white-space: nowrap;
+}
+.jc2-special-cta:hover, .jc2-special-cta:focus-visible { background: var(--ac); color: var(--bg1); }
+@media (max-width: 560px) {
+  .jc2-special-item { flex-wrap: wrap; }
+  .jc2-special-cta { align-self: flex-start; margin-left: calc(1rem + var(--sp-3)); }
+}
+
 /* UX-08 (442:99): "신고 대상 ≠ 취업 가능" — amber, always visible, never
    dismissible. A reporting code is not a work permission. */
 .jc2-scope-warn {
@@ -15059,6 +15092,12 @@ body[data-theme="dark"] .us-ev-state.is-lifecycle-ambiguous { color: var(--us-am
                  held behind it so only one action shows at a time. Rendered by JS. -->
             <div id="jcResultsGate" class="jc2-gate" role="status" hidden></div>
 
+            <!-- 4.0b · UX-08 `Emp / Special States` (442:39). Ten states where the
+                 classification is ambiguous or the situation is legally sensitive.
+                 Each carries one next action — "분류가 애매하거나 민감한 경우에도
+                 다음 행동을 안내해요". Rendered by renderEmploymentSpecialStates(). -->
+            <div id="jcSpecialStates" class="jc2-special" role="status" aria-live="polite" hidden></div>
+
             <!-- 4 · Results (Step 4: candidates, shown after interpretation/clarification) -->
             <div class="jc2-results" id="jcResults">
                 <section class="jc2-pane" data-pane="occupation">
@@ -16968,6 +17007,106 @@ function jcApplyFlow() {
         }
     }
 }
+/* UX-08 `Emp / Special States` (node 442:39).
+   Renders the states buildSpecialStates() derived, each with the one next
+   action the design specifies. Ordered by the design; all applicable states
+   show, because they are independent facts about the same input (a trainee in
+   an entertainment role is genuinely both).
+
+   The sensitive-occupation copy states that a permit or licence MAY apply and
+   points at the competent office. It never says an activity is legal or
+   illegal — 가치판단·합법성 단정 금지 (442:99). */
+const JC_SPECIAL_ICON = {
+    no_official_code: '🔍', broad_indirect_match: '🧭', freelancer: '📄',
+    self_employed: '🏢', trainee: '🎓', arts_entertainment: '🎭',
+    legally_sensitive: '⚖️', mixed_language: '🌐', low_confidence: '❓',
+    source_unverifiable: '🔗'
+};
+const JC_SPECIAL_I18N = {
+    no_official_code: 'NoOfficialCode', broad_indirect_match: 'BroadMatch',
+    freelancer: 'Freelancer', self_employed: 'SelfEmployed', trainee: 'Trainee',
+    arts_entertainment: 'Arts', legally_sensitive: 'Sensitive',
+    mixed_language: 'MixedLang', low_confidence: 'LowConfidence',
+    source_unverifiable: 'SourceUnverifiable'
+};
+function renderEmploymentSpecialStates(analysis) {
+    const el = document.getElementById('jcSpecialStates');
+    if (!el) return;
+    const states = (analysis && Array.isArray(analysis.specialStates)) ? analysis.specialStates : [];
+    if (!states.length) { el.hidden = true; el.innerHTML = ''; return; }
+    const items = states.map((st) => {
+        const key = JC_SPECIAL_I18N[st.id];
+        if (!key) return '';
+        return `<li class="jc2-special-item" data-jc-special="${escapeHtml(st.id)}">`
+            + `<span class="jc2-special-ic" aria-hidden="true">${JC_SPECIAL_ICON[st.id] || 'ℹ️'}</span>`
+            + `<span class="jc2-special-tx">`
+            + `<span class="jc2-special-title">${escapeHtml(tx('empSt' + key + 'Title'))}</span>`
+            + `<span class="jc2-special-body">${escapeHtml(tx('empSt' + key + 'Body'))}</span>`
+            + `</span>`
+            + `<button type="button" class="jc2-special-cta" data-jc-special-action="${escapeHtml(st.action)}">`
+            + `${escapeHtml(tx('empSt' + key + 'Cta'))} →</button>`
+            + `</li>`;
+    }).filter(Boolean).join('');
+    if (!items) { el.hidden = true; el.innerHTML = ''; return; }
+    el.innerHTML = `<p class="jc2-special-h">${escapeHtml(tx('empSpecialStatesLabel'))}</p>`
+        + `<ul class="jc2-special-list">${items}</ul>`;
+    el.hidden = false;
+    el.querySelectorAll('[data-jc-special-action]').forEach((btn) => {
+        btn.onclick = () => runEmploymentSpecialAction(btn.getAttribute('data-jc-special-action'));
+    });
+}
+
+/* Every state's next action does something concrete. None of them assert a
+   determination — they move the user toward the input or the office that can
+   settle the question. */
+function runEmploymentSpecialAction(action) {
+    const input = document.getElementById('jcInput');
+    const focusInput = (select) => {
+        if (!input) return;
+        input.focus();
+        if (select && typeof input.select === 'function') input.select();
+    };
+    switch (action) {
+        case 'show_nearest':
+        case 'verify_by_code':
+            // Candidates are the nearest thing we have; reveal and scroll to them.
+            _jcFlow.revealed = true; jcApplyFlow();
+            { const r = document.getElementById('jcResults'); if (r) r.scrollIntoView({ block: 'nearest' }); }
+            return;
+        case 'pick_main_task':
+        case 'answer_followup':
+            // Both are answered by the clarification question already on screen.
+            { const r = document.getElementById('jcRefine');
+              if (r && !r.hidden) { r.scrollIntoView({ block: 'nearest' }); return; } }
+            focusInput(true);
+            return;
+        case 'check_contract':
+        case 'check_business_registration':
+            // These turn on facts only the user has; put them back in the box with
+            // the follow-up chips visible so they can add the missing detail.
+            { const c = document.getElementById('jcRefine');
+              if (c && !c.hidden) c.scrollIntoView({ block: 'nearest' }); }
+            focusInput(false);
+            return;
+        case 'show_e6':
+            // E-6 is a real status in visa_data.json — route through normal search.
+            closeModal('jobCodeOverlay');
+            { const q = document.getElementById('q');
+              if (q) { q.value = 'E-6'; const f = document.getElementById('searchForm');
+                if (f) { try { f.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true })); } catch (e) {} } } }
+            return;
+        case 'confirm_with_office':
+            { const fc = document.getElementById('jcFinalCheck');
+              if (fc) { fc.hidden = false; fc.scrollIntoView({ block: 'nearest' }); } }
+            return;
+        case 'rewrite_in_korean':
+            focusInput(true);
+            return;
+        default:
+            focusInput(false);
+    }
+}
+
 function renderEmploymentRefine(analysis) {
     const el = document.getElementById('jcRefine');
     if (!el) return;
@@ -17153,6 +17292,7 @@ async function searchJobcodeWithAI() {
         renderJobcodeSelectedSummary();
         renderEmploymentInterpretation(analysis);
         renderEmploymentRefine(analysis);
+        renderEmploymentSpecialStates(analysis);
         renderEmploymentFollowupChips(analysis);
         renderEmploymentTips(analysis);
         let jobKw = getJobcodeSearchTerms(input, analysis ? analysis.occupationTerms : []);
