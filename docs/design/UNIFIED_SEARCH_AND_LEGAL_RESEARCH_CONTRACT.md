@@ -410,8 +410,37 @@ category chip at 10%.
 
 Code has safety states the design does not: `forbidden` (403 / OC rejected),
 `repealed`, `ambiguous`, `parse_failed`, the unrecognized-code warning, and
-`manual_card`. The evidence card buckets these for display while keeping the
-exact backend state on `data-us-evidence-state`.
+`manual_card`. Each renders in **its own scale** per §3.6 — see below.
+
+#### Evidence badge scales — how §3.6 is enforced in code
+
+An earlier revision of `buildEvidenceCardHtml` collapsed all four scales into a
+single 7-value bucket and documented the collapsing as a feature. That directly
+broke §3.6: `approved` and `verified` rendered as one emerald, `superseded` and
+`repealed` as one coral, and `not_found` and `unavailable` — the pair §3.6 names
+explicitly — as one grey. Keeping the exact state on `data-us-evidence-state`
+did not redeem it; the badge is what a reader sees.
+
+Now `evidenceScale()` files each state under exactly one scale, and
+`evidenceVisualState()` namespaces the value by scale (`approval-approved`,
+`lifecycle-verified`, …) so no CSS rule can span two of them. Each scale carries
+its own **shape** as well as its own colour, so the distinction survives
+monochrome and colour-blind reading:
+
+| Scale | Shape | States |
+| --- | --- | --- |
+| `approval` | filled pill | `approved` `parsed` `needs_review` `draft` `superseded` `rejected` |
+| `lifecycle` | left colour rule | `verified` `repealed` `scheduled` `ambiguous` `not_found` |
+| `lookup` | neutral dashed | `unavailable` `forbidden` `timeout` `parse_failed` |
+| `relevance` | outline chip | `related` `background` `direct` `analogy` |
+
+Every `lookup` state is neutral: failing to reach a source says nothing about
+that source. An unrecognised state resolves to `unknown` rather than borrowing a
+real scale. `check_unified_search.mjs` asserts that no state appears in two
+scales and that no visual value is reused across them.
+
+This was found by cross-checking against PR #548, which formalised the same four
+scales on the Figma side.
 
 The design has one row the backend deliberately cannot produce:
 `Type=RecentQuery`. Search history is client-side only — the backend keeps no
