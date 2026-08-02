@@ -4738,8 +4738,11 @@ body:not(.searched) .figma-footer-actions .figma-footer-btn-secondary {
 
 /* Claude Design landing visual pass */
 body:not(.searched) {
+  /* 마지막 정지점이 #fffaf4 로 하드코딩돼 있어, 다크에서 페이지 하단이 크림색으로
+     밝아지고 그 위의 면책 문구가 흐려졌다. 라이트 값(#FFFCF5)이 사실상 같은
+     --bg1 로 바꿔 테마를 따르게 한다. */
   background:
-    linear-gradient(180deg, var(--p-paper) 0%, var(--p-mint-soft) 48%, #fffaf4 100%) !important;
+    linear-gradient(180deg, var(--p-paper) 0%, var(--p-mint-soft) 48%, var(--bg1) 100%) !important;
 }
 
 body:not(.searched) .hero-container {

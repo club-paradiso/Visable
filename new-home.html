@@ -297,7 +297,9 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
 /* ── Footer ── */
 .nh-footer { padding: 2rem clamp(1rem,4vw,2rem) 3rem; background: var(--bg2); border-top: 1px solid var(--bd2); }
 .nh-footer-inner { max-width: var(--maxw); margin: 0 auto; display: flex; flex-direction: column; gap: 0.8rem; }
-.nh-footer p { margin: 0; font-size: 0.85rem; color: var(--t3); max-width: 80ch; }
+/* 면책 문구다 — --t3 는 다크 푸터(#184B40)에서 2.70:1 로 AA 미달이었다.
+   --t2 는 라이트 6.56:1 / 다크 5.40:1 로 양쪽 통과한다. */
+.nh-footer p { margin: 0; font-size: 0.85rem; color: var(--t2); max-width: 80ch; }
 .nh-footer a { font-weight: 800; text-decoration: none; }
 .nh-footer a:hover { text-decoration: underline; }
 
