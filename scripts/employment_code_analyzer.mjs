@@ -805,6 +805,101 @@ function buildWarnings(input, entities, occCandidates, indCandidates, context) {
   return warnings;
 }
 
+/* ---------------------- UX-08 Emp / Special States (442:39) ----------------
+ * Ten states the flow can land in where the classification is ambiguous or the
+ * situation is legally sensitive. The design's rule is that EVERY one of them
+ * offers at least one next action — "분류가 애매하거나 민감한 경우에도 다음
+ * 행동을 안내해요."
+ *
+ * Every state is derived from a signal the analyzer already produces. Nothing
+ * here inspects the raw text again, so a state can never contradict the
+ * extraction it is describing.
+ *
+ * Two rules the copy must not break, both from the same annotation:
+ *   - 민감 직종은 가치판단·합법성 단정 금지 → 관할 확인 안내만. These states say
+ *     a separate permit or licence *may* apply and point at the office; they
+ *     never say an activity is legal or illegal.
+ *   - 신고 대상 ≠ 취업 가능. Finding a code is never a work permission.
+ * ------------------------------------------------------------------------ */
+const SPECIAL_STATE_SPECS = [
+  {
+    id: 'no_official_code',
+    test: (r) => r.noOfficialCodeFound === true,
+    action: 'show_nearest'
+  },
+  {
+    id: 'broad_indirect_match',
+    // Matched only through a wide umbrella category, so the code is a rough fit.
+    test: (r) => !r.noOfficialCodeFound
+      && (r.ambiguityFlags || []).includes('workplace_without_role'),
+    action: 'pick_main_task'
+  },
+  {
+    id: 'freelancer',
+    test: (r) => (r.extracted && r.extracted.roleStatus) === 'freelancer'
+      || (r.ambiguityQuestions || []).some((q) => q.flag === 'freelancer'),
+    action: 'check_contract'
+  },
+  {
+    id: 'self_employed',
+    // Three signals mean the same thing: the concept table's owner flag, the
+    // extracted role, and the `owner_operator` umbrella question (a 대표 who
+    // also does the work, where neither answer is safe to assume).
+    test: (r) => (r.ambiguityFlags || []).includes('owner_or_self_employed')
+      || (r.extracted && r.extracted.roleStatus) === 'owner'
+      || (r.ambiguityQuestions || []).some((q) => q.flag === 'owner' || q.flag === 'owner_operator'),
+    action: 'check_business_registration'
+  },
+  {
+    id: 'trainee',
+    test: (r) => (r.ambiguityFlags || []).includes('trainee_status_unclear')
+      || (r.extracted && r.extracted.roleStatus) === 'trainee',
+    action: 'check_contract'
+  },
+  {
+    id: 'arts_entertainment',
+    test: (r) => ((r.extracted && r.extracted.legalSensitivity) || []).includes('entertainment'),
+    action: 'show_e6'
+  },
+  {
+    id: 'legally_sensitive',
+    // Any sensitivity that is not the entertainment track (e.g. tattoo work).
+    test: (r) => (((r.extracted && r.extracted.legalSensitivity) || [])
+      .some((s) => s !== 'entertainment')),
+    action: 'confirm_with_office'
+  },
+  {
+    id: 'mixed_language',
+    test: (r) => r.detectedLanguage === 'mixed',
+    action: 'rewrite_in_korean'
+  },
+  {
+    id: 'low_confidence',
+    test: (r) => r.clarificationRequired === true,
+    action: 'answer_followup'
+  },
+  {
+    id: 'source_unverifiable',
+    test: (r) => r.sourceStatus === 'needs_confirmation',
+    action: 'verify_by_code'
+  }
+];
+
+const SPECIAL_STATE_IDS = SPECIAL_STATE_SPECS.map((s) => s.id);
+
+/**
+ * Which special states an analysis result is in, in design order.
+ * Pure: takes the analyzer's own output, returns `{id, action}` records.
+ */
+function buildSpecialStates(result) {
+  if (!result || typeof result !== 'object') return [];
+  return SPECIAL_STATE_SPECS
+    .filter((spec) => {
+      try { return spec.test(result) === true; } catch (e) { return false; }
+    })
+    .map((spec) => ({ id: spec.id, action: spec.action }));
+}
+
 function buildSourceNotes(sources, context) {
   const notes = [];
   if (sources && sources.occupation) {
@@ -873,6 +968,8 @@ function buildLegalNotes(legalSources, sensitivity) {
  *  - context: employment_reporting_context block (target/excluded statuses, etc.)
  * Returns { analyze(input), index } where index is reusable.
  */
+export { buildSpecialStates, SPECIAL_STATE_IDS };
+
 export function createEmploymentAnalyzer(deps = {}) {
   const dataset = deps.data || { data: [] };
   const lexicon = deps.lexicon || { ko: { concepts: [] }, en: { concepts: [] } };
@@ -990,7 +1087,7 @@ export function createEmploymentAnalyzer(deps = {}) {
     // cautionNotes mirrors warnings (spec field name); warnings kept for back-compat.
     const cautionNotes = warnings.slice();
 
-    return {
+    const payload = {
       input: safeInput.text,
       normalizedInput: entities.normalizedInput,
       detectedLanguage: entities.language,
@@ -1040,6 +1137,9 @@ export function createEmploymentAnalyzer(deps = {}) {
       noOfficialCodeFound,
       sourceNotes
     };
+    // Derived last so the specs read the finished result, not a partial one.
+    payload.specialStates = buildSpecialStates(payload);
+    return payload;
   }
 
   return { analyze, index };
