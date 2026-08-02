@@ -13829,19 +13829,61 @@ body[data-theme="dark"] .us-ev-avatar { background: var(--us-accent-soft); }
   padding: 6px 11px; border-radius: 999px;
   font-size: 12px; font-weight: 500; white-space: nowrap;
 }
-/* State colours per the design: verified emerald · needsreview amber ·
-   unavailable grey · superseded coral · scheduled periwinkle. */
-.us-ev-state.is-verified { background: var(--us-accent-soft); color: var(--us-accent); }
-.us-ev-state.is-needsreview { background: #f7edd1; color: #9e730d; }
-.us-ev-state.is-superseded { background: #fbe4dc; color: #b23c17; }
-.us-ev-state.is-scheduled { background: #e5e8fb; color: #4453a6; }
-.us-ev-state.is-unavailable { background: #ececed; color: #6b7280; }
-.us-ev-state.is-related,
-.us-ev-state.is-background { background: var(--us-chip); color: var(--us-muted); border: 1px solid var(--us-line); }
-body[data-theme="dark"] .us-ev-state.is-needsreview { background: color-mix(in srgb, var(--us-amber) 18%, transparent); color: var(--us-amber); }
-body[data-theme="dark"] .us-ev-state.is-superseded { background: color-mix(in srgb, var(--us-coral) 18%, transparent); color: var(--us-coral); }
-body[data-theme="dark"] .us-ev-state.is-scheduled { background: color-mix(in srgb, #8b9cf5 18%, transparent); color: #b3bef8; }
-body[data-theme="dark"] .us-ev-state.is-unavailable { background: color-mix(in srgb, var(--us-muted) 18%, transparent); color: var(--us-muted); }
+/* Four INDEPENDENT scales (contract §3.6) — they must not share one ramp.
+   Each scale gets its own *shape* as well as its own colour, so the scale is
+   readable even in monochrome or by a colour-blind reader:
+     approval  = filled pill          (a human decision)
+     lifecycle = left colour rule     (the law's own state)
+     lookup    = neutral dashed       (our infrastructure, not a judgement)
+     relevance = plain outline chip   (how the evidence relates)
+   `lifecycle-notfound` ("we checked, it is not there") is deliberately NOT
+   styled like `lookup-*` ("we could not check") — different claims. */
+.us-ev-state[data-us-evidence-scale="approval"] {
+  border: 0; font-weight: 700;
+}
+.us-ev-state.is-approval-approved { background: var(--us-accent-soft); color: var(--us-accent); }
+.us-ev-state.is-approval-parsed,
+.us-ev-state.is-approval-needsreview,
+.us-ev-state.is-approval-draft { background: #f7edd1; color: #9e730d; }
+.us-ev-state.is-approval-superseded { background: #ececed; color: #5b616e; }
+.us-ev-state.is-approval-rejected { background: #fbe4dc; color: #b23c17; }
+
+.us-ev-state[data-us-evidence-scale="lifecycle"] {
+  background: transparent; border: 0; border-left: 3px solid currentColor;
+  border-radius: 0; padding-left: 8px; font-weight: 700;
+}
+.us-ev-state.is-lifecycle-verified { color: var(--us-accent); }
+.us-ev-state.is-lifecycle-repealed { color: #b23c17; }
+.us-ev-state.is-lifecycle-scheduled { color: #4453a6; }
+.us-ev-state.is-lifecycle-ambiguous { color: #9e730d; }
+.us-ev-state.is-lifecycle-notfound { color: var(--us-muted); }
+
+/* Every lookup failure is neutral: failing to reach a source says nothing
+   about the source. Dashed marks it as "no reading taken". */
+.us-ev-state[data-us-evidence-scale="lookup"] {
+  background: transparent; border: 1px dashed var(--us-line);
+  color: var(--us-muted); font-weight: 500;
+}
+
+.us-ev-state[data-us-evidence-scale="relevance"],
+.us-ev-state.is-unknown {
+  background: transparent; border: 1px solid var(--us-line);
+  color: var(--us-muted); font-weight: 500;
+}
+body[data-theme="dark"] .us-ev-state.is-approval-parsed,
+body[data-theme="dark"] .us-ev-state.is-approval-needsreview,
+body[data-theme="dark"] .us-ev-state.is-approval-draft {
+  background: color-mix(in srgb, var(--us-amber) 18%, transparent); color: var(--us-amber);
+}
+body[data-theme="dark"] .us-ev-state.is-approval-superseded {
+  background: color-mix(in srgb, var(--us-muted) 18%, transparent); color: var(--us-muted);
+}
+body[data-theme="dark"] .us-ev-state.is-approval-rejected {
+  background: color-mix(in srgb, var(--us-coral) 18%, transparent); color: var(--us-coral);
+}
+body[data-theme="dark"] .us-ev-state.is-lifecycle-repealed { color: var(--us-coral); }
+body[data-theme="dark"] .us-ev-state.is-lifecycle-scheduled { color: #b3bef8; }
+body[data-theme="dark"] .us-ev-state.is-lifecycle-ambiguous { color: var(--us-amber); }
 
 .us-extra { margin-bottom: 0.9rem; }
 .us-card-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.55rem; }

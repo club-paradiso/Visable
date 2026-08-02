@@ -42,6 +42,12 @@ function assert(condition, message) {
   if (!condition) throw new Error(message || 'assertion failed');
 }
 
+function assertNotEqual(actual, unexpected, message) {
+  if (actual === unexpected) {
+    throw new Error(`${message || 'values must differ'} — both were ${JSON.stringify(actual)}`);
+  }
+}
+
 function assertEqual(actual, expected, message) {
   if (actual !== expected) {
     throw new Error(`${message || 'not equal'} — expected ${JSON.stringify(expected)}, got ${JSON.stringify(actual)}`);
@@ -360,59 +366,119 @@ check('review-pending manual cards are labelled, never shown as settled', () => 
     { kind: 'manual_card', title: '체류자격 변경', summary: '…',
       approvalState: 'parsed', usableAsDirectEvidence: false, page: 42 }
   ]);
-  assert(html.includes('is-needsreview'), 'missing the needs-review state');
-  assert(!html.includes('is-verified'), 'unreviewed content must not read as verified');
+  assert(html.includes('is-approval-parsed'), 'missing the needs-review state');
+  assert(!html.includes('is-approval-approved'), 'unreviewed content must not read as approved');
 });
 
-check('approved manual cards read as verified', () => {
+check('approved manual cards read as approved', () => {
   const html = US.buildExtraResultsHtml([
     { kind: 'manual_card', title: 'x', summary: 'y',
       approvalState: 'approved', usableAsDirectEvidence: true }
   ]);
-  assert(html.includes('is-verified'), 'approved content should read as verified');
-  assert(!html.includes('is-needsreview'));
+  assert(html.includes('is-approval-approved'), 'approved content should read as approved');
+  assert(!html.includes('is-approval-parsed'));
 });
 
-/* ------------------------------- Figma UX-03 Source / Evidence Card ------- */
-check('every backend evidence state maps to a visual bucket', () => {
+/* ---------- contract §3.6 — four scales that must not share one ramp ------ */
+check('every backend state is filed under exactly one scale', () => {
   const expected = {
-    approved: 'verified', parsed: 'needsreview', needs_review: 'needsreview',
-    draft: 'needsreview', superseded: 'superseded', rejected: 'unavailable',
-    verified: 'verified', repealed: 'superseded', scheduled: 'scheduled',
-    ambiguous: 'needsreview', not_found: 'unavailable', unavailable: 'unavailable',
-    forbidden: 'unavailable', timeout: 'unavailable', parse_failed: 'unavailable',
-    related: 'related', background: 'background'
+    approved: 'approval', parsed: 'approval', needs_review: 'approval',
+    draft: 'approval', superseded: 'approval', rejected: 'approval',
+    verified: 'lifecycle', repealed: 'lifecycle', scheduled: 'lifecycle',
+    ambiguous: 'lifecycle', not_found: 'lifecycle',
+    unavailable: 'lookup', forbidden: 'lookup', timeout: 'lookup',
+    parse_failed: 'lookup',
+    related: 'relevance', background: 'relevance'
   };
-  for (const [backend, visual] of Object.entries(expected)) {
-    assertEqual(US.evidenceVisualState(backend), visual, `mapping for ${backend}`);
+  for (const [backend, scale] of Object.entries(expected)) {
+    assertEqual(US.evidenceScale(backend), scale, `scale for ${backend}`);
+  }
+  // No state may appear in two scales.
+  const seen = new Map();
+  for (const [scale, members] of Object.entries(US.EVIDENCE_SCALES)) {
+    for (const state of Object.keys(members)) {
+      assert(!seen.has(state), `${state} appears in both ${seen.get(state)} and ${scale}`);
+      seen.set(state, scale);
+    }
   }
 });
 
-check('a repealed statute is never shown as verified', () => {
-  // Coral "superseded" is the design's "no longer the operative authority".
-  assertEqual(US.evidenceVisualState('repealed'), 'superseded');
+check('the four scales never share a visual value', () => {
+  // Namespacing the value by scale is what makes a shared CSS rule impossible.
+  const values = new Set();
+  for (const members of Object.values(US.EVIDENCE_SCALES)) {
+    for (const state of Object.keys(members)) {
+      const v = US.evidenceVisualState(state);
+      assert(!values.has(v), `visual value ${v} is reused across scales`);
+      values.add(v);
+    }
+  }
+});
+
+check('approval "approved" and lifecycle "verified" are not the same badge', () => {
+  // A human signing off on a manual extract and a statute being in force are
+  // different claims about different things.
+  assert(US.evidenceScale('approved') !== US.evidenceScale('verified'));
+  assertNotEqual(US.evidenceVisualState('approved'), US.evidenceVisualState('verified'));
+  const a = US.buildEvidenceCardHtml({ type: 'manual', title: 'x', state: 'approved' });
+  const v = US.buildEvidenceCardHtml({ type: 'statute', title: 'y', state: 'verified' });
+  assert(a.includes('data-us-evidence-scale="approval"'));
+  assert(v.includes('data-us-evidence-scale="lifecycle"'));
+});
+
+check('a repealed statute is not the same badge as a superseded manual', () => {
+  // "No longer law" and "a newer manual exists" are different facts.
+  assert(US.evidenceScale('repealed') !== US.evidenceScale('superseded'));
+  assertNotEqual(US.evidenceVisualState('repealed'), US.evidenceVisualState('superseded'));
   const html = US.buildEvidenceCardHtml({
     type: 'statute', title: '출입국관리법', state: 'repealed' });
-  assert(html.includes('is-superseded'));
-  assert(!html.includes('is-verified'));
+  assert(html.includes('is-lifecycle-repealed'));
+  assert(!html.includes('is-lifecycle-verified'), 'a repealed statute must not read as in force');
 });
 
-check('a lookup failure never reads as "not found"', () => {
+check('"not found" and "could not check" are different claims', () => {
+  // Contract §3.6 names this pair explicitly.
+  assertEqual(US.evidenceScale('not_found'), 'lifecycle');
+  assertEqual(US.evidenceScale('unavailable'), 'lookup');
+  assertNotEqual(US.evidenceVisualState('not_found'), US.evidenceVisualState('unavailable'));
+  assertNotEqual(US.evidenceStateLabel('not_found'), US.evidenceStateLabel('unavailable'));
+});
+
+check('every lookup failure is neutral and stays in its own scale', () => {
   for (const failure of ['forbidden', 'timeout', 'parse_failed', 'unavailable']) {
-    assertEqual(US.evidenceVisualState(failure), 'unavailable', failure);
+    assertEqual(US.evidenceScale(failure), 'lookup', failure);
+    const html = US.buildEvidenceCardHtml({ type: 'statute', title: 'x', state: failure });
+    assert(html.includes('data-us-evidence-scale="lookup"'), failure);
+    // A failed lookup is not a judgement about the source.
+    assert(!html.includes('is-approval-'), `${failure} leaked into the approval scale`);
+    assert(!html.includes('is-lifecycle-'), `${failure} leaked into the lifecycle scale`);
   }
+});
+
+check('each state gets its own words, not a shared bucket label', () => {
+  const labels = new Set();
+  for (const s of ['approved', 'verified', 'superseded', 'repealed', 'not_found',
+                   'unavailable', 'forbidden', 'timeout', 'parse_failed']) {
+    labels.add(US.evidenceStateLabel(s));
+  }
+  assertEqual(labels.size, 9, 'distinct states collapsed onto the same label');
 });
 
 check('the precise backend state is preserved on the element', () => {
   const html = US.buildEvidenceCardHtml({
     type: 'statute', title: '출입국관리법', state: 'forbidden' });
   assert(html.includes('data-us-evidence-state="forbidden"'),
-    'the exact reason must survive the visual bucketing');
+    'the exact reason must survive rendering');
+  assert(html.includes('data-us-evidence-scale="lookup"'), 'the scale must be carried too');
 });
 
-check('an unknown state falls back to related, not verified', () => {
-  assertEqual(US.evidenceVisualState('brand_new_state'), 'related');
-  assertEqual(US.evidenceVisualState(undefined), 'related');
+check('an unknown state is not filed under a scale it may not belong to', () => {
+  assertEqual(US.evidenceScale('brand_new_state'), 'unknown');
+  assertEqual(US.evidenceVisualState('brand_new_state'), 'unknown');
+  assertEqual(US.evidenceVisualState(undefined), 'unknown');
+  const html = US.buildEvidenceCardHtml({ type: 'statute', title: 'x', state: 'brand_new' });
+  assert(!html.includes('is-approval-'), 'unknown state borrowed the approval scale');
+  assert(!html.includes('is-lifecycle-'), 'unknown state borrowed the lifecycle scale');
 });
 
 check('an evidence card with an official URL becomes a safe anchor', () => {

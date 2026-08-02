@@ -78,12 +78,22 @@
       unknownCodeTitle: '확인되지 않은 코드',
       unknownCodeBody: '입력하신 %s 은(는) 저희 데이터에 없는 코드입니다. 오타가 아닌지 확인해 주세요.',
       reviewPending: '검토 필요',
-      evVerified: '확인됨',
+      evApproved: '승인됨',
+      evRejected: '반려됨',
       evSuperseded: '대체됨',
+      evVerified: '현행',
+      evRepealed: '폐지',
       evScheduled: '시행예정',
-      evUnavailable: '조회 불가',
-      evRelated: '관련',
-      evBackground: '배경',
+      evAmbiguous: '해석 불명확',
+      evNotFound: '해당 조문 없음',
+      evUnavailable: '조회하지 못함',
+      evForbidden: '접근 거부됨',
+      evTimeout: '응답 시간 초과',
+      evParseFailed: '해석 실패',
+      evDirect: '직접 근거',
+      evRelated: '관련 근거',
+      evAnalogy: '비교·유추',
+      evBackground: '배경정보',
       reviewPendingHelp: '사람이 원문과 대조·승인하기 전 상태입니다. 확정 내용은 공식 출처에서 확인하세요.',
       officialKorean: '공식 원문 (한국어)',
       confirmOfficial: '최종 확인은 하이코리아 또는 1345에서 하세요.',
@@ -136,11 +146,21 @@
       unknownCodeTitle: 'Unrecognized code',
       unknownCodeBody: '%s is not a code in our dataset. Please check for a typo.',
       reviewPending: 'Needs review',
-      evVerified: 'Verified',
+      evApproved: 'Approved',
+      evRejected: 'Rejected',
       evSuperseded: 'Superseded',
+      evVerified: 'In force',
+      evRepealed: 'Repealed',
       evScheduled: 'Not yet in force',
-      evUnavailable: 'Could not retrieve',
+      evAmbiguous: 'Ambiguous',
+      evNotFound: 'No such provision',
+      evUnavailable: 'Could not check',
+      evForbidden: 'Access denied',
+      evTimeout: 'Timed out',
+      evParseFailed: 'Could not parse',
+      evDirect: 'Direct',
       evRelated: 'Related',
+      evAnalogy: 'By analogy',
       evBackground: 'Background',
       reviewPendingHelp: 'This manual text has not been checked against the original by a human. Confirm with an official source.',
       officialKorean: 'Official text (Korean)',
@@ -442,32 +462,55 @@
    * `repealed` maps onto `superseded`: both mean "no longer the operative
    * authority", which is what the coral treatment communicates.
    */
-  var EVIDENCE_STATE_MAP = {
-    // manual approval states
-    approved: 'verified',
-    parsed: 'needsreview',
-    needs_review: 'needsreview',
-    draft: 'needsreview',
-    superseded: 'superseded',
-    rejected: 'unavailable',
-    // law lifecycle / lookup states
-    verified: 'verified',
-    repealed: 'superseded',
-    scheduled: 'scheduled',
-    ambiguous: 'needsreview',
-    not_found: 'unavailable',
-    unavailable: 'unavailable',
-    forbidden: 'unavailable',
-    timeout: 'unavailable',
-    parse_failed: 'unavailable',
-    // relevance grades
-    related: 'related',
-    background: 'background'
+  /**
+   * Evidence badges are FOUR INDEPENDENT SCALES, not one ramp (contract §3.6).
+   *
+   * Manual approval, law lifecycle, lookup failure and relevance answer
+   * different questions, so they get different visual treatments and never
+   * share a colour ramp. An earlier version of this file collapsed all four
+   * into a single 7-value bucket; that made `approved` (a human signed off)
+   * and `verified` (the statute is in force) the same emerald, and `repealed`
+   * (no longer law) the same coral as `superseded` (a newer manual exists).
+   * Those are different claims about different things.
+   *
+   * The contract also singles out the pair this most affects: `not_found`
+   * ("we checked, it is not there") and `unavailable` ("we could not check")
+   * are different claims and must not look alike. Only the second is a lookup
+   * failure; the first is an answer.
+   *
+   * Lookup failures are ALL neutral — failing to reach a source is an
+   * infrastructure fact, not a judgement about the source's quality.
+   */
+  var EVIDENCE_SCALES = {
+    approval:  { approved: 1, parsed: 1, needs_review: 1, draft: 1, superseded: 1, rejected: 1 },
+    lifecycle: { verified: 1, repealed: 1, scheduled: 1, ambiguous: 1, not_found: 1 },
+    lookup:    { unavailable: 1, forbidden: 1, timeout: 1, parse_failed: 1 },
+    relevance: { related: 1, background: 1, direct: 1, analogy: 1 }
   };
 
+  var EVIDENCE_SCALE_ORDER = ['approval', 'lifecycle', 'lookup', 'relevance'];
+
+  /** Which of the four scales a backend state belongs to. */
+  function evidenceScale(state) {
+    var key = String(state || '').toLowerCase();
+    for (var i = 0; i < EVIDENCE_SCALE_ORDER.length; i++) {
+      var name = EVIDENCE_SCALE_ORDER[i];
+      if (EVIDENCE_SCALES[name][key]) return name;
+    }
+    // An unknown state is not filed under a scale it might not belong to.
+    return 'unknown';
+  }
+
+  /**
+   * The value within its own scale. Values are namespaced by scale so no CSS
+   * rule can accidentally style, say, approval `superseded` and lifecycle
+   * `repealed` with the same declaration.
+   */
   function evidenceVisualState(state) {
     var key = String(state || '').toLowerCase();
-    return EVIDENCE_STATE_MAP[key] || 'related';
+    var scale = evidenceScale(key);
+    if (scale === 'unknown') return 'unknown';
+    return scale + '-' + key.replace(/_/g, '');
   }
 
   // Type avatar initial. Korean single glyph, matching the design's "매" sample.
@@ -476,16 +519,30 @@
     precedent: '판', hikorea: 'H', embassy: '공', structured: 'P', paradiso: 'P'
   };
 
-  function evidenceStateLabel(visual) {
-    switch (visual) {
-      case 'verified': return t('evVerified');
-      case 'needsreview': return t('reviewPending');
-      case 'superseded': return t('evSuperseded');
-      case 'scheduled': return t('evScheduled');
-      case 'unavailable': return t('evUnavailable');
-      case 'background': return t('evBackground');
-      default: return t('evRelated');
-    }
+  /**
+   * Label per state, keyed by the raw backend state rather than a shared
+   * bucket — each scale gets its own words, the same way it gets its own
+   * treatment. `not_found` and `unavailable` read differently on purpose.
+   */
+  var EVIDENCE_STATE_LABEL = {
+    // manual approval
+    approved: 'evApproved', parsed: 'reviewPending', needs_review: 'reviewPending',
+    draft: 'reviewPending', superseded: 'evSuperseded', rejected: 'evRejected',
+    // law lifecycle
+    verified: 'evVerified', repealed: 'evRepealed', scheduled: 'evScheduled',
+    ambiguous: 'evAmbiguous', not_found: 'evNotFound',
+    // lookup failure
+    unavailable: 'evUnavailable', forbidden: 'evForbidden',
+    timeout: 'evTimeout', parse_failed: 'evParseFailed',
+    // relevance
+    related: 'evRelated', background: 'evBackground',
+    direct: 'evDirect', analogy: 'evAnalogy'
+  };
+
+  function evidenceStateLabel(state) {
+    var key = String(state || '').toLowerCase();
+    var strKey = EVIDENCE_STATE_LABEL[key];
+    return strKey ? t(strKey) : t('evRelated');
   }
 
   /**
@@ -499,7 +556,9 @@
     var title = item.title || item.label || '';
     if (!title) return '';
     var type = String(item.type || item.kind || 'manual').toLowerCase();
-    var visual = evidenceVisualState(item.state || item.approvalState);
+    var rawState = String(item.state || item.approvalState || '').toLowerCase();
+    var visual = evidenceVisualState(rawState);
+    var scale = evidenceScale(rawState);
     var url = safeOfficialUrl(item.url);
     var initial = EVIDENCE_TYPE_INITIAL[type] || '·';
 
@@ -510,8 +569,11 @@
         : '') +
       '</span>';
 
-    var chip = '<span class="us-ev-state is-' + escapeHtml(visual) + '">' +
-      escapeHtml(evidenceStateLabel(visual)) + '</span>';
+    // The scale is carried as its own attribute so each of the four gets its
+    // own treatment in CSS and no rule can span two of them.
+    var chip = '<span class="us-ev-state is-' + escapeHtml(visual) +
+      '" data-us-evidence-scale="' + escapeHtml(scale) + '">' +
+      escapeHtml(evidenceStateLabel(rawState)) + '</span>';
 
     var inner =
       '<span class="us-ev-avatar" aria-hidden="true">' + escapeHtml(initial) + '</span>' +
@@ -519,7 +581,7 @@
       (url ? '<span class="us-ev-ext" aria-hidden="true">↗</span>' : '') + '</span>';
 
     var attrs = ' class="us-ev" data-us-evidence-state="' +
-      escapeHtml(String(item.state || item.approvalState || '')) + '"';
+      escapeHtml(rawState) + '" data-us-evidence-scale="' + escapeHtml(scale) + '"';
 
     return url
       ? '<a' + attrs.replace('class="us-ev"', 'class="us-ev us-ev--link"') +
@@ -769,6 +831,9 @@
     buildSourceCardsHtml: buildSourceCardsHtml,
     buildEvidenceCardHtml: buildEvidenceCardHtml,
     evidenceVisualState: evidenceVisualState,
+    evidenceScale: evidenceScale,
+    evidenceStateLabel: evidenceStateLabel,
+    EVIDENCE_SCALES: EVIDENCE_SCALES,
     buildSuggestionsHtml: buildSuggestionsHtml,
     buildSuggestionRowHtml: buildSuggestionRowHtml,
     suggestionBadgeLabel: suggestionBadgeLabel,

@@ -275,13 +275,15 @@ test.describe('interpretation and evidence labelling', () => {
     const card = page.locator('#unifiedSearchLayer .us-ev').first();
     await expect(card).toBeVisible();
     // The visual bucket says "not settled"…
-    await expect(card.locator('.us-ev-state.is-needsreview')).toBeVisible();
+    await expect(card.locator('.us-ev-state.is-approval-parsed')).toBeVisible();
     // …and the exact backend state survives the bucketing.
     await expect(card).toHaveAttribute('data-us-evidence-state', 'parsed');
-    await expect(card.locator('.us-ev-state.is-verified')).toHaveCount(0);
+    await expect(card.locator('.us-ev-state.is-approval-approved')).toHaveCount(0);
+    // Contract §3.6: approval is its own scale.
+    await expect(card.locator('[data-us-evidence-scale="approval"]')).toBeVisible();
   });
 
-  test('a repealed statute is not bucketed with verified evidence', async ({ page }) => {
+  test('a repealed statute is not shown as in force', async ({ page }) => {
     await page.route(UNIFIED, (route) => route.fulfill({
       json: unifiedBody({
         organicResults: [{
@@ -298,8 +300,11 @@ test.describe('interpretation and evidence labelling', () => {
 
     const card = page.locator('#unifiedSearchLayer .us-ev').first();
     await expect(card).toHaveAttribute('data-us-evidence-state', 'repealed');
-    await expect(card.locator('.us-ev-state.is-superseded')).toBeVisible();
-    await expect(card.locator('.us-ev-state.is-verified')).toHaveCount(0);
+    await expect(card.locator('.us-ev-state.is-lifecycle-repealed')).toBeVisible();
+    await expect(card.locator('.us-ev-state.is-lifecycle-verified')).toHaveCount(0);
+    // A repealed statute is a lifecycle fact, not a manual-approval one.
+    await expect(card.locator('[data-us-evidence-scale="lifecycle"]')).toBeVisible();
+    await expect(card.locator('[data-us-evidence-scale="approval"]')).toHaveCount(0);
   });
 
   test('official source links are safe anchors', async ({ page }) => {
