@@ -6226,29 +6226,42 @@ body:not(.searched) #visaManualSection::before {
   border-color: var(--color-primary);
   color: var(--color-primary-ink);
 }
+/* 빈 결과 · 에러 — Figma 91 공통 상태 세트 기준.
+   빈 결과는 실패 통보가 아니라 다음 행동을 안내하는 카드다. 배경 위에 얹히는
+   카드이므로 1px 보더가 필수다(라이트 표면끼리 명도가 가깝다).
+
+   토큰 주의: --color-* 계열은 [data-theme="dark"] 에서 재정의되지 않는다.
+   여기서 --color-surface 를 쓰면 다크에서 밝은 카드가 튀어나온다.
+   테마를 따르는 것은 --bg1/--bd/--t1/--t2/--cy 계열뿐이므로 그쪽을 쓴다. */
 .p-agent-finder__empty,
 .p-agent-finder__error {
   margin: 0;
-  padding: 0.85rem 1rem;
+  padding: 0.9rem 1.05rem;
   font-size: 0.88rem;
-  border-radius: var(--radius-md);
-  background: color-mix(in srgb, var(--color-border) 22%, transparent);
-  color: var(--color-text-muted);
+  line-height: 1.55;
+  border-radius: var(--radius-lg);
+  background: var(--bg1);
+  border: 1px solid color-mix(in srgb, var(--bd) 45%, transparent);
+  color: var(--t2);
 }
+/* 에러는 '확인 필요'(앰버)가 아니라 오류다 — 오류 토큰을 쓴다. */
 .p-agent-finder__error {
-  border-left: 3px solid var(--color-warning);
-  color: var(--color-text);
+  border-left: 3px solid var(--cy);
+  background: color-mix(in srgb, var(--cy) 7%, var(--bg1));
+  color: var(--t1);
 }
 .p-agent-finder[hidden] { display: none; }
 .p-agent-finder [hidden] { display: none !important; }
 .p-agent-finder__prompt,
 .p-agent-finder__loading {
   margin: 0;
-  padding: 0.85rem 1rem;
+  padding: 0.9rem 1.05rem;
   font-size: 0.88rem;
-  border-radius: var(--radius-md);
-  background: color-mix(in srgb, var(--color-border) 22%, transparent);
-  color: var(--color-text-muted);
+  line-height: 1.55;
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--bd) 14%, var(--bg1));
+  border: 1px solid color-mix(in srgb, var(--bd) 30%, transparent);
+  color: var(--t2);
 }
 .p-agent-finder__more {
   display: flex;
@@ -6398,26 +6411,35 @@ body:not(.searched) #visaManualSection::before {
 .p-med-finder__actions a:focus-visible,
 .p-med-finder__actions button:hover,
 .p-med-finder__actions button:focus-visible { border-color: var(--color-primary); color: var(--color-primary-ink); }
+/* 위 .p-agent-finder__empty 와 같은 규칙 — 테마를 따르는 토큰만 쓴다. */
 .p-med-finder__empty,
 .p-med-finder__error {
   margin: 0;
-  padding: 0.85rem 1rem;
+  padding: 0.9rem 1.05rem;
   font-size: 0.88rem;
-  border-radius: var(--radius-md);
-  background: color-mix(in srgb, var(--color-border) 22%, transparent);
-  color: var(--color-text-muted);
+  line-height: 1.55;
+  border-radius: var(--radius-lg);
+  background: var(--bg1);
+  border: 1px solid color-mix(in srgb, var(--bd) 45%, transparent);
+  color: var(--t2);
 }
-.p-med-finder__error { border-left: 3px solid var(--color-warning); color: var(--color-text); }
+.p-med-finder__error {
+  border-left: 3px solid var(--cy);
+  background: color-mix(in srgb, var(--cy) 7%, var(--bg1));
+  color: var(--t1);
+}
 .p-med-finder[hidden] { display: none; }
 .p-med-finder [hidden] { display: none !important; }
 .p-med-finder__prompt,
 .p-med-finder__loading {
   margin: 0;
-  padding: 0.85rem 1rem;
+  padding: 0.9rem 1.05rem;
   font-size: 0.88rem;
-  border-radius: var(--radius-md);
-  background: color-mix(in srgb, var(--color-border) 22%, transparent);
-  color: var(--color-text-muted);
+  line-height: 1.55;
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--bd) 14%, var(--bg1));
+  border: 1px solid color-mix(in srgb, var(--bd) 30%, transparent);
+  color: var(--t2);
 }
 .p-med-finder__more { display: flex; justify-content: center; padding: 0.5rem 0; }
 .p-med-finder__show-more {
@@ -15180,11 +15202,11 @@ body[data-theme="dark"] .us-ev-state.is-unavailable { background: color-mix(in s
                     <input id="agentFinderKeyword" type="search" placeholder="지역명·사무소명·주소로 검색" autocomplete="off" />
                 </div>
                 <p class="p-agent-finder__prompt" id="agentFinderPrompt">지역 선택 후 키워드를 입력하면 더 빠르게 찾을 수 있습니다. 예: 서울, 제주, 강릉</p>
-                <p class="p-agent-finder__loading" id="agentFinderLoading" hidden>데이터를 불러오는 중입니다.</p>
+                <p class="p-agent-finder__loading" id="agentFinderLoading" hidden>목록을 불러오는 중이에요.</p>
                 <p class="p-agent-finder__count" id="agentFinderCount" aria-live="polite"></p>
                 <ul class="p-agent-finder__list" id="agentFinderList" aria-label="등록 대행기관 목록"></ul>
-                <p class="p-agent-finder__empty" id="agentFinderEmpty" hidden>검색 결과가 없습니다. 지역 필터를 "전체 지역"으로 바꾸거나 키워드를 줄여 다시 확인해 주세요.</p>
-                <div class="p-agent-finder__error" id="agentFinderError" role="alert" hidden><span id="agentFinderErrorText">데이터를 불러오지 못했습니다. 잠시 후 다시 시도하거나 하이코리아 공식 조회를 이용하세요.</span> <button type="button" class="cb" id="agentFinderRetry" style="margin-left:0.5rem; padding:0.25rem 0.6rem;" data-i18n="retryButton">다시 시도</button></div>
+                <p class="p-agent-finder__empty" id="agentFinderEmpty" hidden>조건에 맞는 사무소를 찾지 못했어요. 지역을 넓히거나 사무소명을 줄이면 나올 수 있어요.</p>
+                <div class="p-agent-finder__error" id="agentFinderError" role="alert" hidden><span id="agentFinderErrorText">잠깐 문제가 생겼어요. 잠시 후 다시 시도하면 불러올 수 있어요. 급하면 하이코리아 공식 조회에서 바로 확인할 수 있어요.</span> <button type="button" class="cb" id="agentFinderRetry" style="margin-left:0.5rem; padding:0.6rem 1rem; min-height:2.75rem;" data-i18n="retryButton">다시 시도</button></div>
                 <div class="p-agent-finder__more" id="agentFinderMore" hidden>
                     <button type="button" id="agentFinderShowMore" class="p-agent-finder__show-more">더 보기</button>
                 </div>
@@ -15225,11 +15247,11 @@ body[data-theme="dark"] .us-ev-state.is-unavailable { background: color-mix(in s
                     <button type="button" id="medFinderClear" class="p-med-finder__clear" hidden aria-label="검색 초기화">✕</button>
                 </div>
                 <p class="p-med-finder__prompt" id="medFinderPrompt">지역 버튼을 누르거나 2자 이상 입력하면 검색됩니다. 예: 제주, 한라병원, 강남</p>
-                <p class="p-med-finder__loading" id="medFinderLoading" hidden>데이터를 불러오는 중입니다.</p>
+                <p class="p-med-finder__loading" id="medFinderLoading" hidden>목록을 불러오는 중이에요.</p>
                 <p class="p-med-finder__count" id="medFinderCount" aria-live="polite"></p>
                 <ul class="p-med-finder__list" id="medFinderList" aria-label="법무부지정 의료기관 목록"></ul>
-                <p class="p-med-finder__empty" id="medFinderEmpty" hidden>검색 결과가 없습니다. 다른 키워드나 지역을 시도해 보세요.</p>
-                <div class="p-med-finder__error" id="medFinderError" role="alert" hidden><span id="medFinderErrorText">데이터를 불러오지 못했습니다. 잠시 후 다시 시도하세요.</span> <button type="button" class="cb" id="medFinderRetry" style="margin-left:0.5rem; padding:0.25rem 0.6rem;" data-i18n="retryButton">다시 시도</button></div>
+                <p class="p-med-finder__empty" id="medFinderEmpty" hidden>조건에 맞는 병원을 찾지 못했어요. 지역을 넓히거나 병원명을 줄이면 나올 수 있어요.</p>
+                <div class="p-med-finder__error" id="medFinderError" role="alert" hidden><span id="medFinderErrorText">잠깐 문제가 생겼어요. 잠시 후 다시 시도하면 불러올 수 있어요. 급하면 하이코리아 공식 조회에서 바로 확인할 수 있어요.</span> <button type="button" class="cb" id="medFinderRetry" style="margin-left:0.5rem; padding:0.6rem 1rem; min-height:2.75rem;" data-i18n="retryButton">다시 시도</button></div>
                 <div class="p-med-finder__more" id="medFinderMore" hidden>
                     <button type="button" id="medFinderShowMore" class="p-med-finder__show-more">더 보기</button>
                 </div>
