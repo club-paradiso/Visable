@@ -14391,7 +14391,10 @@ body[data-theme="dark"] .us-ev-state.is-lifecycle-ambiguous { color: var(--us-am
                     <span class="p-gw-card-sub">내 상황에 맞는 예약 목적과 준비물을 확인하세요.</span>
                 </button>
 
-                <a class="p-gw-card p-gw-card-ai" href="ai.html">
+                <!-- 게이트웨이 진입은 Waymaker 랜딩(Figma 21 · 369:12 확정안)으로 보낸다.
+                     "AI로 더 자세히 묻기" 같은 즉시 질문 링크는 그대로 ai.html 로 두어
+                     도구에 바로 닿는 경로가 사라지지 않게 한다. 되돌리려면 이 href 하나만 바꾸면 된다. -->
+                <a class="p-gw-card p-gw-card-ai" href="waymaker.html">
                     <span class="p-gw-card-icon" aria-hidden="true">🧭</span>
                     <span class="p-gw-card-label">Waymaker by Paradiso에게 묻기</span>
                     <span class="p-gw-card-sub">내 상황에 맞는 체류자격과 확인 절차를 정리합니다.</span>
