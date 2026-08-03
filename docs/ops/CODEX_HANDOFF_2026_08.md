@@ -1,11 +1,17 @@
 # Codex Desktop 인수인계 — Waymaker 법률 근거 · 통합 검색 · 취업 신고 분석
 
-작성일 2026-08-03 · 브랜치 `claude/waymaker-legal-unified-search-bsw1gl` · PR
-[#549](https://github.com/lucanomics/Paradiso/pull/549) (**Draft 유지**)
+작성일 2026-08-03 · 최종 갱신 2026-08-03
 
 이 문서는 "이 컨테이너에서 더 진행할 수 없는 일"만 넘기기 위한 것이다. 코드로
-할 수 있었던 작업은 남기지 않고 브랜치에 이미 반영했다. 아래 §1이 그 경계선이고,
+할 수 있었던 작업은 남기지 않고 이미 반영했다. 아래 §1이 그 경계선이고,
 §4가 Codex Desktop에 그대로 붙여넣을 수 있는 작업 프롬프트다.
+
+> **머지 완료 (2026-08-03).** 이 문서 초안은 브랜치
+> `claude/waymaker-legal-unified-search-bsw1gl` 와 Draft PR
+> [#549](https://github.com/lucanomics/Paradiso/pull/549) 를 기준으로 쓰였다.
+> **#545 · #548–#555 는 전부 `main` 에 머지됐고 열려 있는 PR 은 없다.**
+> 따라서 아래 작업 프롬프트의 기준 브랜치는 **`main`** 이다. 남은 것은 코드가
+> 아니라 자격증명·사람 확인·사용자 결정이 필요한 항목뿐이다 (TASK A · C · D · E).
 
 ---
 
@@ -49,15 +55,37 @@
 
 즉 **Codex 로 넘길 것은 TASK A · C · D · E 네 가지**다 (TASK B 는 완료돼 §4에서 취소선 처리).
 
+### 1b. 남은 4건 — 누가 해야 하는가
+
+에이전트가 "아직 안 한" 것이 아니라, **에이전트가 해서는 안 되거나 할 수 없는** 것들이다.
+
+| 태스크 | 막고 있는 것 | 실행 주체 | 대리 수행 가능? |
+| --- | --- | --- | --- |
+| **A** 운영 스모크 | 자격증명 + 상류 네트워크 | 키를 가진 환경(Codex Desktop / 로컬) | ✅ 사람이 환경만 주면 에이전트가 실행 가능 |
+| **C** 매뉴얼 승인 | 원본 PDF 와 OCR 의 조문 단위 대조 | **사람만** | ❌ 자동화하면 §0 "창작 금지" 위반 |
+| **D** Figma 파일 수정 | 파일 소유 세션의 롤아웃 계획 | 사용자 확인 후 누구든 | ⚠️ 소유 확인 먼저 |
+| **E** Foundations 토큰 마이그레이션 | **사용자 결정** (전 화면·양 테마 영향) | 사용자가 결정 → 에이전트가 실행 | ✅ 승인만 있으면 |
+
+**A · D · E 는 "사람이 문을 열어주면 에이전트가 끝낼 수 있는" 일이고,
+C 만이 성질상 끝까지 사람의 일이다.**
+
 ---
 
 ## 2. 차단 사실 (2026-08-03 재확인)
 
 ```
 LAW_API_OC=unset   LAW_API_KEY=unset   OPENROUTER_API_KEY=unset   PARADISO_API_BASE=unset
-curl https://www.law.go.kr/                                → 000 (연결 자체가 안 됨)
-curl https://paradiso-production.up.railway.app/health      → 000
+curl https://www.law.go.kr/                                     → 000 (연결 자체가 안 됨)
+curl https://web-production-14f9a.up.railway.app/health         → 000
+curl https://web-production-14f9a.up.railway.app/api/legal/...  → 000
 ```
+
+> **정정.** 이 문서 초안은 Railway 호스트를 `paradiso-production.up.railway.app`
+> 이라고 적었다. **그런 호스트는 없다.** 저장소가 실제로 쓰는 값은
+> `assets/js/unified-search.js` · `assets/js/legal-source-search.js` · `ai.html` ·
+> `index.html` 의 `DEFAULT_API_BASE`, 즉 **`web-production-14f9a.up.railway.app`**
+> 이다. 둘 다 이 컨테이너에서는 `000` 이라 차단 결론 자체는 바뀌지 않지만,
+> 스모크를 도는 쪽이 잘못된 URL 을 두드리면 안 되므로 바로잡는다.
 
 `000`은 HTTP 오류가 아니라 **연결이 성립하지 않았다**는 뜻이다. 그래서 이 브랜치의
 법령·판례 경로는 전부 **목/픽스처 기준으로만** 검증되어 있다. 실제 상류 응답
@@ -69,7 +97,7 @@ curl https://paradiso-production.up.railway.app/health      → 000
 bash scripts/check_repo.sh                        # 전체 저장소 검증
 node scripts/check_legal_source_search.mjs        # 313/313
 node scripts/check_legal_source_search_dom.mjs    # 68/68 (jsdom 없으면 SKIP)
-node scripts/check_unified_search.mjs             # 79/79
+node scripts/check_unified_search.mjs             # 81/81 (#553 에서 대비 검사 2건 추가)
 node scripts/check_employment_code_analyzer.mjs
 node scripts/check_i18n_coverage.mjs              # 1236 keys × 14 langs
 cd backend && python3 -m pytest tests/ -q
@@ -131,10 +159,11 @@ PARADISO_E2E_PORT=4173 npx playwright test tests/e2e/unified-search.spec.mjs
 ### TASK A — 운영 환경 스모크 (자격증명 필요)
 
 ```
-저장소: lucanomics/Paradiso · 브랜치 claude/waymaker-legal-unified-search-bsw1gl
+저장소: lucanomics/Paradiso · 기준 브랜치 main (관련 PR 은 전부 머지됨)
 
-목표: 이 브랜치의 법령/판례/리서치 경로를 실제 상류 서비스에 대고 처음으로 검증한다.
-지금까지는 목·픽스처로만 검증되어 있다.
+목표: 법령/판례/리서치 경로를 실제 상류 서비스에 대고 처음으로 검증한다.
+지금까지는 목·픽스처로만 검증되어 있다. 코드는 이미 main 에 있으므로 이 태스크의
+산출물은 "검증 결과"이고, 불일치가 발견되면 그때 새 브랜치를 파서 고친다.
 
 필요한 환경변수 (없으면 여기서 중단하고 보고할 것. 임의로 우회하지 말 것):
   LAW_API_OC          법제처 오픈 API OC
@@ -154,6 +183,10 @@ PARADISO_E2E_PORT=4173 npx playwright test tests/e2e/unified-search.spec.mjs
      -d '{"question":"E-7 전공 일치 판단 기준","locale":"ko","depth":"pro"}'
    - stream은 start → step×6 → done 순으로 와야 한다. 순서가 다르면 그대로 보고
 3) Railway 배포본에도 같은 두 호출을 실행
+   호스트는 https://web-production-14f9a.up.railway.app 이다
+   (저장소의 DEFAULT_API_BASE 값. 다른 이름을 쓰지 말 것)
+   main 이 머지돼 있으므로 이 배포본에는 이미 새 경로가 올라가 있어야 한다.
+   /api/legal/research/stream 이 404 면 배포가 안 된 것이므로 그것부터 보고
 
 확인해야 할 것 (실패 시 코드를 고치는 것이 이 태스크의 산출물):
 - 응답 본문·로그·source URL 어디에도 OC와 API 키가 나타나지 않는다 (검색해서 확인)
@@ -192,7 +225,7 @@ Codex 로 넘기지 않는다. 감사와 수정을 모두 끝냈다.
 아무 일도 하지 않았다. `ensureMount()` 로 바꿨다.
 
 검증: `tests/e2e/ux10-a11y.spec.mjs` 3건(실제 탭 순서 · 진행 중 busy · 실패 경로에서
-busy 해제) + `check_unified_search.mjs` 정적 검사(76 → 79).
+busy 해제) + `check_unified_search.mjs` 정적 검사(76 → 79, 이후 #553 에서 → 81).
 
 ### TASK E — UX-10 `Spec / Foundations` 토큰 마이그레이션 (사용자 승인 필요)
 
@@ -295,7 +328,11 @@ use_figma 를 쓰기 전에 반드시 figma-use 스킬을 먼저 로드한다.
 - **근거 배지**: §3.6 네 스케일을 네임스페이스로 분리 (`approval` / `lifecycle` /
   `lookup` / `relevance`) — 하나의 램프로 합치던 이전 구현을 되돌린 것
 - **팔레트**: `.us-layer` 가 자체 emerald 를 버리고 `--ac` 를 별칭으로 사용. 파생
-  틴트는 `color-mix` 8%/6%(라이트), 16%/12%(다크) — 대비 ≥5:1 유지
+  틴트는 `color-mix` **7%/5%(라이트)**, 16%/12%(다크) — 대비 ≥5:1 유지.
+  라이트 값은 원래 8%/6% 였는데, #551 이 `--ac` 를 옮기면서 별칭인 `.us-layer` 도
+  같이 끌려가 accent-on-soft 가 4.98:1 로 떨어졌다. #553 에서 틴트를 낮춰 복구하고,
+  **임계값 자체를 `check_unified_search.mjs` 의 계산식 검사 2건으로 고정했다** —
+  기준이 산문에만 있어서 모든 가드가 초록인 채로 회귀가 나갔던 게 원인이었다
 
 ### 알려진 미해결 이슈 (정직한 기록)
 
