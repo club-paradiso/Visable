@@ -13767,10 +13767,15 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
   --us-surface: #fffcf5;
   --us-surface-alt: #f2f6f0;
   --us-accent: var(--ac, #0B7357);
-  /* 8% / 6%: chosen so accent-on-soft keeps >=5:1, matching the headroom the
-     hand-picked #e5f5ed had. A heavier mix still passes AA but thins it. */
-  --us-accent-soft: color-mix(in srgb, var(--us-accent) 8%, var(--us-surface));
-  --us-accent-chip: color-mix(in srgb, var(--us-accent) 6%, var(--us-surface));
+  /* 7% / 5%: chosen so accent-on-soft keeps >=5:1, matching the headroom the
+     hand-picked #e5f5ed had. A heavier mix still passes AA but thins it.
+     Retuned from 8%/6% when the civic token layer moved --ac from #0B7357 to
+     #177366: the lighter accent dropped accent-on-soft to 4.98:1. This is the
+     smallest step that clears 5:1 again (5.05:1), and the tint stays just as
+     separable from the surface (1.104:1 vs 1.118:1) — going lighter would buy
+     headroom nobody needs by making the tint harder to see. */
+  --us-accent-soft: color-mix(in srgb, var(--us-accent) 7%, var(--us-surface));
+  --us-accent-chip: color-mix(in srgb, var(--us-accent) 5%, var(--us-surface));
   --us-link: var(--us-accent);
   --us-ink: #1c1f29;
   --us-muted: #4d5261;

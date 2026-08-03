@@ -763,6 +763,107 @@ check('the first tab stop skips to the main content', () => {
     'skip link never becomes visible on focus');
 });
 
+/* --- Accent-on-tint contrast (contract §9b) ------------------------------
+ * §9b states the layer's tint percentages are tuned so accent-on-soft keeps
+ * >=5:1. That was prose only, and prose does not hold: the civic token layer
+ * later moved --ac from #0B7357 to #177366 and quietly took accent-on-soft to
+ * 4.98:1 with every existing check still green. This computes the real number
+ * from the shipped CSS so the threshold cannot drift again unnoticed.
+ */
+function srgbToLinear(channel) {
+  const x = channel / 255;
+  return x <= 0.04045 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4);
+}
+function relativeLuminance(hex) {
+  const h = hex.replace('#', '');
+  const [r, g, b] = [0, 2, 4].map((i) => parseInt(h.slice(i, i + 2), 16));
+  return 0.2126 * srgbToLinear(r) + 0.7152 * srgbToLinear(g) + 0.0722 * srgbToLinear(b);
+}
+function contrastRatio(a, b) {
+  const [hi, lo] = [relativeLuminance(a), relativeLuminance(b)].sort((x, y) => y - x);
+  return (hi + 0.05) / (lo + 0.05);
+}
+// color-mix(in srgb, A p%, B) — the same sRGB average the browser computes.
+function mixHex(a, b, percent) {
+  const parse = (hex) => {
+    const h = hex.replace('#', '');
+    return [0, 2, 4].map((i) => parseInt(h.slice(i, i + 2), 16));
+  };
+  const [ra, ga, ba] = parse(a);
+  const [rb, gb, bb] = parse(b);
+  const p = percent / 100;
+  const chan = (x, y) => Math.round(x * p + y * (1 - p));
+  return '#' + [chan(ra, rb), chan(ga, gb), chan(ba, bb)]
+    .map((v) => v.toString(16).padStart(2, '0')).join('');
+}
+/** Read one custom property out of the first matching selector block. */
+function cssVar(selector, prop) {
+  const block = indexHtml.match(
+    new RegExp(selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\s*\\{([^}]*)\\}'));
+  if (!block) return null;
+  const decl = block[1].match(new RegExp('--' + prop + '\\s*:\\s*([^;]+);'));
+  return decl ? decl[1].trim() : null;
+}
+function tintPercent(scope, name) {
+  const block = indexHtml.match(
+    new RegExp(scope.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\s*\\{([\\s\\S]*?)\\n\\}'));
+  if (!block) return null;
+  const m = block[1].match(
+    new RegExp('--us-accent-' + name + ':\\s*color-mix\\(in srgb, var\\(--us-accent\\) (\\d+)%'));
+  return m ? Number(m[1]) : null;
+}
+
+check('the layer accent keeps >=5:1 against its own tint, in both themes', () => {
+  // Light: the accent the default (civic) layer actually resolves to.
+  const lightAccent = cssVar(':root:not([data-theme="archive_diary"])', 'ac');
+  assert(/^#[0-9a-f]{6}$/i.test(lightAccent || ''), `could not read the light --ac (got ${lightAccent})`);
+  const lightSurface = cssVar('.us-layer', 'us-surface');
+  assert(/^#[0-9a-f]{6}$/i.test(lightSurface || ''), `could not read light --us-surface (got ${lightSurface})`);
+
+  for (const name of ['soft', 'chip']) {
+    const pct = tintPercent('.us-layer', name);
+    assert(pct !== null, `could not read the light ${name} tint percentage`);
+    const tint = mixHex(lightAccent, lightSurface, pct);
+    const ratio = contrastRatio(lightAccent, tint);
+    assert(ratio >= 5,
+      `light accent-on-${name} is ${ratio.toFixed(2)}:1 at ${pct}% — below the 5:1 §9b tunes for. ` +
+      `Lower the percentage until it clears 5:1.`);
+  }
+
+  // Dark: the civic layer deliberately does not override --ac, so dark keeps
+  // the base dark emerald. Assert that, or the numbers below are fiction.
+  const darkAccent = cssVar('\n[data-theme="dark"]', 'ac');
+  assert(/^#[0-9a-f]{6}$/i.test(darkAccent || ''), `could not read the dark --ac (got ${darkAccent})`);
+  assertNotEqual(darkAccent.toLowerCase(), (lightAccent || '').toLowerCase(),
+    'dark and light must not resolve to the same accent');
+  const darkSurface = cssVar('body[data-theme="dark"] .us-layer', 'us-surface');
+  assert(/^#[0-9a-f]{6}$/i.test(darkSurface || ''), `could not read dark --us-surface (got ${darkSurface})`);
+
+  for (const name of ['soft', 'chip']) {
+    const pct = tintPercent('body[data-theme="dark"] .us-layer', name);
+    assert(pct !== null, `could not read the dark ${name} tint percentage`);
+    const tint = mixHex(darkAccent, darkSurface, pct);
+    const ratio = contrastRatio(darkAccent, tint);
+    assert(ratio >= 5,
+      `dark accent-on-${name} is ${ratio.toFixed(2)}:1 at ${pct}% — below the 5:1 §9b tunes for.`);
+  }
+});
+
+check('the tint stays visibly separate from the plain surface', () => {
+  // The fix for a thin contrast ratio is to lighten the tint, which at some
+  // point makes the tinted block indistinguishable from the card behind it.
+  // This is the other side of that trade, so one cannot be "fixed" into the
+  // other without noticing.
+  const accent = cssVar(':root:not([data-theme="archive_diary"])', 'ac');
+  const surface = cssVar('.us-layer', 'us-surface');
+  const pct = tintPercent('.us-layer', 'soft');
+  const tint = mixHex(accent, surface, pct);
+  const separation = contrastRatio(tint, surface);
+  assert(separation >= 1.08,
+    `the soft tint is only ${separation.toFixed(3)}:1 against the surface at ${pct}% — it has been ` +
+    `lightened until it is no longer visible as a tinted region.`);
+});
+
 /* ----------------------------------------------------------- report ------ */
 if (failures.length) {
   console.error(`\nFAIL — ${failures.length} check(s) failed, ${passed} passed:\n`);
