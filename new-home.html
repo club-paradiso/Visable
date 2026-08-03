@@ -32,6 +32,7 @@
   --bd: #d1c6b4; --bd2: #ddd3c3;
   --t1: #073B32; --t2: #3A544C; --t3: #6E7A74;
   --ac: #0E8A6B; --ac2: #073B32; --acG: rgba(47,94,103,0.10); --acL: #e1eaec;
+  --ac-ink: #fff;
   --cy: #FF6B5B; --cyL: #FFE2DB; --cyT: #8A3426;
   --ok: #0EA37B; --warn: #E68A3A;
   --r-sm: 8px; --r-md: 12px; --r-lg: 18px; --r-xl: 26px;
@@ -46,6 +47,9 @@
   --bd: #2D5A50; --bd2: #224A41;
   --t1: #F3EEDF; --t2: #C7BFA8; --t3: #8C8572;
   --ac: #3BE4B8; --ac2: #22C9A0; --acG: rgba(52,212,168,0.14); --acL: #163E36;
+  /* 다크 accent(#3BE4B8)는 밝은 민트라 흰 텍스트가 1.62:1로 사실상 안 보였다.
+     진한 잉크로 8.02:1 확보 — 라이트는 흰 텍스트 그대로 둔다(4.32:1, 이미 정상). */
+  --ac-ink: #083830;
   --cy: #FF8B7A; --cyL: #3A1E1A; --cyT: #FFB5A5;
   --sh1: 0 1px 4px rgba(0,0,0,0.35);
   --sh2: 0 12px 32px -10px rgba(0,0,0,0.55);
@@ -170,7 +174,7 @@ main { display: block; }
   border-radius: var(--r-md); border: 1px solid transparent; text-decoration: none;
   transition: transform 0.18s, box-shadow 0.18s, background 0.18s, border-color 0.18s;
 }
-.nh-btn-primary { background: var(--ac); color: #fff; box-shadow: var(--sh2); }
+.nh-btn-primary { background: var(--ac); color: var(--ac-ink); box-shadow: var(--sh2); }
 .nh-btn-primary:hover { transform: translateY(-2px); }
 .nh-btn-secondary { background: var(--bg1); color: var(--t1); border-color: var(--bd); }
 .nh-btn-secondary:hover { border-color: var(--ac); transform: translateY(-2px); }
@@ -232,7 +236,7 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
 }
 .nh-pathway-steps li::before {
   content: counter(step); position: absolute; left: 0.8rem; top: 0.85rem;
-  width: 1.4rem; height: 1.4rem; border-radius: 999px; background: var(--ac); color: #fff;
+  width: 1.4rem; height: 1.4rem; border-radius: 999px; background: var(--ac); color: var(--ac-ink);
   font-size: 0.78rem; font-weight: 800; display: inline-flex; align-items: center; justify-content: center;
 }
 
@@ -297,7 +301,9 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
 /* ── Footer ── */
 .nh-footer { padding: 2rem clamp(1rem,4vw,2rem) 3rem; background: var(--bg2); border-top: 1px solid var(--bd2); }
 .nh-footer-inner { max-width: var(--maxw); margin: 0 auto; display: flex; flex-direction: column; gap: 0.8rem; }
-.nh-footer p { margin: 0; font-size: 0.85rem; color: var(--t3); max-width: 80ch; }
+/* 면책 문구다 — --t3 는 다크 푸터(#184B40)에서 2.70:1 로 AA 미달이었다.
+   --t2 는 라이트 6.56:1 / 다크 5.40:1 로 양쪽 통과한다. */
+.nh-footer p { margin: 0; font-size: 0.85rem; color: var(--t2); max-width: 80ch; }
 .nh-footer a { font-weight: 800; text-decoration: none; }
 .nh-footer a:hover { text-decoration: underline; }
 
@@ -362,7 +368,7 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
 
 .nh-btn-sm { min-height: 42px; padding: 0 1.1rem; border-radius: var(--r-md); font-weight: 800; font-size: 0.9rem; font-family: var(--ff); cursor: pointer; border: 1px solid var(--bd); background: var(--bg1); color: var(--t1); transition: border-color 0.18s, transform 0.18s; }
 .nh-btn-sm:hover { border-color: var(--ac); transform: translateY(-1px); }
-.nh-btn-sm.primary { background: var(--ac); color: #fff; border-color: transparent; }
+.nh-btn-sm.primary { background: var(--ac); color: var(--ac-ink); border-color: transparent; }
 .nh-btn-sm:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
 .nh-loaderr { padding: 2rem 1rem; text-align: center; color: var(--t2); }
 

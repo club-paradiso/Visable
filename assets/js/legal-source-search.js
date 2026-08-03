@@ -779,6 +779,9 @@
       + '.lss-input{flex:1 1 auto;min-width:0;min-height:46px;padding:.6rem .85rem;border-radius:10px;'
       + 'border:1.5px solid var(--bd,#2D5A50);background:var(--bg0,#0B2A24);color:var(--t1,#F3EEDF);font:600 16px/1.3 inherit;}'
       + '.lss-input:focus{outline:2px solid var(--ac,#34D4A8);outline-offset:1px;border-color:var(--ac,#34D4A8);}'
+      // ::placeholder 규칙이 없어 브라우저 기본 #757575 로 떨어졌다 —
+      // 라이트 4.05:1 / 다크 3.32:1 로 양쪽 AA 미달. --t2 는 양쪽 통과한다.
+      + '.lss-input::placeholder{color:var(--t2,#C7BFA8);opacity:1;}'
       + '.lss-search-btn{flex:0 0 auto;min-height:46px;padding:0 1.1rem;border-radius:10px;cursor:pointer;font:inherit;'
       + 'font-weight:800;font-size:.9rem;border:1px solid var(--ac,#34D4A8);background:var(--ac,#34D4A8);color:#06231C;}'
       + '.lss-search-btn:hover{background:var(--ac2,#17B388);border-color:var(--ac2,#17B388);}'
@@ -815,6 +818,7 @@
       + '.lss-rinput{flex:1 1 auto;min-width:0;min-height:48px;padding:.6rem .85rem;border-radius:10px;resize:vertical;'
       + 'border:1.5px solid var(--bd,#2D5A50);background:var(--bg0,#0B2A24);color:var(--t1,#F3EEDF);font:600 16px/1.45 inherit;}'
       + '.lss-rinput:focus{outline:2px solid var(--ac,#34D4A8);outline-offset:1px;border-color:var(--ac,#34D4A8);}'
+      + '.lss-rinput::placeholder{color:var(--t2,#C7BFA8);opacity:1;}'
       // research result
       + '.lss-research{display:flex;flex-direction:column;gap:.2rem;}'
       + '.lss-rhead{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;margin:.2rem 0 .4rem;}'

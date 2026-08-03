@@ -173,6 +173,22 @@ are the same axis.
 Exactly **one** question at a time, with 2–4 answer chips. Never asserts a
 reporting duty — the backend strips any determination the model emits.
 
+**Clarified 2026-07 — the 2–4 limit counts substantive answers only.**
+Escape paths are not answers and are not counted: "잘 모르겠어요" (I don't know)
+and "직접 입력" (it isn't on your list) must both remain available, and must sit
+in a visually separate group so they never read as a candidate answer.
+
+The reason is accuracy, not generosity. KSIC11 has hundreds of industry codes,
+so a closed list of three will often not contain the applicant's actual business.
+Remove the free-text path and the user is forced to pick the least-wrong of
+three — which produces a **confidently wrong industry code** that flows into the
+final checklist and then into HiKorea. That is the precise failure this contract
+guards against everywhere else (§3.9, "nearest candidate ≠ confirmed code").
+
+"잘 모르겠어요" and "직접 입력" also carry different information and must stay
+distinct: the first defers, the second captures an answer the list was missing.
+Collapsing them loses the only signal that the candidate set was inadequate.
+
 ### 3.9 `Employment / Occupation Candidate` and `Employment / Industry Candidate`
 
 Two components, never one with a type switch, so they cannot be visually confused.

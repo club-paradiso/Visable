@@ -452,10 +452,29 @@ body.product-visable .about-me {
   backdrop-filter: none !important;
 }
 
+/* .p-footer-cta 는 위 섹션 정규화의 예외다.
+   그 규칙이 background/border/radius/shadow 를 !important 로 지우는데, 이
+   패널은 흰 텍스트를 전제로 한 짙은 CTA 밴드다. 배경이 지워지면 라이트·다크
+   양쪽에서 "어렵기만 하던 체류 관리…" 제목과 보조 버튼이 배경에 묻혀 사라진다.
+   폭·정렬은 정규화를 그대로 따르고 패널 외형만 되돌린다. */
+body.product-visable .p-footer-cta {
+  padding: clamp(2rem, 5vw, 3rem) !important;
+  background:
+    radial-gradient(120% 90% at 0% 0%, rgba(14, 163, 123, 0.32), transparent 60%),
+    linear-gradient(135deg, rgba(11, 42, 36, 0.98), rgba(31, 79, 61, 0.96)) !important;
+  border: 1px solid rgba(125, 216, 184, 0.18) !important;
+  border-radius: var(--p-r-xl, 24px) !important;
+  box-shadow: var(--p-shadow-3, 0 12px 32px rgba(14, 31, 26, 0.10)) !important;
+}
 body.product-visable .p-section + .p-section,
 body.product-visable .p-section + .brand-hero,
 body.product-visable .brand-hero + .brand-feature {
   border-top: 1px solid var(--vp-line-soft) !important;
+}
+/* 위 구분선 규칙보다 뒤에 와야 실제로 덮인다 — 이 패널 위아래엔 구분선을 긋지 않는다. */
+body.product-visable .p-footer-cta + .p-section,
+body.product-visable .p-section + .p-footer-cta {
+  border-top: 0 !important;
 }
 
 body.product-visable .p-section-head {
@@ -868,6 +887,11 @@ body.product-new-home .nh-dashboard,
 body.product-new-home .nh-pathway,
 body.product-new-home .nh-sources { padding-block: 42px !important; }
 body.product-new-home .nh-footer { background: #eae3d4 !important; }
+/* 위 하드코딩 값이 !important 로 테마 토큰을 덮어, 다크에서 푸터만 크림색으로
+   남고 상속 텍스트 색은 밝은 쪽으로 뒤집혀 읽히지 않았다. 다크에서만 되돌린다.
+   (new-home 은 data-theme 을 documentElement 에 걸지만 body 에 거는 경로도 있어 둘 다 받는다.) */
+[data-theme="dark"] body.product-new-home .nh-footer,
+body.product-new-home[data-theme="dark"] .nh-footer { background: var(--bg2) !important; }
 
 /* --------------------------------------------------------------------------
    Form Helper

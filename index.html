@@ -187,6 +187,33 @@
   --shD: 0 12px 32px rgba(0,0,0,0.55);
 }
 
+/* ── 랜딩 --p-* 팔레트의 다크 대응 (Figma 13 · P1-3) ──────────────────────
+   이 계열은 :root 와 archive_diary 테마에만 정의돼 있었고 기본 테마의
+   [data-theme="dark"] 에는 없었다. 그래서 다크 모드에서 .p-section-title /
+   .p-section-copy / .p-manual-* 이 어두운 잉크색 그대로 남아 어두운 배경 위에
+   거의 보이지 않았다.
+   규칙마다 색을 덮어쓰지 않고 토큰 값만 뒤집는다 — 이 계열을 통해 해석되는
+   모든 규칙이 한 번에 따라온다. */
+[data-theme="dark"] {
+  --p-ink:        #F4EFE4;
+  --p-ink-2:      #DCD5C4;
+  --p-ink-3:      #C7BFA8;
+  --p-ink-mute:   #B3AB96;
+  --p-paper:      #062A22;
+  --p-paper-2:    #0C3A30;
+  --p-paper-3:    #184B40;
+  --p-green:      #0B7357;
+  --p-green-deep: #073B32;
+  --p-green-soft: #22C9A0;
+  --p-mint:       #2A6B57;
+  --p-mint-soft:  #143C33;
+  --p-coral:      #FF8B7A;
+  --p-coral-deep: #FF6B5B;
+  --p-coral-soft: #3A1E1A;
+  --p-line:       #2D5A50;
+  --p-line-2:     #224A41;
+}
+
 /* ════════════════════════════════════════════════════════════════════════
    PARADISO EDITORIAL THEME SYSTEM
    ────────────────────────────────────────────────────────────────────────
@@ -4830,8 +4857,11 @@ body:not(.searched) .figma-footer-actions .figma-footer-btn-secondary {
 
 /* Claude Design landing visual pass */
 body:not(.searched) {
+  /* 마지막 정지점이 #fffaf4 로 하드코딩돼 있어, 다크에서 페이지 하단이 크림색으로
+     밝아지고 그 위의 면책 문구가 흐려졌다. 라이트 값(#FFFCF5)이 사실상 같은
+     --bg1 로 바꿔 테마를 따르게 한다. */
   background:
-    linear-gradient(180deg, var(--p-paper) 0%, var(--p-mint-soft) 48%, #fffaf4 100%) !important;
+    linear-gradient(180deg, var(--p-paper) 0%, var(--p-mint-soft) 48%, var(--bg1) 100%) !important;
 }
 
 body:not(.searched) .hero-container {
@@ -10633,7 +10663,9 @@ body:not(.searched) .brand-hero-kicker {
   padding: 0.78rem 0.95rem;
   border-radius: var(--p-r-md);
   border: 1px dashed color-mix(in srgb, var(--p-coral) 32%, var(--p-line));
-  background: color-mix(in srgb, var(--p-coral-soft) 24%, white);
+  /* 하드코딩된 white 를 테마 표면 토큰으로 — 다크에서 밝은 블록이 튀지 않게 한다.
+     라이트 결과값(#FFFCF5 기준)은 기존 white 기준과 사실상 동일하다. */
+  background: color-mix(in srgb, var(--p-coral-soft) 24%, var(--bg1));
   color: var(--p-coral-deep);
   font-size: var(--p-fs-sm);
   line-height: 1.6;
