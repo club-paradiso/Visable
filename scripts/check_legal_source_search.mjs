@@ -444,6 +444,63 @@ const enSynth = L.buildResearchHtml(richResult, 'en');
 ok(enSynth.indexOf('lss-synth-notice') !== -1 && /unofficial/i.test(enSynth), 'EN synthesis shows the unofficial-summary notice');
 ok(L.buildResearchHtml(richResult, 'ko').indexOf('lss-synth-notice') === -1, 'KO synthesis omits the EN-only notice');
 
+section('UX-07 Legal / Entry (434:5) — depth time estimates');
+for (const [lang, etas] of [['ko', ['약 30초', '약 2분', '약 5분']], ['en', ['about 30 sec', 'about 2 min', 'about 5 min']]]) {
+  const sel = L.buildDepthSelectorHtml('basic', lang);
+  ok(etas.every((e) => sel.indexOf(e) !== -1), `${lang}: every depth carries its time estimate`);
+  ok(sel.indexOf(L.S('etaNote', lang)) !== -1, `${lang}: the estimate is labelled as an estimate, not a promise`);
+  ok(sel.indexOf(`aria-label="${L.S('depthBasic', lang)} · ${L.S('etaLabel', lang)} ${L.S('depthBasicEta', lang)}`) !== -1,
+    `${lang}: the accessible name includes the estimate`);
+}
+
+section('UX-07 Legal / Entry (434:33) — status-context chip claims nothing it was not given');
+ok(L.buildVisaContextChipHtml('', 'ko') === '' && L.buildVisaContextChipHtml(null, 'ko') === '' && L.buildVisaContextChipHtml(undefined, 'ko') === '',
+  'no status supplied → no chip (never a default status)');
+for (const junk of ['취업', '<img src=x>', 'D2', 'DD-222', 'https://x.test']) {
+  ok(L.buildVisaContextChipHtml(junk, 'ko') === '', `non-code value "${junk}" renders no chip`);
+}
+ok(L.normalizeVisaContext('d-2') === 'D-2' && L.normalizeVisaContext(' e-7-1 ') === 'E-7-1' && L.normalizeVisaContext('d-10-t') === 'D-10-T',
+  'parent codes, subcodes and -T variants all normalize');
+const ctxChip = L.buildVisaContextChipHtml('D-2', 'ko');
+ok(ctxChip.indexOf('현재 체류자격') !== -1 && ctxChip.indexOf('D-2') !== -1, 'chip labels the code as the current status');
+ok(ctxChip.indexOf('data-lss-ctx-clear') !== -1, 'chip is removable (the steering is consented to, not permanent)');
+
+section('UX-07 Legal / Result (436:8) — memo structure');
+const memo = L.buildResearchHtml({
+  ok: true, depth: 'basic', question: 'D-10으로 바꾸면 아르바이트를 할 수 있나요?',
+  issues: ['허가 없이 시간제 취업이 가능한지', '허가 대상 업종·시간 범위'],
+  missingFacts: ['근무 시간'], laws: [], precedents: [{ caseName: '대법원 2020두1234' }],
+  nextChecks: ['체류자격외활동허가는 어디에서 신청하나요?'], limitations: ['참고용'], disclaimer: 'd'
+}, 'ko');
+ok(memo.indexOf('질문') !== -1 && memo.indexOf('D-10으로 바꾸면') !== -1, 'the question that produced the result is echoed with it');
+ok(memo.indexOf('lss-rnum') !== -1, '주요 쟁점 renders as a numbered list (the numerals are content)');
+ok(memo.indexOf('비교·유추') !== -1 && memo.indexOf('직접 근거가 아니라') !== -1, 'precedents carry the analogy-only notice');
+ok(memo.indexOf('data-lss-copy-q') !== -1, 'the questions for the authority can be copied');
+
+section('UX-07 Legal / Result (437:71) — the basis tally is counted, never asserted');
+const tallyGroups = L.evidenceTally({ sourceGroups: [
+  { group: 'manual', cards: [1, 2] }, { group: 'paradiso', cards: [3] },
+  { group: 'law', cards: [4] }, { group: 'subordinate', cards: [5] }, { group: 'precedent', cards: [6] }] });
+ok(tallyGroups.manual === 3 && tallyGroups.law === 2 && tallyGroups.precedent === 1,
+  'manual/statute/precedent stay three separate counts (§3.6 scales do not merge)');
+const tallyFlat = L.evidenceTally({ laws: [1, 2], precedents: [3], directEvidenceCount: 4 });
+ok(tallyFlat.manual === 4 && tallyFlat.law === 2 && tallyFlat.precedent === 1, 'flat payloads fall back to the top-level arrays');
+const emptyTally = L.evidenceTally({});
+ok(emptyTally.manual === 0 && emptyTally.law === 0 && emptyTally.precedent === 0, 'an empty payload counts zero, not "some"');
+const noSrc = L.buildResearchHtml({ ok: true, depth: 'fast', question: 'q', issues: ['a'], laws: [], precedents: [], limitations: [], disclaimer: 'd' }, 'ko');
+ok(noSrc.indexOf('붙은 출처가 없어요') !== -1, 'no sources → says so, instead of printing a zero-count tally');
+ok(noSrc.indexOf('직접 근거가 아니라') === -1, 'no precedents → no precedent notice');
+
+section('UX-07 Legal / Result — hostile payloads stay escaped');
+const hostile = L.buildResearchHtml({
+  ok: true, depth: 'basic', question: '<img src=x onerror=alert(1)>',
+  issues: ['<script>bad()</script>'], missingFacts: [], laws: [], precedents: [],
+  nextChecks: ['"><svg onload=alert(1)>'], limitations: [], disclaimer: 'd'
+}, 'ko');
+ok(hostile.indexOf('<img') === -1 && hostile.indexOf('&lt;img') !== -1, 'the echoed question is escaped');
+ok(hostile.indexOf('<script>bad') === -1, 'a hostile issue is escaped inside the numbered list');
+ok(hostile.indexOf('<svg onload') === -1, 'a hostile next-check is escaped inside the copy-payload attribute');
+
 section('no dummy / fake-professional strings');
 const src = readFileSync(join(ROOT, 'assets/js/legal-source-search.js'), 'utf8');
 for (const bad of ['Mr.Visa', 'Mr Visa', 'lorem ipsum', '행정사 검토', '법무법인']) {

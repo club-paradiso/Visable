@@ -267,6 +267,29 @@ async function run() {
   ok(lastBody && typeof lastBody.question === 'string' && lastBody.question.indexOf('F-6') !== -1, 'handoff prefills the visa code into the question');
   ok(root.querySelector('[data-lss-rinput]').value.indexOf('변경허가에서 다툴 쟁점') !== -1, 'handoff prefills the question text');
 
+  // --- UX-07 434:33 status-context chip -------------------------------------
+  // The handed-over status is shown, not smuggled: it appears as a chip and it
+  // stays out of the question textarea.
+  let chip = root.querySelector('[data-lss-ctx-chip]');
+  ok(!!chip && chip.textContent.indexOf('F-6') !== -1, 'handoff renders the status-context chip');
+  ok(root.querySelector('[data-lss-rinput]').value.indexOf('F-6') === -1, 'status code stays out of the question textarea');
+
+  // Clearing the chip has to actually stop steering the next request — a chip
+  // that only disappears visually would keep re-aiming later questions.
+  root.querySelector('[data-lss-ctx-clear]').click();
+  ok(!root.querySelector('[data-lss-ctx-chip]'), 'clearing removes the status-context chip');
+  lastBody = null;
+  L.doResearch('체류기간 연장 요건');
+  await sleep(25);
+  ok(lastBody && lastBody.question.indexOf('F-6') === -1, 'cleared status context is not sent upstream');
+
+  // A status that is not a status code is never displayed under the
+  // "현재 체류자격" label.
+  dom.window.dispatchEvent(new dom.window.CustomEvent('paradiso:legal-research', { detail: { question: '질문', visaCode: '<img src=x onerror=alert(1)>' } }));
+  await sleep(25);
+  ok(!root.querySelector('[data-lss-ctx-chip]'), 'a non-code status value renders no chip');
+  ok(!root.querySelector('.lss-options img'), 'no element injected from the rejected status value');
+
   console.log(`\n${failures ? 'FAIL' : 'OK'} — ${checks - failures}/${checks} checks passed`);
   process.exit(failures ? 1 : 0);
 }

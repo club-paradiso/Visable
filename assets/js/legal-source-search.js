@@ -167,7 +167,29 @@
     secDocsToCheck: '확인할 서류',
     whyItMattersLabel: '왜 중요한가',
     basicSteps: ['쟁점 정리 중', '법령·자료 검색 중', '확인사항 정리 중'],
-    handoffToResearch: '법령·판례 기준으로 더 분석하기'
+    handoffToResearch: '법령·판례 기준으로 더 분석하기',
+    // UX-07 Legal / Entry (434:5) — depth time estimates + status context chip
+    etaLabel: '예상 소요',
+    depthFastEta: '약 30초',
+    depthBasicEta: '약 2분',
+    depthProEta: '약 5분',
+    etaNote: '예상 시간이며 질문과 서버 상태에 따라 달라져요.',
+    visaContextLabel: '현재 체류자격',
+    visaContextClear: '체류자격 맥락 지우기',
+    // UX-07 Legal / Result (436:8)
+    resultQuestionLabel: '질문',
+    secFactsGroup: '확인된 사실과 부족한 사실',
+    secEstablished: '확인된 사실',
+    secNeedsCheck: '더 확인이 필요한 사실',
+    precedentAnalogyNote: '이 판례는 사안이 완전히 같지 않아요. 직접 근거가 아니라 비교·유추 자료로만 참고해 주세요.',
+    basisTallyTitle: '근거 및 한계',
+    basisTallyManual: '매뉴얼·공식자료 직접 근거 %s건',
+    basisTallyLaw: '법령 보충 근거 %s건',
+    basisTallyPrecedent: '판례 비교·유추 %s건',
+    basisTallyNone: '이번 정리에는 붙은 출처가 없어요. 아래 검색어로 공식 원문을 직접 확인해 주세요.',
+    copyQuestions: '질문 복사하기',
+    copyQuestionsDone: '복사했어요',
+    copyQuestionsFail: '복사하지 못했어요'
   };
   var STR_EN = {
     title: 'Waymaker Legal Research',
@@ -293,7 +315,29 @@
     secDocsToCheck: 'Documents to check',
     whyItMattersLabel: 'Why it matters',
     basicSteps: ['Organizing issues', 'Searching laws & materials', 'Compiling checks'],
-    handoffToResearch: 'Analyze with legal sources'
+    handoffToResearch: 'Analyze with legal sources',
+    // UX-07 Legal / Entry (434:5) — depth time estimates + status context chip
+    etaLabel: 'Est. time',
+    depthFastEta: 'about 30 sec',
+    depthBasicEta: 'about 2 min',
+    depthProEta: 'about 5 min',
+    etaNote: 'An estimate — the actual wait varies with the question and server load.',
+    visaContextLabel: 'Current status',
+    visaContextClear: 'Clear status context',
+    // UX-07 Legal / Result (436:8)
+    resultQuestionLabel: 'Question',
+    secFactsGroup: 'What is established and what is missing',
+    secEstablished: 'Established facts',
+    secNeedsCheck: 'Facts that still need checking',
+    precedentAnalogyNote: 'This precedent is not an identical case. Treat it as comparison or analogy material, not as direct authority.',
+    basisTallyTitle: 'Basis and limits',
+    basisTallyManual: '%s direct manual / official source(s)',
+    basisTallyLaw: '%s supporting statute source(s)',
+    basisTallyPrecedent: '%s precedent(s) by comparison / analogy',
+    basisTallyNone: 'No sources were attached to this result. Use the search terms below to check the official text directly.',
+    copyQuestions: 'Copy questions',
+    copyQuestionsDone: 'Copied',
+    copyQuestionsFail: 'Could not copy'
   };
   var STR_PACKS = { ko: STR_KO, en: STR_EN };
   function S(k, lang) {
@@ -556,6 +600,11 @@
   var DEPTHS = ['fast', 'basic', 'pro'];
   var DEPTH_KEY = { fast: 'depthFast', basic: 'depthBasic', pro: 'depthPro' };
   var DEPTH_DESC_KEY = { fast: 'depthFastDesc', basic: 'depthBasicDesc', pro: 'depthProDesc' };
+  // UX-07 434:19–26 puts a time estimate under each depth. They are estimates,
+  // not measurements — the wait depends on the question and on how the upstream
+  // law/precedent services respond — so the label says so and `etaNote` repeats
+  // it once for the group rather than implying a guarantee per button.
+  var DEPTH_ETA_KEY = { fast: 'depthFastEta', basic: 'depthBasicEta', pro: 'depthProEta' };
   // Client-side mirror of the backend auto-selector (UI suggestion only; the
   // backend decides authoritatively). Keep the heuristics in sync.
   var PRO_TRIGGERS = ['판례', '불허', '취소소송', '강제퇴거', '출국명령', '난민', '귀화 불허', '행정심판', '소송', 'appeal', 'precedent', 'refusal', 'denial', 'deportation'];
@@ -576,13 +625,51 @@
     var cur = DEPTHS.indexOf(depth) === -1 ? 'basic' : depth;
     var btns = DEPTHS.map(function (d) {
       var on = d === cur;
-      return '<button type="button" class="lss-depth-btn' + (on ? ' lss-depth-on' : '') + '" role="radio" aria-checked="' + (on ? 'true' : 'false') + '" data-lss-depth="' + d + '">' + escapeHtml(S(DEPTH_KEY[d], lang)) + '</button>';
+      var name = S(DEPTH_KEY[d], lang);
+      var eta = S(DEPTH_ETA_KEY[d], lang);
+      // The accessible name carries the estimate too, so the two-line visual
+      // does not become a one-line announcement that drops the wait.
+      var aria = name + ' · ' + S('etaLabel', lang) + ' ' + eta;
+      return '<button type="button" class="lss-depth-btn' + (on ? ' lss-depth-on' : '') + '" role="radio"'
+        + ' aria-checked="' + (on ? 'true' : 'false') + '" aria-label="' + escapeHtml(aria) + '"'
+        + ' data-lss-depth="' + d + '">'
+        + '<span class="lss-depth-name">' + escapeHtml(name) + '</span>'
+        + '<span class="lss-depth-eta">' + escapeHtml(eta) + '</span>'
+        + '</button>';
     }).join('');
     return '<div class="lss-depth">'
       + '<span class="lss-depth-label">' + escapeHtml(S('researchDepthLabel', lang)) + '</span>'
       + '<div class="lss-depth-row" role="radiogroup" aria-label="' + escapeHtml(S('researchDepthLabel', lang)) + '">' + btns + '</div>'
       + '<p class="lss-depth-desc">' + escapeHtml(S(DEPTH_DESC_KEY[cur], lang)) + '</p>'
+      + '<p class="lss-depth-eta-note">' + escapeHtml(S('etaNote', lang)) + '</p>'
       + '</div>';
+  }
+
+  /* ------------- UX-07 Legal / Entry — status context chip (434:33) --------
+   * The design shows "현재 체류자격 D-2" next to the option toggles. The value
+   * is never a default: it renders only when a caller actually handed one over
+   * (`openResearch({visaCode})` / the `paradiso:legal-research` event / a
+   * `visa_code` URL param). An invented status would silently re-aim the whole
+   * research question, so no context is shown rather than a guessed one.
+   *
+   * It is also removable. The code is prepended to the question sent upstream,
+   * so a stale chip from an earlier handoff would keep steering later questions
+   * with no way to tell — the × is what makes the steering consented to.
+   */
+  var VISA_CODE_RE = /^[A-Z]{1,2}-\d{1,2}(-\d{1,2})?(-[A-Z])?$/;
+  function normalizeVisaContext(code) {
+    var c = String(code == null ? '' : code).trim().toUpperCase().replace(/\s+/g, '');
+    return VISA_CODE_RE.test(c) ? c : '';
+  }
+  function buildVisaContextChipHtml(code, lang) {
+    var c = normalizeVisaContext(code);
+    if (!c) return '';
+    return '<span class="lss-ctx-chip" data-lss-ctx-chip>'
+      + '<span class="lss-ctx-label">' + escapeHtml(S('visaContextLabel', lang)) + '</span>'
+      + '<span class="lss-ctx-code">' + escapeHtml(c) + '</span>'
+      + '<button type="button" class="lss-ctx-clear" data-lss-ctx-clear aria-label="'
+      + escapeHtml(S('visaContextClear', lang)) + '">×</button>'
+      + '</span>';
   }
 
   function _ul(items) {
@@ -604,6 +691,99 @@
   function _sec(title, inner) {
     if (!inner) return '';
     return '<section class="lss-rsec"><h4 class="lss-rsec-title">' + escapeHtml(title) + '</h4>' + inner + '</section>';
+  }
+
+  /* ------------- UX-07 Legal / Result (436:8) building blocks -------------- */
+
+  // Question echo (436:11). Shows what was actually asked, so a result read
+  // later — or after the input was edited — cannot be attached to the wrong
+  // question.
+  function _questionEchoHtml(question, lang) {
+    var q = String(question == null ? '' : question).trim();
+    if (!q) return '';
+    return '<p class="lss-rquestion"><span class="lss-rquestion-label">'
+      + escapeHtml(S('resultQuestionLabel', lang)) + '</span> ' + escapeHtml(q) + '</p>';
+  }
+
+  // 확인된 사실 / 더 확인이 필요한 사실 side by side (436:16). The pairing is the
+  // point: "established" read alone overstates, and the design puts the gap
+  // next to it at equal weight. A column with nothing in it still renders its
+  // heading and an em dash — an empty "missing" column would otherwise read as
+  // "nothing is missing", which is a much stronger claim than "we found none".
+  function _factsGridHtml(established, needsCheck, lang) {
+    if ((!established || !established.length) && (!needsCheck || !needsCheck.length)) return '';
+    function col(titleKey, inner) {
+      return '<div class="lss-facts-col"><h5 class="lss-facts-title">' + escapeHtml(S(titleKey, lang)) + '</h5>'
+        + (inner || '<p class="lss-facts-empty">—</p>') + '</div>';
+    }
+    return '<section class="lss-rsec lss-facts">'
+      + '<h4 class="lss-rsec-title">' + escapeHtml(S('secFactsGroup', lang)) + '</h4>'
+      + '<div class="lss-facts-grid">'
+      + col('secEstablished', established) + col('secNeedsCheck', needsCheck)
+      + '</div></section>';
+  }
+
+  // Numbered issue list (436:28–40). <ol> rather than styled <ul>: the design's
+  // numerals are content — they are how the memo refers back to an issue.
+  function _numberedList(items, render) {
+    if (!items || !items.length) return '';
+    return '<ol class="lss-rnum">' + items.map(function (it) {
+      return '<li>' + render(it) + '</li>';
+    }).join('') + '</ol>';
+  }
+
+  // Basis tally (437:71–72): how many sources of each kind actually backed this
+  // result. Counted from the payload, never asserted — and the three kinds stay
+  // separate because they carry different weight (§3.6): a manual is direct
+  // authority, a statute is supporting text, a precedent is analogy only.
+  function evidenceTally(result) {
+    var r = result || {};
+    var manual = 0, law = 0, prec = 0;
+    var groups = r.sourceGroups;
+    if (Array.isArray(groups) && groups.length) {
+      groups.forEach(function (g) {
+        var n = ((g && g.cards) || []).length;
+        if (!n) return;
+        if (g.group === 'manual' || g.group === 'paradiso') manual += n;
+        else if (g.group === 'precedent') prec += n;
+        else law += n; // law + subordinate
+      });
+    } else {
+      law = (r.laws || []).length;
+      prec = (r.precedents || []).length;
+      if (Number.isFinite(Number(r.directEvidenceCount))) manual = Number(r.directEvidenceCount) || 0;
+    }
+    return { manual: manual, law: law, precedent: prec };
+  }
+  function _basisTallyHtml(result, lang) {
+    var t = evidenceTally(result);
+    var parts = [];
+    if (t.manual > 0) parts.push(S('basisTallyManual', lang).replace('%s', String(t.manual)));
+    if (t.law > 0) parts.push(S('basisTallyLaw', lang).replace('%s', String(t.law)));
+    if (t.precedent > 0) parts.push(S('basisTallyPrecedent', lang).replace('%s', String(t.precedent)));
+    var line = parts.length ? parts.join(' · ') : S('basisTallyNone', lang);
+    return '<section class="lss-rsec lss-basis-tally">'
+      + '<h4 class="lss-rsec-title">' + escapeHtml(S('basisTallyTitle', lang)) + '</h4>'
+      + '<p class="lss-tally-line">' + escapeHtml(line) + '</p></section>';
+  }
+
+  // 관련 판례 relevance notice (437:37–41). Precedents in this product are never
+  // direct authority for an individual case, so the notice is unconditional
+  // whenever precedents are shown — it is not a per-result judgement.
+  function _precedentNoticeHtml(list, lang) {
+    if (!list || !list.length) return '';
+    return '<p class="lss-prec-note"><span class="lss-prec-tag" data-lss-relevance="analogy">'
+      + escapeHtml(lang === 'en' ? 'By analogy' : '비교·유추') + '</span> '
+      + escapeHtml(S('precedentAnalogyNote', lang)) + '</p>';
+  }
+
+  // Copy-the-questions action (437:68–69) for the questions to put to the
+  // authority. The payload is stashed as an attribute so the handler does not
+  // have to re-derive the list from rendered DOM text.
+  function _copyQuestionsHtml(items, lang) {
+    if (!items || !items.length) return '';
+    return '<button type="button" class="lss-copy-q" data-lss-copy-q="'
+      + escapeHtml(items.join('\n')) + '">' + escapeHtml(S('copyQuestions', lang)) + '</button>';
   }
   // Collapsible section (source drawer). Native <details> gives built-in
   // aria-expanded semantics and keyboard support (§7/§8). Open by default.
@@ -706,12 +886,11 @@
       }).join(' ') + '</span>';
     }
     function issueList(items) {
-      if (!items || !items.length) return '';
-      return '<ul class="lss-rlist">' + items.map(function (it) {
+      return _numberedList(items, function (it) {
         var why = it.whyItMatters
           ? ' <span class="lss-why">— ' + escapeHtml(S('whyItMattersLabel', lang)) + ': ' + escapeHtml(it.whyItMatters) + '</span>' : '';
-        return '<li>' + escapeHtml(it.issue || '') + why + basis(it.sourceIds) + '</li>';
-      }).join('') + '</ul>';
+        return escapeHtml(it.issue || '') + why + basis(it.sourceIds);
+      });
     }
     function ruleList(items) {
       if (!items || !items.length) return '';
@@ -739,16 +918,19 @@
     // Honest "unofficial / source may be Korean" notice (non-KO UI only).
     var tNotice = S('translatedSummaryNotice', lang);
     if (tNotice) html += '<p class="lss-synth-notice">' + escapeHtml(tNotice) + '</p>';
+    html += _questionEchoHtml(result.question, lang);
     if (syn.summary) html += _sec(S('synthSummary', lang), '<p class="lss-rnote">' + escapeHtml(syn.summary) + '</p>');
+    // 436:16 — what the sources establish, paired with what is still unknown.
+    html += _factsGridHtml(ruleList(syn.sourceBackedRules), _ul(syn.missingFacts), lang);
     html += _sec(S('secIssueMap', lang), issueList(syn.issueMap));
-    html += _sec(S('synthRules', lang), ruleList(syn.sourceBackedRules));
     html += _sec(S('secApplyPoints', lang), pointList(syn.applicationPoints));
     html += _sec(S('secRisks', lang), riskList(syn.riskFlags));
-    html += _sec(S('secMissing', lang), _ul(syn.missingFacts));
-    html += _sec(S('synthNextQ', lang), _ul(syn.nextQuestions));
+    html += _sec(S('synthNextQ', lang), _ul(syn.nextQuestions) + _copyQuestionsHtml(syn.nextQuestions, lang));
     html += _sec(S('secDocsToCheck', lang), _ul(syn.documentsToCheck));
     html += _sec(S('secLimits', lang), _ul(syn.limitations));
+    html += _precedentNoticeHtml(result.precedents, lang);
     html += _secDrawer(S('secSources', lang), _sourceCardsHtml(result, lang)); // always show source cards (collapsible drawer)
+    html += _basisTallyHtml(result, lang);
     var caution = syn.caution || result.disclaimer || S('disclaimer', lang);
     html += '<div class="lss-rcaution"><strong>' + escapeHtml(cautionLabel) + '</strong> ' + escapeHtml(caution) + '</div>';
     html += '</div>';
@@ -764,26 +946,31 @@
     html += '<div class="lss-rhead"><span class="lss-rdepth">' + escapeHtml(result.depthLabel || S(DEPTH_KEY[depth], lang)) + '</span>'
       + (result.depthAutoSelected ? '<span class="lss-rauto">' + escapeHtml(S('autoSuggested', lang)) + '</span>' : '') + '</div>';
 
+    html += _questionEchoHtml(result.question, lang);
+
     if (depth === 'fast') {
-      html += _sec(S('secIssues', lang), _ul(result.issues));
+      html += _sec(S('secIssues', lang), _numberedList(result.issues, function (t) { return escapeHtml(String(t == null ? '' : t)); }));
       html += _sec(S('secLawTerms', lang), _termChips(result.lawSearchTerms, 'laws'));
       html += _sec(S('secLaws', lang), _cards(result.laws, 'laws', lang));
     } else {
       if (depth === 'pro') html += '<p class="lss-rmemo">' + escapeHtml((result.headings && result.headings[0]) || '') + '</p>';
-      html += _sec(S('secIssues', lang), _ul(result.issues));
+      html += _sec(S('secIssues', lang), _numberedList(result.issues, function (t) { return escapeHtml(String(t == null ? '' : t)); }));
       html += _sec(S('secMissing', lang), _ul(result.missingFacts));
       html += _sec(S('secLawTerms', lang), _termChips(result.lawSearchTerms, 'laws'));
       html += _sec(S('secLaws', lang), _cards(result.laws, 'laws', lang));
-      var precInner = _termChips(result.precedentSearchTerms, 'precedents') + _cards(result.precedents, 'precedents', lang);
+      var precInner = _termChips(result.precedentSearchTerms, 'precedents')
+        + _precedentNoticeHtml(result.precedents, lang)
+        + _cards(result.precedents, 'precedents', lang);
       html += _sec(S('secPrecedents', lang), precInner);
       if (depth === 'pro') html += _sec(S('secApply', lang), '<p class="lss-rnote">' + escapeHtml(S('applyNote', lang)) + '</p>');
       html += _sec(S('secRisks', lang), _ul(result.riskFlags));
-      html += _sec(S('secNext', lang), _ul(result.nextChecks));
+      html += _sec(S('secNext', lang), _ul(result.nextChecks) + _copyQuestionsHtml(result.nextChecks, lang));
       if (depth === 'pro' && result.sourceGroups && result.sourceGroups.length) {
         html += _secDrawer(S('secSources', lang), _sourceCardsHtml(result, lang));
       }
     }
     html += _sec(S('secLimits', lang), _ul(result.limitations));
+    html += _basisTallyHtml(result, lang);
     html += '<div class="lss-rcaution"><strong>' + escapeHtml(cautionLabel) + '</strong> ' + escapeHtml(result.disclaimer || S('disclaimer', lang)) + '</div>';
     html += '</div>';
     return html;
@@ -877,6 +1064,8 @@
       + '<label class="lss-opt"><input type="checkbox" data-lss-opt-prec checked><span>' + escapeHtml(S('optPrecedents', lang)) + '</span></label>'
       + '<label class="lss-opt"><input type="checkbox" data-lss-opt-orig><span>' + escapeHtml(S('optShowOriginal', lang)) + '</span></label>'
       + '<label class="lss-synth-toggle lss-opt" data-lss-synth-wrap><input type="checkbox" data-lss-synth-toggle checked><span>' + escapeHtml(S('synthToggle', lang)) + '</span></label>'
+      // Filled by syncVisaContextUI() — empty until a caller supplies a status.
+      + '<span class="lss-ctx-slot" data-lss-ctx-slot></span>'
       + '</div>'
       + '<div class="lss-searchbar">'
       + '<textarea class="lss-rinput" data-lss-rinput placeholder="' + escapeHtml(S('researchPlaceholder', lang)) + '" aria-label="' + escapeHtml(S('researchInputAria', lang)) + '" maxlength="800" rows="2"></textarea>'
@@ -1003,6 +1192,9 @@
     FAILURE_STATES: FAILURE_STATES,
     panelHtml: panelHtml,
     buildDepthSelectorHtml: buildDepthSelectorHtml,
+    buildVisaContextChipHtml: buildVisaContextChipHtml,
+    normalizeVisaContext: normalizeVisaContext,
+    evidenceTally: evidenceTally,
     buildResearchHtml: buildResearchHtml,
     buildSynthesisHtml: buildSynthesisHtml,
     normalizeSynthesis: normalizeSynthesis,
@@ -1098,6 +1290,21 @@
       + '.lss-depth-btn:focus-visible{outline:2px solid var(--ac,#34D4A8);outline-offset:2px;}'
       + '.lss-depth-on{background:var(--acL,#163E36);border-color:var(--ac2,#17B388);color:var(--t1,#F3EEDF);}'
       + '.lss-depth-desc{font-size:.78rem;line-height:1.55;color:var(--t3,#8C8572);margin:.5rem 0 0;word-break:keep-all;}'
+      // UX-07 434:17 — two-line depth button (name over time estimate)
+      + '.lss-depth-btn{display:flex;flex-direction:column;align-items:flex-start;gap:.12rem;}'
+      + '.lss-depth-name{font-size:.85rem;font-weight:750;}'
+      + '.lss-depth-eta{font-size:.72rem;font-weight:650;color:var(--t3,#8C8572);}'
+      + '.lss-depth-on .lss-depth-eta{color:var(--t2,#C7BFA8);}'
+      + '.lss-depth-eta-note{font-size:.72rem;line-height:1.5;color:var(--t3,#8C8572);margin:.25rem 0 0;word-break:keep-all;}'
+      // UX-07 434:33 — status-context chip
+      + '.lss-ctx-chip{display:inline-flex;align-items:center;gap:.35rem;padding:.2rem .3rem .2rem .6rem;border-radius:999px;'
+      + 'border:1px solid var(--ac2,#17B388);background:var(--acL,#163E36);font-size:.78rem;font-weight:700;color:var(--t1,#F3EEDF);}'
+      + '.lss-ctx-label{color:var(--t2,#C7BFA8);font-weight:650;}'
+      + '.lss-ctx-code{font-weight:850;letter-spacing:.01em;}'
+      + '.lss-ctx-clear{min-width:26px;min-height:26px;border:0;border-radius:999px;cursor:pointer;background:transparent;'
+      + 'color:var(--t2,#C7BFA8);font:inherit;font-size:.95rem;line-height:1;}'
+      + '.lss-ctx-clear:hover{color:var(--t1,#F3EEDF);background:rgba(255,255,255,.08);}'
+      + '.lss-ctx-clear:focus-visible{outline:2px solid var(--ac,#34D4A8);outline-offset:1px;}'
       + '.lss-rinput{flex:1 1 auto;min-width:0;min-height:48px;padding:.6rem .85rem;border-radius:10px;resize:vertical;'
       + 'border:1.5px solid var(--bd,#2D5A50);background:var(--bg0,#0B2A24);color:var(--t1,#F3EEDF);font:600 16px/1.45 inherit;}'
       + '.lss-rinput:focus{outline:2px solid var(--ac,#34D4A8);outline-offset:1px;border-color:var(--ac,#34D4A8);}'
@@ -1112,6 +1319,26 @@
       + '.lss-rlist{margin:.1rem 0 .3rem;padding-left:1.15rem;}'
       + '.lss-rlist li{font-size:.86rem;line-height:1.6;color:var(--t1,#F3EEDF);margin:.15rem 0;word-break:keep-all;}'
       + '.lss-rnote{font-size:.83rem;line-height:1.6;color:var(--t2,#C7BFA8);margin:.1rem 0;word-break:keep-all;}'
+      // UX-07 436:8 result blocks
+      + '.lss-rquestion{font-size:.8rem;line-height:1.55;color:var(--t2,#C7BFA8);margin:.1rem 0 .5rem;word-break:keep-all;}'
+      + '.lss-rquestion-label{font-weight:800;color:var(--t3,#8C8572);}'
+      + '.lss-facts-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.6rem;}'
+      + '.lss-facts-col{border:1px solid var(--bd2,#224A41);border-radius:10px;padding:.55rem .7rem;min-width:0;}'
+      + '.lss-facts-title{font-size:.8rem;font-weight:800;color:var(--t2,#C7BFA8);margin:0 0 .3rem;}'
+      + '.lss-facts-empty{font-size:.83rem;color:var(--t3,#8C8572);margin:.1rem 0;}'
+      + '.lss-rnum{margin:.1rem 0 .3rem;padding-left:1.35rem;}'
+      + '.lss-rnum li{font-size:.86rem;line-height:1.6;color:var(--t1,#F3EEDF);margin:.15rem 0;word-break:keep-all;}'
+      + '.lss-rnum li::marker{font-weight:850;color:var(--ac,#34D4A8);}'
+      + '.lss-prec-note{display:flex;flex-wrap:wrap;align-items:baseline;gap:.4rem;font-size:.8rem;line-height:1.6;'
+      + 'color:var(--t2,#C7BFA8);margin:.1rem 0 .45rem;word-break:keep-all;}'
+      + '.lss-prec-tag{flex:0 0 auto;font-size:.72rem;font-weight:850;border-radius:999px;padding:.12rem .5rem;'
+      + 'border:1px dashed var(--bd,#2D5A50);color:var(--t3,#8C8572);}'
+      + '.lss-basis-tally{border-top:1px solid var(--bd2,#224A41);}'
+      + '.lss-tally-line{font-size:.82rem;line-height:1.6;color:var(--t2,#C7BFA8);margin:.1rem 0;word-break:keep-all;}'
+      + '.lss-copy-q{min-height:34px;margin:.3rem 0 .1rem;padding:.25rem .7rem;border-radius:999px;cursor:pointer;font:inherit;'
+      + 'font-size:.78rem;font-weight:700;border:1px solid var(--bd,#2D5A50);background:transparent;color:var(--ac,#34D4A8);}'
+      + '.lss-copy-q:hover{border-color:var(--ac,#34D4A8);}'
+      + '.lss-copy-q:focus-visible{outline:2px solid var(--ac,#34D4A8);outline-offset:2px;}'
       + '.lss-rterms{display:flex;flex-wrap:wrap;gap:.4rem;margin:.1rem 0 .4rem;}'
       + '.lss-rterm{min-height:34px;padding:.25rem .65rem;border-radius:999px;cursor:pointer;font:inherit;font-size:.8rem;font-weight:650;'
       + 'border:1px dashed var(--bd,#2D5A50);background:transparent;color:var(--ac,#34D4A8);}'
@@ -1218,6 +1445,10 @@
       + '.lss-depth-desc,.lss-positioning,.lss-results-note{font-size:.8rem;line-height:1.62;}'
       + '.lss-example{min-height:46px;padding:.55rem .75rem;font-size:.84rem;line-height:1.5;}'
       + '.lss-options{gap:.65rem 1rem;}.lss-opt{min-height:44px;font-size:.84rem;line-height:1.4;}'
+      // The two fact columns stack rather than shrink: 확인된/더 확인이 필요한 lines
+      // are full sentences, and half a phone width turns them into slivers.
+      + '.lss-facts-grid{grid-template-columns:minmax(0,1fr);}'
+      + '.lss-rnum li{line-height:1.65;}'
       + '.lss-rinput{min-height:76px;font-size:16px;line-height:1.55;}'
       + '.lss-card{padding:.9rem;border-radius:12px;}'
       + '.lss-card-title{font-size:.96rem;line-height:1.45;}'
@@ -1236,7 +1467,7 @@
   }
 
   /* ----------------------------------------------------------- runtime ---- */
-  var state = { kind: 'laws', lastQuery: '', researchDepth: 'basic', depthManual: false, lastResearch: '', useSynthesis: true, providerConfigured: null, includePrecedents: true, showOriginal: false, lastResearchJson: null };
+  var state = { kind: 'laws', lastQuery: '', researchDepth: 'basic', depthManual: false, lastResearch: '', useSynthesis: true, providerConfigured: null, includePrecedents: true, showOriginal: false, lastResearchJson: null, visaContext: '' };
   var root = null;
 
   function out() { return root && root.querySelector('[data-lss-out]'); }
@@ -1262,6 +1493,24 @@
     o.querySelectorAll('[data-lss-recover]').forEach(function (btn) {
       btn.addEventListener('click', function () {
         runRecovery(btn.getAttribute('data-lss-recover'));
+      });
+    });
+    // UX-07 437:68 — copy the questions to put to the authority. Confirmation
+    // is per-outcome: a clipboard the browser refused must not read "복사했어요".
+    o.querySelectorAll('[data-lss-copy-q]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var lang = lssLang();
+        var text = btn.getAttribute('data-lss-copy-q') || '';
+        var label = S('copyQuestions', lang);
+        function settle(key) {
+          btn.textContent = S(key, lang);
+          setTimeout(function () { btn.textContent = label; }, 1800);
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text)
+            .then(function () { settle('copyQuestionsDone'); })
+            .catch(function () { settle('copyQuestionsFail'); });
+        } else { settle('copyQuestionsFail'); }
       });
     });
   }
@@ -1356,6 +1605,31 @@
     syncSynthToggle();
   }
 
+  /** Paint the status-context chip from state (empty slot when there is none). */
+  function syncVisaContextUI() {
+    if (!root) return;
+    var slot = root.querySelector('[data-lss-ctx-slot]');
+    if (!slot) return;
+    slot.innerHTML = buildVisaContextChipHtml(state.visaContext, lssLang());
+    var clear = slot.querySelector('[data-lss-ctx-clear]');
+    if (clear) {
+      clear.addEventListener('click', function () {
+        state.visaContext = '';
+        syncVisaContextUI();
+        focusInput('[data-lss-rinput]');
+      });
+    }
+  }
+
+  /**
+   * Set the status context a handoff supplied. Rejected values clear the chip
+   * rather than displaying unvalidated text next to a "현재 체류자격" label.
+   */
+  function setVisaContext(code) {
+    state.visaContext = normalizeVisaContext(code);
+    syncVisaContextUI();
+  }
+
   function syncSynthToggle() {
     if (!root) return;
     var wrap = root.querySelector('[data-lss-synth-wrap]');
@@ -1398,8 +1672,14 @@
   }
 
   function doResearch(question) {
-    var q = String(question == null ? '' : question).trim().slice(0, 800);
-    if (!q) return;
+    var raw = String(question == null ? '' : question).trim();
+    if (!raw) return;
+    // The status-context chip is part of what is being asked, so it is folded
+    // into the request — but visibly, through the chip, instead of silently
+    // rewriting the user's text. The guard keeps a re-run (recovery, retry)
+    // from stacking the code again.
+    var ctx = state.visaContext;
+    var q = ((ctx && raw.indexOf(ctx) === -1) ? (ctx + ' ' + raw) : raw).slice(0, 800);
     state.lastResearch = q;
     var lang = lssLang();
     // Deep research can take longer (multiple source searches) — surface the
@@ -1637,6 +1917,7 @@
     root.innerHTML = panelHtml(lang);
     wire();
     syncDepthUI();
+    syncVisaContextUI();
     // Re-open when this is the selected workspace route.  Previously the
     // sidebar took users to the research screen and then made them discover a
     // second collapsed disclosure before they could search.
@@ -1659,6 +1940,13 @@
     if (!root) return false;
     if (!root.classList.contains('lss-root')) root.classList.add('lss-root');
     injectStyles();
+    // index.html's Waymaker CTA hands the status over in the URL
+    // (buildWaymakerHandoffUrl → ?visa_code=…). Picking it up here is what makes
+    // the chip appear on a cold load rather than only after an in-page handoff.
+    try {
+      var p = new URLSearchParams(location.search);
+      state.visaContext = normalizeVisaContext(p.get('visa_code'));
+    } catch (e) { /* non-fatal: no context rather than a wrong one */ }
     render();
     return true;
   }
@@ -1686,8 +1974,9 @@
     if (bodyEl) bodyEl.removeAttribute('hidden');
     if (toggleEl) toggleEl.setAttribute('aria-expanded', 'true');
     var q = String(opts.question || opts.query || '').trim();
-    var code = String(opts.visaCode || '').trim();
-    if (code && q.indexOf(code) === -1) q = code + ' ' + q;
+    // The status code becomes a visible, removable chip (434:33) rather than an
+    // invisible prefix on the question. doResearch() still sends it upstream.
+    setVisaContext(opts.visaCode);
     if (opts.depth && DEPTHS.indexOf(opts.depth) !== -1) { state.researchDepth = opts.depth; state.depthManual = true; }
     setTab('research');
     var ri = root.querySelector('[data-lss-rinput]');
