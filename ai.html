@@ -4149,5 +4149,21 @@ select:focus-visible {
     })();
     </script>
     <script src="assets/js/waymaker-workspace.js?v=20260703-chat-first"></script>
+    <script>
+    /* Waymaker 랜딩(waymaker.html)의 입력창에서 넘어온 질문을 채팅 입력창에
+       미리 채운다. `q` 가 없으면 동작이 이전과 완전히 동일하다 — 전송은 하지
+       않고 채우기만 한다(사용자가 확인·수정한 뒤 보내도록). */
+    (function () {
+        'use strict';
+        var q;
+        try { q = (new URLSearchParams(location.search).get('q') || '').trim(); } catch (e) { return; }
+        if (!q) return;
+        var box = document.getElementById('aiQ');
+        if (!box) return;
+        box.value = q.slice(0, 500);
+        box.dispatchEvent(new Event('input', { bubbles: true }));
+        try { box.focus({ preventScroll: true }); box.setSelectionRange(box.value.length, box.value.length); } catch (e) {}
+    })();
+    </script>
 </body>
 </html>
