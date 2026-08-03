@@ -1176,14 +1176,14 @@
       "titleKo": "방문동거",
       "titleEn": "Visiting and Joining Family",
       "manualSource": {
-        "manual": "visa_manual_2026_05_21",
+        "manual": "visa_manual_2026_07_31",
         "sectionTitle": "§29 방문동거(F-1)",
         "pages": [
           297,
           307
         ],
-        "sourceRevisionDate": "2026-05-21",
-        "extractionConfidence": "medium"
+        "sourceRevisionDate": "2026-07-31",
+        "extractionConfidence": "high"
       },
       "issuanceSummaryKo": "방문동거(F-1)는 방문·동거 목적과 초청자·가족관계·체류목적 입증이 중요한 가족·동거 계열 항목입니다.",
       "issuanceSummaryEn": "F-1 focuses on visit/cohabitation purpose and evidence of inviter, family relationship, and stay purpose.",
@@ -1234,11 +1234,73 @@
           ],
           "sourceRefs": [
             {
-              "manual": "visa_manual_2026_05_21",
+              "manual": "visa_manual_2026_07_31",
               "sectionTitle": "§ 방문동거(F-1)",
               "pageStart": 297,
               "pageEnd": 307,
-              "sourceRevisionDate": "2026-05-21"
+              "sourceRevisionDate": "2026-07-31",
+              "extractionConfidence": "high"
+            }
+          ]
+        },
+        {
+          "id": "f-1-51-international-adoption",
+          "type": "consular_discretion",
+          "labelKo": "국제 입양 외국인(F-1-51) 사증발급",
+          "labelEn": "International adoption child (F-1-51)",
+          "appliesToKo": "외국에 상거소를 두고 국내 입양 절차가 진행 중이거나 완료된 18세 미만 외국국적 아동이 사증을 신청하는 경우입니다.",
+          "appliesToEn": "For a foreign-national child under 18 habitually resident abroad whose Korean adoption procedure is pending or complete.",
+          "actor": "applicant",
+          "whereToApply": "overseas_mission",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "입양 절차 진행 여부와 아동·양부모의 신원자료를 확인합니다.",
+              "en": "Confirm the adoption stage and identity records for the child and adoptive parents."
+            },
+            {
+              "order": 2,
+              "ko": "양국의 국제입양 성립·진행을 입증하는 서류를 준비합니다.",
+              "en": "Prepare evidence that the intercountry adoption has been established or is in progress."
+            },
+            {
+              "order": 3,
+              "ko": "아포스티유 또는 영사확인과 번역문 요건을 갖춰 관할 재외공관에 제출합니다.",
+              "en": "Meet apostille or consular-authentication and translation requirements, then submit to the competent mission."
+            }
+          ],
+          "documents": {
+            "common": [
+              "여권",
+              "사증발급신청서",
+              "표준규격사진 1매",
+              "수수료"
+            ],
+            "additional": [
+              "국제입양절차 진행 협의서 사본(출신국 또는 보건복지부 발급) 또는 협약준수입양증명서(체약국은 출신국 또는 보건복지부 발급)",
+              "출생증명서(아동의 출신국 발급)",
+              "양부모의 가족관계증명서(상세본)와 신분증",
+              "체류지 입증서류"
+            ],
+            "conditional": [
+              "해당 시 임시양육 허가 증명서 사본",
+              "전혼 자녀인 경우 양자의 가족관계 확인서류",
+              "만 14세 이상인 경우 주재국 정부 발행 범죄경력증명서(면제사유 있음)",
+              "결핵고위험국가의 경우 결핵진단서(6세 미만 면제)"
+            ]
+          },
+          "warnings": [
+            "해외 발급서류는 아포스티유 또는 대한민국 공관의 영사확인과 국문·영문 번역문을 갖추고, 원칙적으로 접수일 기준 6개월 이내 발급본을 제출합니다.",
+            "입양 절차가 진행 중이면 2년 단수사증, 완료된 경우에는 F-2-3 또는 F-5-3 지침을 적용합니다."
+          ],
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_07_31",
+              "sectionTitle": "§29 방문동거(F-1) — 국제 입양 외국인(F-1-51)",
+              "pageStart": 306,
+              "pageEnd": 307,
+              "sourceRevisionDate": "2026-07-31",
+              "extractionConfidence": "high"
             }
           ]
         }
@@ -2839,17 +2901,17 @@
       "titleKo": "예술흥행",
       "titleEn": "Arts/Entertainment",
       "manualSource": {
-        "manual": "visa_manual_2026_05_21",
+        "manual": "visa_manual_2026_07_31",
         "sectionTitle": "§ 예술흥행(E-6)",
         "pages": [
           163,
           167
         ],
-        "sourceRevisionDate": "2026-05-21",
-        "extractionConfidence": "medium"
+        "sourceRevisionDate": "2026-07-31",
+        "extractionConfidence": "high"
       },
-      "issuanceSummaryKo": "예술흥행(E-6)는 2026.5 사증발급 안내매뉴얼 기준 제출서류를 안내합니다. 세부유형·국가/공관별 차이가 있을 수 있습니다.",
-      "issuanceSummaryEn": "Arts/Entertainment (E-6) issuance documents per the 2026.5 visa manual; details may vary by subtype and mission.",
+      "issuanceSummaryKo": "예술흥행(E-6)는 2026.7 사증발급 안내매뉴얼 기준 제출서류를 안내합니다. 호텔·유흥(E-6-2)은 경력요건과 면제기준을 별도로 확인해야 합니다.",
+      "issuanceSummaryEn": "Arts/Entertainment (E-6) issuance documents per the 2026.7 visa manual; E-6-2 has separate experience and exemption rules.",
       "issuanceModes": [
         {
           "type": "mixed",
@@ -2890,17 +2952,23 @@
             ],
             "conditional": [
               "연예활동계획서",
-              "자격증명서 또는 경력증명서",
+              "호텔·유흥(E-6-2): 자격증명서 또는 원칙적으로 3년 이상 경력증명서",
               "피초청인이 미성년자인 경우 법정대리인 동의서"
             ]
           },
+          "warnings": [
+            "E-6-2는 신청일 기준 과거 10년 이내 국내 경력을 인정하며, 국내에서 정상 근무한 2년 경력이 있는 경우 3년 경력요건을 2년으로 완화합니다.",
+            "형사범죄, 100만원 이상 범칙금 통고처분, 출국명령 또는 강제퇴거가 있으면 해당 외국인등록기간의 국내 경력은 인정되지 않습니다.",
+            "호텔·유흥(E-6-2) 체류사실이 확인되면 경력증명서 등을 면제할 수 있고 체류기간을 합산할 수 있습니다."
+          ],
           "sourceRefs": [
             {
-              "manual": "visa_manual_2026_05_21",
+              "manual": "visa_manual_2026_07_31",
               "sectionTitle": "§ 예술흥행(E-6)",
               "pageStart": 163,
               "pageEnd": 167,
-              "sourceRevisionDate": "2026-05-21"
+              "sourceRevisionDate": "2026-07-31",
+              "extractionConfidence": "high"
             }
           ]
         }

@@ -15645,12 +15645,9 @@
       {
         "code": "E-6-2",
         "name": "호텔유흥",
-        "addReq": "지자체장 추천서, 숙소 확인서.",
-        "addReqDocs": [
-          "doc_invitation",
-          "doc_accom"
-        ],
-        "note": "⚠ 인신매매 고위험.",
+        "addReq": "관광진흥법에 따른 호텔업시설·유흥업소 등에서 공연 또는 연예활동에 종사하는 호텔·유흥 분야 예술흥행 자격입니다.",
+        "addReqDocs": [],
+        "note": "⚠ 인신매매 고위험. 사증발급인정서 제출서류와 국내 체류허가 제출서류는 서로 다른 절차이므로 각각의 절차 안내를 확인해야 합니다.",
         "searchAliases": [
           "E-6-2",
           "E62"
@@ -15681,6 +15678,18 @@
             "needsManualReview": false,
             "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
             "sourceId": "stay_manual_2026_06_23_pdf"
+          },
+          {
+            "manualName": "사증민원",
+            "manualType": "visa",
+            "manualVersion": "2026.7",
+            "sourceDate": "2026-07-31",
+            "sourceFile": "backend/data/sources/manuals/260731_visa_manual_extracted.txt",
+            "pageRange": "예술흥행(E-6) 사증발급인정서 발급대상",
+            "section": "호텔·유흥(E-6-2) 경력요건",
+            "confidence": "manual_diff_verified_260731_hwp",
+            "needsManualReview": false,
+            "sourceId": "visa_manual_2026_07_31_hwp"
           }
         ],
         "status": "active",
@@ -16425,12 +16434,9 @@
       {
         "code": "E-6-2",
         "name": "호텔유흥",
-        "addReq": "지자체장 추천서, 숙소 확인서.",
-        "addReqDocs": [
-          "doc_invitation",
-          "doc_accom"
-        ],
-        "note": "⚠ 인신매매 고위험.",
+        "addReq": "관광진흥법에 따른 호텔업시설·유흥업소 등에서 공연 또는 연예활동에 종사하는 호텔·유흥 분야 예술흥행 자격입니다.",
+        "addReqDocs": [],
+        "note": "⚠ 인신매매 고위험. 사증발급인정서 제출서류와 국내 체류허가 제출서류는 서로 다른 절차이므로 각각의 절차 안내를 확인해야 합니다.",
         "searchAliases": [
           "E-6-2",
           "E62"
@@ -16461,6 +16467,18 @@
             "needsManualReview": false,
             "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
             "sourceId": "stay_manual_2026_06_23_pdf"
+          },
+          {
+            "manualName": "사증민원",
+            "manualType": "visa",
+            "manualVersion": "2026.7",
+            "sourceDate": "2026-07-31",
+            "sourceFile": "backend/data/sources/manuals/260731_visa_manual_extracted.txt",
+            "pageRange": "예술흥행(E-6) 사증발급인정서 발급대상",
+            "section": "호텔·유흥(E-6-2) 경력요건",
+            "confidence": "manual_diff_verified_260731_hwp",
+            "needsManualReview": false,
+            "sourceId": "visa_manual_2026_07_31_hwp"
           }
         ],
         "status": "active",
@@ -22703,7 +22721,7 @@
           "doc_fam_rel",
           "doc_address"
         ],
-        "note": "명칭·자격요건·제출서류를 2026.6 매뉴얼 해당 항목 기준으로 반영했습니다. 세부 가감은 관할 출입국·외국인관서에서 최종 확인하시기 바랍니다.",
+        "note": "2026.7 매뉴얼 기준으로 국제입양절차 진행 협의서와 협약준수입양증명서의 발급 주체를 구분해 반영했습니다. 체약국의 협약준수입양증명서는 출신국 또는 보건복지부 발급본을 인정합니다.",
         "searchAliases": [
           "F-1-51",
           "F151"
@@ -22714,12 +22732,11 @@
           {
             "manualName": "체류민원",
             "manualType": "stay",
-            "manualVersion": "2026.6",
-            "sourceDate": "2026-06-23",
-            "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-            "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-            "sourceId": "stay_manual_2026_06_23_pdf",
-            "confidence": "manual_reconciled_260623_pdf",
+            "manualVersion": "2026.7",
+            "sourceDate": "2026-07-31",
+            "sourceFile": "backend/data/sources/manuals/260731_stay_manual_extracted.txt",
+            "sourceId": "stay_manual_2026_07_31_hwp",
+            "confidence": "manual_diff_verified_260731_hwp",
             "needsManualReview": false,
             "pageRange": "p. 351",
             "section": "11. 국제 입양 외국인(국내로 입양 아동, F-1-51)에 대한 체류자격 변경허가"
@@ -22727,12 +22744,11 @@
           {
             "manualName": "체류민원",
             "manualType": "stay",
-            "manualVersion": "2026.6",
-            "sourceDate": "2026-06-23",
-            "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-            "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-            "sourceId": "stay_manual_2026_06_23_pdf",
-            "confidence": "manual_reconciled_260623_pdf",
+            "manualVersion": "2026.7",
+            "sourceDate": "2026-07-31",
+            "sourceFile": "backend/data/sources/manuals/260731_stay_manual_extracted.txt",
+            "sourceId": "stay_manual_2026_07_31_hwp",
+            "confidence": "manual_diff_verified_260731_hwp",
             "needsManualReview": false,
             "pageRange": "p. 352",
             "section": "다. 제출 서류 (F-1-51)"
@@ -22740,12 +22756,11 @@
           {
             "manualName": "사증민원",
             "manualType": "visa",
-            "manualVersion": "2026.6",
-            "sourceDate": "2026-06-17",
-            "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
-            "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
-            "sourceId": "visa_manual_2026_06_17_pdf",
-            "confidence": "manual_reconciled_260617_pdf",
+            "manualVersion": "2026.7",
+            "sourceDate": "2026-07-31",
+            "sourceFile": "backend/data/sources/manuals/260731_visa_manual_extracted.txt",
+            "sourceId": "visa_manual_2026_07_31_hwp",
+            "confidence": "manual_diff_verified_260731_hwp",
             "needsManualReview": false,
             "pageRange": "p. 306",
             "section": "9. 국제 입양 외국인(국내로 입양 아동, F-1-51)에 대한 사증발급"
@@ -22973,6 +22988,49 @@
             "statusCode": "F-1-16"
           },
           {
+            "id": "f-1-51-international-adoption-status-change",
+            "labelKo": "국제 입양 외국인(F-1-51) 체류자격 변경허가",
+            "scenarioKo": "국내 입양 절차가 진행 중이거나 완료된 18세 미만 외국국적 아동이 무사증 또는 단기방문(C-3)으로 입국한 뒤 F-1-51로 변경하는 경우",
+            "requiredDocs": {
+              "commonDocs": [],
+              "requiredDocs": [
+                "여권, 통합신청서, 표준규격사진 1매, 수수료",
+                "국제입양절차 진행 협의서 사본(출신국 또는 보건복지부 발급) 또는 협약준수입양증명서(체약국은 출신국 또는 보건복지부 발급)",
+                "출생증명서(아동의 출신국 발급)",
+                "양부모의 가족관계증명서(상세본)와 신분증",
+                "doc_residence_proof_generic"
+              ],
+              "additionalDocs": [],
+              "conditionalDocs": [
+                "해당 시 임시양육 허가 증명서 사본",
+                "전혼 자녀인 경우 양자의 가족관계 확인서류",
+                "해당 시 재학증명서 등 재학 중임을 확인할 수 있는 서류",
+                "만 14세 이상인 경우 주재국 정부 발행 범죄경력증명서(면제사유 있음)",
+                "결핵고위험국가의 경우 결핵진단서(사증발급 시 제출했거나 6세 미만이면 면제)"
+              ]
+            },
+            "manualRefs": [
+              {
+                "manualName": "체류민원",
+                "manualType": "stay",
+                "manualVersion": "2026.7",
+                "sourceDate": "2026-07-31",
+                "sourceFile": "backend/data/sources/manuals/260731_stay_manual_extracted.txt",
+                "pageRange": "p. 351",
+                "section": "11. 국제 입양 외국인(국내로 입양 아동, F-1-51)에 대한 체류자격 변경허가",
+                "confidence": "manual_diff_verified_260731_hwp",
+                "needsManualReview": true,
+                "reviewReason": "260731 HWP 본문과 직전판의 변경 문구는 행 단위 대조했지만, 배포용 HWP의 페이지 번호는 새 PDF로 재인증하지 못해 페이지 로케이터 검토 상태를 유지합니다.",
+                "sourceId": "stay_manual_2026_07_31_hwp"
+              }
+            ],
+            "notes": [
+              "입양 절차 진행 중인 아동은 2년, 입양 절차가 완료된 경우에는 거주(F-2-3) 또는 영주(F-5-3) 지침을 적용합니다.",
+              "해외 발급 서류는 아포스티유 또는 대한민국 공관 영사확인과 국문·영문 번역문을 갖추고 접수일 기준 6개월 이내 발급본을 제출합니다."
+            ],
+            "statusCode": "F-1-51"
+          },
+          {
             "id": "f-1-52-prior-marriage-child-status-change",
             "labelKo": "결혼이민자 전혼관계 출생 미성년 자녀(F-1-52) 체류자격 변경허가",
             "scenarioKo": "혼인관계가 유지 중인 결혼이민자의 전혼관계 출생 친생 미성년 자녀가 F-1-52로 변경하는 경우",
@@ -23117,6 +23175,44 @@
               "자녀가 취학연령인데 초청인이 취학의무를 이행하지 않을 경우 신청인의 체류기간 연장이 제한될 수 있습니다."
             ],
             "statusCode": "F-1-5"
+          },
+          {
+            "id": "f-1-51-international-adoption-extension",
+            "labelKo": "국제 입양 외국인(F-1-51) 체류기간 연장",
+            "scenarioKo": "입양 또는 국적취득 절차가 진행 중인 국내 체류 아동이 F-1-51 체류기간을 연장하는 경우",
+            "requiredDocs": {
+              "commonDocs": [
+                "통합신청서",
+                "여권",
+                "수수료",
+                "doc_residence_proof_generic",
+                "가족관계증명 서류"
+              ],
+              "requiredDocs": [],
+              "additionalDocs": [
+                "협약준수입양증명서 사본(체약국은 출신국 또는 보건복지부 발급) 또는 국내 법원의 입양허가 재판 진행 증빙(청구서·접수증 등)"
+              ],
+              "conditionalDocs": []
+            },
+            "manualRefs": [
+              {
+                "manualName": "체류민원",
+                "manualType": "stay",
+                "manualVersion": "2026.7",
+                "sourceDate": "2026-07-31",
+                "sourceFile": "backend/data/sources/manuals/260731_stay_manual_extracted.txt",
+                "pageRange": "방문동거(F-1) 체류기간 연장허가 장",
+                "section": "13. 국제 입양 외국인(국내로 입양 아동, F-1-51)",
+                "confidence": "manual_diff_verified_260731_hwp",
+                "needsManualReview": true,
+                "reviewReason": "260731 HWP 본문과 직전판의 변경 문구는 행 단위 대조했지만, 배포용 HWP의 페이지 번호는 새 PDF로 재인증하지 못해 페이지 로케이터 검토 상태를 유지합니다.",
+                "sourceId": "stay_manual_2026_07_31_hwp"
+              }
+            ],
+            "notes": [
+              "직전 체류허가 만료일부터 1년 이내로 허가하며, 국제입양법상 입양 자격을 유지해야 합니다."
+            ],
+            "statusCode": "F-1-51"
           }
         ]
       },
@@ -24476,7 +24572,7 @@
           "doc_fam_rel",
           "doc_address"
         ],
-        "note": "명칭·자격요건·제출서류를 2026.6 매뉴얼 해당 항목 기준으로 반영했습니다. 세부 가감은 관할 출입국·외국인관서에서 최종 확인하시기 바랍니다.",
+        "note": "2026.7 매뉴얼 기준으로 국제입양절차 진행 협의서와 협약준수입양증명서의 발급 주체를 구분해 반영했습니다. 체약국의 협약준수입양증명서는 출신국 또는 보건복지부 발급본을 인정합니다.",
         "searchAliases": [
           "F-1-51",
           "F151"
@@ -24487,12 +24583,11 @@
           {
             "manualName": "체류민원",
             "manualType": "stay",
-            "manualVersion": "2026.6",
-            "sourceDate": "2026-06-23",
-            "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-            "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-            "sourceId": "stay_manual_2026_06_23_pdf",
-            "confidence": "manual_reconciled_260623_pdf",
+            "manualVersion": "2026.7",
+            "sourceDate": "2026-07-31",
+            "sourceFile": "backend/data/sources/manuals/260731_stay_manual_extracted.txt",
+            "sourceId": "stay_manual_2026_07_31_hwp",
+            "confidence": "manual_diff_verified_260731_hwp",
             "needsManualReview": false,
             "pageRange": "p. 351",
             "section": "11. 국제 입양 외국인(국내로 입양 아동, F-1-51)에 대한 체류자격 변경허가"
@@ -24500,12 +24595,11 @@
           {
             "manualName": "체류민원",
             "manualType": "stay",
-            "manualVersion": "2026.6",
-            "sourceDate": "2026-06-23",
-            "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-            "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-            "sourceId": "stay_manual_2026_06_23_pdf",
-            "confidence": "manual_reconciled_260623_pdf",
+            "manualVersion": "2026.7",
+            "sourceDate": "2026-07-31",
+            "sourceFile": "backend/data/sources/manuals/260731_stay_manual_extracted.txt",
+            "sourceId": "stay_manual_2026_07_31_hwp",
+            "confidence": "manual_diff_verified_260731_hwp",
             "needsManualReview": false,
             "pageRange": "p. 352",
             "section": "다. 제출 서류 (F-1-51)"
@@ -24513,12 +24607,11 @@
           {
             "manualName": "사증민원",
             "manualType": "visa",
-            "manualVersion": "2026.6",
-            "sourceDate": "2026-06-17",
-            "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
-            "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
-            "sourceId": "visa_manual_2026_06_17_pdf",
-            "confidence": "manual_reconciled_260617_pdf",
+            "manualVersion": "2026.7",
+            "sourceDate": "2026-07-31",
+            "sourceFile": "backend/data/sources/manuals/260731_visa_manual_extracted.txt",
+            "sourceId": "visa_manual_2026_07_31_hwp",
+            "confidence": "manual_diff_verified_260731_hwp",
             "needsManualReview": false,
             "pageRange": "p. 306",
             "section": "9. 국제 입양 외국인(국내로 입양 아동, F-1-51)에 대한 사증발급"
@@ -40958,11 +41051,11 @@
       {
         "code": "F-2-R",
         "name": "지역특화형 우수인재 (지역우수인재)",
-        "addReq": "",
+        "addReq": "광역지자체장 추천, 국내 전문학사 이상 학위 또는 해당 광역지자체 생활임금 이상의 연소득, 5년 이상 추천지역 거주·취업·창업 의사, 기본소양과 품행 요건을 충족해야 합니다. 2026.7 개정 기본소양 기준은 사회통합프로그램 3단계 이상 이수(사전평가 4단계 이상 배정 포함) 또는 TOPIK 3급 이상입니다.",
         "addReqDocs": [
           "doc_local_recommendation"
         ],
-        "note": "지역특화형 비자 우수인재 主 체류자격.",
+        "note": "2026.7 개정으로 기본소양 기준이 종전 사회통합프로그램 4단계·사전평가 5단계·TOPIK 4급에서 각각 3단계·4단계·3급으로 완화되었습니다.",
         "nameKo": "지역특화형 우수인재 (지역우수인재)",
         "searchAliases": [
           "F-2-R",
@@ -40973,6 +41066,18 @@
         "status": "active",
         "needsManualReview": true,
         "manualRefs": [
+          {
+            "manualName": "체류민원",
+            "manualType": "stay",
+            "manualVersion": "2026.7",
+            "sourceDate": "2026-07-31",
+            "sourceFile": "backend/data/sources/manuals/260731_stay_manual_extracted.txt",
+            "pageRange": "지역특화형 우수인재(F-2-R) 장",
+            "section": "기본 요건 — 기본소양 및 제출서류",
+            "confidence": "manual_diff_verified_260731_hwp",
+            "needsManualReview": false,
+            "sourceId": "stay_manual_2026_07_31_hwp"
+          },
           {
             "manualName": "체류민원",
             "manualType": "stay",
@@ -41001,18 +41106,18 @@
           }
         ],
         "group": "우수인재",
-        "statusNote": "2026.6 official manual special-track code; track-specific procedure/document details require source-aware review before broad reuse.",
-        "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
+        "statusNote": "2026.7 공식 매뉴얼의 변경이력·기본요건 표·제출서류에서 확인한 완화 기준을 반영했습니다.",
+        "manualReviewReason": "2026-07-31 매뉴얼의 기본요건 표와 제출서류는 3단계·사전평가 4단계·TOPIK 3급으로 개정되었지만, 같은 장 뒤쪽의 기본소양 설명 한 곳에는 종전 4단계·5단계·4급 문구가 남아 있습니다. 변경이력과 개정 표를 우선하되 법무부의 정정 게시 여부를 계속 확인해야 합니다."
       },
       {
         "code": "E-7-4R",
         "name": "지역특화형 숙련기능인력 (지역숙련인력)",
-        "addReq": "",
+        "addReq": "광역지자체와 고용기업의 추천이 필수이며, 원칙적으로 현재 1년 이상 근무 중인 기업의 추천을 받아야 합니다. 직전 근무처의 휴·폐업, 폭언·폭행·임금체불 등 근로자 귀책 없는 사유가 객관적으로 입증되면 직전·현재 근무기간을 합산해 1년 이상인 경우 추천할 수 있습니다.",
         "addReqDocs": [
           "doc_local_recommendation",
           "doc_point_table"
         ],
-        "note": "지역특화형 비자 숙련기능인력 主 체류자격.",
+        "note": "현 근무처 3년 이상 계속 근무는 가점 항목이며, 출입국관리법 위반 행정처분 감점에는 과태료 처분을 포함하지 않습니다. E-7-4와 E-7-4R 동시고용 시 인구감소지역 소재 기업·뿌리기업·농림축산어업체의 내국인 고용이 71명을 초과하거나 인구감소(관심)지역의 내국인 고용이 135명 이상인 경우 등 E-7-4 지침이 더 유리하면 내국인 고용인원의 50% 이내인 E-7-4 허용인원 기준을 적용합니다.",
         "nameKo": "지역특화형 숙련기능인력 (지역숙련인력)",
         "searchAliases": [
           "E-7-4R",
@@ -41023,6 +41128,18 @@
         "status": "active",
         "needsManualReview": true,
         "manualRefs": [
+          {
+            "manualName": "체류민원",
+            "manualType": "stay",
+            "manualVersion": "2026.7",
+            "sourceDate": "2026-07-31",
+            "sourceFile": "backend/data/sources/manuals/260731_stay_manual_extracted.txt",
+            "pageRange": "지역특화형 숙련기능인력(E-7-4R) 장",
+            "section": "가점·감점 항목 및 고용기업 허용인원",
+            "confidence": "manual_diff_verified_260731_hwp",
+            "needsManualReview": false,
+            "sourceId": "stay_manual_2026_07_31_hwp"
+          },
           {
             "manualName": "체류민원",
             "manualType": "stay",
@@ -41051,8 +41168,8 @@
           }
         ],
         "group": "숙련기능인력",
-        "statusNote": "2026.6 official manual special-track code; track-specific procedure/document details require source-aware review before broad reuse.",
-        "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
+        "statusNote": "2026.7 공식 매뉴얼의 고용주 추천, 감점 제외 및 동시고용 특례 변경을 반영했습니다.",
+        "manualReviewReason": "2026-07-31 매뉴얼은 근로자 귀책 없는 이직 시 직전·현재 근무기간 합산 1년 규정을 고용기업 추천 예외로 두지만, 동일 문장이 현 근무처 3년 가점 설명 아래에도 남아 있어 문서 내부 배치가 모호합니다. 추천 예외로만 구조화했습니다."
       },
       {
         "code": "F-3-3R",
@@ -41639,11 +41756,11 @@
       {
         "code": "F-2-R",
         "name": "지역특화형 우수인재 (지역우수인재)",
-        "addReq": "",
+        "addReq": "광역지자체장 추천, 국내 전문학사 이상 학위 또는 해당 광역지자체 생활임금 이상의 연소득, 5년 이상 추천지역 거주·취업·창업 의사, 기본소양과 품행 요건을 충족해야 합니다. 2026.7 개정 기본소양 기준은 사회통합프로그램 3단계 이상 이수(사전평가 4단계 이상 배정 포함) 또는 TOPIK 3급 이상입니다.",
         "addReqDocs": [
           "doc_local_recommendation"
         ],
-        "note": "지역특화형 비자 우수인재 主 체류자격.",
+        "note": "2026.7 개정으로 기본소양 기준이 종전 사회통합프로그램 4단계·사전평가 5단계·TOPIK 4급에서 각각 3단계·4단계·3급으로 완화되었습니다.",
         "nameKo": "지역특화형 우수인재 (지역우수인재)",
         "searchAliases": [
           "F-2-R",
@@ -41654,6 +41771,18 @@
         "status": "active",
         "needsManualReview": true,
         "manualRefs": [
+          {
+            "manualName": "체류민원",
+            "manualType": "stay",
+            "manualVersion": "2026.7",
+            "sourceDate": "2026-07-31",
+            "sourceFile": "backend/data/sources/manuals/260731_stay_manual_extracted.txt",
+            "pageRange": "지역특화형 우수인재(F-2-R) 장",
+            "section": "기본 요건 — 기본소양 및 제출서류",
+            "confidence": "manual_diff_verified_260731_hwp",
+            "needsManualReview": false,
+            "sourceId": "stay_manual_2026_07_31_hwp"
+          },
           {
             "manualName": "체류민원",
             "manualType": "stay",
@@ -41682,18 +41811,18 @@
           }
         ],
         "group": "우수인재",
-        "statusNote": "2026.6 official manual special-track code; track-specific procedure/document details require source-aware review before broad reuse.",
-        "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
+        "statusNote": "2026.7 공식 매뉴얼의 변경이력·기본요건 표·제출서류에서 확인한 완화 기준을 반영했습니다.",
+        "manualReviewReason": "2026-07-31 매뉴얼의 기본요건 표와 제출서류는 3단계·사전평가 4단계·TOPIK 3급으로 개정되었지만, 같은 장 뒤쪽의 기본소양 설명 한 곳에는 종전 4단계·5단계·4급 문구가 남아 있습니다. 변경이력과 개정 표를 우선하되 법무부의 정정 게시 여부를 계속 확인해야 합니다."
       },
       {
         "code": "E-7-4R",
         "name": "지역특화형 숙련기능인력 (지역숙련인력)",
-        "addReq": "",
+        "addReq": "광역지자체와 고용기업의 추천이 필수이며, 원칙적으로 현재 1년 이상 근무 중인 기업의 추천을 받아야 합니다. 직전 근무처의 휴·폐업, 폭언·폭행·임금체불 등 근로자 귀책 없는 사유가 객관적으로 입증되면 직전·현재 근무기간을 합산해 1년 이상인 경우 추천할 수 있습니다.",
         "addReqDocs": [
           "doc_local_recommendation",
           "doc_point_table"
         ],
-        "note": "지역특화형 비자 숙련기능인력 主 체류자격.",
+        "note": "현 근무처 3년 이상 계속 근무는 가점 항목이며, 출입국관리법 위반 행정처분 감점에는 과태료 처분을 포함하지 않습니다. E-7-4와 E-7-4R 동시고용 시 인구감소지역 소재 기업·뿌리기업·농림축산어업체의 내국인 고용이 71명을 초과하거나 인구감소(관심)지역의 내국인 고용이 135명 이상인 경우 등 E-7-4 지침이 더 유리하면 내국인 고용인원의 50% 이내인 E-7-4 허용인원 기준을 적용합니다.",
         "nameKo": "지역특화형 숙련기능인력 (지역숙련인력)",
         "searchAliases": [
           "E-7-4R",
@@ -41704,6 +41833,18 @@
         "status": "active",
         "needsManualReview": true,
         "manualRefs": [
+          {
+            "manualName": "체류민원",
+            "manualType": "stay",
+            "manualVersion": "2026.7",
+            "sourceDate": "2026-07-31",
+            "sourceFile": "backend/data/sources/manuals/260731_stay_manual_extracted.txt",
+            "pageRange": "지역특화형 숙련기능인력(E-7-4R) 장",
+            "section": "가점·감점 항목 및 고용기업 허용인원",
+            "confidence": "manual_diff_verified_260731_hwp",
+            "needsManualReview": false,
+            "sourceId": "stay_manual_2026_07_31_hwp"
+          },
           {
             "manualName": "체류민원",
             "manualType": "stay",
@@ -41732,8 +41873,8 @@
           }
         ],
         "group": "숙련기능인력",
-        "statusNote": "2026.6 official manual special-track code; track-specific procedure/document details require source-aware review before broad reuse.",
-        "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
+        "statusNote": "2026.7 공식 매뉴얼의 고용주 추천, 감점 제외 및 동시고용 특례 변경을 반영했습니다.",
+        "manualReviewReason": "2026-07-31 매뉴얼은 근로자 귀책 없는 이직 시 직전·현재 근무기간 합산 1년 규정을 고용기업 추천 예외로 두지만, 동일 문장이 현 근무처 3년 가점 설명 아래에도 남아 있어 문서 내부 배치가 모호합니다. 추천 예외로만 구조화했습니다."
       },
       {
         "code": "F-3-3R",
