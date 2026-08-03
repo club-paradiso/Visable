@@ -5768,23 +5768,34 @@ def _run_research_precedent_retrieval(plan: Dict[str, Any], cfg) -> List[Dict[st
     return out[:8]
 
 
-@app.post(
-    "/api/legal/research",
-    dependencies=[Depends(rate_limit("legal_research", per_minute=4, per_day=60))],
-)
-async def legal_research_endpoint(req: LegalResearchRequest) -> Any:
-    """Deterministic, source-grounded legal research scaffold (no LLM).
+# ---------------------------------------------------------------------------
+# Shared research pipeline (UX-07 `Legal / Progress`, node 435:8).
+#
+# Both /api/legal/research and /api/legal/research/stream drain THIS generator,
+# so a streamed run and a buffered run cannot diverge. A second copy would let
+# the rules that keep synthesis grounded — the source packet and its validation —
+# be updated on one path only.
+#
+# A step is yielded only AFTER its stage ran, carrying that stage's real count,
+# so a progress event can never claim a finding that has not happened yet. That
+# is precisely what the frontend could not do before: the buffered endpoint had
+# no way to say "the statute search found 3".
+# ---------------------------------------------------------------------------
+LEGAL_RESEARCH_STEPS = ("issues", "manuals", "laws", "precedents", "citations", "memo")
 
-    Plans retrieval by research depth (fast / basic / pro), runs the budgeted
-    law/precedent searches via the OC-safe adapters, and returns a depth-
-    structured result: issues to verify, source-strength-labelled cards (grouped
-    by source type in pro), risk flags, missing facts, next checks, limitations,
-    and a disclaimer. It never fabricates citations, never states a legal
-    conclusion, and never infers facts the user did not provide.
-    """
-    question = (req.question or "").strip()[:_LEGAL_RESEARCH_MAX_QUESTION]
-    if not question:
-        return UTF8JSONResponse(status_code=400, content={"ok": False, "error": "empty_question"})
+
+async def _legal_research_pipeline(req: LegalResearchRequest, question: str):
+    _started = time.monotonic()
+
+    def _step(name: str, found: int, status: str = "done") -> Dict[str, Any]:
+        return {
+            "step": name,
+            "index": LEGAL_RESEARCH_STEPS.index(name) + 1,
+            "total": len(LEGAL_RESEARCH_STEPS),
+            "status": status,
+            "foundCount": int(found),
+            "elapsedMs": int((time.monotonic() - _started) * 1000),
+        }
 
     plan = legal_research.build_research_plan(
         question,
@@ -5795,15 +5806,8 @@ async def legal_research_endpoint(req: LegalResearchRequest) -> Any:
         include_manuals=req.includeManuals,
         locale=req.locale,
     )
-
-    cfg = load_grounding_config()
-    retrieval_available = bool(cfg.law_api_configured)
-    laws: List[Dict[str, Any]] = []
-    precs: List[Dict[str, Any]] = []
-    if retrieval_available:
-        laws = _run_research_law_retrieval(plan, cfg)
-        if plan.get("runPrecedents"):
-            precs = _run_research_precedent_retrieval(plan, cfg)
+    yield _step("issues", len(
+        plan.get("issuesKo" if plan.get("locale") == "ko" else "issuesEn") or []))
 
     paradiso_sources: List[Dict[str, Any]] = []
     hint = (req.visaStatusHint or "").strip()
@@ -5813,11 +5817,35 @@ async def legal_research_endpoint(req: LegalResearchRequest) -> Any:
             "strength": "background",
             "note": "Paradiso 구조화 데이터" if plan.get("locale") == "ko" else "Paradiso structured data",
         })
+    yield _step("manuals", len(paradiso_sources))
+
+    cfg = load_grounding_config()
+    retrieval_available = bool(cfg.law_api_configured)
+    laws: List[Dict[str, Any]] = []
+    precs: List[Dict[str, Any]] = []
+    if retrieval_available:
+        laws = _run_research_law_retrieval(plan, cfg)
+        yield _step("laws", len(laws))
+        if plan.get("runPrecedents"):
+            precs = _run_research_precedent_retrieval(plan, cfg)
+            yield _step("precedents", len(precs))
+        else:
+            # The caller turned precedents off. "Skipped" and "we looked and
+            # found none" are different claims and must not share a status.
+            yield _step("precedents", 0, status="skipped")
+    else:
+        # No law API configured: neither retrieval stage ran at all, which is
+        # again not the same as finding nothing.
+        yield _step("laws", 0, status="unavailable")
+        yield _step("precedents", 0, status="unavailable")
+
 
     result = legal_research.build_research_result(
         plan, law_results=laws, precedent_results=precs,
         paradiso_sources=paradiso_sources, retrieval_available=retrieval_available,
     )
+    yield _step("citations",
+                len(result.get("laws") or []) + len(result.get("precedents") or []))
 
     # ---- Optional source-grounded LLM synthesis (strictly after retrieval) ----
     # The deterministic result above is always the fallback. Synthesis runs only
@@ -5872,7 +5900,81 @@ async def legal_research_endpoint(req: LegalResearchRequest) -> Any:
                 result["synthesisFailureReason"] = reason
         # else: LLM unavailable/failed → leave synthesisStatus = "deterministic".
 
+    yield _step("memo", 1 if result.get("synthesis") else 0,
+                status="failed" if result.get("synthesisStatus") == "validation_failed" else "done")
+    yield {"__result__": result}
+
+
+@app.post(
+    "/api/legal/research",
+    dependencies=[Depends(rate_limit("legal_research", per_minute=4, per_day=60))],
+)
+async def legal_research_endpoint(req: LegalResearchRequest) -> Any:
+    """Deterministic, source-grounded legal research scaffold (no LLM).
+
+    Plans retrieval by research depth (fast / basic / pro), runs the budgeted
+    law/precedent searches via the OC-safe adapters, and returns a depth-
+    structured result: issues to verify, source-strength-labelled cards (grouped
+    by source type in pro), risk flags, missing facts, next checks, limitations,
+    and a disclaimer. It never fabricates citations, never states a legal
+    conclusion, and never infers facts the user did not provide.
+    """
+    question = (req.question or "").strip()[:_LEGAL_RESEARCH_MAX_QUESTION]
+    if not question:
+        return UTF8JSONResponse(status_code=400, content={"ok": False, "error": "empty_question"})
+
+    result = None
+    async for _rec in _legal_research_pipeline(req, question):
+        if isinstance(_rec, dict) and "__result__" in _rec:
+            result = _rec["__result__"]
     return result
+
+
+@app.post(
+    "/api/legal/research/stream",
+    dependencies=[Depends(rate_limit("legal_research", per_minute=4, per_day=60))],
+)
+async def legal_research_stream_endpoint(req: LegalResearchRequest) -> Any:
+    """The same research run as /api/legal/research, reported as it happens.
+
+    Frames: ``start`` -> ``step`` per stage -> ``done`` with the identical
+    payload the buffered endpoint returns. Both drain
+    `_legal_research_pipeline`, so the two cannot answer the same question
+    differently.
+
+    ``status`` separates the three things a stage can be: ``done`` (it ran),
+    ``skipped`` (the caller turned it off) and ``unavailable`` (the law API is
+    not configured) — because "found nothing" and "never ran" are different
+    claims about our coverage.
+    """
+    question = (req.question or "").strip()[:_LEGAL_RESEARCH_MAX_QUESTION]
+    if not question:
+        return UTF8JSONResponse(status_code=400, content={"ok": False, "error": "empty_question"})
+
+    async def _gen():
+        yield _sse("start", {"status": "running", "total": len(LEGAL_RESEARCH_STEPS),
+                             "steps": list(LEGAL_RESEARCH_STEPS)})
+        result = None
+        try:
+            async for rec in _legal_research_pipeline(req, question):
+                if isinstance(rec, dict) and "__result__" in rec:
+                    result = rec["__result__"]
+                else:
+                    yield _sse("step", rec)
+        except Exception:
+            # The buffered endpoint stays available, so report the failure
+            # rather than leaving the client on a spinner forever.
+            yield _sse("done", {"ok": False, "error": "search_failed",
+                                "reason": "pipeline_error"})
+            return
+        yield _sse("done", result if result is not None
+                   else {"ok": False, "error": "search_failed", "reason": "no_result"})
+
+    return StreamingResponse(
+        _gen(),
+        media_type="text/event-stream",
+        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+    )
 
 
 # Shared per-client limiter for ALL /api/debug/law-grounding* endpoints (H-1a).

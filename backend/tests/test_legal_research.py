@@ -272,5 +272,118 @@ class ResearchEndpointTests(unittest.TestCase):
         self.assertNotIn("test-oc", r.text)
 
 
+class ResearchProgressStreamTests(unittest.TestCase):
+    """UX-07 `Legal / Progress` (435:8) — per-stage progress events.
+
+    The frontend could not show per-step findings before because the buffered
+    endpoint had no way to say "the statute search found 3". These assert that
+    the stream says it, and says it only after the stage actually ran.
+    """
+
+    def setUp(self):
+        self._oc = os.environ.get("LAW_API_OC")
+        self._t = law_tools._default_transport
+        os.environ["LAW_API_OC"] = "test-oc"
+        self.client = TestClient(P.app)
+
+    def tearDown(self):
+        law_tools._default_transport = self._t
+        if self._oc is None:
+            os.environ.pop("LAW_API_OC", None)
+        else:
+            os.environ["LAW_API_OC"] = self._oc
+
+    def _stream(self, payload):
+        frames = []
+        with self.client.stream("POST", "/api/legal/research/stream", json=payload) as resp:
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn("text/event-stream", resp.headers.get("content-type", ""))
+            event = None
+            for line in resp.iter_lines():
+                if line.startswith("event: "):
+                    event = line[7:]
+                elif line.startswith("data: "):
+                    frames.append((event, json.loads(line[6:])))
+        return frames
+
+    def test_stream_emits_every_step_in_order(self):
+        law_tools._default_transport = _transport()
+        frames = self._stream({"question": SOPHISTICATED[0], "depth": "pro"})
+        self.assertEqual(frames[0][0], "start")
+        steps = [d for e, d in frames if e == "step"]
+        self.assertEqual(len(steps), len(P.LEGAL_RESEARCH_STEPS))
+        self.assertEqual([s["index"] for s in steps], list(range(1, len(steps) + 1)))
+        self.assertEqual([s["step"] for s in steps], list(P.LEGAL_RESEARCH_STEPS))
+        self.assertEqual(frames[-1][0], "done")
+
+    def test_every_step_carries_a_real_count_and_elapsed(self):
+        law_tools._default_transport = _transport()
+        for _event, data in self._stream({"question": SOPHISTICATED[0], "depth": "pro"}):
+            if _event != "step":
+                continue
+            self.assertIsInstance(data["foundCount"], int)
+            self.assertGreaterEqual(data["elapsedMs"], 0)
+            self.assertIn(data["status"], {"done", "skipped", "unavailable", "failed"})
+
+    def test_elapsed_is_monotonic_across_steps(self):
+        law_tools._default_transport = _transport()
+        elapsed = [d["elapsedMs"] for e, d in self._stream(
+            {"question": SOPHISTICATED[0], "depth": "pro"}) if e == "step"]
+        self.assertEqual(elapsed, sorted(elapsed))
+
+    def test_issue_step_reports_the_issues_actually_planned(self):
+        law_tools._default_transport = _transport()
+        frames = self._stream({"question": SOPHISTICATED[0], "depth": "pro"})
+        issues = next(d for e, d in frames if e == "step" and d["step"] == "issues")
+        done = next(d for e, d in frames if e == "done")
+        self.assertEqual(issues["foundCount"], len(done["issues"]))
+
+    def test_skipped_precedents_are_skipped_not_empty(self):
+        # "the caller turned it off" and "we looked and found none" are
+        # different claims and must not share a status.
+        law_tools._default_transport = _transport()
+        frames = self._stream({"question": "체류기간 연장 서류", "depth": "fast"})
+        prec = next(d for e, d in frames if e == "step" and d["step"] == "precedents")
+        self.assertEqual(prec["status"], "skipped")
+
+    def test_unconfigured_law_api_is_unavailable_not_empty(self):
+        os.environ.pop("LAW_API_OC", None)
+        client = TestClient(P.app)
+        frames = []
+        with client.stream("POST", "/api/legal/research/stream",
+                           json={"question": SOPHISTICATED[0], "depth": "pro"}) as resp:
+            event = None
+            for line in resp.iter_lines():
+                if line.startswith("event: "):
+                    event = line[7:]
+                elif line.startswith("data: "):
+                    frames.append((event, json.loads(line[6:])))
+        laws = next(d for e, d in frames if e == "step" and d["step"] == "laws")
+        self.assertEqual(laws["status"], "unavailable")
+
+    def test_streamed_and_buffered_runs_agree(self):
+        # Both drain the same pipeline, so the same question must not produce
+        # two different answers depending on which endpoint was called.
+        law_tools._default_transport = _transport()
+        buffered = self.client.post(
+            "/api/legal/research", json={"question": SOPHISTICATED[0], "depth": "pro"}).json()
+        law_tools._default_transport = _transport()
+        streamed = next(d for e, d in self._stream(
+            {"question": SOPHISTICATED[0], "depth": "pro"}) if e == "done")
+        for key in ("issues", "laws", "precedents", "depth", "mode", "disclaimer"):
+            self.assertEqual(streamed.get(key), buffered.get(key), key)
+
+    def test_empty_question_is_rejected_before_streaming(self):
+        r = self.client.post("/api/legal/research/stream", json={"question": "   "})
+        self.assertEqual(r.status_code, 400)
+
+    def test_oc_never_leaks_in_the_stream(self):
+        law_tools._default_transport = _transport()
+        with self.client.stream("POST", "/api/legal/research/stream",
+                                json={"question": SOPHISTICATED[2], "depth": "pro"}) as resp:
+            body = "".join(resp.iter_text())
+        self.assertNotIn("test-oc", body)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
