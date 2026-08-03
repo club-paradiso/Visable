@@ -538,27 +538,175 @@ _FEATURE_TITLES = {
 }
 
 
-def build_suggestions(query: str, intent: Dict[str, Any], detected: Dict[str, Any]) -> List[str]:
-    """Next-query suggestions. Deterministic, never fabricated codes."""
-    suggestions: List[str] = []
+# Suggestion row types, mirroring the `Search / Suggestion Row` design
+# component (UX-03, node 400:12). `recent_query` is rendered by the frontend
+# from client-side history; the backend never emits it, because the backend
+# does not — and should not — keep a record of what anyone searched for.
+SUGGEST_VISA_CODE = "visa_code"
+SUGGEST_VISA_STATUS = "visa_status"
+SUGGEST_PROCEDURE = "procedure"
+SUGGEST_LEGAL_SOURCE = "legal_source"
+SUGGEST_EMPLOYMENT_TOOL = "employment_tool"
+SUGGEST_RECENT_QUERY = "recent_query"
+SUGGEST_CORRECTION = "correction"
+
+SUGGESTION_TYPES = (
+    SUGGEST_VISA_CODE, SUGGEST_VISA_STATUS, SUGGEST_PROCEDURE,
+    SUGGEST_LEGAL_SOURCE, SUGGEST_EMPLOYMENT_TOOL, SUGGEST_RECENT_QUERY,
+    SUGGEST_CORRECTION,
+)
+
+# Category chip copy. Fixed strings — a suggestion never carries a generated
+# label, so there is nothing here a model could have invented.
+_SUGGEST_BADGES = {
+    SUGGEST_VISA_CODE: "체류자격",
+    SUGGEST_VISA_STATUS: "체류자격",
+    SUGGEST_PROCEDURE: "절차",
+    SUGGEST_LEGAL_SOURCE: "법령 출처",
+    SUGGEST_EMPLOYMENT_TOOL: "취업 도구",
+    SUGGEST_RECENT_QUERY: "최근 검색",
+    SUGGEST_CORRECTION: "추천 검색어",
+}
+
+
+def _suggestion_row(
+    kind: str,
+    query: str,
+    label: str,
+    sublabel: str = "",
+) -> Dict[str, Any]:
+    return {
+        "type": kind,
+        "query": query,
+        "label": label,
+        "sublabel": sublabel,
+        "badge": _SUGGEST_BADGES.get(kind, ""),
+    }
+
+
+def build_suggestion_rows(
+    query: str,
+    intent: Dict[str, Any],
+    detected: Dict[str, Any],
+    index: Optional[Dict[str, Dict[str, Any]]] = None,
+) -> List[Dict[str, Any]]:
+    """Typed next-query suggestions.
+
+    Every row is derived from the query, the intent rules, or the loaded visa
+    dataset. Nothing is generated: a secondary line only appears when the visa
+    record actually carries a name, and a correction row only appears when the
+    corrected code is present in the dataset. A code-shaped token we do not
+    have never becomes a suggestion — that would turn "we don't have this" into
+    "here it is".
+    """
+    index = index or {}
+    rows: List[Dict[str, Any]] = []
     recognized = detected.get("recognized") or []
+    unrecognized = detected.get("unrecognized") or []
+
+    # A code-shaped token that did not resolve, next to a code that did, means
+    # the input was degraded to a parent (D-2-99 -> D-2). Saying so is the whole
+    # point of the Correction row: it names what was typed and what we do have.
+    if unrecognized and recognized:
+        typed = unrecognized[0]
+        target = recognized[0]
+        rows.append(_suggestion_row(
+            SUGGEST_CORRECTION, target,
+            f"혹시 “{target}” 을(를) 찾으셨나요?",
+            f"입력하신 “{typed}” 은(는) 보유한 체류자격 목록에 없습니다",
+        ))
+
     if recognized:
         code = recognized[0]
-        suggestions += [f"{code} 체류기간 연장", f"{code} 필요 서류", f"{code} 자격변경"]
+        record = index.get(code) or {}
+        name = _record_label(record) if record else ""
+        # `_record_label` falls back to the code itself; a label identical to
+        # the code carries no information, so it is not shown as a subtitle.
+        sub = name if name and name != code else ""
+        is_sub = bool(record.get("_isSubcode"))
+        if is_sub:
+            # A subcode always names its parent, so the row can never be read
+            # as a standalone top-level 체류자격 (CLAUDE.md code hierarchy).
+            parent = record.get("_parentCode") or ""
+            parent_name = _record_label(index.get(parent) or {}) if parent else ""
+            if parent and parent_name and parent_name != parent:
+                detail = f"{parent} · {parent_name}의 세부 체류자격"
+            elif parent:
+                detail = f"{parent}의 세부 체류자격"
+            else:
+                detail = "세부 체류자격"
+        else:
+            detail = "체류자격 개요"
+        rows.append(_suggestion_row(
+            SUGGEST_VISA_STATUS if is_sub else SUGGEST_VISA_CODE,
+            code, code if not sub else f"{code} · {sub}", detail,
+        ))
+        for action, hint in (
+            ("체류기간 연장", "연장 신청 요건과 제출 서류"),
+            ("필요 서류", "신청 유형별 제출 서류"),
+            ("자격변경", "다른 체류자격으로 변경하는 절차"),
+        ):
+            rows.append(_suggestion_row(
+                SUGGEST_PROCEDURE, f"{code} {action}", f"{code} {action}", hint,
+            ))
+
     intent_name = intent.get("intent")
     if intent_name == INTENT_EMPLOYMENT_REPORTING:
-        suggestions += ["취업정보 신고 직종 코드", "근무처 변경 신고 기한"]
+        rows.append(_suggestion_row(
+            SUGGEST_EMPLOYMENT_TOOL, "취업정보 신고 직종 코드",
+            "취업정보 신고 직종 코드", "직종(KSCO) 코드 찾기",
+        ))
+        rows.append(_suggestion_row(
+            SUGGEST_EMPLOYMENT_TOOL, "근무처 변경 신고 기한",
+            "근무처 변경 신고 기한", "신고 대상과 기한 확인",
+        ))
     elif intent_name == INTENT_LEGAL_QUESTION:
-        suggestions += ["출입국관리법 제20조", "체류자격 외 활동 허가"]
+        rows.append(_suggestion_row(
+            SUGGEST_LEGAL_SOURCE, "출입국관리법 제20조",
+            "출입국관리법 제20조", "법령 원문으로 확인",
+        ))
+        rows.append(_suggestion_row(
+            SUGGEST_PROCEDURE, "체류자격 외 활동 허가",
+            "체류자격 외 활동 허가", "허가 요건과 절차",
+        ))
     elif intent_name == INTENT_UNKNOWN:
-        suggestions += ["체류기간 연장", "체류지 변경 신고", "D-2", "F-6"]
+        rows.append(_suggestion_row(
+            SUGGEST_PROCEDURE, "체류기간 연장", "체류기간 연장", "연장 신청 절차",
+        ))
+        rows.append(_suggestion_row(
+            SUGGEST_PROCEDURE, "체류지 변경 신고", "체류지 변경 신고", "주소 변경 신고 절차",
+        ))
+        for code in ("D-2", "F-6"):
+            record = index.get(code) or {}
+            name = _record_label(record) if record else ""
+            sub = name if name and name != code else ""
+            rows.append(_suggestion_row(
+                SUGGEST_VISA_CODE, code, code if not sub else f"{code} · {sub}",
+                "체류자격 개요",
+            ))
+
     seen: Set[str] = set()
-    out: List[str] = []
-    for item in suggestions:
-        if item not in seen:
-            seen.add(item)
-            out.append(item)
+    out: List[Dict[str, Any]] = []
+    for row in rows:
+        key = row["query"]
+        if key and key not in seen:
+            seen.add(key)
+            out.append(row)
     return out[:6]
+
+
+def build_suggestions(
+    query: str,
+    intent: Dict[str, Any],
+    detected: Dict[str, Any],
+    index: Optional[Dict[str, Dict[str, Any]]] = None,
+) -> List[str]:
+    """Next-query suggestions as plain strings.
+
+    Kept for callers that only need the query text. Derived from
+    :func:`build_suggestion_rows` so the two can never drift apart.
+    """
+    return [row["query"] for row in build_suggestion_rows(query, intent, detected, index)]
 
 
 def build_interpretation(
@@ -597,7 +745,8 @@ def run_unified_search(
     text = normalize_query(query)
     # Subcodes must be in the known set, otherwise a valid "D-2-1" would be
     # reported as an unrecognized token.
-    known_codes = set(build_visa_index(visa_data).keys())
+    visa_index = build_visa_index(visa_data)
+    known_codes = set(visa_index.keys())
 
     detected = detect_visa_codes(text, valid_main_codes, known_codes)
     intent = classify_intent(text, detected)
@@ -613,6 +762,7 @@ def run_unified_search(
         text, visa_data=visa_data, intent=intent, detected=detected,
         manual_hits=manual_hits, limit=limit,
     )
+    suggestion_rows = build_suggestion_rows(text, intent, detected, visa_index)
 
     return {
         "query": text,
@@ -620,7 +770,10 @@ def run_unified_search(
         "detectedVisaCodes": detected.get("recognized", []),
         "interpretation": build_interpretation(text, intent, detected),
         "organicResults": organic,
-        "suggestions": build_suggestions(text, intent, detected),
+        # Both shapes ship: `suggestionRows` drives the typed Suggestion Row UI,
+        # `suggestions` stays a plain string list for existing callers.
+        "suggestionRows": suggestion_rows,
+        "suggestions": [row["query"] for row in suggestion_rows],
         "manualEvidence": {
             "status": manual_hits.get("status", "not_queried"),
             "approvedCount": len(manual_hits.get("approved", []) or []),
@@ -643,5 +796,9 @@ __all__ = [
     "RESULT_MANUAL_CARD",
     "normalize_query", "normalize_visa_code", "split_visa_code",
     "detect_visa_codes", "classify_intent", "build_organic_results",
-    "build_suggestions", "build_interpretation", "run_unified_search",
+    "build_suggestions", "build_suggestion_rows", "build_interpretation",
+    "run_unified_search",
+    "SUGGESTION_TYPES", "SUGGEST_VISA_CODE", "SUGGEST_VISA_STATUS",
+    "SUGGEST_PROCEDURE", "SUGGEST_LEGAL_SOURCE", "SUGGEST_EMPLOYMENT_TOOL",
+    "SUGGEST_RECENT_QUERY", "SUGGEST_CORRECTION",
 ]

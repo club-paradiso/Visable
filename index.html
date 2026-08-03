@@ -867,6 +867,14 @@ body.searched .ft { opacity: 1; }
 .subcode-modal-head-stack { display: flex; flex-direction: column; gap: 0.3rem; min-width: 0; }
 .subcode-modal-eyebrow { font-size: 0.7rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ac); }
 .subcode-modal-parent { display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; font-size: 0.8rem; color: var(--t2); }
+/* UX-03 Result / Subcode Card (473:96): this view holds only sub-code-specific
+   requirements, so it states where the common ones actually are. Takes the
+   whole row so it is read as a scope statement, not another inline chip. */
+.subcode-modal-parent-scope {
+  flex-basis: 100%; margin-top: 0.3rem;
+  font-size: 0.78rem; line-height: 1.5; color: var(--t3);
+  word-break: keep-all; overflow-wrap: anywhere;
+}
 .subcode-modal-section { display: flex; flex-direction: column; gap: 0.5rem; padding-bottom: 0.9rem; border-bottom: 1px solid var(--bd2); }
 .subcode-modal-section:last-of-type { border-bottom: none; padding-bottom: 0; }
 .subcode-modal-h { margin: 0; font-size: 0.92rem; font-weight: 800; color: var(--t1); }
@@ -1011,6 +1019,50 @@ body.searched .ft { opacity: 1; }
 .jc2-badge { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.74rem; font-weight: 700; padding: 0.32rem 0.65rem; border-radius: var(--radius-full); border: 1px solid var(--bd); }
 .jc2-badge--trust { background: var(--acL); color: var(--ac2); border-color: var(--ac); }
 .jc2-badge--caution { background: color-mix(in srgb, var(--color-warning) 14%, var(--bg1)); color: var(--color-warning); border-color: color-mix(in srgb, var(--color-warning) 42%, var(--bd)); }
+/* UX-08 `Emp / Special States` (442:39). Advisory, not alarming: these are
+   "worth checking", not failures — so neutral surface with a per-item accent,
+   and each row carries its own next action. */
+.jc2-special { margin: var(--sp-3) 0 0; }
+.jc2-special[hidden] { display: none; }
+.jc2-special-h { margin: 0 0 var(--sp-2); font-size: 0.78rem; font-weight: 800; letter-spacing: 0.02em; color: var(--t3); }
+.jc2-special-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--sp-2); }
+.jc2-special-item {
+  display: flex; align-items: flex-start; gap: var(--sp-3);
+  padding: 0.7rem 0.85rem;
+  border: 1px solid var(--bd2); border-left: 3px solid var(--ac);
+  border-radius: var(--radius-md); background: var(--bg1);
+}
+/* Legally sensitive and arts/entertainment take the caution accent — they point
+   at an office rather than at a candidate list. */
+.jc2-special-item[data-jc-special="legally_sensitive"],
+.jc2-special-item[data-jc-special="arts_entertainment"] { border-left-color: var(--color-warning); }
+.jc2-special-ic { font-size: 1rem; line-height: 1.4; flex: none; }
+.jc2-special-tx { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; flex: 1; }
+.jc2-special-title { font-size: 0.85rem; font-weight: 750; color: var(--t1); word-break: keep-all; }
+.jc2-special-body { font-size: 0.78rem; line-height: 1.5; color: var(--t2); word-break: keep-all; overflow-wrap: anywhere; }
+.jc2-special-cta {
+  flex: none; align-self: center; padding: 0.35rem 0.7rem;
+  border: 1px solid var(--ac); border-radius: var(--radius-full);
+  background: transparent; color: var(--ac);
+  font-size: 0.76rem; font-weight: 750; cursor: pointer; font-family: inherit; white-space: nowrap;
+}
+.jc2-special-cta:hover, .jc2-special-cta:focus-visible { background: var(--ac); color: var(--bg1); }
+@media (max-width: 560px) {
+  .jc2-special-item { flex-wrap: wrap; }
+  .jc2-special-cta { align-self: flex-start; margin-left: calc(1rem + var(--sp-3)); }
+}
+
+/* UX-08 (442:99): "신고 대상 ≠ 취업 가능" — amber, always visible, never
+   dismissible. A reporting code is not a work permission. */
+.jc2-scope-warn {
+  margin: var(--sp-3) 0 0; padding: 0.7rem 0.85rem;
+  border: 1px solid color-mix(in srgb, var(--color-warning) 42%, var(--bd));
+  border-left-width: 4px;
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--color-warning) 10%, var(--bg1));
+  color: var(--t2); font-size: 0.82rem; line-height: 1.55;
+  word-break: keep-all; overflow-wrap: anywhere;
+}
 
 /* Guided checklist — 직종 → 업종 → 연간소득 → 하이코리아 최종 확인 */
 .jc2-checklist { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr; gap: var(--sp-2); }
@@ -11191,6 +11243,93 @@ button[data-keyword]:focus-visible {
   font-weight: 700 !important;
 }
 
+/* Result / Status Card `MatchReason=ParentOfExactCode` — Figma UX-03 (405:66).
+   Scopes the card: everything below belongs to the PARENT code, not to the
+   sub-code the user typed. Uses the global card tokens rather than the emerald
+   --us-* set, because this lives inside #rlist, not inside .us-layer. */
+.parent-scope-notice {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 0.35rem;
+  margin: 0 0 0.85rem; padding: 0.7rem 0.9rem;
+  border: 1px solid var(--bd2); border-left: 3px solid var(--ac);
+  border-radius: 10px; background: var(--bg2);
+}
+.parent-scope-badge {
+  padding: 0.15rem 0.5rem; border-radius: 999px;
+  font-size: 0.7rem; font-weight: 800; letter-spacing: 0.02em;
+  background: var(--ac); color: var(--bg1);
+}
+.parent-scope-body {
+  margin: 0; font-size: 0.82rem; line-height: 1.55; color: var(--t2);
+  word-break: keep-all; overflow-wrap: anywhere;
+}
+
+/* Search / Unified Input states — Figma UX-03 (node 394:203).
+   Loading swaps the submit arrow for spinner dots; Error adds a helper line
+   under the bar. `error` is distinct from "no results" on purpose. */
+#searchForm[data-us-search-state="loading"] .sbar-go svg { opacity: 0; }
+#searchForm[data-us-search-state="loading"] .sbar-go::after {
+  content: ""; position: absolute; inset: 0; margin: auto;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: currentColor;
+  animation: usSbarPulse 1s ease-in-out infinite;
+}
+#searchForm[data-us-search-state="loading"] .sbar-go { position: relative; }
+@keyframes usSbarPulse {
+  0%, 100% { opacity: 0.25; transform: scale(0.7); }
+  50% { opacity: 1; transform: scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  #searchForm[data-us-search-state="loading"] .sbar-go::after { animation: none; opacity: 0.8; }
+}
+/* The note sits in #searchForm, outside `.us-layer`, so the layer's --us-amber
+   is not in scope here; the literal is the fallback, not a second source of
+   truth. Keep it in step with --us-amber if that token changes. */
+.us-sbar-note {
+  margin: 0.4rem 0 0; padding: 0 0.2rem;
+  font-size: 12.5px; line-height: 1.5;
+  color: var(--us-amber, #b45309); word-break: keep-all;
+}
+#searchForm[data-us-search-state="error"] .sbar {
+  border-color: color-mix(in srgb, var(--us-amber, #b45309) 45%, transparent);
+}
+body[data-theme="dark"] .us-sbar-note { color: #f0b357; }
+
+/* Suggestion Row inside the autocomplete dropdown.
+   The dropdown is a translucent dark surface over the hero, so it takes the
+   design's Dark theme rather than the light `.us-layer` palette. The rules
+   above set `.auto-item * { background: transparent !important }` to force
+   contrast; the avatar and category chip have to opt back out of that, which
+   is why these declarations carry `!important` too. */
+.auto-item.us-sug {
+  --us-sug-tint: rgba(244, 238, 224, 0.62);
+  position: relative !important;
+  min-height: 56px !important;
+  gap: 12px !important;
+}
+.auto-item.us-sug[data-us-suggest-type="visa_code"],
+.auto-item.us-sug[data-us-suggest-type="visa_status"],
+.auto-item.us-sug[data-us-suggest-type="procedure"] { --us-sug-tint: #7dd8b8; }
+.auto-item.us-sug[data-us-suggest-type="legal_source"] { --us-sug-tint: #b3bef8; }
+.auto-item.us-sug[data-us-suggest-type="employment_tool"] { --us-sug-tint: #f0a08c; }
+.auto-item.us-sug .us-sug-avatar {
+  background: color-mix(in srgb, var(--us-sug-tint) 18%, transparent) !important;
+  color: var(--us-sug-tint) !important;
+}
+.auto-item.us-sug .us-sug-avatar svg { color: var(--us-sug-tint) !important; }
+.auto-item.us-sug .us-sug-badge {
+  background: color-mix(in srgb, var(--us-sug-tint) 14%, transparent) !important;
+  color: var(--us-sug-tint) !important;
+  font-weight: 600 !important;
+}
+.auto-item.us-sug .us-sug-title { font-weight: 700 !important; }
+.auto-item.us-sug .us-sug-sub {
+  color: rgba(244, 238, 224, 0.66) !important;
+  font-weight: 400 !important;
+}
+@media (max-width: 560px) {
+  .auto-item.us-sug .us-sug-badge { display: none !important; }
+}
+
 /* Keep recommended keyword chips readable without turning them into radioactive buttons. */
 .lh,
 .qb,
@@ -13611,64 +13750,260 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
    Wide content scrolls inside its own container — the page body never scrolls
    horizontally at 390px.
    ══════════════════════════════════════════════════════════════════════ */
-.us-layer { display: block; margin: 0 auto var(--sp-4, 1rem); max-width: 100%; }
+/* Layer-level tokens — the emerald/neutral palette used by the UX-0x Figma
+   pages, confirmed as the standard. Scoped to `.us-layer` on purpose: the site's
+   global --ac is still indigo, and flipping that would restyle every screen.
+   Promoting these to global tokens is a separate change with a much larger
+   blast radius. */
+/* The layer's accent is an ALIAS of the site accent, not a second emerald.
+   UX-0x specifies #177361 and the site already uses #0B7357 — the same emerald
+   to the eye (both ~5.6:1 on --us-surface; the site value is marginally
+   better on every surface in both themes). Aliasing keeps one source of truth
+   and, unlike a duplicated hex, lets the layer follow alternate themes
+   (data-theme="archive_diary" etc.) instead of staying emerald inside a
+   palette that is deliberately not. The soft/chip tints derive from it for the
+   same reason. Figma's #177361 is the value that should move. */
+.us-layer {
+  --us-surface: #fffcf5;
+  --us-surface-alt: #f2f6f0;
+  --us-accent: var(--ac, #0B7357);
+  /* 8% / 6%: chosen so accent-on-soft keeps >=5:1, matching the headroom the
+     hand-picked #e5f5ed had. A heavier mix still passes AA but thins it. */
+  --us-accent-soft: color-mix(in srgb, var(--us-accent) 8%, var(--us-surface));
+  --us-accent-chip: color-mix(in srgb, var(--us-accent) 6%, var(--us-surface));
+  --us-link: var(--us-accent);
+  --us-ink: #1c1f29;
+  --us-muted: #4d5261;
+  --us-line: #e5e5ed;
+  --us-chip: #fffcf5;
+  --us-amber: #b45309;
+  --us-coral: #c2410c;
+  display: block; margin: 0 auto var(--sp-4, 1rem); max-width: 100%;
+}
+body[data-theme="dark"] .us-layer {
+  --us-surface: #0b2a24;
+  --us-surface-alt: #10322b;
+  /* Dark re-points the surfaces; the accent keeps following --ac, which the
+     dark theme has already switched to its own emerald. */
+  --us-accent-soft: color-mix(in srgb, var(--us-accent) 16%, var(--us-surface));
+  --us-accent-chip: color-mix(in srgb, var(--us-accent) 12%, var(--us-surface));
+  --us-ink: #f3eedf;
+  --us-muted: #9db5ad;
+  --us-line: #23564a;
+  --us-chip: #0b2a24;
+  --us-amber: #fbbf24;
+  --us-coral: #fb923c;
+}
+/* Skip link (UX-10 Behavior & A11y). Off-screen rather than `display:none` —
+   a hidden element is not focusable, and an unfocusable skip link is not a
+   skip link. It reveals itself on keyboard focus only. */
+.skip-link {
+  position: absolute; top: 0; left: 0; z-index: 10000;
+  transform: translateY(-120%);
+  padding: 0.7rem 1.1rem; border-radius: 0 0 10px 0;
+  background: var(--ac, #0B7357); color: #fff;
+  font-size: 0.9rem; font-weight: 800; text-decoration: none;
+  transition: transform 0.14s ease;
+}
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline: 2px solid var(--t1, #073B32); outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) { .skip-link { transition: none; } }
+
 .us-layer:empty { display: none; }
 body:not(.searched) .us-layer { display: none; }
 
+/* UX-10 Behavior & A11y — "긴 한국어 · word-break: keep-all — 단어 중간에서
+   끊기지 않게". The rest of the site already does this in 160+ places; this
+   layer was the outlier, so its prose is brought in line here rather than rule
+   by rule.
+
+   Scoped to the prose-bearing elements, not `.us-layer` wholesale: `keep-all`
+   inherits, and on an unbroken Latin run (a law.go.kr URL, a long code) it
+   forbids the only available break and the text overflows its card instead of
+   wrapping. `overflow-wrap: anywhere` is the escape hatch the repo already
+   pairs it with elsewhere (`.doc-chk-item`, `.doc-guide-drawer`) — Korean
+   phrases stay whole, and a URL with nowhere to break still breaks. */
+.us-interpret-value, .us-interpret-note, .us-warn,
+.us-ai-body, .us-ai-sublabel, .us-ai-confirm, .us-ai-banner,
+.us-ev-title, .us-ev-sub,
+.us-card-title, .us-card-summary,
+.us-sug-title, .us-sug-sub,
+.us-source-note {
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+/* Interpretation — Figma UX-03 `Search / Interpretation` (node 397:93).
+   Row layout, not a chip row: each row is label + value + a right-aligned
+   "수정" text button, separated by hairlines. */
 .us-interpret {
-  display: flex; flex-direction: column; gap: 0.55rem;
-  padding: 0.85rem 1rem; margin-bottom: 0.9rem;
-  background: var(--bg2); border: 1px solid var(--bd);
-  border-radius: 14px; box-shadow: var(--sh1);
+  display: flex; flex-direction: column; gap: 16px;
+  padding: 22px 24px 20px; margin-bottom: 0.9rem;
+  background: var(--us-surface); border: 1px solid var(--us-line);
+  border-radius: 18px;
 }
-.us-interpret-head { display: flex; flex-wrap: wrap; align-items: center; gap: 0.45rem; }
-.us-interpret-label { font-size: 0.82rem; font-weight: 700; color: var(--t2); }
+.us-interpret-title {
+  margin: 0; font-size: 12.5px; font-weight: 700; letter-spacing: 0.75px;
+  color: var(--us-muted);
+}
+.us-interpret-rows { display: flex; flex-direction: column; }
+.us-interpret-row {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; padding: 12px 0;
+}
+.us-interpret-row + .us-interpret-row { border-top: 1px solid var(--us-line); }
+.us-interpret-left { display: flex; flex-direction: column; gap: 5px; min-width: 0; flex: 1; }
+.us-interpret-label {
+  font-size: 11.5px; font-weight: 700; letter-spacing: 0.46px; color: var(--us-muted);
+}
+.us-interpret-value {
+  font-size: 14.5px; font-weight: 500; color: var(--us-ink); overflow-wrap: anywhere;
+}
 .us-interpret-edit {
-  margin-left: auto; min-height: 32px; padding: 0 0.7rem;
-  background: transparent; border: 1px solid var(--bd);
-  border-radius: 999px; color: var(--t2); font-size: 0.78rem; cursor: pointer;
+  flex: 0 0 auto; min-height: 32px; padding: 0 4px;
+  background: transparent; border: 0; color: var(--us-link);
+  font-size: 13px; font-weight: 700; cursor: pointer;
 }
-.us-interpret-edit:hover { border-color: var(--ac); color: var(--ac); }
+.us-interpret-edit:hover { text-decoration: underline; }
+.us-interpret-foot {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; flex-wrap: wrap; padding-top: 6px;
+}
+.us-interpret-note { font-size: 12px; color: var(--us-muted); }
+
+/* Confidence badge — Figma `Status / Confidence` (node 392:13). */
+.us-confidence {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 12px 5px 10px; border-radius: 999px;
+  background: var(--us-accent-soft); color: var(--us-ink);
+  font-size: 12px; font-weight: 700; white-space: nowrap;
+}
+.us-confidence-dot {
+  width: 7px; height: 7px; border-radius: 999px; background: var(--us-accent);
+  flex: 0 0 auto;
+}
+.us-confidence.is-medium .us-confidence-dot { background: var(--us-amber); }
+.us-confidence.is-low .us-confidence-dot { background: var(--us-coral); }
 
 .us-chip {
   display: inline-flex; align-items: center; min-height: 30px;
-  padding: 0 0.7rem; border-radius: 999px; border: 1px solid var(--bd);
-  background: var(--bg1); color: var(--t1);
-  font-size: 0.8rem; line-height: 1.2; cursor: pointer;
+  padding: 6px 12px; border-radius: 999px; border: 1px solid var(--us-line);
+  background: var(--us-chip); color: var(--us-ink);
+  font-size: 13px; line-height: 1.2; cursor: pointer;
   max-width: 100%; overflow-wrap: anywhere;
 }
-.us-chip--intent { background: var(--acL); border-color: var(--ac); color: var(--ac); font-weight: 700; cursor: default; }
-.us-chip--code { font-weight: 700; font-variant-numeric: tabular-nums; }
-.us-chip:hover:not(.us-chip--intent) { border-color: var(--ac); color: var(--ac); }
+.us-chip--intent { background: var(--us-accent-chip); border-color: transparent; color: var(--us-accent); font-weight: 700; cursor: default; }
+.us-chip--code {
+  font-weight: 700; font-variant-numeric: tabular-nums;
+  background: var(--us-accent-chip); border-color: transparent; color: var(--us-accent);
+}
+.us-chip:hover:not(.us-chip--intent) { border-color: var(--us-accent); color: var(--us-accent); }
 
 .us-warn {
   padding: 0.6rem 0.75rem; border-radius: 10px; font-size: 0.82rem; line-height: 1.5;
-  background: color-mix(in srgb, var(--ac) 8%, var(--bg1));
-  border: 1px solid color-mix(in srgb, var(--ac) 32%, var(--bd));
-  color: var(--t1);
+  background: color-mix(in srgb, var(--us-coral) 8%, var(--us-surface));
+  border: 1px solid color-mix(in srgb, var(--us-coral) 32%, var(--us-line));
+  color: var(--us-ink);
 }
 
+/* AI Overview — implements Figma UX-03 `AI Overview` (node 406:92).
+   That page uses a newer emerald/neutral palette than `01 Design System`, so the
+   values below are the design's own tokens, mapped to --us-* custom
+   properties. Dark mode re-points the same properties rather than duplicating
+   the rules. */
 .us-ai {
-  padding: 1rem 1.1rem; margin-bottom: 0.9rem;
-  background: var(--bg1); border: 1px solid var(--bd);
-  border-radius: 16px; box-shadow: var(--sh1);
+  padding: 20px 24px 18px 26px; margin-bottom: 0.9rem;
+  background: var(--us-surface);
+  border-left: 3px solid var(--us-accent);
+  border-radius: 18px;
+  display: flex; flex-direction: column; gap: 14px;
 }
-.us-ai.is-unavailable, .us-ai.is-empty { background: var(--bg2); opacity: 0.92; }
-.us-ai-head { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; flex-wrap: wrap; }
-.us-ai-title { margin: 0; font-size: 0.98rem; font-weight: 800; color: var(--t1); }
-.us-ai-body { margin: 0 0 0.6rem; font-size: 0.92rem; line-height: 1.65; color: var(--t1); overflow-wrap: anywhere; }
-.us-ai-confirm { margin: 0.5rem 0 0; font-size: 0.78rem; color: var(--t3); }
-.us-ai-actions { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 0.6rem; }
+.us-ai.is-unavailable, .us-ai.is-blocked { opacity: 0.94; }
+.us-ai-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 0.5rem; flex-wrap: wrap;
+}
+.us-ai-title {
+  margin: 0; font-size: 12.5px; font-weight: 700; letter-spacing: 0.75px;
+  color: var(--us-muted);
+}
+.us-ai-body {
+  margin: 0; font-size: 14.5px; line-height: 1.5; color: var(--us-ink);
+  overflow-wrap: anywhere;
+}
+.us-ai-sublabel {
+  margin: 0; font-size: 11.5px; font-weight: 700; letter-spacing: 0.46px;
+  color: var(--us-muted);
+}
+.us-ai-sublabel--warn { font-weight: 400; color: var(--us-amber); }
+.us-ai-confirm {
+  margin: 0; font-size: 11px; line-height: 1.45; color: var(--us-muted);
+}
+.us-ai-divider { height: 1px; background: var(--us-line); }
+
+/* Next steps — numbered circles per the design's `NextSteps` block. */
+.us-ai-steps { display: flex; flex-direction: column; gap: 8px; }
+.us-ai-step-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.us-ai-step { display: flex; align-items: center; gap: 9px; }
+.us-ai-step-num {
+  flex: 0 0 auto; width: 18px; height: 18px; border-radius: 999px;
+  background: var(--us-accent-soft); color: var(--us-accent);
+  font-size: 10.5px; font-weight: 700;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.us-ai-step-label { font-size: 13.5px; color: var(--us-ink); overflow-wrap: anywhere; }
+
+/* Source chips. `is-muted` marks a source that could not be retrieved — it is
+   dimmed, never removed, so the evidence set never looks larger than it is. */
+.us-ai-sources { display: flex; flex-direction: column; gap: 9px; }
+.us-ai-srcs { display: flex; flex-wrap: wrap; gap: 8px; }
+.us-ai-src {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 6px 12px 6px 11px; border-radius: 999px;
+  background: var(--us-chip); border: 1px solid var(--us-line);
+  font-size: 12px; font-weight: 500; color: var(--us-ink);
+  max-width: 100%; overflow-wrap: anywhere;
+}
+.us-ai-src-dot {
+  width: 6px; height: 6px; border-radius: 999px; background: var(--us-accent);
+  flex: 0 0 auto;
+}
+.us-ai-src.is-muted { opacity: 0.55; }
+.us-ai-src.is-muted .us-ai-src-dot { background: var(--us-muted); }
+
+/* State banners: amber = official confirmation, coral = citation failure. */
+.us-ai-banner {
+  padding: 10px 12px; border-radius: 10px; font-size: 12.5px; line-height: 1.5;
+  border: 1px solid currentColor;
+}
+.us-ai-banner-title { font-weight: 700; }
+.us-ai-banner-body { font-weight: 400; color: var(--us-ink); }
+.us-ai-banner--confirm { color: var(--us-amber); background: color-mix(in srgb, currentColor 8%, transparent); }
+.us-ai-banner--citation { color: var(--us-coral); background: color-mix(in srgb, currentColor 8%, transparent); }
+
+.us-ai-actions { display: flex; flex-wrap: wrap; gap: 0.45rem; }
 .us-ai-action {
-  min-height: 38px; padding: 0 0.9rem; border-radius: 10px;
-  border: 1px solid var(--bd); background: var(--bg2); color: var(--t1);
-  font-size: 0.83rem; font-weight: 700; cursor: pointer;
+  min-height: 40px; padding: 11px 16px 11px 18px; border-radius: 999px;
+  border: 1px solid var(--us-line); background: transparent;
+  color: var(--us-ink); font-size: 13.5px; font-weight: 700; cursor: pointer;
 }
-.us-ai-action:hover { border-color: var(--ac); color: var(--ac); }
+.us-ai-action--cta { border: 1.5px solid var(--us-accent); color: var(--us-accent); }
+.us-ai-action:hover { border-color: var(--us-accent); color: var(--us-accent); }
+
+/* Streaming caret — the design's "작성중·커서" affordance. */
+.us-ai-caret {
+  display: inline-block; width: 2px; height: 1em; margin-left: 2px;
+  vertical-align: text-bottom; background: var(--us-accent);
+  animation: usCaret 1s step-end infinite;
+}
+@keyframes usCaret { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .us-ai-caret { animation: none; } }
 .us-ai-skeleton { display: flex; flex-direction: column; gap: 0.45rem; }
 .us-ai-skeleton span {
   display: block; height: 12px; border-radius: 6px;
-  background: linear-gradient(90deg, var(--bd2) 25%, var(--bd) 50%, var(--bd2) 75%);
+  background: linear-gradient(90deg, var(--us-line) 25%, var(--us-accent-soft) 50%, var(--us-line) 75%);
   background-size: 200% 100%; animation: usShimmer 1.4s ease-in-out infinite;
 }
 .us-ai-skeleton span:nth-child(2) { width: 88%; }
@@ -13679,37 +14014,176 @@ body:not(.searched) .us-layer { display: none; }
 .us-badge {
   display: inline-flex; align-items: center; padding: 0.15rem 0.5rem;
   border-radius: 999px; font-size: 0.7rem; font-weight: 700; white-space: nowrap;
-  border: 1px solid var(--bd); background: var(--bg2); color: var(--t2);
+  border: 1px solid var(--us-line); background: var(--us-surface-alt); color: var(--us-muted);
 }
-.us-badge--ref { border-color: var(--ac); color: var(--ac); background: var(--acL); }
-.us-badge--review { border-color: color-mix(in srgb, #b45309 55%, var(--bd)); color: #b45309; background: color-mix(in srgb, #b45309 10%, var(--bg1)); }
-body[data-theme="dark"] .us-badge--review { color: #fbbf24; border-color: color-mix(in srgb, #fbbf24 45%, var(--bd)); background: color-mix(in srgb, #fbbf24 12%, var(--bg1)); }
-.us-badge--official { border-color: var(--bd); color: var(--t2); }
+.us-badge--ref { border-color: transparent; color: var(--us-accent); background: var(--us-accent-chip); }
+.us-badge--review {
+  border-color: color-mix(in srgb, var(--us-amber) 55%, var(--us-line));
+  color: var(--us-amber);
+  background: color-mix(in srgb, var(--us-amber) 10%, var(--us-surface));
+}
+.us-badge--official { border-color: var(--us-line); color: var(--us-muted); }
+
+/* Source / Evidence Card — Figma UX-03 (node 408:12).
+   Type avatar · title + subtitle · state chip · external-link mark.
+   The state chip is a *bucket*: the precise backend state stays on
+   data-us-evidence-state so the reason a source is unusable is never lost. */
+.us-ev {
+  display: flex; align-items: center; gap: 12px;
+  min-height: 72px; padding: 12px 16px;
+  background: var(--us-surface); border: 1px solid var(--us-line);
+  border-radius: 14px; text-decoration: none; color: inherit;
+}
+.us-ev--link:hover { border-color: var(--us-accent); }
+.us-ev-avatar {
+  flex: 0 0 auto; width: 32px; height: 32px; border-radius: 8px;
+  background: #e0f0eb; color: var(--us-accent);
+  font-size: 13px; font-weight: 700;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+body[data-theme="dark"] .us-ev-avatar { background: var(--us-accent-soft); }
+.us-ev-meta { display: flex; flex-direction: column; gap: 3px; min-width: 0; flex: 1; }
+.us-ev-title { font-size: 14px; font-weight: 500; color: var(--us-ink); overflow-wrap: anywhere; }
+.us-ev-sub { font-size: 12px; color: var(--us-muted); overflow-wrap: anywhere; }
+.us-ev-status { display: flex; align-items: center; gap: 8px; flex: 0 0 auto; }
+.us-ev-ext { font-size: 12px; color: var(--us-muted); }
+.us-ev-state {
+  padding: 6px 11px; border-radius: 999px;
+  font-size: 12px; font-weight: 500; white-space: nowrap;
+}
+/* Four INDEPENDENT scales (contract §3.6) — they must not share one ramp.
+   Each scale gets its own *shape* as well as its own colour, so the scale is
+   readable even in monochrome or by a colour-blind reader:
+     approval  = filled pill          (a human decision)
+     lifecycle = left colour rule     (the law's own state)
+     lookup    = neutral dashed       (our infrastructure, not a judgement)
+     relevance = plain outline chip   (how the evidence relates)
+   `lifecycle-notfound` ("we checked, it is not there") is deliberately NOT
+   styled like `lookup-*` ("we could not check") — different claims. */
+.us-ev-state[data-us-evidence-scale="approval"] {
+  border: 0; font-weight: 700;
+}
+.us-ev-state.is-approval-approved { background: var(--us-accent-soft); color: var(--us-accent); }
+.us-ev-state.is-approval-parsed,
+.us-ev-state.is-approval-needsreview,
+.us-ev-state.is-approval-draft { background: #f7edd1; color: #9e730d; }
+.us-ev-state.is-approval-superseded { background: #ececed; color: #5b616e; }
+.us-ev-state.is-approval-rejected { background: #fbe4dc; color: #b23c17; }
+
+.us-ev-state[data-us-evidence-scale="lifecycle"] {
+  background: transparent; border: 0; border-left: 3px solid currentColor;
+  border-radius: 0; padding-left: 8px; font-weight: 700;
+}
+.us-ev-state.is-lifecycle-verified { color: var(--us-accent); }
+.us-ev-state.is-lifecycle-repealed { color: #b23c17; }
+.us-ev-state.is-lifecycle-scheduled { color: #4453a6; }
+.us-ev-state.is-lifecycle-ambiguous { color: #9e730d; }
+.us-ev-state.is-lifecycle-notfound { color: var(--us-muted); }
+
+/* Every lookup failure is neutral: failing to reach a source says nothing
+   about the source. Dashed marks it as "no reading taken". */
+.us-ev-state[data-us-evidence-scale="lookup"] {
+  background: transparent; border: 1px dashed var(--us-line);
+  color: var(--us-muted); font-weight: 500;
+}
+
+.us-ev-state[data-us-evidence-scale="relevance"],
+.us-ev-state.is-unknown {
+  background: transparent; border: 1px solid var(--us-line);
+  color: var(--us-muted); font-weight: 500;
+}
+body[data-theme="dark"] .us-ev-state.is-approval-parsed,
+body[data-theme="dark"] .us-ev-state.is-approval-needsreview,
+body[data-theme="dark"] .us-ev-state.is-approval-draft {
+  background: color-mix(in srgb, var(--us-amber) 18%, transparent); color: var(--us-amber);
+}
+body[data-theme="dark"] .us-ev-state.is-approval-superseded {
+  background: color-mix(in srgb, var(--us-muted) 18%, transparent); color: var(--us-muted);
+}
+body[data-theme="dark"] .us-ev-state.is-approval-rejected {
+  background: color-mix(in srgb, var(--us-coral) 18%, transparent); color: var(--us-coral);
+}
+body[data-theme="dark"] .us-ev-state.is-lifecycle-repealed { color: var(--us-coral); }
+body[data-theme="dark"] .us-ev-state.is-lifecycle-scheduled { color: #b3bef8; }
+body[data-theme="dark"] .us-ev-state.is-lifecycle-ambiguous { color: var(--us-amber); }
 
 .us-extra { margin-bottom: 0.9rem; }
 .us-card-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.55rem; }
 .us-card {
-  padding: 0.8rem 0.95rem; border: 1px solid var(--bd); border-radius: 12px;
-  background: var(--bg1);
+  padding: 14px 16px; border: 1px solid var(--us-line); border-radius: 14px;
+  background: var(--us-surface);
 }
 .us-card[data-us-tool] { cursor: pointer; }
-.us-card[data-us-tool]:hover { border-color: var(--ac); }
+.us-card[data-us-tool]:hover { border-color: var(--us-accent); }
 .us-card-head { display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap; }
-.us-card-title { font-size: 0.9rem; font-weight: 700; color: var(--t1); overflow-wrap: anywhere; }
-.us-card-page { font-size: 0.74rem; color: var(--t3); font-variant-numeric: tabular-nums; }
-.us-card-summary { margin: 0.35rem 0 0; font-size: 0.83rem; line-height: 1.55; color: var(--t2); overflow-wrap: anywhere; }
+.us-card-title { font-size: 14px; font-weight: 700; color: var(--us-ink); overflow-wrap: anywhere; }
+.us-card-page { font-size: 11.5px; color: var(--us-muted); font-variant-numeric: tabular-nums; }
+.us-card-summary { margin: 6px 0 0; font-size: 13px; line-height: 1.55; color: var(--us-muted); overflow-wrap: anywhere; }
 
-.us-suggest { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; margin-bottom: 0.9rem; }
-.us-suggest-label { font-size: 0.78rem; font-weight: 700; color: var(--t3); }
+.us-suggest { display: flex; flex-direction: column; gap: 0.45rem; margin-bottom: 0.9rem; }
+.us-suggest-label { font-size: 11.5px; font-weight: 700; letter-spacing: 0.46px; color: var(--us-muted); }
 
-.us-sources { padding: 0.85rem 1rem; border: 1px solid var(--bd); border-radius: 14px; background: var(--bg2); }
-.us-sources-title { margin: 0 0 0.5rem; font-size: 0.85rem; font-weight: 800; color: var(--t2); }
+/* Search / Suggestion Row — Figma UX-03 (node 400:12).
+   Category avatar · primary + secondary text · category chip.
+   The design's KeyboardActive=Yes variant is real keyboard focus here, so it
+   is styled with :focus-visible rather than a class the renderer has to guess. */
+.us-sug-list { display: flex; flex-direction: column; gap: 2px; }
+.us-sug {
+  --us-sug-tint: var(--us-muted);
+  position: relative; display: flex; align-items: center; gap: 12px;
+  width: 100%; min-height: 56px; padding: 14px 16px;
+  border: 0; border-radius: 12px; background: var(--us-surface-alt);
+  text-align: left; cursor: pointer; font: inherit; color: inherit;
+}
+.us-sug[data-us-suggest-type="visa_code"],
+.us-sug[data-us-suggest-type="visa_status"],
+.us-sug[data-us-suggest-type="procedure"] { --us-sug-tint: var(--us-accent); }
+.us-sug[data-us-suggest-type="legal_source"] { --us-sug-tint: #7f89ce; }
+.us-sug[data-us-suggest-type="employment_tool"] { --us-sug-tint: var(--us-coral); }
+.us-sug:hover { background: color-mix(in srgb, var(--us-sug-tint) 7%, var(--us-surface-alt)); }
+.us-sug:focus-visible {
+  outline: none;
+  background: color-mix(in srgb, var(--us-sug-tint) 12%, var(--us-surface-alt));
+}
+/* 2px left accent bar, per the design's keyboard-active variant. The fallback
+   keeps the bar visible where the row is used outside `.us-layer` (the
+   autocomplete dropdown), which does not define the layer tokens. */
+.us-sug:focus-visible::before {
+  content: ""; position: absolute; inset: 0 auto 0 0; width: 2px;
+  border-radius: 12px 0 0 12px;
+  background: var(--us-accent, var(--us-sug-tint));
+}
+.us-sug-avatar {
+  flex: 0 0 auto; width: 28px; height: 28px; border-radius: 8px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: color-mix(in srgb, var(--us-sug-tint) 14%, transparent);
+  color: var(--us-sug-tint);
+}
+.us-sug-avatar svg { width: 15px; height: 15px; }
+.us-sug-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
+.us-sug-title { font-size: 14.5px; font-weight: 500; color: var(--us-ink); overflow-wrap: anywhere; }
+.us-sug-sub { font-size: 12.5px; color: var(--us-muted); overflow-wrap: anywhere; }
+.us-sug-badge {
+  flex: 0 0 auto; padding: 6px 11px; border-radius: 20px;
+  font-size: 12.5px; font-weight: 500; white-space: nowrap;
+  background: color-mix(in srgb, var(--us-sug-tint) 10%, transparent);
+  color: var(--us-sug-tint);
+}
+@media (max-width: 560px) {
+  /* The chip is a redundant label on a narrow screen — the avatar already
+     carries the category — so it is dropped rather than allowed to squeeze
+     the title it is supposed to be describing. */
+  .us-sug-badge { display: none; }
+}
+
+.us-sources { padding: 18px 20px; border: 1px solid var(--us-line); border-radius: 18px; background: var(--us-surface-alt); }
+.us-sources-title { margin: 0 0 10px; font-size: 11.5px; font-weight: 700; letter-spacing: 0.46px; color: var(--us-muted); }
 .us-source-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.5rem; }
 .us-source { display: flex; flex-direction: column; gap: 0.2rem; }
-.us-source-link { font-size: 0.86rem; font-weight: 700; color: var(--ac); text-decoration: none; overflow-wrap: anywhere; }
+.us-source-link { font-size: 14px; font-weight: 700; color: var(--us-link); text-decoration: none; overflow-wrap: anywhere; }
 .us-source-link:hover { text-decoration: underline; }
-.us-source-link--plain { color: var(--t1); }
-.us-source-note { margin: 0; font-size: 0.78rem; line-height: 1.5; color: var(--t3); overflow-wrap: anywhere; }
+.us-source-link--plain { color: var(--us-ink); }
+.us-source-note { margin: 0; font-size: 12px; line-height: 1.5; color: var(--us-muted); overflow-wrap: anywhere; }
 
 @media (max-width: 480px) {
   .us-interpret, .us-ai, .us-sources { padding: 0.75rem 0.8rem; border-radius: 12px; }
@@ -13728,6 +14202,10 @@ body[data-theme="dark"] .us-badge--review { color: #fbbf24; border-color: color-
    and is independent of the editorial style theme set on <html>. */
 (function(){try{var b=localStorage.getItem('paradiso:brightness');if(b==='system'){b=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}if(b==='dark'||b==='light'){document.body.setAttribute('data-theme',b);}}catch(e){}})();
 </script>
+<!-- UX-10 Behavior & A11y — "건너뛰기 · '본문으로 건너뛰기' 링크를 첫 Tab에 제공".
+     First in the DOM so it is genuinely the first stop, and hidden until it is
+     focused so it costs sighted users nothing. -->
+<a class="skip-link" href="#mainContent" data-i18n="skipToContent">본문으로 건너뛰기</a>
 <div class="k-grain" aria-hidden="true"></div>
 <div class="p-cmd-backdrop" data-action="close-cmd-palette" aria-hidden="true"></div>
 
@@ -14001,6 +14479,11 @@ body[data-theme="dark"] .us-badge--review { color: #fbbf24; border-color: color-
                 </button>
             </div>
             <div class="auto-list" id="auto-list" role="listbox" aria-label="검색 제안"></div>
+            <!-- Search / Unified Input `State=Error` helper line (UX-03, node
+                 394:203). Text is filled from the i18n pack at runtime. It
+                 reports that the *unified* layer failed — never that the search
+                 found nothing, which is a different state. -->
+            <p class="us-sbar-note" id="usSearchNote" role="status" aria-live="polite" hidden></p>
             <div class="smeta"><span id="rc">데이터 로딩 중…</span><span id="rh"></span></div>
         </form>
         <p class="reference-disclaimer">본 서비스는 공개 법령·매뉴얼 기반 참고용 정보 제공 도구이며, 법적 상담이나 민원 대행이 아닙니다. 최종 판단은 출입국·외국인청, 하이코리아, 또는 자격 있는 전문가에게 확인하세요.</p>
@@ -14715,6 +15198,13 @@ body[data-theme="dark"] .us-badge--review { color: #fbbf24; border-color: color-
                     <span class="jc2-badge jc2-badge--caution" id="jcBadgeCaution" data-i18n="jobCodeBadgeCaution">⚠ 최종 신고 전 HiKorea에서 재확인</span>
                 </div>
                 <p class="jc2-hero-sub" id="jcHeroSub" data-i18n="jobCodeHeroSub" hidden>HiKorea 신고 전에 내 일과 사업장 분야를 미리 정리해보세요.</p>
+                <!-- UX-08 `Annotation / Employment` (node 442:99): "신고 대상 ≠ 취업
+                     가능 — AMBER 경고 필수". Finding a code tells you how to
+                     *report* work, never that the work is permitted for your
+                     status. That needs 체류자격외활동허가 or an equivalent, which
+                     this tool does not assess. Shown always, not only for
+                     legally sensitive inputs. -->
+                <p class="jc2-scope-warn" id="jcScopeWarn" role="note" data-i18n="jobCodeScopeWarning">⚠ 코드를 찾았다고 해서 그 일을 할 수 있다는 뜻은 아니에요. 신고 대상인지와 취업이 허용되는지는 서로 다른 문제이며, 체류자격에 따라 별도 허가가 필요할 수 있어요. 반드시 관할 출입국·외국인관서나 1345에서 확인하세요.</p>
             </div>
 
             <!-- 3 · Search panel -->
@@ -14794,6 +15284,12 @@ body[data-theme="dark"] .us-badge--review { color: #fbbf24; border-color: color-
             <!-- 4.0 · Candidate gate — when a fork question is pending, candidates are
                  held behind it so only one action shows at a time. Rendered by JS. -->
             <div id="jcResultsGate" class="jc2-gate" role="status" hidden></div>
+
+            <!-- 4.0b · UX-08 `Emp / Special States` (442:39). Ten states where the
+                 classification is ambiguous or the situation is legally sensitive.
+                 Each carries one next action — "분류가 애매하거나 민감한 경우에도
+                 다음 행동을 안내해요". Rendered by renderEmploymentSpecialStates(). -->
+            <div id="jcSpecialStates" class="jc2-special" role="status" aria-live="polite" hidden></div>
 
             <!-- 4 · Results (Step 4: candidates, shown after interpretation/clarification) -->
             <div class="jc2-results" id="jcResults">
@@ -15821,7 +16317,14 @@ function buildSubcodeModalView(visa, sub) {
     const name = getLocalizedSubcodeName(sub) || '';
     const parentName = getLocalizedVisaName(visa) || '';
     const title = name ? `${escapeHtml(sub.code)} · ${escapeHtml(name)}` : escapeHtml(sub.code);
-    const parentHtml = `<span class="subcode-modal-parent-text">${escapeHtml(tx('subcodeModalParentLabel'))}: ${escapeHtml(visa.code)}${parentName ? ` (${escapeHtml(parentName)})` : ''}</span>${subcodeSourceChip(sub)}`;
+    /* UX-03 `Result / Subcode Card` (node 473:96): "상위 코드 D-10 — 공통 요건은
+       상위 코드 카드에서 확인하세요". Naming the parent is not enough — this view
+       shows only what is SPECIFIC to the sub-code, so a reader who takes it as
+       complete would miss the parent's common requirements entirely. This is
+       the reciprocal of renderParentScopeNotice, which scopes the parent card
+       when a sub-code was searched. */
+    const parentScope = `<span class="subcode-modal-parent-scope">${escapeHtml(tx('subcodeModalParentScope', { code: visa.code }))}</span>`;
+    const parentHtml = `<span class="subcode-modal-parent-text">${escapeHtml(tx('subcodeModalParentLabel'))}: ${escapeHtml(visa.code)}${parentName ? ` (${escapeHtml(parentName)})` : ''}</span>${subcodeSourceChip(sub)}${parentScope}`;
 
     const sections = [];
 
@@ -16697,6 +17200,106 @@ function jcApplyFlow() {
         }
     }
 }
+/* UX-08 `Emp / Special States` (node 442:39).
+   Renders the states buildSpecialStates() derived, each with the one next
+   action the design specifies. Ordered by the design; all applicable states
+   show, because they are independent facts about the same input (a trainee in
+   an entertainment role is genuinely both).
+
+   The sensitive-occupation copy states that a permit or licence MAY apply and
+   points at the competent office. It never says an activity is legal or
+   illegal — 가치판단·합법성 단정 금지 (442:99). */
+const JC_SPECIAL_ICON = {
+    no_official_code: '🔍', broad_indirect_match: '🧭', freelancer: '📄',
+    self_employed: '🏢', trainee: '🎓', arts_entertainment: '🎭',
+    legally_sensitive: '⚖️', mixed_language: '🌐', low_confidence: '❓',
+    source_unverifiable: '🔗'
+};
+const JC_SPECIAL_I18N = {
+    no_official_code: 'NoOfficialCode', broad_indirect_match: 'BroadMatch',
+    freelancer: 'Freelancer', self_employed: 'SelfEmployed', trainee: 'Trainee',
+    arts_entertainment: 'Arts', legally_sensitive: 'Sensitive',
+    mixed_language: 'MixedLang', low_confidence: 'LowConfidence',
+    source_unverifiable: 'SourceUnverifiable'
+};
+function renderEmploymentSpecialStates(analysis) {
+    const el = document.getElementById('jcSpecialStates');
+    if (!el) return;
+    const states = (analysis && Array.isArray(analysis.specialStates)) ? analysis.specialStates : [];
+    if (!states.length) { el.hidden = true; el.innerHTML = ''; return; }
+    const items = states.map((st) => {
+        const key = JC_SPECIAL_I18N[st.id];
+        if (!key) return '';
+        return `<li class="jc2-special-item" data-jc-special="${escapeHtml(st.id)}">`
+            + `<span class="jc2-special-ic" aria-hidden="true">${JC_SPECIAL_ICON[st.id] || 'ℹ️'}</span>`
+            + `<span class="jc2-special-tx">`
+            + `<span class="jc2-special-title">${escapeHtml(tx('empSt' + key + 'Title'))}</span>`
+            + `<span class="jc2-special-body">${escapeHtml(tx('empSt' + key + 'Body'))}</span>`
+            + `</span>`
+            + `<button type="button" class="jc2-special-cta" data-jc-special-action="${escapeHtml(st.action)}">`
+            + `${escapeHtml(tx('empSt' + key + 'Cta'))} →</button>`
+            + `</li>`;
+    }).filter(Boolean).join('');
+    if (!items) { el.hidden = true; el.innerHTML = ''; return; }
+    el.innerHTML = `<p class="jc2-special-h">${escapeHtml(tx('empSpecialStatesLabel'))}</p>`
+        + `<ul class="jc2-special-list">${items}</ul>`;
+    el.hidden = false;
+    el.querySelectorAll('[data-jc-special-action]').forEach((btn) => {
+        btn.onclick = () => runEmploymentSpecialAction(btn.getAttribute('data-jc-special-action'));
+    });
+}
+
+/* Every state's next action does something concrete. None of them assert a
+   determination — they move the user toward the input or the office that can
+   settle the question. */
+function runEmploymentSpecialAction(action) {
+    const input = document.getElementById('jcInput');
+    const focusInput = (select) => {
+        if (!input) return;
+        input.focus();
+        if (select && typeof input.select === 'function') input.select();
+    };
+    switch (action) {
+        case 'show_nearest':
+        case 'verify_by_code':
+            // Candidates are the nearest thing we have; reveal and scroll to them.
+            _jcFlow.revealed = true; jcApplyFlow();
+            { const r = document.getElementById('jcResults'); if (r) r.scrollIntoView({ block: 'nearest' }); }
+            return;
+        case 'pick_main_task':
+        case 'answer_followup':
+            // Both are answered by the clarification question already on screen.
+            { const r = document.getElementById('jcRefine');
+              if (r && !r.hidden) { r.scrollIntoView({ block: 'nearest' }); return; } }
+            focusInput(true);
+            return;
+        case 'check_contract':
+        case 'check_business_registration':
+            // These turn on facts only the user has; put them back in the box with
+            // the follow-up chips visible so they can add the missing detail.
+            { const c = document.getElementById('jcRefine');
+              if (c && !c.hidden) c.scrollIntoView({ block: 'nearest' }); }
+            focusInput(false);
+            return;
+        case 'show_e6':
+            // E-6 is a real status in visa_data.json — route through normal search.
+            closeModal('jobCodeOverlay');
+            { const q = document.getElementById('q');
+              if (q) { q.value = 'E-6'; const f = document.getElementById('searchForm');
+                if (f) { try { f.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true })); } catch (e) {} } } }
+            return;
+        case 'confirm_with_office':
+            { const fc = document.getElementById('jcFinalCheck');
+              if (fc) { fc.hidden = false; fc.scrollIntoView({ block: 'nearest' }); } }
+            return;
+        case 'rewrite_in_korean':
+            focusInput(true);
+            return;
+        default:
+            focusInput(false);
+    }
+}
+
 function renderEmploymentRefine(analysis) {
     const el = document.getElementById('jcRefine');
     if (!el) return;
@@ -16882,6 +17485,7 @@ async function searchJobcodeWithAI() {
         renderJobcodeSelectedSummary();
         renderEmploymentInterpretation(analysis);
         renderEmploymentRefine(analysis);
+        renderEmploymentSpecialStates(analysis);
         renderEmploymentFollowupChips(analysis);
         renderEmploymentTips(analysis);
         let jobKw = getJobcodeSearchTerms(input, analysis ? analysis.occupationTerms : []);
@@ -20809,6 +21413,39 @@ function renderSubcodes(v, keywords, matchingSubcodes, opts) {
     return `<div class="manual-section" data-subcode-section>${title}${matchedHtml}${restHtml}${restInactiveHtml}</div>`;
 }
 
+/* Result / Status Card `MatchReason=ParentOfExactCode` — Figma UX-03 (node
+   405:66). When the query names a sub-code but this card is its PARENT, every
+   requirement rendered below belongs to the parent, not to the sub-code the
+   user actually asked about. Saying so is a CLAUDE.md non-negotiable: a parent
+   record must never read as though it carried the sub-code's specific rules.
+
+   The notice appears only when the sub-code resolves against visa_data.json.
+   A code-shaped token we do not have ("D-2-99") is never named back as if it
+   were real. */
+function renderParentScopeNotice(v, primaryCodeQuery) {
+    const query = normalizeVisaCode(primaryCodeQuery || '');
+    const parent = normalizeVisaCode(v.code || '');
+    if (!query || !parent || query === parent) return '';
+    const segments = query.split('-');
+    if (segments.length < 3) return '';
+    if (`${segments[0]}-${segments[1]}` !== parent) return '';
+    const sub = getVisaSubcodes(v).find(s => normalizeVisaCode(s.code) === query);
+    if (!sub) return '';
+
+    const en = currentLanguage === 'en';
+    const zh = currentLanguage === 'zh-CN';
+    const label = zh ? '输入的细分代码的上级'
+        : en ? 'Parent of the code you entered'
+        : '입력한 세부코드의 상위';
+    const body = zh
+        ? `此处列出的是 ${parent} 的共同要件。${query} 的专属要件请在下方细分代码中确认。`
+        : en
+        ? `The requirements shown here are common to ${parent}. Requirements specific to ${query} are in the sub-code section below.`
+        : `여기에 적힌 요건은 ${parent} 공통 요건이에요. ${query} 전용 요건은 아래 세부코드에서 확인하세요.`;
+
+    return `<div class="parent-scope-notice" data-parent-scope="${escapeHtml(parent)}" data-sub-scope="${escapeHtml(query)}"><span class="parent-scope-badge">${escapeHtml(label)}</span><p class="parent-scope-body">${escapeHtml(body)}</p></div>`;
+}
+
 function renderCommonWarnings(v) {
     const warnings = Array.isArray(v.commonWarnings) && v.commonWarnings.length ? v.commonWarnings : COMMON_MANUAL_WARNINGS;
     return `<div class="manual-warning-box"><strong>${escapeHtml(tx('commonWarningsTitle'))}</strong><ul>${warnings.map(w => `<li>${escapeHtml(w)}</li>`).join('')}</ul></div>`;
@@ -21887,40 +22524,73 @@ const PREDEF_KEYWORDS = [
 "D-2 유학", "영주권(F-5)", "E-9 이직", "점수제 비자"
 ];
 
+// A predefined keyword that names a real 체류자격 code is a status suggestion,
+// not a procedure one. The code has to resolve against VISA_DATA — a
+// code-shaped substring alone never promotes a keyword.
+function suggestionTypeForKeyword(keyword) {
+    const match = String(keyword || '').match(/([A-Za-z]-\d+(?:-\d+)?)/);
+    if (!match) return 'procedure';
+    const norm = normalizeVisaCode(match[1]);
+    const known = VISA_DATA.some(v => normalizeVisaCode(v.code) === norm ||
+        getVisaSubcodes(v).some(s => normalizeVisaCode(s.code) === norm));
+    return known ? 'visa_code' : 'procedure';
+}
+
 function showSuggestions(val) {
     if(!dataReady) return;
     const list = document.getElementById('auto-list'); list.innerHTML = '';
     if(!val) { list.classList.remove('active'); return; }
     const lowerVal = val.toLowerCase(), valNorm = normalizeVisaCode(val);
     const matches = [];
-    const pushMatch = (text) => {
-        if (text && !matches.includes(text)) matches.push(text);
+    const seen = new Set();
+    // `query` stays exactly the string the search already understood; `type`
+    // and `sublabel` only add description around it.
+    const pushMatch = (query, type, sublabel) => {
+        if (!query || seen.has(query)) return;
+        seen.add(query);
+        matches.push({ type: type, query: query, label: query, sublabel: sublabel || '' });
     };
     const primaryCode = getPrimaryCodeLikeQuery(val);
     if (primaryCode) {
         VISA_DATA
             .filter(v => normalizeVisaCode(v.code) === normalizeVisaCode(primaryCode))
-            .forEach(v => pushMatch(`${v.code} ${getVisaNameKo(v)}`));
+            .forEach(v => pushMatch(`${v.code} ${getVisaNameKo(v)}`, 'visa_code', ''));
     }
-    PREDEF_KEYWORDS.filter(k => k.toLowerCase().includes(lowerVal)).forEach(pushMatch);
+    PREDEF_KEYWORDS.filter(k => k.toLowerCase().includes(lowerVal))
+        .forEach(k => pushMatch(k, suggestionTypeForKeyword(k), ''));
     VISA_DATA.forEach(v => {
         const codeMatch = (v.code||'').toLowerCase().includes(lowerVal) || (valNorm && normalizeVisaCode(v.code).includes(valNorm));
         if(codeMatch || getVisaNameKo(v).toLowerCase().includes(lowerVal)) {
-            const str = `${v.code} ${getVisaNameKo(v)}`; if(!matches.includes(str)) matches.push(str);
+            pushMatch(`${v.code} ${getVisaNameKo(v)}`, 'visa_code', '');
         }
         getVisaSubcodes(v).forEach(s => {
             const subCodeMatch = (s.code || '').toLowerCase().includes(lowerVal) || (valNorm && normalizeVisaCode(s.code).includes(valNorm));
             if (subCodeMatch || (s.nameKo || s.name || '').toLowerCase().includes(lowerVal)) {
-                const str = `${s.code} ${s.nameKo || s.name || ''}`; if(!matches.includes(str)) matches.push(str);
+                // A subcode always names its parent, so the row can never be
+                // read as a standalone top-level 체류자격.
+                pushMatch(`${s.code} ${s.nameKo || s.name || ''}`, 'visa_status',
+                    `${v.code} ${getVisaNameKo(v)}`);
             }
         });
     });
     if(matches.length > 0) {
+        const rows = window.ParadisoUnifiedSearch;
         matches.slice(0, 7).forEach(m => {
             const item = document.createElement('button'); item.className = 'auto-item'; item.type = 'button';
             item.setAttribute('role', 'option');
-            item.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg> <span>${hl(m, [val])}</span>`;
-            item.setAttribute('data-action', 'search-hint'); item.setAttribute('data-query', m);
+            if (rows && typeof rows.buildSuggestionRowHtml === 'function') {
+                // The shared UX-03 row markup in inner mode — this element
+                // already is the button, so the renderer must not add one.
+                item.innerHTML = rows.buildSuggestionRowHtml(m, {
+                    inner: true,
+                    labelHtml: hl(m.label, [val])
+                });
+                item.classList.add('us-sug');
+                item.setAttribute('data-us-suggest-type', m.type);
+            } else {
+                item.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg> <span>${hl(m.label, [val])}</span>`;
+            }
+            item.setAttribute('data-action', 'search-hint'); item.setAttribute('data-query', m.query);
             list.appendChild(item);
         });
         list.classList.add('active');
@@ -22168,6 +22838,7 @@ function renderResults(query){
                 ${v.cat === 'scn' ? `<div class="ai-cta" style="flex-direction:column; align-items:center; text-align:center; padding:2.5rem 1rem; background:var(--bg0);"><h4 style="color:var(--t1); font-weight:800; font-size:1.1rem; margin-bottom:0.5rem;">${tx('specialCaseTitle')}</h4><p style="font-size:0.85rem; color:var(--t3); margin-bottom:1.5rem; word-break:keep-all; max-width:400px;">${tx('specialCaseBody')}</p><button type="button" class="ai-btn" style="width:100%; max-width:320px; justify-content:center; box-shadow:var(--shD);" data-action="open-ai-modal" data-visa-code="${escapeHtml(v.code)}">${tx('specialCaseButton')}</button></div>` : `
                 <div class="manual-layout">
                     ${renderViewModeToggle(v, isVisaCode)}
+                    ${renderParentScopeNotice(v, primaryCodeQuery)}
                     ${renderNextActionArea(v, isVisaCode)}
                     ${renderCardSummary(v, kw)}
                     <div class="external-guide-slot" data-guide-slot="${escapeHtml(v.code || '')}"></div>

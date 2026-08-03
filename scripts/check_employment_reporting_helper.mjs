@@ -28,6 +28,49 @@ has('취업정보 신고용 직종·업종 찾기', 'header title microcopy miss
 has('HiKorea 신고 전에 내 일과 사업장 분야를 미리 정리', 'hero subtitle missing');
 has('기준: KSCO8 · KSIC11', 'trust badge missing');
 has('최종 신고 전 HiKorea에서 재확인', 'caution badge missing');
+// UX-08 (442:99) "신고 대상 ≠ 취업 가능 — AMBER 경고 필수". A reporting code is
+// not a work permission; conflating the two is the most consequential
+// misreading this tool can produce, so the warning is asserted structurally and
+// must be present for EVERY input, not only legally sensitive ones.
+has('id="jcScopeWarn"', 'reportable-is-not-permitted warning element missing');
+has('jobCodeScopeWarning', 'scope warning is not i18n-bound');
+ok(!/id="jcScopeWarn"[^>]*\shidden/.test(html),
+  'the scope warning must not be hidden by default');
+ok(/class="jc2-scope-warn"/.test(html), 'scope warning missing its amber styling hook');
+// UX-08 Emp / Special States (442:39): ten states, each with one next action.
+has('id="jcSpecialStates"', 'special-states container missing');
+has('renderEmploymentSpecialStates', 'special-states renderer not wired');
+has('runEmploymentSpecialAction', 'special-state actions not wired');
+{
+  const ids = ['no_official_code', 'broad_indirect_match', 'freelancer', 'self_employed',
+    'trainee', 'arts_entertainment', 'legally_sensitive', 'mixed_language',
+    'low_confidence', 'source_unverifiable'];
+  const i18nMap = html.slice(html.indexOf('const JC_SPECIAL_I18N'), html.indexOf('function renderEmploymentSpecialStates'));
+  for (const id of ids) {
+    ok(i18nMap.includes(id), `special state ${id} has no i18n mapping`);
+  }
+  // Every state needs Title/Body/Cta in both packs — a state without a next
+  // action would break the design's one rule for this screen.
+  const suffixes = ['NoOfficialCode', 'BroadMatch', 'Freelancer', 'SelfEmployed', 'Trainee',
+    'Arts', 'Sensitive', 'MixedLang', 'LowConfidence', 'SourceUnverifiable'];
+  for (const suf of suffixes) {
+    for (const part of ['Title', 'Body', 'Cta']) {
+      ok(typeof ko[`empSt${suf}${part}`] === 'string' && ko[`empSt${suf}${part}`].length > 0,
+        `KO copy missing empSt${suf}${part}`);
+    }
+  }
+  // 가치판단·합법성 단정 금지: the sensitive-occupation copy must hedge and point
+  // at the office, never assert legality either way.
+  const sens = ko.empStSensitiveBody || '';
+  ok(/필요할 수 있|관할/.test(sens), 'sensitive-occupation copy does not hedge or point at the office');
+  ok(!/합법|불법|가능합니다|할 수 있습니다$/.test(sens),
+    'sensitive-occupation copy asserts legality');
+}
+const koScope = ko.jobCodeScopeWarning || '';
+ok(koScope.includes('신고 대상') || koScope.includes('취업이 허용'),
+  'KO scope warning does not actually distinguish reporting from permission');
+ok(/1345|하이코리아|출입국/.test(koScope),
+  'KO scope warning does not point at an official channel');
 // guided checklist (dynamic; copy lives in scripts/employment_checklist.mjs) +
 // plain-language pane labels before the official classification terms
 has('id="jcChecklist"', 'guided checklist container missing');

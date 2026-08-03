@@ -47,6 +47,23 @@
     })();
     </script>
     <style>
+        /* Skip link (UX-10 Behavior & A11y) — mirrors index.html. Off-screen
+           rather than display:none, because a hidden element is not focusable
+           and an unfocusable skip link is not a skip link. */
+        .skip-link {
+            position: absolute; top: 0; left: 0; z-index: 10000;
+            transform: translateY(-120%);
+            padding: 0.7rem 1.1rem; border-radius: 0 0 10px 0;
+            background: var(--ac, #0E8A6B); color: #fff;
+            font-size: 0.9rem; font-weight: 800; text-decoration: none;
+            transition: transform 0.14s ease;
+        }
+        .skip-link:focus-visible {
+            transform: translateY(0);
+            outline: 2px solid var(--t1, #0E1F1A); outline-offset: 2px;
+        }
+        @media (prefers-reduced-motion: reduce) { .skip-link { transition: none; } }
+
         /* paradiso-design-tokens — additive, prefixed, no overrides */
         :root {
             /* palette */
@@ -1379,6 +1396,10 @@ select:focus-visible {
    ai.html is dark-first, so it defaults to dark when nothing is stored. */
 (function(){try{var b=localStorage.getItem('paradiso:brightness');var d=!b||b==='dark'||(b==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);document.body.setAttribute('data-theme',d?'dark':'light');}catch(e){document.body.setAttribute('data-theme','dark');}})();
 </script>
+<!-- UX-10 Behavior & A11y — the same skip link index.html carries. Applying the
+     rule to one of the two main pages would leave the other's keyboard users
+     tabbing through the whole header to reach the conversation. -->
+<a class="skip-link" href="#chatHistory">본문으로 건너뛰기</a>
 
     <!-- Header -->
     <header class="chat-header">
@@ -3748,7 +3769,14 @@ select:focus-visible {
             loadVisaData();
             setupAiModeSelector();
             // Easy Mode: load the shared i18n packs and wire the per-answer toggle.
-            loadEasyModeI18n();
+            // The skip link ships with its Korean text inline so it works before
+            // the packs land; once they do, it follows the chosen locale. Same
+            // i18n key as index.html, so the two pages cannot drift apart.
+            loadEasyModeI18n().then(function () {
+                var sk = document.querySelector('a.skip-link');
+                var label = txEasy('skipToContent');
+                if (sk && label) sk.textContent = label;
+            }).catch(function () { /* keep the inline Korean default */ });
             document.addEventListener('click', function (e) {
                 const b = e.target.closest && e.target.closest('[data-ai-action="set-answer-mode"]');
                 if (!b) return;

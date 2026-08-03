@@ -77,19 +77,144 @@ section('results state machine');
 ok(L.buildResultsHtml('idle', 'laws', [], 'ko').indexOf(L.S('idleTitle', 'ko')) !== -1, 'idle state renders');
 ok(L.buildResultsHtml('loading', 'precedents', [], 'ko').indexOf('lss-spinner') !== -1, 'loading state renders spinner');
 ok(L.buildResultsHtml('loading', 'precedents', [], 'ko').indexOf(L.S('loadingPrec', 'ko')) !== -1, 'loading precedent label');
-ok(L.buildResultsHtml('missing-key', 'laws', [], 'ko').indexOf('API 설정이 필요합니다') !== -1, 'missing-key state renders');
+ok(L.buildResultsHtml('missing-key', 'laws', [], 'ko').indexOf('법령 API 미설정') !== -1, 'legacy missing-key maps to the not-configured state');
 ok(L.buildResultsHtml('error', 'laws', [], 'ko').indexOf('검색에 실패했습니다') !== -1, 'error state renders');
-ok(L.buildResultsHtml('empty', 'laws', [], 'ko').indexOf('검색 결과가 없습니다') !== -1, 'empty state renders');
-ok(L.buildResultsHtml('results', 'laws', [], 'ko').indexOf('검색 결과가 없습니다') !== -1, 'results with no data falls back to empty');
+ok(L.buildResultsHtml('empty', 'laws', [], 'ko').indexOf('법령 검색 결과 없음') !== -1, 'empty laws → no-result state');
+ok(L.buildResultsHtml('empty', 'precedents', [], 'ko').indexOf('판례 없음') !== -1, 'empty precedents → no-precedent state');
+ok(L.buildResultsHtml('results', 'laws', [], 'ko').indexOf('법령 검색 결과 없음') !== -1, 'results with no data falls back to no-result');
 ok(L.buildResultsHtml('results', 'laws', [{ title: '출입국관리법', sourceUrl: 'https://www.law.go.kr/법령/x' }], 'ko').indexOf('lss-results') !== -1, 'results state renders cards');
+
+section('UX-07 failure states (node 438:37)');
+// Every failure state must offer at least one action the reader can take.
+for (const [name, spec] of Object.entries(L.FAILURE_STATES)) {
+  const html = L.failureStateHtml(name, 'ko');
+  ok(html.indexOf('data-lss-state="' + name + '"') !== -1, `${name} carries its state name`);
+  ok(html.indexOf('data-lss-recover="' + spec.act + '"') !== -1, `${name} offers a recovery action`);
+  ok(html.indexOf('lss-state-title') !== -1 && html.indexOf('lss-state-body') !== -1,
+    `${name} states both what happened and what it means`);
+  const en = L.failureStateHtml(name, 'en');
+  ok(en.indexOf('lss-state-cta') !== -1, `${name} has an English recovery label`);
+}
+ok(Object.keys(L.FAILURE_STATES).length === 7, 'all seven design failure states exist');
+// Distinct causes must not collapse into one state.
+const distinct = new Set(Object.values(L.FAILURE_STATES).map((s) => s.act));
+ok(distinct.size === 7, 'each failure state has its own recovery action');
+
+section('UX-07 Legal / Progress (node 435:8)');
+{
+  const ko = L.buildResearchProgressHtml({ lang: 'ko', includePrecedents: true, elapsedMs: 0 });
+  ok((ko.match(/lss-prog-step/g) || []).length === 6, 'six steps rendered');
+  ok(L.RESEARCH_STEPS.length === 6, 'six steps defined');
+  // The endpoint has no progress stream, so the client cannot know what a step
+  // found while it is running. Claiming otherwise would invent findings.
+  ok(!/찾았어요|건을 찾/.test(ko), 'progress must not claim per-step findings');
+  ok(!/✓/.test(ko), 'progress must not mark steps complete');
+  ok(ko.includes('예정'), 'steps are labelled as planned');
+  ok(ko.includes('마지막 단계에서'), 'states that citations are verified at the end');
+
+  // The skipped step IS real — it comes from the client's own option.
+  const skipped = L.buildResearchProgressHtml({ lang: 'ko', includePrecedents: false, elapsedMs: 0 });
+  ok(skipped.includes('data-lss-step-skipped="1"'), 'precedent step marked skipped when the option is off');
+  ok(skipped.includes('건너뜀'), 'skipped step labelled');
+  ok(skipped.includes('판례 포함'), 'skipped step explains how to turn it back on');
+  ok(!ko.includes('data-lss-step-skipped'), 'nothing is skipped when precedents are included');
+
+  // Elapsed time is measured, so it is shown.
+  ok(/경과 12초/.test(L.buildResearchProgressHtml({ lang: 'ko', includePrecedents: true, elapsedMs: 12400 })),
+    'elapsed seconds rendered from the measured value');
+  const en = L.buildResearchProgressHtml({ lang: 'en', includePrecedents: false, elapsedMs: 0 });
+  ok(en.includes('Skipped') && en.includes('Planned'), 'EN progress labels present');
+  ok((en.match(/lss-prog-step/g) || []).length === 6, 'EN renders six steps too');
+}
+
+section('UX-07 progress — live step records');
+{
+  // Step names must line up with the backend's LEGAL_RESEARCH_STEPS, since the
+  // stream keys its records by them.
+  ok(JSON.stringify(L.RESEARCH_STEP_NAMES) ===
+     JSON.stringify(['issues', 'manuals', 'laws', 'precedents', 'citations', 'memo']),
+    'step names match the backend pipeline order');
+
+  // A step with no record yet is "waiting" — never "0 found", which would
+  // claim a completed empty search that has not happened.
+  ok(L.progressStepNote(null, 'ko') === '대기 중', 'no record reads as waiting');
+  ok(L.progressStepNote({ status: 'done', foundCount: 0 }, 'ko') === '해당 없음',
+    'a completed empty stage reads as none-found');
+  ok(L.progressStepNote(null, 'ko') !== L.progressStepNote({ status: 'done', foundCount: 0 }, 'ko'),
+    'waiting and none-found must not read the same');
+
+  // "could not look" vs "looked and found none" stay distinct.
+  const unavailable = L.progressStepNote({ status: 'unavailable' }, 'ko');
+  const zero = L.progressStepNote({ status: 'done', foundCount: 0 }, 'ko');
+  const skipped = L.progressStepNote({ status: 'skipped' }, 'ko');
+  ok(unavailable !== zero, 'unavailable must not read as none-found');
+  ok(skipped !== zero, 'skipped must not read as none-found');
+  ok(skipped !== unavailable, 'skipped must not read as unavailable');
+
+  ok(L.progressStepNote({ status: 'done', foundCount: 3 }, 'ko').includes('3'),
+    'a real count is shown');
+
+  // Without the stream the component stays a plan: no ticks, no counts.
+  const planned = L.buildResearchProgressHtml({ lang: 'ko', includePrecedents: true, elapsedMs: 0 });
+  ok(planned.includes('예정'), 'planned mode labels steps as planned');
+  ok(!planned.includes('✓'), 'planned mode never ticks a step');
+  ok(!/\d+건 찾음/.test(planned), 'planned mode never claims a count');
+
+  // With the stream it reports what actually happened.
+  const live = L.buildResearchProgressHtml({
+    lang: 'ko', streaming: true, elapsedMs: 11000,
+    steps: {
+      issues: { status: 'done', foundCount: 3 },
+      manuals: { status: 'done', foundCount: 1 },
+      laws: { status: 'done', foundCount: 2 }
+    }
+  });
+  ok(live.includes('3건 찾음'), 'live mode shows the reported count');
+  ok(live.includes('✓'), 'a delivered step is ticked');
+  ok(live.includes('대기 중'), 'steps with no record yet still read as waiting');
+  ok(live.includes('data-lss-step-status="done"'), 'the raw status is carried on the element');
+  ok(!live.includes('완료 후에 함께'), 'the "results shown after the run" caveat drops once live');
+
+  // A skipped precedent step reported by the stream stays skipped.
+  const skippedLive = L.buildResearchProgressHtml({
+    lang: 'ko', streaming: true, elapsedMs: 0,
+    steps: { precedents: { status: 'skipped', foundCount: 0 } }
+  });
+  ok(skippedLive.includes('data-lss-step-skipped="1"'), 'stream-reported skip is marked');
+}
+
+section('failure reason mapping');
+ok(L.failureStateForReason('not_configured') === 'not-configured', 'not_configured → not-configured');
+ok(L.failureStateForReason('law_api_not_configured') === 'not-configured', 'law_api_not_configured → not-configured');
+ok(L.failureStateForReason('law_api_timeout') === 'timeout', 'law_api_timeout → timeout');
+ok(L.failureStateForReason('law_api_no_results', 'laws') === 'no-result', 'no results (laws) → no-result');
+ok(L.failureStateForReason('law_api_no_results', 'precedents') === 'no-precedent', 'no results (precedents) → no-precedent');
+// An unrecognised reason must NOT be guessed into a specific state — telling a
+// user their query "found nothing" when the cause was a 403 misstates coverage.
+ok(L.failureStateForReason('law_api_http_error') === '', 'http error is not reported as "no result"');
+ok(L.failureStateForReason('law_api_parse_error') === '', 'parse error is not reported as "no result"');
+ok(L.failureStateForReason('') === '', 'empty reason maps to nothing');
 
 section('response classifier');
 ok(L.classifyResponse({ ok: true, results: [1, 2] }).state === 'results', 'ok + results → results');
-ok(L.classifyResponse({ ok: true, results: [] }).state === 'empty', 'ok + no results → empty');
-ok(L.classifyResponse({ ok: false, error: 'LAW_API_OC is not configured' }).state === 'missing-key', 'not-configured error → missing-key');
-ok(L.classifyResponse({ ok: false, reason: 'not_configured' }).state === 'missing-key', 'not_configured reason → missing-key');
+ok(L.classifyResponse({ ok: true, results: [] }, 'laws').state === 'no-result', 'ok + no laws → no-result');
+ok(L.classifyResponse({ ok: true, results: [] }, 'precedents').state === 'no-precedent', 'ok + no precedents → no-precedent');
+ok(L.classifyResponse({ ok: false, error: 'LAW_API_OC is not configured' }).state === 'not-configured', 'not-configured error → not-configured');
+ok(L.classifyResponse({ ok: false, reason: 'not_configured' }).state === 'not-configured', 'not_configured reason → not-configured');
+ok(L.classifyResponse({ ok: false, reason: 'law_api_timeout' }).state === 'timeout', 'timeout reason → timeout state');
 ok(L.classifyResponse({ ok: false, error: 'search_failed' }).state === 'error', 'other failure → error');
 ok(L.classifyResponse(null).state === 'error', 'null → error');
+
+section('research notices sit above results, never replace them');
+const okResult = { ok: true, synthesisStatus: 'deterministic', directEvidenceCount: 2 };
+ok(L.researchNoticeHtml(okResult, 'ko') === '', 'a clean result shows no notice');
+ok(L.researchNoticeHtml({ ...okResult, citationVerification: { failureCount: 1 } }, 'ko')
+  .indexOf('citation-failed') !== -1, 'an unverified citation raises a notice');
+ok(L.researchNoticeHtml({ ...okResult, directEvidenceCount: 0 }, 'ko')
+  .indexOf('no-direct-manual') !== -1, 'no direct manual authority raises a notice');
+ok(L.researchNoticeHtml({ ...okResult, synthesisStatus: 'failed' }, 'ko')
+  .indexOf('ai-failed') !== -1, 'a failed summary raises a notice');
+ok(L.researchNoticeHtml({ ok: false }, 'ko') === '', 'a failed request produces no inline notice');
 
 section('i18n parity + required labels');
 const koKeys = Object.keys(L.STR_KO).sort();
@@ -104,8 +229,8 @@ const required = {
   searchBtn: ['검색', 'Search'],
   viewSource: ['공식 원문 보기', 'View official source'],
   checkOfficial: ['원문 확인 필요', 'Check official text'],
-  emptyTitle: ['검색 결과가 없습니다', 'No results found'],
-  missingKeyTitle: ['API 설정이 필요합니다', 'API configuration required'],
+  stNoResultTitle: ['법령 검색 결과 없음', 'No matching statute found'],
+  stNotConfiguredTitle: ['법령 API 미설정', 'Legal API not configured'],
   loadingLaws: ['법령 검색 중입니다', 'Searching legal sources'],
   loadingPrec: ['판례 검색 중입니다', 'Searching precedents'],
   errorTitle: ['검색에 실패했습니다', 'Search failed']
@@ -182,7 +307,7 @@ const fastResult = { ok: true, depth: 'fast', depthLabel: '빠른 확인', local
 const fastHtml = L.buildResearchHtml(fastResult, 'ko');
 ok(fastHtml.indexOf('리서치 메모') === -1, 'fast render omits the memo title');
 ok(fastHtml.indexOf('위험 신호') === -1, 'fast render omits risk-flag section');
-ok(L.buildResearchHtml({ ok: false, error: 'LAW_API_OC is not configured' }, 'ko').indexOf('API 설정이 필요합니다') !== -1, 'research missing-key → config state');
+ok(L.buildResearchHtml({ ok: false, error: 'LAW_API_OC is not configured' }, 'ko').indexOf('법령 API 미설정') !== -1, 'research not-configured → not-configured state');
 ok(L.buildResearchHtml({ ok: false, error: 'search_failed' }, 'ko').indexOf('검색에 실패했습니다') !== -1, 'research failure → error state');
 
 section('AI synthesis — labels, status badges, synthesis render');
@@ -318,6 +443,63 @@ section('EN synthesis — unofficial/translated-summary notice');
 const enSynth = L.buildResearchHtml(richResult, 'en');
 ok(enSynth.indexOf('lss-synth-notice') !== -1 && /unofficial/i.test(enSynth), 'EN synthesis shows the unofficial-summary notice');
 ok(L.buildResearchHtml(richResult, 'ko').indexOf('lss-synth-notice') === -1, 'KO synthesis omits the EN-only notice');
+
+section('UX-07 Legal / Entry (434:5) — depth time estimates');
+for (const [lang, etas] of [['ko', ['약 30초', '약 2분', '약 5분']], ['en', ['about 30 sec', 'about 2 min', 'about 5 min']]]) {
+  const sel = L.buildDepthSelectorHtml('basic', lang);
+  ok(etas.every((e) => sel.indexOf(e) !== -1), `${lang}: every depth carries its time estimate`);
+  ok(sel.indexOf(L.S('etaNote', lang)) !== -1, `${lang}: the estimate is labelled as an estimate, not a promise`);
+  ok(sel.indexOf(`aria-label="${L.S('depthBasic', lang)} · ${L.S('etaLabel', lang)} ${L.S('depthBasicEta', lang)}`) !== -1,
+    `${lang}: the accessible name includes the estimate`);
+}
+
+section('UX-07 Legal / Entry (434:33) — status-context chip claims nothing it was not given');
+ok(L.buildVisaContextChipHtml('', 'ko') === '' && L.buildVisaContextChipHtml(null, 'ko') === '' && L.buildVisaContextChipHtml(undefined, 'ko') === '',
+  'no status supplied → no chip (never a default status)');
+for (const junk of ['취업', '<img src=x>', 'D2', 'DD-222', 'https://x.test']) {
+  ok(L.buildVisaContextChipHtml(junk, 'ko') === '', `non-code value "${junk}" renders no chip`);
+}
+ok(L.normalizeVisaContext('d-2') === 'D-2' && L.normalizeVisaContext(' e-7-1 ') === 'E-7-1' && L.normalizeVisaContext('d-10-t') === 'D-10-T',
+  'parent codes, subcodes and -T variants all normalize');
+const ctxChip = L.buildVisaContextChipHtml('D-2', 'ko');
+ok(ctxChip.indexOf('현재 체류자격') !== -1 && ctxChip.indexOf('D-2') !== -1, 'chip labels the code as the current status');
+ok(ctxChip.indexOf('data-lss-ctx-clear') !== -1, 'chip is removable (the steering is consented to, not permanent)');
+
+section('UX-07 Legal / Result (436:8) — memo structure');
+const memo = L.buildResearchHtml({
+  ok: true, depth: 'basic', question: 'D-10으로 바꾸면 아르바이트를 할 수 있나요?',
+  issues: ['허가 없이 시간제 취업이 가능한지', '허가 대상 업종·시간 범위'],
+  missingFacts: ['근무 시간'], laws: [], precedents: [{ caseName: '대법원 2020두1234' }],
+  nextChecks: ['체류자격외활동허가는 어디에서 신청하나요?'], limitations: ['참고용'], disclaimer: 'd'
+}, 'ko');
+ok(memo.indexOf('질문') !== -1 && memo.indexOf('D-10으로 바꾸면') !== -1, 'the question that produced the result is echoed with it');
+ok(memo.indexOf('lss-rnum') !== -1, '주요 쟁점 renders as a numbered list (the numerals are content)');
+ok(memo.indexOf('비교·유추') !== -1 && memo.indexOf('직접 근거가 아니라') !== -1, 'precedents carry the analogy-only notice');
+ok(memo.indexOf('data-lss-copy-q') !== -1, 'the questions for the authority can be copied');
+
+section('UX-07 Legal / Result (437:71) — the basis tally is counted, never asserted');
+const tallyGroups = L.evidenceTally({ sourceGroups: [
+  { group: 'manual', cards: [1, 2] }, { group: 'paradiso', cards: [3] },
+  { group: 'law', cards: [4] }, { group: 'subordinate', cards: [5] }, { group: 'precedent', cards: [6] }] });
+ok(tallyGroups.manual === 3 && tallyGroups.law === 2 && tallyGroups.precedent === 1,
+  'manual/statute/precedent stay three separate counts (§3.6 scales do not merge)');
+const tallyFlat = L.evidenceTally({ laws: [1, 2], precedents: [3], directEvidenceCount: 4 });
+ok(tallyFlat.manual === 4 && tallyFlat.law === 2 && tallyFlat.precedent === 1, 'flat payloads fall back to the top-level arrays');
+const emptyTally = L.evidenceTally({});
+ok(emptyTally.manual === 0 && emptyTally.law === 0 && emptyTally.precedent === 0, 'an empty payload counts zero, not "some"');
+const noSrc = L.buildResearchHtml({ ok: true, depth: 'fast', question: 'q', issues: ['a'], laws: [], precedents: [], limitations: [], disclaimer: 'd' }, 'ko');
+ok(noSrc.indexOf('붙은 출처가 없어요') !== -1, 'no sources → says so, instead of printing a zero-count tally');
+ok(noSrc.indexOf('직접 근거가 아니라') === -1, 'no precedents → no precedent notice');
+
+section('UX-07 Legal / Result — hostile payloads stay escaped');
+const hostile = L.buildResearchHtml({
+  ok: true, depth: 'basic', question: '<img src=x onerror=alert(1)>',
+  issues: ['<script>bad()</script>'], missingFacts: [], laws: [], precedents: [],
+  nextChecks: ['"><svg onload=alert(1)>'], limitations: [], disclaimer: 'd'
+}, 'ko');
+ok(hostile.indexOf('<img') === -1 && hostile.indexOf('&lt;img') !== -1, 'the echoed question is escaped');
+ok(hostile.indexOf('<script>bad') === -1, 'a hostile issue is escaped inside the numbered list');
+ok(hostile.indexOf('<svg onload') === -1, 'a hostile next-check is escaped inside the copy-payload attribute');
 
 section('no dummy / fake-professional strings');
 const src = readFileSync(join(ROOT, 'assets/js/legal-source-search.js'), 'utf8');

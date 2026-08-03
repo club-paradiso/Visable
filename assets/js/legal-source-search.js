@@ -60,12 +60,36 @@
     idleBody: '예: 출입국관리법, 체류자격 변경, 강제퇴거. 아래 빠른 검색을 눌러도 됩니다.',
     loadingLaws: '법령 검색 중입니다',
     loadingPrec: '판례 검색 중입니다',
-    emptyTitle: '검색 결과가 없습니다',
-    emptyBody: '검색어를 바꾸거나, 공식 자료에서 직접 확인해 보세요.',
     errorTitle: '검색에 실패했습니다',
     errorBody: '잠시 후 다시 시도하거나, 하이코리아·1345 또는 공식 자료에서 확인하세요.',
-    missingKeyTitle: 'API 설정이 필요합니다',
-    missingKeyBody: '법령 검색 서비스가 아직 설정되지 않았습니다. 공식 자료(law.go.kr·하이코리아·1345)에서 직접 확인하세요.',
+    /* UX-07 `Legal / Failure States` (node 438:37). Seven distinct failure
+       states, each with at least one next action the reader can actually take.
+       The states are kept apart because the recovery differs: a timeout is
+       retryable, an unconfigured credential is not, and "no result" is not a
+       failure at all. */
+    stNotConfiguredTitle: '법령 API 미설정',
+    stNotConfiguredBody: '법령 원문 연결이 아직 준비 중이에요. 매뉴얼 근거로 먼저 정리해 드릴게요.',
+    stNotConfiguredCta: '매뉴얼 근거만 보기',
+    stTimeoutTitle: '법령 API 응답 지연',
+    stTimeoutBody: '법령 검색이 오래 걸리고 있어요. 기본 리서치로 바꾸면 더 빨리 볼 수 있어요.',
+    stTimeoutCta: '기본 리서치로 전환',
+    stNoResultTitle: '법령 검색 결과 없음',
+    stNoResultBody: '이 질문에 딱 맞는 조문을 찾지 못했어요. 표현을 바꾸면 찾을 수 있어요.',
+    stNoResultCta: '질문 다시 쓰기',
+    stNoPrecedentTitle: '판례 없음',
+    stNoPrecedentBody: '비슷한 판례를 찾지 못했어요. 법령과 매뉴얼 근거로 정리했어요.',
+    stNoPrecedentCta: '법령 근거 보기',
+    stAiFailedTitle: 'AI 요약 실패',
+    stAiFailedBody: '요약을 만들지 못했어요. 찾은 근거는 그대로 확인할 수 있어요.',
+    stAiFailedCta: '근거 목록 보기',
+    stCitationFailedTitle: '인용 검증 실패',
+    stCitationFailedBody: '인용한 문장을 원문에서 확인하지 못했어요. 원문을 직접 확인해 주세요.',
+    stCitationFailedCta: '원문 열기',
+    stNoDirectManualTitle: '매뉴얼 직접 근거 없음',
+    stNoDirectManualBody: '매뉴얼에서 직접 근거를 찾지 못했어요. 관할 관서 확인이 필요해요.',
+    stNoDirectManualCta: '1345 안내 보기',
+    official1345Title: '관할 관서에서 확인해 주세요',
+    official1345Body: '외국인종합안내센터 1345 (평일 09:00–18:00, 다국어 상담) 또는 하이코리아(hikorea.go.kr)에서 확인할 수 있어요. 개별 사정에 따라 판단이 달라질 수 있어 여기서는 결론을 드리지 않아요.',
     precNote: '판례는 개별 사건 판단이며 결과를 보장하지 않습니다. 자세한 내용은 공식 원문을 확인하세요.',
     tabResearch: '리걸 리서치',
     researchDepthLabel: '리서치 깊이',
@@ -95,6 +119,26 @@
     secLimits: '한계',
     applyNote: '아래 근거를 본인 사실관계에 직접 대입해 확인하세요. 이 정리는 결론이 아닙니다.',
     proSteps: ['쟁점 추출 중', '법령 검색 중', '판례 검색 중', '공식자료 대조 중', '리서치 메모 작성 중'],
+    progTitle: '리서치 중이에요',
+    progSub: '아래 순서로 확인해요.',
+    progStep1: '쟁점 파악',
+    progStep2: '매뉴얼 확인',
+    progStep3: '법령 검색',
+    progStep4: '판례 검색',
+    progStep5: '인용 검증',
+    progStep6: '리서치 메모 생성',
+    progPlanned: '예정',
+    progSkipped: '건너뜀',
+    progSkippedWhy: '‘판례 포함’이 꺼져 있어 이 단계는 건너뛰어요. 켜면 다시 확인해요.',
+    progElapsed: '경과 %s초',
+    progCitationNote: '인용은 마지막 단계에서 한 번에 검증해요.',
+    progNoLiveDetail: '단계별 결과는 완료 후에 함께 보여드려요.',
+    progRunning: '확인 중',
+    progWaiting: '대기 중',
+    progUnavailable: '조회 불가',
+    progFailed: '실패',
+    progFound: '%s건 찾음',
+    progFoundNone: '해당 없음',
     synthToggle: 'AI 리서치 요약 사용',
     badgeStandard: '기본 리서치 결과',
     badgeAI: 'AI 리서치 요약',
@@ -123,7 +167,29 @@
     secDocsToCheck: '확인할 서류',
     whyItMattersLabel: '왜 중요한가',
     basicSteps: ['쟁점 정리 중', '법령·자료 검색 중', '확인사항 정리 중'],
-    handoffToResearch: '법령·판례 기준으로 더 분석하기'
+    handoffToResearch: '법령·판례 기준으로 더 분석하기',
+    // UX-07 Legal / Entry (434:5) — depth time estimates + status context chip
+    etaLabel: '예상 소요',
+    depthFastEta: '약 30초',
+    depthBasicEta: '약 2분',
+    depthProEta: '약 5분',
+    etaNote: '예상 시간이며 질문과 서버 상태에 따라 달라져요.',
+    visaContextLabel: '현재 체류자격',
+    visaContextClear: '체류자격 맥락 지우기',
+    // UX-07 Legal / Result (436:8)
+    resultQuestionLabel: '질문',
+    secFactsGroup: '확인된 사실과 부족한 사실',
+    secEstablished: '확인된 사실',
+    secNeedsCheck: '더 확인이 필요한 사실',
+    precedentAnalogyNote: '이 판례는 사안이 완전히 같지 않아요. 직접 근거가 아니라 비교·유추 자료로만 참고해 주세요.',
+    basisTallyTitle: '근거 및 한계',
+    basisTallyManual: '매뉴얼·공식자료 직접 근거 %s건',
+    basisTallyLaw: '법령 보충 근거 %s건',
+    basisTallyPrecedent: '판례 비교·유추 %s건',
+    basisTallyNone: '이번 정리에는 붙은 출처가 없어요. 아래 검색어로 공식 원문을 직접 확인해 주세요.',
+    copyQuestions: '질문 복사하기',
+    copyQuestionsDone: '복사했어요',
+    copyQuestionsFail: '복사하지 못했어요'
   };
   var STR_EN = {
     title: 'Waymaker Legal Research',
@@ -147,12 +213,31 @@
     idleBody: 'e.g. Immigration Act, status change, deportation. You can also tap a quick search below.',
     loadingLaws: 'Searching legal sources',
     loadingPrec: 'Searching precedents',
-    emptyTitle: 'No results found',
-    emptyBody: 'Try a different term, or check the official source directly.',
     errorTitle: 'Search failed',
     errorBody: 'Please try again shortly, or check with HiKorea / 1345 or the official source.',
-    missingKeyTitle: 'API configuration required',
-    missingKeyBody: 'The legal search service is not configured yet. Please check official sources (law.go.kr / HiKorea / 1345) directly.',
+    stNotConfiguredTitle: 'Legal API not configured',
+    stNotConfiguredBody: 'The statute-text connection is not ready yet. We will start from manual-based sources.',
+    stNotConfiguredCta: 'Show manual sources only',
+    stTimeoutTitle: 'Legal API is slow to respond',
+    stTimeoutBody: 'The legal search is taking a while. Switching to standard research will be faster.',
+    stTimeoutCta: 'Switch to standard research',
+    stNoResultTitle: 'No matching statute found',
+    stNoResultBody: 'We could not find a provision that matches this question. Rewording may help.',
+    stNoResultCta: 'Reword the question',
+    stNoPrecedentTitle: 'No precedent found',
+    stNoPrecedentBody: 'We could not find a similar precedent. The summary uses statute and manual sources.',
+    stNoPrecedentCta: 'See statute sources',
+    stAiFailedTitle: 'AI summary failed',
+    stAiFailedBody: 'The summary could not be generated. The sources we found are still available.',
+    stAiFailedCta: 'See the source list',
+    stCitationFailedTitle: 'Citation not verified',
+    stCitationFailedBody: 'We could not confirm the quoted sentence against the original text. Please check it directly.',
+    stCitationFailedCta: 'Open the original text',
+    stNoDirectManualTitle: 'No direct manual source',
+    stNoDirectManualBody: 'We could not find direct manual authority. Confirmation with the competent office is needed.',
+    stNoDirectManualCta: 'See 1345 guidance',
+    official1345Title: 'Please confirm with the competent office',
+    official1345Body: 'Call the Immigration Contact Center at 1345 (weekdays 09:00-18:00, multilingual) or check HiKorea (hikorea.go.kr). The outcome can differ case by case, so no conclusion is given here.',
     precNote: 'Precedents are individual case decisions and do not guarantee any outcome. See the official text for details.',
     tabResearch: 'Legal Research',
     researchDepthLabel: 'Research depth',
@@ -182,6 +267,26 @@
     secLimits: 'Limitations',
     applyNote: 'Apply the sources below to your own facts and verify. This is not a conclusion.',
     proSteps: ['Spotting issues', 'Searching laws', 'Searching precedents', 'Cross-checking official materials', 'Drafting research memo'],
+    progTitle: 'Researching',
+    progSub: 'We check these in order.',
+    progStep1: 'Identify the issues',
+    progStep2: 'Check the manuals',
+    progStep3: 'Search statutes',
+    progStep4: 'Search precedents',
+    progStep5: 'Verify citations',
+    progStep6: 'Draft the research memo',
+    progPlanned: 'Planned',
+    progSkipped: 'Skipped',
+    progSkippedWhy: '"Include precedents" is off, so this step is skipped. Turn it on to include it.',
+    progElapsed: '%ss elapsed',
+    progCitationNote: 'Citations are verified once, at the final step.',
+    progNoLiveDetail: 'Per-step results are shown together once the run finishes.',
+    progRunning: 'Checking',
+    progWaiting: 'Waiting',
+    progUnavailable: 'Unavailable',
+    progFailed: 'Failed',
+    progFound: '%s found',
+    progFoundNone: 'none',
     synthToggle: 'Use AI research synthesis',
     badgeStandard: 'Standard research result',
     badgeAI: 'AI research synthesis',
@@ -210,7 +315,29 @@
     secDocsToCheck: 'Documents to check',
     whyItMattersLabel: 'Why it matters',
     basicSteps: ['Organizing issues', 'Searching laws & materials', 'Compiling checks'],
-    handoffToResearch: 'Analyze with legal sources'
+    handoffToResearch: 'Analyze with legal sources',
+    // UX-07 Legal / Entry (434:5) — depth time estimates + status context chip
+    etaLabel: 'Est. time',
+    depthFastEta: 'about 30 sec',
+    depthBasicEta: 'about 2 min',
+    depthProEta: 'about 5 min',
+    etaNote: 'An estimate — the actual wait varies with the question and server load.',
+    visaContextLabel: 'Current status',
+    visaContextClear: 'Clear status context',
+    // UX-07 Legal / Result (436:8)
+    resultQuestionLabel: 'Question',
+    secFactsGroup: 'What is established and what is missing',
+    secEstablished: 'Established facts',
+    secNeedsCheck: 'Facts that still need checking',
+    precedentAnalogyNote: 'This precedent is not an identical case. Treat it as comparison or analogy material, not as direct authority.',
+    basisTallyTitle: 'Basis and limits',
+    basisTallyManual: '%s direct manual / official source(s)',
+    basisTallyLaw: '%s supporting statute source(s)',
+    basisTallyPrecedent: '%s precedent(s) by comparison / analogy',
+    basisTallyNone: 'No sources were attached to this result. Use the search terms below to check the official text directly.',
+    copyQuestions: 'Copy questions',
+    copyQuestionsDone: 'Copied',
+    copyQuestionsFail: 'Could not copy'
   };
   var STR_PACKS = { ko: STR_KO, en: STR_EN };
   function S(k, lang) {
@@ -366,12 +493,61 @@
       + '</article>';
   }
 
-  function stateBlock(icon, title, body) {
-    return '<div class="lss-state">'
+  function stateBlock(icon, title, body, action, stateName) {
+    return '<div class="lss-state"'
+      + (stateName ? ' data-lss-state="' + escapeHtml(stateName) + '"' : '') + '>'
       + '<div class="lss-state-ic" aria-hidden="true">' + icon + '</div>'
       + '<p class="lss-state-title">' + escapeHtml(title) + '</p>'
       + (body ? '<p class="lss-state-body">' + escapeHtml(body) + '</p>' : '')
+      + (action
+        ? '<button type="button" class="lss-state-cta" data-lss-recover="'
+          + escapeHtml(action.act) + '">' + escapeHtml(action.label) + ' →</button>'
+        : '')
       + '</div>';
+  }
+
+  /* ------------- UX-07 Legal / Failure States (node 438:37) ---------------- */
+
+  /**
+   * The seven failure states, each paired with the one recovery action the
+   * design specifies. They are deliberately NOT collapsed into a single
+   * "error": the right next step differs per cause. A timeout is worth
+   * retrying at a lower depth; an unconfigured credential never is; and
+   * "no result" is not a failure at all, only an empty answer.
+   */
+  var FAILURE_STATES = {
+    'not-configured':  { ic: '🔧', k: 'stNotConfigured',  act: 'manual-only' },
+    'timeout':         { ic: '⏳', k: 'stTimeout',         act: 'lower-depth' },
+    'no-result':       { ic: '📭', k: 'stNoResult',        act: 'reword' },
+    'no-precedent':    { ic: '⚖️', k: 'stNoPrecedent',     act: 'show-laws' },
+    'ai-failed':       { ic: '📝', k: 'stAiFailed',        act: 'show-sources' },
+    'citation-failed': { ic: '🔍', k: 'stCitationFailed',  act: 'open-original' },
+    'no-direct-manual':{ ic: '📌', k: 'stNoDirectManual',  act: 'show-1345' }
+  };
+
+  function failureStateHtml(state, lang) {
+    var spec = FAILURE_STATES[state];
+    if (!spec) return '';
+    return stateBlock(spec.ic, S(spec.k + 'Title', lang), S(spec.k + 'Body', lang),
+      { act: spec.act, label: S(spec.k + 'Cta', lang) }, state);
+  }
+
+  /**
+   * Map a backend `reason` / `error_type` onto a failure state.
+   *
+   * Only reasons the backend actually emits are mapped. Anything else falls
+   * through to the generic error state rather than being guessed into a
+   * specific one — telling a user their query "found nothing" when the real
+   * cause was a 403 would be a lie about our own coverage.
+   */
+  function failureStateForReason(reason, kind) {
+    var r = String(reason || '').toLowerCase();
+    if (r === 'not_configured' || r === 'law_api_not_configured') return 'not-configured';
+    if (r === 'law_api_timeout' || r === 'timeout') return 'timeout';
+    if (r === 'law_api_no_results' || r === 'no_results') {
+      return kind === 'precedents' ? 'no-precedent' : 'no-result';
+    }
+    return '';
   }
   // state: 'idle' | 'loading' | 'empty' | 'error' | 'missing-key' | 'results'
   function buildResultsHtml(state, kind, data, lang) {
@@ -379,11 +555,18 @@
       return '<div class="lss-state lss-loading"><div class="lss-spinner" aria-hidden="true"></div>'
         + '<p class="lss-state-title">' + escapeHtml(kind === 'precedents' ? S('loadingPrec', lang) : S('loadingLaws', lang)) + '</p></div>';
     }
-    if (state === 'missing-key') return stateBlock('🔧', S('missingKeyTitle', lang), S('missingKeyBody', lang));
-    if (state === 'error') return stateBlock('⚠️', S('errorTitle', lang), S('errorBody', lang));
-    if (state === 'idle') return stateBlock('🔎', S('idleTitle', lang), S('idleBody', lang));
+    // A named failure state wins: it carries the specific cause and the one
+    // recovery action for it.
+    if (FAILURE_STATES[state]) return failureStateHtml(state, lang);
+    // `missing-key` is the legacy name for `not-configured`; keep it working.
+    if (state === 'missing-key') return failureStateHtml('not-configured', lang);
+    if (state === 'error') return stateBlock('⚠️', S('errorTitle', lang), S('errorBody', lang), null, 'error');
+    if (state === 'idle') return stateBlock('🔎', S('idleTitle', lang), S('idleBody', lang), null, 'idle');
     var list = data || [];
-    if (state === 'empty' || !list.length) return stateBlock('📭', S('emptyTitle', lang), S('emptyBody', lang));
+    if (state === 'empty' || !list.length) {
+      // Empty is not an error, but it still owes the reader a next step.
+      return failureStateHtml(kind === 'precedents' ? 'no-precedent' : 'no-result', lang);
+    }
     var cards = list.map(function (r) {
       return kind === 'precedents' ? buildPrecedentCardHtml(r, lang) : buildLawCardHtml(r, lang);
     }).join('');
@@ -394,15 +577,22 @@
   }
 
   // Map a backend JSON envelope to a UI state. Pure → unit-testable.
-  function classifyResponse(json) {
+  // `kind` decides whether an empty statute search reads as `no-result` or an
+  // empty precedent search reads as `no-precedent` — different states because
+  // "no precedent exists" is a normal, informative answer while "no statute
+  // matched" usually means the query needs rewording.
+  function classifyResponse(json, kind) {
     if (!json || typeof json !== 'object') return { state: 'error', results: [] };
     if (json.ok) {
       var results = Array.isArray(json.results) ? json.results : [];
-      return { state: results.length ? 'results' : 'empty', results: results };
+      if (results.length) return { state: 'results', results: results };
+      return { state: kind === 'precedents' ? 'no-precedent' : 'no-result', results: [] };
     }
     if (json.error === 'LAW_API_OC is not configured' || json.reason === 'not_configured') {
-      return { state: 'missing-key', results: [] };
+      return { state: 'not-configured', results: [] };
     }
+    var mapped = failureStateForReason(json.reason, kind);
+    if (mapped) return { state: mapped, results: [] };
     return { state: 'error', results: [] };
   }
 
@@ -410,6 +600,11 @@
   var DEPTHS = ['fast', 'basic', 'pro'];
   var DEPTH_KEY = { fast: 'depthFast', basic: 'depthBasic', pro: 'depthPro' };
   var DEPTH_DESC_KEY = { fast: 'depthFastDesc', basic: 'depthBasicDesc', pro: 'depthProDesc' };
+  // UX-07 434:19–26 puts a time estimate under each depth. They are estimates,
+  // not measurements — the wait depends on the question and on how the upstream
+  // law/precedent services respond — so the label says so and `etaNote` repeats
+  // it once for the group rather than implying a guarantee per button.
+  var DEPTH_ETA_KEY = { fast: 'depthFastEta', basic: 'depthBasicEta', pro: 'depthProEta' };
   // Client-side mirror of the backend auto-selector (UI suggestion only; the
   // backend decides authoritatively). Keep the heuristics in sync.
   var PRO_TRIGGERS = ['판례', '불허', '취소소송', '강제퇴거', '출국명령', '난민', '귀화 불허', '행정심판', '소송', 'appeal', 'precedent', 'refusal', 'denial', 'deportation'];
@@ -430,13 +625,51 @@
     var cur = DEPTHS.indexOf(depth) === -1 ? 'basic' : depth;
     var btns = DEPTHS.map(function (d) {
       var on = d === cur;
-      return '<button type="button" class="lss-depth-btn' + (on ? ' lss-depth-on' : '') + '" role="radio" aria-checked="' + (on ? 'true' : 'false') + '" data-lss-depth="' + d + '">' + escapeHtml(S(DEPTH_KEY[d], lang)) + '</button>';
+      var name = S(DEPTH_KEY[d], lang);
+      var eta = S(DEPTH_ETA_KEY[d], lang);
+      // The accessible name carries the estimate too, so the two-line visual
+      // does not become a one-line announcement that drops the wait.
+      var aria = name + ' · ' + S('etaLabel', lang) + ' ' + eta;
+      return '<button type="button" class="lss-depth-btn' + (on ? ' lss-depth-on' : '') + '" role="radio"'
+        + ' aria-checked="' + (on ? 'true' : 'false') + '" aria-label="' + escapeHtml(aria) + '"'
+        + ' data-lss-depth="' + d + '">'
+        + '<span class="lss-depth-name">' + escapeHtml(name) + '</span>'
+        + '<span class="lss-depth-eta">' + escapeHtml(eta) + '</span>'
+        + '</button>';
     }).join('');
     return '<div class="lss-depth">'
       + '<span class="lss-depth-label">' + escapeHtml(S('researchDepthLabel', lang)) + '</span>'
       + '<div class="lss-depth-row" role="radiogroup" aria-label="' + escapeHtml(S('researchDepthLabel', lang)) + '">' + btns + '</div>'
       + '<p class="lss-depth-desc">' + escapeHtml(S(DEPTH_DESC_KEY[cur], lang)) + '</p>'
+      + '<p class="lss-depth-eta-note">' + escapeHtml(S('etaNote', lang)) + '</p>'
       + '</div>';
+  }
+
+  /* ------------- UX-07 Legal / Entry — status context chip (434:33) --------
+   * The design shows "현재 체류자격 D-2" next to the option toggles. The value
+   * is never a default: it renders only when a caller actually handed one over
+   * (`openResearch({visaCode})` / the `paradiso:legal-research` event / a
+   * `visa_code` URL param). An invented status would silently re-aim the whole
+   * research question, so no context is shown rather than a guessed one.
+   *
+   * It is also removable. The code is prepended to the question sent upstream,
+   * so a stale chip from an earlier handoff would keep steering later questions
+   * with no way to tell — the × is what makes the steering consented to.
+   */
+  var VISA_CODE_RE = /^[A-Z]{1,2}-\d{1,2}(-\d{1,2})?(-[A-Z])?$/;
+  function normalizeVisaContext(code) {
+    var c = String(code == null ? '' : code).trim().toUpperCase().replace(/\s+/g, '');
+    return VISA_CODE_RE.test(c) ? c : '';
+  }
+  function buildVisaContextChipHtml(code, lang) {
+    var c = normalizeVisaContext(code);
+    if (!c) return '';
+    return '<span class="lss-ctx-chip" data-lss-ctx-chip>'
+      + '<span class="lss-ctx-label">' + escapeHtml(S('visaContextLabel', lang)) + '</span>'
+      + '<span class="lss-ctx-code">' + escapeHtml(c) + '</span>'
+      + '<button type="button" class="lss-ctx-clear" data-lss-ctx-clear aria-label="'
+      + escapeHtml(S('visaContextClear', lang)) + '">×</button>'
+      + '</span>';
   }
 
   function _ul(items) {
@@ -458,6 +691,99 @@
   function _sec(title, inner) {
     if (!inner) return '';
     return '<section class="lss-rsec"><h4 class="lss-rsec-title">' + escapeHtml(title) + '</h4>' + inner + '</section>';
+  }
+
+  /* ------------- UX-07 Legal / Result (436:8) building blocks -------------- */
+
+  // Question echo (436:11). Shows what was actually asked, so a result read
+  // later — or after the input was edited — cannot be attached to the wrong
+  // question.
+  function _questionEchoHtml(question, lang) {
+    var q = String(question == null ? '' : question).trim();
+    if (!q) return '';
+    return '<p class="lss-rquestion"><span class="lss-rquestion-label">'
+      + escapeHtml(S('resultQuestionLabel', lang)) + '</span> ' + escapeHtml(q) + '</p>';
+  }
+
+  // 확인된 사실 / 더 확인이 필요한 사실 side by side (436:16). The pairing is the
+  // point: "established" read alone overstates, and the design puts the gap
+  // next to it at equal weight. A column with nothing in it still renders its
+  // heading and an em dash — an empty "missing" column would otherwise read as
+  // "nothing is missing", which is a much stronger claim than "we found none".
+  function _factsGridHtml(established, needsCheck, lang) {
+    if ((!established || !established.length) && (!needsCheck || !needsCheck.length)) return '';
+    function col(titleKey, inner) {
+      return '<div class="lss-facts-col"><h5 class="lss-facts-title">' + escapeHtml(S(titleKey, lang)) + '</h5>'
+        + (inner || '<p class="lss-facts-empty">—</p>') + '</div>';
+    }
+    return '<section class="lss-rsec lss-facts">'
+      + '<h4 class="lss-rsec-title">' + escapeHtml(S('secFactsGroup', lang)) + '</h4>'
+      + '<div class="lss-facts-grid">'
+      + col('secEstablished', established) + col('secNeedsCheck', needsCheck)
+      + '</div></section>';
+  }
+
+  // Numbered issue list (436:28–40). <ol> rather than styled <ul>: the design's
+  // numerals are content — they are how the memo refers back to an issue.
+  function _numberedList(items, render) {
+    if (!items || !items.length) return '';
+    return '<ol class="lss-rnum">' + items.map(function (it) {
+      return '<li>' + render(it) + '</li>';
+    }).join('') + '</ol>';
+  }
+
+  // Basis tally (437:71–72): how many sources of each kind actually backed this
+  // result. Counted from the payload, never asserted — and the three kinds stay
+  // separate because they carry different weight (§3.6): a manual is direct
+  // authority, a statute is supporting text, a precedent is analogy only.
+  function evidenceTally(result) {
+    var r = result || {};
+    var manual = 0, law = 0, prec = 0;
+    var groups = r.sourceGroups;
+    if (Array.isArray(groups) && groups.length) {
+      groups.forEach(function (g) {
+        var n = ((g && g.cards) || []).length;
+        if (!n) return;
+        if (g.group === 'manual' || g.group === 'paradiso') manual += n;
+        else if (g.group === 'precedent') prec += n;
+        else law += n; // law + subordinate
+      });
+    } else {
+      law = (r.laws || []).length;
+      prec = (r.precedents || []).length;
+      if (Number.isFinite(Number(r.directEvidenceCount))) manual = Number(r.directEvidenceCount) || 0;
+    }
+    return { manual: manual, law: law, precedent: prec };
+  }
+  function _basisTallyHtml(result, lang) {
+    var t = evidenceTally(result);
+    var parts = [];
+    if (t.manual > 0) parts.push(S('basisTallyManual', lang).replace('%s', String(t.manual)));
+    if (t.law > 0) parts.push(S('basisTallyLaw', lang).replace('%s', String(t.law)));
+    if (t.precedent > 0) parts.push(S('basisTallyPrecedent', lang).replace('%s', String(t.precedent)));
+    var line = parts.length ? parts.join(' · ') : S('basisTallyNone', lang);
+    return '<section class="lss-rsec lss-basis-tally">'
+      + '<h4 class="lss-rsec-title">' + escapeHtml(S('basisTallyTitle', lang)) + '</h4>'
+      + '<p class="lss-tally-line">' + escapeHtml(line) + '</p></section>';
+  }
+
+  // 관련 판례 relevance notice (437:37–41). Precedents in this product are never
+  // direct authority for an individual case, so the notice is unconditional
+  // whenever precedents are shown — it is not a per-result judgement.
+  function _precedentNoticeHtml(list, lang) {
+    if (!list || !list.length) return '';
+    return '<p class="lss-prec-note"><span class="lss-prec-tag" data-lss-relevance="analogy">'
+      + escapeHtml(lang === 'en' ? 'By analogy' : '비교·유추') + '</span> '
+      + escapeHtml(S('precedentAnalogyNote', lang)) + '</p>';
+  }
+
+  // Copy-the-questions action (437:68–69) for the questions to put to the
+  // authority. The payload is stashed as an attribute so the handler does not
+  // have to re-derive the list from rendered DOM text.
+  function _copyQuestionsHtml(items, lang) {
+    if (!items || !items.length) return '';
+    return '<button type="button" class="lss-copy-q" data-lss-copy-q="'
+      + escapeHtml(items.join('\n')) + '">' + escapeHtml(S('copyQuestions', lang)) + '</button>';
   }
   // Collapsible section (source drawer). Native <details> gives built-in
   // aria-expanded semantics and keyboard support (§7/§8). Open by default.
@@ -560,12 +886,11 @@
       }).join(' ') + '</span>';
     }
     function issueList(items) {
-      if (!items || !items.length) return '';
-      return '<ul class="lss-rlist">' + items.map(function (it) {
+      return _numberedList(items, function (it) {
         var why = it.whyItMatters
           ? ' <span class="lss-why">— ' + escapeHtml(S('whyItMattersLabel', lang)) + ': ' + escapeHtml(it.whyItMatters) + '</span>' : '';
-        return '<li>' + escapeHtml(it.issue || '') + why + basis(it.sourceIds) + '</li>';
-      }).join('') + '</ul>';
+        return escapeHtml(it.issue || '') + why + basis(it.sourceIds);
+      });
     }
     function ruleList(items) {
       if (!items || !items.length) return '';
@@ -593,16 +918,19 @@
     // Honest "unofficial / source may be Korean" notice (non-KO UI only).
     var tNotice = S('translatedSummaryNotice', lang);
     if (tNotice) html += '<p class="lss-synth-notice">' + escapeHtml(tNotice) + '</p>';
+    html += _questionEchoHtml(result.question, lang);
     if (syn.summary) html += _sec(S('synthSummary', lang), '<p class="lss-rnote">' + escapeHtml(syn.summary) + '</p>');
+    // 436:16 — what the sources establish, paired with what is still unknown.
+    html += _factsGridHtml(ruleList(syn.sourceBackedRules), _ul(syn.missingFacts), lang);
     html += _sec(S('secIssueMap', lang), issueList(syn.issueMap));
-    html += _sec(S('synthRules', lang), ruleList(syn.sourceBackedRules));
     html += _sec(S('secApplyPoints', lang), pointList(syn.applicationPoints));
     html += _sec(S('secRisks', lang), riskList(syn.riskFlags));
-    html += _sec(S('secMissing', lang), _ul(syn.missingFacts));
-    html += _sec(S('synthNextQ', lang), _ul(syn.nextQuestions));
+    html += _sec(S('synthNextQ', lang), _ul(syn.nextQuestions) + _copyQuestionsHtml(syn.nextQuestions, lang));
     html += _sec(S('secDocsToCheck', lang), _ul(syn.documentsToCheck));
     html += _sec(S('secLimits', lang), _ul(syn.limitations));
+    html += _precedentNoticeHtml(result.precedents, lang);
     html += _secDrawer(S('secSources', lang), _sourceCardsHtml(result, lang)); // always show source cards (collapsible drawer)
+    html += _basisTallyHtml(result, lang);
     var caution = syn.caution || result.disclaimer || S('disclaimer', lang);
     html += '<div class="lss-rcaution"><strong>' + escapeHtml(cautionLabel) + '</strong> ' + escapeHtml(caution) + '</div>';
     html += '</div>';
@@ -618,42 +946,82 @@
     html += '<div class="lss-rhead"><span class="lss-rdepth">' + escapeHtml(result.depthLabel || S(DEPTH_KEY[depth], lang)) + '</span>'
       + (result.depthAutoSelected ? '<span class="lss-rauto">' + escapeHtml(S('autoSuggested', lang)) + '</span>' : '') + '</div>';
 
+    html += _questionEchoHtml(result.question, lang);
+
     if (depth === 'fast') {
-      html += _sec(S('secIssues', lang), _ul(result.issues));
+      html += _sec(S('secIssues', lang), _numberedList(result.issues, function (t) { return escapeHtml(String(t == null ? '' : t)); }));
       html += _sec(S('secLawTerms', lang), _termChips(result.lawSearchTerms, 'laws'));
       html += _sec(S('secLaws', lang), _cards(result.laws, 'laws', lang));
     } else {
       if (depth === 'pro') html += '<p class="lss-rmemo">' + escapeHtml((result.headings && result.headings[0]) || '') + '</p>';
-      html += _sec(S('secIssues', lang), _ul(result.issues));
+      html += _sec(S('secIssues', lang), _numberedList(result.issues, function (t) { return escapeHtml(String(t == null ? '' : t)); }));
       html += _sec(S('secMissing', lang), _ul(result.missingFacts));
       html += _sec(S('secLawTerms', lang), _termChips(result.lawSearchTerms, 'laws'));
       html += _sec(S('secLaws', lang), _cards(result.laws, 'laws', lang));
-      var precInner = _termChips(result.precedentSearchTerms, 'precedents') + _cards(result.precedents, 'precedents', lang);
+      var precInner = _termChips(result.precedentSearchTerms, 'precedents')
+        + _precedentNoticeHtml(result.precedents, lang)
+        + _cards(result.precedents, 'precedents', lang);
       html += _sec(S('secPrecedents', lang), precInner);
       if (depth === 'pro') html += _sec(S('secApply', lang), '<p class="lss-rnote">' + escapeHtml(S('applyNote', lang)) + '</p>');
       html += _sec(S('secRisks', lang), _ul(result.riskFlags));
-      html += _sec(S('secNext', lang), _ul(result.nextChecks));
+      html += _sec(S('secNext', lang), _ul(result.nextChecks) + _copyQuestionsHtml(result.nextChecks, lang));
       if (depth === 'pro' && result.sourceGroups && result.sourceGroups.length) {
         html += _secDrawer(S('secSources', lang), _sourceCardsHtml(result, lang));
       }
     }
     html += _sec(S('secLimits', lang), _ul(result.limitations));
+    html += _basisTallyHtml(result, lang);
     html += '<div class="lss-rcaution"><strong>' + escapeHtml(cautionLabel) + '</strong> ' + escapeHtml(result.disclaimer || S('disclaimer', lang)) + '</div>';
     html += '</div>';
     return html;
   }
 
   // Top-level research render: status badge + (synthesis | deterministic) view.
+  /**
+   * Research-side failure states (UX-07 438:37).
+   *
+   * These sit *above* a successful research payload rather than replacing it:
+   * a failed summary or an unverified citation does not invalidate the sources
+   * that were retrieved, and hiding them would throw away the useful part of
+   * the answer. Only a wholesale request failure replaces the output.
+   */
+  function researchNoticeHtml(result, lang) {
+    if (!result || result.ok === false) return '';
+    var notices = [];
+    // The summary was requested but could not be produced.
+    if (result.synthesisStatus === 'failed'
+      || (result.synthesisRequested && result.synthesisStatus === 'llm' && !result.synthesis)) {
+      notices.push('ai-failed');
+    }
+    // A statute reference in the summary could not be matched to the evidence.
+    var cv = result.citationVerification || {};
+    if (Number(cv.failureCount || 0) > 0 || Number(cv.unverifiableCount || 0) > 0) {
+      notices.push('citation-failed');
+    }
+    // Nothing in the approved manual set directly answers the question.
+    if (result.missingDirectAuthority === true
+      || Number(result.directEvidenceCount) === 0) {
+      notices.push('no-direct-manual');
+    }
+    return notices.map(function (n) { return failureStateHtml(n, lang); }).join('');
+  }
+
   function buildResearchHtml(result, lang) {
     if (!result || result.ok === false) {
-      var st = (result && result.error === 'LAW_API_OC is not configured') ? 'missing-key'
-        : (result && result.error === 'empty_question') ? 'idle' : 'error';
+      var reason = result && (result.reason || result.error);
+      var mapped = failureStateForReason(reason, 'laws');
+      var st = (result && result.error === 'LAW_API_OC is not configured') ? 'not-configured'
+        : (result && result.error === 'empty_question') ? 'idle'
+        : (mapped || 'error');
       return buildResultsHtml(st, 'laws', [], lang);
     }
     var status = result.synthesisStatus || 'deterministic';
     var badge = _badgeHtml(status, lang, result.synthesisWarning);
-    if (status === 'llm' && result.synthesis) return badge + buildSynthesisHtml(result, lang);
-    return badge + buildDeterministicResearchHtml(result, lang);
+    var notices = researchNoticeHtml(result, lang);
+    if (status === 'llm' && result.synthesis) {
+      return badge + notices + buildSynthesisHtml(result, lang);
+    }
+    return badge + notices + buildDeterministicResearchHtml(result, lang);
   }
 
   /* ------------------------------------------------------ panel markup ---- */
@@ -696,6 +1064,8 @@
       + '<label class="lss-opt"><input type="checkbox" data-lss-opt-prec checked><span>' + escapeHtml(S('optPrecedents', lang)) + '</span></label>'
       + '<label class="lss-opt"><input type="checkbox" data-lss-opt-orig><span>' + escapeHtml(S('optShowOriginal', lang)) + '</span></label>'
       + '<label class="lss-synth-toggle lss-opt" data-lss-synth-wrap><input type="checkbox" data-lss-synth-toggle checked><span>' + escapeHtml(S('synthToggle', lang)) + '</span></label>'
+      // Filled by syncVisaContextUI() — empty until a caller supplies a status.
+      + '<span class="lss-ctx-slot" data-lss-ctx-slot></span>'
       + '</div>'
       + '<div class="lss-searchbar">'
       + '<textarea class="lss-rinput" data-lss-rinput placeholder="' + escapeHtml(S('researchPlaceholder', lang)) + '" aria-label="' + escapeHtml(S('researchInputAria', lang)) + '" maxlength="800" rows="2"></textarea>'
@@ -707,6 +1077,110 @@
       + '</div>';
   }
 
+  /* ------------- UX-07 Legal / Progress (node 435:8) ---------------------
+   * A six-step indicator for a wait that can run tens of seconds.
+   *
+   * The design shows per-step findings ("근거 2건을 찾았어요 · 11초").
+   * `/api/legal/research` is a single request with no progress stream, so the
+   * client cannot know what any step found while it is in flight. Rendering
+   * those lines would be inventing findings, which is the one thing this
+   * codebase must not do — so the steps are shown as the *planned sequence*
+   * and labelled `예정`, never as completed with results.
+   *
+   * What IS real here and therefore shown:
+   *   - the step list and its order (fixed by the pipeline);
+   *   - which step is skipped, from the client's own includePrecedents flag;
+   *   - elapsed time, measured.
+   *
+   * Per-step findings need the endpoint to emit progress events, the way
+   * /ai-overview/stream does. Until then the honest surface is a plan.
+   */
+  var RESEARCH_STEPS = ['progStep1', 'progStep2', 'progStep3', 'progStep4', 'progStep5', 'progStep6'];
+  // Must match backend LEGAL_RESEARCH_STEPS order exactly — the stream keys its
+  // step records by these names.
+  var RESEARCH_STEP_NAMES = ['issues', 'manuals', 'laws', 'precedents', 'citations', 'memo'];
+  var PRECEDENT_STEP_INDEX = 3;
+
+  /**
+   * Per-step note. Only says what the stream actually reported.
+   *
+   * A step with no record yet is `대기 중` — not "0 found", which would claim a
+   * completed empty search. `unavailable` and `skipped` stay distinct from a
+   * genuine zero, because "we could not look" and "we looked and found none"
+   * are different facts.
+   */
+  function progressStepNote(rec, lang) {
+    if (!rec) return S('progWaiting', lang);
+    if (rec.status === 'skipped') return S('progSkipped', lang);
+    if (rec.status === 'unavailable') return S('progUnavailable', lang);
+    if (rec.status === 'failed') return S('progFailed', lang);
+    if (rec.status === 'running') return S('progRunning', lang);
+    var n = Number(rec.foundCount);
+    if (!isFinite(n)) return S('progPlanned', lang);
+    return n > 0 ? S('progFound', lang).replace('%s', String(n))
+                 : S('progFoundNone', lang);
+  }
+
+  function buildResearchProgressHtml(opts) {
+    var o = opts || {};
+    var lang = o.lang || 'ko';
+    var skipPrecedents = o.includePrecedents === false;
+    var seconds = Math.max(0, Math.round((o.elapsedMs || 0) / 1000));
+    // `steps` is the map of step-name -> record the stream has delivered so far.
+    // Empty means the stream has not started (or is unavailable), in which case
+    // every row reads as planned rather than as a finished empty search.
+    var got = o.steps || {};
+    var streaming = !!o.streaming;
+    var firstOpen = false; // set once the current step has been marked
+
+    var items = RESEARCH_STEPS.map(function (key, i) {
+      var name = RESEARCH_STEP_NAMES[i];
+      var rec = got[name];
+      var skipped = (rec && rec.status === 'skipped') ||
+        (!rec && skipPrecedents && i === PRECEDENT_STEP_INDEX);
+      var note = streaming
+        ? progressStepNote(rec || (skipped ? { status: 'skipped' } : null), lang)
+        : (skipped ? S('progSkipped', lang) : S('progPlanned', lang));
+      var done = !!rec && rec.status !== 'skipped';
+      // UX-10 Behavior & A11y: 진행 단계 → aria-current="step". Only while the
+      // stream is live: on the pre-flight plan nothing is running yet, and
+      // marking step 1 "current" before the request leaves would announce
+      // progress that has not started.
+      var current = streaming && !done && !skipped && !firstOpen;
+      if (current) firstOpen = true;
+      return '<li class="lss-prog-step' + (skipped ? ' is-skipped' : '') +
+        (done ? ' is-done' : '') + '"' +
+        (current ? ' aria-current="step"' : '') +
+        ' data-lss-step="' + (i + 1) + '"' +
+        ' data-lss-step-name="' + escapeHtml(name) + '"' +
+        (rec ? ' data-lss-step-status="' + escapeHtml(String(rec.status || '')) + '"' : '') +
+        (skipped ? ' data-lss-step-skipped="1"' : '') + '>' +
+        '<span class="lss-prog-n" aria-hidden="true">' +
+        (skipped ? '—' : (done ? '✓' : (i + 1))) + '</span>' +
+        '<span class="lss-prog-label">' + escapeHtml(S(key, lang)) + '</span>' +
+        '<span class="lss-prog-note">' + escapeHtml(note) + '</span>' +
+        '</li>';
+    }).join('');
+
+    return '<div class="lss-state lss-loading lss-prog" aria-busy="true" data-lss-progress="1">' +
+      '<div class="lss-spinner" aria-hidden="true"></div>' +
+      '<p class="lss-state-title">' + escapeHtml(S('progTitle', lang)) + '</p>' +
+      '<p class="lss-state-body">' + escapeHtml(S('progSub', lang)) + '</p>' +
+      '<ol class="lss-prog-list">' + items + '</ol>' +
+      (skipPrecedents
+        ? '<p class="lss-prog-skip-why">' + escapeHtml(S('progSkippedWhy', lang)) + '</p>'
+        : '') +
+      '<p class="lss-prog-meta">' +
+      '<span class="lss-prog-elapsed" data-lss-elapsed>' +
+      escapeHtml(S('progElapsed', lang).replace('%s', String(seconds))) + '</span>' +
+      '</p>' +
+      '<p class="lss-prog-note-cite">' + escapeHtml(S('progCitationNote', lang)) + '</p>' +
+      (streaming
+        ? ''
+        : '<p class="lss-prog-note-cite">' + escapeHtml(S('progNoLiveDetail', lang)) + '</p>') +
+      '</div>';
+  }
+
   /* --------------------------------------------------------- public API --- */
   var api = {
     escapeHtml: escapeHtml,
@@ -715,8 +1189,20 @@
     buildPrecedentCardHtml: buildPrecedentCardHtml,
     buildResultsHtml: buildResultsHtml,
     classifyResponse: classifyResponse,
+    failureStateHtml: failureStateHtml,
+    buildResearchProgressHtml: buildResearchProgressHtml,
+    RESEARCH_STEPS: RESEARCH_STEPS,
+    RESEARCH_STEP_NAMES: RESEARCH_STEP_NAMES,
+    runResearchStream: runResearchStream,
+    progressStepNote: progressStepNote,
+    failureStateForReason: failureStateForReason,
+    researchNoticeHtml: researchNoticeHtml,
+    FAILURE_STATES: FAILURE_STATES,
     panelHtml: panelHtml,
     buildDepthSelectorHtml: buildDepthSelectorHtml,
+    buildVisaContextChipHtml: buildVisaContextChipHtml,
+    normalizeVisaContext: normalizeVisaContext,
+    evidenceTally: evidenceTally,
     buildResearchHtml: buildResearchHtml,
     buildSynthesisHtml: buildSynthesisHtml,
     normalizeSynthesis: normalizeSynthesis,
@@ -815,6 +1301,21 @@
       + '.lss-depth-btn:focus-visible{outline:2px solid var(--ac,#34D4A8);outline-offset:2px;}'
       + '.lss-depth-on{background:var(--acL,#163E36);border-color:var(--ac2,#17B388);color:var(--t1,#F3EEDF);}'
       + '.lss-depth-desc{font-size:.78rem;line-height:1.55;color:var(--t3,#8C8572);margin:.5rem 0 0;word-break:keep-all;}'
+      // UX-07 434:17 — two-line depth button (name over time estimate)
+      + '.lss-depth-btn{display:flex;flex-direction:column;align-items:flex-start;gap:.12rem;}'
+      + '.lss-depth-name{font-size:.85rem;font-weight:750;}'
+      + '.lss-depth-eta{font-size:.72rem;font-weight:650;color:var(--t3,#8C8572);}'
+      + '.lss-depth-on .lss-depth-eta{color:var(--t2,#C7BFA8);}'
+      + '.lss-depth-eta-note{font-size:.72rem;line-height:1.5;color:var(--t3,#8C8572);margin:.25rem 0 0;word-break:keep-all;}'
+      // UX-07 434:33 — status-context chip
+      + '.lss-ctx-chip{display:inline-flex;align-items:center;gap:.35rem;padding:.2rem .3rem .2rem .6rem;border-radius:999px;'
+      + 'border:1px solid var(--ac2,#17B388);background:var(--acL,#163E36);font-size:.78rem;font-weight:700;color:var(--t1,#F3EEDF);}'
+      + '.lss-ctx-label{color:var(--t2,#C7BFA8);font-weight:650;}'
+      + '.lss-ctx-code{font-weight:850;letter-spacing:.01em;}'
+      + '.lss-ctx-clear{min-width:26px;min-height:26px;border:0;border-radius:999px;cursor:pointer;background:transparent;'
+      + 'color:var(--t2,#C7BFA8);font:inherit;font-size:.95rem;line-height:1;}'
+      + '.lss-ctx-clear:hover{color:var(--t1,#F3EEDF);background:rgba(255,255,255,.08);}'
+      + '.lss-ctx-clear:focus-visible{outline:2px solid var(--ac,#34D4A8);outline-offset:1px;}'
       + '.lss-rinput{flex:1 1 auto;min-width:0;min-height:48px;padding:.6rem .85rem;border-radius:10px;resize:vertical;'
       + 'border:1.5px solid var(--bd,#2D5A50);background:var(--bg0,#0B2A24);color:var(--t1,#F3EEDF);font:600 16px/1.45 inherit;}'
       + '.lss-rinput:focus{outline:2px solid var(--ac,#34D4A8);outline-offset:1px;border-color:var(--ac,#34D4A8);}'
@@ -830,6 +1331,26 @@
       + '.lss-rlist{margin:.1rem 0 .3rem;padding-left:1.15rem;}'
       + '.lss-rlist li{font-size:.86rem;line-height:1.6;color:var(--t1,#F3EEDF);margin:.15rem 0;word-break:keep-all;}'
       + '.lss-rnote{font-size:.83rem;line-height:1.6;color:var(--t2,#C7BFA8);margin:.1rem 0;word-break:keep-all;}'
+      // UX-07 436:8 result blocks
+      + '.lss-rquestion{font-size:.8rem;line-height:1.55;color:var(--t2,#C7BFA8);margin:.1rem 0 .5rem;word-break:keep-all;}'
+      + '.lss-rquestion-label{font-weight:800;color:var(--t3,#8C8572);}'
+      + '.lss-facts-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.6rem;}'
+      + '.lss-facts-col{border:1px solid var(--bd2,#224A41);border-radius:10px;padding:.55rem .7rem;min-width:0;}'
+      + '.lss-facts-title{font-size:.8rem;font-weight:800;color:var(--t2,#C7BFA8);margin:0 0 .3rem;}'
+      + '.lss-facts-empty{font-size:.83rem;color:var(--t3,#8C8572);margin:.1rem 0;}'
+      + '.lss-rnum{margin:.1rem 0 .3rem;padding-left:1.35rem;}'
+      + '.lss-rnum li{font-size:.86rem;line-height:1.6;color:var(--t1,#F3EEDF);margin:.15rem 0;word-break:keep-all;}'
+      + '.lss-rnum li::marker{font-weight:850;color:var(--ac,#34D4A8);}'
+      + '.lss-prec-note{display:flex;flex-wrap:wrap;align-items:baseline;gap:.4rem;font-size:.8rem;line-height:1.6;'
+      + 'color:var(--t2,#C7BFA8);margin:.1rem 0 .45rem;word-break:keep-all;}'
+      + '.lss-prec-tag{flex:0 0 auto;font-size:.72rem;font-weight:850;border-radius:999px;padding:.12rem .5rem;'
+      + 'border:1px dashed var(--bd,#2D5A50);color:var(--t3,#8C8572);}'
+      + '.lss-basis-tally{border-top:1px solid var(--bd2,#224A41);}'
+      + '.lss-tally-line{font-size:.82rem;line-height:1.6;color:var(--t2,#C7BFA8);margin:.1rem 0;word-break:keep-all;}'
+      + '.lss-copy-q{min-height:34px;margin:.3rem 0 .1rem;padding:.25rem .7rem;border-radius:999px;cursor:pointer;font:inherit;'
+      + 'font-size:.78rem;font-weight:700;border:1px solid var(--bd,#2D5A50);background:transparent;color:var(--ac,#34D4A8);}'
+      + '.lss-copy-q:hover{border-color:var(--ac,#34D4A8);}'
+      + '.lss-copy-q:focus-visible{outline:2px solid var(--ac,#34D4A8);outline-offset:2px;}'
       + '.lss-rterms{display:flex;flex-wrap:wrap;gap:.4rem;margin:.1rem 0 .4rem;}'
       + '.lss-rterm{min-height:34px;padding:.25rem .65rem;border-radius:999px;cursor:pointer;font:inherit;font-size:.8rem;font-weight:650;'
       + 'border:1px dashed var(--bd,#2D5A50);background:transparent;color:var(--ac,#34D4A8);}'
@@ -884,7 +1405,31 @@
       + '.lss-state-ic{font-size:1.6rem;margin-bottom:.4rem;}'
       + '.lss-state-title{font-size:.92rem;font-weight:750;color:var(--t1,#F3EEDF);margin:0 0 .25rem;word-break:keep-all;}'
       + '.lss-state-body{font-size:.8rem;line-height:1.55;color:var(--t2,#C7BFA8);margin:0;word-break:keep-all;}'
+      // UX-07: the recovery action every failure state carries.
+      + '.lss-state-cta{margin-top:.7rem;padding:.42rem .9rem;border:1px solid var(--ac,#0B7357);'
+      + 'border-radius:999px;background:transparent;color:var(--ac,#0B7357);'
+      + 'font-size:.8rem;font-weight:750;cursor:pointer;font-family:inherit;}'
+      + '.lss-state-cta:hover,.lss-state-cta:focus-visible{background:var(--ac,#0B7357);color:var(--bg1,#0C3A30);}'
+      // Research notices stack above the result rather than replacing it, so
+      // they read as inline warnings, not as an empty state.
+      + '.lss-results + .lss-state,.lss-rsec .lss-state{text-align:left;}'
+      + '.lss-state[data-lss-state="citation-failed"],.lss-state[data-lss-state="ai-failed"],'
+      + '.lss-state[data-lss-state="no-direct-manual"]{text-align:left;padding:.9rem 1rem;'
+      + 'border:1px solid var(--bd2,#224A41);border-radius:12px;margin:0 0 .7rem;}'
       + '.lss-spinner{width:30px;height:30px;margin:.2rem auto .5rem;border:3px solid var(--bd,#2D5A50);border-top-color:var(--ac,#34D4A8);border-radius:50%;animation:lss-spin .8s linear infinite;}'
+      // UX-07 Legal / Progress (435:8). Steps read as a plan, not a scoreboard:
+      // no tick marks, because we do not know what any step found while the
+      // single request is in flight.
+      + '.lss-prog-list{list-style:none;margin:.7rem 0 0;padding:0;display:flex;flex-direction:column;gap:.3rem;text-align:left;}'
+      + '.lss-prog-step{display:flex;align-items:center;gap:.55rem;font-size:.82rem;color:var(--t1,#F3EEDF);}'
+      + '.lss-prog-n{flex:none;width:1.35rem;height:1.35rem;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;'
+      + 'font-size:.72rem;font-weight:750;border:1px solid var(--bd2,#224A41);color:var(--t2,#C7BFA8);}'
+      + '.lss-prog-label{flex:1;min-width:0;}'
+      + '.lss-prog-note{flex:none;font-size:.74rem;color:var(--t3,#8C8572);}'
+      + '.lss-prog-step.is-skipped .lss-prog-label,.lss-prog-step.is-skipped .lss-prog-note{opacity:.6;text-decoration:line-through;}'
+      + '.lss-prog-step.is-skipped .lss-prog-n{border-style:dashed;}'
+      + '.lss-prog-skip-why,.lss-prog-note-cite{margin:.5rem 0 0;font-size:.74rem;line-height:1.5;color:var(--t3,#8C8572);}'
+      + '.lss-prog-meta{margin:.6rem 0 0;font-size:.76rem;color:var(--t2,#C7BFA8);font-variant-numeric:tabular-nums;}'
       + '.lss-rsteps{list-style:none;margin:.4rem 0 0;padding:0;display:inline-block;text-align:left;}'
       + '.lss-rsteps li{font-size:.8rem;color:var(--t2,#C7BFA8);margin:.2rem 0;}'
       + '.lss-rsteps li::before{content:"· ";color:var(--ac,#34D4A8);}'
@@ -912,6 +1457,10 @@
       + '.lss-depth-desc,.lss-positioning,.lss-results-note{font-size:.8rem;line-height:1.62;}'
       + '.lss-example{min-height:46px;padding:.55rem .75rem;font-size:.84rem;line-height:1.5;}'
       + '.lss-options{gap:.65rem 1rem;}.lss-opt{min-height:44px;font-size:.84rem;line-height:1.4;}'
+      // The two fact columns stack rather than shrink: 확인된/더 확인이 필요한 lines
+      // are full sentences, and half a phone width turns them into slivers.
+      + '.lss-facts-grid{grid-template-columns:minmax(0,1fr);}'
+      + '.lss-rnum li{line-height:1.65;}'
       + '.lss-rinput{min-height:76px;font-size:16px;line-height:1.55;}'
       + '.lss-card{padding:.9rem;border-radius:12px;}'
       + '.lss-card-title{font-size:.96rem;line-height:1.45;}'
@@ -930,7 +1479,7 @@
   }
 
   /* ----------------------------------------------------------- runtime ---- */
-  var state = { kind: 'laws', lastQuery: '', researchDepth: 'basic', depthManual: false, lastResearch: '', useSynthesis: true, providerConfigured: null, includePrecedents: true, showOriginal: false, lastResearchJson: null };
+  var state = { kind: 'laws', lastQuery: '', researchDepth: 'basic', depthManual: false, lastResearch: '', useSynthesis: true, providerConfigured: null, includePrecedents: true, showOriginal: false, lastResearchJson: null, visaContext: '' };
   var root = null;
 
   function out() { return root && root.querySelector('[data-lss-out]'); }
@@ -950,6 +1499,84 @@
         doSearch(term);
       });
     });
+    // UX-07: every failure state offers a next action, so each one has to
+    // actually do something. Wired here (not at mount) because the state block
+    // is re-rendered into the output area on every request.
+    o.querySelectorAll('[data-lss-recover]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        runRecovery(btn.getAttribute('data-lss-recover'));
+      });
+    });
+    // UX-07 437:68 — copy the questions to put to the authority. Confirmation
+    // is per-outcome: a clipboard the browser refused must not read "복사했어요".
+    o.querySelectorAll('[data-lss-copy-q]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var lang = lssLang();
+        var text = btn.getAttribute('data-lss-copy-q') || '';
+        var label = S('copyQuestions', lang);
+        function settle(key) {
+          btn.textContent = S(key, lang);
+          setTimeout(function () { btn.textContent = label; }, 1800);
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text)
+            .then(function () { settle('copyQuestionsDone'); })
+            .catch(function () { settle('copyQuestionsFail'); });
+        } else { settle('copyQuestionsFail'); }
+      });
+    });
+  }
+
+  /** Perform the recovery action a failure state offered. */
+  function runRecovery(act) {
+    var lang = lssLang();
+    if (act === 'manual-only') {
+      // Statute lookup is unavailable, so move to the research tab, which is
+      // grounded on manuals and does not depend on the law API.
+      setTab('research');
+      focusInput('[data-lss-rinput]');
+      return;
+    }
+    if (act === 'lower-depth') {
+      // Deep research is what timed out; standard depth runs fewer lookups.
+      state.researchDepth = 'basic';
+      state.depthManual = true;
+      syncDepthUI();
+      if (state.lastResearch) doResearch(state.lastResearch);
+      return;
+    }
+    if (act === 'reword') {
+      focusInput(state.kind === 'research' ? '[data-lss-rinput]' : '[data-lss-input]', true);
+      return;
+    }
+    if (act === 'show-laws' || act === 'open-original') {
+      // Both land on the statute tab: its cards carry the official law.go.kr
+      // links, which is where "open the original" actually goes.
+      setTab('laws');
+      var q = state.lastQuery || state.lastResearch;
+      if (q) doSearch(q);
+      return;
+    }
+    if (act === 'show-sources') {
+      // The summary failed but the retrieved sources are intact — re-render
+      // the research result with synthesis off instead of discarding it.
+      state.useSynthesis = false;
+      syncSynthToggle();
+      if (state.lastResearchJson) setOut(buildResearchHtml(state.lastResearchJson, lang));
+      else if (state.lastResearch) doResearch(state.lastResearch);
+      return;
+    }
+    if (act === 'show-1345') {
+      setOut(stateBlock('☎️', S('official1345Title', lang), S('official1345Body', lang),
+        null, 'official-1345'));
+    }
+  }
+
+  function focusInput(selector, select) {
+    var el = root && root.querySelector(selector);
+    if (!el) return;
+    el.focus();
+    if (select && typeof el.select === 'function') el.select();
   }
 
   function doSearch(query) {
@@ -968,7 +1595,7 @@
       .then(function (json) {
         // Ignore a stale response if the user moved on to a newer query.
         if (state.lastQuery !== q) return;
-        var c = classifyResponse(json);
+        var c = classifyResponse(json, kind);
         setOut(buildResultsHtml(c.state, kind, c.results, lssLang()));
       })
       .catch(function () {
@@ -988,6 +1615,31 @@
     var desc = row.querySelector('.lss-depth-desc');
     if (desc) desc.textContent = S(DEPTH_DESC_KEY[state.researchDepth] || 'depthBasicDesc', lssLang());
     syncSynthToggle();
+  }
+
+  /** Paint the status-context chip from state (empty slot when there is none). */
+  function syncVisaContextUI() {
+    if (!root) return;
+    var slot = root.querySelector('[data-lss-ctx-slot]');
+    if (!slot) return;
+    slot.innerHTML = buildVisaContextChipHtml(state.visaContext, lssLang());
+    var clear = slot.querySelector('[data-lss-ctx-clear]');
+    if (clear) {
+      clear.addEventListener('click', function () {
+        state.visaContext = '';
+        syncVisaContextUI();
+        focusInput('[data-lss-rinput]');
+      });
+    }
+  }
+
+  /**
+   * Set the status context a handoff supplied. Rejected values clear the chip
+   * rather than displaying unvalidated text next to a "현재 체류자격" label.
+   */
+  function setVisaContext(code) {
+    state.visaContext = normalizeVisaContext(code);
+    syncVisaContextUI();
   }
 
   function syncSynthToggle() {
@@ -1015,44 +1667,149 @@
       + '<p class="lss-state-body">' + escapeHtml(S('researchIdleBody', lang)) + '</p></div>';
   }
 
+  // Elapsed time is the only live number we honestly have, so it is the only
+  // thing that ticks.
+  var _progTimer = null;
+  function startProgressTimer(startedAt, lang) {
+    stopProgressTimer();
+    _progTimer = setInterval(function () {
+      var el = root && root.querySelector('[data-lss-elapsed]');
+      if (!el) { stopProgressTimer(); return; }
+      var secs = Math.max(0, Math.round((Date.now() - startedAt) / 1000));
+      el.textContent = S('progElapsed', lang).replace('%s', String(secs));
+    }, 1000);
+  }
+  function stopProgressTimer() {
+    if (_progTimer) { clearInterval(_progTimer); _progTimer = null; }
+  }
+
   function doResearch(question) {
-    var q = String(question == null ? '' : question).trim().slice(0, 800);
-    if (!q) return;
+    var raw = String(question == null ? '' : question).trim();
+    if (!raw) return;
+    // The status-context chip is part of what is being asked, so it is folded
+    // into the request — but visibly, through the chip, instead of silently
+    // rewriting the user's text. The guard keeps a re-run (recovery, retry)
+    // from stacking the code again.
+    var ctx = state.visaContext;
+    var q = ((ctx && raw.indexOf(ctx) === -1) ? (ctx + ' ' + raw) : raw).slice(0, 800);
     state.lastResearch = q;
     var lang = lssLang();
     // Deep research can take longer (multiple source searches) — surface the
     // staged work so the wait is legible (§8).
     var effectiveDepth = state.depthManual ? state.researchDepth : clientAutoDepth(q);
     // Surface the staged work so the wait is legible and trustworthy (§2/§8).
-    var steps = (effectiveDepth === 'pro') ? (S('proSteps', lang) || []) : (S('basicSteps', lang) || []);
-    var stepsHtml = steps.length
-      ? '<ul class="lss-rsteps">' + steps.map(function (s) { return '<li>' + escapeHtml(s) + '</li>'; }).join('') + '</ul>'
-      : '';
-    setOut('<div class="lss-state lss-loading" aria-busy="true"><div class="lss-spinner" aria-hidden="true"></div>'
-      + '<p class="lss-state-title">' + escapeHtml(S('researchLoading', lang)) + '</p>' + stepsHtml + '</div>');
+    var startedAt = Date.now();
+    var stepRecords = {};
+    var renderProgress = function (streaming) {
+      setOut(buildResearchProgressHtml({
+        lang: lang,
+        includePrecedents: !!state.includePrecedents,
+        elapsedMs: Date.now() - startedAt,
+        steps: stepRecords,
+        streaming: !!streaming
+      }));
+      startProgressTimer(startedAt, lang);
+    };
+    renderProgress(false);
     var payload = { question: q, locale: lang, includePrecedents: !!state.includePrecedents };
     // Only pin depth when the user manually chose one; otherwise let the backend
     // auto-select and reflect its choice back into the selector.
     if (state.depthManual) payload.depth = state.researchDepth;
     // Request AI synthesis per the toggle (fast stays deterministic anyway).
     payload.synthesis = (state.useSynthesis && effectiveDepth !== 'fast') ? 'source_grounded_llm' : 'deterministic';
+    // Try the progress stream first. It reports what each stage actually found,
+    // which is the only way the step list can show findings instead of a plan.
+    // Any failure falls back to the buffered endpoint, so a browser without
+    // ReadableStream — or a proxy that buffers SSE — loses the progress detail
+    // and nothing else.
+    var streamed = false;
+    if (typeof ReadableStream !== 'undefined' && typeof TextDecoder !== 'undefined') {
+      streamed = true;
+      runResearchStream(q, payload, lang, stepRecords, renderProgress)
+        .then(function (done) {
+          if (state.lastResearch !== q) return;
+          stopProgressTimer();
+          if (done) { finishResearch(q, done); return; }
+          runBufferedResearch(q, payload);
+        })
+        .catch(function () {
+          if (state.lastResearch !== q) return;
+          runBufferedResearch(q, payload);
+        });
+    }
+    if (streamed) return;
+    runBufferedResearch(q, payload);
+  }
+
+  /** Read the SSE progress stream. Resolves with the final result, or null. */
+  function runResearchStream(q, payload, lang, stepRecords, renderProgress) {
+    return fetch(apiBase() + '/api/legal/research/stream', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'text/event-stream' },
+      body: JSON.stringify(payload)
+    }).then(function (res) {
+      if (!res.ok || !res.body) return null;
+      var reader = res.body.getReader();
+      var decoder = new TextDecoder();
+      var buf = '';
+      var finalResult = null;
+
+      function handleFrame(frame) {
+        var evLine = /^event:\s*(.+)$/m.exec(frame);
+        var dataLine = /^data:\s*([\s\S]+)$/m.exec(frame);
+        if (!evLine || !dataLine) return;
+        var data;
+        try { data = JSON.parse(dataLine[1]); } catch (e) { return; }
+        if (evLine[1] === 'step' && data && data.step) {
+          stepRecords[data.step] = data;
+          if (state.lastResearch === q) renderProgress(true);
+        } else if (evLine[1] === 'done') {
+          finalResult = data;
+        }
+      }
+
+      function pump() {
+        return reader.read().then(function (chunk) {
+          if (chunk.done) {
+            if (buf.trim()) handleFrame(buf);
+            return finalResult;
+          }
+          buf += decoder.decode(chunk.value, { stream: true });
+          var parts = buf.split('\n\n');
+          buf = parts.pop() || '';
+          parts.forEach(handleFrame);
+          return pump();
+        });
+      }
+      return pump();
+    });
+  }
+
+  function finishResearch(q, json) {
+    if (state.lastResearch !== q) return;
+    state.lastResearchJson = json;
+    if (json && json.ok && !state.depthManual && json.depth) {
+      state.researchDepth = json.depth; syncDepthUI();
+    }
+    if (json && typeof json.providerConfigured === 'boolean') {
+      state.providerConfigured = json.providerConfigured;
+      syncSynthToggle();
+    }
+    setOut(buildResearchHtml(json, lssLang()));
+  }
+
+  function runBufferedResearch(q, payload) {
     fetch(apiBase() + '/api/legal/research', {
       method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify(payload)
     })
       .then(function (r) { return r.json().catch(function () { return null; }); })
       .then(function (json) {
-        if (state.lastResearch !== q) return;
-        state.lastResearchJson = json;
-        if (json && json.ok && !state.depthManual && json.depth) { state.researchDepth = json.depth; syncDepthUI(); }
-        // Reflect provider availability: disable the toggle if no provider.
-        if (json && typeof json.providerConfigured === 'boolean') {
-          state.providerConfigured = json.providerConfigured;
-          syncSynthToggle();
-        }
-        setOut(buildResearchHtml(json, lssLang()));
+        stopProgressTimer();
+        finishResearch(q, json);
       })
       .catch(function () {
+        stopProgressTimer();
         if (state.lastResearch !== q) return;
         setOut(buildResearchHtml({ ok: false, error: 'search_failed' }, lssLang()));
       });
@@ -1172,6 +1929,7 @@
     root.innerHTML = panelHtml(lang);
     wire();
     syncDepthUI();
+    syncVisaContextUI();
     // Re-open when this is the selected workspace route.  Previously the
     // sidebar took users to the research screen and then made them discover a
     // second collapsed disclosure before they could search.
@@ -1194,6 +1952,13 @@
     if (!root) return false;
     if (!root.classList.contains('lss-root')) root.classList.add('lss-root');
     injectStyles();
+    // index.html's Waymaker CTA hands the status over in the URL
+    // (buildWaymakerHandoffUrl → ?visa_code=…). Picking it up here is what makes
+    // the chip appear on a cold load rather than only after an in-page handoff.
+    try {
+      var p = new URLSearchParams(location.search);
+      state.visaContext = normalizeVisaContext(p.get('visa_code'));
+    } catch (e) { /* non-fatal: no context rather than a wrong one */ }
     render();
     return true;
   }
@@ -1221,8 +1986,9 @@
     if (bodyEl) bodyEl.removeAttribute('hidden');
     if (toggleEl) toggleEl.setAttribute('aria-expanded', 'true');
     var q = String(opts.question || opts.query || '').trim();
-    var code = String(opts.visaCode || '').trim();
-    if (code && q.indexOf(code) === -1) q = code + ' ' + q;
+    // The status code becomes a visible, removable chip (434:33) rather than an
+    // invisible prefix on the question. doResearch() still sends it upstream.
+    setVisaContext(opts.visaCode);
     if (opts.depth && DEPTHS.indexOf(opts.depth) !== -1) { state.researchDepth = opts.depth; state.depthManual = true; }
     setTab('research');
     var ri = root.querySelector('[data-lss-rinput]');

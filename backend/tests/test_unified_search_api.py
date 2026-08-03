@@ -52,9 +52,19 @@ class UnifiedSearchApiTests(unittest.TestCase):
     def test_response_carries_the_documented_schema(self):
         body = self._search("D-2-1")
         for key in ("query", "intent", "detectedVisaCodes", "interpretation",
-                    "organicResults", "suggestions", "sourceCards", "aiOverview",
-                    "aiOverviewStatus", "fallbackAvailable", "requestId", "latency"):
+                    "organicResults", "suggestions", "suggestionRows", "sourceCards",
+                    "aiOverview", "aiOverviewStatus", "fallbackAvailable",
+                    "requestId", "latency"):
             self.assertIn(key, body, f"missing `{key}` in unified search response")
+
+    def test_suggestion_rows_are_typed_and_match_the_string_list(self):
+        body = self._search("D-2-1")
+        rows = body["suggestionRows"]
+        self.assertTrue(rows)
+        self.assertEqual([row["query"] for row in rows], body["suggestions"])
+        for row in rows:
+            for key in ("type", "query", "label", "sublabel", "badge"):
+                self.assertIn(key, row)
 
     def test_ai_overview_is_null_and_pending_on_the_organic_endpoint(self):
         body = self._search("D-2-1")
@@ -172,6 +182,86 @@ class ManualEvidenceStateApiTests(unittest.TestCase):
         client = TestClient(pb.app)
         body = client.get("/api/search/manual-evidence-state").json()
         self.assertEqual(body["approvalCounts"].get("approved", 0), 0)
+
+
+class AiOverviewFigmaStateTests(unittest.TestCase):
+    """States added to match Figma UX-03 `AI Overview` (node 406:92)."""
+
+    def setUp(self):
+        self.client = TestClient(pb.app)
+        self._saved = {k: os.environ.get(k) for k in PROVIDER_ENV}
+        for key in PROVIDER_ENV:
+            os.environ.pop(key, None)
+
+    def tearDown(self):
+        for key, value in self._saved.items():
+            if value is None:
+                os.environ.pop(key, None)
+            else:
+                os.environ[key] = value
+
+    def test_no_evidence_is_reported_as_blocked_with_a_reason(self):
+        # A query that resolves to no organic evidence must say why, not render
+        # an empty card.
+        body = self.client.post("/api/search/unified/ai-overview",
+                                json={"query": "ㅁㄴㅇㄹ"}).json()
+        # With no provider configured the provider gate fires first; assert the
+        # blocked shape directly instead.
+        self.assertIn(body["status"], {"unavailable", "blocked"})
+        if body["status"] == "blocked":
+            self.assertTrue(body["reason"])
+
+    def test_source_chips_mark_unretrieved_sources_instead_of_dropping_them(self):
+        deterministic = {
+            "organicResults": [
+                {"kind": "manual_card", "title": "체류자격 변경", "page": 42,
+                 "usableAsDirectEvidence": False},
+                {"code": "D-2-1", "title": "전문학사과정"},
+            ],
+            "manualEvidence": {"status": "ok", "approvedCount": 0, "reviewPendingCount": 1},
+        }
+        chips = pb._unified_overview_sources(deterministic)
+        labels = [c["label"] for c in chips]
+        self.assertTrue(any("체류자격 변경" in l for l in labels))
+        manual_chip = next(c for c in chips if "체류자격 변경" in c["label"])
+        self.assertTrue(manual_chip["unavailable"],
+                        "review-pending manual evidence must be dimmed, not presented as settled")
+
+    def test_missing_manual_index_appears_as_an_unavailable_source(self):
+        chips = pb._unified_overview_sources({
+            "organicResults": [], "manualEvidence": {"status": "index_unavailable"}})
+        self.assertTrue(chips)
+        self.assertTrue(chips[0]["unavailable"])
+
+    def test_source_chips_are_deduplicated_and_bounded(self):
+        deterministic = {"organicResults": [{"code": "D-2", "title": "유학"}] * 20,
+                         "manualEvidence": {}}
+        chips = pb._unified_overview_sources(deterministic)
+        self.assertEqual(len(chips), 1)
+
+    def test_evidence_label_counts_approved_and_pending_separately(self):
+        label = pb._unified_evidence_label({
+            "organicResults": [{"code": "D-2"}],
+            "manualEvidence": {"approvedCount": 2, "reviewPendingCount": 3},
+        }, "ko")
+        self.assertIn("매뉴얼 직접 근거 2건", label)
+        self.assertIn("검토 전 매뉴얼 3건", label)
+        self.assertIn("공식 확인 필요", label)
+
+    def test_evidence_label_omits_zero_buckets(self):
+        label = pb._unified_evidence_label({
+            "organicResults": [{"code": "D-2"}],
+            "manualEvidence": {"approvedCount": 0, "reviewPendingCount": 0},
+        }, "ko")
+        self.assertNotIn("매뉴얼 직접 근거", label)
+        self.assertIn("공식 확인 필요", label)
+
+    def test_evidence_label_has_an_english_form(self):
+        label = pb._unified_evidence_label({
+            "organicResults": [{"code": "D-2"}],
+            "manualEvidence": {"approvedCount": 1, "reviewPendingCount": 0},
+        }, "en")
+        self.assertIn("official confirmation required", label)
 
 
 if __name__ == "__main__":

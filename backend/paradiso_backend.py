@@ -24,7 +24,7 @@ import time
 import uuid
 import dataclasses
 from contextlib import asynccontextmanager
-from typing import Any, Dict, List, Optional, Sequence
+from typing import Any, Dict, List, Optional, Sequence, Tuple
 from urllib.parse import quote
 
 from fastapi import Depends, FastAPI, HTTPException
@@ -5717,8 +5717,20 @@ class LegalResearchRequest(BaseModel):
 _LEGAL_RESEARCH_MAX_QUESTION = 800
 
 
-def _run_research_law_retrieval(plan: Dict[str, Any], cfg) -> List[Dict[str, Any]]:
-    """Run the budgeted law searches for a plan and return deduped law cards.
+def _aggregate_research_stage_status(statuses: Sequence[str], *, found: int) -> str:
+    """Collapse per-query outcomes without turning an outage into no results."""
+    if found:
+        return "done"
+    normalized = [str(status or "").strip().lower() for status in statuses]
+    if normalized and all(status in {"not_found", "no_results"} for status in normalized):
+        return "no_results"
+    return "failed"
+
+
+def _run_research_law_retrieval(
+    plan: Dict[str, Any], cfg
+) -> Tuple[List[Dict[str, Any]], str]:
+    """Return deduped law cards plus a no-results/failure-aware stage status.
 
     Uses the ranked search so alias input resolves, substring noise is filtered by
     the name guard, and each card carries its lifecycle state. A ranked outcome
@@ -5726,9 +5738,11 @@ def _run_research_law_retrieval(plan: Dict[str, Any], cfg) -> List[Dict[str, Any
     rather than being read as "this law does not exist".
     """
     laws: List[Dict[str, Any]] = []
+    statuses: List[str] = []
     seen = set()
     for term in plan.get("lawTerms", []):
         outcome = search_laws_ranked(term, limit=_LEGAL_SEARCH_MAX_RESULTS, config=cfg)
+        statuses.append(str(outcome.get("status") or ""))
         if outcome.get("status") in {"unavailable", "forbidden", "timeout",
                                      "parse_failed", "not_found"}:
             continue
@@ -5743,15 +5757,20 @@ def _run_research_law_retrieval(plan: Dict[str, Any], cfg) -> List[Dict[str, Any
             laws.append(card)
         if len(laws) >= 12:
             break
-    return laws[:12]
+    items = laws[:12]
+    return items, _aggregate_research_stage_status(statuses, found=len(items))
 
 
-def _run_research_precedent_retrieval(plan: Dict[str, Any], cfg) -> List[Dict[str, Any]]:
-    """Run the budgeted precedent searches for a plan and return deduped cards."""
+def _run_research_precedent_retrieval(
+    plan: Dict[str, Any], cfg
+) -> Tuple[List[Dict[str, Any]], str]:
+    """Return deduped precedent cards plus an honest aggregate stage status."""
     out: List[Dict[str, Any]] = []
+    statuses: List[str] = []
     seen = set()
     for term in plan.get("precedentTerms", []):
         env = precedent_sources.search_precedents(term, limit=_LEGAL_SEARCH_MAX_RESULTS, config=cfg)
+        statuses.append(str(env.get("status") or ""))
         if env.get("status") != "results_found":
             continue
         for it in (env.get("items") or []):
@@ -5765,26 +5784,38 @@ def _run_research_precedent_retrieval(plan: Dict[str, Any], cfg) -> List[Dict[st
             out.append(card)
         if len(out) >= 8:
             break
-    return out[:8]
+    items = out[:8]
+    return items, _aggregate_research_stage_status(statuses, found=len(items))
 
 
-@app.post(
-    "/api/legal/research",
-    dependencies=[Depends(rate_limit("legal_research", per_minute=4, per_day=60))],
-)
-async def legal_research_endpoint(req: LegalResearchRequest) -> Any:
-    """Deterministic, source-grounded legal research scaffold (no LLM).
+# ---------------------------------------------------------------------------
+# Shared research pipeline (UX-07 `Legal / Progress`, node 435:8).
+#
+# Both /api/legal/research and /api/legal/research/stream drain THIS generator,
+# so a streamed run and a buffered run cannot diverge. A second copy would let
+# the rules that keep synthesis grounded — the source packet and its validation —
+# be updated on one path only.
+#
+# A step is yielded only AFTER its stage ran, carrying that stage's real count,
+# so a progress event can never claim a finding that has not happened yet. That
+# is precisely what the frontend could not do before: the buffered endpoint had
+# no way to say "the statute search found 3".
+# ---------------------------------------------------------------------------
+LEGAL_RESEARCH_STEPS = ("issues", "manuals", "laws", "precedents", "citations", "memo")
 
-    Plans retrieval by research depth (fast / basic / pro), runs the budgeted
-    law/precedent searches via the OC-safe adapters, and returns a depth-
-    structured result: issues to verify, source-strength-labelled cards (grouped
-    by source type in pro), risk flags, missing facts, next checks, limitations,
-    and a disclaimer. It never fabricates citations, never states a legal
-    conclusion, and never infers facts the user did not provide.
-    """
-    question = (req.question or "").strip()[:_LEGAL_RESEARCH_MAX_QUESTION]
-    if not question:
-        return UTF8JSONResponse(status_code=400, content={"ok": False, "error": "empty_question"})
+
+async def _legal_research_pipeline(req: LegalResearchRequest, question: str):
+    _started = time.monotonic()
+
+    def _step(name: str, found: int, status: str = "done") -> Dict[str, Any]:
+        return {
+            "step": name,
+            "index": LEGAL_RESEARCH_STEPS.index(name) + 1,
+            "total": len(LEGAL_RESEARCH_STEPS),
+            "status": status,
+            "foundCount": int(found),
+            "elapsedMs": int((time.monotonic() - _started) * 1000),
+        }
 
     plan = legal_research.build_research_plan(
         question,
@@ -5795,15 +5826,8 @@ async def legal_research_endpoint(req: LegalResearchRequest) -> Any:
         include_manuals=req.includeManuals,
         locale=req.locale,
     )
-
-    cfg = load_grounding_config()
-    retrieval_available = bool(cfg.law_api_configured)
-    laws: List[Dict[str, Any]] = []
-    precs: List[Dict[str, Any]] = []
-    if retrieval_available:
-        laws = _run_research_law_retrieval(plan, cfg)
-        if plan.get("runPrecedents"):
-            precs = _run_research_precedent_retrieval(plan, cfg)
+    yield _step("issues", len(
+        plan.get("issuesKo" if plan.get("locale") == "ko" else "issuesEn") or []))
 
     paradiso_sources: List[Dict[str, Any]] = []
     hint = (req.visaStatusHint or "").strip()
@@ -5813,11 +5837,38 @@ async def legal_research_endpoint(req: LegalResearchRequest) -> Any:
             "strength": "background",
             "note": "Paradiso 구조화 데이터" if plan.get("locale") == "ko" else "Paradiso structured data",
         })
+    yield _step("manuals", len(paradiso_sources))
+
+    cfg = load_grounding_config()
+    retrieval_available = bool(cfg.law_api_configured)
+    laws: List[Dict[str, Any]] = []
+    precs: List[Dict[str, Any]] = []
+    retrieval_statuses = {"laws": "unavailable", "precedents": "unavailable"}
+    if retrieval_available:
+        laws, retrieval_statuses["laws"] = _run_research_law_retrieval(plan, cfg)
+        yield _step("laws", len(laws), status=retrieval_statuses["laws"])
+        if plan.get("runPrecedents"):
+            precs, retrieval_statuses["precedents"] = _run_research_precedent_retrieval(plan, cfg)
+            yield _step("precedents", len(precs), status=retrieval_statuses["precedents"])
+        else:
+            # The caller turned precedents off. "Skipped" and "we looked and
+            # found none" are different claims and must not share a status.
+            retrieval_statuses["precedents"] = "skipped"
+            yield _step("precedents", 0, status="skipped")
+    else:
+        # No law API configured: neither retrieval stage ran at all, which is
+        # again not the same as finding nothing.
+        yield _step("laws", 0, status="unavailable")
+        yield _step("precedents", 0, status="unavailable")
+
 
     result = legal_research.build_research_result(
         plan, law_results=laws, precedent_results=precs,
         paradiso_sources=paradiso_sources, retrieval_available=retrieval_available,
+        retrieval_statuses=retrieval_statuses,
     )
+    yield _step("citations",
+                len(result.get("laws") or []) + len(result.get("precedents") or []))
 
     # ---- Optional source-grounded LLM synthesis (strictly after retrieval) ----
     # The deterministic result above is always the fallback. Synthesis runs only
@@ -5872,7 +5923,82 @@ async def legal_research_endpoint(req: LegalResearchRequest) -> Any:
                 result["synthesisFailureReason"] = reason
         # else: LLM unavailable/failed → leave synthesisStatus = "deterministic".
 
+    yield _step("memo", 1 if result.get("synthesis") else 0,
+                status="failed" if result.get("synthesisStatus") == "validation_failed" else "done")
+    yield {"__result__": result}
+
+
+@app.post(
+    "/api/legal/research",
+    dependencies=[Depends(rate_limit("legal_research", per_minute=4, per_day=60))],
+)
+async def legal_research_endpoint(req: LegalResearchRequest) -> Any:
+    """Deterministic, source-grounded legal research scaffold (no LLM).
+
+    Plans retrieval by research depth (fast / basic / pro), runs the budgeted
+    law/precedent searches via the OC-safe adapters, and returns a depth-
+    structured result: issues to verify, source-strength-labelled cards (grouped
+    by source type in pro), risk flags, missing facts, next checks, limitations,
+    and a disclaimer. It never fabricates citations, never states a legal
+    conclusion, and never infers facts the user did not provide.
+    """
+    question = (req.question or "").strip()[:_LEGAL_RESEARCH_MAX_QUESTION]
+    if not question:
+        return UTF8JSONResponse(status_code=400, content={"ok": False, "error": "empty_question"})
+
+    result = None
+    async for _rec in _legal_research_pipeline(req, question):
+        if isinstance(_rec, dict) and "__result__" in _rec:
+            result = _rec["__result__"]
     return result
+
+
+@app.post(
+    "/api/legal/research/stream",
+    dependencies=[Depends(rate_limit("legal_research", per_minute=4, per_day=60))],
+)
+async def legal_research_stream_endpoint(req: LegalResearchRequest) -> Any:
+    """The same research run as /api/legal/research, reported as it happens.
+
+    Frames: ``start`` -> ``step`` per stage -> ``done`` with the identical
+    payload the buffered endpoint returns. Both drain
+    `_legal_research_pipeline`, so the two cannot answer the same question
+    differently.
+
+    ``status`` separates ``done`` (sources found), ``no_results`` (the search
+    ran cleanly), ``failed`` (upstream/parse failure), ``skipped`` (the caller
+    turned it off), and ``unavailable`` (the law API is not configured) —
+    because "found nothing", "search failed", and "never ran" are different
+    claims about our coverage.
+    """
+    question = (req.question or "").strip()[:_LEGAL_RESEARCH_MAX_QUESTION]
+    if not question:
+        return UTF8JSONResponse(status_code=400, content={"ok": False, "error": "empty_question"})
+
+    async def _gen():
+        yield _sse("start", {"status": "running", "total": len(LEGAL_RESEARCH_STEPS),
+                             "steps": list(LEGAL_RESEARCH_STEPS)})
+        result = None
+        try:
+            async for rec in _legal_research_pipeline(req, question):
+                if isinstance(rec, dict) and "__result__" in rec:
+                    result = rec["__result__"]
+                else:
+                    yield _sse("step", rec)
+        except Exception:
+            # The buffered endpoint stays available, so report the failure
+            # rather than leaving the client on a spinner forever.
+            yield _sse("done", {"ok": False, "error": "search_failed",
+                                "reason": "pipeline_error"})
+            return
+        yield _sse("done", result if result is not None
+                   else {"ok": False, "error": "search_failed", "reason": "no_result"})
+
+    return StreamingResponse(
+        _gen(),
+        media_type="text/event-stream",
+        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+    )
 
 
 # Shared per-client limiter for ALL /api/debug/law-grounding* endpoints (H-1a).
@@ -6647,8 +6773,11 @@ async def search_unified_ai_overview(req: UnifiedAiOverviewRequest) -> Any:
     manual_state = (deterministic.get("manualEvidence") or {}).get("status", "not_queried")
 
     if not evidence_lines:
+        # `blocked` in the design vocabulary: no summary was produced, and the
+        # reason is stated rather than left as an empty card.
         return {
-            "status": "no_evidence",
+            "status": "blocked",
+            "reason": ("검색된 근거 0건" if lang == "ko" else "no grounded evidence"),
             "requestId": request_id,
             "overview": None,
             "fallbackAvailable": True,
@@ -6657,26 +6786,7 @@ async def search_unified_ai_overview(req: UnifiedAiOverviewRequest) -> Any:
                         "No grounded evidence was retrieved, so no overview was generated."),
         }
 
-    language_line = ("Write in natural Korean." if lang == "ko"
-                     else "Write in natural English.")
-    prompt = (
-        "You summarize Korean immigration/status-of-stay search results for a "
-        "public information site. You are NOT giving legal advice.\n\n"
-        f"User query: {query}\n"
-        f"Detected intent: {deterministic.get('intent')}\n"
-        f"Retrieved evidence (the ONLY facts you may use):\n"
-        + "\n".join(evidence_lines[:8]) + "\n\n"
-        "HARD RULES:\n"
-        "1. Use ONLY the retrieved evidence above. Do not add requirements, "
-        "deadlines, fees or eligibility rules that are not present in it.\n"
-        "2. NEVER write a statute name, article number, case number, visa code, "
-        "occupation code or industry code that does not appear above.\n"
-        "3. Do not state whether the user is eligible or will be approved.\n"
-        "4. 2-5 sentences. Then one short line naming the single most useful "
-        "next action.\n"
-        "5. End by telling the reader to confirm with HiKorea or 1345.\n\n"
-        f"{language_line}"
-    )
+    prompt = _unified_overview_prompt(query, deterministic, evidence_lines, lang)
 
     try:
         text, attempt_meta = await _openrouter_complete_with_candidates(prompt)
@@ -6722,12 +6832,210 @@ async def search_unified_ai_overview(req: UnifiedAiOverviewRequest) -> Any:
             "directEvidenceCount": len(evidence_lines),
             "law": "not_queried",
         },
+        "sources": _unified_overview_sources(deterministic),
+        "evidenceLabel": _unified_evidence_label(deterministic, lang),
         "requiresOfficialConfirmation": True,
         "provider": attempt_meta.get("provider", "") if isinstance(attempt_meta, dict) else "",
         "model": attempt_meta.get("model", "") if isinstance(attempt_meta, dict) else "",
         "fallbackAvailable": True,
         "latency": {"totalMs": elapsed_ms},
     }
+
+
+def _unified_overview_prompt(
+    query: str,
+    deterministic: Dict[str, Any],
+    evidence_lines: List[str],
+    lang: str,
+) -> str:
+    """Prompt shared by the buffered and streaming AI Overview endpoints.
+
+    Shared deliberately: two copies would drift, and the hard rules here are the
+    only thing stopping the model from inventing a statute or a visa code.
+    """
+    language_line = ("Write in natural Korean." if lang == "ko"
+                     else "Write in natural English.")
+    return (
+        "You summarize Korean immigration/status-of-stay search results for a "
+        "public information site. You are NOT giving legal advice.\n\n"
+        f"User query: {query}\n"
+        f"Detected intent: {deterministic.get('intent')}\n"
+        f"Retrieved evidence (the ONLY facts you may use):\n"
+        + "\n".join(evidence_lines[:8]) + "\n\n"
+        "HARD RULES:\n"
+        "1. Use ONLY the retrieved evidence above. Do not add requirements, "
+        "deadlines, fees or eligibility rules that are not present in it.\n"
+        "2. NEVER write a statute name, article number, case number, visa code, "
+        "occupation code or industry code that does not appear above.\n"
+        "3. Do not state whether the user is eligible or will be approved.\n"
+        "4. 2-5 sentences. Then one short line naming the single most useful "
+        "next action.\n"
+        "5. End by telling the reader to confirm with HiKorea or 1345.\n\n"
+        f"{language_line}"
+    )
+
+
+@app.post(
+    "/api/search/unified/ai-overview/stream",
+    dependencies=[Depends(rate_limit("search_unified_ai", per_minute=10, per_day=200))],
+)
+async def search_unified_ai_overview_stream(req: UnifiedAiOverviewRequest) -> Any:
+    """SSE variant of the AI Overview — emits `streaming` deltas, then `done`.
+
+    Exists so the design's `Streaming` state (Figma UX-03, node 406:92) is a real
+    state and not decoration: without a producer the frontend could render it but
+    nothing would ever trigger it.
+
+    The citation guard runs on the ACCUMULATED text at the end, never per delta —
+    a half-written statute reference would otherwise be judged incomplete and
+    wrongly flagged. Until `done` arrives the client shows the text as provisional.
+    """
+    query = (req.query or "").strip()[:_UNIFIED_SEARCH_MAX_QUERY]
+    lang = "en" if str(req.lang or "ko").lower().startswith("en") else "ko"
+    request_id = uuid.uuid4().hex[:16]
+
+    async def event_stream():
+        if not query:
+            yield _sse("done", {"status": "not_applicable", "requestId": request_id})
+            return
+        if not _providers_configured().get("openrouter"):
+            # Non-streaming providers cannot satisfy this endpoint; the client
+            # falls back to the buffered endpoint rather than showing nothing.
+            yield _sse("done", {
+                "status": "unavailable", "reason": "streaming_not_available",
+                "requestId": request_id, "fallbackAvailable": True,
+                "message": ("실시간 요약을 사용할 수 없습니다. 일반 요약으로 대체합니다."
+                            if lang == "ko" else
+                            "Live summary is unavailable; falling back to the buffered summary."),
+            })
+            return
+
+        cached = _load_visas()
+        deterministic = _unified_search.run_unified_search(
+            query, visa_data=cached.get("visas") or [],
+            valid_main_codes=set(_VALID_MAIN_CODES),
+            manual_search=_unified_manual_search, limit=8,
+        )
+        evidence_lines = [
+            f"- [{c['code']}] {c.get('title', '')}: {c.get('summary', '')[:180]}"
+            for c in deterministic.get("organicResults", []) if c.get("code")
+        ]
+        if not evidence_lines:
+            yield _sse("done", {
+                "status": "blocked",
+                "reason": ("검색된 근거 0건" if lang == "ko" else "no grounded evidence"),
+                "requestId": request_id, "fallbackAvailable": True,
+            })
+            return
+
+        prompt = _unified_overview_prompt(query, deterministic, evidence_lines, lang)
+        yield _sse("start", {"status": "streaming", "requestId": request_id})
+
+        accumulated = ""
+        try:
+            candidates = _resolve_openrouter_candidates()
+            model = candidates[0] if candidates else OPENROUTER_MODEL
+            async for delta in _stream_openrouter_text(prompt, model):
+                if not delta:
+                    continue
+                accumulated += delta
+                yield _sse("delta", {"text": delta})
+        except Exception:
+            yield _sse("done", {
+                "status": "unavailable", "reason": "provider_error",
+                "requestId": request_id, "fallbackAvailable": True,
+                "message": ("AI 요약을 불러오지 못했습니다. 아래 검색 결과는 정상입니다."
+                            if lang == "ko" else
+                            "The AI overview could not be loaded."),
+            })
+            return
+
+        verification = _statute_guard.verify_statute_citations(
+            accumulated, [], evidence_available=False)
+        safe_text = _statute_guard.strip_failed_statute_citations(accumulated, verification)
+        yield _sse("done", {
+            "status": "ok",
+            "requestId": request_id,
+            "overview": safe_text,
+            "citationVerification": {
+                "status": verification["status"],
+                "unverifiableCount": verification["unverifiable_count"],
+                "failureCount": verification["failure_count"],
+            },
+            "evidenceState": {
+                "manual": (deterministic.get("manualEvidence") or {}).get("status", "not_queried"),
+                "directEvidenceCount": len(evidence_lines),
+                "law": "not_queried",
+            },
+            "sources": _unified_overview_sources(deterministic),
+            "evidenceLabel": _unified_evidence_label(deterministic, lang),
+            "requiresOfficialConfirmation": True,
+            "fallbackAvailable": True,
+        })
+
+    return StreamingResponse(
+        event_stream(),
+        media_type="text/event-stream",
+        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+    )
+
+
+def _unified_overview_sources(deterministic: Dict[str, Any]) -> List[Dict[str, Any]]:
+    """Source chips for the overview card (Figma UX-03 `SourceChips`).
+
+    A source that could not be retrieved is included with ``unavailable: true``
+    rather than omitted — the frontend dims it, so the evidence set never looks
+    larger or cleaner than it actually is.
+    """
+    chips: List[Dict[str, Any]] = []
+    for card in deterministic.get("organicResults", []):
+        if card.get("kind") == _unified_search.RESULT_MANUAL_CARD:
+            page = card.get("page")
+            label = card.get("title") or "매뉴얼 본문"
+            chips.append({
+                "label": f"{label} p.{page}" if page else label,
+                "kind": "manual",
+                # Review-pending manual text is real evidence but not approved,
+                # so it is shown dimmed rather than as a settled source.
+                "unavailable": not card.get("usableAsDirectEvidence", False),
+            })
+        elif card.get("code"):
+            chips.append({"label": f"{card['code']} {card.get('title', '')}".strip(),
+                          "kind": "structured", "unavailable": False})
+    manual = deterministic.get("manualEvidence") or {}
+    if manual.get("status") == "index_unavailable":
+        chips.append({"label": "매뉴얼 색인", "kind": "manual", "unavailable": True})
+    # De-duplicate on label, keep first occurrence.
+    seen: set = set()
+    out: List[Dict[str, Any]] = []
+    for chip in chips:
+        if chip["label"] and chip["label"] not in seen:
+            seen.add(chip["label"])
+            out.append(chip)
+    return out[:8]
+
+
+def _unified_evidence_label(deterministic: Dict[str, Any], lang: str) -> str:
+    """One-line evidence tally, mirroring the design's '매뉴얼 직접 근거 N · …' line."""
+    manual = deterministic.get("manualEvidence") or {}
+    approved = int(manual.get("approvedCount") or 0)
+    pending = int(manual.get("reviewPendingCount") or 0)
+    structured = sum(1 for c in deterministic.get("organicResults", []) if c.get("code"))
+    if lang == "ko":
+        parts = [f"구조화 데이터 {structured}건"]
+        if approved:
+            parts.append(f"매뉴얼 직접 근거 {approved}건")
+        if pending:
+            parts.append(f"검토 전 매뉴얼 {pending}건")
+        parts.append("공식 확인 필요")
+        return " · ".join(parts)
+    parts = [f"{structured} structured records"]
+    if approved:
+        parts.append(f"{approved} approved manual")
+    if pending:
+        parts.append(f"{pending} unreviewed manual")
+    parts.append("official confirmation required")
+    return " · ".join(parts)
 
 
 class EmploymentInterpretRequest(BaseModel):

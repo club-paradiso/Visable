@@ -249,6 +249,11 @@ if command -v node >/dev/null 2>&1; then
   # for forbidden dummy/professional-name/legacy wording. Rendered-surface scan
   # self-skips when jsdom is absent; the raw unambiguous-term scan always runs.
   node scripts/check_public_dummy_text.mjs
+  # Unified search layer: escaping, official-host allow-list, AI Overview state
+  # resolution, evidence-state bucketing and suggestion-row typing. These encode
+  # safety invariants (a failed lookup is never "not found"; an unrecognized code
+  # is never echoed as real), so they belong in CI rather than in npm scripts.
+  node scripts/check_unified_search.mjs
 else
   echo "INFO: Node.js not found; skipping subcode-modal and dummy-text checks."
 fi

@@ -79,9 +79,19 @@ never reserve blocking space: in `loading` it renders a bounded skeleton, and in
 
 | Property | Values |
 | --- | --- |
-| `State` | `Idle` · `Focused` · `Typing` · `Loading` · `Disabled` |
+| `State` | `Idle` · `Focused` · `Typing` · `Loading` · `Results` · `Error` · `Disabled` |
 | `Theme` | `Light` · `Dark` |
 | `Size` | `Hero` (landing) · `Compact` (sticky, post-search) |
+
+`Loading`, `Results` and `Error` are driven from code by
+`data-us-search-state` on `#searchForm`, set by `fetchUnified`.
+
+**`Error` is not "no results".** It fires when the unified request itself
+failed — network, 5xx, malformed body — and renders a helper line under the bar
+naming the failure and confirming the organic results below are unaffected. A
+search that returned zero matches is a different thing entirely and never
+reaches this state. Before this existed, a failed unified search rendered
+nothing at all, which read to the user as "there is nothing here".
 
 Accessibility contract (already implemented in markup):
 `role="search"` on the form; input `type="search"` with `aria-label`;
@@ -133,6 +143,20 @@ subcode-specific rules as universal (`CLAUDE.md` code hierarchy).
 | --- | --- |
 | `Kind` | `Status` (2 segments) · `Subcode` (3+ segments) |
 | `MatchReason` | `ExactCode` · `ParentOfExactCode` · `Keyword` |
+
+**`ParentOfExactCode` carries a scoping notice** (`renderParentScopeNotice` in
+`index.html`; the Figma variant is 222px against the others' 120px because of
+it). Searching `D-2-1` renders the `D-2` card — sub-codes live inside their
+parent record — and lifts the sub-code into a "내 상황과 관련" group. Everything
+above that group is the *parent's* common requirements. Without the notice a
+user who searched a specific sub-code can read the parent's universal rules as
+that sub-code's own, which is the code-hierarchy rule failing in the direction
+the rule does not literally name.
+
+The notice renders **only when the sub-code resolves against
+`visa_data.json`**. `D-2-99` is not a sub-code we hold, so naming it back
+("`D-2-99` 전용 요건은 아래에서") would assert a sub-code that does not exist —
+nothing renders instead.
 
 ### 3.5 `Evidence / Source Card` (S2, S3)
 
@@ -210,6 +234,59 @@ visually unmistakable, because only HiKorea confirms the latter.
 ### 3.10 `Employment / Final Checklist` (S4)
 
 The HiKorea confirmation step. The HiKorea row can never render as complete.
+
+---
+
+### 3.11 `Legal / Progress` (S3) — resolved
+
+UX-07 `Legal / Progress` (node `435:8`) shows per-step findings. The first
+implementation could not: `POST /api/legal/research` was a single request with
+no progress stream, so the client had no way to know what a stage found while
+it ran, and rendering those lines would have invented findings. It shipped as a
+*plan* — steps labelled `예정`, never ticked.
+
+**`POST /api/legal/research/stream` now closes that gap.** Frames are
+`start` → `step` per stage → `done` with the identical payload the buffered
+endpoint returns. Both endpoints drain the same `_legal_research_pipeline`
+generator, so a streamed run and a buffered run cannot answer the same question
+differently.
+
+A step is emitted only *after* its stage ran, carrying that stage's real count.
+`status` separates the three things a stage can be, and the frontend renders
+each distinctly:
+
+| status | meaning | reads as |
+| --- | --- | --- |
+| *(no record yet)* | the stage has not run | `대기 중` |
+| `done`, count 0 | it ran and found nothing | `해당 없음` |
+| `skipped` | the caller turned precedents off | `건너뜀` |
+| `unavailable` | the law API is not configured | `조회 불가` |
+
+Those four must never collapse into each other — "we could not look" and "we
+looked and found none" are different facts about our coverage. Asserted in
+`check_legal_source_search.mjs`.
+
+The plan view is still the fallback: without `ReadableStream`, or behind a proxy
+that buffers SSE, the component degrades to the labelled-plan rendering and
+loses only the per-step detail.
+
+### 3.12 `Emp / Special States` (S4)
+
+Ten states (node `442:39`), each with exactly one next action. All are derived
+in `buildSpecialStates()` from signals the analyzer already emitted — it
+re-reads nothing, so a state cannot contradict the extraction it describes.
+
+Two rules the copy must not break, both from the annotation (`442:99`):
+
+- **민감 직종은 가치판단·합법성 단정 금지 → 관할 확인 안내만.** These states say a
+  separate permit or licence *may* apply and name the office. They never say an
+  activity is legal or illegal. Asserted by the check.
+- **신고 대상 ≠ 취업 가능.** Finding a code is never a work permission; the amber
+  warning is unconditional, not limited to legally sensitive inputs.
+
+All applicable states render, not just the highest-priority one: they are
+independent facts about one input, and a trainee in an entertainment role
+genuinely is both.
 
 ---
 
@@ -341,6 +418,174 @@ machine-translated.
 | Approval badge | `backend/services/manual_registry.py` | `evidence_gate` |
 | Employment extraction | `backend/services/employment_nl.py` | `validate_extraction` |
 | Occupation/industry candidates | `scripts/employment_code_analyzer.mjs` | `searchTrack` |
+
+---
+
+## 9b. Figma node inventory (as built)
+
+File `pInhK8Oyg04lpL4PMSCB4l` · page **UX-03 Unified Search · Components**
+(`389:4`) — 82 components in 8 sets.
+
+> `get_metadata` with no `nodeId` returns a **stale two-page view** of this
+> file. It is not authoritative. Read `figma.root.children` through `use_figma`
+> instead — that is where the UX-0x pages actually are.
+
+| Set | Node | Variants | Code owner |
+| --- | --- | --- | --- |
+| `Search / Unified Input` | `394:203` | 16 | `index.html` `#searchForm` |
+| `Search / Suggestion Row` | `400:12` | 14 | `unified-search.js` `buildSuggestionRowHtml` |
+| `Search / Interpretation Strip` | `397:93` | 4 | `unified-search.js` `buildInterpretationHtml` |
+| `Search / AI Overview` | `406:92` | 9 | `unified-search.js` `buildAiOverviewHtml` |
+| `Result / Status Card` | `405:66` | 8 | `index.html` `#rlist` renderer |
+| `Evidence / Source Card` | `408:12` | 16 | `unified-search.js` `buildEvidenceCardHtml` |
+| `Evidence / Confidence Badge` | `392:13` | 3 | `unified-search.js` `buildConfidenceHtml` |
+| `Evidence / Relevance Badge` | `392:26` | 4 | evidence-card `related` / `background` states |
+
+Palette: the UX-0x pages use the **emerald** system (`#177361` accent), while
+the `01 Design System` page still shows indigo `#2f3e8f`. Emerald is the agreed
+reconciliation target.
+
+**The code was never indigo.** `index.html`'s default theme accent is already
+emerald — `--ac: #0B7357` (light) / `#3BE4B8` (dark) — and `#2f3e8f` appears
+nowhere in the repo. The blue accents in `index.html` (`--ac: #2F5EFC`,
+`#7FA6FF`) belong to alternate themes (`data-theme="archive_diary"`), which are
+deliberately their own palettes. So the indigo is a **Figma-side staleness** on
+`01 Design System`, not a pending code migration.
+
+**Resolved:** `.us-layer` no longer carries its own emerald. `--us-accent` is
+now an alias of the site accent (`var(--ac, #0B7357)`), and `--us-accent-soft` /
+`--us-accent-chip` derive from it with `color-mix`.
+
+The small side moved: `--us-accent` had 26 references, `--ac` has 267. The two
+emeralds are the same colour to the eye, and the site value is marginally better
+on contrast in both themes (5.69 vs 5.60 on `--us-surface`; 9.46 vs 9.04 in
+dark). Tint percentages were tuned to 8% / 6% (light) and 16% / 12% (dark) so
+accent-on-soft keeps the ≥5:1 headroom the hand-picked `#e5f5ed` had — a heavier
+mix still passes AA but thins it.
+
+Aliasing rather than copying the hex has a second effect worth stating: the
+layer now follows alternate themes (`data-theme="archive_diary"` and friends)
+instead of staying emerald inside a palette that is deliberately not. Those
+themes are their own systems, and a hard-coded emerald island in them would read
+as a bug.
+
+`#177361` is therefore the value that should move — on the Figma side.
+
+Category tints used by the Suggestion Row: visa/procedure `#177361`, legal
+`#7f89ce`, employment `#d95c47`, recent/correction `#4d5261` — avatar at 14%,
+category chip at 10%.
+
+### UX-07 Legal frames
+
+| Frame | Node | Code owner |
+| --- | --- | --- |
+| `Legal / Entry` | `434:5` | `legal-source-search.js` `panelHtml` + `buildDepthSelectorHtml` + `buildVisaContextChipHtml` |
+| `Legal / Progress` | `435:8` | `legal-source-search.js` `buildResearchProgressHtml` |
+| `Legal / Result` | `436:8` | `legal-source-search.js` `buildSynthesisHtml` / `buildDeterministicResearchHtml` |
+| `Legal / Failure states` | `438:37` | `legal-source-search.js` `FAILURE_STATES` |
+
+Two deliberate departures from the entry frame:
+
+- **The time estimates are labelled as estimates.** 434:19–26 print 약 30초 /
+  약 2분 / 약 5분 as bare figures. The wait is set by the question and by how
+  law.go.kr responds, neither of which the client controls, so `etaNote` says
+  once that these vary. A bare figure next to a spinner that runs long reads as
+  a broken promise rather than an estimate.
+- **The status chip has no default.** 434:33 shows `현재 체류자격 D-2` as part of
+  the composition; in code that value renders only when a caller actually
+  supplied one (`openResearch({visaCode})`, the `paradiso:legal-research` event,
+  or `?visa_code=`) and only when it parses as a status code. A status shown
+  under that label re-aims the whole research question, so a placeholder one
+  would be a fabricated premise, not a visual filler. It is also removable: the
+  code is prepended to the question sent upstream, and a stale chip from an
+  earlier handoff would otherwise keep steering later questions invisibly.
+
+From the result frame, one addition worth naming: 확인된 사실 and
+더 확인이 필요한 사실 render **as a pair, at equal weight** (436:16). Either one
+alone misleads — "established" without the gap overstates, and a missing-facts
+column that disappears when empty reads as "nothing is missing". An empty column
+keeps its heading and an em dash.
+
+The basis tally (437:71) is **counted from the payload**, in three separate
+figures (manual / statute / precedent). Merging them into one number would
+flatten the §3.6 scales, which is exactly what those scales exist to prevent:
+a manual is direct authority, a statute is supporting text, a precedent is
+analogy. Zero sources prints a sentence saying so rather than three zeroes.
+
+Progress steps carry `aria-current="step"` (UX-10 Behavior & A11y) on the first
+step that is neither finished nor skipped — and **only while the stream is
+live**. The pre-flight plan marks none: before the request leaves, announcing a
+step as current would report progress that has not started.
+
+### UX-09 and UX-10 are specification pages, not screens
+
+`443:4` (**UX-09 Responsive & Interaction Prototype**) and `445:4` (**UX-10
+Design Specification & Handoff**) are canvases, not frames, and both are full.
+An earlier revision of this section recorded them as empty; that was a reading
+error, and the correction matters because it changes what is left to build.
+
+- **UX-09** holds three flow maps (search → AI overview → deep research;
+  employment reporting; source → legal research), plus `Interaction Rules`
+  (443:114) and `Prototype Wiring Status` (444:4). The flow maps are Figma
+  prototype wiring, not code. The interaction rules are behavioural and mostly
+  already satisfied by the code in this contract.
+- **UX-10** holds `Spec / Foundations` (445:5), `Spec / Component Contract`
+  (446:4), `Spec / Behavior & A11y` (447:4) and `Spec / Theme Coverage` (457:4).
+  Its component-contract table is an independent restatement of §9 here and
+  agrees with it.
+
+`Spec / Foundations` carries a **token migration proposal** — a table mapping
+Figma tokens onto this repo's CSS custom properties, with the live values
+quoted. Those quoted values are accurate (`--bg0: #F4EFE4`, `--bd: #998058`,
+`--t1: #073B32`, `--t2: #3A544C`, `--ac: #0B7357`, `--cy: #FF6B5B`,
+`--cWk: #E68A3A`), so the table was written from the code rather than guessed.
+It is labelled **"Figma 값은 제안이다"** and it is not applied here: it moves
+`--bg0`, `--bd`, `--t1`, `--t2`, `--cWk` and `--cy`, which every screen and both
+themes read, and it asks for a **new** variable for the primary-CTA background.
+That is a site-wide look change, not a gap in this PR's scope — see
+`docs/ops/CODEX_HANDOFF_2026_08.md` TASK E.
+
+### Still design-only / code-only
+
+Code has safety states the design does not: `forbidden` (403 / OC rejected),
+`repealed`, `ambiguous`, `parse_failed`, the unrecognized-code warning, and
+`manual_card`. Each renders in **its own scale** per §3.6 — see below.
+
+#### Evidence badge scales — how §3.6 is enforced in code
+
+An earlier revision of `buildEvidenceCardHtml` collapsed all four scales into a
+single 7-value bucket and documented the collapsing as a feature. That directly
+broke §3.6: `approved` and `verified` rendered as one emerald, `superseded` and
+`repealed` as one coral, and `not_found` and `unavailable` — the pair §3.6 names
+explicitly — as one grey. Keeping the exact state on `data-us-evidence-state`
+did not redeem it; the badge is what a reader sees.
+
+Now `evidenceScale()` files each state under exactly one scale, and
+`evidenceVisualState()` namespaces the value by scale (`approval-approved`,
+`lifecycle-verified`, …) so no CSS rule can span two of them. Each scale carries
+its own **shape** as well as its own colour, so the distinction survives
+monochrome and colour-blind reading:
+
+| Scale | Shape | States |
+| --- | --- | --- |
+| `approval` | filled pill | `approved` `parsed` `needs_review` `draft` `superseded` `rejected` |
+| `lifecycle` | left colour rule | `verified` `repealed` `scheduled` `ambiguous` `not_found` |
+| `lookup` | neutral dashed | `unavailable` `forbidden` `timeout` `parse_failed` |
+| `relevance` | outline chip | `related` `background` `direct` `analogy` |
+
+Every `lookup` state is neutral: failing to reach a source says nothing about
+that source. An unrecognised state resolves to `unknown` rather than borrowing a
+real scale. `check_unified_search.mjs` asserts that no state appears in two
+scales and that no visual value is reused across them.
+
+This was found by cross-checking against PR #548, which formalised the same four
+scales on the Figma side.
+
+The design has one row the backend deliberately cannot produce:
+`Type=RecentQuery`. Search history is client-side only — the backend keeps no
+record of what anyone searched for, so it never emits that row. The renderer
+supports the type; nothing populates it yet, and adding storage for it is a
+data-retention decision, not a styling one.
 
 ---
 
