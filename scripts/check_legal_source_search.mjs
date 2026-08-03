@@ -127,6 +127,62 @@ section('UX-07 Legal / Progress (node 435:8)');
   ok((en.match(/lss-prog-step/g) || []).length === 6, 'EN renders six steps too');
 }
 
+section('UX-07 progress — live step records');
+{
+  // Step names must line up with the backend's LEGAL_RESEARCH_STEPS, since the
+  // stream keys its records by them.
+  ok(JSON.stringify(L.RESEARCH_STEP_NAMES) ===
+     JSON.stringify(['issues', 'manuals', 'laws', 'precedents', 'citations', 'memo']),
+    'step names match the backend pipeline order');
+
+  // A step with no record yet is "waiting" — never "0 found", which would
+  // claim a completed empty search that has not happened.
+  ok(L.progressStepNote(null, 'ko') === '대기 중', 'no record reads as waiting');
+  ok(L.progressStepNote({ status: 'done', foundCount: 0 }, 'ko') === '해당 없음',
+    'a completed empty stage reads as none-found');
+  ok(L.progressStepNote(null, 'ko') !== L.progressStepNote({ status: 'done', foundCount: 0 }, 'ko'),
+    'waiting and none-found must not read the same');
+
+  // "could not look" vs "looked and found none" stay distinct.
+  const unavailable = L.progressStepNote({ status: 'unavailable' }, 'ko');
+  const zero = L.progressStepNote({ status: 'done', foundCount: 0 }, 'ko');
+  const skipped = L.progressStepNote({ status: 'skipped' }, 'ko');
+  ok(unavailable !== zero, 'unavailable must not read as none-found');
+  ok(skipped !== zero, 'skipped must not read as none-found');
+  ok(skipped !== unavailable, 'skipped must not read as unavailable');
+
+  ok(L.progressStepNote({ status: 'done', foundCount: 3 }, 'ko').includes('3'),
+    'a real count is shown');
+
+  // Without the stream the component stays a plan: no ticks, no counts.
+  const planned = L.buildResearchProgressHtml({ lang: 'ko', includePrecedents: true, elapsedMs: 0 });
+  ok(planned.includes('예정'), 'planned mode labels steps as planned');
+  ok(!planned.includes('✓'), 'planned mode never ticks a step');
+  ok(!/\d+건 찾음/.test(planned), 'planned mode never claims a count');
+
+  // With the stream it reports what actually happened.
+  const live = L.buildResearchProgressHtml({
+    lang: 'ko', streaming: true, elapsedMs: 11000,
+    steps: {
+      issues: { status: 'done', foundCount: 3 },
+      manuals: { status: 'done', foundCount: 1 },
+      laws: { status: 'done', foundCount: 2 }
+    }
+  });
+  ok(live.includes('3건 찾음'), 'live mode shows the reported count');
+  ok(live.includes('✓'), 'a delivered step is ticked');
+  ok(live.includes('대기 중'), 'steps with no record yet still read as waiting');
+  ok(live.includes('data-lss-step-status="done"'), 'the raw status is carried on the element');
+  ok(!live.includes('완료 후에 함께'), 'the "results shown after the run" caveat drops once live');
+
+  // A skipped precedent step reported by the stream stays skipped.
+  const skippedLive = L.buildResearchProgressHtml({
+    lang: 'ko', streaming: true, elapsedMs: 0,
+    steps: { precedents: { status: 'skipped', foundCount: 0 } }
+  });
+  ok(skippedLive.includes('data-lss-step-skipped="1"'), 'stream-reported skip is marked');
+}
+
 section('failure reason mapping');
 ok(L.failureStateForReason('not_configured') === 'not-configured', 'not_configured → not-configured');
 ok(L.failureStateForReason('law_api_not_configured') === 'not-configured', 'law_api_not_configured → not-configured');

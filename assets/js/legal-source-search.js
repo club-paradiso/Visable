@@ -133,6 +133,12 @@
     progElapsed: '경과 %s초',
     progCitationNote: '인용은 마지막 단계에서 한 번에 검증해요.',
     progNoLiveDetail: '단계별 결과는 완료 후에 함께 보여드려요.',
+    progRunning: '확인 중',
+    progWaiting: '대기 중',
+    progUnavailable: '조회 불가',
+    progFailed: '실패',
+    progFound: '%s건 찾음',
+    progFoundNone: '해당 없음',
     synthToggle: 'AI 리서치 요약 사용',
     badgeStandard: '기본 리서치 결과',
     badgeAI: 'AI 리서치 요약',
@@ -253,6 +259,12 @@
     progElapsed: '%ss elapsed',
     progCitationNote: 'Citations are verified once, at the final step.',
     progNoLiveDetail: 'Per-step results are shown together once the run finishes.',
+    progRunning: 'Checking',
+    progWaiting: 'Waiting',
+    progUnavailable: 'Unavailable',
+    progFailed: 'Failed',
+    progFound: '%s found',
+    progFoundNone: 'none',
     synthToggle: 'Use AI research synthesis',
     badgeStandard: 'Standard research result',
     badgeAI: 'AI research synthesis',
@@ -895,20 +907,59 @@
    * /ai-overview/stream does. Until then the honest surface is a plan.
    */
   var RESEARCH_STEPS = ['progStep1', 'progStep2', 'progStep3', 'progStep4', 'progStep5', 'progStep6'];
+  // Must match backend LEGAL_RESEARCH_STEPS order exactly — the stream keys its
+  // step records by these names.
+  var RESEARCH_STEP_NAMES = ['issues', 'manuals', 'laws', 'precedents', 'citations', 'memo'];
   var PRECEDENT_STEP_INDEX = 3;
+
+  /**
+   * Per-step note. Only says what the stream actually reported.
+   *
+   * A step with no record yet is `대기 중` — not "0 found", which would claim a
+   * completed empty search. `unavailable` and `skipped` stay distinct from a
+   * genuine zero, because "we could not look" and "we looked and found none"
+   * are different facts.
+   */
+  function progressStepNote(rec, lang) {
+    if (!rec) return S('progWaiting', lang);
+    if (rec.status === 'skipped') return S('progSkipped', lang);
+    if (rec.status === 'unavailable') return S('progUnavailable', lang);
+    if (rec.status === 'failed') return S('progFailed', lang);
+    if (rec.status === 'running') return S('progRunning', lang);
+    var n = Number(rec.foundCount);
+    if (!isFinite(n)) return S('progPlanned', lang);
+    return n > 0 ? S('progFound', lang).replace('%s', String(n))
+                 : S('progFoundNone', lang);
+  }
 
   function buildResearchProgressHtml(opts) {
     var o = opts || {};
     var lang = o.lang || 'ko';
     var skipPrecedents = o.includePrecedents === false;
     var seconds = Math.max(0, Math.round((o.elapsedMs || 0) / 1000));
+    // `steps` is the map of step-name -> record the stream has delivered so far.
+    // Empty means the stream has not started (or is unavailable), in which case
+    // every row reads as planned rather than as a finished empty search.
+    var got = o.steps || {};
+    var streaming = !!o.streaming;
 
     var items = RESEARCH_STEPS.map(function (key, i) {
-      var skipped = skipPrecedents && i === PRECEDENT_STEP_INDEX;
-      var note = skipped ? S('progSkipped', lang) : S('progPlanned', lang);
-      return '<li class="lss-prog-step' + (skipped ? ' is-skipped' : '') + '"' +
-        ' data-lss-step="' + (i + 1) + '"' + (skipped ? ' data-lss-step-skipped="1"' : '') + '>' +
-        '<span class="lss-prog-n" aria-hidden="true">' + (skipped ? '—' : (i + 1)) + '</span>' +
+      var name = RESEARCH_STEP_NAMES[i];
+      var rec = got[name];
+      var skipped = (rec && rec.status === 'skipped') ||
+        (!rec && skipPrecedents && i === PRECEDENT_STEP_INDEX);
+      var note = streaming
+        ? progressStepNote(rec || (skipped ? { status: 'skipped' } : null), lang)
+        : (skipped ? S('progSkipped', lang) : S('progPlanned', lang));
+      var done = !!rec && rec.status !== 'skipped';
+      return '<li class="lss-prog-step' + (skipped ? ' is-skipped' : '') +
+        (done ? ' is-done' : '') + '"' +
+        ' data-lss-step="' + (i + 1) + '"' +
+        ' data-lss-step-name="' + escapeHtml(name) + '"' +
+        (rec ? ' data-lss-step-status="' + escapeHtml(String(rec.status || '')) + '"' : '') +
+        (skipped ? ' data-lss-step-skipped="1"' : '') + '>' +
+        '<span class="lss-prog-n" aria-hidden="true">' +
+        (skipped ? '—' : (done ? '✓' : (i + 1))) + '</span>' +
         '<span class="lss-prog-label">' + escapeHtml(S(key, lang)) + '</span>' +
         '<span class="lss-prog-note">' + escapeHtml(note) + '</span>' +
         '</li>';
@@ -927,7 +978,9 @@
       escapeHtml(S('progElapsed', lang).replace('%s', String(seconds))) + '</span>' +
       '</p>' +
       '<p class="lss-prog-note-cite">' + escapeHtml(S('progCitationNote', lang)) + '</p>' +
-      '<p class="lss-prog-note-cite">' + escapeHtml(S('progNoLiveDetail', lang)) + '</p>' +
+      (streaming
+        ? ''
+        : '<p class="lss-prog-note-cite">' + escapeHtml(S('progNoLiveDetail', lang)) + '</p>') +
       '</div>';
   }
 
@@ -942,6 +995,9 @@
     failureStateHtml: failureStateHtml,
     buildResearchProgressHtml: buildResearchProgressHtml,
     RESEARCH_STEPS: RESEARCH_STEPS,
+    RESEARCH_STEP_NAMES: RESEARCH_STEP_NAMES,
+    runResearchStream: runResearchStream,
+    progressStepNote: progressStepNote,
     failureStateForReason: failureStateForReason,
     researchNoticeHtml: researchNoticeHtml,
     FAILURE_STATES: FAILURE_STATES,
@@ -1351,18 +1407,106 @@
     var effectiveDepth = state.depthManual ? state.researchDepth : clientAutoDepth(q);
     // Surface the staged work so the wait is legible and trustworthy (§2/§8).
     var startedAt = Date.now();
-    setOut(buildResearchProgressHtml({
-      lang: lang,
-      includePrecedents: !!state.includePrecedents,
-      elapsedMs: 0
-    }));
-    startProgressTimer(startedAt, lang);
+    var stepRecords = {};
+    var renderProgress = function (streaming) {
+      setOut(buildResearchProgressHtml({
+        lang: lang,
+        includePrecedents: !!state.includePrecedents,
+        elapsedMs: Date.now() - startedAt,
+        steps: stepRecords,
+        streaming: !!streaming
+      }));
+      startProgressTimer(startedAt, lang);
+    };
+    renderProgress(false);
     var payload = { question: q, locale: lang, includePrecedents: !!state.includePrecedents };
     // Only pin depth when the user manually chose one; otherwise let the backend
     // auto-select and reflect its choice back into the selector.
     if (state.depthManual) payload.depth = state.researchDepth;
     // Request AI synthesis per the toggle (fast stays deterministic anyway).
     payload.synthesis = (state.useSynthesis && effectiveDepth !== 'fast') ? 'source_grounded_llm' : 'deterministic';
+    // Try the progress stream first. It reports what each stage actually found,
+    // which is the only way the step list can show findings instead of a plan.
+    // Any failure falls back to the buffered endpoint, so a browser without
+    // ReadableStream — or a proxy that buffers SSE — loses the progress detail
+    // and nothing else.
+    var streamed = false;
+    if (typeof ReadableStream !== 'undefined' && typeof TextDecoder !== 'undefined') {
+      streamed = true;
+      runResearchStream(q, payload, lang, stepRecords, renderProgress)
+        .then(function (done) {
+          if (state.lastResearch !== q) return;
+          stopProgressTimer();
+          if (done) { finishResearch(q, done); return; }
+          runBufferedResearch(q, payload);
+        })
+        .catch(function () {
+          if (state.lastResearch !== q) return;
+          runBufferedResearch(q, payload);
+        });
+    }
+    if (streamed) return;
+    runBufferedResearch(q, payload);
+  }
+
+  /** Read the SSE progress stream. Resolves with the final result, or null. */
+  function runResearchStream(q, payload, lang, stepRecords, renderProgress) {
+    return fetch(apiBase() + '/api/legal/research/stream', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'text/event-stream' },
+      body: JSON.stringify(payload)
+    }).then(function (res) {
+      if (!res.ok || !res.body) return null;
+      var reader = res.body.getReader();
+      var decoder = new TextDecoder();
+      var buf = '';
+      var finalResult = null;
+
+      function handleFrame(frame) {
+        var evLine = /^event:\s*(.+)$/m.exec(frame);
+        var dataLine = /^data:\s*([\s\S]+)$/m.exec(frame);
+        if (!evLine || !dataLine) return;
+        var data;
+        try { data = JSON.parse(dataLine[1]); } catch (e) { return; }
+        if (evLine[1] === 'step' && data && data.step) {
+          stepRecords[data.step] = data;
+          if (state.lastResearch === q) renderProgress(true);
+        } else if (evLine[1] === 'done') {
+          finalResult = data;
+        }
+      }
+
+      function pump() {
+        return reader.read().then(function (chunk) {
+          if (chunk.done) {
+            if (buf.trim()) handleFrame(buf);
+            return finalResult;
+          }
+          buf += decoder.decode(chunk.value, { stream: true });
+          var parts = buf.split('\n\n');
+          buf = parts.pop() || '';
+          parts.forEach(handleFrame);
+          return pump();
+        });
+      }
+      return pump();
+    });
+  }
+
+  function finishResearch(q, json) {
+    if (state.lastResearch !== q) return;
+    state.lastResearchJson = json;
+    if (json && json.ok && !state.depthManual && json.depth) {
+      state.researchDepth = json.depth; syncDepthUI();
+    }
+    if (json && typeof json.providerConfigured === 'boolean') {
+      state.providerConfigured = json.providerConfigured;
+      syncSynthToggle();
+    }
+    setOut(buildResearchHtml(json, lssLang()));
+  }
+
+  function runBufferedResearch(q, payload) {
     fetch(apiBase() + '/api/legal/research', {
       method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify(payload)
@@ -1370,15 +1514,7 @@
       .then(function (r) { return r.json().catch(function () { return null; }); })
       .then(function (json) {
         stopProgressTimer();
-        if (state.lastResearch !== q) return;
-        state.lastResearchJson = json;
-        if (json && json.ok && !state.depthManual && json.depth) { state.researchDepth = json.depth; syncDepthUI(); }
-        // Reflect provider availability: disable the toggle if no provider.
-        if (json && typeof json.providerConfigured === 'boolean') {
-          state.providerConfigured = json.providerConfigured;
-          syncSynthToggle();
-        }
-        setOut(buildResearchHtml(json, lssLang()));
+        finishResearch(q, json);
       })
       .catch(function () {
         stopProgressTimer();
