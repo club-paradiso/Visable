@@ -456,10 +456,15 @@ deliberately their own palettes. So the indigo is a **Figma-side staleness** on
 now an alias of the site accent (`var(--ac, #0B7357)`), and `--us-accent-soft` /
 `--us-accent-chip` derive from it with `color-mix`.
 
-The small side moved: `--us-accent` had 26 references, `--ac` has 267. The two
-emeralds are the same colour to the eye, and the site value is marginally better
-on contrast in both themes (5.69 vs 5.60 on `--us-surface`; 9.46 vs 9.04 in
-dark). Tint percentages are tuned so accent-on-soft keeps the ≥5:1 headroom the
+The small side moved: `--us-accent` had 26 references, `--ac` has 267. That
+count is the durable reason; the tie-breaker recorded at the time — that the
+site's `#0B7357` also measured marginally better than the layer's `#177361`
+(5.69 vs 5.60 on `--us-surface`, 9.46 vs 9.04 dark) — has since expired, because
+PR #551 moved `--ac` to `#177366`, which is that Figma value in all but the last
+digit. Accent-on-surface is **5.57:1** today. Still well clear of AA, and the
+alias is still right, but the argument now rests on the reference count alone.
+
+Tint percentages are tuned so accent-on-soft keeps the ≥5:1 headroom the
 hand-picked `#e5f5ed` had — a heavier mix still passes AA but thins it. Current
 values: **7% / 5% (light), 16% / 12% (dark)**.
 
