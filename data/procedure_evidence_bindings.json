@@ -495,12 +495,12 @@
       "evidenceLevel": "source_confirmed",
       "manualSources": [
         {
-          "manual": "visa_manual_2026_05_21",
-          "sectionTitle": "§ 예술흥행(E-6)",
+        "manual": "visa_manual_2026_07_31",
+        "sectionTitle": "§ 예술흥행(E-6)",
           "pageStart": 163,
           "pageEnd": 167,
-          "sourceRevisionDate": "2026-05-21",
-          "extractionConfidence": "medium"
+        "sourceRevisionDate": "2026-07-31",
+        "extractionConfidence": "high"
         }
       ],
       "sourceBackedFields": {
@@ -511,8 +511,8 @@
         "channels": false,
         "warnings": true
       },
-      "limitationReasonKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 예술흥행(E-6) 항목(163–167p)에 근거합니다. 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
-      "userFacingExplanationKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 예술흥행(E-6) 항목(163–167p)에 근거합니다. 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "limitationReasonKo": "표시된 제출서류와 E-6-2 경력요건은 2026.7 사증발급 안내매뉴얼 예술흥행(E-6) 항목에 근거합니다. 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "userFacingExplanationKo": "표시된 제출서류와 E-6-2 경력요건은 2026.7 사증발급 안내매뉴얼 예술흥행(E-6) 항목에 근거합니다. 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
       "reviewStatus": "complete"
     },
     {
@@ -630,12 +630,12 @@
       "evidenceLevel": "source_confirmed",
       "manualSources": [
         {
-          "manual": "visa_manual_2026_05_21",
-          "sectionTitle": "§ 방문동거(F-1)",
+        "manual": "visa_manual_2026_07_31",
+        "sectionTitle": "§ 방문동거(F-1)",
           "pageStart": 297,
           "pageEnd": 307,
-          "sourceRevisionDate": "2026-05-21",
-          "extractionConfidence": "medium"
+        "sourceRevisionDate": "2026-07-31",
+        "extractionConfidence": "high"
         }
       ],
       "sourceBackedFields": {
@@ -646,8 +646,8 @@
         "channels": false,
         "warnings": true
       },
-      "limitationReasonKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 방문동거(F-1) 항목(297–307p)에 근거합니다. 세부유형별 추가서류 차이가 크므로 해당 세부코드와 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
-      "userFacingExplanationKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 방문동거(F-1) 항목(297–307p)에 근거합니다. 세부유형별 추가서류 차이가 크므로 해당 세부코드와 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "limitationReasonKo": "표시된 제출서류와 F-1-51 국제입양 서류는 2026.7 사증발급 안내매뉴얼 방문동거(F-1) 항목에 근거합니다. 다른 세부유형의 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "userFacingExplanationKo": "표시된 제출서류와 F-1-51 국제입양 서류는 2026.7 사증발급 안내매뉴얼 방문동거(F-1) 항목에 근거합니다. 다른 세부유형의 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
       "reviewStatus": "complete"
     },
     {

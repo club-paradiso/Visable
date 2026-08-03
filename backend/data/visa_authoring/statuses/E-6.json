@@ -77,12 +77,9 @@
     {
       "code": "E-6-2",
       "name": "호텔유흥",
-      "addReq": "지자체장 추천서, 숙소 확인서.",
-      "addReqDocs": [
-        "doc_invitation",
-        "doc_accom"
-      ],
-      "note": "⚠ 인신매매 고위험.",
+      "addReq": "관광진흥법에 따른 호텔업시설·유흥업소 등에서 공연 또는 연예활동에 종사하는 호텔·유흥 분야 예술흥행 자격입니다.",
+      "addReqDocs": [],
+      "note": "⚠ 인신매매 고위험. 사증발급인정서 제출서류와 국내 체류허가 제출서류는 서로 다른 절차이므로 각각의 절차 안내를 확인해야 합니다.",
       "searchAliases": [
         "E-6-2",
         "E62"
@@ -113,6 +110,18 @@
           "needsManualReview": false,
           "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
           "sourceId": "stay_manual_2026_06_23_pdf"
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.7",
+          "sourceDate": "2026-07-31",
+          "sourceFile": "backend/data/sources/manuals/260731_visa_manual_extracted.txt",
+          "pageRange": "예술흥행(E-6) 사증발급인정서 발급대상",
+          "section": "호텔·유흥(E-6-2) 경력요건",
+          "confidence": "manual_diff_verified_260731_hwp",
+          "needsManualReview": false,
+          "sourceId": "visa_manual_2026_07_31_hwp"
         }
       ],
       "status": "active",

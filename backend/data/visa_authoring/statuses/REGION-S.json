@@ -7,11 +7,11 @@
     {
       "code": "F-2-R",
       "name": "지역특화형 우수인재 (지역우수인재)",
-      "addReq": "",
+      "addReq": "광역지자체장 추천, 국내 전문학사 이상 학위 또는 해당 광역지자체 생활임금 이상의 연소득, 5년 이상 추천지역 거주·취업·창업 의사, 기본소양과 품행 요건을 충족해야 합니다. 2026.7 개정 기본소양 기준은 사회통합프로그램 3단계 이상 이수(사전평가 4단계 이상 배정 포함) 또는 TOPIK 3급 이상입니다.",
       "addReqDocs": [
         "doc_local_recommendation"
       ],
-      "note": "지역특화형 비자 우수인재 主 체류자격.",
+      "note": "2026.7 개정으로 기본소양 기준이 종전 사회통합프로그램 4단계·사전평가 5단계·TOPIK 4급에서 각각 3단계·4단계·3급으로 완화되었습니다.",
       "nameKo": "지역특화형 우수인재 (지역우수인재)",
       "searchAliases": [
         "F-2-R",
@@ -22,6 +22,18 @@
       "status": "active",
       "needsManualReview": true,
       "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.7",
+          "sourceDate": "2026-07-31",
+          "sourceFile": "backend/data/sources/manuals/260731_stay_manual_extracted.txt",
+          "pageRange": "지역특화형 우수인재(F-2-R) 장",
+          "section": "기본 요건 — 기본소양 및 제출서류",
+          "confidence": "manual_diff_verified_260731_hwp",
+          "needsManualReview": false,
+          "sourceId": "stay_manual_2026_07_31_hwp"
+        },
         {
           "manualName": "체류민원",
           "manualType": "stay",
@@ -50,18 +62,18 @@
         }
       ],
       "group": "우수인재",
-      "statusNote": "2026.6 official manual special-track code; track-specific procedure/document details require source-aware review before broad reuse.",
-      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
+      "statusNote": "2026.7 공식 매뉴얼의 변경이력·기본요건 표·제출서류에서 확인한 완화 기준을 반영했습니다.",
+      "manualReviewReason": "2026-07-31 매뉴얼의 기본요건 표와 제출서류는 3단계·사전평가 4단계·TOPIK 3급으로 개정되었지만, 같은 장 뒤쪽의 기본소양 설명 한 곳에는 종전 4단계·5단계·4급 문구가 남아 있습니다. 변경이력과 개정 표를 우선하되 법무부의 정정 게시 여부를 계속 확인해야 합니다."
     },
     {
       "code": "E-7-4R",
       "name": "지역특화형 숙련기능인력 (지역숙련인력)",
-      "addReq": "",
+      "addReq": "광역지자체와 고용기업의 추천이 필수이며, 원칙적으로 현재 1년 이상 근무 중인 기업의 추천을 받아야 합니다. 직전 근무처의 휴·폐업, 폭언·폭행·임금체불 등 근로자 귀책 없는 사유가 객관적으로 입증되면 직전·현재 근무기간을 합산해 1년 이상인 경우 추천할 수 있습니다.",
       "addReqDocs": [
         "doc_local_recommendation",
         "doc_point_table"
       ],
-      "note": "지역특화형 비자 숙련기능인력 主 체류자격.",
+      "note": "현 근무처 3년 이상 계속 근무는 가점 항목이며, 출입국관리법 위반 행정처분 감점에는 과태료 처분을 포함하지 않습니다. E-7-4와 E-7-4R 동시고용 시 인구감소지역 소재 기업·뿌리기업·농림축산어업체의 내국인 고용이 71명을 초과하거나 인구감소(관심)지역의 내국인 고용이 135명 이상인 경우 등 E-7-4 지침이 더 유리하면 내국인 고용인원의 50% 이내인 E-7-4 허용인원 기준을 적용합니다.",
       "nameKo": "지역특화형 숙련기능인력 (지역숙련인력)",
       "searchAliases": [
         "E-7-4R",
@@ -72,6 +84,18 @@
       "status": "active",
       "needsManualReview": true,
       "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.7",
+          "sourceDate": "2026-07-31",
+          "sourceFile": "backend/data/sources/manuals/260731_stay_manual_extracted.txt",
+          "pageRange": "지역특화형 숙련기능인력(E-7-4R) 장",
+          "section": "가점·감점 항목 및 고용기업 허용인원",
+          "confidence": "manual_diff_verified_260731_hwp",
+          "needsManualReview": false,
+          "sourceId": "stay_manual_2026_07_31_hwp"
+        },
         {
           "manualName": "체류민원",
           "manualType": "stay",
@@ -100,8 +124,8 @@
         }
       ],
       "group": "숙련기능인력",
-      "statusNote": "2026.6 official manual special-track code; track-specific procedure/document details require source-aware review before broad reuse.",
-      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
+      "statusNote": "2026.7 공식 매뉴얼의 고용주 추천, 감점 제외 및 동시고용 특례 변경을 반영했습니다.",
+      "manualReviewReason": "2026-07-31 매뉴얼은 근로자 귀책 없는 이직 시 직전·현재 근무기간 합산 1년 규정을 고용기업 추천 예외로 두지만, 동일 문장이 현 근무처 3년 가점 설명 아래에도 남아 있어 문서 내부 배치가 모호합니다. 추천 예외로만 구조화했습니다."
     },
     {
       "code": "F-3-3R",
