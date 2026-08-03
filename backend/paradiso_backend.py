@@ -24,7 +24,7 @@ import time
 import uuid
 import dataclasses
 from contextlib import asynccontextmanager
-from typing import Any, Dict, List, Optional, Sequence
+from typing import Any, Dict, List, Optional, Sequence, Tuple
 from urllib.parse import quote
 
 from fastapi import Depends, FastAPI, HTTPException
@@ -5717,8 +5717,20 @@ class LegalResearchRequest(BaseModel):
 _LEGAL_RESEARCH_MAX_QUESTION = 800
 
 
-def _run_research_law_retrieval(plan: Dict[str, Any], cfg) -> List[Dict[str, Any]]:
-    """Run the budgeted law searches for a plan and return deduped law cards.
+def _aggregate_research_stage_status(statuses: Sequence[str], *, found: int) -> str:
+    """Collapse per-query outcomes without turning an outage into no results."""
+    if found:
+        return "done"
+    normalized = [str(status or "").strip().lower() for status in statuses]
+    if normalized and all(status in {"not_found", "no_results"} for status in normalized):
+        return "no_results"
+    return "failed"
+
+
+def _run_research_law_retrieval(
+    plan: Dict[str, Any], cfg
+) -> Tuple[List[Dict[str, Any]], str]:
+    """Return deduped law cards plus a no-results/failure-aware stage status.
 
     Uses the ranked search so alias input resolves, substring noise is filtered by
     the name guard, and each card carries its lifecycle state. A ranked outcome
@@ -5726,9 +5738,11 @@ def _run_research_law_retrieval(plan: Dict[str, Any], cfg) -> List[Dict[str, Any
     rather than being read as "this law does not exist".
     """
     laws: List[Dict[str, Any]] = []
+    statuses: List[str] = []
     seen = set()
     for term in plan.get("lawTerms", []):
         outcome = search_laws_ranked(term, limit=_LEGAL_SEARCH_MAX_RESULTS, config=cfg)
+        statuses.append(str(outcome.get("status") or ""))
         if outcome.get("status") in {"unavailable", "forbidden", "timeout",
                                      "parse_failed", "not_found"}:
             continue
@@ -5743,15 +5757,20 @@ def _run_research_law_retrieval(plan: Dict[str, Any], cfg) -> List[Dict[str, Any
             laws.append(card)
         if len(laws) >= 12:
             break
-    return laws[:12]
+    items = laws[:12]
+    return items, _aggregate_research_stage_status(statuses, found=len(items))
 
 
-def _run_research_precedent_retrieval(plan: Dict[str, Any], cfg) -> List[Dict[str, Any]]:
-    """Run the budgeted precedent searches for a plan and return deduped cards."""
+def _run_research_precedent_retrieval(
+    plan: Dict[str, Any], cfg
+) -> Tuple[List[Dict[str, Any]], str]:
+    """Return deduped precedent cards plus an honest aggregate stage status."""
     out: List[Dict[str, Any]] = []
+    statuses: List[str] = []
     seen = set()
     for term in plan.get("precedentTerms", []):
         env = precedent_sources.search_precedents(term, limit=_LEGAL_SEARCH_MAX_RESULTS, config=cfg)
+        statuses.append(str(env.get("status") or ""))
         if env.get("status") != "results_found":
             continue
         for it in (env.get("items") or []):
@@ -5765,7 +5784,8 @@ def _run_research_precedent_retrieval(plan: Dict[str, Any], cfg) -> List[Dict[st
             out.append(card)
         if len(out) >= 8:
             break
-    return out[:8]
+    items = out[:8]
+    return items, _aggregate_research_stage_status(statuses, found=len(items))
 
 
 # ---------------------------------------------------------------------------
@@ -5823,15 +5843,17 @@ async def _legal_research_pipeline(req: LegalResearchRequest, question: str):
     retrieval_available = bool(cfg.law_api_configured)
     laws: List[Dict[str, Any]] = []
     precs: List[Dict[str, Any]] = []
+    retrieval_statuses = {"laws": "unavailable", "precedents": "unavailable"}
     if retrieval_available:
-        laws = _run_research_law_retrieval(plan, cfg)
-        yield _step("laws", len(laws))
+        laws, retrieval_statuses["laws"] = _run_research_law_retrieval(plan, cfg)
+        yield _step("laws", len(laws), status=retrieval_statuses["laws"])
         if plan.get("runPrecedents"):
-            precs = _run_research_precedent_retrieval(plan, cfg)
-            yield _step("precedents", len(precs))
+            precs, retrieval_statuses["precedents"] = _run_research_precedent_retrieval(plan, cfg)
+            yield _step("precedents", len(precs), status=retrieval_statuses["precedents"])
         else:
             # The caller turned precedents off. "Skipped" and "we looked and
             # found none" are different claims and must not share a status.
+            retrieval_statuses["precedents"] = "skipped"
             yield _step("precedents", 0, status="skipped")
     else:
         # No law API configured: neither retrieval stage ran at all, which is
@@ -5843,6 +5865,7 @@ async def _legal_research_pipeline(req: LegalResearchRequest, question: str):
     result = legal_research.build_research_result(
         plan, law_results=laws, precedent_results=precs,
         paradiso_sources=paradiso_sources, retrieval_available=retrieval_available,
+        retrieval_statuses=retrieval_statuses,
     )
     yield _step("citations",
                 len(result.get("laws") or []) + len(result.get("precedents") or []))
@@ -5942,9 +5965,10 @@ async def legal_research_stream_endpoint(req: LegalResearchRequest) -> Any:
     `_legal_research_pipeline`, so the two cannot answer the same question
     differently.
 
-    ``status`` separates the three things a stage can be: ``done`` (it ran),
-    ``skipped`` (the caller turned it off) and ``unavailable`` (the law API is
-    not configured) — because "found nothing" and "never ran" are different
+    ``status`` separates ``done`` (sources found), ``no_results`` (the search
+    ran cleanly), ``failed`` (upstream/parse failure), ``skipped`` (the caller
+    turned it off), and ``unavailable`` (the law API is not configured) —
+    because "found nothing", "search failed", and "never ran" are different
     claims about our coverage.
     """
     question = (req.question or "").strip()[:_LEGAL_RESEARCH_MAX_QUESTION]

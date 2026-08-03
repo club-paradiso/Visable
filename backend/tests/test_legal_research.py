@@ -48,6 +48,11 @@ def _transport(*, ok=True, status=200, err=""):
     return send
 
 
+def _empty_transport(url, timeout):
+    payload = {"PrecSearch": {"prec": []}} if "target=prec" in url else {"LawSearch": {"law": []}}
+    return law_tools.LawHttpResponse(ok=True, status_code=200, text=json.dumps(payload))
+
+
 class DepthSelectionTests(unittest.TestCase):
     def test_normalize_depth_defaults_to_basic(self):
         self.assertEqual(LR.normalize_depth("nonsense"), "basic")
@@ -271,6 +276,35 @@ class ResearchEndpointTests(unittest.TestCase):
         r = self.client.post("/api/legal/research", json={"question": SOPHISTICATED[2], "depth": "pro"})
         self.assertNotIn("test-oc", r.text)
 
+    def test_upstream_500_keeps_scaffold_and_reports_failure(self):
+        law_tools._default_transport = _transport(ok=False, status=500, err="http_error")
+        r = self.client.post("/api/legal/research", json={
+            "question": "D-10에서 시간제 취업이 가능한가요?", "depth": "basic",
+        })
+        self.assertEqual(r.status_code, 200)
+        body = r.json()
+        self.assertTrue(body["ok"])
+        self.assertTrue(body["issues"])
+        self.assertEqual(body["retrievalStatuses"]["laws"], "failed")
+        self.assertTrue(any("검색 일부가 실패" in text for text in body["limitations"]))
+
+    def test_upstream_timeout_is_not_reported_as_no_results(self):
+        law_tools._default_transport = _transport(ok=False, status=0, err="timeout")
+        body = self.client.post("/api/legal/research", json={
+            "question": "D-10에서 시간제 취업이 가능한가요?", "depth": "basic",
+        }).json()
+        self.assertTrue(body["ok"])
+        self.assertEqual(body["retrievalStatuses"]["laws"], "failed")
+
+    def test_clean_empty_search_is_distinct_from_failure(self):
+        law_tools._default_transport = _empty_transport
+        body = self.client.post("/api/legal/research", json={
+            "question": "D-10에서 시간제 취업이 가능한가요?", "depth": "basic",
+        }).json()
+        self.assertTrue(body["ok"])
+        self.assertEqual(body["retrievalStatuses"]["laws"], "no_results")
+        self.assertTrue(any("관련 근거가 없다는 뜻은 아니" in text for text in body["limitations"]))
+
 
 class ResearchProgressStreamTests(unittest.TestCase):
     """UX-07 `Legal / Progress` (435:8) — per-stage progress events.
@@ -323,7 +357,7 @@ class ResearchProgressStreamTests(unittest.TestCase):
                 continue
             self.assertIsInstance(data["foundCount"], int)
             self.assertGreaterEqual(data["elapsedMs"], 0)
-            self.assertIn(data["status"], {"done", "skipped", "unavailable", "failed"})
+            self.assertIn(data["status"], {"done", "no_results", "skipped", "unavailable", "failed"})
 
     def test_elapsed_is_monotonic_across_steps(self):
         law_tools._default_transport = _transport()
@@ -360,6 +394,19 @@ class ResearchProgressStreamTests(unittest.TestCase):
                     frames.append((event, json.loads(line[6:])))
         laws = next(d for e, d in frames if e == "step" and d["step"] == "laws")
         self.assertEqual(laws["status"], "unavailable")
+
+    def test_stream_separates_upstream_failure_from_no_results(self):
+        law_tools._default_transport = _transport(ok=False, status=500, err="http_error")
+        failed = next(d for e, d in self._stream({
+            "question": "D-10에서 시간제 취업이 가능한가요?", "depth": "basic",
+        }) if e == "step" and d["step"] == "laws")
+        self.assertEqual(failed["status"], "failed")
+
+        law_tools._default_transport = _empty_transport
+        empty = next(d for e, d in self._stream({
+            "question": "D-10에서 시간제 취업이 가능한가요?", "depth": "basic",
+        }) if e == "step" and d["step"] == "laws")
+        self.assertEqual(empty["status"], "no_results")
 
     def test_streamed_and_buffered_runs_agree(self):
         # Both drain the same pipeline, so the same question must not produce

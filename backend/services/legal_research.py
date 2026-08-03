@@ -654,6 +654,7 @@ def build_research_result(
     precedent_results: Optional[List[Dict[str, Any]]] = None,
     paradiso_sources: Optional[List[Dict[str, Any]]] = None,
     retrieval_available: bool = True,
+    retrieval_statuses: Optional[Dict[str, str]] = None,
 ) -> Dict[str, Any]:
     """Assemble the depth-structured, source-grounded research scaffold.
 
@@ -668,6 +669,7 @@ def build_research_result(
     laws = list(law_results or [])
     precs = list(precedent_results or [])
     para = list(paradiso_sources or [])
+    source_statuses = dict(retrieval_statuses or {})
 
     strength_labels = SOURCE_STRENGTH_LABELS[lang]
     for c in laws:
@@ -694,12 +696,20 @@ def build_research_result(
         limitations.append("이 정리는 검색·구조화 결과이며 법적 결론이 아닙니다. 쟁점·위험 신호는 확인 대상입니다.")
         if not retrieval_available:
             limitations.append("법령 검색 서비스(LAW_API_OC)가 설정되지 않아 실시간 원문은 검색하지 못했습니다. 아래 검색어로 공식 자료에서 직접 확인하세요.")
+        elif any(status == "failed" for status in source_statuses.values()):
+            limitations.append("실시간 법령·판례 검색 일부가 실패했습니다. 아래 검색어로 공식 원문을 직접 확인하세요.")
+        elif any(status == "no_results" for status in source_statuses.values()):
+            limitations.append("법령·판례 검색 중 결과가 없는 단계가 있습니다. 관련 근거가 없다는 뜻은 아니므로 검색어를 바꾸어 원문을 다시 확인하세요.")
         if depth == "pro":
             limitations.append("판례 검색 결과는 후보이며, 관련성·최신성은 원문에서 직접 확인해야 합니다.")
     else:
         limitations.append("This is a search/structuring result, not a legal conclusion. Issues and risk flags are items to verify.")
         if not retrieval_available:
             limitations.append("The legal search service (LAW_API_OC) is not configured, so live text was not retrieved. Use the search terms below to check official sources directly.")
+        elif any(status == "failed" for status in source_statuses.values()):
+            limitations.append("Part of the live law or precedent search failed. Check the official sources directly with the search terms below.")
+        elif any(status == "no_results" for status in source_statuses.values()):
+            limitations.append("A law or precedent search stage returned no results. This does not mean no relevant authority exists; retry with different terms.")
         if depth == "pro":
             limitations.append("Precedent results are candidates; verify relevance and currency against the official text.")
 
@@ -740,6 +750,7 @@ def build_research_result(
         "sourceLanguageNotice": _source_notice(locale_raw),
         "disclaimer": DISCLAIMER[lang],
         "retrievalAvailable": retrieval_available,
+        "retrievalStatuses": source_statuses,
     }
     if depth == "pro":
         result["loadingSteps"] = PRO_LOADING_STEPS_KO if lang == "ko" else PRO_LOADING_STEPS_EN

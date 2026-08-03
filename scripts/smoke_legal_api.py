@@ -61,6 +61,8 @@ def main() -> int:
             print("  laws: ok (%d)" % count)
             for r in (law.get("results") or [])[:2]:
                 print("    - %s" % (r.get("title") or r.get("law_name") or "(law)"))
+        elif law.get("error_type") == "law_api_no_results":
+            print("  laws: no_results (0)")
         else:
             et = law.get("error_type") or "?"
             print("  laws: %s (%s)" % (status, et))
