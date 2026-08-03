@@ -64,3 +64,16 @@ test('a failed search clears busy instead of leaving it stuck', async ({ page })
   await expect(page.locator('#unifiedSearchLayer')).toHaveAttribute('aria-busy', 'false');
   await expect(page.locator('#searchForm')).toHaveAttribute('data-us-search-state', 'error');
 });
+
+test('ai.html carries the same skip link as the homepage', async ({ page }) => {
+  await page.goto('/ai.html');
+  const skip = page.locator('a.skip-link');
+  await expect(skip).toHaveCount(1);
+  await expect(skip).not.toBeInViewport();       // hidden until asked for
+  await page.keyboard.press('Tab');
+  await expect(skip).toBeFocused();              // genuinely the first tab stop
+  await expect(skip).toBeInViewport();
+  await skip.press('Enter');
+  await expect(page).toHaveURL(/#chatHistory$/);
+  await expect(page.locator('#chatHistory')).toBeVisible();
+});
