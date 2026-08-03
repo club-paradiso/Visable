@@ -130,6 +130,11 @@
             --error: #E05B4A; --warning: #E68A3A;
             --sh-modal: 0 12px 48px rgba(7,59,50,0.14);
             --p-paper: #FFFCF5; --p-paper-2: #F4EFE4;
+            /* --p-emerald-soft 는 :root 에 밝은 민트(#34D4A8)로만 선언돼 있어
+               라이트에서도 그대로 쓰였다. 이 값을 color: 로 직접 쓰는 규칙들이
+               크림 배경 위에서 1.87:1 까지 떨어진다. 라이트용 짙은 초록으로
+               덮는다(5.29:1). --ac 는 아래에서 이미 따로 잡고 있다. */
+            --p-emerald-soft: #0B7A61;
             background:
                 radial-gradient(120% 80% at 100% 0%, rgba(59,228,184,.16), transparent 60%),
                 radial-gradient(100% 70% at 0% 100%, rgba(116,133,255,.12), transparent 65%),
@@ -138,7 +143,7 @@
         }
         html:has(body[data-theme="light"]) { background: #F4EFE4; }
         body[data-theme="light"] .chat-header { background: rgba(255,252,245,0.92) !important; border-bottom-color: #E0D6C2 !important; }
-        body[data-theme="light"] .ai-title-main { color: #0E8A6B !important; }
+        body[data-theme="light"] .ai-title-main { color: #0B7A61 !important; }  /* #0E8A6B 는 4.13:1 */
         body[data-theme="light"] .ai-title-sub { color: #3A544C !important; }
         body[data-theme="light"] .chat-input-area { background: rgba(255,252,245,0.94) !important; }
         body[data-theme="light"] .ai-textarea { background: #FFFCF5 !important; color: #073B32 !important; }
@@ -157,6 +162,12 @@
         body[data-theme="light"] .msg-row.user .msg-bubble { color: #073B32 !important; }
         body[data-theme="light"] .reference-disclaimer,
         body[data-theme="light"] .msg-time { color: #3A544C !important; }
+        /* .char-counter / .composer-hint 는 color-mix(--p-paper N%, transparent)
+           로 칠해진다. --p-paper 는 다크에서 어두운 표면 위의 크림 잉크지만
+           라이트에서는 크림 "배경"이라, 라이트에서 크림 글자가 크림 배경 위에
+           얹혀 1.00:1 — 글자가 아예 사라졌다. 라이트에만 실색을 준다. */
+        body[data-theme="light"] .char-counter,
+        body[data-theme="light"] .composer-hint { color: #3A544C !important; }
 
         :root {
             --ff: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
@@ -569,7 +580,8 @@
             font-weight: 800;
         }
         .msg-time {
-            color: color-mix(in srgb, var(--p-paper) 48%, transparent);
+            /* 48% 는 어두운 표면에서 4.11:1 로 기준(4.5:1) 아래였다. */
+            color: color-mix(in srgb, var(--p-paper) 58%, transparent);
             font-weight: 500;
         }
         .msg-disc {
@@ -702,7 +714,8 @@
             box-shadow: none;
         }
         .char-counter {
-            color: color-mix(in srgb, var(--p-paper) 48%, transparent);
+            /* 48% 는 어두운 표면에서 4.11:1 로 기준(4.5:1) 아래였다. */
+            color: color-mix(in srgb, var(--p-paper) 58%, transparent);
         }
 
         /* ── Disclaimer reads as a quiet hairline note ──────────── */

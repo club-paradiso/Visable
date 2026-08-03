@@ -1133,3 +1133,237 @@ body.product-nationality-hub .ni-btn-primary { background: var(--vp-green-2) !im
     animation-iteration-count: 1 !important;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+ * 가독성 패스 · 2026-08
+ *
+ * 5개 공개 페이지(index / new-home / ai / form-helper /
+ * nationality-interview-hub)를 라이트·다크 양쪽에서 렌더링한 뒤, 글자만
+ * 투명하게 만든 두 번째 렌더에서 실제 배경 픽셀을 뽑아 대비를 측정했다.
+ * 그래디언트·반투명·겹침까지 반영된 "화면에 실제로 보이는" 값이다.
+ * 아래 수치는 전부 그 측정에서 나온 것이고, 목표는 WCAG AA
+ * (본문 4.5:1 / 큰 글자 3:1)다.
+ *
+ * 이 파일이 5개 페이지 공통 스킨이라 !important 로 각 페이지의 인라인
+ * 토큰을 덮는다. 페이지별 인라인 <style> 을 각각 고치는 것보다 여기 한 곳에
+ * 두는 편이 재발을 막는다.
+ * ═══════════════════════════════════════════════════════════════════ */
+
+/* 1 · 3차(muted) 잉크 — 사이트 전체 실패의 대부분이 이 토큰 하나였다.
+ *
+ * 출처 메타데이터("법무부 출입국·외국인정책본부", "Accessed 2026-06-28"),
+ * 각주, 안내 문구가 전부 이 색이라 페이지당 50~100개 텍스트가 한꺼번에
+ * 기준 미달이었다. 라이트 #74817C 는 최악 3.10:1, 다크 #8C8572 는 2.53:1.
+ * 실제로 얹히는 모든 표면(--vp-surface/paper/paper-strong/mint 및 각
+ * 페이지의 카드 배경)에 대해 4.5:1 을 넘는 가장 가까운 값으로 옮겼다.
+ *
+ * 페이지마다 3차 잉크의 토큰 이름이 달라(--t3 / --p-ink-3 / --p-ink-mute)
+ * 전부 같은 값으로 묶는다. */
+body.product-visable:not([data-theme="dark"]),
+body.product-new-home:not([data-theme="dark"]),
+body.product-form-helper:not([data-theme="dark"]),
+body.product-waymaker:not([data-theme="dark"]),
+body.product-nationality-hub:not([data-theme="dark"]) {
+  --vp-ink-3: #5a6561;   /* was #74817c — 3.10:1 → 4.63:1 */
+  --t3: #5a6561;
+  --p-ink-3: #4a5852;
+  --p-ink-mute: #5a6561;
+}
+body.product-visable[data-theme="dark"],
+body.product-new-home[data-theme="dark"],
+body.product-form-helper[data-theme="dark"],
+body.product-waymaker[data-theme="dark"],
+body.product-nationality-hub[data-theme="dark"] {
+  --vp-ink-3: #abbab4;   /* was #8da29a — 3.44:1 → 4.61:1 */
+  --t3: #abbab4;         /* was #8c8572 — 2.53:1 */
+  --p-ink-3: #abbab4;
+  --p-ink-mute: #abbab4; /* was #6a6457 — 2.93:1 */
+  /* 다크 블록은 여태 --vp-* 값만 바꾸고 --t1/--t2 로 연결하지 않아서, 다크에서는
+     각 페이지의 인라인 토큰이 그대로 쓰였다. 라이트 블록과 대칭을 맞춘다. */
+  --t1: var(--vp-ink);
+  --t2: var(--vp-ink-2);
+}
+
+/* 2 · 강조색 위의 잉크
+ *
+ * 다크 accent 는 밝은 민트(#3BE4B8 / #34D4A8)라 그 위의 흰 글자가 1.62:1 —
+ * 버튼 라벨이 사실상 안 보였다. new-home 에서 한 번 고쳤지만 토큰이 페이지
+ * 안에 갇혀 있어 다른 페이지로 퍼지지 않았다. 공통 스킨으로 올린다.
+ * 라이트 accent 는 짙은 초록이라 반대로 흰 글자가 맞다. */
+body.product-visable:not([data-theme="dark"]),
+body.product-new-home:not([data-theme="dark"]),
+body.product-form-helper:not([data-theme="dark"]),
+body.product-waymaker:not([data-theme="dark"]),
+body.product-nationality-hub:not([data-theme="dark"]) { --vp-on-accent: #ffffff; --ac-ink: #ffffff; }
+body.product-visable[data-theme="dark"],
+body.product-new-home[data-theme="dark"],
+body.product-form-helper[data-theme="dark"],
+body.product-waymaker[data-theme="dark"],
+body.product-nationality-hub[data-theme="dark"] { --vp-on-accent: #083830; --ac-ink: #083830; }
+
+/* 밝은 민트 위에 흰 글자를 직접 박아 둔 곳들 (측정: 1.62 / 1.89 / 2.19:1) */
+body.product-nationality-hub[data-theme="dark"] .ni-btn-primary,
+body.product-nationality-hub[data-theme="dark"] .ni-chip[aria-pressed="true"],
+body.product-nationality-hub[data-theme="dark"] .ni-roomtab[aria-selected="true"],
+body.product-visable[data-theme="dark"] .p-journey-entry b,
+body.product-visable[data-theme="dark"] .p-cta-btn.primary {
+  color: var(--vp-on-accent) !important;
+}
+/* .p-reminder-submit 는 배경이 토큰이 아니라 고정 #1F3A2D 라 다크에서도 흰
+   글자가 맞다. 측정에서 걸린 건 다크 스킨이 배경만 밝은 민트로 덮었기
+   때문이므로 배경을 원래 의도(짙은 초록)로 되돌린다. */
+body.product-visable[data-theme="dark"] .p-reminder-submit {
+  background: var(--vp-green) !important;
+  color: var(--vp-on-accent) !important;
+}
+
+/* 3 · "공식 사이트에서 최신 내용을 확인하세요" 주의 배지 (2.58:1)
+ *
+ * 경고 문구는 약화하면 안 되므로 더 잘 보이게만 조정한다. --warn 을 텍스트로
+ * 쓰면 크림 배경에서 2.29:1 까지 떨어져, 텍스트 전용 짙은 앰버를 따로 둔다.
+ * 테두리·아이콘용 --warn 자체는 건드리지 않는다. */
+body.product-new-home:not([data-theme="dark"]) .nh-source-flag,
+body.product-nationality-hub:not([data-theme="dark"]) .nh-source-flag {
+  color: #9a5c27 !important;   /* 2.58:1 → 4.69:1 */
+}
+
+/* 4 · 다크 연락처 칩 — 중간 톤 초록 위의 --t2 가 2.93:1 */
+body.product-nationality-hub[data-theme="dark"] .ni-chip:not([aria-pressed="true"]) {
+  color: var(--vp-ink) !important;
+}
+
+/* 5 · 브랜드 브릿지 히어로
+ *
+ * 부제가 rgba(255,255,255,0.92) 로 초록 그래디언트 위에 얹혀 2.67:1 이었다.
+ * 불투명 흰색으로 올려도 그래디언트 중간 톤(#0EA37B)에서 3.56:1 이라 기준을
+ * 못 넘겨, 중간 스톱을 흰 글자가 4.5:1 을 넘는 가장 밝은 초록까지만 내린다.
+ * 브랜드 초록 계열은 유지된다. */
+body.product-visable .brand-hero.figma-brand-bridge {
+  background: linear-gradient(160deg, #085e48 0%, #0b8465 50%, #085e48 100%) !important;
+}
+body.product-visable .brand-hero.figma-brand-bridge .brand-hero-subtitle {
+  color: #ffffff !important;   /* 2.67:1 → 4.64:1 */
+}
+
+/* 6 · New Home 다크 히어로 — 오로라
+ *
+ * 다크 히어로가 var(--vp-paper) 단색이라 완전히 평평했다. Figma
+ * "Waymaker Hero · Dark Aurora"(198:5)에서 확정된 하우스 레시피 —
+ * 깊은 베이스 + 낮은 알파의 밝은 블룸 5겹 — 을 radial-gradient 로 옮긴다.
+ * 어두운 wash 톤을 쓰면 다시 평평해지므로, 밝은 accent 를 낮은 알파로
+ * 쓰는 것이 핵심이다.
+ *
+ * 블룸 알파는 Figma 원본(mint .15 / glow .07)에서 조금 낮췄다. 시안과 달리
+ * 실제 히어로에는 본문이 얹히는데, 원본 값이면 민트 블룸 정점에서 보조
+ * 텍스트가 4.46:1 로 기준 아래로 내려간다. .13/.06 이면 4.91:1 로 통과한다.
+ * 베이스 그래디언트는 아래에서 --vp-paper 로 착지시켜 본문 영역과의
+ * 이음매가 보이지 않게 했다. */
+body.product-new-home[data-theme="dark"] {
+  --aurora-base: #0e3028;
+  --aurora-mint: 59, 228, 184;
+  --aurora-peri: 90, 99, 168;
+  --aurora-ember: 255, 139, 122;
+  --aurora-glow: 243, 238, 223;
+}
+body.product-new-home[data-theme="dark"] .nh-hero {
+  position: relative !important;
+  overflow: hidden !important;
+  background:
+    radial-gradient(85% 125% at 94% 4%,  rgba(var(--aurora-mint),  0.13) 0%, transparent 62%),
+    radial-gradient(80% 120% at 2% 96%,  rgba(var(--aurora-peri),  0.30) 0%, transparent 64%),
+    radial-gradient(62% 85% at 64% 108%, rgba(var(--aurora-ember), 0.13) 0%, transparent 66%),
+    radial-gradient(78% 105% at 38% 2%,  rgba(var(--aurora-glow),  0.06) 0%, transparent 60%),
+    radial-gradient(56% 78% at 70% 66%,  rgba(var(--aurora-glow),  0.05) 0%, transparent 68%),
+    linear-gradient(180deg, var(--aurora-base) 0%, #08251f 58%, var(--vp-paper) 100%) !important;
+}
+/* 시안의 State A/B/C Smart-Animate 루프에 대응하는 아주 느린 표류.
+   그래디언트를 다시 칠하지 않도록 블룸만 ::before 로 떼어 transform 으로
+   움직인다. 모션 감소를 켠 사용자에게는 정지 상태로 보인다. */
+@media (prefers-reduced-motion: no-preference) {
+  body.product-new-home[data-theme="dark"] .nh-hero::before {
+    content: "";
+    position: absolute;
+    inset: -25%;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(38% 46% at 74% 40%, rgba(var(--aurora-mint), 0.10) 0%, transparent 70%),
+      radial-gradient(34% 42% at 24% 68%, rgba(var(--aurora-peri), 0.12) 0%, transparent 70%);
+    animation: vp-aurora-drift 26s ease-in-out infinite alternate;
+  }
+}
+body.product-new-home[data-theme="dark"] .nh-hero-inner {
+  position: relative !important;
+  z-index: 1 !important;
+}
+@keyframes vp-aurora-drift {
+  from { transform: translate3d(-2%, -1.5%, 0) scale(1);    opacity: 0.85; }
+  to   { transform: translate3d(2%, 1.5%, 0)  scale(1.08);  opacity: 1; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+ * 가독성 패스 2차 — 1차 적용 뒤 재측정에서 남은 근소 미달 항목들.
+ * 전부 4.1~4.5:1 구간이라 눈에 띄는 결함은 아니지만 AA 기준선 아래다.
+ * ─────────────────────────────────────────────────────────────────── */
+
+/* 3차 잉크를 한 단계 더 올린다. --vp-line(#28594D)이 카드 배경으로도 쓰이는
+   자리가 있어서, 그 표면까지 포함하면 #ABBAB4 로는 3.97:1 이었다. */
+body.product-visable[data-theme="dark"],
+body.product-new-home[data-theme="dark"],
+body.product-form-helper[data-theme="dark"],
+body.product-waymaker[data-theme="dark"],
+body.product-nationality-hub[data-theme="dark"] {
+  --vp-ink-3: #bbc7c3;
+  --t3: #bbc7c3;
+  --p-ink-3: #bbc7c3;
+  --p-ink-mute: #bbc7c3;
+}
+
+/* 브랜드 브릿지 히어로 — 앞선 규칙이 `#brandHero.figma-brand-bridge` 의
+   id 레벨 !important 에 밀렸다. id 를 포함해 특정도를 올린다.
+   중간 스톱은 ::before 의 밝은 radial 이 더해지는 것까지 감안해 흰 글자가
+   4.87:1 나오는 지점까지만 내렸다. */
+body.product-visable #brandHero.figma-brand-bridge,
+body.product-visable .brand-hero.figma-brand-bridge {
+  background: linear-gradient(160deg, #085e48 0%, #0c8766 50%, #085e48 100%) !important;
+}
+/* 부제가 흐린 진짜 원인은 색이 아니라 `.brand-hero-subtitle { opacity: 0.82 }`
+   였다. opacity 는 color 로 덮을 수 없어 흰색으로 바꿔도 그대로 흐렸다.
+   불투명도를 되돌리고, 그래디언트 중간 톤은 ::before 의 밝은 radial 이
+   더해진 뒤에도 흰 글자가 4.66:1 이 되는 선까지만 내렸다. */
+body.product-visable #brandHero .brand-hero-subtitle,
+body.product-visable .brand-hero.figma-brand-bridge .brand-hero-subtitle {
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
+
+/* 라이트 코랄 CTA — 흰 글자가 4.19:1 */
+body.product-visable:not([data-theme="dark"]) .p-cta-btn.primary {
+  background: #be4f3c !important;
+  border-color: #be4f3c !important;
+}
+
+/* New Home 다크 출처 칩 — --ac2(#22C9A0)가 칩 배경 위에서 4.40:1 */
+body.product-new-home[data-theme="dark"] .nh-src-chip {
+  color: var(--vp-green) !important;   /* #40DDB2 → 5.7:1 */
+}
+
+/* New Home 라이트 복귀 링크 — 상단바(.nh-back)와 푸터 링크 둘 다 크림 배경
+   위에서 --ac(#0B7A61)가 4.14:1 이었다. 푸터 링크는 클래스가 없어 컨테이너로
+   잡는다. */
+body.product-new-home:not([data-theme="dark"]) .nh-back,
+body.product-new-home:not([data-theme="dark"]) .nh-footer a {
+  color: #0a715a !important;
+}
+
+/* 민트 칩(#E1F0EA) 위의 초록 라벨이 정확히 4.50:1 경계 */
+body.product-waymaker:not([data-theme="dark"]) .wm-workspace-nav-kicker,
+body.product-form-helper:not([data-theme="dark"]) .fh-privacy-notice strong {
+  color: #096b55 !important;
+}
+
+/* 국적 허브 라이트 연락처 칩 — 선택된 칩은 accent 배경이라 흰 글자를
+   유지해야 한다. 눌리지 않은 칩에만 적용한다. */
+body.product-nationality-hub:not([data-theme="dark"]) .ni-chip:not([aria-pressed="true"]) {
+  color: #3f534d !important;
+}
