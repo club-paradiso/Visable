@@ -13643,8 +13643,46 @@ body[data-theme="dark"] .us-layer {
   --us-amber: #fbbf24;
   --us-coral: #fb923c;
 }
+/* Skip link (UX-10 Behavior & A11y). Off-screen rather than `display:none` —
+   a hidden element is not focusable, and an unfocusable skip link is not a
+   skip link. It reveals itself on keyboard focus only. */
+.skip-link {
+  position: absolute; top: 0; left: 0; z-index: 10000;
+  transform: translateY(-120%);
+  padding: 0.7rem 1.1rem; border-radius: 0 0 10px 0;
+  background: var(--ac, #0B7357); color: #fff;
+  font-size: 0.9rem; font-weight: 800; text-decoration: none;
+  transition: transform 0.14s ease;
+}
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline: 2px solid var(--t1, #073B32); outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) { .skip-link { transition: none; } }
+
 .us-layer:empty { display: none; }
 body:not(.searched) .us-layer { display: none; }
+
+/* UX-10 Behavior & A11y — "긴 한국어 · word-break: keep-all — 단어 중간에서
+   끊기지 않게". The rest of the site already does this in 160+ places; this
+   layer was the outlier, so its prose is brought in line here rather than rule
+   by rule.
+
+   Scoped to the prose-bearing elements, not `.us-layer` wholesale: `keep-all`
+   inherits, and on an unbroken Latin run (a law.go.kr URL, a long code) it
+   forbids the only available break and the text overflows its card instead of
+   wrapping. `overflow-wrap: anywhere` is the escape hatch the repo already
+   pairs it with elsewhere (`.doc-chk-item`, `.doc-guide-drawer`) — Korean
+   phrases stay whole, and a URL with nowhere to break still breaks. */
+.us-interpret-value, .us-interpret-note, .us-warn,
+.us-ai-body, .us-ai-sublabel, .us-ai-confirm, .us-ai-banner,
+.us-ev-title, .us-ev-sub,
+.us-card-title, .us-card-summary,
+.us-sug-title, .us-sug-sub,
+.us-source-note {
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
 
 /* Interpretation — Figma UX-03 `Search / Interpretation` (node 397:93).
    Row layout, not a chip row: each row is label + value + a right-aligned
@@ -14013,6 +14051,10 @@ body[data-theme="dark"] .us-ev-state.is-lifecycle-ambiguous { color: var(--us-am
    and is independent of the editorial style theme set on <html>. */
 (function(){try{var b=localStorage.getItem('paradiso:brightness');if(b==='system'){b=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}if(b==='dark'||b==='light'){document.body.setAttribute('data-theme',b);}}catch(e){}})();
 </script>
+<!-- UX-10 Behavior & A11y — "건너뛰기 · '본문으로 건너뛰기' 링크를 첫 Tab에 제공".
+     First in the DOM so it is genuinely the first stop, and hidden until it is
+     focused so it costs sighted users nothing. -->
+<a class="skip-link" href="#mainContent" data-i18n="skipToContent">본문으로 건너뛰기</a>
 <div class="k-grain" aria-hidden="true"></div>
 <div class="p-cmd-backdrop" data-action="close-cmd-palette" aria-hidden="true"></div>
 

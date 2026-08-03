@@ -709,6 +709,60 @@ check('the composed layer prefers typed rows over the string list', () => {
   assert(!html.includes('ignored fallback'), 'string list rendered alongside typed rows');
 });
 
+/* --- UX-10 Spec / Behavior & A11y (node 447:4) ---------------------------
+ * Three rules the spec names that this layer did not satisfy. They are checked
+ * against the shipped files, not against a description of them.
+ */
+const indexHtml = readFileSync(join(REPO_ROOT, 'index.html'), 'utf8');
+
+check('the results layer reports busy while a search is in flight', () => {
+  const fn = source.slice(source.indexOf('function setSearchBarState'));
+  const body = fn.slice(0, fn.indexOf('\n  }'));
+  assert(/aria-busy/.test(body), 'setSearchBarState does not touch aria-busy');
+  assert(/state === 'loading' \? 'true' : 'false'/.test(body),
+    'aria-busy is not derived from the same state the bar shows — the two can drift');
+  // ensureMount, not a lookup: the layer does not exist until the first render,
+  // which is after the request resolves — so a lookup silently no-ops on the
+  // very first search, the longest wait there is.
+  assert(/ensureMount\(\)/.test(body),
+    'aria-busy is set via a lookup, so the first search announces no busy state');
+});
+
+check('the layer\'s Korean prose does not break mid-word', () => {
+  // Every `.us-*` rule that sizes text should either keep Korean words whole or
+  // be a short label that cannot wrap. Rather than police all of them, assert
+  // the prose-bearing set is covered — those are the ones that hold sentences.
+  const prose = ['.us-ai-body', '.us-card-summary', '.us-ev-sub', '.us-warn',
+    '.us-interpret-value', '.us-sug-sub', '.us-source-note'];
+  const rule = indexHtml.match(/\.us-interpret-value[^{]*\{[^}]*word-break:\s*keep-all[^}]*\}/);
+  assert(rule, 'no keep-all rule covers the layer prose');
+  for (const sel of prose) {
+    assert(rule[0].includes(sel) || new RegExp(`\\${sel}[^{]*\\{[^}]*keep-all`).test(indexHtml),
+      `${sel} can break a Korean word mid-syllable`);
+  }
+  assert(/keep-all;\s*\n?\s*overflow-wrap:\s*anywhere/.test(rule[0]),
+    'keep-all without an overflow-wrap escape hatch — a long URL will overflow its card');
+});
+
+check('the first tab stop skips to the main content', () => {
+  const body = indexHtml.slice(indexHtml.indexOf('<body'));
+  const link = body.match(/<a class="skip-link"[^>]*>/);
+  assert(link, 'no skip link');
+  assert(/href="#mainContent"/.test(link[0]), 'skip link does not point at #mainContent');
+  assert(indexHtml.includes('id="mainContent"'), 'skip-link target does not exist');
+  assert(/data-i18n="skipToContent"/.test(link[0]), 'skip link is not translated');
+  // It has to be genuinely first: anything focusable before it makes it useless.
+  const before = body.slice(0, body.indexOf('<a class="skip-link"'));
+  assert(!/<(a|button|input|select|textarea)\b/i.test(before),
+    'a focusable element precedes the skip link, so it is not the first tab stop');
+  // display:none / visibility:hidden would make it unfocusable — i.e. not a link.
+  const css = indexHtml.match(/\.skip-link\s*\{[^}]*\}/);
+  assert(css && !/display:\s*none|visibility:\s*hidden/.test(css[0]),
+    'skip link is hidden in a way that removes it from the tab order');
+  assert(/\.skip-link:focus-visible\s*\{[^}]*transform:\s*translateY\(0\)/.test(indexHtml),
+    'skip link never becomes visible on focus');
+});
+
 /* ----------------------------------------------------------- report ------ */
 if (failures.length) {
   console.error(`\nFAIL — ${failures.length} check(s) failed, ${passed} passed:\n`);

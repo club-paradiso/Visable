@@ -909,6 +909,19 @@
     if (typeof document === 'undefined') return;
     var form = document.getElementById('searchForm');
     if (form) form.setAttribute('data-us-search-state', state);
+    // UX-10 Behavior & A11y — "로딩 · aria-busy=true · 완료 시 false로 전환".
+    // Driven from here, the one place that already knows the state, so the
+    // announced busy-ness cannot drift from the visible one. It is set on the
+    // results layer rather than the form: what is busy is the region whose
+    // content is being replaced, and that is what a screen reader should hold
+    // off reading. `error` and `results` both end the wait, so both clear it.
+    // `ensureMount`, not `getElementById`: the layer is created lazily by the
+    // first render, which happens *after* the request resolves. Looking it up
+    // would find nothing on the first search — exactly the moment the wait is
+    // longest and the busy state matters most. Mounting early is free; the
+    // element stays invisible while empty (`.us-layer:empty { display: none }`).
+    var layer = ensureMount();
+    if (layer) layer.setAttribute('aria-busy', state === 'loading' ? 'true' : 'false');
     var note = document.getElementById('usSearchNote');
     if (!note) return;
     if (message) {
