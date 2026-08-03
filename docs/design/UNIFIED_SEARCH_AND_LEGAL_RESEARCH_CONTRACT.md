@@ -459,9 +459,29 @@ now an alias of the site accent (`var(--ac, #0B7357)`), and `--us-accent-soft` /
 The small side moved: `--us-accent` had 26 references, `--ac` has 267. The two
 emeralds are the same colour to the eye, and the site value is marginally better
 on contrast in both themes (5.69 vs 5.60 on `--us-surface`; 9.46 vs 9.04 in
-dark). Tint percentages were tuned to 8% / 6% (light) and 16% / 12% (dark) so
-accent-on-soft keeps the ≥5:1 headroom the hand-picked `#e5f5ed` had — a heavier
-mix still passes AA but thins it.
+dark). Tint percentages are tuned so accent-on-soft keeps the ≥5:1 headroom the
+hand-picked `#e5f5ed` had — a heavier mix still passes AA but thins it. Current
+values: **7% / 5% (light), 16% / 12% (dark)**.
+
+**This threshold drifted once, so it is now a check, not a sentence.** PR #551's
+civic token layer moved `--ac` from `#0B7357` to `#177366`. Because
+`--us-accent` aliases `--ac` — deliberately, see above — the lighter accent
+carried straight into the tints and took light accent-on-soft from 5.07:1 to
+**4.98:1**, under the threshold this section had claimed for it. Every guard
+stayed green, because the number lived only in prose. It shipped.
+
+`check_unified_search.mjs` now parses the shipped CSS, recomputes the ratio the
+browser will produce, and fails below 5:1 — verified by reverting to the 8%
+value and watching it fail. It also guards the other direction: the fix for a
+thin ratio is to lighten the tint, and past a point that makes the tinted block
+indistinguishable from the card behind it, so the tint's separation from the
+plain surface is asserted too. 7% is the smallest step that clears 5:1 (5.05:1)
+while keeping that separation essentially unchanged (1.104:1 vs 1.118:1).
+
+The general lesson for this contract: a number that some other change can move
+belongs in a check. Aliasing `--ac` was still the right call — it is what makes
+the layer follow alternate themes — but an alias means upstream palette edits
+land here silently, and only an executable threshold notices.
 
 Aliasing rather than copying the hex has a second effect worth stating: the
 layer now follows alternate themes (`data-theme="archive_diary"` and friends)
