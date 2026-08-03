@@ -459,6 +459,76 @@ Category tints used by the Suggestion Row: visa/procedure `#177361`, legal
 `#7f89ce`, employment `#d95c47`, recent/correction `#4d5261` — avatar at 14%,
 category chip at 10%.
 
+### UX-07 Legal frames
+
+| Frame | Node | Code owner |
+| --- | --- | --- |
+| `Legal / Entry` | `434:5` | `legal-source-search.js` `panelHtml` + `buildDepthSelectorHtml` + `buildVisaContextChipHtml` |
+| `Legal / Progress` | `435:8` | `legal-source-search.js` `buildResearchProgressHtml` |
+| `Legal / Result` | `436:8` | `legal-source-search.js` `buildSynthesisHtml` / `buildDeterministicResearchHtml` |
+| `Legal / Failure states` | `438:37` | `legal-source-search.js` `FAILURE_STATES` |
+
+Two deliberate departures from the entry frame:
+
+- **The time estimates are labelled as estimates.** 434:19–26 print 약 30초 /
+  약 2분 / 약 5분 as bare figures. The wait is set by the question and by how
+  law.go.kr responds, neither of which the client controls, so `etaNote` says
+  once that these vary. A bare figure next to a spinner that runs long reads as
+  a broken promise rather than an estimate.
+- **The status chip has no default.** 434:33 shows `현재 체류자격 D-2` as part of
+  the composition; in code that value renders only when a caller actually
+  supplied one (`openResearch({visaCode})`, the `paradiso:legal-research` event,
+  or `?visa_code=`) and only when it parses as a status code. A status shown
+  under that label re-aims the whole research question, so a placeholder one
+  would be a fabricated premise, not a visual filler. It is also removable: the
+  code is prepended to the question sent upstream, and a stale chip from an
+  earlier handoff would otherwise keep steering later questions invisibly.
+
+From the result frame, one addition worth naming: 확인된 사실 and
+더 확인이 필요한 사실 render **as a pair, at equal weight** (436:16). Either one
+alone misleads — "established" without the gap overstates, and a missing-facts
+column that disappears when empty reads as "nothing is missing". An empty column
+keeps its heading and an em dash.
+
+The basis tally (437:71) is **counted from the payload**, in three separate
+figures (manual / statute / precedent). Merging them into one number would
+flatten the §3.6 scales, which is exactly what those scales exist to prevent:
+a manual is direct authority, a statute is supporting text, a precedent is
+analogy. Zero sources prints a sentence saying so rather than three zeroes.
+
+Progress steps carry `aria-current="step"` (UX-10 Behavior & A11y) on the first
+step that is neither finished nor skipped — and **only while the stream is
+live**. The pre-flight plan marks none: before the request leaves, announcing a
+step as current would report progress that has not started.
+
+### UX-09 and UX-10 are specification pages, not screens
+
+`443:4` (**UX-09 Responsive & Interaction Prototype**) and `445:4` (**UX-10
+Design Specification & Handoff**) are canvases, not frames, and both are full.
+An earlier revision of this section recorded them as empty; that was a reading
+error, and the correction matters because it changes what is left to build.
+
+- **UX-09** holds three flow maps (search → AI overview → deep research;
+  employment reporting; source → legal research), plus `Interaction Rules`
+  (443:114) and `Prototype Wiring Status` (444:4). The flow maps are Figma
+  prototype wiring, not code. The interaction rules are behavioural and mostly
+  already satisfied by the code in this contract.
+- **UX-10** holds `Spec / Foundations` (445:5), `Spec / Component Contract`
+  (446:4), `Spec / Behavior & A11y` (447:4) and `Spec / Theme Coverage` (457:4).
+  Its component-contract table is an independent restatement of §9 here and
+  agrees with it.
+
+`Spec / Foundations` carries a **token migration proposal** — a table mapping
+Figma tokens onto this repo's CSS custom properties, with the live values
+quoted. Those quoted values are accurate (`--bg0: #F4EFE4`, `--bd: #998058`,
+`--t1: #073B32`, `--t2: #3A544C`, `--ac: #0B7357`, `--cy: #FF6B5B`,
+`--cWk: #E68A3A`), so the table was written from the code rather than guessed.
+It is labelled **"Figma 값은 제안이다"** and it is not applied here: it moves
+`--bg0`, `--bd`, `--t1`, `--t2`, `--cWk` and `--cy`, which every screen and both
+themes read, and it asks for a **new** variable for the primary-CTA background.
+That is a site-wide look change, not a gap in this PR's scope — see
+`docs/ops/CODEX_HANDOFF_2026_08.md` TASK E.
+
 ### Still design-only / code-only
 
 Code has safety states the design does not: `forbidden` (403 / OC rejected),

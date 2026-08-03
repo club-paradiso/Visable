@@ -1131,6 +1131,7 @@
     // every row reads as planned rather than as a finished empty search.
     var got = o.steps || {};
     var streaming = !!o.streaming;
+    var firstOpen = false; // set once the current step has been marked
 
     var items = RESEARCH_STEPS.map(function (key, i) {
       var name = RESEARCH_STEP_NAMES[i];
@@ -1141,8 +1142,15 @@
         ? progressStepNote(rec || (skipped ? { status: 'skipped' } : null), lang)
         : (skipped ? S('progSkipped', lang) : S('progPlanned', lang));
       var done = !!rec && rec.status !== 'skipped';
+      // UX-10 Behavior & A11y: 진행 단계 → aria-current="step". Only while the
+      // stream is live: on the pre-flight plan nothing is running yet, and
+      // marking step 1 "current" before the request leaves would announce
+      // progress that has not started.
+      var current = streaming && !done && !skipped && !firstOpen;
+      if (current) firstOpen = true;
       return '<li class="lss-prog-step' + (skipped ? ' is-skipped' : '') +
         (done ? ' is-done' : '') + '"' +
+        (current ? ' aria-current="step"' : '') +
         ' data-lss-step="' + (i + 1) + '"' +
         ' data-lss-step-name="' + escapeHtml(name) + '"' +
         (rec ? ' data-lss-step-status="' + escapeHtml(String(rec.status || '')) + '"' : '') +
