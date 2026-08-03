@@ -221,28 +221,38 @@ The HiKorea confirmation step. The HiKorea row can never render as complete.
 
 ---
 
-### 3.11 `Legal / Progress` (S3) — what the client may honestly claim
+### 3.11 `Legal / Progress` (S3) — resolved
 
-UX-07 `Legal / Progress` (node `435:8`) shows per-step findings —
-"매뉴얼 확인 ✓ 체류매뉴얼에서 근거 2건을 찾았어요 · 11초".
+UX-07 `Legal / Progress` (node `435:8`) shows per-step findings. The first
+implementation could not: `POST /api/legal/research` was a single request with
+no progress stream, so the client had no way to know what a stage found while
+it ran, and rendering those lines would have invented findings. It shipped as a
+*plan* — steps labelled `예정`, never ticked.
 
-`POST /api/legal/research` is a **single request with no progress stream**, so
-while it is in flight the client cannot know what any step found. Rendering
-those lines would be inventing findings. The implemented component therefore
-shows the steps as the *planned sequence*, labelled `예정`, and never ticks one.
+**`POST /api/legal/research/stream` now closes that gap.** Frames are
+`start` → `step` per stage → `done` with the identical payload the buffered
+endpoint returns. Both endpoints drain the same `_legal_research_pipeline`
+generator, so a streamed run and a buffered run cannot answer the same question
+differently.
 
-Real, and therefore shown:
+A step is emitted only *after* its stage ran, carrying that stage's real count.
+`status` separates the three things a stage can be, and the frontend renders
+each distinctly:
 
-| Signal | Why it is real |
-| --- | --- |
-| step list and order | fixed by the pipeline |
-| skipped precedent step | the client owns `includePrecedents` |
-| elapsed seconds | measured locally |
+| status | meaning | reads as |
+| --- | --- | --- |
+| *(no record yet)* | the stage has not run | `대기 중` |
+| `done`, count 0 | it ran and found nothing | `해당 없음` |
+| `skipped` | the caller turned precedents off | `건너뜀` |
+| `unavailable` | the law API is not configured | `조회 불가` |
 
-**To complete this component**, `/api/legal/research` needs to emit progress
-events the way `/api/search/unified/ai-overview/stream` already does — a
-`step` event per stage carrying `{index, status, foundCount, elapsedMs}`. Until
-then, a plan is the honest surface and a scoreboard is not.
+Those four must never collapse into each other — "we could not look" and "we
+looked and found none" are different facts about our coverage. Asserted in
+`check_legal_source_search.mjs`.
+
+The plan view is still the fallback: without `ReadableStream`, or behind a proxy
+that buffers SSE, the component degrades to the labelled-plan rendering and
+loses only the per-step detail.
 
 ### 3.12 `Emp / Special States` (S4)
 
