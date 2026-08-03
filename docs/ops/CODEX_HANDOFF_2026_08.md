@@ -34,8 +34,8 @@
 | --- | --- | --- |
 | UX-07 `Legal / Entry` (434:5) — 깊이별 예상 시간, 체류자격 컨텍스트 칩 | ✅ 완료 | 커밋 `8eeb8a2` |
 | UX-07 `Legal / Result` (436:8) — 메모 구조 | ✅ 완료 | 커밋 `8eeb8a2` |
-| UX-09 (443:4) 인터랙션 규칙 | ⚠️ 부분 가능 | 대부분 이미 충족. 남은 건 감사(audit) 성격 → TASK B |
-| UX-10 (445:4) `Spec / Behavior & A11y` | ⚠️ 부분 가능 | skip link · `aria-busy` 등 일부 미충족 → TASK B |
+| UX-09 (443:4) 인터랙션 규칙 | ✅ **여기서 완료** | 대부분 이미 충족이었고 나머지는 `6cd99d7` |
+| UX-10 (445:4) `Spec / Behavior & A11y` | ✅ **여기서 완료** | skip link · `aria-busy` · `word-break` 3건 수정 (`6cd99d7`) |
 | UX-10 (445:4) `Spec / Foundations` 토큰 마이그레이션 | ⛔ 하지 않음 | **전 화면·양 테마에 영향.** 사용자 결정 사항이지 잔여 작업이 아님 → TASK E |
 | 운영 스모크 (Railway `/api/legal/*`, law.go.kr 실호출) | ⛔ 불가 | 이 컨테이너에서 egress 차단. 아래 §2 재확인 결과 참조 |
 | 매뉴얼 승인 (`approved` 상태 만들기) | ⛔ 불가 | 코드 작업이 아니라 **사람의 조문 단위 인증**이 필요. 아래 §3 |
@@ -47,7 +47,7 @@
 > Behavior & A11y / Theme Coverage 4개 프레임이다. `get_metadata` 를 프레임으로
 > 조회했다가 잘못 읽은 것이다. 남은 작업의 크기가 달라지므로 그대로 남겨 둔다.
 
-즉 **"안 된다"에 해당하는 건 아래 다섯 가지**이고, §4의 프롬프트가 이를 다룬다.
+즉 **Codex 로 넘길 것은 TASK A · C · D · E 네 가지**다 (TASK B 는 완료돼 §4에서 취소선 처리).
 
 ---
 
@@ -69,10 +69,17 @@ curl https://paradiso-production.up.railway.app/health      → 000
 bash scripts/check_repo.sh                        # 전체 저장소 검증
 node scripts/check_legal_source_search.mjs        # 313/313
 node scripts/check_legal_source_search_dom.mjs    # 68/68 (jsdom 없으면 SKIP)
-node scripts/check_unified_search.mjs             # 76/76
+node scripts/check_unified_search.mjs             # 79/79
 node scripts/check_employment_code_analyzer.mjs
-node scripts/check_i18n_coverage.mjs              # 1235 keys × 14 langs
+node scripts/check_i18n_coverage.mjs              # 1236 keys × 14 langs
 cd backend && python3 -m pytest tests/ -q
+```
+
+브라우저가 필요한 검증 (아래 실행 경로 주의):
+
+```bash
+PARADISO_PW_EXECUTABLE=/opt/pw-browsers/chromium \
+  npx playwright test tests/e2e/ux10-a11y.spec.mjs tests/e2e/unified-search.spec.mjs
 ```
 
 **Playwright 를 돌릴 때는 브라우저 경로를 반드시 넘긴다.** 이 컨테이너에 미리 깔린
@@ -158,39 +165,34 @@ PARADISO_E2E_PORT=4173 npx playwright test tests/e2e/unified-search.spec.mjs
 금지: PR merge / approve / Ready for review 전환. Draft 유지.
 ```
 
-### TASK B — UX-09 인터랙션 규칙 · UX-10 Behavior & A11y 감사
+### ~~TASK B — UX-09 인터랙션 규칙 · UX-10 Behavior & A11y 감사~~ → **완료됨 (`6cd99d7`)**
 
-```
-저장소: lucanomics/Paradiso · 브랜치 claude/waymaker-legal-unified-search-bsw1gl
-Figma 파일 키: pInhK8Oyg04lpL4PMSCB4l
-대상 노드: 443:114 (Interaction Rules), 447:4 (Spec / Behavior & A11y)
+Codex 로 넘기지 않는다. 감사와 수정을 모두 끝냈다.
 
-이건 새 화면을 만드는 작업이 아니다. 두 스펙 프레임이 규칙을 나열하고 있고,
-그 규칙이 실제 코드에서 지켜지는지 확인해 미충족분만 채우는 감사 작업이다.
+이미 충족하고 있던 것: focus-visible 2px 링 + offset 2 · 자동완성 ↑↓/Enter/Esc ·
+에러마다 다음 행동 1개 이상(legal 은 `FAILURE_STATES` 7종) · `aria-live="polite"`
+결과 안내 · 리서치 진행 블록 `aria-busy` · 진행 단계 `aria-current="step"`.
 
-주의: nodeId 없이 get_metadata 를 호출하면 이 파일은 stale 한 2페이지 뷰를 준다.
-반드시 nodeId 를 지정하거나 use_figma 로 figma.root.children 을 읽는다.
+미충족 3건을 고쳤다:
 
-이미 확인된 것 (재확인만 하면 됨):
-- focus-visible 2px 링 + offset 2 → 충족
-- 자동완성 ↑↓ / Enter / Esc → 충족
-- 에러마다 다음 행동 1개 이상 → 충족 (legal 은 FAILURE_STATES 7종)
-- aria-live="polite" 결과 개수 안내 → index.html 에 28곳
-- 진행 단계 aria-current="step" → 충족 (스트림이 살아있는 동안만)
-- 리서치 진행 블록 aria-busy="true" → 충족
+1. **skip link** — `<body>` 첫 요소로 `#mainContent` 를 가리키게 추가. `display:none`
+   이 아니라 화면 밖에 두었다 — 숨긴 요소는 포커스를 못 받고, 포커스를 못 받는
+   skip link 는 skip link 가 아니다. 14개 언어 팩 전부에 문자열 추가.
+2. **통합 검색 레이어 `aria-busy`** — `setSearchBarState` 한 곳에서 구동해 보이는
+   상태와 알리는 상태가 어긋날 수 없게 했다.
+3. **`word-break`** — 이 문서 초안이 "index.html 에 1곳뿐"이라고 적었던 건 **틀렸다.**
+   콜론 뒤 공백을 놓친 grep 이었고 실제로는 163곳에 적용돼 있다. 진짜 누락은 더
+   좁았고 이 PR 이 만든 것이었다 — `.us-*` 규칙만 예외였다. prose 선택자에 한정한
+   규칙 하나로 처리하되 `overflow-wrap: anywhere` 를 함께 뒀다. `keep-all` 만 쓰면
+   끊을 곳 없는 라틴 문자열(law.go.kr URL 등)이 카드를 넘쳐 흐른다.
 
-미충족으로 확인된 것 (이게 실제 작업분):
-- "본문으로 건너뛰기" skip link 가 없다 (첫 Tab 에 와야 한다).
-  index.html 에 넣을 경우 14개 언어 팩 전부에 문자열을 추가해야 한다.
-- 통합 검색 레이어에 aria-busy 가 없다. #searchForm 은 이미
-  data-us-search-state 를 갖고 있으므로 loading 상태와 함께 aria-busy 를 토글한다.
-- word-break: keep-all 이 index.html 에 1곳뿐이다. UX-10 은 긴 한국어 전반에
-  적용하라고 한다 — 카드 본문·상태 문구 등 실제로 깨지는 곳을 찾아 적용한다.
+브라우저 테스트가 값을 했다: **첫 검색에서 `aria-busy` 가 전혀 설정되지 않는 것**을
+잡아냈다. 레이어 엘리먼트는 첫 렌더에서 지연 생성되는데 그 렌더는 요청이 끝난
+**뒤에** 일어나므로, `getElementById` 조회는 대기가 가장 긴 바로 그 순간에 조용히
+아무 일도 하지 않았다. `ensureMount()` 로 바꿨다.
 
-각 항목마다:
-- 고친 뒤 scripts/check_*.mjs 에 대응 검증을 추가한다 (규칙만 문서에 적지 않는다)
-- 라이트/다크 양쪽에서 확인한다
-```
+검증: `tests/e2e/ux10-a11y.spec.mjs` 3건(실제 탭 순서 · 진행 중 busy · 실패 경로에서
+busy 해제) + `check_unified_search.mjs` 정적 검사(76 → 79).
 
 ### TASK E — UX-10 `Spec / Foundations` 토큰 마이그레이션 (사용자 승인 필요)
 
@@ -255,7 +257,6 @@ UI는 "직접 근거 없음"을 표시한다.
 ```
 
 ### TASK D — Figma 측 정리 (소유 세션 확인 후)
-<!-- TASK E 는 TASK B 바로 뒤에 있다 (토큰 마이그레이션). -->
 
 
 ```
