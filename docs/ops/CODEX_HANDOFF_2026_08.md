@@ -75,6 +75,17 @@ node scripts/check_i18n_coverage.mjs              # 1235 keys × 14 langs
 cd backend && python3 -m pytest tests/ -q
 ```
 
+**Playwright 를 돌릴 때는 브라우저 경로를 반드시 넘긴다.** 이 컨테이너에 미리 깔린
+Chromium 은 `@playwright/test` 가 기대하는 빌드와 다르다. 그냥 실행하면 전부
+"Executable doesn't exist … chromium_headless_shell-1234" 로 죽고, 이게 **테스트
+실패처럼 보인다** (실제로 한 번 그렇게 잘못 읽었다). `npx playwright install` 을
+실행하지 말고 `playwright.config` 가 이미 지원하는 환경변수를 쓴다:
+
+```bash
+PARADISO_PW_EXECUTABLE=/opt/pw-browsers/chromium \
+PARADISO_E2E_PORT=4173 npx playwright test tests/e2e/unified-search.spec.mjs
+```
+
 ---
 
 ## 3. 매뉴얼 승인 상태 (사람이 해야 하는 부분)
@@ -290,8 +301,11 @@ use_figma 를 쓰기 전에 반드시 figma-use 스킬을 먼저 로드한다.
 - `tests/e2e/new-home.spec.mjs` 는 **`main` 기준으로도 10건이 실패한다** (별도
   worktree 에 원본 `origin/main` 을 체크아웃해 동일 실패를 확인함). 이 브랜치가
   만든 회귀가 아니다.
-- 추가로 `new-home.spec.mjs:63` ("homepage visa search settles without reopening
-  blocking menus") 이 5개 프로젝트 병렬 풀런에서 **한 번** 실패했다. 단독 재실행은
-  **3/3 통과**(포트 4231, 각 20~23초). 부하성 flake로 **추정**하지만 **증명하지 못했다.**
-  `main` 의 결정론적 실패 목록에는 들어 있지 않다.
+- ~~`new-home.spec.mjs:63` 이 부하 상황에서 flake 일 수 있다~~ → **해소됨.**
+  그 테스트는 `test.skip(viewport.width < 1000)` 을 갖고 있어 `desktop-1280`
+  에서만 실행되고 나머지 4개 프로젝트에서는 원래 skip 된다. 올바른 브라우저로
+  전체 실행하면 **10 failed (`:8`·`:41` × 5) · 1 passed (`:63`) · 4 skipped** 로
+  나온다 — 즉 `:63` 은 통과하고, 실패는 알려진 기존 10건과 정확히 일치한다.
+  이전에 "부하성 flake로 추정"이라고 적은 건 브라우저 실행 실패를 테스트 실패로
+  잘못 읽은 것이다.
 - 상류 실호출 검증은 §2 때문에 **전무하다.** TASK A 가 이걸 다룬다.
