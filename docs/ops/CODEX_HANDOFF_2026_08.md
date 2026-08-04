@@ -291,6 +291,48 @@ Figma 노드: 445:5 (UX-10 › Spec / Foundations)
 
 </details>
 
+### TASK C-0 — "하이코리아에서 최신 매뉴얼을 받아 반영" 은 지금 3중으로 막혀 있다
+
+2026-08-03 에 실제로 시도하고 확인한 결과다. 추정이 아니다.
+
+| 경로 | 결과 | 확인 방법 |
+| --- | --- | --- |
+| 이 컨테이너에서 직접 fetch | ⛔ `000` | `curl https://www.hikorea.go.kr/` — 연결 미성립. `immigration.go.kr` 도 동일 |
+| `hikorea-manual-sync` 워크플로 디스패치 | ⛔ `403` | `Resource not accessible by integration` — 통합 앱에 workflow dispatch 권한이 없다 |
+| 워크플로가 스스로 다운로드 | ⛔ 대상 없음 | `data/sources/hikorea_manual_sync.json` 의 `download_url` 이 **두 매뉴얼 모두 `null`**. `allow_network: true` 를 켜도 받을 URL 자체가 없다 |
+
+**그리고 게시판 모니터를 "새 매뉴얼 없음"의 근거로 쓰면 안 된다.**
+`data/sources/hikorea_manual_board_watch.json` 의 두 타깃 모두
+`baseline_content_hash` 가 **`null`** 이다. 파일 자신의 주석이 밝히듯 *"A null
+baseline means 'not yet established' — the first run records the current
+fingerprint in its report but does not raise a change."* 즉 08-03 실행에서
+`Open or update tracking issue on change` 단계가 `skipped` 된 것은 **비교할
+기준선이 없었다**는 뜻이지, 게시판이 그대로였다는 뜻이 아니다.
+(이 세션에서 실제로 그렇게 오독할 뻔했다.)
+
+**그러므로 실제 경로는 하나뿐이다 — 사람이 파일을 가져온다.**
+`hikorea-manual-sync` 워크플로는 이미 그 입력을 갖고 있다:
+
+```
+workflow_dispatch inputs:
+  manual_hwp_visa   체크아웃 안의 사증 매뉴얼 HWP 경로
+  manual_hwp_stay   체크아웃 안의 체류 매뉴얼 HWP 경로
+```
+
+즉 최신 HWP 를 저장소에 올리고 그 경로를 넘겨 워크플로를 돌리면, 워크플로가
+추출 + **Draft PR 생성**까지 한다. 워크플로 자신이 "never edits production data
+— promotion of any legal content is a reviewed, manual step" 라고 명시한다.
+자동화가 승인까지 하지 않는다는 §0 제약과 이미 일치하는 설계다.
+
+> **덧붙여 확인할 것 (드리프트 의심).** `hikorea_manual_sync.json` 의
+> `hwp_path` 는 아직 `2026_05_21`(사증) / `2026_06_01`(체류) 를 가리키는데,
+> `data/manual_approval_index.json` 의 최신 `parsed` 판은
+> `2026_06_17`(사증) / `2026_06_23`(체류) 다. 전자는 HWP 원본, 후자는 PDF 판을
+> 추적하므로 설계상 다를 수 있으나, **같은 것을 가리켜야 하는데 어긋난 것인지
+> 확인이 필요하다.** 확인 없이 어느 쪽도 손대지 않았다.
+
+---
+
 ### TASK C — 매뉴얼 승인 (사람 확인 필수, 에이전트 단독 수행 금지)
 
 ```
