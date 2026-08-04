@@ -254,6 +254,11 @@ if command -v node >/dev/null 2>&1; then
   # safety invariants (a failed lookup is never "not found"; an unrecognized code
   # is never echoed as real), so they belong in CI rather than in npm scripts.
   node scripts/check_unified_search.mjs
+  # Sitewide civic palette (Figma UX-10 Foundations): computes the real WCAG
+  # ratios from the shipped CSS. The unified-search accent regression shipped
+  # because its >=5:1 floor lived only in prose, so the sitewide floors that the
+  # token migration had to hold are asserted here rather than described.
+  node scripts/check_civic_tokens.mjs
 else
   echo "INFO: Node.js not found; skipping subcode-modal and dummy-text checks."
 fi

@@ -560,15 +560,37 @@ error, and the correction matters because it changes what is left to build.
   agrees with it.
 
 `Spec / Foundations` carries a **token migration proposal** — a table mapping
-Figma tokens onto this repo's CSS custom properties, with the live values
-quoted. Those quoted values are accurate (`--bg0: #F4EFE4`, `--bd: #998058`,
-`--t1: #073B32`, `--t2: #3A544C`, `--ac: #0B7357`, `--cy: #FF6B5B`,
-`--cWk: #E68A3A`), so the table was written from the code rather than guessed.
-It is labelled **"Figma 값은 제안이다"** and it is not applied here: it moves
-`--bg0`, `--bd`, `--t1`, `--t2`, `--cWk` and `--cy`, which every screen and both
-themes read, and it asks for a **new** variable for the primary-CTA background.
-That is a site-wide look change, not a gap in this PR's scope — see
-`docs/ops/CODEX_HANDOFF_2026_08.md` TASK E.
+Figma tokens onto this repo's CSS custom properties, with the then-live values
+quoted (`--bg0: #F4EFE4`, `--bd: #998058`, `--t1: #073B32`, `--t2: #3A544C`,
+`--ac: #0B7357`, `--cy: #FF6B5B`, `--cWk: #E68A3A`). Those were accurate, so the
+table was written from the code rather than guessed. It was labelled **"Figma
+값은 제안이다"** and deliberately left unapplied in this PR: it moves variables
+every screen and both themes read, and it asks for a **new** variable for the
+primary-CTA background — a site-wide look change, not a gap in this PR's scope.
+
+**It has since landed** (PR #551, `:root:not([data-theme="archive_diary"])`).
+All nine mappings shipped: `--bg0 #F7F4EF`, `--bg1 #FFFCF5`, `--bd #E6E6EE`,
+`--t1 #1C1F29`, `--t2 #4D5261`, `--ac #177366`, `--cWk #F2C879`, `--cy #D95C47`,
+and the new `--cta #0B4F44` for the primary CTA. The alternate `archive_diary`
+palette is held out by the `:not()` in the scope selector, as Foundations
+requires.
+
+Foundations attached WCAG floors to that migration — body AA 4.5:1, primary CTA
+AAA 7:1 — and those floors lived only in prose, which is the exact condition
+that let the accent regression below ship with every check green.
+`scripts/check_civic_tokens.mjs` now computes them from the shipped CSS in both
+themes. Two invariants there are worth stating, because the ratios are
+meaningless without them:
+
+- `--cWk` and `--cy` are **graphical tones, never type**. Raw amber is 1.54:1
+  against the card surface — fine as a 4px rule or as a tint behind `--t1`
+  text, unreadable as type. What is read is the derived ink,
+  `color-mix(in srgb, var(--cWk) 38%, var(--t1))` = 6.07:1 and
+  `color-mix(in srgb, var(--cy) 62%, var(--t1))` = 6.57:1. The check asserts
+  both that those declarations still perform the mix and that no rule sets
+  `color: var(--cWk)` / `var(--cy)` directly.
+- The primary CTA background may only be reached through `var(--cta)`; a
+  hardcoded `#0B4F44` fails the check.
 
 ### Still design-only / code-only
 
