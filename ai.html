@@ -275,6 +275,21 @@
         .ai-title-row { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
         .ai-ref-chip { display: inline-flex; align-items: center; padding: 0.18rem 0.55rem; border-radius: 999px; border: 1px solid rgba(199,191,168,0.3); background: rgba(244,238,224,0.05); color: var(--t3); font-size: 0.64rem; font-weight: 800; letter-spacing: 0.04em; }
         .ai-welcome-chips { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: var(--sp-3); padding-top: 0.8rem; border-top: 1px dashed var(--bd); }
+        /* Waymaker 브랜드 락업 — 별도 랜딩을 접으면서 가져온 유일한 시각 요소.
+           오로라는 가져오지 않는다: 디자인 계약이 "Aurora is hero-background only —
+           result, document and source screens stay calm" 이라, 작업 화면인 이 페이지에
+           히어로 연출을 얹는 것은 계약 위반이다. 브랜드만 조용히 세운다. */
+        .ai-brand-lockup {
+            display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.5rem;
+            margin: 0 0 0.6rem;
+        }
+        .ai-brand-wordmark {
+            font-family: Georgia, "Times New Roman", serif;
+            font-style: italic; font-size: 1.35rem; line-height: 1;
+            color: var(--p-periwinkle, #7F89CE);
+        }
+        .ai-brand-tagline { font-size: 0.86rem; font-weight: 700; color: var(--t2); }
+        body[data-theme="light"] .ai-brand-wordmark { color: #4A55A8; }
         .ai-welcome-chip { min-height: 36px; padding: 0.45rem 0.85rem; border-radius: 999px; border: 1px solid var(--bd); background: var(--bg2); color: var(--t2); font: 700 0.8rem/1.3 var(--ff); cursor: pointer; transition: var(--btn-tr); text-align: left; word-break: keep-all; }
         .ai-welcome-chip:hover { border-color: var(--ac); color: var(--t1); background: rgba(52,212,168,0.08); transform: translateY(-1px); }
         .ai-welcome-chip:focus-visible { outline: 2px solid var(--ac); outline-offset: 2px; }
@@ -1471,6 +1486,12 @@ select:focus-visible {
             <span class="wm-workspace-nav-kicker">Forms</span>
             <span>서식·제출서류</span>
           </a>
+          <!-- 레일이 유일하게 덮지 못하던 목적지. 나머지 진입점은 이미 위 4개로
+               모두 닿는다(상담·절차·출처·서식). -->
+          <a class="wm-workspace-nav-link" href="nationality-interview-hub.html#interview">
+            <span class="wm-workspace-nav-kicker">Practice</span>
+            <span>귀화면접 학습실</span>
+          </a>
         </nav>
         <section class="wm-workspace-trust" aria-label="Waymaker 안내 원칙">
           <strong>출처가 보이는 답변</strong>
@@ -1506,6 +1527,12 @@ select:focus-visible {
     <main class="chat-history" id="chatHistory" aria-live="polite" aria-atomic="false">
         <!-- Initial Message -->
         <div class="msg-row ai" id="welcomeMessage">
+            <!-- Waymaker 브랜드 락업. `.msg-bubble` 밖에 두는 이유 — 언어 전환 시
+                 버블은 innerHTML 이 통째로 교체되므로 안에 넣으면 지워진다. -->
+            <p class="ai-brand-lockup">
+                <span class="ai-brand-wordmark">waymaker.</span>
+                <span class="ai-brand-tagline" id="aiBrandTagline">막막하지 않게, 명쾌하게.</span>
+            </p>
             <div class="msg-bubble">
                 안녕하세요. <strong>Waymaker by Paradiso</strong>는 공개 법령·매뉴얼을 기반으로 비자·체류 절차를 정리해 드리는 참고용 도우미입니다.<br><br>
                 국적, 현재 체류자격, 상황을 가능한 한 상세히 적어주시면, 관련 출처를 함께 안내해 드립니다.<br><br>
@@ -2455,7 +2482,8 @@ select:focus-visible {
             placeholder: { ko: '예: 미국 국적, 이태원 거주, D-10 비자 상태인데 E-7 취업을 희망합니다...', en: 'e.g. US national, living in Itaewon, on a D-10 visa and hoping to switch to E-7 employment...', zh: '例：美国国籍，居住在梨泰院，持 D-10 签证，希望转为 E-7 就业……' },
             sendAria: { ko: '분석 요청 전송', en: 'Send analysis request', zh: '发送分析请求' },
             send: { ko: '전송', en: 'Send', zh: '发送' },
-            quotaLabel: { ko: '남은 분석 횟수', en: 'Remaining analyses', zh: '剩余分析次数' }
+            quotaLabel: { ko: '남은 분석 횟수', en: 'Remaining analyses', zh: '剩余分析次数' },
+            brandTagline: { ko: '막막하지 않게, 명쾌하게.', en: 'Less stuck, more certain.', zh: '不再茫然，清晰明了。' }
         };
         const SHELL_CHIPS = {
             ko: [['D-2 연장 서류', 'D-2 연장에 필요한 서류는?'], ['E-7 근무처 변경', 'E-7 근무처 변경은 어떻게 확인하나요?'], ['F-6 연장 준비', 'F-6 체류기간 연장 전에 무엇을 준비해야 하나요?'], ['HiKorea 예약 전 체크', 'HiKorea 예약 전에 무엇을 확인해야 하나요?']],
@@ -2493,6 +2521,7 @@ select:focus-visible {
                 welcome.appendChild(box);
                 if (chipsBox) { /* old node replaced */ }
             }
+            set('aiBrandTagline', 'brandTagline');
             const msgTime = document.querySelector('#welcomeMessage .msg-time'); if (msgTime) msgTime.textContent = tt(lang, SHELL_CHROME.msgTime);
             const fastSub = document.querySelector('.ai-mode-btn[data-mode="fast"] .ai-mode-sub'); if (fastSub) fastSub.textContent = tt(lang, SHELL_CHROME.modeFastSub);
             const basicSub = document.querySelector('.ai-mode-btn[data-mode="basic"] .ai-mode-sub'); if (basicSub) basicSub.textContent = tt(lang, SHELL_CHROME.modeBasicSub);
