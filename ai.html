@@ -217,6 +217,63 @@
         @keyframes ambientFloat { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(5%, 8%) scale(1.05); } }
         @keyframes ambientFloat2 { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(-8%, -10%) scale(0.95); } }
 
+        /* ── Waymaker Aurora — 웰컴(빈) 상태 전용 ──────────────────────
+           Figma "Waymaker Hero · Dark Aurora"(198:5) 확정 레시피를
+           radial-gradient 로 옮겼다.
+
+           디자인 계약은 "Aurora is hero-background only — result, document
+           and source screens stay calm" 이다. 이 페이지에서 **웰컴 상태가 곧
+           히어로**다 — 아직 결과가 없고 진입하는 순간이다. 첫 메시지가 붙는
+           순간부터는 결과를 읽는 작업 화면이 되므로 오로라를 걷는다.
+           절차 내비게이터(.wm-active)도 작업 화면이라 처음부터 띄우지 않는다.
+
+           베이스 색을 깔지 않고 블룸만 얹는다 — body 가 이미 자체 그라디언트를
+           갖고 있어서, 불투명 베이스를 깔면 기존 앰비언트 설계와 싸운다.
+           기존 앰비언트 레이어(body::before/::after)가 z-index:-2 라 그 위,
+           본문 아래인 -1 에 놓는다. */
+        .wm-aurora {
+            position: fixed; inset: 0; z-index: -1; pointer-events: none;
+            opacity: 1; transition: opacity .7s ease;
+            background:
+                radial-gradient(85% 125% at 94% 4%,   rgba(59, 228, 184, 0.22) 0%, transparent 62%),
+                radial-gradient(80% 120% at 2% 96%,   rgba(90, 99, 168, 0.34) 0%, transparent 64%),
+                radial-gradient(62% 85% at 64% 108%,  rgba(255, 139, 122, 0.13) 0%, transparent 66%),
+                radial-gradient(78% 105% at 38% 2%,   rgba(243, 238, 223, 0.09) 0%, transparent 60%),
+                radial-gradient(56% 78% at 70% 66%,   rgba(243, 238, 223, 0.06) 0%, transparent 68%);
+        }
+        body[data-theme="light"] .wm-aurora {
+            background:
+                radial-gradient(85% 125% at 94% 4%,   rgba(14, 163, 123, 0.13) 0%, transparent 62%),
+                radial-gradient(80% 120% at 2% 96%,   rgba(127, 137, 206, 0.16) 0%, transparent 64%),
+                radial-gradient(62% 85% at 64% 108%,  rgba(255, 107, 91, 0.10) 0%, transparent 66%),
+                radial-gradient(78% 105% at 38% 2%,   rgba(255, 255, 255, 0.55) 0%, transparent 60%),
+                radial-gradient(56% 78% at 70% 66%,   rgba(255, 255, 255, 0.35) 0%, transparent 68%);
+        }
+        /* 대화가 시작되면(첫 메시지) · 내비게이터 화면이면 → calm */
+        body.wm-conversing .wm-aurora,
+        body.wm-active .wm-aurora { opacity: 0; }
+
+        /* 시안의 State A/B/C Smart-Animate 루프에 대응하는 아주 느린 표류.
+           그라디언트를 다시 칠하지 않도록 블룸만 별도 레이어에서 transform 한다. */
+        @media (prefers-reduced-motion: no-preference) {
+            .wm-aurora::after {
+                content: ""; position: absolute; inset: -25%;
+                background:
+                    radial-gradient(38% 46% at 74% 40%, rgba(59, 228, 184, 0.10) 0%, transparent 70%),
+                    radial-gradient(34% 42% at 24% 68%, rgba(90, 99, 168, 0.12) 0%, transparent 70%);
+                animation: wmAuroraDrift 26s ease-in-out infinite alternate;
+            }
+            body[data-theme="light"] .wm-aurora::after {
+                background:
+                    radial-gradient(38% 46% at 74% 40%, rgba(14, 163, 123, 0.08) 0%, transparent 70%),
+                    radial-gradient(34% 42% at 24% 68%, rgba(127, 137, 206, 0.09) 0%, transparent 70%);
+            }
+        }
+        @keyframes wmAuroraDrift {
+            from { transform: translate3d(-2%, -1.5%, 0) scale(1);    opacity: .85; }
+            to   { transform: translate3d(2%, 1.5%, 0)  scale(1.08);  opacity: 1; }
+        }
+
         /* Header (Glassmorphism) */
         .chat-header {
             flex-shrink: 0; background: color-mix(in srgb, var(--bg1) 85%, transparent);
@@ -1419,6 +1476,8 @@ select:focus-visible {
     <link rel="stylesheet" href="assets/css/visable-product-2026.css?v=20260713-figma-production">
 </head>
 <body class="product-waymaker">
+<!-- 웰컴(빈) 상태 전용 오로라 레이어. 첫 메시지가 붙으면 걷힌다 — 위 CSS 주석 참조. -->
+<div class="wm-aurora" aria-hidden="true"></div>
 <script>
 /* Follow the shared brightness (light/dark) chosen on the other Visable pages.
    ai.html is dark-first, so it defaults to dark when nothing is stored. */
@@ -2268,6 +2327,8 @@ select:focus-visible {
                 <div class="msg-time">${senderName} · ${timeStr}</div>
             `;
             hist.appendChild(row);
+            // 첫 메시지부터 이 화면은 "결과를 읽는 작업 화면"이다 — 오로라를 걷는다.
+            document.body.classList.add('wm-conversing');
             scrollConversationToEnd(row);
             return row;
         }
