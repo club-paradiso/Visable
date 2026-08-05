@@ -1434,3 +1434,8 @@ body.product-waymaker:not(.wm-conversing):not(.wm-active) .wm-workspace-shell,
 body.product-waymaker:not(.wm-conversing):not(.wm-active) .wm-workspace-sidebar {
   background: transparent !important;
 }
+
+/* 오로라가 켜진 웰컴 상태에서 사이드바 각주가 4.44:1 로 내려간다 — 그 상태에서만 한 단계 진하게. */
+body.product-waymaker:not(.wm-conversing):not(.wm-active):not([data-theme="dark"]) .wm-workspace-trust-note {
+  color: #56615d !important;
+}
