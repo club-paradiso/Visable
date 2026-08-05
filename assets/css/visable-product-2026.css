@@ -1367,3 +1367,52 @@ body.product-form-helper:not([data-theme="dark"]) .fh-privacy-notice strong {
 body.product-nationality-hub:not([data-theme="dark"]) .ni-chip:not([aria-pressed="true"]) {
   color: #3f534d !important;
 }
+
+/* ───────────────────────────────────────────────────────────────────
+ * 주 CTA를 §5 기준(AAA 7:1)까지 — 초록 계열만 (2026-08)
+ *
+ * 스펙 보드 90 은 "주 CTA는 양 모드 WCAG AAA"라고 적고 있었지만 실측하면
+ * 라이트 5.29:1 / 다크 6.88:1 로 AA 였다. 초록 CTA는 값을 조금만 조정하면
+ * AAA 에 닿으므로 올린다.
+ *
+ * accent 토큰(--vp-green-2)을 통째로 어둡게 하면 액센트 텍스트·아이콘까지
+ * 전부 짙어져 브랜드 톤이 바뀐다. CTA 표면 전용 토큰을 따로 둔다
+ * ("CTA는 화면당 1개" 원칙과도 맞는다).
+ *
+ * 다크는 민트 표면을 그대로 두고 잉크만 더 진하게 했다 — 표면을 건드리면
+ * 다크 화면의 인상이 바뀌는데, 잉크만 내리면 대비만 오른다.
+ *
+ * 코랄 CTA(index)는 의도적으로 AA(4.80:1)로 남긴다. 흰 글자로 AAA 를
+ * 맞추려면 #943D2F 벽돌색이 되어 코랄이라는 브랜드 액센트 자체가 사라진다.
+ * 기준을 맞추려고 정체성을 버리는 교환은 하지 않는다 — §5 에 예외로 명시했다.
+ * ─────────────────────────────────────────────────────────────────── */
+body.product-visable:not([data-theme="dark"]),
+body.product-new-home:not([data-theme="dark"]),
+body.product-form-helper:not([data-theme="dark"]),
+body.product-waymaker:not([data-theme="dark"]),
+body.product-nationality-hub:not([data-theme="dark"]) {
+  --vp-cta: #096450;      /* 흰 글자 7.08:1 (was #0B7A61 → 5.29:1) */
+  --vp-on-cta: #ffffff;
+}
+body.product-visable[data-theme="dark"],
+body.product-new-home[data-theme="dark"],
+body.product-form-helper[data-theme="dark"],
+body.product-waymaker[data-theme="dark"],
+body.product-nationality-hub[data-theme="dark"] {
+  --vp-cta: #34d4a8;      /* 표면은 그대로 */
+  --vp-on-cta: #062e27;   /* 잉크만 진하게 — 7.79:1 (was #083830 → 6.88:1) */
+}
+
+/* 테마 속성을 포함해야 한다. 위 "밝은 민트 위 흰 글자" 블록이
+   `body.product-nationality-hub[data-theme="dark"] .ni-btn-primary` 로
+   (0,3,1) 특정도를 갖고 있어, 테마 없는 (0,2,1) 선택자로는 뒤에 와도 진다. */
+body.product-new-home:not([data-theme="dark"]) .nh-btn-primary,
+body.product-new-home[data-theme="dark"] .nh-btn-primary,
+body.product-nationality-hub:not([data-theme="dark"]) .ni-btn-primary,
+body.product-nationality-hub[data-theme="dark"] .ni-btn-primary,
+body.product-visable:not([data-theme="dark"]) .p-reminder-submit,
+body.product-visable[data-theme="dark"] .p-reminder-submit {
+  background: var(--vp-cta) !important;
+  border-color: var(--vp-cta) !important;
+  color: var(--vp-on-cta) !important;
+}
