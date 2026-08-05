@@ -1416,3 +1416,21 @@ body.product-visable[data-theme="dark"] .p-reminder-submit {
   border-color: var(--vp-cta) !important;
   color: var(--vp-on-cta) !important;
 }
+
+/* ───────────────────────────────────────────────────────────────────
+ * Waymaker 오로라 — 웰컴(빈) 상태에서만 표면을 비운다 (2026-08)
+ *
+ * `ai.html` 의 오로라 레이어는 z-index:-1 이라 body 배경 위·본문 아래에
+ * 깔리는데, `.wm-workspace-shell` 이 불투명 배경(#082b22 / --vp-paper)을
+ * !important 로 덮고 있어 전부 가려졌다.
+ *
+ * 웰컴 상태에서만 그 표면을 비워 오로라가 보이게 한다. 첫 메시지가 붙거나
+ * (.wm-conversing) 내비게이터 화면이면(.wm-active) 원래 불투명 표면으로
+ * 돌아간다 — 결과를 읽는 화면은 calm 하게 두라는 계약을 지키는 지점이다.
+ *
+ * 특정도: 스킨 원본이 (0,3,1)+!important 라 :not() 두 개를 더해 (0,4,1) 로 이긴다.
+ * ─────────────────────────────────────────────────────────────────── */
+body.product-waymaker:not(.wm-conversing):not(.wm-active) .wm-workspace-shell,
+body.product-waymaker:not(.wm-conversing):not(.wm-active) .wm-workspace-sidebar {
+  background: transparent !important;
+}
