@@ -378,3 +378,18 @@ body[data-theme="light"] .msg-row.ai .msg-bubble { background: #F4EFE4; }
 body[data-theme="light"] .answer-card,
 body[data-theme="light"] .msg-row.ai .answer-card { background: #FFFCF5; }
 body[data-theme="light"] .chat-input-area { background: rgba(255, 252, 245, 0.94); }
+
+/* 사이드바는 justify-content:space-between 이라 자식이 2개(nav, trust)일 때를 전제로
+   위/아래로 갈라졌다. 브랜드 킥커가 들어오면서 세 덩어리가 균등하게 벌어져 레일이
+   가운데로 밀렸다. 앞쪽은 위에서부터 쌓고 신뢰 섹션만 아래로 밀어 원래 배치를 지킨다. */
+.wm-workspace-sidebar { justify-content: flex-start; }
+.wm-workspace-sidebar > .wm-workspace-trust { margin-top: auto; }
+
+/* 사이드바 상단 브랜드 킥커 — Figma 21 `Waymaker Desktop · Live Workspace`(255:4) 대조로 추가. */
+.wm-workspace-brand {
+  margin: 0 0 14px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: var(--t3, #8c8572);
+}

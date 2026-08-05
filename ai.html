@@ -458,6 +458,14 @@
         .ai-textarea::placeholder { color: var(--t3); }
 
         .ai-mode-selector { display: flex; gap: var(--sp-2); margin-bottom: var(--sp-2); }
+        /* 시안(255:4) 대조로 채운 것들 — 모드 라벨 · 자동 감지 안내 · 사이드바 브랜드 킥커 */
+        .ai-mode-label {
+            display: inline-block; margin: 0 0 0.35rem;
+            font-size: 0.75rem; font-weight: 700; letter-spacing: 0.02em;
+            color: var(--t3);
+        }
+        .composer-detect { font-size: 0.7rem; color: var(--t3); }
+        @media (max-width: 900px) { .composer-detect { display: none; } }
         .ai-mode-btn {
             flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px;
             padding: var(--sp-2); border: 1px solid var(--bd); background: var(--bg0);
@@ -1537,6 +1545,8 @@ select:focus-visible {
 
     <div class="wm-workspace-shell" id="wmWorkspaceShell">
       <aside class="wm-workspace-sidebar" aria-label="Waymaker 작업공간">
+        <!-- 시안(255:4)의 사이드바 상단 브랜드 킥커. -->
+        <p class="wm-workspace-brand" aria-hidden="true">WAYMAKER</p>
         <nav class="wm-workspace-nav" aria-label="Waymaker 주요 기능">
           <a class="wm-workspace-nav-link is-active" href="ai.html" data-workspace-route="chat">
             <span class="wm-workspace-nav-kicker">Ask</span>
@@ -1619,7 +1629,10 @@ select:focus-visible {
 
     <!-- Input Area -->
     <footer class="chat-input-area">
-        <div class="ai-mode-selector" role="radiogroup" aria-label="답변 속도 모드" id="aiModeSelector">
+        <!-- 시안(255:4)에는 모드 앞에 "답변 속도" 라벨이 보인다. 라이브는 aria-label 만
+             있어서, 눈으로 보는 사용자에게는 두 버튼이 무엇을 고르는 것인지 설명이 없었다. -->
+        <span class="ai-mode-label" id="aiModeLabel">답변 속도</span>
+        <div class="ai-mode-selector" role="radiogroup" aria-labelledby="aiModeLabel" id="aiModeSelector">
             <button type="button" class="ai-mode-btn" data-mode="fast" role="radio" aria-checked="false">
                 <span class="ai-mode-title">⚡ Fast</span>
                 <span class="ai-mode-sub">간단 질문 즉답 · 복잡하면 Basic</span>
@@ -1636,6 +1649,8 @@ select:focus-visible {
         </div>
         <div class="input-footer">
             <span class="char-counter" id="charCount">0 / 500자</span>
+            <!-- 시안(255:4)의 자동 감지 안내. 위 컨텍스트 스트립이 무엇을 읽는지 알려준다. -->
+            <span class="composer-detect" id="composerDetect">질문에서 국적·현재 체류자격·목표를 자동 감지합니다.</span>
             <span class="composer-hint">Enter 전송 · Shift+Enter 줄바꿈</span>
         </div>
     </footer>
@@ -2553,6 +2568,12 @@ select:focus-visible {
             sendAria: { ko: '분석 요청 전송', en: 'Send analysis request', zh: '发送分析请求' },
             send: { ko: '전송', en: 'Send', zh: '发送' },
             quotaLabel: { ko: '남은 분석 횟수', en: 'Remaining analyses', zh: '剩余分析次数' },
+            modeLabel: { ko: '답변 속도', en: 'Answer speed', zh: '答复速度' },
+            composerDetect: {
+                ko: '질문에서 국적·현재 체류자격·목표를 자동 감지합니다.',
+                en: 'Nationality, current status and goal are detected from your question.',
+                zh: '系统会从您的提问中自动识别国籍·当前居留资格·目标。'
+            },
             brandTagline: { ko: '막막하지 않게, 명쾌하게.', en: 'Less stuck, more certain.', zh: '不再茫然，清晰明了。' }
         };
         const SHELL_CHIPS = {
@@ -2592,6 +2613,8 @@ select:focus-visible {
                 if (chipsBox) { /* old node replaced */ }
             }
             set('aiBrandTagline', 'brandTagline');
+            set('aiModeLabel', 'modeLabel');
+            set('composerDetect', 'composerDetect');
             const msgTime = document.querySelector('#welcomeMessage .msg-time'); if (msgTime) msgTime.textContent = tt(lang, SHELL_CHROME.msgTime);
             const fastSub = document.querySelector('.ai-mode-btn[data-mode="fast"] .ai-mode-sub'); if (fastSub) fastSub.textContent = tt(lang, SHELL_CHROME.modeFastSub);
             const basicSub = document.querySelector('.ai-mode-btn[data-mode="basic"] .ai-mode-sub'); if (basicSub) basicSub.textContent = tt(lang, SHELL_CHROME.modeBasicSub);
