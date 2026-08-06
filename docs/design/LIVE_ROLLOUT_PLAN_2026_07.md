@@ -518,6 +518,38 @@ ko/en/zh 전환에서 락업이 살아남고 번역되는 것 확인, `?q=` 무�
 
 ---
 
+## 4-D. ⚠️ 공통 CSS 를 고쳤으면 캐시버스터를 반드시 올린다
+
+5개 공개 페이지는 공통 스킨을 **쿼리 문자열 버전**으로 참조한다.
+
+```html
+<link rel="stylesheet" href="assets/css/visable-product-2026.css?v=YYYYMMDD-slug">
+<link rel="stylesheet" href="assets/css/waymaker-workspace.css?v=YYYYMMDD-slug">
+```
+
+**파일을 고치고 `?v=` 를 그대로 두면 URL 이 같아 브라우저·CDN 이 예전 CSS 를 계속
+쓴다.** 실제로 그 사고가 났다 — `#557`·`#558`·`#559` 가 스킨에 72줄을 넣는 동안
+`?v=` 는 `#539` 이후 그대로였다.
+
+특히 위험한 이유: **`index.html` 은 그 세 PR 에서 자기 파일이 0줄 바뀌었다.**
+주 CTA 대비·가독성 토큰·오로라용 shell 투명화가 전부 공통 CSS 에만 있으므로,
+캐시된 CSS 로는 페이지가 **바이트 단위로 동일**하다. 배포는 성공했는데
+"아무것도 안 바뀌었다"로 보인다.
+
+**규칙:** `assets/css/*.css` 를 건드린 PR 은 참조하는 모든 HTML 의 `?v=` 를 같이
+올린다. 확인 명령:
+
+```bash
+grep -ho 'visable-product-2026\.css?v=[^"]*' *.html | sort -u   # 값이 하나여야 한다
+git log --oneline -1 -- assets/css/visable-product-2026.css      # 이 커밋 이후 ?v= 가 바뀌었는지
+```
+
+**배포 여부와 캐시 문제를 헷갈리지 말 것.** 이번 건은 GitHub Pages 배포가 머지마다
+전부 성공(`pages-build-deployment`)한 상태였다. 파이프라인을 의심하기 전에
+`?v=` 부터 본다.
+
+---
+
 ## 5. 접근성 기준 (PR 머지 전 확인)
 
 - 본문 대비 WCAG AA 4.5:1 이상, 주 CTA AAA 7:1
