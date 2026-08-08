@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "generated": "2026-07-26",
+  "generated": "2026-08-08",
   "description": "Review/approval layer over data/source_registry.json. Records whether a manual edition's EXTRACTED CONTENT has been compared against the original document by a human and approved for use as direct AI evidence. Document-level provenance (file authenticity, checksum, page count) is tracked separately in source_registry.json and is NOT the same thing as content approval.",
   "notes": [
     "approval_state is deliberately conservative. No edition is marked 'approved'",
@@ -21,8 +21,50 @@
     "is allowed to assert."
   ],
   "documents": {
-    "visa_manual_2026_06_17_pdf": {
+    "visa_manual_2026_07_31_hwp": {
       "approval_state": "parsed",
+      "effective_date": "2026-07-31",
+      "parser": "scripts/decrypt_hwp_distribution.py (배포용 HWP ViewText AES)",
+      "reviewer": "",
+      "reviewed_at": "",
+      "source_confidence": "high",
+      "has_tables_or_annexes": true,
+      "section_locator": "paragraph",
+      "source_path": "docs/source-manuals/2026-07-31/visa_manual_260731.hwp",
+      "source_sha256": "0c5bc2d195a750ba01bc1a287f0c65915437a146e402202c9bad3a12ca574216",
+      "extracted_text_path": "docs/source-manuals/2026-07-31/extracted/full_text/visa_manual_260731.txt",
+      "extraction_warnings": [
+        "Extracted from the 배포용 HWP ViewText stream via scripts/decrypt_hwp_distribution.py. The text layer is the document's own — no OCR or glyph artifacts — but it has NOT been compared against the source and is NOT certified.",
+        "Paragraph-based, not page-based: locators do not line up with the 2026-06 PDF editions. A line-by-line diff against those extractions measures the change of extraction method, not a change of content.",
+        "Downstream legal wording remains under manual review unless a field was separately line-by-line certified."
+      ],
+      "table_extraction_warnings": [
+        "별표/첨부서류 tables are flattened to paragraph text; cell and column boundaries are NOT preserved and must not be read as a structured table."
+      ]
+    },
+    "stay_manual_2026_07_31_hwp": {
+      "approval_state": "parsed",
+      "effective_date": "2026-07-31",
+      "parser": "scripts/decrypt_hwp_distribution.py (배포용 HWP ViewText AES)",
+      "reviewer": "",
+      "reviewed_at": "",
+      "source_confidence": "high",
+      "has_tables_or_annexes": true,
+      "section_locator": "paragraph",
+      "source_path": "docs/source-manuals/2026-07-31/stay_manual_260731.hwp",
+      "source_sha256": "d2c6dc547fd3c52e885ccf3686e87d79bc4a7df9889d8afa9be9f05ce7e1acfc",
+      "extracted_text_path": "docs/source-manuals/2026-07-31/extracted/full_text/stay_manual_260731.txt",
+      "extraction_warnings": [
+        "Extracted from the 배포용 HWP ViewText stream via scripts/decrypt_hwp_distribution.py. The text layer is the document's own — no OCR or glyph artifacts — but it has NOT been compared against the source and is NOT certified.",
+        "Paragraph-based, not page-based: locators do not line up with the 2026-06 PDF editions. A line-by-line diff against those extractions measures the change of extraction method, not a change of content.",
+        "Downstream legal wording remains under manual review unless a field was separately line-by-line certified."
+      ],
+      "table_extraction_warnings": [
+        "별표/첨부서류 tables are flattened to paragraph text; cell and column boundaries are NOT preserved and must not be read as a structured table."
+      ]
+    },
+    "visa_manual_2026_06_17_pdf": {
+      "approval_state": "superseded",
       "effective_date": "2026-06-17",
       "parser": "scripts/extract_manual_sections (pdf text layer)",
       "reviewer": "",
@@ -36,10 +78,11 @@
       ],
       "table_extraction_warnings": [
         "별표/첨부서류 tables are extracted as flowed text; column boundaries are not preserved and must not be read as a structured table."
-      ]
+      ],
+      "superseded_date": "2026-07-31"
     },
     "stay_manual_2026_06_23_pdf": {
-      "approval_state": "parsed",
+      "approval_state": "superseded",
       "effective_date": "2026-06-23",
       "parser": "scripts/extract_manual_sections (pdf text layer)",
       "reviewer": "",
@@ -52,7 +95,8 @@
       ],
       "table_extraction_warnings": [
         "별표/서식 tables are extracted as flowed text; column boundaries are not preserved."
-      ]
+      ],
+      "superseded_date": "2026-07-31"
     },
     "stay_manual_2026_06_01_pdf": {
       "approval_state": "superseded",

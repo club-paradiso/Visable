@@ -140,6 +140,11 @@ echo "[5a2/14] Validating manual-sync pipeline (structured diff + board monitor)
 # touch the network or any production/protected data file.
 python3 scripts/tests/test_diff_manual_versions.py
 python3 scripts/tests/test_monitor_hikorea_manual_board.py
+# 배포용 HWP decryptor: AES core pinned to the FIPS-197 vector, key schedule and
+# the record/text walkers checked against synthetic payloads. Stdlib-only — the
+# pure-Python AES path is exercised deliberately, because a subtly wrong one
+# does not raise, it yields plausible-length garbage.
+python3 scripts/tests/test_decrypt_hwp_distribution.py > /dev/null
 python3 scripts/monitor_hikorea_manual_board.py > /dev/null
 
 echo "[5b/14] Validating source-grounding metadata model (schema + registry/manifest parity)..."
