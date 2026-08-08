@@ -1461,7 +1461,7 @@ body.product-waymaker:not(.wm-conversing):not(.wm-active):not([data-theme="dark"
  * 까지 이겨야 한다 — 그래서 (0,5,2) 로 맞춘다.
  * 검색 후(.searched) 컴팩트 헤더에는 적용하지 않는다 — 결과를 읽는 화면은 calm.
  * ═══════════════════════════════════════════════════════════════════ */
-body.product-visable.landing:not(.searched):not([data-theme="dark"]) .hero-container::before {
+:root:not([data-theme="archive_diary"]) body.product-visable.landing:not(.searched):not([data-theme="dark"]) .hero-container::before {
   display: block !important;
   content: "" !important;
   position: absolute !important;
@@ -1479,7 +1479,7 @@ body.product-visable.landing:not(.searched):not([data-theme="dark"]) .hero-conta
 }
 /* 히어로 자신의 단색 배경을 비워 위 레이어가 보이게 한다. 음수 z 자식이
    "배경 위 · 본문 아래"에 오도록 스태킹 컨텍스트도 만든다. */
-body.product-visable.landing:not(.searched):not([data-theme="dark"]) .hero-container {
+:root:not([data-theme="archive_diary"]) body.product-visable.landing:not(.searched):not([data-theme="dark"]) .hero-container {
   position: relative !important;
   z-index: 0 !important;
   background: transparent !important;
@@ -1488,7 +1488,7 @@ body.product-visable.landing:not(.searched):not([data-theme="dark"]) .hero-conta
 /* 오로라가 켜지면 히어로 하단 고지문이 에메랄드 블룸(#CADFCC) 위에 놓여
    4.31:1 로 내려간다. 고지문은 약하게 둘 수 없는 문구라 그 상태에서만
    잉크를 한 단계 진하게 잡는다 (4.31 → 4.94:1). 특정도 (0,4,1). */
-body.product-visable.landing:not(.searched):not([data-theme="dark"]) .reference-disclaimer {
+:root:not([data-theme="archive_diary"]) body.product-visable.landing:not(.searched):not([data-theme="dark"]) .reference-disclaimer {
   color: #515c58 !important;
 }
 
@@ -1517,7 +1517,7 @@ body.product-visable.landing:not(.searched):not([data-theme="dark"]) .reference-
  * 워드마크 벡터(203:13)는 이 환경의 네트워크 정책이 figma.com 자산 호스트를
  * 막아 내려받지 못했다 — 임의로 다시 그리지 않고 비워 두었다.
  * ═══════════════════════════════════════════════════════════════════ */
-body.product-new-home .nh-hero {
+:root:not([data-theme="archive_diary"]) body.product-new-home .nh-hero {
   position: relative !important;
   overflow: hidden !important;
   min-height: 620px !important;
@@ -1527,7 +1527,7 @@ body.product-new-home .nh-hero {
   justify-items: center !important;
   border: 0 !important;
 }
-body.product-new-home:not([data-theme="dark"]) .nh-hero {
+:root:not([data-theme="archive_diary"]) body.product-new-home:not([data-theme="dark"]) .nh-hero {
   background:
     radial-gradient(34.7% 59.5% at 58.3% 73.8%, rgba(255, 255, 255, 0.35) 0%, transparent 70%),
     radial-gradient(43.8% 72.0% at 46.5% 30.4%, rgba(255, 252, 245, 0.50) 0%, transparent 70%),
@@ -1537,7 +1537,7 @@ body.product-new-home:not([data-theme="dark"]) .nh-hero {
     linear-gradient(180deg, #fffbf3 0%, #f3e9da 100%) !important;
 }
 
-body.product-new-home .nh-hero-inner {
+:root:not([data-theme="archive_diary"]) body.product-new-home .nh-hero-inner {
   position: relative !important;
   z-index: 1 !important;
   width: min(100%, 940px) !important;
@@ -1545,7 +1545,7 @@ body.product-new-home .nh-hero-inner {
   grid-template-columns: none !important;
   gap: 0 !important;
 }
-body.product-new-home .nh-hero-copy {
+:root:not([data-theme="archive_diary"]) body.product-new-home .nh-hero-copy {
   max-width: none !important;
   display: flex !important;
   flex-direction: column !important;
@@ -1553,10 +1553,10 @@ body.product-new-home .nh-hero-copy {
   gap: 20px !important;
   text-align: center !important;
 }
-body.product-new-home .nh-hero-copy > * { margin: 0 !important; }
+:root:not([data-theme="archive_diary"]) body.product-new-home .nh-hero-copy > * { margin: 0 !important; }
 
 /* 키커 — 유리 알약 */
-body.product-new-home .nh-kicker {
+:root:not([data-theme="archive_diary"]) body.product-new-home .nh-kicker {
   display: inline-flex !important;
   align-items: center !important;
   padding: 9px 16px !important;
@@ -1571,12 +1571,12 @@ body.product-new-home .nh-kicker {
   letter-spacing: 0.06em !important;
   text-transform: none !important;
 }
-body.product-new-home[data-theme="dark"] .nh-kicker {
+:root:not([data-theme="archive_diary"]) body.product-new-home[data-theme="dark"] .nh-kicker {
   border-color: rgba(241, 238, 229, 0.22) !important;
   background: rgba(241, 238, 229, 0.10) !important;
 }
 
-body.product-new-home .nh-title {
+:root:not([data-theme="archive_diary"]) body.product-new-home .nh-title {
   max-width: 720px !important;
   white-space: pre-line !important;
   color: var(--vp-ink) !important;
@@ -1586,15 +1586,15 @@ body.product-new-home .nh-title {
   letter-spacing: -0.02em !important;
   word-break: keep-all !important;
 }
-body.product-new-home .nh-tagline {
+:root:not([data-theme="archive_diary"]) body.product-new-home .nh-tagline {
   color: #e0513e !important;
   font-size: 24px !important;
   font-weight: 700 !important;
   font-style: italic !important;
 }
-body.product-new-home[data-theme="dark"] .nh-tagline { color: #ff9d8c !important; }
+:root:not([data-theme="archive_diary"]) body.product-new-home[data-theme="dark"] .nh-tagline { color: #ff9d8c !important; }
 
-body.product-new-home .nh-lead {
+:root:not([data-theme="archive_diary"]) body.product-new-home .nh-lead {
   max-width: 640px !important;
   color: var(--vp-ink-2) !important;
   font-size: 17px !important;
@@ -1602,43 +1602,43 @@ body.product-new-home .nh-lead {
   word-break: keep-all !important;
 }
 
-body.product-new-home .nh-cta-row {
+:root:not([data-theme="archive_diary"]) body.product-new-home .nh-cta-row {
   margin-top: 0 !important;
   justify-content: center !important;
   gap: 12px !important;
 }
-body.product-new-home .nh-btn {
+:root:not([data-theme="archive_diary"]) body.product-new-home .nh-btn {
   min-height: 48px !important;
   padding: 0 24px !important;
   border-radius: 999px !important;
   font-size: 15px !important;
   font-weight: 700 !important;
 }
-body.product-new-home .nh-btn-primary {
+:root:not([data-theme="archive_diary"]) body.product-new-home .nh-btn-primary {
   padding-left: 26px !important;
   box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.22) !important;
 }
-body.product-new-home .nh-btn-arrow { font-weight: 700 !important; }
-body.product-new-home:not([data-theme="dark"]) .nh-btn-secondary {
+:root:not([data-theme="archive_diary"]) body.product-new-home .nh-btn-arrow { font-weight: 700 !important; }
+:root:not([data-theme="archive_diary"]) body.product-new-home:not([data-theme="dark"]) .nh-btn-secondary {
   border: 1.4px solid rgba(255, 255, 255, 0.55) !important;
   background: rgba(255, 255, 255, 0.60) !important;
   -webkit-backdrop-filter: blur(9px) !important;
   backdrop-filter: blur(9px) !important;
   color: var(--vp-ink) !important;
 }
-body.product-new-home[data-theme="dark"] .nh-btn-secondary {
+:root:not([data-theme="archive_diary"]) body.product-new-home[data-theme="dark"] .nh-btn-secondary {
   border: 1.4px solid rgba(241, 238, 229, 0.22) !important;
   background: rgba(241, 238, 229, 0.08) !important;
   color: var(--vp-ink) !important;
 }
 
 /* 신뢰 칩 3개 */
-body.product-new-home .nh-proof-row {
+:root:not([data-theme="archive_diary"]) body.product-new-home .nh-proof-row {
   margin-top: 0 !important;
   justify-content: center !important;
   gap: 8px !important;
 }
-body.product-new-home .nh-proof-row span {
+:root:not([data-theme="archive_diary"]) body.product-new-home .nh-proof-row span {
   padding: 7px 13px !important;
   border: 0 !important;
   border-radius: 999px !important;
@@ -1646,18 +1646,18 @@ body.product-new-home .nh-proof-row span {
   font-size: 12.5px !important;
   font-weight: 700 !important;
 }
-body.product-new-home:not([data-theme="dark"]) .nh-proof-row span {
+:root:not([data-theme="archive_diary"]) body.product-new-home:not([data-theme="dark"]) .nh-proof-row span {
   background: rgba(255, 255, 255, 0.55) !important;
   -webkit-backdrop-filter: blur(7px) !important;
   backdrop-filter: blur(7px) !important;
 }
-body.product-new-home[data-theme="dark"] .nh-proof-row span {
+:root:not([data-theme="archive_diary"]) body.product-new-home[data-theme="dark"] .nh-proof-row span {
   background: rgba(241, 238, 229, 0.10) !important;
 }
 
 /* 키네틱 스트립 — 시안의 흐르는 문구 띠. 같은 문구를 두 번 이어 붙이고
    트랙을 -50% 만큼 밀어 이음매 없이 반복한다. 모션 감소 설정에서는 멈춘다. */
-body.product-new-home .nh-kinetic {
+:root:not([data-theme="archive_diary"]) body.product-new-home .nh-kinetic {
   position: absolute !important;
   left: 0 !important;
   right: 0 !important;
@@ -1668,30 +1668,30 @@ body.product-new-home .nh-kinetic {
   mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
   -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
 }
-body.product-new-home .nh-kinetic-track {
+:root:not([data-theme="archive_diary"]) body.product-new-home .nh-kinetic-track {
   display: flex !important;
   width: max-content !important;
   animation: nh-kinetic-scroll 64s linear infinite;
 }
-body.product-new-home .nh-kinetic-line {
+:root:not([data-theme="archive_diary"]) body.product-new-home .nh-kinetic-line {
   white-space: pre !important;
   color: #47594f !important;
   font-size: 12px !important;
   font-weight: 700 !important;
   letter-spacing: 0.08em !important;
 }
-body.product-new-home[data-theme="dark"] .nh-kinetic-line { color: var(--vp-ink-3) !important; }
+:root:not([data-theme="archive_diary"]) body.product-new-home[data-theme="dark"] .nh-kinetic-line { color: var(--vp-ink-3) !important; }
 @keyframes nh-kinetic-scroll {
   from { transform: translate3d(0, 0, 0); }
   to   { transform: translate3d(-50%, 0, 0); }
 }
 @media (prefers-reduced-motion: reduce) {
-  body.product-new-home .nh-kinetic-track { animation: none !important; }
+  :root:not([data-theme="archive_diary"]) body.product-new-home .nh-kinetic-track { animation: none !important; }
 }
 
 /* 히어로 각주 — 시안은 rgba(90,101,97,.9) 지만 11px 에서 4.12:1 이라
    3차 잉크 토큰(#5A6561 / #BBC7C3, 5.04:1)을 쓴다. */
-body.product-new-home .nh-hero-foot {
+:root:not([data-theme="archive_diary"]) body.product-new-home .nh-hero-foot {
   position: absolute !important;
   left: 50% !important;
   bottom: 18px !important;
@@ -1707,7 +1707,7 @@ body.product-new-home .nh-hero-foot {
 }
 
 /* 오른쪽 가장자리의 오로라 도트 4개 — 첫 점만 진하고 나머지는 흰 35% 잔상. */
-body.product-new-home .nh-aurora-dots {
+:root:not([data-theme="archive_diary"]) body.product-new-home .nh-aurora-dots {
   position: absolute !important;
   right: 31px !important;
   top: 46% !important;
@@ -1717,23 +1717,23 @@ body.product-new-home .nh-aurora-dots {
   gap: 17px !important;
   pointer-events: none !important;
 }
-body.product-new-home .nh-aurora-dots i {
+:root:not([data-theme="archive_diary"]) body.product-new-home .nh-aurora-dots i {
   width: 11px !important;
   height: 11px !important;
   border-radius: 999px !important;
   background: rgba(255, 255, 255, 0.35) !important;
 }
-body.product-new-home .nh-aurora-dots i:first-child { background: var(--vp-green) !important; }
+:root:not([data-theme="archive_diary"]) body.product-new-home .nh-aurora-dots i:first-child { background: var(--vp-green) !important; }
 
 @media (max-width: 960px) {
-  body.product-new-home .nh-hero { min-height: auto !important; padding: 56px 20px 96px !important; }
-  body.product-new-home .nh-aurora-dots { display: none !important; }
+  :root:not([data-theme="archive_diary"]) body.product-new-home .nh-hero { min-height: auto !important; padding: 56px 20px 96px !important; }
+  :root:not([data-theme="archive_diary"]) body.product-new-home .nh-aurora-dots { display: none !important; }
 }
 @media (max-width: 720px) {
-  body.product-new-home .nh-hero { padding: 42px 18px 92px !important; }
-  body.product-new-home .nh-hero-copy { gap: 16px !important; }
-  body.product-new-home .nh-title { font-size: 34px !important; }
-  body.product-new-home .nh-cta-row .nh-btn { flex: 1 1 100% !important; }
+  :root:not([data-theme="archive_diary"]) body.product-new-home .nh-hero { padding: 42px 18px 92px !important; }
+  :root:not([data-theme="archive_diary"]) body.product-new-home .nh-hero-copy { gap: 16px !important; }
+  :root:not([data-theme="archive_diary"]) body.product-new-home .nh-title { font-size: 34px !important; }
+  :root:not([data-theme="archive_diary"]) body.product-new-home .nh-cta-row .nh-btn { flex: 1 1 100% !important; }
 }
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -1748,7 +1748,7 @@ body.product-new-home .nh-aurora-dots i:first-child { background: var(--vp-green
 
 /* 블룸 반경을 시안의 LAYER_BLUR(코랄·페리·에메랄드 170, 라이트 210)만큼
    정확히 넓힌다. 7-A 에서는 반경을 다소 좁게 잡아 블룸이 시안보다 작았다. */
-body.product-visable.landing:not(.searched):not([data-theme="dark"]) .hero-container::before {
+:root:not([data-theme="archive_diary"]) body.product-visable.landing:not(.searched):not([data-theme="dark"]) .hero-container::before {
   background:
     radial-gradient(37.2% 63.7% at 59.0% 73.6%, rgba(255, 255, 255, 0.24) 0%, transparent 70%),
     radial-gradient(45.8% 75.6% at 47.9% 31.5%, rgba(255, 252, 245, 0.42) 0%, transparent 70%),
@@ -1759,7 +1759,7 @@ body.product-visable.landing:not(.searched):not([data-theme="dark"]) .hero-conta
 }
 
 /* 키커 — 유리 알약 (507:2146). 로고 위에 절대 배치된 기존 구조는 유지한다. */
-body.product-visable .p-hero-eyebrow {
+:root:not([data-theme="archive_diary"]) body.product-visable .p-hero-eyebrow {
   top: -126px !important;
   padding: 9px 16px !important;
   border: 1.4px solid rgba(255, 255, 255, 0.55) !important;
@@ -1772,8 +1772,8 @@ body.product-visable .p-hero-eyebrow {
   font: 700 12.5px/1.2 var(--vp-font) !important;
   letter-spacing: 0.06em !important;
 }
-body.product-visable .p-hero-eyebrow::before { display: none !important; content: none !important; }
-body.product-visable[data-theme="dark"] .p-hero-eyebrow {
+:root:not([data-theme="archive_diary"]) body.product-visable .p-hero-eyebrow::before { display: none !important; content: none !important; }
+:root:not([data-theme="archive_diary"]) body.product-visable[data-theme="dark"] .p-hero-eyebrow {
   border-color: rgba(241, 238, 229, 0.22) !important;
   background: rgba(241, 238, 229, 0.10) !important;
   box-shadow: none !important;
@@ -1781,24 +1781,24 @@ body.product-visable[data-theme="dark"] .p-hero-eyebrow {
 
 /* 헤드라인 (507:2150) — 54px SemiBold, tracking -1.08px(= -0.02em), 행간 1.08.
    강조어는 같은 줄 안에서 초록으로 바뀐다(기존은 두 번째 줄 전체가 초록이었다). */
-body.product-visable .p-hero-title {
+:root:not([data-theme="archive_diary"]) body.product-visable .p-hero-title {
   font: 600 clamp(34px, 3.8vw, 54px)/1.08 var(--vp-font) !important;
   letter-spacing: -0.02em !important;
 }
-body.product-visable .p-hero-title em {
+:root:not([data-theme="archive_diary"]) body.product-visable .p-hero-title em {
   display: inline !important;
   color: #085e48 !important;
 }
-body.product-visable[data-theme="dark"] .p-hero-title em { color: var(--vp-green) !important; }
+:root:not([data-theme="archive_diary"]) body.product-visable[data-theme="dark"] .p-hero-title em { color: var(--vp-green) !important; }
 
-body.product-visable .p-hero-sub {
+:root:not([data-theme="archive_diary"]) body.product-visable .p-hero-sub {
   max-width: 620px !important;
   font: 400 18px/1.6 var(--vp-font) !important;
   letter-spacing: -0.01em !important;
 }
 
 /* 검색 바 (507:2152) — 700×74 유리 알약. 클릭하면 기존처럼 실제 검색이 열린다. */
-body.product-visable .p-gw-search {
+:root:not([data-theme="archive_diary"]) body.product-visable .p-gw-search {
   min-height: 74px !important;
   padding: 13px 11px 13px 26px !important;
   border: 1.4px solid rgba(255, 255, 255, 0.55) !important;
@@ -1808,12 +1808,12 @@ body.product-visable .p-gw-search {
   backdrop-filter: blur(12px) !important;
   box-shadow: 0 14px 34px -6px rgba(31, 58, 96, 0.14) !important;
 }
-body.product-visable[data-theme="dark"] .p-gw-search {
+:root:not([data-theme="archive_diary"]) body.product-visable[data-theme="dark"] .p-gw-search {
   border-color: rgba(241, 238, 229, 0.18) !important;
   background: rgba(241, 238, 229, 0.08) !important;
   box-shadow: none !important;
 }
-body.product-visable .p-gw-search-title { font-size: 16px !important; }
+:root:not([data-theme="archive_diary"]) body.product-visable .p-gw-search-title { font-size: 16px !important; }
 /* 특정도 주의: index.html 안에
    `:root:not([data-theme="archive_diary"]) body.product-visable .p-gw-search-kbd`
    (0,3,2) + !important 로 `background: var(--cta)` 를 박아둔 규칙이 있다.
@@ -1827,35 +1827,35 @@ body.product-visable .p-gw-search-title { font-size: 16px !important; }
   color: var(--vp-on-cta) !important;
   box-shadow: 0 6px 18px rgba(8, 94, 72, 0.32), inset 0 1px 1px rgba(255, 255, 255, 0.22) !important;
 }
-body.product-visable .p-gw-search-kbd::after { content: "확인하기 →"; }
+:root:not([data-theme="archive_diary"]) body.product-visable .p-gw-search-kbd::after { content: "확인하기 →"; }
 
 /* 섹션 머리말 (507:1356-1357) */
-body.product-visable .p-gw-head {
+:root:not([data-theme="archive_diary"]) body.product-visable .p-gw-head {
   grid-column: 1 / -1 !important;
   margin: 6px 0 2px !important;
 }
-body.product-visable .p-gw-head-title {
+:root:not([data-theme="archive_diary"]) body.product-visable .p-gw-head-title {
   margin: 0 !important;
   color: var(--vp-ink) !important;
   font: 700 24px/1.25 var(--vp-font) !important;
   letter-spacing: -0.03em !important;
 }
-body.product-visable .p-gw-head-sub {
+:root:not([data-theme="archive_diary"]) body.product-visable .p-gw-head-sub {
   margin: 8px 0 0 !important;
   color: var(--vp-ink-2) !important;
   font: 400 15px/1.55 var(--vp-font) !important;
 }
 
 /* 카드 그리드 (507:1358-1400) — 182px 높이, 반경 18. */
-body.product-visable .p-gw-card,
-body.product-visable .p-gw-newhome {
+:root:not([data-theme="archive_diary"]) body.product-visable .p-gw-card,
+:root:not([data-theme="archive_diary"]) body.product-visable .p-gw-newhome {
   min-height: 182px !important;
   border-radius: 18px !important;
 }
 
 /* 키네틱 스트립 (507:2159) — 시안 잉크 rgba(58,84,76,.55) 는 12px 에서
    2.5:1 이라 #47594F(5.01:1)로 올렸다. 문구는 시안 그대로다. */
-body.product-visable .p-kinetic {
+:root:not([data-theme="archive_diary"]) body.product-visable .p-kinetic {
   position: relative !important;
   z-index: 1 !important;
   width: 100vw !important;
@@ -1865,28 +1865,28 @@ body.product-visable .p-kinetic {
   mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
   -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
 }
-body.product-visable .p-kinetic-track {
+:root:not([data-theme="archive_diary"]) body.product-visable .p-kinetic-track {
   display: flex !important;
   width: max-content !important;
   animation: vp-kinetic-scroll 68s linear infinite;
 }
-body.product-visable .p-kinetic-line {
+:root:not([data-theme="archive_diary"]) body.product-visable .p-kinetic-line {
   white-space: pre !important;
   color: #47594f !important;
   font: 700 12px/1.3 var(--vp-font) !important;
   letter-spacing: 0.08em !important;
 }
-body.product-visable[data-theme="dark"] .p-kinetic-line { color: var(--vp-ink-3) !important; }
+:root:not([data-theme="archive_diary"]) body.product-visable[data-theme="dark"] .p-kinetic-line { color: var(--vp-ink-3) !important; }
 @keyframes vp-kinetic-scroll {
   from { transform: translate3d(0, 0, 0); }
   to   { transform: translate3d(-50%, 0, 0); }
 }
 @media (prefers-reduced-motion: reduce) {
-  body.product-visable .p-kinetic-track { animation: none !important; }
+  :root:not([data-theme="archive_diary"]) body.product-visable .p-kinetic-track { animation: none !important; }
 }
 
 /* 저작권 각주 (507:2158) — 시안 #5A6561 12.5px 이 그대로 3차 잉크 토큰이다. */
-body.product-visable .p-hero-foot {
+:root:not([data-theme="archive_diary"]) body.product-visable .p-hero-foot {
   position: relative !important;
   z-index: 1 !important;
   margin: 14px 0 0 !important;
@@ -1896,7 +1896,7 @@ body.product-visable .p-hero-foot {
 }
 
 /* 오로라 도트 (507:2161-2164) — 첫 점만 진하고 나머지는 흰 35% 잔상. */
-body.product-visable .p-aurora-dots {
+:root:not([data-theme="archive_diary"]) body.product-visable .p-aurora-dots {
   position: absolute !important;
   right: 31px !important;
   top: 46% !important;
@@ -1906,29 +1906,29 @@ body.product-visable .p-aurora-dots {
   gap: 17px !important;
   pointer-events: none !important;
 }
-body.product-visable .p-aurora-dots i {
+:root:not([data-theme="archive_diary"]) body.product-visable .p-aurora-dots i {
   width: 11px !important;
   height: 11px !important;
   border-radius: 999px !important;
   background: rgba(255, 255, 255, 0.35) !important;
 }
-body.product-visable .p-aurora-dots i:first-child { background: #085e48 !important; }
-body.product-visable[data-theme="dark"] .p-aurora-dots i:first-child { background: var(--vp-green) !important; }
+:root:not([data-theme="archive_diary"]) body.product-visable .p-aurora-dots i:first-child { background: #085e48 !important; }
+:root:not([data-theme="archive_diary"]) body.product-visable[data-theme="dark"] .p-aurora-dots i:first-child { background: var(--vp-green) !important; }
 /* 검색 결과 화면은 calm — 장식은 랜딩에서만 보인다. */
-body.product-visable.searched .p-kinetic,
-body.product-visable.searched .p-hero-foot,
-body.product-visable.searched .p-aurora-dots { display: none !important; }
+:root:not([data-theme="archive_diary"]) body.product-visable.searched .p-kinetic,
+:root:not([data-theme="archive_diary"]) body.product-visable.searched .p-hero-foot,
+:root:not([data-theme="archive_diary"]) body.product-visable.searched .p-aurora-dots { display: none !important; }
 
 @media (max-width: 960px) {
-  body.product-visable .p-aurora-dots { display: none !important; }
-  body.product-visable .p-hero-eyebrow { top: -104px !important; }
+  :root:not([data-theme="archive_diary"]) body.product-visable .p-aurora-dots { display: none !important; }
+  :root:not([data-theme="archive_diary"]) body.product-visable .p-hero-eyebrow { top: -104px !important; }
 }
 @media (max-width: 720px) {
-  body.product-visable .p-hero-sub { font-size: 15px !important; }
-  body.product-visable .p-gw-search { min-height: 64px !important; padding: 10px 10px 10px 18px !important; }
-  body.product-visable .p-gw-search-kbd { min-width: 100px !important; height: 44px !important; }
-  body.product-visable .p-gw-card,
-  body.product-visable .p-gw-newhome { min-height: 148px !important; }
+  :root:not([data-theme="archive_diary"]) body.product-visable .p-hero-sub { font-size: 15px !important; }
+  :root:not([data-theme="archive_diary"]) body.product-visable .p-gw-search { min-height: 64px !important; padding: 10px 10px 10px 18px !important; }
+  :root:not([data-theme="archive_diary"]) body.product-visable .p-gw-search-kbd { min-width: 100px !important; height: 44px !important; }
+  :root:not([data-theme="archive_diary"]) body.product-visable .p-gw-card,
+  :root:not([data-theme="archive_diary"]) body.product-visable .p-gw-newhome { min-height: 148px !important; }
 }
 
 /* 카드 본문 (507:1359-1367) — 시안 실측: 428×182, r18, 표면 #FFFCF5,
@@ -1936,7 +1936,7 @@ body.product-visable.searched .p-aurora-dots { display: none !important; }
    설명 13px #3A544C, 화살표 링크 13.5px Bold.
    화살표 링크 색만 시안(#0E8A6B, 4.18:1)이 아니라 var(--vp-green)(7.38:1)
    을 쓴다 — 13.5px 굵은 글씨는 large text 가 아니라 4.5:1 을 넘겨야 한다. */
-body.product-visable .p-gw-card {
+:root:not([data-theme="archive_diary"]) body.product-visable .p-gw-card {
   display: flex !important;
   flex-direction: column !important;
   align-items: flex-start !important;
@@ -1944,24 +1944,24 @@ body.product-visable .p-gw-card {
   border-color: #d1c6b4 !important;
   background: #fffcf5 !important;
 }
-body.product-visable[data-theme="dark"] .p-gw-card {
+:root:not([data-theme="archive_diary"]) body.product-visable[data-theme="dark"] .p-gw-card {
   border-color: var(--vp-line) !important;
   background: var(--vp-surface) !important;
 }
-body.product-visable .p-gw-card-label,
-body.product-visable .p-gw-newhome-label {
+:root:not([data-theme="archive_diary"]) body.product-visable .p-gw-card-label,
+:root:not([data-theme="archive_diary"]) body.product-visable .p-gw-newhome-label {
   font: 800 16.5px/1.25 var(--vp-font) !important;
   letter-spacing: -0.02em !important;
 }
-body.product-visable:not([data-theme="dark"]) .p-gw-card-label,
-body.product-visable:not([data-theme="dark"]) .p-gw-newhome-label { color: #073b32 !important; }
-body.product-visable .p-gw-card-sub,
-body.product-visable .p-gw-newhome-desc {
+:root:not([data-theme="archive_diary"]) body.product-visable:not([data-theme="dark"]) .p-gw-card-label,
+:root:not([data-theme="archive_diary"]) body.product-visable:not([data-theme="dark"]) .p-gw-newhome-label { color: #073b32 !important; }
+:root:not([data-theme="archive_diary"]) body.product-visable .p-gw-card-sub,
+:root:not([data-theme="archive_diary"]) body.product-visable .p-gw-newhome-desc {
   color: var(--vp-ink-2) !important;
   font: 400 13px/1.5 var(--vp-font) !important;
 }
-body.product-visable .p-gw-card-go,
-body.product-visable .p-gw-newhome-arrow {
+:root:not([data-theme="archive_diary"]) body.product-visable .p-gw-card-go,
+:root:not([data-theme="archive_diary"]) body.product-visable .p-gw-newhome-arrow {
   margin-top: auto !important;
   padding-top: 14px !important;
   color: var(--vp-green) !important;
@@ -1969,28 +1969,28 @@ body.product-visable .p-gw-newhome-arrow {
 }
 /* New Home 배너도 나머지 카드와 같은 카드로 읽히게 맞춘다 — 위쪽 정렬 +
    화살표 링크 노출. 상단 스킨이 .p-gw-newhome-cta 를 감추고 있었다. */
-body.product-visable .p-gw-newhome {
+:root:not([data-theme="archive_diary"]) body.product-visable .p-gw-newhome {
   justify-content: flex-start !important;
   padding: 20px !important;
   border-color: #d1c6b4 !important;
   background: #fffcf5 !important;
 }
-body.product-visable[data-theme="dark"] .p-gw-newhome {
+:root:not([data-theme="archive_diary"]) body.product-visable[data-theme="dark"] .p-gw-newhome {
   border-color: var(--vp-line) !important;
   background: var(--vp-surface) !important;
 }
-body.product-visable .p-gw-newhome-cta { display: contents !important; }
-body.product-visable .p-gw-newhome-tagline { display: none !important; }
+:root:not([data-theme="archive_diary"]) body.product-visable .p-gw-newhome-cta { display: contents !important; }
+:root:not([data-theme="archive_diary"]) body.product-visable .p-gw-newhome-tagline { display: none !important; }
 
 /* 섹션 머리말 실측값 (507:1356-1357). */
-body.product-visable .p-gw-head-title { font: 600 24px/1.2 var(--vp-font) !important; }
-body.product-visable .p-gw-head-sub { font: 400 14px/1.5 var(--vp-font) !important; }
+:root:not([data-theme="archive_diary"]) body.product-visable .p-gw-head-title { font: 600 24px/1.2 var(--vp-font) !important; }
+:root:not([data-theme="archive_diary"]) body.product-visable .p-gw-head-sub { font: 400 14px/1.5 var(--vp-font) !important; }
 
 /* 예전 스킨의 3px 초록 마커는 확정 시안에 없다 (시안은 44×44 아이콘 타일).
    카드가 flex 로 바뀌면서 설명 위에 겹쳐 보이기까지 해서 내린다.
    아이콘 타일은 Iconify 라인 아이콘이라 이 환경에서 자산을 받지 못했다 — 보류. */
-body.product-visable .p-gw-card::before,
-body.product-visable .p-gw-newhome::before { display: none !important; content: none !important; }
+:root:not([data-theme="archive_diary"]) body.product-visable .p-gw-card::before,
+:root:not([data-theme="archive_diary"]) body.product-visable .p-gw-newhome::before { display: none !important; content: none !important; }
 
 /* ───────────────────────────────────────────────────────────────────
  * 의사요소(::before/::after) 대비 — 감사 하네스에 의사요소 텍스트를
@@ -2000,16 +2000,16 @@ body.product-visable .p-gw-newhome::before { display: none !important; content: 
 
 /* index 랜딩의 섹션 눈썹 "체류 경로 선택" — #F8F2E7 로 사실상 배경과
    같은 색이라 1.09:1 이었다. 3차 잉크로 올린다. */
-body.product-visable #visaManualSection::before {
+:root:not([data-theme="archive_diary"]) body.product-visable #visaManualSection::before {
   color: var(--vp-ink-3) !important;
 }
 
 /* New Home 조건 목록의 ✓ / ✕ 글리프. 글리프 모양이 달라 색만으로
    정보를 전달하지는 않지만, 그래도 읽히는 크기의 글자라 기준을 맞춘다. */
-body.product-new-home:not([data-theme="dark"]) .nh-pill-list.yes li::before { color: #0a7355 !important; }
-body.product-new-home:not([data-theme="dark"]) .nh-pill-list.no li::before  { color: #9a5210 !important; }
-body.product-new-home[data-theme="dark"] .nh-pill-list.yes li::before { color: #4fdcb2 !important; }
-body.product-new-home[data-theme="dark"] .nh-pill-list.no li::before  { color: #f0a860 !important; }
+:root:not([data-theme="archive_diary"]) body.product-new-home:not([data-theme="dark"]) .nh-pill-list.yes li::before { color: #0a7355 !important; }
+:root:not([data-theme="archive_diary"]) body.product-new-home:not([data-theme="dark"]) .nh-pill-list.no li::before  { color: #9a5210 !important; }
+:root:not([data-theme="archive_diary"]) body.product-new-home[data-theme="dark"] .nh-pill-list.yes li::before { color: #4fdcb2 !important; }
+:root:not([data-theme="archive_diary"]) body.product-new-home[data-theme="dark"] .nh-pill-list.no li::before  { color: #f0a860 !important; }
 
 /* ═══════════════════════════════════════════════════════════════════
  * New Home Content 영역 + 양쪽 푸터 — 확정 시안 그대로 (2026-08)
@@ -2031,18 +2031,18 @@ body.product-new-home[data-theme="dark"] .nh-pill-list.no li::before  { color: #
  * 으로 올렸다 — 색상 계열은 같고 대비만 한 단계 위다.
  * ═══════════════════════════════════════════════════════════════════ */
 
-body.product-new-home .nh-section-h h2 {
+:root:not([data-theme="archive_diary"]) body.product-new-home .nh-section-h h2 {
   font: 800 24px/1.2 var(--vp-font) !important;
   letter-spacing: -0.03em !important;
 }
-body.product-new-home:not([data-theme="dark"]) .nh-section-h h2 { color: #073b32 !important; }
-body.product-new-home .nh-section-intro {
+:root:not([data-theme="archive_diary"]) body.product-new-home:not([data-theme="dark"]) .nh-section-h h2 { color: #073b32 !important; }
+:root:not([data-theme="archive_diary"]) body.product-new-home .nh-section-intro {
   color: var(--vp-ink-3) !important;
   font: 400 14.5px/1.6 var(--vp-font) !important;
 }
 
 /* 기능 카드 (122:12-17) */
-body.product-new-home .nh-card {
+:root:not([data-theme="archive_diary"]) body.product-new-home .nh-card {
   min-height: 182px !important;
   padding: 20px !important;
   display: flex !important;
@@ -2051,11 +2051,11 @@ body.product-new-home .nh-card {
   gap: 10px !important;
   border-radius: 18px !important;
 }
-body.product-new-home:not([data-theme="dark"]) .nh-card {
+:root:not([data-theme="archive_diary"]) body.product-new-home:not([data-theme="dark"]) .nh-card {
   border-color: #d1c6b4 !important;
   background: #fffcf5 !important;
 }
-body.product-new-home .nh-card-icon {
+:root:not([data-theme="archive_diary"]) body.product-new-home .nh-card-icon {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -2067,49 +2067,49 @@ body.product-new-home .nh-card-icon {
   font: 800 15px/1 var(--vp-font) !important;
   letter-spacing: 0 !important;
 }
-body.product-new-home[data-theme="dark"] .nh-card-icon {
+:root:not([data-theme="archive_diary"]) body.product-new-home[data-theme="dark"] .nh-card-icon {
   background: var(--vp-mint) !important;
   color: var(--vp-green) !important;
 }
-body.product-new-home .nh-card-label {
+:root:not([data-theme="archive_diary"]) body.product-new-home .nh-card-label {
   font: 800 16.5px/1.25 var(--vp-font) !important;
   letter-spacing: -0.02em !important;
 }
-body.product-new-home:not([data-theme="dark"]) .nh-card-label { color: #073b32 !important; }
-body.product-new-home .nh-card-desc {
+:root:not([data-theme="archive_diary"]) body.product-new-home:not([data-theme="dark"]) .nh-card-label { color: #073b32 !important; }
+:root:not([data-theme="archive_diary"]) body.product-new-home .nh-card-desc {
   color: var(--vp-ink-2) !important;
   font: 400 13px/1.5 var(--vp-font) !important;
 }
-body.product-new-home .nh-card-cta {
+:root:not([data-theme="archive_diary"]) body.product-new-home .nh-card-cta {
   margin-top: auto !important;
   color: var(--vp-green) !important;
   font: 700 13.5px/1.3 var(--vp-font) !important;
 }
 
 /* 정착 여정 스테퍼 (123:9-42) */
-body.product-new-home .nh-journey {
+:root:not([data-theme="archive_diary"]) body.product-new-home .nh-journey {
   margin-top: 18px !important;
   padding: 24px 28px 28px !important;
   border: 1px solid #e3dccb !important;
   border-radius: 20px !important;
   background: var(--vp-surface) !important;
 }
-body.product-new-home[data-theme="dark"] .nh-journey { border-color: var(--vp-line) !important; }
-body.product-new-home .nh-journey-track {
+:root:not([data-theme="archive_diary"]) body.product-new-home[data-theme="dark"] .nh-journey { border-color: var(--vp-line) !important; }
+:root:not([data-theme="archive_diary"]) body.product-new-home .nh-journey-track {
   display: flex !important;
   align-items: flex-start !important;
   justify-content: center !important;
   flex-wrap: wrap !important;
   gap: 0 !important;
 }
-body.product-new-home .nh-journey-step {
+:root:not([data-theme="archive_diary"]) body.product-new-home .nh-journey-step {
   display: flex !important;
   flex-direction: column !important;
   align-items: center !important;
   gap: 8px !important;
   width: 34px !important;
 }
-body.product-new-home .nh-journey-dot {
+:root:not([data-theme="archive_diary"]) body.product-new-home .nh-journey-dot {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -2124,19 +2124,19 @@ body.product-new-home .nh-journey-dot {
 }
 /* 그려진 단계는 CTA 토큰으로 채운다 — 시안의 #0EA37B + 흰 글자는 3.21:1 로
    하우스 규칙상 금지된 조합이다. */
-body.product-new-home .nh-journey-step.is-drawn .nh-journey-dot {
+:root:not([data-theme="archive_diary"]) body.product-new-home .nh-journey-step.is-drawn .nh-journey-dot {
   border-color: var(--vp-cta) !important;
   background: var(--vp-cta) !important;
   color: var(--vp-on-cta) !important;
 }
-body.product-new-home .nh-journey-label {
+:root:not([data-theme="archive_diary"]) body.product-new-home .nh-journey-label {
   color: var(--vp-ink-3) !important;
   font: 700 13px/1.2 var(--vp-font) !important;
   white-space: nowrap !important;
   transition: color 0.35s ease;
 }
-body.product-new-home .nh-journey-step.is-drawn .nh-journey-label { color: var(--vp-green) !important; }
-body.product-new-home .nh-journey-link {
+:root:not([data-theme="archive_diary"]) body.product-new-home .nh-journey-step.is-drawn .nh-journey-label { color: var(--vp-green) !important; }
+:root:not([data-theme="archive_diary"]) body.product-new-home .nh-journey-link {
   width: 40px !important;
   height: 3px !important;
   margin-top: 15.5px !important;
@@ -2146,63 +2146,63 @@ body.product-new-home .nh-journey-link {
   transform-origin: left center;
   transition: transform 0.4s ease, background 0.4s ease;
 }
-body.product-new-home .nh-journey-link.is-drawn {
+:root:not([data-theme="archive_diary"]) body.product-new-home .nh-journey-link.is-drawn {
   background: var(--vp-cta) !important;
   transform: scaleX(1);
 }
 @media (prefers-reduced-motion: reduce) {
-  body.product-new-home .nh-journey-link { transform: scaleX(1); transition: none; }
-  body.product-new-home .nh-journey-dot,
-  body.product-new-home .nh-journey-label { transition: none; }
+  :root:not([data-theme="archive_diary"]) body.product-new-home .nh-journey-link { transform: scaleX(1); transition: none; }
+  :root:not([data-theme="archive_diary"]) body.product-new-home .nh-journey-dot,
+  :root:not([data-theme="archive_diary"]) body.product-new-home .nh-journey-label { transition: none; }
 }
-body.product-new-home .nh-journey-note {
+:root:not([data-theme="archive_diary"]) body.product-new-home .nh-journey-note {
   margin: 18px 0 0 !important;
   color: var(--vp-ink-3) !important;
   font: 400 12px/1.55 var(--vp-font) !important;
   text-align: center !important;
 }
 @media (max-width: 720px) {
-  body.product-new-home .nh-journey { padding: 18px 14px 20px !important; }
-  body.product-new-home .nh-journey-link { width: 18px !important; }
+  :root:not([data-theme="archive_diary"]) body.product-new-home .nh-journey { padding: 18px 14px 20px !important; }
+  :root:not([data-theme="archive_diary"]) body.product-new-home .nh-journey-link { width: 18px !important; }
 }
 
 /* 주의 줄 (123:70-72) */
-body.product-new-home:not([data-theme="dark"]) .nh-caution .nh-caution-inner {
+:root:not([data-theme="archive_diary"]) body.product-new-home:not([data-theme="dark"]) .nh-caution .nh-caution-inner {
   border-color: #e68a3a !important;
   border-radius: 14px !important;
   background: #fbf2e4 !important;
 }
-body.product-new-home:not([data-theme="dark"]) .nh-caution h2,
-body.product-new-home:not([data-theme="dark"]) .nh-caution p { color: #8a4e14 !important; }
+:root:not([data-theme="archive_diary"]) body.product-new-home:not([data-theme="dark"]) .nh-caution h2,
+:root:not([data-theme="archive_diary"]) body.product-new-home:not([data-theme="dark"]) .nh-caution p { color: #8a4e14 !important; }
 
 /* 푸터 (123:73 · 507:1407) */
-body.product-new-home:not([data-theme="dark"]) .nh-footer {
+:root:not([data-theme="archive_diary"]) body.product-new-home:not([data-theme="dark"]) .nh-footer {
   background: #ece5d6 !important;
   border-top: 1px solid #d1c6b4 !important;
 }
-body.product-new-home .nh-footer p {
+:root:not([data-theme="archive_diary"]) body.product-new-home .nh-footer p {
   color: var(--vp-ink-3) !important;
   font: 400 12px/1.6 var(--vp-font) !important;
 }
 
-body.product-visable .p-footer {
+:root:not([data-theme="archive_diary"]) body.product-visable .p-footer {
   padding: 26px clamp(18px, 4vw, 50px) 34px !important;
   border-top: 1px solid #d1c6b4 !important;
   background: #ece5d6 !important;
 }
-body.product-visable[data-theme="dark"] .p-footer {
+:root:not([data-theme="archive_diary"]) body.product-visable[data-theme="dark"] .p-footer {
   border-top-color: var(--vp-line) !important;
   background: var(--vp-paper-strong) !important;
 }
-body.product-visable .p-footer-inner {
+:root:not([data-theme="archive_diary"]) body.product-visable .p-footer-inner {
   max-width: var(--vp-max) !important;
   margin: 0 auto !important;
   display: flex !important;
   flex-direction: column !important;
   gap: 8px !important;
 }
-body.product-visable .p-footer-logo { width: 80px !important; height: auto !important; }
-body.product-visable .p-footer-notice {
+:root:not([data-theme="archive_diary"]) body.product-visable .p-footer-logo { width: 80px !important; height: auto !important; }
+:root:not([data-theme="archive_diary"]) body.product-visable .p-footer-notice {
   margin: 0 !important;
   color: var(--vp-ink-3) !important;
   font: 400 12px/1.6 var(--vp-font) !important;
@@ -2434,4 +2434,222 @@ body.product-nationality-hub .ni-page-foot {
 @media (max-width: 640px) {
   body.product-nationality-hub .ni-hubgrid { grid-template-columns: 1fr !important; gap: 14px !important; }
   body.product-nationality-hub .ni-coachband { padding: 18px 20px !important; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+ * archive_diary(팝) 테마 보정 — 2026-08
+ *
+ * 위 확정-시안 이식 블록은 전부 civic_editorial 기준이다. 팝 테마는 자체
+ * 디자인 언어(두꺼운 검정 테두리 · 하드 오프셋 그림자 · 스탬프 장식)를
+ * 가진 별도 확정 스킨이라, 시안을 그 위에 덮어씌우면 화면이 깨진다.
+ * 그래서 이식 블록 전체를 `:root:not([data-theme="archive_diary"])` 로
+ * 스코프했다.
+ *
+ * 다만 마크업이 바뀐 부분은 팝 테마에서도 제대로 읽혀야 한다.
+ * 아래는 그 최소 보정만 담는다 — 팝 테마의 조형은 건드리지 않는다.
+ * ═══════════════════════════════════════════════════════════════════ */
+
+/* 1) 헤드라인 구조 변경 대응.
+   확정 시안은 1행 안에 강조어를 품는다(`답이 <em>보이는</em>` / `한국 생활.`).
+   팝 테마의 `.p-hero-title em { display:block }` 을 그대로 두면 3줄로 쪼개진다.
+   하이라이터 배경 등 팝 고유의 강조 표현은 그대로 살린다. */
+:root[data-theme="archive_diary"] body.product-visable .p-hero-title em {
+  display: inline !important;
+}
+
+/* 2) 키커가 절대배치(top:-115px)라, 확정 문구로 길어지면서 ENTRY 스탬프를
+   파고든다. 팝 테마에서는 흐름 배치로 되돌려 충돌 자체를 없앤다.
+   (절대배치는 이 PR 이전부터 있었고 그때도 스탬프에 닿아 있었다.) */
+:root[data-theme="archive_diary"] body.product-visable .p-hero-eyebrow {
+  position: static !important;
+  top: auto !important;
+  margin: 0 0 10px !important;
+}
+
+/* 3) 새로 붙인 요소들이 팝 테마에서 상속색으로 남아 읽히지 않는다.
+   특히 `.p-gw-card-ai` 는 파란 블록이라 초록 링크가 거의 안 보인다. */
+:root[data-theme="archive_diary"] body.product-visable .p-gw-head-title {
+  color: var(--t1) !important;
+  font-weight: 900 !important;
+}
+:root[data-theme="archive_diary"] body.product-visable .p-gw-head-sub {
+  color: var(--t2) !important;
+}
+:root[data-theme="archive_diary"] body.product-visable .p-gw-card-go {
+  display: inline-block !important;
+  margin-top: 10px !important;
+  color: var(--ac2) !important;
+  font-weight: 800 !important;
+}
+:root[data-theme="archive_diary"] body.product-visable .p-gw-card-ai .p-gw-card-go {
+  color: #ffffff !important;
+}
+:root[data-theme="archive_diary"] body.product-visable .p-gw-newhome-arrow {
+  color: var(--ac2) !important;
+  font-weight: 800 !important;
+}
+
+/* 4) 장식은 팝 테마에 이미 자체 요소(.k-marquee · .k-decor · 스탬프)가 있다.
+   시안의 키네틱 스트립·오로라 도트를 겹쳐 올리면 소음만 된다. */
+:root[data-theme="archive_diary"] body.product-visable .p-kinetic,
+:root[data-theme="archive_diary"] body.product-visable .p-aurora-dots,
+:root[data-theme="archive_diary"] body.product-new-home .nh-kinetic,
+:root[data-theme="archive_diary"] body.product-new-home .nh-aurora-dots {
+  display: none !important;
+}
+
+/* 5) 고지문·각주는 어느 테마에서도 숨기지 않는다 — 팝 토큰으로 보이게만 한다. */
+:root[data-theme="archive_diary"] body.product-visable .p-hero-foot,
+:root[data-theme="archive_diary"] body.product-new-home .nh-hero-foot,
+:root[data-theme="archive_diary"] body.product-form-helper .fh-page-foot,
+:root[data-theme="archive_diary"] body.product-nationality-hub .ni-page-foot {
+  margin: 18px 0 0 !important;
+  color: var(--t2) !important;
+  font-size: 12px !important;
+  text-align: center !important;
+}
+:root[data-theme="archive_diary"] body.product-visable .p-footer {
+  padding: 26px clamp(18px, 4vw, 50px) 34px !important;
+  border-top: 2px solid var(--t1) !important;
+  background: var(--bg2) !important;
+}
+:root[data-theme="archive_diary"] body.product-visable .p-footer-inner {
+  max-width: var(--vp-max) !important;
+  margin: 0 auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+}
+:root[data-theme="archive_diary"] body.product-visable .p-footer-logo { width: 80px !important; height: auto !important; }
+:root[data-theme="archive_diary"] body.product-visable .p-footer-notice {
+  margin: 0 !important;
+  color: var(--t2) !important;
+  font-size: 12px !important;
+  line-height: 1.6 !important;
+}
+
+/* 6) New Home 정착 여정 스테퍼 — 팝 테마 조형(2px 검정 테두리)으로 맞춘다. */
+:root[data-theme="archive_diary"] body.product-new-home .nh-journey {
+  margin-top: 18px !important;
+  padding: 22px 24px 24px !important;
+  border: 2px solid var(--t1) !important;
+  border-radius: 22px !important;
+  background: var(--bg1) !important;
+  box-shadow: var(--shCard) !important;
+}
+:root[data-theme="archive_diary"] body.product-new-home .nh-journey-track {
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  flex-wrap: wrap !important;
+}
+:root[data-theme="archive_diary"] body.product-new-home .nh-journey-step {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 8px !important;
+  width: 34px !important;
+}
+:root[data-theme="archive_diary"] body.product-new-home .nh-journey-dot {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 34px !important;
+  height: 34px !important;
+  border: 2px solid var(--t1) !important;
+  border-radius: 999px !important;
+  background: var(--bg1) !important;
+  color: var(--t1) !important;
+  font-weight: 800 !important;
+  font-size: 13px !important;
+}
+:root[data-theme="archive_diary"] body.product-new-home .nh-journey-step.is-drawn .nh-journey-dot {
+  background: var(--k-lime, #c2ff44) !important;
+  /* 라임 채움 위에는 라이트/다크 모두 어두운 잉크여야 한다 — --t1 을 쓰면
+     팝 다크에서 밝은 글자가 밝은 라임 위에 얹혀 1.06:1 이 된다. */
+  color: #141414 !important;
+}
+:root[data-theme="archive_diary"] body.product-new-home .nh-journey-label {
+  color: var(--t1) !important;
+  font-weight: 800 !important;
+  font-size: 13px !important;
+  white-space: nowrap !important;
+}
+:root[data-theme="archive_diary"] body.product-new-home .nh-journey-link {
+  width: 40px !important;
+  height: 3px !important;
+  margin-top: 16px !important;
+  border-radius: 999px !important;
+  background: var(--t1) !important;
+}
+:root[data-theme="archive_diary"] body.product-new-home .nh-journey-note {
+  margin: 16px 0 0 !important;
+  color: var(--t2) !important;
+  font-size: 12px !important;
+  text-align: center !important;
+}
+
+
+/* 9) 팝 테마의 ✓/✕ 글리프. §7 에서 civic 쪽만 고쳤더니 팝에서 그대로 남았다
+   (라이트 4.15 / 2.41:1). 팝 팔레트의 --ok/--warn 을 그대로 쓰지 않고
+   기준을 넘는 값으로 잡는다. */
+:root[data-theme="archive_diary"] body.product-new-home:not([data-theme="dark"]) .nh-pill-list.yes li::before { color: #12704a !important; }
+:root[data-theme="archive_diary"] body.product-new-home:not([data-theme="dark"]) .nh-pill-list.no li::before  { color: #96500f !important; }
+:root[data-theme="archive_diary"] body.product-new-home[data-theme="dark"] .nh-pill-list.yes li::before { color: #57e0ab !important; }
+:root[data-theme="archive_diary"] body.product-new-home[data-theme="dark"] .nh-pill-list.no li::before  { color: #f5ab63 !important; }
+
+/* ═══════════════════════════════════════════════════════════════════
+ * 팝 테마 다크 — 하드코딩된 잉크가 뒤집히지 않는 기존 결함 (2026-08-08)
+ *
+ * 팝 테마의 컴포넌트 규칙은 `--k-ink: #141414` 를 직접 쓰는데, 다크 팔레트
+ * (`:root[data-theme="archive_diary"] [data-theme="dark"]`)는 `--t1` 만
+ * 뒤집고 `--k-*` 는 그대로 둔다. 그래서 팝+다크에서 카드 라벨·검색 문구가
+ * 어두운 카드 위 검정 글자로 남아 1.0~1.1:1 이 된다.
+ *
+ * 이 PR 이전 커밋(2cdf9d5)에서도 동일하게 깨져 있었다 — 대비 하네스가
+ * 스크롤 리빌 중 낮은 opacity 로 걸러내 놓치고 있었을 뿐이다.
+ * 팝의 조형(배경·테두리·그림자)은 그대로 두고 잉크만 뒤집는다.
+ * ═══════════════════════════════════════════════════════════════════ */
+/* 팝 다크에서 잉크가 안 뒤집히는 자리들. --k-ink 를 토큰 수준에서 통째로
+   뒤집어 봤더니 흰 표면을 유지하는 카드(예: `1345 통화 스크립트`)의 글자까지
+   밝아져 새 회귀가 났다 — 측정으로 확인하고 되돌렸다.
+   그래서 '어두운 표면 위 텍스트'로 확인된 자리만 열거해 뒤집는다. */
+:root[data-theme="archive_diary"] body.product-visable[data-theme="dark"] :is(
+  .p-gw-card-label,
+  .p-gw-search-title,
+  .p-gw-util-label,
+  .p-gw-newhome-label,
+  .p-gw-newhome-desc,
+  .p-gw-newhome-arrow,
+  .visa-track-title,
+  .stat-num
+) {
+  color: var(--t1) !important;
+}
+
+/* 파란 액센트 글자도 다크 표면에서 2.3~3.6:1 에 머문다. 표면으로 쓰이는
+   --k-blue 는 건드리지 않고, 글자로 쓰이는 자리만 밝은 파랑으로 올린다. */
+:root[data-theme="archive_diary"] body[data-theme="dark"] :is(
+  .p-kicker,
+  .brand-hero-kicker,
+  .p-pathway-index,
+  .doc-composer-cta,
+  .nh-official-badge,
+  .p-status.planned,
+  .ni-badge-official
+) {
+  color: #9db9ff !important;
+}
+
+/* AI 카드는 파란 블록이라 원래대로 흰 글자를 유지한다. */
+:root[data-theme="archive_diary"] body.product-visable[data-theme="dark"] .p-gw-card-ai .p-gw-card-label {
+  color: #ffffff !important;
+}
+/* New Home 배너는 다크에서도 크림 표면을 유지한다 — 그 위 글자는 어두워야 한다. */
+:root[data-theme="archive_diary"] body.product-visable[data-theme="dark"] :is(
+  .p-gw-newhome-label,
+  .p-gw-newhome-desc,
+  .p-gw-newhome-arrow
+) {
+  color: #141414 !important;
 }
