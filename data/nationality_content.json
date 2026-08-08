@@ -181,6 +181,11 @@
       "ko": "콘텐츠를 불러오지 못했습니다. 잠시 후 다시 시도하거나 Visable 메인에서 접속해 주세요.",
       "en": "Content could not be loaded. Please try again shortly or return via the Visable main page.",
       "zh-CN": "无法加载内容。请稍后重试，或从 Visable 主页进入。"
+    },
+    "close": {
+      "ko": "닫기",
+      "en": "Close",
+      "zh-CN": "关闭"
     }
   },
   "nav": {

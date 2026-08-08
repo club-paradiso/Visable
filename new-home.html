@@ -1221,10 +1221,19 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
     body.appendChild(fs);
 
     foot.innerHTML = '';
-    var back = el('button', 'nh-btn-sm', esc(pick(content.ui.back)));
-    back.type = 'button';
-    back.style.visibility = readinessStep === 0 ? 'hidden' : 'visible';
-    back.addEventListener('click', function () { readinessStep--; buildReadinessStep(); });
+    // 확정 시안(116:27, "Btn / 닫기 — 라이브 미구현 · 반영 후보")대로 첫 질문에서는
+    // 비어 있던 '이전' 자리에 '닫기'를 둔다. 헤더 ✕ 만으로도 나갈 수는 있었지만,
+    // 푸터에서 손이 머무는 자리에 나가는 길이 없던 것이 시안이 지적한 지점이다.
+    var back;
+    if (readinessStep === 0) {
+      back = el('button', 'nh-btn-sm', esc(pick(content.ui.close)));
+      back.type = 'button';
+      back.addEventListener('click', function () { closeOverlay(); });
+    } else {
+      back = el('button', 'nh-btn-sm', esc(pick(content.ui.back)));
+      back.type = 'button';
+      back.addEventListener('click', function () { readinessStep--; buildReadinessStep(); });
+    }
 
     var next = el('button', 'nh-btn-sm primary', esc(pick(isLast ? content.ui.viewResult : content.ui.next)));
     next.type = 'button';
