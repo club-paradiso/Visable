@@ -2208,3 +2208,230 @@ body.product-visable .p-footer-notice {
   font: 400 12px/1.6 var(--vp-font) !important;
 }
 /* 검색 결과 화면에서도 고지문은 남긴다 — 숨기지 않는다. */
+
+/* ═══════════════════════════════════════════════════════════════════
+ * 서류 작성 도우미 — 확정 시안 (2026-08)
+ * Figma 15 `FH · 서류 작성 도우미 — 확정안 v1` (312:4, 1440×900)
+ *
+ * 라이브는 좌측 정렬 평면 페이지였고, 확정 시안은 오로라 배경 위의
+ * 중앙 정렬 히어로다. 실측값:
+ *   페이지 #F7F4EF / bloom-peri #7F89CE .16 / bloom-emerald #298C70 .12
+ *   (둘 다 LAYER_BLUR 180)
+ *   키커 흰 알약 + 테두리 #E5E5ED, 12.5px Bold #1C1F29
+ *   제목 44px SemiBold #177361 (5.23:1) · 리드 16px #4D5261 (7.11:1)
+ *   각주 11px #4D5261 · 카드 r18 흰 배경 + 테두리 #E5E5ED
+ * ═══════════════════════════════════════════════════════════════════ */
+body.product-form-helper:not([data-theme="dark"]) {
+  background:
+    radial-gradient(41.0% 58.9% at 11.8% 85.6%, rgba(41, 140, 112, 0.12) 0%, transparent 70%),
+    radial-gradient(43.8% 62.2% at 86.8% 13.3%, rgba(127, 137, 206, 0.16) 0%, transparent 70%),
+    #f7f4ef !important;
+  background-attachment: fixed !important;
+}
+
+body.product-form-helper .fh-hero {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  text-align: center !important;
+  gap: 16px !important;
+}
+body.product-form-helper .fh-hero > * { margin: 0 !important; }
+body.product-form-helper .fh-kicker {
+  display: inline-flex !important;
+  align-items: center !important;
+  padding: 9px 16px !important;
+  border: 1px solid #e5e5ed !important;
+  border-radius: 999px !important;
+  background: #ffffff !important;
+  color: #1c1f29 !important;
+  font: 700 12.5px/1.2 var(--vp-font) !important;
+  letter-spacing: 0.02em !important;
+  text-transform: none !important;
+}
+body.product-form-helper[data-theme="dark"] .fh-kicker {
+  border-color: var(--vp-line) !important;
+  background: var(--vp-surface) !important;
+  color: var(--vp-ink) !important;
+}
+body.product-form-helper .fh-hero-title {
+  font: 600 clamp(30px, 3.2vw, 44px)/1.2 var(--vp-font) !important;
+  letter-spacing: -0.025em !important;
+}
+body.product-form-helper:not([data-theme="dark"]) .fh-hero-title { color: #177361 !important; }
+body.product-form-helper[data-theme="dark"] .fh-hero-title { color: var(--vp-green) !important; }
+body.product-form-helper .fh-hero-sub {
+  max-width: 900px !important;
+  color: var(--vp-ink-2) !important;
+  font: 400 16px/1.6 var(--vp-font) !important;
+}
+body.product-form-helper .fh-privacy-notice,
+body.product-form-helper .fh-source-meta { text-align: left !important; }
+body.product-form-helper .fh-source-meta { justify-content: center !important; }
+
+body.product-form-helper .fh-page-foot {
+  margin: 40px 0 8px !important;
+  color: var(--vp-ink-3) !important;
+  font: 400 11px/1.5 var(--vp-font) !important;
+  text-align: center !important;
+}
+
+/* 시안의 카드 형태 — r18, 흰 표면, 테두리 #E5E5ED. */
+body.product-form-helper:not([data-theme="dark"]) :is(.fh-picker, .fh-doc-card, .fh-step-panel, .fh-aside, .fh-stepper) {
+  border-radius: 18px !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+ * 국적민원·귀화면접 허브 — 확정 시안 (2026-08)
+ * Figma 34 `NIH · 귀화면접 허브 — 확정안 v1` (314:4, 1440×760)
+ *
+ * 실측값: 페이지 #F8F4F1 / bloom-peri #7F89CE .15(좌상) /
+ *   bloom-coral #D95C47 .10(우하), 둘 다 LAYER_BLUR 180
+ *   키커 흰 알약 + 테두리 #E5E5ED, 12.5px Bold #1C1F29
+ *   제목 44px SemiBold · 리드 16px #4D5261 (7.11:1)
+ *   허브 카드 412×100 r16 흰 배경 + 테두리 #E5E5ED,
+ *     점 10px #7F89CE, 제목 16.5px SemiBold #1C1F29, 본문 13px #4D5261
+ *   코치 배너 r20 #0B4F44, 제목 19px 흰색, 부제 13.5px #C7E0D6 (6.80:1),
+ *     CTA 알약 #8CD9B8 + #083830 (7.86:1)
+ *   각주 11px #4D5261
+ * ═══════════════════════════════════════════════════════════════════ */
+body.product-nationality-hub:not([data-theme="dark"]) {
+  background:
+    radial-gradient(41.7% 60.5% at 16.0% 15.8%, rgba(127, 137, 206, 0.15) 0%, transparent 70%),
+    radial-gradient(39.6% 55.3% at 87.5% 93.4%, rgba(217, 92, 71, 0.10) 0%, transparent 70%),
+    #f8f4f1 !important;
+  background-attachment: fixed !important;
+}
+
+body.product-nationality-hub .ni-hero {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  text-align: center !important;
+  gap: 16px !important;
+}
+body.product-nationality-hub .ni-hero > * { margin: 0 !important; }
+body.product-nationality-hub .ni-hero-kicker {
+  display: inline-flex !important;
+  align-items: center !important;
+  padding: 9px 16px !important;
+  border: 1px solid #e5e5ed !important;
+  border-radius: 999px !important;
+  background: #ffffff !important;
+  color: #1c1f29 !important;
+  font: 700 12.5px/1.2 var(--vp-font) !important;
+  letter-spacing: 0.02em !important;
+  text-transform: none !important;
+}
+body.product-nationality-hub[data-theme="dark"] .ni-hero-kicker {
+  border-color: var(--vp-line) !important;
+  background: var(--vp-surface) !important;
+  color: var(--vp-ink) !important;
+}
+body.product-nationality-hub .ni-hero h1 {
+  font: 600 clamp(28px, 3.2vw, 44px)/1.2 var(--vp-font) !important;
+  letter-spacing: -0.025em !important;
+  word-break: keep-all !important;
+}
+body.product-nationality-hub .ni-hero-lead {
+  max-width: 640px !important;
+  color: var(--vp-ink-2) !important;
+  font: 400 16px/1.6 var(--vp-font) !important;
+  word-break: keep-all !important;
+}
+body.product-nationality-hub .ni-hero-cta { justify-content: center !important; }
+
+/* 허브 카드 6장 (314:19-42) */
+body.product-nationality-hub .ni-hubgrid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 24px !important;
+  padding-top: 10px !important;
+}
+body.product-nationality-hub .ni-hubcard {
+  display: grid !important;
+  grid-template-columns: 10px 1fr !important;
+  align-content: start !important;
+  gap: 9px 9px !important;
+  min-height: 100px !important;
+  padding: 22px 24px !important;
+  border: 1px solid #e5e5ed !important;
+  border-radius: 16px !important;
+  background: #ffffff !important;
+  text-decoration: none !important;
+}
+body.product-nationality-hub[data-theme="dark"] .ni-hubcard {
+  border-color: var(--vp-line) !important;
+  background: var(--vp-surface) !important;
+}
+body.product-nationality-hub .ni-hubcard:hover { border-color: var(--vp-green-2) !important; }
+body.product-nationality-hub .ni-hubcard-dot {
+  width: 10px !important;
+  height: 10px !important;
+  margin-top: 5px !important;
+  border-radius: 99px !important;
+  background: #7f89ce !important;
+}
+body.product-nationality-hub .ni-hubcard-title {
+  color: var(--vp-ink) !important;
+  font: 600 16.5px/1.25 var(--vp-font) !important;
+  letter-spacing: -0.02em !important;
+}
+body.product-nationality-hub .ni-hubcard-body {
+  grid-column: 1 / -1 !important;
+  color: var(--vp-ink-2) !important;
+  font: 400 13px/1.5 var(--vp-font) !important;
+  word-break: keep-all !important;
+}
+
+/* Waymaker 코치 배너 (314:43-48) */
+body.product-nationality-hub .ni-coachband {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 16px !important;
+  margin-top: 26px !important;
+  padding: 22px 36px !important;
+  border-radius: 20px !important;
+  background: #0b4f44 !important;
+  text-decoration: none !important;
+}
+body.product-nationality-hub .ni-coachband-text {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+}
+body.product-nationality-hub .ni-coachband-text strong {
+  color: #ffffff !important;
+  font: 600 19px/1.25 var(--vp-font) !important;
+  letter-spacing: -0.02em !important;
+}
+body.product-nationality-hub .ni-coachband-text span {
+  color: #c7e0d6 !important;
+  font: 400 13.5px/1.5 var(--vp-font) !important;
+}
+body.product-nationality-hub .ni-coachband-cta {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 15px 24px 15px 26px !important;
+  border-radius: 999px !important;
+  background: #8cd9b8 !important;
+  color: #083830 !important;
+  font: 700 14.5px/1 var(--vp-font) !important;
+}
+
+body.product-nationality-hub .ni-page-foot {
+  margin-top: 18px !important;
+  color: var(--vp-ink-3) !important;
+  font: 400 11px/1.6 var(--vp-font) !important;
+}
+
+@media (max-width: 960px) {
+  body.product-nationality-hub .ni-hubgrid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+}
+@media (max-width: 640px) {
+  body.product-nationality-hub .ni-hubgrid { grid-template-columns: 1fr !important; gap: 14px !important; }
+  body.product-nationality-hub .ni-coachband { padding: 18px 20px !important; }
+}
