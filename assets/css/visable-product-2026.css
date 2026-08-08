@@ -1439,3 +1439,55 @@ body.product-waymaker:not(.wm-conversing):not(.wm-active) .wm-workspace-sidebar 
 body.product-waymaker:not(.wm-conversing):not(.wm-active):not([data-theme="dark"]) .wm-workspace-trust-note {
   color: #56615d !important;
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+ * Visable 랜딩 히어로 — 확정안 "Aurora Live" 복원 (2026-08)
+ * Figma 11 `Visable Landing (pre-search)` · 히어로 프레임 507:2139
+ *
+ * 이 파일 위쪽에서 `.hero-container::before/::after` 를
+ * `display:none; content:none !important` 로 죽이고 히어로 배경을
+ * `var(--vp-paper)` 단색으로 덮고 있었다. 그래서 확정 시안이 Aurora Live 인데
+ * 라이브 랜딩은 완전히 평평했다.
+ *
+ * 시안 실측값을 그대로 옮긴다:
+ *   base    #FCFAF5 → #F1EADC (세로)
+ *   peri    #7F89CE .42 / emerald #0EA37B .24 / coral #FF6B5B .16
+ *   light-1 #FFFCF5 .42 / light-2 #FFFFFF .24   (LAYER_BLUR 170~210)
+ * 타원 중심·반경은 1440×840 기준 백분율로 환산했고, 블러만큼 반경을 넓혔다.
+ * Figma 는 뒤 레이어가 아래 → CSS background 는 앞이 위라 순서를 뒤집는다.
+ *
+ * 특정도: 차단 규칙 (0,2,2) 뿐 아니라 index.html 안의 라이트 히어로 규칙
+ * `body.landing:not([data-theme="dark"]):not(.searched) .hero-container::before` (0,4,2)
+ * 까지 이겨야 한다 — 그래서 (0,5,2) 로 맞춘다.
+ * 검색 후(.searched) 컴팩트 헤더에는 적용하지 않는다 — 결과를 읽는 화면은 calm.
+ * ═══════════════════════════════════════════════════════════════════ */
+body.product-visable.landing:not(.searched):not([data-theme="dark"]) .hero-container::before {
+  display: block !important;
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: -1 !important;
+  pointer-events: none !important;
+  opacity: 1 !important;
+  background:
+    radial-gradient(30% 46% at 59% 74%,   rgba(255, 255, 255, 0.24) 0%, transparent 70%),
+    radial-gradient(40% 60% at 48% 31%,   rgba(255, 252, 245, 0.42) 0%, transparent 70%),
+    radial-gradient(28% 44% at 84% 92%,   rgba(255, 107, 91,  0.16) 0%, transparent 70%),
+    radial-gradient(38% 58% at 12% 92%,   rgba(14, 163, 123,  0.24) 0%, transparent 70%),
+    radial-gradient(43% 64% at 88% 27%,   rgba(127, 137, 206, 0.42) 0%, transparent 70%),
+    linear-gradient(180deg, #FCFAF5 0%, #F1EADC 100%) !important;
+}
+/* 히어로 자신의 단색 배경을 비워 위 레이어가 보이게 한다. 음수 z 자식이
+   "배경 위 · 본문 아래"에 오도록 스태킹 컨텍스트도 만든다. */
+body.product-visable.landing:not(.searched):not([data-theme="dark"]) .hero-container {
+  position: relative !important;
+  z-index: 0 !important;
+  background: transparent !important;
+}
+
+/* 오로라가 켜지면 히어로 하단 고지문이 에메랄드 블룸(#CADFCC) 위에 놓여
+   4.31:1 로 내려간다. 고지문은 약하게 둘 수 없는 문구라 그 상태에서만
+   잉크를 한 단계 진하게 잡는다 (4.31 → 4.94:1). 특정도 (0,4,1). */
+body.product-visable.landing:not(.searched):not([data-theme="dark"]) .reference-disclaimer {
+  color: #515c58 !important;
+}
