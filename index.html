@@ -14340,25 +14340,19 @@ body[data-theme="dark"] .us-ev-state.is-lifecycle-ambiguous { color: var(--us-am
 
         <section class="p-hero-copy" aria-labelledby="pHeroTitle">
             <p class="p-hero-eyebrow">Visable · 비자·체류 안내</p>
+            <!-- 확정 시안(507:2150): 1행 = "답이 " + 초록 "보이는", 2행 = "한국 생활."
+                 2행(heroTail)이 비어 있는 로케일은 1행만 렌더된다. -->
             <h2 class="p-hero-title" id="pHeroTitle">
-                <span class="p-hero-line">답이 보이는</span>
-                <em class="p-hero-line">한국생활</em>
+                <span class="p-hero-line">답이 <em>보이는</em></span>
+                <span class="p-hero-line">한국 생활.</span>
             </h2>
-            <p class="p-hero-sub">목적과 상황에 맞는 비자·체류 경로를 살펴봅니다.<br>출처를 확인하며 안내합니다.</p>
+            <p class="p-hero-sub">내 상황을 입력하면 필요한 서류·다음 절차·확인할 공식 출처를 편리하게 정리해요.</p>
             <div class="p-hero-proof" aria-label="Visable 기준">
                 <span class="p-proof-chip">공개 자료 기반</span>
                 <span class="p-proof-chip">목적별 경로 정리</span>
                 <span class="p-proof-chip">최종 확인은 공식 출처</span>
             </div>
         </section>
-
-        <!-- Kitsch-only zine marquee tape (decorative) -->
-        <div class="k-marquee" aria-hidden="true">
-            <div class="k-marquee-track">
-                <span data-i18n="heroMarquee">VISABLE · 흩어진 정보를 한 곳에서 · RESIDENCE GUIDE · 슬기로운 한국생활 · </span>
-                <span data-i18n="heroMarquee">VISABLE · 흩어진 정보를 한 곳에서 · RESIDENCE GUIDE · 슬기로운 한국생활 · </span>
-            </div>
-        </div>
 
         <!-- Home gateway — calm civic-tech entry grid. JS hooks reuse existing data-action handlers. -->
         <section class="p-gateway" aria-label="주요 기능 바로가기">
@@ -14367,34 +14361,43 @@ body[data-theme="dark"] .us-ev-state.is-lifecycle-ambiguous { color: var(--us-am
                     <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
                 </span>
                 <span class="p-gw-search-body">
-                    <span class="p-gw-search-title">비자·체류 검색</span>
+                    <span class="p-gw-search-title">예: F-6 연장에 필요한 서류는?</span>
                     <span class="p-gw-search-sub">코드(D-2, E-7) 또는 상황 키워드로 시작</span>
                 </span>
                 <span class="p-gw-search-kbd" aria-hidden="true">↵</span>
             </button>
+            <!-- 확정 시안(507:1356-1357)의 섹션 머리말. 검색 바 아래, 카드 그리드 위. -->
+            <div class="p-gw-head">
+                <h2 class="p-gw-head-title" id="pGwHeadTitle">무엇을 도와드릴까요?</h2>
+                <p class="p-gw-head-sub" id="pGwHeadSub">필요한 기능으로 바로 이동하세요.</p>
+            </div>
             <button type="button" class="p-gw-card p-gw-card-visa" data-action="toggle-search">
                 <span class="p-gw-card-label" data-i18n="gwSearchTitle">비자·체류 검색</span>
-                <span class="p-gw-card-sub" data-i18n="gwSearchSub">코드(D-2, E-7) 또는 상황 키워드로 시작</span>
+                <span class="p-gw-card-sub" data-i18n="gwSearchSub">코드 또는 상황 키워드로 39개 체류자격과 공식 출처를 찾아요.</span>
+                <span class="p-gw-card-go" aria-hidden="true">검색하기 →</span>
             </button>
             <div class="p-gw-primary" role="group" aria-label="주요 진입점">
                 <!-- Card order matters: applyLanguage() maps gwDocLabel / gwHikoreaLabel /
                      gwAiLabel onto .p-gw-card-label by index. -->
                 <a class="p-gw-card p-gw-card-doc" href="#docComposer">
                     <span class="p-gw-card-icon" aria-hidden="true">✎</span>
-                    <span class="p-gw-card-label">필수 서류 작성기</span>
-                    <span class="p-gw-card-sub">통합신청서 등 필수 서식을 온라인으로 작성하고 인쇄·PDF로 저장합니다.</span>
+                    <span class="p-gw-card-label">필수 서류 작성 도우미</span>
+                    <span class="p-gw-card-sub">통합신청서·숙소제공확인서·신원보증서를 단계별로 작성해요.</span>
+                    <span class="p-gw-card-go" aria-hidden="true">작성하기 →</span>
                 </a>
 
                 <button type="button" class="p-gw-card p-gw-card-hikorea" data-action="open-hikorea-guide">
                     <span class="p-gw-card-icon" aria-hidden="true">🏛</span>
                     <span class="p-gw-card-label">하이코리아 예약 도우미</span>
-                    <span class="p-gw-card-sub">내 상황에 맞는 예약 목적과 준비물을 확인하세요.</span>
+                    <span class="p-gw-card-sub">회원가입·로그인·방문예약·예약 확인까지 순서대로 안내해요.</span>
+                    <span class="p-gw-card-go" aria-hidden="true">안내 보기 →</span>
                 </button>
 
                 <a class="p-gw-card p-gw-card-ai" href="ai.html">
                     <span class="p-gw-card-icon" aria-hidden="true">🧭</span>
-                    <span class="p-gw-card-label">Waymaker by Paradiso에게 묻기</span>
-                    <span class="p-gw-card-sub">내 상황에 맞는 체류자격과 확인 절차를 정리합니다.</span>
+                    <span class="p-gw-card-label">Waymaker AI 상담</span>
+                    <span class="p-gw-card-sub">Ask·Plan·Sources·Forms에서 상황과 절차를 함께 정리해요.</span>
+                    <span class="p-gw-card-go" aria-hidden="true">상담 시작 →</span>
                 </a>
             </div>
 
@@ -14405,20 +14408,21 @@ body[data-theme="dark"] .us-ev-state.is-lifecycle-ambiguous { color: var(--us-am
                 <span class="p-gw-newhome-icon" aria-hidden="true">🏡</span>
                 <span class="p-gw-newhome-body">
                     <span class="p-gw-newhome-titles">
-                        <span class="p-gw-newhome-label" id="gwNewHomeLabel">국적·귀화 안내</span>
+                        <span class="p-gw-newhome-label" id="gwNewHomeLabel">New Home 국적·귀화</span>
                         <span class="p-gw-newhome-brand" id="gwNewHomeSub">New Home by Paradiso</span>
                     </span>
-                    <span class="p-gw-newhome-desc" id="gwNewHomeDesc">귀화·국적회복·복수국적·사회통합프로그램까지 한 곳에서 안내합니다.</span>
+                    <span class="p-gw-newhome-desc" id="gwNewHomeDesc">귀화 준비 점검·KIIP·국적업무·귀화 후 절차를 한곳에서 확인해요.</span>
                 </span>
                 <span class="p-gw-newhome-cta" aria-hidden="true">
                     <span class="p-gw-newhome-tagline" id="gwNewHomeTagline">You Belong Here.</span>
-                    <span class="p-gw-newhome-arrow">→</span>
+                    <span class="p-gw-newhome-arrow" id="gwNewHomeGo">바로가기 →</span>
                 </span>
             </a>
 
             <a class="p-gw-card p-gw-card-support" href="#pathwaySection">
                 <span class="p-gw-card-label" data-i18n="gwSupportLabel">생활·민원 보조 도구</span>
-                <span class="p-gw-card-sub" data-i18n="gwSupportSub">중요한 날짜와 단기입국·직업분류·관할관서·대행기관·지정병원을 확인합니다.</span>
+                <span class="p-gw-card-sub" data-i18n="gwSupportSub">단기입국·직업분류·관할관서·대행기관·지정병원을 찾아요.</span>
+                <span class="p-gw-card-go" aria-hidden="true">찾아보기 →</span>
             </a>
 
             <div class="p-gw-utility" role="group" aria-label="보조 도구">
@@ -14492,6 +14496,18 @@ body[data-theme="dark"] .us-ev-state.is-lifecycle-ambiguous { color: var(--us-am
             <div class="smeta"><span id="rc">데이터 로딩 중…</span><span id="rh"></span></div>
         </form>
         <p class="reference-disclaimer">본 서비스는 공개 법령·매뉴얼 기반 참고용 정보 제공 도구이며, 법적 상담이나 민원 대행이 아닙니다. 최종 판단은 출입국·외국인청, 하이코리아, 또는 자격 있는 전문가에게 확인하세요.</p>
+
+        <!-- 확정 시안(507:2159 · 507:2158 · 507:2161-2164): 히어로 하단의
+             키네틱 스트립 · 저작권 각주 · 오른쪽 가장자리 오로라 도트 4개.
+             스트립 문구는 각주·고지문에 그대로 남아 있어 장식으로만 노출한다. -->
+        <div class="p-kinetic" aria-hidden="true">
+            <div class="p-kinetic-track">
+                <span class="p-kinetic-line" data-i18n="heroMarquee">한국 생활을 더 쉽게   ·   39개 체류자격   ·   공식 매뉴얼 기준   ·   로그인 없이   ·   참고용 · 최종 확인은 HiKorea·1345   ·   </span><span class="p-kinetic-line" data-i18n="heroMarquee">한국 생활을 더 쉽게   ·   39개 체류자격   ·   공식 매뉴얼 기준   ·   로그인 없이   ·   참고용 · 최종 확인은 HiKorea·1345   ·   </span>
+            </div>
+        </div>
+        <p class="p-hero-foot" id="pHeroFoot">Powered by Club Paradiso. All rights reserved.</p>
+        <span class="p-aurora-dots" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+
 
         <div class="ctrls" aria-label="검색결과 정렬 및 조작">
             <button class="cb on" id="ma" data-action="set-search-mode" data-mode="and">AND</button>
@@ -23460,17 +23476,26 @@ function applyLanguage(code, options = {}) {
     updateEditorialThemeLabel();
     setAttr('.logo-area', 'aria-label', tx('reset'));
     setText('.p-hero-eyebrow', tx('heroEyebrow'));
-    setHtml('#pHeroTitle', `<span class="p-hero-line">${tx('heroTitle')}</span><em class="p-hero-line">${tx('heroEm')}</em>`);
+    // 확정 시안(507:2150)의 2행 구성: 1행 = heroTitle + 초록 heroEm, 2행 = heroTail.
+    // heroTail 이 빈 로케일(한국어 외)은 1행만 렌더한다.
+    const heroTail = tx('heroTail');
+    setHtml('#pHeroTitle',
+        `<span class="p-hero-line">${tx('heroTitle')} <em>${tx('heroEm')}</em></span>` +
+        (heroTail ? `<span class="p-hero-line">${heroTail}</span>` : ''));
     setHtml('.p-hero-sub', tx('heroSub'));
     setAttr('.p-hero-proof', 'aria-label', 'Visable');
     setIndexedText('.p-proof-chip', [tx('proof1'), tx('proof2'), tx('proof3')]);
     setAttr('.p-gateway', 'aria-label', tx('gwAriaLabel'));
     setAttr('.p-gw-primary', 'aria-label', tx('gwPrimaryAria'));
     setAttr('.p-gw-utility', 'aria-label', tx('gwUtilityAria'));
-    setText('.p-gw-search-title', tx('gwSearchTitle'));
+    setText('.p-gw-search-title', tx('heroSearchPlaceholder'));
     setText('.p-gw-search-sub', tx('gwSearchSub'));
     setIndexedText('.p-gw-primary .p-gw-card-label', [tx('gwDocLabel'), tx('gwHikoreaLabel'), tx('gwAiLabel')]);
     setIndexedText('.p-gw-primary .p-gw-card-sub', [tx('gwDocSub'), tx('gwHikoreaSub'), tx('gwAiSub')]);
+    setIndexedText('.p-gw-primary .p-gw-card-go', [tx('gwDocGo'), tx('gwHikoreaGo'), tx('gwAiGo')]);
+    setText('.p-gw-card-visa .p-gw-card-go', tx('gwSearchGo'));
+    setText('.p-gw-card-support .p-gw-card-go', tx('gwSupportGo'));
+    setText('#gwNewHomeGo', tx('gwNewHomeGo'));
     setIndexedText('.p-gw-util-label', [tx('gwShortStayLabel'), tx('gwJobcodeLabel'), tx('jurisdiction'), tx('gwAgentLabel'), tx('gwMedLabel')]);
     setIndexedText('.p-gw-util-restored .p-gw-util-label', [tx('gwRestoredEntry'), tx('gwRestoredPathways'), tx('gwRestoredReminder')]);
     setText('#gwNewHomeLabel', tx('gwNewHomeLabel'));
@@ -23478,6 +23503,10 @@ function applyLanguage(code, options = {}) {
     setText('#gwNewHomeDesc', tx('gwNewHomeDesc'));
     setText('#gwNewHomeTagline', tx('gwNewHomeTagline'));
     setAttr('#gwNewHomeLink', 'aria-label', tx('gwNewHomeAria'));
+    setText('#pGwHeadTitle', tx('gwHeadTitle'));
+    setText('#pGwHeadSub', tx('gwHeadSub'));
+    setText('#pHeroFoot', tx('heroFoot'));
+    setIndexedText('.p-kinetic-line', [tx('heroMarquee'), tx('heroMarquee')]);
     setText('#pCmdChipsTitle', tx('cmdChipsTitle'));
     setText('#pCmdDisclaimer', tx('cmdDisclaimer'));
     setText('.p-cmd-close-label', tx('cmdCloseLabel'));
