@@ -15146,6 +15146,15 @@ body[data-theme="dark"] .us-ev-state.is-lifecycle-ambiguous { color: var(--us-am
     <section id="f4RouteGuide" class="f4-route-guide" aria-labelledby="f4RouteGuideTitle" hidden></section>
 </main>
 
+<!-- 확정 시안(507:1407)의 푸터. 배경 #ECE5D6, 위쪽 경계 #D1C6B4.
+     고지문은 시안 문구 그대로다. -->
+<footer class="p-footer" role="contentinfo">
+    <div class="p-footer-inner">
+        <img class="p-footer-logo" src="assets/brand/visable-wordmark.svg" alt="Visable by Paradiso" width="80" height="24" decoding="async" loading="lazy" />
+        <p class="p-footer-notice" id="pFooterNotice">Visable은 공식 정부 서비스가 아닙니다. 제공 정보는 참고용이며 법적 효력이 없습니다. 최종 판단은 HiKorea·1345·관할 출입국·외국인관서에서 확인하세요. © 2026 Club Paradiso.</p>
+    </div>
+</footer>
+
 <!-- Modals -->
 <!-- 국적별 단기입국 경로 확인 — 페이지 내 팝업. 폼/결과는 외부 모듈(assets/js/short-stay-checker.js)이 #shortStayChecker에 렌더. -->
 <div class="modal-overlay" id="shortStayModalOverlay" role="dialog" aria-modal="true" aria-labelledby="shortStayModalTitle" aria-hidden="true">
@@ -23506,6 +23515,7 @@ function applyLanguage(code, options = {}) {
     setText('#pGwHeadTitle', tx('gwHeadTitle'));
     setText('#pGwHeadSub', tx('gwHeadSub'));
     setText('#pHeroFoot', tx('heroFoot'));
+    setText('#pFooterNotice', tx('footerNotice'));
     setIndexedText('.p-kinetic-line', [tx('heroMarquee'), tx('heroMarquee')]);
     setText('#pCmdChipsTitle', tx('cmdChipsTitle'));
     setText('#pCmdDisclaimer', tx('cmdDisclaimer'));

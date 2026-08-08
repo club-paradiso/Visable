@@ -2010,3 +2010,201 @@ body.product-new-home:not([data-theme="dark"]) .nh-pill-list.yes li::before { co
 body.product-new-home:not([data-theme="dark"]) .nh-pill-list.no li::before  { color: #9a5210 !important; }
 body.product-new-home[data-theme="dark"] .nh-pill-list.yes li::before { color: #4fdcb2 !important; }
 body.product-new-home[data-theme="dark"] .nh-pill-list.no li::before  { color: #f0a860 !important; }
+
+/* ═══════════════════════════════════════════════════════════════════
+ * New Home Content 영역 + 양쪽 푸터 — 확정 시안 그대로 (2026-08)
+ * Figma 31 `New Home Desktop · Landing` · Content 122:8 / Footer 123:73
+ * Figma 11 `Visable Landing` · Footer 507:1407
+ *
+ * 시안 실측:
+ *   섹션 제목 24px ExtraBold #073B32 / 부제 14.5px #5A6561
+ *   카드 283×182 r18, 표면 #FFFCF5, 테두리 #D1C6B4, 패딩 20, 간격 10
+ *   아이콘 타일 44×44 r12 #E1EAEC, 글리프 15px ExtraBold
+ *   카드 제목 16.5px ExtraBold #073B32 / 설명 13px #3A544C / 링크 13.5px Bold
+ *   여정 카드 r20 흰 배경, 테두리 #E3DCCB, 패딩 24/28/28/28
+ *   출처 카드 335×62 r12 / 배지 알약 #E1EAEC
+ *   주의 줄 r14, 표면 #FBF2E4, 테두리 #E68A3A, 잉크 #8A4E14
+ *   푸터 #ECE5D6, 위 경계 #D1C6B4, 고지문 12px #5A6561
+ *
+ * 시안의 강조 초록 #0E8A6B 는 흰 계열 표면에서 4.18:1, 배지 위에서는
+ * 3.53:1 이라 본문 크기 글자에 쓸 수 없다. 전부 var(--vp-green)(6.2~7.4:1)
+ * 으로 올렸다 — 색상 계열은 같고 대비만 한 단계 위다.
+ * ═══════════════════════════════════════════════════════════════════ */
+
+body.product-new-home .nh-section-h h2 {
+  font: 800 24px/1.2 var(--vp-font) !important;
+  letter-spacing: -0.03em !important;
+}
+body.product-new-home:not([data-theme="dark"]) .nh-section-h h2 { color: #073b32 !important; }
+body.product-new-home .nh-section-intro {
+  color: var(--vp-ink-3) !important;
+  font: 400 14.5px/1.6 var(--vp-font) !important;
+}
+
+/* 기능 카드 (122:12-17) */
+body.product-new-home .nh-card {
+  min-height: 182px !important;
+  padding: 20px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 10px !important;
+  border-radius: 18px !important;
+}
+body.product-new-home:not([data-theme="dark"]) .nh-card {
+  border-color: #d1c6b4 !important;
+  background: #fffcf5 !important;
+}
+body.product-new-home .nh-card-icon {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 12px !important;
+  background: #e1eaec !important;
+  color: var(--vp-green) !important;
+  font: 800 15px/1 var(--vp-font) !important;
+  letter-spacing: 0 !important;
+}
+body.product-new-home[data-theme="dark"] .nh-card-icon {
+  background: var(--vp-mint) !important;
+  color: var(--vp-green) !important;
+}
+body.product-new-home .nh-card-label {
+  font: 800 16.5px/1.25 var(--vp-font) !important;
+  letter-spacing: -0.02em !important;
+}
+body.product-new-home:not([data-theme="dark"]) .nh-card-label { color: #073b32 !important; }
+body.product-new-home .nh-card-desc {
+  color: var(--vp-ink-2) !important;
+  font: 400 13px/1.5 var(--vp-font) !important;
+}
+body.product-new-home .nh-card-cta {
+  margin-top: auto !important;
+  color: var(--vp-green) !important;
+  font: 700 13.5px/1.3 var(--vp-font) !important;
+}
+
+/* 정착 여정 스테퍼 (123:9-42) */
+body.product-new-home .nh-journey {
+  margin-top: 18px !important;
+  padding: 24px 28px 28px !important;
+  border: 1px solid #e3dccb !important;
+  border-radius: 20px !important;
+  background: var(--vp-surface) !important;
+}
+body.product-new-home[data-theme="dark"] .nh-journey { border-color: var(--vp-line) !important; }
+body.product-new-home .nh-journey-track {
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  flex-wrap: wrap !important;
+  gap: 0 !important;
+}
+body.product-new-home .nh-journey-step {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 8px !important;
+  width: 34px !important;
+}
+body.product-new-home .nh-journey-dot {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 34px !important;
+  height: 34px !important;
+  border: 1px solid #e3dccb !important;
+  border-radius: 999px !important;
+  background: var(--vp-surface) !important;
+  color: var(--vp-ink-3) !important;
+  font: 700 13px/1 var(--vp-font) !important;
+  transition: background 0.35s ease, color 0.35s ease, border-color 0.35s ease;
+}
+/* 그려진 단계는 CTA 토큰으로 채운다 — 시안의 #0EA37B + 흰 글자는 3.21:1 로
+   하우스 규칙상 금지된 조합이다. */
+body.product-new-home .nh-journey-step.is-drawn .nh-journey-dot {
+  border-color: var(--vp-cta) !important;
+  background: var(--vp-cta) !important;
+  color: var(--vp-on-cta) !important;
+}
+body.product-new-home .nh-journey-label {
+  color: var(--vp-ink-3) !important;
+  font: 700 13px/1.2 var(--vp-font) !important;
+  white-space: nowrap !important;
+  transition: color 0.35s ease;
+}
+body.product-new-home .nh-journey-step.is-drawn .nh-journey-label { color: var(--vp-green) !important; }
+body.product-new-home .nh-journey-link {
+  width: 40px !important;
+  height: 3px !important;
+  margin-top: 15.5px !important;
+  border-radius: 999px !important;
+  background: #e3dccb !important;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.4s ease, background 0.4s ease;
+}
+body.product-new-home .nh-journey-link.is-drawn {
+  background: var(--vp-cta) !important;
+  transform: scaleX(1);
+}
+@media (prefers-reduced-motion: reduce) {
+  body.product-new-home .nh-journey-link { transform: scaleX(1); transition: none; }
+  body.product-new-home .nh-journey-dot,
+  body.product-new-home .nh-journey-label { transition: none; }
+}
+body.product-new-home .nh-journey-note {
+  margin: 18px 0 0 !important;
+  color: var(--vp-ink-3) !important;
+  font: 400 12px/1.55 var(--vp-font) !important;
+  text-align: center !important;
+}
+@media (max-width: 720px) {
+  body.product-new-home .nh-journey { padding: 18px 14px 20px !important; }
+  body.product-new-home .nh-journey-link { width: 18px !important; }
+}
+
+/* 주의 줄 (123:70-72) */
+body.product-new-home:not([data-theme="dark"]) .nh-caution .nh-caution-inner {
+  border-color: #e68a3a !important;
+  border-radius: 14px !important;
+  background: #fbf2e4 !important;
+}
+body.product-new-home:not([data-theme="dark"]) .nh-caution h2,
+body.product-new-home:not([data-theme="dark"]) .nh-caution p { color: #8a4e14 !important; }
+
+/* 푸터 (123:73 · 507:1407) */
+body.product-new-home:not([data-theme="dark"]) .nh-footer {
+  background: #ece5d6 !important;
+  border-top: 1px solid #d1c6b4 !important;
+}
+body.product-new-home .nh-footer p {
+  color: var(--vp-ink-3) !important;
+  font: 400 12px/1.6 var(--vp-font) !important;
+}
+
+body.product-visable .p-footer {
+  padding: 26px clamp(18px, 4vw, 50px) 34px !important;
+  border-top: 1px solid #d1c6b4 !important;
+  background: #ece5d6 !important;
+}
+body.product-visable[data-theme="dark"] .p-footer {
+  border-top-color: var(--vp-line) !important;
+  background: var(--vp-paper-strong) !important;
+}
+body.product-visable .p-footer-inner {
+  max-width: var(--vp-max) !important;
+  margin: 0 auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+}
+body.product-visable .p-footer-logo { width: 80px !important; height: auto !important; }
+body.product-visable .p-footer-notice {
+  margin: 0 !important;
+  color: var(--vp-ink-3) !important;
+  font: 400 12px/1.6 var(--vp-font) !important;
+}
+/* 검색 결과 화면에서도 고지문은 남긴다 — 숨기지 않는다. */

@@ -654,6 +654,11 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
   <section class="nh-pathway">
     <div class="nh-wrap">
       <div class="nh-section-h"><h2 data-c="pathwayPreview.title"></h2></div>
+      <p class="nh-section-intro" data-c="pathwayPreview.sub"></p>
+      <div class="nh-journey">
+        <div class="nh-journey-track" id="journeySteps" role="list" aria-label="정착 여정 단계"></div>
+        <p class="nh-journey-note" data-c="pathwayPreview.stagesNote"></p>
+      </div>
       <ol class="nh-pathway-steps" id="pathwaySteps"></ol>
     </div>
   </section>
@@ -888,7 +893,9 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
       card.setAttribute('data-action', f.action);
       card.setAttribute('data-variant', f.id);
       card.innerHTML =
-        '<span class="nh-card-icon" aria-hidden="true">' + String(index + 1).padStart(2, '0') + '</span>' +
+        // 확정 시안(122:13-14)의 44×44 한 글자 아이콘 타일. glyph 가 없으면
+        // 예전처럼 순번을 쓴다.
+        '<span class="nh-card-icon" aria-hidden="true">' + esc(f.glyph || String(index + 1).padStart(2, '0')) + '</span>' +
         '<span class="nh-card-label">' + esc(pick(f.label)) + '</span>' +
         '<span class="nh-card-desc">' + esc(pick(f.desc)) + '</span>' +
         '<span class="nh-card-cta">' + esc(pick(f.cta)) + '</span>';
@@ -902,6 +909,41 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
     (pick(content.pathwayPreview.steps) || []).forEach(function (s) {
       ol.appendChild(el('li', null, esc(s)));
     });
+    renderJourney();
+  }
+
+  // 정착 여정 스테퍼 — 확정 시안 123:9. 원 + 연결선 + 라벨.
+  // 시안의 ✓ 는 "스크롤에 따라 한 걸음씩 그려지는 길"이라는 연출이지
+  // 사용자의 실제 진행 상황이 아니다. 개인 진행이나 심사 결과로 읽히지
+  // 않도록 아래에 그 뜻을 명시하고, 원 안에는 항상 단계 번호를 쓴다.
+  function renderJourney() {
+    var wrap = document.getElementById('journeySteps');
+    if (!wrap) return;
+    var stages = pick(content.pathwayPreview.stages) || [];
+    wrap.innerHTML = '';
+    stages.forEach(function (label, i) {
+      if (i > 0) wrap.appendChild(el('span', 'nh-journey-link'));
+      var step = el('span', 'nh-journey-step',
+        '<span class="nh-journey-dot">' + (i + 1) + '</span>' +
+        '<span class="nh-journey-label">' + esc(label) + '</span>');
+      wrap.appendChild(step);
+    });
+    observeJourney(wrap);
+  }
+
+  function observeJourney(wrap) {
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var steps = wrap.querySelectorAll('.nh-journey-step');
+    var links = wrap.querySelectorAll('.nh-journey-link');
+    function draw() {
+      steps.forEach(function (n, i) { setTimeout(function () { n.classList.add('is-drawn'); }, reduce ? 0 : i * 140); });
+      links.forEach(function (n, i) { setTimeout(function () { n.classList.add('is-drawn'); }, reduce ? 0 : 70 + i * 140); });
+    }
+    if (!('IntersectionObserver' in window)) { draw(); return; }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { draw(); io.disconnect(); } });
+    }, { threshold: 0.35 });
+    io.observe(wrap);
   }
 
   // Field helpers: support both {ko,en} objects and Ko/En-suffixed fields.
