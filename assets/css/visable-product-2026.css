@@ -1491,3 +1491,247 @@ body.product-visable.landing:not(.searched):not([data-theme="dark"]) .hero-conta
 body.product-visable.landing:not(.searched):not([data-theme="dark"]) .reference-disclaimer {
   color: #515c58 !important;
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+ * New Home 랜딩 히어로 — 확정 시안 그대로 구현 (2026-08)
+ * Figma `New Home Desktop · Landing` · 히어로 마스터 507:2876 (1440×840)
+ *
+ * 라이브는 좌측 카피 + 우측 가이드 카드의 2단 그리드였고, 확정 시안은
+ * 중앙 정렬 단일 컬럼이다. 시안의 값은 Plugin API 로 직접 읽어 옮겼다:
+ *   base   linear-gradient(180deg, #FFFBF3 → #F3E9DA)
+ *   coral  #FF6B5B .28 / peri #7F89CE .30 / emerald #0EA37B .15
+ *   light-1 #FFFCF5 .50 / light-2 #FFFFFF .35   (모두 LAYER_BLUR 180)
+ * 타원 중심·반경은 1440×840 기준 백분율로 환산하고 블러 180 만큼 넓혔다.
+ * Figma 는 자식 배열의 앞이 아래 → CSS background 는 앞이 위라 순서를 뒤집는다.
+ *
+ * 다크는 이미 `Waymaker Hero · Dark Aurora` 레시피가 위(6번 블록)에 있고
+ * 선택자가 (0,3,1) 이라 배경은 그대로 유지된다. 여기서는 레이아웃·타이포만
+ * 공통으로 적용하고, 유리 표면만 테마별로 나눈다.
+ *
+ * 시안과 다르게 간 지점 2곳 (모두 근거를 남긴다):
+ *  - CTA 는 시안의 #085E48/#F3EEDF(6.70:1) 대신 하우스 AAA 토큰
+ *    var(--vp-cta)/var(--vp-on-cta)(7.08:1) 을 쓴다. 색차는 육안으로
+ *    구분되지 않지만 대비 기준은 한 단계 위다.
+ *  - 키네틱 스트립 잉크는 시안 rgba(58,84,76,.5)(2.29:1) 대신 #47594F(5.01:1).
+ *    12px 본문 크기라 시안 값 그대로는 읽히지 않는다.
+ * 워드마크 벡터(203:13)는 이 환경의 네트워크 정책이 figma.com 자산 호스트를
+ * 막아 내려받지 못했다 — 임의로 다시 그리지 않고 비워 두었다.
+ * ═══════════════════════════════════════════════════════════════════ */
+body.product-new-home .nh-hero {
+  position: relative !important;
+  overflow: hidden !important;
+  min-height: 620px !important;
+  padding: 84px 32px 104px !important;
+  display: grid !important;
+  align-items: center !important;
+  justify-items: center !important;
+  border: 0 !important;
+}
+body.product-new-home:not([data-theme="dark"]) .nh-hero {
+  background:
+    radial-gradient(34.7% 59.5% at 58.3% 73.8%, rgba(255, 255, 255, 0.35) 0%, transparent 70%),
+    radial-gradient(43.8% 72.0% at 46.5% 30.4%, rgba(255, 252, 245, 0.50) 0%, transparent 70%),
+    radial-gradient(33.3% 56.0% at 86.1% 91.7%, rgba(14, 163, 123, 0.15) 0%, transparent 70%),
+    radial-gradient(42.4% 70.2% at 13.2% 84.5%, rgba(127, 137, 206, 0.30) 0%, transparent 70%),
+    radial-gradient(46.5% 73.8% at 88.2% 28.6%, rgba(255, 107, 91, 0.28) 0%, transparent 70%),
+    linear-gradient(180deg, #fffbf3 0%, #f3e9da 100%) !important;
+}
+
+body.product-new-home .nh-hero-inner {
+  position: relative !important;
+  z-index: 1 !important;
+  width: min(100%, 940px) !important;
+  display: block !important;
+  grid-template-columns: none !important;
+  gap: 0 !important;
+}
+body.product-new-home .nh-hero-copy {
+  max-width: none !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 20px !important;
+  text-align: center !important;
+}
+body.product-new-home .nh-hero-copy > * { margin: 0 !important; }
+
+/* 키커 — 유리 알약 */
+body.product-new-home .nh-kicker {
+  display: inline-flex !important;
+  align-items: center !important;
+  padding: 9px 16px !important;
+  border: 1.4px solid rgba(255, 255, 255, 0.55) !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.55) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  backdrop-filter: blur(10px) !important;
+  color: var(--vp-ink) !important;
+  font-size: 12.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: none !important;
+}
+body.product-new-home[data-theme="dark"] .nh-kicker {
+  border-color: rgba(241, 238, 229, 0.22) !important;
+  background: rgba(241, 238, 229, 0.10) !important;
+}
+
+body.product-new-home .nh-title {
+  max-width: 720px !important;
+  white-space: pre-line !important;
+  color: var(--vp-ink) !important;
+  font-size: clamp(34px, 3.8vw, 54px) !important;
+  font-weight: 800 !important;
+  line-height: 1.08 !important;
+  letter-spacing: -0.02em !important;
+  word-break: keep-all !important;
+}
+body.product-new-home .nh-tagline {
+  color: #e0513e !important;
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  font-style: italic !important;
+}
+body.product-new-home[data-theme="dark"] .nh-tagline { color: #ff9d8c !important; }
+
+body.product-new-home .nh-lead {
+  max-width: 640px !important;
+  color: var(--vp-ink-2) !important;
+  font-size: 17px !important;
+  line-height: 1.6 !important;
+  word-break: keep-all !important;
+}
+
+body.product-new-home .nh-cta-row {
+  margin-top: 0 !important;
+  justify-content: center !important;
+  gap: 12px !important;
+}
+body.product-new-home .nh-btn {
+  min-height: 48px !important;
+  padding: 0 24px !important;
+  border-radius: 999px !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+}
+body.product-new-home .nh-btn-primary {
+  padding-left: 26px !important;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.22) !important;
+}
+body.product-new-home .nh-btn-arrow { font-weight: 700 !important; }
+body.product-new-home:not([data-theme="dark"]) .nh-btn-secondary {
+  border: 1.4px solid rgba(255, 255, 255, 0.55) !important;
+  background: rgba(255, 255, 255, 0.60) !important;
+  -webkit-backdrop-filter: blur(9px) !important;
+  backdrop-filter: blur(9px) !important;
+  color: var(--vp-ink) !important;
+}
+body.product-new-home[data-theme="dark"] .nh-btn-secondary {
+  border: 1.4px solid rgba(241, 238, 229, 0.22) !important;
+  background: rgba(241, 238, 229, 0.08) !important;
+  color: var(--vp-ink) !important;
+}
+
+/* 신뢰 칩 3개 */
+body.product-new-home .nh-proof-row {
+  margin-top: 0 !important;
+  justify-content: center !important;
+  gap: 8px !important;
+}
+body.product-new-home .nh-proof-row span {
+  padding: 7px 13px !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  color: var(--vp-green) !important;
+  font-size: 12.5px !important;
+  font-weight: 700 !important;
+}
+body.product-new-home:not([data-theme="dark"]) .nh-proof-row span {
+  background: rgba(255, 255, 255, 0.55) !important;
+  -webkit-backdrop-filter: blur(7px) !important;
+  backdrop-filter: blur(7px) !important;
+}
+body.product-new-home[data-theme="dark"] .nh-proof-row span {
+  background: rgba(241, 238, 229, 0.10) !important;
+}
+
+/* 키네틱 스트립 — 시안의 흐르는 문구 띠. 같은 문구를 두 번 이어 붙이고
+   트랙을 -50% 만큼 밀어 이음매 없이 반복한다. 모션 감소 설정에서는 멈춘다. */
+body.product-new-home .nh-kinetic {
+  position: absolute !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 46px !important;
+  z-index: 1 !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
+  mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+}
+body.product-new-home .nh-kinetic-track {
+  display: flex !important;
+  width: max-content !important;
+  animation: nh-kinetic-scroll 64s linear infinite;
+}
+body.product-new-home .nh-kinetic-line {
+  white-space: pre !important;
+  color: #47594f !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+}
+body.product-new-home[data-theme="dark"] .nh-kinetic-line { color: var(--vp-ink-3) !important; }
+@keyframes nh-kinetic-scroll {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  body.product-new-home .nh-kinetic-track { animation: none !important; }
+}
+
+/* 히어로 각주 — 시안은 rgba(90,101,97,.9) 지만 11px 에서 4.12:1 이라
+   3차 잉크 토큰(#5A6561 / #BBC7C3, 5.04:1)을 쓴다. */
+body.product-new-home .nh-hero-foot {
+  position: absolute !important;
+  left: 50% !important;
+  bottom: 18px !important;
+  transform: translateX(-50%) !important;
+  z-index: 1 !important;
+  margin: 0 !important;
+  max-width: min(92%, 900px) !important;
+  color: var(--vp-ink-3) !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  text-align: center !important;
+  word-break: keep-all !important;
+}
+
+/* 오른쪽 가장자리의 오로라 도트 4개 — 첫 점만 진하고 나머지는 흰 35% 잔상. */
+body.product-new-home .nh-aurora-dots {
+  position: absolute !important;
+  right: 31px !important;
+  top: 46% !important;
+  z-index: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 17px !important;
+  pointer-events: none !important;
+}
+body.product-new-home .nh-aurora-dots i {
+  width: 11px !important;
+  height: 11px !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.35) !important;
+}
+body.product-new-home .nh-aurora-dots i:first-child { background: var(--vp-green) !important; }
+
+@media (max-width: 960px) {
+  body.product-new-home .nh-hero { min-height: auto !important; padding: 56px 20px 96px !important; }
+  body.product-new-home .nh-aurora-dots { display: none !important; }
+}
+@media (max-width: 720px) {
+  body.product-new-home .nh-hero { padding: 42px 18px 92px !important; }
+  body.product-new-home .nh-hero-copy { gap: 16px !important; }
+  body.product-new-home .nh-title { font-size: 34px !important; }
+  body.product-new-home .nh-cta-row .nh-btn { flex: 1 1 100% !important; }
+}

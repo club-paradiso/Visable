@@ -595,33 +595,39 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
 </nav>
 
 <main id="nhMain">
+  <!-- 히어로 — Figma `New Home Desktop · Landing` 확정 시안(507:2876) 그대로.
+       중앙 정렬 단일 컬럼: 키커 → 헤드라인 → Welcome home. → 리드 → CTA 2개 →
+       신뢰 칩 3개. 아래로 키네틱 스트립 · 각주 · 오로라 도트. -->
   <section class="nh-hero">
     <div class="nh-hero-inner">
       <div class="nh-hero-copy">
-        <span class="nh-kicker" data-c="hero.kicker">New Home by Paradiso 국적·귀화 플랫폼</span>
-        <h1 class="nh-title" data-c="hero.title">New Home by Paradiso</h1>
-        <p class="nh-tagline">You Belong Here.</p>
+        <span class="nh-kicker" data-c="hero.kicker">New Home by Paradiso · 국적·귀화</span>
+        <h1 class="nh-title" data-c="hero.title">혼자서도 할 수 있는
+귀화·국적 회복.</h1>
+        <p class="nh-tagline" data-c="hero.tagline">Welcome home.</p>
         <p class="nh-lead" data-c="hero.lead"></p>
         <div class="nh-cta-row">
-          <button type="button" class="nh-btn nh-btn-primary" data-action="open-readiness" data-c="hero.ctaPrimary"></button>
-          <button type="button" class="nh-btn nh-btn-secondary" data-action="open-pathfinder" data-c="hero.ctaSecondary"></button>
+          <button type="button" class="nh-btn nh-btn-primary" data-action="open-readiness"><span data-c="hero.ctaPrimary"></span><span class="nh-btn-arrow" aria-hidden="true">→</span></button>
+          <a class="nh-btn nh-btn-secondary" href="index.html" data-c="hero.ctaSecondary"></a>
         </div>
         <div class="nh-proof-row" aria-label="Service details">
-          <span data-c="hero.proofTime"></span><span data-c="hero.proofLogin"></span><span data-c="hero.proofSource"></span>
+          <span data-c="hero.proofLogin"></span><span data-c="hero.proofTime"></span><span data-c="hero.proofSource"></span>
         </div>
         <div class="nh-notice" role="note">
           <span class="nh-notice-icon" aria-hidden="true">i</span>
           <span data-c="notice"></span>
         </div>
       </div>
-      <aside class="nh-hero-guide" aria-labelledby="nhGuideTitle">
-        <h2 id="nhGuideTitle" data-c="hero.guideTitle"></h2>
-        <p data-c="hero.guideIntro"></p>
-        <button type="button" class="nh-guide-link" data-action="open-readiness"><span class="nh-guide-num">01</span><strong data-c="hero.guideCheck"></strong><span class="nh-guide-arrow" aria-hidden="true">→</span></button>
-        <button type="button" class="nh-guide-link" data-action="open-pathfinder"><span class="nh-guide-num">02</span><strong data-c="hero.guidePath"></strong><span class="nh-guide-arrow" aria-hidden="true">→</span></button>
-        <a class="nh-guide-link" href="#sources"><span class="nh-guide-num">03</span><strong data-c="hero.guideSource"></strong><span class="nh-guide-arrow" aria-hidden="true">↓</span></a>
-      </aside>
     </div>
+    <!-- 키네틱 스트립: 같은 문구를 두 번 이어 붙여 끊김 없이 흐르게 한다.
+         내용은 각주·고지문에 그대로 남아 있으므로 장식으로만 노출한다. -->
+    <div class="nh-kinetic" aria-hidden="true">
+      <div class="nh-kinetic-track">
+        <span class="nh-kinetic-line" data-c="hero.kineticLine"></span><span class="nh-kinetic-line" data-c="hero.kineticLine"></span>
+      </div>
+    </div>
+    <p class="nh-hero-foot" data-c="hero.footnote"></p>
+    <span class="nh-aurora-dots" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
   </section>
 
   <div class="nh-wrap">

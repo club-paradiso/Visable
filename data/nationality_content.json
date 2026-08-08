@@ -8,7 +8,7 @@
   },
   "brand": {
     "title": "New Home by Paradiso",
-    "tagline": "You Belong Here."
+    "tagline": "Welcome home."
   },
   "ui": {
     "backToParadiso": {
@@ -212,44 +212,44 @@
   },
   "hero": {
     "kicker": {
-      "ko": "New Home by Paradiso 국적·귀화 플랫폼",
-      "en": "New Home by Paradiso nationality platform",
-      "zh-CN": "New Home by Paradiso 国籍·归化平台"
+      "ko": "New Home by Paradiso · 국적·귀화",
+      "en": "New Home by Paradiso · Nationality",
+      "zh-CN": "New Home by Paradiso · 国籍·归化"
     },
     "title": {
-      "ko": "나에게 맞는 국적·귀화 경로를 찾으세요",
-      "en": "Find your nationality and citizenship path",
-      "zh-CN": "找到适合您的国籍·归化路径"
+      "ko": "혼자서도 할 수 있는\n귀화·국적 회복.",
+      "en": "Naturalization and nationality\nrestoration, on your own.",
+      "zh-CN": "一个人也能完成的\n归化·国籍恢复。"
     },
     "lead": {
-      "ko": "귀화, 국적회복, 국적판정, 복수국적, 사회통합프로그램, 면접, 귀화 후 절차까지 단계별로 안내합니다.",
-      "en": "Step-by-step guidance for Korean naturalization, nationality restoration, nationality determination, dual nationality, KIIP, interviews, and post-approval steps.",
-      "zh-CN": "从归化、国籍恢复、国籍判定、复数国籍、社会融合项目、面试到归化后程序，分阶段为您指引。"
+      "ko": "내 상황을 입력하면 귀화·국적회복·복수국적에 필요한 서류와 절차를 확인해요.",
+      "en": "Tell us your situation and see the documents and steps for naturalization, nationality restoration, and dual nationality.",
+      "zh-CN": "输入您的情况，即可确认归化·国籍恢复·复数国籍所需的材料与程序。"
     },
     "ctaPrimary": {
-      "ko": "2분 준비 점검 시작",
-      "en": "Start the 2-minute readiness check",
-      "zh-CN": "开始 2 分钟准备检查"
+      "ko": "내 준비 상태 확인하기",
+      "en": "Check my readiness",
+      "zh-CN": "确认我的准备状态"
     },
     "ctaSecondary": {
-      "ko": "상황별 경로 찾기",
-      "en": "Find a path for my situation",
-      "zh-CN": "按情况查找路径"
+      "ko": "Visable(체류 민원 안내 플랫폼)으로 이동하기",
+      "en": "Go to Visable (residence-affairs guidance platform)",
+      "zh-CN": "前往 Visable（居留民愿指引平台）"
     },
     "proofTime": {
-      "ko": "약 2분",
-      "en": "About 2 minutes",
-      "zh-CN": "约 2 分钟"
+      "ko": "약 3분",
+      "en": "About 3 minutes",
+      "zh-CN": "约 3 分钟"
     },
     "proofLogin": {
-      "ko": "로그인 불필요",
-      "en": "No login required",
+      "ko": "로그인 없이",
+      "en": "No login",
       "zh-CN": "无需登录"
     },
     "proofSource": {
-      "ko": "공식 출처 연결",
-      "en": "Linked to official sources",
-      "zh-CN": "连接官方出处"
+      "ko": "공식 출처 표기",
+      "en": "Official sources cited",
+      "zh-CN": "标注官方出处"
     },
     "guideTitle": {
       "ko": "지금 필요한 것부터",
@@ -275,6 +275,21 @@
       "ko": "공식 근거와 확인 창구 보기",
       "en": "Open official sources and contacts",
       "zh-CN": "查看官方依据与确认窗口"
+    },
+    "tagline": {
+      "ko": "Welcome home.",
+      "en": "Welcome home.",
+      "zh-CN": "Welcome home."
+    },
+    "footnote": {
+      "ko": "New Home by Paradiso — 공식 정부 서비스가 아니며 참고용입니다. © 2026 Club Paradiso.",
+      "en": "New Home by Paradiso — not an official government service; reference use only. © 2026 Club Paradiso.",
+      "zh-CN": "New Home by Paradiso — 并非官方政府服务，仅供参考。© 2026 Club Paradiso."
+    },
+    "kineticLine": {
+      "ko": "혼자서도 할 수 있는 귀화 절차   ·   귀화 · 국적회복 · 복수국적   ·   KIIP 안내   ·   공식 출처 기반   ·   참고용 · 최종 확인은 관할 출입국·1345   ·   ",
+      "en": "Naturalization you can do on your own   ·   Naturalization · Restoration · Dual nationality   ·   KIIP guidance   ·   Official-source based   ·   Reference only · Confirm with your immigration office or 1345   ·   ",
+      "zh-CN": "一个人也能完成的归化程序   ·   归化 · 国籍恢复 · 复数国籍   ·   KIIP 指引   ·   基于官方出处   ·   仅供参考 · 最终请向管辖出入境·1345 确认   ·   "
     }
   },
   "notice": {
@@ -289,9 +304,9 @@
       "zh-CN": "需要为您做些什么？"
     },
     "intro": {
-      "ko": "상황에 맞는 카드를 선택해 시작하세요. 각 도구는 입력하신 정보를 바탕으로 검토 방향을 정리할 뿐, 허가 여부를 결정하지 않습니다.",
-      "en": "Pick the card that fits your situation. Each tool organizes a direction to review from what you share — it does not decide approval.",
-      "zh-CN": "请选择符合您情况的卡片开始。每个工具只是根据您输入的信息整理审查方向，并不决定是否许可。"
+      "ko": "국적·귀화의 큰 갈래를 골라 단계별 안내로 들어가요. 각 도구는 입력하신 정보를 바탕으로 검토 방향을 정리할 뿐, 허가 여부를 결정하지 않습니다.",
+      "en": "Pick a branch of nationality work and step into its guidance. Each tool organizes a direction to review from what you share — it does not decide approval.",
+      "zh-CN": "选择国籍·归化的大方向，进入分阶段指引。每个工具只是根据您输入的信息整理审查方向，并不决定是否许可。"
     }
   },
   "features": [
@@ -395,8 +410,8 @@
         "zh-CN": "打开中心"
       }
     },
-  {
-    "id": "waymaker",
+    {
+      "id": "waymaker",
       "icon": "✦",
       "action": "open-waymaker",
       "label": {
@@ -412,50 +427,50 @@
       "cta": {
         "ko": "내 절차 찾기",
         "en": "Find my procedure",
-      "zh-CN": "查找我的手续"
+        "zh-CN": "查找我的手续"
+      }
+    },
+    {
+      "id": "interview",
+      "icon": "🎙️",
+      "action": "scroll-interview",
+      "label": {
+        "ko": "국적민원·귀화면접 준비",
+        "en": "Nationality Services & Interview Prep",
+        "zh-CN": "国籍业务·归化面试准备"
+      },
+      "desc": {
+        "ko": "공식 안내를 바탕으로 연습 질문, 모의면접, 참고 영상과 Waymaker 코치를 한곳에서 확인합니다.",
+        "en": "Open practice questions, mock interviews, reference videos, and a Waymaker coach grounded in official guidance.",
+        "zh-CN": "基于官方指引，在一处查看练习题、模拟面试、参考视频和 Waymaker 教练。"
+      },
+      "cta": {
+        "ko": "면접 준비 시작",
+        "en": "Start preparing",
+        "zh-CN": "开始准备面试"
+      }
+    },
+    {
+      "id": "sources",
+      "icon": "↗",
+      "action": "scroll-sources",
+      "label": {
+        "ko": "공식 출처",
+        "en": "Official Sources",
+        "zh-CN": "官方来源"
+      },
+      "desc": {
+        "ko": "국적법·법무부·Socinet·HiKorea의 근거와 최신 확인 경로를 한곳에서 살펴봅니다.",
+        "en": "Review Nationality Act, Ministry of Justice, Soci-Net, and HiKorea sources and current verification routes.",
+        "zh-CN": "集中查看《国籍法》、法务部、Socinet、HiKorea 的依据及最新确认路径。"
+      },
+      "cta": {
+        "ko": "출처 보기",
+        "en": "View sources",
+        "zh-CN": "查看来源"
+      }
     }
-  },
-  {
-    "id": "interview",
-    "icon": "🎙️",
-    "action": "scroll-interview",
-    "label": {
-      "ko": "국적민원·귀화면접 준비",
-      "en": "Nationality Services & Interview Prep",
-      "zh-CN": "国籍业务·归化面试准备"
-    },
-    "desc": {
-      "ko": "공식 안내를 바탕으로 연습 질문, 모의면접, 참고 영상과 Waymaker 코치를 한곳에서 확인합니다.",
-      "en": "Open practice questions, mock interviews, reference videos, and a Waymaker coach grounded in official guidance.",
-      "zh-CN": "基于官方指引，在一处查看练习题、模拟面试、参考视频和 Waymaker 教练。"
-    },
-    "cta": {
-      "ko": "면접 준비 시작",
-      "en": "Start preparing",
-      "zh-CN": "开始准备面试"
-    }
-  },
-  {
-    "id": "sources",
-    "icon": "↗",
-    "action": "scroll-sources",
-    "label": {
-      "ko": "공식 출처",
-      "en": "Official Sources",
-      "zh-CN": "官方来源"
-    },
-    "desc": {
-      "ko": "국적법·법무부·Socinet·HiKorea의 근거와 최신 확인 경로를 한곳에서 살펴봅니다.",
-      "en": "Review Nationality Act, Ministry of Justice, Soci-Net, and HiKorea sources and current verification routes.",
-      "zh-CN": "集中查看《国籍法》、法务部、Socinet、HiKorea 的依据及最新确认路径。"
-    },
-    "cta": {
-      "ko": "출처 보기",
-      "en": "View sources",
-      "zh-CN": "查看来源"
-    }
-  }
-],
+  ],
   "pathwayPreview": {
     "title": {
       "ko": "전체 흐름 미리보기",

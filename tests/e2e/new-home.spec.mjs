@@ -13,7 +13,10 @@ test('New Home exposes a useful entry point and an accessible readiness dialog',
 
   await page.goto('/new-home.html');
   await expect(page.locator('.nh-section-nav')).toBeVisible();
-  await expect(page.locator('.nh-hero-guide')).toBeVisible();
+  // 확정 시안(507:2876)의 히어로는 중앙 정렬 단일 컬럼이라 우측 가이드 카드가 없다.
+  // 진입점은 히어로 CTA 두 개 — 준비 점검(모달)과 Visable 이동.
+  await expect(page.locator('.nh-hero .nh-btn-primary')).toBeVisible();
+  await expect(page.locator('.nh-hero .nh-btn-secondary')).toHaveAttribute('href', 'index.html');
   await expect(page.locator('.nh-card-icon').first()).toHaveText('01');
   await expectNoHorizontalOverflow(page);
 
