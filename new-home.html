@@ -572,7 +572,7 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
   * { transition: none !important; }
 }
 </style>
-<link rel="stylesheet" href="assets/css/visable-product-2026.css?v=20260806-aurora-a11y">
+<link rel="stylesheet" href="assets/css/visable-product-2026.css?v=20260808-figma-verbatim">
 </head>
 <body class="product-new-home">
 <a class="sr-only" href="#nhMain">본문 바로가기 / Skip to content</a>
@@ -595,33 +595,39 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
 </nav>
 
 <main id="nhMain">
+  <!-- 히어로 — Figma `New Home Desktop · Landing` 확정 시안(507:2876) 그대로.
+       중앙 정렬 단일 컬럼: 키커 → 헤드라인 → Welcome home. → 리드 → CTA 2개 →
+       신뢰 칩 3개. 아래로 키네틱 스트립 · 각주 · 오로라 도트. -->
   <section class="nh-hero">
     <div class="nh-hero-inner">
       <div class="nh-hero-copy">
-        <span class="nh-kicker" data-c="hero.kicker">New Home by Paradiso 국적·귀화 플랫폼</span>
-        <h1 class="nh-title" data-c="hero.title">New Home by Paradiso</h1>
-        <p class="nh-tagline">You Belong Here.</p>
+        <span class="nh-kicker" data-c="hero.kicker">New Home by Paradiso · 국적·귀화</span>
+        <h1 class="nh-title" data-c="hero.title">혼자서도 할 수 있는
+귀화·국적 회복.</h1>
+        <p class="nh-tagline" data-c="hero.tagline">Welcome home.</p>
         <p class="nh-lead" data-c="hero.lead"></p>
         <div class="nh-cta-row">
-          <button type="button" class="nh-btn nh-btn-primary" data-action="open-readiness" data-c="hero.ctaPrimary"></button>
-          <button type="button" class="nh-btn nh-btn-secondary" data-action="open-pathfinder" data-c="hero.ctaSecondary"></button>
+          <button type="button" class="nh-btn nh-btn-primary" data-action="open-readiness"><span data-c="hero.ctaPrimary"></span><span class="nh-btn-arrow" aria-hidden="true">→</span></button>
+          <a class="nh-btn nh-btn-secondary" href="index.html" data-c="hero.ctaSecondary"></a>
         </div>
         <div class="nh-proof-row" aria-label="Service details">
-          <span data-c="hero.proofTime"></span><span data-c="hero.proofLogin"></span><span data-c="hero.proofSource"></span>
+          <span data-c="hero.proofLogin"></span><span data-c="hero.proofTime"></span><span data-c="hero.proofSource"></span>
         </div>
         <div class="nh-notice" role="note">
           <span class="nh-notice-icon" aria-hidden="true">i</span>
           <span data-c="notice"></span>
         </div>
       </div>
-      <aside class="nh-hero-guide" aria-labelledby="nhGuideTitle">
-        <h2 id="nhGuideTitle" data-c="hero.guideTitle"></h2>
-        <p data-c="hero.guideIntro"></p>
-        <button type="button" class="nh-guide-link" data-action="open-readiness"><span class="nh-guide-num">01</span><strong data-c="hero.guideCheck"></strong><span class="nh-guide-arrow" aria-hidden="true">→</span></button>
-        <button type="button" class="nh-guide-link" data-action="open-pathfinder"><span class="nh-guide-num">02</span><strong data-c="hero.guidePath"></strong><span class="nh-guide-arrow" aria-hidden="true">→</span></button>
-        <a class="nh-guide-link" href="#sources"><span class="nh-guide-num">03</span><strong data-c="hero.guideSource"></strong><span class="nh-guide-arrow" aria-hidden="true">↓</span></a>
-      </aside>
     </div>
+    <!-- 키네틱 스트립: 같은 문구를 두 번 이어 붙여 끊김 없이 흐르게 한다.
+         내용은 각주·고지문에 그대로 남아 있으므로 장식으로만 노출한다. -->
+    <div class="nh-kinetic" aria-hidden="true">
+      <div class="nh-kinetic-track">
+        <span class="nh-kinetic-line" data-c="hero.kineticLine"></span><span class="nh-kinetic-line" data-c="hero.kineticLine"></span>
+      </div>
+    </div>
+    <p class="nh-hero-foot" data-c="hero.footnote"></p>
+    <span class="nh-aurora-dots" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
   </section>
 
   <div class="nh-wrap">
@@ -648,6 +654,11 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
   <section class="nh-pathway">
     <div class="nh-wrap">
       <div class="nh-section-h"><h2 data-c="pathwayPreview.title"></h2></div>
+      <p class="nh-section-intro" data-c="pathwayPreview.sub"></p>
+      <div class="nh-journey">
+        <div class="nh-journey-track" id="journeySteps" role="list" aria-label="정착 여정 단계"></div>
+        <p class="nh-journey-note" data-c="pathwayPreview.stagesNote"></p>
+      </div>
       <ol class="nh-pathway-steps" id="pathwaySteps"></ol>
     </div>
   </section>
@@ -882,7 +893,9 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
       card.setAttribute('data-action', f.action);
       card.setAttribute('data-variant', f.id);
       card.innerHTML =
-        '<span class="nh-card-icon" aria-hidden="true">' + String(index + 1).padStart(2, '0') + '</span>' +
+        // 확정 시안(122:13-14)의 44×44 한 글자 아이콘 타일. glyph 가 없으면
+        // 예전처럼 순번을 쓴다.
+        '<span class="nh-card-icon" aria-hidden="true">' + esc(f.glyph || String(index + 1).padStart(2, '0')) + '</span>' +
         '<span class="nh-card-label">' + esc(pick(f.label)) + '</span>' +
         '<span class="nh-card-desc">' + esc(pick(f.desc)) + '</span>' +
         '<span class="nh-card-cta">' + esc(pick(f.cta)) + '</span>';
@@ -896,6 +909,41 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
     (pick(content.pathwayPreview.steps) || []).forEach(function (s) {
       ol.appendChild(el('li', null, esc(s)));
     });
+    renderJourney();
+  }
+
+  // 정착 여정 스테퍼 — 확정 시안 123:9. 원 + 연결선 + 라벨.
+  // 시안의 ✓ 는 "스크롤에 따라 한 걸음씩 그려지는 길"이라는 연출이지
+  // 사용자의 실제 진행 상황이 아니다. 개인 진행이나 심사 결과로 읽히지
+  // 않도록 아래에 그 뜻을 명시하고, 원 안에는 항상 단계 번호를 쓴다.
+  function renderJourney() {
+    var wrap = document.getElementById('journeySteps');
+    if (!wrap) return;
+    var stages = pick(content.pathwayPreview.stages) || [];
+    wrap.innerHTML = '';
+    stages.forEach(function (label, i) {
+      if (i > 0) wrap.appendChild(el('span', 'nh-journey-link'));
+      var step = el('span', 'nh-journey-step',
+        '<span class="nh-journey-dot">' + (i + 1) + '</span>' +
+        '<span class="nh-journey-label">' + esc(label) + '</span>');
+      wrap.appendChild(step);
+    });
+    observeJourney(wrap);
+  }
+
+  function observeJourney(wrap) {
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var steps = wrap.querySelectorAll('.nh-journey-step');
+    var links = wrap.querySelectorAll('.nh-journey-link');
+    function draw() {
+      steps.forEach(function (n, i) { setTimeout(function () { n.classList.add('is-drawn'); }, reduce ? 0 : i * 140); });
+      links.forEach(function (n, i) { setTimeout(function () { n.classList.add('is-drawn'); }, reduce ? 0 : 70 + i * 140); });
+    }
+    if (!('IntersectionObserver' in window)) { draw(); return; }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { draw(); io.disconnect(); } });
+    }, { threshold: 0.35 });
+    io.observe(wrap);
   }
 
   // Field helpers: support both {ko,en} objects and Ko/En-suffixed fields.
@@ -1173,10 +1221,19 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
     body.appendChild(fs);
 
     foot.innerHTML = '';
-    var back = el('button', 'nh-btn-sm', esc(pick(content.ui.back)));
-    back.type = 'button';
-    back.style.visibility = readinessStep === 0 ? 'hidden' : 'visible';
-    back.addEventListener('click', function () { readinessStep--; buildReadinessStep(); });
+    // 확정 시안(116:27, "Btn / 닫기 — 라이브 미구현 · 반영 후보")대로 첫 질문에서는
+    // 비어 있던 '이전' 자리에 '닫기'를 둔다. 헤더 ✕ 만으로도 나갈 수는 있었지만,
+    // 푸터에서 손이 머무는 자리에 나가는 길이 없던 것이 시안이 지적한 지점이다.
+    var back;
+    if (readinessStep === 0) {
+      back = el('button', 'nh-btn-sm', esc(pick(content.ui.close)));
+      back.type = 'button';
+      back.addEventListener('click', function () { closeOverlay(); });
+    } else {
+      back = el('button', 'nh-btn-sm', esc(pick(content.ui.back)));
+      back.type = 'button';
+      back.addEventListener('click', function () { readinessStep--; buildReadinessStep(); });
+    }
 
     var next = el('button', 'nh-btn-sm primary', esc(pick(isLast ? content.ui.viewResult : content.ui.next)));
     next.type = 'button';

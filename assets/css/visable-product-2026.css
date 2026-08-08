@@ -1439,3 +1439,999 @@ body.product-waymaker:not(.wm-conversing):not(.wm-active) .wm-workspace-sidebar 
 body.product-waymaker:not(.wm-conversing):not(.wm-active):not([data-theme="dark"]) .wm-workspace-trust-note {
   color: #56615d !important;
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+ * Visable 랜딩 히어로 — 확정안 "Aurora Live" 복원 (2026-08)
+ * Figma 11 `Visable Landing (pre-search)` · 히어로 프레임 507:2139
+ *
+ * 이 파일 위쪽에서 `.hero-container::before/::after` 를
+ * `display:none; content:none !important` 로 죽이고 히어로 배경을
+ * `var(--vp-paper)` 단색으로 덮고 있었다. 그래서 확정 시안이 Aurora Live 인데
+ * 라이브 랜딩은 완전히 평평했다.
+ *
+ * 시안 실측값을 그대로 옮긴다:
+ *   base    #FCFAF5 → #F1EADC (세로)
+ *   peri    #7F89CE .42 / emerald #0EA37B .24 / coral #FF6B5B .16
+ *   light-1 #FFFCF5 .42 / light-2 #FFFFFF .24   (LAYER_BLUR 170~210)
+ * 타원 중심·반경은 1440×840 기준 백분율로 환산했고, 블러만큼 반경을 넓혔다.
+ * Figma 는 뒤 레이어가 아래 → CSS background 는 앞이 위라 순서를 뒤집는다.
+ *
+ * 특정도: 차단 규칙 (0,2,2) 뿐 아니라 index.html 안의 라이트 히어로 규칙
+ * `body.landing:not([data-theme="dark"]):not(.searched) .hero-container::before` (0,4,2)
+ * 까지 이겨야 한다 — 그래서 (0,5,2) 로 맞춘다.
+ * 검색 후(.searched) 컴팩트 헤더에는 적용하지 않는다 — 결과를 읽는 화면은 calm.
+ * ═══════════════════════════════════════════════════════════════════ */
+body.product-visable.landing:not(.searched):not([data-theme="dark"]) .hero-container::before {
+  display: block !important;
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: -1 !important;
+  pointer-events: none !important;
+  opacity: 1 !important;
+  background:
+    radial-gradient(30% 46% at 59% 74%,   rgba(255, 255, 255, 0.24) 0%, transparent 70%),
+    radial-gradient(40% 60% at 48% 31%,   rgba(255, 252, 245, 0.42) 0%, transparent 70%),
+    radial-gradient(28% 44% at 84% 92%,   rgba(255, 107, 91,  0.16) 0%, transparent 70%),
+    radial-gradient(38% 58% at 12% 92%,   rgba(14, 163, 123,  0.24) 0%, transparent 70%),
+    radial-gradient(43% 64% at 88% 27%,   rgba(127, 137, 206, 0.42) 0%, transparent 70%),
+    linear-gradient(180deg, #FCFAF5 0%, #F1EADC 100%) !important;
+}
+/* 히어로 자신의 단색 배경을 비워 위 레이어가 보이게 한다. 음수 z 자식이
+   "배경 위 · 본문 아래"에 오도록 스태킹 컨텍스트도 만든다. */
+body.product-visable.landing:not(.searched):not([data-theme="dark"]) .hero-container {
+  position: relative !important;
+  z-index: 0 !important;
+  background: transparent !important;
+}
+
+/* 오로라가 켜지면 히어로 하단 고지문이 에메랄드 블룸(#CADFCC) 위에 놓여
+   4.31:1 로 내려간다. 고지문은 약하게 둘 수 없는 문구라 그 상태에서만
+   잉크를 한 단계 진하게 잡는다 (4.31 → 4.94:1). 특정도 (0,4,1). */
+body.product-visable.landing:not(.searched):not([data-theme="dark"]) .reference-disclaimer {
+  color: #515c58 !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+ * New Home 랜딩 히어로 — 확정 시안 그대로 구현 (2026-08)
+ * Figma `New Home Desktop · Landing` · 히어로 마스터 507:2876 (1440×840)
+ *
+ * 라이브는 좌측 카피 + 우측 가이드 카드의 2단 그리드였고, 확정 시안은
+ * 중앙 정렬 단일 컬럼이다. 시안의 값은 Plugin API 로 직접 읽어 옮겼다:
+ *   base   linear-gradient(180deg, #FFFBF3 → #F3E9DA)
+ *   coral  #FF6B5B .28 / peri #7F89CE .30 / emerald #0EA37B .15
+ *   light-1 #FFFCF5 .50 / light-2 #FFFFFF .35   (모두 LAYER_BLUR 180)
+ * 타원 중심·반경은 1440×840 기준 백분율로 환산하고 블러 180 만큼 넓혔다.
+ * Figma 는 자식 배열의 앞이 아래 → CSS background 는 앞이 위라 순서를 뒤집는다.
+ *
+ * 다크는 이미 `Waymaker Hero · Dark Aurora` 레시피가 위(6번 블록)에 있고
+ * 선택자가 (0,3,1) 이라 배경은 그대로 유지된다. 여기서는 레이아웃·타이포만
+ * 공통으로 적용하고, 유리 표면만 테마별로 나눈다.
+ *
+ * 시안과 다르게 간 지점 2곳 (모두 근거를 남긴다):
+ *  - CTA 는 시안의 #085E48/#F3EEDF(6.70:1) 대신 하우스 AAA 토큰
+ *    var(--vp-cta)/var(--vp-on-cta)(7.08:1) 을 쓴다. 색차는 육안으로
+ *    구분되지 않지만 대비 기준은 한 단계 위다.
+ *  - 키네틱 스트립 잉크는 시안 rgba(58,84,76,.5)(2.29:1) 대신 #47594F(5.01:1).
+ *    12px 본문 크기라 시안 값 그대로는 읽히지 않는다.
+ * 워드마크 벡터(203:13)는 이 환경의 네트워크 정책이 figma.com 자산 호스트를
+ * 막아 내려받지 못했다 — 임의로 다시 그리지 않고 비워 두었다.
+ * ═══════════════════════════════════════════════════════════════════ */
+body.product-new-home .nh-hero {
+  position: relative !important;
+  overflow: hidden !important;
+  min-height: 620px !important;
+  padding: 84px 32px 104px !important;
+  display: grid !important;
+  align-items: center !important;
+  justify-items: center !important;
+  border: 0 !important;
+}
+body.product-new-home:not([data-theme="dark"]) .nh-hero {
+  background:
+    radial-gradient(34.7% 59.5% at 58.3% 73.8%, rgba(255, 255, 255, 0.35) 0%, transparent 70%),
+    radial-gradient(43.8% 72.0% at 46.5% 30.4%, rgba(255, 252, 245, 0.50) 0%, transparent 70%),
+    radial-gradient(33.3% 56.0% at 86.1% 91.7%, rgba(14, 163, 123, 0.15) 0%, transparent 70%),
+    radial-gradient(42.4% 70.2% at 13.2% 84.5%, rgba(127, 137, 206, 0.30) 0%, transparent 70%),
+    radial-gradient(46.5% 73.8% at 88.2% 28.6%, rgba(255, 107, 91, 0.28) 0%, transparent 70%),
+    linear-gradient(180deg, #fffbf3 0%, #f3e9da 100%) !important;
+}
+
+body.product-new-home .nh-hero-inner {
+  position: relative !important;
+  z-index: 1 !important;
+  width: min(100%, 940px) !important;
+  display: block !important;
+  grid-template-columns: none !important;
+  gap: 0 !important;
+}
+body.product-new-home .nh-hero-copy {
+  max-width: none !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 20px !important;
+  text-align: center !important;
+}
+body.product-new-home .nh-hero-copy > * { margin: 0 !important; }
+
+/* 키커 — 유리 알약 */
+body.product-new-home .nh-kicker {
+  display: inline-flex !important;
+  align-items: center !important;
+  padding: 9px 16px !important;
+  border: 1.4px solid rgba(255, 255, 255, 0.55) !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.55) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  backdrop-filter: blur(10px) !important;
+  color: var(--vp-ink) !important;
+  font-size: 12.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: none !important;
+}
+body.product-new-home[data-theme="dark"] .nh-kicker {
+  border-color: rgba(241, 238, 229, 0.22) !important;
+  background: rgba(241, 238, 229, 0.10) !important;
+}
+
+body.product-new-home .nh-title {
+  max-width: 720px !important;
+  white-space: pre-line !important;
+  color: var(--vp-ink) !important;
+  font-size: clamp(34px, 3.8vw, 54px) !important;
+  font-weight: 800 !important;
+  line-height: 1.08 !important;
+  letter-spacing: -0.02em !important;
+  word-break: keep-all !important;
+}
+body.product-new-home .nh-tagline {
+  color: #e0513e !important;
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  font-style: italic !important;
+}
+body.product-new-home[data-theme="dark"] .nh-tagline { color: #ff9d8c !important; }
+
+body.product-new-home .nh-lead {
+  max-width: 640px !important;
+  color: var(--vp-ink-2) !important;
+  font-size: 17px !important;
+  line-height: 1.6 !important;
+  word-break: keep-all !important;
+}
+
+body.product-new-home .nh-cta-row {
+  margin-top: 0 !important;
+  justify-content: center !important;
+  gap: 12px !important;
+}
+body.product-new-home .nh-btn {
+  min-height: 48px !important;
+  padding: 0 24px !important;
+  border-radius: 999px !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+}
+body.product-new-home .nh-btn-primary {
+  padding-left: 26px !important;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.22) !important;
+}
+body.product-new-home .nh-btn-arrow { font-weight: 700 !important; }
+body.product-new-home:not([data-theme="dark"]) .nh-btn-secondary {
+  border: 1.4px solid rgba(255, 255, 255, 0.55) !important;
+  background: rgba(255, 255, 255, 0.60) !important;
+  -webkit-backdrop-filter: blur(9px) !important;
+  backdrop-filter: blur(9px) !important;
+  color: var(--vp-ink) !important;
+}
+body.product-new-home[data-theme="dark"] .nh-btn-secondary {
+  border: 1.4px solid rgba(241, 238, 229, 0.22) !important;
+  background: rgba(241, 238, 229, 0.08) !important;
+  color: var(--vp-ink) !important;
+}
+
+/* 신뢰 칩 3개 */
+body.product-new-home .nh-proof-row {
+  margin-top: 0 !important;
+  justify-content: center !important;
+  gap: 8px !important;
+}
+body.product-new-home .nh-proof-row span {
+  padding: 7px 13px !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  color: var(--vp-green) !important;
+  font-size: 12.5px !important;
+  font-weight: 700 !important;
+}
+body.product-new-home:not([data-theme="dark"]) .nh-proof-row span {
+  background: rgba(255, 255, 255, 0.55) !important;
+  -webkit-backdrop-filter: blur(7px) !important;
+  backdrop-filter: blur(7px) !important;
+}
+body.product-new-home[data-theme="dark"] .nh-proof-row span {
+  background: rgba(241, 238, 229, 0.10) !important;
+}
+
+/* 키네틱 스트립 — 시안의 흐르는 문구 띠. 같은 문구를 두 번 이어 붙이고
+   트랙을 -50% 만큼 밀어 이음매 없이 반복한다. 모션 감소 설정에서는 멈춘다. */
+body.product-new-home .nh-kinetic {
+  position: absolute !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 46px !important;
+  z-index: 1 !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
+  mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+}
+body.product-new-home .nh-kinetic-track {
+  display: flex !important;
+  width: max-content !important;
+  animation: nh-kinetic-scroll 64s linear infinite;
+}
+body.product-new-home .nh-kinetic-line {
+  white-space: pre !important;
+  color: #47594f !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+}
+body.product-new-home[data-theme="dark"] .nh-kinetic-line { color: var(--vp-ink-3) !important; }
+@keyframes nh-kinetic-scroll {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  body.product-new-home .nh-kinetic-track { animation: none !important; }
+}
+
+/* 히어로 각주 — 시안은 rgba(90,101,97,.9) 지만 11px 에서 4.12:1 이라
+   3차 잉크 토큰(#5A6561 / #BBC7C3, 5.04:1)을 쓴다. */
+body.product-new-home .nh-hero-foot {
+  position: absolute !important;
+  left: 50% !important;
+  bottom: 18px !important;
+  transform: translateX(-50%) !important;
+  z-index: 1 !important;
+  margin: 0 !important;
+  max-width: min(92%, 900px) !important;
+  color: var(--vp-ink-3) !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  text-align: center !important;
+  word-break: keep-all !important;
+}
+
+/* 오른쪽 가장자리의 오로라 도트 4개 — 첫 점만 진하고 나머지는 흰 35% 잔상. */
+body.product-new-home .nh-aurora-dots {
+  position: absolute !important;
+  right: 31px !important;
+  top: 46% !important;
+  z-index: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 17px !important;
+  pointer-events: none !important;
+}
+body.product-new-home .nh-aurora-dots i {
+  width: 11px !important;
+  height: 11px !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.35) !important;
+}
+body.product-new-home .nh-aurora-dots i:first-child { background: var(--vp-green) !important; }
+
+@media (max-width: 960px) {
+  body.product-new-home .nh-hero { min-height: auto !important; padding: 56px 20px 96px !important; }
+  body.product-new-home .nh-aurora-dots { display: none !important; }
+}
+@media (max-width: 720px) {
+  body.product-new-home .nh-hero { padding: 42px 18px 92px !important; }
+  body.product-new-home .nh-hero-copy { gap: 16px !important; }
+  body.product-new-home .nh-title { font-size: 34px !important; }
+  body.product-new-home .nh-cta-row .nh-btn { flex: 1 1 100% !important; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+ * Visable 랜딩 — 확정 시안 나머지 (2026-08)
+ * Figma 11 `Visable Landing (pre-search)` · 히어로 마스터 507:2139
+ *
+ * 7-A 에서 오로라 배경만 살렸고, 이번에 나머지 확정 요소를 옮긴다:
+ * 유리 키커 · 2행 헤드라인(초록 강조어) · 리드 · 알약형 검색 바 ·
+ * 섹션 머리말 · 키네틱 스트립 · 저작권 각주 · 오로라 도트 4개.
+ * 값은 전부 Plugin API 실측이다.
+ * ═══════════════════════════════════════════════════════════════════ */
+
+/* 블룸 반경을 시안의 LAYER_BLUR(코랄·페리·에메랄드 170, 라이트 210)만큼
+   정확히 넓힌다. 7-A 에서는 반경을 다소 좁게 잡아 블룸이 시안보다 작았다. */
+body.product-visable.landing:not(.searched):not([data-theme="dark"]) .hero-container::before {
+  background:
+    radial-gradient(37.2% 63.7% at 59.0% 73.6%, rgba(255, 255, 255, 0.24) 0%, transparent 70%),
+    radial-gradient(45.8% 75.6% at 47.9% 31.5%, rgba(255, 252, 245, 0.42) 0%, transparent 70%),
+    radial-gradient(33.3% 56.0% at 84.0% 91.7%, rgba(255, 107, 91,  0.16) 0%, transparent 70%),
+    radial-gradient(41.7% 69.0% at 11.8% 91.7%, rgba(14, 163, 123,  0.24) 0%, transparent 70%),
+    radial-gradient(46.5% 73.8% at 87.5% 27.4%, rgba(127, 137, 206, 0.42) 0%, transparent 70%),
+    linear-gradient(180deg, #fcfaf5 0%, #f1eadc 100%) !important;
+}
+
+/* 키커 — 유리 알약 (507:2146). 로고 위에 절대 배치된 기존 구조는 유지한다. */
+body.product-visable .p-hero-eyebrow {
+  top: -126px !important;
+  padding: 9px 16px !important;
+  border: 1.4px solid rgba(255, 255, 255, 0.55) !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.55) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  backdrop-filter: blur(10px) !important;
+  box-shadow: 0 4px 16px rgba(31, 42, 80, 0.08) !important;
+  color: var(--vp-ink) !important;
+  font: 700 12.5px/1.2 var(--vp-font) !important;
+  letter-spacing: 0.06em !important;
+}
+body.product-visable .p-hero-eyebrow::before { display: none !important; content: none !important; }
+body.product-visable[data-theme="dark"] .p-hero-eyebrow {
+  border-color: rgba(241, 238, 229, 0.22) !important;
+  background: rgba(241, 238, 229, 0.10) !important;
+  box-shadow: none !important;
+}
+
+/* 헤드라인 (507:2150) — 54px SemiBold, tracking -1.08px(= -0.02em), 행간 1.08.
+   강조어는 같은 줄 안에서 초록으로 바뀐다(기존은 두 번째 줄 전체가 초록이었다). */
+body.product-visable .p-hero-title {
+  font: 600 clamp(34px, 3.8vw, 54px)/1.08 var(--vp-font) !important;
+  letter-spacing: -0.02em !important;
+}
+body.product-visable .p-hero-title em {
+  display: inline !important;
+  color: #085e48 !important;
+}
+body.product-visable[data-theme="dark"] .p-hero-title em { color: var(--vp-green) !important; }
+
+body.product-visable .p-hero-sub {
+  max-width: 620px !important;
+  font: 400 18px/1.6 var(--vp-font) !important;
+  letter-spacing: -0.01em !important;
+}
+
+/* 검색 바 (507:2152) — 700×74 유리 알약. 클릭하면 기존처럼 실제 검색이 열린다. */
+body.product-visable .p-gw-search {
+  min-height: 74px !important;
+  padding: 13px 11px 13px 26px !important;
+  border: 1.4px solid rgba(255, 255, 255, 0.55) !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.72) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  backdrop-filter: blur(12px) !important;
+  box-shadow: 0 14px 34px -6px rgba(31, 58, 96, 0.14) !important;
+}
+body.product-visable[data-theme="dark"] .p-gw-search {
+  border-color: rgba(241, 238, 229, 0.18) !important;
+  background: rgba(241, 238, 229, 0.08) !important;
+  box-shadow: none !important;
+}
+body.product-visable .p-gw-search-title { font-size: 16px !important; }
+/* 특정도 주의: index.html 안에
+   `:root:not([data-theme="archive_diary"]) body.product-visable .p-gw-search-kbd`
+   (0,3,2) + !important 로 `background: var(--cta)` 를 박아둔 규칙이 있다.
+   그대로 두면 다크에서 표면은 #0B4F44 인데 잉크만 #062E27 로 바뀌어 1.55:1 이
+   된다. 같은 가드를 붙이고 클래스를 하나 더해 (0,4,2) 로 이긴다. */
+:root:not([data-theme="archive_diary"]) body.product-visable:not(.searched) .p-gw-search-kbd {
+  min-width: 128px !important;
+  height: 48px !important;
+  border-radius: 999px !important;
+  background: var(--vp-cta) !important;
+  color: var(--vp-on-cta) !important;
+  box-shadow: 0 6px 18px rgba(8, 94, 72, 0.32), inset 0 1px 1px rgba(255, 255, 255, 0.22) !important;
+}
+body.product-visable .p-gw-search-kbd::after { content: "확인하기 →"; }
+
+/* 섹션 머리말 (507:1356-1357) */
+body.product-visable .p-gw-head {
+  grid-column: 1 / -1 !important;
+  margin: 6px 0 2px !important;
+}
+body.product-visable .p-gw-head-title {
+  margin: 0 !important;
+  color: var(--vp-ink) !important;
+  font: 700 24px/1.25 var(--vp-font) !important;
+  letter-spacing: -0.03em !important;
+}
+body.product-visable .p-gw-head-sub {
+  margin: 8px 0 0 !important;
+  color: var(--vp-ink-2) !important;
+  font: 400 15px/1.55 var(--vp-font) !important;
+}
+
+/* 카드 그리드 (507:1358-1400) — 182px 높이, 반경 18. */
+body.product-visable .p-gw-card,
+body.product-visable .p-gw-newhome {
+  min-height: 182px !important;
+  border-radius: 18px !important;
+}
+
+/* 키네틱 스트립 (507:2159) — 시안 잉크 rgba(58,84,76,.55) 는 12px 에서
+   2.5:1 이라 #47594F(5.01:1)로 올렸다. 문구는 시안 그대로다. */
+body.product-visable .p-kinetic {
+  position: relative !important;
+  z-index: 1 !important;
+  width: 100vw !important;
+  margin: 30px calc(50% - 50vw) 0 !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
+  mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+}
+body.product-visable .p-kinetic-track {
+  display: flex !important;
+  width: max-content !important;
+  animation: vp-kinetic-scroll 68s linear infinite;
+}
+body.product-visable .p-kinetic-line {
+  white-space: pre !important;
+  color: #47594f !important;
+  font: 700 12px/1.3 var(--vp-font) !important;
+  letter-spacing: 0.08em !important;
+}
+body.product-visable[data-theme="dark"] .p-kinetic-line { color: var(--vp-ink-3) !important; }
+@keyframes vp-kinetic-scroll {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  body.product-visable .p-kinetic-track { animation: none !important; }
+}
+
+/* 저작권 각주 (507:2158) — 시안 #5A6561 12.5px 이 그대로 3차 잉크 토큰이다. */
+body.product-visable .p-hero-foot {
+  position: relative !important;
+  z-index: 1 !important;
+  margin: 14px 0 0 !important;
+  color: var(--vp-ink-3) !important;
+  font: 500 12.5px/1.4 var(--vp-font) !important;
+  text-align: center !important;
+}
+
+/* 오로라 도트 (507:2161-2164) — 첫 점만 진하고 나머지는 흰 35% 잔상. */
+body.product-visable .p-aurora-dots {
+  position: absolute !important;
+  right: 31px !important;
+  top: 46% !important;
+  z-index: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 17px !important;
+  pointer-events: none !important;
+}
+body.product-visable .p-aurora-dots i {
+  width: 11px !important;
+  height: 11px !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.35) !important;
+}
+body.product-visable .p-aurora-dots i:first-child { background: #085e48 !important; }
+body.product-visable[data-theme="dark"] .p-aurora-dots i:first-child { background: var(--vp-green) !important; }
+/* 검색 결과 화면은 calm — 장식은 랜딩에서만 보인다. */
+body.product-visable.searched .p-kinetic,
+body.product-visable.searched .p-hero-foot,
+body.product-visable.searched .p-aurora-dots { display: none !important; }
+
+@media (max-width: 960px) {
+  body.product-visable .p-aurora-dots { display: none !important; }
+  body.product-visable .p-hero-eyebrow { top: -104px !important; }
+}
+@media (max-width: 720px) {
+  body.product-visable .p-hero-sub { font-size: 15px !important; }
+  body.product-visable .p-gw-search { min-height: 64px !important; padding: 10px 10px 10px 18px !important; }
+  body.product-visable .p-gw-search-kbd { min-width: 100px !important; height: 44px !important; }
+  body.product-visable .p-gw-card,
+  body.product-visable .p-gw-newhome { min-height: 148px !important; }
+}
+
+/* 카드 본문 (507:1359-1367) — 시안 실측: 428×182, r18, 표면 #FFFCF5,
+   테두리 #D1C6B4 1px, 패딩 20, 제목 16.5px ExtraBold #073B32,
+   설명 13px #3A544C, 화살표 링크 13.5px Bold.
+   화살표 링크 색만 시안(#0E8A6B, 4.18:1)이 아니라 var(--vp-green)(7.38:1)
+   을 쓴다 — 13.5px 굵은 글씨는 large text 가 아니라 4.5:1 을 넘겨야 한다. */
+body.product-visable .p-gw-card {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  padding: 20px !important;
+  border-color: #d1c6b4 !important;
+  background: #fffcf5 !important;
+}
+body.product-visable[data-theme="dark"] .p-gw-card {
+  border-color: var(--vp-line) !important;
+  background: var(--vp-surface) !important;
+}
+body.product-visable .p-gw-card-label,
+body.product-visable .p-gw-newhome-label {
+  font: 800 16.5px/1.25 var(--vp-font) !important;
+  letter-spacing: -0.02em !important;
+}
+body.product-visable:not([data-theme="dark"]) .p-gw-card-label,
+body.product-visable:not([data-theme="dark"]) .p-gw-newhome-label { color: #073b32 !important; }
+body.product-visable .p-gw-card-sub,
+body.product-visable .p-gw-newhome-desc {
+  color: var(--vp-ink-2) !important;
+  font: 400 13px/1.5 var(--vp-font) !important;
+}
+body.product-visable .p-gw-card-go,
+body.product-visable .p-gw-newhome-arrow {
+  margin-top: auto !important;
+  padding-top: 14px !important;
+  color: var(--vp-green) !important;
+  font: 700 13.5px/1.3 var(--vp-font) !important;
+}
+/* New Home 배너도 나머지 카드와 같은 카드로 읽히게 맞춘다 — 위쪽 정렬 +
+   화살표 링크 노출. 상단 스킨이 .p-gw-newhome-cta 를 감추고 있었다. */
+body.product-visable .p-gw-newhome {
+  justify-content: flex-start !important;
+  padding: 20px !important;
+  border-color: #d1c6b4 !important;
+  background: #fffcf5 !important;
+}
+body.product-visable[data-theme="dark"] .p-gw-newhome {
+  border-color: var(--vp-line) !important;
+  background: var(--vp-surface) !important;
+}
+body.product-visable .p-gw-newhome-cta { display: contents !important; }
+body.product-visable .p-gw-newhome-tagline { display: none !important; }
+
+/* 섹션 머리말 실측값 (507:1356-1357). */
+body.product-visable .p-gw-head-title { font: 600 24px/1.2 var(--vp-font) !important; }
+body.product-visable .p-gw-head-sub { font: 400 14px/1.5 var(--vp-font) !important; }
+
+/* 예전 스킨의 3px 초록 마커는 확정 시안에 없다 (시안은 44×44 아이콘 타일).
+   카드가 flex 로 바뀌면서 설명 위에 겹쳐 보이기까지 해서 내린다.
+   아이콘 타일은 Iconify 라인 아이콘이라 이 환경에서 자산을 받지 못했다 — 보류. */
+body.product-visable .p-gw-card::before,
+body.product-visable .p-gw-newhome::before { display: none !important; content: none !important; }
+
+/* ───────────────────────────────────────────────────────────────────
+ * 의사요소(::before/::after) 대비 — 감사 하네스에 의사요소 텍스트를
+ * 포함시키자 드러난 기존 미달 항목들. 텍스트 노드만 훑던 이전 하네스는
+ * CSS content 로 넣은 글자를 통째로 놓치고 있었다.
+ * ─────────────────────────────────────────────────────────────────── */
+
+/* index 랜딩의 섹션 눈썹 "체류 경로 선택" — #F8F2E7 로 사실상 배경과
+   같은 색이라 1.09:1 이었다. 3차 잉크로 올린다. */
+body.product-visable #visaManualSection::before {
+  color: var(--vp-ink-3) !important;
+}
+
+/* New Home 조건 목록의 ✓ / ✕ 글리프. 글리프 모양이 달라 색만으로
+   정보를 전달하지는 않지만, 그래도 읽히는 크기의 글자라 기준을 맞춘다. */
+body.product-new-home:not([data-theme="dark"]) .nh-pill-list.yes li::before { color: #0a7355 !important; }
+body.product-new-home:not([data-theme="dark"]) .nh-pill-list.no li::before  { color: #9a5210 !important; }
+body.product-new-home[data-theme="dark"] .nh-pill-list.yes li::before { color: #4fdcb2 !important; }
+body.product-new-home[data-theme="dark"] .nh-pill-list.no li::before  { color: #f0a860 !important; }
+
+/* ═══════════════════════════════════════════════════════════════════
+ * New Home Content 영역 + 양쪽 푸터 — 확정 시안 그대로 (2026-08)
+ * Figma 31 `New Home Desktop · Landing` · Content 122:8 / Footer 123:73
+ * Figma 11 `Visable Landing` · Footer 507:1407
+ *
+ * 시안 실측:
+ *   섹션 제목 24px ExtraBold #073B32 / 부제 14.5px #5A6561
+ *   카드 283×182 r18, 표면 #FFFCF5, 테두리 #D1C6B4, 패딩 20, 간격 10
+ *   아이콘 타일 44×44 r12 #E1EAEC, 글리프 15px ExtraBold
+ *   카드 제목 16.5px ExtraBold #073B32 / 설명 13px #3A544C / 링크 13.5px Bold
+ *   여정 카드 r20 흰 배경, 테두리 #E3DCCB, 패딩 24/28/28/28
+ *   출처 카드 335×62 r12 / 배지 알약 #E1EAEC
+ *   주의 줄 r14, 표면 #FBF2E4, 테두리 #E68A3A, 잉크 #8A4E14
+ *   푸터 #ECE5D6, 위 경계 #D1C6B4, 고지문 12px #5A6561
+ *
+ * 시안의 강조 초록 #0E8A6B 는 흰 계열 표면에서 4.18:1, 배지 위에서는
+ * 3.53:1 이라 본문 크기 글자에 쓸 수 없다. 전부 var(--vp-green)(6.2~7.4:1)
+ * 으로 올렸다 — 색상 계열은 같고 대비만 한 단계 위다.
+ * ═══════════════════════════════════════════════════════════════════ */
+
+body.product-new-home .nh-section-h h2 {
+  font: 800 24px/1.2 var(--vp-font) !important;
+  letter-spacing: -0.03em !important;
+}
+body.product-new-home:not([data-theme="dark"]) .nh-section-h h2 { color: #073b32 !important; }
+body.product-new-home .nh-section-intro {
+  color: var(--vp-ink-3) !important;
+  font: 400 14.5px/1.6 var(--vp-font) !important;
+}
+
+/* 기능 카드 (122:12-17) */
+body.product-new-home .nh-card {
+  min-height: 182px !important;
+  padding: 20px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 10px !important;
+  border-radius: 18px !important;
+}
+body.product-new-home:not([data-theme="dark"]) .nh-card {
+  border-color: #d1c6b4 !important;
+  background: #fffcf5 !important;
+}
+body.product-new-home .nh-card-icon {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 12px !important;
+  background: #e1eaec !important;
+  color: var(--vp-green) !important;
+  font: 800 15px/1 var(--vp-font) !important;
+  letter-spacing: 0 !important;
+}
+body.product-new-home[data-theme="dark"] .nh-card-icon {
+  background: var(--vp-mint) !important;
+  color: var(--vp-green) !important;
+}
+body.product-new-home .nh-card-label {
+  font: 800 16.5px/1.25 var(--vp-font) !important;
+  letter-spacing: -0.02em !important;
+}
+body.product-new-home:not([data-theme="dark"]) .nh-card-label { color: #073b32 !important; }
+body.product-new-home .nh-card-desc {
+  color: var(--vp-ink-2) !important;
+  font: 400 13px/1.5 var(--vp-font) !important;
+}
+body.product-new-home .nh-card-cta {
+  margin-top: auto !important;
+  color: var(--vp-green) !important;
+  font: 700 13.5px/1.3 var(--vp-font) !important;
+}
+
+/* 정착 여정 스테퍼 (123:9-42) */
+body.product-new-home .nh-journey {
+  margin-top: 18px !important;
+  padding: 24px 28px 28px !important;
+  border: 1px solid #e3dccb !important;
+  border-radius: 20px !important;
+  background: var(--vp-surface) !important;
+}
+body.product-new-home[data-theme="dark"] .nh-journey { border-color: var(--vp-line) !important; }
+body.product-new-home .nh-journey-track {
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  flex-wrap: wrap !important;
+  gap: 0 !important;
+}
+body.product-new-home .nh-journey-step {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 8px !important;
+  width: 34px !important;
+}
+body.product-new-home .nh-journey-dot {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 34px !important;
+  height: 34px !important;
+  border: 1px solid #e3dccb !important;
+  border-radius: 999px !important;
+  background: var(--vp-surface) !important;
+  color: var(--vp-ink-3) !important;
+  font: 700 13px/1 var(--vp-font) !important;
+  transition: background 0.35s ease, color 0.35s ease, border-color 0.35s ease;
+}
+/* 그려진 단계는 CTA 토큰으로 채운다 — 시안의 #0EA37B + 흰 글자는 3.21:1 로
+   하우스 규칙상 금지된 조합이다. */
+body.product-new-home .nh-journey-step.is-drawn .nh-journey-dot {
+  border-color: var(--vp-cta) !important;
+  background: var(--vp-cta) !important;
+  color: var(--vp-on-cta) !important;
+}
+body.product-new-home .nh-journey-label {
+  color: var(--vp-ink-3) !important;
+  font: 700 13px/1.2 var(--vp-font) !important;
+  white-space: nowrap !important;
+  transition: color 0.35s ease;
+}
+body.product-new-home .nh-journey-step.is-drawn .nh-journey-label { color: var(--vp-green) !important; }
+body.product-new-home .nh-journey-link {
+  width: 40px !important;
+  height: 3px !important;
+  margin-top: 15.5px !important;
+  border-radius: 999px !important;
+  background: #e3dccb !important;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.4s ease, background 0.4s ease;
+}
+body.product-new-home .nh-journey-link.is-drawn {
+  background: var(--vp-cta) !important;
+  transform: scaleX(1);
+}
+@media (prefers-reduced-motion: reduce) {
+  body.product-new-home .nh-journey-link { transform: scaleX(1); transition: none; }
+  body.product-new-home .nh-journey-dot,
+  body.product-new-home .nh-journey-label { transition: none; }
+}
+body.product-new-home .nh-journey-note {
+  margin: 18px 0 0 !important;
+  color: var(--vp-ink-3) !important;
+  font: 400 12px/1.55 var(--vp-font) !important;
+  text-align: center !important;
+}
+@media (max-width: 720px) {
+  body.product-new-home .nh-journey { padding: 18px 14px 20px !important; }
+  body.product-new-home .nh-journey-link { width: 18px !important; }
+}
+
+/* 주의 줄 (123:70-72) */
+body.product-new-home:not([data-theme="dark"]) .nh-caution .nh-caution-inner {
+  border-color: #e68a3a !important;
+  border-radius: 14px !important;
+  background: #fbf2e4 !important;
+}
+body.product-new-home:not([data-theme="dark"]) .nh-caution h2,
+body.product-new-home:not([data-theme="dark"]) .nh-caution p { color: #8a4e14 !important; }
+
+/* 푸터 (123:73 · 507:1407) */
+body.product-new-home:not([data-theme="dark"]) .nh-footer {
+  background: #ece5d6 !important;
+  border-top: 1px solid #d1c6b4 !important;
+}
+body.product-new-home .nh-footer p {
+  color: var(--vp-ink-3) !important;
+  font: 400 12px/1.6 var(--vp-font) !important;
+}
+
+body.product-visable .p-footer {
+  padding: 26px clamp(18px, 4vw, 50px) 34px !important;
+  border-top: 1px solid #d1c6b4 !important;
+  background: #ece5d6 !important;
+}
+body.product-visable[data-theme="dark"] .p-footer {
+  border-top-color: var(--vp-line) !important;
+  background: var(--vp-paper-strong) !important;
+}
+body.product-visable .p-footer-inner {
+  max-width: var(--vp-max) !important;
+  margin: 0 auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+}
+body.product-visable .p-footer-logo { width: 80px !important; height: auto !important; }
+body.product-visable .p-footer-notice {
+  margin: 0 !important;
+  color: var(--vp-ink-3) !important;
+  font: 400 12px/1.6 var(--vp-font) !important;
+}
+/* 검색 결과 화면에서도 고지문은 남긴다 — 숨기지 않는다. */
+
+/* ═══════════════════════════════════════════════════════════════════
+ * 서류 작성 도우미 — 확정 시안 (2026-08)
+ * Figma 15 `FH · 서류 작성 도우미 — 확정안 v1` (312:4, 1440×900)
+ *
+ * 라이브는 좌측 정렬 평면 페이지였고, 확정 시안은 오로라 배경 위의
+ * 중앙 정렬 히어로다. 실측값:
+ *   페이지 #F7F4EF / bloom-peri #7F89CE .16 / bloom-emerald #298C70 .12
+ *   (둘 다 LAYER_BLUR 180)
+ *   키커 흰 알약 + 테두리 #E5E5ED, 12.5px Bold #1C1F29
+ *   제목 44px SemiBold #177361 (5.23:1) · 리드 16px #4D5261 (7.11:1)
+ *   각주 11px #4D5261 · 카드 r18 흰 배경 + 테두리 #E5E5ED
+ * ═══════════════════════════════════════════════════════════════════ */
+body.product-form-helper:not([data-theme="dark"]) {
+  background:
+    radial-gradient(41.0% 58.9% at 11.8% 85.6%, rgba(41, 140, 112, 0.12) 0%, transparent 70%),
+    radial-gradient(43.8% 62.2% at 86.8% 13.3%, rgba(127, 137, 206, 0.16) 0%, transparent 70%),
+    #f7f4ef !important;
+  background-attachment: fixed !important;
+}
+
+body.product-form-helper .fh-hero {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  text-align: center !important;
+  gap: 16px !important;
+}
+body.product-form-helper .fh-hero > * { margin: 0 !important; }
+body.product-form-helper .fh-kicker {
+  display: inline-flex !important;
+  align-items: center !important;
+  padding: 9px 16px !important;
+  border: 1px solid #e5e5ed !important;
+  border-radius: 999px !important;
+  background: #ffffff !important;
+  color: #1c1f29 !important;
+  font: 700 12.5px/1.2 var(--vp-font) !important;
+  letter-spacing: 0.02em !important;
+  text-transform: none !important;
+}
+body.product-form-helper[data-theme="dark"] .fh-kicker {
+  border-color: var(--vp-line) !important;
+  background: var(--vp-surface) !important;
+  color: var(--vp-ink) !important;
+}
+body.product-form-helper .fh-hero-title {
+  font: 600 clamp(30px, 3.2vw, 44px)/1.2 var(--vp-font) !important;
+  letter-spacing: -0.025em !important;
+}
+body.product-form-helper:not([data-theme="dark"]) .fh-hero-title { color: #177361 !important; }
+body.product-form-helper[data-theme="dark"] .fh-hero-title { color: var(--vp-green) !important; }
+body.product-form-helper .fh-hero-sub {
+  max-width: 900px !important;
+  color: var(--vp-ink-2) !important;
+  font: 400 16px/1.6 var(--vp-font) !important;
+}
+body.product-form-helper .fh-privacy-notice,
+body.product-form-helper .fh-source-meta { text-align: left !important; }
+body.product-form-helper .fh-source-meta { justify-content: center !important; }
+
+body.product-form-helper .fh-page-foot {
+  margin: 40px 0 8px !important;
+  color: var(--vp-ink-3) !important;
+  font: 400 11px/1.5 var(--vp-font) !important;
+  text-align: center !important;
+}
+
+/* 시안의 카드 형태 — r18, 흰 표면, 테두리 #E5E5ED. */
+body.product-form-helper:not([data-theme="dark"]) :is(.fh-picker, .fh-doc-card, .fh-step-panel, .fh-aside, .fh-stepper) {
+  border-radius: 18px !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+ * 국적민원·귀화면접 허브 — 확정 시안 (2026-08)
+ * Figma 34 `NIH · 귀화면접 허브 — 확정안 v1` (314:4, 1440×760)
+ *
+ * 실측값: 페이지 #F8F4F1 / bloom-peri #7F89CE .15(좌상) /
+ *   bloom-coral #D95C47 .10(우하), 둘 다 LAYER_BLUR 180
+ *   키커 흰 알약 + 테두리 #E5E5ED, 12.5px Bold #1C1F29
+ *   제목 44px SemiBold · 리드 16px #4D5261 (7.11:1)
+ *   허브 카드 412×100 r16 흰 배경 + 테두리 #E5E5ED,
+ *     점 10px #7F89CE, 제목 16.5px SemiBold #1C1F29, 본문 13px #4D5261
+ *   코치 배너 r20 #0B4F44, 제목 19px 흰색, 부제 13.5px #C7E0D6 (6.80:1),
+ *     CTA 알약 #8CD9B8 + #083830 (7.86:1)
+ *   각주 11px #4D5261
+ * ═══════════════════════════════════════════════════════════════════ */
+body.product-nationality-hub:not([data-theme="dark"]) {
+  background:
+    radial-gradient(41.7% 60.5% at 16.0% 15.8%, rgba(127, 137, 206, 0.15) 0%, transparent 70%),
+    radial-gradient(39.6% 55.3% at 87.5% 93.4%, rgba(217, 92, 71, 0.10) 0%, transparent 70%),
+    #f8f4f1 !important;
+  background-attachment: fixed !important;
+}
+
+body.product-nationality-hub .ni-hero {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  text-align: center !important;
+  gap: 16px !important;
+}
+body.product-nationality-hub .ni-hero > * { margin: 0 !important; }
+body.product-nationality-hub .ni-hero-kicker {
+  display: inline-flex !important;
+  align-items: center !important;
+  padding: 9px 16px !important;
+  border: 1px solid #e5e5ed !important;
+  border-radius: 999px !important;
+  background: #ffffff !important;
+  color: #1c1f29 !important;
+  font: 700 12.5px/1.2 var(--vp-font) !important;
+  letter-spacing: 0.02em !important;
+  text-transform: none !important;
+}
+body.product-nationality-hub[data-theme="dark"] .ni-hero-kicker {
+  border-color: var(--vp-line) !important;
+  background: var(--vp-surface) !important;
+  color: var(--vp-ink) !important;
+}
+body.product-nationality-hub .ni-hero h1 {
+  font: 600 clamp(28px, 3.2vw, 44px)/1.2 var(--vp-font) !important;
+  letter-spacing: -0.025em !important;
+  word-break: keep-all !important;
+}
+body.product-nationality-hub .ni-hero-lead {
+  max-width: 640px !important;
+  color: var(--vp-ink-2) !important;
+  font: 400 16px/1.6 var(--vp-font) !important;
+  word-break: keep-all !important;
+}
+body.product-nationality-hub .ni-hero-cta { justify-content: center !important; }
+
+/* 허브 카드 6장 (314:19-42) */
+body.product-nationality-hub .ni-hubgrid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 24px !important;
+  padding-top: 10px !important;
+}
+body.product-nationality-hub .ni-hubcard {
+  display: grid !important;
+  grid-template-columns: 10px 1fr !important;
+  align-content: start !important;
+  gap: 9px 9px !important;
+  min-height: 100px !important;
+  padding: 22px 24px !important;
+  border: 1px solid #e5e5ed !important;
+  border-radius: 16px !important;
+  background: #ffffff !important;
+  text-decoration: none !important;
+}
+body.product-nationality-hub[data-theme="dark"] .ni-hubcard {
+  border-color: var(--vp-line) !important;
+  background: var(--vp-surface) !important;
+}
+body.product-nationality-hub .ni-hubcard:hover { border-color: var(--vp-green-2) !important; }
+body.product-nationality-hub .ni-hubcard-dot {
+  width: 10px !important;
+  height: 10px !important;
+  margin-top: 5px !important;
+  border-radius: 99px !important;
+  background: #7f89ce !important;
+}
+body.product-nationality-hub .ni-hubcard-title {
+  color: var(--vp-ink) !important;
+  font: 600 16.5px/1.25 var(--vp-font) !important;
+  letter-spacing: -0.02em !important;
+}
+body.product-nationality-hub .ni-hubcard-body {
+  grid-column: 1 / -1 !important;
+  color: var(--vp-ink-2) !important;
+  font: 400 13px/1.5 var(--vp-font) !important;
+  word-break: keep-all !important;
+}
+
+/* Waymaker 코치 배너 (314:43-48) */
+body.product-nationality-hub .ni-coachband {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 16px !important;
+  margin-top: 26px !important;
+  padding: 22px 36px !important;
+  border-radius: 20px !important;
+  background: #0b4f44 !important;
+  text-decoration: none !important;
+}
+body.product-nationality-hub .ni-coachband-text {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+}
+body.product-nationality-hub .ni-coachband-text strong {
+  color: #ffffff !important;
+  font: 600 19px/1.25 var(--vp-font) !important;
+  letter-spacing: -0.02em !important;
+}
+body.product-nationality-hub .ni-coachband-text span {
+  color: #c7e0d6 !important;
+  font: 400 13.5px/1.5 var(--vp-font) !important;
+}
+body.product-nationality-hub .ni-coachband-cta {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 15px 24px 15px 26px !important;
+  border-radius: 999px !important;
+  background: #8cd9b8 !important;
+  color: #083830 !important;
+  font: 700 14.5px/1 var(--vp-font) !important;
+}
+
+body.product-nationality-hub .ni-page-foot {
+  margin-top: 18px !important;
+  color: var(--vp-ink-3) !important;
+  font: 400 11px/1.6 var(--vp-font) !important;
+}
+
+@media (max-width: 960px) {
+  body.product-nationality-hub .ni-hubgrid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+}
+@media (max-width: 640px) {
+  body.product-nationality-hub .ni-hubgrid { grid-template-columns: 1fr !important; gap: 14px !important; }
+  body.product-nationality-hub .ni-coachband { padding: 18px 20px !important; }
+}
