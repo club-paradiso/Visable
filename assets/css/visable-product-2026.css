@@ -2806,3 +2806,63 @@ body.product-visable[data-theme="dark"] #aboutMe :is(.about-title, .bi-title, .b
 /* 5-c. `.hobby-desc` 는 opacity:0.85 때문에 색을 진하게 해도 3.9:1 에 걸린다.
    opacity 는 color 로 덮을 수 없다 — 두 스타일 모두 불투명도를 되돌린다. */
 body.product-visable .hobby-desc { opacity: 1 !important; }
+
+/* ── 6. Pop 반응형 — 위 Pop 규칙들이 미디어 쿼리 없이 !important 로 걸려
+   기존 모바일 반응형을 덮어버렸다. 390px 에서 카드가 3열로 남고, 알약형
+   검색 바가 원형으로 뭉개지고, 키커가 워드마크를 덮었다.
+   (Editorial 은 스킨의 기존 미디어 쿼리가 정상 동작한다 — Pop 만 보정한다.) */
+@media (max-width: 1080px) {
+  :root[data-theme="archive_diary"] body.product-visable .p-gateway {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+@media (max-width: 760px) {
+  :root[data-theme="archive_diary"] body.product-visable .p-gateway {
+    grid-template-columns: 1fr !important;
+  }
+  /* 알약(999px) 은 좁은 폭에서 글자를 원 안에 가둔다 — 라운드 사각으로. */
+  :root[data-theme="archive_diary"] body.product-visable .p-gw-search {
+    border-radius: 22px !important;
+    padding: 14px 16px !important;
+    box-shadow: 4px 4px 0 var(--k-blue, #2f5efc) !important;
+  }
+  /* 헤더를 단순 세로 스택으로 — Pop 의 그리드 배치(grid-area: logo)와
+     흐름 배치된 키커가 겹치던 것을 없앤다. */
+  :root[data-theme="archive_diary"] body.product-visable:not(.searched) .header-inner {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 10px !important;
+  }
+  :root[data-theme="archive_diary"] body.product-visable:not(.searched) .logo-area {
+    grid-area: auto !important;
+    justify-self: center !important;
+    margin: 0 0 6px !important;
+    transform: rotate(-1.5deg) !important;
+  }
+  :root[data-theme="archive_diary"] body.product-visable .p-hero-eyebrow {
+    position: static !important;
+    margin: 0 0 6px !important;
+  }
+  :root[data-theme="archive_diary"] body.product-visable :is(.p-gw-card, .p-gw-newhome) {
+    min-height: 0 !important;
+  }
+}
+
+/* ── 7. 히어로 하단 장식의 모바일 충돌 ──────────────────────────────
+   키네틱 스트립과 각주를 히어로 바닥에 절대배치했는데, 좁은 폭에서 각주가
+   2~3줄로 늘어나면서 스트립 위로 올라타 글자가 겹쳤다.
+   모바일에서는 둘 다 흐름 배치로 되돌린다(두 스타일 공통 구조다). */
+@media (max-width: 760px) {
+  body.product-new-home .nh-kinetic,
+  body.product-new-home .nh-hero-foot {
+    position: static !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    transform: none !important;
+  }
+  body.product-new-home .nh-kinetic { margin: 20px 0 0 !important; }
+  body.product-new-home .nh-hero-foot { margin: 10px auto 0 !important; max-width: 100% !important; }
+  body.product-new-home .nh-hero { padding-bottom: 28px !important; }
+}
