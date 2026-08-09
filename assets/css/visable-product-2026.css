@@ -2691,3 +2691,118 @@ body.product-nationality-hub .ni-page-foot {
 /* Pop 은 자기 잉크 토큰을 쓴다 (확정 시안의 초록 잉크는 Editorial 전용). */
 :root[data-theme="archive_diary"] body.product-new-home .nh-section-h h2,
 :root[data-theme="archive_diary"] body.product-new-home .nh-card-label { color: var(--t1) !important; }
+
+/* ── 4. Pop 팔레트의 대비 미달 (하네스를 안정화하고 나서야 보인 기존 결함) ──
+   리빌 애니메이션을 끄고 측정하니 같은 조건 재실행에서 27/27 로 일치했다.
+   아래는 그때 드러난 항목들로, 전부 확정 시안 이식과 무관한 Pop 고유 색이다. */
+
+/* 4-a. Pop 의 밝은 파랑(#2F5EFC)은 밝은 표면에서 4.33~4.49:1 로 기준 바로
+   아래다. 글자로 쓰이는 자리만 이미 있는 --k-blue-deep(#1B36C9, 7.49:1)으로
+   내린다. 표면·테두리로 쓰이는 --k-blue 는 그대로 둔다. */
+:root[data-theme="archive_diary"] body.product-visable:not([data-theme="dark"]) :is(
+  .brand-hero-kicker,
+  .p-kicker,
+  .p-pathway-index,
+  .hobby-desc
+) {
+  color: var(--k-blue-deep, #1b36c9) !important;
+}
+
+/* 4-b. 브랜드 히어로 부제가 흰 글자인데 Pop 에서는 표면이 밝아 1.12:1 이었다. */
+/* 스킨의 `body.product-visable #brandHero .brand-hero-subtitle` 가 ID 를 써서
+   (1,2,1) 이다 — 클래스만으로는 못 이긴다. 같은 ID 를 넣어 (1,5,1) 로 맞춘다. */
+:root[data-theme="archive_diary"] body.product-visable:not([data-theme="dark"]) #brandHero .brand-hero-subtitle,
+:root[data-theme="archive_diary"] body.product-visable:not([data-theme="dark"]) .brand-hero.figma-brand-bridge .brand-hero-subtitle {
+  color: var(--t2) !important;
+}
+
+/* 4-c. 워드마크 캡슐의 ★ 배지. 배지가 캡슐 모서리에 걸쳐 있어 글자 뒤에
+   핑크(배지)와 파랑(캡슐)이 함께 온다. 어느 쪽에 얹혀도 통과하도록
+   배지를 진한 핑크로 내리고 흰 글자를 쓴다 (핑크 5.22:1 · 파랑 5.09:1). */
+:root[data-theme="archive_diary"] body.product-visable:not(.searched) .logo-area::after {
+  background: #c42c80 !important;
+  color: #ffffff !important;
+}
+
+/* 4-d. 애너그램 글자(PARADISO) — 크림 위 --k-pink 는 24px 에서 1.9:1.
+   large text 기준 3.0 을 넘도록 한 단계 진한 핑크로. */
+/* 여기도 `#anagram-bot` ID 규칙(1,2,1)이 이긴다 — 같은 ID 로 맞춘다. */
+:root[data-theme="archive_diary"] body.product-visable:not([data-theme="dark"]) #anagram-bot .anagram-letter,
+:root[data-theme="archive_diary"] body.product-visable:not([data-theme="dark"]) .figma-anagram-section .anagram-letter.anagram-bot {
+  color: #d6338f !important;
+}
+
+/* 4-e. 목록 불릿 · — 코랄 #FF6B5B 는 22.4px 에서 2.7:1. coral-deep 으로. */
+/* 4-e. 목록 불릿 · — 22.4px 라 large text(24px) 가 아니어서 4.5:1 이 필요하다.
+   코랄로는 3.7:1 이 한계라 Pop 에서는 본문 잉크를 쓴다(코랄은 CTA 에 남는다). */
+:root[data-theme="archive_diary"] body.product-visable:not([data-theme="dark"]) li::before {
+  color: var(--t2) !important;
+}
+
+/* 4-f. `.hobby-desc` 는 opacity:0.85 가 걸려 있어 색을 진하게 해도 3.97:1 이다.
+   opacity 는 color 로 덮을 수 없다 — 불투명도를 되돌린다. */
+:root[data-theme="archive_diary"] body.product-visable .hobby-desc { opacity: 1 !important; }
+
+/* ═══════════════════════════════════════════════════════════════════
+ * 하네스 안정화 뒤 드러난 다크 결함 — 2026-08-09
+ *
+ * 리빌을 최종 상태로 고정하고 측정하자, 그동안 `opacity < 0.15` 로 걸러져
+ * 감사 대상에서 빠져 있던 구간이 드러났다. 아래는 전부 실측 기준이다.
+ * ═══════════════════════════════════════════════════════════════════ */
+
+/* 5-a. Pop 다크 — 트랙 카드와 통계 숫자가 어두운 표면 위 검정 잉크였다.
+   (앞서 "Pop 은 다크에서도 크림을 유지한다"고 적었던 것은 리빌 고정 전
+   측정이라 틀렸다. 실측: 트랙 카드 rgb(24,32,58), 통계는 어두운 페이지 위.) */
+:root[data-theme="archive_diary"] body.product-visable[data-theme="dark"] :is(
+  .visa-track-title,
+  .visa-track-desc,
+  .stat-num
+) {
+  color: var(--t1) !important;
+}
+
+/* 5-b. Editorial 다크 — 소개 섹션의 표면과 잉크가 어긋나 있다.
+   머리말(.bi-head)은 어두운 표면 위에 어두운 초록 잉크(#0B4F44)였고,
+   본문 카드들은 밝은 종이 표면을 유지하는데 잉크만 다크로 뒤집혀 있었다.
+   카드의 종이 인상은 그대로 두고 잉크만 각 표면에 맞춘다. */
+body.product-visable[data-theme="dark"] #aboutMe :is(.about-title, .bi-title, .bi-lede, .bi-kicker) {
+  color: var(--vp-ink) !important;
+}
+/* 이 카드들이 '밝은 종이'로 남는 것은 Editorial 다크에서만이다.
+   Pop 다크에서는 같은 카드가 어두우므로 잉크를 반대로 잡아야 한다. */
+:root:not([data-theme="archive_diary"]) body.product-visable[data-theme="dark"] #aboutMe :is(.about-brand, .figma-anagram-section, .intro-text, .hobby-card, .about-experience) :is(h3, p, .anagram-label, .hobby-desc, .hobby-title) {
+  color: #14261f !important;
+}
+:root:not([data-theme="archive_diary"]) body.product-visable[data-theme="dark"] #aboutMe :is(.about-brand, .figma-anagram-section, .intro-text) h3::before {
+  color: #0b4f44 !important;
+}
+/* Pop 다크 — 같은 자리의 어두운 표면 위 잉크. */
+:root[data-theme="archive_diary"] body.product-visable[data-theme="dark"] #aboutMe :not(.about-hobbies):not(.figma-values-section) > :is(h3, p, .anagram-label, .hobby-desc, .hobby-title, strong),
+:root[data-theme="archive_diary"] body.product-visable[data-theme="dark"] #aboutMe :is(.about-brand, .figma-anagram-section, .intro-text) :is(h3, p, .anagram-label, strong) {
+  color: var(--t1) !important;
+}
+/* `.about-hobbies.figma-values-section` 만은 Pop 다크에서도 밝은 표면을
+   유지한다 — 여기는 어두운 잉크가 맞다. */
+:root[data-theme="archive_diary"] body.product-visable[data-theme="dark"] :is(.about-hobbies, .figma-values-section) :is(h3, p, .hobby-title, .hobby-desc) {
+  color: #14261f !important;
+}
+/* 푸터 워드마크가 어두운 푸터 위 검정이었다. */
+:root[data-theme="archive_diary"] body.product-visable[data-theme="dark"] .ft-logo {
+  color: var(--t1) !important;
+}
+:root[data-theme="archive_diary"] body.product-visable[data-theme="dark"] #aboutMe h3::before {
+  color: #9db9ff !important;
+}
+/* Pop 다크 — 폼 라벨이 어두운 표면 위 검정이었다. */
+:root[data-theme="archive_diary"] body.product-visable[data-theme="dark"] :is(.p-reminder-form label, form label) {
+  color: var(--t1) !important;
+}
+/* `.p-status.planned` 칩은 다크에서도 흰 표면을 유지한다 — 밝은 파랑이 아니라
+   진한 파랑이 맞다(위 4-a 액센트 목록에서 이 항목만 되돌린다). */
+:root[data-theme="archive_diary"] body[data-theme="dark"] .p-status.planned {
+  color: var(--k-blue-deep, #1b36c9) !important;
+}
+
+/* 5-c. `.hobby-desc` 는 opacity:0.85 때문에 색을 진하게 해도 3.9:1 에 걸린다.
+   opacity 는 color 로 덮을 수 없다 — 두 스타일 모두 불투명도를 되돌린다. */
+body.product-visable .hobby-desc { opacity: 1 !important; }
