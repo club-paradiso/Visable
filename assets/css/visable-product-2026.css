@@ -2768,30 +2768,11 @@ body.product-nationality-hub .ni-page-foot {
 body.product-visable[data-theme="dark"] #aboutMe :is(.about-title, .bi-title, .bi-lede, .bi-kicker) {
   color: var(--vp-ink) !important;
 }
-/* 이 카드들이 '밝은 종이'로 남는 것은 Editorial 다크에서만이다.
-   Pop 다크에서는 같은 카드가 어두우므로 잉크를 반대로 잡아야 한다. */
-:root:not([data-theme="archive_diary"]) body.product-visable[data-theme="dark"] #aboutMe :is(.about-brand, .figma-anagram-section, .intro-text, .hobby-card, .about-experience) :is(h3, p, .anagram-label, .hobby-desc, .hobby-title) {
-  color: #14261f !important;
-}
-:root:not([data-theme="archive_diary"]) body.product-visable[data-theme="dark"] #aboutMe :is(.about-brand, .figma-anagram-section, .intro-text) h3::before {
-  color: #0b4f44 !important;
-}
-/* Pop 다크 — 같은 자리의 어두운 표면 위 잉크. */
-:root[data-theme="archive_diary"] body.product-visable[data-theme="dark"] #aboutMe :not(.about-hobbies):not(.figma-values-section) > :is(h3, p, .anagram-label, .hobby-desc, .hobby-title, strong),
-:root[data-theme="archive_diary"] body.product-visable[data-theme="dark"] #aboutMe :is(.about-brand, .figma-anagram-section, .intro-text) :is(h3, p, .anagram-label, strong) {
-  color: var(--t1) !important;
-}
-/* `.about-hobbies.figma-values-section` 만은 Pop 다크에서도 밝은 표면을
-   유지한다 — 여기는 어두운 잉크가 맞다. */
-:root[data-theme="archive_diary"] body.product-visable[data-theme="dark"] :is(.about-hobbies, .figma-values-section) :is(h3, p, .hobby-title, .hobby-desc) {
-  color: #14261f !important;
-}
+/* 카드 표면 자체는 §9 에서 두 스타일 공통으로 통일한다.
+   여기서 스타일별로 잉크를 갈라 잡던 규칙들은 그 통일에 흡수되어 삭제했다. */
 /* 푸터 워드마크가 어두운 푸터 위 검정이었다. */
 :root[data-theme="archive_diary"] body.product-visable[data-theme="dark"] .ft-logo {
   color: var(--t1) !important;
-}
-:root[data-theme="archive_diary"] body.product-visable[data-theme="dark"] #aboutMe h3::before {
-  color: #9db9ff !important;
 }
 /* Pop 다크 — 폼 라벨이 어두운 표면 위 검정이었다. */
 :root[data-theme="archive_diary"] body.product-visable[data-theme="dark"] :is(.p-reminder-form label, form label) {
@@ -2866,3 +2847,84 @@ body.product-visable .hobby-desc { opacity: 1 !important; }
   body.product-new-home .nh-hero-foot { margin: 10px auto 0 !important; max-width: 100% !important; }
   body.product-new-home .nh-hero { padding-bottom: 28px !important; }
 }
+
+/* ── 8. 모바일에서만 나타나는 대비 미달 ─────────────────────────────
+   글자 크기가 뷰포트에 따라 줄면서 large text(24px) 기준을 벗어나는 자리들.
+   데스크톱 감사만으로는 보이지 않는다. */
+@media (max-width: 760px) {
+  /* 8-a. 애너그램 하단 단어(PARADISO)는 데스크톱에서 24px 라 large text
+     기준(3.0)을 통과하지만, 390px 에서 17.94px 로 줄어 4.5 가 필요해진다.
+     그 크기에서는 코랄이 2.94~3.57:1 이라 한 단계 진하게 잡는다.
+     데스크톱의 코랄 아이덴티티는 그대로 둔다. */
+  /* ID 규칙(1,2,1)을 이겨야 하므로 같은 ID 를 쓴다. */
+  /* 라이트에서만 — 다크는 §9 에서 표면을 어둡게 통일했으므로 밝은 코랄이 맞다. */
+  :root:not([data-theme="archive_diary"]) body.product-visable:not([data-theme="dark"]) #anagram-bot .anagram-letter,
+  :root:not([data-theme="archive_diary"]) body.product-visable:not([data-theme="dark"]) .figma-anagram-section .anagram-letter.anagram-bot {
+    color: #a8362a !important;
+  }
+  :root[data-theme="archive_diary"] body.product-visable:not([data-theme="dark"]) #anagram-bot .anagram-letter,
+  :root[data-theme="archive_diary"] body.product-visable:not([data-theme="dark"]) .figma-anagram-section .anagram-letter.anagram-bot {
+    color: #a81e6a !important;
+  }
+  /* 8-b. 히어로 각주가 모바일에서 에메랄드 블룸 위로 올라가 4.40:1 이 된다. */
+  body.product-visable .p-hero-foot,
+  body.product-new-home .nh-hero-foot { color: #515c58 !important; }
+  body.product-visable[data-theme="dark"] .p-hero-foot,
+  body.product-new-home[data-theme="dark"] .nh-hero-foot { color: var(--vp-ink-3) !important; }
+}
+
+/* ── 9. 소개 섹션 — 다크에서는 표면을 어둡게 통일한다 ───────────────
+   이 섹션의 카드 배경은 반투명 종이 그래디언트라, 다크에서 카드 위쪽은
+   밝고 아래쪽은 어두운 페이지가 비쳤다. 같은 카드 안에서 표면이 뒤집히니
+   잉크를 어느 방향으로 잡아도 절반은 틀렸다 — 실제로 이 자리에서 잉크
+   방향을 세 번 뒤집었다.
+   종이 인상을 살리려던 접근을 버리고, 다크에서는 표면을 어둡게 통일한다.
+   그러면 잉크는 한 방향(밝은 잉크)으로 정리되고 뷰포트가 바뀌어도 안 흔들린다.
+   두 스타일 공통 규칙이다. */
+body.product-visable[data-theme="dark"] :is(
+  .figma-anagram-section,
+  .about-brand,
+  .about-experience,
+  .figma-roadmap-section,
+  .about-hobbies,
+  .figma-values-section,
+  .hobby-card,
+  .intro-text
+) {
+  background: var(--bg1) !important;
+  background-image: none !important;
+  border-color: var(--bd) !important;
+}
+body.product-visable[data-theme="dark"] #aboutMe :is(h3, h4, p, li, strong, .anagram-label, .hobby-title, .hobby-desc, .about-title, .bi-title, .bi-lede) {
+  color: var(--vp-ink) !important;
+}
+body.product-visable[data-theme="dark"] #aboutMe :is(p, li, .hobby-desc, .anagram-label) {
+  color: var(--vp-ink-2) !important;
+}
+body.product-visable[data-theme="dark"] #anagram-top .anagram-letter { color: var(--vp-green) !important; }
+/* 애너그램 마지막 글자는 구분선(--vp-line) 위에 걸쳐 #ff8b7a 로는 4.00:1 이었다.
+   테마가 이미 쓰는 한 단계 밝은 코랄로 올리면 4.56:1 이 된다. */
+body.product-visable[data-theme="dark"] #anagram-bot .anagram-letter { color: #ffb3a7 !important; }
+body.product-visable[data-theme="dark"] #aboutMe h3::before { color: var(--vp-green) !important; }
+
+/* 9-b. `#aboutMe` 안쪽 카드는 ID 를 붙여야 기존 규칙을 이긴다. */
+body.product-visable[data-theme="dark"] #aboutMe :is(.hobby-card, .intro-text, .about-experience, .figma-values-section, .about-hobbies) {
+  background: var(--bg1) !important;
+  background-image: none !important;
+  border-color: var(--bd) !important;
+}
+body.product-visable[data-theme="dark"] #aboutMe :is(.en-label, .anagram-label) { color: var(--vp-green) !important; }
+body.product-visable[data-theme="dark"] #aboutMe .hobby-title { color: var(--vp-ink) !important; }
+body.product-visable[data-theme="dark"] #aboutMe .hobby-desc { color: var(--vp-ink-2) !important; }
+
+/* ── 10. Pop 상단바 '쉬운 안내' 칩 ────────────────────────────────── */
+/* 이 버튼은 배경이 아예 없어서(투명) 뒤에 오로라·장식이 지나가면 잉크 대비가
+   위치에 따라 흔들린다 — 같은 상단바의 다른 Pop 칩처럼 표면을 준다.
+   그러면 잉크가 얹히는 바닥이 고정되어 뷰포트·스크롤과 무관해진다. */
+:root[data-theme="archive_diary"] body.product-visable .easy-mode-btn {
+  padding: 6px 12px !important;
+  border: 2px solid var(--t1) !important;
+  border-radius: 999px !important;
+  background: var(--bg1) !important;
+}
+:root[data-theme="archive_diary"] body.product-visable .easy-mode-btn-text { color: var(--t1) !important; }
