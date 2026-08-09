@@ -1815,11 +1815,11 @@ body.product-visable[data-theme="dark"] .p-gw-search {
 }
 body.product-visable .p-gw-search-title { font-size: 16px !important; }
 /* 특정도 주의: index.html 안에
-   `:root:not([data-theme="archive_diary"]) body.product-visable .p-gw-search-kbd`
+   `body.product-visable .p-gw-search-kbd`
    (0,3,2) + !important 로 `background: var(--cta)` 를 박아둔 규칙이 있다.
    그대로 두면 다크에서 표면은 #0B4F44 인데 잉크만 #062E27 로 바뀌어 1.55:1 이
    된다. 같은 가드를 붙이고 클래스를 하나 더해 (0,4,2) 로 이긴다. */
-:root:not([data-theme="archive_diary"]) body.product-visable:not(.searched) .p-gw-search-kbd {
+body.product-visable:not(.searched) .p-gw-search-kbd {
   min-width: 128px !important;
   height: 48px !important;
   border-radius: 999px !important;
@@ -1953,8 +1953,11 @@ body.product-visable .p-gw-newhome-label {
   font: 800 16.5px/1.25 var(--vp-font) !important;
   letter-spacing: -0.02em !important;
 }
-body.product-visable:not([data-theme="dark"]) .p-gw-card-label,
-body.product-visable:not([data-theme="dark"]) .p-gw-newhome-label { color: #073b32 !important; }
+:root:not([data-theme="archive_diary"]) body.product-visable:not([data-theme="dark"]) .p-gw-card-label,
+:root:not([data-theme="archive_diary"]) body.product-visable:not([data-theme="dark"]) .p-gw-newhome-label { color: #073b32 !important; }
+/* Pop 은 자기 잉크 토큰을 쓴다 — 확정 시안의 초록 잉크는 Editorial 전용이다. */
+:root[data-theme="archive_diary"] body.product-visable .p-gw-card-label,
+:root[data-theme="archive_diary"] body.product-visable .p-gw-newhome-label { color: var(--t1) !important; }
 body.product-visable .p-gw-card-sub,
 body.product-visable .p-gw-newhome-desc {
   color: var(--vp-ink-2) !important;
@@ -2035,7 +2038,7 @@ body.product-new-home .nh-section-h h2 {
   font: 800 24px/1.2 var(--vp-font) !important;
   letter-spacing: -0.03em !important;
 }
-body.product-new-home:not([data-theme="dark"]) .nh-section-h h2 { color: #073b32 !important; }
+:root:not([data-theme="archive_diary"]) body.product-new-home:not([data-theme="dark"]) .nh-section-h h2 { color: #073b32 !important; }
 body.product-new-home .nh-section-intro {
   color: var(--vp-ink-3) !important;
   font: 400 14.5px/1.6 var(--vp-font) !important;
@@ -2075,7 +2078,7 @@ body.product-new-home .nh-card-label {
   font: 800 16.5px/1.25 var(--vp-font) !important;
   letter-spacing: -0.02em !important;
 }
-body.product-new-home:not([data-theme="dark"]) .nh-card-label { color: #073b32 !important; }
+:root:not([data-theme="archive_diary"]) body.product-new-home:not([data-theme="dark"]) .nh-card-label { color: #073b32 !important; }
 body.product-new-home .nh-card-desc {
   color: var(--vp-ink-2) !important;
   font: 400 13px/1.5 var(--vp-font) !important;
@@ -2435,3 +2438,493 @@ body.product-nationality-hub .ni-page-foot {
   body.product-nationality-hub .ni-hubgrid { grid-template-columns: 1fr !important; gap: 14px !important; }
   body.product-nationality-hub .ni-coachband { padding: 18px 20px !important; }
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+ * Editorial-pop(archive_diary) 스타일 레이어 — 2026-08-08
+ *
+ * 확정 테마 시스템(Figma 90 · 118:7)은 이렇게 정의한다:
+ *   "밝기(라이트/다크)와 스타일(Editorial/Pop)은 분리된 축.
+ *    모든 화면이 두 모드를 지원합니다."
+ *
+ * 즉 확정 시안의 **구조**(오로라 배경 · 중앙 정렬 히어로 · 카드 그리드 ·
+ * 화살표 링크 · 섹션 머리말 · 키네틱 스트립 · 각주 · 도트)는 두 스타일에
+ * 공통이고, Pop 은 **팔레트와 조형**(굵은 검정 테두리 · 하드 오프셋 그림자 ·
+ * 스탬프 장식)만 다르다.
+ *
+ * 그래서 위 이식 블록에서 테마 가드를 제거해 구조를 공통으로 되돌리고,
+ * 이 레이어에서 Pop 의 색·조형만 다시 입힌다.
+ * ═══════════════════════════════════════════════════════════════════ */
+
+/* ── 1. 오로라 — Pop 팔레트 판 ──────────────────────────────────────
+   기하(중심·반경)는 확정 시안 그대로 두고 색만 Pop 팔레트로 바꾼다.
+   Pop 은 채도가 높아 알파를 Editorial(.42/.24/.16)보다 낮게 잡는다. */
+:root[data-theme="archive_diary"] body.product-visable.landing:not(.searched):not([data-theme="dark"]) .hero-container::before {
+  background:
+    radial-gradient(37.2% 63.7% at 59.0% 73.6%, rgba(255, 255, 255, 0.30) 0%, transparent 70%),
+    radial-gradient(45.8% 75.6% at 47.9% 31.5%, rgba(255, 255, 255, 0.46) 0%, transparent 70%),
+    radial-gradient(33.3% 56.0% at 84.0% 91.7%, rgba(255, 142, 209, 0.16) 0%, transparent 70%),
+    radial-gradient(41.7% 69.0% at 11.8% 91.7%, rgba(194, 255, 68,  0.14) 0%, transparent 70%),
+    radial-gradient(46.5% 73.8% at 87.5% 27.4%, rgba(138, 116, 255, 0.18) 0%, transparent 70%),
+    linear-gradient(180deg, #fffdf7 0%, #f2eeff 100%) !important;
+}
+:root[data-theme="archive_diary"] body.product-visable.landing:not(.searched)[data-theme="dark"] .hero-container::before {
+  display: block !important;
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: -1 !important;
+  pointer-events: none !important;
+  opacity: 1 !important;
+  background:
+    radial-gradient(45.8% 75.6% at 47.9% 31.5%, rgba(110, 198, 255, 0.10) 0%, transparent 70%),
+    radial-gradient(33.3% 56.0% at 84.0% 91.7%, rgba(255, 142, 209, 0.14) 0%, transparent 70%),
+    radial-gradient(41.7% 69.0% at 11.8% 91.7%, rgba(194, 255, 68,  0.08) 0%, transparent 70%),
+    radial-gradient(46.5% 73.8% at 87.5% 27.4%, rgba(138, 116, 255, 0.22) 0%, transparent 70%),
+    linear-gradient(180deg, #171c33 0%, #14182b 100%) !important;
+}
+
+/* New Home 히어로 오로라 — Pop 판 */
+:root[data-theme="archive_diary"] body.product-new-home:not([data-theme="dark"]) .nh-hero {
+  background:
+    radial-gradient(34.7% 59.5% at 58.3% 73.8%, rgba(255, 255, 255, 0.40) 0%, transparent 70%),
+    radial-gradient(43.8% 72.0% at 46.5% 30.4%, rgba(255, 255, 255, 0.52) 0%, transparent 70%),
+    radial-gradient(33.3% 56.0% at 86.1% 91.7%, rgba(194, 255, 68,  0.14) 0%, transparent 70%),
+    radial-gradient(42.4% 70.2% at 13.2% 84.5%, rgba(138, 116, 255, 0.18) 0%, transparent 70%),
+    radial-gradient(46.5% 73.8% at 88.2% 28.6%, rgba(255, 142, 209, 0.18) 0%, transparent 70%),
+    linear-gradient(180deg, #fffdf7 0%, #f2eeff 100%) !important;
+}
+:root[data-theme="archive_diary"] body.product-new-home[data-theme="dark"] .nh-hero {
+  background:
+    radial-gradient(43.8% 72.0% at 46.5% 30.4%, rgba(110, 198, 255, 0.10) 0%, transparent 70%),
+    radial-gradient(33.3% 56.0% at 86.1% 91.7%, rgba(194, 255, 68,  0.08) 0%, transparent 70%),
+    radial-gradient(42.4% 70.2% at 13.2% 84.5%, rgba(138, 116, 255, 0.22) 0%, transparent 70%),
+    radial-gradient(46.5% 73.8% at 88.2% 28.6%, rgba(255, 142, 209, 0.14) 0%, transparent 70%),
+    linear-gradient(180deg, #171c33 0%, #14182b 100%) !important;
+}
+
+/* 서류 도우미 · 국적민원 허브 — Pop 판 페이지 배경 */
+:root[data-theme="archive_diary"] body.product-form-helper:not([data-theme="dark"]),
+:root[data-theme="archive_diary"] body.product-nationality-hub:not([data-theme="dark"]) {
+  background:
+    radial-gradient(41.0% 58.9% at 11.8% 85.6%, rgba(194, 255, 68, 0.12) 0%, transparent 70%),
+    radial-gradient(43.8% 62.2% at 86.8% 13.3%, rgba(138, 116, 255, 0.16) 0%, transparent 70%),
+    #fffdf7 !important;
+}
+:root[data-theme="archive_diary"] body.product-form-helper[data-theme="dark"],
+:root[data-theme="archive_diary"] body.product-nationality-hub[data-theme="dark"] {
+  background:
+    radial-gradient(41.0% 58.9% at 11.8% 85.6%, rgba(110, 198, 255, 0.10) 0%, transparent 70%),
+    radial-gradient(43.8% 62.2% at 86.8% 13.3%, rgba(138, 116, 255, 0.20) 0%, transparent 70%),
+    #14182b !important;
+}
+
+/* ── 2. Pop 조형 복원 — 확정 구조 위에 Pop 의 표면·테두리·그림자 ────── */
+:root[data-theme="archive_diary"] body.product-visable :is(.p-gw-card, .p-gw-newhome),
+:root[data-theme="archive_diary"] body.product-new-home .nh-card,
+:root[data-theme="archive_diary"] body.product-nationality-hub .ni-hubcard {
+  border: 2px solid var(--t1) !important;
+  border-radius: 22px !important;
+  background: var(--bg1) !important;
+  box-shadow: var(--shCard) !important;
+}
+/* AI 카드는 Pop 의 가장 강한 파란 블록 — 그대로 둔다. */
+:root[data-theme="archive_diary"] body.product-visable .p-gw-card-ai {
+  background: linear-gradient(135deg, var(--k-blue, #2f5efc), var(--k-blue-deep, #1b36c9)) !important;
+}
+:root[data-theme="archive_diary"] body.product-visable .p-gw-card-ai :is(.p-gw-card-label, .p-gw-card-sub, .p-gw-card-go) {
+  color: #ffffff !important;
+}
+:root[data-theme="archive_diary"] body.product-visable .p-gw-search {
+  border: 2px solid var(--t1) !important;
+  border-radius: 999px !important;
+  background: var(--bg1) !important;
+  box-shadow: 5px 5px 0 var(--k-blue, #2f5efc) !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+:root[data-theme="archive_diary"] body.product-visable .p-hero-eyebrow,
+:root[data-theme="archive_diary"] body.product-new-home .nh-kicker,
+:root[data-theme="archive_diary"] body.product-form-helper .fh-kicker,
+:root[data-theme="archive_diary"] body.product-nationality-hub .ni-hero-kicker {
+  border: 2px solid var(--t1) !important;
+  background: var(--bg1) !important;
+  color: var(--t1) !important;
+  box-shadow: var(--shCard) !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+:root[data-theme="archive_diary"] body.product-new-home .nh-btn-secondary,
+:root[data-theme="archive_diary"] body.product-nationality-hub .ni-btn {
+  border: 2px solid var(--t1) !important;
+  background: var(--bg1) !important;
+  color: var(--t1) !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+:root[data-theme="archive_diary"] body.product-new-home .nh-proof-row span {
+  border: 2px solid var(--t1) !important;
+  background: var(--bg1) !important;
+  color: var(--t1) !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+:root[data-theme="archive_diary"] body.product-new-home .nh-journey,
+:root[data-theme="archive_diary"] body.product-nationality-hub .ni-coachband {
+  border: 2px solid var(--t1) !important;
+  box-shadow: var(--shCard) !important;
+}
+:root[data-theme="archive_diary"] body.product-nationality-hub .ni-coachband {
+  background: var(--bg2) !important;
+}
+:root[data-theme="archive_diary"] body.product-nationality-hub .ni-coachband-text strong { color: var(--t1) !important; }
+:root[data-theme="archive_diary"] body.product-nationality-hub .ni-coachband-text span { color: var(--t2) !important; }
+:root[data-theme="archive_diary"] body.product-nationality-hub .ni-coachband-cta {
+  border: 2px solid #141414 !important;
+  background: var(--k-lime, #c2ff44) !important;
+  color: #141414 !important;
+}
+:root[data-theme="archive_diary"] body.product-new-home .nh-journey-dot {
+  border: 2px solid var(--t1) !important;
+  background: var(--bg1) !important;
+  color: var(--t1) !important;
+}
+:root[data-theme="archive_diary"] body.product-new-home .nh-journey-step.is-drawn .nh-journey-dot {
+  border-color: #141414 !important;
+  background: var(--k-lime, #c2ff44) !important;
+  color: #141414 !important;
+}
+:root[data-theme="archive_diary"] body.product-new-home .nh-journey-link { background: var(--t1) !important; }
+:root[data-theme="archive_diary"] body.product-new-home:not([data-theme="dark"]) .nh-journey-step.is-drawn .nh-journey-label { color: var(--ac2) !important; }
+/* Pop 다크의 --ac2 는 어두운 파랑(#2F5EFC)이라 어두운 표면에서 2.68:1 이다. */
+:root[data-theme="archive_diary"] body.product-new-home[data-theme="dark"] .nh-journey-step.is-drawn .nh-journey-label { color: #9db9ff !important; }
+:root[data-theme="archive_diary"] body.product-visable .p-footer,
+:root[data-theme="archive_diary"] body.product-new-home .nh-footer {
+  border-top: 2px solid var(--t1) !important;
+  background: var(--bg2) !important;
+}
+
+/* ── 3. Pop 고유 결함 수정 ────────────────────────────────────────── */
+
+/* 3-a. 확정 헤드라인은 1행 안에 강조어를 품는다. Pop 의
+   `.p-hero-title em { display:block }` 을 두면 3줄로 쪼개진다.
+   하이라이터 배경 등 Pop 고유 강조 표현은 그대로 살린다. */
+:root[data-theme="archive_diary"] body.product-visable .p-hero-title em { display: inline !important; }
+
+/* 3-b. Pop 의 3px 초록 세로 마커는 확정 시안에 없고, 카드가 flex 로 바뀌면서
+   설명 글자 위에 겹쳐 보인다. */
+:root[data-theme="archive_diary"] body.product-visable :is(.p-gw-card, .p-gw-newhome)::before {
+  display: none !important;
+  content: none !important;
+}
+
+/* 3-c. 보조 도구 알약은 Editorial 에서 이미 숨긴다 — 두 스타일을 맞춘다.
+   같은 목적지가 아래 `생활·민원 보조 도구` 카드에 그대로 있다. */
+:root[data-theme="archive_diary"] body.product-visable .p-gw-utility { display: none !important; }
+
+/* 3-d. 다크에서 Pop 잉크가 안 뒤집히는 자리들. Pop 규칙이 --k-ink(#141414)를
+   직접 쓰는데 다크 팔레트가 그 토큰을 뒤집지 않는다(이 PR 이전부터 동일).
+   토큰을 통째로 뒤집으면 흰 표면 카드의 글자까지 밝아져 새 회귀가 나므로,
+   어두운 표면 위 텍스트로 확인된 자리만 열거한다. */
+:root[data-theme="archive_diary"] body[data-theme="dark"] :is(
+  .p-gw-card-label,
+  .p-gw-search-title,
+  .p-gw-util-label,
+  .p-gw-newhome-label,
+  .p-gw-newhome-desc
+) {
+  color: var(--t1) !important;
+}
+/* 주의: `.stat-num` · `.visa-track-title` 은 여기 넣지 않는다. Pop 은 다크에서도
+   그 카드들의 표면을 크림으로 유지하므로 잉크는 어두워야 맞다. 감사가
+   그래디언트 배경을 스크린샷 시점에 놓쳐 미달로 잡을 뿐이다. */
+/* 파란 액센트 글자는 다크 표면에서 2.0~3.6:1 에 머문다. 표면으로 쓰이는
+   --k-blue 는 두고 글자 자리만 밝은 파랑으로 올린다. */
+:root[data-theme="archive_diary"] body[data-theme="dark"] :is(
+  .p-kicker,
+  .brand-hero-kicker,
+  .p-pathway-index,
+  .doc-composer-cta,
+  .nh-official-badge,
+  .p-status.planned,
+  .ni-badge-official,
+  .p-gw-card-go,
+  .p-gw-newhome-arrow
+) {
+  color: #9db9ff !important;
+}
+/* AI 카드는 파란 블록이라 흰 글자를 유지한다(위 규칙보다 뒤에 와야 이긴다). */
+:root[data-theme="archive_diary"] body[data-theme="dark"] .p-gw-card-ai .p-gw-card-go {
+  color: #ffffff !important;
+}
+/* 3-e. ✓/✕ 글리프 — Pop 팔레트의 --ok/--warn 은 라이트에서 4.15/2.41:1. */
+:root[data-theme="archive_diary"] body.product-new-home:not([data-theme="dark"]) .nh-pill-list.yes li::before { color: #12704a !important; }
+:root[data-theme="archive_diary"] body.product-new-home:not([data-theme="dark"]) .nh-pill-list.no li::before  { color: #96500f !important; }
+:root[data-theme="archive_diary"] body.product-new-home[data-theme="dark"] .nh-pill-list.yes li::before { color: #57e0ab !important; }
+:root[data-theme="archive_diary"] body.product-new-home[data-theme="dark"] .nh-pill-list.no li::before  { color: #f5ab63 !important; }
+
+/* 3-f. 게이트웨이 그리드 — Pop 에서 `.p-gateway` 가 flex 로 떨어져 확정 시안의
+   3열 배치(grid-column)가 통째로 무시되고 카드가 비대칭으로 흘렀다.
+   확정 구조인 3열 그리드를 되돌린다. */
+:root[data-theme="archive_diary"] body.product-visable .p-gateway {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+}
+:root[data-theme="archive_diary"] body.product-visable .p-gw-primary { display: contents !important; }
+
+/* 3-g. 워드마크 — 공유 스킨과 Pop 이 서로를 덮어쓰던 기존 충돌.
+   스킨이 `.logo-area` 배경을 지우고(`transparent !important`) 워드마크에
+   페리윙클 invert 필터를 씌우는데, Pop 은 같은 자리에 **흰색** 워드마크를
+   넣는다. 결과적으로 흰 글자가 크림 배경 위에 얹혀 거의 보이지 않았다.
+   Pop 에서는 Pop 자신의 파란 캡슐을 되살리고 필터를 벗긴다. */
+:root[data-theme="archive_diary"] body.product-visable:not(.searched) .logo-area {
+  padding: 0.7rem 1.4rem !important;
+  transform: rotate(-2deg) !important;
+  background:
+    radial-gradient(130% 95% at 16% -4%, rgba(255, 255, 255, 0.58) 0%, rgba(255, 255, 255, 0.10) 42%, transparent 58%),
+    linear-gradient(135deg, var(--k-sky, #6ec6ff) 0%, var(--k-blue, #2f5efc) 82%) !important;
+}
+:root[data-theme="archive_diary"] body.product-visable:not(.searched) .brand-wordmark-img {
+  filter: none !important;
+  content: url("../brand/visable-wordmark-white.svg") !important;
+}
+
+/* Pop 은 자기 잉크 토큰을 쓴다 (확정 시안의 초록 잉크는 Editorial 전용). */
+:root[data-theme="archive_diary"] body.product-new-home .nh-section-h h2,
+:root[data-theme="archive_diary"] body.product-new-home .nh-card-label { color: var(--t1) !important; }
+
+/* ── 4. Pop 팔레트의 대비 미달 (하네스를 안정화하고 나서야 보인 기존 결함) ──
+   리빌 애니메이션을 끄고 측정하니 같은 조건 재실행에서 27/27 로 일치했다.
+   아래는 그때 드러난 항목들로, 전부 확정 시안 이식과 무관한 Pop 고유 색이다. */
+
+/* 4-a. Pop 의 밝은 파랑(#2F5EFC)은 밝은 표면에서 4.33~4.49:1 로 기준 바로
+   아래다. 글자로 쓰이는 자리만 이미 있는 --k-blue-deep(#1B36C9, 7.49:1)으로
+   내린다. 표면·테두리로 쓰이는 --k-blue 는 그대로 둔다. */
+:root[data-theme="archive_diary"] body.product-visable:not([data-theme="dark"]) :is(
+  .brand-hero-kicker,
+  .p-kicker,
+  .p-pathway-index,
+  .hobby-desc
+) {
+  color: var(--k-blue-deep, #1b36c9) !important;
+}
+
+/* 4-b. 브랜드 히어로 부제가 흰 글자인데 Pop 에서는 표면이 밝아 1.12:1 이었다. */
+/* 스킨의 `body.product-visable #brandHero .brand-hero-subtitle` 가 ID 를 써서
+   (1,2,1) 이다 — 클래스만으로는 못 이긴다. 같은 ID 를 넣어 (1,5,1) 로 맞춘다. */
+:root[data-theme="archive_diary"] body.product-visable:not([data-theme="dark"]) #brandHero .brand-hero-subtitle,
+:root[data-theme="archive_diary"] body.product-visable:not([data-theme="dark"]) .brand-hero.figma-brand-bridge .brand-hero-subtitle {
+  color: var(--t2) !important;
+}
+
+/* 4-c. 워드마크 캡슐의 ★ 배지. 배지가 캡슐 모서리에 걸쳐 있어 글자 뒤에
+   핑크(배지)와 파랑(캡슐)이 함께 온다. 어느 쪽에 얹혀도 통과하도록
+   배지를 진한 핑크로 내리고 흰 글자를 쓴다 (핑크 5.22:1 · 파랑 5.09:1). */
+:root[data-theme="archive_diary"] body.product-visable:not(.searched) .logo-area::after {
+  background: #c42c80 !important;
+  color: #ffffff !important;
+}
+
+/* 4-d. 애너그램 글자(PARADISO) — 크림 위 --k-pink 는 24px 에서 1.9:1.
+   large text 기준 3.0 을 넘도록 한 단계 진한 핑크로. */
+/* 여기도 `#anagram-bot` ID 규칙(1,2,1)이 이긴다 — 같은 ID 로 맞춘다. */
+:root[data-theme="archive_diary"] body.product-visable:not([data-theme="dark"]) #anagram-bot .anagram-letter,
+:root[data-theme="archive_diary"] body.product-visable:not([data-theme="dark"]) .figma-anagram-section .anagram-letter.anagram-bot {
+  color: #d6338f !important;
+}
+
+/* 4-e. 목록 불릿 · — 코랄 #FF6B5B 는 22.4px 에서 2.7:1. coral-deep 으로. */
+/* 4-e. 목록 불릿 · — 22.4px 라 large text(24px) 가 아니어서 4.5:1 이 필요하다.
+   코랄로는 3.7:1 이 한계라 Pop 에서는 본문 잉크를 쓴다(코랄은 CTA 에 남는다). */
+:root[data-theme="archive_diary"] body.product-visable:not([data-theme="dark"]) li::before {
+  color: var(--t2) !important;
+}
+
+/* 4-f. `.hobby-desc` 는 opacity:0.85 가 걸려 있어 색을 진하게 해도 3.97:1 이다.
+   opacity 는 color 로 덮을 수 없다 — 불투명도를 되돌린다. */
+:root[data-theme="archive_diary"] body.product-visable .hobby-desc { opacity: 1 !important; }
+
+/* ═══════════════════════════════════════════════════════════════════
+ * 하네스 안정화 뒤 드러난 다크 결함 — 2026-08-09
+ *
+ * 리빌을 최종 상태로 고정하고 측정하자, 그동안 `opacity < 0.15` 로 걸러져
+ * 감사 대상에서 빠져 있던 구간이 드러났다. 아래는 전부 실측 기준이다.
+ * ═══════════════════════════════════════════════════════════════════ */
+
+/* 5-a. Pop 다크 — 트랙 카드와 통계 숫자가 어두운 표면 위 검정 잉크였다.
+   (앞서 "Pop 은 다크에서도 크림을 유지한다"고 적었던 것은 리빌 고정 전
+   측정이라 틀렸다. 실측: 트랙 카드 rgb(24,32,58), 통계는 어두운 페이지 위.) */
+:root[data-theme="archive_diary"] body.product-visable[data-theme="dark"] :is(
+  .visa-track-title,
+  .visa-track-desc,
+  .stat-num
+) {
+  color: var(--t1) !important;
+}
+
+/* 5-b. Editorial 다크 — 소개 섹션의 표면과 잉크가 어긋나 있다.
+   머리말(.bi-head)은 어두운 표면 위에 어두운 초록 잉크(#0B4F44)였고,
+   본문 카드들은 밝은 종이 표면을 유지하는데 잉크만 다크로 뒤집혀 있었다.
+   카드의 종이 인상은 그대로 두고 잉크만 각 표면에 맞춘다. */
+body.product-visable[data-theme="dark"] #aboutMe :is(.about-title, .bi-title, .bi-lede, .bi-kicker) {
+  color: var(--vp-ink) !important;
+}
+/* 카드 표면 자체는 §9 에서 두 스타일 공통으로 통일한다.
+   여기서 스타일별로 잉크를 갈라 잡던 규칙들은 그 통일에 흡수되어 삭제했다. */
+/* 푸터 워드마크가 어두운 푸터 위 검정이었다. */
+:root[data-theme="archive_diary"] body.product-visable[data-theme="dark"] .ft-logo {
+  color: var(--t1) !important;
+}
+/* Pop 다크 — 폼 라벨이 어두운 표면 위 검정이었다. */
+:root[data-theme="archive_diary"] body.product-visable[data-theme="dark"] :is(.p-reminder-form label, form label) {
+  color: var(--t1) !important;
+}
+/* `.p-status.planned` 칩은 다크에서도 흰 표면을 유지한다 — 밝은 파랑이 아니라
+   진한 파랑이 맞다(위 4-a 액센트 목록에서 이 항목만 되돌린다). */
+:root[data-theme="archive_diary"] body[data-theme="dark"] .p-status.planned {
+  color: var(--k-blue-deep, #1b36c9) !important;
+}
+
+/* 5-c. `.hobby-desc` 는 opacity:0.85 때문에 색을 진하게 해도 3.9:1 에 걸린다.
+   opacity 는 color 로 덮을 수 없다 — 두 스타일 모두 불투명도를 되돌린다. */
+body.product-visable .hobby-desc { opacity: 1 !important; }
+
+/* ── 6. Pop 반응형 — 위 Pop 규칙들이 미디어 쿼리 없이 !important 로 걸려
+   기존 모바일 반응형을 덮어버렸다. 390px 에서 카드가 3열로 남고, 알약형
+   검색 바가 원형으로 뭉개지고, 키커가 워드마크를 덮었다.
+   (Editorial 은 스킨의 기존 미디어 쿼리가 정상 동작한다 — Pop 만 보정한다.) */
+@media (max-width: 1080px) {
+  :root[data-theme="archive_diary"] body.product-visable .p-gateway {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+@media (max-width: 760px) {
+  :root[data-theme="archive_diary"] body.product-visable .p-gateway {
+    grid-template-columns: 1fr !important;
+  }
+  /* 알약(999px) 은 좁은 폭에서 글자를 원 안에 가둔다 — 라운드 사각으로. */
+  :root[data-theme="archive_diary"] body.product-visable .p-gw-search {
+    border-radius: 22px !important;
+    padding: 14px 16px !important;
+    box-shadow: 4px 4px 0 var(--k-blue, #2f5efc) !important;
+  }
+  /* 헤더를 단순 세로 스택으로 — Pop 의 그리드 배치(grid-area: logo)와
+     흐름 배치된 키커가 겹치던 것을 없앤다. */
+  :root[data-theme="archive_diary"] body.product-visable:not(.searched) .header-inner {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 10px !important;
+  }
+  :root[data-theme="archive_diary"] body.product-visable:not(.searched) .logo-area {
+    grid-area: auto !important;
+    justify-self: center !important;
+    margin: 0 0 6px !important;
+    transform: rotate(-1.5deg) !important;
+  }
+  :root[data-theme="archive_diary"] body.product-visable .p-hero-eyebrow {
+    position: static !important;
+    margin: 0 0 6px !important;
+  }
+  :root[data-theme="archive_diary"] body.product-visable :is(.p-gw-card, .p-gw-newhome) {
+    min-height: 0 !important;
+  }
+}
+
+/* ── 7. 히어로 하단 장식의 모바일 충돌 ──────────────────────────────
+   키네틱 스트립과 각주를 히어로 바닥에 절대배치했는데, 좁은 폭에서 각주가
+   2~3줄로 늘어나면서 스트립 위로 올라타 글자가 겹쳤다.
+   모바일에서는 둘 다 흐름 배치로 되돌린다(두 스타일 공통 구조다). */
+@media (max-width: 760px) {
+  body.product-new-home .nh-kinetic,
+  body.product-new-home .nh-hero-foot {
+    position: static !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    transform: none !important;
+  }
+  body.product-new-home .nh-kinetic { margin: 20px 0 0 !important; }
+  body.product-new-home .nh-hero-foot { margin: 10px auto 0 !important; max-width: 100% !important; }
+  body.product-new-home .nh-hero { padding-bottom: 28px !important; }
+}
+
+/* ── 8. 모바일에서만 나타나는 대비 미달 ─────────────────────────────
+   글자 크기가 뷰포트에 따라 줄면서 large text(24px) 기준을 벗어나는 자리들.
+   데스크톱 감사만으로는 보이지 않는다. */
+@media (max-width: 760px) {
+  /* 8-a. 애너그램 하단 단어(PARADISO)는 데스크톱에서 24px 라 large text
+     기준(3.0)을 통과하지만, 390px 에서 17.94px 로 줄어 4.5 가 필요해진다.
+     그 크기에서는 코랄이 2.94~3.57:1 이라 한 단계 진하게 잡는다.
+     데스크톱의 코랄 아이덴티티는 그대로 둔다. */
+  /* ID 규칙(1,2,1)을 이겨야 하므로 같은 ID 를 쓴다. */
+  /* 라이트에서만 — 다크는 §9 에서 표면을 어둡게 통일했으므로 밝은 코랄이 맞다. */
+  :root:not([data-theme="archive_diary"]) body.product-visable:not([data-theme="dark"]) #anagram-bot .anagram-letter,
+  :root:not([data-theme="archive_diary"]) body.product-visable:not([data-theme="dark"]) .figma-anagram-section .anagram-letter.anagram-bot {
+    color: #a8362a !important;
+  }
+  :root[data-theme="archive_diary"] body.product-visable:not([data-theme="dark"]) #anagram-bot .anagram-letter,
+  :root[data-theme="archive_diary"] body.product-visable:not([data-theme="dark"]) .figma-anagram-section .anagram-letter.anagram-bot {
+    color: #a81e6a !important;
+  }
+  /* 8-b. 히어로 각주가 모바일에서 에메랄드 블룸 위로 올라가 4.40:1 이 된다. */
+  body.product-visable .p-hero-foot,
+  body.product-new-home .nh-hero-foot { color: #515c58 !important; }
+  body.product-visable[data-theme="dark"] .p-hero-foot,
+  body.product-new-home[data-theme="dark"] .nh-hero-foot { color: var(--vp-ink-3) !important; }
+}
+
+/* ── 9. 소개 섹션 — 다크에서는 표면을 어둡게 통일한다 ───────────────
+   이 섹션의 카드 배경은 반투명 종이 그래디언트라, 다크에서 카드 위쪽은
+   밝고 아래쪽은 어두운 페이지가 비쳤다. 같은 카드 안에서 표면이 뒤집히니
+   잉크를 어느 방향으로 잡아도 절반은 틀렸다 — 실제로 이 자리에서 잉크
+   방향을 세 번 뒤집었다.
+   종이 인상을 살리려던 접근을 버리고, 다크에서는 표면을 어둡게 통일한다.
+   그러면 잉크는 한 방향(밝은 잉크)으로 정리되고 뷰포트가 바뀌어도 안 흔들린다.
+   두 스타일 공통 규칙이다. */
+body.product-visable[data-theme="dark"] :is(
+  .figma-anagram-section,
+  .about-brand,
+  .about-experience,
+  .figma-roadmap-section,
+  .about-hobbies,
+  .figma-values-section,
+  .hobby-card,
+  .intro-text
+) {
+  background: var(--bg1) !important;
+  background-image: none !important;
+  border-color: var(--bd) !important;
+}
+body.product-visable[data-theme="dark"] #aboutMe :is(h3, h4, p, li, strong, .anagram-label, .hobby-title, .hobby-desc, .about-title, .bi-title, .bi-lede) {
+  color: var(--vp-ink) !important;
+}
+body.product-visable[data-theme="dark"] #aboutMe :is(p, li, .hobby-desc, .anagram-label) {
+  color: var(--vp-ink-2) !important;
+}
+body.product-visable[data-theme="dark"] #anagram-top .anagram-letter { color: var(--vp-green) !important; }
+/* 애너그램 마지막 글자는 구분선(--vp-line) 위에 걸쳐 #ff8b7a 로는 4.00:1 이었다.
+   테마가 이미 쓰는 한 단계 밝은 코랄로 올리면 4.56:1 이 된다. */
+body.product-visable[data-theme="dark"] #anagram-bot .anagram-letter { color: #ffb3a7 !important; }
+body.product-visable[data-theme="dark"] #aboutMe h3::before { color: var(--vp-green) !important; }
+
+/* 9-b. `#aboutMe` 안쪽 카드는 ID 를 붙여야 기존 규칙을 이긴다. */
+body.product-visable[data-theme="dark"] #aboutMe :is(.hobby-card, .intro-text, .about-experience, .figma-values-section, .about-hobbies) {
+  background: var(--bg1) !important;
+  background-image: none !important;
+  border-color: var(--bd) !important;
+}
+body.product-visable[data-theme="dark"] #aboutMe :is(.en-label, .anagram-label) { color: var(--vp-green) !important; }
+body.product-visable[data-theme="dark"] #aboutMe .hobby-title { color: var(--vp-ink) !important; }
+body.product-visable[data-theme="dark"] #aboutMe .hobby-desc { color: var(--vp-ink-2) !important; }
+
+/* ── 10. Pop 상단바 '쉬운 안내' 칩 ────────────────────────────────── */
+/* 이 버튼은 배경이 아예 없어서(투명) 뒤에 오로라·장식이 지나가면 잉크 대비가
+   위치에 따라 흔들린다 — 같은 상단바의 다른 Pop 칩처럼 표면을 준다.
+   그러면 잉크가 얹히는 바닥이 고정되어 뷰포트·스크롤과 무관해진다. */
+:root[data-theme="archive_diary"] body.product-visable .easy-mode-btn {
+  padding: 6px 12px !important;
+  border: 2px solid var(--t1) !important;
+  border-radius: 999px !important;
+  background: var(--bg1) !important;
+}
+:root[data-theme="archive_diary"] body.product-visable .easy-mode-btn-text { color: var(--t1) !important; }
