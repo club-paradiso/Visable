@@ -20,6 +20,46 @@
   ],
   "sources": [
     {
+      "id": "visa_manual_2026_07_31_hwp",
+      "type": "hwp_manual",
+      "title": "사증발급 안내매뉴얼 (2026.7; 2026-07-31 배포용 HWP)",
+      "title_en": "Visa Issuance Guide Manual (2026.7; 2026-07-31 distribution HWP)",
+      "authority": "법무부 출입국·외국인정책본부",
+      "version": "2026.7",
+      "source_date": "2026-07-31",
+      "local_path": "docs/source-manuals/2026-07-31/visa_manual_260731.hwp",
+      "url": "https://www.hikorea.go.kr/",
+      "last_known_hash": "sha256:0c5bc2d195a750ba01bc1a287f0c65915437a146e402202c9bad3a12ca574216",
+      "last_checked_at": "2026-08-09T00:00:00+09:00",
+      "language": [
+        "ko"
+      ],
+      "confidence": "high",
+      "update_frequency": "irregular",
+      "status": "active",
+      "notes": "배포용 HWP (FileHeader flag 0x4): the body lives in ViewText, AES-128-ECB encrypted, and was read with scripts/decrypt_hwp_distribution.py — the procedure documented in Hancom's published 한글 문서 파일 형식 5.0 spec. The extracted text is the document's own text layer, so there are no OCR or glyph artifacts. 별표/첨부서류 tables are flattened to paragraph text and must not be read as structured tables."
+    },
+    {
+      "id": "stay_manual_2026_07_31_hwp",
+      "type": "hwp_manual",
+      "title": "외국인체류 안내매뉴얼 (2026.7; 2026-07-31 배포용 HWP)",
+      "title_en": "Foreign Residence Guide Manual (2026.7; 2026-07-31 distribution HWP)",
+      "authority": "법무부 출입국·외국인정책본부",
+      "version": "2026.7",
+      "source_date": "2026-07-31",
+      "local_path": "docs/source-manuals/2026-07-31/stay_manual_260731.hwp",
+      "url": "https://www.hikorea.go.kr/",
+      "last_known_hash": "sha256:d2c6dc547fd3c52e885ccf3686e87d79bc4a7df9889d8afa9be9f05ce7e1acfc",
+      "last_checked_at": "2026-08-09T00:00:00+09:00",
+      "language": [
+        "ko"
+      ],
+      "confidence": "high",
+      "update_frequency": "irregular",
+      "status": "active",
+      "notes": "배포용 HWP (FileHeader flag 0x4): the body lives in ViewText, AES-128-ECB encrypted, and was read with scripts/decrypt_hwp_distribution.py — the procedure documented in Hancom's published 한글 문서 파일 형식 5.0 spec. The extracted text is the document's own text layer, so there are no OCR or glyph artifacts. 별표/첨부서류 tables are flattened to paragraph text and must not be read as structured tables."
+    },
+    {
       "id": "visa_manual_2026_06_17_pdf",
       "type": "pdf_manual",
       "title": "사증발급 안내매뉴얼 (2026.6; 2026-06-17 source PDF export)",
@@ -36,8 +76,9 @@
       ],
       "confidence": "high",
       "update_frequency": "irregular",
-      "status": "active",
-      "notes": "Readable PDF export acquired from desktop Downloads and verified by file type, hash, pdfinfo page count (487 pages), rendered cover, and full text extraction. Downstream legal wording remains under manual review unless a field was separately line-by-line certified."
+      "status": "deprecated",
+      "notes": "Superseded 2026-07-31 by visa_manual_2026_07_31_hwp. Retained for point-in-time questions. Readable PDF export acquired from desktop Downloads and verified by file type, hash, pdfinfo page count (487 pages), rendered cover, and full text extraction. Downstream legal wording remains under manual review unless a field was separately line-by-line certified.",
+      "superseded_by": "visa_manual_2026_07_31_hwp"
     },
     {
       "id": "stay_manual_2026_06_23_pdf",
@@ -56,8 +97,9 @@
       ],
       "confidence": "high",
       "update_frequency": "irregular",
-      "status": "active",
-      "notes": "Readable PDF export acquired from desktop Downloads and verified by file type, hash, pdfinfo page count (780 pages), rendered cover, and full text extraction. Downstream legal wording remains under manual review unless a field was separately line-by-line certified."
+      "status": "deprecated",
+      "notes": "Superseded 2026-07-31 by stay_manual_2026_07_31_hwp. Retained for point-in-time questions. Readable PDF export acquired from desktop Downloads and verified by file type, hash, pdfinfo page count (780 pages), rendered cover, and full text extraction. Downstream legal wording remains under manual review unless a field was separately line-by-line certified.",
+      "superseded_by": "stay_manual_2026_07_31_hwp"
     },
     {
       "id": "stay_manual_2026_06_01_pdf",

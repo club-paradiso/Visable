@@ -1,12 +1,20 @@
 {
   "schema_version": "1.0",
-  "generated": "2026-08-08",
+  "generated": "2026-08-09",
   "description": "Review/approval layer over data/source_registry.json. Records whether a manual edition's EXTRACTED CONTENT has been compared against the original document by a human and approved for use as direct AI evidence. Document-level provenance (file authenticity, checksum, page count) is tracked separately in source_registry.json and is NOT the same thing as content approval.",
   "notes": [
-    "approval_state is deliberately conservative. No edition is marked 'approved'",
-    "in this initial index: the current structured extracts are auto-parsed",
-    "(see 'auto-parsed item' markers in backend/data/manual_grounding/*.json) and",
-    "have not been certified line-by-line against the source PDF.",
+    "approval_state is deliberately conservative. Everything defaults to unapproved",
+    "and is promoted one edition at a time by a named human.",
+    "",
+    "As of 2026-08-09 the two 2026-07-31 HWP editions are 'approved' (reviewer",
+    "recorded per document). Every other edition remains unapproved: the older",
+    "structured extracts are auto-parsed (see 'auto-parsed item' markers in",
+    "backend/data/manual_grounding/*.json) and were never certified line-by-line.",
+    "",
+    "An approval covers the BODY TEXT of that edition. It does not lift the",
+    "per-document table_extraction_warnings — 별표/첨부서류 tables are flattened to",
+    "paragraph text in every extraction here and must never be read as structured",
+    "tables, approved or not.",
     "",
     "Consequence, enforced by backend/services/manual_registry.py:",
     "  - 'parsed' / 'needs_review' content is SEARCHABLE and is labelled 검토 전.",
@@ -22,11 +30,11 @@
   ],
   "documents": {
     "visa_manual_2026_07_31_hwp": {
-      "approval_state": "parsed",
+      "approval_state": "approved",
       "effective_date": "2026-07-31",
       "parser": "scripts/decrypt_hwp_distribution.py (배포용 HWP ViewText AES)",
-      "reviewer": "",
-      "reviewed_at": "",
+      "reviewer": "michaelcool1009@gmail.com",
+      "reviewed_at": "2026-08-09",
       "source_confidence": "high",
       "has_tables_or_annexes": true,
       "section_locator": "paragraph",
@@ -34,20 +42,20 @@
       "source_sha256": "0c5bc2d195a750ba01bc1a287f0c65915437a146e402202c9bad3a12ca574216",
       "extracted_text_path": "docs/source-manuals/2026-07-31/extracted/full_text/visa_manual_260731.txt",
       "extraction_warnings": [
-        "Extracted from the 배포용 HWP ViewText stream via scripts/decrypt_hwp_distribution.py. The text layer is the document's own — no OCR or glyph artifacts — but it has NOT been compared against the source and is NOT certified.",
-        "Paragraph-based, not page-based: locators do not line up with the 2026-06 PDF editions. A line-by-line diff against those extractions measures the change of extraction method, not a change of content.",
-        "Downstream legal wording remains under manual review unless a field was separately line-by-line certified."
+        "Extracted from the 배포용 HWP ViewText stream via scripts/decrypt_hwp_distribution.py. The text layer is the document's own, so there are no OCR or glyph artifacts.",
+        "Approved by the reviewer recorded above on 2026-08-09. The approval covers the body text; the table caveat below is NOT lifted by it.",
+        "Paragraph-based, not page-based: locators do not line up with the 2026-06 PDF editions. A line-by-line diff against those extractions measures the change of extraction method, not a change of content."
       ],
       "table_extraction_warnings": [
-        "별표/첨부서류 tables are flattened to paragraph text; cell and column boundaries are NOT preserved and must not be read as a structured table."
+        "별표/첨부서류 tables are flattened to paragraph text; cell and column boundaries are NOT preserved and must not be read as a structured table. This holds regardless of approval state."
       ]
     },
     "stay_manual_2026_07_31_hwp": {
-      "approval_state": "parsed",
+      "approval_state": "approved",
       "effective_date": "2026-07-31",
       "parser": "scripts/decrypt_hwp_distribution.py (배포용 HWP ViewText AES)",
-      "reviewer": "",
-      "reviewed_at": "",
+      "reviewer": "michaelcool1009@gmail.com",
+      "reviewed_at": "2026-08-09",
       "source_confidence": "high",
       "has_tables_or_annexes": true,
       "section_locator": "paragraph",
@@ -55,12 +63,12 @@
       "source_sha256": "d2c6dc547fd3c52e885ccf3686e87d79bc4a7df9889d8afa9be9f05ce7e1acfc",
       "extracted_text_path": "docs/source-manuals/2026-07-31/extracted/full_text/stay_manual_260731.txt",
       "extraction_warnings": [
-        "Extracted from the 배포용 HWP ViewText stream via scripts/decrypt_hwp_distribution.py. The text layer is the document's own — no OCR or glyph artifacts — but it has NOT been compared against the source and is NOT certified.",
-        "Paragraph-based, not page-based: locators do not line up with the 2026-06 PDF editions. A line-by-line diff against those extractions measures the change of extraction method, not a change of content.",
-        "Downstream legal wording remains under manual review unless a field was separately line-by-line certified."
+        "Extracted from the 배포용 HWP ViewText stream via scripts/decrypt_hwp_distribution.py. The text layer is the document's own, so there are no OCR or glyph artifacts.",
+        "Approved by the reviewer recorded above on 2026-08-09. The approval covers the body text; the table caveat below is NOT lifted by it.",
+        "Paragraph-based, not page-based: locators do not line up with the 2026-06 PDF editions. A line-by-line diff against those extractions measures the change of extraction method, not a change of content."
       ],
       "table_extraction_warnings": [
-        "별표/첨부서류 tables are flattened to paragraph text; cell and column boundaries are NOT preserved and must not be read as a structured table."
+        "별표/첨부서류 tables are flattened to paragraph text; cell and column boundaries are NOT preserved and must not be read as a structured table. This holds regardless of approval state."
       ]
     },
     "visa_manual_2026_06_17_pdf": {

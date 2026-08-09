@@ -94,7 +94,11 @@ def validate() -> Tuple[List[str], List[str]]:
     # source_registry.json uses ``type``/``status`` which the schema crosswalk
     # maps to canonical source_type/review_status. The registry's own vocab is a
     # subset, so validate against the union the schema declares.
-    registry_type_vocab = {"pdf_manual", "law_api", "notice_index"}
+    # hwp_manual is the 배포용 HWP the ministry actually publishes; the PDF
+    # editions are exports of it. Both are manuals for every downstream purpose,
+    # so they share the freshness rules below.
+    registry_type_vocab = {"pdf_manual", "hwp_manual", "law_api", "notice_index"}
+    manual_types = {"pdf_manual", "hwp_manual"}
     registry_status_vocab = {"active", "deprecated", "not_configured"}
 
     sources = registry.get("sources")
@@ -123,7 +127,7 @@ def validate() -> Tuple[List[str], List[str]]:
             errors.append(f"{sid}: unknown status {status!r}")
         # Freshness-gap warnings on official manual entries only. A concept is
         # satisfied if ANY of its crosswalk aliases holds a non-empty value.
-        if src.get("type") == "pdf_manual" and src.get("status") == "active":
+        if src.get("type") in manual_types and src.get("status") == "active":
             for concept in _FRESHNESS_GAP_CONCEPTS:
                 aliases = source_crosswalk.get(concept, [concept])
                 if not any(src.get(alias) not in (None, "", []) for alias in aliases):
@@ -134,7 +138,7 @@ def validate() -> Tuple[List[str], List[str]]:
     if allowed_source_types and not registry_type_vocab.issubset(
         # pdf_manual->manual, law_api->law/public_api, notice_index->official_web
         {"manual", "law", "public_api", "official_web", "internal_review",
-         "pdf_manual", "law_api", "notice_index"}
+         "pdf_manual", "hwp_manual", "law_api", "notice_index"}
     ):
         warnings.append("registry type vocab not representable in schema source_type enum")
     if allowed_review_status and not registry_status_vocab.issubset(allowed_review_status):
