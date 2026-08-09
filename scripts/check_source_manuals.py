@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import shutil
 import subprocess
@@ -11,20 +12,28 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST_PATH = ROOT / "docs/source-manuals/source_manifest.json"
-REQUIRED_ROLES = {
-    "visa_issuance_manual": 487,
-    "stay_residence_manual": 780,
+REQUIRED_ROLES = ("visa_issuance_manual", "stay_residence_manual")
+
+# The ministry publishes 배포용 HWP; the PDF editions are exports of it. A PDF is
+# pinned by its page count, which an HWP has no equivalent of — so an HWP entry
+# is pinned by a recomputed SHA-256 of the declared file instead. That is a
+# stronger identity check than a page count, not a weaker one, so neither format
+# can be swapped underneath the manifest unnoticed.
+EXPECTED_PAGES = {
+    "backend/data/sources/manuals/260617_visa_manual_exported.pdf": 487,
+    "backend/data/sources/manuals/260623_stay_manual_exported.pdf": 780,
 }
 REQUIRED_FIELDS = {
     "title_ko",
     "title_en",
     "version",
     "authority",
-    "pages",
     "file",
     "role",
     "status",
 }
+PDF_ONLY_FIELDS = {"pages"}
+NON_PDF_REQUIRED_FIELDS = {"file_sha256"}
 
 
 def fail(message: str) -> None:
@@ -70,16 +79,23 @@ def main() -> None:
     if not isinstance(current, dict):
         fail("manifest must contain object field `current`")
 
-    if set(current.keys()) != set(REQUIRED_ROLES.keys()):
+    if set(current.keys()) != set(REQUIRED_ROLES):
         fail("manifest.current must declare exactly visa_issuance_manual and stay_residence_manual")
 
     seen_roles: dict[str, int] = {}
-    for key, expected_pages in REQUIRED_ROLES.items():
+    for key in REQUIRED_ROLES:
         entry = current.get(key)
         if not isinstance(entry, dict):
             fail(f"current.{key} must be an object")
 
-        missing = sorted(REQUIRED_FIELDS - set(entry.keys()))
+        rel_file = entry.get("file")
+        if not isinstance(rel_file, str) or not rel_file.endswith((".pdf", ".hwp")):
+            fail(f"current.{key}.file must be a .pdf or .hwp path")
+        is_pdf = rel_file.endswith(".pdf")
+
+        required = set(REQUIRED_FIELDS)
+        required |= PDF_ONLY_FIELDS if is_pdf else NON_PDF_REQUIRED_FIELDS
+        missing = sorted(required - set(entry.keys()))
         if missing:
             fail(f"current.{key} missing required field(s): {', '.join(missing)}")
 
@@ -89,23 +105,30 @@ def main() -> None:
             fail(f"current.{key}.role must be {key!r}")
         if status != "current":
             fail(f"current.{key}.status must be 'current'")
-        if entry.get("pages") != expected_pages:
-            fail(f"current.{key}.pages must be {expected_pages}")
 
         seen_roles[role] = seen_roles.get(role, 0) + 1
 
-        rel_file = entry.get("file")
-        if not isinstance(rel_file, str) or not rel_file.endswith(".pdf"):
-            fail(f"current.{key}.file must be a .pdf path")
-        pdf_path = ROOT / rel_file
-        if not pdf_path.exists():
-            fail(f"declared PDF does not exist: {rel_file}")
-        if not pdf_path.is_file():
-            fail(f"declared PDF is not a file: {rel_file}")
+        path = ROOT / rel_file
+        if not path.exists():
+            fail(f"declared manual does not exist: {rel_file}")
+        if not path.is_file():
+            fail(f"declared manual is not a file: {rel_file}")
 
-        actual_pages = pdf_page_count(pdf_path)
-        if actual_pages is not None and actual_pages != expected_pages:
-            fail(f"{rel_file} has {actual_pages} pages; expected {expected_pages}")
+        if is_pdf:
+            expected_pages = EXPECTED_PAGES.get(rel_file)
+            if expected_pages is None:
+                fail(f"no expected page count recorded for {rel_file}")
+            if entry.get("pages") != expected_pages:
+                fail(f"current.{key}.pages must be {expected_pages}")
+            actual_pages = pdf_page_count(path)
+            if actual_pages is not None and actual_pages != expected_pages:
+                fail(f"{rel_file} has {actual_pages} pages; expected {expected_pages}")
+        else:
+            declared = str(entry.get("file_sha256") or "").lower()
+            actual = hashlib.sha256(path.read_bytes()).hexdigest()
+            if declared != actual:
+                fail(f"{rel_file} sha256 {actual[:12]}… does not match declared "
+                     f"{declared[:12] or '(empty)'}…")
 
     duplicates = [role for role, count in seen_roles.items() if count != 1]
     if duplicates:

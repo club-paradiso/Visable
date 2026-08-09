@@ -276,14 +276,31 @@ def convert(input_path: Path, outdir: Path, compare: Path | None = None) -> dict
     with tempfile.TemporaryDirectory() as td:
         workdir = Path(td)
         # builtin backends
-        for name, fn in (("olefile", lambda: extract_olefile(input_path)),
+        #
+        # `viewtext_aes` reads the 배포용 path the others cannot: for a
+        # distribution HWP the body lives in ViewText, AES-128-ECB encrypted,
+        # while every backend below reads the BodyText stub and comes back
+        # empty. See scripts/decrypt_hwp_distribution.py for why that is a
+        # documented format feature rather than a protection being bypassed.
+        # It is still only a *candidate* extraction — nothing here promotes an
+        # edition to `approved`.
+        def _viewtext_aes() -> str:
+            if not distribution:
+                raise RuntimeError("not a distribution HWP — other backends apply")
+            import decrypt_hwp_distribution as dist
+            return dist.extract(input_path)
+
+        for name, fn in (("viewtext_aes", _viewtext_aes),
+                         ("olefile", lambda: extract_olefile(input_path)),
                          ("soffice_pdftotext", lambda: extract_soffice(input_path, workdir))):
             rec = {"name": name, "url": "builtin", "installed": True,
                    "command": name, "exit_code": None, "text": None, "error": None}
             try:
                 rec["text"] = fn()
             except Exception as e:  # noqa: BLE001
-                rec["installed"] = name == "olefile"  # olefile import handled inside
+                # Both builtins are always present; only soffice is an external
+                # dependency that can genuinely be missing.
+                rec["installed"] = name in ("olefile", "viewtext_aes")
                 rec["error"] = str(e)
             backends.append(rec)
         # external CLI backends
@@ -339,8 +356,13 @@ def render_report(result: dict) -> str:
         f"# HWP extraction benchmark — {result['input']}",
         "",
         f"- HWP format: **{result['hwp_format']}**"
-        + ("  ⚠ open tools cannot fully extract distribution HWP — a verified"
-           " (human/AI-assisted) extraction is required before merge." if dist else ""),
+        + ("  ⚠ distribution HWP: the body is read via the documented ViewText"
+           " AES path (`viewtext_aes`); the BodyText-reading backends below"
+           " will always report empty. A high character count here is a"
+           " *candidate* extraction only — it is not evidence that the text"
+           " matches the source, so human verification against the original is"
+           " still required before merge, and nothing here may set"
+           " `approved`." if dist else ""),
         f"- overall classification: **{result['overall_quality']}**",
         f"- candidate backend: {result['candidate_backend'] or 'NONE'}"
         f" ({result['candidate_chars']} chars)",

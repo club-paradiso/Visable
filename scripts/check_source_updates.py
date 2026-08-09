@@ -58,7 +58,10 @@ DEFAULT_IMM_NOTICE_PATH = os.path.join(
     "immigration_notice_sources.json",
 )
 
-_VALID_TYPES = {"pdf_manual", "law_api", "notice_index"}
+# hwp_manual is the 배포용 HWP the ministry publishes; the PDF editions are
+# exports of it. Both are local-file manuals and follow the same path below.
+_MANUAL_TYPES = {"pdf_manual", "hwp_manual"}
+_VALID_TYPES = _MANUAL_TYPES | {"law_api", "notice_index"}
 _VALID_STATUSES = {"active", "not_configured", "deprecated"}
 _REQUIRED_CATALOG_FIELDS = {
     "source_id",
@@ -145,9 +148,9 @@ def _validate_record(rec: Dict[str, Any], idx: int) -> List[str]:
             f"sources[{idx}] id={rec.get('id')!r}: invalid status "
             f"{rec_status!r}; expected one of {sorted(_VALID_STATUSES)}"
         )
-    if rec_type == "pdf_manual" and not rec.get("local_path"):
+    if rec_type in _MANUAL_TYPES and not rec.get("local_path"):
         errors.append(
-            f"sources[{idx}] id={rec.get('id')!r}: pdf_manual entries must "
+            f"sources[{idx}] id={rec.get('id')!r}: {rec_type} entries must "
             "declare local_path"
         )
     return errors
@@ -559,7 +562,7 @@ def _check_source(rec: Dict[str, Any], allow_network: bool) -> Dict[str, Any]:
 
     if rec_status == "deprecated":
         return {**base, "state": "skipped", "reason": "deprecated"}
-    if rec_type == "pdf_manual":
+    if rec_type in _MANUAL_TYPES:
         return {**base, **_check_local(rec)}
     if rec_type in ("law_api", "notice_index"):
         if rec_status == "not_configured":

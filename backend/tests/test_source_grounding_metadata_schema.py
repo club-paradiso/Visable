@@ -59,8 +59,11 @@ class SchemaShapeTests(unittest.TestCase):
         inv = self.schema.get("manual_version_invariants") or {}
         self.assertIn("visa_issuance_manual", inv)
         self.assertIn("stay_residence_manual", inv)
-        self.assertEqual(inv["visa_issuance_manual"]["published_or_updated_at"], "2026-06-17")
-        self.assertEqual(inv["stay_residence_manual"]["published_or_updated_at"], "2026-06-23")
+        # Bumped when a new official edition is installed — the schema's own
+        # note says to update these intentionally. 2026-07-31 is the 배포용 HWP
+        # pair that superseded the 2026-06 PDF exports.
+        self.assertEqual(inv["visa_issuance_manual"]["published_or_updated_at"], "2026-07-31")
+        self.assertEqual(inv["stay_residence_manual"]["published_or_updated_at"], "2026-07-31")
 
 
 class RegistryConsistencyTests(unittest.TestCase):
@@ -76,18 +79,20 @@ class RegistryConsistencyTests(unittest.TestCase):
     def test_current_manuals_recognized(self):
         registry = _load(os.path.join(REPO_ROOT, "data", "source_registry.json"))
         by_kw = {}
+        # The ministry publishes 배포용 HWP; the PDF editions are exports of it.
+        # Both count as the active manual for this check.
         for src in registry["sources"]:
-            if src.get("status") == "active" and src.get("type") == "pdf_manual":
+            if src.get("status") == "active" and src.get("type") in ("pdf_manual", "hwp_manual"):
                 if "stay_manual" in src["id"]:
                     by_kw["stay"] = src
                 elif "visa_manual" in src["id"]:
                     by_kw["visa"] = src
         self.assertIn("stay", by_kw, "active stay manual must be registered")
         self.assertIn("visa", by_kw, "active visa manual must be registered")
-        self.assertEqual(by_kw["stay"]["version"], "2026.6")
-        self.assertEqual(by_kw["stay"]["source_date"], "2026-06-23")
-        self.assertEqual(by_kw["visa"]["version"], "2026.6")
-        self.assertEqual(by_kw["visa"]["source_date"], "2026-06-17")
+        self.assertEqual(by_kw["stay"]["version"], "2026.7")
+        self.assertEqual(by_kw["stay"]["source_date"], "2026-07-31")
+        self.assertEqual(by_kw["visa"]["version"], "2026.7")
+        self.assertEqual(by_kw["visa"]["source_date"], "2026-07-31")
 
 
 class AnswerGroundingFieldTests(unittest.TestCase):
