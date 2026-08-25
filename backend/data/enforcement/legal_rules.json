@@ -1,0 +1,110 @@
+{
+  "schemaVersion": "1.0.0",
+  "snapshots": [
+    {
+      "id": "kr-immigration-enforcement-2026-01-23",
+      "jurisdiction": "KR",
+      "effectiveFrom": "2026-01-23",
+      "effectiveUntil": null,
+      "verifiedAt": "2026-08-19",
+      "sources": [
+        {
+          "authority": "국가법령정보센터",
+          "lawName": "출입국관리법",
+          "article": "제18조, 제20조, 제21조, 제25조, 제46조, 제68조",
+          "url": "https://www.law.go.kr/법령/출입국관리법"
+        },
+        {
+          "authority": "국가법령정보센터",
+          "lawName": "출입국관리법 시행규칙",
+          "article": "제86조 및 별표 7",
+          "url": "https://www.law.go.kr/법령/출입국관리법시행규칙"
+        }
+      ],
+      "rules": [
+        {
+          "violationCode": "UNAUTHORIZED_STAY_OR_WORK_ART18_1",
+          "label": "체류자격 또는 취업활동 허가 위반",
+          "statuteArticle": "출입국관리법 제18조제1항",
+          "penaltyArticle": "출입국관리법 시행규칙 제86조 및 별표 7",
+          "statutoryMaximumKrw": 30000000,
+          "tiers": [
+            {"minimumMonths": 0, "maximumMonths": 1, "amountKrw": 2000000},
+            {"minimumMonths": 1, "maximumMonths": 3, "amountKrw": 3000000},
+            {"minimumMonths": 3, "maximumMonths": 6, "amountKrw": 4000000},
+            {"minimumMonths": 6, "maximumMonths": 12, "amountKrw": 7000000},
+            {"minimumMonths": 12, "maximumMonths": 24, "amountKrw": 10000000},
+            {"minimumMonths": 24, "maximumMonths": 36, "amountKrw": 15000000},
+            {"minimumMonths": 36, "maximumMonths": 60, "amountKrw": 20000000},
+            {"minimumMonths": 60, "maximumMonths": 84, "amountKrw": 25000000},
+            {"minimumMonths": 84, "maximumMonths": null, "amountKrw": 30000000}
+          ]
+        },
+        {
+          "violationCode": "STATUS_OUTSIDE_ACTIVITY_ART20",
+          "label": "체류자격 외 활동허가 위반",
+          "statuteArticle": "출입국관리법 제20조",
+          "penaltyArticle": "출입국관리법 시행규칙 제86조 및 별표 7",
+          "statutoryMaximumKrw": 30000000,
+          "tiers": [
+            {"minimumMonths": 0, "maximumMonths": 1, "amountKrw": 2000000},
+            {"minimumMonths": 1, "maximumMonths": 3, "amountKrw": 3000000},
+            {"minimumMonths": 3, "maximumMonths": 6, "amountKrw": 4000000},
+            {"minimumMonths": 6, "maximumMonths": 12, "amountKrw": 7000000},
+            {"minimumMonths": 12, "maximumMonths": 24, "amountKrw": 10000000},
+            {"minimumMonths": 24, "maximumMonths": 36, "amountKrw": 15000000},
+            {"minimumMonths": 36, "maximumMonths": 60, "amountKrw": 20000000},
+            {"minimumMonths": 60, "maximumMonths": 84, "amountKrw": 25000000},
+            {"minimumMonths": 84, "maximumMonths": null, "amountKrw": 30000000}
+          ]
+        },
+        {
+          "violationCode": "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1",
+          "label": "근무처 변경·추가 허가 위반",
+          "statuteArticle": "출입국관리법 제21조제1항",
+          "penaltyArticle": "출입국관리법 시행규칙 제86조 및 별표 7",
+          "statutoryMaximumKrw": 10000000,
+          "tiers": [
+            {"minimumMonths": 0, "maximumMonths": 3, "amountKrw": 1000000},
+            {"minimumMonths": 3, "maximumMonths": 6, "amountKrw": 2000000},
+            {"minimumMonths": 6, "maximumMonths": 12, "amountKrw": 3000000},
+            {"minimumMonths": 12, "maximumMonths": 24, "amountKrw": 5000000},
+            {"minimumMonths": 24, "maximumMonths": null, "amountKrw": 10000000}
+          ]
+        },
+        {
+          "violationCode": "UNAUTHORIZED_EMPLOYMENT_ART18_2",
+          "label": "취업할 수 없는 체류자격의 취업",
+          "statuteArticle": "출입국관리법 제18조제2항",
+          "penaltyArticle": "출입국관리법 시행규칙 제86조 및 별표 7",
+          "statutoryMaximumKrw": 10000000,
+          "tiers": [
+            {"minimumMonths": 0, "maximumMonths": 3, "amountKrw": 1000000},
+            {"minimumMonths": 3, "maximumMonths": 6, "amountKrw": 2000000},
+            {"minimumMonths": 6, "maximumMonths": 12, "amountKrw": 3000000},
+            {"minimumMonths": 12, "maximumMonths": 24, "amountKrw": 5000000},
+            {"minimumMonths": 24, "maximumMonths": null, "amountKrw": 10000000}
+          ]
+        },
+        {
+          "violationCode": "OVERSTAY_ART25",
+          "label": "체류기간 연장허가 없는 체류",
+          "statuteArticle": "출입국관리법 제25조",
+          "penaltyArticle": "출입국관리법 시행규칙 제86조 및 별표 7",
+          "statutoryMaximumKrw": 30000000,
+          "tiers": [
+            {"minimumMonths": 0, "maximumMonths": 1, "amountKrw": 500000},
+            {"minimumMonths": 1, "maximumMonths": 3, "amountKrw": 1000000},
+            {"minimumMonths": 3, "maximumMonths": 6, "amountKrw": 2000000},
+            {"minimumMonths": 6, "maximumMonths": 12, "amountKrw": 5000000},
+            {"minimumMonths": 12, "maximumMonths": 24, "amountKrw": 10000000},
+            {"minimumMonths": 24, "maximumMonths": 36, "amountKrw": 15000000},
+            {"minimumMonths": 36, "maximumMonths": 60, "amountKrw": 20000000},
+            {"minimumMonths": 60, "maximumMonths": 84, "amountKrw": 25000000},
+            {"minimumMonths": 84, "maximumMonths": null, "amountKrw": 30000000}
+          ]
+        }
+      ]
+    }
+  ]
+}
