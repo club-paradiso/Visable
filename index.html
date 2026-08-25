@@ -9868,6 +9868,24 @@ body.searching:not(.searched) .p-gateway { display: none !important; }
 }
 .p-gw-newhome:hover .p-gw-newhome-arrow { transform: translateX(3px); }
 
+.p-gw-enforcement {
+  background: linear-gradient(120deg, rgba(85, 142, 208, 0.19), rgba(125, 216, 184, 0.12));
+  border-color: rgba(122, 176, 238, 0.46);
+}
+.p-gw-enforcement:hover,
+.p-gw-enforcement:focus-visible {
+  border-color: rgba(122, 176, 238, 0.72);
+  background: linear-gradient(120deg, rgba(85, 142, 208, 0.27), rgba(125, 216, 184, 0.16));
+}
+.p-gw-enforcement .p-gw-newhome-icon {
+  background: rgba(85, 142, 208, 0.24);
+  border-color: rgba(122, 176, 238, 0.44);
+}
+.p-gw-enforcement .p-gw-newhome-brand {
+  color: rgba(211, 232, 255, 0.96);
+  border-color: rgba(122, 176, 238, 0.52);
+}
+
 /* Compact utility row */
 .p-gw-utility {
   display: grid;
@@ -14400,6 +14418,23 @@ body[data-theme="dark"] .us-ev-state.is-lifecycle-ambiguous { color: var(--us-am
                     <span class="p-gw-card-go" aria-hidden="true">상담 시작 →</span>
                 </a>
             </div>
+
+            <!-- Enforcement Intelligence keeps legal calculation and AI outcome
+                 prediction visibly separate on its dedicated privacy-safe flow. -->
+            <a class="p-gw-newhome p-gw-enforcement" href="enforcement.html" aria-label="출입국 사범처리 예상 분석 열기">
+                <span class="p-gw-newhome-icon" aria-hidden="true">⚖</span>
+                <span class="p-gw-newhome-body">
+                    <span class="p-gw-newhome-titles">
+                        <span class="p-gw-newhome-label">출입국 사범처리 예상</span>
+                        <span class="p-gw-newhome-brand">Enforcement Intelligence</span>
+                    </span>
+                    <span class="p-gw-newhome-desc">공식 법령상 기준 범칙금과 공개 근거에 기반한 AI 예상 처분을 구분해 확인해요.</span>
+                </span>
+                <span class="p-gw-newhome-cta" aria-hidden="true">
+                    <span class="p-gw-newhome-tagline">Law first. Prediction second.</span>
+                    <span class="p-gw-newhome-arrow">분석하기 →</span>
+                </span>
+            </a>
 
             <!-- New Home platform banner — distinct warm entry to the dedicated
                  nationality/citizenship platform. Plain <a> so it opens normally;

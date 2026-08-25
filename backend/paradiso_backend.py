@@ -24,6 +24,7 @@ import time
 import uuid
 import dataclasses
 from contextlib import asynccontextmanager
+from datetime import date
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 from urllib.parse import quote
 
@@ -56,6 +57,8 @@ from services import manual_registry as _manual_registry
 from services import statute_citation_guard as _statute_guard
 from services import employment_nl as _employment_nl
 from services import precedent_sources
+from services.enforcement_models import StructuredCase
+from services.enforcement_service import analyze_enforcement_case, extract_structured_case
 from services import legal_research
 from services import legal_synthesis
 from services import mofa_public_data
@@ -7041,6 +7044,52 @@ def _unified_evidence_label(deterministic: Dict[str, Any], lang: str) -> str:
 class EmploymentInterpretRequest(BaseModel):
     text: str = ""
     lang: Optional[str] = None
+
+
+class EnforcementExtractRequest(BaseModel):
+    text: str = Field(default="", max_length=3000)
+    assessment_date: Optional[date] = Field(default=None, alias="assessmentDate")
+
+
+class EnforcementAnalyzeRequest(BaseModel):
+    case_data: Dict[str, Any] = Field(alias="caseData")
+
+
+async def _enforcement_ai_provider(prompt: str) -> Dict[str, Any]:
+    """Narrow adapter over Visable's existing OpenRouter provider policy."""
+    return await _openrouter_complete_with_candidates(prompt, max_tokens=1800)
+
+
+@app.post(
+    "/api/enforcement/extract",
+    dependencies=[Depends(rate_limit("enforcement_extract", per_minute=10, per_day=200))],
+)
+async def enforcement_extract(req: EnforcementExtractRequest) -> Any:
+    """Convert a sensitive narrative into non-identifying structured facts."""
+    if not (req.text or "").strip():
+        raise HTTPException(status_code=422, detail="case text is required")
+    provider = _enforcement_ai_provider if OPENROUTER_API_KEY else None
+    case = await extract_structured_case(
+        req.text,
+        provider=provider,
+        assessment_date=req.assessment_date,
+    )
+    return {"schemaVersion": "1", "case": case.public_dict()}
+
+
+@app.post(
+    "/api/enforcement/analyze",
+    dependencies=[Depends(rate_limit("enforcement_analyze", per_minute=8, per_day=160))],
+)
+async def enforcement_analyze(req: EnforcementAnalyzeRequest) -> Any:
+    """Calculate the law first, then request a bounded outcome prediction."""
+    try:
+        case = StructuredCase.model_validate(req.case_data)
+    except Exception as exc:
+        raise HTTPException(status_code=422, detail="invalid structured enforcement case") from exc
+    provider = _enforcement_ai_provider if OPENROUTER_API_KEY else None
+    analysis = await analyze_enforcement_case(case, prediction_provider=provider)
+    return analysis.public_dict()
 
 
 @app.post(

@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="description" content="공식 법령 기준과 공개 근거를 분리해 보여주는 출입국 사범처리 예상 도구">
+  <title>Enforcement Intelligence · Visable</title>
+  <link rel="icon" href="assets/brand/visable-favicon.svg">
+  <link rel="stylesheet" href="assets/css/enforcement.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">본문으로 건너뛰기</a>
+  <header class="topbar">
+    <a class="brand" href="index.html" aria-label="Visable 홈">
+      <img src="assets/brand/visable-wordmark.svg" alt="Visable">
+    </a>
+    <span class="product-label">Enforcement Intelligence</span>
+  </header>
+
+  <main id="main" class="shell">
+    <section class="hero" aria-labelledby="page-title">
+      <p class="eyebrow">IMMIGRATION ENFORCEMENT INTELLIGENCE</p>
+      <h1 id="page-title">법령상 기준과 실제 예상 결과를<br>한 화면에서 구분해 확인하세요.</h1>
+      <p>공식 법령으로 기준 범칙금을 먼저 계산한 뒤, 확인 가능한 공개 근거 안에서 AI가 가장 유력한 처분 방향을 조심스럽게 예상합니다.</p>
+      <div class="privacy-note"><strong>개인정보 최소화</strong> 이름·여권번호·외국인등록번호·정확한 직장명은 입력하지 마세요. 원문 서술은 저장하지 않습니다.</div>
+    </section>
+
+    <nav class="steps" aria-label="분석 단계">
+      <button type="button" class="step is-active" data-step-nav="1" aria-current="step"><span>1</span>사례 입력</button>
+      <button type="button" class="step" data-step-nav="2" disabled><span>2</span>사실 확인</button>
+      <button type="button" class="step" data-step-nav="3" disabled><span>3</span>예상 결과</button>
+    </nav>
+
+    <section class="panel" data-step="1" aria-labelledby="input-title">
+      <div class="panel-heading">
+        <p class="section-number">STEP 01</p>
+        <h2 id="input-title">사례를 설명해 주세요</h2>
+        <p>판단에 필요한 사실만 적어 주세요. 아래 예시는 법적 결론이 아닌 입력 형식 예시입니다.</p>
+      </div>
+      <form id="case-form">
+        <label for="case-text">사례 설명</label>
+        <textarea id="case-text" maxlength="3000" required placeholder="예: D-2 유학생인데 음식점에서 허가 없이 약 3주 동안 아르바이트를 했어요. 이번이 처음입니다."></textarea>
+        <div class="form-row">
+          <label for="assessment-date">분석 기준일 <span>(선택)</span></label>
+          <input id="assessment-date" type="date">
+        </div>
+        <p class="form-error" id="input-error" role="alert" hidden></p>
+        <button class="primary-button" type="submit">입력 내용 구조화하기 <span aria-hidden="true">→</span></button>
+      </form>
+    </section>
+
+    <section class="panel" data-step="2" aria-labelledby="confirm-title" hidden>
+      <div class="panel-heading">
+        <p class="section-number">STEP 02</p>
+        <h2 id="confirm-title">입력 내용을 이렇게 이해했어요.</h2>
+        <p>금액과 처분에 영향을 줄 수 있으니 틀린 내용은 바로 고쳐 주세요.</p>
+      </div>
+      <form id="confirm-form" class="fact-grid">
+        <label>체류자격<input name="statusOfStay" placeholder="예: D-2"></label>
+        <label>위반 유형<select name="violationCode">
+          <option value="">확인 필요</option>
+          <option value="STATUS_OUTSIDE_ACTIVITY_ART20">체류자격 외 활동허가 위반</option>
+          <option value="UNAUTHORIZED_EMPLOYMENT_ART18_2">취업할 수 없는 자격의 취업</option>
+          <option value="UNAUTHORIZED_STAY_OR_WORK_ART18_1">체류·취업활동 허가 위반</option>
+          <option value="UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1">근무처 변경·추가 허가 위반</option>
+          <option value="OVERSTAY_ART25">체류기간 초과</option>
+        </select></label>
+        <label>위반기간(일)<input name="durationDays" type="number" min="0" max="36500"></label>
+        <label>과거 위반 횟수<input name="priorViolations" type="number" min="0" max="100"></label>
+        <label>허가 여부<select name="authorizationObtained"><option value="">확인 필요</option><option value="true">허가 있음</option><option value="false">허가 없음</option></select></label>
+        <label>자진신고<select name="voluntaryDisclosure"><option value="">확인 필요</option><option value="true">예</option><option value="false">아니요</option></select></label>
+        <label>위반 시작일<input name="violationStartDate" type="date"></label>
+        <label>위반 종료일<input name="violationEndDate" type="date"></label>
+        <div class="unknown-box full-width" id="unknown-facts"></div>
+        <p class="form-error full-width" id="confirm-error" role="alert" hidden></p>
+        <div class="actions full-width">
+          <button class="secondary-button" type="button" data-back="1">이전</button>
+          <button class="primary-button" type="submit">법령 기준과 AI 예상 분석 <span aria-hidden="true">→</span></button>
+        </div>
+      </form>
+    </section>
+
+    <section data-step="3" aria-labelledby="result-title" hidden>
+      <div class="result-heading">
+        <p class="section-number">STEP 03</p>
+        <h2 id="result-title">분석 결과</h2>
+        <p>법령이 정한 기준과 Visable의 예상은 서로 다른 정보입니다.</p>
+      </div>
+      <div id="result-root" aria-live="polite"></div>
+      <div class="actions result-actions">
+        <button class="secondary-button" type="button" data-back="2">사실 수정</button>
+        <button class="primary-button" type="button" id="restart">새 사례 분석</button>
+      </div>
+    </section>
+
+    <div class="loading" id="loading" role="status" hidden><span></span><p>법령과 공개 근거를 분리해 분석하고 있어요.</p></div>
+  </main>
+
+  <footer>정보 제공용 도구이며 출입국 당국의 최종 처분 또는 법률 자문을 대신하지 않습니다.</footer>
+  <script type="module" src="scripts/enforcement-ui.mjs"></script>
+</body>
+</html>
