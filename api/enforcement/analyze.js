@@ -1,5 +1,16 @@
 'use strict';
 
+// Keep Enforcement on currently active default fallbacks even if the shared
+// runtime's historical defaults still contain deprecated free endpoints.
+// A deployment-specific ENFORCEMENT_OPENROUTER_MODEL_CANDIDATES value always
+// wins, so operators can opt into premium or newer models without a code edit.
+if (!String(process.env.ENFORCEMENT_OPENROUTER_MODEL_CANDIDATES || '').trim()) {
+  process.env.ENFORCEMENT_OPENROUTER_MODEL_CANDIDATES = [
+    'openai/gpt-oss-120b:free',
+    'google/gemma-4-31b-it:free',
+  ].join(',');
+}
+
 const { analyzeGroundedCase, publicRuntimeConfig } = require('../../lib/enforcement-grounded-ai');
 
 module.exports = async function handler(request, response) {
