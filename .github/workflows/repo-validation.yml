@@ -1,12 +1,16 @@
 name: Repo Validation
 
 on:
+  workflow_dispatch:
   pull_request:
   push:
     branches:
       - main
       - 'feat/**'
       - 'fix/**'
+
+permissions:
+  contents: read
 
 jobs:
   validate:
