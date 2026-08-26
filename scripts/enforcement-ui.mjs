@@ -123,8 +123,12 @@ const confidenceLabels = { VERY_HIGH: '매우 높음', HIGH: '높음', MEDIUM: '
 const likelihoodLabels = { VERY_HIGH: '매우 높음', HIGH: '높음', MODERATE: '중간', LOW: '낮음', VERY_LOW: '매우 낮음', UNKNOWN: '특정 어려움' };
 const groundingLabels = { VERIFIED: '실시간 법령 API 검증 완료', AUDIT_ONLY: '법령 API 감사 모드', LIMITED: '법령 API 부분 검증', UNAVAILABLE: '정적 법령 스냅샷 사용' };
 const dispositionLabels = {
-  STAY_PERMISSION_DISADVANTAGE: '체류허가상 불이익', DEPARTURE_ORDER: '출국명령',
-  DEPORTATION: '강제퇴거', CRIMINAL_REFERRAL: '형사절차 회부'
+  NO_IMMEDIATE_DEPARTURE_MEASURE: '즉시 출국조치 없음',
+  STAY_PERMISSION_DISADVANTAGE: '체류허가상 불이익',
+  DEPARTURE_RECOMMENDATION: '출국권고',
+  DEPARTURE_ORDER: '출국명령',
+  DEPORTATION: '강제퇴거',
+  CRIMINAL_REFERRAL: '형사절차 회부'
 };
 
 function factors(items = []) {
@@ -155,7 +159,7 @@ function renderResult(data) {
         <h3>법령 기준</h3>
         <p class="subtle">법령상 기준 범칙금</p>
         <p class="amount">${won(baseline.baselineAmountKrw)}</p>
-        <p>법정 조정 가능 범위: <strong>${range(baseline.legallyAdjustableRange)}</strong></p>
+        <p>통상 가감 범위(시행규칙 제86조제2항): <strong>${range(baseline.legallyAdjustableRange)}</strong></p>
         <p><span class="tag">${escapeHtml(groundingLabel)}</span></p>
         <p class="subtle">${escapeHtml((baseline.appliedRules || []).join(' · '))}</p>
       </article>
@@ -165,7 +169,7 @@ function renderResult(data) {
         <p class="subtle">예상 범칙금</p>
         <p class="amount">${monetary ? range(monetary.predictedLikelyRange) : '생성하지 못함'}</p>
         <p>${monetary?.pointEstimateKrw != null ? `대표 추정액: <strong>${won(monetary.pointEstimateKrw)}</strong>` : '근거가 충분하지 않아 대표 추정액을 표시하지 않습니다.'}</p>
-        <p class="subtle">${escapeHtml(modelLabel)} · 예측은 위 법정 범위 안에서만 허용됩니다.</p>
+        <p class="subtle">${escapeHtml(modelLabel)} · AI 금액 예측은 위 통상 가감 범위 안으로 제한됩니다.</p>
       </article>
       <article class="result-card span-2">
         <p class="card-kicker">3 · DISPOSITION</p>
