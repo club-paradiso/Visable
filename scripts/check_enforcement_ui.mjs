@@ -9,6 +9,7 @@ const html = fs.readFileSync(path.join(root, 'enforcement.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'assets/css/enforcement.css'), 'utf8');
 const js = fs.readFileSync(path.join(root, 'scripts/enforcement-ui.mjs'), 'utf8');
 const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+const backendOrigin = fs.readFileSync(path.join(root, 'assets/js/backend-origin.js'), 'utf8');
 const vercelExtract = fs.readFileSync(path.join(root, 'api/enforcement/extract.js'), 'utf8');
 const vercelAnalyze = fs.readFileSync(path.join(root, 'api/enforcement/analyze.js'), 'utf8');
 const lawProbe = fs.readFileSync(path.join(root, 'api/enforcement/law-probe.js'), 'utf8');
@@ -38,7 +39,7 @@ const checks = [
   ['raw narrative discarded', js.includes("$('#case-text').value = ''")],
   ['extract endpoint wired', js.includes('/api/enforcement/extract')],
   ['analyze endpoint wired', js.includes('/api/enforcement/analyze')],
-  ['same-origin API base selected for enforcement', html.includes('<meta name="api-base" content=".">')],
+  ['Railway resolver is production primary for enforcement', !html.includes('<meta name="api-base" content=".">') && backendOrigin.includes('https://web-production-14f9a.up.railway.app')],
   ['Vercel extract v2 exists', vercelExtract.includes('extractStructuredCaseV2') && vercelExtract.includes('legal-aware-extraction-v2')],
   ['Vercel grounded analyzer exists', vercelAnalyze.includes('analyzeGroundedCase') && vercelAnalyze.includes('grounded-ai-v2')],
   ['runtime reads OpenRouter only server-side', groundedRuntime.includes('process.env.OPENROUTER_API_KEY') && !html.includes('OPENROUTER_API_KEY')],
