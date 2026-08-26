@@ -1,6 +1,7 @@
 'use strict';
 
 const { analyzeGroundedCase, publicRuntimeConfig } = require('../../lib/enforcement-grounded-ai');
+const { OUTCOME_POLICY_VERSION, applyOutcomePolicy } = require('../../lib/enforcement-outcome-policy');
 
 module.exports = async function handler(request, response) {
   if (request.method === 'GET') {
@@ -9,6 +10,7 @@ module.exports = async function handler(request, response) {
       service: 'visable-enforcement-analyze',
       status: 'ok',
       mode: runtime.openrouterConfigured ? 'grounded-ai-v2' : 'deterministic-fallback',
+      outcomePolicyVersion: OUTCOME_POLICY_VERSION,
       runtime,
     });
   }
@@ -25,7 +27,8 @@ module.exports = async function handler(request, response) {
   }
 
   try {
-    return response.status(200).json(await analyzeGroundedCase(payload.caseData));
+    const analysis = await analyzeGroundedCase(payload.caseData);
+    return response.status(200).json(applyOutcomePolicy(analysis));
   } catch (error) {
     console.error('Enforcement analysis rejected', { name: error && error.name, message: error && error.message });
     return response.status(422).json({ detail: 'invalid structured enforcement case' });
