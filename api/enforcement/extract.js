@@ -1,13 +1,14 @@
 'use strict';
 
-const { extractStructuredCase } = require('../../lib/enforcement-fallback');
+const { extractStructuredCaseV2, publicRuntimeConfig } = require('../../lib/enforcement-grounded-ai');
 
 module.exports = async function handler(request, response) {
   if (request.method === 'GET') {
     return response.status(200).json({
       service: 'visable-enforcement-extract',
       status: 'ok',
-      mode: 'deterministic-fallback',
+      mode: 'legal-aware-extraction-v2',
+      runtime: publicRuntimeConfig(),
     });
   }
 
@@ -31,7 +32,7 @@ module.exports = async function handler(request, response) {
   }
 
   try {
-    const caseData = extractStructuredCase(text, assessmentDate);
+    const caseData = extractStructuredCaseV2(text, assessmentDate);
     return response.status(200).json({ case: caseData });
   } catch (error) {
     return response.status(422).json({ detail: error.message || 'case extraction failed' });
