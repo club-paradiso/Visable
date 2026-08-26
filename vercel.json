@@ -1,0 +1,9 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "functions": {
+    "api/enforcement/**/*.py": {
+      "maxDuration": 30,
+      "excludeFiles": "{.github/**,agency-directory/**,assets/**,audits/**,data/**,docs/**,scripts/**,backend/tests/**,backend/data/audits/**,backend/data/eval/**,backend/data/manual_grounding/**,backend/data/sources/**,backend/data/visa_authoring/**,backend/data/visas.json,*.html,*.md,visa_data.json}"
+    }
+  }
+}
