@@ -7,6 +7,8 @@ const html = fs.readFileSync(path.join(root, 'enforcement.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'assets/css/enforcement.css'), 'utf8');
 const js = fs.readFileSync(path.join(root, 'scripts/enforcement-ui.mjs'), 'utf8');
 const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+const vercelExtract = fs.readFileSync(path.join(root, 'api/enforcement/extract.py'), 'utf8');
+const vercelAnalyze = fs.readFileSync(path.join(root, 'api/enforcement/analyze.py'), 'utf8');
 
 const backendResolverIndex = html.indexOf('assets/js/backend-origin.js');
 const enforcementModuleIndex = html.indexOf('scripts/enforcement-ui.mjs');
@@ -25,10 +27,14 @@ const checks = [
   ['raw narrative discarded', js.includes("$('#case-text').value = ''")],
   ['extract endpoint wired', js.includes('/api/enforcement/extract')],
   ['analyze endpoint wired', js.includes('/api/enforcement/analyze')],
+  ['same-origin API base selected for enforcement', html.includes('<meta name="api-base" content=".">')],
+  ['Vercel extract fallback exists', vercelExtract.includes('extract_structured_case') && vercelExtract.includes('provider=None')],
+  ['Vercel analyze fallback exists', vercelAnalyze.includes('analyze_enforcement_case') && vercelAnalyze.includes('prediction_provider=None')],
+  ['Vercel fallback does not call precedents', vercelAnalyze.includes('NoPrecedents')],
   ['shared backend resolver loaded', backendResolverIndex >= 0],
   ['shared backend resolver loads before enforcement module', backendResolverIndex >= 0 && backendResolverIndex < enforcementModuleIndex],
-  ['shared backend resolver used', js.includes('window.VisableBackend') && js.includes('window.VisableBackend.origin')],
-  ['production does not silently fall back to same-origin', js.includes("return local ? '' : null")],
+  ['shared backend resolver remains available as operator override infrastructure', js.includes('window.VisableBackend') && js.includes('window.VisableBackend.origin')],
+  ['production does not silently fall back to same-origin without explicit config', js.includes("return local ? '' : null")],
   ['network failure has explicit user message', js.includes('Visable 분석 서버에 연결하지 못했습니다.')],
   ['HTTP failure preserves status', js.includes('분석 서버 요청에 실패했습니다. (${response.status})')],
   ['mobile breakpoint', css.includes('@media (max-width: 680px)')],
