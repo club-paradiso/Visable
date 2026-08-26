@@ -1,13 +1,16 @@
 'use strict';
 
-// Keep Enforcement on currently active default fallbacks even if the shared
-// runtime's historical defaults still contain deprecated free endpoints.
-// A deployment-specific ENFORCEMENT_OPENROUTER_MODEL_CANDIDATES value always
-// wins, so operators can opt into premium or newer models without a code edit.
+// Enforcement has a Korean-first output surface. Prefer the current multilingual
+// Gemma 4 free endpoint, then fall back to gpt-oss-120b. Deployment-specific
+// ENFORCEMENT_OPENROUTER_MODEL / *_CANDIDATES values always win, so operators
+// can opt into a premium verifier (for example Gemini 3 Flash) without code edits.
+if (!String(process.env.ENFORCEMENT_OPENROUTER_MODEL || '').trim()) {
+  process.env.ENFORCEMENT_OPENROUTER_MODEL = 'google/gemma-4-31b-it:free';
+}
 if (!String(process.env.ENFORCEMENT_OPENROUTER_MODEL_CANDIDATES || '').trim()) {
   process.env.ENFORCEMENT_OPENROUTER_MODEL_CANDIDATES = [
-    'openai/gpt-oss-120b:free',
     'google/gemma-4-31b-it:free',
+    'openai/gpt-oss-120b:free',
   ].join(',');
 }
 
