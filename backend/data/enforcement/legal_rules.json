@@ -6,7 +6,7 @@
       "jurisdiction": "KR",
       "effectiveFrom": "2026-01-23",
       "effectiveUntil": null,
-      "verifiedAt": "2026-08-19",
+      "verifiedAt": "2026-08-26",
       "sources": [
         {
           "authority": "국가법령정보센터",
@@ -19,12 +19,18 @@
           "lawName": "출입국관리법 시행규칙",
           "article": "제86조 및 별표 7",
           "url": "https://www.law.go.kr/법령/출입국관리법시행규칙"
+        },
+        {
+          "authority": "국가법령정보센터",
+          "lawName": "출입국관리법 시행규칙 별표 7",
+          "article": "범칙금의 양정기준(제86조제1항 관련), 2026. 1. 23. 개정",
+          "url": "https://www.law.go.kr/LSW/flDownload.do?bylClsCd=110201&flSeq=161124779&gubun="
         }
       ],
       "rules": [
         {
           "violationCode": "UNAUTHORIZED_STAY_OR_WORK_ART18_1",
-          "label": "체류자격 또는 취업활동 허가 위반",
+          "label": "취업활동이 허용되는 체류자격 없이 취업",
           "statuteArticle": "출입국관리법 제18조제1항",
           "penaltyArticle": "출입국관리법 시행규칙 제86조 및 별표 7",
           "statutoryMaximumKrw": 30000000,
@@ -74,7 +80,7 @@
         },
         {
           "violationCode": "UNAUTHORIZED_EMPLOYMENT_ART18_2",
-          "label": "취업할 수 없는 체류자격의 취업",
+          "label": "취업활동 자격 보유자가 지정된 근무처가 아닌 곳에서 근무",
           "statuteArticle": "출입국관리법 제18조제2항",
           "penaltyArticle": "출입국관리법 시행규칙 제86조 및 별표 7",
           "statutoryMaximumKrw": 10000000,
