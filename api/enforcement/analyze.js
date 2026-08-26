@@ -1,6 +1,7 @@
 'use strict';
 
 const { analyzeGroundedCase, publicRuntimeConfig } = require('../../lib/enforcement-grounded-ai');
+const { retrieveOfficialPrecedents } = require('../../lib/enforcement-precedent-grounding');
 
 module.exports = async function handler(request, response) {
   if (request.method === 'GET') {
@@ -25,7 +26,28 @@ module.exports = async function handler(request, response) {
   }
 
   try {
-    return response.status(200).json(await analyzeGroundedCase(payload.caseData));
+    const analysis = await analyzeGroundedCase(payload.caseData);
+    const precedent = await retrieveOfficialPrecedents(payload.caseData || {}, analysis.legalBaseline);
+    const prediction = analysis.prediction || {};
+    const knownEvidence = new Set((prediction.evidence || []).map((item) => item && item.id).filter(Boolean));
+    const appendedEvidence = [...(prediction.evidence || [])];
+    for (const item of precedent.evidence || []) {
+      if (item && item.id && !knownEvidence.has(item.id)) {
+        knownEvidence.add(item.id);
+        appendedEvidence.push(item);
+      }
+    }
+    analysis.prediction = {
+      ...prediction,
+      evidence: appendedEvidence,
+      similarCases: precedent.similarCases || [],
+      limitations: [...new Set([...(prediction.limitations || []), ...(precedent.limitations || [])])],
+    };
+    analysis.precedentGrounding = {
+      status: precedent.status,
+      retrievedCases: (precedent.similarCases || []).length,
+    };
+    return response.status(200).json(analysis);
   } catch (error) {
     console.error('Enforcement analysis rejected', { name: error && error.name, message: error && error.message });
     return response.status(422).json({ detail: 'invalid structured enforcement case' });
