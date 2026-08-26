@@ -1,8 +1,10 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
 
 const root = path.resolve(import.meta.dirname, '..');
+const require = createRequire(import.meta.url);
 const html = fs.readFileSync(path.join(root, 'enforcement.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'assets/css/enforcement.css'), 'utf8');
 const js = fs.readFileSync(path.join(root, 'scripts/enforcement-ui.mjs'), 'utf8');
@@ -10,6 +12,10 @@ const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const vercelExtract = fs.readFileSync(path.join(root, 'api/enforcement/extract.js'), 'utf8');
 const vercelAnalyze = fs.readFileSync(path.join(root, 'api/enforcement/analyze.js'), 'utf8');
 const fallbackRuntime = fs.readFileSync(path.join(root, 'lib/enforcement-fallback.js'), 'utf8');
+const groundedRuntime = fs.readFileSync(path.join(root, 'lib/enforcement-grounded-ai.js'), 'utf8');
+const lawRuntime = fs.readFileSync(path.join(root, 'lib/enforcement-law-grounding.js'), 'utf8');
+const legalRules = JSON.parse(fs.readFileSync(path.join(root, 'backend/data/enforcement/legal_rules.json'), 'utf8'));
+const { extractStructuredCaseV2, publicRuntimeConfig } = require('../lib/enforcement-grounded-ai.js');
 
 const backendResolverIndex = html.indexOf('assets/js/backend-origin.js');
 const enforcementModuleIndex = html.indexOf('scripts/enforcement-ui.mjs');
@@ -29,11 +35,20 @@ const checks = [
   ['extract endpoint wired', js.includes('/api/enforcement/extract')],
   ['analyze endpoint wired', js.includes('/api/enforcement/analyze')],
   ['same-origin API base selected for enforcement', html.includes('<meta name="api-base" content=".">')],
-  ['Vercel extract fallback exists', vercelExtract.includes('extractStructuredCase') && vercelExtract.includes('deterministic-fallback')],
-  ['Vercel analyze fallback exists', vercelAnalyze.includes('analyzeCase') && vercelAnalyze.includes('deterministic-fallback')],
+  ['Vercel extract v2 exists', vercelExtract.includes('extractStructuredCaseV2') && vercelExtract.includes('legal-aware-extraction-v2')],
+  ['Vercel grounded analyzer exists', vercelAnalyze.includes('analyzeGroundedCase') && vercelAnalyze.includes('grounded-ai-v2')],
+  ['runtime reads OpenRouter only server-side', groundedRuntime.includes('process.env.OPENROUTER_API_KEY') && !html.includes('OPENROUTER_API_KEY')],
+  ['runtime rejects numeric probabilities', groundedRuntime.includes('numeric_probability_prohibited')],
+  ['runtime bounds monetary prediction', groundedRuntime.includes('sanitizeMoneyRange') && groundedRuntime.includes('legallyAdjustableRange')],
+  ['runtime forbids random OpenRouter routing', groundedRuntime.includes('RANDOM_MODEL_IDS')],
+  ['law runtime supports preferred OC and legacy key', lawRuntime.includes('process.env.LAW_API_OC') && lawRuntime.includes('process.env.LAW_API_KEY')],
+  ['law runtime calls official DRF endpoints', lawRuntime.includes('/DRF/lawSearch.do') && lawRuntime.includes('/DRF/lawService.do')],
+  ['law runtime never returns credential value', !lawRuntime.includes('credential: cfg.credential')],
   ['fallback runtime uses canonical rule snapshot', fallbackRuntime.includes("require('../backend/data/enforcement/legal_rules.json')")],
-  ['fallback prediction stays unavailable without provider', fallbackRuntime.includes("status: 'UNAVAILABLE'") && fallbackRuntime.includes('예측 모델의 유효한 구조화 결과가 없습니다.')],
+  ['fallback remains fail-closed without provider', fallbackRuntime.includes("status: 'UNAVAILABLE'")],
   ['fallback preserves no-precedent limitation', fallbackRuntime.includes('현재 확인 가능한 유사 공개사례가 충분하지 않습니다.')],
+  ['Article 18(1) label is legally corrected', html.includes('취업활동 가능 체류자격 없이 취업')],
+  ['Article 18(2) label is legally corrected', html.includes('지정된 근무처가 아닌 곳에서 근무')],
   ['shared backend resolver loaded', backendResolverIndex >= 0],
   ['shared backend resolver loads before enforcement module', backendResolverIndex >= 0 && backendResolverIndex < enforcementModuleIndex],
   ['shared backend resolver remains available as operator override infrastructure', js.includes('window.VisableBackend') && js.includes('window.VisableBackend.origin')],
@@ -47,4 +62,33 @@ const checks = [
 ];
 
 for (const [name, ok] of checks) assert.equal(ok, true, `enforcement UI contract failed: ${name}`);
-console.log(`Enforcement UI contract passed (${checks.length} checks).`);
+
+const snapshot = legalRules.snapshots[0];
+assert.equal(snapshot.verifiedAt, '2026-08-26');
+assert.equal(snapshot.rules.find((rule) => rule.violationCode === 'UNAUTHORIZED_STAY_OR_WORK_ART18_1').label,
+  '취업활동이 허용되는 체류자격 없이 취업');
+assert.equal(snapshot.rules.find((rule) => rule.violationCode === 'UNAUTHORIZED_EMPLOYMENT_ART18_2').label,
+  '취업활동 자격 보유자가 지정된 근무처가 아닌 곳에서 근무');
+
+const d2 = extractStructuredCaseV2('D-2 유학생인데 음식점에서 허가 없이 18일 아르바이트했습니다. 처음입니다.', '2026-08-26');
+assert.equal(d2.violationCode, 'STATUS_OUTSIDE_ACTIVITY_ART20');
+assert.equal(d2.durationDays, 18);
+
+const c3 = extractStructuredCaseV2('C-3 체류자격인데 음식점에서 허가 없이 12일 일했습니다.', '2026-08-26');
+assert.equal(c3.violationCode, 'UNAUTHORIZED_STAY_OR_WORK_ART18_1');
+
+const e7 = extractStructuredCaseV2('E-7인데 지정된 근무처가 아닌 다른 사업장에서 허가 없이 20일 근무했습니다.', '2026-08-26');
+assert.equal(e7.violationCode, 'UNAUTHORIZED_EMPLOYMENT_ART18_2');
+
+const ambiguous = extractStructuredCaseV2('F-2인데 다른 곳에서 허가 없이 10일 일했습니다.', '2026-08-26');
+assert.equal(ambiguous.violationCode, null);
+assert.ok(ambiguous.violationCandidates.length >= 2);
+
+const runtime = publicRuntimeConfig();
+assert.equal(Object.hasOwn(runtime, 'openrouterConfigured'), true);
+assert.equal(Object.hasOwn(runtime, 'lawApiConfigured'), true);
+assert.equal(Object.hasOwn(runtime, 'lawApiCredentialSource'), true);
+assert.equal(Object.hasOwn(runtime, 'key'), false);
+assert.equal(Object.hasOwn(runtime, 'credential'), false);
+
+console.log(`Enforcement UI/runtime contract passed (${checks.length} static checks + legal extraction assertions).`);
