@@ -1896,9 +1896,16 @@ body.product-visable .p-hero-foot {
 }
 
 /* 오로라 도트 (507:2161-2164) — 첫 점만 진하고 나머지는 흰 35% 잔상. */
+/* 시안(507:2161-2164)의 도트는 오로라 오른쪽 '여백'에 있다. 고정 오프셋
+   (right:31px)으로 두면 게이트웨이 그리드(max 900px) 안쪽으로 들어와 카드
+   본문 위에 얹힌다 — 실제로 '하이코리아 예약 도우미' 카드 글자를 덮었다.
+   그리드 바깥 여백을 계산해서 항상 카드 오른쪽에 서게 한다. */
 body.product-visable .p-aurora-dots {
   position: absolute !important;
-  right: 31px !important;
+  /* 이 도트의 컨테이닝 블록은 게이트웨이와 같은 900px 칼럼이다. 그래서
+     양수 오프셋은 무조건 카드 위로 들어온다 — 칼럼 바깥으로 내보낸다.
+     960px 아래에서는 어차피 숨기므로 여백 부족은 문제되지 않는다. */
+  right: -26px !important;
   top: 46% !important;
   z-index: 1 !important;
   display: flex !important;
@@ -2818,7 +2825,9 @@ body.product-visable .hobby-desc { opacity: 1 !important; }
   :root[data-theme="archive_diary"] body.product-visable:not(.searched) .logo-area {
     grid-area: auto !important;
     justify-self: center !important;
-    margin: 0 0 6px !important;
+    /* 유틸 바(Seoul·언어·테마·쉬운 안내)는 위쪽에 절대배치돼 있다.
+       워드마크 캡슐이 y44 부터 시작해 그 줄과 겹쳤다 — 아래로 내려보낸다. */
+    margin: 26px 0 6px !important;
     transform: rotate(-1.5deg) !important;
   }
   :root[data-theme="archive_diary"] body.product-visable .p-hero-eyebrow {
@@ -2928,3 +2937,5 @@ body.product-visable[data-theme="dark"] #aboutMe .hobby-desc { color: var(--vp-i
   background: var(--bg1) !important;
 }
 :root[data-theme="archive_diary"] body.product-visable .easy-mode-btn-text { color: var(--t1) !important; }
+/* 좁은 폭에서 '쉬운 안내' 가 두 줄로 접혀 유틸 바가 두 겹이 됐다. */
+body.product-visable .easy-mode-btn { white-space: nowrap !important; }
