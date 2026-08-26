@@ -1782,6 +1782,42 @@
           "section": "체류자격 변경허가 영주세부약호 목록"
         }
       ]
+    },
+    {
+      "code": "F-5-T1",
+      "name": "톱티어 동반 영주",
+      "addReq": "톱티어 동반 거주(F-2-T1) 자격으로 국내에서 3년 이상 체류한 경우, 또는 주 자격자가 톱티어 영주(F-5-T)를 취득한 뒤 동반가족으로 국내에 입국하여 F-2-T1 자격으로 2년 이상 체류한 경우가 대상 요건에 포함된다.",
+      "addReqDocs": [
+        "doc_app_form",
+        "doc_photo",
+        "doc_passport_copy",
+        "doc_address",
+        "doc_fee",
+        "doc_id",
+        "doc_fam_rel"
+      ],
+      "note": "사증발급·자격변경 시 체류허가 제한 대상 여부, 품행 단정 요건 및 법무부장관이 정하는 요건 등을 종합 심사한다. 해외 발급 가족관계 서류와 해외 범죄경력증명서 관련 원문 요건을 함께 확인해야 한다.",
+      "searchAliases": [
+        "F-5-T1",
+        "F5T1",
+        "톱티어 동반 영주",
+        "톱티어영주 동반가족"
+      ],
+      "manualRefs": [
+        {
+          "manualName": "사증발급 안내매뉴얼",
+          "manualType": "visa",
+          "manualVersion": "2026.7",
+          "sourceDate": "2026-07-31",
+          "sourceFile": "docs/source-manuals/2026-07-31/extracted/full_text/visa_manual_260731.txt",
+          "sourceId": "visa_manual_2026_07_31_hwp",
+          "section": "톱티어 비자(D-10-T, E-7-T, F-2-T, F-5-T) - 동반 가족 등",
+          "confidence": "approved_manual_260731_hwp",
+          "needsManualReview": false
+        }
+      ],
+      "status": "active",
+      "needsManualReview": false
     }
   ],
   "procedures": {

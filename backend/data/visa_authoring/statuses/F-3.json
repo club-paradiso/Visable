@@ -256,6 +256,78 @@
           "section": "방문취업(H-2), 재외동포(F-4) 자격자의 배우자 및 미성년자녀에 대한 방문동거 체류자격 변경허가(F-3-19, F-3-20)"
         }
       ]
+    },
+    {
+      "code": "F-3-17",
+      "name": "유망톱티어 특정활동(E-7-T) 동반",
+      "addReq": "유망톱티어 특정활동(E-7-T) 자격자의 법률상 배우자 및 미성년 자녀에 적용되는 동반(F-3) 세부약호다.",
+      "addReqDocs": [
+        "doc_app_form",
+        "doc_photo",
+        "doc_passport_copy",
+        "doc_address",
+        "doc_fee",
+        "doc_id",
+        "doc_fam_rel"
+      ],
+      "note": "Top-Tier 대상별 세부약호 표에서 E-7-T의 배우자·자녀를 F-3-17로 명시한다. 부모와 가사보조인은 각각 F-1-15, F-1-24 체계로 별도 관리된다.",
+      "searchAliases": [
+        "F-3-17",
+        "F317",
+        "E-7-T 동반",
+        "유망톱티어 동반"
+      ],
+      "manualRefs": [
+        {
+          "manualName": "사증발급 안내매뉴얼",
+          "manualType": "visa",
+          "manualVersion": "2026.7",
+          "sourceDate": "2026-07-31",
+          "sourceFile": "docs/source-manuals/2026-07-31/extracted/full_text/visa_manual_260731.txt",
+          "sourceId": "visa_manual_2026_07_31_hwp",
+          "section": "톱티어 비자(D-10-T, E-7-T, F-2-T, F-5-T) - 동반 가족 등",
+          "confidence": "approved_manual_260731_hwp",
+          "needsManualReview": false
+        }
+      ],
+      "status": "active",
+      "needsManualReview": false
+    },
+    {
+      "code": "F-3-10",
+      "name": "예비톱티어 구직(D-10-T) 동반",
+      "addReq": "예비톱티어 구직(D-10-T) 자격자의 배우자 및 미성년 자녀에게 발급 가능한 동반(F-3) 세부약호다. D-10-T 주 자격자는 부모 또는 가사보조인을 이 Top-Tier 가족 체계로 초청할 수 없다.",
+      "addReqDocs": [
+        "doc_app_form",
+        "doc_photo",
+        "doc_passport_copy",
+        "doc_address",
+        "doc_fee",
+        "doc_id",
+        "doc_fam_rel"
+      ],
+      "note": "원문은 D-10-T 본인과 동반가족(F-3)의 전자사증 발급이 불가하고, 동반가족 사증은 재외공관 경로로 안내한다.",
+      "searchAliases": [
+        "F-3-10",
+        "F310",
+        "D-10-T 동반",
+        "예비톱티어 동반"
+      ],
+      "manualRefs": [
+        {
+          "manualName": "사증발급 안내매뉴얼",
+          "manualType": "visa",
+          "manualVersion": "2026.7",
+          "sourceDate": "2026-07-31",
+          "sourceFile": "docs/source-manuals/2026-07-31/extracted/full_text/visa_manual_260731.txt",
+          "sourceId": "visa_manual_2026_07_31_hwp",
+          "section": "톱티어 비자(D-10-T, E-7-T, F-2-T, F-5-T) - 동반 가족 등",
+          "confidence": "approved_manual_260731_hwp",
+          "needsManualReview": false
+        }
+      ],
+      "status": "active",
+      "needsManualReview": false
     }
   ],
   "procedures": {
