@@ -1,7 +1,7 @@
 """Official-source evidence retrieval for enforcement predictions.
 
 Only verified legal sources and citation-grade official precedent bodies enter
-the public pack.  List results, fixtures, demo/synthetic records and secondary
+the public pack. List results, fixtures, demo/synthetic records and secondary
 anonymous material are excluded by construction.
 """
 
@@ -33,11 +33,11 @@ def _contains_forbidden_marker(item: Dict[str, Any]) -> bool:
 
 def _query_for_case(case: StructuredCase, baseline: LegalBaseline) -> str:
     labels = {
-        "STATUS_OUTSIDE_ACTIVITY_ART20": "체류자격외활동허가 위반 출입국",
-        "UNAUTHORIZED_EMPLOYMENT_ART18_2": "취업할 수 없는 체류자격 취업 출입국",
-        "UNAUTHORIZED_STAY_OR_WORK_ART18_1": "체류자격 취업활동 위반 출입국",
-        "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1": "근무처 변경 추가 허가 위반 출입국",
-        "OVERSTAY_ART25": "체류기간 초과 출입국",
+        "STATUS_OUTSIDE_ACTIVITY_ART20": "체류자격외활동허가 출입국관리법",
+        "UNAUTHORIZED_EMPLOYMENT_ART18_2": "지정된 근무처 아닌 곳 근무 출입국관리법",
+        "UNAUTHORIZED_STAY_OR_WORK_ART18_1": "취업활동 가능한 체류자격 없이 취업 출입국관리법",
+        "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1": "근무처 변경 추가 허가 출입국관리법",
+        "OVERSTAY_ART25": "체류기간 연장허가 출입국관리법",
     }
     return labels.get(case.violation_code or "", baseline.violation_label or "출입국 사범")
 
