@@ -11542,6 +11542,10 @@ button[data-keyword]:focus-visible {
 <script>
   window.PARADISO_BACKEND_URL = window.PARADISO_BACKEND_URL || "";
 </script>
+<!-- Canonical backend origin resolver. MUST load before anything that
+     calls the Visable backend: every API_BASE/apiBase falls back to an
+     inline literal if this has not run. -->
+<script src="assets/js/backend-origin.js?v=20260826"></script>
 
 
 
@@ -15988,9 +15992,13 @@ function toggleCityMenu(force) {
 // Backend API base. Override at deploy time by setting `window.PARADISO_BACKEND_URL`
 // in a <script> tag before this script runs (or edit DEFAULT_API_BASE below).
 // See docs/backend/BACKEND_DEPLOYMENT_ALIGNMENT.md.
-const DEFAULT_API_BASE = "https://web-production-14f9a.up.railway.app";
-const API_BASE = (window.PARADISO_BACKEND_URL && window.PARADISO_BACKEND_URL.trim())
-    || ((location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.protocol === 'file:') ? "" : DEFAULT_API_BASE);
+// Resolved by assets/js/backend-origin.js, the one place the backend origin
+// is defined. The inline fallback below only runs if that script failed to
+// load, so the production host is not restated as a second source of truth.
+const API_BASE = (window.VisableBackend && window.VisableBackend.origin())
+    || ((window.PARADISO_BACKEND_URL && window.PARADISO_BACKEND_URL.trim())
+        || ((location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.protocol === 'file:')
+            ? "" : "https://web-production-14f9a.up.railway.app"));
 // Hard client-side ceiling for an /api/ask round-trip so the AI spinner can
 // never spin forever when the backend / AI provider hangs. Kept above a single
 // backend provider attempt (OPENROUTER_TIMEOUT_SECONDS, default 60s) plus

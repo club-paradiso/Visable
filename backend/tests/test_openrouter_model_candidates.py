@@ -784,7 +784,7 @@ class ProviderErrorUxFrontendTests(unittest.TestCase):
         )
         self.assertEqual(
             localized(self.packs, "en", "aiAllCandidatesFailed"),
-            "Paradiso retried the configured model candidates but could not generate a response. Please try again shortly.",
+            "Visable retried the configured model candidates but could not generate a response. Please try again shortly.",
         )
         for locale in SUPPORTED_LOCALES:
             self.assertIn("aiAllCandidatesFailed", self.packs[locale])
@@ -793,7 +793,7 @@ class ProviderErrorUxFrontendTests(unittest.TestCase):
         self.assertEqual(localized(self.packs, "ko", "aiFallbackSucceeded"), "다른 모델 후보로 재시도하여 응답했습니다.")
         self.assertEqual(
             localized(self.packs, "en", "aiFallbackSucceeded"),
-            "Paradiso retried with another configured model candidate and generated a response.",
+            "Visable retried with another configured model candidate and generated a response.",
         )
         self.assertEqual(localized(self.packs, "ko", "aiResponseModel"), "응답 모델")
         self.assertEqual(localized(self.packs, "en", "aiResponseModel"), "Response model")

@@ -56,6 +56,7 @@ from services import manual_search as _manual_search
 from services import manual_registry as _manual_registry
 from services import statute_citation_guard as _statute_guard
 from services import employment_nl as _employment_nl
+from services import immigration_tools as _immigration_tools
 from services import precedent_sources
 from services.enforcement_models import StructuredCase
 from services.enforcement_service import analyze_enforcement_case, extract_structured_case
@@ -76,6 +77,7 @@ from services.answer_shape import (
     build_answer_shape_contract,
     evaluate_answer_shape,
 )
+from services import ai_runtime as _ai_runtime
 from services.model_policy import (
     CHINESE_ONLY_MODEL_PREFIXES,
     DEFAULT_ANSWER_MODE,
@@ -222,8 +224,11 @@ def _env_float(name: str, default: float) -> float:
 
 
 OPENROUTER_MODEL_COOLDOWN_SECONDS: float = _env_float("OPENROUTER_MODEL_COOLDOWN_SECONDS", 300.0)
-# In-memory only: model id -> unix timestamp when the retryable failure occurred.
-_OPENROUTER_MODEL_COOLDOWNS: Dict[str, float] = {}
+# ONE shared circuit breaker for every AI feature. Per-feature cooldown maps
+# meant a model that had just rate-limited /api/ask was still tried at full
+# cost by the next feature; sharing the registry makes one model's outage known
+# process-wide. In-memory by design — it is a latency optimization, not state.
+_MODEL_COOLDOWNS = _ai_runtime.ModelCooldownRegistry(OPENROUTER_MODEL_COOLDOWN_SECONDS)
 
 ENABLE_OLLAMA_FALLBACK: bool = _env_bool("ENABLE_OLLAMA_FALLBACK", False)
 OLLAMA_BASE_URL: str = os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434").strip() or "http://localhost:11434"
@@ -1177,18 +1182,26 @@ WAYMAKER_SYSTEM_PROMPT = (
 )
 
 
-def _llm_messages(prompt: str) -> List[Dict[str, str]]:
-    """Chat messages for an LLM call: the Waymaker governance system prompt first,
-    then the fully-built (grounded + answer-shaped) user prompt. Shared by every
-    provider/path so the governance instruction is applied uniformly."""
+def _llm_messages(prompt: str, system_prompt: Optional[str] = None) -> List[Dict[str, str]]:
+    """Chat messages for an LLM call: a governance system prompt first, then the
+    fully-built (grounded + answer-shaped) user prompt. Shared by every
+    provider/path so the governance instruction is applied uniformly.
+
+    ``system_prompt`` lets a feature with its own governance text (the
+    nationality coach) reuse this transport without inheriting the Waymaker
+    answer-shape directives that do not apply to it. It never *removes* a
+    system prompt — omitting it keeps the Waymaker default."""
     return [
-        {"role": "system", "content": WAYMAKER_SYSTEM_PROMPT},
+        {"role": "system", "content": system_prompt or WAYMAKER_SYSTEM_PROMPT},
         {"role": "user", "content": prompt},
     ]
 
 
 async def _call_openrouter(
-    prompt: str, model: Optional[str] = None, max_tokens: Optional[int] = None
+    prompt: str,
+    model: Optional[str] = None,
+    max_tokens: Optional[int] = None,
+    system_prompt: Optional[str] = None,
 ) -> str:
     if not OPENROUTER_API_KEY:
         raise HTTPException(
@@ -1206,7 +1219,7 @@ async def _call_openrouter(
 
     payload: Dict[str, Any] = {
         "model": model or OPENROUTER_MODEL,
-        "messages": _llm_messages(prompt),
+        "messages": _llm_messages(prompt, system_prompt),
     }
     effective_max_tokens = OPENROUTER_MAX_TOKENS if max_tokens is None else max_tokens
     if effective_max_tokens and effective_max_tokens > 0:
@@ -1301,7 +1314,9 @@ async def _call_openrouter(
     return content
 
 
-async def _call_groq(prompt: str, model: Optional[str] = None) -> str:
+async def _call_groq(
+    prompt: str, model: Optional[str] = None, system_prompt: Optional[str] = None
+) -> str:
     if not GROQ_API_KEY:
         raise HTTPException(
             status_code=503,
@@ -1318,7 +1333,7 @@ async def _call_groq(prompt: str, model: Optional[str] = None) -> str:
 
     payload = {
         "model": model or GROQ_MODEL,
-        "messages": _llm_messages(prompt),
+        "messages": _llm_messages(prompt, system_prompt),
     }
     headers = {
         "Authorization": f"Bearer {GROQ_API_KEY}",
@@ -1395,10 +1410,10 @@ async def _call_groq(prompt: str, model: Optional[str] = None) -> str:
 
 # Retryable classes trigger the NEXT OpenRouter candidate; non-retryable classes
 # stop the candidate loop (the failure is not transient/model-specific load).
+# Both sets are DERIVED from the shared taxonomy in services.ai_runtime so the
+# retry rules cannot drift away from the classification that produced them.
 _RETRYABLE_PROVIDER_ERROR_TYPES = {
-    "rate_limited",
-    "upstream_unavailable",
-    "provider_unavailable",
+    _ai_runtime.legacy_label(t) for t in _ai_runtime.RETRYABLE_ERROR_TYPES
 }
 
 # Model-SPECIFIC failures: the failure is tied to ONE model id (a bad/unknown
@@ -1409,7 +1424,7 @@ _RETRYABLE_PROVIDER_ERROR_TYPES = {
 # model id can never sink an otherwise-answerable request (this is what made
 # Basic mode return only a fallback note while Fast mode worked).
 _PER_MODEL_SKIP_ERROR_TYPES = {
-    "model_not_found",
+    _ai_runtime.legacy_label(t) for t in _ai_runtime.PER_MODEL_SKIP_ERROR_TYPES
 }
 
 
@@ -1418,85 +1433,16 @@ def _classify_openrouter_error(
 ) -> tuple:
     """Map an OpenRouter failure to ``(error_type, retryable)`` — no secrets.
 
-    ``status`` is the upstream HTTP status (e.g. 429/503) when known; ``message``
-    is sanitized provider text. The observed production failure (503 with
-    "no healthy upstream", preceded by a Google AI Studio 429) classifies as a
-    retryable ``upstream_unavailable`` / ``rate_limited`` error.
-    """
-    msg = (message or "").lower()
-    code = (error_code or "").lower()
-    try:
-        status_int = int(status) if status is not None else None
-    except (TypeError, ValueError):
-        status_int = None
+    Delegates to :mod:`services.ai_runtime`, which owns the taxonomy for every
+    Visable AI feature. The wire-format label is preserved here (see
+    ``ai_runtime.LEGACY_ERROR_LABELS``) so the frontend error cards and the
+    existing /api/ask contract are unaffected by the finer-grained taxonomy.
 
-    if (
-        status_int == 429
-        or "rate limit" in msg
-        or "rate-limit" in msg
-        or "too many requests" in msg
-        or "quota" in msg
-        or "429" in msg
-    ):
-        return "rate_limited", True
-    if (
-        status_int in (502, 503, 504)
-        or "no healthy upstream" in msg
-        or "no instances available" in msg
-        or "overloaded" in msg
-        or "temporarily unavailable" in msg
-        or "service unavailable" in msg
-        or "bad gateway" in msg
-    ):
-        return "upstream_unavailable", True
-    if "timeout" in msg or "timed out" in msg or code == "timeout":
-        return "upstream_unavailable", True
-    # Auth / config: affects every candidate -> do not retry.
-    if (
-        status_int in (401, 403)
-        or "invalid api key" in msg
-        or "unauthorized" in msg
-        or "no auth credentials" in msg
-        or "authentication" in msg
-    ):
-        return "invalid_provider_config", False
-    # Model-specific: bad/unknown slug, or no available provider/endpoint for
-    # this model right now. Not retryable on the SAME model, but the candidate
-    # loop skips to the NEXT candidate (see _PER_MODEL_SKIP_ERROR_TYPES) so a
-    # single bad model id never aborts the whole request.
-    if (
-        status_int == 404
-        or "not found" in msg
-        or "no endpoints" in msg
-        or "no allowed providers" in msg
-        or "no endpoints found" in msg
-        or "unknown model" in msg
-        or "not a valid model" in msg
-    ):
-        return "model_not_found", False
-    # Safety / moderation / policy rejection.
-    if (
-        status_int == 451
-        or "moderation" in msg
-        or "flagged" in msg
-        or "safety" in msg
-        or "content policy" in msg
-        or "content filter" in msg
-    ):
-        return "policy_or_safety_rejection", False
-    # Bad request / validation / malformed payload.
-    if (
-        status_int == 400
-        or code == "openrouter_bad_response"
-        or "bad request" in msg
-        or "invalid request" in msg
-        or "validation" in msg
-    ):
-        return "invalid_request", False
-    # Other 5xx without a clearer reason -> retryable provider unavailability.
-    if status_int is not None and status_int >= 500:
-        return "provider_unavailable", True
-    return "unknown_provider_error", False
+    ``status`` is the upstream HTTP status (e.g. 429/503) when known; ``message``
+    is sanitized provider text.
+    """
+    error_type = _ai_runtime.classify_provider_error(status, message, error_code)
+    return _ai_runtime.legacy_label(error_type), _ai_runtime.is_retryable(error_type)
 
 
 def _now() -> float:
@@ -1504,41 +1450,23 @@ def _now() -> float:
 
 
 def _cooldown_enabled() -> bool:
-    return OPENROUTER_MODEL_COOLDOWN_SECONDS > 0
+    return _MODEL_COOLDOWNS.enabled
 
 
 def _cooling_down_models(now: Optional[float] = None) -> List[str]:
-    if not _cooldown_enabled():
-        return []
-    ts = _now() if now is None else now
-    expired = [
-        model for model, failed_at in _OPENROUTER_MODEL_COOLDOWNS.items()
-        if ts - failed_at >= OPENROUTER_MODEL_COOLDOWN_SECONDS
-    ]
-    for model in expired:
-        _OPENROUTER_MODEL_COOLDOWNS.pop(model, None)
-    return [
-        model for model, failed_at in _OPENROUTER_MODEL_COOLDOWNS.items()
-        if ts - failed_at < OPENROUTER_MODEL_COOLDOWN_SECONDS
-    ]
+    return _MODEL_COOLDOWNS.cooling_down(now)
 
 
 def _mark_openrouter_model_cooling_down(model: str, now: Optional[float] = None) -> None:
-    if not model or not _cooldown_enabled():
-        return
-    _OPENROUTER_MODEL_COOLDOWNS[model] = _now() if now is None else now
+    _MODEL_COOLDOWNS.mark(model, now)
 
 
 def _reset_openrouter_model_cooldowns_for_tests() -> None:
-    _OPENROUTER_MODEL_COOLDOWNS.clear()
+    _MODEL_COOLDOWNS.clear()
 
 
 def _openrouter_cooldown_metadata() -> Dict[str, Any]:
-    return {
-        "cooling_down_models": _cooling_down_models(),
-        "model_cooldown_seconds": OPENROUTER_MODEL_COOLDOWN_SECONDS,
-        "cooldown_enabled": _cooldown_enabled(),
-    }
+    return _MODEL_COOLDOWNS.metadata()
 
 
 async def _call_ollama(prompt: str, model: Optional[str] = None) -> str:
@@ -4228,6 +4156,128 @@ async def health() -> Dict[str, Any]:
     }
 
 
+@app.get("/api/health/ai")
+async def health_ai() -> Dict[str, Any]:
+    """AI readiness — what an operator needs to answer "is the AI actually up?".
+
+    /health answers "is the web server alive?". That is a different question,
+    and conflating them is how a deployment can look healthy while every AI
+    feature is failing. This endpoint reports readiness per feature.
+
+    It performs NO provider calls: a health probe that costs a completion is a
+    health probe nobody runs often enough to be useful, and it would bill the
+    account on every check. Everything here is configuration and registry state,
+    so it is cheap enough to poll.
+
+    Readiness is NOT proof of a working answer. `liveVerification` says so
+    explicitly, and names the smoke script that can actually prove it — so this
+    endpoint can never be mistaken for the live check.
+
+    Non-secret by construction: booleans, public model ids, classified states.
+    No credential value, no authorization header, no raw provider body.
+    """
+    runtime = _ai_runtime.provider_configuration()
+    llm = _resolve_llm_config()
+
+    try:
+        law_cfg = load_grounding_config()
+        law_mode, law_effective_mode, law_active = _law_grounding_runtime_state(law_cfg)
+        law_configured = law_cfg.law_api_configured
+    except Exception:  # pragma: no cover - defensive
+        law_mode = (os.environ.get("LAW_GROUNDING_MODE") or "enabled").strip().lower()
+        law_effective_mode, law_active, law_configured = "unknown", False, bool(LAW_API_KEY)
+
+    try:
+        manual_summary = _manual_registry.registry_summary()
+        approved_manuals = int(manual_summary["approval_counts"].get("approved", 0))
+        index_available = _manual_search.index_available()
+    except Exception:  # pragma: no cover - defensive
+        approved_manuals, index_available = 0, False
+
+    # Approved editions are useless without a built index, and that combination
+    # is invisible on /health today: the registry says "2 approved" while the
+    # search that would surface them cannot run. Say it plainly.
+    manual_ready = bool(approved_manuals) and index_available
+    manual_blocker = ""
+    if approved_manuals and not index_available:
+        manual_blocker = (
+            "approved manual editions exist but the FTS index is not built on this "
+            "deployment; run scripts/build_manual_search_index.py during the build"
+        )
+    elif not approved_manuals:
+        manual_blocker = "no manual edition has been human-approved for direct evidence"
+
+    provider_ready = bool(OPENROUTER_API_KEY) or bool(GROQ_API_KEY and ALLOW_GROQ_FALLBACK)
+
+    def feature(name: str, ready: bool, *, blocker: str = "",
+                degrades_to: str = "") -> Dict[str, Any]:
+        return {"feature": name, "ready": ready, "blocker": blocker,
+                "degradesTo": degrades_to}
+
+    no_provider = "" if provider_ready else "no LLM provider is configured"
+    features = [
+        feature("waymaker_ask", provider_ready, blocker=no_provider,
+                degrades_to="deterministic source-grounded preparation note"),
+        feature("unified_search_ai_overview", provider_ready, blocker=no_provider,
+                degrades_to="deterministic organic search results (always available)"),
+        feature("employment_interpret", provider_ready, blocker=no_provider,
+                degrades_to="guided deterministic employment analyzer"),
+        feature("nationality_coach", bool(OPENROUTER_API_KEY or GROQ_API_KEY),
+                blocker="" if (OPENROUTER_API_KEY or GROQ_API_KEY) else no_provider,
+                degrades_to="local heuristic practice feedback"),
+        feature("legal_research", True,
+                degrades_to="deterministic retrieval without LLM synthesis"),
+        feature("enforcement_intelligence", True,
+                degrades_to="deterministic statutory baseline without AI explanation"),
+    ]
+
+    return {
+        "status": "ok",
+        "service": "visable-backend",
+        "aiReady": provider_ready,
+        "runtimeVersion": runtime["runtime_version"],
+        "modelPolicyVersion": runtime["policy_version"],
+        "toolLayerVersion": _immigration_tools.TOOL_LAYER_VERSION,
+        "providers": runtime["providers"],
+        "activeProvider": runtime["active_provider"],
+        "answerTiers": {
+            mode: resolve_answer_mode_models(mode) for mode in ("fast", "basic", "pro")
+        },
+        "taskRoleModels": runtime["task_roles"],
+        "cooldown": _MODEL_COOLDOWNS.metadata(),
+        "grounding": {
+            "law": {
+                "configured": law_configured,
+                "mode": law_mode,
+                "effectiveMode": law_effective_mode,
+                "active": law_active,
+                # Audit posture is a real, deliberate state — not a failure —
+                # but citations retrieved under it are never marked verified.
+                "citationsTrustworthy": law_effective_mode == "enabled" and law_configured,
+            },
+            "manual": {
+                "approvedEditions": approved_manuals,
+                "indexAvailable": index_available,
+                "ready": manual_ready,
+                "blocker": manual_blocker,
+            },
+        },
+        "features": features,
+        "tools": _immigration_tools.build_registry().describe(),
+        "candidateWarnings": _validate_model_candidates(OPENROUTER_MODEL_CANDIDATES),
+        "llmWarnings": llm.get("warnings", []),
+        "liveVerification": {
+            "performed": False,
+            "note": (
+                "This endpoint reports CONFIGURATION readiness only and issues no "
+                "provider call. A configured provider is not a working one. Prove a "
+                "real completion with: python3 scripts/smoke_ai_runtime.py "
+                "--backend-url <url> --require-live"
+            ),
+        },
+    }
+
+
 def _enrich_with_source_confirmed_requirements(
     records: List[Dict[str, Any]]
 ) -> List[Dict[str, Any]]:
@@ -6425,75 +6475,118 @@ def _coach_extract_json(text: Optional[str]) -> Optional[Dict[str, Any]]:
         return None
 
 
+def _openrouter_adapter(system_prompt: Optional[str] = None) -> "_ai_runtime.CompletionAdapter":
+    """Wrap the OpenRouter transport in the runtime's adapter contract.
+
+    The transport already raises a classified ``HTTPException``; this only
+    translates it into the shared ``AIError`` taxonomy so the runtime can make
+    its retry / skip / stop decision. No secret crosses this boundary.
+    """
+    async def _adapter(prompt: str, model: str, max_tokens: Optional[int]) -> str:
+        try:
+            return await _call_openrouter(
+                prompt, model=model, max_tokens=max_tokens, system_prompt=system_prompt
+            )
+        except HTTPException as exc:
+            detail = exc.detail if isinstance(exc.detail, dict) else {}
+            error_type = _ai_runtime.classify_provider_error(
+                detail.get("status", exc.status_code),
+                detail.get("message"),
+                detail.get("error"),
+            )
+            raise _ai_runtime.AIError(
+                error_type,
+                str(detail.get("message") or "")[:200],
+                status=detail.get("status", exc.status_code),
+            ) from None
+
+    return _adapter
+
+
 async def _coach_complete(system_prompt: str, user_prompt: str) -> Dict[str, str]:
-    """Groq-first, then OpenRouter. Bounded timeout. Raises 503 if no provider
-    is configured or all providers fail — the caller turns that into the
-    frontend's local-feedback fallback (never an infinite spinner)."""
+    """Run one nationality-coach completion through the shared AI runtime.
+
+    Previously this endpoint carried its OWN Groq-first -> OpenRouter routing:
+    a single model per provider, no candidate chain, no cooldown, no error
+    taxonomy, and it ignored ``ALLOW_GROQ_FALLBACK`` entirely. So a deployment
+    that had deliberately switched strict-OpenRouter-first on still answered
+    nationality questions from a different provider and a model the policy
+    never governed.
+
+    It now uses the same candidate chain, circuit breaker and classification as
+    every other feature, under the ``NATIONALITY_COACH`` task role.
+
+    Ordering note: this is OpenRouter-first, matching the rest of the platform,
+    where it used to be Groq-first. Groq remains a working fallback so a
+    Groq-only deployment keeps answering; it is simply no longer preferred over
+    the policy-governed chain when both are configured.
+
+    Raises 503 when no provider is configured or every candidate fails — the
+    caller turns that into the hub's local heuristic feedback, never a hang.
+    """
     if httpx is None:
         raise HTTPException(
             status_code=503,
             detail={"error": "httpx_missing", "message": "httpx is not installed."},
         )
-    messages = [
-        {"role": "system", "content": system_prompt},
-        {"role": "user", "content": user_prompt},
-    ]
-    timeout = min(float(OPENROUTER_TIMEOUT_SECONDS), 20.0)
-    providers: List[Dict[str, str]] = []
-    if GROQ_API_KEY:
-        providers.append({
-            "name": "groq",
-            "url": "https://api.groq.com/openai/v1/chat/completions",
-            "key": GROQ_API_KEY,
-            "model": GROQ_MODEL,
-        })
+
+    # The coach asks for short structured JSON, so it is capped tighter than a
+    # full answer and uses the coach task role's chain.
+    coach_max_tokens = 700
+
     if OPENROUTER_API_KEY:
-        providers.append({
-            "name": "openrouter",
-            "url": "https://openrouter.ai/api/v1/chat/completions",
-            "key": OPENROUTER_API_KEY,
-            "model": OPENROUTER_MODEL,
-        })
-    if not providers:
-        raise HTTPException(
-            status_code=503,
-            detail={
-                "error": "coach_no_provider",
-                "message": "No GROQ_API_KEY or OPENROUTER_API_KEY configured.",
-            },
+        runtime = _ai_runtime.AIRuntime(
+            adapter=_openrouter_adapter(system_prompt),
+            provider_name="openrouter",
+            cooldowns=_MODEL_COOLDOWNS,
         )
-    last_error: Optional[str] = None
-    for prov in providers:
-        payload = {
-            "model": prov["model"],
-            "messages": messages,
-            "temperature": 0.4,
-            "max_tokens": 700,
-        }
-        headers = {
-            "Authorization": f"Bearer {prov['key']}",
-            "Content-Type": "application/json",
-        }
-        if prov["name"] == "openrouter":
-            if SITE_URL:
-                headers["HTTP-Referer"] = SITE_URL
-            if SITE_TITLE:
-                headers["X-Title"] = SITE_TITLE
+        result = await runtime.complete(
+            user_prompt,
+            role=_ai_runtime.TaskRole.NATIONALITY_COACH,
+            max_tokens=coach_max_tokens,
+        )
+        if result.ok:
+            return {
+                "content": result.text,
+                "provider": "openrouter",
+                "model": result.final_model or "",
+                "model_fallback_used": result.model_fallback_used,
+            }
+        coach_error = result.error_type or "provider_error"
+    else:
+        coach_error = "openrouter_not_configured"
+
+    # Provider-family fallback. Unlike /api/ask this is not gated on
+    # ALLOW_GROQ_FALLBACK: the coach produces practice feedback rather than
+    # source-grounded legal answers, and a Groq-only deployment must keep
+    # working. The provider that actually answered is always reported back.
+    if GROQ_API_KEY:
         try:
-            async with httpx.AsyncClient(timeout=timeout) as client:
-                resp = await client.post(prov["url"], headers=headers, json=payload)
-            if resp.status_code >= 400:
-                last_error = f"{prov['name']} HTTP {resp.status_code}"
-                continue
-            data = resp.json()
-            content = data["choices"][0]["message"]["content"]
-            return {"content": content, "provider": prov["name"], "model": prov["model"]}
-        except Exception as exc:  # noqa: BLE001 — any provider failure → next/fallback
-            last_error = f"{prov['name']}: {str(exc)[:120]}"
-            continue
+            content = await _call_groq(user_prompt, system_prompt=system_prompt)
+        except HTTPException as exc:
+            detail = exc.detail if isinstance(exc.detail, dict) else {}
+            coach_error = _ai_runtime.legacy_label(
+                _ai_runtime.classify_provider_error(
+                    detail.get("status", exc.status_code),
+                    detail.get("message"),
+                    detail.get("error"),
+                )
+            )
+        else:
+            return {
+                "content": content,
+                "provider": "groq",
+                "model": GROQ_MODEL,
+                "model_fallback_used": True,
+            }
+
     raise HTTPException(
         status_code=503,
-        detail={"error": "coach_unavailable", "message": last_error or "all providers failed"},
+        detail={
+            "error": "coach_unavailable",
+            "message": "The nationality coach could not reach a configured model provider.",
+            "provider_error_type": coach_error,
+        },
     )
 
 
@@ -6574,6 +6667,10 @@ async def nationality_coach(req: NationalityCoachRequest) -> Dict[str, Any]:
             parsed["caution"] = "이 피드백은 연습용이며 실제 심사 결과를 보장하지 않습니다."
     parsed["mode"] = mode
     parsed["provider"] = result["provider"]
+    # Which model actually answered is non-secret routing metadata; surfacing it
+    # keeps the coach as auditable as every other AI surface.
+    parsed["model"] = result.get("model", "")
+    parsed["modelFallbackUsed"] = bool(result.get("model_fallback_used"))
     parsed["ai_available"] = True
     return parsed
 
@@ -6791,12 +6888,10 @@ async def search_unified_ai_overview(req: UnifiedAiOverviewRequest) -> Any:
 
     prompt = _unified_overview_prompt(query, deterministic, evidence_lines, lang)
 
-    try:
-        text, attempt_meta = await _openrouter_complete_with_candidates(prompt)
-    except HTTPException as exc:
+    def _overview_unavailable(reason: str) -> Dict[str, Any]:
         return {
             "status": "unavailable",
-            "reason": _classify_openrouter_error(exc)[0] if hasattr(exc, "detail") else "provider_error",
+            "reason": reason,
             "requestId": request_id,
             "overview": None,
             "fallbackAvailable": True,
@@ -6805,14 +6900,31 @@ async def search_unified_ai_overview(req: UnifiedAiOverviewRequest) -> Any:
                         "The AI overview could not be loaded. The search results below "
                         "are unaffected."),
         }
+
+    # ``_openrouter_complete_with_candidates`` returns a RESULT DICT, never a
+    # (text, meta) tuple. Unpacking it into two names raised ValueError on every
+    # call, which the bare ``except Exception`` below swallowed into
+    # ``provider_error`` — so this endpoint reported "unavailable" even when the
+    # provider answered correctly. Read the documented keys instead.
+    try:
+        attempt_meta = await _openrouter_complete_with_candidates(prompt)
+    except HTTPException as exc:
+        detail = exc.detail if isinstance(exc.detail, dict) else {}
+        reason, _retryable = _classify_openrouter_error(
+            detail.get("status", exc.status_code), detail.get("message"), detail.get("error")
+        )
+        return _overview_unavailable(reason)
     except Exception:
-        return {
-            "status": "unavailable", "reason": "provider_error",
-            "requestId": request_id, "overview": None, "fallbackAvailable": True,
-            "message": ("AI 요약을 불러오지 못했습니다. 아래 검색 결과는 정상입니다."
-                        if lang == "ko" else
-                        "The AI overview could not be loaded."),
-        }
+        return _overview_unavailable("provider_error")
+
+    if not attempt_meta.get("ok") or not (attempt_meta.get("answer") or "").strip():
+        # Every candidate failed (or all are cooling down). This is the same
+        # quiet, organic-results-preserving outcome as a transport failure, but
+        # the classified provider reason is reported rather than a generic one.
+        return _overview_unavailable(
+            str(attempt_meta.get("provider_error_type") or "provider_error")
+        )
+    text = attempt_meta["answer"]
 
     # Citation guard: the overview is grounded in visa-data cards, not in fetched
     # statute text, so ANY statute citation it emits is unverifiable here and is
@@ -6838,8 +6950,12 @@ async def search_unified_ai_overview(req: UnifiedAiOverviewRequest) -> Any:
         "sources": _unified_overview_sources(deterministic),
         "evidenceLabel": _unified_evidence_label(deterministic, lang),
         "requiresOfficialConfirmation": True,
-        "provider": attempt_meta.get("provider", "") if isinstance(attempt_meta, dict) else "",
-        "model": attempt_meta.get("model", "") if isinstance(attempt_meta, dict) else "",
+        # The result dict names the model that actually answered ``final_model``;
+        # there is no "model"/"provider" key on it. Reading the wrong names made
+        # both fields silently blank in every successful response.
+        "provider": "openrouter",
+        "model": attempt_meta.get("final_model") or "",
+        "modelFallbackUsed": bool(attempt_meta.get("model_fallback_used")),
         "fallbackAvailable": True,
         "latency": {"totalMs": elapsed_ms},
     }
@@ -7128,18 +7244,40 @@ async def employment_interpret(req: EmploymentInterpretRequest) -> Any:
         }
 
     prompt = _employment_nl.build_extraction_prompt(text, lang=lang)
-    try:
-        raw, attempt_meta = await _openrouter_complete_with_candidates(prompt)
-    except Exception:
+
+    def _interpret_unavailable(reason: str) -> Dict[str, Any]:
+        # The deterministic analyzer is the fallback, so the raw sentence still
+        # reaches it: this layer is a convenience, never a gate.
         return {
             "status": "unavailable",
-            "reason": "provider_error",
+            "reason": reason,
             "extraction": _employment_nl.empty_extraction(),
             "analyzerInput": {"text": text, "locale": "", "visaStatus": "", "employmentType": ""},
             "interpretation": "",
             "warnings": [],
             "fallbackAvailable": True,
         }
+
+    # Same defect as the AI Overview endpoint: the helper returns a RESULT DICT,
+    # not a (text, meta) tuple, so this unpack raised ValueError on every call
+    # and the bare ``except Exception`` reported a provider failure that had not
+    # happened. Employment interpretation never once ran in production.
+    try:
+        attempt_meta = await _openrouter_complete_with_candidates(prompt)
+    except HTTPException as exc:
+        detail = exc.detail if isinstance(exc.detail, dict) else {}
+        reason, _retryable = _classify_openrouter_error(
+            detail.get("status", exc.status_code), detail.get("message"), detail.get("error")
+        )
+        return _interpret_unavailable(reason)
+    except Exception:
+        return _interpret_unavailable("provider_error")
+
+    if not attempt_meta.get("ok") or not (attempt_meta.get("answer") or "").strip():
+        return _interpret_unavailable(
+            str(attempt_meta.get("provider_error_type") or "provider_error")
+        )
+    raw = attempt_meta["answer"]
 
     try:
         known_codes = {
@@ -7172,7 +7310,8 @@ async def employment_interpret(req: EmploymentInterpretRequest) -> Any:
         "clarificationQuestion": data.get("clarificationQuestion", ""),
         "warnings": validated["warnings"],
         "fallbackAvailable": True,
-        "provider": attempt_meta.get("provider", "") if isinstance(attempt_meta, dict) else "",
+        "provider": "openrouter",
+        "model": attempt_meta.get("final_model") or "",
         "notice": ("직종·업종 코드는 이 단계에서 만들지 않습니다. 아래 후보는 공식 분류표에서 "
                    "검색한 결과이며, 최종 확정은 하이코리아에서 확인하세요."
                    if lang == "ko" else

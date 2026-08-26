@@ -171,6 +171,10 @@
 </footer>
 
 <script src="assets/js/preview/preview-data.js?v=20260704"></script>
+<!-- Canonical backend origin resolver. MUST load before anything that
+     calls the Visable backend: every API_BASE/apiBase falls back to an
+     inline literal if this has not run. -->
+<script src="assets/js/backend-origin.js?v=20260826"></script>
 <script src="assets/js/preview/preview-app.js?v=20260704"></script>
 </body>
 </html>

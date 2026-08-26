@@ -26,7 +26,9 @@
 (function () {
   'use strict';
 
-  var DEFAULT_API_BASE = 'https://web-production-14f9a.up.railway.app';
+  // Resolved by assets/js/backend-origin.js — see unified-search.js.
+  var DEFAULT_API_BASE = (typeof window !== 'undefined' && window.VisableBackend && window.VisableBackend.productionOrigin)
+    || 'https://web-production-14f9a.up.railway.app';
   var MAX_QUERY = 150;
 
   /* ----------------------------------------------------------- language --- */

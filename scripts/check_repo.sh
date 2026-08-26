@@ -413,25 +413,27 @@ echo "[12b/14] Checking duplicate / misclassified status-result rendering (SEVER
 # findings are warn-only and documented in audits/dedup-rendering-audit.md.
 python3 scripts/audit_duplicate_render_content.py --check
 
-echo "[13/14] Running backend regression tests..."
+echo "[12c/14] Running the AI architecture guard (offline, no credentials)..."
+# Structural invariants for the AI layer: provider hosts confined to approved
+# adapters, credentials read in one auditable place, model ids governed by
+# services.model_policy, no random routing, no committed secrets, no
+# frontend-to-provider calls, and — specifically — no caller unpacking the
+# completion result as a tuple. That last one shipped twice and left two
+# endpoints reporting a healthy provider as an outage for their entire lives.
+python3 scripts/check_ai_architecture.py
+
+echo "[13/14] Running backend regression tests (FULL suite)..."
+# This step used to run 5 of the 47 backend test modules by name. The other 42
+# were committed, maintained, and never executed — which is exactly how the AI
+# provider suites, the unified-search API suite and the employment-interpretation
+# suite could all be failing while this script printed "Success".
+#
+# run_backend_tests.py runs every module and classifies each one. A NEW failure
+# fails the build; a registered pre-existing failure is reported loudly with a
+# reason and an owner; and a registered failure that starts PASSING also fails
+# the build, so the register cannot rot into a permanent excuse list.
 if ensure_backend_test_runtime; then
-  $TEST_PYTHON backend/tests/test_paradiso_backend.py
-  # E-7 workplace-change / law-grounding-safety regression suite (intent triggers,
-  # status-detail contract, unverified-citation guardrail, Fast/Basic routing).
-  $TEST_PYTHON backend/tests/test_e7_workplace_change_law_grounding.py
-  # Legal source search proxy (/api/legal/laws|precedents/search): empty-query
-  # rejection, missing-LAW_API_OC safe envelope, upstream-failure safety, result
-  # normalization, and the no-credential-leak invariant (mocked transport).
-  $TEST_PYTHON backend/tests/test_legal_source_search_api.py
-  # Legal research depth layer (fast/basic/pro) + /api/legal/research: depth
-  # auto-selection, the §7 sophisticated questions, source-strength labels, pro
-  # grouping, safe missing-OC scaffold, and the no-credential-leak invariant.
-  $TEST_PYTHON backend/tests/test_legal_research.py
-  # Optional source-grounded LLM synthesis: mode gating (provider+sources),
-  # source packet, citation/safety validator (phantom source / fabricated
-  # statute+case / forbidden phrase / raw HTML), and the deterministic fallback
-  # on missing provider / no sources / LLM failure / validation failure (mocked).
-  $TEST_PYTHON backend/tests/test_legal_synthesis.py
+  $TEST_PYTHON scripts/run_backend_tests.py
 else
   run_offline_backend_checks
   if [[ "$ALLOW_BACKEND_TEST_SKIP" == "1" ]]; then

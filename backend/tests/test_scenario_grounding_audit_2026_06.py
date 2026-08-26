@@ -21,13 +21,20 @@ while still catching real classification regressions.
 from __future__ import annotations
 
 import json
+import sys
 import unittest
 from pathlib import Path
 
-from services import answer_quality as aq
-from services import answer_shape as ash
-from services import evidence_ontology as eo
-from services import legal_analysis as la
+# The suite imports `services.*` directly, which only resolves when backend/ is
+# on sys.path. Without this the module raised ModuleNotFoundError at import
+# time and reported as a single "failed test" — invisible while the repository
+# check ran only 5 of the 47 backend modules.
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from services import answer_quality as aq  # noqa: E402
+from services import answer_shape as ash  # noqa: E402
+from services import evidence_ontology as eo  # noqa: E402
+from services import legal_analysis as la  # noqa: E402
 
 _FIXTURE = (
     Path(__file__).resolve().parent.parent

@@ -83,11 +83,18 @@ class LawGroundingStatusPanelTests(_IndexHtml):
 
 class PartialLanguageNoticeTests(_IndexHtml):
     def test_support_map_declares_supported_locales(self):
-        # ko/en are full; zh-CN is still being finalized ('preparing'), which is
-        # what drives the partial-language notice. zh-Hant is no longer a separate
-        # locale (manifest aliases zhHant -> zh-CN).
-        self.assertIn("const LANGUAGE_SUPPORT = { ko: 'full', en: 'full', 'zh-CN': 'preparing' };", self.html)
+        # This used to assert the literal map text from the era when only ko/en
+        # were full and zh-CN was 'preparing'. The site has since finished more
+        # locales, so the literal became a record of a past state rather than a
+        # property. What must hold is that the map exists, is the single place
+        # support level is declared, and still declares ko/en — the two locales
+        # every other assertion in this file depends on.
+        self.assertIn("const LANGUAGE_SUPPORT = {", self.html)
         self.assertIn("function languageSupportLevel(", self.html)
+        support = self.html[self.html.index("const LANGUAGE_SUPPORT = {"):]
+        support = support[:support.index("}") + 1]
+        for locale in ("ko:", "en:", "'zh-CN':"):
+            self.assertIn(locale, support, f"{locale} must have a declared support level")
 
     def test_notice_present_all_supported_languages(self):
         self.assertIn("이 언어는 일부 화면에서 한국어가 함께 표시될 수 있습니다. 공식 서류명은 출입국 매뉴얼과 맞추기 위해 한국어로 유지됩니다.", self.blobs["ko"])
@@ -150,8 +157,8 @@ class DeadlineSourceStatusTests(_IndexHtml):
         self.assertIn("encodeURIComponent(note)", fn)
 
     def test_calendar_caution_label_present_all_languages(self):
-        self.assertIn("Paradiso 준비용 알림입니다. 공식 기한이 아니며 HiKorea·1345·관할 출입국·외국인관서에서 확인하세요.", self.blobs["ko"])
-        self.assertIn("Paradiso preparation reminder. Not an official deadline; confirm with HiKorea, 1345, or the competent immigration office.", self.blobs["en"])
+        self.assertIn("Visable 준비용 알림입니다. 공식 기한이 아니며 HiKorea·1345·관할 출입국·외국인관서에서 확인하세요.", self.blobs["ko"])
+        self.assertIn("Visable preparation reminder. Not an official deadline; confirm with HiKorea, 1345, or the competent immigration office.", self.blobs["en"])
 
     def test_local_reminder_state_not_sent_to_ai(self):
         start = self.html.find("function submitAiAnalysis")

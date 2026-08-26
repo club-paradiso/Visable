@@ -13,7 +13,11 @@
 (function () {
   'use strict';
 
-  var DEFAULT_API_BASE = 'https://web-production-14f9a.up.railway.app';
+  // Resolved by assets/js/backend-origin.js — the one place the backend
+  // origin is defined. The literal is a last-resort guard for a failed
+  // script load, never the primary path.
+  var DEFAULT_API_BASE = (typeof window !== 'undefined' && window.VisableBackend && window.VisableBackend.productionOrigin)
+    || 'https://web-production-14f9a.up.railway.app';
   var API_TIMEOUT_MS = 6000;
 
   var ALLOWED_LINK_PREFIXES = [
