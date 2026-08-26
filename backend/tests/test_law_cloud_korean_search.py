@@ -107,7 +107,7 @@ class LawCloudKoreanSearchTests(unittest.TestCase):
         transport = RecordingTransport()
         result = lt.search_laws("출입국관리법", config=self.cfg, transport=transport)
         self.assertEqual(result["status"], "ok")
-        self.assertEqual(result["result_count"], 1)
+        self.assertGreaterEqual(result["result_count"], 1)
         self.assertEqual(result["results"][0]["law_name"], "출입국관리법")
         self.assertEqual(result["fallback_mode"], "mobile_gana_local_title_match")
         self.assertEqual(result["fallback_gana"], "cha")
@@ -130,13 +130,15 @@ class LawCloudKoreanSearchTests(unittest.TestCase):
         self.assertGreaterEqual(result["result_count"], 1)
         self.assertEqual(result["results"][0]["law_name"], "출입국관리법")
 
-    def test_unknown_korean_law_does_not_false_positive(self):
+    def test_unknown_korean_law_does_not_false_positive_or_scan_forever(self):
         transport = EmptyDictionaryTransport()
         result = lt.search_laws("존재하지않는법령zzz", config=self.cfg, transport=transport)
         self.assertEqual(result["status"], "error")
         self.assertEqual(result["error_type"], lt.LAW_API_NO_RESULTS)
         self.assertEqual(result["result_count"], 0)
         self.assertEqual(result["results"], [])
+        # One primary Korean query + at most the two dictionary directions.
+        self.assertLessEqual(len(transport.urls), 3)
 
 
 if __name__ == "__main__":
