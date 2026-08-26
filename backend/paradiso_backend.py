@@ -1181,18 +1181,26 @@ WAYMAKER_SYSTEM_PROMPT = (
 )
 
 
-def _llm_messages(prompt: str) -> List[Dict[str, str]]:
-    """Chat messages for an LLM call: the Waymaker governance system prompt first,
-    then the fully-built (grounded + answer-shaped) user prompt. Shared by every
-    provider/path so the governance instruction is applied uniformly."""
+def _llm_messages(prompt: str, system_prompt: Optional[str] = None) -> List[Dict[str, str]]:
+    """Chat messages for an LLM call: a governance system prompt first, then the
+    fully-built (grounded + answer-shaped) user prompt. Shared by every
+    provider/path so the governance instruction is applied uniformly.
+
+    ``system_prompt`` lets a feature with its own governance text (the
+    nationality coach) reuse this transport without inheriting the Waymaker
+    answer-shape directives that do not apply to it. It never *removes* a
+    system prompt — omitting it keeps the Waymaker default."""
     return [
-        {"role": "system", "content": WAYMAKER_SYSTEM_PROMPT},
+        {"role": "system", "content": system_prompt or WAYMAKER_SYSTEM_PROMPT},
         {"role": "user", "content": prompt},
     ]
 
 
 async def _call_openrouter(
-    prompt: str, model: Optional[str] = None, max_tokens: Optional[int] = None
+    prompt: str,
+    model: Optional[str] = None,
+    max_tokens: Optional[int] = None,
+    system_prompt: Optional[str] = None,
 ) -> str:
     if not OPENROUTER_API_KEY:
         raise HTTPException(
@@ -1210,7 +1218,7 @@ async def _call_openrouter(
 
     payload: Dict[str, Any] = {
         "model": model or OPENROUTER_MODEL,
-        "messages": _llm_messages(prompt),
+        "messages": _llm_messages(prompt, system_prompt),
     }
     effective_max_tokens = OPENROUTER_MAX_TOKENS if max_tokens is None else max_tokens
     if effective_max_tokens and effective_max_tokens > 0:
@@ -1305,7 +1313,9 @@ async def _call_openrouter(
     return content
 
 
-async def _call_groq(prompt: str, model: Optional[str] = None) -> str:
+async def _call_groq(
+    prompt: str, model: Optional[str] = None, system_prompt: Optional[str] = None
+) -> str:
     if not GROQ_API_KEY:
         raise HTTPException(
             status_code=503,
@@ -1322,7 +1332,7 @@ async def _call_groq(prompt: str, model: Optional[str] = None) -> str:
 
     payload = {
         "model": model or GROQ_MODEL,
-        "messages": _llm_messages(prompt),
+        "messages": _llm_messages(prompt, system_prompt),
     }
     headers = {
         "Authorization": f"Bearer {GROQ_API_KEY}",
@@ -6342,75 +6352,118 @@ def _coach_extract_json(text: Optional[str]) -> Optional[Dict[str, Any]]:
         return None
 
 
+def _openrouter_adapter(system_prompt: Optional[str] = None) -> "_ai_runtime.CompletionAdapter":
+    """Wrap the OpenRouter transport in the runtime's adapter contract.
+
+    The transport already raises a classified ``HTTPException``; this only
+    translates it into the shared ``AIError`` taxonomy so the runtime can make
+    its retry / skip / stop decision. No secret crosses this boundary.
+    """
+    async def _adapter(prompt: str, model: str, max_tokens: Optional[int]) -> str:
+        try:
+            return await _call_openrouter(
+                prompt, model=model, max_tokens=max_tokens, system_prompt=system_prompt
+            )
+        except HTTPException as exc:
+            detail = exc.detail if isinstance(exc.detail, dict) else {}
+            error_type = _ai_runtime.classify_provider_error(
+                detail.get("status", exc.status_code),
+                detail.get("message"),
+                detail.get("error"),
+            )
+            raise _ai_runtime.AIError(
+                error_type,
+                str(detail.get("message") or "")[:200],
+                status=detail.get("status", exc.status_code),
+            ) from None
+
+    return _adapter
+
+
 async def _coach_complete(system_prompt: str, user_prompt: str) -> Dict[str, str]:
-    """Groq-first, then OpenRouter. Bounded timeout. Raises 503 if no provider
-    is configured or all providers fail — the caller turns that into the
-    frontend's local-feedback fallback (never an infinite spinner)."""
+    """Run one nationality-coach completion through the shared AI runtime.
+
+    Previously this endpoint carried its OWN Groq-first -> OpenRouter routing:
+    a single model per provider, no candidate chain, no cooldown, no error
+    taxonomy, and it ignored ``ALLOW_GROQ_FALLBACK`` entirely. So a deployment
+    that had deliberately switched strict-OpenRouter-first on still answered
+    nationality questions from a different provider and a model the policy
+    never governed.
+
+    It now uses the same candidate chain, circuit breaker and classification as
+    every other feature, under the ``NATIONALITY_COACH`` task role.
+
+    Ordering note: this is OpenRouter-first, matching the rest of the platform,
+    where it used to be Groq-first. Groq remains a working fallback so a
+    Groq-only deployment keeps answering; it is simply no longer preferred over
+    the policy-governed chain when both are configured.
+
+    Raises 503 when no provider is configured or every candidate fails — the
+    caller turns that into the hub's local heuristic feedback, never a hang.
+    """
     if httpx is None:
         raise HTTPException(
             status_code=503,
             detail={"error": "httpx_missing", "message": "httpx is not installed."},
         )
-    messages = [
-        {"role": "system", "content": system_prompt},
-        {"role": "user", "content": user_prompt},
-    ]
-    timeout = min(float(OPENROUTER_TIMEOUT_SECONDS), 20.0)
-    providers: List[Dict[str, str]] = []
-    if GROQ_API_KEY:
-        providers.append({
-            "name": "groq",
-            "url": "https://api.groq.com/openai/v1/chat/completions",
-            "key": GROQ_API_KEY,
-            "model": GROQ_MODEL,
-        })
+
+    # The coach asks for short structured JSON, so it is capped tighter than a
+    # full answer and uses the coach task role's chain.
+    coach_max_tokens = 700
+
     if OPENROUTER_API_KEY:
-        providers.append({
-            "name": "openrouter",
-            "url": "https://openrouter.ai/api/v1/chat/completions",
-            "key": OPENROUTER_API_KEY,
-            "model": OPENROUTER_MODEL,
-        })
-    if not providers:
-        raise HTTPException(
-            status_code=503,
-            detail={
-                "error": "coach_no_provider",
-                "message": "No GROQ_API_KEY or OPENROUTER_API_KEY configured.",
-            },
+        runtime = _ai_runtime.AIRuntime(
+            adapter=_openrouter_adapter(system_prompt),
+            provider_name="openrouter",
+            cooldowns=_MODEL_COOLDOWNS,
         )
-    last_error: Optional[str] = None
-    for prov in providers:
-        payload = {
-            "model": prov["model"],
-            "messages": messages,
-            "temperature": 0.4,
-            "max_tokens": 700,
-        }
-        headers = {
-            "Authorization": f"Bearer {prov['key']}",
-            "Content-Type": "application/json",
-        }
-        if prov["name"] == "openrouter":
-            if SITE_URL:
-                headers["HTTP-Referer"] = SITE_URL
-            if SITE_TITLE:
-                headers["X-Title"] = SITE_TITLE
+        result = await runtime.complete(
+            user_prompt,
+            role=_ai_runtime.TaskRole.NATIONALITY_COACH,
+            max_tokens=coach_max_tokens,
+        )
+        if result.ok:
+            return {
+                "content": result.text,
+                "provider": "openrouter",
+                "model": result.final_model or "",
+                "model_fallback_used": result.model_fallback_used,
+            }
+        coach_error = result.error_type or "provider_error"
+    else:
+        coach_error = "openrouter_not_configured"
+
+    # Provider-family fallback. Unlike /api/ask this is not gated on
+    # ALLOW_GROQ_FALLBACK: the coach produces practice feedback rather than
+    # source-grounded legal answers, and a Groq-only deployment must keep
+    # working. The provider that actually answered is always reported back.
+    if GROQ_API_KEY:
         try:
-            async with httpx.AsyncClient(timeout=timeout) as client:
-                resp = await client.post(prov["url"], headers=headers, json=payload)
-            if resp.status_code >= 400:
-                last_error = f"{prov['name']} HTTP {resp.status_code}"
-                continue
-            data = resp.json()
-            content = data["choices"][0]["message"]["content"]
-            return {"content": content, "provider": prov["name"], "model": prov["model"]}
-        except Exception as exc:  # noqa: BLE001 — any provider failure → next/fallback
-            last_error = f"{prov['name']}: {str(exc)[:120]}"
-            continue
+            content = await _call_groq(user_prompt, system_prompt=system_prompt)
+        except HTTPException as exc:
+            detail = exc.detail if isinstance(exc.detail, dict) else {}
+            coach_error = _ai_runtime.legacy_label(
+                _ai_runtime.classify_provider_error(
+                    detail.get("status", exc.status_code),
+                    detail.get("message"),
+                    detail.get("error"),
+                )
+            )
+        else:
+            return {
+                "content": content,
+                "provider": "groq",
+                "model": GROQ_MODEL,
+                "model_fallback_used": True,
+            }
+
     raise HTTPException(
         status_code=503,
-        detail={"error": "coach_unavailable", "message": last_error or "all providers failed"},
+        detail={
+            "error": "coach_unavailable",
+            "message": "The nationality coach could not reach a configured model provider.",
+            "provider_error_type": coach_error,
+        },
     )
 
 
@@ -6491,6 +6544,10 @@ async def nationality_coach(req: NationalityCoachRequest) -> Dict[str, Any]:
             parsed["caution"] = "이 피드백은 연습용이며 실제 심사 결과를 보장하지 않습니다."
     parsed["mode"] = mode
     parsed["provider"] = result["provider"]
+    # Which model actually answered is non-secret routing metadata; surfacing it
+    # keeps the coach as auditable as every other AI surface.
+    parsed["model"] = result.get("model", "")
+    parsed["modelFallbackUsed"] = bool(result.get("model_fallback_used"))
     parsed["ai_available"] = True
     return parsed
 
