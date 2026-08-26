@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Manual-to-data coverage check (2026.5 visa / 2026.5–2026-06-01 stay).
+"""Manual-to-data coverage check for the current structured visa inventory.
 
 Compares a canonical manual code inventory against visa_data.json and
 classifies each item. Fails if:
@@ -8,8 +8,9 @@ classifies each item. Fails if:
   * a quarantined code (deprecated / suspended / reference-only / legacy /
     internal marker) is presented as active.
 
-This is the source-grounded coverage gate; the prose/JSON audit artifacts
-live under docs/data/2026_06_08_*.
+The Top-Tier family variants are explicitly pinned because the approved
+2026-07-31 manual and the 2026-08-07 refresh both contain them; omitting them
+was previously invisible to this gate.
 """
 from __future__ import annotations
 
@@ -39,8 +40,9 @@ REQUIRED_ACTIVE = [
     "E-8-7", "E-8-8", "E-8-99",
     # special talent / startup / nomad / trade
     "D-8-4S", "D-9-5", "E-7-S1", "E-7-S2", "F-1-D", "A-3-99", "H-2-7",
-    # Top-Tier
+    # Top-Tier principals + spouse/minor-child variants
     "D-10-T", "E-7-T", "F-2-T", "F-5-T",
+    "F-3-10", "F-3-17", "F-2-T1", "F-5-T1",
     # K-STAR
     "F-2-7S", "F-2-71", "F-5-S1", "F-5-S2",
     # regional (지역특화형)
