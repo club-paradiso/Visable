@@ -41,9 +41,6 @@ class GroundingConfig:
     public_data_job_path: str = ""
     warnings: List[str] = field(default_factory=list)
 
-    # ------------------------------------------------------------------
-    # Credential resolution (OC-style variables preferred, LAW_API_KEY fallback)
-    # ------------------------------------------------------------------
     @property
     def law_api_credential(self) -> str:
         """Effective Open Law API ``OC`` value.
@@ -103,10 +100,10 @@ def _is_railway_runtime() -> bool:
     """Detect the running Railway service without requiring a user secret.
 
     Railway documents these variables as platform-provided values available to
-    builds and deployments. Checking them keeps this compatibility shim scoped
-    to Railway rather than silently changing credential precedence everywhere.
+    builds and deployments. Checking non-empty values keeps this compatibility
+    shim scoped to Railway rather than changing credential precedence globally.
     """
-    return any((os.environ.get(name) or "").strip() for name in _RAILWAY_RUNTIME_ENV_NAMES)
+    return any(bool((os.environ.get(name) or "").strip()) for name in _RAILWAY_RUNTIME_ENV_NAMES)
 
 
 def _configured_oc_credentials() -> list[tuple[str, str]]:
@@ -123,11 +120,11 @@ def _resolve_oc_credential() -> tuple[str, str]:
     if not configured:
         return "", "LAW_API_OC"
 
-    # Preserve the established OC-first contract everywhere except the live
-    # Railway runtime. Historical deployment docs used `paradiso` as an example
-    # OC and a recorded live probe returned HTTP 403 for it. If that stale value
-    # still exists on Railway, prefer another configured *real* OC alias. If no
-    # real OC alias exists, load_grounding_config will fall back to LAW_API_KEY.
+    # Preserve the established OC-first contract everywhere except Railway.
+    # Historical deployment docs used `paradiso` as an example OC and a
+    # recorded live probe returned HTTP 403 for it. If that stale value still
+    # exists on Railway, prefer another configured real OC alias. If no real OC
+    # alias exists, load_grounding_config falls back to LAW_API_KEY.
     first_value, first_name = configured[0]
     if _is_railway_runtime() and first_value.lower() in _KNOWN_PLACEHOLDER_OC_VALUES:
         for value, name in configured[1:]:
