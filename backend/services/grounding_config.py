@@ -102,8 +102,9 @@ def _parse_cache_ttl(raw_value: str | None) -> int:
 def _is_railway_runtime() -> bool:
     """Detect the running Railway service without requiring a user secret.
 
-    Railway injects these system variables into builds/deployments. Requiring a
-    platform marker keeps the historical non-Railway OC-first contract intact.
+    Railway documents these variables as platform-provided values available to
+    builds and deployments. Checking them keeps this compatibility shim scoped
+    to Railway rather than silently changing credential precedence everywhere.
     """
     return any((os.environ.get(name) or "").strip() for name in _RAILWAY_RUNTIME_ENV_NAMES)
 
