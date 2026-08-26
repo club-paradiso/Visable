@@ -197,6 +197,46 @@ class FrontendRuleTests(_RuleHarness):
         self.assertIn("frontend-calls-provider-directly", rules)
 
 
+class BackendOriginRuleTests(_RuleHarness):
+    """The origin was written out six times, each with its own localhost logic."""
+
+    ORIGIN = "https://web-production-14f9a.up.railway.app"
+
+    def test_a_new_file_hardcoding_the_backend_origin_is_caught(self):
+        rules = self.run_rule(
+            guard.check_backend_origin_is_single_sourced,
+            "assets/js/new-feature.js",
+            f"var API = '{self.ORIGIN}';\n",
+        )
+        self.assertIn("backend-origin-duplicated", rules)
+
+    def test_an_allowlisted_fallback_that_never_consults_the_resolver_is_caught(self):
+        """A fallback that is the only path is not a fallback."""
+        rules = self.run_rule(
+            guard.check_backend_origin_is_single_sourced,
+            "assets/js/unified-search.js",
+            f"var DEFAULT_API_BASE = '{self.ORIGIN}';\n",
+        )
+        self.assertIn("backend-origin-fallback-is-primary", rules)
+
+    def test_an_allowlisted_fallback_behind_the_resolver_is_accepted(self):
+        rules = self.run_rule(
+            guard.check_backend_origin_is_single_sourced,
+            "assets/js/unified-search.js",
+            "var DEFAULT_API_BASE = (window.VisableBackend && "
+            f"window.VisableBackend.productionOrigin) || '{self.ORIGIN}';\n",
+        )
+        self.assertEqual(rules, [])
+
+    def test_the_owning_file_may_hold_the_literal(self):
+        rules = self.run_rule(
+            guard.check_backend_origin_is_single_sourced,
+            "assets/js/backend-origin.js",
+            f"var PRODUCTION_ORIGIN = '{self.ORIGIN}';\n",
+        )
+        self.assertEqual(rules, [])
+
+
 class SharedRuntimeRuleTests(unittest.TestCase):
     def test_the_backend_still_uses_the_shared_runtime(self):
         findings = []

@@ -1787,9 +1787,11 @@ select:focus-visible {
         // Backend API base. Override at deploy time by setting `window.PARADISO_BACKEND_URL`
         // in a <script> tag before this script runs (or edit DEFAULT_API_BASE below).
         // See docs/backend/BACKEND_DEPLOYMENT_ALIGNMENT.md.
-        const DEFAULT_API_BASE = "https://web-production-14f9a.up.railway.app";
-        const API_BASE = (window.PARADISO_BACKEND_URL && window.PARADISO_BACKEND_URL.trim())
-            || ((location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.protocol === 'file:') ? "" : DEFAULT_API_BASE);
+        // Resolved by assets/js/backend-origin.js — see index.html.
+        const API_BASE = (window.VisableBackend && window.VisableBackend.origin())
+            || ((window.PARADISO_BACKEND_URL && window.PARADISO_BACKEND_URL.trim())
+                || ((location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.protocol === 'file:')
+                    ? "" : "https://web-production-14f9a.up.railway.app"));
         const MAX_CHARS = 500;
         const QUOTA_LIMIT = 30;
         // Hard client-side ceiling for an /api/ask round-trip so the loader can
@@ -3990,6 +3992,10 @@ select:focus-visible {
          The authoritative result is the backend Procedure Packet (no LLM). The AI
          follow-up below is SECONDARY and uses the buffered (fully-gated) /api/ask
          path (stream:false) so the answer-shape / citation / safety gates run. -->
+    <!-- Canonical backend origin resolver. MUST load before anything that
+         calls the Visable backend: every API_BASE/apiBase falls back to an
+         inline literal if this has not run. -->
+    <script src="assets/js/backend-origin.js?v=20260826"></script>
     <script src="assets/js/zh-traditional.js"></script>
     <script src="assets/js/waymaker-navigator.js"></script>
     <script defer src="assets/js/legal-source-search.js?v=20260628-mobile"></script>
@@ -4028,9 +4034,10 @@ select:focus-visible {
         })();
 
         // Mirror ai.html's API base resolution (the const is module-scoped above).
-        var DEFAULT_API_BASE = "https://web-production-14f9a.up.railway.app";
-        var apiBase = (window.PARADISO_BACKEND_URL && window.PARADISO_BACKEND_URL.trim())
-            || ((location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.protocol === 'file:') ? "" : DEFAULT_API_BASE);
+        var apiBase = (window.VisableBackend && window.VisableBackend.origin())
+            || ((window.PARADISO_BACKEND_URL && window.PARADISO_BACKEND_URL.trim())
+                || ((location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.protocol === 'file:')
+                    ? "" : "https://web-production-14f9a.up.railway.app"));
 
         function getRecords() {
             // Reuse the same source ai.html uses: live /api/visas, else local file.

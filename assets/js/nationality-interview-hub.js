@@ -1027,9 +1027,13 @@
   }
 
   // Mirror ai.html's API base resolution so the coach can reach the backend.
-  var DEFAULT_API_BASE = 'https://web-production-14f9a.up.railway.app';
-  var apiBase = (window.PARADISO_BACKEND_URL && window.PARADISO_BACKEND_URL.trim())
-    || ((location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.protocol === 'file:') ? '' : DEFAULT_API_BASE);
+  // One resolver for the whole site (assets/js/backend-origin.js): the
+  // override hook, the localhost rule and the production origin all live
+  // there instead of being restated per feature.
+  var apiBase = (window.VisableBackend && window.VisableBackend.origin())
+    || ((window.PARADISO_BACKEND_URL && window.PARADISO_BACKEND_URL.trim())
+        || ((location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.protocol === 'file:')
+            ? '' : 'https://web-production-14f9a.up.railway.app'));
 
   var CATEGORY_LABELS = {
     korean_language: { ko: '한국어 의사소통', en: 'Korean communication', 'zh-CN': '韩语沟通', ja: '韓国語コミュニケーション', vi: 'Giao tiếp tiếng Hàn', tl: 'Komunikasyon sa Korean', id: 'Komunikasi bahasa Korea', ru: 'Общение на корейском', fr: 'Communication en coréen', es: 'Comunicación en coreano', ar: 'التواصل بالكورية', de: 'Koreanische Kommunikation', tr: "Korece iletişim", uk: "Спілкування корейською" },

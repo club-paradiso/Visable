@@ -399,6 +399,10 @@ h1, h2, h3 { line-height: 1.25; letter-spacing: -0.01em; }
   </footer>
 </main>
 
+<!-- Canonical backend origin resolver. MUST load before anything that
+     calls the Visable backend: every API_BASE/apiBase falls back to an
+     inline literal if this has not run. -->
+<script src="assets/js/backend-origin.js?v=20260826"></script>
 <script src="assets/js/zh-traditional.js"></script>
 <script src="assets/js/nationality-interview-hub.js?v=20260628"></script>
 </body>

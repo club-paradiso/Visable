@@ -326,6 +326,59 @@ def check_ai_consumers_use_shared_runtime(findings: List[Finding]) -> None:
             ))
 
 
+#: The one file allowed to contain the production backend origin literal.
+BACKEND_ORIGIN_OWNER = "assets/js/backend-origin.js"
+
+#: Files allowed to keep an inline fallback copy, for the case where the
+#: resolver script fails to load. Each must actually consult the resolver
+#: first — the rule below checks that, so a fallback cannot quietly become
+#: the primary path again.
+BACKEND_ORIGIN_FALLBACK_ALLOWED = {
+    "index.html",
+    "ai.html",
+    "assets/js/unified-search.js",
+    "assets/js/legal-source-search.js",
+    "assets/js/nationality-interview-hub.js",
+    "assets/js/preview/preview-app.js",
+}
+
+_PRODUCTION_ORIGIN_RE = re.compile(r"https://[a-z0-9-]+\.up\.railway\.app")
+
+
+def check_backend_origin_is_single_sourced(findings: List[Finding]) -> None:
+    """The backend origin was written out five times, each with its own
+    localhost logic. Moving the backend meant finding all five, and missing one
+    left a page silently talking to the wrong host.
+
+    One file owns the literal. Anywhere else may keep an inline fallback only
+    if it consults ``window.VisableBackend`` first.
+    """
+    for path in frontend_sources():
+        relpath = rel(path)
+        if relpath == BACKEND_ORIGIN_OWNER:
+            continue
+        try:
+            text = path.read_text(encoding="utf-8")
+        except (UnicodeDecodeError, OSError):
+            continue
+        for num, line in enumerate(text.splitlines(), 1):
+            if not _PRODUCTION_ORIGIN_RE.search(line):
+                continue
+            if relpath not in BACKEND_ORIGIN_FALLBACK_ALLOWED:
+                findings.append(Finding(
+                    "backend-origin-duplicated", relpath, num,
+                    f"hardcodes the backend origin. Resolve it through "
+                    f"window.VisableBackend.origin() ({BACKEND_ORIGIN_OWNER} owns "
+                    f"the literal) so moving the backend is one edit.",
+                ))
+            elif "VisableBackend" not in text:
+                findings.append(Finding(
+                    "backend-origin-fallback-is-primary", relpath, num,
+                    "keeps an inline backend origin but never consults "
+                    "window.VisableBackend, so the fallback IS the primary path.",
+                ))
+
+
 RULES = (
     check_provider_hosts,
     check_credential_reads,
@@ -335,6 +388,7 @@ RULES = (
     check_committed_secrets,
     check_frontend_provider_calls,
     check_ai_consumers_use_shared_runtime,
+    check_backend_origin_is_single_sourced,
 )
 
 
@@ -367,6 +421,7 @@ def main() -> int:
         print("  * completion result never unpacked as a tuple")
         print("  * no committed secrets")
         print("  * no frontend-to-provider calls")
+        print("  * backend origin defined in exactly one place")
         return 0
 
     by_rule: Dict[str, List[Finding]] = {}
