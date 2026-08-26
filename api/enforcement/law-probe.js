@@ -1,5 +1,7 @@
 'use strict';
 
+const { LAW_CREDENTIAL_ENV_NAMES, resolveLawCredential } = require('../../lib/law-credential');
+
 const LAW_HOST = 'https://www.law.go.kr';
 
 function exactLawFound(data, lawName) {
@@ -25,18 +27,21 @@ module.exports = async function handler(request, response) {
     return response.status(405).json({ detail: 'method not allowed' });
   }
 
-  const preferred = String(process.env.LAW_API_OC || '').trim();
-  const legacy = String(process.env.LAW_API_KEY || '').trim();
-  const credential = preferred || legacy;
-  const credentialSource = preferred ? 'LAW_API_OC' : (legacy ? 'LAW_API_KEY' : null);
+  const resolved = resolveLawCredential();
+  const credential = resolved.credential;
+  const credentialSource = resolved.credentialSource || null;
   const mode = String(process.env.LAW_GROUNDING_MODE || 'enabled').trim().toLowerCase();
+  const publicBase = {
+    service: 'visable-enforcement-law-probe',
+    credentialSource,
+    supportedCredentialEnvNames: [...LAW_CREDENTIAL_ENV_NAMES],
+    mode,
+  };
 
   if (!credential) {
     return response.status(200).json({
-      service: 'visable-enforcement-law-probe',
+      ...publicBase,
       configured: false,
-      credentialSource: null,
-      mode,
       reachable: false,
       exactLawFound: false,
       status: 'not_configured',
@@ -61,10 +66,8 @@ module.exports = async function handler(request, response) {
     });
     if (!upstream.ok) {
       return response.status(200).json({
-        service: 'visable-enforcement-law-probe',
+        ...publicBase,
         configured: true,
-        credentialSource,
-        mode,
         reachable: true,
         exactLawFound: false,
         status: `upstream_http_${upstream.status}`,
@@ -75,10 +78,8 @@ module.exports = async function handler(request, response) {
     try { data = JSON.parse(text); }
     catch {
       return response.status(200).json({
-        service: 'visable-enforcement-law-probe',
+        ...publicBase,
         configured: true,
-        credentialSource,
-        mode,
         reachable: true,
         exactLawFound: false,
         status: 'unexpected_non_json_response',
@@ -86,20 +87,16 @@ module.exports = async function handler(request, response) {
     }
     const found = exactLawFound(data, '출입국관리법');
     return response.status(200).json({
-      service: 'visable-enforcement-law-probe',
+      ...publicBase,
       configured: true,
-      credentialSource,
-      mode,
       reachable: true,
       exactLawFound: found,
       status: found ? 'ok' : 'no_exact_law_match',
     });
   } catch (error) {
     return response.status(200).json({
-      service: 'visable-enforcement-law-probe',
+      ...publicBase,
       configured: true,
-      credentialSource,
-      mode,
       reachable: false,
       exactLawFound: false,
       status: error && error.name === 'AbortError' ? 'timeout' : 'network_error',

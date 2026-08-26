@@ -16,8 +16,10 @@ const fallbackRuntime = fs.readFileSync(path.join(root, 'lib/enforcement-fallbac
 const groundedRuntime = fs.readFileSync(path.join(root, 'lib/enforcement-grounded-ai.js'), 'utf8');
 const lawRuntime = fs.readFileSync(path.join(root, 'lib/enforcement-law-grounding.js'), 'utf8');
 const precedentRuntime = fs.readFileSync(path.join(root, 'lib/enforcement-precedent-grounding.js'), 'utf8');
+const credentialRuntime = fs.readFileSync(path.join(root, 'lib/law-credential.js'), 'utf8');
 const legalRules = JSON.parse(fs.readFileSync(path.join(root, 'backend/data/enforcement/legal_rules.json'), 'utf8'));
 const { extractStructuredCaseV2, publicRuntimeConfig } = require('../lib/enforcement-grounded-ai.js');
+const { resolveLawCredential } = require('../lib/law-credential.js');
 
 const backendResolverIndex = html.indexOf('assets/js/backend-origin.js');
 const enforcementModuleIndex = html.indexOf('scripts/enforcement-ui.mjs');
@@ -47,8 +49,10 @@ const checks = [
   ['precedent bodies are retrieved before prediction', groundedRuntime.includes('retrieveOfficialPrecedents') && groundedRuntime.includes('similarCases') && groundedRuntime.indexOf('retrieveOfficialPrecedents') < groundedRuntime.lastIndexOf('predictionPrompt(')],
   ['precedent runtime uses official list and body endpoints', precedentRuntime.includes("target: 'prec'") && precedentRuntime.includes('/DRF/lawSearch.do') && precedentRuntime.includes('/DRF/lawService.do')],
   ['precedent runtime exposes only body results as direct evidence', precedentRuntime.includes("resultKind: 'BODY_RESULT'") && precedentRuntime.includes("citationGrade: 'DIRECT'")],
-  ['law runtime supports preferred OC and legacy key', lawRuntime.includes('process.env.LAW_API_OC') && lawRuntime.includes('process.env.LAW_API_KEY')],
+  ['law credential helper supports canonical and MCP aliases', ['LAW_API_OC', 'LAW_OC', 'OPEN_LAW_ID', 'LAW_API_KEY'].every((name) => credentialRuntime.includes(`'${name}'`))],
+  ['law runtime uses shared secret-safe credential resolver', lawRuntime.includes('resolveLawCredential') && lawRuntime.includes('publicLawCredentialConfig')],
   ['law runtime calls official DRF endpoints', lawRuntime.includes('/DRF/lawSearch.do') && lawRuntime.includes('/DRF/lawService.do')],
+  ['law runtime requests appendix 7 explicitly when needed', lawRuntime.includes("BD: 'ON'") && lawRuntime.includes("BT: '1'") && lawRuntime.includes("BN: '7'")],
   ['law runtime never returns credential value', !lawRuntime.includes('credential: cfg.credential')],
   ['safe live law probe exists', lawProbe.includes("service: 'visable-enforcement-law-probe'") && lawProbe.includes("target: 'law'") && lawProbe.includes('exactLawFound')],
   ['safe live law probe never returns credential value', !lawProbe.includes('credential: credential') && !lawProbe.includes('credentialValue')],
@@ -92,11 +96,16 @@ const ambiguous = extractStructuredCaseV2('F-2인데 다른 곳에서 허가 없
 assert.equal(ambiguous.violationCode, null);
 assert.ok(ambiguous.violationCandidates.length >= 2);
 
+assert.deepEqual(resolveLawCredential({ LAW_OC: 'alias-value' }), { credential: 'alias-value', credentialSource: 'LAW_OC' });
+assert.deepEqual(resolveLawCredential({ OPEN_LAW_ID: 'mcp-value' }), { credential: 'mcp-value', credentialSource: 'OPEN_LAW_ID' });
+assert.equal(resolveLawCredential({ LAW_API_OC: 'canonical', LAW_OC: 'alias' }).credential, 'canonical');
+
 const runtime = publicRuntimeConfig();
 assert.equal(Object.hasOwn(runtime, 'openrouterConfigured'), true);
 assert.equal(Object.hasOwn(runtime, 'lawApiConfigured'), true);
 assert.equal(Object.hasOwn(runtime, 'lawApiCredentialSource'), true);
+assert.ok(Array.isArray(runtime.supportedCredentialEnvNames));
 assert.equal(Object.hasOwn(runtime, 'key'), false);
 assert.equal(Object.hasOwn(runtime, 'credential'), false);
 
-console.log(`Enforcement UI/runtime contract passed (${checks.length} static checks + legal extraction assertions).`);
+console.log(`Enforcement UI/runtime contract passed (${checks.length} static checks + legal extraction/credential assertions).`);
