@@ -29,4 +29,6 @@ The Railway live smoke now requires all of the following:
 - `/api/legal/laws/search?q=출입국관리법` returns HTTP 200 and `ok=true`;
 - the returned law-search `count` is greater than zero.
 
+A deployment is not considered verified merely because the upstream HTTP status is 200; at least one usable law row must be returned.
+
 This document intentionally contains no credential values.
