@@ -1,13 +1,15 @@
 'use strict';
 
-const { analyzeCase } = require('../../lib/enforcement-fallback');
+const { analyzeGroundedCase, publicRuntimeConfig } = require('../../lib/enforcement-grounded-ai');
 
 module.exports = async function handler(request, response) {
   if (request.method === 'GET') {
+    const runtime = publicRuntimeConfig();
     return response.status(200).json({
       service: 'visable-enforcement-analyze',
       status: 'ok',
-      mode: 'deterministic-fallback',
+      mode: runtime.openrouterConfigured ? 'grounded-ai-v2' : 'deterministic-fallback',
+      runtime,
     });
   }
 
@@ -23,8 +25,9 @@ module.exports = async function handler(request, response) {
   }
 
   try {
-    return response.status(200).json(analyzeCase(payload.caseData));
-  } catch {
+    return response.status(200).json(await analyzeGroundedCase(payload.caseData));
+  } catch (error) {
+    console.error('Enforcement analysis rejected', { name: error && error.name, message: error && error.message });
     return response.status(422).json({ detail: 'invalid structured enforcement case' });
   }
 };

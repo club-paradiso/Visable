@@ -121,6 +121,7 @@ const won = (value) => value == null ? '산출 불가' : `${Number(value).toLoca
 const range = (value) => !value ? '예상 범위 산출 불가' : `${won(value.minimumKrw)} – ${won(value.maximumKrw)}`;
 const confidenceLabels = { VERY_HIGH: '매우 높음', HIGH: '높음', MEDIUM: '중간', LOW: '낮음', VERY_LOW: '매우 낮음', INSUFFICIENT: '근거 부족' };
 const likelihoodLabels = { VERY_HIGH: '매우 높음', HIGH: '높음', MODERATE: '중간', LOW: '낮음', VERY_LOW: '매우 낮음', UNKNOWN: '특정 어려움' };
+const groundingLabels = { VERIFIED: '실시간 법령 API 검증 완료', AUDIT_ONLY: '법령 API 감사 모드', LIMITED: '법령 API 부분 검증', UNAVAILABLE: '정적 법령 스냅샷 사용' };
 const dispositionLabels = {
   STAY_PERMISSION_DISADVANTAGE: '체류허가상 불이익', DEPARTURE_ORDER: '출국명령',
   DEPORTATION: '강제퇴거', CRIMINAL_REFERRAL: '형사절차 회부'
@@ -139,11 +140,14 @@ function disposition(item, primary = false) {
 function renderResult(data) {
   const baseline = data.legalBaseline || {};
   const prediction = data.prediction || {};
+  const grounding = data.lawGrounding || {};
   const monetary = prediction.monetaryPrediction;
   const confidence = prediction.confidence || { level: 'INSUFFICIENT', reasons: [] };
   const sources = prediction.evidence || [];
   const similar = prediction.similarCases || [];
   const limitations = prediction.limitations || [];
+  const groundingLabel = groundingLabels[grounding.status] || grounding.status || '상태 확인 불가';
+  const modelLabel = prediction.modelId ? `모델: ${prediction.modelId}` : '검증된 AI 결과 없음';
   $('#result-root').innerHTML = `
     <div class="result-grid">
       <article class="result-card baseline">
@@ -152,6 +156,7 @@ function renderResult(data) {
         <p class="subtle">법령상 기준 범칙금</p>
         <p class="amount">${won(baseline.baselineAmountKrw)}</p>
         <p>법정 조정 가능 범위: <strong>${range(baseline.legallyAdjustableRange)}</strong></p>
+        <p><span class="tag">${escapeHtml(groundingLabel)}</span></p>
         <p class="subtle">${escapeHtml((baseline.appliedRules || []).join(' · '))}</p>
       </article>
       <article class="result-card prediction">
@@ -160,7 +165,7 @@ function renderResult(data) {
         <p class="subtle">예상 범칙금</p>
         <p class="amount">${monetary ? range(monetary.predictedLikelyRange) : '생성하지 못함'}</p>
         <p>${monetary?.pointEstimateKrw != null ? `대표 추정액: <strong>${won(monetary.pointEstimateKrw)}</strong>` : '근거가 충분하지 않아 대표 추정액을 표시하지 않습니다.'}</p>
-        <p class="subtle">예측은 위 법정 범위 안에서만 허용됩니다.</p>
+        <p class="subtle">${escapeHtml(modelLabel)} · 예측은 위 법정 범위 안에서만 허용됩니다.</p>
       </article>
       <article class="result-card span-2">
         <p class="card-kicker">3 · DISPOSITION</p>
@@ -190,6 +195,7 @@ function renderResult(data) {
       </article>
       <article class="result-card span-2">
         <p class="card-kicker">OFFICIAL SOURCES</p><h3>법적 근거</h3>
+        <p class="subtle">${escapeHtml(groundingLabel)}${grounding.credentialSource ? ` · ${escapeHtml(grounding.credentialSource)}` : ''}</p>
         <div class="evidence-list">${sources.length ? sources.map((source) => `<a class="evidence-item" href="${escapeHtml(source.sourceUrl)}" target="_blank" rel="noopener noreferrer"><strong>${escapeHtml(source.title)}</strong><br><span class="subtle">${escapeHtml(source.authority)} · ${escapeHtml(source.excerpt || '')}</span></a>`).join('') : '<p class="subtle">검증된 공개 근거를 불러오지 못했습니다.</p>'}</div>
       </article>
     </div>
