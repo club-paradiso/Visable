@@ -56,6 +56,7 @@ from services import manual_search as _manual_search
 from services import manual_registry as _manual_registry
 from services import statute_citation_guard as _statute_guard
 from services import employment_nl as _employment_nl
+from services import immigration_tools as _immigration_tools
 from services import precedent_sources
 from services.enforcement_models import StructuredCase
 from services.enforcement_service import analyze_enforcement_case, extract_structured_case
@@ -4152,6 +4153,128 @@ async def health() -> Dict[str, Any]:
         "law_grounding_active": law_grounding_active,
         # Granular, non-secret Open Law API configuration flags (Part A).
         "law_api": law_api_status,
+    }
+
+
+@app.get("/api/health/ai")
+async def health_ai() -> Dict[str, Any]:
+    """AI readiness — what an operator needs to answer "is the AI actually up?".
+
+    /health answers "is the web server alive?". That is a different question,
+    and conflating them is how a deployment can look healthy while every AI
+    feature is failing. This endpoint reports readiness per feature.
+
+    It performs NO provider calls: a health probe that costs a completion is a
+    health probe nobody runs often enough to be useful, and it would bill the
+    account on every check. Everything here is configuration and registry state,
+    so it is cheap enough to poll.
+
+    Readiness is NOT proof of a working answer. `liveVerification` says so
+    explicitly, and names the smoke script that can actually prove it — so this
+    endpoint can never be mistaken for the live check.
+
+    Non-secret by construction: booleans, public model ids, classified states.
+    No credential value, no authorization header, no raw provider body.
+    """
+    runtime = _ai_runtime.provider_configuration()
+    llm = _resolve_llm_config()
+
+    try:
+        law_cfg = load_grounding_config()
+        law_mode, law_effective_mode, law_active = _law_grounding_runtime_state(law_cfg)
+        law_configured = law_cfg.law_api_configured
+    except Exception:  # pragma: no cover - defensive
+        law_mode = (os.environ.get("LAW_GROUNDING_MODE") or "enabled").strip().lower()
+        law_effective_mode, law_active, law_configured = "unknown", False, bool(LAW_API_KEY)
+
+    try:
+        manual_summary = _manual_registry.registry_summary()
+        approved_manuals = int(manual_summary["approval_counts"].get("approved", 0))
+        index_available = _manual_search.index_available()
+    except Exception:  # pragma: no cover - defensive
+        approved_manuals, index_available = 0, False
+
+    # Approved editions are useless without a built index, and that combination
+    # is invisible on /health today: the registry says "2 approved" while the
+    # search that would surface them cannot run. Say it plainly.
+    manual_ready = bool(approved_manuals) and index_available
+    manual_blocker = ""
+    if approved_manuals and not index_available:
+        manual_blocker = (
+            "approved manual editions exist but the FTS index is not built on this "
+            "deployment; run scripts/build_manual_search_index.py during the build"
+        )
+    elif not approved_manuals:
+        manual_blocker = "no manual edition has been human-approved for direct evidence"
+
+    provider_ready = bool(OPENROUTER_API_KEY) or bool(GROQ_API_KEY and ALLOW_GROQ_FALLBACK)
+
+    def feature(name: str, ready: bool, *, blocker: str = "",
+                degrades_to: str = "") -> Dict[str, Any]:
+        return {"feature": name, "ready": ready, "blocker": blocker,
+                "degradesTo": degrades_to}
+
+    no_provider = "" if provider_ready else "no LLM provider is configured"
+    features = [
+        feature("waymaker_ask", provider_ready, blocker=no_provider,
+                degrades_to="deterministic source-grounded preparation note"),
+        feature("unified_search_ai_overview", provider_ready, blocker=no_provider,
+                degrades_to="deterministic organic search results (always available)"),
+        feature("employment_interpret", provider_ready, blocker=no_provider,
+                degrades_to="guided deterministic employment analyzer"),
+        feature("nationality_coach", bool(OPENROUTER_API_KEY or GROQ_API_KEY),
+                blocker="" if (OPENROUTER_API_KEY or GROQ_API_KEY) else no_provider,
+                degrades_to="local heuristic practice feedback"),
+        feature("legal_research", True,
+                degrades_to="deterministic retrieval without LLM synthesis"),
+        feature("enforcement_intelligence", True,
+                degrades_to="deterministic statutory baseline without AI explanation"),
+    ]
+
+    return {
+        "status": "ok",
+        "service": "visable-backend",
+        "aiReady": provider_ready,
+        "runtimeVersion": runtime["runtime_version"],
+        "modelPolicyVersion": runtime["policy_version"],
+        "toolLayerVersion": _immigration_tools.TOOL_LAYER_VERSION,
+        "providers": runtime["providers"],
+        "activeProvider": runtime["active_provider"],
+        "answerTiers": {
+            mode: resolve_answer_mode_models(mode) for mode in ("fast", "basic", "pro")
+        },
+        "taskRoleModels": runtime["task_roles"],
+        "cooldown": _MODEL_COOLDOWNS.metadata(),
+        "grounding": {
+            "law": {
+                "configured": law_configured,
+                "mode": law_mode,
+                "effectiveMode": law_effective_mode,
+                "active": law_active,
+                # Audit posture is a real, deliberate state — not a failure —
+                # but citations retrieved under it are never marked verified.
+                "citationsTrustworthy": law_effective_mode == "enabled" and law_configured,
+            },
+            "manual": {
+                "approvedEditions": approved_manuals,
+                "indexAvailable": index_available,
+                "ready": manual_ready,
+                "blocker": manual_blocker,
+            },
+        },
+        "features": features,
+        "tools": _immigration_tools.build_registry().describe(),
+        "candidateWarnings": _validate_model_candidates(OPENROUTER_MODEL_CANDIDATES),
+        "llmWarnings": llm.get("warnings", []),
+        "liveVerification": {
+            "performed": False,
+            "note": (
+                "This endpoint reports CONFIGURATION readiness only and issues no "
+                "provider call. A configured provider is not a working one. Prove a "
+                "real completion with: python3 scripts/smoke_ai_runtime.py "
+                "--backend-url <url> --require-live"
+            ),
+        },
     }
 
 
