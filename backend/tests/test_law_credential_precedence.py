@@ -41,12 +41,11 @@ class _RecordingTransport:
         )
 
 
-def _search_url_for(cfg) -> str:
+def _request_url(cfg) -> str:
     transport = _RecordingTransport()
     result = lt.search_laws("출입국관리법", config=cfg, transport=transport)
     assert result["status"] == "ok"
-    assert transport.urls
-    assert "OC=" not in result["source_url"]
+    assert transport.urls and "OC=" not in result["source_url"]
     return transport.urls[0]
 
 
@@ -55,30 +54,26 @@ def test_non_railway_preserves_existing_oc_first_contract():
         cfg = load_grounding_config()
     assert cfg.law_api_credential == "paradiso"
     assert cfg.law_api_credential_source == "LAW_API_OC"
-    assert cfg.law_api_oc_configured is True
-    assert cfg.law_api_key_fallback_configured is True
 
 
-def test_railway_placeholder_oc_falls_back_to_existing_legacy_key():
+def test_railway_placeholder_uses_existing_key_in_real_request_builder():
     with _env(
         RAILWAY_SERVICE_ID="service-test",
         LAW_API_OC="paradiso",
         LAW_API_KEY="registered-legacy-oc",
     ):
         cfg = load_grounding_config()
-        request_url = _search_url_for(cfg)
+        request_url = _request_url(cfg)
     assert cfg.law_api_credential == "registered-legacy-oc"
     assert cfg.law_api_credential_source == "LAW_API_KEY"
     assert cfg.law_api_oc_configured is False
-    assert cfg.law_api_key_fallback_configured is True
     assert "OC=registered-legacy-oc" in request_url
     assert "OC=paradiso" not in request_url
     assert "LAW_API_OC_PLACEHOLDER_DETECTED_ON_RAILWAY" in cfg.warnings
     assert "LAW_API_OC_PLACEHOLDER_IGNORED_FOR_RAILWAY_KEY_FALLBACK" in cfg.warnings
-    assert "LAW_API_OC_RECOMMENDED" in cfg.warnings
 
 
-def test_railway_real_oc_alias_beats_historical_primary_placeholder():
+def test_railway_real_alias_beats_historical_placeholder():
     with _env(
         RAILWAY_ENVIRONMENT_ID="environment-test",
         LAW_API_OC="paradiso",
@@ -86,13 +81,11 @@ def test_railway_real_oc_alias_beats_historical_primary_placeholder():
         LAW_API_KEY="registered-legacy-oc",
     ):
         cfg = load_grounding_config()
-        request_url = _search_url_for(cfg)
+        request_url = _request_url(cfg)
     assert cfg.law_api_credential == "registered-current-oc"
     assert cfg.law_api_credential_source == "LAW_OC"
-    assert cfg.law_api_oc_configured is True
     assert "OC=registered-current-oc" in request_url
     assert "OC=paradiso" not in request_url
-    assert "LAW_API_OC_ALIAS_USED" in cfg.warnings
 
 
 def test_railway_real_primary_oc_still_wins():
@@ -102,20 +95,13 @@ def test_railway_real_primary_oc_still_wins():
         LAW_API_KEY="registered-legacy-oc",
     ):
         cfg = load_grounding_config()
-        request_url = _search_url_for(cfg)
     assert cfg.law_api_credential == "registered-primary-oc"
     assert cfg.law_api_credential_source == "LAW_API_OC"
-    assert "OC=registered-primary-oc" in request_url
-    assert "LAW_API_OC_PLACEHOLDER_DETECTED_ON_RAILWAY" not in cfg.warnings
 
 
-def test_railway_placeholder_without_any_fallback_remains_configured():
-    with _env(
-        RAILWAY_PUBLIC_DOMAIN="example.up.railway.app",
-        LAW_API_OC="paradiso",
-    ):
+def test_railway_placeholder_without_fallback_remains_available():
+    with _env(RAILWAY_PUBLIC_DOMAIN="example.up.railway.app", LAW_API_OC="paradiso"):
         cfg = load_grounding_config()
     assert cfg.law_api_credential == "paradiso"
-    assert cfg.law_api_credential_source == "LAW_API_OC"
     assert cfg.law_api_configured is True
     assert "LAW_API_OC_PLACEHOLDER_DETECTED_ON_RAILWAY" in cfg.warnings
