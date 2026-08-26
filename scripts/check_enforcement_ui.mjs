@@ -11,9 +11,11 @@ const js = fs.readFileSync(path.join(root, 'scripts/enforcement-ui.mjs'), 'utf8'
 const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const vercelExtract = fs.readFileSync(path.join(root, 'api/enforcement/extract.js'), 'utf8');
 const vercelAnalyze = fs.readFileSync(path.join(root, 'api/enforcement/analyze.js'), 'utf8');
+const lawProbe = fs.readFileSync(path.join(root, 'api/enforcement/law-probe.js'), 'utf8');
 const fallbackRuntime = fs.readFileSync(path.join(root, 'lib/enforcement-fallback.js'), 'utf8');
 const groundedRuntime = fs.readFileSync(path.join(root, 'lib/enforcement-grounded-ai.js'), 'utf8');
 const lawRuntime = fs.readFileSync(path.join(root, 'lib/enforcement-law-grounding.js'), 'utf8');
+const precedentRuntime = fs.readFileSync(path.join(root, 'lib/enforcement-precedent-grounding.js'), 'utf8');
 const legalRules = JSON.parse(fs.readFileSync(path.join(root, 'backend/data/enforcement/legal_rules.json'), 'utf8'));
 const { extractStructuredCaseV2, publicRuntimeConfig } = require('../lib/enforcement-grounded-ai.js');
 
@@ -41,9 +43,15 @@ const checks = [
   ['runtime rejects numeric probabilities', groundedRuntime.includes('numeric_probability_prohibited')],
   ['runtime bounds monetary prediction', groundedRuntime.includes('sanitizeMoneyRange') && groundedRuntime.includes('legallyAdjustableRange')],
   ['runtime forbids random OpenRouter routing', groundedRuntime.includes('RANDOM_MODEL_IDS')],
+  ['runtime factor ids remain deterministic', groundedRuntime.includes('deterministicFactorCode') && !groundedRuntime.includes('Math.random')],
+  ['precedent bodies are retrieved before prediction', groundedRuntime.includes('retrieveOfficialPrecedents') && groundedRuntime.includes("similarCases,") && groundedRuntime.indexOf('retrieveOfficialPrecedents') < groundedRuntime.lastIndexOf('predictionPrompt(')],
+  ['precedent runtime uses official list and body endpoints', precedentRuntime.includes("target: 'prec'") && precedentRuntime.includes('/DRF/lawSearch.do') && precedentRuntime.includes('/DRF/lawService.do')],
+  ['precedent runtime exposes only body results as direct evidence', precedentRuntime.includes("resultKind: 'BODY_RESULT'") && precedentRuntime.includes("citationGrade: 'DIRECT'")],
   ['law runtime supports preferred OC and legacy key', lawRuntime.includes('process.env.LAW_API_OC') && lawRuntime.includes('process.env.LAW_API_KEY')],
   ['law runtime calls official DRF endpoints', lawRuntime.includes('/DRF/lawSearch.do') && lawRuntime.includes('/DRF/lawService.do')],
   ['law runtime never returns credential value', !lawRuntime.includes('credential: cfg.credential')],
+  ['safe live law probe exists', lawProbe.includes("service: 'visable-enforcement-law-probe'") && lawProbe.includes("target: 'law'") && lawProbe.includes('exactLawFound')],
+  ['safe live law probe never returns credential', !lawProbe.includes('credential,') && !lawProbe.includes('credential: credential')],
   ['fallback runtime uses canonical rule snapshot', fallbackRuntime.includes("require('../backend/data/enforcement/legal_rules.json')")],
   ['fallback remains fail-closed without provider', fallbackRuntime.includes("status: 'UNAVAILABLE'")],
   ['fallback preserves no-precedent limitation', fallbackRuntime.includes('현재 확인 가능한 유사 공개사례가 충분하지 않습니다.')],
