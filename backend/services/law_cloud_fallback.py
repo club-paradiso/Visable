@@ -38,8 +38,6 @@ _CORE_LAW_NAMES = (
     "재외동포의 출입국과 법적 지위에 관한 법률",
 )
 
-# Key parts are public labels plus the in-process identity of an injected test
-# transport. The actual credential value never participates in this cache key.
 _PAGE_CACHE: Dict[Tuple[str, str, str, int, int], Tuple[float, Dict[str, Any]]] = {}
 
 
@@ -159,7 +157,7 @@ def _cached_page(
         limit=_PAGE_SIZE,
         include_payload=True,
     )
-    if result.get("status") == "ok":
+    if result.get("status") == "ok" or result.get("error_type") == getattr(law_tools, "LAW_API_NO_RESULTS", "law_api_no_results"):
         _PAGE_CACHE[key] = (now, result)
     return result
 
@@ -239,6 +237,8 @@ def _dictionary_fallback(
             sort=sort, page=1, query_label=query,
         )
         if result.get("status") != "ok":
+            if result.get("error_type") == getattr(law_tools, "LAW_API_NO_RESULTS", "law_api_no_results"):
+                totals[sort] = 0
             continue
         first_success = first_success or result
         collected.extend(result.get("results") or [])
@@ -259,6 +259,8 @@ def _dictionary_fallback(
                 sort=sort, page=page, query_label=query,
             )
             if result.get("status") != "ok":
+                if result.get("error_type") == getattr(law_tools, "LAW_API_NO_RESULTS", "law_api_no_results"):
+                    totals[sort] = 0
                 continue
             first_success = first_success or result
             collected.extend(result.get("results") or [])
