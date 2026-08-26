@@ -7,8 +7,9 @@ const html = fs.readFileSync(path.join(root, 'enforcement.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'assets/css/enforcement.css'), 'utf8');
 const js = fs.readFileSync(path.join(root, 'scripts/enforcement-ui.mjs'), 'utf8');
 const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
-const vercelExtract = fs.readFileSync(path.join(root, 'api/enforcement/extract.py'), 'utf8');
-const vercelAnalyze = fs.readFileSync(path.join(root, 'api/enforcement/analyze.py'), 'utf8');
+const vercelExtract = fs.readFileSync(path.join(root, 'api/enforcement/extract.js'), 'utf8');
+const vercelAnalyze = fs.readFileSync(path.join(root, 'api/enforcement/analyze.js'), 'utf8');
+const fallbackRuntime = fs.readFileSync(path.join(root, 'lib/enforcement-fallback.js'), 'utf8');
 
 const backendResolverIndex = html.indexOf('assets/js/backend-origin.js');
 const enforcementModuleIndex = html.indexOf('scripts/enforcement-ui.mjs');
@@ -28,9 +29,11 @@ const checks = [
   ['extract endpoint wired', js.includes('/api/enforcement/extract')],
   ['analyze endpoint wired', js.includes('/api/enforcement/analyze')],
   ['same-origin API base selected for enforcement', html.includes('<meta name="api-base" content=".">')],
-  ['Vercel extract fallback exists', vercelExtract.includes('extract_structured_case') && vercelExtract.includes('provider=None')],
-  ['Vercel analyze fallback exists', vercelAnalyze.includes('analyze_enforcement_case') && vercelAnalyze.includes('prediction_provider=None')],
-  ['Vercel fallback does not call precedents', vercelAnalyze.includes('NoPrecedents')],
+  ['Vercel extract fallback exists', vercelExtract.includes('extractStructuredCase') && vercelExtract.includes('deterministic-fallback')],
+  ['Vercel analyze fallback exists', vercelAnalyze.includes('analyzeCase') && vercelAnalyze.includes('deterministic-fallback')],
+  ['fallback runtime uses canonical rule snapshot', fallbackRuntime.includes("require('../backend/data/enforcement/legal_rules.json')")],
+  ['fallback prediction stays unavailable without provider', fallbackRuntime.includes("status: 'UNAVAILABLE'") && fallbackRuntime.includes('예측 모델의 유효한 구조화 결과가 없습니다.')],
+  ['fallback preserves no-precedent limitation', fallbackRuntime.includes('현재 확인 가능한 유사 공개사례가 충분하지 않습니다.')],
   ['shared backend resolver loaded', backendResolverIndex >= 0],
   ['shared backend resolver loads before enforcement module', backendResolverIndex >= 0 && backendResolverIndex < enforcementModuleIndex],
   ['shared backend resolver remains available as operator override infrastructure', js.includes('window.VisableBackend') && js.includes('window.VisableBackend.origin')],
