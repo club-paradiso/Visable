@@ -32,16 +32,13 @@ jobs:
           def get_json(path: str, timeout: float = 15.0):
               request = urllib.request.Request(
                   base + path,
-                  headers={"Accept": "application/json", "User-Agent": "Visable-Railway-Live-Smoke/2"},
+                  headers={"Accept": "application/json", "User-Agent": "Visable-Railway-Live-Smoke/3"},
               )
               try:
                   with urllib.request.urlopen(request, timeout=timeout) as response:
                       body = response.read().decode("utf-8", errors="replace")
                       return int(getattr(response, "status", 200) or 200), json.loads(body)
               except urllib.error.HTTPError as exc:
-                  # Keep diagnostics secret-safe. We parse the public API error
-                  # envelope only to obtain stable reason labels, never print the
-                  # raw response body or any outbound URL containing credentials.
                   body = exc.read().decode("utf-8", errors="replace")
                   try:
                       payload = json.loads(body)
@@ -68,14 +65,15 @@ jobs:
                   health = candidate
 
                   query = urllib.parse.quote("출입국관리법")
-                  # This is the actual public read-only route exposed by the
-                  # FastAPI backend. The previous smoke accidentally omitted
-                  # `/search`, producing a diagnostic 404 unrelated to Railway.
                   law_status, law_candidate = get_json(f"/api/legal/laws/search?q={query}")
                   law_result = law_candidate
-                  if law_status == 200 and law_candidate.get("ok") is True:
+                  count = int(law_candidate.get("count") or 0)
+                  if law_status == 200 and law_candidate.get("ok") is True and count > 0:
                       break
-                  last_error = f"law_http_{law_status}:{law_candidate.get('reason') or law_candidate.get('error') or 'not_ok'}"
+                  if law_status == 200 and law_candidate.get("ok") is True and count == 0:
+                      last_error = "law_empty_result"
+                  else:
+                      last_error = f"law_http_{law_status}:{law_candidate.get('reason') or law_candidate.get('error') or 'not_ok'}"
               except Exception as exc:
                   last_error = f"{type(exc).__name__}:{str(exc)[:120]}"
               time.sleep(10)
@@ -83,6 +81,8 @@ jobs:
           law = (health or {}).get("law_api") or {}
           providers = (health or {}).get("providers") or {}
           provider_status = (health or {}).get("provider_status") or {}
+          law_count = int((law_result or {}).get("count") or 0)
+          law_ok = bool(law_result and law_result.get("ok") is True)
           summary = {
               "backend_status": (health or {}).get("status"),
               "service": (health or {}).get("service"),
@@ -97,9 +97,10 @@ jobs:
               "law_grounding_active": bool((health or {}).get("law_grounding_active")),
               "legal_evidence_configured": bool((provider_status.get("legal_evidence") or {}).get("configured")),
               "law_search_http_status": law_status,
-              "law_search_ok": bool(law_result and law_result.get("ok") is True),
-              "law_search_count": int((law_result or {}).get("count") or 0),
-              "failure_label": None if law_result and law_result.get("ok") is True else last_error,
+              "law_search_ok": law_ok,
+              "law_search_count": law_count,
+              "law_search_nonempty": bool(law_ok and law_count > 0),
+              "failure_label": None if law_ok and law_count > 0 else last_error,
           }
           print(json.dumps(summary, ensure_ascii=False, sort_keys=True))
 
@@ -112,7 +113,7 @@ jobs:
           if not summary["law_api_configured"] or not summary["law_grounding_active"]:
               print("Railway Open Law credential is not active.", file=sys.stderr)
               sys.exit(1)
-          if not summary["law_search_ok"]:
-              print("Railway Open Law live search did not succeed.", file=sys.stderr)
+          if not summary["law_search_nonempty"]:
+              print("Railway Open Law live search returned no usable law rows.", file=sys.stderr)
               sys.exit(1)
           PY
