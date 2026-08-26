@@ -76,6 +76,7 @@ from services.answer_shape import (
     build_answer_shape_contract,
     evaluate_answer_shape,
 )
+from services import ai_runtime as _ai_runtime
 from services.model_policy import (
     CHINESE_ONLY_MODEL_PREFIXES,
     DEFAULT_ANSWER_MODE,
@@ -222,8 +223,11 @@ def _env_float(name: str, default: float) -> float:
 
 
 OPENROUTER_MODEL_COOLDOWN_SECONDS: float = _env_float("OPENROUTER_MODEL_COOLDOWN_SECONDS", 300.0)
-# In-memory only: model id -> unix timestamp when the retryable failure occurred.
-_OPENROUTER_MODEL_COOLDOWNS: Dict[str, float] = {}
+# ONE shared circuit breaker for every AI feature. Per-feature cooldown maps
+# meant a model that had just rate-limited /api/ask was still tried at full
+# cost by the next feature; sharing the registry makes one model's outage known
+# process-wide. In-memory by design — it is a latency optimization, not state.
+_MODEL_COOLDOWNS = _ai_runtime.ModelCooldownRegistry(OPENROUTER_MODEL_COOLDOWN_SECONDS)
 
 ENABLE_OLLAMA_FALLBACK: bool = _env_bool("ENABLE_OLLAMA_FALLBACK", False)
 OLLAMA_BASE_URL: str = os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434").strip() or "http://localhost:11434"
@@ -1395,10 +1399,10 @@ async def _call_groq(prompt: str, model: Optional[str] = None) -> str:
 
 # Retryable classes trigger the NEXT OpenRouter candidate; non-retryable classes
 # stop the candidate loop (the failure is not transient/model-specific load).
+# Both sets are DERIVED from the shared taxonomy in services.ai_runtime so the
+# retry rules cannot drift away from the classification that produced them.
 _RETRYABLE_PROVIDER_ERROR_TYPES = {
-    "rate_limited",
-    "upstream_unavailable",
-    "provider_unavailable",
+    _ai_runtime.legacy_label(t) for t in _ai_runtime.RETRYABLE_ERROR_TYPES
 }
 
 # Model-SPECIFIC failures: the failure is tied to ONE model id (a bad/unknown
@@ -1409,7 +1413,7 @@ _RETRYABLE_PROVIDER_ERROR_TYPES = {
 # model id can never sink an otherwise-answerable request (this is what made
 # Basic mode return only a fallback note while Fast mode worked).
 _PER_MODEL_SKIP_ERROR_TYPES = {
-    "model_not_found",
+    _ai_runtime.legacy_label(t) for t in _ai_runtime.PER_MODEL_SKIP_ERROR_TYPES
 }
 
 
@@ -1418,85 +1422,16 @@ def _classify_openrouter_error(
 ) -> tuple:
     """Map an OpenRouter failure to ``(error_type, retryable)`` — no secrets.
 
-    ``status`` is the upstream HTTP status (e.g. 429/503) when known; ``message``
-    is sanitized provider text. The observed production failure (503 with
-    "no healthy upstream", preceded by a Google AI Studio 429) classifies as a
-    retryable ``upstream_unavailable`` / ``rate_limited`` error.
-    """
-    msg = (message or "").lower()
-    code = (error_code or "").lower()
-    try:
-        status_int = int(status) if status is not None else None
-    except (TypeError, ValueError):
-        status_int = None
+    Delegates to :mod:`services.ai_runtime`, which owns the taxonomy for every
+    Visable AI feature. The wire-format label is preserved here (see
+    ``ai_runtime.LEGACY_ERROR_LABELS``) so the frontend error cards and the
+    existing /api/ask contract are unaffected by the finer-grained taxonomy.
 
-    if (
-        status_int == 429
-        or "rate limit" in msg
-        or "rate-limit" in msg
-        or "too many requests" in msg
-        or "quota" in msg
-        or "429" in msg
-    ):
-        return "rate_limited", True
-    if (
-        status_int in (502, 503, 504)
-        or "no healthy upstream" in msg
-        or "no instances available" in msg
-        or "overloaded" in msg
-        or "temporarily unavailable" in msg
-        or "service unavailable" in msg
-        or "bad gateway" in msg
-    ):
-        return "upstream_unavailable", True
-    if "timeout" in msg or "timed out" in msg or code == "timeout":
-        return "upstream_unavailable", True
-    # Auth / config: affects every candidate -> do not retry.
-    if (
-        status_int in (401, 403)
-        or "invalid api key" in msg
-        or "unauthorized" in msg
-        or "no auth credentials" in msg
-        or "authentication" in msg
-    ):
-        return "invalid_provider_config", False
-    # Model-specific: bad/unknown slug, or no available provider/endpoint for
-    # this model right now. Not retryable on the SAME model, but the candidate
-    # loop skips to the NEXT candidate (see _PER_MODEL_SKIP_ERROR_TYPES) so a
-    # single bad model id never aborts the whole request.
-    if (
-        status_int == 404
-        or "not found" in msg
-        or "no endpoints" in msg
-        or "no allowed providers" in msg
-        or "no endpoints found" in msg
-        or "unknown model" in msg
-        or "not a valid model" in msg
-    ):
-        return "model_not_found", False
-    # Safety / moderation / policy rejection.
-    if (
-        status_int == 451
-        or "moderation" in msg
-        or "flagged" in msg
-        or "safety" in msg
-        or "content policy" in msg
-        or "content filter" in msg
-    ):
-        return "policy_or_safety_rejection", False
-    # Bad request / validation / malformed payload.
-    if (
-        status_int == 400
-        or code == "openrouter_bad_response"
-        or "bad request" in msg
-        or "invalid request" in msg
-        or "validation" in msg
-    ):
-        return "invalid_request", False
-    # Other 5xx without a clearer reason -> retryable provider unavailability.
-    if status_int is not None and status_int >= 500:
-        return "provider_unavailable", True
-    return "unknown_provider_error", False
+    ``status`` is the upstream HTTP status (e.g. 429/503) when known; ``message``
+    is sanitized provider text.
+    """
+    error_type = _ai_runtime.classify_provider_error(status, message, error_code)
+    return _ai_runtime.legacy_label(error_type), _ai_runtime.is_retryable(error_type)
 
 
 def _now() -> float:
@@ -1504,41 +1439,23 @@ def _now() -> float:
 
 
 def _cooldown_enabled() -> bool:
-    return OPENROUTER_MODEL_COOLDOWN_SECONDS > 0
+    return _MODEL_COOLDOWNS.enabled
 
 
 def _cooling_down_models(now: Optional[float] = None) -> List[str]:
-    if not _cooldown_enabled():
-        return []
-    ts = _now() if now is None else now
-    expired = [
-        model for model, failed_at in _OPENROUTER_MODEL_COOLDOWNS.items()
-        if ts - failed_at >= OPENROUTER_MODEL_COOLDOWN_SECONDS
-    ]
-    for model in expired:
-        _OPENROUTER_MODEL_COOLDOWNS.pop(model, None)
-    return [
-        model for model, failed_at in _OPENROUTER_MODEL_COOLDOWNS.items()
-        if ts - failed_at < OPENROUTER_MODEL_COOLDOWN_SECONDS
-    ]
+    return _MODEL_COOLDOWNS.cooling_down(now)
 
 
 def _mark_openrouter_model_cooling_down(model: str, now: Optional[float] = None) -> None:
-    if not model or not _cooldown_enabled():
-        return
-    _OPENROUTER_MODEL_COOLDOWNS[model] = _now() if now is None else now
+    _MODEL_COOLDOWNS.mark(model, now)
 
 
 def _reset_openrouter_model_cooldowns_for_tests() -> None:
-    _OPENROUTER_MODEL_COOLDOWNS.clear()
+    _MODEL_COOLDOWNS.clear()
 
 
 def _openrouter_cooldown_metadata() -> Dict[str, Any]:
-    return {
-        "cooling_down_models": _cooling_down_models(),
-        "model_cooldown_seconds": OPENROUTER_MODEL_COOLDOWN_SECONDS,
-        "cooldown_enabled": _cooldown_enabled(),
-    }
+    return _MODEL_COOLDOWNS.metadata()
 
 
 async def _call_ollama(prompt: str, model: Optional[str] = None) -> str:
