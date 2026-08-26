@@ -71,6 +71,7 @@ def test_railway_placeholder_uses_existing_key_in_real_request_builder():
     assert "OC=paradiso" not in request_url
     assert "LAW_API_OC_PLACEHOLDER_DETECTED_ON_RAILWAY" in cfg.warnings
     assert "LAW_API_OC_PLACEHOLDER_IGNORED_FOR_RAILWAY_KEY_FALLBACK" in cfg.warnings
+    assert "LAW_API_OC_RECOMMENDED" in cfg.warnings
 
 
 def test_railway_real_alias_beats_historical_placeholder():
@@ -86,6 +87,7 @@ def test_railway_real_alias_beats_historical_placeholder():
     assert cfg.law_api_credential_source == "LAW_OC"
     assert "OC=registered-current-oc" in request_url
     assert "OC=paradiso" not in request_url
+    assert "LAW_API_OC_ALIAS_USED" in cfg.warnings
 
 
 def test_railway_real_primary_oc_still_wins():
