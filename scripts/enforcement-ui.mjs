@@ -3,11 +3,24 @@ const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 
 let structuredCase = null;
 
-const apiBase = (() => {
+function resolveApiBase() {
   const configured = document.querySelector('meta[name="api-base"]')?.content?.trim();
-  if (configured) return configured.replace(/\/$/, '');
-  return location.hostname === 'localhost' && location.port !== '8000' ? 'http://localhost:8000' : '';
-})();
+  if (configured) return configured.replace(/\/+$/, '');
+
+  if (window.VisableBackend && typeof window.VisableBackend.origin === 'function') {
+    return window.VisableBackend.origin();
+  }
+
+  const override = window.PARADISO_BACKEND_URL?.trim();
+  if (override) return override.replace(/\/+$/, '');
+
+  const local = location.hostname === 'localhost'
+    || location.hostname === '127.0.0.1'
+    || location.protocol === 'file:';
+  return local ? '' : null;
+}
+
+const apiBase = resolveApiBase();
 
 function escapeHtml(value) {
   return String(value ?? '').replace(/[&<>'"]/g, (character) => ({
@@ -31,13 +44,36 @@ function setLoading(active) { $('#loading').hidden = !active; }
 function setError(target, message = '') { target.textContent = message; target.hidden = !message; }
 
 async function request(path, payload) {
-  const response = await fetch(`${apiBase}${path}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload),
-  });
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok) throw new Error(typeof data.detail === 'string' ? data.detail : '요청을 처리하지 못했습니다.');
+  if (apiBase == null) {
+    throw new Error('Visable 분석 서버 주소를 확인하지 못했습니다. 페이지를 새로고침해 주세요.');
+  }
+
+  const url = `${apiBase}${path}`;
+  let response;
+  try {
+    response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+  } catch (error) {
+    console.error('Enforcement API connection failure', { url, error });
+    throw new Error('Visable 분석 서버에 연결하지 못했습니다. 잠시 후 다시 시도해 주세요.');
+  }
+
+  const contentType = response.headers.get('content-type') || '';
+  const data = contentType.includes('application/json')
+    ? await response.json().catch(() => ({}))
+    : {};
+
+  if (!response.ok) {
+    console.error('Enforcement API request failure', { url, status: response.status });
+    throw new Error(
+      typeof data.detail === 'string'
+        ? data.detail
+        : `분석 서버 요청에 실패했습니다. (${response.status})`
+    );
+  }
   return data;
 }
 
