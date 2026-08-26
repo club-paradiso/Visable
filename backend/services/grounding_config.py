@@ -7,6 +7,7 @@ from typing import List
 _SUPPORTED_MODES = {"disabled", "audit", "enabled"}
 _DEFAULT_TIMEOUT_SECONDS = 8.0
 _DEFAULT_CACHE_TTL_SECONDS = 86400
+_LAW_OC_ENV_NAMES = ("LAW_API_OC", "LAW_OC", "OPEN_LAW_ID")
 
 
 @dataclass(frozen=True)
@@ -19,6 +20,9 @@ class GroundingConfig:
     # identifier (the ``OC`` query parameter on open.law.go.kr / DRF). It is
     # NEVER exposed in /health, debug output, logs, or sanitized source URLs.
     law_api_oc: str = ""
+    # Non-secret name of the env var that supplied law_api_oc. This allows
+    # compatibility with common Korean Law MCP aliases without exposing values.
+    law_api_oc_source: str = "LAW_API_OC"
     mode: str = "enabled"
     timeout_seconds: float = _DEFAULT_TIMEOUT_SECONDS
     cache_ttl_seconds: int = _DEFAULT_CACHE_TTL_SECONDS
@@ -31,16 +35,16 @@ class GroundingConfig:
     warnings: List[str] = field(default_factory=list)
 
     # ------------------------------------------------------------------
-    # Credential resolution (LAW_API_OC preferred, LAW_API_KEY fallback)
+    # Credential resolution (OC-style variables preferred, LAW_API_KEY fallback)
     # ------------------------------------------------------------------
     @property
     def law_api_credential(self) -> str:
         """Effective Open Law API ``OC`` value.
 
-        Precedence: the explicit ``LAW_API_OC`` wins; otherwise the legacy
-        ``LAW_API_KEY`` is used for backward compatibility. This value is a
-        SECRET-equivalent identifier and must never be surfaced to the
-        frontend, /health, debug responses, logs, or sanitized URLs.
+        Preferred OC-style env vars are resolved before the legacy
+        ``LAW_API_KEY`` fallback. This value is a SECRET-equivalent identifier
+        and must never be surfaced to the frontend, /health, debug responses,
+        logs, or sanitized URLs.
         """
         return self.law_api_oc or self.law_api_key
 
@@ -48,19 +52,19 @@ class GroundingConfig:
     def law_api_credential_source(self) -> str:
         """Which env var supplied the effective credential (non-secret label)."""
         if self.law_api_oc:
-            return "LAW_API_OC"
+            return self.law_api_oc_source or "LAW_API_OC"
         if self.law_api_key:
             return "LAW_API_KEY"
         return ""
 
     @property
     def law_api_configured(self) -> bool:
-        """True when any Open Law API credential (OC or legacy key) is present."""
+        """True when any supported Open Law API credential is present."""
         return bool(self.law_api_credential)
 
     @property
     def law_api_oc_configured(self) -> bool:
-        """True when the preferred explicit ``LAW_API_OC`` is set (non-secret)."""
+        """True when an OC-style credential is set (non-secret)."""
         return bool(self.law_api_oc)
 
     @property
@@ -89,6 +93,14 @@ def _parse_cache_ttl(raw_value: str | None) -> int:
         return _DEFAULT_CACHE_TTL_SECONDS
 
 
+def _resolve_oc_credential() -> tuple[str, str]:
+    for name in _LAW_OC_ENV_NAMES:
+        value = (os.environ.get(name) or "").strip()
+        if value:
+            return value, name
+    return "", "LAW_API_OC"
+
+
 def load_grounding_config() -> GroundingConfig:
     warnings: List[str] = []
     mode = (os.environ.get("LAW_GROUNDING_MODE") or "enabled").strip().lower()
@@ -96,8 +108,11 @@ def load_grounding_config() -> GroundingConfig:
         warnings.append("LAW_GROUNDING_MODE_INVALID_USING_DISABLED")
         mode = "disabled"
 
-    law_api_oc = (os.environ.get("LAW_API_OC") or "").strip()
+    law_api_oc, law_api_oc_source = _resolve_oc_credential()
     law_api_key = (os.environ.get("LAW_API_KEY") or "").strip()
+
+    if law_api_oc and law_api_oc_source != "LAW_API_OC":
+        warnings.append("LAW_API_OC_ALIAS_USED")
 
     # Non-secret advisory: the deployment is relying on the legacy LAW_API_KEY
     # fallback only. Recommend the explicit LAW_API_OC. This marker never
@@ -109,6 +124,7 @@ def load_grounding_config() -> GroundingConfig:
         public_data_api_key=(os.environ.get("PUBLIC_DATA_API_KEY") or "").strip(),
         law_api_key=law_api_key,
         law_api_oc=law_api_oc,
+        law_api_oc_source=law_api_oc_source,
         mode=mode,
         timeout_seconds=_parse_timeout(os.environ.get("LAW_GROUNDING_TIMEOUT_SECONDS")),
         cache_ttl_seconds=_parse_cache_ttl(os.environ.get("LAW_GROUNDING_CACHE_TTL_SECONDS")),
