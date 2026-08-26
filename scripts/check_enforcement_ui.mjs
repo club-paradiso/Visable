@@ -14,11 +14,13 @@ const vercelAnalyze = fs.readFileSync(path.join(root, 'api/enforcement/analyze.j
 const lawProbe = fs.readFileSync(path.join(root, 'api/enforcement/law-probe.js'), 'utf8');
 const fallbackRuntime = fs.readFileSync(path.join(root, 'lib/enforcement-fallback.js'), 'utf8');
 const groundedRuntime = fs.readFileSync(path.join(root, 'lib/enforcement-grounded-ai.js'), 'utf8');
+const outcomeRuntime = fs.readFileSync(path.join(root, 'lib/enforcement-outcome-policy.js'), 'utf8');
 const lawRuntime = fs.readFileSync(path.join(root, 'lib/enforcement-law-grounding.js'), 'utf8');
 const precedentRuntime = fs.readFileSync(path.join(root, 'lib/enforcement-precedent-grounding.js'), 'utf8');
 const credentialRuntime = fs.readFileSync(path.join(root, 'lib/law-credential.js'), 'utf8');
 const legalRules = JSON.parse(fs.readFileSync(path.join(root, 'backend/data/enforcement/legal_rules.json'), 'utf8'));
 const { extractStructuredCaseV2, publicRuntimeConfig } = require('../lib/enforcement-grounded-ai.js');
+const { applyOutcomePolicy } = require('../lib/enforcement-outcome-policy.js');
 const { resolveLawCredential } = require('../lib/law-credential.js');
 
 const backendResolverIndex = html.indexOf('assets/js/backend-origin.js');
@@ -41,6 +43,13 @@ const checks = [
   ['same-origin API base selected for enforcement', html.includes('<meta name="api-base" content=".">')],
   ['Vercel extract v2 exists', vercelExtract.includes('extractStructuredCaseV2') && vercelExtract.includes('legal-aware-extraction-v2')],
   ['Vercel grounded analyzer exists', vercelAnalyze.includes('analyzeGroundedCase') && vercelAnalyze.includes('grounded-ai-v2')],
+  ['balanced outcome policy is applied after grounded analysis', vercelAnalyze.includes('applyOutcomePolicy') && vercelAnalyze.includes('OUTCOME_POLICY_VERSION')],
+  ['outcome policy preserves no-immediate-departure option', outcomeRuntime.includes('NO_IMMEDIATE_DEPARTURE_MEASURE')],
+  ['outcome policy recognizes departure recommendation', outcomeRuntime.includes('DEPARTURE_RECOMMENDATION')],
+  ['unsupported high-impact departure prediction is demoted', outcomeRuntime.includes('HIGH_IMPACT_DEPARTURE_TYPES') && outcomeRuntime.includes('prediction.primaryDisposition = null')],
+  ['F-5 deportation is fail-closed', outcomeRuntime.includes('제46조제2항') && outcomeRuntime.includes("type !== 'DEPORTATION'")],
+  ['UI names neutral and recommendation outcomes', js.includes("NO_IMMEDIATE_DEPARTURE_MEASURE: '즉시 출국조치 없음'") && js.includes("DEPARTURE_RECOMMENDATION: '출국권고'")],
+  ['UI labels the Article 86(2) range accurately', js.includes('통상 가감 범위(시행규칙 제86조제2항)')],
   ['runtime reads OpenRouter only server-side', groundedRuntime.includes('process.env.OPENROUTER_API_KEY') && !html.includes('OPENROUTER_API_KEY')],
   ['runtime rejects numeric probabilities', groundedRuntime.includes('numeric_probability_prohibited')],
   ['runtime bounds monetary prediction', groundedRuntime.includes('sanitizeMoneyRange') && groundedRuntime.includes('legallyAdjustableRange')],
@@ -100,6 +109,31 @@ assert.deepEqual(resolveLawCredential({ LAW_OC: 'alias-value' }), { credential: 
 assert.deepEqual(resolveLawCredential({ OPEN_LAW_ID: 'mcp-value' }), { credential: 'mcp-value', credentialSource: 'OPEN_LAW_ID' });
 assert.equal(resolveLawCredential({ LAW_API_OC: 'canonical', LAW_OC: 'alias' }).credential, 'canonical');
 
+const noDirectCase = applyOutcomePolicy({
+  case: { statusOfStay: 'D-2' },
+  legalBaseline: { status: 'AVAILABLE', legallyAvailableDispositions: ['DEPARTURE_ORDER', 'DEPORTATION'] },
+  prediction: {
+    evidence: [{ id: 'law:1', resultKind: 'LEGAL_RULE', citationGrade: 'DIRECT' }],
+    primaryDisposition: {
+      type: 'DEPORTATION', likelihood: 'HIGH', rank: 1,
+      confidence: { level: 'HIGH', reasons: [] }, rationale: [], supportingEvidence: [],
+    },
+    alternativeDispositions: [], limitations: [],
+  },
+});
+assert.equal(noDirectCase.prediction.primaryDisposition, null);
+assert.ok(noDirectCase.prediction.alternativeDispositions.some((item) => item.type === 'NO_IMMEDIATE_DEPARTURE_MEASURE'));
+assert.ok(noDirectCase.legalBaseline.legallyAvailableDispositions.includes('DEPARTURE_RECOMMENDATION'));
+assert.equal(noDirectCase.outcomePolicy.departureOrderIsAutomatic, false);
+
+const f5 = applyOutcomePolicy({
+  case: { statusOfStay: 'F-5' },
+  legalBaseline: { status: 'AVAILABLE', legallyAvailableDispositions: ['DEPORTATION', 'DEPARTURE_ORDER'] },
+  prediction: { evidence: [], primaryDisposition: null, alternativeDispositions: [{ type: 'DEPORTATION', likelihood: 'UNKNOWN', rank: 1, confidence: { level: 'LOW', reasons: [] }, rationale: [], supportingEvidence: [] }], limitations: [] },
+});
+assert.ok(!f5.legalBaseline.legallyAvailableDispositions.includes('DEPORTATION'));
+assert.ok(!f5.prediction.alternativeDispositions.some((item) => item.type === 'DEPORTATION'));
+
 const runtime = publicRuntimeConfig();
 assert.equal(Object.hasOwn(runtime, 'openrouterConfigured'), true);
 assert.equal(Object.hasOwn(runtime, 'lawApiConfigured'), true);
@@ -108,4 +142,4 @@ assert.ok(Array.isArray(runtime.supportedCredentialEnvNames));
 assert.equal(Object.hasOwn(runtime, 'key'), false);
 assert.equal(Object.hasOwn(runtime, 'credential'), false);
 
-console.log(`Enforcement UI/runtime contract passed (${checks.length} static checks + legal extraction/credential assertions).`);
+console.log(`Enforcement UI/runtime contract passed (${checks.length} static checks + legal extraction/credential/outcome assertions).`);
