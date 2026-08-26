@@ -32,61 +32,80 @@ jobs:
           def get_json(path: str, timeout: float = 15.0):
               request = urllib.request.Request(
                   base + path,
-                  headers={"Accept": "application/json", "User-Agent": "Visable-Railway-Live-Smoke/1"},
+                  headers={"Accept": "application/json", "User-Agent": "Visable-Railway-Live-Smoke/2"},
               )
-              with urllib.request.urlopen(request, timeout=timeout) as response:
-                  body = response.read().decode("utf-8", errors="replace")
-                  return int(getattr(response, "status", 200) or 200), json.loads(body)
+              try:
+                  with urllib.request.urlopen(request, timeout=timeout) as response:
+                      body = response.read().decode("utf-8", errors="replace")
+                      return int(getattr(response, "status", 200) or 200), json.loads(body)
+              except urllib.error.HTTPError as exc:
+                  # Keep diagnostics secret-safe. We parse the public API error
+                  # envelope only to obtain stable reason labels, never print the
+                  # raw response body or any outbound URL containing credentials.
+                  body = exc.read().decode("utf-8", errors="replace")
+                  try:
+                      payload = json.loads(body)
+                  except Exception:
+                      payload = {}
+                  return int(exc.code), payload
 
           health = None
           law_result = None
+          health_status = None
+          law_status = None
           last_error = "not_started"
 
           # main push and Railway deployment are asynchronous. Retry a bounded
-          # number of times so the smoke verifies the newly deployed backend
-          # rather than racing the previous container during rollout.
-          for attempt in range(24):
+          # number of times so the smoke observes the newly deployed container.
+          for _attempt in range(24):
               try:
-                  status, candidate = get_json("/health")
-                  if status != 200 or candidate.get("status") != "ok":
-                      raise RuntimeError(f"health_status_{status}")
+                  health_status, candidate = get_json("/health")
+                  if health_status != 200 or candidate.get("status") != "ok":
+                      health = candidate
+                      last_error = f"health_http_{health_status}"
+                      time.sleep(10)
+                      continue
                   health = candidate
 
                   query = urllib.parse.quote("출입국관리법")
-                  law_status, law_candidate = get_json(f"/api/legal/laws?q={query}")
+                  # This is the actual public read-only route exposed by the
+                  # FastAPI backend. The previous smoke accidentally omitted
+                  # `/search`, producing a diagnostic 404 unrelated to Railway.
+                  law_status, law_candidate = get_json(f"/api/legal/laws/search?q={query}")
                   law_result = law_candidate
                   if law_status == 200 and law_candidate.get("ok") is True:
                       break
-                  last_error = f"law_http_{law_status}:{law_candidate.get('error', 'not_ok')}"
+                  last_error = f"law_http_{law_status}:{law_candidate.get('reason') or law_candidate.get('error') or 'not_ok'}"
               except Exception as exc:
-                  # Never print response bodies or credentials. Only a bounded
-                  # exception class/message is retained for operator diagnosis.
                   last_error = f"{type(exc).__name__}:{str(exc)[:120]}"
               time.sleep(10)
-          else:
-              print(f"Railway smoke failed: {last_error}", file=sys.stderr)
-              sys.exit(1)
 
-          law = health.get("law_api") or {}
-          providers = health.get("providers") or {}
-          provider_status = health.get("provider_status") or {}
+          law = (health or {}).get("law_api") or {}
+          providers = (health or {}).get("providers") or {}
+          provider_status = (health or {}).get("provider_status") or {}
           summary = {
-              "backend_status": health.get("status"),
-              "service": health.get("service"),
+              "backend_status": (health or {}).get("status"),
+              "service": (health or {}).get("service"),
+              "health_http_status": health_status,
               "openrouter_configured": bool(providers.get("openrouter")),
               "law_api_configured": bool(law.get("law_api_configured")),
               "law_api_credential_source": law.get("law_api_credential_source") or None,
               "law_api_oc_configured": bool(law.get("law_api_oc_configured")),
               "law_api_key_fallback_configured": bool(law.get("law_api_key_fallback_configured")),
-              "law_grounding_mode": health.get("law_grounding_mode"),
-              "law_grounding_effective_mode": health.get("law_grounding_effective_mode"),
-              "law_grounding_active": bool(health.get("law_grounding_active")),
+              "law_grounding_mode": (health or {}).get("law_grounding_mode"),
+              "law_grounding_effective_mode": (health or {}).get("law_grounding_effective_mode"),
+              "law_grounding_active": bool((health or {}).get("law_grounding_active")),
               "legal_evidence_configured": bool((provider_status.get("legal_evidence") or {}).get("configured")),
+              "law_search_http_status": law_status,
               "law_search_ok": bool(law_result and law_result.get("ok") is True),
               "law_search_count": int((law_result or {}).get("count") or 0),
+              "failure_label": None if law_result and law_result.get("ok") is True else last_error,
           }
           print(json.dumps(summary, ensure_ascii=False, sort_keys=True))
 
+          if summary["health_http_status"] != 200 or summary["backend_status"] != "ok":
+              print("Railway backend health check failed.", file=sys.stderr)
+              sys.exit(1)
           if not summary["openrouter_configured"]:
               print("Railway OpenRouter is not configured.", file=sys.stderr)
               sys.exit(1)

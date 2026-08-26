@@ -5,7 +5,7 @@ from __future__ import annotations
 import inspect
 import json
 import re
-from datetime import date, datetime
+from datetime import date
 from typing import Any, Callable, Optional
 
 from .enforcement_evidence import retrieve_enforcement_evidence
@@ -20,6 +20,21 @@ _PII_PATTERNS = [
     re.compile(r"\b\d{6}[- ]?[1-8]\d{6}\b"),
     re.compile(r"\b01[016789][- ]?\d{3,4}[- ]?\d{4}\b"),
     re.compile(r"[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}"),
+]
+
+# Article 18(2) is NOT a generic "unauthorized work" bucket. It applies to a
+# foreigner who already holds a work-authorized status but works outside the
+# designated workplace. Keeping these status families explicit prevents the
+# local/Railway extractor from reviving the old Article 18 semantic bug.
+_WORK_STATUS_RE = re.compile(r"^(?:C-4|E-(?:1|2|3|4|5|6|7|8|9|10)|H-2)(?:-|$)", re.I)
+_CLEAR_NON_WORK_STATUS_RE = re.compile(r"^(?:B-1|B-2|C-1|C-3)(?:-|$)", re.I)
+_STUDY_STATUS_RE = re.compile(r"^(?:D-2|D-4)(?:-|$)", re.I)
+_AMBIGUOUS_WORK_RELATION_FACT = "취업 가능 체류자격인지 및 지정 근무처·근무처 변경 관계"
+_AMBIGUOUS_WORK_CODES = [
+    "UNAUTHORIZED_STAY_OR_WORK_ART18_1",
+    "STATUS_OUTSIDE_ACTIVITY_ART20",
+    "UNAUTHORIZED_EMPLOYMENT_ART18_2",
+    "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1",
 ]
 
 
@@ -37,6 +52,63 @@ def _extract_date(value: str) -> Optional[date]:
     except ValueError:
         pass
     return None
+
+
+def _classify_violation(clean: str, status: Optional[str]) -> tuple[Optional[str], list[str], bool, bool]:
+    """Return (violation_code, candidates, unauthorized, work).
+
+    This is deliberately conservative. The extractor only fixes a legal code
+    when the narrative contains enough facts to distinguish the relevant
+    Immigration Act provision. Ambiguous work scenarios stay ambiguous for the
+    user's confirmation step instead of being forced into Article 18(2).
+    """
+    unauthorized = bool(re.search(
+        r"허가\s*(?:를\s*)?(?:받지\s*않|없이|없)|무허가|불법\s*(?:취업|근무)|취업\s*(?:불가|금지)",
+        clean,
+        re.I,
+    ))
+    work = bool(re.search(
+        r"일했|일함|근무|아르바이트|알바|취업|고용|사업장|근무처|음식점|공장|건설",
+        clean,
+        re.I,
+    ))
+    overstay = bool(re.search(r"체류기간.*(?:넘|초과)|오버스테이|불법체류|초과\s*체류", clean, re.I))
+    workplace_change = bool(re.search(
+        r"(?:근무처|사업장)\s*(?:를\s*)?(?:변경|추가)|(?:변경|추가)\s*(?:허가|신고)",
+        clean,
+        re.I,
+    ))
+    outside_designated_workplace = bool(re.search(
+        r"지정(?:된)?\s*(?:근무처|사업장).*(?:아닌|외)|다른\s*(?:근무처|사업장)|허가(?:된)?\s*(?:근무처|사업장).*(?:외|아닌)",
+        clean,
+        re.I,
+    ))
+    explicit_no_work_status = bool(re.search(
+        r"취업활동을?\s*(?:할\s*수\s*)?없는\s*체류자격|취업\s*(?:불가|금지)\s*체류자격|취업자격\s*(?:이\s*)?없",
+        clean,
+        re.I,
+    ))
+
+    if overstay:
+        return "OVERSTAY_ART25", ["OVERSTAY_ART25"], unauthorized, work
+
+    if not (work and unauthorized):
+        return None, [], unauthorized, work
+
+    normalized_status = (status or "").upper()
+    if _STUDY_STATUS_RE.match(normalized_status):
+        return "STATUS_OUTSIDE_ACTIVITY_ART20", ["STATUS_OUTSIDE_ACTIVITY_ART20"], unauthorized, work
+    if workplace_change:
+        return "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1", ["UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1"], unauthorized, work
+    if outside_designated_workplace and _WORK_STATUS_RE.match(normalized_status):
+        return "UNAUTHORIZED_EMPLOYMENT_ART18_2", ["UNAUTHORIZED_EMPLOYMENT_ART18_2"], unauthorized, work
+    if explicit_no_work_status or _CLEAR_NON_WORK_STATUS_RE.match(normalized_status):
+        return "UNAUTHORIZED_STAY_OR_WORK_ART18_1", ["UNAUTHORIZED_STAY_OR_WORK_ART18_1"], unauthorized, work
+
+    # F-2 and other statuses may permit some work depending on subtype/facts.
+    # A bare "worked without permission" sentence cannot distinguish Article
+    # 18(1), 18(2), 20, or 21. Keep the legal classification unresolved.
+    return None, list(_AMBIGUOUS_WORK_CODES), unauthorized, work
 
 
 def _heuristic_extract(text: str, *, assessment_date: Optional[date] = None) -> StructuredCase:
@@ -61,20 +133,12 @@ def _heuristic_extract(text: str, *, assessment_date: Optional[date] = None) -> 
     if start and end:
         duration_days = (end - start).days + 1 if end >= start else duration_days
 
-    unauthorized = bool(re.search(r"허가\s*(?:를\s*)?(?:받지\s*않|없이|없)|무허가|불법\s*취업", clean))
-    work = bool(re.search(r"일했|일함|근무|아르바이트|알바|취업|고용|음식점|공장|건설", clean))
-    overstay = bool(re.search(r"체류기간.*(?:넘|초과)|오버스테이|불법체류", clean))
-    workplace_change = bool(re.search(r"근무처.*(?:변경|추가)|사업장.*(?:변경|추가)", clean))
-    if overstay:
-        violation_code = "OVERSTAY_ART25"
-    elif workplace_change and unauthorized:
-        violation_code = "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1"
-    elif work and unauthorized and status and status.startswith(("D-2", "D-4")):
-        violation_code = "STATUS_OUTSIDE_ACTIVITY_ART20"
-    elif work and unauthorized:
-        violation_code = "UNAUTHORIZED_EMPLOYMENT_ART18_2"
-    else:
-        violation_code = None
+    violation_code, violation_candidates, unauthorized, work = _classify_violation(clean, status)
+    workplace_change = bool(re.search(
+        r"(?:근무처|사업장)\s*(?:를\s*)?(?:변경|추가)|(?:변경|추가)\s*(?:허가|신고)",
+        clean,
+        re.I,
+    ))
 
     prior = None
     if re.search(r"처음|초범|전력\s*(?:없|0)|걸린\s*적(?:은|이)?\s*없", clean):
@@ -91,7 +155,10 @@ def _heuristic_extract(text: str, *, assessment_date: Optional[date] = None) -> 
     if not status:
         unknown.append("체류자격")
     if not violation_code:
-        unknown.append("구체적인 위반 유형")
+        if violation_candidates:
+            unknown.append(_AMBIGUOUS_WORK_RELATION_FACT)
+        else:
+            unknown.append("구체적인 위반 유형")
     if duration_days is None:
         unknown.append("위반기간")
     if not start:
@@ -106,10 +173,11 @@ def _heuristic_extract(text: str, *, assessment_date: Optional[date] = None) -> 
     return StructuredCase(
         status_of_stay=status,
         violation_code=violation_code,
-        violation_candidates=[violation_code] if violation_code else [],
+        violation_candidates=violation_candidates,
         activity="취업활동" if work else None,
         workplace_type="음식점" if "음식점" in clean else None,
         authorization_obtained=False if unauthorized else None,
+        workplace_change_authorized=False if workplace_change and unauthorized else None,
         duration_days=duration_days,
         violation_start_date=start,
         violation_end_date=end,
@@ -147,6 +215,25 @@ def _parse_ai_case(raw: Any) -> StructuredCase:
     return StructuredCase.model_validate(raw)
 
 
+def _apply_deterministic_legal_guard(extracted: StructuredCase, fallback: StructuredCase) -> StructuredCase:
+    """Prevent the extraction LLM from inventing a legal violation mapping.
+
+    The model may improve factual extraction, but when deterministic text facts
+    establish a provision, or establish that the provision is ambiguous, that
+    legal boundary wins. The user can still correct the structured facts in the
+    confirmation UI before analysis.
+    """
+    if fallback.violation_code:
+        extracted.violation_code = fallback.violation_code
+        extracted.violation_candidates = [fallback.violation_code]
+    elif fallback.violation_candidates:
+        extracted.violation_code = None
+        extracted.violation_candidates = list(fallback.violation_candidates)
+        if _AMBIGUOUS_WORK_RELATION_FACT not in extracted.unknown_facts:
+            extracted.unknown_facts.append(_AMBIGUOUS_WORK_RELATION_FACT)
+    return extracted
+
+
 async def extract_structured_case(
     text: str,
     *,
@@ -163,6 +250,7 @@ async def extract_structured_case(
         if inspect.isawaitable(response):
             response = await response
         extracted = _parse_ai_case(response)
+        extracted = _apply_deterministic_legal_guard(extracted, fallback)
         # PII warning is deterministic and cannot be removed by the model.
         if contains_sensitive_identifier(text):
             warning = "분석에 불필요한 개인식별정보가 감지되어 구조화 결과에 포함하지 않았습니다."
