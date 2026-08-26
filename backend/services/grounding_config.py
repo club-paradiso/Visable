@@ -8,10 +8,13 @@ _SUPPORTED_MODES = {"disabled", "audit", "enabled"}
 _DEFAULT_TIMEOUT_SECONDS = 8.0
 _DEFAULT_CACHE_TTL_SECONDS = 86400
 _LAW_OC_ENV_NAMES = ("LAW_API_OC", "LAW_OC", "OPEN_LAW_ID")
-# Historical repo docs used `paradiso` as an example OC. A 2026-06 live probe
-# returned HTTP 403 for that value. It must not shadow another configured,
-# non-placeholder credential such as Railway's legacy LAW_API_KEY.
 _KNOWN_PLACEHOLDER_OC_VALUES = {"paradiso"}
+_RAILWAY_RUNTIME_ENV_NAMES = (
+    "RAILWAY_PROJECT_ID",
+    "RAILWAY_ENVIRONMENT_ID",
+    "RAILWAY_SERVICE_ID",
+    "RAILWAY_PUBLIC_DOMAIN",
+)
 
 
 @dataclass(frozen=True)
@@ -45,27 +48,19 @@ class GroundingConfig:
     def law_api_credential(self) -> str:
         """Effective Open Law API ``OC`` value.
 
-        Preferred OC-style env vars are resolved before the legacy
-        ``LAW_API_KEY`` fallback, except that a known historical placeholder
-        never shadows a configured non-placeholder fallback. This value is a
-        SECRET-equivalent identifier and must never be surfaced to the
-        frontend, /health, debug responses, logs, or sanitized URLs.
+        The normal contract remains OC-first. Railway-specific compatibility is
+        resolved in ``load_grounding_config`` before the immutable config is
+        constructed, so callers and tests see one deterministic credential.
         """
-        if self.law_api_oc and self.law_api_oc.strip().lower() not in _KNOWN_PLACEHOLDER_OC_VALUES:
-            return self.law_api_oc
-        if self.law_api_key:
-            return self.law_api_key
-        return self.law_api_oc
+        return self.law_api_oc or self.law_api_key
 
     @property
     def law_api_credential_source(self) -> str:
         """Which env var supplied the effective credential (non-secret label)."""
-        if self.law_api_oc and self.law_api_oc.strip().lower() not in _KNOWN_PLACEHOLDER_OC_VALUES:
+        if self.law_api_oc:
             return self.law_api_oc_source or "LAW_API_OC"
         if self.law_api_key:
             return "LAW_API_KEY"
-        if self.law_api_oc:
-            return self.law_api_oc_source or "LAW_API_OC"
         return ""
 
     @property
@@ -75,7 +70,7 @@ class GroundingConfig:
 
     @property
     def law_api_oc_configured(self) -> bool:
-        """True when an OC-style credential is set (non-secret)."""
+        """True when an effective OC-style credential is set (non-secret)."""
         return bool(self.law_api_oc)
 
     @property
@@ -104,26 +99,40 @@ def _parse_cache_ttl(raw_value: str | None) -> int:
         return _DEFAULT_CACHE_TTL_SECONDS
 
 
-def _resolve_oc_credential() -> tuple[str, str, bool]:
+def _is_railway_runtime() -> bool:
+    """Detect the running Railway service without requiring a user secret.
+
+    Railway injects these system variables into builds/deployments. Requiring a
+    platform marker keeps the historical non-Railway OC-first contract intact.
+    """
+    return any((os.environ.get(name) or "").strip() for name in _RAILWAY_RUNTIME_ENV_NAMES)
+
+
+def _configured_oc_credentials() -> list[tuple[str, str]]:
     configured: list[tuple[str, str]] = []
     for name in _LAW_OC_ENV_NAMES:
         value = (os.environ.get(name) or "").strip()
         if value:
             configured.append((value, name))
+    return configured
 
-    for value, name in configured:
-        if value.lower() not in _KNOWN_PLACEHOLDER_OC_VALUES:
-            placeholder_seen = any(
-                candidate.lower() in _KNOWN_PLACEHOLDER_OC_VALUES
-                for candidate, _ in configured
-                if candidate != value
-            )
-            return value, name, placeholder_seen
 
-    if configured:
-        value, name = configured[0]
-        return value, name, True
-    return "", "LAW_API_OC", False
+def _resolve_oc_credential() -> tuple[str, str]:
+    configured = _configured_oc_credentials()
+    if not configured:
+        return "", "LAW_API_OC"
+
+    # Preserve the established OC-first contract everywhere except the live
+    # Railway runtime. Historical deployment docs used `paradiso` as an example
+    # OC and a recorded live probe returned HTTP 403 for it. If that stale value
+    # still exists on Railway, prefer another configured *real* OC alias. If no
+    # real OC alias exists, load_grounding_config will fall back to LAW_API_KEY.
+    first_value, first_name = configured[0]
+    if _is_railway_runtime() and first_value.lower() in _KNOWN_PLACEHOLDER_OC_VALUES:
+        for value, name in configured[1:]:
+            if value.lower() not in _KNOWN_PLACEHOLDER_OC_VALUES:
+                return value, name
+    return first_value, first_name
 
 
 def load_grounding_config() -> GroundingConfig:
@@ -133,22 +142,31 @@ def load_grounding_config() -> GroundingConfig:
         warnings.append("LAW_GROUNDING_MODE_INVALID_USING_DISABLED")
         mode = "disabled"
 
-    law_api_oc, law_api_oc_source, placeholder_seen = _resolve_oc_credential()
+    law_api_oc, law_api_oc_source = _resolve_oc_credential()
     law_api_key = (os.environ.get("LAW_API_KEY") or "").strip()
 
     if law_api_oc and law_api_oc_source != "LAW_API_OC":
         warnings.append("LAW_API_OC_ALIAS_USED")
-    if placeholder_seen:
-        warnings.append("LAW_API_OC_PLACEHOLDER_DETECTED")
-    if law_api_oc and law_api_oc.strip().lower() in _KNOWN_PLACEHOLDER_OC_VALUES and law_api_key:
-        warnings.append("LAW_API_OC_PLACEHOLDER_IGNORED_FOR_KEY_FALLBACK")
+
+    railway_placeholder = bool(
+        _is_railway_runtime()
+        and law_api_oc
+        and law_api_oc.lower() in _KNOWN_PLACEHOLDER_OC_VALUES
+    )
+    if railway_placeholder:
+        warnings.append("LAW_API_OC_PLACEHOLDER_DETECTED_ON_RAILWAY")
+        if law_api_key:
+            # Do not mutate process.env or expose either value. The immutable
+            # config simply represents the effective credential Railway should
+            # use for this process.
+            law_api_oc = ""
+            law_api_oc_source = "LAW_API_OC"
+            warnings.append("LAW_API_OC_PLACEHOLDER_IGNORED_FOR_RAILWAY_KEY_FALLBACK")
 
     # Non-secret advisory: the deployment is relying on the legacy LAW_API_KEY
-    # fallback only, or a known placeholder OC was ignored in favor of it.
-    if law_api_key and (
-        not law_api_oc
-        or law_api_oc.strip().lower() in _KNOWN_PLACEHOLDER_OC_VALUES
-    ):
+    # fallback only. Recommend the explicit registered LAW_API_OC. This marker
+    # never contains either value.
+    if law_api_key and not law_api_oc:
         warnings.append("LAW_API_OC_RECOMMENDED")
 
     return GroundingConfig(
