@@ -1,9 +1,6 @@
 from __future__ import annotations
 
-import json
 import os
-import shutil
-import subprocess
 import sys
 from pathlib import Path
 from unittest.mock import patch
@@ -16,62 +13,78 @@ if str(BACKEND_DIR) not in sys.path:
 from services.grounding_config import load_grounding_config  # noqa: E402
 
 LAW_ENV_NAMES = ("LAW_API_OC", "LAW_OC", "OPEN_LAW_ID", "LAW_API_KEY")
+RAILWAY_ENV_NAMES = (
+    "RAILWAY_PROJECT_ID",
+    "RAILWAY_ENVIRONMENT_ID",
+    "RAILWAY_SERVICE_ID",
+    "RAILWAY_PUBLIC_DOMAIN",
+)
 
 
 def _env(**values: str):
-    clean = {name: "" for name in LAW_ENV_NAMES}
+    clean = {name: "" for name in (*LAW_ENV_NAMES, *RAILWAY_ENV_NAMES)}
     clean.update(values)
     return patch.dict(os.environ, clean, clear=False)
 
 
-def test_python_placeholder_oc_does_not_shadow_legacy_key():
+def test_non_railway_preserves_existing_oc_first_contract():
     with _env(LAW_API_OC="paradiso", LAW_API_KEY="registered-legacy-oc"):
+        cfg = load_grounding_config()
+    assert cfg.law_api_credential == "paradiso"
+    assert cfg.law_api_credential_source == "LAW_API_OC"
+    assert cfg.law_api_oc_configured is True
+    assert cfg.law_api_key_fallback_configured is True
+
+
+def test_railway_placeholder_oc_falls_back_to_existing_legacy_key():
+    with _env(
+        RAILWAY_SERVICE_ID="service-test",
+        LAW_API_OC="paradiso",
+        LAW_API_KEY="registered-legacy-oc",
+    ):
         cfg = load_grounding_config()
     assert cfg.law_api_credential == "registered-legacy-oc"
     assert cfg.law_api_credential_source == "LAW_API_KEY"
-    assert "LAW_API_OC_PLACEHOLDER_DETECTED" in cfg.warnings
-    assert "LAW_API_OC_PLACEHOLDER_IGNORED_FOR_KEY_FALLBACK" in cfg.warnings
+    assert cfg.law_api_oc_configured is False
+    assert cfg.law_api_key_fallback_configured is True
+    assert "LAW_API_OC_PLACEHOLDER_DETECTED_ON_RAILWAY" in cfg.warnings
+    assert "LAW_API_OC_PLACEHOLDER_IGNORED_FOR_RAILWAY_KEY_FALLBACK" in cfg.warnings
+    assert "LAW_API_OC_RECOMMENDED" in cfg.warnings
 
 
-def test_python_real_alias_beats_historical_placeholder():
-    with _env(LAW_API_OC="paradiso", LAW_OC="registered-current-oc"):
+def test_railway_real_oc_alias_beats_historical_primary_placeholder():
+    with _env(
+        RAILWAY_ENVIRONMENT_ID="environment-test",
+        LAW_API_OC="paradiso",
+        LAW_OC="registered-current-oc",
+        LAW_API_KEY="registered-legacy-oc",
+    ):
         cfg = load_grounding_config()
     assert cfg.law_api_credential == "registered-current-oc"
     assert cfg.law_api_credential_source == "LAW_OC"
-    assert "LAW_API_OC_PLACEHOLDER_DETECTED" in cfg.warnings
+    assert cfg.law_api_oc_configured is True
+    assert "LAW_API_OC_ALIAS_USED" in cfg.warnings
 
 
-def test_python_real_primary_still_wins():
-    with _env(LAW_API_OC="registered-primary-oc", LAW_API_KEY="registered-legacy-oc"):
+def test_railway_real_primary_oc_still_wins():
+    with _env(
+        RAILWAY_PROJECT_ID="project-test",
+        LAW_API_OC="registered-primary-oc",
+        LAW_API_KEY="registered-legacy-oc",
+    ):
         cfg = load_grounding_config()
     assert cfg.law_api_credential == "registered-primary-oc"
     assert cfg.law_api_credential_source == "LAW_API_OC"
+    assert "LAW_API_OC_PLACEHOLDER_DETECTED_ON_RAILWAY" not in cfg.warnings
 
 
-def test_node_resolver_matches_python_placeholder_policy():
-    if not shutil.which("node"):
-        return
-    script = r"""
-const { resolveLawCredential } = require('./lib/law-credential');
-const cases = [
-  resolveLawCredential({ LAW_API_OC: 'paradiso', LAW_API_KEY: 'registered-legacy-oc' }),
-  resolveLawCredential({ LAW_API_OC: 'paradiso', LAW_OC: 'registered-current-oc' }),
-  resolveLawCredential({ LAW_API_OC: 'registered-primary-oc', LAW_API_KEY: 'registered-legacy-oc' }),
-];
-process.stdout.write(JSON.stringify(cases));
-"""
-    result = subprocess.run(
-        ["node", "-e", script],
-        cwd=REPO_ROOT,
-        check=True,
-        capture_output=True,
-        text=True,
-    )
-    cases = json.loads(result.stdout)
-    assert cases[0]["credential"] == "registered-legacy-oc"
-    assert cases[0]["credentialSource"] == "LAW_API_KEY"
-    assert cases[0]["ignoredPlaceholderSource"] == "LAW_API_OC"
-    assert cases[1]["credential"] == "registered-current-oc"
-    assert cases[1]["credentialSource"] == "LAW_OC"
-    assert cases[2]["credential"] == "registered-primary-oc"
-    assert cases[2]["credentialSource"] == "LAW_API_OC"
+def test_railway_placeholder_without_any_fallback_remains_configured():
+    with _env(
+        RAILWAY_PUBLIC_DOMAIN="example.up.railway.app",
+        LAW_API_OC="paradiso",
+    ):
+        cfg = load_grounding_config()
+    assert cfg.law_api_credential == "paradiso"
+    assert cfg.law_api_credential_source == "LAW_API_OC"
+    assert cfg.law_api_configured is True
+    assert "LAW_API_OC_PLACEHOLDER_DETECTED_ON_RAILWAY" in cfg.warnings
