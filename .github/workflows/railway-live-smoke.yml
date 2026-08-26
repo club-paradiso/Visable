@@ -1,0 +1,99 @@
+name: Railway Live Smoke
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  railway-live-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Probe Railway backend and Open Law retrieval
+        env:
+          BACKEND_URL: https://web-production-14f9a.up.railway.app
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import sys
+          import time
+          import urllib.error
+          import urllib.parse
+          import urllib.request
+
+          base = os.environ["BACKEND_URL"].rstrip("/")
+
+          def get_json(path: str, timeout: float = 15.0):
+              request = urllib.request.Request(
+                  base + path,
+                  headers={"Accept": "application/json", "User-Agent": "Visable-Railway-Live-Smoke/1"},
+              )
+              with urllib.request.urlopen(request, timeout=timeout) as response:
+                  body = response.read().decode("utf-8", errors="replace")
+                  return int(getattr(response, "status", 200) or 200), json.loads(body)
+
+          health = None
+          law_result = None
+          last_error = "not_started"
+
+          # main push and Railway deployment are asynchronous. Retry a bounded
+          # number of times so the smoke verifies the newly deployed backend
+          # rather than racing the previous container during rollout.
+          for attempt in range(24):
+              try:
+                  status, candidate = get_json("/health")
+                  if status != 200 or candidate.get("status") != "ok":
+                      raise RuntimeError(f"health_status_{status}")
+                  health = candidate
+
+                  query = urllib.parse.quote("출입국관리법")
+                  law_status, law_candidate = get_json(f"/api/legal/laws?q={query}")
+                  law_result = law_candidate
+                  if law_status == 200 and law_candidate.get("ok") is True:
+                      break
+                  last_error = f"law_http_{law_status}:{law_candidate.get('error', 'not_ok')}"
+              except Exception as exc:
+                  # Never print response bodies or credentials. Only a bounded
+                  # exception class/message is retained for operator diagnosis.
+                  last_error = f"{type(exc).__name__}:{str(exc)[:120]}"
+              time.sleep(10)
+          else:
+              print(f"Railway smoke failed: {last_error}", file=sys.stderr)
+              sys.exit(1)
+
+          law = health.get("law_api") or {}
+          providers = health.get("providers") or {}
+          provider_status = health.get("provider_status") or {}
+          summary = {
+              "backend_status": health.get("status"),
+              "service": health.get("service"),
+              "openrouter_configured": bool(providers.get("openrouter")),
+              "law_api_configured": bool(law.get("law_api_configured")),
+              "law_api_credential_source": law.get("law_api_credential_source") or None,
+              "law_api_oc_configured": bool(law.get("law_api_oc_configured")),
+              "law_api_key_fallback_configured": bool(law.get("law_api_key_fallback_configured")),
+              "law_grounding_mode": health.get("law_grounding_mode"),
+              "law_grounding_effective_mode": health.get("law_grounding_effective_mode"),
+              "law_grounding_active": bool(health.get("law_grounding_active")),
+              "legal_evidence_configured": bool((provider_status.get("legal_evidence") or {}).get("configured")),
+              "law_search_ok": bool(law_result and law_result.get("ok") is True),
+              "law_search_count": int((law_result or {}).get("count") or 0),
+          }
+          print(json.dumps(summary, ensure_ascii=False, sort_keys=True))
+
+          if not summary["openrouter_configured"]:
+              print("Railway OpenRouter is not configured.", file=sys.stderr)
+              sys.exit(1)
+          if not summary["law_api_configured"] or not summary["law_grounding_active"]:
+              print("Railway Open Law credential is not active.", file=sys.stderr)
+              sys.exit(1)
+          if not summary["law_search_ok"]:
+              print("Railway Open Law live search did not succeed.", file=sys.stderr)
+              sys.exit(1)
+          PY
