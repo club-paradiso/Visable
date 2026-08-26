@@ -6791,12 +6791,10 @@ async def search_unified_ai_overview(req: UnifiedAiOverviewRequest) -> Any:
 
     prompt = _unified_overview_prompt(query, deterministic, evidence_lines, lang)
 
-    try:
-        text, attempt_meta = await _openrouter_complete_with_candidates(prompt)
-    except HTTPException as exc:
+    def _overview_unavailable(reason: str) -> Dict[str, Any]:
         return {
             "status": "unavailable",
-            "reason": _classify_openrouter_error(exc)[0] if hasattr(exc, "detail") else "provider_error",
+            "reason": reason,
             "requestId": request_id,
             "overview": None,
             "fallbackAvailable": True,
@@ -6805,14 +6803,31 @@ async def search_unified_ai_overview(req: UnifiedAiOverviewRequest) -> Any:
                         "The AI overview could not be loaded. The search results below "
                         "are unaffected."),
         }
+
+    # ``_openrouter_complete_with_candidates`` returns a RESULT DICT, never a
+    # (text, meta) tuple. Unpacking it into two names raised ValueError on every
+    # call, which the bare ``except Exception`` below swallowed into
+    # ``provider_error`` — so this endpoint reported "unavailable" even when the
+    # provider answered correctly. Read the documented keys instead.
+    try:
+        attempt_meta = await _openrouter_complete_with_candidates(prompt)
+    except HTTPException as exc:
+        detail = exc.detail if isinstance(exc.detail, dict) else {}
+        reason, _retryable = _classify_openrouter_error(
+            detail.get("status", exc.status_code), detail.get("message"), detail.get("error")
+        )
+        return _overview_unavailable(reason)
     except Exception:
-        return {
-            "status": "unavailable", "reason": "provider_error",
-            "requestId": request_id, "overview": None, "fallbackAvailable": True,
-            "message": ("AI 요약을 불러오지 못했습니다. 아래 검색 결과는 정상입니다."
-                        if lang == "ko" else
-                        "The AI overview could not be loaded."),
-        }
+        return _overview_unavailable("provider_error")
+
+    if not attempt_meta.get("ok") or not (attempt_meta.get("answer") or "").strip():
+        # Every candidate failed (or all are cooling down). This is the same
+        # quiet, organic-results-preserving outcome as a transport failure, but
+        # the classified provider reason is reported rather than a generic one.
+        return _overview_unavailable(
+            str(attempt_meta.get("provider_error_type") or "provider_error")
+        )
+    text = attempt_meta["answer"]
 
     # Citation guard: the overview is grounded in visa-data cards, not in fetched
     # statute text, so ANY statute citation it emits is unverifiable here and is
@@ -6838,8 +6853,12 @@ async def search_unified_ai_overview(req: UnifiedAiOverviewRequest) -> Any:
         "sources": _unified_overview_sources(deterministic),
         "evidenceLabel": _unified_evidence_label(deterministic, lang),
         "requiresOfficialConfirmation": True,
-        "provider": attempt_meta.get("provider", "") if isinstance(attempt_meta, dict) else "",
-        "model": attempt_meta.get("model", "") if isinstance(attempt_meta, dict) else "",
+        # The result dict names the model that actually answered ``final_model``;
+        # there is no "model"/"provider" key on it. Reading the wrong names made
+        # both fields silently blank in every successful response.
+        "provider": "openrouter",
+        "model": attempt_meta.get("final_model") or "",
+        "modelFallbackUsed": bool(attempt_meta.get("model_fallback_used")),
         "fallbackAvailable": True,
         "latency": {"totalMs": elapsed_ms},
     }
@@ -7128,18 +7147,40 @@ async def employment_interpret(req: EmploymentInterpretRequest) -> Any:
         }
 
     prompt = _employment_nl.build_extraction_prompt(text, lang=lang)
-    try:
-        raw, attempt_meta = await _openrouter_complete_with_candidates(prompt)
-    except Exception:
+
+    def _interpret_unavailable(reason: str) -> Dict[str, Any]:
+        # The deterministic analyzer is the fallback, so the raw sentence still
+        # reaches it: this layer is a convenience, never a gate.
         return {
             "status": "unavailable",
-            "reason": "provider_error",
+            "reason": reason,
             "extraction": _employment_nl.empty_extraction(),
             "analyzerInput": {"text": text, "locale": "", "visaStatus": "", "employmentType": ""},
             "interpretation": "",
             "warnings": [],
             "fallbackAvailable": True,
         }
+
+    # Same defect as the AI Overview endpoint: the helper returns a RESULT DICT,
+    # not a (text, meta) tuple, so this unpack raised ValueError on every call
+    # and the bare ``except Exception`` reported a provider failure that had not
+    # happened. Employment interpretation never once ran in production.
+    try:
+        attempt_meta = await _openrouter_complete_with_candidates(prompt)
+    except HTTPException as exc:
+        detail = exc.detail if isinstance(exc.detail, dict) else {}
+        reason, _retryable = _classify_openrouter_error(
+            detail.get("status", exc.status_code), detail.get("message"), detail.get("error")
+        )
+        return _interpret_unavailable(reason)
+    except Exception:
+        return _interpret_unavailable("provider_error")
+
+    if not attempt_meta.get("ok") or not (attempt_meta.get("answer") or "").strip():
+        return _interpret_unavailable(
+            str(attempt_meta.get("provider_error_type") or "provider_error")
+        )
+    raw = attempt_meta["answer"]
 
     try:
         known_codes = {
@@ -7172,7 +7213,8 @@ async def employment_interpret(req: EmploymentInterpretRequest) -> Any:
         "clarificationQuestion": data.get("clarificationQuestion", ""),
         "warnings": validated["warnings"],
         "fallbackAvailable": True,
-        "provider": attempt_meta.get("provider", "") if isinstance(attempt_meta, dict) else "",
+        "provider": "openrouter",
+        "model": attempt_meta.get("final_model") or "",
         "notice": ("직종·업종 코드는 이 단계에서 만들지 않습니다. 아래 후보는 공식 분류표에서 "
                    "검색한 결과이며, 최종 확정은 하이코리아에서 확인하세요."
                    if lang == "ko" else
