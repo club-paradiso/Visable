@@ -302,12 +302,22 @@ class I18nLeakGuardTests(unittest.TestCase):
             os.unlink(fixture)
 
     def test_i18n_guard_enforces_parity_allowlist_and_official_korean_notes(self):
-        # Strict cross-locale parity guard: lists every supported locale and fails
-        # on missing/extra/shape-mismatched keys (replaces the old inline
+        # Strict cross-locale parity guard: covers every supported locale and
+        # fails on missing/extra/shape-mismatched keys (replaces the old inline
         # REQUIRED_UI_KEYS / checkRequiredKeysAcrossLanguages logic).
+        #
+        # This used to require each locale to appear as a LITERAL in the script.
+        # The guard has since been changed to derive its locale list from
+        # manifest.supportedLocales, which is strictly better — a new pack is
+        # gated automatically instead of only when someone remembers to edit the
+        # script — but it made the literal assertion fail on locales the guard
+        # does in fact cover. Assert the derivation instead.
         coverage = CHECK_I18N_COVERAGE.read_text(encoding="utf-8")
-        for locale in SUPPORTED_LOCALES:
-            self.assertIn("'%s'" % locale, coverage)
+        self.assertIn("manifest.supportedLocales", coverage)
+        self.assertIn("supported.filter", coverage)
+        for locale in ("ko", "en", "zh-CN"):
+            self.assertIn("'%s'" % locale, coverage,
+                          "core locales must stay hard-guaranteed, not manifest-dependent")
         for token in ("requiredLocales", "missing", "extra", "shape mismatch"):
             self.assertIn(token, coverage)
         # Inline hardcoded-text scanner keeps an allowlist of intentionally

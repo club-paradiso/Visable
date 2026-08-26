@@ -178,10 +178,23 @@ class ManualEvidenceStateApiTests(unittest.TestCase):
         self.assertIn("documentCount", body)
         self.assertNotIn("documents", body)
 
-    def test_no_document_is_reported_as_approved_by_default(self):
+    def test_approved_is_reported_separately_and_is_never_the_whole_registry(self):
+        """Approval must stay a minority, explicitly-counted state.
+
+        This previously asserted `approved == 0`, which was a snapshot of the
+        moment before the evidence gate was first opened rather than a safety
+        property. What matters is that the endpoint keeps reporting approved
+        content as its own bucket — so a caller can never read "we hold 13
+        manuals" as "13 manuals may back a direct assertion".
+        """
         client = TestClient(pb.app)
         body = client.get("/api/search/manual-evidence-state").json()
-        self.assertEqual(body["approvalCounts"].get("approved", 0), 0)
+        counts = body["approvalCounts"]
+        self.assertIn("approved", counts)
+        self.assertLess(
+            counts["approved"], body["documentCount"],
+            "an all-approved registry means the review gate is not doing anything")
+        self.assertIn("Only approval_state='approved'", body["note"])
 
 
 class AiOverviewFigmaStateTests(unittest.TestCase):

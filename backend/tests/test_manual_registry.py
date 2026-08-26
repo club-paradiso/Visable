@@ -190,12 +190,29 @@ class RealRegistryTests(unittest.TestCase):
         versions = mr.load_manual_versions()
         self.assertTrue(versions, "the committed source registry must parse")
 
-    def test_no_edition_is_auto_approved_in_the_committed_index(self):
-        versions = mr.load_manual_versions()
-        approved = [v.source_id for v in versions if v.usable_as_direct_evidence]
+    def test_every_approved_edition_carries_a_recorded_human_review(self):
+        """Content approval is a human action; nothing may ship pre-approved.
+
+        This used to assert `approved == []`, which was true only while the
+        evidence gate had never been opened. Editions have since been approved
+        by a named reviewer, so the literal assertion had become a statement
+        about history rather than about safety — and it failed on a deliberate,
+        correctly-recorded approval.
+
+        The invariant that actually matters is unchanged and is now asserted
+        directly: an edition may back a direct factual assertion only if a
+        human is on the record as having reviewed it. An edition that reached
+        `approved` with no reviewer and no review date is auto-approval, and
+        that is what must never ship.
+        """
+        unattested = [
+            v.source_id
+            for v in mr.load_manual_versions()
+            if v.usable_as_direct_evidence and not (v.reviewer.strip() and v.reviewed_at.strip())
+        ]
         self.assertEqual(
-            approved, [],
-            "content approval is a human action; nothing may ship pre-approved")
+            unattested, [],
+            "these editions may back direct assertions but record no human reviewer")
 
     def test_summary_reports_families_and_counts(self):
         summary = mr.registry_summary()
