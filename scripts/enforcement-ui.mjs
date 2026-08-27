@@ -28,6 +28,17 @@ function escapeHtml(value) {
   })[character]);
 }
 
+function localTodayIso() {
+  const now = new Date();
+  const local = new Date(now.getTime() - now.getTimezoneOffset() * 60000);
+  return local.toISOString().slice(0, 10);
+}
+
+function setAssessmentDateToday({ force = false } = {}) {
+  const input = $('#assessment-date');
+  if (input && (force || !input.value)) input.value = localTodayIso();
+}
+
 function showStep(number) {
   $$('[data-step]').forEach((section) => { section.hidden = Number(section.dataset.step) !== number; });
   $$('[data-step-nav]').forEach((button) => {
@@ -68,11 +79,13 @@ async function request(path, payload) {
 
   if (!response.ok) {
     console.error('Enforcement API request failure', { url, status: response.status });
-    throw new Error(
-      typeof data.detail === 'string'
-        ? data.detail
-        : `분석 서버 요청에 실패했습니다. (${response.status})`
-    );
+    const detail = typeof data.detail === 'string' ? data.detail : '';
+    const friendly = {
+      'case text is required': '사례 설명을 입력해 주세요.',
+      'invalid assessmentDate': '분석 기준일 형식을 확인해 주세요.',
+      'invalid structured enforcement case': '확인한 사실 중 형식이 맞지 않는 항목이 있습니다. 입력값을 다시 확인해 주세요.',
+    }[detail];
+    throw new Error(friendly || detail || `분석 서버 요청에 실패했습니다. (${response.status})`);
   }
   return data;
 }
@@ -88,9 +101,18 @@ function populateConfirmation(caseData) {
   const form = $('#confirm-form');
   ['statusOfStay', 'violationCode', 'durationDays', 'priorViolations', 'authorizationObtained',
     'voluntaryDisclosure', 'violationStartDate', 'violationEndDate'].forEach((name) => assignValue(form, name, caseData[name]));
+
   const unknown = caseData.unknownFacts || [];
-  $('#unknown-facts').innerHTML = unknown.length
-    ? `<strong>정확도에 영향을 줄 수 있는 미확인 정보</strong><ul>${unknown.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>`
+  const warnings = caseData.extractionWarnings || [];
+  const blocks = [];
+  if (warnings.length) {
+    blocks.push(`<strong>구조화 확인 메모</strong><ul>${warnings.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>`);
+  }
+  if (unknown.length) {
+    blocks.push(`<strong>정확도에 영향을 줄 수 있는 미확인 정보</strong><ul>${unknown.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>`);
+  }
+  $('#unknown-facts').innerHTML = blocks.length
+    ? blocks.join('')
     : '<strong>주요 입력 사실이 모두 확인되었습니다.</strong>';
 }
 
@@ -114,6 +136,7 @@ function readConfirmedCase() {
     voluntaryDisclosure: nullableBoolean(value('voluntaryDisclosure')),
     violationStartDate: value('violationStartDate') || null,
     violationEndDate: value('violationEndDate') || null,
+    assessmentDate: $('#assessment-date').value || localTodayIso(),
   };
 }
 
@@ -211,11 +234,10 @@ $('#case-form').addEventListener('submit', async (event) => {
     if (!text) throw new Error('사례 설명을 입력해 주세요.');
     const response = await request('/api/enforcement/extract', {
       text,
-      assessmentDate: $('#assessment-date').value || null,
+      assessmentDate: $('#assessment-date').value || localTodayIso(),
     });
     structuredCase = response.case;
     populateConfirmation(structuredCase);
-    // Discard the raw narrative from live UI state after extraction.
     $('#case-text').value = '';
     showStep(2);
   } catch (error) { setError($('#input-error'), error.message); }
@@ -241,5 +263,8 @@ $('#restart').addEventListener('click', () => {
   $('#case-form').reset();
   $('#confirm-form').reset();
   $('#result-root').replaceChildren();
+  setAssessmentDateToday({ force: true });
   showStep(1);
 });
+
+setAssessmentDateToday();
