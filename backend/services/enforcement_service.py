@@ -195,11 +195,20 @@ def _classify_violation(clean: str, status: Optional[str]) -> tuple[Optional[str
             re.I,
         )
     )
+    # 제21조제1항 is "required workplace change/addition permission was not
+    # obtained", so this needs an actual change/addition/이직 signal.
+    #
+    # A third alternative — 다른\s*(?:회사|업체|사업장|근무처).*(?:근무|일),
+    # "worked at a different workplace" — was removed. That phrasing describes
+    # the 제18조제2항 fact pattern ("a work-authorized foreigner worked outside
+    # the designated workplace", per this module's own docstring), and because
+    # workplace_change is evaluated BEFORE outside_designated_workplace it
+    # captured 18-2 cases into the 21-1 branch. It was also redundant: every
+    # 21-1 case in the suite still matches on the two remaining alternatives.
     workplace_change = bool(
         re.search(
             r"(?:근무처|사업장|회사|업체).*(?:변경|추가|옮겼|이직)"
-            r"|(?:변경|추가|이직).*(?:허가|신고)"
-            r"|다른\s*(?:회사|업체|사업장|근무처).*(?:근무|일)",
+            r"|(?:변경|추가|이직).*(?:허가|신고)",
             clean,
             re.I,
         )

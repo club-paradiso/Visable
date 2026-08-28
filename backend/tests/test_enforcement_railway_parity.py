@@ -40,6 +40,36 @@ class RailwayEnforcementClassificationParityTests(unittest.IsolatedAsyncioTestCa
         self.assertEqual(case.violation_code, "UNAUTHORIZED_EMPLOYMENT_ART18_2")
         self.assertEqual(case.violation_candidates, ["UNAUTHORIZED_EMPLOYMENT_ART18_2"])
 
+    async def test_working_elsewhere_is_not_by_itself_a_workplace_change(self):
+        """제18조제2항 vs 제21조제1항 must not collapse into each other.
+
+        PR #580 broadened the 21-1 trigger with an alternative matching
+        "다른 …에서 근무" — worked at a different workplace. That is the 18-2
+        fact pattern, and because the 21-1 branch is evaluated first it
+        captured 18-2 cases. This pins the distinction the module's own
+        docstrings draw:
+
+          18-2  a work-authorized foreigner worked OUTSIDE the designated
+                workplace
+          21-1  required change/addition PERMISSION was not obtained
+
+        Working somewhere else is the former. Only a change/addition signal
+        makes it the latter.
+        """
+        case = await extract_structured_case(
+            "E-7 체류자격으로 다른 사업장에서 허가 없이 20일 근무했습니다.",
+            assessment_date=ASSESSMENT_DATE,
+        )
+        self.assertEqual(case.violation_code, "UNAUTHORIZED_EMPLOYMENT_ART18_2")
+
+    async def test_a_change_signal_still_maps_to_article_21(self):
+        """The other side of the same line: 이직/변경허가 IS a 21-1 signal."""
+        case = await extract_structured_case(
+            "E-7 비자인데 다른 회사로 이직하고 변경허가를 받지 않고 2개월 근무했습니다.",
+            assessment_date=ASSESSMENT_DATE,
+        )
+        self.assertEqual(case.violation_code, "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1")
+
     async def test_workplace_change_without_permission_maps_to_article_21(self):
         case = await extract_structured_case(
             "E-7인데 근무처를 변경하고 변경허가 없이 2개월 근무했습니다.",
