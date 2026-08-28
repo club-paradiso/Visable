@@ -231,8 +231,13 @@ def unresolved_document_ids(record: Any) -> List[str]:
     return found
 
 
-def _display_path(path: str) -> str:
-    """Repo-relative when inside the tree, otherwise unchanged."""
+def display_path(path: str) -> str:
+    """Repo-relative when inside the tree, otherwise unchanged.
+
+    Public because readiness reporting elsewhere presents filesystem paths the
+    same way: enough to diagnose where a lookup searched, without publishing
+    absolute container paths on an endpoint anyone can call.
+    """
     for base in (_REPO_ROOT, _BACKEND_DIR):
         try:
             rel = os.path.relpath(path, base)
@@ -267,5 +272,5 @@ def registry_source(path: Optional[str] = None) -> Dict[str, Any]:
         # Relative to the repo/deploy root: enough to diagnose "where did it
         # look", without publishing absolute container paths on a public
         # endpoint. An operator-set path outside the tree is shown as given.
-        "searched": [_display_path(c) for c in candidate_doc_master_paths(path)],
+        "searched": [display_path(c) for c in candidate_doc_master_paths(path)],
     }

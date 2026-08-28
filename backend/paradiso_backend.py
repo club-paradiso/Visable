@@ -4223,7 +4223,7 @@ async def health_ai() -> Dict[str, Any]:
             "during the build. Ship a prebuilt index as "
             "backend/data/manual_search_index.sqlite3, or point "
             "MANUAL_SEARCH_INDEX_PATH at a mounted volume. Searched: "
-            + ", ".join(_document_labels._display_path(c)
+            + ", ".join(_document_labels.display_path(c)
                         for c in _manual_search.candidate_index_paths())
         )
     elif indexed_direct == 0:
