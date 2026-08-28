@@ -38,6 +38,22 @@ class EnforcementExtractionQualityTests(unittest.IsolatedAsyncioTestCase):
         self.assertFalse(result.authorization_obtained)
         self.assertFalse(result.workplace_change_authorized)
 
+    async def test_designated_workplace_wording_maps_to_article_18_2(self):
+        result = await extract_structured_case(
+            "E-7인데 지정된 근무처가 아닌 다른 사업장에서 허가 없이 20일 근무했습니다.",
+            assessment_date=date(2026, 8, 27),
+        )
+        self.assertEqual(result.violation_code, "UNAUTHORIZED_EMPLOYMENT_ART18_2")
+        self.assertEqual(result.duration_days, 20)
+
+    async def test_bare_other_workplace_wording_stays_unresolved(self):
+        result = await extract_structured_case(
+            "F-2인데 다른 곳에서 허가 없이 10일 일했습니다.",
+            assessment_date=date(2026, 8, 27),
+        )
+        self.assertIsNone(result.violation_code)
+        self.assertGreaterEqual(len(result.violation_candidates), 2)
+
     async def test_ai_extraction_accepts_extra_commentary_keys_and_preserves_assessment_date(self):
         async def provider(_prompt: str):
             return {

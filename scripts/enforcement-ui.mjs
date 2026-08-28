@@ -36,7 +36,18 @@ function localTodayIso() {
 
 function setAssessmentDateToday({ force = false } = {}) {
   const input = $('#assessment-date');
-  if (input && (force || !input.value)) input.value = localTodayIso();
+  if (!input) return;
+  input.max = localTodayIso();
+  if (force || !input.value) input.value = localTodayIso();
+}
+
+function resolveAssessmentDate() {
+  const input = $('#assessment-date');
+  const today = localTodayIso();
+  const value = input?.value || '';
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return today;
+  if (value > today) return today;
+  return value;
 }
 
 function showStep(number) {
@@ -136,7 +147,7 @@ function readConfirmedCase() {
     voluntaryDisclosure: nullableBoolean(value('voluntaryDisclosure')),
     violationStartDate: value('violationStartDate') || null,
     violationEndDate: value('violationEndDate') || null,
-    assessmentDate: $('#assessment-date').value || localTodayIso(),
+    assessmentDate: resolveAssessmentDate(),
   };
 }
 
@@ -181,6 +192,7 @@ function renderResult(data) {
         <p>법정 조정 가능 범위: <strong>${range(baseline.legallyAdjustableRange)}</strong></p>
         <p><span class="tag">${escapeHtml(groundingLabel)}</span></p>
         <p class="subtle">${escapeHtml((baseline.appliedRules || []).join(' · '))}</p>
+        <p class="subtle">분석 기준일: <strong>${escapeHtml(data.case?.assessmentDate || resolveAssessmentDate())}</strong></p>
       </article>
       <article class="result-card prediction">
         <p class="card-kicker">2 · VISABLE AI PREDICTION</p>
@@ -234,7 +246,7 @@ $('#case-form').addEventListener('submit', async (event) => {
     if (!text) throw new Error('사례 설명을 입력해 주세요.');
     const response = await request('/api/enforcement/extract', {
       text,
-      assessmentDate: $('#assessment-date').value || localTodayIso(),
+      assessmentDate: resolveAssessmentDate(),
     });
     structuredCase = response.case;
     populateConfirmation(structuredCase);
@@ -255,6 +267,19 @@ $('#confirm-form').addEventListener('submit', async (event) => {
     showStep(3);
   } catch (error) { setError($('#confirm-error'), error.message); }
   finally { setLoading(false); }
+});
+
+$$('[data-example]').forEach((button) => button.addEventListener('click', () => {
+  const field = $('#case-text');
+  field.value = button.dataset.example;
+  setError($('#input-error'));
+  field.focus();
+  field.setSelectionRange(field.value.length, field.value.length);
+}));
+
+$('#assessment-date-today').addEventListener('click', () => {
+  setAssessmentDateToday({ force: true });
+  setError($('#input-error'));
 });
 
 $$('[data-back]').forEach((button) => button.addEventListener('click', () => showStep(Number(button.dataset.back))));
