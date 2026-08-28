@@ -46,6 +46,8 @@ try:  # pragma: no cover - import shim
     import structured_requirements as _sr  # type: ignore
 except Exception:  # pragma: no cover
     _sr = None  # type: ignore
+from . import document_labels as _document_labels
+
 
 PROCEDURE_PACKET_VERSION = "2026-06-procedure-packet-and-application-helper-v1"
 
@@ -323,7 +325,12 @@ def _make_document(
     source_refs: List[Dict[str, Any]],
 ) -> Optional[Dict[str, Any]]:
     """Build a PacketDocument from a doc string (returns None for placeholders)."""
-    name = (text or "").strip()
+    # visa_data document arrays mix manual prose with doc_master IDs. An ID that
+    # reaches `nameKo` is rendered to the user as the name of a document they
+    # must bring to an immigration office, so resolve it to its registered label
+    # first. Non-IDs and IDs doc_master does not define pass through unchanged —
+    # inventing a label would be fabricating a requirement.
+    name = str(_document_labels.resolve_document_label((text or "").strip())).strip()
     if _is_placeholder(name):
         return None
     note = (note_ko or "").strip()
