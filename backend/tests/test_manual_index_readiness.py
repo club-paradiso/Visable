@@ -123,31 +123,69 @@ class ReadinessTests(unittest.TestCase):
 
 
 class DeployConfigTests(unittest.TestCase):
-    """The index is a build artifact; nothing built it at deploy time."""
+    """The index is a build artifact, and this deploy layout cannot build it.
 
-    def test_the_railway_build_runs_the_index_builder(self):
+    PR #582 added a buildCommand running scripts/build_manual_search_index.py.
+    Review caught that it could never run: the Railway service sets Root
+    Directory = backend (backend/README.md), so the repo-root scripts/ tree is
+    not in the build context. The command failed with "can't open file" on every
+    deploy, and its `|| echo` turned that guaranteed failure into a success —
+    printing a warning that read as conditional for an unconditional failure.
+
+    A build step that cannot succeed is worse than no build step: it hides the
+    absence of the thing it claims to produce. These tests pin the honest
+    contract instead.
+    """
+
+    def _railway_config(self):
         import json
         from pathlib import Path
-
-        config = json.loads(
+        return json.loads(
             (Path(__file__).resolve().parents[2] / "backend" / "railway.json").read_text()
         )
-        build_command = config["build"].get("buildCommand", "")
-        self.assertIn("build_manual_search_index.py", build_command)
 
-    def test_a_failed_index_build_does_not_fail_the_deploy(self):
-        """The app degrades to index_unavailable, which is the designed fallback.
+    def test_the_build_does_not_invoke_a_script_outside_the_deploy_context(self):
+        build_command = self._railway_config()["build"].get("buildCommand", "")
+        self.assertNotIn("scripts/", build_command,
+                         "the repo-root scripts/ tree is not in the backend build "
+                         "context; a command referencing it always fails")
 
-        Killing a deploy over a search index would trade a weaker answer for no
-        service at all.
-        """
-        import json
+    def test_no_build_command_masks_its_own_failure(self):
+        """`|| echo` on a build step converts failure into a false success."""
+        build_command = self._railway_config()["build"].get("buildCommand", "")
+        if build_command:
+            self.assertNotIn("|| echo", build_command)
+
+    def test_the_backend_scripts_directory_really_is_absent(self):
+        """The premise of the whole fix, asserted rather than assumed."""
         from pathlib import Path
+        backend = Path(__file__).resolve().parents[1]
+        self.assertFalse((backend / "scripts").exists(),
+                         "if backend/scripts/ now exists, revisit the buildCommand")
 
-        config = json.loads(
-            (Path(__file__).resolve().parents[2] / "backend" / "railway.json").read_text()
+    def test_the_index_is_searched_inside_the_deploy_context_first(self):
+        candidates = ms.candidate_index_paths()
+        self.assertEqual(candidates[0], ms.BACKEND_INDEX_PATH)
+        self.assertTrue(
+            candidates[0].startswith(os.path.dirname(os.path.dirname(
+                os.path.abspath(ms.__file__)))),
+            "the first candidate must live inside backend/, which IS deployed",
         )
-        self.assertIn("||", config["build"].get("buildCommand", ""))
+
+    def test_an_operator_override_is_the_only_candidate(self):
+        """Silently searching another index would answer from unchosen sources."""
+        self.assertEqual(ms.candidate_index_paths("/mnt/vol/idx.sqlite3"),
+                         ["/mnt/vol/idx.sqlite3"])
+
+    def test_the_unavailable_blocker_does_not_prescribe_the_impossible_build(self):
+        """The old blocker told operators to run exactly the command that fails."""
+        import paradiso_backend as pb
+        from fastapi.testclient import TestClient
+
+        blocker = TestClient(pb.app).get("/api/health/ai").json()[
+            "grounding"]["manual"]["blocker"]
+        if "index is not built" in blocker or "no FTS index is present" in blocker:
+            self.assertNotIn("run scripts/build_manual_search_index.py", blocker)
 
 
 if __name__ == "__main__":

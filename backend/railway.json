@@ -1,8 +1,7 @@
 {
   "$schema": "https://railway.app/railway.schema.json",
   "build": {
-    "builder": "NIXPACKS",
-    "buildCommand": "python3 scripts/build_manual_search_index.py || echo 'WARNING: manual search index build failed; the backend will report grounding.manual.blocker and degrade to index_unavailable'"
+    "builder": "NIXPACKS"
   },
   "deploy": {
     "startCommand": "uvicorn paradiso_backend:app --host 0.0.0.0 --port $PORT",

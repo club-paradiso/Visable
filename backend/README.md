@@ -222,6 +222,36 @@ committing.
 field: `backend-data`, `repo-root`, `explicit` (from `VISA_DATA_PATH`),
 or `fallback` (DEFAULT_VISAS, with an accompanying `warning`).
 
+### Document registry path on Railway
+
+`doc_master.json` has the same problem and the same solution. The procedure
+packet builder resolves document IDs (`doc_fee_generic`) to their official
+labels (`수수료`) through it; when the registry cannot be loaded the resolver
+degrades to passing IDs through, and users see the raw identifier as the name
+of a document to bring to an immigration office.
+
+The loader searches, in order:
+
+1. `DOC_MASTER_PATH` env var — when set it is the **only** candidate, so an
+   operator override can never be silently replaced by a different registry.
+2. `backend/data/doc_master.json` — the committed copy in the deploy context.
+3. `<repo-root>/doc_master.json` — the canonical file, for local dev.
+
+`scripts/sync_visa_data.py` keeps the copy byte-identical and
+`scripts/check_repo.sh` runs it in `--check` mode to fail CI on drift.
+`/api/health/ai` reports `grounding.documentRegistry` — which copy answered and
+how many entries it holds.
+
+### Manual search index on Railway
+
+There is **no build step for it**, deliberately. The builder
+(`scripts/build_manual_search_index.py`) lives at the repository root, outside
+this build context, so it cannot be invoked from `railway.json`. Absence is a
+supported state: manual search degrades to `index_unavailable`, and nothing
+unapproved can back a direct assertion. To ground answers in production, ship a
+prebuilt index as `backend/data/manual_search_index.sqlite3` or point
+`MANUAL_SEARCH_INDEX_PATH` at a mounted volume.
+
 ## Verification
 
 After deploying (or when running locally), verify each route:

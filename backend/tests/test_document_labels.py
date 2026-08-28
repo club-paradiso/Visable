@@ -167,6 +167,85 @@ class TransportKeepsRawIdsTests(unittest.TestCase):
         self.assertTrue(dl.is_document_id("doc_fee_generic"))
 
 
+class DeployContextTests(unittest.TestCase):
+    """The registry must resolve where the service actually runs.
+
+    Railway deploys this backend with Root Directory = backend, so the
+    repo-root ``doc_master.json`` is NOT in the build context. Resolving only
+    against it meant ``load_document_labels()`` caught OSError, returned an
+    empty map, and passed all 67 IDs through unchanged — the packet fix was
+    green in CI and inert in production. ``backend/README.md`` documents the
+    same hazard for ``visa_data.json``; this follows that solution.
+    """
+
+    def setUp(self):
+        dl.reset_cache_for_tests()
+
+    def tearDown(self):
+        dl.reset_cache_for_tests()
+
+    def _railway_tree(self):
+        """A tree shaped like the deploy: backend/ contents at the root."""
+        import shutil
+        tmp = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, tmp, True)
+        app = os.path.join(tmp, "app")
+        backend = os.path.dirname(os.path.dirname(os.path.abspath(dl.__file__)))
+        shutil.copytree(backend, app,
+                        ignore=shutil.ignore_patterns("tests", "__pycache__"))
+        self.assertFalse(os.path.exists(os.path.join(tmp, "doc_master.json")),
+                         "the simulated deploy must not have a repo-root copy")
+        return app
+
+    def test_the_in_context_copy_is_searched_before_the_repo_root(self):
+        candidates = dl.candidate_doc_master_paths()
+        self.assertEqual(candidates[-2:],
+                         [dl.BACKEND_DOC_MASTER_PATH, dl.REPO_ROOT_DOC_MASTER_PATH])
+
+    def test_an_explicit_path_still_wins(self):
+        self.assertEqual(dl.candidate_doc_master_paths("/x/y.json")[0], "/x/y.json")
+
+    def test_the_backend_copy_ships_and_is_byte_identical(self):
+        """A drifted copy would serve different labels than the canonical file."""
+        import filecmp
+        self.assertTrue(os.path.isfile(dl.BACKEND_DOC_MASTER_PATH),
+                        "backend/data/doc_master.json must ship in the deploy context")
+        self.assertTrue(
+            filecmp.cmp(dl.REPO_ROOT_DOC_MASTER_PATH, dl.BACKEND_DOC_MASTER_PATH,
+                        shallow=False),
+            "run scripts/sync_visa_data.py",
+        )
+
+    def test_resolution_works_with_no_repo_root_file(self):
+        """The exact production failure: repo root absent, resolution must hold."""
+        app = self._railway_tree()
+        path = os.path.join(app, "data", "doc_master.json")
+        self.assertEqual(dl.resolve_document_label("doc_fee_generic", path=path),
+                         "수수료")
+
+    def test_without_the_in_context_copy_it_would_have_stayed_broken(self):
+        """Pins WHY the copy is required, not just that it exists."""
+        app = self._railway_tree()
+        os.unlink(os.path.join(app, "data", "doc_master.json"))
+        missing = os.path.join(app, "data", "doc_master.json")
+        self.assertEqual(dl.load_document_labels(path=missing), {})
+        self.assertEqual(dl.resolve_document_label("doc_fee_generic", path=missing),
+                         "doc_fee_generic")
+
+    def test_registry_source_reports_which_copy_answered(self):
+        info = dl.registry_source()
+        self.assertTrue(info["resolved"])
+        self.assertEqual(info["source"], "backend-data")
+        self.assertGreater(info["entries"], 0)
+
+    def test_registry_source_reports_a_packaging_failure_honestly(self):
+        info = dl.registry_source(path="/nonexistent/doc_master.json")
+        self.assertFalse(info["resolved"])
+        self.assertEqual(info["source"], "missing")
+        self.assertEqual(info["entries"], 0)
+        self.assertIn("/nonexistent/doc_master.json", info["searched"])
+
+
 class DiagnosticTests(unittest.TestCase):
     def test_undefined_ids_are_reported_rather_than_guessed(self):
         record = {"procedures": {"reentry": {"requiredDocs": {

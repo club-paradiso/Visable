@@ -4216,8 +4216,15 @@ async def health_ai() -> Dict[str, Any]:
         manual_blocker = "no manual edition has been human-approved for direct evidence"
     elif not index_available:
         manual_blocker = (
-            "approved manual editions exist but the FTS index is not built on this "
-            "deployment; run scripts/build_manual_search_index.py during the build"
+            "approved manual editions exist but no FTS index is present on this "
+            "deployment. The builder (scripts/build_manual_search_index.py) lives at "
+            "the repository root, which is NOT in the backend build context — the "
+            "Railway service sets Root Directory = backend — so it cannot be invoked "
+            "during the build. Ship a prebuilt index as "
+            "backend/data/manual_search_index.sqlite3, or point "
+            "MANUAL_SEARCH_INDEX_PATH at a mounted volume. Searched: "
+            + ", ".join(_document_labels.display_path(c)
+                        for c in _manual_search.candidate_index_paths())
         )
     elif indexed_direct == 0:
         manual_blocker = (
@@ -4288,6 +4295,13 @@ async def health_ai() -> Dict[str, Any]:
                 "ready": manual_ready,
                 "blocker": manual_blocker,
             },
+            # The document registry is a packaging fact, not a model fact, but
+            # it belongs here for the same reason as the index: it is loaded
+            # from disk, and a deploy layout that omits it degrades answers
+            # silently. Review on #582 found exactly that — the resolver was
+            # correct and the file was not in the deploy context, so every
+            # document ID reached users unresolved.
+            "documentRegistry": _document_labels.registry_source(),
         },
         "features": features,
         "tools": _immigration_tools.build_registry().describe(),
