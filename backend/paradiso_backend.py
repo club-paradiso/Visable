@@ -4191,22 +4191,43 @@ async def health_ai() -> Dict[str, Any]:
     try:
         manual_summary = _manual_registry.registry_summary()
         approved_manuals = int(manual_summary["approval_counts"].get("approved", 0))
-        index_available = _manual_search.index_available()
+        composition = _manual_search.index_composition()
+        index_available = bool(composition.get("available"))
+        indexed_direct = int(composition.get("directEvidenceChunks") or 0)
+        indexed_total = int(composition.get("totalChunks") or 0)
     except Exception:  # pragma: no cover - defensive
         approved_manuals, index_available = 0, False
+        indexed_direct, indexed_total, composition = 0, 0, {}
 
-    # Approved editions are useless without a built index, and that combination
-    # is invisible on /health today: the registry says "2 approved" while the
-    # search that would surface them cannot run. Say it plainly.
-    manual_ready = bool(approved_manuals) and index_available
+    # Three separate facts, and only all three together mean approved manual
+    # evidence can actually back an answer:
+    #   1. an edition is human-approved in the registry,
+    #   2. the FTS index is built,
+    #   3. that index CONTAINS chunks from the approved edition.
+    #
+    # (3) is the one an "is the file there?" probe misses. The index can be
+    # complete and healthy while holding zero direct-evidence chunks, because
+    # the approved editions have extracted full text but no sectioned source
+    # for the builder to read. Reporting ready on (1) and (2) alone would be
+    # the same class of false green this endpoint exists to prevent.
+    manual_ready = bool(approved_manuals) and index_available and indexed_direct > 0
     manual_blocker = ""
-    if approved_manuals and not index_available:
+    if not approved_manuals:
+        manual_blocker = "no manual edition has been human-approved for direct evidence"
+    elif not index_available:
         manual_blocker = (
             "approved manual editions exist but the FTS index is not built on this "
             "deployment; run scripts/build_manual_search_index.py during the build"
         )
-    elif not approved_manuals:
-        manual_blocker = "no manual edition has been human-approved for direct evidence"
+    elif indexed_direct == 0:
+        manual_blocker = (
+            f"the index holds {indexed_total} chunks but 0 from an approved edition. "
+            "The approved editions are extracted to full text only; they have no "
+            "*_sections.json, and scripts/build_manual_search_index.py SECTION_SOURCES "
+            "does not list them. Sectioning an approved manual produces direct legal "
+            "evidence and needs the manual-sourcing owner plus a human review pass — "
+            "it is not a build-configuration fix."
+        )
 
     provider_ready = bool(OPENROUTER_API_KEY) or bool(GROQ_API_KEY and ALLOW_GROQ_FALLBACK)
 
@@ -4259,6 +4280,11 @@ async def health_ai() -> Dict[str, Any]:
             "manual": {
                 "approvedEditions": approved_manuals,
                 "indexAvailable": index_available,
+                # What the index actually holds, so "built" is never mistaken
+                # for "approved evidence is searchable".
+                "indexedChunks": indexed_total,
+                "indexedDirectEvidenceChunks": indexed_direct,
+                "indexedByApprovalState": composition.get("byApprovalState", {}),
                 "ready": manual_ready,
                 "blocker": manual_blocker,
             },

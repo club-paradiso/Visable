@@ -56,6 +56,56 @@ def index_available(path: Optional[str] = None) -> bool:
     return os.path.exists(index_path(path))
 
 
+def index_composition(path: Optional[str] = None) -> Dict[str, Any]:
+    """What the built index actually CONTAINS, by approval state.
+
+    "The index file exists" and "approved evidence is searchable" are different
+    facts, and conflating them is how a readiness probe reports green while the
+    strongest evidence in the repository is unreachable. The index can be built
+    and complete while holding zero direct-evidence chunks — which is exactly
+    the current state, because the approved editions have no sectioned source
+    to index yet.
+
+    Returns counts only; no document text. Never raises — a probe must not be
+    able to take down the endpoint that reports on it.
+    """
+    resolved = index_path(path)
+    if not os.path.exists(resolved):
+        return {"available": False, "totalChunks": 0, "directEvidenceChunks": 0,
+                "byApprovalState": {}, "sources": []}
+    try:
+        con = sqlite3.connect(f"file:{resolved}?mode=ro", uri=True)
+        try:
+            by_state = {
+                str(state): int(count)
+                for state, count in con.execute(
+                    "SELECT approval_state, COUNT(*) FROM chunk GROUP BY approval_state"
+                )
+            }
+            direct = int(
+                con.execute(
+                    "SELECT COUNT(*) FROM chunk WHERE direct_evidence = 1"
+                ).fetchone()[0]
+            )
+            sources = [
+                str(row[0])
+                for row in con.execute("SELECT DISTINCT source_id FROM chunk ORDER BY source_id")
+            ]
+        finally:
+            con.close()
+    except sqlite3.Error:
+        return {"available": True, "totalChunks": 0, "directEvidenceChunks": 0,
+                "byApprovalState": {}, "sources": [], "error": "index_unreadable"}
+
+    return {
+        "available": True,
+        "totalChunks": sum(by_state.values()),
+        "directEvidenceChunks": direct,
+        "byApprovalState": by_state,
+        "sources": sources,
+    }
+
+
 def search_manuals(
     query: str,
     *,

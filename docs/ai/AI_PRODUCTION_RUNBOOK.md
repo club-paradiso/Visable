@@ -56,29 +56,49 @@ were **permanently broken in production** before this change — every request
 returned `unavailable`. They are verified against the real application locally,
 but only this run proves it on the deployed instance.
 
-### 2.2 Build the manual search index at deploy time — **required for manual grounding**
+### 2.2 Manual grounding — index build DONE, sectioning still blocked
 
-`/api/health/ai` currently reports:
+`backend/railway.json` now runs `scripts/build_manual_search_index.py` during
+the build (non-fatal: a failed build degrades to `index_unavailable`, which is
+the designed fallback — killing a deploy over a search index would trade a
+weaker answer for no service).
+
+**That was necessary but not sufficient, and an earlier version of this runbook
+was wrong to call it "one line in the build."** Building the index produces:
 
 ```
-grounding.manual.blocker:
-  "approved manual editions exist but the FTS index is not built on this
-   deployment; run scripts/build_manual_search_index.py during the build"
+indexedChunks:                 1297
+indexedDirectEvidenceChunks:      0
+indexedByApprovalState:  {superseded: 1265, needs_review: 32}
+ready:                        false
 ```
 
-The registry holds human-approved manual editions, but the FTS index that
-surfaces them is a build artifact and nothing builds it. **Approved manual
-evidence is therefore unreachable in production**, and answers degrade to
-`index_unavailable` — honest, but far weaker than the evidence Visable actually
-holds.
+The chain has two more broken links:
 
-Fix: add to the Railway build (or a start hook):
-
-```bash
-python3 scripts/build_manual_search_index.py
+```
+approved HWP  ->  extracted full_text  ->  *_sections.json  ->  index  ->  searchable
+   2 editions          PRESENT              MISSING            n/a        no
 ```
 
-Then confirm `grounding.manual.ready` is `true` and the blocker is empty.
+1. The approved 2026-07-31 editions are extracted to full text only
+   (`docs/source-manuals/2026-07-31/extracted/full_text/*.txt`). Neither has a
+   `*_sections.json`.
+2. `SECTION_SOURCES` in `scripts/build_manual_search_index.py` lists only the
+   superseded 2026-06-17 editions and the needs-review dongpo manual.
+
+**This is deliberately not automated.** Sectioning an approved manual turns
+1.6 MB of extracted Korean text into chunks that may back direct legal
+assertions. Getting a boundary wrong attaches a requirement to the wrong
+status, and flattened tables must not be read as cell relationships. It needs
+the manual-sourcing owner and a human review pass — the same gate every other
+approved edition went through.
+
+Until then the behaviour is correct and honest: `/api/health/ai` reports the
+blocker verbatim, searches return `needs_review` results clearly labelled as
+검토 전, and nothing unapproved can back a direct assertion.
+
+When the sectioned sources land, add them to `SECTION_SOURCES`, rebuild, and
+confirm `grounding.manual.indexedDirectEvidenceChunks > 0` and `ready: true`.
 
 ### 2.3 Decide the law grounding posture — **judgement call**
 
