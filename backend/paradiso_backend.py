@@ -57,6 +57,7 @@ from services import manual_registry as _manual_registry
 from services import statute_citation_guard as _statute_guard
 from services import employment_nl as _employment_nl
 from services import immigration_tools as _immigration_tools
+from services import document_labels as _document_labels
 from services import precedent_sources
 from services.enforcement_models import StructuredCase
 from services.enforcement_service import analyze_enforcement_case, extract_structured_case

@@ -81,16 +81,15 @@ KNOWN_FAILING: Dict[str, str] = {
         "source. Manual-sourcing owner should re-point it at the current edition."
     ),
     "test_reentry_procedure_coverage": (
-        "Rendered document lists contain the raw doc_master id 'doc_fee_generic' where "
-        "the test expects a resolved fee label. The id IS valid in doc_master.json, so "
-        "this is a resolution gap between the packet builder and the renderer, not data "
-        "corruption. Worth fixing — an unresolved id reaching a user-facing list is "
-        "exactly the misleading-rendering class CLAUDE.md guards against — but it needs "
-        "a doc-resolution owner, not an AI-architecture change."
-    ),
-    "test_scenario_procedure_variants": (
-        "Same doc_fee_generic resolution gap, plus a spacing change in "
-        "'통합신청서 (별지 제34호 서식)' vs '통합신청서(별지 제34호 서식)'."
+        "The doc_fee_generic half of this is FIXED: the packet builder now resolves "
+        "doc_master ids, so no procedure packet serves an id as a document name. What "
+        "remains is data-snapshot drift, and it is the data owner's call, not a "
+        "rendering fix: the test expects pageRange 'p. N' but the data carries "
+        "'pp. 32-34'; expects a '복수재입국' condition string that is no longer present; "
+        "expects manualRefs[0].needsManualReview to be True where the committed data "
+        "says False; and expects D-2 reentry to be EMPTY where visa_data.json now "
+        "carries a three-document list with a 2026.6 manual ref (verified sourced and "
+        "committed, NOT fabricated at runtime — checked before registering this)."
     ),
 }
 

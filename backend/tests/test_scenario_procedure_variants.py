@@ -174,7 +174,16 @@ class ScenarioProcedureVariantApiTests(unittest.TestCase):
         d9_reentry = records["D-9"]["procedures"]["reentry"]
         self.assertEqual(
             d9_reentry["requiredDocs"]["requiredDocs"],
-            ["통합신청서(별지 제34호 서식)", "여권 원본", "외국인등록증", "doc_fee_generic"],
+            # Snapshot spacing corrected 2026-08 (a data commit added the space
+            # in 통합신청서). "doc_fee_generic" stays deliberately: /api/visas
+            # carries doc_master IDs as an INTERNAL KEY, and
+            # complex-status-guide.js partitions on exactly that to keep
+            # unverified manual prose out of its audit-safe checklist. The
+            # rendering bug was one consumer — the procedure packet builder —
+            # serving that key as a document NAME; it now resolves the ID (see
+            # test_document_labels.py). Resolving here instead would empty the
+            # guide's checklist.
+            ["통합신청서 (별지 제34호 서식)", "여권 원본", "외국인등록증", "doc_fee_generic"],
         )
 
 
@@ -1067,7 +1076,16 @@ class AiVariantGroundingPostMergeSmokeTests(unittest.TestCase):
         d9_reentry = records["D-9"]["procedures"]["reentry"]
         self.assertEqual(
             d9_reentry["requiredDocs"]["requiredDocs"],
-            ["통합신청서(별지 제34호 서식)", "여권 원본", "외국인등록증", "doc_fee_generic"],
+            # Snapshot spacing corrected 2026-08 (a data commit added the space
+            # in 통합신청서). "doc_fee_generic" stays deliberately: /api/visas
+            # carries doc_master IDs as an INTERNAL KEY, and
+            # complex-status-guide.js partitions on exactly that to keep
+            # unverified manual prose out of its audit-safe checklist. The
+            # rendering bug was one consumer — the procedure packet builder —
+            # serving that key as a document NAME; it now resolves the ID (see
+            # test_document_labels.py). Resolving here instead would empty the
+            # guide's checklist.
+            ["통합신청서 (별지 제34호 서식)", "여권 원본", "외국인등록증", "doc_fee_generic"],
         )
 
 
