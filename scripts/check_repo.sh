@@ -359,6 +359,22 @@ else
   echo "INFO: Node.js not found; skipping nationality-services data validation."
 fi
 
+echo "[9h/14] Validating 사범처리 예상(Enforcement Intelligence) contracts..."
+# Stdlib/Node-only, offline. check_enforcement_ui asserts the three-step flow,
+# the deterministic-baseline/AI-prediction separation, and that no credential
+# ever reaches the client. check_enforcement_nl_ux asserts the assessment-date
+# contract (today default, bounded input, validated resolver). The extraction
+# quality suite pins colloquial Korean parsing for the same-origin JS fallback
+# so it cannot drift back behind the Python service.
+if command -v node >/dev/null 2>&1; then
+  node scripts/check_enforcement_ui.mjs
+  node scripts/check_enforcement_nl_ux.mjs
+  node scripts/check_enforcement_extraction_quality.mjs
+else
+  echo "INFO: Node.js not found; skipping enforcement contract validation."
+fi
+python3 -m unittest backend.tests.test_enforcement_intelligence backend.tests.test_enforcement_extraction_quality
+
 echo "[10/14] Scanning key user-facing files for forbidden branding strings..."
 KEY_FILES=(
   "index.html"
