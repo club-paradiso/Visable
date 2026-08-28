@@ -23,8 +23,39 @@ from . import manual_registry as mr
 
 MANUAL_SEARCH_VERSION = "2026-07-manual-search-v1"
 
-_REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-DEFAULT_INDEX_PATH = os.path.join(_REPO_ROOT, "build", "manual_search_index.sqlite3")
+#: ``backend/`` — the directory that IS the Railway build context (Root
+#: Directory = backend). Under that layout the old ``dirname`` x3 walk climbed
+#: past the deploy root and produced an absolute ``/build/...`` path outside the
+#: application, so the index could never be found even if one were shipped.
+_BACKEND_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+_REPO_ROOT = os.path.dirname(_BACKEND_DIR)
+
+BACKEND_INDEX_PATH = os.path.join(_BACKEND_DIR, "data", "manual_search_index.sqlite3")
+REPO_ROOT_INDEX_PATH = os.path.join(_REPO_ROOT, "build", "manual_search_index.sqlite3")
+
+#: Where a locally built index lands. ``scripts/build_manual_search_index.py``
+#: writes here, and it is gitignored — the index is a build artifact.
+DEFAULT_INDEX_PATH = REPO_ROOT_INDEX_PATH
+
+
+def candidate_index_paths(explicit: Optional[str] = None) -> List[str]:
+    """Search order for the manual search index.
+
+    1. ``explicit``, or ``MANUAL_SEARCH_INDEX_PATH`` — an operator override, and
+       when set it is the ONLY candidate: silently searching a different index
+       would answer immigration questions from sources nobody selected.
+    2. ``backend/data/manual_search_index.sqlite3`` — an index shipped inside
+       the deploy context, should one ever be committed or produced there.
+    3. ``<repo-root>/build/manual_search_index.sqlite3`` — the local build
+       output, used for development and CI.
+
+    Nothing here builds an index. Absence is a supported state that degrades to
+    ``index_unavailable``; see ``manual_index_blocker``.
+    """
+    chosen = (explicit or os.environ.get("MANUAL_SEARCH_INDEX_PATH") or "").strip()
+    if chosen:
+        return [chosen]
+    return [BACKEND_INDEX_PATH, REPO_ROOT_INDEX_PATH]
 
 STATUS_OK = "ok"
 STATUS_NO_RESULTS = "no_results"
@@ -49,7 +80,17 @@ def _sanitize_fts_query(query: str) -> str:
 
 
 def index_path(explicit: Optional[str] = None) -> str:
-    return explicit or os.environ.get("MANUAL_SEARCH_INDEX_PATH") or DEFAULT_INDEX_PATH
+    """First candidate present on disk; the last candidate if none are.
+
+    Returning a non-existent path when nothing is found keeps the failure
+    reportable — callers degrade to ``index_unavailable`` and diagnostics can
+    still say where the search looked.
+    """
+    candidates = candidate_index_paths(explicit)
+    for candidate in candidates:
+        if os.path.exists(candidate):
+            return candidate
+    return candidates[-1]
 
 
 def index_available(path: Optional[str] = None) -> bool:
@@ -215,5 +256,5 @@ __all__ = [
     "MANUAL_SEARCH_VERSION", "STATUS_OK", "STATUS_NO_RESULTS",
     "STATUS_INDEX_UNAVAILABLE", "STATUS_BAD_QUERY",
     "index_path", "index_available", "search_manuals", "manual_evidence_state",
-    "DEFAULT_INDEX_PATH",
+    "DEFAULT_INDEX_PATH", "candidate_index_paths", "index_composition",
 ]

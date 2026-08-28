@@ -8,6 +8,9 @@ Stack: vanilla HTML/CSS/JS, single-file, no build system.
 - `visa_data.json`
 - `backend/data/visas.json`
 - `doc_master.json`
+- `backend/data/doc_master.json` (byte-identical deploy-context copy of
+  `doc_master.json`; never edit directly — edit the canonical file at the repo
+  root, then run `python3 scripts/sync_visa_data.py`)
 
 These may receive ONLY safe, surgical edits (see below). Never bulk-rewrite.
 

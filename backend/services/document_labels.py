@@ -39,8 +39,49 @@ from typing import Any, Dict, List, Optional
 
 DOCUMENT_LABELS_VERSION = "2026-08-document-labels-v1"
 
-_REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-DEFAULT_DOC_MASTER_PATH = os.path.join(_REPO_ROOT, "doc_master.json")
+#: ``backend/`` — the directory that IS the Railway build context (the service
+#: is deployed with Root Directory = backend). Anchoring to this package rather
+#: than to a computed repo root is what makes resolution work in production.
+_BACKEND_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+_REPO_ROOT = os.path.dirname(_BACKEND_DIR)
+
+#: In-context copy, kept byte-identical to the canonical registry by
+#: ``scripts/sync_visa_data.py`` and drift-gated in CI.
+BACKEND_DOC_MASTER_PATH = os.path.join(_BACKEND_DIR, "data", "doc_master.json")
+#: The canonical registry. Present for local dev and any deploy built from the
+#: repository root; absent when Root Directory = backend.
+REPO_ROOT_DOC_MASTER_PATH = os.path.join(_REPO_ROOT, "doc_master.json")
+
+#: Retained for callers that want a single default. Prefer
+#: :func:`candidate_doc_master_paths`, which is what resolution actually uses.
+DEFAULT_DOC_MASTER_PATH = REPO_ROOT_DOC_MASTER_PATH
+
+
+def candidate_doc_master_paths(explicit: Optional[str] = None) -> List[str]:
+    """Search order for the document registry.
+
+    1. ``explicit`` argument, or the ``DOC_MASTER_PATH`` env var.
+    2. ``backend/data/doc_master.json`` — the committed copy that ships inside
+       the backend deploy context.
+    3. ``<repo-root>/doc_master.json`` — the canonical file, used for local dev
+       and any deploy whose build context includes the repository root.
+
+    Order 2 before 3 deliberately mirrors ``_candidate_visa_paths`` in
+    ``paradiso_backend``. The Railway service sets Root Directory = backend, so
+    the repo-root file is simply not on disk there; resolving only against it
+    meant ``load_document_labels`` returned an empty map in production and every
+    document ID passed through unresolved — the packet fix worked in CI and did
+    nothing for users.
+
+    An explicit path is the ONLY candidate when given. Falling back from an
+    operator's ``DOC_MASTER_PATH`` to a different registry would silently serve
+    labels from a file they did not choose, turning a visible misconfiguration
+    into wrong document names.
+    """
+    chosen = (explicit or os.environ.get("DOC_MASTER_PATH") or "").strip()
+    if chosen:
+        return [chosen]
+    return [BACKEND_DOC_MASTER_PATH, REPO_ROOT_DOC_MASTER_PATH]
 
 #: A doc_master identifier: lowercase ASCII snake_case. Deliberately narrow so
 #: Korean manual prose can never be mistaken for an ID and "resolved" into
@@ -52,11 +93,21 @@ _CACHE_PATH: Optional[str] = None
 
 
 def _doc_master_path(explicit: Optional[str] = None) -> str:
-    return explicit or os.environ.get("DOC_MASTER_PATH") or DEFAULT_DOC_MASTER_PATH
+    """First candidate that exists on disk; the last candidate if none do.
+
+    Returning a non-existent path when nothing is found is deliberate: the
+    caller degrades to an empty map, and the returned path is what diagnostics
+    report as "where we looked".
+    """
+    candidates = candidate_doc_master_paths(explicit)
+    for candidate in candidates:
+        if os.path.isfile(candidate):
+            return candidate
+    return candidates[-1]
 
 
 def load_document_labels(path: Optional[str] = None) -> Dict[str, Dict[str, str]]:
-    """``id -> {"ko": ..., "en": ...}``, cached per path.
+    """``id -> {"ko": ..., "en": ...}``, cached per resolved path.
 
     A missing or malformed registry yields an empty map rather than raising:
     resolution is an improvement on the raw value, never a precondition for
@@ -178,3 +229,43 @@ def unresolved_document_ids(record: Any) -> List[str]:
 
     walk((record or {}).get("procedures") if isinstance(record, dict) else record)
     return found
+
+
+def _display_path(path: str) -> str:
+    """Repo-relative when inside the tree, otherwise unchanged."""
+    for base in (_REPO_ROOT, _BACKEND_DIR):
+        try:
+            rel = os.path.relpath(path, base)
+        except ValueError:
+            continue
+        if not rel.startswith(os.pardir):
+            return rel
+    return path
+
+
+def registry_source(path: Optional[str] = None) -> Dict[str, Any]:
+    """Where the registry was loaded from, for readiness reporting.
+
+    ``resolved: false`` with a non-empty ``searched`` list is the production
+    failure Codex caught on #582: the file is simply not in the deploy context,
+    which is a packaging problem, not a data problem.
+    """
+    resolved = _doc_master_path(path)
+    exists = os.path.isfile(resolved)
+    if not exists:
+        source = "missing"
+    elif resolved == BACKEND_DOC_MASTER_PATH:
+        source = "backend-data"
+    elif resolved == REPO_ROOT_DOC_MASTER_PATH:
+        source = "repo-root"
+    else:
+        source = "explicit"
+    return {
+        "resolved": exists,
+        "source": source,
+        "entries": len(load_document_labels(path)),
+        # Relative to the repo/deploy root: enough to diagnose "where did it
+        # look", without publishing absolute container paths on a public
+        # endpoint. An operator-set path outside the tree is shown as given.
+        "searched": [_display_path(c) for c in candidate_doc_master_paths(path)],
+    }

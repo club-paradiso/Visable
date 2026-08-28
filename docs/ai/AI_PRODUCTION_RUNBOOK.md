@@ -56,49 +56,73 @@ were **permanently broken in production** before this change — every request
 returned `unavailable`. They are verified against the real application locally,
 but only this run proves it on the deployed instance.
 
-### 2.2 Manual grounding — index build DONE, sectioning still blocked
+### 2.2 Manual grounding — blocked on sectioning, and there is no build step
 
-`backend/railway.json` now runs `scripts/build_manual_search_index.py` during
-the build (non-fatal: a failed build degrades to `index_unavailable`, which is
-the designed fallback — killing a deploy over a search index would trade a
-weaker answer for no service).
+**Two earlier versions of this section were wrong. This is the corrected one.**
 
-**That was necessary but not sufficient, and an earlier version of this runbook
-was wrong to call it "one line in the build."** Building the index produces:
+First it said the index was "one line in the build." Building it showed the
+approved editions were not in it at all. Then #582 wired a `buildCommand` into
+`backend/railway.json` — and review on that PR showed the command could never
+have run: the Railway service sets **Root Directory = backend**, so the
+repo-root `scripts/` tree is not in the build context. `python3
+scripts/build_manual_search_index.py` exited with "can't open file" on every
+deploy, and the trailing `|| echo` converted that guaranteed failure into a
+success. The warning it printed read as conditional; the failure was
+unconditional.
 
-```
-indexedChunks:                 1297
-indexedDirectEvidenceChunks:      0
-indexedByApprovalState:  {superseded: 1265, needs_review: 32}
-ready:                        false
-```
+The `buildCommand` has been removed. A build step that cannot succeed is worse
+than none: it hides the absence of the thing it claims to produce.
 
-The chain has two more broken links:
+The chain is broken in two independent places:
 
 ```
 approved HWP  ->  extracted full_text  ->  *_sections.json  ->  index  ->  searchable
    2 editions          PRESENT              MISSING            n/a        no
+                                                                ^
+                                        and no builder can run in the deploy context
 ```
 
-1. The approved 2026-07-31 editions are extracted to full text only
-   (`docs/source-manuals/2026-07-31/extracted/full_text/*.txt`). Neither has a
-   `*_sections.json`.
-2. `SECTION_SOURCES` in `scripts/build_manual_search_index.py` lists only the
-   superseded 2026-06-17 editions and the needs-review dongpo manual.
+1. **Sectioning (needs a human).** The approved 2026-07-31 editions are
+   extracted to full text only; neither has a `*_sections.json`, and
+   `SECTION_SOURCES` lists only the superseded 2026-06-17 editions and the
+   needs-review dongpo manual. Sectioning turns 1.6 MB of Korean text into
+   chunks that may back direct legal assertions — a wrong boundary attaches a
+   requirement to the wrong status, and flattened tables must not be read as
+   cell relationships. This needs the manual-sourcing owner and a human review
+   pass, the same gate every other approved edition went through.
 
-**This is deliberately not automated.** Sectioning an approved manual turns
-1.6 MB of extracted Korean text into chunks that may back direct legal
-assertions. Getting a boundary wrong attaches a requirement to the wrong
-status, and flattened tables must not be read as cell relationships. It needs
-the manual-sourcing owner and a human review pass — the same gate every other
-approved edition went through.
+2. **Packaging (an operator step).** Even with sections, nothing builds the
+   index inside the backend deploy context. Build it and ship it as
+   `backend/data/manual_search_index.sqlite3`, or point
+   `MANUAL_SEARCH_INDEX_PATH` at a mounted volume. `manual_search` searches the
+   in-context path first and the local `build/` output second.
 
-Until then the behaviour is correct and honest: `/api/health/ai` reports the
-blocker verbatim, searches return `needs_review` results clearly labelled as
-검토 전, and nothing unapproved can back a direct assertion.
+Until both land the behaviour is correct and honest: `/api/health/ai` reports
+the blocker verbatim (naming the paths it searched), searches return
+`needs_review` results labelled 검토 전, and nothing unapproved can back a
+direct assertion. Confirm success with
+`grounding.manual.indexedDirectEvidenceChunks > 0` and `ready: true`.
 
-When the sectioned sources land, add them to `SECTION_SOURCES`, rebuild, and
-confirm `grounding.manual.indexedDirectEvidenceChunks > 0` and `ready: true`.
+### 2.2b Document registry — FIXED, verify after deploy
+
+The same deploy-context trap hit `doc_master.json`. The #582 resolver fix was
+correct and **inert in production**: the registry was loaded only from the
+repo root, which is not in the backend build context, so `load_document_labels()`
+returned an empty map and all 67 document IDs passed through unresolved. Users
+still saw `doc_fee_generic` as a document name. CI was green throughout, because
+CI runs from the repo root where the file exists.
+
+`backend/data/doc_master.json` now ships in the deploy context, kept
+byte-identical by `scripts/sync_visa_data.py` and drift-gated in CI. Verify:
+
+```bash
+curl -s https://<BACKEND_HOST>/api/health/ai \
+  | python3 -c 'import json,sys; print(json.load(sys.stdin)["grounding"]["documentRegistry"])'
+```
+
+Expect `resolved: true`, `source: "backend-data"`, and a non-zero `entries`.
+`source: "repo-root"` means the deploy context includes the repo root (fine, but
+not the documented Railway layout); `resolved: false` means the bug is back.
 
 ### 2.3 Decide the law grounding posture — **judgement call**
 
