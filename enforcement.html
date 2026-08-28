@@ -40,9 +40,19 @@
       <form id="case-form">
         <label for="case-text">사례 설명</label>
         <textarea id="case-text" maxlength="3000" required placeholder="예: D-2 유학생인데 음식점에서 허가 없이 약 3주 동안 아르바이트를 했어요. 이번이 처음입니다."></textarea>
-        <div class="form-row">
-          <label for="assessment-date">분석 기준일 <span>(선택)</span></label>
-          <input id="assessment-date" type="date">
+        <div class="example-row">
+          <span class="example-label">예시로 채우기</span>
+          <button type="button" class="example-chip" data-example="D-2 유학생인데 시간제취업 허가를 안 받고 음식점에서 한 달 동안 아르바이트를 했어요. 이번이 처음입니다.">유학생 시간제취업</button>
+          <button type="button" class="example-chip" data-example="E-7-4 비자인데 근무처 변경 허가를 안 받고 2개월 3일 동안 다른 회사에서 일했습니다.">근무처 변경</button>
+          <button type="button" class="example-chip" data-example="D-10 구직비자인데 체류기간 만료 후 엿새 지났어요. 이번이 처음이고 스스로 출입국관서에 자진 방문했습니다.">체류기간 초과</button>
+        </div>
+        <div class="form-row form-row--date">
+          <label for="assessment-date">분석 기준일</label>
+          <div class="date-field">
+            <input id="assessment-date" type="date" aria-describedby="assessment-date-hint">
+            <button type="button" class="secondary-button" id="assessment-date-today">오늘로</button>
+          </div>
+          <p class="field-hint" id="assessment-date-hint">오늘 날짜가 기본값으로 채워집니다. 과거 사례를 볼 때만 바꿔 주세요.</p>
         </div>
         <p class="form-error" id="input-error" role="alert" hidden></p>
         <button class="primary-button" type="submit">입력 내용 구조화하기 <span aria-hidden="true">→</span></button>

@@ -59,6 +59,21 @@ _FULL_DATE_RE = re.compile(
 )
 _SHORT_DATE_RE = re.compile(r"(\d{1,2})\s*(?:월|[./-])\s*(\d{1,2})\s*일?")
 _DURATION_TOKEN_RE = re.compile(r"(\d+)\s*(년|개월|달|주|일)")
+# 제21조제1항(근무처 변경·추가 허가)을 가리키는 명시적 표현만 잡는다.
+# "다른 회사에서 일했다" 같은 서술은 제18조제2항과 구별되지 않으므로 제외한다.
+_WORKPLACE_CHANGE_RE = re.compile(
+    r"(?:근무처|사업장|회사|업체)\s*(?:를|로|으로)?\s*(?:변경|추가)"
+    r"|(?:변경|추가)\s*(?:허가|신고)"
+    r"|(?:근무처|사업장|회사|업체).*?(?:옮겼|옮긴|옮기|이직)"
+    r"|(?:옮겼|옮긴|이직).*?(?:허가|신고)",
+    re.I,
+)
+# 제18조제2항(지정된 근무처가 아닌 곳에서 근무)을 가리키는 명시적 표현.
+_OUTSIDE_DESIGNATED_WORKPLACE_RE = re.compile(
+    r"지정(?:된)?\s*(?:근무처|사업장).*(?:아닌|외)"
+    r"|허가(?:된)?\s*(?:근무처|사업장).*(?:외|아닌)",
+    re.I,
+)
 _WORD_DURATIONS = (
     (re.compile(r"(?<![가-힣])하루(?![가-힣])"), 1),
     (re.compile(r"(?<![가-힣])이틀(?![가-힣])"), 2),
@@ -195,24 +210,8 @@ def _classify_violation(clean: str, status: Optional[str]) -> tuple[Optional[str
             re.I,
         )
     )
-    workplace_change = bool(
-        re.search(
-            r"(?:근무처|사업장|회사|업체).*(?:변경|추가|옮겼|이직)"
-            r"|(?:변경|추가|이직).*(?:허가|신고)"
-            r"|다른\s*(?:회사|업체|사업장|근무처).*(?:근무|일)",
-            clean,
-            re.I,
-        )
-    )
-    outside_designated_workplace = bool(
-        re.search(
-            r"지정(?:된)?\s*(?:근무처|사업장).*(?:아닌|외)"
-            r"|다른\s*(?:근무처|사업장|회사|업체)"
-            r"|허가(?:된)?\s*(?:근무처|사업장).*(?:외|아닌)",
-            clean,
-            re.I,
-        )
-    )
+    workplace_change = bool(_WORKPLACE_CHANGE_RE.search(clean))
+    outside_designated_workplace = bool(_OUTSIDE_DESIGNATED_WORKPLACE_RE.search(clean))
     explicit_no_work_status = bool(
         re.search(
             r"취업활동을?\s*(?:할\s*수\s*)?없는\s*체류자격"
@@ -232,10 +231,12 @@ def _classify_violation(clean: str, status: Optional[str]) -> tuple[Optional[str
     normalized_status = (status or "").upper()
     if _STUDY_STATUS_RE.match(normalized_status):
         return "STATUS_OUTSIDE_ACTIVITY_ART20", ["STATUS_OUTSIDE_ACTIVITY_ART20"], unauthorized, work
-    if workplace_change:
-        return "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1", ["UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1"], unauthorized, work
+    # 명시적인 조문 표지가 있을 때만 조문을 확정한다. 표지가 겹치지 않도록
+    # "지정된 근무처가 아닌 곳"(제18조제2항)을 "근무처 변경·추가"(제21조제1항)보다 먼저 본다.
     if outside_designated_workplace and _WORK_STATUS_RE.match(normalized_status):
         return "UNAUTHORIZED_EMPLOYMENT_ART18_2", ["UNAUTHORIZED_EMPLOYMENT_ART18_2"], unauthorized, work
+    if workplace_change:
+        return "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1", ["UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1"], unauthorized, work
     if explicit_no_work_status or _CLEAR_NON_WORK_STATUS_RE.match(normalized_status):
         return "UNAUTHORIZED_STAY_OR_WORK_ART18_1", ["UNAUTHORIZED_STAY_OR_WORK_ART18_1"], unauthorized, work
 
@@ -277,15 +278,7 @@ def _heuristic_extract(text: str, *, assessment_date: Optional[date] = None) -> 
         duration_days = (end - start).days + 1
 
     violation_code, violation_candidates, unauthorized, work = _classify_violation(clean, status)
-    workplace_change = bool(
-        re.search(
-            r"(?:근무처|사업장|회사|업체).*(?:변경|추가|옮겼|이직)"
-            r"|(?:변경|추가|이직).*(?:허가|신고)"
-            r"|다른\s*(?:회사|업체|사업장|근무처).*(?:근무|일)",
-            clean,
-            re.I,
-        )
-    )
+    workplace_change = bool(_WORKPLACE_CHANGE_RE.search(clean))
 
     prior = None
     if re.search(
