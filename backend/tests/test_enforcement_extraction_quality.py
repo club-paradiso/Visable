@@ -14,6 +14,51 @@ if str(BACKEND_DIR) not in sys.path:
 from services.enforcement_service import build_extraction_prompt, extract_structured_case  # noqa: E402
 
 
+PARITY_FIXTURE = json.loads(
+    (Path(__file__).resolve().parent / "fixtures" / "enforcement_extraction_parity.json")
+    .read_text(encoding="utf-8")
+)
+
+_CAMEL_TO_SNAKE = {
+    "statusOfStay": "status_of_stay",
+    "violationCode": "violation_code",
+    "violationCandidates": "violation_candidates",
+    "durationDays": "duration_days",
+    "violationStartDate": "violation_start_date",
+    "violationEndDate": "violation_end_date",
+    "priorViolations": "prior_violations",
+    "voluntaryDisclosure": "voluntary_disclosure",
+    "workplaceChangeAuthorized": "workplace_change_authorized",
+}
+
+
+class EnforcementExtractionParityTests(unittest.IsolatedAsyncioTestCase):
+    """Runs the fixture shared with scripts/check_enforcement_extraction_quality.mjs.
+
+    The Python service is the primary extractor and the JS module is the
+    same-origin fallback. Driving both from one fixture keeps them from
+    drifting, so a user never gets a different provision depending on which
+    path served the request.
+    """
+
+    async def test_shared_parity_fixture(self):
+        assessment_date = date.fromisoformat(PARITY_FIXTURE["assessmentDate"])
+        ambiguous = PARITY_FIXTURE["ambiguousWorkCodes"]
+        for case in PARITY_FIXTURE["cases"]:
+            with self.subTest(case=case["name"]):
+                result = await extract_structured_case(
+                    case["text"], assessment_date=assessment_date
+                )
+                for key, expected in case["expect"].items():
+                    actual = getattr(result, _CAMEL_TO_SNAKE[key])
+                    if expected == "AMBIGUOUS":
+                        expected = ambiguous
+                    elif key in ("violationStartDate", "violationEndDate") and expected:
+                        expected = date.fromisoformat(expected)
+                    self.assertEqual(actual, expected, f"{case['name']}: {key}")
+                self.assertEqual(result.assessment_date, assessment_date)
+
+
 class EnforcementExtractionQualityTests(unittest.IsolatedAsyncioTestCase):
     async def test_colloquial_overstay_extracts_status_duration_first_offense_and_voluntary_visit(self):
         result = await extract_structured_case(
