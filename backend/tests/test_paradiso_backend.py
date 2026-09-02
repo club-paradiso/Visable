@@ -87,7 +87,7 @@ class RootEndpointTests(unittest.TestCase):
         self.assertIsNone(body.get("frontend"))
 
     def test_root_includes_frontend_url_when_configured(self):
-        os.environ["FRONTEND_URL"] = "https://lucanomics.github.io/Paradiso/"
+        os.environ["FRONTEND_URL"] = "https://visable-mu.vercel.app/"
         try:
             # FRONTEND_URL is read at import; reload to pick up env override.
             import importlib
@@ -101,7 +101,7 @@ class RootEndpointTests(unittest.TestCase):
             self.assertEqual(resp.status_code, 200, resp.text)
             self.assertEqual(
                 resp.json().get("frontend"),
-                "https://lucanomics.github.io/Paradiso/",
+                "https://visable-mu.vercel.app/",
             )
         finally:
             os.environ.pop("FRONTEND_URL", None)

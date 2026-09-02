@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-URL="${1:-https://lucanomics.github.io/Paradiso/}"
+URL="${1:-https://visable-mu.vercel.app/}"
 TMP_HTML="$(mktemp)"
 TMP_HEADERS="$(mktemp)"
 

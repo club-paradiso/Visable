@@ -16,8 +16,8 @@ lookup flows.
 | GET    | `/api/debug/law-grounding/preflight` | Operator-safe readiness preflight: resolved mode, key/endpoint configured (booleans), sample trigger + query, warning markers. No secrets, no external call. |
 
 > The Paradiso backend is **API-only**. The human-facing frontend
-> (`index.html`, `ai.html`) is deployed separately (currently GitHub
-> Pages at `lucanomics.github.io/Paradiso/`). `GET /` returns a small
+> (`index.html`, `ai.html`) is deployed separately (currently Vercel at
+> `visable-mu.vercel.app`). `GET /` returns a small
 > JSON descriptor instead of a bare 404 so anyone — especially mobile
 > users — who opens the Railway URL directly sees where to go next.
 
@@ -160,7 +160,7 @@ for `/api/ask` to return answers.
 
 1. Sign in to Railway and choose **New Project → Deploy from GitHub
    repo**.
-2. Select **Repo:** `lucanomics/Paradiso`.
+2. Select the current **Visable** repository.
 3. After the service is created, open **Settings → Service → Source**
    and set **Root Directory** to `backend`.
 4. Railway will detect `requirements.txt` and `Procfile` automatically.
