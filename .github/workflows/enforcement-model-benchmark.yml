@@ -35,6 +35,22 @@ jobs:
         run: pip install -r backend/requirements.txt
       - name: Validate synthetic fixtures and prompts without network
         run: python3 scripts/benchmark_enforcement_models.py --dry-run
+      - name: Inspect enforcement route wiring
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('backend/paradiso_backend.py')
+          lines = path.read_text(encoding='utf-8').splitlines()
+          needle = '/api/enforcement/analyze'
+          matches = [i for i, line in enumerate(lines) if needle in line]
+          if not matches:
+              raise SystemExit('enforcement analyze route not found')
+          for i in matches:
+              start=max(0, i-25); end=min(len(lines), i+90)
+              print(f'--- {path}:{i+1} ---')
+              for n in range(start, end):
+                  print(f'{n+1:05d}: {lines[n]}')
+          PY
 
   live-model-comparison:
     if: ${{ github.event_name == 'workflow_dispatch' }}
