@@ -35,21 +35,23 @@ jobs:
         run: pip install -r backend/requirements.txt
       - name: Validate synthetic fixtures and prompts without network
         run: python3 scripts/benchmark_enforcement_models.py --dry-run
-      - name: Inspect enforcement route wiring
+      - name: Probe public production AI readiness
         run: |
           python3 - <<'PY'
-          from pathlib import Path
-          path = Path('backend/paradiso_backend.py')
-          lines = path.read_text(encoding='utf-8').splitlines()
-          needle = '/api/enforcement/analyze'
-          matches = [i for i, line in enumerate(lines) if needle in line]
-          if not matches:
-              raise SystemExit('enforcement analyze route not found')
-          for i in matches:
-              start=max(0, i-25); end=min(len(lines), i+90)
-              print(f'--- {path}:{i+1} ---')
-              for n in range(start, end):
-                  print(f'{n+1:05d}: {lines[n]}')
+          import json, urllib.request
+          url='https://web-production-14f9a.up.railway.app/api/health/ai'
+          req=urllib.request.Request(url, headers={'Accept':'application/json','User-Agent':'Visable-Enforcement-Benchmark/1.0'})
+          with urllib.request.urlopen(req, timeout=30) as response:
+              body=json.loads(response.read().decode())
+          safe={
+              'aiReady': body.get('aiReady'),
+              'activeProvider': body.get('activeProvider'),
+              'runtimeVersion': body.get('runtimeVersion'),
+              'modelPolicyVersion': body.get('modelPolicyVersion'),
+              'candidateWarnings': body.get('candidateWarnings'),
+              'modelPolicy': body.get('modelPolicy'),
+          }
+          print('AI_READINESS=' + json.dumps(safe, ensure_ascii=False, sort_keys=True))
           PY
 
   live-model-comparison:
