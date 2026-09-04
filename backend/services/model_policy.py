@@ -103,6 +103,17 @@ DEFAULT_FAST_ANSWER_MODEL_CANDIDATES: List[str] = [
     "meta-llama/llama-3.3-70b-instruct:free",    # Fast fallback 3 — Llama 3.3 70B
 ]
 
+# Enforcement structured extraction/prediction is deliberately isolated from
+# the deploy-wide Fast answer env overrides. Railway can carry older Fast-tier
+# settings for unrelated features; enforcement must not inherit those silently.
+# Keep this chain short: both models are current free OpenRouter endpoints with
+# structured-output support, and the caller applies a hard total latency budget.
+DEFAULT_ENFORCEMENT_STRUCTURED_MODEL = "google/gemma-4-26b-a4b-it:free"
+DEFAULT_ENFORCEMENT_STRUCTURED_MODEL_CANDIDATES: List[str] = [
+    "google/gemma-4-26b-a4b-it:free",
+    "openai/gpt-oss-20b:free",
+]
+
 DEFAULT_VERIFIER_MODEL = "openai/gpt-oss-120b:free"
 
 DEFAULT_CHINESE_MODEL = "deepseek/deepseek-r1-0528:free"
@@ -152,6 +163,18 @@ def resolve_model_role_policy() -> Dict[str, Any]:
     final_candidates = _dedupe_preserve_order(
         [final_model, *_csv_env("OPENROUTER_MODEL_CANDIDATES", DEFAULT_FINAL_ANSWER_MODEL_CANDIDATES)]
     )
+    enforcement_model = _env(
+        "OPENROUTER_ENFORCEMENT_MODEL", DEFAULT_ENFORCEMENT_STRUCTURED_MODEL
+    )
+    enforcement_candidates = _dedupe_preserve_order(
+        [
+            enforcement_model,
+            *_csv_env(
+                "OPENROUTER_ENFORCEMENT_MODEL_CANDIDATES",
+                DEFAULT_ENFORCEMENT_STRUCTURED_MODEL_CANDIDATES,
+            ),
+        ]
+    )
 
     return {
         "version": MODEL_POLICY_VERSION,
@@ -160,6 +183,8 @@ def resolve_model_role_policy() -> Dict[str, Any]:
         "final_answer_model": final_model,
         "final_answer_model_candidates": final_candidates,
         "verifier_model": _env("AI_VERIFIER_MODEL", DEFAULT_VERIFIER_MODEL),
+        "enforcement_structured_model": enforcement_model,
+        "enforcement_structured_model_candidates": enforcement_candidates,
         "chinese_model": _env("AI_CHINESE_MODEL", DEFAULT_CHINESE_MODEL),
         "chinese_fallback_models": _csv_env("AI_CHINESE_FALLBACK_MODELS", DEFAULT_CHINESE_FALLBACK_MODELS),
         "chinese_only_model_prefixes": list(CHINESE_ONLY_MODEL_PREFIXES),

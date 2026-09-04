@@ -510,7 +510,13 @@ async def extract_structured_case(
         raise ValueError("case text is required")
 
     fallback = _heuristic_extract(text, assessment_date=assessment_date)
-    if provider is None:
+    heuristic_complete = bool(
+        fallback.status_of_stay
+        and fallback.violation_code
+        and fallback.duration_days is not None
+        and not fallback.extraction_warnings
+    )
+    if provider is None or heuristic_complete:
         return fallback
 
     try:
