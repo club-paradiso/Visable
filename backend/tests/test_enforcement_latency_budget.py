@@ -56,6 +56,45 @@ class EnforcementLatencyBudgetTests(unittest.IsolatedAsyncioTestCase):
         )
         self.assertEqual(calls, 1)
 
+
+    async def test_enforcement_provider_requests_json_mode(self):
+        import paradiso_backend as pb
+
+        captured = {}
+
+        async def fake_complete(prompt, **kwargs):
+            captured.update(kwargs)
+            return {"ok": False, "answer": None, "provider_error_type": "test"}
+
+        with patch.object(pb, "_openrouter_complete_with_candidates", new=fake_complete):
+            await pb._enforcement_ai_provider("synthetic prompt")
+
+        self.assertEqual(captured["response_format"], {"type": "json_object"})
+        self.assertEqual(captured["temperature"], 0.1)
+        self.assertEqual(captured["max_tokens"], 900)
+        self.assertEqual(captured["system_prompt"], pb.ENFORCEMENT_STRUCTURED_SYSTEM_PROMPT)
+        self.assertIn("exactly one JSON object", captured["system_prompt"])
+
+    async def test_general_candidate_path_preserves_legacy_transport_signature(self):
+        import paradiso_backend as pb
+
+        calls = []
+
+        async def legacy_transport(prompt, model=None, max_tokens=None):
+            calls.append((prompt, model, max_tokens))
+            return "{}"
+
+        with patch.object(pb, "_call_openrouter", new=legacy_transport):
+            result = await pb._openrouter_complete_with_candidates(
+                "synthetic prompt",
+                requested_model="google/gemma-4-26b-a4b-it:free",
+                candidate_models=["google/gemma-4-26b-a4b-it:free"],
+                max_tokens=100,
+            )
+
+        self.assertTrue(result["ok"])
+        self.assertEqual(calls, [("synthetic prompt", "google/gemma-4-26b-a4b-it:free", 100)])
+
     def test_enforcement_role_isolated_from_fast_env_overrides(self):
         with patch.dict(
             os.environ,
