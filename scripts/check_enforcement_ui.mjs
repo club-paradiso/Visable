@@ -12,6 +12,7 @@ const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const backendOrigin = fs.readFileSync(path.join(root, 'assets/js/backend-origin.js'), 'utf8');
 const vercelExtract = fs.readFileSync(path.join(root, 'api/enforcement/extract.js'), 'utf8');
 const vercelAnalyze = fs.readFileSync(path.join(root, 'api/enforcement/analyze.js'), 'utf8');
+const vercelConfirm = fs.readFileSync(path.join(root, 'api/enforcement/confirm.js'), 'utf8');
 const lawProbe = fs.readFileSync(path.join(root, 'api/enforcement/law-probe.js'), 'utf8');
 const fallbackRuntime = fs.readFileSync(path.join(root, 'lib/enforcement-fallback.js'), 'utf8');
 const groundedRuntime = fs.readFileSync(path.join(root, 'lib/enforcement-grounded-ai.js'), 'utf8');
@@ -27,7 +28,15 @@ const enforcementModuleIndex = html.indexOf('scripts/enforcement-ui.mjs');
 
 const checks = [
   ['three-step flow', /data-step="1"[\s\S]*data-step="2"[\s\S]*data-step="3"/.test(html)],
-  ['fact confirmation copy', html.includes('입력 내용을 이렇게 이해했어요.')],
+  ['human confirmation copy', html.includes('제가 이해한 내용이 맞나요?') && html.includes('네, 맞아요 · 분석하기')],
+  ['confirmation replaces bureaucratic edit grid', !html.includes('name="violationCode"') && !html.includes('name="durationDays"') && html.includes('id="confirmed-facts"')],
+  ['single-question clarification UI', html.includes('id="clarification-card"') && js.includes('function clarificationFor(') && js.includes('한 가지만 더 확인할게요')],
+  ['critical clarification can be skipped honestly', js.includes('잘 모르겠어요') && js.includes('skippedClarifications')],
+  ['confirmation always precedes analysis', !js.includes('caseNeedsConfirmation') && js.includes('showStep(2);') && js.includes('renderConfirmation(structuredCase)')],
+  ['Gemma humanizer is best-effort and non-blocking', js.includes('void humanizeConfirmation(structuredCase)') && js.includes('/api/enforcement/confirm')],
+  ['Gemma receives structured facts, not raw narrative', vercelConfirm.includes('payload.caseData') && !vercelConfirm.includes('payload.text') && vercelConfirm.includes('SAFE_FIELDS')],
+  ['Gemma is copy-only and cannot drive legal output', vercelConfirm.includes('copy-only-no-legal-judgment') && vercelConfirm.includes('Never perform legal analysis') && vercelConfirm.includes('summaryIsSafe')],
+  ['Gemma 4 preferred for confirmation copy', vercelConfirm.includes('google/gemma-4-31b-it:free')],
   ['legal baseline card', html.includes('법령상 기준') && js.includes('법령 기준')],
   ['AI prediction card', js.includes('Visable AI 예상') && js.includes('예상 범칙금')],
   ['disposition section', js.includes('예상 행정처분')],
@@ -36,7 +45,7 @@ const checks = [
   ['why panel', js.includes('WHY THIS PREDICTION?') && js.includes('예상 근거')],
   ['official source links', js.includes('OFFICIAL SOURCES') && js.includes('sourceUrl')],
   ['privacy copy', html.includes('원문 서술은 저장하지 않습니다')],
-  ['raw narrative discarded', js.includes("$('#case-text').value = ''")],
+  ['raw narrative discarded from textarea after extraction', js.includes("$('#case-text').value = ''")],
   ['extract endpoint wired', js.includes('/api/enforcement/extract')],
   ['analyze endpoint wired', js.includes('/api/enforcement/analyze')],
   ['Railway resolver is production primary for enforcement', !html.includes('<meta name="api-base" content=".">') && backendOrigin.includes('https://web-production-14f9a.up.railway.app')],
@@ -60,8 +69,8 @@ const checks = [
   ['fallback runtime uses canonical rule snapshot', fallbackRuntime.includes("require('../backend/data/enforcement/legal_rules.json')")],
   ['fallback remains fail-closed without provider', fallbackRuntime.includes("status: 'UNAVAILABLE'")],
   ['fallback preserves no-precedent limitation', fallbackRuntime.includes('현재 확인 가능한 유사 공개사례가 충분하지 않습니다.')],
-  ['Article 18(1) label is legally corrected', html.includes('취업활동 가능 체류자격 없이 취업')],
-  ['Article 18(2) label is legally corrected', html.includes('지정된 근무처가 아닌 곳에서 근무')],
+  ['Article 18(1) label remains legally corrected', groundedRuntime.includes('취업활동이 허용되는 체류자격 없이 취업')],
+  ['Article 18(2) label remains legally corrected', groundedRuntime.includes('취업활동 자격 보유자가 지정된 근무처가 아닌 곳에서 근무')],
   ['shared backend resolver loaded', backendResolverIndex >= 0],
   ['shared backend resolver loads before enforcement module', backendResolverIndex >= 0 && backendResolverIndex < enforcementModuleIndex],
   ['shared backend resolver remains available as operator override infrastructure', js.includes('window.VisableBackend') && js.includes('window.VisableBackend.origin')],
@@ -70,6 +79,7 @@ const checks = [
   ['HTTP failure preserves status', js.includes('분석 서버 요청에 실패했습니다. (${response.status})')],
   ['mobile breakpoint', css.includes('@media (max-width: 680px)')],
   ['mobile one-column results', /@media \(max-width: 680px\)[\s\S]*\.fact-grid, \.result-grid \{ grid-template-columns: 1fr; \}/.test(css)],
+  ['mobile confirmation input stacks', /@media \(max-width: 680px\)[\s\S]*\.clarification-input-row \{ grid-template-columns: 1fr; \}/.test(css)],
   ['reduced motion support', css.includes('prefers-reduced-motion')],
   ['homepage gateway', index.includes('enforcement.html')],
 ];
