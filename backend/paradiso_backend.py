@@ -7212,26 +7212,13 @@ class EnforcementAnalyzeRequest(BaseModel):
     case_data: Dict[str, Any] = Field(alias="caseData")
 
 
-_ENFORCEMENT_OPENROUTER_MODEL_CANDIDATES: List[str] = [
-    "google/gemma-4-26b-a4b-it:free",
-    "openai/gpt-oss-20b:free",
-    "google/gemma-4-31b-it:free",
-    "openai/gpt-oss-120b:free",
-]
-
-
 async def _enforcement_ai_provider(prompt: str) -> Dict[str, Any]:
-    """Fast structured-output chain dedicated to enforcement prediction/extraction.
-
-    The enforcement service already constrains model output with typed validation
-    and keeps the legal baseline deterministic, so a 405B general-answer model is
-    unnecessary latency here. The shared OpenRouter cooldown/circuit breaker still
-    applies; only the ordered candidate set is feature-specific.
-    """
+    """Shared-runtime structured role for enforcement extraction/prediction."""
+    plan = _ai_runtime.resolve_task_models(_ai_runtime.TaskRole.ENFORCEMENT_STRUCTURED)
     return await _openrouter_complete_with_candidates(
         prompt,
-        requested_model=_ENFORCEMENT_OPENROUTER_MODEL_CANDIDATES[0],
-        candidate_models=_ENFORCEMENT_OPENROUTER_MODEL_CANDIDATES,
+        requested_model=plan["primary"],
+        candidate_models=plan["candidates"],
         max_tokens=1800,
     )
 

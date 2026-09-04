@@ -307,6 +307,14 @@ class TaskRoleTests(unittest.TestCase):
                 self.assertTrue(plan["candidates"], f"{role} has no candidates")
                 self.assertEqual(plan["primary"], plan["candidates"][0])
 
+    def test_enforcement_structured_role_uses_fast_chain_then_verifier(self):
+        plan = rt.resolve_task_models(rt.TaskRole.ENFORCEMENT_STRUCTURED)
+        fast = rt.resolve_task_models(rt.TaskRole.FAST_FINAL_ANSWER)["candidates"]
+        verifier = rt.resolve_task_models(rt.TaskRole.VERIFIER)["candidates"][0]
+        self.assertEqual(plan["task_role"], "enforcement_structured")
+        self.assertEqual(plan["candidates"][:len(fast)], fast)
+        self.assertIn(verifier, plan["candidates"])
+
     def test_an_unknown_role_falls_back_to_the_final_answer_chain(self):
         plan = rt.resolve_task_models("not-a-real-role")
         self.assertEqual(plan["task_role"], rt.TaskRole.FINAL_ANSWER.value)
