@@ -1,0 +1,73 @@
+name: Enforcement Provider Live Diagnostic
+
+on:
+  push:
+    branches:
+      - perf/enforcement-benchmark-20260904
+    paths:
+      - .github/workflows/enforcement-provider-live-diagnostic.yml
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Probe deployed enforcement provider contract
+        env:
+          BACKEND_URL: https://web-production-14f9a.up.railway.app
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import sys
+          import time
+          import urllib.error
+          import urllib.request
+
+          url = os.environ['BACKEND_URL'].rstrip('/') + '/api/enforcement/provider-probe'
+          result = None
+          last = None
+          for attempt in range(30):
+              req = urllib.request.Request(url, headers={'Accept':'application/json','User-Agent':'Visable-Enforcement-Provider-Diagnostic/1'})
+              try:
+                  with urllib.request.urlopen(req, timeout=20) as response:
+                      body = json.loads(response.read().decode('utf-8', errors='replace'))
+                      if int(response.status) == 200 and body.get('service') == 'visable-enforcement-provider-probe':
+                          result = body
+                          break
+                      last = {'httpStatus': int(response.status), 'shape': sorted(body.keys())[:20] if isinstance(body, dict) else []}
+              except urllib.error.HTTPError as exc:
+                  last = {'httpStatus': int(exc.code)}
+              except Exception as exc:
+                  last = {'errorType': type(exc).__name__}
+              time.sleep(10)
+
+          if result is None:
+              print(json.dumps({'deployedProbeObserved': False, 'last': last}, sort_keys=True))
+              sys.exit(1)
+
+          safe = {
+              'deployedProbeObserved': True,
+              'configured': result.get('configured'),
+              'primaryModel': result.get('primaryModel'),
+              'modelCandidates': result.get('modelCandidates'),
+              'ok': result.get('ok'),
+              'attemptedModels': result.get('attemptedModels'),
+              'skippedModelsDueToCooldown': result.get('skippedModelsDueToCooldown'),
+              'coolingDownModels': result.get('coolingDownModels'),
+              'finalModel': result.get('finalModel'),
+              'providerErrorType': result.get('providerErrorType'),
+              'upstreamStatuses': result.get('upstreamStatuses'),
+              'allCandidatesFailed': result.get('allCandidatesFailed'),
+              'jsonObjectReturned': result.get('jsonObjectReturned'),
+              'predictionContractOk': result.get('predictionContractOk'),
+              'predictionValidationError': result.get('predictionValidationError'),
+              'legalBaselineStatus': result.get('legalBaselineStatus'),
+              'evidenceStatus': result.get('evidenceStatus'),
+              'elapsedMs': result.get('elapsedMs'),
+          }
+          print('SAFE_PROVIDER_DIAGNOSTIC=' + json.dumps(safe, ensure_ascii=False, sort_keys=True))
+          PY
