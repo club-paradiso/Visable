@@ -4,7 +4,18 @@ const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 let structuredCase = null;
 let currentStep = 1;
 let sessionNarrative = '';
+let sessionLocale = 'ko-KR';
+let confirmationRequestToken = 0;
+const skippedClarifications = new Set();
 const analysisCache = new Map();
+
+const violationLabels = {
+  STATUS_OUTSIDE_ACTIVITY_ART20: '체류자격에서 허용된 범위를 벗어난 활동을 필요한 허가 없이 한 상황',
+  UNAUTHORIZED_STAY_OR_WORK_ART18_1: '취업할 수 있는 체류자격 없이 일을 한 상황',
+  UNAUTHORIZED_EMPLOYMENT_ART18_2: '허가된 근무처가 아닌 곳에서 일을 한 상황',
+  UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1: '필요한 근무처 변경·추가 허가 없이 다른 근무처에서 일을 한 상황',
+  OVERSTAY_ART25: '허가된 체류기간이 지난 뒤에도 계속 체류한 상황',
+};
 
 function resolveApiBase() {
   const configured = document.querySelector('meta[name="api-base"]')?.content?.trim();
@@ -123,68 +134,300 @@ async function request(path, payload) {
   return data;
 }
 
-function assignValue(form, name, value) {
-  const input = form.elements.namedItem(name);
-  if (!input) return;
-  if (typeof value === 'boolean') input.value = String(value);
-  else input.value = value ?? '';
+function detectLocale(text) {
+  const value = String(text || '');
+  if (/[가-힣]/.test(value)) return 'ko-KR';
+  if (/[ぁ-んァ-ン]/.test(value)) return 'ja-JP';
+  if (/[一-鿿]/.test(value)) return 'zh-CN';
+  if (/[Ѐ-ӿ]/.test(value)) return 'ru-RU';
+  if (/[؀-ۿ]/.test(value)) return 'ar';
+  if (/[฀-๿]/.test(value)) return 'th-TH';
+  const browserLocale = String(navigator.language || 'en-US');
+  return browserLocale.startsWith('ko') ? 'en-US' : browserLocale;
 }
 
-function populateConfirmation(caseData) {
-  const form = $('#confirm-form');
-  ['statusOfStay', 'violationCode', 'durationDays', 'priorViolations', 'authorizationObtained',
-    'voluntaryDisclosure', 'violationStartDate', 'violationEndDate']
-    .forEach((name) => assignValue(form, name, caseData[name]));
+function isKoreanLocale() {
+  return sessionLocale.toLowerCase().startsWith('ko');
+}
 
-  const unknown = caseData.unknownFacts || [];
+function normalizeStatus(value) {
+  const clean = String(value || '').trim().toUpperCase();
+  const match = clean.match(/^([A-HM])\s*-?\s*(\d{1,2})(?:\s*-?\s*(\d{1,2}))?$/);
+  if (!match) return clean.slice(0, 20);
+  return `${match[1]}-${Number(match[2])}${match[3] ? `-${Number(match[3])}` : ''}`;
+}
+
+function removeUnknownFacts(caseData, labels) {
+  const blocked = new Set(labels);
+  caseData.unknownFacts = (caseData.unknownFacts || []).filter((item) => !blocked.has(item));
+}
+
+function deriveViolationAfterStatus(caseData) {
+  if (caseData.violationCode) return;
+  const status = String(caseData.statusOfStay || '').toUpperCase();
+  const candidates = new Set(caseData.violationCandidates || []);
+  if (/^D-(?:2|4)(?:-|$)/.test(status) && candidates.has('STATUS_OUTSIDE_ACTIVITY_ART20')) {
+    caseData.violationCode = 'STATUS_OUTSIDE_ACTIVITY_ART20';
+  } else if (/^(?:B-1|B-2|C-1|C-3)(?:-|$)/.test(status) && candidates.has('UNAUTHORIZED_STAY_OR_WORK_ART18_1')) {
+    caseData.violationCode = 'UNAUTHORIZED_STAY_OR_WORK_ART18_1';
+  }
+  if (caseData.violationCode) {
+    caseData.violationCandidates = [caseData.violationCode];
+    removeUnknownFacts(caseData, ['구체적인 위반 유형', '취업 가능 체류자격인지 및 지정 근무처·근무처 변경 관계']);
+  }
+}
+
+function deterministicSummary(caseData) {
+  const status = caseData.statusOfStay;
+  const days = Number.isFinite(Number(caseData.durationDays)) ? Number(caseData.durationDays) : null;
+  const workplace = caseData.workplaceType;
+  const activity = caseData.activity;
+
+  if (!isKoreanLocale()) {
+    const parts = [];
+    if (status) parts.push(`your current status of stay is ${status}`);
+    if (caseData.violationCode === 'OVERSTAY_ART25') {
+      parts.push(days != null ? `you stayed ${days} days beyond the permitted period` : 'you stayed beyond the permitted period');
+    } else if (activity || workplace || caseData.authorizationObtained === false) {
+      let work = workplace ? `you worked at a ${workplace}` : 'you carried out work-related activity';
+      if (caseData.authorizationObtained === false) work += ' without the required permission';
+      if (days != null) work += ` for ${days} days`;
+      parts.push(work);
+    } else if (caseData.violationCode) {
+      parts.push(violationLabels[caseData.violationCode] || 'a possible immigration-related violation was described');
+    }
+    if (caseData.priorViolations === 0) parts.push('this is your first violation');
+    else if (Number(caseData.priorViolations) > 0) parts.push(`you reported ${Number(caseData.priorViolations)} previous violation(s)`);
+    if (caseData.voluntaryDisclosure === true) parts.push('you reported or visited the immigration office voluntarily');
+    if (caseData.investigationStarted === true && caseData.voluntaryDisclosure !== true) parts.push('an investigation or enforcement contact has already started');
+    return parts.length ? `${parts.join(', ')}.` : 'I could only identify part of the situation you described.';
+  }
+
+  const clauses = [];
+  if (status) clauses.push(`현재 ${status} 체류자격`);
+
+  if (caseData.violationCode === 'OVERSTAY_ART25') {
+    clauses.push(days != null ? `허가된 체류기간이 지난 뒤 ${days}일 동안 더 체류한 상황` : '허가된 체류기간이 지난 뒤에도 계속 체류한 상황');
+  } else if (activity || workplace || caseData.authorizationObtained === false) {
+    let work = workplace ? `${workplace}에서 ` : '';
+    if (caseData.authorizationObtained === false) work += '필요한 허가 없이 ';
+    work += activity || '일을 했고';
+    if (days != null) work += ` 그 기간은 ${days}일`;
+    clauses.push(work.replace(/했고 그 기간은/, '했으며 그 기간은'));
+  } else if (caseData.violationCode) {
+    clauses.push(violationLabels[caseData.violationCode] || '출입국 관련 위반 상황');
+  }
+
+  if (caseData.priorViolations === 0) clauses.push('이번이 첫 위반');
+  else if (Number(caseData.priorViolations) > 0) clauses.push(`과거 위반 전력이 ${Number(caseData.priorViolations)}회`);
+  if (caseData.voluntaryDisclosure === true) clauses.push('본인이 먼저 신고하거나 출입국관서에 자진 방문');
+  if (caseData.investigationStarted === true && caseData.voluntaryDisclosure !== true) clauses.push('이미 적발되었거나 조사가 시작된 상태');
+
+  if (!clauses.length) return '입력한 내용 중 일부 사실만 확인할 수 있었어요.';
+  return `${clauses.join(', ')}인 것으로 이해했어요.`;
+}
+
+function displayValue(value, fallback = '확인되지 않음') {
+  if (value === null || value === undefined || value === '') return fallback;
+  if (value === true) return '예';
+  if (value === false) return '아니요';
+  return String(value);
+}
+
+function renderFactList(caseData) {
+  const facts = [
+    ['체류자격', displayValue(caseData.statusOfStay)],
+    ['상황', caseData.violationCode ? (violationLabels[caseData.violationCode] || caseData.violationCode) : '정확한 유형을 더 확인해야 함'],
+    ['기간', caseData.durationDays == null ? '확인되지 않음' : `${Number(caseData.durationDays)}일`],
+    ['허가 여부', caseData.authorizationObtained == null ? '확인되지 않음' : (caseData.authorizationObtained ? '필요한 허가를 받은 것으로 입력됨' : '필요한 허가를 받지 않은 것으로 입력됨')],
+    ['과거 위반', caseData.priorViolations == null ? '확인되지 않음' : (Number(caseData.priorViolations) === 0 ? '첫 위반으로 입력됨' : `${Number(caseData.priorViolations)}회`)],
+    ['자진신고·자진방문', caseData.voluntaryDisclosure == null ? '확인되지 않음' : (caseData.voluntaryDisclosure ? '예' : '아니요')],
+    ['적발·사범조사 시작', caseData.investigationStarted == null ? '확인되지 않음' : (caseData.investigationStarted ? '예' : '아니요')],
+  ];
+  $('#confirmed-facts').innerHTML = facts.map(([label, value]) => `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd></div>`).join('');
+}
+
+function renderConfirmationNotes(caseData) {
   const warnings = caseData.extractionWarnings || [];
-  const blocks = [];
-  if (warnings.length) {
-    blocks.push(`<strong>확인이 필요한 해석</strong><ul>${warnings.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>`);
+  const unknown = caseData.unknownFacts || [];
+  const notes = [];
+  if (warnings.length) notes.push(`<strong>확인이 필요한 해석</strong><ul>${warnings.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>`);
+  if (unknown.length) notes.push(`<strong>아직 확인되지 않은 정보</strong><ul>${unknown.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>`);
+  const target = $('#confirmation-notes');
+  target.innerHTML = notes.join('');
+  target.hidden = notes.length === 0;
+}
+
+function clarificationFor(caseData) {
+  if (!caseData.statusOfStay && !skippedClarifications.has('statusOfStay')) {
+    return {
+      kind: 'statusOfStay',
+      type: 'text',
+      question: '현재 체류자격이 무엇인가요?',
+      hint: '예: D-2, E-7-4, F-2',
+    };
   }
-  if (unknown.length) {
-    blocks.push(`<strong>정확도에 영향을 줄 수 있는 미확인 정보</strong><ul>${unknown.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>`);
+
+  if (!caseData.violationCode && !skippedClarifications.has('violationCode')) {
+    const candidates = new Set(caseData.violationCandidates || []);
+    const options = [];
+    const add = (value, label) => { if (!candidates.size || candidates.has(value)) options.push({ value, label }); };
+    add('STATUS_OUTSIDE_ACTIVITY_ART20', '학생 등의 체류자격으로, 필요한 활동 허가 없이 일을 했어요');
+    add('UNAUTHORIZED_STAY_OR_WORK_ART18_1', '애초에 취업할 수 없는 체류자격인데 일을 했어요');
+    add('UNAUTHORIZED_EMPLOYMENT_ART18_2', '허가된 회사는 그대로이고, 지정된 근무처가 아닌 곳에서도 일했어요');
+    add('UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1', '다른 회사·사업장으로 옮기거나 추가했는데 필요한 변경·추가 허가를 받지 않았어요');
+    add('OVERSTAY_ART25', '체류기간이 지난 뒤에도 계속 체류했어요');
+    return {
+      kind: 'violationCode',
+      type: 'choice',
+      question: candidates.has('UNAUTHORIZED_EMPLOYMENT_ART18_2') && candidates.has('UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1')
+        ? '다른 곳에서 일했다는 게 정확히 어떤 상황이었나요?'
+        : '아래 중 실제 상황에 가장 가까운 것은 무엇인가요?',
+      options,
+    };
   }
-  $('#unknown-facts').innerHTML = blocks.length
-    ? blocks.join('')
-    : '<strong>주요 입력 사실이 모두 확인되었습니다.</strong>';
+
+  if (caseData.durationDays == null && !skippedClarifications.has('durationDays')) {
+    return {
+      kind: 'durationDays',
+      type: 'number',
+      question: '그 상황은 대략 며칠 동안 이어졌나요?',
+      hint: '예: 21',
+    };
+  }
+
+  return null;
 }
 
-function nullableBoolean(value) {
-  if (value === '') return null;
-  return value === 'true';
+function renderClarification(caseData) {
+  const card = $('#clarification-card');
+  const answers = $('#clarification-answers');
+  const question = clarificationFor(caseData);
+  const primary = $('#confirm-primary');
+  card.hidden = !question;
+  primary.disabled = Boolean(question);
+  answers.innerHTML = '';
+
+  if (!question) return;
+  $('#clarification-question').textContent = question.question;
+
+  if (question.type === 'choice') {
+    answers.innerHTML = `${question.options.map((option) => `<button type="button" class="clarification-option" data-clarify-value="${escapeHtml(option.value)}">${escapeHtml(option.label)}</button>`).join('')}
+      <button type="button" class="clarification-option clarification-option--muted" data-clarify-skip="${escapeHtml(question.kind)}">잘 모르겠어요</button>`;
+  } else {
+    const type = question.type === 'number' ? 'number' : 'text';
+    const attrs = type === 'number' ? 'min="0" max="36500" inputmode="numeric"' : 'maxlength="20" autocomplete="off"';
+    answers.innerHTML = `<div class="clarification-input-row"><input id="clarification-input" type="${type}" ${attrs} placeholder="${escapeHtml(question.hint || '')}" aria-label="${escapeHtml(question.question)}"><button type="button" class="primary-button secondary-button--small" id="clarification-apply">확인</button></div>
+      <button type="button" class="clarification-option clarification-option--muted" data-clarify-skip="${escapeHtml(question.kind)}">잘 모르겠어요</button>`;
+  }
+
+  $$('[data-clarify-value]', answers).forEach((button) => button.addEventListener('click', () => {
+    applyClarification(question.kind, button.dataset.clarifyValue || '');
+  }));
+  $$('[data-clarify-skip]', answers).forEach((button) => button.addEventListener('click', () => {
+    skippedClarifications.add(button.dataset.clarifySkip || question.kind);
+    setError($('#confirm-error'));
+    renderConfirmation(structuredCase);
+    void humanizeConfirmation(structuredCase);
+  }));
+
+  const apply = $('#clarification-apply', answers);
+  if (apply) {
+    const input = $('#clarification-input', answers);
+    const commit = () => applyClarification(question.kind, input.value);
+    apply.addEventListener('click', commit);
+    input.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        commit();
+      }
+    });
+    input.focus({ preventScroll: true });
+  }
 }
 
-function readConfirmedCase() {
-  const form = $('#confirm-form');
-  const value = (name) => form.elements.namedItem(name).value.trim();
-  const numberOrNull = (name) => value(name) === '' ? null : Number(value(name));
-  return {
-    ...structuredCase,
-    statusOfStay: value('statusOfStay') || null,
-    violationCode: value('violationCode') || null,
-    violationCandidates: value('violationCode') ? [value('violationCode')] : [],
-    durationDays: numberOrNull('durationDays'),
-    priorViolations: numberOrNull('priorViolations'),
-    authorizationObtained: nullableBoolean(value('authorizationObtained')),
-    voluntaryDisclosure: nullableBoolean(value('voluntaryDisclosure')),
-    violationStartDate: value('violationStartDate') || null,
-    violationEndDate: value('violationEndDate') || null,
-    assessmentDate: resolveAssessmentDate(),
-  };
+function applyClarification(kind, rawValue) {
+  const value = String(rawValue || '').trim();
+  setError($('#confirm-error'));
+
+  if (kind === 'statusOfStay') {
+    if (!value) return setError($('#confirm-error'), '체류자격을 입력하거나 잘 모르겠어요를 선택해 주세요.');
+    structuredCase.statusOfStay = normalizeStatus(value);
+    removeUnknownFacts(structuredCase, ['체류자격']);
+    deriveViolationAfterStatus(structuredCase);
+  } else if (kind === 'durationDays') {
+    const days = Number(value);
+    if (!Number.isInteger(days) || days < 0 || days > 36500) return setError($('#confirm-error'), '기간을 일수로 입력해 주세요.');
+    structuredCase.durationDays = days;
+    removeUnknownFacts(structuredCase, ['위반기간', '위반 시작일']);
+  } else if (kind === 'violationCode') {
+    if (!violationLabels[value]) return setError($('#confirm-error'), '실제 상황과 가장 가까운 항목을 선택해 주세요.');
+    structuredCase.violationCode = value;
+    structuredCase.violationCandidates = [value];
+    if (value === 'STATUS_OUTSIDE_ACTIVITY_ART20' || value === 'UNAUTHORIZED_STAY_OR_WORK_ART18_1') {
+      if (structuredCase.authorizationObtained == null) structuredCase.authorizationObtained = false;
+    }
+    if (value === 'UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1') {
+      structuredCase.workplaceChangeAuthorized = false;
+      if (structuredCase.authorizationObtained == null) structuredCase.authorizationObtained = false;
+    }
+    removeUnknownFacts(structuredCase, ['구체적인 위반 유형', '취업 가능 체류자격인지 및 지정 근무처·근무처 변경 관계']);
+  }
+
+  skippedClarifications.delete(kind);
+  renderConfirmation(structuredCase);
+  void humanizeConfirmation(structuredCase);
 }
 
-function caseNeedsConfirmation(caseData) {
-  if (!caseData || !caseData.violationCode || caseData.durationDays == null) return true;
-  if ((caseData.unknownFacts || []).length) return true;
-  if ((caseData.extractionWarnings || []).length) return true;
-  return false;
+function confirmationFingerprint(caseData) {
+  const keys = [
+    'statusOfStay', 'violationCode', 'activity', 'workplaceType', 'authorizationObtained',
+    'workplaceChangeAuthorized', 'durationDays', 'priorViolations', 'voluntaryDisclosure',
+    'investigationStarted', 'violationStartDate', 'violationEndDate'
+  ];
+  return JSON.stringify(keys.map((key) => caseData?.[key] ?? null));
+}
+
+function renderConfirmation(caseData) {
+  $('#confirmation-summary').textContent = deterministicSummary(caseData);
+  $('#confirmation-source').hidden = true;
+  renderFactList(caseData);
+  renderConfirmationNotes(caseData);
+  renderClarification(caseData);
+}
+
+async function humanizeConfirmation(caseData) {
+  if (!caseData || location.protocol === 'file:') return;
+  const fingerprint = confirmationFingerprint(caseData);
+  const requestToken = ++confirmationRequestToken;
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 9000);
+  try {
+    const response = await fetch(new URL('/api/enforcement/confirm', window.location.origin), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({ caseData, locale: sessionLocale }),
+      signal: controller.signal,
+    });
+    if (!response.ok) return;
+    const data = await response.json().catch(() => ({}));
+    if (requestToken !== confirmationRequestToken || currentStep !== 2) return;
+    if (confirmationFingerprint(structuredCase) !== fingerprint) return;
+    if (data.mode !== 'gemma' || typeof data.summary !== 'string' || !data.summary.trim()) return;
+    $('#confirmation-summary').textContent = data.summary.trim();
+    $('#confirmation-source').hidden = false;
+  } catch {
+    // The deterministic confirmation is already visible; model polishing is best-effort only.
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 function analysisFingerprint(caseData) {
   const keys = [
     'statusOfStay', 'violationCode', 'durationDays', 'priorViolations',
-    'authorizationObtained', 'voluntaryDisclosure', 'violationStartDate',
+    'authorizationObtained', 'workplaceChangeAuthorized', 'voluntaryDisclosure',
+    'investigationStarted', 'falseRepresentation', 'violationStartDate',
     'violationEndDate', 'assessmentDate'
   ];
   return JSON.stringify(keys.map((key) => caseData?.[key] ?? null));
@@ -302,7 +545,9 @@ function renderResult(data) {
 }
 
 async function analyzeCase(caseData, { form, errorTarget } = {}) {
-  const fingerprint = analysisFingerprint(caseData);
+  const normalizedCase = { ...caseData, assessmentDate: resolveAssessmentDate() };
+  structuredCase = normalizedCase;
+  const fingerprint = analysisFingerprint(normalizedCase);
   if (analysisCache.has(fingerprint)) {
     renderResult(analysisCache.get(fingerprint));
     showStep(3);
@@ -312,7 +557,7 @@ async function analyzeCase(caseData, { form, errorTarget } = {}) {
   setBusy(form, true);
   setLoading(true, '법령 기준과 예상 처분을 분석하고 있어요.', '결론을 먼저 정리한 뒤 근거와 유사사례를 함께 표시합니다.');
   try {
-    const response = await request('/api/enforcement/analyze', { caseData });
+    const response = await request('/api/enforcement/analyze', { caseData: normalizedCase });
     analysisCache.set(fingerprint, response);
     renderResult(response);
     showStep(3);
@@ -330,31 +575,29 @@ $('#case-form').addEventListener('submit', async (event) => {
   const form = event.currentTarget;
   setError($('#input-error'));
   setBusy(form, true);
-  setLoading(true, '사례에서 핵심 사실을 찾고 있어요.', '체류자격, 위반 유형, 기간과 허가 여부를 정리합니다.');
+  setLoading(true, '사례에서 핵심 사실을 찾고 있어요.', '체류자격, 상황과 기간을 정리합니다.');
 
   try {
     const text = $('#case-text').value.trim();
     if (!text) throw new Error('사례 설명을 입력해 주세요.');
     sessionNarrative = text;
+    sessionLocale = detectLocale(text);
+    skippedClarifications.clear();
+    confirmationRequestToken += 1;
 
     const response = await request('/api/enforcement/extract', {
       text,
       assessmentDate: resolveAssessmentDate(),
     });
     structuredCase = response.case;
-    populateConfirmation(structuredCase);
     $('#case-text').value = '';
     updateCount();
-
-    if (caseNeedsConfirmation(structuredCase)) {
-      setLoading(false);
-      showStep(2);
-      return;
-    }
-
-    await analyzeCase(structuredCase, { form, errorTarget: $('#input-error') });
+    renderConfirmation(structuredCase);
+    setLoading(false);
+    showStep(2);
+    void humanizeConfirmation(structuredCase);
   } catch (error) {
-    if (currentStep === 1) setError($('#input-error'), error.message);
+    setError($('#input-error'), error.message);
   } finally {
     setBusy(form, false);
     setLoading(false);
@@ -365,8 +608,13 @@ $('#confirm-form').addEventListener('submit', async (event) => {
   event.preventDefault();
   const form = event.currentTarget;
   setError($('#confirm-error'));
+  const pending = clarificationFor(structuredCase);
+  if (pending) {
+    setError($('#confirm-error'), '위 질문에 답하거나 잘 모르겠어요를 선택해 주세요.');
+    $('#clarification-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
   try {
-    structuredCase = readConfirmedCase();
     await analyzeCase(structuredCase, { form, errorTarget: $('#confirm-error') });
   } catch {
     // analyzeCase already surfaces the user-facing error in this step.
@@ -383,15 +631,21 @@ function restoreNarrativeForEditing() {
 
 $$('[data-back]').forEach((button) => button.addEventListener('click', () => {
   const target = Number(button.dataset.back);
+  confirmationRequestToken += 1;
   if (target === 1) restoreNarrativeForEditing();
+  if (target === 2 && structuredCase) renderConfirmation(structuredCase);
   showStep(target);
+  if (target === 2 && structuredCase) void humanizeConfirmation(structuredCase);
 }));
 
 $$('[data-step-nav]').forEach((button) => button.addEventListener('click', () => {
   const target = Number(button.dataset.stepNav);
   if (target >= currentStep) return;
+  confirmationRequestToken += 1;
   if (target === 1) restoreNarrativeForEditing();
+  if (target === 2 && structuredCase) renderConfirmation(structuredCase);
   showStep(target);
+  if (target === 2 && structuredCase) void humanizeConfirmation(structuredCase);
 }));
 
 $$('[data-example]').forEach((button) => button.addEventListener('click', () => {
@@ -414,9 +668,14 @@ $('#assessment-date-today').addEventListener('click', () => setAssessmentDateTod
 $('#restart').addEventListener('click', () => {
   structuredCase = null;
   sessionNarrative = '';
+  sessionLocale = 'ko-KR';
+  confirmationRequestToken += 1;
+  skippedClarifications.clear();
   $('#case-form').reset();
   $('#confirm-form').reset();
   $('#result-root').innerHTML = '';
+  $('#confirmation-summary').textContent = '';
+  $('#confirmed-facts').innerHTML = '';
   setError($('#input-error'));
   setError($('#confirm-error'));
   setAssessmentDateToday({ force: true });
