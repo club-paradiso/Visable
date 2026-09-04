@@ -289,7 +289,9 @@ body.wm-research-open .chat-input-area { display: none; }
 
 .ai-mode-btn {
   width: auto;
-  min-height: 34px;
+  /* 34px 는 손가락 대상보다 작았다 — 답변 속도 전환은 이 화면에서
+     자주 누르는 컨트롤이라 44px 로 올린다. */
+  min-height: 44px;
   padding: 0.3rem 0.65rem;
   border-radius: 9px;
 }

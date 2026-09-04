@@ -411,6 +411,8 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
   color: var(--ac2); background: var(--acG); border: 1px solid color-mix(in srgb, var(--ac) 26%, transparent);
   text-decoration: none;
 }
+/* 26px 이라 손가락 대상보다 작았다 — 조밀한 출처 칩이라 32px 선에서 맞춘다. */
+@media (max-width: 720px) { .nh-src-chip { min-height: 32px; padding-inline: 0.7rem; } }
 .nh-src-chip:hover { border-color: var(--ac); }
 .nh-src-chip::after { content: "↗"; font-size: 0.66rem; opacity: 0.8; }
 

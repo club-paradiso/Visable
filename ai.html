@@ -467,7 +467,8 @@
         .composer-detect { font-size: 0.7rem; color: var(--t3); }
         @media (max-width: 900px) { .composer-detect { display: none; } }
         .ai-mode-btn {
-            flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px;
+            flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+            min-height: 44px;
             padding: var(--sp-2); border: 1px solid var(--bd); background: var(--bg0);
             border-radius: var(--btn-r-md); cursor: pointer; transition: var(--btn-tr);
             font-family: var(--ff); color: var(--t2);
@@ -530,7 +531,8 @@
         @media (max-width: 768px) {
             body { display: block; min-height: 100dvh; overflow-y: auto; }
             .chat-header { padding: var(--sp-2) var(--sp-3); }
-            .back-btn { padding: 0 0.55rem; }
+            /* 아이콘만 남는 폭이라 38px 까지 좁아져 손가락으로 누르기 어려웠다. */
+            .back-btn { padding: 0 0.55rem; min-width: 44px; }
             .back-btn-text { display: none; }
             .header-right, .header-left { min-width: 0; }
             .quota-badge { white-space: nowrap; }
@@ -1527,7 +1529,7 @@ select:focus-visible {
         </div>
         <div class="header-right">
             <button type="button" id="aiThemeBtn" aria-label="라이트/다크 전환" title="라이트/다크 전환"
-                style="background:var(--bg2);border:1px solid var(--bd);color:var(--t2);min-width:34px;height:34px;border-radius:999px;cursor:pointer;font-size:0.95rem;line-height:1;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">◐</button>
+                style="background:var(--bg2);border:1px solid var(--bd);color:var(--t2);min-width:44px;height:44px;border-radius:999px;cursor:pointer;line-height:1;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.2 14.2A8.4 8.4 0 0 1 9.8 3.8a8.4 8.4 0 1 0 10.4 10.4z"/></svg></button>
             <span class="quota-badge" aria-label="남은 분석 횟수" title="일일 분석 횟수">잔여: <span id="quotaCount">0</span>회</span>
         </div>
     </header>

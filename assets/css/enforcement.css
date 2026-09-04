@@ -101,7 +101,7 @@ footer { padding: 2rem 1rem 3rem; color: var(--muted); text-align: center; font-
 
 .example-row { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; margin: .9rem 0 .2rem; }
 .example-label { font-size: .84rem; font-weight: 700; color: #5b6675; }
-.example-chip { min-height: 36px; padding: .35rem .8rem; border: 1px solid #c9d2dc; border-radius: 999px; background: white; color: var(--ink); font-size: .86rem; cursor: pointer; }
+.example-chip { min-height: 44px; padding: .35rem .8rem; border: 1px solid #c9d2dc; border-radius: 999px; background: white; color: var(--ink); font-size: .86rem; cursor: pointer; }
 .example-chip:hover { border-color: var(--blue); color: var(--blue); }
 .example-chip:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
 .form-row--date { max-width: 420px; }
@@ -109,3 +109,7 @@ footer { padding: 2rem 1rem 3rem; color: var(--muted); text-align: center; font-
 .form-row .date-field input { flex: 1 1 auto; }
 .form-row .date-field .secondary-button { flex: 0 0 auto; min-height: 48px; padding: .6rem .85rem; font-size: .88rem; }
 .field-hint { margin-top: .4rem; font-size: .82rem; color: #5b6675; }
+
+
+/* 로고 링크가 34px 라 손가락 대상보다 작았다 (라벨은 aria-label 로 이미 있음). */
+.brand { display: inline-flex; align-items: center; min-height: 44px; }

@@ -234,8 +234,8 @@ h2{margin:0;font-size:22px;letter-spacing:-.025em}
 .views button{
   display:grid;
   place-items:center;
-  width:34px;
-  height:30px;
+  width:40px;
+  height:38px;
   padding:0;
   border:0;
   border-radius:7px;
@@ -497,3 +497,23 @@ body.field .reset{width:100%}
 }
 
 [hidden]{display:none!important}
+
+
+/* ── 모바일 탭 대상 정리 ────────────────────────────────────────────────
+   390px 에서 계측한 값: 지역 칩 38px 폭, 링크복사/CSV 38px 높이,
+   목록·격자 전환 34×30, 전화 링크 23px 높이. 손가락으로 정확히 누르기
+   어려운 크기라, 조밀함을 크게 해치지 않는 선에서 키운다. */
+@media (max-width: 640px){
+  /* .chips / .recent 는 `overflow:auto; flex-wrap:nowrap` 인 가로 스크롤
+     행인데, 칩이 기본 flex-shrink:1 이라 스크롤되는 대신 짓눌렸다.
+     "충남 133" 이 38px 폭에 3줄로 접히던 원인이다. 줄어들지 않게 해서
+     원래 의도대로 가로로 스크롤되게 한다. */
+  .chips > .chip, .recent > .chip{ flex:0 0 auto; white-space:nowrap; }
+  .chip{ min-height:40px; padding:6px 14px; display:inline-flex; align-items:center; }
+  .util{ height:44px; }
+  .views button{ width:44px; height:40px; }
+  /* 전화번호는 이 화면의 핵심 행동이라 넉넉히 잡는다.
+     검색어 하이라이트(<mark>)가 안에 들어오므로 flex 로 바꾸면 번호가
+     조각조각 떨어진다 — inline-block 그대로 두고 패딩으로만 키운다. */
+  .phone{ padding-block:11px; }
+}
