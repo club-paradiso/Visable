@@ -35,6 +35,24 @@
         target.appendChild(hardening);
       }
 
+      /* iPhones can exceed the portrait breakpoint when rotated. Keep the
+         landscape-only fixes inline so 844-956px phone viewports do not fall
+         through to legacy 14px controls just because their width got larger. */
+      if (!document.getElementById('visable-mobile-landscape-compat')) {
+        var landscapeCompat = document.createElement('style');
+        landscapeCompat.id = 'visable-mobile-landscape-compat';
+        landscapeCompat.textContent = '@media (orientation: landscape) and (max-height: 500px) and (pointer: coarse) {'
+          + ' html, body { width:100%; max-width:100%; overflow-x:clip; }'
+          + ' input, textarea, select { font-size:16px !important; }'
+          + ' button, input, textarea, select, a, [role="button"] { touch-action:manipulation; -webkit-tap-highlight-color:rgba(11,115,87,.14); }'
+          + ' .top-ctrls, #topCtrls, .hero-container, .results-area { padding-left:max(.75rem,env(safe-area-inset-left,0px)) !important; padding-right:max(.75rem,env(safe-area-inset-right,0px)) !important; }'
+          + ' .p-gateway, .hero-actions, .sbar, .results-area, .rlist, #rlist, .us-layer, .us-interpret, .us-ai { min-width:0 !important; max-width:100%; }'
+          + ' .modal-box, .hikorea-modal, .document-help-modal, .scenario-picker-panel-inner { max-height:calc(100vh - max(12px,env(safe-area-inset-top,0px))) !important; max-height:calc(100dvh - max(12px,env(safe-area-inset-top,0px))) !important; }'
+          + ' button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible, [role="button"]:focus-visible, [tabindex]:focus-visible { outline:2px solid currentColor !important; outline-offset:2px !important; }'
+          + ' }';
+        target.appendChild(landscapeCompat);
+      }
+
       /* Keep reduced-motion behavior valid even in engines that do not parse
          nested conditional group rules. This inline fallback remains intentional
          even though the QA stylesheet also carries the flat rule. */
