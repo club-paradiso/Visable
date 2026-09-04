@@ -22,12 +22,18 @@ assert.equal(
 );
 assert.ok(js.includes('input.max = localTodayIso();'), 'assessment date must be bounded to today');
 assert.ok(html.includes('id="assessment-date-today"'), 'a reset-to-today control must exist');
-assert.ok(html.includes('오늘 날짜가 기본값으로 채워집니다'), 'the today default must be explained to the user');
+assert.ok(
+  html.includes('기본값은 오늘') || html.includes('오늘 날짜가 기본값으로 채워집니다'),
+  'the today default must be explained to the user',
+);
 assert.ok(js.includes('분석 기준일:'), 'the applied assessment date must be visible in the result');
 assert.ok(html.includes('data-example='), 'quick-fill examples must exist for natural-language input');
 assert.ok(js.includes("$$('[data-example]')"), 'quick-fill examples must be wired');
 assert.ok(js.includes('extractionWarnings'), 'fallback extraction warnings must be visible in confirmation UI');
-assert.ok(js.includes('구조화 확인 메모'), 'confirmation UI must explain extraction fallbacks');
+assert.ok(
+  js.includes('확인이 필요한 해석') || js.includes('구조화 확인 메모'),
+  'confirmation UI must explain extraction fallbacks',
+);
 assert.ok(js.includes("'case text is required': '사례 설명을 입력해 주세요.'"), 'backend validation errors must be localized');
 
 console.log('Enforcement natural-language/date UX contract passed.');
