@@ -76,55 +76,55 @@
     overscroll-behavior: contain;
   }
 
-  /* The original authority layer already protects the bottom home indicator.
-     Add the missing left/right notch protection, especially for landscape. */
-  @media (orientation: landscape) {
-    .top-ctrls,
-    .hero-container,
-    .results-area {
-      padding-left: max(0.75rem, env(safe-area-inset-left, 0px)) !important;
-      padding-right: max(0.75rem, env(safe-area-inset-right, 0px)) !important;
-    }
-
-    .us-layer,
-    .document-help-modal,
-    .scenario-picker-panel-inner {
-      margin-left: env(safe-area-inset-left, 0px) !important;
-      margin-right: env(safe-area-inset-right, 0px) !important;
-      max-width: calc(100% - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px)) !important;
-    }
-  }
-
-  /* A landscape phone has very little vertical room. Avoid letting the landing
-     hero consume the whole viewport before the first useful action appears. */
-  @media (orientation: landscape) and (max-height: 500px) {
-    body:not(.searched) .hero-container {
-      padding-top: 0.5rem !important;
-      padding-bottom: 0.5rem !important;
-    }
-
-    body:not(.searched) .brand-wordmark-img {
-      max-height: 40px !important;
-    }
-
-    body:not(.searched) .p-hero-title {
-      margin-top: 0.25rem !important;
-      margin-bottom: 0.5rem !important;
-      font-size: clamp(1.5rem, 7vh, 2.1rem) !important;
-      line-height: 1.05 !important;
-    }
-
-    body:not(.searched) .p-gateway,
-    body:not(.searched) .hero-actions {
-      gap: 0.5rem !important;
-    }
-  }
-
   /* Keyboard users and switch-control users need a persistent visible focus cue.
      currentColor avoids fighting the app's light/dark theme palette. */
   :where(button, a, input, textarea, select, [role="button"], [tabindex]):focus-visible {
     outline: 2px solid currentColor !important;
     outline-offset: 2px !important;
+  }
+}
+
+/* The original authority layer already protects the bottom home indicator.
+   Add the missing left/right notch protection, especially for landscape. */
+@media (max-width: 820px) and (orientation: landscape) {
+  .top-ctrls,
+  .hero-container,
+  .results-area {
+    padding-left: max(0.75rem, env(safe-area-inset-left, 0px)) !important;
+    padding-right: max(0.75rem, env(safe-area-inset-right, 0px)) !important;
+  }
+
+  .us-layer,
+  .document-help-modal,
+  .scenario-picker-panel-inner {
+    margin-left: env(safe-area-inset-left, 0px) !important;
+    margin-right: env(safe-area-inset-right, 0px) !important;
+    max-width: calc(100% - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px)) !important;
+  }
+}
+
+/* A landscape phone has very little vertical room. Avoid letting the landing
+   hero consume the whole viewport before the first useful action appears. */
+@media (max-width: 820px) and (orientation: landscape) and (max-height: 500px) {
+  body:not(.searched) .hero-container {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+  }
+
+  body:not(.searched) .brand-wordmark-img {
+    max-height: 40px !important;
+  }
+
+  body:not(.searched) .p-hero-title {
+    margin-top: 0.25rem !important;
+    margin-bottom: 0.5rem !important;
+    font-size: clamp(1.5rem, 7vh, 2.1rem) !important;
+    line-height: 1.05 !important;
+  }
+
+  body:not(.searched) .p-gateway,
+  body:not(.searched) .hero-actions {
+    gap: 0.5rem !important;
   }
 }
 
