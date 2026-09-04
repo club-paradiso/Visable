@@ -1,8 +1,22 @@
-import json
-import unittest
+from __future__ import annotations
 
-from services.enforcement_models import EnforcementEvidencePack, LegalBaseline, MoneyRange, StructuredCase
-from services.enforcement_prediction import (
+import json
+import sys
+import unittest
+from pathlib import Path
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
+BACKEND_DIR = REPO_ROOT / "backend"
+if str(BACKEND_DIR) not in sys.path:
+    sys.path.insert(0, str(BACKEND_DIR))
+
+from services.enforcement_models import (  # noqa: E402
+    EnforcementEvidencePack,
+    LegalBaseline,
+    MoneyRange,
+    StructuredCase,
+)
+from services.enforcement_prediction import (  # noqa: E402
     PredictionValidationError,
     build_prediction_prompt,
     validate_ai_prediction,
