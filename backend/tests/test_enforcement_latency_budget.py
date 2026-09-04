@@ -1,3 +1,9 @@
+"""Regression coverage for the bounded enforcement AI path.
+
+Clear cases must stay local, ambiguous cases may use AI, and enforcement model
+routing must remain isolated from deploy-wide Fast-tier overrides.
+"""
+
 from __future__ import annotations
 
 import os
