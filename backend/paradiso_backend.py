@@ -16,6 +16,7 @@ instead of crashing.
 
 from __future__ import annotations
 
+import asyncio
 import json
 import logging
 import os
@@ -244,6 +245,12 @@ OLLAMA_TIMEOUT_SECONDS: float = _env_float("OLLAMA_TIMEOUT_SECONDS", 20.0)
 # an uncaught 500). The default preserves the historical 60s behaviour; lower
 # it per-deploy (e.g. OPENROUTER_TIMEOUT_SECONDS=40) for snappier failure.
 OPENROUTER_TIMEOUT_SECONDS: float = _env_float("OPENROUTER_TIMEOUT_SECONDS", 60.0)
+# Enforcement is synchronous from the user's perspective, so a long provider
+# fallback chain is worse than returning the deterministic legal baseline.
+# This is a total budget for the whole enforcement model chain, not per model.
+ENFORCEMENT_AI_BUDGET_SECONDS: float = min(
+    12.0, max(1.0, _env_float("ENFORCEMENT_AI_BUDGET_SECONDS", 8.0))
+)
 
 # Output-length cap for the final answer. Unbounded generation over Paradiso's
 # large grounded prompt was a major perceived-latency source ("Waymaker is too
@@ -7213,14 +7220,33 @@ class EnforcementAnalyzeRequest(BaseModel):
 
 
 async def _enforcement_ai_provider(prompt: str) -> Dict[str, Any]:
-    """Shared-runtime structured role for enforcement extraction/prediction."""
+    """Bounded shared-runtime provider for enforcement extraction/prediction."""
     plan = _ai_runtime.resolve_task_models(_ai_runtime.TaskRole.ENFORCEMENT_STRUCTURED)
-    return await _openrouter_complete_with_candidates(
-        prompt,
-        requested_model=plan["primary"],
-        candidate_models=plan["candidates"],
-        max_tokens=1800,
-    )
+    try:
+        return await asyncio.wait_for(
+            _openrouter_complete_with_candidates(
+                prompt,
+                requested_model=plan["primary"],
+                candidate_models=plan["candidates"],
+                max_tokens=900,
+            ),
+            timeout=ENFORCEMENT_AI_BUDGET_SECONDS,
+        )
+    except asyncio.TimeoutError:
+        logger.warning(
+            "enforcement_ai_budget_exhausted: budget=%.1fs candidates=%d",
+            ENFORCEMENT_AI_BUDGET_SECONDS,
+            len(plan["candidates"]),
+        )
+        return {
+            "ok": False,
+            "answer": None,
+            "primary_model": plan["primary"],
+            "model_candidates": list(plan["candidates"]),
+            "attempted_models": [],
+            "final_model": None,
+            "provider_error_type": "enforcement_total_timeout",
+        }
 
 
 @app.post(
