@@ -25,6 +25,15 @@ Runs every `backend/tests/test_*.py` module and classifies each one:
   SKIP       — could not be imported for an environmental reason (a missing
                optional test-only dependency), reported explicitly.
 
+Modules run one per subprocess, under pytest when it is available. Both matter:
+subprocess isolation because several modules leak state into each other and a
+shared process turns that into order-dependent failures; pytest because it
+collects bare test functions as well as unittest.TestCase classes. Under plain
+`unittest` a pytest-style module collects ZERO tests and exits 0 — reported as
+PASS while asserting nothing. That is how a real source-routing bug sat unseen
+for two months. CI installs pytest via backend/requirements-dev.txt, and a
+0-collection run is now an error rather than a pass.
+
 The register is the point. "Known failing" is only honest if it is dated,
 justified, and self-expiring; a list nobody is forced to shrink is just a
 quieter way of hiding red.
@@ -59,42 +68,44 @@ TESTS_DIR = REPO_ROOT / "backend" / "tests"
 # protected data files or reverting deliberate frontend refactors — decisions
 # that belong to the people who made them, not to a drive-by fix.
 KNOWN_FAILING: Dict[str, str] = {
-    "test_core_journey_ux_hardening": (
-        "Asserts the literal CSS rule '.next-action-grid { grid-template-columns: 1fr; }' "
-        "in index.html. The narrow-screen action surface was restyled and the rule no "
-        "longer exists in that form. Frontend owner should re-express the assertion "
-        "against the current responsive rule, or restore it if the behaviour regressed."
-    ),
-    "test_expanded_route_wizard": (
-        "Asserts the inline call \"applyScenarioSelection(selector, variantId || '')\" "
-        "inside selectF4Route, which has since been refactored into a back-compat shim "
-        "that resolves the wizard from the clicked control. Route-wizard owner should "
-        "re-point the assertion at the shim's real delegation path."
-    ),
-    "test_i18n_sweep_route_wizard": (
-        "Same selectF4Route refactor as test_expanded_route_wizard."
-    ),
-    "test_source_grounding_pipeline": (
-        "Asserts the manual manifest points at docs/source-manuals/2026-06/"
-        "stay_manual_2026_06_01.pdf. PR #562 superseded that edition with the "
-        "2026-07-31 distribution HWP, so the assertion now describes a retired "
-        "source. Manual-sourcing owner should re-point it at the current edition."
-    ),
-    "test_reentry_procedure_coverage": (
-        "The doc_fee_generic half of this is FIXED: the packet builder now resolves "
-        "doc_master ids, so no procedure packet serves an id as a document name. What "
-        "remains is data-snapshot drift, and it is the data owner's call, not a "
-        "rendering fix: the test expects pageRange 'p. N' but the data carries "
-        "'pp. 32-34'; expects a '복수재입국' condition string that is no longer present; "
-        "expects manualRefs[0].needsManualReview to be True where the committed data "
-        "says False; and expects D-2 reentry to be EMPTY where visa_data.json now "
-        "carries a three-document list with a 2026.6 manual ref (verified sourced and "
-        "committed, NOT fabricated at runtime — checked before registering this)."
-    ),
+    # Empty, and that is the point. Every entry here was a real pre-existing
+    # failure; each was resolved by deciding whether the ASSERTION had gone
+    # stale or the BEHAVIOUR had regressed, and none by deleting or weakening a
+    # test:
+    #
+    #   test_core_journey_ux_hardening   assertion — pinned three literal CSS
+    #       strings; the phone rule had been deliberately re-scoped to
+    #       `.next-action-panel .next-action-grid` to outrank the 640px rule.
+    #       Re-expressed against the behaviour (single column, 44px target).
+    #   test_expanded_route_wizard       assertion — pinned a call inside
+    #   test_i18n_sweep_route_wizard         selectF4Route, now a back-compat
+    #       shim delegating to applyRouteSelection. Re-pointed at the PR #252
+    #       invariant: a broad route must not inherit the previous subtype.
+    #   test_source_grounding_pipeline   assertion — pinned the 2026-06 stay PDF
+    #       superseded by the 2026-07-31 HWP. Now asserts what must hold for any
+    #       edition: pinned, present, human-approved, predecessor archived.
+    #   test_reentry_procedure_coverage  assertion — written against the 2026-05
+    #       pass; the 2026.6 re-sourcing changed doc ids, page ranges and moved
+    #       prose into notes. Now asserts provenance, no flattening, and a
+    #       retained user-facing caution.
+    #
+    # Each rewrite was checked by mutating the source to reintroduce the failure
+    # it guards and confirming the test fails — a rewritten assertion that
+    # cannot fail is worse than the stale one it replaced.
+    #
+    # Add an entry only with what fails, why it is not fixed here, and who
+    # should fix it. A register nobody is forced to shrink is a quieter way of
+    # hiding red, which is why a listed test that starts passing also fails the
+    # run.
 }
 
 # Test modules that need a test-only dependency the backend itself does not
 # require. These are reported as SKIP, never silently counted as passing.
+#
+# These two are pytest-style (bare test functions, no unittest.TestCase). They
+# are listed so a machine WITHOUT pytest still reports them honestly rather
+# than as passing. With pytest installed — which CI now guarantees via
+# backend/requirements-dev.txt — they run normally and this map is unused.
 OPTIONAL_DEPENDENCY_MODULES: Dict[str, str] = {
     "test_generalized_evidence_ontology": "pytest",
     "test_generalized_legal_issue_source_planning": "pytest",
@@ -105,14 +116,39 @@ def discover_modules() -> List[str]:
     return sorted(p.stem for p in TESTS_DIR.glob("test_*.py"))
 
 
-def run_module(name: str) -> Dict[str, object]:
-    """Run one module in a subprocess so a crash cannot take the runner down."""
-    proc = subprocess.run(
-        [sys.executable, "-m", "unittest", f"backend.tests.{name}"],
-        cwd=REPO_ROOT,
+def _pytest_available() -> bool:
+    return subprocess.run(
+        [sys.executable, "-c", "import pytest"],
         capture_output=True,
-        text=True,
-    )
+    ).returncode == 0
+
+
+#: pytest exit code for "no tests were collected". A module that collects
+#: nothing has not passed — it has not run. `unittest` reports the same
+#: situation as a clean exit 0, which is how a pytest-style module could sit in
+#: this suite being counted as PASS while executing zero assertions.
+PYTEST_NO_TESTS_COLLECTED = 5
+
+
+def run_module(name: str, *, use_pytest: bool) -> Dict[str, object]:
+    """Run one module in a subprocess so a crash cannot take the runner down.
+
+    One module per process is deliberate and worth the startup cost: several
+    modules in this suite leak state into each other (module-level config
+    caches, monkeypatched globals), and a single shared process turns that into
+    order-dependent failures that have nothing to do with the code under test.
+
+    pytest is used when present because it collects BOTH unittest.TestCase
+    classes and bare pytest-style test functions; plain `unittest` silently
+    collects zero tests from the latter.
+    """
+    if use_pytest:
+        cmd = [sys.executable, "-m", "pytest", str(TESTS_DIR / f"{name}.py"),
+               "-q", "-p", "no:cacheprovider"]
+    else:
+        cmd = [sys.executable, "-m", "unittest", f"backend.tests.{name}"]
+
+    proc = subprocess.run(cmd, cwd=REPO_ROOT, capture_output=True, text=True)
     output = (proc.stderr or "") + (proc.stdout or "")
     tail = [line for line in output.strip().splitlines() if line.strip()]
     summary = tail[-1] if tail else ""
@@ -124,11 +160,20 @@ def run_module(name: str) -> Dict[str, object]:
                 missing_dep = line.split("'")[1] if "'" in line else line.strip()
                 break
 
+    collected_nothing = use_pytest and proc.returncode == PYTEST_NO_TESTS_COLLECTED
+    if collected_nothing:
+        output += (
+            "\n\nRUNNER: pytest collected 0 tests from this module. An empty "
+            "module is not a passing module — either it lost its tests or its "
+            "names no longer match the collection pattern.\n"
+        )
+
     return {
         "module": name,
         "returncode": proc.returncode,
         "summary": summary,
         "missing_dependency": missing_dep,
+        "collected_nothing": collected_nothing,
         "output": output,
     }
 
@@ -153,9 +198,10 @@ def main() -> int:
     details: List[Dict[str, object]] = []
     failure_output: Dict[str, str] = {}
 
+    use_pytest = _pytest_available()
     for name in modules:
-        outcome = run_module(name)
-        ok = outcome["returncode"] == 0
+        outcome = run_module(name, use_pytest=use_pytest)
+        ok = outcome["returncode"] == 0 and not outcome["collected_nothing"]
         dep = outcome["missing_dependency"]
         expected_dep = OPTIONAL_DEPENDENCY_MODULES.get(name)
 
@@ -195,7 +241,13 @@ def main() -> int:
         }, ensure_ascii=False, indent=2))
         return exit_code
 
-    print(f"Backend test suite — {len(modules)} modules\n" + "=" * 60)
+    runner_name = "pytest" if use_pytest else "unittest"
+    print(f"Backend test suite — {len(modules)} modules (via {runner_name})\n" + "=" * 60)
+    if not use_pytest:
+        print("  WARNING: pytest is not installed, so this run is DEGRADED.\n"
+              "  Modules written as bare pytest functions collect zero tests\n"
+              "  under unittest and are reported SKIP, never PASS.\n"
+              "  Install backend/requirements-dev.txt for a complete run.\n")
     print(f"  PASS   {len(results['pass']):>3}")
     print(f"  KNOWN  {len(results['known']):>3}  (registered pre-existing failures)")
     print(f"  SKIP   {len(results['skip']):>3}  (optional test-only dependency absent)")

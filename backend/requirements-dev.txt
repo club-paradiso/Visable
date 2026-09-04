@@ -1,0 +1,10 @@
+# Test-only dependencies. Deliberately NOT in requirements.txt: that file is
+# what NIXPACKS installs into the Railway image, and the production service has
+# no reason to carry a test runner.
+#
+# CI must install this. Without pytest, scripts/run_backend_tests.py cannot
+# execute pytest-style modules and reports them as SKIP — which is how
+# test_generalized_legal_issue_source_planning went two months without ever
+# running, hiding a real source-routing bug.
+-r requirements.txt
+pytest==9.1.1
