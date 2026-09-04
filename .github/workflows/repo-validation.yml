@@ -69,3 +69,35 @@ jobs:
           path: artifacts/mobile-render-qa/
           if-no-files-found: error
           retention-days: 7
+
+  mobile-webkit-qa:
+    if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install Playwright
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
+        run: npm install --no-save --package-lock=false playwright@1.55.0
+
+      - name: Install WebKit runtime
+        run: npx playwright install --with-deps webkit
+
+      - name: Render iPhone WebKit QA
+        run: node scripts/mobile_webkit_qa.mjs
+
+      - name: Upload WebKit QA evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mobile-webkit-qa
+          path: artifacts/mobile-webkit-qa/
+          if-no-files-found: error
+          retention-days: 7
