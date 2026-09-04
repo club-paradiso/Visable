@@ -4,9 +4,10 @@ from __future__ import annotations
 
 import inspect
 import json
+import logging
 import re
 from copy import deepcopy
-from typing import Any, Awaitable, Callable, Dict, Optional
+from typing import Any, Callable, Dict, Optional
 
 from pydantic import ValidationError
 
@@ -15,16 +16,84 @@ from .enforcement_models import (
     EnforcementPrediction,
     LegalBaseline,
     PredictionConfidence,
-    PredictionFactor,
     StructuredCase,
 )
 
 PREDICTION_ENGINE_VERSION = "enforcement-prediction-v1"
 PREDICTION_PROMPT_VERSION = "enforcement-prediction-prompt-v1"
+logger = logging.getLogger("paradiso.enforcement_prediction")
 
 
 class PredictionValidationError(ValueError):
     pass
+
+
+# The model cannot see our Python Pydantic classes. Telling it merely to
+# "match EnforcementPrediction" caused otherwise healthy completions to be
+# rejected because the required nested JSON shape was never actually shown to
+# the provider. Keep this contract deliberately compact: evidence and similar
+# cases are always overwritten from verified server data after parsing.
+_PREDICTION_OUTPUT_CONTRACT = r"""
+Return exactly ONE JSON object. Do not wrap it in markdown. Use this shape and
+these camelCase field names. Omit no required `confidence` object. Empty arrays
+and null are valid when evidence cannot support a prediction.
+
+{
+  "status": "AVAILABLE | LIMITED | UNAVAILABLE",
+  "monetaryPrediction": null | {
+    "predictedLikelyRange": null | {
+      "minimumKrw": 0,
+      "maximumKrw": 0,
+      "currency": "KRW"
+    },
+    "pointEstimateKrw": null | 0,
+    "predictedDirection": "MITIGATED | BASELINE | AGGRAVATED | UNCERTAIN",
+    "confidence": {
+      "level": "HIGH | MEDIUM | LOW | VERY_LOW | INSUFFICIENT",
+      "reasons": []
+    },
+    "rationale": []
+  },
+  "primaryDisposition": null | {
+    "type": "one disposition string copied from legalBaseline.legallyAvailableDispositions",
+    "likelihood": "VERY_LOW | LOW | MODERATE | HIGH | VERY_HIGH | UNKNOWN",
+    "rank": 1,
+    "confidence": {
+      "level": "HIGH | MEDIUM | LOW | VERY_LOW | INSUFFICIENT",
+      "reasons": []
+    },
+    "rationale": [],
+    "supportingEvidence": []
+  },
+  "alternativeDispositions": [],
+  "stayImpact": [],
+  "aggravatingFactors": [],
+  "mitigatingFactors": [],
+  "unresolvedFactors": [],
+  "confidence": {
+    "level": "HIGH | MEDIUM | LOW | VERY_LOW | INSUFFICIENT",
+    "reasons": []
+  },
+  "limitations": []
+}
+
+Every factor, when used, MUST have exactly this shape:
+{
+  "code": "stable_short_code",
+  "label": "short Korean explanation",
+  "direction": "AGGRAVATING | MITIGATING | NEUTRAL | UNRESOLVED",
+  "basis": "SUPPORTED | INFERRED | UNKNOWN",
+  "evidenceIds": []
+}
+
+Rules for the JSON contract:
+- Do NOT output schemaVersion, engineVersion, promptVersion, evidence, similarCases, or modelId; the server supplies them.
+- Do NOT add summary, reasoning, probability, percentage, score, recommendation, statute, or any other extra field.
+- Use only evidence ids that appear in INPUT_JSON.evidence.evidence.
+- If there is no direct evidence for a disposition, primaryDisposition MUST be null.
+- If a monetary range is not supportable, monetaryPrediction may be null.
+- Never copy numbers from this template. Monetary values must come only from INPUT_JSON legalBaseline and must remain inside the legal range.
+""".strip()
 
 
 def _json_safe_input(case: StructuredCase, baseline: LegalBaseline, evidence: EnforcementEvidencePack) -> Dict[str, Any]:
@@ -48,9 +117,11 @@ amounts and ranges are authoritative and may not be changed. Use only supplied
 EVIDENCE ids. Distinguish SUPPORTED, INFERRED and UNKNOWN. Do not invent a case,
 citation, statute, percentage or numeric probability. Qualitative likelihood only.
 If public evidence cannot distinguish dispositions, set primaryDisposition to null.
-Return one JSON object matching EnforcementPrediction schemaVersion "1". No prose
-outside JSON. A point estimate is optional and must be inside predictedLikelyRange;
-the predicted range must be inside legalRange.
+A point estimate is optional and must be inside predictedLikelyRange; the predicted
+range must be inside legalRange.
+
+OUTPUT_JSON_CONTRACT:
+{_PREDICTION_OUTPUT_CONTRACT}
 
 INPUT_JSON:
 {payload}
@@ -74,7 +145,8 @@ def _parse_provider_output(raw: Any) -> tuple[Dict[str, Any], Optional[str]]:
     model_id = None
     if isinstance(raw, dict) and "ok" in raw:
         if not raw.get("ok") or not raw.get("answer"):
-            raise PredictionValidationError("prediction provider unavailable")
+            error_type = str(raw.get("provider_error_type") or "provider_unavailable")
+            raise PredictionValidationError(f"prediction provider unavailable: {error_type}")
         model_id = str(raw.get("final_model") or raw.get("model") or "") or None
         raw = raw["answer"]
     if isinstance(raw, str):
@@ -199,5 +271,8 @@ async def predict_enforcement_outcome(
         if inspect.isawaitable(result):
             result = await result
         return validate_ai_prediction(result, case, baseline, evidence)
-    except Exception:
+    except Exception as exc:
+        # Log only the exception class/message. Never log the prompt, case facts,
+        # provider answer, or evidence payload; those can contain sensitive facts.
+        logger.warning("enforcement_prediction_unavailable: %s: %s", type(exc).__name__, str(exc)[:200])
         return unavailable_prediction(baseline, evidence)

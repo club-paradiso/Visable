@@ -177,14 +177,98 @@ class CoreJourneyUxHardeningFrontendTests(unittest.TestCase):
         self.assertNotIn("scenario-checklist", body)
 
     # --- Mobile / accessibility hardening (Part E) -------------------------
-    def test_narrow_screen_action_surface_css_present(self):
-        self.assertIn("@media (max-width: 480px) {", self.html)
-        for rule in (
-            ".next-action-grid { grid-template-columns: 1fr; }",
-            ".scenario-choice { width: 100%; min-height: 44px; }",
-            ".deadline-inputs { grid-template-columns: 1fr; }",
-        ):
-            self.assertIn(rule, self.html)
+    #
+    # These assert the narrow-screen BEHAVIOUR, not three literal CSS strings.
+    # The literal form broke on a real improvement: the next-action rule was
+    # deliberately re-scoped to `.next-action-panel .next-action-grid` so it
+    # would beat the wider max-width:640px two-column rule on source order,
+    # which had been collapsing the "구비서류 확인" card to a ~34px column of
+    # vertical text. The single-column behaviour was never lost, only the exact
+    # selector text, and a test that pins selector text fails on a fix.
+    def _phone_media_block(self) -> str:
+        """Every @media (max-width: 480px) body, brace-matched and joined.
+
+        There is more than one such block in index.html, and which one carries a
+        given rule is an authoring detail, not a contract. Joining them asks the
+        question that actually matters: at a phone width, does this rule apply?
+        """
+        marker = "@media (max-width: 480px) {"
+        blocks, cursor = [], 0
+        while True:
+            found = self.html.find(marker, cursor)
+            if found < 0:
+                break
+            start = found + len(marker)
+            depth, end = 1, None
+            for i in range(start, len(self.html)):
+                if self.html[i] == "{":
+                    depth += 1
+                elif self.html[i] == "}":
+                    depth -= 1
+                    if depth == 0:
+                        end = i
+                        break
+            self.assertIsNotNone(end, "unterminated @media (max-width: 480px) block")
+            blocks.append(self.html[start:end])
+            cursor = end
+        self.assertTrue(blocks, "no @media (max-width: 480px) block in index.html")
+        return "\n".join(blocks)
+
+    def test_next_action_grid_collapses_to_one_column_on_phones(self):
+        """Three side-by-side action cards do not fit a phone width.
+
+        Scoped to the panel on purpose. renderNextActionArea() emits the grid
+        inside <section class="next-action-panel">, and only a selector carrying
+        that ancestor outranks the max-width:640px two-column rule that would
+        otherwise win on source order. An unscoped `.next-action-grid` rule
+        elsewhere in the stylesheet does not protect this surface, so matching
+        one would pass the test while the phone layout stayed broken.
+        """
+        import re
+
+        rules = [
+            (selector, body)
+            for selector, body in re.findall(
+                r"([^{}]*\.next-action-grid[^{}]*)\{([^}]*)\}",
+                self._phone_media_block(), re.S)
+            if ".next-action-panel" in selector
+        ]
+        self.assertTrue(
+            rules,
+            "the phone breakpoint has no `.next-action-panel .next-action-grid` "
+            "rule; without that ancestor the 640px two-column rule wins and the "
+            "document card collapses to a sliver of vertical text",
+        )
+        self.assertTrue(
+            any(re.search(r"grid-template-columns:\s*1fr\s*;", body)
+                for _selector, body in rules),
+            "the panel-scoped rule must collapse to a single column; found: "
+            + "; ".join(b.strip() for _s, b in rules),
+        )
+
+    def test_scenario_choice_is_full_width_with_a_real_touch_target(self):
+        """44px is the documented minimum; the base rule may exceed it."""
+        import re
+
+        self.assertIn("width: 100%", self._phone_media_block())
+        base = re.search(r"\.scenario-choice\s*\{([^}]*)\}", self.html, re.S)
+        self.assertIsNotNone(base, "no base .scenario-choice rule")
+        height = re.search(r"min-height:\s*(\d+)px", base.group(1))
+        self.assertIsNotNone(height, ".scenario-choice needs an explicit min-height")
+        self.assertGreaterEqual(
+            int(height.group(1)), 44,
+            "tap targets below 44px fail the touch-target guidance this "
+            "hardening pass introduced",
+        )
+
+    def test_deadline_inputs_stack_on_phones(self):
+        import re
+
+        self.assertTrue(
+            re.search(r"\.deadline-inputs\s*\{[^}]*grid-template-columns:\s*1fr",
+                      self._phone_media_block(), re.S),
+            "date inputs must stack rather than sit side by side on a phone",
+        )
 
     def test_new_surface_focus_visible_styles_exist(self):
         # Route chips, scenario choices, and deadline buttons remain keyboard

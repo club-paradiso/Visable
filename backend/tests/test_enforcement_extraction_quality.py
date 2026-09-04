@@ -132,13 +132,18 @@ class EnforcementExtractionQualityTests(unittest.IsolatedAsyncioTestCase):
         async def broken(_prompt: str):
             raise RuntimeError("provider unavailable")
 
+        # Keep this case materially ambiguous so the extractor genuinely needs
+        # the AI provider. Complete local parses now intentionally skip AI for
+        # latency, and therefore must not pretend that an unattempted provider
+        # "failed" or force a fake confirmation warning on the user.
         result = await extract_structured_case(
-            "C3로 들어와서 허가 없이 12일 알바했습니다.",
+            "F-2인데 다른 곳에서 허가 없이 10일 일했습니다.",
             provider=broken,
             assessment_date=date(2026, 8, 27),
         )
-        self.assertEqual(result.status_of_stay, "C-3")
-        self.assertEqual(result.violation_code, "UNAUTHORIZED_STAY_OR_WORK_ART18_1")
+        self.assertEqual(result.status_of_stay, "F-2")
+        self.assertIsNone(result.violation_code)
+        self.assertGreaterEqual(len(result.violation_candidates), 2)
         self.assertTrue(any("로컬 추출 결과" in item for item in result.extraction_warnings))
 
     def test_prompt_defines_schema_codes_and_reference_date(self):

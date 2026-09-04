@@ -272,6 +272,7 @@ class TaskRole(str, Enum):
     NATIONALITY_COACH = "nationality_coach"
     EMPLOYMENT_INTERPRETER = "employment_interpreter"
     ENFORCEMENT_EXPLAINER = "enforcement_explainer"
+    ENFORCEMENT_STRUCTURED = "enforcement_structured"
     SEARCH_OVERVIEW = "search_overview"
 
 
@@ -311,6 +312,11 @@ def resolve_task_models(role: Any) -> Dict[str, Any]:
         candidates = chain(fast["candidates"], basic["candidates"])
     elif task == TaskRole.VERIFIER:
         candidates = chain(policy["verifier_model"], basic["candidates"])
+    elif task == TaskRole.ENFORCEMENT_STRUCTURED:
+        # Enforcement already has deterministic legal rules and strict typed
+        # validation. Do not inherit deploy-wide Fast overrides or a deep verifier
+        # tail: both caused minute-scale latency when every candidate failed.
+        candidates = chain(policy["enforcement_structured_model_candidates"])
     elif task == TaskRole.FAST_FINAL_ANSWER:
         candidates = chain(fast["candidates"])
     elif task in (TaskRole.SEARCH_OVERVIEW, TaskRole.NATIONALITY_COACH):
