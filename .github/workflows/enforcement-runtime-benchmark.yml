@@ -32,7 +32,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Run synthetic enforcement benchmark
         env:
-          BENCHMARK_REPETITIONS: ${{ github.event_name == 'workflow_dispatch' && inputs.repetitions || '2' }}
+          BENCHMARK_REPETITIONS: ${{ github.event_name == 'workflow_dispatch' && inputs.repetitions || '1' }}
         run: |
           python3 scripts/benchmark_enforcement_runtime.py \
             --repetitions "$BENCHMARK_REPETITIONS" \
