@@ -1,0 +1,513 @@
+/* Visable mobile authority layer
+   Loaded after the legacy inline cascade so phone UX has one final source of truth.
+   Scope is intentionally narrow: phone/tablet widths only. */
+
+@media (max-width: 820px) {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    overflow-x: clip;
+    scroll-padding-top: calc(5rem + env(safe-area-inset-top, 0px));
+  }
+
+  body {
+    min-width: 0;
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow-x: clip;
+  }
+
+  img,
+  svg,
+  video,
+  canvas,
+  iframe {
+    max-width: 100%;
+  }
+
+  input,
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+
+  button,
+  input,
+  textarea,
+  select,
+  a,
+  [role="button"] {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: rgba(11, 115, 87, 0.14);
+  }
+
+  /* Header controls: keep them reachable without letting them float over the
+     whole page forever. Fixed chrome on a 390px screen is not a personality. */
+  .top-ctrls,
+  #topCtrls {
+    position: absolute !important;
+    top: max(0.5rem, env(safe-area-inset-top, 0px)) !important;
+    left: 0.75rem !important;
+    right: 0.75rem !important;
+    width: auto !important;
+    max-width: none !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+    align-items: center !important;
+    gap: 0.4rem !important;
+    z-index: 120 !important;
+  }
+
+  .top-ctrls .city-btn,
+  .top-ctrls .theme-btn,
+  .top-ctrls .language-btn,
+  #topCtrls .city-btn,
+  #topCtrls .theme-btn,
+  #topCtrls .language-btn {
+    flex: 0 0 44px !important;
+    width: 44px !important;
+    min-width: 44px !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    padding: 0 !important;
+    border-radius: 12px !important;
+    justify-content: center !important;
+  }
+
+  .city-menu,
+  .language-menu {
+    position: fixed !important;
+    top: calc(max(0.5rem, env(safe-area-inset-top, 0px)) + 52px) !important;
+    left: 0.75rem !important;
+    right: 0.75rem !important;
+    width: auto !important;
+    max-width: none !important;
+    max-height: min(68vh, 68dvh) !important;
+    border-radius: 18px !important;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .city-search-input,
+  .language-search-input {
+    min-height: 48px !important;
+    font-size: 16px !important;
+  }
+
+  /* Landing: less billboard, more product. */
+  body:not(.searched) .hero-container {
+    min-height: auto !important;
+    padding: calc(4.35rem + env(safe-area-inset-top, 0px)) 1rem 2rem !important;
+  }
+
+  body:not(.searched) .header-inner {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    align-items: stretch !important;
+    gap: 1rem !important;
+  }
+
+  body:not(.searched) .logo-area {
+    align-self: flex-start !important;
+    max-width: 100% !important;
+  }
+
+  body:not(.searched) .brand-wordmark-img {
+    height: clamp(54px, 15vw, 72px) !important;
+    max-width: 72vw !important;
+  }
+
+  body:not(.searched) .p-hero-copy {
+    width: 100% !important;
+    max-width: 100% !important;
+    gap: 0.7rem !important;
+  }
+
+  body:not(.searched) .p-hero-title {
+    width: 100% !important;
+    max-width: 100% !important;
+    font-size: clamp(2rem, 9.5vw, 2.8rem) !important;
+    line-height: 1.04 !important;
+    letter-spacing: -0.035em !important;
+    text-wrap: balance;
+    overflow-wrap: anywhere;
+  }
+
+  body:not(.searched) .p-hero-title .p-hero-line,
+  body:not(.searched) .p-hero-title em {
+    white-space: normal !important;
+  }
+
+  body:not(.searched) .p-hero-sub {
+    max-width: 100% !important;
+    font-size: 0.96rem !important;
+    line-height: 1.62 !important;
+  }
+
+  body:not(.searched) .p-hero-proof {
+    gap: 0.4rem !important;
+  }
+
+  body:not(.searched) .p-proof-chip {
+    min-height: 32px !important;
+    padding: 0.35rem 0.65rem !important;
+  }
+
+  /* Gateway: the previous desktop card ratios were the main phone offender. */
+  .p-gateway,
+  .p-gw-primary,
+  .p-gw-utility,
+  .p-entry-rail,
+  .hero-actions {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .p-gw-primary,
+  .p-gw-utility,
+  .p-entry-rail,
+  .hero-actions {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 0.6rem !important;
+  }
+
+  .p-gw-search,
+  .p-gw-card,
+  .p-gw-util,
+  .p-gw-newhome,
+  .p-entry-card,
+  .hero-action-btn {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    aspect-ratio: auto !important;
+    transform: none !important;
+  }
+
+  .p-gw-search {
+    min-height: 64px !important;
+    padding: 0.75rem 0.85rem !important;
+    border-radius: 15px !important;
+    gap: 0.75rem !important;
+  }
+
+  .p-gw-search-kbd {
+    display: none !important;
+  }
+
+  .p-gw-card,
+  .p-entry-card {
+    min-height: 72px !important;
+    padding: 0.8rem 0.9rem !important;
+    border-radius: 14px !important;
+    grid-template-columns: 40px minmax(0, 1fr) !important;
+    column-gap: 0.75rem !important;
+    row-gap: 0.15rem !important;
+  }
+
+  .p-gw-card-icon,
+  .p-gw-search-icon {
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+  }
+
+  .p-gw-card-label,
+  .p-gw-search-title {
+    font-size: 0.98rem !important;
+    line-height: 1.34 !important;
+  }
+
+  .p-gw-card-sub,
+  .p-gw-search-sub {
+    font-size: 0.81rem !important;
+    line-height: 1.46 !important;
+  }
+
+  .p-gw-newhome {
+    min-height: 80px !important;
+    padding: 0.85rem 0.9rem !important;
+    border-radius: 15px !important;
+  }
+
+  .p-gw-util {
+    min-height: 52px !important;
+    padding: 0.7rem 0.85rem !important;
+    border-radius: 13px !important;
+  }
+
+  .hero-action-btn {
+    min-height: 52px !important;
+    padding: 0.75rem 0.9rem !important;
+    border-radius: 14px !important;
+    flex-direction: row !important;
+    justify-content: flex-start !important;
+    gap: 0.75rem !important;
+  }
+
+  /* Search controls: 16px input prevents Safari focus zoom. */
+  .search-wrap,
+  #searchForm,
+  .sbar {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .sbar {
+    min-height: 54px !important;
+    border-radius: 16px !important;
+  }
+
+  #q,
+  .sbar input {
+    min-width: 0 !important;
+    min-height: 52px !important;
+    font-size: 16px !important;
+    line-height: 1.35 !important;
+  }
+
+  .sbar-go,
+  .xb {
+    flex: 0 0 46px !important;
+    width: 46px !important;
+    min-width: 46px !important;
+    height: 46px !important;
+    min-height: 46px !important;
+  }
+
+  /* Search result header: make the second screen feel like the same product. */
+  body.searched .top-ctrls,
+  body.searched #topCtrls {
+    position: static !important;
+    width: 100% !important;
+    padding: max(0.45rem, env(safe-area-inset-top, 0px)) 0.75rem 0 !important;
+    justify-content: flex-end !important;
+  }
+
+  body.searched .hero-container {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 90 !important;
+    min-height: 0 !important;
+  }
+
+  body.searched .header-inner {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    display: grid !important;
+    grid-template-columns: auto minmax(0, 1fr) !important;
+    gap: 0.6rem !important;
+    align-items: center !important;
+    padding: 0.55rem 0.75rem 0.7rem !important;
+  }
+
+  body.searched .logo-area {
+    min-width: 92px !important;
+    width: auto !important;
+    height: 40px !important;
+    padding: 0.3rem 0.6rem !important;
+  }
+
+  body.searched .brand-wordmark-img {
+    height: 22px !important;
+    max-width: 90px !important;
+  }
+
+  body.searched .search-wrap {
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
+  }
+
+  body.searched .results-area {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    padding: 0.9rem 0.75rem calc(5.5rem + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  body.searched .rlist,
+  body.searched #rlist,
+  body.searched .us-layer {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  body.searched .rlist,
+  body.searched #rlist {
+    gap: 0.75rem !important;
+  }
+
+  body.searched :is(.card, .result-card, .r, .vc, .manual-result) {
+    max-width: 100% !important;
+    min-width: 0 !important;
+    border-radius: 16px !important;
+    overflow: clip;
+  }
+
+  body.searched .ctrls {
+    max-width: 100% !important;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    gap: 0.45rem !important;
+    overflow-x: auto !important;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 0.2rem;
+  }
+
+  body.searched .ctrls::-webkit-scrollbar {
+    display: none;
+  }
+
+  .cb,
+  .qb,
+  .view-mode-btn,
+  .doc-trigger-btn,
+  .next-action-btn,
+  .easy-official-btn,
+  .p-cta-btn,
+  .p-reminder-item__btn {
+    min-height: 44px !important;
+  }
+
+  /* Unified search cards: reduce desktop padding but increase actual tap area. */
+  .us-interpret,
+  .us-ai {
+    padding: 1rem !important;
+    border-radius: 15px !important;
+  }
+
+  .us-interpret-row {
+    gap: 0.65rem !important;
+    padding: 0.7rem 0 !important;
+    align-items: flex-start !important;
+  }
+
+  .us-interpret-edit,
+  button.us-chip,
+  a.us-chip,
+  a.us-ai-src {
+    min-height: 44px !important;
+  }
+
+  .us-ai-head,
+  .us-interpret-foot {
+    align-items: flex-start !important;
+  }
+
+  /* Modal and drawer behavior: use the dynamic viewport and home indicator. */
+  .modal-overlay {
+    padding: 0 !important;
+    align-items: flex-end !important;
+  }
+
+  .modal-box,
+  .hikorea-modal,
+  .document-help-modal,
+  .scenario-picker-panel-inner {
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: 90vh !important;
+    max-height: 90dvh !important;
+    border-radius: 20px 20px 0 0 !important;
+  }
+
+  .modal-close,
+  .p-cmd-close,
+  [class*="modal-close"] {
+    min-width: 44px !important;
+    min-height: 44px !important;
+  }
+
+  .modal-footer,
+  .scenario-picker-panel-inner {
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  /* Floating AI is useful in results, but on the landing page it was simply
+     another object covering content. Inline it there and reserve room for it
+     only when results are visible. */
+  body:not(.searched) .ai-fab {
+    position: static !important;
+    display: flex !important;
+    width: auto !important;
+    max-width: none !important;
+    min-height: 48px !important;
+    margin: 1rem 1rem calc(1rem + env(safe-area-inset-bottom, 0px)) !important;
+    justify-content: center !important;
+    border-radius: 14px !important;
+  }
+
+  body.searched .ai-fab {
+    left: 0.75rem !important;
+    right: 0.75rem !important;
+    bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px)) !important;
+    width: auto !important;
+    max-width: none !important;
+    min-height: 48px !important;
+    justify-content: center !important;
+    border-radius: 14px !important;
+  }
+
+  /* Touch devices should not inherit desktop hover movement after a tap. */
+  @media (hover: none) and (pointer: coarse) {
+    :is(
+      .p-gw-search,
+      .p-gw-card,
+      .p-gw-util,
+      .p-gw-newhome,
+      .p-entry-card,
+      .hero-action-btn,
+      .city-btn,
+      .theme-btn,
+      .language-btn,
+      .ai-fab
+    ):hover {
+      transform: none !important;
+    }
+  }
+}
+
+@media (max-width: 390px) {
+  body:not(.searched) .hero-container {
+    padding-left: 0.85rem !important;
+    padding-right: 0.85rem !important;
+  }
+
+  body:not(.searched) .p-hero-title {
+    font-size: clamp(1.9rem, 9.2vw, 2.25rem) !important;
+  }
+
+  .p-gw-card,
+  .p-entry-card,
+  .p-gw-search,
+  .p-gw-newhome {
+    padding-left: 0.8rem !important;
+    padding-right: 0.8rem !important;
+  }
+
+  body.searched .results-area {
+    padding-left: 0.6rem !important;
+    padding-right: 0.6rem !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @media (max-width: 820px) {
+    *,
+    *::before,
+    *::after {
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+    }
+  }
+}
