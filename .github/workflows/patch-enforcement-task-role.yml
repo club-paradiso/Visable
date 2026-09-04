@@ -1,0 +1,77 @@
+name: Patch Enforcement Task Role
+
+on:
+  push:
+    branches:
+      - perf/enforcement-benchmark-20260904
+    paths:
+      - .github/workflows/patch-enforcement-task-role.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Apply shared-runtime role patch
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          # 1) Give enforcement structured work a first-class runtime role.
+          runtime = Path('backend/services/ai_runtime.py')
+          text = runtime.read_text(encoding='utf-8')
+          old_enum = '    ENFORCEMENT_EXPLAINER = "enforcement_explainer"\n    SEARCH_OVERVIEW = "search_overview"\n'
+          new_enum = '    ENFORCEMENT_EXPLAINER = "enforcement_explainer"\n    ENFORCEMENT_STRUCTURED = "enforcement_structured"\n    SEARCH_OVERVIEW = "search_overview"\n'
+          if text.count(old_enum) != 1:
+              raise SystemExit('TaskRole insertion anchor not found exactly once')
+          text = text.replace(old_enum, new_enum)
+
+          old_route = '''    elif task == TaskRole.VERIFIER:\n        candidates = chain(policy["verifier_model"], basic["candidates"])\n    elif task == TaskRole.FAST_FINAL_ANSWER:\n        candidates = chain(fast["candidates"])\n'''
+          new_route = '''    elif task == TaskRole.VERIFIER:\n        candidates = chain(policy["verifier_model"], basic["candidates"])\n    elif task == TaskRole.ENFORCEMENT_STRUCTURED:\n        # Extraction/prediction already runs behind deterministic legal rules and\n        # strict typed validation. Lead with the low-latency structured-output\n        # chain; keep the verifier model as the final deep fallback without\n        # paying the general 405B Basic-answer primary on every request.\n        candidates = chain(fast["candidates"], policy["verifier_model"])\n    elif task == TaskRole.FAST_FINAL_ANSWER:\n        candidates = chain(fast["candidates"])\n'''
+          if text.count(old_route) != 1:
+              raise SystemExit('TaskRole resolver anchor not found exactly once')
+          runtime.write_text(text.replace(old_route, new_route), encoding='utf-8')
+
+          # 2) Backend asks for a capability; it never names a model.
+          backend = Path('backend/paradiso_backend.py')
+          text = backend.read_text(encoding='utf-8')
+          old_provider = '''_ENFORCEMENT_OPENROUTER_MODEL_CANDIDATES: List[str] = [\n    "google/gemma-4-26b-a4b-it:free",\n    "openai/gpt-oss-20b:free",\n    "google/gemma-4-31b-it:free",\n    "openai/gpt-oss-120b:free",\n]\n\n\nasync def _enforcement_ai_provider(prompt: str) -> Dict[str, Any]:\n    """Fast structured-output chain dedicated to enforcement prediction/extraction.\n\n    The enforcement service already constrains model output with typed validation\n    and keeps the legal baseline deterministic, so a 405B general-answer model is\n    unnecessary latency here. The shared OpenRouter cooldown/circuit breaker still\n    applies; only the ordered candidate set is feature-specific.\n    """\n    return await _openrouter_complete_with_candidates(\n        prompt,\n        requested_model=_ENFORCEMENT_OPENROUTER_MODEL_CANDIDATES[0],\n        candidate_models=_ENFORCEMENT_OPENROUTER_MODEL_CANDIDATES,\n        max_tokens=1800,\n    )\n'''
+          new_provider = '''async def _enforcement_ai_provider(prompt: str) -> Dict[str, Any]:\n    """Shared-runtime structured role for enforcement extraction/prediction."""\n    plan = _ai_runtime.resolve_task_models(_ai_runtime.TaskRole.ENFORCEMENT_STRUCTURED)\n    return await _openrouter_complete_with_candidates(\n        prompt,\n        requested_model=plan["primary"],\n        candidate_models=plan["candidates"],\n        max_tokens=1800,\n    )\n'''
+          if text.count(old_provider) != 1:
+              raise SystemExit('enforcement provider block not found exactly once')
+          backend.write_text(text.replace(old_provider, new_provider), encoding='utf-8')
+
+          # 3) Lock the role semantics with an offline unit test.
+          tests = Path('backend/tests/test_ai_runtime.py')
+          text = tests.read_text(encoding='utf-8')
+          anchor = '''    def test_an_unknown_role_falls_back_to_the_final_answer_chain(self):\n'''
+          test = '''    def test_enforcement_structured_role_uses_fast_chain_then_verifier(self):\n        plan = rt.resolve_task_models(rt.TaskRole.ENFORCEMENT_STRUCTURED)\n        fast = rt.resolve_task_models(rt.TaskRole.FAST_FINAL_ANSWER)["candidates"]\n        verifier = rt.resolve_task_models(rt.TaskRole.VERIFIER)["candidates"][0]\n        self.assertEqual(plan["task_role"], "enforcement_structured")\n        self.assertEqual(plan["candidates"][:len(fast)], fast)\n        self.assertIn(verifier, plan["candidates"])\n\n'''
+          if text.count(anchor) != 1:
+              raise SystemExit('ai runtime test anchor not found exactly once')
+          tests.write_text(text.replace(anchor, test + anchor), encoding='utf-8')
+
+          # 4) Keep operator documentation truthful.
+          docs = Path('docs/ai/AI_PROVIDER_AND_MODEL_POLICY.md')
+          text = docs.read_text(encoding='utf-8')
+          old_doc = '| `ENFORCEMENT_EXPLAINER` | basic chain | explains a statutory range |\n| `SEARCH_OVERVIEW` | fast, then basic | short summary over search cards |\n'
+          new_doc = '| `ENFORCEMENT_EXPLAINER` | basic chain | explains a statutory range |\n| `ENFORCEMENT_STRUCTURED` | fast chain, then verifier | typed enforcement extraction / prediction behind deterministic rules |\n| `SEARCH_OVERVIEW` | fast, then basic | short summary over search cards |\n'
+          if text.count(old_doc) != 1:
+              raise SystemExit('AI policy doc anchor not found exactly once')
+          docs.write_text(text.replace(old_doc, new_doc), encoding='utf-8')
+          PY
+          git diff --check
+          PYTHONPATH=backend python3 -m unittest backend.tests.test_ai_runtime
+          python3 scripts/check_ai_architecture.py
+      - name: Commit shared-runtime patch
+        run: |
+          git config user.name 'Luca Kim'
+          git config user.email 'seonjae.kic@khu.ac.kr'
+          git add backend/services/ai_runtime.py backend/paradiso_backend.py backend/tests/test_ai_runtime.py docs/ai/AI_PROVIDER_AND_MODEL_POLICY.md
+          git commit -m 'perf(enforcement): route structured AI through shared task policy'
+          git push origin HEAD:perf/enforcement-benchmark-20260904
