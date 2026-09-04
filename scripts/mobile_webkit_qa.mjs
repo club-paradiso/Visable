@@ -2,7 +2,7 @@ import http from 'node:http';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
-import { webkit } from 'playwright';
+import { webkit } from '@playwright/test';
 
 const ROOT = process.cwd();
 const PORT = Number(process.env.MOBILE_WEBKIT_QA_PORT || 4174);
