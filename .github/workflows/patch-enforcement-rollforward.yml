@@ -21,6 +21,9 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Install backend dependencies
+        run: pip install -r backend/requirements.txt
+
       - name: Apply bounded enforcement patch
         run: python scripts/_patch_enforcement_rollforward.py
 
