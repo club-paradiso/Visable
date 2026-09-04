@@ -6,6 +6,7 @@ routing must remain isolated from deploy-wide Fast-tier overrides.
 
 from __future__ import annotations
 
+import json
 import os
 import sys
 import unittest
@@ -94,6 +95,56 @@ class EnforcementLatencyBudgetTests(unittest.IsolatedAsyncioTestCase):
 
         self.assertTrue(result["ok"])
         self.assertEqual(calls, [("synthetic prompt", "google/gemma-4-26b-a4b-it:free", 100)])
+
+    async def test_provider_probe_returns_metadata_without_completion_content(self):
+        import paradiso_backend as pb
+
+        async def fake_complete(prompt, **kwargs):
+            return {
+                "ok": False,
+                "answer": "SHOULD_NEVER_BE_EXPOSED",
+                "attempted_models": ["model-a"],
+                "skipped_models_due_to_cooldown": ["model-b"],
+                "cooling_down_models": ["model-b"],
+                "final_model": None,
+                "provider_error_type": "invalid_request",
+                "upstream_statuses": [400],
+                "all_candidates_failed": False,
+            }
+
+        with patch.object(pb, "_openrouter_complete_with_candidates", new=fake_complete):
+            payload = await pb._run_enforcement_provider_probe()
+
+        self.assertFalse(payload["ok"])
+        self.assertEqual(payload["attemptedModels"], ["model-a"])
+        self.assertEqual(payload["providerErrorType"], "invalid_request")
+        self.assertEqual(payload["upstreamStatuses"], [400])
+        self.assertNotIn("answer", payload)
+        self.assertNotIn("SHOULD_NEVER_BE_EXPOSED", str(payload))
+
+    async def test_provider_probe_recognizes_exact_json_contract(self):
+        import paradiso_backend as pb
+
+        async def fake_complete(prompt, **kwargs):
+            return {
+                "ok": True,
+                "answer": json.dumps({"status":"UNAVAILABLE","monetaryPrediction":None,"primaryDisposition":None,"alternativeDispositions":[],"stayImpact":[],"aggravatingFactors":[],"mitigatingFactors":[],"unresolvedFactors":[],"confidence":{"level":"INSUFFICIENT","reasons":[]},"limitations":[]}),
+                "attempted_models": ["model-a"],
+                "skipped_models_due_to_cooldown": [],
+                "cooling_down_models": [],
+                "final_model": "model-a",
+                "provider_error_type": None,
+                "upstream_statuses": [],
+                "all_candidates_failed": False,
+            }
+
+        with patch.object(pb, "_openrouter_complete_with_candidates", new=fake_complete):
+            payload = await pb._run_enforcement_provider_probe()
+
+        self.assertTrue(payload["ok"])
+        self.assertTrue(payload["jsonObjectReturned"])
+        self.assertTrue(payload["predictionContractOk"])
+        self.assertEqual(payload["finalModel"], "model-a")
 
     def test_enforcement_role_isolated_from_fast_env_overrides(self):
         with patch.dict(

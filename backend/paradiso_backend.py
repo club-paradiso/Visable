@@ -7276,6 +7276,96 @@ async def _enforcement_ai_provider(prompt: str) -> Dict[str, Any]:
         }
 
 
+async def _run_enforcement_provider_probe() -> Dict[str, Any]:
+    """Run one fixed synthetic prediction through provider + validator; return metadata only."""
+    from services.enforcement_evidence import retrieve_enforcement_evidence
+    from services.enforcement_prediction import (
+        PredictionValidationError,
+        build_prediction_prompt,
+        validate_ai_prediction,
+    )
+    from services.enforcement_rules import calculate_legal_baseline
+
+    plan = _ai_runtime.resolve_task_models(_ai_runtime.TaskRole.ENFORCEMENT_STRUCTURED)
+    synthetic_case = StructuredCase(
+        status_of_stay="D-2",
+        violation_code="STATUS_OUTSIDE_ACTIVITY_ART20",
+        violation_candidates=["STATUS_OUTSIDE_ACTIVITY_ART20"],
+        activity="synthetic part-time work",
+        authorization_obtained=False,
+        duration_days=18,
+        assessment_date=date(2026, 9, 4),
+        prior_violations=0,
+        voluntary_disclosure=True,
+        investigation_started=False,
+        unknown_facts=[],
+    )
+    baseline = calculate_legal_baseline(synthetic_case)
+    evidence = retrieve_enforcement_evidence(synthetic_case, baseline)
+    prompt = build_prediction_prompt(synthetic_case, baseline, evidence)
+
+    started = time.perf_counter()
+    result = await _enforcement_ai_provider(prompt)
+    answer = result.get("answer") if isinstance(result, dict) else None
+    json_object_returned = False
+    prediction_contract_ok = False
+    validation_error = None
+    if isinstance(answer, str):
+        try:
+            parsed = json.loads(answer.strip())
+            json_object_returned = isinstance(parsed, dict)
+        except (TypeError, ValueError, json.JSONDecodeError):
+            pass
+    if isinstance(result, dict) and result.get("ok"):
+        try:
+            validate_ai_prediction(result, synthetic_case, baseline, evidence)
+            prediction_contract_ok = True
+        except PredictionValidationError as exc:
+            validation_error = str(exc)[:120]
+        except Exception as exc:
+            validation_error = type(exc).__name__
+    elapsed_ms = int(round((time.perf_counter() - started) * 1000))
+    return {
+        "service": "visable-enforcement-provider-probe",
+        "diagnosticOnly": True,
+        "syntheticCaseOnly": True,
+        "configured": bool(OPENROUTER_API_KEY),
+        "primaryModel": plan.get("primary"),
+        "modelCandidates": list(plan.get("candidates") or []),
+        "ok": bool(isinstance(result, dict) and result.get("ok")),
+        "attemptedModels": list((result or {}).get("attempted_models") or []),
+        "skippedModelsDueToCooldown": list((result or {}).get("skipped_models_due_to_cooldown") or []),
+        "coolingDownModels": list((result or {}).get("cooling_down_models") or []),
+        "finalModel": (result or {}).get("final_model"),
+        "providerErrorType": (result or {}).get("provider_error_type"),
+        "upstreamStatuses": list((result or {}).get("upstream_statuses") or []),
+        "allCandidatesFailed": bool((result or {}).get("all_candidates_failed")),
+        "jsonObjectReturned": json_object_returned,
+        "predictionContractOk": prediction_contract_ok,
+        "predictionValidationError": validation_error,
+        "legalBaselineStatus": baseline.status,
+        "evidenceStatus": evidence.retrieval_status,
+        "elapsedMs": elapsed_ms,
+    }
+
+
+@app.get(
+    "/api/enforcement/provider-probe",
+    dependencies=[Depends(rate_limit("enforcement_provider_probe", per_minute=2, per_day=20))],
+)
+async def enforcement_provider_probe() -> Any:
+    """Fixed synthetic probe. Accepts no case input and never returns model text."""
+    if not OPENROUTER_API_KEY:
+        return {
+            "service": "visable-enforcement-provider-probe",
+            "diagnosticOnly": True,
+            "configured": False,
+            "ok": False,
+            "providerErrorType": "provider_not_configured",
+        }
+    return await _run_enforcement_provider_probe()
+
+
 @app.post(
     "/api/enforcement/extract",
     dependencies=[Depends(rate_limit("enforcement_extract", per_minute=10, per_day=200))],
