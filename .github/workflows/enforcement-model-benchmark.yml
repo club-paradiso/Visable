@@ -1,0 +1,73 @@
+name: Enforcement Model Benchmark
+
+on:
+  workflow_dispatch:
+    inputs:
+      models:
+        description: Comma-separated exact OpenRouter model ids
+        required: false
+        default: google/gemma-4-31b-it:free,openai/gpt-oss-120b:free
+      repetitions:
+        description: Repetitions per synthetic case
+        required: false
+        default: "1"
+  push:
+    branches:
+      - perf/enforcement-benchmark-20260904
+    paths:
+      - scripts/benchmark_enforcement_models.py
+      - .github/workflows/enforcement-model-benchmark.yml
+
+permissions:
+  contents: read
+
+jobs:
+  validate-harness:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install backend dependencies
+        run: pip install -r backend/requirements.txt
+      - name: Validate synthetic fixtures and prompts without network
+        run: python3 scripts/benchmark_enforcement_models.py --dry-run
+
+  live-model-comparison:
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    needs: validate-harness
+    env:
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      BENCHMARK_MODELS: ${{ inputs.models }}
+      BENCHMARK_REPETITIONS: ${{ inputs.repetitions }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install backend dependencies
+        run: pip install -r backend/requirements.txt
+      - name: Check benchmark credential availability
+        run: |
+          if [ -z "$OPENROUTER_API_KEY" ]; then
+            echo "OPENROUTER_API_KEY is not configured as a GitHub Actions secret."
+            exit 1
+          fi
+      - name: Compare exact models
+        run: |
+          python3 scripts/benchmark_enforcement_models.py \
+            --models "$BENCHMARK_MODELS" \
+            --repetitions "$BENCHMARK_REPETITIONS" \
+            --timeout 60 \
+            --delay 3 \
+            --output /tmp/enforcement-model-benchmark.json
+          echo '### Enforcement exact-model benchmark' >> "$GITHUB_STEP_SUMMARY"
+          echo '```json' >> "$GITHUB_STEP_SUMMARY"
+          cat /tmp/enforcement-model-benchmark.json >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
