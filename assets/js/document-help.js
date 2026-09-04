@@ -8,13 +8,25 @@
      deterministic last layer without rewriting the legacy page wholesale. */
   if (typeof document !== 'undefined') {
     var installMobileAuthorityStyles = function () {
-      if (document.getElementById('visable-mobile-authority-styles')) return;
-      var link = document.createElement('link');
-      link.id = 'visable-mobile-authority-styles';
-      link.rel = 'stylesheet';
-      link.media = '(max-width: 820px)';
-      link.href = 'assets/css/visable-mobile-iphone-20260904.css?v=20260904';
-      (document.head || document.documentElement).appendChild(link);
+      var target = document.head || document.documentElement;
+      if (!document.getElementById('visable-mobile-authority-styles')) {
+        var link = document.createElement('link');
+        link.id = 'visable-mobile-authority-styles';
+        link.rel = 'stylesheet';
+        link.media = '(max-width: 820px)';
+        link.href = 'assets/css/visable-mobile-iphone-20260904.css?v=20260904';
+        target.appendChild(link);
+      }
+
+      /* Keep reduced-motion behavior valid even in engines that do not parse
+         nested conditional group rules. This deliberately duplicates the
+         modern rule as a conservative, flat compatibility fallback. */
+      if (!document.getElementById('visable-mobile-reduced-motion-compat')) {
+        var reducedMotionCompat = document.createElement('style');
+        reducedMotionCompat.id = 'visable-mobile-reduced-motion-compat';
+        reducedMotionCompat.textContent = '@media (prefers-reduced-motion: reduce) and (max-width: 820px) { .p-gw-card, .p-gw-util, .p-gw-newhome, .hero-actions .ha { transition: none !important; } }';
+        target.appendChild(reducedMotionCompat);
+      }
     };
 
     if (document.readyState === 'loading') {
