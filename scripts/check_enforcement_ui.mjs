@@ -30,7 +30,7 @@ const checks = [
   ['three-step flow', /data-step="1"[\s\S]*data-step="2"[\s\S]*data-step="3"/.test(html)],
   ['human confirmation copy', html.includes('제가 이해한 내용이 맞나요?') && html.includes('네, 맞아요 · 분석하기')],
   ['confirmation replaces bureaucratic edit grid', !html.includes('name="violationCode"') && !html.includes('name="durationDays"') && html.includes('id="confirmed-facts"')],
-  ['single-question clarification UI', html.includes('id="clarification-card"') && js.includes('function clarificationFor(') && js.includes('한 가지만 더 확인할게요')],
+  ['single-question clarification UI', html.includes('id="clarification-card"') && js.includes('function clarificationFor(') && html.includes('한 가지만 더 확인할게요')],
   ['critical clarification can be skipped honestly', js.includes('잘 모르겠어요') && js.includes('skippedClarifications')],
   ['confirmation always precedes analysis', !js.includes('caseNeedsConfirmation') && js.includes('showStep(2);') && js.includes('renderConfirmation(structuredCase)')],
   ['Gemma humanizer is best-effort and non-blocking', js.includes('void humanizeConfirmation(structuredCase)') && js.includes('/api/enforcement/confirm')],
