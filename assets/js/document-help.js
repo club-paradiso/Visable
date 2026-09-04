@@ -2,6 +2,27 @@
   var api = factory();
   if (typeof module === 'object' && module.exports) module.exports = api;
   root.ParadisoDocumentHelp = api;
+
+  /* index.html is intentionally monolithic and carries years of inline CSS.
+     Install one final mobile stylesheet after parsing so phone layout has a
+     deterministic last layer without rewriting the legacy page wholesale. */
+  if (typeof document !== 'undefined') {
+    var installMobileAuthorityStyles = function () {
+      if (document.getElementById('visable-mobile-authority-styles')) return;
+      var link = document.createElement('link');
+      link.id = 'visable-mobile-authority-styles';
+      link.rel = 'stylesheet';
+      link.media = '(max-width: 820px)';
+      link.href = 'assets/css/visable-mobile-iphone-20260904.css?v=20260904';
+      (document.head || document.documentElement).appendChild(link);
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', installMobileAuthorityStyles, { once: true });
+    } else {
+      installMobileAuthorityStyles();
+    }
+  }
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
 
