@@ -80,7 +80,7 @@ textarea:focus, input:focus, select:focus { border-color: var(--blue); box-shado
 
 .example-row { display: flex; flex-wrap: wrap; align-items: center; gap: .45rem; margin: .75rem 0 .4rem; }
 .example-label { font-size: .8rem; font-weight: 750; color: var(--muted); }
-.example-chip { min-height: 34px; padding: .32rem .7rem; border: 1px solid #c9d2dc; border-radius: 999px; background: white; color: var(--ink); font-size: .82rem; }
+.example-chip { min-height: 44px; padding: .32rem .7rem; border: 1px solid #c9d2dc; border-radius: 999px; background: white; color: var(--ink); font-size: .82rem; }
 .example-chip:hover { border-color: var(--blue); color: var(--blue); }
 .example-chip:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
 .advanced-options { margin: .65rem 0 1rem; border-top: 1px solid #edf0f3; padding-top: .65rem; }
@@ -215,3 +215,7 @@ footer { padding: 1.8rem 1rem 3rem; color: var(--muted); text-align: center; fon
 @media (prefers-reduced-motion: reduce) {
   * { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
+
+/* 로고 링크가 모바일에서 34px 로 재어져 손가락 대상보다 작았다
+   (접근성 라벨은 aria-label 로 이미 있다). */
+.brand { display: inline-flex; align-items: center; min-height: 44px; }

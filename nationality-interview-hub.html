@@ -108,6 +108,16 @@ h1, h2, h3 { line-height: 1.25; letter-spacing: -0.01em; }
 .ni-nav { position: sticky; top: 53px; z-index: 40; display: flex; gap: 0.35rem; overflow-x: auto; padding: 0.5rem clamp(0.9rem, 3vw, 1.6rem); background: color-mix(in srgb, var(--bg0) 92%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--bd2); scrollbar-width: thin; }
 .ni-nav a { white-space: nowrap; font-size: 0.84rem; font-weight: 700; color: var(--t2); text-decoration: none; padding: 0.4rem 0.7rem; border-radius: 999px; }
 .ni-nav a:hover { background: var(--bg2); color: var(--t1); }
+/* 모바일에서 뒤로가기 36px, 네비 링크 34px 로 손가락 대상보다 작았다.
+   .ni-chip 은 조밀한 출처 칩이라 44px 로 키우면 카드가 무너지므로
+   32px 로만 올린다(WCAG 2.2 AA 최소 24px 는 충족). */
+@media (max-width: 720px) {
+  .ni-back, .ni-nav a { min-height: 44px; box-sizing: border-box; }
+  .ni-back { padding-block: 0; }
+  .ni-nav a { display: inline-flex; align-items: center; }
+  .ni-chip { min-height: 32px; padding-inline: 0.7rem; }
+  .ni-chiprow { gap: 8px; }
+}
 
 /* ── Buttons ── */
 .ni-btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.45rem; min-height: 48px; padding: 0 1.3rem; border-radius: var(--r-md); border: 1px solid var(--bd); background: var(--bg1); color: var(--t1); font: inherit; font-weight: 700; cursor: pointer; text-decoration: none; transition: transform 0.06s ease, background 0.15s ease; }

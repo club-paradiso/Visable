@@ -3230,3 +3230,84 @@ body.product-visable.landing:not(.searched) .results-area > .qf,
 body.product-visable.landing:not(.searched) .results-area > .rlist:empty {
   display: none !important;
 }
+
+/* ==========================================================================
+   12. 두 번째 훑기 — 모바일 폭에서 남아 있던 결함 (2026-08)
+   1440 / 768 / 390 세 폭을 다시 계측해서 나온 것만 고친다.
+   ========================================================================== */
+
+/* ── 12.1 소개 섹션이 모바일에서 화면 밖으로 나가던 문제 ────────────────
+   .about-brand 는 `grid-template-columns: minmax(260px, 360px) 1fr` 로
+   선언돼 있다. 390px 화면에서 이 컨테이너의 콘텐츠 박스는 254px 뿐인데
+   트랙이 324px 로 잡혀, 자식(.anagram-visual)이 부모 밖으로 47px,
+   뷰포트 밖으로 3px 삐져나갔다. 트랙이 컨테이너보다 넓을 수 없게 한다. */
+@media (max-width: 760px) {
+  body.product-visable .about-brand,
+  body.product-visable .figma-anagram-section {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  body.product-visable .about-brand > * { min-width: 0 !important; max-width: 100% !important; }
+}
+
+/* ── 12.2 모바일 탭 대상 ──────────────────────────────────────────────
+   체류자격 코드 칩이 32×21px 이라 손가락으로 정확히 누르기 어려웠다.
+   40개가 넘는 조밀한 격자라 44px 로 키우면 화면을 다 잡아먹으므로,
+   높이를 늘리고 칩 사이 간격을 벌려 오조작을 줄이는 선에서 맞춘다. */
+@media (max-width: 720px) {
+  body.product-visable .stat-code-chip {
+    min-height: 34px !important;
+    padding: 0 12px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+  }
+  body.product-visable .stat-code-list,
+  body.product-visable .stat-codes { gap: 8px !important; }
+}
+
+/* ── 12.3 히어로 Aurora — 브랜드 색으로 정리 ───────────────────────────
+   지난 패스에서 판단을 남겨뒀던 항목이다. 위쪽 § Aurora Live 블록은
+   확정 시안 실측값을 그대로 옮긴 것이라 구조·반경·위치는 존중하되,
+   색만 브랜드 팔레트로 되돌린다.
+
+   원래 값에서 화면을 지배하던 두 색이 팔레트 밖이었다:
+     페리윙클 rgba(127,137,206,.42) — 오른쪽 위, 다섯 겹 중 가장 진함
+     코랄     rgba(255,107,91,.16)  — 오른쪽 아래
+   따뜻한 종이(#FCFAF5→#F1EADC) 위에 라벤더·핑크가 번지는 조합이
+   이 화면을 "자동 생성물"처럼 보이게 하는 가장 큰 원인이었다.
+
+   구조(타원 중심·반경·블룸)는 그대로 두고, 두 색을 브랜드 그린
+   계열로 바꾼다. 깊이감은 남고 색은 팔레트 안으로 들어온다.
+   되돌리려면 이 블록만 지우면 위 원본 선언이 다시 이긴다. */
+body.product-visable.landing:not(.searched):not([data-theme="dark"]) .hero-container::before {
+  background:
+    radial-gradient(37.2% 63.7% at 59.0% 73.6%, rgba(255, 255, 255, 0.24) 0%, transparent 70%),
+    radial-gradient(45.8% 75.6% at 47.9% 31.5%, rgba(255, 252, 245, 0.42) 0%, transparent 70%),
+    /* 코랄 → 따뜻한 종이 하이라이트 */
+    radial-gradient(33.3% 56.0% at 84.0% 91.7%, rgba(230, 138,  58, 0.07) 0%, transparent 70%),
+    /* 에메랄드는 브랜드 색이라 유지 */
+    radial-gradient(41.7% 69.0% at 11.8% 91.7%, rgba( 14, 163, 123, 0.20) 0%, transparent 70%),
+    /* 페리윙클 → 브랜드 딥그린. 가장 진하던 자리라 농도도 함께 낮춘다 */
+    radial-gradient(46.5% 73.8% at 87.5% 27.4%, rgba(  8,  94,  72, 0.13) 0%, transparent 70%),
+    linear-gradient(180deg, #fcfaf5 0%, #f1eadc 100%) !important;
+}
+
+/* ── 12.4 히어로 워드마크 색 ──────────────────────────────────────────
+   워드마크는 흰색 SVG 를 `content: url()` 로 어두운 SVG 로 바꾼 뒤
+   invert/sepia/saturate/hue-rotate/brightness/contrast 5단 필터로
+   페리윙클에 근사시키고 있었다. 근사값이라 정확한 토큰 색이 아니고,
+   같은 페이지 안에서 로고가 세 가지 색으로 보였다:
+     히어로 = 페리윙클 · 푸터 = 잉크 · 브랜드 스토리 = 그린/크림
+
+   12.3 에서 히어로의 라벤더를 걷어내면서 이 파란 로고만 팔레트 밖에
+   남았다. 필터 체인을 걷어내면 원본 SVG 의 fill(#0E1F1A = 브랜드 잉크)이
+   그대로 나온다 — 근사가 아니라 정확한 토큰 색이고, 푸터 워드마크와도
+   같은 색이 된다. */
+body.product-visable:not([data-theme="dark"]) .brand-wordmark-img {
+  filter: none !important;
+}
+/* 다크에서는 잉크 워드마크가 어두운 배경에 묻힌다 — 원본 흰색 SVG 를
+   그대로 쓴다(여기서도 근사 필터 없이 정확한 색). */
+body.product-visable[data-theme="dark"] .brand-wordmark-img {
+  content: url("../brand/visable-wordmark-white.svg") !important;
+  filter: none !important;
+}
