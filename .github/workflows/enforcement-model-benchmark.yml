@@ -35,33 +35,14 @@ jobs:
         run: pip install -r backend/requirements.txt
       - name: Validate synthetic fixtures and prompts without network
         run: python3 scripts/benchmark_enforcement_models.py --dry-run
-      - name: Probe public production AI readiness
-        run: |
-          python3 - <<'PY'
-          import json, urllib.request
-          url='https://web-production-14f9a.up.railway.app/api/health/ai'
-          req=urllib.request.Request(url, headers={'Accept':'application/json','User-Agent':'Visable-Enforcement-Benchmark/1.0'})
-          with urllib.request.urlopen(req, timeout=30) as response:
-              body=json.loads(response.read().decode())
-          safe={
-              'aiReady': body.get('aiReady'),
-              'activeProvider': body.get('activeProvider'),
-              'runtimeVersion': body.get('runtimeVersion'),
-              'modelPolicyVersion': body.get('modelPolicyVersion'),
-              'candidateWarnings': body.get('candidateWarnings'),
-              'modelPolicy': body.get('modelPolicy'),
-          }
-          print('AI_READINESS=' + json.dumps(safe, ensure_ascii=False, sort_keys=True))
-          PY
 
   live-model-comparison:
-    if: ${{ github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     needs: validate-harness
     env:
       OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-      BENCHMARK_MODELS: ${{ inputs.models }}
-      BENCHMARK_REPETITIONS: ${{ inputs.repetitions }}
+      BENCHMARK_MODELS: ${{ github.event_name == 'workflow_dispatch' && inputs.models || 'google/gemma-4-31b-it:free,openai/gpt-oss-120b:free' }}
+      BENCHMARK_REPETITIONS: ${{ github.event_name == 'workflow_dispatch' && inputs.repetitions || '1' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -71,13 +52,19 @@ jobs:
           python-version: "3.12"
       - name: Install backend dependencies
         run: pip install -r backend/requirements.txt
-      - name: Check benchmark credential availability
+      - name: Detect benchmark credential
+        id: credential
+        shell: bash
         run: |
-          if [ -z "$OPENROUTER_API_KEY" ]; then
-            echo "OPENROUTER_API_KEY is not configured as a GitHub Actions secret."
-            exit 1
+          if [ -n "$OPENROUTER_API_KEY" ]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+            echo "OpenRouter benchmark credential is available."
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "OpenRouter benchmark credential is not configured; live comparison skipped."
           fi
       - name: Compare exact models
+        if: ${{ steps.credential.outputs.available == 'true' }}
         run: |
           python3 scripts/benchmark_enforcement_models.py \
             --models "$BENCHMARK_MODELS" \
