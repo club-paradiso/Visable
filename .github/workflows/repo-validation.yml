@@ -8,6 +8,7 @@ on:
       - main
       - 'feat/**'
       - 'fix/**'
+      - 'test/**'
 
 permissions:
   contents: read
@@ -33,3 +34,38 @@ jobs:
 
       - name: Run repository validation
         run: bash scripts/check_repo.sh
+
+  mobile-render-qa:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install browser driver
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
+        run: npm install --no-save --package-lock=false puppeteer-core@24.16.0
+
+      - name: Resolve Chrome
+        run: |
+          CHROME_BIN="$(command -v google-chrome || command -v chromium || command -v chromium-browser)"
+          test -n "$CHROME_BIN"
+          echo "CHROME_BIN=$CHROME_BIN" >> "$GITHUB_ENV"
+          "$CHROME_BIN" --version
+
+      - name: Render iPhone viewport QA
+        run: node scripts/mobile_render_qa.mjs
+
+      - name: Upload mobile QA evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mobile-render-qa
+          path: artifacts/mobile-render-qa/
+          if-no-files-found: error
+          retention-days: 7
