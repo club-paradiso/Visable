@@ -1,0 +1,140 @@
+/*
+ * Visable mobile QA hardening — 2026-09-05
+ *
+ * Last-mile safeguards for iPhone/Safari after the main mobile authority layer:
+ * - dynamic viewport fallbacks
+ * - notch / landscape safe-area protection
+ * - long-content overflow resilience
+ * - keyboard-friendly sheets
+ * - visible keyboard focus
+ * - flat reduced-motion compatibility
+ *
+ * Keep this file narrow and late-loaded. The legacy index intentionally remains
+ * untouched because it contains a large stack of historical inline styles.
+ */
+
+@media (max-width: 820px) {
+  html,
+  body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
+  }
+
+  body {
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+
+  /* Flex/grid children with long translated text or URLs must be allowed to shrink. */
+  :where(
+    .hero-container,
+    .p-gateway,
+    .hero-actions,
+    .sbar,
+    .results-area,
+    .rlist,
+    #rlist,
+    .us-layer,
+    .us-interpret,
+    .us-ai,
+    .document-help-modal,
+    .scenario-picker-panel-inner,
+    .ctrls
+  ) {
+    min-width: 0 !important;
+    max-width: 100%;
+  }
+
+  :where(
+    .results-area,
+    .rlist,
+    #rlist,
+    .us-layer,
+    .us-interpret,
+    .us-ai,
+    .document-help-modal,
+    .scenario-picker-panel-inner,
+    .document-help-section,
+    .document-help-source-meta
+  ) :where(p, li, a, span, strong, em, h1, h2, h3, h4) {
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
+
+  /* Preserve momentum scrolling for horizontally scrollable mobile tool rows. */
+  :where(.ctrls, .document-help-chips) {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-inline: contain;
+  }
+
+  /* Bottom sheets should remain usable when Safari chrome or the keyboard reduces
+     the visual viewport. Keep the vh fallback before dvh for older engines. */
+  :where(.document-help-modal, .scenario-picker-panel-inner) {
+    max-height: calc(100vh - max(12px, env(safe-area-inset-top, 0px))) !important;
+    max-height: calc(100dvh - max(12px, env(safe-area-inset-top, 0px))) !important;
+    overscroll-behavior: contain;
+  }
+
+  /* The original authority layer already protects the bottom home indicator.
+     Add the missing left/right notch protection, especially for landscape. */
+  @media (orientation: landscape) {
+    .top-ctrls,
+    .hero-container,
+    .results-area {
+      padding-left: max(0.75rem, env(safe-area-inset-left, 0px)) !important;
+      padding-right: max(0.75rem, env(safe-area-inset-right, 0px)) !important;
+    }
+
+    .us-layer,
+    .document-help-modal,
+    .scenario-picker-panel-inner {
+      margin-left: env(safe-area-inset-left, 0px) !important;
+      margin-right: env(safe-area-inset-right, 0px) !important;
+      max-width: calc(100% - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px)) !important;
+    }
+  }
+
+  /* A landscape phone has very little vertical room. Avoid letting the landing
+     hero consume the whole viewport before the first useful action appears. */
+  @media (orientation: landscape) and (max-height: 500px) {
+    body:not(.searched) .hero-container {
+      padding-top: 0.5rem !important;
+      padding-bottom: 0.5rem !important;
+    }
+
+    body:not(.searched) .brand-wordmark-img {
+      max-height: 40px !important;
+    }
+
+    body:not(.searched) .p-hero-title {
+      margin-top: 0.25rem !important;
+      margin-bottom: 0.5rem !important;
+      font-size: clamp(1.5rem, 7vh, 2.1rem) !important;
+      line-height: 1.05 !important;
+    }
+
+    body:not(.searched) .p-gateway,
+    body:not(.searched) .hero-actions {
+      gap: 0.5rem !important;
+    }
+  }
+
+  /* Keyboard users and switch-control users need a persistent visible focus cue.
+     currentColor avoids fighting the app's light/dark theme palette. */
+  :where(button, a, input, textarea, select, [role="button"], [tabindex]):focus-visible {
+    outline: 2px solid currentColor !important;
+    outline-offset: 2px !important;
+  }
+}
+
+/* Flat conditional form for engines that do not accept nested media groups. */
+@media (prefers-reduced-motion: reduce) and (max-width: 820px) {
+  .p-gw-card,
+  .p-gw-util,
+  .p-gw-newhome,
+  .hero-actions .ha {
+    transition: none !important;
+    animation: none !important;
+  }
+}
