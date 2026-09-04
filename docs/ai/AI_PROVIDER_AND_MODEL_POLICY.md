@@ -42,6 +42,7 @@ hardcodes a model is a feature nobody updates when the catalog changes.
 | `NATIONALITY_COACH` | fast, then basic | short structured feedback |
 | `EMPLOYMENT_INTERPRETER` | fast, then basic | short structured extraction |
 | `ENFORCEMENT_EXPLAINER` | basic chain | explains a statutory range |
+| `ENFORCEMENT_STRUCTURED` | fast chain, then verifier | typed enforcement extraction / prediction behind deterministic rules |
 | `SEARCH_OVERVIEW` | fast, then basic | short summary over search cards |
 
 Resolution: `services/ai_runtime.py::resolve_task_models` →

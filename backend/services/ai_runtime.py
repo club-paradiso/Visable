@@ -272,6 +272,7 @@ class TaskRole(str, Enum):
     NATIONALITY_COACH = "nationality_coach"
     EMPLOYMENT_INTERPRETER = "employment_interpreter"
     ENFORCEMENT_EXPLAINER = "enforcement_explainer"
+    ENFORCEMENT_STRUCTURED = "enforcement_structured"
     SEARCH_OVERVIEW = "search_overview"
 
 
@@ -311,6 +312,12 @@ def resolve_task_models(role: Any) -> Dict[str, Any]:
         candidates = chain(fast["candidates"], basic["candidates"])
     elif task == TaskRole.VERIFIER:
         candidates = chain(policy["verifier_model"], basic["candidates"])
+    elif task == TaskRole.ENFORCEMENT_STRUCTURED:
+        # Extraction/prediction already runs behind deterministic legal rules and
+        # strict typed validation. Lead with the low-latency structured-output
+        # chain; keep the verifier model as the final deep fallback without
+        # paying the general 405B Basic-answer primary on every request.
+        candidates = chain(fast["candidates"], policy["verifier_model"])
     elif task == TaskRole.FAST_FINAL_ANSWER:
         candidates = chain(fast["candidates"])
     elif task in (TaskRole.SEARCH_OVERVIEW, TaskRole.NATIONALITY_COACH):

@@ -1,0 +1,46 @@
+name: Enforcement Runtime Benchmark
+
+on:
+  workflow_dispatch:
+    inputs:
+      repetitions:
+        description: Synthetic repetitions per case
+        required: false
+        default: "2"
+  push:
+    branches:
+      - perf/enforcement-benchmark-20260904
+    paths:
+      - scripts/benchmark_enforcement_runtime.py
+      - .github/workflows/enforcement-runtime-benchmark.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: enforcement-runtime-benchmark
+  cancel-in-progress: true
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      ENFORCEMENT_BENCHMARK_BASE_URL: https://web-production-14f9a.up.railway.app
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Run synthetic enforcement benchmark
+        env:
+          BENCHMARK_REPETITIONS: ${{ github.event_name == 'workflow_dispatch' && inputs.repetitions || '1' }}
+        run: |
+          python3 scripts/benchmark_enforcement_runtime.py \
+            --repetitions "$BENCHMARK_REPETITIONS" \
+            --delay 11 \
+            --retry-delay 15 \
+            --timeout 90 \
+            --output /tmp/enforcement-runtime-benchmark.json
+          echo '### Enforcement runtime benchmark' >> "$GITHUB_STEP_SUMMARY"
+          echo '```json' >> "$GITHUB_STEP_SUMMARY"
+          cat /tmp/enforcement-runtime-benchmark.json >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"

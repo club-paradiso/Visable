@@ -7213,8 +7213,14 @@ class EnforcementAnalyzeRequest(BaseModel):
 
 
 async def _enforcement_ai_provider(prompt: str) -> Dict[str, Any]:
-    """Narrow adapter over Visable's existing OpenRouter provider policy."""
-    return await _openrouter_complete_with_candidates(prompt, max_tokens=1800)
+    """Shared-runtime structured role for enforcement extraction/prediction."""
+    plan = _ai_runtime.resolve_task_models(_ai_runtime.TaskRole.ENFORCEMENT_STRUCTURED)
+    return await _openrouter_complete_with_candidates(
+        prompt,
+        requested_model=plan["primary"],
+        candidate_models=plan["candidates"],
+        max_tokens=1800,
+    )
 
 
 @app.post(
