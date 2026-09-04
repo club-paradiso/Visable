@@ -1,0 +1,75 @@
+name: Patch Enforcement Provider Policy
+
+on:
+  push:
+    branches:
+      - perf/enforcement-benchmark-20260904
+    paths:
+      - .github/workflows/patch-enforcement-provider.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Apply exact enforcement provider patch
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('backend/paradiso_backend.py')
+          text = path.read_text(encoding='utf-8')
+          old = '''async def _enforcement_ai_provider(prompt: str) -> Dict[str, Any]:
+              """Narrow adapter over Visable's existing OpenRouter provider policy."""
+              return await _openrouter_complete_with_candidates(prompt, max_tokens=1800)
+          '''
+          # Dedent exactly because the triple-quoted literal above is indented by this script.
+          import textwrap
+          old = textwrap.dedent(old)
+          new = '''_ENFORCEMENT_OPENROUTER_MODEL_CANDIDATES: List[str] = [
+              "google/gemma-4-26b-a4b-it:free",
+              "openai/gpt-oss-20b:free",
+              "google/gemma-4-31b-it:free",
+              "openai/gpt-oss-120b:free",
+          ]
+          
+          
+          async def _enforcement_ai_provider(prompt: str) -> Dict[str, Any]:
+              """Fast structured-output chain dedicated to enforcement prediction/extraction.
+          
+              The enforcement service already constrains model output with typed validation
+              and keeps the legal baseline deterministic, so a 405B general-answer model is
+              unnecessary latency here. The shared OpenRouter cooldown/circuit breaker still
+              applies; only the ordered candidate set is feature-specific.
+              """
+              return await _openrouter_complete_with_candidates(
+                  prompt,
+                  requested_model=_ENFORCEMENT_OPENROUTER_MODEL_CANDIDATES[0],
+                  candidate_models=_ENFORCEMENT_OPENROUTER_MODEL_CANDIDATES,
+                  max_tokens=1800,
+              )
+          '''
+          new = textwrap.dedent(new)
+          count = text.count(old)
+          if count != 1:
+              raise SystemExit(f'expected exactly one provider adapter block, found {count}')
+          path.write_text(text.replace(old, new), encoding='utf-8')
+          PY
+          git diff --check
+          git diff -- backend/paradiso_backend.py
+      - name: Commit provider policy patch
+        run: |
+          if git diff --quiet -- backend/paradiso_backend.py; then
+            echo 'No change to commit.'
+            exit 0
+          fi
+          git config user.name 'Luca Kim'
+          git config user.email 'seonjae.kic@khu.ac.kr'
+          git add backend/paradiso_backend.py
+          git commit -m 'perf(enforcement): use a dedicated structured-output model chain'
+          git push origin HEAD:perf/enforcement-benchmark-20260904
