@@ -330,15 +330,15 @@
   "manual_version_invariants": {
     "note": "Asserted by the validator + test against data/source_registry.json and docs/source-manuals/source_manifest.json. Update intentionally when a new official manual is installed.",
     "visa_issuance_manual": {
-      "version_label": "2026.7",
-      "published_or_updated_at": "2026-07-31",
+      "version_label": "2026.9",
+      "published_or_updated_at": "2026-09-01",
       "expected_status": "active",
       "registry_id_keyword": "visa_manual",
       "manifest_key": "visa_issuance_manual"
     },
     "stay_residence_manual": {
-      "version_label": "2026.7",
-      "published_or_updated_at": "2026-07-31",
+      "version_label": "2026.9",
+      "published_or_updated_at": "2026-09-01",
       "expected_status": "active",
       "registry_id_keyword": "stay_manual",
       "manifest_key": "stay_residence_manual",

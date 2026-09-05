@@ -36,8 +36,29 @@
       ],
       "confidence": "high",
       "update_frequency": "irregular",
+      "status": "deprecated",
+      "notes": "배포용 HWP (FileHeader flag 0x4): the body lives in ViewText, AES-128-ECB encrypted, and was read with scripts/decrypt_hwp_distribution.py — the procedure documented in Hancom's published 한글 문서 파일 형식 5.0 spec. The extracted text is the document's own text layer, so there are no OCR or glyph artifacts. 별표/첨부서류 tables are flattened to paragraph text and must not be read as structured tables.",
+      "superseded_by": "visa_manual_2026_09_01_hwp"
+    },
+    {
+      "id": "visa_manual_2026_09_01_hwp",
+      "type": "hwp_manual",
+      "title": "사증발급 안내매뉴얼 (2026.9; 2026-09-01 배포용 HWP)",
+      "title_en": "Visa Issuance Guide Manual (2026.9; 2026-09-01 distribution HWP)",
+      "authority": "법무부 출입국·외국인정책본부",
+      "version": "2026.9",
+      "source_date": "2026-09-01",
+      "local_path": "docs/source-manuals/2026-09-01/visa_manual_260901.hwp",
+      "url": "https://www.hikorea.go.kr/",
+      "last_known_hash": "sha256:6a806dbf6822bb8e4e5c6fd6b758da122dd254d0683533278bd7436d1e87925f",
+      "last_checked_at": "2026-09-01T00:00:00+09:00",
+      "language": [
+        "ko"
+      ],
+      "confidence": "high",
+      "update_frequency": "irregular",
       "status": "active",
-      "notes": "배포용 HWP (FileHeader flag 0x4): the body lives in ViewText, AES-128-ECB encrypted, and was read with scripts/decrypt_hwp_distribution.py — the procedure documented in Hancom's published 한글 문서 파일 형식 5.0 spec. The extracted text is the document's own text layer, so there are no OCR or glyph artifacts. 별표/첨부서류 tables are flattened to paragraph text and must not be read as structured tables."
+      "notes": "배포용 HWP (FileHeader flag 0x4): the body lives in ViewText, AES-128-ECB encrypted, and was read with scripts/decrypt_hwp_distribution.py — the procedure documented in Hancom's published 한글 문서 파일 형식 5.0 spec. The extracted text is the document's own text layer, so there are no OCR or glyph artifacts. 별표/첨부서류 tables are flattened to paragraph text and must not be read as structured tables. CONTENT NOT YET APPROVED: this edition is registered as needs_review in data/manual_approval_index.json, so it is searchable and labelled 검토 전 but may not back a direct assertion until a human reviewer compares it against the original and records the approval."
     },
     {
       "id": "stay_manual_2026_07_31_hwp",
@@ -56,8 +77,29 @@
       ],
       "confidence": "high",
       "update_frequency": "irregular",
+      "status": "deprecated",
+      "notes": "배포용 HWP (FileHeader flag 0x4): the body lives in ViewText, AES-128-ECB encrypted, and was read with scripts/decrypt_hwp_distribution.py — the procedure documented in Hancom's published 한글 문서 파일 형식 5.0 spec. The extracted text is the document's own text layer, so there are no OCR or glyph artifacts. 별표/첨부서류 tables are flattened to paragraph text and must not be read as structured tables.",
+      "superseded_by": "stay_manual_2026_09_01_hwp"
+    },
+    {
+      "id": "stay_manual_2026_09_01_hwp",
+      "type": "hwp_manual",
+      "title": "외국인체류 안내매뉴얼 (2026.9; 2026-09-01 배포용 HWP)",
+      "title_en": "Foreigner Stay/Residence Guide Manual (2026.9; 2026-09-01 distribution HWP)",
+      "authority": "법무부 출입국·외국인정책본부",
+      "version": "2026.9",
+      "source_date": "2026-09-01",
+      "local_path": "docs/source-manuals/2026-09-01/stay_manual_260901.hwp",
+      "url": "https://www.hikorea.go.kr/",
+      "last_known_hash": "sha256:1d7e24293b141243b4020aa4d05798f6fdd62218b33c13f6a8ea3765d4e04b66",
+      "last_checked_at": "2026-09-01T00:00:00+09:00",
+      "language": [
+        "ko"
+      ],
+      "confidence": "high",
+      "update_frequency": "irregular",
       "status": "active",
-      "notes": "배포용 HWP (FileHeader flag 0x4): the body lives in ViewText, AES-128-ECB encrypted, and was read with scripts/decrypt_hwp_distribution.py — the procedure documented in Hancom's published 한글 문서 파일 형식 5.0 spec. The extracted text is the document's own text layer, so there are no OCR or glyph artifacts. 별표/첨부서류 tables are flattened to paragraph text and must not be read as structured tables."
+      "notes": "배포용 HWP (FileHeader flag 0x4): the body lives in ViewText, AES-128-ECB encrypted, and was read with scripts/decrypt_hwp_distribution.py — the procedure documented in Hancom's published 한글 문서 파일 형식 5.0 spec. The extracted text is the document's own text layer, so there are no OCR or glyph artifacts. 별표/첨부서류 tables are flattened to paragraph text and must not be read as structured tables. CONTENT NOT YET APPROVED: this edition is registered as needs_review in data/manual_approval_index.json, so it is searchable and labelled 검토 전 but may not back a direct assertion until a human reviewer compares it against the original and records the approval."
     },
     {
       "id": "visa_manual_2026_06_17_pdf",
