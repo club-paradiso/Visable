@@ -7,9 +7,14 @@
     "download link; while null, the pipeline relies on the manual-upload fallback",
     "(workflow_dispatch input). Auto-fetch never bypasses the human-review gate:",
     "a change only ever opens a DRAFT PR — it never edits production data.",
-    "These manuals ship as 배포용(distribution) HWP, which open tools cannot fully",
-    "extract; the committed *_hwp_full.txt were produced by verified human/AI",
-    "extraction. See docs/hikorea_manual_sync.md."
+    "These manuals ship as 배포용(distribution) HWP. Their ViewText body is read by",
+    "scripts/decrypt_hwp_distribution.py, which reproduces the approved 2026-07-31",
+    "extractions byte-for-byte; txt_path points at that extraction. Mechanical",
+    "extraction is NOT content approval — promoting an edition to 'approved' in",
+    "data/manual_approval_index.json remains a human action.",
+    "baseline_sha256 is the currently-registered edition; bump it deliberately when",
+    "a new edition is installed so the next real change is detected fresh.",
+    "See docs/hikorea_manual_sync.md."
   ],
   "manuals": [
     {
@@ -18,9 +23,9 @@
       "title_en": "Visa civil-affairs manual by status",
       "landing_url": "https://www.hikorea.go.kr/",
       "download_url": null,
-      "hwp_path": "docs/source-manuals/2026-05/visa_manual_2026_05_21.hwp",
-      "txt_path": "docs/data/claude_opus_manual_extraction_2026_05/visa_hwp_full.txt",
-      "baseline_sha256": "635b8ede13218bb31a46d2993e8ab5efad211122bcfa6928a951d0fe5bae2ac4"
+      "hwp_path": "docs/source-manuals/2026-09-01/visa_manual_260901.hwp",
+      "txt_path": "docs/source-manuals/2026-09-01/extracted/full_text/visa_manual_260901.txt",
+      "baseline_sha256": "6a806dbf6822bb8e4e5c6fd6b758da122dd254d0683533278bd7436d1e87925f"
     },
     {
       "id": "stay_manual",
@@ -28,9 +33,9 @@
       "title_en": "Stay/residence civil-affairs manual by status",
       "landing_url": "https://www.hikorea.go.kr/",
       "download_url": null,
-      "hwp_path": "docs/source-manuals/2026-06/stay_manual_2026_06_01.hwp",
-      "txt_path": "docs/data/claude_opus_manual_extraction_2026_05/stay_hwp_full.txt",
-      "baseline_sha256": "9bba776083a1599a4fb7c6fc1c4452053652a1750ef6824de72e9e5bdffa297d"
+      "hwp_path": "docs/source-manuals/2026-09-01/stay_manual_260901.hwp",
+      "txt_path": "docs/source-manuals/2026-09-01/extracted/full_text/stay_manual_260901.txt",
+      "baseline_sha256": "1d7e24293b141243b4020aa4d05798f6fdd62218b33c13f6a8ea3765d4e04b66"
     }
   ]
 }

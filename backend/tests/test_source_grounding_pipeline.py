@@ -192,6 +192,79 @@ class SourceGroundingPipelineTests(unittest.TestCase):
         self.assertTrue(str(stay.get("supersedes") or "").strip(),
                         "the entry must name what it supersedes")
 
+    def test_a_pending_edition_is_staged_outside_current_and_stays_pinned(self) -> None:
+        """A received-but-unreviewed edition is visible, pinned, and not current.
+
+        `current` is approval-gated (see the test above), so a newly received
+        edition cannot go there. Dropping it on the floor until someone reviews
+        it is the other failure mode: the file would sit in the repo with
+        nothing pinning it. `pending_review_editions` is the middle ground, and
+        these are the properties that make it safe.
+        """
+        import re
+
+        manifest = self._manifest()
+        pending = manifest.get("pending_review_editions")
+        if pending is None:
+            self.skipTest("no edition is awaiting review")
+        self.assertIsInstance(pending, list)
+
+        current_files = {e["file"] for e in manifest["current"].values()}
+        for entry in pending:
+            with self.subTest(role=entry.get("role")):
+                self.assertIn(entry["role"], ("visa_issuance_manual", "stay_residence_manual"))
+                self.assertEqual(entry["status"], "pending_review")
+                self.assertNotIn(
+                    "approved", str(entry["verification_status"]),
+                    "an approved edition belongs in `current`, not in the "
+                    "pending slot; the two must not blur together",
+                )
+                self.assertNotIn(
+                    entry["file"], current_files,
+                    "a pending edition must not also be recorded as current",
+                )
+                self.assertRegex(
+                    str(entry["file_sha256"]), r"^[0-9a-f]{64}$",
+                    "a staged edition is pinned by digest just like a current "
+                    "one; scripts/check_source_manuals.py verifies it against "
+                    "the bytes on every run",
+                )
+                self.assertTrue(
+                    (REPO_ROOT / entry["file"]).is_file(),
+                    "manifest stages %s but the file is not in the repository"
+                    % entry["file"],
+                )
+                self.assertTrue(
+                    str(entry.get("change_review_artifact") or "").strip(),
+                    "a reviewer needs the edition-to-edition diff to act on; "
+                    "staging without it just defers the whole comparison",
+                )
+
+    def test_a_pending_edition_is_not_yet_approved_in_the_approval_index(self) -> None:
+        """The manifest slot and the approval gate must not disagree."""
+        manifest = self._manifest()
+        pending = manifest.get("pending_review_editions")
+        if pending is None:
+            self.skipTest("no edition is awaiting review")
+
+        index_path = REPO_ROOT / "data" / "manual_approval_index.json"
+        documents = json.loads(index_path.read_text(encoding="utf-8"))["documents"]
+        for entry in pending:
+            source_id = entry.get("registry_id_when_promoted")
+            with self.subTest(role=entry.get("role")):
+                self.assertTrue(source_id, "a pending edition must name its future registry id")
+                record = documents.get(source_id)
+                self.assertIsInstance(
+                    record, dict,
+                    "a staged edition must carry an approval record so it is "
+                    "labelled 검토 전 rather than silently untracked",
+                )
+                self.assertNotEqual(
+                    record["approval_state"], "approved",
+                    "an approved edition must be promoted into `current`, not "
+                    "left staged — otherwise the gate and the manifest drift",
+                )
+
     def test_the_2026_06_stay_pdf_is_still_accounted_for(self) -> None:
         """The edition this test used to pin is retired, not forgotten.
 

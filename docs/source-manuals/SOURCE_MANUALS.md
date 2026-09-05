@@ -7,6 +7,23 @@ Current manuals (see `source_manifest.json` for the authoritative pointer):
 - `backend/data/sources/manuals/260617_visa_manual_exported.pdf` - 사증발급 안내매뉴얼, 2026.6 / source date 2026-06-17. (PDF, current primary extraction source; readable extraction + section index alongside it)
 - `backend/data/sources/manuals/260623_stay_manual_exported.pdf` - 외국인체류 안내매뉴얼, 2026.6 / source date 2026-06-23. (PDF, current primary extraction source; readable extraction + section index alongside it)
 
+Awaiting content review (staged in `source_manifest.json` under `pending_review_editions`, deliberately NOT `current`):
+
+- `2026-09-01/visa_manual_260901.hwp` - 사증발급 안내매뉴얼, 2026.9 / source date 2026-09-01. (배포용 HWP; body read from ViewText; full text at `2026-09-01/extracted/full_text/visa_manual_260901.txt`)
+- `2026-09-01/stay_manual_260901.hwp` - 외국인체류 안내매뉴얼, 2026.9 / source date 2026-09-01. (배포용 HWP; body read from ViewText; full text at `2026-09-01/extracted/full_text/stay_manual_260901.txt`)
+
+> The *extraction* is mechanically verified: `scripts/decrypt_hwp_distribution.py`
+> reproduces both approved 2026-07-31 extractions byte-for-byte (SHA-256 match).
+> The *content* has not been compared against the original by a human, so these
+> editions stay out of `current` — that slot is approval-gated by
+> `backend/tests/test_source_grounding_pipeline.py`. The 2026-07-31 pair remains
+> current and approved, so the direct-evidence gate stays open on the reviewed
+> edition. Staged files are digest-pinned and verified by
+> `scripts/check_source_manuals.py` on every run, exactly like current ones.
+>
+> Change review artifacts, and the promotion procedure:
+> `audits/manual-refresh-260901/README.md`.
+
 Special program manuals (also registered in `source_manifest.json` under `special_program_manuals`):
 
 - `backend/data/sources/manuals/260629_kcore_manual.hwp` - 「육성형 전문기술인력 제도」(K-CORE / E-7-M) 사증·체류관리 매뉴얼, 2026.6 (시행 2026-03-05, 배포 2026-06-29; standard HWP, body fully extracted)

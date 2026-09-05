@@ -6,6 +6,14 @@
     "approval_state is deliberately conservative. Everything defaults to unapproved",
     "and is promoted one edition at a time by a named human.",
     "",
+    "As of 2026-09-01 a newer edition (the 2026-09-01 HWP pair) is registered",
+    "  'needs_review' pending human content review. The 2026-07-31 pair REMAINS",
+    "  approved and current. The new edition is staged under 'pending_review_editions' in",
+    "  docs/source-manuals/source_manifest.json, deliberately NOT in 'current':",
+    "  'current' is reserved for approved editions. Promotion happens when",
+    "  the reviewer records the approval here AND, in the same change,",
+    "  moves it into manifest 'current'.",
+    "",
     "As of 2026-08-09 the two 2026-07-31 HWP editions are 'approved' (reviewer",
     "recorded per document). Every other edition remains unapproved: the older",
     "structured extracts are auto-parsed (see 'auto-parsed item' markers in",
@@ -171,6 +179,56 @@
     },
     "moj_immigration_notice_placeholder": {
       "approval_state": "draft"
+    },
+    "visa_manual_2026_09_01_hwp": {
+      "approval_state": "needs_review",
+      "effective_date": "2026-09-01",
+      "parser": "scripts/decrypt_hwp_distribution.py (배포용 HWP ViewText AES)",
+      "reviewer": "",
+      "reviewed_at": "",
+      "source_confidence": "high",
+      "has_tables_or_annexes": true,
+      "section_locator": "paragraph",
+      "source_path": "docs/source-manuals/2026-09-01/visa_manual_260901.hwp",
+      "source_sha256": "6a806dbf6822bb8e4e5c6fd6b758da122dd254d0683533278bd7436d1e87925f",
+      "extracted_text_path": "docs/source-manuals/2026-09-01/extracted/full_text/visa_manual_260901.txt",
+      "would_supersede": "visa_manual_2026_07_31_hwp",
+      "manifest_slot": "pending_review_editions",
+      "change_review_artifact": "audits/manual-refresh-260901/visa_260731_to_260901.md",
+      "extraction_warnings": [
+        "Extracted from the 배포용 HWP ViewText stream via scripts/decrypt_hwp_distribution.py. The text layer is the document's own, so there are no OCR or glyph artifacts.",
+        "NOT APPROVED, and deliberately not recorded as the current edition. The extraction METHOD is verified — the same script reproduces both approved 2026-07-31 extractions byte-for-byte — but no human has compared this edition's CONTENT against the original. The 2026-07-31 edition stays approved and current until that happens, so the direct-evidence gate stays open on the reviewed edition rather than on this one.",
+        "Paragraph-based, not page-based: locators do not line up with the 2026-06 PDF editions. A line-by-line diff against those extractions measures the change of extraction method, not a change of content.",
+        "The 2026-07-31 → 2026-09-01 change set is summarised in the change_review_artifact above. Review concentrates on E-7 (임금요건 기준 개편, 육성형 해외전문기술인력 특례, E-7-4 추천·고용 허용인원 기준), D-10 (직종코드 KSCO 개정 반영), F-1-D (해외범죄경력증명서 제출기준 신설) and F-5-28/F-5-29 (특별기여자 영주 신설)."
+      ],
+      "table_extraction_warnings": [
+        "별표/첨부서류 tables are flattened to paragraph text; cell and column boundaries are NOT preserved and must not be read as a structured table. This holds regardless of approval state."
+      ]
+    },
+    "stay_manual_2026_09_01_hwp": {
+      "approval_state": "needs_review",
+      "effective_date": "2026-09-01",
+      "parser": "scripts/decrypt_hwp_distribution.py (배포용 HWP ViewText AES)",
+      "reviewer": "",
+      "reviewed_at": "",
+      "source_confidence": "high",
+      "has_tables_or_annexes": true,
+      "section_locator": "paragraph",
+      "source_path": "docs/source-manuals/2026-09-01/stay_manual_260901.hwp",
+      "source_sha256": "1d7e24293b141243b4020aa4d05798f6fdd62218b33c13f6a8ea3765d4e04b66",
+      "extracted_text_path": "docs/source-manuals/2026-09-01/extracted/full_text/stay_manual_260901.txt",
+      "would_supersede": "stay_manual_2026_07_31_hwp",
+      "manifest_slot": "pending_review_editions",
+      "change_review_artifact": "audits/manual-refresh-260901/stay_260731_to_260901.md",
+      "extraction_warnings": [
+        "Extracted from the 배포용 HWP ViewText stream via scripts/decrypt_hwp_distribution.py. The text layer is the document's own, so there are no OCR or glyph artifacts.",
+        "NOT APPROVED, and deliberately not recorded as the current edition. The extraction METHOD is verified — the same script reproduces both approved 2026-07-31 extractions byte-for-byte — but no human has compared this edition's CONTENT against the original. The 2026-07-31 edition stays approved and current until that happens, so the direct-evidence gate stays open on the reviewed edition rather than on this one.",
+        "Paragraph-based, not page-based: locators do not line up with the 2026-06 PDF editions. A line-by-line diff against those extractions measures the change of extraction method, not a change of content.",
+        "The 2026-07-31 → 2026-09-01 change set is summarised in the change_review_artifact above. Review concentrates on E-7 (임금요건 기준 개편, 육성형 해외전문기술인력 특례, E-7-4 추천·고용 허용인원 기준), D-10 (직종코드 KSCO 개정 반영), F-1-D (해외범죄경력증명서 제출기준 신설) and F-5-28/F-5-29 (특별기여자 영주 신설)."
+      ],
+      "table_extraction_warnings": [
+        "별표/첨부서류 tables are flattened to paragraph text; cell and column boundaries are NOT preserved and must not be read as a structured table. This holds regardless of approval state."
+      ]
     }
   }
 }
