@@ -4,30 +4,25 @@ The Ministry of Justice immigration manuals in this directory are Paradiso's off
 
 Current manuals (see `source_manifest.json` for the authoritative pointer):
 
-- `2026-09-01/visa_manual_260901.hwp` - 사증발급 안내매뉴얼, 2026.9 / source date 2026-09-01. (배포용 HWP; body read from ViewText by `scripts/decrypt_hwp_distribution.py`; full text at `2026-09-01/extracted/full_text/visa_manual_260901.txt`)
+- `backend/data/sources/manuals/260617_visa_manual_exported.pdf` - 사증발급 안내매뉴얼, 2026.6 / source date 2026-06-17. (PDF, current primary extraction source; readable extraction + section index alongside it)
+- `backend/data/sources/manuals/260623_stay_manual_exported.pdf` - 외국인체류 안내매뉴얼, 2026.6 / source date 2026-06-23. (PDF, current primary extraction source; readable extraction + section index alongside it)
+
+Awaiting content review (staged in `source_manifest.json` under `pending_review_editions`, deliberately NOT `current`):
+
+- `2026-09-01/visa_manual_260901.hwp` - 사증발급 안내매뉴얼, 2026.9 / source date 2026-09-01. (배포용 HWP; body read from ViewText; full text at `2026-09-01/extracted/full_text/visa_manual_260901.txt`)
 - `2026-09-01/stay_manual_260901.hwp` - 외국인체류 안내매뉴얼, 2026.9 / source date 2026-09-01. (배포용 HWP; body read from ViewText; full text at `2026-09-01/extracted/full_text/stay_manual_260901.txt`)
 
-> **Content review pending.** Both 2026-09-01 editions are registered
-> `needs_review` in `data/manual_approval_index.json`. The *extraction* is
-> mechanically verified — the same script reproduces both approved 2026-07-31
-> extractions byte-for-byte (SHA-256 match) — but no human has compared this
-> edition's content against the original, so neither may back a direct AI
-> assertion yet. Because the 2026-07-31 editions are now `superseded`, the
-> direct-evidence gate for the visa/stay families is closed until a reviewer
-> promotes 2026-09-01. That is the intended fail-closed behaviour.
-> Start from the change review artifacts:
-> `audits/manual-refresh-260901/visa_260731_to_260901.md` and
-> `audits/manual-refresh-260901/stay_260731_to_260901.md`.
-
-Last content-approved editions (superseded as source, kept for lineage):
-
-- `2026-07-31/visa_manual_260731.hwp` - 사증발급 안내매뉴얼, 2026.7. (approved 2026-08-09; superseded by the 2026-09-01 edition)
-- `2026-07-31/stay_manual_260731.hwp` - 외국인체류 안내매뉴얼, 2026.7. (approved 2026-08-09; superseded by the 2026-09-01 edition)
-
-Earlier PDF extraction sources (superseded):
-
-- `backend/data/sources/manuals/260617_visa_manual_exported.pdf` - 사증발급 안내매뉴얼, 2026.6 / source date 2026-06-17. (PDF; readable extraction + section index alongside it)
-- `backend/data/sources/manuals/260623_stay_manual_exported.pdf` - 외국인체류 안내매뉴얼, 2026.6 / source date 2026-06-23. (PDF; readable extraction + section index alongside it)
+> The *extraction* is mechanically verified: `scripts/decrypt_hwp_distribution.py`
+> reproduces both approved 2026-07-31 extractions byte-for-byte (SHA-256 match).
+> The *content* has not been compared against the original by a human, so these
+> editions stay out of `current` — that slot is approval-gated by
+> `backend/tests/test_source_grounding_pipeline.py`. The 2026-07-31 pair remains
+> current and approved, so the direct-evidence gate stays open on the reviewed
+> edition. Staged files are digest-pinned and verified by
+> `scripts/check_source_manuals.py` on every run, exactly like current ones.
+>
+> Change review artifacts, and the promotion procedure:
+> `audits/manual-refresh-260901/README.md`.
 
 Special program manuals (also registered in `source_manifest.json` under `special_program_manuals`):
 

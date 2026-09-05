@@ -11,8 +11,9 @@
 | 원본 HWP 저장 | 완료 — `docs/source-manuals/2026-09-01/` |
 | 본문 추출 | 완료 — `extracted/full_text/*.txt` |
 | 추출 정확성 검증 | **완료 (기계적)** — 아래 2절 |
+| 매니페스트 등재 | 완료 — `pending_review_editions` (승인 대기 슬롯) |
 | 내용 대조 검토 | **미완료 — 사람이 해야 함** |
-| 근거(직접 인용) 게이트 | **닫힘** — 아래 4절 |
+| 근거(직접 인용) 게이트 | **열림 (260731판 기준)** — 아래 4절 |
 
 ## 2. 추출을 신뢰할 수 있는 근거
 
@@ -106,28 +107,50 @@ stay_manual_260731.txt 도 동일하게 일치 ✅
 
 5. 그 외 소규모 변경: E-8, E-9, E-10, F-2, F-3, F-4, F-6, H-2.
 
-## 4. 근거 게이트가 닫혀 있는 이유
+## 4. 왜 `current`가 아니라 대기 슬롯인가
 
-`backend/services/manual_registry.py`의 설계상 **`approved` 상태의 판본만**
-AI 답변의 직접 근거가 될 수 있습니다. 현재:
+저장소에 명시적 불변식이 있습니다
+(`backend/tests/test_source_grounding_pipeline.py`):
 
-- 260731 판 → `superseded` (260901이 대체)
-- 260901 판 → `needs_review` (사람 검토 전)
+> *"an edition may back direct legal evidence only after the human approval
+> gate; an unapproved edition must not be recorded as current"*
 
-따라서 사증/체류 매뉴얼 계열에 `approved` 판본이 없어 **직접 근거 게이트가
-닫혀 있습니다.** 이는 의도된 fail-closed 동작이며 결함이 아닙니다.
-`needs_review` 상태 콘텐츠는 여전히 **검색은 되고 `검토 전`으로 라벨링**됩니다.
+즉 매니페스트의 `current` 슬롯은 **사람이 승인한 판본 전용**입니다. 그래서
+260901판은 `current`가 아니라 새 최상위 슬롯
+`pending_review_editions`에 등재했습니다.
 
-## 5. 승인 절차
+결과적으로:
 
-`data/manual_approval_index.json`의 `visa_manual_2026_09_01_hwp` /
-`stay_manual_2026_09_01_hwp` 항목에서:
+- **260731판이 계속 `current` + `approved`** — AI 직접 근거 게이트는 **열린
+  채로 유지**됩니다. 검토된 판본을 계속 인용합니다.
+- **260901판은 `needs_review`** — 검색은 되고 `검토 전`으로 라벨링됩니다.
+  직접 근거로는 쓰이지 않습니다.
+- 대기 판본도 **해시로 고정**되어 `scripts/check_source_manuals.py`가 매 실행마다
+  실제 바이트와 대조합니다. 검토 기간 동안 파일이 바뀌면 즉시 실패합니다.
+
+## 5. 승인(promotion) 절차
+
+두 단계이며, 둘 다 **같은 변경**에서 해야 합니다.
+
+**(1) 승인 기록** — `data/manual_approval_index.json`의
+`visa_manual_2026_09_01_hwp` / `stay_manual_2026_09_01_hwp`:
 
 ```json
 "approval_state": "needs_review",   →   "approved"
 "reviewer": "",                     →   "<검토자 식별자>"
 "reviewed_at": "",                  →   "<YYYY-MM-DD>"
 ```
+
+**(2) 매니페스트 승격** — `docs/source-manuals/source_manifest.json`:
+`pending_review_editions`의 해당 항목을 `current.<role>`로 옮기고,
+`verification_status`에 `approved`가 포함되도록 바꾸고, 기존 260731 항목을
+`archived_previous_current`로 내립니다.
+
+한쪽만 하면 테스트가 막습니다. `approval_state`만 `approved`로 바꾸고
+매니페스트를 안 옮기면
+`test_a_pending_edition_is_not_yet_approved_in_the_approval_index`가,
+매니페스트만 옮기고 승인 기록을 안 하면
+`test_current_manuals_are_pinned_present_and_human_approved`가 실패합니다.
 
 자동화 파이프라인은 이 값을 설정할 수 없습니다
 (`data/manual_approval_index.json` 주석: *"Nothing in the automated pipeline

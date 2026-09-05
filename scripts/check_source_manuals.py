@@ -134,7 +134,65 @@ def main() -> None:
     if duplicates:
         fail(f"duplicate or missing current manual role(s): {', '.join(duplicates)}")
 
-    print("[check_source_manuals] OK - current source manuals are registered.")
+    pending = check_pending_editions(manifest)
+
+    suffix = f" ({pending} pending-review edition(s) also pinned)" if pending else ""
+    print(f"[check_source_manuals] OK - current source manuals are registered.{suffix}")
+
+
+def check_pending_editions(manifest: dict) -> int:
+    """Verify staged, not-yet-approved editions are pinned to their real bytes.
+
+    An officially received edition waits in `pending_review_editions` until a
+    human approves its content, because `current` is reserved for approved
+    editions. It is not current, but it is committed, so its digest is verified
+    here exactly like a current one — otherwise a staged file could be swapped
+    underneath the manifest during the review window, which is precisely when
+    nobody is watching it.
+    """
+    entries = manifest.get("pending_review_editions")
+    if entries is None:
+        return 0
+    if not isinstance(entries, list):
+        fail("manifest.pending_review_editions must be a list when present")
+
+    for index, entry in enumerate(entries):
+        where = f"pending_review_editions[{index}]"
+        if not isinstance(entry, dict):
+            fail(f"{where} must be an object")
+
+        role = entry.get("role")
+        if role not in REQUIRED_ROLES:
+            fail(f"{where}.role must be one of {', '.join(REQUIRED_ROLES)}")
+        if entry.get("status") != "pending_review":
+            fail(f"{where}.status must be 'pending_review'")
+        # The whole point of this slot: it must not claim approval.
+        if "approved" in str(entry.get("verification_status") or ""):
+            fail(f"{where} claims approval; an approved edition belongs in `current`")
+
+        missing = sorted(({"file", "file_sha256", "version", "source_date"}) - set(entry))
+        if missing:
+            fail(f"{where} missing required field(s): {', '.join(missing)}")
+
+        for field in ("file", "extracted_text_file"):
+            rel = entry.get(field)
+            if rel is None and field == "extracted_text_file":
+                continue
+            if not isinstance(rel, str):
+                fail(f"{where}.{field} must be a path string")
+            path = ROOT / rel
+            if not path.is_file():
+                fail(f"{where}.{field} does not exist: {rel}")
+            digest_field = "file_sha256" if field == "file" else "extracted_text_sha256"
+            declared = str(entry.get(digest_field) or "").lower()
+            if not declared:
+                continue
+            actual = hashlib.sha256(path.read_bytes()).hexdigest()
+            if declared != actual:
+                fail(f"{rel} sha256 {actual[:12]}… does not match declared "
+                     f"{declared[:12]}…")
+
+    return len(entries)
 
 
 if __name__ == "__main__":
