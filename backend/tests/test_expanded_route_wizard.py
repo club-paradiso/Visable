@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import sys
+import re
 import unittest
 from pathlib import Path
 
@@ -100,11 +101,41 @@ class ExpandedRouteWizardTests(unittest.TestCase):
             self.assertNotIn("variantId", self._route_entry(code, route_id, next_code))
 
     def test_broad_route_behavior_keeps_pr252_show_all_reset(self):
-        handler = self._slice("function selectF4Route", "function resetF4Route")
-        # The route wizard reuses the in-screen scenario picker model: specific
-        # routes select their mapped variant, while broad routes (empty
-        # variantId) reset the picker to its empty / unselected state.
-        self.assertIn("applyScenarioSelection(selector, variantId || '')", handler)
+        # The logic moved out of selectF4Route — now a back-compat shim that
+        # resolves the wizard from the clicked control — into the shared
+        # applyRouteSelection, which the in-screen popup path (chooseRoute) also
+        # uses. Pinning the old inline call text asserted the shim's body rather
+        # than the behaviour, so it failed on a refactor that changed nothing a
+        # user can see.
+        handler = self._slice("function applyRouteSelection", "function openRoutePicker")
+        # The picker is resolved from its unselected state...
+        self.assertIn(".scenario-needs-pick", handler)
+        # ...a specific route's own variant always wins...
+        call = re.search(
+            r"applyScenarioSelection\(\s*selector\s*,\s*variantId\s*\|\|\s*(\w+)\s*\)",
+            handler,
+        )
+        self.assertIsNotNone(
+            call,
+            "applyRouteSelection must hand the mapped variantId to the scenario "
+            "picker, falling back for a broad route",
+        )
+        fallback = call.group(1)
+        # ...and the broad-route fallback resolves to EMPTY unless the procedure
+        # has exactly one scenario, which is auto-revealed instead of showing an
+        # empty picker. That is what keeps a previously chosen subtype from
+        # leaking into a broad route (PR #252) — the part that matters.
+        self.assertRegex(
+            handler,
+            r"const\s+%s\s*=\s*\(\s*!variantId\s*&&\s*\w+\.length\s*===\s*1\s*\)" % fallback,
+            "the broad-route fallback must be conditional on there being exactly "
+            "one scenario",
+        )
+        self.assertRegex(
+            handler, r"%s\s*=[^;]*:\s*''\s*;" % fallback,
+            "a broad route onto a multi-scenario procedure must reset the picker "
+            "to its empty state, not inherit the previous subtype",
+        )
 
     def test_route_chooser_does_not_expose_raw_metadata(self):
         chooser = self._slice("function renderF4RouteChooser", "function selectF4Route")

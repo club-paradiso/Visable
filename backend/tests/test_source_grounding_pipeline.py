@@ -120,23 +120,86 @@ class SourceGroundingPipelineTests(unittest.TestCase):
         self.assertEqual(select_answer_policy(work)["policy"], "eligibility_activity")
         self.assertEqual(select_answer_policy(risk)["policy"], "law_risk")
 
-    def test_manual_manifest_points_to_current_june_stay_pdf_and_stored_only_hwp(self) -> None:
-        manifest_path = REPO_ROOT / "docs" / "source-manuals" / "source_manifest.json"
-        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-        stay = manifest["current"]["stay_residence_manual"]
-        self.assertEqual(stay["file"], "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf")
-        self.assertEqual(stay["source_date"], "2026-06-01")
-        self.assertEqual(
-            stay["file_sha256"],
-            "e25e97c3c2a05b5676ca3648a04226dcdc2433ab7c89a2f5105e6f8be49778b0",
+    # The previous version of this pinned the 2026-06-01 stay PDF by exact path,
+    # date, SHA-256 and page count, plus an alternate_source_files[0] HWP entry.
+    # PR #562 superseded that edition with the 2026-07-31 distribution HWP: the
+    # HWP became the source itself rather than an alternate, so
+    # alternate_source_files is now null and the June PDF moved to
+    # archived_previous_current. Every one of those assertions described a
+    # retired shape.
+    #
+    # Pinning a literal SHA-256 here was also redundant: scripts/check_source_manuals.py
+    # recomputes the digest of every manifest file on each run and fails on a
+    # mismatch, so identity is enforced against the real bytes rather than
+    # against a copy of the hash that rots at each new edition.
+    #
+    # What is asserted instead is what must hold for WHATEVER edition is current:
+    # it exists, it is pinned, it is human-approved, and the edition it replaced
+    # is archived rather than dropped.
+    def _manifest(self) -> dict:
+        path = REPO_ROOT / "docs" / "source-manuals" / "source_manifest.json"
+        return json.loads(path.read_text(encoding="utf-8"))
+
+    def test_current_manuals_are_pinned_present_and_human_approved(self) -> None:
+        import re
+
+        current = self._manifest()["current"]
+        self.assertIn("stay_residence_manual", current)
+        self.assertIn("visa_issuance_manual", current)
+        for role, entry in current.items():
+            with self.subTest(role=role):
+                self.assertEqual(entry["status"], "current")
+                self.assertRegex(
+                    str(entry["file_sha256"]), r"^[0-9a-f]{64}$",
+                    "every current manual is pinned by digest; "
+                    "scripts/check_source_manuals.py verifies it against the bytes",
+                )
+                self.assertTrue(
+                    (REPO_ROOT / entry["file"]).is_file(),
+                    "manifest names %s but the file is not in the repository"
+                    % entry["file"],
+                )
+                self.assertIn(
+                    "approved", str(entry["verification_status"]),
+                    "an edition may back direct legal evidence only after the "
+                    "human approval gate; an unapproved edition must not be "
+                    "recorded as current",
+                )
+
+    def test_the_stored_file_matches_the_format_extraction_read(self) -> None:
+        """"We extracted from X" and "we stored Y" must not drift apart."""
+        for role, entry in self._manifest()["current"].items():
+            with self.subTest(role=role):
+                fmt = entry.get("extraction_primary_format")
+                self.assertTrue(fmt, "%s declares no extraction_primary_format" % role)
+                self.assertTrue(
+                    str(entry["file"]).lower().endswith("." + str(fmt).lower()),
+                    "%s stores %s but claims extraction from %s"
+                    % (role, entry["file"], fmt),
+                )
+
+    def test_a_superseded_edition_is_archived_never_dropped(self) -> None:
+        """An edition change must stay auditable after the fact."""
+        stay = self._manifest()["current"]["stay_residence_manual"]
+        archived = stay.get("archived_previous_current")
+        self.assertIsInstance(
+            archived, dict,
+            "replacing the current stay manual must record the edition it "
+            "replaced, so a swap cannot happen silently",
         )
-        self.assertEqual(stay["pages"], 777)
-        hwp = stay["alternate_source_files"][0]
-        self.assertEqual(hwp["format"], "hwp")
-        self.assertEqual(hwp["extraction_primary_format"], "pdf")
-        self.assertIn("blocks_text_extraction", hwp["verification_status"])
-        self.assertIn("not parsed", hwp["verification_note"].lower())
-        self.assertIn("indexed", hwp["verification_note"].lower())
+        for field in ("file", "file_sha256", "source_date", "source_label"):
+            self.assertIn(field, archived)
+        self.assertTrue(str(stay.get("supersedes") or "").strip(),
+                        "the entry must name what it supersedes")
+
+    def test_the_2026_06_stay_pdf_is_still_accounted_for(self) -> None:
+        """The edition this test used to pin is retired, not forgotten.
+
+        Keeping this specific assertion means the June PDF cannot quietly vanish
+        from the audit trail just because a newer edition arrived.
+        """
+        blob = json.dumps(self._manifest(), ensure_ascii=False)
+        self.assertIn("docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf", blob)
 
 
 if __name__ == "__main__":

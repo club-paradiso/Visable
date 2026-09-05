@@ -312,9 +312,22 @@ def to_grounding_item(
 # document / registration issues; statute family leads for activity-scope /
 # authority issues.
 # ---------------------------------------------------------------------------
+# NOTE: administrative_appeal is deliberately NOT here. It is a `case_law`
+# family (see EVIDENCE_FAMILY_OF_SOURCE below), and case-law families belong to
+# the adjudicative routes only — a denial/remedy, an ambiguous interpretation,
+# or an overstay/sanction question. A routine "what is the ordinary route for
+# this status" question is not a dispute, and planning 행정심판례 for it invites
+# contested-outcome material into an answer about settled procedure.
+#
+# It WAS here, contradicting this module's own comment below that the
+# adjudicative routes are "the ONLY routes that pull" case-law families, and
+# contradicting test_routine_extension_or_route_question_does_not_plan_precedent
+# in the very same commit (6fdb838, #525). The contradiction survived two months
+# because that test module needs pytest, which CI did not install, so it was
+# reported SKIP and never actually ran.
 _ACTIVITY_AUTHORITY_ROUTE = (
     "statute", "enforcement_decree", "enforcement_rule", "administrative_rule",
-    "legal_interpretation", "administrative_appeal", "manual",
+    "legal_interpretation", "manual",
 )
 _REGISTRATION_ROUTE = (
     "manual", "statute", "enforcement_decree", "enforcement_rule",

@@ -84,6 +84,13 @@ body{
   transition:all var(--p-dur-1);
 }
 .fh-back:hover{color:var(--p-green);border-color:var(--p-green)}
+/* 헤더 컨트롤은 24×24 ~ 60×30 까지 작아져 손가락으로 누르기 어려웠다.
+   테마 버튼이 특히 24px 로, 아이콘만 있는 버튼 중 가장 작았다. */
+.fh-back,.fh-theme-btn,.fh-lang-btn{min-height:44px;box-sizing:border-box}
+.fh-theme-btn{min-width:44px;display:inline-flex;align-items:center;justify-content:center}
+/* inline-flex 는 자식 사이의 공백 텍스트 노드를 없앤다 —
+   "Visable <span>by Paradiso</span>" 가 "Visableby" 로 붙어버려 gap 으로 되살린다. */
+.fh-logo{display:inline-flex;align-items:center;gap:.3em;min-height:44px}
 .fh-logo{
   font-size:var(--p-fs-base);font-weight:800;
   color:var(--p-ink);text-decoration:none;letter-spacing:-.01em;
@@ -701,7 +708,7 @@ main{flex:1;padding:0 1rem 3rem}
     <button class="fh-lang-btn" id="fhLangBtn" type="button" aria-label="언어 / Language">
       <span id="fhLangLabel">한국어 · EN</span>
     </button>
-    <button class="fh-theme-btn" id="fhThemeBtn" type="button" aria-label="다크 모드 전환">☾</button>
+    <button class="fh-theme-btn" id="fhThemeBtn" type="button" aria-label="다크 모드 전환"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.2 14.2A8.4 8.4 0 0 1 9.8 3.8a8.4 8.4 0 1 0 10.4 10.4z"/></svg></button>
   </div>
 </header>
 
