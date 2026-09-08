@@ -159,7 +159,7 @@ class LawCloudKoreanSearchTests(unittest.TestCase):
         self.assertEqual(result["error_type"], lt.LAW_API_TIMEOUT)
         self.assertEqual(result["result_count"], 0)
         self.assertEqual(result["results"], [])
-        self.assertEqual(result.get("primary_error_type"), "")
+        self.assertEqual(result.get("primary_error_type"), lt.LAW_API_NO_RESULTS)
         # Primary + page 1 in each sort direction. No pointless page 2..6 retries.
         self.assertEqual(len(transport.urls), 3)
         self.assertEqual(sum("mobileYn=Y" in url for url in transport.urls), 2)
