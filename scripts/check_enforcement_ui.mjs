@@ -7,7 +7,9 @@ const root = path.resolve(import.meta.dirname, '..');
 const require = createRequire(import.meta.url);
 const html = fs.readFileSync(path.join(root, 'enforcement.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'assets/css/enforcement.css'), 'utf8');
+const resultUxCss = fs.readFileSync(path.join(root, 'assets/css/enforcement-result-ux.css'), 'utf8');
 const js = fs.readFileSync(path.join(root, 'scripts/enforcement-ui.mjs'), 'utf8');
+const resultUxJs = fs.readFileSync(path.join(root, 'scripts/enforcement-result-ux.js'), 'utf8');
 const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const backendOrigin = fs.readFileSync(path.join(root, 'assets/js/backend-origin.js'), 'utf8');
 const vercelExtract = fs.readFileSync(path.join(root, 'api/enforcement/extract.js'), 'utf8');
@@ -28,7 +30,7 @@ const enforcementModuleIndex = html.indexOf('scripts/enforcement-ui.mjs');
 
 const checks = [
   ['three-step flow', /data-step="1"[\s\S]*data-step="2"[\s\S]*data-step="3"/.test(html)],
-  ['human confirmation copy', html.includes('제가 이해한 내용이 맞나요?') && html.includes('네, 맞아요 · 분석하기')],
+  ['fact-only confirmation copy', html.includes('입력한 사실이 맞는지만 확인해 주세요.') && html.includes('맞아요 · 분석하기') && html.includes('법률 판단이 아니라 사실 확인 단계입니다.')],
   ['confirmation replaces bureaucratic edit grid', !html.includes('name="violationCode"') && !html.includes('name="durationDays"') && html.includes('id="confirmed-facts"')],
   ['single-question clarification UI', html.includes('id="clarification-card"') && js.includes('function clarificationFor(') && html.includes('한 가지만 더 확인할게요')],
   ['critical clarification can be skipped honestly', js.includes('잘 모르겠어요') && js.includes('skippedClarifications')],
@@ -39,6 +41,9 @@ const checks = [
   ['Gemma 4 preferred for confirmation copy', vercelConfirm.includes('google/gemma-4-31b-it:free')],
   ['legal baseline card', html.includes('법령상 기준') && js.includes('법령 기준')],
   ['AI prediction card', js.includes('Visable AI 예상') && js.includes('예상 범칙금')],
+  ['degraded prediction is explained instead of looking broken', html.includes('scripts/enforcement-result-ux.js') && resultUxJs.includes('AI 추정 보류') && resultUxJs.includes('법령 계산은 그대로 유효합니다')],
+  ['30-day month-boundary warning is reliable', resultUxJs.includes('duration === 30') && resultUxJs.includes('30일은 월 단위 경계에 걸릴 수 있습니다') && !resultUxJs.includes('hasExactDates')],
+  ['result UX stylesheet is wired', html.includes('assets/css/enforcement-result-ux.css') && resultUxCss.includes('.prediction-degraded-note') && resultUxCss.includes('.baseline-boundary-note')],
   ['disposition section', js.includes('예상 행정처분')],
   ['confidence section', js.includes('예측 신뢰도')],
   ['similar cases section', js.includes('유사사례')],
@@ -80,6 +85,7 @@ const checks = [
   ['mobile breakpoint', css.includes('@media (max-width: 680px)')],
   ['mobile one-column results', /@media \(max-width: 680px\)[\s\S]*\.fact-grid, \.result-grid \{ grid-template-columns: 1fr; \}/.test(css)],
   ['mobile confirmation input stacks', /@media \(max-width: 680px\)[\s\S]*\.clarification-input-row \{ grid-template-columns: 1fr; \}/.test(css)],
+  ['mobile confirmation actions stack', /@media \(max-width: 640px\)[\s\S]*\.confirmation-actions[\s\S]*grid-template-columns: 1fr/.test(resultUxCss)],
   ['reduced motion support', css.includes('prefers-reduced-motion')],
   ['homepage gateway', index.includes('enforcement.html')],
 ];
