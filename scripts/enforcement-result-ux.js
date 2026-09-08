@@ -19,12 +19,6 @@
     return null;
   }
 
-  function hasExactDates() {
-    var notes = document.getElementById('confirmation-notes');
-    if (!notes) return false;
-    return !/위반 시작일/.test(notes.textContent || '');
-  }
-
   function appendNotice(parent, className, title, body) {
     if (!parent || parent.querySelector('.' + className)) return;
     var notice = document.createElement('div');
@@ -65,12 +59,12 @@
 
     var baselineCard = root.querySelector('.result-card.baseline');
     var duration = confirmedDurationDays();
-    if (baselineCard && duration === 30 && !hasExactDates()) {
+    if (baselineCard && duration === 30) {
       appendNotice(
         baselineCard,
         'baseline-boundary-note',
         '30일은 월 단위 경계에 걸릴 수 있습니다',
-        '별표 7은 “개월” 단위 기준을 사용합니다. 시작일·종료일이 없으면 30일을 1개월로 환산한 가정이 포함될 수 있으므로, 정확한 날짜를 적으면 경계 판단이 더 정확해집니다.'
+        '별표 7은 “개월” 단위 기준을 사용합니다. 30일만 입력한 사례는 시작일·종료일에 따라 월 단위 판단이 달라질 수 있으므로, 정확한 날짜를 적으면 경계 판단이 더 정확해집니다.'
       );
     }
   }
