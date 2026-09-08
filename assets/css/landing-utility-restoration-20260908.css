@@ -1,0 +1,76 @@
+/*
+ * Visable landing utility restoration · 2026-09-08
+ *
+ * The five public utility entry points never disappeared from index.html, but
+ * the Figma product skin hides their shared .p-gw-utility container with
+ * display:none!important. That made the short-stay checker, occupation/industry
+ * finder, jurisdiction finder, registered-agent finder and designated-hospital
+ * finder effectively disappear from the landing page while their handlers and
+ * modals remained shipped.
+ *
+ * Keep this layer intentionally narrow: it restores access to existing actions
+ * only. No immigration rules, source data, labels or tool logic are changed.
+ */
+
+body.product-visable.landing:not(.searched) .p-gw-utility,
+:root[data-theme="archive_diary"] body.product-visable.landing:not(.searched) .p-gw-utility {
+  grid-column: 1 / -1 !important;
+  width: 100% !important;
+  display: grid !important;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+  margin: 2px 0 0 !important;
+}
+
+body.product-visable.landing:not(.searched) .p-gw-util {
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 52px !important;
+  padding: 10px 12px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 1px solid var(--vp-line) !important;
+  border-radius: var(--vp-r-sm) !important;
+  background: color-mix(in srgb, var(--vp-paper-strong) 92%, transparent) !important;
+  box-shadow: none !important;
+  color: var(--vp-green) !important;
+  font: 700 12px/1.4 var(--vp-font) !important;
+  letter-spacing: -0.01em !important;
+  text-align: center !important;
+  text-decoration: none !important;
+  transform: none !important;
+}
+
+body.product-visable.landing:not(.searched) .p-gw-util:hover,
+body.product-visable.landing:not(.searched) .p-gw-util:focus-visible {
+  border-color: var(--vp-green-2) !important;
+  background: color-mix(in srgb, var(--vp-mint) 48%, var(--vp-surface)) !important;
+  color: var(--vp-green) !important;
+  transform: translateY(-1px) !important;
+}
+
+body.product-visable.landing:not(.searched) .p-gw-util-label {
+  display: block !important;
+  color: inherit !important;
+}
+
+@media (max-width: 900px) {
+  body.product-visable.landing:not(.searched) .p-gw-utility,
+  :root[data-theme="archive_diary"] body.product-visable.landing:not(.searched) .p-gw-utility {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 640px) {
+  body.product-visable.landing:not(.searched) .p-gw-utility,
+  :root[data-theme="archive_diary"] body.product-visable.landing:not(.searched) .p-gw-utility {
+    gap: 8px !important;
+  }
+
+  body.product-visable.landing:not(.searched) .p-gw-util {
+    min-height: 56px !important;
+    padding: 9px 10px !important;
+    font-size: 11.5px !important;
+  }
+}

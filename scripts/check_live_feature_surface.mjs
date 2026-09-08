@@ -14,6 +14,8 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (path) => readFileSync(join(ROOT, path), 'utf8');
 const index = read('index.html');
 const packageJson = JSON.parse(read('package.json'));
+const backendOrigin = read('assets/js/backend-origin.js');
+const utilityRestoration = read('assets/css/landing-utility-restoration-20260908.css');
 
 let failures = 0;
 let checks = 0;
@@ -96,6 +98,24 @@ for (const feature of features) {
   ok(feature.entry.test(index), `${feature.name}: visible landing entry exists`);
   ok(feature.hook.test(index), `${feature.name}: implementation hook exists`);
 }
+
+console.log('\n== Landing utility row is actually restored, not merely present in DOM');
+const directUtilityActions = [
+  'open-short-stay',
+  'open-jobcode-modal',
+  'open-jurisdiction-modal',
+  'open-agent-finder',
+  'open-med-finder'
+];
+for (const action of directUtilityActions) {
+  ok(new RegExp(`class="p-gw-util"[^>]*data-action="${action}"`).test(index), `${action}: direct gateway button remains shipped`);
+}
+ok(/landing-utility-restoration-20260908\.css/.test(backendOrigin), 'root landing loads the utility-restoration stylesheet');
+ok(/pathname === '\/'[\s\S]*pathname === '\/index\.html'/.test(backendOrigin), 'restoration stylesheet is scoped to the root index page');
+ok(/body\.product-visable\.landing:not\(\.searched\) \.p-gw-utility[\s\S]{0,500}display:\s*grid\s*!important/.test(utilityRestoration), 'default landing forces the utility row visible');
+ok(/:root\[data-theme="archive_diary"\][\s\S]{0,160}\.p-gw-utility[\s\S]{0,500}display:\s*grid\s*!important/.test(utilityRestoration), 'archive theme cannot re-hide the utility row');
+ok(/grid-template-columns:\s*repeat\(5,\s*minmax\(0,\s*1fr\)\)\s*!important/.test(utilityRestoration), 'desktop restoration preserves all five utilities in one direct-access row');
+ok(/@media \(max-width:\s*900px\)[\s\S]*repeat\(2,\s*minmax\(0,\s*1fr\)\)/.test(utilityRestoration), 'restored utility row remains usable on narrow viewports');
 
 console.log('\n== Restored HiKorea account preparation');
 const hiKorea = read('assets/js/hikorea-reservation-helper.js');
