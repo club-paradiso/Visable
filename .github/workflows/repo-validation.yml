@@ -104,3 +104,25 @@ jobs:
           path: artifacts/mobile-webkit-qa/
           if-no-files-found: error
           retention-days: 7
+
+  landing-restoration-e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install Playwright
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
+        run: npm install --no-save --package-lock=false @playwright/test@1.61.0
+
+      - name: Install Chromium runtime
+        run: ./node_modules/.bin/playwright install --with-deps chromium
+
+      - name: Verify restored landing services in Chromium
+        run: ./node_modules/.bin/playwright test tests/e2e/landing-utilities.spec.mjs --project=desktop-1280 --project=mobile-390
