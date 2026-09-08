@@ -45,3 +45,20 @@ test('restored short-stay entry opens the existing checker instead of a dead she
   await expect(modal.locator('#shortStayChecker')).toBeVisible();
   await expect(modal).toContainText(/국적별 단기입국 경로 확인|Short-stay entry/);
 });
+
+test('an early short-stay tap is replayed after the deferred checker becomes ready', async ({ page }) => {
+  await page.route('**/assets/js/short-stay-checker.js', async (route) => {
+    await new Promise((resolve) => setTimeout(resolve, 2500));
+    await route.continue();
+  });
+
+  await page.goto('/index.html', { waitUntil: 'commit' });
+  const entry = page.locator('.p-gw-util[data-action="open-short-stay"]');
+  await expect(entry).toBeVisible();
+  await entry.click();
+
+  const modal = page.locator('#shortStayModalOverlay');
+  await expect(modal).toHaveClass(/active/, { timeout: 10_000 });
+  await expect(modal).toHaveAttribute('aria-hidden', 'false');
+  await expect(modal.locator('#shortStayChecker')).toBeVisible();
+});
