@@ -83,4 +83,28 @@
       global.PARADISO_BACKEND_URL = global.PARADISO_BACKEND_URL || '';
     } catch (e) { /* non-writable global: the resolver above still works */ }
   }
+
+  /*
+   * Root-index page asset shim.
+   *
+   * The shared Figma skin currently hides the historical .p-gw-utility row
+   * with display:none!important even though all five actions still exist. The
+   * main HTML is a very large single-file application, so keep the narrowly
+   * scoped restoration in its own stylesheet and load it only for the root
+   * landing page. This does not participate in backend-origin resolution.
+   */
+  try {
+    var doc = global.document;
+    var pathname = (global.location && global.location.pathname) || '';
+    if (doc && doc.head && (pathname === '/' || pathname === '/index.html') &&
+        !doc.getElementById('visable-landing-utility-restoration')) {
+      var utilityStyles = doc.createElement('link');
+      utilityStyles.id = 'visable-landing-utility-restoration';
+      utilityStyles.rel = 'stylesheet';
+      utilityStyles.href = 'assets/css/landing-utility-restoration-20260908.css';
+      doc.head.appendChild(utilityStyles);
+    }
+  } catch (e) {
+    // Cosmetic restoration must never interfere with backend resolution.
+  }
 })(typeof window !== 'undefined' ? window : this);
