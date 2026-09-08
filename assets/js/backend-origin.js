@@ -85,18 +85,28 @@
   }
 
   /*
-   * Root-index page asset shim.
+   * Root-index landing compatibility shims.
    *
    * The shared Figma skin currently hides the historical .p-gw-utility row
-   * with display:none!important even though all five actions still exist. The
-   * main HTML is a very large single-file application, so keep the narrowly
-   * scoped restoration in its own stylesheet and load it only for the root
-   * landing page. This does not participate in backend-origin resolution.
+   * with display:none!important even though the actions still exist. The main
+   * HTML is a very large single-file application, so keep the narrowly scoped
+   * restoration in its own stylesheet and load it only for the root landing.
+   *
+   * The short-stay module is deferred and can finish after a fast mobile user
+   * taps the restored button. The delegated action intentionally calls
+   * window.ParadisoShortStay.open(), so install a tiny readiness bridge before
+   * that module loads. If the user taps early, the bridge records the intent;
+   * when the real module assigns window.ParadisoShortStay, the setter replays
+   * exactly one open. This is UI readiness only and does not touch entry rules.
+   *
+   * Neither shim participates in backend-origin resolution.
    */
   try {
     var doc = global.document;
     var pathname = (global.location && global.location.pathname) || '';
-    if (doc && doc.head && (pathname === '/' || pathname === '/index.html') &&
+    var isRootLanding = pathname === '/' || pathname === '/index.html';
+
+    if (doc && doc.head && isRootLanding &&
         !doc.getElementById('visable-landing-utility-restoration')) {
       var utilityStyles = doc.createElement('link');
       utilityStyles.id = 'visable-landing-utility-restoration';
@@ -104,7 +114,40 @@
       utilityStyles.href = 'assets/css/landing-utility-restoration-20260908.css';
       doc.head.appendChild(utilityStyles);
     }
+
+    if (isRootLanding && (!global.ParadisoShortStay || typeof global.ParadisoShortStay.open !== 'function')) {
+      var pendingShortStayOpen = false;
+      var shortStayBootstrap = {
+        __visableBootstrap: true,
+        open: function () {
+          pendingShortStayOpen = true;
+        }
+      };
+
+      Object.defineProperty(global, 'ParadisoShortStay', {
+        configurable: true,
+        enumerable: true,
+        get: function () {
+          return shortStayBootstrap;
+        },
+        set: function (realApi) {
+          Object.defineProperty(global, 'ParadisoShortStay', {
+            configurable: true,
+            enumerable: true,
+            writable: true,
+            value: realApi
+          });
+
+          if (pendingShortStayOpen && realApi && typeof realApi.open === 'function') {
+            pendingShortStayOpen = false;
+            global.setTimeout(function () {
+              try { realApi.open(); } catch (e) { /* keep page usable if popup setup fails */ }
+            }, 0);
+          }
+        }
+      });
+    }
   } catch (e) {
-    // Cosmetic restoration must never interfere with backend resolution.
+    // Landing compatibility must never interfere with backend resolution.
   }
 })(typeof window !== 'undefined' ? window : this);
