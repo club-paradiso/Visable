@@ -1,0 +1,87 @@
+.panel[data-step="2"] {
+  padding-top: clamp(1.15rem, 3vw, 1.8rem);
+  padding-bottom: clamp(1.15rem, 3vw, 1.8rem);
+}
+
+.panel[data-step="2"] .panel-heading > p:last-child {
+  margin-bottom: .85rem;
+}
+
+.panel[data-step="2"] .confirmation-card {
+  padding: 1rem 1.15rem;
+}
+
+.panel[data-step="2"] .confirmation-summary {
+  font-size: clamp(1.04rem, 2vw, 1.2rem);
+  line-height: 1.55;
+}
+
+.panel[data-step="2"] .understood-details {
+  margin-top: .72rem;
+}
+
+.panel[data-step="2"] .confirmation-actions {
+  margin-top: .8rem;
+}
+
+.prediction-degraded-note,
+.baseline-boundary-note {
+  display: grid;
+  gap: .22rem;
+  margin-top: .9rem;
+  padding: .72rem .8rem;
+  border-radius: .68rem;
+  font-size: .8rem;
+  line-height: 1.5;
+}
+
+.prediction-degraded-note {
+  border: 1px solid #bfe3d9;
+  background: rgba(255, 255, 255, .62);
+  color: #275f55;
+}
+
+.baseline-boundary-note {
+  border: 1px solid #ead69a;
+  background: #fff8e7;
+  color: #76520c;
+}
+
+.prediction-degraded-note strong,
+.baseline-boundary-note strong {
+  font-size: .82rem;
+}
+
+.prediction-degraded-note span,
+.baseline-boundary-note span {
+  color: inherit;
+}
+
+.result-card .amount {
+  line-height: 1.08;
+}
+
+.result-details {
+  margin-top: .85rem;
+}
+
+@media (min-width: 760px) {
+  .panel[data-step="2"] .confirmation-actions {
+    align-items: center;
+  }
+
+  .result-card {
+    padding: 1.25rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .panel[data-step="2"] .confirmation-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .panel[data-step="2"] .confirmation-actions button {
+    width: 100%;
+  }
+}

@@ -35,8 +35,8 @@ class PredictionValidationError(ValueError):
 # cases are always overwritten from verified server data after parsing.
 _PREDICTION_OUTPUT_CONTRACT = r"""
 Return exactly ONE JSON object. Do not wrap it in markdown. Use this shape and
-these camelCase field names. Omit no required `confidence` object. Empty arrays
-and null are valid when evidence cannot support a prediction.
+these camelCase field names. Empty arrays and null are valid when evidence cannot
+support a prediction. Do not add fields that are not shown here.
 
 {
   "status": "AVAILABLE | LIMITED | UNAVAILABLE",
@@ -91,8 +91,9 @@ Rules for the JSON contract:
 - Do NOT add summary, reasoning, probability, percentage, score, recommendation, statute, or any other extra field.
 - Use only evidence ids that appear in INPUT_JSON.evidence.evidence.
 - If there is no direct evidence for a disposition, primaryDisposition MUST be null.
-- If a monetary range is not supportable, monetaryPrediction may be null.
+- When legalBaseline.status is AVAILABLE and legalRange exists, prefer a conservative LOW-confidence monetaryPrediction over null: predictedLikelyRange may equal the full legalRange when public evidence supports nothing narrower. Keep pointEstimateKrw null unless evidence supports a representative amount.
 - Never copy numbers from this template. Monetary values must come only from INPUT_JSON legalBaseline and must remain inside the legal range.
+- A known first violation may be described only as a possible mitigating-direction factor, not as proof that the authority will mitigate the amount.
 """.strip()
 
 
@@ -117,8 +118,11 @@ amounts and ranges are authoritative and may not be changed. Use only supplied
 EVIDENCE ids. Distinguish SUPPORTED, INFERRED and UNKNOWN. Do not invent a case,
 citation, statute, percentage or numeric probability. Qualitative likelihood only.
 If public evidence cannot distinguish dispositions, set primaryDisposition to null.
-A point estimate is optional and must be inside predictedLikelyRange; the predicted
-range must be inside legalRange.
+For an AVAILABLE statutory money range, it is useful to return a conservative
+LOW-confidence predicted range even when it is no narrower than the legal range;
+do not invent a point estimate merely to appear precise. A point estimate is
+optional and must be inside predictedLikelyRange; the predicted range must be
+inside legalRange.
 
 OUTPUT_JSON_CONTRACT:
 {_PREDICTION_OUTPUT_CONTRACT}
@@ -200,6 +204,103 @@ def _apply_confidence_cap(payload: Dict[str, Any], cap: str, reasons: list[str])
     update(payload)
 
 
+def _normalize_confidence(value: Any) -> Dict[str, Any]:
+    if not isinstance(value, dict):
+        return {"level": "LOW", "reasons": []}
+    return {
+        "level": value.get("level") or "LOW",
+        "reasons": value.get("reasons") if isinstance(value.get("reasons"), list) else [],
+    }
+
+
+def _normalize_factor(value: Any) -> Any:
+    if not isinstance(value, dict):
+        return value
+    return {
+        "code": value.get("code"),
+        "label": value.get("label"),
+        "direction": value.get("direction"),
+        "basis": value.get("basis"),
+        "evidenceIds": value.get("evidenceIds") if isinstance(value.get("evidenceIds"), list) else [],
+    }
+
+
+def _normalize_factors(value: Any) -> list[Any]:
+    if not isinstance(value, list):
+        return []
+    return [_normalize_factor(item) for item in value if isinstance(item, dict)]
+
+
+def _normalize_disposition(value: Any, *, default_rank: int) -> Any:
+    if value is None:
+        return None
+    if not isinstance(value, dict):
+        return value
+    return {
+        "type": value.get("type"),
+        "likelihood": value.get("likelihood") or "UNKNOWN",
+        "rank": value.get("rank") if isinstance(value.get("rank"), int) else default_rank,
+        "confidence": _normalize_confidence(value.get("confidence")),
+        "rationale": _normalize_factors(value.get("rationale")),
+        "supportingEvidence": value.get("supportingEvidence") if isinstance(value.get("supportingEvidence"), list) else [],
+    }
+
+
+def _normalize_prediction_shape(payload: Dict[str, Any]) -> Dict[str, Any]:
+    """Repair harmless free-model JSON drift without weakening legal guards.
+
+    Free structured-output endpoints sometimes add commentary fields or omit
+    empty arrays/confidence objects. Those are transport/schema defects, not a
+    reason to discard an otherwise valid bounded prediction. Numeric values,
+    evidence IDs, disposition types and probability-like content are NEVER
+    corrected or clamped here; downstream validation still fails closed for
+    those substantive errors.
+    """
+    normalized: Dict[str, Any] = {
+        "status": payload.get("status") or "LIMITED",
+        "monetaryPrediction": None,
+        "primaryDisposition": _normalize_disposition(payload.get("primaryDisposition"), default_rank=1),
+        "alternativeDispositions": [],
+        "stayImpact": payload.get("stayImpact") if isinstance(payload.get("stayImpact"), list) else [],
+        "aggravatingFactors": _normalize_factors(payload.get("aggravatingFactors")),
+        "mitigatingFactors": _normalize_factors(payload.get("mitigatingFactors")),
+        "unresolvedFactors": _normalize_factors(payload.get("unresolvedFactors")),
+        "confidence": _normalize_confidence(payload.get("confidence")),
+        "limitations": payload.get("limitations") if isinstance(payload.get("limitations"), list) else [],
+    }
+
+    alternatives = payload.get("alternativeDispositions")
+    if isinstance(alternatives, list):
+        normalized["alternativeDispositions"] = [
+            _normalize_disposition(item, default_rank=index + 1)
+            for index, item in enumerate(alternatives)
+            if isinstance(item, dict)
+        ]
+
+    monetary = payload.get("monetaryPrediction")
+    if isinstance(monetary, dict):
+        likely_range = monetary.get("predictedLikelyRange")
+        if isinstance(likely_range, dict):
+            likely_range = {
+                "minimumKrw": likely_range.get("minimumKrw"),
+                "maximumKrw": likely_range.get("maximumKrw"),
+                "currency": likely_range.get("currency") or "KRW",
+            }
+        elif likely_range is not None:
+            # Preserve the invalid value so Pydantic rejects it rather than
+            # silently turning a substantive model mistake into null.
+            likely_range = likely_range
+        normalized["monetaryPrediction"] = {
+            "predictedLikelyRange": likely_range,
+            "pointEstimateKrw": monetary.get("pointEstimateKrw"),
+            "predictedDirection": monetary.get("predictedDirection") or "UNCERTAIN",
+            "confidence": _normalize_confidence(monetary.get("confidence")),
+            "rationale": _normalize_factors(monetary.get("rationale")),
+        }
+
+    return normalized
+
+
 def validate_ai_prediction(
     raw: Any,
     case: StructuredCase,
@@ -209,7 +310,7 @@ def validate_ai_prediction(
     payload, model_id = _parse_provider_output(raw)
     if _contains_fake_probability(payload):
         raise PredictionValidationError("numeric probabilities are prohibited")
-    payload = deepcopy(payload)
+    payload = _normalize_prediction_shape(deepcopy(payload))
     payload["schemaVersion"] = "1"
     payload["engineVersion"] = PREDICTION_ENGINE_VERSION
     payload["promptVersion"] = PREDICTION_PROMPT_VERSION

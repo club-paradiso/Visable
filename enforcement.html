@@ -7,6 +7,7 @@
   <title>출입국 사범처리 예상 · Visable</title>
   <link rel="icon" href="assets/brand/visable-favicon.svg">
   <link rel="stylesheet" href="assets/css/enforcement.css">
+  <link rel="stylesheet" href="assets/css/enforcement-result-ux.css">
 </head>
 <body>
   <a class="skip-link" href="#main">본문으로 건너뛰기</a>
@@ -78,13 +79,13 @@
     <section class="panel" data-step="2" aria-labelledby="confirm-title" hidden>
       <div class="panel-heading panel-heading--compact">
         <p class="section-number">STEP 02</p>
-        <h2 id="confirm-title">제가 이해한 내용이 맞나요?</h2>
-        <p>법률 용어 대신 실제로 입력한 사실을 기준으로 정리했습니다. 다르면 사례 문장을 고쳐 주세요.</p>
+        <h2 id="confirm-title">입력한 사실이 맞는지만 확인해 주세요.</h2>
+        <p>법률 판단이 아니라 사실 확인 단계입니다. 다르면 사례 문장을 고치고, 맞으면 바로 분석합니다.</p>
       </div>
 
       <form id="confirm-form">
         <article class="confirmation-card" aria-labelledby="confirmation-card-title">
-          <p class="confirmation-label" id="confirmation-card-title">제가 이해한 내용</p>
+          <p class="confirmation-label" id="confirmation-card-title">VISABLE이 정리한 사실</p>
           <p class="confirmation-summary" id="confirmation-summary" aria-live="polite">입력 내용을 정리하고 있습니다.</p>
           <p class="confirmation-source" id="confirmation-source" hidden>표현만 Gemma가 자연스럽게 다듬었습니다. 사실 추출과 법률 판단에는 사용하지 않습니다.</p>
         </article>
@@ -96,7 +97,7 @@
         </section>
 
         <details class="understood-details">
-          <summary>제가 이해한 세부 내용 보기</summary>
+          <summary>정리된 세부 사실 보기</summary>
           <dl class="fact-list" id="confirmed-facts"></dl>
           <div class="confirmation-notes" id="confirmation-notes" hidden></div>
         </details>
@@ -104,7 +105,7 @@
         <p class="form-error" id="confirm-error" role="alert" hidden></p>
         <div class="actions confirmation-actions">
           <button class="secondary-button" type="button" data-back="1">일부 내용이 달라요</button>
-          <button class="primary-button" type="submit" id="confirm-primary">네, 맞아요 · 분석하기 <span aria-hidden="true">→</span></button>
+          <button class="primary-button" type="submit" id="confirm-primary">맞아요 · 분석하기 <span aria-hidden="true">→</span></button>
         </div>
       </form>
     </section>
@@ -133,6 +134,7 @@
 
   <footer>정보 제공용 도구이며 출입국 당국의 최종 처분 또는 법률 자문을 대신하지 않습니다.</footer>
   <script src="assets/js/backend-origin.js"></script>
+  <script defer src="scripts/enforcement-result-ux.js"></script>
   <script type="module" src="scripts/enforcement-ui.mjs"></script>
 </body>
 </html>
