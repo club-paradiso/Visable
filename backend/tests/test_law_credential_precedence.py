@@ -56,7 +56,7 @@ def test_non_railway_preserves_existing_oc_first_contract():
     assert cfg.law_api_credential_source == "LAW_API_OC"
 
 
-def test_railway_placeholder_uses_existing_key_in_real_request_builder():
+def test_railway_explicit_oc_still_wins_in_real_request_builder():
     with _env(
         RAILWAY_SERVICE_ID="service-test",
         LAW_API_OC="paradiso",
@@ -64,17 +64,15 @@ def test_railway_placeholder_uses_existing_key_in_real_request_builder():
     ):
         cfg = load_grounding_config()
         request_url = _request_url(cfg)
-    assert cfg.law_api_credential == "registered-legacy-oc"
-    assert cfg.law_api_credential_source == "LAW_API_KEY"
-    assert cfg.law_api_oc_configured is False
-    assert "OC=registered-legacy-oc" in request_url
-    assert "OC=paradiso" not in request_url
-    assert "LAW_API_OC_PLACEHOLDER_DETECTED_ON_RAILWAY" in cfg.warnings
-    assert "LAW_API_OC_PLACEHOLDER_IGNORED_FOR_RAILWAY_KEY_FALLBACK" in cfg.warnings
-    assert "LAW_API_OC_RECOMMENDED" in cfg.warnings
+    assert cfg.law_api_credential == "paradiso"
+    assert cfg.law_api_credential_source == "LAW_API_OC"
+    assert cfg.law_api_oc_configured is True
+    assert "OC=paradiso" in request_url
+    assert "OC=registered-legacy-oc" not in request_url
+    assert not any("PLACEHOLDER" in warning for warning in cfg.warnings)
 
 
-def test_railway_real_alias_beats_historical_placeholder():
+def test_railway_primary_oc_beats_alias_and_legacy_key():
     with _env(
         RAILWAY_ENVIRONMENT_ID="environment-test",
         LAW_API_OC="paradiso",
@@ -83,11 +81,11 @@ def test_railway_real_alias_beats_historical_placeholder():
     ):
         cfg = load_grounding_config()
         request_url = _request_url(cfg)
-    assert cfg.law_api_credential == "registered-current-oc"
-    assert cfg.law_api_credential_source == "LAW_OC"
-    assert "OC=registered-current-oc" in request_url
-    assert "OC=paradiso" not in request_url
-    assert "LAW_API_OC_ALIAS_USED" in cfg.warnings
+    assert cfg.law_api_credential == "paradiso"
+    assert cfg.law_api_credential_source == "LAW_API_OC"
+    assert "OC=paradiso" in request_url
+    assert "OC=registered-current-oc" not in request_url
+    assert "LAW_API_OC_ALIAS_USED" not in cfg.warnings
 
 
 def test_railway_real_primary_oc_still_wins():
@@ -106,4 +104,4 @@ def test_railway_placeholder_without_fallback_remains_available():
         cfg = load_grounding_config()
     assert cfg.law_api_credential == "paradiso"
     assert cfg.law_api_configured is True
-    assert "LAW_API_OC_PLACEHOLDER_DETECTED_ON_RAILWAY" in cfg.warnings
+    assert not any("PLACEHOLDER" in warning for warning in cfg.warnings)

@@ -302,13 +302,13 @@ class FastBasicModelRoutingTests(unittest.TestCase):
 
     def test_verifier_model_is_not_a_default_answer_primary(self):
         # The reported bug: both Fast and Basic answered with the verifier model
-        # (openai/gpt-oss-120b:free). It must never be a default answer primary.
+        # It must never be a default answer primary.
         from services.model_policy import (
             resolve_answer_mode_models,
             DEFAULT_VERIFIER_MODEL,
         )
 
-        self.assertEqual(DEFAULT_VERIFIER_MODEL, "openai/gpt-oss-120b:free")
+        self.assertEqual(DEFAULT_VERIFIER_MODEL, "nvidia/nemotron-3-super-120b-a12b:free")
         self.assertNotEqual(resolve_answer_mode_models("fast")["primary"], DEFAULT_VERIFIER_MODEL)
         self.assertNotEqual(resolve_answer_mode_models("basic")["primary"], DEFAULT_VERIFIER_MODEL)
 

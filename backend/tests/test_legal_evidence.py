@@ -90,6 +90,10 @@ _ADMIN_LIST = json.dumps({"DeccSearch": {"decc": [
 class ConfigAndOcTests(unittest.TestCase):
     def setUp(self):
         le.reset_legal_evidence_cache_for_tests()
+        # The model cooldown registry is process-wide by production design.
+        # Keep this test class isolated from earlier simulated provider outages.
+        import paradiso_backend as pb
+        pb._reset_openrouter_model_cooldowns_for_tests()
 
     def test_missing_oc_does_not_crash_and_reports_not_configured(self):
         r = le.retrieve_legal_evidence("체류기간 연장 불허가 판례", config=_no_oc_cfg())
@@ -523,6 +527,8 @@ class WaymakerIntegrationTests(unittest.TestCase):
             os.environ.pop(k, None)
 
     def tearDown(self):
+        import paradiso_backend as pb
+        pb._reset_openrouter_model_cooldowns_for_tests()
         for k, v in self._saved.items():
             if v is None:
                 os.environ.pop(k, None)
