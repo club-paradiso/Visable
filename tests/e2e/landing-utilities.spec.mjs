@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-const ACTIONS = [
+const DIRECT_ACTIONS = [
   'open-short-stay',
   'open-jobcode-modal',
   'open-jurisdiction-modal',
@@ -14,20 +14,21 @@ const JOURNEY_TARGETS = [
   'reminderSection'
 ];
 
-test('landing keeps five direct utilities and the restored journey surface visible', async ({ page }) => {
+test('landing keeps all eight public utilities and restored journey surfaces visible', async ({ page }) => {
   await page.goto('/index.html');
 
   const utilityRow = page.locator('.p-gw-utility');
   await expect(utilityRow).toBeVisible();
-  await expect(utilityRow.locator('.p-gw-util')).toHaveCount(5);
+  await expect(utilityRow.locator('.p-gw-util')).toHaveCount(DIRECT_ACTIONS.length + JOURNEY_TARGETS.length);
 
-  for (const action of ACTIONS) {
-    await expect(page.locator(`.p-gw-util[data-action="${action}"]`)).toBeVisible();
+  for (const action of DIRECT_ACTIONS) {
+    await expect(utilityRow.locator(`.p-gw-util[data-action="${action}"]`)).toBeVisible();
   }
 
   for (const target of JOURNEY_TARGETS) {
+    const entry = utilityRow.locator(`.p-gw-util[data-action="reveal-home-section"][data-target="${target}"]`);
+    await expect(entry).toBeVisible();
     await expect(page.locator(`#${target}`)).toBeVisible();
-    await expect(page.locator(`[data-action="reveal-home-section"][data-target="${target}"]:visible`).first()).toBeVisible();
   }
 
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
