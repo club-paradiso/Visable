@@ -29,14 +29,15 @@ jobs:
 
           base = os.environ["BACKEND_URL"].rstrip("/")
           request_timeout = 6.0
-          deploy_attempts = 10
-          deploy_sleep_seconds = 6.0
+          law_search_timeout = 18.0
+          deploy_attempts = 6
+          deploy_sleep_seconds = 5.0
 
           def request_json(path: str, *, method: str = "GET", payload=None, timeout: float = request_timeout):
               body = None
               headers = {
                   "Accept": "application/json",
-                  "User-Agent": "Visable-Railway-Live-Smoke/4",
+                  "User-Agent": "Visable-Railway-Live-Smoke/5",
               }
               if payload is not None:
                   body = json.dumps(payload, ensure_ascii=False).encode("utf-8")
@@ -60,11 +61,11 @@ jobs:
           law_status = None
           last_error = "not_started"
 
-          # GitHub main and Railway deploy asynchronously. Keep this retry loop
-          # comfortably below the job timeout even when every request reaches
-          # its network timeout. The previous 24 x (15s timeout + 10s sleep)
-          # loop could exceed the 8-minute job ceiling and was routinely killed
-          # by Actions before it could report its own failure.
+          # GitHub main and Railway deploy asynchronously. The public law-search
+          # route can legitimately spend up to the backend's own upstream timeout
+          # plus one bounded dictionary fallback attempt. Give that route enough
+          # room to return its typed result, while keeping the whole retry budget
+          # comfortably below the six-minute Actions ceiling.
           for attempt in range(1, deploy_attempts + 1):
               try:
                   health_status, candidate = request_json("/health")
@@ -74,13 +75,17 @@ jobs:
                       print(f"deploy probe {attempt}/{deploy_attempts}: {last_error}", flush=True)
                   else:
                       query = urllib.parse.quote("출입국관리법")
-                      law_status, law_candidate = request_json(f"/api/legal/laws/search?q={query}")
+                      law_status, law_candidate = request_json(
+                          f"/api/legal/laws/search?q={query}",
+                          timeout=law_search_timeout,
+                      )
                       law_result = law_candidate
                       count = int(law_candidate.get("count") or 0)
                       law_ok = law_status == 200 and law_candidate.get("ok") is True
                       print(
                           f"deploy probe {attempt}/{deploy_attempts}: health=ok "
-                          f"law_http={law_status} law_ok={law_ok} law_count={count}",
+                          f"law_http={law_status} law_ok={law_ok} law_count={count} "
+                          f"law_reason={law_candidate.get('reason') or law_candidate.get('error') or ''}",
                           flush=True,
                       )
                       if law_ok and count > 0:
