@@ -8,7 +8,13 @@ const ACTIONS = [
   'open-med-finder'
 ];
 
-test('landing keeps all five historical utility entry points visible', async ({ page }) => {
+const JOURNEY_TARGETS = [
+  'visaManualSection',
+  'pathwaySection',
+  'reminderSection'
+];
+
+test('landing keeps five direct utilities and the restored journey surface visible', async ({ page }) => {
   await page.goto('/index.html');
 
   const utilityRow = page.locator('.p-gw-utility');
@@ -19,8 +25,13 @@ test('landing keeps all five historical utility entry points visible', async ({ 
     await expect(page.locator(`.p-gw-util[data-action="${action}"]`)).toBeVisible();
   }
 
+  for (const target of JOURNEY_TARGETS) {
+    await expect(page.locator(`#${target}`)).toBeVisible();
+    await expect(page.locator(`[data-action="reveal-home-section"][data-target="${target}"]:visible`).first()).toBeVisible();
+  }
+
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
-  expect(overflow, 'restored utilities must not introduce horizontal overflow').toBeLessThanOrEqual(1);
+  expect(overflow, 'restored landing services must not introduce horizontal overflow').toBeLessThanOrEqual(1);
 });
 
 test('restored short-stay entry opens the existing checker instead of a dead shell', async ({ page }) => {
