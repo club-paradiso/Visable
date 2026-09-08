@@ -7,6 +7,8 @@ anonymous material are excluded by construction.
 
 from __future__ import annotations
 
+import os
+from dataclasses import replace
 from datetime import date
 from typing import Any, Dict, Optional
 
@@ -106,27 +108,53 @@ def _convert_precedent_body(raw: Dict[str, Any], case: StructuredCase) -> tuple[
     return evidence, similar
 
 
+def _bounded_grounding_config():
+    """Return the normal law config with an enforcement-specific short timeout.
+
+    Enforcement analysis is synchronous from the user's perspective. A slow
+    precedent lookup must not delay the deterministic statutory baseline for
+    several seconds per candidate. The normal law tooling keeps its own timeout;
+    only this optional similar-case enrichment is bounded here.
+    """
+    from .grounding_config import load_grounding_config
+
+    raw = (os.environ.get("ENFORCEMENT_PRECEDENT_TIMEOUT_SECONDS") or "0.8").strip()
+    try:
+        timeout = float(raw)
+    except (TypeError, ValueError):
+        timeout = 0.8
+    timeout = max(0.25, min(timeout, 2.0))
+    return replace(load_grounding_config(), timeout_seconds=timeout)
+
+
 def retrieve_enforcement_evidence(
     case: StructuredCase,
     baseline: LegalBaseline,
     *,
     precedent_adapter: Any = None,
-    max_cases: int = 3,
+    max_cases: int = 1,
 ) -> EnforcementEvidencePack:
     evidence = _baseline_evidence(baseline)
     similar_cases: list[SimilarCaseReference] = []
     limitations: list[str] = []
+    adapter_kwargs: Dict[str, Any] = {}
 
     if precedent_adapter is None:
         try:
             from . import precedent_sources as precedent_adapter  # type: ignore
+            adapter_kwargs["config"] = _bounded_grounding_config()
         except Exception:
             precedent_adapter = None
+            adapter_kwargs = {}
 
     if precedent_adapter is not None and baseline.status == "AVAILABLE":
         try:
-            search = precedent_adapter.search_precedents(_query_for_case(case, baseline), limit=max_cases)
-            for candidate in (search.get("items") or [])[:max_cases]:
+            search = precedent_adapter.search_precedents(
+                _query_for_case(case, baseline),
+                limit=max(1, min(int(max_cases or 1), 1)),
+                **adapter_kwargs,
+            )
+            for candidate in (search.get("items") or [])[:1]:
                 # A search result is metadata only. Fetch and expose a case only
                 # after a citation-grade body result has been retrieved.
                 if not isinstance(candidate, dict) or _contains_forbidden_marker(candidate):
@@ -134,7 +162,7 @@ def retrieve_enforcement_evidence(
                 source_id = candidate.get("serialNumber") or candidate.get("sourceId")
                 if not source_id:
                     continue
-                detail = precedent_adapter.get_precedent_detail(str(source_id))
+                detail = precedent_adapter.get_precedent_detail(str(source_id), **adapter_kwargs)
                 for body in detail.get("items") or []:
                     converted, similar = _convert_precedent_body(body, case)
                     if converted and similar:
