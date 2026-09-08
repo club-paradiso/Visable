@@ -121,8 +121,12 @@ jobs:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
         run: npm install --no-save --package-lock=false @playwright/test@1.61.0
 
-      - name: Install Chromium runtime
-        run: ./node_modules/.bin/playwright install --with-deps chromium
+      - name: Resolve Chrome
+        run: |
+          CHROME_BIN="$(command -v google-chrome || command -v chromium || command -v chromium-browser)"
+          test -n "$CHROME_BIN"
+          echo "PARADISO_PW_EXECUTABLE=$CHROME_BIN" >> "$GITHUB_ENV"
+          "$CHROME_BIN" --version
 
-      - name: Verify restored landing services in Chromium
+      - name: Verify restored landing services in Chrome
         run: ./node_modules/.bin/playwright test tests/e2e/landing-utilities.spec.mjs --project=desktop-1280 --project=mobile-390
