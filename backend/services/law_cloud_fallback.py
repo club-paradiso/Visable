@@ -228,17 +228,27 @@ def _dictionary_fallback(
 
     collected: List[Dict[str, Any]] = []
     first_success: Optional[Dict[str, Any]] = None
+    first_failure: Optional[Dict[str, Any]] = None
     directions = ("lasc", "ldes")
+    active_directions = set(directions)
     totals: Dict[str, Optional[int]] = {"lasc": None, "ldes": None}
+    no_results_error = getattr(law_tools, "LAW_API_NO_RESULTS", "law_api_no_results")
 
+    # Probe each direction once. A transport/auth/parse failure makes that
+    # direction terminal for this request. Retrying page 2..6 after page 1 could
+    # not even be fetched only multiplies the same upstream timeout and used to
+    # keep the public endpoint busy for a minute or more.
     for sort in directions:
         result = _cached_page(
             law_tools, config=config, transport=transport, gana=gana,
             sort=sort, page=1, query_label=query,
         )
         if result.get("status") != "ok":
-            if result.get("error_type") == getattr(law_tools, "LAW_API_NO_RESULTS", "law_api_no_results"):
+            if result.get("error_type") == no_results_error:
                 totals[sort] = 0
+            else:
+                active_directions.discard(sort)
+                first_failure = first_failure or result
             continue
         first_success = first_success or result
         collected.extend(result.get("results") or [])
@@ -247,11 +257,19 @@ def _dictionary_fallback(
         if matches and _match_score(matches[0], query) >= 7800:
             return _fallback_result(first_success, matches, query, gana)
 
+    # If neither dictionary direction was reachable, surface that failure rather
+    # than disguising it as the primary query's known-unreliable empty shell.
+    if not active_directions and first_success is None:
+        return first_failure
+
     for page in range(2, _MAX_SCAN_PAGES_PER_DIRECTION + 1):
         made_request = False
         for sort in directions:
+            if sort not in active_directions:
+                continue
             total = totals.get(sort)
             if total is not None and (page - 1) * _PAGE_SIZE >= total:
+                active_directions.discard(sort)
                 continue
             made_request = True
             result = _cached_page(
@@ -259,8 +277,11 @@ def _dictionary_fallback(
                 sort=sort, page=page, query_label=query,
             )
             if result.get("status") != "ok":
-                if result.get("error_type") == getattr(law_tools, "LAW_API_NO_RESULTS", "law_api_no_results"):
+                if result.get("error_type") == no_results_error:
                     totals[sort] = 0
+                else:
+                    first_failure = first_failure or result
+                active_directions.discard(sort)
                 continue
             first_success = first_success or result
             collected.extend(result.get("results") or [])
@@ -269,11 +290,15 @@ def _dictionary_fallback(
             matches = _best_matches(collected, query, limit)
             if matches and _match_score(matches[0], query) >= 7800:
                 return _fallback_result(first_success, matches, query, gana)
-        if not made_request:
+        if not made_request or not active_directions:
             break
 
     matches = _best_matches(collected, query, limit)
-    return _fallback_result(first_success, matches, query, gana) if matches else None
+    if matches:
+        return _fallback_result(first_success, matches, query, gana)
+    if first_success is None and first_failure is not None:
+        return first_failure
+    return None
 
 
 def install_cloud_resilient_search(law_tools: Any) -> Callable[..., Dict[str, Any]]:

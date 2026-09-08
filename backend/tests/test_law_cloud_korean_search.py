@@ -85,6 +85,17 @@ class EmptyDictionaryTransport(RecordingTransport):
         return lt.LawHttpResponse(ok=True, status_code=200, text=payload)
 
 
+class TimeoutDictionaryTransport(RecordingTransport):
+    """Primary Korean query returns the known zero shell; dictionary transport dies."""
+
+    def __call__(self, url: str, timeout: float) -> lt.LawHttpResponse:
+        self.urls.append(url)
+        qs = parse_qs(urlsplit(url).query)
+        if "query" in qs:
+            return lt.LawHttpResponse(ok=True, status_code=200, text=ZERO_SHELL)
+        return lt.LawHttpResponse(ok=False, status_code=0, text="", error_type="timeout")
+
+
 class LawCloudKoreanSearchTests(unittest.TestCase):
     def setUp(self):
         _PAGE_CACHE.clear()
@@ -139,6 +150,19 @@ class LawCloudKoreanSearchTests(unittest.TestCase):
         self.assertEqual(result["results"], [])
         # One primary Korean query + at most the two dictionary directions.
         self.assertLessEqual(len(transport.urls), 3)
+
+    def test_dictionary_transport_timeout_is_terminal_and_not_disguised_as_no_results(self):
+        transport = TimeoutDictionaryTransport()
+        result = lt.search_laws("출입국관리법", config=self.cfg, transport=transport)
+
+        self.assertEqual(result["status"], "error")
+        self.assertEqual(result["error_type"], lt.LAW_API_TIMEOUT)
+        self.assertEqual(result["result_count"], 0)
+        self.assertEqual(result["results"], [])
+        self.assertEqual(result.get("primary_error_type"), lt.LAW_API_NO_RESULTS)
+        # Primary + page 1 in each sort direction. No pointless page 2..6 retries.
+        self.assertEqual(len(transport.urls), 3)
+        self.assertEqual(sum("mobileYn=Y" in url for url in transport.urls), 2)
 
 
 if __name__ == "__main__":
