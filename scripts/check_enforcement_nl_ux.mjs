@@ -33,9 +33,12 @@ assert.ok(js.includes('extractionWarnings'), 'fallback extraction warnings must 
 assert.ok(js.includes('확인이 필요한 해석'), 'confirmation details must explain extraction fallbacks');
 assert.ok(js.includes("'case text is required': '사례 설명을 입력해 주세요.'"), 'backend validation errors must be localized');
 
-assert.ok(html.includes('제가 이해한 내용이 맞나요?'), 'confirmation must ask a plain-language question');
+assert.ok(
+  html.includes('입력한 사실이 맞는지만 확인해 주세요.') && html.includes('법률 판단이 아니라 사실 확인 단계입니다.'),
+  'confirmation must remain a plain-language fact check rather than imply a legal judgment',
+);
 assert.ok(html.includes('일부 내용이 달라요'), 'users must have an obvious way to correct the interpretation');
-assert.ok(html.includes('네, 맞아요 · 분석하기'), 'users must explicitly confirm before analysis');
+assert.ok(html.includes('맞아요 · 분석하기'), 'users must explicitly confirm before analysis');
 assert.ok(!html.includes('name="violationCode"'), 'internal violation code must not be exposed as an edit field');
 assert.ok(!html.includes('name="authorizationObtained"'), 'internal boolean fields must not be exposed as bureaucratic controls');
 assert.ok(js.includes('function deterministicSummary('), 'a zero-latency deterministic confirmation fallback must exist');
