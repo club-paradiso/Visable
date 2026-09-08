@@ -245,6 +245,12 @@ OLLAMA_TIMEOUT_SECONDS: float = _env_float("OLLAMA_TIMEOUT_SECONDS", 20.0)
 # an uncaught 500). The default preserves the historical 60s behaviour; lower
 # it per-deploy (e.g. OPENROUTER_TIMEOUT_SECONDS=40) for snappier failure.
 OPENROUTER_TIMEOUT_SECONDS: float = _env_float("OPENROUTER_TIMEOUT_SECONDS", 60.0)
+# Total wall-clock budget for the complete candidate chain. A per-model timeout
+# alone allows four stale candidates to outlive the frontend's 75s request
+# deadline. Keep the server budget below that client ceiling.
+OPENROUTER_CHAIN_BUDGET_SECONDS: float = min(
+    60.0, max(1.0, _env_float("OPENROUTER_CHAIN_BUDGET_SECONDS", 45.0))
+)
 # Enforcement is synchronous from the user's perspective, so a long provider
 # fallback chain is worse than returning the deterministic legal baseline.
 # This is a total budget for the whole enforcement model chain, not per model.
@@ -723,6 +729,9 @@ class AskResponse(BaseModel):
     cooling_down_models: List[str] = Field(default_factory=list)
     model_cooldown_seconds: float = 0
     cooldown_enabled: bool = False
+    chain_budget_seconds: float = 0
+    chain_budget_exhausted: bool = False
+    provider_latency_ms: int = 0
     deterministic_fallback_answer_used: bool = False
     llm_unavailable: bool = False
     provider_unavailable: bool = False
@@ -2365,6 +2374,8 @@ async def _openrouter_complete_with_candidates(
     it returns deterministic metadata so /api/ask can use the preparation-note
     fallback (or an explicitly enabled provider-family/private fallback).
     """
+    started = time.monotonic()
+    chain_budget_exhausted = False
     base_candidates = candidate_models or OPENROUTER_MODEL_CANDIDATES
     if requested_model:
         candidates = _dedupe_preserve_order([requested_model, *base_candidates])
@@ -2393,6 +2404,9 @@ async def _openrouter_complete_with_candidates(
             "upstream_statuses": [],
             "retryable_provider_error": True,
             "all_candidates_failed": True,
+            "chain_budget_seconds": OPENROUTER_CHAIN_BUDGET_SECONDS,
+            "chain_budget_exhausted": False,
+            "latency_ms": int((time.monotonic() - started) * 1000),
         }
 
     attempted: List[str] = []
@@ -2401,6 +2415,12 @@ async def _openrouter_complete_with_candidates(
     last_retryable = False
 
     for model in runnable:
+        remaining = OPENROUTER_CHAIN_BUDGET_SECONDS - (time.monotonic() - started)
+        if remaining <= 0:
+            chain_budget_exhausted = True
+            last_error_type = "openrouter_chain_budget_exhausted"
+            last_retryable = True
+            break
         attempted.append(model)
         try:
             call_kwargs: Dict[str, Any] = {"model": model, "max_tokens": max_tokens}
@@ -2410,7 +2430,16 @@ async def _openrouter_complete_with_candidates(
                 call_kwargs["response_format"] = response_format
             if temperature is not None:
                 call_kwargs["temperature"] = temperature
-            answer = await _call_openrouter(prompt, **call_kwargs)
+            answer = await asyncio.wait_for(
+                _call_openrouter(prompt, **call_kwargs), timeout=remaining
+            )
+        except asyncio.TimeoutError:
+            upstream_statuses.append(504)
+            last_error_type = "openrouter_chain_budget_exhausted"
+            last_retryable = True
+            chain_budget_exhausted = True
+            _mark_openrouter_model_cooling_down(model)
+            break
         except HTTPException as exc:
             detail = exc.detail if isinstance(exc.detail, dict) else {}
             upstream = detail.get("status", exc.status_code)
@@ -2446,6 +2475,9 @@ async def _openrouter_complete_with_candidates(
             "upstream_statuses": upstream_statuses,
             "retryable_provider_error": last_retryable,
             "all_candidates_failed": False,
+            "chain_budget_seconds": OPENROUTER_CHAIN_BUDGET_SECONDS,
+            "chain_budget_exhausted": chain_budget_exhausted,
+            "latency_ms": int((time.monotonic() - started) * 1000),
         }
 
     return {
@@ -2464,7 +2496,13 @@ async def _openrouter_complete_with_candidates(
         "provider_error_type": last_error_type or "unknown_provider_error",
         "upstream_statuses": upstream_statuses,
         "retryable_provider_error": last_retryable,
-        "all_candidates_failed": len(attempted) + len(skipped) == len(candidates),
+        "all_candidates_failed": (
+            chain_budget_exhausted
+            or len(attempted) + len(skipped) == len(candidates)
+        ),
+        "chain_budget_seconds": OPENROUTER_CHAIN_BUDGET_SECONDS,
+        "chain_budget_exhausted": chain_budget_exhausted,
+        "latency_ms": int((time.monotonic() - started) * 1000),
     }
 
 
@@ -2654,32 +2692,43 @@ async def _sse_answer_stream(
     # Non-secret meta event (grounding/answer-mode/source panel state).
     yield _sse("meta", base_meta)
 
+    started = time.monotonic()
+    chain_budget_exhausted = False
     cooling = set(_cooling_down_models())
-    runnable = [m for m in candidates if m not in cooling] or list(candidates)
+    runnable = [m for m in candidates if m not in cooling]
+    skipped = [m for m in candidates if m in cooling]
     attempted: List[str] = []
-    last_error_type: Optional[str] = None
+    last_error_type: Optional[str] = (
+        "all_candidates_cooling_down" if not runnable else None
+    )
 
     for model in runnable:
+        remaining = OPENROUTER_CHAIN_BUDGET_SECONDS - (time.monotonic() - started)
+        if remaining <= 0:
+            chain_budget_exhausted = True
+            last_error_type = "openrouter_chain_budget_exhausted"
+            break
         attempted.append(model)
         committed = False
         answer_parts: List[str] = []
         try:
-            async for delta in _stream_openrouter_text(final_prompt, model=model, max_tokens=max_tokens):
-                if not committed:
-                    committed = True
-                    _primary = candidates[0] if candidates else model
-                    _is_fast = str(base_meta.get("answer_mode") or "") == "fast"
-                    yield _sse("model", {
-                        "final_model": model,
-                        "selected_model": model,
-                        "primary_model": _primary,
-                        "model_fallback_used": bool(candidates) and model != _primary,
-                        "fast_mode_fell_back": bool(_is_fast and model != _primary),
-                        "answer_mode": base_meta.get("answer_mode", ""),
-                        "attempted_models": list(attempted),
-                    })
-                answer_parts.append(delta)
-                yield _sse("delta", {"text": delta})
+            async with asyncio.timeout(remaining):
+                async for delta in _stream_openrouter_text(final_prompt, model=model, max_tokens=max_tokens):
+                    if not committed:
+                        committed = True
+                        _primary = candidates[0] if candidates else model
+                        _is_fast = str(base_meta.get("answer_mode") or "") == "fast"
+                        yield _sse("model", {
+                            "final_model": model,
+                            "selected_model": model,
+                            "primary_model": _primary,
+                            "model_fallback_used": bool(candidates) and model != _primary,
+                            "fast_mode_fell_back": bool(_is_fast and model != _primary),
+                            "answer_mode": base_meta.get("answer_mode", ""),
+                            "attempted_models": list(attempted),
+                        })
+                    answer_parts.append(delta)
+                    yield _sse("delta", {"text": delta})
             if committed:
                 # Post-generation safety re-check on the COMPLETE accumulated
                 # answer (H-7) — zero added latency before the first token.
@@ -2696,6 +2745,11 @@ async def _sse_answer_stream(
             # Stream ended with zero tokens: treat as a soft failure, try next.
             last_error_type = "empty_stream"
             continue
+        except TimeoutError:
+            chain_budget_exhausted = True
+            last_error_type = "openrouter_chain_budget_exhausted"
+            _mark_openrouter_model_cooling_down(model)
+            break
         except HTTPException as exc:
             if committed:
                 # Failure AFTER partial output: stop cleanly (can't switch models
@@ -2727,9 +2781,14 @@ async def _sse_answer_stream(
     attempt_meta = {
         "llm_provider": "openrouter",
         "attempted_models": list(attempted),
+        "skipped_models_due_to_cooldown": skipped,
+        "cooling_down_models": _cooling_down_models(),
         "final_model": None,
         "provider_error_type": last_error_type or "unknown_provider_error",
         "all_candidates_failed": True,
+        "chain_budget_seconds": OPENROUTER_CHAIN_BUDGET_SECONDS,
+        "chain_budget_exhausted": chain_budget_exhausted,
+        "provider_latency_ms": int((time.monotonic() - started) * 1000),
     }
     try:
         fallback_payload = _build_deterministic_fallback_payload(
@@ -4163,6 +4222,7 @@ async def health() -> Dict[str, Any]:
             "provider_family_fallback_allowed": llm["groq_fallback_allowed"],
             "candidate_warnings": candidate_warnings,
             **_openrouter_cooldown_metadata(),
+            "chain_budget_seconds": OPENROUTER_CHAIN_BUDGET_SECONDS,
             "ollama_fallback_enabled": ENABLE_OLLAMA_FALLBACK,
             "ollama_model": OLLAMA_MODEL,
             "ollama_configured": bool(ENABLE_OLLAMA_FALLBACK and OLLAMA_BASE_URL),
@@ -4207,9 +4267,11 @@ async def health_ai() -> Dict[str, Any]:
         law_cfg = load_grounding_config()
         law_mode, law_effective_mode, law_active = _law_grounding_runtime_state(law_cfg)
         law_configured = law_cfg.law_api_configured
+        law_total_budget = law_cfg.total_budget_seconds
     except Exception:  # pragma: no cover - defensive
         law_mode = (os.environ.get("LAW_GROUNDING_MODE") or "enabled").strip().lower()
         law_effective_mode, law_active, law_configured = "unknown", False, bool(LAW_API_KEY)
+        law_total_budget = 0.0
 
     try:
         manual_summary = _manual_registry.registry_summary()
@@ -4261,6 +4323,50 @@ async def health_ai() -> Dict[str, Any]:
 
     provider_ready = bool(OPENROUTER_API_KEY) or bool(GROQ_API_KEY and ALLOW_GROQ_FALLBACK)
 
+    # Privacy-safe deploy truth: report only whether a variable exists. Never
+    # return credential values, headers, or raw provider responses.
+    def env_present(name: str) -> bool:
+        return bool((os.environ.get(name) or "").strip())
+
+    environment_overrides = {
+        "provider": {
+            "OPENROUTER_API_KEY": env_present("OPENROUTER_API_KEY"),
+            "GROQ_API_KEY": env_present("GROQ_API_KEY"),
+            "ALLOW_GROQ_FALLBACK": env_present("ALLOW_GROQ_FALLBACK"),
+        },
+        "model": {
+            "OPENROUTER_MODEL": env_present("OPENROUTER_MODEL"),
+            "OPENROUTER_MODEL_CANDIDATES": env_present("OPENROUTER_MODEL_CANDIDATES"),
+            "OPENROUTER_FAST_MODEL": env_present("OPENROUTER_FAST_MODEL"),
+            "OPENROUTER_FAST_MODEL_CANDIDATES": env_present("OPENROUTER_FAST_MODEL_CANDIDATES"),
+        },
+        "timeouts": {
+            "OPENROUTER_TIMEOUT_SECONDS": env_present("OPENROUTER_TIMEOUT_SECONDS"),
+            "OPENROUTER_CHAIN_BUDGET_SECONDS": env_present("OPENROUTER_CHAIN_BUDGET_SECONDS"),
+            "OPENROUTER_MODEL_COOLDOWN_SECONDS": env_present("OPENROUTER_MODEL_COOLDOWN_SECONDS"),
+        },
+        "law": {
+            "LAW_API_OC": env_present("LAW_API_OC"),
+            "LAW_OC": env_present("LAW_OC"),
+            "OPEN_LAW_ID": env_present("OPEN_LAW_ID"),
+            "LAW_API_KEY": env_present("LAW_API_KEY"),
+            "LAW_GROUNDING_MODE": env_present("LAW_GROUNDING_MODE"),
+            "LAW_GROUNDING_TOTAL_BUDGET_SECONDS": env_present("LAW_GROUNDING_TOTAL_BUDGET_SECONDS"),
+        },
+        "manual": {
+            "MANUAL_SEARCH_INDEX_PATH": env_present("MANUAL_SEARCH_INDEX_PATH"),
+        },
+    }
+
+    candidate_warnings = _validate_model_candidates(OPENROUTER_MODEL_CANDIDATES)
+    if env_present("OPENROUTER_MODEL") and OPENROUTER_MODEL != _DEFAULT_OPENROUTER_MODEL:
+        candidate_warnings.append("OPENROUTER_MODEL_ENV_OVERRIDE")
+    if (
+        env_present("OPENROUTER_MODEL_CANDIDATES")
+        and OPENROUTER_MODEL_CANDIDATES != list(_DEFAULT_OPENROUTER_MODEL_CANDIDATES)
+    ):
+        candidate_warnings.append("OPENROUTER_MODEL_CANDIDATES_ENV_OVERRIDE")
+
     def feature(name: str, ready: bool, *, blocker: str = "",
                 degrades_to: str = "") -> Dict[str, Any]:
         return {"feature": name, "ready": ready, "blocker": blocker,
@@ -4296,13 +4402,18 @@ async def health_ai() -> Dict[str, Any]:
             mode: resolve_answer_mode_models(mode) for mode in ("fast", "basic", "pro")
         },
         "taskRoleModels": runtime["task_roles"],
-        "cooldown": _MODEL_COOLDOWNS.metadata(),
+        "cooldown": {
+            **_MODEL_COOLDOWNS.metadata(),
+            "chainBudgetSeconds": OPENROUTER_CHAIN_BUDGET_SECONDS,
+        },
+        "environmentOverrides": environment_overrides,
         "grounding": {
             "law": {
                 "configured": law_configured,
                 "mode": law_mode,
                 "effectiveMode": law_effective_mode,
                 "active": law_active,
+                "totalBudgetSeconds": law_total_budget,
                 # Audit posture is a real, deliberate state — not a failure —
                 # but citations retrieved under it are never marked verified.
                 "citationsTrustworthy": law_effective_mode == "enabled" and law_configured,
@@ -4328,7 +4439,7 @@ async def health_ai() -> Dict[str, Any]:
         },
         "features": features,
         "tools": _immigration_tools.build_registry().describe(),
-        "candidateWarnings": _validate_model_candidates(OPENROUTER_MODEL_CANDIDATES),
+        "candidateWarnings": candidate_warnings,
         "llmWarnings": llm.get("warnings", []),
         "liveVerification": {
             "performed": False,
@@ -5450,6 +5561,9 @@ async def ask(req: AskRequest) -> AskResponse:
             cooling_down_models=result.get("cooling_down_models", []),
             model_cooldown_seconds=result.get("model_cooldown_seconds", OPENROUTER_MODEL_COOLDOWN_SECONDS),
             cooldown_enabled=result.get("cooldown_enabled", _cooldown_enabled()),
+            chain_budget_seconds=result.get("chain_budget_seconds", OPENROUTER_CHAIN_BUDGET_SECONDS),
+            chain_budget_exhausted=result.get("chain_budget_exhausted", False),
+            provider_latency_ms=result.get("latency_ms", 0),
         )
         if result["ok"]:
             response_meta = dict(base_meta)

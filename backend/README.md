@@ -120,15 +120,16 @@ into the image. See `.env.example` for the full list.
 | Variable                | Required? | Notes                                                    |
 | ----------------------- | --------- | -------------------------------------------------------- |
 | `OPENROUTER_API_KEY`    | optional* | Enables `/api/ask` via OpenRouter.                       |
-| `OPENROUTER_MODEL`      | optional  | Defaults to `nousresearch/hermes-3-llama-3.1-405b:free` (code default + `.env.example` pin). The Basic answer tier primary. Override per-deploy if the catalog changes. Always tried first for core Paradiso final answers. |
-| `OPENROUTER_MODEL_CANDIDATES` | optional | Comma-separated, ordered OpenRouter fallback list (the Basic answer tier). On a **retryable** primary failure (429 rate limit / 503 "no healthy upstream"), Paradiso retries the next non-cooling candidate. Unset → built-in policy list (Hermes 3 405B → Gemma 4 26B). Random routing (`openrouter/auto`, `openrouter/free`) is warned/rejected by policy metadata. `/health` lists the resolved candidates. |
-| `OPENROUTER_FAST_MODEL` / `OPENROUTER_FAST_MODEL_CANDIDATES` | optional | The Fast answer tier (UI "⚡ Fast"). Unset → built-in default (`google/gemma-4-26b-a4b-it:free` → `openai/gpt-oss-20b:free`): a light, low-latency primary plus a small fast fallback so the tier cannot collapse into the deterministic note while a model is reachable. |
+| `OPENROUTER_MODEL`      | optional  | Defaults to `nvidia/nemotron-3-ultra-550b-a55b:free`. The Basic answer tier primary. Override per-deploy only after catalog verification. |
+| `OPENROUTER_MODEL_CANDIDATES` | optional | Ordered Basic fallback list. Unset → the catalog-reconciled Nemotron/Gemma/Inkling chain. `/health` shows both resolved and code-default candidates so stale deploy overrides are visible. |
+| `OPENROUTER_FAST_MODEL` / `OPENROUTER_FAST_MODEL_CANDIDATES` | optional | Fast tier. Unset → Gemma 4 26B, Nemotron 3.5 Lightning, Inkling Small, then Gemma 4 31B. |
 | `AI_ROUTER_MODEL` | optional | Defaults to `google/gemma-4-31b-it:free`. Used as the declared low-risk router / query-classification model policy. |
 | `AI_TRANSLATION_MODEL` | optional | Defaults to `google/gemma-4-31b-it:free`. Used as the declared UI/site translation model policy. |
-| `AI_VERIFIER_MODEL` | optional | Defaults to `openai/gpt-oss-120b:free`. Used as the declared verifier / structured answer-audit model policy. **Note on the Basic tier:** a deploy may *intentionally* set `OPENROUTER_MODEL=openai/gpt-oss-120b:free` so Basic answers with that model — that is a valid, supported configuration, **not** an error. The concern is only when the **Fast** tier also resolves to it: Fast must use `OPENROUTER_FAST_MODEL` (default `google/gemma-4-26b-a4b-it:free`), which is independent of `OPENROUTER_MODEL`. To verify Fast and Basic are actually distinct, read the per-answer routing metadata: `answer_mode` (tier requested/used), `selected_model` (== `final_model`, the model that actually answered), and `fast_mode_fell_back` (true when Fast answered on a non-fast model). If Fast shows `selected_model=openai/gpt-oss-120b:free`, check `OPENROUTER_FAST_MODEL`/`OPENROUTER_FAST_MODEL_CANDIDATES` and that the request carried `answer_mode=fast`. |
-| `AI_CHINESE_MODEL` | optional | Defaults to `deepseek/deepseek-r1-0528:free`. Reserved for Chinese-language routes only. |
-| `AI_CHINESE_FALLBACK_MODELS` | optional | Defaults to `qwen/qwen3-next-80b-a3b-instruct:free,moonshotai/kimi-k2.6:free`. Reserved for Chinese-language fallback only. |
+| `AI_VERIFIER_MODEL` | optional | Defaults to `nvidia/nemotron-3-super-120b-a12b:free`. Used as the declared verifier / structured answer-audit model policy. |
+| `AI_CHINESE_MODEL` | optional | Defaults to `minimax/minimax-m3`. Reserved for Chinese-language routes only. |
+| `AI_CHINESE_FALLBACK_MODELS` | optional | Defaults to two current InclusionAI Ling free variants. Reserved for Chinese-language fallback only. |
 | `OPENROUTER_MODEL_COOLDOWN_SECONDS` | optional | Defaults to `300`. Retryable per-model failures are remembered in memory and skipped during cooldown. If all models are cooling down, Paradiso returns deterministic limited preparation guidance instead of repeatedly hitting upstream. |
+| `OPENROUTER_CHAIN_BUDGET_SECONDS` | optional | Defaults to `45` (constrained to 1–60). Total wall-clock budget across the whole candidate chain, kept below the frontend's 75-second deadline. |
 | `GROQ_API_KEY`          | optional* | Enables `/api/ask` via Groq **only if** OpenRouter is not set and `ALLOW_GROQ_FALLBACK` is true (or, with that flag, as a last-resort provider-family fallback after all OpenRouter candidates fail). |
 | `GROQ_MODEL`            | optional  | Defaults to `llama-3.1-8b-instant`.                      |
 | `ALLOW_GROQ_FALLBACK`   | optional  | **Defaults to `false`** (strict OpenRouter-first posture). When `false` and OpenRouter is unset, `/api/ask` returns a safe 503 instead of silently answering via Groq. Set `true` only to opt a Groq-only deployment back in. `/health` reports the resolved value and adds `llm.warnings:["GROQ_FALLBACK_ENABLED"]` when fallback is enabled. |
@@ -140,6 +141,7 @@ into the image. See `.env.example` for the full list.
 | `SITE_TITLE`            | optional  | Sent as `X-Title` to OpenRouter. Defaults to `Paradiso`. |
 | `FRONTEND_URL`          | optional  | Surfaced by `GET /` so a user who opens the bare backend URL sees where the real app lives. |
 | `LAW_API_OC`            | optional  | **Preferred** Open Law API auth identifier (the `OC` query param for open.law.go.kr). Backend-only; never exposed in `/health`, debug, logs, or sanitized URLs. With `LAW_GROUNDING_MODE=audit` it activates the internal law tool layer. |
+| `LAW_GROUNDING_TOTAL_BUDGET_SECONDS` | optional | Defaults to `12` (constrained to 1–30). Total wall-clock budget across a multi-query statute lookup so an unavailable law service cannot consume the frontend deadline. |
 | `LAW_API_KEY`           | optional  | **Backward-compatibility fallback only.** Used as the OC value when `LAW_API_OC` is unset. If only this is set, `/health` adds `law_api.law_api_credential_source:"LAW_API_KEY"` and a non-secret `LAW_API_OC_RECOMMENDED` warning is surfaced. Do not overwrite an existing Railway value — add `LAW_API_OC` alongside it. |
 | `DATABASE_URL`          | optional  | Reserved for future Postgres integration.                |
 | `SUPABASE_URL`          | optional  | Reserved for future Supabase integration.                |
@@ -466,7 +468,7 @@ present), confirm grounding actually reaches `verified`:
      `employment_condition`, `status_purpose_alignment`
 4. **Fast vs Basic routing** (same question, `answer_mode` `fast` then `basic`):
    - Basic: `selected_model` == `OPENROUTER_MODEL` (intentional, e.g.
-     `openai/gpt-oss-120b:free`)
+     the configured catalog-verified Basic primary)
    - Fast: `selected_model` == `OPENROUTER_FAST_MODEL` (≠ Basic); if it equals the
      Basic id, check `OPENROUTER_FAST_MODEL` and `fast_mode_fell_back`.
 

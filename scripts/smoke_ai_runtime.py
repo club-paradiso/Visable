@@ -113,14 +113,27 @@ def check_readiness(base: str) -> Tuple[Check, Dict[str, Any]]:
         check.detail = f"/api/health/ai returned {status}"
         return check, {}
 
+    grounding = body.get("grounding") or {}
+    law = grounding.get("law") or {}
+    manual = grounding.get("manual") or {}
+    registry = grounding.get("documentRegistry") or {}
     check.metadata = {
         "aiReady": body.get("aiReady"),
         "activeProvider": body.get("activeProvider"),
         "runtimeVersion": body.get("runtimeVersion"),
         "modelPolicyVersion": body.get("modelPolicyVersion"),
-        "lawMode": (body.get("grounding") or {}).get("law", {}).get("effectiveMode"),
-        "manualReady": (body.get("grounding") or {}).get("manual", {}).get("ready"),
-        "manualBlocker": (body.get("grounding") or {}).get("manual", {}).get("blocker"),
+        "lawMode": law.get("effectiveMode"),
+        "citationsTrustworthy": law.get("citationsTrustworthy"),
+        "lawTotalBudgetSeconds": law.get("totalBudgetSeconds"),
+        "manualReady": manual.get("ready"),
+        "manualBlocker": manual.get("blocker"),
+        "approvedManualEditions": manual.get("approvedEditions"),
+        "indexedChunks": manual.get("indexedChunks"),
+        "indexedDirectEvidenceChunks": manual.get("indexedDirectEvidenceChunks"),
+        "documentRegistryResolved": registry.get("resolved"),
+        "documentRegistryEntries": registry.get("entries") or registry.get("entryCount"),
+        "environmentOverrides": body.get("environmentOverrides") or {},
+        "cooldown": body.get("cooldown") or {},
         "candidateWarnings": body.get("candidateWarnings"),
     }
     check.status = "ok" if body.get("aiReady") else "degraded"
@@ -148,7 +161,20 @@ def check_ask(base: str, name: str, question: str, extra: Dict[str, Any]) -> Che
         detail = body.get("detail", {}) if isinstance(body, dict) else {}
         check.status = "degraded"
         check.detail = f"503 {detail.get('error', 'unavailable')}"
-        check.metadata = {"providerErrorType": detail.get("provider_error_type")}
+        check.metadata = {
+            "providerErrorType": detail.get("provider_error_type"),
+            "attemptedModels": detail.get("attempted_models") or [],
+            "upstreamStatuses": detail.get("upstream_statuses") or [],
+            "skippedModelsDueToCooldown": detail.get("skipped_models_due_to_cooldown") or [],
+            "coolingDownModels": detail.get("cooling_down_models") or [],
+            "chainBudgetSeconds": detail.get("chain_budget_seconds"),
+            "chainBudgetExhausted": detail.get("chain_budget_exhausted"),
+            "providerLatencyMs": detail.get("provider_latency_ms"),
+            "lawGroundingStatus": detail.get("law_grounding_status"),
+            "lawGroundingVerified": detail.get("law_grounding_verified"),
+            "manualGroundingStatus": detail.get("manual_grounding_status"),
+            "directEvidenceCount": detail.get("direct_evidence_count"),
+        }
         return check
     if status != 200 or not isinstance(body, dict):
         check.status, check.detail = "failed", f"HTTP {status}"
@@ -162,6 +188,19 @@ def check_ask(base: str, name: str, question: str, extra: Dict[str, Any]) -> Che
         "deterministicFallback": body.get("deterministic_fallback_answer_used"),
         "lawGroundingStatus": body.get("law_grounding_status"),
         "manualGroundingStatus": body.get("manual_grounding_status"),
+        "lawGroundingVerified": body.get("law_grounding_verified"),
+        "lawGroundingStatusDetail": body.get("law_grounding_status_detail"),
+        "lawEvidenceCount": body.get("law_evidence_count"),
+        "directEvidenceCount": body.get("direct_evidence_count"),
+        "citationVerificationStatus": body.get("citation_verification_status"),
+        "unverifiedLawCitationDetected": body.get("unverified_law_citation_detected"),
+        "lawCitationGuardAction": body.get("law_citation_guard_action"),
+        "attemptedModels": body.get("attempted_models") or [],
+        "upstreamStatuses": body.get("upstream_statuses") or [],
+        "skippedModelsDueToCooldown": body.get("skipped_models_due_to_cooldown") or [],
+        "chainBudgetSeconds": body.get("chain_budget_seconds"),
+        "chainBudgetExhausted": body.get("chain_budget_exhausted"),
+        "providerLatencyMs": body.get("provider_latency_ms"),
         "answerChars": len(answer),
         "effectiveAnswerMode": body.get("effective_answer_mode") or body.get("answer_mode"),
     }

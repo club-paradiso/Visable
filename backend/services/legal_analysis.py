@@ -323,9 +323,11 @@ def classify_activity_types(question: str) -> List[str]:
         add("volunteer_activity")
     if _has_any(
         text,
-        "근무처 변경", "근무처변경", "직장 변경", "직장변경", "직장 이동", "이직", "전직",
+        "근무처 변경", "근무처변경", "근무처를 변경", "근무처를 옮",
+        "직장 변경", "직장변경", "직장을 변경", "직장을 옮", "직장 이동", "이직", "전직",
         "퇴사", "퇴직", "동종업계", "동종 업계", "동종업종", "다른 회사", "타 회사", "타사",
-        "새 회사", "새로운 회사", "회사를 옮", "회사 이동", "고용주 변경", "사업주 변경",
+        "새 회사", "새로운 회사", "회사를 변경", "회사를 옮", "회사 이동",
+        "고용주 변경", "고용주를 변경", "사업주 변경", "사업주를 변경",
         "change workplace", "workplace change", "change employer", "change of employer",
         "switch employer", "switch company", "switch companies", "change jobs",
         "job transfer", "new employer", "move to another company", "move to a new company",

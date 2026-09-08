@@ -1469,6 +1469,21 @@ def classify_law_question_type(
     if signals["documents"]:
         return {"question_type": LQ_DOCUMENTS_NEEDED, "risk_level": "low", "signals": signals}
 
+    # A named non-status change must win over the generic "status code + 변경"
+    # heuristic. Otherwise "E-7 근무처를 변경" is mislabeled as a change of
+    # sojourn status merely because it contains both E-7 and 변경.
+    workplace_change_wording = re.search(
+        r"근무처(?:를|을)?\s*(?:변경|추가)|직장(?:을|를)?\s*(?:변경|옮)|"
+        r"고용주(?:를|을)?\s*변경|change\s+(?:of\s+)?(?:workplace|employer)|"
+        r"switch\s+(?:jobs?|employers?)",
+        question or "",
+        re.IGNORECASE,
+    )
+    if workplace_change_wording or tt in {
+        "address_report", "passport_info_report", "workplace_change", "foreigner_registration",
+    }:
+        return {"question_type": LQ_DEADLINE_OR_REPORT, "risk_level": "medium", "signals": signals}
+
     # 8. Status change.
     codes = extract_status_codes(question)
     if (signals["change"] and (len(codes) >= 1)) or tt in {"status_change"} or (

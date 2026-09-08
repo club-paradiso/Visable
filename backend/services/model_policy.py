@@ -3,9 +3,9 @@
 This module keeps model routing policy explicit and testable:
 
 - Gemma is the default low-risk router / translation model.
-- Hermes 3 (Llama 3.1 405B) is the Basic final-answer model, with Gemma 4 as the
-  Basic fallback.
-- gpt-oss is the verifier / structured audit model.
+- Nemotron 3 Ultra is the Basic final-answer model, with a catalog-reconciled
+  multi-provider fallback chain.
+- Nemotron 3 Super is the verifier / structured audit model.
 - China-origin model families are reserved for Chinese-language tasks only by policy.
 
 The module never reads or exposes provider secrets. It only resolves public model
@@ -17,22 +17,22 @@ import os
 import re
 from typing import Any, Dict, List, Optional, Sequence
 
-MODEL_POLICY_VERSION = "2026-07-fast-complexity-escalation-v1"
+MODEL_POLICY_VERSION = "2026-09-production-truth-audit-v1"
 
 DEFAULT_ROUTER_MODEL = "google/gemma-4-31b-it:free"
 DEFAULT_TRANSLATION_MODEL = "google/gemma-4-31b-it:free"
 
-# Basic answer tier (final answers): Hermes 3 405B primary with a 4-deep
-# fallback chain across multiple providers (NousResearch, Google, Meta).
+# Basic answer tier (final answers): every identifier below was reconciled
+# against OpenRouter's public catalog during the 2026-09 production audit.
 # A 4-candidate chain prevents the "all online model candidates failed" fallback
 # banner when 1–2 models are simultaneously rate-limited or their upstream is
 # temporarily down — a common occurrence on OpenRouter's free tier.
-DEFAULT_FINAL_ANSWER_MODEL = "nousresearch/hermes-3-llama-3.1-405b:free"
+DEFAULT_FINAL_ANSWER_MODEL = "nvidia/nemotron-3-ultra-550b-a55b:free"
 DEFAULT_FINAL_ANSWER_MODEL_CANDIDATES: List[str] = [
-    "nousresearch/hermes-3-llama-3.1-405b:free",  # Basic primary (Hermes 3 405B)
-    "google/gemma-4-26b-a4b-it:free",             # Fallback 1 — Gemma 4 MoE (~3.8B active)
-    "meta-llama/llama-3.3-70b-instruct:free",     # Fallback 2 — Llama 3.3 70B (diverse provider)
-    "meta-llama/llama-4-scout:free",              # Fallback 3 — Llama 4 Scout 17B MoE
+    "nvidia/nemotron-3-ultra-550b-a55b:free",
+    "google/gemma-4-31b-it:free",
+    "nvidia/nemotron-3-super-120b-a12b:free",
+    "thinkingmachines/inkling:free",
 ]
 
 # ---------------------------------------------------------------------------
@@ -97,10 +97,10 @@ _PROCEDURE_RISK_RE = re.compile(
 # routes by policy.
 DEFAULT_FAST_ANSWER_MODEL = "google/gemma-4-26b-a4b-it:free"
 DEFAULT_FAST_ANSWER_MODEL_CANDIDATES: List[str] = [
-    "google/gemma-4-26b-a4b-it:free",            # Fast primary — Gemma 4 MoE (~3.8B active)
-    "openai/gpt-oss-20b:free",                   # Fast fallback 1 — small, fast gpt-oss
-    "google/gemma-4-31b-it:free",                # Fast fallback 2 — Gemma 4 31B dense
-    "meta-llama/llama-3.3-70b-instruct:free",    # Fast fallback 3 — Llama 3.3 70B
+    "google/gemma-4-26b-a4b-it:free",
+    "nvidia/nemotron-3.5-lightning:free",
+    "thinkingmachines/inkling-small:free",
+    "google/gemma-4-31b-it:free",
 ]
 
 # Enforcement structured extraction/prediction is deliberately isolated from
@@ -111,21 +111,23 @@ DEFAULT_FAST_ANSWER_MODEL_CANDIDATES: List[str] = [
 DEFAULT_ENFORCEMENT_STRUCTURED_MODEL = "google/gemma-4-26b-a4b-it:free"
 DEFAULT_ENFORCEMENT_STRUCTURED_MODEL_CANDIDATES: List[str] = [
     "google/gemma-4-26b-a4b-it:free",
-    "openai/gpt-oss-20b:free",
+    "nvidia/nemotron-3-super-120b-a12b:free",
 ]
 
-DEFAULT_VERIFIER_MODEL = "openai/gpt-oss-120b:free"
+DEFAULT_VERIFIER_MODEL = "nvidia/nemotron-3-super-120b-a12b:free"
 
-DEFAULT_CHINESE_MODEL = "deepseek/deepseek-r1-0528:free"
+DEFAULT_CHINESE_MODEL = "minimax/minimax-m3"
 DEFAULT_CHINESE_FALLBACK_MODELS: List[str] = [
-    "qwen/qwen3-next-80b-a3b-instruct:free",
-    "moonshotai/kimi-k2.6:free",
+    "inclusionai/ling-3.0-flash-sante:free",
+    "inclusionai/ling-3.0-flash-fin:free",
 ]
 
 # These are public provider/model-family labels, not secrets.
 # They are excluded from Paradiso's default final-answer candidate chain unless a
 # Chinese-language route explicitly asks for them.
-CHINESE_ONLY_MODEL_PREFIXES = ("deepseek/", "qwen/", "moonshotai/", "z-ai/")
+CHINESE_ONLY_MODEL_PREFIXES = (
+    "deepseek/", "qwen/", "moonshotai/", "z-ai/", "minimax/", "inclusionai/"
+)
 
 
 def _env(name: str, default: str) -> str:
@@ -190,9 +192,9 @@ def resolve_model_role_policy() -> Dict[str, Any]:
         "chinese_only_model_prefixes": list(CHINESE_ONLY_MODEL_PREFIXES),
         "policy_notes": [
             "Gemma is reserved for translation, language detection, and low-risk routing by default.",
-            "Hermes 3 (Llama 3.1 405B) is the default Basic final-answer model, with Gemma 4 as the Basic fallback.",
-            "gpt-oss is the default verifier / structured audit model (gpt-oss-20b is the Fast-tier fallback).",
-            "DeepSeek, Qwen, Kimi, and Z.ai families are reserved for Chinese-language routes by policy.",
+            "Nemotron 3 Ultra is the default Basic final-answer model, with catalog-reconciled fallbacks.",
+            "Nemotron 3 Super is the default verifier / structured audit model.",
+            "DeepSeek, Qwen, Kimi, Z.ai, MiniMax, and InclusionAI families are reserved for Chinese-language routes by policy.",
             "Random OpenRouter routing such as openrouter/auto or openrouter/free is not allowed.",
         ],
     }

@@ -6,15 +6,9 @@ from typing import List
 
 _SUPPORTED_MODES = {"disabled", "audit", "enabled"}
 _DEFAULT_TIMEOUT_SECONDS = 8.0
+_DEFAULT_TOTAL_BUDGET_SECONDS = 12.0
 _DEFAULT_CACHE_TTL_SECONDS = 86400
 _LAW_OC_ENV_NAMES = ("LAW_API_OC", "LAW_OC", "OPEN_LAW_ID")
-_KNOWN_PLACEHOLDER_OC_VALUES = {"paradiso"}
-_RAILWAY_RUNTIME_ENV_NAMES = (
-    "RAILWAY_PROJECT_ID",
-    "RAILWAY_ENVIRONMENT_ID",
-    "RAILWAY_SERVICE_ID",
-    "RAILWAY_PUBLIC_DOMAIN",
-)
 
 
 @dataclass(frozen=True)
@@ -32,6 +26,7 @@ class GroundingConfig:
     law_api_oc_source: str = "LAW_API_OC"
     mode: str = "enabled"
     timeout_seconds: float = _DEFAULT_TIMEOUT_SECONDS
+    total_budget_seconds: float = _DEFAULT_TOTAL_BUDGET_SECONDS
     cache_ttl_seconds: int = _DEFAULT_CACHE_TTL_SECONDS
     law_api_base_url: str = ""
     law_api_search_path: str = ""
@@ -45,9 +40,9 @@ class GroundingConfig:
     def law_api_credential(self) -> str:
         """Effective Open Law API ``OC`` value.
 
-        The normal contract remains OC-first. Railway-specific compatibility is
-        resolved in ``load_grounding_config`` before the immutable config is
-        constructed, so callers and tests see one deterministic credential.
+        The public API contract is OC-first in every environment. Deployment
+        platform heuristics must never silently replace an explicitly supplied
+        identifier with a different credential.
         """
         return self.law_api_oc or self.law_api_key
 
@@ -86,6 +81,15 @@ def _parse_timeout(raw_value: str | None) -> float:
         return _DEFAULT_TIMEOUT_SECONDS
 
 
+def _parse_total_budget(raw_value: str | None) -> float:
+    if raw_value is None or raw_value.strip() == "":
+        return _DEFAULT_TOTAL_BUDGET_SECONDS
+    try:
+        return min(30.0, max(1.0, float(raw_value)))
+    except (TypeError, ValueError):
+        return _DEFAULT_TOTAL_BUDGET_SECONDS
+
+
 def _parse_cache_ttl(raw_value: str | None) -> int:
     if raw_value is None or raw_value.strip() == "":
         return _DEFAULT_CACHE_TTL_SECONDS
@@ -94,16 +98,6 @@ def _parse_cache_ttl(raw_value: str | None) -> int:
         return value if value > 0 else _DEFAULT_CACHE_TTL_SECONDS
     except (TypeError, ValueError):
         return _DEFAULT_CACHE_TTL_SECONDS
-
-
-def _is_railway_runtime() -> bool:
-    """Detect the running Railway service without requiring a user secret.
-
-    Railway documents these variables as platform-provided values available to
-    builds and deployments. Checking non-empty values keeps this compatibility
-    shim scoped to Railway rather than changing credential precedence globally.
-    """
-    return any(bool((os.environ.get(name) or "").strip()) for name in _RAILWAY_RUNTIME_ENV_NAMES)
 
 
 def _configured_oc_credentials() -> list[tuple[str, str]]:
@@ -120,17 +114,7 @@ def _resolve_oc_credential() -> tuple[str, str]:
     if not configured:
         return "", "LAW_API_OC"
 
-    # Preserve the established OC-first contract everywhere except Railway.
-    # Historical deployment docs used `paradiso` as an example OC and a
-    # recorded live probe returned HTTP 403 for it. If that stale value still
-    # exists on Railway, prefer another configured real OC alias. If no real OC
-    # alias exists, load_grounding_config falls back to LAW_API_KEY.
-    first_value, first_name = configured[0]
-    if _is_railway_runtime() and first_value.lower() in _KNOWN_PLACEHOLDER_OC_VALUES:
-        for value, name in configured[1:]:
-            if value.lower() not in _KNOWN_PLACEHOLDER_OC_VALUES:
-                return value, name
-    return first_value, first_name
+    return configured[0]
 
 
 def load_grounding_config() -> GroundingConfig:
@@ -146,21 +130,6 @@ def load_grounding_config() -> GroundingConfig:
     if law_api_oc and law_api_oc_source != "LAW_API_OC":
         warnings.append("LAW_API_OC_ALIAS_USED")
 
-    railway_placeholder = bool(
-        _is_railway_runtime()
-        and law_api_oc
-        and law_api_oc.lower() in _KNOWN_PLACEHOLDER_OC_VALUES
-    )
-    if railway_placeholder:
-        warnings.append("LAW_API_OC_PLACEHOLDER_DETECTED_ON_RAILWAY")
-        if law_api_key:
-            # Do not mutate process.env or expose either value. The immutable
-            # config simply represents the effective credential Railway should
-            # use for this process.
-            law_api_oc = ""
-            law_api_oc_source = "LAW_API_OC"
-            warnings.append("LAW_API_OC_PLACEHOLDER_IGNORED_FOR_RAILWAY_KEY_FALLBACK")
-
     # Non-secret advisory: the deployment is relying on the legacy LAW_API_KEY
     # fallback only. Recommend the explicit registered LAW_API_OC. This marker
     # never contains either value.
@@ -174,6 +143,9 @@ def load_grounding_config() -> GroundingConfig:
         law_api_oc_source=law_api_oc_source,
         mode=mode,
         timeout_seconds=_parse_timeout(os.environ.get("LAW_GROUNDING_TIMEOUT_SECONDS")),
+        total_budget_seconds=_parse_total_budget(
+            os.environ.get("LAW_GROUNDING_TOTAL_BUDGET_SECONDS")
+        ),
         cache_ttl_seconds=_parse_cache_ttl(os.environ.get("LAW_GROUNDING_CACHE_TTL_SECONDS")),
         law_api_base_url=(os.environ.get("LAW_API_BASE_URL") or "").strip(),
         law_api_search_path=(os.environ.get("LAW_API_SEARCH_PATH") or "").strip(),

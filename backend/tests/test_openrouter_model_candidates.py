@@ -126,13 +126,13 @@ class CandidateListParsingTests(unittest.TestCase):
     def test_default_candidate_list_matches_approved_policy(self):
         pb = _pb()
         os.environ.pop("OPENROUTER_MODEL_CANDIDATES", None)
-        with patch.object(pb, "OPENROUTER_MODEL", "nousresearch/hermes-3-llama-3.1-405b:free"):
+        with patch.object(pb, "OPENROUTER_MODEL", "nvidia/nemotron-3-ultra-550b-a55b:free"):
             cands = pb._resolve_openrouter_candidates()
         self.assertEqual(cands, [
-            "nousresearch/hermes-3-llama-3.1-405b:free",
-            "google/gemma-4-26b-a4b-it:free",
-            "meta-llama/llama-3.3-70b-instruct:free",
-            "meta-llama/llama-4-scout:free",
+            "nvidia/nemotron-3-ultra-550b-a55b:free",
+            "google/gemma-4-31b-it:free",
+            "nvidia/nemotron-3-super-120b-a12b:free",
+            "thinkingmachines/inkling:free",
         ])
 
     def test_default_candidate_list_excludes_random_routing(self):
@@ -346,7 +346,7 @@ class CandidateFallbackBehaviorTests(unittest.TestCase):
         # Regression for the reported bug: Fast mode showed only the
         # "all online model candidates failed" preparation note when the fast
         # models were unavailable. A dead light primary must now fall THROUGH to
-        # the fast fallback (gpt-oss-20b) and return a real answer, not give up.
+        # the next catalog-listed fast fallback and return a real answer.
         pb = _pb()
         resp, calls = self._ask(
             pb,
@@ -358,9 +358,9 @@ class CandidateFallbackBehaviorTests(unittest.TestCase):
         # Walked past the dead light primary and answered on the fast fallback.
         self.assertEqual(calls, [
             "google/gemma-4-26b-a4b-it:free",
-            "openai/gpt-oss-20b:free",
+            "nvidia/nemotron-3.5-lightning:free",
         ])
-        self.assertEqual(body["final_model"], "openai/gpt-oss-20b:free")
+        self.assertEqual(body["final_model"], "nvidia/nemotron-3.5-lightning:free")
         self.assertTrue(body["model_fallback_used"])
         self.assertEqual(body["answer_mode"], "fast")
         # The deterministic "all candidates failed" note must NOT be used.
@@ -721,12 +721,12 @@ class HealthCandidateExposureTests(unittest.TestCase):
         # after merge" case) is made visible: code_default_model differs from the
         # active primary_model and an override warning is flagged.
         pb = _pb()
-        with patch.dict(os.environ, {"OPENROUTER_MODEL": "nvidia/nemotron-3-ultra-550b-a55b:free"}, clear=False), \
-                patch.object(pb, "OPENROUTER_MODEL", "nvidia/nemotron-3-ultra-550b-a55b:free"):
+        with patch.dict(os.environ, {"OPENROUTER_MODEL": "stale/example-model:free"}, clear=False), \
+                patch.object(pb, "OPENROUTER_MODEL", "stale/example-model:free"):
             client = _client(pb)
             llm = client.get("/health").json()["llm"]
-        self.assertEqual(llm["primary_model"], "nvidia/nemotron-3-ultra-550b-a55b:free")
-        self.assertEqual(llm["code_default_model"], "nousresearch/hermes-3-llama-3.1-405b:free")
+        self.assertEqual(llm["primary_model"], "stale/example-model:free")
+        self.assertEqual(llm["code_default_model"], "nvidia/nemotron-3-ultra-550b-a55b:free")
         self.assertTrue(llm["model_env_override"])
         self.assertIn("OPENROUTER_MODEL_ENV_OVERRIDE", llm["candidate_warnings"])
 
@@ -740,7 +740,7 @@ class HealthCandidateExposureTests(unittest.TestCase):
                 llm = client.get("/health").json()["llm"]
         self.assertFalse(llm["model_env_override"])
         self.assertNotIn("OPENROUTER_MODEL_ENV_OVERRIDE", llm["candidate_warnings"])
-        self.assertEqual(llm["code_default_model"], "nousresearch/hermes-3-llama-3.1-405b:free")
+        self.assertEqual(llm["code_default_model"], "nvidia/nemotron-3-ultra-550b-a55b:free")
 
 
 # ---------------------------------------------------------------------------

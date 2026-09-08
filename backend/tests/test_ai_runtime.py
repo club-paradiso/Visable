@@ -314,11 +314,11 @@ class TaskRoleTests(unittest.TestCase):
         self.assertEqual(plan["task_role"], "enforcement_structured")
         self.assertEqual(
             plan["candidates"],
-            ["google/gemma-4-26b-a4b-it:free", "openai/gpt-oss-20b:free"],
+            ["google/gemma-4-26b-a4b-it:free", "nvidia/nemotron-3-super-120b-a12b:free"],
         )
         self.assertEqual(len(plan["candidates"]), 2)
         self.assertNotEqual(plan["candidates"], fast)
-        self.assertNotIn(verifier, plan["candidates"])
+        self.assertEqual(plan["candidates"][1], verifier)
 
     def test_an_unknown_role_falls_back_to_the_final_answer_chain(self):
         plan = rt.resolve_task_models("not-a-real-role")

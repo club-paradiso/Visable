@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import re
+import time
+from dataclasses import replace
 from typing import Any, Dict, List, Sequence
 
 from .citation_verifier import (
@@ -457,12 +459,22 @@ def build_law_grounding_context(question: str) -> Dict[str, Any]:
         aggregate_results: List[Dict[str, Any]] = []
         search_cache: Dict[str, Dict[str, Any]] = {}
         request_cache_hits = 0
+        grounding_started = time.monotonic()
+        budget_exhausted = False
         for query in law_search_queries[:_MAX_LAW_SEARCH_QUERIES]:
+            remaining = config.total_budget_seconds - (time.monotonic() - grounding_started)
+            if remaining <= 0:
+                budget_exhausted = True
+                break
             if query in search_cache:
                 outcome = search_cache[query]
                 request_cache_hits += 1
             else:
-                outcome = law_tools.search_laws(query, config=config)
+                call_config = replace(
+                    config,
+                    timeout_seconds=min(config.timeout_seconds, max(0.1, remaining)),
+                )
+                outcome = law_tools.search_laws(query, config=call_config)
                 search_cache[query] = outcome
             outcomes.append(outcome)
             if outcome.get("status") == "ok":
@@ -470,13 +482,27 @@ def build_law_grounding_context(question: str) -> Dict[str, Any]:
                     if isinstance(item, dict):
                         aggregate_results.append({**item, "query": query})
         aggregate_results = _dedupe_law_results(aggregate_results)
-        citation_verification = _verify_requested_articles(
-            question,
-            aggregate_results,
-            law_tools=law_tools,
-            config=config,
-            detail_cache={},
-        )
+        remaining = config.total_budget_seconds - (time.monotonic() - grounding_started)
+        if remaining <= 0:
+            budget_exhausted = True
+            citation_verification = extract_korean_legal_citations(question)
+            citation_verification.setdefault("article_evidence", [])
+            citation_verification.setdefault("request_cache_hits", 0)
+            citation_verification["warnings"] = [
+                *citation_verification.get("warnings", []),
+                "LAW_GROUNDING_BUDGET_EXHAUSTED",
+            ]
+        else:
+            citation_verification = _verify_requested_articles(
+                question,
+                aggregate_results,
+                law_tools=law_tools,
+                config=replace(
+                    config,
+                    timeout_seconds=min(config.timeout_seconds, max(0.1, remaining)),
+                ),
+                detail_cache={},
+            )
         request_cache_hits += int(citation_verification.get("request_cache_hits") or 0)
         aggregate_results = _dedupe_law_results([
             *(citation_verification.get("article_evidence") or []),
@@ -497,6 +523,8 @@ def build_law_grounding_context(question: str) -> Dict[str, Any]:
 
     used = bool(aggregate_results)
     tool_warnings: List[str] = []
+    if budget_exhausted:
+        tool_warnings.append("LAW_GROUNDING_BUDGET_EXHAUSTED")
     failed_outcomes = [outcome for outcome in outcomes if outcome.get("status") != "ok"]
     if failed_outcomes:
         if used:
@@ -527,6 +555,8 @@ def build_law_grounding_context(question: str) -> Dict[str, Any]:
     if not used and failed_outcomes:
         non_empty = [str(o.get("error_type") or "") for o in failed_outcomes if o.get("error_type")]
         overall_error = next((e for e in non_empty if e.lower() != "law_api_no_results"), non_empty[0] if non_empty else "")
+    if budget_exhausted and not used:
+        overall_error = "law_grounding_budget_exhausted"
     return {
         "attempted": True,
         "intent_reasons": intent["reasons"],

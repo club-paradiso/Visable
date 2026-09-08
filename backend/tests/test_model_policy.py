@@ -26,16 +26,16 @@ class ModelRolePolicyTests(unittest.TestCase):
         ):
             os.environ.pop(key, None)
 
-    def test_default_final_answer_chain_uses_hermes_then_gemma(self):
+    def test_default_final_answer_chain_matches_catalog_reconciled_policy(self):
         policy = model_policy.resolve_model_role_policy()
-        self.assertEqual(policy["final_answer_model"], "nousresearch/hermes-3-llama-3.1-405b:free")
+        self.assertEqual(policy["final_answer_model"], "nvidia/nemotron-3-ultra-550b-a55b:free")
         self.assertEqual(
             policy["final_answer_model_candidates"],
             [
-                "nousresearch/hermes-3-llama-3.1-405b:free",
-                "google/gemma-4-26b-a4b-it:free",
-                "meta-llama/llama-3.3-70b-instruct:free",
-                "meta-llama/llama-4-scout:free",
+                "nvidia/nemotron-3-ultra-550b-a55b:free",
+                "google/gemma-4-31b-it:free",
+                "nvidia/nemotron-3-super-120b-a12b:free",
+                "thinkingmachines/inkling:free",
             ],
         )
 
@@ -44,18 +44,18 @@ class ModelRolePolicyTests(unittest.TestCase):
         self.assertEqual(policy["router_model"], "google/gemma-4-31b-it:free")
         self.assertEqual(policy["translation_model"], "google/gemma-4-31b-it:free")
 
-    def test_gpt_oss_is_verifier_default(self):
+    def test_nemotron_super_is_verifier_default(self):
         policy = model_policy.resolve_model_role_policy()
-        self.assertEqual(policy["verifier_model"], "openai/gpt-oss-120b:free")
+        self.assertEqual(policy["verifier_model"], "nvidia/nemotron-3-super-120b-a12b:free")
 
     def test_chinese_models_are_separate_from_default_final_chain(self):
         policy = model_policy.resolve_model_role_policy()
         final_chain = policy["final_answer_model_candidates"]
         for model in final_chain:
             self.assertFalse(model_policy.model_family_is_chinese_only(model), model)
-        self.assertEqual(policy["chinese_model"], "deepseek/deepseek-r1-0528:free")
-        self.assertIn("qwen/qwen3-next-80b-a3b-instruct:free", policy["chinese_fallback_models"])
-        self.assertIn("moonshotai/kimi-k2.6:free", policy["chinese_fallback_models"])
+        self.assertEqual(policy["chinese_model"], "minimax/minimax-m3")
+        self.assertIn("inclusionai/ling-3.0-flash-sante:free", policy["chinese_fallback_models"])
+        self.assertIn("inclusionai/ling-3.0-flash-fin:free", policy["chinese_fallback_models"])
 
 
 class AnswerModeTierTests(unittest.TestCase):
@@ -68,18 +68,18 @@ class AnswerModeTierTests(unittest.TestCase):
         ):
             os.environ.pop(key, None)
 
-    def test_basic_mode_uses_hermes_then_gemma_chain(self):
+    def test_basic_mode_uses_catalog_reconciled_chain(self):
         plan = model_policy.resolve_answer_mode_models("basic")
         self.assertEqual(plan["mode"], "basic")
         self.assertTrue(plan["available"])
-        self.assertEqual(plan["primary"], "nousresearch/hermes-3-llama-3.1-405b:free")
+        self.assertEqual(plan["primary"], "nvidia/nemotron-3-ultra-550b-a55b:free")
         self.assertEqual(
             plan["candidates"],
             [
-                "nousresearch/hermes-3-llama-3.1-405b:free",
-                "google/gemma-4-26b-a4b-it:free",
-                "meta-llama/llama-3.3-70b-instruct:free",
-                "meta-llama/llama-4-scout:free",
+                "nvidia/nemotron-3-ultra-550b-a55b:free",
+                "google/gemma-4-31b-it:free",
+                "nvidia/nemotron-3-super-120b-a12b:free",
+                "thinkingmachines/inkling:free",
             ],
         )
 
@@ -87,15 +87,15 @@ class AnswerModeTierTests(unittest.TestCase):
         plan = model_policy.resolve_answer_mode_models("fast")
         self.assertEqual(plan["mode"], "fast")
         self.assertTrue(plan["available"])
-        # Lightweight Gemma 4 (MoE) is the fast primary; gpt-oss-20b is the first
-        # fallback, then Gemma 4 31B and Llama 3.3 70B as deeper fallbacks.
+        # Lightweight Gemma 4 (MoE) is the fast primary; every fallback is a
+        # current public-catalog identifier.
         self.assertEqual(plan["primary"], "google/gemma-4-26b-a4b-it:free")
         cands = plan["candidates"]
         self.assertEqual(cands, [
             "google/gemma-4-26b-a4b-it:free",
-            "openai/gpt-oss-20b:free",
+            "nvidia/nemotron-3.5-lightning:free",
+            "thinkingmachines/inkling-small:free",
             "google/gemma-4-31b-it:free",
-            "meta-llama/llama-3.3-70b-instruct:free",
         ])
         # The fast primary is also the basic fallback, so the two tiers share a
         # proven model and the fast tier can never be left without a reachable
