@@ -1,8 +1,10 @@
-// Playwright config for the complex-status-guide real-browser QA suite.
+// Playwright config for the real-browser QA suites.
 //
-// This is intentionally NOT part of `bash scripts/check_repo.sh` / CI: CI has no
-// browser binary and the repo is a no-build static site. Run it locally in a
-// browser-capable environment:
+// The full E2E matrix remains a local/manual suite because it is intentionally
+// broad. CI runs a small, targeted landing-restoration smoke on Chromium so a
+// CSS/theme rewrite cannot silently hide restored public services again.
+//
+// Local full-suite setup:
 //
 //   npm install                      # installs @playwright/test (devDependency)
 //   npx playwright install chromium  # one-time browser download
