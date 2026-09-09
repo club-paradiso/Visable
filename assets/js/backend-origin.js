@@ -124,6 +124,20 @@
         }
       };
 
+      function replayPendingShortStayOpen(realApi, attemptsLeft) {
+        if (!pendingShortStayOpen) return;
+        if (realApi && typeof realApi.open === 'function') {
+          pendingShortStayOpen = false;
+          try { realApi.open(); } catch (e) { /* keep page usable if popup setup fails */ }
+          return;
+        }
+        if (attemptsLeft > 0) {
+          global.setTimeout(function () {
+            replayPendingShortStayOpen(realApi, attemptsLeft - 1);
+          }, 25);
+        }
+      }
+
       Object.defineProperty(global, 'ParadisoShortStay', {
         configurable: true,
         enumerable: true,
@@ -138,10 +152,12 @@
             value: realApi
           });
 
-          if (pendingShortStayOpen && realApi && typeof realApi.open === 'function') {
-            pendingShortStayOpen = false;
+          if (pendingShortStayOpen) {
+            // short-stay-checker.js publishes its API before the browser-only
+            // DOM layer attaches api.open. Defer the replay until the current
+            // script turn completes, with a small bounded retry for slow setup.
             global.setTimeout(function () {
-              try { realApi.open(); } catch (e) { /* keep page usable if popup setup fails */ }
+              replayPendingShortStayOpen(realApi, 20);
             }, 0);
           }
         }
