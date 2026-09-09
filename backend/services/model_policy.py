@@ -18,6 +18,7 @@ import re
 from typing import Any, Dict, List, Optional, Sequence
 
 MODEL_POLICY_VERSION = "2026-09-production-truth-audit-v1"
+OPENROUTER_MODEL_OVERRIDE_OPT_IN_ENV = "OPENROUTER_ALLOW_MODEL_ENV_OVERRIDES"
 
 DEFAULT_ROUTER_MODEL = "google/gemma-4-31b-it:free"
 DEFAULT_TRANSLATION_MODEL = "google/gemma-4-31b-it:free"
@@ -135,6 +136,27 @@ def _env(name: str, default: str) -> str:
     return value or default
 
 
+def model_env_overrides_allowed() -> bool:
+    """Return whether deploy-time OpenRouter model overrides are trusted.
+
+    Model identifiers are operational configuration, but stale Railway values
+    can otherwise pin a removed catalog entry indefinitely. Requiring a separate
+    opt-in keeps the catalog-reconciled committed policy authoritative by
+    default while retaining an explicit emergency override path.
+    """
+    return (os.environ.get(OPENROUTER_MODEL_OVERRIDE_OPT_IN_ENV) or "").strip().lower() in {
+        "1", "true", "yes", "on",
+    }
+
+
+def _model_env(name: str, default: str) -> str:
+    return _env(name, default) if model_env_overrides_allowed() else default
+
+
+def _model_csv_env(name: str, default: List[str]) -> List[str]:
+    return _csv_env(name, default) if model_env_overrides_allowed() else list(default)
+
+
 def _csv_env(name: str, default: List[str]) -> List[str]:
     raw = os.environ.get(name, "").strip()
     if not raw:
@@ -161,17 +183,17 @@ def _dedupe_preserve_order(items: List[str]) -> List[str]:
 
 
 def resolve_model_role_policy() -> Dict[str, Any]:
-    final_model = _env("OPENROUTER_MODEL", DEFAULT_FINAL_ANSWER_MODEL)
+    final_model = _model_env("OPENROUTER_MODEL", DEFAULT_FINAL_ANSWER_MODEL)
     final_candidates = _dedupe_preserve_order(
-        [final_model, *_csv_env("OPENROUTER_MODEL_CANDIDATES", DEFAULT_FINAL_ANSWER_MODEL_CANDIDATES)]
+        [final_model, *_model_csv_env("OPENROUTER_MODEL_CANDIDATES", DEFAULT_FINAL_ANSWER_MODEL_CANDIDATES)]
     )
-    enforcement_model = _env(
+    enforcement_model = _model_env(
         "OPENROUTER_ENFORCEMENT_MODEL", DEFAULT_ENFORCEMENT_STRUCTURED_MODEL
     )
     enforcement_candidates = _dedupe_preserve_order(
         [
             enforcement_model,
-            *_csv_env(
+            *_model_csv_env(
                 "OPENROUTER_ENFORCEMENT_MODEL_CANDIDATES",
                 DEFAULT_ENFORCEMENT_STRUCTURED_MODEL_CANDIDATES,
             ),
@@ -180,6 +202,7 @@ def resolve_model_role_policy() -> Dict[str, Any]:
 
     return {
         "version": MODEL_POLICY_VERSION,
+        "model_env_overrides_allowed": model_env_overrides_allowed(),
         "router_model": _env("AI_ROUTER_MODEL", DEFAULT_ROUTER_MODEL),
         "translation_model": _env("AI_TRANSLATION_MODEL", DEFAULT_TRANSLATION_MODEL),
         "final_answer_model": final_model,
@@ -279,23 +302,23 @@ def resolve_answer_mode_models(mode: Any) -> Dict[str, Any]:
     ``available``. The ``pro`` tier is intentionally NOT wired to a model yet
     ("coming soon") — callers should fall back to the basic chain and surface the
     tier as unavailable rather than silently answering with a different depth.
-    Env overrides keep deploys flexible: ``OPENROUTER_FAST_MODEL`` /
+    Opted-in env overrides keep deploys flexible: ``OPENROUTER_FAST_MODEL`` /
     ``OPENROUTER_FAST_MODEL_CANDIDATES`` for the fast tier; the basic tier reuses
     ``OPENROUTER_MODEL`` / ``OPENROUTER_MODEL_CANDIDATES``.
     """
     normalized = normalize_answer_mode(mode)
 
     if normalized == "fast":
-        primary = _env("OPENROUTER_FAST_MODEL", DEFAULT_FAST_ANSWER_MODEL)
+        primary = _model_env("OPENROUTER_FAST_MODEL", DEFAULT_FAST_ANSWER_MODEL)
         candidates = _dedupe_preserve_order(
-            [primary, *_csv_env("OPENROUTER_FAST_MODEL_CANDIDATES", DEFAULT_FAST_ANSWER_MODEL_CANDIDATES)]
+            [primary, *_model_csv_env("OPENROUTER_FAST_MODEL_CANDIDATES", DEFAULT_FAST_ANSWER_MODEL_CANDIDATES)]
         )
         return {"mode": "fast", "primary": primary, "candidates": candidates, "available": True}
 
     # basic (and pro -> basic fallback)
-    primary = _env("OPENROUTER_MODEL", DEFAULT_FINAL_ANSWER_MODEL)
+    primary = _model_env("OPENROUTER_MODEL", DEFAULT_FINAL_ANSWER_MODEL)
     candidates = _dedupe_preserve_order(
-        [primary, *_csv_env("OPENROUTER_MODEL_CANDIDATES", DEFAULT_FINAL_ANSWER_MODEL_CANDIDATES)]
+        [primary, *_model_csv_env("OPENROUTER_MODEL_CANDIDATES", DEFAULT_FINAL_ANSWER_MODEL_CANDIDATES)]
     )
     return {
         "mode": normalized if normalized == "basic" else "basic",

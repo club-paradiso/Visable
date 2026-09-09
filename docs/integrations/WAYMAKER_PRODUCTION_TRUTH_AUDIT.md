@@ -44,7 +44,10 @@ only by length and a short SHA-256 fingerprint.
 
 1. Remove or reconcile stale `OPENROUTER_MODEL` and
    `OPENROUTER_MODEL_CANDIDATES` overrides with the committed catalog-checked
-   policy. Do the same for Fast-tier overrides.
+   policy. Do the same for Fast-tier overrides. Model env values are safely
+   ignored by default; enable `OPENROUTER_ALLOW_MODEL_ENV_OVERRIDES=true` only
+   for a deliberate, temporary override whose public catalog entries were
+   independently checked.
 2. Set `OPENROUTER_CHAIN_BUDGET_SECONDS=45` so the complete model chain stays
    below the frontend's 75-second deadline.
 3. Configure a valid explicit `LAW_API_OC`; keep `LAW_API_KEY` only as a legacy

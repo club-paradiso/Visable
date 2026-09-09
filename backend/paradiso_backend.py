@@ -86,6 +86,7 @@ from services.model_policy import (
     DEFAULT_FINAL_ANSWER_MODEL,
     DEFAULT_FINAL_ANSWER_MODEL_CANDIDATES,
     MODEL_POLICY_VERSION,
+    model_env_overrides_allowed,
     normalize_answer_mode,
     resolve_answer_mode_models,
     resolve_question_answer_mode,
@@ -157,11 +158,14 @@ SUPABASE_SERVICE_KEY: Optional[str] = os.environ.get("SUPABASE_SERVICE_KEY")
 # - verifier: gpt-oss
 # - Chinese-language route only: DeepSeek / Qwen / Kimi family
 #
-# Override per-deploy with OPENROUTER_MODEL and OPENROUTER_MODEL_CANDIDATES if
-# the OpenRouter catalog changes. Random routing is still forbidden.
+# Override per-deploy with OPENROUTER_MODEL and OPENROUTER_MODEL_CANDIDATES only
+# when OPENROUTER_ALLOW_MODEL_ENV_OVERRIDES is explicitly enabled. This prevents
+# a forgotten Railway variable from pinning removed catalog entries forever.
 _DEFAULT_OPENROUTER_MODEL: str = DEFAULT_FINAL_ANSWER_MODEL
+OPENROUTER_MODEL_ENV_OVERRIDES_ALLOWED: bool = model_env_overrides_allowed()
 OPENROUTER_MODEL: str = (
-    os.environ.get("OPENROUTER_MODEL", "").strip() or _DEFAULT_OPENROUTER_MODEL
+    (os.environ.get("OPENROUTER_MODEL", "").strip() if OPENROUTER_MODEL_ENV_OVERRIDES_ALLOWED else "")
+    or _DEFAULT_OPENROUTER_MODEL
 )
 
 # Explicit, predictable OpenRouter fallback candidates. When the primary model
@@ -195,7 +199,11 @@ def _resolve_openrouter_candidates() -> List[str]:
     (optional, comma-separated) supplies the rest; when unset we fall back to the
     built-in policy list. Random-routing ids are never injected by us.
     """
-    raw = (os.environ.get("OPENROUTER_MODEL_CANDIDATES") or "").strip()
+    raw = (
+        (os.environ.get("OPENROUTER_MODEL_CANDIDATES") or "").strip()
+        if model_env_overrides_allowed()
+        else ""
+    )
     configured = (
         [c.strip() for c in raw.split(",")]
         if raw
@@ -4152,18 +4160,21 @@ async def health() -> Dict[str, Any]:
     candidate_warnings = _validate_model_candidates(candidates)
     if llm.get("groq_fallback_allowed"):
         candidate_warnings = [*candidate_warnings, "PROVIDER_FAMILY_FALLBACK_ENABLED"]
-    # Make a deploy-time env override of the answer model VISIBLE. The active
-    # OPENROUTER_MODEL / *_CANDIDATES env vars override the committed code policy
-    # default by design, so a stale Railway env var (e.g. an old pinned model)
-    # silently keeps the live answer model on the old value even after the code
-    # default is updated. Surfacing this turns that invisible override into an
-    # obvious, diagnosable signal (model ids are public; no secrets here).
-    _model_env_override = bool((os.environ.get("OPENROUTER_MODEL") or "").strip())
-    _candidates_env_override = bool((os.environ.get("OPENROUTER_MODEL_CANDIDATES") or "").strip())
+    # Make deploy-time model configuration visible without exposing secrets.
+    # Presence is distinct from activity: stale values are ignored unless the
+    # independent opt-in flag is enabled.
+    _model_env_present = bool((os.environ.get("OPENROUTER_MODEL") or "").strip())
+    _candidates_env_present = bool((os.environ.get("OPENROUTER_MODEL_CANDIDATES") or "").strip())
+    _model_env_override = OPENROUTER_MODEL_ENV_OVERRIDES_ALLOWED and _model_env_present
+    _candidates_env_override = OPENROUTER_MODEL_ENV_OVERRIDES_ALLOWED and _candidates_env_present
     if _model_env_override and OPENROUTER_MODEL != _DEFAULT_OPENROUTER_MODEL:
         candidate_warnings = [*candidate_warnings, "OPENROUTER_MODEL_ENV_OVERRIDE"]
     if _candidates_env_override and candidates != list(_DEFAULT_OPENROUTER_MODEL_CANDIDATES):
         candidate_warnings = [*candidate_warnings, "OPENROUTER_MODEL_CANDIDATES_ENV_OVERRIDE"]
+    if _model_env_present and not OPENROUTER_MODEL_ENV_OVERRIDES_ALLOWED:
+        candidate_warnings = [*candidate_warnings, "OPENROUTER_MODEL_ENV_OVERRIDE_IGNORED"]
+    if _candidates_env_present and not OPENROUTER_MODEL_ENV_OVERRIDES_ALLOWED:
+        candidate_warnings = [*candidate_warnings, "OPENROUTER_MODEL_CANDIDATES_ENV_OVERRIDE_IGNORED"]
     # Non-secret Open Law API posture. NEVER exposes LAW_API_OC / LAW_API_KEY
     # values — only booleans, the resolved mode, and which env var supplied the
     # credential. Computed live so LAW_API_OC-only deployments report correctly.
@@ -4219,6 +4230,12 @@ async def health() -> Dict[str, Any]:
             "code_default_model": _DEFAULT_OPENROUTER_MODEL,
             "code_default_model_candidates": list(_DEFAULT_OPENROUTER_MODEL_CANDIDATES),
             "model_env_override": _model_env_override or _candidates_env_override,
+            "model_env_override_present": _model_env_present or _candidates_env_present,
+            "model_env_override_ignored": (
+                (_model_env_present or _candidates_env_present)
+                and not OPENROUTER_MODEL_ENV_OVERRIDES_ALLOWED
+            ),
+            "model_env_overrides_allowed": OPENROUTER_MODEL_ENV_OVERRIDES_ALLOWED,
             "provider_family_fallback_allowed": llm["groq_fallback_allowed"],
             "candidate_warnings": candidate_warnings,
             **_openrouter_cooldown_metadata(),
@@ -4335,6 +4352,7 @@ async def health_ai() -> Dict[str, Any]:
             "ALLOW_GROQ_FALLBACK": env_present("ALLOW_GROQ_FALLBACK"),
         },
         "model": {
+            "OPENROUTER_ALLOW_MODEL_ENV_OVERRIDES": env_present("OPENROUTER_ALLOW_MODEL_ENV_OVERRIDES"),
             "OPENROUTER_MODEL": env_present("OPENROUTER_MODEL"),
             "OPENROUTER_MODEL_CANDIDATES": env_present("OPENROUTER_MODEL_CANDIDATES"),
             "OPENROUTER_FAST_MODEL": env_present("OPENROUTER_FAST_MODEL"),
@@ -4359,13 +4377,22 @@ async def health_ai() -> Dict[str, Any]:
     }
 
     candidate_warnings = _validate_model_candidates(OPENROUTER_MODEL_CANDIDATES)
-    if env_present("OPENROUTER_MODEL") and OPENROUTER_MODEL != _DEFAULT_OPENROUTER_MODEL:
+    if (
+        OPENROUTER_MODEL_ENV_OVERRIDES_ALLOWED
+        and env_present("OPENROUTER_MODEL")
+        and OPENROUTER_MODEL != _DEFAULT_OPENROUTER_MODEL
+    ):
         candidate_warnings.append("OPENROUTER_MODEL_ENV_OVERRIDE")
     if (
-        env_present("OPENROUTER_MODEL_CANDIDATES")
+        OPENROUTER_MODEL_ENV_OVERRIDES_ALLOWED
+        and env_present("OPENROUTER_MODEL_CANDIDATES")
         and OPENROUTER_MODEL_CANDIDATES != list(_DEFAULT_OPENROUTER_MODEL_CANDIDATES)
     ):
         candidate_warnings.append("OPENROUTER_MODEL_CANDIDATES_ENV_OVERRIDE")
+    if not OPENROUTER_MODEL_ENV_OVERRIDES_ALLOWED and env_present("OPENROUTER_MODEL"):
+        candidate_warnings.append("OPENROUTER_MODEL_ENV_OVERRIDE_IGNORED")
+    if not OPENROUTER_MODEL_ENV_OVERRIDES_ALLOWED and env_present("OPENROUTER_MODEL_CANDIDATES"):
+        candidate_warnings.append("OPENROUTER_MODEL_CANDIDATES_ENV_OVERRIDE_IGNORED")
 
     def feature(name: str, ready: bool, *, blocker: str = "",
                 degrades_to: str = "") -> Dict[str, Any]:

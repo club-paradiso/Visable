@@ -241,3 +241,42 @@ def test_http_200_deterministic_fallback_is_reported_as_provider_failure():
     )
     assert "deterministic fallback" in live_failure["detail"]
     assert report["liveCompletion"]["completed"] is False
+
+
+def test_ignored_deploy_model_variables_are_not_reported_as_active_override():
+    model = "current/model:free"
+    health = _health([model])
+    health["llm"].update({
+        "model_env_override": False,
+        "model_env_override_present": True,
+        "model_env_override_ignored": True,
+        "model_env_overrides_allowed": False,
+    })
+    ready = {
+        **_ready(),
+        "candidateWarnings": ["OPENROUTER_MODEL_ENV_OVERRIDE_IGNORED"],
+    }
+    replies = iter([
+        (200, health, 1),
+        (200, ready, 1),
+        (200, {
+            "answer": "live answer",
+            "provider": "openrouter",
+            "selected_model": model,
+            "final_model": model,
+            "attempted_models": [model],
+            "deterministic_fallback_answer_used": False,
+            "task_type_detected": "workplace_change",
+            "question_type_detected": "deadline_report",
+            "legal_issue_types": ["workplace_change_addition"],
+        }, 50),
+        (200, ready, 1),
+    ])
+    with patch.object(audit, "http_json", side_effect=lambda *a, **k: next(replies)), patch.object(
+        audit, "_catalog", return_value={"reachable": True, "errorType": "", "ids": {model}}
+    ):
+        report = audit.run_audit("https://example.invalid", timeout=10)
+
+    codes = {item["code"] for item in report["findings"]}
+    assert "DEPLOY_MODEL_OVERRIDE_IGNORED" in codes
+    assert "DEPLOY_MODEL_OVERRIDE_ACTIVE" not in codes
