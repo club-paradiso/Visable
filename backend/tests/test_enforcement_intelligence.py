@@ -4,6 +4,7 @@ import asyncio
 import json
 import os
 import sys
+import time
 import unittest
 from datetime import date
 from pathlib import Path
@@ -29,6 +30,13 @@ from services.enforcement_service import analyze_enforcement_case, extract_struc
 class NoPrecedents:
     @staticmethod
     def search_precedents(query, limit=3):
+        return {"status": "no_results", "items": []}
+
+
+class SlowNoPrecedents:
+    @staticmethod
+    def search_precedents(query, limit=3):
+        time.sleep(0.12)
         return {"status": "no_results", "items": []}
 
 
@@ -243,6 +251,17 @@ class PredictionTests(unittest.TestCase):
 
 
 class PipelineAndApiTests(unittest.IsolatedAsyncioTestCase):
+    async def test_slow_official_source_lookup_does_not_block_event_loop(self):
+        started = asyncio.get_running_loop().time()
+        analysis_task = asyncio.create_task(
+            analyze_enforcement_case(sample_case(), precedent_adapter=SlowNoPrecedents)
+        )
+        await asyncio.sleep(0.02)
+        heartbeat_elapsed = asyncio.get_running_loop().time() - started
+        self.assertLess(heartbeat_elapsed, 0.09)
+        analysis = await analysis_task
+        self.assertEqual(analysis.legal_baseline.baseline_amount_krw, 2_000_000)
+
     async def test_provider_failure_preserves_baseline(self):
         async def broken(_):
             raise RuntimeError("provider down")

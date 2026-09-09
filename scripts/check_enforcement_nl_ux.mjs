@@ -45,10 +45,12 @@ assert.ok(js.includes('function deterministicSummary('), 'a zero-latency determi
 assert.ok(js.includes('function clarificationFor('), 'material missing facts must be asked conversationally');
 assert.ok(js.includes('primary.disabled = Boolean(question)'), 'analysis must wait for a material clarification or explicit skip');
 assert.ok(js.includes('잘 모르겠어요'), 'users must be allowed to keep genuinely unknown facts unknown');
-assert.ok(js.includes('detectLocale(text)'), 'confirmation humanizer must receive a user-language hint');
-assert.ok(js.includes('void humanizeConfirmation(structuredCase)'), 'Gemma polishing must never block the confirmation screen');
+assert.ok(js.includes('detectLocale(text)'), 'deterministic confirmation must use a user-language hint');
+assert.ok(!js.includes('humanizeConfirmation'), 'confirmation must not trigger a second AI request or swap copy after render');
 assert.ok(confirm.includes('Do not invent or infer missing facts'), 'humanizer must not add facts');
 assert.ok(confirm.includes('Do not give legal advice'), 'humanizer must not perform legal analysis');
 assert.ok(confirm.includes('payload.caseData') && !confirm.includes('payload.text'), 'humanizer must receive structured facts rather than raw narrative');
+assert.ok(html.includes('aria-pressed="false"'), 'quick-fill examples must expose their selection state');
+assert.ok(js.includes("setAttribute('aria-pressed'"), 'quick-fill selection state must stay synchronized');
 
 console.log('Enforcement natural-language/date UX contract passed.');

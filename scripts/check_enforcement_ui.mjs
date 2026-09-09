@@ -7,9 +7,7 @@ const root = path.resolve(import.meta.dirname, '..');
 const require = createRequire(import.meta.url);
 const html = fs.readFileSync(path.join(root, 'enforcement.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'assets/css/enforcement.css'), 'utf8');
-const resultUxCss = fs.readFileSync(path.join(root, 'assets/css/enforcement-result-ux.css'), 'utf8');
 const js = fs.readFileSync(path.join(root, 'scripts/enforcement-ui.mjs'), 'utf8');
-const resultUxJs = fs.readFileSync(path.join(root, 'scripts/enforcement-result-ux.js'), 'utf8');
 const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const backendOrigin = fs.readFileSync(path.join(root, 'assets/js/backend-origin.js'), 'utf8');
 const vercelExtract = fs.readFileSync(path.join(root, 'api/enforcement/extract.js'), 'utf8');
@@ -35,15 +33,18 @@ const checks = [
   ['single-question clarification UI', html.includes('id="clarification-card"') && js.includes('function clarificationFor(') && html.includes('한 가지만 더 확인할게요')],
   ['critical clarification can be skipped honestly', js.includes('잘 모르겠어요') && js.includes('skippedClarifications')],
   ['confirmation always precedes analysis', !js.includes('caseNeedsConfirmation') && js.includes('showStep(2);') && js.includes('renderConfirmation(structuredCase)')],
-  ['Gemma humanizer is best-effort and non-blocking', js.includes('void humanizeConfirmation(structuredCase)') && js.includes('/api/enforcement/confirm')],
+  ['confirmation copy is immediate and deterministic', js.includes('function deterministicSummary(') && !js.includes('/api/enforcement/confirm')],
   ['Gemma receives structured facts, not raw narrative', vercelConfirm.includes('payload.caseData') && !vercelConfirm.includes('payload.text') && vercelConfirm.includes('SAFE_FIELDS')],
   ['Gemma is copy-only and cannot drive legal output', vercelConfirm.includes('copy-only-no-legal-judgment') && vercelConfirm.includes('Never perform legal analysis') && vercelConfirm.includes('summaryIsSafe')],
   ['Gemma 4 preferred for confirmation copy', vercelConfirm.includes('google/gemma-4-31b-it:free')],
   ['legal baseline card', html.includes('법령상 기준') && js.includes('법령 기준')],
   ['AI prediction card', js.includes('Visable AI 예상') && js.includes('예상 범칙금')],
-  ['degraded prediction is explained instead of looking broken', html.includes('scripts/enforcement-result-ux.js') && resultUxJs.includes('AI 추정 보류') && resultUxJs.includes('법령 계산은 그대로 유효합니다')],
-  ['30-day month-boundary warning is reliable', resultUxJs.includes('duration === 30') && resultUxJs.includes('30일은 월 단위 경계에 걸릴 수 있습니다') && !resultUxJs.includes('hasExactDates')],
-  ['result UX stylesheet is wired', html.includes('assets/css/enforcement-result-ux.css') && resultUxCss.includes('.prediction-degraded-note') && resultUxCss.includes('.baseline-boundary-note')],
+  ['degraded prediction is explained without a DOM observer', js.includes('AI 추정 보류') && js.includes('법령 계산은 그대로 유효합니다') && !js.includes('MutationObserver')],
+  ['30-day month-boundary warning is reliable', js.includes('durationDays === 30') && js.includes('30일은 월 단위 경계에 걸릴 수 있습니다') && !js.includes('hasExactDates')],
+  ['result UX styles ship in the primary stylesheet', !html.includes('assets/css/enforcement-result-ux.css') && css.includes('.prediction-degraded-note') && css.includes('.baseline-boundary-note')],
+  ['result UX runs in the primary module', !html.includes('scripts/enforcement-result-ux.js') && js.includes('function resultNotice(')],
+  ['analysis shows an immediate inline progress state', js.includes('function renderAnalysisLoading(') && js.indexOf('showStep(3);') < js.indexOf("request('/api/enforcement/analyze'")],
+  ['step changes focus the active work area', js.includes("activeSection.scrollIntoView({ block: 'start', behavior: 'auto' })") && js.includes("activeSection.querySelector('h2')?.focus")],
   ['disposition section', js.includes('예상 행정처분')],
   ['confidence section', js.includes('예측 신뢰도')],
   ['similar cases section', js.includes('유사사례')],
@@ -85,7 +86,7 @@ const checks = [
   ['mobile breakpoint', css.includes('@media (max-width: 680px)')],
   ['mobile one-column results', /@media \(max-width: 680px\)[\s\S]*\.fact-grid, \.result-grid \{ grid-template-columns: 1fr; \}/.test(css)],
   ['mobile confirmation input stacks', /@media \(max-width: 680px\)[\s\S]*\.clarification-input-row \{ grid-template-columns: 1fr; \}/.test(css)],
-  ['mobile confirmation actions stack', /@media \(max-width: 640px\)[\s\S]*\.confirmation-actions[\s\S]*grid-template-columns: 1fr/.test(resultUxCss)],
+  ['mobile confirmation actions stack', /@media \(max-width: 640px\)[\s\S]*\.confirmation-actions[\s\S]*grid-template-columns: 1fr/.test(css)],
   ['reduced motion support', css.includes('prefers-reduced-motion')],
   ['homepage gateway', index.includes('enforcement.html')],
 ];

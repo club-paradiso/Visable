@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import inspect
 import json
 import re
@@ -540,6 +541,15 @@ async def analyze_enforcement_case(
     precedent_adapter: Any = None,
 ) -> EnforcementAnalysis:
     baseline = calculate_legal_baseline(case)
-    evidence = retrieve_enforcement_evidence(case, baseline, precedent_adapter=precedent_adapter)
+    # The official-law adapters are synchronous network clients. Running them
+    # on the event loop made every other request wait for up to two bounded
+    # timeouts whenever law.go.kr was slow. Keep the same fail-closed evidence
+    # path while allowing the API worker to serve concurrent requests.
+    evidence = await asyncio.to_thread(
+        retrieve_enforcement_evidence,
+        case,
+        baseline,
+        precedent_adapter=precedent_adapter,
+    )
     prediction = await predict_enforcement_outcome(case, baseline, evidence, provider=prediction_provider)
     return EnforcementAnalysis(case=case, legal_baseline=baseline, prediction=prediction)
