@@ -549,7 +549,8 @@ class AskResponse(BaseModel):
     # Granular, mutually-exclusive, user-visible law-grounding status. One of:
     #   law_grounding_not_attempted / law_grounding_disabled /
     #   law_grounding_audit_only / law_grounding_verified /
-    #   law_grounding_attempted_no_results / law_grounding_attempted_failed.
+    #   law_grounding_attempted_no_results / law_grounding_attempted_failed /
+    #   law_grounding_used_without_normalized_evidence.
     # ``law_grounding_verified`` is the ONLY value that means specific real-time
     # statute citations may be trusted as confirmed.
     law_grounding_status_detail: str = "law_grounding_not_attempted"
@@ -951,6 +952,55 @@ def _apply_law_citation_guard(
     # Keep the copy-safe mirror in sync with the (possibly augmented) answer.
     guarded["copy_safe_answer"] = new_answer
     return new_answer, guarded
+
+
+def _reconcile_law_verification_with_evidence(
+    *,
+    law_grounding_verified: bool,
+    law_grounding_status_detail: str,
+    law_evidence_pack: Optional[Dict[str, Any]],
+    citation_verification: Optional[Dict[str, Any]],
+    law_grounding_warnings: Optional[List[str]],
+) -> Dict[str, Any]:
+    """Fail closed when a verified label has no displayable law evidence.
+
+    Upstream search/citation parsing can succeed while normalization drops every
+    result. In that state the model may have received contextual text, but the
+    response cannot truthfully expose a verifiable evidence packet to the user.
+    Keep the coarse ``used`` state elsewhere, while downgrading the trust flag
+    and citation status that authorize specific statute claims.
+    """
+    pack = dict(law_evidence_pack or {})
+    sources = [item for item in (pack.get("law_sources") or []) if isinstance(item, dict)]
+    evidence_count = max(int(pack.get("law_evidence_count") or 0), len(sources))
+    warnings = list(dict.fromkeys(law_grounding_warnings or []))
+    verification = dict(citation_verification or {})
+
+    if law_grounding_verified and evidence_count <= 0:
+        marker = "LAW_GROUNDING_VERIFIED_WITHOUT_NORMALIZED_EVIDENCE"
+        warnings = list(dict.fromkeys([*warnings, marker]))
+        verification["status"] = "insufficient_evidence"
+        verification["warnings"] = list(dict.fromkeys([
+            *(verification.get("warnings") or []), marker,
+        ]))
+        if pack:
+            pack["citation_verification"] = verification
+            pack["law_grounding_warnings"] = warnings
+        return {
+            "law_grounding_verified": False,
+            "law_grounding_status_detail": "law_grounding_used_without_normalized_evidence",
+            "law_evidence_pack": pack or law_evidence_pack,
+            "citation_verification": verification,
+            "law_grounding_warnings": warnings,
+        }
+
+    return {
+        "law_grounding_verified": law_grounding_verified,
+        "law_grounding_status_detail": law_grounding_status_detail,
+        "law_evidence_pack": law_evidence_pack,
+        "citation_verification": citation_verification,
+        "law_grounding_warnings": warnings,
+    }
 
 
 def _derive_source_panel_metadata(
@@ -5175,6 +5225,19 @@ async def ask(req: AskRequest) -> AskResponse:
     if law_evidence_pack and law_evidence_pack.get("citation_verification"):
         citation_verification = law_evidence_pack.get("citation_verification")
 
+    evidence_truth = _reconcile_law_verification_with_evidence(
+        law_grounding_verified=law_grounding_verified,
+        law_grounding_status_detail=law_grounding_status_detail,
+        law_evidence_pack=law_evidence_pack,
+        citation_verification=citation_verification,
+        law_grounding_warnings=law_grounding_warnings,
+    )
+    law_grounding_verified = evidence_truth["law_grounding_verified"]
+    law_grounding_status_detail = evidence_truth["law_grounding_status_detail"]
+    law_evidence_pack = evidence_truth["law_evidence_pack"]
+    citation_verification = evidence_truth["citation_verification"]
+    law_grounding_warnings = evidence_truth["law_grounding_warnings"]
+
     citation_status = str((citation_verification or {}).get("status") or "")
     citation_specific = bool((citation_verification or {}).get("citation_specific"))
     direct_evidence_count = int((law_evidence_pack or {}).get("direct_evidence_count", 0) or 0)
@@ -5186,6 +5249,7 @@ async def ask(req: AskRequest) -> AskResponse:
         "law_grounding_attempted_no_results",
         "law_grounding_attempted_failed",
         "law_grounding_source_linked_unverified",
+        "law_grounding_used_without_normalized_evidence",
     }
     quality = enforce_source_confidence_invariants(
         quality,

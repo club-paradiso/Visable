@@ -219,6 +219,14 @@ def run_audit(base: str, *, timeout: int) -> Dict[str, Any]:
     task_type = str(response.get("task_type_detected") or "")
     question_type = str(response.get("question_type_detected") or "")
     issues = [str(item) for item in _list(response.get("legal_issue_types"))]
+    law_verified = bool(response.get("law_grounding_verified"))
+    law_evidence_count = int(response.get("law_evidence_count") or 0)
+    if law_verified and law_evidence_count <= 0:
+        findings.append(_finding(
+            "P0",
+            "VERIFIED_WITHOUT_LAW_EVIDENCE",
+            "response marked law grounding verified while exposing zero normalized law evidence items",
+        ))
     if task_type == "workplace_change" and question_type == "status_change":
         findings.append(_finding("P1", "WORKPLACE_CHANGE_MISCLASSIFIED", "workplace-change intent was classified as status change"))
 
