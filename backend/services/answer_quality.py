@@ -211,13 +211,35 @@ def classify_question_type(prompt: str, task_type: Optional[str]) -> str:
         return Q_DOCUMENTS_NEEDED
 
     # Status-change framing: from task detection, change keywords, or an
-    # "A -> B" code pattern. This must beat the broad activity heuristic so that
-    # "Can I change from A to B?" is not mis-read as an activity question.
-    is_workplace = "workplace" in tt
+    # "A -> B" code pattern. Named operational changes (workplace/employer,
+    # address, passport) must not become a change of sojourn status merely
+    # because the Korean sentence also contains the generic word ``변경``.
+    named_operational_change = bool(
+        re.search(
+            r"근무처(?:를|을)?\s*(?:변경|추가)|직장(?:을|를)?\s*(?:변경|옮)|"
+            r"고용주(?:를|을)?\s*변경|주소(?:를|을)?\s*변경|여권(?:을|를)?\s*변경|"
+            r"change\s+(?:of\s+)?(?:workplace|employer|address|passport)|"
+            r"switch\s+(?:jobs?|employers?)",
+            raw,
+            re.IGNORECASE,
+        )
+    ) or any(marker in tt for marker in ("workplace", "address", "passport"))
+    explicit_status_change = any(
+        hint in text
+        for hint in (
+            "change from", "change to", "switch from", "switch to",
+            "change status", "change of status", "transfer to",
+            "체류자격 변경", "체류자격을 변경", "비자 변경", "비자를 변경",
+            "자격변경", "체류자격 전환",
+        )
+    )
+    if named_operational_change and not explicit_status_change and not _A_TO_B_RE.search(raw):
+        return Q_DEADLINE_REPORT
     if (
         ("status_change" in tt)
-        or (not is_workplace and "change" in tt)
-        or any(h in text for h in _CHANGE_HINTS)
+        or (not named_operational_change and "change" in tt)
+        or explicit_status_change
+        or (not named_operational_change and any(h in text for h in _CHANGE_HINTS))
         or _A_TO_B_RE.search(raw)
     ):
         return Q_STATUS_CHANGE

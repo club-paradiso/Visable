@@ -182,7 +182,15 @@ def run_audit(base: str, *, timeout: int) -> Dict[str, Any]:
 
     findings: List[Dict[str, str]] = []
     if not completion:
-        findings.append(_finding("P0", "LIVE_COMPLETION_FAILED", f"/api/ask returned HTTP {ask_status}"))
+        if ask_status == 200 and response.get("deterministic_fallback_answer_used"):
+            completion_detail = (
+                "/api/ask returned a deterministic fallback after the live provider chain failed"
+            )
+        elif ask_status == 200:
+            completion_detail = "/api/ask returned HTTP 200 without a usable live-provider answer"
+        else:
+            completion_detail = f"/api/ask returned HTTP {ask_status}"
+        findings.append(_finding("P0", "LIVE_COMPLETION_FAILED", completion_detail))
     missing = [entry["model"] for entry in catalog_state if entry["listed"] is False]
     if missing:
         findings.append(_finding("P0", "STALE_MODEL_CANDIDATES", f"{len(missing)}/{len(candidates)} production candidates are absent from the public catalog"))

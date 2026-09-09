@@ -212,3 +212,32 @@ def test_successful_audit_reports_hash_and_structural_alignment():
     assert report["liveCompletion"]["completed"] is True
     assert report["liveCompletion"]["answerSha256Prefix"]
     assert report["answerEvidenceAlignment"]["status"] == "structurally_consistent"
+
+
+def test_http_200_deterministic_fallback_is_reported_as_provider_failure():
+    model = "current/model:free"
+    replies = iter([
+        (200, _health([model]), 1),
+        (200, {**_ready(), "candidateWarnings": []}, 1),
+        (200, {
+            "answer": "deterministic safe note",
+            "provider": "deterministic_fallback",
+            "deterministic_fallback_answer_used": True,
+            "attempted_models": [model],
+            "upstream_statuses": [504],
+            "task_type_detected": "workplace_change",
+            "question_type_detected": "deadline_report",
+            "legal_issue_types": ["workplace_change_addition"],
+        }, 45_000),
+        (200, _ready(), 1),
+    ])
+    with patch.object(audit, "http_json", side_effect=lambda *a, **k: next(replies)), patch.object(
+        audit, "_catalog", return_value={"reachable": True, "errorType": "", "ids": {model}}
+    ):
+        report = audit.run_audit("https://example.invalid", timeout=60)
+
+    live_failure = next(
+        item for item in report["findings"] if item["code"] == "LIVE_COMPLETION_FAILED"
+    )
+    assert "deterministic fallback" in live_failure["detail"]
+    assert report["liveCompletion"]["completed"] is False

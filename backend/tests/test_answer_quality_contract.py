@@ -81,6 +81,24 @@ class QuestionTypeTests(unittest.TestCase):
             aq.Q_STATUS_CHANGE,
         )
 
+    def test_workplace_change_is_not_status_change(self):
+        self.assertEqual(
+            aq.classify_question_type(
+                "E-7 체류자격으로 근무처를 변경하려면 사전 허가가 필요한가요?",
+                "workplace_change",
+            ),
+            aq.Q_DEADLINE_REPORT,
+        )
+
+    def test_workplace_change_wording_wins_without_task_type(self):
+        self.assertEqual(
+            aq.classify_question_type(
+                "E-7 체류자격으로 고용주를 변경할 때 신고 기한은?",
+                None,
+            ),
+            aq.Q_DEADLINE_REPORT,
+        )
+
     def test_deadline_report(self):
         self.assertEqual(
             aq.classify_question_type("국내거소신고 기한이 며칠인가요?", None),
