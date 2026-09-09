@@ -162,6 +162,21 @@
           }
         }
       });
+
+      // The main landing click delegation is installed from an async
+      // DOMContentLoaded callback. A deferred checker can therefore hold that
+      // callback back while the restored utility is already visible and
+      // tappable. Capture only this bootstrap state so the first tap records
+      // its intent; once the real API is installed, the normal landing handler
+      // remains the sole owner of subsequent clicks.
+      doc.addEventListener('click', function (event) {
+        var target = event.target && typeof event.target.closest === 'function'
+          ? event.target.closest('[data-action="open-short-stay"]')
+          : null;
+        if (target && global.ParadisoShortStay && global.ParadisoShortStay.__visableBootstrap) {
+          global.ParadisoShortStay.open();
+        }
+      }, true);
     }
   } catch (e) {
     // Landing compatibility must never interfere with backend resolution.
