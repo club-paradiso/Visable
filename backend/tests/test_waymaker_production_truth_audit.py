@@ -67,6 +67,32 @@ def test_law_search_plan_has_total_budget():
     assert "LAW_GROUNDING_BUDGET_EXHAUSTED" in result["grounding_warnings"]
 
 
+def test_verified_law_state_is_downgraded_when_normalized_evidence_is_empty():
+    result = pb._reconcile_law_verification_with_evidence(
+        law_grounding_verified=True,
+        law_grounding_status_detail="law_grounding_verified",
+        law_evidence_pack={"law_sources": [], "law_evidence_count": 0},
+        citation_verification={"status": "verified", "warnings": []},
+        law_grounding_warnings=[],
+    )
+    assert result["law_grounding_verified"] is False
+    assert result["law_grounding_status_detail"] == "law_grounding_used_without_normalized_evidence"
+    assert result["citation_verification"]["status"] == "insufficient_evidence"
+    assert "LAW_GROUNDING_VERIFIED_WITHOUT_NORMALIZED_EVIDENCE" in result["law_grounding_warnings"]
+
+
+def test_verified_law_state_remains_verified_with_normalized_evidence():
+    result = pb._reconcile_law_verification_with_evidence(
+        law_grounding_verified=True,
+        law_grounding_status_detail="law_grounding_verified",
+        law_evidence_pack={"law_sources": [{"law_name": "법"}], "law_evidence_count": 1},
+        citation_verification={"status": "verified", "warnings": []},
+        law_grounding_warnings=[],
+    )
+    assert result["law_grounding_verified"] is True
+    assert result["law_grounding_status_detail"] == "law_grounding_verified"
+
+
 def test_buffered_candidate_chain_has_total_budget():
     calls = []
 
@@ -280,3 +306,34 @@ def test_ignored_deploy_model_variables_are_not_reported_as_active_override():
     codes = {item["code"] for item in report["findings"]}
     assert "DEPLOY_MODEL_OVERRIDE_IGNORED" in codes
     assert "DEPLOY_MODEL_OVERRIDE_ACTIVE" not in codes
+
+
+def test_audit_rejects_verified_law_label_with_zero_evidence():
+    model = "current/model:free"
+    replies = iter([
+        (200, _health([model]), 1),
+        (200, {**_ready(), "candidateWarnings": []}, 1),
+        (200, {
+            "answer": "live answer",
+            "provider": "openrouter",
+            "selected_model": model,
+            "final_model": model,
+            "attempted_models": [model],
+            "deterministic_fallback_answer_used": False,
+            "task_type_detected": "workplace_change",
+            "question_type_detected": "deadline_report",
+            "legal_issue_types": ["workplace_change_addition"],
+            "law_grounding_verified": True,
+            "law_evidence_count": 0,
+        }, 50),
+        (200, _ready(), 1),
+    ])
+    with patch.object(audit, "http_json", side_effect=lambda *a, **k: next(replies)), patch.object(
+        audit, "_catalog", return_value={"reachable": True, "errorType": "", "ids": {model}}
+    ):
+        report = audit.run_audit("https://example.invalid", timeout=10)
+
+    assert "VERIFIED_WITHOUT_LAW_EVIDENCE" in {
+        item["code"] for item in report["findings"]
+    }
+    assert report["summary"]["p0"] == 1
