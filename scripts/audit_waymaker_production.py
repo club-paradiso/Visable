@@ -199,8 +199,18 @@ def run_audit(base: str, *, timeout: int) -> Dict[str, Any]:
     if ask_ms >= 60_000:
         findings.append(_finding("P1", "LIVE_REQUEST_NEAR_FRONTEND_TIMEOUT", f"request took {ask_ms}ms against the 75s frontend deadline"))
     candidate_warnings = [str(item) for item in _list(readiness.get("candidateWarnings"))]
-    if any("ENV_OVERRIDE" in item for item in candidate_warnings) or llm.get("model_env_override"):
+    active_override_markers = {
+        "OPENROUTER_MODEL_ENV_OVERRIDE",
+        "OPENROUTER_MODEL_CANDIDATES_ENV_OVERRIDE",
+    }
+    ignored_override_markers = {
+        "OPENROUTER_MODEL_ENV_OVERRIDE_IGNORED",
+        "OPENROUTER_MODEL_CANDIDATES_ENV_OVERRIDE_IGNORED",
+    }
+    if active_override_markers.intersection(candidate_warnings) or llm.get("model_env_override"):
         findings.append(_finding("P1", "DEPLOY_MODEL_OVERRIDE_ACTIVE", "deployment environment overrides the committed model policy"))
+    elif ignored_override_markers.intersection(candidate_warnings) or llm.get("model_env_override_ignored"):
+        findings.append(_finding("P1", "DEPLOY_MODEL_OVERRIDE_IGNORED", "stale deployment model variables are present but safely ignored; remove them from Railway"))
     law_warnings = [str(item) for item in _list(response.get("law_grounding_warnings"))]
     if any("PLACEHOLDER_IGNORED" in item for item in law_warnings):
         findings.append(_finding("P1", "LAW_OC_DISCARDED", "runtime discarded an explicitly configured OC and used legacy fallback"))
@@ -235,6 +245,9 @@ def run_audit(base: str, *, timeout: int) -> Dict[str, Any]:
             "primaryModel": llm.get("primary_model") or llm.get("model"),
             "codeDefaultModel": llm.get("code_default_model"),
             "modelEnvOverride": bool(llm.get("model_env_override")),
+            "modelEnvOverridePresent": bool(llm.get("model_env_override_present")),
+            "modelEnvOverrideIgnored": bool(llm.get("model_env_override_ignored")),
+            "modelEnvOverridesAllowed": bool(llm.get("model_env_overrides_allowed")),
             "environmentOverrides": _bool_tree(readiness.get("environmentOverrides") or {}),
             "candidates": catalog_state,
             "catalogReachable": catalog["reachable"],

@@ -96,9 +96,11 @@ def _node_available():
 class CandidateListParsingTests(unittest.TestCase):
     def setUp(self):
         os.environ.pop("OPENROUTER_MODEL_CANDIDATES", None)
+        os.environ["OPENROUTER_ALLOW_MODEL_ENV_OVERRIDES"] = "true"
 
     def tearDown(self):
         os.environ.pop("OPENROUTER_MODEL_CANDIDATES", None)
+        os.environ.pop("OPENROUTER_ALLOW_MODEL_ENV_OVERRIDES", None)
 
     def test_parses_comma_separated_list_primary_first(self):
         pb = _pb()
@@ -293,7 +295,8 @@ class CandidateFallbackBehaviorTests(unittest.TestCase):
         # (which reads os.environ, not the module globals) uses the synthetic
         # CANDS fixture rather than the production Hermes/Gemma default.
         with patch.dict(os.environ, {"OPENROUTER_MODEL": CANDS[0],
-                                     "OPENROUTER_MODEL_CANDIDATES": ",".join(CANDS)}, clear=False), \
+                                     "OPENROUTER_MODEL_CANDIDATES": ",".join(CANDS),
+                                     "OPENROUTER_ALLOW_MODEL_ENV_OVERRIDES": "true"}, clear=False), \
                 patch.object(pb, "OPENROUTER_API_KEY", "or-sentinel-key"), \
                 patch.object(pb, "GROQ_API_KEY", None), \
                 patch.object(pb, "ALLOW_GROQ_FALLBACK", False), \
@@ -517,7 +520,8 @@ class ProviderFamilyFallbackTests(unittest.TestCase):
             return "GROQ ANSWER"
 
         with patch.dict(os.environ, {"OPENROUTER_MODEL": CANDS[0],
-                                     "OPENROUTER_MODEL_CANDIDATES": ",".join(CANDS)}, clear=False), \
+                                     "OPENROUTER_MODEL_CANDIDATES": ",".join(CANDS),
+                                     "OPENROUTER_ALLOW_MODEL_ENV_OVERRIDES": "true"}, clear=False), \
                 patch.object(pb, "OPENROUTER_API_KEY", "or-key"), \
                 patch.object(pb, "GROQ_API_KEY", groq_key), \
                 patch.object(pb, "ALLOW_GROQ_FALLBACK", allow_groq), \
@@ -613,7 +617,8 @@ class DeterministicFallbackAndOllamaTests(unittest.TestCase):
         fake, calls = _fake_openrouter({c: (503, '{"error":"No healthy upstream"}') for c in CANDS})
         patches = [
             patch.dict(os.environ, {"OPENROUTER_MODEL": CANDS[0],
-                                    "OPENROUTER_MODEL_CANDIDATES": ",".join(CANDS)}, clear=False),
+                                    "OPENROUTER_MODEL_CANDIDATES": ",".join(CANDS),
+                                    "OPENROUTER_ALLOW_MODEL_ENV_OVERRIDES": "true"}, clear=False),
             patch.object(pb, "OPENROUTER_API_KEY", "or-key"),
             patch.object(pb, "GROQ_API_KEY", None),
             patch.object(pb, "ALLOW_GROQ_FALLBACK", False),
@@ -722,6 +727,7 @@ class HealthCandidateExposureTests(unittest.TestCase):
         # active primary_model and an override warning is flagged.
         pb = _pb()
         with patch.dict(os.environ, {"OPENROUTER_MODEL": "stale/example-model:free"}, clear=False), \
+                patch.object(pb, "OPENROUTER_MODEL_ENV_OVERRIDES_ALLOWED", True), \
                 patch.object(pb, "OPENROUTER_MODEL", "stale/example-model:free"):
             client = _client(pb)
             llm = client.get("/health").json()["llm"]
@@ -729,6 +735,18 @@ class HealthCandidateExposureTests(unittest.TestCase):
         self.assertEqual(llm["code_default_model"], "nvidia/nemotron-3-ultra-550b-a55b:free")
         self.assertTrue(llm["model_env_override"])
         self.assertIn("OPENROUTER_MODEL_ENV_OVERRIDE", llm["candidate_warnings"])
+
+    def test_health_ignores_env_override_without_opt_in(self):
+        pb = _pb()
+        with patch.dict(os.environ, {"OPENROUTER_MODEL": "stale/example-model:free"}, clear=False), \
+                patch.object(pb, "OPENROUTER_MODEL_ENV_OVERRIDES_ALLOWED", False), \
+                patch.object(pb, "OPENROUTER_MODEL", pb._DEFAULT_OPENROUTER_MODEL), \
+                patch.object(pb, "OPENROUTER_MODEL_CANDIDATES", list(pb._DEFAULT_OPENROUTER_MODEL_CANDIDATES)):
+            llm = _client(pb).get("/health").json()["llm"]
+        self.assertFalse(llm["model_env_override"])
+        self.assertTrue(llm["model_env_override_present"])
+        self.assertTrue(llm["model_env_override_ignored"])
+        self.assertIn("OPENROUTER_MODEL_ENV_OVERRIDE_IGNORED", llm["candidate_warnings"])
 
     def test_health_no_override_warning_when_env_unset(self):
         pb = _pb()
@@ -882,7 +900,8 @@ class StreamingAnswerTests(unittest.TestCase):
         # Drive the Basic answer chain via env (resolve_answer_mode_models reads
         # os.environ) so the streamed candidates are the synthetic CANDS fixture.
         with patch.dict(os.environ, {"OPENROUTER_MODEL": CANDS[0],
-                                     "OPENROUTER_MODEL_CANDIDATES": ",".join(CANDS)}, clear=False), \
+                                     "OPENROUTER_MODEL_CANDIDATES": ",".join(CANDS),
+                                     "OPENROUTER_ALLOW_MODEL_ENV_OVERRIDES": "true"}, clear=False), \
                 patch.object(pb, "OPENROUTER_API_KEY", "or-sentinel-key"), \
                 patch.object(pb, "GROQ_API_KEY", None), \
                 patch.object(pb, "ALLOW_GROQ_FALLBACK", False), \

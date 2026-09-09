@@ -45,6 +45,7 @@ HALLUCINATED_ANSWER = (
 )
 
 _MODEL_ENV_KEYS = (
+    "OPENROUTER_ALLOW_MODEL_ENV_OVERRIDES",
     "OPENROUTER_MODEL",
     "OPENROUTER_MODEL_CANDIDATES",
     "OPENROUTER_FAST_MODEL",
@@ -279,6 +280,7 @@ class FastBasicModelRoutingTests(unittest.TestCase):
     def setUp(self):
         for key in _MODEL_ENV_KEYS:
             os.environ.pop(key, None)
+        os.environ["OPENROUTER_ALLOW_MODEL_ENV_OVERRIDES"] = "true"
 
     def test_fast_uses_openrouter_fast_model_first(self):
         from services.model_policy import resolve_answer_mode_models

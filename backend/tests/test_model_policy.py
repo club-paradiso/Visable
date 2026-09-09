@@ -18,6 +18,9 @@ class ModelRolePolicyTests(unittest.TestCase):
         for key in (
             "OPENROUTER_MODEL",
             "OPENROUTER_MODEL_CANDIDATES",
+            "OPENROUTER_ENFORCEMENT_MODEL",
+            "OPENROUTER_ENFORCEMENT_MODEL_CANDIDATES",
+            "OPENROUTER_ALLOW_MODEL_ENV_OVERRIDES",
             "AI_ROUTER_MODEL",
             "AI_TRANSLATION_MODEL",
             "AI_VERIFIER_MODEL",
@@ -65,6 +68,7 @@ class AnswerModeTierTests(unittest.TestCase):
             "OPENROUTER_MODEL_CANDIDATES",
             "OPENROUTER_FAST_MODEL",
             "OPENROUTER_FAST_MODEL_CANDIDATES",
+            "OPENROUTER_ALLOW_MODEL_ENV_OVERRIDES",
         ):
             os.environ.pop(key, None)
 
@@ -120,8 +124,14 @@ class AnswerModeTierTests(unittest.TestCase):
 
     def test_fast_model_env_override(self):
         os.environ["OPENROUTER_FAST_MODEL"] = "openai/gpt-oss-120b:free"
+        os.environ["OPENROUTER_ALLOW_MODEL_ENV_OVERRIDES"] = "true"
         plan = model_policy.resolve_answer_mode_models("fast")
         self.assertEqual(plan["primary"], "openai/gpt-oss-120b:free")
+
+    def test_fast_model_env_override_is_ignored_without_opt_in(self):
+        os.environ["OPENROUTER_FAST_MODEL"] = "stale/example:free"
+        plan = model_policy.resolve_answer_mode_models("fast")
+        self.assertEqual(plan["primary"], model_policy.DEFAULT_FAST_ANSWER_MODEL)
 
     def test_simple_fast_question_stays_fast(self):
         route = model_policy.resolve_question_answer_mode(
@@ -154,11 +164,48 @@ class AnswerModeTierTests(unittest.TestCase):
             {
                 "OPENROUTER_MODEL": "x/primary:free",
                 "OPENROUTER_MODEL_CANDIDATES": "a/b:free,x/primary:free,c/d:free,a/b:free",
+                "OPENROUTER_ALLOW_MODEL_ENV_OVERRIDES": "true",
             },
             clear=False,
         ):
             policy = model_policy.resolve_model_role_policy()
         self.assertEqual(policy["final_answer_model_candidates"], ["x/primary:free", "a/b:free", "c/d:free"])
+
+    def test_stale_final_chain_is_ignored_without_explicit_opt_in(self):
+        with patch.dict(
+            os.environ,
+            {
+                "OPENROUTER_MODEL": "stale/primary:free",
+                "OPENROUTER_MODEL_CANDIDATES": "stale/one:free,stale/two:free",
+            },
+            clear=False,
+        ):
+            policy = model_policy.resolve_model_role_policy()
+        self.assertFalse(policy["model_env_overrides_allowed"])
+        self.assertEqual(policy["final_answer_model"], model_policy.DEFAULT_FINAL_ANSWER_MODEL)
+        self.assertEqual(
+            policy["final_answer_model_candidates"],
+            model_policy.DEFAULT_FINAL_ANSWER_MODEL_CANDIDATES,
+        )
+
+    def test_stale_enforcement_chain_is_ignored_without_explicit_opt_in(self):
+        with patch.dict(
+            os.environ,
+            {
+                "OPENROUTER_ENFORCEMENT_MODEL": "stale/enforcement:free",
+                "OPENROUTER_ENFORCEMENT_MODEL_CANDIDATES": "stale/enforcement:free",
+            },
+            clear=False,
+        ):
+            policy = model_policy.resolve_model_role_policy()
+        self.assertEqual(
+            policy["enforcement_structured_model"],
+            model_policy.DEFAULT_ENFORCEMENT_STRUCTURED_MODEL,
+        )
+        self.assertEqual(
+            policy["enforcement_structured_model_candidates"],
+            model_policy.DEFAULT_ENFORCEMENT_STRUCTURED_MODEL_CANDIDATES,
+        )
 
 
 if __name__ == "__main__":

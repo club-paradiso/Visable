@@ -121,7 +121,8 @@ into the image. See `.env.example` for the full list.
 | ----------------------- | --------- | -------------------------------------------------------- |
 | `OPENROUTER_API_KEY`    | optional* | Enables `/api/ask` via OpenRouter.                       |
 | `OPENROUTER_MODEL`      | optional  | Defaults to `nvidia/nemotron-3-ultra-550b-a55b:free`. The Basic answer tier primary. Override per-deploy only after catalog verification. |
-| `OPENROUTER_MODEL_CANDIDATES` | optional | Ordered Basic fallback list. Unset → the catalog-reconciled Nemotron/Gemma/Inkling chain. `/health` shows both resolved and code-default candidates so stale deploy overrides are visible. |
+| `OPENROUTER_ALLOW_MODEL_ENV_OVERRIDES` | optional | Defaults to `false`. Must be explicitly enabled before any deploy-time OpenRouter model or candidate override is honored. |
+| `OPENROUTER_MODEL_CANDIDATES` | optional | Ordered Basic fallback list. Ignored unless model env overrides are explicitly enabled; otherwise the catalog-reconciled Nemotron/Gemma/Inkling chain is authoritative. `/health` reports present/active/ignored state without exposing secrets. |
 | `OPENROUTER_FAST_MODEL` / `OPENROUTER_FAST_MODEL_CANDIDATES` | optional | Fast tier. Unset → Gemma 4 26B, Nemotron 3.5 Lightning, Inkling Small, then Gemma 4 31B. |
 | `AI_ROUTER_MODEL` | optional | Defaults to `google/gemma-4-31b-it:free`. Used as the declared low-risk router / query-classification model policy. |
 | `AI_TRANSLATION_MODEL` | optional | Defaults to `google/gemma-4-31b-it:free`. Used as the declared UI/site translation model policy. |
