@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://visable.club/schemas/enforcement/outcome-ground-truth.v1.json",
+  "title": "Visable Enforcement Outcome Ground Truth",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "datasetVersion", "jurisdiction", "purpose", "records"],
+  "properties": {
+    "schemaVersion": {"const": "1.0.0"},
+    "datasetVersion": {"type": "string", "minLength": 1},
+    "jurisdiction": {"const": "KR"},
+    "purpose": {"type": "string", "minLength": 1},
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "caseId",
+          "reviewStatus",
+          "reviewedAt",
+          "reviewerRole",
+          "independentFromPrediction",
+          "provenance",
+          "outcome"
+        ],
+        "properties": {
+          "caseId": {"type": "string", "minLength": 1},
+          "reviewStatus": {"const": "INDEPENDENTLY_REVIEWED"},
+          "reviewedAt": {"type": "string", "format": "date"},
+          "reviewerRole": {"type": "string", "minLength": 1},
+          "independentFromPrediction": {"const": true},
+          "provenance": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["sourceType", "authority", "recordId"],
+            "properties": {
+              "sourceType": {
+                "enum": [
+                  "OFFICIAL_ADMINISTRATIVE_DECISION",
+                  "COURT_DECISION",
+                  "VERIFIED_ADMINISTRATIVE_RECORD"
+                ]
+              },
+              "authority": {"type": "string", "minLength": 1},
+              "recordId": {"type": "string", "minLength": 1},
+              "publicUrl": {"type": "string", "format": "uri", "pattern": "^https://"}
+            }
+          },
+          "outcome": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["decisionDate", "monetaryOutcomeKrw", "dispositionTypes", "primaryDispositionType"],
+            "properties": {
+              "decisionDate": {"type": "string", "format": "date"},
+              "monetaryOutcomeKrw": {"type": ["integer", "null"], "minimum": 0},
+              "dispositionTypes": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {"type": "string", "minLength": 1}
+              },
+              "primaryDispositionType": {"type": ["string", "null"], "minLength": 1}
+            },
+            "anyOf": [
+              {"properties": {"monetaryOutcomeKrw": {"type": "integer"}}},
+              {"properties": {"dispositionTypes": {"minItems": 1}}}
+            ]
+          }
+        }
+      }
+    }
+  }
+}
