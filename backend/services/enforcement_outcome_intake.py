@@ -1,13 +1,9 @@
 """Privacy-safe intake pipeline for Enforcement Intelligence v3 outcome review.
 
-This module is deliberately separate from both prediction and evaluation. It
-normalizes private offline review records into a de-identified intake dataset,
-validates a staged review workflow, and promotes only independently reviewed
-records into the evaluator contract.
-
-The private source identifiers and reviewer references are consumed only to
-compute HMAC tokens. They are never returned by this module. No real outcome
-data belongs in this repository; checked-in templates remain empty.
+Private source identifiers and reviewer references are consumed only to derive
+HMAC tokens. They are never returned. The runtime validator is intentionally
+closed-shape, mirroring the checked-in safe JSON Schema, and only independently
+reviewed rows may be promoted into the existing outcome evaluator contract.
 """
 
 from __future__ import annotations
@@ -16,6 +12,7 @@ from copy import deepcopy
 from datetime import date, datetime
 import hashlib
 import hmac
+import ipaddress
 import json
 from pathlib import Path
 from typing import Any, Dict, Optional
@@ -28,12 +25,7 @@ from .enforcement_outcome_evaluation import (
 )
 
 INTAKE_SCHEMA_VERSION = "1.0.0"
-_ALLOWED_STAGES = (
-    "STAGED",
-    "SOURCE_VERIFIED",
-    "INDEPENDENTLY_REVIEWED",
-    "REJECTED",
-)
+_ALLOWED_STAGES = {"STAGED", "SOURCE_VERIFIED", "INDEPENDENTLY_REVIEWED", "REJECTED"}
 _ALLOWED_TRANSITIONS = {
     None: {"STAGED"},
     "STAGED": {"SOURCE_VERIFIED", "REJECTED"},
@@ -46,12 +38,7 @@ _ALLOWED_SOURCE_TYPES = {
     "COURT_DECISION",
     "VERIFIED_ADMINISTRATIVE_RECORD",
 }
-_FORBIDDEN_SOURCE_TYPES = {
-    "SYNTHETIC",
-    "MODEL_GENERATED",
-    "LLM_GENERATED",
-    "PREDICTION_OUTPUT",
-}
+_FORBIDDEN_SOURCE_TYPES = {"SYNTHETIC", "MODEL_GENERATED", "LLM_GENERATED", "PREDICTION_OUTPUT"}
 _ALLOWED_REJECTION_CODES = {
     "SOURCE_INELIGIBLE",
     "PII_PRESENT",
@@ -60,37 +47,36 @@ _ALLOWED_REJECTION_CODES = {
     "PREDICTION_DERIVED",
     "REVIEW_CONFLICT",
 }
+_ALLOWED_REVIEWER_ROLES = {
+    "AUTHORIZED_ADMINISTRATIVE_REVIEWER",
+    "LEGAL_REVIEWER",
+    "DATA_QUALITY_REVIEWER",
+    "AUTHORIZED_RECORD_REVIEWER",
+}
 _FORBIDDEN_KEYS = {
-    "rawText",
-    "text",
-    "caseText",
-    "narrative",
-    "freeText",
-    "notes",
-    "name",
-    "fullName",
-    "passportNumber",
-    "alienRegistrationNumber",
-    "registrationNumber",
-    "phone",
-    "phoneNumber",
-    "email",
-    "address",
-    "dateOfBirth",
-    "birthDate",
-    "modelOutput",
-    "predictionOutput",
+    "rawText", "text", "caseText", "narrative", "freeText", "notes",
+    "name", "fullName", "passportNumber", "alienRegistrationNumber",
+    "registrationNumber", "phone", "phoneNumber", "email", "address",
+    "dateOfBirth", "birthDate", "modelOutput", "predictionOutput",
 }
 _PRIVATE_ONLY_KEYS = {"sourceRecordId", "reviewerReference"}
-_SAFE_CASE_FACT_FIELDS = {
-    "statusOfStay",
-    "violationCode",
-    "durationDays",
-    "priorViolations",
-    "voluntaryDisclosure",
-    "authorizationObtained",
-    "assessmentDate",
+_DATASET_KEYS = {"schemaVersion", "datasetVersion", "jurisdiction", "records"}
+_PRIVATE_RECORD_KEYS = {
+    "sourceRecordId", "reviewStage", "caseFacts", "provenance", "outcome",
+    "independentFromPrediction", "reviewerRole", "reviewHistory",
 }
+_SAFE_RECORD_KEYS = {
+    "caseId", "reviewStage", "caseFacts", "provenance", "outcome",
+    "independentFromPrediction", "reviewerRole", "reviewHistory",
+}
+_CASE_FACT_KEYS = {
+    "statusOfStay", "violationCode", "durationDays", "priorViolations",
+    "voluntaryDisclosure", "authorizationObtained", "assessmentDate",
+}
+_PRIVATE_HISTORY_KEYS = {"stage", "at", "reviewerReference", "reasonCode"}
+_SAFE_HISTORY_KEYS = {"stage", "at", "actorToken", "reasonCode"}
+_PROVENANCE_KEYS = {"sourceType", "authority", "recordId", "publicUrl"}
+_OUTCOME_KEYS = {"decisionDate", "monetaryOutcomeKrw", "dispositionTypes", "primaryDispositionType"}
 
 
 class EnforcementOutcomeIntakeError(ValueError):
@@ -101,6 +87,12 @@ def _require_string(value: Any, field: str) -> str:
     if not isinstance(value, str) or not value.strip():
         raise EnforcementOutcomeIntakeError(f"invalid or missing {field}")
     return value.strip()
+
+
+def _require_exact_keys(value: Dict[str, Any], allowed: set[str], field: str) -> None:
+    unknown = set(value) - allowed
+    if unknown:
+        raise EnforcementOutcomeIntakeError(f"unsupported fields in {field}: {sorted(unknown)}")
 
 
 def _parse_iso_date(value: Any, field: str) -> str:
@@ -146,13 +138,12 @@ def _reject_private_only_fields(value: Any, *, path: str = "root") -> None:
 
 
 def _secret_bytes(secret: str, field: str) -> bytes:
-    if not isinstance(secret, str) or len(secret.encode("utf-8")) < 16:
-        raise EnforcementOutcomeIntakeError(f"{field} must contain at least 16 UTF-8 bytes")
+    if not isinstance(secret, str) or len(secret.encode("utf-8")) < 32:
+        raise EnforcementOutcomeIntakeError(f"{field} must contain at least 32 UTF-8 bytes")
     return secret.encode("utf-8")
 
 
 def derive_private_token(secret: str, value: str, *, prefix: str) -> str:
-    """Derive a stable non-reversible token without persisting the source value."""
     key = _secret_bytes(secret, "secret")
     source = _require_string(value, "token source")
     digest = hmac.new(key, source.encode("utf-8"), hashlib.sha256).hexdigest()[:24]
@@ -164,8 +155,20 @@ def _validate_public_url(value: Any) -> Optional[str]:
         return None
     raw = _require_string(value, "provenance.publicUrl")
     parsed = urlparse(raw)
-    if parsed.scheme != "https" or not parsed.netloc or parsed.username or parsed.password:
+    if parsed.scheme != "https" or not parsed.hostname or parsed.username or parsed.password:
         raise EnforcementOutcomeIntakeError("provenance.publicUrl must be a public https URL")
+    host = parsed.hostname.lower().rstrip(".")
+    if host == "localhost" or host.endswith(".local"):
+        raise EnforcementOutcomeIntakeError("provenance.publicUrl must not use a local host")
+    try:
+        address = ipaddress.ip_address(host)
+    except ValueError:
+        address = None
+    if address is not None and (
+        address.is_private or address.is_loopback or address.is_link_local
+        or address.is_reserved or address.is_unspecified
+    ):
+        raise EnforcementOutcomeIntakeError("provenance.publicUrl must not use a non-public IP")
     return raw
 
 
@@ -174,9 +177,7 @@ def _normalize_case_facts(value: Any) -> Dict[str, Any]:
         return {}
     if not isinstance(value, dict):
         raise EnforcementOutcomeIntakeError("caseFacts must be an object")
-    unknown = set(value) - _SAFE_CASE_FACT_FIELDS
-    if unknown:
-        raise EnforcementOutcomeIntakeError(f"unsupported caseFacts fields: {sorted(unknown)}")
+    _require_exact_keys(value, _CASE_FACT_KEYS, "caseFacts")
     out: Dict[str, Any] = {}
     for key, item in value.items():
         if key == "assessmentDate":
@@ -196,33 +197,37 @@ def _normalize_case_facts(value: Any) -> Dict[str, Any]:
     return out
 
 
-def _normalize_provenance(value: Any, *, record_secret: str, required: bool) -> Optional[Dict[str, Any]]:
+def _normalize_private_provenance(value: Any, *, record_secret: str, required: bool) -> Optional[Dict[str, Any]]:
     if value in (None, {}):
         if required:
             raise EnforcementOutcomeIntakeError("verified/reviewed records require provenance")
         return None
     if not isinstance(value, dict):
         raise EnforcementOutcomeIntakeError("provenance must be an object")
+    _require_exact_keys(value, _PROVENANCE_KEYS, "provenance")
     source_type = _require_string(value.get("sourceType"), "provenance.sourceType")
     if source_type in _FORBIDDEN_SOURCE_TYPES or source_type not in _ALLOWED_SOURCE_TYPES:
         raise EnforcementOutcomeIntakeError(f"ineligible provenance.sourceType: {source_type}")
-    authority = _require_string(value.get("authority"), "provenance.authority")
-    source_record_id = _require_string(value.get("recordId"), "provenance.recordId")
     return {
         "sourceType": source_type,
-        "authority": authority,
-        "recordId": derive_private_token(record_secret, source_record_id, prefix="src"),
+        "authority": _require_string(value.get("authority"), "provenance.authority"),
+        "recordId": derive_private_token(
+            record_secret,
+            _require_string(value.get("recordId"), "provenance.recordId"),
+            prefix="src",
+        ),
         "publicUrl": _validate_public_url(value.get("publicUrl")),
     }
 
 
 def _validate_safe_provenance(value: Dict[str, Any]) -> None:
+    _require_exact_keys(value, _PROVENANCE_KEYS, "provenance")
     source_type = _require_string(value.get("sourceType"), "provenance.sourceType")
     if source_type not in _ALLOWED_SOURCE_TYPES:
         raise EnforcementOutcomeIntakeError(f"ineligible provenance.sourceType: {source_type}")
     _require_string(value.get("authority"), "provenance.authority")
     record_id = _require_string(value.get("recordId"), "provenance.recordId")
-    if not record_id.startswith("src_"):
+    if not record_id.startswith("src_") or len(record_id) != 28:
         raise EnforcementOutcomeIntakeError("provenance.recordId must be a derived token")
     _validate_public_url(value.get("publicUrl"))
 
@@ -234,6 +239,7 @@ def _normalize_outcome(value: Any, *, required: bool) -> Optional[Dict[str, Any]
         return None
     if not isinstance(value, dict):
         raise EnforcementOutcomeIntakeError("outcome must be an object")
+    _require_exact_keys(value, _OUTCOME_KEYS, "outcome")
     decision_date = _parse_iso_date(value.get("decisionDate"), "outcome.decisionDate")
     monetary = value.get("monetaryOutcomeKrw")
     if monetary is not None and (not isinstance(monetary, int) or isinstance(monetary, bool) or monetary < 0):
@@ -241,22 +247,33 @@ def _normalize_outcome(value: Any, *, required: bool) -> Optional[Dict[str, Any]
     dispositions = value.get("dispositionTypes", [])
     if not isinstance(dispositions, list) or any(not isinstance(x, str) or not x.strip() for x in dispositions):
         raise EnforcementOutcomeIntakeError("outcome.dispositionTypes must be an array of non-empty strings")
-    normalized_dispositions = [x.strip() for x in dispositions]
-    if len(normalized_dispositions) != len(set(normalized_dispositions)):
+    normalized = [x.strip() for x in dispositions]
+    if len(normalized) != len(set(normalized)):
         raise EnforcementOutcomeIntakeError("duplicate outcome.dispositionTypes")
     primary = value.get("primaryDispositionType")
     if primary is not None:
         primary = _require_string(primary, "outcome.primaryDispositionType")
-        if primary not in normalized_dispositions:
+        if primary not in normalized:
             raise EnforcementOutcomeIntakeError("primary disposition must appear in dispositionTypes")
-    if required and monetary is None and not normalized_dispositions:
+    if required and monetary is None and not normalized:
         raise EnforcementOutcomeIntakeError("reviewed outcome has no scoreable label")
     return {
         "decisionDate": decision_date,
         "monetaryOutcomeKrw": monetary,
-        "dispositionTypes": normalized_dispositions,
+        "dispositionTypes": normalized,
         "primaryDispositionType": primary,
     }
+
+
+def _validated_reviewer_role(value: Any, *, required: bool) -> Optional[str]:
+    if value in (None, ""):
+        if required:
+            raise EnforcementOutcomeIntakeError("reviewed record requires reviewerRole")
+        return None
+    role = _require_string(value, "reviewerRole")
+    if role not in _ALLOWED_REVIEWER_ROLES:
+        raise EnforcementOutcomeIntakeError("reviewerRole must be a non-identifying approved role code")
+    return role
 
 
 def _normalize_history(value: Any, *, reviewer_secret: str, current_stage: str) -> list[Dict[str, Any]]:
@@ -268,28 +285,28 @@ def _normalize_history(value: Any, *, reviewer_secret: str, current_stage: str) 
     for index, event in enumerate(value):
         if not isinstance(event, dict):
             raise EnforcementOutcomeIntakeError("reviewHistory event must be an object")
+        _require_exact_keys(event, _PRIVATE_HISTORY_KEYS, f"reviewHistory[{index}]")
         stage = _require_string(event.get("stage"), f"reviewHistory[{index}].stage")
         if stage not in _ALLOWED_STAGES or stage not in _ALLOWED_TRANSITIONS[previous]:
             raise EnforcementOutcomeIntakeError(f"invalid review transition: {previous or 'START'} -> {stage}")
         at, parsed_at = _parse_iso_datetime(event.get("at"), f"reviewHistory[{index}].at")
         if previous_at is not None and parsed_at < previous_at:
             raise EnforcementOutcomeIntakeError("reviewHistory timestamps must be chronological")
-        actor_ref = _require_string(event.get("reviewerReference"), f"reviewHistory[{index}].reviewerReference")
-        reason_code = event.get("reasonCode")
+        reason = event.get("reasonCode")
         if stage == "REJECTED":
-            reason_code = _require_string(reason_code, f"reviewHistory[{index}].reasonCode")
-            if reason_code not in _ALLOWED_REJECTION_CODES:
-                raise EnforcementOutcomeIntakeError(f"unsupported rejection reason: {reason_code}")
-        elif reason_code is not None:
+            reason = _require_string(reason, f"reviewHistory[{index}].reasonCode")
+            if reason not in _ALLOWED_REJECTION_CODES:
+                raise EnforcementOutcomeIntakeError(f"unsupported rejection reason: {reason}")
+        elif reason is not None:
             raise EnforcementOutcomeIntakeError("reasonCode is allowed only for REJECTED events")
+        actor_ref = _require_string(event.get("reviewerReference"), f"reviewHistory[{index}].reviewerReference")
         out.append({
             "stage": stage,
             "at": at,
             "actorToken": derive_private_token(reviewer_secret, actor_ref, prefix="reviewer"),
-            **({"reasonCode": reason_code} if reason_code else {}),
+            **({"reasonCode": reason} if reason else {}),
         })
-        previous = stage
-        previous_at = parsed_at
+        previous, previous_at = stage, parsed_at
     if previous != current_stage:
         raise EnforcementOutcomeIntakeError("reviewHistory final stage must equal reviewStage")
     return out
@@ -300,87 +317,71 @@ def _validate_safe_history(value: Any, *, current_stage: str) -> None:
         raise EnforcementOutcomeIntakeError("reviewHistory must contain at least one event")
     previous: Optional[str] = None
     previous_at: Optional[datetime] = None
-    for event in value:
+    for index, event in enumerate(value):
         if not isinstance(event, dict):
             raise EnforcementOutcomeIntakeError("reviewHistory event must be an object")
-        stage = _require_string(event.get("stage"), "reviewHistory.stage")
+        _require_exact_keys(event, _SAFE_HISTORY_KEYS, f"reviewHistory[{index}]")
+        stage = _require_string(event.get("stage"), f"reviewHistory[{index}].stage")
         if stage not in _ALLOWED_STAGES or stage not in _ALLOWED_TRANSITIONS[previous]:
             raise EnforcementOutcomeIntakeError(f"invalid review transition: {previous or 'START'} -> {stage}")
-        _, parsed_at = _parse_iso_datetime(event.get("at"), "reviewHistory.at")
+        _, parsed_at = _parse_iso_datetime(event.get("at"), f"reviewHistory[{index}].at")
         if previous_at is not None and parsed_at < previous_at:
             raise EnforcementOutcomeIntakeError("reviewHistory timestamps must be chronological")
-        actor = _require_string(event.get("actorToken"), "reviewHistory.actorToken")
-        if not actor.startswith("reviewer_"):
-            raise EnforcementOutcomeIntakeError("reviewHistory.actorToken must be derived")
+        actor = _require_string(event.get("actorToken"), f"reviewHistory[{index}].actorToken")
+        if not actor.startswith("reviewer_") or len(actor) != 33:
+            raise EnforcementOutcomeIntakeError("reviewHistory.actorToken must be a derived token")
         reason = event.get("reasonCode")
         if stage == "REJECTED":
-            reason = _require_string(reason, "reviewHistory.reasonCode")
+            reason = _require_string(reason, f"reviewHistory[{index}].reasonCode")
             if reason not in _ALLOWED_REJECTION_CODES:
                 raise EnforcementOutcomeIntakeError(f"unsupported rejection reason: {reason}")
         elif reason is not None:
             raise EnforcementOutcomeIntakeError("reasonCode is allowed only for REJECTED events")
-        previous = stage
-        previous_at = parsed_at
+        previous, previous_at = stage, parsed_at
     if previous != current_stage:
         raise EnforcementOutcomeIntakeError("reviewHistory final stage must equal reviewStage")
 
 
-def normalize_private_intake_record(
-    raw: Any,
-    *,
-    record_secret: str,
-    reviewer_secret: str,
-) -> Dict[str, Any]:
-    """Convert one private offline record into the de-identified intake shape."""
+def normalize_private_intake_record(raw: Any, *, record_secret: str, reviewer_secret: str) -> Dict[str, Any]:
     if not isinstance(raw, dict):
         raise EnforcementOutcomeIntakeError("intake record must be an object")
     _reject_forbidden_fields(raw)
+    _require_exact_keys(raw, _PRIVATE_RECORD_KEYS, "private record")
     source_record_id = _require_string(raw.get("sourceRecordId"), "sourceRecordId")
     stage = _require_string(raw.get("reviewStage"), "reviewStage")
     if stage not in _ALLOWED_STAGES:
         raise EnforcementOutcomeIntakeError(f"unsupported reviewStage: {stage}")
-    case_id = derive_private_token(record_secret, source_record_id, prefix="case")
-    case_facts = _normalize_case_facts(raw.get("caseFacts"))
-    provenance = _normalize_provenance(
+    provenance = _normalize_private_provenance(
         raw.get("provenance"),
         record_secret=record_secret,
         required=stage in {"SOURCE_VERIFIED", "INDEPENDENTLY_REVIEWED"},
     )
     outcome = _normalize_outcome(raw.get("outcome"), required=stage == "INDEPENDENTLY_REVIEWED")
-    history = _normalize_history(raw.get("reviewHistory"), reviewer_secret=reviewer_secret, current_stage=stage)
     independent = raw.get("independentFromPrediction")
     if stage == "INDEPENDENTLY_REVIEWED" and independent is not True:
         raise EnforcementOutcomeIntakeError("reviewed label must be independent from prediction output")
     if independent not in (None, True, False):
         raise EnforcementOutcomeIntakeError("independentFromPrediction must be boolean or null")
-    reviewer_role = raw.get("reviewerRole")
-    if stage == "INDEPENDENTLY_REVIEWED":
-        reviewer_role = _require_string(reviewer_role, "reviewerRole")
-    elif reviewer_role is not None and (not isinstance(reviewer_role, str) or not reviewer_role.strip()):
-        raise EnforcementOutcomeIntakeError("invalid reviewerRole")
-
+    reviewer_role = _validated_reviewer_role(raw.get("reviewerRole"), required=stage == "INDEPENDENTLY_REVIEWED")
     return {
-        "caseId": case_id,
+        "caseId": derive_private_token(record_secret, source_record_id, prefix="case"),
         "reviewStage": stage,
-        "caseFacts": case_facts,
+        "caseFacts": _normalize_case_facts(raw.get("caseFacts")),
         "provenance": provenance,
         "outcome": outcome,
         "independentFromPrediction": independent,
-        "reviewerRole": reviewer_role.strip() if isinstance(reviewer_role, str) else None,
-        "reviewHistory": history,
+        "reviewerRole": reviewer_role,
+        "reviewHistory": _normalize_history(
+            raw.get("reviewHistory"), reviewer_secret=reviewer_secret, current_stage=stage
+        ),
     }
 
 
-def normalize_private_intake_dataset(
-    data: Any,
-    *,
-    record_secret: str,
-    reviewer_secret: str,
-) -> Dict[str, Any]:
-    """De-identify a private offline dataset. Secrets and raw identifiers are not returned."""
+def normalize_private_intake_dataset(data: Any, *, record_secret: str, reviewer_secret: str) -> Dict[str, Any]:
     if not isinstance(data, dict):
         raise EnforcementOutcomeIntakeError("private intake dataset must be an object")
     _reject_forbidden_fields(data)
+    _require_exact_keys(data, _DATASET_KEYS, "dataset")
     if data.get("schemaVersion") != INTAKE_SCHEMA_VERSION:
         raise EnforcementOutcomeIntakeError("unsupported intake schemaVersion")
     dataset_version = _require_string(data.get("datasetVersion"), "datasetVersion")
@@ -393,24 +394,26 @@ def normalize_private_intake_dataset(
         normalize_private_intake_record(row, record_secret=record_secret, reviewer_secret=reviewer_secret)
         for row in records
     ]
-    ids = [row["caseId"] for row in normalized]
-    if len(ids) != len(set(ids)):
+    case_ids = [row["caseId"] for row in normalized]
+    if len(case_ids) != len(set(case_ids)):
         raise EnforcementOutcomeIntakeError("duplicate source records detected after de-identification")
-    output = {
+    source_ids = [row["provenance"]["recordId"] for row in normalized if row.get("provenance")]
+    if len(source_ids) != len(set(source_ids)):
+        raise EnforcementOutcomeIntakeError("duplicate provenance records detected after de-identification")
+    return validate_safe_intake_dataset({
         "schemaVersion": INTAKE_SCHEMA_VERSION,
         "datasetVersion": dataset_version,
         "jurisdiction": "KR",
         "records": normalized,
-    }
-    return validate_safe_intake_dataset(output)
+    })
 
 
 def validate_safe_intake_dataset(data: Any) -> Dict[str, Any]:
-    """Validate an already de-identified intake dataset before persistence/export."""
     if not isinstance(data, dict):
         raise EnforcementOutcomeIntakeError("safe intake dataset must be an object")
     _reject_forbidden_fields(data)
     _reject_private_only_fields(data)
+    _require_exact_keys(data, _DATASET_KEYS, "dataset")
     if data.get("schemaVersion") != INTAKE_SCHEMA_VERSION:
         raise EnforcementOutcomeIntakeError("unsupported intake schemaVersion")
     _require_string(data.get("datasetVersion"), "datasetVersion")
@@ -419,16 +422,18 @@ def validate_safe_intake_dataset(data: Any) -> Dict[str, Any]:
     rows = data.get("records")
     if not isinstance(rows, list):
         raise EnforcementOutcomeIntakeError("records must be an array")
-    seen: set[str] = set()
+    seen_cases: set[str] = set()
+    seen_sources: set[str] = set()
     for row in rows:
         if not isinstance(row, dict):
             raise EnforcementOutcomeIntakeError("safe intake record must be an object")
+        _require_exact_keys(row, _SAFE_RECORD_KEYS, "safe record")
         case_id = _require_string(row.get("caseId"), "caseId")
-        if not case_id.startswith("case_"):
+        if not case_id.startswith("case_") or len(case_id) != 29:
             raise EnforcementOutcomeIntakeError("safe intake caseId must be a derived token")
-        if case_id in seen:
+        if case_id in seen_cases:
             raise EnforcementOutcomeIntakeError(f"duplicate caseId: {case_id}")
-        seen.add(case_id)
+        seen_cases.add(case_id)
         stage = _require_string(row.get("reviewStage"), f"{case_id}.reviewStage")
         if stage not in _ALLOWED_STAGES:
             raise EnforcementOutcomeIntakeError(f"unsupported reviewStage: {stage}")
@@ -438,11 +443,15 @@ def validate_safe_intake_dataset(data: Any) -> Dict[str, Any]:
             raise EnforcementOutcomeIntakeError(f"{case_id} requires provenance")
         if isinstance(provenance, dict):
             _validate_safe_provenance(provenance)
+            source_id = provenance["recordId"]
+            if source_id in seen_sources:
+                raise EnforcementOutcomeIntakeError(f"duplicate provenance recordId: {source_id}")
+            seen_sources.add(source_id)
         _validate_safe_history(row.get("reviewHistory"), current_stage=stage)
+        _validated_reviewer_role(row.get("reviewerRole"), required=stage == "INDEPENDENTLY_REVIEWED")
         if stage == "INDEPENDENTLY_REVIEWED":
             if row.get("independentFromPrediction") is not True:
                 raise EnforcementOutcomeIntakeError(f"{case_id} is not independent from prediction")
-            _require_string(row.get("reviewerRole"), f"{case_id}.reviewerRole")
             _normalize_outcome(row.get("outcome"), required=True)
         elif row.get("outcome") not in (None, {}):
             _normalize_outcome(row.get("outcome"), required=False)
@@ -450,17 +459,15 @@ def validate_safe_intake_dataset(data: Any) -> Dict[str, Any]:
 
 
 def promote_reviewed_ground_truth(data: Any) -> Dict[str, Any]:
-    """Export only independently reviewed records to the existing evaluator schema."""
     safe = validate_safe_intake_dataset(data)
     rows: list[Dict[str, Any]] = []
     for row in safe["records"]:
         if row["reviewStage"] != "INDEPENDENTLY_REVIEWED":
             continue
-        reviewed_at = row["reviewHistory"][-1]["at"][:10]
         promoted: Dict[str, Any] = {
             "caseId": row["caseId"],
             "reviewStatus": "INDEPENDENTLY_REVIEWED",
-            "reviewedAt": reviewed_at,
+            "reviewedAt": row["reviewHistory"][-1]["at"][:10],
             "reviewerRole": row["reviewerRole"],
             "independentFromPrediction": True,
             "provenance": deepcopy(row["provenance"]),
