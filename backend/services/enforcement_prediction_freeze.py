@@ -41,6 +41,7 @@ _FREEZE_DATASET_KEYS = {
     "datasetVersion",
     "jurisdiction",
     "caseSetId",
+    "caseSetGeneratedAt",
     "frozenAt",
     "freezeId",
     "predictionContract",
@@ -76,6 +77,21 @@ def _canonical_json(value: Any) -> str:
 
 def _sha256(value: Any) -> str:
     return hashlib.sha256(_canonical_json(value).encode("utf-8")).hexdigest()
+
+
+def _require_hex(value: Any, length: int, field: str) -> str:
+    raw = _require_string(value, field)
+    if len(raw) != length or any(ch not in "0123456789abcdef" for ch in raw):
+        raise EnforcementPredictionFreezeError(f"invalid {field}")
+    return raw
+
+
+def _require_hex_token(value: Any, *, prefix: str, hex_length: int, field: str) -> str:
+    raw = _require_string(value, field)
+    if not raw.startswith(prefix):
+        raise EnforcementPredictionFreezeError(f"invalid {field}")
+    _require_hex(raw[len(prefix):], hex_length, field)
+    return raw
 
 
 def _parse_timestamp(value: Any, field: str) -> datetime:
@@ -189,9 +205,7 @@ def validate_blind_case_set(data: Any) -> Dict[str, Any]:
         if not isinstance(row, dict):
             raise EnforcementPredictionFreezeError("blind case record must be an object")
         _require_exact_keys(row, _BLIND_RECORD_KEYS, "blind case record")
-        case_id = _require_string(row.get("caseId"), "record.caseId")
-        if not case_id.startswith("case_") or len(case_id) != 29:
-            raise EnforcementPredictionFreezeError("blind caseId must be a derived case token")
+        case_id = _require_hex_token(row.get("caseId"), prefix="case_", hex_length=24, field="record.caseId")
         if case_id in seen:
             raise EnforcementPredictionFreezeError(f"duplicate blind caseId: {case_id}")
         if previous_case_id is not None and case_id < previous_case_id:
@@ -200,13 +214,14 @@ def validate_blind_case_set(data: Any) -> Dict[str, Any]:
         previous_case_id = case_id
         facts = row.get("caseFacts")
         expected_digest = _case_facts_digest(facts)
-        digest = _require_string(row.get("caseFactsDigest"), f"{case_id}.caseFactsDigest")
+        digest = _require_hex(row.get("caseFactsDigest"), 64, f"{case_id}.caseFactsDigest")
         if digest != expected_digest:
             raise EnforcementPredictionFreezeError(f"caseFactsDigest mismatch for {case_id}")
         normalized.append(deepcopy(row))
 
     expected_case_set_id = _case_set_identity(dataset_version, normalized)
-    if data.get("caseSetId") != expected_case_set_id:
+    case_set_id = _require_hex_token(data.get("caseSetId"), prefix="cases_", hex_length=24, field="caseSetId")
+    if case_set_id != expected_case_set_id:
         raise EnforcementPredictionFreezeError("caseSetId does not match blind cohort content")
     return deepcopy(data)
 
@@ -242,6 +257,12 @@ def freeze_predictions(
             f"prediction cohort mismatch: missing={missing} extra={extra}"
         )
 
+    frozen_at_raw = _iso_timestamp(frozen_at)
+    generated_at_dt = _parse_timestamp(cases["generatedAt"], "generatedAt")
+    frozen_at_dt = _parse_timestamp(frozen_at_raw, "frozenAt")
+    if frozen_at_dt < generated_at_dt:
+        raise EnforcementPredictionFreezeError("prediction freeze cannot precede blind case-set generation")
+
     records: list[Dict[str, Any]] = []
     contract: Optional[Dict[str, str]] = None
     for row in cases["records"]:
@@ -273,7 +294,8 @@ def freeze_predictions(
         "datasetVersion": cases["datasetVersion"],
         "jurisdiction": "KR",
         "caseSetId": cases["caseSetId"],
-        "frozenAt": _iso_timestamp(frozen_at),
+        "caseSetGeneratedAt": cases["generatedAt"],
+        "frozenAt": frozen_at_raw,
         "predictionContract": contract,
         "records": records,
     }
@@ -295,10 +317,11 @@ def validate_prediction_freeze(data: Any) -> Dict[str, Any]:
     _require_string(data.get("datasetVersion"), "datasetVersion")
     if data.get("jurisdiction") != "KR":
         raise EnforcementPredictionFreezeError("unsupported prediction freeze jurisdiction")
-    case_set_id = _require_string(data.get("caseSetId"), "caseSetId")
-    if not case_set_id.startswith("cases_") or len(case_set_id) != 30:
-        raise EnforcementPredictionFreezeError("invalid caseSetId")
-    _parse_timestamp(data.get("frozenAt"), "frozenAt")
+    _require_hex_token(data.get("caseSetId"), prefix="cases_", hex_length=24, field="caseSetId")
+    generated_at = _parse_timestamp(data.get("caseSetGeneratedAt"), "caseSetGeneratedAt")
+    frozen_at = _parse_timestamp(data.get("frozenAt"), "frozenAt")
+    if frozen_at < generated_at:
+        raise EnforcementPredictionFreezeError("prediction freeze cannot precede blind case-set generation")
 
     contract = data.get("predictionContract")
     if not isinstance(contract, dict):
@@ -316,21 +339,17 @@ def validate_prediction_freeze(data: Any) -> Dict[str, Any]:
         if not isinstance(row, dict):
             raise EnforcementPredictionFreezeError("prediction freeze record must be an object")
         _require_exact_keys(row, _FREEZE_RECORD_KEYS, "prediction freeze record")
-        case_id = _require_string(row.get("caseId"), "record.caseId")
-        if not case_id.startswith("case_") or len(case_id) != 29:
-            raise EnforcementPredictionFreezeError("frozen caseId must be a derived case token")
+        case_id = _require_hex_token(row.get("caseId"), prefix="case_", hex_length=24, field="record.caseId")
         if case_id in seen:
             raise EnforcementPredictionFreezeError(f"duplicate frozen caseId: {case_id}")
         if previous_case_id is not None and case_id < previous_case_id:
             raise EnforcementPredictionFreezeError("prediction freeze records must be sorted by caseId")
         seen.add(case_id)
         previous_case_id = case_id
-        facts_digest = _require_string(row.get("caseFactsDigest"), f"{case_id}.caseFactsDigest")
-        if len(facts_digest) != 64 or any(ch not in "0123456789abcdef" for ch in facts_digest):
-            raise EnforcementPredictionFreezeError(f"invalid caseFactsDigest for {case_id}")
+        _require_hex(row.get("caseFactsDigest"), 64, f"{case_id}.caseFactsDigest")
         prediction = _as_prediction(row.get("prediction"))
         prediction_json = prediction.public_dict(exclude_none=False)
-        digest = _require_string(row.get("predictionDigest"), f"{case_id}.predictionDigest")
+        digest = _require_hex(row.get("predictionDigest"), 64, f"{case_id}.predictionDigest")
         if digest != _sha256(prediction_json):
             raise EnforcementPredictionFreezeError(f"predictionDigest mismatch for {case_id}")
         actual_contract = {
@@ -343,7 +362,8 @@ def validate_prediction_freeze(data: Any) -> Dict[str, Any]:
 
     payload_without_id = {key: deepcopy(value) for key, value in data.items() if key != "freezeId"}
     expected_id = _freeze_identity(payload_without_id)
-    if data.get("freezeId") != expected_id:
+    freeze_id = _require_hex_token(data.get("freezeId"), prefix="freeze_", hex_length=24, field="freezeId")
+    if freeze_id != expected_id:
         raise EnforcementPredictionFreezeError("freezeId does not match frozen content")
     return deepcopy(data)
 
@@ -417,6 +437,7 @@ def evaluate_frozen_outcomes(safe_intake: Any, prediction_freeze: Any) -> Dict[s
         "freezeId": frozen["freezeId"],
         "caseSetId": frozen["caseSetId"],
         "datasetVersion": frozen["datasetVersion"],
+        "caseSetGeneratedAt": frozen["caseSetGeneratedAt"],
         "frozenAt": frozen["frozenAt"],
         "cohortCases": len(frozen_rows),
         "reviewedCases": reviewed_count,
