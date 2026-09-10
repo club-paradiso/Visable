@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from copy import deepcopy
 import json
 import os
 from pathlib import Path
@@ -24,7 +23,7 @@ from services.enforcement_outcome_intake import (  # noqa: E402
 )
 
 RECORD_SECRET = "record-secret-for-tests-1234567890"
-REVIEWER_SECRET = "reviewer-secret-for-tests-12345678"
+REVIEWER_SECRET = "reviewer-secret-for-tests-1234567890"
 
 
 def reviewed_private_record(source_id: str = "private-case-001", provenance_id: str = "official-record-001") -> dict:
@@ -113,7 +112,7 @@ def normalize(data: dict) -> dict:
 def test_hmac_tokens_are_stable_but_secret_scoped():
     first = derive_private_token(RECORD_SECRET, "case-1", prefix="case")
     second = derive_private_token(RECORD_SECRET, "case-1", prefix="case")
-    other = derive_private_token("different-secret-123456789", "case-1", prefix="case")
+    other = derive_private_token("different-secret-for-tests-1234567890", "case-1", prefix="case")
     assert first == second
     assert first != other
     assert first.startswith("case_")
@@ -121,8 +120,7 @@ def test_hmac_tokens_are_stable_but_secret_scoped():
 
 
 def test_private_identifiers_and_reviewer_references_do_not_survive_normalization():
-    raw = dataset(reviewed_private_record())
-    safe = normalize(raw)
+    safe = normalize(dataset(reviewed_private_record()))
     blob = json.dumps(safe, ensure_ascii=False)
     assert "private-case-001" not in blob
     assert "official-record-001" not in blob
@@ -185,6 +183,25 @@ def test_duplicate_source_records_are_detected_deterministically():
         normalize(dataset(one, two))
 
 
+def test_duplicate_provenance_is_rejected_even_when_case_ids_differ():
+    one = reviewed_private_record("private-case-a", "same-official-source")
+    two = reviewed_private_record("private-case-b", "same-official-source")
+    with pytest.raises(EnforcementOutcomeIntakeError, match="duplicate provenance"):
+        normalize(dataset(one, two))
+
+
+def test_runtime_validator_is_closed_shape_for_private_and_safe_records():
+    raw = reviewed_private_record()
+    raw["mysteryField"] = "not allowed"
+    with pytest.raises(EnforcementOutcomeIntakeError, match="unsupported fields in private record"):
+        normalize(dataset(raw))
+
+    safe = normalize(dataset(reviewed_private_record()))
+    safe["records"][0]["mysteryField"] = "not allowed"
+    with pytest.raises(EnforcementOutcomeIntakeError, match="unsupported fields in safe record"):
+        validate_safe_intake_dataset(safe)
+
+
 def test_safe_validator_rejects_private_only_fields_leaked_after_normalization():
     safe = normalize(dataset(reviewed_private_record()))
     safe["records"][0]["sourceRecordId"] = "should-never-be-here"
@@ -195,6 +212,25 @@ def test_safe_validator_rejects_private_only_fields_leaked_after_normalization()
     safe["records"][0]["reviewHistory"][0]["reviewerReference"] = "should-never-be-here"
     with pytest.raises(EnforcementOutcomeIntakeError, match="private-only field leaked"):
         validate_safe_intake_dataset(safe)
+
+
+def test_reviewer_role_must_be_non_identifying_approved_code():
+    raw = reviewed_private_record()
+    raw["reviewerRole"] = "Jane Doe"
+    with pytest.raises(EnforcementOutcomeIntakeError, match="approved role code"):
+        normalize(dataset(raw))
+
+
+def test_public_url_rejects_local_and_private_network_hosts():
+    raw = reviewed_private_record()
+    raw["provenance"]["publicUrl"] = "https://localhost/private"
+    with pytest.raises(EnforcementOutcomeIntakeError, match="local host"):
+        normalize(dataset(raw))
+
+    raw = reviewed_private_record()
+    raw["provenance"]["publicUrl"] = "https://127.0.0.1/private"
+    with pytest.raises(EnforcementOutcomeIntakeError, match="non-public IP"):
+        normalize(dataset(raw))
 
 
 def test_only_independently_reviewed_records_are_promoted_to_evaluator_contract():
@@ -216,6 +252,7 @@ def test_checked_in_intake_template_is_empty_and_schema_is_closed():
     assert validate_safe_intake_dataset(template)["records"] == []
     assert schema["additionalProperties"] is False
     assert schema["$defs"]["record"]["additionalProperties"] is False
+    assert "AUTHORIZED_ADMINISTRATIVE_REVIEWER" in schema["$defs"]["reviewerRole"]["enum"]
 
 
 def test_cli_deidentifies_validates_and_promotes_without_echoing_private_ids(tmp_path: Path):
