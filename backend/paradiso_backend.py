@@ -259,6 +259,13 @@ OPENROUTER_TIMEOUT_SECONDS: float = _env_float("OPENROUTER_TIMEOUT_SECONDS", 60.
 OPENROUTER_CHAIN_BUDGET_SECONDS: float = min(
     60.0, max(1.0, _env_float("OPENROUTER_CHAIN_BUDGET_SECONDS", 45.0))
 )
+# Keep part of the chain budget available for at least one alternate model.
+# Without this reserve, the first slow model receives the entire remaining
+# chain budget and a four-model "fallback" chain can make exactly one request.
+OPENROUTER_FALLBACK_RESERVE_SECONDS: float = min(
+    20.0,
+    max(0.0, _env_float("OPENROUTER_FALLBACK_RESERVE_SECONDS", 12.0)),
+)
 # Enforcement is synchronous from the user's perspective, so a long provider
 # fallback chain is worse than returning the deterministic legal baseline.
 # This is a total budget for the whole enforcement model chain, not per model.
@@ -2472,13 +2479,17 @@ async def _openrouter_complete_with_candidates(
     last_error_type: Optional[str] = None
     last_retryable = False
 
-    for model in runnable:
+    for index, model in enumerate(runnable):
         remaining = OPENROUTER_CHAIN_BUDGET_SECONDS - (time.monotonic() - started)
         if remaining <= 0:
             chain_budget_exhausted = True
             last_error_type = "openrouter_chain_budget_exhausted"
             last_retryable = True
             break
+        attempt_timeout = _openrouter_candidate_attempt_timeout(
+            remaining,
+            has_fallback=index < len(runnable) - 1,
+        )
         attempted.append(model)
         try:
             call_kwargs: Dict[str, Any] = {"model": model, "max_tokens": max_tokens}
@@ -2489,15 +2500,18 @@ async def _openrouter_complete_with_candidates(
             if temperature is not None:
                 call_kwargs["temperature"] = temperature
             answer = await asyncio.wait_for(
-                _call_openrouter(prompt, **call_kwargs), timeout=remaining
+                _call_openrouter(prompt, **call_kwargs), timeout=attempt_timeout
             )
         except asyncio.TimeoutError:
             upstream_statuses.append(504)
-            last_error_type = "openrouter_chain_budget_exhausted"
+            if index == len(runnable) - 1:
+                chain_budget_exhausted = True
+                last_error_type = "openrouter_chain_budget_exhausted"
+            else:
+                last_error_type = "openrouter_candidate_timeout"
             last_retryable = True
-            chain_budget_exhausted = True
             _mark_openrouter_model_cooling_down(model)
-            break
+            continue
         except HTTPException as exc:
             detail = exc.detail if isinstance(exc.detail, dict) else {}
             upstream = detail.get("status", exc.status_code)
@@ -2562,6 +2576,24 @@ async def _openrouter_complete_with_candidates(
         "chain_budget_exhausted": chain_budget_exhausted,
         "latency_ms": int((time.monotonic() - started) * 1000),
     }
+
+
+def _openrouter_candidate_attempt_timeout(
+    remaining: float,
+    *,
+    has_fallback: bool,
+) -> float:
+    """Bound one candidate without letting it consume the fallback chain.
+
+    The reserve is only carved out while enough time remains to make it useful.
+    Once the chain reaches the reserved tail, the next candidate receives all
+    remaining time instead of repeatedly subdividing an already-small budget.
+    """
+    bounded = min(OPENROUTER_TIMEOUT_SECONDS, max(0.001, remaining))
+    reserve = min(OPENROUTER_FALLBACK_RESERVE_SECONDS, remaining / 2.0)
+    if has_fallback and reserve > 0 and remaining > OPENROUTER_FALLBACK_RESERVE_SECONDS * 1.5:
+        return max(0.001, min(bounded, remaining - reserve))
+    return bounded
 
 
 # ---------------------------------------------------------------------------
@@ -2760,31 +2792,44 @@ async def _sse_answer_stream(
         "all_candidates_cooling_down" if not runnable else None
     )
 
-    for model in runnable:
+    for index, model in enumerate(runnable):
         remaining = OPENROUTER_CHAIN_BUDGET_SECONDS - (time.monotonic() - started)
         if remaining <= 0:
             chain_budget_exhausted = True
             last_error_type = "openrouter_chain_budget_exhausted"
             break
+        attempt_timeout = _openrouter_candidate_attempt_timeout(
+            remaining,
+            has_fallback=index < len(runnable) - 1,
+        )
         attempted.append(model)
         committed = False
         answer_parts: List[str] = []
+        stream = _stream_openrouter_text(final_prompt, model=model, max_tokens=max_tokens)
         try:
-            async with asyncio.timeout(remaining):
-                async for delta in _stream_openrouter_text(final_prompt, model=model, max_tokens=max_tokens):
-                    if not committed:
-                        committed = True
-                        _primary = candidates[0] if candidates else model
-                        _is_fast = str(base_meta.get("answer_mode") or "") == "fast"
-                        yield _sse("model", {
-                            "final_model": model,
-                            "selected_model": model,
-                            "primary_model": _primary,
-                            "model_fallback_used": bool(candidates) and model != _primary,
-                            "fast_mode_fell_back": bool(_is_fast and model != _primary),
-                            "answer_mode": base_meta.get("answer_mode", ""),
-                            "attempted_models": list(attempted),
-                        })
+            # Bound time-to-first-token per candidate. Once output is committed
+            # we cannot safely switch models mid-answer, so the rest of the
+            # stream receives the remaining total chain budget.
+            first_delta = await asyncio.wait_for(anext(stream), timeout=attempt_timeout)
+            committed = True
+            _primary = candidates[0] if candidates else model
+            _is_fast = str(base_meta.get("answer_mode") or "") == "fast"
+            yield _sse("model", {
+                "final_model": model,
+                "selected_model": model,
+                "primary_model": _primary,
+                "model_fallback_used": bool(candidates) and model != _primary,
+                "fast_mode_fell_back": bool(_is_fast and model != _primary),
+                "answer_mode": base_meta.get("answer_mode", ""),
+                "attempted_models": list(attempted),
+            })
+            answer_parts.append(first_delta)
+            yield _sse("delta", {"text": first_delta})
+            stream_remaining = OPENROUTER_CHAIN_BUDGET_SECONDS - (time.monotonic() - started)
+            if stream_remaining <= 0:
+                raise TimeoutError
+            async with asyncio.timeout(stream_remaining):
+                async for delta in stream:
                     answer_parts.append(delta)
                     yield _sse("delta", {"text": delta})
             if committed:
@@ -2800,14 +2845,22 @@ async def _sse_answer_stream(
                     return
                 yield _sse("done", {"final_model": model, "attempted_models": list(attempted)})
                 return
+        except StopAsyncIteration:
             # Stream ended with zero tokens: treat as a soft failure, try next.
             last_error_type = "empty_stream"
             continue
         except TimeoutError:
-            chain_budget_exhausted = True
-            last_error_type = "openrouter_chain_budget_exhausted"
             _mark_openrouter_model_cooling_down(model)
-            break
+            if committed:
+                chain_budget_exhausted = True
+                last_error_type = "openrouter_chain_budget_exhausted"
+                break
+            if index == len(runnable) - 1:
+                chain_budget_exhausted = True
+                last_error_type = "openrouter_chain_budget_exhausted"
+            else:
+                last_error_type = "openrouter_candidate_timeout"
+            continue
         except HTTPException as exc:
             if committed:
                 # Failure AFTER partial output: stop cleanly (can't switch models
@@ -4290,6 +4343,7 @@ async def health() -> Dict[str, Any]:
             "candidate_warnings": candidate_warnings,
             **_openrouter_cooldown_metadata(),
             "chain_budget_seconds": OPENROUTER_CHAIN_BUDGET_SECONDS,
+            "fallback_reserve_seconds": OPENROUTER_FALLBACK_RESERVE_SECONDS,
             "ollama_fallback_enabled": ENABLE_OLLAMA_FALLBACK,
             "ollama_model": OLLAMA_MODEL,
             "ollama_configured": bool(ENABLE_OLLAMA_FALLBACK and OLLAMA_BASE_URL),
@@ -4411,6 +4465,7 @@ async def health_ai() -> Dict[str, Any]:
         "timeouts": {
             "OPENROUTER_TIMEOUT_SECONDS": env_present("OPENROUTER_TIMEOUT_SECONDS"),
             "OPENROUTER_CHAIN_BUDGET_SECONDS": env_present("OPENROUTER_CHAIN_BUDGET_SECONDS"),
+            "OPENROUTER_FALLBACK_RESERVE_SECONDS": env_present("OPENROUTER_FALLBACK_RESERVE_SECONDS"),
             "OPENROUTER_MODEL_COOLDOWN_SECONDS": env_present("OPENROUTER_MODEL_COOLDOWN_SECONDS"),
         },
         "law": {
@@ -4482,6 +4537,7 @@ async def health_ai() -> Dict[str, Any]:
         "cooldown": {
             **_MODEL_COOLDOWNS.metadata(),
             "chainBudgetSeconds": OPENROUTER_CHAIN_BUDGET_SECONDS,
+            "fallbackReserveSeconds": OPENROUTER_FALLBACK_RESERVE_SECONDS,
         },
         "environmentOverrides": environment_overrides,
         "grounding": {

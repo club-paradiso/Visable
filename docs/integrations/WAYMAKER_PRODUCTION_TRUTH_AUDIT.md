@@ -48,8 +48,10 @@ only by length and a short SHA-256 fingerprint.
    ignored by default; enable `OPENROUTER_ALLOW_MODEL_ENV_OVERRIDES=true` only
    for a deliberate, temporary override whose public catalog entries were
    independently checked.
-2. Set `OPENROUTER_CHAIN_BUDGET_SECONDS=45` so the complete model chain stays
-   below the frontend's 75-second deadline.
+2. Keep `OPENROUTER_CHAIN_BUDGET_SECONDS=45` so the complete model chain stays
+   below the frontend's 75-second deadline. Keep
+   `OPENROUTER_FALLBACK_RESERVE_SECONDS=12` (the code default) so a hung first
+   candidate cannot consume all 45 seconds before an alternate is attempted.
 3. Configure a valid explicit `LAW_API_OC`; keep `LAW_API_KEY` only as a legacy
    fallback. Never print either value during verification.
    Keep `LAW_GROUNDING_TOTAL_BUDGET_SECONDS=12` so a failing multi-query plan
