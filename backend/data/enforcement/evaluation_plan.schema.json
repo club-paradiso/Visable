@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://visable.local/schemas/enforcement/evaluation_plan.schema.json",
+  "title": "Enforcement Intelligence v3 Evaluation Plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "protocolVersion",
+    "datasetVersion",
+    "jurisdiction",
+    "caseSetId",
+    "caseSetGeneratedAt",
+    "createdAt",
+    "planId",
+    "metrics",
+    "reportingPolicy"
+  ],
+  "properties": {
+    "schemaVersion": {"const": "1.0.0"},
+    "protocolVersion": {"const": "enforcement-v3-evaluation-plan-v1"},
+    "datasetVersion": {"type": "string", "minLength": 1},
+    "jurisdiction": {"const": "KR"},
+    "caseSetId": {"type": "string", "pattern": "^cases_[0-9a-f]{24}$"},
+    "caseSetGeneratedAt": {"type": "string", "format": "date-time"},
+    "createdAt": {"type": "string", "format": "date-time"},
+    "planId": {"type": "string", "pattern": "^plan_[0-9a-f]{24}$"},
+    "metrics": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/metric"}
+    },
+    "reportingPolicy": {"$ref": "#/$defs/reportingPolicy"}
+  },
+  "$defs": {
+    "metric": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["metric", "minimumEligibleCases"],
+      "properties": {
+        "metric": {
+          "enum": [
+            "PREDICTION_AVAILABILITY",
+            "MONETARY_INTERVAL_COVERAGE",
+            "MONETARY_POINT_MAE_KRW",
+            "DISPOSITION_TOP1_ACCURACY",
+            "DISPOSITION_TOPK_RECALL",
+            "QUALITATIVE_CONFIDENCE_OBSERVED_SUCCESS"
+          ]
+        },
+        "minimumEligibleCases": {"type": "integer", "minimum": 1}
+      }
+    },
+    "reportingPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "suppressBelowMinimum",
+        "reportCohortAttrition",
+        "allowPerformanceVerdict",
+        "allowProbabilityCalibrationClaim"
+      ],
+      "properties": {
+        "suppressBelowMinimum": {"const": true},
+        "reportCohortAttrition": {"const": true},
+        "allowPerformanceVerdict": {"const": false},
+        "allowProbabilityCalibrationClaim": {"const": false}
+      }
+    }
+  }
+}
