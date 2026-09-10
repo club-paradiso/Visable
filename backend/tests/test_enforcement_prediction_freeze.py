@@ -2,7 +2,9 @@ from __future__ import annotations
 
 from copy import deepcopy
 from datetime import datetime
+import json
 from pathlib import Path
+import subprocess
 import sys
 
 import pytest
@@ -143,6 +145,13 @@ def _freeze_from_safe(safe: dict, *, frozen_at: str = "2026-08-20T00:30:00+00:00
     return cases, frozen
 
 
+def _reviewed_safe() -> dict:
+    return _normalize(
+        _private_record("case-a", stage="INDEPENDENTLY_REVIEWED"),
+        _private_record("case-b", stage="STAGED", facts=_facts("F-2")),
+    )
+
+
 def test_blind_case_export_requires_complete_pre_outcome_cohort():
     safe = _pre_outcome_safe()
     cases = build_blind_case_set(safe, generated_at=datetime.fromisoformat("2026-08-19T23:30:00+00:00"))
@@ -187,8 +196,7 @@ def test_prediction_and_freeze_digests_detect_tampering():
 
 
 def test_evaluation_rejects_case_fact_drift_after_freeze():
-    safe = _pre_outcome_safe()
-    _, frozen = _freeze_from_safe(safe)
+    _, frozen = _freeze_from_safe(_pre_outcome_safe())
     reviewed = _normalize(
         _private_record("case-a", stage="INDEPENDENTLY_REVIEWED", facts=_facts("E-7")),
         _private_record("case-b", stage="STAGED", facts=_facts("F-2")),
@@ -198,24 +206,14 @@ def test_evaluation_rejects_case_fact_drift_after_freeze():
 
 
 def test_evaluation_rejects_freeze_that_does_not_precede_independent_review():
-    safe = _pre_outcome_safe()
-    _, frozen = _freeze_from_safe(safe, frozen_at="2026-08-20T02:00:00+00:00")
-    reviewed = _normalize(
-        _private_record("case-a", stage="INDEPENDENTLY_REVIEWED"),
-        _private_record("case-b", stage="STAGED", facts=_facts("F-2")),
-    )
+    _, frozen = _freeze_from_safe(_pre_outcome_safe(), frozen_at="2026-08-20T02:00:00+00:00")
     with pytest.raises(EnforcementPredictionFreezeError, match="must precede independent review"):
-        evaluate_frozen_outcomes(reviewed, frozen)
+        evaluate_frozen_outcomes(_reviewed_safe(), frozen)
 
 
 def test_valid_frozen_cohort_joins_reviewed_outcomes_without_cherry_picking():
-    safe = _pre_outcome_safe()
-    _, frozen = _freeze_from_safe(safe)
-    reviewed = _normalize(
-        _private_record("case-a", stage="INDEPENDLY_REVIEWED") if False else _private_record("case-a", stage="INDEPENDENTLY_REVIEWED"),
-        _private_record("case-b", stage="STAGED", facts=_facts("F-2")),
-    )
-    report = evaluate_frozen_outcomes(reviewed, frozen)
+    _, frozen = _freeze_from_safe(_pre_outcome_safe())
+    report = evaluate_frozen_outcomes(_reviewed_safe(), frozen)
     assert report["protocolStatus"] == "VALID"
     assert report["cohortCases"] == 2
     assert report["reviewedCases"] == 1
@@ -225,8 +223,7 @@ def test_valid_frozen_cohort_joins_reviewed_outcomes_without_cherry_picking():
 
 
 def test_evaluation_rejects_cohort_growth_after_freeze():
-    safe = _pre_outcome_safe()
-    _, frozen = _freeze_from_safe(safe)
+    _, frozen = _freeze_from_safe(_pre_outcome_safe())
     grown = _normalize(
         _private_record("case-a", stage="SOURCE_VERIFIED"),
         _private_record("case-b", stage="STAGED", facts=_facts("F-2")),
@@ -234,3 +231,64 @@ def test_evaluation_rejects_cohort_growth_after_freeze():
     )
     with pytest.raises(EnforcementPredictionFreezeError, match="cohort changed"):
         evaluate_frozen_outcomes(grown, frozen)
+
+
+def test_checked_in_blind_freeze_schemas_are_closed_at_protocol_boundaries():
+    blind_schema = json.loads(
+        (REPO_ROOT / "backend/data/enforcement/blind_case_set.schema.json").read_text(encoding="utf-8")
+    )
+    freeze_schema = json.loads(
+        (REPO_ROOT / "backend/data/enforcement/prediction_freeze.schema.json").read_text(encoding="utf-8")
+    )
+    assert blind_schema["additionalProperties"] is False
+    assert blind_schema["$defs"]["record"]["additionalProperties"] is False
+    assert freeze_schema["additionalProperties"] is False
+    assert freeze_schema["$defs"]["record"]["additionalProperties"] is False
+    assert freeze_schema["properties"]["protocolVersion"]["const"] == "enforcement-v3-blind-freeze-v1"
+
+
+def test_cli_validates_frozen_bundle_and_evaluates_without_revealing_private_ids(tmp_path: Path):
+    cases, frozen = _freeze_from_safe(_pre_outcome_safe())
+    reviewed = _reviewed_safe()
+    cases_path = tmp_path / "cases.json"
+    freeze_path = tmp_path / "freeze.json"
+    intake_path = tmp_path / "intake.json"
+    report_path = tmp_path / "report.json"
+    cases_path.write_text(json.dumps(cases), encoding="utf-8")
+    freeze_path.write_text(json.dumps(frozen), encoding="utf-8")
+    intake_path.write_text(json.dumps(reviewed), encoding="utf-8")
+
+    script = REPO_ROOT / "scripts/freeze_enforcement_v3_predictions.py"
+    validate_run = subprocess.run(
+        [sys.executable, str(script), "validate-freeze", "--input", str(freeze_path)],
+        cwd=REPO_ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    assert validate_run.returncode == 0, validate_run.stderr
+    assert "prediction_freeze_valid" in validate_run.stdout
+    assert "case-a" not in validate_run.stdout
+
+    evaluate_run = subprocess.run(
+        [
+            sys.executable,
+            str(script),
+            "evaluate",
+            "--intake",
+            str(intake_path),
+            "--freeze",
+            str(freeze_path),
+            "--output",
+            str(report_path),
+        ],
+        cwd=REPO_ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    assert evaluate_run.returncode == 0, evaluate_run.stderr
+    assert "blind_evaluation=EVALUATED" in evaluate_run.stdout
+    assert "case-a" not in evaluate_run.stdout
+    report = json.loads(report_path.read_text(encoding="utf-8"))
+    assert report["protocolStatus"] == "VALID"
