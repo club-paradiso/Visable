@@ -131,7 +131,7 @@ def _reject_private_only_fields(value: Any, *, path: str = "root") -> None:
         for key, child in value.items():
             if key in _PRIVATE_ONLY_KEYS:
                 raise EnforcementOutcomeIntakeError(f"private-only field leaked into safe dataset: {path}.{key}")
-            _reject_private_only_fields(child, path=f"{path}.{key}")
+            _reject_private_only_fields(child, path=f"{path}[{index}]") if isinstance(value, list) else f"{path}.{key}")
     elif isinstance(value, list):
         for index, child in enumerate(value):
             _reject_private_only_fields(child, path=f"{path}[{index}]")
@@ -208,12 +208,14 @@ def _normalize_private_provenance(value: Any, *, record_secret: str, required: b
     source_type = _require_string(value.get("sourceType"), "provenance.sourceType")
     if source_type in _FORBIDDEN_SOURCE_TYPES or source_type not in _ALLOWED_SOURCE_TYPES:
         raise EnforcementOutcomeIntakeError(f"ineligible provenance.sourceType: {source_type}")
+    authority = _require_string(value.get("authority"), "provenance.authority")
+    source_record_id = _require_string(value.get("recordId"), "provenance.recordId")
     return {
         "sourceType": source_type,
-        "authority": _require_string(value.get("authority"), "provenance.authority"),
+        "authority": authority,
         "recordId": derive_private_token(
             record_secret,
-            _require_string(value.get("recordId"), "provenance.recordId"),
+            f"{authority}\x1f{source_record_id}",
             prefix="src",
         ),
         "publicUrl": _validate_public_url(value.get("publicUrl")),
