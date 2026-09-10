@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://visable.local/schemas/enforcement/blind_case_set.schema.json",
+  "title": "Enforcement Intelligence v3 Blind Case Set",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "datasetVersion", "jurisdiction", "generatedAt", "caseSetId", "records"],
+  "properties": {
+    "schemaVersion": {"const": "1.0.0"},
+    "datasetVersion": {"type": "string", "minLength": 1},
+    "jurisdiction": {"const": "KR"},
+    "generatedAt": {"type": "string", "format": "date-time"},
+    "caseSetId": {"type": "string", "pattern": "^cases_[0-9a-f]{24}$"},
+    "records": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/record"}
+    }
+  },
+  "$defs": {
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["caseId", "caseFacts", "caseFactsDigest"],
+      "properties": {
+        "caseId": {"type": "string", "pattern": "^case_[0-9a-f]{24}$"},
+        "caseFacts": {"$ref": "#/$defs/caseFacts"},
+        "caseFactsDigest": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "caseFacts": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": false,
+      "properties": {
+        "statusOfStay": {"type": ["string", "null"]},
+        "violationCode": {"type": ["string", "null"]},
+        "durationDays": {"type": ["integer", "null"], "minimum": 0},
+        "priorViolations": {"type": ["integer", "null"], "minimum": 0},
+        "voluntaryDisclosure": {"type": ["boolean", "null"]},
+        "authorizationObtained": {"type": ["boolean", "null"]},
+        "assessmentDate": {"type": ["string", "null"], "format": "date"}
+      }
+    }
+  }
+}

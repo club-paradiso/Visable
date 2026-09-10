@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://visable.local/schemas/enforcement/prediction_freeze.schema.json",
+  "title": "Enforcement Intelligence v3 Prediction Freeze",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "protocolVersion",
+    "datasetVersion",
+    "jurisdiction",
+    "caseSetId",
+    "caseSetGeneratedAt",
+    "frozenAt",
+    "freezeId",
+    "predictionContract",
+    "records"
+  ],
+  "properties": {
+    "schemaVersion": {"const": "1.0.0"},
+    "protocolVersion": {"const": "enforcement-v3-blind-freeze-v1"},
+    "datasetVersion": {"type": "string", "minLength": 1},
+    "jurisdiction": {"const": "KR"},
+    "caseSetId": {"type": "string", "pattern": "^cases_[0-9a-f]{24}$"},
+    "caseSetGeneratedAt": {"type": "string", "format": "date-time"},
+    "frozenAt": {"type": "string", "format": "date-time"},
+    "freezeId": {"type": "string", "pattern": "^freeze_[0-9a-f]{24}$"},
+    "predictionContract": {"$ref": "#/$defs/predictionContract"},
+    "records": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/record"}
+    }
+  },
+  "$defs": {
+    "predictionContract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "engineVersion", "promptVersion"],
+      "properties": {
+        "schemaVersion": {"const": "1"},
+        "engineVersion": {"const": "enforcement-prediction-v1"},
+        "promptVersion": {"const": "enforcement-prediction-prompt-v1"}
+      }
+    },
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["caseId", "caseFactsDigest", "predictionDigest", "prediction"],
+      "properties": {
+        "caseId": {"type": "string", "pattern": "^case_[0-9a-f]{24}$"},
+        "caseFactsDigest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "predictionDigest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "prediction": {"$ref": "#/$defs/prediction"}
+      }
+    },
+    "prediction": {
+      "type": "object",
+      "required": ["schemaVersion", "engineVersion", "promptVersion", "status", "confidence"],
+      "properties": {
+        "schemaVersion": {"const": "1"},
+        "engineVersion": {"const": "enforcement-prediction-v1"},
+        "promptVersion": {"const": "enforcement-prediction-prompt-v1"},
+        "status": {"enum": ["AVAILABLE", "LIMITED", "UNAVAILABLE"]},
+        "modelId": {"type": ["string", "null"]},
+        "confidence": {"type": "object"}
+      }
+    }
+  }
+}
