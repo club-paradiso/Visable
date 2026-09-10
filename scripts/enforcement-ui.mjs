@@ -5,7 +5,6 @@ let structuredCase = null;
 let currentStep = 1;
 let sessionNarrative = '';
 let sessionLocale = 'ko-KR';
-let confirmationRequestToken = 0;
 const skippedClarifications = new Set();
 const analysisCache = new Map();
 
@@ -66,8 +65,12 @@ function resolveAssessmentDate() {
 
 function showStep(number, { scroll = true } = {}) {
   currentStep = number;
+  document.body.dataset.enforcementStep = String(number);
+  let activeSection = null;
   $$('[data-step]').forEach((section) => {
-    section.hidden = Number(section.dataset.step) !== number;
+    const active = Number(section.dataset.step) === number;
+    section.hidden = !active;
+    if (active) activeSection = section;
   });
   $$('[data-step-nav]').forEach((button) => {
     const value = Number(button.dataset.stepNav);
@@ -76,7 +79,12 @@ function showStep(number, { scroll = true } = {}) {
     if (value === number) button.setAttribute('aria-current', 'step');
     else button.removeAttribute('aria-current');
   });
-  if (scroll) window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (scroll && activeSection) {
+    requestAnimationFrame(() => {
+      activeSection.scrollIntoView({ block: 'start', behavior: 'auto' });
+      activeSection.querySelector('h2')?.focus({ preventScroll: true });
+    });
+  }
 }
 
 function setLoading(active, title = '사례를 정리하고 있어요.', detail = '필요한 사실을 빠르게 구조화하고 있습니다.') {
@@ -98,22 +106,31 @@ function setError(target, message = '') {
   target.hidden = !message;
 }
 
-async function request(path, payload) {
+async function request(path, payload, { timeoutMs = 30000 } = {}) {
   if (apiBase == null) {
     throw new Error('Visable 분석 서버 주소를 확인하지 못했습니다. 페이지를 새로고침해 주세요.');
   }
 
   const url = `${apiBase}${path}`;
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
   let response;
   try {
     response = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify(payload),
+      cache: 'no-store',
+      signal: controller.signal,
     });
   } catch (error) {
     console.error('Enforcement API connection failure', { url, error });
+    if (error?.name === 'AbortError') {
+      throw new Error('분석 시간이 길어져 요청을 멈췄습니다. 잠시 후 다시 시도해 주세요.');
+    }
     throw new Error('Visable 분석 서버에 연결하지 못했습니다. 잠시 후 다시 시도해 주세요.');
+  } finally {
+    clearTimeout(timer);
   }
 
   const contentType = response.headers.get('content-type') || '';
@@ -328,7 +345,6 @@ function renderClarification(caseData) {
     skippedClarifications.add(button.dataset.clarifySkip || question.kind);
     setError($('#confirm-error'));
     renderConfirmation(structuredCase);
-    void humanizeConfirmation(structuredCase);
   }));
 
   const apply = $('#clarification-apply', answers);
@@ -376,51 +392,13 @@ function applyClarification(kind, rawValue) {
 
   skippedClarifications.delete(kind);
   renderConfirmation(structuredCase);
-  void humanizeConfirmation(structuredCase);
-}
-
-function confirmationFingerprint(caseData) {
-  const keys = [
-    'statusOfStay', 'violationCode', 'activity', 'workplaceType', 'authorizationObtained',
-    'workplaceChangeAuthorized', 'durationDays', 'priorViolations', 'voluntaryDisclosure',
-    'investigationStarted', 'violationStartDate', 'violationEndDate'
-  ];
-  return JSON.stringify(keys.map((key) => caseData?.[key] ?? null));
 }
 
 function renderConfirmation(caseData) {
   $('#confirmation-summary').textContent = deterministicSummary(caseData);
-  $('#confirmation-source').hidden = true;
   renderFactList(caseData);
   renderConfirmationNotes(caseData);
   renderClarification(caseData);
-}
-
-async function humanizeConfirmation(caseData) {
-  if (!caseData || location.protocol === 'file:') return;
-  const fingerprint = confirmationFingerprint(caseData);
-  const requestToken = ++confirmationRequestToken;
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 9000);
-  try {
-    const response = await fetch(new URL('/api/enforcement/confirm', window.location.origin), {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify({ caseData, locale: sessionLocale }),
-      signal: controller.signal,
-    });
-    if (!response.ok) return;
-    const data = await response.json().catch(() => ({}));
-    if (requestToken !== confirmationRequestToken || currentStep !== 2) return;
-    if (confirmationFingerprint(structuredCase) !== fingerprint) return;
-    if (data.mode !== 'gemma' || typeof data.summary !== 'string' || !data.summary.trim()) return;
-    $('#confirmation-summary').textContent = data.summary.trim();
-    $('#confirmation-source').hidden = false;
-  } catch {
-    // The deterministic confirmation is already visible; model polishing is best-effort only.
-  } finally {
-    clearTimeout(timer);
-  }
 }
 
 function analysisFingerprint(caseData) {
@@ -455,6 +433,21 @@ function disposition(item, primary = false) {
   return `<div class="disposition"><strong><span>${primary ? '가장 유력 · ' : ''}${escapeHtml(dispositionLabels[item.type] || item.type)}</span><span>${escapeHtml(likelihoodLabels[item.likelihood] || item.likelihood)}</span></strong>${factors(item.rationale)}</div>`;
 }
 
+function resultNotice(className, title, body) {
+  return `<div class="${className}"><strong>${escapeHtml(title)}</strong><span>${escapeHtml(body)}</span></div>`;
+}
+
+function renderAnalysisLoading() {
+  $('#result-root').innerHTML = `
+    <div class="analysis-loading" role="status">
+      <span class="loading-spinner" aria-hidden="true"></span>
+      <div>
+        <strong>법령 기준과 예상 처분을 분석하고 있어요.</strong>
+        <p>공식 근거와 AI 응답을 함께 검증하므로 보통 수 초가 걸립니다. 이 화면에서 결과가 바로 이어집니다.</p>
+      </div>
+    </div>`;
+}
+
 function renderResult(data) {
   const baseline = data.legalBaseline || {};
   const prediction = data.prediction || {};
@@ -466,6 +459,13 @@ function renderResult(data) {
   const limitations = prediction.limitations || [];
   const groundingLabel = groundingLabels[grounding.status] || grounding.status || '상태 확인 불가';
   const modelLabel = prediction.modelId ? `모델: ${prediction.modelId}` : '검증된 AI 결과 없음';
+  const durationDays = Number(data.case?.durationDays ?? structuredCase?.durationDays);
+  const boundaryNotice = durationDays === 30
+    ? resultNotice('baseline-boundary-note', '30일은 월 단위 경계에 걸릴 수 있습니다', '별표 7은 “개월” 단위 기준을 사용합니다. 정확한 시작일·종료일을 적으면 경계 판단이 더 정확해집니다.')
+    : '';
+  const degradedNotice = monetary
+    ? ''
+    : resultNotice('prediction-degraded-note', '법령 계산은 그대로 유효합니다', 'AI 예측 실패와 법령 기준 산출 실패는 다른 상태입니다. 왼쪽 법령 기준을 우선 확인하세요.');
 
   $('#result-root').innerHTML = `
     <div class="result-summary">
@@ -476,14 +476,16 @@ function renderResult(data) {
         <p class="amount">${won(baseline.baselineAmountKrw)}</p>
         <p>법정 조정 가능 범위: <strong>${range(baseline.legallyAdjustableRange)}</strong></p>
         <p><span class="tag">${escapeHtml(groundingLabel)}</span></p>
+        ${boundaryNotice}
       </article>
       <article class="result-card prediction">
         <p class="card-kicker">VISABLE AI PREDICTION</p>
         <h3>Visable AI 예상</h3>
         <p class="subtle">예상 범칙금</p>
-        <p class="amount">${monetary ? range(monetary.predictedLikelyRange) : '생성하지 못함'}</p>
-        <p>${monetary?.pointEstimateKrw != null ? `대표 추정액: <strong>${won(monetary.pointEstimateKrw)}</strong>` : '근거가 충분하지 않아 대표 추정액을 표시하지 않습니다.'}</p>
+        <p class="amount">${monetary ? range(monetary.predictedLikelyRange) : 'AI 추정 보류'}</p>
+        <p>${monetary?.pointEstimateKrw != null ? `대표 추정액: <strong>${won(monetary.pointEstimateKrw)}</strong>` : monetary ? '근거가 충분하지 않아 대표 추정액을 표시하지 않습니다.' : '유효성 검증을 통과한 구조화 예측이 없어 금액을 임의로 만들지 않았습니다.'}</p>
         <p class="subtle">${escapeHtml(modelLabel)}</p>
+        ${degradedNotice}
       </article>
     </div>
 
@@ -555,18 +557,18 @@ async function analyzeCase(caseData, { form, errorTarget } = {}) {
   }
 
   setBusy(form, true);
-  setLoading(true, '법령 기준과 예상 처분을 분석하고 있어요.', '결론을 먼저 정리한 뒤 근거와 유사사례를 함께 표시합니다.');
+  renderAnalysisLoading();
+  showStep(3);
   try {
-    const response = await request('/api/enforcement/analyze', { caseData: normalizedCase });
+    const response = await request('/api/enforcement/analyze', { caseData: normalizedCase }, { timeoutMs: 30000 });
     analysisCache.set(fingerprint, response);
     renderResult(response);
-    showStep(3);
   } catch (error) {
     if (errorTarget) setError(errorTarget, error.message);
+    showStep(2);
     throw error;
   } finally {
     setBusy(form, false);
-    setLoading(false);
   }
 }
 
@@ -583,19 +585,17 @@ $('#case-form').addEventListener('submit', async (event) => {
     sessionNarrative = text;
     sessionLocale = detectLocale(text);
     skippedClarifications.clear();
-    confirmationRequestToken += 1;
 
     const response = await request('/api/enforcement/extract', {
       text,
       assessmentDate: resolveAssessmentDate(),
-    });
+    }, { timeoutMs: 15000 });
     structuredCase = response.case;
     $('#case-text').value = '';
     updateCount();
     renderConfirmation(structuredCase);
     setLoading(false);
     showStep(2);
-    void humanizeConfirmation(structuredCase);
   } catch (error) {
     setError($('#input-error'), error.message);
   } finally {
@@ -631,26 +631,23 @@ function restoreNarrativeForEditing() {
 
 $$('[data-back]').forEach((button) => button.addEventListener('click', () => {
   const target = Number(button.dataset.back);
-  confirmationRequestToken += 1;
   if (target === 1) restoreNarrativeForEditing();
   if (target === 2 && structuredCase) renderConfirmation(structuredCase);
   showStep(target);
-  if (target === 2 && structuredCase) void humanizeConfirmation(structuredCase);
 }));
 
 $$('[data-step-nav]').forEach((button) => button.addEventListener('click', () => {
   const target = Number(button.dataset.stepNav);
   if (target >= currentStep) return;
-  confirmationRequestToken += 1;
   if (target === 1) restoreNarrativeForEditing();
   if (target === 2 && structuredCase) renderConfirmation(structuredCase);
   showStep(target);
-  if (target === 2 && structuredCase) void humanizeConfirmation(structuredCase);
 }));
 
 $$('[data-example]').forEach((button) => button.addEventListener('click', () => {
   const textarea = $('#case-text');
   textarea.value = button.dataset.example || '';
+  $$('[data-example]').forEach((item) => item.setAttribute('aria-pressed', String(item === button)));
   textarea.focus();
   updateCount();
 }));
@@ -662,20 +659,23 @@ function updateCount() {
   count.textContent = `${textarea.value.length} / 3000`;
 }
 
-$('#case-text').addEventListener('input', updateCount);
+$('#case-text').addEventListener('input', () => {
+  $$('[data-example]').forEach((button) => button.setAttribute('aria-pressed', 'false'));
+  updateCount();
+});
 $('#assessment-date-today').addEventListener('click', () => setAssessmentDateToday({ force: true }));
 
 $('#restart').addEventListener('click', () => {
   structuredCase = null;
   sessionNarrative = '';
   sessionLocale = 'ko-KR';
-  confirmationRequestToken += 1;
   skippedClarifications.clear();
   $('#case-form').reset();
   $('#confirm-form').reset();
   $('#result-root').innerHTML = '';
   $('#confirmation-summary').textContent = '';
   $('#confirmed-facts').innerHTML = '';
+  $$('[data-example]').forEach((button) => button.setAttribute('aria-pressed', 'false'));
   setError($('#input-error'));
   setError($('#confirm-error'));
   setAssessmentDateToday({ force: true });
