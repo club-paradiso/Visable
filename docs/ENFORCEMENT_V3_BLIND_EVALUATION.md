@@ -4,7 +4,7 @@ This protocol prevents reviewed outcome labels from being used to tune, replace,
 
 ## Why this exists
 
-The reviewed-outcome corpus and the prediction system solve different problems. The corpus establishes independently reviewed ground truth. The prediction freeze establishes what Visable predicted **before** that ground truth was independently reviewed. Evaluating predictions created after the reviewer has already recorded the answer is not prospective evaluation.
+The reviewed-outcome corpus and the prediction system solve different problems. The corpus establishes independently reviewed ground truth. The prediction freeze establishes what Visable predicted **before** that ground truth was independently reviewed. Evaluating predictions created after the reviewer has already recorded the answer is not a blind evaluation.
 
 The freeze mechanism is deliberately local and privacy-safe. It records canonical SHA-256 digests and timestamps, but it is **not external notarization** and must not be described as cryptographic proof that a machine clock was honest.
 
@@ -44,7 +44,7 @@ The freeze mechanism is deliberately local and privacy-safe. It records canonica
 
 The blind case set contains only the de-identified `caseId`, normalized `caseFacts`, and a SHA-256 digest of those facts. Provenance, reviewer history, outcome labels, source-record identifiers, and reviewer identifiers are excluded.
 
-The prediction freeze contains the complete case cohort, one prediction per case, the case-facts digest, a canonical prediction digest, the prediction schema/engine/prompt contract, the UTC freeze timestamp, and a content-derived `freezeId`.
+The prediction freeze contains the complete case cohort, one prediction per case, the case-facts digest, a canonical prediction digest, the prediction schema/engine/prompt contract, the blind case-set creation timestamp, the UTC freeze timestamp, and a content-derived `freezeId`. The freeze timestamp is required to be equal to or later than the case-set creation timestamp.
 
 ## Fail-closed rules
 
@@ -53,6 +53,7 @@ The protocol rejects evaluation when any of the following occurs:
 - the blind export contains a reviewed/rejected record or any outcome label;
 - any cohort case lacks a prediction;
 - predictions contain extra case IDs outside the cohort;
+- the freeze is backdated earlier than blind case-set generation;
 - a prediction or freeze manifest changes without matching its canonical digest;
 - the intake dataset version changes;
 - cases are added to or removed from the frozen cohort;
