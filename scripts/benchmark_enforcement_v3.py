@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run the deterministic Enforcement Intelligence v3 benchmark seed."""
+"""Run the deterministic Enforcement Intelligence v3 benchmark corpus."""
 
 from __future__ import annotations
 
@@ -15,9 +15,9 @@ BACKEND = ROOT / "backend"
 if str(BACKEND) not in sys.path:
     sys.path.insert(0, str(BACKEND))
 
-from services.enforcement_benchmark import run_benchmark  # noqa: E402
+from services.enforcement_benchmark import run_benchmark, validate_benchmark_dataset  # noqa: E402
 
-DEFAULT_FIXTURE = BACKEND / "tests" / "fixtures" / "enforcement_v3_benchmark_seed.json"
+DEFAULT_FIXTURE = BACKEND / "tests" / "fixtures" / "enforcement_v3_benchmark_corpus.json"
 
 
 def parse_args() -> argparse.Namespace:
@@ -26,29 +26,33 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--require-perfect",
         action="store_true",
-        help="Exit non-zero unless all deterministic seed metrics are perfect.",
+        help="Exit non-zero unless all reviewed deterministic metrics are perfect.",
     )
     return parser.parse_args()
 
 
 async def main() -> int:
     args = parse_args()
-    payload = json.loads(args.fixture.read_text(encoding="utf-8"))
+    payload = validate_benchmark_dataset(json.loads(args.fixture.read_text(encoding="utf-8")))
     assessment_date = date.fromisoformat(payload["assessmentDate"])
     report = await run_benchmark(payload["cases"], assessment_date=assessment_date)
+    report["schemaVersion"] = payload.get("schemaVersion")
     report["datasetVersion"] = payload.get("datasetVersion")
     report["assessmentDate"] = payload["assessmentDate"]
     print(json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True))
 
     if args.require_perfect:
-        required = (
+        required = [
             report["exactCaseAccuracy"],
             report["materialFactAccuracy"],
             report["violationCodeAccuracy"],
             report["deterministicBaselineAccuracy"],
+            report["securityInvariantAccuracy"],
             report["abstention"]["precision"],
             report["abstention"]["recall"],
-        )
+        ]
+        if payload.get("schemaVersion") == "2.0.0":
+            required.append(report["coverage"]["provenanceCoverage"])
         if any(value != 1.0 for value in required):
             return 1
     return 0
