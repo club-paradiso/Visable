@@ -15,6 +15,7 @@ from services.enforcement_ontology import (  # noqa: E402
     EnforcementOntologyError,
     deterministic_violation_codes,
     load_enforcement_ontology,
+    ontology_statute_reference,
     validate_legal_rule_database,
     validate_ontology_data,
     violation_map,
@@ -43,7 +44,7 @@ class EnforcementOntologyTests(unittest.TestCase):
             for rule in snapshot["rules"]:
                 definition = definitions[rule["violationCode"]]
                 self.assertEqual(rule["label"], definition["labelKo"])
-                self.assertEqual(rule["statuteArticle"], definition["legalBasis"]["article"])
+                self.assertEqual(rule["statuteArticle"], ontology_statute_reference(definition))
 
     def test_duplicate_violation_codes_are_rejected(self):
         broken = deepcopy(self.ontology)
@@ -69,6 +70,12 @@ class EnforcementOntologyTests(unittest.TestCase):
         broken = deepcopy(self.rules)
         broken["snapshots"][0]["rules"][0]["label"] = "drifted label"
         with self.assertRaisesRegex(EnforcementOntologyError, "rule label drift"):
+            validate_legal_rule_database(broken, ontology=self.ontology)
+
+    def test_rule_statute_drift_is_rejected(self):
+        broken = deepcopy(self.rules)
+        broken["snapshots"][0]["rules"][0]["statuteArticle"] = "출입국관리법 제999조"
+        with self.assertRaisesRegex(EnforcementOntologyError, "rule statute drift"):
             validate_legal_rule_database(broken, ontology=self.ontology)
 
     def test_planned_non_deterministic_concept_does_not_require_money_rule(self):
