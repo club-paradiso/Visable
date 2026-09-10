@@ -104,6 +104,15 @@ def deterministic_violation_codes(data: Optional[Dict[str, Any]] = None) -> set[
     }
 
 
+def ontology_statute_reference(definition: Dict[str, Any]) -> str:
+    """Render the ontology's structured legal basis in the legacy rule format."""
+
+    legal_basis = definition.get("legalBasis") or {}
+    law_name = _require_nonempty_string(legal_basis.get("lawName"), "legalBasis.lawName")
+    article = _require_nonempty_string(legal_basis.get("article"), "legalBasis.article")
+    return f"{law_name} {article}".strip()
+
+
 def validate_legal_rule_database(
     rule_database: Dict[str, Any],
     *,
@@ -131,7 +140,7 @@ def validate_legal_rule_database(
                 raise EnforcementOntologyError(f"ontology forbids deterministic rule for: {code}")
             if rule.get("label") != definition.get("labelKo"):
                 raise EnforcementOntologyError(f"rule label drift for {code}")
-            if rule.get("statuteArticle") != definition.get("legalBasis", {}).get("article"):
+            if rule.get("statuteArticle") != ontology_statute_reference(definition):
                 raise EnforcementOntologyError(f"rule statute drift for {code}")
             observed.add(code)
 
