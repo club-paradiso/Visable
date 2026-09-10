@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, Optional
 
 from .enforcement_models import LegalBaseline, MoneyRange, SourceReference, StructuredCase
+from .enforcement_ontology import EnforcementOntologyError, validate_legal_rule_database
 
 RULES_PATH = Path(__file__).resolve().parents[1] / "data" / "enforcement" / "legal_rules.json"
 
@@ -32,6 +33,10 @@ def load_rule_database(path: Optional[Path] = None) -> Dict[str, Any]:
                 if minimum <= previous or int(tier["amountKrw"]) < 0:
                     raise EnforcementRuleError("invalid or unordered enforcement tiers")
                 previous = minimum
+    try:
+        validate_legal_rule_database(data)
+    except EnforcementOntologyError as exc:
+        raise EnforcementRuleError(str(exc)) from exc
     return data
 
 
