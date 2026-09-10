@@ -118,6 +118,62 @@ def test_buffered_candidate_chain_has_total_budget():
     assert calls == ["test/one"]
 
 
+def test_buffered_candidate_timeout_preserves_time_for_fallback():
+    calls = []
+
+    async def first_hangs_second_works(prompt, model=None, max_tokens=None):
+        calls.append(model)
+        if model == "test/one":
+            await asyncio.sleep(1)
+        return "fallback answer"
+
+    async def run():
+        with patch.object(pb, "_call_openrouter", first_hangs_second_works), patch.object(
+            pb, "OPENROUTER_CHAIN_BUDGET_SECONDS", 0.08
+        ), patch.object(pb, "OPENROUTER_FALLBACK_RESERVE_SECONDS", 0.03), patch.object(
+            pb, "_cooling_down_models", return_value=[]
+        ), patch.object(pb, "_mark_openrouter_model_cooling_down"):
+            return await pb._openrouter_complete_with_candidates(
+                "synthetic", candidate_models=["test/one", "test/two"]
+            )
+
+    result = asyncio.run(run())
+    assert result["ok"] is True
+    assert result["final_model"] == "test/two"
+    assert result["attempted_models"] == ["test/one", "test/two"]
+    assert result["upstream_statuses"] == [504]
+    assert result["chain_budget_exhausted"] is False
+
+
+def test_streaming_first_token_timeout_preserves_time_for_fallback():
+    calls = []
+
+    async def first_hangs_second_streams(prompt, model=None, max_tokens=None):
+        calls.append(model)
+        if model == "test/one":
+            await asyncio.sleep(1)
+        yield "fallback stream"
+
+    async def collect():
+        frames = []
+        with patch.object(pb, "_stream_openrouter_text", first_hangs_second_streams), patch.object(
+            pb, "OPENROUTER_CHAIN_BUDGET_SECONDS", 0.08
+        ), patch.object(pb, "OPENROUTER_FALLBACK_RESERVE_SECONDS", 0.03), patch.object(
+            pb, "_cooling_down_models", return_value=[]
+        ), patch.object(pb, "_mark_openrouter_model_cooling_down"):
+            async for frame in pb._sse_answer_stream(
+                "synthetic", ["test/one", "test/two"], 10, {},
+                prompt="synthetic", lang="ko",
+            ):
+                frames.append(frame)
+        return frames
+
+    frames = asyncio.run(collect())
+    assert calls == ["test/one", "test/two"]
+    assert any('"final_model": "test/two"' in frame for frame in frames)
+    assert any("fallback stream" in frame for frame in frames)
+
+
 def test_streaming_does_not_retry_models_when_all_are_cooling():
     calls = []
 
