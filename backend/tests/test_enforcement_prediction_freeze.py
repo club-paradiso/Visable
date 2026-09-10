@@ -180,6 +180,20 @@ def test_freeze_requires_prediction_for_every_case_and_refuses_extras():
         freeze_predictions(cases, predictions)
 
 
+def test_freeze_cannot_be_backdated_before_case_set_generation():
+    cases = build_blind_case_set(
+        _pre_outcome_safe(),
+        generated_at=datetime.fromisoformat("2026-08-19T23:30:00+00:00"),
+    )
+    predictions = {row["caseId"]: _prediction() for row in cases["records"]}
+    with pytest.raises(EnforcementPredictionFreezeError, match="cannot precede blind case-set generation"):
+        freeze_predictions(
+            cases,
+            predictions,
+            frozen_at=datetime.fromisoformat("2026-08-19T23:29:59+00:00"),
+        )
+
+
 def test_prediction_and_freeze_digests_detect_tampering():
     _, frozen = _freeze_from_safe(_pre_outcome_safe())
     assert validate_prediction_freeze(frozen)["freezeId"] == frozen["freezeId"]
@@ -190,7 +204,7 @@ def test_prediction_and_freeze_digests_detect_tampering():
         validate_prediction_freeze(tampered_prediction)
 
     tampered_manifest = deepcopy(frozen)
-    tampered_manifest["frozenAt"] = "2026-08-19T00:00:00Z"
+    tampered_manifest["frozenAt"] = "2026-08-20T00:31:00Z"
     with pytest.raises(EnforcementPredictionFreezeError, match="freezeId"):
         validate_prediction_freeze(tampered_manifest)
 
@@ -244,6 +258,7 @@ def test_checked_in_blind_freeze_schemas_are_closed_at_protocol_boundaries():
     assert blind_schema["$defs"]["record"]["additionalProperties"] is False
     assert freeze_schema["additionalProperties"] is False
     assert freeze_schema["$defs"]["record"]["additionalProperties"] is False
+    assert "caseSetGeneratedAt" in freeze_schema["required"]
     assert freeze_schema["properties"]["protocolVersion"]["const"] == "enforcement-v3-blind-freeze-v1"
 
 
