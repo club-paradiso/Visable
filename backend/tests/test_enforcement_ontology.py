@@ -1,10 +1,17 @@
 from __future__ import annotations
 
 import json
+import sys
 import unittest
 from copy import deepcopy
+from pathlib import Path
 
-from services.enforcement_ontology import (
+REPO_ROOT = Path(__file__).resolve().parents[2]
+BACKEND_DIR = REPO_ROOT / "backend"
+if str(BACKEND_DIR) not in sys.path:
+    sys.path.insert(0, str(BACKEND_DIR))
+
+from services.enforcement_ontology import (  # noqa: E402
     EnforcementOntologyError,
     deterministic_violation_codes,
     load_enforcement_ontology,
@@ -12,7 +19,7 @@ from services.enforcement_ontology import (
     validate_ontology_data,
     violation_map,
 )
-from services.enforcement_rules import RULES_PATH, load_rule_database
+from services.enforcement_rules import RULES_PATH, load_rule_database  # noqa: E402
 
 
 class EnforcementOntologyTests(unittest.TestCase):
