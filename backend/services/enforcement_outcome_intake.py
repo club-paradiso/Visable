@@ -131,7 +131,7 @@ def _reject_private_only_fields(value: Any, *, path: str = "root") -> None:
         for key, child in value.items():
             if key in _PRIVATE_ONLY_KEYS:
                 raise EnforcementOutcomeIntakeError(f"private-only field leaked into safe dataset: {path}.{key}")
-            _reject_private_only_fields(child, path=f"{path}[{index}]") if isinstance(value, list) else f"{path}.{key}")
+            _reject_private_only_fields(child, path=f"{path}.{key}")
     elif isinstance(value, list):
         for index, child in enumerate(value):
             _reject_private_only_fields(child, path=f"{path}[{index}]")
