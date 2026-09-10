@@ -118,6 +118,15 @@ def _plan_identity(payload_without_id: Dict[str, Any]) -> str:
     return f"plan_{_sha256(payload_without_id)[:24]}"
 
 
+def _canonical_metrics(metrics: Any) -> list[Dict[str, Any]]:
+    if not isinstance(metrics, list):
+        raise EnforcementEvaluationPlanError("metrics must be a non-empty array")
+    copied = deepcopy(metrics)
+    if any(not isinstance(item, dict) for item in copied):
+        raise EnforcementEvaluationPlanError("metric entry must be an object")
+    return sorted(copied, key=lambda item: str(item.get("metric", "")))
+
+
 def build_evaluation_plan(
     blind_case_set: Any,
     *,
@@ -150,7 +159,7 @@ def build_evaluation_plan(
         "caseSetId": cases["caseSetId"],
         "caseSetGeneratedAt": cases["generatedAt"],
         "createdAt": created_at_raw,
-        "metrics": deepcopy(metrics),
+        "metrics": _canonical_metrics(metrics),
         "reportingPolicy": deepcopy(_REQUIRED_REPORTING_POLICY),
     }
     plan = {**payload_without_id, "planId": _plan_identity(payload_without_id)}
