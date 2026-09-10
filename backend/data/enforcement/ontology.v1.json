@@ -1,0 +1,115 @@
+{
+  "schemaVersion": "1.0.0",
+  "ontologyVersion": "2026-09-10-v1",
+  "jurisdiction": "KR",
+  "purpose": "Versioned semantic registry for Visable enforcement case classification. Monetary rules remain authoritative in legal_rules.json.",
+  "factDimensions": [
+    "statusOfStay",
+    "violationType",
+    "duration",
+    "authorization",
+    "workplaceRelationship",
+    "priorViolations",
+    "voluntaryDisclosure",
+    "investigationState",
+    "assessmentDate"
+  ],
+  "violations": [
+    {
+      "code": "UNAUTHORIZED_STAY_OR_WORK_ART18_1",
+      "labelKo": "취업활동이 허용되는 체류자격 없이 취업",
+      "category": "EMPLOYMENT_AUTHORIZATION",
+      "legalBasis": {
+        "lawName": "출입국관리법",
+        "article": "제18조제1항"
+      },
+      "materialFactDimensions": [
+        "statusOfStay",
+        "duration",
+        "authorization",
+        "priorViolations",
+        "voluntaryDisclosure",
+        "investigationState"
+      ],
+      "lifecycle": "ACTIVE",
+      "supportedByDeterministicRules": true
+    },
+    {
+      "code": "UNAUTHORIZED_EMPLOYMENT_ART18_2",
+      "labelKo": "취업활동 자격 보유자가 지정된 근무처가 아닌 곳에서 근무",
+      "category": "WORKPLACE_AUTHORIZATION",
+      "legalBasis": {
+        "lawName": "출입국관리법",
+        "article": "제18조제2항"
+      },
+      "materialFactDimensions": [
+        "statusOfStay",
+        "duration",
+        "authorization",
+        "workplaceRelationship",
+        "priorViolations",
+        "voluntaryDisclosure",
+        "investigationState"
+      ],
+      "lifecycle": "ACTIVE",
+      "supportedByDeterministicRules": true
+    },
+    {
+      "code": "STATUS_OUTSIDE_ACTIVITY_ART20",
+      "labelKo": "체류자격 외 활동허가 위반",
+      "category": "STATUS_SCOPE_AUTHORIZATION",
+      "legalBasis": {
+        "lawName": "출입국관리법",
+        "article": "제20조"
+      },
+      "materialFactDimensions": [
+        "statusOfStay",
+        "duration",
+        "authorization",
+        "priorViolations",
+        "voluntaryDisclosure",
+        "investigationState"
+      ],
+      "lifecycle": "ACTIVE",
+      "supportedByDeterministicRules": true
+    },
+    {
+      "code": "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1",
+      "labelKo": "근무처 변경·추가 허가 위반",
+      "category": "WORKPLACE_CHANGE_AUTHORIZATION",
+      "legalBasis": {
+        "lawName": "출입국관리법",
+        "article": "제21조제1항"
+      },
+      "materialFactDimensions": [
+        "statusOfStay",
+        "duration",
+        "authorization",
+        "workplaceRelationship",
+        "priorViolations",
+        "voluntaryDisclosure",
+        "investigationState"
+      ],
+      "lifecycle": "ACTIVE",
+      "supportedByDeterministicRules": true
+    },
+    {
+      "code": "OVERSTAY_ART25",
+      "labelKo": "체류기간 연장허가 없는 체류",
+      "category": "STAY_PERIOD",
+      "legalBasis": {
+        "lawName": "출입국관리법",
+        "article": "제25조"
+      },
+      "materialFactDimensions": [
+        "statusOfStay",
+        "duration",
+        "priorViolations",
+        "voluntaryDisclosure",
+        "investigationState"
+      ],
+      "lifecycle": "ACTIVE",
+      "supportedByDeterministicRules": true
+    }
+  ]
+}
