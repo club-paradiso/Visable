@@ -53,6 +53,8 @@ DEFAULT_OUT = REPO_ROOT / "build" / "manual_search_index.sqlite3"
 # Labelling these chunks 'superseded' is the honest state; silently attributing
 # them to the current edition would misdate every stay-manual search hit.
 SECTION_SOURCES: Tuple[Tuple[str, str], ...] = (
+    ("visa_manual_2026_09_01_pdf", "data/manual-corpus/visa_manual_2026_09_01_pdf.json"),
+    ("stay_manual_2026_09_18_pdf", "data/manual-corpus/stay_manual_2026_09_18_pdf.json"),
     ("visa_manual_2026_06_17_pdf", "backend/data/sources/manuals/260617_visa_manual_sections.json"),
     ("stay_manual_2026_06_17_txt", "backend/data/sources/manuals/260617_stay_manual_sections.json"),
     ("dongpo_manual_2026_04_21", "backend/data/sources/manuals/260421_dongpo_manual_sections.json"),
@@ -90,8 +92,7 @@ CREATE INDEX idx_chunk_domain   ON chunk(domain);
 CREATE VIRTUAL TABLE chunk_fts USING fts5(
     heading,
     body,
-    status_codes,
-    content=''
+    status_codes
 );
 """
 

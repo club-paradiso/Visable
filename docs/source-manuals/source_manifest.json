@@ -374,6 +374,46 @@
       "original_filename": "not preserved — the upload retained only the '260901' date prefix; the document's own cover reads 외국인체류 안내매뉴얼 2026.9",
       "change_review_artifact": "audits/manual-refresh-260901/stay_260731_to_260901.md",
       "promotion_procedure": "audits/manual-refresh-260901/README.md"
+    },
+    {
+      "role": "visa_issuance_manual",
+      "title_ko": "사증발급 안내매뉴얼",
+      "title_en": "Visa Issuance Guide Manual",
+      "version": "2026.9",
+      "source_date": "2026-09-01",
+      "status": "pending_review",
+      "registry_id_when_promoted": "visa_manual_2026_09_01_pdf",
+      "file": "docs/source-manuals/2026-09/visa_manual_260901.pdf",
+      "file_sha256": "18f2c022d40ffe1a71cee5e388f0219fff6b435b6876da6ce119a398f0fb6fb8",
+      "file_size_bytes": 13703971,
+      "pages": 519,
+      "extraction_primary_format": "pdf",
+      "extracted_text_file": "docs/source-manuals/2026-09/extracted/visa_manual_2026_09_01_pdf.txt",
+      "extracted_text_sha256": "72a10e8a9e38a63b84a28de6c12150763900c7be39105245f5a334326c51c95e",
+      "verification_status": "source_file_pinned_page_text_extracted_pending_content_approval",
+      "verification_note": "PDF text layer only; image content and table cell relationships require checking the original page.",
+      "official_notice_url": "https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&BBS_GB_CD=BS10&NTCCTT_SEQ=1062&page=1",
+      "change_review_artifact": "audits/manual-refresh-260921/visa_pdf_comparison.md"
+    },
+    {
+      "role": "stay_residence_manual",
+      "title_ko": "외국인체류 안내매뉴얼",
+      "title_en": "Foreigner Stay/Residence Guide Manual",
+      "version": "2026.9",
+      "source_date": "2026-09-18",
+      "status": "pending_review",
+      "registry_id_when_promoted": "stay_manual_2026_09_18_pdf",
+      "file": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+      "file_sha256": "e464284cb85e5f0124db5e9b9b41fe2b95f1d44e79f8a43b1d10c6e42e178153",
+      "file_size_bytes": 15512666,
+      "pages": 810,
+      "extraction_primary_format": "pdf",
+      "extracted_text_file": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+      "extracted_text_sha256": "291182d5fd1c95208baec7481c0199658f0e6b4e479379a1bfd36c10a11987f5",
+      "verification_status": "source_file_pinned_page_text_extracted_pending_content_approval",
+      "verification_note": "PDF text layer only; image content and table cell relationships require checking the original page.",
+      "official_notice_url": "https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&BBS_GB_CD=BS10&NTCCTT_SEQ=1062&page=1",
+      "change_review_artifact": "audits/manual-refresh-260921/stay_pdf_comparison.md"
     }
   ]
 }

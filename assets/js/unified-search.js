@@ -888,7 +888,8 @@
       mountEl = document.createElement('div');
       mountEl.id = 'unifiedSearchLayer';
       mountEl.className = 'us-layer';
-      rlist.parentNode.insertBefore(mountEl, rlist);
+      if (document.body.classList.contains('civic-refresh')) rlist.after(mountEl);
+      else rlist.parentNode.insertBefore(mountEl, rlist);
     }
     return mountEl;
   }
@@ -898,6 +899,12 @@
     if (!host) return;
     if (!lastPayload || !lastPayload.query) { host.innerHTML = ''; return; }
     host.innerHTML = buildUnifiedLayerHtml(lastPayload, aiState, aiData);
+    if (document.body.classList.contains('civic-refresh') && aiState === 'hidden') {
+      var request = document.createElement('button');
+      request.className = 'cs-ai-request'; request.setAttribute('data-us-action', 'retry-overview');
+      request.textContent = usLang() === 'en' ? 'Show AI assistance' : 'AI 보조 안내 보기';
+      host.append(request);
+    }
   }
 
   /* ------------- UX-03 Search / Unified Input state (node 394:203) -------- */
@@ -952,7 +959,7 @@
       if (token !== currentToken) return null;   // a newer query superseded this
       lastPayload = body;
       setSearchBarState('results', '');
-      render('loading', null);
+      render(document.body.classList.contains('civic-refresh') ? 'hidden' : 'loading', null);
       return body;
     }).catch(function () {
       if (token !== currentToken) return null;
@@ -1098,7 +1105,7 @@
       return;
     }
     fetchUnified(q).then(function (payload) {
-      if (payload) fetchAiOverview(q, payload);
+      if (payload && !document.body.classList.contains('civic-refresh')) fetchAiOverview(q, payload);
     });
   }
 

@@ -106,3 +106,10 @@ recorded because the design debt is real.
 Neither project is a runtime dependency, a git submodule, or a build input.
 Paradiso's backend remains `fastapi + starlette + uvicorn + pydantic + httpx`
 (see `backend/requirements.txt`), and the site itself has no build system.
+
+## Lucide icons — civic search surface
+
+`assets/icons/civic/*.svg` uses lucide-static 1.47.0 (ISC license).
+Source: https://lucide.dev/ and https://www.npmjs.com/package/lucide-static
+The included license is `assets/icons/civic/LICENSE`. SVG shapes are unchanged;
+the website applies color through CSS.

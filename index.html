@@ -380,7 +380,7 @@
   --ui-focus: var(--ac);
 }
 
-:root:not([data-theme="archive_diary"]) body.product-visable:not([data-theme="dark"]) {
+:root:not([data-theme="archive_diary"]) body.product-visable:not([data-theme="dark"]):not(.civic-refresh) {
   --bg0: #F7F4EF;
   --bg1: #FFFCF5;
   --bd: #E6E6EE;
@@ -14220,6 +14220,7 @@ body[data-theme="dark"] .us-ev-state.is-lifecycle-ambiguous { color: var(--us-am
 </style>
 <link rel="stylesheet" href="assets/css/visable-product-2026.css?v=20260809-deco-collision">
 
+<link rel="stylesheet" href="assets/css/civic-search.css">
 </head>
 <!-- Legacy grounding labels retained for regression tests: lawGroundingReassure: 'If statutory search was not used, it does not mean the answer is wrong — only that grounding sources were limited.' | 법령 근거 확인 상태 | Law-grounding status | 法令依据确认状态 | 法令依據確認狀態 | If statutory search was not used, it does not mean the answer is wrong — only that grounding sources were limited. -->
 <body class="landing product-visable" data-theme="light">
@@ -22698,7 +22699,7 @@ function executeSearch() {
             document.querySelectorAll('.logo-brand .al').forEach(el => { el.style.transitionDelay = ''; el.style.removeProperty('--ax'); });
             closeSearchBlockingSurfaces();
             document.body.classList.add('searched'); renderResults(query); window.scrollTo({ top: 0, behavior: 'smooth' });
-        }, 1200);
+        }, document.body.classList.contains('civic-refresh') ? 0 : 1200);
     } else {
         closeSearchBlockingSurfaces();
         renderResults(query);
@@ -24061,6 +24062,7 @@ async function loadVisaData() {
         await loadVisaIssuanceData();
         VISA_DATA = arr; dataReady = true; if(rcEl) rcEl.textContent = tx('dataReady', { count: VISA_DATA.length, source: label });
         setSearchEnabled(true); initUI(); updateCategoryCounts();
+        document.dispatchEvent(new CustomEvent('paradiso:data-ready'));
     };
     try {
         if (!API_BASE) throw new Error("Local");
@@ -24076,6 +24078,7 @@ async function loadVisaData() {
             dataReady = false;
             if (rcEl) rcEl.textContent = tx('visaDataLoadError');
             setSearchEnabled(false);
+            document.dispatchEvent(new CustomEvent('paradiso:data-failed'));
         }
     }
 }
@@ -26252,5 +26255,7 @@ function showVisaDocForAction(visaCode) {
      window.EmploymentChecklist; shared with scripts/check_employment_checklist.mjs. -->
 <script type="module" src="scripts/employment_checklist.mjs"></script>
 
+<script defer src="assets/js/manual-corpus-search.js"></script>
+<script defer src="assets/js/civic-search.js"></script>
 </body>
 </html>

@@ -243,6 +243,46 @@
       "update_frequency": "irregular",
       "status": "not_configured",
       "notes": "Placeholder. No scraping by default. Confirm exact notice-index URL before enabling."
+    },
+    {
+      "id": "visa_manual_2026_09_01_pdf",
+      "type": "pdf_manual",
+      "title": "사증발급 안내매뉴얼",
+      "title_en": "Visa Issuance Guide Manual",
+      "authority": "법무부 출입국·외국인정책본부",
+      "version": "2026.9",
+      "source_date": "2026-09-01",
+      "local_path": "docs/source-manuals/2026-09/visa_manual_260901.pdf",
+      "url": "https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&BBS_GB_CD=BS10&NTCCTT_SEQ=1062&page=1",
+      "last_known_hash": "sha256:18f2c022d40ffe1a71cee5e388f0219fff6b435b6876da6ce119a398f0fb6fb8",
+      "last_checked_at": "2026-09-21T00:00:00+09:00",
+      "language": [
+        "ko"
+      ],
+      "confidence": "high",
+      "update_frequency": "irregular",
+      "status": "needs_manual_review",
+      "notes": "User-supplied PDF; searchable original, pending human content approval."
+    },
+    {
+      "id": "stay_manual_2026_09_18_pdf",
+      "type": "pdf_manual",
+      "title": "외국인체류 안내매뉴얼",
+      "title_en": "Foreigner Stay/Residence Guide Manual",
+      "authority": "법무부 출입국·외국인정책본부",
+      "version": "2026.9",
+      "source_date": "2026-09-18",
+      "local_path": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+      "url": "https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&BBS_GB_CD=BS10&NTCCTT_SEQ=1062&page=1",
+      "last_known_hash": "sha256:e464284cb85e5f0124db5e9b9b41fe2b95f1d44e79f8a43b1d10c6e42e178153",
+      "last_checked_at": "2026-09-21T00:00:00+09:00",
+      "language": [
+        "ko"
+      ],
+      "confidence": "high",
+      "update_frequency": "irregular",
+      "status": "needs_manual_review",
+      "notes": "User-supplied PDF; searchable original, pending human content approval."
     }
   ]
 }

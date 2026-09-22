@@ -1,0 +1,4 @@
+{
+  "genre": "ux",
+  "exclude": ["docs/source-manuals/**", "data/manual-corpus/**", "backend/data/sources/**", "visa_data.json", "backend/data/visas.json", "doc_master.json", "backend/data/doc_master.json"]
+}
