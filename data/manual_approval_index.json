@@ -229,6 +229,44 @@
       "table_extraction_warnings": [
         "별표/첨부서류 tables are flattened to paragraph text; cell and column boundaries are NOT preserved and must not be read as a structured table. This holds regardless of approval state."
       ]
+    },
+    "visa_manual_2026_09_01_pdf": {
+      "approval_state": "needs_review",
+      "effective_date": "",
+      "parser": "scripts/build_current_manual_corpus.py / PyMuPDF 1.28.2",
+      "reviewer": "",
+      "reviewed_at": "",
+      "source_confidence": "high",
+      "has_tables_or_annexes": true,
+      "section_locator": "pdf_page",
+      "source_path": "docs/source-manuals/2026-09/visa_manual_260901.pdf",
+      "source_sha256": "18f2c022d40ffe1a71cee5e388f0219fff6b435b6876da6ce119a398f0fb6fb8",
+      "extracted_text_path": "docs/source-manuals/2026-09/extracted/visa_manual_2026_09_01_pdf.txt",
+      "extraction_warnings": [
+        "PDF text layer only; image content and table cell relationships require checking the original page."
+      ],
+      "table_extraction_warnings": [
+        "PDF text layer only; image content and table cell relationships require checking the original page."
+      ]
+    },
+    "stay_manual_2026_09_18_pdf": {
+      "approval_state": "needs_review",
+      "effective_date": "",
+      "parser": "scripts/build_current_manual_corpus.py / PyMuPDF 1.28.2",
+      "reviewer": "",
+      "reviewed_at": "",
+      "source_confidence": "high",
+      "has_tables_or_annexes": true,
+      "section_locator": "pdf_page",
+      "source_path": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+      "source_sha256": "e464284cb85e5f0124db5e9b9b41fe2b95f1d44e79f8a43b1d10c6e42e178153",
+      "extracted_text_path": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+      "extraction_warnings": [
+        "PDF text layer only; image content and table cell relationships require checking the original page."
+      ],
+      "table_extraction_warnings": [
+        "PDF text layer only; image content and table cell relationships require checking the original page."
+      ]
     }
   }
 }

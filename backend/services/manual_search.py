@@ -1,8 +1,8 @@
 """BM25 search over the built manual FTS index, with approval-state separation.
 
 Reads the SQLite FTS5 index produced by ``scripts/build_manual_search_index.py``.
-The index is a *build artifact*, not committed, so every entry point here must
-work when it is absent — a missing index degrades to an explicit
+The generated index is shipped in ``backend/data`` for the Railway build context.
+Every entry point must still work when it is absent — a missing index degrades to an explicit
 ``index_unavailable`` state, never to a silent empty result set that would read as
 "the manuals say nothing about this".
 
@@ -68,6 +68,7 @@ _MAX_RESULTS = 25
 # FTS5 treats these as syntax. A user query is data, not a query language, so they
 # are stripped rather than escaped — a stray quote must not become an operator.
 _FTS_SYNTAX_RE = re.compile(r'["*():^{}\[\]-]+')
+_EXACT_CODE_RE = re.compile(r"(?<![A-Z0-9-])[A-H]-\d{1,2}(?:-[A-Z0-9]+)*(?![A-Z0-9-])", re.I)
 
 
 def _sanitize_fts_query(query: str) -> str:
@@ -180,6 +181,11 @@ def search_manuals(
         " WHERE chunk_fts MATCH ?"
     )
     params: List[Any] = [match_query]
+    # FTS tokenizes E-7-4 as E, 7, 4. Require the complete detected code too,
+    # otherwise an unrelated page containing those three tokens can match.
+    for code in dict.fromkeys(_EXACT_CODE_RE.findall(str(query).upper())):
+        sql += " AND instr(' ' || c.status_codes || ' ', ?) > 0"
+        params.append(" " + code + " ")
     if domain:
         sql += " AND c.domain = ?"
         params.append(domain)

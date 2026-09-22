@@ -16,6 +16,7 @@ const profiles = [
   { name: 'iphone-landscape', width: 844, height: 390 },
 ];
 const criticalSelectors = [
+  '#civicLanding', '.cs-nav', '.cs-hero', '.cs-searchbar', '.cs-routes', '.cs-tool-grid', '.cs-source-strip', '#civicManualResults',
   '.top-ctrls', '.hero-container', '.p-hero-title', '.p-gateway', '.p-gw-search',
   '.p-gw-card', '.p-gw-util', '.p-gw-newhome', '.hero-actions', '.sbar', '#q',
   '.results-area', '.rlist', '.us-layer', '.us-interpret', '.us-ai', '.ai-fab',
@@ -72,7 +73,7 @@ async function inspect(page, profile, state) {
       .filter(visible)
       .map((el) => ({ tag: el.tagName.toLowerCase(), type: el.getAttribute('type') || '', fontSize: parseFloat(getComputedStyle(el).fontSize) || 0 }))
       .filter((entry) => entry.fontSize > 0 && entry.fontSize < 16);
-    const touchTargets = [...document.querySelectorAll('.top-ctrls button, .top-ctrls [role="button"], .hero-actions .ha, .p-gw-search, .p-gw-card, .p-gw-util, .p-gw-newhome, .sbar button, .sbar [role="button"]')]
+    const touchTargets = [...document.querySelectorAll('.cs-languages button, .cs-examples button, .cs-searchbar button, .cs-routes button, .cs-tool-grid > *, .top-ctrls button, .top-ctrls [role="button"], .hero-actions .ha, .p-gw-search, .p-gw-card, .p-gw-util, .p-gw-newhome, .sbar button, .sbar [role="button"]')]
       .filter(visible)
       .map((el) => el.getBoundingClientRect())
       .filter((r) => r.width < 40 || r.height < 40)
@@ -125,8 +126,9 @@ try {
     const states = profile.name === 'iphone-15' ? ['landing', 'searching', 'searched'] : ['landing'];
     for (const state of states) {
       await page.evaluate((nextState) => {
-        document.body.classList.remove('searched', 'searching');
-        if (nextState !== 'landing') document.body.classList.add(nextState);
+        document.body.classList.remove('landing', 'searched', 'searching');
+        document.body.classList.add(nextState === 'searching' ? 'landing' : nextState);
+        if (nextState === 'searching') document.querySelector('#civicQuery')?.focus();
       }, state);
       await page.waitForTimeout(120);
       const stateReport = await inspect(page, profile, state);

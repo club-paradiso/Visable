@@ -62,7 +62,7 @@ DEFAULT_IMM_NOTICE_PATH = os.path.join(
 # exports of it. Both are local-file manuals and follow the same path below.
 _MANUAL_TYPES = {"pdf_manual", "hwp_manual"}
 _VALID_TYPES = _MANUAL_TYPES | {"law_api", "notice_index"}
-_VALID_STATUSES = {"active", "not_configured", "deprecated"}
+_VALID_STATUSES = {"active", "not_configured", "deprecated", "needs_manual_review"}
 _REQUIRED_CATALOG_FIELDS = {
     "source_id",
     "source_type",

@@ -159,6 +159,10 @@ python3 backend/tests/test_source_grounding_metadata_schema.py > /dev/null 2>&1 
   || { echo "ERROR: source-grounding metadata schema tests failed." >&2; \
        python3 backend/tests/test_source_grounding_metadata_schema.py >&2; exit 1; }
 
+echo "[5c/14] Validating current PDF corpus and shipped search index..."
+node scripts/check_current_manual_corpus.mjs
+python3 scripts/tests/test_current_manual_index.py
+
 echo "[6/12] Validating manual-grounding candidates (if any)..."
 # Passes cleanly when no candidate.json files exist. Only fails if a
 # committed candidate file is structurally invalid.

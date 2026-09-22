@@ -99,7 +99,7 @@ def validate() -> Tuple[List[str], List[str]]:
     # so they share the freshness rules below.
     registry_type_vocab = {"pdf_manual", "hwp_manual", "law_api", "notice_index"}
     manual_types = {"pdf_manual", "hwp_manual"}
-    registry_status_vocab = {"active", "deprecated", "not_configured"}
+    registry_status_vocab = {"active", "deprecated", "not_configured", "needs_manual_review"}
 
     sources = registry.get("sources")
     if not isinstance(sources, list) or not sources:

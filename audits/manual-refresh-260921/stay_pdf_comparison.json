@@ -1,0 +1,6695 @@
+{
+  "schema_version": "1.0",
+  "role": "stay",
+  "old": {
+    "path": "build/manual-review/stay_previous_pdf_sections.json",
+    "sha256": "dbe54b46d84973cb9715168d5dfb81e88867b95c86bd006a0cd8b60bf134d42d",
+    "page_count": 780
+  },
+  "new": {
+    "path": "data/manual-corpus/stay_manual_2026_09_18_pdf.json",
+    "sha256": "d777498774b0c1188386a725665ce6ea3116fd31776b5232f74401c917c919df",
+    "page_count": 810
+  },
+  "summary": {
+    "pages_changed": 304,
+    "pages_added": 30,
+    "pages_removed": 0,
+    "affected_code_count": 150,
+    "affected_base_code_count": 38,
+    "change_ratio": 0.412,
+    "extraction_mismatch_suspected": false
+  },
+  "affected_codes": [
+    {
+      "code": "A-1",
+      "base": "A-1",
+      "pages": [
+        2,
+        220,
+        394,
+        503,
+        506
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "A-2",
+      "base": "A-2",
+      "pages": [
+        2,
+        220,
+        261
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "A-3",
+      "base": "A-3",
+      "pages": [
+        2,
+        394
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "B-1",
+      "base": "B-1",
+      "pages": [
+        2,
+        225,
+        353,
+        369,
+        429,
+        480,
+        483,
+        509,
+        512,
+        515
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "B-2",
+      "base": "B-2",
+      "pages": [
+        2,
+        353,
+        369,
+        429,
+        480,
+        483,
+        509,
+        512,
+        515
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "C-1",
+      "base": "C-1",
+      "pages": [
+        2,
+        480,
+        483
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "C-3",
+      "base": "C-3",
+      "pages": [
+        2,
+        351,
+        353,
+        369,
+        384,
+        386,
+        387,
+        509,
+        512,
+        515
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "C-3-1",
+      "base": "C-3",
+      "pages": [
+        478,
+        481
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "C-3-3",
+      "base": "C-3",
+      "pages": [
+        512,
+        515
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "C-3-8",
+      "base": "C-3",
+      "pages": [
+        2,
+        527
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "C-4",
+      "base": "C-4",
+      "pages": [
+        2,
+        366,
+        405,
+        480,
+        483
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "C-4-5",
+      "base": "C-4",
+      "pages": [
+        219
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "D-1",
+      "base": "D-1",
+      "pages": [
+        2,
+        219,
+        220,
+        224,
+        394,
+        426
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "D-10",
+      "base": "D-10",
+      "pages": [
+        2,
+        224,
+        252,
+        257,
+        270,
+        413,
+        415,
+        447,
+        451,
+        452,
+        596,
+        679,
+        680,
+        686,
+        687,
+        701
+      ],
+      "kinds": [
+        "added",
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "D-10-3",
+      "base": "D-10",
+      "pages": [
+        215
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "D-10-T",
+      "base": "D-10",
+      "pages": [
+        2,
+        682,
+        683,
+        685,
+        686,
+        692,
+        693,
+        697,
+        698,
+        700,
+        701
+      ],
+      "kinds": [
+        "added",
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "D-2",
+      "base": "D-2",
+      "pages": [
+        2,
+        220,
+        224,
+        373,
+        462,
+        467,
+        468,
+        520,
+        523,
+        639
+      ],
+      "kinds": [
+        "added",
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "D-2-3",
+      "base": "D-2",
+      "pages": [
+        427
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "D-2-4",
+      "base": "D-2",
+      "pages": [
+        427,
+        462
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "D-2-7",
+      "base": "D-2",
+      "pages": [
+        215,
+        224,
+        445
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "D-3",
+      "base": "D-3",
+      "pages": [
+        2,
+        219,
+        220,
+        224,
+        225,
+        269,
+        426
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "D-4",
+      "base": "D-4",
+      "pages": [
+        2,
+        220,
+        224
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "D-4-1",
+      "base": "D-4",
+      "pages": [
+        269
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "D-4-6",
+      "base": "D-4",
+      "pages": [
+        216,
+        275
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "D-5",
+      "base": "D-5",
+      "pages": [
+        2,
+        224,
+        373,
+        374,
+        394
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "D-6",
+      "base": "D-6",
+      "pages": [
+        2,
+        219,
+        220,
+        224,
+        394,
+        399,
+        419
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "D-7",
+      "base": "D-7",
+      "pages": [
+        2,
+        219,
+        224,
+        228,
+        394,
+        431,
+        451,
+        452,
+        458,
+        459,
+        460,
+        461,
+        685,
+        687
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "D-8",
+      "base": "D-8",
+      "pages": [
+        2,
+        219,
+        224,
+        228,
+        372,
+        394,
+        402,
+        432,
+        447,
+        451,
+        452,
+        474,
+        475,
+        476
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "D-8-4",
+      "base": "D-8",
+      "pages": [
+        434,
+        446,
+        475
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "D-9",
+      "base": "D-9",
+      "pages": [
+        2,
+        219,
+        224,
+        373,
+        374,
+        394,
+        447,
+        451,
+        452
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "E-1",
+      "base": "E-1",
+      "pages": [
+        2,
+        219,
+        220,
+        224,
+        225,
+        230,
+        366,
+        373,
+        394,
+        405,
+        426,
+        427,
+        447,
+        451,
+        452,
+        519,
+        522,
+        682,
+        693,
+        699
+      ],
+      "kinds": [
+        "added",
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "E-10",
+      "base": "E-10",
+      "pages": [
+        2,
+        219,
+        220,
+        224,
+        230,
+        269,
+        273,
+        278,
+        299,
+        300,
+        301,
+        302,
+        303,
+        304,
+        309,
+        311,
+        366,
+        405,
+        472,
+        614,
+        619,
+        620,
+        621,
+        646
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "E-2",
+      "base": "E-2",
+      "pages": [
+        2,
+        219,
+        220,
+        221,
+        224,
+        225,
+        226,
+        260,
+        366,
+        367,
+        394,
+        401,
+        406,
+        426,
+        427,
+        506,
+        507,
+        509,
+        510
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "E-3",
+      "base": "E-3",
+      "pages": [
+        2,
+        219,
+        220,
+        224,
+        225,
+        394,
+        426,
+        427,
+        693
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "E-4",
+      "base": "E-4",
+      "pages": [
+        2,
+        220,
+        224,
+        225,
+        394,
+        426,
+        427
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "E-5",
+      "base": "E-5",
+      "pages": [
+        2,
+        219,
+        220,
+        224,
+        225,
+        273,
+        373,
+        394,
+        426,
+        427,
+        441,
+        445,
+        452
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "E-6",
+      "base": "E-6",
+      "pages": [
+        2,
+        219,
+        220,
+        224,
+        225,
+        426,
+        451,
+        452,
+        519,
+        522
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "E-6-1",
+      "base": "E-6",
+      "pages": [
+        394
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "E-6-2",
+      "base": "E-6",
+      "pages": [
+        220,
+        225,
+        373,
+        374,
+        426
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "E-7",
+      "base": "E-7",
+      "pages": [
+        2,
+        218,
+        219,
+        220,
+        221,
+        222,
+        224,
+        225,
+        226,
+        227,
+        228,
+        230,
+        231,
+        252,
+        257,
+        260,
+        270,
+        273,
+        294,
+        303,
+        367,
+        394,
+        399,
+        426,
+        427,
+        431,
+        447,
+        451,
+        452,
+        458,
+        459,
+        460,
+        461,
+        519,
+        521,
+        522,
+        524,
+        621,
+        679,
+        680,
+        685,
+        686,
+        687,
+        701
+      ],
+      "kinds": [
+        "added",
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "E-7-1",
+      "base": "E-7",
+      "pages": [
+        214,
+        230,
+        373,
+        374,
+        399,
+        682,
+        699
+      ],
+      "kinds": [
+        "added",
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "E-7-2",
+      "base": "E-7",
+      "pages": [
+        214,
+        230,
+        233,
+        373,
+        374
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "E-7-3",
+      "base": "E-7",
+      "pages": [
+        214,
+        230,
+        234,
+        279,
+        281,
+        282,
+        283,
+        284,
+        285
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "E-7-4",
+      "base": "E-7",
+      "pages": [
+        214,
+        216,
+        226,
+        227,
+        230,
+        234,
+        294,
+        298,
+        299,
+        300,
+        301,
+        302,
+        303,
+        304,
+        309,
+        311,
+        313,
+        373,
+        374,
+        401,
+        406,
+        426,
+        596,
+        621,
+        646
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "E-7-4R",
+      "base": "E-7",
+      "pages": [
+        300,
+        303,
+        596,
+        614,
+        619,
+        621,
+        622,
+        623,
+        624,
+        625,
+        626,
+        627,
+        628,
+        629,
+        630,
+        646
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "E-7-91",
+      "base": "E-7",
+      "pages": [
+        214
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "E-7-H",
+      "base": "E-7",
+      "pages": [
+        504,
+        507
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "E-7-S",
+      "base": "E-7",
+      "pages": [
+        214,
+        234,
+        294,
+        295
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "E-7-S1",
+      "base": "E-7",
+      "pages": [
+        234,
+        294,
+        295
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "E-7-S2",
+      "base": "E-7",
+      "pages": [
+        234,
+        294,
+        295
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "E-7-T",
+      "base": "E-7",
+      "pages": [
+        2,
+        214,
+        234,
+        683,
+        685,
+        686,
+        689,
+        691,
+        700,
+        701
+      ],
+      "kinds": [
+        "added",
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "E-7-Y",
+      "base": "E-7",
+      "pages": [
+        214,
+        234
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "E-8",
+      "base": "E-8",
+      "pages": [
+        2,
+        224,
+        230,
+        472
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "E-9",
+      "base": "E-9",
+      "pages": [
+        2,
+        219,
+        220,
+        224,
+        225,
+        226,
+        230,
+        251,
+        269,
+        278,
+        299,
+        300,
+        301,
+        302,
+        303,
+        304,
+        309,
+        311,
+        472,
+        614,
+        619,
+        620,
+        621,
+        646
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "E-9-1",
+      "base": "E-9",
+      "pages": [
+        401,
+        406
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-1",
+      "base": "F-1",
+      "pages": [
+        2,
+        220,
+        221,
+        261,
+        354,
+        356,
+        367,
+        369,
+        380,
+        381,
+        394,
+        411,
+        416,
+        426,
+        427,
+        430,
+        461,
+        527,
+        679
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-1-1",
+      "base": "F-1",
+      "pages": [
+        370
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-1-12",
+      "base": "F-1",
+      "pages": [
+        357,
+        359,
+        412,
+        413,
+        414,
+        415
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-1-13",
+      "base": "F-1",
+      "pages": [
+        361,
+        364
+      ],
+      "kinds": [
+        "added",
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-1-15",
+      "base": "F-1",
+      "pages": [
+        698,
+        701,
+        702,
+        703
+      ],
+      "kinds": [
+        "added"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-1-16",
+      "base": "F-1",
+      "pages": [
+        351,
+        507,
+        510
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-1-24",
+      "base": "F-1",
+      "pages": [
+        698,
+        701,
+        703
+      ],
+      "kinds": [
+        "added"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-1-28",
+      "base": "F-1",
+      "pages": [
+        351,
+        356,
+        359
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-1-5",
+      "base": "F-1",
+      "pages": [
+        351,
+        357,
+        358,
+        359,
+        360,
+        361,
+        362,
+        363
+      ],
+      "kinds": [
+        "added",
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-1-51",
+      "base": "F-1",
+      "pages": [
+        351,
+        362
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-1-52",
+      "base": "F-1",
+      "pages": [
+        352,
+        360,
+        363
+      ],
+      "kinds": [
+        "added",
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-1-6",
+      "base": "F-1",
+      "pages": [
+        355,
+        357,
+        494,
+        497,
+        500,
+        503
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-1-D",
+      "base": "F-1",
+      "pages": [
+        353,
+        354,
+        355,
+        361,
+        363
+      ],
+      "kinds": [
+        "added",
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-2",
+      "base": "F-2",
+      "pages": [
+        2,
+        230,
+        294,
+        295,
+        303,
+        351,
+        368,
+        370,
+        372,
+        376,
+        380,
+        381,
+        382,
+        383,
+        384,
+        386,
+        387,
+        388,
+        389,
+        392,
+        394,
+        397,
+        405,
+        408,
+        410,
+        413,
+        415,
+        416,
+        417,
+        418,
+        420,
+        423,
+        424,
+        426,
+        431,
+        432,
+        433,
+        442,
+        451,
+        456,
+        457,
+        458,
+        459,
+        460,
+        461,
+        469,
+        470,
+        471,
+        472,
+        473,
+        474,
+        477,
+        478,
+        621,
+        639,
+        679,
+        680,
+        685,
+        686,
+        687,
+        701,
+        717
+      ],
+      "kinds": [
+        "added",
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-2-1",
+      "base": "F-2",
+      "pages": [
+        501,
+        504
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-2-10",
+      "base": "F-2",
+      "pages": [
+        501,
+        504
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-2-12",
+      "base": "F-2",
+      "pages": [
+        384,
+        417
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-2-13",
+      "base": "F-2",
+      "pages": [
+        388
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-2-16",
+      "base": "F-2",
+      "pages": [
+        390,
+        478,
+        479
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-2-2",
+      "base": "F-2",
+      "pages": [
+        360,
+        363,
+        370,
+        411
+      ],
+      "kinds": [
+        "added",
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-2-3",
+      "base": "F-2",
+      "pages": [
+        352,
+        388,
+        412
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-2-4",
+      "base": "F-2",
+      "pages": [
+        412
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-2-5",
+      "base": "F-2",
+      "pages": [
+        412
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-2-6",
+      "base": "F-2",
+      "pages": [
+        418,
+        422
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-2-7",
+      "base": "F-2",
+      "pages": [
+        294,
+        295,
+        357,
+        359,
+        367,
+        368,
+        369,
+        412,
+        413,
+        414,
+        415,
+        469,
+        470
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-2-71",
+      "base": "F-2",
+      "pages": [
+        357,
+        359,
+        367,
+        369,
+        412,
+        413,
+        414,
+        415,
+        469,
+        470
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-2-7S",
+      "base": "F-2",
+      "pages": [
+        357,
+        359,
+        368,
+        369,
+        374,
+        412,
+        413
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-2-8",
+      "base": "F-2",
+      "pages": [
+        379,
+        382,
+        470,
+        471
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-2-81",
+      "base": "F-2",
+      "pages": [
+        379,
+        471,
+        472
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-2-99",
+      "base": "F-2",
+      "pages": [
+        366,
+        394,
+        395,
+        399,
+        401,
+        402,
+        403,
+        404,
+        405,
+        406,
+        412,
+        418,
+        419,
+        420
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-2-R",
+      "base": "F-2",
+      "pages": [
+        596,
+        639,
+        640
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-2-T",
+      "base": "F-2",
+      "pages": [
+        2,
+        683,
+        684,
+        685,
+        686,
+        688,
+        689,
+        692,
+        693,
+        695,
+        696,
+        700,
+        701,
+        702,
+        703
+      ],
+      "kinds": [
+        "added",
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-2-T1",
+      "base": "F-2",
+      "pages": [
+        701,
+        702,
+        703
+      ],
+      "kinds": [
+        "added"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-3",
+      "base": "F-3",
+      "pages": [
+        2,
+        220,
+        221,
+        225,
+        401,
+        403,
+        413,
+        415,
+        426,
+        427,
+        461,
+        527,
+        679,
+        686,
+        698
+      ],
+      "kinds": [
+        "added",
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-3-10",
+      "base": "F-3",
+      "pages": [
+        698,
+        701
+      ],
+      "kinds": [
+        "added"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-3-17",
+      "base": "F-3",
+      "pages": [
+        701
+      ],
+      "kinds": [
+        "added"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-3-18",
+      "base": "F-3",
+      "pages": [
+        394,
+        399,
+        403,
+        404,
+        405,
+        406,
+        412,
+        413,
+        414,
+        415
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-3-19",
+      "base": "F-3",
+      "pages": [
+        430
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-3-20",
+      "base": "F-3",
+      "pages": [
+        430
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-3-2R",
+      "base": "F-3",
+      "pages": [
+        631
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-3-3R",
+      "base": "F-3",
+      "pages": [
+        614,
+        627,
+        628,
+        629,
+        630
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-4",
+      "base": "F-4",
+      "pages": [
+        2,
+        230,
+        303,
+        370,
+        426,
+        430,
+        431,
+        458,
+        459,
+        527,
+        621,
+        631,
+        632,
+        633
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-4-R",
+      "base": "F-4",
+      "pages": [
+        631,
+        632,
+        633,
+        634,
+        635,
+        638
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-5",
+      "base": "F-5",
+      "pages": [
+        2,
+        230,
+        294,
+        295,
+        303,
+        368,
+        371,
+        380,
+        384,
+        387,
+        431,
+        432,
+        433,
+        436,
+        443,
+        446,
+        458,
+        459,
+        461,
+        462,
+        463,
+        469,
+        472,
+        478,
+        481,
+        503,
+        506,
+        527,
+        621,
+        679,
+        680,
+        686,
+        687,
+        701,
+        717
+      ],
+      "kinds": [
+        "added",
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-5-1",
+      "base": "F-5",
+      "pages": [
+        433,
+        434,
+        441,
+        445,
+        446,
+        449,
+        451,
+        452
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-5-10",
+      "base": "F-5",
+      "pages": [
+        437,
+        441,
+        445,
+        446,
+        447,
+        462,
+        463
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-5-11",
+      "base": "F-5",
+      "pages": [
+        436,
+        440,
+        441,
+        443,
+        445,
+        446,
+        447,
+        464
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-5-12",
+      "base": "F-5",
+      "pages": [
+        436,
+        440,
+        441,
+        443,
+        445,
+        446,
+        468
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-5-13",
+      "base": "F-5",
+      "pages": [
+        407,
+        437,
+        439,
+        441,
+        445,
+        446,
+        447,
+        468,
+        469
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-5-14",
+      "base": "F-5",
+      "pages": [
+        434
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-5-15",
+      "base": "F-5",
+      "pages": [
+        436,
+        441,
+        443,
+        445,
+        446,
+        447,
+        461,
+        462
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-5-16",
+      "base": "F-5",
+      "pages": [
+        295,
+        434,
+        441,
+        445,
+        446,
+        447,
+        458,
+        469,
+        470
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-5-17",
+      "base": "F-5",
+      "pages": [
+        434,
+        440,
+        441,
+        442,
+        445,
+        446,
+        447,
+        458,
+        470,
+        471,
+        472,
+        474
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-5-18",
+      "base": "F-5",
+      "pages": [
+        441,
+        445,
+        446,
+        447,
+        469,
+        470
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-5-19",
+      "base": "F-5",
+      "pages": [
+        440,
+        441,
+        442,
+        445,
+        446,
+        447,
+        470,
+        471,
+        472
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-5-2",
+      "base": "F-5",
+      "pages": [
+        352,
+        360,
+        363,
+        433,
+        434,
+        452,
+        636
+      ],
+      "kinds": [
+        "added",
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-5-20",
+      "base": "F-5",
+      "pages": [
+        440,
+        441,
+        445,
+        446,
+        447,
+        472,
+        473
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-5-21",
+      "base": "F-5",
+      "pages": [
+        388,
+        434,
+        440,
+        441,
+        442,
+        445,
+        446,
+        447,
+        458,
+        473,
+        474,
+        477,
+        479
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-5-22",
+      "base": "F-5",
+      "pages": [
+        440,
+        441,
+        442,
+        445,
+        446,
+        447,
+        473,
+        474
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-5-23",
+      "base": "F-5",
+      "pages": [
+        434,
+        440,
+        441,
+        442,
+        445,
+        446,
+        447,
+        473,
+        474,
+        477,
+        479
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-5-24",
+      "base": "F-5",
+      "pages": [
+        440,
+        441,
+        445,
+        446,
+        447,
+        474,
+        475
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-5-25",
+      "base": "F-5",
+      "pages": [
+        440,
+        441,
+        445,
+        446,
+        447,
+        450,
+        475,
+        476
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-5-26",
+      "base": "F-5",
+      "pages": [
+        441,
+        445,
+        446,
+        447,
+        476
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-5-27",
+      "base": "F-5",
+      "pages": [
+        434
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-5-28",
+      "base": "F-5",
+      "pages": [
+        477,
+        478
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-5-29",
+      "base": "F-5",
+      "pages": [
+        477,
+        478
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-5-3",
+      "base": "F-5",
+      "pages": [
+        352,
+        433,
+        452,
+        636
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-5-4",
+      "base": "F-5",
+      "pages": [
+        433,
+        441,
+        445,
+        446,
+        458
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-5-5",
+      "base": "F-5",
+      "pages": [
+        433,
+        436,
+        440,
+        441,
+        443,
+        445,
+        446,
+        447,
+        459,
+        460
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-5-6",
+      "base": "F-5",
+      "pages": [
+        433,
+        434,
+        636
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-5-7",
+      "base": "F-5",
+      "pages": [
+        433,
+        434
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-5-8",
+      "base": "F-5",
+      "pages": [
+        433,
+        440,
+        441,
+        445,
+        446,
+        447,
+        460
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-5-9",
+      "base": "F-5",
+      "pages": [
+        434,
+        436,
+        441,
+        443,
+        445,
+        446,
+        461,
+        462
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-5-T",
+      "base": "F-5",
+      "pages": [
+        2,
+        683,
+        685,
+        686,
+        689,
+        692,
+        693,
+        696,
+        700,
+        701,
+        703
+      ],
+      "kinds": [
+        "added",
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-5-T1",
+      "base": "F-5",
+      "pages": [
+        701,
+        703,
+        704
+      ],
+      "kinds": [
+        "added"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-6",
+      "base": "F-6",
+      "pages": [
+        2,
+        230,
+        303,
+        352,
+        360,
+        363,
+        452,
+        453,
+        454,
+        455,
+        479,
+        480,
+        482,
+        483,
+        484,
+        485,
+        486,
+        487,
+        488,
+        489,
+        490,
+        491,
+        492,
+        493,
+        496,
+        501,
+        503,
+        504,
+        506,
+        621
+      ],
+      "kinds": [
+        "added",
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-6-1",
+      "base": "F-6",
+      "pages": [
+        410,
+        452,
+        479,
+        480,
+        481,
+        482,
+        483,
+        484,
+        485,
+        486,
+        494,
+        495,
+        496,
+        497,
+        498,
+        499,
+        500,
+        501,
+        502,
+        504
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-6-2",
+      "base": "F-6",
+      "pages": [
+        410,
+        424,
+        479,
+        482,
+        493,
+        496,
+        497,
+        498,
+        499,
+        500,
+        501,
+        504
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "F-6-3",
+      "base": "F-6",
+      "pages": [
+        354,
+        357,
+        410,
+        479,
+        482,
+        493,
+        494,
+        496,
+        497,
+        498,
+        499,
+        500,
+        501,
+        502,
+        503
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "G-1",
+      "base": "G-1",
+      "pages": [
+        2,
+        224,
+        269,
+        355,
+        357,
+        394,
+        472,
+        480,
+        483,
+        493,
+        496,
+        500,
+        503,
+        506,
+        514,
+        515,
+        517,
+        518
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "G-1-1",
+      "base": "G-1",
+      "pages": [
+        509,
+        512
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "G-1-10",
+      "base": "G-1",
+      "pages": [
+        509,
+        512,
+        515,
+        516,
+        519
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "G-1-11",
+      "base": "G-1",
+      "pages": [
+        503,
+        506,
+        512,
+        515
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "G-1-12",
+      "base": "G-1",
+      "pages": [
+        507,
+        508,
+        510,
+        511,
+        513,
+        516,
+        517,
+        520
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "G-1-2",
+      "base": "G-1",
+      "pages": [
+        509,
+        512
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "G-1-3",
+      "base": "G-1",
+      "pages": [
+        510,
+        513,
+        514,
+        517
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "G-1-4",
+      "base": "G-1",
+      "pages": [
+        510,
+        513,
+        515,
+        518
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "G-1-5",
+      "base": "G-1",
+      "pages": [
+        507,
+        508,
+        510,
+        511,
+        513,
+        514,
+        516,
+        517,
+        520
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "G-1-6",
+      "base": "G-1",
+      "pages": [
+        503,
+        506,
+        511,
+        514
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "G-1-7",
+      "base": "G-1",
+      "pages": [
+        503,
+        506
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "G-1-9",
+      "base": "G-1",
+      "pages": [
+        511,
+        514
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "G-1-99",
+      "base": "G-1",
+      "pages": [
+        503,
+        506,
+        508,
+        511,
+        513,
+        516,
+        517,
+        520
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "H-1",
+      "base": "H-1",
+      "pages": [
+        2,
+        225,
+        260,
+        369,
+        394,
+        472,
+        480,
+        483,
+        503,
+        506,
+        519,
+        520,
+        522,
+        523
+      ],
+      "kinds": [
+        "added",
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "H-2",
+      "base": "H-2",
+      "pages": [
+        2,
+        219,
+        220,
+        230,
+        278,
+        299,
+        300,
+        301,
+        302,
+        303,
+        309,
+        311,
+        366,
+        405,
+        426,
+        430,
+        432,
+        458,
+        459,
+        503,
+        506,
+        527,
+        614,
+        619,
+        620,
+        621,
+        646
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    },
+    {
+      "code": "K-STAR",
+      "base": "K-STAR",
+      "pages": [
+        2
+      ],
+      "kinds": [
+        "changed"
+      ],
+      "ledger": {
+        "manualVersion": "2026.5",
+        "verified": false,
+        "needsManualReview": true
+      }
+    }
+  ],
+  "page_changes": [
+    {
+      "kind": "changed",
+      "old_page": 1,
+      "new_page": 1,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 2,
+      "new_page": 2,
+      "codes": [
+        "A-1",
+        "A-2",
+        "A-3",
+        "B-1",
+        "B-2",
+        "C-1",
+        "C-3",
+        "C-3-8",
+        "C-4",
+        "D-1",
+        "D-10",
+        "D-10-T",
+        "D-2",
+        "D-3",
+        "D-4",
+        "D-5",
+        "D-6",
+        "D-7",
+        "D-8",
+        "D-9",
+        "E-1",
+        "E-10",
+        "E-2",
+        "E-3",
+        "E-4",
+        "E-5",
+        "E-6",
+        "E-7",
+        "E-7-T",
+        "E-8",
+        "E-9",
+        "F-1",
+        "F-2",
+        "F-2-T",
+        "F-3",
+        "F-4",
+        "F-5",
+        "F-5-T",
+        "F-6",
+        "G-1",
+        "H-1",
+        "H-2",
+        "K-STAR"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 3,
+      "new_page": 3,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 214,
+      "new_page": 214,
+      "codes": [
+        "E-7-1",
+        "E-7-2",
+        "E-7-3",
+        "E-7-4",
+        "E-7-91",
+        "E-7-S",
+        "E-7-T",
+        "E-7-Y"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 215,
+      "new_page": 215,
+      "codes": [
+        "D-10-3",
+        "D-2-7"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 216,
+      "new_page": 216,
+      "codes": [
+        "D-4-6",
+        "E-7-4"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 217,
+      "new_page": 217,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 218,
+      "new_page": 218,
+      "codes": [
+        "E-7"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 219,
+      "new_page": 219,
+      "codes": [
+        "C-4-5",
+        "D-1",
+        "D-3",
+        "D-6",
+        "D-7",
+        "D-8",
+        "D-9",
+        "E-1",
+        "E-10",
+        "E-2",
+        "E-3",
+        "E-5",
+        "E-6",
+        "E-7",
+        "E-9",
+        "H-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 220,
+      "new_page": 220,
+      "codes": [
+        "A-1",
+        "A-2",
+        "D-1",
+        "D-2",
+        "D-3",
+        "D-4",
+        "D-6",
+        "E-1",
+        "E-10",
+        "E-2",
+        "E-3",
+        "E-4",
+        "E-5",
+        "E-6",
+        "E-6-2",
+        "E-7",
+        "E-9",
+        "F-1",
+        "F-3",
+        "H-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 221,
+      "new_page": 221,
+      "codes": [
+        "E-2",
+        "E-7",
+        "F-1",
+        "F-3"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 222,
+      "new_page": 222,
+      "codes": [
+        "E-7"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 223,
+      "new_page": 223,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 224,
+      "new_page": 224,
+      "codes": [
+        "D-1",
+        "D-10",
+        "D-2",
+        "D-2-7",
+        "D-3",
+        "D-4",
+        "D-5",
+        "D-6",
+        "D-7",
+        "D-8",
+        "D-9",
+        "E-1",
+        "E-10",
+        "E-2",
+        "E-3",
+        "E-4",
+        "E-5",
+        "E-6",
+        "E-7",
+        "E-8",
+        "E-9",
+        "G-1"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 225,
+      "new_page": 225,
+      "codes": [
+        "B-1",
+        "D-3",
+        "E-1",
+        "E-2",
+        "E-3",
+        "E-4",
+        "E-5",
+        "E-6",
+        "E-6-2",
+        "E-7",
+        "E-9",
+        "F-3",
+        "H-1"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 226,
+      "new_page": 226,
+      "codes": [
+        "E-2",
+        "E-7",
+        "E-7-4",
+        "E-9"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 227,
+      "new_page": 227,
+      "codes": [
+        "E-7",
+        "E-7-4"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 228,
+      "new_page": 228,
+      "codes": [
+        "D-7",
+        "D-8",
+        "E-7"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 230,
+      "new_page": 230,
+      "codes": [
+        "E-1",
+        "E-10",
+        "E-7",
+        "E-7-1",
+        "E-7-2",
+        "E-7-3",
+        "E-7-4",
+        "E-8",
+        "E-9",
+        "F-2",
+        "F-4",
+        "F-5",
+        "F-6",
+        "H-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 231,
+      "new_page": 231,
+      "codes": [
+        "E-7"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 233,
+      "new_page": 233,
+      "codes": [
+        "E-7-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 234,
+      "new_page": 234,
+      "codes": [
+        "E-7-3",
+        "E-7-4",
+        "E-7-S",
+        "E-7-S1",
+        "E-7-S2",
+        "E-7-T",
+        "E-7-Y"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 237,
+      "new_page": 237,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 239,
+      "new_page": 239,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 240,
+      "new_page": 240,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 241,
+      "new_page": 241,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 242,
+      "new_page": 242,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 243,
+      "new_page": 243,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 244,
+      "new_page": 244,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 245,
+      "new_page": 245,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 246,
+      "new_page": 246,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 247,
+      "new_page": 247,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 248,
+      "new_page": 248,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 249,
+      "new_page": 249,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 250,
+      "new_page": 250,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 251,
+      "new_page": 251,
+      "codes": [
+        "E-9"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 252,
+      "new_page": 252,
+      "codes": [
+        "D-10",
+        "E-7"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 253,
+      "new_page": 253,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 254,
+      "new_page": 254,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 255,
+      "new_page": 255,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 256,
+      "new_page": 256,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 257,
+      "new_page": 257,
+      "codes": [
+        "D-10",
+        "E-7"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 258,
+      "new_page": 258,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 259,
+      "new_page": 259,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 260,
+      "new_page": 260,
+      "codes": [
+        "E-2",
+        "E-7",
+        "H-1"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 261,
+      "new_page": 261,
+      "codes": [
+        "A-2",
+        "F-1"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 262,
+      "new_page": 262,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 263,
+      "new_page": 263,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 264,
+      "new_page": 264,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 265,
+      "new_page": 265,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 266,
+      "new_page": 266,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 267,
+      "new_page": 267,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 268,
+      "new_page": 268,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 269,
+      "new_page": 269,
+      "codes": [
+        "D-3",
+        "D-4-1",
+        "E-10",
+        "E-9",
+        "G-1"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 270,
+      "new_page": 270,
+      "codes": [
+        "D-10",
+        "E-7"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 271,
+      "new_page": 271,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 272,
+      "new_page": 272,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 273,
+      "new_page": 273,
+      "codes": [
+        "E-10",
+        "E-5",
+        "E-7"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 274,
+      "new_page": 274,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 275,
+      "new_page": 275,
+      "codes": [
+        "D-4-6"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 278,
+      "new_page": 278,
+      "codes": [
+        "E-10",
+        "E-9",
+        "H-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 279,
+      "new_page": 279,
+      "codes": [
+        "E-7-3"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 280,
+      "new_page": 280,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 281,
+      "new_page": 281,
+      "codes": [
+        "E-7-3"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 282,
+      "new_page": 282,
+      "codes": [
+        "E-7-3"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 283,
+      "new_page": 283,
+      "codes": [
+        "E-7-3"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 284,
+      "new_page": 284,
+      "codes": [
+        "E-7-3"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 285,
+      "new_page": 285,
+      "codes": [
+        "E-7-3"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 286,
+      "new_page": 286,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 287,
+      "new_page": 287,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 288,
+      "new_page": 288,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 289,
+      "new_page": 289,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 290,
+      "new_page": 290,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 291,
+      "new_page": 291,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 292,
+      "new_page": 292,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 293,
+      "new_page": 293,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 294,
+      "new_page": 294,
+      "codes": [
+        "E-7",
+        "E-7-4",
+        "E-7-S",
+        "E-7-S1",
+        "E-7-S2",
+        "F-2",
+        "F-2-7",
+        "F-5"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 295,
+      "new_page": 295,
+      "codes": [
+        "E-7-S",
+        "E-7-S1",
+        "E-7-S2",
+        "F-2",
+        "F-2-7",
+        "F-5",
+        "F-5-16"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 296,
+      "new_page": 296,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 297,
+      "new_page": 297,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 298,
+      "new_page": 298,
+      "codes": [
+        "E-7-4"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 299,
+      "new_page": 299,
+      "codes": [
+        "E-10",
+        "E-7-4",
+        "E-9",
+        "H-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 300,
+      "new_page": 300,
+      "codes": [
+        "E-10",
+        "E-7-4",
+        "E-7-4R",
+        "E-9",
+        "H-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 301,
+      "new_page": 301,
+      "codes": [
+        "E-10",
+        "E-7-4",
+        "E-9",
+        "H-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 302,
+      "new_page": 302,
+      "codes": [
+        "E-10",
+        "E-7-4",
+        "E-9",
+        "H-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 303,
+      "new_page": 303,
+      "codes": [
+        "E-10",
+        "E-7",
+        "E-7-4",
+        "E-7-4R",
+        "E-9",
+        "F-2",
+        "F-4",
+        "F-5",
+        "F-6",
+        "H-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 304,
+      "new_page": 304,
+      "codes": [
+        "E-10",
+        "E-7-4",
+        "E-9"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 309,
+      "new_page": 309,
+      "codes": [
+        "E-10",
+        "E-7-4",
+        "E-9",
+        "H-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 311,
+      "new_page": 311,
+      "codes": [
+        "E-10",
+        "E-7-4",
+        "E-9",
+        "H-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 313,
+      "new_page": 313,
+      "codes": [
+        "E-7-4"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 351,
+      "new_page": 351,
+      "codes": [
+        "C-3",
+        "F-1-16",
+        "F-1-28",
+        "F-1-5",
+        "F-1-51",
+        "F-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 352,
+      "new_page": 352,
+      "codes": [
+        "F-1-52",
+        "F-2-3",
+        "F-5-2",
+        "F-5-3",
+        "F-6"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 353,
+      "new_page": 353,
+      "codes": [
+        "B-1",
+        "B-2",
+        "C-3",
+        "F-1-D"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 354,
+      "new_page": 354,
+      "codes": [
+        "F-1",
+        "F-1-D",
+        "F-6-3"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 355,
+      "new_page": 355,
+      "codes": [
+        "F-1-6",
+        "F-1-D",
+        "G-1"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 356,
+      "new_page": 356,
+      "codes": [
+        "F-1",
+        "F-1-28"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 357,
+      "new_page": 357,
+      "codes": [
+        "F-1-12",
+        "F-1-5",
+        "F-1-6",
+        "F-2-7",
+        "F-2-71",
+        "F-2-7S",
+        "F-6-3",
+        "G-1"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 358,
+      "new_page": 358,
+      "codes": [
+        "F-1-5"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 359,
+      "new_page": 359,
+      "codes": [
+        "F-1-12",
+        "F-1-28",
+        "F-1-5",
+        "F-2-7",
+        "F-2-71",
+        "F-2-7S"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 360,
+      "new_page": 360,
+      "codes": [
+        "F-1-5",
+        "F-1-52",
+        "F-2-2",
+        "F-5-2",
+        "F-6"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 361,
+      "new_page": 361,
+      "codes": [
+        "F-1-13",
+        "F-1-5",
+        "F-1-D"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 362,
+      "new_page": 362,
+      "codes": [
+        "F-1-5",
+        "F-1-51"
+      ]
+    },
+    {
+      "kind": "added",
+      "old_page": null,
+      "new_page": 363,
+      "codes": [
+        "F-1-5",
+        "F-1-52",
+        "F-1-D",
+        "F-2-2",
+        "F-5-2",
+        "F-6"
+      ]
+    },
+    {
+      "kind": "added",
+      "old_page": null,
+      "new_page": 364,
+      "codes": [
+        "F-1-13"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 364,
+      "new_page": 366,
+      "codes": [
+        "C-4",
+        "E-1",
+        "E-10",
+        "E-2",
+        "F-2-99",
+        "H-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 365,
+      "new_page": 367,
+      "codes": [
+        "E-2",
+        "E-7",
+        "F-1",
+        "F-2-7",
+        "F-2-71"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 366,
+      "new_page": 368,
+      "codes": [
+        "F-2",
+        "F-2-7",
+        "F-2-7S",
+        "F-5"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 367,
+      "new_page": 369,
+      "codes": [
+        "B-1",
+        "B-2",
+        "C-3",
+        "F-1",
+        "F-2-7",
+        "F-2-71",
+        "F-2-7S",
+        "H-1"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 368,
+      "new_page": 370,
+      "codes": [
+        "F-1-1",
+        "F-2",
+        "F-2-2",
+        "F-4"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 369,
+      "new_page": 371,
+      "codes": [
+        "F-5"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 370,
+      "new_page": 372,
+      "codes": [
+        "D-8",
+        "F-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 371,
+      "new_page": 373,
+      "codes": [
+        "D-2",
+        "D-5",
+        "D-9",
+        "E-1",
+        "E-5",
+        "E-6-2",
+        "E-7-1",
+        "E-7-2",
+        "E-7-4"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 372,
+      "new_page": 374,
+      "codes": [
+        "D-5",
+        "D-9",
+        "E-6-2",
+        "E-7-1",
+        "E-7-2",
+        "E-7-4",
+        "F-2-7S"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 373,
+      "new_page": 375,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 374,
+      "new_page": 376,
+      "codes": [
+        "F-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 375,
+      "new_page": 377,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 376,
+      "new_page": 378,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 377,
+      "new_page": 379,
+      "codes": [
+        "F-2-8",
+        "F-2-81"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 378,
+      "new_page": 380,
+      "codes": [
+        "F-1",
+        "F-2",
+        "F-5"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 379,
+      "new_page": 381,
+      "codes": [
+        "F-1",
+        "F-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 380,
+      "new_page": 382,
+      "codes": [
+        "F-2",
+        "F-2-8"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 381,
+      "new_page": 383,
+      "codes": [
+        "F-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 382,
+      "new_page": 384,
+      "codes": [
+        "C-3",
+        "F-2",
+        "F-2-12",
+        "F-5"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 383,
+      "new_page": 385,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 384,
+      "new_page": 386,
+      "codes": [
+        "C-3",
+        "F-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 385,
+      "new_page": 387,
+      "codes": [
+        "C-3",
+        "F-2",
+        "F-5"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 386,
+      "new_page": 388,
+      "codes": [
+        "F-2",
+        "F-2-13",
+        "F-2-3",
+        "F-5-21"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 387,
+      "new_page": 389,
+      "codes": [
+        "F-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 388,
+      "new_page": 390,
+      "codes": [
+        "F-2-16"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 389,
+      "new_page": 391,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 390,
+      "new_page": 392,
+      "codes": [
+        "F-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 391,
+      "new_page": 393,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 392,
+      "new_page": 394,
+      "codes": [
+        "A-1",
+        "A-3",
+        "D-1",
+        "D-5",
+        "D-6",
+        "D-7",
+        "D-8",
+        "D-9",
+        "E-1",
+        "E-2",
+        "E-3",
+        "E-4",
+        "E-5",
+        "E-6-1",
+        "E-7",
+        "F-1",
+        "F-2",
+        "F-2-99",
+        "F-3-18",
+        "G-1",
+        "H-1"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 393,
+      "new_page": 395,
+      "codes": [
+        "F-2-99"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 394,
+      "new_page": 396,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 395,
+      "new_page": 397,
+      "codes": [
+        "F-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 396,
+      "new_page": 398,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 397,
+      "new_page": 399,
+      "codes": [
+        "D-6",
+        "E-7",
+        "E-7-1",
+        "F-2-99",
+        "F-3-18"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 398,
+      "new_page": 400,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 399,
+      "new_page": 401,
+      "codes": [
+        "E-2",
+        "E-7-4",
+        "E-9-1",
+        "F-2-99",
+        "F-3"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 400,
+      "new_page": 402,
+      "codes": [
+        "D-8",
+        "F-2-99"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 401,
+      "new_page": 403,
+      "codes": [
+        "F-2-99",
+        "F-3",
+        "F-3-18"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 402,
+      "new_page": 404,
+      "codes": [
+        "F-2-99",
+        "F-3-18"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 403,
+      "new_page": 405,
+      "codes": [
+        "C-4",
+        "E-1",
+        "E-10",
+        "F-2",
+        "F-2-99",
+        "F-3-18",
+        "H-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 404,
+      "new_page": 406,
+      "codes": [
+        "E-2",
+        "E-7-4",
+        "E-9-1",
+        "F-2-99",
+        "F-3-18"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 405,
+      "new_page": 407,
+      "codes": [
+        "F-5-13"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 406,
+      "new_page": 408,
+      "codes": [
+        "F-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 407,
+      "new_page": 409,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 408,
+      "new_page": 410,
+      "codes": [
+        "F-2",
+        "F-6-1",
+        "F-6-2",
+        "F-6-3"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 409,
+      "new_page": 411,
+      "codes": [
+        "F-1",
+        "F-2-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 410,
+      "new_page": 412,
+      "codes": [
+        "F-1-12",
+        "F-2-3",
+        "F-2-4",
+        "F-2-5",
+        "F-2-7",
+        "F-2-71",
+        "F-2-7S",
+        "F-2-99",
+        "F-3-18"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 411,
+      "new_page": 413,
+      "codes": [
+        "D-10",
+        "F-1-12",
+        "F-2",
+        "F-2-7",
+        "F-2-71",
+        "F-2-7S",
+        "F-3",
+        "F-3-18"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 412,
+      "new_page": 414,
+      "codes": [
+        "F-1-12",
+        "F-2-7",
+        "F-2-71",
+        "F-3-18"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 413,
+      "new_page": 415,
+      "codes": [
+        "D-10",
+        "F-1-12",
+        "F-2",
+        "F-2-7",
+        "F-2-71",
+        "F-3",
+        "F-3-18"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 414,
+      "new_page": 416,
+      "codes": [
+        "F-1",
+        "F-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 415,
+      "new_page": 417,
+      "codes": [
+        "F-2",
+        "F-2-12"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 416,
+      "new_page": 418,
+      "codes": [
+        "F-2",
+        "F-2-6",
+        "F-2-99"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 417,
+      "new_page": 419,
+      "codes": [
+        "D-6",
+        "F-2-99"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 418,
+      "new_page": 420,
+      "codes": [
+        "F-2",
+        "F-2-99"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 419,
+      "new_page": 421,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 420,
+      "new_page": 422,
+      "codes": [
+        "F-2-6"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 421,
+      "new_page": 423,
+      "codes": [
+        "F-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 422,
+      "new_page": 424,
+      "codes": [
+        "F-2",
+        "F-6-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 423,
+      "new_page": 425,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 424,
+      "new_page": 426,
+      "codes": [
+        "D-1",
+        "D-3",
+        "E-1",
+        "E-2",
+        "E-3",
+        "E-4",
+        "E-5",
+        "E-6",
+        "E-6-2",
+        "E-7",
+        "E-7-4",
+        "F-1",
+        "F-2",
+        "F-3",
+        "F-4",
+        "H-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 425,
+      "new_page": 427,
+      "codes": [
+        "D-2-3",
+        "D-2-4",
+        "E-1",
+        "E-2",
+        "E-3",
+        "E-4",
+        "E-5",
+        "E-7",
+        "F-1",
+        "F-3"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 426,
+      "new_page": 428,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 427,
+      "new_page": 429,
+      "codes": [
+        "B-1",
+        "B-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 428,
+      "new_page": 430,
+      "codes": [
+        "F-1",
+        "F-3-19",
+        "F-3-20",
+        "F-4",
+        "H-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 429,
+      "new_page": 431,
+      "codes": [
+        "D-7",
+        "E-7",
+        "F-2",
+        "F-4",
+        "F-5"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 430,
+      "new_page": 432,
+      "codes": [
+        "D-8",
+        "F-2",
+        "F-5",
+        "H-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 431,
+      "new_page": 433,
+      "codes": [
+        "F-2",
+        "F-5",
+        "F-5-1",
+        "F-5-2",
+        "F-5-3",
+        "F-5-4",
+        "F-5-5",
+        "F-5-6",
+        "F-5-7",
+        "F-5-8"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 432,
+      "new_page": 434,
+      "codes": [
+        "D-8-4",
+        "F-5-1",
+        "F-5-14",
+        "F-5-16",
+        "F-5-17",
+        "F-5-2",
+        "F-5-21",
+        "F-5-23",
+        "F-5-27",
+        "F-5-6",
+        "F-5-7",
+        "F-5-9"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 433,
+      "new_page": 435,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 434,
+      "new_page": 436,
+      "codes": [
+        "F-5",
+        "F-5-11",
+        "F-5-12",
+        "F-5-15",
+        "F-5-5",
+        "F-5-9"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 435,
+      "new_page": 437,
+      "codes": [
+        "F-5-10",
+        "F-5-13"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 436,
+      "new_page": 438,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 437,
+      "new_page": 439,
+      "codes": [
+        "F-5-13"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 438,
+      "new_page": 440,
+      "codes": [
+        "F-5-11",
+        "F-5-12",
+        "F-5-17",
+        "F-5-19",
+        "F-5-20",
+        "F-5-21",
+        "F-5-22",
+        "F-5-23",
+        "F-5-24",
+        "F-5-25",
+        "F-5-5",
+        "F-5-8"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 439,
+      "new_page": 441,
+      "codes": [
+        "E-5",
+        "F-5-1",
+        "F-5-10",
+        "F-5-11",
+        "F-5-12",
+        "F-5-13",
+        "F-5-15",
+        "F-5-16",
+        "F-5-17",
+        "F-5-18",
+        "F-5-19",
+        "F-5-20",
+        "F-5-21",
+        "F-5-22",
+        "F-5-23",
+        "F-5-24",
+        "F-5-25",
+        "F-5-26",
+        "F-5-4",
+        "F-5-5",
+        "F-5-8",
+        "F-5-9"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 440,
+      "new_page": 442,
+      "codes": [
+        "F-2",
+        "F-5-17",
+        "F-5-19",
+        "F-5-21",
+        "F-5-22",
+        "F-5-23"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 441,
+      "new_page": 443,
+      "codes": [
+        "F-5",
+        "F-5-11",
+        "F-5-12",
+        "F-5-15",
+        "F-5-5",
+        "F-5-9"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 442,
+      "new_page": 444,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 443,
+      "new_page": 445,
+      "codes": [
+        "D-2-7",
+        "E-5",
+        "F-5-1",
+        "F-5-10",
+        "F-5-11",
+        "F-5-12",
+        "F-5-13",
+        "F-5-15",
+        "F-5-16",
+        "F-5-17",
+        "F-5-18",
+        "F-5-19",
+        "F-5-20",
+        "F-5-21",
+        "F-5-22",
+        "F-5-23",
+        "F-5-24",
+        "F-5-25",
+        "F-5-26",
+        "F-5-4",
+        "F-5-5",
+        "F-5-8",
+        "F-5-9"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 444,
+      "new_page": 446,
+      "codes": [
+        "D-8-4",
+        "F-5",
+        "F-5-1",
+        "F-5-10",
+        "F-5-11",
+        "F-5-12",
+        "F-5-13",
+        "F-5-15",
+        "F-5-16",
+        "F-5-17",
+        "F-5-18",
+        "F-5-19",
+        "F-5-20",
+        "F-5-21",
+        "F-5-22",
+        "F-5-23",
+        "F-5-24",
+        "F-5-25",
+        "F-5-26",
+        "F-5-4",
+        "F-5-5",
+        "F-5-8",
+        "F-5-9"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 445,
+      "new_page": 447,
+      "codes": [
+        "D-10",
+        "D-8",
+        "D-9",
+        "E-1",
+        "E-7",
+        "F-5-10",
+        "F-5-11",
+        "F-5-13",
+        "F-5-15",
+        "F-5-16",
+        "F-5-17",
+        "F-5-18",
+        "F-5-19",
+        "F-5-20",
+        "F-5-21",
+        "F-5-22",
+        "F-5-23",
+        "F-5-24",
+        "F-5-25",
+        "F-5-26",
+        "F-5-5",
+        "F-5-8"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 446,
+      "new_page": 448,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 447,
+      "new_page": 449,
+      "codes": [
+        "F-5-1"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 448,
+      "new_page": 450,
+      "codes": [
+        "F-5-25"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 449,
+      "new_page": 451,
+      "codes": [
+        "D-10",
+        "D-7",
+        "D-8",
+        "D-9",
+        "E-1",
+        "E-6",
+        "E-7",
+        "F-2",
+        "F-5-1"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 450,
+      "new_page": 452,
+      "codes": [
+        "D-10",
+        "D-7",
+        "D-8",
+        "D-9",
+        "E-1",
+        "E-5",
+        "E-6",
+        "E-7",
+        "F-5-1",
+        "F-5-2",
+        "F-5-3",
+        "F-6",
+        "F-6-1"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 451,
+      "new_page": 453,
+      "codes": [
+        "F-6"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 452,
+      "new_page": 454,
+      "codes": [
+        "F-6"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 453,
+      "new_page": 455,
+      "codes": [
+        "F-6"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 454,
+      "new_page": 456,
+      "codes": [
+        "F-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 455,
+      "new_page": 457,
+      "codes": [
+        "F-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 456,
+      "new_page": 458,
+      "codes": [
+        "D-7",
+        "E-7",
+        "F-2",
+        "F-4",
+        "F-5",
+        "F-5-16",
+        "F-5-17",
+        "F-5-21",
+        "F-5-4",
+        "H-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 457,
+      "new_page": 459,
+      "codes": [
+        "D-7",
+        "E-7",
+        "F-2",
+        "F-4",
+        "F-5",
+        "F-5-5",
+        "H-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 458,
+      "new_page": 460,
+      "codes": [
+        "D-7",
+        "E-7",
+        "F-2",
+        "F-5-5",
+        "F-5-8"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 459,
+      "new_page": 461,
+      "codes": [
+        "D-7",
+        "E-7",
+        "F-1",
+        "F-2",
+        "F-3",
+        "F-5",
+        "F-5-15",
+        "F-5-9"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 460,
+      "new_page": 462,
+      "codes": [
+        "D-2",
+        "D-2-4",
+        "F-5",
+        "F-5-10",
+        "F-5-15",
+        "F-5-9"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 461,
+      "new_page": 463,
+      "codes": [
+        "F-5",
+        "F-5-10"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 462,
+      "new_page": 464,
+      "codes": [
+        "F-5-11"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 463,
+      "new_page": 465,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 464,
+      "new_page": 466,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 465,
+      "new_page": 467,
+      "codes": [
+        "D-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 466,
+      "new_page": 468,
+      "codes": [
+        "D-2",
+        "F-5-12",
+        "F-5-13"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 467,
+      "new_page": 469,
+      "codes": [
+        "F-2",
+        "F-2-7",
+        "F-2-71",
+        "F-5",
+        "F-5-13",
+        "F-5-16",
+        "F-5-18"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 468,
+      "new_page": 470,
+      "codes": [
+        "F-2",
+        "F-2-7",
+        "F-2-71",
+        "F-2-8",
+        "F-5-16",
+        "F-5-17",
+        "F-5-18",
+        "F-5-19"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 469,
+      "new_page": 471,
+      "codes": [
+        "F-2",
+        "F-2-8",
+        "F-2-81",
+        "F-5-17",
+        "F-5-19"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 470,
+      "new_page": 472,
+      "codes": [
+        "E-10",
+        "E-8",
+        "E-9",
+        "F-2",
+        "F-2-81",
+        "F-5",
+        "F-5-17",
+        "F-5-19",
+        "F-5-20",
+        "G-1",
+        "H-1"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 471,
+      "new_page": 473,
+      "codes": [
+        "F-2",
+        "F-5-20",
+        "F-5-21",
+        "F-5-22",
+        "F-5-23"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 472,
+      "new_page": 474,
+      "codes": [
+        "D-8",
+        "F-2",
+        "F-5-17",
+        "F-5-21",
+        "F-5-22",
+        "F-5-23",
+        "F-5-24"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 473,
+      "new_page": 475,
+      "codes": [
+        "D-8",
+        "D-8-4",
+        "F-5-24",
+        "F-5-25"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 474,
+      "new_page": 476,
+      "codes": [
+        "D-8",
+        "F-5-25",
+        "F-5-26"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 475,
+      "new_page": 477,
+      "codes": [
+        "F-2",
+        "F-5-21",
+        "F-5-23",
+        "F-5-28",
+        "F-5-29"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 476,
+      "new_page": 478,
+      "codes": [
+        "C-3-1",
+        "F-2",
+        "F-2-16",
+        "F-5",
+        "F-5-28",
+        "F-5-29"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 477,
+      "new_page": 479,
+      "codes": [
+        "F-2-16",
+        "F-5-21",
+        "F-5-23",
+        "F-6",
+        "F-6-1",
+        "F-6-2",
+        "F-6-3"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 478,
+      "new_page": 480,
+      "codes": [
+        "B-1",
+        "B-2",
+        "C-1",
+        "C-4",
+        "F-6",
+        "F-6-1",
+        "G-1",
+        "H-1"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 479,
+      "new_page": 481,
+      "codes": [
+        "C-3-1",
+        "F-5",
+        "F-6-1"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 480,
+      "new_page": 482,
+      "codes": [
+        "F-6",
+        "F-6-1",
+        "F-6-2",
+        "F-6-3"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 481,
+      "new_page": 483,
+      "codes": [
+        "B-1",
+        "B-2",
+        "C-1",
+        "C-4",
+        "F-6",
+        "F-6-1",
+        "G-1",
+        "H-1"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 482,
+      "new_page": 484,
+      "codes": [
+        "F-6",
+        "F-6-1"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 483,
+      "new_page": 485,
+      "codes": [
+        "F-6",
+        "F-6-1"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 484,
+      "new_page": 486,
+      "codes": [
+        "F-6",
+        "F-6-1"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 485,
+      "new_page": 487,
+      "codes": [
+        "F-6"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 486,
+      "new_page": 488,
+      "codes": [
+        "F-6"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 487,
+      "new_page": 489,
+      "codes": [
+        "F-6"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 488,
+      "new_page": 490,
+      "codes": [
+        "F-6"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 489,
+      "new_page": 491,
+      "codes": [
+        "F-6"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 490,
+      "new_page": 492,
+      "codes": [
+        "F-6"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 491,
+      "new_page": 493,
+      "codes": [
+        "F-6",
+        "F-6-2",
+        "F-6-3",
+        "G-1"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 492,
+      "new_page": 494,
+      "codes": [
+        "F-1-6",
+        "F-6-1",
+        "F-6-3"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 493,
+      "new_page": 495,
+      "codes": [
+        "F-6-1"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 494,
+      "new_page": 496,
+      "codes": [
+        "F-6",
+        "F-6-1",
+        "F-6-2",
+        "F-6-3",
+        "G-1"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 495,
+      "new_page": 497,
+      "codes": [
+        "F-1-6",
+        "F-6-1",
+        "F-6-2",
+        "F-6-3"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 496,
+      "new_page": 498,
+      "codes": [
+        "F-6-1",
+        "F-6-2",
+        "F-6-3"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 497,
+      "new_page": 499,
+      "codes": [
+        "F-6-1",
+        "F-6-2",
+        "F-6-3"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 498,
+      "new_page": 500,
+      "codes": [
+        "F-1-6",
+        "F-6-1",
+        "F-6-2",
+        "F-6-3",
+        "G-1"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 499,
+      "new_page": 501,
+      "codes": [
+        "F-2-1",
+        "F-2-10",
+        "F-6",
+        "F-6-1",
+        "F-6-2",
+        "F-6-3"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 500,
+      "new_page": 502,
+      "codes": [
+        "F-6-1",
+        "F-6-3"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 501,
+      "new_page": 503,
+      "codes": [
+        "A-1",
+        "F-1-6",
+        "F-5",
+        "F-6",
+        "F-6-3",
+        "G-1",
+        "G-1-11",
+        "G-1-6",
+        "G-1-7",
+        "G-1-99",
+        "H-1",
+        "H-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 502,
+      "new_page": 504,
+      "codes": [
+        "E-7-H",
+        "F-2-1",
+        "F-2-10",
+        "F-6",
+        "F-6-1",
+        "F-6-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 503,
+      "new_page": 505,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 504,
+      "new_page": 506,
+      "codes": [
+        "A-1",
+        "E-2",
+        "F-5",
+        "F-6",
+        "G-1",
+        "G-1-11",
+        "G-1-6",
+        "G-1-7",
+        "G-1-99",
+        "H-1",
+        "H-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 505,
+      "new_page": 507,
+      "codes": [
+        "E-2",
+        "E-7-H",
+        "F-1-16",
+        "G-1-12",
+        "G-1-5"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 506,
+      "new_page": 508,
+      "codes": [
+        "G-1-12",
+        "G-1-5",
+        "G-1-99"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 507,
+      "new_page": 509,
+      "codes": [
+        "B-1",
+        "B-2",
+        "C-3",
+        "E-2",
+        "G-1-1",
+        "G-1-10",
+        "G-1-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 508,
+      "new_page": 510,
+      "codes": [
+        "E-2",
+        "F-1-16",
+        "G-1-12",
+        "G-1-3",
+        "G-1-4",
+        "G-1-5"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 509,
+      "new_page": 511,
+      "codes": [
+        "G-1-12",
+        "G-1-5",
+        "G-1-6",
+        "G-1-9",
+        "G-1-99"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 510,
+      "new_page": 512,
+      "codes": [
+        "B-1",
+        "B-2",
+        "C-3",
+        "C-3-3",
+        "G-1-1",
+        "G-1-10",
+        "G-1-11",
+        "G-1-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 511,
+      "new_page": 513,
+      "codes": [
+        "G-1-12",
+        "G-1-3",
+        "G-1-4",
+        "G-1-5",
+        "G-1-99"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 512,
+      "new_page": 514,
+      "codes": [
+        "G-1",
+        "G-1-3",
+        "G-1-5",
+        "G-1-6",
+        "G-1-9"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 513,
+      "new_page": 515,
+      "codes": [
+        "B-1",
+        "B-2",
+        "C-3",
+        "C-3-3",
+        "G-1",
+        "G-1-10",
+        "G-1-11",
+        "G-1-4"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 514,
+      "new_page": 516,
+      "codes": [
+        "G-1-10",
+        "G-1-12",
+        "G-1-5",
+        "G-1-99"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 515,
+      "new_page": 517,
+      "codes": [
+        "G-1",
+        "G-1-12",
+        "G-1-3",
+        "G-1-5",
+        "G-1-99"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 516,
+      "new_page": 518,
+      "codes": [
+        "G-1",
+        "G-1-4"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 517,
+      "new_page": 519,
+      "codes": [
+        "E-1",
+        "E-6",
+        "E-7",
+        "G-1-10",
+        "H-1"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 518,
+      "new_page": 520,
+      "codes": [
+        "D-2",
+        "G-1-12",
+        "G-1-5",
+        "G-1-99",
+        "H-1"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 519,
+      "new_page": 521,
+      "codes": [
+        "E-7"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 520,
+      "new_page": 522,
+      "codes": [
+        "E-1",
+        "E-6",
+        "E-7",
+        "H-1"
+      ]
+    },
+    {
+      "kind": "added",
+      "old_page": null,
+      "new_page": 523,
+      "codes": [
+        "D-2",
+        "H-1"
+      ]
+    },
+    {
+      "kind": "added",
+      "old_page": null,
+      "new_page": 524,
+      "codes": [
+        "E-7"
+      ]
+    },
+    {
+      "kind": "added",
+      "old_page": null,
+      "new_page": 525,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 522,
+      "new_page": 527,
+      "codes": [
+        "C-3-8",
+        "F-1",
+        "F-3",
+        "F-4",
+        "F-5",
+        "H-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 591,
+      "new_page": 596,
+      "codes": [
+        "D-10",
+        "E-7-4",
+        "E-7-4R",
+        "F-2-R"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 600,
+      "new_page": 605,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 609,
+      "new_page": 614,
+      "codes": [
+        "E-10",
+        "E-7-4R",
+        "E-9",
+        "F-3-3R",
+        "H-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 611,
+      "new_page": 616,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 612,
+      "new_page": 617,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 614,
+      "new_page": 619,
+      "codes": [
+        "E-10",
+        "E-7-4R",
+        "E-9",
+        "H-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 615,
+      "new_page": 620,
+      "codes": [
+        "E-10",
+        "E-9",
+        "H-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 616,
+      "new_page": 621,
+      "codes": [
+        "E-10",
+        "E-7",
+        "E-7-4",
+        "E-7-4R",
+        "E-9",
+        "F-2",
+        "F-4",
+        "F-5",
+        "F-6",
+        "H-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 617,
+      "new_page": 622,
+      "codes": [
+        "E-7-4R"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 618,
+      "new_page": 623,
+      "codes": [
+        "E-7-4R"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 619,
+      "new_page": 624,
+      "codes": [
+        "E-7-4R"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 620,
+      "new_page": 625,
+      "codes": [
+        "E-7-4R"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 621,
+      "new_page": 626,
+      "codes": [
+        "E-7-4R"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 622,
+      "new_page": 627,
+      "codes": [
+        "E-7-4R",
+        "F-3-3R"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 623,
+      "new_page": 628,
+      "codes": [
+        "E-7-4R",
+        "F-3-3R"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 624,
+      "new_page": 629,
+      "codes": [
+        "E-7-4R",
+        "F-3-3R"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 625,
+      "new_page": 630,
+      "codes": [
+        "E-7-4R",
+        "F-3-3R"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 626,
+      "new_page": 631,
+      "codes": [
+        "F-3-2R",
+        "F-4",
+        "F-4-R"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 627,
+      "new_page": 632,
+      "codes": [
+        "F-4",
+        "F-4-R"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 628,
+      "new_page": 633,
+      "codes": [
+        "F-4",
+        "F-4-R"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 629,
+      "new_page": 634,
+      "codes": [
+        "F-4-R"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 630,
+      "new_page": 635,
+      "codes": [
+        "F-4-R"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 631,
+      "new_page": 636,
+      "codes": [
+        "F-5-2",
+        "F-5-3",
+        "F-5-6"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 633,
+      "new_page": 638,
+      "codes": [
+        "F-4-R"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 634,
+      "new_page": 639,
+      "codes": [
+        "D-2",
+        "F-2",
+        "F-2-R"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 635,
+      "new_page": 640,
+      "codes": [
+        "F-2-R"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 641,
+      "new_page": 646,
+      "codes": [
+        "E-10",
+        "E-7-4",
+        "E-7-4R",
+        "E-9",
+        "H-2"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 672,
+      "new_page": 677,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 673,
+      "new_page": 678,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 674,
+      "new_page": 679,
+      "codes": [
+        "D-10",
+        "E-7",
+        "F-1",
+        "F-2",
+        "F-3",
+        "F-5"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 675,
+      "new_page": 680,
+      "codes": [
+        "D-10",
+        "E-7",
+        "F-2",
+        "F-5"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 676,
+      "new_page": 681,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 677,
+      "new_page": 682,
+      "codes": [
+        "D-10-T",
+        "E-1",
+        "E-7-1"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 678,
+      "new_page": 683,
+      "codes": [
+        "D-10-T",
+        "E-7-T",
+        "F-2-T",
+        "F-5-T"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 679,
+      "new_page": 684,
+      "codes": [
+        "F-2-T"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 680,
+      "new_page": 685,
+      "codes": [
+        "D-10-T",
+        "D-7",
+        "E-7",
+        "E-7-T",
+        "F-2",
+        "F-2-T",
+        "F-5-T"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 681,
+      "new_page": 686,
+      "codes": [
+        "D-10",
+        "D-10-T",
+        "E-7",
+        "E-7-T",
+        "F-2",
+        "F-2-T",
+        "F-3",
+        "F-5",
+        "F-5-T"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 682,
+      "new_page": 687,
+      "codes": [
+        "D-10",
+        "D-7",
+        "E-7",
+        "F-2",
+        "F-5"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 683,
+      "new_page": 688,
+      "codes": [
+        "F-2-T"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 684,
+      "new_page": 689,
+      "codes": [
+        "E-7-T",
+        "F-2-T",
+        "F-5-T"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 685,
+      "new_page": 690,
+      "codes": []
+    },
+    {
+      "kind": "changed",
+      "old_page": 686,
+      "new_page": 691,
+      "codes": [
+        "E-7-T"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 687,
+      "new_page": 692,
+      "codes": [
+        "D-10-T",
+        "F-2-T",
+        "F-5-T"
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_page": 688,
+      "new_page": 693,
+      "codes": [
+        "D-10-T",
+        "E-1",
+        "E-3",
+        "F-2-T",
+        "F-5-T"
+      ]
+    },
+    {
+      "kind": "added",
+      "old_page": null,
+      "new_page": 694,
+      "codes": []
+    },
+    {
+      "kind": "added",
+      "old_page": null,
+      "new_page": 695,
+      "codes": [
+        "F-2-T"
+      ]
+    },
+    {
+      "kind": "added",
+      "old_page": null,
+      "new_page": 696,
+      "codes": [
+        "F-2-T",
+        "F-5-T"
+      ]
+    },
+    {
+      "kind": "added",
+      "old_page": null,
+      "new_page": 697,
+      "codes": [
+        "D-10-T"
+      ]
+    },
+    {
+      "kind": "added",
+      "old_page": null,
+      "new_page": 698,
+      "codes": [
+        "D-10-T",
+        "F-1-15",
+        "F-1-24",
+        "F-3",
+        "F-3-10"
+      ]
+    },
+    {
+      "kind": "added",
+      "old_page": null,
+      "new_page": 699,
+      "codes": [
+        "E-1",
+        "E-7-1"
+      ]
+    },
+    {
+      "kind": "added",
+      "old_page": null,
+      "new_page": 700,
+      "codes": [
+        "D-10-T",
+        "E-7-T",
+        "F-2-T",
+        "F-5-T"
+      ]
+    },
+    {
+      "kind": "added",
+      "old_page": null,
+      "new_page": 701,
+      "codes": [
+        "D-10",
+        "D-10-T",
+        "E-7",
+        "E-7-T",
+        "F-1-15",
+        "F-1-24",
+        "F-2",
+        "F-2-T",
+        "F-2-T1",
+        "F-3-10",
+        "F-3-17",
+        "F-5",
+        "F-5-T",
+        "F-5-T1"
+      ]
+    },
+    {
+      "kind": "added",
+      "old_page": null,
+      "new_page": 702,
+      "codes": [
+        "F-1-15",
+        "F-2-T",
+        "F-2-T1"
+      ]
+    },
+    {
+      "kind": "added",
+      "old_page": null,
+      "new_page": 703,
+      "codes": [
+        "F-1-15",
+        "F-1-24",
+        "F-2-T",
+        "F-2-T1",
+        "F-5-T",
+        "F-5-T1"
+      ]
+    },
+    {
+      "kind": "added",
+      "old_page": null,
+      "new_page": 704,
+      "codes": [
+        "F-5-T1"
+      ]
+    },
+    {
+      "kind": "added",
+      "old_page": null,
+      "new_page": 705,
+      "codes": []
+    },
+    {
+      "kind": "added",
+      "old_page": null,
+      "new_page": 706,
+      "codes": []
+    },
+    {
+      "kind": "added",
+      "old_page": null,
+      "new_page": 707,
+      "codes": []
+    },
+    {
+      "kind": "added",
+      "old_page": null,
+      "new_page": 708,
+      "codes": []
+    },
+    {
+      "kind": "added",
+      "old_page": null,
+      "new_page": 709,
+      "codes": []
+    },
+    {
+      "kind": "added",
+      "old_page": null,
+      "new_page": 710,
+      "codes": []
+    },
+    {
+      "kind": "added",
+      "old_page": null,
+      "new_page": 711,
+      "codes": []
+    },
+    {
+      "kind": "added",
+      "old_page": null,
+      "new_page": 712,
+      "codes": []
+    },
+    {
+      "kind": "added",
+      "old_page": null,
+      "new_page": 713,
+      "codes": []
+    },
+    {
+      "kind": "added",
+      "old_page": null,
+      "new_page": 714,
+      "codes": []
+    },
+    {
+      "kind": "added",
+      "old_page": null,
+      "new_page": 715,
+      "codes": []
+    },
+    {
+      "kind": "added",
+      "old_page": null,
+      "new_page": 716,
+      "codes": []
+    },
+    {
+      "kind": "added",
+      "old_page": null,
+      "new_page": 717,
+      "codes": [
+        "F-2",
+        "F-5"
+      ]
+    },
+    {
+      "kind": "added",
+      "old_page": null,
+      "new_page": 718,
+      "codes": []
+    }
+  ]
+}

@@ -14,20 +14,22 @@ const JOURNEY_TARGETS = [
   'reminderSection'
 ];
 
-test('landing keeps all eight public utilities and restored journey surfaces visible', async ({ page }) => {
+test('all eight utilities remain reachable through the selected design service directory', async ({ page }) => {
   await page.goto('/index.html');
 
-  const utilityRow = page.locator('.p-gw-utility');
+  await page.locator('.cs-directory summary').click();
+  const utilityRow = page.locator('.cs-directory');
   await expect(utilityRow).toBeVisible();
-  await expect(utilityRow.locator('.p-gw-util')).toHaveCount(DIRECT_ACTIONS.length + JOURNEY_TARGETS.length);
+  await expect(utilityRow.locator('button[data-action^="open-"], button[data-action="reveal-home-section"]')).toHaveCount(DIRECT_ACTIONS.length + JOURNEY_TARGETS.length);
 
   for (const action of DIRECT_ACTIONS) {
-    await expect(utilityRow.locator(`.p-gw-util[data-action="${action}"]`)).toBeVisible();
+    await expect(utilityRow.locator(`button[data-action="${action}"]`)).toBeVisible();
   }
 
   for (const target of JOURNEY_TARGETS) {
-    const entry = utilityRow.locator(`.p-gw-util[data-action="reveal-home-section"][data-target="${target}"]`);
+    const entry = utilityRow.locator(`button[data-action="reveal-home-section"][data-target="${target}"]`);
     await expect(entry).toBeVisible();
+    await entry.click();
     await expect(page.locator(`#${target}`)).toBeVisible();
   }
 
@@ -38,7 +40,8 @@ test('landing keeps all eight public utilities and restored journey surfaces vis
 test('restored short-stay entry opens the existing checker instead of a dead shell', async ({ page }) => {
   await page.goto('/index.html');
 
-  await page.locator('.p-gw-util[data-action="open-short-stay"]').click();
+  await page.locator('.cs-directory summary').click();
+  await page.locator('.cs-directory [data-action="open-short-stay"]').click();
   const modal = page.locator('#shortStayModalOverlay');
   await expect(modal).toHaveClass(/active/);
   await expect(modal).toHaveAttribute('aria-hidden', 'false');
@@ -53,7 +56,8 @@ test('an early short-stay tap is replayed after the deferred checker becomes rea
   });
 
   await page.goto('/index.html', { waitUntil: 'commit' });
-  const entry = page.locator('.p-gw-util[data-action="open-short-stay"]');
+  await page.locator('.cs-directory summary').click();
+  const entry = page.locator('.cs-directory [data-action="open-short-stay"]');
   await expect(entry).toBeVisible();
   await entry.click();
 
@@ -61,4 +65,23 @@ test('an early short-stay tap is replayed after the deferred checker becomes rea
   await expect(modal).toHaveClass(/active/, { timeout: 10_000 });
   await expect(modal).toHaveAttribute('aria-hidden', 'false');
   await expect(modal.locator('#shortStayChecker')).toBeVisible();
+});
+
+test('September original search preserves source scope, page links and exact code aliases', async ({ page }) => {
+  await page.goto('/index.html');
+  await page.locator('#civicQuery').fill('E74');
+  await page.locator('#civicSearchForm button[type="submit"]').click();
+  const results = page.locator('#civicManualResults');
+  await expect(results).toContainText('2026.09.18');
+  await expect(results.locator('.cs-manual-list li')).toHaveCount(6);
+  await expect(results.locator('.cs-result-title').first()).toContainText('E-7-4');
+  await results.locator('#civicDomain').selectOption('visa_issuance');
+  await expect(results.locator('.cs-result-meta').first()).toContainText('2026-09-01');
+  const link = results.locator('.cs-result-actions a').first();
+  await expect(link).toHaveAttribute('href', /visa_manual_260901\.pdf#page=\d+/);
+  await results.locator('.cs-result-title').first().click();
+  await expect(page.locator('#civicPageDialog')).toBeVisible();
+  await expect(page.locator('#civicPageDialog pre')).toContainText('E-7-4');
+  await page.keyboard.press('Escape');
+  await expect(page.locator('#civicPageDialog')).not.toBeVisible();
 });
