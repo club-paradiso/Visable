@@ -58,7 +58,7 @@ body.civic-refresh::before, body.civic-refresh::after { display: none !important
 .cs-nav nav { display: flex; align-items: center; gap: 30px; font-size: 15px; font-weight: 650; }
 .cs-nav nav > button { border: 0; padding: 8px 0; background: none; }
 .cs-languages { display: flex; gap: 12px; border-left: 1px solid var(--cs-line); padding-left: 28px; }
-.cs-languages button { min-width: 58px; min-height: 38px; border: 1px solid var(--cs-line); border-radius: 24px; background: var(--cs-bg); font-size: 14px !important; }
+.cs-languages button { min-width: 58px; min-height: 44px; border: 1px solid var(--cs-line); border-radius: 24px; background: var(--cs-bg); font-size: 14px !important; }
 .cs-languages button[aria-pressed="true"] { background: var(--cs-green); color: var(--cs-bg) !important; border-color: var(--cs-green); }
 .cs-home { max-width: 1600px; margin: 0 auto; padding: 0 68px; }
 .cs-hero { text-align: center; padding: 64px 0 52px; }
