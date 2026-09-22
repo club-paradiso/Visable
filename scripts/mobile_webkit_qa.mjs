@@ -71,6 +71,15 @@ await new Promise((resolve) => server.listen(PORT, '127.0.0.1', resolve));
 const browser = await webkit.launch({ headless: true });
 const report = { generatedAt: new Date().toISOString(), engine: 'webkit', profiles: [], failures: [] };
 
+// WebKit cannot screenshot pages taller than 32767px; a mobile results page that
+// tall is itself a defect, so record it as a failure and fall back to a viewport shot.
+const MAX_PAGE_HEIGHT = 30000;
+async function fullPageShot(page, file, failures) {
+  const height = await page.evaluate(() => document.documentElement.scrollHeight);
+  if (height > MAX_PAGE_HEIGHT) failures.push(`page is ${height}px tall (mobile results must stay under ${MAX_PAGE_HEIGHT}px)`);
+  await page.screenshot({ path: file, fullPage: height <= MAX_PAGE_HEIGHT });
+}
+
 async function inspect(page, profile, state) {
   const data = await page.evaluate(({ criticalSelectors, profile, state }) => {
     const visible = (el) => {
@@ -184,7 +193,7 @@ try {
           const stateReport = await inspect(page, profile, `guidance:${flow.name}`);
           profileReport.states.push(stateReport);
           flowReport.failures.push(...stateReport.failures);
-          await page.screenshot({ path: path.join(OUT, `${profile.name}-guidance-${flow.name}.png`), fullPage: true });
+          await fullPageShot(page, path.join(OUT, `${profile.name}-guidance-${flow.name}.png`), flowReport.failures);
         } catch (error) {
           flowReport.failures.push(`flow error: ${String(error.message || error)}`);
         }
@@ -215,7 +224,7 @@ try {
         const rtlState = await inspect(page, profile, 'landing-rtl');
         profileReport.states.push(rtlState);
         langReport.failures.push(...rtlState.failures);
-        await page.screenshot({ path: path.join(OUT, `${profile.name}-landing-rtl.png`), fullPage: true });
+        await fullPageShot(page, path.join(OUT, `${profile.name}-landing-rtl.png`), langReport.failures);
         await page.fill('#civicQuery', '외국인등록증 재발급');
         await page.press('#civicQuery', 'Enter');
         await page.waitForSelector('#statusGuidance[data-sg-kind]', { timeout: 20000 });
@@ -225,7 +234,7 @@ try {
         const searchedState = await inspect(page, profile, 'searched-rtl');
         profileReport.states.push(searchedState);
         langReport.failures.push(...searchedState.failures);
-        await page.screenshot({ path: path.join(OUT, `${profile.name}-searched-rtl.png`), fullPage: true });
+        await fullPageShot(page, path.join(OUT, `${profile.name}-searched-rtl.png`), langReport.failures);
       } catch (error) {
         langReport.failures.push(`flow error: ${String(error.message || error)}`);
       }

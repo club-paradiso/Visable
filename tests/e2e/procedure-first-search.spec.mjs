@@ -168,6 +168,33 @@ test.describe('status-required procedures ask a plain-language status question',
   });
 });
 
+test.describe('legacy status cards stay collapsed under procedure-first answers', () => {
+  for (const [q, kind] of [['체류기간 연장', 'need-status'], ['체류지 변경 신고', 'procedure']]) {
+    test(`"${q}": the per-status cards below start collapsed and the page stays scrollable`, async ({ page }) => {
+      await boot(page);
+      const sg = await search(page, q);
+      await expect(sg).toHaveAttribute('data-sg-kind', kind);
+      const cards = page.locator('#rlist article.vc');
+      expect(await cards.count()).toBeGreaterThan(1);
+      await expect(page.locator('#rlist article.vc.open')).toHaveCount(0);
+      expect(await page.evaluate(() => document.body.getAttribute('data-sg-legacy'))).toBe('collapsed');
+      const height = await page.evaluate(() => document.documentElement.scrollHeight);
+      expect(height, `page height ${height}px`).toBeLessThan(30_000);
+      // still expandable by the user
+      await cards.first().locator('.vc-h').click();
+      await expect(cards.first()).toHaveClass(/open/);
+    });
+  }
+
+  test('a status query keeps its single card expanded as before', async ({ page }) => {
+    await boot(page);
+    await search(page, 'D-2 연장');
+    await expect(page.locator('#rlist article.vc')).toHaveCount(1);
+    await expect(page.locator('#rlist article.vc.open')).toHaveCount(1);
+    expect(await page.evaluate(() => document.body.getAttribute('data-sg-legacy'))).toBeNull();
+  });
+});
+
 test.describe('evidence, disclaimer, report, local practice', () => {
   test('evidence is collapsed by default and still opens the September 2026 page', async ({ page }) => {
     await boot(page);

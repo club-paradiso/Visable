@@ -1092,6 +1092,21 @@
   function snapshot() { return { answers: JSON.parse(JSON.stringify(state.answers)), procedure: state.procedure, status: state.status, variant: state.variant || null, askStatus: !!state.askStatus }; }
 
   var lastKind = null;
+  // Procedure-first results and the legacy per-status list below them.
+  // The legacy renderer auto-expands every matching card, which is fine for a
+  // status query (one card) but not for a status-independent procedure or a
+  // status prompt: "체류기간 연장" matches all 40 statuses and 40 expanded cards
+  // are ~100k px on a phone (WebKit refuses to even screenshot it). For those two
+  // kinds the cards are context, not the answer, so they start collapsed; every
+  // header stays tappable and the compact summary above them is untouched.
+  var legacyDirty = true;
+  function collapseLegacyList(kind) {
+    var cards = document.querySelectorAll('#rlist article.vc');
+    if ((kind !== 'procedure' && kind !== 'need-status') || cards.length < 2) { document.body.removeAttribute('data-sg-legacy'); return; }
+    cards.forEach(function (c) { c.classList.remove('open'); });
+    document.body.setAttribute('data-sg-legacy', 'collapsed');
+  }
+
   function render(focusTarget) {
     var h = ensureHost();
     if (!state) { h.innerHTML = ''; return; }
@@ -1102,6 +1117,7 @@
     h.setAttribute('data-sg-kind', step.kind);
     h.setAttribute('data-sg-quick', out.model.quick ? out.model.quick.mode : 'none');
     document.body.setAttribute('data-sg-kind', step.kind);
+    if (legacyDirty || lastKind !== step.kind) { collapseLegacyList(step.kind); legacyDirty = false; }
     saveState();
     if (focusTarget) {
       var f = h.querySelector('#sgQuickTitle, #sgQuestionTitle, #sgAnswerTitle');
@@ -1181,7 +1197,7 @@
       return;
     }
     if (action === 'manual-tab') { var tab = document.querySelector('[data-cs-tab="manual"]'); if (tab) { tab.click(); tab.focus(); } return; }
-    if (action === 'legacy-card') { var card = document.querySelector('#rlist article.vc'); var tabAll = document.querySelector('[data-cs-tab="guide"]'); if (tabAll) tabAll.click(); if (card) { card.scrollIntoView({ block: 'start', behavior: 'smooth' }); var hd = card.querySelector('.vc-h'); if (hd) hd.setAttribute('tabindex', '-1'), hd.focus(); } return; }
+    if (action === 'legacy-card') { var card = document.querySelector('#rlist article.vc'); var tabAll = document.querySelector('[data-cs-tab="guide"]'); if (tabAll) tabAll.click(); if (card) { card.classList.add('open'); card.scrollIntoView({ block: 'start', behavior: 'smooth' }); var hd = card.querySelector('.vc-h'); if (hd) hd.setAttribute('tabindex', '-1'), hd.focus(); } return; }
     if (action === 'toggle-full') { state.fullOpen = !state.fullOpen; render(false); track('quick_answer_full_detail', { open: state.fullOpen }); var full = host.querySelector('#sgFull'); if (state.fullOpen && full) { var ft = full.querySelector('#sgAnswerTitle, #sgQuestionTitle'); if (ft) { try { ft.focus({ preventScroll: false }); } catch (e) { ft.focus(); } } } return; }
     if (action === 'show-evidence') { state.fullOpen = true; state.evidenceOpen = true; render(false); var ev = host.querySelector('#sgEvidence'); if (ev) { ev.open = true; ev.scrollIntoView({ block: 'start', behavior: 'smooth' }); var s = ev.querySelector('summary'); if (s) { s.setAttribute('tabindex', '-1'); s.focus(); } } return; }
     if (action === 'report') { event.preventDefault(); var cm = currentModel(); track('local_report_started', { procedure: cm && cm.model.procedure }); document.dispatchEvent(new CustomEvent('visable:local-report', { detail: { query: state.query, procedure: cm ? cm.model.procedure : null, status: cm ? cm.model.status : null, office: state.office || null, lang: lang() } })); return; }
@@ -1216,8 +1232,8 @@
     if (typeof n === 'string') { state.history.push(snapshot()); state.status = n; state.answers = {}; state.editing = false; state.askStatus = false; render(true); }
     else { form.querySelector('input').setAttribute('aria-invalid', 'true'); }
   });
-  document.addEventListener('paradiso:results-rendered', function (event) { start(event.detail && event.detail.query); });
-  document.addEventListener('paradiso:landing-reset', function () { state = null; lastQuery = ''; if (host) host.innerHTML = ''; document.body.removeAttribute('data-sg-kind'); });
+  document.addEventListener('paradiso:results-rendered', function (event) { legacyDirty = true; start(event.detail && event.detail.query); });
+  document.addEventListener('paradiso:landing-reset', function () { state = null; lastQuery = ''; if (host) host.innerHTML = ''; document.body.removeAttribute('data-sg-kind'); document.body.removeAttribute('data-sg-legacy'); });
   window.addEventListener('paradiso-language-applied', function () { if (state && bundle) render(false); });
   if (document.body.classList.contains('searched')) { var q0 = document.getElementById('q'); if (q0 && q0.value) start(q0.value); }
 })(typeof globalThis !== 'undefined' ? globalThis : this);
