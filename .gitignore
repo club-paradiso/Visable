@@ -21,3 +21,6 @@ build/
 backend/var/
 test-results/
 playwright-report/
+
+# Local/CI QA output (mobile render/WebKit QA, post-search screenshots); uploaded as workflow artifacts, never committed
+artifacts/
