@@ -145,6 +145,11 @@ python3 scripts/tests/test_monitor_hikorea_manual_board.py
 # pure-Python AES path is exercised deliberately, because a subtly wrong one
 # does not raise, it yields plausible-length garbage.
 python3 scripts/tests/test_decrypt_hwp_distribution.py > /dev/null
+# Railway live smoke: the readiness loop is executed against canned responses,
+# offline. It used to accept any healthy process as a ready one, so every
+# post-merge run tested the deploy the merge had just replaced. The gate that
+# fixed it only works if it is really there.
+python3 scripts/tests/test_railway_live_smoke.py > /dev/null
 python3 scripts/monitor_hikorea_manual_board.py > /dev/null
 
 echo "[5b/14] Validating source-grounding metadata model (schema + registry/manifest parity)..."
