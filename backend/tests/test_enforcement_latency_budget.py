@@ -210,7 +210,8 @@ class EnforcementChainBudgetTests(unittest.IsolatedAsyncioTestCase):
             return '{"ok": 1}'
 
         started = time.monotonic()
-        with patch.object(pb, "_call_openrouter", new=transport):
+        with patch.object(pb, "_call_openrouter", new=transport), \
+                patch.object(pb, "OPENROUTER_MIN_CANDIDATE_ATTEMPT_SECONDS", 0.5):
             result = await pb._openrouter_complete_with_candidates(
                 "synthetic prompt",
                 candidate_models=["slow/model:free", "fast/model:free"],
@@ -231,7 +232,8 @@ class EnforcementChainBudgetTests(unittest.IsolatedAsyncioTestCase):
             await asyncio.sleep(30)
             raise AssertionError("every candidate must be bounded by the budget")
 
-        with patch.object(pb, "_call_openrouter", new=transport):
+        with patch.object(pb, "_call_openrouter", new=transport), \
+                patch.object(pb, "OPENROUTER_MIN_CANDIDATE_ATTEMPT_SECONDS", 0.2):
             result = await pb._openrouter_complete_with_candidates(
                 "synthetic prompt",
                 candidate_models=["slow-a/model:free", "slow-b/model:free"],
@@ -272,6 +274,7 @@ class CandidateAttemptTimeoutTests(unittest.TestCase):
             ("OPENROUTER_TIMEOUT_SECONDS", 60.0),
             ("OPENROUTER_CHAIN_BUDGET_SECONDS", 45.0),
             ("OPENROUTER_FALLBACK_RESERVE_SECONDS", 12.0),
+            ("OPENROUTER_MIN_CANDIDATE_ATTEMPT_SECONDS", 3.5),
         ):
             patcher = patch.object(pb, name, value)
             patcher.start()
@@ -307,6 +310,38 @@ class CandidateAttemptTimeoutTests(unittest.TestCase):
             8.0, has_fallback=True, budget=8.0
         )
         self.assertAlmostEqual(attempt, 4.0)
+
+    def test_a_supplied_budget_is_shared_across_every_remaining_candidate(self):
+        """Successes cluster around three seconds and failures hang to their cap,
+        so what raises the hit rate on a short deadline is more independent
+        tries, not a longer wait on one model."""
+        first = self.pb._openrouter_candidate_attempt_timeout(
+            12.0, has_fallback=True, budget=12.0, remaining_candidates=3
+        )
+        self.assertAlmostEqual(first, 4.0)
+        second = self.pb._openrouter_candidate_attempt_timeout(
+            8.0, has_fallback=True, budget=12.0, remaining_candidates=2
+        )
+        self.assertAlmostEqual(second, 4.0)
+        third = self.pb._openrouter_candidate_attempt_timeout(
+            4.0, has_fallback=False, budget=12.0, remaining_candidates=1
+        )
+        self.assertAlmostEqual(third, 4.0)
+
+    def test_slicing_stops_at_the_floor_instead_of_handing_out_slivers(self):
+        # A slice under the floor would cut off a model that was going to
+        # answer, which is worse than not asking it. The remainder goes to this
+        # candidate whole.
+        attempt = self.pb._openrouter_candidate_attempt_timeout(
+            6.0, has_fallback=True, budget=12.0, remaining_candidates=4
+        )
+        self.assertAlmostEqual(attempt, 6.0)
+
+    def test_the_floor_never_exceeds_what_is_left(self):
+        attempt = self.pb._openrouter_candidate_attempt_timeout(
+            1.0, has_fallback=True, budget=12.0, remaining_candidates=3
+        )
+        self.assertAlmostEqual(attempt, 1.0)
 
 
 if __name__ == "__main__":
