@@ -112,6 +112,28 @@ h1, h2, h3 { line-height: 1.25; letter-spacing: -0.01em; }
 .nh-back:hover { border-color: var(--ac); transform: translateX(-2px); }
 .nh-back-label-short { display: none; }
 .nh-controls { display: flex; gap: 0.4rem; position: relative; }
+.nh-lang-wrap { position: relative; }
+.nh-lang-menu {
+  position: absolute; top: calc(100% + 0.45rem); inset-inline-end: 0; z-index: 80;
+  display: none; width: min(18rem, calc(100vw - 1.5rem)); max-height: min(70vh, 30rem);
+  overflow-y: auto; padding: 0.4rem;
+  border: 1px solid var(--bd); border-radius: 12px; background: var(--bg1); box-shadow: var(--sh2);
+}
+.nh-lang-menu.open { display: grid; gap: 0.2rem; }
+.nh-lang-option {
+  width: 100%; min-height: 44px; padding: 0.55rem 0.65rem;
+  display: grid; grid-template-columns: 2.4rem minmax(0, 1fr) auto; align-items: center; gap: 0.55rem;
+  border: 0; border-radius: 8px; background: transparent; color: var(--t1);
+  text-align: start; font: inherit; cursor: pointer;
+}
+.nh-lang-option:hover, .nh-lang-option:focus-visible { background: var(--bg2); }
+.nh-lang-option[aria-selected="true"] { background: var(--acL); color: var(--ac2); }
+.nh-lang-option-code { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.05em; color: var(--ac2); }
+.nh-lang-option-name { min-width: 0; font-size: 0.84rem; font-weight: 800; overflow-wrap: anywhere; }
+.nh-lang-option-state { color: var(--ac2); font-weight: 800; }
+.nh-lang-option-note {
+  display: inline-block; margin-inline-start: 0.35rem; color: var(--t3); font-size: 0.65rem; font-weight: 700;
+}
 .nh-lang-note {
   position: absolute; top: 100%; inset-inline-end: 0; margin-top: 0.35rem; z-index: 60;
   max-width: 280px; padding: 0.35rem 0.55rem;
@@ -471,10 +493,8 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
     width: 44px; min-width: 44px; min-height: 44px; padding: 0;
     border-radius: var(--r-md); font-size: 0.86rem; line-height: 1;
   }
-  #langBtn { position: relative; overflow: hidden; color: transparent; font-size: 0; }
-  #langBtn::after { color: var(--t2); font-size: 0.78rem; font-weight: 850; line-height: 1; }
-  html[lang="ko"] #langBtn::after { content: "EN"; }
-  html[lang="en"] #langBtn::after { content: "한"; }
+  #langBtn { position: relative; overflow: visible; color: var(--t2); font-size: 0.78rem; font-weight: 850; }
+  .nh-lang-menu { position: fixed; top: 56px; inset-inline-end: 0.75rem; width: min(18rem, calc(100vw - 1.5rem)); max-height: calc(100dvh - 72px); }
   #themeBtnLabel { display: none; }
   .nh-section-nav {
     top: 56px; min-height: 48px; justify-content: flex-start; gap: 0.2rem;
@@ -583,7 +603,10 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
 <header class="nh-topbar">
   <a class="nh-back" href="index.html" id="nhBack"><span aria-hidden="true">←</span> <span class="nh-back-label-full" data-c="ui.backToParadiso">Visable로 돌아가기</span><span class="nh-back-label-short">Visable</span></a>
   <div class="nh-controls">
-    <button type="button" class="nh-ctl" data-action="toggle-lang" id="langBtn">English</button>
+    <div class="nh-lang-wrap" id="nhLangWrap">
+      <button type="button" class="nh-ctl" data-action="toggle-lang-menu" id="langBtn" aria-label="언어 선택" aria-haspopup="listbox" aria-expanded="false" aria-controls="nhLangMenu">KO</button>
+      <div class="nh-lang-menu" id="nhLangMenu" role="listbox" aria-label="언어 선택" data-s2t="off"></div>
+    </div>
     <button type="button" class="nh-ctl" data-action="toggle-theme" id="themeBtn" aria-label="테마 전환"><span id="themeBtnLabel">Editorial</span></button>
     <button type="button" class="nh-ctl" data-action="toggle-brightness" id="brightBtn" aria-label="밝기 전환">◐</button>
   </div>
@@ -772,8 +795,13 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
   // the shared paradiso:language key with a coerced ko/en/zh value.
   var LANG_ORDER = ['ko', 'en', 'zh-CN', 'zh-TW', 'ja', 'vi', 'tl', 'id', 'ru', 'fr', 'es', 'ar', 'de', 'tr', 'uk'];
   var LANG_SHORT = {
-    ko: '한', en: 'EN', 'zh-CN': '简', 'zh-TW': '繁', ja: '日', vi: 'VI',
+    ko: 'KO', en: 'EN', 'zh-CN': '简', 'zh-TW': '繁', ja: '日', vi: 'VI',
     tl: 'TL', id: 'ID', ru: 'RU', fr: 'FR', es: 'ES', ar: 'ع', de: 'DE', tr: 'TR', uk: 'UK'
+  };
+  var LANG_LABEL = {
+    ko: '한국어', en: 'English', 'zh-CN': '简体中文', 'zh-TW': '繁體中文', ja: '日本語',
+    vi: 'Tiếng Việt', tl: 'Tagalog', id: 'Bahasa Indonesia', ru: 'Русский', fr: 'Français',
+    es: 'Español', ar: 'العربية', de: 'Deutsch', tr: 'Türkçe', uk: 'Українська'
   };
   // Locales this page renders natively (content JSON carries ko/en/zh-CN; zh-TW is
   // a display layer over zh-CN). A selected locale outside this set stays selected
@@ -863,9 +891,13 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
       if (val != null) node.textContent = pick(val);
     });
     var langBtn = document.getElementById('langBtn');
-    // The cycle button shows the CURRENT selected locale (not the content locale,
-    // so an untranslated selection like ja still reads 日, not the ko fallback).
-    if (langBtn) { langBtn.textContent = LANG_SHORT[selectedLocale] || LANG_SHORT.ko; langBtn.setAttribute('data-s2t', 'off'); }
+    // Show the CURRENT selected locale, not the fallback content locale.
+    if (langBtn) {
+      langBtn.textContent = LANG_SHORT[selectedLocale] || LANG_SHORT.ko;
+      langBtn.setAttribute('data-s2t', 'off');
+      langBtn.setAttribute('aria-label', '언어 선택 · ' + (LANG_LABEL[selectedLocale] || selectedLocale));
+    }
+    renderLangMenu();
     updateLangNote(selectedLocale);
     var themeLabel = document.getElementById('themeBtnLabel');
     if (themeLabel) themeLabel.textContent = currentTheme() === 'archive_diary' ? 'Editorial-pop' : 'Editorial';
@@ -1554,14 +1586,38 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
       note.remove();
     }
   }
-  function toggleLang() {
-    var idx = LANG_ORDER.indexOf(selectedLocale);
-    selectedLocale = idx < 0 ? 'ko' : LANG_ORDER[(idx + 1) % LANG_ORDER.length];
+  function renderLangMenu() {
+    var menu = document.getElementById('nhLangMenu');
+    if (!menu) return;
+    menu.innerHTML = LANG_ORDER.map(function (code) {
+      var selected = code === selectedLocale;
+      var translated = !!LANG_TRANSLATED[code];
+      var note = translated ? '' : '<span class="nh-lang-option-note">이 페이지 번역 준비 중</span>';
+      return '<button type="button" class="nh-lang-option" role="option" aria-selected="' + (selected ? 'true' : 'false') +
+        '" data-action="select-language" data-lang="' + esc(code) + '">' +
+        '<span class="nh-lang-option-code">' + esc(LANG_SHORT[code] || code.toUpperCase()) + '</span>' +
+        '<span class="nh-lang-option-name">' + esc(LANG_LABEL[code] || code) + note + '</span>' +
+        '<span class="nh-lang-option-state" aria-hidden="true">' + (selected ? '✓' : '') + '</span></button>';
+    }).join('');
+  }
+  function toggleLangMenu(forceOpen) {
+    var menu = document.getElementById('nhLangMenu');
+    var btn = document.getElementById('langBtn');
+    if (!menu || !btn) return;
+    var open = forceOpen === undefined ? !menu.classList.contains('open') : !!forceOpen;
+    menu.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (open) renderLangMenu();
+  }
+  function setLanguage(code) {
+    if (LANG_ORDER.indexOf(code) < 0) return;
+    selectedLocale = code;
     tradTW = (selectedLocale === 'zh-TW');
     lang = contentLocaleFor(selectedLocale);
-    // Write the shared global key ONLY here, on an explicit user click.
+    // Preserve the shared global language choice across Visable surfaces.
     try { localStorage.setItem(LANG_KEY, selectedLocale); } catch (e) {}
     applyTradLayer(tradTW);
+    toggleLangMenu(false);
     renderAll();
   }
   function syncMeta() {
@@ -1577,7 +1633,8 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
     if (!t) return;
     var action = t.getAttribute('data-action');
     var handlers = {
-      'toggle-lang': toggleLang,
+      'toggle-lang-menu': function () { toggleLangMenu(); },
+      'select-language': function () { setLanguage(t.getAttribute('data-lang')); },
       'toggle-theme': toggleTheme,
       'toggle-brightness': toggleBrightness,
       'open-readiness': openReadiness,
@@ -1597,13 +1654,24 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
     }
   });
 
-  // Backdrop click closes the active modal.
+  // Backdrop click closes the active modal; outside click closes the language menu.
   document.addEventListener('click', function (e) {
     if (activeOverlay && e.target === activeOverlay) closeOverlay();
+    var wrap = document.getElementById('nhLangWrap');
+    var menu = document.getElementById('nhLangMenu');
+    if (wrap && menu && menu.classList.contains('open') && !wrap.contains(e.target)) toggleLangMenu(false);
   });
 
-  // ESC closes the active modal.
+  // ESC closes the language menu first, then the active modal.
   document.addEventListener('keydown', function (e) {
+    var menu = document.getElementById('nhLangMenu');
+    if (e.key === 'Escape' && menu && menu.classList.contains('open')) {
+      e.preventDefault();
+      toggleLangMenu(false);
+      var btn = document.getElementById('langBtn');
+      if (btn) btn.focus();
+      return;
+    }
     if (e.key === 'Escape' && activeOverlay) { e.preventDefault(); closeOverlay(); }
   });
 
