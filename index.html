@@ -24334,6 +24334,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (sWrap && !sWrap.contains(e.target) && al) al.classList.remove('active');
     });
 
+    // The listener above is the sole owner of every [data-action] on the page,
+    // and this callback only reaches it after `await loadI18nTranslations()`.
+    // Deferred scripts render the interactive landing inside that window, so
+    // the utility directory is clickable before its owner exists and an early
+    // tap has nothing to retry it. assets/js/backend-origin.js records one such
+    // tap; announcing the owner is live lets it replay that tap instead of
+    // dropping it. Dispatched here, not at the end of the callback, so the
+    // replay happens the moment the delegation can serve it.
+    document.dispatchEvent(new CustomEvent('visable:landing-actions-ready'));
+
     // Keyboard activation (Enter/Space) for role="button" subcode cards. Real
     // <button> preview chips handle this natively, so they are skipped here.
     document.addEventListener('keydown', (e) => {
