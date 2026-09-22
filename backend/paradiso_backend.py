@@ -281,6 +281,14 @@ ENFORCEMENT_AI_BUDGET_GRACE_SECONDS: float = min(
     5.0, max(0.5, _env_float("ENFORCEMENT_AI_BUDGET_GRACE_SECONDS", 1.5))
 )
 
+# Smallest slice worth giving a candidate. Live probes that succeeded returned
+# a complete structured prediction in about three seconds, so a slice under
+# this would cut off a model that was going to answer — which is worse than not
+# asking it at all. Slicing stops here rather than handing out slivers.
+OPENROUTER_MIN_CANDIDATE_ATTEMPT_SECONDS: float = min(
+    10.0, max(0.5, _env_float("OPENROUTER_MIN_CANDIDATE_ATTEMPT_SECONDS", 3.5))
+)
+
 # Which non-secret env var carries the commit this process was built from.
 # Railway sets RAILWAY_GIT_COMMIT_SHA on a GitHub-linked service;
 # PARADISO_BUILD_COMMIT is an explicit override for any other host. Checked in
@@ -2522,7 +2530,8 @@ async def _openrouter_complete_with_candidates(
         attempt_timeout = _openrouter_candidate_attempt_timeout(
             remaining,
             has_fallback=index < len(runnable) - 1,
-            budget=chain_budget,
+            budget=chain_budget if chain_budget_seconds is not None else None,
+            remaining_candidates=len(runnable) - index,
         )
         attempted.append(model)
         try:
@@ -2617,27 +2626,40 @@ def _openrouter_candidate_attempt_timeout(
     *,
     has_fallback: bool,
     budget: Optional[float] = None,
+    remaining_candidates: int = 2,
 ) -> float:
     """Bound one candidate without letting it consume the fallback chain.
 
-    The reserve is only carved out while enough time remains to make it useful.
-    Once the chain reaches the reserved tail, the next candidate receives all
-    remaining time instead of repeatedly subdividing an already-small budget.
+    Two policies, because the two callers want different things.
 
-    The reserve is relative to the budget actually in force, not to the global
-    45s chain budget. A 12s enforcement budget with a flat 12s reserve cap
-    reserved nothing (the whole budget sat below the reserve's usefulness gate),
-    so the first candidate received all 12 seconds and a "fallback" chain made
-    exactly one request. Capping the reserve at half the budget keeps a short
-    budget genuinely two-shot while leaving the default 45s chain unchanged.
+    The default chain (no explicit ``budget``) keeps its reserve: the first
+    candidate gets most of the 45s and an alternate keeps a usable tail. The
+    reserve is only carved out while enough time remains to make it useful, so
+    the chain does not subdivide an already-small tail.
+
+    A caller that supplies its own ``budget`` is on a short deadline, and there
+    the useful quantity is not "how long can one model take" but "how many
+    independent tries fit". Live enforcement probes that succeeded returned in
+    about three seconds while the failures hung to their cap — a hung free-tier
+    request does not answer at ten seconds either. So a supplied budget is split
+    evenly across the candidates still to try, never below
+    ``OPENROUTER_MIN_CANDIDATE_ATTEMPT_SECONDS``: more draws at a slice that
+    still fits a real answer beats one long wait on a model that is stuck.
     """
-    ceiling = OPENROUTER_CHAIN_BUDGET_SECONDS if budget is None else max(0.001, float(budget))
-    reserve_cap = min(OPENROUTER_FALLBACK_RESERVE_SECONDS, ceiling / 2.0)
     bounded = min(OPENROUTER_TIMEOUT_SECONDS, max(0.001, remaining))
-    reserve = min(reserve_cap, remaining / 2.0)
-    if has_fallback and reserve > 0 and remaining > reserve_cap * 1.5:
-        return max(0.001, min(bounded, remaining - reserve))
-    return bounded
+    if budget is None:
+        reserve_cap = min(OPENROUTER_FALLBACK_RESERVE_SECONDS, OPENROUTER_CHAIN_BUDGET_SECONDS / 2.0)
+        reserve = min(reserve_cap, remaining / 2.0)
+        if has_fallback and reserve > 0 and remaining > reserve_cap * 1.5:
+            return max(0.001, min(bounded, remaining - reserve))
+        return bounded
+
+    share = remaining / max(1, int(remaining_candidates))
+    if share < OPENROUTER_MIN_CANDIDATE_ATTEMPT_SECONDS:
+        # Too little left to split again without cutting off an answer that was
+        # coming. Give what is left to this candidate instead of slicing it.
+        return bounded
+    return max(0.001, min(bounded, share))
 
 
 # ---------------------------------------------------------------------------
