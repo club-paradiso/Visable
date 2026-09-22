@@ -283,6 +283,26 @@
       "update_frequency": "irregular",
       "status": "needs_manual_review",
       "notes": "User-supplied PDF; searchable original, pending human content approval."
+    },
+    {
+      "id": "stay_manual_2026_09_18_hwp",
+      "type": "hwp_manual",
+      "title": "외국인체류 안내매뉴얼 (2026.9; 2026-09-18 배포용 HWP)",
+      "title_en": "Foreigner Stay/Residence Guide Manual (2026.9; 2026-09-18 distribution HWP)",
+      "authority": "법무부 출입국·외국인정책본부",
+      "version": "2026.9",
+      "source_date": "2026-09-18",
+      "local_path": "docs/source-manuals/2026-09/stay_manual_260918.hwp",
+      "url": "https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&BBS_GB_CD=BS10&NTCCTT_SEQ=1062&page=1",
+      "last_known_hash": "sha256:06abba5f7ca1b3029225114097b234391306f71e0fbeabbfea73a5b8824e5917",
+      "last_checked_at": "2026-09-22T00:00:00+09:00",
+      "language": [
+        "ko"
+      ],
+      "confidence": "high",
+      "update_frequency": "irregular",
+      "status": "needs_manual_review",
+      "notes": "User-supplied 배포용 HWP original of the 2026-09-18 stay edition, read with scripts/decrypt_hwp_distribution.py. Paragraph-anchored text; NOT indexed into the searchable corpus, which carries the page-anchored PDF of the same edition. Pending human content approval — the approved and current stay edition remains stay_manual_2026_07_31_hwp."
     }
   ]
 }

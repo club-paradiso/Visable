@@ -6,9 +6,11 @@ routing must remain isolated from deploy-wide Fast-tier overrides.
 
 from __future__ import annotations
 
+import asyncio
 import json
 import os
 import sys
+import time
 import unittest
 from datetime import date
 from pathlib import Path
@@ -163,6 +165,148 @@ class EnforcementLatencyBudgetTests(unittest.IsolatedAsyncioTestCase):
         )
         self.assertNotIn("stale/example-model:free", plan["candidates"])
         self.assertEqual(len(plan["candidates"]), 2)
+
+
+
+class EnforcementChainBudgetTests(unittest.IsolatedAsyncioTestCase):
+    """The enforcement budget must bound the CHAIN, not just wrap it.
+
+    Production symptom this pins: /api/enforcement/analyze returned HTTP 200
+    with prediction UNAVAILABLE after ~12.7s, while a standalone provider probe
+    on the same deployment produced a valid structured prediction in ~3s. The
+    wrapper fired during candidate #1 — sized from the 45s general chain budget
+    — so the alternate candidate was never requested.
+    """
+
+    def setUp(self):
+        import paradiso_backend as pb
+
+        pb._reset_openrouter_model_cooldowns_for_tests()
+        self.addCleanup(pb._reset_openrouter_model_cooldowns_for_tests)
+
+    async def test_enforcement_budget_is_passed_into_the_candidate_chain(self):
+        import paradiso_backend as pb
+
+        captured = {}
+
+        async def fake_complete(prompt, **kwargs):
+            captured.update(kwargs)
+            return {"ok": False, "answer": None, "provider_error_type": "test"}
+
+        with patch.object(pb, "_openrouter_complete_with_candidates", new=fake_complete):
+            await pb._enforcement_ai_provider("synthetic prompt")
+
+        self.assertEqual(
+            captured["chain_budget_seconds"], pb.ENFORCEMENT_AI_BUDGET_SECONDS
+        )
+
+    async def test_slow_first_candidate_still_leaves_room_for_the_fallback(self):
+        import paradiso_backend as pb
+
+        async def transport(prompt, model=None, max_tokens=None, **kwargs):
+            if model == "slow/model:free":
+                await asyncio.sleep(30)
+                raise AssertionError("the slow candidate must be bounded well below the budget")
+            return '{"ok": 1}'
+
+        started = time.monotonic()
+        with patch.object(pb, "_call_openrouter", new=transport):
+            result = await pb._openrouter_complete_with_candidates(
+                "synthetic prompt",
+                candidate_models=["slow/model:free", "fast/model:free"],
+                chain_budget_seconds=4.0,
+            )
+        elapsed = time.monotonic() - started
+
+        self.assertTrue(result["ok"])
+        self.assertEqual(result["final_model"], "fast/model:free")
+        self.assertEqual(result["attempted_models"], ["slow/model:free", "fast/model:free"])
+        self.assertEqual(result["chain_budget_seconds"], 4.0)
+        self.assertLess(elapsed, 4.0)
+
+    async def test_budget_exhaustion_still_reports_which_models_were_tried(self):
+        import paradiso_backend as pb
+
+        async def transport(prompt, model=None, max_tokens=None, **kwargs):
+            await asyncio.sleep(30)
+            raise AssertionError("every candidate must be bounded by the budget")
+
+        with patch.object(pb, "_call_openrouter", new=transport):
+            result = await pb._openrouter_complete_with_candidates(
+                "synthetic prompt",
+                candidate_models=["slow-a/model:free", "slow-b/model:free"],
+                chain_budget_seconds=2.0,
+            )
+
+        self.assertFalse(result["ok"])
+        self.assertEqual(
+            result["attempted_models"], ["slow-a/model:free", "slow-b/model:free"]
+        )
+        self.assertTrue(result["all_candidates_failed"])
+        self.assertTrue(result["chain_budget_exhausted"])
+
+    async def test_outer_wrapper_remains_a_backstop_for_a_chain_that_never_returns(self):
+        import paradiso_backend as pb
+
+        async def never_returns(prompt, **kwargs):
+            await asyncio.sleep(30)
+            raise AssertionError("the backstop must fire")
+
+        with patch.object(pb, "_openrouter_complete_with_candidates", new=never_returns), \
+                patch.object(pb, "ENFORCEMENT_AI_BUDGET_SECONDS", 0.2), \
+                patch.object(pb, "ENFORCEMENT_AI_BUDGET_GRACE_SECONDS", 0.3):
+            result = await pb._enforcement_ai_provider("synthetic prompt")
+
+        self.assertFalse(result["ok"])
+        self.assertIsNone(result["final_model"])
+        self.assertEqual(result["provider_error_type"], "enforcement_total_timeout")
+
+
+class CandidateAttemptTimeoutTests(unittest.TestCase):
+    """The fallback reserve must scale with the budget actually in force."""
+
+    def setUp(self):
+        import paradiso_backend as pb
+
+        for name, value in (
+            ("OPENROUTER_TIMEOUT_SECONDS", 60.0),
+            ("OPENROUTER_CHAIN_BUDGET_SECONDS", 45.0),
+            ("OPENROUTER_FALLBACK_RESERVE_SECONDS", 12.0),
+        ):
+            patcher = patch.object(pb, name, value)
+            patcher.start()
+            self.addCleanup(patcher.stop)
+        self.pb = pb
+
+    def test_default_chain_behaviour_is_unchanged(self):
+        attempt = self.pb._openrouter_candidate_attempt_timeout(45.0, has_fallback=True)
+        self.assertAlmostEqual(attempt, 33.0)
+        # Below the reserve's usefulness gate the next candidate still gets the
+        # whole remainder rather than subdividing an already-small tail.
+        self.assertAlmostEqual(
+            self.pb._openrouter_candidate_attempt_timeout(15.0, has_fallback=True), 15.0
+        )
+        self.assertAlmostEqual(
+            self.pb._openrouter_candidate_attempt_timeout(45.0, has_fallback=False), 45.0
+        )
+
+    def test_short_budget_keeps_a_reserve_for_the_alternate_candidate(self):
+        attempt = self.pb._openrouter_candidate_attempt_timeout(
+            12.0, has_fallback=True, budget=12.0
+        )
+        self.assertAlmostEqual(attempt, 6.0)
+        self.assertLess(attempt, 12.0)
+        # The tail candidate is bounded by what is left, not by the 60s ceiling.
+        self.assertAlmostEqual(
+            self.pb._openrouter_candidate_attempt_timeout(6.0, has_fallback=False, budget=12.0),
+            6.0,
+        )
+
+    def test_default_enforcement_budget_is_also_two_shot(self):
+        attempt = self.pb._openrouter_candidate_attempt_timeout(
+            8.0, has_fallback=True, budget=8.0
+        )
+        self.assertAlmostEqual(attempt, 4.0)
 
 
 if __name__ == "__main__":

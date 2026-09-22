@@ -272,6 +272,14 @@ OPENROUTER_FALLBACK_RESERVE_SECONDS: float = min(
 ENFORCEMENT_AI_BUDGET_SECONDS: float = min(
     12.0, max(1.0, _env_float("ENFORCEMENT_AI_BUDGET_SECONDS", 8.0))
 )
+# The candidate chain is given the budget above and returns its own structured
+# metadata when it runs out. The outer asyncio.wait_for is only a backstop for a
+# chain that fails to return at all, so it fires slightly later; otherwise it
+# cancels the chain mid-attempt and the caller loses the attempted-model list,
+# the upstream statuses, and the per-model cooldown marking.
+ENFORCEMENT_AI_BUDGET_GRACE_SECONDS: float = min(
+    5.0, max(0.5, _env_float("ENFORCEMENT_AI_BUDGET_GRACE_SECONDS", 1.5))
+)
 
 # Output-length cap for the final answer. Unbounded generation over Paradiso's
 # large grounded prompt was a major perceived-latency source ("Waymaker is too
@@ -2430,6 +2438,7 @@ async def _openrouter_complete_with_candidates(
     system_prompt: Optional[str] = None,
     response_format: Optional[Dict[str, Any]] = None,
     temperature: Optional[float] = None,
+    chain_budget_seconds: Optional[float] = None,
 ) -> Dict[str, Any]:
     """Try OpenRouter candidates in order, skipping models in short cooldown.
 
@@ -2438,8 +2447,19 @@ async def _openrouter_complete_with_candidates(
     If every candidate is cooling down, this function does not hammer any model;
     it returns deterministic metadata so /api/ask can use the preparation-note
     fallback (or an explicitly enabled provider-family/private fallback).
+
+    ``chain_budget_seconds`` lets a caller with a tighter deadline than
+    ``OPENROUTER_CHAIN_BUDGET_SECONDS`` size the chain to its own budget.
+    A caller that merely wraps this coroutine in its own ``asyncio.wait_for``
+    does NOT bound it: the chain keeps sizing attempt #1 from the 45s chain
+    budget, so the caller's shorter timeout fires during the first candidate,
+    the coroutine is cancelled, and no alternate model is ever tried. The
+    enforcement path degraded to an unavailable AI prediction on exactly that.
     """
     started = time.monotonic()
+    chain_budget = OPENROUTER_CHAIN_BUDGET_SECONDS
+    if chain_budget_seconds is not None:
+        chain_budget = max(0.001, min(float(chain_budget_seconds), OPENROUTER_CHAIN_BUDGET_SECONDS))
     chain_budget_exhausted = False
     base_candidates = candidate_models or OPENROUTER_MODEL_CANDIDATES
     if requested_model:
@@ -2469,7 +2489,7 @@ async def _openrouter_complete_with_candidates(
             "upstream_statuses": [],
             "retryable_provider_error": True,
             "all_candidates_failed": True,
-            "chain_budget_seconds": OPENROUTER_CHAIN_BUDGET_SECONDS,
+            "chain_budget_seconds": chain_budget,
             "chain_budget_exhausted": False,
             "latency_ms": int((time.monotonic() - started) * 1000),
         }
@@ -2480,7 +2500,7 @@ async def _openrouter_complete_with_candidates(
     last_retryable = False
 
     for index, model in enumerate(runnable):
-        remaining = OPENROUTER_CHAIN_BUDGET_SECONDS - (time.monotonic() - started)
+        remaining = chain_budget - (time.monotonic() - started)
         if remaining <= 0:
             chain_budget_exhausted = True
             last_error_type = "openrouter_chain_budget_exhausted"
@@ -2489,6 +2509,7 @@ async def _openrouter_complete_with_candidates(
         attempt_timeout = _openrouter_candidate_attempt_timeout(
             remaining,
             has_fallback=index < len(runnable) - 1,
+            budget=chain_budget,
         )
         attempted.append(model)
         try:
@@ -2547,7 +2568,7 @@ async def _openrouter_complete_with_candidates(
             "upstream_statuses": upstream_statuses,
             "retryable_provider_error": last_retryable,
             "all_candidates_failed": False,
-            "chain_budget_seconds": OPENROUTER_CHAIN_BUDGET_SECONDS,
+            "chain_budget_seconds": chain_budget,
             "chain_budget_exhausted": chain_budget_exhausted,
             "latency_ms": int((time.monotonic() - started) * 1000),
         }
@@ -2572,7 +2593,7 @@ async def _openrouter_complete_with_candidates(
             chain_budget_exhausted
             or len(attempted) + len(skipped) == len(candidates)
         ),
-        "chain_budget_seconds": OPENROUTER_CHAIN_BUDGET_SECONDS,
+        "chain_budget_seconds": chain_budget,
         "chain_budget_exhausted": chain_budget_exhausted,
         "latency_ms": int((time.monotonic() - started) * 1000),
     }
@@ -2582,16 +2603,26 @@ def _openrouter_candidate_attempt_timeout(
     remaining: float,
     *,
     has_fallback: bool,
+    budget: Optional[float] = None,
 ) -> float:
     """Bound one candidate without letting it consume the fallback chain.
 
     The reserve is only carved out while enough time remains to make it useful.
     Once the chain reaches the reserved tail, the next candidate receives all
     remaining time instead of repeatedly subdividing an already-small budget.
+
+    The reserve is relative to the budget actually in force, not to the global
+    45s chain budget. A 12s enforcement budget with a flat 12s reserve cap
+    reserved nothing (the whole budget sat below the reserve's usefulness gate),
+    so the first candidate received all 12 seconds and a "fallback" chain made
+    exactly one request. Capping the reserve at half the budget keeps a short
+    budget genuinely two-shot while leaving the default 45s chain unchanged.
     """
+    ceiling = OPENROUTER_CHAIN_BUDGET_SECONDS if budget is None else max(0.001, float(budget))
+    reserve_cap = min(OPENROUTER_FALLBACK_RESERVE_SECONDS, ceiling / 2.0)
     bounded = min(OPENROUTER_TIMEOUT_SECONDS, max(0.001, remaining))
-    reserve = min(OPENROUTER_FALLBACK_RESERVE_SECONDS, remaining / 2.0)
-    if has_fallback and reserve > 0 and remaining > OPENROUTER_FALLBACK_RESERVE_SECONDS * 1.5:
+    reserve = min(reserve_cap, remaining / 2.0)
+    if has_fallback and reserve > 0 and remaining > reserve_cap * 1.5:
         return max(0.001, min(bounded, remaining - reserve))
     return bounded
 
@@ -7505,7 +7536,16 @@ ENFORCEMENT_STRUCTURED_SYSTEM_PROMPT = (
 
 
 async def _enforcement_ai_provider(prompt: str) -> Dict[str, Any]:
-    """Bounded JSON-only provider for enforcement extraction/prediction."""
+    """Bounded JSON-only provider for enforcement extraction/prediction.
+
+    The budget is passed INTO the candidate chain, not merely wrapped around it.
+    With only the wrapper, the chain sized its first attempt from the 45s
+    general chain budget, the wrapper fired part-way through that single
+    attempt, and the request came back with no answer and no alternate model
+    tried — which is how a live enforcement analysis degraded to an unavailable
+    AI prediction while a standalone provider probe seconds later succeeded on
+    the same deployment.
+    """
     plan = _ai_runtime.resolve_task_models(_ai_runtime.TaskRole.ENFORCEMENT_STRUCTURED)
     try:
         return await asyncio.wait_for(
@@ -7517,8 +7557,9 @@ async def _enforcement_ai_provider(prompt: str) -> Dict[str, Any]:
                 system_prompt=ENFORCEMENT_STRUCTURED_SYSTEM_PROMPT,
                 response_format={"type": "json_object"},
                 temperature=0.1,
+                chain_budget_seconds=ENFORCEMENT_AI_BUDGET_SECONDS,
             ),
-            timeout=ENFORCEMENT_AI_BUDGET_SECONDS,
+            timeout=ENFORCEMENT_AI_BUDGET_SECONDS + ENFORCEMENT_AI_BUDGET_GRACE_SECONDS,
         )
     except asyncio.TimeoutError:
         logger.warning(
