@@ -92,14 +92,28 @@
    * HTML is a very large single-file application, so keep the narrowly scoped
    * restoration in its own stylesheet and load it only for the root landing.
    *
-   * The short-stay module is deferred and can finish after a fast mobile user
-   * taps the restored button. The delegated action intentionally calls
-   * window.ParadisoShortStay.open(), so install a tiny readiness bridge before
-   * that module loads. If the user taps early, the bridge records the intent;
-   * when the real module assigns window.ParadisoShortStay, the setter replays
-   * exactly one open. This is UI readiness only and does not touch entry rules.
+   * Two separate readiness races can swallow a tap on the landing, and each
+   * gets its own bridge here. Both record exactly one intent and replay it;
+   * neither runs a handler early, so nothing acts on data that has not loaded.
    *
-   * Neither shim participates in backend-origin resolution.
+   * 1. The delegated click listener that owns EVERY [data-action] on the
+   *    landing is installed inside index.html's DOMContentLoaded callback,
+   *    after `await loadI18nTranslations()`. Deferred scripts — civic-search.js
+   *    among them — render the interactive landing while that await is still
+   *    pending, so the whole utility directory is visible and clickable before
+   *    its owner exists, and a tap in that window is dropped with nothing to
+   *    retry it. The recorder below keeps the first such tap and replays it
+   *    when index.html announces `visable:landing-actions-ready`.
+   *
+   * 2. The short-stay module is deferred and can finish after a fast mobile
+   *    user taps the restored button. The delegated action intentionally calls
+   *    window.ParadisoShortStay.open(), so install a tiny readiness bridge
+   *    before that module loads. If the user taps early, the bridge records the
+   *    intent; when the real module assigns window.ParadisoShortStay, the
+   *    setter replays exactly one open.
+   *
+   * These are UI readiness only and do not touch entry rules. No shim
+   * participates in backend-origin resolution.
    */
   try {
     var doc = global.document;
@@ -162,20 +176,71 @@
           }
         }
       });
+    }
 
-      // The main landing click delegation is installed from an async
-      // DOMContentLoaded callback. A deferred checker can therefore hold that
-      // callback back while the restored utility is already visible and
-      // tappable. Capture only this bootstrap state so the first tap records
-      // its intent; once the real API is installed, the normal landing handler
-      // remains the sole owner of subsequent clicks.
-      doc.addEventListener('click', function (event) {
-        var target = event.target && typeof event.target.closest === 'function'
-          ? event.target.closest('[data-action="open-short-stay"]')
-          : null;
-        if (target && global.ParadisoShortStay && global.ParadisoShortStay.__visableBootstrap) {
-          global.ParadisoShortStay.open();
+    if (isRootLanding) {
+      // Race 1. Runs whether or not the short-stay module is present: the tap
+      // that is lost here is any landing action whose owning delegation has not
+      // been installed yet, not only the short-stay one.
+      var pendingLandingAction = null;
+      var landingActionsReady = false;
+      // Conservative: only identifier-shaped values are rebuilt into a
+      // selector. Some actions carry arbitrary payloads (data-city holds JSON),
+      // and those must never be spliced into a query.
+      var SIMPLE_VALUE = /^[\w-]+$/;
+
+      var findReplayTarget = function (record) {
+        if (record.element && doc.contains(record.element)) return record.element;
+        // A re-render between the tap and readiness (the language pass rebuilds
+        // the directory) detaches the original node. Any control carrying the
+        // same action and target means the same thing, so fall back to one.
+        if (!SIMPLE_VALUE.test(record.action)) return null;
+        var selector = '[data-action="' + record.action + '"]';
+        if (record.target) {
+          if (!SIMPLE_VALUE.test(record.target)) return null;
+          selector += '[data-target="' + record.target + '"]';
         }
+        try { return doc.querySelector(selector); } catch (e) { return null; }
+      };
+
+      doc.addEventListener('visable:landing-actions-ready', function () {
+        landingActionsReady = true;
+        var record = pendingLandingAction;
+        pendingLandingAction = null;
+        if (!record) return;
+        var target = findReplayTarget(record);
+        if (!target) return;
+        // Re-dispatch rather than calling a handler directly: the delegation is
+        // now installed and remains the sole owner of what the action means.
+        // The replayed click re-enters the recorder below, which is already
+        // disarmed, so this cannot loop.
+        try { target.click(); } catch (e) { /* keep the page usable */ }
+      });
+
+      doc.addEventListener('click', function (event) {
+        if (landingActionsReady || pendingLandingAction) return;
+        var target = event.target && typeof event.target.closest === 'function'
+          ? event.target.closest('[data-action]')
+          : null;
+        if (!target) return;
+        var action = target.getAttribute('data-action');
+        if (!action) return;
+        // While the short-stay bootstrap is installed, race 2 owns this tap and
+        // replays it on module publish without needing the delegation. Keeping
+        // the two disjoint is what stops the checker opening twice.
+        if (action === 'open-short-stay'
+            && global.ParadisoShortStay && global.ParadisoShortStay.__visableBootstrap) {
+          global.ParadisoShortStay.open();
+          return;
+        }
+        // Only the first tap is kept, matching the one-intent contract the
+        // short-stay bridge already set. A page that is still loading should
+        // honour what the user asked for once, not replay a queue at them.
+        pendingLandingAction = {
+          element: target,
+          action: action,
+          target: target.getAttribute('data-target') || ''
+        };
       }, true);
     }
   } catch (e) {
