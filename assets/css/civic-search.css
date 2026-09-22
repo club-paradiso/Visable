@@ -37,6 +37,9 @@ body.civic-refresh::before, body.civic-refresh::after { display: none !important
 .civic-refresh.landing #mainContent > #visaManualSection:not(.is-home-revealed) { display: none !important; }
 .civic-refresh.landing #mainContent > .is-home-revealed { display: block !important; }
 .civic-refresh.landing #mainContent > #visaManualSection.is-home-revealed { display: block !important; }
+.civic-refresh.landing #mainContent > .landing-scroll { display: contents !important; }
+.civic-refresh.landing #mainContent > .landing-scroll > * { display: none !important; }
+.civic-refresh.landing #mainContent > .landing-scroll > .is-home-revealed { display: block !important; }
 .civic-refresh.searched #mainContent > #visaManualSection { display: none !important; }
 .civic-refresh.landing .site-footer, .civic-refresh.landing .p-footer { display: none !important; }
 .civic-refresh.landing #mainContent { padding-top: 0 !important; min-height: 0 !important; }

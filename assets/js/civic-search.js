@@ -92,11 +92,15 @@
   function searchFromHome(value) {
     value = String(value || '').trim();
     if (!value) { root.querySelector('input').focus(); return; }
+    document.getElementById('q').value = value;
+    document.body.classList.remove('landing', 'launching', 'searching');
+    document.body.classList.add('searched');
+    document.body.setAttribute('data-scene', 'searched');
+    find(value);
     if (typeof dataReady !== 'undefined' && !dataReady) {
-      queuedQuery = value; homeStatus(t('preparing')); return;
+      queuedQuery = value; return;
     }
     queuedQuery = '';
-    document.getElementById('q').value = value;
     if (typeof executeSearch === 'function') executeSearch();
   }
   function load() {
@@ -185,7 +189,12 @@
       var url = new URL(location.href); url.searchParams.delete('q'); history.replaceState(null, '', url);
       home();
     });
-    window.addEventListener('paradiso-language-applied', function () { home(); if (query) find(query); });
+    window.addEventListener('paradiso-language-applied', function () {
+      var draft = root.querySelector('input') ? root.querySelector('input').value : '';
+      home();
+      if (draft && root.querySelector('input')) root.querySelector('input').value = draft;
+      if (query) find(query);
+    });
     if (document.body.classList.contains('searched')) find(document.getElementById('q').value);
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
