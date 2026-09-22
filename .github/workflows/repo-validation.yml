@@ -130,3 +130,6 @@ jobs:
 
       - name: Verify restored landing services in Chrome
         run: ./node_modules/.bin/playwright test tests/e2e/landing-utilities.spec.mjs tests/e2e/post-search-guidance.spec.mjs --project=desktop-1280 --project=mobile-390
+
+      - name: Verify procedure-first search, Waymaker Quick Answer and the language control (320–1280)
+        run: ./node_modules/.bin/playwright test tests/e2e/procedure-first-search.spec.mjs tests/e2e/waymaker-quick-answer.spec.mjs tests/e2e/language-control.spec.mjs --project=desktop-1280 --project=tablet-768 --project=mobile-390 --project=mobile-320

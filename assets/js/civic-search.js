@@ -10,21 +10,22 @@
       preSub: '사증 종류, 발급 요건, 필요 서류를 확인하세요.', postSub: '체류기간 연장, 체류자격 변경, 신고 절차를 확인하세요.',
       tools: '자주 찾는 업무', paperwork: '필수 서류 작성', paperworkSub: '신청서·숙소제공확인서 등 필수 서류를 단계별로 작성하세요.',
       reservation: '방문예약 안내', reservationSub: '하이코리아 방문예약 방법과 준비사항을 확인하세요.',
-      manuals: '매뉴얼 본문 검색', manualsSub: '사증발급·외국인체류 매뉴얼에서 필요한 내용을 찾아보세요.',
-      visa: '사증발급 매뉴얼', stay: '외국인체류 매뉴얼', original: '원문 보기',
+      manuals: '공식 원문 찾기', manualsSub: '사증발급·외국인체류 공식 안내 원문에서 필요한 구절을 찾아보세요.',
+      visa: '사증 안내', stay: '체류 안내', original: '원문 보기', sourceLabel: '공식 기준 업데이트',
+      language: '언어', languageTitle: '언어 선택', languageSearch: '언어 검색', languageNone: '일치하는 언어가 없어요.',
       disclaimer: 'Visable은 공식 정부 서비스가 아닙니다. 제공 정보는 참고용이며 법적 효력이 없습니다. 최종 판단은 HiKorea·1345·관할 출입국·외국인관서에서 확인하세요.',
-      allTools: '전체 도구 보기', theme: '화면 테마', guide: '체류자격 안내', all: '전체', sourceTab: '매뉴얼 원문',
-      manualTitle: '매뉴얼에서 찾은 내용', sourceNote: '2026년 9월 판본의 원문 검색입니다. 아래 체류자격 요약과 판본이 다를 수 있습니다.',
+      allTools: '전체 도구 보기', theme: '화면 테마', guide: '체류자격 안내', all: '전체', sourceTab: '원문',
+      manualTitle: '관련 공식 원문', sourceNote: '2026년 9월 기준 공식 안내 원문에서 찾은 구절이에요. 위 안내와 판본이 다를 수 있어요.',
       review: '원문 발췌 · 검토 전', caveat: '표·이미지의 내용과 적용 조건은 원문 페이지에서 확인하세요. 발췌문은 개별 요건을 확정하는 안내가 아닙니다.',
-      page: '쪽', pages: '쪽 검색됨', excerpt: '본문 펼치기', close: '닫기', loading: '매뉴얼 본문을 불러오는 중입니다.',
-      error: '매뉴얼을 불러오지 못했습니다. 다시 시도하거나 원문 PDF를 열어 확인하세요.', retry: '다시 시도',
-      empty: '일치하는 원문 페이지가 없습니다.', emptyHelp: '체류자격 코드와 짧은 키워드를 함께 입력해 보세요. 예: F-6 연장, E-7-4 소득',
-      more: '결과 더 보기', filter: '매뉴얼 범위', both: '사증·체류 전체', ai: 'AI 보조 안내 보기',
-      info: '매뉴얼 원문과 체류자격별 안내를 함께 검색할 수 있습니다. 각 결과의 판본과 적용 범위를 확인하고, 신청 전 공식 기관에 문의하세요.',
-      currentSource: '사증 2026.09.01 · 체류 2026.09.18', examples: '자주 찾는 질문', quickExtension: '체류기간 연장', quickAddress: '주소 변경', quickArc: '외국인등록증 재발급',
+      page: '쪽', pages: '건', excerpt: '본문 펼치기', close: '닫기', loading: '공식 원문을 불러오는 중입니다.',
+      error: '원문을 불러오지 못했습니다. 다시 시도하거나 원문 PDF를 열어 확인하세요.', retry: '다시 시도',
+      empty: '일치하는 원문이 없습니다.', emptyHelp: '체류자격 코드와 짧은 키워드를 함께 입력해 보세요. 예: F-6 연장, E-7-4 소득',
+      more: '관련 원문 더 보기', filter: '원문 범위', both: '사증·체류 전체', ai: 'AI 보조 안내 보기',
+      info: '공식 안내 원문과 체류자격별 안내를 함께 검색할 수 있습니다. 각 결과의 기준일과 적용 범위를 확인하고, 신청 전 공식 기관에 문의하세요.',
+      currentSource: '기준일 사증 2026.09.01 · 체류 2026.09.18', examples: '자주 찾는 질문', quickExtension: '체류기간 연장', quickAddress: '주소 변경', quickArc: '외국인등록증 재발급',
       short: '단기입국 경로', jobs: '직업·산업분류', office: '관할 출입국관서', agencies: '등록 민원대행기관', hospitals: '법무부지정 병원',
       pathways: '생활 경로 8종', reminders: '체류 기한 계산·알림', naturalization: '국적·귀화 안내', enforcement: '출입국 사범처리 예상',
-      pendingInfo: '첨부 PDF의 본문을 검색용으로 반영했습니다. 새 판본의 내용 검토는 별도이며, 기존 구조화된 안내의 출처 날짜는 각 결과에 표시됩니다.'
+      pendingInfo: '2026년 9월판 공식 안내 원문은 검색용으로 반영되어 있고, 내용 검토는 별도로 진행 중이에요. 구조화된 안내에는 각 근거의 기준일이 함께 표시됩니다.'
     },
     en: {
       search: 'Visa & stay search', forms: 'Forms', about: 'About', submit: 'Search', preparing: 'Preparing your search…', unavailable: 'Could not load the guides. Please reload the page.',
@@ -33,21 +34,22 @@
       preSub: 'Explore visa types, requirements and documents.', postSub: 'Check extensions, status changes and reporting procedures.',
       tools: 'Frequently used services', paperwork: 'Prepare documents', paperworkSub: 'Complete application and accommodation forms step by step.',
       reservation: 'Visit reservations', reservationSub: 'Find the steps and preparation for a HiKorea appointment.',
-      manuals: 'Search manual text', manualsSub: 'Find passages in the visa issuance and residence manuals.',
-      visa: 'Visa issuance manual', stay: 'Residence manual', original: 'Open original',
+      manuals: 'Find official source text', manualsSub: 'Search the official visa and residence guidance for the passage you need.',
+      visa: 'Visa guidance', stay: 'Stay guidance', original: 'Open original', sourceLabel: 'Official basis updated',
+      language: 'Language', languageTitle: 'Choose language', languageSearch: 'Search languages', languageNone: 'No matching language.',
       disclaimer: 'Visable is not a government service. Information is for reference and has no legal effect. Confirm with HiKorea, 1345 or the relevant immigration office.',
-      allTools: 'All services', theme: 'Theme', guide: 'Status guides', all: 'All results', sourceTab: 'Manual originals',
-      manualTitle: 'Found in the manuals', sourceNote: 'Original text from the September 2026 editions. Status summaries below may use earlier editions.',
+      allTools: 'All services', theme: 'Theme', guide: 'Status guides', all: 'All results', sourceTab: 'Sources',
+      manualTitle: 'Related official sources', sourceNote: 'Passages from the official guidance as of September 2026. The guidance above may cite a different edition.',
       review: 'Original excerpt · not reviewed', caveat: 'Check tables, images and applicable conditions on the original page. Excerpts do not establish individual requirements.',
-      page: 'page', pages: 'matching pages', excerpt: 'Read page text', close: 'Close', loading: 'Loading manual text…',
-      error: 'The manuals could not be loaded. Try again or open the original PDFs.', retry: 'Try again',
-      empty: 'No matching manual pages.', emptyHelp: 'The originals are in Korean. Try a code with a short Korean keyword, such as F-6 연장 or E-7-4 소득.',
-      more: 'Show more results', filter: 'Manual scope', both: 'Both manuals', ai: 'Show AI assistance',
-      info: 'Search original manuals alongside status guides. Check the edition and scope of each result, and confirm with an official authority before applying.',
-      currentSource: 'Visa 2026.09.01 · Stay 2026.09.18', examples: 'Popular questions', quickExtension: 'Extend my stay', quickAddress: 'Report address change', quickArc: 'Reissue residence card',
+      page: 'page', pages: 'passages', excerpt: 'Read page text', close: 'Close', loading: 'Loading official source text…',
+      error: 'The source text could not be loaded. Try again or open the original PDFs.', retry: 'Try again',
+      empty: 'No matching passages.', emptyHelp: 'The originals are in Korean. Try a code with a short Korean keyword, such as F-6 연장 or E-7-4 소득.',
+      more: 'More source passages', filter: 'Source scope', both: 'Visa and stay', ai: 'Show AI assistance',
+      info: 'Search the official source text alongside the status guides. Check the basis date and scope of each result, and confirm with an official authority before applying.',
+      currentSource: 'Basis: visa 2026.09.01 · stay 2026.09.18', examples: 'Popular questions', quickExtension: 'Extend my stay', quickAddress: 'Report address change', quickArc: 'Reissue residence card',
       short: 'Short-stay entry routes', jobs: 'Occupation & industry codes', office: 'Immigration offices', agencies: 'Registered agencies', hospitals: 'Designated hospitals',
       pathways: 'Eight life pathways', reminders: 'Dates & reminders', naturalization: 'Nationality & naturalization', enforcement: 'Immigration enforcement',
-      pendingInfo: 'The supplied PDFs are indexed for text search. Content review is separate. Existing structured guides retain their own source dates.'
+      pendingInfo: 'The September 2026 official guidance is indexed for search; its content review is a separate step. Structured guidance shows the basis date of each source.'
     }
   };
   function t(key) { return copy[lang()][key]; }
@@ -57,11 +59,68 @@
   var catalog, corpus, loadPromise, query = '', domain = '', activeTab = 'all', shown = 3, hits = [], sequence = 0;
   var panel, tabs, dialog, dialogReturn, queuedQuery = '', homeLanguage = '';
 
+  /* ------------------------------------------------------------ language ---- */
+  // One global language control for the civic surfaces (home nav + searched header). It renders the same
+  // 15 languages index.html owns (LANGUAGE_OPTIONS), prefers native names, and applies a choice through the
+  // existing `data-action="apply-language"` delegation so paradiso:language, ?lang=, zh-TW conversion and
+  // Arabic RTL keep working exactly as before. Desktop: anchored popover; mobile: bottom sheet (same dialog).
+  var LANG_FALLBACK = [['ko', '한국어', 'Korean', 'KO'], ['en', 'English', 'English', 'EN'], ['zh-CN', '简体中文', 'Chinese (Simplified)', '简'], ['zh-TW', '繁體中文', 'Chinese (Traditional)', '繁'], ['ja', '日本語', 'Japanese', '日'], ['vi', 'Tiếng Việt', 'Vietnamese', 'VI'], ['tl', 'Tagalog', 'Tagalog', 'TL'], ['id', 'Bahasa Indonesia', 'Indonesian', 'ID'], ['ru', 'Русский', 'Russian', 'RU'], ['fr', 'Français', 'French', 'FR'], ['es', 'Español', 'Spanish', 'ES'], ['ar', 'العربية', 'Arabic', 'ع'], ['de', 'Deutsch', 'German', 'DE'], ['tr', 'Türkçe', 'Turkish', 'TR'], ['uk', 'Українська', 'Ukrainian', 'UK']];
+  function langOptions() {
+    if (typeof LANGUAGE_OPTIONS !== 'undefined' && Array.isArray(LANGUAGE_OPTIONS)) return LANGUAGE_OPTIONS.map(function (o) { return { code: o.code, name: o.name, local: o.local, short: o.short, dir: o.dir || 'ltr', html: o.html || o.code }; });
+    return LANG_FALLBACK.map(function (o) { return { code: o[0], name: o[1], local: o[2], short: o[3], dir: o[0] === 'ar' ? 'rtl' : 'ltr', html: o[0] }; });
+  }
+  function currentLangCode() {
+    if (typeof selectedLocale !== 'undefined' && selectedLocale) return selectedLocale;
+    return document.documentElement.lang || 'ko';
+  }
+  function langSelectable(code) { return typeof isLanguageSelectable === 'function' ? isLanguageSelectable(code) : true; }
+  function langButton(cls) {
+    var cur = langOptions().filter(function (o) { return o.code === currentLangCode(); })[0] || langOptions()[0];
+    return '<button type="button" class="cs-lang ' + (cls || '') + '" data-cs-lang-open aria-haspopup="dialog" aria-expanded="false" aria-controls="csLangDialog" aria-label="' + esc(t('language')) + ': ' + esc(cur.name) + '"><span class="cs-lang-code" aria-hidden="true">' + esc(cur.short) + '</span><span class="cs-lang-name" lang="' + esc(cur.html) + '">' + esc(cur.name) + '</span></button>';
+  }
+  var langDialog = null, langOpener = null;
+  function renderLangDialog(filter) {
+    var cur = currentLangCode(); var f = String(filter || '').trim().toLowerCase();
+    var list = langOptions().filter(function (o) { return !f || o.name.toLowerCase().indexOf(f) >= 0 || o.local.toLowerCase().indexOf(f) >= 0 || o.code.toLowerCase().indexOf(f) >= 0; });
+    var body = list.length ? list.map(function (o) {
+      var selectable = langSelectable(o.code);
+      return '<li><button type="button" class="cs-lang-option" role="option" lang="' + esc(o.html) + '" dir="' + esc(o.dir) + '" aria-selected="' + (o.code === cur) + '"' + (selectable ? ' data-action="apply-language" data-lang="' + esc(o.code) + '"' : ' aria-disabled="true" disabled') + '><span class="cs-lang-native">' + esc(o.name) + '</span><span class="cs-lang-local" lang="en">' + esc(o.local) + '</span><span class="cs-lang-check" aria-hidden="true">' + (o.code === cur ? '✓' : '') + '</span></button></li>';
+    }).join('') : '<li class="cs-lang-none">' + esc(t('languageNone')) + '</li>';
+    langDialog.querySelector('.cs-lang-list').innerHTML = body;
+  }
+  function openLangDialog(opener) {
+    if (!langDialog) {
+      langDialog = document.createElement('dialog'); langDialog.id = 'csLangDialog'; langDialog.className = 'cs-lang-dialog'; langDialog.setAttribute('aria-labelledby', 'csLangTitle'); document.body.append(langDialog);
+      langDialog.addEventListener('close', function () { document.querySelectorAll('[data-cs-lang-open]').forEach(function (b) { b.setAttribute('aria-expanded', 'false'); }); if (langOpener && langOpener.isConnected) langOpener.focus(); });
+      langDialog.addEventListener('click', function (e) { if (e.target === langDialog) langDialog.close(); });
+      // Escape closes the sheet even when a page-level key handler would otherwise swallow the dialog's cancel.
+      langDialog.addEventListener('keydown', function (e) { if (e.key === 'Escape' || e.key === 'Esc') { e.preventDefault(); e.stopPropagation(); langDialog.close(); } });
+    }
+    langOpener = opener;
+    langDialog.innerHTML = '<div class="cs-lang-head"><h2 id="csLangTitle">' + esc(t('languageTitle')) + '</h2><button type="button" class="cs-lang-close" data-cs-lang-close aria-label="' + esc(t('close')) + '">' + icon('x') + '</button></div>' +
+      '<label class="cs-lang-search"><span class="cs-sr">' + esc(t('languageSearch')) + '</span><input type="search" autocomplete="off" placeholder="' + esc(t('languageSearch')) + '" data-cs-lang-filter></label>' +
+      '<ul class="cs-lang-list" role="listbox" aria-labelledby="csLangTitle"></ul>';
+    renderLangDialog('');
+    langDialog.querySelector('[data-cs-lang-filter]').addEventListener('input', function (e) { renderLangDialog(e.target.value); });
+    langDialog.querySelector('[data-cs-lang-close]').addEventListener('click', function () { langDialog.close(); });
+    // Desktop: anchor under the opener like a popover; mobile (≤680px): the stylesheet turns it into a bottom sheet.
+    langDialog.style.top = ''; langDialog.style.left = ''; langDialog.style.right = '';
+    if (window.innerWidth > 680 && opener) { var r = opener.getBoundingClientRect(); langDialog.style.top = Math.round(r.bottom + 8) + 'px'; langDialog.style.right = Math.max(12, Math.round(window.innerWidth - r.right)) + 'px'; }
+    opener && opener.setAttribute('aria-expanded', 'true');
+    if (typeof langDialog.showModal === 'function') langDialog.showModal(); else langDialog.setAttribute('open', '');
+    var sel = langDialog.querySelector('.cs-lang-option[aria-selected="true"]') || langDialog.querySelector('.cs-lang-option'); if (sel) sel.focus();
+  }
+  function refreshLangButtons() { document.querySelectorAll('.cs-lang').forEach(function (b) { var tmp = document.createElement('div'); tmp.innerHTML = langButton(b.classList.contains('cs-lang-searched') ? 'cs-lang-searched' : 'cs-lang-home'); b.replaceWith(tmp.firstChild); }); }
+  function mountSearchedLangButton() {
+    var header = document.querySelector('#hero .header-inner'); if (!header || header.querySelector('.cs-lang-searched')) return;
+    var tmp = document.createElement('div'); tmp.innerHTML = langButton('cs-lang-searched'); header.append(tmp.firstChild);
+  }
+
   function home() {
     homeLanguage = lang();
     root.innerHTML = '<header class="cs-nav"><a class="cs-brand" href="./" aria-label="Visable"><img src="assets/brand/visable-wordmark.svg" alt="Visable"></a>' +
       '<nav aria-label="' + t('about') + '"><button data-cs-focus>' + t('search') + '</button><a href="form-helper.html">' + t('forms') + '</a><a href="#civic-about">' + t('about') + '</a>' +
-      '<span class="cs-languages"><button data-action="apply-language" data-lang="ko" aria-pressed="' + (lang() === 'ko') + '">KO</button><button data-action="apply-language" data-lang="en" aria-pressed="' + (lang() === 'en') + '">EN</button></span></nav></header>' +
+      '<span class="cs-languages">' + langButton('cs-lang-home') + '</span></nav></header>' +
       '<main class="cs-home"><section class="cs-hero"><h1>' + t('title') + '</h1><p>' + t('sub') + '</p>' +
       '<form id="civicSearchForm" role="search"><label class="cs-sr" for="civicQuery">' + t('search') + '</label><div class="cs-searchbar">' + icon('search') +
       '<input id="civicQuery" type="search" maxlength="300" autocomplete="off" placeholder="' + t('placeholder') + '"><button type="submit">' + t('submit') + '</button></div></form>' +
@@ -72,7 +131,7 @@
       '<a href="form-helper.html"><span class="cs-icon-circle">' + icon('file-text') + '</span><span><strong>' + t('paperwork') + icon('chevron-right') + '</strong><small>' + t('paperworkSub') + '</small></span></a>' +
       '<button data-action="open-hikorea-guide"><span class="cs-icon-circle">' + icon('calendar-days') + '</span><span><strong>' + t('reservation') + icon('chevron-right') + '</strong><small>' + t('reservationSub') + '</small></span></button>' +
       '<button data-cs-focus data-cs-manual><span class="cs-icon-circle">' + icon('book-open') + '</span><span><strong>' + t('manuals') + icon('chevron-right') + '</strong><small>' + t('manualsSub') + '</small></span></button></div></section>' +
-      '<div class="cs-source-strip"><a href="docs/source-manuals/2026-09/visa_manual_260901.pdf" target="_blank" rel="noopener">' + icon('file-text') + '<span>' + t('visa') + ' · 2026.09.01</span>' + icon('external-link') + '</a>' +
+      '<div class="cs-source-strip"><span class="cs-source-strip-label">' + t('sourceLabel') + '</span><a href="docs/source-manuals/2026-09/visa_manual_260901.pdf" target="_blank" rel="noopener">' + icon('file-text') + '<span>' + t('visa') + ' · 2026.09.01</span>' + icon('external-link') + '</a>' +
       '<a href="docs/source-manuals/2026-09/stay_manual_260918.pdf" target="_blank" rel="noopener">' + icon('file-text') + '<span>' + t('stay') + ' · 2026.09.18</span>' + icon('external-link') + '</a></div>' +
       '<details class="cs-directory"><summary>' + t('allTools') + '</summary><div>' +
       [['open-short-stay','short'],['open-jobcode-modal','jobs'],['open-jurisdiction-modal','office'],['open-agent-finder','agencies'],['open-med-finder','hospitals']].map(function (item) { return '<button data-action="' + item[0] + '">' + t(item[1]) + '</button>'; }).join('') +
@@ -181,8 +240,10 @@
     results.prepend(panel); results.prepend(tabs);
     dialog = document.createElement('dialog'); dialog.id = 'civicPageDialog'; dialog.setAttribute('aria-labelledby', 'civicPageTitle'); document.body.append(dialog);
     dialog.addEventListener('close', function () { if (dialogReturn && dialogReturn.isConnected) dialogReturn.focus(); });
+    mountSearchedLangButton();
     document.addEventListener('click', function (event) {
       var target = event.target.closest('button'); if (!target) return;
+      if (target.hasAttribute('data-cs-lang-open')) { openLangDialog(target); return; }
       if (target.hasAttribute('data-cs-focus')) { if (target.hasAttribute('data-cs-manual')) activeTab = 'manual'; root.querySelector('input').focus(); root.querySelector('input').scrollIntoView({ block: 'center', behavior: 'smooth' }); }
       if (target.dataset.csQuery) searchFromHome(target.dataset.csQuery);
       if (target.dataset.csTab) setTab(target.dataset.csTab);
@@ -200,6 +261,8 @@
       home();
     });
     window.addEventListener('paradiso-language-applied', function () {
+      if (langDialog && langDialog.open) langDialog.close();
+      refreshLangButtons();
       if (lang() === homeLanguage) return;
       var draft = root.querySelector('input') ? root.querySelector('input').value : '';
       var directoryOpen = root.querySelector('.cs-directory') && root.querySelector('.cs-directory').open;

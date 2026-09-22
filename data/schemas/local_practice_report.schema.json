@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://visable-mu.vercel.app/schemas/local_practice_report.schema.json",
+  "title": "Visable local-practice report",
+  "description": "A user's structured report that an actual immigration-office visit differed from Visable's guidance. Reports are evidence for review, never guidance: a report becomes visible only after moderation (see data/local-practice-202609.json → moderation_states) and even then is labelled by its truth layer. No personal identifiers are collected.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "office", "procedure", "visit_month", "outcome", "consent"],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "office": { "type": "string", "minLength": 2, "maxLength": 80, "description": "Office id from data/local-practice-202609.json or a free-text office name." },
+    "visit_month": { "type": "string", "pattern": "^20[2-3][0-9]-(0[1-9]|1[0-2])$", "description": "Month of the visit (YYYY-MM). Day is deliberately not collected." },
+    "procedure": { "type": "string", "enum": ["extension", "status_change", "registration", "card_reissue", "residence_report", "registration_info_report", "reentry", "part_time_work", "activities_outside_status", "workplace_change", "workplace_report", "status_grant", "other"] },
+    "status": { "type": ["string", "null"], "pattern": "^[A-H]-\\d{1,2}(-[0-9A-Z]{1,6})?$", "description": "Status code if the user knows it. Optional." },
+    "status_unknown": { "type": "boolean" },
+    "outcome": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "document_expected_not_requested": { "type": "array", "items": { "type": "string", "maxLength": 120 }, "maxItems": 12 },
+        "document_requested_not_expected": { "type": "array", "items": { "type": "string", "maxLength": 120 }, "maxItems": 12 },
+        "fee_difference": { "type": ["string", "null"], "maxLength": 300 },
+        "process_difference": { "type": ["string", "null"], "maxLength": 300 }
+      }
+    },
+    "notes": { "type": ["string", "null"], "maxLength": 800 },
+    "evidence_available": { "type": "boolean", "description": "The reporter says they could show a receipt, notice or officer memo on request. Nothing is uploaded." },
+    "language": { "type": "string", "maxLength": 8 },
+    "consent": { "const": true, "description": "The reporter confirmed the text contains no passport number, ARC number, resident registration number, case number or full legal name." },
+    "client_submitted_at": { "type": "string", "format": "date-time" }
+  },
+  "x-forbidden-patterns": {
+    "description": "The API rejects a report when any free-text field matches these (privacy guard, mirrored in api/local-practice/report.js).",
+    "patterns": [
+      "\\b[A-Z]{1,2}\\d{7,8}\\b",
+      "\\b\\d{6}-?[1-8]\\d{6}\\b",
+      "\\b\\d{6}-?[5-8]\\d{6}\\b",
+      "\\b\\d{4}-?\\d{4}-?\\d{4}\\b"
+    ]
+  },
+  "x-moderation": {
+    "initial_state": "SUBMITTED",
+    "states": ["SUBMITTED", "UNDER_REVIEW", "REVIEWED", "CORROBORATED", "CONFLICTING", "REJECTED", "STALE"],
+    "rule": "A single report never changes guidance. A reviewed report is shown as REVIEWED_USER_REPORT; two or more consistent reviewed reports may be shown as VERIFIED_LOCAL_PRACTICE only after a maintainer marks them CORROBORATED; official notices are OFFICIAL_LOCAL_GUIDANCE."
+  }
+}

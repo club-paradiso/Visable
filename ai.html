@@ -2245,6 +2245,26 @@ select:focus-visible {
                 : '[모드: 귀화면접 준비] 사용자는 귀화면접과 기본소양 학습을 연습하러 왔습니다. 텍스트 기반 면접 코치로서 연습 답변을 검토하고, 더 자연스러운 예시 답변과 후속 질문 하나, 학습 팁을 제시하십시오. 이는 연습이며 실제 심사가 아닙니다. 합격·불합격을 예측하지 말고, 허가를 보장하지 말며, 연습 질문을 공식 기출문제라고 말하지 마십시오.';
         }
 
+        // Quick Answer handoff (index.html search → "이어서 질문하기"): the confirmed structured facts travel as
+        // context the model must explain but never extend. Resolved lazily because
+        // assets/js/waymaker-quick-answer.js is included after this inline script.
+        let QA_HANDOFF_CACHE;
+        function qaHandoff() {
+            if (QA_HANDOFF_CACHE !== undefined) return QA_HANDOFF_CACHE;
+            try {
+                const p = new URLSearchParams(location.search);
+                if (p.get('handoff') !== 'quick-answer') { QA_HANDOFF_CACHE = null; return null; }
+                const QA = window.VisableQuickAnswer;
+                if (!QA || typeof QA.readHandoff !== 'function') return null; // script not loaded yet: try again later
+                QA_HANDOFF_CACHE = QA.readHandoff();
+            } catch (e) { QA_HANDOFF_CACHE = null; }
+            return QA_HANDOFF_CACHE;
+        }
+        function quickAnswerContextLine(lang) {
+            const packet = qaHandoff();
+            if (!packet || !window.VisableQuickAnswer) return '';
+            try { return window.VisableQuickAnswer.handoffContextLine(packet, String(lang).indexOf('en') === 0 ? 'en' : 'ko'); } catch (e) { return ''; }
+        }
         function buildAskContext(lang) {
             if (lang === 'zh-CN' || lang === 'zh-TW') {
                 const trad = lang === 'zh-TW';
@@ -2257,7 +2277,8 @@ select:focus-visible {
                     '[资料不足时] 即使参考资料不足，也要表明已识别到检测出的签证代码或主题，不要假装无法理解问题；不要擅自编造法律规则或具体数字，并建议用户向 1345 外国人综合服务中心、HiKorea（hikorea.go.kr）或就近的出入境·外国人机关最终确认。',
                     nationalityContextLine(lang),
                     interviewPrepContextLine(lang),
-                    scenarioContextLine(lang)
+                    scenarioContextLine(lang),
+                    quickAnswerContextLine(lang)
                 ].filter(Boolean).join('\n');
             }
             if (lang === 'en') {
@@ -2267,7 +2288,8 @@ select:focus-visible {
                     '[Fallback] If the provided reference data is insufficient, acknowledge the detected visa code or topic, do not pretend the question is unrecognized, do not invent legal rules or specific numbers, and recommend the user confirm with the 1345 immigration call center, HiKorea (hikorea.go.kr), or the nearest immigration office.',
                     nationalityContextLine('en'),
                     interviewPrepContextLine('en'),
-                    scenarioContextLine('en')
+                    scenarioContextLine('en'),
+                    quickAnswerContextLine('en')
                 ].filter(Boolean).join('\n');
             }
             return [
@@ -2276,7 +2298,8 @@ select:focus-visible {
                 '[데이터 부족 시] 참고 자료가 부족하더라도 감지된 비자 코드 또는 주제는 인지하고 있음을 밝히고, 질문 자체를 인식하지 못한 것처럼 응답하지 마십시오. 구체 수치나 법적 결론을 임의로 단정하지 말고, 1345 외국인종합안내센터, 하이코리아(hikorea.go.kr) 또는 관할 출입국·외국인청에서 최종 확인하도록 안내하십시오.',
                 nationalityContextLine('ko'),
                 interviewPrepContextLine('ko'),
-                scenarioContextLine('ko')
+                scenarioContextLine('ko'),
+                quickAnswerContextLine('ko')
             ].filter(Boolean).join('\n');
         }
 
@@ -3908,6 +3931,12 @@ select:focus-visible {
         document.addEventListener('DOMContentLoaded', () => {
             loadVisaData();
             setupAiModeSelector();
+            // Quick Answer handoff: bring the original question into the box so the user continues, not restarts.
+            const handoffPacket = qaHandoff();
+            if (handoffPacket && handoffPacket.query) {
+                const box = document.getElementById('aiQ');
+                if (box && !box.value) { box.value = handoffPacket.query; try { box.dispatchEvent(new Event('input', { bubbles: true })); } catch (e) {} box.focus(); }
+            }
             // Easy Mode: load the shared i18n packs and wire the per-answer toggle.
             // The skip link ships with its Korean text inline so it works before
             // the packs land; once they do, it follows the chosen locale. Same
@@ -4001,6 +4030,8 @@ select:focus-visible {
     <script src="assets/js/backend-origin.js?v=20260826"></script>
     <script src="assets/js/zh-traditional.js"></script>
     <script src="assets/js/waymaker-navigator.js"></script>
+    <!-- Quick Answer handoff reader (sessionStorage packet from index.html search): prefills the question and adds the confirmed structured facts as chatbot context. -->
+    <script src="assets/js/waymaker-quick-answer.js"></script>
     <script defer src="assets/js/legal-source-search.js?v=20260628-mobile"></script>
     <script>
     (function () {

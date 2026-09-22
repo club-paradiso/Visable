@@ -34,17 +34,17 @@
    "SUPPORTED": 36,
    "LEGACY_ONLY": 1
   },
-  "guidance_entries": 110,
-  "document_items": 687,
+  "guidance_entries": 115,
+  "document_items": 700,
   "document_completeness": {
-   "FULLY_STRUCTURED": 84,
+   "FULLY_STRUCTURED": 88,
    "PARTIALLY_STRUCTURED": 9,
-   "SOURCE_ONLY": 17
+   "SOURCE_ONLY": 18
   },
   "procedure_states": {
    "SOURCE_ONLY": 1744,
-   "UNVERIFIED": 1748,
-   "SUPPORTED": 196,
+   "UNVERIFIED": 1739,
+   "SUPPORTED": 205,
    "CONDITIONAL": 31,
    "NOT_APPLICABLE": 355,
    "EXCEPTION_ONLY": 14,
