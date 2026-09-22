@@ -178,8 +178,8 @@ test.describe('legacy status cards stay collapsed under procedure-first answers'
       expect(await cards.count()).toBeGreaterThan(1);
       await expect(page.locator('#rlist article.vc.open')).toHaveCount(0);
       expect(await page.evaluate(() => document.body.getAttribute('data-sg-legacy'))).toBe('collapsed');
-      const height = await page.evaluate(() => document.documentElement.scrollHeight);
-      expect(height, `page height ${height}px`).toBeLessThan(30_000);
+      // the collapse snaps on render; poll so a slow runner mid-layout cannot fake a tall page
+      await expect.poll(() => page.evaluate(() => document.documentElement.scrollHeight), { timeout: 10_000, message: 'page height stays under 30000px' }).toBeLessThan(30_000);
       // still expandable by the user
       await cards.first().locator('.vc-h').click();
       await expect(cards.first()).toHaveClass(/open/);

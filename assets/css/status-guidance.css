@@ -274,3 +274,6 @@ html[dir="rtl"] .sg-evidence-details > summary::after { margin-left: 8px; margin
 @media (max-width: 680px) { .sg-report { width: 100%; max-width: none; margin: auto 0 0; border-radius: 14px 14px 0 0; } .sg-report-form { padding: 16px 16px 20px; max-height: 92vh; } .sg-report-row { grid-template-columns: 1fr; } }
 /* The report dialog toggles fields with the hidden attribute; block-level label styling must not override it. */
 .sg-report [hidden] { display: none !important; }
+
+/* Legacy status cards under a procedure-first answer collapse instantly on render (status-guidance.js collapseLegacyList). */
+#rlist.sg-legacy-snap .vc-cw, #rlist.sg-legacy-snap .tgl { transition: none !important; }

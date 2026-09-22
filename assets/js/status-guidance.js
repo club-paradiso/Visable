@@ -1103,8 +1103,14 @@
   function collapseLegacyList(kind) {
     var cards = document.querySelectorAll('#rlist article.vc');
     if ((kind !== 'procedure' && kind !== 'need-status') || cards.length < 2) { document.body.removeAttribute('data-sg-legacy'); return; }
+    // Snap closed without the card's open/close transition: the list was just
+    // rendered expanded, and animating 15–40 cards shut is a visible jump on a
+    // phone (and a 40k px page for the duration of the transition).
+    var list = cards[0].parentElement;
+    if (list) list.classList.add('sg-legacy-snap');
     cards.forEach(function (c) { c.classList.remove('open'); });
     document.body.setAttribute('data-sg-legacy', 'collapsed');
+    if (list) { void list.offsetHeight; requestAnimationFrame(function () { requestAnimationFrame(function () { list.classList.remove('sg-legacy-snap'); }); }); }
   }
 
   function render(focusTarget) {
