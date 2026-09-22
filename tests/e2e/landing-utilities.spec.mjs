@@ -125,7 +125,9 @@ test('September original search preserves source scope, page links and exact cod
   await page.locator('#civicSearchForm button[type="submit"]').click();
   const results = page.locator('#civicManualResults');
   await expect(results).toContainText('2026.09.18');
-  await expect(results.locator('.cs-manual-list li')).toHaveCount(6);
+  // The raw excerpt list opens with 3 hits (the structured status guidance now sits above it); 결과 더 보기 loads more.
+  await expect(results.locator('.cs-manual-list li')).toHaveCount(3);
+  await expect(results.locator('.cs-more')).toHaveCount(1);
   await expect(results.locator('.cs-result-title').first()).toContainText('E-7-4');
   await results.locator('#civicDomain').selectOption('visa_issuance');
   await expect(results.locator('.cs-result-meta').first()).toContainText('2026-09-01');

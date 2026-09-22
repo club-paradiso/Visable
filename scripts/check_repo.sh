@@ -319,6 +319,26 @@ else
   echo "INFO: Node.js not found; skipping complex status guide QA matrix."
 fi
 
+echo "[9d-5/14] Validating post-search status guidance (coverage manifest + document QA + resolver QA)..."
+# Offline. The September 2026 manuals are the only authority for this layer:
+#   * build_status_coverage_manifest.py --check  → data/status-coverage-202609.json and
+#     data/status-guidance-202609.json are byte-identical to a fresh build from
+#     scripts/status_guidance/author_rules.py (every anchor still resolves to a page);
+#   * check_status_coverage_manifest.mjs → every chapter / status / substatus /
+#     special program is inventoried with provenance and a valid state;
+#   * check_document_guidance.mjs → every document item has a requirement level,
+#     applicant role, 2026.9 page and no invented text;
+#   * check_status_resolver.mjs → resolver flows A–H + cross-status matrix.
+python3 scripts/status_guidance/author_rules.py --check
+python3 scripts/build_status_coverage_manifest.py --check
+if command -v node >/dev/null 2>&1; then
+  node scripts/check_status_coverage_manifest.mjs
+  node scripts/check_document_guidance.mjs
+  node scripts/check_status_resolver.mjs
+else
+  echo "INFO: Node.js not found; skipping status-guidance JS validation."
+fi
+
 echo "[9e/14] Validating 사증발급(visa issuance) UI + scenario-guide popup..."
 # Stdlib/Node-only, offline. check_visa_issuance_ui executes the real route-chip
 # derivation + F-4 exclusion guard for every record; validate_visa_issuance_enrichment

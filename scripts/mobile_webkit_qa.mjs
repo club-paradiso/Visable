@@ -20,6 +20,15 @@ const criticalSelectors = [
   '.top-ctrls', '.hero-container', '.p-hero-title', '.p-gateway', '.p-gw-search',
   '.p-gw-card', '.p-gw-util', '.p-gw-newhome', '.hero-actions', '.sbar', '#q',
   '.results-area', '.rlist', '.us-layer', '.us-interpret', '.us-ai', '.ai-fab',
+  '#statusGuidance', '.sg-interp', '.sg-question', '.sg-answer', '.sg-docs', '.sg-next', '.sg-evidence',
+];
+// Post-search guidance flows (status-guidance.js) exercised on the iphone-15
+// profile with real searches: the sprint's four mobile journeys.
+const guidanceFlows = [
+  { name: 'f1-extension', query: 'F-1 연장', picks: ['marriage_family', 'marriage_migrant', 'first', 'childcare'], expectKind: 'resolved', expectTitle: 'F-1-5' },
+  { name: 'e7-extension', query: 'E-7 연장', picks: ['unsure'], expectKind: 'unresolved' },
+  { name: 'e9-hotel', query: 'E-9 호텔', picks: ['extension'], expectKind: 'resolved', expectTitle: 'E-9-5' },
+  { name: 'd2-extension', query: 'D-2 연장', picks: [], expectKind: 'resolved', expectTitle: 'D-2' },
 ];
 const mime = new Map([
   ['.html', 'text/html; charset=utf-8'], ['.css', 'text/css; charset=utf-8'],
@@ -73,7 +82,7 @@ async function inspect(page, profile, state) {
       .filter(visible)
       .map((el) => ({ tag: el.tagName.toLowerCase(), type: el.getAttribute('type') || '', fontSize: parseFloat(getComputedStyle(el).fontSize) || 0 }))
       .filter((entry) => entry.fontSize > 0 && entry.fontSize < 16);
-    const touchTargets = [...document.querySelectorAll('.cs-languages button, .cs-examples button, .cs-searchbar button, .cs-routes button, .cs-tool-grid > *, .top-ctrls button, .top-ctrls [role="button"], .hero-actions .ha, .p-gw-search, .p-gw-card, .p-gw-util, .p-gw-newhome, .sbar button, .sbar [role="button"]')]
+    const touchTargets = [...document.querySelectorAll('.cs-languages button, .cs-examples button, .cs-searchbar button, .cs-routes button, .cs-tool-grid > *, .top-ctrls button, .top-ctrls [role="button"], .hero-actions .ha, .p-gw-search, .p-gw-card, .p-gw-util, .p-gw-newhome, .sbar button, .sbar [role="button"], #statusGuidance .sg-option, #statusGuidance .sg-btn, #statusGuidance .sg-candidate, #statusGuidance .sg-next a, #statusGuidance .sg-evidence-actions a')]
       .filter(visible)
       .map((el) => el.getBoundingClientRect())
       .filter((r) => r.width < 40 || r.height < 40)
@@ -136,6 +145,40 @@ try {
       const suffix = state === 'landing' ? '' : `-${state}`;
       await page.screenshot({ path: path.join(OUT, `${profile.name}${suffix}.png`), fullPage: true });
       for (const failure of stateReport.failures) report.failures.push(`${profile.name}/${state}: ${failure}`);
+    }
+    if (profile.name === 'iphone-15') {
+      for (const flow of guidanceFlows) {
+        const flowReport = { name: flow.name, query: flow.query, failures: [] };
+        try {
+          await page.goto(`http://127.0.0.1:${PORT}/`, { waitUntil: 'domcontentloaded', timeout: 30000 });
+          await page.waitForFunction(() => { try { return typeof VISA_DATA !== 'undefined' && VISA_DATA.length > 10 && !!document.querySelector('#civicQuery'); } catch { return false; } }, null, { timeout: 30000 });
+          await page.fill('#civicQuery', flow.query);
+          await page.press('#civicQuery', 'Enter');
+          await page.waitForSelector('#statusGuidance[data-sg-kind]', { timeout: 20000 });
+          for (const pick of flow.picks) {
+            await page.locator(`#statusGuidance [data-sg-action="answer"][data-sg-value="${pick}"]`).first().tap();
+            await page.waitForTimeout(150);
+          }
+          await page.waitForTimeout(300);
+          const kind = await page.getAttribute('#statusGuidance', 'data-sg-kind');
+          if (kind !== flow.expectKind) flowReport.failures.push(`expected ${flow.expectKind}, got ${kind}`);
+          if (flow.expectTitle) {
+            const title = (await page.locator('#sgAnswerTitle').textContent().catch(() => '')) || '';
+            if (!title.includes(flow.expectTitle)) flowReport.failures.push(`answer title "${title.trim()}" lacks ${flow.expectTitle}`);
+          }
+          const fabShown = await page.evaluate(() => { const f = document.querySelector('.ai-fab'); return !!f && getComputedStyle(f).display !== 'none'; });
+          if (fabShown) flowReport.failures.push('AI FAB still shown over the searched state');
+          const stateReport = await inspect(page, profile, `guidance:${flow.name}`);
+          profileReport.states.push(stateReport);
+          flowReport.failures.push(...stateReport.failures);
+          await page.screenshot({ path: path.join(OUT, `${profile.name}-guidance-${flow.name}.png`), fullPage: true });
+        } catch (error) {
+          flowReport.failures.push(`flow error: ${String(error.message || error)}`);
+        }
+        profileReport.guidanceFlows = profileReport.guidanceFlows || [];
+        profileReport.guidanceFlows.push(flowReport);
+        for (const failure of flowReport.failures) report.failures.push(`${profile.name}/guidance:${flow.name}: ${failure}`);
+      }
     }
     report.profiles.push(profileReport);
     await context.close();

@@ -54,7 +54,7 @@
   function esc(value) { return String(value == null ? '' : value).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function icon(name) { return '<img class="cs-icon" src="assets/icons/civic/' + name + '.svg" alt="" aria-hidden="true">'; }
   var root = document.createElement('div'); root.id = 'civicLanding';
-  var catalog, corpus, loadPromise, query = '', domain = '', activeTab = 'all', shown = 6, hits = [], sequence = 0;
+  var catalog, corpus, loadPromise, query = '', domain = '', activeTab = 'all', shown = 3, hits = [], sequence = 0;
   var panel, tabs, dialog, dialogReturn, queuedQuery = '', homeLanguage = '';
 
   function home() {
@@ -142,10 +142,10 @@
       }).join('') + '</ol>' : '<div class="cs-empty"><h3>' + t('empty') + '</h3><p>' + t('emptyHelp') + '</p></div>') +
       (hits.length > shown ? '<button class="cs-more" data-cs-more>' + t('more') + '</button>' : '') + '<p class="cs-caveat">' + t('caveat') + '</p>';
     var select = panel.querySelector('select'); select.value = domain;
-    select.addEventListener('change', function () { domain = select.value; shown = 6; renderResults(); });
+    select.addEventListener('change', function () { domain = select.value; shown = 3; renderResults(); });
   }
   function find(queryValue) {
-    query = String(queryValue || '').trim(); shown = 6;
+    query = String(queryValue || '').trim(); shown = 3;
     var request = ++sequence;
     renderTabs();
     if (!query) { panel.innerHTML = ''; return; }
@@ -155,12 +155,21 @@
       panel.innerHTML = '<div class="cs-empty" role="status"><p>' + t('error') + '</p><button data-cs-retry>' + t('retry') + '</button><p>' + sourceLinks() + '</p></div>';
     });
   }
-  function showPage(index, origin) {
-    var hit = hits[index]; if (!hit) return;
+  function showHit(hit, origin) {
     dialogReturn = origin;
     dialog.innerHTML = '<div class="cs-dialog-head"><div><p>' + esc(hit.source.title) + ' · ' + esc(hit.source.date) + ' · ' + hit.page.page + ' ' + t('page') + '</p><h2 id="civicPageTitle">' + esc(hit.page.heading) + '</h2></div><button data-cs-close aria-label="' + t('close') + '">' + icon('x') + '</button></div><p class="cs-caveat">' + t('review') + '. ' + t('caveat') + '</p><pre>' + esc(hit.page.text) + '</pre><a class="cs-pdf-link" href="' + esc(hit.source.file) + '#page=' + hit.page.page + '" target="_blank" rel="noopener">' + t('original') + ' · ' + hit.page.page + ' ' + t('page') + icon('external-link') + '</a>';
     dialog.showModal();
   }
+  function showPage(index, origin) { var hit = hits[index]; if (hit) showHit(hit, origin); }
+  // Page-level evidence bridge for other modules (status guidance): open a manual page by source id + page number.
+  function openPage(sourceId, pageNo, origin) {
+    return load().then(function () {
+      var source = (catalog.sources || []).filter(function (s) { return s.id === sourceId; })[0];
+      var row = corpus.rows.filter(function (r) { return r.source && r.source.id === sourceId && r.page.page === Number(pageNo); })[0];
+      if (source && row) showHit({ source: source, page: row.page }, origin);
+    }).catch(function () { /* the PDF link beside the button remains available */ });
+  }
+  window.VisableCivicSearch = { load: load, openPage: openPage };
   function init() {
     document.body.classList.add('civic-refresh');
     document.body.insertBefore(root, document.getElementById('hero'));

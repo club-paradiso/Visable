@@ -129,4 +129,4 @@ jobs:
           "$CHROME_BIN" --version
 
       - name: Verify restored landing services in Chrome
-        run: ./node_modules/.bin/playwright test tests/e2e/landing-utilities.spec.mjs --project=desktop-1280 --project=mobile-390
+        run: ./node_modules/.bin/playwright test tests/e2e/landing-utilities.spec.mjs tests/e2e/post-search-guidance.spec.mjs --project=desktop-1280 --project=mobile-390
