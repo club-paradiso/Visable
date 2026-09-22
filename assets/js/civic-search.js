@@ -55,9 +55,10 @@
   function icon(name) { return '<img class="cs-icon" src="assets/icons/civic/' + name + '.svg" alt="" aria-hidden="true">'; }
   var root = document.createElement('div'); root.id = 'civicLanding';
   var catalog, corpus, loadPromise, query = '', domain = '', activeTab = 'all', shown = 6, hits = [], sequence = 0;
-  var panel, tabs, dialog, dialogReturn, queuedQuery = '';
+  var panel, tabs, dialog, dialogReturn, queuedQuery = '', homeLanguage = '';
 
   function home() {
+    homeLanguage = lang();
     root.innerHTML = '<header class="cs-nav"><a class="cs-brand" href="./" aria-label="Visable"><img src="assets/brand/visable-wordmark.svg" alt="Visable"></a>' +
       '<nav aria-label="' + t('about') + '"><button data-cs-focus>' + t('search') + '</button><a href="form-helper.html">' + t('forms') + '</a><a href="#civic-about">' + t('about') + '</a>' +
       '<span class="cs-languages"><button data-action="apply-language" data-lang="ko" aria-pressed="' + (lang() === 'ko') + '">KO</button><button data-action="apply-language" data-lang="en" aria-pressed="' + (lang() === 'en') + '">EN</button></span></nav></header>' +
@@ -190,9 +191,14 @@
       home();
     });
     window.addEventListener('paradiso-language-applied', function () {
+      if (lang() === homeLanguage) return;
       var draft = root.querySelector('input') ? root.querySelector('input').value : '';
+      var directoryOpen = root.querySelector('.cs-directory') && root.querySelector('.cs-directory').open;
+      var aboutOpen = root.querySelector('.cs-about') && root.querySelector('.cs-about').open;
       home();
       if (draft && root.querySelector('input')) root.querySelector('input').value = draft;
+      if (directoryOpen) root.querySelector('.cs-directory').open = true;
+      if (aboutOpen) root.querySelector('.cs-about').open = true;
       if (query) find(query);
     });
     if (document.body.classList.contains('searched')) find(document.getElementById('q').value);
