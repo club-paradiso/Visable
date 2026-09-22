@@ -281,6 +281,19 @@ ENFORCEMENT_AI_BUDGET_GRACE_SECONDS: float = min(
     5.0, max(0.5, _env_float("ENFORCEMENT_AI_BUDGET_GRACE_SECONDS", 1.5))
 )
 
+# Which non-secret env var carries the commit this process was built from.
+# Railway sets RAILWAY_GIT_COMMIT_SHA on a GitHub-linked service;
+# PARADISO_BUILD_COMMIT is an explicit override for any other host. Checked in
+# order, first well-formed value wins. A commit sha is public repository
+# metadata, never a credential.
+_BUILD_COMMIT_ENV_NAMES: Tuple[str, ...] = (
+    "PARADISO_BUILD_COMMIT",
+    "RAILWAY_GIT_COMMIT_SHA",
+    "SOURCE_COMMIT",
+    "GIT_COMMIT",
+)
+_BUILD_COMMIT_RE = re.compile(r"^[0-9a-fA-F]{7,40}$")
+
 # Output-length cap for the final answer. Unbounded generation over Paradiso's
 # large grounded prompt was a major perceived-latency source ("Waymaker is too
 # slow"): a long answer takes proportionally longer to generate and stream back.
@@ -4287,6 +4300,31 @@ async def root() -> Dict[str, Any]:
     }
 
 
+def _deployed_build_metadata() -> Dict[str, Any]:
+    """Report the commit this process was built from, for deploy verification.
+
+    A post-deploy smoke that only checks /health cannot tell a finished deploy
+    from the previous one still serving: the old process answers "ok" just as
+    readily, so the check passes seconds after a merge and silently exercises
+    the code the merge replaced. Waiting longer does not fix that — nothing in
+    the response changes when the new build arrives. Reporting the commit does:
+    a caller can wait for its own commit instead of testing whatever happened
+    to be running.
+
+    Values are validated before being echoed, so a malformed env var surfaces
+    as "not reported" rather than as arbitrary text in a public response.
+    """
+    for name in _BUILD_COMMIT_ENV_NAMES:
+        value = (os.environ.get(name) or "").strip()
+        if _BUILD_COMMIT_RE.match(value):
+            return {
+                "commit": value.lower(),
+                "commit_source": name,
+                "commit_reported": True,
+            }
+    return {"commit": "", "commit_source": "", "commit_reported": False}
+
+
 @app.get("/health")
 async def health() -> Dict[str, Any]:
     llm = _resolve_llm_config()
@@ -4342,6 +4380,9 @@ async def health() -> Dict[str, Any]:
         "status": "ok",
         "service": "paradiso-backend",
         "version": app.version,
+        # Which commit is actually serving. Lets a post-deploy check wait for
+        # its own commit instead of passing against the previous deploy.
+        "build": _deployed_build_metadata(),
         "providers": _providers_configured(),
         "provider_status": provider_status,
         # Non-secret active LLM descriptor. Model ids are public catalog
