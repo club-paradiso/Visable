@@ -111,11 +111,19 @@ def test_buffered_candidate_chain_has_total_budget():
                 "synthetic", candidate_models=["test/one", "test/two"]
             )
 
+    started = time.monotonic()
     result = asyncio.run(run())
+    elapsed = time.monotonic() - started
     assert result["ok"] is False
     assert result["chain_budget_exhausted"] is True
     assert result["provider_error_type"] == "openrouter_chain_budget_exhausted"
-    assert calls == ["test/one"]
+    # The budget is total, not per model. Each attempt is sized from what is
+    # left of it, so a hanging candidate is cut off long before the 1s sleep
+    # and the whole chain still finishes inside the declared budget. What must
+    # never happen is one candidate outliving the budget on its own: that is
+    # what left the enforcement path with a single attempt and no fallback.
+    assert calls == ["test/one", "test/two"]
+    assert elapsed < 0.5
 
 
 def test_buffered_candidate_timeout_preserves_time_for_fallback():
