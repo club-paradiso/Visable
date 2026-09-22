@@ -76,9 +76,11 @@ body.civic-refresh::before, body.civic-refresh::after { display: none !important
 .cs-searchbar input::placeholder { color: var(--cs-muted); opacity: 1; }
 .cs-searchbar > button { border: 0; border-radius: 13px; background: var(--cs-green); color: var(--cs-bg); font-weight: 700 !important; font-size: 19px !important; padding: 17px 48px; min-height: 62px; }
 .cs-searchbar > button:hover { opacity: .9; }
-.cs-examples { display: flex; align-items: center; justify-content: center; gap: 25px; margin-top: 25px; color: var(--cs-green); }
-.cs-examples button { display: flex; align-items: center; gap: 8px; background: none; border: 0; padding: 8px 0; font-size: 18px !important; text-decoration: underline; text-underline-offset: 5px; }
-.cs-examples > span { height: 21px; width: 1px; background: var(--cs-line); }
+.cs-examples { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px 18px; margin-top: 25px; color: var(--cs-green); }
+.cs-examples-label { color: var(--cs-muted); font-size: 15px; font-weight: 700; letter-spacing: -.01em; }
+.cs-examples button { display: flex; align-items: center; gap: 7px; background: var(--cs-soft); border: 1px solid transparent; border-radius: 999px; padding: 9px 14px; min-height: 42px; font-size: 16px !important; text-decoration: none; }
+.cs-examples button:hover { border-color: var(--cs-line); background: var(--cs-row); }
+.cs-examples button:focus-visible { outline: 2px solid var(--cs-green); outline-offset: 2px; }
 .cs-icon { display: inline-block; width: 22px; height: 22px; flex: 0 0 auto; vertical-align: middle; filter: invert(25%) sepia(19%) saturate(1030%) hue-rotate(109deg) brightness(90%) contrast(92%); }
 .cs-icon-circle { width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--cs-soft); flex-shrink: 0; }
 .cs-icon-circle .cs-icon { width: 32px; height: 32px; }
@@ -184,9 +186,10 @@ body[data-theme="dark"] .cs-icon, body[data-theme="dark"] .cs-brand img, body[da
   .cs-searchbar > .cs-icon { margin-left: 6px; width: 22px; height: 22px; }
   .cs-searchbar input { font-size: 16px !important; }
   .cs-searchbar > button { min-height: 48px; font-size: 16px !important; padding: 12px 18px; border-radius: 8px; }
-  .cs-examples { margin-top: 15px; }
-  .cs-examples button { font-size: 15px !important; min-height: 44px; }
-  .cs-examples .cs-icon { width: 18px; height: 18px; }
+  .cs-examples { justify-content: flex-start; gap: 8px; margin-top: 15px; }
+  .cs-examples-label { flex-basis: 100%; font-size: 13px; text-align: left; }
+  .cs-examples button { font-size: 14px !important; min-height: 44px; padding: 9px 12px; }
+  .cs-examples .cs-icon { width: 17px; height: 17px; }
   .cs-routes { grid-template-columns: 1fr; gap: 12px; padding-bottom: 24px; }
   .cs-routes > button { padding: 18px 16px; }
   .cs-routes strong { font-size: 19px; }

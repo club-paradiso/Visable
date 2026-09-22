@@ -21,7 +21,7 @@
       empty: '일치하는 원문 페이지가 없습니다.', emptyHelp: '체류자격 코드와 짧은 키워드를 함께 입력해 보세요. 예: F-6 연장, E-7-4 소득',
       more: '결과 더 보기', filter: '매뉴얼 범위', both: '사증·체류 전체', ai: 'AI 보조 안내 보기',
       info: '매뉴얼 원문과 체류자격별 안내를 함께 검색할 수 있습니다. 각 결과의 판본과 적용 범위를 확인하고, 신청 전 공식 기관에 문의하세요.',
-      currentSource: '사증 2026.09.01 · 체류 2026.09.18', examples: '자주 찾는 검색어',
+      currentSource: '사증 2026.09.01 · 체류 2026.09.18', examples: '자주 찾는 질문', quickExtension: '체류기간 연장', quickAddress: '주소 변경', quickArc: '외국인등록증 재발급',
       short: '단기입국 경로', jobs: '직업·산업분류', office: '관할 출입국관서', agencies: '등록 민원대행기관', hospitals: '법무부지정 병원',
       pathways: '생활 경로 8종', reminders: '체류 기한 계산·알림', naturalization: '국적·귀화 안내', enforcement: '출입국 사범처리 예상',
       pendingInfo: '첨부 PDF의 본문을 검색용으로 반영했습니다. 새 판본의 내용 검토는 별도이며, 기존 구조화된 안내의 출처 날짜는 각 결과에 표시됩니다.'
@@ -44,7 +44,7 @@
       empty: 'No matching manual pages.', emptyHelp: 'The originals are in Korean. Try a code with a short Korean keyword, such as F-6 연장 or E-7-4 소득.',
       more: 'Show more results', filter: 'Manual scope', both: 'Both manuals', ai: 'Show AI assistance',
       info: 'Search original manuals alongside status guides. Check the edition and scope of each result, and confirm with an official authority before applying.',
-      currentSource: 'Visa 2026.09.01 · Stay 2026.09.18', examples: 'Example searches',
+      currentSource: 'Visa 2026.09.01 · Stay 2026.09.18', examples: 'Popular questions', quickExtension: 'Extend my stay', quickAddress: 'Report address change', quickArc: 'Reissue residence card',
       short: 'Short-stay entry routes', jobs: 'Occupation & industry codes', office: 'Immigration offices', agencies: 'Registered agencies', hospitals: 'Designated hospitals',
       pathways: 'Eight life pathways', reminders: 'Dates & reminders', naturalization: 'Nationality & naturalization', enforcement: 'Immigration enforcement',
       pendingInfo: 'The supplied PDFs are indexed for text search. Content review is separate. Existing structured guides retain their own source dates.'
@@ -65,7 +65,7 @@
       '<main class="cs-home"><section class="cs-hero"><h1>' + t('title') + '</h1><p>' + t('sub') + '</p>' +
       '<form id="civicSearchForm" role="search"><label class="cs-sr" for="civicQuery">' + t('search') + '</label><div class="cs-searchbar">' + icon('search') +
       '<input id="civicQuery" type="search" maxlength="300" autocomplete="off" placeholder="' + t('placeholder') + '"><button type="submit">' + t('submit') + '</button></div></form>' +
-      '<div class="cs-examples" aria-label="' + t('examples') + '"><button data-cs-query="E-7-4">' + icon('search') + 'E-7-4</button><span></span><button data-cs-query="F-6 연장">' + icon('search') + 'F-6 연장</button></div></section>' +
+      '<div class="cs-examples" aria-label="' + t('examples') + '"><span class="cs-examples-label">' + t('examples') + '</span><button data-cs-query="체류기간 연장">' + icon('search') + t('quickExtension') + '</button><button data-cs-query="주소 변경 신고">' + icon('search') + t('quickAddress') + '</button><button data-cs-query="외국인등록증 재발급">' + icon('search') + t('quickArc') + '</button></div></section>' +
       '<section class="cs-routes"><button data-action="reveal-home-section" data-target="visaManualSection" data-journey-track="pre"><span class="cs-icon-circle">' + icon('globe') + '</span><span><strong>' + t('pre') + icon('chevron-right') + '</strong><small>' + t('preSub') + '</small></span></button>' +
       '<button data-action="reveal-home-section" data-target="visaManualSection" data-journey-track="in"><span class="cs-icon-circle">' + icon('user-round') + '</span><span><strong>' + t('post') + icon('chevron-right') + '</strong><small>' + t('postSub') + '</small></span></button></section>' +
       '<section class="cs-tools"><h2>' + t('tools') + '</h2><div class="cs-tool-grid">' +
