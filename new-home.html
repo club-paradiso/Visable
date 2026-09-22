@@ -788,12 +788,9 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
   var LANG_KEY = 'paradiso:language';
   var THEME_KEY = 'paradiso:editorial-theme';
   var BRIGHT_KEY = 'paradiso:brightness';
-  var SUPPORTED = ['ko', 'en', 'zh-CN', 'zh-TW'];
-  // Full canonical site locale cycle, in index.html LANGUAGE_OPTIONS order. The
-  // toggle must advance through EVERY site locale so a click from a globally
-  // stored ja/vi/etc. lands on the genuine next locale instead of overwriting
-  // the shared paradiso:language key with a coerced ko/en/zh value.
+  // Full canonical site locale set, matching data/i18n/manifest.json.
   var LANG_ORDER = ['ko', 'en', 'zh-CN', 'zh-TW', 'ja', 'vi', 'tl', 'id', 'ru', 'fr', 'es', 'ar', 'de', 'tr', 'uk'];
+  var EXTRA_PACK_LOCALES = ['ja', 'vi', 'tl', 'id', 'ru', 'fr', 'es', 'ar', 'de', 'tr', 'uk'];
   var LANG_SHORT = {
     ko: 'KO', en: 'EN', 'zh-CN': '简', 'zh-TW': '繁', ja: '日', vi: 'VI',
     tl: 'TL', id: 'ID', ru: 'RU', fr: 'FR', es: 'ES', ar: 'ع', de: 'DE', tr: 'TR', uk: 'UK'
@@ -803,15 +800,21 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
     vi: 'Tiếng Việt', tl: 'Tagalog', id: 'Bahasa Indonesia', ru: 'Русский', fr: 'Français',
     es: 'Español', ar: 'العربية', de: 'Deutsch', tr: 'Türkçe', uk: 'Українська'
   };
-  // Locales this page renders natively (content JSON carries ko/en/zh-CN; zh-TW is
-  // a display layer over zh-CN). A selected locale outside this set stays selected
-  // but renders via the ko fallback in pick(), flagged by the note — never coerced.
+  // Base data carries ko/en/zh-CN directly. zh-TW is the existing display
+  // conversion layer; the other 11 locales are complete New Home packs loaded
+  // on demand from data/i18n/new-home/<locale>.json.
   var LANG_TRANSLATED = { ko: true, en: true, 'zh-CN': true, 'zh-TW': true };
-  // Content locale that actually drives pick(): untranslated selections render ko.
+  var LOCALE_PACKS = Object.create(null);
+  var LOCALE_PACK_PROMISES = Object.create(null);
+  EXTRA_PACK_LOCALES.forEach(function (code) { LANG_TRANSLATED[code] = true; });
+  var LANG_DIR = { ar: 'rtl' };
+  var LANG_MENU_LABEL = {
+    ko: '언어 선택', en: 'Language', 'zh-CN': '语言', 'zh-TW': '語言', ja: '言語',
+    vi: 'Ngôn ngữ', tl: 'Wika', id: 'Bahasa', ru: 'Язык', fr: 'Langue',
+    es: 'Idioma', ar: 'اللغة', de: 'Sprache', tr: 'Dil', uk: 'Мова'
+  };
   function contentLocaleFor(sel) {
-    if (sel === 'zh-TW' || sel === 'zh-CN') return 'zh-CN';
-    if (sel === 'en') return 'en';
-    return 'ko';
+    return sel === 'zh-TW' ? 'zh-CN' : sel;
   }
   // Traditional Chinese is a display layer over zh-CN content (zh-traditional.js).
   // `lang` is the content locale; `tradTW` activates the converter.
@@ -831,14 +834,20 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
 
   function initialSelection() {
     try {
-      // Read the shared global choice WITHOUT coercion: any canonical site locale
-      // stays selected as-is (content falls back to ko via pick() if untranslated
-      // here). Garbage/unknown falls through to the navigator hint, then ko.
+      var requested = new URLSearchParams(window.location.search).get('lang');
+      if (requested && LANG_ORDER.indexOf(requested) >= 0) return requested;
+    } catch (e) {}
+    try {
+      // Shared global choice across Visable surfaces.
       var raw = (localStorage.getItem(LANG_KEY) || '');
       if (LANG_ORDER.indexOf(raw) >= 0) return raw;
     } catch (e) {}
     try {
-      if ((navigator.language || '').toLowerCase().indexOf('en') === 0) return 'en';
+      var nav = (navigator.language || '').toLowerCase();
+      if (nav.indexOf('zh-tw') === 0 || nav.indexOf('zh-hant') === 0) return 'zh-TW';
+      if (nav.indexOf('zh') === 0) return 'zh-CN';
+      var base = nav.split('-')[0];
+      if (LANG_ORDER.indexOf(base) >= 0) return base;
     } catch (e) {}
     return 'ko';
   }
@@ -846,11 +855,27 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
     try { var zt = window.ParadisoZhT; if (!zt) return; if (on) { if (!zt.isActive()) zt.start(); } else if (zt.isActive()) { zt.stop(); } } catch (e) {}
   }
 
+  function translateCanonicalValue(value, locale) {
+    var pack = LOCALE_PACKS[locale] || null;
+    if (!pack) return value;
+    if (typeof value === 'string') return pack[value] != null ? pack[value] : value;
+    if (Array.isArray(value)) return value.map(function (item) { return translateCanonicalValue(item, locale); });
+    if (value && typeof value === 'object') {
+      var out = {};
+      Object.keys(value).forEach(function (key) { out[key] = translateCanonicalValue(value[key], locale); });
+      return out;
+    }
+    return value;
+  }
+
   function pick(node) {
     if (node == null) return '';
     if (typeof node === 'string') return node;
     if (typeof node === 'object') {
       if (node[lang] != null) return node[lang];
+      if (node.ko != null && EXTRA_PACK_LOCALES.indexOf(selectedLocale) >= 0) {
+        return translateCanonicalValue(node.ko, selectedLocale);
+      }
       if (node.ko != null) return node.ko;
       if (node.en != null) return node.en;
     }
@@ -884,7 +909,8 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
 
   // ── Static text binding: elements carry a dotted content path attribute ──
   function applyStatic() {
-    document.documentElement.lang = tradTW ? 'zh-TW' : lang;
+    document.documentElement.lang = selectedLocale;
+    document.documentElement.dir = LANG_DIR[selectedLocale] || 'ltr';
     applyTradLayer(tradTW);
     document.querySelectorAll('[data-c]').forEach(function (node) {
       var val = resolve(content, node.getAttribute('data-c'));
@@ -895,7 +921,7 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
     if (langBtn) {
       langBtn.textContent = LANG_SHORT[selectedLocale] || LANG_SHORT.ko;
       langBtn.setAttribute('data-s2t', 'off');
-      langBtn.setAttribute('aria-label', '언어 선택 · ' + (LANG_LABEL[selectedLocale] || selectedLocale));
+      langBtn.setAttribute('aria-label', (LANG_MENU_LABEL[selectedLocale] || 'Language') + ' · ' + (LANG_LABEL[selectedLocale] || selectedLocale));
     }
     renderLangMenu();
     updateLangNote(selectedLocale);
@@ -1571,7 +1597,7 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
     var holder = langBtn ? langBtn.parentElement : null;
     if (!holder) return;
     var note = document.getElementById('nhLangNote');
-    var untranslated = sel !== 'ko' && !LANG_TRANSLATED[sel];
+    var untranslated = sel !== 'ko' && (!LANG_TRANSLATED[sel] || (EXTRA_PACK_LOCALES.indexOf(sel) >= 0 && !LOCALE_PACKS[sel]));
     if (untranslated) {
       if (!note) {
         note = document.createElement('div');
@@ -1581,7 +1607,7 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
         note.setAttribute('data-s2t', 'off');
         holder.appendChild(note);
       }
-      note.textContent = '이 페이지는 선택한 언어 번역 준비 중입니다 · This page is not yet translated into the selected language.';
+      note.textContent = '번역팩을 불러오지 못했습니다 · Translation pack unavailable.';
     } else if (note) {
       note.remove();
     }
@@ -1592,7 +1618,7 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
     menu.innerHTML = LANG_ORDER.map(function (code) {
       var selected = code === selectedLocale;
       var translated = !!LANG_TRANSLATED[code];
-      var note = translated ? '' : '<span class="nh-lang-option-note">이 페이지 번역 준비 중</span>';
+      var note = translated ? '' : '<span class="nh-lang-option-note">translation unavailable</span>';
       return '<button type="button" class="nh-lang-option" role="option" aria-selected="' + (selected ? 'true' : 'false') +
         '" data-action="select-language" data-lang="' + esc(code) + '">' +
         '<span class="nh-lang-option-code">' + esc(LANG_SHORT[code] || code.toUpperCase()) + '</span>' +
@@ -1609,6 +1635,29 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
     btn.setAttribute('aria-expanded', open ? 'true' : 'false');
     if (open) renderLangMenu();
   }
+  function localePackPath(code) {
+    return 'data/i18n/new-home/' + code + '.json';
+  }
+  function ensureLocalePack(code) {
+    if (EXTRA_PACK_LOCALES.indexOf(code) < 0) return Promise.resolve(true);
+    if (LOCALE_PACKS[code]) return Promise.resolve(true);
+    if (LOCALE_PACK_PROMISES[code]) return LOCALE_PACK_PROMISES[code];
+    LOCALE_PACK_PROMISES[code] = getJson(localePackPath(code), 'new-home i18n ' + code)
+      .then(function (payload) {
+        var strings = payload && payload.strings ? payload.strings : payload;
+        if (!strings || typeof strings !== 'object') throw new Error('invalid new-home i18n pack: ' + code);
+        LOCALE_PACKS[code] = strings;
+        LANG_TRANSLATED[code] = true;
+        return true;
+      })
+      .catch(function (err) {
+        console.warn('[new-home i18n] ' + code + ' unavailable', err);
+        LANG_TRANSLATED[code] = false;
+        return false;
+      })
+      .finally(function () { delete LOCALE_PACK_PROMISES[code]; });
+    return LOCALE_PACK_PROMISES[code];
+  }
   function setLanguage(code) {
     if (LANG_ORDER.indexOf(code) < 0) return;
     selectedLocale = code;
@@ -1618,7 +1667,12 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
     try { localStorage.setItem(LANG_KEY, selectedLocale); } catch (e) {}
     applyTradLayer(tradTW);
     toggleLangMenu(false);
-    renderAll();
+    var root = document.getElementById('nhMain');
+    if (root) root.setAttribute('aria-busy', 'true');
+    ensureLocalePack(code).then(function () {
+      renderAll();
+      if (root) root.setAttribute('aria-busy', 'false');
+    });
   }
   function syncMeta() {
     var meta = document.querySelector('meta[name="theme-color"]');
@@ -1707,7 +1761,6 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
       (flows.statusChips || []).forEach(function (c) { chipMap[c.id] = c; });
       (flows.resultCategories || []).forEach(function (c) { catMap[c.id] = c; });
       (sources.sources || []).forEach(function (s) { srcMap[s.sourceId] = s; });
-      if (SUPPORTED.indexOf(lang) < 0) lang = 'ko';
       try {
         var savedBrightness = localStorage.getItem(BRIGHT_KEY);
         var useDark = savedBrightness === 'dark' ||
@@ -1715,6 +1768,8 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
         if (useDark) document.body.setAttribute('data-theme', 'dark');
         else document.body.removeAttribute('data-theme');
       } catch (e) {}
+      return ensureLocalePack(selectedLocale);
+    }).then(function () {
       renderAll();
       syncMeta();
     }).catch(function () { showLoadError(); });
