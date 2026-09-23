@@ -56,13 +56,18 @@
 .fh-handoff { margin: 6px 0 0; font-size: 14px; }
 .fh-handoff-links { margin: 4px 0 0; font-size: 14px; }
 .fh-empty { color: var(--cs-muted); padding: 10px 2px; }
-.fh-chip { display: inline-block; font-size: 12px; font-weight: 700; border-radius: 999px; padding: 2px 9px; border: 1px solid var(--cs-line); color: var(--cs-muted); width: max-content; }
+.fh-chip { display: inline-block; font-size: 12px; font-weight: 700; border-radius: 999px; padding: 2px 9px; border: 1px solid var(--cs-line); color: var(--cs-muted); width: max-content; max-width: 100%; }
 .fh-chip-ok { background: var(--cs-soft); color: var(--cs-green); border-color: transparent; }
 .fh-chip-mid { background: #fff5dc; color: #6f4d00; border-color: transparent; }
 .fh-chip-no { background: #fbe9e7; color: #8b2418; border-color: transparent; }
 .fh-chip-dirty { background: var(--cs-green); color: var(--cs-bg); border-color: transparent; }
 body[data-theme="dark"] .fh-chip-mid { background: #4a3a10; color: #ffe2a1; }
 body[data-theme="dark"] .fh-chip-no { background: #4d2320; color: #ffc7c0; }
+/* dark theme: native radios / checkboxes / inputs follow the page, and error text keeps AA
+   contrast on the dark surface (the light-theme red #8b2418 is ~1.6 : 1 there) */
+body[data-theme="dark"] { color-scheme: dark; }
+body[data-theme="dark"] .fh-field-issue, body[data-theme="dark"] .fh-status-err, body[data-theme="dark"] #fhBootError { color: #ffb4a9; }
+body[data-theme="dark"] .fh-has-issue input, body[data-theme="dark"] .fh-has-issue textarea { border-color: #ff8a7a; }
 
 /* groups + cards */
 .fh-groups { margin-top: 28px; }
@@ -73,6 +78,8 @@ body[data-theme="dark"] .fh-chip-no { background: #4d2320; color: #ffc7c0; }
 .fh-card-top { display: flex; gap: 6px; flex-wrap: wrap; }
 .fh-card-title { font-weight: 780; font-size: 17px; letter-spacing: -.02em; word-break: keep-all; }
 .fh-card-sub { color: var(--cs-muted); font-size: 13px; }
+/* grid items may not grow past the card: long localized chips and subtitles wrap inside it */
+.fh-card > * { min-width: 0; overflow-wrap: anywhere; }
 .fh-card-num { color: var(--cs-muted); font-size: 12px; }
 .fh-coverage { margin-top: 12px; font-size: 14px; color: var(--cs-muted); }
 .fh-coverage a { color: var(--cs-green); }

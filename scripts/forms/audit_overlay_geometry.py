@@ -17,6 +17,9 @@ ones a sample happens to fill). For each text overlay the whole writable area �
   CROSSES_HRULE  not have a horizontal rule running through the glyphs;
   OVERLAPS_TEXT  not overlap printed template text (labels, units, 년/월/일 …), unless
                  that text sits under the overlay's own white-out box (wbox);
+  TOUCHES_LABEL  keep a visible gap to printed text it does not overlap: at least 1.5 pt
+                 below a label it sits under, and no label tail running into its start
+                 (inline slots after ':' or '(' are exempt — the bracket is the boundary);
   OUTSIDE_ROW    stay within the table row it starts in (forms without side borders end
                  a row where its top and bottom rules end);
   OFF_PAGE       stay on the page.
@@ -180,6 +183,11 @@ def audit_spec(fid, spec):
             if wb and w[0] >= wb[0] - 0.5 and w[2] <= wb[2] + 0.5 and w[1] >= wb[1] - 0.5 and w[3] <= wb[3] + 0.5:
                 continue  # printed placeholder under this overlay's own white-out box
             ix = overlap(x0, x1, w[0], w[2]); iy = overlap(y0, y1, w[1], w[3])
+            if not (ix > 0.6 and iy > 0.35 * min(y1 - y0, w[3] - w[1])):
+                if ix > 0.6 and w[3] <= o['y'] and -0.35 * min(y1 - y0, w[3] - w[1]) <= y0 - w[3] < 1.5:
+                    issues.append((key, 'TOUCHES_LABEL', f"glyph top {y0:.1f} is {y0 - w[3]:.1f} pt under printed '{w[4]}' (bottom {w[3]:.1f})"))
+                elif iy > 0 and w[0] < x0 and -3 <= x0 - w[2] < 0.3 and w[4][-1] not in ':：(（[' and o.get('align') != 'center':
+                    issues.append((key, 'TOUCHES_LABEL', f"printed '{w[4]}' ends at {w[2]:.1f}, the value starts at {x0:.1f}"))
             if ix > 0.6 and iy > 0.35 * min(y1 - y0, w[3] - w[1]):
                 issues.append((key, 'OVERLAPS_TEXT', f"area x {x0:.1f}-{x1:.1f} overlaps printed '{w[4]}' at x {w[0]:.1f}-{w[2]:.1f}"))
     return checked, issues

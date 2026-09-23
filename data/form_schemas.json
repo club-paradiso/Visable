@@ -4367,10 +4367,10 @@
           "maxWidth": 76
         },
         "app_addr": {
-          "x": 192,
-          "y": 246,
+          "x": 150,
+          "y": 249.5,
           "size": 8,
-          "maxWidth": 217.5
+          "maxWidth": 259.5
         },
         "app_phone": {
           "x": 456,
@@ -4443,10 +4443,10 @@
           "maxWidth": 92
         },
         "g_work_addr": {
-          "x": 182,
+          "x": 150,
           "y": 535,
           "size": 8,
-          "maxWidth": 227.5
+          "maxWidth": 259.5
         },
         "g_note": {
           "x": 440,
@@ -5688,16 +5688,16 @@
           "maxWidth": 121
         },
         "a_dob": {
-          "x": 434,
+          "x": 438,
           "y": 524.5,
           "size": 9,
           "maxWidth": 100
         },
         "a_phone": {
-          "x": 205,
+          "x": 212,
           "y": 555,
           "size": 9,
-          "maxWidth": 121
+          "maxWidth": 116
         },
         "a_relation": {
           "x": 337,
@@ -8353,24 +8353,24 @@
           "maxWidth": 105
         },
         "name_en": {
-          "x": 140,
+          "x": 146,
           "y": 206.1,
           "size": 10,
-          "maxWidth": 390,
+          "maxWidth": 384,
           "page": 1
         },
         "dob_en": {
-          "x": 140,
+          "x": 146,
           "y": 236.3,
           "size": 10,
-          "maxWidth": 390,
+          "maxWidth": 384,
           "page": 1
         },
         "nationality_en": {
-          "x": 140,
+          "x": 146,
           "y": 266.5,
           "size": 10,
-          "maxWidth": 390,
+          "maxWidth": 384,
           "page": 1
         },
         "sex_m_en": {
@@ -8386,10 +8386,10 @@
           "page": 1
         },
         "passport_no_en": {
-          "x": 140,
+          "x": 146,
           "y": 326.8,
           "size": 10,
-          "maxWidth": 390,
+          "maxWidth": 384,
           "page": 1
         },
         "q6_yes_en": {
@@ -8405,10 +8405,10 @@
           "page": 1
         },
         "q6_text_en": {
-          "x": 410,
+          "x": 411.5,
           "y": 385,
           "size": 7.5,
-          "maxWidth": 35,
+          "maxWidth": 33.5,
           "page": 1
         },
         "q7_yes_en": {

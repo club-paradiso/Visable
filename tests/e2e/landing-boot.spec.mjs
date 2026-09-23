@@ -251,3 +251,33 @@ test.describe('Waymaker and New Home entries', () => {
     await expect(page.locator('#civicQuery')).toBeVisible();
   });
 });
+
+test.describe('localized layout', () => {
+  test('the mounted journey pickers are fully translated (no Korean left in de / ja / ar)', async ({ page }) => {
+    for (const lang of ['de', 'ja', 'ar']) {
+      await bootHome(page, '/index.html?lang=' + lang);
+      for (const track of ['pre', 'post']) {
+        await page.click(`[data-cs-journey="${track}"]`);
+        await expect(page.locator('#civicJourneyPanel')).toBeVisible();
+        const korean = await page.evaluate(() => [...document.querySelectorAll('.cs-journey-slot *')]
+          .filter((e) => e.children.length === 0 && e.offsetParent && /[가-힣]/.test(e.textContent)).map((e) => e.textContent.trim()));
+        expect(korean, `${lang} ${track}`).toEqual([]);
+      }
+    }
+  });
+
+  // keep-all keeps Korean words whole but removes every break point from Japanese / Chinese
+  for (const lang of ['ja', 'zh-CN']) {
+    test(`the ${lang} headline, journey leads and tool text wrap inside the viewport`, async ({ page }) => {
+      await bootHome(page, '/index.html?lang=' + lang);
+      await expect(page.locator('html')).toHaveAttribute('lang', lang);
+      const clipped = await page.evaluate(() => {
+        const vw = document.documentElement.clientWidth;
+        return [...document.querySelectorAll('.cs-hero h1, .cs-route-title, .cs-route-lead, .cs-tool strong, .cs-tool small')]
+          .filter((e) => { const r = e.getBoundingClientRect(); return r.width && (e.scrollWidth - e.clientWidth > 1 || r.right > vw + 1); })
+          .map((e) => e.textContent.trim().slice(0, 20));
+      });
+      expect(clipped).toEqual([]);
+    });
+  }
+});

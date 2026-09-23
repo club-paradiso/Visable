@@ -204,6 +204,32 @@ test.describe('Form Helper 2.0', () => {
     expect(await ratio('#fhNext, #fhMobileBar .fh-btn-primary'), 'next button contrast (light)').toBeGreaterThanOrEqual(4.5);
   });
 
+  test('dark theme: field warnings stay readable and native radios follow the theme', async ({ page }) => {
+    await boot(page, '?form=F08');
+    await page.click('#fhTheme');
+    await expect(page.locator('body')).toHaveAttribute('data-theme', 'dark');
+    await page.click('#fhStart');
+    await page.fill('#f_nationality', 'SOCIALIST REPUBLIC OF VIETNAM AND MORE');
+    await expect(page.locator('[data-key="nationality"] .fh-field-issue')).toBeVisible();
+    const r = await page.evaluate(() => {
+      const lum = (c) => { const f = (x) => { x /= 255; return x <= 0.03928 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4); }; return 0.2126 * f(c[0]) + 0.7152 * f(c[1]) + 0.0722 * f(c[2]); };
+      const rgb = (v) => v.match(/[\d.]+/g).slice(0, 3).map(Number);
+      const a = lum(rgb(getComputedStyle(document.querySelector('[data-key="nationality"] .fh-field-issue')).color)), b = lum(rgb(getComputedStyle(document.body).backgroundColor));
+      return { contrast: (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05), scheme: getComputedStyle(document.querySelector('input[type="radio"]')).colorScheme };
+    });
+    expect(r.contrast).toBeGreaterThanOrEqual(4.5);
+    expect(r.scheme).toBe('dark');
+  });
+
+  test('localized cards: long French chips and subtitles stay inside their cards', async ({ page }) => {
+    await boot(page, '?lang=fr');
+    const escaping = await page.evaluate(() => [...document.querySelectorAll('.fh-card')].flatMap((c) => {
+      const cr = c.getBoundingClientRect();
+      return [...c.children].filter((e) => { const r = e.getBoundingClientRect(); return r.width && (r.right > cr.right + 1 || e.scrollWidth - e.clientWidth > 1); }).map((e) => e.textContent.trim().slice(0, 24));
+    }));
+    expect(escaping).toEqual([]);
+  });
+
   test('keyboard: the whole flow is reachable without a mouse and dialogs return focus', async ({ page }) => {
     await boot(page);
     await page.focus('#fhSearch');

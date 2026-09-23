@@ -159,6 +159,19 @@ body.civic-refresh .visa-search-box .jc-search-input:focus { border-color: var(-
 .cs-tool strong .cs-icon { width: 16px; height: 16px; transition: transform .2s ease; }
 .cs-tool:hover strong .cs-icon { transform: translateX(3px); }
 .cs-tool small { display: block; color: var(--cs-muted); font-size: 15px; line-height: 1.55; margin-top: 4px; word-break: keep-all; max-width: 300px; }
+/* word-break: keep-all keeps Korean words whole. Japanese and Chinese have no spaces, so the
+   same rule would forbid every line break and push headlines off-screen: those languages use
+   normal CJK breaking (with strict kinsoku). A single token longer than its box (a German
+   compound, an e-mail) may break rather than overflow. */
+html:lang(ja) *, html:lang(zh) * { word-break: normal !important; line-break: strict; }
+/* Japanese headings: break between phrases, not inside a word (生|活); ignored where unsupported */
+html:lang(ja) .cs-hero h1, html:lang(ja) .fh-h1 { word-break: auto-phrase !important; }
+/* the journey panel mounts the existing purpose pickers; their colour emoji do not belong to the
+   civic line-icon set, so inside the panel the tiles are text-only (labels and hints unchanged) */
+#civicLanding .cs-journey-slot .visa-purpose-icon { display: none; }
+/* the panel already frames the section: drop the mounted section's own frame (one level of boxes less) */
+#civicLanding .cs-journey-slot #visaManualSection { border: 0 !important; padding: 0 !important; background: transparent !important; box-shadow: none !important; }
+.cs-hero h1, .cs-route-title, .cs-route-lead, .cs-tool strong, .cs-tool small, .fh-h1, .fh-h2, .fh-lead, .fh-card-title, .fh-facts dd, .fh-rail-label span, .fh-help { overflow-wrap: anywhere; }
 .cs-tools-core .cs-tool strong { font-size: 21px; }
 .cs-tools-core .cs-icon-circle { width: 52px; height: 52px; }
 .cs-tools-core .cs-icon-circle .cs-icon { width: 26px; height: 26px; }
@@ -360,7 +373,7 @@ body[data-theme="dark"] .cs-icon, body[data-theme="dark"] .cs-brand img, body[da
   .cs-lang-dialog { inset: auto 0 0 0 !important; width: 100%; max-width: none; max-height: 82vh; border-radius: 14px 14px 0 0; border-bottom: 0; }
   .cs-lang-head { padding-top: 10px; }
   .cs-lang-option { min-height: 52px; }
-  .cs-source-strip-label { padding: 6px 0 2px; }
+  .cs-source-strip-label { padding: 6px 0 2px; white-space: normal; }
   .civic-refresh.searched #hero .cs-lang-searched { position: absolute; top: 0; right: 0; margin: 0; }
 }
 html[dir="rtl"] .cs-lang-dialog { text-align: right; }

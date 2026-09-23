@@ -266,6 +266,9 @@ if (HAVE_PYMUPDF) {
     'F11/email': [{ x: 236, y: 286.5, size: 9, maxWidth: 296 }, 'OVERLAPS_TEXT'],       // touching the printed label
     'F12/tel': [{ x: 411, y: 298, size: 9, maxWidth: 122 }, 'OUTSIDE_ROW'],             // past the table's right end
     'F06/rcpt_name': [{ x: 150, y: 180, size: 8 }, 'UNBOUNDED'],                        // no width limit at all
+    'F10/a_phone': [{ x: 205, y: 555, size: 9, maxWidth: 121 }, 'TOUCHES_LABEL'],       // "(Phone No.)010-…" butting against the label
+    'F15/dob_en': [{ x: 140, y: 236.3, size: 10, maxWidth: 390, page: 1 }, 'TOUCHES_LABEL'], // "Date of Birth1996…"
+    'F07/app_addr': [{ x: 150, y: 246, size: 8, maxWidth: 259.5 }, 'TOUCHES_LABEL'],     // value glued under its label
   };
   for (const [ref, [ov]] of Object.entries(plant)) { const [fid, key] = ref.split('/'); broken.forms[fid].overlay[key] = ov; }
   const tmp = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'fh-geom-')), 'schemas.json');

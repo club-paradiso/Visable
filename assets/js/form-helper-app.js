@@ -675,8 +675,9 @@
       h('h2', { text: t('exportConfirmTitle') }), h('p', { text: t('exportConfirmBody', { n: st.issues.length }) }),
       h('ul', { 'class': 'fh-dialog-list' }, st.issues.slice(0, 6).map(function (i) { return h('li', { text: fitMessage(i) }); })),
       h('div', { 'class': 'fh-actions' }, [
-        h('button', { 'class': 'fh-btn fh-btn-ghost', value: 'fix', text: t('exportFix') }),
-        h('button', { 'class': 'fh-btn fh-btn-primary', value: 'go', text: t('exportAnyway') }),
+        // fixing is the recommended path; exporting anyway stays available but is not the primary action
+        h('button', { 'class': 'fh-btn fh-btn-ghost', value: 'go', text: t('exportAnyway') }),
+        h('button', { 'class': 'fh-btn fh-btn-primary', value: 'fix', text: t('exportFix'), autofocus: 'autofocus' }),
       ]),
     ]));
     d.onclose = function () { if (d.returnValue === 'go') exportPdf(); else if (d.returnValue === 'fix') go('review'); };
