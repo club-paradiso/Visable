@@ -231,7 +231,116 @@ DOCDEFS = {
     'tuition_history': ('학비 납부 내역서(수업료, 기숙사비, 입학금 등)', 'Tuition payment history (fees, dormitory, admission)', 'educational_institution', 'school'),
     'guardian_docs': ('후견보증서, 관계 증명 자료 및 재정능력 입증서류(후견인 변경 시)', 'Guardianship guarantee, relationship proof and financial proof (if the guardian changes)', 'sponsor', None),
     'dorm_admission_cert': ('학교장 명의 기숙사 입소확인서(후견인 면제 대상자)', "Dormitory admission confirmation from the principal (guardian-exempt students)", 'educational_institution', 'school'),
+    # --- common (status-independent) procedures: names transcribed from the regulation / 별지 제34호 서식 ---
+    'photo_reissue': ('사진 1장 (여권용 35㎜×45㎜, 촬영일부터 6개월 이내)', 'One photo (passport size 35×45 mm, taken within the last 6 months)', 'applicant', None),
+    'arc_existing_original': ('원래의 외국인등록증', 'The existing residence card', 'applicant', None),
+    'residence_change_form': ('체류지 변경신고서 (통합신청서 별지 제34호 서식 / 주민센터 제출 시 별지 제34호의4~8 서식)', 'Change-of-residence report (integrated form 34 at the immigration office; forms 34-4 to 34-8 at the community centre)', 'applicant', 'hikorea'),
+    'residence_move_proof': ('체류지를 이전한 사실을 확인할 수 있는 서류', 'A document confirming the move to the new residence', 'applicant', None),
+    'info_change_form': ('외국인등록사항 변경신고서 (통합신청서 별지 제34호 서식)', 'Registration-information change report (integrated form 34)', 'applicant', 'hikorea'),
+    'prev_school_withdrawal': ('前 학교 제적증명서', 'Withdrawal certificate from the previous school', 'educational_institution', 'school'),
 }
+
+# --------------------------------------------------------------------------
+# Physical (submission) form of a document. NEVER inferred from what a document
+# usually is — only from the verbatim source phrase of the specific rule
+# (the document definition transcribes that phrase; the anchor proves the
+# phrase is on the manual page). A bare "여권" stays SOURCE_DOES_NOT_SPECIFY.
+# --------------------------------------------------------------------------
+SUBMISSION_FORMS = ['ORIGINAL_ONLY', 'COPY_ONLY', 'ORIGINAL_AND_COPY', 'ORIGINAL_PRESENT_COPY_SUBMIT', 'CERTIFIED_COPY', 'ONE_OF_ORIGINAL_OR_COPY', 'ELECTRONIC_DOCUMENT_ACCEPTED', 'VARIES_BY_ITEM', 'SOURCE_DOES_NOT_SPECIFY', 'NOT_APPLICABLE']
+FORM_ONLY_MARKERS = ('원본', '사본', '원본대조필')
+
+
+def _strip_parens(text):
+    out, depth = [], 0
+    for ch in text:
+        if ch in '([（':
+            depth += 1
+        elif ch in ')]）':
+            depth = max(0, depth - 1)
+        elif depth == 0:
+            out.append(ch)
+    return ''.join(out)
+
+
+def _part_form(part):
+    p = part.strip()
+    if not p:
+        return None
+    if '원본대조필' in p:
+        return 'CERTIFIED_COPY'
+    has_o, has_c = '원본' in p, '사본' in p
+    if has_o and has_c:
+        return 'ORIGINAL_AND_COPY'
+    if has_o:
+        return 'ORIGINAL_ONLY'
+    if has_c:
+        return 'COPY_ONLY'
+    return 'SOURCE_DOES_NOT_SPECIFY'
+
+
+def derive_submission_form(name_ko):
+    """(form, copy_count) from the transcribed source phrase only."""
+    text = str(name_ko or '')
+    outside = _strip_parens(text)
+    if re.search(r'(원본\s*(및|과|·|,)\s*사본|원본\s*사본)', outside):
+        m = re.search(r'사본\s*(\d+)\s*[부통장매]', outside)
+        return 'ORIGINAL_AND_COPY', (int(m.group(1)) if m else None)
+    if re.search(r'및\s*사본\s*\d*\s*[부통장매]?', outside):
+        m = re.search(r'사본\s*(\d+)\s*[부통장매]', outside)
+        return 'ORIGINAL_AND_COPY', (int(m.group(1)) if m else None)
+    parts = [x for x in re.split(r'\s*(?:또는|,|·|/|및)\s*', outside) if x.strip()]
+    forms = [_part_form(x) for x in parts] or ['SOURCE_DOES_NOT_SPECIFY']
+    distinct = set(forms)
+    if len(distinct) == 1:
+        form = forms[0]
+        if form == 'SOURCE_DOES_NOT_SPECIFY' and any(mk in text for mk in FORM_ONLY_MARKERS):
+            return 'VARIES_BY_ITEM', None  # a form marker exists only inside an example list
+        if form in ('COPY_ONLY', 'ORIGINAL_AND_COPY'):
+            m = re.search(r'사본\s*(\d+)\s*[부통장매]', outside)
+            return form, (int(m.group(1)) if m else None)
+        return form, None
+    return 'VARIES_BY_ITEM', None
+
+
+def _form_markers(text):
+    return {mk for mk in ('원본', '사본') if mk in str(text or '')}
+
+
+# --------------------------------------------------------------------------
+# Regulation sources (tier 1–3). Text read from law.go.kr on 2026-09-22 (current
+# editions: 출입국관리법 시행 2026-01-23, 시행령·시행규칙 시행 2026-09-15). The
+# manual stays authoritative for status-specific document lists; the statute /
+# decree / rule are authoritative for fees, payment method, exemptions and the
+# status-independent procedures the manual has no chapter for.
+# --------------------------------------------------------------------------
+LAW_ACT = {'law_id': '001707', 'mst': '272921', 'title_ko': '출입국관리법', 'title_en': 'Immigration Act', 'tier': 1, 'kind': 'act', 'effective': '2026-01-23'}
+LAW_DECREE = {'law_id': '005256', 'mst': '289697', 'title_ko': '출입국관리법 시행령', 'title_en': 'Enforcement Decree of the Immigration Act', 'tier': 2, 'kind': 'decree', 'effective': '2026-09-15'}
+LAW_RULE = {'law_id': '008494', 'mst': '289833', 'title_ko': '출입국관리법 시행규칙', 'title_en': 'Enforcement Rule of the Immigration Act', 'tier': 3, 'kind': 'rule', 'effective': '2026-09-15'}
+
+
+def _law(base, article, label_ko, label_en, quote_ko):
+    art_url = article.replace(' ', '')
+    return dict(base, article=article, label_ko=label_ko, label_en=label_en, quote_ko=quote_ko,
+                url=f"https://www.law.go.kr/법령/{base['title_ko'].replace(' ', '')}/{art_url}", checked_on='2026-09-22', review_state='CURRENT_TEXT_READ')
+
+
+LAW_SOURCES = {
+    'act_35': _law(LAW_ACT, '제35조', '외국인등록사항의 변경신고', 'Report of changes in registration information', '성명, 성별, 생년월일 및 국적 / 여권의 번호, 발급일자 및 유효기간 / 법무부령으로 정하는 사항이 변경되었을 때 15일 이내에 체류지 관할 지방출입국·외국인관서의 장에게 신고'),
+    'act_36': _law(LAW_ACT, '제36조', '체류지 변경의 신고', 'Report of change of residence', '전입한 날부터 15일 이내에 새로운 체류지의 시·군·구 또는 읍·면·동의 장이나 관할 지방출입국·외국인관서의 장에게 전입신고; 신고 시 외국인등록증을 제출하고 변경사항 기재 후 돌려받음'),
+    'act_87': _law(LAW_ACT, '제87조', '출입국관리 수수료', 'Immigration fees', '허가 등을 받는 사람은 법무부령으로 정하는 수수료를 내야 하며, 법무부장관은 법무부령으로 정하는 사유로 수수료를 감면할 수 있음'),
+    'decree_40': _law(LAW_DECREE, '제40조', '외국인등록 등', 'Foreign resident registration', '외국인등록 신청서에 여권과 그 밖에 법무부령으로 정하는 서류를 첨부하여 체류지 관할 청장·사무소장 또는 출장소장에게 제출'),
+    'decree_42': _law(LAW_DECREE, '제42조', '외국인등록증의 재발급', 'Reissue of the residence card', '분실·훼손·기재란 부족·체류자격 변경허가·법 제35조 제1호 변경신고·일괄 갱신 시 재발급; 재발급 신청서에 사진 1장 첨부; 제2호~제6호 사유는 원래의 외국인등록증을 첨부하며 관서가 파기'),
+    'decree_44': _law(LAW_DECREE, '제44조', '외국인등록사항 변경의 신고', 'Report of changes in registration information', '외국인등록사항 변경신고서에 외국인등록증과 여권을 첨부하여 제출; 법 제35조 제1호 변경사항은 외국인등록증을 재발급'),
+    'decree_45': _law(LAW_DECREE, '제45조', '체류지 변경의 신고', 'Report of change of residence', '체류지 변경신고서에 법무부령으로 정하는 서류를 첨부; 전입신고는 법무부장관이 정하는 정보통신망을 이용하여 할 수 있음'),
+    'rule_44_2': _law(LAW_RULE, '제44조의2', '재입국허가 면제기준 등', 'Exemption from the re-entry permit', '영주(F-5)는 출국한 날부터 2년 이내, 그 밖의 등록외국인(A-1~F-3, F-6~G-1)은 1년(남은 체류기간이 1년보다 짧으면 그 기간) 이내 재입국 시 재입국허가 면제'),
+    'rule_49_2': _law(LAW_RULE, '제49조의2', '외국인등록사항변경의 신고', 'Reportable registration changes', 'D-1, D-2, D-4~D-9 소속기관 변경·추가(명칭 변경 포함), 재학 여부 변경, D-10 연수개시·연수기관 변경, H-2 취업개시·고용업체 변경, 직업 또는 연간소득금액 변경(취업 가능 자격·D-7~D-9)'),
+    'rule_49_3': _law(LAW_RULE, '제49조의3', '체류지 변경의 신고', 'Change-of-residence report forms and attachments', '출입국관서 제출 시 별지 제34호·34호의2·34호의3 서식, 시·군·구·읍·면·동 제출 시 별지 제34호의4~8 서식; 첨부서류는 임대차계약서, 매매계약서, 그 밖에 체류지를 이전한 사실을 확인할 수 있는 서류로서 법무부장관이 정하는 서류'),
+    'rule_72': _law(LAW_RULE, '제72조', '각종 허가 등에 관한 수수료', 'Fees for permits', '체류자격 외 활동허가 12만원(D-2·D-4 시간제 취업 등 법무부장관이 인정하는 경우 2만원), 근무처 변경·추가 허가 12만원, 체류자격부여 8만원(F-6 4만원), 체류자격 변경 허가 10만원(F-5 20만원), 체류기간 연장 허가 6만원(F-6 3만원), 단수재입국허가 3만원, 복수재입국허가 5만원, 외국인등록증 발급 및 재발급 3만 5천원'),
+    'rule_73': _law(LAW_RULE, '제73조', '수수료의 납부방법', 'How fees are paid', '청·사무소·출장소 납부 시 수입인지(외국인등록증 발급 및 재발급 수수료의 경우에는 현금 또는 현금 납입을 증명하는 증표), 신용카드·직불카드 또는 정보통신망을 이용한 전자화폐·전자결제; 시·군·구·읍·면·동 납부 시 수입증지·카드·전자결제'),
+    'rule_74': _law(LAW_RULE, '제74조', '수수료의 감면', 'Fee exemptions and reductions', '면제: 정부·정부출연연구기관 등이 학비 등 국내체재비를 부담하고 초청한 D-1·D-2·D-4 활동자의 자격변경·연장·재입국(제2호), A-1~A-3·D-8(제3호), 등록증·영주증 발급상의 잘못으로 인한 재발급(제7호) 등; 감경: 온라인 근무처 변경·추가, 자격변경·연장, 재입국 신청은 10분의 2'),
+    'rule_form_34': _law(LAW_RULE, '별지 제34호서식', '통합신청서(신고서)', 'Integrated application (report) form', '외국인 등록 / 등록증 재발급 / 체류기간 연장허가 / 체류자격 변경허가 / 체류자격 부여 / 근무처 변경·추가 / 재입국허가 / 체류지 변경신고 / 등록사항 변경신고 선택란; 사진은 외국인 등록 및 등록증 재발급 시에만 부착; 반환용 계좌번호는 외국인등록 및 등록증 재발급 신청 시에만 기재; 첨부서류는 별표 5의2 참고'),
+}
+LAW_SOURCES['rule_form_34']['url'] = 'https://www.law.go.kr/법령별표서식/(출입국관리법 시행규칙,20260915,별지제34호서식)'
 
 
 def docdef(id_):
@@ -247,10 +356,31 @@ def item(def_id, level='REQUIRED_BASELINE', **kw):
     if role:
         assert role in ROLES, role
         d['applicant_role'] = role
-    for k in ('applies_when_ko', 'applies_when_en', 'does_not_apply_when_ko', 'does_not_apply_when_en', 'anchor', 'alternatives_group', 'alternatives', 'original_or_copy', 'validity_period', 'issuer', 'notes_ko', 'notes_en', 'translation_required', 'apostille_required', 'consular_confirmation_required', 'administrative_information_exemption', 'previous_submission_exemption', 'substitution_allowed', 'substitute_documents', 'submission_channel'):
+    for k in ('applies_when_ko', 'applies_when_en', 'does_not_apply_when_ko', 'does_not_apply_when_en', 'anchor', 'alternatives_group', 'alternatives', 'original_or_copy', 'validity_period', 'issuer', 'notes_ko', 'notes_en', 'translation_required', 'apostille_required', 'consular_confirmation_required', 'administrative_information_exemption', 'previous_submission_exemption', 'substitution_allowed', 'substitute_documents', 'submission_channel',
+              'law', 'law_quote', 'submission_form', 'copy_count', 'original_returned', 'form_note_ko', 'form_note_en'):
         if k in kw:
             d[k] = kw.pop(k)
     assert not kw, kw
+    # Physical form: explicit (law-backed) override, else derived from the transcribed phrase.
+    if 'submission_form' in d:
+        assert d['submission_form'] in SUBMISSION_FORMS, d['submission_form']
+        assert d.get('law') or d.get('anchor'), f'{def_id}: an explicit submission_form needs a law or manual source'
+        d['form_basis'] = 'REGULATION' if d.get('law') else 'SOURCE_PHRASE'
+    else:
+        form, count = derive_submission_form(DOCDEFS[def_id][0])
+        # The definition name is the transcription of the source line; when a manual anchor is given it must
+        # carry the same 원본/사본 marker, otherwise the form is NOT taken from the name (no guessing).
+        markers = _form_markers(DOCDEFS[def_id][0])
+        anchor_markers = _form_markers(d.get('anchor'))
+        if form not in ('SOURCE_DOES_NOT_SPECIFY', 'VARIES_BY_ITEM') and d.get('anchor') and markers and not (markers & anchor_markers):
+            form, count = 'SOURCE_DOES_NOT_SPECIFY', None
+            d['form_review_state'] = 'PHRASE_NOT_IN_ANCHOR'
+        d['submission_form'] = form
+        d['form_basis'] = 'SOURCE_PHRASE' if form not in ('SOURCE_DOES_NOT_SPECIFY',) else 'NONE'
+        if count is not None:
+            d['copy_count'] = count
+    if d.get('law'):
+        assert d['law'] in LAW_SOURCES, d['law']
     return d
 
 
@@ -280,8 +410,10 @@ GUIDANCE = []
 def guidance(code, procedure, *, section, anchor, manual=STAY, state='SUPPORTED', completeness='FULLY_STRUCTURED',
              summary_ko='', summary_en='', docs=None, scenario=None, period_ko=None, period_en=None, fee_ko=None, fee_en=None,
              channel_ko=None, channel_en=None, timing_ko=None, timing_en=None, filer=None, notes_ko=None, notes_en=None,
-             conditions_ko=None, conditions_en=None, extra_sources=None, doc_page_window=2, covers=None):
+             conditions_ko=None, conditions_en=None, extra_sources=None, doc_page_window=2, covers=None, law_sources=None):
     assert state in PROCEDURE_STATES, state
+    for ls in law_sources or []:
+        assert ls in LAW_SOURCES, ls
     for c in covers or []:
         assert re.match(r'^[A-Z]-\d{1,2}(-[0-9A-Z]{1,3})?$', c), c
     assert completeness in COMPLETENESS, completeness
@@ -297,6 +429,7 @@ def guidance(code, procedure, *, section, anchor, manual=STAY, state='SUPPORTED'
         'conditions_ko': conditions_ko or [], 'conditions_en': conditions_en or [],
         'extra_sources': extra_sources or [],
         'covers': covers or [],
+        'law_sources': law_sources or [],
         'review_state': 'SEPT_2026_ORIGINAL_UNREVIEWED',
     }
     GUIDANCE.append(entry)
@@ -555,7 +688,20 @@ guidance('D-2', 'registration_info_report',
          summary_en='Report changes of name, sex, birth date, nationality, passport details or school (including renaming) within 15 days at the office or online. Changing school is allowed only within the same degree level (D-2-1~4) and with conditions.',
          timing_ko='변경일로부터 15일 이내', timing_en='Within 15 days of the change', channel_ko='관할 청(사무소·출장소) 또는 온라인', channel_en='Local office or online',
          docs=[item('app_form', anchor='신청서, 여권, 외국인등록증'), item('passport', anchor='신청서, 여권, 외국인등록증'), item('arc', anchor='신청서, 여권, 외국인등록증'),
-               item('enrollment_cert', 'CONDITIONAL_REQUIRED', anchor='(학교변경 시) 변경된 학교의 재학증명서 및 전 학교 제적증명서', applies_when_ko='학교를 변경하는 경우(전 학교 제적증명서 포함)', applies_when_en='If changing school (plus the previous school\'s withdrawal certificate)', role='educational_institution')])
+               item('enrollment_cert', 'CONDITIONAL_REQUIRED', anchor='(학교변경 시) 변경된 학교의 재학증명서 및 전 학교 제적증명서', applies_when_ko='학교를 변경하는 경우(변경된 학교 발급)', applies_when_en='If changing school (issued by the new school)', role='educational_institution'),
+               item('prev_school_withdrawal', 'CONDITIONAL_REQUIRED', anchor='(학교변경 시) 변경된 학교의 재학증명서 및 전 학교 제적증명서', applies_when_ko='학교를 변경하는 경우(전 학교 발급)', applies_when_en='If changing school (issued by the previous school)', role='educational_institution')],
+         law_sources=['act_35', 'rule_49_2', 'decree_44'])
+
+# ==========================================================================
+# D-2 유학 — 체류지 변경신고 (manual chapter; the common rule is the law entry below)
+# ==========================================================================
+guidance('D-2', 'residence_report',
+         section='유학(D-2) — 6. 외국인유학생 체류지변경신고', anchor='외국인유학생 체류지변경신고',
+         summary_ko='유학생도 전입한 날부터 15일 이내에 새 체류지의 시·군·구청장 또는 새 체류지 관할 출입국·외국인관서에 신고합니다. 매뉴얼은 체류지변경신고서와 여권·외국인등록증을 첨부서류로 안내합니다.',
+         summary_en='Students also report within 15 days of moving, to the new city/county/district office or the immigration office for the new address. The manual lists the report form, passport and residence card.',
+         timing_ko='전입한 날로부터 15일 이내', timing_en='Within 15 days of moving in', channel_ko='신체류지 시·군·구청장 또는 신체류지 관할 출입국·외국인청(사무소·출장소)', channel_en='New-address city/county/district office or the immigration office for the new address',
+         docs=[item('residence_change_form', anchor='체류지변경신고서, 여권 및 외국인등록증'), item('passport', anchor='체류지변경신고서, 여권 및 외국인등록증'), item('arc', anchor='체류지변경신고서, 여권 및 외국인등록증')],
+         law_sources=['act_36', 'decree_45', 'rule_49_3'])
 
 # ==========================================================================
 # E-9 비전문취업 — 연장 / 근무처 변경
@@ -958,6 +1104,236 @@ guidance('H-2', 'registration', completeness='PARTIALLY_STRUCTURED', section='�
 # Procedure-state overrides read directly from the stay manual section
 # headings ("해당사항 없음", "억제", "불가 원칙"). Anchored like everything else.
 # ==========================================================================
+# ==========================================================================
+# COMMON (status-independent) procedures — the 2026.9 stay manual has no
+# chapter for these; the regulation is the source. Manual anchors bind the
+# 공통사항 fee table (p. 4) and the 별지 제34호 통합신청서 page where the manual
+# reproduces them. target 'COMMON' is never a status: the resolver serves it
+# whenever the procedure is known and the registry says status is not needed.
+# ==========================================================================
+guidance('COMMON', 'card_reissue',
+         section='공통 — 외국인등록증 재발급 (출입국관리법 시행령 제42조)', anchor='외국인등록증 발급 및 재발급',
+         summary_ko='외국인등록증을 잃어버렸거나, 헐어서 못 쓰게 됐거나, 적는 난이 부족하거나, 체류자격 변경허가를 받았거나, 성명·성별·생년월일·국적 변경신고를 한 경우에 재발급을 신청합니다. 통합신청서에 사진 1장을 붙여 체류지 관할 출입국·외국인관서에 내고, 분실이 아니면 기존 등록증을 함께 냅니다. 체류자격과 관계없이 같은 기준이 적용됩니다.',
+         summary_en='Apply for a reissue when the card is lost, worn out, has no space left, after a change-of-status permit, or after reporting a change of name, sex, date of birth or nationality. File the integrated form with one photo at the immigration office for your address; unless the card was lost, hand in the existing card. The same rule applies regardless of status.',
+         channel_ko='체류지 관할 출입국·외국인청(사무소·출장소) 방문', channel_en='Immigration office (청·사무소·출장소) for your registered address', filer='applicant',
+         conditions_ko=['재발급 사유: ① 분실 ② 헐어서 못 쓰게 된 경우 ③ 적는 난이 부족한 경우 ④ 체류자격 변경허가를 받은 경우 ⑤ 성명·성별·생년월일·국적 변경신고를 한 경우 ⑥ 위조방지 등을 위한 일괄 갱신 (시행령 제42조 제1항)',
+                        '분실이 아닌 사유(②~⑥)로 신청할 때는 원래의 외국인등록증을 첨부하며, 관서가 이를 파기합니다 (시행령 제42조 제2항·제3항)',
+                        '여권번호·발급일자·유효기간만 바뀐 경우는 등록사항 변경신고 대상이며, 이 사유만으로 등록증이 재발급되지는 않습니다 (법 제35조 제2호, 시행령 제44조 제2항)'],
+         conditions_en=['Reasons: ① lost ② worn out ③ no space left ④ a change-of-status permit ⑤ a reported change of name, sex, date of birth or nationality ⑥ a general renewal against forgery (Decree Art. 42(1))',
+                        'For reasons ②–⑥ attach the existing card; the office destroys it (Decree Art. 42(2)–(3))',
+                        'A change of passport number, issue date or expiry alone is a registration-information report and does not by itself trigger a reissue (Act Art. 35(2), Decree Art. 44(2))'],
+         notes_ko=['정부초청장학생 등 수수료 면제 대상자도 외국인등록증 발급·재발급 수수료는 납부합니다 (시행규칙 제74조).', '통합신청서의 반환용 계좌번호란은 외국인등록·등록증 재발급 신청 시에만 기재합니다.'],
+         notes_en=['Even fee-exempt applicants such as government scholarship students pay the card issue/reissue fee (Rule Art. 74).', 'Fill in the refund bank-account field of the integrated form (used only for registration and card reissue).'],
+         docs=[item('app_form_34', anchor='등록증 재발급', law='decree_42', law_quote='외국인등록증 재발급 신청서에 사진 1장을 첨부하여 체류지 관할 청장·사무소장 또는 출장소장에게 제출해야 한다',
+                    notes_ko='통합신청서(별지 제34호 서식)의 "등록증 재발급"란에 표시합니다.', notes_en='Tick "등록증 재발급 / Reissuance of registration card" on the integrated form (Form 34).'),
+               item('photo_reissue', anchor='시에만 사진 부착', law='decree_42', law_quote='사진 1장을 첨부'),
+               item('arc_existing_original', 'CONDITIONAL_REQUIRED', law='decree_42', law_quote='제1항제2호부터 제6호까지 규정된 사유로 외국인등록증의 재발급 신청을 할 때에는 그 신청서에 원래의 외국인등록증을 첨부하여야 한다',
+                    applies_when_ko='분실이 아닌 사유(훼손, 기재란 부족, 체류자격 변경, 등록사항 변경, 일괄 갱신)로 재발급받는 경우', applies_when_en='Reissue for any reason other than loss (damage, no space, status change, information change, general renewal)',
+                    does_not_apply_when_ko='외국인등록증을 분실한 경우', does_not_apply_when_en='If the card was lost',
+                    submission_form='ORIGINAL_ONLY', original_returned=False, form_note_ko='기존 등록증 실물을 제출하며 관서에서 파기합니다 (시행령 제42조 제3항).', form_note_en='Hand in the physical card; the office destroys it (Decree Art. 42(3)).')],
+         law_sources=['decree_42', 'rule_72', 'rule_73', 'rule_74', 'rule_form_34'])
+
+guidance('COMMON', 'residence_report',
+         section='공통 — 체류지 변경신고 (출입국관리법 제36조)', anchor='ALTERATION OF RESIDENCE',
+         summary_ko='등록외국인이 이사하면 전입한 날부터 15일 이내에 새 체류지의 시·군·구청 또는 읍·면·동 주민센터, 아니면 새 체류지 관할 출입국·외국인관서에 전입신고를 합니다. 신고서에 임대차계약서·매매계약서 등 체류지를 옮긴 사실을 확인할 수 있는 서류를 첨부하고 외국인등록증을 내면 변경사항을 적어 돌려줍니다. 하이코리아 전자민원으로도 신고할 수 있습니다. 체류자격과 관계없이 같은 기준이 적용됩니다.',
+         summary_en='Registered foreign residents who move report within 15 days to the city/county/district office or community centre for the new address, or to the immigration office for that address. Attach a lease, sale contract or another document confirming the move, and present the residence card, which is annotated and returned. The report can also be filed online through HiKorea. The same rule applies regardless of status.',
+         timing_ko='전입한 날부터 15일 이내', timing_en='Within 15 days of moving in',
+         channel_ko='새 체류지 시·군·구·읍·면·동 또는 관할 출입국·외국인관서 방문, 또는 법무부장관이 정하는 정보통신망(하이코리아 전자민원)', channel_en='New-address local government office or immigration office, or online through the network designated by the Minister of Justice (HiKorea e-application)',
+         filer='applicant',
+         conditions_ko=['출입국관서에 낼 때는 통합신청서(별지 제34호·34호의2·34호의3), 주민센터에 낼 때는 별지 제34호의4~8 서식을 씁니다 (시행규칙 제49조의3 제1항).', '모바일외국인등록증 소지자가 전자민원창구를 이용하면 등록증 뒷면 기재를 모바일외국인등록증 수록으로 갈음할 수 있습니다 (법 제36조 제8항).'],
+         conditions_en=['Use the integrated form (34, 34-2 or 34-3) at the immigration office and forms 34-4 to 34-8 at the community centre (Rule Art. 49-3(1)).', 'Holders of the mobile residence card who file online have the change recorded on the mobile card instead of the plastic card (Act Art. 36(8)).'],
+         docs=[item('residence_change_form', anchor='ALTERATION OF RESIDENCE', law='rule_49_3', law_quote='별지 제34호서식, 별지 제34호의2서식 또는 제34호의3서식 / 별지 제34호의4서식~별지 제34호의8서식'),
+               item('arc', law='act_36', law_quote='외국인이 제1항에 따른 신고를 할 때에는 외국인등록증을 제출하여야 한다. 이 경우 … 그 외국인등록증에 체류지 변경사항을 적은 후 돌려주어야 한다',
+                    submission_form='ORIGINAL_ONLY', original_returned=True, form_note_ko='등록증 실물을 제출하면 변경사항을 적은 뒤 돌려줍니다 (법 제36조 제2항).', form_note_en='Present the physical card; it is annotated and returned (Act Art. 36(2)).'),
+               item('residence_move_proof', law='rule_49_3', law_quote='1. 임대차계약서 2. 매매계약서 3. 그 밖에 체류지를 이전한 사실을 확인할 수 있는 서류로서 법무부장관이 정하는 서류',
+                    alternatives_group='residence_move', substitution_allowed=True,
+                    alternatives=[{'ko': '임대차계약서', 'en': 'Lease contract'}, {'ko': '매매계약서', 'en': 'Sale contract'}, {'ko': '그 밖에 체류지를 이전한 사실을 확인할 수 있는 서류(법무부장관이 정하는 서류)', 'en': 'Another document confirming the move, as designated by the Minister of Justice'}])],
+         law_sources=['act_36', 'decree_45', 'rule_49_3', 'rule_form_34'])
+
+guidance('COMMON', 'registration_info_report',
+         section='공통 — 외국인등록사항 변경신고 (출입국관리법 제35조)', anchor='CHANGE OF INFORMATION ON REGISTRATION',
+         summary_ko='성명·성별·생년월일·국적이나 여권번호·발급일자·유효기간이 바뀌면 15일 이내에 체류지 관할 출입국·외국인관서에 신고합니다. 신고서에 외국인등록증과 여권을 첨부하며 수수료는 없습니다. 소속기관 변경(D-1, D-2, D-4~D-9), 재학 여부, 구직(D-10) 연수기관, 방문취업(H-2) 취업개시, 직업·연간소득 변경도 신고 대상이므로 체류자격에 따라 추가 서류가 있을 수 있습니다.',
+         summary_en='Report a change of name, sex, date of birth, nationality, or passport number, issue date or expiry within 15 days at the immigration office for your address. Attach the residence card and passport; there is no fee. Changes of institution (D-1, D-2, D-4 to D-9), school enrollment, a D-10 training institution, H-2 employment start and occupation or annual income are also reportable, so some statuses add documents.',
+         timing_ko='변경일로부터 15일 이내', timing_en='Within 15 days of the change', fee_ko='수수료 없음', fee_en='No fee',
+         channel_ko='체류지 관할 출입국·외국인청(사무소·출장소)', channel_en='Immigration office for your registered address', filer='applicant',
+         conditions_ko=['성명, 성별, 생년월일 및 국적이 바뀐 경우에는 신고 후 외국인등록증이 재발급됩니다 (시행령 제44조 제2항).', '여권번호·발급일자·유효기간 변경은 신고 대상이지만 이 사유만으로 등록증이 재발급되지는 않습니다 (법 제35조 제2호).', '소속기관·학교 변경(D-1, D-2, D-4~D-9), 재학 여부 변경, D-10 연수기관 변경, H-2 취업개시·고용업체 변경, 직업·연간소득 변경도 신고 대상입니다 (시행규칙 제49조의2).'],
+         conditions_en=['After a change of name, sex, date of birth or nationality the card is reissued (Decree Art. 44(2)).', 'A passport number, issue-date or expiry change must be reported but does not by itself trigger a card reissue (Act Art. 35(2)).', 'Institution/school changes (D-1, D-2, D-4 to D-9), enrollment status, a D-10 training institution, H-2 employment start or employer, and occupation or annual income are also reportable (Rule Art. 49-2).'],
+         docs=[item('info_change_form', anchor='외국인등록사항변경신고서, 여권 및 외국인등록증, 수수료 없음', law='decree_44', law_quote='외국인등록사항 변경신고서에 외국인등록증과 여권을 첨부하여 체류지 관할 청장·사무소장 또는 출장소장에게 제출'),
+               item('arc', anchor='외국인등록사항변경신고서, 여권 및 외국인등록증, 수수료 없음', law='decree_44', law_quote='외국인등록증과 여권을 첨부'),
+               item('passport', anchor='외국인등록사항변경신고서, 여권 및 외국인등록증, 수수료 없음', law='decree_44', law_quote='외국인등록증과 여권을 첨부')],
+         law_sources=['act_35', 'decree_44', 'rule_49_2', 'rule_form_34'])
+
+guidance('COMMON', 'reentry', state='SUPPORTED', completeness='SOURCE_ONLY',
+         section='공통 — 재입국허가 (출입국관리법 시행규칙 제44조의2·제72조)', anchor='단수재입국허가',
+         summary_ko='등록외국인은 출국한 날부터 1년 이내(남은 체류기간이 1년보다 짧으면 그 기간 이내)에 재입국하면 재입국허가가 면제되고, 영주(F-5)는 2년 이내 면제됩니다. 그 밖의 경우 단수 3만원·복수 5만원의 재입국허가를 받으며 온라인 신청은 20% 감경됩니다. 제출서류는 체류자격별 안내에서 확인하세요.',
+         summary_en='Registered residents re-entering within one year of departure (or within the remaining stay if shorter) are exempt from the re-entry permit; F-5 holders are exempt for two years. Otherwise a single permit costs KRW 30,000 and a multiple permit KRW 50,000, with a 20% reduction online. Documents are listed per status.',
+         channel_ko='관할 출입국·외국인관서 또는 하이코리아 온라인 신청', channel_en='Immigration office or HiKorea online',
+         docs=[], law_sources=['rule_44_2', 'rule_72', 'rule_74'])
+
+
+# ==========================================================================
+# Procedure registry — what context a procedure needs before a useful answer
+# exists. Determined from the source that defines each procedure, not from
+# the shape of the data. The router reads this; the resolver no longer
+# dead-ends a known procedure just because no status was typed.
+# ==========================================================================
+CONTEXT_REQUIREMENTS = ['STATUS_INDEPENDENT', 'STATUS_OPTIONAL', 'STATUS_REQUIRED', 'STATUS_AND_SUBSTATUS_REQUIRED', 'CURRENT_AND_TARGET_STATUS_REQUIRED', 'CONTEXT_DEPENDENT']
+
+
+def ctx(procedure, requirement, basis_ko, basis_en, *, law=(), objects=(), discriminators=(), status_optional_note_ko=None, status_optional_note_en=None):
+    assert requirement in CONTEXT_REQUIREMENTS, requirement
+    assert procedure in [p[0] for p in PROCEDURES], procedure
+    for l in law:
+        assert l in LAW_SOURCES, l
+    return {'procedure': procedure, 'context_requirement': requirement, 'basis_ko': basis_ko, 'basis_en': basis_en, 'law_sources': list(law), 'objects': list(objects), 'discriminators': list(discriminators),
+            'common_target': 'COMMON' if any(g['target'] == 'COMMON' and g['procedure'] == procedure for g in GUIDANCE) else None,
+            'status_optional_note_ko': status_optional_note_ko, 'status_optional_note_en': status_optional_note_en}
+
+
+PROCEDURE_REGISTRY = [
+    ctx('card_reissue', 'STATUS_INDEPENDENT', '시행령 제42조는 등록외국인 누구에게나 같은 사유·서류(신청서, 사진 1장, 분실 외에는 기존 등록증)를 정하고, 수수료(시행규칙 제72조 제10호)도 체류자격과 무관합니다. 사유(분실/훼손 등)만 기존 등록증 첨부 여부를 바꿉니다.',
+        'Decree Art. 42 sets the same reasons and documents for every registered resident (form, one photo, the existing card unless lost), and the fee (Rule Art. 72(10)) does not depend on status. Only the reason changes whether the old card is attached.',
+        law=('decree_42', 'rule_72', 'rule_73', 'rule_74'), objects=('card',), discriminators=('reissue_reason',)),
+    ctx('residence_report', 'STATUS_INDEPENDENT', '법 제36조·시행령 제45조·시행규칙 제49조의3은 신고 기한(15일), 신고처, 서식과 첨부서류(임대차계약서·매매계약서 등)를 체류자격과 무관하게 정합니다.',
+        'Act Art. 36, Decree Art. 45 and Rule Art. 49-3 fix the deadline (15 days), where to file, the forms and the attachments (lease, sale contract, etc.) regardless of status.',
+        law=('act_36', 'decree_45', 'rule_49_3'), objects=('address',)),
+    ctx('registration_info_report', 'STATUS_OPTIONAL', '기본 서류(신고서, 외국인등록증, 여권)와 기한(15일), 수수료 없음은 공통(시행령 제44조)이지만, 무엇이 신고 대상인지와 추가 서류(예: D-2 학교 변경 시 재학·제적증명서)는 체류자격에 따라 달라집니다(시행규칙 제49조의2).',
+        'The base documents (form, residence card, passport), the 15-day deadline and the absence of a fee are common (Decree Art. 44), but what counts as reportable and the extra documents (e.g. D-2 school change) depend on status (Rule Art. 49-2).',
+        law=('act_35', 'decree_44', 'rule_49_2'), objects=('passport', 'school', 'name'), discriminators=('change_kind',),
+        status_optional_note_ko='체류자격을 알려주시면 신고 대상과 추가 서류를 더 정확히 안내할 수 있어요.', status_optional_note_en='Tell us your status to see what is reportable and any extra documents.'),
+    ctx('reentry', 'STATUS_OPTIONAL', '수수료(시행규칙 제72조)와 면제 기준(제44조의2: 1년 이내, 영주 2년 이내)은 공통이지만 제출서류는 체류자격별 매뉴얼 절에 있습니다.',
+        'The fee (Rule Art. 72) and the exemption (Art. 44-2: within one year, F-5 two years) are common, but the documents are in each status chapter of the manual.',
+        law=('rule_44_2', 'rule_72', 'rule_74'), objects=(),
+        status_optional_note_ko='체류자격을 알려주시면 제출서류를 함께 보여드려요.', status_optional_note_en='Tell us your status to see the document list.'),
+    ctx('registration', 'STATUS_REQUIRED', '시행령 제40조는 여권 외의 첨부서류를 "법무부령으로 정하는 서류"로 두고, 시행규칙 별표 5의2와 매뉴얼은 체류자격별로 목록을 정합니다.',
+        'Decree Art. 40 leaves the attachments beyond the passport to the Rule; Annex 5-2 and the manual list them per status.',
+        law=('decree_40', 'rule_72', 'rule_73'), objects=('card',)),
+    ctx('extension', 'STATUS_AND_SUBSTATUS_REQUIRED', '체류기간 연장허가의 제출서류는 체류자격과 세부유형(예: F-1 15개 시나리오, F-6-1/2/3)에 따라 다릅니다(매뉴얼 각 장). 수수료만 공통입니다(시행규칙 제72조 제6호).',
+        'Extension documents differ by status and subtype (e.g. 15 F-1 scenarios, F-6-1/2/3) in each manual chapter; only the fee is common (Rule Art. 72(6)).',
+        law=('rule_72', 'rule_73', 'rule_74')),
+    ctx('status_change', 'CURRENT_AND_TARGET_STATUS_REQUIRED', '변경 가능 여부와 서류는 현재 자격과 목표 자격의 조합으로 정해집니다(매뉴얼 각 장의 변경허가 절, 시행규칙 별표 5의2).',
+        'Eligibility and documents depend on the combination of current and target status (manual change-of-status sections, Annex 5-2).',
+        law=('rule_72', 'rule_74')),
+    ctx('status_grant', 'STATUS_REQUIRED', '부여받으려는 체류자격에 따라 서류가 다릅니다.', 'Documents depend on the status to be granted.', law=('rule_72',)),
+    ctx('activities_outside_status', 'STATUS_REQUIRED', '현재 체류자격과 하려는 활동에 따라 허용 여부와 서류가 다릅니다.', 'Permission and documents depend on the current status and the intended activity.', law=('rule_72',)),
+    ctx('part_time_work', 'STATUS_REQUIRED', '시간제 취업은 유학(D-2)·일반연수(D-4) 등 특정 자격에만 있고 요건이 자격·과정별로 다릅니다.', 'Part-time work exists only for specific statuses (D-2, D-4) with course-specific conditions.', law=('rule_72',)),
+    ctx('workplace_change', 'STATUS_REQUIRED', '허가 대상인지 신고 대상인지, 어떤 서류인지 체류자격에 따라 다릅니다.', 'Whether it is a permit or a report, and the documents, depend on the status.', law=('rule_72', 'rule_74')),
+    ctx('workplace_report', 'STATUS_REQUIRED', '신고 대상 자격(H-2 등)에 따라 다릅니다.', 'Depends on the reporting status (e.g. H-2).', law=('rule_49_2',)),
+    ctx('program_condition_change', 'CONTEXT_DEPENDENT', '특별 제도(지역특화형 등)의 허가조건 변경은 해당 제도 규정에 따릅니다.', 'Depends on the special program whose conditions change.'),
+    ctx('visa_issuance', 'STATUS_REQUIRED', '사증 종류에 따라 서류가 다릅니다(사증발급 안내매뉴얼).', 'Documents depend on the visa type (visa issuance manual).'),
+    ctx('visa_issuance_confirmation', 'STATUS_REQUIRED', '사증 종류에 따라 다릅니다.', 'Depends on the visa type.'),
+    ctx('electronic_visa', 'STATUS_REQUIRED', '전자사증 대상 자격에 따라 다릅니다.', 'Depends on the e-visa-eligible status.'),
+]
+
+# Ordinary-language status prompt used when a procedure needs a status and the query has none.
+STATUS_PROMPT = {
+    'question_ko': '지금 어떤 체류자격으로 한국에 계세요?', 'question_en': 'Which status are you staying in Korea with?',
+    'hint_ko': '외국인등록증의 체류자격란(예: F-6-1)을 그대로 입력해도 돼요.', 'hint_en': 'You can also type the status printed on your residence card (e.g. F-6-1).',
+    'options': [
+        {'id': 'marriage', 'ko': '한국인과 결혼해서 체류 중', 'en': 'Married to a Korean national', 'targets': ['F-6']},
+        {'id': 'study', 'ko': '유학·어학연수 중', 'en': 'Studying or in language training', 'targets': ['D-2', 'D-4']},
+        {'id': 'work', 'ko': '취업 중 (회사·고용허가제·계절근로·선원)', 'en': 'Working (company, EPS, seasonal, seafarer)', 'targets': ['E-7', 'E-9', 'E-8', 'E-10', 'E-1', 'E-2', 'E-3', 'E-6']},
+        {'id': 'family', 'ko': '가족과 함께 체류 중 (동반·방문동거)', 'en': 'Staying with family (dependant, visiting family)', 'targets': ['F-3', 'F-1']},
+        {'id': 'resident', 'ko': '거주·영주·재외동포', 'en': 'Residence, permanent residence, overseas Korean', 'targets': ['F-2', 'F-5', 'F-4']},
+        {'id': 'business', 'ko': '구직·투자·주재·무역', 'en': 'Job seeking, investment, intra-company, trade', 'targets': ['D-10', 'D-8', 'D-7', 'D-9']},
+        {'id': 'humanitarian', 'ko': '난민·인도적 체류·기타(G-1)', 'en': 'Refugee, humanitarian stay, other (G-1)', 'targets': ['G-1']},
+    ],
+}
+
+# Reason discriminator for card reissue (시행령 제42조 제1항). Optional: the baseline is shown first.
+REISSUE_REASON = {
+    'id': 'reissue_reason', 'question_ko': '어떤 이유로 재발급받으세요?', 'question_en': 'Why do you need a reissue?',
+    'options': [
+        {'id': 'lost', 'ko': '잃어버렸어요', 'en': 'I lost it', 'aliases': ['분실', '잃어버', '잃었', '없어졌', 'lost', 'missing'], 'attach_existing': False},
+        {'id': 'damaged', 'ko': '헐거나 훼손됐어요', 'en': 'It is worn out or damaged', 'aliases': ['훼손', '헐', '찢어', '깨졌', '망가', 'damaged', 'broken', 'worn'], 'attach_existing': True},
+        {'id': 'no_space', 'ko': '적는 난이 부족해요', 'en': 'There is no space left to write on it', 'aliases': ['기재란', '적는 난', '칸이 부족', 'no space'], 'attach_existing': True},
+        {'id': 'status_change', 'ko': '체류자격 변경허가를 받았어요', 'en': 'I received a change-of-status permit', 'aliases': ['자격 변경 후', '자격변경 후', 'after status change'], 'attach_existing': True},
+        {'id': 'info_change', 'ko': '성명·성별·생년월일·국적이 바뀌었어요', 'en': 'My name, sex, date of birth or nationality changed', 'aliases': ['이름 바뀌', '개명', '국적 변경', '국적이 바뀌', 'name change'], 'attach_existing': True},
+    ],
+}
+
+# ==========================================================================
+# Fee registry — amounts and payment method from the regulation; exemptions
+# are conditional rules with their own source; conflicts are recorded, never
+# reconciled. Nothing here is a document.
+# ==========================================================================
+PAYMENT_INSTRUMENTS = ['REVENUE_STAMP', 'CASH_OR_CASH_RECEIPT', 'CARD', 'ELECTRONIC_PAYMENT', 'REVENUE_CERTIFICATE_STAMP']
+FEE_REVIEW_STATES = ['VERIFIED_REGULATION', 'MANUAL_EXPLICIT', 'CONDITIONAL_NEEDS_REVIEW', 'CONFLICT', 'NEEDS_REVIEW', 'NOT_FOUND']
+AMOUNT_STATES = ['FIXED', 'NO_FEE', 'NOT_LISTED', 'CONFLICT']
+STAMP_INSTRUMENTS = ['REVENUE_STAMP', 'CARD', 'ELECTRONIC_PAYMENT']
+CASH_INSTRUMENTS = ['CASH_OR_CASH_RECEIPT', 'CARD', 'ELECTRONIC_PAYMENT']
+ONLINE_20 = {'rate': 0.2, 'law': 'rule_74', 'quote_ko': '온라인 신청 시 해당 수수료의 10분의 2를 감경 (시행규칙 제74조 제2항)', 'quote_en': '20% reduction for online applications (Rule Art. 74(2))'}
+
+
+def exemption(id_, cond_ko, cond_en, *, law=None, law_quote=None, manual_anchor=None, evidence_ko=None, evidence_en=None, program=None, scope=None, review_state='VERIFIED_REGULATION'):
+    assert review_state in FEE_REVIEW_STATES, review_state
+    assert law or manual_anchor, id_
+    if law:
+        assert law in LAW_SOURCES, law
+    return {'id': id_, 'condition_ko': cond_ko, 'condition_en': cond_en, 'law': law, 'law_quote': law_quote, 'manual_anchor': manual_anchor, 'evidence_required_ko': evidence_ko, 'evidence_required_en': evidence_en, 'program': program, 'scope': scope, 'review_state': review_state}
+
+
+EX_A_SERIES_D8 = exemption('a_series_d8', '외교(A-1)·공무(A-2)·협정(A-3) 또는 기업투자(D-8) 체류자격자', 'Holders of A-1, A-2, A-3 or D-8 status', law='rule_74', law_quote='영 별표 1의2 중 체류자격 1. 외교(A-1)부터 3. 협정(A-3)까지 또는 체류자격 11. 기업투자(D-8)의 자격에 해당하는 사람')
+EX_GOV_INVITED = exemption('gov_invited_study', '대한민국 정부나 정부출연연구기관 등이 학비 등 국내체재비를 부담하기로 하고 초청한 사람이 문화예술(D-1)·유학(D-2)·일반연수(D-4) 활동을 위해 체류자격 변경·체류기간 연장·재입국허가를 신청하는 경우. 정부초청장학생(GKS)이 이 요건에 해당하는지는 초청 조건으로 확인해야 합니다.',
+                           'Applicants invited by the Korean Government or a government-funded research institute that bears tuition and living costs, applying for a status change, extension or re-entry permit for D-1, D-2 or D-4 activities. Whether a GKS scholar meets this depends on the invitation terms.',
+                           law='rule_74', law_quote='대한민국정부, 정부출연연구기관 … 등이 학비 등 국내체재비를 부담하기로 하고 초청한 외국인이 … 문화예술(D-1), 유학(D-2) 또는 일반연수(D-4)에 해당하는 체류활동을 하기 위하여 체류자격변경허가·체류기간연장허가 또는 재입국허가를 신청하는 경우',
+                           evidence_ko='초청기관의 체재비 부담을 확인할 수 있는 서류(장학증서 등) — 관할 관서가 판단', evidence_en='Proof that the inviting body bears the costs (scholarship certificate etc.) — decided by the office', program='gks', review_state='CONDITIONAL_NEEDS_REVIEW')
+EX_GKS_D2_CHANGE = exemption('gks_status_change_d2', 'GKS 장학증서 소지자가 유학(D-2)으로 체류자격을 변경하는 경우', 'GKS scholarship-certificate holders changing status to D-2', manual_anchor='※ GKS 장학증서 소지자는 수수료 면제', program='gks', scope={'target_parents': ['D-2']}, review_state='MANUAL_EXPLICIT')
+EX_D2_REG_WITH_EXT = exemption('d2_registration_with_extension', '유학(D-2) 외국인등록과 체류기간 연장허가를 동시에 신청하는 경우', 'When a D-2 student applies for registration and an extension at the same time', manual_anchor='외국인등록 시, 체류기간 연장허가를 동시에 신청하는 경우에 한하여 연장 수수료 면제', scope={'parents': ['D-2']}, review_state='MANUAL_EXPLICIT')
+EX_ISSUING_ERROR = exemption('issuing_error_reissue', '등록증 발급상의 잘못으로 재발급하는 경우', 'Reissue caused by an error in issuing the card', law='rule_74', law_quote='외국인등록증 또는 영주증 발급상의 잘못으로 인해 재발급하는 경우')
+EX_REENTRY_1Y = exemption('reentry_within_1y', '등록외국인(A-1~F-3, F-6~G-1)이 출국한 날부터 1년 이내(남은 체류기간이 1년보다 짧으면 그 기간 이내)에 재입국하는 경우 — 재입국허가 자체가 면제', 'Registered residents (A-1 to F-3, F-6 to G-1) re-entering within one year of departure (or within the remaining stay if shorter) — no permit needed', law='rule_44_2')
+EX_REENTRY_F5 = exemption('reentry_f5_2y', '영주(F-5)는 출국한 날부터 2년 이내 재입국 시 면제', 'F-5 holders re-entering within two years', law='rule_44_2', scope={'parents': ['F-5']})
+EX_WORKPLACE_REPORT = exemption('workplace_report_no_fee', '근무처 변경·추가가 허가가 아닌 신고 대상인 자격·경우(매뉴얼이 "수수료 없음"으로 안내하는 신고 절차)', 'Where the workplace change is a report rather than a permit (the manual marks these "no fee")', manual_anchor='여권 및 외국인등록증, 수수료 없음 ② 변경관련 입증서류', review_state='MANUAL_EXPLICIT')
+NOT_EXEMPT_CARD = {'ko': '정부초청장학생 등 수수료 면제 대상자도 외국인등록증 발급 및 재발급 수수료는 납부해야 합니다.', 'en': 'Even fee-exempt applicants such as government scholarship students must pay the card issue and reissue fee.', 'law': 'rule_74', 'manual_anchor': '정부초청장학생 등 수수료 면제 대상자도'}
+
+
+def fee(id_, procedure, amount, label_ko, label_en, *, scope=None, instruments, channels=('office',), online_reduction=None, exemptions=(), not_exempt=(), law='rule_72', law_quote='', payment_law='rule_73', manual_anchor=None, review_state='VERIFIED_REGULATION', amount_state='FIXED', notes_ko=(), notes_en=(), conflicts=(), investigations=()):
+    assert procedure in [p[0] for p in PROCEDURES], procedure
+    assert review_state in FEE_REVIEW_STATES and amount_state in AMOUNT_STATES
+    for i in instruments:
+        assert i in PAYMENT_INSTRUMENTS, i
+    return {'id': id_, 'procedure': procedure, 'scope': scope, 'amount': amount, 'currency': 'KRW', 'amount_state': amount_state, 'label_ko': label_ko, 'label_en': label_en,
+            'payment_instruments': list(instruments), 'payment_channels': list(channels), 'online_reduction': online_reduction, 'exemptions': list(exemptions), 'not_exempt': list(not_exempt),
+            'law': law, 'law_quote': law_quote, 'payment_law': payment_law if instruments else None, 'manual': STAY, 'manual_anchor': manual_anchor, 'review_state': review_state,
+            'notes_ko': list(notes_ko), 'notes_en': list(notes_en), 'conflicts': list(conflicts), 'investigations': list(investigations), 'effective_from': '2026-09-15'}
+
+
+FEES = [
+    fee('extension_general', 'extension', 60000, '체류기간 연장허가 심사수수료', 'Extension of stay fee', instruments=STAMP_INSTRUMENTS, channels=('office', 'online'), online_reduction=ONLINE_20,
+        law_quote='체류기간 연장 허가: 6만원', manual_anchor='체류기간 연장허가 6만원', exemptions=(EX_A_SERIES_D8, EX_GOV_INVITED, EX_D2_REG_WITH_EXT),
+        notes_ko=('심사수수료이므로 접수 후 반환되지 않습니다.',), notes_en=('An examination fee: not refunded once the application is accepted.',),
+        investigations=({'topic': 'g1_99_exemption', 'ko': '기타(G-1-99) 연장 수수료 면제 근거는 시행규칙 제74조와 2026.9 체류매뉴얼에서 확인되지 않았습니다(매뉴얼: "수수료는 일반 체류외국인과 동일").', 'en': 'No basis for a G-1-99 extension-fee exemption was found in Rule Art. 74 or the 2026.9 stay manual ("same fee as other residents").', 'manual_anchor': '수수료는 일반 체류외국인과 동일', 'state': 'NOT_FOUND'},)),
+    fee('extension_f6', 'extension', 30000, '체류기간 연장허가 심사수수료 (결혼이민 F-6)', 'Extension of stay fee (F-6 marriage migrant)', scope={'parents': ['F-6']}, instruments=STAMP_INSTRUMENTS, channels=('office', 'online'), online_reduction=ONLINE_20,
+        law_quote='결혼이민(F-6) 체류자격을 가지고 있는 경우에는 3만원', manual_anchor='결혼이민(F-6) 3만원', exemptions=(EX_A_SERIES_D8,)),
+    fee('status_change_general', 'status_change', 100000, '체류자격 변경허가 심사수수료', 'Change of status fee', instruments=STAMP_INSTRUMENTS, channels=('office', 'online'), online_reduction=ONLINE_20,
+        law_quote='체류자격 변경 허가: 10만원', manual_anchor='체류자격 변경허가 10만원', exemptions=(EX_A_SERIES_D8, EX_GOV_INVITED, EX_GKS_D2_CHANGE)),
+    fee('status_change_f5', 'status_change', 200000, '체류자격 변경허가 심사수수료 (영주 F-5로 변경)', 'Change of status fee (to F-5)', scope={'target_parents': ['F-5']}, instruments=STAMP_INSTRUMENTS, channels=('office', 'online'), online_reduction=ONLINE_20,
+        law_quote='영 별표 1의3 영주(F-5) 체류자격에 해당하는 경우에는 20만원', manual_anchor='영주(F-5)자격 변경허가 20만원'),
+    fee('status_grant_general', 'status_grant', 80000, '체류자격 부여 심사수수료', 'Status grant fee', instruments=STAMP_INSTRUMENTS, law_quote='체류자격부여: 8만원', manual_anchor='체류자격 부여 8만원', exemptions=(EX_A_SERIES_D8,)),
+    fee('status_grant_f6', 'status_grant', 40000, '체류자격 부여 심사수수료 (결혼이민 F-6)', 'Status grant fee (F-6)', scope={'parents': ['F-6']}, instruments=STAMP_INSTRUMENTS, law_quote='결혼이민(F-6) 체류자격에 해당하는 경우에는 4만원', manual_anchor='결혼이민(F-6) 4만원'),
+    fee('activities_outside_status', 'activities_outside_status', 120000, '체류자격 외 활동허가 심사수수료', 'Activities-outside-status permit fee', instruments=STAMP_INSTRUMENTS, law_quote='체류자격 외 활동허가: 12만원', manual_anchor='체류자격 외 활동허가 12만원', exemptions=(EX_A_SERIES_D8,)),
+    fee('part_time_work', 'part_time_work', 20000, '유학생 시간제 취업허가 수수료', 'Student part-time work permit fee', scope={'parents': ['D-2', 'D-4']}, instruments=STAMP_INSTRUMENTS, amount_state='CONFLICT', review_state='CONFLICT',
+        law_quote='영 별표 1의2 중 5. 유학(D-2) 또는 7. 일반연수(D-4) 체류자격을 가지고 있는 사람에 대한 시간제 취업 허용 등 법무부장관이 인정하는 경우에는 2만원', manual_anchor='신청서, 여권, 외국인등록증 ※ 수수료 면제',
+        conflicts=({'regulation_ko': '시행규칙 제72조 제2호 단서: 2만원', 'regulation_en': 'Rule Art. 72(2) proviso: KRW 20,000', 'manual_ko': '2026.9 체류매뉴얼 유학(D-2) 시간제취업 절: "※ 수수료 면제"', 'manual_en': '2026.9 stay manual, D-2 part-time section: "fee exempt"', 'interim_ko': '금액을 단정하지 않고 두 근거를 함께 표시합니다. 신청 전 관할 관서에서 확인하세요.', 'interim_en': 'Both values are shown; confirm with the office before applying.'},)),
+    fee('workplace_change', 'workplace_change', 120000, '근무처 변경·추가 허가 심사수수료', 'Workplace change/addition permit fee', instruments=STAMP_INSTRUMENTS, channels=('office', 'online'), online_reduction=ONLINE_20,
+        law_quote='근무처의 변경·추가 허가: 12만원', manual_anchor='근무처의 변경․추가 12만원', exemptions=(EX_A_SERIES_D8, EX_WORKPLACE_REPORT)),
+    fee('reentry_single', 'reentry', 30000, '단수재입국허가 수수료', 'Single re-entry permit fee', instruments=STAMP_INSTRUMENTS, channels=('office', 'online'), online_reduction=ONLINE_20,
+        law_quote='단수재입국허가: 3만원', manual_anchor='단수재입국허가 3만원', exemptions=(EX_REENTRY_1Y, EX_REENTRY_F5, EX_A_SERIES_D8, EX_GOV_INVITED)),
+    fee('reentry_multiple', 'reentry', 50000, '복수재입국허가 수수료', 'Multiple re-entry permit fee', instruments=STAMP_INSTRUMENTS, channels=('office', 'online'), online_reduction=ONLINE_20,
+        law_quote='복수재입국허가: 5만원', manual_anchor='복수재입국허가 5만원', exemptions=(EX_REENTRY_1Y, EX_REENTRY_F5, EX_A_SERIES_D8, EX_GOV_INVITED)),
+    fee('registration_card', 'registration', 35000, '외국인등록증 발급 수수료', 'Residence card issue fee', instruments=CASH_INSTRUMENTS,
+        law_quote='외국인등록증 발급 및 재발급: 3만 5천원', manual_anchor='외국인등록증 발급 및 재발급 3만 5천원', not_exempt=(NOT_EXEMPT_CARD,),
+        notes_ko=('등록증 발급 수수료는 수입인지가 아니라 현금 또는 현금 납입을 증명하는 증표(또는 카드·전자결제)로 냅니다 (시행규칙 제73조 제1호).',), notes_en=('The card fee is paid in cash or with a cash-payment receipt (or card/e-payment), not with a revenue stamp (Rule Art. 73(1)).',)),
+    fee('card_reissue', 'card_reissue', 35000, '외국인등록증 재발급 수수료', 'Residence card reissue fee', instruments=CASH_INSTRUMENTS,
+        law_quote='외국인등록증 발급 및 재발급: 3만 5천원', manual_anchor='외국인등록증 발급 및 재발급 3만 5천원', exemptions=(EX_ISSUING_ERROR,), not_exempt=(NOT_EXEMPT_CARD,),
+        notes_ko=('재발급 수수료는 수입인지가 아니라 현금 또는 현금 납입을 증명하는 증표(또는 카드·전자결제)로 냅니다 (시행규칙 제73조 제1호). 온라인 감경 대상이 아닙니다.',), notes_en=('Paid in cash or with a cash-payment receipt (or card/e-payment), not with a revenue stamp (Rule Art. 73(1)). No online reduction applies.',)),
+    fee('residence_report', 'residence_report', 0, '체류지 변경신고', 'Change-of-residence report', instruments=(), amount_state='NOT_LISTED', review_state='NEEDS_REVIEW',
+        law_quote='시행규칙 제72조의 수수료 목록에 체류지 변경신고 항목이 없습니다.', notes_ko=('수수료 항목이 규정에 없어 별도 수수료가 없는 것으로 보이지만, 명시 문구는 아니므로 확인 필요로 표시합니다.',), notes_en=('No fee item exists in the regulation, which suggests no fee, but this is not an explicit statement, so it is marked for confirmation.',)),
+    fee('registration_info_report', 'registration_info_report', 0, '외국인등록사항 변경신고', 'Registration-information change report', instruments=(), amount_state='NO_FEE', review_state='MANUAL_EXPLICIT',
+        law_quote='시행규칙 제72조의 수수료 목록에 없음', manual_anchor='외국인등록사항변경신고서, 여권 및 외국인등록증, 수수료 없음'),
+]
+
+
 STATE_OVERRIDES = [
     # code, procedure, state, anchor, ko, en
     ('D-1', 'status_grant', 'NOT_APPLICABLE', '해당사항 없음', '체류자격 부여는 해당사항 없음.', 'Status grant does not apply.'),
@@ -1417,8 +1793,14 @@ SUBCODE_NAMES = {
 def main():
     data = {
         'schema_version': 1, 'generated_by': 'scripts/status_guidance/author_rules.py', 'source_editions': {'stay': STAY, 'visa': VISA},
-        'enums': {'procedure_states': PROCEDURE_STATES, 'coverage_states': COVERAGE_STATES, 'requirement_levels': REQ_LEVELS, 'completeness': COMPLETENESS, 'roles': ROLES},
+        'enums': {'procedure_states': PROCEDURE_STATES, 'coverage_states': COVERAGE_STATES, 'requirement_levels': REQ_LEVELS, 'completeness': COMPLETENESS, 'roles': ROLES,
+                  'submission_forms': SUBMISSION_FORMS, 'context_requirements': CONTEXT_REQUIREMENTS, 'payment_instruments': PAYMENT_INSTRUMENTS, 'fee_review_states': FEE_REVIEW_STATES, 'amount_states': AMOUNT_STATES},
         'procedures': [{'id': p[0], 'domain': p[1], 'ko': p[2], 'en': p[3], 'keywords': p[4]} for p in PROCEDURES],
+        'law_sources': LAW_SOURCES,
+        'procedure_registry': PROCEDURE_REGISTRY,
+        'status_prompt': STATUS_PROMPT,
+        'reissue_reason': REISSUE_REASON,
+        'fees': FEES,
         'document_definitions': [docdef(k) for k in DOCDEFS],
         'guidance': GUIDANCE,
         'state_overrides': [{'target': c, 'procedure': p, 'state': s, 'anchor': a, 'ko': ko, 'en': en, 'manual': STAY} for c, p, s, a, ko, en in STATE_OVERRIDES],

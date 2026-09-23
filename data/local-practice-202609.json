@@ -1,0 +1,451 @@
+{
+ "schema_version": 1,
+ "generated_on": "2026-09-22",
+ "purpose_ko": "관할 관서별 실무 차이를 전국 공식 기준과 분리해 보관합니다. 어떤 층위의 정보도 전국 기준을 덮어쓰지 않으며, 단일 제보는 절대 자동으로 안내가 되지 않습니다.",
+ "purpose_en": "Keeps office-level practice separate from the national official baseline. No layer overrides the baseline, and a single report never becomes guidance automatically.",
+ "truth_layers": [
+  {
+   "id": "NATIONAL_OFFICIAL_BASELINE",
+   "ko": "전국 공식 기준",
+   "en": "National official baseline",
+   "rank": 0
+  },
+  {
+   "id": "OFFICIAL_LOCAL_GUIDANCE",
+   "ko": "관서 공식 안내",
+   "en": "Official local guidance",
+   "rank": 1
+  },
+  {
+   "id": "VERIFIED_LOCAL_PRACTICE",
+   "ko": "검토된 실무 정보",
+   "en": "Verified local practice",
+   "rank": 2
+  },
+  {
+   "id": "REVIEWED_USER_REPORT",
+   "ko": "검토된 이용자 제보",
+   "en": "Reviewed user report",
+   "rank": 3
+  },
+  {
+   "id": "UNVERIFIED_USER_REPORT",
+   "ko": "확인되지 않은 이용자 제보",
+   "en": "Unverified user report",
+   "rank": 4
+  },
+  {
+   "id": "CONFLICTING_REPORTS",
+   "ko": "제보 간 불일치",
+   "en": "Conflicting reports",
+   "rank": 5
+  },
+  {
+   "id": "STALE_REPORT",
+   "ko": "오래된 제보",
+   "en": "Stale report",
+   "rank": 6
+  },
+  {
+   "id": "UNKNOWN",
+   "ko": "정보 없음",
+   "en": "Unknown",
+   "rank": 7
+  }
+ ],
+ "moderation_states": [
+  "SUBMITTED",
+  "UNDER_REVIEW",
+  "REVIEWED",
+  "CORROBORATED",
+  "CONFLICTING",
+  "REJECTED",
+  "STALE"
+ ],
+ "promotion_rule_ko": "이용자 제보(SUBMITTED)는 검토(UNDER_REVIEW→REVIEWED) 후에도 \"검토된 이용자 제보\"로만 표시됩니다. 서로 일치하는 검토된 제보가 2건 이상이고 운영자가 CORROBORATED로 표시한 경우에만 \"검토된 실무 정보\"가 되며, 관서 공지 등 공식 문서가 있을 때만 \"관서 공식 안내\"가 됩니다. 어떤 경우에도 전국 기준 문구는 바뀌지 않습니다.",
+ "promotion_rule_en": "A user report stays a \"reviewed user report\" after moderation. Only two or more consistent reviewed reports marked CORROBORATED by a maintainer become \"verified local practice\", and only an official notice becomes \"official local guidance\". The national baseline text never changes.",
+ "stale_after_days": 365,
+ "offices": [
+  {
+   "id": "seoul-sejongno",
+   "name_ko": "서울출입국·외국인청 세종로출장소",
+   "name_en": "Seoul Immigration Office — Sejongno Branch",
+   "kind": "branch",
+   "parent": "seoul",
+   "aliases": [
+    "sejongno",
+    "서울출입국·외국인청 세종로출장소",
+    "서울출장소",
+    "세종로",
+    "세종로출장소"
+   ],
+   "source": "index.html JUR_DB (관할 출입국관서 안내)"
+  },
+  {
+   "id": "seoul",
+   "name_ko": "서울출입국·외국인청",
+   "name_en": "Seoul Immigration Office",
+   "kind": "regional_office",
+   "parent": null,
+   "aliases": [
+    "서울",
+    "서울출입국",
+    "seoul",
+    "서울출입국·외국인청"
+   ],
+   "source": "index.html JUR_DB (관할 출입국관서 안내)"
+  },
+  {
+   "id": "seoul-southern",
+   "name_ko": "서울남부출입국·외국인사무소",
+   "name_en": "Seoul Southern Immigration Office",
+   "kind": "office",
+   "parent": null,
+   "aliases": [
+    "서울남부",
+    "남부출입국",
+    "seoul southern",
+    "seoul south",
+    "서울남부출입국·외국인사무소"
+   ],
+   "source": "index.html JUR_DB (관할 출입국관서 안내)"
+  },
+  {
+   "id": "incheon",
+   "name_ko": "인천출입국·외국인청",
+   "name_en": "Incheon Immigration Office",
+   "kind": "regional_office",
+   "parent": null,
+   "aliases": [
+    "incheon",
+    "인천",
+    "인천출입국·외국인청"
+   ],
+   "source": "index.html JUR_DB (관할 출입국관서 안내)"
+  },
+  {
+   "id": "suwon",
+   "name_ko": "수원출입국·외국인청",
+   "name_en": "Suwon Immigration Office",
+   "kind": "regional_office",
+   "parent": null,
+   "aliases": [
+    "suwon",
+    "수원",
+    "수원출입국·외국인청"
+   ],
+   "source": "index.html JUR_DB (관할 출입국관서 안내)"
+  },
+  {
+   "id": "suwon-pyeongtaek",
+   "name_ko": "수원출입국·외국인청 평택출장소",
+   "name_en": "Suwon Immigration Office — Pyeongtaek Branch",
+   "kind": "branch",
+   "parent": "suwon",
+   "aliases": [
+    "pyeongtaek",
+    "수원출입국·외국인청 평택출장소",
+    "수원출장소",
+    "평택",
+    "평택출장소"
+   ],
+   "source": "index.html JUR_DB (관할 출입국관서 안내)"
+  },
+  {
+   "id": "ansan",
+   "name_ko": "안산출입국·외국인사무소",
+   "name_en": "Ansan Immigration Office",
+   "kind": "office",
+   "parent": null,
+   "aliases": [
+    "ansan",
+    "안산",
+    "안산출입국·외국인사무소"
+   ],
+   "source": "index.html JUR_DB (관할 출입국관서 안내)"
+  },
+  {
+   "id": "yangju",
+   "name_ko": "양주출입국·외국인사무소",
+   "name_en": "Yangju Immigration Office",
+   "kind": "office",
+   "parent": null,
+   "aliases": [
+    "yangju",
+    "양주",
+    "양주출입국·외국인사무소"
+   ],
+   "source": "index.html JUR_DB (관할 출입국관서 안내)"
+  },
+  {
+   "id": "yangju-goyang",
+   "name_ko": "양주출입국·외국인사무소 고양출장소",
+   "name_en": "Yangju Immigration Office — Goyang Branch",
+   "kind": "branch",
+   "parent": "yangju",
+   "aliases": [
+    "goyang",
+    "고양",
+    "고양출장소",
+    "양주출입국·외국인사무소 고양출장소",
+    "양주출장소"
+   ],
+   "source": "index.html JUR_DB (관할 출입국관서 안내)"
+  },
+  {
+   "id": "daegu",
+   "name_ko": "대구출입국·외국인청",
+   "name_en": "Daegu Immigration Office",
+   "kind": "regional_office",
+   "parent": null,
+   "aliases": [
+    "daegu",
+    "대구",
+    "대구출입국·외국인청"
+   ],
+   "source": "index.html JUR_DB (관할 출입국관서 안내)"
+  },
+  {
+   "id": "busan",
+   "name_ko": "부산출입국·외국인청",
+   "name_en": "Busan Immigration Office",
+   "kind": "regional_office",
+   "parent": null,
+   "aliases": [
+    "busan",
+    "부산",
+    "부산출입국·외국인청"
+   ],
+   "source": "index.html JUR_DB (관할 출입국관서 안내)"
+  },
+  {
+   "id": "ulsan",
+   "name_ko": "울산출입국·외국인사무소",
+   "name_en": "Ulsan Immigration Office",
+   "kind": "office",
+   "parent": null,
+   "aliases": [
+    "ulsan",
+    "울산",
+    "울산출입국·외국인사무소"
+   ],
+   "source": "index.html JUR_DB (관할 출입국관서 안내)"
+  },
+  {
+   "id": "gwangju",
+   "name_ko": "광주출입국·외국인사무소",
+   "name_en": "Gwangju Immigration Office",
+   "kind": "office",
+   "parent": null,
+   "aliases": [
+    "gwangju",
+    "광주",
+    "광주출입국·외국인사무소"
+   ],
+   "source": "index.html JUR_DB (관할 출입국관서 안내)"
+  },
+  {
+   "id": "daejeon",
+   "name_ko": "대전출입국·외국인사무소",
+   "name_en": "Daejeon Immigration Office",
+   "kind": "office",
+   "parent": null,
+   "aliases": [
+    "daejeon",
+    "대전",
+    "대전출입국·외국인사무소"
+   ],
+   "source": "index.html JUR_DB (관할 출입국관서 안내)"
+  },
+  {
+   "id": "chuncheon",
+   "name_ko": "춘천출입국·외국인사무소",
+   "name_en": "Chuncheon Immigration Office",
+   "kind": "office",
+   "parent": null,
+   "aliases": [
+    "chuncheon",
+    "춘천",
+    "춘천출입국·외국인사무소"
+   ],
+   "source": "index.html JUR_DB (관할 출입국관서 안내)"
+  },
+  {
+   "id": "chuncheon-donghae",
+   "name_ko": "춘천출입국·외국인사무소 동해출장소",
+   "name_en": "Chuncheon Immigration Office — Donghae Branch",
+   "kind": "branch",
+   "parent": "chuncheon",
+   "aliases": [
+    "donghae",
+    "동해",
+    "동해출장소",
+    "춘천출입국·외국인사무소 동해출장소",
+    "춘천출장소"
+   ],
+   "source": "index.html JUR_DB (관할 출입국관서 안내)"
+  },
+  {
+   "id": "chuncheon-sokcho",
+   "name_ko": "춘천출입국·외국인사무소 속초출장소",
+   "name_en": "Chuncheon Immigration Office — Sokcho Branch",
+   "kind": "branch",
+   "parent": "chuncheon",
+   "aliases": [
+    "sokcho",
+    "속초",
+    "속초출장소",
+    "춘천출입국·외국인사무소 속초출장소",
+    "춘천출장소"
+   ],
+   "source": "index.html JUR_DB (관할 출입국관서 안내)"
+  },
+  {
+   "id": "cheongju",
+   "name_ko": "청주출입국·외국인사무소",
+   "name_en": "Cheongju Immigration Office",
+   "kind": "office",
+   "parent": null,
+   "aliases": [
+    "cheongju",
+    "청주",
+    "청주출입국·외국인사무소"
+   ],
+   "source": "index.html JUR_DB (관할 출입국관서 안내)"
+  },
+  {
+   "id": "daejeon-cheonan",
+   "name_ko": "대전출입국·외국인사무소 천안출장소",
+   "name_en": "Daejeon Immigration Office — Cheonan Branch",
+   "kind": "branch",
+   "parent": "daejeon",
+   "aliases": [
+    "cheonan",
+    "대전출입국·외국인사무소 천안출장소",
+    "대전출장소",
+    "천안",
+    "천안출장소"
+   ],
+   "source": "index.html JUR_DB (관할 출입국관서 안내)"
+  },
+  {
+   "id": "jeonju",
+   "name_ko": "전주출입국·외국인사무소",
+   "name_en": "Jeonju Immigration Office",
+   "kind": "office",
+   "parent": null,
+   "aliases": [
+    "jeonju",
+    "전주",
+    "전주출입국·외국인사무소"
+   ],
+   "source": "index.html JUR_DB (관할 출입국관서 안내)"
+  },
+  {
+   "id": "yeosu",
+   "name_ko": "여수출입국·외국인사무소",
+   "name_en": "Yeosu Immigration Office",
+   "kind": "office",
+   "parent": null,
+   "aliases": [
+    "yeosu",
+    "여수",
+    "여수출입국·외국인사무소"
+   ],
+   "source": "index.html JUR_DB (관할 출입국관서 안내)"
+  },
+  {
+   "id": "gwangju-mokpo",
+   "name_ko": "광주출입국·외국인사무소 목포출장소",
+   "name_en": "Gwangju Immigration Office — Mokpo Branch",
+   "kind": "branch",
+   "parent": "gwangju",
+   "aliases": [
+    "mokpo",
+    "광주출입국·외국인사무소 목포출장소",
+    "광주출장소",
+    "목포",
+    "목포출장소"
+   ],
+   "source": "index.html JUR_DB (관할 출입국관서 안내)"
+  },
+  {
+   "id": "daegu-pohang",
+   "name_ko": "대구출입국·외국인청 포항출장소",
+   "name_en": "Daegu Immigration Office — Pohang Branch",
+   "kind": "branch",
+   "parent": "daegu",
+   "aliases": [
+    "pohang",
+    "대구출입국·외국인청 포항출장소",
+    "대구출장소",
+    "포항",
+    "포항출장소"
+   ],
+   "source": "index.html JUR_DB (관할 출입국관서 안내)"
+  },
+  {
+   "id": "daegu-gumi",
+   "name_ko": "대구출입국·외국인청 구미출장소",
+   "name_en": "Daegu Immigration Office — Gumi Branch",
+   "kind": "branch",
+   "parent": "daegu",
+   "aliases": [
+    "gumi",
+    "구미",
+    "구미출장소",
+    "대구출입국·외국인청 구미출장소",
+    "대구출장소"
+   ],
+   "source": "index.html JUR_DB (관할 출입국관서 안내)"
+  },
+  {
+   "id": "changwon",
+   "name_ko": "창원출입국·외국인사무소",
+   "name_en": "Changwon Immigration Office",
+   "kind": "office",
+   "parent": null,
+   "aliases": [
+    "changwon",
+    "창원",
+    "창원출입국·외국인사무소"
+   ],
+   "source": "index.html JUR_DB (관할 출입국관서 안내)"
+  },
+  {
+   "id": "jeju",
+   "name_ko": "제주출입국·외국인청",
+   "name_en": "Jeju Immigration Office",
+   "kind": "regional_office",
+   "parent": null,
+   "aliases": [
+    "jeju",
+    "제주",
+    "제주출입국·외국인청"
+   ],
+   "source": "index.html JUR_DB (관할 출입국관서 안내)"
+  }
+ ],
+ "variations": [
+  {
+   "id": "jeju-f6-1-extension-residence-proof",
+   "office": "jeju",
+   "status": "F-6-1",
+   "procedure": "extension",
+   "rule": "residence_proof",
+   "layer": "UNVERIFIED_USER_REPORT",
+   "moderation": "UNDER_REVIEW",
+   "summary_ko": "F-6-1 체류기간 연장 시 체류지 입증서류를 요구하지 않았다는 사례가 1건 전달되었습니다.",
+   "summary_en": "One account says the Jeju office did not ask for proof of residence at an F-6-1 extension.",
+   "detail_ko": "제품 책임자가 전달한 사례입니다. 관서 공지·매뉴얼·법령 등 공식 근거는 확인되지 않았습니다. 전국 기준(외국인체류 안내매뉴얼 F-6-1 체류기간 연장: 체류지 입증서류 제출)은 그대로 적용되므로 서류를 준비해 가는 것이 안전합니다.",
+   "detail_en": "Supplied by the product owner. No official basis (office notice, manual or regulation) was found. The national baseline (stay manual, F-6-1 extension: proof of residence) still applies, so bring the document.",
+   "national_baseline_ko": "외국인체류 안내매뉴얼 2026.9 — 결혼이민(F-6-1) 체류기간 연장허가 제출서류에 체류지 입증서류 포함",
+   "national_baseline_en": "2026.9 stay manual — proof of residence is among the F-6-1 extension documents",
+   "report_count": 1,
+   "first_reported": "2026-09-22",
+   "last_checked": null,
+   "official_source": null,
+   "do_not_generalize": true
+  }
+ ]
+}

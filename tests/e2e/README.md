@@ -51,3 +51,25 @@ is fully functional offline.
 Per-status block smoke runs on every viewport; the deep flow runs only for F-4 +
 F-6 (the strongest implementations) to keep runtime reasonable. Extend the deep
 flow to G-1/E-7/F-5/D-2/D-4 as their data matures.
+
+## Procedure-first search, Waymaker Quick Answer, language control (2026-09)
+
+Three specs cover the search sprint and run in CI (`landing-restoration-e2e`,
+projects desktop-1280 / tablet-768 / mobile-390 / mobile-320):
+
+- `procedure-first-search.spec.mjs` — `외국인등록증 재발급` (and its Korean/English
+  phrasings) never dead-ends on "체류자격을 찾지 못했어요"; reason chips move only the
+  existing-card item; fees render in the fee section, never as a document; the
+  status question for `체류기간 연장`; collapsed evidence still opens the page;
+  concise disclaimer; report dialog; Jeju office variation stays an unverified report.
+- `waymaker-quick-answer.spec.mjs` — deterministic Quick Answer for question-form
+  queries, collapsed full guidance, fee mode without a model call, AI rewrite
+  accepted only when validated (hallucinated text rejected, honest note), 404 /
+  NOT_CONFIGURED silent, follow-up handoff prefills `ai.html`.
+- `language-control.spec.mjs` — 15 native-name languages, filter, Escape/focus,
+  popover vs bottom sheet, English/Arabic (RTL) application, `?lang=` bootstrap,
+  storage persistence, New Home selector untouched.
+
+```bash
+PARADISO_PW_EXECUTABLE=/path/to/chromium npx playwright test tests/e2e/procedure-first-search.spec.mjs tests/e2e/waymaker-quick-answer.spec.mjs tests/e2e/language-control.spec.mjs --project=desktop-1280 --project=mobile-320
+```

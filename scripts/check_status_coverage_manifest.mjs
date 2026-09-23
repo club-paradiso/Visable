@@ -143,6 +143,15 @@ for (const g of bundle.guidance) {
     assert(authored, 'no authored rule behind the compiled entry');
     assert(pageHas(g.source.manual, g.source.pdf_page, authored.source.anchor), `section anchor not on page ${g.source.pdf_page}`);
     const base = g.target.split('~')[0].split('#')[0];
+    if (base === 'COMMON') {
+      // Status-independent rule: not a status record. It must be declared in the procedure registry and carry the
+      // regulation that defines it, otherwise the router could serve a baseline nobody sourced.
+      const reg = (bundle.procedure_registry || []).find((r) => r.procedure === g.procedure);
+      assert(reg && reg.common_target === 'COMMON', 'COMMON entry without a procedure-registry declaration');
+      assert(['STATUS_INDEPENDENT', 'STATUS_OPTIONAL'].includes(reg.context_requirement), `COMMON entry for a ${reg && reg.context_requirement} procedure`);
+      assert(Array.isArray(g.law_sources) && g.law_sources.length && g.law_sources.every((id) => bundle.law_sources && bundle.law_sources[id]), 'COMMON entry must cite regulation sources present in the bundle');
+      return;
+    }
     assert(byCode.has(base) || byCode.has(g.target), 'target not in manifest');
     const rec = byCode.get(g.target) || byCode.get(base);
     assert(rec.coverage_state !== 'UNVERIFIED', 'guidance attached to an UNVERIFIED code');

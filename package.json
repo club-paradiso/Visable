@@ -32,7 +32,8 @@
     "build:current-manuals": "python3 scripts/build_current_manual_corpus.py && python3 scripts/build_current_manual_review.py && python3 scripts/build_manual_search_index.py --out backend/data/manual_search_index.sqlite3",
     "test:current-manuals": "node scripts/check_current_manual_corpus.mjs && python3 scripts/tests/test_current_manual_index.py",
     "build:status-guidance": "python3 scripts/status_guidance/author_rules.py && python3 scripts/build_status_coverage_manifest.py",
-    "test:status-guidance": "python3 scripts/status_guidance/author_rules.py --check && python3 scripts/build_status_coverage_manifest.py --check && node scripts/check_status_coverage_manifest.mjs && node scripts/check_document_guidance.mjs && node scripts/check_status_resolver.mjs"
+    "test:status-guidance": "python3 scripts/status_guidance/author_rules.py --check && python3 scripts/build_status_coverage_manifest.py --check && node scripts/check_status_coverage_manifest.mjs && node scripts/check_document_guidance.mjs && node scripts/check_status_resolver.mjs && npm run test:search-waymaker",
+    "test:search-waymaker": "node scripts/check_search_router.mjs && node scripts/check_document_physical_form.mjs && node scripts/check_fee_rules.mjs && node scripts/check_local_practice.mjs && node scripts/check_waymaker_quick_answer.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.61.0",

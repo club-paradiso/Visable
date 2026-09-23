@@ -26268,7 +26268,14 @@ function showVisaDocForAction(visaCode) {
 
 <script defer src="assets/js/manual-corpus-search.js"></script>
 <script defer src="assets/js/civic-search.js"></script>
-<!-- Post-search status guidance: interpretation → clarification → structured answer → documents → evidence, from the September 2026 manuals (assets/js/status-guidance.js; data/status-guidance-202609.json). -->
+<!-- Post-search guidance, procedure-first. Load order matters: the router
+     (VisableSearchRouter) is consulted by status-guidance.js when present; the
+     Quick Answer composer and the local-practice report flow hook into the
+     rendered guidance and degrade to nothing when absent.
+     (data/status-guidance-202609.json · data/local-practice-202609.json) -->
+<script defer src="assets/js/search-router.js"></script>
 <script defer src="assets/js/status-guidance.js"></script>
+<script defer src="assets/js/waymaker-quick-answer.js"></script>
+<script defer src="assets/js/local-practice-report.js"></script>
 </body>
 </html>

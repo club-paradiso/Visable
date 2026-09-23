@@ -58,7 +58,7 @@ const profiles = [
 ];
 
 const criticalSelectors = [
-  '#civicLanding', '.cs-nav', '.cs-hero', '.cs-searchbar', '.cs-routes', '.cs-tool-grid', '.cs-source-strip', '#civicManualResults',
+  '#civicLanding', '.cs-nav', '.cs-lang', '.cs-lang-dialog', '.cs-hero', '.cs-searchbar', '.cs-routes', '.cs-tool-grid', '.cs-source-strip', '#civicManualResults',
   '.top-ctrls', '.hero-container', '.p-hero-title', '.p-gateway', '.p-gw-primary',
   '.p-gw-search', '.p-gw-card', '.p-gw-util', '.p-gw-newhome', '.hero-actions',
   '.sbar', '#q', '.results-area', '.rlist', '.us-layer', '.us-interpret', '.us-ai', '.ai-fab',
@@ -87,7 +87,7 @@ async function inspect(page, profile, state) {
       tag: el.tagName.toLowerCase(), type: el.getAttribute('type') || '', fontSize: parseFloat(getComputedStyle(el).fontSize) || 0, ...rect(el),
     }));
     const smallInputs = textInputs.filter((i) => i.fontSize > 0 && i.fontSize < 16);
-    const touchSelectors = '.cs-languages button, .cs-examples button, .cs-searchbar button, .cs-routes button, .cs-tool-grid > *, .top-ctrls button, .top-ctrls [role="button"], .hero-actions .ha, .p-gw-search, .p-gw-card, .p-gw-util, .p-gw-newhome, .sbar button, .sbar [role="button"]';
+    const touchSelectors = '.cs-languages button, .cs-lang, .cs-lang-option, .cs-lang-close, #statusGuidance .sg-chip, #statusGuidance [data-sg-action="toggle-full"], .cs-examples button, .cs-searchbar button, .cs-routes button, .cs-tool-grid > *, .top-ctrls button, .top-ctrls [role="button"], .hero-actions .ha, .p-gw-search, .p-gw-card, .p-gw-util, .p-gw-newhome, .sbar button, .sbar [role="button"]';
     const touchTargets = [...document.querySelectorAll(touchSelectors)].filter(visible).map((el) => ({
       tag: el.tagName.toLowerCase(), cls: String(el.className || '').slice(0, 120), ...rect(el),
     }));

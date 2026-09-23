@@ -165,6 +165,10 @@ test.describe('evidence, language and layout', () => {
   test('evidence opens the September 2026 manual page in the civic page dialog', async ({ page }) => {
     await boot(page);
     const sg = await search(page, 'F-2-7 연장');
+    // evidence is collapsed by default (de-emphasised); open it before following a page link
+    const ev = sg.locator('#sgEvidence');
+    await expect(ev).not.toHaveAttribute('open', /.*/);
+    await ev.locator('> summary').click();
     await sg.locator('[data-sg-action="open-page"]').first().click();
     const dialog = page.locator('#civicPageDialog[open]');
     await expect(dialog).toBeVisible({ timeout: 10_000 });

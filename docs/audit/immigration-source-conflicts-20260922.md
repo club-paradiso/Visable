@@ -194,3 +194,93 @@ stay-manual procedures) as `CLAUDE.md` requires.
   legacy card can be retired.
 - Fee amounts are quoted from the 공통사항 fee table only; per-procedure fee
   exceptions outside that table were not cross-checked.
+
+## 8. Sprint 2026-09-22 — procedure-first search, fees, physical form, local practice
+
+Added by the procedure-first search / Waymaker Quick Answer sprint. Sources
+checked in this sprint, in the order the guidance layer trusts them:
+
+| Layer | Source | Checked |
+| --- | --- | --- |
+| 1 | 출입국관리법 (MST 272921) · 시행령 (MST 289697) · 시행규칙 (MST 289833), law.go.kr | 2026-09-22 |
+| 2 | 외국인체류 안내매뉴얼 2026.9 (`stay_manual_260918.pdf`) | text extracted, **not human-reviewed** |
+| 3 | 사증발급 안내매뉴얼 2026.9 (`visa_manual_260901.pdf`) | text extracted, **not human-reviewed** |
+| 4 | Local-practice user reports (`data/local-practice-202609.json`) | never a source of rules |
+
+Everything below is recorded in `data/status-guidance-202609.json` (`fees`,
+`procedure_registry`, document `submission_form`) and rendered with its state;
+nothing was resolved by picking a value.
+
+### 8.1 Fee conflicts and open investigations (`fees[]`)
+
+| Fee id | Regulation (시행규칙) | 2026.9 stay manual | State | How the UI renders it |
+| --- | --- | --- | --- | --- |
+| `part_time_work` (D-2·D-4 시간제취업허가) | 제72조 제2호 단서: 2만원 | 유학(D-2) 시간제취업 절 "※ 수수료 면제" | `CONFLICT` / amount `CONFLICT` | both statements shown side by side, no amount asserted, "신청 전 관할 관서에서 확인" |
+| `extension_general` → G-1-99 exemption | 제74조: no G-1-99 item | p.510 "수수료는 일반 체류외국인과 동일" | investigation `NOT_FOUND` | no exemption claimed for G-1-99; the 6만원 baseline stands |
+| `extension_general` / `status_change_general` / `reentry_*` → `gov_invited_study` | 제74조: 정부·정부출연연구기관이 체재비를 부담하기로 하고 초청한 D-1·D-2·D-4 | — | `CONDITIONAL_NEEDS_REVIEW` | exemption listed as a **condition** (invitation terms + proof), never "GKS = free" |
+| `status_change_general` → `gks_status_change_d2` | no regulation clause located | p.41 "※ GKS 장학증서 소지자는 수수료 면제" (change to D-2) | `MANUAL_EXPLICIT` | shown with the manual page as basis, scoped to D-2 target |
+| `card_reissue` / `registration_card` → GKS | 제74조: 외국인등록증 발급·재발급 수수료는 면제 대상에서 제외 | — | `VERIFIED_REGULATION` (not exempt) | "정부초청장학생 등 수수료 면제 대상자도 외국인등록증 발급·재발급 수수료는 납부" |
+| `extension_general` → `d2_registration_with_extension` | no regulation clause located | p.44 "외국인등록 시, 체류기간 연장허가를 동시에 신청하는 경우에 한하여 연장 수수료 면제" | `MANUAL_EXPLICIT` | conditional exemption with page |
+| `workplace_change` → `workplace_report_no_fee` | 제72조: 근무처 변경·추가 **허가** 12만원 | p.137 신고 절차 "수수료 없음" | `MANUAL_EXPLICIT` | permit fee shown; report-type cases shown as "수수료 없음" with page |
+| `residence_report` (체류지 변경신고) | 제72조 lists no item | manual gives no amount | amount `NOT_LISTED` / `NEEDS_REVIEW` | "수수료 항목이 규정에 없어요" — never ₩0 as a fact |
+| `registration_info_report` (등록사항 변경신고) | 제72조 lists no item | "외국인등록사항변경신고서, 여권 및 외국인등록증, 수수료 없음" | `NO_FEE` / `MANUAL_EXPLICIT` | "수수료 없음" with page |
+
+Payment instruments are taken from 시행규칙 제73조 only: 수입인지 for the permit
+fees (제73조 제2호), 현금 또는 현금 납입 증표 (plus 카드·전자결제 as the article
+allows) for 외국인등록증 발급·재발급 (제73조 제1호). The 20% online reduction
+(제74조 제2항) is attached only to the fees the article names; the card fee is
+explicitly excluded.
+
+### 8.2 Same document, different physical form by procedure
+
+The form is stored per rule, derived only from the rule's own transcribed
+phrase (`scripts/status_guidance/author_rules.py → derive_submission_form`),
+and never inferred from the document name. Examples the sprint checked:
+
+| Document | Procedure / target | Source phrase | Recorded form |
+| --- | --- | --- | --- |
+| 여권 | D-2 외국인등록 (p.44) | "여권 및 사본 1부" | `ORIGINAL_AND_COPY` ×1 |
+| 여권 | D-10-1 점수제 연장 (p.156) | "여권 사본" | `COPY_ONLY` |
+| 여권 | most other procedures | no original/copy wording | `SOURCE_DOES_NOT_SPECIFY` |
+| 외국인등록증 (기존 등록증) | 외국인등록증 재발급, 분실 외 사유 | 시행령 제42조 제2항·제3항 "원래의 외국인등록증을 첨부 … 폐기" | `ORIGINAL_ONLY`, not returned (`REGULATION`) |
+| 외국인등록증 | 체류지 변경신고 | 법 제36조 (제시) | `ORIGINAL_ONLY`, returned (`REGULATION`) |
+| 사업자등록증 | E-9 연장 (p.330) | "사업자등록증 사본" | `COPY_ONLY` |
+| 사업자등록증 또는 법인등기부등본 | E-7 연장 (p.227) | mixed markers | `VARIES_BY_ITEM` |
+
+Coverage (from `reports/data-coverage/document-physical-form-202609.md`):
+621 document rules, 55 with an explicit form (53 from a source phrase, 2 from a
+regulation clause), 566 `SOURCE_DOES_NOT_SPECIFY`. The UI says "원문에
+원본·사본 표기가 없어요" for the 566 instead of guessing; this is the honest
+state, not a claim of document accuracy.
+
+### 8.3 National baseline vs local report (F-6-1, Jeju)
+
+| Claim | Source | Layer | State |
+| --- | --- | --- | --- |
+| F-6-1 체류기간 연장 requires 체류지 입증서류 | 2026.9 stay manual, F-6 chapter | `NATIONAL_OFFICIAL_BASELINE` | rendered as required |
+| 제주출입국·외국인청 did not ask for it (1 report) | user report, no official document | `UNVERIFIED_USER_REPORT` / `UNDER_REVIEW` | rendered only when the office is picked, labelled "확인되지 않은 이용자 제보", `do_not_generalize: true` |
+
+The report never changes the baseline, never leaks to other statuses or
+offices, and the Quick Answer carries the office plus an uncertainty line.
+Promotion to `VERIFIED_LOCAL_PRACTICE` requires an official local source
+(`promotion_rule` in the data file); none exists today.
+
+### 8.4 Status-first assumption vs regulation (the confirmed regression)
+
+| Procedure | Basis | Context requirement | Old behaviour | New behaviour |
+| --- | --- | --- | --- | --- |
+| 외국인등록증 재발급 | 시행령 제42조 | `STATUS_INDEPENDENT` | "체류자격을 찾지 못했어요" | common rule + fee + form, reason chips only move the existing-card item |
+| 체류지 변경신고 | 법 제36조, 시행규칙 제49조의3 | `STATUS_INDEPENDENT` | dead end | common rule, 15일 이내, 입증서류 alternatives |
+| 등록사항 변경신고 (여권 변경 포함) | 법 제35조, 시행령 제44조 | `STATUS_OPTIONAL` | dead end or mis-routed to reissue | common rule, "여권번호 변경만으로 재발급되지 않음" |
+| 재입국허가 | 시행규칙 제44조의2 | `STATUS_OPTIONAL` | dead end | fee + source-only note |
+| 체류기간 연장 / 외국인등록 / 자격변경 | manual chapters per status | `STATUS_REQUIRED` … | dead end | plain-language status question, then the status rule |
+
+### 8.5 Not verified in this sprint
+
+- Regulation clauses were read from law.go.kr on 2026-09-22 and quoted
+  verbatim in `law_sources`; a lawyer has not reviewed the interpretation.
+- The 2026.9 manual pages cited for fees and common procedures remain
+  `SEPT_2026_ORIGINAL_UNREVIEWED`.
+- The Jeju report was not corroborated; it stays a report.
+- WebKit rendering runs only in CI (`mobile-webkit-qa`); it could not be
+  executed in the authoring sandbox.

@@ -479,8 +479,11 @@ def main():
         src = entry['source']
         mid = src['manual']
         base_code = entry['target'].split('~')[0]
-        ch = chapter_for(mid, base_code)
-        pages, line = locate(mid, src['anchor'], ch, entry['procedure'])
+        # 'COMMON' entries are status-independent rules whose primary source is the regulation; their manual anchors
+        # (공통사항 fee table, 별지 제34호 서식 page) are resolved manual-wide, not inside a status chapter.
+        common = base_code == 'COMMON'
+        ch = None if common else chapter_for(mid, base_code)
+        pages, line = locate(mid, src['anchor'], ch, None if common else entry['procedure'])
         if not pages:
             errors.append(f'guidance {entry["target"]}|{entry["procedure"]}: section anchor not found: {src["anchor"][:60]}')
             continue
@@ -508,15 +511,31 @@ def main():
             d['name_en'] = dd['name_en']
             d.setdefault('applicant_role', dd['default_role'])
             d.setdefault('where_to_obtain', dd['where_to_obtain'])
+            if d.get('law') and not d.get('anchor'):
+                # Regulation-only item (e.g. 시행령 제42조 "원래의 외국인등록증"): no manual page exists for it, by design.
+                if d['law'] not in rules.get('law_sources', {}):
+                    errors.append(f'guidance {entry["target"]}|{entry["procedure"]}: unknown law source {d["law"]}')
+                    continue
+                d['source'] = {'type': 'regulation', 'law': d['law'], 'quote': d.get('law_quote')}
+                d['review_state'] = 'REGULATION_TEXT_20260922'
+                continue
             a = d.get('anchor') or src['anchor']
-            dpages, dline = locate(mid, a, ch, entry['procedure'], near_page=pages[0], window=src.get('doc_page_window', 2))
+            if common:
+                dpages, dline = locate(mid, a, None, None)
+            else:
+                dpages, dline = locate(mid, a, ch, entry['procedure'], near_page=pages[0], window=src.get('doc_page_window', 2))
             if not dpages:
                 errors.append(f'guidance {entry["target"]}|{entry["procedure"]}: document anchor not found near p.{pages[0]}: {a[:60]}')
                 continue
-            if line and dline and abs(dline - line) > 400:
+            if line and dline and abs(dline - line) > 400 and not common:
                 dl = [l for l in manuals[mid].find_lines(a) if abs(l - line) <= 400]
                 dline = dl[0] if dl else dline
-            d['source'] = {'manual': mid, 'pdf_page': dpages[0], 'hwp_line': dline, 'anchor': a, 'section': src['section'], 'file': src['file'], 'edition': src['edition'], 'review_state': src['review_state']}
+            d['source'] = {'type': 'manual', 'manual': mid, 'pdf_page': dpages[0], 'hwp_line': dline, 'anchor': a, 'section': src['section'], 'file': src['file'], 'edition': src['edition'], 'review_state': src['review_state']}
+            if d.get('law'):
+                if d['law'] not in rules.get('law_sources', {}):
+                    errors.append(f'guidance {entry["target"]}|{entry["procedure"]}: unknown law source {d["law"]}')
+                d['source']['law'] = d['law']
+                d['source']['quote'] = d.get('law_quote')
             d['review_state'] = 'SEPT_2026_ORIGINAL_UNREVIEWED'
         guidance_out.append(entry)
 
@@ -594,6 +613,23 @@ def main():
         ch = chapters[p['manual']].get(p['chapter_key'])
         resolve_simple(p, label=f'program {p["id"]}')
         p['chapter'] = {'stay': ch, 'visa': chapters['visa_manual_2026_09_01'].get(p['chapter_key']) if p.get('visa_manual_chapter') else None}
+    # Fee registry: regulation values pass through; every manual anchor (fee table, exemption sentence) must resolve to a page.
+    fees = json.loads(json.dumps(rules.get('fees', [])))
+    law_sources = rules.get('law_sources', {})
+    for f in fees:
+        for key in ('law', 'payment_law'):
+            if f.get(key) and f[key] not in law_sources:
+                errors.append(f'fee {f["id"]}: unknown law source {f[key]}')
+        if f.get('manual_anchor'):
+            resolve_simple(f, anchor_key='manual_anchor', label=f'fee {f["id"]}')
+        for ex in f.get('exemptions', []) + f.get('not_exempt', []) + f.get('investigations', []):
+            if ex.get('law') and ex['law'] not in law_sources:
+                errors.append(f'fee {f["id"]} exemption {ex.get("id")}: unknown law source {ex["law"]}')
+            if ex.get('manual_anchor'):
+                ex.setdefault('manual', f.get('manual', 'stay_manual_2026_09_18'))
+                resolve_simple(ex, anchor_key='manual_anchor', label=f'fee {f["id"]} exemption {ex.get("id") or ex.get("topic")}')
+        if f.get('online_reduction') and f['online_reduction'].get('law') not in law_sources:
+            errors.append(f'fee {f["id"]}: online reduction cites unknown law source')
 
     if errors:
         print('BUILD FAILED — anchors or chapters could not be resolved:', file=sys.stderr)
@@ -854,13 +890,21 @@ def main():
         e['source'] = {'manual': src['manual'], 'section': src['section'], 'pdf_page': src['pdf_page'], 'hwp_line': src['hwp_line'], 'file': src['file'], 'edition': src['edition'], 'date': src['date'], 'chapter': src['chapter'], 'review_state': src['review_state']}
         for d in e['documents']:
             d.pop('anchor', None)
+            d.pop('law_quote', None)
             ds = d.get('source') or {}
-            d['source'] = {'pdf_page': ds.get('pdf_page'), 'hwp_line': ds.get('hwp_line')}
+            if ds.get('type') == 'regulation':
+                d['source'] = {'type': 'regulation', 'law': ds.get('law'), 'quote': ds.get('quote')}
+            else:
+                d['source'] = {'type': 'manual', 'pdf_page': ds.get('pdf_page'), 'hwp_line': ds.get('hwp_line')}
+                if ds.get('law'):
+                    d['source']['law'] = ds['law']
+                    d['source']['quote'] = ds.get('quote')
         for k in ('extra_sources',):
             e.pop(k, None)
         return e
 
     bundle = {'schema_version': 1, 'generated_by': 'scripts/build_status_coverage_manifest.py', 'sources': SOURCES, 'procedures': rules['procedures'], 'enums': rules['enums'],
+              'law_sources': law_sources, 'procedure_registry': rules.get('procedure_registry', []), 'status_prompt': rules.get('status_prompt'), 'reissue_reason': rules.get('reissue_reason'), 'fees': fees,
               'guidance': [slim_guidance(g) for g in guidance_out], 'state_overrides': overrides, 'overlays': overlays, 'transitions': transitions, 'families': rules['families'], 'current_status_question': rules['current_status_question'], 'aliases': rules['aliases'], 'programs': programs, 'officer_note': rules['officer_note'],
               'codes': {r['code']: {'kind': r['kind'], 'parent': r['parent'], 'name_ko': r['name_ko'], 'name_en': r.get('name_en'), 'coverage_state': r['coverage_state'], 'lifecycle': r['lifecycle'],
                                     'temporal': {k: v for k, v in r['temporal'].items() if v not in (None, False) and k not in ('source_edition',)} or {}, 'programs': r['programs'], 'related_programs': r.get('related_programs', []),

@@ -319,22 +319,38 @@ else
   echo "INFO: Node.js not found; skipping complex status guide QA matrix."
 fi
 
-echo "[9d-5/14] Validating post-search status guidance (coverage manifest + document QA + resolver QA)..."
-# Offline. The September 2026 manuals are the only authority for this layer:
+echo "[9d-5/14] Validating post-search status guidance (coverage manifest + document QA + resolver QA + procedure-first search)..."
+# Offline. The September 2026 manuals (plus the regulation articles quoted in
+# scripts/status_guidance/author_rules.py) are the only authority for this layer:
 #   * build_status_coverage_manifest.py --check  → data/status-coverage-202609.json and
 #     data/status-guidance-202609.json are byte-identical to a fresh build from
 #     scripts/status_guidance/author_rules.py (every anchor still resolves to a page);
 #   * check_status_coverage_manifest.mjs → every chapter / status / substatus /
 #     special program is inventoried with provenance and a valid state;
 #   * check_document_guidance.mjs → every document item has a requirement level,
-#     applicant role, 2026.9 page and no invented text;
-#   * check_status_resolver.mjs → resolver flows A–H + cross-status matrix.
+#     applicant role, 2026.9 page (or a quoted regulation) and no invented text;
+#   * check_status_resolver.mjs → resolver flows A–H + cross-status matrix;
+#   * check_search_router.mjs → procedure-first routing (외국인등록증 재발급 never
+#     dead-ends on "체류자격을 찾지 못했어요"; context requirements come from the registry);
+#   * check_document_physical_form.mjs → original/copy form only from a transcribed
+#     source phrase, SOURCE_DOES_NOT_SPECIFY otherwise (writes the form QA report);
+#   * check_fee_rules.mjs → fee registry: amounts, payment instruments, exemptions
+#     as conditional rules, conflicts surfaced, no fee rendered as a document;
+#   * check_local_practice.mjs → local-practice truth layers, Jeju report stays an
+#     unverified report, report API/client reject identifiers;
+#   * check_waymaker_quick_answer.mjs → Quick Answer modes, AI grounding validator,
+#     server handler states (no key → NOT_CONFIGURED; hallucination → rejected).
 python3 scripts/status_guidance/author_rules.py --check
 python3 scripts/build_status_coverage_manifest.py --check
 if command -v node >/dev/null 2>&1; then
   node scripts/check_status_coverage_manifest.mjs
   node scripts/check_document_guidance.mjs
   node scripts/check_status_resolver.mjs
+  node scripts/check_search_router.mjs
+  node scripts/check_document_physical_form.mjs
+  node scripts/check_fee_rules.mjs
+  node scripts/check_local_practice.mjs
+  node scripts/check_waymaker_quick_answer.mjs
 else
   echo "INFO: Node.js not found; skipping status-guidance JS validation."
 fi

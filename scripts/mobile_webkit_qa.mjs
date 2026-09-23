@@ -16,11 +16,11 @@ const profiles = [
   { name: 'iphone-landscape', width: 844, height: 390 },
 ];
 const criticalSelectors = [
-  '#civicLanding', '.cs-nav', '.cs-hero', '.cs-searchbar', '.cs-routes', '.cs-tool-grid', '.cs-source-strip', '#civicManualResults',
+  '#civicLanding', '.cs-nav', '.cs-lang', '.cs-lang-dialog', '.cs-hero', '.cs-searchbar', '.cs-routes', '.cs-tool-grid', '.cs-source-strip', '#civicManualResults',
   '.top-ctrls', '.hero-container', '.p-hero-title', '.p-gateway', '.p-gw-search',
   '.p-gw-card', '.p-gw-util', '.p-gw-newhome', '.hero-actions', '.sbar', '#q',
   '.results-area', '.rlist', '.us-layer', '.us-interpret', '.us-ai', '.ai-fab',
-  '#statusGuidance', '.sg-interp', '.sg-question', '.sg-answer', '.sg-docs', '.sg-next', '.sg-evidence',
+  '#statusGuidance', '.sg-interp', '.sg-quick', '.sg-fee', '.sg-local', '.sg-disclaimer', '.sg-question', '.sg-answer', '.sg-docs', '.sg-next', '.sg-evidence',
 ];
 // Post-search guidance flows (status-guidance.js) exercised on the iphone-15
 // profile with real searches: the sprint's four mobile journeys.
@@ -29,6 +29,11 @@ const guidanceFlows = [
   { name: 'e7-extension', query: 'E-7 연장', picks: ['unsure'], expectKind: 'unresolved' },
   { name: 'e9-hotel', query: 'E-9 호텔', picks: ['extension'], expectKind: 'resolved', expectTitle: 'E-9-5' },
   { name: 'd2-extension', query: 'D-2 연장', picks: [], expectKind: 'resolved', expectTitle: 'D-2' },
+  // procedure-first search: status-independent procedures answer without a status
+  { name: 'card-reissue', query: '외국인등록증 재발급', picks: [], expectKind: 'procedure', expectTitle: '외국인등록증 재발급', expectSelectors: ['.sg-fee', '.sg-doc-form', '.sg-doc-group-required'], forbidText: '체류자격을 찾지 못했어요' },
+  { name: 'quick-answer', query: '외국인등록증 재발급하려면 뭐 필요해?', picks: [], expectKind: 'procedure', expectSelectors: ['.sg-quick[data-sg-quick-mode="answer"]', '#sgQuickSummary', '[data-sg-action="toggle-full"]'], forbidText: '체류자격을 찾지 못했어요' },
+  { name: 'address-report', query: '체류지 변경 신고', picks: [], expectKind: 'procedure', expectTitle: '체류지 변경 신고', expectSelectors: ['.sg-doc-alts'] },
+  { name: 'extension-status-prompt', query: '체류기간 연장', picks: ['study', 'D-2'], expectKind: 'resolved', expectTitle: 'D-2' },
 ];
 const mime = new Map([
   ['.html', 'text/html; charset=utf-8'], ['.css', 'text/css; charset=utf-8'],
@@ -66,6 +71,15 @@ await new Promise((resolve) => server.listen(PORT, '127.0.0.1', resolve));
 const browser = await webkit.launch({ headless: true });
 const report = { generatedAt: new Date().toISOString(), engine: 'webkit', profiles: [], failures: [] };
 
+// WebKit cannot screenshot pages taller than 32767px; a mobile results page that
+// tall is itself a defect, so record it as a failure and fall back to a viewport shot.
+const MAX_PAGE_HEIGHT = 30000;
+async function fullPageShot(page, file, failures) {
+  const height = await page.evaluate(() => document.documentElement.scrollHeight);
+  if (height > MAX_PAGE_HEIGHT) failures.push(`page is ${height}px tall (mobile results must stay under ${MAX_PAGE_HEIGHT}px)`);
+  await page.screenshot({ path: file, fullPage: height <= MAX_PAGE_HEIGHT });
+}
+
 async function inspect(page, profile, state) {
   const data = await page.evaluate(({ criticalSelectors, profile, state }) => {
     const visible = (el) => {
@@ -82,7 +96,7 @@ async function inspect(page, profile, state) {
       .filter(visible)
       .map((el) => ({ tag: el.tagName.toLowerCase(), type: el.getAttribute('type') || '', fontSize: parseFloat(getComputedStyle(el).fontSize) || 0 }))
       .filter((entry) => entry.fontSize > 0 && entry.fontSize < 16);
-    const touchTargets = [...document.querySelectorAll('.cs-languages button, .cs-examples button, .cs-searchbar button, .cs-routes button, .cs-tool-grid > *, .top-ctrls button, .top-ctrls [role="button"], .hero-actions .ha, .p-gw-search, .p-gw-card, .p-gw-util, .p-gw-newhome, .sbar button, .sbar [role="button"], #statusGuidance .sg-option, #statusGuidance .sg-btn, #statusGuidance .sg-candidate, #statusGuidance .sg-next a, #statusGuidance .sg-evidence-actions a')]
+    const touchTargets = [...document.querySelectorAll('.cs-languages button, .cs-lang, .cs-lang-option, .cs-lang-close, #statusGuidance .sg-chip, #statusGuidance [data-sg-action="toggle-full"], .cs-examples button, .cs-searchbar button, .cs-routes button, .cs-tool-grid > *, .top-ctrls button, .top-ctrls [role="button"], .hero-actions .ha, .p-gw-search, .p-gw-card, .p-gw-util, .p-gw-newhome, .sbar button, .sbar [role="button"], #statusGuidance .sg-option, #statusGuidance .sg-btn, #statusGuidance .sg-candidate, #statusGuidance .sg-next a, #statusGuidance .sg-evidence-actions a')]
       .filter(visible)
       .map((el) => el.getBoundingClientRect())
       .filter((r) => r.width < 40 || r.height < 40)
@@ -166,12 +180,20 @@ try {
             const title = (await page.locator('#sgAnswerTitle').textContent().catch(() => '')) || '';
             if (!title.includes(flow.expectTitle)) flowReport.failures.push(`answer title "${title.trim()}" lacks ${flow.expectTitle}`);
           }
+          for (const selector of flow.expectSelectors || []) {
+            const shown = await page.evaluate((sel) => { const el = document.querySelector(sel); if (!el) return false; const r = el.getBoundingClientRect(); return getComputedStyle(el).display !== 'none' && r.width > 0 && r.height > 0; }, selector);
+            if (!shown) flowReport.failures.push(`expected ${selector} to be visible`);
+          }
+          if (flow.forbidText) {
+            const text = (await page.locator('#statusGuidance').textContent().catch(() => '')) || '';
+            if (text.includes(flow.forbidText)) flowReport.failures.push(`guidance still says "${flow.forbidText}"`);
+          }
           const fabShown = await page.evaluate(() => { const f = document.querySelector('.ai-fab'); return !!f && getComputedStyle(f).display !== 'none'; });
           if (fabShown) flowReport.failures.push('AI FAB still shown over the searched state');
           const stateReport = await inspect(page, profile, `guidance:${flow.name}`);
           profileReport.states.push(stateReport);
           flowReport.failures.push(...stateReport.failures);
-          await page.screenshot({ path: path.join(OUT, `${profile.name}-guidance-${flow.name}.png`), fullPage: true });
+          await fullPageShot(page, path.join(OUT, `${profile.name}-guidance-${flow.name}.png`), flowReport.failures);
         } catch (error) {
           flowReport.failures.push(`flow error: ${String(error.message || error)}`);
         }
@@ -179,6 +201,46 @@ try {
         profileReport.guidanceFlows.push(flowReport);
         for (const failure of flowReport.failures) report.failures.push(`${profile.name}/guidance:${flow.name}: ${failure}`);
       }
+    }
+    if (profile.name === 'iphone-15') {
+      // Global language control: bottom sheet on mobile, 15 native names, Arabic → RTL, control still present after a search.
+      const langReport = { name: 'language-sheet', failures: [] };
+      try {
+        await page.goto(`http://127.0.0.1:${PORT}/`, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await page.waitForFunction(() => { try { return typeof VISA_DATA !== 'undefined' && VISA_DATA.length > 10 && !!document.querySelector('[data-cs-lang-open]'); } catch { return false; } }, null, { timeout: 30000 });
+        await page.locator('[data-cs-lang-open]:visible').first().tap();
+        await page.waitForSelector('#csLangDialog[open]', { timeout: 5000 });
+        const sheet = await page.evaluate(() => { const d = document.querySelector('#csLangDialog[open]'); const r = d.getBoundingClientRect(); return { count: d.querySelectorAll('.cs-lang-option').length, width: r.width, bottom: r.bottom, innerWidth, innerHeight }; });
+        if (sheet.count !== 15) langReport.failures.push(`expected 15 languages, got ${sheet.count}`);
+        if (sheet.width < sheet.innerWidth - 2 || sheet.bottom < sheet.innerHeight - 2) langReport.failures.push(`language dialog is not a bottom sheet (${Math.round(sheet.width)}x, bottom ${Math.round(sheet.bottom)} of ${sheet.innerHeight})`);
+        const sheetState = await inspect(page, profile, 'language-sheet');
+        profileReport.states.push(sheetState);
+        langReport.failures.push(...sheetState.failures);
+        await page.screenshot({ path: path.join(OUT, `${profile.name}-language-sheet.png`), fullPage: false });
+        await page.locator('#csLangDialog .cs-lang-option[data-lang="ar"]').tap();
+        await page.waitForTimeout(400);
+        const dir = await page.evaluate(() => document.documentElement.dir);
+        if (dir !== 'rtl') langReport.failures.push(`Arabic did not switch the document to RTL (dir=${dir})`);
+        const rtlState = await inspect(page, profile, 'landing-rtl');
+        profileReport.states.push(rtlState);
+        langReport.failures.push(...rtlState.failures);
+        await fullPageShot(page, path.join(OUT, `${profile.name}-landing-rtl.png`), langReport.failures);
+        await page.fill('#civicQuery', '외국인등록증 재발급');
+        await page.press('#civicQuery', 'Enter');
+        await page.waitForSelector('#statusGuidance[data-sg-kind]', { timeout: 20000 });
+        const searchedLang = await page.evaluate(() => { const b = [...document.querySelectorAll('[data-cs-lang-open]')].find((el) => { const r = el.getBoundingClientRect(); return r.width > 0 && r.height > 0; }); return { present: !!b, dir: document.documentElement.dir }; });
+        if (!searchedLang.present) langReport.failures.push('language control missing from the searched header');
+        if (searchedLang.dir !== 'rtl') langReport.failures.push('RTL lost after the search');
+        const searchedState = await inspect(page, profile, 'searched-rtl');
+        profileReport.states.push(searchedState);
+        langReport.failures.push(...searchedState.failures);
+        await fullPageShot(page, path.join(OUT, `${profile.name}-searched-rtl.png`), langReport.failures);
+      } catch (error) {
+        langReport.failures.push(`flow error: ${String(error.message || error)}`);
+      }
+      profileReport.guidanceFlows = profileReport.guidanceFlows || [];
+      profileReport.guidanceFlows.push(langReport);
+      for (const failure of langReport.failures) report.failures.push(`${profile.name}/language-sheet: ${failure}`);
     }
     report.profiles.push(profileReport);
     await context.close();

@@ -59,9 +59,24 @@ for (const g of bundle.guidance) {
       assert(LEVELS.has(d.requirement_level), `requirement level ${d.requirement_level}`);
       assert(ROLES.has(d.applicant_role), `applicant role ${d.applicant_role}`);
       assert(d.name_ko && d.name_en, 'names');
-      assert(d.source && Number.isInteger(d.source.pdf_page) && d.source.pdf_page >= 1 && d.source.pdf_page <= corpusPages[g.source.manual], 'no valid 2026.9 page');
-      assert(Math.abs(d.source.pdf_page - g.source.pdf_page) <= 3, `item page ${d.source.pdf_page} far from section page ${g.source.pdf_page}`);
-      assert(d.review_state === 'SEPT_2026_ORIGINAL_UNREVIEWED', 'review state must stay explicit');
+      const common = g.target === 'COMMON';
+      if (d.source && d.source.type === 'regulation') {
+        // Regulation-only item: allowed solely on COMMON rules, and only when the cited article is in the bundle.
+        assert(common, 'regulation-only items are reserved for COMMON (status-independent) rules');
+        assert(d.source.law && bundle.law_sources && bundle.law_sources[d.source.law], `unknown law source ${d.source.law}`);
+        assert(d.source.quote && d.source.quote.length > 10, 'regulation item must carry the quoted clause');
+        assert(d.review_state === 'REGULATION_TEXT_20260922', 'review state must name the regulation reading');
+      } else {
+        assert(d.source && Number.isInteger(d.source.pdf_page) && d.source.pdf_page >= 1 && d.source.pdf_page <= corpusPages[g.source.manual], 'no valid 2026.9 page');
+        // COMMON rules cite the 공통사항 fee table and the 별지 제34호 form page, which are far apart by design.
+        if (!common) assert(Math.abs(d.source.pdf_page - g.source.pdf_page) <= 3, `item page ${d.source.pdf_page} far from section page ${g.source.pdf_page}`);
+        assert(d.review_state === 'SEPT_2026_ORIGINAL_UNREVIEWED', 'review state must stay explicit');
+      }
+      // Physical form is explicit or explicitly unknown — never absent, never inferred from the document's usual nature.
+      assert(rules.enums.submission_forms.includes(d.submission_form), `submission_form ${d.submission_form} not in enum`);
+      assert(['SOURCE_PHRASE', 'REGULATION', 'NONE'].includes(d.form_basis), `form basis ${d.form_basis}`);
+      if (d.form_basis === 'NONE') assert(d.submission_form === 'SOURCE_DOES_NOT_SPECIFY', 'a form without a source phrase must be SOURCE_DOES_NOT_SPECIFY');
+      if (d.submission_form !== 'SOURCE_DOES_NOT_SPECIFY' && d.form_basis === 'SOURCE_PHRASE') assert(/원본|사본/.test(d.name_ko), 'source-phrase form without 원본/사본 in the transcribed phrase');
       if (CONDITIONAL_LEVELS.has(d.requirement_level)) assert(d.applies_when_ko || d.does_not_apply_when_ko || d.alternatives_group, 'conditional document without conditional logic');
       if (d.requirement_level === 'REQUIRED_BASELINE') assert(!d.applies_when_ko, 'required baseline item carries an applies_when — should be conditional');
       if (d.alternatives_group) { seenAlt[d.alternatives_group] = (seenAlt[d.alternatives_group] || 0) + 1; assert(d.substitution_allowed === true, 'alternatives group without substitution flag'); assert(Array.isArray(d.alternatives) && d.alternatives.length >= 1 && d.alternatives.every((a) => a.ko && a.en), 'alternatives group needs at least one bilingual substitute'); }
