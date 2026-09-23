@@ -95,17 +95,63 @@ check('residence proof / lease: no rule states a physical form, so none is shown
 });
 
 /* --------------------------------------------------------- rendering ---- */
-check('renderer: explicit forms get a label; unspecified forms get none on the row and an explicit note in the details', () => {
+const run = (q, answers = {}, lang = 'ko') => { const interp = SG.interpret(q, bundle); const state = { interp, answers, procedure: null, status: null, history: [], lang }; const step = SG.nextStep(state, bundle); return SG.renderModel(step, state, bundle).html; };
+check('formLabel: explicit forms get a label; "원본" alone never claims presentation or surrender', () => {
   assert(SG.formLabel('ko', { submission_form: 'ORIGINAL_AND_COPY', copy_count: 1 }) === '원본 + 사본 1부', 'ORIGINAL_AND_COPY label');
   assert(SG.formLabel('ko', { submission_form: 'COPY_ONLY' }) === '사본', 'COPY_ONLY label');
-  assert(SG.formLabel('ko', { submission_form: 'ORIGINAL_ONLY', original_returned: true }) === '원본 · 돌려받음', 'returned original');
-  assert(SG.formLabel('en', { submission_form: 'ORIGINAL_ONLY', original_returned: false }) === 'Original', 'EN original');
+  assert(SG.formLabel('ko', { submission_form: 'ORIGINAL_ONLY' }) === '원본', 'bare original stays bare');
+  assert(SG.formLabel('ko', { submission_form: 'ORIGINAL_ONLY', original_returned: true }) === '원본 제시 · 돌려받음', 'returned original = presentation');
+  assert(SG.formLabel('ko', { submission_form: 'ORIGINAL_ONLY', original_returned: false }) === '원본 제출 · 반환되지 않음', 'kept original = surrender');
+  assert(SG.formLabel('en', { submission_form: 'ORIGINAL_ONLY', original_returned: false }) === 'Original submitted · not returned', 'EN surrender');
+  assert(SG.formLabel('en', { submission_form: 'ORIGINAL_ONLY', original_returned: true }) === 'Original shown · returned to you', 'EN presentation');
   assert(SG.formLabel('ko', { submission_form: 'SOURCE_DOES_NOT_SPECIFY' }) === '' && SG.formLabel('ko', {}) === '', 'no default label');
-  const run = (q, answers = {}) => { const interp = SG.interpret(q, bundle); const state = { interp, answers, procedure: null, status: null, history: [], lang: 'ko' }; const step = SG.nextStep(state, bundle); return SG.renderModel(step, state, bundle).html; };
-  const d2 = run('D-2 외국인등록'); assert(d2.includes('sg-doc-form">원본 + 사본 1부<'), 'D-2 registration passport shows 원본 + 사본 1부');
-  const f6 = run('F-6-1 연장', { f61_phase: 'normal' }); assert(!/여권<\/span>(<span class="sg-doc-ko"[^>]*>[^<]*<\/span>)?<span class="sg-doc-form">/.test(f6), 'F-6-1 passport row carries no form label'); assert(f6.includes('원본·사본 표기가 없어요'), 'explicit not-specified note in details');
-  const e9 = run('E-9-1 연장'); assert(e9.includes('sg-doc-form">사본<'), 'E-9 copies labelled');
-  const addr = run('주소 변경 신고'); assert(addr.includes('원본 · 돌려받음'), 'address report card returned');
+});
+check('preparation policy: official-explicit vs preparation-recommendation vs not-applicable, source beats heuristic', () => {
+  const p = (d) => SG.preparation(d);
+  // silent passport → recommendation, possession-sensitive: bring + copy, never "submit original"
+  const passport = p({ ref: 'passport', name_ko: '여권', submission_form: 'SOURCE_DOES_NOT_SPECIFY' });
+  assert(passport.kind === 'PREPARATION_RECOMMENDATION' && passport.policy === 'KEEP_ORIGINAL', JSON.stringify(passport));
+  assert(SG.preparationLabel('ko', { ref: 'passport', name_ko: '여권', submission_form: 'SOURCE_DOES_NOT_SPECIFY' }) === '원본 지참 · 사본 준비', 'passport label');
+  assert(SG.preparationLabel('en', { ref: 'passport', name_ko: '여권', submission_form: 'SOURCE_DOES_NOT_SPECIFY' }) === 'Bring the original · prepare a copy', 'passport EN label');
+  // silent contract / lease → possession-sensitive
+  for (const d of [{ ref: 'employment_contract', name_ko: '고용계약서' }, { ref: 'lease', name_ko: '임대차계약서' }, { ref: 'residence_proof', name_ko: '체류지 입증서류' }]) {
+    const r = p(Object.assign({ submission_form: 'SOURCE_DOES_NOT_SPECIFY' }, d));
+    assert(r.kind === 'PREPARATION_RECOMMENDATION', `${d.ref} recommendation`);
+    assert(!/제출/.test(SG.preparationLabel('ko', Object.assign({ submission_form: 'SOURCE_DOES_NOT_SPECIFY' }, d))), `${d.ref}: never "제출" for a silent original`);
+  }
+  assert(p({ ref: 'employment_contract', name_ko: '고용계약서', submission_form: 'SOURCE_DOES_NOT_SPECIFY' }).policy === 'KEEP_ORIGINAL', 'contract keeps the original');
+  assert(p({ ref: 'residence_proof', name_ko: '체류지 입증서류', submission_form: 'SOURCE_DOES_NOT_SPECIFY' }).policy === 'BRING_ORIGINAL', 'generic residence proof (utility bill etc.) is a plain bring-original recommendation');
+  // silent generic certificate → bring original (copy optional)
+  const cert = p({ ref: 'marriage_cert', name_ko: '혼인관계증명서(상세)', submission_form: 'SOURCE_DOES_NOT_SPECIFY' });
+  assert(cert.kind === 'PREPARATION_RECOMMENDATION' && cert.policy === 'BRING_ORIGINAL', 'certificate → bring original');
+  // forms, fees and photos carry no physical-form advice
+  assert(p({ ref: 'app_form_34', name_ko: '통합신청서 (별지 제34호 서식)', submission_form: 'SOURCE_DOES_NOT_SPECIFY' }).kind === 'NOT_APPLICABLE', 'application form');
+  assert(p({ ref: 'fee', name_ko: '수수료', submission_form: 'SOURCE_DOES_NOT_SPECIFY' }).kind === 'NOT_APPLICABLE', 'fee');
+  assert(p({ ref: 'photo_reissue', name_ko: '사진 1장', submission_form: 'SOURCE_DOES_NOT_SPECIFY' }).kind === 'NOT_APPLICABLE', 'photo');
+  // explicit source wins even for possession-sensitive classes
+  const explicit = p({ ref: 'contract_original_copy', name_ko: '고용계약서 원본 및 사본', submission_form: 'ORIGINAL_AND_COPY', form_basis: 'SOURCE_PHRASE' });
+  assert(explicit.kind === 'OFFICIAL_EXPLICIT' && explicit.form === 'ORIGINAL_AND_COPY', 'explicit contract form kept');
+  const kept = p({ ref: 'arc_existing_original', name_ko: '원래의 외국인등록증', submission_form: 'ORIGINAL_ONLY', form_basis: 'REGULATION', original_returned: false });
+  assert(kept.kind === 'OFFICIAL_EXPLICIT' && kept.returnKnown === true, 'regulation-backed surrender is explicit');
+});
+check('renderer: explicit rows carry official labels, silent rows carry dashed advice, forms/fees carry nothing, one section note', () => {
+  const d2 = run('D-2 외국인등록'); assert(d2.includes('data-sg-form-kind="OFFICIAL_EXPLICIT">원본 + 사본 1부<'), 'D-2 registration passport shows 원본 + 사본 1부 as official');
+  const f6 = run('F-6-1 연장', { f61_phase: 'normal' });
+  assert(f6.includes('sg-doc-form sg-doc-form-rec" data-sg-form-kind="PREPARATION_RECOMMENDATION">원본 지참 · 사본 준비<'), 'F-6-1 passport row: dashed keep-original advice');
+  assert(/통합신청서 \(별지 제34호 서식\)<\/span>(?:<span class="sg-doc-ko"[^>]*>[^<]*<\/span>)?(?:<span class="sg-doc-tag">)?/.test(f6) && !/통합신청서 \(별지 제34호 서식\)<\/span><span class="sg-doc-form/.test(f6), 'application form row carries no physical-form tag');
+  assert((f6.match(/sg-doc-prep-note/g) || []).length === 1, 'exactly one section-level preparation note');
+  assert(f6.includes('준비 권장 · 공식 표기 없음'), 'recommendation basis is labelled as advice in the details');
+  assert(!/지참하면 안전해요|원문에 원본·사본 표기가 없어요/.test(f6), 'the weak fallback sentence is gone');
+  const e9 = run('E-9-1 연장'); assert(e9.includes('data-sg-form-kind="OFFICIAL_EXPLICIT">사본<'), 'E-9 copies labelled as official');
+  const addr = run('주소 변경 신고'); assert(addr.includes('원본 제시 · 돌려받음'), 'address report: card is shown and returned (Act 36(2))');
+  const reissue = run('외국인등록증 재발급', { reissue_reason: 'damaged' }); assert(reissue.includes('원본 제출 · 반환되지 않음'), 'card reissue: existing card is handed in and destroyed (Decree 42)');
+  const en = run('F-6-1 연장', { f61_phase: 'normal' }, 'en'); assert(en.includes('Bring the original · prepare a copy') && en.includes('preparation advice · not stated in the source'), 'EN advice');
+  // a silent contract row never renders as "원본 제출"
+  const e7 = run('E-7 연장'); const contractRow = e7.split('고용계약서')[1] || ''; assert(!/원본 제출/.test(contractRow.split('</li>')[0]), 'E-7 silent contract: no surrender wording');
+});
+check('source: the weak wording is gone from every renderer and the Quick Answer', () => {
+  const files = ['assets/js/status-guidance.js', 'assets/js/waymaker-quick-answer.js', 'lib/waymaker-quick-answer-ai.js'];
+  for (const f of files) { const src = readFileSync(join(ROOT, f), 'utf8'); assert(!/지참하면 안전해요|원문에 원본·사본 표기가 없어요|관서 확인\)/.test(src), `${f} still carries the weak wording`); }
 });
 
 /* ------------------------------------------------------------- report ---- */
