@@ -11,7 +11,7 @@
       tools: '자주 찾는 업무', paperwork: '필수 서류 작성', paperworkSub: '신청서·숙소제공확인서 등 필수 서류를 단계별로 작성하세요.',
       reservation: '방문예약 안내', reservationSub: '하이코리아 방문예약 방법과 준비사항을 확인하세요.',
       manuals: '공식 원문 찾기', manualsSub: '사증발급·외국인체류 공식 안내 원문에서 필요한 구절을 찾아보세요.',
-      visa: '사증 안내', stay: '체류 안내', original: '원문 보기', sourceLabel: '공식 기준 업데이트',
+      visa: '사증 안내', stay: '체류 안내', original: '원문 보기', sourceLabel: '체류자격별 매뉴얼',
       language: '언어', languageTitle: '언어 선택', languageSearch: '언어 검색', languageNone: '일치하는 언어가 없어요.',
       disclaimer: 'Visable은 공식 정부 서비스가 아닙니다. 제공 정보는 참고용이며 법적 효력이 없습니다. 최종 판단은 HiKorea·1345·관할 출입국·외국인관서에서 확인하세요.',
       allTools: '전체 도구 보기', theme: '화면 테마', guide: '체류자격 안내', all: '전체', sourceTab: '원문',
