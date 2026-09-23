@@ -106,16 +106,29 @@ PARADISO_PW_EXECUTABLE=/path/to/chromium npx playwright test tests/e2e/landing-b
 - select → explain → fill → browser Back keeps the values → review → preview → export; the
   ops drawn on the preview canvas are the ops written into the PDF (`VisableFormHelper.lastExport`);
   no request leaves the origin apart from the font CDN;
+- the downloaded file name is asserted exactly (`NGUYEN VAN ANH_체류지변경신고서.pdf`), both
+  from the browser's download event and from `VisableFormHelper.lastExport.filename`;
 - a too-long value is flagged in the field, on the review screen and again in the export
   dialog ("그래도 내려받기" / "고치기"); the reset `<dialog>` warns before clearing;
 - Waymaker deep links (`?form=F01&type=sojourn_extension`) preselect the application type;
   edition switches (F01 ↔ F03 중문 병기) keep the data; EN chrome and Arabic RTL work with
-  the Korean official field names still visible; the flow is keyboard reachable.
+  the Korean official field names still visible; the flow is keyboard reachable;
+- primary actions and the current step number keep a WCAG contrast of at least 4.5 : 1 in the
+  light and the dark theme, and screen transitions are off under `prefers-reduced-motion`.
 
 The offline twin is `scripts/check_form_helper.mjs` (in `check_repo.sh`): inventory /
 coverage freshness, exclusions, template sha256 / page / size drift, schema ↔ definition
-consistency, engine unit tests, and a Node export of every form verified with PyMuPDF
-(`scripts/forms/verify_export.py`) — the same vendor pdf-lib / fontkit files the browser uses.
+consistency, engine unit tests, a Node export of every sample verified with PyMuPDF
+(`scripts/forms/verify_export.py`) — the same vendor pdf-lib / fontkit files the browser uses —
+and a static geometry audit of **every** overlay (`scripts/forms/audit_overlay_geometry.py`:
+bounded width, no table rule / printed label inside the writable area, no run past the row end),
+which is itself tested against planted defects.
+
+**Browser locale.** Chromium on Linux converts a suggested download name to the process's
+native multibyte charset; under the POSIX/C locale every non-ASCII name degrades to
+`download`. `playwright.config.mjs` therefore launches the browser with `LANG` / `LC_ALL =
+C.UTF-8` unless the environment already selects a UTF-8 locale — the filename assertion stays
+strict instead of accepting the fallback.
 
 ```bash
 PARADISO_PW_EXECUTABLE=/path/to/chromium npx playwright test tests/e2e/form-helper.spec.mjs --project=desktop-1280 --project=mobile-390 --project=mobile-320

@@ -437,15 +437,53 @@ landing) in `landing-boot.spec.mjs`; the mobile matrix below confirms the target
 | --- | ---: |
 | Official forms inventoried (`data/forms_inventory.json`) | 292 |
 | Applicant-facing | 46 |
-| SUPPORTED before / now | 6 / 15 |
+| SUPPORTED before / now | 6 / 14 |
 | Newly supported | 9 (F02, F08, F09, F10, F11, F12, F13, F14, F15) |
-| Fully QA'd (Node export verified with PyMuPDF, `support.qa = PASS`) | 15 |
+| Fully QA'd (`support.qa = PASS`: verified export + clean geometry audit) among SUPPORTED | 14 |
+| PARTIAL (mapped and QA'd, edition not comparable) | 1 (F06 — HiKorea file, `PENDING_HIKOREA`) |
 | BLOCKED (applicant-facing, no field map yet) | 31 |
 | EXCLUDED — departure deadline | 2 (44, 44의2) |
 | EXCLUDED — refugee | 9 (30의3, 30의4, 30의5, 126의11, 126의12, 126의13, 126의14, 126의15, (all annexes)) |
 | Not applicable (official-use / enforcement / deleted) | 233 |
 | Unknown (sources not verifiable offline) | 2 |
+| Stale / superseded | 0 |
 
+SUPPORTED is strict: `support.qa = PASS` **and** `template.verification = VERIFIED_CURRENT`
+(the annex in force, read from law.go.kr through its Open API on 2026-09-23 — 출입국관리법
+시행규칙 MST 289833 in force from 2026-09-15, 재외동포법 시행규칙 MST 267499 in force from
+2025-02-01 — has the same header revision tag and row / cell structure as the template). The
+guard rejects any SUPPORTED form that misses either half.
+
+* **Cell geometry (found and fixed late in the sprint).** The sample-based export check only
+  proved that the PDF draws what the preview draws — not that either draws inside the right box.
+  A new static audit (`scripts/forms/audit_overlay_geometry.py`, in the guard, self-tested with
+  planted defects) checks every one of the 533 overlays against the template's own vector
+  rules and printed text. On the pre-fix schema it reports 199 issues (144 cells without a width
+  limit, 24 areas running past the row end, 22 containing a table rule, 6 overlapping printed
+  text, 3 cut by a divider) — 146 of them already on `main`'s six forms — and 46 values in the
+  sample exports crossed a cell border, a divider or a printed label. Pre-existing on `main`
+  (F01, F03, F04, F05, F06): phone,
+  mobile, e-mail, home-country phone, income, occupation, nationality, passport-expiry and
+  application-date values started inside the label cell and ran over the border; the F03 birth
+  date put the month in the year cell and the day on top of 月; F06 values started 15 pt left of
+  the value column; 144 text cells had no width limit, so an overflow was never flagged. From
+  this sprint (F02, F10–F14): F02's name cells ran into the next column and its 13-digit
+  registration number was one text run across the digit grid; F12–F14 widths ran past the
+  table's right end; F11 / F13 / F14 values touched printed labels. All were re-measured from the
+  PDF geometry (values in the empty value cell, birth dates centred in the empty line under
+  년 / 월 / 일 with the printed `yyyy / mm / dd` hints left visible, one digit per printed cell):
+  audit 199 → 0 issues, sample collisions 46 → 0, every sample export re-inspected as an image.
+  Narrow official cells now say so: a mobile number in the 2 cm phone cells or a long
+  nationality name shrinks to 6.5–7 pt and is flagged SHRUNK ("인쇄 확인") before export.
+* **Contrast and motion (found in final QA).** The element reset `.fh-body button { color:
+  inherit }` outranked `.fh-btn-primary`, so every primary action (작성 시작, 다음, PDF 내려받기)
+  printed dark text on the dark green: 1.7 : 1 in the light theme, 1.4 : 1 in the dark theme.
+  The reset now sits in `:where()` and controls on the green use the page-background token as
+  text colour (9.3 : 1 light, 10.3 : 1 dark — plain `#fff` would have failed on the dark
+  theme's mint). The screen fade ignored `prefers-reduced-motion` (the page is outside the
+  `.civic-refresh` scope that carries the landing's rule); it is now switched off there. Both
+  are asserted in `form-helper.spec.mjs` (the contrast test fails on the old stylesheet), and
+  the screenshot script no longer captures screens mid-fade.
 * One data model (`data/form_definitions.json`) drives editor, preview and export through
   `assets/js/form-engine.js`; the browser export and the Node QA export draw the identical
   operations (`VisableFormHelper.lastExport.ops` == canvas ops, asserted in
@@ -455,7 +493,8 @@ landing) in `landing-boot.spec.mjs`; the mobile matrix below confirms the target
   otherwise clip inside the cell and flag OVERFLOW (field, review screen, export dialog); glyphs
   outside the embedded font leave the cell blank and are flagged FONT — never drawn silently.
 * Template drift: sha256 + byte size + page count + page size + anchors recorded per template in
-  `data/form_schemas.json` and asserted by `scripts/check_form_helper.mjs` (2 311 checks).
+  `data/form_schemas.json` and asserted by `scripts/check_form_helper.mjs` (2 489 checks,
+  20 sample exports).
 * F06 now fills the official HiKorea PDF (the hand-drawn canvas replica is gone).
 * Privacy: the only requests are static assets, the template PDF, the font and the two vendor
   libraries; no storage of values, no analytics (asserted in the E2E request log).
@@ -493,16 +532,40 @@ D-2 / F-6-1 / address report / card reissue / E-1 / E-9). No data file was edite
 ### 11.7 Test / check status
 
 `bash scripts/check_repo.sh` → exit 0 (backend suites need `backend/requirements-dev.txt`);
-E2E: `landing-boot` 22 / 22, `form-helper` 21 / 21 (desktop-1280, mobile-390, mobile-320);
+E2E on desktop-1280 + mobile-390 + mobile-320: `form-helper` 27 / 27, `landing-boot` 33 / 33,
+`landing-utilities` + `post-search-guidance` 36 / 36, search + Quick Answer + language 128 / 128;
 guidance suites green (document guidance 936, physical form 633, resolver 61, Quick Answer 21,
 navigator 404).
 
+Root causes of the Form Helper E2E failures met on the way (all fixed in production code or in
+the test environment, no assertion weakened, no timeout raised):
+
+* edition switch (3 runs): switching F01 → F03 changed the template but the preview canvases were
+  not rebuilt → rebuild on edition change;
+* workflow (3 runs): fields on a step hidden by the application type (power of attorney) were
+  still validated → hidden-step fields are inert in the engine;
+* download name (3 runs): Linux Chromium converts the suggested name to the process's native
+  multibyte charset and the test browser ran under the POSIX locale, so every non-ASCII name
+  became `download` (probe: ASCII names survived, timing and user gesture made no difference,
+  `C.UTF-8` fixed all) → `playwright.config.mjs` launches the browser under a UTF-8 locale and
+  the test asserts the exact Korean file name;
+* CI `validate`: the inventory freshness check depended on PyMuPDF being installed → the annex
+  page map is pinned (sha256 of the rule PDF) and the guard re-runs the check with PyMuPDF
+  blocked; the CI job installs `pymupdf==1.28.2` for the export and geometry checks.
+
 ### 11.8 Known limitations (honest)
 
-* Edition currency: templates extracted from 법무부령 제1106호 (2026-01-23) print their own
-  revision date; whether the 2026-09-15 amendment changed any of these annexes could not be
-  checked offline (`template.verification = RULE_1106_PDF` / `PENDING_*`). Re-check on law.go.kr
-  before relying on a form.
+* Edition currency: the 14 statute templates were compared with the annexes in force on
+  2026-09-23 (law.go.kr Open API; same header revision tag and structure). Amendments already
+  promulgated take effect on 2027-09-16 (법무부령 제1125호 / 제1124호): the check has to be re-run
+  then. F06 (HiKorea 거주/숙소제공확인서) could not be compared with the current HiKorea file and
+  stays PARTIAL.
+* This is rendering / placement QA, not legal revalidation: Visable fills what the user types
+  into the official cells; it does not decide which form or attachments a case needs.
+* Narrow official cells (2 cm phone cells, the 희망 자격 brackets on 별지 제34호서식 and its
+  editions) cannot hold every value at a readable size: long values are shrunk to the 6.5 pt
+  floor and flagged, or flagged OVERFLOW before export (e.g. a six-character status code such as
+  `D-10-1` inside the 19 pt bracket of the Chinese edition).
 * 漢字 name cells (F02, F07, F12, F13) are left for handwriting: the embedded font has no CJK
   ideographs; circled reason codes on F14 print as plain letters/digits.
 * 31 applicant-facing annexes remain BLOCKED (listed in the coverage report), among them the
