@@ -1,0 +1,7438 @@
+{
+  "version": "2026-09-23",
+  "_meta": {
+    "purpose": "Form Helper 2.0 data model: every fillable official form (steps, fields, mapping to data/form_schemas.json overlay keys, validation, search, Waymaker prefill). Rendering, preview and export all read this file through assets/js/form-engine.js.",
+    "dsl": "field.map: \"overlayKey\" | {\"dot\": key} (YYYY.MM.DD) | {\"ymd\": [y,m,d]} | {\"digits\": key} (digits only). choice/yesno options carry map (check key) or text (literal written to the field map). showIf/reqIf: {field, eq|in|gte|empty|truthy} | {any:[…]} | {all:[…]} | {not: …}. derived: copy values into overlay keys (from field, fromOverlay, const, elseMap). Fields with map null are never printed."
+  },
+  "groups": [
+    {
+      "id": "frequent",
+      "label": {
+        "ko": "자주 쓰는 서류",
+        "en": "Most used"
+      },
+      "lead": {
+        "ko": "등록·연장·주소 변경처럼 많이 찾는 서식",
+        "en": "Registration, extension and address change"
+      }
+    },
+    {
+      "id": "stay",
+      "label": {
+        "ko": "체류·등록",
+        "en": "Stay and registration"
+      },
+      "lead": {
+        "ko": "체류기간·자격·등록증·주소",
+        "en": "Period, status, card and address"
+      }
+    },
+    {
+      "id": "work",
+      "label": {
+        "ko": "취업·활동",
+        "en": "Work and activities"
+      },
+      "lead": {
+        "ko": "취업 신고, 고용주 신고, 사증 신청 서류",
+        "en": "Job reports, employer reports and visa-stage papers"
+      }
+    },
+    {
+      "id": "family",
+      "label": {
+        "ko": "가족·초청",
+        "en": "Family and invitation"
+      },
+      "lead": {
+        "ko": "보증·숙소 제공 확인",
+        "en": "Guarantee and accommodation confirmation"
+      }
+    },
+    {
+      "id": "overseas",
+      "label": {
+        "ko": "재외동포",
+        "en": "Overseas Koreans"
+      },
+      "lead": {
+        "ko": "F-4 거소신고와 H-2 취업 신고",
+        "en": "F-4 residence report and H-2 job report"
+      }
+    },
+    {
+      "id": "other",
+      "label": {
+        "ko": "기타 출입국 민원",
+        "en": "Other immigration services"
+      },
+      "lead": {
+        "ko": "사실증명, 자동출입국심사",
+        "en": "Certificates and automated clearance"
+      }
+    }
+  ],
+  "waymaker": {
+    "registration": {
+      "form": "F01",
+      "values": {
+        "app_type": "foreign_registration"
+      }
+    },
+    "extension": {
+      "form": "F01",
+      "values": {
+        "app_type": "sojourn_extension"
+      }
+    },
+    "status_change": {
+      "form": "F01",
+      "values": {
+        "app_type": "status_change"
+      }
+    },
+    "status_grant": {
+      "form": "F01",
+      "values": {
+        "app_type": "status_granting"
+      }
+    },
+    "activities_outside_status": {
+      "form": "F01",
+      "values": {
+        "app_type": "activity_outside_status"
+      }
+    },
+    "part_time_work": {
+      "form": "F01",
+      "values": {
+        "app_type": "activity_outside_status"
+      }
+    },
+    "workplace_change": {
+      "form": "F01",
+      "values": {
+        "app_type": "workplace_change"
+      }
+    },
+    "workplace_report": {
+      "form": "F01",
+      "values": {
+        "app_type": "workplace_change"
+      }
+    },
+    "residence_report": {
+      "form": "F08",
+      "values": {}
+    },
+    "registration_info_report": {
+      "form": "F01",
+      "values": {
+        "app_type": "registration_change"
+      }
+    },
+    "reentry": {
+      "form": "F01",
+      "values": {
+        "app_type": "reentry_permit"
+      }
+    },
+    "card_reissue": {
+      "form": "F01",
+      "values": {
+        "app_type": "card_reissuance"
+      }
+    }
+  },
+  "forms": {
+    "F01": {
+      "schema": "F01",
+      "groups": [
+        "frequent",
+        "stay"
+      ],
+      "featured": true,
+      "name": {
+        "ko": "통합신청서(신고서)",
+        "en": "Application form (report form)"
+      },
+      "short": {
+        "ko": "통합신청서",
+        "en": "Integrated application"
+      },
+      "number": {
+        "ko": "출입국관리법 시행규칙 별지 제34호서식",
+        "en": "Immigration Rule Annex 34"
+      },
+      "editions": [
+        {
+          "v": "F01",
+          "label": {
+            "ko": "국문·영문 (별지 제34호)",
+            "en": "Korean / English (Annex 34)"
+          }
+        },
+        {
+          "v": "F03",
+          "label": {
+            "ko": "중문 병기 (별지 제34호의3)",
+            "en": "With Chinese (Annex 34-3)"
+          }
+        },
+        {
+          "v": "F02",
+          "label": {
+            "ko": "한자·일문 병기 (별지 제34호의2, 2025. 5. 30. 개정)",
+            "en": "With Chinese characters / Japanese (Annex 34-2, rev. 2025-05-30)"
+          }
+        }
+      ],
+      "summary": {
+        "ko": "외국인등록, 체류기간 연장, 체류자격 변경, 재입국허가, 체류지 변경 등 체류 관련 신청·신고 대부분에 쓰는 기본 서식이에요.",
+        "en": "The base form for most stay-related applications and reports: registration, extension, change of status, re-entry permit, change of address and more."
+      },
+      "who": {
+        "ko": "신청인 본인이 작성하고 서명해요.",
+        "en": "Filled in and signed by the applicant."
+      },
+      "where": {
+        "ko": "관할 출입국·외국인청(사무소·출장소)",
+        "en": "Your regional immigration office (branch office)"
+      },
+      "attachments": {
+        "ko": "체류자격·신청 구분별 첨부서류는 시행규칙 별표 5의2를 따라요. Visable 검색에서 절차별 준비서류를 확인하세요.",
+        "en": "Attachments follow Annex Table 5-2 of the Rule by status and application type; use the Visable search for the per-procedure document list."
+      },
+      "notes": [
+        {
+          "ko": "서명/인은 제출할 때 직접 해요. 이 도구는 서명을 받지 않아요.",
+          "en": "Sign or seal the form when you submit it; this tool does not collect signatures."
+        },
+        {
+          "ko": "여권용 사진(3.5×4.5cm)은 외국인등록·등록증 재발급 때만 붙여요.",
+          "en": "A passport photo (3.5×4.5 cm) is attached only for registration and card reissuance."
+        }
+      ],
+      "search": {
+        "ko": [
+          "통합신청서",
+          "신고서",
+          "외국인등록",
+          "체류기간 연장",
+          "연장",
+          "체류자격 변경",
+          "자격변경",
+          "재입국허가",
+          "재입국",
+          "체류지 변경",
+          "주소 변경",
+          "이사",
+          "등록증 재발급",
+          "재발급",
+          "등록사항 변경",
+          "체류자격 외 활동",
+          "아르바이트",
+          "근무처 변경",
+          "근무처 추가",
+          "체류자격 부여",
+          "별지 34호",
+          "ARC"
+        ],
+        "en": [
+          "integrated application",
+          "application form",
+          "report form",
+          "registration",
+          "extension",
+          "change of status",
+          "re-entry",
+          "address change",
+          "moved",
+          "card reissue",
+          "workplace change",
+          "annex 34",
+          "ARC"
+        ],
+        "primary": [
+          "통합신청서",
+          "integrated application",
+          "application form"
+        ]
+      },
+      "procedures": [
+        "registration",
+        "extension",
+        "status_change",
+        "activities_outside_status",
+        "part_time_work",
+        "workplace_change",
+        "workplace_report",
+        "residence_report",
+        "registration_info_report",
+        "reentry",
+        "card_reissue",
+        "status_grant"
+      ],
+      "steps": [
+        {
+          "id": "type",
+          "title": {
+            "ko": "무엇을 신청하나요?",
+            "en": "What are you applying for?"
+          },
+          "lead": {
+            "ko": "서식에서 체크할 항목이 정해져요. 한 가지만 골라요.",
+            "en": "This decides which box is ticked on the form. Pick one."
+          }
+        },
+        {
+          "id": "person",
+          "title": {
+            "ko": "인적사항",
+            "en": "Personal details"
+          },
+          "lead": {
+            "ko": "여권에 적힌 대로 영문 대문자로 적어요.",
+            "en": "Write names in capital letters exactly as in your passport."
+          }
+        },
+        {
+          "id": "contact",
+          "title": {
+            "ko": "주소와 연락처",
+            "en": "Address and contact"
+          }
+        },
+        {
+          "id": "extra",
+          "title": {
+            "ko": "절차별 추가 항목",
+            "en": "Procedure-specific items"
+          },
+          "showIf": {
+            "any": [
+              {
+                "field": "app_type",
+                "in": [
+                  "status_change",
+                  "status_granting",
+                  "activity_outside_status",
+                  "workplace_change",
+                  "address_change",
+                  "reentry_permit",
+                  "foreign_registration",
+                  "card_reissuance"
+                ]
+              },
+              {
+                "field": "edition",
+                "eq": "F02"
+              }
+            ]
+          }
+        },
+        {
+          "id": "sign",
+          "title": {
+            "ko": "신청일과 서식 판",
+            "en": "Date and edition"
+          }
+        }
+      ],
+      "fields": [
+        {
+          "key": "app_type",
+          "step": "type",
+          "type": "choice",
+          "req": true,
+          "label": {
+            "ko": "신청·신고 구분",
+            "en": "Type of application"
+          },
+          "options": [
+            {
+              "v": "foreign_registration",
+              "label": {
+                "ko": "외국인등록",
+                "en": "Foreign resident registration"
+              },
+              "map": "cb_reg_foreign",
+              "sub": {
+                "ko": "처음 국내에 등록할 때",
+                "en": "First registration after arrival"
+              },
+              "note": {
+                "ko": "입국한 날부터 90일 이내에 신청해요. 여권용 사진(최근 6개월)이 필요해요.",
+                "en": "Apply within 90 days of arrival. A recent passport photo (within 6 months) is needed."
+              }
+            },
+            {
+              "v": "sojourn_extension",
+              "label": {
+                "ko": "체류기간 연장허가",
+                "en": "Extension of sojourn period"
+              },
+              "map": "cb_extension",
+              "sub": {
+                "ko": "체류기간이 끝나기 전에 연장",
+                "en": "Extend before the current period ends"
+              },
+              "note": {
+                "ko": "체류기간 만료일 전에 신청하는 것이 원칙이에요.",
+                "en": "Apply before the expiry date of your current period."
+              }
+            },
+            {
+              "v": "status_change",
+              "label": {
+                "ko": "체류자격 변경허가",
+                "en": "Change of status of sojourn"
+              },
+              "map": "cb_status_change",
+              "sub": {
+                "ko": "지금 자격을 다른 자격으로 바꿀 때",
+                "en": "Switch to another status"
+              },
+              "note": {
+                "ko": "바꾸려는 자격의 요건을 먼저 확인하세요. 희망 자격은 서식의 괄호 칸에 적혀요.",
+                "en": "Check the requirements of the new status first. The desired status is printed in the bracket on the form."
+              }
+            },
+            {
+              "v": "activity_outside_status",
+              "label": {
+                "ko": "체류자격 외 활동허가",
+                "en": "Activities outside status"
+              },
+              "map": "cb_activity",
+              "sub": {
+                "ko": "지금 자격 범위 밖의 활동 허가",
+                "en": "Permission for activities beyond your status"
+              },
+              "note": {
+                "ko": "예: 유학(D-2) 중 아르바이트 허가. 희망 자격·활동을 괄호 칸에 적어요.",
+                "en": "e.g. part-time work permission while on D-2. The desired activity goes in the bracket."
+              }
+            },
+            {
+              "v": "workplace_change",
+              "label": {
+                "ko": "근무처 변경·추가 허가/신고",
+                "en": "Change or addition of workplace"
+              },
+              "map": "cb_workplace",
+              "sub": {
+                "ko": "근무처를 바꾸거나 더할 때",
+                "en": "Change or add a workplace"
+              },
+              "note": {
+                "ko": "허가 대상인지 신고 대상인지는 체류자격에 따라 달라요. 관할 출입국·외국인관서에서 확인하세요.",
+                "en": "Whether this is a permit or a report depends on your status. Confirm with your immigration office."
+              }
+            },
+            {
+              "v": "address_change",
+              "label": {
+                "ko": "체류지 변경신고",
+                "en": "Alteration of residence"
+              },
+              "map": "cb_address_change",
+              "sub": {
+                "ko": "이사한 뒤 새 주소 신고",
+                "en": "Report a new address after moving"
+              },
+              "note": {
+                "ko": "전입한 날부터 15일 이내에 신고해요. 서식의 주소 칸에는 새 주소를 적어요. 전용 서식(체류지변경신고서)도 있어요.",
+                "en": "Report within 15 days of moving in. The address cell carries the NEW address. A dedicated form (체류지변경신고서) also exists."
+              }
+            },
+            {
+              "v": "registration_change",
+              "label": {
+                "ko": "등록사항 변경신고",
+                "en": "Change of registration information"
+              },
+              "map": "cb_reg_change",
+              "sub": {
+                "ko": "등록된 내용(성명·여권 등)이 바뀌었을 때",
+                "en": "Registered details (name, passport…) changed"
+              },
+              "note": {
+                "ko": "바뀐 내용은 해당 칸(예: 새 여권번호는 여권번호 칸)에 새 정보로 적어요. 서식에 별도 변경 칸은 없어요.",
+                "en": "Write the new information in the matching cell (e.g. a new passport number in the passport cell); the form has no separate change cell."
+              }
+            },
+            {
+              "v": "reentry_permit",
+              "label": {
+                "ko": "재입국허가",
+                "en": "Re-entry permit"
+              },
+              "map": "cb_reentry",
+              "sub": {
+                "ko": "출국 후 다시 들어올 허가",
+                "en": "Permission to re-enter after leaving"
+              },
+              "note": {
+                "ko": "출국 전에 신청해요. 재입국 신청 기간 칸에 기간을 적어요.",
+                "en": "Apply before departure. Write the period in the re-entry period cell."
+              }
+            },
+            {
+              "v": "card_reissuance",
+              "label": {
+                "ko": "등록증 재발급",
+                "en": "Reissuance of registration card"
+              },
+              "map": "cb_card_reissue",
+              "sub": {
+                "ko": "분실·훼손 등으로 다시 발급",
+                "en": "Lost, damaged or changed card"
+              },
+              "note": {
+                "ko": "여권용 사진이 필요해요. 반환용 계좌번호 칸은 등록·재발급 신청 때만 적어요.",
+                "en": "A passport photo is needed. The refund account cell is used only for registration and reissuance."
+              }
+            },
+            {
+              "v": "status_granting",
+              "label": {
+                "ko": "체류자격 부여",
+                "en": "Granting status of sojourn"
+              },
+              "map": "cb_status_grant",
+              "sub": {
+                "ko": "체류자격이 없는 상태에서 자격을 받을 때",
+                "en": "Obtain a status when you hold none"
+              },
+              "note": {
+                "ko": "신청하려는 체류자격을 괄호 칸에 적어요.",
+                "en": "Write the status you apply for in the bracket."
+              }
+            }
+          ],
+          "layout": "cards"
+        },
+        {
+          "key": "surname",
+          "step": "person",
+          "type": "upper",
+          "req": true,
+          "label": {
+            "ko": "성 (Surname)",
+            "en": "Surname"
+          },
+          "map": "surname",
+          "placeholder": {
+            "ko": "KIM",
+            "en": "KIM"
+          },
+          "maxLen": 40
+        },
+        {
+          "key": "given",
+          "step": "person",
+          "type": "upper",
+          "req": true,
+          "label": {
+            "ko": "이름 (Given names)",
+            "en": "Given names"
+          },
+          "map": "given",
+          "placeholder": {
+            "ko": "MINSOO",
+            "en": "MINSOO"
+          },
+          "maxLen": 40
+        },
+        {
+          "key": "dob",
+          "step": "person",
+          "type": "date",
+          "req": true,
+          "label": {
+            "ko": "생년월일",
+            "en": "Date of birth"
+          },
+          "map": {
+            "ymd": [
+              "dob_y",
+              "dob_m",
+              "dob_d"
+            ]
+          }
+        },
+        {
+          "key": "sex",
+          "step": "person",
+          "type": "choice",
+          "req": true,
+          "label": {
+            "ko": "성별",
+            "en": "Sex"
+          },
+          "options": [
+            {
+              "v": "M",
+              "label": {
+                "ko": "남 (Male)",
+                "en": "Male"
+              },
+              "map": "sex_m"
+            },
+            {
+              "v": "F",
+              "label": {
+                "ko": "여 (Female)",
+                "en": "Female"
+              },
+              "map": "sex_f"
+            }
+          ]
+        },
+        {
+          "key": "nationality",
+          "step": "person",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "국적",
+            "en": "Nationality"
+          },
+          "map": "nationality",
+          "placeholder": {
+            "ko": "예: VIETNAM",
+            "en": "e.g. VIETNAM"
+          },
+          "help": {
+            "ko": "여권에 적힌 국적을 적어요.",
+            "en": "As printed in your passport."
+          },
+          "maxLen": 40
+        },
+        {
+          "key": "arc_no",
+          "step": "person",
+          "type": "arc",
+          "req": false,
+          "label": {
+            "ko": "외국인등록번호",
+            "en": "Foreign resident registration No."
+          },
+          "map": {
+            "digits": "frn_reg_no"
+          },
+          "help": {
+            "ko": "이미 등록했으면 13자리를 적어요. 처음 신청하면 비워 둬요.",
+            "en": "Enter the 13 digits if you are already registered; leave blank for a first registration."
+          }
+        },
+        {
+          "key": "passport_no",
+          "step": "person",
+          "type": "upper",
+          "req": true,
+          "label": {
+            "ko": "여권번호",
+            "en": "Passport No."
+          },
+          "map": "passport_no",
+          "placeholder": {
+            "ko": "M12345678",
+            "en": "M12345678"
+          },
+          "maxLen": 20
+        },
+        {
+          "key": "passport_issue",
+          "step": "person",
+          "type": "date",
+          "req": false,
+          "label": {
+            "ko": "여권 발급일",
+            "en": "Passport issue date"
+          },
+          "map": {
+            "dot": "passport_issue"
+          }
+        },
+        {
+          "key": "passport_expiry",
+          "step": "person",
+          "type": "date",
+          "req": true,
+          "label": {
+            "ko": "여권 유효기간",
+            "en": "Passport expiry date"
+          },
+          "map": {
+            "dot": "passport_expiry"
+          }
+        },
+        {
+          "key": "korean_address",
+          "step": "contact",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "대한민국 내 주소",
+            "en": "Address in Korea"
+          },
+          "placeholder": {
+            "ko": "서울특별시 …",
+            "en": "Seoul …"
+          },
+          "maxLen": 90,
+          "showIf": {
+            "not": {
+              "field": "app_type",
+              "eq": "address_change"
+            }
+          }
+        },
+        {
+          "key": "new_address",
+          "step": "contact",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "변경된 새 주소 (대한민국 내)",
+            "en": "New address in Korea"
+          },
+          "help": {
+            "ko": "체류지 변경신고는 서식의 주소 칸에 새 주소를 적어요.",
+            "en": "For a change of address the form’s address cell carries the new address."
+          },
+          "maxLen": 90,
+          "showIf": {
+            "field": "app_type",
+            "eq": "address_change"
+          }
+        },
+        {
+          "key": "tel",
+          "step": "contact",
+          "type": "phone",
+          "req": false,
+          "label": {
+            "ko": "전화번호",
+            "en": "Telephone No."
+          },
+          "map": "tel",
+          "placeholder": {
+            "ko": "02-000-0000",
+            "en": "02-000-0000"
+          }
+        },
+        {
+          "key": "cell",
+          "step": "contact",
+          "type": "phone",
+          "req": false,
+          "label": {
+            "ko": "휴대전화",
+            "en": "Cell phone No."
+          },
+          "map": "cell",
+          "placeholder": {
+            "ko": "010-0000-0000",
+            "en": "010-0000-0000"
+          }
+        },
+        {
+          "key": "email",
+          "step": "contact",
+          "type": "email",
+          "req": false,
+          "label": {
+            "ko": "전자우편",
+            "en": "E-mail"
+          },
+          "map": "email"
+        },
+        {
+          "key": "home_addr",
+          "step": "contact",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "본국 주소",
+            "en": "Address in home country"
+          },
+          "map": "home_addr",
+          "maxLen": 80
+        },
+        {
+          "key": "home_tel",
+          "step": "contact",
+          "type": "phone",
+          "req": false,
+          "label": {
+            "ko": "본국 전화번호",
+            "en": "Home country phone"
+          },
+          "map": "home_tel"
+        },
+        {
+          "key": "occupation",
+          "step": "contact",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "직업",
+            "en": "Occupation"
+          },
+          "map": "occupation",
+          "maxLen": 30
+        },
+        {
+          "key": "annual_income",
+          "step": "contact",
+          "type": "number",
+          "req": false,
+          "label": {
+            "ko": "연 소득금액 (만원)",
+            "en": "Annual income (10,000 KRW)"
+          },
+          "map": "annual_income",
+          "help": {
+            "ko": "만원 단위 숫자만 적어요.",
+            "en": "Numbers only, in units of 10,000 KRW."
+          }
+        },
+        {
+          "key": "desired_status",
+          "step": "extra",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "희망 체류자격",
+            "en": "Desired status"
+          },
+          "placeholder": {
+            "ko": "예: E-7-1",
+            "en": "e.g. E-7-1"
+          },
+          "maxLen": 12,
+          "showIf": {
+            "field": "app_type",
+            "in": [
+              "status_change",
+              "status_granting"
+            ]
+          }
+        },
+        {
+          "key": "desired_activity",
+          "step": "extra",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "희망 활동·자격",
+            "en": "Desired activity / status"
+          },
+          "map": "activity_status",
+          "placeholder": {
+            "ko": "예: 시간제취업(D-2)",
+            "en": "e.g. part-time work (D-2)"
+          },
+          "maxLen": 20,
+          "showIf": {
+            "field": "app_type",
+            "eq": "activity_outside_status"
+          }
+        },
+        {
+          "key": "workplace_cur",
+          "step": "extra",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "원 근무처",
+            "en": "Current workplace"
+          },
+          "map": "workplace_cur",
+          "maxLen": 40,
+          "showIf": {
+            "field": "app_type",
+            "eq": "workplace_change"
+          }
+        },
+        {
+          "key": "biz_no_cur",
+          "step": "extra",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "원 근무처 사업자등록번호",
+            "en": "Current workplace business No."
+          },
+          "map": "biz_no_cur",
+          "maxLen": 14,
+          "showIf": {
+            "field": "app_type",
+            "eq": "workplace_change"
+          }
+        },
+        {
+          "key": "tel_cur",
+          "step": "extra",
+          "type": "phone",
+          "req": false,
+          "label": {
+            "ko": "원 근무처 전화번호",
+            "en": "Current workplace phone"
+          },
+          "map": "tel_cur",
+          "showIf": {
+            "field": "app_type",
+            "eq": "workplace_change"
+          }
+        },
+        {
+          "key": "workplace_new",
+          "step": "extra",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "예정 근무처",
+            "en": "New workplace"
+          },
+          "map": "workplace_new",
+          "maxLen": 40,
+          "showIf": {
+            "field": "app_type",
+            "eq": "workplace_change"
+          }
+        },
+        {
+          "key": "biz_no_new",
+          "step": "extra",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "예정 근무처 사업자등록번호",
+            "en": "New workplace business No."
+          },
+          "map": "biz_no_new",
+          "maxLen": 14,
+          "showIf": {
+            "field": "app_type",
+            "eq": "workplace_change"
+          }
+        },
+        {
+          "key": "tel_new",
+          "step": "extra",
+          "type": "phone",
+          "req": false,
+          "label": {
+            "ko": "예정 근무처 전화번호",
+            "en": "New workplace phone"
+          },
+          "map": "tel_new",
+          "showIf": {
+            "field": "app_type",
+            "eq": "workplace_change"
+          }
+        },
+        {
+          "key": "reentry_period",
+          "step": "extra",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "재입국 신청 기간",
+            "en": "Intended period of re-entry"
+          },
+          "map": "reentry_period",
+          "placeholder": {
+            "ko": "예: 2026.10.01 ~ 2026.12.31 (복수)",
+            "en": "e.g. 2026.10.01 – 2026.12.31 (multiple)"
+          },
+          "maxLen": 40,
+          "showIf": {
+            "field": "app_type",
+            "eq": "reentry_permit"
+          }
+        },
+        {
+          "key": "refund_account",
+          "step": "extra",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "반환용 계좌번호",
+            "en": "Refund bank account No."
+          },
+          "map": "refund_account",
+          "help": {
+            "ko": "외국인등록·등록증 재발급 신청 때만 적는 칸이에요. 중문 병기판(별지 34의3)에는 이 칸이 없어요.",
+            "en": "Used only for registration and card reissuance. The Chinese edition (Annex 34-3) has no such cell."
+          },
+          "maxLen": 40,
+          "showIf": {
+            "field": "app_type",
+            "in": [
+              "foreign_registration",
+              "card_reissuance"
+            ]
+          }
+        },
+        {
+          "key": "photo_note",
+          "step": "extra",
+          "type": "note",
+          "req": false,
+          "label": {
+            "ko": "사진",
+            "en": "Photo"
+          },
+          "text": {
+            "ko": "여권용 사진(최근 6개월 이내, 3.5×4.5cm)을 서식 오른쪽 위 칸에 붙여요.",
+            "en": "Attach a passport photo (taken within 6 months, 3.5×4.5 cm) in the box at the top right of the form."
+          },
+          "showIf": {
+            "field": "app_type",
+            "in": [
+              "foreign_registration",
+              "card_reissuance"
+            ]
+          }
+        },
+        {
+          "key": "school_level",
+          "step": "extra",
+          "type": "choice",
+          "req": false,
+          "label": {
+            "ko": "재학 여부 (2025 개정판 칸)",
+            "en": "School enrolment (2025 edition cell)"
+          },
+          "options": [
+            {
+              "v": "none",
+              "label": {
+                "ko": "미취학",
+                "en": "Not enrolled"
+              },
+              "map": "school_none"
+            },
+            {
+              "v": "elem",
+              "label": {
+                "ko": "초등학교",
+                "en": "Elementary"
+              },
+              "map": "school_elem"
+            },
+            {
+              "v": "mid",
+              "label": {
+                "ko": "중학교",
+                "en": "Middle school"
+              },
+              "map": "school_mid"
+            },
+            {
+              "v": "high",
+              "label": {
+                "ko": "고등학교",
+                "en": "High school"
+              },
+              "map": "school_high"
+            }
+          ],
+          "showIf": {
+            "field": "edition",
+            "eq": "F02"
+          }
+        },
+        {
+          "key": "school_name",
+          "step": "extra",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "학교 이름",
+            "en": "School name"
+          },
+          "map": "school_name",
+          "maxLen": 30,
+          "showIf": {
+            "all": [
+              {
+                "field": "edition",
+                "eq": "F02"
+              },
+              {
+                "field": "school_level",
+                "in": [
+                  "elem",
+                  "mid",
+                  "high"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "key": "school_tel",
+          "step": "extra",
+          "type": "phone",
+          "req": false,
+          "label": {
+            "ko": "학교 전화번호",
+            "en": "School phone"
+          },
+          "map": "school_tel",
+          "showIf": {
+            "all": [
+              {
+                "field": "edition",
+                "eq": "F02"
+              },
+              {
+                "field": "school_level",
+                "in": [
+                  "elem",
+                  "mid",
+                  "high"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "key": "school_kind",
+          "step": "extra",
+          "type": "choice",
+          "req": false,
+          "label": {
+            "ko": "학교 종류",
+            "en": "School type"
+          },
+          "options": [
+            {
+              "v": "acc",
+              "label": {
+                "ko": "교육청 인가",
+                "en": "Accredited by the education office"
+              },
+              "map": "school_acc"
+            },
+            {
+              "v": "alt",
+              "label": {
+                "ko": "교육청 비인가·대안학교",
+                "en": "Non-accredited / alternative school"
+              },
+              "map": "school_alt"
+            }
+          ],
+          "showIf": {
+            "all": [
+              {
+                "field": "edition",
+                "eq": "F02"
+              },
+              {
+                "field": "school_level",
+                "in": [
+                  "elem",
+                  "mid",
+                  "high"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "key": "apply_date",
+          "step": "sign",
+          "type": "date",
+          "req": false,
+          "label": {
+            "ko": "신청일",
+            "en": "Date of application"
+          },
+          "map": {
+            "dot": "apply_date"
+          },
+          "default": "today"
+        },
+        {
+          "key": "edition",
+          "step": "sign",
+          "type": "choice",
+          "req": true,
+          "label": {
+            "ko": "서식 판",
+            "en": "Form edition"
+          },
+          "options": [
+            {
+              "v": "F01",
+              "label": {
+                "ko": "국문·영문 (기본)",
+                "en": "Korean / English (default)"
+              }
+            },
+            {
+              "v": "F03",
+              "label": {
+                "ko": "중문 병기",
+                "en": "With Chinese"
+              }
+            },
+            {
+              "v": "F02",
+              "label": {
+                "ko": "한자·일문 병기 (2025. 5. 30. 개정판)",
+                "en": "With Chinese characters / Japanese (rev. 2025-05-30)"
+              }
+            }
+          ],
+          "default": "F01",
+          "help": {
+            "ko": "내용은 같고 인쇄된 안내 언어만 달라요. 한자 병기판은 2025년 5월 개정판이에요.",
+            "en": "Same content, different printed guide language. The Chinese-character edition is the May 2025 revision."
+          },
+          "role": "edition"
+        }
+      ],
+      "derived": [
+        {
+          "target": "addr_korea",
+          "when": {
+            "field": "app_type",
+            "eq": "address_change"
+          },
+          "from": "new_address",
+          "else": "korean_address"
+        },
+        {
+          "target": "change_status",
+          "when": {
+            "field": "app_type",
+            "eq": "status_change"
+          },
+          "from": "desired_status"
+        },
+        {
+          "target": "grant_status",
+          "when": {
+            "field": "app_type",
+            "eq": "status_granting"
+          },
+          "from": "desired_status"
+        }
+      ],
+      "validation": [
+        {
+          "kind": "dateOrder",
+          "before": "apply_date",
+          "after": "passport_expiry",
+          "level": "warn",
+          "msg": {
+            "ko": "여권 유효기간이 신청일보다 앞서 있어요. 여권을 먼저 갱신해야 할 수 있어요.",
+            "en": "The passport expiry date is before the application date. You may need to renew the passport first."
+          }
+        }
+      ],
+      "output": {
+        "filenameFrom": [
+          "surname",
+          "given"
+        ],
+        "noun": {
+          "ko": "통합신청서",
+          "en": "application-form"
+        }
+      },
+      "waymakerTypes": {
+        "foreign_registration": {
+          "app_type": "foreign_registration"
+        },
+        "sojourn_extension": {
+          "app_type": "sojourn_extension"
+        },
+        "status_change": {
+          "app_type": "status_change"
+        },
+        "activity_outside_status": {
+          "app_type": "activity_outside_status"
+        },
+        "workplace_change": {
+          "app_type": "workplace_change"
+        },
+        "address_change": {
+          "app_type": "address_change"
+        },
+        "registration_change": {
+          "app_type": "registration_change"
+        },
+        "reentry_permit": {
+          "app_type": "reentry_permit"
+        },
+        "card_reissuance": {
+          "app_type": "card_reissuance"
+        },
+        "status_granting": {
+          "app_type": "status_granting"
+        }
+      }
+    },
+    "F04": {
+      "schema": "F04",
+      "groups": [
+        "overseas",
+        "stay"
+      ],
+      "featured": false,
+      "name": {
+        "ko": "재외동포(F-4) 통합신청서 · 국내거소신고서",
+        "en": "Overseas Korean (F-4) application / residence report form"
+      },
+      "short": {
+        "ko": "재외동포(F-4) 거소신고서",
+        "en": "F-4 residence report"
+      },
+      "number": {
+        "ko": "재외동포의 출입국과 법적 지위에 관한 법률 시행규칙 별지 제1호서식",
+        "en": "Overseas Koreans Act Rule Annex 1"
+      },
+      "editions": [
+        {
+          "v": "F04",
+          "label": {
+            "ko": "국문·영문 (별지 제1호)",
+            "en": "Korean / English (Annex 1)"
+          }
+        },
+        {
+          "v": "F05",
+          "label": {
+            "ko": "중문 병기 (별지 제1호의2)",
+            "en": "With Chinese (Annex 1-2)"
+          }
+        }
+      ],
+      "summary": {
+        "ko": "외국국적동포(F-4)가 국내거소신고, 거소 이전신고, 거소신고증 재발급, 체류기간 연장, 체류자격 변경·부여를 신청할 때 쓰는 서식이에요.",
+        "en": "For overseas Koreans (F-4): residence report, change of residence, card reissuance, extension, change or granting of status."
+      },
+      "who": {
+        "ko": "신청인 본인이 작성하고 서명해요.",
+        "en": "Filled in and signed by the applicant."
+      },
+      "where": {
+        "ko": "관할 출입국·외국인청(사무소·출장소)",
+        "en": "Your regional immigration office (branch office)"
+      },
+      "attachments": {
+        "ko": "신청 구분별 첨부서류는 Visable 검색(재외동포 F-4)에서 확인하세요.",
+        "en": "See the Visable search (F-4) for the document list per application type."
+      },
+      "notes": [
+        {
+          "ko": "서명/인은 제출할 때 직접 해요.",
+          "en": "Sign or seal when you submit."
+        }
+      ],
+      "search": {
+        "ko": [
+          "재외동포",
+          "F-4",
+          "F4",
+          "거소신고",
+          "국내거소신고서",
+          "거소 이전",
+          "거소신고증",
+          "동포",
+          "별지 1호"
+        ],
+        "en": [
+          "overseas Korean",
+          "F-4",
+          "residence report",
+          "domestic residence",
+          "annex 1"
+        ],
+        "primary": [
+          "재외동포",
+          "F-4",
+          "거소신고",
+          "국내거소신고서",
+          "overseas Korean",
+          "residence report"
+        ]
+      },
+      "procedures": [
+        "registration",
+        "extension",
+        "status_change",
+        "residence_report",
+        "card_reissue",
+        "status_grant"
+      ],
+      "steps": [
+        {
+          "id": "type",
+          "title": {
+            "ko": "무엇을 신청하나요?",
+            "en": "What are you applying for?"
+          },
+          "lead": {
+            "ko": "서식에서 체크할 항목이 정해져요.",
+            "en": "This decides which box is ticked."
+          }
+        },
+        {
+          "id": "person",
+          "title": {
+            "ko": "인적사항",
+            "en": "Personal details"
+          }
+        },
+        {
+          "id": "contact",
+          "title": {
+            "ko": "거소·연락처",
+            "en": "Residence and contact"
+          }
+        },
+        {
+          "id": "extra",
+          "title": {
+            "ko": "직업·근무처 (선택)",
+            "en": "Occupation and workplace (optional)"
+          }
+        },
+        {
+          "id": "sign",
+          "title": {
+            "ko": "신청일과 서식 판",
+            "en": "Date and edition"
+          }
+        }
+      ],
+      "fields": [
+        {
+          "key": "app_type",
+          "step": "type",
+          "type": "choice",
+          "req": true,
+          "label": {
+            "ko": "신청·신고 구분",
+            "en": "Type of application"
+          },
+          "options": [
+            {
+              "v": "overseas_reg",
+              "label": {
+                "ko": "국내거소신고",
+                "en": "Domestic residence report (registration)"
+              },
+              "map": "cb_overseas_reg",
+              "sub": {
+                "ko": "외국국적동포의 최초 거소신고",
+                "en": "First residence report for overseas Koreans"
+              },
+              "note": {
+                "ko": "거소신고증 발급을 함께 해요. 여권용 사진(최근 6개월)이 필요해요.",
+                "en": "Issues the residence report card. A recent passport photo is needed."
+              }
+            },
+            {
+              "v": "move_report",
+              "label": {
+                "ko": "국내거소 이전신고",
+                "en": "Report on alteration of domestic residence"
+              },
+              "map": "cb_move_report",
+              "sub": {
+                "ko": "거소(주소)를 옮겼을 때",
+                "en": "Moved to a new residence"
+              },
+              "note": {
+                "ko": "「대한민국 안의 거소」 칸에 새 주소를 적어요.",
+                "en": "Write the new address in the “residence in Korea” cell."
+              }
+            },
+            {
+              "v": "card_reissue",
+              "label": {
+                "ko": "국내거소신고증 재발급",
+                "en": "Reissuance of the residence report card"
+              },
+              "map": "cb_card_reissue",
+              "sub": {
+                "ko": "분실·훼손 등",
+                "en": "Lost or damaged card"
+              },
+              "note": {
+                "ko": "여권용 사진이 필요해요.",
+                "en": "A passport photo is needed."
+              }
+            },
+            {
+              "v": "extension",
+              "label": {
+                "ko": "체류기간 연장허가",
+                "en": "Extension of sojourn period"
+              },
+              "map": "cb_extension",
+              "sub": {
+                "ko": "체류기간이 끝나기 전에",
+                "en": "Before the current period ends"
+              },
+              "note": {
+                "ko": "체류기간 만료일 전에 신청해요.",
+                "en": "Apply before the expiry date."
+              }
+            },
+            {
+              "v": "status_change",
+              "label": {
+                "ko": "체류자격 변경허가",
+                "en": "Change of status of sojourn"
+              },
+              "map": "cb_status_change",
+              "sub": {
+                "ko": "다른 자격으로 변경",
+                "en": "Switch to another status"
+              },
+              "note": {
+                "ko": "이 서식에는 희망 자격 칸이 없어요. 창구에서 자격을 말하면 돼요.",
+                "en": "This form has no desired-status cell; state the status at the counter."
+              }
+            },
+            {
+              "v": "status_grant",
+              "label": {
+                "ko": "체류자격 부여",
+                "en": "Granting status of sojourn"
+              },
+              "map": "cb_status_grant",
+              "sub": {
+                "ko": "자격 부여 신청",
+                "en": "Obtain a status"
+              },
+              "note": {
+                "ko": "이 서식에는 희망 자격 칸이 없어요.",
+                "en": "This form has no desired-status cell."
+              }
+            }
+          ],
+          "layout": "cards"
+        },
+        {
+          "key": "surname",
+          "step": "person",
+          "type": "upper",
+          "req": true,
+          "label": {
+            "ko": "성 (Surname)",
+            "en": "Surname"
+          },
+          "map": "surname",
+          "maxLen": 40
+        },
+        {
+          "key": "given",
+          "step": "person",
+          "type": "upper",
+          "req": true,
+          "label": {
+            "ko": "이름 (Given names)",
+            "en": "Given names"
+          },
+          "map": "given",
+          "maxLen": 40
+        },
+        {
+          "key": "korean_name",
+          "step": "person",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "한글 성명",
+            "en": "Name in Korean"
+          },
+          "map": "korean_name",
+          "maxLen": 20
+        },
+        {
+          "key": "dob",
+          "step": "person",
+          "type": "date",
+          "req": true,
+          "label": {
+            "ko": "생년월일",
+            "en": "Date of birth"
+          },
+          "map": {
+            "ymd": [
+              "dob_y",
+              "dob_m",
+              "dob_d"
+            ]
+          }
+        },
+        {
+          "key": "sex",
+          "step": "person",
+          "type": "choice",
+          "req": true,
+          "label": {
+            "ko": "성별",
+            "en": "Sex"
+          },
+          "options": [
+            {
+              "v": "M",
+              "label": {
+                "ko": "남 (Male)",
+                "en": "Male"
+              },
+              "map": "sex_m"
+            },
+            {
+              "v": "F",
+              "label": {
+                "ko": "여 (Female)",
+                "en": "Female"
+              },
+              "map": "sex_f"
+            }
+          ]
+        },
+        {
+          "key": "nationality",
+          "step": "person",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "국적",
+            "en": "Nationality"
+          },
+          "map": "nationality",
+          "maxLen": 40
+        },
+        {
+          "key": "arc_no",
+          "step": "person",
+          "type": "arc",
+          "req": false,
+          "label": {
+            "ko": "외국인등록번호(국내거소신고번호)",
+            "en": "Foreign resident / residence report No."
+          },
+          "map": {
+            "digits": "frn_reg_no"
+          },
+          "help": {
+            "ko": "이미 신고했으면 13자리를 적어요.",
+            "en": "Enter the 13 digits if already reported."
+          }
+        },
+        {
+          "key": "passport_no",
+          "step": "person",
+          "type": "upper",
+          "req": true,
+          "label": {
+            "ko": "여권번호",
+            "en": "Passport No."
+          },
+          "map": "passport_no",
+          "maxLen": 20
+        },
+        {
+          "key": "passport_issue",
+          "step": "person",
+          "type": "date",
+          "req": false,
+          "label": {
+            "ko": "여권 발급일",
+            "en": "Passport issue date"
+          },
+          "map": {
+            "dot": "passport_issue"
+          }
+        },
+        {
+          "key": "passport_expiry",
+          "step": "person",
+          "type": "date",
+          "req": true,
+          "label": {
+            "ko": "여권 유효기간",
+            "en": "Passport expiry date"
+          },
+          "map": {
+            "dot": "passport_expiry"
+          }
+        },
+        {
+          "key": "foreign_nat_date",
+          "step": "person",
+          "type": "date",
+          "req": false,
+          "label": {
+            "ko": "외국국적 취득일",
+            "en": "Date of acquisition of foreign nationality"
+          },
+          "map": {
+            "dot": "foreign_nat_date"
+          }
+        },
+        {
+          "key": "residence_korea",
+          "step": "contact",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "대한민국 안의 거소",
+            "en": "Residence in Korea"
+          },
+          "map": "residence_korea",
+          "help": {
+            "ko": "이전신고라면 새 거소(주소)를 적어요.",
+            "en": "For a change of residence, write the new address."
+          },
+          "maxLen": 90
+        },
+        {
+          "key": "tel",
+          "step": "contact",
+          "type": "phone",
+          "req": false,
+          "label": {
+            "ko": "전화번호",
+            "en": "Telephone No."
+          },
+          "map": "tel"
+        },
+        {
+          "key": "cell",
+          "step": "contact",
+          "type": "phone",
+          "req": false,
+          "label": {
+            "ko": "휴대전화",
+            "en": "Cell phone No."
+          },
+          "map": "cell"
+        },
+        {
+          "key": "email",
+          "step": "contact",
+          "type": "email",
+          "req": false,
+          "label": {
+            "ko": "전자우편",
+            "en": "E-mail"
+          },
+          "map": "email"
+        },
+        {
+          "key": "overseas_addr",
+          "step": "contact",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "거주국 주소",
+            "en": "Overseas address"
+          },
+          "map": "overseas_addr",
+          "maxLen": 80
+        },
+        {
+          "key": "overseas_tel",
+          "step": "contact",
+          "type": "phone",
+          "req": false,
+          "label": {
+            "ko": "거주국 전화번호",
+            "en": "Overseas phone"
+          },
+          "map": "overseas_tel"
+        },
+        {
+          "key": "occupation",
+          "step": "extra",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "직업",
+            "en": "Occupation"
+          },
+          "map": "occupation",
+          "maxLen": 30
+        },
+        {
+          "key": "workplace",
+          "step": "extra",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "근무처",
+            "en": "Workplace"
+          },
+          "map": "workplace",
+          "maxLen": 40
+        },
+        {
+          "key": "biz_no",
+          "step": "extra",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "사업자등록번호",
+            "en": "Business registration No."
+          },
+          "map": "biz_no",
+          "maxLen": 14
+        },
+        {
+          "key": "tel_work",
+          "step": "extra",
+          "type": "phone",
+          "req": false,
+          "label": {
+            "ko": "근무처 전화번호",
+            "en": "Workplace phone"
+          },
+          "map": "tel_work"
+        },
+        {
+          "key": "refund_account",
+          "step": "extra",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "반환용 계좌번호",
+            "en": "Refund bank account No."
+          },
+          "map": "refund_account",
+          "help": {
+            "ko": "거소신고·신고증 재발급 신청 때만 적어요. 중문 병기판에는 이 칸이 없어요.",
+            "en": "Only for registration and card reissuance; the Chinese edition has no such cell."
+          },
+          "maxLen": 40,
+          "showIf": {
+            "field": "app_type",
+            "in": [
+              "overseas_reg",
+              "card_reissue"
+            ]
+          }
+        },
+        {
+          "key": "photo_note",
+          "step": "extra",
+          "type": "note",
+          "req": false,
+          "label": {
+            "ko": "사진",
+            "en": "Photo"
+          },
+          "text": {
+            "ko": "여권용 사진(최근 6개월 이내)을 서식의 사진 칸에 붙여요.",
+            "en": "Attach a recent passport photo in the photo box."
+          },
+          "showIf": {
+            "field": "app_type",
+            "in": [
+              "overseas_reg",
+              "card_reissue"
+            ]
+          }
+        },
+        {
+          "key": "apply_date",
+          "step": "sign",
+          "type": "date",
+          "req": false,
+          "label": {
+            "ko": "신청일",
+            "en": "Date of application"
+          },
+          "map": {
+            "dot": "apply_date"
+          },
+          "default": "today"
+        },
+        {
+          "key": "edition",
+          "step": "sign",
+          "type": "choice",
+          "req": true,
+          "label": {
+            "ko": "서식 판",
+            "en": "Form edition"
+          },
+          "options": [
+            {
+              "v": "F04",
+              "label": {
+                "ko": "국문·영문 (기본)",
+                "en": "Korean / English (default)"
+              }
+            },
+            {
+              "v": "F05",
+              "label": {
+                "ko": "중문 병기",
+                "en": "With Chinese"
+              }
+            }
+          ],
+          "default": "F04",
+          "role": "edition"
+        }
+      ],
+      "derived": [],
+      "validation": [
+        {
+          "kind": "dateOrder",
+          "before": "apply_date",
+          "after": "passport_expiry",
+          "level": "warn",
+          "msg": {
+            "ko": "여권 유효기간이 신청일보다 앞서 있어요.",
+            "en": "The passport expiry date is before the application date."
+          }
+        }
+      ],
+      "output": {
+        "filenameFrom": [
+          "surname",
+          "given"
+        ],
+        "noun": {
+          "ko": "국내거소신고서",
+          "en": "F4-residence-report"
+        }
+      },
+      "waymakerTypes": {
+        "overseas_reg": {
+          "app_type": "overseas_reg"
+        },
+        "move_report": {
+          "app_type": "move_report"
+        },
+        "card_reissue": {
+          "app_type": "card_reissue"
+        },
+        "extension": {
+          "app_type": "extension"
+        },
+        "status_change": {
+          "app_type": "status_change"
+        },
+        "status_grant": {
+          "app_type": "status_grant"
+        }
+      }
+    },
+    "F06": {
+      "schema": "F06",
+      "groups": [
+        "frequent",
+        "family",
+        "stay"
+      ],
+      "featured": true,
+      "name": {
+        "ko": "거주·숙소제공확인서",
+        "en": "Confirmation of residence / accommodation"
+      },
+      "short": {
+        "ko": "숙소제공확인서",
+        "en": "Accommodation confirmation"
+      },
+      "number": {
+        "ko": "HiKorea 민원서식 (개정 2024. 5.)",
+        "en": "HiKorea civil service form (rev. 2024-05)"
+      },
+      "summary": {
+        "ko": "집주인·가족·회사가 외국인에게 거주할 곳을 제공한다고 확인해 주는 서식이에요. 체류지 입증 서류로 자주 쓰여요.",
+        "en": "The landlord, family member or company confirms that they provide the foreigner’s place of residence. Often used as proof of address."
+      },
+      "who": {
+        "ko": "숙소를 제공하는 사람(제공자)이 작성하고 서명해요. 거주자 정보도 함께 적어요.",
+        "en": "Filled in and signed by the person providing the accommodation; the resident’s details are entered too."
+      },
+      "where": {
+        "ko": "체류 신청 서류와 함께 관할 출입국·외국인관서에 제출해요.",
+        "en": "Submitted with your stay application to the immigration office."
+      },
+      "attachments": {
+        "ko": "제공자 신분증 사본, 임대차계약서·등기부등본 등 제공자의 거주 근거를 함께 요구하는 경우가 많아요(관서 확인).",
+        "en": "Offices often ask for the provider’s ID copy and the lease or property register as well (confirm locally)."
+      },
+      "notes": [
+        {
+          "ko": "제공자의 서명/인은 제출할 때 직접 해요.",
+          "en": "The provider signs or seals when submitting."
+        }
+      ],
+      "search": {
+        "ko": [
+          "숙소제공확인서",
+          "거주확인서",
+          "숙소 제공",
+          "거주 제공",
+          "체류지 입증",
+          "집주인 확인",
+          "거주지 확인서"
+        ],
+        "en": [
+          "accommodation",
+          "residence confirmation",
+          "proof of address",
+          "landlord"
+        ],
+        "primary": [
+          "숙소제공확인서",
+          "거주확인서",
+          "숙소 제공",
+          "거주 제공",
+          "accommodation",
+          "proof of address"
+        ]
+      },
+      "procedures": [
+        "registration",
+        "extension",
+        "residence_report",
+        "status_change"
+      ],
+      "steps": [
+        {
+          "id": "q",
+          "title": {
+            "ko": "어떤 집인가요?",
+            "en": "About the place"
+          },
+          "lead": {
+            "ko": "세 가지만 고르면 서식의 체크 칸이 정해져요.",
+            "en": "Three choices decide the ticked boxes."
+          }
+        },
+        {
+          "id": "recipient",
+          "title": {
+            "ko": "거주자 (제공받는 외국인)",
+            "en": "Resident (the foreigner)"
+          }
+        },
+        {
+          "id": "provider",
+          "title": {
+            "ko": "제공자",
+            "en": "Provider"
+          }
+        },
+        {
+          "id": "sign",
+          "title": {
+            "ko": "날짜",
+            "en": "Dates"
+          }
+        }
+      ],
+      "fields": [
+        {
+          "key": "res_type",
+          "step": "q",
+          "type": "choice",
+          "req": true,
+          "label": {
+            "ko": "소유 형태",
+            "en": "Ownership of the place"
+          },
+          "options": [
+            {
+              "v": "own",
+              "label": {
+                "ko": "자가",
+                "en": "Own"
+              },
+              "map": "own_self"
+            },
+            {
+              "v": "rent",
+              "label": {
+                "ko": "임대 (전·월세)",
+                "en": "Rent"
+              },
+              "map": "own_rent"
+            },
+            {
+              "v": "other",
+              "label": {
+                "ko": "기타",
+                "en": "Other"
+              },
+              "map": "own_other"
+            }
+          ],
+          "layout": "cards"
+        },
+        {
+          "key": "res_type_other",
+          "step": "q",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "기타 소유 형태 내용",
+            "en": "Other ownership (text)"
+          },
+          "map": "own_other_text",
+          "maxLen": 20,
+          "showIf": {
+            "field": "res_type",
+            "eq": "other"
+          }
+        },
+        {
+          "key": "holder",
+          "step": "q",
+          "type": "choice",
+          "req": true,
+          "label": {
+            "ko": "숙소를 제공하는 주체",
+            "en": "Who provides the place"
+          },
+          "options": [
+            {
+              "v": "family",
+              "label": {
+                "ko": "가족·지인",
+                "en": "Family / acquaintance"
+              },
+              "map": "rel_family"
+            },
+            {
+              "v": "company",
+              "label": {
+                "ko": "회사·기관",
+                "en": "Company / institution"
+              },
+              "map": "rel_employer"
+            },
+            {
+              "v": "self",
+              "label": {
+                "ko": "본인(외국인) 명의 계약",
+                "en": "The foreigner’s own lease"
+              },
+              "map": "rel_other"
+            }
+          ],
+          "layout": "cards"
+        },
+        {
+          "key": "res_form",
+          "step": "q",
+          "type": "choice",
+          "req": true,
+          "label": {
+            "ko": "주거 형태",
+            "en": "Type of residence"
+          },
+          "options": [
+            {
+              "v": "house",
+              "label": {
+                "ko": "개인주택 등",
+                "en": "Private residence"
+              },
+              "map": "res_house"
+            },
+            {
+              "v": "dorm",
+              "label": {
+                "ko": "기숙사",
+                "en": "Dormitory"
+              },
+              "map": "res_dorm"
+            },
+            {
+              "v": "lodging",
+              "label": {
+                "ko": "숙박시설",
+                "en": "Accommodation facility"
+              },
+              "map": "res_lodging"
+            },
+            {
+              "v": "other",
+              "label": {
+                "ko": "기타",
+                "en": "Other"
+              },
+              "map": "res_other"
+            }
+          ],
+          "layout": "cards"
+        },
+        {
+          "key": "res_form_other",
+          "step": "q",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "기타 주거 형태 내용",
+            "en": "Other residence type (text)"
+          },
+          "map": "res_other_text",
+          "maxLen": 20,
+          "showIf": {
+            "field": "res_form",
+            "eq": "other"
+          }
+        },
+        {
+          "key": "r_name",
+          "step": "recipient",
+          "type": "upper",
+          "req": true,
+          "label": {
+            "ko": "거주자 성명",
+            "en": "Resident full name"
+          },
+          "map": "rcpt_name",
+          "maxLen": 40
+        },
+        {
+          "key": "r_nat",
+          "step": "recipient",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "거주자 국적",
+            "en": "Resident nationality"
+          },
+          "map": "rcpt_nationality",
+          "maxLen": 30
+        },
+        {
+          "key": "r_reg",
+          "step": "recipient",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "외국인등록(거소)번호",
+            "en": "Registration No."
+          },
+          "map": "rcpt_regno",
+          "placeholder": {
+            "ko": "000000-0000000",
+            "en": "000000-0000000"
+          },
+          "maxLen": 14
+        },
+        {
+          "key": "r_phone",
+          "step": "recipient",
+          "type": "phone",
+          "req": false,
+          "label": {
+            "ko": "거주자 연락처",
+            "en": "Resident phone"
+          },
+          "map": "rcpt_phone"
+        },
+        {
+          "key": "r_addr",
+          "step": "recipient",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "제공받는 숙소 주소",
+            "en": "Address of the place provided"
+          },
+          "map": "rcpt_address",
+          "maxLen": 80
+        },
+        {
+          "key": "p_name",
+          "step": "provider",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "제공자 성명",
+            "en": "Provider full name"
+          },
+          "map": "prov_name",
+          "help": {
+            "ko": "회사·기관이면 대표자 이름을 적고 업체명도 적어요.",
+            "en": "For a company, write the representative’s name and the company name."
+          },
+          "maxLen": 30
+        },
+        {
+          "key": "p_nat",
+          "step": "provider",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "제공자 국적",
+            "en": "Provider nationality"
+          },
+          "map": "prov_nationality",
+          "default": "대한민국",
+          "maxLen": 30
+        },
+        {
+          "key": "p_reg",
+          "step": "provider",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "주민/외국인등록번호",
+            "en": "Resident / foreign registration No."
+          },
+          "map": "prov_regno",
+          "maxLen": 14
+        },
+        {
+          "key": "p_phone",
+          "step": "provider",
+          "type": "phone",
+          "req": false,
+          "label": {
+            "ko": "제공자 연락처",
+            "en": "Provider phone"
+          },
+          "map": "prov_phone"
+        },
+        {
+          "key": "p_company",
+          "step": "provider",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "업체명 (법인·기관일 때)",
+            "en": "Company name"
+          },
+          "map": "prov_company",
+          "maxLen": 40,
+          "showIf": {
+            "field": "holder",
+            "eq": "company"
+          }
+        },
+        {
+          "key": "start_date",
+          "step": "sign",
+          "type": "date",
+          "req": false,
+          "label": {
+            "ko": "거주·숙소 제공 시작일",
+            "en": "Starting date"
+          },
+          "map": {
+            "ymd": [
+              "start_y",
+              "start_m",
+              "start_d"
+            ]
+          }
+        },
+        {
+          "key": "confirm_date",
+          "step": "sign",
+          "type": "date",
+          "req": false,
+          "label": {
+            "ko": "확인일",
+            "en": "Date of confirmation"
+          },
+          "map": {
+            "ymd": [
+              "conf_y",
+              "conf_m",
+              "conf_d"
+            ]
+          },
+          "default": "today"
+        }
+      ],
+      "derived": [
+        {
+          "target": "prov_sign_name",
+          "from": "p_name"
+        },
+        {
+          "target": "rel_other_text",
+          "when": {
+            "field": "holder",
+            "eq": "self"
+          },
+          "const": "본인"
+        }
+      ],
+      "validation": [
+        {
+          "kind": "dateOrder",
+          "before": "start_date",
+          "after": "confirm_date",
+          "level": "info",
+          "msg": {
+            "ko": "확인일이 제공 시작일보다 앞서요. 날짜를 확인하세요.",
+            "en": "The confirmation date is before the start date; please check."
+          }
+        }
+      ],
+      "output": {
+        "filenameFrom": [
+          "r_name"
+        ],
+        "noun": {
+          "ko": "거주숙소제공확인서",
+          "en": "accommodation-confirmation"
+        }
+      }
+    },
+    "F07": {
+      "schema": "F07",
+      "groups": [
+        "family",
+        "work"
+      ],
+      "featured": false,
+      "name": {
+        "ko": "신원보증서",
+        "en": "Letter of guarantee"
+      },
+      "short": {
+        "ko": "신원보증서",
+        "en": "Letter of guarantee"
+      },
+      "number": {
+        "ko": "출입국관리법 시행규칙 별지 제129호서식",
+        "en": "Immigration Rule Annex 129"
+      },
+      "summary": {
+        "ko": "한국에 있는 보증인이 외국인의 체류 비용과 출국 등을 책임진다고 약속하는 서식이에요. 특정 체류자격·절차에서만 요구돼요.",
+        "en": "A guarantor in Korea promises to cover the foreigner’s stay costs and departure. Required only for certain statuses and procedures."
+      },
+      "who": {
+        "ko": "신원보증인이 작성하고 서명해요. 피보증외국인의 정보도 함께 적어요.",
+        "en": "Filled in and signed by the guarantor; the guaranteed foreigner’s details are entered too."
+      },
+      "where": {
+        "ko": "사증·체류 신청 서류와 함께 제출해요.",
+        "en": "Submitted with the visa or stay application."
+      },
+      "attachments": {
+        "ko": "보증인 신분증 사본, 재직·소득 증빙 등을 함께 요구하는 경우가 있어요(관서 확인).",
+        "en": "The guarantor’s ID copy and employment or income proof may be requested (confirm locally)."
+      },
+      "notes": [
+        {
+          "ko": "보증내용 (1)(2)(3)은 서식에 인쇄되어 있어 따로 적지 않아요. 보증기간은 최장 4년이에요(서식 기재).",
+          "en": "The guarantee terms (1)–(3) are pre-printed. The period is at most 4 years (as printed)."
+        },
+        {
+          "ko": "한자 성명 칸은 자동 표기하지 않아요. 필요하면 출력 후 손으로 적어요.",
+          "en": "The Chinese-character name cell is not filled automatically; write it by hand if needed."
+        }
+      ],
+      "search": {
+        "ko": [
+          "신원보증서",
+          "신원보증",
+          "보증인",
+          "보증서",
+          "별지 129호"
+        ],
+        "en": [
+          "guarantee",
+          "guarantor",
+          "letter of guarantee",
+          "annex 129"
+        ],
+        "primary": [
+          "신원보증서",
+          "신원보증",
+          "보증인",
+          "guarantee",
+          "guarantor"
+        ]
+      },
+      "procedures": [
+        "visa_issuance",
+        "visa_issuance_confirmation",
+        "extension",
+        "status_change"
+      ],
+      "steps": [
+        {
+          "id": "q",
+          "title": {
+            "ko": "누구의 입장에서 작성하나요?",
+            "en": "Whose side are you filling in?"
+          }
+        },
+        {
+          "id": "applicant",
+          "title": {
+            "ko": "피보증외국인",
+            "en": "Guaranteed foreigner"
+          }
+        },
+        {
+          "id": "guarantor",
+          "title": {
+            "ko": "신원보증인",
+            "en": "Guarantor"
+          }
+        },
+        {
+          "id": "sign",
+          "title": {
+            "ko": "작성일",
+            "en": "Date"
+          }
+        }
+      ],
+      "fields": [
+        {
+          "key": "role",
+          "step": "q",
+          "type": "choice",
+          "req": true,
+          "label": {
+            "ko": "작성자",
+            "en": "You are"
+          },
+          "options": [
+            {
+              "v": "guarantor",
+              "label": {
+                "ko": "신원보증인(보증인)",
+                "en": "The guarantor"
+              }
+            },
+            {
+              "v": "applicant",
+              "label": {
+                "ko": "피보증외국인(피보증인)",
+                "en": "The foreigner"
+              }
+            }
+          ],
+          "layout": "cards",
+          "help": {
+            "ko": "두 사람의 정보가 모두 서식에 들어가요. 모르는 칸은 비워 두고 상대에게 확인해요.",
+            "en": "Both parties’ details go on the form; leave unknown cells blank and confirm with the other person."
+          }
+        },
+        {
+          "key": "rel",
+          "step": "q",
+          "type": "choice",
+          "req": true,
+          "label": {
+            "ko": "보증인과 외국인의 관계",
+            "en": "Relationship"
+          },
+          "options": [
+            {
+              "v": "employer",
+              "label": {
+                "ko": "고용주",
+                "en": "Employer"
+              }
+            },
+            {
+              "v": "family",
+              "label": {
+                "ko": "가족",
+                "en": "Family"
+              }
+            },
+            {
+              "v": "relative",
+              "label": {
+                "ko": "친척",
+                "en": "Relative"
+              }
+            },
+            {
+              "v": "acquaintance",
+              "label": {
+                "ko": "지인",
+                "en": "Acquaintance"
+              }
+            },
+            {
+              "v": "other",
+              "label": {
+                "ko": "기타",
+                "en": "Other"
+              }
+            }
+          ],
+          "layout": "cards"
+        },
+        {
+          "key": "rel_other",
+          "step": "q",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "기타 관계 내용",
+            "en": "Other relationship (text)"
+          },
+          "maxLen": 20,
+          "showIf": {
+            "field": "rel",
+            "eq": "other"
+          }
+        },
+        {
+          "key": "a_surname",
+          "step": "applicant",
+          "type": "upper",
+          "req": true,
+          "label": {
+            "ko": "성 (Surname)",
+            "en": "Surname"
+          },
+          "map": "app_surname",
+          "maxLen": 40
+        },
+        {
+          "key": "a_given",
+          "step": "applicant",
+          "type": "upper",
+          "req": true,
+          "label": {
+            "ko": "이름 (Given names)",
+            "en": "Given names"
+          },
+          "map": "app_given",
+          "maxLen": 40
+        },
+        {
+          "key": "a_dob",
+          "step": "applicant",
+          "type": "date",
+          "req": true,
+          "label": {
+            "ko": "생년월일",
+            "en": "Date of birth"
+          },
+          "map": {
+            "dot": "app_dob"
+          }
+        },
+        {
+          "key": "a_sex",
+          "step": "applicant",
+          "type": "choice",
+          "req": true,
+          "label": {
+            "ko": "성별",
+            "en": "Sex"
+          },
+          "options": [
+            {
+              "v": "M",
+              "label": {
+                "ko": "남 (Male)",
+                "en": "Male"
+              },
+              "map": "app_sex_m"
+            },
+            {
+              "v": "F",
+              "label": {
+                "ko": "여 (Female)",
+                "en": "Female"
+              },
+              "map": "app_sex_f"
+            }
+          ]
+        },
+        {
+          "key": "a_nat",
+          "step": "applicant",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "국적",
+            "en": "Nationality"
+          },
+          "map": "app_nat",
+          "maxLen": 30
+        },
+        {
+          "key": "a_passport",
+          "step": "applicant",
+          "type": "upper",
+          "req": false,
+          "label": {
+            "ko": "여권번호",
+            "en": "Passport No."
+          },
+          "map": "app_passport",
+          "maxLen": 20
+        },
+        {
+          "key": "a_addr",
+          "step": "applicant",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "대한민국 주소",
+            "en": "Address in Korea"
+          },
+          "map": "app_addr",
+          "maxLen": 80
+        },
+        {
+          "key": "a_phone",
+          "step": "applicant",
+          "type": "phone",
+          "req": false,
+          "label": {
+            "ko": "전화번호",
+            "en": "Phone"
+          },
+          "map": "app_phone"
+        },
+        {
+          "key": "a_purpose",
+          "step": "applicant",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "체류목적",
+            "en": "Purpose of sojourn"
+          },
+          "map": "app_purpose",
+          "placeholder": {
+            "ko": "예: 유학(D-2), 취업(E-7)",
+            "en": "e.g. study (D-2), work (E-7)"
+          },
+          "maxLen": 30
+        },
+        {
+          "key": "g_name",
+          "step": "guarantor",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "신원보증인 성명",
+            "en": "Guarantor name"
+          },
+          "map": "g_name",
+          "maxLen": 30
+        },
+        {
+          "key": "g_nat",
+          "step": "guarantor",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "국적",
+            "en": "Nationality"
+          },
+          "map": "g_nat",
+          "default": "대한민국",
+          "maxLen": 30
+        },
+        {
+          "key": "g_sex",
+          "step": "guarantor",
+          "type": "choice",
+          "req": false,
+          "label": {
+            "ko": "성별",
+            "en": "Sex"
+          },
+          "options": [
+            {
+              "v": "M",
+              "label": {
+                "ko": "남 (Male)",
+                "en": "Male"
+              },
+              "map": "g_sex_m"
+            },
+            {
+              "v": "F",
+              "label": {
+                "ko": "여 (Female)",
+                "en": "Female"
+              },
+              "map": "g_sex_f"
+            }
+          ]
+        },
+        {
+          "key": "g_passport_dob",
+          "step": "guarantor",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "여권번호 또는 생년월일",
+            "en": "Passport No. or date of birth"
+          },
+          "map": "g_passport_dob",
+          "placeholder": {
+            "ko": "예: 1980.01.01",
+            "en": "e.g. 1980.01.01"
+          },
+          "maxLen": 20
+        },
+        {
+          "key": "g_addr",
+          "step": "guarantor",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "주소",
+            "en": "Address"
+          },
+          "map": "g_addr",
+          "maxLen": 80
+        },
+        {
+          "key": "g_phone",
+          "step": "guarantor",
+          "type": "phone",
+          "req": false,
+          "label": {
+            "ko": "전화번호",
+            "en": "Phone"
+          },
+          "map": "g_phone"
+        },
+        {
+          "key": "g_period",
+          "step": "guarantor",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "보증기간 (최장 4년)",
+            "en": "Period of guarantee (max 4 years)"
+          },
+          "map": "g_period",
+          "placeholder": {
+            "ko": "예: 2026.10.01 ~ 2028.09.30",
+            "en": "e.g. 2026.10.01 – 2028.09.30"
+          },
+          "maxLen": 30
+        },
+        {
+          "key": "g_workplace",
+          "step": "guarantor",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "근무처",
+            "en": "Workplace"
+          },
+          "map": "g_workplace",
+          "maxLen": 40
+        },
+        {
+          "key": "g_position",
+          "step": "guarantor",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "직위",
+            "en": "Job position"
+          },
+          "map": "g_position",
+          "maxLen": 20
+        },
+        {
+          "key": "g_work_addr",
+          "step": "guarantor",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "근무처 주소",
+            "en": "Work address"
+          },
+          "map": "g_work_addr",
+          "maxLen": 80
+        },
+        {
+          "key": "g_note",
+          "step": "guarantor",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "비고",
+            "en": "Note"
+          },
+          "map": "g_note",
+          "maxLen": 40
+        },
+        {
+          "key": "g_sign_date",
+          "step": "sign",
+          "type": "date",
+          "req": false,
+          "label": {
+            "ko": "작성일",
+            "en": "Date of signing"
+          },
+          "map": {
+            "ymd": [
+              "g_sign_y",
+              "g_sign_m",
+              "g_sign_d"
+            ]
+          },
+          "default": "today"
+        }
+      ],
+      "derived": [
+        {
+          "target": "g_relationship",
+          "when": {
+            "field": "rel",
+            "eq": "other"
+          },
+          "from": "rel_other",
+          "elseMap": {
+            "field": "rel",
+            "values": {
+              "employer": "고용주",
+              "family": "가족",
+              "relative": "친척",
+              "acquaintance": "지인"
+            }
+          }
+        }
+      ],
+      "validation": [],
+      "output": {
+        "filenameFrom": [
+          "a_surname",
+          "a_given"
+        ],
+        "noun": {
+          "ko": "신원보증서",
+          "en": "letter-of-guarantee"
+        }
+      }
+    },
+    "F08": {
+      "schema": "F08",
+      "groups": [
+        "frequent",
+        "stay"
+      ],
+      "featured": true,
+      "name": {
+        "ko": "체류지변경신고서",
+        "en": "Change of address notification"
+      },
+      "short": {
+        "ko": "체류지 변경신고",
+        "en": "Change of address"
+      },
+      "number": {
+        "ko": "출입국관리법 시행규칙 별지 제34호의4서식 (신설 2023. 12. 14.)",
+        "en": "Immigration Rule Annex 34-4 (new 2023-12-14)"
+      },
+      "summary": {
+        "ko": "이사한 뒤 새 체류지(주소)를 신고하는 전용 서식이에요. 통합신청서의 체류지 변경신고 항목과 같은 용도예요.",
+        "en": "The dedicated form for reporting a new address after moving. Same purpose as the change-of-address box on the integrated form."
+      },
+      "who": {
+        "ko": "본인이 작성해요. 대신 신고하는 사람이 있으면 아래 위임장 칸을 채워요.",
+        "en": "Filled in by the person moving; if someone reports on your behalf, fill the power-of-attorney part."
+      },
+      "when": {
+        "ko": "전입한 날부터 15일 이내 (Visable 체류 안내 기준).",
+        "en": "Within 15 days of moving in (per the Visable stay guidance)."
+      },
+      "where": {
+        "ko": "서식 기재: 시·군·구 또는 읍·면·동의 장 (주민센터 등). 출입국·외국인관서에서도 신고할 수 있어요.",
+        "en": "As printed: the head of the Si/Gun/Gu or Eup/Myeon/Dong (community centre). Immigration offices also accept it."
+      },
+      "attachments": {
+        "ko": "서식 기재: 주민등록등본(주민등록표에 기록된 외국인), 매매·임대차계약서, 기숙사 입주확인서, 숙소제공확인서, 주거확인서 등, 그 밖에 그 주소에 사는 것을 확인할 수 있는 서류(고시원 납입영수증 등).",
+        "en": "As printed: resident registration record (if recorded), purchase or lease agreement, dormitory or accommodation confirmation, or other proof that you live at the address (e.g. goshiwon receipt)."
+      },
+      "notes": [
+        {
+          "ko": "가족 전체가 신고하면 소유자·임차인 본인 외의 가족은 거주형태를 ‘그 밖의 형태’로 표시해요(서식 기재).",
+          "en": "When the whole household reports, family members other than the owner or tenant tick “others” (as printed)."
+        }
+      ],
+      "search": {
+        "ko": [
+          "체류지변경신고서",
+          "체류지 변경",
+          "주소 변경",
+          "주소 이전",
+          "이사",
+          "전입신고",
+          "새 주소",
+          "별지 34의4"
+        ],
+        "en": [
+          "change of address",
+          "moved",
+          "new address",
+          "residence change",
+          "annex 34-4"
+        ],
+        "primary": [
+          "체류지변경신고서",
+          "체류지 변경",
+          "주소 변경",
+          "주소 이전",
+          "이사",
+          "전입신고",
+          "새 주소",
+          "change of address",
+          "moved",
+          "new address"
+        ]
+      },
+      "procedures": [
+        "residence_report"
+      ],
+      "steps": [
+        {
+          "id": "person",
+          "title": {
+            "ko": "신고인",
+            "en": "Person reporting"
+          },
+          "lead": {
+            "ko": "외국인등록증에 적힌 대로 적어요.",
+            "en": "As printed on your registration card."
+          }
+        },
+        {
+          "id": "change",
+          "title": {
+            "ko": "새 주소",
+            "en": "New address"
+          }
+        },
+        {
+          "id": "sign",
+          "title": {
+            "ko": "신고일",
+            "en": "Date"
+          }
+        },
+        {
+          "id": "poa",
+          "title": {
+            "ko": "대신 신고할 때 (위임장)",
+            "en": "Reporting on someone’s behalf (optional)"
+          },
+          "showIf": {
+            "field": "use_poa",
+            "eq": "yes"
+          }
+        }
+      ],
+      "fields": [
+        {
+          "key": "name",
+          "step": "person",
+          "type": "upper",
+          "req": true,
+          "label": {
+            "ko": "성명",
+            "en": "Full name"
+          },
+          "map": "name",
+          "maxLen": 40
+        },
+        {
+          "key": "sex",
+          "step": "person",
+          "type": "choice",
+          "req": true,
+          "label": {
+            "ko": "성별",
+            "en": "Sex"
+          },
+          "options": [
+            {
+              "v": "M",
+              "label": {
+                "ko": "남 (Male)",
+                "en": "Male"
+              },
+              "map": "sex_m"
+            },
+            {
+              "v": "F",
+              "label": {
+                "ko": "여 (Female)",
+                "en": "Female"
+              },
+              "map": "sex_f"
+            }
+          ]
+        },
+        {
+          "key": "nationality",
+          "step": "person",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "국적",
+            "en": "Nationality"
+          },
+          "map": "nationality",
+          "maxLen": 30
+        },
+        {
+          "key": "phone",
+          "step": "person",
+          "type": "phone",
+          "req": false,
+          "label": {
+            "ko": "연락처",
+            "en": "Phone No."
+          },
+          "map": "phone"
+        },
+        {
+          "key": "arc_no",
+          "step": "person",
+          "type": "arc",
+          "req": true,
+          "label": {
+            "ko": "외국인등록번호",
+            "en": "Foreign resident registration No."
+          },
+          "map": {
+            "digits": "arc_no"
+          }
+        },
+        {
+          "key": "new_address",
+          "step": "change",
+          "type": "textarea",
+          "req": true,
+          "label": {
+            "ko": "변경된 대한민국 내 주소",
+            "en": "New address in Korea"
+          },
+          "map": "new_address",
+          "maxLen": 120,
+          "help": {
+            "ko": "동·호수까지 적어요. 세 줄까지 인쇄돼요.",
+            "en": "Include the building and unit number. Up to three printed lines."
+          }
+        },
+        {
+          "key": "res_type",
+          "step": "change",
+          "type": "choice",
+          "req": true,
+          "label": {
+            "ko": "거주 형태",
+            "en": "Type of residence"
+          },
+          "options": [
+            {
+              "v": "own",
+              "label": {
+                "ko": "자가",
+                "en": "House of your own"
+              },
+              "map": "res_own"
+            },
+            {
+              "v": "rent",
+              "label": {
+                "ko": "전세·월세",
+                "en": "Rental (deposit or monthly)"
+              },
+              "map": "res_rent"
+            },
+            {
+              "v": "other",
+              "label": {
+                "ko": "그 밖의 형태",
+                "en": "Others"
+              },
+              "map": "res_other"
+            }
+          ],
+          "layout": "cards"
+        },
+        {
+          "key": "res_other_text",
+          "step": "change",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "그 밖의 형태 내용",
+            "en": "Others (text)"
+          },
+          "map": "res_other_text",
+          "maxLen": 40,
+          "showIf": {
+            "field": "res_type",
+            "eq": "other"
+          }
+        },
+        {
+          "key": "report_date",
+          "step": "sign",
+          "type": "date",
+          "req": false,
+          "label": {
+            "ko": "신고일",
+            "en": "Date of notification"
+          },
+          "map": {
+            "dot": "report_date"
+          },
+          "default": "today"
+        },
+        {
+          "key": "reporter_name",
+          "step": "sign",
+          "type": "upper",
+          "req": false,
+          "label": {
+            "ko": "신고인 성명",
+            "en": "Name of person who reports"
+          },
+          "map": "reporter_name",
+          "help": {
+            "ko": "비워 두면 위 성명이 그대로 들어가요. 서명은 제출할 때 직접 해요.",
+            "en": "Leave blank to use the name above. Sign when you submit."
+          },
+          "maxLen": 40
+        },
+        {
+          "key": "use_poa",
+          "step": "sign",
+          "type": "choice",
+          "req": true,
+          "label": {
+            "ko": "다른 사람이 대신 신고하나요?",
+            "en": "Is someone reporting for you?"
+          },
+          "options": [
+            {
+              "v": "no",
+              "label": {
+                "ko": "아니요, 직접 신고해요",
+                "en": "No, I report myself"
+              }
+            },
+            {
+              "v": "yes",
+              "label": {
+                "ko": "네, 위임장을 채울게요",
+                "en": "Yes, fill in the power of attorney"
+              }
+            }
+          ],
+          "default": "no"
+        },
+        {
+          "key": "poa_date",
+          "step": "poa",
+          "type": "date",
+          "req": true,
+          "label": {
+            "ko": "위임일",
+            "en": "Date of authorization"
+          },
+          "map": {
+            "ymd": [
+              "poa_y",
+              "poa_m",
+              "poa_d"
+            ]
+          },
+          "default": "today"
+        },
+        {
+          "key": "agent_name",
+          "step": "poa",
+          "type": "upper",
+          "req": true,
+          "label": {
+            "ko": "위임받은 사람 성명",
+            "en": "Authorized person name"
+          },
+          "map": "agent_name",
+          "maxLen": 40
+        },
+        {
+          "key": "agent_dob",
+          "step": "poa",
+          "type": "date",
+          "req": true,
+          "label": {
+            "ko": "위임받은 사람 생년월일",
+            "en": "Authorized person date of birth"
+          },
+          "map": {
+            "dot": "agent_dob"
+          }
+        }
+      ],
+      "derived": [
+        {
+          "target": "reporter_name",
+          "when": {
+            "field": "reporter_name",
+            "empty": true
+          },
+          "from": "name"
+        }
+      ],
+      "validation": [],
+      "output": {
+        "filenameFrom": [
+          "name"
+        ],
+        "noun": {
+          "ko": "체류지변경신고서",
+          "en": "change-of-address"
+        }
+      }
+    },
+    "F09": {
+      "schema": "F09",
+      "groups": [
+        "frequent",
+        "stay"
+      ],
+      "featured": true,
+      "name": {
+        "ko": "모바일외국인등록증 신규 발급·재발급 신청서",
+        "en": "Mobile residence card — new issuance / reissuance"
+      },
+      "short": {
+        "ko": "모바일외국인등록증",
+        "en": "Mobile residence card"
+      },
+      "number": {
+        "ko": "출입국관리법 시행규칙 별지 제34호의9서식 (개정 2024. 12. 24.)",
+        "en": "Immigration Rule Annex 34-9 (rev. 2024-12-24)"
+      },
+      "summary": {
+        "ko": "스마트폰에 담는 모바일 외국인등록증을 처음 발급받거나, 기기 변경·분실 등으로 다시 발급받을 때 쓰는 서식이에요.",
+        "en": "Apply for the smartphone-based mobile residence card for the first time, or again after changing or losing the device."
+      },
+      "who": {
+        "ko": "신청인 본인이 작성하고 서명해요.",
+        "en": "Filled in and signed by the applicant."
+      },
+      "where": {
+        "ko": "출입국·외국인청(사무소·출장소)",
+        "en": "Immigration office (branch office)"
+      },
+      "attachments": {
+        "ko": "서식 기재: 유효한 여권, 외국인등록증(영주증 포함). 수수료 없음.",
+        "en": "As printed: valid passport and residence card (incl. permanent resident card). No fee."
+      },
+      "notes": [
+        {
+          "ko": "재발급이면 사유 하나를 골라요. 기기를 분실했으면 분실일자를 적어요.",
+          "en": "For reissuance pick one reason; if the device was lost, enter the date of loss."
+        }
+      ],
+      "search": {
+        "ko": [
+          "모바일외국인등록증",
+          "모바일 등록증",
+          "모바일 신분증",
+          "스마트폰 등록증",
+          "재발급",
+          "기기 변경",
+          "별지 34의9"
+        ],
+        "en": [
+          "mobile residence card",
+          "mobile ID",
+          "digital card",
+          "reissuance",
+          "annex 34-9"
+        ],
+        "primary": [
+          "모바일외국인등록증",
+          "모바일 등록증",
+          "mobile residence card"
+        ]
+      },
+      "procedures": [
+        "card_reissue",
+        "registration"
+      ],
+      "steps": [
+        {
+          "id": "type",
+          "title": {
+            "ko": "신규인가요, 재발급인가요?",
+            "en": "New or reissuance?"
+          }
+        },
+        {
+          "id": "person",
+          "title": {
+            "ko": "신청인",
+            "en": "Applicant"
+          }
+        },
+        {
+          "id": "sign",
+          "title": {
+            "ko": "신청일",
+            "en": "Date"
+          }
+        }
+      ],
+      "fields": [
+        {
+          "key": "type",
+          "step": "type",
+          "type": "choice",
+          "req": true,
+          "label": {
+            "ko": "신청 내용",
+            "en": "Type"
+          },
+          "options": [
+            {
+              "v": "new",
+              "label": {
+                "ko": "신규 발급",
+                "en": "New issuance"
+              },
+              "map": "type_new"
+            },
+            {
+              "v": "reissue",
+              "label": {
+                "ko": "재발급",
+                "en": "Reissuance"
+              },
+              "map": "type_reissue"
+            }
+          ],
+          "layout": "cards"
+        },
+        {
+          "key": "reason",
+          "step": "type",
+          "type": "choice",
+          "req": true,
+          "label": {
+            "ko": "재발급 사유",
+            "en": "Reason for reissue"
+          },
+          "options": [
+            {
+              "v": "card",
+              "label": {
+                "ko": "외국인등록증(영주증) 재발급",
+                "en": "Residence card reissued"
+              },
+              "map": "reason_card"
+            },
+            {
+              "v": "device",
+              "label": {
+                "ko": "이동통신단말장치(기기) 변경",
+                "en": "Change of mobile device"
+              },
+              "map": "reason_device"
+            },
+            {
+              "v": "other",
+              "label": {
+                "ko": "그 밖의 사유",
+                "en": "Other reasons"
+              },
+              "map": "reason_other"
+            }
+          ],
+          "layout": "cards",
+          "showIf": {
+            "field": "type",
+            "eq": "reissue"
+          }
+        },
+        {
+          "key": "loss_date",
+          "step": "type",
+          "type": "date",
+          "req": false,
+          "label": {
+            "ko": "분실일자 (분실한 경우)",
+            "en": "Date of loss (if lost)"
+          },
+          "map": {
+            "dot": "loss_date"
+          },
+          "showIf": {
+            "field": "type",
+            "eq": "reissue"
+          }
+        },
+        {
+          "key": "name",
+          "step": "person",
+          "type": "upper",
+          "req": true,
+          "label": {
+            "ko": "성명",
+            "en": "Full name"
+          },
+          "map": "name",
+          "maxLen": 40
+        },
+        {
+          "key": "arc_no",
+          "step": "person",
+          "type": "arc",
+          "req": true,
+          "label": {
+            "ko": "외국인등록번호",
+            "en": "Foreign resident registration No."
+          },
+          "map": {
+            "digits": "arc_no"
+          }
+        },
+        {
+          "key": "phone",
+          "step": "person",
+          "type": "phone",
+          "req": true,
+          "label": {
+            "ko": "연락처 (휴대전화)",
+            "en": "Phone No. (mobile)"
+          },
+          "map": {
+            "digits": "phone"
+          },
+          "help": {
+            "ko": "휴대전화 번호 11자리는 서식의 칸에 한 자리씩 들어가요.",
+            "en": "An 11-digit mobile number is placed one digit per printed cell."
+          }
+        },
+        {
+          "key": "apply_date",
+          "step": "sign",
+          "type": "date",
+          "req": false,
+          "label": {
+            "ko": "신청일",
+            "en": "Date of application"
+          },
+          "map": {
+            "ymd": [
+              "apply_y",
+              "apply_m",
+              "apply_d"
+            ]
+          },
+          "default": "today"
+        },
+        {
+          "key": "applicant_name",
+          "step": "sign",
+          "type": "upper",
+          "req": false,
+          "label": {
+            "ko": "신청인 (서명란 이름)",
+            "en": "Applicant (name on signature line)"
+          },
+          "map": "applicant_name",
+          "maxLen": 40,
+          "help": {
+            "ko": "비워 두면 위 성명이 그대로 들어가요.",
+            "en": "Leave blank to use the name above."
+          }
+        }
+      ],
+      "derived": [
+        {
+          "target": "applicant_name",
+          "when": {
+            "field": "applicant_name",
+            "empty": true
+          },
+          "from": "name"
+        }
+      ],
+      "validation": [],
+      "output": {
+        "filenameFrom": [
+          "name"
+        ],
+        "noun": {
+          "ko": "모바일외국인등록증신청서",
+          "en": "mobile-residence-card"
+        }
+      }
+    },
+    "F10": {
+      "schema": "F10",
+      "groups": [
+        "other",
+        "stay"
+      ],
+      "featured": false,
+      "name": {
+        "ko": "사실증명 발급·열람 신청서",
+        "en": "Certificate of fact — issuance / access"
+      },
+      "short": {
+        "ko": "사실증명 신청",
+        "en": "Certificate of fact"
+      },
+      "number": {
+        "ko": "출입국관리법 시행규칙 별지 제138호의2서식 (개정 2025. 5. 30.)",
+        "en": "Immigration Rule Annex 138-2 (rev. 2025-05-30)"
+      },
+      "summary": {
+        "ko": "출입국에 관한 사실증명이나 외국인등록 사실증명을 발급받거나 열람할 때 쓰는 서식이에요. 본인이 직접 창구에서 발급받을 때는 서식 없이 신분증만 제시하면 된다고 서식에 적혀 있어요.",
+        "en": "Request a certificate of fact on entry/departure or on foreign resident registration, or access to the registration. As printed, if you apply in person at the counter you only present your ID and need no form."
+      },
+      "who": {
+        "ko": "발급대상자 본인, 또는 위임받은 사람(위임장 칸 작성)이 신청해요.",
+        "en": "The principal, or an authorized person (fill the power-of-attorney part)."
+      },
+      "where": {
+        "ko": "서식 기재: 출입국·외국인청(사무소·출장소), 시·군·구·읍·면·동, 재외공관. 본인 발급은 정부24(www.gov.kr)에서 무료로도 가능해요(서식 기재).",
+        "en": "As printed: immigration office, Si/Gun/Gu/Eup/Myeon/Dong office, or an overseas mission. Your own certificate is also free online at gov.kr (as printed)."
+      },
+      "attachments": {
+        "ko": "위임 시: 위임장과 위임한 사람의 신분증(사본), 신청인 신분증 제시(서식 뒤쪽 유의사항 5).",
+        "en": "If authorized: power of attorney, the principal’s ID (copy) and your own ID (notice 5 on the back)."
+      },
+      "notes": [
+        {
+          "ko": "영문 성명 병기 여부 칸은 국민만 해당해서 이 도구에서는 채우지 않아요.",
+          "en": "The English-name option applies to Korean nationals only and is not filled here."
+        },
+        {
+          "ko": "위임은 작성한 날부터 6개월까지만 유효해요(서식 뒤쪽 유의사항 6).",
+          "en": "A power of attorney is valid for six months from the date written (notice 6 on the back)."
+        }
+      ],
+      "search": {
+        "ko": [
+          "사실증명",
+          "출입국 사실증명",
+          "출입국사실증명서",
+          "외국인등록 사실증명",
+          "열람",
+          "출입국 기록",
+          "증명서 발급",
+          "별지 138의2",
+          "A322"
+        ],
+        "en": [
+          "certificate of fact",
+          "entry and departure record",
+          "registration certificate",
+          "annex 138-2",
+          "A322"
+        ],
+        "primary": [
+          "사실증명",
+          "certificate of fact"
+        ]
+      },
+      "procedures": [],
+      "steps": [
+        {
+          "id": "principal",
+          "title": {
+            "ko": "발급대상자",
+            "en": "Principal (whose record)"
+          }
+        },
+        {
+          "id": "cert",
+          "title": {
+            "ko": "어떤 증명이 필요한가요?",
+            "en": "Which certificate?"
+          }
+        },
+        {
+          "id": "agent",
+          "title": {
+            "ko": "대신 신청하나요?",
+            "en": "Applying for someone else?"
+          }
+        },
+        {
+          "id": "sign",
+          "title": {
+            "ko": "신청일",
+            "en": "Date"
+          }
+        }
+      ],
+      "fields": [
+        {
+          "key": "p_name",
+          "step": "principal",
+          "type": "upper",
+          "req": true,
+          "label": {
+            "ko": "성명",
+            "en": "Full name"
+          },
+          "map": "p_name",
+          "maxLen": 40
+        },
+        {
+          "key": "p_phone",
+          "step": "principal",
+          "type": "phone",
+          "req": false,
+          "label": {
+            "ko": "연락처",
+            "en": "Phone No."
+          },
+          "map": "p_phone"
+        },
+        {
+          "key": "p_reg_no",
+          "step": "principal",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "주민등록번호 (외국인등록번호 또는 국내거소신고번호)",
+            "en": "Registration No. (resident / foreign resident / overseas Korean)"
+          },
+          "map": "p_reg_no",
+          "placeholder": {
+            "ko": "000000-0000000",
+            "en": "000000-0000000"
+          },
+          "maxLen": 14
+        },
+        {
+          "key": "cert_entry",
+          "step": "cert",
+          "type": "yesno",
+          "req": false,
+          "label": {
+            "ko": "출입국에 관한 사실증명",
+            "en": "Certificate of fact on entry and departure"
+          },
+          "map": "cert_entry"
+        },
+        {
+          "key": "cert_entry_count",
+          "step": "cert",
+          "type": "number",
+          "req": true,
+          "label": {
+            "ko": "통수",
+            "en": "Copies"
+          },
+          "map": "cert_entry_count",
+          "default": "1",
+          "maxLen": 1,
+          "showIf": {
+            "field": "cert_entry",
+            "eq": true
+          }
+        },
+        {
+          "key": "from_date",
+          "step": "cert",
+          "type": "date",
+          "req": false,
+          "label": {
+            "ko": "출입국 조회기간 시작",
+            "en": "Reference period from"
+          },
+          "map": {
+            "ymd": [
+              "from_y",
+              "from_m",
+              "from_d"
+            ]
+          },
+          "showIf": {
+            "field": "cert_entry",
+            "eq": true
+          }
+        },
+        {
+          "key": "to_date",
+          "step": "cert",
+          "type": "date",
+          "req": false,
+          "label": {
+            "ko": "출입국 조회기간 끝",
+            "en": "Reference period to"
+          },
+          "map": {
+            "ymd": [
+              "to_y",
+              "to_m",
+              "to_d"
+            ]
+          },
+          "showIf": {
+            "field": "cert_entry",
+            "eq": true
+          }
+        },
+        {
+          "key": "cert_reg",
+          "step": "cert",
+          "type": "yesno",
+          "req": false,
+          "label": {
+            "ko": "외국인등록 사실증명",
+            "en": "Certificate of fact on foreign resident registration"
+          },
+          "map": "cert_reg"
+        },
+        {
+          "key": "cert_reg_count",
+          "step": "cert",
+          "type": "number",
+          "req": true,
+          "label": {
+            "ko": "통수",
+            "en": "Copies"
+          },
+          "map": "cert_reg_count",
+          "default": "1",
+          "maxLen": 1,
+          "showIf": {
+            "field": "cert_reg",
+            "eq": true
+          }
+        },
+        {
+          "key": "cert_access",
+          "step": "cert",
+          "type": "yesno",
+          "req": false,
+          "label": {
+            "ko": "외국인등록 열람",
+            "en": "Access to foreign resident registration"
+          },
+          "map": "cert_access"
+        },
+        {
+          "key": "cert_access_count",
+          "step": "cert",
+          "type": "number",
+          "req": true,
+          "label": {
+            "ko": "건수",
+            "en": "Times"
+          },
+          "map": "cert_access_count",
+          "default": "1",
+          "maxLen": 1,
+          "showIf": {
+            "field": "cert_access",
+            "eq": true
+          }
+        },
+        {
+          "key": "prev_regno",
+          "step": "cert",
+          "type": "choice",
+          "req": false,
+          "label": {
+            "ko": "과거 등록번호 포함",
+            "en": "Previous registration number"
+          },
+          "options": [
+            {
+              "v": "yes",
+              "label": {
+                "ko": "포함",
+                "en": "Yes (include)"
+              },
+              "map": "prev_regno_yes"
+            },
+            {
+              "v": "no",
+              "label": {
+                "ko": "미포함",
+                "en": "No"
+              },
+              "map": "prev_regno_no"
+            }
+          ],
+          "showIf": {
+            "any": [
+              {
+                "field": "cert_reg",
+                "eq": true
+              },
+              {
+                "field": "cert_access",
+                "eq": true
+              }
+            ]
+          }
+        },
+        {
+          "key": "prev_name",
+          "step": "cert",
+          "type": "choice",
+          "req": false,
+          "label": {
+            "ko": "과거 성명 변경 사항 포함",
+            "en": "Previous name"
+          },
+          "options": [
+            {
+              "v": "yes",
+              "label": {
+                "ko": "포함",
+                "en": "Yes (include)"
+              },
+              "map": "prev_name_yes"
+            },
+            {
+              "v": "no",
+              "label": {
+                "ko": "미포함",
+                "en": "No"
+              },
+              "map": "prev_name_no"
+            }
+          ],
+          "showIf": {
+            "any": [
+              {
+                "field": "cert_reg",
+                "eq": true
+              },
+              {
+                "field": "cert_access",
+                "eq": true
+              }
+            ]
+          }
+        },
+        {
+          "key": "prev_addr",
+          "step": "cert",
+          "type": "choice",
+          "req": false,
+          "label": {
+            "ko": "과거 체류지 변동 사항 포함",
+            "en": "Previous address"
+          },
+          "options": [
+            {
+              "v": "yes",
+              "label": {
+                "ko": "포함",
+                "en": "Yes (include)"
+              },
+              "map": "prev_addr_yes"
+            },
+            {
+              "v": "no",
+              "label": {
+                "ko": "미포함",
+                "en": "No"
+              },
+              "map": "prev_addr_no"
+            }
+          ],
+          "showIf": {
+            "any": [
+              {
+                "field": "cert_reg",
+                "eq": true
+              },
+              {
+                "field": "cert_access",
+                "eq": true
+              }
+            ]
+          }
+        },
+        {
+          "key": "prev_status",
+          "step": "cert",
+          "type": "choice",
+          "req": false,
+          "label": {
+            "ko": "과거 체류자격 변동 사항 포함",
+            "en": "Previous status of sojourn"
+          },
+          "options": [
+            {
+              "v": "yes",
+              "label": {
+                "ko": "포함",
+                "en": "Yes (include)"
+              },
+              "map": "prev_status_yes"
+            },
+            {
+              "v": "no",
+              "label": {
+                "ko": "미포함",
+                "en": "No"
+              },
+              "map": "prev_status_no"
+            }
+          ],
+          "showIf": {
+            "any": [
+              {
+                "field": "cert_reg",
+                "eq": true
+              },
+              {
+                "field": "cert_access",
+                "eq": true
+              }
+            ]
+          }
+        },
+        {
+          "key": "addr_en",
+          "step": "cert",
+          "type": "choice",
+          "req": false,
+          "label": {
+            "ko": "체류지 영문표기",
+            "en": "Address in English"
+          },
+          "options": [
+            {
+              "v": "yes",
+              "label": {
+                "ko": "표기",
+                "en": "Yes"
+              },
+              "map": "addr_en_yes"
+            },
+            {
+              "v": "no",
+              "label": {
+                "ko": "미표기",
+                "en": "No"
+              },
+              "map": "addr_en_no"
+            }
+          ],
+          "showIf": {
+            "any": [
+              {
+                "field": "cert_reg",
+                "eq": true
+              },
+              {
+                "field": "cert_access",
+                "eq": true
+              }
+            ]
+          }
+        },
+        {
+          "key": "purpose",
+          "step": "cert",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "용도",
+            "en": "Purpose"
+          },
+          "map": "purpose",
+          "placeholder": {
+            "ko": "예: 은행 제출용",
+            "en": "e.g. for a bank"
+          },
+          "maxLen": 60
+        },
+        {
+          "key": "is_agent",
+          "step": "agent",
+          "type": "choice",
+          "req": true,
+          "label": {
+            "ko": "누가 신청하나요?",
+            "en": "Who is applying?"
+          },
+          "options": [
+            {
+              "v": "self",
+              "label": {
+                "ko": "본인이 직접",
+                "en": "The principal in person"
+              }
+            },
+            {
+              "v": "agent",
+              "label": {
+                "ko": "위임받은 사람",
+                "en": "An authorized person"
+              }
+            }
+          ],
+          "default": "self",
+          "layout": "cards"
+        },
+        {
+          "key": "a_name",
+          "step": "agent",
+          "type": "upper",
+          "req": true,
+          "label": {
+            "ko": "신청인(위임받은 사람) 성명",
+            "en": "Applicant (authorized person) name"
+          },
+          "map": "a_name",
+          "maxLen": 40,
+          "showIf": {
+            "field": "is_agent",
+            "eq": "agent"
+          }
+        },
+        {
+          "key": "a_dob",
+          "step": "agent",
+          "type": "date",
+          "req": true,
+          "label": {
+            "ko": "신청인 생년월일",
+            "en": "Applicant date of birth"
+          },
+          "map": {
+            "dot": "a_dob"
+          },
+          "showIf": {
+            "field": "is_agent",
+            "eq": "agent"
+          }
+        },
+        {
+          "key": "a_phone",
+          "step": "agent",
+          "type": "phone",
+          "req": false,
+          "label": {
+            "ko": "신청인 연락처",
+            "en": "Applicant phone"
+          },
+          "map": "a_phone",
+          "showIf": {
+            "field": "is_agent",
+            "eq": "agent"
+          }
+        },
+        {
+          "key": "a_relation",
+          "step": "agent",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "발급대상자와의 관계",
+            "en": "Relationship to principal"
+          },
+          "map": "a_relation",
+          "maxLen": 30,
+          "showIf": {
+            "field": "is_agent",
+            "eq": "agent"
+          }
+        },
+        {
+          "key": "poa_date",
+          "step": "agent",
+          "type": "date",
+          "req": true,
+          "label": {
+            "ko": "위임일",
+            "en": "Date of authorization"
+          },
+          "map": {
+            "ymd": [
+              "poa_y",
+              "poa_m",
+              "poa_d"
+            ]
+          },
+          "default": "today",
+          "showIf": {
+            "field": "is_agent",
+            "eq": "agent"
+          }
+        },
+        {
+          "key": "apply_date",
+          "step": "sign",
+          "type": "date",
+          "req": false,
+          "label": {
+            "ko": "신청일",
+            "en": "Date"
+          },
+          "map": {
+            "ymd": [
+              "apply_y",
+              "apply_m",
+              "apply_d"
+            ]
+          },
+          "default": "today"
+        }
+      ],
+      "derived": [
+        {
+          "target": "applicant_name",
+          "when": {
+            "field": "is_agent",
+            "eq": "agent"
+          },
+          "from": "a_name",
+          "else": "p_name"
+        },
+        {
+          "target": "applicant_name_p2",
+          "when": {
+            "field": "is_agent",
+            "eq": "agent"
+          },
+          "from": "a_name",
+          "else": "p_name"
+        },
+        {
+          "target": "principal_sign_name",
+          "when": {
+            "field": "is_agent",
+            "eq": "agent"
+          },
+          "from": "p_name"
+        },
+        {
+          "target": "cert_entry_count_en",
+          "fromOverlay": "cert_entry_count"
+        },
+        {
+          "target": "cert_reg_count_en",
+          "fromOverlay": "cert_reg_count"
+        },
+        {
+          "target": "cert_access_count_en",
+          "fromOverlay": "cert_access_count"
+        }
+      ],
+      "validation": [
+        {
+          "kind": "anyOf",
+          "fields": [
+            "cert_entry",
+            "cert_reg",
+            "cert_access"
+          ],
+          "level": "error",
+          "msg": {
+            "ko": "증명 종류를 하나 이상 골라요.",
+            "en": "Choose at least one certificate type."
+          }
+        },
+        {
+          "kind": "dateOrder",
+          "before": "from_date",
+          "after": "to_date",
+          "level": "warn",
+          "msg": {
+            "ko": "조회기간의 끝이 시작보다 앞서요.",
+            "en": "The reference period ends before it starts."
+          }
+        }
+      ],
+      "output": {
+        "filenameFrom": [
+          "p_name"
+        ],
+        "noun": {
+          "ko": "사실증명신청서",
+          "en": "certificate-of-fact"
+        }
+      }
+    },
+    "F11": {
+      "schema": "F11",
+      "groups": [
+        "other"
+      ],
+      "featured": false,
+      "name": {
+        "ko": "자동출입국심사 등록신청서",
+        "en": "Automated immigration clearance (SES) registration"
+      },
+      "short": {
+        "ko": "자동출입국심사 등록",
+        "en": "SES registration"
+      },
+      "number": {
+        "ko": "출입국관리법 시행규칙 별지 제1호의4서식 (개정 2022. 4. 12.)",
+        "en": "Immigration Rule Annex 1-4 (rev. 2022-04-12)"
+      },
+      "summary": {
+        "ko": "공항의 자동출입국심사대를 쓰기 위해 지문과 얼굴 정보를 등록할 때 쓰는 서식이에요. 개인정보 고지사항이 서식에 인쇄되어 있어요.",
+        "en": "Register fingerprints and face data to use the automated immigration gates. The privacy notice is printed on the form."
+      },
+      "who": {
+        "ko": "신청인 본인이 작성하고 서명해요.",
+        "en": "Filled in and signed by the applicant."
+      },
+      "where": {
+        "ko": "출입국·외국인청(사무소·출장소) 등록센터",
+        "en": "Immigration office (registration centre)"
+      },
+      "attachments": {
+        "ko": "서식 기재: 첨부서류 없음, 수수료 없음.",
+        "en": "As printed: no attachments, no fee."
+      },
+      "notes": [
+        {
+          "ko": "등록 대상·조건은 관서 안내를 확인하세요. 이 도구는 서식 작성만 도와요.",
+          "en": "Eligibility is confirmed by the office; this tool only helps fill in the form."
+        }
+      ],
+      "search": {
+        "ko": [
+          "자동출입국심사",
+          "자동출입국",
+          "SES",
+          "자동심사대",
+          "지문 등록",
+          "공항 자동심사",
+          "별지 1의4"
+        ],
+        "en": [
+          "SES",
+          "automated immigration",
+          "smart entry",
+          "e-gate",
+          "fingerprint",
+          "annex 1-4"
+        ],
+        "primary": [
+          "자동출입국심사",
+          "SES"
+        ]
+      },
+      "procedures": [],
+      "steps": [
+        {
+          "id": "person",
+          "title": {
+            "ko": "신청인 기본정보",
+            "en": "Applicant"
+          }
+        },
+        {
+          "id": "sign",
+          "title": {
+            "ko": "신청일",
+            "en": "Date"
+          }
+        }
+      ],
+      "fields": [
+        {
+          "key": "name",
+          "step": "person",
+          "type": "upper",
+          "req": true,
+          "label": {
+            "ko": "성명",
+            "en": "Full name"
+          },
+          "map": "name",
+          "maxLen": 40
+        },
+        {
+          "key": "sex",
+          "step": "person",
+          "type": "choice",
+          "req": true,
+          "label": {
+            "ko": "성별",
+            "en": "Sex"
+          },
+          "options": [
+            {
+              "v": "M",
+              "label": {
+                "ko": "남 (Male)",
+                "en": "Male"
+              },
+              "map": "sex_m"
+            },
+            {
+              "v": "F",
+              "label": {
+                "ko": "여 (Female)",
+                "en": "Female"
+              },
+              "map": "sex_f"
+            }
+          ]
+        },
+        {
+          "key": "dob",
+          "step": "person",
+          "type": "date",
+          "req": true,
+          "label": {
+            "ko": "생년월일",
+            "en": "Date of birth"
+          },
+          "map": {
+            "dot": "dob"
+          }
+        },
+        {
+          "key": "passport_no",
+          "step": "person",
+          "type": "upper",
+          "req": true,
+          "label": {
+            "ko": "여권번호",
+            "en": "Passport No."
+          },
+          "map": "passport_no",
+          "maxLen": 20
+        },
+        {
+          "key": "address",
+          "step": "person",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "주소",
+            "en": "Address"
+          },
+          "map": "address",
+          "maxLen": 90
+        },
+        {
+          "key": "tel",
+          "step": "person",
+          "type": "phone",
+          "req": false,
+          "label": {
+            "ko": "전화번호",
+            "en": "Telephone"
+          },
+          "map": "tel"
+        },
+        {
+          "key": "cell",
+          "step": "person",
+          "type": "phone",
+          "req": false,
+          "label": {
+            "ko": "휴대전화",
+            "en": "Cell phone"
+          },
+          "map": "cell"
+        },
+        {
+          "key": "email",
+          "step": "person",
+          "type": "email",
+          "req": false,
+          "label": {
+            "ko": "전자우편",
+            "en": "E-mail"
+          },
+          "map": "email"
+        },
+        {
+          "key": "date",
+          "step": "sign",
+          "type": "date",
+          "req": false,
+          "label": {
+            "ko": "신청일",
+            "en": "Date"
+          },
+          "map": {
+            "ymd": [
+              "date_y",
+              "date_m",
+              "date_d"
+            ]
+          },
+          "default": "today"
+        }
+      ],
+      "derived": [
+        {
+          "target": "applicant_name",
+          "from": "name"
+        }
+      ],
+      "validation": [],
+      "output": {
+        "filenameFrom": [
+          "name"
+        ],
+        "noun": {
+          "ko": "자동출입국심사등록신청서",
+          "en": "ses-registration"
+        }
+      }
+    },
+    "F12": {
+      "schema": "F12",
+      "groups": [
+        "stay"
+      ],
+      "featured": false,
+      "name": {
+        "ko": "재입국허가기간 연장허가 신청서",
+        "en": "Extension of re-entry permit period"
+      },
+      "short": {
+        "ko": "재입국허가 기간 연장",
+        "en": "Re-entry permit extension"
+      },
+      "number": {
+        "ko": "출입국관리법 시행규칙 별지 제61호서식 (개정 2013. 1. 1.)",
+        "en": "Immigration Rule Annex 61 (rev. 2013-01-01)"
+      },
+      "summary": {
+        "ko": "이미 받은 재입국허가의 유효기간을 늘려 달라고 신청하는 서식이에요. 보통 해외에 있을 때 재외공관을 통해 신청해요.",
+        "en": "Ask to extend the validity of a re-entry permit you already hold; usually filed from abroad through a Korean mission."
+      },
+      "who": {
+        "ko": "신청인 본인이 작성하고 서명해요. 동반자가 있으면 표에 적어요.",
+        "en": "Filled in and signed by the applicant; list dependents in the table."
+      },
+      "where": {
+        "ko": "재외공관 또는 출입국·외국인관서(서식에 제출처가 인쇄되어 있지 않아요 — 관서 확인).",
+        "en": "A Korean mission abroad or an immigration office (the form prints no addressee — confirm locally)."
+      },
+      "attachments": {
+        "ko": "서식에 첨부서류 목록이 없어요. 여권·재입국허가 내역을 준비하고 관서 안내를 확인하세요.",
+        "en": "The form lists no attachments; have your passport and permit details ready and confirm with the office."
+      },
+      "notes": [
+        {
+          "ko": "한자 성명 칸은 자동 표기하지 않아요.",
+          "en": "The Chinese-character name cell is not filled automatically."
+        }
+      ],
+      "search": {
+        "ko": [
+          "재입국허가 연장",
+          "재입국 기간 연장",
+          "재입국허가기간",
+          "재입국",
+          "해외 체류 연장",
+          "별지 61호"
+        ],
+        "en": [
+          "re-entry permit extension",
+          "re-entry",
+          "extend permit",
+          "annex 61"
+        ],
+        "primary": [
+          "재입국허가 연장",
+          "재입국허가기간",
+          "re-entry permit extension"
+        ]
+      },
+      "procedures": [
+        "reentry"
+      ],
+      "steps": [
+        {
+          "id": "type",
+          "title": {
+            "ko": "허가 종류",
+            "en": "Permit type"
+          }
+        },
+        {
+          "id": "person",
+          "title": {
+            "ko": "신청인",
+            "en": "Applicant"
+          }
+        },
+        {
+          "id": "permit",
+          "title": {
+            "ko": "재입국허가와 연장 신청",
+            "en": "Permit and extension"
+          }
+        },
+        {
+          "id": "dep",
+          "title": {
+            "ko": "동반자 (있을 때)",
+            "en": "Dependents (if any)"
+          }
+        },
+        {
+          "id": "sign",
+          "title": {
+            "ko": "신청일자",
+            "en": "Date"
+          }
+        }
+      ],
+      "fields": [
+        {
+          "key": "type",
+          "step": "type",
+          "type": "choice",
+          "req": true,
+          "label": {
+            "ko": "종류",
+            "en": "Type"
+          },
+          "options": [
+            {
+              "v": "single",
+              "label": {
+                "ko": "단수 (Single)",
+                "en": "Single"
+              },
+              "map": "type_single"
+            },
+            {
+              "v": "multiple",
+              "label": {
+                "ko": "복수 (Multiple)",
+                "en": "Multiple"
+              },
+              "map": "type_multiple"
+            }
+          ],
+          "layout": "cards"
+        },
+        {
+          "key": "name",
+          "step": "person",
+          "type": "upper",
+          "req": true,
+          "label": {
+            "ko": "성명",
+            "en": "Name in full"
+          },
+          "map": "name",
+          "maxLen": 40
+        },
+        {
+          "key": "sex",
+          "step": "person",
+          "type": "choice",
+          "req": true,
+          "label": {
+            "ko": "성별",
+            "en": "Gender"
+          },
+          "options": [
+            {
+              "v": "M",
+              "label": {
+                "ko": "남 (Male)",
+                "en": "Male"
+              },
+              "map": "sex_m"
+            },
+            {
+              "v": "F",
+              "label": {
+                "ko": "여 (Female)",
+                "en": "Female"
+              },
+              "map": "sex_f"
+            }
+          ]
+        },
+        {
+          "key": "dob",
+          "step": "person",
+          "type": "date",
+          "req": true,
+          "label": {
+            "ko": "생년월일",
+            "en": "Date of birth"
+          },
+          "map": {
+            "dot": "dob"
+          }
+        },
+        {
+          "key": "nationality",
+          "step": "person",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "국적",
+            "en": "Nationality"
+          },
+          "map": "nationality",
+          "maxLen": 30
+        },
+        {
+          "key": "employment",
+          "step": "person",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "직장 및 직위",
+            "en": "Place and position of employment"
+          },
+          "map": "employment",
+          "maxLen": 60
+        },
+        {
+          "key": "address_korea",
+          "step": "person",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "한국 내 주소",
+            "en": "Address in Korea"
+          },
+          "map": "address_korea",
+          "maxLen": 60
+        },
+        {
+          "key": "tel",
+          "step": "person",
+          "type": "phone",
+          "req": false,
+          "label": {
+            "ko": "전화번호",
+            "en": "Telephone"
+          },
+          "map": "tel"
+        },
+        {
+          "key": "address_home",
+          "step": "person",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "본국 주소",
+            "en": "Address in home country"
+          },
+          "map": "address_home",
+          "maxLen": 80
+        },
+        {
+          "key": "passport_no",
+          "step": "person",
+          "type": "upper",
+          "req": true,
+          "label": {
+            "ko": "여권 번호",
+            "en": "Passport No."
+          },
+          "map": "passport_no",
+          "maxLen": 20
+        },
+        {
+          "key": "passport_expiry",
+          "step": "person",
+          "type": "date",
+          "req": true,
+          "label": {
+            "ko": "여권 유효기간",
+            "en": "Passport validity"
+          },
+          "map": {
+            "dot": "passport_expiry"
+          }
+        },
+        {
+          "key": "permit_no",
+          "step": "permit",
+          "type": "upper",
+          "req": true,
+          "label": {
+            "ko": "재입국 허가번호",
+            "en": "Re-entry permit No."
+          },
+          "map": "permit_no",
+          "maxLen": 16
+        },
+        {
+          "key": "permit_date",
+          "step": "permit",
+          "type": "date",
+          "req": false,
+          "label": {
+            "ko": "허가일",
+            "en": "Date of permit"
+          },
+          "map": {
+            "dot": "permit_date"
+          }
+        },
+        {
+          "key": "permit_expiry",
+          "step": "permit",
+          "type": "date",
+          "req": true,
+          "label": {
+            "ko": "유효기간 (만료일)",
+            "en": "Date of expiration"
+          },
+          "map": {
+            "dot": "permit_expiry"
+          }
+        },
+        {
+          "key": "ext_period",
+          "step": "permit",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "연장신청 기간",
+            "en": "Intended period of extension"
+          },
+          "map": "ext_period",
+          "placeholder": {
+            "ko": "예: 6개월",
+            "en": "e.g. 6 months"
+          },
+          "maxLen": 16
+        },
+        {
+          "key": "ext_reason",
+          "step": "permit",
+          "type": "textarea",
+          "req": true,
+          "label": {
+            "ko": "연장신청 사유",
+            "en": "Reason for application"
+          },
+          "map": "ext_reason",
+          "maxLen": 80,
+          "help": {
+            "ko": "두 줄까지 인쇄돼요.",
+            "en": "Up to two printed lines."
+          }
+        },
+        {
+          "key": "dep_count",
+          "step": "dep",
+          "type": "choice",
+          "req": true,
+          "label": {
+            "ko": "동반자 수",
+            "en": "Number of dependents"
+          },
+          "options": [
+            {
+              "v": 0,
+              "label": {
+                "ko": "없음",
+                "en": "None"
+              }
+            },
+            {
+              "v": 1,
+              "label": {
+                "ko": "1명",
+                "en": "One"
+              }
+            },
+            {
+              "v": 2,
+              "label": {
+                "ko": "2명",
+                "en": "Two"
+              }
+            }
+          ],
+          "default": 0
+        },
+        {
+          "key": "dep1_name",
+          "step": "dep",
+          "type": "upper",
+          "req": true,
+          "label": {
+            "ko": "동반자 1 성명",
+            "en": "Dependent 1 name"
+          },
+          "map": "dep1_name",
+          "maxLen": 40,
+          "showIf": {
+            "field": "dep_count",
+            "gte": 1
+          }
+        },
+        {
+          "key": "dep1_dob",
+          "step": "dep",
+          "type": "date",
+          "req": false,
+          "label": {
+            "ko": "생년월일",
+            "en": "Date of birth"
+          },
+          "map": {
+            "dot": "dep1_dob"
+          },
+          "showIf": {
+            "field": "dep_count",
+            "gte": 1
+          }
+        },
+        {
+          "key": "dep1_sex",
+          "step": "dep",
+          "type": "choice",
+          "req": false,
+          "label": {
+            "ko": "성별",
+            "en": "Gender"
+          },
+          "options": [
+            {
+              "v": "M",
+              "label": {
+                "ko": "M",
+                "en": "M"
+              },
+              "map": "dep1_sex_m"
+            },
+            {
+              "v": "F",
+              "label": {
+                "ko": "F",
+                "en": "F"
+              },
+              "map": "dep1_sex_f"
+            }
+          ],
+          "showIf": {
+            "field": "dep_count",
+            "gte": 1
+          }
+        },
+        {
+          "key": "dep1_relation",
+          "step": "dep",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "관계",
+            "en": "Relation"
+          },
+          "map": "dep1_relation",
+          "maxLen": 20,
+          "showIf": {
+            "field": "dep_count",
+            "gte": 1
+          }
+        },
+        {
+          "key": "dep1_remarks",
+          "step": "dep",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "비고",
+            "en": "Remarks"
+          },
+          "map": "dep1_remarks",
+          "maxLen": 20,
+          "showIf": {
+            "field": "dep_count",
+            "gte": 1
+          }
+        },
+        {
+          "key": "dep2_name",
+          "step": "dep",
+          "type": "upper",
+          "req": false,
+          "label": {
+            "ko": "동반자 2 성명",
+            "en": "Dependent 2 name"
+          },
+          "map": "dep2_name",
+          "maxLen": 40,
+          "showIf": {
+            "field": "dep_count",
+            "gte": 2
+          }
+        },
+        {
+          "key": "dep2_dob",
+          "step": "dep",
+          "type": "date",
+          "req": false,
+          "label": {
+            "ko": "생년월일",
+            "en": "Date of birth"
+          },
+          "map": {
+            "dot": "dep2_dob"
+          },
+          "showIf": {
+            "field": "dep_count",
+            "gte": 2
+          }
+        },
+        {
+          "key": "dep2_sex",
+          "step": "dep",
+          "type": "choice",
+          "req": false,
+          "label": {
+            "ko": "성별",
+            "en": "Gender"
+          },
+          "options": [
+            {
+              "v": "M",
+              "label": {
+                "ko": "M",
+                "en": "M"
+              },
+              "map": "dep2_sex_m"
+            },
+            {
+              "v": "F",
+              "label": {
+                "ko": "F",
+                "en": "F"
+              },
+              "map": "dep2_sex_f"
+            }
+          ],
+          "showIf": {
+            "field": "dep_count",
+            "gte": 2
+          }
+        },
+        {
+          "key": "dep2_relation",
+          "step": "dep",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "관계",
+            "en": "Relation"
+          },
+          "map": "dep2_relation",
+          "maxLen": 20,
+          "showIf": {
+            "field": "dep_count",
+            "gte": 2
+          }
+        },
+        {
+          "key": "dep2_remarks",
+          "step": "dep",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "비고",
+            "en": "Remarks"
+          },
+          "map": "dep2_remarks",
+          "maxLen": 20,
+          "showIf": {
+            "field": "dep_count",
+            "gte": 2
+          }
+        },
+        {
+          "key": "apply_date",
+          "step": "sign",
+          "type": "date",
+          "req": false,
+          "label": {
+            "ko": "신청 일자",
+            "en": "Date of application"
+          },
+          "map": {
+            "ymd": [
+              "apply_y",
+              "apply_m",
+              "apply_d"
+            ]
+          },
+          "default": "today"
+        }
+      ],
+      "derived": [],
+      "validation": [
+        {
+          "kind": "dateOrder",
+          "before": "permit_date",
+          "after": "permit_expiry",
+          "level": "warn",
+          "msg": {
+            "ko": "허가 만료일이 허가일보다 앞서요.",
+            "en": "The expiration date is before the permit date."
+          }
+        }
+      ],
+      "output": {
+        "filenameFrom": [
+          "name"
+        ],
+        "noun": {
+          "ko": "재입국허가기간연장허가신청서",
+          "en": "reentry-permit-extension"
+        }
+      }
+    },
+    "F13": {
+      "schema": "F13",
+      "groups": [
+        "work",
+        "overseas"
+      ],
+      "featured": false,
+      "name": {
+        "ko": "방문취업동포 취업개시 등 신고서",
+        "en": "Report on start of employment (working visit, H-2)"
+      },
+      "short": {
+        "ko": "H-2 취업개시 신고",
+        "en": "H-2 job start report"
+      },
+      "number": {
+        "ko": "출입국관리법 시행규칙 별지 제72호서식 (개정 2018. 5. 15.)",
+        "en": "Immigration Rule Annex 72 (rev. 2018-05-15)"
+      },
+      "summary": {
+        "ko": "방문취업(H-2) 동포가 처음 취업하거나 사업장을 바꿨을 때 신고하는 서식이에요.",
+        "en": "For working-visit (H-2) overseas Koreans reporting a first job or a change of workplace."
+      },
+      "who": {
+        "ko": "신고인(H-2 동포) 본인이 작성하고 서명해요.",
+        "en": "Filled in and signed by the H-2 worker."
+      },
+      "when": {
+        "ko": "서식 유의사항: 발생일로부터 14일 이내. 늦거나 거짓으로 신고하면 과태료 등 불이익이 있을 수 있어요(서식 기재).",
+        "en": "Per the printed notice: within 14 days of the event. Late or false reports may lead to fines (as printed)."
+      },
+      "where": {
+        "ko": "출입국·외국인청(사무소·출장소). 팩스 신고도 가능하다고 서식에 적혀 있어요.",
+        "en": "Immigration office (branch). The form notes that fax reports are possible."
+      },
+      "attachments": {
+        "ko": "서식 기재: 외국인등록증 사본, 특례고용가능확인서 사본, 표준근로계약서 사본. 담당공무원 확인: 사업자등록증 사본.",
+        "en": "As printed: copies of the residence card, the special employment permit confirmation and the standard labour contract. Officer check: business registration copy."
+      },
+      "notes": [
+        {
+          "ko": "최초 취업이면 현 사업장만 적어요(서식 기재).",
+          "en": "For a first job, fill in only the current workplace (as printed)."
+        }
+      ],
+      "search": {
+        "ko": [
+          "방문취업",
+          "H-2",
+          "H2",
+          "취업개시 신고",
+          "취업 시작",
+          "사업장 변경 신고",
+          "동포 취업",
+          "별지 72호"
+        ],
+        "en": [
+          "H-2",
+          "working visit",
+          "start of employment",
+          "job start report",
+          "workplace change report",
+          "annex 72"
+        ],
+        "primary": [
+          "방문취업",
+          "H-2",
+          "취업개시 신고"
+        ]
+      },
+      "procedures": [
+        "workplace_report",
+        "workplace_change"
+      ],
+      "steps": [
+        {
+          "id": "person",
+          "title": {
+            "ko": "신고인",
+            "en": "Person reporting"
+          }
+        },
+        {
+          "id": "report",
+          "title": {
+            "ko": "신고 사유",
+            "en": "Reason for report"
+          }
+        },
+        {
+          "id": "work",
+          "title": {
+            "ko": "사업장",
+            "en": "Workplace"
+          }
+        },
+        {
+          "id": "sign",
+          "title": {
+            "ko": "신고일자",
+            "en": "Date"
+          }
+        }
+      ],
+      "fields": [
+        {
+          "key": "name",
+          "step": "person",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "성명",
+            "en": "Full name"
+          },
+          "map": "name",
+          "maxLen": 30
+        },
+        {
+          "key": "sex",
+          "step": "person",
+          "type": "choice",
+          "req": true,
+          "label": {
+            "ko": "성별",
+            "en": "Sex"
+          },
+          "options": [
+            {
+              "v": "M",
+              "label": {
+                "ko": "남 (Male)",
+                "en": "Male"
+              },
+              "map": "sex_m"
+            },
+            {
+              "v": "F",
+              "label": {
+                "ko": "여 (Female)",
+                "en": "Female"
+              },
+              "map": "sex_f"
+            }
+          ]
+        },
+        {
+          "key": "dob",
+          "step": "person",
+          "type": "date",
+          "req": true,
+          "label": {
+            "ko": "생년월일",
+            "en": "Date of birth"
+          },
+          "map": {
+            "dot": "dob"
+          }
+        },
+        {
+          "key": "nationality",
+          "step": "person",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "국적",
+            "en": "Nationality"
+          },
+          "map": "nationality",
+          "maxLen": 30
+        },
+        {
+          "key": "arc_no",
+          "step": "person",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "외국인등록번호",
+            "en": "Foreign resident registration No."
+          },
+          "map": "arc_no",
+          "placeholder": {
+            "ko": "000000-0000000",
+            "en": "000000-0000000"
+          },
+          "maxLen": 14
+        },
+        {
+          "key": "address",
+          "step": "person",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "주소",
+            "en": "Address"
+          },
+          "map": "address",
+          "maxLen": 80
+        },
+        {
+          "key": "phone",
+          "step": "person",
+          "type": "phone",
+          "req": true,
+          "label": {
+            "ko": "전화번호(휴대전화)",
+            "en": "Phone (mobile)"
+          },
+          "map": "phone"
+        },
+        {
+          "key": "email",
+          "step": "person",
+          "type": "email",
+          "req": false,
+          "label": {
+            "ko": "전자우편",
+            "en": "E-mail"
+          },
+          "map": "email"
+        },
+        {
+          "key": "reason",
+          "step": "report",
+          "type": "choice",
+          "req": true,
+          "label": {
+            "ko": "신고 사유",
+            "en": "Reason"
+          },
+          "options": [
+            {
+              "v": "first",
+              "label": {
+                "ko": "최초 취업",
+                "en": "First employment"
+              },
+              "map": "reason_first"
+            },
+            {
+              "v": "change",
+              "label": {
+                "ko": "사업장 등의 변경",
+                "en": "Change of workplace"
+              },
+              "map": "reason_change"
+            }
+          ],
+          "layout": "cards"
+        },
+        {
+          "key": "prev_biz_no",
+          "step": "work",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "종전 사업장 사업자등록번호",
+            "en": "Previous workplace business registration No."
+          },
+          "map": "prev_biz_no",
+          "maxLen": 14,
+          "showIf": {
+            "field": "reason",
+            "eq": "change"
+          }
+        },
+        {
+          "key": "prev_name",
+          "step": "work",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "종전 사업장 사업장명",
+            "en": "Previous workplace name"
+          },
+          "map": "prev_name",
+          "maxLen": 20,
+          "showIf": {
+            "field": "reason",
+            "eq": "change"
+          }
+        },
+        {
+          "key": "prev_tel",
+          "step": "work",
+          "type": "phone",
+          "req": false,
+          "label": {
+            "ko": "종전 사업장 전화번호",
+            "en": "Previous workplace phone"
+          },
+          "map": "prev_tel",
+          "showIf": {
+            "field": "reason",
+            "eq": "change"
+          }
+        },
+        {
+          "key": "prev_industry",
+          "step": "work",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "종전 사업장 업종",
+            "en": "Previous workplace industry"
+          },
+          "map": "prev_industry",
+          "maxLen": 20,
+          "showIf": {
+            "field": "reason",
+            "eq": "change"
+          }
+        },
+        {
+          "key": "prev_position",
+          "step": "work",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "종전 사업장 직위 및 담당업무",
+            "en": "Previous workplace position and duties"
+          },
+          "map": "prev_position",
+          "maxLen": 24,
+          "showIf": {
+            "field": "reason",
+            "eq": "change"
+          }
+        },
+        {
+          "key": "cur_biz_no",
+          "step": "work",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "현 사업장 사업자등록번호",
+            "en": "Current workplace business registration No."
+          },
+          "map": "cur_biz_no",
+          "maxLen": 14,
+          "help": {
+            "ko": "가사서비스업(사업자등록번호 없음)은 888-88-88888로 적어요(서식 유의사항 1).",
+            "en": "Domestic service without a registration number: write 888-88-88888 (notice 1)."
+          }
+        },
+        {
+          "key": "cur_name",
+          "step": "work",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "현 사업장 사업장명",
+            "en": "Current workplace name"
+          },
+          "map": "cur_name",
+          "maxLen": 20
+        },
+        {
+          "key": "cur_tel",
+          "step": "work",
+          "type": "phone",
+          "req": false,
+          "label": {
+            "ko": "현 사업장 전화번호",
+            "en": "Current workplace phone"
+          },
+          "map": "cur_tel"
+        },
+        {
+          "key": "cur_industry",
+          "step": "work",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "현 사업장 업종",
+            "en": "Current workplace industry"
+          },
+          "map": "cur_industry",
+          "maxLen": 20
+        },
+        {
+          "key": "cur_position",
+          "step": "work",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "현 사업장 직위 및 담당업무",
+            "en": "Current workplace position and duties"
+          },
+          "map": "cur_position",
+          "maxLen": 24
+        },
+        {
+          "key": "report_date",
+          "step": "sign",
+          "type": "date",
+          "req": false,
+          "label": {
+            "ko": "신고일자",
+            "en": "Date of report"
+          },
+          "map": {
+            "ymd": [
+              "report_y",
+              "report_m",
+              "report_d"
+            ]
+          },
+          "default": "today"
+        }
+      ],
+      "derived": [],
+      "validation": [],
+      "output": {
+        "filenameFrom": [
+          "name"
+        ],
+        "noun": {
+          "ko": "취업개시신고서",
+          "en": "h2-job-start-report"
+        }
+      }
+    },
+    "F14": {
+      "schema": "F14",
+      "groups": [
+        "work"
+      ],
+      "featured": false,
+      "name": {
+        "ko": "고용·연수외국인 변동사유 발생 신고서 (고용주용)",
+        "en": "Employer report on changes concerning employed / trainee foreigners"
+      },
+      "short": {
+        "ko": "고용변동 신고 (고용주)",
+        "en": "Employer change report"
+      },
+      "number": {
+        "ko": "출입국관리법 시행규칙 별지 제32호서식 (개정 2018. 5. 15.)",
+        "en": "Immigration Rule Annex 32 (rev. 2018-05-15)"
+      },
+      "summary": {
+        "ko": "고용주가 고용한 외국인의 퇴직·해고·사망·소재불명이나 사업장 정보 변경 등을 출입국관서에 신고하는 서식이에요.",
+        "en": "Employers report a foreign worker’s resignation, dismissal, death, disappearance, or changes to the workplace to the immigration office."
+      },
+      "who": {
+        "ko": "고용주(사업장)가 작성하고 신고인(대리인)이 서명해요.",
+        "en": "Filled in by the employer; the reporter (or agent) signs."
+      },
+      "when": {
+        "ko": "서식 뒷면 유의사항: 사유가 발생한 날부터 15일 이내.",
+        "en": "Per the notice on the back: within 15 days of the event."
+      },
+      "where": {
+        "ko": "출입국·외국인청(사무소·출장소). H-2·E-9 근로자는 여기에 신고하면 고용노동부 신고를 따로 하지 않아도 된다고 서식에 적혀 있어요.",
+        "en": "Immigration office (branch). As printed, reporting here for H-2 / E-9 workers replaces the separate Ministry of Employment report."
+      },
+      "attachments": {
+        "ko": "서식 기재: 고용주 신분증 사본, 사유별 제출서류(사망진단서·질병상해진단서·근로계약서·사직서 등). 담당공무원 확인: 사업자등록증 사본.",
+        "en": "As printed: employer ID copy and reason-specific documents (death certificate, medical certificate, labour contract, resignation letter…). Officer check: business registration copy."
+      },
+      "notes": [
+        {
+          "ko": "세분류(①~⑰)는 서식 뒷면 작성요령에서 확인해요. 동그라미 글자·숫자는 글꼴에 없어 알파벳·숫자로 인쇄돼요.",
+          "en": "Sub-categories 1–17 are explained on the back page. Circled glyphs are printed as plain letters and digits."
+        }
+      ],
+      "search": {
+        "ko": [
+          "고용변동 신고",
+          "변동사유 발생 신고",
+          "고용주 신고",
+          "외국인 근로자 퇴직 신고",
+          "해고 신고",
+          "소재불명",
+          "무단이탈",
+          "고용·연수외국인",
+          "별지 32호",
+          "E-9 퇴사",
+          "H-2 퇴사"
+        ],
+        "en": [
+          "employer report",
+          "change of employment",
+          "worker resigned",
+          "dismissal report",
+          "absconded",
+          "annex 32"
+        ],
+        "primary": [
+          "고용변동 신고",
+          "고용주 신고",
+          "employer report"
+        ]
+      },
+      "procedures": [
+        "workplace_report"
+      ],
+      "steps": [
+        {
+          "id": "employer",
+          "title": {
+            "ko": "신고자(사업장) 정보",
+            "en": "Employer (workplace)"
+          }
+        },
+        {
+          "id": "reason",
+          "title": {
+            "ko": "신고 사유",
+            "en": "Reason for report"
+          }
+        },
+        {
+          "id": "detail",
+          "title": {
+            "ko": "사유별 추가 내용",
+            "en": "Details for the reason"
+          },
+          "showIf": {
+            "any": [
+              {
+                "field": "reason_c",
+                "eq": true
+              },
+              {
+                "field": "reason_d",
+                "eq": true
+              }
+            ]
+          }
+        },
+        {
+          "id": "workers",
+          "title": {
+            "ko": "신고 대상 외국인",
+            "en": "Foreign workers concerned"
+          }
+        },
+        {
+          "id": "sign",
+          "title": {
+            "ko": "신고일자와 신고인",
+            "en": "Date and reporter"
+          }
+        }
+      ],
+      "fields": [
+        {
+          "key": "emp_ins_no",
+          "step": "employer",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "고용보험 사업장관리번호",
+            "en": "Employment insurance workplace No."
+          },
+          "map": "emp_ins_no",
+          "maxLen": 20
+        },
+        {
+          "key": "biz_no",
+          "step": "employer",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "사업자등록번호 (주민등록번호)",
+            "en": "Business registration No."
+          },
+          "map": "biz_no",
+          "maxLen": 14
+        },
+        {
+          "key": "company",
+          "step": "employer",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "사업장명 (대표자명)",
+            "en": "Workplace name (representative)"
+          },
+          "map": "company",
+          "maxLen": 40
+        },
+        {
+          "key": "mobile",
+          "step": "employer",
+          "type": "phone",
+          "req": true,
+          "label": {
+            "ko": "휴대전화번호",
+            "en": "Mobile phone"
+          },
+          "map": "mobile"
+        },
+        {
+          "key": "fax",
+          "step": "employer",
+          "type": "phone",
+          "req": false,
+          "label": {
+            "ko": "팩스",
+            "en": "Fax"
+          },
+          "map": "fax"
+        },
+        {
+          "key": "tel",
+          "step": "employer",
+          "type": "phone",
+          "req": false,
+          "label": {
+            "ko": "전화번호",
+            "en": "Telephone"
+          },
+          "map": "tel"
+        },
+        {
+          "key": "email",
+          "step": "employer",
+          "type": "email",
+          "req": false,
+          "label": {
+            "ko": "이메일",
+            "en": "E-mail"
+          },
+          "map": "email"
+        },
+        {
+          "key": "reason_a",
+          "step": "reason",
+          "type": "yesno",
+          "req": false,
+          "label": {
+            "ko": "ⓐ 근로계약 해지 (해고·퇴직·계약기간 변경 등)",
+            "en": "(a) Termination of employment contract"
+          },
+          "map": "reason_a"
+        },
+        {
+          "key": "reason_b",
+          "step": "reason",
+          "type": "yesno",
+          "req": false,
+          "label": {
+            "ko": "ⓑ 사망",
+            "en": "(b) Death"
+          },
+          "map": "reason_b"
+        },
+        {
+          "key": "reason_c",
+          "step": "reason",
+          "type": "yesno",
+          "req": false,
+          "label": {
+            "ko": "ⓒ 5일 이상 무단결근 또는 소재불명(무단이탈)",
+            "en": "(c) Absence of 5+ days / whereabouts unknown"
+          },
+          "map": "reason_c"
+        },
+        {
+          "key": "reason_d",
+          "step": "reason",
+          "type": "yesno",
+          "req": false,
+          "label": {
+            "ko": "ⓓ 고용사업장 정보변동 (대표자·명칭·소재지 등)",
+            "en": "(d) Change of workplace information"
+          },
+          "map": "reason_d"
+        },
+        {
+          "key": "reason_e",
+          "step": "reason",
+          "type": "yesno",
+          "req": false,
+          "label": {
+            "ko": "ⓔ 고용승계 (사업장 양수·양도)",
+            "en": "(e) Succession of employment"
+          },
+          "map": "reason_e"
+        },
+        {
+          "key": "reason_f",
+          "step": "reason",
+          "type": "yesno",
+          "req": false,
+          "label": {
+            "ko": "ⓕ 지사간 이동 (고용주 변동 없음)",
+            "en": "(f) Transfer between branches"
+          },
+          "map": "reason_f"
+        },
+        {
+          "key": "reason_g",
+          "step": "reason",
+          "type": "yesno",
+          "req": false,
+          "label": {
+            "ko": "ⓖ 근로자를 파견한 경우",
+            "en": "(g) Dispatch of workers"
+          },
+          "map": "reason_g"
+        },
+        {
+          "key": "reason_h",
+          "step": "reason",
+          "type": "yesno",
+          "req": false,
+          "label": {
+            "ko": "ⓗ 기타",
+            "en": "(h) Other"
+          },
+          "map": "reason_h"
+        },
+        {
+          "key": "reason_other_text",
+          "step": "reason",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "기타 사유 내용",
+            "en": "Other reason (text)"
+          },
+          "map": "reason_other_text",
+          "maxLen": 30,
+          "showIf": {
+            "field": "reason_h",
+            "eq": true
+          }
+        },
+        {
+          "key": "place",
+          "step": "detail",
+          "type": "choice",
+          "req": false,
+          "label": {
+            "ko": "발생 장소 (소재불명 신고)",
+            "en": "Place (disappearance report)"
+          },
+          "options": [
+            {
+              "v": "workplace",
+              "label": {
+                "ko": "사업장",
+                "en": "Workplace"
+              },
+              "map": "place_workplace"
+            },
+            {
+              "v": "dorm",
+              "label": {
+                "ko": "숙소",
+                "en": "Lodging"
+              },
+              "map": "place_dorm"
+            },
+            {
+              "v": "other",
+              "label": {
+                "ko": "기타",
+                "en": "Other"
+              },
+              "map": "place_other"
+            }
+          ],
+          "showIf": {
+            "field": "reason_c",
+            "eq": true
+          }
+        },
+        {
+          "key": "place_other_text",
+          "step": "detail",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "기타 장소 내용",
+            "en": "Other place (text)"
+          },
+          "map": "place_other_text",
+          "maxLen": 30,
+          "showIf": {
+            "all": [
+              {
+                "field": "reason_c",
+                "eq": true
+              },
+              {
+                "field": "place",
+                "eq": "other"
+              }
+            ]
+          }
+        },
+        {
+          "key": "worker_phone",
+          "step": "detail",
+          "type": "phone",
+          "req": false,
+          "label": {
+            "ko": "외국인근로자 전화번호",
+            "en": "Worker phone"
+          },
+          "map": "worker_phone",
+          "showIf": {
+            "field": "reason_c",
+            "eq": true
+          }
+        },
+        {
+          "key": "incident",
+          "step": "detail",
+          "type": "textarea",
+          "req": false,
+          "label": {
+            "ko": "발생사유 (구체적으로)",
+            "en": "Details of the incident"
+          },
+          "map": "incident",
+          "maxLen": 120,
+          "showIf": {
+            "field": "reason_c",
+            "eq": true
+          },
+          "help": {
+            "ko": "두 줄까지 인쇄돼요.",
+            "en": "Up to two printed lines."
+          }
+        },
+        {
+          "key": "change_before",
+          "step": "detail",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "변경 전",
+            "en": "Before the change"
+          },
+          "map": "change_before",
+          "maxLen": 80,
+          "showIf": {
+            "field": "reason_d",
+            "eq": true
+          }
+        },
+        {
+          "key": "change_after",
+          "step": "detail",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "변경 후",
+            "en": "After the change"
+          },
+          "map": "change_after",
+          "maxLen": 80,
+          "showIf": {
+            "field": "reason_d",
+            "eq": true
+          }
+        },
+        {
+          "key": "worker_count",
+          "step": "workers",
+          "type": "choice",
+          "req": true,
+          "label": {
+            "ko": "신고 대상 외국인 수",
+            "en": "Number of foreigners"
+          },
+          "options": [
+            {
+              "v": 1,
+              "label": {
+                "ko": "1명",
+                "en": "1"
+              }
+            },
+            {
+              "v": 2,
+              "label": {
+                "ko": "2명",
+                "en": "2"
+              }
+            },
+            {
+              "v": 3,
+              "label": {
+                "ko": "3명",
+                "en": "3"
+              }
+            },
+            {
+              "v": 4,
+              "label": {
+                "ko": "4명",
+                "en": "4"
+              }
+            },
+            {
+              "v": 5,
+              "label": {
+                "ko": "5명",
+                "en": "5"
+              }
+            }
+          ],
+          "default": 1
+        },
+        {
+          "key": "w1_name",
+          "step": "workers",
+          "type": "upper",
+          "req": true,
+          "label": {
+            "ko": "대상 외국인 1 성명(영문)",
+            "en": "Foreigner 1 name (English)"
+          },
+          "map": "w1_name",
+          "maxLen": 30,
+          "showIf": {
+            "field": "worker_count",
+            "gte": 1
+          }
+        },
+        {
+          "key": "w1_arc",
+          "step": "workers",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "외국인등록번호",
+            "en": "Registration No."
+          },
+          "map": "w1_arc",
+          "maxLen": 14,
+          "showIf": {
+            "field": "worker_count",
+            "gte": 1
+          }
+        },
+        {
+          "key": "w1_status",
+          "step": "workers",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "체류자격",
+            "en": "Status"
+          },
+          "map": "w1_status",
+          "placeholder": {
+            "ko": "E-9",
+            "en": "E-9"
+          },
+          "maxLen": 6,
+          "showIf": {
+            "field": "worker_count",
+            "gte": 1
+          }
+        },
+        {
+          "key": "w1_date",
+          "step": "workers",
+          "type": "date",
+          "req": true,
+          "label": {
+            "ko": "사유발생일 (발생사실을 안 날)",
+            "en": "Date of occurrence"
+          },
+          "map": {
+            "dot": "w1_date"
+          },
+          "showIf": {
+            "field": "worker_count",
+            "gte": 1
+          }
+        },
+        {
+          "key": "w1_reason",
+          "step": "workers",
+          "type": "choice",
+          "req": true,
+          "label": {
+            "ko": "신고사유 (ⓐ~ⓗ)",
+            "en": "Reason code (a–h)"
+          },
+          "map": "w1_reason",
+          "options": [
+            {
+              "v": "a",
+              "label": {
+                "ko": "ⓐ",
+                "en": "(a)"
+              },
+              "text": "a"
+            },
+            {
+              "v": "b",
+              "label": {
+                "ko": "ⓑ",
+                "en": "(b)"
+              },
+              "text": "b"
+            },
+            {
+              "v": "c",
+              "label": {
+                "ko": "ⓒ",
+                "en": "(c)"
+              },
+              "text": "c"
+            },
+            {
+              "v": "d",
+              "label": {
+                "ko": "ⓓ",
+                "en": "(d)"
+              },
+              "text": "d"
+            },
+            {
+              "v": "e",
+              "label": {
+                "ko": "ⓔ",
+                "en": "(e)"
+              },
+              "text": "e"
+            },
+            {
+              "v": "f",
+              "label": {
+                "ko": "ⓕ",
+                "en": "(f)"
+              },
+              "text": "f"
+            },
+            {
+              "v": "g",
+              "label": {
+                "ko": "ⓖ",
+                "en": "(g)"
+              },
+              "text": "g"
+            },
+            {
+              "v": "h",
+              "label": {
+                "ko": "ⓗ",
+                "en": "(h)"
+              },
+              "text": "h"
+            }
+          ],
+          "showIf": {
+            "field": "worker_count",
+            "gte": 1
+          },
+          "help": {
+            "ko": "서식의 동그라미 글자는 내장 글꼴에 없어 a~h 알파벳으로 인쇄돼요.",
+            "en": "The circled letters are not in the embedded font; the plain letter a–h is printed."
+          }
+        },
+        {
+          "key": "w1_sub",
+          "step": "workers",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "세분류 번호 (①~⑰, ⓐ일 때)",
+            "en": "Sub-category No. (1–17, for (a))"
+          },
+          "map": "w1_sub",
+          "maxLen": 2,
+          "showIf": {
+            "field": "worker_count",
+            "gte": 1
+          },
+          "help": {
+            "ko": "뒷면 작성요령의 번호를 숫자로 적어요.",
+            "en": "Write the number from the back-page guide as a plain digit."
+          }
+        },
+        {
+          "key": "w2_name",
+          "step": "workers",
+          "type": "upper",
+          "req": false,
+          "label": {
+            "ko": "대상 외국인 2 성명(영문)",
+            "en": "Foreigner 2 name (English)"
+          },
+          "map": "w2_name",
+          "maxLen": 30,
+          "showIf": {
+            "field": "worker_count",
+            "gte": 2
+          }
+        },
+        {
+          "key": "w2_arc",
+          "step": "workers",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "외국인등록번호",
+            "en": "Registration No."
+          },
+          "map": "w2_arc",
+          "maxLen": 14,
+          "showIf": {
+            "field": "worker_count",
+            "gte": 2
+          }
+        },
+        {
+          "key": "w2_status",
+          "step": "workers",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "체류자격",
+            "en": "Status"
+          },
+          "map": "w2_status",
+          "placeholder": {
+            "ko": "E-9",
+            "en": "E-9"
+          },
+          "maxLen": 6,
+          "showIf": {
+            "field": "worker_count",
+            "gte": 2
+          }
+        },
+        {
+          "key": "w2_date",
+          "step": "workers",
+          "type": "date",
+          "req": false,
+          "label": {
+            "ko": "사유발생일 (발생사실을 안 날)",
+            "en": "Date of occurrence"
+          },
+          "map": {
+            "dot": "w2_date"
+          },
+          "showIf": {
+            "field": "worker_count",
+            "gte": 2
+          }
+        },
+        {
+          "key": "w2_reason",
+          "step": "workers",
+          "type": "choice",
+          "req": false,
+          "label": {
+            "ko": "신고사유 (ⓐ~ⓗ)",
+            "en": "Reason code (a–h)"
+          },
+          "map": "w2_reason",
+          "options": [
+            {
+              "v": "a",
+              "label": {
+                "ko": "ⓐ",
+                "en": "(a)"
+              },
+              "text": "a"
+            },
+            {
+              "v": "b",
+              "label": {
+                "ko": "ⓑ",
+                "en": "(b)"
+              },
+              "text": "b"
+            },
+            {
+              "v": "c",
+              "label": {
+                "ko": "ⓒ",
+                "en": "(c)"
+              },
+              "text": "c"
+            },
+            {
+              "v": "d",
+              "label": {
+                "ko": "ⓓ",
+                "en": "(d)"
+              },
+              "text": "d"
+            },
+            {
+              "v": "e",
+              "label": {
+                "ko": "ⓔ",
+                "en": "(e)"
+              },
+              "text": "e"
+            },
+            {
+              "v": "f",
+              "label": {
+                "ko": "ⓕ",
+                "en": "(f)"
+              },
+              "text": "f"
+            },
+            {
+              "v": "g",
+              "label": {
+                "ko": "ⓖ",
+                "en": "(g)"
+              },
+              "text": "g"
+            },
+            {
+              "v": "h",
+              "label": {
+                "ko": "ⓗ",
+                "en": "(h)"
+              },
+              "text": "h"
+            }
+          ],
+          "showIf": {
+            "field": "worker_count",
+            "gte": 2
+          },
+          "help": {
+            "ko": "서식의 동그라미 글자는 내장 글꼴에 없어 a~h 알파벳으로 인쇄돼요.",
+            "en": "The circled letters are not in the embedded font; the plain letter a–h is printed."
+          }
+        },
+        {
+          "key": "w2_sub",
+          "step": "workers",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "세분류 번호 (①~⑰, ⓐ일 때)",
+            "en": "Sub-category No. (1–17, for (a))"
+          },
+          "map": "w2_sub",
+          "maxLen": 2,
+          "showIf": {
+            "field": "worker_count",
+            "gte": 2
+          },
+          "help": {
+            "ko": "뒷면 작성요령의 번호를 숫자로 적어요.",
+            "en": "Write the number from the back-page guide as a plain digit."
+          }
+        },
+        {
+          "key": "w3_name",
+          "step": "workers",
+          "type": "upper",
+          "req": false,
+          "label": {
+            "ko": "대상 외국인 3 성명(영문)",
+            "en": "Foreigner 3 name (English)"
+          },
+          "map": "w3_name",
+          "maxLen": 30,
+          "showIf": {
+            "field": "worker_count",
+            "gte": 3
+          }
+        },
+        {
+          "key": "w3_arc",
+          "step": "workers",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "외국인등록번호",
+            "en": "Registration No."
+          },
+          "map": "w3_arc",
+          "maxLen": 14,
+          "showIf": {
+            "field": "worker_count",
+            "gte": 3
+          }
+        },
+        {
+          "key": "w3_status",
+          "step": "workers",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "체류자격",
+            "en": "Status"
+          },
+          "map": "w3_status",
+          "placeholder": {
+            "ko": "E-9",
+            "en": "E-9"
+          },
+          "maxLen": 6,
+          "showIf": {
+            "field": "worker_count",
+            "gte": 3
+          }
+        },
+        {
+          "key": "w3_date",
+          "step": "workers",
+          "type": "date",
+          "req": false,
+          "label": {
+            "ko": "사유발생일 (발생사실을 안 날)",
+            "en": "Date of occurrence"
+          },
+          "map": {
+            "dot": "w3_date"
+          },
+          "showIf": {
+            "field": "worker_count",
+            "gte": 3
+          }
+        },
+        {
+          "key": "w3_reason",
+          "step": "workers",
+          "type": "choice",
+          "req": false,
+          "label": {
+            "ko": "신고사유 (ⓐ~ⓗ)",
+            "en": "Reason code (a–h)"
+          },
+          "map": "w3_reason",
+          "options": [
+            {
+              "v": "a",
+              "label": {
+                "ko": "ⓐ",
+                "en": "(a)"
+              },
+              "text": "a"
+            },
+            {
+              "v": "b",
+              "label": {
+                "ko": "ⓑ",
+                "en": "(b)"
+              },
+              "text": "b"
+            },
+            {
+              "v": "c",
+              "label": {
+                "ko": "ⓒ",
+                "en": "(c)"
+              },
+              "text": "c"
+            },
+            {
+              "v": "d",
+              "label": {
+                "ko": "ⓓ",
+                "en": "(d)"
+              },
+              "text": "d"
+            },
+            {
+              "v": "e",
+              "label": {
+                "ko": "ⓔ",
+                "en": "(e)"
+              },
+              "text": "e"
+            },
+            {
+              "v": "f",
+              "label": {
+                "ko": "ⓕ",
+                "en": "(f)"
+              },
+              "text": "f"
+            },
+            {
+              "v": "g",
+              "label": {
+                "ko": "ⓖ",
+                "en": "(g)"
+              },
+              "text": "g"
+            },
+            {
+              "v": "h",
+              "label": {
+                "ko": "ⓗ",
+                "en": "(h)"
+              },
+              "text": "h"
+            }
+          ],
+          "showIf": {
+            "field": "worker_count",
+            "gte": 3
+          },
+          "help": {
+            "ko": "서식의 동그라미 글자는 내장 글꼴에 없어 a~h 알파벳으로 인쇄돼요.",
+            "en": "The circled letters are not in the embedded font; the plain letter a–h is printed."
+          }
+        },
+        {
+          "key": "w3_sub",
+          "step": "workers",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "세분류 번호 (①~⑰, ⓐ일 때)",
+            "en": "Sub-category No. (1–17, for (a))"
+          },
+          "map": "w3_sub",
+          "maxLen": 2,
+          "showIf": {
+            "field": "worker_count",
+            "gte": 3
+          },
+          "help": {
+            "ko": "뒷면 작성요령의 번호를 숫자로 적어요.",
+            "en": "Write the number from the back-page guide as a plain digit."
+          }
+        },
+        {
+          "key": "w4_name",
+          "step": "workers",
+          "type": "upper",
+          "req": false,
+          "label": {
+            "ko": "대상 외국인 4 성명(영문)",
+            "en": "Foreigner 4 name (English)"
+          },
+          "map": "w4_name",
+          "maxLen": 30,
+          "showIf": {
+            "field": "worker_count",
+            "gte": 4
+          }
+        },
+        {
+          "key": "w4_arc",
+          "step": "workers",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "외국인등록번호",
+            "en": "Registration No."
+          },
+          "map": "w4_arc",
+          "maxLen": 14,
+          "showIf": {
+            "field": "worker_count",
+            "gte": 4
+          }
+        },
+        {
+          "key": "w4_status",
+          "step": "workers",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "체류자격",
+            "en": "Status"
+          },
+          "map": "w4_status",
+          "placeholder": {
+            "ko": "E-9",
+            "en": "E-9"
+          },
+          "maxLen": 6,
+          "showIf": {
+            "field": "worker_count",
+            "gte": 4
+          }
+        },
+        {
+          "key": "w4_date",
+          "step": "workers",
+          "type": "date",
+          "req": false,
+          "label": {
+            "ko": "사유발생일 (발생사실을 안 날)",
+            "en": "Date of occurrence"
+          },
+          "map": {
+            "dot": "w4_date"
+          },
+          "showIf": {
+            "field": "worker_count",
+            "gte": 4
+          }
+        },
+        {
+          "key": "w4_reason",
+          "step": "workers",
+          "type": "choice",
+          "req": false,
+          "label": {
+            "ko": "신고사유 (ⓐ~ⓗ)",
+            "en": "Reason code (a–h)"
+          },
+          "map": "w4_reason",
+          "options": [
+            {
+              "v": "a",
+              "label": {
+                "ko": "ⓐ",
+                "en": "(a)"
+              },
+              "text": "a"
+            },
+            {
+              "v": "b",
+              "label": {
+                "ko": "ⓑ",
+                "en": "(b)"
+              },
+              "text": "b"
+            },
+            {
+              "v": "c",
+              "label": {
+                "ko": "ⓒ",
+                "en": "(c)"
+              },
+              "text": "c"
+            },
+            {
+              "v": "d",
+              "label": {
+                "ko": "ⓓ",
+                "en": "(d)"
+              },
+              "text": "d"
+            },
+            {
+              "v": "e",
+              "label": {
+                "ko": "ⓔ",
+                "en": "(e)"
+              },
+              "text": "e"
+            },
+            {
+              "v": "f",
+              "label": {
+                "ko": "ⓕ",
+                "en": "(f)"
+              },
+              "text": "f"
+            },
+            {
+              "v": "g",
+              "label": {
+                "ko": "ⓖ",
+                "en": "(g)"
+              },
+              "text": "g"
+            },
+            {
+              "v": "h",
+              "label": {
+                "ko": "ⓗ",
+                "en": "(h)"
+              },
+              "text": "h"
+            }
+          ],
+          "showIf": {
+            "field": "worker_count",
+            "gte": 4
+          },
+          "help": {
+            "ko": "서식의 동그라미 글자는 내장 글꼴에 없어 a~h 알파벳으로 인쇄돼요.",
+            "en": "The circled letters are not in the embedded font; the plain letter a–h is printed."
+          }
+        },
+        {
+          "key": "w4_sub",
+          "step": "workers",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "세분류 번호 (①~⑰, ⓐ일 때)",
+            "en": "Sub-category No. (1–17, for (a))"
+          },
+          "map": "w4_sub",
+          "maxLen": 2,
+          "showIf": {
+            "field": "worker_count",
+            "gte": 4
+          },
+          "help": {
+            "ko": "뒷면 작성요령의 번호를 숫자로 적어요.",
+            "en": "Write the number from the back-page guide as a plain digit."
+          }
+        },
+        {
+          "key": "w5_name",
+          "step": "workers",
+          "type": "upper",
+          "req": false,
+          "label": {
+            "ko": "대상 외국인 5 성명(영문)",
+            "en": "Foreigner 5 name (English)"
+          },
+          "map": "w5_name",
+          "maxLen": 30,
+          "showIf": {
+            "field": "worker_count",
+            "gte": 5
+          }
+        },
+        {
+          "key": "w5_arc",
+          "step": "workers",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "외국인등록번호",
+            "en": "Registration No."
+          },
+          "map": "w5_arc",
+          "maxLen": 14,
+          "showIf": {
+            "field": "worker_count",
+            "gte": 5
+          }
+        },
+        {
+          "key": "w5_status",
+          "step": "workers",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "체류자격",
+            "en": "Status"
+          },
+          "map": "w5_status",
+          "placeholder": {
+            "ko": "E-9",
+            "en": "E-9"
+          },
+          "maxLen": 6,
+          "showIf": {
+            "field": "worker_count",
+            "gte": 5
+          }
+        },
+        {
+          "key": "w5_date",
+          "step": "workers",
+          "type": "date",
+          "req": false,
+          "label": {
+            "ko": "사유발생일 (발생사실을 안 날)",
+            "en": "Date of occurrence"
+          },
+          "map": {
+            "dot": "w5_date"
+          },
+          "showIf": {
+            "field": "worker_count",
+            "gte": 5
+          }
+        },
+        {
+          "key": "w5_reason",
+          "step": "workers",
+          "type": "choice",
+          "req": false,
+          "label": {
+            "ko": "신고사유 (ⓐ~ⓗ)",
+            "en": "Reason code (a–h)"
+          },
+          "map": "w5_reason",
+          "options": [
+            {
+              "v": "a",
+              "label": {
+                "ko": "ⓐ",
+                "en": "(a)"
+              },
+              "text": "a"
+            },
+            {
+              "v": "b",
+              "label": {
+                "ko": "ⓑ",
+                "en": "(b)"
+              },
+              "text": "b"
+            },
+            {
+              "v": "c",
+              "label": {
+                "ko": "ⓒ",
+                "en": "(c)"
+              },
+              "text": "c"
+            },
+            {
+              "v": "d",
+              "label": {
+                "ko": "ⓓ",
+                "en": "(d)"
+              },
+              "text": "d"
+            },
+            {
+              "v": "e",
+              "label": {
+                "ko": "ⓔ",
+                "en": "(e)"
+              },
+              "text": "e"
+            },
+            {
+              "v": "f",
+              "label": {
+                "ko": "ⓕ",
+                "en": "(f)"
+              },
+              "text": "f"
+            },
+            {
+              "v": "g",
+              "label": {
+                "ko": "ⓖ",
+                "en": "(g)"
+              },
+              "text": "g"
+            },
+            {
+              "v": "h",
+              "label": {
+                "ko": "ⓗ",
+                "en": "(h)"
+              },
+              "text": "h"
+            }
+          ],
+          "showIf": {
+            "field": "worker_count",
+            "gte": 5
+          },
+          "help": {
+            "ko": "서식의 동그라미 글자는 내장 글꼴에 없어 a~h 알파벳으로 인쇄돼요.",
+            "en": "The circled letters are not in the embedded font; the plain letter a–h is printed."
+          }
+        },
+        {
+          "key": "w5_sub",
+          "step": "workers",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "세분류 번호 (①~⑰, ⓐ일 때)",
+            "en": "Sub-category No. (1–17, for (a))"
+          },
+          "map": "w5_sub",
+          "maxLen": 2,
+          "showIf": {
+            "field": "worker_count",
+            "gte": 5
+          },
+          "help": {
+            "ko": "뒷면 작성요령의 번호를 숫자로 적어요.",
+            "en": "Write the number from the back-page guide as a plain digit."
+          }
+        },
+        {
+          "key": "report_date",
+          "step": "sign",
+          "type": "date",
+          "req": false,
+          "label": {
+            "ko": "신고일자",
+            "en": "Date of report"
+          },
+          "map": {
+            "ymd": [
+              "report_y",
+              "report_m",
+              "report_d"
+            ]
+          },
+          "default": "today"
+        },
+        {
+          "key": "reporter_name",
+          "step": "sign",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "신고인(대리인) 성명",
+            "en": "Reporter (agent) name"
+          },
+          "map": "reporter_name",
+          "maxLen": 12
+        }
+      ],
+      "derived": [],
+      "validation": [
+        {
+          "kind": "anyOf",
+          "fields": [
+            "reason_a",
+            "reason_b",
+            "reason_c",
+            "reason_d",
+            "reason_e",
+            "reason_f",
+            "reason_g",
+            "reason_h"
+          ],
+          "level": "error",
+          "msg": {
+            "ko": "신고 사유를 하나 이상 골라요.",
+            "en": "Choose at least one reason."
+          }
+        }
+      ],
+      "output": {
+        "filenameFrom": [
+          "company"
+        ],
+        "noun": {
+          "ko": "고용변동신고서",
+          "en": "employer-change-report"
+        }
+      }
+    },
+    "F15": {
+      "schema": "F15",
+      "groups": [
+        "work"
+      ],
+      "featured": false,
+      "name": {
+        "ko": "회화지도(E-2) 자격 사증신청자 건강확인서",
+        "en": "E-2 applicant’s health statement"
+      },
+      "short": {
+        "ko": "E-2 건강확인서",
+        "en": "E-2 health statement"
+      },
+      "number": {
+        "ko": "출입국관리법 시행규칙 별지 제21호의3서식 (개정 2018. 5. 15.)",
+        "en": "Immigration Rule Annex 21-3 (rev. 2018-05-15)"
+      },
+      "summary": {
+        "ko": "회화지도(E-2) 사증이나 사증발급인정서를 신청하는 사람이 자기 건강 상태를 직접 확인하는 체크리스트예요. 사증 신청 단계의 서류예요.",
+        "en": "A self-declaration checklist for E-2 visa (or visa issuance confirmation) applicants. Belongs to the visa application stage."
+      },
+      "who": {
+        "ko": "신청인 본인이 작성하고 서명해요.",
+        "en": "Filled in and signed by the applicant."
+      },
+      "where": {
+        "ko": "사증 신청 서류와 함께 재외공관 또는 출입국·외국인관서에 제출해요.",
+        "en": "Submitted with the visa application to a Korean mission or an immigration office."
+      },
+      "attachments": {
+        "ko": "서식 뒷면 유의사항: 입국 후 90일 이내 외국인등록 시 정부 지정 병원의 건강진단서를 제출해야 해요.",
+        "en": "Per the printed notice: at registration within 90 days of arrival you must submit a health certificate from a designated hospital."
+      },
+      "notes": [
+        {
+          "ko": "빠뜨리거나 거짓으로 적으면 사증 불허, 체류허가 취소, 강제퇴거 등 불이익이 있을 수 있다고 서식에 적혀 있어요.",
+          "en": "As printed: omissions or false statements may lead to visa denial, cancellation of stay or deportation."
+        },
+        {
+          "ko": "앞면(한국어)과 뒷면(영어)에 같은 내용이 인쇄돼요.",
+          "en": "The same entries are printed on the Korean front and the English back."
+        }
+      ],
+      "search": {
+        "ko": [
+          "E-2 건강확인서",
+          "건강확인서",
+          "회화지도",
+          "영어강사 비자",
+          "건강 체크리스트",
+          "사증 신청 건강",
+          "별지 21의3"
+        ],
+        "en": [
+          "E-2",
+          "health statement",
+          "health checklist",
+          "conversation instructor",
+          "English teacher visa",
+          "annex 21-3"
+        ],
+        "primary": [
+          "E-2 건강확인서",
+          "건강확인서",
+          "health statement"
+        ]
+      },
+      "procedures": [
+        "visa_issuance",
+        "visa_issuance_confirmation"
+      ],
+      "steps": [
+        {
+          "id": "person",
+          "title": {
+            "ko": "신청인",
+            "en": "Applicant"
+          }
+        },
+        {
+          "id": "health",
+          "title": {
+            "ko": "건강 질문 (6~9)",
+            "en": "Health questions (6–9)"
+          }
+        },
+        {
+          "id": "sign",
+          "title": {
+            "ko": "작성일",
+            "en": "Date"
+          }
+        }
+      ],
+      "fields": [
+        {
+          "key": "name",
+          "step": "person",
+          "type": "upper",
+          "req": true,
+          "label": {
+            "ko": "성명",
+            "en": "Full name"
+          },
+          "map": "name",
+          "maxLen": 40
+        },
+        {
+          "key": "dob",
+          "step": "person",
+          "type": "date",
+          "req": true,
+          "label": {
+            "ko": "생년월일",
+            "en": "Date of birth"
+          },
+          "map": {
+            "dot": "dob"
+          }
+        },
+        {
+          "key": "nationality",
+          "step": "person",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "국적",
+            "en": "Nationality"
+          },
+          "map": "nationality",
+          "maxLen": 30
+        },
+        {
+          "key": "sex",
+          "step": "person",
+          "type": "choice",
+          "req": true,
+          "label": {
+            "ko": "성별",
+            "en": "Sex"
+          },
+          "options": [
+            {
+              "v": "M",
+              "label": {
+                "ko": "남 (Male)",
+                "en": "Male"
+              },
+              "map": "sex_m"
+            },
+            {
+              "v": "F",
+              "label": {
+                "ko": "여 (Female)",
+                "en": "Female"
+              },
+              "map": "sex_f"
+            }
+          ]
+        },
+        {
+          "key": "passport_no",
+          "step": "person",
+          "type": "upper",
+          "req": true,
+          "label": {
+            "ko": "여권번호",
+            "en": "Passport No."
+          },
+          "map": "passport_no",
+          "maxLen": 20
+        },
+        {
+          "key": "q6",
+          "step": "health",
+          "type": "choice",
+          "req": true,
+          "label": {
+            "ko": "6. 공중보건에 위협이 되는 전염성 질환에 감염되었습니까?",
+            "en": "6. Have you ever had any infectious disease that threatens the public health?"
+          },
+          "options": [
+            {
+              "v": "yes",
+              "label": {
+                "ko": "예",
+                "en": "Yes"
+              },
+              "map": "q6_yes"
+            },
+            {
+              "v": "no",
+              "label": {
+                "ko": "아니오",
+                "en": "No"
+              },
+              "map": "q6_no"
+            }
+          ]
+        },
+        {
+          "key": "q6_text",
+          "step": "health",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "질환명",
+            "en": "Disease name"
+          },
+          "map": "q6_text",
+          "maxLen": 40,
+          "showIf": {
+            "field": "q6",
+            "eq": "yes"
+          }
+        },
+        {
+          "key": "q7",
+          "step": "health",
+          "type": "choice",
+          "req": true,
+          "label": {
+            "ko": "7. 최근 5년 이내에 통제된 물질(마약류)을 복용한 적이 있거나 알코올 등에 중독된 적이 있습니까?",
+            "en": "7. Have you taken any illegal substances or been addicted to alcohol in the last 5 years?"
+          },
+          "options": [
+            {
+              "v": "yes",
+              "label": {
+                "ko": "예",
+                "en": "Yes"
+              },
+              "map": "q7_yes"
+            },
+            {
+              "v": "no",
+              "label": {
+                "ko": "아니오",
+                "en": "No"
+              },
+              "map": "q7_no"
+            }
+          ]
+        },
+        {
+          "key": "q7_text",
+          "step": "health",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "복용 물질",
+            "en": "Substance"
+          },
+          "map": "q7_text",
+          "maxLen": 40,
+          "showIf": {
+            "field": "q7",
+            "eq": "yes"
+          }
+        },
+        {
+          "key": "q8",
+          "step": "health",
+          "type": "choice",
+          "req": true,
+          "label": {
+            "ko": "8. 과거 정신적·감정적 또는 신경적 혼란으로 의사의 치료를 받은 적이 있습니까?",
+            "en": "8. Have you ever received treatment for mental, neurotic or emotional disorders?"
+          },
+          "options": [
+            {
+              "v": "yes",
+              "label": {
+                "ko": "예",
+                "en": "Yes"
+              },
+              "map": "q8_yes"
+            },
+            {
+              "v": "no",
+              "label": {
+                "ko": "아니오",
+                "en": "No"
+              },
+              "map": "q8_no"
+            }
+          ]
+        },
+        {
+          "key": "q8_text",
+          "step": "health",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "질환명",
+            "en": "Disorder name"
+          },
+          "map": "q8_text",
+          "maxLen": 40,
+          "showIf": {
+            "field": "q8",
+            "eq": "yes"
+          }
+        },
+        {
+          "key": "q9",
+          "step": "health",
+          "type": "choice",
+          "req": true,
+          "label": {
+            "ko": "9. 최근 5년 이내에 심각한 질병, 상해 등을 겪은 사실이 있습니까?",
+            "en": "9. Have you had any serious diseases or injuries in the last 5 years?"
+          },
+          "options": [
+            {
+              "v": "yes",
+              "label": {
+                "ko": "예",
+                "en": "Yes"
+              },
+              "map": "q9_yes"
+            },
+            {
+              "v": "no",
+              "label": {
+                "ko": "아니오",
+                "en": "No"
+              },
+              "map": "q9_no"
+            }
+          ]
+        },
+        {
+          "key": "q9_text",
+          "step": "health",
+          "type": "text",
+          "req": true,
+          "label": {
+            "ko": "질환명 및 치료경과",
+            "en": "Name and recent situation"
+          },
+          "map": "q9_text",
+          "maxLen": 40,
+          "showIf": {
+            "field": "q9",
+            "eq": "yes"
+          }
+        },
+        {
+          "key": "date",
+          "step": "sign",
+          "type": "date",
+          "req": false,
+          "label": {
+            "ko": "작성일",
+            "en": "Date"
+          },
+          "map": {
+            "ymd": [
+              "date_y",
+              "date_m",
+              "date_d"
+            ]
+          },
+          "default": "today"
+        }
+      ],
+      "derived": [
+        {
+          "target": "applicant_name",
+          "from": "name"
+        },
+        {
+          "target": "applicant_name_en",
+          "from": "name"
+        },
+        {
+          "target": "name_en",
+          "fromOverlay": "name"
+        },
+        {
+          "target": "dob_en",
+          "fromOverlay": "dob"
+        },
+        {
+          "target": "nationality_en",
+          "fromOverlay": "nationality"
+        },
+        {
+          "target": "sex_m_en",
+          "fromOverlay": "sex_m"
+        },
+        {
+          "target": "sex_f_en",
+          "fromOverlay": "sex_f"
+        },
+        {
+          "target": "passport_no_en",
+          "fromOverlay": "passport_no"
+        },
+        {
+          "target": "date_y_en",
+          "fromOverlay": "date_y"
+        },
+        {
+          "target": "date_m_en",
+          "fromOverlay": "date_m"
+        },
+        {
+          "target": "date_d_en",
+          "fromOverlay": "date_d"
+        },
+        {
+          "target": "q6_yes_en",
+          "fromOverlay": "q6_yes"
+        },
+        {
+          "target": "q6_no_en",
+          "fromOverlay": "q6_no"
+        },
+        {
+          "target": "q6_text_en",
+          "fromOverlay": "q6_text"
+        },
+        {
+          "target": "q7_yes_en",
+          "fromOverlay": "q7_yes"
+        },
+        {
+          "target": "q7_no_en",
+          "fromOverlay": "q7_no"
+        },
+        {
+          "target": "q7_text_en",
+          "fromOverlay": "q7_text"
+        },
+        {
+          "target": "q8_yes_en",
+          "fromOverlay": "q8_yes"
+        },
+        {
+          "target": "q8_no_en",
+          "fromOverlay": "q8_no"
+        },
+        {
+          "target": "q8_text_en",
+          "fromOverlay": "q8_text"
+        },
+        {
+          "target": "q9_yes_en",
+          "fromOverlay": "q9_yes"
+        },
+        {
+          "target": "q9_no_en",
+          "fromOverlay": "q9_no"
+        },
+        {
+          "target": "q9_text_en",
+          "fromOverlay": "q9_text"
+        }
+      ],
+      "validation": [],
+      "output": {
+        "filenameFrom": [
+          "name"
+        ],
+        "noun": {
+          "ko": "E-2건강확인서",
+          "en": "e2-health-statement"
+        }
+      }
+    }
+  }
+}

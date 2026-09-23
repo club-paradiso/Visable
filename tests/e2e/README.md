@@ -95,3 +95,29 @@ PARADISO_PW_EXECUTABLE=/path/to/chromium npx playwright test tests/e2e/procedure
 ```bash
 PARADISO_PW_EXECUTABLE=/path/to/chromium npx playwright test tests/e2e/landing-boot.spec.mjs --project=desktop-1280 --project=mobile-390
 ```
+
+## Form Helper 2.0 (2026-09-23)
+
+`form-helper.spec.mjs` runs in CI (`landing-restoration-e2e`, desktop-1280 / mobile-390 / mobile-320):
+
+- home search resolves the brief's examples (주소 변경 → 체류지변경신고서, 통합신청서, 숙소 제공,
+  신원보증, F-4 거소신고); 난민 / 출국기한유예 forms only ever appear as catalog entries with
+  the "이 서류는 Visable 자동작성 대상이 아니에요" hand-off, never as fillable forms;
+- select → explain → fill → browser Back keeps the values → review → preview → export; the
+  ops drawn on the preview canvas are the ops written into the PDF (`VisableFormHelper.lastExport`);
+  no request leaves the origin apart from the font CDN;
+- a too-long value is flagged in the field, on the review screen and again in the export
+  dialog ("그래도 내려받기" / "고치기"); the reset `<dialog>` warns before clearing;
+- Waymaker deep links (`?form=F01&type=sojourn_extension`) preselect the application type;
+  edition switches (F01 ↔ F03 중문 병기) keep the data; EN chrome and Arabic RTL work with
+  the Korean official field names still visible; the flow is keyboard reachable.
+
+The offline twin is `scripts/check_form_helper.mjs` (in `check_repo.sh`): inventory /
+coverage freshness, exclusions, template sha256 / page / size drift, schema ↔ definition
+consistency, engine unit tests, and a Node export of every form verified with PyMuPDF
+(`scripts/forms/verify_export.py`) — the same vendor pdf-lib / fontkit files the browser uses.
+
+```bash
+PARADISO_PW_EXECUTABLE=/path/to/chromium npx playwright test tests/e2e/form-helper.spec.mjs --project=desktop-1280 --project=mobile-390 --project=mobile-320
+node scripts/check_form_helper.mjs            # add --record-qa to write support.qa into data/form_schemas.json
+```

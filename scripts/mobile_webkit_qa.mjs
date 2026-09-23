@@ -242,6 +242,60 @@ try {
       profileReport.guidanceFlows.push(langReport);
       for (const failure of langReport.failures) report.failures.push(`${profile.name}/language-sheet: ${failure}`);
     }
+    if (profile.name === 'iphone-15' || profile.name === 'iphone-se') {
+      // Journey state machine (CLOSED → PRE_ENTRY_OPEN → CLOSED) and the Form Helper 2.0 phone flow
+      // (card → explain → editor → preview sheet) on real WebKit.
+      const fhReport = { name: 'journey+form-helper', failures: [] };
+      try {
+        await page.goto(`http://127.0.0.1:${PORT}/`, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await page.waitForSelector('#civicLanding [data-cs-journey="pre"]', { timeout: 20000 });
+        await page.locator('[data-cs-journey="pre"]').tap();
+        await page.waitForTimeout(300);
+        if ((await page.getAttribute('[data-cs-journey="pre"]', 'aria-expanded')) !== 'true') fhReport.failures.push('journey did not open on tap');
+        const panelShown = await page.evaluate(() => { const p = document.getElementById('civicJourneyPanel'); return !!p && !p.hidden && p.getBoundingClientRect().height > 40; });
+        if (!panelShown) fhReport.failures.push('journey panel not shown');
+        await page.locator('[data-cs-journey="pre"]').tap();
+        await page.waitForTimeout(200);
+        if ((await page.getAttribute('[data-cs-journey="pre"]', 'aria-expanded')) !== 'false') fhReport.failures.push('second tap did not collapse the journey');
+        const journeyState = await inspect(page, profile, 'journey');
+        profileReport.states.push(journeyState);
+        fhReport.failures.push(...journeyState.failures);
+        await page.goto(`http://127.0.0.1:${PORT}/form-helper.html`, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await page.waitForSelector('body.fh-ready', { timeout: 20000 });
+        await page.waitForTimeout(400);
+        const home = await page.evaluate(() => ({ overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth, cards: document.querySelectorAll('.fh-card').length }));
+        if (home.overflow > 1) fhReport.failures.push(`form helper home overflows by ${home.overflow}px`);
+        if (home.cards < 12) fhReport.failures.push(`form helper lists ${home.cards} cards`);
+        await page.screenshot({ path: path.join(OUT, `${profile.name}-form-helper-home.png`), fullPage: false });
+        await page.locator('.fh-card[data-form="F08"]').first().tap();
+        await page.waitForSelector('#fhStart', { timeout: 10000 });
+        await page.locator('#fhStart').tap();
+        await page.waitForSelector('#f_name', { timeout: 10000 });
+        await page.fill('#f_name', 'nguyen van anh');
+        await page.fill('#f_arc_no', '9801231234567');
+        await page.waitForTimeout(300);
+        const edit = await page.evaluate(() => ({ overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth, name: document.getElementById('f_name').value, arc: document.getElementById('f_arc_no').value, ops: (window.VisableFormHelper && VisableFormHelper.state.ops.length) || 0, bar: !!document.querySelector('#fhMobileBar') && getComputedStyle(document.querySelector('#fhMobileBar')).display !== 'none' }));
+        if (edit.overflow > 1) fhReport.failures.push(`form helper editor overflows by ${edit.overflow}px`);
+        if (edit.name !== 'NGUYEN VAN ANH') fhReport.failures.push(`upper-case normalisation failed (${edit.name})`);
+        if (edit.arc !== '980123-1234567') fhReport.failures.push(`registration number normalisation failed (${edit.arc})`);
+        if (edit.ops < 14) fhReport.failures.push(`preview ops missing (${edit.ops})`);
+        if (!edit.bar) fhReport.failures.push('mobile action bar not shown');
+        await page.screenshot({ path: path.join(OUT, `${profile.name}-form-helper-edit.png`), fullPage: false });
+        await page.locator('#fhOpenSheet').tap();
+        await page.waitForSelector('#fhSheet canvas', { timeout: 10000 });
+        await page.waitForTimeout(500);
+        const sheet = await page.evaluate(() => { const c = document.querySelector('#fhSheet canvas'); const r = c.getBoundingClientRect(); return { width: r.width, innerWidth, overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth }; });
+        if (sheet.width < sheet.innerWidth - 40) fhReport.failures.push(`preview sheet canvas is only ${Math.round(sheet.width)}px wide`);
+        await page.screenshot({ path: path.join(OUT, `${profile.name}-form-helper-sheet.png`), fullPage: false });
+        await page.locator('#fhSheetClose').tap();
+        await page.waitForTimeout(200);
+      } catch (error) {
+        fhReport.failures.push(`flow error: ${String(error.message || error)}`);
+      }
+      profileReport.guidanceFlows = profileReport.guidanceFlows || [];
+      profileReport.guidanceFlows.push(fhReport);
+      for (const failure of fhReport.failures) report.failures.push(`${profile.name}/journey+form-helper: ${failure}`);
+    }
     report.profiles.push(profileReport);
     await context.close();
   }

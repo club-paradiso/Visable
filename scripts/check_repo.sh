@@ -356,6 +356,8 @@ if command -v node >/dev/null 2>&1; then
   node scripts/check_status_resolver.mjs
   node scripts/check_search_router.mjs
   node scripts/check_document_physical_form.mjs
+  echo "[13c/14] Validating the Form Helper (inventory, exclusions, template drift, engine, exports)..."
+  node scripts/check_form_helper.mjs
   node scripts/check_fee_rules.mjs
   node scripts/check_local_practice.mjs
   node scripts/check_waymaker_quick_answer.mjs
