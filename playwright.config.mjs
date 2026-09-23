@@ -17,6 +17,14 @@ import { defineConfig } from '@playwright/test';
 
 const PORT = Number(process.env.PARADISO_E2E_PORT || 4173);
 
+// Browsers inherit the runner's locale. Under the POSIX / C locale (a container with
+// LANG unset) Linux Chromium cannot encode a non-ASCII download name in the native
+// charset and reports every such download as "download" — a condition real users
+// (UTF-8 Linux desktops, Android, iOS, macOS, Windows) never hit. Pin a UTF-8 locale
+// when the runner has none, so file-name assertions describe real browsers.
+const UTF8_LOCALE = /utf-?8/i.test(process.env.LC_ALL || process.env.LC_CTYPE || process.env.LANG || '');
+const BROWSER_ENV = UTF8_LOCALE ? process.env : { ...process.env, LANG: 'C.UTF-8', LC_ALL: 'C.UTF-8' };
+
 export default defineConfig({
   testDir: './tests/e2e',
   timeout: 60_000,
@@ -32,9 +40,10 @@ export default defineConfig({
     // the @playwright/test pin, point at it via PARADISO_PW_EXECUTABLE instead of
     // downloading (e.g. /opt/pw-browsers/chromium-XXXX/chrome-linux/chrome). When
     // the env var is unset, Playwright uses its own managed browser as usual.
-    launchOptions: process.env.PARADISO_PW_EXECUTABLE
-      ? { executablePath: process.env.PARADISO_PW_EXECUTABLE }
-      : {}
+    launchOptions: {
+      ...(process.env.PARADISO_PW_EXECUTABLE ? { executablePath: process.env.PARADISO_PW_EXECUTABLE } : {}),
+      env: BROWSER_ENV
+    }
   },
   webServer: {
     command: `python3 -m http.server ${PORT}`,

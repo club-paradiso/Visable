@@ -14,13 +14,18 @@
  *  5. export: for every fillable form the Node export (pdf-lib + fontkit, the same vendor
  *     files the browser loads) is verified against the engine ops with PyMuPDF
  *     (scripts/forms/verify_export.py) — skipped with INFO when PyMuPDF is unavailable.
+ *  6. geometry: every overlay of every template (not only the ones a sample fills) is
+ *     bounded (maxWidth) and its whole writable area stays inside its table cell — no
+ *     vertical rule, horizontal rule or printed label inside it, no run past the row end
+ *     (scripts/forms/audit_overlay_geometry.py, PyMuPDF; skipped with INFO without it).
  *
  *  --record-qa  writes support.qa = PASS/FAIL (+ qaDate) into data/form_schemas.json.
  */
 import fs from 'node:fs';
 import path from 'node:path';
+import os from 'node:os';
 import { createRequire } from 'node:module';
-import { execFileSync, spawnSync } from 'node:child_process';
+import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
@@ -43,6 +48,13 @@ function info(msg) { console.log('  INFO ' + msg); }
 {
   const r = spawnSync('python3', [path.join(ROOT, 'scripts/forms/build_forms_inventory.py'), '--check'], { encoding: 'utf8' });
   ok(r.status === 0, 'inventory + coverage doc are fresh (build_forms_inventory.py --check): ' + (r.stdout || '').trim().split('\n').slice(-2).join(' | ') + (r.stderr || '').trim().slice(-300));
+  // the committed inventory must not depend on whether PyMuPDF is installed (CI runners and
+  // contributors may not have it): re-run the check with the module import blocked
+  const blocker = fs.mkdtempSync(path.join(os.tmpdir(), 'no-pymupdf-'));
+  for (const mod of ['pymupdf', 'fitz']) fs.writeFileSync(path.join(blocker, mod + '.py'), 'raise ImportError("blocked by check_form_helper")\n');
+  const rb = spawnSync('python3', [path.join(ROOT, 'scripts/forms/build_forms_inventory.py'), '--check'], { encoding: 'utf8', env: { ...process.env, PYTHONPATH: blocker } });
+  ok(rb.status === 0, 'inventory check gives the same answer without PyMuPDF (pinned annex page map): ' + ((rb.stderr || '') + (rb.stdout || '')).trim().slice(-300));
+  fs.rmSync(blocker, { recursive: true, force: true });
   const excludedNumbers = new Set();
   for (const it of inventory.inventory) {
     if (it.class === 'excluded_departure' || it.class === 'excluded_refugee') {
@@ -56,7 +68,16 @@ function info(msg) { console.log('  INFO ' + msg); }
   for (const [fid, spec] of Object.entries(schemas.forms)) {
     ok(!excludedNumbers.has(spec.support.annex), `${fid} does not map an excluded annex`);
     ok(!/난민|출국기한|출국기한유예|refugee/i.test(spec.nameKo + spec.nameEn), `${fid} is not a refugee / departure-deadline form`);
-    if (spec.support.status === 'SUPPORTED') ok(spec.support.qa === 'PASS', `${fid} SUPPORTED requires qa PASS (got ${spec.support.qa})`);
+    if (spec.support.status === 'SUPPORTED') {
+      ok(spec.support.qa === 'PASS', `${fid} SUPPORTED requires qa PASS (got ${spec.support.qa})`);
+      ok(spec.template.verification === 'VERIFIED_CURRENT', `${fid} SUPPORTED requires the edition to be verified against the current official text (got ${spec.template.verification})`);
+    }
+    if (spec.template.verification === 'VERIFIED_CURRENT') {
+      const va = spec.template.verifiedAgainst || {};
+      const printed = String(spec.template.revisionOnForm || '').replace(/[^0-9]/g, '');
+      ok(va.law && va.mst && va.annex && va.checkedOn && va.headerOnCurrentText, `${fid} verification record is complete`);
+      ok(printed && String(va.headerOnCurrentText).replace(/[^0-9]/g, '') === printed, `${fid} the current annex header (${va.headerOnCurrentText}) carries the revision printed on the template (${spec.template.revisionOnForm})`);
+    } else ok(spec.support.status !== 'SUPPORTED', `${fid} an unverified edition is never SUPPORTED`);
     ok(['SUPPORTED', 'PARTIAL', 'BLOCKED'].includes(spec.support.status), `${fid} status is a known value`);
   }
   ok(inventory.supported_now.every((f) => schemas.forms[f] && schemas.forms[f].support.status === 'SUPPORTED'), 'inventory supported_now matches schema statuses');
@@ -136,7 +157,7 @@ const glyphs = E.makeGlyphChecker(charset);
   const lay2 = E.layout(schemas.forms.F14, { w1_sub: '③' }, measure, glyphs, {});
   ok(lay2.ops.length === 0 && lay2.issues[0].kind === 'FONT', 'a glyph outside the font is left blank and flagged FONT');
   const f01 = defs.forms.F01; const v = E.initialValues(f01);
-  ok(E.visibleSteps(f01, v).map((s) => s.id).join(',') === 'type,person,contact,sign', 'F01 conditional steps hidden until a type is chosen');
+  ok(E.visibleSteps(f01, v).map((s) => s.id).join(',') === 'type,person,contact,school,sign', 'F01 conditional steps hidden until a type is chosen (the school-status step is always offered)');
   v.app_type = 'address_change'; v.new_address = 'A'; v.korean_address = 'B';
   ok(E.overlayValues(f01, v).addr_korea === 'A', 'address change maps the NEW address into the official address cell');
   ok(E.visibleFields(f01, v, 'contact').some((x) => x.key === 'new_address') && !E.visibleFields(f01, v, 'contact').some((x) => x.key === 'korean_address'), 'address-change shows the new-address field only');
@@ -153,10 +174,12 @@ const glyphs = E.makeGlyphChecker(charset);
   const idx = E.buildSearchIndex(defs, inventory, 'ko');
   const top = (q) => (E.search(idx, q, 3)[0] || {}).entry?.id;
   ok(top('통합신청서') === 'F01' && top('주소 변경') === 'F08' && top('숙소 제공') === 'F06' && top('신원보증') === 'F07' && top('F-4 거소신고') === 'F04', 'search examples from the brief resolve to the intended forms');
-  const ref = E.search(idx, '난민', 8).map((r) => r.entry);
-  ok(ref.length && ref.every((e) => e.kind === 'catalog') && ref.some((e) => e.status === 'EXCLUDED') && !ref.some((e) => e.status === 'FILLABLE'), 'refugee forms are never fillable: only catalog entries (excluded / official-use) match');
+  const ref = E.search(idx, '난민인정', 8).map((r) => r.entry);
+  ok(ref.length && ref.every((e) => e.kind === 'catalog' && e.status === 'EXCLUDED'), 'refugee-status forms (난민인정) are searchable only as excluded catalog entries');
+  const refAll = E.search(idx, '난민', 20).map((r) => r.entry);
+  ok(refAll.length && refAll.every((e) => e.kind === 'catalog') && !refAll.some((e) => e.status === 'FILLABLE'), 'no refugee-related search result is ever fillable');
   const dep = E.search(idx, '출국기한유예', 8).map((r) => r.entry);
-  ok(dep.length && dep.every((e) => e.kind === 'catalog') && dep.some((e) => e.status === 'EXCLUDED') && !dep.some((e) => e.status === 'FILLABLE'), 'departure-deadline forms are never fillable: only catalog entries match');
+  ok(dep.length && dep.every((e) => e.kind === 'catalog' && e.status === 'EXCLUDED'), 'departure-deadline forms are searchable only as excluded catalog entries');
   ok(E.normalizeValue({ type: 'arc' }, '980123 1234567') === '980123-1234567' && E.normalizeValue({ type: 'upper', maxLen: 4 }, 'abcdef') === 'ABCD', 'value normalisation (arc hyphen, upper-case, maxLen)');
   ok(E.filename(defs.forms.F08, { name: 'NGUYEN VAN ANH' }, 'F08', 'ko') === 'NGUYEN VAN ANH_체류지변경신고서.pdf', 'download filename');
 }
@@ -216,11 +239,52 @@ for (const [fid, vals] of Object.entries(overlaySamples)) {
 }
 if (!HAVE_PYMUPDF) info('PyMuPDF not importable — export geometry verification skipped (run locally: pip install pymupdf)');
 
+/* ── 6. static geometry audit of every overlay ─────────────────────────── */
+let GEOMETRY_OK = null;
+if (HAVE_PYMUPDF) {
+  const r = spawnSync('python3', [path.join(ROOT, 'scripts/forms/audit_overlay_geometry.py'), '--json'], { encoding: 'utf8' });
+  let report = null;
+  try { report = JSON.parse(r.stdout); } catch (e) { report = null; }
+  ok(!!report, 'overlay geometry audit ran (' + (r.stderr || '').trim().slice(-200) + ')');
+  if (report) {
+    let n = 0;
+    for (const [fid, rep] of Object.entries(report)) {
+      n += rep.checked;
+      ok(rep.issues.length === 0, `${fid}: every overlay stays inside its cell (${rep.issues.slice(0, 4).map((i) => i.kind + ' ' + i.key + ': ' + i.detail).join(' | ')})`);
+    }
+    ok(Object.keys(report).length === Object.keys(schemas.forms).length, 'geometry audit covers every template');
+    GEOMETRY_OK = r.status === 0;
+    info(`overlay geometry audit: ${n} overlays across ${Object.keys(report).length} templates`);
+  }
+  // the audit must have teeth: the pre-fix coordinates of real defects are each caught
+  const broken = JSON.parse(JSON.stringify(schemas));
+  const plant = {
+    'F01/tel': [{ x: 165, y: 418, size: 8.5, maxWidth: 60 }, 'CROSSES_RULE'],          // started in the label cell, ran over the border
+    'F01/apply_date': [{ x: 165, y: 586, size: 9, maxWidth: 50 }, 'CROSSES_RULE'],      // date written into the label cell
+    'F02/dob_y': [{ x: 150, y: 303.5, size: 8.5, maxWidth: 24 }, 'CROSSES_HRULE'],      // digits on the header/value divider
+    'F03/dob_d': [{ x: 256, y: 298, size: 8.5, maxWidth: 17 }, 'OVERLAPS_TEXT'],        // day value printed over 月
+    'F11/email': [{ x: 236, y: 286.5, size: 9, maxWidth: 296 }, 'OVERLAPS_TEXT'],       // touching the printed label
+    'F12/tel': [{ x: 411, y: 298, size: 9, maxWidth: 122 }, 'OUTSIDE_ROW'],             // past the table's right end
+    'F06/rcpt_name': [{ x: 150, y: 180, size: 8 }, 'UNBOUNDED'],                        // no width limit at all
+  };
+  for (const [ref, [ov]] of Object.entries(plant)) { const [fid, key] = ref.split('/'); broken.forms[fid].overlay[key] = ov; }
+  const tmp = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'fh-geom-')), 'schemas.json');
+  fs.writeFileSync(tmp, JSON.stringify(broken));
+  const rt = spawnSync('python3', [path.join(ROOT, 'scripts/forms/audit_overlay_geometry.py'), '--json', '--schema', tmp], { encoding: 'utf8' });
+  let rep = null; try { rep = JSON.parse(rt.stdout); } catch (e) { rep = null; }
+  ok(rt.status === 1 && !!rep, 'geometry audit fails on a schema with planted defects');
+  for (const [ref, [, kind]] of Object.entries(plant)) {
+    const [fid, key] = ref.split('/');
+    ok(!!rep && rep[fid].issues.some((i) => i.key === key && i.kind === kind), `geometry audit catches the planted ${kind} on ${ref}`);
+  }
+  fs.rmSync(path.dirname(tmp), { recursive: true, force: true });
+} else info('PyMuPDF not importable — overlay geometry audit skipped');
+
 if (RECORD && HAVE_PYMUPDF) {
   const today = new Date().toISOString().slice(0, 10);
   for (const [fid, spec] of Object.entries(schemas.forms)) {
     if (qaResult[fid] === undefined) continue;
-    spec.support.qa = qaResult[fid] ? 'PASS' : 'FAIL'; spec.support.qaDate = today; spec.support.qaMethod = 'node export (pdf-lib + fontkit) verified with PyMuPDF against engine ops; browser E2E on F08/F01';
+    spec.support.qa = qaResult[fid] && GEOMETRY_OK ? 'PASS' : 'FAIL'; spec.support.qaDate = today; spec.support.qaMethod = 'node export (pdf-lib + fontkit) verified with PyMuPDF against engine ops; static geometry audit of every overlay against the template cells; browser E2E on F08/F01';
   }
   fs.writeFileSync(path.join(ROOT, 'data/form_schemas.json'), JSON.stringify(schemas, null, 2) + '\n');
   info('recorded qa results into data/form_schemas.json: ' + JSON.stringify(qaResult));

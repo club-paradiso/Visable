@@ -1,10 +1,11 @@
 /* Visable Form Helper 2.0 — civic editorial surface (tokens from civic-search.css) */
 .fh-body { margin: 0; background: var(--cs-bg); color: var(--cs-ink); font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.6; -webkit-text-size-adjust: 100%; }
 .fh-body * { box-sizing: border-box; }
-.fh-body button, .fh-body input, .fh-body select, .fh-body textarea { font: inherit; color: inherit; }
+/* reset at element weight only (:where adds none), so component classes such as .fh-btn-primary win */
+:where(.fh-body) :is(button, input, select, textarea) { font: inherit; color: inherit; }
 .fh-body :focus-visible { outline: 3px solid var(--cs-green); outline-offset: 3px; }
 /* skip link parked above the viewport: a negative horizontal offset would become scrollable overflow in RTL */
-.fh-skip { position: absolute; top: -120px; inset-inline-start: 8px; background: var(--cs-green); color: #fff; padding: 8px 12px; border-radius: 8px; z-index: 50; }
+.fh-skip { position: absolute; top: -120px; inset-inline-start: 8px; background: var(--cs-green); color: var(--cs-bg); padding: 8px 12px; border-radius: 8px; z-index: 50; }
 .fh-skip:focus { top: 8px; }
 [hidden] { display: none !important; }
 
@@ -23,6 +24,9 @@
 #fhMain { max-width: 1240px; margin: 0 auto; padding: 8px 20px 96px; }
 .fh-screen { animation: fh-in .18s ease; }
 @keyframes fh-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .fh-body *, .fh-body *::before, .fh-body *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}
 .fh-hero { padding: 36px 0 12px; max-width: 760px; }
 .fh-kicker { margin: 0; font-size: 13px; font-weight: 700; letter-spacing: .04em; color: var(--cs-green); text-transform: uppercase; }
 .fh-h1 { font-size: clamp(28px, 4vw, 44px); line-height: 1.2; letter-spacing: -.035em; font-weight: 800; margin: 6px 0 10px; word-break: keep-all; }
@@ -56,7 +60,7 @@
 .fh-chip-ok { background: var(--cs-soft); color: var(--cs-green); border-color: transparent; }
 .fh-chip-mid { background: #fff5dc; color: #6f4d00; border-color: transparent; }
 .fh-chip-no { background: #fbe9e7; color: #8b2418; border-color: transparent; }
-.fh-chip-dirty { background: var(--cs-green); color: #fff; border-color: transparent; }
+.fh-chip-dirty { background: var(--cs-green); color: var(--cs-bg); border-color: transparent; }
 body[data-theme="dark"] .fh-chip-mid { background: #4a3a10; color: #ffe2a1; }
 body[data-theme="dark"] .fh-chip-no { background: #4d2320; color: #ffc7c0; }
 
@@ -99,7 +103,8 @@ body[data-theme="dark"] .fh-chip-no { background: #4d2320; color: #ffc7c0; }
 .fh-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 10px 20px; border-radius: 12px; border: 1px solid var(--cs-line); background: var(--cs-bg); color: var(--cs-ink); font-weight: 750; cursor: pointer; text-decoration: none; }
 .fh-btn:hover { border-color: var(--cs-green); }
 .fh-btn:disabled { opacity: .45; cursor: default; }
-.fh-btn-primary { background: var(--cs-green); color: #fff; border-color: var(--cs-green); }
+/* text = the page background token: white on the dark green (light theme), dark on the mint (dark theme) */
+.fh-btn-primary { background: var(--cs-green); color: var(--cs-bg); border-color: var(--cs-green); }
 .fh-btn-primary:hover { opacity: .92; }
 .fh-btn-secondary { background: var(--cs-soft); color: var(--cs-green); border-color: transparent; }
 .fh-btn-ghost { background: transparent; }
@@ -114,7 +119,7 @@ body[data-theme="dark"] .fh-chip-no { background: #4d2320; color: #ffc7c0; }
 .fh-rail-item button { width: 100%; text-align: left; display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 10px; align-items: center; border: 0; background: none; padding: 8px 8px; border-radius: 10px; cursor: pointer; min-height: 44px; }
 .fh-rail-item button:hover { background: var(--cs-row); }
 .fh-rail-n { width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: 800; font-size: 13px; border: 1px solid var(--cs-line); color: var(--cs-muted); }
-.fh-rail-current .fh-rail-n { background: var(--cs-green); color: #fff; border-color: var(--cs-green); }
+.fh-rail-current .fh-rail-n { background: var(--cs-green); color: var(--cs-bg); border-color: var(--cs-green); }
 .fh-rail-done .fh-rail-n { background: var(--cs-soft); color: var(--cs-green); border-color: transparent; }
 .fh-rail-label { display: grid; line-height: 1.25; }
 .fh-rail-label span { font-weight: 700; font-size: 15px; word-break: keep-all; }

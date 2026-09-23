@@ -43,10 +43,11 @@
  },
  "counts_by_status": {
   "BLOCKED": 31,
-  "SUPPORTED": 15,
+  "SUPPORTED": 14,
   "NOT_APPLICABLE": 233,
   "EXCLUDED": 11,
-  "UNKNOWN": 2
+  "UNKNOWN": 2,
+  "PARTIAL": 1
  },
  "counts_by_class": {
   "applicant_facing": 46,
@@ -66,13 +67,13 @@
    "revision_on_form": "2022-04-12",
    "pdf": "assets/forms/pdf/F01.pdf",
    "pages": 1,
-   "field_count": 42,
+   "field_count": 50,
    "field_map_version": "2026-07.1",
-   "template_edition": "법무부령 제1106호 (2026-01-23) 기준",
+   "template_edition": "현행 출입국관리법 시행규칙 (2026-09-15 시행본) 별지 제34호서식와 대조 확인",
    "template_sha256": "2787b724ed0c398af0339f8ebbff89b142fa25c1218bdf7473832a080314c8d2",
-   "edition_verification": "MATCHES_RULE_1106_TEXT",
+   "edition_verification": "VERIFIED_CURRENT",
    "status": "SUPPORTED",
-   "status_reason": "mapped + Node export verified with PyMuPDF + browser E2E (Chromium desktop/mobile)",
+   "status_reason": "mapped (incl. 재학 여부 and 반환용 계좌번호 rows) + Node export verified with PyMuPDF + browser E2E; edition verified against the current rule",
    "qa": "PASS",
    "is_variant": false,
    "base_form": null,
@@ -90,11 +91,11 @@
    "pages": 1,
    "field_count": 50,
    "field_map_version": "2026-09-23.1",
-   "template_edition": "법무부령 제1106호 (2026-01-23) 기준",
+   "template_edition": "현행 출입국관리법 시행규칙 (2026-09-15 시행본) 별지 제34호의2서식와 대조 확인",
    "template_sha256": "28c0454c991a0b2a428869ad7a674c45b9d920e322c336e6b5616d02addc89a1",
-   "edition_verification": "RULE_1106_PDF",
+   "edition_verification": "VERIFIED_CURRENT",
    "status": "SUPPORTED",
-   "status_reason": "F01 edition (한자·일문 병기, 2025-05-30); mapped + export verified; 漢字姓名 cell left for handwriting (no CJK glyphs in the embedded font)",
+   "status_reason": "F01 edition (한자·일문 병기, 2025-05-30); mapped + export verified; edition verified against the current rule; 漢字姓名 cell left for handwriting (no CJK ideographs in the embedded font)",
    "qa": "PASS",
    "is_variant": true,
    "base_form": "F01",
@@ -110,13 +111,13 @@
    "revision_on_form": "2023-06-14",
    "pdf": "assets/forms/pdf/F03.pdf",
    "pages": 1,
-   "field_count": 41,
+   "field_count": 50,
    "field_map_version": "2026-06.1",
-   "template_edition": "법무부령 제1106호 (2026-01-23) 기준",
+   "template_edition": "현행 출입국관리법 시행규칙 (2026-09-15 시행본) 별지 제34호의3서식와 대조 확인",
    "template_sha256": "3a5a7194b9fb15334e1fb0905bdd4037e94ffdac7546e7a40f4e867d3802f18c",
-   "edition_verification": "MATCHES_RULE_1106_TEXT",
+   "edition_verification": "VERIFIED_CURRENT",
    "status": "SUPPORTED",
-   "status_reason": "F01 edition (중문 병기); mapped + export verified; refund-account cell absent on this edition (told to the user)",
+   "status_reason": "F01 edition (중문 병기); mapped incl. 재학 여부 and 반환용 계좌번호 + export verified; edition verified against the current rule; 中文姓名 cell left for handwriting",
    "qa": "PASS",
    "is_variant": true,
    "base_form": "F01",
@@ -132,13 +133,13 @@
    "revision_on_form": "2022-04-12",
    "pdf": "assets/forms/pdf/F04.pdf",
    "pages": 1,
-   "field_count": 32,
+   "field_count": 40,
    "field_map_version": "2026-07.1",
-   "template_edition": "재외동포법 시행규칙 (현행 확인 필요)",
+   "template_edition": "현행 재외동포의 출입국과 법적 지위에 관한 법률 시행규칙 (2025-02-01 시행본) 별지 제1호서식와 대조 확인",
    "template_sha256": "8e264b5ddbcb2d3b6b614494c1418b574e4265360c38d6465b1d350e2463d7d6",
-   "edition_verification": "PENDING_LAW_GO_KR",
+   "edition_verification": "VERIFIED_CURRENT",
    "status": "SUPPORTED",
-   "status_reason": "mapped + export verified; edition of the 재외동포법 시행규칙 annex unverified offline",
+   "status_reason": "mapped incl. 재학 여부 and 반환용 계좌번호 + export verified; edition verified against the current 재외동포법 시행규칙",
    "qa": "PASS",
    "is_variant": false,
    "base_form": null,
@@ -154,13 +155,13 @@
    "revision_on_form": "2022-04-12",
    "pdf": "assets/forms/pdf/F05.pdf",
    "pages": 1,
-   "field_count": 31,
+   "field_count": 40,
    "field_map_version": "2026-06.1",
-   "template_edition": "재외동포법 시행규칙 (현행 확인 필요)",
+   "template_edition": "현행 재외동포의 출입국과 법적 지위에 관한 법률 시행규칙 (2025-02-01 시행본) 별지 제1호의2서식와 대조 확인",
    "template_sha256": "279512d34781254db8ae8c8975df967ebac976979157b21786bd93848f13b3ab",
-   "edition_verification": "PENDING_LAW_GO_KR",
+   "edition_verification": "VERIFIED_CURRENT",
    "status": "SUPPORTED",
-   "status_reason": "F04 edition (중문 병기); mapped + export verified; refund-account cell absent on this edition",
+   "status_reason": "F04 edition (중문 병기); mapped incl. 재학 여부 and 반환용 계좌번호 + export verified; edition verified against the current 재외동포법 시행규칙; 中文姓名 cell left for handwriting",
    "qa": "PASS",
    "is_variant": true,
    "base_form": "F04",
@@ -178,11 +179,11 @@
    "pages": 1,
    "field_count": 30,
    "field_map_version": "2026-06.1",
-   "template_edition": "HiKorea 민원서식",
+   "template_edition": "HiKorea 민원서식 (개정 2024. 5.) — 최신판 대조 미완료 (hikorea.go.kr은 빌드 환경에서 접속 불가)",
    "template_sha256": "b49a3d6b4aad93974069d0e4fdbbb74d80149d9e31e34caad3383b3a615aed75",
    "edition_verification": "PENDING_HIKOREA",
-   "status": "SUPPORTED",
-   "status_reason": "mapped onto the official HiKorea PDF (canvas replica retired) + export verified; HiKorea edition unverified offline",
+   "status": "PARTIAL",
+   "status_reason": "mapped onto the official HiKorea PDF (canvas replica retired) + export verified; PARTIAL because the HiKorea edition could not be compared with the current download (hikorea.go.kr unreachable from the build sandbox)",
    "qa": "PASS",
    "is_variant": false,
    "base_form": null,
@@ -200,11 +201,11 @@
    "pages": 2,
    "field_count": 28,
    "field_map_version": "2026-06.1",
-   "template_edition": "법무부령 제1106호 (2026-01-23) 기준",
+   "template_edition": "현행 출입국관리법 시행규칙 (2026-09-15 시행본) 별지 제129호서식와 대조 확인",
    "template_sha256": "27cee3a6ec53a091ea65944dadf6dfb636316da20e87304bb4bb528155544c19",
-   "edition_verification": "MATCHES_RULE_1106_TEXT",
+   "edition_verification": "VERIFIED_CURRENT",
    "status": "SUPPORTED",
-   "status_reason": "mapped + export verified; 漢字 name cells left for handwriting",
+   "status_reason": "mapped + export verified; edition verified against the current rule; 漢字 name cells left for handwriting",
    "qa": "PASS",
    "is_variant": false,
    "base_form": null,
@@ -222,11 +223,11 @@
    "pages": 1,
    "field_count": 18,
    "field_map_version": "2026-09-23.1",
-   "template_edition": "법무부령 제1106호 (2026-01-23) 기준",
+   "template_edition": "현행 출입국관리법 시행규칙 (2026-09-15 시행본) 별지 제34호의4서식와 대조 확인",
    "template_sha256": "9c8ca0e64ad10adf761e2a39f72a8acaea09bb595f79076a7eacd4c99cbd427d",
-   "edition_verification": "RULE_1106_PDF",
+   "edition_verification": "VERIFIED_CURRENT",
    "status": "SUPPORTED",
-   "status_reason": "new 2026-09-23: mapped from the rule PDF + export verified + browser E2E",
+   "status_reason": "mapped from the rule PDF + export verified + browser E2E; edition verified against the current rule",
    "qa": "PASS",
    "is_variant": false,
    "base_form": null,
@@ -244,11 +245,11 @@
    "pages": 1,
    "field_count": 13,
    "field_map_version": "2026-09-23.1",
-   "template_edition": "법무부령 제1106호 (2026-01-23) 기준",
+   "template_edition": "현행 출입국관리법 시행규칙 (2026-09-15 시행본) 별지 제34호의9서식와 대조 확인",
    "template_sha256": "f8ca2a67bef00a090e1a8df6a70e5eaa7aba96df8ed8b4ada00ced021858c42a",
-   "edition_verification": "RULE_1106_PDF",
+   "edition_verification": "VERIFIED_CURRENT",
    "status": "SUPPORTED",
-   "status_reason": "new 2026-09-23: mapped (13-digit and 11-digit cell grids) + export verified",
+   "status_reason": "mapped (13-digit and 11-digit cell grids) + export verified; edition verified against the current rule",
    "qa": "PASS",
    "is_variant": false,
    "base_form": null,
@@ -266,11 +267,11 @@
    "pages": 2,
    "field_count": 42,
    "field_map_version": "2026-09-23.1",
-   "template_edition": "법무부령 제1106호 (2026-01-23) 기준",
+   "template_edition": "현행 출입국관리법 시행규칙 (2026-09-15 시행본) 별지 제138호의2서식와 대조 확인",
    "template_sha256": "cb409ace3237279717b4553e91141f19f91fcb33c4cd7dc9e11a0e7b654366f7",
-   "edition_verification": "RULE_1106_PDF",
+   "edition_verification": "VERIFIED_CURRENT",
    "status": "SUPPORTED",
-   "status_reason": "new 2026-09-23: 2 pages mapped + export verified; 영문 성명 병기 option (국민만 해당) intentionally not exposed",
+   "status_reason": "2 pages mapped + export verified; edition verified against the current rule; 영문 성명 병기 option (국민만 해당) intentionally not exposed",
    "qa": "PASS",
    "is_variant": false,
    "base_form": null,
@@ -288,11 +289,11 @@
    "pages": 1,
    "field_count": 13,
    "field_map_version": "2026-09-23.1",
-   "template_edition": "법무부령 제1106호 (2026-01-23) 기준",
+   "template_edition": "현행 출입국관리법 시행규칙 (2026-09-15 시행본) 별지 제1호의4서식와 대조 확인",
    "template_sha256": "42f0f0fe8c0f5ca091507251b5a386f4956d6ce35e33ccc40d9226e4034899e9",
-   "edition_verification": "RULE_1106_PDF",
+   "edition_verification": "VERIFIED_CURRENT",
    "status": "SUPPORTED",
-   "status_reason": "new 2026-09-23: mapped + export verified",
+   "status_reason": "mapped + export verified; edition verified against the current rule",
    "qa": "PASS",
    "is_variant": false,
    "base_form": null,
@@ -310,11 +311,11 @@
    "pages": 1,
    "field_count": 33,
    "field_map_version": "2026-09-23.1",
-   "template_edition": "법무부령 제1106호 (2026-01-23) 기준",
+   "template_edition": "현행 출입국관리법 시행규칙 (2026-09-15 시행본) 별지 제61호서식와 대조 확인",
    "template_sha256": "76f97ddfdd311bf8393486fe6e45d713b92308df7d64e1ae90cc199f9d591cb9",
-   "edition_verification": "RULE_1106_PDF",
+   "edition_verification": "VERIFIED_CURRENT",
    "status": "SUPPORTED",
-   "status_reason": "new 2026-09-23: mapped incl. two dependent rows + export verified; 漢字 name cell left for handwriting",
+   "status_reason": "mapped incl. two dependent rows + export verified; edition verified against the current rule; 漢字 name cell left for handwriting",
    "qa": "PASS",
    "is_variant": false,
    "base_form": null,
@@ -332,11 +333,11 @@
    "pages": 1,
    "field_count": 24,
    "field_map_version": "2026-09-23.1",
-   "template_edition": "법무부령 제1106호 (2026-01-23) 기준",
+   "template_edition": "현행 출입국관리법 시행규칙 (2026-09-15 시행본) 별지 제72호서식와 대조 확인",
    "template_sha256": "0707f8721a513e7dddbc45b61c36860b3b357c1f2135d87ea102d56c984e81a0",
-   "edition_verification": "RULE_1106_PDF",
+   "edition_verification": "VERIFIED_CURRENT",
    "status": "SUPPORTED",
-   "status_reason": "new 2026-09-23: mapped + export verified; 漢字 name cell left for handwriting",
+   "status_reason": "mapped + export verified; edition verified against the current rule; 漢字 name cell left for handwriting",
    "qa": "PASS",
    "is_variant": false,
    "base_form": null,
@@ -354,11 +355,11 @@
    "pages": 2,
    "field_count": 58,
    "field_map_version": "2026-09-23.1",
-   "template_edition": "법무부령 제1106호 (2026-01-23) 기준",
+   "template_edition": "현행 출입국관리법 시행규칙 (2026-09-15 시행본) 별지 제32호서식와 대조 확인",
    "template_sha256": "28dbf7d496dd138fcd043f9ba8093409d78cef7bd3f9e35eda650662e8bf268c",
-   "edition_verification": "RULE_1106_PDF",
+   "edition_verification": "VERIFIED_CURRENT",
    "status": "SUPPORTED",
-   "status_reason": "new 2026-09-23: 2 pages mapped (5 worker rows) + export verified; circled reason codes printed as plain letters/digits (font)",
+   "status_reason": "2 pages mapped (5 worker rows) + export verified; edition verified against the current rule; circled reason codes printed as plain letters/digits (font)",
    "qa": "PASS",
    "is_variant": false,
    "base_form": null,
@@ -376,11 +377,11 @@
    "pages": 2,
    "field_count": 44,
    "field_map_version": "2026-09-23.1",
-   "template_edition": "법무부령 제1106호 (2026-01-23) 기준",
+   "template_edition": "현행 출입국관리법 시행규칙 (2026-09-15 시행본) 별지 제21호의3서식와 대조 확인",
    "template_sha256": "d8ebfee3d6e5bd94df911a14a60a13e392cba9e082b3a9c5bac1a8dbfcadf577",
-   "edition_verification": "RULE_1106_PDF",
+   "edition_verification": "VERIFIED_CURRENT",
    "status": "SUPPORTED",
-   "status_reason": "new 2026-09-23: both KO/EN sides mapped + export verified",
+   "status_reason": "both KO/EN sides mapped + export verified; edition verified against the current rule",
    "qa": "PASS",
    "is_variant": false,
    "base_form": null,
@@ -403,7 +404,6 @@
   "F03",
   "F04",
   "F05",
-  "F06",
   "F07",
   "F08",
   "F09",
@@ -414,7 +414,9 @@
   "F14",
   "F15"
  ],
- "partial_now": [],
+ "partial_now": [
+  "F06"
+ ],
  "newly_supported": [
   "F02",
   "F08",
@@ -487,7 +489,7 @@
     "F11"
    ],
    "status": "SUPPORTED",
-   "status_reason": "F11: new 2026-09-23: mapped + export verified"
+   "status_reason": "F11: mapped + export verified; edition verified against the current rule"
   },
   {
    "number": "1의5",
@@ -1119,7 +1121,7 @@
     "F15"
    ],
    "status": "SUPPORTED",
-   "status_reason": "F15: new 2026-09-23: both KO/EN sides mapped + export verified"
+   "status_reason": "F15: both KO/EN sides mapped + export verified; edition verified against the current rule"
   },
   {
    "number": "22",
@@ -1436,7 +1438,7 @@
     "F14"
    ],
    "status": "SUPPORTED",
-   "status_reason": "F14: new 2026-09-23: 2 pages mapped (5 worker rows) + export verified; circled reason codes printed as plain letters/digits (font)"
+   "status_reason": "F14: 2 pages mapped (5 worker rows) + export verified; edition verified against the current rule; circled reason codes printed as plain letters/digits (font)"
   },
   {
    "number": "33",
@@ -1498,7 +1500,7 @@
     "F01"
    ],
    "status": "SUPPORTED",
-   "status_reason": "F01: mapped + Node export verified with PyMuPDF + browser E2E (Chromium desktop/mobile)"
+   "status_reason": "F01: mapped (incl. 재학 여부 and 반환용 계좌번호 rows) + Node export verified with PyMuPDF + browser E2E; edition verified against the current rule"
   },
   {
    "number": "34의2",
@@ -1515,7 +1517,7 @@
     "F02"
    ],
    "status": "SUPPORTED",
-   "status_reason": "F02: F01 edition (한자·일문 병기, 2025-05-30); mapped + export verified; 漢字姓名 cell left for handwriting (no CJK glyphs in the embedded font)"
+   "status_reason": "F02: F01 edition (한자·일문 병기, 2025-05-30); mapped + export verified; edition verified against the current rule; 漢字姓名 cell left for handwriting (no CJK ideographs in the embedded font)"
   },
   {
    "number": "34의3",
@@ -1532,7 +1534,7 @@
     "F03"
    ],
    "status": "SUPPORTED",
-   "status_reason": "F03: F01 edition (중문 병기); mapped + export verified; refund-account cell absent on this edition (told to the user)"
+   "status_reason": "F03: F01 edition (중문 병기); mapped incl. 재학 여부 and 반환용 계좌번호 + export verified; edition verified against the current rule; 中文姓名 cell left for handwriting"
   },
   {
    "number": "34의4",
@@ -1549,7 +1551,7 @@
     "F08"
    ],
    "status": "SUPPORTED",
-   "status_reason": "F08: new 2026-09-23: mapped from the rule PDF + export verified + browser E2E"
+   "status_reason": "F08: mapped from the rule PDF + export verified + browser E2E; edition verified against the current rule"
   },
   {
    "number": "34의5",
@@ -1626,7 +1628,7 @@
     "F09"
    ],
    "status": "SUPPORTED",
-   "status_reason": "F09: new 2026-09-23: mapped (13-digit and 11-digit cell grids) + export verified"
+   "status_reason": "F09: mapped (13-digit and 11-digit cell grids) + export verified; edition verified against the current rule"
   },
   {
    "number": "35",
@@ -2363,7 +2365,7 @@
     "F12"
    ],
    "status": "SUPPORTED",
-   "status_reason": "F12: new 2026-09-23: mapped incl. two dependent rows + export verified; 漢字 name cell left for handwriting"
+   "status_reason": "F12: mapped incl. two dependent rows + export verified; edition verified against the current rule; 漢字 name cell left for handwriting"
   },
   {
    "number": "62",
@@ -2590,7 +2592,7 @@
     "F13"
    ],
    "status": "SUPPORTED",
-   "status_reason": "F13: new 2026-09-23: mapped + export verified; 漢字 name cell left for handwriting"
+   "status_reason": "F13: mapped + export verified; edition verified against the current rule; 漢字 name cell left for handwriting"
   },
   {
    "number": "73",
@@ -3942,7 +3944,7 @@
     "F07"
    ],
    "status": "SUPPORTED",
-   "status_reason": "F07: mapped + export verified; 漢字 name cells left for handwriting"
+   "status_reason": "F07: mapped + export verified; edition verified against the current rule; 漢字 name cells left for handwriting"
   },
   {
    "number": "129의2",
@@ -4139,7 +4141,7 @@
     "F10"
    ],
    "status": "SUPPORTED",
-   "status_reason": "F10: new 2026-09-23: 2 pages mapped + export verified; 영문 성명 병기 option (국민만 해당) intentionally not exposed"
+   "status_reason": "F10: 2 pages mapped + export verified; edition verified against the current rule; 영문 성명 병기 option (국민만 해당) intentionally not exposed"
   },
   {
    "number": "138의3",
@@ -4752,7 +4754,7 @@
     "F04"
    ],
    "status": "SUPPORTED",
-   "status_reason": "F04: mapped + export verified; edition of the 재외동포법 시행규칙 annex unverified offline"
+   "status_reason": "F04: mapped incl. 재학 여부 and 반환용 계좌번호 + export verified; edition verified against the current 재외동포법 시행규칙"
   },
   {
    "source": "overseas_koreans_rule",
@@ -4765,7 +4767,7 @@
     "F05"
    ],
    "status": "SUPPORTED",
-   "status_reason": "F05: F04 edition (중문 병기); mapped + export verified; refund-account cell absent on this edition"
+   "status_reason": "F05: F04 edition (중문 병기); mapped incl. 재학 여부 and 반환용 계좌번호 + export verified; edition verified against the current 재외동포법 시행규칙; 中文姓名 cell left for handwriting"
   },
   {
    "source": "overseas_koreans_rule",
@@ -4788,8 +4790,8 @@
    "visable_forms": [
     "F06"
    ],
-   "status": "SUPPORTED",
-   "status_reason": "F06: mapped onto the official HiKorea PDF (canvas replica retired) + export verified; HiKorea edition unverified offline"
+   "status": "PARTIAL",
+   "status_reason": "F06: mapped onto the official HiKorea PDF (canvas replica retired) + export verified; PARTIAL because the HiKorea edition could not be compared with the current download (hikorea.go.kr unreachable from the build sandbox)"
   },
   {
    "source": "refugee_act_rule",

@@ -269,7 +269,7 @@
   function sourceLine(f) {
     var s = data.schemas.forms[E.editionOf(f, ensureValues(st.formId))];
     var tpl = s.template || {};
-    var ver = tpl.verification === 'MATCHES_RULE_1106_TEXT' ? t('verificationMatches') : tpl.verification === 'RULE_1106_PDF' ? (tpl.edition || '') : t('verificationPending');
+    var ver = tpl.verification === 'VERIFIED_CURRENT' ? t('verificationMatches', { date: (tpl.verifiedAgainst && tpl.verifiedAgainst.checkedOn) || '' }) : t('verificationPending');
     return t('sourceLine', { basis: s.legalBasis + ' · ' + (tpl.revisionOnForm || s.revisionDate), edition: ver });
   }
   function renderExplain() {

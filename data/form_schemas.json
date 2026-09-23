@@ -368,6 +368,70 @@
           "group": "person",
           "req": "opt",
           "kind": "text"
+        },
+        {
+          "key": "school_none",
+          "ko": "재학 여부: 미취학",
+          "en": "School: not enrolled",
+          "group": "school",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "school_elem",
+          "ko": "재학 여부: 초",
+          "en": "School: elementary",
+          "group": "school",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "school_mid",
+          "ko": "재학 여부: 중",
+          "en": "School: middle",
+          "group": "school",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "school_high",
+          "ko": "재학 여부: 고",
+          "en": "School: high",
+          "group": "school",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "school_name",
+          "ko": "학교 이름",
+          "en": "School name",
+          "group": "school",
+          "req": "cond",
+          "kind": "text"
+        },
+        {
+          "key": "school_tel",
+          "ko": "학교 전화번호",
+          "en": "School phone",
+          "group": "school",
+          "req": "cond",
+          "kind": "text"
+        },
+        {
+          "key": "school_acc",
+          "ko": "학교 종류: 교육청 인가",
+          "en": "School type: accredited",
+          "group": "school",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "school_alt",
+          "ko": "학교 종류: 교육청 비인가·대안학교",
+          "en": "School type: non-accredited / alternative",
+          "group": "school",
+          "req": "cond",
+          "kind": "check"
         }
       ],
       "overlay": {
@@ -422,62 +486,57 @@
           "check": true
         },
         "activity_status": {
-          "x": 366,
+          "x": 362.6,
           "y": 148.5,
-          "size": 8
+          "size": 8,
+          "maxWidth": 30.2
         },
         "change_status": {
-          "x": 189,
+          "x": 186.9,
           "y": 229,
-          "size": 8
+          "size": 8,
+          "maxWidth": 23.4
         },
         "grant_status": {
-          "x": 189,
+          "x": 186.9,
           "y": 265.5,
-          "size": 8
+          "size": 8,
+          "maxWidth": 23.4
         },
         "surname": {
-          "x": 178,
+          "x": 196.8,
           "y": 314,
-          "size": 9
+          "size": 9,
+          "maxWidth": 136,
+          "align": "center"
         },
         "given": {
-          "x": 322,
+          "x": 349.05,
           "y": 314,
-          "size": 9
+          "size": 9,
+          "maxWidth": 159,
+          "align": "center"
         },
         "dob_y": {
-          "x": 185,
-          "y": 328,
+          "x": 186.75,
+          "y": 340.5,
           "size": 8.5,
-          "wbox": [
-            183,
-            321,
-            202,
-            330.5
-          ]
+          "maxWidth": 76,
+          "align": "center"
         },
         "dob_m": {
-          "x": 245,
-          "y": 328,
+          "x": 247.3,
+          "y": 340.5,
           "size": 8.5,
-          "wbox": [
-            244,
-            321,
-            262,
-            330.5
-          ]
+          "maxWidth": 35,
+          "align": "center"
         },
         "dob_d": {
-          "x": 288,
-          "y": 328,
+          "x": 287.35,
+          "y": 340.5,
           "size": 8.5,
-          "wbox": [
-            287,
-            321,
-            300,
-            330.5
-          ]
+          "maxWidth": 35,
+          "align": "center"
         },
         "sex_m": {
           "cx": 369.2,
@@ -490,9 +549,10 @@
           "check": true
         },
         "nationality": {
-          "x": 480,
-          "y": 340,
-          "size": 8
+          "x": 482.5,
+          "y": 344,
+          "size": 8,
+          "maxWidth": 54.5
         },
         "frn_reg_no": {
           "x": 200,
@@ -517,119 +577,182 @@
             "y": 358.25,
             "size": 10,
             "_note": "13-digit 외국인등록번호 grid measured from the official PDF vector dividers (scripts: PR post-submission stabilization 2026-07). Falls back to the single-run x/y when the value is not exactly 13 digits."
-          }
+          },
+          "maxWidth": 228
         },
         "passport_no": {
           "x": 140,
-          "y": 383,
-          "size": 8.5
+          "y": 380,
+          "size": 8.5,
+          "maxWidth": 85
         },
         "passport_issue": {
           "x": 312,
-          "y": 383,
-          "size": 8.5
+          "y": 380,
+          "size": 8.5,
+          "maxWidth": 82.5
         },
         "passport_expiry": {
-          "x": 478,
-          "y": 383,
-          "size": 8
+          "x": 482.5,
+          "y": 380,
+          "size": 8,
+          "maxWidth": 54.5
         },
         "addr_korea": {
           "x": 150,
-          "y": 404,
-          "size": 8.5
+          "y": 401,
+          "size": 8.5,
+          "maxWidth": 387
         },
         "tel": {
-          "x": 165,
+          "x": 186.5,
           "y": 418,
-          "size": 8.5
+          "size": 8.5,
+          "maxWidth": 108.5
         },
         "cell": {
-          "x": 400,
+          "x": 419.5,
           "y": 418,
-          "size": 8.5
+          "size": 8.5,
+          "maxWidth": 117.5
         },
         "home_addr": {
-          "x": 185,
-          "y": 438,
-          "size": 8
+          "x": 186.5,
+          "y": 435,
+          "size": 8,
+          "maxWidth": 228
         },
         "home_tel": {
-          "x": 472,
-          "y": 438,
-          "size": 8
+          "x": 485.5,
+          "y": 435,
+          "size": 8,
+          "maxWidth": 51.5
         },
         "workplace_cur": {
           "x": 210,
-          "y": 502,
-          "size": 8
+          "y": 499,
+          "size": 8,
+          "maxWidth": 47.5
         },
         "biz_no_cur": {
           "x": 358,
-          "y": 502,
-          "size": 8
+          "y": 499,
+          "size": 8,
+          "maxWidth": 56.5
         },
         "tel_cur": {
-          "x": 470,
-          "y": 502,
-          "size": 8
+          "x": 485.5,
+          "y": 499,
+          "size": 8,
+          "maxWidth": 51.5
         },
         "workplace_new": {
           "x": 210,
-          "y": 523,
-          "size": 8
+          "y": 520,
+          "size": 8,
+          "maxWidth": 47.5
         },
         "biz_no_new": {
           "x": 358,
-          "y": 523,
-          "size": 8
+          "y": 520,
+          "size": 8,
+          "maxWidth": 56.5
         },
         "tel_new": {
-          "x": 470,
-          "y": 523,
-          "size": 8
+          "x": 485.5,
+          "y": 520,
+          "size": 8,
+          "maxWidth": 51.5
         },
         "annual_income": {
-          "x": 205,
+          "x": 210,
           "y": 538,
-          "size": 8.5
+          "size": 8.5,
+          "maxWidth": 40.5
         },
         "occupation": {
-          "x": 482,
+          "x": 485.5,
           "y": 538,
-          "size": 8
+          "size": 8,
+          "maxWidth": 51.5
         },
         "reentry_period": {
           "x": 210,
           "y": 552,
-          "size": 8
+          "size": 8,
+          "maxWidth": 47.5
         },
         "email": {
-          "x": 345,
+          "x": 357.5,
           "y": 552,
-          "size": 8
+          "size": 8,
+          "maxWidth": 179.5
         },
         "refund_account": {
-          "x": 355,
-          "y": 565,
-          "size": 8
+          "x": 358,
+          "y": 566.5,
+          "size": 8,
+          "maxWidth": 178
         },
         "apply_date": {
-          "x": 165,
+          "x": 210.5,
           "y": 586,
-          "size": 9
+          "size": 9,
+          "maxWidth": 81.5
+        },
+        "school_none": {
+          "cx": 164.3,
+          "cy": 449.8,
+          "check": true
+        },
+        "school_elem": {
+          "cx": 215.9,
+          "cy": 449.8,
+          "check": true
+        },
+        "school_mid": {
+          "cx": 251.1,
+          "cy": 449.8,
+          "check": true
+        },
+        "school_high": {
+          "cx": 279.7,
+          "cy": 449.8,
+          "check": true
+        },
+        "school_name": {
+          "x": 366,
+          "y": 456,
+          "size": 8,
+          "maxWidth": 48
+        },
+        "school_tel": {
+          "x": 485.5,
+          "y": 456,
+          "size": 8,
+          "maxWidth": 51.5
+        },
+        "school_acc": {
+          "cx": 372.8,
+          "cy": 471.2,
+          "check": true
+        },
+        "school_alt": {
+          "cx": 508.6,
+          "cy": 471.2,
+          "check": true
         }
       },
       "template": {
         "source": "repo template (HiKorea/law.go.kr download); printed revision matches 법무부령 제1106호 text",
-        "edition": "법무부령 제1106호 (2026-01-23) 기준",
+        "edition": "현행 출입국관리법 시행규칙 (2026-09-15 시행본) 별지 제34호서식와 대조 확인",
         "revisionOnForm": "개정 2022. 4. 12.",
         "sha256": "2787b724ed0c398af0339f8ebbff89b142fa25c1218bdf7473832a080314c8d2",
         "bytes": 85427,
         "pages": 1,
         "pageWidth": 595,
         "pageHeight": 841,
-        "verification": "MATCHES_RULE_1106_TEXT",
+        "verification": "VERIFIED_CURRENT",
         "fieldMapVersion": "2026-07.1",
         "anchors": [
           {
@@ -644,16 +767,27 @@
             "width": 595,
             "height": 841
           }
-        ]
+        ],
+        "verifiedAgainst": {
+          "source": "law.go.kr 국가법령정보 Open API (Korean-law MCP connector)",
+          "law": "출입국관리법 시행규칙",
+          "mst": "289833",
+          "inForceFrom": "2026-09-15",
+          "annex": "별지 제34호서식",
+          "headerOnCurrentText": "<개정 2022. 4. 12.>",
+          "checkedOn": "2026-09-23",
+          "method": "the current annex (HWP → text) was retrieved and its header revision tag and row / cell structure compared with the template; they match",
+          "pendingAmendment": "법무부령 제1125호 (공포 2026-09-15, 시행 2027-09-16) — re-verify this annex on or after 2027-09-16"
+        }
       },
       "support": {
         "status": "SUPPORTED",
-        "reason": "mapped + Node export verified with PyMuPDF + browser E2E (Chromium desktop/mobile)",
+        "reason": "mapped (incl. 재학 여부 and 반환용 계좌번호 rows) + Node export verified with PyMuPDF + browser E2E; edition verified against the current rule",
         "qa": "PASS",
         "annex": "34",
         "law": "immigration_rule",
         "qaDate": "2026-09-23",
-        "qaMethod": "node export (pdf-lib + fontkit) verified with PyMuPDF against engine ops; browser E2E on F08/F01"
+        "qaMethod": "node export (pdf-lib + fontkit) verified with PyMuPDF against engine ops; static geometry audit of every overlay against the template cells; browser E2E on F08/F01"
       }
     },
     "F02": {
@@ -673,7 +807,7 @@
         18,
         92
       ],
-      "note": "漢字姓名 칸은 폰트 한자 미수록으로 자동 표기하지 않으며 필요 시 수기 작성. 2025. 5. 30. 개정판이라 별지 제34호(2022. 4. 12.)에는 없는 재학 여부 칸이 있습니다.",
+      "note": "漢字姓名 칸은 폰트 한자 미수록으로 자동 표기하지 않으며 필요 시 수기 작성.",
       "fields": [
         {
           "key": "cb_reg_foreign",
@@ -1128,10 +1262,10 @@
           "check": true
         },
         "activity_status": {
-          "x": 405,
+          "x": 404.1,
           "y": 138,
           "size": 7,
-          "maxWidth": 18
+          "maxWidth": 20.3
         },
         "change_status": {
           "x": 202,
@@ -1146,34 +1280,39 @@
           "maxWidth": 50
         },
         "surname": {
-          "x": 131,
+          "x": 196.8,
           "y": 283,
           "size": 9.5,
-          "maxWidth": 165
+          "maxWidth": 136,
+          "align": "center"
         },
         "given": {
-          "x": 308,
+          "x": 349.05,
           "y": 283,
           "size": 9.5,
-          "maxWidth": 148
+          "maxWidth": 159,
+          "align": "center"
         },
         "dob_y": {
-          "x": 150,
-          "y": 303.5,
+          "x": 186.75,
+          "y": 310.2,
           "size": 8.5,
-          "maxWidth": 24
+          "maxWidth": 76,
+          "align": "center"
         },
         "dob_m": {
-          "x": 212,
-          "y": 303.5,
+          "x": 247.3,
+          "y": 310.2,
           "size": 8.5,
-          "maxWidth": 22
+          "maxWidth": 35,
+          "align": "center"
         },
         "dob_d": {
-          "x": 258,
-          "y": 303.5,
+          "x": 287.35,
+          "y": 310.2,
           "size": 8.5,
-          "maxWidth": 17
+          "maxWidth": 35,
+          "align": "center"
         },
         "sex_m": {
           "cx": 369.3,
@@ -1187,15 +1326,35 @@
         },
         "nationality": {
           "x": 484,
-          "y": 303.5,
+          "y": 314.5,
           "size": 8,
           "maxWidth": 52
         },
         "frn_reg_no": {
-          "x": 192,
-          "y": 329,
-          "size": 10,
-          "maxWidth": 235
+          "x": 189,
+          "y": 328.4,
+          "size": 9,
+          "maxWidth": 239,
+          "digits": {
+            "cells": [
+              196.5,
+              216.9,
+              237.3,
+              257.3,
+              277.35,
+              297.4,
+              316.2,
+              333.85,
+              351.5,
+              369.1,
+              386.7,
+              404.35,
+              422
+            ],
+            "y": 328.4,
+            "size": 10,
+            "_note": "13-digit grid: same vector dividers as F01/F03 (x 186.5–430.8, 20.1 pt pitch for the birth-date half, 17.6 pt after it); row 313.7–335.9 measured from the F02 PDF. A value that is not exactly 13 digits falls back to one bounded run."
+          }
         },
         "passport_no": {
           "x": 131,
@@ -1240,58 +1399,58 @@
           "maxWidth": 225
         },
         "home_tel": {
-          "x": 487,
+          "x": 485.5,
           "y": 418.5,
           "size": 8,
-          "maxWidth": 48
+          "maxWidth": 51.5
         },
         "school_none": {
-          "cx": 160.5,
-          "cy": 433,
+          "cx": 160.1,
+          "cy": 433.1,
           "check": true
         },
         "school_elem": {
-          "cx": 195,
-          "cy": 433,
+          "cx": 195.3,
+          "cy": 433.1,
           "check": true
         },
         "school_mid": {
-          "cx": 231,
-          "cy": 433,
+          "cx": 230.5,
+          "cy": 433.1,
           "check": true
         },
         "school_high": {
-          "cx": 266,
-          "cy": 433,
+          "cx": 265.7,
+          "cy": 433.1,
           "check": true
         },
         "school_name": {
-          "x": 350,
-          "y": 436,
-          "size": 8,
-          "maxWidth": 78
-        },
-        "school_tel": {
-          "x": 487,
-          "y": 436,
+          "x": 366,
+          "y": 439.5,
           "size": 8,
           "maxWidth": 48
         },
+        "school_tel": {
+          "x": 485.5,
+          "y": 439.5,
+          "size": 8,
+          "maxWidth": 51.5
+        },
         "school_acc": {
-          "cx": 371,
-          "cy": 453.5,
+          "cx": 372.8,
+          "cy": 455.4,
           "check": true
         },
         "school_alt": {
-          "cx": 507,
-          "cy": 453.5,
+          "cx": 508.6,
+          "cy": 455.4,
           "check": true
         },
         "workplace_cur": {
-          "x": 196,
+          "x": 210,
           "y": 485,
           "size": 7.5,
-          "maxWidth": 62
+          "maxWidth": 47.5
         },
         "biz_no_cur": {
           "x": 358,
@@ -1300,16 +1459,16 @@
           "maxWidth": 56
         },
         "tel_cur": {
-          "x": 486,
+          "x": 485.5,
           "y": 485,
           "size": 7.5,
-          "maxWidth": 50
+          "maxWidth": 51.5
         },
         "workplace_new": {
-          "x": 196,
+          "x": 210,
           "y": 507,
           "size": 7.5,
-          "maxWidth": 62
+          "maxWidth": 47.5
         },
         "biz_no_new": {
           "x": 358,
@@ -1318,58 +1477,58 @@
           "maxWidth": 56
         },
         "tel_new": {
-          "x": 486,
+          "x": 485.5,
           "y": 507,
           "size": 7.5,
-          "maxWidth": 50
+          "maxWidth": 51.5
         },
         "annual_income": {
-          "x": 205,
+          "x": 210,
           "y": 524.5,
           "size": 8.5,
-          "maxWidth": 85
+          "maxWidth": 80.5
         },
         "occupation": {
-          "x": 486,
+          "x": 485.5,
           "y": 524.5,
           "size": 8,
-          "maxWidth": 50
+          "maxWidth": 51.5
         },
         "reentry_period": {
-          "x": 205,
+          "x": 210,
           "y": 537.5,
           "size": 8,
-          "maxWidth": 52
+          "maxWidth": 47.5
         },
         "email": {
-          "x": 350,
+          "x": 357.5,
           "y": 537.5,
           "size": 8.5,
-          "maxWidth": 185
+          "maxWidth": 179.5
         },
         "refund_account": {
-          "x": 335,
-          "y": 556,
+          "x": 357.5,
+          "y": 555,
           "size": 8.5,
-          "maxWidth": 200
+          "maxWidth": 179.5
         },
         "apply_date": {
-          "x": 118,
+          "x": 210.5,
           "y": 577,
           "size": 9,
-          "maxWidth": 86
+          "maxWidth": 81.5
         }
       },
       "template": {
         "source": "extracted from 법무부령 제1106호 (2026-01-23) consolidated PDF p.183",
-        "edition": "법무부령 제1106호 (2026-01-23) 기준",
+        "edition": "현행 출입국관리법 시행규칙 (2026-09-15 시행본) 별지 제34호의2서식와 대조 확인",
         "revisionOnForm": "개정 2025. 5. 30.",
         "sha256": "28c0454c991a0b2a428869ad7a674c45b9d920e322c336e6b5616d02addc89a1",
         "bytes": 149177,
         "pages": 1,
         "pageWidth": 595,
         "pageHeight": 841,
-        "verification": "RULE_1106_PDF",
+        "verification": "VERIFIED_CURRENT",
         "fieldMapVersion": "2026-09-23.1",
         "anchors": [
           {
@@ -1384,16 +1543,27 @@
             "width": 595,
             "height": 841
           }
-        ]
+        ],
+        "verifiedAgainst": {
+          "source": "law.go.kr 국가법령정보 Open API (Korean-law MCP connector)",
+          "law": "출입국관리법 시행규칙",
+          "mst": "289833",
+          "inForceFrom": "2026-09-15",
+          "annex": "별지 제34호의2서식",
+          "headerOnCurrentText": "<개정 2025. 5. 30.>",
+          "checkedOn": "2026-09-23",
+          "method": "the current annex (HWP → text) was retrieved and its header revision tag and row / cell structure compared with the template; they match",
+          "pendingAmendment": "법무부령 제1125호 (공포 2026-09-15, 시행 2027-09-16) — re-verify this annex on or after 2027-09-16"
+        }
       },
       "support": {
         "status": "SUPPORTED",
-        "reason": "F01 edition (한자·일문 병기, 2025-05-30); mapped + export verified; 漢字姓名 cell left for handwriting (no CJK glyphs in the embedded font)",
+        "reason": "F01 edition (한자·일문 병기, 2025-05-30); mapped + export verified; edition verified against the current rule; 漢字姓名 cell left for handwriting (no CJK ideographs in the embedded font)",
         "qa": "PASS",
         "annex": "34의2",
         "law": "immigration_rule",
         "qaDate": "2026-09-23",
-        "qaMethod": "node export (pdf-lib + fontkit) verified with PyMuPDF against engine ops; browser E2E on F08/F01"
+        "qaMethod": "node export (pdf-lib + fontkit) verified with PyMuPDF against engine ops; static geometry audit of every overlay against the template cells; browser E2E on F08/F01"
       }
     },
     "F03": {
@@ -1741,6 +1911,78 @@
           "group": "person",
           "req": "opt",
           "kind": "text"
+        },
+        {
+          "key": "school_none",
+          "ko": "재학 여부: 미취학",
+          "en": "School: not enrolled",
+          "group": "school",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "school_elem",
+          "ko": "재학 여부: 초",
+          "en": "School: elementary",
+          "group": "school",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "school_mid",
+          "ko": "재학 여부: 중",
+          "en": "School: middle",
+          "group": "school",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "school_high",
+          "ko": "재학 여부: 고",
+          "en": "School: high",
+          "group": "school",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "school_name",
+          "ko": "학교 이름",
+          "en": "School name",
+          "group": "school",
+          "req": "cond",
+          "kind": "text"
+        },
+        {
+          "key": "school_tel",
+          "ko": "학교 전화번호",
+          "en": "School phone",
+          "group": "school",
+          "req": "cond",
+          "kind": "text"
+        },
+        {
+          "key": "school_acc",
+          "ko": "학교 종류: 교육청 인가",
+          "en": "School type: accredited",
+          "group": "school",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "school_alt",
+          "ko": "학교 종류: 교육청 비인가·대안학교",
+          "en": "School type: non-accredited / alternative",
+          "group": "school",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "refund_account",
+          "ko": "반환용 계좌번호",
+          "en": "Refund bank account No.",
+          "group": "proc",
+          "req": "cond",
+          "kind": "text"
         }
       ],
       "overlay": {
@@ -1795,44 +2037,57 @@
           "check": true
         },
         "activity_status": {
-          "x": 372,
+          "x": 373,
           "y": 135,
-          "size": 7.5
+          "size": 7.5,
+          "maxWidth": 51.5
         },
         "change_status": {
-          "x": 190,
+          "x": 191.6,
           "y": 215.5,
-          "size": 7.5
+          "size": 7.5,
+          "maxWidth": 18.8
         },
         "grant_status": {
-          "x": 180,
+          "x": 183.5,
           "y": 242.5,
-          "size": 7.5
+          "size": 7.5,
+          "maxWidth": 26.5
         },
         "surname": {
-          "x": 200,
+          "x": 196.8,
           "y": 283,
-          "size": 9
+          "size": 9,
+          "maxWidth": 136,
+          "align": "center"
         },
         "given": {
-          "x": 350,
+          "x": 349.05,
           "y": 283,
-          "size": 9
+          "size": 9,
+          "maxWidth": 159,
+          "align": "center"
         },
         "dob_y": {
-          "x": 150,
-          "y": 298,
-          "size": 8.5
+          "x": 186.75,
+          "y": 311.3,
+          "size": 8.5,
+          "maxWidth": 76,
+          "align": "center"
         },
         "dob_m": {
-          "x": 212,
-          "y": 298,
-          "size": 8.5
+          "x": 247.3,
+          "y": 311.3,
+          "size": 8.5,
+          "maxWidth": 35,
+          "align": "center"
         },
         "dob_d": {
-          "x": 256,
-          "y": 298,
-          "size": 8.5
+          "x": 287.35,
+          "y": 311.3,
+          "size": 8.5,
+          "maxWidth": 35,
+          "align": "center"
         },
         "sex_m": {
           "cx": 369.2,
@@ -1845,9 +2100,10 @@
           "check": true
         },
         "nationality": {
-          "x": 468,
-          "y": 303,
-          "size": 8
+          "x": 482.5,
+          "y": 317,
+          "size": 8,
+          "maxWidth": 54.5
         },
         "frn_reg_no": {
           "x": 200,
@@ -1872,114 +2128,182 @@
             "y": 330.95,
             "size": 10,
             "_note": "13-digit 외국인등록번호 grid measured from the official PDF vector dividers (scripts: PR post-submission stabilization 2026-07). Falls back to the single-run x/y when the value is not exactly 13 digits."
-          }
+          },
+          "maxWidth": 228
         },
         "passport_no": {
           "x": 140,
-          "y": 359,
-          "size": 8.5
+          "y": 355.5,
+          "size": 8.5,
+          "maxWidth": 85
         },
         "passport_issue": {
           "x": 315,
-          "y": 359,
-          "size": 8.5
+          "y": 355.5,
+          "size": 8.5,
+          "maxWidth": 79.5
         },
         "passport_expiry": {
-          "x": 478,
-          "y": 359,
-          "size": 8
+          "x": 482.5,
+          "y": 355.5,
+          "size": 8,
+          "maxWidth": 54.5
         },
         "addr_korea": {
           "x": 150,
-          "y": 382,
-          "size": 8.5
+          "y": 379,
+          "size": 8.5,
+          "maxWidth": 387
         },
         "tel": {
-          "x": 160,
+          "x": 186.5,
           "y": 397,
-          "size": 8
+          "size": 8,
+          "maxWidth": 108.5
         },
         "cell": {
-          "x": 400,
+          "x": 419.5,
           "y": 397,
-          "size": 8
+          "size": 8,
+          "maxWidth": 117.5
         },
         "home_addr": {
-          "x": 180,
-          "y": 418,
-          "size": 8
+          "x": 186.5,
+          "y": 415.5,
+          "size": 8,
+          "maxWidth": 228
         },
         "home_tel": {
-          "x": 475,
-          "y": 418,
-          "size": 7.5
+          "x": 485.5,
+          "y": 415.5,
+          "size": 7.5,
+          "maxWidth": 51.5
         },
         "workplace_cur": {
-          "x": 200,
-          "y": 488,
-          "size": 8
+          "x": 210,
+          "y": 484,
+          "size": 8,
+          "maxWidth": 47.5
         },
         "biz_no_cur": {
-          "x": 345,
-          "y": 488,
-          "size": 7.5
+          "x": 357.5,
+          "y": 484,
+          "size": 7.5,
+          "maxWidth": 57
         },
         "tel_cur": {
-          "x": 470,
-          "y": 488,
-          "size": 7.5
+          "x": 485.5,
+          "y": 484,
+          "size": 7.5,
+          "maxWidth": 51.5
         },
         "workplace_new": {
-          "x": 200,
-          "y": 512,
-          "size": 8
+          "x": 210,
+          "y": 508,
+          "size": 8,
+          "maxWidth": 47.5
         },
         "biz_no_new": {
-          "x": 345,
-          "y": 512,
-          "size": 7.5
+          "x": 357.5,
+          "y": 508,
+          "size": 7.5,
+          "maxWidth": 57
         },
         "tel_new": {
-          "x": 470,
-          "y": 512,
-          "size": 7.5
+          "x": 485.5,
+          "y": 508,
+          "size": 7.5,
+          "maxWidth": 51.5
         },
         "annual_income": {
-          "x": 205,
+          "x": 210.5,
           "y": 527,
-          "size": 8.5
+          "size": 8.5,
+          "maxWidth": 86.5
         },
         "occupation": {
-          "x": 455,
+          "x": 485.5,
           "y": 527,
-          "size": 8
+          "size": 8,
+          "maxWidth": 51.5
         },
         "reentry_period": {
           "x": 210,
           "y": 540,
-          "size": 8
+          "size": 8,
+          "maxWidth": 47.5
         },
         "email": {
-          "x": 345,
+          "x": 357.5,
           "y": 540,
-          "size": 8
+          "size": 8,
+          "maxWidth": 179.5
         },
         "apply_date": {
-          "x": 160,
+          "x": 210.5,
           "y": 578,
-          "size": 9
+          "size": 9,
+          "maxWidth": 81.5
+        },
+        "school_none": {
+          "cx": 162.3,
+          "cy": 431.6,
+          "check": true
+        },
+        "school_elem": {
+          "cx": 197.6,
+          "cy": 431.6,
+          "check": true
+        },
+        "school_mid": {
+          "cx": 232.9,
+          "cy": 431.6,
+          "check": true
+        },
+        "school_high": {
+          "cx": 268.3,
+          "cy": 431.6,
+          "check": true
+        },
+        "school_name": {
+          "x": 366,
+          "y": 438,
+          "size": 8,
+          "maxWidth": 48
+        },
+        "school_tel": {
+          "x": 485.5,
+          "y": 438,
+          "size": 8,
+          "maxWidth": 51.5
+        },
+        "school_acc": {
+          "cx": 337.6,
+          "cy": 453.8,
+          "check": true
+        },
+        "school_alt": {
+          "cx": 493.4,
+          "cy": 453.8,
+          "check": true
+        },
+        "refund_account": {
+          "x": 358,
+          "y": 558,
+          "size": 8,
+          "maxWidth": 178
         }
       },
       "template": {
         "source": "repo template; printed revision matches 법무부령 제1106호 text",
-        "edition": "법무부령 제1106호 (2026-01-23) 기준",
+        "edition": "현행 출입국관리법 시행규칙 (2026-09-15 시행본) 별지 제34호의3서식와 대조 확인",
         "revisionOnForm": "개정 2023. 6. 14.",
         "sha256": "3a5a7194b9fb15334e1fb0905bdd4037e94ffdac7546e7a40f4e867d3802f18c",
         "bytes": 131102,
         "pages": 1,
         "pageWidth": 595,
         "pageHeight": 841,
-        "verification": "MATCHES_RULE_1106_TEXT",
+        "verification": "VERIFIED_CURRENT",
         "fieldMapVersion": "2026-06.1",
         "anchors": [
           {
@@ -1994,16 +2318,27 @@
             "width": 595,
             "height": 841
           }
-        ]
+        ],
+        "verifiedAgainst": {
+          "source": "law.go.kr 국가법령정보 Open API (Korean-law MCP connector)",
+          "law": "출입국관리법 시행규칙",
+          "mst": "289833",
+          "inForceFrom": "2026-09-15",
+          "annex": "별지 제34호의3서식",
+          "headerOnCurrentText": "<개정 2023. 6. 14.>",
+          "checkedOn": "2026-09-23",
+          "method": "the current annex (HWP → text) was retrieved and its header revision tag and row / cell structure compared with the template; they match",
+          "pendingAmendment": "법무부령 제1125호 (공포 2026-09-15, 시행 2027-09-16) — re-verify this annex on or after 2027-09-16"
+        }
       },
       "support": {
         "status": "SUPPORTED",
-        "reason": "F01 edition (중문 병기); mapped + export verified; refund-account cell absent on this edition (told to the user)",
+        "reason": "F01 edition (중문 병기); mapped incl. 재학 여부 and 반환용 계좌번호 + export verified; edition verified against the current rule; 中文姓名 cell left for handwriting",
         "qa": "PASS",
         "annex": "34의3",
         "law": "immigration_rule",
         "qaDate": "2026-09-23",
-        "qaMethod": "node export (pdf-lib + fontkit) verified with PyMuPDF against engine ops; browser E2E on F08/F01"
+        "qaMethod": "node export (pdf-lib + fontkit) verified with PyMuPDF against engine ops; static geometry audit of every overlay against the template cells; browser E2E on F08/F01"
       }
     },
     "F04": {
@@ -2276,6 +2611,70 @@
           "group": "person",
           "req": "opt",
           "kind": "text"
+        },
+        {
+          "key": "school_none",
+          "ko": "재학 여부: 미취학",
+          "en": "School: not enrolled",
+          "group": "school",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "school_elem",
+          "ko": "재학 여부: 초",
+          "en": "School: elementary",
+          "group": "school",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "school_mid",
+          "ko": "재학 여부: 중",
+          "en": "School: middle",
+          "group": "school",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "school_high",
+          "ko": "재학 여부: 고",
+          "en": "School: high",
+          "group": "school",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "school_name",
+          "ko": "학교 이름",
+          "en": "School name",
+          "group": "school",
+          "req": "cond",
+          "kind": "text"
+        },
+        {
+          "key": "school_tel",
+          "ko": "학교 전화번호",
+          "en": "School phone",
+          "group": "school",
+          "req": "cond",
+          "kind": "text"
+        },
+        {
+          "key": "school_acc",
+          "ko": "학교 종류: 교육청 인가",
+          "en": "School type: accredited",
+          "group": "school",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "school_alt",
+          "ko": "학교 종류: 교육청 비인가·대안학교",
+          "en": "School type: non-accredited / alternative",
+          "group": "school",
+          "req": "cond",
+          "kind": "check"
         }
       ],
       "overlay": {
@@ -2310,52 +2709,46 @@
           "check": true
         },
         "surname": {
-          "x": 195,
+          "x": 205.4,
           "y": 272,
-          "size": 9
+          "size": 9,
+          "maxWidth": 110,
+          "align": "center"
         },
         "given": {
-          "x": 330,
+          "x": 349.8,
           "y": 272,
-          "size": 9
+          "size": 9,
+          "maxWidth": 168,
+          "align": "center"
         },
         "korean_name": {
-          "x": 478,
+          "x": 487.9,
           "y": 272,
-          "size": 8.5
+          "size": 8.5,
+          "maxWidth": 97,
+          "align": "center"
         },
         "dob_y": {
-          "x": 188,
-          "y": 286,
+          "x": 188.6,
+          "y": 298.8,
           "size": 8.5,
-          "wbox": [
-            185,
-            279,
-            210,
-            288.5
-          ]
+          "maxWidth": 76,
+          "align": "center"
         },
         "dob_m": {
-          "x": 256,
-          "y": 286,
+          "x": 257.55,
+          "y": 298.8,
           "size": 8.5,
-          "wbox": [
-            254,
-            279,
-            272,
-            288.5
-          ]
+          "maxWidth": 51,
+          "align": "center"
         },
         "dob_d": {
-          "x": 315,
-          "y": 286,
+          "x": 313.9,
+          "y": 298.8,
           "size": 8.5,
-          "wbox": [
-            314,
-            279,
-            327,
-            288.5
-          ]
+          "maxWidth": 51,
+          "align": "center"
         },
         "sex_m": {
           "cx": 408,
@@ -2368,9 +2761,10 @@
           "check": true
         },
         "nationality": {
-          "x": 478,
-          "y": 298,
-          "size": 8
+          "x": 487,
+          "y": 307.5,
+          "size": 8,
+          "maxWidth": 50
         },
         "frn_reg_no": {
           "x": 210,
@@ -2395,99 +2789,158 @@
             "y": 321.4,
             "size": 10,
             "_note": "13-digit 외국인등록번호 grid measured from the official PDF vector dividers (scripts: PR post-submission stabilization 2026-07). Falls back to the single-run x/y when the value is not exactly 13 digits."
-          }
+          },
+          "maxWidth": 224
         },
         "passport_no": {
-          "x": 130,
-          "y": 352,
-          "size": 8.5
+          "x": 150.5,
+          "y": 348.5,
+          "size": 8.5,
+          "maxWidth": 76.5
         },
         "passport_issue": {
-          "x": 315,
-          "y": 352,
-          "size": 8.5
+          "x": 326,
+          "y": 348.5,
+          "size": 8.5,
+          "maxWidth": 70
         },
         "passport_expiry": {
-          "x": 482,
-          "y": 352,
-          "size": 7
+          "x": 487,
+          "y": 348.5,
+          "size": 8,
+          "maxWidth": 50
         },
         "residence_korea": {
-          "x": 175,
-          "y": 375,
-          "size": 8.5
+          "x": 150.5,
+          "y": 371.5,
+          "size": 8.5,
+          "maxWidth": 245.5
         },
         "email": {
-          "x": 445,
-          "y": 374,
-          "size": 7.5
+          "x": 439.5,
+          "y": 371.5,
+          "size": 7.5,
+          "maxWidth": 97.5
         },
         "tel": {
           "x": 170,
-          "y": 398,
-          "size": 8.5
+          "y": 394.5,
+          "size": 8.5,
+          "maxWidth": 152
         },
         "cell": {
-          "x": 450,
-          "y": 398,
-          "size": 8.5
+          "x": 439.5,
+          "y": 394.5,
+          "size": 8.5,
+          "maxWidth": 97.5
         },
         "overseas_addr": {
-          "x": 180,
-          "y": 422,
-          "size": 8
+          "x": 150.5,
+          "y": 417.5,
+          "size": 8,
+          "maxWidth": 284
         },
         "overseas_tel": {
-          "x": 472,
-          "y": 422,
-          "size": 7
+          "x": 488.5,
+          "y": 417.5,
+          "size": 8,
+          "maxWidth": 48.5
         },
         "occupation": {
-          "x": 155,
-          "y": 490,
-          "size": 8
+          "x": 150.5,
+          "y": 491.5,
+          "size": 8,
+          "maxWidth": 71
         },
         "workplace": {
-          "x": 228,
+          "x": 226.5,
           "y": 503,
-          "size": 8
+          "size": 8,
+          "maxWidth": 95.5
         },
         "biz_no": {
           "x": 327,
           "y": 503,
-          "size": 7
+          "size": 8,
+          "maxWidth": 107.5
         },
         "tel_work": {
           "x": 488,
-          "y": 490,
-          "size": 7
+          "y": 491.5,
+          "size": 7.5,
+          "maxWidth": 49
         },
         "foreign_nat_date": {
           "x": 300,
-          "y": 524,
-          "size": 8
+          "y": 521,
+          "size": 8,
+          "maxWidth": 237
         },
         "refund_account": {
           "x": 368,
           "y": 543,
-          "size": 7.5
+          "size": 7.5,
+          "maxWidth": 168
         },
         "apply_date": {
-          "x": 170,
+          "x": 226.5,
           "y": 562,
-          "size": 9
+          "size": 9,
+          "maxWidth": 83.5
+        },
+        "school_none": {
+          "cx": 189,
+          "cy": 433.4,
+          "check": true
+        },
+        "school_elem": {
+          "cx": 236.5,
+          "cy": 433.4,
+          "check": true
+        },
+        "school_mid": {
+          "cx": 266,
+          "cy": 433.4,
+          "check": true
+        },
+        "school_high": {
+          "cx": 292.5,
+          "cy": 433.4,
+          "check": true
+        },
+        "school_name": {
+          "x": 368,
+          "y": 440,
+          "size": 8,
+          "maxWidth": 65
+        },
+        "school_tel": {
+          "x": 488.5,
+          "y": 440,
+          "size": 8,
+          "maxWidth": 47
+        },
+        "school_acc": {
+          "cx": 380.9,
+          "cy": 455.6,
+          "check": true
+        },
+        "school_alt": {
+          "cx": 516.7,
+          "cy": 455.6,
+          "check": true
         }
       },
       "template": {
         "source": "repo template; 재외동포법 시행규칙 is not in the repo sources — edition unverified offline",
-        "edition": "재외동포법 시행규칙 (현행 확인 필요)",
+        "edition": "현행 재외동포의 출입국과 법적 지위에 관한 법률 시행규칙 (2025-02-01 시행본) 별지 제1호서식와 대조 확인",
         "revisionOnForm": "개정 2022. 4. 12.",
         "sha256": "8e264b5ddbcb2d3b6b614494c1418b574e4265360c38d6465b1d350e2463d7d6",
         "bytes": 88651,
         "pages": 1,
         "pageWidth": 595,
         "pageHeight": 841,
-        "verification": "PENDING_LAW_GO_KR",
+        "verification": "VERIFIED_CURRENT",
         "fieldMapVersion": "2026-07.1",
         "anchors": [
           {
@@ -2502,16 +2955,27 @@
             "width": 595,
             "height": 841
           }
-        ]
+        ],
+        "verifiedAgainst": {
+          "source": "law.go.kr 국가법령정보 Open API (Korean-law MCP connector)",
+          "law": "재외동포의 출입국과 법적 지위에 관한 법률 시행규칙",
+          "mst": "267499",
+          "inForceFrom": "2025-02-01",
+          "annex": "별지 제1호서식",
+          "headerOnCurrentText": "<개정 2022. 4. 12.>",
+          "checkedOn": "2026-09-23",
+          "method": "the current annex (HWP → text) was retrieved and its header revision tag and row / cell structure compared with the template; they match",
+          "pendingAmendment": "법무부령 제1124호 (공포 2026-09-15, 시행 2027-09-16) — re-verify this annex on or after 2027-09-16"
+        }
       },
       "support": {
         "status": "SUPPORTED",
-        "reason": "mapped + export verified; edition of the 재외동포법 시행규칙 annex unverified offline",
+        "reason": "mapped incl. 재학 여부 and 반환용 계좌번호 + export verified; edition verified against the current 재외동포법 시행규칙",
         "qa": "PASS",
         "annex": "1",
         "law": "overseas_koreans_rule",
         "qaDate": "2026-09-23",
-        "qaMethod": "node export (pdf-lib + fontkit) verified with PyMuPDF against engine ops; browser E2E on F08/F01"
+        "qaMethod": "node export (pdf-lib + fontkit) verified with PyMuPDF against engine ops; static geometry audit of every overlay against the template cells; browser E2E on F08/F01"
       }
     },
     "F05": {
@@ -2779,6 +3243,78 @@
           "group": "person",
           "req": "opt",
           "kind": "text"
+        },
+        {
+          "key": "school_none",
+          "ko": "재학 여부: 미취학",
+          "en": "School: not enrolled",
+          "group": "school",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "school_elem",
+          "ko": "재학 여부: 초",
+          "en": "School: elementary",
+          "group": "school",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "school_mid",
+          "ko": "재학 여부: 중",
+          "en": "School: middle",
+          "group": "school",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "school_high",
+          "ko": "재학 여부: 고",
+          "en": "School: high",
+          "group": "school",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "school_name",
+          "ko": "학교 이름",
+          "en": "School name",
+          "group": "school",
+          "req": "cond",
+          "kind": "text"
+        },
+        {
+          "key": "school_tel",
+          "ko": "학교 전화번호",
+          "en": "School phone",
+          "group": "school",
+          "req": "cond",
+          "kind": "text"
+        },
+        {
+          "key": "school_acc",
+          "ko": "학교 종류: 교육청 인가",
+          "en": "School type: accredited",
+          "group": "school",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "school_alt",
+          "ko": "학교 종류: 교육청 비인가·대안학교",
+          "en": "School type: non-accredited / alternative",
+          "group": "school",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "refund_account",
+          "ko": "반환용 계좌번호",
+          "en": "Refund bank account No.",
+          "group": "proc",
+          "req": "cond",
+          "kind": "text"
         }
       ],
       "overlay": {
@@ -2813,34 +3349,46 @@
           "check": true
         },
         "surname": {
-          "x": 205,
+          "x": 205.4,
           "y": 268,
-          "size": 9
+          "size": 9,
+          "maxWidth": 110,
+          "align": "center"
         },
         "given": {
-          "x": 340,
+          "x": 349.8,
           "y": 268,
-          "size": 9
+          "size": 9,
+          "maxWidth": 168,
+          "align": "center"
         },
         "korean_name": {
-          "x": 478,
+          "x": 487.6,
           "y": 268,
-          "size": 8.5
+          "size": 8.5,
+          "maxWidth": 97,
+          "align": "center"
         },
         "dob_y": {
-          "x": 150,
-          "y": 284,
-          "size": 8.5
+          "x": 188.6,
+          "y": 295.7,
+          "size": 8.5,
+          "maxWidth": 76,
+          "align": "center"
         },
         "dob_m": {
-          "x": 220,
-          "y": 284,
-          "size": 8.5
+          "x": 257.55,
+          "y": 295.7,
+          "size": 8.5,
+          "maxWidth": 51,
+          "align": "center"
         },
         "dob_d": {
-          "x": 278,
-          "y": 284,
-          "size": 8.5
+          "x": 313.9,
+          "y": 295.7,
+          "size": 8.5,
+          "maxWidth": 51,
+          "align": "center"
         },
         "sex_m": {
           "cx": 407,
@@ -2853,9 +3401,10 @@
           "check": true
         },
         "nationality": {
-          "x": 478,
-          "y": 288,
-          "size": 8
+          "x": 487,
+          "y": 300,
+          "size": 8,
+          "maxWidth": 49.5
         },
         "frn_reg_no": {
           "x": 210,
@@ -2880,94 +3429,158 @@
             "y": 313.85,
             "size": 10,
             "_note": "13-digit 외국인등록번호 grid measured from the official PDF vector dividers (scripts: PR post-submission stabilization 2026-07). Falls back to the single-run x/y when the value is not exactly 13 digits."
-          }
+          },
+          "maxWidth": 224
         },
         "passport_no": {
-          "x": 140,
-          "y": 340,
-          "size": 8.5
+          "x": 150.5,
+          "y": 336.5,
+          "size": 8.5,
+          "maxWidth": 76.5
         },
         "passport_issue": {
-          "x": 315,
-          "y": 340,
-          "size": 8.5
+          "x": 326,
+          "y": 336.5,
+          "size": 8.5,
+          "maxWidth": 70
         },
         "passport_expiry": {
-          "x": 478,
-          "y": 340,
-          "size": 8
+          "x": 487,
+          "y": 336.5,
+          "size": 8,
+          "maxWidth": 49.5
         },
         "residence_korea": {
-          "x": 175,
-          "y": 362,
-          "size": 8.5
+          "x": 150.5,
+          "y": 359.5,
+          "size": 8.5,
+          "maxWidth": 245.5
         },
         "email": {
-          "x": 445,
-          "y": 362,
-          "size": 7.5
+          "x": 439.5,
+          "y": 359.5,
+          "size": 7.5,
+          "maxWidth": 97
         },
         "tel": {
           "x": 170,
-          "y": 385,
-          "size": 8.5
+          "y": 383,
+          "size": 8.5,
+          "maxWidth": 152
         },
         "cell": {
-          "x": 450,
-          "y": 385,
-          "size": 8.5
+          "x": 439.5,
+          "y": 383,
+          "size": 8.5,
+          "maxWidth": 97
         },
         "overseas_addr": {
-          "x": 180,
-          "y": 408,
-          "size": 8
+          "x": 150.5,
+          "y": 405.5,
+          "size": 8,
+          "maxWidth": 284
         },
         "overseas_tel": {
-          "x": 478,
-          "y": 408,
-          "size": 7
+          "x": 488.5,
+          "y": 405.5,
+          "size": 8,
+          "maxWidth": 48
         },
         "occupation": {
-          "x": 155,
-          "y": 476,
-          "size": 8
+          "x": 150.5,
+          "y": 479.5,
+          "size": 8,
+          "maxWidth": 71
         },
         "workplace": {
-          "x": 250,
-          "y": 490,
-          "size": 8
+          "x": 226.5,
+          "y": 491,
+          "size": 8,
+          "maxWidth": 95.5
         },
         "biz_no": {
-          "x": 360,
-          "y": 490,
-          "size": 7
+          "x": 327,
+          "y": 491,
+          "size": 8,
+          "maxWidth": 107.5
         },
         "tel_work": {
-          "x": 478,
-          "y": 476,
-          "size": 7
+          "x": 488.5,
+          "y": 479.5,
+          "size": 7.5,
+          "maxWidth": 48
         },
         "foreign_nat_date": {
           "x": 300,
-          "y": 503,
-          "size": 8
+          "y": 504,
+          "size": 8,
+          "maxWidth": 236.5
         },
         "apply_date": {
-          "x": 175,
-          "y": 550,
-          "size": 9
+          "x": 226.5,
+          "y": 547.5,
+          "size": 9,
+          "maxWidth": 83.5
+        },
+        "school_none": {
+          "cx": 189.4,
+          "cy": 421.3,
+          "check": true
+        },
+        "school_elem": {
+          "cx": 220.7,
+          "cy": 421.3,
+          "check": true
+        },
+        "school_mid": {
+          "cx": 252,
+          "cy": 421.3,
+          "check": true
+        },
+        "school_high": {
+          "cx": 283.3,
+          "cy": 421.3,
+          "check": true
+        },
+        "school_name": {
+          "x": 368,
+          "y": 428,
+          "size": 8,
+          "maxWidth": 65
+        },
+        "school_tel": {
+          "x": 488.5,
+          "y": 428,
+          "size": 8,
+          "maxWidth": 47
+        },
+        "school_acc": {
+          "cx": 345.4,
+          "cy": 443.5,
+          "check": true
+        },
+        "school_alt": {
+          "cx": 501.2,
+          "cy": 443.5,
+          "check": true
+        },
+        "refund_account": {
+          "x": 364,
+          "y": 523,
+          "size": 7.5,
+          "maxWidth": 172
         }
       },
       "template": {
         "source": "repo template; 재외동포법 시행규칙 is not in the repo sources — edition unverified offline",
-        "edition": "재외동포법 시행규칙 (현행 확인 필요)",
+        "edition": "현행 재외동포의 출입국과 법적 지위에 관한 법률 시행규칙 (2025-02-01 시행본) 별지 제1호의2서식와 대조 확인",
         "revisionOnForm": "신설 2022. 4. 12.",
         "sha256": "279512d34781254db8ae8c8975df967ebac976979157b21786bd93848f13b3ab",
         "bytes": 131782,
         "pages": 1,
         "pageWidth": 595,
         "pageHeight": 841,
-        "verification": "PENDING_LAW_GO_KR",
+        "verification": "VERIFIED_CURRENT",
         "fieldMapVersion": "2026-06.1",
         "anchors": [
           {
@@ -2982,16 +3595,27 @@
             "width": 595,
             "height": 841
           }
-        ]
+        ],
+        "verifiedAgainst": {
+          "source": "law.go.kr 국가법령정보 Open API (Korean-law MCP connector)",
+          "law": "재외동포의 출입국과 법적 지위에 관한 법률 시행규칙",
+          "mst": "267499",
+          "inForceFrom": "2025-02-01",
+          "annex": "별지 제1호의2서식",
+          "headerOnCurrentText": "<신설 2022. 4. 12.>",
+          "checkedOn": "2026-09-23",
+          "method": "the current annex (HWP → text) was retrieved and its header revision tag and row / cell structure compared with the template; they match",
+          "pendingAmendment": "법무부령 제1124호 (공포 2026-09-15, 시행 2027-09-16) — re-verify this annex on or after 2027-09-16"
+        }
       },
       "support": {
         "status": "SUPPORTED",
-        "reason": "F04 edition (중문 병기); mapped + export verified; refund-account cell absent on this edition",
+        "reason": "F04 edition (중문 병기); mapped incl. 재학 여부 and 반환용 계좌번호 + export verified; edition verified against the current 재외동포법 시행규칙; 中文姓名 cell left for handwriting",
         "qa": "PASS",
         "annex": "1의2",
         "law": "overseas_koreans_rule",
         "qaDate": "2026-09-23",
-        "qaMethod": "node export (pdf-lib + fontkit) verified with PyMuPDF against engine ops; browser E2E on F08/F01"
+        "qaMethod": "node export (pdf-lib + fontkit) verified with PyMuPDF against engine ops; static geometry audit of every overlay against the template cells; browser E2E on F08/F01"
       }
     },
     "F06": {
@@ -3253,49 +3877,58 @@
       ],
       "overlay": {
         "rcpt_nationality": {
-          "x": 150,
-          "y": 145,
-          "size": 8
+          "x": 168.5,
+          "y": 138.5,
+          "size": 8,
+          "maxWidth": 81.5
         },
         "rcpt_regno": {
-          "x": 438,
-          "y": 152,
-          "size": 7.5
+          "x": 390,
+          "y": 138.5,
+          "size": 7.5,
+          "maxWidth": 140
         },
         "rcpt_name": {
-          "x": 150,
-          "y": 180,
-          "size": 8
+          "x": 168.5,
+          "y": 176,
+          "size": 8,
+          "maxWidth": 191
         },
         "rcpt_phone": {
-          "x": 425,
-          "y": 180,
-          "size": 8
+          "x": 429.5,
+          "y": 176,
+          "size": 8,
+          "maxWidth": 100.5
         },
         "rcpt_address": {
-          "x": 145,
-          "y": 205,
-          "size": 8
+          "x": 168.5,
+          "y": 202.5,
+          "size": 8,
+          "maxWidth": 361.5
         },
         "prov_nationality": {
-          "x": 150,
-          "y": 276,
-          "size": 8
+          "x": 168.5,
+          "y": 270,
+          "size": 8,
+          "maxWidth": 70
         },
         "prov_regno": {
-          "x": 438,
-          "y": 283,
-          "size": 7.5
+          "x": 380,
+          "y": 270,
+          "size": 7.5,
+          "maxWidth": 150
         },
         "prov_name": {
-          "x": 150,
-          "y": 311,
-          "size": 8
+          "x": 168.5,
+          "y": 306,
+          "size": 8,
+          "maxWidth": 206.5
         },
         "prov_phone": {
-          "x": 432,
-          "y": 311,
-          "size": 8
+          "x": 429.5,
+          "y": 306,
+          "size": 8,
+          "maxWidth": 100.5
         },
         "rel_family": {
           "cx": 181,
@@ -3315,7 +3948,8 @@
         "rel_other_text": {
           "x": 432,
           "y": 328,
-          "size": 7
+          "size": 7,
+          "maxWidth": 89.5
         },
         "own_self": {
           "cx": 181,
@@ -3335,7 +3969,8 @@
         "own_other_text": {
           "x": 442,
           "y": 382,
-          "size": 7
+          "size": 7,
+          "maxWidth": 79
         },
         "res_house": {
           "cx": 181,
@@ -3360,52 +3995,61 @@
         "res_other_text": {
           "x": 390,
           "y": 429,
-          "size": 7
+          "size": 7,
+          "maxWidth": 129.5
         },
         "start_y": {
           "x": 192,
           "y": 459,
-          "size": 8
+          "size": 8,
+          "maxWidth": 20
         },
         "start_m": {
           "x": 270,
           "y": 459,
-          "size": 8
+          "size": 8,
+          "maxWidth": 20
         },
         "start_d": {
           "x": 356,
           "y": 459,
-          "size": 8
+          "size": 8,
+          "maxWidth": 20
         },
         "conf_y": {
           "x": 190,
           "y": 522,
-          "size": 8
+          "size": 8,
+          "maxWidth": 19.5
         },
         "conf_m": {
           "x": 255,
           "y": 522,
-          "size": 8
+          "size": 8,
+          "maxWidth": 14.5
         },
         "conf_d": {
           "x": 320,
           "y": 522,
-          "size": 8
+          "size": 8,
+          "maxWidth": 14.5
         },
         "prov_sign_name": {
           "x": 268,
           "y": 544,
-          "size": 8.5
+          "size": 8.5,
+          "maxWidth": 60.5
         },
         "prov_company": {
           "x": 268,
           "y": 559,
-          "size": 8
+          "size": 8,
+          "maxWidth": 60.5
         }
       },
       "template": {
         "source": "repo template (HiKorea 민원서식); edition unverified offline",
-        "edition": "HiKorea 민원서식",
+        "edition": "HiKorea 민원서식 (개정 2024. 5.) — 최신판 대조 미완료 (hikorea.go.kr은 빌드 환경에서 접속 불가)",
         "revisionOnForm": "개정 2024. 5.",
         "sha256": "b49a3d6b4aad93974069d0e4fdbbb74d80149d9e31e34caad3383b3a615aed75",
         "bytes": 70911,
@@ -3430,13 +4074,13 @@
         ]
       },
       "support": {
-        "status": "SUPPORTED",
-        "reason": "mapped onto the official HiKorea PDF (canvas replica retired) + export verified; HiKorea edition unverified offline",
+        "status": "PARTIAL",
+        "reason": "mapped onto the official HiKorea PDF (canvas replica retired) + export verified; PARTIAL because the HiKorea edition could not be compared with the current download (hikorea.go.kr unreachable from the build sandbox)",
         "qa": "PASS",
         "annex": "거주숙소제공확인서",
         "law": "hikorea",
         "qaDate": "2026-09-23",
-        "qaMethod": "node export (pdf-lib + fontkit) verified with PyMuPDF against engine ops; browser E2E on F08/F01"
+        "qaMethod": "node export (pdf-lib + fontkit) verified with PyMuPDF against engine ops; static geometry audit of every overlay against the template cells; browser E2E on F08/F01"
       }
     },
     "F07": {
@@ -3685,17 +4329,20 @@
         "app_surname": {
           "x": 150,
           "y": 157,
-          "size": 9
+          "size": 9,
+          "maxWidth": 109.5
         },
         "app_given": {
           "x": 285,
           "y": 157,
-          "size": 9
+          "size": 9,
+          "maxWidth": 124.5
         },
         "app_dob": {
           "x": 170,
           "y": 186,
-          "size": 8.5
+          "size": 8.5,
+          "maxWidth": 239.5
         },
         "app_sex_m": {
           "cx": 467,
@@ -3710,37 +4357,44 @@
         "app_nat": {
           "x": 150,
           "y": 214,
-          "size": 8.5
+          "size": 8.5,
+          "maxWidth": 259.5
         },
         "app_passport": {
           "x": 456,
           "y": 214,
-          "size": 8.5
+          "size": 8.5,
+          "maxWidth": 76
         },
         "app_addr": {
           "x": 192,
           "y": 246,
-          "size": 8
+          "size": 8,
+          "maxWidth": 217.5
         },
         "app_phone": {
           "x": 456,
           "y": 246,
-          "size": 8
+          "size": 8,
+          "maxWidth": 76
         },
         "app_purpose": {
           "x": 170,
           "y": 278,
-          "size": 8.5
+          "size": 8.5,
+          "maxWidth": 362
         },
         "g_name": {
           "x": 150,
           "y": 353,
-          "size": 9
+          "size": 9,
+          "maxWidth": 259.5
         },
         "g_nat": {
           "x": 150,
           "y": 382,
-          "size": 8.5
+          "size": 8.5,
+          "maxWidth": 259.5
         },
         "g_sex_m": {
           "cx": 467,
@@ -3755,84 +4409,98 @@
         "g_passport_dob": {
           "x": 230,
           "y": 410,
-          "size": 8
+          "size": 8,
+          "maxWidth": 179.5
         },
         "g_phone": {
           "x": 456,
           "y": 410,
-          "size": 8
+          "size": 8,
+          "maxWidth": 76
         },
         "g_addr": {
           "x": 150,
           "y": 441,
-          "size": 8
+          "size": 8,
+          "maxWidth": 382
         },
         "g_relationship": {
           "x": 210,
           "y": 471,
-          "size": 8.5
+          "size": 8.5,
+          "maxWidth": 322
         },
         "g_workplace": {
           "x": 158,
           "y": 503,
-          "size": 8.5
+          "size": 8.5,
+          "maxWidth": 251.5
         },
         "g_position": {
           "x": 440,
           "y": 503,
-          "size": 8.5
+          "size": 8.5,
+          "maxWidth": 92
         },
         "g_work_addr": {
           "x": 182,
           "y": 535,
-          "size": 8
+          "size": 8,
+          "maxWidth": 227.5
         },
         "g_note": {
           "x": 440,
           "y": 535,
-          "size": 8
+          "size": 8,
+          "maxWidth": 92
         },
         "g_period": {
           "x": 340,
           "y": 562,
-          "size": 8.5
+          "size": 8.5,
+          "maxWidth": 192
         },
         "g_sign_y": {
           "x": 392,
           "y": 728,
-          "size": 9
+          "size": 9,
+          "maxWidth": 23
         },
         "g_sign_m": {
           "x": 442,
           "y": 728,
-          "size": 9
+          "size": 9,
+          "maxWidth": 21.5
         },
         "g_sign_d": {
           "x": 492,
           "y": 728,
-          "size": 9
+          "size": 9,
+          "maxWidth": 20
         },
         "app_hanja": {
           "x": 440,
           "y": 157,
-          "size": 9
+          "size": 9,
+          "maxWidth": 92
         },
         "g_hanja": {
           "x": 440,
           "y": 353,
-          "size": 9
+          "size": 9,
+          "maxWidth": 92
         }
       },
       "template": {
         "source": "repo template; printed revision matches 법무부령 제1106호 text",
-        "edition": "법무부령 제1106호 (2026-01-23) 기준",
+        "edition": "현행 출입국관리법 시행규칙 (2026-09-15 시행본) 별지 제129호서식와 대조 확인",
         "revisionOnForm": "개정 2022. 2. 7.",
         "sha256": "27cee3a6ec53a091ea65944dadf6dfb636316da20e87304bb4bb528155544c19",
         "bytes": 54185,
         "pages": 2,
         "pageWidth": 595,
         "pageHeight": 841,
-        "verification": "MATCHES_RULE_1106_TEXT",
+        "verification": "VERIFIED_CURRENT",
         "fieldMapVersion": "2026-06.1",
         "anchors": [
           {
@@ -3852,16 +4520,27 @@
             "width": 595,
             "height": 841
           }
-        ]
+        ],
+        "verifiedAgainst": {
+          "source": "law.go.kr 국가법령정보 Open API (Korean-law MCP connector)",
+          "law": "출입국관리법 시행규칙",
+          "mst": "289833",
+          "inForceFrom": "2026-09-15",
+          "annex": "별지 제129호서식",
+          "headerOnCurrentText": "<개정 2022. 2. 7.>",
+          "checkedOn": "2026-09-23",
+          "method": "the current annex (HWP → text) was retrieved and its header revision tag and row / cell structure compared with the template; they match",
+          "pendingAmendment": "법무부령 제1125호 (공포 2026-09-15, 시행 2027-09-16) — re-verify this annex on or after 2027-09-16"
+        }
       },
       "support": {
         "status": "SUPPORTED",
-        "reason": "mapped + export verified; 漢字 name cells left for handwriting",
+        "reason": "mapped + export verified; edition verified against the current rule; 漢字 name cells left for handwriting",
         "qa": "PASS",
         "annex": "129",
         "law": "immigration_rule",
         "qaDate": "2026-09-23",
-        "qaMethod": "node export (pdf-lib + fontkit) verified with PyMuPDF against engine ops; browser E2E on F08/F01"
+        "qaMethod": "node export (pdf-lib + fontkit) verified with PyMuPDF against engine ops; static geometry audit of every overlay against the template cells; browser E2E on F08/F01"
       }
     },
     "F08": {
@@ -4154,14 +4833,14 @@
       },
       "template": {
         "source": "extracted from 법무부령 제1106호 (2026-01-23) consolidated PDF p.185",
-        "edition": "법무부령 제1106호 (2026-01-23) 기준",
+        "edition": "현행 출입국관리법 시행규칙 (2026-09-15 시행본) 별지 제34호의4서식와 대조 확인",
         "revisionOnForm": "신설 2023. 12. 14.",
         "sha256": "9c8ca0e64ad10adf761e2a39f72a8acaea09bb595f79076a7eacd4c99cbd427d",
         "bytes": 57911,
         "pages": 1,
         "pageWidth": 595,
         "pageHeight": 841,
-        "verification": "RULE_1106_PDF",
+        "verification": "VERIFIED_CURRENT",
         "fieldMapVersion": "2026-09-23.1",
         "anchors": [
           {
@@ -4176,16 +4855,27 @@
             "width": 595,
             "height": 841
           }
-        ]
+        ],
+        "verifiedAgainst": {
+          "source": "law.go.kr 국가법령정보 Open API (Korean-law MCP connector)",
+          "law": "출입국관리법 시행규칙",
+          "mst": "289833",
+          "inForceFrom": "2026-09-15",
+          "annex": "별지 제34호의4서식",
+          "headerOnCurrentText": "<신설 2023. 12. 14.>",
+          "checkedOn": "2026-09-23",
+          "method": "the current annex (HWP → text) was retrieved and its header revision tag and row / cell structure compared with the template; they match",
+          "pendingAmendment": "법무부령 제1125호 (공포 2026-09-15, 시행 2027-09-16) — re-verify this annex on or after 2027-09-16"
+        }
       },
       "support": {
         "status": "SUPPORTED",
-        "reason": "new 2026-09-23: mapped from the rule PDF + export verified + browser E2E",
+        "reason": "mapped from the rule PDF + export verified + browser E2E; edition verified against the current rule",
         "qa": "PASS",
         "annex": "34의4",
         "law": "immigration_rule",
         "qaDate": "2026-09-23",
-        "qaMethod": "node export (pdf-lib + fontkit) verified with PyMuPDF against engine ops; browser E2E on F08/F01"
+        "qaMethod": "node export (pdf-lib + fontkit) verified with PyMuPDF against engine ops; static geometry audit of every overlay against the template cells; browser E2E on F08/F01"
       }
     },
     "F09": {
@@ -4423,14 +5113,14 @@
       },
       "template": {
         "source": "extracted from 법무부령 제1106호 (2026-01-23) consolidated PDF p.190",
-        "edition": "법무부령 제1106호 (2026-01-23) 기준",
+        "edition": "현행 출입국관리법 시행규칙 (2026-09-15 시행본) 별지 제34호의9서식와 대조 확인",
         "revisionOnForm": "개정 2024. 12. 24.",
         "sha256": "f8ca2a67bef00a090e1a8df6a70e5eaa7aba96df8ed8b4ada00ced021858c42a",
         "bytes": 73213,
         "pages": 1,
         "pageWidth": 595,
         "pageHeight": 841,
-        "verification": "RULE_1106_PDF",
+        "verification": "VERIFIED_CURRENT",
         "fieldMapVersion": "2026-09-23.1",
         "anchors": [
           {
@@ -4445,16 +5135,27 @@
             "width": 595,
             "height": 841
           }
-        ]
+        ],
+        "verifiedAgainst": {
+          "source": "law.go.kr 국가법령정보 Open API (Korean-law MCP connector)",
+          "law": "출입국관리법 시행규칙",
+          "mst": "289833",
+          "inForceFrom": "2026-09-15",
+          "annex": "별지 제34호의9서식",
+          "headerOnCurrentText": "<개정 2024. 12. 24.>",
+          "checkedOn": "2026-09-23",
+          "method": "the current annex (HWP → text) was retrieved and its header revision tag and row / cell structure compared with the template; they match",
+          "pendingAmendment": "법무부령 제1125호 (공포 2026-09-15, 시행 2027-09-16) — re-verify this annex on or after 2027-09-16"
+        }
       },
       "support": {
         "status": "SUPPORTED",
-        "reason": "new 2026-09-23: mapped (13-digit and 11-digit cell grids) + export verified",
+        "reason": "mapped (13-digit and 11-digit cell grids) + export verified; edition verified against the current rule",
         "qa": "PASS",
         "annex": "34의9",
         "law": "immigration_rule",
         "qaDate": "2026-09-23",
-        "qaMethod": "node export (pdf-lib + fontkit) verified with PyMuPDF against engine ops; browser E2E on F08/F01"
+        "qaMethod": "node export (pdf-lib + fontkit) verified with PyMuPDF against engine ops; static geometry audit of every overlay against the template cells; browser E2E on F08/F01"
       }
     },
     "F10": {
@@ -4837,10 +5538,10 @@
           "check": true
         },
         "cert_entry_count": {
-          "x": 242.3,
+          "x": 241.6,
           "y": 279.5,
           "size": 8,
-          "maxWidth": 9,
+          "maxWidth": 7,
           "align": "center"
         },
         "cert_entry_count_en": {
@@ -4856,10 +5557,10 @@
           "check": true
         },
         "cert_reg_count": {
-          "x": 230.2,
+          "x": 229.5,
           "y": 292.1,
           "size": 8,
-          "maxWidth": 9,
+          "maxWidth": 7,
           "align": "center"
         },
         "cert_reg_count_en": {
@@ -4875,17 +5576,17 @@
           "check": true
         },
         "cert_access_count": {
-          "x": 214,
+          "x": 213.3,
           "y": 305.1,
           "size": 8,
-          "maxWidth": 9,
+          "maxWidth": 7,
           "align": "center"
         },
         "cert_access_count_en": {
-          "x": 413.9,
+          "x": 413.95,
           "y": 305.1,
           "size": 8,
-          "maxWidth": 9,
+          "maxWidth": 7,
           "align": "center"
         },
         "prev_regno_yes": {
@@ -5062,14 +5763,14 @@
       },
       "template": {
         "source": "extracted from 법무부령 제1106호 (2026-01-23) consolidated PDF pp.375-376",
-        "edition": "법무부령 제1106호 (2026-01-23) 기준",
+        "edition": "현행 출입국관리법 시행규칙 (2026-09-15 시행본) 별지 제138호의2서식와 대조 확인",
         "revisionOnForm": "개정 2025. 5. 30.",
         "sha256": "cb409ace3237279717b4553e91141f19f91fcb33c4cd7dc9e11a0e7b654366f7",
         "bytes": 112780,
         "pages": 2,
         "pageWidth": 595,
         "pageHeight": 841,
-        "verification": "RULE_1106_PDF",
+        "verification": "VERIFIED_CURRENT",
         "fieldMapVersion": "2026-09-23.1",
         "anchors": [
           {
@@ -5089,16 +5790,27 @@
             "width": 595,
             "height": 841
           }
-        ]
+        ],
+        "verifiedAgainst": {
+          "source": "law.go.kr 국가법령정보 Open API (Korean-law MCP connector)",
+          "law": "출입국관리법 시행규칙",
+          "mst": "289833",
+          "inForceFrom": "2026-09-15",
+          "annex": "별지 제138호의2서식",
+          "headerOnCurrentText": "<개정 2025. 5. 30.>",
+          "checkedOn": "2026-09-23",
+          "method": "the current annex (HWP → text) was retrieved and its header revision tag and row / cell structure compared with the template; they match",
+          "pendingAmendment": "법무부령 제1125호 (공포 2026-09-15, 시행 2027-09-16) — re-verify this annex on or after 2027-09-16"
+        }
       },
       "support": {
         "status": "SUPPORTED",
-        "reason": "new 2026-09-23: 2 pages mapped + export verified; 영문 성명 병기 option (국민만 해당) intentionally not exposed",
+        "reason": "2 pages mapped + export verified; edition verified against the current rule; 영문 성명 병기 option (국민만 해당) intentionally not exposed",
         "qa": "PASS",
         "annex": "138의2",
         "law": "immigration_rule",
         "qaDate": "2026-09-23",
-        "qaMethod": "node export (pdf-lib + fontkit) verified with PyMuPDF against engine ops; browser E2E on F08/F01"
+        "qaMethod": "node export (pdf-lib + fontkit) verified with PyMuPDF against engine ops; static geometry audit of every overlay against the template cells; browser E2E on F08/F01"
       }
     },
     "F11": {
@@ -5271,10 +5983,10 @@
           "maxWidth": 115
         },
         "email": {
-          "x": 236,
+          "x": 239,
           "y": 286.5,
           "size": 9,
-          "maxWidth": 296
+          "maxWidth": 293
         },
         "date_y": {
           "x": 410,
@@ -5303,14 +6015,14 @@
       },
       "template": {
         "source": "extracted from 법무부령 제1106호 (2026-01-23) consolidated PDF p.88",
-        "edition": "법무부령 제1106호 (2026-01-23) 기준",
+        "edition": "현행 출입국관리법 시행규칙 (2026-09-15 시행본) 별지 제1호의4서식와 대조 확인",
         "revisionOnForm": "개정 2022. 4. 12.",
         "sha256": "42f0f0fe8c0f5ca091507251b5a386f4956d6ce35e33ccc40d9226e4034899e9",
         "bytes": 45126,
         "pages": 1,
         "pageWidth": 595,
         "pageHeight": 841,
-        "verification": "RULE_1106_PDF",
+        "verification": "VERIFIED_CURRENT",
         "fieldMapVersion": "2026-09-23.1",
         "anchors": [
           {
@@ -5325,16 +6037,27 @@
             "width": 595,
             "height": 841
           }
-        ]
+        ],
+        "verifiedAgainst": {
+          "source": "law.go.kr 국가법령정보 Open API (Korean-law MCP connector)",
+          "law": "출입국관리법 시행규칙",
+          "mst": "289833",
+          "inForceFrom": "2026-09-15",
+          "annex": "별지 제1호의4서식",
+          "headerOnCurrentText": "<개정 2022. 4. 12.>",
+          "checkedOn": "2026-09-23",
+          "method": "the current annex (HWP → text) was retrieved and its header revision tag and row / cell structure compared with the template; they match",
+          "pendingAmendment": "법무부령 제1125호 (공포 2026-09-15, 시행 2027-09-16) — re-verify this annex on or after 2027-09-16"
+        }
       },
       "support": {
         "status": "SUPPORTED",
-        "reason": "new 2026-09-23: mapped + export verified",
+        "reason": "mapped + export verified; edition verified against the current rule",
         "qa": "PASS",
         "annex": "1의4",
         "law": "immigration_rule",
         "qaDate": "2026-09-23",
-        "qaMethod": "node export (pdf-lib + fontkit) verified with PyMuPDF against engine ops; browser E2E on F08/F01"
+        "qaMethod": "node export (pdf-lib + fontkit) verified with PyMuPDF against engine ops; static geometry audit of every overlay against the template cells; browser E2E on F08/F01"
       }
     },
     "F12": {
@@ -5656,13 +6379,13 @@
           "x": 411,
           "y": 235,
           "size": 9,
-          "maxWidth": 122
+          "maxWidth": 98
         },
         "employment": {
           "x": 266,
           "y": 266,
           "size": 9,
-          "maxWidth": 268
+          "maxWidth": 243
         },
         "address_korea": {
           "x": 179,
@@ -5674,13 +6397,13 @@
           "x": 411,
           "y": 298,
           "size": 9,
-          "maxWidth": 122
+          "maxWidth": 98
         },
         "address_home": {
           "x": 220,
           "y": 331,
           "size": 8.5,
-          "maxWidth": 314
+          "maxWidth": 289
         },
         "passport_no": {
           "x": 183,
@@ -5692,7 +6415,7 @@
           "x": 400,
           "y": 364,
           "size": 9,
-          "maxWidth": 134
+          "maxWidth": 109
         },
         "permit_no": {
           "x": 183,
@@ -5707,10 +6430,10 @@
           "maxWidth": 48
         },
         "permit_expiry": {
-          "x": 471,
+          "x": 467.7,
           "y": 397,
-          "size": 8.5,
-          "maxWidth": 63
+          "size": 7.5,
+          "maxWidth": 42.3
         },
         "ext_period": {
           "x": 183,
@@ -5722,7 +6445,7 @@
           "x": 325,
           "y": 425,
           "size": 8.5,
-          "maxWidth": 209,
+          "maxWidth": 184,
           "lines": 2,
           "lineHeight": 11
         },
@@ -5758,7 +6481,7 @@
           "x": 458,
           "y": 502,
           "size": 8.5,
-          "maxWidth": 76
+          "maxWidth": 51
         },
         "dep2_name": {
           "x": 128,
@@ -5792,7 +6515,7 @@
           "x": 458,
           "y": 529.5,
           "size": 8.5,
-          "maxWidth": 76
+          "maxWidth": 51
         },
         "apply_y": {
           "x": 196,
@@ -5815,14 +6538,14 @@
       },
       "template": {
         "source": "extracted from 법무부령 제1106호 (2026-01-23) consolidated PDF p.241",
-        "edition": "법무부령 제1106호 (2026-01-23) 기준",
+        "edition": "현행 출입국관리법 시행규칙 (2026-09-15 시행본) 별지 제61호서식와 대조 확인",
         "revisionOnForm": "개정 2013. 1. 1.",
         "sha256": "76f97ddfdd311bf8393486fe6e45d713b92308df7d64e1ae90cc199f9d591cb9",
         "bytes": 56095,
         "pages": 1,
         "pageWidth": 595,
         "pageHeight": 841,
-        "verification": "RULE_1106_PDF",
+        "verification": "VERIFIED_CURRENT",
         "fieldMapVersion": "2026-09-23.1",
         "anchors": [
           {
@@ -5837,16 +6560,27 @@
             "width": 595,
             "height": 841
           }
-        ]
+        ],
+        "verifiedAgainst": {
+          "source": "law.go.kr 국가법령정보 Open API (Korean-law MCP connector)",
+          "law": "출입국관리법 시행규칙",
+          "mst": "289833",
+          "inForceFrom": "2026-09-15",
+          "annex": "별지 제61호서식",
+          "headerOnCurrentText": "<개정 2013.1.1>",
+          "checkedOn": "2026-09-23",
+          "method": "the current annex (HWP → text) was retrieved and its header revision tag and row / cell structure compared with the template; they match",
+          "pendingAmendment": "법무부령 제1125호 (공포 2026-09-15, 시행 2027-09-16) — re-verify this annex on or after 2027-09-16"
+        }
       },
       "support": {
         "status": "SUPPORTED",
-        "reason": "new 2026-09-23: mapped incl. two dependent rows + export verified; 漢字 name cell left for handwriting",
+        "reason": "mapped incl. two dependent rows + export verified; edition verified against the current rule; 漢字 name cell left for handwriting",
         "qa": "PASS",
         "annex": "61",
         "law": "immigration_rule",
         "qaDate": "2026-09-23",
-        "qaMethod": "node export (pdf-lib + fontkit) verified with PyMuPDF against engine ops; browser E2E on F08/F01"
+        "qaMethod": "node export (pdf-lib + fontkit) verified with PyMuPDF against engine ops; static geometry audit of every overlay against the template cells; browser E2E on F08/F01"
       }
     },
     "F13": {
@@ -6086,31 +6820,31 @@
           "x": 384,
           "y": 148,
           "size": 9,
-          "maxWidth": 150
+          "maxWidth": 126
         },
         "arc_no": {
           "x": 200,
           "y": 174,
           "size": 10,
-          "maxWidth": 330
+          "maxWidth": 310
         },
         "address": {
           "x": 182,
           "y": 199,
           "size": 9,
-          "maxWidth": 350
+          "maxWidth": 328
         },
         "phone": {
           "x": 250,
           "y": 224,
           "size": 9,
-          "maxWidth": 282
+          "maxWidth": 260
         },
         "email": {
           "x": 195,
           "y": 248.5,
           "size": 9,
-          "maxWidth": 337
+          "maxWidth": 315
         },
         "reason_first": {
           "cx": 162.9,
@@ -6150,7 +6884,7 @@
           "x": 446,
           "y": 338,
           "size": 8,
-          "maxWidth": 88
+          "maxWidth": 64
         },
         "cur_biz_no": {
           "x": 154,
@@ -6180,13 +6914,13 @@
           "x": 446,
           "y": 387,
           "size": 8,
-          "maxWidth": 88
+          "maxWidth": 64
         },
         "report_y": {
-          "x": 411,
+          "x": 413.2,
           "y": 447.5,
-          "size": 8,
-          "maxWidth": 18
+          "size": 6.8,
+          "maxWidth": 17.3
         },
         "report_m": {
           "x": 449,
@@ -6203,14 +6937,14 @@
       },
       "template": {
         "source": "extracted from 법무부령 제1106호 (2026-01-23) consolidated PDF p.256",
-        "edition": "법무부령 제1106호 (2026-01-23) 기준",
+        "edition": "현행 출입국관리법 시행규칙 (2026-09-15 시행본) 별지 제72호서식와 대조 확인",
         "revisionOnForm": "개정 2018. 5. 15.",
         "sha256": "0707f8721a513e7dddbc45b61c36860b3b357c1f2135d87ea102d56c984e81a0",
         "bytes": 58715,
         "pages": 1,
         "pageWidth": 595,
         "pageHeight": 841,
-        "verification": "RULE_1106_PDF",
+        "verification": "VERIFIED_CURRENT",
         "fieldMapVersion": "2026-09-23.1",
         "anchors": [
           {
@@ -6225,16 +6959,27 @@
             "width": 595,
             "height": 841
           }
-        ]
+        ],
+        "verifiedAgainst": {
+          "source": "law.go.kr 국가법령정보 Open API (Korean-law MCP connector)",
+          "law": "출입국관리법 시행규칙",
+          "mst": "289833",
+          "inForceFrom": "2026-09-15",
+          "annex": "별지 제72호서식",
+          "headerOnCurrentText": "<개정 2018. 5. 15.>",
+          "checkedOn": "2026-09-23",
+          "method": "the current annex (HWP → text) was retrieved and its header revision tag and row / cell structure compared with the template; they match",
+          "pendingAmendment": "법무부령 제1125호 (공포 2026-09-15, 시행 2027-09-16) — re-verify this annex on or after 2027-09-16"
+        }
       },
       "support": {
         "status": "SUPPORTED",
-        "reason": "new 2026-09-23: mapped + export verified; 漢字 name cell left for handwriting",
+        "reason": "mapped + export verified; edition verified against the current rule; 漢字 name cell left for handwriting",
         "qa": "PASS",
         "annex": "72",
         "law": "immigration_rule",
         "qaDate": "2026-09-23",
-        "qaMethod": "node export (pdf-lib + fontkit) verified with PyMuPDF against engine ops; browser E2E on F08/F01"
+        "qaMethod": "node export (pdf-lib + fontkit) verified with PyMuPDF against engine ops; static geometry audit of every overlay against the template cells; browser E2E on F08/F01"
       }
     },
     "F14": {
@@ -6737,7 +7482,7 @@
           "x": 376,
           "y": 152,
           "size": 8,
-          "maxWidth": 158
+          "maxWidth": 132.5
         },
         "mobile": {
           "x": 180,
@@ -6749,7 +7494,7 @@
           "x": 340,
           "y": 173,
           "size": 8.5,
-          "maxWidth": 195
+          "maxWidth": 168.5
         },
         "tel": {
           "x": 165,
@@ -6761,7 +7506,7 @@
           "x": 375,
           "y": 198.5,
           "size": 8.5,
-          "maxWidth": 160
+          "maxWidth": 133.5
         },
         "reason_a": {
           "cx": 103.8,
@@ -6825,10 +7570,10 @@
           "check": true
         },
         "place_other_text": {
-          "x": 222,
+          "x": 237.5,
           "y": 353.5,
           "size": 8,
-          "maxWidth": 100
+          "maxWidth": 87
         },
         "worker_phone": {
           "x": 175,
@@ -6890,7 +7635,7 @@
           "x": 447,
           "y": 493.5,
           "size": 8,
-          "maxWidth": 88
+          "maxWidth": 61.5
         },
         "w2_name": {
           "x": 124,
@@ -6926,7 +7671,7 @@
           "x": 447,
           "y": 510,
           "size": 8,
-          "maxWidth": 88
+          "maxWidth": 61.5
         },
         "w3_name": {
           "x": 124,
@@ -6962,7 +7707,7 @@
           "x": 447,
           "y": 526.7,
           "size": 8,
-          "maxWidth": 88
+          "maxWidth": 61.5
         },
         "w4_name": {
           "x": 124,
@@ -6998,7 +7743,7 @@
           "x": 447,
           "y": 543.4,
           "size": 8,
-          "maxWidth": 88
+          "maxWidth": 61.5
         },
         "w5_name": {
           "x": 124,
@@ -7034,7 +7779,7 @@
           "x": 447,
           "y": 560,
           "size": 8,
-          "maxWidth": 88
+          "maxWidth": 61.5
         },
         "report_y": {
           "x": 386,
@@ -7063,14 +7808,14 @@
       },
       "template": {
         "source": "extracted from 법무부령 제1106호 (2026-01-23) consolidated PDF pp.177-178",
-        "edition": "법무부령 제1106호 (2026-01-23) 기준",
+        "edition": "현행 출입국관리법 시행규칙 (2026-09-15 시행본) 별지 제32호서식와 대조 확인",
         "revisionOnForm": "개정 2018. 5. 15.",
         "sha256": "28dbf7d496dd138fcd043f9ba8093409d78cef7bd3f9e35eda650662e8bf268c",
         "bytes": 114934,
         "pages": 2,
         "pageWidth": 595,
         "pageHeight": 841,
-        "verification": "RULE_1106_PDF",
+        "verification": "VERIFIED_CURRENT",
         "fieldMapVersion": "2026-09-23.1",
         "anchors": [
           {
@@ -7090,16 +7835,27 @@
             "width": 595,
             "height": 841
           }
-        ]
+        ],
+        "verifiedAgainst": {
+          "source": "law.go.kr 국가법령정보 Open API (Korean-law MCP connector)",
+          "law": "출입국관리법 시행규칙",
+          "mst": "289833",
+          "inForceFrom": "2026-09-15",
+          "annex": "별지 제32호서식",
+          "headerOnCurrentText": "<개정 2018. 5. 15.>",
+          "checkedOn": "2026-09-23",
+          "method": "the current annex (HWP → text) was retrieved and its header revision tag and row / cell structure compared with the template; they match",
+          "pendingAmendment": "법무부령 제1125호 (공포 2026-09-15, 시행 2027-09-16) — re-verify this annex on or after 2027-09-16"
+        }
       },
       "support": {
         "status": "SUPPORTED",
-        "reason": "new 2026-09-23: 2 pages mapped (5 worker rows) + export verified; circled reason codes printed as plain letters/digits (font)",
+        "reason": "2 pages mapped (5 worker rows) + export verified; edition verified against the current rule; circled reason codes printed as plain letters/digits (font)",
         "qa": "PASS",
         "annex": "32",
         "law": "immigration_rule",
         "qaDate": "2026-09-23",
-        "qaMethod": "node export (pdf-lib + fontkit) verified with PyMuPDF against engine ops; browser E2E on F08/F01"
+        "qaMethod": "node export (pdf-lib + fontkit) verified with PyMuPDF against engine ops; static geometry audit of every overlay against the template cells; browser E2E on F08/F01"
       }
     },
     "F15": {
@@ -7743,14 +8499,14 @@
       },
       "template": {
         "source": "extracted from 법무부령 제1106호 (2026-01-23) consolidated PDF pp.152-153",
-        "edition": "법무부령 제1106호 (2026-01-23) 기준",
+        "edition": "현행 출입국관리법 시행규칙 (2026-09-15 시행본) 별지 제21호의3서식와 대조 확인",
         "revisionOnForm": "개정 2018. 5. 15.",
         "sha256": "d8ebfee3d6e5bd94df911a14a60a13e392cba9e082b3a9c5bac1a8dbfcadf577",
         "bytes": 78385,
         "pages": 2,
         "pageWidth": 595,
         "pageHeight": 841,
-        "verification": "RULE_1106_PDF",
+        "verification": "VERIFIED_CURRENT",
         "fieldMapVersion": "2026-09-23.1",
         "anchors": [
           {
@@ -7770,16 +8526,27 @@
             "width": 595,
             "height": 841
           }
-        ]
+        ],
+        "verifiedAgainst": {
+          "source": "law.go.kr 국가법령정보 Open API (Korean-law MCP connector)",
+          "law": "출입국관리법 시행규칙",
+          "mst": "289833",
+          "inForceFrom": "2026-09-15",
+          "annex": "별지 제21호의3서식",
+          "headerOnCurrentText": "<개정 2018. 5. 15.>",
+          "checkedOn": "2026-09-23",
+          "method": "the current annex (HWP → text) was retrieved and its header revision tag and row / cell structure compared with the template; they match",
+          "pendingAmendment": "법무부령 제1125호 (공포 2026-09-15, 시행 2027-09-16) — re-verify this annex on or after 2027-09-16"
+        }
       },
       "support": {
         "status": "SUPPORTED",
-        "reason": "new 2026-09-23: both KO/EN sides mapped + export verified",
+        "reason": "both KO/EN sides mapped + export verified; edition verified against the current rule",
         "qa": "PASS",
         "annex": "21의3",
         "law": "immigration_rule",
         "qaDate": "2026-09-23",
-        "qaMethod": "node export (pdf-lib + fontkit) verified with PyMuPDF against engine ops; browser E2E on F08/F01"
+        "qaMethod": "node export (pdf-lib + fontkit) verified with PyMuPDF against engine ops; static geometry audit of every overlay against the template cells; browser E2E on F08/F01"
       }
     }
   }

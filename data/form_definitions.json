@@ -304,30 +304,33 @@
           }
         },
         {
+          "id": "school",
+          "title": {
+            "ko": "재학 여부 (아동·학생)",
+            "en": "School status (children and students)"
+          },
+          "lead": {
+            "ko": "학교에 다니는 아동·청소년이면 적어요. 어른은 '해당 없음' 그대로 두고 넘어가요.",
+            "en": "Fill this in for school-age children. Adults keep “not applicable” and continue."
+          }
+        },
+        {
           "id": "extra",
           "title": {
             "ko": "절차별 추가 항목",
             "en": "Procedure-specific items"
           },
           "showIf": {
-            "any": [
-              {
-                "field": "app_type",
-                "in": [
-                  "status_change",
-                  "status_granting",
-                  "activity_outside_status",
-                  "workplace_change",
-                  "address_change",
-                  "reentry_permit",
-                  "foreign_registration",
-                  "card_reissuance"
-                ]
-              },
-              {
-                "field": "edition",
-                "eq": "F02"
-              }
+            "field": "app_type",
+            "in": [
+              "status_change",
+              "status_granting",
+              "activity_outside_status",
+              "workplace_change",
+              "address_change",
+              "reentry_permit",
+              "foreign_registration",
+              "card_reissuance"
             ]
           }
         },
@@ -801,6 +804,134 @@
           }
         },
         {
+          "key": "school_level",
+          "step": "school",
+          "type": "choice",
+          "req": false,
+          "label": {
+            "ko": "재학 여부",
+            "en": "School status"
+          },
+          "options": [
+            {
+              "v": "na",
+              "label": {
+                "ko": "해당 없음 (칸을 비워 둬요)",
+                "en": "Not applicable (leave the row blank)"
+              }
+            },
+            {
+              "v": "none",
+              "label": {
+                "ko": "미취학",
+                "en": "Not enrolled"
+              },
+              "map": "school_none"
+            },
+            {
+              "v": "elem",
+              "label": {
+                "ko": "초등학교",
+                "en": "Elementary school"
+              },
+              "map": "school_elem"
+            },
+            {
+              "v": "mid",
+              "label": {
+                "ko": "중학교",
+                "en": "Middle school"
+              },
+              "map": "school_mid"
+            },
+            {
+              "v": "high",
+              "label": {
+                "ko": "고등학교",
+                "en": "High school"
+              },
+              "map": "school_high"
+            }
+          ],
+          "default": "na",
+          "layout": "cards"
+        },
+        {
+          "key": "school_name",
+          "step": "school",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "학교 이름",
+            "en": "Name of school"
+          },
+          "map": "school_name",
+          "maxLen": 30,
+          "showIf": {
+            "field": "school_level",
+            "in": [
+              "elem",
+              "mid",
+              "high"
+            ]
+          }
+        },
+        {
+          "key": "school_tel",
+          "step": "school",
+          "type": "phone",
+          "req": false,
+          "label": {
+            "ko": "학교 전화번호",
+            "en": "School phone"
+          },
+          "map": "school_tel",
+          "showIf": {
+            "field": "school_level",
+            "in": [
+              "elem",
+              "mid",
+              "high"
+            ]
+          }
+        },
+        {
+          "key": "school_kind",
+          "step": "school",
+          "type": "choice",
+          "req": false,
+          "label": {
+            "ko": "학교 종류",
+            "en": "Type of school"
+          },
+          "options": [
+            {
+              "v": "acc",
+              "label": {
+                "ko": "교육청 인가",
+                "en": "Accredited by the education office"
+              },
+              "map": "school_acc"
+            },
+            {
+              "v": "alt",
+              "label": {
+                "ko": "교육청 비인가 · 대안학교",
+                "en": "Non-accredited / alternative school"
+              },
+              "map": "school_alt"
+            }
+          ],
+          "showIf": {
+            "field": "school_level",
+            "in": [
+              "elem",
+              "mid",
+              "high"
+            ]
+          }
+        },
+        {
           "key": "desired_status",
           "step": "extra",
           "type": "text",
@@ -967,8 +1098,8 @@
           },
           "map": "refund_account",
           "help": {
-            "ko": "외국인등록·등록증 재발급 신청 때만 적는 칸이에요. 중문 병기판(별지 34의3)에는 이 칸이 없어요.",
-            "en": "Used only for registration and card reissuance. The Chinese edition (Annex 34-3) has no such cell."
+            "ko": "서식 기재: 외국인등록 및 외국인등록증 재발급 신청 때만 적어요.",
+            "en": "As printed: only for foreign resident registration and reissuance of the registration card."
           },
           "maxLen": 40,
           "showIf": {
@@ -997,153 +1128,6 @@
             "in": [
               "foreign_registration",
               "card_reissuance"
-            ]
-          }
-        },
-        {
-          "key": "school_level",
-          "step": "extra",
-          "type": "choice",
-          "req": false,
-          "label": {
-            "ko": "재학 여부 (2025 개정판 칸)",
-            "en": "School enrolment (2025 edition cell)"
-          },
-          "options": [
-            {
-              "v": "none",
-              "label": {
-                "ko": "미취학",
-                "en": "Not enrolled"
-              },
-              "map": "school_none"
-            },
-            {
-              "v": "elem",
-              "label": {
-                "ko": "초등학교",
-                "en": "Elementary"
-              },
-              "map": "school_elem"
-            },
-            {
-              "v": "mid",
-              "label": {
-                "ko": "중학교",
-                "en": "Middle school"
-              },
-              "map": "school_mid"
-            },
-            {
-              "v": "high",
-              "label": {
-                "ko": "고등학교",
-                "en": "High school"
-              },
-              "map": "school_high"
-            }
-          ],
-          "showIf": {
-            "field": "edition",
-            "eq": "F02"
-          }
-        },
-        {
-          "key": "school_name",
-          "step": "extra",
-          "type": "text",
-          "req": false,
-          "label": {
-            "ko": "학교 이름",
-            "en": "School name"
-          },
-          "map": "school_name",
-          "maxLen": 30,
-          "showIf": {
-            "all": [
-              {
-                "field": "edition",
-                "eq": "F02"
-              },
-              {
-                "field": "school_level",
-                "in": [
-                  "elem",
-                  "mid",
-                  "high"
-                ]
-              }
-            ]
-          }
-        },
-        {
-          "key": "school_tel",
-          "step": "extra",
-          "type": "phone",
-          "req": false,
-          "label": {
-            "ko": "학교 전화번호",
-            "en": "School phone"
-          },
-          "map": "school_tel",
-          "showIf": {
-            "all": [
-              {
-                "field": "edition",
-                "eq": "F02"
-              },
-              {
-                "field": "school_level",
-                "in": [
-                  "elem",
-                  "mid",
-                  "high"
-                ]
-              }
-            ]
-          }
-        },
-        {
-          "key": "school_kind",
-          "step": "extra",
-          "type": "choice",
-          "req": false,
-          "label": {
-            "ko": "학교 종류",
-            "en": "School type"
-          },
-          "options": [
-            {
-              "v": "acc",
-              "label": {
-                "ko": "교육청 인가",
-                "en": "Accredited by the education office"
-              },
-              "map": "school_acc"
-            },
-            {
-              "v": "alt",
-              "label": {
-                "ko": "교육청 비인가·대안학교",
-                "en": "Non-accredited / alternative school"
-              },
-              "map": "school_alt"
-            }
-          ],
-          "showIf": {
-            "all": [
-              {
-                "field": "edition",
-                "eq": "F02"
-              },
-              {
-                "field": "school_level",
-                "in": [
-                  "elem",
-                  "mid",
-                  "high"
-                ]
-              }
             ]
           }
         },
@@ -1195,8 +1179,8 @@
           ],
           "default": "F01",
           "help": {
-            "ko": "내용은 같고 인쇄된 안내 언어만 달라요. 한자 병기판은 2025년 5월 개정판이에요.",
-            "en": "Same content, different printed guide language. The Chinese-character edition is the May 2025 revision."
+            "ko": "칸 구성은 같고 인쇄된 안내 언어가 달라요. 한자·중문 병기판에는 한자 성명 칸이 더 있어요(출력 후 손으로 적어요). 한자 병기판은 2025. 5. 30. 개정판이에요.",
+            "en": "Same cells, different printed guide language. The Chinese-character and Chinese editions add a name-in-characters cell (write it by hand after printing). The Chinese-character edition is the 2025-05-30 revision."
           },
           "role": "edition"
         }
@@ -1403,6 +1387,17 @@
           }
         },
         {
+          "id": "school",
+          "title": {
+            "ko": "재학 여부 (아동·학생)",
+            "en": "School status (children and students)"
+          },
+          "lead": {
+            "ko": "학교에 다니는 아동·청소년이면 적어요. 어른은 '해당 없음' 그대로 두고 넘어가요.",
+            "en": "Fill this in for school-age children. Adults keep “not applicable” and continue."
+          }
+        },
+        {
           "id": "extra",
           "title": {
             "ko": "직업·근무처 (선택)",
@@ -1504,8 +1499,8 @@
                 "en": "Switch to another status"
               },
               "note": {
-                "ko": "이 서식에는 희망 자격 칸이 없어요. 창구에서 자격을 말하면 돼요.",
-                "en": "This form has no desired-status cell; state the status at the counter."
+                "ko": "이 서식에는 희망 자격을 적는 칸이 없어요.",
+                "en": "This form has no cell for the desired status."
               }
             },
             {
@@ -1520,8 +1515,8 @@
                 "en": "Obtain a status"
               },
               "note": {
-                "ko": "이 서식에는 희망 자격 칸이 없어요.",
-                "en": "This form has no desired-status cell."
+                "ko": "이 서식에는 희망 자격을 적는 칸이 없어요.",
+                "en": "This form has no cell for the desired status."
               }
             }
           ],
@@ -1761,6 +1756,134 @@
           "map": "overseas_tel"
         },
         {
+          "key": "school_level",
+          "step": "school",
+          "type": "choice",
+          "req": false,
+          "label": {
+            "ko": "재학 여부",
+            "en": "School status"
+          },
+          "options": [
+            {
+              "v": "na",
+              "label": {
+                "ko": "해당 없음 (칸을 비워 둬요)",
+                "en": "Not applicable (leave the row blank)"
+              }
+            },
+            {
+              "v": "none",
+              "label": {
+                "ko": "미취학",
+                "en": "Not enrolled"
+              },
+              "map": "school_none"
+            },
+            {
+              "v": "elem",
+              "label": {
+                "ko": "초등학교",
+                "en": "Elementary school"
+              },
+              "map": "school_elem"
+            },
+            {
+              "v": "mid",
+              "label": {
+                "ko": "중학교",
+                "en": "Middle school"
+              },
+              "map": "school_mid"
+            },
+            {
+              "v": "high",
+              "label": {
+                "ko": "고등학교",
+                "en": "High school"
+              },
+              "map": "school_high"
+            }
+          ],
+          "default": "na",
+          "layout": "cards"
+        },
+        {
+          "key": "school_name",
+          "step": "school",
+          "type": "text",
+          "req": false,
+          "label": {
+            "ko": "학교 이름",
+            "en": "Name of school"
+          },
+          "map": "school_name",
+          "maxLen": 30,
+          "showIf": {
+            "field": "school_level",
+            "in": [
+              "elem",
+              "mid",
+              "high"
+            ]
+          }
+        },
+        {
+          "key": "school_tel",
+          "step": "school",
+          "type": "phone",
+          "req": false,
+          "label": {
+            "ko": "학교 전화번호",
+            "en": "School phone"
+          },
+          "map": "school_tel",
+          "showIf": {
+            "field": "school_level",
+            "in": [
+              "elem",
+              "mid",
+              "high"
+            ]
+          }
+        },
+        {
+          "key": "school_kind",
+          "step": "school",
+          "type": "choice",
+          "req": false,
+          "label": {
+            "ko": "학교 종류",
+            "en": "Type of school"
+          },
+          "options": [
+            {
+              "v": "acc",
+              "label": {
+                "ko": "교육청 인가",
+                "en": "Accredited by the education office"
+              },
+              "map": "school_acc"
+            },
+            {
+              "v": "alt",
+              "label": {
+                "ko": "교육청 비인가 · 대안학교",
+                "en": "Non-accredited / alternative school"
+              },
+              "map": "school_alt"
+            }
+          ],
+          "showIf": {
+            "field": "school_level",
+            "in": [
+              "elem",
+              "mid",
+              "high"
+            ]
+          }
+        },
+        {
           "key": "occupation",
           "step": "extra",
           "type": "text",
@@ -1818,8 +1941,8 @@
           },
           "map": "refund_account",
           "help": {
-            "ko": "거소신고·신고증 재발급 신청 때만 적어요. 중문 병기판에는 이 칸이 없어요.",
-            "en": "Only for registration and card reissuance; the Chinese edition has no such cell."
+            "ko": "서식 기재: 국내거소신고증 발급 신청 때만 적어요.",
+            "en": "As printed: only when applying for issuance of the overseas Korean resident card."
           },
           "maxLen": 40,
           "showIf": {
@@ -1959,8 +2082,8 @@
         "en": "HiKorea civil service form (rev. 2024-05)"
       },
       "summary": {
-        "ko": "집주인·가족·회사가 외국인에게 거주할 곳을 제공한다고 확인해 주는 서식이에요. 체류지 입증 서류로 자주 쓰여요.",
-        "en": "The landlord, family member or company confirms that they provide the foreigner’s place of residence. Often used as proof of address."
+        "ko": "집주인·가족·회사가 외국인에게 거주할 곳을 제공한다고 확인해 주는 서식이에요. 체류지 입증 서류로 쓰여요(체류지변경신고서의 첨부서류 목록에도 있어요).",
+        "en": "The landlord, family member or company confirms that they provide the foreigner’s place of residence. It serves as proof of address (it is also listed among the attachments of the change-of-address form)."
       },
       "who": {
         "ko": "숙소를 제공하는 사람(제공자)이 작성하고 서명해요. 거주자 정보도 함께 적어요.",
@@ -1971,8 +2094,8 @@
         "en": "Submitted with your stay application to the immigration office."
       },
       "attachments": {
-        "ko": "제공자 신분증 사본, 임대차계약서·등기부등본 등 제공자의 거주 근거를 함께 요구하는 경우가 많아요(관서 확인).",
-        "en": "Offices often ask for the provider’s ID copy and the lease or property register as well (confirm locally)."
+        "ko": "서식 기재(숙소제공자가 외국인에게 주는 서류): 이 확인서, 제공하는 숙소가 본인 소유 또는 임차 물건임을 증빙하는 서류(등기부등본, 임대차계약서 등), 숙소제공자 신분증 사본. 제공자 신분증의 주소와 제공하는 숙소 주소가 같으면 증빙서류는 신분증 사본으로 갈음해요.",
+        "en": "As printed (documents the provider gives the foreign resident): this confirmation, proof that the place is owned or leased by the provider (property register, lease agreement, etc.) and a copy of the provider’s ID. When the provider’s ID shows the same address as the place provided, the ID copy replaces the ownership proof."
       },
       "notes": [
         {
@@ -2432,8 +2555,8 @@
         "en": "Submitted with the visa or stay application."
       },
       "attachments": {
-        "ko": "보증인 신분증 사본, 재직·소득 증빙 등을 함께 요구하는 경우가 있어요(관서 확인).",
-        "en": "The guarantor’s ID copy and employment or income proof may be requested (confirm locally)."
+        "ko": "서식에 첨부서류 목록은 없어요. 신원보증서가 필요한지, 무엇을 함께 내는지는 체류자격·절차마다 달라요. Visable 검색에서 절차별 준비서류를 확인하세요.",
+        "en": "The form lists no attachments. Whether a letter of guarantee is needed, and what goes with it, depends on the status and procedure; check the per-procedure document list in the Visable search."
       },
       "notes": [
         {
@@ -2964,8 +3087,8 @@
         "en": "Within 15 days of moving in (per the Visable stay guidance)."
       },
       "where": {
-        "ko": "서식 기재: 시·군·구 또는 읍·면·동의 장 (주민센터 등). 출입국·외국인관서에서도 신고할 수 있어요.",
-        "en": "As printed: the head of the Si/Gun/Gu or Eup/Myeon/Dong (community centre). Immigration offices also accept it."
+        "ko": "서식 기재: 시·군·구 또는 읍·면·동의 장. Visable 체류 안내: 새 체류지 관할 출입국·외국인관서에도 신고할 수 있어요.",
+        "en": "As printed: the head of the Si/Gun/Gu or Eup/Myeon/Dong. Per the Visable stay guidance, the immigration office for the new address also accepts the report."
       },
       "attachments": {
         "ko": "서식 기재: 주민등록등본(주민등록표에 기록된 외국인), 매매·임대차계약서, 기숙사 입주확인서, 숙소제공확인서, 주거확인서 등, 그 밖에 그 주소에 사는 것을 확인할 수 있는 서류(고시원 납입영수증 등).",
@@ -4311,8 +4434,8 @@
         "en": "Filled in and signed by the applicant."
       },
       "where": {
-        "ko": "출입국·외국인청(사무소·출장소) 등록센터",
-        "en": "Immigration office (registration centre)"
+        "ko": "출입국·외국인청(사무소·출장소)",
+        "en": "Immigration office (branch office)"
       },
       "attachments": {
         "ko": "서식 기재: 첨부서류 없음, 수수료 없음.",
@@ -4530,20 +4653,20 @@
         "en": "Immigration Rule Annex 61 (rev. 2013-01-01)"
       },
       "summary": {
-        "ko": "이미 받은 재입국허가의 유효기간을 늘려 달라고 신청하는 서식이에요. 보통 해외에 있을 때 재외공관을 통해 신청해요.",
-        "en": "Ask to extend the validity of a re-entry permit you already hold; usually filed from abroad through a Korean mission."
+        "ko": "재입국허가를 받고 출국했지만 질병이나 그 밖의 부득이한 사유로 허가받은 기간 안에 돌아올 수 없을 때, 그 기간이 끝나기 전에 연장허가를 신청하는 서식이에요(출입국관리법 제30조제3항).",
+        "en": "Use this when, after leaving with a re-entry permit, illness or another unavoidable reason keeps you from returning within the permitted period: apply for an extension before that period ends (Immigration Act Article 30(3))."
       },
       "who": {
         "ko": "신청인 본인이 작성하고 서명해요. 동반자가 있으면 표에 적어요.",
         "en": "Filled in and signed by the applicant; list dependents in the table."
       },
       "where": {
-        "ko": "재외공관 또는 출입국·외국인관서(서식에 제출처가 인쇄되어 있지 않아요 — 관서 확인).",
-        "en": "A Korean mission abroad or an immigration office (the form prints no addressee — confirm locally)."
+        "ko": "서식에 제출처가 적혀 있지 않아요. 출입국관리법 제30조제4항은 이 연장허가 권한을 재외공관의 장에게 위임할 수 있게 해요. 제출 전 가까운 재외공관이나 1345에 확인하세요.",
+        "en": "The form prints no addressee. Immigration Act Article 30(4) allows this authority to be delegated to the head of a Korean diplomatic mission; confirm with the nearest mission or 1345 before filing."
       },
       "attachments": {
-        "ko": "서식에 첨부서류 목록이 없어요. 여권·재입국허가 내역을 준비하고 관서 안내를 확인하세요.",
-        "en": "The form lists no attachments; have your passport and permit details ready and confirm with the office."
+        "ko": "서식에 첨부서류 목록이 없어요. 서식을 채우려면 여권과 재입국허가 내역(허가번호·허가일·유효기간)이 필요해요.",
+        "en": "The form lists no attachments. To fill it in you need your passport and the re-entry permit details (number, date, expiry)."
       },
       "notes": [
         {
@@ -5117,6 +5240,10 @@
           "ko": "재입국허가기간연장허가신청서",
           "en": "reentry-permit-extension"
         }
+      },
+      "when": {
+        "ko": "허가받은 재입국 기간이 끝나기 전 (출입국관리법 제30조제3항).",
+        "en": "Before the permitted re-entry period ends (Immigration Act Article 30(3))."
       }
     },
     "F13": {
@@ -6988,8 +7115,8 @@
         "en": "Filled in and signed by the applicant."
       },
       "where": {
-        "ko": "사증 신청 서류와 함께 재외공관 또는 출입국·외국인관서에 제출해요.",
-        "en": "Submitted with the visa application to a Korean mission or an immigration office."
+        "ko": "서식 기재: ○○출입국·외국인청(사무소·출장소)장 앞. 사증 또는 사증발급인정서 신청 서류와 함께 내요.",
+        "en": "As printed: addressed to the chief of the immigration office (branch). Submitted with the visa or visa-issuance-confirmation application."
       },
       "attachments": {
         "ko": "서식 뒷면 유의사항: 입국 후 90일 이내 외국인등록 시 정부 지정 병원의 건강진단서를 제출해야 해요.",

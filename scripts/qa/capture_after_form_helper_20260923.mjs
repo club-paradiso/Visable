@@ -7,8 +7,11 @@ const BASE = process.env.BASE || 'http://127.0.0.1:4173';
 const browser = await chromium.launch({ executablePath: process.env.PARADISO_PW_EXECUTABLE || '/opt/pw-browsers/chromium', headless: true, args: ['--no-sandbox'] });
 const UA = 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1';
 async function ctxFor(vp, lang) {
-  const ctx = await browser.newContext({ viewport: { width: vp.w, height: vp.h }, isMobile: vp.mobile, hasTouch: vp.mobile, userAgent: vp.mobile ? UA : undefined, locale: lang === 'ar' ? 'ar' : 'ko-KR' });
+  // reduced motion: screens fade in over 180 ms; a capture taken mid-fade looks washed out
+  const ctx = await browser.newContext({ viewport: { width: vp.w, height: vp.h }, isMobile: vp.mobile, hasTouch: vp.mobile, userAgent: vp.mobile ? UA : undefined, locale: lang === 'ar' ? 'ar' : 'ko-KR', reducedMotion: 'reduce' });
   const page = await ctx.newPage();
+  const shot = page.screenshot.bind(page);
+  page.screenshot = async (opts) => { await page.evaluate(() => Promise.all(document.getAnimations().map((a) => a.finished.catch(() => null)))); return shot(opts); };
   await page.goto(BASE + '/form-helper.html' + (lang ? '?lang=' + lang : ''), { waitUntil: 'domcontentloaded' });
   await page.waitForSelector('body.fh-ready', { timeout: 20000 }); await page.waitForTimeout(500);
   return { ctx, page };

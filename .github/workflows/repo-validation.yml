@@ -32,6 +32,9 @@ jobs:
           python3 -m pip install --upgrade pip
           python3 -m pip install -r backend/requirements-dev.txt
 
+      - name: Install the PDF QA dependency (Form Helper export verification + annex page map)
+        run: python3 -m pip install pymupdf==1.28.2
+
       - name: Run repository validation
         run: bash scripts/check_repo.sh
 

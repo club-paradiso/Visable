@@ -28,7 +28,7 @@ test.describe('Form Helper 2.0', () => {
     await expect(first).toHaveAttribute('data-form', 'F08');
     await page.fill('#fhSearch', '통합신청서');
     await expect(page.locator('#fhResults .fh-result').first()).toHaveAttribute('data-form', 'F01');
-    await page.fill('#fhSearch', '난민');
+    await page.fill('#fhSearch', '난민인정');
     const excluded = page.locator('#fhResults .fh-result-static').first();
     await expect(excluded).toContainText('이 서류는 Visable 자동작성 대상이 아니에요');
     await expect(excluded.locator('.fh-chip')).toContainText('난민');
@@ -77,8 +77,7 @@ test.describe('Form Helper 2.0', () => {
     await expect(page.locator('#fhFullPreview canvas')).toHaveCount(1);
     const opsBefore = await page.evaluate(() => JSON.stringify(VisableFormHelper.state.ops));
     const [download] = await Promise.all([page.waitForEvent('download'), page.click('#fhExport')]);
-    // headless Chromium reports blob downloads with a non-ASCII `download` attribute as "download"; the app-side name is asserted below
-    expect(['NGUYEN VAN ANH_체류지변경신고서.pdf', 'download']).toContain(download.suggestedFilename());
+    expect(download.suggestedFilename()).toBe('NGUYEN VAN ANH_체류지변경신고서.pdf');
     await expect(page.locator('#fhExportStatus')).toContainText('PDF를 만들었어요');
     const last = await page.evaluate(() => VisableFormHelper.lastExport);
     expect(last.filename).toBe('NGUYEN VAN ANH_체류지변경신고서.pdf');
@@ -108,6 +107,8 @@ test.describe('Form Helper 2.0', () => {
     await page.fill('#f_passport_no', 'P1234567'); await page.fill('#f_passport_expiry', '2030-01-01');
     await primaryNext(page).click();
     await page.fill('#f_korean_address', '서울특별시 강남구 테헤란로 152');
+    await primaryNext(page).click(); // school status: adults keep "not applicable" (the row stays blank)
+    await expect(page.locator('input[name="f_school_level"][value="na"]')).toBeChecked();
     await primaryNext(page).click(); // sign (extension has no extra step)
     await primaryNext(page).click(); // review
     await expect(page.locator('#fhReview .fh-issues-fit')).toContainText('인쇄 확인');
@@ -119,16 +120,23 @@ test.describe('Form Helper 2.0', () => {
     await expect(page.locator('#fhReview h1')).toContainText('빠진 곳과 확인할 점');
   });
 
-  test('edition switch keeps the data and changes the template; Chinese edition drops the refund cell honestly', async ({ page }) => {
+  test('edition switch keeps the data and changes the template; the Chinese edition also prints the school and refund-account rows', async ({ page }) => {
     await boot(page, '?form=F01&type=foreign_registration');
     await page.click('#fhStart');
     await primaryNext(page).click();
     await page.fill('#f_surname', 'TRAN'); await page.fill('#f_given', 'THI MAI');
-    await page.evaluate(() => VisableFormHelper.go('edit', { stepIndex: VisableFormHelper.engine.visibleSteps(VisableFormHelper.data.defs.forms.F01, VisableFormHelper.state.values.F01).length - 1 }));
+    const stepIndex = (id) => page.evaluate((sid) => VisableFormHelper.engine.visibleSteps(VisableFormHelper.data.defs.forms.F01, VisableFormHelper.state.values.F01).map((st) => st.id).indexOf(sid), id);
+    await page.evaluate((i) => VisableFormHelper.go('edit', { stepIndex: i }), await stepIndex('school'));
+    await page.click('label[for="f_school_level_2"]'); // 초등학교
+    await page.fill('#f_school_name', '대림초등학교');
+    await page.evaluate((i) => VisableFormHelper.go('edit', { stepIndex: i }), await stepIndex('extra'));
+    await page.fill('#f_refund_account', '110-123-456789');
+    await page.evaluate((i) => VisableFormHelper.go('edit', { stepIndex: i }), await stepIndex('sign'));
     await page.click('label[for="f_edition_1"]'); // F03 중문 병기
     await expect(page.locator('#fhEdit figcaption').first()).toContainText('F03');
-    const surname = await page.evaluate(() => VisableFormHelper.state.values.F01.surname);
-    expect(surname).toBe('TRAN');
+    const printed = await page.evaluate(() => [...new Set(VisableFormHelper.state.ops.map((o) => o.key))]);
+    expect(printed).toEqual(expect.arrayContaining(['surname', 'given', 'school_elem', 'school_name', 'refund_account']));
+    expect(await page.evaluate(() => VisableFormHelper.state.values.F01.surname)).toBe('TRAN');
     await page.click('label[for="f_edition_0"]');
     await expect(page.locator('#fhEdit figcaption').first()).toContainText('F01');
   });
@@ -159,6 +167,41 @@ test.describe('Form Helper 2.0', () => {
     expect(overflow).toBeLessThanOrEqual(1);
     await page.click('.fh-card[data-form="F08"]');
     await expect(page.locator('#fhStart')).toBeVisible();
+  });
+
+  test('reduced motion: screen transitions are switched off', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await boot(page);
+    const secs = await page.evaluate(() => parseFloat(getComputedStyle(document.querySelector('#fhHome')).animationDuration));
+    expect(secs).toBeLessThan(0.001);
+    await page.click('.fh-card[data-form="F08"]');
+    expect(await page.evaluate(() => parseFloat(getComputedStyle(document.querySelector('#fhExplain')).animationDuration))).toBeLessThan(0.001);
+  });
+
+  test('contrast: primary actions and the current step stay readable in the light and dark themes', async ({ page }) => {
+    await boot(page, '?form=F08');
+    // WCAG contrast of the first visible element matching the selector (null when none is visible)
+    const ratio = (sel) => page.evaluate((q) => {
+      const el = [...document.querySelectorAll(q)].find((e) => e.getClientRects().length && getComputedStyle(e).visibility !== 'hidden');
+      if (!el) return null;
+      const cs = getComputedStyle(el);
+      const rgb = (v) => v.match(/[\d.]+/g).slice(0, 3).map(Number);
+      const lum = (c) => { const f = (x) => { x /= 255; return x <= 0.03928 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4); }; return 0.2126 * f(c[0]) + 0.7152 * f(c[1]) + 0.0722 * f(c[2]); };
+      const a = lum(rgb(cs.color)), b = lum(rgb(cs.backgroundColor));
+      return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+    }, sel);
+    for (const theme of ['light', 'dark']) {
+      if (theme === 'dark') { await page.click('#fhTheme'); await expect(page.locator('body')).toHaveAttribute('data-theme', 'dark'); }
+      expect(await ratio('#fhStart'), `start button contrast (${theme})`).toBeGreaterThanOrEqual(4.5);
+    }
+    await page.click('#fhStart');
+    await expect(page.locator('#f_name')).toBeVisible();
+    expect(await ratio('#fhNext, #fhMobileBar .fh-btn-primary'), 'next button contrast (dark)').toBeGreaterThanOrEqual(4.5);
+    const rail = await ratio('.fh-rail-current .fh-rail-n');
+    if (rail !== null) expect(rail, 'current step number contrast (dark)').toBeGreaterThanOrEqual(4.5);
+    await page.click('#fhTheme');
+    await expect(page.locator('body')).toHaveAttribute('data-theme', 'light');
+    expect(await ratio('#fhNext, #fhMobileBar .fh-btn-primary'), 'next button contrast (light)').toBeGreaterThanOrEqual(4.5);
   });
 
   test('keyboard: the whole flow is reachable without a mouse and dialogs return focus', async ({ page }) => {
