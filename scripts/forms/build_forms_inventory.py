@@ -301,6 +301,24 @@ def main():
     json_text = json.dumps(out, ensure_ascii=False, indent=1) + '\n'
 
     # ---- markdown report ----
+    def total_breakdown(rows):
+        """Label for the total, computed from the rows so it cannot drift from the count."""
+        named = [('immigration_rule_1106', '출입국관리법 시행규칙 annexes'), ('overseas_koreans_rule', '재외동포법 시행규칙 annexes'),
+                 ('hikorea_forms', 'HiKorea forms')]
+        def is_bucket(r):
+            return str(r.get('number', '')).startswith('(')
+        parts = []
+        for src, label in named:
+            n = sum(1 for r in rows if r['source'] == src and not is_bucket(r))
+            if n: parts.append(f"{label} {n}")
+        policy = sum(1 for r in rows if r['source'] == 'refugee_act_rule')
+        if policy: parts.append(f"난민법 시행규칙 (policy row) {policy}")
+        known = {src for src, _ in named} | {'refugee_act_rule'}
+        other = sum(1 for r in rows if r['source'] not in known)
+        if other: parts.append(f"other {other}")
+        unknown = sum(1 for r in rows if is_bucket(r) and r['source'] in known - {'refugee_act_rule'})
+        if unknown: parts.append(f"{unknown} unknown buckets")
+        return ' + '.join(parts)
     app = [it for it in inventory if it['class'] == 'applicant_facing']
     def row(it):
         ids = ', '.join(it.get('visable_forms') or []) or '—'
@@ -310,7 +328,7 @@ def main():
           '**Support definition** (a blank PDF being downloadable is not support): official current source identified · correct PDF template · fields mapped · data entry, editing and preview work · text lands in the right cells · PDF export works · critical checkbox / date fields work · mobile workflow works · QA passes. A form is SUPPORTED only when its export QA passed (`support.qa = PASS`: the Node export of every sample is verified with PyMuPDF against the preview ops, **and** a static geometry audit proves that every overlay of the template — filled by a sample or not — has a bounded width and stays inside its table cell, clear of rules and printed labels) **and** its template edition was compared with the current official text (`template.verification = VERIFIED_CURRENT`: the header revision tag and the row / cell structure of the current annex, retrieved from law.go.kr through its Open API, match the template). Every other mapped form is **PARTIAL**.', '',
           '## Totals', '',
           '| Metric | Count |', '| --- | ---: |',
-          f"| TOTAL OFFICIAL FORMS INVENTORIED (rule annexes {len(rule)} + 재외동포 2 + HiKorea 1 + 2 unknown buckets) | {len(inventory)} |",
+          f"| TOTAL OFFICIAL FORMS INVENTORIED ({total_breakdown(inventory)}) | {len(inventory)} |",
           f"| Applicant-facing (in scope for a Form Helper) | {len(app)} |",
           f"| SUPPORTED BEFORE (2026-09-22) | {len(before)} ({', '.join(before)}) |",
           f"| SUPPORTED NOW | {len(supported_forms)} ({', '.join(supported_forms) or '—'}) |",
