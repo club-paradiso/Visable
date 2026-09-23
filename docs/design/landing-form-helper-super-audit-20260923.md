@@ -553,6 +553,15 @@ the test environment, no assertion weakened, no timeout raised):
   page map is pinned (sha256 of the rule PDF) and the guard re-runs the check with PyMuPDF
   blocked; the CI job installs `pymupdf==1.28.2` for the export and geometry checks.
 
+### 11.7b Release visual sign-off
+
+`docs/design/VISUAL_SIGNOFF_20260923.md`: every SUPPORTED template filled and rasterized, long-text
+and print-geometry checks, 125 UI captures (9 viewports, light / dark, 7 languages) and a 14-language
+text-overflow scan. Defects found and fixed there: F10 / F15 values butting against their labels,
+F07 address cells off the value column, CJK headlines running off-screen (keep-all), French cards and a
+German label overflowing, untranslated journey tiles in 11 languages, emoji and a double frame in the
+journey panel, dark-theme warnings and radios, and the export-warning button hierarchy.
+
 ### 11.8 Known limitations (honest)
 
 * Edition currency: the 14 statute templates were compared with the annexes in force on

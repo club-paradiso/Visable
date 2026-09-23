@@ -114,7 +114,13 @@ PARADISO_PW_EXECUTABLE=/path/to/chromium npx playwright test tests/e2e/landing-b
   edition switches (F01 ↔ F03 중문 병기) keep the data; EN chrome and Arabic RTL work with
   the Korean official field names still visible; the flow is keyboard reachable;
 - primary actions and the current step number keep a WCAG contrast of at least 4.5 : 1 in the
-  light and the dark theme, and screen transitions are off under `prefers-reduced-motion`.
+  light and the dark theme, and screen transitions are off under `prefers-reduced-motion`;
+  dark-theme field warnings keep AA contrast and native radios follow the theme; long French
+  chips and subtitles stay inside their cards.
+
+`landing-boot.spec.mjs` also asserts localized layout: the Japanese and Chinese headline, journey
+leads and tool text wrap inside the viewport (keep-all is Korean-only), and the mounted journey
+pickers carry no Korean in German, Japanese or Arabic.
 
 The offline twin is `scripts/check_form_helper.mjs` (in `check_repo.sh`): inventory /
 coverage freshness, exclusions, template sha256 / page / size drift, schema ↔ definition

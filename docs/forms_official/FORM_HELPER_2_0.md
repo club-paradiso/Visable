@@ -43,6 +43,8 @@ times the glyph band of each line (0.80 em above to 0.14 em below the baseline).
 * is cut by a horizontal rule,
 * overlaps printed template text (labels, units, 년 / 월 / 일, brackets), unless the text sits
   under the overlay's own `wbox`,
+* sits glued to a label (less than 1.5 pt under it, or a label tail running into its start —
+  inline slots after ':' or '(' are exempt),
 * runs past the end of its table row (several templates have no outer side border: the row ends
   where its top and bottom rules end),
 * or has no `maxWidth` at all.
