@@ -52,7 +52,14 @@
       docsCount: '필수 {n}개', docsCountCond: '조건부 {n}개',
       grpRequired: '필수서류', grpConditional: '상황에 따라 필요한 서류', grpApplicable: '해당자만 제출', grpAlternative: '아래 서류 중 하나', grpOfficer: '심사 중 추가 요청될 수 있음', grpAdmin: '행정정보 공동이용 동의 시 제출 생략 가능', grpPrev: '이미 제출한 경우 생략될 수 있음', grpSource: '원문에 언급되어 있으나 구조화되지 않음', grpNA: '이번에는 해당 없음', grpLegacy: '기존 소지자만',
       oneOf: '다음 중 하나', role: '준비하는 사람', where: '발급처', validity: '유효기간', apostille: '아포스티유·영사확인 필요', translation: '번역 필요', applies: '적용 조건', notApplies: '생략 조건', notes: '참고', source: '근거', page: '쪽',
-      formTitle: '제출 형태', formCopies: '사본 {n}부', formReturned: '돌려받음', formKept: '반환되지 않음', formUnspecified: '원문에 원본·사본 표기가 없어요. 원본을 지참하면 안전해요(관서 확인).',
+      formTitle: '제출 형태', formCopies: '사본 {n}부', formReturned: '돌려받음', formKept: '반환되지 않음',
+      formOriginalShown: '원본 제시 · 돌려받음', formOriginalKept: '원본 제출 · 반환되지 않음',
+      formReturnUnknown: '원본을 제시만 하는지 제출하는지는 원문에 적혀 있지 않아요. 계속 필요한 원본이면 돌려받는지 창구에서 확인하세요.',
+      prepBring: '원본 지참 권장', prepKeep: '원본 지참 · 사본 준비',
+      prepNoteBring: '공식 안내에 제출 형태가 따로 적혀 있지 않아요. 원본을 지참하고, 필요한 경우를 대비해 사본도 준비할 수 있어요.',
+      prepNoteKeep: '공식 안내에 제출 형태가 따로 적혀 있지 않아요. 원본은 확인용으로 지참하고, 제출이 필요할 때를 대비해 사본을 준비해 두세요.',
+      prepBasis: '준비 권장 · 공식 표기 없음',
+      prepSection: '제출 형태는 공식 안내에 원본·사본이 적힌 서류만 그대로 표시해요. 표기가 없는 서류의 「원본 지참」은 준비를 돕는 권장 사항이고, 여권·계약서처럼 계속 필요한 원본은 사본을 함께 준비하는 편이 안전해요.',
       forms: { ORIGINAL_ONLY: '원본', COPY_ONLY: '사본', ORIGINAL_AND_COPY: '원본 + 사본', ORIGINAL_PRESENT_COPY_SUBMIT: '원본 지참 · 사본 제출', CERTIFIED_COPY: '원본대조필 사본', ONE_OF_ORIGINAL_OR_COPY: '원본 또는 사본', ELECTRONIC_DOCUMENT_ACCEPTED: '전자문서 가능', VARIES_BY_ITEM: '항목별로 다름', SOURCE_DOES_NOT_SPECIFY: '원본·사본 표기 없음', NOT_APPLICABLE: '' },
       formBasis: { SOURCE_PHRASE: '원문 표기', REGULATION: '법령 규정', NONE: '' },
       roles: { applicant: '신청인', inviter: '초청인', employer: '고용주', educational_institution: '학교·연수기관', korean_spouse: '한국인 배우자', principal_holder: '주체류자', local_government: '지방자치단체', sponsor: '신원보증인', business_entity: '사업체', ship_owner: '선주·선박회사', agency: '대행기관', medical_institution: '의료기관·유치기관', other_third_party: '제3자' },
@@ -106,7 +113,14 @@
       docsCount: '{n} required', docsCountCond: '{n} conditional',
       grpRequired: 'Required', grpConditional: 'Depending on your situation', grpApplicable: 'Only if it applies to you', grpAlternative: 'One of the following', grpOfficer: 'May be requested during review', grpAdmin: 'Can be skipped with consent to administrative data sharing', grpPrev: 'May be skipped if already submitted', grpSource: 'Mentioned in the source but not structured', grpNA: 'Not needed in your case', grpLegacy: 'Existing holders only',
       oneOf: 'One of', role: 'Prepared by', where: 'Where to get it', validity: 'Validity', apostille: 'Apostille or consular confirmation required', translation: 'Translation required', applies: 'Applies when', notApplies: 'May be omitted when', notes: 'Notes', source: 'Source', page: 'p.',
-      formTitle: 'How to submit', formCopies: '{n} copy', formReturned: 'returned to you', formKept: 'not returned', formUnspecified: 'The source does not say original or copy. Bringing the original is safest (check with the office).',
+      formTitle: 'How to submit', formCopies: '{n} copy', formReturned: 'returned to you', formKept: 'not returned',
+      formOriginalShown: 'Original shown · returned to you', formOriginalKept: 'Original submitted · not returned',
+      formReturnUnknown: 'The source does not say whether the original is only shown or handed in. If you still need it, ask at the counter whether it is returned.',
+      prepBring: 'Bring the original', prepKeep: 'Bring the original · prepare a copy',
+      prepNoteBring: 'The official guidance does not state a submission form. Bring the original; you can also prepare a copy in case it is asked for.',
+      prepNoteKeep: 'The official guidance does not state a submission form. Bring the original to be checked and keep a copy ready in case one has to be handed in.',
+      prepBasis: 'preparation advice · not stated in the source',
+      prepSection: 'A submission form is shown exactly as written only where the official guidance says original or copy. “Bring the original” on the other rows is preparation advice, and for originals you keep needing — a passport, a contract — it is safer to prepare a copy as well.',
       forms: { ORIGINAL_ONLY: 'Original', COPY_ONLY: 'Copy', ORIGINAL_AND_COPY: 'Original + copy', ORIGINAL_PRESENT_COPY_SUBMIT: 'Show original · submit copy', CERTIFIED_COPY: 'Certified copy', ONE_OF_ORIGINAL_OR_COPY: 'Original or copy', ELECTRONIC_DOCUMENT_ACCEPTED: 'Electronic document accepted', VARIES_BY_ITEM: 'Varies by item', SOURCE_DOES_NOT_SPECIFY: 'Not specified in the source', NOT_APPLICABLE: '' },
       formBasis: { SOURCE_PHRASE: 'source wording', REGULATION: 'regulation', NONE: '' },
       roles: { applicant: 'Applicant', inviter: 'Inviter', employer: 'Employer', educational_institution: 'School / institution', korean_spouse: 'Korean spouse', principal_holder: 'Principal holder', local_government: 'Local government', sponsor: 'Guarantor', business_entity: 'Business', ship_owner: 'Ship owner', agency: 'Agency', medical_institution: 'Hospital / facilitator', other_third_party: 'Third party' },
@@ -683,8 +697,50 @@
     var label = tr(lang, 'forms')[f] || '';
     if (f === 'ORIGINAL_AND_COPY' && d.copy_count) label = (lang === 'en' ? 'Original + ' : '원본 + ') + tr(lang, 'formCopies', { n: d.copy_count });
     else if (f === 'COPY_ONLY' && d.copy_count) label = tr(lang, 'formCopies', { n: d.copy_count });
-    if (d.original_returned === true) label += ' · ' + tr(lang, 'formReturned');
+    // "원본" alone never says whether it is only shown or handed in. Only a source-backed
+    // return statement distinguishes presentation from surrender; otherwise the label stays bare.
+    if (f === 'ORIGINAL_ONLY' && d.original_returned === true) label = tr(lang, 'formOriginalShown');
+    else if (f === 'ORIGINAL_ONLY' && d.original_returned === false) label = tr(lang, 'formOriginalKept');
+    else if (d.original_returned === true) label += ' · ' + tr(lang, 'formReturned');
     return label;
+  }
+
+  /* Physical-form preparation policy.
+   * Two different questions are kept apart: whether a document is required
+   * (requirement_level) and what physical form to prepare (this layer).
+   *   OFFICIAL_EXPLICIT          the rule's own source phrase / regulation states original or copy;
+   *   PREPARATION_RECOMMENDATION the source is silent — a preparation default, never a rule:
+   *                                BRING_ORIGINAL   bring the original, a copy may be prepared;
+   *                                KEEP_ORIGINAL    possession-sensitive originals (passport,
+   *                                                 ID cards, contracts, diplomas, licences):
+   *                                                 bring the original to be checked, prepare a
+   *                                                 copy for submission — never "submit original";
+   *   NOT_APPLICABLE             the item is a form you fill in, a fee or a photo.
+   * Source beats heuristic: an explicit form is shown as written even for a contract. */
+  var POSSESSION_REF = /passport|^arc|_id$|_id_|contract|diploma|degree|licen[cs]e|ip_proof|patent|biz_reg|business_reg|registration_cert|corp_reg/i;
+  var POSSESSION_NAME = /여권|등록증|신분증|계약서|약정서|학위|졸업증|자격증|면허|특허|여행증명서|거소신고증|영주증|고유번호증|허가증/;
+  var FORM_REF = /^app_form|_form_\d+|_form$|^form_/;
+  var FORM_NAME = /^(?:재외동포\s*)?(?:통합)?신청서|^신고서|\(별지 제\d+호/;
+  function docClass(d) {
+    var ref = String(d.ref || ''), name = String(d.name_ko || '');
+    if (ref === 'fee' || /수수료/.test(name)) return 'fee';
+    if (/photo/.test(ref) || /^사진/.test(name)) return 'photo';
+    if (FORM_REF.test(ref) || FORM_NAME.test(name)) return 'form';
+    if (POSSESSION_REF.test(ref) || POSSESSION_NAME.test(name)) return 'possession';
+    return 'general';
+  }
+  function preparation(d) {
+    var f = d.submission_form || 'SOURCE_DOES_NOT_SPECIFY';
+    var cls = docClass(d);
+    if (f !== 'SOURCE_DOES_NOT_SPECIFY' && f !== 'NOT_APPLICABLE') return { kind: 'OFFICIAL_EXPLICIT', form: f, basis: d.form_basis || 'SOURCE_PHRASE', docClass: cls, returnKnown: d.original_returned === true || d.original_returned === false };
+    if (cls === 'form' || cls === 'fee' || cls === 'photo' || f === 'NOT_APPLICABLE') return { kind: 'NOT_APPLICABLE', form: 'NOT_APPLICABLE', docClass: cls };
+    return { kind: 'PREPARATION_RECOMMENDATION', form: 'SOURCE_DOES_NOT_SPECIFY', policy: cls === 'possession' ? 'KEEP_ORIGINAL' : 'BRING_ORIGINAL', docClass: cls };
+  }
+  function preparationLabel(lang, d) {
+    var p = preparation(d);
+    if (p.kind === 'OFFICIAL_EXPLICIT') return formLabel(lang, d) || tr(lang, 'forms')[p.form] || '';
+    if (p.kind === 'PREPARATION_RECOMMENDATION') return tr(lang, p.policy === 'KEEP_ORIGINAL' ? 'prepKeep' : 'prepBring');
+    return '';
   }
 
   function renderDocItem(d, lang, bundle, entry) {
@@ -692,17 +748,21 @@
     var where = d.where_to_obtain ? (tr(lang, 'where_labels')[d.where_to_obtain] || d.where_to_obtain) : '';
     var name = lang === 'en' ? d.name_en : d.name_ko;
     var sub = lang === 'en' && d.name_ko ? '<span class="sg-doc-ko" lang="ko">' + esc(d.name_ko) + '</span>' : '';
-    var form = formLabel(lang, d);
+    var prep = preparation(d);
+    var form = preparationLabel(lang, d);
     var cond = d.applies_when_ko ? '<div class="sg-doc-cond">' + esc(L(lang, d, 'applies_when')) + '</div>' : '';
     var alts = d.alternatives && d.alternatives.length ? '<div class="sg-doc-alts"><span>' + esc(tr(lang, 'oneOf')) + '</span><ul>' + d.alternatives.map(function (a) { return '<li>' + esc(LL(lang, a)) + '</li>'; }).join('') + '</ul></div>' : '';
     var details = [];
-    if (d.submission_form && d.submission_form !== 'NOT_APPLICABLE') {
-      var ftxt = d.submission_form === 'SOURCE_DOES_NOT_SPECIFY' ? tr(lang, 'formUnspecified') : (tr(lang, 'forms')[d.submission_form] || d.submission_form);
-      if (d.copy_count) ftxt += ' · ' + tr(lang, 'formCopies', { n: d.copy_count });
-      if (d.original_returned === true) ftxt += ' · ' + tr(lang, 'formReturned'); else if (d.original_returned === false) ftxt += ' · ' + tr(lang, 'formKept');
+    if (prep.kind === 'OFFICIAL_EXPLICIT') {
+      var ftxt = form || tr(lang, 'forms')[d.submission_form] || d.submission_form;
+      if (d.copy_count && d.submission_form !== 'ORIGINAL_AND_COPY' && d.submission_form !== 'COPY_ONLY') ftxt += ' · ' + tr(lang, 'formCopies', { n: d.copy_count });
       if (d.form_note_ko) ftxt += ' — ' + L(lang, d, 'form_note');
       var basis = tr(lang, 'formBasis')[d.form_basis] || '';
-      details.push([tr(lang, 'formTitle'), ftxt + (basis && d.submission_form !== 'SOURCE_DOES_NOT_SPECIFY' ? ' (' + basis + ')' : '')]);
+      if (basis) ftxt += ' (' + basis + ')';
+      if (d.submission_form === 'ORIGINAL_ONLY' && !prep.returnKnown && prep.docClass === 'possession') ftxt += ' — ' + tr(lang, 'formReturnUnknown');
+      details.push([tr(lang, 'formTitle'), ftxt]);
+    } else if (prep.kind === 'PREPARATION_RECOMMENDATION') {
+      details.push([tr(lang, 'formTitle'), form + ' — ' + tr(lang, prep.policy === 'KEEP_ORIGINAL' ? 'prepNoteKeep' : 'prepNoteBring') + ' (' + tr(lang, 'prepBasis') + ')']);
     }
     if (role && d.applicant_role !== 'applicant') details.push([tr(lang, 'role'), role]);
     if (where) details.push([tr(lang, 'where'), where]);
@@ -716,7 +776,7 @@
     else if (d.source && d.source.pdf_page && entry && entry.source && bundle.sources[entry.source.manual]) { src = [tr(lang, 'source'), (lang === 'en' ? bundle.sources[entry.source.manual].title_en : bundle.sources[entry.source.manual].title_ko) + ' · ' + d.source.pdf_page + tr(lang, 'page') + (d.source.law && bundle.law_sources[d.source.law] ? ' · ' + bundle.law_sources[d.source.law].title_ko + ' ' + bundle.law_sources[d.source.law].article : '')]; }
     if (src) details.push(src);
     var body = details.length ? '<dl class="sg-doc-meta">' + details.map(function (p) { return '<div><dt>' + esc(p[0]) + '</dt><dd>' + esc(p[1]) + '</dd></div>'; }).join('') + '</dl>' : '';
-    var inner = '<span class="sg-doc-name">' + esc(name) + '</span>' + sub + (form ? '<span class="sg-doc-form">' + esc(form) + '</span>' : '') + (d.adminNote ? '<span class="sg-doc-tag">' + esc(tr(lang, 'grpAdmin')) + '</span>' : '');
+    var inner = '<span class="sg-doc-name">' + esc(name) + '</span>' + sub + (form ? '<span class="sg-doc-form' + (prep.kind === 'PREPARATION_RECOMMENDATION' ? ' sg-doc-form-rec' : '') + '" data-sg-form-kind="' + prep.kind + '">' + esc(form) + '</span>' : '') + (d.adminNote ? '<span class="sg-doc-tag">' + esc(tr(lang, 'grpAdmin')) + '</span>' : '');
     if (!body && !cond && !alts) return '<li class="sg-doc"><div class="sg-doc-row">' + inner + '</div></li>';
     return '<li class="sg-doc"><details class="sg-doc-details"><summary class="sg-doc-row">' + inner + '</summary>' + cond + alts + body + '</details></li>';
   }
@@ -729,9 +789,12 @@
     var counts = model.docCounts.required ? '<span class="sg-docs-count">' + esc(tr(lang, 'docsCount', { n: model.docCounts.required })) + (model.docCounts.conditional ? ' · ' + esc(tr(lang, 'docsCountCond', { n: model.docCounts.conditional })) : '') + '</span>' : '';
     var html = '<section class="sg-docs" aria-labelledby="sgDocsTitle"><div class="sg-section-head"><h3 id="sgDocsTitle">' + esc(title) + '</h3>' + counts + '</div>';
     if (!model.documentGroups.length) { html += '<p class="sg-muted">' + esc(tr(lang, entry.completeness === 'SOURCE_ONLY' ? 'docsSourceOnly' : 'docsClarify')) + '</p></section>'; return html; }
+    var recommended = false;
     model.documentGroups.forEach(function (g) {
+      g.items.forEach(function (d) { if (preparation(d).kind === 'PREPARATION_RECOMMENDATION') recommended = true; });
       html += '<div class="sg-doc-group sg-doc-group-' + g.key + '"><h4>' + esc(tr(lang, g.labelKey)) + '</h4><ul class="sg-doc-list">' + g.items.map(function (d) { return renderDocItem(d, lang, bundle, entry); }).join('') + '</ul></div>';
     });
+    if (recommended) html += '<p class="sg-doc-prep-note">' + esc(tr(lang, 'prepSection')) + '</p>';
     if (!full) html += '<p class="sg-muted">' + esc(tr(lang, 'docsClarify')) + '</p>';
     html += '<p class="sg-officer">' + esc(model.officerNote) + '</p></section>';
     return html;
@@ -1055,7 +1118,7 @@
     return { html: html, model: model };
   }
 
-  var api = { STR: STR, normalizeCode: normalizeCode, interpret: interpret, nextStep: nextStep, compose: compose, renderModel: renderModel, groupDocuments: groupDocuments, applicableOverlays: applicableOverlays, candidateEntries: candidateEntries, feesFor: feesFor, exemptionApplies: exemptionApplies, evidenceFor: evidenceFor, localPracticeFor: localPracticeFor, registryFor: registryFor, commonEntry: commonEntry, formLabel: formLabel, feeSummary: feeSummary, PROCEDURE_ORDER: PROCEDURE_ORDER, esc: esc, parentOf: parentOf, tr: tr, won: won };
+  var api = { STR: STR, normalizeCode: normalizeCode, interpret: interpret, nextStep: nextStep, compose: compose, renderModel: renderModel, groupDocuments: groupDocuments, applicableOverlays: applicableOverlays, candidateEntries: candidateEntries, feesFor: feesFor, exemptionApplies: exemptionApplies, evidenceFor: evidenceFor, localPracticeFor: localPracticeFor, registryFor: registryFor, commonEntry: commonEntry, formLabel: formLabel, preparation: preparation, preparationLabel: preparationLabel, feeSummary: feeSummary, PROCEDURE_ORDER: PROCEDURE_ORDER, esc: esc, parentOf: parentOf, tr: tr, won: won };
   root.VisableStatusGuidance = api;
 
   /* ------------------------------------------------------------------ DOM -- */

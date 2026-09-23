@@ -1,16 +1,31 @@
 (function () {
   'use strict';
   if (typeof document === 'undefined') return;
-  var lang = function () { return document.documentElement.lang === 'en' ? 'en' : 'ko'; };
+
+  /* ------------------------------------------------------------------ copy ---
+   * Bootstrap copy for the civic landing. Korean and English live here so the
+   * static shell in index.html (generated from this builder) and the very first
+   * render never wait for a network fetch. The same strings — and the twelve
+   * other locales — live in data/i18n/<locale>.json under the `civic` object;
+   * t() prefers the loaded pack and falls back to this table.
+   * scripts/check_landing_shell.mjs asserts ko/en here == ko/en packs. */
   var copy = {
     ko: {
       search: '비자·체류 검색', forms: '서류 작성', about: '이용 안내', submit: '검색', preparing: '검색을 준비하고 있습니다.', unavailable: '안내 데이터를 불러오지 못했습니다. 페이지를 새로고침해 주세요.',
       title: '답이 <em>보이는</em> 한국 생활.', sub: '비자 코드나 지금 상황을 검색하세요.',
       placeholder: '예: F-6 체류기간 연장', pre: '입국 전 · 사증 발급', post: '입국 후 · 체류 관리',
       preSub: '사증 종류, 발급 요건, 필요 서류를 확인하세요.', postSub: '체류기간 연장, 체류자격 변경, 신고 절차를 확인하세요.',
-      tools: '자주 찾는 업무', paperwork: '필수 서류 작성', paperworkSub: '신청서·숙소제공확인서 등 필수 서류를 단계별로 작성하세요.',
+      journeyAria: '입국 전과 입국 후, 어디에서 시작할지 고르세요',
+      preKicker: '한국 입국 전', preTitle: '사증 발급', preLead: '한국에 오기 전에 필요한 비자 종류와 발급 절차, 준비 서류를 확인해요.',
+      postKicker: '한국 입국 후', postTitle: '체류 관리', postLead: '체류기간 연장, 자격 변경, 외국인등록, 주소·근무처 신고 절차를 확인해요.',
+      journeyClose: '안내 닫기',
+      tools: '자주 찾는 업무', coreTools: '핵심 도구',
+      paperwork: '필수 서류 작성', paperworkSub: '통합신청서 등 공식 서식을 단계별로 채우고 PDF로 내려받아요.',
+      waymaker: 'Waymaker', waymakerSub: '복잡한 상황을 설명하면 필요한 절차와 근거를 단계별로 정리하는 AI 안내예요.',
+      newHome: 'New Home', newHomeSub: '국적·귀화와 한국 정착 준비를 한곳에서 안내해요.',
       reservation: '방문예약 안내', reservationSub: '하이코리아 방문예약 방법과 준비사항을 확인하세요.',
       manuals: '공식 원문 찾기', manualsSub: '사증발급·외국인체류 공식 안내 원문에서 필요한 구절을 찾아보세요.',
+      officeSub: '내 주소지를 담당하는 출입국·외국인관서를 확인하세요.',
       visa: '사증 안내', stay: '체류 안내', original: '원문 보기', sourceLabel: '체류자격별 매뉴얼',
       language: '언어', languageTitle: '언어 선택', languageSearch: '언어 검색', languageNone: '일치하는 언어가 없어요.',
       disclaimer: 'Visable은 공식 정부 서비스가 아닙니다. 제공 정보는 참고용이며 법적 효력이 없습니다. 최종 판단은 HiKorea·1345·관할 출입국·외국인관서에서 확인하세요.',
@@ -25,16 +40,27 @@
       currentSource: '기준일 사증 2026.09.01 · 체류 2026.09.18', examples: '자주 찾는 질문', quickExtension: '체류기간 연장', quickAddress: '주소 변경', quickArc: '외국인등록증 재발급',
       short: '단기입국 경로', jobs: '직업·산업분류', office: '관할 출입국관서', agencies: '등록 민원대행기관', hospitals: '법무부지정 병원',
       pathways: '생활 경로 8종', reminders: '체류 기한 계산·알림', naturalization: '국적·귀화 안내', enforcement: '출입국 사범처리 예상',
-      pendingInfo: '2026년 9월판 공식 안내 원문은 검색용으로 반영되어 있고, 내용 검토는 별도로 진행 중이에요. 구조화된 안내에는 각 근거의 기준일이 함께 표시됩니다.'
+      pendingInfo: '2026년 9월판 공식 안내 원문은 검색용으로 반영되어 있고, 내용 검토는 별도로 진행 중이에요. 구조화된 안내에는 각 근거의 기준일이 함께 표시됩니다.',
+      bootFailed: '화면을 준비하지 못했어요. 새로고침하면 대부분 해결돼요.', reload: '새로고침',
+      bootLinks: '그래도 안 되면 공식 원문(PDF)과 다른 도구를 바로 열 수 있어요.',
+      noscript: 'JavaScript가 꺼져 있으면 검색과 안내를 사용할 수 없어요. 공식 원문 PDF는 아래 링크에서 바로 열 수 있어요.'
     },
     en: {
       search: 'Visa & stay search', forms: 'Forms', about: 'About', submit: 'Search', preparing: 'Preparing your search…', unavailable: 'Could not load the guides. Please reload the page.',
       title: 'A <em>clearer</em> life in Korea.', sub: 'Search a visa code or describe your situation.',
       placeholder: 'e.g. F-6 extension', pre: 'Before entry · Visa issuance', post: 'After entry · Managing your stay',
       preSub: 'Explore visa types, requirements and documents.', postSub: 'Check extensions, status changes and reporting procedures.',
-      tools: 'Frequently used services', paperwork: 'Prepare documents', paperworkSub: 'Complete application and accommodation forms step by step.',
+      journeyAria: 'Choose where to start: before or after entering Korea',
+      preKicker: 'Before entering Korea', preTitle: 'Visa issuance', preLead: 'The visa types, issuance steps and documents to prepare before you arrive.',
+      postKicker: 'After entering Korea', postTitle: 'Managing your stay', postLead: 'Extensions, status changes, foreigner registration and the address or workplace reports you must file.',
+      journeyClose: 'Close this guide',
+      tools: 'Frequently used services', coreTools: 'Core tools',
+      paperwork: 'Prepare documents', paperworkSub: 'Fill official forms such as the integrated application step by step and download a PDF.',
+      waymaker: 'Waymaker', waymakerSub: 'Describe a complex situation and get the steps and sources laid out in order, with AI assistance.',
+      newHome: 'New Home', newHomeSub: 'Nationality, naturalization and settling in Korea, guided in one place.',
       reservation: 'Visit reservations', reservationSub: 'Find the steps and preparation for a HiKorea appointment.',
       manuals: 'Find official source text', manualsSub: 'Search the official visa and residence guidance for the passage you need.',
+      officeSub: 'Find the immigration office responsible for your address.',
       visa: 'Visa guidance', stay: 'Stay guidance', original: 'Open original', sourceLabel: 'Official basis updated',
       language: 'Language', languageTitle: 'Choose language', languageSearch: 'Search languages', languageNone: 'No matching language.',
       disclaimer: 'Visable is not a government service. Information is for reference and has no legal effect. Confirm with HiKorea, 1345 or the relevant immigration office.',
@@ -49,13 +75,38 @@
       currentSource: 'Basis: visa 2026.09.01 · stay 2026.09.18', examples: 'Popular questions', quickExtension: 'Extend my stay', quickAddress: 'Report address change', quickArc: 'Reissue residence card',
       short: 'Short-stay entry routes', jobs: 'Occupation & industry codes', office: 'Immigration offices', agencies: 'Registered agencies', hospitals: 'Designated hospitals',
       pathways: 'Eight life pathways', reminders: 'Dates & reminders', naturalization: 'Nationality & naturalization', enforcement: 'Immigration enforcement',
-      pendingInfo: 'The September 2026 official guidance is indexed for search; its content review is a separate step. Structured guidance shows the basis date of each source.'
+      pendingInfo: 'The September 2026 official guidance is indexed for search; its content review is a separate step. Structured guidance shows the basis date of each source.',
+      bootFailed: 'The page could not finish loading. Reloading usually fixes it.', reload: 'Reload',
+      bootLinks: 'If it still fails, the official source PDFs and the other tools open directly.',
+      noscript: 'Search and guidance need JavaScript. The official source PDFs open from the links below.'
     }
   };
-  function t(key) { return copy[lang()][key]; }
+
+  /* -------------------------------------------------------------- locale ----
+   * uiLang(): the selected product locale (content code — zh-TW renders zh-CN).
+   * lang(): the bilingual data language (en or ko) used for source titles etc. */
+  function contentLocale(code) { return code === 'zh-TW' ? 'zh-CN' : code; }
+  function uiLang() {
+    if (typeof selectedLocale !== 'undefined' && selectedLocale) return contentLocale(selectedLocale);
+    return contentLocale(document.documentElement.lang || 'ko');
+  }
+  function lang() { return uiLang() === 'en' ? 'en' : 'ko'; }
+  function packFor(loc) {
+    if (typeof UI_TRANSLATIONS === 'undefined' || !UI_TRANSLATIONS) return null;
+    var pack = UI_TRANSLATIONS[loc];
+    return pack && pack.civic && typeof pack.civic === 'object' ? pack.civic : null;
+  }
+  function t(key) {
+    var loc = uiLang();
+    var pack = packFor(loc);
+    if (pack && typeof pack[key] === 'string') return pack[key];
+    if (loc !== 'ko' && loc !== 'en') { var ko = packFor('ko'); if (ko && typeof ko[key] === 'string') return ko[key]; }
+    return (copy[lang()] || copy.ko)[key];
+  }
   function esc(value) { return String(value == null ? '' : value).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function icon(name) { return '<img class="cs-icon" src="assets/icons/civic/' + name + '.svg" alt="" aria-hidden="true">'; }
-  var root = document.createElement('div'); root.id = 'civicLanding';
+  var VISA_PDF = 'docs/source-manuals/2026-09/visa_manual_260901.pdf', STAY_PDF = 'docs/source-manuals/2026-09/stay_manual_260918.pdf';
+  var root = null;
   var catalog, corpus, loadPromise, query = '', domain = '', activeTab = 'all', shown = 3, hits = [], sequence = 0;
   var panel, tabs, dialog, dialogReturn, queuedQuery = '', homeLanguage = '';
 
@@ -74,9 +125,11 @@
     return document.documentElement.lang || 'ko';
   }
   function langSelectable(code) { return typeof isLanguageSelectable === 'function' ? isLanguageSelectable(code) : true; }
-  function langButton(cls) {
-    var cur = langOptions().filter(function (o) { return o.code === currentLangCode(); })[0] || langOptions()[0];
-    return '<button type="button" class="cs-lang ' + (cls || '') + '" data-cs-lang-open aria-haspopup="dialog" aria-expanded="false" aria-controls="csLangDialog" aria-label="' + esc(t('language')) + ': ' + esc(cur.name) + '"><span class="cs-lang-code" aria-hidden="true">' + esc(cur.short) + '</span><span class="cs-lang-name" lang="' + esc(cur.html) + '">' + esc(cur.name) + '</span></button>';
+  function langButton(cls, code, T) {
+    T = T || t;
+    var want = code || currentLangCode();
+    var cur = langOptions().filter(function (o) { return o.code === want; })[0] || langOptions()[0];
+    return '<button type="button" class="cs-lang ' + (cls || '') + '" data-cs-lang-open aria-haspopup="dialog" aria-expanded="false" aria-controls="csLangDialog" aria-label="' + esc(T('language')) + ': ' + esc(cur.name) + '"><span class="cs-lang-code" aria-hidden="true">' + esc(cur.short) + '</span><span class="cs-lang-name" lang="' + esc(cur.html) + '">' + esc(cur.name) + '</span></button>';
   }
   var langDialog = null, langOpener = null;
   function renderLangDialog(filter) {
@@ -116,33 +169,138 @@
     var tmp = document.createElement('div'); tmp.innerHTML = langButton('cs-lang-searched'); header.append(tmp.firstChild);
   }
 
-  function home() {
-    homeLanguage = lang();
-    root.innerHTML = '<header class="cs-nav"><a class="cs-brand" href="./" aria-label="Visable"><img src="assets/brand/visable-wordmark.svg" alt="Visable"></a>' +
-      '<nav aria-label="' + t('about') + '"><button data-cs-focus>' + t('search') + '</button><a href="form-helper.html">' + t('forms') + '</a><a href="#civic-about">' + t('about') + '</a>' +
-      '<span class="cs-languages">' + langButton('cs-lang-home') + '</span></nav></header>' +
-      '<main class="cs-home"><section class="cs-hero"><h1>' + t('title') + '</h1><p>' + t('sub') + '</p>' +
-      '<form id="civicSearchForm" role="search"><label class="cs-sr" for="civicQuery">' + t('search') + '</label><div class="cs-searchbar">' + icon('search') +
-      '<input id="civicQuery" type="search" maxlength="300" autocomplete="off" placeholder="' + t('placeholder') + '"><button type="submit">' + t('submit') + '</button></div></form>' +
-      '<div class="cs-examples" aria-label="' + t('examples') + '"><span class="cs-examples-label">' + t('examples') + '</span><button data-cs-query="체류기간 연장">' + icon('search') + t('quickExtension') + '</button><button data-cs-query="주소 변경 신고">' + icon('search') + t('quickAddress') + '</button><button data-cs-query="외국인등록증 재발급">' + icon('search') + t('quickArc') + '</button></div></section>' +
-      '<section class="cs-routes"><button data-action="reveal-home-section" data-target="visaManualSection" data-journey-track="pre"><span class="cs-icon-circle">' + icon('globe') + '</span><span><strong>' + t('pre') + icon('chevron-right') + '</strong><small>' + t('preSub') + '</small></span></button>' +
-      '<button data-action="reveal-home-section" data-target="visaManualSection" data-journey-track="in"><span class="cs-icon-circle">' + icon('user-round') + '</span><span><strong>' + t('post') + icon('chevron-right') + '</strong><small>' + t('postSub') + '</small></span></button></section>' +
-      '<section class="cs-tools"><h2>' + t('tools') + '</h2><div class="cs-tool-grid">' +
-      '<a href="form-helper.html"><span class="cs-icon-circle">' + icon('file-text') + '</span><span><strong>' + t('paperwork') + icon('chevron-right') + '</strong><small>' + t('paperworkSub') + '</small></span></a>' +
-      '<button data-action="open-hikorea-guide"><span class="cs-icon-circle">' + icon('calendar-days') + '</span><span><strong>' + t('reservation') + icon('chevron-right') + '</strong><small>' + t('reservationSub') + '</small></span></button>' +
-      '<button data-cs-focus data-cs-manual><span class="cs-icon-circle">' + icon('book-open') + '</span><span><strong>' + t('manuals') + icon('chevron-right') + '</strong><small>' + t('manualsSub') + '</small></span></button></div></section>' +
-      '<div class="cs-source-strip"><span class="cs-source-strip-label">' + t('sourceLabel') + '</span><a href="docs/source-manuals/2026-09/visa_manual_260901.pdf" target="_blank" rel="noopener">' + icon('file-text') + '<span>' + t('visa') + ' · 2026.09.01</span>' + icon('external-link') + '</a>' +
-      '<a href="docs/source-manuals/2026-09/stay_manual_260918.pdf" target="_blank" rel="noopener">' + icon('file-text') + '<span>' + t('stay') + ' · 2026.09.18</span>' + icon('external-link') + '</a></div>' +
-      '<details class="cs-directory"><summary>' + t('allTools') + '</summary><div>' +
-      [['open-short-stay','short'],['open-jobcode-modal','jobs'],['open-jurisdiction-modal','office'],['open-agent-finder','agencies'],['open-med-finder','hospitals']].map(function (item) { return '<button data-action="' + item[0] + '">' + t(item[1]) + '</button>'; }).join('') +
-      '<button data-action="reveal-home-section" data-target="visaManualSection">' + t('pre') + ' / ' + t('post') + '</button><button data-action="reveal-home-section" data-target="pathwaySection">' + t('pathways') + '</button><button data-action="reveal-home-section" data-target="reminderSection">' + t('reminders') + '</button><a href="new-home.html">' + t('naturalization') + '</a><a href="enforcement.html">' + t('enforcement') + '</a><a href="ai.html">Waymaker AI</a><button data-action="toggle-theme">' + t('theme') + '</button></div></details>' +
-      '<details id="civic-about" class="cs-about"><summary>' + t('about') + '</summary><p>' + t('info') + '</p><p>' + t('pendingInfo') + '</p><a href="https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&amp;BBS_GB_CD=BS10&amp;NTCCTT_SEQ=1062&amp;page=1" target="_blank" rel="noopener">HiKorea · ' + t('original') + '</a></details>' +
-      '<footer class="cs-footer"><img src="assets/brand/visable-wordmark.svg" alt="Visable"><p>' + t('disclaimer') + '</p></footer></main>';
+  /* ------------------------------------------------------------ home ----
+   * homeHtml(T, ctx) is a pure builder: it is what the browser renders and
+   * what scripts/build_landing_shell.mjs writes into index.html as the static
+   * first-paint shell. Keep it free of DOM access. */
+  function routeButton(T, track, iconName, kicker, title, lead) {
+    return '<button type="button" class="cs-route" data-cs-journey="' + track + '" aria-expanded="false" aria-controls="civicJourneyPanel">' +
+      '<span class="cs-route-icon">' + icon(iconName) + '</span>' +
+      '<span class="cs-route-body"><span class="cs-route-kicker">' + esc(T(kicker)) + '</span><strong class="cs-route-title">' + esc(T(title)) + '</strong><span class="cs-route-lead">' + esc(T(lead)) + '</span></span>' +
+      '<span class="cs-route-chevron">' + icon('chevron-down') + '</span></button>';
+  }
+  function toolLink(T, href, iconName, title, sub, extra) {
+    return '<a class="cs-tool" href="' + href + '"' + (extra || '') + '><span class="cs-icon-circle">' + icon(iconName) + '</span><span class="cs-tool-body"><strong>' + esc(T(title)) + icon('chevron-right') + '</strong><small>' + esc(T(sub)) + '</small></span></a>';
+  }
+  function toolButton(T, attrs, iconName, title, sub) {
+    return '<button type="button" class="cs-tool" ' + attrs + '><span class="cs-icon-circle">' + icon(iconName) + '</span><span class="cs-tool-body"><strong>' + esc(T(title)) + icon('chevron-right') + '</strong><small>' + esc(T(sub)) + '</small></span></button>';
+  }
+  function homeHtml(T, ctx) {
+    ctx = ctx || {};
+    var langHtml = ctx.langButton || langButton('cs-lang-home', ctx.langCode, T);
+    var sourceLinksHtml = '<a href="' + VISA_PDF + '" target="_blank" rel="noopener">' + esc(T('visa')) + ' PDF</a> · <a href="' + STAY_PDF + '" target="_blank" rel="noopener">' + esc(T('stay')) + ' PDF</a>';
+    return '<header class="cs-nav"><a class="cs-brand" href="./" aria-label="Visable"><img src="assets/brand/visable-wordmark.svg" alt="Visable"></a>' +
+      '<nav aria-label="' + esc(T('about')) + '"><button type="button" data-cs-focus>' + esc(T('search')) + '</button><a href="form-helper.html">' + esc(T('forms')) + '</a><a href="#civic-about">' + esc(T('about')) + '</a>' +
+      '<span class="cs-languages">' + langHtml + '</span></nav></header>' +
+      '<main class="cs-home"><section class="cs-hero"><h1>' + T('title') + '</h1><p>' + esc(T('sub')) + '</p>' +
+      '<form id="civicSearchForm" role="search"><label class="cs-sr" for="civicQuery">' + esc(T('search')) + '</label><div class="cs-searchbar">' + icon('search') +
+      '<input id="civicQuery" type="search" maxlength="300" autocomplete="off" placeholder="' + esc(T('placeholder')) + '"><button type="submit">' + esc(T('submit')) + '</button></div></form>' +
+      '<div class="cs-boot-failed" role="alert"><span>' + esc(T('bootFailed')) + '</span> <button type="button" class="cs-boot-reload" onclick="location.reload()">' + esc(T('reload')) + '</button><span class="cs-boot-links">' + esc(T('bootLinks')) + ' ' + sourceLinksHtml + ' · <a href="form-helper.html">' + esc(T('paperwork')) + '</a> · <a href="ai.html">Waymaker</a> · <a href="new-home.html">New Home</a></span></div>' +
+      '<noscript><p class="cs-noscript">' + esc(T('noscript')) + ' ' + sourceLinksHtml + '</p></noscript>' +
+      '<div class="cs-examples" aria-label="' + esc(T('examples')) + '"><span class="cs-examples-label">' + esc(T('examples')) + '</span><button type="button" data-cs-query="체류기간 연장">' + icon('search') + esc(T('quickExtension')) + '</button><button type="button" data-cs-query="주소 변경 신고">' + icon('search') + esc(T('quickAddress')) + '</button><button type="button" data-cs-query="외국인등록증 재발급">' + icon('search') + esc(T('quickArc')) + '</button></div></section>' +
+      '<section class="cs-journey" aria-labelledby="csJourneyTitle"><h2 id="csJourneyTitle" class="cs-sr">' + esc(T('journeyAria')) + '</h2><div class="cs-routes">' +
+      routeButton(T, 'pre', 'plane', 'preKicker', 'preTitle', 'preLead') + routeButton(T, 'post', 'id-card', 'postKicker', 'postTitle', 'postLead') +
+      '</div><div id="civicJourneyPanel" class="cs-journey-panel" hidden><div class="cs-journey-panel-head"><p class="cs-journey-panel-title" id="csJourneyPanelTitle"></p><button type="button" class="cs-journey-close" data-cs-journey="close" aria-label="' + esc(T('journeyClose')) + '">' + icon('x') + '</button></div><div class="cs-journey-slot"></div></div></section>' +
+      '<section class="cs-tools cs-tools-core" aria-labelledby="csCoreTitle"><h2 id="csCoreTitle">' + esc(T('coreTools')) + '</h2><div class="cs-tool-grid">' +
+      toolLink(T, 'form-helper.html', 'file-text', 'paperwork', 'paperworkSub', ' data-cs-tool="forms"') +
+      toolLink(T, 'ai.html', 'compass', 'waymaker', 'waymakerSub', ' data-cs-tool="waymaker"') +
+      toolLink(T, 'new-home.html', 'house', 'newHome', 'newHomeSub', ' data-cs-tool="newhome"') + '</div></section>' +
+      '<section class="cs-tools cs-tools-support" aria-labelledby="csSupportTitle"><h2 id="csSupportTitle">' + esc(T('tools')) + '</h2><div class="cs-tool-grid">' +
+      toolButton(T, 'data-action="open-hikorea-guide"', 'calendar-days', 'reservation', 'reservationSub') +
+      toolButton(T, 'data-cs-focus data-cs-manual', 'book-open', 'manuals', 'manualsSub') +
+      toolButton(T, 'data-action="open-jurisdiction-modal"', 'landmark', 'office', 'officeSub') + '</div></section>' +
+      '<div class="cs-source-strip"><span class="cs-source-strip-label">' + esc(T('sourceLabel')) + '</span><a href="' + VISA_PDF + '" target="_blank" rel="noopener">' + icon('file-text') + '<span>' + esc(T('visa')) + ' · 2026.09.01</span>' + icon('external-link') + '</a>' +
+      '<a href="' + STAY_PDF + '" target="_blank" rel="noopener">' + icon('file-text') + '<span>' + esc(T('stay')) + ' · 2026.09.18</span>' + icon('external-link') + '</a></div>' +
+      '<footer class="cs-footer"><img src="assets/brand/visable-wordmark.svg" alt="Visable"><p>' + esc(T('disclaimer')) + '</p></footer>' +
+      '<details class="cs-directory"><summary>' + esc(T('allTools')) + '</summary><div>' +
+      [['open-short-stay', 'short'], ['open-jobcode-modal', 'jobs'], ['open-jurisdiction-modal', 'office'], ['open-agent-finder', 'agencies'], ['open-med-finder', 'hospitals']].map(function (item) { return '<button type="button" data-action="' + item[0] + '">' + esc(T(item[1])) + '</button>'; }).join('') +
+      '<button type="button" data-action="reveal-home-section" data-target="visaManualSection">' + esc(T('pre')) + ' / ' + esc(T('post')) + '</button><button type="button" data-action="reveal-home-section" data-target="pathwaySection">' + esc(T('pathways')) + '</button><button type="button" data-action="reveal-home-section" data-target="reminderSection">' + esc(T('reminders')) + '</button><a href="form-helper.html">' + esc(T('paperwork')) + '</a><a href="new-home.html">' + esc(T('naturalization')) + '</a><a href="enforcement.html">' + esc(T('enforcement')) + '</a><a href="ai.html">Waymaker</a><button type="button" data-action="toggle-theme">' + esc(T('theme')) + '</button></div></details>' +
+      '<details id="civic-about" class="cs-about"><summary>' + esc(T('about')) + '</summary><p>' + esc(T('info')) + '</p><p>' + esc(T('pendingInfo')) + '</p><a href="https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&amp;BBS_GB_CD=BS10&amp;NTCCTT_SEQ=1062&amp;page=1" target="_blank" rel="noopener">HiKorea · ' + esc(T('original')) + '</a></details></main>';
+  }
+
+  /* ------------------------------------------------------------ journey ----
+   * One explicit state machine for the two journey controls:
+   *   CLOSED | PRE_ENTRY_OPEN | POST_ENTRY_OPEN
+   * The immigration content itself is still produced by index.html's
+   * startPreEntryTrack() / startInKoreaTrack() into #visaManualDynamic; this
+   * layer owns only the shell, the ARIA state and where the panel lives. */
+  var TRACK_STATE = { pre: 'PRE_ENTRY_OPEN', post: 'POST_ENTRY_OPEN' };
+  var journey = { state: 'CLOSED' };
+  // The legacy #visaManualSection node is moved into the civic panel. A home()
+  // re-render (language change, landing reset) replaces the panel, so the node
+  // is held here and re-attached rather than looked up in a DOM it just left.
+  var journeySection = null;
+  function journeyTrack(state) { return state === 'PRE_ENTRY_OPEN' ? 'pre' : state === 'POST_ENTRY_OPEN' ? 'post' : null; }
+  function journeyPanel() { return root ? root.querySelector('#civicJourneyPanel') : null; }
+  function journeyTrigger(track) { return root ? root.querySelector('.cs-route[data-cs-journey="' + track + '"]') : null; }
+  function mountJourneySection() {
+    var slot = root && root.querySelector('.cs-journey-slot');
+    if (!journeySection || !journeySection.isConnected) journeySection = document.getElementById('visaManualSection') || journeySection;
+    if (slot && journeySection && journeySection.parentNode !== slot) slot.appendChild(journeySection);
+  }
+  function renderTrackContent(track) {
+    var dynamicEl = document.getElementById('visaManualDynamic');
+    if (track === 'pre' && typeof startPreEntryTrack === 'function') startPreEntryTrack();
+    else if (track === 'post' && typeof startInKoreaTrack === 'function') startInKoreaTrack();
+    else if (dynamicEl) dynamicEl.innerHTML = '<p class="cs-home-status" role="status">' + esc(t('preparing')) + '</p>';
+  }
+  function prefersReducedMotion() { try { return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+  function setJourney(next, opts) {
+    opts = opts || {};
+    if (next !== 'CLOSED' && next !== 'PRE_ENTRY_OPEN' && next !== 'POST_ENTRY_OPEN') next = 'CLOSED';
+    var previous = journey.state;
+    journey.state = next;
+    var track = journeyTrack(next);
+    var panel = journeyPanel();
+    ['pre', 'post'].forEach(function (k) {
+      var b = journeyTrigger(k); if (!b) return;
+      var open = k === track;
+      b.setAttribute('aria-expanded', open ? 'true' : 'false');
+      b.setAttribute('data-state', open ? 'open' : 'closed');
+    });
+    if (root) root.setAttribute('data-cs-journey-state', next);
+    if (!panel) return;
+    if (!track) {
+      panel.hidden = true; panel.removeAttribute('data-track');
+      if (opts.focus !== false && previous !== 'CLOSED') { var back = journeyTrigger(journeyTrack(previous)); if (back && opts.focusTrigger !== false) back.focus(); }
+      return;
+    }
+    mountJourneySection();
+    panel.hidden = false; panel.setAttribute('data-track', track);
+    var title = panel.querySelector('#csJourneyPanelTitle');
+    if (title) title.textContent = t(track === 'pre' ? 'preKicker' : 'postKicker') + ' · ' + t(track === 'pre' ? 'preTitle' : 'postTitle');
+    renderTrackContent(track);
+    if (opts.scroll !== false) {
+      var trigger = journeyTrigger(track);
+      if (trigger && typeof trigger.scrollIntoView === 'function') trigger.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' });
+    }
+  }
+  function toggleJourney(track) {
+    var target = TRACK_STATE[track];
+    if (!target) return;
+    setJourney(journey.state === target ? 'CLOSED' : target);
+  }
+  function openJourney(track) { if (TRACK_STATE[track]) setJourney(TRACK_STATE[track]); }
+  function closeJourney() { setJourney('CLOSED'); }
+
+  function bindHome() {
     root.querySelector('form').addEventListener('submit', function (event) { event.preventDefault(); searchFromHome(root.querySelector('input').value); });
     root.querySelector('a[href="#civic-about"]').addEventListener('click', function () { root.querySelector('#civic-about').open = true; });
-    var footer = root.querySelector('.cs-footer');
-    footer.before(root.querySelector('.cs-source-strip'));
-    footer.after(root.querySelector('.cs-directory'), root.querySelector('.cs-about'));
+    var panel = journeyPanel();
+    if (panel) panel.addEventListener('keydown', function (e) { if ((e.key === 'Escape' || e.key === 'Esc') && journey.state !== 'CLOSED') { e.preventDefault(); e.stopPropagation(); closeJourney(); } });
+    mountJourneySection();
+  }
+  function home(opts) {
+    opts = opts || {};
+    homeLanguage = uiLang();
+    if (!journeySection) journeySection = document.getElementById('visaManualSection');
+    var reuse = Boolean(opts.reuse) && root.getAttribute('data-cs-shell') === homeLanguage && root.querySelector('#civicJourneyPanel') && root.querySelector('.cs-tools-core');
+    if (!reuse) root.innerHTML = homeHtml(t, { langCode: currentLangCode() });
+    root.setAttribute('data-cs-shell', homeLanguage);
+    root.setAttribute('data-cs-hydrated', reuse ? 'reused' : 'rendered');
+    bindHome();
+    var state = opts.keepJourney ? journey.state : 'CLOSED';
+    setJourney(state, { scroll: false, focus: false });
   }
   function homeStatus(message) {
     var status = root.querySelector('.cs-home-status');
@@ -182,24 +340,24 @@
     panel.hidden = value === 'guide';
   }
   function renderTabs() {
-    tabs.innerHTML = ['all','guide','manual'].map(function (key) { return '<button data-cs-tab="' + key + '" aria-pressed="' + (activeTab === key) + '">' + t(key === 'manual' ? 'sourceTab' : key) + '</button>'; }).join('');
+    tabs.innerHTML = ['all', 'guide', 'manual'].map(function (key) { return '<button type="button" data-cs-tab="' + key + '" aria-pressed="' + (activeTab === key) + '">' + esc(t(key === 'manual' ? 'sourceTab' : key)) + '</button>'; }).join('');
     tabs.setAttribute('aria-label', t('search'));
     setTab(activeTab);
   }
   function sourceLinks() {
-    return '<a href="docs/source-manuals/2026-09/visa_manual_260901.pdf" target="_blank" rel="noopener">' + t('visa') + '</a> · <a href="docs/source-manuals/2026-09/stay_manual_260918.pdf" target="_blank" rel="noopener">' + t('stay') + '</a>';
+    return '<a href="' + VISA_PDF + '" target="_blank" rel="noopener">' + esc(t('visa')) + '</a> · <a href="' + STAY_PDF + '" target="_blank" rel="noopener">' + esc(t('stay')) + '</a>';
   }
   function renderResults() {
     hits = window.VisableManualSearch.search(corpus, query, { domain: domain });
-    panel.innerHTML = '<div class="cs-results-head"><div><h2>' + t('manualTitle') + '</h2><p>' + t('currentSource') + ' · ' + hits.length + ' ' + t('pages') + '</p></div><label><span class="cs-sr">' + t('filter') + '</span><select id="civicDomain"><option value="">' + t('both') + '</option><option value="visa_issuance">' + t('visa') + '</option><option value="stay">' + t('stay') + '</option></select></label></div>' +
-      '<p class="cs-source-note">' + t('sourceNote') + '</p>' +
+    panel.innerHTML = '<div class="cs-results-head"><div><h2>' + esc(t('manualTitle')) + '</h2><p>' + esc(t('currentSource')) + ' · ' + hits.length + ' ' + esc(t('pages')) + '</p></div><label><span class="cs-sr">' + esc(t('filter')) + '</span><select id="civicDomain"><option value="">' + esc(t('both')) + '</option><option value="visa_issuance">' + esc(t('visa')) + '</option><option value="stay">' + esc(t('stay')) + '</option></select></label></div>' +
+      '<p class="cs-source-note">' + esc(t('sourceNote')) + '</p>' +
       (hits.length ? '<ol class="cs-manual-list">' + hits.slice(0, shown).map(function (hit, i) {
         var source = hit.source, page = hit.page;
-        return '<li><div class="cs-result-meta">' + esc(lang() === 'en' ? source.title_en : source.title) + ' · ' + esc(source.date) + ' · ' + page.page + ' ' + t('page') + '</div>' +
-          '<button class="cs-result-title" data-cs-page="' + i + '">' + esc(page.heading) + '</button><p>' + esc(window.VisableManualSearch.excerpt(page.text, query, corpus)) + '</p>' +
-          '<div class="cs-result-actions"><span>' + t('review') + '</span><button data-cs-page="' + i + '">' + t('excerpt') + '</button><a href="' + esc(source.file) + '#page=' + page.page + '" target="_blank" rel="noopener">' + t('original') + icon('external-link') + '</a></div></li>';
-      }).join('') + '</ol>' : '<div class="cs-empty"><h3>' + t('empty') + '</h3><p>' + t('emptyHelp') + '</p></div>') +
-      (hits.length > shown ? '<button class="cs-more" data-cs-more>' + t('more') + '</button>' : '') + '<p class="cs-caveat">' + t('caveat') + '</p>';
+        return '<li><div class="cs-result-meta">' + esc(lang() === 'en' ? source.title_en : source.title) + ' · ' + esc(source.date) + ' · ' + page.page + ' ' + esc(t('page')) + '</div>' +
+          '<button type="button" class="cs-result-title" data-cs-page="' + i + '">' + esc(page.heading) + '</button><p>' + esc(window.VisableManualSearch.excerpt(page.text, query, corpus)) + '</p>' +
+          '<div class="cs-result-actions"><span>' + esc(t('review')) + '</span><button type="button" data-cs-page="' + i + '">' + esc(t('excerpt')) + '</button><a href="' + esc(source.file) + '#page=' + page.page + '" target="_blank" rel="noopener">' + esc(t('original')) + icon('external-link') + '</a></div></li>';
+      }).join('') + '</ol>' : '<div class="cs-empty"><h3>' + esc(t('empty')) + '</h3><p>' + esc(t('emptyHelp')) + '</p></div>') +
+      (hits.length > shown ? '<button type="button" class="cs-more" data-cs-more>' + esc(t('more')) + '</button>' : '') + '<p class="cs-caveat">' + esc(t('caveat')) + '</p>';
     var select = panel.querySelector('select'); select.value = domain;
     select.addEventListener('change', function () { domain = select.value; shown = 3; renderResults(); });
   }
@@ -208,15 +366,15 @@
     var request = ++sequence;
     renderTabs();
     if (!query) { panel.innerHTML = ''; return; }
-    panel.innerHTML = '<p class="cs-load" role="status">' + t('loading') + '</p>';
+    panel.innerHTML = '<p class="cs-load" role="status">' + esc(t('loading')) + '</p>';
     load().then(function () { if (request === sequence) renderResults(); }).catch(function () {
       if (request !== sequence) return;
-      panel.innerHTML = '<div class="cs-empty" role="status"><p>' + t('error') + '</p><button data-cs-retry>' + t('retry') + '</button><p>' + sourceLinks() + '</p></div>';
+      panel.innerHTML = '<div class="cs-empty" role="status"><p>' + esc(t('error')) + '</p><button type="button" data-cs-retry>' + esc(t('retry')) + '</button><p>' + sourceLinks() + '</p></div>';
     });
   }
   function showHit(hit, origin) {
     dialogReturn = origin;
-    dialog.innerHTML = '<div class="cs-dialog-head"><div><p>' + esc(hit.source.title) + ' · ' + esc(hit.source.date) + ' · ' + hit.page.page + ' ' + t('page') + '</p><h2 id="civicPageTitle">' + esc(hit.page.heading) + '</h2></div><button data-cs-close aria-label="' + t('close') + '">' + icon('x') + '</button></div><p class="cs-caveat">' + t('review') + '. ' + t('caveat') + '</p><pre>' + esc(hit.page.text) + '</pre><a class="cs-pdf-link" href="' + esc(hit.source.file) + '#page=' + hit.page.page + '" target="_blank" rel="noopener">' + t('original') + ' · ' + hit.page.page + ' ' + t('page') + icon('external-link') + '</a>';
+    dialog.innerHTML = '<div class="cs-dialog-head"><div><p>' + esc(hit.source.title) + ' · ' + esc(hit.source.date) + ' · ' + hit.page.page + ' ' + esc(t('page')) + '</p><h2 id="civicPageTitle">' + esc(hit.page.heading) + '</h2></div><button type="button" data-cs-close aria-label="' + esc(t('close')) + '">' + icon('x') + '</button></div><p class="cs-caveat">' + esc(t('review')) + '. ' + esc(t('caveat')) + '</p><pre>' + esc(hit.page.text) + '</pre><a class="cs-pdf-link" href="' + esc(hit.source.file) + '#page=' + hit.page.page + '" target="_blank" rel="noopener">' + esc(t('original')) + ' · ' + hit.page.page + ' ' + esc(t('page')) + icon('external-link') + '</a>';
     dialog.showModal();
   }
   function showPage(index, origin) { var hit = hits[index]; if (hit) showHit(hit, origin); }
@@ -228,13 +386,23 @@
       if (source && row) showHit({ source: source, page: row.page }, origin);
     }).catch(function () { /* the PDF link beside the button remains available */ });
   }
-  window.VisableCivicSearch = { load: load, openPage: openPage };
+  window.VisableCivicSearch = {
+    load: load, openPage: openPage, homeHtml: homeHtml, copy: copy, langButton: langButton,
+    journey: { open: openJourney, close: closeJourney, toggle: toggleJourney, state: function () { return journey.state; } }
+  };
+  // Pages (and the Node parity check) that have no landing DOM stop here: the API above is still published.
+  if (!document.getElementById('mainContent')) return;
+
   function init() {
+    var existing = document.getElementById('civicLanding');
+    root = existing || document.createElement('div');
+    root.id = 'civicLanding';
+    // The static document already carries this class; keeping the add() makes the JS
+    // path self-sufficient on any page that still lacks the static shell.
     document.body.classList.add('civic-refresh');
-    document.body.insertBefore(root, document.getElementById('hero'));
-    home();
+    if (!existing) document.body.insertBefore(root, document.getElementById('hero'));
+    home({ reuse: Boolean(existing) });
     var results = document.getElementById('mainContent');
-    results.prepend(document.getElementById('visaManualSection'));
     tabs = document.createElement('div'); tabs.className = 'cs-tabs'; tabs.id = 'civicResultTabs'; tabs.setAttribute('role', 'group');
     panel = document.createElement('section'); panel.id = 'civicManualResults'; panel.className = 'cs-manual-results'; panel.setAttribute('aria-label', t('manuals'));
     results.prepend(panel); results.prepend(tabs);
@@ -244,6 +412,7 @@
     document.addEventListener('click', function (event) {
       var target = event.target.closest('button'); if (!target) return;
       if (target.hasAttribute('data-cs-lang-open')) { openLangDialog(target); return; }
+      if (target.hasAttribute('data-cs-journey')) { var track = target.getAttribute('data-cs-journey'); if (track === 'close') closeJourney(); else toggleJourney(track); return; }
       if (target.hasAttribute('data-cs-focus')) { if (target.hasAttribute('data-cs-manual')) activeTab = 'manual'; root.querySelector('input').focus(); root.querySelector('input').scrollIntoView({ block: 'center', behavior: 'smooth' }); }
       if (target.dataset.csQuery) searchFromHome(target.dataset.csQuery);
       if (target.dataset.csTab) setTab(target.dataset.csTab);
@@ -263,11 +432,11 @@
     window.addEventListener('paradiso-language-applied', function () {
       if (langDialog && langDialog.open) langDialog.close();
       refreshLangButtons();
-      if (lang() === homeLanguage) return;
+      if (uiLang() === homeLanguage) return;
       var draft = root.querySelector('input') ? root.querySelector('input').value : '';
       var directoryOpen = root.querySelector('.cs-directory') && root.querySelector('.cs-directory').open;
       var aboutOpen = root.querySelector('.cs-about') && root.querySelector('.cs-about').open;
-      home();
+      home({ keepJourney: true });
       if (draft && root.querySelector('input')) root.querySelector('input').value = draft;
       if (directoryOpen) root.querySelector('.cs-directory').open = true;
       if (aboutOpen) root.querySelector('.cs-about').open = true;
@@ -275,5 +444,13 @@
     });
     if (document.body.classList.contains('searched')) find(document.getElementById('q').value);
   }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+  function boot() {
+    try { init(); }
+    catch (error) {
+      // A failed boot must never leave a silent, dead page: the static shell shows a reload row.
+      document.body.classList.add('civic-boot-failed');
+      throw error;
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
 })();

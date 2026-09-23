@@ -73,3 +73,70 @@ projects desktop-1280 / tablet-768 / mobile-390 / mobile-320):
 ```bash
 PARADISO_PW_EXECUTABLE=/path/to/chromium npx playwright test tests/e2e/procedure-first-search.spec.mjs tests/e2e/waymaker-quick-answer.spec.mjs tests/e2e/language-control.spec.mjs --project=desktop-1280 --project=mobile-320
 ```
+
+## Landing boot, journey state machine, Waymaker / New Home entries (2026-09-23)
+
+`landing-boot.spec.mjs` runs in CI (`landing-restoration-e2e`, desktop-1280 / mobile-390 / mobile-320):
+
+- first paint: an init script samples every animation frame from the earliest
+  moment the page can run script and asserts the legacy hero / top controls are
+  never displayed (fast and throttled connection), `body.civic-refresh` is present
+  from the first frame, the civic shell stays visible once parsed and cumulative
+  layout shift stays low;
+- the static shell in `index.html` is reused by `civic-search.js`
+  (`data-cs-hydrated="reused"`), a failed civic script load shows the reload row;
+- journey: CLOSED → PRE → CLOSED (second click) → POST → PRE, keyboard Enter/Space,
+  Escape, `aria-expanded` / `aria-controls`, focus returns to the trigger, the panel
+  sits under the triggers, the directory entry routes through the same state, a
+  language change keeps the open track and re-renders it;
+- Waymaker and New Home are visible core tools with ≥44 px targets, navigate to
+  `ai.html` / `new-home.html`, and Back restores the landing.
+
+```bash
+PARADISO_PW_EXECUTABLE=/path/to/chromium npx playwright test tests/e2e/landing-boot.spec.mjs --project=desktop-1280 --project=mobile-390
+```
+
+## Form Helper 2.0 (2026-09-23)
+
+`form-helper.spec.mjs` runs in CI (`landing-restoration-e2e`, desktop-1280 / mobile-390 / mobile-320):
+
+- home search resolves the brief's examples (주소 변경 → 체류지변경신고서, 통합신청서, 숙소 제공,
+  신원보증, F-4 거소신고); 난민 / 출국기한유예 forms only ever appear as catalog entries with
+  the "이 서류는 Visable 자동작성 대상이 아니에요" hand-off, never as fillable forms;
+- select → explain → fill → browser Back keeps the values → review → preview → export; the
+  ops drawn on the preview canvas are the ops written into the PDF (`VisableFormHelper.lastExport`);
+  no request leaves the origin apart from the font CDN;
+- the downloaded file name is asserted exactly (`NGUYEN VAN ANH_체류지변경신고서.pdf`), both
+  from the browser's download event and from `VisableFormHelper.lastExport.filename`;
+- a too-long value is flagged in the field, on the review screen and again in the export
+  dialog ("그래도 내려받기" / "고치기"); the reset `<dialog>` warns before clearing;
+- Waymaker deep links (`?form=F01&type=sojourn_extension`) preselect the application type;
+  edition switches (F01 ↔ F03 중문 병기) keep the data; EN chrome and Arabic RTL work with
+  the Korean official field names still visible; the flow is keyboard reachable;
+- primary actions and the current step number keep a WCAG contrast of at least 4.5 : 1 in the
+  light and the dark theme, and screen transitions are off under `prefers-reduced-motion`;
+  dark-theme field warnings keep AA contrast and native radios follow the theme; long French
+  chips and subtitles stay inside their cards.
+
+`landing-boot.spec.mjs` also asserts localized layout: the Japanese and Chinese headline, journey
+leads and tool text wrap inside the viewport (keep-all is Korean-only), and the mounted journey
+pickers carry no Korean in German, Japanese or Arabic.
+
+The offline twin is `scripts/check_form_helper.mjs` (in `check_repo.sh`): inventory /
+coverage freshness, exclusions, template sha256 / page / size drift, schema ↔ definition
+consistency, engine unit tests, a Node export of every sample verified with PyMuPDF
+(`scripts/forms/verify_export.py`) — the same vendor pdf-lib / fontkit files the browser uses —
+and a static geometry audit of **every** overlay (`scripts/forms/audit_overlay_geometry.py`:
+bounded width, no table rule / printed label inside the writable area, no run past the row end),
+which is itself tested against planted defects.
+
+**Browser locale.** Chromium on Linux converts a suggested download name to the process's
+native multibyte charset; under the POSIX/C locale every non-ASCII name degrades to
+`download`. `playwright.config.mjs` therefore launches the browser with `LANG` / `LC_ALL =
+C.UTF-8` unless the environment already selects a UTF-8 locale — the filename assertion stays
+strict instead of accepting the fallback.
+
+```bash
+PARADISO_PW_EXECUTABLE=/path/to/chromium npx playwright test tests/e2e/form-helper.spec.mjs --project=desktop-1280 --project=mobile-390 --project=mobile-320
+node scripts/check_form_helper.mjs            # add --record-qa to write support.qa into data/form_schemas.json
+```

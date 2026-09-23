@@ -32,6 +32,9 @@ jobs:
           python3 -m pip install --upgrade pip
           python3 -m pip install -r backend/requirements-dev.txt
 
+      - name: Install the PDF QA dependency (Form Helper export verification + annex page map)
+        run: python3 -m pip install pymupdf==1.28.2
+
       - name: Run repository validation
         run: bash scripts/check_repo.sh
 
@@ -131,5 +134,20 @@ jobs:
       - name: Verify restored landing services in Chrome
         run: ./node_modules/.bin/playwright test tests/e2e/landing-utilities.spec.mjs tests/e2e/post-search-guidance.spec.mjs --project=desktop-1280 --project=mobile-390
 
+      - name: Verify first paint (no legacy hero), the journey state machine and the Waymaker / New Home entries (desktop + iPhone)
+        run: ./node_modules/.bin/playwright test tests/e2e/landing-boot.spec.mjs --project=desktop-1280 --project=mobile-390 --project=mobile-320
+
       - name: Verify procedure-first search, Waymaker Quick Answer and the language control (320–1280)
         run: ./node_modules/.bin/playwright test tests/e2e/procedure-first-search.spec.mjs tests/e2e/waymaker-quick-answer.spec.mjs tests/e2e/language-control.spec.mjs --project=desktop-1280 --project=tablet-768 --project=mobile-390 --project=mobile-320
+
+      - name: Verify the Form Helper (inventory search + exclusions, fill → preview → export, fit warnings, editions, languages, keyboard)
+        run: ./node_modules/.bin/playwright test tests/e2e/form-helper.spec.mjs --project=desktop-1280 --project=mobile-390 --project=mobile-320
+
+      - name: Upload Form Helper E2E evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: form-helper-e2e
+          path: test-results/
+          if-no-files-found: ignore
+          retention-days: 7
