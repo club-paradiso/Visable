@@ -73,3 +73,25 @@ projects desktop-1280 / tablet-768 / mobile-390 / mobile-320):
 ```bash
 PARADISO_PW_EXECUTABLE=/path/to/chromium npx playwright test tests/e2e/procedure-first-search.spec.mjs tests/e2e/waymaker-quick-answer.spec.mjs tests/e2e/language-control.spec.mjs --project=desktop-1280 --project=mobile-320
 ```
+
+## Landing boot, journey state machine, Waymaker / New Home entries (2026-09-23)
+
+`landing-boot.spec.mjs` runs in CI (`landing-restoration-e2e`, desktop-1280 / mobile-390 / mobile-320):
+
+- first paint: an init script samples every animation frame from the earliest
+  moment the page can run script and asserts the legacy hero / top controls are
+  never displayed (fast and throttled connection), `body.civic-refresh` is present
+  from the first frame, the civic shell stays visible once parsed and cumulative
+  layout shift stays low;
+- the static shell in `index.html` is reused by `civic-search.js`
+  (`data-cs-hydrated="reused"`), a failed civic script load shows the reload row;
+- journey: CLOSED → PRE → CLOSED (second click) → POST → PRE, keyboard Enter/Space,
+  Escape, `aria-expanded` / `aria-controls`, focus returns to the trigger, the panel
+  sits under the triggers, the directory entry routes through the same state, a
+  language change keeps the open track and re-renders it;
+- Waymaker and New Home are visible core tools with ≥44 px targets, navigate to
+  `ai.html` / `new-home.html`, and Back restores the landing.
+
+```bash
+PARADISO_PW_EXECUTABLE=/path/to/chromium npx playwright test tests/e2e/landing-boot.spec.mjs --project=desktop-1280 --project=mobile-390
+```

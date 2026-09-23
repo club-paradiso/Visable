@@ -183,6 +183,14 @@ python3 scripts/validate_coverage_matrix.py > /dev/null
 echo "[8/14] Running git diff --check..."
 git diff --check -- index.html ai.html visa_data.json doc_master.json data/i18n scripts/check_repo.sh scripts/check_source_manuals.py scripts/check_visa_text_corruption.py scripts/check_i18n.js scripts/check_i18n_coverage.mjs scripts/check_index_hardcoded_text.mjs scripts/smoke_static_i18n.mjs scripts/smoke_ai_payload.js docs/data docs/design docs/source-manuals docs/i18n docs/backend
 
+echo "[8b/14] Validating the civic landing first-paint shell..."
+# Offline, stdlib Node. The static #civicLanding shell in index.html must equal the
+# Korean output of civic-search.js homeHtml() (regenerate with
+# scripts/build_landing_shell.mjs), <body> must carry civic-refresh statically, the
+# critical hide rules must be inline, and every locale pack must carry the civic
+# copy. This is what keeps the legacy hero out of the first painted frame.
+node scripts/check_landing_shell.mjs
+
 echo "[9/14] Validating EN/KO UI translations..."
 if [[ -f scripts/check_i18n.js ]]; then
   if command -v node >/dev/null 2>&1; then
