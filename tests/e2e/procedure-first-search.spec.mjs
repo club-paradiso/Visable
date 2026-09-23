@@ -168,30 +168,29 @@ test.describe('status-required procedures ask a plain-language status question',
   });
 });
 
-test.describe('legacy status cards stay collapsed under procedure-first answers', () => {
-  for (const [q, kind] of [['체류기간 연장', 'need-status'], ['체류지 변경 신고', 'procedure']]) {
-    test(`"${q}": the per-status cards below start collapsed and the page stays scrollable`, async ({ page }) => {
+test.describe('one result system: the legacy per-status cards are gated, not rendered', () => {
+  for (const q of ['체류기간 연장', '체류지 변경 신고', 'D-2 연장']) {
+    test(`"${q}": the legacy card list and the backend layer never display; the page stays short`, async ({ page }) => {
       await boot(page);
-      const sg = await search(page, q);
-      await expect(sg).toHaveAttribute('data-sg-kind', kind);
-      const cards = page.locator('#rlist article.vc');
-      expect(await cards.count()).toBeGreaterThan(1);
-      await expect(page.locator('#rlist article.vc.open')).toHaveCount(0);
-      expect(await page.evaluate(() => document.body.getAttribute('data-sg-legacy'))).toBe('collapsed');
-      // the collapse snaps on render; poll so a slow runner mid-layout cannot fake a tall page
-      await expect.poll(() => page.evaluate(() => document.documentElement.scrollHeight), { timeout: 10_000, message: 'page height stays under 30000px' }).toBeLessThan(30_000);
-      // still expandable by the user
-      await cards.first().locator('.vc-h').click();
-      await expect(cards.first()).toHaveClass(/open/);
+      await search(page, q);
+      await expect(page.locator('#rlist')).toBeHidden();
+      await expect(page.locator('#unifiedSearchLayer')).toBeHidden();
+      await expect(page.locator('#hero .reference-disclaimer')).toBeHidden();
+      await expect(page.locator('#civicResultTabs')).toHaveCount(0);
+      await expect.poll(() => page.evaluate(() => document.documentElement.scrollHeight), { timeout: 10_000 }).toBeLessThan(8_000);
     });
   }
 
-  test('a status query keeps its single card expanded as before', async ({ page }) => {
+  test('the legacy card opens only on the explicit "기존 체류자격 카드 보기" request', async ({ page }) => {
     await boot(page);
-    await search(page, 'D-2 연장');
-    await expect(page.locator('#rlist article.vc')).toHaveCount(1);
-    await expect(page.locator('#rlist article.vc.open')).toHaveCount(1);
-    expect(await page.evaluate(() => document.body.getAttribute('data-sg-legacy'))).toBeNull();
+    const sg = await search(page, 'D-2 연장');
+    await expect(page.locator('#rlist')).toBeHidden();
+    await sg.locator('[data-sg-action="legacy-card"]').click();
+    await expect(page.locator('#rlist article.vc').first()).toBeVisible();
+    expect(await page.evaluate(() => document.body.getAttribute('data-legacy-card'))).toBe('open');
+    // a new search closes it again
+    await search(page, 'F-6 연장');
+    await expect(page.locator('#rlist')).toBeHidden();
   });
 });
 
@@ -228,6 +227,9 @@ test.describe('evidence, disclaimer, report, local practice', () => {
   test('the local-practice report dialog opens from the guidance, requires consent and closes on Escape', async ({ page }) => {
     await boot(page);
     const sg = await search(page, '외국인등록증 재발급');
+    // office information is collapsed until the reader opens it
+    await expect(sg.locator('.sg-local-details')).not.toHaveAttribute('open', /.*/);
+    await sg.locator('.sg-local-details > summary').click();
     await sg.locator('[data-sg-action="report"]').first().click();
     const dialog = page.locator('#sgReportDialog[open]');
     await expect(dialog).toBeVisible({ timeout: 5_000 });
@@ -244,7 +246,10 @@ test.describe('evidence, disclaimer, report, local practice', () => {
     await answer(page, 'normal');
     await expect(sg).toHaveAttribute('data-sg-kind', 'resolved');
     await expect(sg.locator('.sg-doc-group-required')).toContainText('체류지');
+    await sg.locator('.sg-local-details > summary').click();
     await sg.locator('#sgOffice').selectOption('jeju');
+    // a chosen office keeps the section open across re-renders
+    await expect(sg.locator('.sg-local-details')).toHaveAttribute('open', /.*/);
     await expect(sg.locator('.sg-local-has')).toBeVisible();
     await expect(sg.locator('.sg-local')).toContainText('확인되지 않은 이용자 제보');
     await expect(sg.locator('.sg-local')).toContainText('전국 기준을 바꾸는 정보가 아니에요');

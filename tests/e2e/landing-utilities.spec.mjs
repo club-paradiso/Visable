@@ -124,8 +124,13 @@ test('September original search preserves source scope, page links and exact cod
   await page.locator('#civicQuery').fill('E74');
   await page.locator('#civicSearchForm button[type="submit"]').click();
   const results = page.locator('#civicManualResults');
+  // Raw passages are evidence on demand: one collapsed "관련 원문" disclosure under the structured answer.
+  const raw = page.locator('#civicRawSources');
+  await expect(page.locator('#statusGuidance[data-sg-kind]')).toBeVisible({ timeout: 20_000 });
+  await expect(raw).not.toHaveAttribute('open', /.*/);
+  await raw.locator('summary').click();
   await expect(results).toContainText('2026.09.18');
-  // The raw excerpt list opens with 3 hits (the structured status guidance now sits above it); 결과 더 보기 loads more.
+  // 3 hits to start; 결과 더 보기 loads more.
   await expect(results.locator('.cs-manual-list li')).toHaveCount(3);
   await expect(results.locator('.cs-more')).toHaveCount(1);
   await expect(results.locator('.cs-result-title').first()).toContainText('E-7-4');

@@ -14235,6 +14235,17 @@ body.civic-refresh::before, body.civic-refresh::after { display: none !important
 body.civic-refresh.landing #mainContent > * { display: none !important; }
 body.civic-refresh.landing #mainContent { padding-top: 0 !important; min-height: 0 !important; }
 body.civic-refresh.searched #civicLanding { display: none; }
+/* Searched state: one result system. The legacy per-status card list, the
+   backend interpretation layer and the legacy caution band never paint on a
+   healthy result page — #statusGuidance is the result. The legacy list returns
+   only on explicit request (data-legacy-card) or when the guidance failed to
+   load (data-sg-state="failed"); until the guidance is ready a neutral
+   skeleton holds the space instead of the old UI. */
+body.civic-refresh.searched:not([data-legacy-card="open"]):not([data-sg-state="failed"]) #rlist { display: none !important; }
+body.civic-refresh.searched #unifiedSearchLayer, body.civic-refresh.searched #usSearchNote { display: none !important; }
+body.civic-refresh.searched:not([data-sg-state="failed"]) #hero .reference-disclaimer { display: none !important; }
+body.civic-refresh.searched:not([data-sg-state="ready"]):not([data-sg-state="failed"]) #mainContent::before { content: ""; display: block; height: 220px; margin: 8px 0 24px; border-radius: 8px; background: linear-gradient(#eef1ef, #eef1ef) 0 0 / 38% 18px no-repeat, linear-gradient(#eef1ef, #eef1ef) 0 44px / 72% 30px no-repeat, linear-gradient(#f3f5f4, #f3f5f4) 0 100px / 100% 14px no-repeat, linear-gradient(#f3f5f4, #f3f5f4) 0 126px / 92% 14px no-repeat, linear-gradient(#f3f5f4, #f3f5f4) 0 152px / 64% 14px no-repeat; }
+html:root body.civic-refresh[data-theme="dark"].searched #mainContent::before { opacity: .12; }
 html:root body.civic-refresh { background: #fff !important; }
 html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important; }
 </style>
@@ -14246,6 +14257,10 @@ html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important
    flash. Runs as soon as <body> is parsed. Brightness lives on body[data-theme]
    and is independent of the editorial style theme set on <html>. */
 (function(){try{var b=localStorage.getItem('paradiso:brightness');if(b==='system'){b=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}if(b==='dark'||b==='light'){document.body.setAttribute('data-theme',b);}}catch(e){}})();
+/* A result URL (?q=…, pushed after every search) starts in the searched state,
+   so a reload never paints the landing and then jumps, and never paints the
+   legacy list: the critical CSS above shows the searched header + skeleton. */
+(function(){try{var q=new URLSearchParams(location.search).get('q');if(q&&q.trim()){var b=document.body;b.classList.remove('landing');b.classList.add('searched');b.setAttribute('data-scene','searched');}}catch(e){}})();
 </script>
 <!-- UX-10 Behavior & A11y — "건너뛰기 · '본문으로 건너뛰기' 링크를 첫 Tab에 제공".
      First in the DOM so it is genuinely the first stop, and hidden until it is
@@ -14583,6 +14598,7 @@ html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important
         </div>
     </div>
 </header>
+<script>(function(){try{var q=new URLSearchParams(location.search).get('q'),el=document.getElementById('q');if(q&&el&&!el.value)el.value=q.trim().slice(0,300);}catch(e){}})();</script>
 
 <main id="mainContent" class="results-area">
 

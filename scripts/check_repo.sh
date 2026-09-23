@@ -348,6 +348,9 @@ echo "[9d-5/14] Validating post-search status guidance (coverage manifest + docu
 #     unverified report, report API/client reject identifiers;
 #   * check_waymaker_quick_answer.mjs → Quick Answer modes, AI grounding validator,
 #     server handler states (no key → NOT_CONFIGURED; hallucination → rejected).
+#   * check_search_result_unification.mjs → one result system: definitive wording for
+#     exact codes, no internal source ids or stale labels, one fee note, tiered common
+#     rules, intent-aware evidence ranking (D-2 연장 never tops with D-2 → E-1).
 python3 scripts/status_guidance/author_rules.py --check
 python3 scripts/build_status_coverage_manifest.py --check
 if command -v node >/dev/null 2>&1; then
@@ -361,6 +364,7 @@ if command -v node >/dev/null 2>&1; then
   node scripts/check_fee_rules.mjs
   node scripts/check_local_practice.mjs
   node scripts/check_waymaker_quick_answer.mjs
+  node scripts/check_search_result_unification.mjs
 else
   echo "INFO: Node.js not found; skipping status-guidance JS validation."
 fi
