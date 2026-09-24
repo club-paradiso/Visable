@@ -94,9 +94,9 @@ body[data-theme="dark"] .sg-state-exception_only, body[data-theme="dark"] .sg-st
 .sg-doc-meta dt { font-size: 12px; color: var(--cs-muted); font-weight: 700; }
 .sg-doc-meta dd { margin: 0; font-size: 14px; line-height: 1.5; word-break: keep-all; }
 .sg-officer { margin-top: 14px; font-size: 13px; color: var(--cs-muted); }
-.sg-overlays ul li { border-bottom: 1px solid var(--cs-line); }
-.sg-overlays summary { padding: 10px 0; font-size: 15px; cursor: pointer; min-height: 44px; display: flex; align-items: center; }
-.sg-overlays details p { font-size: 14px; line-height: 1.6; padding: 0 0 10px; max-width: 760px; word-break: keep-all; }
+.sg-rules li { border-bottom: 1px solid var(--cs-line); }
+.sg-rules summary { padding: 10px 0; font-size: 15px; cursor: pointer; min-height: 44px; display: flex; align-items: center; word-break: keep-all; }
+.sg-rules details p { font-size: 14px; line-height: 1.6; padding: 0 0 10px; max-width: 760px; word-break: keep-all; }
 
 /* 6 · next actions */
 .sg-next ul { display: grid; gap: 4px; }
@@ -121,8 +121,6 @@ body[data-theme="dark"] .sg-state-exception_only, body[data-theme="dark"] .sg-st
 
 /* shell integration */
 .civic-refresh.searched .ai-fab { display: none !important; }
-.civic-refresh[data-civic-results="manual"] #statusGuidance { display: none !important; }
-.civic-refresh.searched #civicManualResults { margin-top: 8px; }
 
 @media (max-width: 680px) {
   .sg-interp { padding-bottom: 12px; gap: 6px 12px; }
@@ -245,13 +243,13 @@ body[data-theme="dark"] .sg-layer-unverified_user_report, body[data-theme="dark"
   .sg-doc-form { font-size: 12px; }
 }
 @media (max-width: 360px) { .sg-quick-grid { grid-template-columns: 1fr; } }
-html[dir="rtl"] .sg { text-align: right; }
-html[dir="rtl"] .sg-quick { border-left: 1px solid var(--cs-line); border-right: 3px solid var(--cs-green); border-radius: 10px 0 0 10px; }
-html[dir="rtl"] .sg-warn { border-left: 0; border-right: 3px solid var(--cs-green); border-radius: 6px 0 0 6px; }
-html[dir="rtl"] .sg-doc-details > summary { padding-right: 0; padding-left: 28px; }
-html[dir="rtl"] .sg-doc-details > summary::after { right: auto; left: 8px; }
-html[dir="rtl"] .sg-doc-cond, html[dir="rtl"] .sg-doc-alts, html[dir="rtl"] .sg-doc-meta { padding-left: 0; padding-right: 22px; margin-left: 0; margin-right: 22px; }
-html[dir="rtl"] .sg-evidence-details > summary::after { margin-left: 8px; margin-right: auto; }
+html[dir="rtl"] .sg:not([dir="ltr"]) { text-align: right; }
+html[dir="rtl"] .sg:not([dir="ltr"]) .sg-quick { border-left: 1px solid var(--cs-line); border-right: 3px solid var(--cs-green); border-radius: 10px 0 0 10px; }
+html[dir="rtl"] .sg:not([dir="ltr"]) .sg-warn { border-left: 0; border-right: 3px solid var(--cs-green); border-radius: 6px 0 0 6px; }
+html[dir="rtl"] .sg:not([dir="ltr"]) .sg-doc-details > summary { padding-right: 0; padding-left: 28px; }
+html[dir="rtl"] .sg:not([dir="ltr"]) .sg-doc-details > summary::after { right: auto; left: 8px; }
+html[dir="rtl"] .sg:not([dir="ltr"]) .sg-doc-cond, html[dir="rtl"] .sg:not([dir="ltr"]) .sg-doc-alts, html[dir="rtl"] .sg:not([dir="ltr"]) .sg-doc-meta { padding-left: 0; padding-right: 22px; margin-left: 0; margin-right: 22px; }
+html[dir="rtl"] .sg:not([dir="ltr"]) .sg-evidence-details > summary::after { margin-left: 8px; margin-right: auto; }
 @media (prefers-reduced-motion: reduce) { .sg-evidence-details > summary::after { transition: none; } }
 
 /* local-practice report dialog */
@@ -280,3 +278,115 @@ html[dir="rtl"] .sg-evidence-details > summary::after { margin-left: 8px; margin
 
 /* Legacy status cards under a procedure-first answer collapse instantly on render (status-guidance.js collapseLegacyList). */
 #rlist.sg-legacy-snap .vc-cw, #rlist.sg-legacy-snap .tgl { transition: none !important; }
+
+
+/* ===================================================================== */
+/* Search result unification (2026-09-23): one renderer, one hierarchy.
+   Typography and dividers carry structure; no card inside a card; the one
+   accent is --cs-green; chips stay small. */
+
+/* A · interpretation — definitive for exact matches */
+.sg-interp { align-items: center; padding: 0 0 12px; }
+.sg-interp-text { font-size: 15px; font-weight: 500; color: var(--cs-muted); letter-spacing: -.01em; }
+.sg-interp-code { font-weight: 750; color: var(--cs-ink); font-variant-numeric: tabular-nums; }
+.sg-interp[data-sg-match] .sg-interp-name { color: var(--cs-ink); font-weight: 600; }
+.sg-interp-proc { color: var(--cs-green); font-weight: 650; }
+.sg-interp-sep { color: var(--cs-line); margin: 0 2px; }
+.sg-interp .sg-link { min-height: 44px; font-size: 14px; }
+
+/* B/C · answer */
+.sg-answer { margin-top: 20px; }
+.sg-answer .sg-kicker { margin-bottom: 4px; }
+.sg-summary { margin-top: 12px; }
+.sg-facts { margin-top: 16px; padding: 12px 0; }
+.sg-answer-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.sg-answer-actions .sg-btn { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; font-size: 15px; }
+.sg-btn-primary { background: var(--cs-green); color: var(--cs-bg) !important; border-color: var(--cs-green); }
+
+/* procedure picker: compact two-column choices instead of a tall stack */
+.sg-options-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; }
+.sg-options-grid .sg-option { min-height: 44px; padding: 10px 14px; font-size: 15px; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
+.sg-question { padding: 18px 20px 14px; }
+.sg-question-title { font-size: 18px; margin-bottom: 6px; }
+
+/* section rhythm */
+.sg-transition, .sg-program, .sg-docs, .sg-cond-section, .sg-fee, .sg-local, .sg-next, .sg-evidence, .sg-related { margin-top: 30px; padding-top: 18px; border-top: 1px solid var(--cs-line); }
+.sg-docs h3, .sg-cond-section h3, .sg-fee h3, .sg-next h3, .sg-related h3, .sg-transition h3, .sg-program h3 { font-size: 19px; margin-bottom: 8px; }
+.sg-related-programs { margin-top: 12px; }
+
+/* D · documents — editorial list, grouped by requirement */
+.sg-doc-group { margin-top: 14px; }
+.sg-doc-group h4 { display: flex; align-items: baseline; gap: 6px; font-size: 13px; letter-spacing: .02em; text-transform: none; color: var(--cs-muted); margin-bottom: 4px; }
+.sg-doc-group-n { font-weight: 500; font-variant-numeric: tabular-nums; }
+.sg-doc-group-required h4 { color: var(--cs-green); }
+.sg-doc-row { flex-direction: column; flex-wrap: nowrap; align-items: stretch; gap: 2px; padding: 10px 0; }
+.sg-doc-row::before { content: none !important; }
+.sg-doc-main { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+.sg-doc-name { font-size: 16px; font-weight: 600; color: var(--cs-ink); }
+.sg-doc-line { display: flex; flex-wrap: wrap; gap: 2px 12px; font-size: 13px; line-height: 1.5; color: var(--cs-muted); }
+.sg-doc-line .sg-doc-cond { padding: 0; color: var(--cs-ink); font-size: 13px; }
+.sg-doc-who::before, .sg-doc-where::before { content: '·'; margin-right: 6px; color: var(--cs-line); }
+.sg-doc-line > :first-child::before { content: none; }
+.sg-doc-form { font-size: 12px; color: var(--cs-muted); border-radius: 4px; padding: 0 6px; }
+.sg-doc-form[data-sg-form-kind="OFFICIAL_EXPLICIT"] { color: var(--cs-ink); border-color: var(--cs-green); }
+.sg-doc-meta { margin: 0 0 12px; padding: 10px 12px; background: var(--cs-row); border-radius: 6px; }
+.sg-doc-alts { padding: 0 0 8px; }
+.sg-doc-details > summary::after { top: 18px; }
+.sg-doc-details[open] > summary::after { top: 22px; }
+.sg-doc-prep-note { padding-top: 10px; }
+
+/* E · fee */
+.sg-fee-row { border-top: 0; padding: 4px 0 10px; }
+.sg-fee-row:last-of-type { border-bottom: 0; }
+
+/* F · conditions and exceptions */
+.sg-cond-section .sg-conditions { margin-top: 4px; }
+.sg-cond-section .sg-overlays { margin-top: 16px; }
+.sg-cond-section .sg-overlays h4 { font-size: 13px; color: var(--cs-muted); letter-spacing: .02em; margin-bottom: 2px; }
+.sg-rules-more { margin-top: 6px; }
+.sg-rules-more > summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; font-size: 14px; color: var(--cs-green); }
+
+/* G · local office — collapsed until an office matters */
+.sg-local-details > summary { list-style: none; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; min-height: 44px; cursor: pointer; }
+.sg-local-details > summary::-webkit-details-marker { display: none; }
+.sg-local-details > summary h3 { font-size: 17px; margin: 0; }
+.sg-local-details > summary::after { content: ''; width: 8px; height: 8px; border-right: 1.5px solid var(--cs-muted); border-bottom: 1.5px solid var(--cs-muted); transform: rotate(45deg); margin-left: auto; margin-right: 8px; align-self: center; }
+.sg-local-details[open] > summary::after { transform: rotate(225deg); }
+
+/* H · next actions — one quiet row */
+.sg-next ul { display: flex; flex-wrap: wrap; gap: 0 20px; }
+.sg-next li { min-height: 44px; }
+.sg-next-ai { margin-top: 0; }
+
+/* I · Waymaker resolver (only when the answer needs more context) */
+.sg-wm { margin-top: 26px; padding: 16px 18px; border-left: 3px solid var(--cs-green); background: var(--cs-row); border-radius: 0 8px 8px 0; }
+.sg-wm-title { font-weight: 700; font-size: 16px; }
+.sg-wm-body { font-size: 14px; color: var(--cs-muted); margin: 4px 0 10px !important; word-break: keep-all; }
+.sg-wm .sg-btn { display: inline-flex; align-items: center; text-decoration: none; }
+
+/* J · evidence — "공식 근거 6건 · 근거 보기" */
+.sg-evidence-details > summary h3 { font-size: 17px; }
+.sg-ev-count { font-weight: 500; color: var(--cs-muted); font-size: 15px; margin-left: 4px; }
+.sg-ev-show { font-size: 14px; color: var(--cs-green); margin-left: auto; }
+.sg-evidence-details > summary::after { margin-left: 0; }
+.sg-ev-basis, .sg-ev-review { font-size: 13px; margin-top: 4px; }
+.sg-evidence-meta { font-size: 13px; }
+
+/* K · related procedures */
+.sg-related .sg-chips { gap: 6px; }
+.sg-related .sg-chip { min-height: 44px; padding: 6px 12px; font-size: 14px; }
+.sg-disclaimer { margin-top: 26px; }
+
+@media (max-width: 680px) {
+  .sg-answer { margin-top: 16px; }
+  .sg-answer-title { font-size: 22px; }
+  .sg-summary { font-size: 15px; line-height: 1.65; }
+  .sg-options-grid { grid-template-columns: 1fr 1fr; }
+  .sg-options-grid .sg-option { font-size: 14px; padding: 8px 10px; }
+  .sg-answer-actions .sg-btn { flex: 1 1 auto; }
+  .sg-transition, .sg-program, .sg-docs, .sg-cond-section, .sg-fee, .sg-local, .sg-next, .sg-evidence, .sg-related { margin-top: 24px; padding-top: 14px; }
+  .sg-doc-meta { margin-left: 0; }
+}
+@media (max-width: 340px) { .sg-options-grid { grid-template-columns: 1fr; } }
+html[dir="rtl"] .sg:not([dir="ltr"]) .sg-wm { border-left: 0; border-right: 3px solid var(--cs-green); border-radius: 8px 0 0 8px; }
+html .sg[dir="ltr"] { text-align: left; }

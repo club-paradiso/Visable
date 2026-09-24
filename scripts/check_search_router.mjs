@@ -53,7 +53,10 @@ for (const q of CARD) {
     assert(['ADMINISTRATIVE_TASK', 'NATURAL_LANGUAGE_QUESTION'].includes(r.route.intent), `intent ${r.route.intent}`);
     assert(r.step.kind === 'procedure' && r.step.common && r.step.status === null, `kind ${r.step.kind}`);
     assert(!r.html.includes(DEAD_END), 'dead end rendered');
-    assert(r.html.includes('외국인등록증 재발급(으)로 이해했어요'), 'interpretation strip');
+    // exact procedure names read definitively; sentences keep the "이해했어요" reading
+    const exactName = ['외국인등록증 재발급', '등록증 재발급', 'residence card reissue'].includes(q);
+    const strip = (r.html.match(/<div class="sg-interp"[^]*?<\/div>/) || [''])[0];
+    assert(strip.includes(exactName ? 'data-sg-match="EXACT_PROCEDURE"' : '(으)로 이해했어요') && strip.includes(r.model.procedureLabel), `interpretation strip (${exactName ? 'exact' : 'natural'}): ${strip.replace(/<[^>]+>/g, ' ').trim()}`);
     assert(r.model.docCounts.required >= 2, 'baseline documents');
     assert(r.html.includes('sg-fee-amount') && r.html.includes('₩35,000'), 'fee shown separately');
     assert(!r.model.documentGroups.some((g) => g.items.some((d) => d.ref === 'fee')), 'fee must not be a document');

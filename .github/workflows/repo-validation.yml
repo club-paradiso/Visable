@@ -140,6 +140,9 @@ jobs:
       - name: Verify procedure-first search, Waymaker Quick Answer and the language control (320–1280)
         run: ./node_modules/.bin/playwright test tests/e2e/procedure-first-search.spec.mjs tests/e2e/waymaker-quick-answer.spec.mjs tests/e2e/language-control.spec.mjs --project=desktop-1280 --project=tablet-768 --project=mobile-390 --project=mobile-320
 
+      - name: Verify one result system (D-2 regression, evidence relevance, no legacy frame on search or ?q= reload, 390 first screen, Arabic)
+        run: ./node_modules/.bin/playwright test tests/e2e/search-result-unification.spec.mjs --project=desktop-1280 --project=mobile-390 --project=mobile-320
+
       - name: Verify the Form Helper (inventory search + exclusions, fill → preview → export, fit warnings, editions, languages, keyboard)
         run: ./node_modules/.bin/playwright test tests/e2e/form-helper.spec.mjs --project=desktop-1280 --project=mobile-390 --project=mobile-320
 

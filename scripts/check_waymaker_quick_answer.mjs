@@ -70,7 +70,7 @@ function expect(r, exp, label) {
     assert(r.qa.documents.required.every((d) => d.name && d.form), `${label}: documents with forms`);
     assert(r.qa.uncertainties.length >= 1, `${label}: uncertainties listed`);
   }
-  if (exp.mode === 'fallback') { assert(r.qa.interpretation.confidence === 'LOW' && !r.html.includes('id="sgFull" hidden'), `${label}: fallback shows the structured evidence, no synthesized answer`); assert(!/준비할 서류는/.test(r.qa.summary), `${label}: no invented list`); }
+  if (exp.mode === 'fallback') { assert(r.qa.interpretation.confidence === 'LOW' && !r.html.includes('id="sgFull" hidden'), `${label}: fallback shows the structured evidence, no synthesized answer`); assert(!/준비할 서류[는:]/.test(r.qa.summary), `${label}: no invented list`); }
   if (exp.fee) assert(r.qa.fees.length && r.qa.fees[0].amount === exp.fee && r.qa.fees[0].amountState === 'FIXED', `${label}: fee ${JSON.stringify(r.qa.fees[0])}`);
   if (exp.feeState) assert(r.qa.fees.length && r.qa.fees[0].amountState === exp.feeState, `${label}: fee state ${r.qa.fees[0] && r.qa.fees[0].amountState}`);
   if (exp.docsMin) assert(r.qa.documents.required.length >= exp.docsMin, `${label}: ${r.qa.documents.required.length} required docs`);

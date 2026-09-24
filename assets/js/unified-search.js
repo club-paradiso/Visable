@@ -1096,8 +1096,20 @@
     fetchAiOverviewStreamed(query, payload, token, timer);
   }
 
+  // On the civic result page the structured guidance (status-guidance.js) is the
+  // one interpretation and answer surface. This layer's own interpretation strip,
+  // source list and AI slot would be a second result system, so it is neither
+  // fetched nor rendered there; ai.html (Waymaker) keeps the AI path.
+  function civicOwnsResults() { return document.body.classList.contains('civic-refresh'); }
+
   function runUnified(query) {
     var q = String(query || '').trim().slice(0, MAX_QUERY);
+    if (civicOwnsResults()) {
+      lastPayload = null;
+      setSearchBarState('idle', '');
+      render('hidden', null);
+      return;
+    }
     if (!q) {
       lastPayload = null;
       setSearchBarState('idle', '');
