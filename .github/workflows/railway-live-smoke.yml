@@ -309,8 +309,45 @@ jobs:
               "markdown_heading": bool(re.search(r"(?m)^\s*#{1,6}\s", public_answer)),
           }
           print("waymaker_public_d2: " + json.dumps(public_summary, ensure_ascii=False, sort_keys=True), flush=True)
-          if public_status != 200 or leaked or internal_fields or public_summary["markdown_heading"]:
+          # Leak checks apply to every public body, error envelopes included.
+          if leaked or internal_fields or public_summary["markdown_heading"]:
               print("Production Waymaker public /api/ask response leaks internal routing/source metadata or raw Markdown." + unverified_note, file=sys.stderr)
+              sys.exit(1)
+          if public_status != 200:
+              # The public projection deliberately hides the provider error, so
+              # repeat the same Fast request with the explicit diagnostics
+              # opt-in and log the routing detail engineers need.
+              diag_status, diag = request_json(
+                  "/api/ask",
+                  method="POST",
+                  payload={
+                      "question": "D-2 연장시 필수 서류",
+                      "visa_code": "D-2",
+                      "answer_mode": "fast",
+                      "stream": False,
+                      "diagnostics": True,
+                  },
+                  timeout=65.0,
+              )
+              diag_body = diag.get("detail") if isinstance(diag, dict) and isinstance(diag.get("detail"), dict) else (diag if isinstance(diag, dict) else {})
+              diag_summary = {
+                  "http_status": diag_status,
+                  "error": diag_body.get("error") or None,
+                  "provider_error_type": diag_body.get("provider_error_type") or None,
+                  "answer_mode": diag_body.get("answer_mode") or None,
+                  "answer_mode_requested": diag_body.get("answer_mode_requested") or None,
+                  "model_candidates": diag_body.get("model_candidates") or [],
+                  "attempted_models": diag_body.get("attempted_models") or [],
+                  "upstream_statuses": diag_body.get("upstream_statuses") or [],
+                  "retryable_provider_error": diag_body.get("retryable_provider_error"),
+                  "final_model": diag_body.get("final_model") or None,
+              }
+              print("waymaker_public_d2_diagnostics: " + json.dumps(diag_summary, ensure_ascii=False, sort_keys=True), flush=True)
+              print(
+                  f"Production Waymaker Fast /api/ask returned HTTP {public_status} for the public D-2 request"
+                  " (see waymaker_public_d2_diagnostics)." + unverified_note,
+                  file=sys.stderr,
+              )
               sys.exit(1)
           if not structured or not public_summary["common_documents"] or public_summary["answer_mode_requested"] != "fast":
               print("Production Waymaker did not return the structured D-2 checklist for a Fast public request." + unverified_note, file=sys.stderr)

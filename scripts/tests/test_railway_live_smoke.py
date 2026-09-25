@@ -150,13 +150,14 @@ class _FakeResponse(io.BytesIO):
 class SmokeRun:
     """One scripted execution of the embedded smoke script."""
 
-    def __init__(self, health_sequence, enforcement=ENFORCEMENT_LIVE, waymaker=WAYMAKER_LIVE, public=WAYMAKER_PUBLIC):
+    def __init__(self, health_sequence, enforcement=ENFORCEMENT_LIVE, waymaker=WAYMAKER_LIVE, public=WAYMAKER_PUBLIC, public_status=200):
         # health_sequence: the commit each successive /health call reports.
         # The last entry repeats once exhausted.
         self.health_sequence = list(health_sequence)
         self.enforcement = enforcement
         self.waymaker = waymaker
         self.public = public
+        self.public_status = public_status
         self.health_calls = 0
         self.slept = 0.0
         self.stdout = ""
@@ -173,6 +174,13 @@ class SmokeRun:
             return _FakeResponse(json.dumps(LAW_OK).encode())
         if "/api/ask" in url:
             body = json.loads((getattr(request, "data", None) or b"{}").decode("utf-8"))
+            if self.public_status != 200 and body.get("answer_mode") == "fast":
+                detail = {"error": "answer_generation_unavailable", "message": "The answer could not be generated right now."}
+                if body.get("diagnostics"):
+                    detail.update({"error": "openrouter_provider_error", "provider_error_type": "invalid_request",
+                                   "attempted_models": ["vendor/fast:free"], "upstream_statuses": [400]})
+                raise urllib.error.HTTPError(url, self.public_status, "error", {},
+                                             io.BytesIO(json.dumps({"detail": detail}).encode()))
             payload = self.waymaker if body.get("diagnostics") else self.public
             return _FakeResponse(json.dumps(payload).encode())
         if "/api/enforcement/analyze" in url:
@@ -265,6 +273,13 @@ class RailwayLiveSmokeReadinessTests(unittest.TestCase):
         self.assertEqual(run.exit_code, 1, run.stdout + run.stderr)
         self.assertIn("waymaker_public_d2:", run.stdout)
         self.assertIn("leaks internal routing/source metadata", run.stderr)
+
+    def test_public_waymaker_http_error_is_reported_with_diagnostics(self):
+        run = SmokeRun([OUR_COMMIT], public=None, public_status=503).run()
+        self.assertEqual(run.exit_code, 1, run.stdout + run.stderr)
+        self.assertIn("waymaker_public_d2_diagnostics:", run.stdout)
+        self.assertIn("returned HTTP 503", run.stderr)
+        self.assertNotIn("leaks internal", run.stderr)
 
     def test_public_waymaker_response_must_carry_structured_checklist(self):
         no_structure = {k: v for k, v in WAYMAKER_PUBLIC.items() if k != "structured_answer"}
