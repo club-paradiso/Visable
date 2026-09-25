@@ -12,7 +12,7 @@ ALLOW_BACKEND_TEST_SKIP="${ALLOW_BACKEND_TEST_SKIP:-0}"
 
 run_offline_backend_checks() {
   echo "INFO: Running offline-safe backend syntax checks..."
-  if ! python3 -m py_compile backend/services/*.py backend/paradiso_backend.py backend/tests/test_paradiso_backend.py backend/tests/test_e7_workplace_change_law_grounding.py; then
+  if ! python3 -m py_compile backend/services/*.py backend/services/knowledge/*.py backend/paradiso_backend.py backend/tests/test_paradiso_backend.py backend/tests/test_e7_workplace_change_law_grounding.py; then
     echo "ERROR: Offline-safe backend syntax checks failed." >&2
     exit 1
   fi
@@ -534,6 +534,21 @@ elif ensure_backend_test_runtime; then
 else
   echo "ERROR: Golden eval requires backend dependencies and could not run." >&2
   echo "       Re-run with network/package-index access, or set ALLOW_BACKEND_TEST_SKIP=1 for restricted environments." >&2
+  exit 1
+fi
+
+echo "[14b/14] Running the Waymaker Knowledge Platform eval corpus (offline, strict)..."
+# Deterministic: a throwaway in-memory knowledge store seeded from the committed
+# repository data, no network, no model. Every approved eval case (the seed
+# corpus in backend/data/knowledge/eval_corpus_seed.json + the referenced
+# golden questions) must pass: a factual regression fails the build even when
+# the answer prose would have looked fine.
+if [[ "$ALLOW_BACKEND_TEST_SKIP" == "1" ]]; then
+  echo "WARNING: Skipping knowledge evals because backend dependency bootstrap was allowed to skip." >&2
+elif ensure_backend_test_runtime; then
+  ${TEST_PYTHON} scripts/knowledge/knowledge_cli.py --db :memory: eval --selector all --strict
+else
+  echo "ERROR: Knowledge evals require backend dependencies and could not run." >&2
   exit 1
 fi
 
