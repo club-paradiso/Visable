@@ -43,7 +43,7 @@ jobs:
               body = None
               headers = {
                   "Accept": "application/json",
-                  "User-Agent": "Visable-Railway-Live-Smoke/6",
+                  "User-Agent": "Visable-Railway-Live-Smoke/7",
               }
               if payload is not None:
                   body = json.dumps(payload, ensure_ascii=False).encode("utf-8")
@@ -200,6 +200,66 @@ jobs:
               print("Railway Open Law live search returned no usable law rows." + unverified_note, file=sys.stderr)
               sys.exit(1)
 
+          # Exercise the actual Waymaker /api/ask route with the exact class of
+          # question reported by users. This is deliberately BUFFERED because
+          # ai.html uses the buffered path by default; a green enforcement model
+          # does not prove Waymaker can answer.
+          waymaker_question = "D-2 체류기간 연장 시 필수 서류는 무엇인가요?"
+          started = time.perf_counter()
+          waymaker_status, waymaker = request_json(
+              "/api/ask",
+              method="POST",
+              payload={
+                  "question": waymaker_question,
+                  "visa_code": "D-2",
+                  "answer_mode": "basic",
+                  "stream": False,
+              },
+              timeout=65.0,
+          )
+          waymaker_elapsed_ms = int(round((time.perf_counter() - started) * 1000))
+          waymaker_answer = str(waymaker.get("answer") or "") if isinstance(waymaker, dict) else ""
+          waymaker_live = (
+              waymaker_status == 200
+              and bool(waymaker_answer.strip())
+              and not bool(waymaker.get("deterministic_fallback_answer_used"))
+              and bool(waymaker.get("final_model") or waymaker.get("selected_model") or waymaker.get("model"))
+              and (waymaker.get("provider") or waymaker.get("llm_provider")) not in {"deterministic_fallback", ""}
+          )
+          waymaker_summary = {
+              "http_status": waymaker_status,
+              "elapsed_ms": waymaker_elapsed_ms,
+              "live_model_answer": waymaker_live,
+              "provider": waymaker.get("provider") or waymaker.get("llm_provider") or None,
+              "final_model": waymaker.get("final_model") or waymaker.get("selected_model") or waymaker.get("model") or None,
+              "attempted_models": waymaker.get("attempted_models") or [],
+              "upstream_statuses": waymaker.get("upstream_statuses") or [],
+              "skipped_models_due_to_cooldown": waymaker.get("skipped_models_due_to_cooldown") or [],
+              "cooling_down_models": waymaker.get("cooling_down_models") or [],
+              "provider_error_type": waymaker.get("provider_error_type") or None,
+              "chain_budget_exhausted": bool(waymaker.get("chain_budget_exhausted")),
+              "deterministic_fallback": bool(waymaker.get("deterministic_fallback_answer_used")),
+              "visa_code_detected": waymaker.get("visa_code_detected") or None,
+              "task_type_detected": waymaker.get("task_type_detected") or None,
+              "manual_grounding_status": waymaker.get("manual_grounding_status") or None,
+              "answer_chars": len(waymaker_answer),
+          }
+          print("waymaker_d2: " + json.dumps(waymaker_summary, ensure_ascii=False, sort_keys=True), flush=True)
+
+          if waymaker_status != 200:
+              print("Production Waymaker /api/ask did not return HTTP 200 for the D-2 extension fixture." + unverified_note, file=sys.stderr)
+              sys.exit(1)
+          if not waymaker_live:
+              print(
+                  "Production Waymaker did not produce a live model answer for the D-2 extension fixture."
+                  + unverified_note,
+                  file=sys.stderr,
+              )
+              sys.exit(1)
+          if waymaker.get("visa_code_detected") != "D-2":
+              print("Production Waymaker failed to detect D-2 in the extension fixture." + unverified_note, file=sys.stderr)
+              sys.exit(1)
+
           # Exercise the actual user-facing enforcement path with synthetic,
           # non-personal structured facts. This is stronger evidence than a
           # provider-only probe because it covers provider routing, JSON mode,
@@ -312,7 +372,7 @@ jobs:
               sys.exit(1)
 
           print(
-              "Railway live smoke passed: backend, law grounding, deterministic baseline, and structured AI prediction are live."
+              "Railway live smoke passed: backend, law grounding, Waymaker D-2 live completion, deterministic baseline, and structured AI prediction are live."
               + unverified_note,
               flush=True,
           )
