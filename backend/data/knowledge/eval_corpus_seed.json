@@ -1,0 +1,262 @@
+{
+  "schema_version": "1.0",
+  "purpose": "Seed regression corpus for the Waymaker Knowledge Platform. Deterministic (offline) cases asserting facts and behaviour, not prose. Imported idempotently into the eval tables at platform bootstrap; cases added in Knowledge Studio live in the knowledge DB.",
+  "is_training_data": false,
+  "provenance": "Expected facts are the repository's verified stay-manual grounding (backend/data/manual_grounding/stay_manual_grounding_2026_05.json, 외국인체류 안내매뉴얼 2026.6). Coverage expectations reflect what the VERIFIED knowledge layer holds today; statuses answered only by unreviewed layers are expected to be knowledge gaps.",
+  "cases": [
+    {
+      "case_key": "d2.extension.documents.ko",
+      "query": "D-2 연장시 필수 서류",
+      "language": "ko",
+      "risk_category": "standard",
+      "tags": ["d2", "extension", "documents", "ci", "ko"],
+      "depends_on_slots": ["D-2|*|extension|general|required_document|재정입증서류",
+                           "D-2|*|extension|general|required_document|수료증명서,지도교수및유학담당자확인서"],
+      "assertions": [
+        {"type": "EXPECTED_STATUS", "value": "D-2"},
+        {"type": "EXPECTED_PROCEDURE", "value": "extension"},
+        {"type": "EXPECTED_INTENT", "value": "required_documents"},
+        {"type": "EXPECTED_COVERAGE_STATE", "value": ["DIRECT_VERIFIED", "VERIFIED_WITH_CONDITIONS"]},
+        {"type": "MUST_INCLUDE_FACT", "value": ["신청서", "여권", "외국인등록증", "수수료", "재정입증 서류", "체류지 입증서류", "학업을 정상적으로 수행하고 있음을 입증하는 서류"]},
+        {"type": "EXPECTED_BUCKET", "value": {"item": "수료증명서", "bucket": "conditional"}},
+        {"type": "EXPECTED_BUCKET", "value": {"item": "여권", "bucket": "common"}},
+        {"type": "MUST_NOT_INCLUDE_FACT", "value": ["고용계약서", "건강진단서", "모집요강", "사업자등록증"]},
+        {"type": "SOURCE_MUST_BE", "value": {"title": "외국인체류 안내매뉴얼", "edition": "2026.6", "pages": "43-44"}},
+        {"type": "MUST_NOT_CLARIFY"},
+        {"type": "MUST_NOT_RECORD_GAP"},
+        {"type": "MUST_NOT_CLAIM_CERTAINTY"},
+        {"type": "MUST_NOT_LEAK_INTERNAL_METADATA"},
+        {"type": "MUST_NOT_LEAK_MODEL_PROVIDER"},
+        {"type": "LANGUAGE_EXPECTED", "value": "ko"}
+      ]
+    },
+    {
+      "case_key": "d2.extension.documents.glued_particle.ko",
+      "query": "D-2비자 연장할 때 서류 뭐 필요해요?",
+      "language": "ko",
+      "tags": ["d2", "extension", "documents", "ci", "ko", "understanding"],
+      "assertions": [
+        {"type": "EXPECTED_STATUS", "value": "D-2"},
+        {"type": "EXPECTED_COVERAGE_STATE", "value": ["DIRECT_VERIFIED", "VERIFIED_WITH_CONDITIONS"]},
+        {"type": "MUST_INCLUDE_FACT", "value": ["재정입증 서류"]}
+      ]
+    },
+    {
+      "case_key": "d2.extension.documents.en",
+      "query": "What documents do I need to extend my D-2 visa?",
+      "language": "en",
+      "tags": ["d2", "extension", "documents", "ci", "en"],
+      "assertions": [
+        {"type": "EXPECTED_STATUS", "value": "D-2"},
+        {"type": "EXPECTED_PROCEDURE", "value": "extension"},
+        {"type": "EXPECTED_INTENT", "value": "required_documents"},
+        {"type": "EXPECTED_COVERAGE_STATE", "value": ["DIRECT_VERIFIED", "VERIFIED_WITH_CONDITIONS"]},
+        {"type": "MUST_INCLUDE_FACT", "value": ["여권", "재정입증 서류"]},
+        {"type": "EXPECTED_BUCKET", "value": {"item": "수료증명서", "bucket": "conditional"}},
+        {"type": "MUST_NOT_LEAK_INTERNAL_METADATA"},
+        {"type": "MUST_NOT_LEAK_MODEL_PROVIDER"},
+        {"type": "LANGUAGE_EXPECTED", "value": "en"}
+      ]
+    },
+    {
+      "case_key": "d4.extension.documents.ko",
+      "query": "D-4 연장 서류",
+      "language": "ko",
+      "tags": ["d4", "extension", "documents", "ci", "subcode_scope"],
+      "assertions": [
+        {"type": "EXPECTED_STATUS", "value": "D-4"},
+        {"type": "EXPECTED_COVERAGE_STATE", "value": "VERIFIED_WITH_CONDITIONS"},
+        {"type": "MUST_INCLUDE_FACT", "value": ["모집요강", "재학을 입증하는 서류", "재정입증 서류 (국내 본인계좌 예치금만 인정)"]},
+        {"type": "MUST_NOT_INCLUDE_FACT", "value": ["고용계약서", "지도교수"]},
+        {"type": "SOURCE_MUST_BE", "value": {"edition": "2026.6", "pages": "90-91"}},
+        {"type": "MUST_NOT_RECORD_GAP"}
+      ]
+    },
+    {
+      "case_key": "d4.extension.d4_2k.uncovered",
+      "query": "D-4-2K 연장 서류",
+      "language": "ko",
+      "payload_visa_code": "D-4-2K",
+      "tags": ["d4", "extension", "subcode", "ci", "no_flattening"],
+      "assertions": [
+        {"type": "EXPECTED_STATUS", "value": "D-4"},
+        {"type": "EXPECTED_SUBCODE", "value": "D-4-2K"},
+        {"type": "EXPECTED_COVERAGE_STATE", "value": "NO_DIRECT_SOURCE"},
+        {"type": "MUST_RECORD_GAP", "value": "UNKNOWN_SUBCODE"},
+        {"type": "MUST_NOT_INCLUDE_FACT", "value": ["모집요강", "재학을 입증하는 서류"]}
+      ]
+    },
+    {
+      "case_key": "e7.extension.documents.ko",
+      "query": "E-7 연장 서류",
+      "language": "ko",
+      "tags": ["e7", "extension", "documents", "ci"],
+      "assertions": [
+        {"type": "EXPECTED_STATUS", "value": "E-7"},
+        {"type": "EXPECTED_COVERAGE_STATE", "value": ["DIRECT_VERIFIED", "VERIFIED_WITH_CONDITIONS"]},
+        {"type": "MUST_INCLUDE_FACT", "value": ["고용계약서", "사업자등록증 사본 또는 법인등기부등본", "개인 소득금액 증명"]},
+        {"type": "EXPECTED_BUCKET", "value": {"item": "신원보증서 원본", "bucket": "conditional"}},
+        {"type": "MUST_NOT_INCLUDE_FACT", "value": ["지도교수", "모집요강"]},
+        {"type": "SOURCE_MUST_BE", "value": {"edition": "2026.6", "pages": "227"}}
+      ]
+    },
+    {
+      "case_key": "e7.extension.e7_4.never_inherits_parent",
+      "query": "E-7-4 체류기간 연장 서류",
+      "language": "ko",
+      "payload_visa_code": "E-7-4",
+      "tags": ["e7", "extension", "subcode", "ci", "no_flattening"],
+      "assertions": [
+        {"type": "EXPECTED_SUBCODE", "value": "E-7-4"},
+        {"type": "EXPECTED_COVERAGE_STATE", "value": "NO_DIRECT_SOURCE"},
+        {"type": "MUST_RECORD_GAP", "value": "UNKNOWN_SUBCODE"},
+        {"type": "MUST_NOT_INCLUDE_FACT", "value": ["고용계약서"]}
+      ]
+    },
+    {
+      "case_key": "f6.extension.online_eligibility",
+      "query": "F-6 온라인으로 체류기간 연장 신청할 수 있나요?",
+      "language": "ko",
+      "tags": ["f6", "extension", "online", "ci", "knowledge_gap"],
+      "assertions": [
+        {"type": "EXPECTED_STATUS", "value": "F-6"},
+        {"type": "EXPECTED_INTENT", "value": "online_application"},
+        {"type": "EXPECTED_COVERAGE_STATE", "value": "NO_DIRECT_SOURCE"},
+        {"type": "MUST_RECORD_GAP", "value": "NO_VERIFIED_KNOWLEDGE"},
+        {"type": "MUST_NOT_INCLUDE_FACT", "value": ["재정입증 서류", "고용계약서"]}
+      ]
+    },
+    {
+      "case_key": "g1.extension.online_eligibility",
+      "query": "G-1 비자 연장 온라인 가능한가요?",
+      "language": "ko",
+      "tags": ["g1", "extension", "online", "ci", "knowledge_gap"],
+      "assertions": [
+        {"type": "EXPECTED_STATUS", "value": "G-1"},
+        {"type": "EXPECTED_INTENT", "value": "online_application"},
+        {"type": "EXPECTED_COVERAGE_STATE", "value": "NO_DIRECT_SOURCE"},
+        {"type": "MUST_RECORD_GAP", "value": "NO_VERIFIED_KNOWLEDGE"}
+      ]
+    },
+    {
+      "case_key": "f1.extension.electronic_service_partial",
+      "query": "F-1 전자민원으로 체류기간 연장 가능?",
+      "language": "ko",
+      "tags": ["f1", "extension", "online", "ci", "knowledge_gap"],
+      "assertions": [
+        {"type": "EXPECTED_STATUS", "value": "F-1"},
+        {"type": "EXPECTED_INTENT", "value": "online_application"},
+        {"type": "EXPECTED_COVERAGE_STATE", "value": "NO_DIRECT_SOURCE"},
+        {"type": "MUST_RECORD_GAP"}
+      ]
+    },
+    {
+      "case_key": "status_change.d2_to_e7",
+      "query": "D-2에서 E-7으로 체류자격 변경할 때 서류",
+      "language": "ko",
+      "tags": ["status_change", "ci", "knowledge_gap"],
+      "assertions": [
+        {"type": "EXPECTED_PROCEDURE", "value": "status_change"},
+        {"type": "EXPECTED_COVERAGE_STATE", "value": ["NO_DIRECT_SOURCE", "NEEDS_CLARIFICATION"]},
+        {"type": "MUST_NOT_INCLUDE_FACT", "value": ["재정입증 서류", "고용계약서"]}
+      ]
+    },
+    {
+      "case_key": "workplace_change.e7",
+      "query": "E-7 근무처 변경 신고 서류",
+      "language": "ko",
+      "tags": ["workplace_change", "e7", "ci", "knowledge_gap"],
+      "assertions": [
+        {"type": "EXPECTED_STATUS", "value": "E-7"},
+        {"type": "EXPECTED_PROCEDURE", "value": "workplace_change"},
+        {"type": "EXPECTED_COVERAGE_STATE", "value": "NO_DIRECT_SOURCE"},
+        {"type": "MUST_RECORD_GAP", "value": "NO_VERIFIED_KNOWLEDGE"},
+        {"type": "MUST_NOT_INCLUDE_FACT", "value": ["고용계약서"]}
+      ]
+    },
+    {
+      "case_key": "reentry.d2",
+      "query": "D-2 재입국허가 받아야 하나요?",
+      "language": "ko",
+      "tags": ["reentry", "d2", "ci", "knowledge_gap"],
+      "assertions": [
+        {"type": "EXPECTED_STATUS", "value": "D-2"},
+        {"type": "EXPECTED_PROCEDURE", "value": "reentry"},
+        {"type": "EXPECTED_COVERAGE_STATE", "value": "NO_DIRECT_SOURCE"},
+        {"type": "MUST_RECORD_GAP"},
+        {"type": "MUST_NOT_INCLUDE_FACT", "value": ["재정입증 서류"]}
+      ]
+    },
+    {
+      "case_key": "clarify.missing_status.documents",
+      "query": "연장할 때 필요한 서류가 뭐예요?",
+      "language": "ko",
+      "tags": ["clarification", "ci", "user_fact_gap"],
+      "assertions": [
+        {"type": "EXPECTED_PROCEDURE", "value": "extension"},
+        {"type": "EXPECTED_COVERAGE_STATE", "value": "NEEDS_CLARIFICATION"},
+        {"type": "MUST_CLARIFY", "value": "status_code"},
+        {"type": "MUST_NOT_RECORD_GAP"},
+        {"type": "MUST_NOT_INCLUDE_FACT", "value": ["재정입증 서류", "고용계약서"]}
+      ]
+    },
+    {
+      "case_key": "unknown.h2.extension_documents",
+      "query": "H-2 체류기간 연장 필요 서류",
+      "language": "ko",
+      "tags": ["unknown", "ci", "knowledge_gap", "synthetic"],
+      "assertions": [
+        {"type": "EXPECTED_STATUS", "value": "H-2"},
+        {"type": "EXPECTED_COVERAGE_STATE", "value": "NO_DIRECT_SOURCE"},
+        {"type": "MUST_RECORD_GAP", "value": "NO_VERIFIED_KNOWLEDGE"},
+        {"type": "MUST_NOT_INCLUDE_FACT", "value": ["여권", "재정입증 서류"]}
+      ]
+    },
+    {
+      "case_key": "high_risk.f6_divorce_never_checklist",
+      "query": "F-6-3 이혼 후 체류 연장 서류",
+      "language": "ko",
+      "risk_category": "high",
+      "tags": ["f6", "high_risk", "ci", "contamination"],
+      "assertions": [
+        {"type": "EXPECTED_STATUS", "value": "F-6"},
+        {"type": "EXPECTED_PROCEDURE", "value": "status_change"},
+        {"type": "EXPECTED_COVERAGE_STATE", "value": "NO_DIRECT_SOURCE"},
+        {"type": "MUST_RECORD_GAP"},
+        {"type": "MUST_NOT_INCLUDE_FACT", "value": ["여권", "재정입증 서류", "고용계약서"]}
+      ]
+    },
+    {
+      "case_key": "out_of_scope.case_research",
+      "query": "D-2 연장 불허 판례",
+      "language": "ko",
+      "tags": ["case_research", "ci"],
+      "assertions": [
+        {"type": "EXPECTED_INTENT", "value": "case_research"},
+        {"type": "EXPECTED_COVERAGE_STATE", "value": "OUT_OF_SCOPE"},
+        {"type": "MUST_NOT_RECORD_GAP"}
+      ]
+    },
+    {
+      "case_key": "partial.d2_fee",
+      "query": "D-2 연장 수수료 얼마예요?",
+      "language": "ko",
+      "tags": ["d2", "fee", "ci", "partial"],
+      "assertions": [
+        {"type": "EXPECTED_INTENT", "value": "fee"},
+        {"type": "EXPECTED_COVERAGE_STATE", "value": "PARTIAL_VERIFIED"},
+        {"type": "MUST_RECORD_GAP", "value": "NO_VERIFIED_KNOWLEDGE"}
+      ]
+    },
+    {
+      "case_key": "privacy.d2_with_passport_number",
+      "query": "D-2 연장 서류 알려줘. 제 여권번호는 M12345678",
+      "language": "ko",
+      "tags": ["d2", "privacy", "ci"],
+      "assertions": [
+        {"type": "EXPECTED_COVERAGE_STATE", "value": ["DIRECT_VERIFIED", "VERIFIED_WITH_CONDITIONS"]},
+        {"type": "MUST_NOT_LEAK_INTERNAL_METADATA"}
+      ]
+    }
+  ]
+}
