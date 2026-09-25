@@ -40,7 +40,8 @@ CASES = {
     "d2_documents_ko_fast.json": ({"question": "D-2 연장시 필수 서류", "lang": "ko", "answer_mode": "fast"}, LEAKY_MODEL_ANSWER),
     "d2_documents_en_fast.json": ({"question": "What documents do I need to extend a D-2?", "lang": "en", "answer_mode": "fast"}, LEAKY_MODEL_ANSWER_EN),
 }
-VOLATILE = ("law_grounding_retrieval_timestamp", "retrievedAt", "retrieval_timestamp")
+# answer_ref is a per-request opaque feedback reference (random id).
+VOLATILE = ("law_grounding_retrieval_timestamp", "retrievedAt", "retrieval_timestamp", "answer_ref")
 
 
 def _strip_volatile(value):
@@ -53,6 +54,8 @@ def _strip_volatile(value):
 
 def build() -> dict:
     os.environ.setdefault("OPENROUTER_API_KEY", "fixture-sentinel")
+    # Deterministic knowledge state: the committed seed, never a local DB.
+    os.environ.setdefault("WAYMAKER_KNOWLEDGE_DB", ":memory:")
     from fastapi.testclient import TestClient
     import paradiso_backend as pb
 

@@ -17,6 +17,7 @@ instead of crashing.
 from __future__ import annotations
 
 import asyncio
+import contextvars
 import json
 import logging
 import os
@@ -75,6 +76,9 @@ from services.answer_quality import (
 )
 from services import answer_quality as _answer_quality
 from services import structured_answer as _structured_answer
+from services.knowledge import runtime as _knowledge_runtime
+from services.knowledge import guard as _knowledge_guard_mod
+from services.knowledge.api import build_knowledge_router
 from services.answer_shape import (
     ANSWER_SHAPE_VERSION,
     build_answer_shape_contract,
@@ -505,6 +509,15 @@ async def _lifespan(_app: "FastAPI"):
         law_effective,
         law_active,
     )
+    # Warm the knowledge store (migrations + idempotent seed) at startup so the
+    # first /api/ask does not pay for it. Never blocks startup on failure: the
+    # runtime retries lazily and falls back to an in-memory store.
+    try:
+        platform = _knowledge_runtime.get_platform()
+        logger.info("knowledge_platform_ready schema=%s durable=%s",
+                    platform.store.schema_version(), platform.store.durable)
+    except Exception:  # pragma: no cover
+        logger.exception("knowledge platform warm-up failed")
     yield
 
 
@@ -656,6 +669,13 @@ class AskResponse(BaseModel):
     # source-confirmed manual list; the checklist buckets come from canonical
     # grounding data, never from the model. See services/structured_answer.py.
     structured_answer: Optional[Dict[str, Any]] = None
+    # Knowledge Platform answer plan (understanding / coverage / retrieval /
+    # guard). Diagnostics-only: removed by _public_ask_payload.
+    knowledge_plan: Optional[Dict[str, Any]] = None
+    # Opaque reference the client may send back with answer feedback
+    # (POST /api/feedback). Links feedback to the privacy-minimized
+    # observation; carries no user data.
+    answer_ref: Optional[str] = None
     # Structured law/manual evidence pack (Part D). Non-secret: sanitized source
     # URLs only, OC/API-key values never appear. ``law_evidence_pack`` is the
     # full structured object; the flat fields below are convenience projections
@@ -2498,6 +2518,59 @@ def _structured_answer_prompt_directive(lang: Optional[str]) -> str:
     )
 
 
+# ---------------------------------------------------------------------------
+# Knowledge Platform runtime hooks (services/knowledge)
+# ---------------------------------------------------------------------------
+# The answer plan of the current /api/ask request. A ContextVar keeps it
+# request-scoped without threading it through every helper signature.
+_KNOWLEDGE_PLAN_CTX: "contextvars.ContextVar[Any]" = contextvars.ContextVar("waymaker_knowledge_plan", default=None)
+
+
+def _build_knowledge_plan(prompt: str, *, lang: Optional[str], visa_code: Optional[str],
+                          visa_sub_code: Optional[str], task_type: Optional[str], risk_level: str,
+                          legal_issue_types: Optional[List[str]]) -> Any:
+    """Understanding -> retrieval -> coverage decision for this request."""
+    try:
+        plan = _knowledge_runtime.get_platform().plan(
+            prompt, detected=(visa_code, visa_sub_code, task_type, risk_level or "low"), lang=lang,
+            legal_issue_types=list(legal_issue_types or []), build_structured=False,
+        )
+    except Exception:  # pragma: no cover - the plan is advisory; answers must survive
+        logger.exception("knowledge plan failed")
+        return None
+    _KNOWLEDGE_PLAN_CTX.set(plan)
+    return plan
+
+
+def _knowledge_guard(text: str, lang: Optional[str], *, summary_only: bool) -> Any:
+    """Answer Guard over generated text (None when no plan is active)."""
+    plan = _KNOWLEDGE_PLAN_CTX.get()
+    if plan is None or not (text or "").strip():
+        return None
+    try:
+        return _knowledge_runtime.get_platform().check_summary(plan, text, lang=lang, summary_only=summary_only)
+    except Exception:  # pragma: no cover
+        logger.exception("answer guard failed")
+        return None
+
+
+def _knowledge_plan_meta() -> Optional[Dict[str, Any]]:
+    plan = _KNOWLEDGE_PLAN_CTX.get()
+    return plan.internal() if plan is not None else None
+
+
+def _record_knowledge_observation(prompt: str) -> Optional[str]:
+    """Privacy-minimized observation (+ coverage gap). Returns an opaque ref."""
+    plan = _KNOWLEDGE_PLAN_CTX.get()
+    if plan is None:
+        return None
+    try:
+        return _knowledge_runtime.get_platform().observe(plan, raw_query=prompt).get("observation_id")
+    except Exception:  # pragma: no cover - learning must never break an answer
+        logger.exception("knowledge observation failed")
+        return None
+
+
 def _finalize_structured_document_answer(
     answer: str,
     response_meta: Dict[str, Any],
@@ -2515,7 +2588,14 @@ def _finalize_structured_document_answer(
     legal-analysis repair memo, which is the wrong shape for a checklist.
     Returns ``(answer_text, meta)``.
     """
-    candidate = _structured_answer.apply_model_summary(structured, answer)
+    # Answer Guard on the only model text shown here (the lead summary). Any
+    # critical or high finding (invented document, certainty, leak, wrong
+    # status) drops the summary: the deterministic short answer is used and
+    # the canonical checklist is untouched either way.
+    summary = _structured_answer.extract_summary(answer)
+    guard = _knowledge_guard(summary, lang, summary_only=True) if summary else None
+    guard_replaced = bool(guard is not None and guard.high)
+    candidate = _structured_answer.apply_model_summary(structured, "" if guard_replaced else answer)
     text = _structured_answer.compose_plain_text(candidate, lang)
     try:
         gate = evaluate_answer_shape(text, response_meta, answer_shape_contract)
@@ -2538,9 +2618,13 @@ def _finalize_structured_document_answer(
         "answer_quality_gate_warnings": gate["warnings"],
         "missing_answer_slots": gate["missing_slots"],
         "answer_shape_failed_by_model": summary_replaced,
-        "model_answer_repaired_by_deterministic_synthesis": summary_replaced,
+        "model_answer_repaired_by_deterministic_synthesis": summary_replaced or guard_replaced,
         "copy_safe_answer": text,
     }
+    plan_meta = _knowledge_plan_meta()
+    if plan_meta is not None:
+        plan_meta["answer_guard_replaced_summary"] = guard_replaced
+        meta["knowledge_plan"] = plan_meta
     return text, meta
 
 
@@ -3296,6 +3380,9 @@ def _load_stay_manual_grounding() -> Optional[Dict[str, Any]]:
 def _reset_grounding_cache_for_tests() -> None:
     global _GROUNDING_CACHE
     _GROUNDING_CACHE = None
+    platform = _knowledge_runtime.platform_if_ready()
+    if platform is not None:
+        platform.retrieval.clear_cache()
 
 
 # Valid top-level main codes the normalizer recognizes. Used as a parsing
@@ -3471,7 +3558,9 @@ def _detect_visa_codes(
     # a longer D-4-2 sub-code; free-text sub-code routing still stays disabled.
     for code in sorted(_VALID_MAIN_CODES, key=len, reverse=True):
         letter, digit = code.split("-", 1)
-        pattern = rf"\b{letter}[\s-]?{re.escape(digit)}\b(?!-?\d)"
+        # Lookarounds instead of \b: Hangul counts as a word character, so
+        # "\b" missed codes glued to Korean text ("D-2비자", "E-7으로").
+        pattern = rf"(?<![A-Za-z0-9]){letter}[\s-]?{re.escape(digit)}(?![A-Za-z0-9])(?!-?\d)"
         if re.search(pattern, text, flags=re.IGNORECASE):
             return code, None
     return None, None
@@ -3599,69 +3688,56 @@ def _risk_level_for_task(task_type: Optional[str]) -> str:
     return _TASK_RISK_LEVELS.get(task_type or "", "low")
 
 
+# The knowledge platform reuses these detectors (no second router).
+_knowledge_runtime.register_detectors(_detect_visa_codes, _detect_task_type, _risk_level_for_task)
+
+
 def _select_grounding(
     visa_code: Optional[str],
     task_type: Optional[str],
     visa_sub_code: Optional[str] = None,
 ) -> Optional[Dict[str, Any]]:
-    """Return the grounding record for the request, or None.
+    """Return the verified document grounding for the request, or None.
 
-    The selector is sub-code-aware:
+    Reads PUBLISHED facts from the Waymaker Knowledge Platform
+    (services/knowledge) — the canonical runtime knowledge source. The legacy
+    stay_manual_grounding_2026_05.json file is now only the seed the platform
+    imports (with its human verification recorded as such); it is no longer
+    read here. The returned dict keeps the historical shape
+    (required_documents / caveats / section / page_range / ...), so the prompt
+    builder, structured answer and source card are unchanged.
 
-    1. If ``visa_sub_code`` is set, prefer an entry whose
-       ``visa_sub_code`` matches exactly.
-    2. Otherwise fall back to a "general" entry (``visa_sub_code`` is
-       null) **only** when that general entry explicitly lists the
-       requested sub-code in ``sub_codes_covered``. A general entry that
-       does not declare coverage is treated as not covering the sub-code,
-       so e.g. an E-7-4 request never silently inherits the general E-7
-       document list.
-    3. If ``visa_sub_code`` is not provided, only entries with
-       ``visa_sub_code`` null are eligible.
+    The selector is sub-code-aware (enforced in knowledge retrieval):
 
-    Codes outside _GROUNDED_VISA_CODES return None so unrelated visa
-    categories — including any sub-code whose top-level is not yet
-    grounded (D-10, F-6) — are unaffected.
+    1. If ``visa_sub_code`` is set, prefer a variant scoped to exactly that
+       sub-code.
+    2. Otherwise fall back to a parent-level variant **only** when it
+       explicitly lists the requested sub-code in ``sub_codes_covered``, so
+       e.g. an E-7-4 request never silently inherits the general E-7 list.
+    3. If ``visa_sub_code`` is not provided, only parent-level variants are
+       eligible.
+
+    Statuses / procedures without published document facts return None, so
+    unrelated visa categories (D-10, F-6, ...) are unaffected.
     """
-    if task_type != "extension":
-        return None
-    if visa_code not in _GROUNDED_VISA_CODES:
-        return None
-    bundle = _load_stay_manual_grounding()
-    if not bundle:
-        return None
-    entries = bundle.get("groundings", []) or []
-
-    if visa_sub_code:
-        # 1. Exact sub-code match wins.
-        for entry in entries:
-            if (
-                entry.get("visa_code") == visa_code
-                and entry.get("procedure_type") == "체류기간 연장허가"
-                and entry.get("visa_sub_code") == visa_sub_code
-            ):
-                return entry
-        # 2. Fall back to a general entry only if it explicitly covers this sub-code.
-        for entry in entries:
-            if (
-                entry.get("visa_code") == visa_code
-                and entry.get("procedure_type") == "체류기간 연장허가"
-                and entry.get("visa_sub_code") in (None, "")
-            ):
-                covered = entry.get("sub_codes_covered") or []
-                if isinstance(covered, list) and visa_sub_code in covered:
-                    return entry
+    try:
+        return _knowledge_runtime.get_platform().grounding_for(visa_code, task_type, visa_sub_code)
+    except Exception:  # pragma: no cover - knowledge lookup must never break /api/ask
+        logger.exception("knowledge grounding lookup failed")
         return None
 
-    # 3. No sub-code supplied: only general entries are eligible.
-    for entry in entries:
-        if (
-            entry.get("visa_code") == visa_code
-            and entry.get("procedure_type") == "체류기간 연장허가"
-            and entry.get("visa_sub_code") in (None, "")
-        ):
-            return entry
-    return None
+
+def _grounding_bundle(grounding: Optional[Dict[str, Any]]) -> Dict[str, Any]:
+    """Source header (title / edition / issuing body) for a grounding record.
+
+    Knowledge-backed groundings carry their own header; a hand-built grounding
+    (tests, legacy callers) falls back to the legacy file header.
+    """
+    meta = (grounding or {}).get("_knowledge") or {}
+    bundle = meta.get("bundle")
+    if isinstance(bundle, dict) and bundle:
+        return dict(bundle)
+    return _load_stay_manual_grounding() or {}
 
 
 def _answer_language_instruction(lang: Optional[str]) -> str:
@@ -5166,7 +5242,7 @@ def _ask_diagnostics_requested(req: "AskRequest", request: Optional[Request]) ->
 # and internal source records; the browser uses only its flat projections
 # (law_sources, legal_analysis, direct_manual_sources, ...), so the pack itself
 # is diagnostics-only.
-ASK_INTERNAL_PAYLOAD_FIELDS: Tuple[str, ...] = ("law_evidence_pack",)
+ASK_INTERNAL_PAYLOAD_FIELDS: Tuple[str, ...] = ("law_evidence_pack", "knowledge_plan")
 
 
 def _strip_internal_source_fields(value: Any) -> Any:
@@ -5265,9 +5341,12 @@ async def _public_sse_stream(body_iterator: Any):
 async def ask(req: AskRequest, request: Request):
     diagnostics = _ask_diagnostics_requested(req, request)
     started = time.monotonic()
+    _KNOWLEDGE_PLAN_CTX.set(None)
+    prompt_text = (req.message or req.query or req.question or "").strip()
     try:
         result = await _ask_internal(req)
     except HTTPException as exc:
+        _record_knowledge_observation(prompt_text)
         detail = exc.detail if isinstance(exc.detail, dict) else None
         _log_ask_routing_telemetry(
             detail, req=req, status_code=exc.status_code,
@@ -5281,6 +5360,7 @@ async def ask(req: AskRequest, request: Request):
             ) from None
         raise
     latency_ms = int((time.monotonic() - started) * 1000)
+    answer_ref = _record_knowledge_observation(prompt_text)
     if isinstance(result, StreamingResponse):
         _log_ask_routing_telemetry(
             {"answer_mode": req.answer_mode}, req=req, status_code=200,
@@ -5290,6 +5370,8 @@ async def ask(req: AskRequest, request: Request):
             result.body_iterator = _public_sse_stream(result.body_iterator)
         return result
     payload = result.model_dump() if isinstance(result, BaseModel) else dict(result or {})
+    if answer_ref:
+        payload["answer_ref"] = answer_ref
     _log_ask_routing_telemetry(payload, req=req, status_code=200, latency_ms=latency_ms)
     return JSONResponse(payload if diagnostics else _public_ask_payload(payload))
 
@@ -5448,7 +5530,7 @@ async def _ask_internal(req: AskRequest) -> AskResponse:
         else ""
     )
     if grounding is not None:
-        bundle = _load_stay_manual_grounding() or {}
+        bundle = _grounding_bundle(grounding)
         final_prompt = _build_grounded_prompt(prompt, grounding, bundle, lang=req.lang)
         grounding_sources = [_grounding_source_summary(grounding, bundle)]
         if visa_data_block:
@@ -5757,12 +5839,26 @@ async def _ask_internal(req: AskRequest) -> AskResponse:
         try:
             structured_answer = _structured_answer.build_document_answer(
                 grounding=grounding,
-                bundle=_load_stay_manual_grounding() or {},
+                bundle=_grounding_bundle(grounding),
                 lang=req.lang,
             )
         except Exception:  # pragma: no cover - structured view must never break /api/ask
             logger.exception("structured document answer build failed")
             structured_answer = None
+
+    # Knowledge Platform answer plan: deterministic understanding, retrieval of
+    # published facts and the coverage decision (services/knowledge). Reviewed
+    # facts that disagree are never resolved silently: their items move to the
+    # "needs confirmation" bucket of the structured answer.
+    knowledge_plan = _build_knowledge_plan(
+        prompt, lang=req.lang, visa_code=visa_code_detected, visa_sub_code=visa_sub_code_detected,
+        task_type=task_type_detected, risk_level=risk_level_detected,
+        legal_issue_types=(law_evidence_pack or {}).get("legal_issue_types") or [],
+    )
+    if (structured_answer is not None and knowledge_plan is not None
+            and knowledge_plan.retrieval is not None and knowledge_plan.retrieval.conflicts):
+        structured_answer = _knowledge_runtime.apply_conflict_view(
+            structured_answer, knowledge_plan.retrieval, _knowledge_runtime.get_platform().repo)
 
     # Answer-prompt integration (Part E): inject ONE compact, normalized
     # evidence summary (never a raw API dump) plus the backend-prepared legal
@@ -6023,6 +6119,8 @@ async def _ask_internal(req: AskRequest) -> AskResponse:
         # path below swaps in the model's short summary; the stream and
         # fallback paths keep this data-only version.
         base_meta["structured_answer"] = structured_answer
+    if knowledge_plan is not None:
+        base_meta["knowledge_plan"] = knowledge_plan.internal()
 
     # Apply the already-resolved question-aware tier.  This is deliberately
     # computed before case-law retrieval above so evidence depth and model depth
@@ -6149,6 +6247,34 @@ async def _ask_internal(req: AskRequest) -> AskResponse:
                 lang=req.lang,
             )
             response_meta.update(citation_guard_meta)
+            # Answer Guard (free-form answers). A critical finding — provider or
+            # internal-metadata leak, unsafe markup, a guaranteed-outcome claim —
+            # withholds the generated text; the deterministic answer is shown.
+            if structured_answer is None:
+                free_guard = _knowledge_guard(answer_text, req.lang, summary_only=False)
+                if free_guard is not None and free_guard.blocked and all(
+                        f.check in _knowledge_guard_mod.LEAK_CHECKS
+                        for f in free_guard.findings if f.severity == "critical"):
+                    # Leak-only findings: drop the leaking lines (as the
+                    # internal-metadata scrub does) when the rest stands alone.
+                    scrubbed = _knowledge_guard_mod.scrub_leaks(answer_text)
+                    if len(scrubbed) >= 40:
+                        answer_text = scrubbed
+                        free_guard = _knowledge_guard(answer_text, req.lang, summary_only=False)
+                if free_guard is not None and free_guard.blocked:
+                    guarded = _build_deterministic_fallback_payload(
+                        prompt, req.lang, base_meta, attempt_meta, reason="answer_guard_blocked",
+                    )
+                    # The model did answer; only its text was withheld. Keep the
+                    # routing diagnostics truthful (diagnostics-only fields).
+                    guarded.update(llm_unavailable=False, provider_unavailable=False,
+                                   final_model=attempt_meta.get("final_model"))
+                    plan_meta = _knowledge_plan_meta() or {}
+                    plan_meta["answer_guard_blocked"] = True
+                    guarded["knowledge_plan"] = plan_meta
+                    return AskResponse(**guarded)
+                if free_guard is not None:
+                    response_meta["knowledge_plan"] = _knowledge_plan_meta()
             # Post-generation safety sanity check (defense-in-depth). Conservative
             # and low-latency: only the most acute facilitation categories trip,
             # which a compliant answer never matches. If it trips, withhold the
@@ -8217,3 +8343,15 @@ if __name__ == "__main__":  # pragma: no cover
         port=port,
         reload=bool(os.environ.get("RELOAD")),
     )
+
+
+# ---------------------------------------------------------------------------
+# Waymaker Knowledge Platform HTTP surface (services/knowledge/api.py):
+# public answer feedback + published-knowledge export, and the
+# operator-authenticated Knowledge Studio API (closed unless
+# WAYMAKER_OPERATOR_TOKENS is configured).
+# ---------------------------------------------------------------------------
+app.include_router(build_knowledge_router(
+    _knowledge_runtime.get_platform,
+    feedback_rate_limit=rate_limit("feedback", per_minute=10, per_day=200),
+))

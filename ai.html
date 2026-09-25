@@ -2202,6 +2202,63 @@
             scrollConversationToEnd(row);
         }
 
+        // Structured answer feedback (Waymaker Knowledge Platform learning loop).
+        // Fixed reasons only — no free-text box, so no personal narrative is
+        // ever collected. The opaque answer_ref links the report to the
+        // privacy-minimized server observation; nothing else is sent.
+        const FEEDBACK_REASONS = [
+            ['HELPFUL', { ko: '도움이 됐어요', en: 'Helpful', zh: '有帮助', zhHant: '有幫助' }],
+            ['INCORRECT', { ko: '틀린 내용이 있어요', en: 'Something is wrong', zh: '内容有误', zhHant: '內容有誤' }],
+            ['MISSING_INFORMATION', { ko: '빠진 정보가 있어요', en: 'Something is missing', zh: '缺少信息', zhHant: '缺少資訊' }],
+            ['OUTDATED', { ko: '예전 정보 같아요', en: 'Looks outdated', zh: '信息过时', zhHant: '資訊過時' }],
+            ['SOURCE_PROBLEM', { ko: '출처가 이상해요', en: 'Source looks wrong', zh: '出处有问题', zhHant: '出處有問題' }],
+            ['MISUNDERSTOOD_QUESTION', { ko: '질문을 잘못 이해했어요', en: 'Misread my question', zh: '误解了问题', zhHant: '誤解了問題' }],
+            ['HARD_TO_UNDERSTAND', { ko: '이해하기 어려워요', en: 'Hard to understand', zh: '难以理解', zhHant: '難以理解' }],
+            ['TOO_LONG', { ko: '너무 길어요', en: 'Too long', zh: '太长', zhHant: '太長' }],
+        ];
+        function buildAnswerFeedback(result, lang) {
+            const ref = result && typeof result.answer_ref === 'string' ? result.answer_ref : '';
+            if (!/^obs_[a-f0-9]{8,40}$/.test(ref)) return null;
+            const box = document.createElement('details');
+            box.className = 'answer-feedback';
+            const summary = document.createElement('summary');
+            summary.textContent = tt(lang, { ko: '이 답변 평가하기', en: 'Rate this answer', zh: '评价此回答', zhHant: '評價此回答' });
+            box.appendChild(summary);
+            const group = document.createElement('div');
+            group.className = 'answer-feedback-reasons';
+            group.setAttribute('role', 'group');
+            group.setAttribute('aria-label', summary.textContent);
+            const note = document.createElement('p');
+            note.className = 'answer-feedback-status';
+            note.setAttribute('role', 'status');
+            FEEDBACK_REASONS.forEach(([code, labels]) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'answer-feedback-btn';
+                btn.textContent = tt(lang, labels);
+                btn.addEventListener('click', async () => {
+                    group.querySelectorAll('button').forEach((b) => { b.disabled = true; });
+                    const feedbackPayload = JSON.stringify({ reason: code, answer_ref: ref, language: lang || '' });
+                    try {
+                        const res = await fetch(`${API_BASE}/api/feedback`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: feedbackPayload,
+                        });
+                        if (!res.ok) throw new Error(String(res.status));
+                        note.textContent = tt(lang, { ko: '알려 주셔서 고마워요. 검토에 반영할게요.', en: 'Thanks — this goes to our review queue.', zh: '谢谢，我们会纳入审核。', zhHant: '謝謝，我們會納入審核。' });
+                    } catch (e) {
+                        group.querySelectorAll('button').forEach((b) => { b.disabled = false; });
+                        note.textContent = tt(lang, { ko: '지금은 보내지 못했어요. 잠시 후 다시 시도해 주세요.', en: 'Could not send right now. Please try again shortly.', zh: '暂时无法发送，请稍后再试。', zhHant: '暫時無法傳送，請稍後再試。' });
+                    }
+                });
+                group.appendChild(btn);
+            });
+            box.appendChild(group);
+            box.appendChild(note);
+            return box;
+        }
+
         function appendAiAnswer(rawResult, lang) {
             const hist = document.getElementById('chatHistory');
             if (!hist) return;
@@ -2279,6 +2336,9 @@
                 if (slot && card) slot.appendChild(card);
                 else if (slot) slot.innerHTML = formatAnswerText(answer, lang);
             }
+            const feedback = buildAnswerFeedback(result, lang);
+            const cardEl = row.querySelector('.answer-card');
+            if (feedback && cardEl) cardEl.appendChild(feedback);
             hist.appendChild(row);
             rememberTurn('assistant', copyText);
             scrollConversationToEnd(row);

@@ -13,6 +13,7 @@
  "answer_quality_gate_passed": true,
  "answer_quality_gate_warnings": [],
  "answer_quality_mode": "source_confirmed",
+ "answer_ref": "<volatile>",
  "answer_shape_contract": "documents_needed",
  "answer_shape_failed_by_model": false,
  "answer_shape_version": "2026-05-answer-shape-gate-v1",
