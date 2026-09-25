@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="referrer" content="no-referrer">
+  <title>Waymaker Knowledge Studio</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="assets/css/knowledge-studio.css">
+</head>
+<body>
+  <!--
+    Waymaker Knowledge Studio — operator surface of the Knowledge Platform.
+    This page holds NO data and NO credentials. Everything shown is fetched
+    from the operator-authenticated API (/api/knowledge/studio/*), which is
+    closed unless the backend sets WAYMAKER_OPERATOR_TOKENS. The operator
+    token lives only in this tab's sessionStorage.
+    See docs/ai/WAYMAKER_KNOWLEDGE_PLATFORM.md §Knowledge Studio.
+  -->
+  <a class="ks-skip" href="#ks-main">본문으로 건너뛰기</a>
+  <header class="ks-header">
+    <div class="ks-brand">
+      <span class="ks-brand-mark" aria-hidden="true">W</span>
+      <div>
+        <p class="ks-brand-title">Waymaker Knowledge Studio</p>
+        <p class="ks-brand-sub">검증된 지식 · 검토 · 커버리지 · 평가</p>
+      </div>
+    </div>
+    <div class="ks-session" id="ks-session" hidden>
+      <span id="ks-operator" class="ks-operator"></span>
+      <button type="button" class="ks-btn ks-btn-quiet" id="ks-signout">로그아웃</button>
+    </div>
+  </header>
+
+  <section class="ks-login" id="ks-login" aria-labelledby="ks-login-title">
+    <h1 id="ks-login-title">운영자 로그인</h1>
+    <p class="ks-muted">지식 검토·게시는 인증된 운영자만 할 수 있습니다. 토큰은 이 탭에만 보관되고 탭을 닫으면 사라집니다.</p>
+    <form id="ks-login-form" class="ks-form" autocomplete="off">
+      <label for="ks-token">운영자 토큰</label>
+      <input id="ks-token" name="token" type="password" required minlength="16" autocomplete="off" spellcheck="false">
+      <button type="submit" class="ks-btn ks-btn-primary">연결</button>
+    </form>
+    <p id="ks-login-error" class="ks-error" role="alert" hidden></p>
+  </section>
+
+  <div class="ks-app" id="ks-app" hidden>
+    <nav class="ks-nav" aria-label="Knowledge Studio">
+      <ul role="tablist" id="ks-tabs">
+        <li role="presentation"><button type="button" role="tab" data-view="overview" aria-selected="true">개요</button></li>
+        <li role="presentation"><button type="button" role="tab" data-view="queue" aria-selected="false">검토 대기열</button></li>
+        <li role="presentation"><button type="button" role="tab" data-view="facts" aria-selected="false">지식</button></li>
+        <li role="presentation"><button type="button" role="tab" data-view="conflicts" aria-selected="false">충돌</button></li>
+        <li role="presentation"><button type="button" role="tab" data-view="sources" aria-selected="false">출처·버전</button></li>
+        <li role="presentation"><button type="button" role="tab" data-view="gaps" aria-selected="false">커버리지 공백</button></li>
+        <li role="presentation"><button type="button" role="tab" data-view="unknown" aria-selected="false">미지 질문</button></li>
+        <li role="presentation"><button type="button" role="tab" data-view="evals" aria-selected="false">평가</button></li>
+        <li role="presentation"><button type="button" role="tab" data-view="audit" aria-selected="false">감사 기록</button></li>
+      </ul>
+    </nav>
+    <main id="ks-main" class="ks-main" tabindex="-1">
+      <p id="ks-status" class="ks-live" role="status" aria-live="polite"></p>
+      <div id="ks-view" class="ks-view" role="tabpanel" aria-label="선택한 화면"></div>
+    </main>
+  </div>
+
+  <dialog id="ks-dialog" class="ks-dialog" aria-labelledby="ks-dialog-title">
+    <form method="dialog" id="ks-dialog-form">
+      <h2 id="ks-dialog-title"></h2>
+      <div id="ks-dialog-body"></div>
+      <div class="ks-dialog-actions">
+        <button type="button" class="ks-btn ks-btn-quiet" value="cancel" id="ks-dialog-cancel">취소</button>
+        <button type="submit" class="ks-btn ks-btn-primary" value="confirm" id="ks-dialog-confirm">확인</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="assets/js/backend-origin.js"></script>
+  <script src="assets/js/knowledge-studio.js"></script>
+</body>
+</html>
