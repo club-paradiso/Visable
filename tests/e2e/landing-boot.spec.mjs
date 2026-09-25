@@ -235,6 +235,10 @@ test.describe('Waymaker and New Home entries', () => {
     await page.locator('.cs-tools-core .cs-tool[data-cs-tool="waymaker"]').click();
     await expect(page).toHaveURL(/ai\.html$/);
     await expect(page.locator('body')).toHaveClass(/product-waymaker/);
+    await expect(page.locator('.vf-product-wordmark.product-wordmark-light')).toBeVisible();
+    await expect(page.locator('.wm-brand-wordmark .product-wordmark-light')).toBeVisible();
+    await expect(page.locator('.vf-product-wordmark.product-wordmark-light')).toHaveAttribute('src', /waymaker-wordmark\.svg$/);
+    expect(await page.locator('.wm-brand-wordmark .product-wordmark-light').evaluate((img) => img.complete && img.naturalWidth > 0)).toBe(true);
     await page.goBack();
     await expect(page).toHaveURL(/index\.html/);
     await expect(page.locator('#civicQuery')).toBeVisible();
@@ -246,6 +250,10 @@ test.describe('Waymaker and New Home entries', () => {
     await page.locator('.cs-tools-core .cs-tool[data-cs-tool="newhome"]').click();
     await expect(page).toHaveURL(/new-home\.html$/);
     await expect(page.locator('body')).toHaveClass(/product-new-home/);
+    await expect(page.locator('.vf-product-wordmark.product-wordmark-light')).toBeVisible();
+    await expect(page.locator('.nh-brand-wordmark .product-wordmark-light')).toBeVisible();
+    await expect(page.locator('.vf-product-wordmark.product-wordmark-light')).toHaveAttribute('src', /new-home-wordmark\.svg$/);
+    expect(await page.locator('.nh-brand-wordmark .product-wordmark-light').evaluate((img) => img.complete && img.naturalWidth > 0)).toBe(true);
     await page.goBack();
     await expect(page).toHaveURL(/index\.html/);
     await expect(page.locator('#civicQuery')).toBeVisible();

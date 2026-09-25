@@ -138,6 +138,18 @@ body[data-theme="dark"] .nh-hero::before {
 .nh-hero-inner { max-width: calc(var(--nh-max) + 2 * var(--nh-pad)); margin: 0 auto; padding-inline: var(--nh-pad); }
 .nh-hero-copy { max-width: 680px; }
 .nh-kicker { display: inline-block; color: var(--vp-green); font-size: 15px; font-weight: 720; letter-spacing: -0.005em; }
+.nh-brand-wordmark {
+  width: 260px;
+  height: 52px;
+  margin-top: 16px;
+  overflow: hidden;
+}
+.nh-brand-wordmark-img {
+  display: block;
+  width: 260px;
+  height: 52px;
+  object-fit: contain;
+}
 .nh-title {
   margin-top: 16px;
   color: var(--vp-ink);
@@ -625,4 +637,10 @@ body[data-theme="dark"] .nh-footer-mark { filter: invert(1); }
 @media (prefers-reduced-motion: reduce) {
   .skip-link, .nh-btn, .nh-btn-arrow, .nh-card-cta::after, .nh-card--primary, .nh-hub-item::after,
   .nh-journey-dot, .nh-journey-link::after, .nh-path-toggle { transition: none; }
+}
+
+/* Canonical Figma wordmark stays legible without crowding the hero on phones. */
+@media (max-width: 680px) {
+  .nh-brand-wordmark { width: 220px; height: 44px; margin-top: 14px; }
+  .nh-brand-wordmark-img { width: 220px; height: 44px; }
 }
