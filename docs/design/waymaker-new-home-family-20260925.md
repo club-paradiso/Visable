@@ -88,7 +88,7 @@ Captured on `main` in Chromium (light/dark, 390 and 1440, Pretendard loaded):
   icon style toggle (current style in the tooltip/hidden label) and brightness.
   Sticky in-page navigation marks the section being read (`aria-current`).
 * Arrival: left-aligned kicker, title, "Welcome home.", lead, one primary CTA
-  (준비 상태 확인), Visable as a text link, three checked facts, footnote. The
+  (준비 상태 확인), Visable as a text link, three plain facts (middot list, no check marks), footnote. The
   marquee and fake pagination dots are removed; the warm light stays behind
   the right side only.
 * "무엇을 도와드릴까요?": two starting points (readiness check, path finder)
