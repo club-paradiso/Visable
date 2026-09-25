@@ -222,6 +222,10 @@ jobs:
               timeout=65.0,
           )
           waymaker_elapsed_ms = int(round((time.perf_counter() - started) * 1000))
+          # Error envelopes (503 etc.) carry the diagnostics under "detail";
+          # read them there so a failure is never logged as all-null fields.
+          if waymaker_status != 200 and isinstance(waymaker, dict) and isinstance(waymaker.get("detail"), dict):
+              waymaker = {**waymaker["detail"], "error_envelope": True}
           waymaker_answer = str(waymaker.get("answer") or "") if isinstance(waymaker, dict) else ""
           waymaker_live = (
               waymaker_status == 200
@@ -240,7 +244,7 @@ jobs:
               "upstream_statuses": waymaker.get("upstream_statuses") or [],
               "skipped_models_due_to_cooldown": waymaker.get("skipped_models_due_to_cooldown") or [],
               "cooling_down_models": waymaker.get("cooling_down_models") or [],
-              "provider_error_type": waymaker.get("provider_error_type") or None,
+              "provider_error_type": waymaker.get("provider_error_type") or waymaker.get("error") or None,
               "chain_budget_exhausted": bool(waymaker.get("chain_budget_exhausted")),
               "deterministic_fallback": bool(waymaker.get("deterministic_fallback_answer_used")),
               "visa_code_detected": waymaker.get("visa_code_detected") or None,
