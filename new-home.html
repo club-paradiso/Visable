@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#f5f2ea">
+<meta name="theme-color" content="#ffffff">
 <meta name="description" content="New Home by Paradiso — 귀화, 국적회복, 국적판정, 복수국적, 사회통합프로그램(KIIP), 면접, 귀화 후 절차까지 단계별 안내. Step-by-step guidance for Korean nationality and naturalization.">
 <title>New Home by Paradiso — 국적·귀화 안내</title>
 <link rel="icon" type="image/svg+xml" href="assets/brand/visable-favicon.svg?v=1">
@@ -24,606 +24,50 @@
 <!-- Pretendard — already used across Paradiso; no new external font is introduced. -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 
-<style>
-/* ── Design tokens (mirrors the Paradiso main page so the look is shared) ── */
-:root {
-  --ff: "Pretendard", "Pretendard Variable", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --bg0: #F4EFE4; --bg1: #FFFCF5; --bg2: #ECE5D6; --bg3: #E0D8C6;
-  --bd: #d1c6b4; --bd2: #ddd3c3;
-  --t1: #073B32; --t2: #3A544C; --t3: #6E7A74;
-  --ac: #0E8A6B; --ac2: #073B32; --acG: rgba(47,94,103,0.10); --acL: #e1eaec;
-  --ac-ink: #fff;
-  --cy: #FF6B5B; --cyL: #FFE2DB; --cyT: #8A3426;
-  --ok: #0EA37B; --warn: #E68A3A;
-  --r-sm: 8px; --r-md: 12px; --r-lg: 18px; --r-xl: 26px;
-  --sh1: 0 1px 2px rgba(24,28,26,0.05);
-  --sh2: 0 10px 28px -10px rgba(24,28,26,0.18);
-  --shCard: 0 2px 12px rgba(31,107,94,0.08);
-  --maxw: 1040px;
-}
-/* Brightness: dark mode lives on <body data-theme="dark"> */
-[data-theme="dark"] {
-  --bg0: #0B2A24; --bg1: #113B32; --bg2: #184B40; --bg3: #205A4E;
-  --bd: #2D5A50; --bd2: #224A41;
-  --t1: #F3EEDF; --t2: #C7BFA8; --t3: #8C8572;
-  --ac: #3BE4B8; --ac2: #22C9A0; --acG: rgba(52,212,168,0.14); --acL: #163E36;
-  /* 다크 accent(#3BE4B8)는 밝은 민트라 흰 텍스트가 1.62:1로 사실상 안 보였다.
-     진한 잉크로 8.02:1 확보 — 라이트는 흰 텍스트 그대로 둔다(4.32:1, 이미 정상). */
-  --ac-ink: #083830;
-  --cy: #FF8B7A; --cyL: #3A1E1A; --cyT: #FFB5A5;
-  --sh1: 0 1px 4px rgba(0,0,0,0.35);
-  --sh2: 0 12px 32px -10px rgba(0,0,0,0.55);
-  --shCard: 0 6px 20px rgba(0,0,0,0.4);
-}
-/* Editorial-pop (kitsch) theme — shared archive_diary palette */
-:root[data-theme="archive_diary"] {
-  --k-cream: #FFF7E8; --k-ink: #141414; --k-pink: #FF8ED1; --k-pink-deep: #F451B0;
-  --k-blue: #2F5EFC; --k-butter: #FFE45E; --k-lime: #C2FF44;
-  --bg0: #EEF3FF; --bg1: #FFFFFF; --bg2: #F4F7FF; --bg3: #E6EDFF;
-  --bd: #C2D2EE; --bd2: #DCE5F8;
-  --t1: #141414; --t2: #353A45; --t3: #6B7280;
-  --ac: #2F5EFC; --ac2: #1B36C9; --acG: rgba(47,94,252,0.12); --acL: #E3EAFF;
-  --cy: #F451B0; --cyL: #FFE3F4; --cyT: #8A0F58;
-  --ok: #1F8A5B; --warn: #EF8A2C;
-  --shCard: 4px 4px 0 var(--k-ink);
-  --sh2: 5px 6px 0 rgba(20,20,40,0.14);
-}
-:root[data-theme="archive_diary"] [data-theme="dark"] {
-  --bg0: #14182B; --bg1: #1B2138; --bg2: #232B47; --bg3: #2C3656;
-  --bd: #38456A; --bd2: #2B3658;
-  --t1: #EEF2FF; --t2: #BAC5E4; --t3: #8C97BE;
-  --ac: #6EC6FF; --ac2: #2F5EFC; --acG: rgba(110,198,255,0.14); --acL: #1E2746;
-  --cy: #FF8ED1; --cyL: #2E1B2A; --cyT: #FFC4E8;
-  --shCard: 4px 4px 0 #0A0D17;
-}
-
-* { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; }
-body {
-  margin: 0;
-  font-family: var(--ff);
-  background: var(--bg0);
-  color: var(--t1);
-  line-height: 1.6;
-  font-size: clamp(15px, 1.2vw, 16px);
-  -webkit-font-smoothing: antialiased;
-}
-a { color: var(--ac); }
-h1, h2, h3 { line-height: 1.25; letter-spacing: -0.01em; }
-.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
-:focus-visible { outline: 2px solid var(--ac); outline-offset: 2px; border-radius: 4px; }
-
-/* ── Top bar ── */
-.nh-topbar {
-  position: sticky; top: 0; z-index: 50;
-  display: flex; align-items: center; justify-content: space-between; gap: 0.75rem;
-  padding: 0.7rem clamp(1rem, 4vw, 2rem);
-  background: color-mix(in srgb, var(--bg1) 86%, transparent);
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--bd2);
-}
-.nh-back {
-  display: inline-flex; align-items: center; gap: 0.4rem;
-  min-height: 40px; padding: 0 0.85rem;
-  font-weight: 700; font-size: 0.9rem; text-decoration: none;
-  color: var(--t1); border: 1px solid var(--bd); border-radius: 999px; background: var(--bg2);
-  transition: border-color 0.18s, background 0.18s, transform 0.18s;
-}
-.nh-back:hover { border-color: var(--ac); transform: translateX(-2px); }
-.nh-back-label-short { display: none; }
-.nh-controls { display: flex; gap: 0.4rem; position: relative; }
-.nh-lang-wrap { position: relative; }
-.nh-lang-menu {
-  position: absolute; top: calc(100% + 0.45rem); inset-inline-end: 0; z-index: 80;
-  display: none; width: min(18rem, calc(100vw - 1.5rem)); max-height: min(70vh, 30rem);
-  overflow-y: auto; padding: 0.4rem;
-  border: 1px solid var(--bd); border-radius: 12px; background: var(--bg1); box-shadow: var(--sh2);
-}
-.nh-lang-menu.open { display: grid; gap: 0.2rem; }
-.nh-lang-option {
-  width: 100%; min-height: 44px; padding: 0.55rem 0.65rem;
-  display: grid; grid-template-columns: 2.4rem minmax(0, 1fr) auto; align-items: center; gap: 0.55rem;
-  border: 0; border-radius: 8px; background: transparent; color: var(--t1);
-  text-align: start; font: inherit; cursor: pointer;
-}
-.nh-lang-option:hover, .nh-lang-option:focus-visible { background: var(--bg2); }
-.nh-lang-option[aria-selected="true"] { background: var(--acL); color: var(--ac2); }
-.nh-lang-option-code { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.05em; color: var(--ac2); }
-.nh-lang-option-name { min-width: 0; font-size: 0.84rem; font-weight: 800; overflow-wrap: anywhere; }
-.nh-lang-option-state { color: var(--ac2); font-weight: 800; }
-.nh-lang-option-note {
-  display: inline-block; margin-inline-start: 0.35rem; color: var(--t3); font-size: 0.65rem; font-weight: 700;
-}
-.nh-lang-note {
-  position: absolute; top: 100%; inset-inline-end: 0; margin-top: 0.35rem; z-index: 60;
-  max-width: 280px; padding: 0.35rem 0.55rem;
-  border: 1px solid var(--bd); border-radius: 10px; background: var(--bg1); box-shadow: var(--sh2);
-  font-size: 0.7rem; line-height: 1.45; font-weight: 400; color: var(--t3); text-align: start;
-}
-.nh-ctl {
-  min-height: 40px; min-width: 40px; padding: 0 0.75rem;
-  font-family: var(--ff); font-weight: 700; font-size: 0.85rem;
-  color: var(--t2); background: var(--bg2); border: 1px solid var(--bd); border-radius: 999px; cursor: pointer;
-  transition: border-color 0.18s, color 0.18s, background 0.18s;
-}
-.nh-ctl:hover { border-color: var(--ac); color: var(--t1); }
-
-.nh-section-nav {
-  position: sticky; top: 64px; z-index: 45;
-  display: flex; justify-content: center; gap: 0.35rem;
-  padding: 0.45rem clamp(1rem, 4vw, 2rem);
-  overflow-x: auto; scrollbar-width: none;
-  background: color-mix(in srgb, var(--bg0) 92%, transparent);
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--bd2);
-}
-.nh-section-nav::-webkit-scrollbar { display: none; }
-.nh-section-nav a {
-  flex: 0 0 auto; padding: 0.42rem 0.72rem; border-radius: 999px;
-  color: var(--t2); text-decoration: none; font-size: 0.78rem; font-weight: 800;
-  border: 1px solid transparent;
-}
-.nh-section-nav a:hover, .nh-section-nav a:focus-visible { color: var(--t1); border-color: var(--bd); background: var(--bg1); }
-
-main { display: block; }
-.nh-wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 clamp(1rem, 4vw, 2rem); }
-
-/* ── Hero ── */
-.nh-hero {
-  position: relative; overflow: hidden;
-  padding: clamp(2.4rem, 6vw, 4.2rem) clamp(1rem, 4vw, 2rem) clamp(1.8rem, 4vw, 2.6rem);
-  background:
-    radial-gradient(120% 90% at 90% -10%, var(--cyL) 0%, transparent 55%),
-    radial-gradient(110% 80% at -10% 0%, var(--acL) 0%, transparent 50%),
-    var(--bg1);
-  border-bottom: 1px solid var(--bd2);
-}
-.nh-hero-inner { max-width: var(--maxw); margin: 0 auto; position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(250px, 0.7fr); gap: clamp(1.4rem, 4vw, 3rem); align-items: center; }
-.nh-hero-copy { min-width: 0; }
-.nh-kicker {
-  display: inline-block; margin: 0 0 0.8rem;
-  font-size: 0.78rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
-  color: var(--ac2); padding: 0.3rem 0.7rem; border: 1px solid var(--bd); border-radius: 999px; background: var(--bg2);
-}
-.nh-title { margin: 0; font-size: clamp(2rem, 6vw, 3.3rem); font-weight: 800; }
-.nh-tagline { margin: 0.35rem 0 0; font-size: clamp(1.1rem, 2.6vw, 1.5rem); font-weight: 700; font-style: italic; color: var(--cyT); }
-.nh-lead { margin: 1rem 0 0; max-width: 60ch; font-size: clamp(0.98rem, 1.6vw, 1.1rem); color: var(--t2); }
-.nh-cta-row { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 1.5rem; }
-.nh-btn {
-  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
-  min-height: 50px; padding: 0 1.4rem;
-  font-family: var(--ff); font-weight: 800; font-size: 0.98rem; cursor: pointer;
-  border-radius: var(--r-md); border: 1px solid transparent; text-decoration: none;
-  transition: transform 0.18s, box-shadow 0.18s, background 0.18s, border-color 0.18s;
-}
-.nh-btn-primary { background: var(--ac); color: var(--ac-ink); box-shadow: var(--sh2); }
-.nh-btn-primary:hover { transform: translateY(-2px); }
-.nh-btn-secondary { background: var(--bg1); color: var(--t1); border-color: var(--bd); }
-.nh-btn-secondary:hover { border-color: var(--ac); transform: translateY(-2px); }
-.nh-proof-row { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 0.85rem; }
-.nh-proof-row span { padding: 0.28rem 0.62rem; border-radius: 999px; border: 1px solid var(--bd); background: color-mix(in srgb, var(--bg1) 86%, transparent); color: var(--t2); font-size: 0.76rem; font-weight: 750; }
-.nh-hero-guide { padding: 1.1rem; border: 1px solid var(--bd); border-radius: var(--r-lg); background: color-mix(in srgb, var(--bg1) 88%, transparent); box-shadow: var(--shCard); }
-.nh-hero-guide h2 { margin: 0 0 0.25rem; font-size: 1rem; }
-.nh-hero-guide p { margin: 0 0 0.75rem; color: var(--t2); font-size: 0.82rem; }
-.nh-guide-link { width: 100%; display: grid; grid-template-columns: 2rem 1fr auto; align-items: center; gap: 0.55rem; padding: 0.68rem 0.72rem; margin-top: 0.45rem; border: 1px solid var(--bd); border-radius: var(--r-md); background: var(--bg1); color: var(--t1); font-family: var(--ff); text-align: left; text-decoration: none; cursor: pointer; }
-.nh-guide-link:hover { border-color: var(--ac); }
-.nh-guide-num, .nh-card-icon, .nh-path-icon { font-variant-numeric: tabular-nums; letter-spacing: 0.04em; }
-.nh-guide-num { font-size: 0.72rem; font-weight: 900; color: var(--ac); }
-.nh-guide-link strong { font-size: 0.86rem; }
-.nh-guide-arrow { color: var(--ac); font-weight: 900; }
-.nh-notice {
-  display: flex; gap: 0.6rem; align-items: flex-start;
-  margin-top: 1.6rem; max-width: 72ch; padding: 0.85rem 1rem;
-  background: var(--acG); border: 1px solid color-mix(in srgb, var(--ac) 28%, transparent);
-  border-radius: var(--r-md); color: var(--t2); font-size: 0.88rem;
-}
-.nh-notice-icon { flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; width: 1.25rem; height: 1.25rem; border: 1px solid var(--bd); border-radius: 999px; color: var(--ac); font-size: 0.72rem; font-weight: 900; font-family: ui-serif, Georgia, serif; }
-
-/* ── Sections ── */
-section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding: clamp(2rem, 5vw, 3rem) 0; }
-.nh-section-h { display: flex; align-items: baseline; gap: 0.6rem; flex-wrap: wrap; }
-.nh-section-h h2 { margin: 0; font-size: clamp(1.3rem, 3vw, 1.8rem); }
-.nh-section-intro { margin: 0.6rem 0 1.4rem; max-width: 70ch; color: var(--t2); }
-
-/* ── Dashboard grid ── */
-.nh-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: clamp(0.8rem, 1.6vw, 1.1rem); }
-.nh-card {
-  display: flex; flex-direction: column; gap: 0.5rem; text-align: left;
-  padding: 1.2rem 1.25rem; min-height: 168px;
-  background: var(--bg1); border: 1px solid var(--bd); border-radius: var(--r-lg);
-  box-shadow: var(--shCard); cursor: pointer; font-family: var(--ff); color: var(--t1);
-  transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
-}
-.nh-card:hover, .nh-card:focus-visible { transform: translateY(-3px); border-color: var(--ac); }
-.nh-card-icon {
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 44px; height: 44px; border-radius: 12px; font-size: 0.78rem; font-weight: 900;
-  background: var(--acG); border: 1px solid color-mix(in srgb, var(--ac) 24%, transparent);
-}
-.nh-card-label { font-size: 1.08rem; font-weight: 800; }
-.nh-card-desc { font-size: 0.88rem; color: var(--t2); flex: 1; }
-.nh-card-cta { font-size: 0.85rem; font-weight: 800; color: var(--ac); display: inline-flex; align-items: center; gap: 0.3rem; }
-.nh-card-cta::after { content: "→"; transition: transform 0.18s; }
-.nh-card:hover .nh-card-cta::after { transform: translateX(3px); }
-.nh-card[data-variant="waymaker"] .nh-card-icon { background: var(--cyL); border-color: color-mix(in srgb, var(--cy) 40%, transparent); color: var(--cyT); }
-
-/* ── Pathway preview ── */
-.nh-pathway { background: var(--bg2); border-top: 1px solid var(--bd2); border-bottom: 1px solid var(--bd2); }
-.nh-pathway-steps { list-style: none; counter-reset: step; margin: 1.2rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: stretch; }
-.nh-pathway-steps li {
-  counter-increment: step; position: relative; flex: 1 1 170px;
-  padding: 0.9rem 1rem 0.9rem 2.6rem;
-  background: var(--bg1); border: 1px solid var(--bd); border-radius: var(--r-md);
-  font-size: 0.88rem; font-weight: 600; color: var(--t1);
-}
-.nh-pathway-steps li::before {
-  content: counter(step); position: absolute; left: 0.8rem; top: 0.85rem;
-  width: 1.4rem; height: 1.4rem; border-radius: 999px; background: var(--ac); color: var(--ac-ink);
-  font-size: 0.78rem; font-weight: 800; display: inline-flex; align-items: center; justify-content: center;
-}
-
-/* ── Generic content blocks ── */
-.nh-block { border-bottom: 1px solid var(--bd2); }
-.nh-sub-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 0.8rem; margin-top: 1.2rem; }
-.nh-sub-item { padding: 1rem 1.1rem; background: var(--bg1); border: 1px solid var(--bd); border-radius: var(--r-md); }
-.nh-sub-item h3 { margin: 0 0 0.35rem; font-size: 0.98rem; }
-.nh-sub-item p { margin: 0; font-size: 0.85rem; color: var(--t2); }
-.nh-inline-note {
-  margin-top: 1.1rem; padding: 0.75rem 0.95rem; font-size: 0.85rem; color: var(--t2);
-  background: color-mix(in srgb, var(--warn) 10%, var(--bg1)); border: 1px solid color-mix(in srgb, var(--warn) 32%, transparent); border-radius: var(--r-md);
-}
-
-/* ── Checklist ── */
-.nh-checklist { list-style: none; margin: 1.2rem 0 0; padding: 0; display: grid; gap: 0.55rem; }
-.nh-checklist li { display: flex; gap: 0.7rem; align-items: flex-start; padding: 0.8rem 1rem; background: var(--bg1); border: 1px solid var(--bd); border-radius: var(--r-md); }
-.nh-check-box { flex-shrink: 0; width: 1.3rem; height: 1.3rem; border: 2px solid var(--ac); border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; color: var(--ac); font-size: 0.85rem; font-weight: 800; }
-.nh-check-body strong { display: block; font-size: 0.95rem; }
-.nh-check-body span { font-size: 0.83rem; color: var(--t2); }
-.nh-check-caution { color: var(--cyT) !important; font-weight: 700; }
-
-/* ── Hub ── */
-.nh-hub-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.7rem; margin-top: 1.2rem; }
-.nh-hub-item { text-align: left; padding: 1rem 1.05rem; background: var(--bg1); border: 1px solid var(--bd); border-radius: var(--r-md); cursor: pointer; font-family: var(--ff); color: var(--t1); transition: transform 0.18s, border-color 0.18s; }
-.nh-hub-item:hover, .nh-hub-item:focus-visible { transform: translateY(-2px); border-color: var(--ac); }
-.nh-hub-item h3 { margin: 0 0 0.3rem; font-size: 0.98rem; }
-.nh-hub-item p { margin: 0; font-size: 0.82rem; color: var(--t2); }
-
-/* ── Waymaker block ── */
-.nh-waymaker .nh-waymaker-inner {
-  display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between;
-  margin-top: 1.2rem; padding: 1.4rem 1.5rem;
-  background: linear-gradient(120deg, var(--acG), var(--cyL));
-  border: 1px solid var(--bd); border-radius: var(--r-lg);
-}
-.nh-waymaker-text { max-width: 56ch; }
-.nh-waymaker-text h3 { margin: 0 0 0.4rem; font-size: 1.15rem; }
-.nh-waymaker-text p { margin: 0; font-size: 0.9rem; color: var(--t2); }
-.nh-waymaker-note { margin-top: 0.7rem !important; font-size: 0.8rem !important; color: var(--t3) !important; }
-
-/* ── Caution + sources ── */
-.nh-caution .nh-caution-inner { padding: 1.4rem 1.5rem; background: color-mix(in srgb, var(--warn) 9%, var(--bg1)); border: 1px solid color-mix(in srgb, var(--warn) 34%, transparent); border-radius: var(--r-lg); }
-.nh-caution h2 { margin: 0 0 0.5rem; font-size: 1.2rem; }
-.nh-caution p { margin: 0; color: var(--t2); }
-.nh-source-list { list-style: none; margin: 1.1rem 0 0; padding: 0; display: grid; gap: 0.5rem; }
-.nh-source-list li { display: flex; flex-wrap: wrap; gap: 0.5rem 0.7rem; align-items: center; padding: 0.7rem 0.95rem; background: var(--bg1); border: 1px solid var(--bd); border-radius: var(--r-md); font-size: 0.88rem; }
-.nh-source-flag { font-size: 0.72rem; font-weight: 800; color: var(--t3); border: 1px dashed var(--bd); border-radius: 999px; padding: 0.1rem 0.5rem; }
-
-/* ── Status chips (never color-only: each has a glyph + text) ── */
-.nh-chip {
-  display: inline-flex; align-items: center; gap: 0.35rem;
-  padding: 0.2rem 0.6rem; border-radius: 999px;
-  font-size: 0.76rem; font-weight: 800; line-height: 1.3;
-  border: 1px solid var(--bd); background: var(--bg2); color: var(--t2);
-}
-.nh-chip-glyph { font-size: 0.8rem; }
-.nh-chip[data-tone="go"] { border-color: color-mix(in srgb, var(--ok) 45%, transparent); background: color-mix(in srgb, var(--ok) 12%, var(--bg1)); color: color-mix(in srgb, var(--ok) 72%, var(--t1)); }
-.nh-chip[data-tone="warn"] { border-color: color-mix(in srgb, var(--warn) 45%, transparent); background: color-mix(in srgb, var(--warn) 12%, var(--bg1)); color: color-mix(in srgb, var(--warn) 72%, var(--t1)); }
-.nh-chip[data-tone="neutral"] { border-color: var(--bd); background: var(--bg2); color: var(--t2); }
-
-/* ── Footer ── */
-.nh-footer { padding: 2rem clamp(1rem,4vw,2rem) 3rem; background: var(--bg2); border-top: 1px solid var(--bd2); }
-.nh-footer-inner { max-width: var(--maxw); margin: 0 auto; display: flex; flex-direction: column; gap: 0.8rem; }
-/* 면책 문구다 — --t3 는 다크 푸터(#184B40)에서 2.70:1 로 AA 미달이었다.
-   --t2 는 라이트 6.56:1 / 다크 5.40:1 로 양쪽 통과한다. */
-.nh-footer p { margin: 0; font-size: 0.85rem; color: var(--t2); max-width: 80ch; }
-.nh-footer a { font-weight: 800; text-decoration: none; }
-.nh-footer a:hover { text-decoration: underline; }
-
-/* ── Modal ── */
-.nh-modal-overlay {
-  position: fixed; inset: 0; z-index: 200; display: none;
-  align-items: center; justify-content: center; padding: 1rem;
-  background: rgba(12,16,14,0.55); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
-  opacity: 0; transition: opacity 0.25s;
-}
-.nh-modal-overlay.active { display: flex; opacity: 1; }
-.nh-modal {
-  width: 100%; max-width: 680px; max-height: 90vh; display: flex; flex-direction: column;
-  background: var(--bg1); border: 1px solid var(--bd); border-radius: var(--r-xl);
-  box-shadow: 0 24px 60px -20px rgba(0,0,0,0.5);
-  transform: translateY(10px) scale(0.98); transition: transform 0.25s;
-}
-.nh-modal-overlay.active .nh-modal { transform: none; }
-.nh-modal-header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.1rem 1.3rem; border-bottom: 1px solid var(--bd2); }
-.nh-modal-title { margin: 0; font-size: 1.1rem; font-weight: 800; }
-.nh-modal-close {
-  flex-shrink: 0; width: 40px; height: 40px; border-radius: 999px; cursor: pointer;
-  background: var(--bg2); border: 1px solid var(--bd); color: var(--t2); font-size: 1.1rem;
-  display: inline-flex; align-items: center; justify-content: center; transition: background 0.18s, color 0.18s, transform 0.2s;
-}
-.nh-modal-close:hover { color: var(--t1); transform: rotate(90deg); }
-.nh-modal-body { padding: 1.3rem; overflow-y: auto; }
-.nh-modal-foot { padding: 1rem 1.3rem; border-top: 1px solid var(--bd2); display: flex; flex-wrap: wrap; gap: 0.6rem; justify-content: space-between; align-items: center; }
-.nh-modal-disclaimer { font-size: 0.78rem; color: var(--t3); flex: 1 1 240px; }
-
-.nh-progress { font-size: 0.8rem; font-weight: 700; color: var(--t3); margin-bottom: 0.6rem; }
-.nh-q { margin: 0 0 1rem; }
-.nh-q legend { font-size: 1.02rem; font-weight: 800; margin-bottom: 0.7rem; padding: 0; border: 0; }
-.nh-q-options { display: grid; gap: 0.5rem; border: 0; margin: 0; padding: 0; }
-.nh-opt {
-  display: flex; align-items: center; gap: 0.65rem; padding: 0.7rem 0.9rem;
-  border: 1px solid var(--bd); border-radius: var(--r-md); background: var(--bg2); cursor: pointer;
-  font-size: 0.92rem; transition: border-color 0.16s, background 0.16s;
-}
-.nh-opt:hover { border-color: var(--ac); }
-.nh-opt input { accent-color: var(--ac); width: 1.05rem; height: 1.05rem; flex-shrink: 0; }
-.nh-opt:has(input:checked) { border-color: var(--ac); background: var(--acG); font-weight: 700; }
-
-.nh-result-item { padding: 0.95rem 1.05rem; border: 1px solid var(--bd); border-radius: var(--r-md); background: var(--bg2); margin-bottom: 0.7rem; }
-.nh-result-item h4 { margin: 0.5rem 0 0.3rem; font-size: 0.98rem; }
-.nh-result-item p { margin: 0; font-size: 0.86rem; color: var(--t2); }
-
-.nh-path-card { border: 1px solid var(--bd); border-radius: var(--r-md); background: var(--bg2); margin-bottom: 0.7rem; overflow: hidden; }
-.nh-path-head { width: 100%; display: flex; align-items: center; gap: 0.6rem; padding: 0.85rem 1rem; background: transparent; border: 0; cursor: pointer; font-family: var(--ff); text-align: left; color: var(--t1); }
-.nh-path-head:hover { background: var(--acG); }
-.nh-path-icon { display: inline-flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; flex: 0 0 2rem; border: 1px solid var(--bd); border-radius: 999px; color: var(--ac); background: var(--bg1); font-size: 0.72rem; font-weight: 900; }
-.nh-path-head-text { flex: 1; min-width: 0; }
-.nh-path-head-text strong { display: block; font-size: 0.98rem; }
-.nh-path-head-text span { font-size: 0.82rem; color: var(--t2); }
-.nh-path-toggle { flex-shrink: 0; color: var(--t3); transition: transform 0.2s; }
-.nh-path-card.open .nh-path-toggle { transform: rotate(180deg); }
-.nh-path-body { display: none; padding: 0 1rem 1rem; }
-.nh-path-card.open .nh-path-body { display: block; }
-.nh-path-body p { margin: 0.2rem 0 0.6rem; font-size: 0.86rem; color: var(--t2); }
-.nh-path-body ul { margin: 0; padding-left: 1.1rem; }
-.nh-path-body li { font-size: 0.85rem; color: var(--t2); margin-bottom: 0.2rem; }
-
-.nh-btn-sm { min-height: 42px; padding: 0 1.1rem; border-radius: var(--r-md); font-weight: 800; font-size: 0.9rem; font-family: var(--ff); cursor: pointer; border: 1px solid var(--bd); background: var(--bg1); color: var(--t1); transition: border-color 0.18s, transform 0.18s; }
-.nh-btn-sm:hover { border-color: var(--ac); transform: translateY(-1px); }
-.nh-btn-sm.primary { background: var(--ac); color: var(--ac-ink); border-color: transparent; }
-.nh-btn-sm:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
-.nh-loaderr { padding: 2rem 1rem; text-align: center; color: var(--t2); }
-
-/* ── Kitsch (archive_diary) component touches ── */
-:root[data-theme="archive_diary"] .nh-card,
-:root[data-theme="archive_diary"] .nh-hub-item,
-:root[data-theme="archive_diary"] .nh-modal { border-width: 2px; border-color: var(--k-ink); }
-:root[data-theme="archive_diary"] .nh-card { border-radius: 22px; }
-:root[data-theme="archive_diary"] .nh-card:hover { box-shadow: 6px 7px 0 var(--k-pink); }
-:root[data-theme="archive_diary"] .nh-btn-primary { box-shadow: 4px 4px 0 var(--k-ink); }
-:root[data-theme="archive_diary"] .nh-back,
-:root[data-theme="archive_diary"] .nh-ctl { border-color: var(--k-ink); border-width: 2px; }
-:root[data-theme="archive_diary"] .nh-tagline { color: var(--k-pink-deep); }
-
-/* ── Official-source badge ── */
-.nh-official-badge {
-  display: inline-flex; align-items: center; gap: 0.3rem;
-  padding: 0.18rem 0.6rem; border-radius: 999px;
-  font-size: 0.72rem; font-weight: 800; letter-spacing: 0.01em;
-  color: var(--ac2); background: var(--acG); border: 1px solid color-mix(in srgb, var(--ac) 30%, transparent);
-}
-
-/* ── KIIP rich block ── */
-.nh-kiip-card { padding: 1rem 1.1rem; background: var(--bg1); border: 1px solid var(--bd); border-radius: var(--r-md); margin-bottom: 0.8rem; }
-.nh-kiip-card h3 { margin: 0 0 0.35rem; font-size: 0.98rem; }
-.nh-kiip-card p { margin: 0; font-size: 0.88rem; color: var(--t2); }
-.nh-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin: 0.4rem 0 0.8rem; }
-.nh-pill-card { padding: 0.85rem 1rem; border-radius: var(--r-md); border: 1px solid var(--bd); background: var(--bg2); }
-.nh-pill-card h4 { margin: 0 0 0.45rem; font-size: 0.86rem; }
-.nh-pill-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.3rem; }
-.nh-pill-list li { font-size: 0.83rem; color: var(--t2); padding-left: 1.1rem; position: relative; }
-.nh-pill-list.yes li::before { content: "✓"; position: absolute; left: 0; color: var(--ok); font-weight: 800; }
-.nh-pill-list.no li::before { content: "✕"; position: absolute; left: 0; color: var(--warn); font-weight: 800; }
-
-/* ── Source chips (inline, in cards/details) ── */
-.nh-src-chips { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.5rem; }
-.nh-src-chip {
-  display: inline-flex; align-items: center; gap: 0.3rem;
-  padding: 0.15rem 0.55rem; border-radius: 999px; font-size: 0.72rem; font-weight: 700;
-  color: var(--ac2); background: var(--acG); border: 1px solid color-mix(in srgb, var(--ac) 26%, transparent);
-  text-decoration: none;
-}
-/* 26px 이라 손가락 대상보다 작았다 — 조밀한 출처 칩이라 32px 선에서 맞춘다. */
-@media (max-width: 720px) { .nh-src-chip { min-height: 32px; padding-inline: 0.7rem; } }
-.nh-src-chip:hover { border-color: var(--ac); }
-.nh-src-chip::after { content: "↗"; font-size: 0.66rem; opacity: 0.8; }
-
-/* ── Result categories (readiness) ── */
-.nh-result-cat { margin-bottom: 1rem; }
-.nh-result-cat-head { display: inline-flex; align-items: center; gap: 0.35rem; margin: 0 0 0.5rem; font-size: 0.92rem; font-weight: 800; }
-.nh-result-cat-head .nh-chip-glyph { font-size: 0.85rem; }
-.nh-result-note { padding: 0.7rem 0.9rem; border: 1px solid var(--bd); border-left: 3px solid var(--ac); border-radius: var(--r-sm); background: var(--bg2); font-size: 0.85rem; color: var(--t2); margin-bottom: 0.5rem; }
-.nh-result-cat[data-tone="warn"] .nh-result-note { border-left-color: var(--warn); }
-
-/* ── Rich path card details ── */
-.nh-path-detail { display: grid; gap: 0.7rem; }
-.nh-path-detail h5 { margin: 0 0 0.3rem; font-size: 0.82rem; color: var(--t1); text-transform: none; }
-.nh-path-detail ul { margin: 0; padding-left: 1.1rem; }
-.nh-path-detail li { font-size: 0.84rem; color: var(--t2); margin-bottom: 0.2rem; }
-.nh-path-caution { font-size: 0.82rem; color: var(--cyT); background: var(--cyL); border: 1px solid color-mix(in srgb, var(--cy) 30%, transparent); border-radius: var(--r-sm); padding: 0.6rem 0.8rem; }
-
-/* ── Hub groups ── */
-.nh-hub-group { margin-bottom: 1.2rem; }
-.nh-hub-group-title { margin: 0 0 0.6rem; font-size: 0.84rem; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; color: var(--t3); }
-
-/* ── Source panel ── */
-.nh-source-group { margin-bottom: 1.3rem; }
-.nh-source-group-title { margin: 0 0 0.6rem; font-size: 0.9rem; font-weight: 800; color: var(--t1); }
-.nh-source-card { display: grid; gap: 0.3rem; padding: 0.85rem 1rem; background: var(--bg1); border: 1px solid var(--bd); border-radius: var(--r-md); margin-bottom: 0.55rem; }
-.nh-source-card-top { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
-.nh-source-link { font-weight: 800; font-size: 0.92rem; text-decoration: none; color: var(--ac); }
-.nh-source-link:hover { text-decoration: underline; }
-.nh-source-type { font-size: 0.68rem; font-weight: 800; color: var(--t3); border: 1px solid var(--bd); border-radius: 999px; padding: 0.05rem 0.45rem; }
-.nh-source-nav { font-size: 0.8rem; color: var(--t2); }
-.nh-source-flag { font-size: 0.68rem; font-weight: 800; color: var(--warn); border: 1px dashed color-mix(in srgb, var(--warn) 50%, var(--bd)); border-radius: 999px; padding: 0.05rem 0.45rem; }
-.nh-source-scope { margin: 0; font-size: 0.84rem; line-height: 1.55; color: var(--t1); }
-.nh-source-meta { display: flex; flex-wrap: wrap; gap: 0.35rem 0.8rem; font-size: 0.74rem; color: var(--t3); }
-.nh-source-disclaimer { margin: 0.85rem 0 1rem; padding: 0.8rem 0.95rem; border: 1px solid var(--bd); border-left: 3px solid var(--ac); border-radius: var(--r-sm); background: var(--bg1); color: var(--t2); font-size: 0.82rem; line-height: 1.55; }
-
-/* ── Detail modal rows ── */
-.nh-detail-row { margin-bottom: 0.8rem; }
-.nh-detail-row h4 { margin: 0 0 0.25rem; font-size: 0.82rem; color: var(--t3); text-transform: uppercase; letter-spacing: 0.03em; }
-.nh-detail-row p { margin: 0; font-size: 0.9rem; color: var(--t1); }
-
-/* ── Responsive ── */
-@media (max-width: 720px) {
-  body { font-size: 16px; line-height: 1.65; }
-  .nh-topbar {
-    min-height: 56px; gap: 0.5rem; padding: 0.375rem 0.75rem;
-    background: color-mix(in srgb, var(--bg1) 94%, transparent);
-  }
-  .nh-back {
-    min-width: 0; min-height: 44px; padding: 0 0.75rem; gap: 0.35rem;
-    border-radius: var(--r-md); font-size: 0.82rem; line-height: 1.2; white-space: nowrap;
-  }
-  .nh-back-label-full { display: none; }
-  .nh-back-label-short { display: inline; }
-  .nh-controls { gap: 0.35rem; margin-left: auto; }
-  .nh-ctl {
-    width: 44px; min-width: 44px; min-height: 44px; padding: 0;
-    border-radius: var(--r-md); font-size: 0.86rem; line-height: 1;
-  }
-  #langBtn { position: relative; overflow: visible; color: var(--t2); font-size: 0.78rem; font-weight: 850; }
-  .nh-lang-menu { position: fixed; top: 56px; inset-inline-end: 0.75rem; width: min(18rem, calc(100vw - 1.5rem)); max-height: calc(100dvh - 72px); }
-  #themeBtnLabel { display: none; }
-  .nh-section-nav {
-    top: 56px; min-height: 48px; justify-content: flex-start; gap: 0.2rem;
-    padding: 0.25rem 0.75rem; scroll-padding-inline: 0.75rem; scroll-snap-type: x proximity;
-  }
-  .nh-section-nav a {
-    min-height: 40px; padding: 0 0.7rem; display: inline-flex; align-items: center;
-    scroll-snap-align: start; font-size: 0.8rem; line-height: 1.2;
-  }
-  #dashboard, #kiip, #after, #hub, #sources { scroll-margin-top: 7.25rem; }
-  .nh-wrap { padding-inline: 1rem; }
-  .nh-hero { padding: 1.75rem 1rem 1.6rem; }
-  .nh-hero-inner { grid-template-columns: 1fr; gap: 1rem; }
-  .nh-kicker { margin-bottom: 0.7rem; font-size: 0.74rem; line-height: 1.3; }
-  .nh-title { font-size: clamp(1.85rem, 8.5vw, 2.2rem); line-height: 1.18; letter-spacing: -0.025em; word-break: keep-all; }
-  .nh-tagline { margin-top: 0.45rem; font-size: 1.03rem; line-height: 1.4; }
-  .nh-lead { margin-top: 0.9rem; font-size: 0.96rem; line-height: 1.72; word-break: keep-all; }
-  .nh-cta-row { gap: 0.6rem; margin-top: 1.25rem; }
-  .nh-cta-row .nh-btn { flex: 1 1 100%; }
-  .nh-btn { min-height: 54px; padding: 0 1rem; font-size: 0.98rem; line-height: 1.3; }
-  .nh-proof-row { gap: 0.4rem; margin-top: 0.75rem; }
-  .nh-proof-row span {
-    min-height: 32px; padding: 0.35rem 0.68rem; display: inline-flex; align-items: center;
-    font-size: 0.78rem; line-height: 1.3;
-  }
-  .nh-notice { margin-top: 1.35rem; padding: 0.85rem 0.9rem; font-size: 0.88rem; line-height: 1.65; }
-  .nh-hero-guide { padding: 1rem; }
-  .nh-hero-guide h2 { font-size: 1.04rem; line-height: 1.35; }
-  .nh-hero-guide p { font-size: 0.86rem; line-height: 1.55; }
-  .nh-guide-link { min-height: 52px; padding: 0.72rem 0.8rem; gap: 0.65rem; }
-  .nh-guide-link strong { font-size: 0.9rem; line-height: 1.45; }
-  section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding: 2.25rem 0; }
-  .nh-section-h { align-items: flex-start; gap: 0.45rem; }
-  .nh-section-h h2 { font-size: 1.5rem; line-height: 1.25; }
-  .nh-section-intro { margin: 0.65rem 0 1.2rem; font-size: 0.94rem; line-height: 1.68; word-break: keep-all; }
-  .nh-grid { gap: 0.7rem; }
-  .nh-card {
-    min-height: 0; padding: 1rem; display: grid;
-    grid-template-columns: 42px minmax(0, 1fr); grid-template-rows: auto auto auto;
-    column-gap: 0.85rem; row-gap: 0.35rem; align-items: start;
-  }
-  .nh-card-icon { width: 42px; height: 42px; grid-column: 1; grid-row: 1 / span 2; border-radius: 11px; }
-  .nh-card-label { grid-column: 2; font-size: 1.02rem; line-height: 1.35; }
-  .nh-card-desc { grid-column: 2; font-size: 0.88rem; line-height: 1.62; }
-  .nh-card-cta { grid-column: 2; margin-top: 0.15rem; font-size: 0.88rem; line-height: 1.4; }
-  .nh-pathway-steps { gap: 0.55rem; }
-  .nh-pathway-steps li { flex-basis: 100%; padding: 0.85rem 0.9rem 0.85rem 2.7rem; font-size: 0.9rem; line-height: 1.55; }
-  .nh-sub-grid, .nh-hub-grid { gap: 0.7rem; }
-  .nh-sub-item, .nh-hub-item { padding: 1rem; }
-  .nh-sub-item h3, .nh-hub-item h3 { font-size: 1rem; line-height: 1.4; }
-  .nh-sub-item p, .nh-hub-item p { font-size: 0.88rem; line-height: 1.62; }
-  .nh-checklist { gap: 0.6rem; }
-  .nh-checklist li { padding: 0.9rem; gap: 0.75rem; }
-  .nh-check-body strong { font-size: 0.96rem; line-height: 1.42; }
-  .nh-check-body span { display: block; margin-top: 0.18rem; font-size: 0.86rem; line-height: 1.6; }
-  .nh-waymaker .nh-waymaker-inner, .nh-caution .nh-caution-inner { padding: 1.1rem; }
-  .nh-waymaker-text h3, .nh-caution h2 { line-height: 1.35; }
-  .nh-waymaker-text p, .nh-caution p { font-size: 0.9rem; line-height: 1.65; }
-  .nh-source-disclaimer { padding: 0.9rem 1rem; font-size: 0.86rem; line-height: 1.65; }
-  .nh-source-group { margin-bottom: 1.5rem; }
-  .nh-source-group-title { margin-bottom: 0.7rem; font-size: 0.96rem; line-height: 1.4; }
-  .nh-source-card { gap: 0.48rem; padding: 1rem; margin-bottom: 0.7rem; }
-  .nh-source-card-top { align-items: flex-start; gap: 0.4rem 0.5rem; }
-  .nh-source-link { flex-basis: 100%; font-size: 0.96rem; line-height: 1.45; }
-  .nh-source-type, .nh-source-flag { min-height: 24px; padding: 0.2rem 0.52rem; display: inline-flex; align-items: center; font-size: 0.7rem; line-height: 1.25; }
-  .nh-source-scope { font-size: 0.88rem; line-height: 1.65; word-break: keep-all; }
-  .nh-source-nav { font-size: 0.82rem; line-height: 1.55; }
-  .nh-source-meta { gap: 0.3rem 0.65rem; font-size: 0.76rem; line-height: 1.5; }
-  .nh-path-head { display: grid; grid-template-columns: 2rem minmax(0, 1fr) auto; align-items: start; gap: 0.55rem; }
-  .nh-path-head .nh-chip { grid-column: 2; justify-self: start; }
-  .nh-path-toggle { grid-column: 3; grid-row: 1; }
-  .nh-path-head-text strong { line-height: 1.35; }
-  .nh-path-head-text span { display: block; margin-top: 0.16rem; line-height: 1.45; }
-  .nh-path-body p, .nh-path-body li, .nh-path-detail li, .nh-path-caution { line-height: 1.6; }
-  .nh-modal { max-height: 92vh; max-height: 92dvh; }
-  .nh-modal-overlay { padding: 0; align-items: flex-end; }
-  .nh-modal { border-radius: var(--r-xl) var(--r-xl) 0 0; }
-  .nh-modal-header { padding: 1rem; }
-  .nh-modal-title { font-size: 1.08rem; line-height: 1.35; }
-  .nh-modal-close { width: 44px; height: 44px; }
-  .nh-modal-body { padding: 1rem; }
-  .nh-modal-foot { padding: 0.9rem 1rem calc(0.9rem + env(safe-area-inset-bottom, 0px)); background: var(--bg1); }
-  .nh-modal-disclaimer { flex-basis: 100%; font-size: 0.8rem; line-height: 1.55; }
-  .nh-btn-sm { min-height: 48px; flex: 1 1 8rem; font-size: 0.92rem; }
-  .nh-modal-foot > .nh-btn-sm:only-child { flex-basis: 100%; }
-  .nh-q legend { font-size: 1.02rem; line-height: 1.45; }
-  .nh-option { min-height: 50px; padding: 0.75rem 0.85rem; font-size: 0.92rem; line-height: 1.5; }
-}
-@media (max-width: 370px) {
-  .nh-topbar { padding-inline: 0.6rem; }
-  .nh-back { padding-inline: 0.6rem; }
-  .nh-controls { gap: 0.25rem; }
-  .nh-section-nav { padding-inline: 0.6rem; }
-  .nh-title { font-size: 1.78rem; }
-}
-@media (prefers-reduced-motion: reduce) {
-  * { transition: none !important; }
-}
-</style>
-<link rel="stylesheet" href="assets/css/visable-product-2026.css?v=20260809-deco-collision">
+<!-- Shared Visable product system → civic palette → this page. new-home.css
+     owns the page; its colours, type and focus come from the shared tokens. -->
+<link rel="stylesheet" href="assets/css/visable-product-2026.css?v=20260925-family">
 <link rel="stylesheet" href="assets/css/civic-search.css">
+<link rel="stylesheet" href="assets/css/new-home.css?v=20260925-family">
 </head>
 <body class="product-new-home">
-<a class="sr-only" href="#nhMain">본문 바로가기 / Skip to content</a>
+<script>
+/* Brightness before first paint (shared paradiso:brightness key) so a dark
+   visitor never sees a light flash while the content JSON loads. */
+(function(){try{var b=localStorage.getItem('paradiso:brightness');if(b==='dark'||(b==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches))document.body.setAttribute('data-theme','dark');}catch(e){}})();
+</script>
+<a class="skip-link" href="#nhMain">본문 바로가기 / Skip to content</a>
 
-<header class="nh-topbar">
-  <a class="nh-back" href="index.html" id="nhBack"><span aria-hidden="true">←</span> <span class="nh-back-label-full" data-c="ui.backToParadiso">Visable로 돌아가기</span><span class="nh-back-label-short">Visable</span></a>
-  <div class="nh-controls">
+<!-- Family bar — the same component Waymaker uses: Visable wordmark home,
+     product name, then this product's language / style / brightness. -->
+<header class="nh-topbar vf-bar">
+  <a class="vf-home" href="index.html" id="nhBack"><img class="vf-wordmark" src="assets/brand/visable-wordmark.svg" alt="" width="92" height="28"><img class="vf-mark" src="assets/brand/visable-favicon.svg" alt="" width="30" height="30"><span class="sr-only" data-c="ui.backToParadiso">Visable로 돌아가기</span></a>
+  <span class="vf-divider" aria-hidden="true"></span>
+  <span class="vf-product">New Home</span>
+  <div class="nh-controls vf-actions">
     <div class="nh-lang-wrap" id="nhLangWrap">
-      <button type="button" class="nh-ctl" data-action="toggle-lang-menu" id="langBtn" aria-label="언어 선택" aria-haspopup="listbox" aria-expanded="false" aria-controls="nhLangMenu">KO</button>
+      <button type="button" class="nh-ctl nh-lang-btn" data-action="toggle-lang-menu" id="langBtn" aria-label="언어 선택" aria-haspopup="listbox" aria-expanded="false" aria-controls="nhLangMenu">KO</button>
       <div class="nh-lang-menu" id="nhLangMenu" role="listbox" aria-label="언어 선택" data-s2t="off"></div>
     </div>
-    <button type="button" class="nh-ctl" data-action="toggle-theme" id="themeBtn" aria-label="테마 전환"><span id="themeBtnLabel">Editorial</span></button>
-    <button type="button" class="nh-ctl" data-action="toggle-brightness" id="brightBtn" aria-label="밝기 전환">◐</button>
+    <button type="button" class="nh-ctl vf-icon-btn nh-style-btn" data-action="toggle-theme" id="themeBtn" aria-label="테마 전환"><svg class="" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z"/><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/></svg><span class="sr-only" id="themeBtnLabel">Editorial</span></button>
+    <button type="button" class="nh-ctl vf-icon-btn vf-theme-btn" data-action="toggle-brightness" id="brightBtn" aria-label="밝기 전환"><svg class="vf-icon-moon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg><svg class="vf-icon-sun" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg></button>
   </div>
 </header>
 
 <nav class="nh-section-nav" aria-label="New Home">
-  <a href="#dashboard" data-c="nav.start"></a>
-  <a href="#kiip" data-c="nav.kiip"></a>
-  <a href="#after" data-c="nav.after"></a>
-  <a href="#hub" data-c="nav.hub"></a>
-  <a href="#sources" data-c="nav.sources"></a>
+  <div class="nh-section-nav-inner">
+    <a href="#dashboard" data-c="nav.start"></a>
+    <a href="#kiip" data-c="nav.kiip"></a>
+    <a href="#after" data-c="nav.after"></a>
+    <a href="#hub" data-c="nav.hub"></a>
+    <a href="#sources" data-c="nav.sources"></a>
+  </div>
 </nav>
 
-<main id="nhMain">
-  <!-- 히어로 — Figma `New Home Desktop · Landing` 확정 시안(507:2876) 그대로.
-       중앙 정렬 단일 컬럼: 키커 → 헤드라인 → Welcome home. → 리드 → CTA 2개 →
-       신뢰 칩 3개. 아래로 키네틱 스트립 · 각주 · 오로라 도트. -->
+<main id="nhMain" tabindex="-1">
+  <!-- Arrival. Left-aligned editorial hero (Visable's is centred search): what
+       New Home is, who it is for, and one first step. The warm light behind it
+       is the page's own identity and never sits under the text column. -->
   <section class="nh-hero">
     <div class="nh-hero-inner">
       <div class="nh-hero-copy">
@@ -633,27 +77,19 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
         <p class="nh-tagline" data-c="hero.tagline">Welcome home.</p>
         <p class="nh-lead" data-c="hero.lead"></p>
         <div class="nh-cta-row">
-          <button type="button" class="nh-btn nh-btn-primary" data-action="open-readiness"><span data-c="hero.ctaPrimary"></span><span class="nh-btn-arrow" aria-hidden="true">→</span></button>
+          <button type="button" class="nh-btn nh-btn-primary" data-action="open-readiness"><span data-c="hero.ctaPrimary"></span><svg class="nh-btn-arrow" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
           <a class="nh-btn nh-btn-secondary" href="index.html" data-c="hero.ctaSecondary"></a>
         </div>
-        <div class="nh-proof-row" aria-label="Service details">
-          <span data-c="hero.proofLogin"></span><span data-c="hero.proofTime"></span><span data-c="hero.proofSource"></span>
-        </div>
+        <ul class="nh-proof-row" aria-label="Service details">
+          <li><span data-c="hero.proofLogin"></span></li><li><span data-c="hero.proofTime"></span></li><li><span data-c="hero.proofSource"></span></li>
+        </ul>
         <div class="nh-notice" role="note">
           <span class="nh-notice-icon" aria-hidden="true">i</span>
           <span data-c="notice"></span>
         </div>
+        <p class="nh-hero-foot" data-c="hero.footnote"></p>
       </div>
     </div>
-    <!-- 키네틱 스트립: 같은 문구를 두 번 이어 붙여 끊김 없이 흐르게 한다.
-         내용은 각주·고지문에 그대로 남아 있으므로 장식으로만 노출한다. -->
-    <div class="nh-kinetic" aria-hidden="true">
-      <div class="nh-kinetic-track">
-        <span class="nh-kinetic-line" data-c="hero.kineticLine"></span><span class="nh-kinetic-line" data-c="hero.kineticLine"></span>
-      </div>
-    </div>
-    <p class="nh-hero-foot" data-c="hero.footnote"></p>
-    <span class="nh-aurora-dots" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
   </section>
 
   <div class="nh-wrap">
@@ -661,19 +97,6 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
       <div class="nh-section-h"><h2 data-c="dashboard.title"></h2></div>
       <p class="nh-section-intro" data-c="dashboard.intro"></p>
       <div class="nh-grid" id="featureGrid"></div>
-    </section>
-  </div>
-
-  <div class="nh-wrap">
-    <section class="nh-block nh-waymaker" id="interviewBridge">
-      <div class="nh-section-h"><h2 data-c="interviewBridge.title"></h2><span class="nh-official-badge" data-c="ui.officialSourceBadge"></span></div>
-      <div class="nh-waymaker-inner">
-        <div class="nh-waymaker-text">
-          <p data-c="interviewBridge.desc"></p>
-          <p class="nh-waymaker-note" data-c="interviewBridge.bullets"></p>
-        </div>
-        <a class="nh-btn nh-btn-primary" href="nationality-interview-hub.html" data-c="interviewBridge.cta"></a>
-      </div>
     </section>
   </div>
 
@@ -698,7 +121,7 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
     <section class="nh-block" id="after">
       <div class="nh-section-h"><h2 data-c="afterApproval.title"></h2></div>
       <p class="nh-section-intro" data-c="afterApproval.intro"></p>
-      <ul class="nh-checklist" id="afterList"></ul>
+      <ol class="nh-checklist" id="afterList"></ol>
       <p class="nh-inline-note" data-c="afterApproval.caution"></p>
     </section>
 
@@ -709,14 +132,30 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
       <p class="nh-inline-note" data-c="hub.expansionNote"></p>
     </section>
 
-    <section class="nh-block nh-waymaker" id="waymaker">
-      <div class="nh-section-h"><h2 data-c="waymaker.title"></h2></div>
-      <div class="nh-waymaker-inner">
+    <!-- Next steps. When the guides above are not enough, the natural move is
+         to explain the situation to Waymaker; interview prep sits beside it.
+         Same "tool row" as the Visable landing's core tools. -->
+    <section class="nh-block nh-waymaker nh-next" id="waymaker">
+      <div class="nh-tool">
+        <span class="nh-tool-icon"><svg class="" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z"/></svg></span>
         <div class="nh-waymaker-text">
+          <h2 data-c="waymaker.title"></h2>
           <p data-c="waymaker.desc"></p>
           <p class="nh-waymaker-note" data-c="waymaker.note"></p>
         </div>
-        <a class="nh-btn nh-btn-primary" id="waymakerCta" href="ai.html?domain=nationality" data-c="waymaker.cta"></a>
+        <a class="nh-btn nh-btn-primary" id="waymakerCta" href="ai.html?domain=nationality"><span data-c="waymaker.cta"></span><svg class="nh-btn-arrow" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+      </div>
+    </section>
+
+    <section class="nh-block nh-waymaker nh-next nh-next-secondary" id="interviewBridge">
+      <div class="nh-tool">
+        <span class="nh-tool-icon"><svg class="" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg></span>
+        <div class="nh-waymaker-text">
+          <div class="nh-section-h"><h2 data-c="interviewBridge.title"></h2><span class="nh-official-badge" data-c="ui.officialSourceBadge"></span></div>
+          <p data-c="interviewBridge.desc"></p>
+          <p class="nh-waymaker-note" data-c="interviewBridge.bullets"></p>
+        </div>
+        <a class="nh-btn nh-btn-quiet" href="nationality-interview-hub.html"><span data-c="interviewBridge.cta"></span><svg class="nh-btn-arrow" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
       </div>
     </section>
 
@@ -738,6 +177,7 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
 
 <footer class="nh-footer">
   <div class="nh-footer-inner">
+    <img class="nh-footer-mark" src="assets/brand/visable-wordmark.svg" alt="Visable" width="78" height="24">
     <p data-c="footer.notice"></p>
     <a href="index.html" data-c="footer.back"></a>
   </div>
@@ -893,14 +333,15 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
     var langBtn = document.getElementById('langBtn');
     // Show the CURRENT selected locale, not the fallback content locale.
     if (langBtn) {
-      langBtn.textContent = LANG_SHORT[selectedLocale] || LANG_SHORT.ko;
+      // Same control as the Visable landing: code badge + native name.
+      langBtn.innerHTML = '<span class="nh-lang-code" aria-hidden="true">' + esc(LANG_SHORT[selectedLocale] || LANG_SHORT.ko) + '</span>' +
+        '<span class="nh-lang-name">' + esc(LANG_LABEL[selectedLocale] || selectedLocale) + '</span>';
       langBtn.setAttribute('data-s2t', 'off');
-      langBtn.setAttribute('aria-label', '언어 선택 · ' + (LANG_LABEL[selectedLocale] || selectedLocale));
+      langBtn.setAttribute('aria-label', pick({ ko: '언어 선택', en: 'Choose language', 'zh-CN': '选择语言' }) + ' · ' + (LANG_LABEL[selectedLocale] || selectedLocale));
     }
     renderLangMenu();
     updateLangNote(selectedLocale);
-    var themeLabel = document.getElementById('themeBtnLabel');
-    if (themeLabel) themeLabel.textContent = currentTheme() === 'archive_diary' ? 'Editorial-pop' : 'Editorial';
+    syncThemeLabel();
     // Locale-aware accessibility labels. These are attributes, so applyStatic's
     // [data-c] textContent pass does not reach them — they must be swapped here so
     // English-mode screen-reader users do not hear Korean labels.
@@ -919,23 +360,36 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
   }
 
   // ── Renderers ────────────────────────────────────────────────────────────
+  // Two tiers: the two interactive starting points (readiness check, path
+  // finder) lead; the six guides/tools below read as one index. Order and copy
+  // come from nationality_content.json unchanged.
+  var PRIMARY_FEATURES = ['readiness', 'pathfinder'];
+  function featureCard(f, index, primary) {
+    var card = el('button', 'nh-card' + (primary ? ' nh-card--primary' : ''));
+    card.type = 'button';
+    card.setAttribute('data-action', f.action);
+    card.setAttribute('data-variant', f.id);
+    card.innerHTML =
+      // 한 글자 타일(확정 시안 122:13-14). glyph 가 없으면 순번을 쓴다.
+      '<span class="nh-card-icon" aria-hidden="true">' + esc(f.glyph || String(index + 1).padStart(2, '0')) + '</span>' +
+      '<span class="nh-card-body">' +
+      '<span class="nh-card-label">' + esc(pick(f.label)) + '</span>' +
+      '<span class="nh-card-desc">' + esc(pick(f.desc)) + '</span>' +
+      '<span class="nh-card-cta">' + esc(pick(f.cta)) + '</span>' +
+      '</span>';
+    return card;
+  }
   function renderFeatures() {
     var grid = document.getElementById('featureGrid');
     grid.innerHTML = '';
-    content.features.forEach(function (f, index) {
-      var card = el('button', 'nh-card');
-      card.type = 'button';
-      card.setAttribute('data-action', f.action);
-      card.setAttribute('data-variant', f.id);
-      card.innerHTML =
-        // 확정 시안(122:13-14)의 44×44 한 글자 아이콘 타일. glyph 가 없으면
-        // 예전처럼 순번을 쓴다.
-        '<span class="nh-card-icon" aria-hidden="true">' + esc(f.glyph || String(index + 1).padStart(2, '0')) + '</span>' +
-        '<span class="nh-card-label">' + esc(pick(f.label)) + '</span>' +
-        '<span class="nh-card-desc">' + esc(pick(f.desc)) + '</span>' +
-        '<span class="nh-card-cta">' + esc(pick(f.cta)) + '</span>';
-      grid.appendChild(card);
+    var start = el('div', 'nh-start');
+    var index = el('div', 'nh-index');
+    content.features.forEach(function (f, i) {
+      var primary = PRIMARY_FEATURES.indexOf(f.id) >= 0;
+      (primary ? start : index).appendChild(featureCard(f, i, primary));
     });
+    grid.appendChild(start);
+    grid.appendChild(index);
   }
 
   function renderPathway() {
@@ -1553,9 +1007,17 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
     var next = currentTheme() === 'civic_editorial' ? 'archive_diary' : 'civic_editorial';
     document.documentElement.setAttribute('data-theme', next);
     try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
-    var label = document.getElementById('themeBtnLabel');
-    if (label) label.textContent = next === 'archive_diary' ? 'Editorial-pop' : 'Editorial';
+    syncThemeLabel();
     syncMeta();
+  }
+  // The style button is icon-only; its current style travels in the hidden
+  // label and the tooltip.
+  function syncThemeLabel() {
+    var name = currentTheme() === 'archive_diary' ? 'Editorial-pop' : 'Editorial';
+    var label = document.getElementById('themeBtnLabel');
+    if (label) label.textContent = name;
+    var btn = document.getElementById('themeBtn');
+    if (btn) btn.setAttribute('title', pick({ ko: '화면 스타일', en: 'Page style', 'zh-CN': '页面风格' }) + ' · ' + name);
   }
   function toggleBrightness() {
     var dark = document.body.getAttribute('data-theme') === 'dark';
@@ -1567,19 +1029,20 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
   // Show an unobtrusive note near the control when the selected locale is not
   // fully translated on this page (rendered via the ko fallback).
   function updateLangNote(sel) {
-    var langBtn = document.getElementById('langBtn');
-    var holder = langBtn ? langBtn.parentElement : null;
-    if (!holder) return;
+    // A full-width strip under the bar: a floating tooltip here covered the
+    // hero on phones.
+    var bar = document.querySelector('.nh-topbar');
+    if (!bar) return;
     var note = document.getElementById('nhLangNote');
     var untranslated = sel !== 'ko' && !LANG_TRANSLATED[sel];
     if (untranslated) {
       if (!note) {
-        note = document.createElement('div');
+        note = document.createElement('p');
         note.id = 'nhLangNote';
         note.className = 'nh-lang-note';
         note.setAttribute('role', 'note');
         note.setAttribute('data-s2t', 'off');
-        holder.appendChild(note);
+        bar.insertAdjacentElement('afterend', note);
       }
       note.textContent = '이 페이지는 선택한 언어 번역 준비 중입니다 · This page is not yet translated into the selected language.';
     } else if (note) {
@@ -1680,6 +1143,26 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
     if (n) n.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
+  // In-page navigation marks the section being read (aria-current), so the
+  // sticky bar also works as a "you are here".
+  function watchSections() {
+    if (!('IntersectionObserver' in window)) return;
+    var links = Array.prototype.slice.call(document.querySelectorAll('.nh-section-nav a[href^="#"]'));
+    var byId = {};
+    links.forEach(function (a) { byId[a.getAttribute('href').slice(1)] = a; });
+    var visible = {};
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { visible[e.target.id] = e.isIntersecting; });
+      var current = null;
+      links.forEach(function (a) { var id = a.getAttribute('href').slice(1); if (!current && visible[id]) current = id; });
+      links.forEach(function (a) {
+        if (a.getAttribute('href').slice(1) === current) a.setAttribute('aria-current', 'true');
+        else a.removeAttribute('aria-current');
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    Object.keys(byId).forEach(function (id) { var n = document.getElementById(id); if (n) io.observe(n); });
+  }
+
   // ── Boot ─────────────────────────────────────────────────────────────────
   function showLoadError() {
     var main = document.getElementById('nhMain');
@@ -1717,6 +1200,7 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
       } catch (e) {}
       renderAll();
       syncMeta();
+      watchSections();
     }).catch(function () { showLoadError(); });
   }
 

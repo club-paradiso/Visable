@@ -39,9 +39,7 @@
 }
 
 body.product-visable,
-body.product-new-home,
 body.product-form-helper,
-body.product-waymaker,
 body.product-nationality-hub {
   font-family: var(--vp-font) !important;
   font-feature-settings: "ss01";
@@ -50,9 +48,7 @@ body.product-nationality-hub {
 }
 
 body.product-visable:not([data-theme="dark"]),
-body.product-new-home:not([data-theme="dark"]),
 body.product-form-helper:not([data-theme="dark"]),
-body.product-waymaker[data-theme="light"],
 body.product-nationality-hub:not([data-theme="dark"]) {
   --bg0: var(--vp-paper);
   --bg1: var(--vp-surface);
@@ -69,10 +65,8 @@ body.product-nationality-hub:not([data-theme="dark"]) {
 }
 
 body.product-visable[data-theme="dark"],
-body.product-new-home[data-theme="dark"],
 body.product-form-helper[data-theme="dark"],
-body.product-nationality-hub[data-theme="dark"],
-body.product-waymaker[data-theme="dark"] {
+body.product-nationality-hub[data-theme="dark"] {
   --vp-paper: #071f19;
   --vp-paper-strong: #0a2a22;
   --vp-surface: #0c342a;
@@ -87,11 +81,21 @@ body.product-waymaker[data-theme="dark"] {
   --vp-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
 }
 
-body.product-visable :where(button, a, input, select, textarea):focus-visible,
-body.product-new-home :where(button, a, input, select, textarea):focus-visible,
-body.product-form-helper :where(button, a, input, select, textarea):focus-visible,
-body.product-waymaker :where(button, a, input, select, textarea):focus-visible,
-body.product-nationality-hub :where(button, a, input, select, textarea):focus-visible {
+body.product-visable :where(button,
+a,
+input,
+select,
+textarea):focus-visible,
+body.product-form-helper :where(button,
+a,
+input,
+select,
+textarea):focus-visible,
+body.product-nationality-hub :where(button,
+a,
+input,
+select,
+textarea):focus-visible {
   outline: 0 !important;
   box-shadow: var(--vp-focus) !important;
 }
@@ -776,128 +780,6 @@ body.product-visable #hikoreaGuideBody .prh-tabs {
 body.product-visable #hikoreaGuideBody .prh-tab { white-space: normal !important; }
 
 /* --------------------------------------------------------------------------
-   New Home
-   -------------------------------------------------------------------------- */
-body.product-new-home .nh-topbar {
-  min-height: 50px !important;
-  padding: 0 max(32px, calc((100vw - 1010px) / 2)) !important;
-  border-bottom: 1px solid var(--vp-line) !important;
-  background: var(--vp-surface) !important;
-  box-shadow: none !important;
-  backdrop-filter: none !important;
-}
-body.product-new-home .nh-back,
-body.product-new-home .nh-ctl { border-radius: var(--vp-r-sm) !important; box-shadow: none !important; }
-body.product-new-home .nh-section-nav {
-  top: 50px !important;
-  display: flex !important;
-  min-height: 42px !important;
-  padding: 5px max(32px, calc((100vw - 1010px) / 2)) !important;
-  justify-content: flex-start !important;
-  gap: 2px !important;
-  border-bottom: 1px solid var(--vp-line-soft) !important;
-  background: var(--vp-paper-strong) !important;
-  backdrop-filter: none !important;
-}
-body.product-new-home .nh-section-nav a {
-  padding: 7px 10px !important;
-  border-radius: var(--vp-r-xs) !important;
-  color: var(--vp-ink-3) !important;
-  font-size: 12px !important;
-  font-weight: 700 !important;
-}
-body.product-new-home .nh-section-nav a:hover,
-body.product-new-home .nh-section-nav a:focus-visible {
-  border-color: var(--vp-line) !important;
-  background: var(--vp-surface) !important;
-  color: var(--vp-ink) !important;
-}
-body.product-new-home .nh-hero {
-  min-height: 508px !important;
-  padding: 70px 32px !important;
-  display: grid !important;
-  align-items: center !important;
-  background: linear-gradient(90deg, #fffdfa 0%, #fffdfa 54%, #f7fbf7 100%) !important;
-  border: 0 !important;
-}
-body.product-new-home[data-theme="dark"] .nh-hero { background: var(--vp-paper) !important; }
-body.product-new-home .nh-hero-inner {
-  width: min(100%, 1010px) !important;
-  display: grid !important;
-  grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.72fr) !important;
-  gap: clamp(32px, 5vw, 70px) !important;
-}
-body.product-new-home .nh-hero-copy { max-width: 580px !important; }
-body.product-new-home .nh-hero-guide {
-  display: block !important;
-  padding: 18px !important;
-  border: 1px solid var(--vp-line) !important;
-  border-radius: var(--vp-r-sm) !important;
-  background: var(--vp-surface) !important;
-  box-shadow: none !important;
-}
-body.product-new-home .nh-hero-guide h2 {
-  color: var(--vp-ink) !important;
-  font-size: 14px !important;
-  letter-spacing: -0.02em !important;
-}
-body.product-new-home .nh-hero-guide p { color: var(--vp-ink-3) !important; }
-body.product-new-home .nh-guide-link {
-  min-height: 50px !important;
-  border-color: var(--vp-line-soft) !important;
-  border-radius: var(--vp-r-xs) !important;
-  background: var(--vp-paper-strong) !important;
-  box-shadow: none !important;
-}
-body.product-new-home .nh-guide-link:hover,
-body.product-new-home .nh-guide-link:focus-visible {
-  border-color: var(--vp-green-2) !important;
-  background: var(--vp-mint) !important;
-}
-body.product-new-home .nh-kicker {
-  display: inline-flex !important;
-  padding: 5px 9px !important;
-  border: 1px solid var(--vp-line) !important;
-  border-radius: var(--vp-r-xs) !important;
-  background: transparent !important;
-  color: var(--vp-green) !important;
-  font-size: 11px !important;
-}
-body.product-new-home .nh-title {
-  margin: 16px 0 4px !important;
-  max-width: 620px !important;
-  color: var(--vp-ink) !important;
-  font-size: clamp(38px, 5vw, 58px) !important;
-  font-weight: 780 !important;
-  line-height: 1.05 !important;
-  letter-spacing: -0.055em !important;
-}
-body.product-new-home .nh-tagline { margin: 12px 0 !important; color: var(--vp-coral) !important; font-size: 22px !important; }
-body.product-new-home .nh-lead { max-width: 580px !important; color: var(--vp-ink-2) !important; }
-body.product-new-home .nh-btn { border-radius: var(--vp-r-sm) !important; box-shadow: none !important; }
-body.product-new-home .nh-btn-primary { background: var(--vp-green-2) !important; border-color: var(--vp-green-2) !important; }
-body.product-new-home .nh-proof-row span { border-radius: var(--vp-r-xs) !important; }
-body.product-new-home .nh-notice { display: none !important; }
-body.product-new-home .nh-wrap { max-width: 1010px !important; }
-body.product-new-home :is(.nh-card, .nh-waymaker-inner, .nh-caution-inner, .nh-source-card, .nh-modal) {
-  border-radius: var(--vp-r-sm) !important;
-  box-shadow: none !important;
-}
-body.product-new-home .nh-grid { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; gap: 12px !important; }
-body.product-new-home .nh-card { min-height: 154px !important; padding: 16px !important; border: 1px solid var(--vp-line) !important; background: var(--vp-surface) !important; }
-body.product-new-home .nh-card-icon { border-radius: var(--vp-r-xs) !important; }
-body.product-new-home .nh-block,
-body.product-new-home .nh-dashboard,
-body.product-new-home .nh-pathway,
-body.product-new-home .nh-sources { padding-block: 42px !important; }
-body.product-new-home .nh-footer { background: #eae3d4 !important; }
-/* 위 하드코딩 값이 !important 로 테마 토큰을 덮어, 다크에서 푸터만 크림색으로
-   남고 상속 텍스트 색은 밝은 쪽으로 뒤집혀 읽히지 않았다. 다크에서만 되돌린다.
-   (new-home 은 data-theme 을 documentElement 에 걸지만 body 에 거는 경로도 있어 둘 다 받는다.) */
-[data-theme="dark"] body.product-new-home .nh-footer,
-body.product-new-home[data-theme="dark"] .nh-footer { background: var(--bg2) !important; }
-
-/* --------------------------------------------------------------------------
    Form Helper
    -------------------------------------------------------------------------- */
 body.product-form-helper {
@@ -943,57 +825,6 @@ body.product-form-helper :is(.fh-doc-card, .fh-type-card) { border: 1px solid va
 body.product-form-helper .fh-doc-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
 body.product-form-helper :is(.fh-btn, .fh-btn-nav, .fh-input, .fh-select, .fh-textarea) { border-radius: var(--vp-r-sm) !important; }
 body.product-form-helper :is(.fh-btn-primary, .fh-btn-next) { background: var(--vp-green-2) !important; border-color: var(--vp-green-2) !important; color: #fff !important; }
-
-/* --------------------------------------------------------------------------
-   Waymaker workspace
-   -------------------------------------------------------------------------- */
-body.product-waymaker {
-  background: var(--vp-paper) !important;
-  color: var(--vp-ink) !important;
-}
-body.product-waymaker .chat-header {
-  min-height: 84px !important;
-  border-bottom: 1px solid var(--vp-line-soft) !important;
-  background: var(--vp-paper-strong) !important;
-  box-shadow: none !important;
-}
-body.product-waymaker .back-btn,
-body.product-waymaker #aiThemeBtn,
-body.product-waymaker .quota-badge { border-radius: var(--vp-r-sm) !important; }
-body.product-waymaker .wm-workspace-shell { min-height: calc(100dvh - 84px) !important; background: var(--vp-paper) !important; }
-body.product-waymaker .wm-workspace-sidebar { width: 230px !important; border-right: 1px solid var(--vp-line) !important; background: var(--vp-paper-strong) !important; }
-body.product-waymaker .wm-workspace-nav-link {
-  min-height: 52px !important;
-  border: 1px solid transparent !important;
-  border-radius: var(--vp-r-sm) !important;
-  box-shadow: none !important;
-}
-body.product-waymaker .wm-workspace-nav-link.is-active { border-color: var(--vp-green-2) !important; background: var(--vp-mint) !important; }
-body.product-waymaker .wm-workspace-main { padding: 20px 32px 30px !important; }
-body.product-waymaker .wm-context-strip,
-body.product-waymaker .msg-bubble,
-body.product-waymaker .input-wrapper,
-body.product-waymaker .reference-disclaimer,
-body.product-waymaker .wm-workspace-trust {
-  border-radius: var(--vp-r-sm) !important;
-  box-shadow: none !important;
-}
-body.product-waymaker .msg-bubble { border: 1px solid var(--vp-line) !important; background: var(--vp-surface) !important; }
-body.product-waymaker .ai-welcome-chip,
-body.product-waymaker .ai-mode-btn,
-body.product-waymaker .send-btn { border-radius: var(--vp-r-sm) !important; box-shadow: none !important; }
-body.product-waymaker .send-btn { background: #3dddb3 !important; color: #06241c !important; }
-body.product-waymaker[data-theme="light"] :is(.back-btn, #aiThemeBtn, .quota-badge) {
-  border-color: var(--vp-line) !important;
-  background: var(--vp-surface) !important;
-  color: var(--vp-ink) !important;
-}
-body.product-waymaker[data-theme="light"] :is(.ai-status, .ai-title-sub) { color: var(--vp-ink-2) !important; }
-body.product-waymaker[data-theme="dark"] .chat-header { background: #061d17 !important; }
-body.product-waymaker[data-theme="dark"] .wm-workspace-shell { background: #082b22 !important; }
-body.product-waymaker[data-theme="dark"] .wm-workspace-sidebar { border-right-color: #174b3f !important; background: #06241c !important; }
-body.product-waymaker[data-theme="dark"] .wm-workspace-nav-link.is-active { border-color: #2a806a !important; background: #0d4034 !important; }
-body.product-waymaker[data-theme="dark"] .msg-bubble { border-color: #2a806a !important; background: #0a352a !important; }
 
 /* --------------------------------------------------------------------------
    Nationality interview hub
@@ -1044,12 +875,6 @@ body.product-nationality-hub .ni-btn-primary { background: var(--vp-green-2) !im
   body.product-visable .p-tool-grid,
   body.product-visable .p-how-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
   body.product-visable .p-journey-entry-grid { grid-template-columns: 1fr !important; }
-  body.product-new-home .nh-hero-inner {
-    grid-template-columns: 1fr !important;
-    gap: 24px !important;
-  }
-  body.product-new-home .nh-hero-copy { max-width: 680px !important; }
-  body.product-new-home .nh-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
   body.product-nationality-hub .ni-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
   body.product-form-helper .fh-page { padding-inline: 22px !important; }
   body.product-form-helper .fh-layout { grid-template-columns: 1fr !important; }
@@ -1105,20 +930,9 @@ body.product-nationality-hub .ni-btn-primary { background: var(--vp-green-2) !im
   body.product-visable .p-settings-grid { grid-template-columns: 1fr !important; }
   body.product-visable #hikoreaGuideBody .prh-tabs { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
 
-  body.product-new-home .nh-topbar { padding-inline: 12px !important; }
-  body.product-new-home .nh-section-nav { padding-inline: 12px !important; }
-  body.product-new-home .nh-hero { min-height: auto !important; padding: 42px 18px !important; }
-  body.product-new-home .nh-grid { grid-template-columns: 1fr !important; }
-  body.product-new-home .nh-title { font-size: 40px !important; }
   body.product-form-helper .fh-header { padding-inline: 12px !important; }
   body.product-form-helper .fh-page { padding: 28px 14px 48px !important; }
   body.product-form-helper .fh-doc-grid { grid-template-columns: 1fr !important; }
-  body.product-waymaker .wm-workspace-shell { display: block !important; }
-  body.product-waymaker .wm-workspace-sidebar { width: 100% !important; border-right: 0 !important; border-bottom: 1px solid #174b3f !important; }
-  body.product-waymaker .wm-workspace-nav { display: grid !important; grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
-  body.product-waymaker .wm-workspace-nav-link { min-height: 62px !important; padding: 7px !important; font-size: 11px !important; }
-  body.product-waymaker .wm-workspace-trust { display: none !important; }
-  body.product-waymaker .wm-workspace-main { padding: 16px 12px 24px !important; }
   body.product-nationality-hub .ni-topbar,
   body.product-nationality-hub .ni-nav { padding-inline: 12px !important; }
   body.product-nationality-hub .ni-grid { grid-template-columns: 1fr !important; }
@@ -1127,10 +941,8 @@ body.product-nationality-hub .ni-btn-primary { background: var(--vp-green-2) !im
 
 @media (prefers-reduced-motion: reduce) {
   body.product-visable *,
-  body.product-new-home *,
-  body.product-form-helper *,
-  body.product-waymaker *,
-  body.product-nationality-hub * {
+body.product-form-helper *,
+body.product-nationality-hub * {
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
@@ -1164,9 +976,7 @@ body.product-nationality-hub .ni-btn-primary { background: var(--vp-green-2) !im
  * 페이지마다 3차 잉크의 토큰 이름이 달라(--t3 / --p-ink-3 / --p-ink-mute)
  * 전부 같은 값으로 묶는다. */
 body.product-visable:not([data-theme="dark"]),
-body.product-new-home:not([data-theme="dark"]),
 body.product-form-helper:not([data-theme="dark"]),
-body.product-waymaker:not([data-theme="dark"]),
 body.product-nationality-hub:not([data-theme="dark"]) {
   --vp-ink-3: #5a6561;   /* was #74817c — 3.10:1 → 4.63:1 */
   --t3: #5a6561;
@@ -1174,9 +984,7 @@ body.product-nationality-hub:not([data-theme="dark"]) {
   --p-ink-mute: #5a6561;
 }
 body.product-visable[data-theme="dark"],
-body.product-new-home[data-theme="dark"],
 body.product-form-helper[data-theme="dark"],
-body.product-waymaker[data-theme="dark"],
 body.product-nationality-hub[data-theme="dark"] {
   --vp-ink-3: #abbab4;   /* was #8da29a — 3.44:1 → 4.61:1 */
   --t3: #abbab4;         /* was #8c8572 — 2.53:1 */
@@ -1195,14 +1003,10 @@ body.product-nationality-hub[data-theme="dark"] {
  * 안에 갇혀 있어 다른 페이지로 퍼지지 않았다. 공통 스킨으로 올린다.
  * 라이트 accent 는 짙은 초록이라 반대로 흰 글자가 맞다. */
 body.product-visable:not([data-theme="dark"]),
-body.product-new-home:not([data-theme="dark"]),
 body.product-form-helper:not([data-theme="dark"]),
-body.product-waymaker:not([data-theme="dark"]),
 body.product-nationality-hub:not([data-theme="dark"]) { --vp-on-accent: #ffffff; --ac-ink: #ffffff; }
 body.product-visable[data-theme="dark"],
-body.product-new-home[data-theme="dark"],
 body.product-form-helper[data-theme="dark"],
-body.product-waymaker[data-theme="dark"],
 body.product-nationality-hub[data-theme="dark"] { --vp-on-accent: #083830; --ac-ink: #083830; }
 
 /* 밝은 민트 위에 흰 글자를 직접 박아 둔 곳들 (측정: 1.62 / 1.89 / 2.19:1) */
@@ -1226,7 +1030,6 @@ body.product-visable[data-theme="dark"] .p-reminder-submit {
  * 경고 문구는 약화하면 안 되므로 더 잘 보이게만 조정한다. --warn 을 텍스트로
  * 쓰면 크림 배경에서 2.29:1 까지 떨어져, 텍스트 전용 짙은 앰버를 따로 둔다.
  * 테두리·아이콘용 --warn 자체는 건드리지 않는다. */
-body.product-new-home:not([data-theme="dark"]) .nh-source-flag,
 body.product-nationality-hub:not([data-theme="dark"]) .nh-source-flag {
   color: #9a5c27 !important;   /* 2.58:1 → 4.69:1 */
 }
@@ -1249,57 +1052,9 @@ body.product-visable .brand-hero.figma-brand-bridge .brand-hero-subtitle {
   color: #ffffff !important;   /* 2.67:1 → 4.64:1 */
 }
 
-/* 6 · New Home 다크 히어로 — 오로라
- *
- * 다크 히어로가 var(--vp-paper) 단색이라 완전히 평평했다. Figma
- * "Waymaker Hero · Dark Aurora"(198:5)에서 확정된 하우스 레시피 —
- * 깊은 베이스 + 낮은 알파의 밝은 블룸 5겹 — 을 radial-gradient 로 옮긴다.
- * 어두운 wash 톤을 쓰면 다시 평평해지므로, 밝은 accent 를 낮은 알파로
- * 쓰는 것이 핵심이다.
- *
- * 블룸 알파는 Figma 원본(mint .15 / glow .07)에서 조금 낮췄다. 시안과 달리
- * 실제 히어로에는 본문이 얹히는데, 원본 값이면 민트 블룸 정점에서 보조
- * 텍스트가 4.46:1 로 기준 아래로 내려간다. .13/.06 이면 4.91:1 로 통과한다.
- * 베이스 그래디언트는 아래에서 --vp-paper 로 착지시켜 본문 영역과의
- * 이음매가 보이지 않게 했다. */
-body.product-new-home[data-theme="dark"] {
-  --aurora-base: #0e3028;
-  --aurora-mint: 59, 228, 184;
-  --aurora-peri: 90, 99, 168;
-  --aurora-ember: 255, 139, 122;
-  --aurora-glow: 243, 238, 223;
-}
-body.product-new-home[data-theme="dark"] .nh-hero {
-  position: relative !important;
-  overflow: hidden !important;
-  background:
-    radial-gradient(85% 125% at 94% 4%,  rgba(var(--aurora-mint),  0.13) 0%, transparent 62%),
-    radial-gradient(80% 120% at 2% 96%,  rgba(var(--aurora-peri),  0.30) 0%, transparent 64%),
-    radial-gradient(62% 85% at 64% 108%, rgba(var(--aurora-ember), 0.13) 0%, transparent 66%),
-    radial-gradient(78% 105% at 38% 2%,  rgba(var(--aurora-glow),  0.06) 0%, transparent 60%),
-    radial-gradient(56% 78% at 70% 66%,  rgba(var(--aurora-glow),  0.05) 0%, transparent 68%),
-    linear-gradient(180deg, var(--aurora-base) 0%, #08251f 58%, var(--vp-paper) 100%) !important;
-}
 /* 시안의 State A/B/C Smart-Animate 루프에 대응하는 아주 느린 표류.
    그래디언트를 다시 칠하지 않도록 블룸만 ::before 로 떼어 transform 으로
    움직인다. 모션 감소를 켠 사용자에게는 정지 상태로 보인다. */
-@media (prefers-reduced-motion: no-preference) {
-  body.product-new-home[data-theme="dark"] .nh-hero::before {
-    content: "";
-    position: absolute;
-    inset: -25%;
-    z-index: 0;
-    pointer-events: none;
-    background:
-      radial-gradient(38% 46% at 74% 40%, rgba(var(--aurora-mint), 0.10) 0%, transparent 70%),
-      radial-gradient(34% 42% at 24% 68%, rgba(var(--aurora-peri), 0.12) 0%, transparent 70%);
-    animation: vp-aurora-drift 26s ease-in-out infinite alternate;
-  }
-}
-body.product-new-home[data-theme="dark"] .nh-hero-inner {
-  position: relative !important;
-  z-index: 1 !important;
-}
 @keyframes vp-aurora-drift {
   from { transform: translate3d(-2%, -1.5%, 0) scale(1);    opacity: 0.85; }
   to   { transform: translate3d(2%, 1.5%, 0)  scale(1.08);  opacity: 1; }
@@ -1313,9 +1068,7 @@ body.product-new-home[data-theme="dark"] .nh-hero-inner {
 /* 3차 잉크를 한 단계 더 올린다. --vp-line(#28594D)이 카드 배경으로도 쓰이는
    자리가 있어서, 그 표면까지 포함하면 #ABBAB4 로는 3.97:1 이었다. */
 body.product-visable[data-theme="dark"],
-body.product-new-home[data-theme="dark"],
 body.product-form-helper[data-theme="dark"],
-body.product-waymaker[data-theme="dark"],
 body.product-nationality-hub[data-theme="dark"] {
   --vp-ink-3: #bbc7c3;
   --t3: #bbc7c3;
@@ -1347,21 +1100,7 @@ body.product-visable:not([data-theme="dark"]) .p-cta-btn.primary {
   border-color: #be4f3c !important;
 }
 
-/* New Home 다크 출처 칩 — --ac2(#22C9A0)가 칩 배경 위에서 4.40:1 */
-body.product-new-home[data-theme="dark"] .nh-src-chip {
-  color: var(--vp-green) !important;   /* #40DDB2 → 5.7:1 */
-}
-
-/* New Home 라이트 복귀 링크 — 상단바(.nh-back)와 푸터 링크 둘 다 크림 배경
-   위에서 --ac(#0B7A61)가 4.14:1 이었다. 푸터 링크는 클래스가 없어 컨테이너로
-   잡는다. */
-body.product-new-home:not([data-theme="dark"]) .nh-back,
-body.product-new-home:not([data-theme="dark"]) .nh-footer a {
-  color: #0a715a !important;
-}
-
 /* 민트 칩(#E1F0EA) 위의 초록 라벨이 정확히 4.50:1 경계 */
-body.product-waymaker:not([data-theme="dark"]) .wm-workspace-nav-kicker,
 body.product-form-helper:not([data-theme="dark"]) .fh-privacy-notice strong {
   color: #096b55 !important;
 }
@@ -1391,17 +1130,13 @@ body.product-nationality-hub:not([data-theme="dark"]) .ni-chip:not([aria-pressed
  * 기준을 맞추려고 정체성을 버리는 교환은 하지 않는다 — §5 에 예외로 명시했다.
  * ─────────────────────────────────────────────────────────────────── */
 body.product-visable:not([data-theme="dark"]),
-body.product-new-home:not([data-theme="dark"]),
 body.product-form-helper:not([data-theme="dark"]),
-body.product-waymaker:not([data-theme="dark"]),
 body.product-nationality-hub:not([data-theme="dark"]) {
   --vp-cta: #096450;      /* 흰 글자 7.08:1 (was #0B7A61 → 5.29:1) */
   --vp-on-cta: #ffffff;
 }
 body.product-visable[data-theme="dark"],
-body.product-new-home[data-theme="dark"],
 body.product-form-helper[data-theme="dark"],
-body.product-waymaker[data-theme="dark"],
 body.product-nationality-hub[data-theme="dark"] {
   --vp-cta: #34d4a8;      /* 표면은 그대로 */
   --vp-on-cta: #062e27;   /* 잉크만 진하게 — 7.79:1 (was #083830 → 6.88:1) */
@@ -1410,8 +1145,6 @@ body.product-nationality-hub[data-theme="dark"] {
 /* 테마 속성을 포함해야 한다. 위 "밝은 민트 위 흰 글자" 블록이
    `body.product-nationality-hub[data-theme="dark"] .ni-btn-primary` 로
    (0,3,1) 특정도를 갖고 있어, 테마 없는 (0,2,1) 선택자로는 뒤에 와도 진다. */
-body.product-new-home:not([data-theme="dark"]) .nh-btn-primary,
-body.product-new-home[data-theme="dark"] .nh-btn-primary,
 body.product-nationality-hub:not([data-theme="dark"]) .ni-btn-primary,
 body.product-nationality-hub[data-theme="dark"] .ni-btn-primary,
 body.product-visable:not([data-theme="dark"]) .p-reminder-submit,
@@ -1419,29 +1152,6 @@ body.product-visable[data-theme="dark"] .p-reminder-submit {
   background: var(--vp-cta) !important;
   border-color: var(--vp-cta) !important;
   color: var(--vp-on-cta) !important;
-}
-
-/* ───────────────────────────────────────────────────────────────────
- * Waymaker 오로라 — 웰컴(빈) 상태에서만 표면을 비운다 (2026-08)
- *
- * `ai.html` 의 오로라 레이어는 z-index:-1 이라 body 배경 위·본문 아래에
- * 깔리는데, `.wm-workspace-shell` 이 불투명 배경(#082b22 / --vp-paper)을
- * !important 로 덮고 있어 전부 가려졌다.
- *
- * 웰컴 상태에서만 그 표면을 비워 오로라가 보이게 한다. 첫 메시지가 붙거나
- * (.wm-conversing) 내비게이터 화면이면(.wm-active) 원래 불투명 표면으로
- * 돌아간다 — 결과를 읽는 화면은 calm 하게 두라는 계약을 지키는 지점이다.
- *
- * 특정도: 스킨 원본이 (0,3,1)+!important 라 :not() 두 개를 더해 (0,4,1) 로 이긴다.
- * ─────────────────────────────────────────────────────────────────── */
-body.product-waymaker:not(.wm-conversing):not(.wm-active) .wm-workspace-shell,
-body.product-waymaker:not(.wm-conversing):not(.wm-active) .wm-workspace-sidebar {
-  background: transparent !important;
-}
-
-/* 오로라가 켜진 웰컴 상태에서 사이드바 각주가 4.44:1 로 내려간다 — 그 상태에서만 한 단계 진하게. */
-body.product-waymaker:not(.wm-conversing):not(.wm-active):not([data-theme="dark"]) .wm-workspace-trust-note {
-  color: #56615d !important;
 }
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -1496,250 +1206,10 @@ body.product-visable.landing:not(.searched):not([data-theme="dark"]) .reference-
   color: #515c58 !important;
 }
 
-/* ═══════════════════════════════════════════════════════════════════
- * New Home 랜딩 히어로 — 확정 시안 그대로 구현 (2026-08)
- * Figma `New Home Desktop · Landing` · 히어로 마스터 507:2876 (1440×840)
- *
- * 라이브는 좌측 카피 + 우측 가이드 카드의 2단 그리드였고, 확정 시안은
- * 중앙 정렬 단일 컬럼이다. 시안의 값은 Plugin API 로 직접 읽어 옮겼다:
- *   base   linear-gradient(180deg, #FFFBF3 → #F3E9DA)
- *   coral  #FF6B5B .28 / peri #7F89CE .30 / emerald #0EA37B .15
- *   light-1 #FFFCF5 .50 / light-2 #FFFFFF .35   (모두 LAYER_BLUR 180)
- * 타원 중심·반경은 1440×840 기준 백분율로 환산하고 블러 180 만큼 넓혔다.
- * Figma 는 자식 배열의 앞이 아래 → CSS background 는 앞이 위라 순서를 뒤집는다.
- *
- * 다크는 이미 `Waymaker Hero · Dark Aurora` 레시피가 위(6번 블록)에 있고
- * 선택자가 (0,3,1) 이라 배경은 그대로 유지된다. 여기서는 레이아웃·타이포만
- * 공통으로 적용하고, 유리 표면만 테마별로 나눈다.
- *
- * 시안과 다르게 간 지점 2곳 (모두 근거를 남긴다):
- *  - CTA 는 시안의 #085E48/#F3EEDF(6.70:1) 대신 하우스 AAA 토큰
- *    var(--vp-cta)/var(--vp-on-cta)(7.08:1) 을 쓴다. 색차는 육안으로
- *    구분되지 않지만 대비 기준은 한 단계 위다.
- *  - 키네틱 스트립 잉크는 시안 rgba(58,84,76,.5)(2.29:1) 대신 #47594F(5.01:1).
- *    12px 본문 크기라 시안 값 그대로는 읽히지 않는다.
- * 워드마크 벡터(203:13)는 이 환경의 네트워크 정책이 figma.com 자산 호스트를
- * 막아 내려받지 못했다 — 임의로 다시 그리지 않고 비워 두었다.
- * ═══════════════════════════════════════════════════════════════════ */
-body.product-new-home .nh-hero {
-  position: relative !important;
-  overflow: hidden !important;
-  min-height: 620px !important;
-  padding: 84px 32px 104px !important;
-  display: grid !important;
-  align-items: center !important;
-  justify-items: center !important;
-  border: 0 !important;
-}
-body.product-new-home:not([data-theme="dark"]) .nh-hero {
-  background:
-    radial-gradient(34.7% 59.5% at 58.3% 73.8%, rgba(255, 255, 255, 0.35) 0%, transparent 70%),
-    radial-gradient(43.8% 72.0% at 46.5% 30.4%, rgba(255, 252, 245, 0.50) 0%, transparent 70%),
-    radial-gradient(33.3% 56.0% at 86.1% 91.7%, rgba(14, 163, 123, 0.15) 0%, transparent 70%),
-    radial-gradient(42.4% 70.2% at 13.2% 84.5%, rgba(127, 137, 206, 0.30) 0%, transparent 70%),
-    radial-gradient(46.5% 73.8% at 88.2% 28.6%, rgba(255, 107, 91, 0.28) 0%, transparent 70%),
-    linear-gradient(180deg, #fffbf3 0%, #f3e9da 100%) !important;
-}
-
-body.product-new-home .nh-hero-inner {
-  position: relative !important;
-  z-index: 1 !important;
-  width: min(100%, 940px) !important;
-  display: block !important;
-  grid-template-columns: none !important;
-  gap: 0 !important;
-}
-body.product-new-home .nh-hero-copy {
-  max-width: none !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  gap: 20px !important;
-  text-align: center !important;
-}
-body.product-new-home .nh-hero-copy > * { margin: 0 !important; }
-
-/* 키커 — 유리 알약 */
-body.product-new-home .nh-kicker {
-  display: inline-flex !important;
-  align-items: center !important;
-  padding: 9px 16px !important;
-  border: 1.4px solid rgba(255, 255, 255, 0.55) !important;
-  border-radius: 999px !important;
-  background: rgba(255, 255, 255, 0.55) !important;
-  -webkit-backdrop-filter: blur(10px) !important;
-  backdrop-filter: blur(10px) !important;
-  color: var(--vp-ink) !important;
-  font-size: 12.5px !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.06em !important;
-  text-transform: none !important;
-}
-body.product-new-home[data-theme="dark"] .nh-kicker {
-  border-color: rgba(241, 238, 229, 0.22) !important;
-  background: rgba(241, 238, 229, 0.10) !important;
-}
-
-body.product-new-home .nh-title {
-  max-width: 720px !important;
-  white-space: pre-line !important;
-  color: var(--vp-ink) !important;
-  font-size: clamp(34px, 3.8vw, 54px) !important;
-  font-weight: 800 !important;
-  line-height: 1.08 !important;
-  letter-spacing: -0.02em !important;
-  word-break: keep-all !important;
-}
-body.product-new-home .nh-tagline {
-  color: #e0513e !important;
-  font-size: 24px !important;
-  font-weight: 700 !important;
-  font-style: italic !important;
-}
-body.product-new-home[data-theme="dark"] .nh-tagline { color: #ff9d8c !important; }
-
-body.product-new-home .nh-lead {
-  max-width: 640px !important;
-  color: var(--vp-ink-2) !important;
-  font-size: 17px !important;
-  line-height: 1.6 !important;
-  word-break: keep-all !important;
-}
-
-body.product-new-home .nh-cta-row {
-  margin-top: 0 !important;
-  justify-content: center !important;
-  gap: 12px !important;
-}
-body.product-new-home .nh-btn {
-  min-height: 48px !important;
-  padding: 0 24px !important;
-  border-radius: 999px !important;
-  font-size: 15px !important;
-  font-weight: 700 !important;
-}
-body.product-new-home .nh-btn-primary {
-  padding-left: 26px !important;
-  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.22) !important;
-}
-body.product-new-home .nh-btn-arrow { font-weight: 700 !important; }
-body.product-new-home:not([data-theme="dark"]) .nh-btn-secondary {
-  border: 1.4px solid rgba(255, 255, 255, 0.55) !important;
-  background: rgba(255, 255, 255, 0.60) !important;
-  -webkit-backdrop-filter: blur(9px) !important;
-  backdrop-filter: blur(9px) !important;
-  color: var(--vp-ink) !important;
-}
-body.product-new-home[data-theme="dark"] .nh-btn-secondary {
-  border: 1.4px solid rgba(241, 238, 229, 0.22) !important;
-  background: rgba(241, 238, 229, 0.08) !important;
-  color: var(--vp-ink) !important;
-}
-
-/* 신뢰 칩 3개 */
-body.product-new-home .nh-proof-row {
-  margin-top: 0 !important;
-  justify-content: center !important;
-  gap: 8px !important;
-}
-body.product-new-home .nh-proof-row span {
-  padding: 7px 13px !important;
-  border: 0 !important;
-  border-radius: 999px !important;
-  color: var(--vp-green) !important;
-  font-size: 12.5px !important;
-  font-weight: 700 !important;
-}
-body.product-new-home:not([data-theme="dark"]) .nh-proof-row span {
-  background: rgba(255, 255, 255, 0.55) !important;
-  -webkit-backdrop-filter: blur(7px) !important;
-  backdrop-filter: blur(7px) !important;
-}
-body.product-new-home[data-theme="dark"] .nh-proof-row span {
-  background: rgba(241, 238, 229, 0.10) !important;
-}
-
-/* 키네틱 스트립 — 시안의 흐르는 문구 띠. 같은 문구를 두 번 이어 붙이고
-   트랙을 -50% 만큼 밀어 이음매 없이 반복한다. 모션 감소 설정에서는 멈춘다. */
-body.product-new-home .nh-kinetic {
-  position: absolute !important;
-  left: 0 !important;
-  right: 0 !important;
-  bottom: 46px !important;
-  z-index: 1 !important;
-  overflow: hidden !important;
-  pointer-events: none !important;
-  mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
-  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
-}
-body.product-new-home .nh-kinetic-track {
-  display: flex !important;
-  width: max-content !important;
-  animation: nh-kinetic-scroll 64s linear infinite;
-}
-body.product-new-home .nh-kinetic-line {
-  white-space: pre !important;
-  color: #47594f !important;
-  font-size: 12px !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.08em !important;
-}
-body.product-new-home[data-theme="dark"] .nh-kinetic-line { color: var(--vp-ink-3) !important; }
 @keyframes nh-kinetic-scroll {
   from { transform: translate3d(0, 0, 0); }
   to   { transform: translate3d(-50%, 0, 0); }
 }
-@media (prefers-reduced-motion: reduce) {
-  body.product-new-home .nh-kinetic-track { animation: none !important; }
-}
-
-/* 히어로 각주 — 시안은 rgba(90,101,97,.9) 지만 11px 에서 4.12:1 이라
-   3차 잉크 토큰(#5A6561 / #BBC7C3, 5.04:1)을 쓴다. */
-body.product-new-home .nh-hero-foot {
-  position: absolute !important;
-  left: 50% !important;
-  bottom: 18px !important;
-  transform: translateX(-50%) !important;
-  z-index: 1 !important;
-  margin: 0 !important;
-  max-width: min(92%, 900px) !important;
-  color: var(--vp-ink-3) !important;
-  font-size: 11px !important;
-  font-weight: 500 !important;
-  text-align: center !important;
-  word-break: keep-all !important;
-}
-
-/* 오른쪽 가장자리의 오로라 도트 4개 — 첫 점만 진하고 나머지는 흰 35% 잔상. */
-body.product-new-home .nh-aurora-dots {
-  position: absolute !important;
-  right: 31px !important;
-  top: 46% !important;
-  z-index: 1 !important;
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 17px !important;
-  pointer-events: none !important;
-}
-body.product-new-home .nh-aurora-dots i {
-  width: 11px !important;
-  height: 11px !important;
-  border-radius: 999px !important;
-  background: rgba(255, 255, 255, 0.35) !important;
-}
-body.product-new-home .nh-aurora-dots i:first-child { background: var(--vp-green) !important; }
-
-@media (max-width: 960px) {
-  body.product-new-home .nh-hero { min-height: auto !important; padding: 56px 20px 96px !important; }
-  body.product-new-home .nh-aurora-dots { display: none !important; }
-}
-@media (max-width: 720px) {
-  body.product-new-home .nh-hero { padding: 42px 18px 92px !important; }
-  body.product-new-home .nh-hero-copy { gap: 16px !important; }
-  body.product-new-home .nh-title { font-size: 34px !important; }
-  body.product-new-home .nh-cta-row .nh-btn { flex: 1 1 100% !important; }
-}
-
 /* ═══════════════════════════════════════════════════════════════════
  * Visable 랜딩 — 확정 시안 나머지 (2026-08)
  * Figma 11 `Visable Landing (pre-search)` · 히어로 마스터 507:2139
@@ -2016,187 +1486,6 @@ body.product-visable .p-gw-newhome::before { display: none !important; content: 
    같은 색이라 1.09:1 이었다. 3차 잉크로 올린다. */
 body.product-visable #visaManualSection::before {
   color: var(--vp-ink-3) !important;
-}
-
-/* New Home 조건 목록의 ✓ / ✕ 글리프. 글리프 모양이 달라 색만으로
-   정보를 전달하지는 않지만, 그래도 읽히는 크기의 글자라 기준을 맞춘다. */
-body.product-new-home:not([data-theme="dark"]) .nh-pill-list.yes li::before { color: #0a7355 !important; }
-body.product-new-home:not([data-theme="dark"]) .nh-pill-list.no li::before  { color: #9a5210 !important; }
-body.product-new-home[data-theme="dark"] .nh-pill-list.yes li::before { color: #4fdcb2 !important; }
-body.product-new-home[data-theme="dark"] .nh-pill-list.no li::before  { color: #f0a860 !important; }
-
-/* ═══════════════════════════════════════════════════════════════════
- * New Home Content 영역 + 양쪽 푸터 — 확정 시안 그대로 (2026-08)
- * Figma 31 `New Home Desktop · Landing` · Content 122:8 / Footer 123:73
- * Figma 11 `Visable Landing` · Footer 507:1407
- *
- * 시안 실측:
- *   섹션 제목 24px ExtraBold #073B32 / 부제 14.5px #5A6561
- *   카드 283×182 r18, 표면 #FFFCF5, 테두리 #D1C6B4, 패딩 20, 간격 10
- *   아이콘 타일 44×44 r12 #E1EAEC, 글리프 15px ExtraBold
- *   카드 제목 16.5px ExtraBold #073B32 / 설명 13px #3A544C / 링크 13.5px Bold
- *   여정 카드 r20 흰 배경, 테두리 #E3DCCB, 패딩 24/28/28/28
- *   출처 카드 335×62 r12 / 배지 알약 #E1EAEC
- *   주의 줄 r14, 표면 #FBF2E4, 테두리 #E68A3A, 잉크 #8A4E14
- *   푸터 #ECE5D6, 위 경계 #D1C6B4, 고지문 12px #5A6561
- *
- * 시안의 강조 초록 #0E8A6B 는 흰 계열 표면에서 4.18:1, 배지 위에서는
- * 3.53:1 이라 본문 크기 글자에 쓸 수 없다. 전부 var(--vp-green)(6.2~7.4:1)
- * 으로 올렸다 — 색상 계열은 같고 대비만 한 단계 위다.
- * ═══════════════════════════════════════════════════════════════════ */
-
-body.product-new-home .nh-section-h h2 {
-  font: 800 24px/1.2 var(--vp-font) !important;
-  letter-spacing: -0.03em !important;
-}
-:root:not([data-theme="archive_diary"]) body.product-new-home:not([data-theme="dark"]) .nh-section-h h2 { color: #073b32 !important; }
-body.product-new-home .nh-section-intro {
-  color: var(--vp-ink-3) !important;
-  font: 400 14.5px/1.6 var(--vp-font) !important;
-}
-
-/* 기능 카드 (122:12-17) */
-body.product-new-home .nh-card {
-  min-height: 182px !important;
-  padding: 20px !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: flex-start !important;
-  gap: 10px !important;
-  border-radius: 18px !important;
-}
-body.product-new-home:not([data-theme="dark"]) .nh-card {
-  border-color: #d1c6b4 !important;
-  background: #fffcf5 !important;
-}
-body.product-new-home .nh-card-icon {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  width: 44px !important;
-  height: 44px !important;
-  border-radius: 12px !important;
-  background: #e1eaec !important;
-  color: var(--vp-green) !important;
-  font: 800 15px/1 var(--vp-font) !important;
-  letter-spacing: 0 !important;
-}
-body.product-new-home[data-theme="dark"] .nh-card-icon {
-  background: var(--vp-mint) !important;
-  color: var(--vp-green) !important;
-}
-body.product-new-home .nh-card-label {
-  font: 800 16.5px/1.25 var(--vp-font) !important;
-  letter-spacing: -0.02em !important;
-}
-:root:not([data-theme="archive_diary"]) body.product-new-home:not([data-theme="dark"]) .nh-card-label { color: #073b32 !important; }
-body.product-new-home .nh-card-desc {
-  color: var(--vp-ink-2) !important;
-  font: 400 13px/1.5 var(--vp-font) !important;
-}
-body.product-new-home .nh-card-cta {
-  margin-top: auto !important;
-  color: var(--vp-green) !important;
-  font: 700 13.5px/1.3 var(--vp-font) !important;
-}
-
-/* 정착 여정 스테퍼 (123:9-42) */
-body.product-new-home .nh-journey {
-  margin-top: 18px !important;
-  padding: 24px 28px 28px !important;
-  border: 1px solid #e3dccb !important;
-  border-radius: 20px !important;
-  background: var(--vp-surface) !important;
-}
-body.product-new-home[data-theme="dark"] .nh-journey { border-color: var(--vp-line) !important; }
-body.product-new-home .nh-journey-track {
-  display: flex !important;
-  align-items: flex-start !important;
-  justify-content: center !important;
-  flex-wrap: wrap !important;
-  gap: 0 !important;
-}
-body.product-new-home .nh-journey-step {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  gap: 8px !important;
-  width: 34px !important;
-}
-body.product-new-home .nh-journey-dot {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  width: 34px !important;
-  height: 34px !important;
-  border: 1px solid #e3dccb !important;
-  border-radius: 999px !important;
-  background: var(--vp-surface) !important;
-  color: var(--vp-ink-3) !important;
-  font: 700 13px/1 var(--vp-font) !important;
-  transition: background 0.35s ease, color 0.35s ease, border-color 0.35s ease;
-}
-/* 그려진 단계는 CTA 토큰으로 채운다 — 시안의 #0EA37B + 흰 글자는 3.21:1 로
-   하우스 규칙상 금지된 조합이다. */
-body.product-new-home .nh-journey-step.is-drawn .nh-journey-dot {
-  border-color: var(--vp-cta) !important;
-  background: var(--vp-cta) !important;
-  color: var(--vp-on-cta) !important;
-}
-body.product-new-home .nh-journey-label {
-  color: var(--vp-ink-3) !important;
-  font: 700 13px/1.2 var(--vp-font) !important;
-  white-space: nowrap !important;
-  transition: color 0.35s ease;
-}
-body.product-new-home .nh-journey-step.is-drawn .nh-journey-label { color: var(--vp-green) !important; }
-body.product-new-home .nh-journey-link {
-  width: 40px !important;
-  height: 3px !important;
-  margin-top: 15.5px !important;
-  border-radius: 999px !important;
-  background: #e3dccb !important;
-  transform: scaleX(0);
-  transform-origin: left center;
-  transition: transform 0.4s ease, background 0.4s ease;
-}
-body.product-new-home .nh-journey-link.is-drawn {
-  background: var(--vp-cta) !important;
-  transform: scaleX(1);
-}
-@media (prefers-reduced-motion: reduce) {
-  body.product-new-home .nh-journey-link { transform: scaleX(1); transition: none; }
-  body.product-new-home .nh-journey-dot,
-  body.product-new-home .nh-journey-label { transition: none; }
-}
-body.product-new-home .nh-journey-note {
-  margin: 18px 0 0 !important;
-  color: var(--vp-ink-3) !important;
-  font: 400 12px/1.55 var(--vp-font) !important;
-  text-align: center !important;
-}
-@media (max-width: 720px) {
-  body.product-new-home .nh-journey { padding: 18px 14px 20px !important; }
-  body.product-new-home .nh-journey-link { width: 18px !important; }
-}
-
-/* 주의 줄 (123:70-72) */
-body.product-new-home:not([data-theme="dark"]) .nh-caution .nh-caution-inner {
-  border-color: #e68a3a !important;
-  border-radius: 14px !important;
-  background: #fbf2e4 !important;
-}
-body.product-new-home:not([data-theme="dark"]) .nh-caution h2,
-body.product-new-home:not([data-theme="dark"]) .nh-caution p { color: #8a4e14 !important; }
-
-/* 푸터 (123:73 · 507:1407) */
-body.product-new-home:not([data-theme="dark"]) .nh-footer {
-  background: #ece5d6 !important;
-  border-top: 1px solid #d1c6b4 !important;
-}
-body.product-new-home .nh-footer p {
-  color: var(--vp-ink-3) !important;
-  font: 400 12px/1.6 var(--vp-font) !important;
 }
 
 body.product-visable .p-footer {
@@ -2494,25 +1783,6 @@ body.product-nationality-hub .ni-page-foot {
     linear-gradient(180deg, #171c33 0%, #14182b 100%) !important;
 }
 
-/* New Home 히어로 오로라 — Pop 판 */
-:root[data-theme="archive_diary"] body.product-new-home:not([data-theme="dark"]) .nh-hero {
-  background:
-    radial-gradient(34.7% 59.5% at 58.3% 73.8%, rgba(255, 255, 255, 0.40) 0%, transparent 70%),
-    radial-gradient(43.8% 72.0% at 46.5% 30.4%, rgba(255, 255, 255, 0.52) 0%, transparent 70%),
-    radial-gradient(33.3% 56.0% at 86.1% 91.7%, rgba(194, 255, 68,  0.14) 0%, transparent 70%),
-    radial-gradient(42.4% 70.2% at 13.2% 84.5%, rgba(138, 116, 255, 0.18) 0%, transparent 70%),
-    radial-gradient(46.5% 73.8% at 88.2% 28.6%, rgba(255, 142, 209, 0.18) 0%, transparent 70%),
-    linear-gradient(180deg, #fffdf7 0%, #f2eeff 100%) !important;
-}
-:root[data-theme="archive_diary"] body.product-new-home[data-theme="dark"] .nh-hero {
-  background:
-    radial-gradient(43.8% 72.0% at 46.5% 30.4%, rgba(110, 198, 255, 0.10) 0%, transparent 70%),
-    radial-gradient(33.3% 56.0% at 86.1% 91.7%, rgba(194, 255, 68,  0.08) 0%, transparent 70%),
-    radial-gradient(42.4% 70.2% at 13.2% 84.5%, rgba(138, 116, 255, 0.22) 0%, transparent 70%),
-    radial-gradient(46.5% 73.8% at 88.2% 28.6%, rgba(255, 142, 209, 0.14) 0%, transparent 70%),
-    linear-gradient(180deg, #171c33 0%, #14182b 100%) !important;
-}
-
 /* 서류 도우미 · 국적민원 허브 — Pop 판 페이지 배경 */
 :root[data-theme="archive_diary"] body.product-form-helper:not([data-theme="dark"]),
 :root[data-theme="archive_diary"] body.product-nationality-hub:not([data-theme="dark"]) {
@@ -2530,8 +1800,8 @@ body.product-nationality-hub .ni-page-foot {
 }
 
 /* ── 2. Pop 조형 복원 — 확정 구조 위에 Pop 의 표면·테두리·그림자 ────── */
-:root[data-theme="archive_diary"] body.product-visable :is(.p-gw-card, .p-gw-newhome),
-:root[data-theme="archive_diary"] body.product-new-home .nh-card,
+:root[data-theme="archive_diary"] body.product-visable :is(.p-gw-card,
+.p-gw-newhome),
 :root[data-theme="archive_diary"] body.product-nationality-hub .ni-hubcard {
   border: 2px solid var(--t1) !important;
   border-radius: 22px !important;
@@ -2554,7 +1824,6 @@ body.product-nationality-hub .ni-page-foot {
   backdrop-filter: none !important;
 }
 :root[data-theme="archive_diary"] body.product-visable .p-hero-eyebrow,
-:root[data-theme="archive_diary"] body.product-new-home .nh-kicker,
 :root[data-theme="archive_diary"] body.product-form-helper .fh-kicker,
 :root[data-theme="archive_diary"] body.product-nationality-hub .ni-hero-kicker {
   border: 2px solid var(--t1) !important;
@@ -2564,7 +1833,6 @@ body.product-nationality-hub .ni-page-foot {
   -webkit-backdrop-filter: none !important;
   backdrop-filter: none !important;
 }
-:root[data-theme="archive_diary"] body.product-new-home .nh-btn-secondary,
 :root[data-theme="archive_diary"] body.product-nationality-hub .ni-btn {
   border: 2px solid var(--t1) !important;
   background: var(--bg1) !important;
@@ -2572,14 +1840,6 @@ body.product-nationality-hub .ni-page-foot {
   -webkit-backdrop-filter: none !important;
   backdrop-filter: none !important;
 }
-:root[data-theme="archive_diary"] body.product-new-home .nh-proof-row span {
-  border: 2px solid var(--t1) !important;
-  background: var(--bg1) !important;
-  color: var(--t1) !important;
-  -webkit-backdrop-filter: none !important;
-  backdrop-filter: none !important;
-}
-:root[data-theme="archive_diary"] body.product-new-home .nh-journey,
 :root[data-theme="archive_diary"] body.product-nationality-hub .ni-coachband {
   border: 2px solid var(--t1) !important;
   box-shadow: var(--shCard) !important;
@@ -2594,22 +1854,7 @@ body.product-nationality-hub .ni-page-foot {
   background: var(--k-lime, #c2ff44) !important;
   color: #141414 !important;
 }
-:root[data-theme="archive_diary"] body.product-new-home .nh-journey-dot {
-  border: 2px solid var(--t1) !important;
-  background: var(--bg1) !important;
-  color: var(--t1) !important;
-}
-:root[data-theme="archive_diary"] body.product-new-home .nh-journey-step.is-drawn .nh-journey-dot {
-  border-color: #141414 !important;
-  background: var(--k-lime, #c2ff44) !important;
-  color: #141414 !important;
-}
-:root[data-theme="archive_diary"] body.product-new-home .nh-journey-link { background: var(--t1) !important; }
-:root[data-theme="archive_diary"] body.product-new-home:not([data-theme="dark"]) .nh-journey-step.is-drawn .nh-journey-label { color: var(--ac2) !important; }
-/* Pop 다크의 --ac2 는 어두운 파랑(#2F5EFC)이라 어두운 표면에서 2.68:1 이다. */
-:root[data-theme="archive_diary"] body.product-new-home[data-theme="dark"] .nh-journey-step.is-drawn .nh-journey-label { color: #9db9ff !important; }
-:root[data-theme="archive_diary"] body.product-visable .p-footer,
-:root[data-theme="archive_diary"] body.product-new-home .nh-footer {
+:root[data-theme="archive_diary"] body.product-visable .p-footer {
   border-top: 2px solid var(--t1) !important;
   background: var(--bg2) !important;
 }
@@ -2667,12 +1912,6 @@ body.product-nationality-hub .ni-page-foot {
 :root[data-theme="archive_diary"] body[data-theme="dark"] .p-gw-card-ai .p-gw-card-go {
   color: #ffffff !important;
 }
-/* 3-e. ✓/✕ 글리프 — Pop 팔레트의 --ok/--warn 은 라이트에서 4.15/2.41:1. */
-:root[data-theme="archive_diary"] body.product-new-home:not([data-theme="dark"]) .nh-pill-list.yes li::before { color: #12704a !important; }
-:root[data-theme="archive_diary"] body.product-new-home:not([data-theme="dark"]) .nh-pill-list.no li::before  { color: #96500f !important; }
-:root[data-theme="archive_diary"] body.product-new-home[data-theme="dark"] .nh-pill-list.yes li::before { color: #57e0ab !important; }
-:root[data-theme="archive_diary"] body.product-new-home[data-theme="dark"] .nh-pill-list.no li::before  { color: #f5ab63 !important; }
-
 /* 3-f. 게이트웨이 그리드 — Pop 에서 `.p-gateway` 가 flex 로 떨어져 확정 시안의
    3열 배치(grid-column)가 통째로 무시되고 카드가 비대칭으로 흘렀다.
    확정 구조인 3열 그리드를 되돌린다. */
@@ -2698,10 +1937,6 @@ body.product-nationality-hub .ni-page-foot {
   filter: none !important;
   content: url("../brand/visable-wordmark-white.svg") !important;
 }
-
-/* Pop 은 자기 잉크 토큰을 쓴다 (확정 시안의 초록 잉크는 Editorial 전용). */
-:root[data-theme="archive_diary"] body.product-new-home .nh-section-h h2,
-:root[data-theme="archive_diary"] body.product-new-home .nh-card-label { color: var(--t1) !important; }
 
 /* ── 4. Pop 팔레트의 대비 미달 (하네스를 안정화하고 나서야 보인 기존 결함) ──
    리빌 애니메이션을 끄고 측정하니 같은 조건 재실행에서 27/27 로 일치했다.
@@ -2847,20 +2082,6 @@ body.product-visable .hobby-desc { opacity: 1 !important; }
    키네틱 스트립과 각주를 히어로 바닥에 절대배치했는데, 좁은 폭에서 각주가
    2~3줄로 늘어나면서 스트립 위로 올라타 글자가 겹쳤다.
    모바일에서는 둘 다 흐름 배치로 되돌린다(두 스타일 공통 구조다). */
-@media (max-width: 760px) {
-  body.product-new-home .nh-kinetic,
-  body.product-new-home .nh-hero-foot {
-    position: static !important;
-    left: auto !important;
-    right: auto !important;
-    bottom: auto !important;
-    transform: none !important;
-  }
-  body.product-new-home .nh-kinetic { margin: 20px 0 0 !important; }
-  body.product-new-home .nh-hero-foot { margin: 10px auto 0 !important; max-width: 100% !important; }
-  body.product-new-home .nh-hero { padding-bottom: 28px !important; }
-}
-
 /* ── 8. 모바일에서만 나타나는 대비 미달 ─────────────────────────────
    글자 크기가 뷰포트에 따라 줄면서 large text(24px) 기준을 벗어나는 자리들.
    데스크톱 감사만으로는 보이지 않는다. */
@@ -2880,10 +2101,8 @@ body.product-visable .hobby-desc { opacity: 1 !important; }
     color: #a81e6a !important;
   }
   /* 8-b. 히어로 각주가 모바일에서 에메랄드 블룸 위로 올라가 4.40:1 이 된다. */
-  body.product-visable .p-hero-foot,
-  body.product-new-home .nh-hero-foot { color: #515c58 !important; }
-  body.product-visable[data-theme="dark"] .p-hero-foot,
-  body.product-new-home[data-theme="dark"] .nh-hero-foot { color: var(--vp-ink-3) !important; }
+  body.product-visable .p-hero-foot { color: #515c58 !important; }
+  body.product-visable[data-theme="dark"] .p-hero-foot { color: var(--vp-ink-3) !important; }
 }
 
 /* ── 9. 소개 섹션 — 다크에서는 표면을 어둡게 통일한다 ───────────────
@@ -3310,4 +2529,256 @@ body.product-visable:not([data-theme="dark"]) .brand-wordmark-img {
 body.product-visable[data-theme="dark"] .brand-wordmark-img {
   content: url("../brand/visable-wordmark-white.svg") !important;
   filter: none !important;
+}
+
+/* ==========================================================================
+   13 · Product family — Waymaker (ai.html) · New Home (new-home.html)
+   --------------------------------------------------------------------------
+   The shipped Visable landing (civic-search.css, `--cs-*`) is the reference:
+   white paper / deep-green ink in light, #10221c paper / mint ink in dark,
+   hairlines instead of boxes, Pretendard, 44px controls, 3px focus outline.
+
+   Waymaker and New Home used to carry their own dark-first or cream palettes
+   plus ~800 lines of page-scoped `!important` overrides here. Those rules are
+   gone; both products now read the SAME `--vp-*` values as the Visable
+   landing, and each page stylesheet (waymaker-workspace.css / new-home.css)
+   only composes them. The legacy aliases (--bg*, --t*, --ac*, --bd*) are
+   mapped once, below, because the embedded modules (procedure navigator,
+   legal-source search, New Home renderers) still read those names.
+   Selectors carry `:root` so they outrank civic-search.css's
+   `html:root body` remap, which loads later on both pages.
+   ========================================================================== */
+:root body.product-waymaker,
+:root body.product-new-home {
+  --vp-paper: #ffffff;
+  --vp-paper-strong: #f7f9f8;
+  --vp-surface: #ffffff;
+  --vp-ink: #172521;
+  --vp-ink-2: #45524e;
+  --vp-ink-3: #5c6864;
+  --vp-green: #214f43;
+  --vp-green-2: #2b6655;
+  --vp-mint: #edf4f1;
+  --vp-line: #d9e0df;
+  --vp-line-soft: #e8ecea;
+  --vp-line-strong: #b9c7c3;
+  --vp-coral: #b0402f;
+  --vp-amber: #845611;
+  --vp-danger: #a53f31;
+  --vp-cta: #214f43;
+  --vp-on-cta: #ffffff;
+  --vp-caution-bg: #fbf7ee;
+  --vp-caution-line: #e3d2a9;
+  --vp-caution-ink: #4e3b12;
+  --vp-shadow: 0 1px 2px rgba(23, 37, 33, 0.04), 0 8px 24px rgba(23, 37, 33, 0.04);
+  --vp-overlay: rgba(16, 34, 28, 0.44);
+  --vp-r-sm: 8px;
+  --vp-r-md: 12px;
+  --vp-r-lg: 16px;
+  --vp-control: 44px;
+  --vp-gutter: clamp(20px, 4.2vw, 68px);
+
+  /* legacy aliases read by the embedded modules */
+  --ff: var(--vp-font);
+  --bg0: var(--vp-paper);
+  --bg1: var(--vp-surface);
+  --bg2: var(--vp-paper-strong);
+  --bg3: var(--vp-mint);
+  --bd: var(--vp-line);
+  --bd2: var(--vp-line-soft);
+  --t1: var(--vp-ink);
+  --t2: var(--vp-ink-2);
+  --t3: var(--vp-ink-3);
+  --ac: var(--vp-green);
+  --ac2: var(--vp-green-2);
+  --acL: var(--vp-mint);
+  --acG: rgba(33, 79, 67, 0.08);
+  --ac-ink: var(--vp-on-cta);
+  --cy: var(--vp-coral);
+  --cyL: #fbeeea;
+  --cyT: var(--vp-coral);
+  --ok: var(--vp-green);
+  --warn: var(--vp-amber);
+  --warning: var(--vp-amber);
+  --error: var(--vp-danger);
+
+  font-family: var(--vp-font);
+  font-feature-settings: "ss01";
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  background: var(--vp-paper);
+  color: var(--vp-ink);
+}
+:root body.product-waymaker[data-theme="dark"],
+:root body.product-new-home[data-theme="dark"] {
+  --vp-paper: #10221c;
+  --vp-paper-strong: #142a22;
+  --vp-surface: #172d24;
+  --vp-ink: #ecf5f0;
+  --vp-ink-2: #c5d3cc;
+  --vp-ink-3: #a6b7af;
+  --vp-green: #9bd9bd;
+  --vp-green-2: #b7e6d1;
+  --vp-mint: #1b352a;
+  --vp-line: #385346;
+  --vp-line-soft: #243d33;
+  --vp-line-strong: #4f6e60;
+  --vp-coral: #f2a493;
+  --vp-amber: #e6c27f;
+  --vp-danger: #f2a092;
+  --vp-cta: #9bd9bd;
+  --vp-on-cta: #0e2019;
+  --vp-caution-bg: #23261b;
+  --vp-caution-line: #595235;
+  --vp-caution-ink: #ece0bd;
+  --vp-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), 0 12px 32px rgba(0, 0, 0, 0.18);
+  --vp-overlay: rgba(4, 12, 9, 0.66);
+  --acG: rgba(155, 217, 189, 0.1);
+  --cyL: #3a231e;
+}
+
+/* Editorial-pop (archive_diary) keeps its own palette on both products. */
+:root[data-theme="archive_diary"] body.product-new-home,
+html[data-editorial-theme="archive_diary"] body.product-waymaker {
+  --vp-paper: #eef3ff;
+  --vp-paper-strong: #f4f7ff;
+  --vp-surface: #ffffff;
+  --vp-ink: #141414;
+  --vp-ink-2: #353a45;
+  --vp-ink-3: #555c6a;
+  --vp-green: #1b36c9;
+  --vp-green-2: #2f5efc;
+  --vp-mint: #e3eaff;
+  --vp-line: #141414;
+  --vp-line-soft: #c2d2ee;
+  --vp-line-strong: #141414;
+  --vp-cta: #1b36c9;
+  --vp-on-cta: #ffffff;
+  --acG: rgba(47, 94, 252, 0.12);
+}
+:root[data-theme="archive_diary"] body.product-new-home[data-theme="dark"],
+html[data-editorial-theme="archive_diary"] body.product-waymaker[data-theme="dark"] {
+  --vp-paper: #14182b;
+  --vp-paper-strong: #1b2138;
+  --vp-surface: #1b2138;
+  --vp-ink: #eef2ff;
+  --vp-ink-2: #bac5e4;
+  --vp-ink-3: #a3aed3;
+  --vp-green: #9ecbff;
+  --vp-green-2: #c3dcff;
+  --vp-mint: #232b47;
+  --vp-line: #4a5780;
+  --vp-line-soft: #2b3658;
+  --vp-line-strong: #6a79a8;
+  --vp-cta: #9ecbff;
+  --vp-on-cta: #0b1024;
+  --acG: rgba(158, 203, 255, 0.12);
+}
+
+body.product-waymaker :where(button, a, input, select, textarea, summary, [tabindex]):focus-visible,
+body.product-new-home :where(button, a, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 3px solid var(--vp-green);
+  outline-offset: 3px;
+  box-shadow: none;
+}
+
+/* ── Family bar ─────────────────────────────────────────────────────────
+   One quiet row on every sub-product: the Visable wordmark (always the way
+   home), a hairline, the product name, then that product's own controls.
+   It is deliberately lower (64px) than the Visable landing nav (92px): on a
+   task surface the chrome must not compete with the work. */
+.vf-bar {
+  position: relative;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 64px;
+  padding: 10px var(--vp-gutter);
+  border-bottom: 1px solid var(--vp-line);
+  background: var(--vp-paper);
+  color: var(--vp-ink);
+}
+.vf-home {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  min-height: var(--vp-control);
+  padding: 0 2px;
+  border-radius: var(--vp-r-sm);
+  text-decoration: none;
+}
+.vf-home img {
+  display: block;
+  width: 92px;
+  height: auto;
+}
+body[data-theme="dark"] .vf-home .vf-wordmark { filter: invert(1); }
+/* Compact brand mark for the narrowest phones, where the wordmark would push
+   the product name into an ellipsis. */
+.vf-home .vf-mark { display: none; width: 30px; height: 30px; border-radius: 8px; }
+body[data-theme="dark"] .vf-home .vf-mark { box-shadow: 0 0 0 1px var(--vp-line); }
+.vf-divider {
+  flex: 0 0 auto;
+  width: 1px;
+  height: 22px;
+  background: var(--vp-line);
+}
+.vf-product {
+  min-width: 0;
+  margin: 0;
+  color: var(--vp-ink);
+  font-size: 17px;
+  font-weight: 740;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.vf-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-inline-start: auto;
+  flex: 0 0 auto;
+}
+.vf-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--vp-control);
+  height: var(--vp-control);
+  padding: 0;
+  border: 1px solid var(--vp-line);
+  border-radius: 999px;
+  background: var(--vp-paper);
+  color: var(--vp-ink);
+  cursor: pointer;
+  transition: border-color 0.16s ease, background-color 0.16s ease;
+}
+.vf-icon-btn:hover { border-color: var(--vp-green); }
+.vf-icon-btn svg { width: 18px; height: 18px; }
+/* The theme toggle shows the mode it switches TO. */
+.vf-theme-btn .vf-icon-sun { display: none; }
+body[data-theme="dark"] .vf-theme-btn .vf-icon-sun { display: block; }
+body[data-theme="dark"] .vf-theme-btn .vf-icon-moon { display: none; }
+
+@media (max-width: 680px) {
+  .vf-bar { min-height: 56px; gap: 10px; padding: 6px 16px; }
+  .vf-home .vf-wordmark { width: 78px; }
+  .vf-divider { height: 18px; }
+  .vf-product { font-size: 16px; }
+  .vf-actions { gap: 6px; }
+}
+@media (max-width: 379px) {
+  .vf-bar { gap: 8px; }
+  .vf-home { min-width: var(--vp-control); justify-content: center; }
+  .vf-divider { display: none; }
+  .vf-product { font-size: 15px; }
+  .vf-home .vf-wordmark { display: none; }
+  .vf-home .vf-mark { display: block; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .vf-icon-btn { transition: none; }
 }

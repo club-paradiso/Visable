@@ -24,6 +24,9 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 AI_HTML = REPO_ROOT / "ai.html"
+# ai.html's presentation lives in its page stylesheet; layout contracts (such as
+# the mobile source-chip wrapping rule) are asserted against the page + sheet.
+AI_CSS = REPO_ROOT / "assets" / "css" / "waymaker-workspace.css"
 CHECKER = REPO_ROOT / "scripts" / "check_ai_shell_semantics.js"
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -59,6 +62,7 @@ class AiShellStaticTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.html = AI_HTML.read_text(encoding="utf-8")
+        cls.page_css = cls.html + "\n" + AI_CSS.read_text(encoding="utf-8")
 
     # -- Source chip semantics (Part A / F) ---------------------------------
     def test_generate_badges_uses_related_metadata(self):
@@ -118,9 +122,9 @@ class AiShellStaticTests(unittest.TestCase):
         ):
             self.assertIn(token, self.html)
         self.assertIn("manualSources.length && !publicLabels.length", self.html)
-        self.assertIn("@media (max-width: 480px)", self.html)
-        self.assertIn(".source-status-chips", self.html)
-        self.assertIn("overflow-wrap: anywhere", self.html)
+        self.assertIn("@media (max-width: 480px)", self.page_css)
+        self.assertIn(".source-status-chips", self.page_css)
+        self.assertIn("overflow-wrap: anywhere", self.page_css)
 
     # -- Warning de-duplication (Part D) ------------------------------------
     def test_warning_dedup_guards_present(self):

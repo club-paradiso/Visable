@@ -146,7 +146,10 @@ check(/source-name-list/.test(src), 'public source name/version subnote missing'
 check(/versionDate/.test(src), 'public source-status renderer must include source version dates');
 check(/manualSources\.length && !publicLabels\.length/.test(src),
       'manual fallback row should be suppressed when public source labels are present');
-check(/@media \(max-width: 480px\)[\s\S]*source-status-chips/.test(src),
+// The page's presentation lives in its stylesheet (assets/css/waymaker-workspace.css).
+const AI_CSS = path.join(path.dirname(AI_HTML), 'assets', 'css', 'waymaker-workspace.css');
+const pageCss = src + '\n' + (fs.existsSync(AI_CSS) ? fs.readFileSync(AI_CSS, 'utf8') : '');
+check(/@media \(max-width: 480px\)[\s\S]*source-status-chips/.test(pageCss),
       'mobile source-status chip wrapping rule missing');
 
 // --- Static: footer disclaimer i18n (4 languages, natural English) ----------
