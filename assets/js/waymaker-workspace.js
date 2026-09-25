@@ -2,32 +2,66 @@
   'use strict';
 
   var VISA_RE = /\b([A-H]-\d{1,2}(?:-\d{1,2}[A-Z]?)?)\b/i;
+  // `key` is the stable goal id; the label comes from COPY in the chrome language.
   var GOALS = [
-    { terms: ['근무처 변경', '근무처를 변경', '이직', '고용주 변경', 'workplace change', 'change employer'], ko: '근무처 변경' },
-    { terms: ['체류기간 연장', '연장', 'extension'], ko: '체류기간 연장' },
-    { terms: ['체류자격 변경', '비자 변경', 'status change'], ko: '체류자격 변경' },
-    { terms: ['외국인등록', '등록증', 'registration'], ko: '외국인등록' },
-    { terms: ['귀화', '국적', 'naturalization'], ko: '국적·귀화' },
-    { terms: ['서류', 'documents'], ko: '제출서류 확인' }
+    { terms: ['근무처 변경', '근무처를 변경', '이직', '고용주 변경', 'workplace change', 'change employer'], key: 'workplace' },
+    { terms: ['체류기간 연장', '연장', 'extension'], key: 'extension' },
+    { terms: ['체류자격 변경', '비자 변경', 'status change'], key: 'statusChange' },
+    { terms: ['외국인등록', '등록증', 'registration'], key: 'registration' },
+    { terms: ['귀화', '국적', 'naturalization'], key: 'nationality' },
+    { terms: ['서류', 'documents'], key: 'documents' }
   ];
+
+  // Context-strip copy in the same three chrome languages ai.html's shell uses
+  // (ko / en / zh; zh-TW is converted by zh-traditional.js like the rest).
+  var COPY = {
+    ko: {
+      detect: '질문에서 자동 감지', auto: '절차 자동 분류', empty: '구체적인 상황을 알려주시면 좁혀 드립니다',
+      workplace: '근무처 변경', extension: '체류기간 연장', statusChange: '체류자격 변경', registration: '외국인등록', nationality: '국적·귀화', documents: '제출서류 확인',
+      needWorkplace: '세부 직종 · 새 사업장 업종 · 변경 예정일', needExtension: '현재 만료일 · 체류 중 변경사항',
+      needStatusChange: '현재 자격 · 목표 자격 · 변경 사유', needDefault: '현재 체류자격 · 원하는 결과 · 처리 예정일'
+    },
+    en: {
+      detect: 'Detected from your question', auto: 'Sorted automatically', empty: 'Tell us more and Waymaker will narrow it down',
+      workplace: 'Workplace change', extension: 'Extension of stay', statusChange: 'Change of status', registration: 'Alien registration', nationality: 'Nationality / naturalization', documents: 'Required documents',
+      needWorkplace: 'Exact job type · new workplace industry · planned change date', needExtension: 'Current expiry date · changes during your stay',
+      needStatusChange: 'Current status · target status · reason for the change', needDefault: 'Current status · the outcome you want · planned date'
+    },
+    zh: {
+      detect: '从提问中自动识别', auto: '自动分类手续', empty: '请告诉我们具体情况，我们会帮您缩小范围',
+      workplace: '工作单位变更', extension: '居留期限延长', statusChange: '居留资格变更', registration: '外国人登录', nationality: '国籍·归化', documents: '确认提交材料',
+      needWorkplace: '具体职种 · 新单位行业 · 预计变更日期', needExtension: '当前到期日 · 居留期间的变化',
+      needStatusChange: '当前资格 · 目标资格 · 变更理由', needDefault: '当前居留资格 · 希望的结果 · 预计办理日期'
+    }
+  };
+
+  function chromeLang() {
+    var raw = '';
+    try { raw = (new URLSearchParams(location.search).get('lang') || '').trim(); } catch (e) {}
+    if (!raw) { try { raw = (localStorage.getItem('paradiso:language') || '').trim(); } catch (e) {} }
+    if (raw === 'en') return 'en';
+    if (raw.indexOf('zh') === 0) return 'zh';
+    return 'ko';
+  }
+  function copy(key) { var c = COPY[chromeLang()] || COPY.ko; return c[key] || COPY.ko[key] || ''; }
 
   function detectGoal(text) {
     var low = String(text || '').toLowerCase();
     for (var i = 0; i < GOALS.length; i += 1) {
       if (GOALS[i].terms.some(function (term) { return low.indexOf(term.toLowerCase()) !== -1; })) {
-        return GOALS[i].ko;
+        return GOALS[i].key;
       }
     }
-    return '절차 자동 분류';
+    return '';
   }
 
   function missingHint(text, goal) {
     var value = String(text || '').trim();
-    if (!value) return '구체적인 상황을 알려주시면 좁혀 드립니다';
-    if (goal === '근무처 변경') return '세부 직종 · 새 사업장 업종 · 변경 예정일';
-    if (goal === '체류기간 연장') return '현재 만료일 · 체류 중 변경사항';
-    if (goal === '체류자격 변경') return '현재 자격 · 목표 자격 · 변경 사유';
-    return '현재 체류자격 · 원하는 결과 · 처리 예정일';
+    if (!value) return copy('empty');
+    if (goal === 'workplace') return copy('needWorkplace');
+    if (goal === 'extension') return copy('needExtension');
+    if (goal === 'statusChange') return copy('needStatusChange');
+    return copy('needDefault');
   }
 
   function updateContext(text) {
@@ -37,8 +71,8 @@
     if (!status || !goal || !missing) return;
     var match = String(text || '').toUpperCase().match(VISA_RE);
     var detectedGoal = detectGoal(text);
-    status.textContent = match ? match[1] : '질문에서 자동 감지';
-    goal.textContent = detectedGoal;
+    status.textContent = match ? match[1] : copy('detect');
+    goal.textContent = detectedGoal ? copy(detectedGoal) : copy('auto');
     missing.textContent = missingHint(text, detectedGoal);
   }
 
