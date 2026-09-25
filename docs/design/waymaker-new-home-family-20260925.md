@@ -163,3 +163,20 @@ specificity mistake that recoloured the consent button's label.
 * In this sandbox the Pretendard CDN is blocked, which makes the two New Home
   e2e tests fail on a console error on `main` as well; with the font served
   locally both pass on all six projects.
+
+
+## 8. Product wordmarks restored from Figma (2026-09-25)
+
+The product-family chrome had regressed from the canonical script wordmarks to plain text product names. The live surfaces now use the existing Figma design-system components as the source of truth:
+
+- New Home: `Logo / New Home Wordmark`, node `203:13`
+- Waymaker: `Logo / Waymaker Wordmark`, node `204:13`
+- Figma file: `pInhK8Oyg04lpL4PMSCB4l`
+- Light fill: `#7F89CE`
+- Dark instance fill: `#9BA3E8`, exactly as documented on both Figma components
+- New Home hero size: 260×52, matching MASTER `194:5`
+- Waymaker hero size: 206×60, matching MASTER `198:5`
+
+The family bar now uses the same canonical product wordmarks at compact sizes, while the Visable wordmark remains the home link. The arrival/welcome block also restores the larger Figma wordmark above each product headline. Local SVG files are committed under `assets/brand/`; no temporary Figma asset URL is used at runtime.
+
+Both the full visual-QA script and the landing Playwright regression now verify that the wordmark is visible and that the SVG actually loads, so a future text-only or broken-asset regression fails CI instead of quietly shipping.

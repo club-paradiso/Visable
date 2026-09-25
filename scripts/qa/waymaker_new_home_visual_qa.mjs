@@ -199,9 +199,15 @@ async function waymaker(vp, theme, lang, opts = {}) {
   await page.goto(BASE + '/ai.html', { waitUntil: 'domcontentloaded' });
   await page.waitForSelector('#welcomeMessage .ai-welcome-chip');
   await page.waitForTimeout(500);
-  let m = await measure(page, { targets: WM_TARGETS, visible: ['.vf-bar', '.vf-product', '#aiQ', '#sendBtn', '#welcomeMessage .ai-title-main', '#referenceDisclaimer', '[data-workspace-route="navigator"]', '[data-workspace-route="research"]'] });
+  let m = await measure(page, { targets: WM_TARGETS, visible: ['.vf-bar', '.vf-product', '.wm-brand-wordmark', '#aiQ', '#sendBtn', '#welcomeMessage .ai-title-main', '#referenceDisclaimer', '[data-workspace-route="navigator"]', '[data-workspace-route="research"]'] });
+  const brand = await page.evaluate(() => ({
+    header: [...document.querySelectorAll('.vf-product-wordmark')].some((img) => img.offsetWidth > 0 && img.complete && img.naturalWidth > 0),
+    hero: [...document.querySelectorAll('.wm-brand-wordmark-img')].some((img) => img.offsetWidth > 0 && img.complete && img.naturalWidth > 0)
+  }));
   const composerTop = await page.locator('.wm-composer').evaluate((el) => el.getBoundingClientRect().top);
   const extra = [];
+  if (!brand.header) extra.push('Waymaker family-bar wordmark missing or failed to load');
+  if (!brand.hero) extra.push('Waymaker hero wordmark missing or failed to load');
   if (w < 1024 && h >= 700 && composerTop > h) extra.push(`composer below the first screen (${Math.round(composerTop)}px)`);
   const aria = await page.getAttribute('[data-workspace-route="chat"]', 'aria-current');
   if (aria !== 'page') extra.push('chat route not aria-current');
@@ -293,13 +299,19 @@ async function newHome(vp, theme, lang, opts = {}) {
   await page.goto(BASE + '/new-home.html', { waitUntil: 'domcontentloaded' });
   await page.waitForSelector('.nh-card-icon');
   await page.waitForTimeout(400);
-  let m = await measure(page, { targets: NH_TARGETS, visible: ['.vf-bar', '.vf-product', '.nh-section-nav', '.nh-hero .nh-title', '.nh-hero .nh-btn-primary', '.nh-hero .nh-btn-secondary', '#langBtn', '#brightBtn'] });
+  let m = await measure(page, { targets: NH_TARGETS, visible: ['.vf-bar', '.vf-product', '.nh-brand-wordmark', '.nh-section-nav', '.nh-hero .nh-title', '.nh-hero .nh-btn-primary', '.nh-hero .nh-btn-secondary', '#langBtn', '#brightBtn'] });
+  const brand = await page.evaluate(() => ({
+    header: [...document.querySelectorAll('.vf-product-wordmark')].some((img) => img.offsetWidth > 0 && img.complete && img.naturalWidth > 0),
+    hero: [...document.querySelectorAll('.nh-brand-wordmark-img')].some((img) => img.offsetWidth > 0 && img.complete && img.naturalWidth > 0)
+  }));
   const hero = await page.evaluate(() => {
     const cta = document.querySelector('.nh-hero .nh-btn-primary').getBoundingClientRect();
     const title = document.querySelector('.nh-title').getBoundingClientRect();
     return { ctaBottom: cta.bottom, titleLeft: title.left, titleRight: title.right };
   });
   const extra = [];
+  if (!brand.header) extra.push('New Home family-bar wordmark missing or failed to load');
+  if (!brand.hero) extra.push('New Home hero wordmark missing or failed to load');
   if (hero.ctaBottom > h + 1 && h >= 700) extra.push(`primary CTA below the first screen (${Math.round(hero.ctaBottom)}px)`);
   const dark = await page.evaluate(() => document.body.getAttribute('data-theme'));
   if ((theme === 'dark') !== (dark === 'dark')) extra.push('brightness not applied');
