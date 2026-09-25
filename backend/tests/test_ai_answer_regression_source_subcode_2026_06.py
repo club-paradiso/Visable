@@ -66,6 +66,12 @@ WEAK_KO = (
 # ---------------------------------------------------------------------------
 # Unit: generalized work-capability model + classifier
 # ---------------------------------------------------------------------------
+
+# /api/ask returns a public projection without provider/model routing
+# fields; these tests assert internal routing/grounding metadata, so they
+# use the explicit developer-diagnostics opt-in.
+DIAGNOSTICS_HEADERS = {"X-Paradiso-Diagnostics": "1"}
+
 class WorkCapabilityModelTests(unittest.TestCase):
     def test_h1_is_work_limited(self):
         self.assertEqual(la.status_work_capability("H-1"), "work_limited")
@@ -254,7 +260,7 @@ class _AskHarness(unittest.TestCase):
                 patch.object(pb, "OPENROUTER_MODEL_CANDIDATES", list(CANDS)), \
                 patch.object(pb, "OPENROUTER_MODEL_COOLDOWN_SECONDS", 0), \
                 patch.object(pb, "_call_openrouter", weak):
-            client = TestClient(pb.app)
+            client = TestClient(pb.app, headers=DIAGNOSTICS_HEADERS)
             payload = {"question": question, "lang": lang}
             if visa_code:
                 payload["visa_data"] = {"code": visa_code}

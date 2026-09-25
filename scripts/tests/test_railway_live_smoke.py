@@ -99,6 +99,29 @@ WAYMAKER_DETERMINISTIC_FALLBACK = {
     "task_type_detected": "extension",
     "manual_grounding_status": "present",
 }
+# The ordinary (non-diagnostics) projection a browser receives.
+WAYMAKER_PUBLIC = {
+    "answer": "유학(D-2) 체류기간 연장허가\n\n기본 서류\n• 신청서",
+    "answer_mode": "fast",
+    "answer_mode_requested": "fast",
+    "answer_mode_auto_escalated": False,
+    "deterministic_fallback_answer_used": False,
+    "visa_code_detected": "D-2",
+    "structured_answer": {
+        "kind": "documents",
+        "required_documents": {
+            "common": [{"label": "신청서"}],
+            "required": [{"label": "재정입증 서류"}],
+            "conditional": [{"label": "수료증명서, 지도교수 및 유학담당자 확인서"}],
+        },
+    },
+}
+WAYMAKER_PUBLIC_LEAKY = {
+    **WAYMAKER_PUBLIC,
+    "provider": "openrouter",
+    "answer": "### 필수 서류\n- 신청서 (외국인체류 안내매뉴얼 2026.6; source file 2026-06-23)",
+}
+
 ENFORCEMENT_LIVE = {
     "legalBaseline": {"status": "AVAILABLE", "baselineAmountKrw": 2_000_000},
     "prediction": {
@@ -127,12 +150,13 @@ class _FakeResponse(io.BytesIO):
 class SmokeRun:
     """One scripted execution of the embedded smoke script."""
 
-    def __init__(self, health_sequence, enforcement=ENFORCEMENT_LIVE, waymaker=WAYMAKER_LIVE):
+    def __init__(self, health_sequence, enforcement=ENFORCEMENT_LIVE, waymaker=WAYMAKER_LIVE, public=WAYMAKER_PUBLIC):
         # health_sequence: the commit each successive /health call reports.
         # The last entry repeats once exhausted.
         self.health_sequence = list(health_sequence)
         self.enforcement = enforcement
         self.waymaker = waymaker
+        self.public = public
         self.health_calls = 0
         self.slept = 0.0
         self.stdout = ""
@@ -148,7 +172,9 @@ class SmokeRun:
         if "/api/legal/laws/search" in url:
             return _FakeResponse(json.dumps(LAW_OK).encode())
         if "/api/ask" in url:
-            return _FakeResponse(json.dumps(self.waymaker).encode())
+            body = json.loads((getattr(request, "data", None) or b"{}").decode("utf-8"))
+            payload = self.waymaker if body.get("diagnostics") else self.public
+            return _FakeResponse(json.dumps(payload).encode())
         if "/api/enforcement/analyze" in url:
             return _FakeResponse(json.dumps(self.enforcement).encode())
         if "/api/enforcement/provider-probe" in url:
@@ -233,6 +259,18 @@ class RailwayLiveSmokeReadinessTests(unittest.TestCase):
         self.assertEqual(run.exit_code, 1)
         self.assertIn("unavailable AI prediction", run.stderr)
         self.assertNotIn("may describe a previous deploy", run.stderr)
+
+    def test_public_waymaker_response_must_not_leak_provider_or_markdown(self):
+        run = SmokeRun([OUR_COMMIT], public=WAYMAKER_PUBLIC_LEAKY).run()
+        self.assertEqual(run.exit_code, 1, run.stdout + run.stderr)
+        self.assertIn("waymaker_public_d2:", run.stdout)
+        self.assertIn("leaks internal routing/source metadata", run.stderr)
+
+    def test_public_waymaker_response_must_carry_structured_checklist(self):
+        no_structure = {k: v for k, v in WAYMAKER_PUBLIC.items() if k != "structured_answer"}
+        run = SmokeRun([OUR_COMMIT], public=no_structure).run()
+        self.assertEqual(run.exit_code, 1, run.stdout + run.stderr)
+        self.assertIn("structured D-2 checklist", run.stderr)
 
     def test_waymaker_d2_requires_a_real_model_completion(self):
         run = SmokeRun([OUR_COMMIT], waymaker=WAYMAKER_DETERMINISTIC_FALLBACK).run()

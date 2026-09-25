@@ -24,6 +24,12 @@ from services import law_tools as lt  # noqa: E402
 ST = le.LegalEvidenceSourceType
 
 
+
+# /api/ask returns a public projection without provider/model routing
+# fields; these tests assert internal routing/grounding metadata, so they
+# use the explicit developer-diagnostics opt-in.
+DIAGNOSTICS_HEADERS = {"X-Paradiso-Diagnostics": "1"}
+
 def _cfg(*, oc: str = "oc-sentinel-zzz", mode: str = "enabled", ttl: int = 0) -> GroundingConfig:
     return GroundingConfig(law_api_oc=oc, mode=mode, cache_ttl_seconds=ttl)
 
@@ -454,7 +460,7 @@ def _client(pb):
     from fastapi.testclient import TestClient
     pb._reset_visas_cache_for_tests()
     pb._reset_grounding_cache_for_tests()
-    return TestClient(pb.app)
+    return TestClient(pb.app, headers=DIAGNOSTICS_HEADERS)
 
 
 def _fake_pack():

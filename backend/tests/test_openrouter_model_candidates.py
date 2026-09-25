@@ -48,6 +48,12 @@ CANDS = [
 H1_Q = "H-1 비자인데 한국 대학에서 계절학기를 수강할 수 있을까요?"
 
 
+
+# /api/ask returns a public projection without provider/model routing
+# fields; these tests assert internal routing/grounding metadata, so they
+# use the explicit developer-diagnostics opt-in.
+DIAGNOSTICS_HEADERS = {"X-Paradiso-Diagnostics": "1"}
+
 def _pb():
     import paradiso_backend
     return paradiso_backend
@@ -59,7 +65,7 @@ def _client(pb):
     pb._reset_grounding_cache_for_tests()
     if hasattr(pb, "_reset_openrouter_model_cooldowns_for_tests"):
         pb._reset_openrouter_model_cooldowns_for_tests()
-    return TestClient(pb.app)
+    return TestClient(pb.app, headers=DIAGNOSTICS_HEADERS)
 
 
 def _fake_openrouter(behaviors):
@@ -454,7 +460,11 @@ class CandidateFallbackBehaviorTests(unittest.TestCase):
         self.assertEqual(resp.status_code, 200, resp.text)
         detail = resp.json()
         self.assertTrue(detail["deterministic_fallback_answer_used"])
-        self.assertEqual(detail["fallback_answer_kind"], "legal_analysis_preparation_note")
+        # "D-2 연장 서류" is a source-confirmed document lookup: the fallback is
+        # the canonical checklist itself, not a generic preparation memo.
+        self.assertEqual(detail["fallback_answer_kind"], "structured_document_checklist")
+        self.assertIn("신청서", detail["copy_safe_answer"])
+        self.assertTrue(detail["structured_answer"]["required_documents"]["common"])
         self.assertTrue(detail["all_candidates_failed"])
         self.assertTrue(detail["retryable_provider_error"])
         self.assertEqual(detail["attempted_models"], CANDS)
@@ -786,9 +796,12 @@ class ProviderErrorUxFrontendTests(unittest.TestCase):
         submit = self.html.split("async function submitAiAnalysis", 1)[1].split("\nfunction ", 1)[0]
         self.assertIn("buildProviderErrorHtml(detail)", submit)
         self.assertIn("response.status === 503", submit)
-        # Subtle fallback note on success.
-        self.assertIn("tx('aiFallbackSucceeded')", submit)
-        self.assertIn("model_fallback_used", submit)
+        # Which model answered (incl. a candidate fallback) is infrastructure
+        # detail: the public modal never renders it (server telemetry and the
+        # explicit developer diagnostics keep it).
+        self.assertNotIn("tx('aiFallbackSucceeded')", submit)
+        self.assertNotIn("model_fallback_used", submit)
+        self.assertNotIn("ollama_model", submit)
 
     def test_provider_busy_message_in_supported_languages(self):
         self.assertEqual(localized(self.packs, "ko", "aiProviderBusy"), "AI 모델이 일시적으로 혼잡합니다.")
@@ -819,10 +832,12 @@ class ProviderErrorUxFrontendTests(unittest.TestCase):
             for locale in SUPPORTED_LOCALES:
                 self.assertIn(key, self.packs[locale], f"{key} missing from {locale} pack")
 
-    def test_model_badge_uses_localized_response_model_label(self):
-        fn = self.html.split("function buildModelBadgeHtml", 1)[1].split("\nfunction ", 1)[0]
-        self.assertIn("tx('aiResponseModel')", fn)
-        self.assertNotIn("응답 모델:", fn)
+    def test_no_public_response_model_badge(self):
+        # The former "응답 모델: OpenRouter · <model id>" badge exposed the
+        # provider and exact model to every user; it must not come back.
+        self.assertNotIn("function buildModelBadgeHtml", self.html)
+        self.assertNotIn("tx('aiResponseModel')", self.html)
+        self.assertNotIn("`OpenRouter · ${", self.html)
 
     @unittest.skipUnless(_node_available(), "node not available")
     def test_i18n_leak_guard_still_passes(self):

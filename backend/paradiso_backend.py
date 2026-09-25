@@ -29,7 +29,7 @@ from datetime import date
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 from urllib.parse import quote
 
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, StreamingResponse
 from pydantic import BaseModel, Field
@@ -74,6 +74,7 @@ from services.answer_quality import (
     enforce_source_confidence_invariants,
 )
 from services import answer_quality as _answer_quality
+from services import structured_answer as _structured_answer
 from services.answer_shape import (
     ANSWER_SHAPE_VERSION,
     build_answer_shape_contract,
@@ -560,6 +561,13 @@ class AskRequest(BaseModel):
     # The post-hoc answer-shape repair gate stays buffered-only: its repair
     # rewrites the complete answer, which is not meaningful after streaming.
     stream: Optional[bool] = None
+    # Explicit developer-diagnostics opt-in. Ordinary /api/ask responses are a
+    # public projection with no provider / model / routing-chain fields (see
+    # _public_ask_payload). Engineers (smoke tests, ai.html ?debug=1) request
+    # the full internal payload with this flag or the X-Paradiso-Diagnostics
+    # header. Model ids are public catalog identifiers, never secrets; the
+    # operator can refuse the opt-in entirely with PARADISO_CLIENT_DIAGNOSTICS=0.
+    diagnostics: Optional[bool] = None
 
 
 class AskResponse(BaseModel):
@@ -643,6 +651,11 @@ class AskResponse(BaseModel):
     source_confidence_invariant_reasons: List[str] = Field(default_factory=list)
     answer_style_version: str = ANSWER_STYLE_VERSION
     question_type_detected: str = "general"
+    # Structured, source-grounded answer view (docs/ai/ANSWER_QUALITY_CONTRACT.md
+    # §3 field names). Present only for plain document lookups backed by a
+    # source-confirmed manual list; the checklist buckets come from canonical
+    # grounding data, never from the model. See services/structured_answer.py.
+    structured_answer: Optional[Dict[str, Any]] = None
     # Structured law/manual evidence pack (Part D). Non-secret: sanitized source
     # URLs only, OC/API-key values never appear. ``law_evidence_pack`` is the
     # full structured object; the flat fields below are convenience projections
@@ -2270,17 +2283,29 @@ def build_legal_analysis_fallback_answer(
 
 def _build_deterministic_fallback_payload(prompt: str, lang: Optional[str], base_meta: Dict[str, Any], attempt_meta: Dict[str, Any], reason: str) -> Dict[str, Any]:
     legal_analysis = base_meta.get("legal_analysis") if isinstance(base_meta.get("legal_analysis"), dict) else None
-    answer = build_legal_analysis_fallback_answer(
-        prompt=prompt,
-        lang=lang,
-        base_meta=base_meta,
-        legal_analysis=legal_analysis,
-    )
-    legal_analysis_exists = bool(legal_analysis)
+    structured = base_meta.get("structured_answer") if isinstance(base_meta.get("structured_answer"), dict) else None
     fallback_meta = dict(base_meta)
-    answer = _confidence_gate_answer_text(answer, fallback_meta)
-    fallback_meta["legal_analysis_exists"] = legal_analysis_exists
-    if legal_analysis_exists:
+    if structured is not None:
+        # A source-confirmed checklist needs no model: show the canonical
+        # document list itself (deterministic short answer), clearly marked as
+        # the limited fallback view, instead of a generic preparation memo.
+        answer = _structured_answer.compose_plain_text(structured, lang)
+        fallback_meta["legal_analysis_exists"] = bool(legal_analysis)
+        fallback_meta["fallback_answer_kind"] = "structured_document_checklist"
+        legal_analysis_exists = bool(legal_analysis)
+    else:
+        answer = build_legal_analysis_fallback_answer(
+            prompt=prompt,
+            lang=lang,
+            base_meta=base_meta,
+            legal_analysis=legal_analysis,
+        )
+        legal_analysis_exists = bool(legal_analysis)
+        answer = _confidence_gate_answer_text(answer, fallback_meta)
+        fallback_meta["legal_analysis_exists"] = legal_analysis_exists
+    if structured is not None:
+        pass
+    elif legal_analysis_exists:
         fallback_meta["fallback_answer_kind"] = "legal_analysis_preparation_note"
         if fallback_meta.get("answer_quality_mode") == "source_unavailable":
             fallback_meta["answer_quality_mode"] = "source_limited"
@@ -2449,6 +2474,74 @@ def _apply_answer_shape_gate(
 
     gate_meta["copy_safe_answer"] = answer
     return answer, gate_meta
+
+
+def _structured_answer_prompt_directive(lang: Optional[str]) -> str:
+    """Prompt contract for a source-confirmed document lookup.
+
+    The document checklist, notes and source card are rendered from canonical
+    data, so the model only writes the short lead-in. Asking it for the list
+    would invite re-bucketing or invented items.
+    """
+    return (
+        "[Structured document answer — summary only]\n"
+        "- The product UI already shows the official document checklist, the"
+        " notes and a source card built from the manual data above.\n"
+        "- Write ONLY a 1-2 sentence plain summary that answers the question"
+        " directly (what kind of documents are needed). No ceremonial intro.\n"
+        "- Do NOT list the documents, do NOT use Markdown headings (#), bullet"
+        " lists or bold labels, do NOT cite the source title/date/pages, and do"
+        " NOT add a disclaimer: those are displayed separately.\n"
+        "- Do NOT mention any document that is not in the manual list, and do"
+        " not say a listed document is unnecessary.\n"
+        "- " + _answer_language_instruction(lang)
+    )
+
+
+def _finalize_structured_document_answer(
+    answer: str,
+    response_meta: Dict[str, Any],
+    structured: Dict[str, Any],
+    answer_shape_contract: Dict[str, Any],
+    *,
+    lang: Optional[str],
+) -> tuple:
+    """Compose the public answer for a structured document lookup.
+
+    The checklist comes from ``structured`` (canonical data); the model text
+    contributes at most its lead prose as ``short_answer``. The composed text
+    is what the answer-shape gate evaluates. If the model summary makes it
+    fail, the deterministic short answer is used instead — never the long
+    legal-analysis repair memo, which is the wrong shape for a checklist.
+    Returns ``(answer_text, meta)``.
+    """
+    candidate = _structured_answer.apply_model_summary(structured, answer)
+    text = _structured_answer.compose_plain_text(candidate, lang)
+    try:
+        gate = evaluate_answer_shape(text, response_meta, answer_shape_contract)
+    except Exception:  # pragma: no cover - the gate must never break /api/ask
+        gate = {"passed": True, "warnings": [], "missing_slots": []}
+    summary_replaced = False
+    if not gate["passed"] and candidate.get("short_answer_source") == "model_summary":
+        candidate = dict(structured)
+        text = _structured_answer.compose_plain_text(candidate, lang)
+        try:
+            gate = evaluate_answer_shape(text, response_meta, answer_shape_contract)
+        except Exception:  # pragma: no cover
+            gate = {"passed": True, "warnings": [], "missing_slots": []}
+        summary_replaced = True
+    meta: Dict[str, Any] = {
+        "structured_answer": candidate,
+        "answer_shape_contract": answer_shape_contract.get("contract_key", ""),
+        "answer_shape_version": answer_shape_contract.get("answer_shape_version", ANSWER_SHAPE_VERSION),
+        "answer_quality_gate_passed": gate["passed"],
+        "answer_quality_gate_warnings": gate["warnings"],
+        "missing_answer_slots": gate["missing_slots"],
+        "answer_shape_failed_by_model": summary_replaced,
+        "model_answer_repaired_by_deterministic_synthesis": summary_replaced,
+        "copy_safe_answer": text,
+    }
+    return text, meta
 
 
 async def _openrouter_complete_with_candidates(
@@ -3603,13 +3696,11 @@ def _build_grounded_prompt(
     caveats = grounding.get("caveats", []) or []
     excerpt = grounding.get("source_excerpt", "") or ""
     source_title = bundle.get("source_title", "외국인체류 안내매뉴얼")
-    source_date = bundle.get("source_date", "2026.6")
-    source_revision_date = bundle.get("source_revision_date")
-    source_date_label = (
-        f"{source_date}; source file {source_revision_date}"
-        if source_revision_date and source_revision_date != source_date
-        else source_date
-    )
+    # PUBLIC source label only. Internal revision metadata (source file path,
+    # source_revision_date, sha256) stays server-side: the model repeats
+    # whatever citation format it is given, so it must never be handed the
+    # internal revision string ("2026.6; source file 2026-06-23").
+    source_date_label = bundle.get("source_date", "2026.6")
     issuing_body = bundle.get("issuing_body", "법무부 출입국·외국인정책본부")
     page_range = grounding.get("page_range")
     page_label = f", pp. {page_range}" if page_range else ""
@@ -3639,8 +3730,11 @@ def _build_grounded_prompt(
         "[답변 지침]\n"
         f"{answer_language_line}\n"
         "- 위 제출서류와 유의사항을 명시적으로 인용하십시오.\n"
-        f"- 출처를 다음과 같이 명시하십시오: {source_title} ({source_date_label}), {issuing_body}.\n"
-        "- 관할 출입국·외국인청/사무소/출장소가 개별 사안에 따라 서류를 추가하거나 면제할 수 있다는 점을 명시하십시오."
+        "- 화면에 출처 카드(자료명·발행기관·쪽수)가 별도로 표시됩니다. 본문에서 출처를 길게 반복하지 말고,"
+        f" 필요하면 한 번만 '{source_title} {source_date_label}'처럼 짧게 언급하십시오."
+        " 파일명·개정일·내부 자료 정보는 절대 쓰지 마십시오.\n"
+        "- 제목에 Markdown 기호(#, ##, ###)를 쓰지 마십시오. 짧은 문단과 '- ' 목록만 사용하십시오.\n"
+        "- 관할 출입국·외국인청/사무소/출장소가 개별 사안에 따라 서류를 추가하거나 면제할 수 있다는 점을 한 번만 언급하십시오."
     )
 
 
@@ -5019,13 +5113,188 @@ def _evaluate_request_safety(
         )
 
 
+# ---------------------------------------------------------------------------
+# /api/ask public projection (provider/model abstraction)
+# ---------------------------------------------------------------------------
+# Waymaker is a Paradiso product. Which third-party provider or model produced
+# the wording is infrastructure: it stays in server telemetry
+# (_log_ask_routing_telemetry) and in the explicit developer-diagnostics
+# payload, and is removed from the ordinary response the browser receives.
+ASK_INTERNAL_ROUTING_FIELDS: Tuple[str, ...] = (
+    "provider", "model", "model_resolved", "llm_provider",
+    "requested_model", "primary_model", "model_candidates", "attempted_models",
+    "final_model", "selected_model", "fast_mode_fell_back", "model_fallback_used",
+    "provider_family_fallback_used", "provider_error_type", "upstream_statuses",
+    "retryable_provider_error", "all_candidates_failed",
+    "skipped_models_due_to_cooldown", "cooling_down_models",
+    "model_cooldown_seconds", "cooldown_enabled", "chain_budget_seconds",
+    "chain_budget_exhausted", "provider_latency_ms",
+    "ollama_fallback_enabled", "ollama_fallback_used", "ollama_model",
+    "ollama_error_type", "final_model_quality_warning", "fallback_answer_reason",
+)
+# Internal source-revision metadata. Public citations carry title / edition /
+# issuing body / section / pages only.
+ASK_INTERNAL_SOURCE_FIELDS: Tuple[str, ...] = (
+    "source_file", "source_revision_date", "source_file_sha256", "verification_note",
+)
+_CLIENT_DIAGNOSTICS_HEADER = "x-paradiso-diagnostics"
+_VENDOR_NAME_RE = re.compile(
+    r"openrouter|groq|ollama|nemotron|gemma|nvidia|inkling|thinkingmachines|nim\b",
+    re.IGNORECASE,
+)
+
+
+def _client_diagnostics_allowed() -> bool:
+    return (os.environ.get("PARADISO_CLIENT_DIAGNOSTICS") or "").strip().lower() not in {
+        "0", "false", "off", "no",
+    }
+
+
+def _ask_diagnostics_requested(req: "AskRequest", request: Optional[Request]) -> bool:
+    if not _client_diagnostics_allowed():
+        return False
+    if req.diagnostics is True:
+        return True
+    try:
+        header = (request.headers.get(_CLIENT_DIAGNOSTICS_HEADER) or "") if request is not None else ""
+    except Exception:  # pragma: no cover - defensive
+        header = ""
+    return header.strip().lower() in {"1", "true", "yes", "on"}
+
+
+# The full law/manual evidence pack embeds the prompt-ready grounding context
+# and internal source records; the browser uses only its flat projections
+# (law_sources, legal_analysis, direct_manual_sources, ...), so the pack itself
+# is diagnostics-only.
+ASK_INTERNAL_PAYLOAD_FIELDS: Tuple[str, ...] = ("law_evidence_pack",)
+
+
+def _strip_internal_source_fields(value: Any) -> Any:
+    if isinstance(value, dict):
+        return {
+            k: _strip_internal_source_fields(v)
+            for k, v in value.items()
+            if k not in ASK_INTERNAL_SOURCE_FIELDS
+        }
+    if isinstance(value, list):
+        return [_strip_internal_source_fields(v) for v in value]
+    return value
+
+
+def _public_ask_payload(payload: Dict[str, Any]) -> Dict[str, Any]:
+    """Project an internal /api/ask payload onto the public contract."""
+    out = {
+        k: v for k, v in (payload or {}).items()
+        if k not in ASK_INTERNAL_ROUTING_FIELDS and k not in ASK_INTERNAL_PAYLOAD_FIELDS
+    }
+    out = _strip_internal_source_fields(out)
+    # Error envelopes keep their generic codes (e.g. no_llm_provider_configured)
+    # but never name a vendor.
+    if isinstance(out.get("error"), str) and _VENDOR_NAME_RE.search(out["error"]):
+        out["error"] = "answer_generation_unavailable"
+    if isinstance(out.get("message"), str) and _VENDOR_NAME_RE.search(out["message"]):
+        out["message"] = "The answer could not be generated right now. Please try again shortly."
+    return out
+
+
+def _log_ask_routing_telemetry(
+    payload: Optional[Dict[str, Any]],
+    *,
+    req: "AskRequest",
+    status_code: int,
+    latency_ms: int,
+    streamed: bool = False,
+) -> None:
+    """Server-side routing telemetry (never logs prompts, answers or secrets)."""
+    p = payload if isinstance(payload, dict) else {}
+    record = {
+        "event": "ask_routing",
+        "status_code": status_code,
+        "streamed": streamed,
+        "answer_mode_requested": p.get("answer_mode_requested") or str(req.answer_mode or ""),
+        "answer_mode_effective": p.get("answer_mode") or "",
+        "answer_mode_auto_escalated": bool(p.get("answer_mode_auto_escalated")),
+        "answer_mode_escalation_reasons": list(p.get("answer_mode_escalation_reasons") or []),
+        "provider": p.get("llm_provider") or p.get("provider") or "",
+        "primary_model": p.get("primary_model") or "",
+        "final_model": p.get("final_model") or "",
+        "attempted_models": list(p.get("attempted_models") or []),
+        "model_fallback_used": bool(p.get("model_fallback_used")),
+        "fast_mode_fell_back": bool(p.get("fast_mode_fell_back")),
+        "deterministic_fallback_answer_used": bool(p.get("deterministic_fallback_answer_used")),
+        "provider_error_type": p.get("provider_error_type") or p.get("error") or "",
+        "upstream_statuses": list(p.get("upstream_statuses") or []),
+        "structured_answer": bool(p.get("structured_answer")),
+        "visa_code_detected": p.get("visa_code_detected") or "",
+        "task_type_detected": p.get("task_type_detected") or "",
+        "latency_ms": latency_ms,
+        "provider_latency_ms": p.get("provider_latency_ms") or 0,
+    }
+    try:
+        logger.info("ask_routing %s", json.dumps(record, ensure_ascii=False, sort_keys=True))
+    except Exception:  # pragma: no cover - telemetry must never break /api/ask
+        pass
+
+
+async def _public_sse_stream(body_iterator: Any):
+    """Project every SSE frame's JSON payload onto the public contract."""
+    async for chunk in body_iterator:
+        text = chunk.decode("utf-8") if isinstance(chunk, (bytes, bytearray)) else str(chunk)
+        head, sep, data = text.partition("\ndata: ")
+        if sep and data.endswith("\n\n"):
+            try:
+                obj = json.loads(data[:-2])
+            except ValueError:
+                yield text
+                continue
+            if isinstance(obj, dict):
+                obj = _public_ask_payload(obj)
+                text = f"{head}\ndata: {json.dumps(obj, ensure_ascii=False)}\n\n"
+        yield text
+
+
 @app.post(
     "/api/ask",
-    response_model=AskResponse,
+    # The response is AskResponse projected by _public_ask_payload (or the full
+    # AskResponse in explicit diagnostics mode), so FastAPI must not re-validate
+    # it against the internal model.
+    response_model=None,
     # Per-client sliding-window limit (H-1a); covers stream AND buffered paths.
     dependencies=[Depends(rate_limit("ask", per_minute=8, per_day=300))],
 )
-async def ask(req: AskRequest) -> AskResponse:
+async def ask(req: AskRequest, request: Request):
+    diagnostics = _ask_diagnostics_requested(req, request)
+    started = time.monotonic()
+    try:
+        result = await _ask_internal(req)
+    except HTTPException as exc:
+        detail = exc.detail if isinstance(exc.detail, dict) else None
+        _log_ask_routing_telemetry(
+            detail, req=req, status_code=exc.status_code,
+            latency_ms=int((time.monotonic() - started) * 1000),
+        )
+        if detail is not None and not diagnostics:
+            raise HTTPException(
+                status_code=exc.status_code,
+                detail=_public_ask_payload(detail),
+                headers=getattr(exc, "headers", None),
+            ) from None
+        raise
+    latency_ms = int((time.monotonic() - started) * 1000)
+    if isinstance(result, StreamingResponse):
+        _log_ask_routing_telemetry(
+            {"answer_mode": req.answer_mode}, req=req, status_code=200,
+            latency_ms=latency_ms, streamed=True,
+        )
+        if not diagnostics:
+            result.body_iterator = _public_sse_stream(result.body_iterator)
+        return result
+    payload = result.model_dump() if isinstance(result, BaseModel) else dict(result or {})
+    _log_ask_routing_telemetry(payload, req=req, status_code=200, latency_ms=latency_ms)
+    return JSONResponse(payload if diagnostics else _public_ask_payload(payload))
+
+
+async def _ask_internal(req: AskRequest) -> AskResponse:
     prompt = (req.message or req.query or req.question or "").strip()
     if not prompt:
         raise HTTPException(
@@ -5476,6 +5745,25 @@ async def ask(req: AskRequest) -> AskResponse:
         question_type=quality.get("question_type", ""),
     )
 
+    # Structured document answer. A plain "which documents?" question with a
+    # source-confirmed manual list is answered from the canonical grounding
+    # data (deterministic buckets); the model may only phrase a short summary.
+    structured_answer: Optional[Dict[str, Any]] = None
+    if grounding is not None and _structured_answer.is_document_lookup(
+        legal_issue_types=(law_evidence_pack or {}).get("legal_issue_types") or [],
+        contract_key=answer_shape_contract.get("contract_key", ""),
+        has_documents=bool(grounding.get("required_documents")),
+    ):
+        try:
+            structured_answer = _structured_answer.build_document_answer(
+                grounding=grounding,
+                bundle=_load_stay_manual_grounding() or {},
+                lang=req.lang,
+            )
+        except Exception:  # pragma: no cover - structured view must never break /api/ask
+            logger.exception("structured document answer build failed")
+            structured_answer = None
+
     # Answer-prompt integration (Part E): inject ONE compact, normalized
     # evidence summary (never a raw API dump) plus the backend-prepared legal
     # analysis object. The model may explain this object; it must not invent it.
@@ -5565,6 +5853,9 @@ async def ask(req: AskRequest) -> AskResponse:
             " context is provided; do not introduce study/course wording unless the"
             " issue is genuinely about study."
         )
+
+    if structured_answer is not None:
+        final_prompt += "\n\n" + _structured_answer_prompt_directive(req.lang)
 
     # Trust & Safety "warn" steer: the request touched a sensitive enforcement
     # theme but explicitly asked for the lawful route. Keep the answer strictly
@@ -5727,6 +6018,11 @@ async def ask(req: AskRequest) -> AskResponse:
         # requests returned earlier and never reach this path).
         **safety_meta,
     )
+    if structured_answer is not None:
+        # Deterministic view (deterministic short answer). The buffered live
+        # path below swaps in the model's short summary; the stream and
+        # fallback paths keep this data-only version.
+        base_meta["structured_answer"] = structured_answer
 
     # Apply the already-resolved question-aware tier.  This is deliberately
     # computed before case-law retrieval above so evidence depth and model depth
@@ -5808,18 +6104,36 @@ async def ask(req: AskRequest) -> AskResponse:
         )
         if result["ok"]:
             response_meta = dict(base_meta)
-            answer_text = _confidence_gate_answer_text(result["answer"], response_meta)
-            # Evidence-backed answer-shape quality gate (Part B/C/F). If the live
-            # model answer fails the issue-type contract structurally, repair it
-            # with deterministic synthesis instead of showing the weak answer.
-            answer_text, gate_meta = _apply_answer_shape_gate(
-                answer_text,
-                response_meta,
-                answer_shape_contract,
-                prompt=prompt,
-                lang=req.lang,
-                final_model=result.get("final_model"),
-                primary_model=result.get("primary_model"),
+            answer_text = _structured_answer.scrub_internal_metadata(
+                _confidence_gate_answer_text(result["answer"], response_meta)
+            )
+            if structured_answer is not None:
+                # Checklist from canonical data; the model supplies only the
+                # short summary (see _finalize_structured_document_answer).
+                answer_text, gate_meta = _finalize_structured_document_answer(
+                    answer_text,
+                    response_meta,
+                    structured_answer,
+                    answer_shape_contract,
+                    lang=req.lang,
+                )
+            else:
+                # Evidence-backed answer-shape quality gate (Part B/C/F). If the
+                # live model answer fails the issue-type contract structurally,
+                # repair it with deterministic synthesis instead of showing the
+                # weak answer.
+                answer_text, gate_meta = _apply_answer_shape_gate(
+                    answer_text,
+                    response_meta,
+                    answer_shape_contract,
+                    prompt=prompt,
+                    lang=req.lang,
+                    final_model=result.get("final_model"),
+                    primary_model=result.get("primary_model"),
+                )
+            gate_meta["final_model_quality_warning"] = bool(
+                result.get("final_model") and result.get("primary_model")
+                and result.get("final_model") != result.get("primary_model")
             )
             response_meta.update(gate_meta)
             # Unverified-citation guardrail. If the answer cites specific statutes/

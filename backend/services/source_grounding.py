@@ -306,7 +306,10 @@ def normalize_manual_source_attempts(
             title=title,
             source_name=str(source.get("issuing_body") or source.get("source_name") or "Ministry of Justice immigration manual"),
             url=_source_url(source),
-            version_date=str(source.get("source_revision_date") or source.get("source_date") or source.get("version_date") or ""),
+            # Public edition label ("2026.6") first: source_revision_date is
+            # internal file-revision metadata and must not become the
+            # user-visible / prompt-visible version of the manual.
+            version_date=str(source.get("source_date") or source.get("version_date") or source.get("source_revision_date") or ""),
             snippets=[{
                 "text": text,
                 "section": source.get("section") or source.get("procedure_type") or "",

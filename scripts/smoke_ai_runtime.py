@@ -145,7 +145,7 @@ def check_readiness(base: str) -> Tuple[Check, Dict[str, Any]]:
 
 def check_ask(base: str, name: str, question: str, extra: Dict[str, Any]) -> Check:
     check = Check(f"ask_{name}", "waymaker_ask")
-    status, body, latency = http_json(f"{base}/api/ask", {"question": question, **extra})
+    status, body, latency = http_json(f"{base}/api/ask", {"question": question, "diagnostics": True, **extra})
     check.latency_ms = latency
 
     if status == 0:

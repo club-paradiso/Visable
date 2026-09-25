@@ -21,6 +21,12 @@ from fastapi.testclient import TestClient  # noqa: E402
 QUESTION = "E-7 체류자가 근무처를 변경하려면 출입국관리법 제21조에 따라 사전허가가 필요한가요?"
 
 
+
+# /api/ask returns a public projection without provider/model routing
+# fields; these tests assert internal routing/grounding metadata, so they
+# use the explicit developer-diagnostics opt-in.
+DIAGNOSTICS_HEADERS = {"X-Paradiso-Diagnostics": "1"}
+
 def _law_result(name: str = "출입국관리법") -> dict:
     return {
         "status": "ok",
@@ -257,7 +263,7 @@ class AskMetadataInvariantTests(unittest.TestCase):
         try:
             with patch.object(backend, "OPENROUTER_API_KEY", "test-key"), \
                  patch.object(backend, "_call_openrouter", fake_answer):
-                response = TestClient(backend.app).post(
+                response = TestClient(backend.app, headers=DIAGNOSTICS_HEADERS).post(
                     "/api/ask",
                     json={"message": QUESTION, "visa_code": "E-7", "lang": "ko"},
                 )

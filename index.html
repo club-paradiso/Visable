@@ -18098,14 +18098,27 @@ function showJurisdiction() {
 function openJurisdictionModal() { openModal('jurisdictionModalOverlay'); initJurisdictionSelects(); }
 
 // --- AI Analysis Processing ---
-function buildModelBadgeHtml(result) {
-    const rawModel = result?.model_resolved || result?.model || '';
-    const provider = result?.provider || '';
-    let label = rawModel || provider || 'AI';
-    if (provider === 'openrouter' && rawModel) label = `OpenRouter · ${rawModel}`;
-    else if (provider === 'groq' && rawModel) label = `Groq · ${rawModel}`;
-    else if (provider === 'ollama' && rawModel) label = `${tx('aiOllamaFallbackProvider')} · ${rawModel}`;
-    return `<div style="margin-top:.65rem;font-size:.75rem;color:var(--t3);">${escapeHtml(tx('aiResponseModel'))}: <span style="display:inline-block;border:1px solid var(--bd);background:var(--bg2);padding:.15rem .5rem;border-radius:999px;color:var(--t2);font-weight:700;">${escapeHtml(label)}</span></div>`;
+// Explicit developer-diagnostics mode (?debug=1 / ?dev=1, localStorage
+// paradisoDevDiagnostics=1, or window.PARADISO_DEV_DIAGNOSTICS). Ordinary users
+// never see which provider/model produced an answer; the former public
+// "응답 모델: OpenRouter · <model id>" badge was removed for that reason.
+function isAiDevDiagnosticsEnabled() {
+    try {
+        if (typeof window !== 'undefined' && window.PARADISO_DEV_DIAGNOSTICS) return true;
+        if (typeof localStorage !== 'undefined' && localStorage.getItem && localStorage.getItem('paradisoDevDiagnostics') === '1') return true;
+        if (typeof location !== 'undefined' && location.search && /[?&](?:debug|dev)=1(?:&|$)/.test(location.search)) return true;
+    } catch (e) { return false; }
+    return false;
+}
+
+// Safe rendering of model text for the AI modal: escape first, then only
+// line breaks, bold and Markdown headings (shown as bold lines, never as "###").
+function formatAiModalAnswer(text) {
+    return escapeHtml(String(text || ''))
+        .split('\n')
+        .map(function (line) { return line.replace(/^\s*#{1,6}\s+(.*?)\s*#*$/, '<strong>$1</strong>'); })
+        .join('<br>')
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
 }
 
 // Build a user-friendly provider-error block. NEVER renders raw provider JSON,
@@ -18126,12 +18139,12 @@ function buildProviderErrorHtml(detail) {
     if (detail.provider_error_type) techBits.push('type: ' + String(detail.provider_error_type));
     if (attempted.length) techBits.push('attempted: ' + attempted.map(String).join(', '));
     if (statuses.length) techBits.push('status: ' + statuses.map(String).join(', '));
-    const tech = techBits.length
+    const tech = (techBits.length && isAiDevDiagnosticsEnabled())
         ? `<details class="ai-provider-error-tech" style="margin-top:.5rem;font-size:.78rem;color:var(--t3);"><summary>${escapeHtml(tx('aiShowTechnicalDetails'))}</summary><pre style="white-space:pre-wrap;">${escapeHtml(techBits.join('\n'))}</pre></details>`
         : '';
     if (fallbackAnswer) {
         const safe = escapeHtml(String(fallbackAnswer)).replace(/\n/g, '<br>');
-        return `<div class="ai-provider-error"><b>${escapeHtml(tx('aiProviderTemporarilyUnavailable'))}</b><p style="margin-top:.4rem;">${escapeHtml(tx('aiLimitedPreparationNote'))}</p><p style="margin-top:.25rem;">${escapeHtml(tx('aiAllCandidatesUnavailable'))}</p><p style="margin-top:.25rem;">${escapeHtml(tx('aiTryAgainShortly'))}</p><p style="margin-top:.25rem;color:var(--t3);font-size:.82rem;">${escapeHtml(tx('aiFallbackFromMetadata'))}</p><div class="ai-fallback-answer" style="margin-top:.7rem;">${safe}</div>${tech}</div>`;
+        return `<div class="ai-provider-error"><b>${escapeHtml(tx('aiProviderTemporarilyUnavailable'))}</b><p style="margin-top:.25rem;">${escapeHtml(tx('aiTryAgainShortly'))}</p><p style="margin-top:.25rem;color:var(--t3);font-size:.82rem;">${escapeHtml(tx('aiFallbackFromMetadata'))}</p><div class="ai-fallback-answer" style="margin-top:.7rem;">${safe}</div>${tech}</div>`;
     }
     return `<div class="ai-provider-error"><b>${escapeHtml(tx('aiProviderBusy'))}</b><p style="margin-top:.4rem;">${escapeHtml(tx('aiAllCandidatesFailed'))}</p>${tech}</div>`;
 }
@@ -18366,6 +18379,8 @@ async function submitAiAnalysis(actionType, btnEl) {
                 context: actionDirective,
                 lang: currentLanguage,
                 answer_mode: currentAiAnswerMode,
+                // Provider/model routing detail only on the explicit developer opt-in.
+                diagnostics: isAiDevDiagnosticsEnabled() || undefined,
                 visa_data: {
                     code: visa.code,
                     name: visa.name,
@@ -18396,24 +18411,20 @@ async function submitAiAnalysis(actionType, btnEl) {
         }
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const result = await response.json();
-        let formattedText = escapeHtml(result.answer || tx('aiNoResult')).replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-        // If an OpenRouter candidate fallback was used, show a subtle note so the
-        // user knows a different (still explicit, auditable) model answered.
-        const fallbackNote = result.ollama_fallback_used
-            ? `<div class="ai-fallback-note" style="margin-top:.5rem;font-size:.78rem;color:var(--t3);">${escapeHtml(tx('aiOllamaFallbackNote'))}: ${escapeHtml(result.ollama_model || result.model || '')}</div>`
-            : (result.deterministic_fallback_answer_used
+        let formattedText = formatAiModalAnswer(result.copy_safe_answer || result.answer || tx('aiNoResult'));
+        // Which provider/model answered is infrastructure detail: it is not shown
+        // here (server telemetry + explicit developer diagnostics keep it). Only
+        // a limited deterministic answer gets a product-language notice.
+        const fallbackNote = (result.deterministic_fallback_answer_used
                 // Deterministic fallback is NOT an evidence-grounded model answer.
                 // Surface it as a clear status callout (matching the prominence the
                 // same state gets on the 503 path) instead of a faint footnote, so
                 // the user can tell this is a temporary preparation note. Inline
                 // styles reuse the existing theme variables (no new CSS/i18n keys).
                 ? `<div class="ai-fallback-note ai-fallback-callout" role="status" style="margin-top:.6rem;padding:.55rem .7rem;border-radius:8px;border:1px solid color-mix(in srgb, var(--color-warning, #b45309) 45%, transparent);background:color-mix(in srgb, var(--color-warning, #b45309) 8%, var(--bg2, #fff));color:var(--t1);font-size:.84rem;line-height:1.5;"><b>${escapeHtml(tx('aiProviderTemporarilyUnavailable'))}</b><br>${escapeHtml(tx('aiFallbackFromMetadata'))}</div>`
-                : (result.model_fallback_used
-                    ? `<div class="ai-fallback-note" style="margin-top:.5rem;font-size:.78rem;color:var(--t3);">${escapeHtml(tx('aiFallbackSucceeded'))}</div>`
-                    : ''));
-        const modelBadge = buildModelBadgeHtml(result);
+                : '');
         const sourcePanel = renderGroundingSourcePanel(result);
-        resultBox.innerHTML = formattedText + fallbackNote + modelBadge + sourcePanel; resultBox.style.display = 'block';
+        resultBox.innerHTML = formattedText + fallbackNote + sourcePanel; resultBox.style.display = 'block';
     } catch (error) {
         if (error.name === 'AbortError') {
             // Timeout-triggered abort shows a graceful message; a user-initiated

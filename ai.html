@@ -33,7 +33,7 @@
          shared tokens it defines. -->
     <link rel="stylesheet" href="assets/css/visable-product-2026.css?v=20260925-family">
     <link rel="stylesheet" href="assets/css/civic-search.css">
-    <link rel="stylesheet" href="assets/css/waymaker-workspace.css?v=20260925-family">
+    <link rel="stylesheet" href="assets/css/waymaker-workspace.css?v=20260925-answer">
 </head>
 <body class="product-waymaker">
 <!-- Welcome-state aurora. It belongs to the arrival moment only: the first
@@ -178,15 +178,15 @@
             <textarea id="aiQ" class="ai-textarea" rows="1" placeholder="예: 미국 국적, 이태원 거주, D-10 비자 상태인데 E-7 취업을 희망합니다..." aria-describedby="charCount"></textarea>
             <div class="wm-composer-bar">
                 <div class="wm-composer-mode">
-                    <span class="ai-mode-label" id="aiModeLabel">답변 속도</span>
+                    <span class="ai-mode-label" id="aiModeLabel">답변 방식</span>
                     <div class="ai-mode-selector" role="radiogroup" aria-labelledby="aiModeLabel" id="aiModeSelector">
-                        <button type="button" class="ai-mode-btn" data-mode="fast" role="radio" aria-checked="false">
-                            <span class="ai-mode-title">Fast</span>
-                            <span class="ai-mode-sub">간단 질문 즉답 · 복잡하면 Basic</span>
+                        <button type="button" class="ai-mode-btn" data-mode="fast" role="radio" aria-checked="false" aria-describedby="aiModeFastSub">
+                            <span class="ai-mode-title" data-shell="modeFastTitle">빠른 답변</span>
+                            <span class="ai-mode-sub" id="aiModeFastSub">간단한 질문을 빠르게 · 필요하면 정밀 답변으로 전환</span>
                         </button>
-                        <button type="button" class="ai-mode-btn is-active" data-mode="basic" role="radio" aria-checked="true">
-                            <span class="ai-mode-title">Basic</span>
-                            <span class="ai-mode-sub">기본(권장)</span>
+                        <button type="button" class="ai-mode-btn is-active" data-mode="basic" role="radio" aria-checked="true" aria-describedby="aiModeBasicSub">
+                            <span class="ai-mode-title" data-shell="modeBasicTitle">정밀 답변</span>
+                            <span class="ai-mode-sub" id="aiModeBasicSub">자료를 더 꼼꼼히 확인 (권장)</span>
                         </button>
                     </div>
                 </div>
@@ -215,100 +215,96 @@
     </div>
 
     <!--
-      Waymaker by Paradiso structured answer card shell — HTML/CSS preparation only.
-      This <template> defines the slot structure described in
-      docs/ai/ANSWER_QUALITY_CONTRACT.md §3. It is NOT yet rendered
-      by appendAiAnswer(); a future PR is required to wire it up.
-      The element is inert (a <template> is parsed but not added to
-      the DOM), so it has no visual effect and does not change the
-      current chat UX. Do not delete — the JS pipeline will clone
-      this template when the structured-answer renderer ships.
+      Waymaker by Paradiso structured answer card — the ONE canonical
+      structured-answer renderer. Slot names follow
+      docs/ai/ANSWER_QUALITY_CONTRACT.md §3. appendAiAnswer() clones this
+      template (renderStructuredAnswer) whenever /api/ask returns a
+      `structured_answer` (source-confirmed document lookups). Every slot is
+      filled with textContent only — never innerHTML — so model or data text
+      cannot inject markup. Kicker / bucket labels are localized at render time
+      from PA_LABELS via tt(); the literals below are Korean defaults.
     -->
     <template id="pa-answer-card-shell">
         <article class="pa-answer-card" data-answer-id="" data-locale="">
+            <!-- Slot 3: visa_code_or_topic (topic chips shown first) -->
+            <div class="pa-topic-row" data-slot="visa_code_or_topic" data-slot-body="visa_code_or_topic" hidden></div>
+
             <!-- Slot 1: short_answer -->
             <section class="pa-slot pa-short-answer" data-slot="short_answer">
-                <div class="pa-slot-kicker">Short answer</div>
-                <div class="pa-slot-body" data-slot-body="short_answer"></div>
+                <h3 class="pa-slot-kicker pa-sr-only" data-kicker="short_answer">요약</h3>
+                <p class="pa-slot-body pa-lead" data-slot-body="short_answer"></p>
             </section>
 
-            <!-- Slot 2: interpreted_intent -->
+            <!-- Slot 2: interpreted_intent (kept for the contract; unused by documents) -->
             <section class="pa-slot pa-interpreted-intent" data-slot="interpreted_intent" hidden>
-                <div class="pa-slot-kicker">Interpreted intent</div>
+                <h3 class="pa-slot-kicker" data-kicker="interpreted_intent">질문 이해</h3>
                 <div class="pa-slot-body" data-slot-body="interpreted_intent"></div>
-            </section>
-
-            <!-- Slot 3: visa_code_or_topic -->
-            <section class="pa-slot pa-topic" data-slot="visa_code_or_topic" hidden>
-                <div class="pa-slot-kicker">Visa / status / topic</div>
-                <div class="pa-topic-row" data-slot-body="visa_code_or_topic"></div>
             </section>
 
             <!-- Slot 4: required_documents (5 buckets) -->
             <section class="pa-slot pa-required-documents" data-slot="required_documents" hidden>
-                <div class="pa-slot-kicker">Required documents</div>
+                <h3 class="pa-slot-kicker pa-sr-only" data-kicker="required_documents">제출 서류</h3>
                 <div class="pa-doc-buckets">
-                    <div class="pa-doc-bucket pa-doc-bucket--common"      data-bucket="common"      hidden>
-                        <div class="pa-doc-bucket-title">공통 · Common</div>
+                    <section class="pa-doc-bucket pa-doc-bucket--common"      data-bucket="common"      hidden>
+                        <h4 class="pa-doc-bucket-title" data-bucket-title="common">기본 서류</h4>
                         <ul class="pa-doc-bucket-list" data-bucket-list="common"></ul>
-                    </div>
-                    <div class="pa-doc-bucket pa-doc-bucket--required"    data-bucket="required"    hidden>
-                        <div class="pa-doc-bucket-title">필수 · Required</div>
+                    </section>
+                    <section class="pa-doc-bucket pa-doc-bucket--required"    data-bucket="required"    hidden>
+                        <h4 class="pa-doc-bucket-title" data-bucket-title="required">증빙 서류</h4>
                         <ul class="pa-doc-bucket-list" data-bucket-list="required"></ul>
-                    </div>
-                    <div class="pa-doc-bucket pa-doc-bucket--conditional" data-bucket="conditional" hidden>
-                        <div class="pa-doc-bucket-title">조건부 · Conditional</div>
+                    </section>
+                    <section class="pa-doc-bucket pa-doc-bucket--conditional" data-bucket="conditional" hidden>
+                        <h4 class="pa-doc-bucket-title" data-bucket-title="conditional">해당하는 경우 제출</h4>
                         <ul class="pa-doc-bucket-list" data-bucket-list="conditional"></ul>
-                    </div>
-                    <div class="pa-doc-bucket pa-doc-bucket--additional"  data-bucket="additional"  hidden>
-                        <div class="pa-doc-bucket-title">추가 · Additional</div>
+                    </section>
+                    <section class="pa-doc-bucket pa-doc-bucket--additional"  data-bucket="additional"  hidden>
+                        <h4 class="pa-doc-bucket-title" data-bucket-title="additional">추가로 요청될 수 있는 서류</h4>
                         <ul class="pa-doc-bucket-list" data-bucket-list="additional"></ul>
-                    </div>
+                    </section>
                     <!-- DATA_MISSING / unverified — never hidden when populated -->
-                    <div class="pa-doc-bucket pa-doc-bucket--missing"     data-bucket="missing_or_unverified" hidden>
-                        <div class="pa-doc-bucket-title">미확인 · Missing / unverified</div>
+                    <section class="pa-doc-bucket pa-doc-bucket--missing"     data-bucket="missing_or_unverified" hidden>
+                        <h4 class="pa-doc-bucket-title" data-bucket-title="missing_or_unverified">확인이 필요한 서류</h4>
                         <ul class="pa-doc-bucket-list" data-bucket-list="missing_or_unverified"></ul>
-                    </div>
+                    </section>
                 </div>
             </section>
 
             <!-- Slot 5: procedure_steps -->
             <section class="pa-slot pa-procedure" data-slot="procedure_steps" hidden>
-                <div class="pa-slot-kicker">Procedure steps</div>
+                <h3 class="pa-slot-kicker" data-kicker="procedure_steps">진행 순서</h3>
                 <ol class="pa-procedure-steps" data-slot-body="procedure_steps"></ol>
             </section>
 
             <!-- Slot 6: fees + appointment_guidance + hikorea_guidance -->
             <section class="pa-slot pa-fees-appointment" data-slot="fees_appointment" hidden>
-                <div class="pa-slot-kicker">Fees &amp; appointment</div>
+                <h3 class="pa-slot-kicker" data-kicker="fees_appointment">수수료·예약</h3>
                 <div class="pa-fees-list" data-slot-body="fees"></div>
                 <div class="pa-appointment-line" data-slot-body="appointment_guidance" hidden></div>
                 <div class="pa-hikorea-line"     data-slot-body="hikorea_guidance"     hidden></div>
             </section>
 
-            <!-- Slot 7: source_summary + per-source verification chips -->
-            <section class="pa-slot pa-sources" data-slot="sources" hidden>
-                <div class="pa-slot-kicker">Source summary</div>
-                <p class="pa-source-summary" data-slot-body="source_summary"></p>
-                <div class="pa-source-state-row" data-slot-body="source_states"></div>
-            </section>
-
-            <!-- Slot 8: uncertainty_flags (always visible when present) -->
+            <!-- Slot 8: uncertainty_flags + manual notes (always visible when present) -->
             <section class="pa-slot pa-uncertainty" data-slot="uncertainty_flags" hidden>
-                <div class="pa-slot-kicker">Uncertainty</div>
+                <h3 class="pa-slot-kicker" data-kicker="uncertainty_flags">유의사항</h3>
                 <ul class="pa-uncertainty-list" data-slot-body="uncertainty_flags"></ul>
             </section>
 
             <!-- Slot 9: high_risk_flags — most prominent -->
             <section class="pa-high-risk" data-slot="high_risk_flags" hidden>
-                <div class="pa-high-risk-title">High-risk topic — consult an official source</div>
+                <h3 class="pa-high-risk-title" data-kicker="high_risk_flags">공식 기관 확인이 꼭 필요한 주제</h3>
                 <div data-slot-body="high_risk_flags"></div>
             </section>
 
             <!-- Slot 10: user_next_actions -->
             <section class="pa-slot pa-next-actions-row" data-slot="user_next_actions" hidden>
-                <div class="pa-slot-kicker">Next actions</div>
-                <div class="pa-next-actions" data-slot-body="user_next_actions"></div>
+                <h3 class="pa-slot-kicker" data-kicker="user_next_actions">다음 단계</h3>
+                <ul class="pa-next-actions" data-slot-body="user_next_actions"></ul>
+            </section>
+
+            <!-- Slot 7: sources — compact official-source component -->
+            <section class="pa-slot pa-sources" data-slot="sources" hidden>
+                <h3 class="pa-slot-kicker" data-kicker="sources">공식 근거</h3>
+                <div class="pa-source-card" data-slot-body="source_summary"></div>
             </section>
 
             <!-- Slot 11: disclaimer_snippet (always last, never hidden) -->
@@ -975,16 +971,6 @@
             return id;
         }
 
-        function getModelBadge(model, provider, modelResolved) {
-            const resolved = modelResolved || model || '';
-            let label = resolved || provider || 'AI';
-            if (!resolved && provider) label = provider.toUpperCase();
-            if (provider === 'openrouter' && resolved) label = `OpenRouter · ${resolved}`;
-            if (provider === 'groq' && resolved) label = `Groq · ${resolved}`;
-            if (provider === 'ollama' && resolved) label = `${tt('en', {ko:'Ollama fallback', en:'Ollama fallback', zh:'Ollama fallback', zhHant:'Ollama fallback'})} · ${resolved}`;
-            return `<div class="model-badge">응답 모델: ${escapeHtml(label)}</div>`;
-        }
-
         function generateBadges(text, lang = 'ko', result = null) {
             if (!text) return '';
             const matchVisas = [...new Set([
@@ -1169,14 +1155,16 @@
             },
             welcomeAria: { ko: '예시 질문', en: 'Example questions', zh: '示例问题' },
             msgTime: { ko: '시스템 메시지 · 예시 질문은 입력창에 자동으로 채워집니다.', en: 'System message · Example questions auto-fill the input box.', zh: '系统消息 · 示例问题会自动填入输入框。' },
-            modeFastSub: { ko: '간단 질문 즉답 · 복잡하면 Basic', en: 'Quick for simple questions · complex routes to Basic', zh: '简单问题快速答复 · 复杂问题转 Basic' },
-            modeBasicSub: { ko: '기본(권장)', en: 'Standard (recommended)', zh: '标准（推荐）' },
+            modeFastTitle: { ko: '빠른 답변', en: 'Quick', zh: '快速答复' },
+            modeBasicTitle: { ko: '정밀 답변', en: 'Thorough', zh: '详细答复' },
+            modeFastSub: { ko: '간단한 질문을 빠르게 · 필요하면 정밀 답변으로 전환', en: 'Fast for simple questions · switches to Thorough when needed', zh: '简单问题快速答复 · 必要时转为详细答复' },
+            modeBasicSub: { ko: '자료를 더 꼼꼼히 확인 (권장)', en: 'Checks the sources more carefully (recommended)', zh: '更仔细地核对资料（推荐）' },
             inputLabel: { ko: '상황 분석 요청 입력창', en: 'Situation analysis request input', zh: '情况分析请求输入框' },
             placeholder: { ko: '예: 미국 국적, 이태원 거주, D-10 비자 상태인데 E-7 취업을 희망합니다...', en: 'e.g. US national, living in Itaewon, on a D-10 visa and hoping to switch to E-7 employment...', zh: '例：美国国籍，居住在梨泰院，持 D-10 签证，希望转为 E-7 就业……' },
             sendAria: { ko: '분석 요청 전송', en: 'Send analysis request', zh: '发送分析请求' },
             send: { ko: '전송', en: 'Send', zh: '发送' },
             quotaLabel: { ko: '남은 분석 횟수', en: 'Remaining analyses', zh: '剩余分析次数' },
-            modeLabel: { ko: '답변 속도', en: 'Answer speed', zh: '答复速度' },
+            modeLabel: { ko: '답변 방식', en: 'Answer style', zh: '答复方式' },
             composerDetect: {
                 ko: '질문에서 국적·현재 체류자격·목표를 자동 감지합니다.',
                 en: 'Nationality, current status and goal are detected from your question.',
@@ -1278,36 +1266,253 @@
             try { if (String(lang).toLowerCase() === 'zh-tw' && window.ParadisoZhT && !window.ParadisoZhT.isActive()) window.ParadisoZhT.start(); } catch (e) {}
         }
 
-        function getModelLabel(model, provider, modelResolved) {
-            const resolved = modelResolved || model || '';
-            let label = resolved || provider || 'AI';
-            if (!resolved && provider) label = provider.toUpperCase();
-            if (provider === 'openrouter' && resolved) label = `OpenRouter · ${resolved}`;
-            if (provider === 'groq' && resolved) label = `Groq · ${resolved}`;
-            if (provider === 'ollama' && resolved) label = `${tt('en', {ko:'Ollama fallback', en:'Ollama fallback', zh:'Ollama fallback', zhHant:'Ollama fallback'})} · ${resolved}`;
-            return label;
+        // Explicit developer-diagnostics mode (?debug=1 / ?dev=1, localStorage
+        // paradisoDevDiagnostics=1, or window.PARADISO_DEV_DIAGNOSTICS). Only in
+        // this mode does ai.html request the backend's diagnostics payload and
+        // render provider/model routing detail. Ordinary users never see which
+        // infrastructure produced an answer. typeof guards keep this safe under
+        // the headless check harness (no window/location/localStorage there).
+        function isDevDiagnosticsEnabled() {
+            try {
+                if (typeof window !== 'undefined' && window.PARADISO_DEV_DIAGNOSTICS) return true;
+                if (typeof localStorage !== 'undefined' && localStorage.getItem && localStorage.getItem('paradisoDevDiagnostics') === '1') return true;
+                if (typeof location !== 'undefined' && location.search && /[?&](?:debug|dev)=1(?:&|$)/.test(location.search)) return true;
+            } catch (e) { return false; }
+            return false;
         }
 
+        // Inline Markdown on ALREADY-ESCAPED text: bold only. Any other stray
+        // emphasis/code markers are dropped rather than shown as syntax.
         function inlineFormat(escapedText) {
-            return escapedText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            return String(escapedText)
+                .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+                .replace(/__(.+?)__/g, '<strong>$1</strong>')
+                .replace(/`([^`]+)`/g, '$1')
+                .replace(/\*\*/g, '');
         }
 
+        // Safe, line-based renderer for free-form model text. Every line is
+        // escaped BEFORE any tag is added, so model output can never inject
+        // markup. Handles # headings, unordered / ordered lists, block quotes,
+        // horizontal rules, paragraphs and line breaks, so raw Markdown syntax
+        // (e.g. "### 필수 서류") never reaches the screen.
         function formatAnswerText(text, lang) {
-            const clean = String(text || '').replace(/\r\n/g, '\n').trim();
+            const clean = String(text || '').replace(/\r\n?/g, '\n').trim();
             if (!clean) return `<p>${t(lang, '표시할 답변이 없습니다.', 'No answer text was returned.')}</p>`;
-            return clean.split(/\n{2,}/).map((block) => {
-                const lines = block.split('\n').map((line) => line.trim()).filter(Boolean);
-                if (!lines.length) return '';
-                const bulletLines = lines.filter((line) => /^([-*•]|\d+[.)])\s+/.test(line));
-                if (bulletLines.length === lines.length) {
-                    const items = lines.map((line) => {
-                        const item = line.replace(/^([-*•]|\d+[.)])\s+/, '');
-                        return `<li>${inlineFormat(escapeHtml(item))}</li>`;
-                    }).join('');
-                    return `<ul>${items}</ul>`;
+            const out = [];
+            let para = [];
+            let list = null; // { tag: 'ul' | 'ol', items: [] }
+            const flushPara = () => {
+                if (para.length) out.push(`<p>${para.map((l) => inlineFormat(escapeHtml(l))).join('<br>')}</p>`);
+                para = [];
+            };
+            const flushList = () => {
+                if (list && list.items.length) {
+                    out.push(`<${list.tag}>${list.items.map((it) => `<li>${inlineFormat(escapeHtml(it))}</li>`).join('')}</${list.tag}>`);
                 }
-                return `<p>${inlineFormat(escapeHtml(lines.join('\n')).replace(/\n/g, '<br>'))}</p>`;
-            }).join('');
+                list = null;
+            };
+            clean.split('\n').forEach((raw) => {
+                const line = raw.trim().replace(/^>\s?/, '');
+                if (!line) { flushPara(); flushList(); return; }
+                const heading = line.match(/^#{1,6}\s+(.*?)\s*#*$/);
+                if (heading) {
+                    flushPara(); flushList();
+                    if (heading[1]) out.push(`<h4 class="answer-subhead">${inlineFormat(escapeHtml(heading[1]))}</h4>`);
+                    return;
+                }
+                if (/^(?:-{3,}|\*{3,}|_{3,})$/.test(line)) { flushPara(); flushList(); return; }
+                const bullet = line.match(/^[-*•·]\s+(.*)$/);
+                const ordered = line.match(/^\d+[.)]\s+(.*)$/);
+                if (bullet || ordered) {
+                    flushPara();
+                    const tag = bullet ? 'ul' : 'ol';
+                    if (!list || list.tag !== tag) { flushList(); list = { tag, items: [] }; }
+                    list.items.push((bullet || ordered)[1]);
+                    return;
+                }
+                flushList();
+                para.push(line.replace(/^#+\s*/, ''));
+            });
+            flushPara(); flushList();
+            return out.join('');
+        }
+
+        // Plain-text version of free-form model text for the clipboard: no
+        // Markdown syntax, readable bullets.
+        function toPlainCopyText(text) {
+            return String(text || '').replace(/\r\n?/g, '\n').split('\n').map((raw) => {
+                const line = raw.replace(/^\s*>\s?/, '');
+                const heading = line.match(/^\s*#{1,6}\s+(.*?)\s*#*$/);
+                if (heading) return heading[1];
+                if (/^\s*(?:-{3,}|\*{3,}|_{3,})\s*$/.test(line)) return '';
+                return line.replace(/^(\s*)[-*]\s+/, '$1• ');
+            }).join('\n').replace(/\*\*(.+?)\*\*/g, '$1').replace(/__(.+?)__/g, '$1').replace(/`([^`]+)`/g, '$1').replace(/\n{3,}/g, '\n\n').trim();
+        }
+
+        // ── Structured answer (the canonical renderer for `structured_answer`) ──
+        const PA_LABELS = {
+            short_answer: { ko: '요약', en: 'Summary', zh: '摘要', zhHant: '摘要' },
+            interpreted_intent: { ko: '질문 이해', en: 'What we understood', zh: '问题理解', zhHant: '問題理解' },
+            required_documents: { ko: '제출 서류', en: 'Documents', zh: '所需材料', zhHant: '所需材料' },
+            procedure_steps: { ko: '진행 순서', en: 'Steps', zh: '办理步骤', zhHant: '辦理步驟' },
+            fees_appointment: { ko: '수수료·예약', en: 'Fees & booking', zh: '手续费·预约', zhHant: '手續費·預約' },
+            uncertainty_flags: { ko: '유의사항', en: 'Good to know', zh: '注意事项', zhHant: '注意事項' },
+            high_risk_flags: { ko: '공식 기관 확인이 꼭 필요한 주제', en: 'Please confirm with an official source', zh: '请务必向官方机构确认', zhHant: '請務必向官方機構確認' },
+            user_next_actions: { ko: '다음 단계', en: 'Next steps', zh: '下一步', zhHant: '下一步' },
+            sources: { ko: '공식 근거', en: 'Official source', zh: '官方依据', zhHant: '官方依據' },
+            common: { ko: '기본 서류', en: 'Basic documents', zh: '基本材料', zhHant: '基本材料' },
+            required: { ko: '증빙 서류', en: 'Supporting documents', zh: '证明材料', zhHant: '證明材料' },
+            conditional: { ko: '해당하는 경우 제출', en: 'Only if it applies to you', zh: '符合条件时提交', zhHant: '符合條件時提交' },
+            additional: { ko: '추가로 요청될 수 있는 서류', en: 'May be requested', zh: '可能要求的材料', zhHant: '可能要求的材料' },
+            missing_or_unverified: { ko: '확인이 필요한 서류', en: 'Needs confirmation', zh: '需确认的材料', zhHant: '需確認的材料' },
+            examples: { ko: '예:', en: 'e.g.', zh: '例如：', zhHant: '例如：' },
+            verified: { ko: '공식 매뉴얼 확인됨', en: 'Checked against the official manual', zh: '已核对官方手册', zhHant: '已核對官方手冊' },
+            source: { ko: '출처', en: 'Source', zh: '出处', zhHant: '出處' }
+        };
+        const PA_BUCKETS = ['common', 'required', 'conditional', 'additional', 'missing_or_unverified'];
+        const PA_PROCEDURE_LABELS = {
+            '체류기간 연장허가': { ko: '체류기간 연장', en: 'Extension of stay', zh: '延长居留期限', zhHant: '延長居留期限' },
+            '외국인등록': { ko: '외국인등록', en: 'Alien registration', zh: '外国人登记', zhHant: '外國人登記' },
+            '체류자격 변경허가': { ko: '체류자격 변경', en: 'Change of status', zh: '变更居留资格', zhHant: '變更居留資格' }
+        };
+        function paProcedureLabel(value, lang) {
+            const entry = PA_PROCEDURE_LABELS[String(value || '').trim()];
+            return entry ? tt(lang, entry) : String(value || '');
+        }
+        function isStructuredDocumentAnswer(structured) {
+            if (!structured || typeof structured !== 'object' || structured.kind !== 'documents') return false;
+            const docs = structured.required_documents || {};
+            return PA_BUCKETS.some((k) => Array.isArray(docs[k]) && docs[k].length);
+        }
+        function paSourceLines(structured, lang) {
+            const src = (structured && structured.source) || {};
+            const titleLine = [src.title, src.edition].filter(Boolean).join(' · ');
+            const pages = src.page_range ? `pp. ${String(src.page_range).replace('-', '–')}` : '';
+            const scopeLine = [src.visa_code, paProcedureLabel(src.procedure, lang), pages].filter(Boolean).join(' · ');
+            return { titleLine, issuer: String(src.issuing_body || ''), scopeLine, verified: Boolean(src.verified) };
+        }
+        // Clipboard text for a structured answer: readable plain text with
+        // section titles; no DOM labels, no diagnostics, no Markdown.
+        function structuredAnswerPlainText(structured, lang) {
+            const out = [];
+            const src = (structured && structured.source) || {};
+            const topic = [src.visa_code, src.scope, paProcedureLabel(src.procedure, lang)].filter(Boolean).join(' ');
+            if (topic) out.push(topic, '');
+            if (structured.short_answer) out.push(String(structured.short_answer), '');
+            const docs = structured.required_documents || {};
+            PA_BUCKETS.forEach((key) => {
+                const items = Array.isArray(docs[key]) ? docs[key] : [];
+                if (!items.length) return;
+                out.push(tt(lang, PA_LABELS[key]));
+                items.forEach((it) => {
+                    let line = '• ' + String(it.label || it.source_text || '');
+                    if (it.examples) line += ` (${tt(lang, PA_LABELS.examples)} ${it.examples})`;
+                    if (it.condition) line += ` — ${it.condition}`;
+                    out.push(line);
+                });
+                out.push('');
+            });
+            const notes = [].concat(structured.important_notes || [], structured.uncertainty_flags || []).filter(Boolean);
+            if (notes.length) { out.push(tt(lang, PA_LABELS.uncertainty_flags)); notes.forEach((n) => out.push('• ' + String(n))); out.push(''); }
+            const lines = paSourceLines(structured, lang);
+            if (lines.titleLine) {
+                out.push(tt(lang, PA_LABELS.source));
+                out.push([lines.titleLine.replace(' · ', ' '), src.page_range ? `pp. ${src.page_range}` : ''].filter(Boolean).join(', '));
+            }
+            return out.join('\n').replace(/\n{3,}/g, '\n\n').trim();
+        }
+        // Clone the canonical <template id="pa-answer-card-shell"> and fill it.
+        // textContent only — no model/data string is ever parsed as HTML.
+        function renderStructuredAnswer(structured, lang) {
+            if (typeof document === 'undefined') return null;
+            const tpl = document.getElementById('pa-answer-card-shell');
+            if (!tpl || !tpl.content || !isStructuredDocumentAnswer(structured)) return null;
+            const card = tpl.content.firstElementChild.cloneNode(true);
+            const put = (sel, text) => { const el = card.querySelector(sel); if (el) el.textContent = text; return el; };
+            const show = (slot) => { const el = card.querySelector(`[data-slot="${slot}"]`); if (el) el.hidden = false; return el; };
+            const notesLang = structured.notes_locale || 'ko';
+            card.setAttribute('data-locale', String(lang || 'ko'));
+            card.setAttribute('data-answer-kind', 'documents');
+            card.querySelectorAll('[data-kicker]').forEach((el) => {
+                const entry = PA_LABELS[el.getAttribute('data-kicker')];
+                if (entry) el.textContent = tt(lang, entry);
+            });
+            card.querySelectorAll('[data-bucket-title]').forEach((el) => {
+                const entry = PA_LABELS[el.getAttribute('data-bucket-title')];
+                if (entry) el.textContent = tt(lang, entry);
+            });
+            // Topic chips: status code + procedure.
+            const src = structured.source || {};
+            const topicRow = card.querySelector('[data-slot-body="visa_code_or_topic"]');
+            [src.visa_code, src.scope, paProcedureLabel(src.procedure, lang)].filter(Boolean).forEach((txt) => {
+                const chip = document.createElement('span');
+                chip.className = 'pa-topic-chip';
+                chip.textContent = txt;
+                topicRow.appendChild(chip);
+            });
+            if (topicRow.childElementCount) show('visa_code_or_topic');
+            put('[data-slot-body="short_answer"]', String(structured.short_answer || ''));
+            // Document buckets — real semantic lists.
+            const docs = structured.required_documents || {};
+            let anyBucket = false;
+            PA_BUCKETS.forEach((key) => {
+                const items = Array.isArray(docs[key]) ? docs[key] : [];
+                if (!items.length) return;
+                anyBucket = true;
+                const bucket = card.querySelector(`[data-bucket="${key}"]`);
+                const list = card.querySelector(`[data-bucket-list="${key}"]`);
+                if (!bucket || !list) return;
+                bucket.hidden = false;
+                items.forEach((it) => {
+                    const li = document.createElement('li');
+                    li.lang = 'ko';
+                    const label = document.createElement('span');
+                    label.className = 'pa-doc-label';
+                    label.textContent = String(it.label || it.source_text || '');
+                    li.appendChild(label);
+                    if (it.examples) {
+                        const ex = document.createElement('span');
+                        ex.className = 'pa-doc-examples';
+                        ex.textContent = `${tt(lang, PA_LABELS.examples)} ${it.examples}`;
+                        li.appendChild(ex);
+                    }
+                    if (it.condition) {
+                        const cond = document.createElement('span');
+                        cond.className = 'pa-doc-examples';
+                        cond.textContent = String(it.condition);
+                        li.appendChild(cond);
+                    }
+                    list.appendChild(li);
+                });
+            });
+            if (anyBucket) show('required_documents');
+            // Notes: manual caveats + the one office-discretion flag.
+            const notes = [].concat(structured.important_notes || [], structured.uncertainty_flags || []).filter(Boolean);
+            if (notes.length) {
+                const ul = card.querySelector('[data-slot-body="uncertainty_flags"]');
+                notes.forEach((n) => { const li = document.createElement('li'); li.lang = notesLang; li.textContent = String(n); ul.appendChild(li); });
+                show('uncertainty_flags');
+            }
+            const next = Array.isArray(structured.user_next_actions) ? structured.user_next_actions.filter(Boolean) : [];
+            if (next.length) {
+                const ul = card.querySelector('[data-slot-body="user_next_actions"]');
+                next.forEach((n) => { const li = document.createElement('li'); li.textContent = String(n); ul.appendChild(li); });
+                show('user_next_actions');
+            }
+            // Compact official-source component.
+            const lines = paSourceLines(structured, lang);
+            if (lines.titleLine) {
+                const box = card.querySelector('[data-slot-body="source_summary"]');
+                const add = (cls, text) => { if (!text) return; const d = document.createElement('div'); d.className = cls; d.textContent = text; box.appendChild(d); };
+                add('pa-source-title', lines.titleLine);
+                add('pa-source-issuer', lines.issuer);
+                add('pa-source-scope', lines.scopeLine);
+                if (lines.verified) add('pa-source-verified', tt(lang, PA_LABELS.verified));
+                show('sources');
+            }
+            put('[data-slot-body="disclaimer_snippet"]', String(structured.disclaimer_snippet || ''));
+            return card;
         }
 
         function sourceValue(source, key) {
@@ -1665,7 +1870,15 @@
                     || (publicLabels.length > 0)
                     || qualityMode === 'source_confirmed'
                     || qualityMode === 'source_assisted';
-                if (lawUnavailable && answerOtherwiseGrounded) {
+                // "Not applicable / not attempted / feature off" is an engineering
+                // capability state, not answer content: never render it as a
+                // public "법령 인용 검증: 기능 꺼짐 (DISABLED)" row.
+                const lawNotApplicable = !lawUsed && !lawAttempted
+                    && (citationStatus === '' || citationStatus === 'not_wired' || citationStatus === 'disabled'
+                        || citationStatus === 'citation_verification_not_applicable' || citationStatus === 'not_applicable');
+                if (lawNotApplicable) {
+                    // Omit — the developer-diagnostics block keeps the raw state.
+                } else if (lawUnavailable && answerOtherwiseGrounded) {
                     // Grounded elsewhere: suppress the supplementary-law status chip.
                 } else if (lawUnavailable && answerBasisCommunicatesLimit(safe)) {
                     const lawMsg = lawSourcePanelMessage(safe, lang);
@@ -1790,6 +2003,11 @@
                 'primary_model: ' + String(safe.primary_model || ''),
                 'model_fallback_used: ' + String(Boolean(safe.model_fallback_used)),
                 'fast_mode_fell_back: ' + String(Boolean(safe.fast_mode_fell_back)),
+                'answer_mode_auto_escalated: ' + String(Boolean(safe.answer_mode_auto_escalated)),
+                'answer_mode_escalation_reasons: ' + (Array.isArray(safe.answer_mode_escalation_reasons) ? safe.answer_mode_escalation_reasons.join(', ') : ''),
+                'provider: ' + String(safe.llm_provider || safe.provider || ''),
+                'attempted_models: ' + (Array.isArray(safe.attempted_models) ? safe.attempted_models.join(', ') : ''),
+                'structured_answer: ' + String(Boolean(safe.structured_answer)),
                 'law_grounding_status_detail: ' + String(safe.law_grounding_status_detail || ''),
             ];
             const diagBody = headerLines.concat(familyBlock).concat(modelLines).concat(['', '--- raw developer codes ---']).concat(lawWarnings);
@@ -1800,13 +2018,9 @@
             // ?dev=1, localStorage paradisoDevDiagnostics=1, or window flag). The
             // typeof guards keep this safe under the headless check harness (no
             // window/location/localStorage globals there).
-            let devDiagnosticsEnabled = false;
-            try {
-                if (typeof window !== 'undefined' && window.PARADISO_DEV_DIAGNOSTICS) devDiagnosticsEnabled = true;
-                else if (typeof localStorage !== 'undefined' && localStorage.getItem && localStorage.getItem('paradisoDevDiagnostics') === '1') devDiagnosticsEnabled = true;
-                else if (typeof location !== 'undefined' && location.search && /[?&](?:debug|dev)=1(?:&|$)/.test(location.search)) devDiagnosticsEnabled = true;
-            } catch (e) { devDiagnosticsEnabled = false; }
-            const debugWarnings = (devDiagnosticsEnabled && (lawWarnings.length || familyLines.length || safe.selected_model || safe.law_grounding_status_detail))
+            // typeof guard: headless check harnesses extract this function alone.
+            const devDiagnosticsEnabled = (typeof isDevDiagnosticsEnabled === 'function') ? isDevDiagnosticsEnabled() : false;
+            const debugWarnings = (devDiagnosticsEnabled && (lawWarnings.length || familyLines.length || safe.selected_model || safe.answer_mode || safe.law_grounding_status_detail))
                 ? `<details class="error-details" data-diagnostics="developer"><summary>${tt(lang, { ko: '개발자 진단 정보 보기', en: 'Show developer diagnostics', zh: '查看开发者诊断信息', zhHant: '查看開發者診斷資訊' })}<span class="source-subnote">${tt(lang, { ko: '일반 사용자는 확인하지 않아도 됩니다.', en: 'Most users do not need this.', zh: '一般用户无需查看。', zhHant: '一般使用者無需查看。' })}</span></summary><pre>${escapeHtml(diagBody.join('\n'))}</pre></details>`
                 : '';
 
@@ -1891,19 +2105,18 @@
             `;
         }
 
+        // Limited-answer notice. Product language only: normal users are told
+        // that the answer is limited and what it is based on — never which
+        // provider or model failed (that stays in server telemetry and the
+        // explicit developer-diagnostics mode).
         function buildDegradedStateBanner(result, lang) {
-            if (!result || (!result.deterministic_fallback_answer_used && !result.ollama_fallback_used)) return '';
-            if (result.ollama_fallback_used) {
-                return `<div class="answer-note">${escapeHtml(tt(lang, { ko: 'Provider: Ollama fallback · Response model', en: 'Provider: Ollama fallback · Response model', zh: 'Provider: Ollama fallback · Response model', zhHant: 'Provider: Ollama fallback · Response model' }))}: ${escapeHtml(result.ollama_model || result.model || '')}</div>`;
-            }
-            const title = tt(lang, { ko: 'AI 모델이 일시적으로 응답하지 않습니다', en: 'AI model temporarily unavailable', zh: 'AI 模型暂时无法响应', zhHant: 'AI 模型暫時無法回應' });
-            const lines = [
-                tt(lang, { ko: '제한적 준비 메모', en: 'Limited preparation note', zh: '有限准备说明', zhHant: '有限準備說明' }),
-                tt(lang, { ko: '모든 온라인 모델 후보가 현재 응답할 수 없습니다', en: 'All online model candidates are currently unavailable', zh: '所有在线候选模型目前均不可用', zhHant: '所有線上候選模型目前均不可用' }),
-                tt(lang, { ko: '잠시 후 다시 시도하세요', en: 'Try again shortly', zh: '请稍后重试', zhHant: '請稍後重試' }),
-                tt(lang, { ko: '사용 가능한 출처/체류자격 메타데이터로 생성한 대체 답변입니다', en: 'Fallback answer generated from available source/status metadata', zh: '基于可用来源/居留资格元数据生成的后备答复', zhHant: '基於可用來源/居留資格中繼資料產生的後備答覆' })
-            ];
-            return `<div class="answer-note"><strong>${escapeHtml(title)}</strong><ul>${lines.map((line) => `<li>${escapeHtml(line)}</li>`).join('')}</ul></div>`;
+            if (!result || !result.deterministic_fallback_answer_used) return '';
+            const structured = isStructuredDocumentAnswer(result.structured_answer);
+            const title = tt(lang, { ko: '답변을 생성하는 중 일시적인 문제가 발생했습니다', en: 'We hit a temporary problem generating the answer', zh: '生成答复时出现暂时性问题', zhHant: '產生答覆時出現暫時性問題' });
+            const body = structured
+                ? tt(lang, { ko: '확인된 공식 자료를 기준으로 기본 안내를 대신 표시합니다. 잠시 후 다시 시도하면 더 자세한 설명을 받을 수 있어요.', en: 'Showing the basic guidance from the confirmed official source instead. Try again shortly for a fuller explanation.', zh: '现改为显示基于已确认官方资料的基本指引。稍后重试可获得更详细的说明。', zhHant: '現改為顯示基於已確認官方資料的基本指引。稍後重試可獲得更詳細的說明。' })
+                : tt(lang, { ko: '확인 가능한 정보만으로 정리한 제한된 안내입니다. 잠시 후 다시 시도해 주세요.', en: 'This is a limited note based only on the information we could confirm. Please try again shortly.', zh: '这是仅根据可确认信息整理的有限指引。请稍后重试。', zhHant: '這是僅根據可確認資訊整理的有限指引。請稍後重試。' });
+            return `<div class="answer-note" role="status"><strong>${escapeHtml(title)}</strong><br>${escapeHtml(body)}</div>`;
         }
 
         function sourceTextForCopy(sources) {
@@ -1924,15 +2137,25 @@
             return `<div class="safety-notice" role="note">${escapeHtml(notice)}</div>`;
         }
 
+        // User-facing answer-mode labels. The API values stay "fast" / "basic";
+        // the product never equates a mode with a specific model.
+        const ANSWER_MODE_LABELS = {
+            fast: { ko: '빠른 답변', en: 'Quick answer', zh: '快速答复', zhHant: '快速答覆' },
+            basic: { ko: '정밀 답변', en: 'Thorough answer', zh: '详细答复', zhHant: '詳細答覆' }
+        };
+        function answerModeLabel(mode, lang) {
+            const entry = ANSWER_MODE_LABELS[String(mode || '').toLowerCase()];
+            return entry ? tt(lang, entry) : '';
+        }
         function buildAnswerRoutingNotice(result, lang) {
             if (!result || !result.answer_mode_auto_escalated) return '';
             const copy = tt(lang, {
-                ko: '<strong>Basic으로 자동 전환</strong> · 법령·판례 확인이나 여러 사실관계 판단이 필요한 질문이라 Fast 대신 더 신중한 답변 경로를 사용했습니다.',
-                en: '<strong>Automatically routed to Basic</strong> · This question needs source checking or multi-factor analysis, so Waymaker used the more careful answer path.',
-                zh: '<strong>已自动切换到 Basic</strong> · 此问题需要核对来源或进行多因素分析，因此采用了更审慎的答复路径。',
-                zhHant: '<strong>已自動切換到 Basic</strong> · 此問題需要核對來源或進行多因素分析，因此採用了更審慎的答覆路徑。'
+                ko: '이 질문은 정확한 자료 확인이 필요해 정밀 답변으로 처리했어요.',
+                en: 'This question needed a closer look at the sources, so we answered it in Thorough mode.',
+                zh: '此问题需要更仔细地核对资料，因此以详细答复模式处理。',
+                zhHant: '此問題需要更仔細地核對資料，因此以詳細答覆模式處理。'
             });
-            return `<div class="answer-routing-note" role="status">${copy}</div>`;
+            return `<div class="answer-routing-note" role="status">${escapeHtml(copy)}</div>`;
         }
 
         // Render a blocked/escalated/emergency safety response as a distinct but
@@ -1979,7 +2202,7 @@
             scrollConversationToEnd(row);
         }
 
-                function appendAiAnswer(rawResult, lang) {
+        function appendAiAnswer(rawResult, lang) {
             const hist = document.getElementById('chatHistory');
             if (!hist) return;
             const result = normalizeAnswerMetadata(rawResult);
@@ -1990,44 +2213,59 @@
                 renderSafetyResponse(result, lang, hist);
                 return;
             }
+            const devMode = isDevDiagnosticsEnabled();
+            // Structured document answers (source-confirmed checklist) render
+            // through the ONE canonical structured renderer; free-form answers
+            // go through the safe Markdown formatter.
+            const structured = isStructuredDocumentAnswer(result.structured_answer) ? result.structured_answer : null;
             // copy_safe_answer is the backend-sanitized, diagnostics-free answer
-            // text. The clipboard payload only ever carries this (and the source
-            // lines) — never the developer-diagnostics block (Part G copy-safe).
+            // text. The clipboard payload only ever carries user-facing text
+            // (never diagnostics, provider/model names, or Markdown syntax).
             const answer = result.copy_safe_answer || result.fallback_answer || result.answer || t(lang, '매뉴얼 내에서 분석 가능한 데이터를 찾지 못했습니다.', 'No answer could be generated from the available manual data.');
+            const copyText = structured ? structuredAnswerPlainText(structured, lang) : toPlainCopyText(answer);
             const copyId = getCopyId();
-            const sourceCopy = sourceTextForCopy(result.grounding_sources);
+            const sourceCopy = structured ? '' : sourceTextForCopy(result.grounding_sources);
             const handoffStatus = (result && (result.visa_sub_code_detected || result.visa_code_detected)) || '';
-            COPY_PAYLOADS[copyId] = { answer, source: sourceCopy, handoff: { question: _lastUserQuestion || '', visaCode: handoffStatus } };
+            COPY_PAYLOADS[copyId] = { answer: copyText, source: sourceCopy, handoff: { question: _lastUserQuestion || '', visaCode: handoffStatus } };
             const grounded = Boolean(result.grounding_used);
-            const modelLabel = getModelLabel(result.model, result.provider, result.model_resolved);
             // Warning de-duplication (Part D). The source panel carries the one
             // primary caution (its disclosure line). When the panel renders, we
             // suppress the duplicate "general AI answer" note and the trailing
             // msg-disc so the same "confirm with 1345 / HiKorea / immigration
-            // office" phrase is not repeated three times in one card.
-            const sourcePanelHtml = renderGroundingSourcePanel(result, lang);
-            const hasPanel = Boolean(sourcePanelHtml);
+            // office" phrase is not repeated three times in one card. A
+            // structured answer carries its own compact source card and a single
+            // disclaimer, so the verbose evidence register is developer-only.
+            const sourcePanelHtml = (structured && !devMode) ? '' : renderGroundingSourcePanel(result, lang);
+            const hasPanel = Boolean(sourcePanelHtml) || Boolean(structured);
             const groundingNoteHtml = (hasPanel || answerBasisCommunicatesLimit(result)) ? '' : buildGroundingNote(result, lang);
             const trailingDisc = hasPanel ? '' : `<span class="msg-disc">${escapeHtml(answerDisclaimer(result, lang))}</span>`;
+            const headLine = grounded
+                ? tt(lang, { ko: '공식 자료 기반 안내', en: 'Guidance from official sources', zh: '基于官方资料的指引', zhHant: '基於官方資料的指引' })
+                : tt(lang, { ko: '참고 안내', en: 'Reference guidance', zh: '参考指引', zhHant: '參考指引' });
+            const modeLabel = answerModeLabel(result.answer_mode, lang);
+            const modeChip = modeLabel ? `<span class="answer-mode-chip" data-answer-mode-used="${escapeHtml(String(result.answer_mode || ''))}">${escapeHtml(modeLabel)}</span>` : '';
             const row = document.createElement('div');
             row.className = 'msg-row ai answer';
             row.innerHTML = `
-                <article class="msg-bubble answer-card${easyGlobalPref() ? ' ai-mode-easy' : ''}">
+                <article class="msg-bubble answer-card${easyGlobalPref() ? ' ai-mode-easy' : ''}${structured ? ' answer-card--structured' : ''}">
                     <header class="answer-head">
                         <div>
-                            <span class="answer-kicker">${t(lang, 'Waymaker by Paradiso 안내', 'Waymaker by Paradiso guidance')}</span>
-                            <span class="answer-model">${escapeHtml(modelLabel)}</span>
+                            <span class="answer-kicker">Waymaker by Paradiso</span>
+                            <span class="answer-model answer-subline">${escapeHtml(headLine)}</span>
                         </div>
-                        <span class="grounding-badge ${grounded ? 'grounded' : ''}">${grounded ? t(lang, '공식 매뉴얼 근거', 'Grounded in official manual') : t(lang, '일반 AI 답변', 'General AI answer')}</span>
+                        <div class="answer-head-chips">
+                            ${modeChip}
+                            <span class="grounding-badge ${grounded ? 'grounded' : ''}">${grounded ? t(lang, '공식 매뉴얼 근거', 'Grounded in official manual') : t(lang, '일반 AI 답변', 'General AI answer')}</span>
+                        </div>
                     </header>
                     ${buildAnswerModeToggle()}
                     ${buildAiEasyFrame()}
-                    ${buildContextRow(result, lang)}
+                    ${structured ? '' : buildContextRow(result, lang)}
                     ${buildAnswerRoutingNotice(result, lang)}
                     ${buildDegradedStateBanner(result, lang)}
                     ${buildSafetyNotice(result, lang)}
-                    <div class="answer-body">${formatAnswerText(answer, lang)}</div>
-                    ${generateBadges(answer, lang, result)}
+                    ${structured ? '<div class="answer-body answer-body--structured" data-structured-slot></div>' : `<div class="answer-body">${formatAnswerText(answer, lang)}</div>`}
+                    ${structured ? '' : generateBadges(answer, lang, result)}
                     ${sourcePanelHtml}
                     ${groundingNoteHtml}
                     ${buildAnswerActions(copyId, Boolean(sourceCopy), lang, true)}
@@ -2035,8 +2273,14 @@
                 </article>
                 <div class="msg-time">Waymaker by Paradiso · ${formatTime()}</div>
             `;
+            if (structured) {
+                const slot = row.querySelector('[data-structured-slot]');
+                const card = renderStructuredAnswer(structured, lang);
+                if (slot && card) slot.appendChild(card);
+                else if (slot) slot.innerHTML = formatAnswerText(answer, lang);
+            }
             hist.appendChild(row);
-            rememberTurn('assistant', answer);
+            rememberTurn('assistant', copyText);
             scrollConversationToEnd(row);
         }
 
@@ -2072,7 +2316,7 @@
         function errorClassBadge(errorClass, status, lang) {
             if (errorClass === 'backend_http' && status) return `HTTP ${escapeHtml(status)}`;
             if (errorClass === 'timeout') return tt(lang, { ko: '응답 시간 초과', en: 'Request timed out', zh: '请求超时', zhHant: '請求逾時' });
-            if (errorClass === 'provider') return tt(lang, { ko: 'AI 제공자 오류', en: 'AI provider unavailable', zh: 'AI 提供方不可用', zhHant: 'AI 提供方不可用' });
+            if (errorClass === 'provider') return tt(lang, { ko: '일시적인 문제', en: 'Temporary problem', zh: '暂时性问题', zhHant: '暫時性問題' });
             if (errorClass === 'frontend_render') return tt(lang, { ko: '화면 표시 오류', en: 'Display error', zh: '显示错误', zhHant: '顯示錯誤' });
             return tt(lang, { ko: '통신 오류', en: 'Network error', zh: '通信错误', zhHant: '通訊錯誤' });
         }
@@ -2132,7 +2376,7 @@
             const diagHeader = {
                 network: tt(lang, { ko: '네트워크 오류: 서버 응답을 받지 못했습니다.', en: 'Network error: no response was received from the server.', zh: '网络错误：未收到服务器响应。', zhHant: '網路錯誤：未收到伺服器回應。' }),
                 backend_http: tt(lang, { ko: '백엔드 HTTP 오류: 서버가 오류 상태를 반환했습니다.', en: 'Backend HTTP error: the server returned an error status.', zh: '后端 HTTP 错误：服务器返回了错误状态。', zhHant: '後端 HTTP 錯誤：伺服器回傳了錯誤狀態。' }),
-                provider: tt(lang, { ko: 'AI 제공자 오류: 모델 제공자가 일시적으로 응답하지 않습니다.', en: 'Provider error: the AI model provider is temporarily unavailable.', zh: 'AI 提供方错误：模型提供方暂时不可用。', zhHant: 'AI 提供方錯誤：模型提供方暫時不可用。' }),
+                provider: tt(lang, { ko: '답변 생성 경로 오류: 답변 생성 서비스가 일시적으로 응답하지 않았습니다.', en: 'Answer-generation error: the answer service did not respond.', zh: '答复生成错误：答复服务暂时未响应。', zhHant: '答覆產生錯誤：答覆服務暫時未回應。' }),
                 frontend_render: tt(lang, { ko: '프런트엔드 표시 오류: 답변은 수신되었으나 화면 렌더링 중 예외가 발생했습니다.', en: 'Frontend render error: the answer was received but an exception occurred while rendering it.', zh: '前端渲染错误：已收到答复，但渲染时发生异常。', zhHant: '前端渲染錯誤：已收到答覆，但渲染時發生例外。' }),
                 timeout: tt(lang, { ko: '응답 시간 초과: 서버가 제한 시간 내에 응답하지 않아 요청을 중단했습니다.', en: 'Request timed out: the request was stopped because the server did not respond within the time limit.', zh: '请求超时：服务器未在限制时间内响应，已中止请求。', zhHant: '請求逾時：伺服器未在限制時間內回應，已中止請求。' })
             }[errorClass] || '';
@@ -2167,7 +2411,7 @@
                     <div class="answer-body">${fallbackAnswer ? formatAnswerText(userMessage, lang) : `<p>${escapeHtml(userMessage)}</p>`}</div>
                     ${renderGroundingSourcePanel(grounding, lang)}
                     ${fallbackAnswer ? buildAnswerActions(copyId, false, lang) : ''}
-                    ${details ? `<details class="error-details" data-diagnostics="developer"><summary>${tt(lang, { ko: '개발자 진단 정보 보기', en: 'Show developer diagnostics', zh: '查看开发者诊断信息', zhHant: '查看開發者診斷資訊' })}<span class="source-subnote">${tt(lang, { ko: '일반 사용자는 확인하지 않아도 됩니다.', en: 'Most users do not need this.', zh: '一般用户无需查看。', zhHant: '一般使用者無需查看。' })}</span></summary><pre>${escapeHtml(details)}</pre></details>` : ''}
+                    ${(details && isDevDiagnosticsEnabled()) ? `<details class="error-details" data-diagnostics="developer"><summary>${tt(lang, { ko: '개발자 진단 정보 보기', en: 'Show developer diagnostics', zh: '查看开发者诊断信息', zhHant: '查看開發者診斷資訊' })}<span class="source-subnote">${tt(lang, { ko: '일반 사용자는 확인하지 않아도 됩니다.', en: 'Most users do not need this.', zh: '一般用户无需查看。', zhHant: '一般使用者無需查看。' })}</span></summary><pre>${escapeHtml(details)}</pre></details>` : ''}
                     <span class="msg-disc">${escapeHtml(answerDisclaimer(grounding, lang))}</span>
                 </article>
                 <div class="msg-time">${t(lang, '시스템 오류', 'System error')} · ${formatTime()}</div>
@@ -2258,15 +2502,14 @@
                         if (ev === 'meta') {
                             meta = obj;
                         } else if (ev === 'model') {
-                            modelInfo = {
-                                model: obj.final_model,
-                                provider: 'openrouter',
-                                model_resolved: obj.final_model,
-                                selected_model: obj.selected_model || obj.final_model,
-                                model_fallback_used: obj.model_fallback_used,
-                                fast_mode_fell_back: obj.fast_mode_fell_back,
-                                answer_mode: obj.answer_mode || (meta && meta.answer_mode),
-                            };
+                            // The public stream carries only the answer mode; model
+                            // identity is present only in developer-diagnostics mode.
+                            modelInfo = { answer_mode: obj.answer_mode || (meta && meta.answer_mode) };
+                            if (isDevDiagnosticsEnabled()) {
+                                modelInfo.selected_model = obj.selected_model || obj.final_model || '';
+                                modelInfo.model_fallback_used = obj.model_fallback_used;
+                                modelInfo.fast_mode_fell_back = obj.fast_mode_fell_back;
+                            }
                         } else if (ev === 'delta') {
                             acc += (obj.text || '');
                             liveBody.innerHTML = formatAnswerText(acc, lang);
@@ -2361,6 +2604,10 @@
                         context: contextText,
                         lang: userLang,
                         answer_mode: currentAiAnswerMode,
+                        // Provider/model routing detail is returned only on this
+                        // explicit developer opt-in (?debug=1 etc.); undefined
+                        // (dropped by JSON.stringify) for ordinary users.
+                        diagnostics: isDevDiagnosticsEnabled() || undefined,
                         // Reliability first: the buffered /api/ask path has the
                         // complete candidate/provider fallback and answer-quality
                         // gates. The SSE path remains available server-side, but
@@ -2485,11 +2732,27 @@
         // Initialization
         // ==========================================
         // Waymaker answer-speed tier: 'fast' | 'basic' | 'pro' (pro is coming-soon).
+        // UI copy is 빠른 답변 / 정밀 답변 (Quick / Thorough); the API values stay
+        // 'fast' / 'basic'. The choice persists across reloads so the selector
+        // never silently snaps back to Basic after the user picked Fast, and
+        // every answer card shows the mode that was actually used.
+        const AI_ANSWER_MODE_STORE_KEY = 'paradiso:waymakerAnswerMode';
         let currentAiAnswerMode = 'basic';
+        function applyAiModeSelection(selector, mode) {
+            currentAiAnswerMode = mode;
+            selector.querySelectorAll('.ai-mode-btn').forEach(b => {
+                const active = b.dataset.mode === mode;
+                b.classList.toggle('is-active', active);
+                b.setAttribute('aria-checked', active ? 'true' : 'false');
+            });
+        }
         function setupAiModeSelector() {
             const selector = document.getElementById('aiModeSelector');
             if (!selector || selector.dataset.wired) return;
             selector.dataset.wired = '1';
+            let saved = '';
+            try { saved = localStorage.getItem(AI_ANSWER_MODE_STORE_KEY) || ''; } catch (e) { saved = ''; }
+            if (saved === 'fast' || saved === 'basic') applyAiModeSelection(selector, saved);
             selector.querySelectorAll('.ai-mode-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
                     const mode = btn.dataset.mode;
@@ -2497,12 +2760,8 @@
                         showToast('Pro 모드는 곧 제공될 예정입니다.');
                         return;
                     }
-                    currentAiAnswerMode = mode;
-                    selector.querySelectorAll('.ai-mode-btn').forEach(b => {
-                        const active = b === btn;
-                        b.classList.toggle('is-active', active);
-                        b.setAttribute('aria-checked', active ? 'true' : 'false');
-                    });
+                    applyAiModeSelection(selector, mode);
+                    try { localStorage.setItem(AI_ANSWER_MODE_STORE_KEY, mode); } catch (e) { /* private mode */ }
                 });
             });
         }

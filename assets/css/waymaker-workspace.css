@@ -322,7 +322,9 @@ body.wm-conversing .ai-textarea { min-height: 28px; }
   border: 0; border-radius: 999px; background: transparent;
   color: var(--vp-ink-2); font-size: 14px; font-weight: 650; cursor: pointer;
 }
-.ai-mode-btn:hover:not(.is-active) { color: var(--vp-ink); background: var(--vp-mint); }
+@media (hover: hover) {
+  .ai-mode-btn:hover:not(.is-active) { color: var(--vp-ink); background: var(--vp-mint); }
+}
 .ai-mode-btn.is-active { background: var(--vp-surface); color: var(--vp-ink); box-shadow: inset 0 0 0 1.5px var(--vp-green); font-weight: 720; }
 .ai-mode-btn.is-disabled { opacity: 0.55; cursor: not-allowed; }
 .ai-mode-sub { display: none; }
@@ -450,7 +452,6 @@ html:lang(ko) .answer-body { word-break: keep-all; }
 .bdg.bdg-visa { color: var(--vp-green); border-color: color-mix(in srgb, var(--vp-green) 45%, var(--vp-line)); background: var(--vp-mint); }
 .bdg.bdg-link { color: var(--vp-coral); }
 .bdg.bdg-related { border-style: dashed; }
-.model-badge { display: inline-flex; margin-top: 8px; padding: 2px 10px; border: 1px solid var(--vp-line); border-radius: 999px; color: var(--vp-ink-3); font-size: 12px; }
 
 /* ── Evidence ─────────────────────────────────────────────────────────────
    Inspectable without overpowering the answer: a quiet ruled table. Each
@@ -482,27 +483,15 @@ html:lang(ko) .answer-body { word-break: keep-all; }
 html:lang(ko) .source-list .source-row { word-break: keep-all; }
 .source-list .source-row:last-child { border-bottom: 0; }
 .source-list .source-row strong { color: var(--vp-ink); font-weight: 700; }
-.source-list .source-row::before {
-  flex: 0 0 auto;
-  padding: 1px 8px;
-  border: 1px solid currentColor; border-radius: 999px;
-  color: var(--state);
-  font-size: 11px; font-weight: 750; letter-spacing: 0.04em; line-height: 1.6;
-}
+/* State is carried by the row text itself ("공식 근거 미확인", "관련 법적 맥락
+   분석", ...) plus a left rule for scanning. The former uppercase English
+   ::before pills (SOURCE / BASIS / DISABLED / NOT WIRED ...) read as engineering
+   diagnostics to ordinary users and are intentionally not rendered. */
 .source-list .source-row.state-verified { --state: var(--vp-green); box-shadow: inset 3px 0 0 var(--vp-green); }
-.source-list .source-row.state-verified::before { content: "SOURCED"; }
 .source-list .source-row.state-source-supported { --state: var(--vp-green); }
-.source-list .source-row.state-source-supported::before { content: "SOURCE"; }
 .source-list .source-row.state-partial { --state: var(--vp-amber); box-shadow: inset 3px 0 0 var(--vp-amber); }
-.source-list .source-row.state-partial::before { content: "PARTIAL"; }
-.source-list .source-row:is(.state-extracted-only, .state-source-linked-unverified, .state-needs-review, .state-candidate) { --state: var(--vp-amber); }
-.source-list .source-row.state-extracted-only::before { content: "UNVERIFIED"; }
-.source-list .source-row.state-source-linked-unverified::before { content: "LINK ONLY"; }
-.source-list .source-row:is(.state-disabled, .state-not-wired) { font-style: italic; }
-.source-list .source-row.state-disabled::before { content: "DISABLED"; font-style: normal; }
-.source-list .source-row.state-not-wired::before { content: "NOT WIRED"; font-style: normal; }
-.source-list .source-row.state-failed { --state: var(--vp-danger); }
-.source-list .source-row.state-failed::before { content: "FAILED"; }
+.source-list .source-row:is(.state-extracted-only, .state-source-linked-unverified, .state-needs-review, .state-candidate) { --state: var(--vp-amber); box-shadow: inset 3px 0 0 var(--vp-amber); }
+.source-list .source-row.state-failed { --state: var(--vp-danger); box-shadow: inset 3px 0 0 var(--vp-danger); }
 /* Explicit no-official-grounding warning: serious and not colour-only. */
 .source-list .source-row.source-unavailable-warning {
   --state: var(--vp-danger);
@@ -510,14 +499,11 @@ html:lang(ko) .source-list .source-row { word-break: keep-all; }
   box-shadow: inset 3px 0 0 var(--vp-danger);
   color: var(--vp-ink); font-weight: 650;
 }
-.source-list .source-row.source-unavailable-warning::before { content: "NO SOURCE"; }
-.source-list .source-row.state-related { --state: #3d5ea8; }
+.source-list .source-row.state-related { --state: #3d5ea8; box-shadow: inset 3px 0 0 var(--state); }
 body[data-theme="dark"] .source-list .source-row.state-related { --state: #a9bff0; }
-.source-list .source-row.state-related::before { content: "RELATED"; }
 .source-list .source-row.answer-basis-row { font-weight: 650; color: var(--vp-ink); }
-.source-list .source-row.answer-basis-row::before { content: "BASIS"; }
-.source-list .source-row.answer-basis-row.basis-confirmed { --state: var(--vp-green); }
-.source-list .source-row.answer-basis-row.basis-limited { --state: var(--vp-amber); }
+.source-list .source-row.answer-basis-row.basis-confirmed { --state: var(--vp-green); box-shadow: inset 3px 0 0 var(--vp-green); }
+.source-list .source-row.answer-basis-row.basis-limited { --state: var(--vp-amber); box-shadow: inset 3px 0 0 var(--vp-amber); }
 .source-list .source-row .source-subnote { flex-basis: 100%; margin-top: 2px; color: var(--vp-ink-3); font-size: 12.5px; line-height: 1.5; font-weight: 400; }
 .source-list .source-row.source-row-public { align-items: flex-start; }
 .source-status-chips { display: inline-flex; flex-wrap: wrap; gap: 4px; min-width: 0; max-width: 100%; }
@@ -575,21 +561,74 @@ html:lang(ko) .source-panel .source-disclosure { word-break: keep-all; }
 }
 
 /* ── Structured answer template (inert <template>, kept for the contract) ── */
-.pa-answer-card { display: grid; gap: 14px; padding: 18px 22px; border: 1px solid var(--vp-line); border-radius: var(--vp-r-lg); background: var(--vp-surface); color: var(--vp-ink); }
+/* ── Structured answer (pa-answer-card-shell) ────────────────────────────
+   The canonical renderer for source-confirmed document lookups. Inside an
+   answer card it is the body itself: no second border, generous hierarchy,
+   real lists, a compact source component and one disclaimer. */
+.pa-answer-card { display: grid; gap: 18px; min-width: 0; color: var(--vp-ink); }
 .pa-answer-card[hidden] { display: none; }
-.pa-slot { display: grid; gap: 6px; min-width: 0; }
-.pa-slot-kicker { color: var(--vp-ink-3); font-size: 13px; font-weight: 700; }
-.pa-slot-body { color: var(--vp-ink); font-size: 15.5px; line-height: 1.7; overflow-wrap: anywhere; }
-.pa-doc-buckets { display: grid; gap: 8px; }
-.pa-doc-bucket { padding: 10px 14px; border-left: 3px solid var(--vp-line-strong); background: var(--vp-paper-strong); border-radius: 0 var(--vp-r-sm) var(--vp-r-sm) 0; }
-.pa-doc-bucket--required { border-left-color: var(--vp-green); }
-.pa-doc-bucket--additional, .pa-doc-bucket--missing { border-left-color: var(--vp-amber); }
-.pa-doc-bucket-title { margin-bottom: 4px; font-size: 14px; font-weight: 700; }
-.pa-doc-bucket-list { list-style: disc; padding-left: 18px; color: var(--vp-ink-2); font-size: 14.5px; line-height: 1.6; }
+.pa-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.pa-slot { display: grid; gap: 8px; min-width: 0; }
+.pa-slot[hidden], .pa-doc-bucket[hidden], .pa-topic-row[hidden] { display: none; }
+.pa-slot-kicker { margin: 0; color: var(--vp-ink); font-size: 15px; font-weight: 740; line-height: 1.4; }
+.pa-slot-body { margin: 0; color: var(--vp-ink); font-size: 16px; line-height: 1.75; overflow-wrap: anywhere; }
+.pa-lead { font-size: 16.5px; font-weight: 560; }
+html:lang(ko) .pa-answer-card { word-break: keep-all; }
+.pa-topic-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.pa-topic-chip {
+  display: inline-flex; align-items: center; min-height: 28px; padding: 2px 10px;
+  border: 1px solid color-mix(in srgb, var(--vp-green) 40%, var(--vp-line)); border-radius: 999px;
+  background: var(--vp-mint); color: var(--vp-green); font-size: 13px; font-weight: 700;
+}
+.pa-doc-buckets { display: grid; gap: 14px; }
+.pa-doc-bucket { display: grid; gap: 6px; }
+.pa-doc-bucket-title { margin: 0; color: var(--vp-ink); font-size: 15px; font-weight: 740; }
+.pa-doc-bucket--conditional .pa-doc-bucket-title,
+.pa-doc-bucket--additional .pa-doc-bucket-title,
+.pa-doc-bucket--missing .pa-doc-bucket-title { color: var(--vp-ink-2); }
+.pa-doc-bucket-list { margin: 0; padding: 0; list-style: none; border: 1px solid var(--vp-line); border-radius: var(--vp-r-md); overflow: hidden; }
+.pa-doc-bucket-list li { display: grid; gap: 2px; padding: 8px 14px; border-bottom: 1px solid var(--vp-line-soft); background: var(--vp-surface); font-size: 15.5px; line-height: 1.55; }
+.pa-doc-bucket-list li:last-child { border-bottom: 0; }
+.pa-doc-bucket--common .pa-doc-bucket-list li { box-shadow: inset 3px 0 0 var(--vp-green); }
+.pa-doc-bucket--required .pa-doc-bucket-list li { box-shadow: inset 3px 0 0 color-mix(in srgb, var(--vp-green) 55%, var(--vp-line)); }
+.pa-doc-bucket--conditional .pa-doc-bucket-list li,
+.pa-doc-bucket--additional .pa-doc-bucket-list li { box-shadow: inset 3px 0 0 var(--vp-line-strong); }
+.pa-doc-bucket--missing .pa-doc-bucket-list li { box-shadow: inset 3px 0 0 var(--vp-amber); }
+.pa-doc-label { color: var(--vp-ink); font-weight: 650; overflow-wrap: anywhere; }
+.pa-doc-examples { color: var(--vp-ink-3); font-size: 13.5px; line-height: 1.5; overflow-wrap: anywhere; }
+.pa-uncertainty-list, .pa-next-actions { margin: 0; padding-left: 20px; color: var(--vp-ink-2); font-size: 14.5px; line-height: 1.65; }
+.pa-uncertainty-list li, .pa-next-actions li { margin: 4px 0; }
+.pa-uncertainty-list li::marker, .pa-next-actions li::marker { color: var(--vp-ink-3); }
 .pa-procedure-steps { padding-left: 22px; color: var(--vp-ink); font-size: 15px; line-height: 1.65; }
 .pa-high-risk { padding: 12px 14px; border-left: 3px solid var(--vp-danger); background: color-mix(in srgb, var(--vp-danger) 7%, var(--vp-surface)); border-radius: 0 var(--vp-r-sm) var(--vp-r-sm) 0; }
-.pa-high-risk-title { font-weight: 740; color: var(--vp-danger); }
-.pa-disclaimer { padding-top: 10px; border-top: 1px solid var(--vp-line-soft); color: var(--vp-ink-3); font-size: 12.5px; }
+.pa-high-risk-title { margin: 0; font-size: 15px; font-weight: 740; color: var(--vp-danger); }
+.pa-sources .pa-slot-kicker { font-size: 13px; color: var(--vp-ink-3); font-weight: 700; }
+.pa-source-card { display: grid; gap: 2px; padding: 12px 14px; border: 1px solid var(--vp-line); border-radius: var(--vp-r-md); background: var(--vp-paper-strong); font-size: 13.5px; line-height: 1.55; min-width: 0; overflow-wrap: anywhere; }
+.pa-source-title { color: var(--vp-ink); font-size: 14.5px; font-weight: 700; }
+.pa-source-issuer, .pa-source-scope { color: var(--vp-ink-2); }
+.pa-source-verified { margin-top: 4px; color: var(--vp-green); font-size: 12.5px; font-weight: 700; }
+.pa-disclaimer { margin: 0; padding-top: 12px; border-top: 1px solid var(--vp-line-soft); color: var(--vp-ink-3); font-size: 12.5px; line-height: 1.6; }
+.answer-body--structured > * { max-width: 72ch; }
+/* The free-form .answer-body list rules must not reach the structured lists. */
+.answer-body .pa-doc-bucket-list { margin: 0; }
+.answer-body .pa-doc-bucket-list li { margin: 0; padding-left: 14px; }
+.answer-body .pa-uncertainty-list, .answer-body .pa-next-actions { margin: 0; }
+.answer-body .pa-slot-body, .answer-body .pa-disclaimer { margin: 0; }
+
+/* Answer header: product identity, then small status chips. */
+.answer-head-chips { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; min-width: 0; }
+.answer-mode-chip {
+  display: inline-flex; align-items: center; min-height: 28px; padding: 0 10px;
+  border: 1px solid var(--vp-line); border-radius: 999px; background: var(--vp-surface);
+  color: var(--vp-ink-2); font-size: 12.5px; font-weight: 650; white-space: nowrap;
+}
+.answer-body .answer-subhead { margin: 18px 0 6px; color: var(--vp-ink); font-size: 16px; font-weight: 740; line-height: 1.45; }
+.answer-body .answer-subhead:first-child { margin-top: 0; }
+.answer-body ol { margin: 6px 0 16px 22px; }
+@media (max-width: 480px) {
+  .answer-head { flex-wrap: wrap; }
+  .answer-head-chips { justify-content: flex-start; }
+}
 
 /* ── Consent dialog ──────────────────────────────────────────────────── */
 .modal-overlay {

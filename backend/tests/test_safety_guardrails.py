@@ -31,6 +31,12 @@ import safety_events  # noqa: E402
 import safety_guardrails as sg  # noqa: E402
 
 
+
+# /api/ask returns a public projection without provider/model routing
+# fields; these tests assert internal routing/grounding metadata, so they
+# use the explicit developer-diagnostics opt-in.
+DIAGNOSTICS_HEADERS = {"X-Paradiso-Diagnostics": "1"}
+
 def _client():
     """A TestClient with no LLM provider configured (allow path returns 503)."""
     for key in ("OPENROUTER_API_KEY", "GROQ_API_KEY"):
@@ -41,7 +47,7 @@ def _client():
 
     paradiso_backend._reset_visas_cache_for_tests()
     paradiso_backend._reset_grounding_cache_for_tests()
-    return TestClient(paradiso_backend.app), paradiso_backend
+    return TestClient(paradiso_backend.app, headers=DIAGNOSTICS_HEADERS), paradiso_backend
 
 
 # ---------------------------------------------------------------------------
