@@ -160,6 +160,13 @@ check('client afterRender: AI unavailable (404/network) stays silent; provider f
   void scenario;
 });
 
+check('Quick Answer and Waymaker handoff never resurrect an unavailable F-6 online reduction', () => {
+  const r = run('제주에서 F-6-1 연장할 때 체류지입증서류 필요해?', { f61_phase: 'normal' });
+  assert(!r.html.includes('온라인 신청 시 20% 감경'), 'rendered Quick Answer must not show F-6 online reduction');
+  const p = QA.buildHandoff(r.model, r.state, bundle, 'ko');
+  assert(!p.fees.join(' ').includes('20%'), 'handoff must not carry F-6 online reduction');
+});
+
 /* -------------------------------------------------- follow-up handoff ---- */
 check('follow-up handoff carries query, status, procedure, documents, forms, fees, local practice, sources and uncertainties, and instructs the chatbot not to extend them', () => {
   const r = run('제주에서 F-6-1 연장할 때 체류지입증서류 필요해?', { f61_phase: 'normal' });

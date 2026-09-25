@@ -997,6 +997,76 @@
    }
   ]
  },
+ "electronic_services": {
+  "source": {
+   "title_ko": "전자민원 대상 업무",
+   "title_en": "Electronic civil petitions eligible for HiKorea",
+   "authority_ko": "법무부 출입국·외국인정책본부 / 국가법령정보센터",
+   "authority_en": "Korea Immigration Service / Korean Law Information Center",
+   "url": "https://www.law.go.kr/LSW/flDownload.do?bylClsCd=200201&flSeq=151064273",
+   "checked_on": "2026-09-25"
+  },
+  "extension": {
+   "mode": "all_except",
+   "exclude_parents": [
+    "D-3",
+    "D-8",
+    "E-7",
+    "F-2",
+    "F-6",
+    "G-1"
+   ],
+   "partial_parents": [
+    "F-1"
+   ],
+   "note_ko": "등록외국인의 일반 체류기간 연장허가 기준입니다. 출국을 위한 체류기간 연장허가는 별도 전자민원 대상입니다.",
+   "note_en": "This rule covers ordinary extensions for registered residents. Extensions for departure are separately eligible."
+  },
+  "status_change": {
+   "mode": "routes",
+   "routes": [
+    {
+     "from_parents": [
+      "D-4"
+     ],
+     "to_parents": [
+      "D-2"
+     ]
+    },
+    {
+     "from_parents": [
+      "H-2"
+     ],
+     "to_codes": [
+      "F-4-24",
+      "F-4-25",
+      "F-4-27",
+      "F-4-28"
+     ]
+    },
+    {
+     "from_parents": [
+      "E-9",
+      "E-10",
+      "H-2"
+     ],
+     "to_codes": [
+      "E-7-4",
+      "E-7-4R"
+     ]
+    }
+   ]
+  },
+  "workplace_change": {
+   "mode": "allow_parents",
+   "allow_parents": [
+    "E-9"
+   ]
+  },
+  "reentry": {
+   "mode": "all"
+  }
+ },
  "fees": [
   {
    "id": "extension_general",

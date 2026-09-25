@@ -61,9 +61,35 @@ check('payment instruments follow 제73조 (card fees: cash / cash receipt, neve
   for (const id of ['registration_card', 'card_reissue']) { assert(byId[id].payment_instruments.includes('CASH_OR_CASH_RECEIPT') && !byId[id].payment_instruments.includes('REVENUE_STAMP'), id); }
   for (const id of ['extension_general', 'status_change_general', 'reentry_single']) assert(byId[id].payment_instruments.includes('REVENUE_STAMP'), id);
 });
-check('online 20% reductions only where 제74조 제2항 grants them', () => {
+check('fee metadata keeps the statutory 20% reductions granted by 제74조 제2항', () => {
   for (const id of ['extension_general', 'extension_f6', 'status_change_general', 'workplace_change', 'reentry_single', 'reentry_multiple']) assert(byId[id].online_reduction && byId[id].online_reduction.rate === 0.2, id);
   for (const id of ['registration_card', 'card_reissue', 'activities_outside_status', 'status_grant_general']) assert(!byId[id].online_reduction, `${id} must not be reduced online`);
+});
+check('electronic-service eligibility gates whether the statutory 20% reduction is actually shown', () => {
+  const cases = [
+    ['extension', 'D-2-1', null, true],
+    ['extension', 'D-3', null, false],
+    ['extension', 'D-8-1', null, false],
+    ['extension', 'E-7-4', null, false],
+    ['extension', 'F-2-7', null, false],
+    ['extension', 'F-6-1', null, false],
+    ['extension', 'G-1-5', null, false],
+    ['workplace_change', 'E-9-1', null, true],
+    ['workplace_change', 'E-7-4', null, false],
+    ['reentry', 'F-6-1', null, true],
+    ['status_change', 'D-4-1', 'D-2-1', true],
+    ['status_change', 'H-2', 'F-4-24', true],
+    ['status_change', 'E-9-1', 'E-7-4', true],
+    ['status_change', 'E-10-1', 'E-7-4R', true],
+    ['status_change', 'E-7-1', 'F-5-1', false],
+  ];
+  for (const [procedure, status, target, eligible] of cases) {
+    const actual = SG.electronicServiceEligibility(bundle, procedure, status, target);
+    assert(actual.eligible === eligible, `${procedure} ${status}→${target || '-'}: ${actual.state}`);
+  }
+  const f1 = SG.electronicServiceEligibility(bundle, 'extension', 'F-1', null);
+  assert(f1.state === 'PARTIAL' && !f1.eligible, 'F-1 is officially partial, so generic F-1 must fail closed');
+  assert(!SG.electronicServiceEligibility(bundle, 'status_change', 'D-4-1', null).eligible, 'change target is required');
 });
 check('exemptions are conditional and sourced: A-1~A-3/D-8; government-invited D-1/D-2/D-4 (conditional, needs review); issuing-error reissue; re-entry within 1 year / F-5 2 years', () => {
   const ext = byId.extension_general;
@@ -108,11 +134,16 @@ check('fees are separate from documents in every rendered answer', () => {
     assert(r.html.includes('class="sg-fee"') && r.html.includes('sg-fee-amount'), `${q}: fee section`);
   }
 });
-check('F-6-1 extension shows ₩30,000 at a glance with instrument, online reduction and the source state', () => {
+check('F-6-1 extension shows ₩30,000 but never advertises the unavailable online reduction', () => {
   const r = render('F-6-1 연장', { f61_phase: 'normal' }); const fee = r.html.split('class="sg-fee"')[1];
-  assert(fee.includes('₩30,000') && fee.includes('정부수입인지') && fee.includes('20%') && fee.includes('시행규칙 기준') && fee.includes('₩60,000'), 'fee block');
+  assert(fee.includes('₩30,000') && fee.includes('정부수입인지') && fee.includes('시행규칙 기준') && fee.includes('₩60,000'), 'fee block');
+  assert(!fee.includes('온라인 신청 시 20% 감경') && fee.includes('전자민원 대상이 아니어서'), 'F-6 online reduction must be suppressed');
   assert(SG.feeSummary('ko', r.model) === '₩30,000', 'summary');
   assert(!r.html.includes('6만원 (결혼이민 F-6: 3만원)'), 'no unresolved table string');
+});
+check('eligible D-2 extension keeps the 20% reduction while G-1 does not', () => {
+  const d2 = render('D-2-1 연장'); assert(d2.html.includes('온라인 신청 시 20% 감경'), 'D-2 should show online reduction');
+  const g1 = render('G-1-5 연장'); assert(!g1.html.includes('온라인 신청 시 20% 감경') && g1.html.includes('전자민원 대상이 아니어서'), 'G-1 should not show online reduction');
 });
 check('card reissue shows ₩35,000, cash/receipt, not-exempt note, and no online reduction', () => {
   const r = render('외국인등록증 재발급'); const fee = r.html.split('class="sg-fee"')[1];
