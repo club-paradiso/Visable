@@ -2,6 +2,13 @@
 
 > **STATUS: DRAFT — documentation-first.**
 >
+> **2026-09 update:** the §3 structured object is now partially implemented
+> for source-confirmed document lookups (`structured_answer` on `/api/ask`,
+> `backend/services/structured_answer.py`), and `ai.html` renders it through
+> the `pa-answer-card-shell` template. See
+> `docs/ai/WAYMAKER_ANSWER_PRODUCT_QUALITY_2026_09.md`. Everything else in this
+> document remains a target contract.
+>
 > This document defines the **target contract** for the structure and
 > quality of answers produced by the Paradiso.ai assistant. It is a
 > specification, not a description of currently shipped behavior.

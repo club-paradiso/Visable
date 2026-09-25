@@ -60,7 +60,9 @@ class WaymakerAnswerStatePolishTests(unittest.TestCase):
         self.assertIn("response.status === 503", self.submit)
         self.assertIn("tx('aiTimeout')", self.submit)                  # finite-timeout state
         self.assertIn("renderGroundingSourcePanel(result)", self.submit)  # evidence panel
-        self.assertIn("result.model_fallback_used", self.submit)       # model-candidate fallback
+        self.assertIn("result.deterministic_fallback_answer_used", self.submit)  # limited fallback notice
+        # Model-candidate fallback is infrastructure detail, never public copy.
+        self.assertNotIn("result.model_fallback_used", self.submit)
 
     def test_reused_keys_have_locale_parity(self):
         for key in ("aiProviderTemporarilyUnavailable", "aiFallbackFromMetadata"):

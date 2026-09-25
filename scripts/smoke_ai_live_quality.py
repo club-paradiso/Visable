@@ -576,7 +576,10 @@ def _check_question(base, q):
     }
 
     try:
-        status, body = _http_post(base.rstrip("/") + "/api/ask", payload)
+        # Engineering smoke: request the explicit diagnostics payload so the
+        # provider/model routing fields are present (the public /api/ask
+        # projection omits them).
+        status, body = _http_post(base.rstrip("/") + "/api/ask", {**payload, "diagnostics": True})
     except Exception as exc:  # pragma: no cover - network dependent
         result["status"] = "unreachable"
         result["note"] = "request failed: %s" % type(exc).__name__

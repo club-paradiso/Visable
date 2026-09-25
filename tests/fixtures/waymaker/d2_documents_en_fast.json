@@ -1,0 +1,1475 @@
+{
+ "analogical_evidence_count": 0,
+ "analysis_mode": "direct_authority",
+ "answer": "D-2 extension of stay\n\nFor a D-2 extension you need the basic application documents plus proof of your studies, finances and place of stay.\n\nBasic documents\n• 신청서\n• 여권\n• 외국인등록증\n• 수수료\n\nSupporting documents\n• 학업을 정상적으로 수행하고 있음을 입증하는 서류 (예: 재학증명서, 성적증명서, 출석확인서 등)\n• 재정입증 서류\n• 체류지 입증서류 (예: 임대차계약서, 숙소제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등)\n\nOnly if it applies to you\n• 수료증명서, 지도교수 및 유학담당자 확인서\n\nNotes\n• 우수인증대학·인증대학 재학생은 재정입증 서류가 생략될 수 있으나, 인증대학 장관 고시 국가 및 중점 관리 국가 국민은 제외됩니다.\n• 심사 기준(인증대학/일반대학/비자심사강화대학)에 따라 체류기간 부여 상한과 추가 심사가 달라질 수 있습니다.\n• The competent office may request additional documents or waive some in individual cases.\n\nSource\n외국인체류 안내매뉴얼 2026.6, 법무부 출입국·외국인정책본부, pp. 43-44",
+ "answer_certainty_level": "limited",
+ "answer_first_sentence": "D-2 extension of stay\n\nFor a D-2 extension you need the basic application documents plus proof of your studies, finances and place of stay",
+ "answer_mode": "fast",
+ "answer_mode_auto_escalated": false,
+ "answer_mode_available": true,
+ "answer_mode_escalation_reasons": [],
+ "answer_mode_requested": "fast",
+ "answer_mode_route_version": "2026-09-production-truth-audit-v1",
+ "answer_quality_gate_passed": true,
+ "answer_quality_gate_warnings": [],
+ "answer_quality_mode": "source_confirmed",
+ "answer_shape_contract": "documents_needed",
+ "answer_shape_failed_by_model": false,
+ "answer_shape_version": "2026-05-answer-shape-gate-v1",
+ "answer_style_version": "2026-06-quality-v4-evidence-invariants",
+ "authority_summary": "direct=2, related=0, analogical=0, background=0; direct authority found",
+ "background_evidence_count": 0,
+ "case_decision_citation_rejected": false,
+ "case_decision_citation_repaired": false,
+ "case_decision_citation_verification": null,
+ "case_decision_citation_verification_status": "",
+ "citation_verification": {
+  "citations": [],
+  "status": "citation_verification_not_applicable",
+  "warnings": []
+ },
+ "citation_verification_status": "citation_verification_not_applicable",
+ "copy_safe_answer": "D-2 extension of stay\n\nFor a D-2 extension you need the basic application documents plus proof of your studies, finances and place of stay.\n\nBasic documents\n• 신청서\n• 여권\n• 외국인등록증\n• 수수료\n\nSupporting documents\n• 학업을 정상적으로 수행하고 있음을 입증하는 서류 (예: 재학증명서, 성적증명서, 출석확인서 등)\n• 재정입증 서류\n• 체류지 입증서류 (예: 임대차계약서, 숙소제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등)\n\nOnly if it applies to you\n• 수료증명서, 지도교수 및 유학담당자 확인서\n\nNotes\n• 우수인증대학·인증대학 재학생은 재정입증 서류가 생략될 수 있으나, 인증대학 장관 고시 국가 및 중점 관리 국가 국민은 제외됩니다.\n• 심사 기준(인증대학/일반대학/비자심사강화대학)에 따라 체류기간 부여 상한과 추가 심사가 달라질 수 있습니다.\n• The competent office may request additional documents or waive some in individual cases.\n\nSource\n외국인체류 안내매뉴얼 2026.6, 법무부 출입국·외국인정책본부, pp. 43-44",
+ "default_source_panel_should_show_raw_codes": false,
+ "deterministic_fallback_answer_used": false,
+ "direct_authority_available": false,
+ "direct_citation_available": false,
+ "direct_evidence_count": 2,
+ "direct_manual_sources": [
+  {
+   "issuing_body": "법무부 출입국·외국인정책본부",
+   "page_range": "43-44",
+   "procedure_type": "체류기간 연장허가",
+   "section": "유학(D-2)",
+   "source_confidence": "high",
+   "source_date": "2026.6",
+   "source_title": "외국인체류 안내매뉴얼",
+   "source_verification_status": "verified_locally",
+   "visa_code": "D-2"
+  },
+  {
+   "page_range": "43-44",
+   "procedure_type": "extension",
+   "query": "D-2 extension 유학(D-2)",
+   "section": "유학(D-2)",
+   "source_confidence": "HIGH",
+   "source_date": "2026.5",
+   "source_title": "외국인체류 안내매뉴얼",
+   "source_type": "manual",
+   "source_verification_status": "verified",
+   "visa_code": "D-2"
+  }
+ ],
+ "evidence_goal_by_query": [
+  "direct",
+  "direct",
+  "direct",
+  "direct",
+  "contextual",
+  "contextual"
+ ],
+ "evidence_ontology": {
+  "activity_types": [
+   "document_preparation",
+   "status_extension"
+  ],
+  "legal_issue_types": [
+   "documents_needed",
+   "extension"
+  ],
+  "ontology_version": "2026-05-generalized-official-evidence-retrieval-v1",
+  "source_families_planned": [
+   "manual",
+   "statute",
+   "enforcement_rule",
+   "enforcement_decree",
+   "administrative_rule",
+   "legal_interpretation"
+  ],
+  "status_family": "study",
+  "unwired_families_planned": [
+   "legal_interpretation"
+  ],
+  "wired_families_planned": [
+   "manual",
+   "statute",
+   "enforcement_rule",
+   "enforcement_decree",
+   "administrative_rule"
+  ]
+ },
+ "evidence_query_plan": [
+  {
+   "evidence_goal": "direct",
+   "expected_concepts": [
+    "구비서류 첨부서류",
+    "documents_needed"
+   ],
+   "expected_status_codes": [
+    "D-2"
+   ],
+   "priority": 1,
+   "query_en": "residence guidance manual D-2 required documents checklist",
+   "query_ko": "체류자격별 안내매뉴얼 D-2 구비서류 첨부서류 첨부서류",
+   "reason": "Issue 'documents_needed' routes to 'manual' (wired); anchored on current_status=D-2; goal=direct.",
+   "source_family": "manual",
+   "status_role": "current_status"
+  },
+  {
+   "evidence_goal": "direct",
+   "expected_concepts": [
+    "구비서류 첨부서류",
+    "documents_needed"
+   ],
+   "expected_status_codes": [
+    "D-2"
+   ],
+   "priority": 2,
+   "query_en": "Immigration Control Act D-2 required documents checklist",
+   "query_ko": "출입국관리법 D-2 구비서류 첨부서류 첨부서류",
+   "reason": "Issue 'documents_needed' routes to 'statute' (wired); anchored on current_status=D-2; goal=direct.",
+   "source_family": "statute",
+   "status_role": "current_status"
+  },
+  {
+   "evidence_goal": "direct",
+   "expected_concepts": [
+    "구비서류 첨부서류",
+    "documents_needed"
+   ],
+   "expected_status_codes": [
+    "D-2"
+   ],
+   "priority": 3,
+   "query_en": "Immigration Control Act Enforcement Rule D-2 required documents checklist",
+   "query_ko": "출입국관리법 시행규칙 D-2 구비서류 첨부서류 첨부서류",
+   "reason": "Issue 'documents_needed' routes to 'enforcement_rule' (wired); anchored on current_status=D-2; goal=direct.",
+   "source_family": "enforcement_rule",
+   "status_role": "current_status"
+  },
+  {
+   "evidence_goal": "direct",
+   "expected_concepts": [
+    "체류기간 연장허가",
+    "extension"
+   ],
+   "expected_status_codes": [
+    "D-2"
+   ],
+   "priority": 4,
+   "query_en": "Immigration Control Act Enforcement Decree D-2 extension of stay",
+   "query_ko": "출입국관리법 시행령 D-2 체류기간 연장허가 연장 신청",
+   "reason": "Issue 'extension' routes to 'enforcement_decree' (wired); anchored on current_status=D-2; goal=direct.",
+   "source_family": "enforcement_decree",
+   "status_role": "current_status"
+  },
+  {
+   "evidence_goal": "contextual",
+   "expected_concepts": [
+    "체류기간 연장허가",
+    "extension"
+   ],
+   "expected_status_codes": [
+    "D-2"
+   ],
+   "priority": 5,
+   "query_en": "administrative rule D-2 extension of stay",
+   "query_ko": "행정규칙 D-2 체류기간 연장허가 연장 신청",
+   "reason": "Issue 'extension' routes to 'administrative_rule' (wired); anchored on current_status=D-2; goal=contextual.",
+   "source_family": "administrative_rule",
+   "status_role": "current_status"
+  },
+  {
+   "evidence_goal": "contextual",
+   "expected_concepts": [
+    "체류기간 연장허가",
+    "extension"
+   ],
+   "expected_status_codes": [
+    "D-2"
+   ],
+   "priority": 6,
+   "query_en": "legal interpretation D-2 extension of stay",
+   "query_ko": "법령해석 D-2 체류기간 연장허가 연장 신청",
+   "reason": "Issue 'extension' routes to 'legal_interpretation' (planned_not_wired); anchored on current_status=D-2; goal=contextual.",
+   "source_family": "legal_interpretation",
+   "status_role": "current_status"
+  }
+ ],
+ "fallback_answer": "",
+ "fallback_answer_kind": "",
+ "first_sentence_quality_warning": "",
+ "grounded_answer_limited": false,
+ "grounding_sources": [
+  {
+   "issuing_body": "법무부 출입국·외국인정책본부",
+   "page_range": "43-44",
+   "procedure_type": "체류기간 연장허가",
+   "section": "유학(D-2)",
+   "source_confidence": "high",
+   "source_date": "2026.6",
+   "source_title": "외국인체류 안내매뉴얼",
+   "source_verification_status": "verified_locally",
+   "visa_code": "D-2"
+  }
+ ],
+ "grounding_used": true,
+ "immigration_facts": {
+  "activity_facts": {
+   "approval_condition_issue": "unknown",
+   "business_registration_issue": "unknown",
+   "credit_bearing": "unknown",
+   "degree_related": "unknown",
+   "duration_known": "false",
+   "employer_or_client_known": "false",
+   "formal_enrollment": "unknown",
+   "institution_registered": "unknown",
+   "paid": "unknown"
+  },
+  "current_parent_status": "D-2",
+  "current_status": "D-2",
+  "current_sub_status": null,
+  "previous_parent_status": null,
+  "previous_status": null,
+  "previous_sub_status": null,
+  "proposed_activities": [
+   "document_preparation",
+   "status_extension"
+  ],
+  "status_transition_detected": false,
+  "target_parent_status": null,
+  "target_status": null,
+  "target_sub_status": null,
+  "user_question_language": "en"
+ },
+ "law_citation_guard_action": "none",
+ "law_citations_detected": [],
+ "law_evidence_count": 0,
+ "law_grounding_attempted": false,
+ "law_grounding_display": {
+  "evidence_role": "",
+  "notice": "Real-time legal-source lookup could not be verified for this answer, so it relies on Paradiso's stored manual/official materials. Specific article numbers below are not confirmed — verify them with HiKorea, 1345, or the competent immigration office.",
+  "retrieval_timestamp": "<volatile>",
+  "sources": [],
+  "status_detail": "law_grounding_not_attempted",
+  "verified": false
+ },
+ "law_grounding_error": "",
+ "law_grounding_intent_reasons": [],
+ "law_grounding_retrieval_timestamp": "<volatile>",
+ "law_grounding_status": "not_attempted",
+ "law_grounding_status_detail": "law_grounding_not_attempted",
+ "law_grounding_used": false,
+ "law_grounding_user_notice": "Real-time legal-source lookup could not be verified for this answer, so it relies on Paradiso's stored manual/official materials. Specific article numbers below are not confirmed — verify them with HiKorea, 1345, or the competent immigration office.",
+ "law_grounding_verified": false,
+ "law_grounding_warnings": [],
+ "law_lookup_error_type": "",
+ "law_lookup_failed": false,
+ "law_search_queries": [],
+ "law_search_query": "",
+ "law_sources": [],
+ "legal_analysis": {
+  "analogical_authority": [],
+  "analogical_evidence_count": 0,
+  "analysis_mode": "direct_authority",
+  "answer_template": "Issue-based template: Document checklist. Start with practical legal posture; identify current status/activity/issue; explain legal analysis from backend-prepared evidence; state source basis later; ask decisive facts; avoid final administrative determination.",
+  "authority_summary": "direct=2, related=0, analogical=0, background=0; direct authority found",
+  "background_authority": [],
+  "background_evidence_count": 0,
+  "confidence": "high",
+  "decisive_facts": [
+   "current_status/sub_status",
+   "previous_status/approval_conditions",
+   "target_status/route",
+   "activity category",
+   "paid_or_credit_bearing",
+   "duration/employer_or_school"
+  ],
+  "direct_authority": [
+   {
+    "authority_level": 6,
+    "directness": "DIRECT",
+    "query": "",
+    "relevance": "direct",
+    "source_type": "source",
+    "title": "외국인체류 안내매뉴얼"
+   },
+   {
+    "authority_level": 3,
+    "directness": "DIRECT",
+    "query": "D-2 extension 유학(D-2)",
+    "relevance": "direct",
+    "source_type": "manual",
+    "title": "외국인체류 안내매뉴얼"
+   }
+  ],
+  "direct_evidence_count": 2,
+  "grounding_items": [
+   {
+    "authority_level": 6,
+    "directness": "DIRECT",
+    "excerpt": "",
+    "page_or_section": "유학(D-2)",
+    "relevance_reason": "Directly addresses the asked status and the same activity/procedure.",
+    "source_id": "",
+    "source_title": "외국인체류 안내매뉴얼",
+    "source_type": "internal",
+    "url": "",
+    "version_or_date": "2026.6"
+   },
+   {
+    "authority_level": 3,
+    "directness": "DIRECT",
+    "excerpt": "",
+    "page_or_section": "유학(D-2)",
+    "relevance_reason": "Directly addresses the asked status and the same activity/procedure.",
+    "source_id": "",
+    "source_title": "외국인체류 안내매뉴얼",
+    "source_type": "manual",
+    "url": "",
+    "version_or_date": "2026.5"
+   }
+  ],
+  "immigration_facts": {
+   "activity_facts": {
+    "approval_condition_issue": "unknown",
+    "business_registration_issue": "unknown",
+    "credit_bearing": "unknown",
+    "degree_related": "unknown",
+    "duration_known": "false",
+    "employer_or_client_known": "false",
+    "formal_enrollment": "unknown",
+    "institution_registered": "unknown",
+    "paid": "unknown"
+   },
+   "current_parent_status": "D-2",
+   "current_status": "D-2",
+   "current_sub_status": null,
+   "previous_parent_status": null,
+   "previous_status": null,
+   "previous_sub_status": null,
+   "proposed_activities": [
+    "document_preparation",
+    "status_extension"
+   ],
+   "status_transition_detected": false,
+   "target_parent_status": null,
+   "target_status": null,
+   "target_sub_status": null,
+   "user_question_language": "en"
+  },
+  "legal_issue_types": [
+   "documents_needed",
+   "extension"
+  ],
+  "main_issue": "Which required documents are source-confirmed by the official manual, without turning law-only authority into a checklist.",
+  "missing_direct_authority": false,
+  "official_confirmation_questions": [
+   "What exact current status/sub-status and period of stay apply (D-2)?",
+   "What are the activity start date, duration, hours, location, and compensation or enrollment terms?",
+   "Does the competent office treat this as within status, reportable, permission-required, or status-change-required?",
+   "Which exact procedure and sub-code applies to your case?",
+   "Are any documents conditional on your specific situation?",
+   "Does the competent immigration office require anything additional?"
+  ],
+  "practical_posture": "Use manual-confirmed checklist evidence first; do not rely on law-only sources to invent required documents.",
+  "related_authority": [],
+  "related_evidence_count": 0,
+  "relevant_legal_concepts": [
+   "체류자격",
+   "활동범위",
+   "체류자격외활동",
+   "documents_needed",
+   "extension"
+  ],
+  "risk_posture": "low",
+  "source_families_attempted": [
+   "manual",
+   "statute",
+   "enforcement_rule",
+   "enforcement_decree",
+   "administrative_rule"
+  ],
+  "source_families_planned": [
+   "manual",
+   "statute",
+   "enforcement_rule",
+   "enforcement_decree",
+   "administrative_rule",
+   "legal_interpretation"
+  ],
+  "source_family_statuses": {
+   "administrative_appeal": "not_attempted",
+   "administrative_rule": "attempted",
+   "constitutional_decision": "not_attempted",
+   "enforcement_decree": "attempted",
+   "enforcement_rule": "attempted",
+   "intelligent_search": "not_attempted",
+   "legal_interpretation": "unsupported",
+   "legal_term": "not_attempted",
+   "manual": "results_found",
+   "precedent": "not_attempted",
+   "statute": "attempted"
+  },
+  "source_plan": {
+   "immigration_facts": {
+    "activity_facts": {
+     "approval_condition_issue": "unknown",
+     "business_registration_issue": "unknown",
+     "credit_bearing": "unknown",
+     "degree_related": "unknown",
+     "duration_known": "false",
+     "employer_or_client_known": "false",
+     "formal_enrollment": "unknown",
+     "institution_registered": "unknown",
+     "paid": "unknown"
+    },
+    "current_parent_status": "D-2",
+    "current_status": "D-2",
+    "current_sub_status": null,
+    "previous_parent_status": null,
+    "previous_status": null,
+    "previous_sub_status": null,
+    "proposed_activities": [
+     "document_preparation",
+     "status_extension"
+    ],
+    "status_transition_detected": false,
+    "target_parent_status": null,
+    "target_status": null,
+    "target_sub_status": null,
+    "user_question_language": "en"
+   },
+   "legal_issue_types": [
+    "documents_needed",
+    "extension"
+   ],
+   "max_queries": 7,
+   "queries": [
+    "체류자격 매뉴얼 절차 서류 활동범위 D-2 D-2 document_preparation status_extension documents_needed extension",
+    "출입국관리법 체류자격 활동범위 신고의무 D-2 D-2 document_preparation status_extension documents_needed extension",
+    "출입국관리법 시행규칙 체류자격 허가 신고 첨부서류 D-2 D-2 document_preparation status_extension documents_needed extension",
+    "출입국관리법 시행령 체류자격 별표 활동범위 D-2 D-2 document_preparation status_extension documents_needed extension",
+    "행정규칙 체류자격외활동 근무처 변경 추가 신고 D-2 D-2 document_preparation status_extension documents_needed extension",
+    "법령해석 체류자격 활동범위 체류자격외활동 D-2 D-2 document_preparation status_extension documents_needed extension"
+   ],
+   "source_families_attempted": [
+    "manual",
+    "statute",
+    "enforcement_rule",
+    "enforcement_decree",
+    "administrative_rule"
+   ],
+   "source_families_planned": [
+    "manual",
+    "statute",
+    "enforcement_rule",
+    "enforcement_decree",
+    "administrative_rule",
+    "legal_interpretation"
+   ],
+   "source_families_returned": [
+    "manual"
+   ],
+   "source_family_statuses": {
+    "administrative_appeal": "not_attempted",
+    "administrative_rule": "attempted",
+    "constitutional_decision": "not_attempted",
+    "enforcement_decree": "attempted",
+    "enforcement_rule": "attempted",
+    "intelligent_search": "not_attempted",
+    "legal_interpretation": "unsupported",
+    "legal_term": "not_attempted",
+    "manual": "results_found",
+    "precedent": "not_attempted",
+    "statute": "attempted"
+   },
+   "source_types_attempted": [
+    "manual",
+    "statute",
+    "enforcement_rule",
+    "enforcement_decree",
+    "administrative_rule"
+   ],
+   "source_types_priority": [
+    "manual",
+    "statute",
+    "enforcement_rule",
+    "enforcement_decree",
+    "administrative_rule",
+    "legal_interpretation"
+   ],
+   "source_types_returned": [
+    "manual"
+   ],
+   "statuses": {
+    "administrative_appeal": "not_attempted",
+    "administrative_rule": "attempted",
+    "constitutional_decision": "not_attempted",
+    "enforcement_decree": "attempted",
+    "enforcement_rule": "attempted",
+    "intelligent_search": "not_attempted",
+    "legal_interpretation": "unsupported",
+    "legal_term": "not_attempted",
+    "manual": "results_found",
+    "precedent": "not_attempted",
+    "statute": "attempted"
+   },
+   "unsupported_source_families": [
+    "legal_interpretation"
+   ],
+   "unsupported_source_types": [
+    "legal_interpretation"
+   ]
+  },
+  "source_type_statuses": {
+   "administrative_appeal": "not_attempted",
+   "administrative_rule": "attempted",
+   "constitutional_decision": "not_attempted",
+   "enforcement_decree": "attempted",
+   "enforcement_rule": "attempted",
+   "intelligent_search": "not_attempted",
+   "legal_interpretation": "unsupported",
+   "legal_term": "not_attempted",
+   "manual": "results_found",
+   "precedent": "not_attempted",
+   "statute": "attempted"
+  },
+  "source_types_attempted": [
+   "manual",
+   "statute",
+   "enforcement_rule",
+   "enforcement_decree",
+   "administrative_rule"
+  ],
+  "source_types_returned": [
+   "manual"
+  ],
+  "sub_issues": [
+   "manual-confirmed checklist versus law-only background"
+  ]
+ },
+ "legal_analysis_available": true,
+ "legal_analysis_exists": true,
+ "legal_evidence": null,
+ "legal_evidence_cases": [],
+ "legal_evidence_source_types": [],
+ "legal_evidence_status": "not_attempted",
+ "legal_evidence_used": false,
+ "legal_issue_types": [
+  "documents_needed",
+  "extension"
+ ],
+ "llm_unavailable": false,
+ "main_issue": "Which required documents are source-confirmed by the official manual, without turning law-only authority into a checklist.",
+ "manual_grounding_status": "present",
+ "manual_grounding_status_detail": "present",
+ "manual_to_law_fallback_reason": "",
+ "manual_to_law_fallback_used": false,
+ "missing_answer_slots": [],
+ "missing_direct_authority": false,
+ "model_answer_repaired_by_deterministic_synthesis": false,
+ "official_confirmation_questions": [],
+ "official_grounding_context": {
+  "answerPolicy": {
+   "policy": "document_requirement",
+   "sectionLabels": [
+    "결론",
+    "필요한 서류",
+    "조건부 서류",
+    "절차 메모",
+    "공식 출처 상태",
+    "다음 행동"
+   ]
+  },
+  "groundingContextVersion": "2026-06-generalized-source-grounding-v1",
+  "llmInstructions": [
+   "Use official snippets when available.",
+   "Do not invent requirements not supported by retrieved sources.",
+   "Distinguish confirmed rules from procedural caution.",
+   "Ask for missing facts only when they materially affect the answer.",
+   "Use 1345/HiKorea/immigration office as final confirmation, not as a substitute for analysis.",
+   "If coverage is partial, say which part is confirmed and which remains uncertain."
+  ],
+  "queryClassification": {
+   "actionActivity": [
+    "document_submission",
+    "renewal"
+   ],
+   "classifierVersion": "2026-06-generalized-source-grounding-v1",
+   "doesNotDecideFinalAnswer": true,
+   "facts": {
+    "activity_facts": {
+     "approval_condition_issue": "unknown",
+     "business_registration_issue": "unknown",
+     "credit_bearing": "unknown",
+     "degree_related": "unknown",
+     "duration_known": "false",
+     "employer_or_client_known": "false",
+     "formal_enrollment": "unknown",
+     "institution_registered": "unknown",
+     "paid": "unknown"
+    },
+    "current_parent_status": "D-2",
+    "current_status": "D-2",
+    "current_sub_status": null,
+    "previous_parent_status": null,
+    "previous_status": null,
+    "previous_sub_status": null,
+    "proposed_activities": [
+     "document_preparation",
+     "status_extension"
+    ],
+    "status_transition_detected": false,
+    "target_parent_status": null,
+    "target_status": null,
+    "target_sub_status": null,
+    "user_question_language": "en"
+   },
+   "intendedStatus": null,
+   "legalIssueTypes": [
+    "documents_needed",
+    "extension"
+   ],
+   "missingMaterialFacts": [],
+   "previousStatus": null,
+   "procedureType": "document_requirement_inquiry",
+   "statusCode": "D-2",
+   "statusFamily": "D-2"
+  },
+  "sourcePlan": {
+   "immigration_facts": {
+    "activity_facts": {
+     "approval_condition_issue": "unknown",
+     "business_registration_issue": "unknown",
+     "credit_bearing": "unknown",
+     "degree_related": "unknown",
+     "duration_known": "false",
+     "employer_or_client_known": "false",
+     "formal_enrollment": "unknown",
+     "institution_registered": "unknown",
+     "paid": "unknown"
+    },
+    "current_parent_status": "D-2",
+    "current_status": "D-2",
+    "current_sub_status": null,
+    "previous_parent_status": null,
+    "previous_status": null,
+    "previous_sub_status": null,
+    "proposed_activities": [
+     "document_preparation",
+     "status_extension"
+    ],
+    "status_transition_detected": false,
+    "target_parent_status": null,
+    "target_status": null,
+    "target_sub_status": null,
+    "user_question_language": "en"
+   },
+   "legal_issue_types": [
+    "documents_needed",
+    "extension"
+   ],
+   "max_queries": 7,
+   "queries": [
+    "체류자격 매뉴얼 절차 서류 활동범위 D-2 D-2 document_preparation status_extension documents_needed extension",
+    "출입국관리법 체류자격 활동범위 신고의무 D-2 D-2 document_preparation status_extension documents_needed extension",
+    "출입국관리법 시행규칙 체류자격 허가 신고 첨부서류 D-2 D-2 document_preparation status_extension documents_needed extension",
+    "출입국관리법 시행령 체류자격 별표 활동범위 D-2 D-2 document_preparation status_extension documents_needed extension",
+    "행정규칙 체류자격외활동 근무처 변경 추가 신고 D-2 D-2 document_preparation status_extension documents_needed extension",
+    "법령해석 체류자격 활동범위 체류자격외활동 D-2 D-2 document_preparation status_extension documents_needed extension"
+   ],
+   "source_families_attempted": [
+    "manual",
+    "statute",
+    "enforcement_rule",
+    "enforcement_decree",
+    "administrative_rule"
+   ],
+   "source_families_planned": [
+    "manual",
+    "statute",
+    "enforcement_rule",
+    "enforcement_decree",
+    "administrative_rule",
+    "legal_interpretation"
+   ],
+   "source_families_returned": [
+    "manual"
+   ],
+   "source_family_statuses": {
+    "administrative_appeal": "not_attempted",
+    "administrative_rule": "attempted",
+    "constitutional_decision": "not_attempted",
+    "enforcement_decree": "attempted",
+    "enforcement_rule": "attempted",
+    "intelligent_search": "not_attempted",
+    "legal_interpretation": "unsupported",
+    "legal_term": "not_attempted",
+    "manual": "results_found",
+    "precedent": "not_attempted",
+    "statute": "attempted"
+   },
+   "source_types_attempted": [
+    "manual",
+    "statute",
+    "enforcement_rule",
+    "enforcement_decree",
+    "administrative_rule"
+   ],
+   "source_types_priority": [
+    "manual",
+    "statute",
+    "enforcement_rule",
+    "enforcement_decree",
+    "administrative_rule",
+    "legal_interpretation"
+   ],
+   "source_types_returned": [
+    "manual"
+   ],
+   "statuses": {
+    "administrative_appeal": "not_attempted",
+    "administrative_rule": "attempted",
+    "constitutional_decision": "not_attempted",
+    "enforcement_decree": "attempted",
+    "enforcement_rule": "attempted",
+    "intelligent_search": "not_attempted",
+    "legal_interpretation": "unsupported",
+    "legal_term": "not_attempted",
+    "manual": "results_found",
+    "precedent": "not_attempted",
+    "statute": "attempted"
+   },
+   "unsupported_source_families": [
+    "legal_interpretation"
+   ],
+   "unsupported_source_types": [
+    "legal_interpretation"
+   ]
+  },
+  "sources": [
+   {
+    "family": "manual",
+    "publicStatus": "available",
+    "reliability": "official",
+    "snippets": [
+     {
+      "page": "43-44",
+      "section": "유학(D-2)",
+      "sourceName": "외국인체류 안내매뉴얼",
+      "text": "외국인체류 안내매뉴얼"
+     }
+    ],
+    "sourceName": "법무부 출입국·외국인정책본부",
+    "status": "available",
+    "title": "외국인체류 안내매뉴얼",
+    "url": "",
+    "versionDate": "2026.6"
+   },
+   {
+    "family": "manual",
+    "publicStatus": "available",
+    "reliability": "official",
+    "snippets": [
+     {
+      "page": "43-44",
+      "section": "유학(D-2)",
+      "sourceName": "외국인체류 안내매뉴얼",
+      "text": "외국인체류 안내매뉴얼"
+     }
+    ],
+    "sourceName": "Ministry of Justice immigration manual",
+    "status": "available",
+    "title": "외국인체류 안내매뉴얼",
+    "url": "",
+    "versionDate": "2026.5"
+   },
+   {
+    "family": "statute",
+    "publicStatus": "temporarily_unavailable",
+    "reliability": "official",
+    "snippets": [],
+    "sourceName": "statute",
+    "status": "temporarily_unavailable",
+    "title": "",
+    "url": "",
+    "versionDate": ""
+   },
+   {
+    "family": "enforcement_decree",
+    "publicStatus": "temporarily_unavailable",
+    "reliability": "official",
+    "snippets": [],
+    "sourceName": "enforcement_decree",
+    "status": "temporarily_unavailable",
+    "title": "",
+    "url": "",
+    "versionDate": ""
+   },
+   {
+    "family": "enforcement_rule",
+    "publicStatus": "temporarily_unavailable",
+    "reliability": "official",
+    "snippets": [],
+    "sourceName": "enforcement_rule",
+    "status": "temporarily_unavailable",
+    "title": "",
+    "url": "",
+    "versionDate": ""
+   },
+   {
+    "family": "administrative_rule",
+    "publicStatus": "temporarily_unavailable",
+    "reliability": "official",
+    "snippets": [],
+    "sourceName": "administrative_rule",
+    "status": "temporarily_unavailable",
+    "title": "",
+    "url": "",
+    "versionDate": ""
+   },
+   {
+    "family": "legal_interpretation",
+    "publicStatus": "unavailable",
+    "reliability": "planned",
+    "snippets": [],
+    "sourceName": "legal_interpretation",
+    "status": "not_configured",
+    "title": "",
+    "url": "",
+    "versionDate": ""
+   },
+   {
+    "family": "precedent",
+    "publicStatus": "unavailable",
+    "reliability": "planned",
+    "snippets": [],
+    "sourceName": "precedent",
+    "status": "not_relevant",
+    "title": "",
+    "url": "",
+    "versionDate": ""
+   },
+   {
+    "family": "administrative_appeal",
+    "publicStatus": "unavailable",
+    "reliability": "planned",
+    "snippets": [],
+    "sourceName": "administrative_appeal",
+    "status": "not_relevant",
+    "title": "",
+    "url": "",
+    "versionDate": ""
+   },
+   {
+    "family": "constitutional_decision",
+    "publicStatus": "unavailable",
+    "reliability": "planned",
+    "snippets": [],
+    "sourceName": "constitutional_decision",
+    "status": "not_relevant",
+    "title": "",
+    "url": "",
+    "versionDate": ""
+   },
+   {
+    "family": "legal_term",
+    "publicStatus": "unavailable",
+    "reliability": "official",
+    "snippets": [],
+    "sourceName": "legal_term",
+    "status": "not_relevant",
+    "title": "",
+    "url": "",
+    "versionDate": ""
+   },
+   {
+    "family": "intelligent_search",
+    "publicStatus": "unavailable",
+    "reliability": "planned",
+    "snippets": [],
+    "sourceName": "intelligent_search",
+    "status": "not_relevant",
+    "title": "",
+    "url": "",
+    "versionDate": ""
+   }
+  ],
+  "uncertaintyBoundaries": [
+   "Some planned source families were unavailable or unwired: administrative_appeal, administrative_rule, constitutional_decision, enforcement_decree, enforcement_rule, intelligent_search, legal_interpretation, legal_term, precedent, statute."
+  ]
+ },
+ "parser_status": "",
+ "parser_status_by_family": {},
+ "planned_law_queries": [
+  "출입국관리법 시행규칙 체류자격 첨부서류 신청",
+  "체류자격 매뉴얼 절차 서류 활동범위 D-2 D-2 document_preparation status_extension documents_needed extension",
+  "출입국관리법 체류자격 활동범위 신고의무 D-2 D-2 document_preparation status_extension documents_needed extension",
+  "출입국관리법 시행규칙 체류자격 허가 신고 첨부서류 D-2 D-2 document_preparation status_extension documents_needed extension",
+  "출입국관리법 시행령 체류자격 별표 활동범위 D-2 D-2 document_preparation status_extension documents_needed extension",
+  "행정규칙 체류자격외활동 근무처 변경 추가 신고 D-2 D-2 document_preparation status_extension documents_needed extension",
+  "법령해석 체류자격 활동범위 체류자격외활동 D-2 D-2 document_preparation status_extension documents_needed extension"
+ ],
+ "precedent_evidence_items": [],
+ "procedure_variant_context_sources": [],
+ "procedure_variant_context_used": false,
+ "proposed_activity_type": [
+  "document_preparation",
+  "status_extension"
+ ],
+ "provider_unavailable": false,
+ "public_official_sources": [
+  {
+   "family": "manual",
+   "publicStatus": "available",
+   "snippetCount": 1,
+   "sourceName": "법무부 출입국·외국인정책본부",
+   "title": "외국인체류 안내매뉴얼",
+   "url": "",
+   "versionDate": "2026.6"
+  },
+  {
+   "family": "manual",
+   "publicStatus": "available",
+   "snippetCount": 1,
+   "sourceName": "Ministry of Justice immigration manual",
+   "title": "외국인체류 안내매뉴얼",
+   "url": "",
+   "versionDate": "2026.5"
+  },
+  {
+   "family": "statute",
+   "publicStatus": "temporarily_unavailable",
+   "snippetCount": 0,
+   "sourceName": "statute",
+   "title": "",
+   "url": "",
+   "versionDate": ""
+  },
+  {
+   "family": "enforcement_decree",
+   "publicStatus": "temporarily_unavailable",
+   "snippetCount": 0,
+   "sourceName": "enforcement_decree",
+   "title": "",
+   "url": "",
+   "versionDate": ""
+  },
+  {
+   "family": "enforcement_rule",
+   "publicStatus": "temporarily_unavailable",
+   "snippetCount": 0,
+   "sourceName": "enforcement_rule",
+   "title": "",
+   "url": "",
+   "versionDate": ""
+  },
+  {
+   "family": "administrative_rule",
+   "publicStatus": "temporarily_unavailable",
+   "snippetCount": 0,
+   "sourceName": "administrative_rule",
+   "title": "",
+   "url": "",
+   "versionDate": ""
+  },
+  {
+   "family": "legal_interpretation",
+   "publicStatus": "unavailable",
+   "snippetCount": 0,
+   "sourceName": "legal_interpretation",
+   "title": "",
+   "url": "",
+   "versionDate": ""
+  },
+  {
+   "family": "precedent",
+   "publicStatus": "unavailable",
+   "snippetCount": 0,
+   "sourceName": "precedent",
+   "title": "",
+   "url": "",
+   "versionDate": ""
+  },
+  {
+   "family": "administrative_appeal",
+   "publicStatus": "unavailable",
+   "snippetCount": 0,
+   "sourceName": "administrative_appeal",
+   "title": "",
+   "url": "",
+   "versionDate": ""
+  },
+  {
+   "family": "constitutional_decision",
+   "publicStatus": "unavailable",
+   "snippetCount": 0,
+   "sourceName": "constitutional_decision",
+   "title": "",
+   "url": "",
+   "versionDate": ""
+  },
+  {
+   "family": "legal_term",
+   "publicStatus": "unavailable",
+   "snippetCount": 0,
+   "sourceName": "legal_term",
+   "title": "",
+   "url": "",
+   "versionDate": ""
+  },
+  {
+   "family": "intelligent_search",
+   "publicStatus": "unavailable",
+   "snippetCount": 0,
+   "sourceName": "intelligent_search",
+   "title": "",
+   "url": "",
+   "versionDate": ""
+  }
+ ],
+ "public_source_status": {
+  "hasAvailableOfficialSource": true,
+  "hasTemporarilyUnavailableSource": true,
+  "labelKeys": [
+   "manual_available",
+   "law_temporarily_unavailable",
+   "stored_official",
+   "confirmation_needed"
+  ],
+  "labels": [
+   "Official manual checked",
+   "Live law temporarily unavailable",
+   "Stored official source used",
+   "Final confirmation needed from the authority"
+  ],
+  "sources": [
+   {
+    "family": "manual",
+    "publicStatus": "available",
+    "snippetCount": 1,
+    "sourceName": "법무부 출입국·외국인정책본부",
+    "title": "외국인체류 안내매뉴얼",
+    "url": "",
+    "versionDate": "2026.6"
+   },
+   {
+    "family": "manual",
+    "publicStatus": "available",
+    "snippetCount": 1,
+    "sourceName": "Ministry of Justice immigration manual",
+    "title": "외국인체류 안내매뉴얼",
+    "url": "",
+    "versionDate": "2026.5"
+   },
+   {
+    "family": "statute",
+    "publicStatus": "temporarily_unavailable",
+    "snippetCount": 0,
+    "sourceName": "statute",
+    "title": "",
+    "url": "",
+    "versionDate": ""
+   },
+   {
+    "family": "enforcement_decree",
+    "publicStatus": "temporarily_unavailable",
+    "snippetCount": 0,
+    "sourceName": "enforcement_decree",
+    "title": "",
+    "url": "",
+    "versionDate": ""
+   },
+   {
+    "family": "enforcement_rule",
+    "publicStatus": "temporarily_unavailable",
+    "snippetCount": 0,
+    "sourceName": "enforcement_rule",
+    "title": "",
+    "url": "",
+    "versionDate": ""
+   },
+   {
+    "family": "administrative_rule",
+    "publicStatus": "temporarily_unavailable",
+    "snippetCount": 0,
+    "sourceName": "administrative_rule",
+    "title": "",
+    "url": "",
+    "versionDate": ""
+   },
+   {
+    "family": "legal_interpretation",
+    "publicStatus": "unavailable",
+    "snippetCount": 0,
+    "sourceName": "legal_interpretation",
+    "title": "",
+    "url": "",
+    "versionDate": ""
+   },
+   {
+    "family": "precedent",
+    "publicStatus": "unavailable",
+    "snippetCount": 0,
+    "sourceName": "precedent",
+    "title": "",
+    "url": "",
+    "versionDate": ""
+   },
+   {
+    "family": "administrative_appeal",
+    "publicStatus": "unavailable",
+    "snippetCount": 0,
+    "sourceName": "administrative_appeal",
+    "title": "",
+    "url": "",
+    "versionDate": ""
+   },
+   {
+    "family": "constitutional_decision",
+    "publicStatus": "unavailable",
+    "snippetCount": 0,
+    "sourceName": "constitutional_decision",
+    "title": "",
+    "url": "",
+    "versionDate": ""
+   },
+   {
+    "family": "legal_term",
+    "publicStatus": "unavailable",
+    "snippetCount": 0,
+    "sourceName": "legal_term",
+    "title": "",
+    "url": "",
+    "versionDate": ""
+   },
+   {
+    "family": "intelligent_search",
+    "publicStatus": "unavailable",
+    "snippetCount": 0,
+    "sourceName": "intelligent_search",
+    "title": "",
+    "url": "",
+    "versionDate": ""
+   }
+  ]
+ },
+ "query_classification": {
+  "actionActivity": [
+   "document_submission",
+   "renewal"
+  ],
+  "classifierVersion": "2026-06-generalized-source-grounding-v1",
+  "doesNotDecideFinalAnswer": true,
+  "facts": {
+   "activity_facts": {
+    "approval_condition_issue": "unknown",
+    "business_registration_issue": "unknown",
+    "credit_bearing": "unknown",
+    "degree_related": "unknown",
+    "duration_known": "false",
+    "employer_or_client_known": "false",
+    "formal_enrollment": "unknown",
+    "institution_registered": "unknown",
+    "paid": "unknown"
+   },
+   "current_parent_status": "D-2",
+   "current_status": "D-2",
+   "current_sub_status": null,
+   "previous_parent_status": null,
+   "previous_status": null,
+   "previous_sub_status": null,
+   "proposed_activities": [
+    "document_preparation",
+    "status_extension"
+   ],
+   "status_transition_detected": false,
+   "target_parent_status": null,
+   "target_status": null,
+   "target_sub_status": null,
+   "user_question_language": "en"
+  },
+  "intendedStatus": null,
+  "legalIssueTypes": [
+   "documents_needed",
+   "extension"
+  ],
+  "missingMaterialFacts": [],
+  "previousStatus": null,
+  "procedureType": "document_requirement_inquiry",
+  "statusCode": "D-2",
+  "statusFamily": "D-2"
+ },
+ "question_type_detected": "documents_needed",
+ "related_evidence_count": 0,
+ "related_manual_sources": [],
+ "related_statuses_not_sources": [],
+ "requires_official_confirmation": false,
+ "response_shape_hint": "",
+ "risk_level_detected": "medium",
+ "safety_action": "allow",
+ "safety_alternatives": [],
+ "safety_blocked": false,
+ "safety_category": "SAFE_LEGAL_INFO",
+ "safety_event_id": "",
+ "safety_notice": "",
+ "safety_reason": "no facilitation signals; treated as lawful information request",
+ "safety_severity": 0,
+ "safety_version": "waymaker-safety-rules-1",
+ "source_confidence_invariant_reasons": [],
+ "source_confidence_level": "high",
+ "source_family_statuses": {
+  "administrative_appeal": "not_attempted",
+  "administrative_rule": "attempted",
+  "constitutional_decision": "not_attempted",
+  "enforcement_decree": "attempted",
+  "enforcement_rule": "attempted",
+  "intelligent_search": "not_attempted",
+  "legal_interpretation": "unsupported",
+  "legal_term": "not_attempted",
+  "manual": "results_found",
+  "precedent": "not_attempted",
+  "statute": "attempted"
+ },
+ "source_family_support": {
+  "administrative_rule": "wired",
+  "enforcement_decree": "wired",
+  "enforcement_rule": "wired",
+  "legal_interpretation": "planned_not_wired",
+  "manual": "wired",
+  "statute": "wired"
+ },
+ "source_panel_confidence": "low",
+ "source_panel_label_key": "manual_grounding_available",
+ "source_panel_state": "manual_grounding_available",
+ "source_panel_status": "citation_verification_not_applicable",
+ "source_plan": {
+  "immigration_facts": {
+   "activity_facts": {
+    "approval_condition_issue": "unknown",
+    "business_registration_issue": "unknown",
+    "credit_bearing": "unknown",
+    "degree_related": "unknown",
+    "duration_known": "false",
+    "employer_or_client_known": "false",
+    "formal_enrollment": "unknown",
+    "institution_registered": "unknown",
+    "paid": "unknown"
+   },
+   "current_parent_status": "D-2",
+   "current_status": "D-2",
+   "current_sub_status": null,
+   "previous_parent_status": null,
+   "previous_status": null,
+   "previous_sub_status": null,
+   "proposed_activities": [
+    "document_preparation",
+    "status_extension"
+   ],
+   "status_transition_detected": false,
+   "target_parent_status": null,
+   "target_status": null,
+   "target_sub_status": null,
+   "user_question_language": "en"
+  },
+  "legal_issue_types": [
+   "documents_needed",
+   "extension"
+  ],
+  "max_queries": 7,
+  "queries": [
+   "체류자격 매뉴얼 절차 서류 활동범위 D-2 D-2 document_preparation status_extension documents_needed extension",
+   "출입국관리법 체류자격 활동범위 신고의무 D-2 D-2 document_preparation status_extension documents_needed extension",
+   "출입국관리법 시행규칙 체류자격 허가 신고 첨부서류 D-2 D-2 document_preparation status_extension documents_needed extension",
+   "출입국관리법 시행령 체류자격 별표 활동범위 D-2 D-2 document_preparation status_extension documents_needed extension",
+   "행정규칙 체류자격외활동 근무처 변경 추가 신고 D-2 D-2 document_preparation status_extension documents_needed extension",
+   "법령해석 체류자격 활동범위 체류자격외활동 D-2 D-2 document_preparation status_extension documents_needed extension"
+  ],
+  "source_families_attempted": [
+   "manual",
+   "statute",
+   "enforcement_rule",
+   "enforcement_decree",
+   "administrative_rule"
+  ],
+  "source_families_planned": [
+   "manual",
+   "statute",
+   "enforcement_rule",
+   "enforcement_decree",
+   "administrative_rule",
+   "legal_interpretation"
+  ],
+  "source_families_returned": [
+   "manual"
+  ],
+  "source_family_statuses": {
+   "administrative_appeal": "not_attempted",
+   "administrative_rule": "attempted",
+   "constitutional_decision": "not_attempted",
+   "enforcement_decree": "attempted",
+   "enforcement_rule": "attempted",
+   "intelligent_search": "not_attempted",
+   "legal_interpretation": "unsupported",
+   "legal_term": "not_attempted",
+   "manual": "results_found",
+   "precedent": "not_attempted",
+   "statute": "attempted"
+  },
+  "source_types_attempted": [
+   "manual",
+   "statute",
+   "enforcement_rule",
+   "enforcement_decree",
+   "administrative_rule"
+  ],
+  "source_types_priority": [
+   "manual",
+   "statute",
+   "enforcement_rule",
+   "enforcement_decree",
+   "administrative_rule",
+   "legal_interpretation"
+  ],
+  "source_types_returned": [
+   "manual"
+  ],
+  "statuses": {
+   "administrative_appeal": "not_attempted",
+   "administrative_rule": "attempted",
+   "constitutional_decision": "not_attempted",
+   "enforcement_decree": "attempted",
+   "enforcement_rule": "attempted",
+   "intelligent_search": "not_attempted",
+   "legal_interpretation": "unsupported",
+   "legal_term": "not_attempted",
+   "manual": "results_found",
+   "precedent": "not_attempted",
+   "statute": "attempted"
+  },
+  "unsupported_source_families": [
+   "legal_interpretation"
+  ],
+  "unsupported_source_types": [
+   "legal_interpretation"
+  ]
+ },
+ "source_state": "direct_authority",
+ "source_type_statuses": {
+  "administrative_appeal": "not_attempted",
+  "administrative_rule": "attempted",
+  "constitutional_decision": "not_attempted",
+  "enforcement_decree": "attempted",
+  "enforcement_rule": "attempted",
+  "intelligent_search": "not_attempted",
+  "legal_interpretation": "unsupported",
+  "legal_term": "not_attempted",
+  "manual": "results_found",
+  "precedent": "not_attempted",
+  "statute": "attempted"
+ },
+ "source_types_attempted": [
+  "manual",
+  "statute",
+  "enforcement_rule",
+  "enforcement_decree",
+  "administrative_rule"
+ ],
+ "source_types_returned": [
+  "manual"
+ ],
+ "structured_answer": {
+  "answer_type": "required_documents",
+  "disclaimer_snippet": "Reference information only. Final approval and document requirements are decided by the competent immigration office.",
+  "important_notes": [
+   "우수인증대학·인증대학 재학생은 재정입증 서류가 생략될 수 있으나, 인증대학 장관 고시 국가 및 중점 관리 국가 국민은 제외됩니다.",
+   "심사 기준(인증대학/일반대학/비자심사강화대학)에 따라 체류기간 부여 상한과 추가 심사가 달라질 수 있습니다."
+  ],
+  "interpreted_intent": "D-2 extension of stay",
+  "kind": "documents",
+  "locale": "en",
+  "notes_locale": "ko",
+  "required_documents": {
+   "additional": [],
+   "common": [
+    {
+     "examples": "",
+     "label": "신청서",
+     "source_text": "신청서"
+    },
+    {
+     "examples": "",
+     "label": "여권",
+     "source_text": "여권"
+    },
+    {
+     "examples": "",
+     "label": "외국인등록증",
+     "source_text": "외국인등록증"
+    },
+    {
+     "examples": "",
+     "label": "수수료",
+     "source_text": "수수료"
+    }
+   ],
+   "conditional": [
+    {
+     "examples": "",
+     "label": "수료증명서, 지도교수 및 유학담당자 확인서",
+     "source_text": "수료증명서, 지도교수 및 유학담당자 확인서 (해당자)"
+    }
+   ],
+   "missing_or_unverified": [],
+   "required": [
+    {
+     "examples": "재학증명서, 성적증명서, 출석확인서 등",
+     "label": "학업을 정상적으로 수행하고 있음을 입증하는 서류",
+     "source_text": "학업을 정상적으로 수행하고 있음을 입증하는 서류 (예: 재학증명서, 성적증명서, 출석확인서 등)"
+    },
+    {
+     "examples": "",
+     "label": "재정입증 서류",
+     "source_text": "재정입증 서류"
+    },
+    {
+     "examples": "임대차계약서, 숙소제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등",
+     "label": "체류지 입증서류",
+     "source_text": "체류지 입증서류 (예: 임대차계약서, 숙소제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등)"
+    }
+   ]
+  },
+  "short_answer": "For a D-2 extension you need the basic application documents plus proof of your studies, finances and place of stay.",
+  "short_answer_source": "model_summary",
+  "source": {
+   "edition": "2026.6",
+   "issuing_body": "법무부 출입국·외국인정책본부",
+   "page_range": "43-44",
+   "procedure": "체류기간 연장허가",
+   "scope": "",
+   "section": "유학(D-2)",
+   "title": "외국인체류 안내매뉴얼",
+   "verified": true,
+   "visa_code": "D-2"
+  },
+  "source_notes": [
+   "본 목록은 외국인체류 안내매뉴얼(2026.6)의 유학(D-2) 체류기간 연장허가 '다. 제출서류' 항목을 그대로 옮긴 것입니다."
+  ],
+  "source_summary": "외국인체류 안내매뉴얼 2026.6, 법무부 출입국·외국인정책본부, pp. 43-44",
+  "uncertainty_flags": [
+   "The competent office may request additional documents or waive some in individual cases."
+  ],
+  "user_next_actions": [
+   "Check the filing schedule with the competent immigration office or HiKorea before your stay expires.",
+   "Offices may ask for more documents in individual cases, so confirm with 1345 before you visit."
+  ],
+  "version": "2026-09-structured-document-answer-v1",
+  "visa_code_or_topic": "D-2"
+ },
+ "task_type_detected": "extension",
+ "unsupported_law_citations": [],
+ "unverified_law_citation_detected": false,
+ "visa_code_detected": "D-2",
+ "visa_sub_code_detected": null
+}

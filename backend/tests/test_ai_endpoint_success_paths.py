@@ -38,6 +38,12 @@ from fastapi.testclient import TestClient  # noqa: E402
 import paradiso_backend as pb  # noqa: E402
 
 
+
+# /api/ask returns a public projection without provider/model routing
+# fields; these tests assert internal routing/grounding metadata, so they
+# use the explicit developer-diagnostics opt-in.
+DIAGNOSTICS_HEADERS = {"X-Paradiso-Diagnostics": "1"}
+
 def provider_success(answer: str, *, final_model: str = "test/model-a") -> Dict[str, Any]:
     """A result dict shaped exactly like ``_openrouter_complete_with_candidates``.
 
@@ -86,7 +92,7 @@ class _ProviderConfigured(unittest.TestCase):
         # The module snapshots the key at import time.
         self._saved_module_key = pb.OPENROUTER_API_KEY
         pb.OPENROUTER_API_KEY = "test-key-never-used"
-        self.client = TestClient(pb.app)
+        self.client = TestClient(pb.app, headers=DIAGNOSTICS_HEADERS)
 
     def tearDown(self) -> None:
         pb.OPENROUTER_API_KEY = self._saved_module_key

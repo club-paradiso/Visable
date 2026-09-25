@@ -557,10 +557,13 @@ _QUESTION_TYPE_DIRECTIVE = {
         " (5) end with one short source-status note."
     ),
     Q_DOCUMENTS_NEEDED: (
-        "Question type — \"What documents do I need?\": if a source-confirmed list"
-        " exists, show it clearly and group documents by purpose, marking"
-        " conditional ones. Do NOT invent missing documents. If it is not"
-        " source-confirmed, say so plainly and give the official-confirmation route."
+        "Question type — \"What documents do I need?\": answer immediately (no"
+        " ceremonial intro, no legal analysis). If a source-confirmed list"
+        " exists, show it once, separating the basic/common items from"
+        " conditional ones, and keep only the relevant procedure. Do NOT invent"
+        " or drop documents, do not repeat the same caution, and do not add"
+        " 5+ sections. If it is not source-confirmed, say so plainly and give the"
+        " official-confirmation route."
     ),
     Q_STATUS_CHANGE: (
         "Question type — \"Can I change from A to B?\": do not promise eligibility."
@@ -610,7 +613,13 @@ def build_answer_directives(
         "2. Briefly explain why — the key rule or risk, in plain language.\n"
         "3. Say what this means for the user / what would change the answer.\n"
         "4. Give a concrete next step or the exact questions to ask.\n"
-        "5. End with ONE short source/verification note.\n"
+        "5. End with ONE short verification note at most. The product UI shows"
+        " the source card and disclaimer separately, so do not restate source"
+        " titles, editions, page ranges, file names, revision dates, or internal"
+        " data labels in the prose.\n"
+        "Formatting: never use Markdown heading syntax (#, ##, ###) — it is not"
+        " rendered as a heading on every surface. Use short paragraphs, '- '"
+        " bullet lists, and at most a few **bold** lead-ins.\n"
         "Keep it mobile-readable: short paragraphs, few headings. A short answer"
         " is better for simple questions; only go deep for genuinely complex"
         " scenarios. Tone: calm, concise, not robotic, not legalistic unless"

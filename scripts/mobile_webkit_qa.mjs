@@ -296,6 +296,60 @@ try {
       profileReport.guidanceFlows.push(fhReport);
       for (const failure of fhReport.failures) report.failures.push(`${profile.name}/journey+form-helper: ${failure}`);
     }
+    {
+      // Waymaker answer card (ai.html) on real WebKit, every iPhone profile: the
+      // REAL public /api/ask projection for "D-2 연장시 필수 서류" must render as
+      // the structured checklist with no provider/model identity, no raw
+      // Markdown, no internal source metadata, no overflow, and a composer that
+      // does not cover the answer actions.
+      const wmReport = { name: 'waymaker-answer', failures: [] };
+      const fixture = await fs.readFile(path.join(ROOT, 'tests', 'fixtures', 'waymaker', 'd2_documents_ko_fast.json'), 'utf8');
+      try {
+        await page.route('**/api/ask', (route) => route.fulfill({ status: 200, contentType: 'application/json', body: fixture }));
+        await page.goto(`http://127.0.0.1:${PORT}/ai.html`, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await page.waitForSelector('#aiQ', { timeout: 20000 });
+        await page.locator('.ai-mode-btn[data-mode="fast"]').tap();
+        await page.fill('#aiQ', 'D-2 연장시 필수 서류');
+        await page.locator('#sendBtn').tap();
+        const agree = page.locator('#consentModal .btn-agree');
+        if (await agree.isVisible().catch(() => false)) await agree.tap();
+        await page.waitForSelector('.answer-card .pa-answer-card', { timeout: 15000 });
+        await page.waitForTimeout(300);
+        const card = await page.evaluate(() => {
+          const el = document.querySelector('.answer-card');
+          const text = el.innerText;
+          const attrs = [...document.querySelectorAll('[aria-label], [title]')].map((n) => `${n.getAttribute('aria-label') || ''} ${n.getAttribute('title') || ''}`).join(' ');
+          const r = el.getBoundingClientRect();
+          const copy = el.querySelector('[data-copy-kind="answer"]');
+          copy.scrollIntoView({ block: 'center' });
+          const cr = copy.getBoundingClientRect();
+          const top = document.elementFromPoint(cr.left + cr.width / 2, cr.top + cr.height / 2);
+          return {
+            text, attrs, left: r.left, right: r.right, innerWidth,
+            commonDocs: el.querySelectorAll('[data-bucket-list="common"] > li').length,
+            modeChip: (el.querySelector('.answer-mode-chip') || {}).textContent || '',
+            copyCovered: !(top === copy || copy.contains(top)),
+          };
+        });
+        if (card.commonDocs !== 4) wmReport.failures.push(`expected 4 basic documents, got ${card.commonDocs}`);
+        if (card.modeChip !== '빠른 답변') wmReport.failures.push(`mode chip shows "${card.modeChip}"`);
+        if (/openrouter|groq|ollama|nemotron|gemma|nvidia|inkling/i.test(card.text + card.attrs)) wmReport.failures.push('provider/model identity visible');
+        if (/(^|\n)\s*#{1,6}\s|###/.test(card.text)) wmReport.failures.push('raw Markdown heading visible');
+        if (/source[\s_-]*file|source_revision_date/i.test(card.text)) wmReport.failures.push('internal source metadata visible');
+        if (/\b(?:BASIS|DISABLED|NOT WIRED)\b|기능 꺼짐/.test(card.text)) wmReport.failures.push('engineering status label visible');
+        if (card.left < -1 || card.right > card.innerWidth + 1) wmReport.failures.push(`answer card leaves the viewport (${Math.round(card.left)}..${Math.round(card.right)})`);
+        if (card.copyCovered) wmReport.failures.push('composer covers the answer actions');
+        const overflow = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
+        if (overflow > 2) wmReport.failures.push(`ai.html overflows horizontally by ${overflow}px`);
+        await page.locator('.answer-card').screenshot({ path: path.join(OUT, `${profile.name}-waymaker-answer.png`) });
+        await page.unroute('**/api/ask');
+      } catch (error) {
+        wmReport.failures.push(`flow error: ${String(error.message || error)}`);
+      }
+      profileReport.guidanceFlows = profileReport.guidanceFlows || [];
+      profileReport.guidanceFlows.push(wmReport);
+      for (const failure of wmReport.failures) report.failures.push(`${profile.name}/waymaker-answer: ${failure}`);
+    }
     report.profiles.push(profileReport);
     await context.close();
   }

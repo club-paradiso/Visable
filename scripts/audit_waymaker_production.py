@@ -159,7 +159,7 @@ def run_audit(base: str, *, timeout: int) -> Dict[str, Any]:
 
     ask_status, ask_body, ask_ms = http_json(
         f"{base}/api/ask",
-        {"question": SYNTHETIC_QUESTION, "visa_code": "E-7", "answer_mode": "basic", "stream": False},
+        {"question": SYNTHETIC_QUESTION, "visa_code": "E-7", "answer_mode": "basic", "stream": False, "diagnostics": True},
         timeout=timeout,
     )
     response = _detail(ask_status, ask_body)

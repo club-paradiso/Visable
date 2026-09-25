@@ -53,6 +53,12 @@ _MODEL_ENV_KEYS = (
 )
 
 
+
+# /api/ask returns a public projection without provider/model routing
+# fields; these tests assert internal routing/grounding metadata, so they
+# use the explicit developer-diagnostics opt-in.
+DIAGNOSTICS_HEADERS = {"X-Paradiso-Diagnostics": "1"}
+
 class E7IntentAndQueryTests(unittest.TestCase):
     def setUp(self):
         for key in ("LAW_GROUNDING_MODE", "LAW_API_OC", "LAW_API_KEY"):
@@ -337,7 +343,7 @@ class AskEndpointE7Tests(unittest.TestCase):
         from fastapi.testclient import TestClient
 
         importlib.reload(pb)  # re-read model env defaults clean
-        return pb, TestClient(pb.app)
+        return pb, TestClient(pb.app, headers=DIAGNOSTICS_HEADERS)
 
     def test_status_detail_surfaced_when_no_llm(self):
         # No LLM provider -> 503, but base_meta (incl. the new status detail) is in

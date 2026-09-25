@@ -30,6 +30,12 @@ if str(BACKEND_DIR) not in sys.path:
     sys.path.insert(0, str(BACKEND_DIR))
 
 
+
+# /api/ask returns a public projection without provider/model routing
+# fields; these tests assert internal routing/grounding metadata, so they
+# use the explicit developer-diagnostics opt-in.
+DIAGNOSTICS_HEADERS = {"X-Paradiso-Diagnostics": "1"}
+
 def _client():
     # Ensure no LLM provider is configured so /api/ask never makes a
     # real upstream call. We only assert on schema-level behavior here.
@@ -46,7 +52,7 @@ def _client():
 
     paradiso_backend._reset_visas_cache_for_tests()
     paradiso_backend._reset_grounding_cache_for_tests()
-    return TestClient(paradiso_backend.app), paradiso_backend
+    return TestClient(paradiso_backend.app, headers=DIAGNOSTICS_HEADERS), paradiso_backend
 
 
 class BackendImportTests(unittest.TestCase):
@@ -96,7 +102,7 @@ class RootEndpointTests(unittest.TestCase):
             paradiso_backend._reset_visas_cache_for_tests()
             paradiso_backend._reset_grounding_cache_for_tests()
             from fastapi.testclient import TestClient  # type: ignore
-            client = TestClient(paradiso_backend.app)
+            client = TestClient(paradiso_backend.app, headers=DIAGNOSTICS_HEADERS)
             resp = client.get("/")
             self.assertEqual(resp.status_code, 200, resp.text)
             self.assertEqual(
