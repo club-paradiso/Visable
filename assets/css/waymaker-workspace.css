@@ -202,6 +202,18 @@ html:lang(ko) .msg-bubble { word-break: keep-all; }
 .ai-title { margin-bottom: 18px; }
 .ai-title-row { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; }
 .wm-welcome-kicker { color: var(--vp-green); font-size: 15px; font-weight: 740; letter-spacing: -0.01em; }
+.wm-brand-wordmark {
+  width: 206px;
+  height: 60px;
+  margin: 0 0 14px;
+  overflow: hidden;
+}
+.wm-brand-wordmark-img {
+  display: block;
+  width: 206px;
+  height: 60px;
+  object-fit: contain;
+}
 .ai-ref-chip {
   display: inline-flex; align-items: center; min-height: 24px; padding: 0 10px;
   border: 1px solid var(--vp-line); border-radius: 999px;
@@ -747,6 +759,8 @@ html[data-editorial-theme="archive_diary"] body.product-waymaker .ai-welcome-chi
   body.product-waymaker { --wm-pad: 16px; }
   .quota-badge { display: none; }
   .ai-title { margin-bottom: 14px; }
+  .wm-brand-wordmark { width: 185px; height: 54px; margin-bottom: 12px; }
+  .wm-brand-wordmark-img { width: 185px; height: 54px; }
   .ai-title-main { font-size: clamp(28px, 8.2vw, 34px); }
   #welcomeMessage .msg-bubble p { font-size: 16px; line-height: 1.68; }
   .ai-welcome-chips { margin-top: 18px; }
