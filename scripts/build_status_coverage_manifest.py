@@ -904,7 +904,7 @@ def main():
         return e
 
     bundle = {'schema_version': 1, 'generated_by': 'scripts/build_status_coverage_manifest.py', 'sources': SOURCES, 'procedures': rules['procedures'], 'enums': rules['enums'],
-              'law_sources': law_sources, 'procedure_registry': rules.get('procedure_registry', []), 'status_prompt': rules.get('status_prompt'), 'reissue_reason': rules.get('reissue_reason'), 'fees': fees,
+              'law_sources': law_sources, 'procedure_registry': rules.get('procedure_registry', []), 'status_prompt': rules.get('status_prompt'), 'reissue_reason': rules.get('reissue_reason'), 'electronic_services': rules.get('electronic_services', {}), 'fees': fees,
               'guidance': [slim_guidance(g) for g in guidance_out], 'state_overrides': overrides, 'overlays': overlays, 'transitions': transitions, 'families': rules['families'], 'current_status_question': rules['current_status_question'], 'aliases': rules['aliases'], 'programs': programs, 'officer_note': rules['officer_note'],
               'codes': {r['code']: {'kind': r['kind'], 'parent': r['parent'], 'name_ko': r['name_ko'], 'name_en': r.get('name_en'), 'coverage_state': r['coverage_state'], 'lifecycle': r['lifecycle'],
                                     'temporal': {k: v for k, v in r['temporal'].items() if v not in (None, False) and k not in ('source_edition',)} or {}, 'programs': r['programs'], 'related_programs': r.get('related_programs', []),

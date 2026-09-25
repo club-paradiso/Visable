@@ -1298,6 +1298,85 @@ def fee(id_, procedure, amount, label_ko, label_en, *, scope=None, instruments, 
             'notes_ko': list(notes_ko), 'notes_en': list(notes_en), 'conflicts': list(conflicts), 'investigations': list(investigations), 'effective_from': '2026-09-15'}
 
 
+# --------------------------------------------------------------------------
+# HiKorea electronic-service eligibility
+# --------------------------------------------------------------------------
+# The 20% reduction in Enforcement Rule Art. 74(2) is only meaningful when
+# the specific status/procedure (and, for status change, route) can actually
+# be filed electronically. Keep this operational eligibility separate from
+# the fee rule itself so a generic fee row cannot imply a nonexistent online
+# filing path. Source checked 2026-09-25: official "전자민원 대상 업무" table.
+ELECTRONIC_SERVICES = {
+    "source": {
+        "title_ko": "전자민원 대상 업무",
+        "title_en": "Electronic civil petitions eligible for HiKorea",
+        "authority_ko": "법무부 출입국·외국인정책본부 / 국가법령정보센터",
+        "authority_en": "Korea Immigration Service / Korean Law Information Center",
+        "url": "https://www.law.go.kr/LSW/flDownload.do?bylClsCd=200201&flSeq=151064273",
+        "checked_on": "2026-09-25"
+    },
+    "extension": {
+        "mode": "all_except",
+        "exclude_parents": [
+            "D-3",
+            "D-8",
+            "E-7",
+            "F-2",
+            "F-6",
+            "G-1"
+        ],
+        "partial_parents": [
+            "F-1"
+        ],
+        "note_ko": "등록외국인의 일반 체류기간 연장허가 기준입니다. 출국을 위한 체류기간 연장허가는 별도 전자민원 대상입니다.",
+        "note_en": "This rule covers ordinary extensions for registered residents. Extensions for departure are separately eligible."
+    },
+    "status_change": {
+        "mode": "routes",
+        "routes": [
+            {
+                "from_parents": [
+                    "D-4"
+                ],
+                "to_parents": [
+                    "D-2"
+                ]
+            },
+            {
+                "from_parents": [
+                    "H-2"
+                ],
+                "to_codes": [
+                    "F-4-24",
+                    "F-4-25",
+                    "F-4-27",
+                    "F-4-28"
+                ]
+            },
+            {
+                "from_parents": [
+                    "E-9",
+                    "E-10",
+                    "H-2"
+                ],
+                "to_codes": [
+                    "E-7-4",
+                    "E-7-4R"
+                ]
+            }
+        ]
+    },
+    "workplace_change": {
+        "mode": "allow_parents",
+        "allow_parents": [
+            "E-9"
+        ]
+    },
+    "reentry": {
+        "mode": "all"
+    }
+}
+
 FEES = [
     fee('extension_general', 'extension', 60000, '체류기간 연장허가 심사수수료', 'Extension of stay fee', instruments=STAMP_INSTRUMENTS, channels=('office', 'online'), online_reduction=ONLINE_20,
         law_quote='체류기간 연장 허가: 6만원', manual_anchor='체류기간 연장허가 6만원', exemptions=(EX_A_SERIES_D8, EX_GOV_INVITED, EX_D2_REG_WITH_EXT),
@@ -1800,6 +1879,7 @@ def main():
         'procedure_registry': PROCEDURE_REGISTRY,
         'status_prompt': STATUS_PROMPT,
         'reissue_reason': REISSUE_REASON,
+        'electronic_services': ELECTRONIC_SERVICES,
         'fees': FEES,
         'document_definitions': [docdef(k) for k in DOCDEFS],
         'guidance': GUIDANCE,

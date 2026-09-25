@@ -84,11 +84,12 @@
     });
     return out;
   }
-  function collectFees(model, lang) {
+  function collectFees(model, lang, bundle) {
     var fees = model.fees;
     if (!fees) return [];
     return fees.primary.map(function (f) {
-      return { id: f.id, label: lang === 'en' ? f.label_en : f.label_ko, amount: f.amount, amountState: f.amount_state, currency: f.currency, instruments: f.payment_instruments || [], onlineReduction: f.online_reduction ? f.online_reduction.rate : null, review: f.review_state,
+      var SG = root.VisableStatusGuidance; var online = SG && typeof SG.onlineReductionApplies === 'function' ? SG.onlineReductionApplies(bundle, f, model.status, model.target) : false;
+      return { id: f.id, label: lang === 'en' ? f.label_en : f.label_ko, amount: f.amount, amountState: f.amount_state, currency: f.currency, instruments: f.payment_instruments || [], onlineReduction: online ? f.online_reduction.rate : null, review: f.review_state,
         exemptions: (f.exemptions || []).filter(function (e) { return root.VisableStatusGuidance ? root.VisableStatusGuidance.exemptionApplies(e, model.status, model.target, model.userProgram) : true; }).map(function (e) { return { id: e.id, condition: L(lang, e, 'condition'), review: e.review_state, program: e.program || null }; }),
         notExempt: (f.not_exempt || []).map(function (n) { return LL(lang, n); }), conflicts: (f.conflicts || []).map(function (c) { return { regulation: L(lang, c, 'regulation'), manual: L(lang, c, 'manual'), interim: L(lang, c, 'interim') }; }) };
     });
@@ -185,7 +186,7 @@
       var feeModel = feeStatus || !isQuestionStep ? SG.feesFor(bundle, model.procedure, feeStatus, model.procedure === 'status_change' ? model.target : null) : null;
       if (feeModel) {
         var m2 = Object.assign({}, model, { fees: feeModel, status: feeStatus || model.status });
-        fees = collectFees(m2, lang);
+        fees = collectFees(m2, lang, bundle);
         qa.mode = 'fee'; qa.interpretation.confidence = 'HIGH'; qa.fees = fees;
         qa.title = t(lang, 'feeTitle', { subject: ((feeStatus || '') + ' ' + procLabel).trim() });
         qa.summary = feeSentences(lang, fees, m2).join(' ');
@@ -205,12 +206,12 @@
     if (step.kind === 'unresolved' || step.kind === 'source-only') {
       qa.mode = 'fallback'; qa.interpretation.confidence = 'LOW';
       qa.title = t(lang, 'fallbackTitle'); qa.summary = t(lang, 'fallbackLead');
-      qa.fees = collectFees(model, lang); qa.sources = collectSources(model, lang); qa.uncertainties = collectUncertainties(model, lang, qa.documents);
+      qa.fees = collectFees(model, lang, bundle); qa.sources = collectSources(model, lang); qa.uncertainties = collectUncertainties(model, lang, qa.documents);
       return finish(qa, model, state, lang, { collapsesDetail: false });
     }
     // resolved / procedure → HIGH
     qa.mode = 'answer'; qa.interpretation.confidence = 'HIGH';
-    docs = collectDocuments(model, lang); fees = collectFees(model, lang);
+    docs = collectDocuments(model, lang); fees = collectFees(model, lang, bundle);
     qa.documents = docs; qa.fees = fees; qa.localPractice = collectLocal(model, lang); qa.sources = collectSources(model, lang); qa.uncertainties = collectUncertainties(model, lang, docs);
     var focusRef = route.conditions && route.conditions.document_focus;
     var sentences = [];
@@ -403,7 +404,7 @@
   function buildHandoff(model, state, bundle, lang) {
     lang = lang || state.lang || 'ko';
     var docs = collectDocuments(model, lang);
-    var fees = collectFees(model, lang);
+    var fees = collectFees(model, lang, bundle);
     var SG = root.VisableStatusGuidance;
     return { version: 1, at: new Date().toISOString(), source: 'quick-answer', query: state.query, lang: lang,
       status: model.status || null, substatus: model.status && /^[A-H]-\d{1,2}-/.test(model.status) ? model.status : null, procedure: model.procedure || null, procedureLabel: model.procedureLabel || '',

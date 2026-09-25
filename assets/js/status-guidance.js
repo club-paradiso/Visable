@@ -63,7 +63,7 @@
       roles: { applicant: '신청인', inviter: '초청인', employer: '고용주', educational_institution: '학교·연수기관', korean_spouse: '한국인 배우자', principal_holder: '주체류자', local_government: '지방자치단체', sponsor: '신원보증인', business_entity: '사업체', ship_owner: '선주·선박회사', agency: '대행기관', medical_institution: '의료기관·유치기관', other_third_party: '제3자' },
       where_labels: { hikorea: '하이코리아·출입국관서 서식', community_center: '주민센터·정부24', bank: '은행', hospital: '의료기관', school: '학교', tax_office: '세무서·홈택스', court: '법원', employment_center: '고용센터', labor_office: '노동관서', kcomwel: '근로복지공단', designated_hospital: '법무부 지정 병원', local_government: '지방자치단체' },
       overlays: '공통 규칙', overlaysMore: '그 밖의 공통 규칙 {n}개', condTitle: '조건과 예외', officer: '심사 과정에서 추가 서류가 요청되거나 일부 서류가 생략될 수 있습니다.',
-      feeTitle: '비용 / 납부', feeNone: '수수료 없음', feeNotListed: '수수료 항목이 규정에 없어요', feeConflict: '근거마다 달라요 · 확인 필요', feeFor: '{label}', feeOnline: '온라인 신청 시 {pct}% 감경', feeInstrument: '납부 방식', feeExemptTitle: '면제·감경 조건', feeNotExempt: '면제되지 않는 경우',
+      feeTitle: '비용 / 납부', feeNone: '수수료 없음', feeNotListed: '수수료 항목이 규정에 없어요', feeConflict: '근거마다 달라요 · 확인 필요', feeFor: '{label}', feeOnline: '온라인 신청 시 {pct}% 감경', feeOnlineUnavailable: '이 체류자격·절차는 하이코리아 전자민원 대상이 아니어서 온라인 {pct}% 감경을 적용하지 않아요.', feeOnlineUnconfirmed: '전자민원 가능 여부가 체류자격·세부유형에 따라 달라 온라인 {pct}% 감경을 자동 안내하지 않아요.', feeInstrument: '납부 방식', feeExemptTitle: '면제·감경 조건', feeNotExempt: '면제되지 않는 경우',
       feeVariants: '다른 경우', feeEntryNote: '절차 안내 원문의 수수료 문구', feeNonRefundable: '심사수수료이므로 접수 후 반환되지 않아요.', feeCheck: '확인 필요', feeGks: 'GKS 장학생', feeInvestigated: '확인 결과',
       instruments: { REVENUE_STAMP: '정부수입인지', CASH_OR_CASH_RECEIPT: '현금 또는 현금 납입 증표', CARD: '신용·직불카드', ELECTRONIC_PAYMENT: '전자결제', REVENUE_CERTIFICATE_STAMP: '수입증지' },
       feeReview: { VERIFIED_REGULATION: '시행규칙 기준', MANUAL_EXPLICIT: '공식 안내 명시', CONDITIONAL_NEEDS_REVIEW: '조건부 · 확인 필요', CONFLICT: '근거 불일치 · 확인 필요', NEEDS_REVIEW: '확인 필요', NOT_FOUND: '근거 확인되지 않음' },
@@ -123,7 +123,7 @@
       roles: { applicant: 'Applicant', inviter: 'Inviter', employer: 'Employer', educational_institution: 'School / institution', korean_spouse: 'Korean spouse', principal_holder: 'Principal holder', local_government: 'Local government', sponsor: 'Guarantor', business_entity: 'Business', ship_owner: 'Ship owner', agency: 'Agency', medical_institution: 'Hospital / facilitator', other_third_party: 'Third party' },
       where_labels: { hikorea: 'HiKorea / immigration office form', community_center: 'Community center / Gov24', bank: 'Bank', hospital: 'Hospital', school: 'School', tax_office: 'Tax office / Hometax', court: 'Court', employment_center: 'Employment center', labor_office: 'Labour office', kcomwel: 'KCOMWEL', designated_hospital: 'Designated hospital', local_government: 'Local government' },
       overlays: 'Common rules', overlaysMore: '{n} more common rules', condTitle: 'Conditions and exceptions', officer: 'The examining officer may request additional documents or waive some of them.',
-      feeTitle: 'Cost / payment', feeNone: 'No fee', feeNotListed: 'No fee item in the regulation', feeConflict: 'Sources disagree · confirm', feeFor: '{label}', feeOnline: '{pct}% reduction when filed online', feeInstrument: 'How to pay', feeExemptTitle: 'Exemptions and reductions', feeNotExempt: 'Not exempt',
+      feeTitle: 'Cost / payment', feeNone: 'No fee', feeNotListed: 'No fee item in the regulation', feeConflict: 'Sources disagree · confirm', feeFor: '{label}', feeOnline: '{pct}% reduction when filed online', feeOnlineUnavailable: 'This status / procedure is not eligible for HiKorea electronic filing, so the {pct}% online reduction does not apply.', feeOnlineUnconfirmed: 'Electronic-filing eligibility depends on the status or subtype, so the {pct}% online reduction is not shown automatically.', feeInstrument: 'How to pay', feeExemptTitle: 'Exemptions and reductions', feeNotExempt: 'Not exempt',
       feeVariants: 'Other cases', feeEntryNote: 'Fee wording in the procedure source', feeNonRefundable: 'An examination fee: not refunded once accepted.', feeCheck: 'Confirm', feeGks: 'GKS scholar', feeInvestigated: 'What we checked',
       instruments: { REVENUE_STAMP: 'Government revenue stamp', CASH_OR_CASH_RECEIPT: 'Cash or cash-payment receipt', CARD: 'Credit / debit card', ELECTRONIC_PAYMENT: 'Electronic payment', REVENUE_CERTIFICATE_STAMP: 'Local revenue stamp' },
       feeReview: { VERIFIED_REGULATION: 'Per the Enforcement Rule', MANUAL_EXPLICIT: 'Stated in official guidance', CONDITIONAL_NEEDS_REVIEW: 'Conditional · confirm', CONFLICT: 'Sources disagree · confirm', NEEDS_REVIEW: 'Confirm', NOT_FOUND: 'No basis found' },
@@ -547,6 +547,43 @@
       return true;
     });
   }
+  // Electronic filing is operational eligibility, not a property of the fee amount.
+  // Fail closed when the official table is partial (F-1) or when a required
+  // status/change target is missing, so we never advertise a discount that a
+  // user cannot actually obtain through HiKorea.
+  function electronicServiceEligibility(bundle, procedure, status, targetStatus) {
+    var registry = bundle && bundle.electronic_services;
+    var rule = registry && registry[procedure];
+    if (!rule) return { state: 'UNKNOWN', eligible: false, reason: 'no_rule' };
+    var parent = status ? parentOf(status) : null;
+    var target = targetStatus ? String(targetStatus).split('~')[0].toUpperCase() : null;
+    var tparent = target ? parentOf(target) : null;
+    if (rule.mode === 'all') return { state: 'ELIGIBLE', eligible: true, reason: 'all' };
+    if (rule.mode === 'all_except') {
+      if (!parent) return { state: 'UNKNOWN', eligible: false, reason: 'status_required' };
+      if ((rule.partial_parents || []).indexOf(parent) >= 0) return { state: 'PARTIAL', eligible: false, reason: 'partial_status' };
+      if ((rule.exclude_parents || []).indexOf(parent) >= 0) return { state: 'INELIGIBLE', eligible: false, reason: 'excluded_status' };
+      return { state: 'ELIGIBLE', eligible: true, reason: 'included' };
+    }
+    if (rule.mode === 'allow_parents') {
+      if (!parent) return { state: 'UNKNOWN', eligible: false, reason: 'status_required' };
+      var parentOk = (rule.allow_parents || []).indexOf(parent) >= 0;
+      return { state: parentOk ? 'ELIGIBLE' : 'INELIGIBLE', eligible: parentOk, reason: parentOk ? 'included' : 'excluded_status' };
+    }
+    if (rule.mode === 'routes') {
+      if (!parent || !target) return { state: 'UNKNOWN', eligible: false, reason: 'route_required' };
+      var routeOk = (rule.routes || []).some(function (r) {
+        if ((r.from_parents || []).indexOf(parent) < 0) return false;
+        return (r.to_parents || []).indexOf(tparent) >= 0 || (r.to_codes || []).indexOf(target) >= 0;
+      });
+      return { state: routeOk ? 'ELIGIBLE' : 'INELIGIBLE', eligible: routeOk, reason: routeOk ? 'route' : 'route_not_listed' };
+    }
+    return { state: 'UNKNOWN', eligible: false, reason: 'unsupported_rule' };
+  }
+  function onlineReductionApplies(bundle, fee, status, targetStatus) {
+    return !!(fee && fee.online_reduction && electronicServiceEligibility(bundle, fee.procedure, status, targetStatus).eligible);
+  }
+
   // Fee registry lookup: the most specific row for (procedure, status, target); others are shown as "other cases".
   function feesFor(bundle, procedure, status, targetStatus) {
     var rows = (bundle.fees || []).filter(function (f) { return f.procedure === procedure; });
@@ -941,7 +978,7 @@
       var review = tr(lang, 'feeReview')[f.review_state] || f.review_state;
       html += '<div class="sg-fee-row"><div class="sg-fee-amount">' + esc(feeAmountLine(lang, f)) + '</div><div class="sg-fee-label">' + esc(lang === 'en' ? f.label_en : f.label_ko) + ' <span class="sg-fee-review sg-fee-review-' + esc(f.review_state.toLowerCase()) + '">' + esc(review) + '</span></div>';
       if (f.payment_instruments && f.payment_instruments.length) html += '<div class="sg-fee-line"><span class="sg-fee-k">' + esc(tr(lang, 'feeInstrument')) + '</span> ' + esc(f.payment_instruments.map(function (i) { return tr(lang, 'instruments')[i] || i; }).join(' · ')) + '</div>';
-      if (f.online_reduction) html += '<div class="sg-fee-line">' + esc(tr(lang, 'feeOnline', { pct: Math.round(f.online_reduction.rate * 100) })) + '</div>';
+      if (f.online_reduction) { var online = electronicServiceEligibility(bundle, f.procedure, model.status, model.target); var pct = Math.round(f.online_reduction.rate * 100); if (online.eligible) html += '<div class="sg-fee-line">' + esc(tr(lang, 'feeOnline', { pct: pct })) + '</div>'; else if (online.state === 'INELIGIBLE') html += note(tr(lang, 'feeOnlineUnavailable', { pct: pct })); else html += note(tr(lang, 'feeOnlineUnconfirmed', { pct: pct })); }
       (f.conflicts || []).forEach(function (c) { html += '<p class="sg-warn"><span>' + esc(L(lang, c, 'regulation')) + ' · ' + esc(L(lang, c, 'manual')) + '<br>' + esc(L(lang, c, 'interim')) + '</span></p>'; });
       var ex = (f.exemptions || []).filter(function (e) { return exemptionApplies(e, model.status, model.target, model.userProgram); });
       if (ex.length) {
@@ -1275,7 +1312,7 @@
     return { html: html, model: model };
   }
 
-  var api = { STR: STR, normalizeCode: normalizeCode, interpret: interpret, nextStep: nextStep, compose: compose, renderModel: renderModel, groupDocuments: groupDocuments, applicableOverlays: applicableOverlays, candidateEntries: candidateEntries, feesFor: feesFor, exemptionApplies: exemptionApplies, evidenceFor: evidenceFor, localPracticeFor: localPracticeFor, registryFor: registryFor, commonEntry: commonEntry, formLabel: formLabel, preparation: preparation, preparationLabel: preparationLabel, feeSummary: feeSummary, uniqueNotes: uniqueNotes, sameNote: sameNote, tierOverlays: tierOverlays, manualTitle: manualTitle, PROCEDURE_ORDER: PROCEDURE_ORDER, esc: esc, parentOf: parentOf, tr: tr, won: won };
+  var api = { STR: STR, normalizeCode: normalizeCode, interpret: interpret, nextStep: nextStep, compose: compose, renderModel: renderModel, groupDocuments: groupDocuments, applicableOverlays: applicableOverlays, candidateEntries: candidateEntries, feesFor: feesFor, electronicServiceEligibility: electronicServiceEligibility, onlineReductionApplies: onlineReductionApplies, exemptionApplies: exemptionApplies, evidenceFor: evidenceFor, localPracticeFor: localPracticeFor, registryFor: registryFor, commonEntry: commonEntry, formLabel: formLabel, preparation: preparation, preparationLabel: preparationLabel, feeSummary: feeSummary, uniqueNotes: uniqueNotes, sameNote: sameNote, tierOverlays: tierOverlays, manualTitle: manualTitle, PROCEDURE_ORDER: PROCEDURE_ORDER, esc: esc, parentOf: parentOf, tr: tr, won: won };
   root.VisableStatusGuidance = api;
 
   /* ------------------------------------------------------------------ DOM -- */
