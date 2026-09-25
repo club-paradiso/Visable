@@ -370,7 +370,6 @@ html:lang(ko) .reference-disclaimer { word-break: keep-all; }
   font-size: 12.5px; font-weight: 650; white-space: nowrap;
 }
 .grounding-badge.grounded { border-color: color-mix(in srgb, var(--vp-green) 45%, var(--vp-line)); background: var(--vp-mint); color: var(--vp-green); }
-.grounding-badge.grounded::before { content: "✓"; margin-right: 5px; font-weight: 800; }
 
 .answer-context { display: flex; flex-wrap: wrap; gap: 6px; padding: 12px 22px 0; }
 .context-pill {

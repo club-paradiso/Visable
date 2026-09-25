@@ -94,7 +94,64 @@ check('New Home renders source scope', newHomeHtml.includes('nh-source-scope') &
 check('New Home renders source dates/access dates', newHomeHtml.includes('sourceAccessedLabel') && newHomeHtml.includes('sourceEffectiveLabel'));
 check('New Home carries a non-affiliation disclaimer', String(nationalityContent.sourcesPanel?.disclaimer?.ko || '').includes('제휴 또는 소속 관계가 없습니다'));
 check('New Home marks future-effective sources', newHomeHtml.includes('futureEffectiveBadge') && newHomeHtml.includes('correction_signal_only'));
-check('New Home no longer uses a verified checkmark badge', !newHomeHtml.includes('.nh-official-badge::before'));
+// The official-source badge tells people to CHECK an official source; it must
+// never read as Visable/New Home having verified or certified the content.
+// Inspect the effective presentation — the page's inline <style> plus every
+// local stylesheet it links (new-home.css, the shared product sheets) — so the
+// guard follows the CSS wherever it lives.
+const stripComments = css => css.replace(/\/\*[\s\S]*?\*\//g, '');
+// Flat list of style rules (selector + body), including rules nested in @media.
+const cssRules = css => {
+  const text = stripComments(css);
+  const rules = [];
+  const open = [];
+  let selStart = 0;
+  for (let i = 0; i < text.length; i += 1) {
+    const ch = text[i];
+    if (ch === '{') {
+      open.push({ selector: text.slice(selStart, i).trim(), bodyStart: i + 1 });
+      selStart = i + 1;
+    } else if (ch === '}') {
+      const rule = open.pop();
+      if (rule && !rule.selector.startsWith('@')) rules.push({ selector: rule.selector, body: text.slice(rule.bodyStart, i) });
+      selStart = i + 1;
+    } else if (ch === ';' && !open.length) {
+      selStart = i + 1;
+    }
+  }
+  return rules;
+};
+const newHomeStylesheets = [...newHomeHtml.matchAll(/<link\b[^>]*rel=["']stylesheet["'][^>]*>/gi)]
+  .map(match => (match[0].match(/href=["']([^"']+)["']/i) || [])[1])
+  .filter(href => href && !/^(https?:)?\/\//i.test(href))
+  .map(href => href.split(/[?#]/)[0]);
+check('New Home links its page stylesheet (assets/css/new-home.css)', newHomeStylesheets.includes('assets/css/new-home.css'), newHomeStylesheets.join(', '));
+const missingSheets = newHomeStylesheets.filter(rel => !fs.existsSync(path.join(ROOT, rel)));
+check('every New Home stylesheet exists (the badge guard cannot skip one)', missingSheets.length === 0, missingSheets.join(', '));
+const newHomePresentation = [
+  { where: 'new-home.html <style>', css: [...newHomeHtml.matchAll(/<style\b[^>]*>([\s\S]*?)<\/style>/gi)].map(m => m[1]).join('\n') },
+  ...newHomeStylesheets.filter(rel => !missingSheets.includes(rel)).map(rel => ({ where: rel, css: readText(rel) }))
+];
+const VERIFIED_GLYPHS = /[✓✔☑✅\u{1F6E1}\u{1F3C5}\u{1F396}\u{1F4DC}]|\\(?:0*)(?:2713|2714|2611|2705|1f6e1|1f3c5|1f396|1f4dc)\b/iu;
+const VERIFIED_ICON_WORDS = /(?:shield[-_]?check|badge[-_]?check|circle[-_]?check|check[-_]?(?:circle|mark)|verified|certif|seal|approv|stamp)/i;
+const badgeOffences = [];
+for (const { where, css } of newHomePresentation) {
+  for (const rule of cssRules(css)) {
+    if (!/\.nh-official-badge\b/.test(rule.selector)) continue;
+    const parts = rule.selector.split(',').filter(part => /\.nh-official-badge\b/.test(part));
+    if (parts.some(part => /::?(?:before|after|marker)\b/i.test(part))) badgeOffences.push(`${where}: pseudo-element "${parts.join(', ').trim()}"`);
+    if (VERIFIED_GLYPHS.test(rule.body)) badgeOffences.push(`${where}: check/seal glyph in "${rule.selector}"`);
+    if (/(?:background|mask|list-style|content)[^;]*url\(/i.test(rule.body) && VERIFIED_ICON_WORDS.test(rule.body)) badgeOffences.push(`${where}: verification icon in "${rule.selector}"`);
+  }
+}
+// Markup side: the badge is text only — no glyph or icon inside it.
+for (const match of newHomeHtml.matchAll(/<span\b[^>]*class=["'][^"']*\bnh-official-badge\b[^"']*["'][^>]*>([\s\S]*?)<\/span>/gi)) {
+  if (match[1].trim() || /<svg|<img/i.test(match[1])) badgeOffences.push(`new-home.html: badge markup carries content "${match[1].trim().slice(0, 40)}"`);
+}
+check('New Home official-source badge carries no verified/checkmark treatment (HTML + all linked CSS)', badgeOffences.length === 0, badgeOffences.join('; '));
+check('New Home official-source badge copy asks the reader to check a source',
+  ['ko', 'en', 'zh-CN'].every(lang => String(nationalityContent.ui?.officialSourceBadge?.[lang] || '').trim().length > 0)
+  && !/(?:verified|certified|검증 완료|인증|认证|已验证)/i.test(JSON.stringify(nationalityContent.ui?.officialSourceBadge || {})));
 
 check('Visa UI matches overlays by covered status codes', indexHtml.includes('record.coveredCodes.some'));
 check('Visa UI renders mission links instead of an inert selector', indexHtml.includes('issuance-mission-link') && !indexHtml.includes('<select>${options}</select>'));

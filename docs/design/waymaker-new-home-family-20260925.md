@@ -103,6 +103,25 @@ Captured on `main` in Chromium (light/dark, 390 and 1440, Pretendard loaded):
 * Height: 8,844px desktop / ~15,000px phone (from 9,822 / 17,593) with no
   content removed.
 
+### Source-trust rule (added in review)
+
+"공식 출처로 확인 / Check official sources" is an instruction to the reader,
+not a certification. The badge is a neutral text pill — no check glyph, seal,
+shield or accent fill. The same reading applies to nearby cues: the hero's
+"공식 출처 표기" fact has no check mark (plain middot list), Waymaker's
+"공식 매뉴얼 근거" grounding badge has no check, and the after-approval items use
+a to-do square rather than a green check circle.
+
+`scripts/check_official_external_sources.mjs` now enforces this on the
+effective presentation — `new-home.html` (markup and any inline `<style>`)
+plus every local stylesheet it links, including `assets/css/new-home.css` —
+and fails if a `::before/::after/::marker`, a check/seal glyph (literal or
+CSS escape) or a verification icon is attached to `.nh-official-badge`, or if
+the page stops linking its stylesheet. The previous guard only searched
+`new-home.html` and went blind once the CSS moved out; it was mutation-tested
+after the fix (inline style, `\2713` in new-home.css inside `@media`, an icon
+background in the shared sheet, an SVG inside the badge — all four fail).
+
 ## 5. Accessibility
 
 Skip links first in tab order on both pages (New Home's now visible); logical
@@ -111,7 +130,8 @@ every control; `aria-current` on the active mode and section; ≥44px targets
 and ≥12px text across the matrix; WCAG AA text contrast measured in every
 state (two Editorial-pop failures found and fixed); reduced motion disables
 message fade-in, journey drawing and hover motion; no colour-only states
-(evidence rows keep their text labels, ✓/✕ glyphs, "!" flags).
+(evidence rows keep their text labels; "helps with / won't claim" keep ✓/✕;
+source flags keep a "!" caution mark).
 
 ## 6. QA method
 
