@@ -73,6 +73,32 @@ def health_payload(commit: str | None) -> dict:
 
 
 LAW_OK = {"ok": True, "count": 3}
+WAYMAKER_LIVE = {
+    "answer": "synthetic live model answer",
+    "provider": "openrouter",
+    "final_model": "vendor/model:free",
+    "selected_model": "vendor/model:free",
+    "attempted_models": ["vendor/model:free"],
+    "upstream_statuses": [],
+    "deterministic_fallback_answer_used": False,
+    "visa_code_detected": "D-2",
+    "task_type_detected": "extension",
+    "manual_grounding_status": "present",
+}
+WAYMAKER_DETERMINISTIC_FALLBACK = {
+    "answer": "synthetic deterministic preparation note",
+    "provider": "deterministic_fallback",
+    "final_model": None,
+    "selected_model": None,
+    "attempted_models": ["vendor/model:free"],
+    "upstream_statuses": [504],
+    "deterministic_fallback_answer_used": True,
+    "provider_error_type": "openrouter_chain_budget_exhausted",
+    "chain_budget_exhausted": True,
+    "visa_code_detected": "D-2",
+    "task_type_detected": "extension",
+    "manual_grounding_status": "present",
+}
 ENFORCEMENT_LIVE = {
     "legalBaseline": {"status": "AVAILABLE", "baselineAmountKrw": 2_000_000},
     "prediction": {
@@ -101,11 +127,12 @@ class _FakeResponse(io.BytesIO):
 class SmokeRun:
     """One scripted execution of the embedded smoke script."""
 
-    def __init__(self, health_sequence, enforcement=ENFORCEMENT_LIVE):
+    def __init__(self, health_sequence, enforcement=ENFORCEMENT_LIVE, waymaker=WAYMAKER_LIVE):
         # health_sequence: the commit each successive /health call reports.
         # The last entry repeats once exhausted.
         self.health_sequence = list(health_sequence)
         self.enforcement = enforcement
+        self.waymaker = waymaker
         self.health_calls = 0
         self.slept = 0.0
         self.stdout = ""
@@ -120,6 +147,8 @@ class SmokeRun:
             return _FakeResponse(json.dumps(health_payload(self.health_sequence[index])).encode())
         if "/api/legal/laws/search" in url:
             return _FakeResponse(json.dumps(LAW_OK).encode())
+        if "/api/ask" in url:
+            return _FakeResponse(json.dumps(self.waymaker).encode())
         if "/api/enforcement/analyze" in url:
             return _FakeResponse(json.dumps(self.enforcement).encode())
         if "/api/enforcement/provider-probe" in url:
@@ -188,6 +217,8 @@ class RailwayLiveSmokeReadinessTests(unittest.TestCase):
         self.assertEqual(run.slept, 0)
         self.assertNotIn("UNVERIFIED", run.stdout)
         self.assertIn("matches this commit", run.stdout)
+        self.assertIn("waymaker_d2:", run.stdout)
+        self.assertIn('"live_model_answer": true', run.stdout)
 
     def test_an_unverified_failure_says_the_result_may_be_a_previous_deploy(self):
         run = SmokeRun([None], enforcement=ENFORCEMENT_DEGRADED).run()
@@ -202,6 +233,15 @@ class RailwayLiveSmokeReadinessTests(unittest.TestCase):
         self.assertEqual(run.exit_code, 1)
         self.assertIn("unavailable AI prediction", run.stderr)
         self.assertNotIn("may describe a previous deploy", run.stderr)
+
+    def test_waymaker_d2_requires_a_real_model_completion(self):
+        run = SmokeRun([OUR_COMMIT], waymaker=WAYMAKER_DETERMINISTIC_FALLBACK).run()
+
+        self.assertEqual(run.exit_code, 1)
+        self.assertIn("did not produce a live model answer", run.stderr)
+        self.assertIn('"deterministic_fallback": true', run.stdout)
+        self.assertIn('"visa_code_detected": "D-2"', run.stdout)
+        self.assertNotIn("enforcement:", run.stdout)
 
 
 class RailwayLiveSmokeBudgetTests(unittest.TestCase):
