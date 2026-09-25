@@ -523,6 +523,16 @@ html:lang(ko) .source-panel .source-disclosure { word-break: keep-all; }
 
 /* Actions + closing disclaimer of an answer. */
 .answer-actions { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 22px 18px; }
+/* Answer feedback (knowledge learning loop): quiet, collapsed by default. */
+.answer-feedback { padding: 0 22px 16px; font-size: 13px; color: var(--vp-ink-2, #41564f); }
+.answer-feedback > summary { cursor: pointer; min-height: 32px; display: inline-flex; align-items: center; }
+.answer-feedback-reasons { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.answer-feedback-btn {
+  font: inherit; font-size: 13px; min-height: 36px; padding: 6px 12px; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--vp-line, #d3cab8); background: var(--vp-surface, #fffefa); color: var(--vp-ink, #0b211b);
+}
+.answer-feedback-btn[disabled] { opacity: .55; cursor: default; }
+.answer-feedback-status { margin: 8px 0 0; min-height: 1em; }
 .answer-action {
   min-height: 44px; padding: 0 14px;
   border: 1px solid var(--vp-line); border-radius: var(--vp-r-sm);
@@ -818,7 +828,7 @@ html[data-editorial-theme="archive_diary"] body.product-waymaker .ai-welcome-chi
   :is(.answer-routing-note, .answer-note, .safety-notice, .ai-easy-frame) { margin-inline: 16px; }
   :is(.source-panel, .error-details, .safety-alt) { margin-inline: 16px; }
   .answer-card .msg-disc { margin-inline: 16px; }
-  .bdg-wrap, .answer-actions { padding-inline: 16px; }
+  .bdg-wrap, .answer-actions, .answer-feedback { padding-inline: 16px; }
   .answer-action { min-height: 44px; flex: 1 1 auto; }
   .source-list .source-row { flex-direction: column; align-items: flex-start; gap: 4px; }
   .modal-overlay { padding: 0; align-items: flex-end; }

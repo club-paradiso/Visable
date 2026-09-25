@@ -14,6 +14,9 @@ lookup flows.
 | POST   | `/api/jobcodekeywords`  | Extracts keywords from a job-code search query.               |
 | POST   | `/api/debug/law-grounding` | Debug-only inspection of law grounding/citation verification (now also embeds a `preflight` block). |
 | GET    | `/api/debug/law-grounding/preflight` | Operator-safe readiness preflight: resolved mode, key/endpoint configured (booleans), sample trigger + query, warning markers. No secrets, no external call. |
+| POST   | `/api/feedback`         | Public, rate-limited structured answer feedback (fixed reason + opaque `answer_ref`). Feeds the Knowledge Platform gap queue. |
+| GET    | `/api/knowledge/published` | Portable export of PUBLISHED knowledge (no review metadata, no internal paths). |
+| *      | `/api/knowledge/studio/*` | Knowledge Studio operator API. `Authorization: Bearer <token>` from `WAYMAKER_OPERATOR_TOKENS`; 503 when unset. See `docs/ai/WAYMAKER_KNOWLEDGE_PLATFORM.md`. |
 
 > The Paradiso backend is **API-only**. The human-facing frontend
 > (`index.html`, `ai.html`) is deployed separately (currently Vercel at
@@ -120,6 +123,10 @@ into the image. See `.env.example` for the full list.
 | Variable                | Required? | Notes                                                    |
 | ----------------------- | --------- | -------------------------------------------------------- |
 | `OPENROUTER_API_KEY`    | optional* | Enables `/api/ask` via OpenRouter.                       |
+| `WAYMAKER_KNOWLEDGE_DB` | optional  | Knowledge Platform SQLite path. Default `backend/var/knowledge/waymaker_knowledge.sqlite3`. On Railway point it at a mounted volume, or operator edits are lost on redeploy (the committed seed is re-applied either way). |
+| `WAYMAKER_OPERATOR_TOKENS` | optional | `name:token,…` for the Knowledge Studio API (tokens ≥ 16 chars). Unset keeps the Studio closed (503). |
+| `WAYMAKER_QUERY_TEXT_RETENTION` | optional | `sanitized` (default) keeps a redacted ≤200-char excerpt per observation; `none` keeps features only. |
+| `WAYMAKER_OBSERVATION_RETENTION_DAYS` | optional | Default 90. |
 | `OPENROUTER_MODEL`      | optional  | Defaults to `nvidia/nemotron-3-ultra-550b-a55b:free`. The Basic answer tier primary. Override per-deploy only after catalog verification. |
 | `OPENROUTER_ALLOW_MODEL_ENV_OVERRIDES` | optional | Defaults to `false`. Must be explicitly enabled before any deploy-time OpenRouter model or candidate override is honored. |
 | `OPENROUTER_MODEL_CANDIDATES` | optional | Ordered Basic fallback list. Ignored unless model env overrides are explicitly enabled; otherwise the catalog-reconciled Nemotron/Gemma/Inkling chain is authoritative. `/health` reports present/active/ignored state without exposing secrets. |

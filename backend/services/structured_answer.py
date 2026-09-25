@@ -411,7 +411,11 @@ def build_document_answer(
     ``caveats``, ``section``, ``procedure_type``, ``page_range``) and
     ``bundle`` its manual header. Returns ``None`` when there is no list.
     """
-    documents = list((grounding or {}).get("required_documents") or [])
+    # Knowledge-backed groundings also carry structured entries (text +
+    # requirement level + condition); prefer them so a reviewed "conditional"
+    # fact can never be re-bucketed as universal from its bare wording.
+    documents = list((grounding or {}).get("required_document_entries")
+                     or (grounding or {}).get("required_documents") or [])
     if not documents:
         return None
     buckets = bucket_documents(documents)

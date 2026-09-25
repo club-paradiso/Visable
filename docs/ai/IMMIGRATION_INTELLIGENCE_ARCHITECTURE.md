@@ -211,3 +211,16 @@ Python. Swapping every model id would change how answers *read*, not what
 Visable is willing to assert.
 
 That is the measure of whether this architecture is working.
+
+---
+
+## 10. Where verified knowledge lives
+
+Document lists and other procedural facts that `/api/ask` may assert now come
+from the **Waymaker Knowledge Platform** (`services/knowledge`): published,
+versioned facts with mandatory provenance, a human review lifecycle, conflict
+detection, a coverage decision taken before generation, and a deterministic
+Answer Guard after it. The evidence hierarchy in §5 is reused there
+(`AUTHORITY_RANK`), and §3's two-state rule becomes the coverage states
+`UNKNOWN` (retrieval failed) vs `NO_DIRECT_SOURCE` (looked, nothing verified).
+See [`WAYMAKER_KNOWLEDGE_PLATFORM.md`](WAYMAKER_KNOWLEDGE_PLATFORM.md).

@@ -139,3 +139,17 @@ When a matrix row transitions from `candidate_only` → `active_grounded` (after
 - Not a replacement for human review of grounding candidates
 - Not a source of legal advice
 - Not a scraper or RAG system — no external websites are accessed
+
+## Knowledge Platform eval corpus
+
+The golden questions are also referenced by the persistent Knowledge Platform
+eval corpus (tag `golden_questions_v1`, same payload semantics as this runner),
+alongside the fact-level seed cases in `backend/data/knowledge/eval_corpus_seed.json`.
+Those cases assert facts, buckets, sources and coverage states, not only
+routing. Run them with:
+
+```bash
+python3 scripts/knowledge/knowledge_cli.py --db :memory: eval --selector all --strict
+```
+
+This runner stays in place; see `docs/ai/WAYMAKER_KNOWLEDGE_PLATFORM.md` §11.

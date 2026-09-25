@@ -149,6 +149,9 @@ jobs:
       - name: Verify the Waymaker answer card (structured D-2 checklist, no provider/model or internal metadata, safe Markdown, clipboard, debug-only diagnostics; 320–1280)
         run: ./node_modules/.bin/playwright test tests/e2e/waymaker-answer-card.spec.mjs --project=desktop-1280 --project=tablet-768 --project=mobile-430 --project=mobile-390 --project=mobile-360 --project=mobile-320
 
+      - name: Verify the Waymaker Knowledge Studio (operator auth, review diff/evidence, reason-gated actions, text-only rendering, keyboard) and answer feedback (320–1280)
+        run: ./node_modules/.bin/playwright test tests/e2e/knowledge-studio.spec.mjs --project=desktop-1280 --project=tablet-768 --project=mobile-390 --project=mobile-320
+
       - name: Upload Form Helper E2E evidence
         if: always()
         uses: actions/upload-artifact@v4
