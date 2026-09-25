@@ -49,6 +49,7 @@ DEFAULT_TIMEOUT = 60
 # brief calls out. Each names the behaviour it is probing so a failure report
 # says what broke rather than just which index failed.
 ASK_CASES: List[Tuple[str, str, Dict[str, Any]]] = [
+    ("d2_extension_documents_ko", "D-2 체류기간 연장 시 필수 서류는 무엇인가요?", {"visa_code": "D-2", "answer_mode": "basic", "stream": False}),
     ("general_ko", "한국 비자 종류에는 어떤 것들이 있나요?", {}),
     ("d2_parttime_ko", "D-2 유학 자격으로 아르바이트를 할 수 있나요?", {"visa_code": "D-2"}),
     ("e7_workplace_ko", "E-7 자격인데 근무처를 변경하려면 어떻게 해야 하나요?", {"visa_code": "E-7"}),

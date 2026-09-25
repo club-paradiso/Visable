@@ -352,6 +352,8 @@ if (sendAiSrc) {
   check(quotaPos  >= 0, 'sendAi() does not call useQuota()');
   check(quotaPos > appendPos,
         'quota-safety: sendAi() must call useQuota() AFTER appendAiAnswer() — quota must not be consumed before visible render');
+  check(/stream\s*:\s*false/.test(body),
+        'Waymaker sendAi() must use buffered /api/ask by default until SSE fallback parity is live-smoke verified');
 }
 
 // --- H-2: formatAnswerText preserves D-2 / E-7 date strings verbatim -------

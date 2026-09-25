@@ -2361,7 +2361,12 @@
                         context: contextText,
                         lang: userLang,
                         answer_mode: currentAiAnswerMode,
-                        stream: true,
+                        // Reliability first: the buffered /api/ask path has the
+                        // complete candidate/provider fallback and answer-quality
+                        // gates. The SSE path remains available server-side, but
+                        // is not the default Waymaker transport until it reaches
+                        // fallback parity and is covered by live production smoke.
+                        stream: false,
                         visa_data: visaPayload,
                         history: recentChatHistory(),
                         // Selected-scenario handoff: only safe identifiers so the
