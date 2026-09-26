@@ -473,6 +473,48 @@ class CandidateFallbackBehaviorTests(unittest.TestCase):
         # No raw provider JSON keys leak through.
         self.assertNotIn("choices", resp.text)
 
+    def test_403_after_the_key_worked_skips_only_that_model(self):
+        # Production (run 70, Fast chain): upstream statuses [429, 504, 403]
+        # ended in HTTP 503 "invalid_provider_config" and never tried the last
+        # candidate. The key had just produced a 429 and a 504, so the 403 was
+        # a per-model refusal and must not sink the request.
+        pb = _pb()
+        resp, calls = self._ask(pb, {
+            CANDS[0]: (429, "Rate limit exceeded"),
+            CANDS[1]: (504, "Gateway timeout"),
+            CANDS[2]: (403, "Forbidden"),
+        })
+        self.assertEqual(resp.status_code, 200, resp.text)
+        body = resp.json()
+        self.assertEqual(calls, CANDS)
+        self.assertEqual(body["final_model"], CANDS[3])
+        self.assertEqual(body["upstream_statuses"], [429, 504, 403])
+        self.assertFalse(body["deterministic_fallback_answer_used"])
+
+    def test_403_after_the_key_worked_ends_in_fallback_not_503(self):
+        pb = _pb()
+        resp, calls = self._ask(pb, {
+            CANDS[0]: (429, "Rate limit exceeded"),
+            CANDS[1]: (504, "Gateway timeout"),
+            CANDS[2]: (403, "Forbidden"),
+            CANDS[3]: (403, "Forbidden"),
+        })
+        self.assertEqual(resp.status_code, 200, resp.text)
+        body = resp.json()
+        self.assertEqual(calls, CANDS)
+        self.assertTrue(body["deterministic_fallback_answer_used"])
+        self.assertEqual(body["provider_error_type"], "model_access_denied")
+        self.assertTrue(body["retryable_provider_error"])
+
+    def test_403_on_the_first_candidate_still_stops_the_chain(self):
+        # The broken-account guard is unchanged: with no proof the key works,
+        # a 403 stops immediately instead of burning every candidate.
+        pb = _pb()
+        resp, calls = self._ask(pb, {c: (403, "Forbidden") for c in CANDS})
+        self.assertEqual(resp.status_code, 503, resp.text)
+        self.assertEqual(calls, [CANDS[0]])
+        self.assertEqual(resp.json()["detail"]["provider_error_type"], "invalid_provider_config")
+
     def test_non_retryable_invalid_key_returns_safe_503_without_retry(self):
         pb = _pb()
         resp, calls = self._ask(pb, {c: (401, "Invalid API key") for c in CANDS})
@@ -951,6 +993,16 @@ class StreamingAnswerTests(unittest.TestCase):
         self.assertIn("event: delta", body)
         self.assertIn(f'"final_model": "{CANDS[1]}"', body)
         self.assertEqual(calls[:2], [CANDS[0], CANDS[1]])
+
+    def test_streaming_403_after_the_key_worked_skips_that_model(self):
+        pb = _pb()
+        resp, calls = self._stream(pb, {
+            CANDS[0]: (429, "Rate limit exceeded"),
+            CANDS[1]: (403, "Forbidden"),
+        })
+        self.assertEqual(resp.status_code, 200, resp.text)
+        self.assertIn(f'"final_model": "{CANDS[2]}"', resp.text)
+        self.assertEqual(calls[:3], CANDS[:3])
 
     def test_streaming_all_fail_emits_fallback_event(self):
         pb = _pb()

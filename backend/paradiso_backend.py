@@ -1576,6 +1576,29 @@ _RETRYABLE_PROVIDER_ERROR_TYPES = {
 _PER_MODEL_SKIP_ERROR_TYPES = {
     _ai_runtime.legacy_label(t) for t in _ai_runtime.PER_MODEL_SKIP_ERROR_TYPES
 }
+_CREDENTIAL_ERROR_LABEL = _ai_runtime.legacy_label(_ai_runtime.AIErrorType.INVALID_PROVIDER_CREDENTIALS)
+# Label for a 403 that the chain has proven is about ONE model, not the key.
+MODEL_ACCESS_DENIED_LABEL = "model_access_denied"
+
+
+def _is_model_scoped_forbidden(error_label: Optional[str], upstream_status: Any, key_proven: bool) -> bool:
+    """True when a credential-class 403 is really a per-model refusal.
+
+    ``classify_provider_error`` treats every 403 as a credentials failure so a
+    broken account stops the chain at once instead of burning every candidate.
+    That guard is kept: a 403 on the FIRST contacted candidate still stops.
+    But once the same key has already received a non-auth upstream response
+    in this chain (429 / 5xx / timeout / 404 ...), the key demonstrably works,
+    and a 403 is OpenRouter refusing that one model or input. Treating it as
+    fatal aborted the whole Fast chain in production (upstream statuses
+    [429, 504, 403] → HTTP 503) and skipped both the remaining candidate and
+    the deterministic fallback.
+    """
+    try:
+        status = int(upstream_status)
+    except (TypeError, ValueError):
+        return False
+    return bool(key_proven and error_label == _CREDENTIAL_ERROR_LABEL and status == 403)
 
 
 def _classify_openrouter_error(
@@ -2696,6 +2719,8 @@ async def _openrouter_complete_with_candidates(
     upstream_statuses: List[int] = []
     last_error_type: Optional[str] = None
     last_retryable = False
+    # Set once any candidate got a non-auth upstream response: the key works.
+    key_proven = False
 
     for index, model in enumerate(runnable):
         remaining = chain_budget - (time.monotonic() - started)
@@ -2730,6 +2755,7 @@ async def _openrouter_complete_with_candidates(
             else:
                 last_error_type = "openrouter_candidate_timeout"
             last_retryable = True
+            key_proven = True
             _mark_openrouter_model_cooling_down(model)
             continue
         except HTTPException as exc:
@@ -2743,11 +2769,21 @@ async def _openrouter_complete_with_candidates(
                 detail.get("status"), detail.get("message"), detail.get("error")
             )
             if last_retryable:
+                key_proven = True
                 _mark_openrouter_model_cooling_down(model)
                 continue
             if last_error_type in _PER_MODEL_SKIP_ERROR_TYPES:
                 # Bad/unknown model id or no endpoints for THIS model: skip to the
                 # next candidate instead of aborting the whole request.
+                key_proven = True
+                continue
+            if _is_model_scoped_forbidden(last_error_type, detail.get("status"), key_proven):
+                # 403 after the key already worked in this chain: this model /
+                # input is refused, not the account. Skip it; if nothing else
+                # answers, the request ends in the retryable fallback path.
+                last_error_type = MODEL_ACCESS_DENIED_LABEL
+                last_retryable = True
+                _mark_openrouter_model_cooling_down(model)
                 continue
             break  # account-wide auth / bad-request / safety: stop early
         return {
@@ -3031,6 +3067,9 @@ async def _sse_answer_stream(
     runnable = [m for m in candidates if m not in cooling]
     skipped = [m for m in candidates if m in cooling]
     attempted: List[str] = []
+    # Set once any candidate got a non-auth upstream response (see
+    # _is_model_scoped_forbidden).
+    stream_key_proven = False
     last_error_type: Optional[str] = (
         "all_candidates_cooling_down" if not runnable else None
     )
@@ -3091,8 +3130,10 @@ async def _sse_answer_stream(
         except StopAsyncIteration:
             # Stream ended with zero tokens: treat as a soft failure, try next.
             last_error_type = "empty_stream"
+            stream_key_proven = True
             continue
         except TimeoutError:
+            stream_key_proven = True
             _mark_openrouter_model_cooling_down(model)
             if committed:
                 chain_budget_exhausted = True
@@ -3124,9 +3165,15 @@ async def _sse_answer_stream(
             )
             last_error_type = etype
             if retryable:
+                stream_key_proven = True
                 _mark_openrouter_model_cooling_down(model)
                 continue
             if etype in _PER_MODEL_SKIP_ERROR_TYPES:
+                stream_key_proven = True
+                continue
+            if _is_model_scoped_forbidden(etype, detail.get("status"), stream_key_proven):
+                last_error_type = MODEL_ACCESS_DENIED_LABEL
+                _mark_openrouter_model_cooling_down(model)
                 continue
             break
 

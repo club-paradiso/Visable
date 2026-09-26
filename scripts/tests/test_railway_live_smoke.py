@@ -150,7 +150,7 @@ class _FakeResponse(io.BytesIO):
 class SmokeRun:
     """One scripted execution of the embedded smoke script."""
 
-    def __init__(self, health_sequence, enforcement=ENFORCEMENT_LIVE, waymaker=WAYMAKER_LIVE, public=WAYMAKER_PUBLIC, public_status=200):
+    def __init__(self, health_sequence, enforcement=ENFORCEMENT_LIVE, waymaker=WAYMAKER_LIVE, public=WAYMAKER_PUBLIC, public_status=200, waymaker_status=200):
         # health_sequence: the commit each successive /health call reports.
         # The last entry repeats once exhausted.
         self.health_sequence = list(health_sequence)
@@ -158,6 +158,7 @@ class SmokeRun:
         self.waymaker = waymaker
         self.public = public
         self.public_status = public_status
+        self.waymaker_status = waymaker_status
         self.health_calls = 0
         self.slept = 0.0
         self.stdout = ""
@@ -181,6 +182,9 @@ class SmokeRun:
                                    "attempted_models": ["vendor/fast:free"], "upstream_statuses": [400]})
                 raise urllib.error.HTTPError(url, self.public_status, "error", {},
                                              io.BytesIO(json.dumps({"detail": detail}).encode()))
+            if self.waymaker_status != 200 and body.get("diagnostics") and body.get("answer_mode") == "basic":
+                raise urllib.error.HTTPError(url, self.waymaker_status, "error", {},
+                                             io.BytesIO(json.dumps(self.waymaker).encode()))
             payload = self.waymaker if body.get("diagnostics") else self.public
             return _FakeResponse(json.dumps(payload).encode())
         if "/api/enforcement/analyze" in url:
@@ -273,6 +277,14 @@ class RailwayLiveSmokeReadinessTests(unittest.TestCase):
         self.assertEqual(run.exit_code, 1, run.stdout + run.stderr)
         self.assertIn("waymaker_public_d2:", run.stdout)
         self.assertIn("leaks internal routing/source metadata", run.stderr)
+
+    def test_basic_http_error_logs_the_detail_envelope(self):
+        detail = {"detail": {"error": "openrouter_provider_error", "provider_error_type": "invalid_provider_config",
+                             "attempted_models": ["vendor/basic:free"], "upstream_statuses": [403]}}
+        run = SmokeRun([OUR_COMMIT], waymaker=detail, waymaker_status=503).run()
+        self.assertEqual(run.exit_code, 1, run.stdout + run.stderr)
+        self.assertIn('"provider_error_type": "invalid_provider_config"', run.stdout)
+        self.assertIn('"upstream_statuses": [403]', run.stdout)
 
     def test_public_waymaker_http_error_is_reported_with_diagnostics(self):
         run = SmokeRun([OUR_COMMIT], public=None, public_status=503).run()
