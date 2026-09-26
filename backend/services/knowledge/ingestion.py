@@ -42,13 +42,15 @@ from .models import (
     variant_key,
 )
 from .repository import KnowledgeRepository
+from . import paths as _paths
 from .review import ReviewService
 from .store import utc_now
 
 logger = logging.getLogger("paradiso.knowledge")
 
-REPO_ROOT = Path(__file__).resolve().parents[3]
-STATUS_UNIVERSE_PATH = REPO_ROOT / "data" / "status-guidance-202609.json"
+REPO_ROOT = _paths.REPO_ROOT
+STATUS_UNIVERSE_PATH = _paths.repo_data_path("data/status-guidance-202609.json",
+                                             "knowledge_deploy/status-guidance-202609.json")
 
 _ORIGIN_INITIAL_STATE = {
     FactOrigin.AI_EXTRACTION: LifecycleState.AI_EXTRACTED,
