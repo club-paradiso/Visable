@@ -26,7 +26,11 @@ from typing import Any, Dict, Iterable, List, Optional, Sequence
 
 from services.structured_answer import contains_internal_metadata
 
-_REPO_ROOT = Path(__file__).resolve().parents[3]
+from . import paths as _paths
+
+_REPO_ROOT = _paths.REPO_ROOT
+# doc_master.json already has a byte-identical deploy copy in backend/data.
+_DOC_MASTER_PATH = _paths.repo_data_path("doc_master.json", "doc_master.json")
 
 CRITICAL, HIGH, MEDIUM, LOW = "critical", "high", "medium", "low"
 
@@ -118,7 +122,7 @@ def _norm(text: str) -> str:
 def document_vocabulary() -> tuple:
     """Official document names Waymaker knows (doc_master.json)."""
     try:
-        data = json.loads((_REPO_ROOT / "doc_master.json").read_text(encoding="utf-8"))
+        data = json.loads(_DOC_MASTER_PATH.read_text(encoding="utf-8"))
     except (OSError, ValueError):
         return tuple()
     names = []

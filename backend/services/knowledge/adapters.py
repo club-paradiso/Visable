@@ -40,16 +40,22 @@ from .models import (
     SourceRefreshState,
     parent_code,
 )
+from . import paths as _paths
 from .repository import KnowledgeRepository
 from .review import ReviewService
 
 logger = logging.getLogger("paradiso.knowledge")
 
-REPO_ROOT = Path(__file__).resolve().parents[3]
-SOURCE_REGISTRY_PATH = REPO_ROOT / "data" / "source_registry.json"
-APPROVAL_INDEX_PATH = REPO_ROOT / "data" / "manual_approval_index.json"
-LEGACY_GROUNDING_PATH = REPO_ROOT / "backend" / "data" / "manual_grounding" / "stay_manual_grounding_2026_05.json"
-STATUS_GUIDANCE_PATH = REPO_ROOT / "data" / "status-guidance-202609.json"
+REPO_ROOT = _paths.REPO_ROOT
+# Repository-root files resolve to their backend/data deploy copy when the
+# root is not in the build context (Railway Root Directory = backend).
+SOURCE_REGISTRY_PATH = _paths.repo_data_path("data/source_registry.json", "knowledge_deploy/source_registry.json")
+APPROVAL_INDEX_PATH = _paths.repo_data_path("data/manual_approval_index.json",
+                                            "knowledge_deploy/manual_approval_index.json")
+LEGACY_GROUNDING_PATH = _paths.BACKEND_DIR / "data" / "manual_grounding" / "stay_manual_grounding_2026_05.json"
+STATUS_GUIDANCE_PATH = _paths.repo_data_path("data/status-guidance-202609.json",
+                                             "knowledge_deploy/status-guidance-202609.json")
+# Not copied into the deploy context (3 MB; Studio evidence / page counts only).
 MANUAL_CORPUS_DIR = REPO_ROOT / "data" / "manual-corpus"
 
 LEGACY_ACTOR = "legacy:stay_manual_grounding_2026_05.json"

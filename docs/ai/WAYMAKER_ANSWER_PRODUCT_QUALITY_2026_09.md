@@ -141,6 +141,31 @@ look contradictory, all fixed:
   Fast) D-2 request asserting the structured checklist and no provider /
   model / internal metadata / Markdown in the ordinary response.
 
+## Production follow-up: no structured checklist on Railway
+
+Railway Live Smoke runs 72 (`a5a8b7d`) and 73 (`cdb9ca3`) returned HTTP 200
+with no leaks but `structured_answer: false`, while the same request offline
+returned the checklist.
+
+Cause (reproduced from a backend-only copy of the tree): the Railway service
+is deployed with Root Directory = `backend`, so repository-root files are not
+in the build context. The Knowledge Platform (#644) bootstrap read
+`<repo root>/data/source_registry.json` and `<repo root>/backend/data/…`,
+raised `FileNotFoundError` in `get_platform()` on every request (also in its
+in-memory fallback), and `_select_grounding()` swallowed it and returned
+`None` — no grounding, no structured answer. `manual_grounding_status` still
+read `present` because structured requirements also set it.
+
+Fix: `services/knowledge/paths.py` resolves repository-root files to
+byte-identical deploy copies in `backend/data/knowledge_deploy/`
+(`source_registry.json`, `manual_approval_index.json`,
+`status-guidance-202609.json`; `doc_master.json` reuses the existing copy),
+maintained and drift-checked by `scripts/sync_visa_data.py`. The legacy
+grounding path is now backend-relative. `data/manual-corpus` (3 MB, Studio
+evidence snippets and page counts only) is not copied. Guarded by
+`backend/tests/test_knowledge_deploy_context.py`, which runs the platform from
+a backend-only copy.
+
 ## Known limits
 
 * Manual notes and document labels are Korean source text in every locale

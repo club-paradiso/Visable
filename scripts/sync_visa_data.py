@@ -16,8 +16,14 @@ Synced pairs:
       serve raw identifiers like `doc_fee_generic` as user-facing document
       names. Caught by review on PR #582, where the resolver fix passed CI and
       did nothing in production for precisely this reason.
+  data/source_registry.json, data/manual_approval_index.json,
+  data/status-guidance-202609.json -> backend/data/knowledge_deploy/
+      Missing copies make the Waymaker Knowledge Platform bootstrap raise
+      FileNotFoundError on every request (services/knowledge/paths.py), so
+      /api/ask loses its manual grounding and the structured document
+      checklist in production while CI stays green.
 
-Both targets are byte-identical copies. This script never edits content: it
+All targets are byte-identical copies. This script never edits content: it
 copies, or reports drift. The canonical file at the repository root stays the
 single source of truth.
 
@@ -40,6 +46,12 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 SYNCED_PAIRS: Tuple[Tuple[Path, Path], ...] = (
     (REPO_ROOT / "visa_data.json", REPO_ROOT / "backend" / "data" / "visas.json"),
     (REPO_ROOT / "doc_master.json", REPO_ROOT / "backend" / "data" / "doc_master.json"),
+    (REPO_ROOT / "data" / "source_registry.json",
+     REPO_ROOT / "backend" / "data" / "knowledge_deploy" / "source_registry.json"),
+    (REPO_ROOT / "data" / "manual_approval_index.json",
+     REPO_ROOT / "backend" / "data" / "knowledge_deploy" / "manual_approval_index.json"),
+    (REPO_ROOT / "data" / "status-guidance-202609.json",
+     REPO_ROOT / "backend" / "data" / "knowledge_deploy" / "status-guidance-202609.json"),
 )
 
 # Back-compat for anything importing the old single-pair constants.
