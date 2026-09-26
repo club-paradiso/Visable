@@ -56,7 +56,7 @@ LEGACY_GROUNDING_PATH = _paths.BACKEND_DIR / "data" / "manual_grounding" / "stay
 STATUS_GUIDANCE_PATH = _paths.repo_data_path("data/status-guidance-202609.json",
                                              "knowledge_deploy/status-guidance-202609.json")
 # Not copied into the deploy context (3 MB; Studio evidence / page counts only).
-MANUAL_CORPUS_DIR = REPO_ROOT / "data" / "manual-corpus"
+MANUAL_CORPUS_DIR = _paths.repo_data_path("data/manual-corpus", "knowledge_deploy/manual-corpus")
 
 LEGACY_ACTOR = "legacy:stay_manual_grounding_2026_05.json"
 

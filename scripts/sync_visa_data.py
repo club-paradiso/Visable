@@ -52,6 +52,18 @@ SYNCED_PAIRS: Tuple[Tuple[Path, Path], ...] = (
      REPO_ROOT / "backend" / "data" / "knowledge_deploy" / "manual_approval_index.json"),
     (REPO_ROOT / "data" / "status-guidance-202609.json",
      REPO_ROOT / "backend" / "data" / "knowledge_deploy" / "status-guidance-202609.json"),
+    # Manual page corpus: edition page counts and source-evidence excerpts
+    # (services/knowledge/adapters.py, services/knowledge/evidence.py).
+    *(
+        (REPO_ROOT / "data" / "manual-corpus" / name,
+         REPO_ROOT / "backend" / "data" / "knowledge_deploy" / "manual-corpus" / name)
+        for name in (
+            "catalog.json",
+            "sources.json",
+            "stay_manual_2026_09_18_pdf.json",
+            "visa_manual_2026_09_01_pdf.json",
+        )
+    ),
 )
 
 # Back-compat for anything importing the old single-pair constants.

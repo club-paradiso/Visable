@@ -19,7 +19,10 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-_CORPUS_DIR = Path(__file__).resolve().parents[3] / "data" / "manual-corpus"
+from .paths import repo_data_path
+
+# Deploy-context aware (Railway Root Directory = backend): services/knowledge/paths.py.
+_CORPUS_DIR = repo_data_path("data/manual-corpus", "knowledge_deploy/manual-corpus")
 _WINDOW = 360
 
 

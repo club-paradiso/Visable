@@ -49,6 +49,8 @@ from dataclasses import dataclass, field
 from datetime import date, datetime
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
+from .knowledge.paths import repo_data_path
+
 MANUAL_REGISTRY_VERSION = "2026-07-manual-registry-v1"
 
 STATE_DRAFT = "draft"
@@ -68,8 +70,12 @@ DIRECT_EVIDENCE_STATES = frozenset({STATE_APPROVED})
 
 _REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-SOURCE_REGISTRY_PATH = os.path.join(_REPO_ROOT, "data", "source_registry.json")
-APPROVAL_INDEX_PATH = os.path.join(_REPO_ROOT, "data", "manual_approval_index.json")
+# Railway deploys Root Directory = backend, where the repository-root data/
+# files are absent: resolve to their byte-identical backend/data copies there
+# (services/knowledge/paths.py). Without this, production saw zero manual
+# versions and every manual fell back to needs_review.
+SOURCE_REGISTRY_PATH = str(repo_data_path("data/source_registry.json", "knowledge_deploy/source_registry.json"))
+APPROVAL_INDEX_PATH = str(repo_data_path("data/manual_approval_index.json", "knowledge_deploy/manual_approval_index.json"))
 
 
 # ---------------------------------------------------------------------------

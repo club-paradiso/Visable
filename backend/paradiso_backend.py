@@ -2761,6 +2761,11 @@ async def _openrouter_complete_with_candidates(
     last_retryable = False
     # Set once any candidate got a non-auth upstream response: the key works.
     key_proven = False
+    # A capacity-type failure (429/503/timeout, or a model skipped while
+    # cooling down) anywhere in the chain. The last error alone used to decide
+    # retryability, so "429 then no-endpoints" read as a configuration error.
+    capacity_failure_seen = bool(skipped)
+    fatal_stop = False
 
     for index, model in enumerate(runnable):
         remaining = chain_budget - (time.monotonic() - started)
@@ -2795,6 +2800,7 @@ async def _openrouter_complete_with_candidates(
             else:
                 last_error_type = "openrouter_candidate_timeout"
             last_retryable = True
+            capacity_failure_seen = True
             key_proven = True
             _mark_openrouter_model_cooling_down(model)
             continue
@@ -2809,6 +2815,7 @@ async def _openrouter_complete_with_candidates(
                 detail.get("status"), detail.get("message"), detail.get("error")
             )
             if last_retryable:
+                capacity_failure_seen = True
                 key_proven = True
                 _mark_openrouter_model_cooling_down(model)
                 continue
@@ -2823,8 +2830,10 @@ async def _openrouter_complete_with_candidates(
                 # answers, the request ends in the retryable fallback path.
                 last_error_type = MODEL_ACCESS_DENIED_LABEL
                 last_retryable = True
+                capacity_failure_seen = True
                 _mark_openrouter_model_cooling_down(model)
                 continue
+            fatal_stop = True
             break  # account-wide auth / bad-request / safety: stop early
         return {
             "ok": True,
@@ -2863,7 +2872,11 @@ async def _openrouter_complete_with_candidates(
         "model_fallback_used": len(attempted) > 1 or bool(skipped),
         "provider_error_type": last_error_type or "unknown_provider_error",
         "upstream_statuses": upstream_statuses,
-        "retryable_provider_error": last_retryable,
+        # An account-wide fatal stop stays non-retryable. Otherwise the chain
+        # was exhausted: if any candidate failed on capacity, this is an outage
+        # (retryable fallback path), not a configuration error, even when the
+        # last candidate happened to report "model not found".
+        "retryable_provider_error": last_retryable or (capacity_failure_seen and not fatal_stop),
         "all_candidates_failed": (
             chain_budget_exhausted
             or len(attempted) + len(skipped) == len(candidates)

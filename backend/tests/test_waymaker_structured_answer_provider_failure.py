@@ -189,6 +189,47 @@ class StructuredAnswerSurvivesModelFailureTests(_Harness):
         self.assert_public(resp)
 
 
+class StreamPathTests(_Harness):
+    """The SSE path (unused by ai.html, which forces stream:false) must also
+    deliver the canonical checklist when every model fails non-retryably."""
+
+    def _stream(self, raise_for):
+        async def fake_stream(prompt, model=None, max_tokens=None):
+            self.calls.append(model)
+            raise raise_for(model)
+            yield ""  # pragma: no cover - makes this an async generator
+
+        with patch.object(pb, "OPENROUTER_API_KEY", "sk-test-sentinel"), \
+                patch.object(pb, "_stream_openrouter_text", fake_stream):
+            return TestClient(pb.app).post("/api/ask", json={**D2_FAST_REQUEST, "stream": True})
+
+    def _events(self, text):
+        out = []
+        for frame in text.split("\n\n"):
+            ev = next((ln[6:].strip() for ln in frame.splitlines() if ln.startswith("event:")), None)
+            data = "".join(ln[5:].strip() for ln in frame.splitlines() if ln.startswith("data:"))
+            if ev and data:
+                out.append((ev, json.loads(data)))
+        return out
+
+    def test_non_retryable_stream_failure_ends_in_structured_fallback(self):
+        resp = self._stream(_model_not_found)
+        self.assertEqual(resp.status_code, 200)
+        events = self._events(resp.text)
+        kinds = [e for e, _ in events]
+        self.assertEqual(kinds[0], "meta")
+        self.assertEqual(kinds[-1], "fallback")
+        meta = events[0][1]
+        docs = meta["structured_answer"]["required_documents"]
+        self.assertEqual([d["label"] for d in docs["common"]], ["신청서", "여권", "외국인등록증", "수수료"])
+        fallback = events[-1][1]
+        for doc in ("신청서", "여권", "외국인등록증", "수수료"):
+            self.assertIn(doc, fallback["answer"])
+        lowered = resp.text.lower()
+        for term in VENDOR_TERMS:
+            self.assertNotIn(term, lowered)
+
+
 class ModelDependentQuestionsKeepFailureSemanticsTests(_Harness):
     def test_e_non_retryable_provider_error_still_503(self):
         resp = self._post({"question": MODEL_DEPENDENT_QUESTION, "answer_mode": "fast", "stream": False},

@@ -568,6 +568,40 @@ class CandidateFallbackBehaviorTests(unittest.TestCase):
                 self.assertNotIn(message, resp.text)
                 self.assertNotIn("or-sentinel-key", resp.text)
 
+    def test_capacity_failure_then_model_not_found_is_an_outage_not_config(self):
+        # The chain used to judge retryability by its LAST error only: a 429 on
+        # the first model followed by "no endpoints" on the rest was reported
+        # as a configuration error and a model-dependent question got a 503.
+        # A capacity failure anywhere in an exhausted chain is an outage.
+        pb = _pb()
+        behaviors = {CANDS[0]: (429, "rate limit")}
+        behaviors.update({c: (404, "No endpoints found for this model") for c in CANDS[1:]})
+        resp, calls = self._ask(pb, behaviors, question=H1_Q, visa_code="H-1")
+        self.assertEqual(resp.status_code, 200, resp.text)
+        self.assertEqual(calls, CANDS)
+        body = resp.json()
+        self.assertTrue(body["retryable_provider_error"])
+        self.assertTrue(body["deterministic_fallback_answer_used"])
+
+    def test_every_model_not_found_is_still_a_configuration_error(self):
+        # No capacity signal at all: genuinely broken model ids keep the safe
+        # 503 so operators repair the configuration.
+        pb = _pb()
+        resp, calls = self._ask(pb, {c: (404, "No endpoints found for this model") for c in CANDS},
+                                question=H1_Q, visa_code="H-1")
+        self.assertEqual(resp.status_code, 503, resp.text)
+        self.assertEqual(calls, CANDS)
+        self.assertFalse(resp.json()["detail"]["retryable_provider_error"])
+
+    def test_capacity_then_fatal_auth_error_stays_fatal(self):
+        # An account-wide fatal stop is never softened by an earlier 429.
+        pb = _pb()
+        resp, calls = self._ask(pb, {CANDS[0]: (429, "rate limit"), CANDS[1]: (401, "Invalid API key")},
+                                question=H1_Q, visa_code="H-1")
+        self.assertEqual(resp.status_code, 503, resp.text)
+        self.assertEqual(calls, CANDS[:2])
+        self.assertEqual(resp.json()["detail"]["provider_error_type"], "invalid_provider_config")
+
     def test_grounding_metadata_survives_model_retries(self):
         pb = _pb()
         resp, calls = self._ask(pb, {CANDS[0]: (429, "rate limit")}, question=H1_Q, visa_code="H-1")
