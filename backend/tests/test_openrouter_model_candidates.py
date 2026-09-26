@@ -510,8 +510,8 @@ class CandidateFallbackBehaviorTests(unittest.TestCase):
         # The broken-account guard is unchanged: with no proof the key works,
         # a 403 stops immediately instead of burning every candidate.
         pb = _pb()
-        # Model-dependent question: a source-confirmed structured document
-        # lookup is served without the model (#643), so it would not 503.
+        # Model-dependent question: a structured document lookup would
+        # survive this with its deterministic checklist.
         resp, calls = self._ask(pb, {c: (403, "Forbidden") for c in CANDS}, question=H1_Q, visa_code="H-1")
         self.assertEqual(resp.status_code, 503, resp.text)
         self.assertEqual(calls, [CANDS[0]])
