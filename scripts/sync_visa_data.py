@@ -40,6 +40,21 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 SYNCED_PAIRS: Tuple[Tuple[Path, Path], ...] = (
     (REPO_ROOT / "visa_data.json", REPO_ROOT / "backend" / "data" / "visas.json"),
     (REPO_ROOT / "doc_master.json", REPO_ROOT / "backend" / "data" / "doc_master.json"),
+    # Waymaker knowledge platform inputs (services/deploy_paths.py). Missing
+    # copies left the platform empty on Railway, so manual grounding and the
+    # structured D-2 document answer silently disappeared in production.
+    *(
+        (REPO_ROOT / "data" / rel, REPO_ROOT / "backend" / "data" / "repo_data" / rel)
+        for rel in (
+            "source_registry.json",
+            "manual_approval_index.json",
+            "status-guidance-202609.json",
+            "manual-corpus/catalog.json",
+            "manual-corpus/sources.json",
+            "manual-corpus/stay_manual_2026_09_18_pdf.json",
+            "manual-corpus/visa_manual_2026_09_01_pdf.json",
+        )
+    ),
 )
 
 # Back-compat for anything importing the old single-pair constants.

@@ -28,6 +28,7 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple
 
 from services import structured_answer as _structured_answer
+from services.deploy_paths import repo_path
 
 from .ingestion import IngestionService
 from .models import (
@@ -46,11 +47,13 @@ from .review import ReviewService
 logger = logging.getLogger("paradiso.knowledge")
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
-SOURCE_REGISTRY_PATH = REPO_ROOT / "data" / "source_registry.json"
-APPROVAL_INDEX_PATH = REPO_ROOT / "data" / "manual_approval_index.json"
-LEGACY_GROUNDING_PATH = REPO_ROOT / "backend" / "data" / "manual_grounding" / "stay_manual_grounding_2026_05.json"
-STATUS_GUIDANCE_PATH = REPO_ROOT / "data" / "status-guidance-202609.json"
-MANUAL_CORPUS_DIR = REPO_ROOT / "data" / "manual-corpus"
+# Repository-root data resolves to its backend deploy copy on Railway
+# (Root Directory = backend); see services/deploy_paths.py.
+SOURCE_REGISTRY_PATH = repo_path("data/source_registry.json")
+APPROVAL_INDEX_PATH = repo_path("data/manual_approval_index.json")
+LEGACY_GROUNDING_PATH = Path(__file__).resolve().parents[2] / "data" / "manual_grounding" / "stay_manual_grounding_2026_05.json"
+STATUS_GUIDANCE_PATH = repo_path("data/status-guidance-202609.json")
+MANUAL_CORPUS_DIR = repo_path("data/manual-corpus")
 
 LEGACY_ACTOR = "legacy:stay_manual_grounding_2026_05.json"
 

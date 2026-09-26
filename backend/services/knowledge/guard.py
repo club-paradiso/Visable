@@ -24,6 +24,7 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Sequence
 
+from services.deploy_paths import repo_path
 from services.structured_answer import contains_internal_metadata
 
 _REPO_ROOT = Path(__file__).resolve().parents[3]
@@ -118,7 +119,7 @@ def _norm(text: str) -> str:
 def document_vocabulary() -> tuple:
     """Official document names Waymaker knows (doc_master.json)."""
     try:
-        data = json.loads((_REPO_ROOT / "doc_master.json").read_text(encoding="utf-8"))
+        data = json.loads(repo_path("doc_master.json").read_text(encoding="utf-8"))
     except (OSError, ValueError):
         return tuple()
     names = []
