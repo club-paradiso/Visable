@@ -36,6 +36,23 @@ if str(BACKEND_DIR) not in sys.path:
 # use the explicit developer-diagnostics opt-in.
 DIAGNOSTICS_HEADERS = {"X-Paradiso-Diagnostics": "1"}
 
+
+def _no_provider_payload(tc, resp):
+    """Metadata of an /api/ask response when no LLM provider is configured.
+
+    Model-dependent questions return the safe 503 envelope. A source-confirmed
+    document lookup is answerable without any model, so it returns 200 with the
+    deterministic structured checklist (never a 503 that discards it).
+    """
+    if resp.status_code == 200:
+        body = resp.json()
+        tc.assertTrue(body.get("structured_answer"), resp.text)
+        tc.assertTrue(body.get("deterministic_fallback_answer_used"), resp.text)
+        tc.assertEqual(body.get("fallback_answer_kind"), "structured_document_checklist")
+        return body
+    tc.assertEqual(resp.status_code, 503, resp.text)
+    return resp.json()["detail"]
+
 def _client():
     # Ensure no LLM provider is configured so /api/ask never makes a
     # real upstream call. We only assert on schema-level behavior here.
@@ -194,20 +211,28 @@ class AskEndpointSchemaTests(unittest.TestCase):
 
     def test_accepts_message(self):
         resp = self._post({"message": self.PROMPT})
+        payload = _no_provider_payload(self, resp)
+        # PROMPT is a source-confirmed D-2 document lookup: answered from the
+        # canonical checklist even with no provider configured.
+        self.assertEqual(resp.status_code, 200, resp.text)
+        self.assertEqual(payload["visa_code_detected"], "D-2")
+
+    def test_model_dependent_prompt_without_provider_is_503(self):
+        resp = self._post({"message": "커피 추천해줘"})
         self.assertEqual(resp.status_code, 503, resp.text)
         self.assertEqual(resp.json()["detail"]["error"], "no_llm_provider_configured")
 
     def test_accepts_query(self):
         resp = self._post({"query": self.PROMPT})
-        self.assertEqual(resp.status_code, 503, resp.text)
+        _no_provider_payload(self, resp)
 
     def test_accepts_question(self):
         resp = self._post({"question": self.PROMPT})
-        self.assertEqual(resp.status_code, 503, resp.text)
+        _no_provider_payload(self, resp)
 
     def test_accepts_visa_code_without_400(self):
         resp = self._post({"question": self.PROMPT, "visa_code": "D-2"})
-        self.assertEqual(resp.status_code, 503, resp.text)
+        _no_provider_payload(self, resp)
 
     def test_accepts_full_frontend_payload(self):
         """The shape index.html / ai.html actually send."""
@@ -218,7 +243,7 @@ class AskEndpointSchemaTests(unittest.TestCase):
             "lang": "ko",
             "visa_data": {"code": "D-2", "name": "유학"},
         })
-        self.assertEqual(resp.status_code, 503, resp.text)
+        _no_provider_payload(self, resp)
 
     def test_empty_payload_returns_updated_error_message(self):
         resp = self._post({})
@@ -316,8 +341,7 @@ class AskEndpointGroundingTests(unittest.TestCase):
             "visa_code": "D-2",
             "lang": "ko",
         })
-        self.assertEqual(resp.status_code, 503, resp.text)
-        detail = resp.json()["detail"]
+        detail = _no_provider_payload(self, resp)
         self.assertTrue(detail.get("grounding_used"))
         self.assertEqual(detail.get("visa_code_detected"), "D-2")
         self.assertEqual(detail.get("task_type_detected"), "extension")
@@ -336,8 +360,7 @@ class AskEndpointGroundingTests(unittest.TestCase):
         resp = self._post({
             "question": "유학(D-2) 자격으로 체류 중인데 체류기간 연장허가 신청에 필요한 서류는?",
         })
-        self.assertEqual(resp.status_code, 503, resp.text)
-        detail = resp.json()["detail"]
+        detail = _no_provider_payload(self, resp)
         self.assertTrue(detail.get("grounding_used"))
         self.assertEqual(detail.get("visa_code_detected"), "D-2")
         self.assertEqual(detail.get("task_type_detected"), "extension")
@@ -347,8 +370,7 @@ class AskEndpointGroundingTests(unittest.TestCase):
             "question": "What documents do I need to extend my D-2 student visa stay?",
             "visa_code": "D-2",
         })
-        self.assertEqual(resp.status_code, 503, resp.text)
-        detail = resp.json()["detail"]
+        detail = _no_provider_payload(self, resp)
         self.assertTrue(detail.get("grounding_used"))
         self.assertEqual(detail.get("visa_code_detected"), "D-2")
         self.assertEqual(detail.get("task_type_detected"), "extension")
@@ -480,8 +502,7 @@ class AskEndpointExpandedGroundingTests(unittest.TestCase):
             "question": "What documents do I need to extend my D-4 language-training stay in Korea?",
             "visa_code": "D-4",
         })
-        self.assertEqual(resp.status_code, 503, resp.text)
-        detail = resp.json()["detail"]
+        detail = _no_provider_payload(self, resp)
         self.assertTrue(detail.get("grounding_used"))
         self.assertEqual(detail.get("visa_code_detected"), "D-4")
         self.assertEqual(detail.get("task_type_detected"), "extension")
@@ -492,8 +513,7 @@ class AskEndpointExpandedGroundingTests(unittest.TestCase):
                 "question": "체류기간 연장 신청에 필요한 서류는?",
                 "visa_code": raw,
             })
-            self.assertEqual(resp.status_code, 503, resp.text)
-            detail = resp.json()["detail"]
+            detail = _no_provider_payload(self, resp)
             self.assertTrue(detail.get("grounding_used"), f"raw={raw!r} did not ground")
             self.assertEqual(detail.get("visa_code_detected"), "D-4")
 
@@ -515,8 +535,7 @@ class AskEndpointExpandedGroundingTests(unittest.TestCase):
             "visa_code": "E-7",
             "lang": "ko",
         })
-        self.assertEqual(resp.status_code, 503, resp.text)
-        detail = resp.json()["detail"]
+        detail = _no_provider_payload(self, resp)
         self.assertTrue(detail.get("grounding_used"))
         self.assertEqual(detail.get("visa_code_detected"), "E-7")
         self.assertEqual(detail.get("task_type_detected"), "extension")
@@ -530,8 +549,7 @@ class AskEndpointExpandedGroundingTests(unittest.TestCase):
             "question": "What documents do I need to extend my E-7 specially-designated activity status in Korea?",
             "visa_code": "E7",
         })
-        self.assertEqual(resp.status_code, 503, resp.text)
-        detail = resp.json()["detail"]
+        detail = _no_provider_payload(self, resp)
         self.assertTrue(detail.get("grounding_used"))
         self.assertEqual(detail.get("visa_code_detected"), "E-7")
         self.assertEqual(detail.get("task_type_detected"), "extension")
@@ -542,8 +560,7 @@ class AskEndpointExpandedGroundingTests(unittest.TestCase):
                 "question": "체류기간 연장에 필요한 서류는?",
                 "visa_code": raw,
             })
-            self.assertEqual(resp.status_code, 503, resp.text)
-            detail = resp.json()["detail"]
+            detail = _no_provider_payload(self, resp)
             self.assertTrue(detail.get("grounding_used"), f"raw={raw!r} did not ground")
             self.assertEqual(detail.get("visa_code_detected"), "E-7")
 
@@ -563,14 +580,14 @@ class AskEndpointExpandedGroundingTests(unittest.TestCase):
         resp = self._post({
             "question": "일반연수(D-4) 자격으로 체류기간 연장허가 신청에 필요한 서류는?",
         })
-        detail = resp.json()["detail"]
+        detail = _no_provider_payload(self, resp)
         self.assertTrue(detail.get("grounding_used"))
         self.assertEqual(detail.get("visa_code_detected"), "D-4")
 
         resp = self._post({
             "question": "특정활동(E-7) 자격으로 체류기간 연장허가 신청 시 제출서류가 무엇인지 알려주세요.",
         })
-        detail = resp.json()["detail"]
+        detail = _no_provider_payload(self, resp)
         self.assertTrue(detail.get("grounding_used"))
         self.assertEqual(detail.get("visa_code_detected"), "E-7")
 
@@ -708,15 +725,13 @@ class AskEndpointVisaCodeNormalizationTests(unittest.TestCase):
 
     def test_lowercase_d2_payload_triggers_grounding(self):
         resp = self._post({"question": self.PROMPT, "visa_code": "d2"})
-        self.assertEqual(resp.status_code, 503, resp.text)
-        detail = resp.json()["detail"]
+        detail = _no_provider_payload(self, resp)
         self.assertTrue(detail.get("grounding_used"))
         self.assertEqual(detail.get("visa_code_detected"), "D-2")
 
     def test_uppercase_no_hyphen_d2_payload_triggers_grounding(self):
         resp = self._post({"question": self.PROMPT, "visa_code": "D2"})
-        self.assertEqual(resp.status_code, 503, resp.text)
-        detail = resp.json()["detail"]
+        detail = _no_provider_payload(self, resp)
         self.assertTrue(detail.get("grounding_used"))
         self.assertEqual(detail.get("visa_code_detected"), "D-2")
 
@@ -725,8 +740,7 @@ class AskEndpointVisaCodeNormalizationTests(unittest.TestCase):
             "question": self.PROMPT,
             "visa_data": {"code": "d2", "name": "유학"},
         })
-        self.assertEqual(resp.status_code, 503, resp.text)
-        detail = resp.json()["detail"]
+        detail = _no_provider_payload(self, resp)
         self.assertTrue(detail.get("grounding_used"))
         self.assertEqual(detail.get("visa_code_detected"), "D-2")
 
@@ -951,8 +965,7 @@ class AskEndpointSubCodeRoutingTests(unittest.TestCase):
         return client.post("/api/ask", json=payload)
 
     def _detail(self, resp):
-        self.assertEqual(resp.status_code, 503, resp.text)
-        return resp.json()["detail"]
+        return _no_provider_payload(self, resp)
 
     # ---- D-4 sub-code routing ----
     def test_d4_2k_payload_does_not_use_d4_grounding(self):
@@ -1265,8 +1278,7 @@ class FallbackGroundingRoutingTests(unittest.TestCase):
         return client.post("/api/ask", json=payload)
 
     def _detail(self, resp):
-        self.assertEqual(resp.status_code, 503, resp.text)
-        return resp.json()["detail"]
+        return _no_provider_payload(self, resp)
 
     def test_f61_divorce_query_does_not_use_grounding(self):
         detail = self._detail(self._post({
@@ -1670,8 +1682,7 @@ class GoldenEvalSuiteTests(unittest.TestCase):
         if code is not None:
             payload["visa_data"] = {"code": code}
         resp = client.post("/api/ask", json=payload)
-        self.assertEqual(resp.status_code, 503, resp.text)
-        return resp.json()["detail"]
+        return _no_provider_payload(self, resp)
 
     def test_h1_summer_semester_contract_metadata(self):
         d = self._ask_detail(
@@ -1970,8 +1981,7 @@ class AskLawGroundingPhase4Tests(unittest.TestCase):
         os.environ["LAW_GROUNDING_MODE"] = "audit"
         client, _ = _client()
         resp = client.post("/api/ask", json={"question": "D-2 연장 서류가 뭐야?", "visa_code": "D-2"})
-        self.assertEqual(resp.status_code, 503)
-        detail = resp.json()["detail"]
+        detail = _no_provider_payload(self, resp)
         self.assertFalse(detail.get("law_grounding_attempted", False))
 
     def test_audit_mode_legal_basis_question_attempted(self):
@@ -1986,8 +1996,7 @@ class AskLawGroundingPhase4Tests(unittest.TestCase):
         os.environ["LAW_GROUNDING_MODE"] = "audit"
         client, _ = _client()
         resp = client.post("/api/ask", json={"question": "D-2 연장 서류", "visa_code": "D-2"})
-        self.assertEqual(resp.status_code, 503)
-        detail = resp.json()["detail"]
+        detail = _no_provider_payload(self, resp)
         self.assertTrue(detail.get("grounding_used"))
         self.assertFalse(detail.get("law_grounding_attempted", False))
 
@@ -2102,8 +2111,7 @@ class LawGroundingMetadataStatusTests(unittest.TestCase):
     def _detail(self, question):
         client, _ = _client()
         resp = client.post("/api/ask", json={"question": question})
-        self.assertEqual(resp.status_code, 503, resp.text)
-        return resp.json()["detail"]
+        return _no_provider_payload(self, resp)
 
     def test_unrelated_question_status_not_attempted(self):
         detail = self._detail("커피 한 잔 추천해줘")
@@ -2578,8 +2586,7 @@ class AskVisaDataInjectionTests(unittest.TestCase):
             },
             "lang": "ko",
         })
-        self.assertEqual(resp.status_code, 503, resp.text)
-        detail = resp.json()["detail"]
+        detail = _no_provider_payload(self, resp)
         self.assertTrue(detail.get("grounding_used"))
         sources = detail.get("grounding_sources") or []
         self.assertEqual(len(sources), 1)
@@ -2834,8 +2841,7 @@ class AnswerQualityGoldenSuiteTests(unittest.TestCase):
             payload["visa_data"] = {"code": code}
         payload.update(extra)
         resp = client.post("/api/ask", json=payload)
-        self.assertEqual(resp.status_code, 503, resp.text)
-        return resp.json()["detail"]
+        return _no_provider_payload(self, resp)
 
     # -- H-1 study / activity-scope golden regression (Part E) --------------
     def test_h1_korean_seasonal_course(self):
@@ -3079,7 +3085,7 @@ class AskInputCapTests(unittest.TestCase):
         resp = client.post(
             "/api/ask", json={"question": "D-2 연장 서류 알려줘", "history": history}
         )
-        self.assertEqual(resp.status_code, 503, resp.text)  # not a 400
+        _no_provider_payload(self, resp)  # not a 400
 
     def test_oversized_visa_data_returns_400(self):
         client, pb = _client()

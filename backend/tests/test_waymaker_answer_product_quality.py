@@ -271,8 +271,11 @@ class PublicProjectionTests(_AskHarness):
         self.assertNotIn("sk-test-sentinel", record)
 
     def test_error_envelope_does_not_name_a_vendor(self):
+        # A model-dependent question (no structured answer): the D-2 document
+        # lookup itself is answerable without a provider (see
+        # test_waymaker_structured_answer_provider_failure.py).
         with patch.object(pb, "OPENROUTER_API_KEY", None), patch.object(pb, "GROQ_API_KEY", None):
-            resp = TestClient(pb.app).post("/api/ask", json={"question": "D-2 연장시 필수 서류"})
+            resp = TestClient(pb.app).post("/api/ask", json={"question": "D-4 자격 신청에 필요한 학력 증빙은 무엇인가요?"})
         self.assertEqual(resp.status_code, 503)
         detail = resp.json()["detail"]
         self.assertEqual(detail["error"], "no_llm_provider_configured")

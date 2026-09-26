@@ -669,6 +669,10 @@ class AskResponse(BaseModel):
     # source-confirmed manual list; the checklist buckets come from canonical
     # grounding data, never from the model. See services/structured_answer.py.
     structured_answer: Optional[Dict[str, Any]] = None
+    # Set only when a structured answer was delivered without the optional
+    # model summary. Diagnostics/telemetry only (hidden from the public view).
+    summary_generation_status: Optional[str] = None
+    summary_generation_failed: bool = False
     # Knowledge Platform answer plan (understanding / coverage / retrieval /
     # guard). Diagnostics-only: removed by _public_ask_payload.
     knowledge_plan: Optional[Dict[str, Any]] = None
@@ -2323,6 +2327,42 @@ def build_legal_analysis_fallback_answer(
         lines.extend(["", "Questions to confirm with the official office:", *[f"* {q}" for q in questions]])
     lines.extend(["", source_note, "This is not a final determination. Before acting, confirm the fact pattern with 1345, HiKorea, or the competent immigration office."])
     return "\n".join(lines)
+
+def _structured_answer_without_model_payload(
+    prompt: str,
+    lang: Optional[str],
+    base_meta: Dict[str, Any],
+    attempt_meta: Dict[str, Any],
+    *,
+    reason: str,
+) -> Optional[Dict[str, Any]]:
+    """Deliver a built source-confirmed structured answer without the model.
+
+    For a structured document lookup the checklist, buckets and source card
+    come from canonical grounding data; the model only contributes an optional
+    short summary (services/structured_answer.py). Its availability therefore
+    must not decide whether the user gets the factual answer: on ANY summary
+    failure (retryable, non-retryable, or no provider configured) the
+    deterministic short answer is kept and the same structured payload is
+    returned. Returns ``None`` when no structured answer was built, so every
+    model-dependent question keeps its existing failure semantics.
+
+    The failure stays observable through server telemetry and explicit
+    diagnostics (``summary_generation_*`` + ``provider_error_type``), never in
+    the ordinary public response.
+    """
+    structured = base_meta.get("structured_answer")
+    if not isinstance(structured, dict):
+        return None
+    payload = _build_deterministic_fallback_payload(
+        prompt, lang, base_meta, attempt_meta, reason=reason,
+    )
+    payload["summary_generation_status"] = "failed"
+    payload["summary_generation_failed"] = True
+    if not payload.get("provider_error_type"):
+        payload["provider_error_type"] = reason
+    return payload
+
 
 def _build_deterministic_fallback_payload(prompt: str, lang: Optional[str], base_meta: Dict[str, Any], attempt_meta: Dict[str, Any], reason: str) -> Dict[str, Any]:
     legal_analysis = base_meta.get("legal_analysis") if isinstance(base_meta.get("legal_analysis"), dict) else None
@@ -5254,6 +5294,7 @@ ASK_INTERNAL_ROUTING_FIELDS: Tuple[str, ...] = (
     "chain_budget_exhausted", "provider_latency_ms",
     "ollama_fallback_enabled", "ollama_fallback_used", "ollama_model",
     "ollama_error_type", "final_model_quality_warning", "fallback_answer_reason",
+    "summary_generation_status", "summary_generation_failed",
 )
 # Internal source-revision metadata. Public citations carry title / edition /
 # issuing body / section / pages only.
@@ -5348,6 +5389,7 @@ def _log_ask_routing_telemetry(
         "provider_error_type": p.get("provider_error_type") or p.get("error") or "",
         "upstream_statuses": list(p.get("upstream_statuses") or []),
         "structured_answer": bool(p.get("structured_answer")),
+        "summary_generation_status": p.get("summary_generation_status") or "",
         "visa_code_detected": p.get("visa_code_detected") or "",
         "task_type_detected": p.get("task_type_detected") or "",
         "latency_ms": latency_ms,
@@ -6354,6 +6396,15 @@ async def _ask_internal(req: AskRequest) -> AskResponse:
                 **response_meta,
             )
         if not result.get("retryable_provider_error"):
+            # A built structured answer does not need the model: keep the
+            # canonical checklist with its deterministic summary instead of
+            # discarding it behind a 503 (the Fast D-2 incident).
+            structured_payload = _structured_answer_without_model_payload(
+                prompt, req.lang, base_meta, attempt_meta,
+                reason="structured_answer_summary_provider_error",
+            )
+            if structured_payload is not None:
+                return AskResponse(**structured_payload)
             # Non-retryable provider failures (bad credentials, malformed
             # requests, unavailable model ids, or safety/policy rejections) are
             # not normal model-capacity outages. Do not convert them into a
@@ -6426,6 +6477,9 @@ async def _ask_internal(req: AskRequest) -> AskResponse:
             prompt, req.lang, base_meta, attempt_meta,
             reason="openrouter_all_candidates_failed",
         )
+        if isinstance(base_meta.get("structured_answer"), dict):
+            fallback_payload["summary_generation_status"] = "failed"
+            fallback_payload["summary_generation_failed"] = True
         fallback_payload["ollama_error_type"] = ollama_error_type
         fallback_payload["answer_first_sentence"] = (fallback_payload.get("answer") or "").strip().split(".", 1)[0].strip()
         fallback_payload["first_sentence_quality_warning"] = first_sentence_quality_warning(fallback_payload.get("answer") or "")
@@ -6456,6 +6510,12 @@ async def _ask_internal(req: AskRequest) -> AskResponse:
             **response_meta,
         )
 
+    structured_payload = _structured_answer_without_model_payload(
+        prompt, req.lang, base_meta, {"llm_provider": "none"},
+        reason="no_llm_provider_configured",
+    )
+    if structured_payload is not None:
+        return AskResponse(**structured_payload)
     raise HTTPException(
         status_code=503,
         detail={

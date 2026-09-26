@@ -517,7 +517,9 @@ class CandidateFallbackBehaviorTests(unittest.TestCase):
 
     def test_non_retryable_invalid_key_returns_safe_503_without_retry(self):
         pb = _pb()
-        resp, calls = self._ask(pb, {c: (401, "Invalid API key") for c in CANDS})
+        # Model-dependent question: a source-confirmed structured document
+        # lookup survives this (see test_structured_answer_survives_...).
+        resp, calls = self._ask(pb, {c: (401, "Invalid API key") for c in CANDS}, question=H1_Q, visa_code="H-1")
         self.assertEqual(resp.status_code, 503, resp.text)
         detail = resp.json()["detail"]
         self.assertEqual(detail["provider_error_type"], "invalid_provider_config")
@@ -533,7 +535,7 @@ class CandidateFallbackBehaviorTests(unittest.TestCase):
 
     def test_bad_request_returns_safe_503_without_retry(self):
         pb = _pb()
-        resp, calls = self._ask(pb, {c: (400, "Bad request") for c in CANDS})
+        resp, calls = self._ask(pb, {c: (400, "Bad request") for c in CANDS}, question=H1_Q, visa_code="H-1")
         self.assertEqual(resp.status_code, 503, resp.text)
         detail = resp.json()["detail"]
         self.assertEqual(calls, [CANDS[0]])
@@ -544,6 +546,25 @@ class CandidateFallbackBehaviorTests(unittest.TestCase):
         self.assertNotIn("fallback_answer", detail)
         self.assertNotIn("copy_safe_answer", detail)
         self.assertNotIn("Bad request", resp.text)
+
+    def test_structured_answer_survives_non_retryable_provider_error(self):
+        # D-2 document lookup: the canonical checklist needs no model, so an
+        # account-wide non-retryable error must not turn it into a 503.
+        pb = _pb()
+        for status, message, error_type in ((401, "Invalid API key", "invalid_provider_config"),
+                                            (400, "Bad request", "invalid_request")):
+            with self.subTest(status=status):
+                resp, calls = self._ask(pb, {c: (status, message) for c in CANDS})
+                self.assertEqual(resp.status_code, 200, resp.text)
+                self.assertEqual(calls, [CANDS[0]], "must still stop after the first non-retryable error")
+                body = resp.json()
+                self.assertTrue(body["structured_answer"])
+                self.assertEqual(body["structured_answer"]["short_answer_source"], "deterministic")
+                self.assertTrue(body["deterministic_fallback_answer_used"])
+                self.assertEqual(body["provider_error_type"], error_type)
+                self.assertEqual(body["summary_generation_status"], "failed")
+                self.assertNotIn(message, resp.text)
+                self.assertNotIn("or-sentinel-key", resp.text)
 
     def test_grounding_metadata_survives_model_retries(self):
         pb = _pb()

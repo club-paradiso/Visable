@@ -301,9 +301,15 @@ try {
       // REAL public /api/ask projection for "D-2 연장시 필수 서류" must render as
       // the structured checklist with no provider/model identity, no raw
       // Markdown, no internal source metadata, no overflow, and a composer that
-      // does not cover the answer actions.
-      const wmReport = { name: 'waymaker-answer', failures: [] };
-      const fixture = await fs.readFile(path.join(ROOT, 'tests', 'fixtures', 'waymaker', 'd2_documents_ko_fast.json'), 'utf8');
+      // does not cover the answer actions. The provider-failed projection
+      // (every Fast model failed, deterministic structured answer delivered)
+      // must render through the same renderer with no error card.
+      for (const [wmName, wmFixture] of [
+        ['waymaker-answer', 'd2_documents_ko_fast.json'],
+        ['waymaker-answer-provider-failed', 'd2_documents_ko_fast_provider_failed.json'],
+      ]) {
+      const wmReport = { name: wmName, failures: [] };
+      const fixture = await fs.readFile(path.join(ROOT, 'tests', 'fixtures', 'waymaker', wmFixture), 'utf8');
       try {
         await page.route('**/api/ask', (route) => route.fulfill({ status: 200, contentType: 'application/json', body: fixture }));
         await page.goto(`http://127.0.0.1:${PORT}/ai.html`, { waitUntil: 'domcontentloaded', timeout: 30000 });
@@ -329,6 +335,8 @@ try {
             commonDocs: el.querySelectorAll('[data-bucket-list="common"] > li').length,
             modeChip: (el.querySelector('.answer-mode-chip') || {}).textContent || '',
             copyCovered: !(top === copy || copy.contains(top)),
+            errorCards: document.querySelectorAll('.error-card').length,
+            sourceCard: Boolean(el.querySelector('.pa-source-card')),
           };
         });
         if (card.commonDocs !== 4) wmReport.failures.push(`expected 4 basic documents, got ${card.commonDocs}`);
@@ -339,16 +347,20 @@ try {
         if (/\b(?:BASIS|DISABLED|NOT WIRED)\b|기능 꺼짐/.test(card.text)) wmReport.failures.push('engineering status label visible');
         if (card.left < -1 || card.right > card.innerWidth + 1) wmReport.failures.push(`answer card leaves the viewport (${Math.round(card.left)}..${Math.round(card.right)})`);
         if (card.copyCovered) wmReport.failures.push('composer covers the answer actions');
+        if (card.errorCards) wmReport.failures.push('error card rendered for a structured answer');
+        if (/답변 생성 오류|일시적인 문제/.test(card.text)) wmReport.failures.push('error/degraded wording on a structured answer');
+        if (!card.sourceCard) wmReport.failures.push('structured source card missing');
         const overflow = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
         if (overflow > 2) wmReport.failures.push(`ai.html overflows horizontally by ${overflow}px`);
-        await page.locator('.answer-card').screenshot({ path: path.join(OUT, `${profile.name}-waymaker-answer.png`) });
+        await page.locator('.answer-card').screenshot({ path: path.join(OUT, `${profile.name}-${wmName}.png`) });
         await page.unroute('**/api/ask');
       } catch (error) {
         wmReport.failures.push(`flow error: ${String(error.message || error)}`);
       }
       profileReport.guidanceFlows = profileReport.guidanceFlows || [];
       profileReport.guidanceFlows.push(wmReport);
-      for (const failure of wmReport.failures) report.failures.push(`${profile.name}/waymaker-answer: ${failure}`);
+      for (const failure of wmReport.failures) report.failures.push(`${profile.name}/${wmName}: ${failure}`);
+      }
     }
     report.profiles.push(profileReport);
     await context.close();

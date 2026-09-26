@@ -44,6 +44,23 @@ from _i18n_pack_support import SUPPORTED_LOCALES, load_packs, localized, pack_bl
 # scanner). Supported display locales are ko, en, zh-CN (zh-Hant aliases to zh-CN).
 
 
+
+def _no_provider_payload(tc, resp):
+    """Metadata of an /api/ask response when no LLM provider is configured.
+
+    Model-dependent questions return the safe 503 envelope. A source-confirmed
+    document lookup is answerable without any model, so it returns 200 with the
+    deterministic structured checklist (never a 503 that discards it).
+    """
+    if resp.status_code == 200:
+        body = resp.json()
+        tc.assertTrue(body.get("structured_answer"), resp.text)
+        tc.assertTrue(body.get("deterministic_fallback_answer_used"), resp.text)
+        tc.assertEqual(body.get("fallback_answer_kind"), "structured_document_checklist")
+        return body
+    tc.assertEqual(resp.status_code, 503, resp.text)
+    return resp.json()["detail"]
+
 def _client():
     """A TestClient with no LLM provider configured (so /api/ask returns 503)."""
     for key in ("OPENROUTER_API_KEY", "GROQ_API_KEY"):
@@ -88,8 +105,7 @@ class ManualToLawFallbackTests(unittest.TestCase):
         payload = {"question": question}
         payload.update(extra)
         resp = client.post("/api/ask", json=payload)
-        self.assertEqual(resp.status_code, 503, resp.text)
-        return resp.json()["detail"]
+        return _no_provider_payload(self, resp)
 
     def test_metadata_fields_present(self):
         detail = self._detail("커피 추천해줘")

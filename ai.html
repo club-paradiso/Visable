@@ -2111,11 +2111,12 @@
         // explicit developer-diagnostics mode).
         function buildDegradedStateBanner(result, lang) {
             if (!result || !result.deterministic_fallback_answer_used) return '';
-            const structured = isStructuredDocumentAnswer(result.structured_answer);
+            // A source-confirmed structured answer is complete without the
+            // model (it only phrases an optional summary), so a summary
+            // failure is engineering telemetry, not a user-facing problem.
+            if (isStructuredDocumentAnswer(result.structured_answer)) return '';
             const title = tt(lang, { ko: '답변을 생성하는 중 일시적인 문제가 발생했습니다', en: 'We hit a temporary problem generating the answer', zh: '生成答复时出现暂时性问题', zhHant: '產生答覆時出現暫時性問題' });
-            const body = structured
-                ? tt(lang, { ko: '확인된 공식 자료를 기준으로 기본 안내를 대신 표시합니다. 잠시 후 다시 시도하면 더 자세한 설명을 받을 수 있어요.', en: 'Showing the basic guidance from the confirmed official source instead. Try again shortly for a fuller explanation.', zh: '现改为显示基于已确认官方资料的基本指引。稍后重试可获得更详细的说明。', zhHant: '現改為顯示基於已確認官方資料的基本指引。稍後重試可獲得更詳細的說明。' })
-                : tt(lang, { ko: '확인 가능한 정보만으로 정리한 제한된 안내입니다. 잠시 후 다시 시도해 주세요.', en: 'This is a limited note based only on the information we could confirm. Please try again shortly.', zh: '这是仅根据可确认信息整理的有限指引。请稍后重试。', zhHant: '這是僅根據可確認資訊整理的有限指引。請稍後重試。' });
+            const body = tt(lang, { ko: '확인 가능한 정보만으로 정리한 제한된 안내입니다. 잠시 후 다시 시도해 주세요.', en: 'This is a limited note based only on the information we could confirm. Please try again shortly.', zh: '这是仅根据可确认信息整理的有限指引。请稍后重试。', zhHant: '這是僅根據可確認資訊整理的有限指引。請稍後重試。' });
             return `<div class="answer-note" role="status"><strong>${escapeHtml(title)}</strong><br>${escapeHtml(body)}</div>`;
         }
 
