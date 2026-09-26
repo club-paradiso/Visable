@@ -338,7 +338,18 @@ class RailwayLiveSmokeReadinessTests(unittest.TestCase):
         run = SmokeRun([OUR_COMMIT], public=WAYMAKER_PUBLIC_DETERMINISTIC).run()
         self.assertEqual(run.exit_code, 0, run.stdout + run.stderr)
         self.assertIn('"short_answer_source": "deterministic"', run.stdout)
-        self.assertNotIn("WAYMAKER_FAST_DIAGNOSTICS", run.stdout)
+        # The public contract passes, but a Fast summary model that did not
+        # answer is still reported (non-gating) instead of going unseen.
+        self.assertIn("WAYMAKER_FAST_DIAGNOSTICS:", run.stdout)
+        self.assertIn('WAYMAKER_FAST_MODEL_HEALTH: {"diagnostic_final_model": null, "public_summary_from_model": false, "status": "degraded"}', run.stdout)
+        self.assertIn("::warning::WAYMAKER_FAST_MODEL_HEALTH degraded", run.stdout)
+
+    def test_fast_model_summary_reports_healthy(self):
+        run = SmokeRun([OUR_COMMIT], public=WAYMAKER_PUBLIC).run()
+        self.assertEqual(run.exit_code, 0, run.stdout + run.stderr)
+        self.assertIn('"public_summary_from_model": true', run.stdout)
+        self.assertIn('"status": "ok"', run.stdout)
+        self.assertNotIn("::warning::WAYMAKER_FAST_MODEL_HEALTH", run.stdout)
 
     def test_fast_must_stay_fast_for_the_simple_document_lookup(self):
         escalated = {**WAYMAKER_PUBLIC, "answer_mode": "basic", "answer_mode_auto_escalated": True}

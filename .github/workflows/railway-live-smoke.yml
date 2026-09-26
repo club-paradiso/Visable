@@ -335,28 +335,45 @@ jobs:
               fast_problems.append("structured source card missing")
           if public_summary["answer_mode_requested"] != "fast" or public_summary["answer_mode"] != "fast" or public_summary["answer_mode_auto_escalated"]:
               fast_problems.append("simple D-2 document lookup did not stay on Fast")
+          # WAYMAKER_FAST_MODEL_HEALTH (informational, never gates): since the
+          # structured checklist survives model failure, a broken Fast model no
+          # longer fails the public contract above, so it would go unseen.
+          # Always record whether the Fast summary model answered and, with
+          # diagnostics, which models were tried and how they failed.
+          fast_model_answered = public_summary["short_answer_source"] == "model_summary"
+          diag_summary = {}
+          try:
+              _diag_status, diag = request_json(
+                  "/api/ask",
+                  method="POST",
+                  payload={"question": "D-2 연장시 필수 서류", "visa_code": "D-2", "answer_mode": "fast", "stream": False, "diagnostics": True},
+                  timeout=65.0,
+              )
+              diag = diag if isinstance(diag, dict) else {}
+              diag = diag.get("detail") if isinstance(diag.get("detail"), dict) else diag
+              diag_summary = {
+                  "http_status": _diag_status,
+                  "primary_model": diag.get("primary_model"),
+                  "final_model": diag.get("final_model"),
+                  "provider_error_type": diag.get("provider_error_type") or diag.get("error"),
+                  "retryable_provider_error": diag.get("retryable_provider_error"),
+                  "attempted_models": diag.get("attempted_models") or [],
+                  "skipped_models_due_to_cooldown": diag.get("skipped_models_due_to_cooldown") or [],
+                  "upstream_statuses": diag.get("upstream_statuses") or [],
+                  "summary_generation_status": diag.get("summary_generation_status"),
+              }
+              print("WAYMAKER_FAST_DIAGNOSTICS: " + json.dumps(diag_summary, ensure_ascii=False, sort_keys=True), flush=True)
+          except Exception as exc:  # noqa: BLE001 - diagnostics must never mask the verdict
+              print(f"WAYMAKER_FAST_DIAGNOSTICS: unavailable ({type(exc).__name__})", flush=True)
+          print("WAYMAKER_FAST_MODEL_HEALTH: " + json.dumps({
+              "public_summary_from_model": fast_model_answered,
+              "diagnostic_final_model": diag_summary.get("final_model"),
+              "status": "ok" if (fast_model_answered or diag_summary.get("final_model")) else "degraded",
+          }, ensure_ascii=False, sort_keys=True), flush=True)
+          if not (fast_model_answered or diag_summary.get("final_model")):
+              print("::warning::WAYMAKER_FAST_MODEL_HEALTH degraded: Fast summary model did not answer "
+                    "(structured checklist still delivered). See WAYMAKER_FAST_DIAGNOSTICS.", flush=True)
           if fast_problems:
-              # Engineering follow-up only (never gates): the same request with
-              # diagnostics shows which Fast provider/model failure occurred.
-              try:
-                  _diag_status, diag = request_json(
-                      "/api/ask",
-                      method="POST",
-                      payload={"question": "D-2 연장시 필수 서류", "visa_code": "D-2", "answer_mode": "fast", "stream": False, "diagnostics": True},
-                      timeout=65.0,
-                  )
-                  diag = diag if isinstance(diag, dict) else {}
-                  diag = diag.get("detail") if isinstance(diag.get("detail"), dict) else diag
-                  print("WAYMAKER_FAST_DIAGNOSTICS: " + json.dumps({
-                      "http_status": _diag_status,
-                      "provider_error_type": diag.get("provider_error_type") or diag.get("error"),
-                      "retryable_provider_error": diag.get("retryable_provider_error"),
-                      "attempted_models": diag.get("attempted_models") or [],
-                      "upstream_statuses": diag.get("upstream_statuses") or [],
-                      "summary_generation_status": diag.get("summary_generation_status"),
-                  }, ensure_ascii=False, sort_keys=True), flush=True)
-              except Exception as exc:  # noqa: BLE001 - diagnostics must never mask the verdict
-                  print(f"WAYMAKER_FAST_DIAGNOSTICS: unavailable ({type(exc).__name__})", flush=True)
               smoke_failures.append("WAYMAKER_FAST_PUBLIC_CONTRACT: " + "; ".join(fast_problems) + ".")
           if smoke_failures:
               for failure in smoke_failures:
