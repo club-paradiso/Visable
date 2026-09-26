@@ -39,6 +39,9 @@ LEAKY_MODEL_ANSWER_EN = (
 CASES = {
     "d2_documents_ko_fast.json": ({"question": "D-2 연장시 필수 서류", "lang": "ko", "answer_mode": "fast"}, LEAKY_MODEL_ANSWER),
     "d2_documents_en_fast.json": ({"question": "What documents do I need to extend a D-2?", "lang": "en", "answer_mode": "fast"}, LEAKY_MODEL_ANSWER_EN),
+    # Every Fast candidate failed non-retryably (the production 503 incident):
+    # the backend must still return the deterministic structured answer.
+    "d2_documents_ko_fast_provider_failed.json": ({"question": "D-2 연장시 필수 서류", "lang": "ko", "answer_mode": "fast"}, None),
 }
 # answer_ref is a per-request opaque feedback reference (random id).
 VOLATILE = ("law_grounding_retrieval_timestamp", "retrievedAt", "retrieval_timestamp", "answer_ref")
@@ -63,6 +66,16 @@ def build() -> dict:
 
     async def fake(prompt, requested_model=None, candidate_models=None, max_tokens=None, **kw):
         model = (candidate_models or ["fixture/model"])[0]
+        if current["answer"] is None:
+            return {
+                "ok": False, "answer": None, "primary_model": model, "requested_model": None,
+                "model_candidates": list(candidate_models or [model]),
+                "attempted_models": list(candidate_models or [model]),
+                "skipped_models_due_to_cooldown": [], "cooling_down_models": [], "model_cooldown_seconds": 0,
+                "cooldown_enabled": False, "final_model": None, "model_fallback_used": True,
+                "provider_error_type": "model_not_found", "upstream_statuses": [404],
+                "retryable_provider_error": False, "all_candidates_failed": True,
+            }
         return {
             "ok": True, "answer": current["answer"], "primary_model": model, "requested_model": None,
             "model_candidates": list(candidate_models or [model]), "attempted_models": [model],

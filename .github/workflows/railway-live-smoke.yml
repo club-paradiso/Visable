@@ -252,27 +252,26 @@ jobs:
               "manual_grounding_status": waymaker.get("manual_grounding_status") or None,
               "answer_chars": len(waymaker_answer),
           }
-          print("waymaker_d2: " + json.dumps(waymaker_summary, ensure_ascii=False, sort_keys=True), flush=True)
+          print("WAYMAKER_BASIC_MODEL_HEALTH: " + json.dumps(waymaker_summary, ensure_ascii=False, sort_keys=True), flush=True)
 
+          # Basic live-model health and the Fast public contract are DIFFERENT
+          # contracts ("Basic answers live" never proved "Fast public Waymaker
+          # works" — see the D-2 Fast 503 incident). Record the Basic verdict,
+          # run the Fast contract regardless, then fail on either.
+          smoke_failures = []
           if waymaker_status != 200:
-              print("Production Waymaker /api/ask did not return HTTP 200 for the D-2 extension fixture." + unverified_note, file=sys.stderr)
-              sys.exit(1)
-          if not waymaker_live:
-              print(
-                  "Production Waymaker did not produce a live model answer for the D-2 extension fixture."
-                  + unverified_note,
-                  file=sys.stderr,
-              )
-              sys.exit(1)
+              smoke_failures.append("WAYMAKER_BASIC_MODEL_HEALTH: /api/ask did not return HTTP 200 for the D-2 extension fixture.")
+          elif not waymaker_live:
+              smoke_failures.append("WAYMAKER_BASIC_MODEL_HEALTH: no live model answer for the D-2 extension fixture.")
           if waymaker.get("visa_code_detected") != "D-2":
-              print("Production Waymaker failed to detect D-2 in the extension fixture." + unverified_note, file=sys.stderr)
-              sys.exit(1)
+              smoke_failures.append("WAYMAKER_BASIC_MODEL_HEALTH: D-2 was not detected in the extension fixture.")
 
-          # Public-contract check: the ORDINARY response a browser receives
-          # (no diagnostics opt-in, Fast selected) must carry the structured
-          # D-2 checklist and must not reveal providers, model ids, internal
-          # source-revision metadata, or raw Markdown headings. These are
-          # deterministic properties, so they hold even on a fallback answer.
+          # WAYMAKER_FAST_PUBLIC_CONTRACT (hard assertion): the ORDINARY
+          # response a browser receives (no diagnostics opt-in, Fast selected)
+          # must be HTTP 200 with the structured D-2 checklist, stay on Fast,
+          # and must not reveal providers, model ids, internal source-revision
+          # metadata, or raw Markdown. The checklist comes from canonical
+          # grounding data, so this holds even when every Fast model fails.
           public_status, public = request_json(
               "/api/ask",
               method="POST",
@@ -308,53 +307,60 @@ jobs:
               "structured_answer": bool(structured),
               "common_documents": len(structured_docs.get("common") or []),
               "conditional_documents": len(structured_docs.get("conditional") or []),
+              "required_documents": len(structured_docs.get("required") or []),
+              "common_labels": [d.get("label") for d in (structured_docs.get("common") or []) if isinstance(d, dict)],
+              "short_answer_source": (structured or {}).get("short_answer_source"),
+              "source_title": ((structured or {}).get("source") or {}).get("title"),
+              "deterministic_fallback": bool(public.get("deterministic_fallback_answer_used")) if isinstance(public, dict) else None,
               "leaked_terms": leaked,
               "internal_fields": internal_fields,
               "markdown_heading": bool(re.search(r"(?m)^\s*#{1,6}\s", public_answer)),
+              "markdown_marks": ("###" in public_text) or ("**" in public_answer),
           }
-          print("waymaker_public_d2: " + json.dumps(public_summary, ensure_ascii=False, sort_keys=True), flush=True)
-          # Leak checks apply to every public body, error envelopes included.
-          if leaked or internal_fields or public_summary["markdown_heading"]:
-              print("Production Waymaker public /api/ask response leaks internal routing/source metadata or raw Markdown." + unverified_note, file=sys.stderr)
-              sys.exit(1)
+          print("WAYMAKER_FAST_PUBLIC_CONTRACT: " + json.dumps(public_summary, ensure_ascii=False, sort_keys=True), flush=True)
+          fast_problems = []
           if public_status != 200:
-              # The public projection deliberately hides the provider error, so
-              # repeat the same Fast request with the explicit diagnostics
-              # opt-in and log the routing detail engineers need.
-              diag_status, diag = request_json(
-                  "/api/ask",
-                  method="POST",
-                  payload={
-                      "question": "D-2 연장시 필수 서류",
-                      "visa_code": "D-2",
-                      "answer_mode": "fast",
-                      "stream": False,
-                      "diagnostics": True,
-                  },
-                  timeout=65.0,
-              )
-              diag_body = diag.get("detail") if isinstance(diag, dict) and isinstance(diag.get("detail"), dict) else (diag if isinstance(diag, dict) else {})
-              diag_summary = {
-                  "http_status": diag_status,
-                  "error": diag_body.get("error") or None,
-                  "provider_error_type": diag_body.get("provider_error_type") or None,
-                  "answer_mode": diag_body.get("answer_mode") or None,
-                  "answer_mode_requested": diag_body.get("answer_mode_requested") or None,
-                  "model_candidates": diag_body.get("model_candidates") or [],
-                  "attempted_models": diag_body.get("attempted_models") or [],
-                  "upstream_statuses": diag_body.get("upstream_statuses") or [],
-                  "retryable_provider_error": diag_body.get("retryable_provider_error"),
-                  "final_model": diag_body.get("final_model") or None,
-              }
-              print("waymaker_public_d2_diagnostics: " + json.dumps(diag_summary, ensure_ascii=False, sort_keys=True), flush=True)
-              print(
-                  f"Production Waymaker Fast /api/ask returned HTTP {public_status} for the public D-2 request"
-                  " (see waymaker_public_d2_diagnostics)." + unverified_note,
-                  file=sys.stderr,
-              )
-              sys.exit(1)
-          if not structured or not public_summary["common_documents"] or public_summary["answer_mode_requested"] != "fast":
-              print("Production Waymaker did not return the structured D-2 checklist for a Fast public request." + unverified_note, file=sys.stderr)
+              fast_problems.append(f"HTTP {public_status} (expected 200)")
+          if leaked or internal_fields:
+              fast_problems.append("leaks internal routing/source metadata")
+          if public_summary["markdown_heading"] or public_summary["markdown_marks"]:
+              fast_problems.append("raw Markdown in the public answer")
+          if not structured:
+              fast_problems.append("no structured_answer")
+          if public_summary["common_labels"] != ["신청서", "여권", "외국인등록증", "수수료"]:
+              fast_problems.append("common documents are not the canonical base documents")
+          if not public_summary["conditional_documents"] or not public_summary["required_documents"]:
+              fast_problems.append("conditional/required document buckets are empty")
+          if not public_summary["source_title"]:
+              fast_problems.append("structured source card missing")
+          if public_summary["answer_mode_requested"] != "fast" or public_summary["answer_mode"] != "fast" or public_summary["answer_mode_auto_escalated"]:
+              fast_problems.append("simple D-2 document lookup did not stay on Fast")
+          if fast_problems:
+              # Engineering follow-up only (never gates): the same request with
+              # diagnostics shows which Fast provider/model failure occurred.
+              try:
+                  _diag_status, diag = request_json(
+                      "/api/ask",
+                      method="POST",
+                      payload={"question": "D-2 연장시 필수 서류", "visa_code": "D-2", "answer_mode": "fast", "stream": False, "diagnostics": True},
+                      timeout=65.0,
+                  )
+                  diag = diag if isinstance(diag, dict) else {}
+                  diag = diag.get("detail") if isinstance(diag.get("detail"), dict) else diag
+                  print("WAYMAKER_FAST_DIAGNOSTICS: " + json.dumps({
+                      "http_status": _diag_status,
+                      "provider_error_type": diag.get("provider_error_type") or diag.get("error"),
+                      "retryable_provider_error": diag.get("retryable_provider_error"),
+                      "attempted_models": diag.get("attempted_models") or [],
+                      "upstream_statuses": diag.get("upstream_statuses") or [],
+                      "summary_generation_status": diag.get("summary_generation_status"),
+                  }, ensure_ascii=False, sort_keys=True), flush=True)
+              except Exception as exc:  # noqa: BLE001 - diagnostics must never mask the verdict
+                  print(f"WAYMAKER_FAST_DIAGNOSTICS: unavailable ({type(exc).__name__})", flush=True)
+              smoke_failures.append("WAYMAKER_FAST_PUBLIC_CONTRACT: " + "; ".join(fast_problems) + ".")
+          if smoke_failures:
+              for failure in smoke_failures:
+                  print("Production " + failure + unverified_note, file=sys.stderr)
               sys.exit(1)
 
           # Exercise the actual user-facing enforcement path with synthetic,

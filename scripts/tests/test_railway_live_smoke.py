@@ -110,10 +110,29 @@ WAYMAKER_PUBLIC = {
     "structured_answer": {
         "kind": "documents",
         "required_documents": {
-            "common": [{"label": "신청서"}],
+            "common": [{"label": "신청서"}, {"label": "여권"}, {"label": "외국인등록증"}, {"label": "수수료"}],
             "required": [{"label": "재정입증 서류"}],
             "conditional": [{"label": "수료증명서, 지도교수 및 유학담당자 확인서"}],
         },
+        "short_answer_source": "model_summary",
+        "source": {"title": "외국인체류 안내매뉴얼", "edition": "2026.6", "page_range": "43-44"},
+    },
+}
+# Every Fast model failed but the structured answer was delivered (the fixed
+# backend): still a passing public contract.
+WAYMAKER_PUBLIC_DETERMINISTIC = {
+    **WAYMAKER_PUBLIC,
+    "deterministic_fallback_answer_used": True,
+    "structured_answer": {**WAYMAKER_PUBLIC["structured_answer"], "short_answer_source": "deterministic"},
+}
+# The production incident (#641 on Railway): HTTP 503, no structured answer.
+WAYMAKER_PUBLIC_503 = {
+    "detail": {
+        "error": "answer_generation_unavailable",
+        "message": "The answer could not be generated right now. Please try again shortly.",
+        "visa_code_detected": "D-2",
+        "answer_mode": "fast",
+        "answer_mode_requested": "fast",
     },
 }
 WAYMAKER_PUBLIC_LEAKY = {
@@ -150,7 +169,8 @@ class _FakeResponse(io.BytesIO):
 class SmokeRun:
     """One scripted execution of the embedded smoke script."""
 
-    def __init__(self, health_sequence, enforcement=ENFORCEMENT_LIVE, waymaker=WAYMAKER_LIVE, public=WAYMAKER_PUBLIC, public_status=200, waymaker_status=200):
+    def __init__(self, health_sequence, enforcement=ENFORCEMENT_LIVE, waymaker=WAYMAKER_LIVE, public=WAYMAKER_PUBLIC,
+                 public_status=200, waymaker_status=200):
         # health_sequence: the commit each successive /health call reports.
         # The last entry repeats once exhausted.
         self.health_sequence = list(health_sequence)
@@ -159,6 +179,7 @@ class SmokeRun:
         self.public = public
         self.public_status = public_status
         self.waymaker_status = waymaker_status
+        self.ask_bodies = []
         self.health_calls = 0
         self.slept = 0.0
         self.stdout = ""
@@ -175,17 +196,22 @@ class SmokeRun:
             return _FakeResponse(json.dumps(LAW_OK).encode())
         if "/api/ask" in url:
             body = json.loads((getattr(request, "data", None) or b"{}").decode("utf-8"))
-            if self.public_status != 200 and body.get("answer_mode") == "fast":
-                detail = {"error": "answer_generation_unavailable", "message": "The answer could not be generated right now."}
-                if body.get("diagnostics"):
-                    detail.update({"error": "openrouter_provider_error", "provider_error_type": "invalid_request",
-                                   "attempted_models": ["vendor/fast:free"], "upstream_statuses": [400]})
-                raise urllib.error.HTTPError(url, self.public_status, "error", {},
-                                             io.BytesIO(json.dumps({"detail": detail}).encode()))
+            self.ask_bodies.append(body)
             if self.waymaker_status != 200 and body.get("diagnostics") and body.get("answer_mode") == "basic":
                 raise urllib.error.HTTPError(url, self.waymaker_status, "error", {},
                                              io.BytesIO(json.dumps(self.waymaker).encode()))
-            payload = self.waymaker if body.get("diagnostics") else self.public
+            if body.get("diagnostics") and body.get("answer_mode") == "fast":
+                payload = self.public if self.public_status == 200 else {"detail": {
+                    **self.public.get("detail", {}), "provider_error_type": "model_not_found",
+                    "retryable_provider_error": False, "attempted_models": ["vendor/fast:free"],
+                }}
+                status = self.public_status
+            elif body.get("diagnostics"):
+                payload, status = self.waymaker, 200
+            else:
+                payload, status = self.public, self.public_status
+            if status != 200:
+                raise urllib.error.HTTPError(url, status, "error", {}, io.BytesIO(json.dumps(payload).encode()))
             return _FakeResponse(json.dumps(payload).encode())
         if "/api/enforcement/analyze" in url:
             return _FakeResponse(json.dumps(self.enforcement).encode())
@@ -255,7 +281,8 @@ class RailwayLiveSmokeReadinessTests(unittest.TestCase):
         self.assertEqual(run.slept, 0)
         self.assertNotIn("UNVERIFIED", run.stdout)
         self.assertIn("matches this commit", run.stdout)
-        self.assertIn("waymaker_d2:", run.stdout)
+        self.assertIn("WAYMAKER_BASIC_MODEL_HEALTH:", run.stdout)
+        self.assertIn("WAYMAKER_FAST_PUBLIC_CONTRACT:", run.stdout)
         self.assertIn('"live_model_answer": true', run.stdout)
 
     def test_an_unverified_failure_says_the_result_may_be_a_previous_deploy(self):
@@ -272,12 +299,6 @@ class RailwayLiveSmokeReadinessTests(unittest.TestCase):
         self.assertIn("unavailable AI prediction", run.stderr)
         self.assertNotIn("may describe a previous deploy", run.stderr)
 
-    def test_public_waymaker_response_must_not_leak_provider_or_markdown(self):
-        run = SmokeRun([OUR_COMMIT], public=WAYMAKER_PUBLIC_LEAKY).run()
-        self.assertEqual(run.exit_code, 1, run.stdout + run.stderr)
-        self.assertIn("waymaker_public_d2:", run.stdout)
-        self.assertIn("leaks internal routing/source metadata", run.stderr)
-
     def test_basic_http_error_logs_the_detail_envelope(self):
         detail = {"detail": {"error": "openrouter_provider_error", "provider_error_type": "invalid_provider_config",
                              "attempted_models": ["vendor/basic:free"], "upstream_statuses": [403]}}
@@ -286,24 +307,61 @@ class RailwayLiveSmokeReadinessTests(unittest.TestCase):
         self.assertIn('"provider_error_type": "invalid_provider_config"', run.stdout)
         self.assertIn('"upstream_statuses": [403]', run.stdout)
 
-    def test_public_waymaker_http_error_is_reported_with_diagnostics(self):
-        run = SmokeRun([OUR_COMMIT], public=None, public_status=503).run()
+    def test_public_waymaker_response_must_not_leak_provider_or_markdown(self):
+        run = SmokeRun([OUR_COMMIT], public=WAYMAKER_PUBLIC_LEAKY).run()
         self.assertEqual(run.exit_code, 1, run.stdout + run.stderr)
-        self.assertIn("waymaker_public_d2_diagnostics:", run.stdout)
-        self.assertIn("returned HTTP 503", run.stderr)
-        self.assertNotIn("leaks internal", run.stderr)
+        self.assertIn("WAYMAKER_FAST_PUBLIC_CONTRACT:", run.stdout)
+        self.assertIn("leaks internal routing/source metadata", run.stderr)
 
     def test_public_waymaker_response_must_carry_structured_checklist(self):
         no_structure = {k: v for k, v in WAYMAKER_PUBLIC.items() if k != "structured_answer"}
         run = SmokeRun([OUR_COMMIT], public=no_structure).run()
         self.assertEqual(run.exit_code, 1, run.stdout + run.stderr)
-        self.assertIn("structured D-2 checklist", run.stderr)
+        self.assertIn("WAYMAKER_FAST_PUBLIC_CONTRACT", run.stderr)
+        self.assertIn("no structured_answer", run.stderr)
+
+    def test_fast_public_503_fails_even_when_basic_model_is_healthy(self):
+        # Exactly the production incident: Basic diagnostics succeed live,
+        # the ordinary Fast D-2 request returns 503.
+        run = SmokeRun([OUR_COMMIT], public=WAYMAKER_PUBLIC_503, public_status=503).run()
+        self.assertEqual(run.exit_code, 1, run.stdout + run.stderr)
+        self.assertIn('"live_model_answer": true', run.stdout)
+        self.assertIn("WAYMAKER_FAST_PUBLIC_CONTRACT", run.stderr)
+        self.assertIn("HTTP 503 (expected 200)", run.stderr)
+        self.assertNotIn("WAYMAKER_BASIC_MODEL_HEALTH", run.stderr)
+        # The follow-up diagnostics probe makes the Fast failure legible.
+        self.assertIn("WAYMAKER_FAST_DIAGNOSTICS:", run.stdout)
+        self.assertIn('"provider_error_type": "model_not_found"', run.stdout)
+        self.assertNotIn("enforcement:", run.stdout)
+
+    def test_deterministic_structured_fast_answer_passes_the_public_contract(self):
+        run = SmokeRun([OUR_COMMIT], public=WAYMAKER_PUBLIC_DETERMINISTIC).run()
+        self.assertEqual(run.exit_code, 0, run.stdout + run.stderr)
+        self.assertIn('"short_answer_source": "deterministic"', run.stdout)
+        self.assertNotIn("WAYMAKER_FAST_DIAGNOSTICS", run.stdout)
+
+    def test_fast_must_stay_fast_for_the_simple_document_lookup(self):
+        escalated = {**WAYMAKER_PUBLIC, "answer_mode": "basic", "answer_mode_auto_escalated": True}
+        run = SmokeRun([OUR_COMMIT], public=escalated).run()
+        self.assertEqual(run.exit_code, 1, run.stdout + run.stderr)
+        self.assertIn("did not stay on Fast", run.stderr)
+
+    def test_fast_contract_requires_canonical_base_documents(self):
+        partial = {**WAYMAKER_PUBLIC, "structured_answer": {
+            **WAYMAKER_PUBLIC["structured_answer"],
+            "required_documents": {**WAYMAKER_PUBLIC["structured_answer"]["required_documents"], "common": [{"label": "신청서"}]},
+        }}
+        run = SmokeRun([OUR_COMMIT], public=partial).run()
+        self.assertEqual(run.exit_code, 1, run.stdout + run.stderr)
+        self.assertIn("canonical base documents", run.stderr)
 
     def test_waymaker_d2_requires_a_real_model_completion(self):
         run = SmokeRun([OUR_COMMIT], waymaker=WAYMAKER_DETERMINISTIC_FALLBACK).run()
 
         self.assertEqual(run.exit_code, 1)
-        self.assertIn("did not produce a live model answer", run.stderr)
+        self.assertIn("WAYMAKER_BASIC_MODEL_HEALTH: no live model answer", run.stderr)
+        # The Fast public contract is still evaluated and reported.
+        self.assertIn("WAYMAKER_FAST_PUBLIC_CONTRACT:", run.stdout)
         self.assertIn('"deterministic_fallback": true', run.stdout)
         self.assertIn('"visa_code_detected": "D-2"', run.stdout)
         self.assertNotIn("enforcement:", run.stdout)

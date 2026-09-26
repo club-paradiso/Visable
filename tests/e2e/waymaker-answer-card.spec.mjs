@@ -214,13 +214,56 @@ test.describe('Waymaker free-form answers and routing', () => {
     expect(selectorText).not.toMatch(VENDOR_RE);
   });
 
-  test('limited fallback uses product language', async ({ page }) => {
-    const f = fixture('d2_documents_ko_fast.json');
-    const payload = { ...f, deterministic_fallback_answer_used: true, fallback_answer_kind: 'structured_document_checklist' };
-    const { card } = await ask(page, payload);
+  // Production incident: every Fast candidate failed, the backend returned
+  // 503 and the user saw the red "답변 생성 오류" card although the canonical
+  // checklist needed no model. The REAL backend projection for that case
+  // (d2_documents_ko_fast_provider_failed.json) now renders through the same
+  // structured renderer, with no error card and no "temporary problem" note.
+  test('summary model failure still renders the structured official answer', async ({ page }) => {
+    const f = fixture('d2_documents_ko_fast_provider_failed.json');
+    expect(f.deterministic_fallback_answer_used).toBe(true);
+    expect(f.structured_answer.short_answer_source).toBe('deterministic');
+    const { card, errors } = await ask(page, f);
+    await expect(page.locator('.error-card')).toHaveCount(0);
+    await expect(card.locator('.pa-answer-card[data-answer-kind="documents"]')).toHaveCount(1);
+    await expect(card.locator('.answer-mode-chip')).toHaveText('빠른 답변');
+    await expect(card.locator('.pa-lead')).toContainText('D-2');
+    await expect(card.locator('[data-bucket-list="common"] > li')).toHaveText(['신청서', '여권', '외국인등록증', '수수료']);
+    await expect(card.locator('.pa-source-card')).toBeVisible();
+    await expect(card.locator('.pa-source-card')).toContainText('외국인체류 안내매뉴얼');
     const text = await card.innerText();
-    expect(text).toContain('확인된 공식 자료를 기준으로 기본 안내를 대신 표시합니다');
+    expect(text).not.toContain('답변 생성 오류');
+    expect(text).not.toContain('일시적인 문제');
     expect(text).not.toMatch(/모델|provider|제공자|후보/i);
+    expect(text).not.toMatch(VENDOR_RE);
+    expect(text).not.toMatch(INTERNAL_RE);
+    expect(text).not.toMatch(/(^|\n)\s*#{1,6}\s|\*\*/);
+    expect(await accessibleStrings(card)).not.toMatch(VENDOR_RE);
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+    expect(overflow).toBeLessThanOrEqual(0);
+    const copy = card.locator('[data-copy-kind="answer"]');
+    await copy.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(150);
+    const covered = await copy.evaluate((btn) => {
+      const r = btn.getBoundingClientRect();
+      const top = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+      return !(top === btn || btn.contains(top));
+    });
+    expect(covered).toBe(false);
+    expect(errors).toEqual([]);
+  });
+
+  test('a genuinely unanswerable provider failure keeps the error card', async ({ page }) => {
+    await page.route('**/api/ask', (route) => route.fulfill({
+      status: 503, contentType: 'application/json',
+      body: JSON.stringify({ detail: { error: 'answer_generation_unavailable', message: 'The answer could not be generated right now. Please try again shortly.', llm_unavailable: true } }),
+    }));
+    await page.goto('/ai.html');
+    await page.fill('#aiQ', 'D-2 연장 서류랑 체류자격 변경 가능한지도 알려줘');
+    await page.click('#sendBtn');
+    const agree = page.locator('#consentModal .btn-agree');
+    if (await agree.isVisible().catch(() => false)) await agree.click();
+    await expect(page.locator('.error-card').last()).toBeVisible({ timeout: 15_000 });
   });
 });
 
