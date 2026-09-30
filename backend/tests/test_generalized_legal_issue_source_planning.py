@@ -4,7 +4,7 @@ import pytest
 
 from services.grounding_config import GroundingConfig
 from services.law_tools import build_law_evidence_pack
-from services.legal_analysis import build_generalized_source_plan, classify_activity_types, classify_legal_issue_types, extract_immigration_facts, score_evidence_relevance
+from services.legal_analysis import build_generalized_source_plan, classify_activity_types, classify_legal_issue_types, extract_immigration_facts, is_registration_deadline_query, score_evidence_relevance
 
 CFG = GroundingConfig(mode="audit")
 
@@ -87,6 +87,44 @@ def test_registration_phrases_are_not_school_enrollment():
         issues = set(classify_legal_issue_types(question))
         assert "formal_enrollment" not in activities
         assert "study_on_non_study_status" not in issues
+
+
+def test_f6_status_card_and_marriage_registration_do_not_route_to_foreigner_registration():
+    question = (
+        "f-6로 등록증에 적혀있기는 한데, 한국인 남자하고 혼인신고는 하지 않은 "
+        "남성이 있어. 이 사람은 세부코드가 뭘까? f-6-2일까 f-6-3 일까?"
+    )
+    facts = extract_immigration_facts(question, visa_code="F-6")
+    activities = set(classify_activity_types(question))
+    issues = set(classify_legal_issue_types(question, facts))
+
+    assert is_registration_deadline_query(question) is False
+    assert "family_or_marriage_related" in activities
+    assert "registration_or_reporting" not in activities
+    assert "registration_deadline" not in issues
+    assert "registration_or_residence_report" not in issues
+    assert "reporting_duty" not in issues
+
+
+@pytest.mark.parametrize("question", [
+    "등록증에 F-6로 적혀 있는데 세부코드는 뭐예요?",
+    "외국인등록증상 F-6인데 F-6-2와 F-6-3 중 어느 유형인가요?",
+    "ARC에 F-6라고 되어 있는데 세부자격을 확인하고 싶어요.",
+    "한국인과 혼인신고는 하지 않았는데 F-6 세부코드는 어떻게 구분하나요?",
+])
+def test_status_identification_wording_is_not_registration_deadline(question):
+    assert is_registration_deadline_query(question) is False
+    assert "registration_or_reporting" not in set(classify_activity_types(question))
+
+
+@pytest.mark.parametrize("question", [
+    "H-1 외국인등록은 언제 해야 하나요?",
+    "외국인등록증 신청은 어디서 하나요?",
+    "ARC 등록은 언제까지 해야 하나요?",
+])
+def test_actual_foreigner_registration_queries_still_route_to_registration(question):
+    assert is_registration_deadline_query(question) is True
+    assert "registration_or_reporting" in set(classify_activity_types(question))
 
 
 @pytest.mark.parametrize("status", ["H-1", "G-1", "F-2-99", "D-2", "D-4", "D-10", "E-7", "F-4", "F-6", "B-2", "C-3"])

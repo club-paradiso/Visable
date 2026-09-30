@@ -2139,6 +2139,82 @@ def _fallback_confirmation_questions_localized(issues: List[str], facts: Dict[st
     return []
 
 
+def _f6_subcode_identification_fallback(
+    prompt: str,
+    *,
+    current_status: Optional[str],
+    is_ko: bool,
+    intro_mode: str,
+) -> Optional[str]:
+    """Return a bounded deterministic answer for explicit F-6 sub-code identification.
+
+    This path is intentionally narrow. It exists so provider outages do not turn
+    status-identification questions into unrelated registration/deadline memos.
+    It never infers a final sub-code from the card label alone.
+    """
+    raw = prompt or ""
+    compact = re.sub(r"\s+", "", raw.lower())
+    current = str(current_status or "").upper()
+    mentions_f6 = current.startswith("F-6") or bool(
+        re.search(r"(?<![A-Za-z0-9])F\s*-?\s*6(?:\b|\s*-)", raw, re.IGNORECASE)
+    )
+    asks_subcode = any(
+        token in raw
+        for token in ("세부코드", "세부 코드", "세부자격", "세부 자격", "무슨 코드", "어떤 코드")
+    )
+    compares_f62_f63 = bool(
+        re.search(r"f-?6-?2", compact, re.IGNORECASE)
+        and re.search(r"f-?6-?3", compact, re.IGNORECASE)
+    )
+    if not mentions_f6 or not (asks_subcode or compares_f62_f63):
+        return None
+
+    if is_ko:
+        lines: List[str] = []
+        if intro_mode != "quality_repair":
+            lines.extend([
+                "AI 모델이 일시적으로 응답하지 않아, Paradiso가 확인 가능한 F-6 세부자격 기준을 대신 안내합니다.",
+                "",
+            ])
+        lines.extend([
+            "현재 적어주신 정보만으로는 F-6-2와 F-6-3 중 하나로 확정할 수 없습니다.",
+            "",
+            "구분 기준:",
+            "* F-6-2(자녀양육): 국민과의 혼인관계(사실상의 혼인관계 포함)에서 출생한 미성년 자녀를 혼인관계 단절 후 국내에서 양육하거나 양육하려는 부 또는 모에 해당하는 유형입니다.",
+            "* F-6-3(혼인단절): 국민과의 혼인이 사망·실종·이혼 등으로 단절된 뒤 해당 요건을 충족하는 경우의 유형입니다.",
+            "",
+            "따라서 등록증에 F-6라고 적혀 있다는 점이나 한국인과 혼인신고를 하지 않았다는 사실만으로 F-6-2/F-6-3을 가를 수는 없습니다.",
+            "확인할 사실:",
+            "* 국민과의 관계에서 출생한 미성년 자녀가 있는지, 실제로 양육 중인지",
+            "* 법률혼 또는 사실혼 관계가 있었는지",
+            "* 관계가 끝났다면 사망·실종·이혼 등 혼인단절 사유가 무엇인지",
+            "* 현재 출입국 등록기록상 실제 세부자격과 그 허가 근거가 무엇인지",
+            "",
+            "최종 세부자격은 등록증의 상위코드만 보고 추정하지 말고 HiKorea, 1345 또는 관할 출입국·외국인관서에서 등록기록을 확인하는 것이 안전합니다.",
+        ])
+        return "\n".join(lines)
+
+    lines = []
+    if intro_mode != "quality_repair":
+        lines.extend([
+            "The AI model is temporarily unavailable, so Paradiso is showing the verified F-6 sub-status distinction instead.",
+            "",
+        ])
+    lines.extend([
+        "The facts provided are not enough to determine whether the person is F-6-2 or F-6-3.",
+        "",
+        "Key distinction:",
+        "* F-6-2 (child-rearing): generally concerns a parent raising, or intending to raise in Korea, a minor child born from a relationship with a Korean national, including a de facto marital relationship, after that relationship ended.",
+        "* F-6-3 (marriage breakdown): concerns qualifying cases where the marriage or marital relationship ended through circumstances such as death, disappearance, or divorce.",
+        "",
+        "The fact that the card only says F-6, or that no formal marriage registration was filed, does not by itself decide between F-6-2 and F-6-3.",
+        "Confirm the existence and custody of a Korean-national minor child, whether there was a legal or de facto marital relationship, the reason the relationship ended, and the exact sub-status recorded in immigration records.",
+        "",
+        "Confirm the final sub-status through HiKorea, 1345, or the competent immigration office rather than inferring it from the parent F-6 label alone.",
+    ])
+    return "\n".join(lines)
+
+
 def build_legal_analysis_fallback_answer(
     *,
     prompt: str,
@@ -2183,6 +2259,14 @@ def build_legal_analysis_fallback_answer(
             questions = list(la.get("official_confirmation_questions") or base_meta.get("official_confirmation_questions") or [])[:8]
     questions = list(dict.fromkeys([q for q in questions if isinstance(q, str) and q.strip()]))[:8]
     current = facts.get("current_status") or base_meta.get("visa_code_detected")
+    special_subcode_answer = _f6_subcode_identification_fallback(
+        prompt,
+        current_status=current,
+        is_ko=is_ko,
+        intro_mode=intro_mode,
+    )
+    if special_subcode_answer:
+        return special_subcode_answer
     previous = facts.get("previous_status")
     target = facts.get("target_status")
     source_state = str(base_meta.get("source_state") or la.get("analysis_mode") or "").lower()

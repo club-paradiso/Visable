@@ -226,6 +226,21 @@ class DeterministicSynthesisQualityTests(unittest.TestCase):
             self.assertNotIn(snake, answer)
 
 
+    def test_f6_subcode_identification_fallback_does_not_drift_to_registration(self):
+        q = (
+            "f-6로 등록증에 적혀있기는 한데, 한국인 남자하고 혼인신고는 하지 않은 "
+            "남성이 있어. 이 사람은 세부코드가 뭘까? f-6-2일까 f-6-3 일까?"
+        )
+        answer, _gate = self._synth(q)
+        self.assertIn("현재 적어주신 정보만으로는 F-6-2와 F-6-3 중 하나로 확정할 수 없습니다.", answer)
+        self.assertIn("F-6-2(자녀양육)", answer)
+        self.assertIn("F-6-3(혼인단절)", answer)
+        self.assertIn("사실상의 혼인관계", answer)
+        self.assertIn("미성년 자녀", answer)
+        for bad in ("외국인등록 기한", "신고 기산일", "90일", "입국일 또는 체류자격 부여"):
+            self.assertNotIn(bad, answer)
+
+
 # ---------------------------------------------------------------------------
 # Integration: /api/ask repair path + sub-code metadata (mocked LLM)
 # ---------------------------------------------------------------------------

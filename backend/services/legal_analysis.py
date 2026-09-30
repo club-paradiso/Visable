@@ -169,10 +169,21 @@ def _has_formal_enrollment_context(text: str) -> bool:
 
 
 _REGISTRATION_DEADLINE_TERMS = (
-    "외국인등록", "외국인 등록", "외국인등록증", "등록증", "거소신고",
-    "arc 등록", "arc", "alien registration", "foreigner registration",
-    "registration card", "when do i need to register",
-    "by when should i register", "when should i register",
+    "거소신고", "arc 등록", "alien registration", "foreigner registration",
+    "when do i need to register", "by when should i register",
+    "when should i register",
+)
+# A card/status reference ("등록증에 F-6로 적혀 있다", "ARC상 F-6") is not
+# itself a request about alien-registration procedure or deadlines. Only treat
+# the card noun as procedural when the user also names an application/issuance
+# action. This prevents status-identification questions from drifting into the
+# registration/reporting answer contract during deterministic fallback.
+_REGISTRATION_CARD_ACTION_TERMS = (
+    "외국인등록증 신청", "외국인등록증 발급", "외국인등록증 재발급",
+    "등록증 신청", "등록증 발급", "등록증 재발급",
+    "arc 신청", "arc 발급", "arc 재발급",
+    "registration card application", "apply for registration card",
+    "issue registration card", "reissue registration card",
 )
 _REGISTRATION_DEADLINE_PHRASES = (
     "등록 언제까지", "등록은 언제까지", "등록 기한", "등록기한",
@@ -201,7 +212,14 @@ def is_registration_deadline_query(text: str) -> bool:
     """
     raw = text or ""
     low = _low(raw)
-    has_registration = any(term in low for term in _REGISTRATION_DEADLINE_TERMS)
+    # Match the procedure itself, not a card noun used merely as evidence of
+    # current status. Negative lookahead deliberately excludes 외국인등록증.
+    explicit_foreigner_registration = bool(re.search(r"외국인\s*등록(?!증)", raw))
+    has_registration = (
+        explicit_foreigner_registration
+        or any(term in low for term in _REGISTRATION_DEADLINE_TERMS)
+        or any(term in low for term in _REGISTRATION_CARD_ACTION_TERMS)
+    )
     has_deadline = any(term in low for term in _REGISTRATION_DEADLINE_PHRASES)
     excluded_business = any(term in low for term in _REGISTRATION_EXCLUSION_TERMS)
     if excluded_business and not any(term in low for term in ("외국인등록", "외국인 등록", "arc", "alien registration", "foreigner registration")):
@@ -339,13 +357,26 @@ def classify_activity_types(question: str) -> List[str]:
         add("medical_treatment")
     if _has_any(text, "소송", "litigation", "lawsuit", "trial"):
         add("litigation_related_stay")
-    if _has_any(text, "결혼", "이혼", "배우자", "marriage", "divorce", "spouse",
+    if _has_any(text, "결혼", "혼인", "사실혼", "이혼", "배우자", "marriage", "divorce", "spouse",
                 "가족초청", "초청", "family invitation", "invite", "sponsor",
                 "동성 배우자", "동성배우자", "same-sex spouse", "same sex spouse"):
         add("family_or_marriage_related")
     if _has_any(text, "난민", "인도적", "refugee", "asylum", "humanitarian"):
         add("refugee_or_humanitarian_context")
-    if registration_deadline or _has_any(text, "외국인등록", "외국인 등록", "거소신고", "신고", "report", "registration", "residence report", "ARC"):
+    # Bare "신고" is far too broad: 혼인신고/출생신고 and ordinary status-card
+    # references are not immigration reporting procedures. Keep this activity
+    # signal to explicit immigration-reporting phrases; foreigner registration
+    # itself is already covered by is_registration_deadline_query().
+    reporting_signal = _has_any(
+        text,
+        "거소신고", "체류지 변경신고", "체류지 변경 신고",
+        "주소 변경신고", "주소 변경 신고",
+        "여권정보 변경신고", "여권 정보 변경신고", "여권 정보 변경 신고",
+        "근무처 변경신고", "근무처 변경 신고", "취업정보 신고", "출입국 신고",
+        "residence report", "change of address report", "passport information report",
+        "workplace change report", "immigration report", "reporting duty",
+    )
+    if registration_deadline or reporting_signal:
         add("registration_or_reporting")
     if _has_any(text, "재입국", "출국", "re-entry", "reentry", "depart", "leave korea"):
         add("reentry_or_departure")
@@ -480,12 +511,20 @@ def classify_legal_issue_types(question: str, immigration_facts: Optional[Dict[s
         # Generic 신고 language also appears in workplace-change questions.
         # Only classify foreigner registration/residence reporting when the
         # user actually names that procedure.
-        if _has_any(
+        if is_registration_deadline_query(text) or _has_any(
             text,
-            "외국인등록", "외국인 등록", "거소신고", "체류지 변경",
-            "alien registration", "foreigner registration", "residence report", "ARC",
+            "거소신고", "체류지 변경", "alien registration",
+            "foreigner registration", "residence report",
         ):
             add("registration_or_residence_report")
+    # Preserve explicit reporting-duty questions without turning every civil or
+    # everyday "...신고" phrase into an immigration-registration activity.
+    if _has_any(
+        text,
+        "신고의무", "신고 의무", "신고해야", "신고해야 하나",
+        "reporting duty", "must report", "need to report", "have to report",
+    ):
+        add("reporting_duty")
     if acts & {"workplace_change", "workplace_addition", "additional_employment"}:
         add("reporting_duty"); add("workplace_change_addition")
         # A change of employer/workplace is not just a reporting duty: for a
