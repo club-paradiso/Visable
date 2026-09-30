@@ -170,7 +170,7 @@ class SmokeRun:
     """One scripted execution of the embedded smoke script."""
 
     def __init__(self, health_sequence, enforcement=ENFORCEMENT_LIVE, waymaker=WAYMAKER_LIVE, public=WAYMAKER_PUBLIC,
-                 public_status=200, waymaker_status=200):
+                 public_status=200, waymaker_status=200, provider_probe=None):
         # health_sequence: the commit each successive /health call reports.
         # The last entry repeats once exhausted.
         self.health_sequence = list(health_sequence)
@@ -179,6 +179,7 @@ class SmokeRun:
         self.public = public
         self.public_status = public_status
         self.waymaker_status = waymaker_status
+        self.provider_probe = provider_probe
         self.ask_bodies = []
         self.health_calls = 0
         self.slept = 0.0
@@ -216,17 +217,14 @@ class SmokeRun:
         if "/api/enforcement/analyze" in url:
             return _FakeResponse(json.dumps(self.enforcement).encode())
         if "/api/enforcement/provider-probe" in url:
-            # A healthy provider contract on the synthetic case. This is the
-            # production shape that matters: the standalone probe succeeds
-            # while the real analysis path degrades, so the script must report
-            # the degraded ANALYSIS rather than blame the provider.
-            return _FakeResponse(json.dumps({
+            payload = self.provider_probe or {
                 "configured": True,
                 "ok": True,
                 "jsonObjectReturned": True,
                 "predictionContractOk": True,
                 "finalModel": "vendor/model:free",
-            }).encode())
+            }
+            return _FakeResponse(json.dumps(payload).encode())
         raise AssertionError(f"unexpected request: {url}")
 
     def run(self):
@@ -366,16 +364,43 @@ class RailwayLiveSmokeReadinessTests(unittest.TestCase):
         self.assertEqual(run.exit_code, 1, run.stdout + run.stderr)
         self.assertIn("canonical base documents", run.stderr)
 
-    def test_waymaker_d2_requires_a_real_model_completion(self):
-        run = SmokeRun([OUR_COMMIT], waymaker=WAYMAKER_DETERMINISTIC_FALLBACK).run()
+    def test_transient_basic_model_failure_does_not_fail_a_healthy_public_contract(self):
+        transient = {
+            **WAYMAKER_DETERMINISTIC_FALLBACK,
+            "provider_error_type": "rate_limited",
+            "upstream_statuses": [429],
+        }
+        run = SmokeRun([OUR_COMMIT], waymaker=transient).run()
 
-        self.assertEqual(run.exit_code, 1)
-        self.assertIn("WAYMAKER_BASIC_MODEL_HEALTH: no live model answer", run.stderr)
-        # The Fast public contract is still evaluated and reported.
+        self.assertEqual(run.exit_code, 0, run.stdout + run.stderr)
+        self.assertIn("WAYMAKER_BASIC_MODEL_HEALTH transient provider degradation", run.stdout)
         self.assertIn("WAYMAKER_FAST_PUBLIC_CONTRACT:", run.stdout)
-        self.assertIn('"deterministic_fallback": true', run.stdout)
         self.assertIn('"visa_code_detected": "D-2"', run.stdout)
-        self.assertNotIn("enforcement:", run.stdout)
+        self.assertIn("enforcement:", run.stdout)
+
+    def test_non_transient_basic_model_failure_still_fails(self):
+        broken = {
+            **WAYMAKER_DETERMINISTIC_FALLBACK,
+            "provider_error_type": "invalid_provider_config",
+            "upstream_statuses": [403],
+        }
+        run = SmokeRun([OUR_COMMIT], waymaker=broken).run()
+        self.assertEqual(run.exit_code, 1, run.stdout + run.stderr)
+        self.assertIn("WAYMAKER_BASIC_MODEL_HEALTH: no live model answer", run.stderr)
+
+    def test_enforcement_provider_cooldown_is_warning_when_baseline_is_live(self):
+        cooldown = {
+            "configured": True,
+            "ok": False,
+            "jsonObjectReturned": False,
+            "predictionContractOk": False,
+            "finalModel": None,
+            "providerErrorType": "all_candidates_cooling_down",
+        }
+        run = SmokeRun([OUR_COMMIT], enforcement=ENFORCEMENT_DEGRADED, provider_probe=cooldown).run()
+        self.assertEqual(run.exit_code, 0, run.stdout + run.stderr)
+        self.assertIn("ENFORCEMENT_MODEL_HEALTH transient provider degradation", run.stdout)
+        self.assertIn("deterministic legal baseline remains live", run.stdout)
 
 
 class RailwayLiveSmokeBudgetTests(unittest.TestCase):

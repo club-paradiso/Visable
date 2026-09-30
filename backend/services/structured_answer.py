@@ -459,6 +459,11 @@ def build_document_answer(
 _HEADING_RE = re.compile(r"^\s{0,3}#{1,6}\s+")
 _LIST_RE = re.compile(r"^\s*(?:[-*•·]|\d+[.)])\s+")
 _BOLD_RE = re.compile(r"\*\*(.+?)\*\*|__(.+?)__")
+_INLINE_LINK_RE = re.compile(r"!?\[([^\]\n]+)\]\([^\)\n]+\)")
+_INLINE_CODE_RE = re.compile(r"`+`?([^`\n]+?)`+`?")
+_STRIKE_RE = re.compile(r"~~(.+?)~~")
+_SINGLE_EMPHASIS_RE = re.compile(r"(?<!\*)\*([^*\n]+?)\*(?!\*)")
+_LEFTOVER_MARKDOWN_RE = re.compile(r"\*\*|__|~~|`+")
 _MAX_SUMMARY_CHARS = 360
 _LEAD_LABEL_RE = re.compile(r"^\s*(?:요약|핵심|답변|Summary|Short answer|Answer|摘要|简答|簡答)\s*[:：]\s*", re.IGNORECASE)
 # "(외국인체류 안내매뉴얼 2026.6, pp. 43-44)" style in-prose citations. The
@@ -488,6 +493,14 @@ def extract_summary(text: Optional[str], *, max_chars: int = _MAX_SUMMARY_CHARS)
             continue
         joined = " ".join(lines)
         joined = _BOLD_RE.sub(lambda m: m.group(1) or m.group(2) or "", joined)
+        joined = _INLINE_LINK_RE.sub(r"\1", joined)
+        joined = _INLINE_CODE_RE.sub(r"\1", joined)
+        joined = _STRIKE_RE.sub(r"\1", joined)
+        joined = _SINGLE_EMPHASIS_RE.sub(r"\1", joined)
+        # Models occasionally emit malformed/unbalanced Markdown (for example
+        # a lone trailing "**"). Public structured answers are plain text, so
+        # no Markdown delimiter is allowed to survive the response boundary.
+        joined = _LEFTOVER_MARKDOWN_RE.sub("", joined)
         joined = _INLINE_CITATION_RE.sub("", joined)
         joined = _LEAD_LABEL_RE.sub("", joined).strip()
         if joined.endswith(":") or joined.endswith("："):
