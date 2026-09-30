@@ -128,9 +128,9 @@ check(/已确认的居留资格/.test(src), 'Simplified Chinese checked-status l
 check(/已確認的居留資格/.test(src), 'Traditional Chinese checked-status label missing');
 
 // --- Static: friendly law-unavailable text + raw code only in details -------
-check(/Legal source lookup returned an unsupported response format\. Paradiso is using limited guidance until this is fixed\./.test(src),
+check(/Legal source lookup returned an unsupported response format\. Waymaker is using limited guidance until this is fixed\./.test(src),
       'English friendly law-unavailable text missing');
-check(/법령 출처 조회가 지원되지 않는 응답 형식을 반환했습니다\. 수정 전까지 Paradiso는 제한적 안내를 사용합니다\./.test(src),
+check(/법령 출처 조회가 지원되지 않는 응답 형식을 반환했습니다\. 수정 전까지 Waymaker는 제한적 안내를 사용합니다\./.test(src),
       'Korean friendly law-unavailable text missing');
 // Raw SOURCE_UNAVAILABLE must only appear inside the warning-code mapping /
 // technical details, never as default user-facing prose. We approximate this
@@ -155,7 +155,7 @@ check(/@media \(max-width: 480px\)[\s\S]*source-status-chips/.test(pageCss),
 // --- Static: footer disclaimer i18n (4 languages, natural English) ----------
 check(/id="referenceDisclaimer"/.test(src), 'footer is missing the referenceDisclaimer id');
 check(/SHELL_FOOTER_DISCLAIMER\s*=/.test(src), 'SHELL_FOOTER_DISCLAIMER map missing');
-check(/Paradiso provides public law\/manual-based reference information/.test(src),
+check(/Waymaker provides public law\/manual-based reference information/.test(src),
       'English footer disclaimer text missing');
 check(/Waymaker 提供基于公开法令与手册的参考信息/.test(src), 'Simplified Chinese footer missing');
 check(/Waymaker 提供基於公開法令與手冊的參考資訊/.test(src), 'Traditional Chinese footer missing');
