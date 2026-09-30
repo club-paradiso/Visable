@@ -45,7 +45,7 @@ const features = [
   {
     name: 'Waymaker',
     entry: /href="ai\.html"/,
-    hook: /Waymaker by Paradiso/
+    hook: /Waymaker/
   },
   {
     name: 'New Home nationality/citizenship hub',

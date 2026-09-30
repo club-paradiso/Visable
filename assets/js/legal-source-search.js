@@ -1,5 +1,5 @@
 /* ============================================================================
- * Waymaker by Paradiso — Waymaker 리걸 리서치 / Waymaker Legal Research
+ * Waymaker — Waymaker 리걸 리서치 / Waymaker Legal Research
  * ----------------------------------------------------------------------------
  * A source-CHECKING layer inside Waymaker. Lets users look up immigration-
  * related statutes (법령) and court precedents (판례) from the official Open Law
