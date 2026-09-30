@@ -1,4 +1,4 @@
-"""Deterministic legal-research-depth layer for Waymaker by Paradiso.
+"""Deterministic legal-research-depth layer for Waymaker.
 
 Turns the Fast / Basic / Pro tiers (formerly answer-*speed* model tiers in
 ``model_policy``) into research-*depth* modes for the Legal Research feature:

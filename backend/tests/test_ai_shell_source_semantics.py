@@ -100,10 +100,10 @@ class AiShellStaticTests(unittest.TestCase):
     # -- Law-source unavailable display (Part C) ----------------------------
     def test_law_unavailable_uses_friendly_text(self):
         self.assertIn(
-            "Legal source lookup returned an unsupported response format. Paradiso is using limited guidance until this is fixed.",
+            "Legal source lookup returned an unsupported response format. Waymaker is using limited guidance until this is fixed.",
             self.html,
         )
-        self.assertIn("법령 출처 조회가 지원되지 않는 응답 형식을 반환했습니다. 수정 전까지 Paradiso는 제한적 안내를 사용합니다.", self.html)
+        self.assertIn("법령 출처 조회가 지원되지 않는 응답 형식을 반환했습니다. 수정 전까지 Waymaker는 제한적 안내를 사용합니다.", self.html)
 
     def test_raw_source_unavailable_not_default_user_text(self):
         # The raw code may exist only in the warning-code map / details block,
@@ -141,12 +141,12 @@ class AiShellStaticTests(unittest.TestCase):
 
     def test_english_footer_is_not_korean(self):
         self.assertIn(
-            "Paradiso provides public law/manual-based reference information",
+            "Waymaker provides public law/manual-based reference information",
             self.html,
         )
         # And the Simplified / Traditional variants exist too.
-        self.assertIn("Paradiso 提供基于公开法令与手册的参考信息", self.html)
-        self.assertIn("Paradiso 提供基於公開法令與手冊的參考資訊", self.html)
+        self.assertIn("Waymaker 提供基于公开法令与手册的参考信息", self.html)
+        self.assertIn("Waymaker 提供基於公開法令與手冊的參考資訊", self.html)
 
 
 class DocumentationTests(unittest.TestCase):

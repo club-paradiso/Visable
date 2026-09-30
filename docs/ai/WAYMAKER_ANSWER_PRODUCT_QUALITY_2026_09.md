@@ -11,7 +11,7 @@ and it does not change the model policy (`backend/services/model_policy.py`).
 Query `D-2 연장시 필수 서류` (Fast selected) rendered:
 
 ```
-Waymaker by Paradiso 안내
+Waymaker 안내
 OpenRouter · nvidia/nemotron-3-ultra-550b-a55b:free
 …(외국인체류 안내매뉴얼 2026.6; source file 2026-06-23, pp. 43-44)
 ### 필수 서류
@@ -105,7 +105,7 @@ look contradictory, all fixed:
   D-2 · 체류기간 연장 · pp. 43–44 / 공식 매뉴얼 확인됨`), one disclaimer.
   The verbose evidence register is omitted for structured answers (shown in
   developer mode).
-* Header: `Waymaker by Paradiso` / `공식 자료 기반 안내`, plus the effective
+* Header: `Waymaker` / `공식 자료 기반 안내`, plus the effective
   mode chip (`빠른 답변` / `정밀 답변`) and the grounding badge. No provider or
   model anywhere (visible text, attributes, clipboard, error cards).
 * Safe formatter for free-form answers: headings, ordered/unordered lists,

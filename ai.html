@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Waymaker by Paradiso — 판례·법령 기반 이민 AI</title>
+    <title>Waymaker — 판례·법령 기반 이민 AI</title>
     <meta name="description" content="공개 법령·판례·출입국 매뉴얼을 근거로 한국 비자·체류 질문과 절차 준비를 돕는 AI 상담 도구입니다.">
     <link rel="icon" href="assets/brand/visable-favicon.svg?v=1" type="image/svg+xml">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
@@ -140,7 +140,7 @@
                 <p class="ai-title-sub">공개 법령·매뉴얼 기반 안내 · 최종 판단은 HiKorea·1345</p>
             </div>
             <div class="msg-bubble">
-                <p class="wm-welcome-lead">안녕하세요. <strong>Waymaker by Paradiso</strong>는 공개 법령·매뉴얼을 기반으로 비자·체류 절차를 정리해 드리는 참고용 도우미입니다.</p>
+                <p class="wm-welcome-lead">안녕하세요. <strong>Waymaker</strong>는 공개 법령·매뉴얼을 기반으로 비자·체류 절차를 정리해 드리는 참고용 도우미입니다.</p>
                 <p class="wm-welcome-how">국적, 현재 체류자격, 상황을 가능한 한 상세히 적어주시면, 관련 출처를 함께 안내해 드립니다.</p>
                 <p class="wm-welcome-fine">답변은 법적 효력을 갖지 아니하며, 최종 판단은 HiKorea·1345·관할 출입국기관에서 확인하세요.</p>
                 <div class="ai-welcome-chips" role="group" aria-label="예시 질문">
@@ -215,7 +215,7 @@
     </div>
 
     <!--
-      Waymaker by Paradiso structured answer card — the ONE canonical
+      Waymaker structured answer card — the ONE canonical
       structured-answer renderer. Slot names follow
       docs/ai/ANSWER_QUALITY_CONTRACT.md §3. appendAiAnswer() clones this
       template (renderStructuredAnswer) whenever /api/ask returns a
@@ -940,7 +940,7 @@
             row.className = `msg-row ${typeClass}`;
             
             const timeStr = formatTime();
-            const senderName = typeClass === 'user' ? '사용자' : (typeClass === 'sys-err' ? '시스템 오류' : 'Waymaker by Paradiso');
+            const senderName = typeClass === 'user' ? '사용자' : (typeClass === 'sys-err' ? '시스템 오류' : 'Waymaker');
 
             row.innerHTML = `
                 <div class="msg-bubble">${htmlContent}</div>
@@ -1134,9 +1134,9 @@
         // (Part E i18n fix). Official Korean institution names stay in Korean.
         const SHELL_FOOTER_DISCLAIMER = {
             ko: '본 서비스는 공개 법령·매뉴얼 기반 참고용 정보 제공 도구이며, 법적 상담이나 민원 대행이 아닙니다. 최종 판단은 출입국·외국인청, 하이코리아, 또는 자격 있는 전문가에게 확인하세요.',
-            en: 'Waymaker by Paradiso provides public law/manual-based reference information and is not legal advice or a filing service. Confirm final decisions with the competent immigration office, HiKorea, 1345, or a qualified professional.',
-            zh: 'Waymaker by Paradiso 提供基于公开法令与手册的参考信息，并非法律咨询或代办服务。最终决定请向管辖出入境·外国人机构、HiKorea、1345 或有资质的专业人士确认。',
-            zhHant: 'Waymaker by Paradiso 提供基於公開法令與手冊的參考資訊，並非法律諮詢或代辦服務。最終決定請向管轄出入境·外國人機構、HiKorea、1345 或具資格的專業人士確認。'
+            en: 'Waymaker provides public law/manual-based reference information and is not legal advice or a filing service. Confirm final decisions with the competent immigration office, HiKorea, 1345, or a qualified professional.',
+            zh: 'Waymaker 提供基于公开法令与手册的参考信息，并非法律咨询或代办服务。最终决定请向管辖出入境·外国人机构、HiKorea、1345 或有资质的专业人士确认。',
+            zhHant: 'Waymaker 提供基於公開法令與手冊的參考資訊，並非法律諮詢或代辦服務。最終決定請向管轄出入境·外國人機構、HiKorea、1345 或具資格的專業人士確認。'
         };
 
         // Static chat-shell chrome in four languages. Traditional (zh-TW) reuses
@@ -1149,9 +1149,9 @@
             refChip: { ko: '참고용', en: 'Reference', zh: '仅供参考' },
             systemStatus: { ko: '시스템 대기 중', en: 'System ready', zh: '系统待机中' },
             welcome: {
-                ko: '<p class="wm-welcome-lead">안녕하세요. <strong>Waymaker by Paradiso</strong>는 공개 법령·매뉴얼을 기반으로 비자·체류 절차를 정리해 드리는 참고용 도우미입니다.</p><p class="wm-welcome-how">국적, 현재 체류자격, 상황을 가능한 한 상세히 적어주시면, 관련 출처를 함께 안내해 드립니다.</p><p class="wm-welcome-fine">답변은 법적 효력을 갖지 아니하며, 최종 판단은 HiKorea·1345·관할 출입국기관에서 확인하세요.</p>',
-                en: '<p class="wm-welcome-lead">Hello. <strong>Waymaker by Paradiso</strong> is a reference helper that organizes visa/residence procedures based on public law and manuals.</p><p class="wm-welcome-how">Describe your nationality, current status, and situation in as much detail as possible, and we will point you to the relevant sources.</p><p class="wm-welcome-fine">Answers have no legal effect; confirm final decisions with HiKorea, 1345, or the competent immigration office.</p>',
-                zh: '<p class="wm-welcome-lead">您好。<strong>Waymaker by Paradiso</strong> 是一款基于公开法令·手册、为您梳理签证·居留程序的参考助手。</p><p class="wm-welcome-how">请尽可能详细地写明您的国籍、当前居留资格和情况，我们会一并为您指引相关出处。</p><p class="wm-welcome-fine">答复不具法律效力，最终判断请向 HiKorea·1345·管辖出入境机关确认。</p>'
+                ko: '<p class="wm-welcome-lead">안녕하세요. <strong>Waymaker</strong>는 공개 법령·매뉴얼을 기반으로 비자·체류 절차를 정리해 드리는 참고용 도우미입니다.</p><p class="wm-welcome-how">국적, 현재 체류자격, 상황을 가능한 한 상세히 적어주시면, 관련 출처를 함께 안내해 드립니다.</p><p class="wm-welcome-fine">답변은 법적 효력을 갖지 아니하며, 최종 판단은 HiKorea·1345·관할 출입국기관에서 확인하세요.</p>',
+                en: '<p class="wm-welcome-lead">Hello. <strong>Waymaker</strong> is a reference helper that organizes visa/residence procedures based on public law and manuals.</p><p class="wm-welcome-how">Describe your nationality, current status, and situation in as much detail as possible, and we will point you to the relevant sources.</p><p class="wm-welcome-fine">Answers have no legal effect; confirm final decisions with HiKorea, 1345, or the competent immigration office.</p>',
+                zh: '<p class="wm-welcome-lead">您好。<strong>Waymaker</strong> 是一款基于公开法令·手册、为您梳理签证·居留程序的参考助手。</p><p class="wm-welcome-how">请尽可能详细地写明您的国籍、当前居留资格和情况，我们会一并为您指引相关出处。</p><p class="wm-welcome-fine">答复不具法律效力，最终判断请向 HiKorea·1345·管辖出入境机关确认。</p>'
             },
             welcomeAria: { ko: '예시 질문', en: 'Example questions', zh: '示例问题' },
             msgTime: { ko: '시스템 메시지 · 예시 질문은 입력창에 자동으로 채워집니다.', en: 'System message · Example questions auto-fill the input box.', zh: '系统消息 · 示例问题会自动填入输入框。' },
@@ -1712,13 +1712,13 @@
             const errorType = String(safe.law_lookup_error_type || safe.law_grounding_error || '').toUpperCase();
             const hasBadLawResponse = warnings.indexOf('LAW_API_BAD_RESPONSE') !== -1 || warnings.indexOf('LAW_API_PARSE_ERROR') !== -1 || errorType === 'LAW_API_BAD_RESPONSE' || errorType === 'LAW_API_PARSE_ERROR' || errorType === 'SOURCE_UNAVAILABLE';
             if (state === 'structured_fallback_available' || key === 'structured_fallback') {
-                return { cls: 'state-needs-review', label: tt(lang, { ko: '구조화된 법률 분석 메모', en: 'Structured legal analysis note', zh: '结构化法律分析备忘', zhHant: '結構化法律分析備忘' }), subtext: tt(lang, { ko: 'AI 모델 응답이 제한되어, Waymaker by Paradiso가 추출한 체류자격·활동유형·쟁점 분석을 기준으로 준비 메모를 표시합니다.', en: 'The live AI response was unavailable, so Waymaker by Paradiso is showing a preparation note based on extracted status, activity type, and legal issue analysis.', zh: '实时 AI 响应不可用，因此 Waymaker by Paradiso 正显示基于已提取居留资格、活动类型和法律争点分析的准备备忘。', zhHant: '即時 AI 回應不可用，因此 Waymaker by Paradiso 正顯示基於已提取居留資格、活動類型與法律爭點分析的準備備忘。' }) };
+                return { cls: 'state-needs-review', label: tt(lang, { ko: '구조화된 법률 분석 메모', en: 'Structured legal analysis note', zh: '结构化法律分析备忘', zhHant: '結構化法律分析備忘' }), subtext: tt(lang, { ko: 'AI 모델 응답이 제한되어, Waymaker가 추출한 체류자격·활동유형·쟁점 분석을 기준으로 준비 메모를 표시합니다.', en: 'The live AI response was unavailable, so Waymaker is showing a preparation note based on extracted status, activity type, and legal issue analysis.', zh: '实时 AI 响应不可用，因此 Waymaker 正显示基于已提取居留资格、活动类型和法律争点分析的准备备忘。', zhHant: '即時 AI 回應不可用，因此 Waymaker 正顯示基於已提取居留資格、活動類型與法律爭點分析的準備備忘。' }) };
             }
             if ((safe.legal_analysis_exists || key === 'structured_legal_analysis_law_lookup_issue') && hasBadLawResponse) {
                 return { cls: 'state-partial', label: tt(lang, { ko: '구조화된 법률 분석 사용', en: 'Structured legal analysis used', zh: '已使用结构化法律分析', zhHant: '已使用結構化法律分析' }), subtext: tt(lang, { ko: '직접 법령 인용은 제한되지만, 답변은 체류자격·활동유형·쟁점 분석을 기준으로 구성되었습니다.', en: 'Live legal-source lookup encountered a technical issue, so direct citation is limited. The answer still uses extracted status, activity, and issue analysis.', zh: '实时法律来源查询遇到技术问题，因此直接引用受限。答复仍基于已提取的居留资格、活动和争点分析。', zhHant: '即時法律來源查詢遇到技術問題，因此直接引用受限。答覆仍基於已提取的居留資格、活動與爭點分析。' }) };
             }
             if (state === 'related_legal_context_available' || key === 'related_legal_context') {
-                return { cls: 'state-partial', label: tt(lang, { ko: '관련 법적 맥락 분석', en: 'Related legal context analysis', zh: '相关法律背景分析', zhHant: '相關法律背景分析' }), subtext: tt(lang, { ko: '직접 조문 또는 매뉴얼 근거가 충분하지 않은 경우에도, 관련 쟁점과 비교 체류자격을 분리해 분석합니다.', en: 'When direct provisions or manual authority are limited, Waymaker by Paradiso separates related issues and comparison statuses for analysis.', zh: '即使直接条文或手册依据不足，也会区分相关争点和比较居留资格进行分析。', zhHant: '即使直接條文或手冊依據不足，也會區分相關爭點與比較居留資格進行分析。' }) };
+                return { cls: 'state-partial', label: tt(lang, { ko: '관련 법적 맥락 분석', en: 'Related legal context analysis', zh: '相关法律背景分析', zhHant: '相關法律背景分析' }), subtext: tt(lang, { ko: '직접 조문 또는 매뉴얼 근거가 충분하지 않은 경우에도, 관련 쟁점과 비교 체류자격을 분리해 분석합니다.', en: 'When direct provisions or manual authority are limited, Waymaker separates related issues and comparison statuses for analysis.', zh: '即使直接条文或手册依据不足，也会区分相关争点和比较居留资格进行分析。', zhHant: '即使直接條文或手冊依據不足，也會區分相關爭點與比較居留資格進行分析。' }) };
             }
             return null;
         }
@@ -1749,10 +1749,10 @@
             if (analogicalCount > 0 || mode === 'analogical_analysis') return { cls: 'state-partial', text: tt(lang, { ko: '유추 법률 분석', en: 'Analogical legal analysis', zh: '类比法律分析', zhHant: '類比法律分析' }) };
             if (missingDirect && (hasEvidence || mode === 'limited_authority')) return { cls: 'state-needs-review', text: tt(lang, { ko: '직접 근거 제한', en: 'Direct authority limited', zh: '未找到直接针对该情形的依据', zhHant: '未找到直接針對該情形的依據' }) };
             if (warnings.indexOf('LAW_API_TIMEOUT') !== -1 || errorType === 'LAW_API_TIMEOUT') {
-                return { cls: 'state-partial', text: tt(lang, { ko: '법령 출처 조회 시간이 초과되었습니다. Waymaker by Paradiso는 제한적 안내를 사용합니다.', en: 'Legal source lookup timed out. Waymaker by Paradiso is using limited guidance.', zh: '法律来源查询超时。Waymaker by Paradiso 将使用有限指引。', zhHant: '法律來源查詢逾時。Waymaker by Paradiso 將使用有限指引。' }) };
+                return { cls: 'state-partial', text: tt(lang, { ko: '법령 출처 조회 시간이 초과되었습니다. Waymaker는 제한적 안내를 사용합니다.', en: 'Legal source lookup timed out. Waymaker is using limited guidance.', zh: '法律来源查询超时。Waymaker 将使用有限指引。', zhHant: '法律來源查詢逾時。Waymaker 將使用有限指引。' }) };
             }
             if (warnings.indexOf('LAW_API_OFFICIAL_ERROR') !== -1 || errorType === 'LAW_API_OFFICIAL_ERROR') {
-                return { cls: 'state-partial', text: tt(lang, { ko: '공식 법령 출처 서비스가 오류를 반환했습니다. Waymaker by Paradiso는 제한적 안내를 사용합니다.', en: 'The official legal source service returned an error. Waymaker by Paradiso is using limited guidance.', zh: '官方法律来源服务返回错误。Waymaker by Paradiso 将使用有限指引。', zhHant: '官方法律來源服務回傳錯誤。Waymaker by Paradiso 將使用有限指引。' }) };
+                return { cls: 'state-partial', text: tt(lang, { ko: '공식 법령 출처 서비스가 오류를 반환했습니다. Waymaker는 제한적 안내를 사용합니다.', en: 'The official legal source service returned an error. Waymaker is using limited guidance.', zh: '官方法律来源服务返回错误。Waymaker 将使用有限指引。', zhHant: '官方法律來源服務回傳錯誤。Waymaker 將使用有限指引。' }) };
             }
             if (warnings.indexOf('LAW_API_BAD_RESPONSE') !== -1 || warnings.indexOf('LAW_API_PARSE_ERROR') !== -1 || errorType === 'LAW_API_BAD_RESPONSE' || errorType === 'LAW_API_PARSE_ERROR') {
                 return { cls: 'state-partial', text: tt(lang, { ko: '출처 조회 기술 문제', en: 'Source lookup technical issue', zh: '来源查询技术问题', zhHant: '來源查詢技術問題' }) };
@@ -2188,7 +2188,7 @@
                     <header class="answer-head">
                         <div>
                             <span class="answer-kicker">${escapeHtml(kicker)}</span>
-                            <span class="answer-model">Waymaker by Paradiso</span>
+                            <span class="answer-model">Waymaker</span>
                         </div>
                         <span class="grounding-badge">${escapeHtml(badge)}</span>
                     </header>
@@ -2196,7 +2196,7 @@
                     ${altList}
                     ${buildAnswerActions(copyId, false, lang)}
                 </article>
-                <div class="msg-time">Waymaker by Paradiso · ${formatTime()}</div>
+                <div class="msg-time">Waymaker · ${formatTime()}</div>
             `;
             hist.appendChild(row);
             rememberTurn('assistant', refusalBody);
@@ -2308,7 +2308,7 @@
                 <article class="msg-bubble answer-card${easyGlobalPref() ? ' ai-mode-easy' : ''}${structured ? ' answer-card--structured' : ''}">
                     <header class="answer-head">
                         <div>
-                            <span class="answer-kicker">Waymaker by Paradiso</span>
+                            <span class="answer-kicker">Waymaker</span>
                             <span class="answer-model answer-subline">${escapeHtml(headLine)}</span>
                         </div>
                         <div class="answer-head-chips">
@@ -2329,7 +2329,7 @@
                     ${buildAnswerActions(copyId, Boolean(sourceCopy), lang, true)}
                     ${trailingDisc}
                 </article>
-                <div class="msg-time">Waymaker by Paradiso · ${formatTime()}</div>
+                <div class="msg-time">Waymaker · ${formatTime()}</div>
             `;
             if (structured) {
                 const slot = row.querySelector('[data-structured-slot]');
@@ -3003,7 +3003,7 @@
                 _isConsentGranted = true;
             }
         });
-    /* Legacy friendly technical-issue copy retained for tests: Legal source lookup returned an unsupported response format. Paradiso is using limited guidance until this is fixed. 법령 출처 조회가 지원되지 않는 응답 형식을 반환했습니다. 수정 전까지 Paradiso는 제한적 안내를 사용합니다. */
+    /* Legacy friendly technical-issue copy retained for tests: Legal source lookup returned an unsupported response format. Waymaker is using limited guidance until this is fixed. 법령 출처 조회가 지원되지 않는 응답 형식을 반환했습니다. 수정 전까지 Waymaker는 제한적 안내를 사용합니다. */
     </script>
 
     <!-- Waymaker procedure navigator: deterministic, official-source-grounded.

@@ -71,7 +71,7 @@ test.describe('Waymaker structured D-2 document answer', () => {
   test('renders the canonical checklist as a polished structured card', async ({ page }) => {
     const { card, errors } = await ask(page, fixture('d2_documents_ko_fast.json'));
     await expect(card.locator('.pa-answer-card[data-answer-kind="documents"]')).toHaveCount(1);
-    await expect(card.locator('.answer-kicker')).toHaveText('Waymaker by Paradiso');
+    await expect(card.locator('.answer-kicker')).toHaveText('Waymaker');
     await expect(card.locator('.answer-subline')).toHaveText('공식 자료 기반 안내');
     await expect(card.locator('.answer-mode-chip')).toHaveText('빠른 답변');
     await expect(card.locator('.pa-lead')).toContainText('D-2');

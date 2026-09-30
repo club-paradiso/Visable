@@ -19,7 +19,7 @@
   - **Club Paradiso** = 스튜디오/하우스(감성·디아스포라→낙원 서사).
   - **Visable by Paradiso** = 비자·체류 정보 제품(이성·명료). 구 "Paradiso" 본체 = `index.html`.
   - **New Home by Paradiso** = 국적·귀화(`new-home.html`).
-  - **Waymaker by Paradiso** = AI 도우미(`ai.html`, 표기 유지).
+  - **Waymaker** = AI 도우미(`ai.html`, 표기 유지).
 - 핵심: "Paradiso가 비자 플랫폼으로 안 와닿는다"를 *이성 제품(Visable) / 감성 하우스(Paradiso)* 분업으로 푼다.
 
 ## 반드시 먼저 읽을 입력

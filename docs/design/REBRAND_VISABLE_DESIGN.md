@@ -34,7 +34,7 @@ brand:
       voice-bias: emotional
     waymaker:
       name: Waymaker
-      lockup: "Waymaker by Paradiso"    # 하우스 레벨 엔도스(두 제품에서 모두 호출되므로)
+      lockup: "Waymaker"    # 독립 제품명; 사용자 노출에서 Paradiso 엔도스 사용 금지
       domain: AI 안내 도우미
       theme: visable-dark
       file: ai.html
@@ -142,7 +142,7 @@ spacing:  { 1: 4px, 2: 8px, 3: 12px, 4: 16px, 5: 24px, 6: 32px, 7: 48px, 8: 64px
 |---|---|---|---|
 | 비자·체류 (`index.html`) | Paradiso | **Visable by Paradiso** | 마스터 → 제품으로 강등, 하우스로 엔도스 |
 | 국적·귀화 (`new-home.html`) | Paradiso: New Home | **New Home by Paradiso** | 콜론 → "by" 엔도서 |
-| AI (`ai.html`) | Waymaker by Paradiso | **Waymaker by Paradiso** (유지) | 두 제품 공통 진입 → 하우스 엔도스 유지 |
+| AI (`ai.html`) | Waymaker | **Waymaker** | 독립 제품명으로 통일 |
 | 스튜디오/팀 | (없음) | **Club Paradiso** | 신규. About·하우스 서사·저작권 표기 |
 
 ## 2. 색 (Colors)
@@ -226,7 +226,7 @@ spacing:  { 1: 4px, 2: 8px, 3: 12px, 4: 16px, 5: 24px, 6: 32px, 7: 48px, 8: 64px
 | 아나그램 + brandStory | **제품에서 제거 → About/하우스(Club Paradiso) 섹션으로 이동** | `#anagram` id는 이동 후에도 의미적 위치 유지 |
 | 푸터 워드마크/면책 | `Paradiso` → `Visable by Paradiso` (면책 본문 톤 유지) | `.ft-logo` |
 | `new-home.html` h1 | `Paradiso: New Home` → `New Home by Paradiso` | `data-c="hero.title"` |
-| `ai.html` 타이틀/말풍선 | `Waymaker by Paradiso` (유지) | `window.PARADISO_BACKEND_URL` 등 유지 |
+| `ai.html` 타이틀/말풍선 | `Waymaker` (유지) | `window.PARADISO_BACKEND_URL` 등 유지 |
 | `package.json`/메타 | 필요 시 name/description | 빌드 영향 확인 |
 | `scripts/check_repo.sh` | FORBIDDEN_REGEX에 `Visable 39` 등 추가 | — |
 

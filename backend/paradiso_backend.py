@@ -1292,7 +1292,7 @@ def _extract_keywords(text: str, max_keywords: int = 12) -> List[str]:
 # refusal of deceptive/fraudulent help, refugee-question neutrality, and the
 # information-vs-advice distinction, consistent with CLAUDE.md's constraints.
 WAYMAKER_SYSTEM_PROMPT = (
-    "You are Waymaker by Paradiso, an official-source-grounded Korean visa, "
+    "You are Waymaker, an official-source-grounded Korean visa, "
     "residence, immigration, and document guidance assistant.\n\n"
     "Core rules:\n"
     "1. Answer only within the scope of official sources retrieved by the system, "
@@ -1797,7 +1797,7 @@ def _localized_source_boundary_note(*, is_ko: bool, source_state: str, legal_ana
             return "직접적인 사안별 근거가 충분하지 않을 수 있어, 이 메모는 확인 질문과 쟁점 정리에 초점을 둡니다."
         return f"확인된 근거 수준은 {confidence}이며, 최종 판단은 관할 기관 확인이 필요합니다."
     if source_state in {"source_unavailable", "unavailable", "disabled"}:
-        return "Source lookup is limited, but Paradiso can still organize the extracted facts and legal issues into a preparation note."
+        return "Source lookup is limited, but Waymaker can still organize the extracted facts and legal issues into a preparation note."
     if missing_direct:
         return "Direct scenario-specific authority may be limited, so this note focuses on the issues and facts to confirm."
     return f"The available source confidence is {confidence}; final outcomes still require competent-office confirmation."
@@ -2173,7 +2173,7 @@ def _f6_subcode_identification_fallback(
         lines: List[str] = []
         if intro_mode != "quality_repair":
             lines.extend([
-                "AI 모델이 일시적으로 응답하지 않아, Paradiso가 확인 가능한 F-6 세부자격 기준을 대신 안내합니다.",
+                "AI 모델이 일시적으로 응답하지 않아, Waymaker가 확인 가능한 F-6 세부자격 기준을 대신 안내합니다.",
                 "",
             ])
         lines.extend([
@@ -2197,7 +2197,7 @@ def _f6_subcode_identification_fallback(
     lines = []
     if intro_mode != "quality_repair":
         lines.extend([
-            "The AI model is temporarily unavailable, so Paradiso is showing the verified F-6 sub-status distinction instead.",
+            "The AI model is temporarily unavailable, so Waymaker is showing the verified F-6 sub-status distinction instead.",
             "",
         ])
     lines.extend([
@@ -2290,7 +2290,7 @@ def build_legal_analysis_fallback_answer(
         if intro_mode == "quality_repair":
             lines = []
         else:
-            lines = ["AI 모델이 일시적으로 응답하지 않아, Paradiso가 구조화된 법률 분석 메모를 대신 표시합니다.", ""]
+            lines = ["AI 모델이 일시적으로 응답하지 않아, Waymaker가 구조화된 법률 분석 메모를 대신 표시합니다.", ""]
         if "post_status_change_residual_duty" in issues and previous and current:
             lines.append(
                 f"{current}로 체류자격 변경이 완료되었다면, 부업 여부는 이전 {previous} 기준만으로 판단할 사안은 아니고 "
@@ -2352,7 +2352,7 @@ def build_legal_analysis_fallback_answer(
     if intro_mode == "quality_repair":
         lines = []
     else:
-        lines = ["The AI model is temporarily unavailable, so Paradiso is showing a structured legal-analysis preparation note.", ""]
+        lines = ["The AI model is temporarily unavailable, so Waymaker is showing a structured legal-analysis preparation note.", ""]
     if "post_status_change_residual_duty" in issues and previous and current:
         lines.append(
             f"Because the status has already changed from {previous} to {current}, analyze the side activity first under the current {current} status. "
@@ -4621,7 +4621,7 @@ def _build_ungrounded_korea_scoped_prompt(
         )
 
     return (
-        "당신은 한국 비자·체류 안내 도우미 Paradiso입니다. 대한민국 출입국·외국인 체류 제도의 범위 안에서만 답하십시오.\n"
+        "당신은 한국 비자·체류 안내 도우미 Waymaker입니다. 대한민국 출입국·외국인 체류 제도의 범위 안에서만 답하십시오.\n"
         "본 답변은 검증된 매뉴얼 발췌가 없는 상황에서 제공되는 일반 안내입니다."
         " 이 답변은 공식 출입국·외국인정책본부 매뉴얼에 근거하지 않습니다.\n\n"
         "[금지 사항 — 반드시 준수]\n"
@@ -6951,7 +6951,7 @@ async def _legal_research_pipeline(req: LegalResearchRequest, question: str):
         paradiso_sources.append({
             "title": hint, "type": "paradiso",
             "strength": "background",
-            "note": "Paradiso 구조화 데이터" if plan.get("locale") == "ko" else "Paradiso structured data",
+            "note": "Waymaker 구조화 데이터" if plan.get("locale") == "ko" else "Waymaker structured data",
         })
     yield _step("manuals", len(paradiso_sources))
 
@@ -7484,7 +7484,7 @@ async def debug_law_grounding(req: DebugLawGroundingRequest) -> Dict[str, Any]:
 # ---------------------------------------------------------------------------
 
 NATIONALITY_SERVICES_SYSTEM_PROMPT = (
-    "You are Waymaker by Paradiso, acting as a source-aware Korean nationality "
+    "You are Waymaker, acting as a source-aware Korean nationality "
     "civil affairs guide. You explain nationality-related procedures such as "
     "naturalization, nationality restoration, nationality loss, nationality "
     "renunciation, nationality retention, multiple nationality, oath and "
@@ -7498,7 +7498,7 @@ NATIONALITY_SERVICES_SYSTEM_PROMPT = (
 )
 
 NATURALIZATION_INTERVIEW_PREP_SYSTEM_PROMPT = (
-    "You are Waymaker by Paradiso, acting as a text-first Korean naturalization "
+    "You are Waymaker, acting as a text-first Korean naturalization "
     "interview preparation coach. You help users practice interview-style answers "
     "and pre-evaluation study flow. You do not provide legal guarantees, do not "
     "predict approval or failure, and do not claim unofficial content is "
