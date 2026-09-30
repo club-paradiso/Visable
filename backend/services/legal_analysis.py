@@ -357,7 +357,7 @@ def classify_activity_types(question: str) -> List[str]:
         add("medical_treatment")
     if _has_any(text, "소송", "litigation", "lawsuit", "trial"):
         add("litigation_related_stay")
-    if _has_any(text, "결혼", "이혼", "배우자", "marriage", "divorce", "spouse",
+    if _has_any(text, "결혼", "혼인", "사실혼", "이혼", "배우자", "marriage", "divorce", "spouse",
                 "가족초청", "초청", "family invitation", "invite", "sponsor",
                 "동성 배우자", "동성배우자", "same-sex spouse", "same sex spouse"):
         add("family_or_marriage_related")
@@ -517,6 +517,14 @@ def classify_legal_issue_types(question: str, immigration_facts: Optional[Dict[s
             "foreigner registration", "residence report",
         ):
             add("registration_or_residence_report")
+    # Preserve explicit reporting-duty questions without turning every civil or
+    # everyday "...신고" phrase into an immigration-registration activity.
+    if _has_any(
+        text,
+        "신고의무", "신고 의무", "신고해야", "신고해야 하나",
+        "reporting duty", "must report", "need to report", "have to report",
+    ):
+        add("reporting_duty")
     if acts & {"workplace_change", "workplace_addition", "additional_employment"}:
         add("reporting_duty"); add("workplace_change_addition")
         # A change of employer/workplace is not just a reporting duty: for a
