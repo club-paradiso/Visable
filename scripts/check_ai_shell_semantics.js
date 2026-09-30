@@ -157,8 +157,8 @@ check(/id="referenceDisclaimer"/.test(src), 'footer is missing the referenceDisc
 check(/SHELL_FOOTER_DISCLAIMER\s*=/.test(src), 'SHELL_FOOTER_DISCLAIMER map missing');
 check(/Paradiso provides public law\/manual-based reference information/.test(src),
       'English footer disclaimer text missing');
-check(/Paradiso 提供基于公开法令与手册的参考信息/.test(src), 'Simplified Chinese footer missing');
-check(/Paradiso 提供基於公開法令與手冊的參考資訊/.test(src), 'Traditional Chinese footer missing');
+check(/Waymaker 提供基于公开法令与手册的参考信息/.test(src), 'Simplified Chinese footer missing');
+check(/Waymaker 提供基於公開法令與手冊的參考資訊/.test(src), 'Traditional Chinese footer missing');
 check(/applyShellLanguage\(userLang\)/.test(src), 'applyShellLanguage is not wired into the send flow');
 
 // --- Static: warning de-duplication wiring ----------------------------------
