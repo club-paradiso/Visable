@@ -123,6 +123,24 @@ class D2StructuredDocumentAnswerTests(_AskHarness):
         self.assertNotIn("source file", summary)
         self.assertNotIn("안내매뉴얼", summary)  # citation lives in the source card
 
+    def test_model_summary_strips_balanced_and_malformed_inline_markdown(self):
+        self.answer_text = (
+            "**유학(D-2)** 연장에는 `기본 서류`와 "
+            "[증빙 서류](https://example.invalid)가 필요합니다**"
+        )
+        try:
+            resp, _ = self._ask("D-2 연장시 필수 서류")
+        finally:
+            self.answer_text = LEAKY_MODEL_ANSWER
+        structured = resp.json()["structured_answer"]
+        self.assertEqual(structured["short_answer_source"], "model_summary")
+        summary = structured["short_answer"]
+        self.assertIn("유학(D-2)", summary)
+        self.assertIn("기본 서류", summary)
+        self.assertIn("증빙 서류", summary)
+        for token in ("**", "`", "[", "](", "https://"):
+            self.assertNotIn(token, summary)
+
     def test_heading_only_model_answer_falls_back_to_deterministic_summary(self):
         self.answer_text = "### 필수 서류\n- 신청서\n- 여권"
         try:
