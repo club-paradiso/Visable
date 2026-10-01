@@ -169,7 +169,79 @@ class CooldownTests(unittest.TestCase):
         reg = rt.ModelCooldownRegistry(60.0)
         meta = reg.metadata()
         self.assertEqual(set(meta), {
-            "cooling_down_models", "model_cooldown_seconds", "cooldown_enabled"})
+            "cooling_down_models", "model_cooldown_seconds", "cooldown_enabled",
+            "free_tier_quota_window", "free_tier_quota_retry_after_seconds"})
+
+
+class FreeTierQuotaTests(unittest.TestCase):
+    """OpenRouter's free-models-per-min / -per-day 429 is shared by every :free id."""
+
+    DAY = "Rate limit exceeded: free-models-per-day. Add 10 credits to unlock 1000 free model requests per day"
+
+    def test_window_is_read_from_the_provider_message(self):
+        self.assertEqual(rt.free_tier_quota_window(self.DAY), "day")
+        self.assertEqual(rt.free_tier_quota_window("Rate limit exceeded: free-models-per-day-high-balance."), "day")
+        self.assertEqual(rt.free_tier_quota_window('{"error":{"message":"Rate limit exceeded: free-models-per-min."}}'), "minute")
+        self.assertIsNone(rt.free_tier_quota_window("google/gemma:free is temporarily rate-limited upstream"))
+        self.assertIsNone(rt.free_tier_quota_window(None))
+
+    def test_block_covers_every_free_id_and_nothing_else(self):
+        reg = rt.ModelCooldownRegistry(300.0, free_tier_day_seconds=3600.0)
+        reg.mark_free_tier_quota("day", now=1000.0)
+        self.assertTrue(reg.is_cooling("x/any:free", now=1001.0))
+        self.assertFalse(reg.is_cooling("x/paid", now=1001.0))
+        self.assertEqual(reg.partition(["a:free", "b", "c:free"], now=1001.0), (["b"], ["a:free", "c:free"]))
+        self.assertFalse(reg.is_cooling("x/any:free", now=1000.0 + 3600.0))
+
+    def test_minute_window_is_short_and_never_shortens_a_daily_block(self):
+        reg = rt.ModelCooldownRegistry(300.0)
+        reg.mark_free_tier_quota("minute", now=1000.0)
+        self.assertTrue(reg.free_tier_blocked(now=1059.0))
+        self.assertFalse(reg.free_tier_blocked(now=1060.0))
+        reg.mark_free_tier_quota("day", now=2000.0)
+        reg.mark_free_tier_quota("minute", now=2001.0)
+        self.assertTrue(reg.free_tier_blocked(now=2100.0))
+
+    def test_disabled_breaker_never_blocks(self):
+        reg = rt.ModelCooldownRegistry(0.0)
+        reg.mark_free_tier_quota("day")
+        self.assertFalse(reg.is_cooling("a:free"))
+
+    def test_runtime_skips_remaining_free_candidates_after_a_shared_quota_429(self):
+        calls = []
+
+        async def adapter(prompt, model, max_tokens):
+            calls.append(model)
+            if model.endswith(":free"):
+                raise rt.AIError(rt.AIErrorType.RATE_LIMITED, self.DAY, status=429)
+            return "paid answer"
+
+        runtime = rt.AIRuntime(adapter=adapter, cooldowns=rt.ModelCooldownRegistry(300.0))
+        r = run(runtime.complete("q", candidates=["a:free", "b:free", "c/paid"]))
+        self.assertTrue(r.ok)
+        self.assertEqual(calls, ["a:free", "c/paid"])
+        self.assertEqual(r.skipped_models_due_to_cooldown, ["b:free"])
+        # The next request does not touch any free id while the block lasts.
+        calls.clear()
+        r2 = run(runtime.complete("q", candidates=["d:free", "e:free"]))
+        self.assertFalse(r2.ok)
+        self.assertEqual(calls, [])
+        self.assertEqual(r2.error_type, rt.AIErrorType.ALL_CANDIDATES_COOLING_DOWN.value)
+
+    def test_a_per_model_429_keeps_trying_other_free_candidates(self):
+        calls = []
+
+        async def adapter(prompt, model, max_tokens):
+            calls.append(model)
+            if model == "a:free":
+                raise rt.AIError(rt.AIErrorType.RATE_LIMITED, "a:free is temporarily rate-limited upstream", status=429)
+            return "ok"
+
+        runtime = rt.AIRuntime(adapter=adapter, cooldowns=rt.ModelCooldownRegistry(300.0))
+        r = run(runtime.complete("q", candidates=["a:free", "b:free"]))
+        self.assertTrue(r.ok)
+        self.assertEqual(calls, ["a:free", "b:free"])
+        self.assertFalse(runtime.cooldowns.free_tier_blocked())
 
 
 class RuntimeFallbackTests(unittest.TestCase):

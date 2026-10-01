@@ -245,7 +245,14 @@ OPENROUTER_MODEL_COOLDOWN_SECONDS: float = _env_float("OPENROUTER_MODEL_COOLDOWN
 # meant a model that had just rate-limited /api/ask was still tried at full
 # cost by the next feature; sharing the registry makes one model's outage known
 # process-wide. In-memory by design — it is a latency optimization, not state.
-_MODEL_COOLDOWNS = _ai_runtime.ModelCooldownRegistry(OPENROUTER_MODEL_COOLDOWN_SECONDS)
+# After OpenRouter's shared free-model bucket returns 429 (free-models-per-min /
+# free-models-per-day), every ``:free`` id is skipped for this long; the daily
+# bucket reports no reset time, so it is re-probed hourly by default.
+OPENROUTER_FREE_TIER_DAILY_COOLDOWN_SECONDS: float = _env_float("OPENROUTER_FREE_TIER_DAILY_COOLDOWN_SECONDS", 3600.0)
+_MODEL_COOLDOWNS = _ai_runtime.ModelCooldownRegistry(
+    OPENROUTER_MODEL_COOLDOWN_SECONDS,
+    free_tier_day_seconds=OPENROUTER_FREE_TIER_DAILY_COOLDOWN_SECONDS,
+)
 
 ENABLE_OLLAMA_FALLBACK: bool = _env_bool("ENABLE_OLLAMA_FALLBACK", False)
 OLLAMA_BASE_URL: str = os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434").strip() or "http://localhost:11434"
@@ -1640,6 +1647,22 @@ def _mark_openrouter_model_cooling_down(model: str, now: Optional[float] = None)
     _MODEL_COOLDOWNS.mark(model, now)
 
 
+def _partition_runnable_models(candidates: List[str]) -> Tuple[List[str], List[str]]:
+    """``(runnable, skipped)``: per-model cooldowns plus the shared free-tier block."""
+    cooling = set(_cooling_down_models())
+    free_blocked = _MODEL_COOLDOWNS.free_tier_blocked()
+    runnable: List[str] = []
+    skipped: List[str] = []
+    for model in candidates:
+        blocked = model in cooling or (free_blocked and _ai_runtime.is_free_model(model))
+        (skipped if blocked else runnable).append(model)
+    return runnable, skipped
+
+
+def _free_tier_blocks(model: str) -> bool:
+    return _ai_runtime.is_free_model(model) and _MODEL_COOLDOWNS.free_tier_blocked()
+
+
 def _reset_openrouter_model_cooldowns_for_tests() -> None:
     _MODEL_COOLDOWNS.clear()
 
@@ -2864,9 +2887,7 @@ async def _openrouter_complete_with_candidates(
     else:
         candidates = list(base_candidates) or [OPENROUTER_MODEL]
 
-    cooling = set(_cooling_down_models())
-    runnable = [model for model in candidates if model not in cooling]
-    skipped = [model for model in candidates if model in cooling]
+    runnable, skipped = _partition_runnable_models(candidates)
 
     if not runnable:
         return {
@@ -2904,6 +2925,11 @@ async def _openrouter_complete_with_candidates(
     fatal_stop = False
 
     for index, model in enumerate(runnable):
+        if _free_tier_blocks(model):
+            # The shared free-model bucket ran out earlier in this chain; every
+            # remaining ``:free`` candidate would fail the same way.
+            skipped.append(model)
+            continue
         remaining = chain_budget - (time.monotonic() - started)
         if remaining <= 0:
             chain_budget_exhausted = True
@@ -2954,6 +2980,12 @@ async def _openrouter_complete_with_candidates(
                 capacity_failure_seen = True
                 key_proven = True
                 _mark_openrouter_model_cooling_down(model)
+                window = (
+                    _ai_runtime.free_tier_quota_window(detail.get("message"))
+                    if _ai_runtime.is_free_model(model) else None
+                )
+                if window:
+                    _MODEL_COOLDOWNS.mark_free_tier_quota(window)
                 continue
             if last_error_type in _PER_MODEL_SKIP_ERROR_TYPES:
                 # Bad/unknown model id or no endpoints for THIS model: skip to the
@@ -3286,9 +3318,7 @@ async def _sse_answer_stream(
 
     started = time.monotonic()
     chain_budget_exhausted = False
-    cooling = set(_cooling_down_models())
-    runnable = [m for m in candidates if m not in cooling]
-    skipped = [m for m in candidates if m in cooling]
+    runnable, skipped = _partition_runnable_models(candidates)
     attempted: List[str] = []
     # Set once any candidate got a non-auth upstream response (see
     # _is_model_scoped_forbidden).
@@ -3298,6 +3328,10 @@ async def _sse_answer_stream(
     )
 
     for index, model in enumerate(runnable):
+        if _free_tier_blocks(model):
+            # Shared free-model bucket exhausted earlier in this chain.
+            skipped.append(model)
+            continue
         remaining = OPENROUTER_CHAIN_BUDGET_SECONDS - (time.monotonic() - started)
         if remaining <= 0:
             chain_budget_exhausted = True
@@ -3402,6 +3436,12 @@ async def _sse_answer_stream(
             if retryable:
                 stream_key_proven = True
                 _mark_openrouter_model_cooling_down(model)
+                window = (
+                    _ai_runtime.free_tier_quota_window(detail.get("message"))
+                    if _ai_runtime.is_free_model(model) else None
+                )
+                if window:
+                    _MODEL_COOLDOWNS.mark_free_tier_quota(window)
                 continue
             if etype in _PER_MODEL_SKIP_ERROR_TYPES:
                 stream_key_proven = True

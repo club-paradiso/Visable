@@ -48,7 +48,12 @@ The backend origin is defined once in `assets/js/backend-origin.js`
    Open Law grounding (`law_grounding.py`, `law_tools.py`).
 4. Model call through `services/ai_runtime.py` (error taxonomy, cooldowns,
    candidate chain) — OpenRouter first; per-model failures skip to the next
-   candidate, account-wide failures (credentials, bad request) stop.
+   candidate, account-wide failures (credentials, bad request) stop. A 429
+   naming OpenRouter's shared free bucket (`free-models-per-min` /
+   `free-models-per-day`) blocks every `:free` id process-wide (60 s /
+   `OPENROUTER_FREE_TIER_DAILY_COOLDOWN_SECONDS`, default 3600 s) instead of
+   walking the rest of the free chain; non-free candidates are still tried. A
+   per-model upstream 429 only cools that model.
 5. Post-processing: confidence gate, internal-metadata scrub
    (`structured_answer.scrub_internal_metadata`, also applied line by line to
    streamed deltas), answer-shape gate, law-citation guard

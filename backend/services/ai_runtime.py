@@ -343,6 +343,28 @@ def resolve_task_models(role: Any) -> Dict[str, Any]:
 # Cooldown / circuit breaker
 # ---------------------------------------------------------------------------
 
+#: OpenRouter's account-wide limits for ``:free`` model ids. The 429 body names
+#: the bucket — ``Rate limit exceeded: free-models-per-day`` (also
+#: ``free-models-per-day-high-balance``) or ``free-models-per-min``. Every
+#: ``:free`` candidate draws on the same bucket, so after one such 429 the rest
+#: of a free chain fails identically. The responses carry no Retry-After.
+_FREE_TIER_QUOTA_RE = re.compile(r"free-models-per-(day|min)", re.IGNORECASE)
+FREE_MODEL_SUFFIX = ":free"
+
+
+def free_tier_quota_window(message: Any) -> Optional[str]:
+    """``"day"`` / ``"minute"`` when a provider message names the shared
+    free-model bucket, else None (a per-model or upstream 429)."""
+    match = _FREE_TIER_QUOTA_RE.search(str(message or ""))
+    if not match:
+        return None
+    return "day" if match.group(1).lower() == "day" else "minute"
+
+
+def is_free_model(model: Any) -> bool:
+    return str(model or "").strip().lower().endswith(FREE_MODEL_SUFFIX)
+
+
 
 class ModelCooldownRegistry:
     """In-memory circuit breaker keyed by public model id.
@@ -354,9 +376,26 @@ class ModelCooldownRegistry:
     state worth persisting, and a restart clearing it is harmless.
     """
 
-    def __init__(self, cooldown_seconds: float = 300.0) -> None:
+    def __init__(
+        self,
+        cooldown_seconds: float = 300.0,
+        *,
+        free_tier_minute_seconds: float = 60.0,
+        free_tier_day_seconds: float = 3600.0,
+    ) -> None:
         self.cooldown_seconds = max(0.0, float(cooldown_seconds))
         self._failed_at: Dict[str, float] = {}
+        # Account-wide block for every ``:free`` model after a shared-bucket
+        # 429 (see free_tier_quota_window). The daily bucket's reset time is
+        # not reported, so the block re-probes once per ``free_tier_day_seconds``
+        # instead of sending the whole free chain into a doomed retry every
+        # ``cooldown_seconds``.
+        self.free_tier_seconds = {
+            "minute": max(0.0, float(free_tier_minute_seconds)),
+            "day": max(0.0, float(free_tier_day_seconds)),
+        }
+        self._free_tier_until = 0.0
+        self._free_tier_window = ""
 
     @property
     def enabled(self) -> bool:
@@ -367,6 +406,32 @@ class ModelCooldownRegistry:
             return
         self._failed_at[model] = time.time() if now is None else now
 
+    def mark_free_tier_quota(self, window: str, now: Optional[float] = None) -> None:
+        if not self.enabled or window not in self.free_tier_seconds:
+            return
+        ts = time.time() if now is None else now
+        until = ts + self.free_tier_seconds[window]
+        if until > self._free_tier_until:
+            self._free_tier_until = until
+            self._free_tier_window = window
+
+    def free_tier_blocked(self, now: Optional[float] = None) -> bool:
+        if not self.enabled:
+            return False
+        ts = time.time() if now is None else now
+        if ts >= self._free_tier_until:
+            self._free_tier_until, self._free_tier_window = 0.0, ""
+            return False
+        return True
+
+    def partition(self, chain: Sequence[str], now: Optional[float] = None) -> "tuple[List[str], List[str]]":
+        """``(runnable, skipped)`` for a candidate chain, order preserved."""
+        runnable: List[str] = []
+        skipped: List[str] = []
+        for model in chain:
+            (skipped if self.is_cooling(model, now) else runnable).append(model)
+        return runnable, skipped
+
     def cooling_down(self, now: Optional[float] = None) -> List[str]:
         if not self.enabled:
             return []
@@ -376,16 +441,23 @@ class ModelCooldownRegistry:
         return [m for m, at in self._failed_at.items() if ts - at < self.cooldown_seconds]
 
     def is_cooling(self, model: str, now: Optional[float] = None) -> bool:
+        if is_free_model(model) and self.free_tier_blocked(now):
+            return True
         return model in set(self.cooling_down(now))
 
     def clear(self) -> None:
         self._failed_at.clear()
+        self._free_tier_until, self._free_tier_window = 0.0, ""
 
     def metadata(self) -> Dict[str, Any]:
+        now = time.time()
+        blocked = self.free_tier_blocked(now)
         return {
-            "cooling_down_models": self.cooling_down(),
+            "cooling_down_models": self.cooling_down(now),
             "model_cooldown_seconds": self.cooldown_seconds,
             "cooldown_enabled": self.enabled,
+            "free_tier_quota_window": self._free_tier_window if blocked else "",
+            "free_tier_quota_retry_after_seconds": int(self._free_tier_until - now) if blocked else 0,
         }
 
 
@@ -564,9 +636,7 @@ class AIRuntime:
             )
 
         started = time.monotonic()
-        cooling = set(self.cooldowns.cooling_down())
-        runnable = [m for m in chain if m not in cooling]
-        skipped = [m for m in chain if m in cooling]
+        runnable, skipped = self.cooldowns.partition(chain)
 
         base = dict(
             provider=self.provider_name,
@@ -596,6 +666,10 @@ class AIRuntime:
         last_error: Optional[AIErrorType] = None
 
         for model in runnable:
+            if self.cooldowns.is_cooling(model):
+                # The shared free-model bucket ran out earlier in this chain.
+                skipped.append(model)
+                continue
             attempted.append(model)
             try:
                 answer = await self._adapter(prompt, model, max_tokens)
@@ -605,6 +679,9 @@ class AIRuntime:
                     statuses.append(int(exc.status))
                 if is_retryable(exc.error_type):
                     self.cooldowns.mark(model)
+                    window = free_tier_quota_window(exc.public_message) if is_free_model(model) else None
+                    if window:
+                        self.cooldowns.mark_free_tier_quota(window)
                     continue
                 if should_skip_model(exc.error_type):
                     continue
