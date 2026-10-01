@@ -28,12 +28,19 @@ async function searchStatus(page, code) {
     .catch(() => {});
   await page.waitForFunction(() => (typeof dataReady !== 'undefined' && dataReady) === true, null, { timeout: 30_000 });
   // Drive the real search path (the search form starts hidden / input disabled).
-  await page.evaluate((c) => {
+  // The per-status card list is gated behind the explicit "기존 체류자격 카드 보기"
+  // request (body[data-legacy-card="open"], see procedure-first-search.spec.mjs),
+  // and every search clears that flag once results render. Open it after the
+  // render, as that button does.
+  await page.evaluate((c) => new Promise((resolve) => {
+    const open = () => { document.body.setAttribute('data-legacy-card', 'open'); resolve(); };
+    document.addEventListener('paradiso:results-rendered', () => setTimeout(open, 0), { once: true });
+    setTimeout(open, 5_000);
     const form = document.getElementById('searchForm'); if (form) form.style.display = '';
     const q = document.getElementById('q'); if (q) { q.disabled = false; q.value = c; }
     if (typeof executeSearch === 'function') executeSearch();
     else if (typeof renderResults === 'function') renderResults(c);
-  }, code);
+  }), code);
   // Ensure the status card rendered and is expanded so its slot is visible.
   const card = page.locator(`#rlist .vc[data-code="${code}"]`);
   await card.first().waitFor({ timeout: 15_000 });
