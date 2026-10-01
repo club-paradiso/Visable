@@ -41,8 +41,9 @@ class EnforcementBenchmarkCorpusTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(report["coverage"]["provenanceCoverage"], 1.0)
         self.assertEqual(report["coverage"]["kindCounts"], {"narrative": 28, "structured": 8})
         self.assertEqual(report["latencyMs"]["samples"], 28)
-        # 18 = 19 before nl-008 moved from a baseline case to an abstention case.
-        self.assertGreaterEqual(report["coverage"]["deterministicBaselineCases"], 18)
+        # nl-008 abstains on the provision but still has a baseline: 18(2) and
+        # 21(1) share one 별표 7 tier table, so the amount does not depend on it.
+        self.assertGreaterEqual(report["coverage"]["deterministicBaselineCases"], 19)
         self.assertGreater(report["coverage"]["securityInvariantChecks"], 0)
         self.assertEqual(report["failures"], [])
 

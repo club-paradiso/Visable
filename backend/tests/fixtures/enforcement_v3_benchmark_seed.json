@@ -88,7 +88,8 @@
         "violationCode": null,
         "classificationState": "AMBIGUOUS",
         "durationDays": 30,
-        "deterministicBaselineStatus": "MISSING_FACTS"
+        "deterministicBaselineStatus": "AVAILABLE",
+        "baselineAmountKrw": 1000000
       }
     },
     {
