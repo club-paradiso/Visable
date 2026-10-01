@@ -1,15 +1,38 @@
 import { test, expect } from '@playwright/test';
 
+// Console errors that matter are first-party. The pages load Pretendard from a
+// public CDN; when the runner cannot reach it (sandboxed CI, offline laptop) the
+// browser logs "Failed to load resource: net::ERR_…" for that cross-origin URL.
+// Only that exact shape — a failed load of a resource on another origin — is
+// ignored; a failed same-origin load or any other console error still fails.
+function collectConsoleErrors(page) {
+  const errors = [];
+  page.on('pageerror', (error) => errors.push(`pageerror: ${error.message || error}`));
+  page.on('console', (message) => {
+    if (message.type() !== 'error') return;
+    const text = message.text();
+    const source = message.location()?.url || '';
+    if (/^Failed to load resource: net::ERR_/.test(text) && isCrossOrigin(page, source)) return;
+    errors.push(source ? `${text} (${source})` : text);
+  });
+  return errors;
+}
+
+function isCrossOrigin(page, url) {
+  try {
+    return new URL(url).origin !== new URL(page.url()).origin;
+  } catch (error) {
+    return false;
+  }
+}
+
 async function expectNoHorizontalOverflow(page) {
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
   expect(overflow, 'no horizontal overflow').toBeLessThanOrEqual(1);
 }
 
 test('New Home exposes a useful entry point and an accessible readiness dialog', async ({ page }) => {
-  const consoleErrors = [];
-  page.on('console', (message) => {
-    if (message.type() === 'error') consoleErrors.push(message.text());
-  });
+  const consoleErrors = collectConsoleErrors(page);
 
   await page.goto('/new-home.html');
   await expect(page.locator('.nh-section-nav')).toBeVisible();
@@ -43,10 +66,7 @@ test('New Home exposes a useful entry point and an accessible readiness dialog',
 });
 
 test('New Home explains nationality and KIIP routes with scoped official sources', async ({ page }) => {
-  const consoleErrors = [];
-  page.on('console', (message) => {
-    if (message.type() === 'error') consoleErrors.push(message.text());
-  });
+  const consoleErrors = collectConsoleErrors(page);
 
   await page.goto('/new-home.html');
   const pathIds = await page.evaluate(() => fetch('/data/nationality_paths.json').then((response) => response.json()).then((data) => data.paths.map((item) => item.id)));
@@ -66,15 +86,24 @@ test('New Home explains nationality and KIIP routes with scoped official sources
 
 test('homepage visa search settles without reopening blocking menus', async ({ page }) => {
   test.skip(page.viewportSize().width < 1000, 'The gateway search transition is a desktop homepage flow.');
+  const consoleErrors = collectConsoleErrors(page);
   await page.goto('/index.html');
-  await expect(page.locator('#searchToggleBtn')).toBeVisible();
-  await page.locator('#searchToggleBtn').click();
-  const input = page.locator('#q');
-  await expect(input).toBeEnabled({ timeout: 20_000 });
-  await input.fill('D-2');
-  await page.getByTestId('visa-search-submit').click();
+  // The civic shell's search box is the home entry (the old gateway toggle is
+  // hidden under body.civic-refresh).
+  const query = page.locator('#civicQuery');
+  await expect(query).toBeVisible({ timeout: 30_000 });
+  // A status + procedure query reaches the procedure result, where the
+  // "기존 체류자격 카드 보기" action lives (a bare code first asks for the procedure).
+  await query.fill('D-2 연장');
+  await query.press('Enter');
   await expect(page.locator('body')).toHaveClass(/searched/, { timeout: 10_000 });
   await expect(page.locator('body')).not.toHaveClass(/launching/);
+  await expect(page.locator('#cityMenu')).toBeHidden();
+  // Procedure guidance comes first; the status card opens only on the explicit
+  // "기존 체류자격 카드 보기" request (see procedure-first-search.spec.mjs).
+  const guidance = page.locator('#statusGuidance[data-sg-kind]');
+  await expect(guidance).toBeVisible({ timeout: 20_000 });
+  await guidance.locator('[data-sg-action="legacy-card"]').click();
   await expect(page.locator('#cityMenu')).toBeHidden();
   await expect(page.locator('.vc[data-code="D-2"]')).toBeVisible();
   const missionSources = page.locator('.vc[data-code="D-2"] details.issuance-mission-sources').first();
@@ -83,4 +112,5 @@ test('homepage visa search settles without reopening blocking menus', async ({ p
   await expect(missionSources.locator('a.issuance-mission-link').first()).toHaveAttribute('href', /overseas\.mofa\.go\.kr/);
   await expect(missionSources).toContainText('해당 공관 범위만 적용');
   await expectNoHorizontalOverflow(page);
+  expect(consoleErrors).toEqual([]);
 });
