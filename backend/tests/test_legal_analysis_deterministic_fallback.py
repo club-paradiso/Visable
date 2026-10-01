@@ -376,3 +376,30 @@ def test_source_panel_contract_for_legal_analysis_bad_law_response() -> None:
     assert meta["law_lookup_error_type"] == "LAW_API_BAD_RESPONSE"
     assert meta["source_panel_confidence"] == "low"
     assert meta["law_lookup_failed"] is True
+
+
+def test_every_issue_and_activity_type_has_a_user_facing_label():
+    # An unlabelled type used to be printed as its id ("employment condition",
+    # "document preparation, status extension") inside the Korean fallback memo.
+    from services.legal_analysis import ACTIVITY_TYPES, LEGAL_ISSUE_TYPES
+
+    for is_ko in (True, False):
+        issue_labels = pb._issue_labels_for_fallback(sorted(LEGAL_ISSUE_TYPES), is_ko=is_ko)
+        activity_labels = pb._activity_labels_for_fallback(sorted(ACTIVITY_TYPES), is_ko=is_ko)
+        assert len(issue_labels) == min(6, len(LEGAL_ISSUE_TYPES))
+        assert len(activity_labels) == min(6, len(ACTIVITY_TYPES))
+        for issue in LEGAL_ISSUE_TYPES:
+            assert pb._issue_labels_for_fallback([issue], is_ko=is_ko), issue
+        for activity in ACTIVITY_TYPES:
+            assert pb._activity_labels_for_fallback([activity], is_ko=is_ko), activity
+    assert pb._issue_labels_for_fallback(["not_a_real_issue"], is_ko=True) == []
+
+
+def test_korean_fallback_memo_names_no_internal_ids():
+    body = _ask_fallback("E-7 근무처 변경하려면 어떻게 해야 하나요?")
+    answer = body["answer"]
+    for raw in ("employment condition", "employment_condition", "document preparation", "status extension"):
+        assert raw not in answer
+    body = _ask_fallback("F-6 체류기간 연장 서류")
+    assert "document preparation" not in body["answer"]
+    assert "status extension" not in body["answer"]

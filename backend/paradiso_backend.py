@@ -1730,6 +1730,10 @@ def _issue_labels_for_fallback(issues: List[str], *, is_ko: bool) -> List[str]:
         "nationality_or_refugee_context": "국적·난민 관련 체류 맥락",
         "legal_general": "일반 법률 쟁점",
         "non_immigration_adjacent_issue": "인접 쟁점",
+        "employment_condition": "근로 조건(임금·근무시간·직무)의 요건 충족",
+        "denial_revocation_or_remedy": "불허·취소 처분과 불복 절차",
+        "constitutional_or_fundamental_rights": "헌법·기본권 관련 쟁점",
+        "discretionary_or_ambiguous_interpretation": "재량·해석이 갈리는 쟁점",
     }
     labels_en = {
         "activity_scope": "current-status activity scope",
@@ -1753,9 +1757,15 @@ def _issue_labels_for_fallback(issues: List[str], *, is_ko: bool) -> List[str]:
         "nationality_or_refugee_context": "nationality/refugee residence context",
         "legal_general": "general legal issue",
         "non_immigration_adjacent_issue": "adjacent issue",
+        "employment_condition": "whether the job's wage, hours and duties meet the conditions",
+        "denial_revocation_or_remedy": "denial or revocation and the remedies against it",
+        "constitutional_or_fundamental_rights": "constitutional or fundamental-rights issue",
+        "discretionary_or_ambiguous_interpretation": "discretionary or contested interpretation",
     }
     labels = labels_ko if is_ko else labels_en
-    return [labels.get(issue, issue.replace("_", " ")) for issue in issues if issue][:6]
+    # Never print an internal issue id: an unlabelled issue is left out of the
+    # user-facing list rather than shown as "employment_condition".
+    return [labels[issue] for issue in issues if issue in labels][:6]
 
 
 def _activity_labels_for_fallback(activities: List[str], *, is_ko: bool) -> List[str]:
@@ -1776,15 +1786,44 @@ def _activity_labels_for_fallback(activities: List[str], *, is_ko: bool) -> List
         "workplace_addition": "근무처 추가",
         "registration_or_reporting": "외국인등록·신고",
         "status_change_route": "체류자격 변경",
+        "status_extension": "체류기간 연장",
+        "document_preparation": "제출 서류 준비",
+        "family_or_marriage_related": "혼인·가족 관련 사정",
+        "litigation_related_stay": "소송 관련 체류",
+        "medical_treatment": "치료 목적 체류",
+        "reentry_or_departure": "출국·재입국",
+        "refugee_or_humanitarian_context": "난민·인도적 체류",
+        "volunteer_activity": "자원봉사",
     }
-    labels_en = {k: k.replace("_", " ") for k in [
-        "credit_bearing_study", "formal_enrollment", "non_credit_audit", "non_credit_cultural_or_hobby",
-        "language_training", "paid_work", "unpaid_internship", "paid_internship", "freelance_work",
-        "side_job", "additional_employment", "business_activity", "workplace_change", "workplace_addition",
-        "registration_or_reporting", "status_change_route",
-    ]}
+    labels_en = {
+        "credit_bearing_study": "credit-bearing classes",
+        "formal_enrollment": "school enrollment / formal study",
+        "non_credit_audit": "auditing / non-credit classes",
+        "non_credit_cultural_or_hobby": "non-credit cultural or hobby classes",
+        "language_training": "language training / Korean classes",
+        "paid_work": "paid work",
+        "unpaid_internship": "unpaid internship",
+        "paid_internship": "paid internship",
+        "freelance_work": "freelance work",
+        "side_job": "side job",
+        "additional_employment": "additional employment",
+        "business_activity": "business activity / business registration",
+        "workplace_change": "workplace change",
+        "workplace_addition": "workplace addition",
+        "registration_or_reporting": "alien registration / reporting",
+        "status_change_route": "change of status",
+        "status_extension": "extension of stay",
+        "document_preparation": "preparing documents",
+        "family_or_marriage_related": "marriage or family circumstances",
+        "litigation_related_stay": "stay related to litigation",
+        "medical_treatment": "stay for medical treatment",
+        "reentry_or_departure": "departure / re-entry",
+        "refugee_or_humanitarian_context": "refugee / humanitarian stay",
+        "volunteer_activity": "volunteering",
+    }
     labels = labels_ko if is_ko else labels_en
-    return [labels.get(activity, activity.replace("_", " ")) for activity in activities if activity][:6]
+    # Same rule as the issue labels: no internal activity id reaches the user.
+    return [labels[activity] for activity in activities if activity in labels][:6]
 
 
 def _localized_source_boundary_note(*, is_ko: bool, source_state: str, legal_analysis: Dict[str, Any]) -> str:
