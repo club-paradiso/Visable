@@ -191,6 +191,12 @@ echo "[8b/14] Validating the civic landing first-paint shell..."
 # copy. This is what keeps the legacy hero out of the first painted frame.
 node scripts/check_landing_shell.mjs
 
+echo "[8c/14] Checking index.html for dead design-token declarations..."
+# Offline, stdlib Python. A token declared earlier in an identical unconditional
+# rule than a later declaration of the same property never renders; duplicates
+# like that are how the inline token layers drifted apart.
+python3 scripts/check_index_dead_tokens.py
+
 echo "[9/14] Validating EN/KO UI translations..."
 if [[ -f scripts/check_i18n.js ]]; then
   if command -v node >/dev/null 2>&1; then
