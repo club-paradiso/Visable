@@ -61,7 +61,20 @@ The backend origin is defined once in `assets/js/backend-origin.js`
    `X-Paradiso-Diagnostics-Token`. `/health` → `client_diagnostics_mode`.
 7. Deterministic fallback: when every candidate fails, a structured
    source-backed answer (document checklists) or a preparation note is returned
-   instead of an error.
+   instead of an error. The preparation note names the exact stay-manual
+   section and page for the status + procedure (`services/manual_locator.py`,
+   2026.9 status guidance, labelled as not yet reviewed line by line; sub-codes
+   listed under their own labels, no requirement restated).
+
+Verified document checklists exist only where the repository records a human
+check (`backend/data/manual_grounding/stay_manual_grounding_2026_05.json`:
+D-2, D-4, E-7 extension). Everything else (e.g. F-6 / F-4 / H-1 extension)
+reaches users as the unreviewed 2026.9 guidance or the locator above until an
+operator reviews and publishes it (Knowledge Studio /
+`scripts/knowledge/knowledge_cli.py ingest --adapter status_guidance`). Known
+limits of that path: the adapter skips scenario-scoped entries (all F-6
+extension entries), F-4 extension is not structured in the 2026.9 guidance
+(source page only), and the manual lists no separate H-1 extension documents.
 
 ## Enforcement Intelligence
 

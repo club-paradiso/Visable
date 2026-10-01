@@ -57,6 +57,7 @@ from services.law_tools import build_law_evidence_pack, search_laws, search_laws
 from services import unified_search as _unified_search
 from services import manual_search as _manual_search
 from services import manual_registry as _manual_registry
+from services import manual_locator as _manual_locator
 from services import statute_citation_guard as _statute_guard
 from services import employment_nl as _employment_nl
 from services import immigration_tools as _immigration_tools
@@ -2309,6 +2310,13 @@ def build_legal_analysis_fallback_answer(
         return special_subcode_answer
     previous = facts.get("previous_status")
     target = facts.get("target_status")
+    # Exact manual section/page for a status + stay procedure the knowledge layer
+    # has no verified facts for (e.g. F-6 / F-4 / H-1 extension), labelled as the
+    # unreviewed 2026.9 edition (services/manual_locator.py).
+    locator_lines = _manual_locator.note_lines(
+        base_meta.get("visa_code_detected"), base_meta.get("visa_sub_code_detected"),
+        base_meta.get("task_type_detected"), is_ko=is_ko,
+    )
     source_state = str(base_meta.get("source_state") or la.get("analysis_mode") or "").lower()
     source_note = _localized_source_boundary_note(is_ko=is_ko, source_state=source_state, legal_analysis=la)
     # Part G: for registration/reporting answers, use concise source-limitation
@@ -2386,6 +2394,8 @@ def build_legal_analysis_fallback_answer(
             lines.extend(["", "확인할 사실:", *[f"* {item}" for item in fact_lines[:8]]])
         if questions:
             lines.extend(["", "공식 확인 질문:", *[f"* {q}" for q in questions]])
+        if locator_lines:
+            lines.extend(["", *locator_lines])
         lines.extend(["", source_note, "이 메모는 최종 판단이 아니며, 시작 전 1345, HiKorea 또는 관할 출입국·외국인청에 위 사실관계를 기준으로 확인하세요."])
         return "\n".join(lines)
 
@@ -2449,6 +2459,8 @@ def build_legal_analysis_fallback_answer(
         lines.extend(["", "Facts to confirm:", *[f"* {item}" for item in fact_lines[:8]]])
     if questions:
         lines.extend(["", "Questions to confirm with the official office:", *[f"* {q}" for q in questions]])
+    if locator_lines:
+        lines.extend(["", *locator_lines])
     lines.extend(["", source_note, "This is not a final determination. Before acting, confirm the fact pattern with 1345, HiKorea, or the competent immigration office."])
     return "\n".join(lines)
 
