@@ -10,7 +10,7 @@ import { test, expect } from '@playwright/test';
 // settles races a re-render that can move focus.
 async function settled(page) {
   await page.goto('/index.html');
-  await expect(page.locator('#searchToggleBtn')).toBeVisible({ timeout: 20_000 });
+  await expect(page.locator('#civicQuery')).toBeVisible({ timeout: 20_000 });
   await expect(page.locator('a.skip-link')).toHaveText(/건너뛰기|Skip/, { timeout: 20_000 });
 }
 
@@ -22,47 +22,60 @@ test('the first Tab reaches a skip link that reveals itself and moves to main', 
   await expect(skip).toBeFocused();
   await expect(skip).toBeInViewport();          // revealed on focus, not merely present
   await skip.press('Enter');
-  await expect(page).toHaveURL(/#mainContent$/);
-  await expect(page.locator('#mainContent')).toBeVisible();
+  // Before a search the visible main region is the civic landing, not the empty
+  // results region: focus must land there and the next Tab must reach search.
+  await expect(page.locator('#civicLanding main')).toBeFocused();
+  await page.keyboard.press('Tab');
+  await expect(page.locator('#civicQuery')).toBeFocused();
 });
 
-// The layer's documented integration seam (`paradiso:results-rendered`) is the
-// real entry point into runUnified → fetchUnified → setSearchBarState. Driving
-// it directly keeps this test about the busy state rather than about opening
-// the homepage's search chrome.
-async function runSearch(page, term) {
-  await page.evaluate((q) => {
-    document.dispatchEvent(new CustomEvent('paradiso:results-rendered', { detail: { query: q } }));
-  }, term);
+test('after a search the skip link moves focus to the results region', async ({ page }) => {
+  await settled(page);
+  await page.fill('#civicQuery', 'D-2 연장');
+  await page.press('#civicQuery', 'Enter');
+  await expect(page.locator('#statusGuidance[data-sg-kind]')).toBeVisible({ timeout: 20_000 });
+  const skip = page.locator('a.skip-link');
+  await skip.focus();
+  await skip.press('Enter');
+  await expect(page).toHaveURL(/#mainContent$/);
+  await expect(page.locator('#mainContent')).toBeFocused();
+});
+
+// The visible result region under the civic refresh is #statusGuidance (the
+// unified-search layer is intentionally not fetched there, see
+// civicOwnsResults() in assets/js/unified-search.js). Its first search loads the
+// guidance bundle, so holding or failing that request exercises both paths.
+async function search(page, term) {
+  await page.fill('#civicQuery', term);
+  await page.press('#civicQuery', 'Enter');
 }
-test('the results layer reports busy only while the search is in flight', async ({ page }) => {
+
+test('the results region reports busy only while the answer is loading', async ({ page }) => {
   let release;
   const held = new Promise((r) => { release = r; });
-  await page.route('**/api/search/unified', async (route) => {
+  await page.route('**/data/status-guidance-202609.json', async (route) => {
     await held;                                  // hold the request open
-    await route.fulfill({
-      status: 200, contentType: 'application/json',
-      body: JSON.stringify({ query: 'D-2', intent: 'exact_visa_code',
-        detectedVisaCodes: ['D-2'], organicResults: [], suggestionRows: [] })
-    });
+    await route.continue();
   });
 
   await settled(page);
-  await runSearch(page, 'D-2');
-  const layer = page.locator('#unifiedSearchLayer');
-  await expect(layer).toHaveAttribute('aria-busy', 'true');
+  await search(page, 'D-2 연장');
+  const region = page.locator('#statusGuidance');
+  await expect(region).toHaveAttribute('aria-busy', 'true');
   release();
-  await expect(layer).toHaveAttribute('aria-busy', 'false');
+  await expect(region).toHaveAttribute('aria-busy', 'false', { timeout: 20_000 });
+  await expect(region).toHaveAttribute('data-sg-kind', /.+/);
 });
 
-test('a failed search clears busy instead of leaving it stuck', async ({ page }) => {
-  await page.route('**/api/search/unified', (route) => route.abort('failed'));
+test('a failed answer load clears busy instead of leaving it stuck', async ({ page }) => {
+  await page.route('**/data/status-guidance-202609.json', (route) => route.abort('failed'));
   await settled(page);
-  await runSearch(page, 'D-2');
-  // The layer fails to a note, not to a permanent spinner: a stuck aria-busy
-  // tells a screen reader to keep waiting for content that will never arrive.
-  await expect(page.locator('#unifiedSearchLayer')).toHaveAttribute('aria-busy', 'false');
-  await expect(page.locator('#searchForm')).toHaveAttribute('data-us-search-state', 'error');
+  await search(page, 'D-2 연장');
+  // The region fails to a note with a retry, not to a permanent spinner: a stuck
+  // aria-busy tells a screen reader to keep waiting for content that never arrives.
+  await expect(page.locator('#statusGuidance')).toHaveAttribute('aria-busy', 'false', { timeout: 20_000 });
+  await expect(page.locator('body')).toHaveAttribute('data-sg-state', 'failed');
+  await expect(page.locator('#statusGuidance [data-sg-action="retry"]')).toBeVisible();
 });
 
 test('ai.html carries the same skip link as the homepage', async ({ page }) => {

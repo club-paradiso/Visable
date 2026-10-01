@@ -1383,6 +1383,7 @@
     h.setAttribute('lang', state.lang);
     if (document.documentElement.dir === 'rtl') h.setAttribute('dir', 'ltr'); else h.removeAttribute('dir');
     document.body.setAttribute('data-sg-state', 'ready');
+    h.setAttribute('aria-busy', 'false');
     h.setAttribute('data-sg-kind', step.kind);
     h.setAttribute('data-sg-quick', out.model.quick ? out.model.quick.mode : 'none');
     document.body.setAttribute('data-sg-kind', step.kind);
@@ -1419,6 +1420,9 @@
     var h = ensureHost();
     lastQuery = query;
     h.innerHTML = '<p class="sg-load" role="status">' + esc(tr(lang(), 'loading')) + '</p>';
+    // UX-10: the result region reports busy only while the answer is loading,
+    // and clears it on failure too (a stuck aria-busy keeps a screen reader waiting).
+    h.setAttribute('aria-busy', 'true');
     document.body.setAttribute('data-sg-state', 'loading');
     load().then(function () {
       if (lastQuery !== query) return;
@@ -1432,6 +1436,7 @@
       if (lastQuery !== query) return;
       h.innerHTML = '<div class="sg-failed" role="status"><p>' + esc(tr(lang(), 'failed')) + '</p><button type="button" class="sg-btn" data-sg-action="retry">' + esc(tr(lang(), 'retry')) + '</button></div>';
       // Only when the structured layer cannot load does the legacy list come back as the fallback.
+      h.setAttribute('aria-busy', 'false');
       document.body.setAttribute('data-sg-state', 'failed');
     });
   }

@@ -14266,6 +14266,27 @@ html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important
      First in the DOM so it is genuinely the first stop, and hidden until it is
      focused so it costs sighted users nothing. -->
 <a class="skip-link" href="#mainContent" data-i18n="skipToContent">본문으로 건너뛰기</a>
+<script>
+/* Skip link target. Before a search the page content is the civic landing
+   (<main class="cs-home">) and #mainContent is an empty results region, so a
+   plain "#mainContent" jump left keyboard focus on <body>. Move focus to the
+   main region that is actually visible. Without JS the href still works. */
+(function () {
+  var link = document.currentScript && document.currentScript.previousElementSibling;
+  if (!link || !link.classList.contains('skip-link')) return;
+  function visible(el) { return !!el && el.getClientRects().length > 0 && el.offsetHeight > 0; }
+  link.addEventListener('click', function (event) {
+    var results = document.getElementById('mainContent');
+    var landing = document.querySelector('#civicLanding main');
+    var target = visible(results) ? results : (visible(landing) ? landing : results);
+    if (!target) return;
+    event.preventDefault();
+    if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+    target.focus();
+    if (target.id) { try { history.replaceState(history.state, '', '#' + target.id); } catch (e) {} }
+  });
+})();
+</script>
 <div class="k-grain" aria-hidden="true"></div>
 <div class="p-cmd-backdrop" data-action="close-cmd-palette" aria-hidden="true"></div>
 
