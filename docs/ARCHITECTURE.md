@@ -55,7 +55,10 @@ The backend origin is defined once in `assets/js/backend-origin.js`
    (`law_citation_guard.py`), post-generation
    safety review.
 6. Public projection: provider/model/routing fields are removed unless explicit
-   developer diagnostics are requested.
+   developer diagnostics are requested. `PARADISO_CLIENT_DIAGNOSTICS=0` refuses
+   the opt-in; `PARADISO_DIAGNOSTICS_TOKEN` (Railway env + same-named GitHub
+   secret for the live smoke) restricts it to callers sending
+   `X-Paradiso-Diagnostics-Token`. `/health` → `client_diagnostics_mode`.
 7. Deterministic fallback: when every candidate fails, a structured
    source-backed answer (document checklists) or a preparation note is returned
    instead of an error.

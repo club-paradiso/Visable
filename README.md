@@ -194,7 +194,7 @@ Visable의 AI 경로는 가능한 한 **retrieval / deterministic logic → vali
 | --- | --- | --- |
 | 브라우저 저장 키 | `paradiso:language`, `paradiso:brightness`, `paradiso:easyMode`, `paradiso:editorial-theme`, `paradiso_ai_consent`, `paradiso_city`, `paradisoDevDiagnostics` | 기존 사용자의 언어·테마·동의 상태가 초기화됨 |
 | DOM 이벤트·전역 객체 | `paradiso:results-rendered`, `paradiso-language-applied`, `ParadisoRoute`, `ParadisoZhT` 등 | 여러 스크립트가 같은 이름으로 연결됨 |
-| 환경 변수·배포 설정 | `PARADISO_BACKEND_URL`, `PARADISO_CLIENT_DIAGNOSTICS`, `PARADISO_BUILD_COMMIT` 등 | Railway/Vercel 설정값과 연결됨 |
+| 환경 변수·배포 설정 | `PARADISO_BACKEND_URL`, `PARADISO_CLIENT_DIAGNOSTICS`, `PARADISO_DIAGNOSTICS_TOKEN`, `PARADISO_BUILD_COMMIT` 등 | Railway/Vercel 설정값과 연결됨 |
 | HTTP 헤더·로거·모듈 | `x-paradiso-diagnostics`, `paradiso.*` 로거, `backend/paradiso_backend.py` | 클라이언트·로그 수집·배포 진입점 계약 |
 | 팀·저작권 | `Club Paradiso`, 팀명 소개와 Diaspora→Paradiso 애너그램 | 제품명이 아니라 팀 이름 |
 | 별도 제품 | PreView (`preview.html`, "PreView by Paradiso") | Visable과 분리된 공모전 MVP, 독립성은 `check_preview_mvp`가 고정 |

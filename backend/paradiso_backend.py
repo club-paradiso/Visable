@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import asyncio
 import contextvars
+import hmac
 import json
 import logging
 import os
@@ -4891,6 +4892,8 @@ async def health() -> Dict[str, Any]:
         "law_grounding_active": law_grounding_active,
         # Granular, non-secret Open Law API configuration flags (Part A).
         "law_api": law_api_status,
+        # off / token / open — never the token itself.
+        "client_diagnostics_mode": _client_diagnostics_mode(),
     }
 
 
@@ -5496,16 +5499,46 @@ def _client_diagnostics_allowed() -> bool:
     }
 
 
+# Optional operator token for the diagnostics opt-in. When PARADISO_DIAGNOSTICS_TOKEN
+# is set, a diagnostics request must also carry it in this header (constant-time
+# compare); without it the caller gets the ordinary public projection. Unset keeps
+# the previous open opt-in so nothing breaks before the operator configures it
+# (the Railway live smoke sends the same value from the GitHub secret).
+_CLIENT_DIAGNOSTICS_TOKEN_HEADER = "x-paradiso-diagnostics-token"
+
+
+def _diagnostics_token() -> str:
+    return (os.environ.get("PARADISO_DIAGNOSTICS_TOKEN") or "").strip()
+
+
+def _client_diagnostics_mode() -> str:
+    """Public, non-secret description of the opt-in: off / token / open."""
+    if not _client_diagnostics_allowed():
+        return "off"
+    return "token" if _diagnostics_token() else "open"
+
+
+def _diagnostics_token_ok(request: Optional[Request]) -> bool:
+    expected = _diagnostics_token()
+    if not expected:
+        return True
+    try:
+        supplied = (request.headers.get(_CLIENT_DIAGNOSTICS_TOKEN_HEADER) or "") if request is not None else ""
+    except Exception:  # pragma: no cover - defensive
+        supplied = ""
+    return bool(supplied) and hmac.compare_digest(supplied.strip().encode("utf-8"), expected.encode("utf-8"))
+
+
 def _ask_diagnostics_requested(req: "AskRequest", request: Optional[Request]) -> bool:
     if not _client_diagnostics_allowed():
         return False
     if req.diagnostics is True:
-        return True
+        return _diagnostics_token_ok(request)
     try:
         header = (request.headers.get(_CLIENT_DIAGNOSTICS_HEADER) or "") if request is not None else ""
     except Exception:  # pragma: no cover - defensive
         header = ""
-    return header.strip().lower() in {"1", "true", "yes", "on"}
+    return header.strip().lower() in {"1", "true", "yes", "on"} and _diagnostics_token_ok(request)
 
 
 # The full law/manual evidence pack embeds the prompt-ready grounding context

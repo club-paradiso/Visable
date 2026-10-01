@@ -18,6 +18,7 @@ jobs:
         env:
           BACKEND_URL: https://web-production-14f9a.up.railway.app
           EXPECTED_COMMIT: ${{ github.sha }}
+          PARADISO_DIAGNOSTICS_TOKEN: ${{ secrets.PARADISO_DIAGNOSTICS_TOKEN }}
         run: |
           python3 -u - <<'PY'
           import json
@@ -46,6 +47,11 @@ jobs:
                   "Accept": "application/json",
                   "User-Agent": "Visable-Railway-Live-Smoke/7",
               }
+              # Diagnostics opt-in token (server: PARADISO_DIAGNOSTICS_TOKEN). Sent
+              # only when the repository secret exists; never printed.
+              diagnostics_token = os.environ.get("PARADISO_DIAGNOSTICS_TOKEN", "").strip()
+              if diagnostics_token and isinstance(payload, dict) and payload.get("diagnostics"):
+                  headers["X-Paradiso-Diagnostics-Token"] = diagnostics_token
               if payload is not None:
                   body = json.dumps(payload, ensure_ascii=False).encode("utf-8")
                   headers["Content-Type"] = "application/json"

@@ -275,6 +275,40 @@ class PublicProjectionTests(_AskHarness):
             resp, _ = self._ask("D-2 연장시 필수 서류", headers={"X-Paradiso-Diagnostics": "1"})
         self.assertNotIn("final_model", resp.json())
 
+    def test_configured_token_gates_the_diagnostics_opt_in(self):
+        token = "diag-token-sentinel"
+        with patch.dict(os.environ, {"PARADISO_DIAGNOSTICS_TOKEN": token}):
+            missing, _ = self._ask("D-2 연장시 필수 서류", headers={"X-Paradiso-Diagnostics": "1"})
+            wrong, _ = self._ask(
+                "D-2 연장시 필수 서류",
+                headers={"X-Paradiso-Diagnostics": "1", "X-Paradiso-Diagnostics-Token": "nope"},
+            )
+            body_flag, _ = self._ask("D-2 연장시 필수 서류", diagnostics=True)
+            ok, _ = self._ask(
+                "D-2 연장시 필수 서류",
+                headers={"X-Paradiso-Diagnostics": "1", "X-Paradiso-Diagnostics-Token": token},
+            )
+        for resp in (missing, wrong, body_flag):
+            self.assertEqual(resp.status_code, 200)
+            for key in pb.ASK_INTERNAL_ROUTING_FIELDS:
+                self.assertNotIn(key, resp.json())
+            self.assertNotIn(token, resp.text)
+        self.assertIn("final_model", ok.json())
+        self.assertNotIn(token, ok.text)
+
+    def test_health_reports_diagnostics_mode_without_the_token(self):
+        token = "diag-token-sentinel"
+        cases = (
+            ({"PARADISO_DIAGNOSTICS_TOKEN": "", "PARADISO_CLIENT_DIAGNOSTICS": ""}, "open"),
+            ({"PARADISO_DIAGNOSTICS_TOKEN": token, "PARADISO_CLIENT_DIAGNOSTICS": ""}, "token"),
+            ({"PARADISO_DIAGNOSTICS_TOKEN": token, "PARADISO_CLIENT_DIAGNOSTICS": "0"}, "off"),
+        )
+        for env, expected in cases:
+            with self.subTest(expected=expected), patch.dict(os.environ, env):
+                resp = TestClient(pb.app).get("/health")
+                self.assertEqual(resp.json()["client_diagnostics_mode"], expected)
+                self.assertNotIn(token, resp.text)
+
     def test_routing_telemetry_is_logged_server_side(self):
         with self.assertLogs("paradiso.backend", level="INFO") as logs:
             self._ask("D-2 연장시 필수 서류")

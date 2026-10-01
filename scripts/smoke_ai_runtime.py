@@ -78,6 +78,20 @@ class Check:
                 "metadata": self.metadata}
 
 
+def diagnostics_headers(payload: Optional[Dict[str, Any]], headers: Dict[str, str]) -> Dict[str, str]:
+    """Add the operator diagnostics token when a diagnostics payload is sent.
+
+    The backend accepts ``diagnostics: true`` only with a matching
+    ``X-Paradiso-Diagnostics-Token`` once ``PARADISO_DIAGNOSTICS_TOKEN`` is set
+    there; the value comes from the same-named environment variable and is
+    never printed.
+    """
+    token = (os.environ.get("PARADISO_DIAGNOSTICS_TOKEN") or "").strip()
+    if token and isinstance(payload, dict) and payload.get("diagnostics"):
+        headers = {**headers, "X-Paradiso-Diagnostics-Token": token}
+    return headers
+
+
 def http_json(url: str, payload: Optional[Dict[str, Any]] = None,
               timeout: int = DEFAULT_TIMEOUT) -> Tuple[int, Any, int]:
     """GET/POST returning (status, parsed_body_or_text, latency_ms). Never raises."""
@@ -85,7 +99,7 @@ def http_json(url: str, payload: Optional[Dict[str, Any]] = None,
     data = json.dumps(payload).encode("utf-8") if payload is not None else None
     request = urllib.request.Request(
         url, data=data,
-        headers={"Content-Type": "application/json", "Accept": "application/json"},
+        headers=diagnostics_headers(payload, {"Content-Type": "application/json", "Accept": "application/json"}),
         method="POST" if payload is not None else "GET",
     )
     try:
