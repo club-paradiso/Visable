@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "lastUpdated": "2026-06-15",
-  "generatedAt": "2026-06-15T05:08:46Z",
+  "lastUpdated": "2026-10-01",
+  "generatedAt": "2026-10-01T06:42:30Z",
   "sourceStatus": "needs_refresh",
   "sourceStatusReason": "seeded from stored fixtures — --from-fixtures flag",
   "countries": {
@@ -10438,6 +10438,14 @@
       "separateFromGeneralVisaFree": true,
       "entryDeniedCount": 22,
       "entryDeniedConflictCount": 1,
+      "laterNoticeObserved": {
+        "title": "제주특별자치도 무사증 입국불허국가 변경(2025년 1월 업데이트)",
+        "publisher": "외교부 재외공관 게시판 (overseas.mofa.go.kr)",
+        "url": "https://overseas.mofa.go.kr/bg-ko/brd/m_7740/view.do?seq=1317521",
+        "observedAt": "2026-10-01",
+        "bodyVerified": false,
+        "note": "본 사본(2022 고시) 이후 변경 게시물이 존재함을 게시물 제목으로만 확인. 본문(국가 목록)은 이 환경에서 접근이 차단되어 대조하지 못했으므로 국가 목록은 바꾸지 않았다. 최신 고시 원문으로 입국불허·체류지역 확대허가 국가 목록을 재확인할 것."
+      },
       "expansionPermitCounts": {
         "all": 34,
         "officialOrdinary": 1,
@@ -10574,13 +10582,13 @@
       "id": "moj_jeju_notice_2022_189",
       "title": "법무부고시 제2022-189호 — 제주특별자치도 무사증입국 불허국가 및 체류지역 확대허가 국가",
       "sourceDate": "2022-06-01",
-      "confidence": "medium"
+      "confidence": "low"
     },
     {
       "id": "mofa_jeju_notice_copy_2023_09_18",
       "title": "외교부/재외공관 게시 제주 무사증 고시 사본 (2023-09-18)",
       "sourceDate": "2023-09-18",
-      "confidence": "medium"
+      "confidence": "low"
     },
     {
       "id": "paradiso_visa_data_b22_subcode_2026_05",

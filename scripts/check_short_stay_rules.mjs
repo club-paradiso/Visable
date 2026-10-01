@@ -155,6 +155,14 @@ function scenario(nameKo, passport, purpose, destination, stayDays) {
 const vnJeju = scenario('베트남', 'ordinary', 'tourism', 'jeju_only', 30);
 ok(vnJeju.primary.path.includes('제주 무사증(B-2-2)'), 'VN jeju_only → Jeju B-2-2 check path');
 ok(vnJeju.primary.explanation.join(' ').includes('포함되어 있지 않습니다'), 'VN jeju_only → deterministic not-in-denial wording');
+// A later official Jeju posting was observed but not compared: every Jeju
+// verdict must say the stored list may be outdated (never read as current).
+ok(!rules.rules.b22JejuVisaFree.laterNoticeObserved
+  || vnJeju.warnings.some((w) => w.includes('이후 변경 고시가 게시된 것이 확인되었지만')),
+  'VN jeju_only → outdated-notice warning shown while a later notice is unverified');
+ok(!rules.rules.b22JejuVisaFree.laterNoticeObserved
+  || sources.sources.filter((s) => s.id.includes('jeju')).every((s) => s.confidence === 'low'),
+  'Jeju notice sources are low confidence while a later notice is unverified');
 const vnMain = scenario('베트남', 'ordinary', 'tourism', 'mainland', 30);
 ok(vnMain.primary.path.includes('C-3-9') && vnMain.primary.status === 'visa_required', 'VN mainland → C-3-9 visa_required');
 ok(vnMain.primary.explanation.join(' ').includes('등재되어 있지 않습니다'), 'VN mainland → deterministic not-listed wording');

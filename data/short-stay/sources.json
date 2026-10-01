@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-15T05:08:46Z",
+  "generatedAt": "2026-10-01T06:42:30Z",
   "sourceStatus": "needs_refresh",
   "sources": [
     {
@@ -23,7 +23,7 @@
       "title": "2026.5 사증발급 안내매뉴얼 (B-1 협정 일람표 2022-09-22 기준 · B-2 무사증 일람표 · C-3 세부약호)",
       "url": null,
       "localPath": "docs/data/claude_opus_manual_extraction_2026_05/visa_hwp_full.txt",
-      "retrievedAt": "2026-06-15",
+      "retrievedAt": "2026-10-01",
       "effectiveDate": "2026-05-21",
       "sourceDate": "2026-05-21",
       "hash": "9ce1500a7dfd048d",
@@ -37,7 +37,7 @@
       "title": "2026.6.1 외국인체류 안내매뉴얼 — B-1/B-2 체류기간 연장·자격변경 원칙 불허 경고",
       "url": null,
       "localPath": "docs/data/claude_opus_manual_extraction_2026_05/stay_hwp_full.txt",
-      "retrievedAt": "2026-06-15",
+      "retrievedAt": "2026-10-01",
       "effectiveDate": "2026-06-01",
       "sourceDate": "2026-06-01",
       "hash": null,
@@ -73,10 +73,10 @@
       "retrievedAt": null,
       "effectiveDate": "2022-06-01",
       "sourceDate": "2022-06-01",
-      "hash": "9465418f3599b3cd",
+      "hash": "9736254bb1f7fe2e",
       "scope": "B-2-2 제주 무사증 입국불허·체류지역 확대허가 국가군",
-      "confidence": "medium",
-      "notes": "고시 원문 실시간 확인 불가 — 저장 사본 기준. 이란 포함 여부 출처 간 불일치 기록됨."
+      "confidence": "low",
+      "notes": "고시 원문 실시간 확인 불가 — 저장 사본 기준. 이란 포함 여부 출처 간 불일치 기록됨. 이후 변경 게시물(제주특별자치도 무사증 입국불허국가 변경(2025년 1월 업데이트)) 존재 확인(2026-10-01), 본문 미대조 — 목록이 최신이 아닐 수 있음."
     },
     {
       "id": "mofa_jeju_notice_copy_2023_09_18",
@@ -87,10 +87,10 @@
       "retrievedAt": null,
       "effectiveDate": "2022-06-01",
       "sourceDate": "2023-09-18",
-      "hash": "9465418f3599b3cd",
+      "hash": "9736254bb1f7fe2e",
       "scope": "B-2-2 고시 사본(국가군 3그룹 34/1/29)",
-      "confidence": "medium",
-      "notes": "재외공관 게시 사본 기준일 2023-09-18."
+      "confidence": "low",
+      "notes": "재외공관 게시 사본 기준일 2023-09-18. 이후 변경 게시물 존재 확인, 본문 미대조."
     },
     {
       "id": "paradiso_visa_data_b22_subcode_2026_05",
@@ -98,7 +98,7 @@
       "title": "Paradiso visa_data.json B-2-2 서브코드 저장 사본 (제외국 23개국 — 이란 포함)",
       "url": null,
       "localPath": "visa_data.json",
-      "retrievedAt": "2026-06-15",
+      "retrievedAt": "2026-10-01",
       "effectiveDate": null,
       "sourceDate": "2026-05-21",
       "hash": null,
