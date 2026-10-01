@@ -282,6 +282,9 @@ const rules = {
       separateFromGeneralVisaFree: true,
       entryDeniedCount: fxJeju.entryDeniedCountriesKo.length,
       entryDeniedConflictCount: (fxJeju.entryDeniedConflicts || []).length,
+      // A later official posting exists but its body could not be compared; the
+      // checker surfaces this so the stored list is never presented as current.
+      laterNoticeObserved: fxJeju.laterNoticeObserved || null,
       expansionPermitCounts: {
         all: exp.allPassports.length,
         officialOrdinary: exp.officialOrdinaryPassports.length,
@@ -382,8 +385,11 @@ const sources = {
       sourceDate: fxJeju.effectiveDate,
       hash: fixtureHash('jeju_b22_notice.json'),
       scope: 'B-2-2 제주 무사증 입국불허·체류지역 확대허가 국가군',
-      confidence: 'medium',
+      confidence: fxJeju.laterNoticeObserved ? 'low' : 'medium',
       notes: '고시 원문 실시간 확인 불가 — 저장 사본 기준. 이란 포함 여부 출처 간 불일치 기록됨.'
+        + (fxJeju.laterNoticeObserved
+          ? ` 이후 변경 게시물(${fxJeju.laterNoticeObserved.title}) 존재 확인(${fxJeju.laterNoticeObserved.observedAt}), 본문 미대조 — 목록이 최신이 아닐 수 있음.`
+          : '')
     },
     {
       id: 'mofa_jeju_notice_copy_2023_09_18',
@@ -396,8 +402,9 @@ const sources = {
       sourceDate: fxJeju.copyDate,
       hash: fixtureHash('jeju_b22_notice.json'),
       scope: 'B-2-2 고시 사본(국가군 3그룹 34/1/29)',
-      confidence: 'medium',
+      confidence: fxJeju.laterNoticeObserved ? 'low' : 'medium',
       notes: '재외공관 게시 사본 기준일 2023-09-18.'
+        + (fxJeju.laterNoticeObserved ? ' 이후 변경 게시물 존재 확인, 본문 미대조.' : '')
     },
     {
       id: 'paradiso_visa_data_b22_subcode_2026_05',

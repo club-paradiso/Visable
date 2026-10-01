@@ -79,8 +79,8 @@ PRO_LOADING_STEPS_EN = ["Spotting issues", "Searching laws", "Searching preceden
 # Pro source-card group order (by source type).
 PRO_SOURCE_GROUPS = ("law", "subordinate", "precedent", "manual", "paradiso")
 PRO_SOURCE_GROUP_LABELS = {
-    "ko": {"law": "법령", "subordinate": "시행령·시행규칙", "precedent": "판례", "manual": "출입국 매뉴얼·공식자료", "paradiso": "Paradiso 구조화 데이터"},
-    "en": {"law": "Laws", "subordinate": "Decrees & rules", "precedent": "Precedents", "manual": "Immigration manuals & official materials", "paradiso": "Paradiso structured data"},
+    "ko": {"law": "법령", "subordinate": "시행령·시행규칙", "precedent": "판례", "manual": "출입국 매뉴얼·공식자료", "paradiso": "Visable 구조화 데이터"},
+    "en": {"law": "Laws", "subordinate": "Decrees & rules", "precedent": "Precedents", "manual": "Immigration manuals & official materials", "paradiso": "Visable structured data"},
 }
 
 SECTION_HEADINGS = {

@@ -15,12 +15,14 @@ const fixture = JSON.parse(fs.readFileSync(
   path.join(root, 'backend/tests/fixtures/enforcement_extraction_parity.json'),
   'utf8',
 ));
-const { assessmentDate, ambiguousWorkCodes, cases } = fixture;
+const { assessmentDate, ambiguousWorkCodes, workplaceOverlapCodes, cases } = fixture;
 
 for (const { name, text, expect } of cases) {
   const result = extractStructuredCaseV2(text, assessmentDate);
   for (const [key, expected] of Object.entries(expect)) {
-    const value = expected === 'AMBIGUOUS' ? ambiguousWorkCodes : expected;
+    const value = expected === 'AMBIGUOUS'
+      ? ambiguousWorkCodes
+      : expected === 'WORKPLACE_OVERLAP' ? workplaceOverlapCodes : expected;
     assert.deepEqual(result[key] ?? null, value, `${name}: ${key}`);
   }
   assert.equal(result.assessmentDate, assessmentDate, `${name}: assessment date is preserved`);

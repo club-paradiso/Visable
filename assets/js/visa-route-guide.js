@@ -1,5 +1,5 @@
 /* =========================================================================
- * visa-route-guide.js — Paradiso unified visa/status route-guidance layer
+ * visa-route-guide.js — Visable unified visa/status route-guidance layer
  * -------------------------------------------------------------------------
  * Turns the existing search → result-card experience into a guided journey
  * that works the SAME way for every 체류자격:

@@ -1,4 +1,4 @@
-"""Generalized source-grounding helpers for Paradiso AI.
+"""Generalized source-grounding helpers for Visable AI.
 
 This module sits above the existing manual/law adapters and produces two
 separate views from the same source attempts:

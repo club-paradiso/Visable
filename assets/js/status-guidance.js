@@ -204,7 +204,31 @@
       var n = normalizeCode(token, codes);
       if (!n) continue;
       if (typeof n === 'object') { out.unknownCodes.push(n.unknownSub); if (out.codes.every(function (c) { return c.code !== n.parent; })) out.codes.push({ code: n.parent, exact: false, fromUnknown: n.unknownSub }); continue; }
-      if (out.codes.every(function (c) { return c.code !== n; })) out.codes.push({ code: n, exact: isSubcode(n) });
+      if (out.codes.every(function (c) { return c.code !== n; })) out.codes.push({ code: n, exact: isSubcode(n), at: m.index, end: m.index + m[0].length });
+    }
+    // "D-2에서 D-10으로 변경" / "D-2 → D-10": the code marked by (으)로 / → / to is the
+    // TARGET of a status change and the 에서/부터/from code is the current status.
+    // status_change guidance is keyed by the target, so the target must come first;
+    // without this the first-typed code (the current status) was answered as if
+    // the user wanted to change INTO it.
+    var changeVerb = /변경|바꾸|바꿀|바꿔|바꿨|전환|->|→|\bchange\b|\bswitch\b/i.test(q);
+    var distinctParents = out.codes.length >= 2 && out.codes.some(function (c) { return parentOf(c.code) !== parentOf(out.codes[0].code); });
+    if (changeVerb && distinctParents) {
+      var targetIdx = -1, fromIdx = -1;
+      out.codes.forEach(function (c, i) {
+        if (typeof c.at !== 'number') return;
+        var after = q.slice(c.end, c.end + 8), before = q.slice(Math.max(0, c.at - 6), c.at);
+        if (targetIdx < 0 && (/^\s*(?:으로|로)(?![가-힣]*\s*(?:부터|에서))/.test(after) || /(?:->|→|\bto)\s*$/i.test(before))) targetIdx = i;
+        else if (fromIdx < 0 && (/^\s*(?:에서|부터)/.test(after) || /\bfrom\s*$/i.test(before))) fromIdx = i;
+      });
+      if (targetIdx > 0 && fromIdx !== targetIdx) {
+        var target = out.codes.splice(targetIdx, 1)[0];
+        out.codes.unshift(target);
+      }
+      if (targetIdx >= 0) {
+        out.codes[0].role = 'target';
+        out.transitionFrom = fromIdx >= 0 ? (fromIdx < targetIdx ? out.codes[fromIdx + 1] : out.codes[fromIdx]).code : null;
+      }
     }
     if (!out.codes.length) {
       var best = null;
@@ -253,6 +277,8 @@
       if (!out.codes.length && !out.aliasQuestion && r.aliasQuestion) { out.aliasQuestion = r.aliasQuestion; out.aliasCandidates = r.statusCandidates || r.aliasQuestion.candidates; }
       out.office = r.office; out.conditions = r.conditions || {}; out.isQuestion = r.isQuestion; out.facet = r.facet; out.userProgram = r.userProgram;
     }
+    // A detected A→B transition with no other procedure is a status change.
+    if (!out.procedure && !out.procedureCandidates.length && out.codes[0] && out.codes[0].role === 'target') out.procedure = 'status_change';
     var primary = out.codes[0];
     if (primary && out.procedure) out.confidence = 'HIGH';
     else if (primary) out.confidence = 'MEDIUM';
@@ -1383,6 +1409,7 @@
     h.setAttribute('lang', state.lang);
     if (document.documentElement.dir === 'rtl') h.setAttribute('dir', 'ltr'); else h.removeAttribute('dir');
     document.body.setAttribute('data-sg-state', 'ready');
+    h.setAttribute('aria-busy', 'false');
     h.setAttribute('data-sg-kind', step.kind);
     h.setAttribute('data-sg-quick', out.model.quick ? out.model.quick.mode : 'none');
     document.body.setAttribute('data-sg-kind', step.kind);
@@ -1419,6 +1446,9 @@
     var h = ensureHost();
     lastQuery = query;
     h.innerHTML = '<p class="sg-load" role="status">' + esc(tr(lang(), 'loading')) + '</p>';
+    // UX-10: the result region reports busy only while the answer is loading,
+    // and clears it on failure too (a stuck aria-busy keeps a screen reader waiting).
+    h.setAttribute('aria-busy', 'true');
     document.body.setAttribute('data-sg-state', 'loading');
     load().then(function () {
       if (lastQuery !== query) return;
@@ -1432,6 +1462,7 @@
       if (lastQuery !== query) return;
       h.innerHTML = '<div class="sg-failed" role="status"><p>' + esc(tr(lang(), 'failed')) + '</p><button type="button" class="sg-btn" data-sg-action="retry">' + esc(tr(lang(), 'retry')) + '</button></div>';
       // Only when the structured layer cannot load does the legacy list come back as the fallback.
+      h.setAttribute('aria-busy', 'false');
       document.body.setAttribute('data-sg-state', 'failed');
     });
   }

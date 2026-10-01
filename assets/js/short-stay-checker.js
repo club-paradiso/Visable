@@ -1,5 +1,5 @@
 /* ============================================================================
- * Paradiso — 국적별 단기입국 경로 확인 (Short-stay entry checker)
+ * Visable — 국적별 단기입국 경로 확인 (Short-stay entry checker)
  * ----------------------------------------------------------------------------
  * Answers, in plain language, whether a nationality can enter Korea without a
  * visa (B-1 agreement / B-2-1 general visa-free + K-ETA), whether Jeju-only
@@ -958,6 +958,20 @@
   var WARN_JEJU_SEPARATE = '제주 무사증은 일반 무사증/B-2-1·K-ETA와 별도 제도입니다.';
   var WARN_NO_EXTENSION = 'B-1·B-2로 입국한 경우 원칙적으로 체류기간 연장·체류자격 변경이 허용되지 않습니다. 허용 기간을 초과해 머무르려면 사증을 받아 입국해야 합니다.';
   var WARN_CONSULATE_VARIES = '재외공관별 제출서류와 심사 기준은 다를 수 있습니다. 항공권 구매 전 관할 재외공관 또는 비자포털에서 확인하세요.';
+  /* The stored Jeju list is a 2022 notice copy and a later official posting has
+     been observed but not compared (data/short-stay/fixtures/jeju_b22_notice.json
+     laterNoticeObserved). Never let the Jeju verdict read as current. */
+  function jejuNoticeOutdatedWarning(rules) {
+    var j = rules && rules.rules && rules.rules.b22JejuVisaFree;
+    if (!j || !j.laterNoticeObserved) return null;
+    return '반영된 제주 무사증 국가 목록은 ' + j.noticeNo + '(' + j.effectiveDate + ' 시행, 사본 ' + j.copyDate +
+      ') 기준입니다. 이후 변경 고시가 게시된 것이 확인되었지만 그 내용은 아직 반영·대조하지 못했으므로, ' +
+      '제주 입국 전 법무부·관할 재외공관의 최신 고시로 국가 목록을 반드시 확인하세요.';
+  }
+  function pushJejuWarnings(r, rules, rest) {
+    var dated = jejuNoticeOutdatedWarning(rules);
+    r.warnings.push.apply(r.warnings, [WARN_JEJU_SEPARATE].concat(dated ? [dated] : [], rest));
+  }
   var WARN_TRANSIT_NOT_ENTRY = '공항 밖으로 나가는 것은 환승이 아니라 입국입니다. 입국이 필요하면 무사증·사증 등 입국 경로를 별도로 확인해야 합니다.';
 
   /* -------------------------------------------------------------- the engine */
@@ -1110,7 +1124,7 @@
           '입국심사 시 방문 목적과 일정을 설명할 수 있도록 준비하세요.'
         ];
         if (visaFreeB1) r.warnings.push('사증면제협정은 협정상 활동범위·기간 제한이 있을 수 있습니다. 협정 기간(' + c.b1.stay + ')을 초과하거나 영리활동을 하려면 사증이 필요합니다.');
-        r.warnings.push(WARN_JEJU_SEPARATE, WARN_KETA_NOT_VISA, WARN_NO_EXTENSION, WARN_AIRLINE, WARN_FINAL_DECISION);
+        pushJejuWarnings(r, rules, [WARN_KETA_NOT_VISA, WARN_NO_EXTENSION, WARN_AIRLINE, WARN_FINAL_DECISION]);
         if (allowedJTM && stayDays && stayDays > allowedJTM) {
           r.primary.status = 'visa_required';
           r.primary.path = c3PathLabel(c3map, purposeJTM) + ' 신청 (무사증 허용기간 초과)';
@@ -1138,7 +1152,7 @@
         ].filter(Boolean)
       };
       r.steps = c3Steps(purposeJTM);
-      r.warnings.push(WARN_JEJU_SEPARATE, WARN_CONSULATE_VARIES, WARN_FINAL_DECISION);
+      pushJejuWarnings(r, rules, [WARN_CONSULATE_VARIES, WARN_FINAL_DECISION]);
       return finalizeResult(r, rules);
     }
 
@@ -1194,7 +1208,7 @@
           ].filter(Boolean)
         };
         r.steps = c3Steps(purpose);
-        r.warnings.push(WARN_JEJU_SEPARATE, WARN_CONSULATE_VARIES, WARN_FINAL_DECISION);
+        pushJejuWarnings(r, rules, [WARN_CONSULATE_VARIES, WARN_FINAL_DECISION]);
         return finalizeResult(r, rules);
       }
 
@@ -1212,7 +1226,7 @@
         '최신 법무부 고시와 입국 요건을 출발 전에 다시 확인하세요.'
       ];
       addAlternative(r, '일반관광 사증(C-3-9)', '본토를 함께 방문하거나 일정이 바뀔 수 있다면 처음부터 사증 신청이 안전합니다.');
-      r.warnings.push(WARN_JEJU_SEPARATE, WARN_AIRLINE, WARN_FINAL_DECISION);
+      pushJejuWarnings(r, rules, [WARN_AIRLINE, WARN_FINAL_DECISION]);
       if (stayDays && stayDays > (jeju.jejuStayDays || 30)) {
         r.warnings.push('예정 체류일수(' + stayDays + '일)가 제주 무사증 허용 기간(' + (jeju.jejuStayDays || 30) + '일)을 초과합니다. 사증 경로를 확인하세요.');
       }

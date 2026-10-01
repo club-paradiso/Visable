@@ -29,8 +29,9 @@ class EnforcementBenchmarkMetricsTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(report["materialFactAccuracy"], 1.0)
         self.assertEqual(report["violationCodeAccuracy"], 1.0)
         self.assertEqual(report["deterministicBaselineAccuracy"], 1.0)
-        self.assertEqual(report["abstention"]["expected"], 2)
-        self.assertEqual(report["abstention"]["predicted"], 2)
+        # nl-008 abstains between 18(2) and 21(1) (issue #587).
+        self.assertEqual(report["abstention"]["expected"], 3)
+        self.assertEqual(report["abstention"]["predicted"], 3)
         self.assertEqual(report["abstention"]["precision"], 1.0)
         self.assertEqual(report["abstention"]["recall"], 1.0)
         self.assertEqual(report["failures"], [])

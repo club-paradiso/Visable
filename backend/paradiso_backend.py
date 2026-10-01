@@ -1,6 +1,6 @@
 """Paradiso backend service.
 
-FastAPI application exposing the routes used by the Paradiso frontend:
+FastAPI application exposing the routes used by the Visable frontend:
 
 - GET  /
 - GET  /health
@@ -152,7 +152,7 @@ DATABASE_URL: Optional[str] = os.environ.get("DATABASE_URL")
 SUPABASE_URL: Optional[str] = os.environ.get("SUPABASE_URL")
 SUPABASE_SERVICE_KEY: Optional[str] = os.environ.get("SUPABASE_SERVICE_KEY")
 
-# Pin Paradiso AI to a deterministic OpenRouter model rather than the
+# Pin Visable AI to a deterministic OpenRouter model rather than the
 # variable `openrouter/auto` router. The model-role policy lives in
 # services.model_policy so the final-answer, router, translation, verifier, and
 # Chinese-language model choices remain explicit and testable.
@@ -175,9 +175,9 @@ OPENROUTER_MODEL: str = (
 
 # Explicit, predictable OpenRouter fallback candidates. When the primary model
 # is rate-limited (429) or its upstream is unavailable (503 / "no healthy
-# upstream"), Paradiso retries the NEXT OpenRouter candidate rather than
+# upstream"), Visable retries the NEXT OpenRouter candidate rather than
 # silently switching providers or surfacing raw provider JSON. Random
-# free-model routing (openrouter/auto) is intentionally NOT used — Paradiso
+# free-model routing (openrouter/auto) is intentionally NOT used — Visable
 # needs predictable model behaviour and auditable response metadata.
 _DEFAULT_OPENROUTER_MODEL_CANDIDATES: List[str] = list(DEFAULT_FINAL_ANSWER_MODEL_CANDIDATES)
 
@@ -307,7 +307,7 @@ _BUILD_COMMIT_ENV_NAMES: Tuple[str, ...] = (
 )
 _BUILD_COMMIT_RE = re.compile(r"^[0-9a-fA-F]{7,40}$")
 
-# Output-length cap for the final answer. Unbounded generation over Paradiso's
+# Output-length cap for the final answer. Unbounded generation over Visable's
 # large grounded prompt was a major perceived-latency source ("Waymaker is too
 # slow"): a long answer takes proportionally longer to generate and stream back.
 # Capping completion tokens keeps answers focused and materially faster without
@@ -401,7 +401,7 @@ def _sanitize_requested_model(requested: Optional[str], provider: str) -> Option
 SITE_URL: str = os.environ.get("SITE_URL", "")
 SITE_TITLE: str = os.environ.get("SITE_TITLE", "Paradiso")
 
-# Optional pointer to the human-facing Paradiso frontend (e.g. the
+# Optional pointer to the human-facing Visable frontend (e.g. the
 # GitHub Pages deployment). Surfaced by GET / so that a person who hits
 # the bare Railway URL on a phone is not greeted by a raw 404 detail
 # blob with no hint where the actual app lives.
@@ -543,7 +543,7 @@ app.add_middleware(
 
 class AskRequest(BaseModel):
     # Prompt aliases. Resolution order: message -> query -> question.
-    # `question` is the field the Paradiso frontend currently sends; the
+    # `question` is the field the Visable frontend currently sends; the
     # other two keep parity with curl-driven clients and earlier docs.
     message: Optional[str] = None
     query: Optional[str] = None
@@ -772,7 +772,7 @@ class AskResponse(BaseModel):
     related_manual_sources: List[Dict[str, Any]] = Field(default_factory=list)
     law_grounding_error: str = ""
     # OpenRouter model-candidate fallback transparency (non-secret). When the
-    # primary model is rate-limited / upstream-unavailable, Paradiso retries the
+    # primary model is rate-limited / upstream-unavailable, Visable retries the
     # next explicit OpenRouter candidate rather than switching providers.
     llm_provider: str = ""
     # Answer-speed tier transparency. `answer_mode` is the tier actually used;
@@ -1730,6 +1730,10 @@ def _issue_labels_for_fallback(issues: List[str], *, is_ko: bool) -> List[str]:
         "nationality_or_refugee_context": "국적·난민 관련 체류 맥락",
         "legal_general": "일반 법률 쟁점",
         "non_immigration_adjacent_issue": "인접 쟁점",
+        "employment_condition": "근로 조건(임금·근무시간·직무)의 요건 충족",
+        "denial_revocation_or_remedy": "불허·취소 처분과 불복 절차",
+        "constitutional_or_fundamental_rights": "헌법·기본권 관련 쟁점",
+        "discretionary_or_ambiguous_interpretation": "재량·해석이 갈리는 쟁점",
     }
     labels_en = {
         "activity_scope": "current-status activity scope",
@@ -1753,9 +1757,15 @@ def _issue_labels_for_fallback(issues: List[str], *, is_ko: bool) -> List[str]:
         "nationality_or_refugee_context": "nationality/refugee residence context",
         "legal_general": "general legal issue",
         "non_immigration_adjacent_issue": "adjacent issue",
+        "employment_condition": "whether the job's wage, hours and duties meet the conditions",
+        "denial_revocation_or_remedy": "denial or revocation and the remedies against it",
+        "constitutional_or_fundamental_rights": "constitutional or fundamental-rights issue",
+        "discretionary_or_ambiguous_interpretation": "discretionary or contested interpretation",
     }
     labels = labels_ko if is_ko else labels_en
-    return [labels.get(issue, issue.replace("_", " ")) for issue in issues if issue][:6]
+    # Never print an internal issue id: an unlabelled issue is left out of the
+    # user-facing list rather than shown as "employment_condition".
+    return [labels[issue] for issue in issues if issue in labels][:6]
 
 
 def _activity_labels_for_fallback(activities: List[str], *, is_ko: bool) -> List[str]:
@@ -1776,15 +1786,44 @@ def _activity_labels_for_fallback(activities: List[str], *, is_ko: bool) -> List
         "workplace_addition": "근무처 추가",
         "registration_or_reporting": "외국인등록·신고",
         "status_change_route": "체류자격 변경",
+        "status_extension": "체류기간 연장",
+        "document_preparation": "제출 서류 준비",
+        "family_or_marriage_related": "혼인·가족 관련 사정",
+        "litigation_related_stay": "소송 관련 체류",
+        "medical_treatment": "치료 목적 체류",
+        "reentry_or_departure": "출국·재입국",
+        "refugee_or_humanitarian_context": "난민·인도적 체류",
+        "volunteer_activity": "자원봉사",
     }
-    labels_en = {k: k.replace("_", " ") for k in [
-        "credit_bearing_study", "formal_enrollment", "non_credit_audit", "non_credit_cultural_or_hobby",
-        "language_training", "paid_work", "unpaid_internship", "paid_internship", "freelance_work",
-        "side_job", "additional_employment", "business_activity", "workplace_change", "workplace_addition",
-        "registration_or_reporting", "status_change_route",
-    ]}
+    labels_en = {
+        "credit_bearing_study": "credit-bearing classes",
+        "formal_enrollment": "school enrollment / formal study",
+        "non_credit_audit": "auditing / non-credit classes",
+        "non_credit_cultural_or_hobby": "non-credit cultural or hobby classes",
+        "language_training": "language training / Korean classes",
+        "paid_work": "paid work",
+        "unpaid_internship": "unpaid internship",
+        "paid_internship": "paid internship",
+        "freelance_work": "freelance work",
+        "side_job": "side job",
+        "additional_employment": "additional employment",
+        "business_activity": "business activity / business registration",
+        "workplace_change": "workplace change",
+        "workplace_addition": "workplace addition",
+        "registration_or_reporting": "alien registration / reporting",
+        "status_change_route": "change of status",
+        "status_extension": "extension of stay",
+        "document_preparation": "preparing documents",
+        "family_or_marriage_related": "marriage or family circumstances",
+        "litigation_related_stay": "stay related to litigation",
+        "medical_treatment": "stay for medical treatment",
+        "reentry_or_departure": "departure / re-entry",
+        "refugee_or_humanitarian_context": "refugee / humanitarian stay",
+        "volunteer_activity": "volunteering",
+    }
     labels = labels_ko if is_ko else labels_en
-    return [labels.get(activity, activity.replace("_", " ")) for activity in activities if activity][:6]
+    # Same rule as the issue labels: no internal activity id reaches the user.
+    return [labels[activity] for activity in activities if activity in labels][:6]
 
 
 def _localized_source_boundary_note(*, is_ko: bool, source_state: str, legal_analysis: Dict[str, Any]) -> str:
@@ -2231,7 +2270,7 @@ def build_legal_analysis_fallback_answer(
 
     ``intro_mode`` controls the leading line:
       * ``"outage"`` (default): the provider was unavailable, so the note opens
-        by saying Paradiso is showing a structured analysis instead.
+        by saying Visable is showing a structured analysis instead.
       * ``"quality_repair"``: the live model DID answer but failed the
         answer-shape gate, so we lead directly with the practical answer (no
         outage line and no uncertainty-first opening — Part C / Part G).
@@ -3173,6 +3212,40 @@ def _post_stream_safety_review_frames(
         return None
 
 
+class _StreamMetadataScrubber:
+    """Line-buffered version of ``scrub_internal_metadata`` for SSE deltas.
+
+    The buffered /api/ask path scrubs internal source metadata ("source file
+    2026-06-23", grounding/fixture wording) out of the complete answer, line by
+    line. Streamed deltas used to reach the client unscrubbed. The scrub rules
+    are per line, so holding text until a newline and scrubbing each completed
+    line gives the stream the same result the buffered path produces.
+    """
+
+    def __init__(self) -> None:
+        self._pending = ""
+
+    @staticmethod
+    def _scrub_line(line: str) -> str:
+        body, newline = (line[:-1], "\n") if line.endswith("\n") else (line, "")
+        cleaned = _structured_answer._SOURCE_FILE_TRAILER_RE.sub("", body)
+        if _structured_answer.contains_internal_metadata(cleaned):
+            return ""
+        return cleaned + newline
+
+    def feed(self, delta: str) -> str:
+        self._pending += delta or ""
+        out: List[str] = []
+        while "\n" in self._pending:
+            line, self._pending = self._pending.split("\n", 1)
+            out.append(self._scrub_line(line + "\n"))
+        return "".join(out)
+
+    def flush(self) -> str:
+        tail, self._pending = self._pending, ""
+        return self._scrub_line(tail) if tail else ""
+
+
 async def _sse_answer_stream(
     final_prompt: str,
     candidates: List[str],
@@ -3223,6 +3296,7 @@ async def _sse_answer_stream(
         )
         attempted.append(model)
         committed = False
+        scrubber = _StreamMetadataScrubber()
         answer_parts: List[str] = []
         stream = _stream_openrouter_text(final_prompt, model=model, max_tokens=max_tokens)
         try:
@@ -3243,14 +3317,21 @@ async def _sse_answer_stream(
                 "attempted_models": list(attempted),
             })
             answer_parts.append(first_delta)
-            yield _sse("delta", {"text": first_delta})
+            visible = scrubber.feed(first_delta)
+            if visible:
+                yield _sse("delta", {"text": visible})
             stream_remaining = OPENROUTER_CHAIN_BUDGET_SECONDS - (time.monotonic() - started)
             if stream_remaining <= 0:
                 raise TimeoutError
             async with asyncio.timeout(stream_remaining):
                 async for delta in stream:
                     answer_parts.append(delta)
-                    yield _sse("delta", {"text": delta})
+                    visible = scrubber.feed(delta)
+                    if visible:
+                        yield _sse("delta", {"text": visible})
+            visible = scrubber.flush()
+            if visible:
+                yield _sse("delta", {"text": visible})
             if committed:
                 # Post-generation safety re-check on the COMPLETE accumulated
                 # answer (H-7) — zero added latency before the first token.
@@ -3294,6 +3375,10 @@ async def _sse_answer_stream(
                 if review_frames:
                     for frame in review_frames:
                         yield frame
+                else:
+                    visible = scrubber.flush()
+                    if visible:
+                        yield _sse("delta", {"text": visible})
                 yield _sse("done", {"final_model": model, "attempted_models": list(attempted), "interrupted": True})
                 return
             detail = exc.detail if isinstance(exc.detail, dict) else {}
@@ -4023,7 +4108,7 @@ def _grounding_source_summary(grounding: Dict[str, Any], bundle: Dict[str, Any])
 def _build_visa_data_context_block(visa_data: Optional[Dict[str, Any]]) -> str:
     """Build a compact local-catalog context block from frontend visa_data.
 
-    The Paradiso frontend (ai.html) sends a record from visa_data.json when
+    The Visable frontend (ai.html) sends a record from visa_data.json when
     the user question mentions a known visa code (D-2 / E-7 / F-6 / ...).
     This helper surfaces a small, conservative selection of safe fields so
     the LLM has some local context even when no deterministic manual
@@ -4659,7 +4744,7 @@ def _build_ungrounded_korea_scoped_prompt(
 async def root() -> Dict[str, Any]:
     """Service-info page for humans who hit the bare backend URL.
 
-    The Paradiso backend is API-only; the human-facing frontend is
+    The Visable backend is API-only; the human-facing frontend is
     served elsewhere (currently GitHub Pages). Without this route,
     FastAPI returns a bare `{"detail":"Not Found"}` for `GET /`, which
     is confusing for anyone (especially mobile users) who opens the
@@ -5376,7 +5461,7 @@ def _evaluate_request_safety(
 # ---------------------------------------------------------------------------
 # /api/ask public projection (provider/model abstraction)
 # ---------------------------------------------------------------------------
-# Waymaker is a Paradiso product. Which third-party provider or model produced
+# Waymaker is a Visable product. Which third-party provider or model produced
 # the wording is infrastructure: it stays in server telemetry
 # (_log_ask_routing_telemetry) and in the explicit developer-diagnostics
 # payload, and is removed from the ordinary response the browser receives.

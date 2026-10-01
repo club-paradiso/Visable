@@ -1,5 +1,5 @@
 /* ============================================================================
- * Paradiso — Complex-Status Guide for additional statuses (F-6/G-1/E-7/F-5/D-2/D-4)
+ * Visable — Complex-Status Guide for additional statuses (F-6/G-1/E-7/F-5/D-2/D-4)
  * ----------------------------------------------------------------------------
  * Brings the F-4 "recommended starting point → one dominant CTA → full-screen
  * guided flow → checklist-first result" pattern to six more complex statuses,

@@ -1,4 +1,4 @@
-"""Generalized official-evidence retrieval ontology for Paradiso.
+"""Generalized official-evidence retrieval ontology for Visable.
 
 This module is the single, reusable ontology + query-planning layer for the
 official-evidence retrieval pipeline. It exists so the system reasons over
@@ -174,7 +174,7 @@ EVIDENCE_GOALS: Tuple[str, ...] = (
 #   3  Ministry of Justice / HiKorea official manuals and public guidance
 #   4  Official notices, forms, administrative guidance, official glossaries
 #   5  Case law, administrative adjudication, precedent-like materials
-#   6  Paradiso internal explanatory data
+#   6  Visable internal explanatory data
 #   7  LLM inference (NOT official source material)
 # ---------------------------------------------------------------------------
 AUTHORITY_LEVEL_LABELS: Dict[int, str] = {
@@ -183,7 +183,7 @@ AUTHORITY_LEVEL_LABELS: Dict[int, str] = {
     3: "Ministry of Justice / HiKorea manual or public guidance",
     4: "official notice, form, administrative guidance, or glossary",
     5: "case law / administrative adjudication / precedent",
-    6: "Paradiso internal explanatory data",
+    6: "Visable internal explanatory data",
     7: "LLM inference (not official source material)",
 }
 

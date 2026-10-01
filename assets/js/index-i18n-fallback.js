@@ -1,5 +1,5 @@
 /*
- * Paradiso index.html — supplementary Korean->target display fallback.
+ * Visable index.html — supplementary Korean->target display fallback.
  *
  * The main UI is localized through the i18n packs (tx() / data-i18n). A handful
  * of feature surfaces (the job-code analyzer result cards, fee notes, document

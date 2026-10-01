@@ -1,5 +1,5 @@
 /* ============================================================================
- * Paradiso — Complex-Status Guide engine + F-4 (재외동포) reference config
+ * Visable — Complex-Status Guide engine + F-4 (재외동포) reference config
  * ----------------------------------------------------------------------------
  * A reusable, full-screen guided-preparation experience for "complex" statuses
  * — statuses whose required documents and procedures vary by sub-category,

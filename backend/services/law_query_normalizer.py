@@ -25,7 +25,7 @@ Attribution
 -----------
 The normalization ladder, the loose-match rule, the relevance-scoring shape and
 the non-law keyword stripper are ported to Python from ``chrisryugj/korean-law-mcp``
-(MIT). See ``THIRD_PARTY_NOTICES.md``. The alias table here is Paradiso's own,
+(MIT). See ``THIRD_PARTY_NOTICES.md``. The alias table here is Visable's own,
 scoped to immigration/status-of-stay law; the upstream tax/labour alias set is not
 carried over.
 

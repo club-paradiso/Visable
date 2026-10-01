@@ -3,7 +3,7 @@
 Why this module exists
 ----------------------
 A question such as "D-2 연장시 필수 서류" is a deterministic lookup: the
-official stay manual already lists the documents, and Paradiso has that list
+official stay manual already lists the documents, and Visable has that list
 in its manual-grounding data. Handing the whole manual excerpt to a language
 model and rendering its free-form Markdown back to the user produced
 unreadable answers (raw ``###`` headings, repeated disclaimers, internal
@@ -41,7 +41,7 @@ KIND_DOCUMENTS = "documents"
 # ---------------------------------------------------------------------------
 # Internal-metadata leak guard
 # ---------------------------------------------------------------------------
-# Phrases that describe Paradiso's grounding machinery rather than the answer.
+# Phrases that describe Visable's grounding machinery rather than the answer.
 # They must never reach public answer prose. Used both to scrub model output
 # and as the invariant the regression tests assert.
 INTERNAL_METADATA_PATTERNS: Sequence[str] = (

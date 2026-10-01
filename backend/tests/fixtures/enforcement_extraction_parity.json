@@ -7,6 +7,10 @@
     "UNAUTHORIZED_EMPLOYMENT_ART18_2",
     "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1"
   ],
+  "workplaceOverlapCodes": [
+    "UNAUTHORIZED_EMPLOYMENT_ART18_2",
+    "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1"
+  ],
   "cases": [
     {
       "name": "two-digit status code is recognised and normalised",
@@ -72,9 +76,9 @@
       "expect": { "violationCode": "UNAUTHORIZED_EMPLOYMENT_ART18_2", "durationDays": 20 }
     },
     {
-      "name": "an explicit change/이직 signal outranks designated-workplace wording",
+      "name": "designated-workplace and workplace-change wording together stay unresolved between 18(2) and 21(1)",
       "text": "E-7인데 지정된 근무처가 아닌 다른 회사로 옮겨서 변경허가 없이 30일 일했습니다.",
-      "expect": { "violationCode": "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1", "durationDays": 30 }
+      "expect": { "violationCode": null, "violationCandidates": "WORKPLACE_OVERLAP", "durationDays": 30 }
     },
     {
       "name": "bare other-workplace wording stays unresolved",
@@ -85,6 +89,21 @@
       "name": "a clearly non-work status maps to article 18(1)",
       "text": "C-3 체류자격인데 음식점에서 허가 없이 12일 일했습니다.",
       "expect": { "violationCode": "UNAUTHORIZED_STAY_OR_WORK_ART18_1", "durationDays": 12 }
+    },
+    {
+      "name": "other-company wording for a work status maps to article 18(2) on both paths",
+      "text": "E-9인데 허가 없이 다른 회사에서 일했어요",
+      "expect": { "statusOfStay": "E-9", "violationCode": "UNAUTHORIZED_EMPLOYMENT_ART18_2" }
+    },
+    {
+      "name": "other-workplace wording for E-7 maps to article 18(2) on both paths",
+      "text": "E-7인데 다른 사업장에서 허가 없이 20일 근무했습니다",
+      "expect": { "violationCode": "UNAUTHORIZED_EMPLOYMENT_ART18_2", "durationDays": 20 }
+    },
+    {
+      "name": "a change signal without designated-workplace wording maps to article 21(1)",
+      "text": "E-9인데 사업장 변경 허가 없이 다른 공장에서 일함",
+      "expect": { "violationCode": "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1" }
     }
   ]
 }

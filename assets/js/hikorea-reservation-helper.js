@@ -1,5 +1,5 @@
 /* ============================================================================
- * Paradiso — 하이코리아 방문예약 도우미 / HiKorea Reservation Helper
+ * Visable — 하이코리아 방문예약 도우미 / HiKorea Reservation Helper
  * ----------------------------------------------------------------------------
  * A friendly, mobile-first, photo/screenshot-based step-by-step guide that takes
  * a first-time user all the way from "do I even need an account?" to a confirmed
@@ -32,7 +32,7 @@
  *  - Korean is canonical; English chrome is paired 1:1 (STR_KO/STR_EN — checked
  *    by scripts/check_popup_i18n.mjs). Per the repo i18n fallback policy, locales
  *    other than en resolve to Korean canonical chrome rather than machine text.
- *  - Screenshots are a navigation aid only, never Paradiso branding. No HiKorea
+ *  - Screenshots are a navigation aid only, never Visable branding. No HiKorea
  *    logos/marks. No personal information in bundled assets. See
  *    assets/hikorea-guide/README.md for the naming + privacy-masking process.
  * ========================================================================== */
@@ -328,7 +328,7 @@
     blkLoginT: '로그인이나 인증이 안 돼요',
     blkLoginB: '회원 로그인이 어렵다면 비회원 인증이 가능한지 확인하세요. 그래도 안 되면 하이코리아 안내나 1345를 이용하세요.',
     blkPurposeT: '어떤 업무를 골라야 할지 모르겠어요',
-    blkPurposeB: 'Paradiso의 추천 결과를 저장해 두고, 1345나 관할 출입국에 정확한 예약 목적을 확인하세요.',
+    blkPurposeB: 'Visable의 추천 결과를 저장해 두고, 1345나 관할 출입국에 정확한 예약 목적을 확인하세요.',
 
     statusSuggTitle: '이 체류자격에서 많이 찾는 예약 목적',
     statusSuggCaution: '아래 항목은 이 체류자격에서 자주 이어지는 예약 목적입니다. 실제로 어떤 업무를 선택해야 하는지는 본인 상황에 따라 달라질 수 있어요.',
@@ -357,7 +357,7 @@
     qp3Sub: '잡아둔 예약을 확인하거나 변경합니다.',
     qp4Title: '문제가 생겼어요',
     qp4Sub: '예약이 안 되거나 막혔을 때 해결 방법을 봅니다.',
-    affiliation: 'Paradiso는 하이코리아나 법무부와 제휴된 서비스가 아닙니다. 이 안내의 화면 설명은 길찾기용 참고 자료일 뿐이며, 실제 신청 내용은 하이코리아 공식 사이트에서 최종 확인하세요.',
+    affiliation: 'Visable은 하이코리아나 법무부와 제휴된 서비스가 아닙니다. 이 안내의 화면 설명은 길찾기용 참고 자료일 뿐이며, 실제 신청 내용은 하이코리아 공식 사이트에서 최종 확인하세요.',
 
     stepDoLabel: '여기서 할 일',
     stepCautionLabel: '주의할 점',
@@ -464,7 +464,7 @@
     mgC2: '방문이 어려우면 미리 취소해서 다른 사람이 예약할 수 있게 해주세요.',
 
     purposeGuideTitle: '예약 목적(민원 종류) 고르기',
-    purposeGuideBody: '체류자격과 민원 유형에 따라 선택지가 달라질 수 있습니다. Paradiso의 체류자격별 안내와 하이코리아의 현재 선택지를 함께 확인하세요.',
+    purposeGuideBody: '체류자격과 민원 유형에 따라 선택지가 달라질 수 있습니다. Visable의 체류자격별 안내와 하이코리아의 현재 선택지를 함께 확인하세요.',
 
     troubleIntro: '자주 막히는 상황과 안전한 해결 방법이에요. 해결되지 않으면 하이코리아 공식 안내나 1345를 이용하세요.',
     troubleCauseLabel: '왜 이런가요',
@@ -483,7 +483,7 @@
     t4f: '현재 주소를 기준으로 관할 관서를 확인하세요. 주소가 애매하면 1345에 문의하면 알려줍니다.',
     t5t: '어떤 민원 목적을 골라야 할지 모르겠어요',
     t5c: '같은 업무라도 체류자격과 상황에 따라 민원 이름이 다르게 보일 수 있어요.',
-    t5f: 'Paradiso의 체류자격별 안내로 내 상황을 먼저 정리하고, 헷갈리면 1345나 관할 출입국에 정확한 민원 종류를 확인하세요.',
+    t5f: 'Visable의 체류자격별 안내로 내 상황을 먼저 정리하고, 헷갈리면 1345나 관할 출입국에 정확한 민원 종류를 확인하세요.',
     t6t: '예약 완료 후 예약증을 저장하지 못했어요',
     t6c: '저장 버튼을 누르기 전에 화면을 닫았거나, 캡처를 못 했을 수 있어요.',
     t6f: '다시 로그인해 방문예약 내역에서 예약을 확인하고, 화면을 캡처하거나 예약번호를 메모해 두세요.',
@@ -603,7 +603,7 @@
     blkLoginT: 'Login or verification does not work',
     blkLoginB: 'If member login does not work, check whether non-member verification is available. If it still fails, use HiKorea support or call 1345.',
     blkPurposeT: 'I do not know which purpose to choose',
-    blkPurposeB: 'Save your Paradiso result and confirm the exact reservation purpose with 1345 or your immigration office.',
+    blkPurposeB: 'Save your Visable result and confirm the exact reservation purpose with 1345 or your immigration office.',
 
     statusSuggTitle: 'Common reservation purposes for this status',
     statusSuggCaution: 'These are common reservation purposes for this status. The exact purpose may differ depending on your situation.',
@@ -632,7 +632,7 @@
     qp3Sub: 'View or change a reservation you already made.',
     qp4Title: 'Something went wrong',
     qp4Sub: 'See fixes for booking problems.',
-    affiliation: 'Paradiso is not affiliated with HiKorea or the Ministry of Justice. The screen descriptions here are only a navigation aid; always confirm the final details on the official HiKorea website.',
+    affiliation: 'Visable is not affiliated with HiKorea or the Ministry of Justice. The screen descriptions here are only a navigation aid; always confirm the final details on the official HiKorea website.',
 
     stepDoLabel: 'What to do here',
     stepCautionLabel: 'Watch out for',
@@ -739,7 +739,7 @@
     mgC2: 'If you cannot make it, cancel early so someone else can book.',
 
     purposeGuideTitle: 'Choosing the reservation purpose',
-    purposeGuideBody: 'The options can differ by status and civil-service type. Check Paradiso status guidance together with the current options on HiKorea.',
+    purposeGuideBody: 'The options can differ by status and civil-service type. Check Visable status guidance together with the current options on HiKorea.',
 
     troubleIntro: 'Common sticking points and safe fixes. If a problem is not solved, use the official HiKorea help or call 1345.',
     troubleCauseLabel: 'Why this happens',
@@ -758,7 +758,7 @@
     t4f: 'Check the office by your current address. If your address is unclear, 1345 can help you find it.',
     t5t: 'I do not know which purpose to choose',
     t5c: 'The same task can appear under different names depending on your status and situation.',
-    t5f: 'Sort out your situation with Paradiso status guidance first, and if unsure, confirm the exact service type with 1345 or your immigration office.',
+    t5f: 'Sort out your situation with Visable status guidance first, and if unsure, confirm the exact service type with 1345 or your immigration office.',
     t6t: 'I could not save the confirmation after booking',
     t6c: 'You may have closed the screen before saving, or missed the screenshot.',
     t6f: 'Log in again, find the booking in your reservation list, and screenshot it or note the reservation number.',
@@ -878,7 +878,7 @@
     blkLoginT: '无法登录或认证',
     blkLoginB: '如果会员登录有困难，请确认是否可用非会员认证。若仍不行，请使用 HiKorea 指引或 1345。',
     blkPurposeT: '不知道该选哪项业务',
-    blkPurposeB: '请保存 Paradiso 的推荐结果，并向 1345 或管辖出入境确认准确的预约目的。',
+    blkPurposeB: '请保存 Visable 的推荐结果，并向 1345 或管辖出入境确认准确的预约目的。',
 
     statusSuggTitle: '此居留资格常用的预约目的',
     statusSuggCaution: '以下项目是此居留资格常见的预约目的。实际应选择哪项业务，会因您的具体情况而不同。',
@@ -906,7 +906,7 @@
     qp3Sub: '确认或变更已预约的内容。',
     qp4Title: '我遇到了问题',
     qp4Sub: '预约不成功或受阻时查看解决方法。',
-    affiliation: 'Paradiso 不是与 HiKorea 或法务部有合作关系的服务。本指引的屏幕说明仅为引导参考，实际申请内容请在 HiKorea 官方网站最终确认。',
+    affiliation: 'Visable 不是与 HiKorea 或法务部有合作关系的服务。本指引的屏幕说明仅为引导参考，实际申请内容请在 HiKorea 官方网站最终确认。',
 
     stepDoLabel: '在这里要做的事',
     stepCautionLabel: '注意事项',
@@ -1013,7 +1013,7 @@
     mgC2: '如难以前往，请提前取消，以便他人预约。',
 
     purposeGuideTitle: '选择预约目的（民愿种类）',
-    purposeGuideBody: '选项可能因居留资格和民愿类型而不同。请将 Paradiso 的各居留资格指引与 HiKorea 当前的选项一并确认。',
+    purposeGuideBody: '选项可能因居留资格和民愿类型而不同。请将 Visable 的各居留资格指引与 HiKorea 当前的选项一并确认。',
 
     troubleIntro: '这是常见受阻情况和安全的解决方法。如仍无法解决，请使用 HiKorea 官方指引或 1345。',
     troubleCauseLabel: '为什么会这样',
@@ -1032,7 +1032,7 @@
     t4f: '请以当前地址确认管辖机关。如地址不明确，向 1345 咨询即可获知。',
     t5t: '不知道该选哪个民愿目的',
     t5c: '即使是同一业务，民愿名称也可能因居留资格和情况而显示不同。',
-    t5f: '请先用 Paradiso 的各居留资格指引理清您的情况，如有疑惑，向 1345 或管辖出入境确认准确的民愿种类。',
+    t5f: '请先用 Visable 的各居留资格指引理清您的情况，如有疑惑，向 1345 或管辖出入境确认准确的民愿种类。',
     t6t: '预约完成后未能保存预约证',
     t6c: '可能在点击保存按钮前关闭了界面，或未能截图。',
     t6f: '请重新登录，在访问预约记录中确认预约，并截图或记下预约号。',

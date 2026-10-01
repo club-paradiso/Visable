@@ -17,11 +17,21 @@ import { test, expect } from '@playwright/test';
 async function searchStatus(page, code) {
   await page.goto('/index.html');
   await page.waitForFunction(() => typeof dataReady !== 'undefined' && dataReady, null, { timeout: 30_000 });
-  await page.evaluate((c) => {
+  // The per-status card list is gated behind the explicit "기존 체류자격 카드 보기"
+  // request (body[data-legacy-card="open"], see procedure-first-search.spec.mjs),
+  // and every search clears that flag once results render. Open it after the
+  // render, as that button does.
+  await page.evaluate((c) => new Promise((resolve) => {
+    const open = () => { document.body.setAttribute('data-legacy-card', 'open'); resolve(); };
+    document.addEventListener('paradiso:results-rendered', () => setTimeout(open, 0), { once: true });
+    setTimeout(open, 5_000);
+    // Drive the real search path: it leaves the landing state (body.landing hides
+    // #mainContent) the way a user's search does.
+    const form = document.getElementById('searchForm'); if (form) form.style.display = '';
     const q = document.getElementById('q'); if (q) { q.disabled = false; q.value = c; }
-    document.body.classList.add('searched');
-    renderResults(c);
-  }, code);
+    if (typeof executeSearch === 'function') executeSearch();
+    else { document.body.classList.add('searched'); renderResults(c); }
+  }), code);
   const card = page.locator(`#rlist .vc[data-code="${code}"]`).first();
   await card.waitFor({ timeout: 15_000 });
   return card;
@@ -118,12 +128,18 @@ test.describe('easy mode content contract', () => {
 
   test('global Easy Mode toggle applies to result cards and persists', async ({ page }) => {
     const card = await searchStatus(page, 'E-7');
-    await page.click('#easyModeBtn');
+    // Under the civic refresh the header .top-ctrls (incl. #easyModeBtn) is hidden;
+    // the global toggle lives in the settings dialog (#globalSettingsEasy).
+    const toggle = async () => {
+      await page.evaluate(() => window.openGlobalSettings());
+      await page.click('#globalSettingsEasy');
+    };
+    await toggle();
     await expect(page.locator('#easyModeBtn')).toHaveAttribute('aria-pressed', 'true');
     await expect(card).toHaveClass(/card-mode-easy/);
     const stored = await page.evaluate(() => localStorage.getItem('paradiso:easyMode'));
     expect(stored).toBe('1');
-    await page.click('#easyModeBtn');
+    await toggle();
     await expect(card).not.toHaveClass(/card-mode-easy/);
   });
 });

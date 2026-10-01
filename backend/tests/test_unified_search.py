@@ -141,6 +141,29 @@ class IntentRoutingTests(unittest.TestCase):
         self.assertEqual(_run("취업정보 신고 직종 코드가 뭔가요")["intent"],
                          us.INTENT_EMPLOYMENT_REPORTING)
 
+    def test_workplace_change_permit_is_a_procedure_not_the_code_tool(self):
+        # 근무처 변경·추가 is a stay procedure (출입국관리법 제21조). It must not be
+        # answered with the 취업정보 신고 KSCO/KSIC occupation-code tool card.
+        for query in (
+            "E-7 근무처 변경 허가 받아야 하나요?",
+            "E-9 근무처 추가하려면 어떻게 해요?",
+            "E-7 비자로 근무처 변경 신고는 며칠 이내",
+            "E-2 회화지도 근무처 추가",
+        ):
+            with self.subTest(query=query):
+                result = _run(query)
+                self.assertEqual(result["intent"], us.INTENT_PROCEDURE_QUESTION)
+                self.assertNotEqual(result["organicResults"][0]["kind"],
+                                    us.RESULT_EMPLOYMENT_TOOL)
+
+    def test_workplace_change_with_code_vocabulary_keeps_the_code_tool(self):
+        self.assertEqual(_run("근무처 변경 후 취업정보 신고 직종 코드")["intent"],
+                         us.INTENT_EMPLOYMENT_REPORTING)
+
+    def test_workplace_change_dispute_stays_a_legal_question(self):
+        self.assertEqual(_run("E-7 근무처 변경 불허 이의신청")["intent"],
+                         us.INTENT_LEGAL_QUESTION)
+
     def test_marriage_migration_keyword(self):
         self.assertEqual(_run("결혼이민")["intent"], us.INTENT_VISA_KEYWORD)
 

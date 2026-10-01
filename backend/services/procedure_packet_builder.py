@@ -1,6 +1,6 @@
 """Procedure Packet Builder + safe Application Typing Helper scaffold.
 
-Paradiso is evolving from an "AI visa search" tool into an official-source-based
+Visable is evolving from an "AI visa search" tool into an official-source-based
 stay/residence **administration preparation** platform. This module turns the
 official-source data the project already curates (the source-confirmed
 structured manual requirements + the per-visa procedure document lists) into

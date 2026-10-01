@@ -152,6 +152,17 @@ _EMPLOYMENT_SIGNALS = (
     "취업정보", "직종", "업종", "직종코드", "업종코드", "ksco", "ksic",
     "취업 신고", "취업신고", "근무처", "일자리", "연간소득",
 )
+# Vocabulary that only the 취업정보 신고 code helper can answer. A bare 근무처
+# is not enough on its own: see _WORKPLACE_PERMIT_RE.
+_EMPLOYMENT_CODE_SIGNALS = (
+    "취업정보", "직종", "업종", "ksco", "ksic", "연간소득",
+)
+# 근무처 변경·추가 is a stay procedure (출입국관리법 제21조: 허가 or 신고), not the
+# 취업정보 신고 code lookup. Without this guard "E-7 근무처 변경 허가 받아야 하나요?"
+# was answered with the KSCO/KSIC occupation-code tool card.
+_WORKPLACE_PERMIT_RE = re.compile(
+    r"(?:근무처|직장|회사|사업장)\s*(?:을|를|의)?\s*(?:변경|추가|옮기|옮겼|옮길|이동)"
+)
 # Job-description shapes: "…에서 …해요/합니다", "일해요", "만들어요"
 _JOB_DESCRIPTION_RE = re.compile(
     r"(에서\s*.{0,12}(해요|합니다|한다|해|하고\s*있|일해|일합|근무))"
@@ -268,6 +279,12 @@ def classify_intent(query: str, detected: Optional[Dict[str, Any]] = None) -> Di
                     "confidence": "high", "query": text, "rule": "code_only"}
 
     # 3. Employment reporting: explicit vocabulary, or a job-description sentence.
+    #    A workplace change/addition question is a procedure question unless the
+    #    user also names the code-lookup vocabulary itself.
+    workplace_permit = bool(_WORKPLACE_PERMIT_RE.search(text))
+    if workplace_permit and not _has_any(text, _EMPLOYMENT_CODE_SIGNALS):
+        employment_word = False
+        job_shape = False
     if employment_word:
         signals.append("employment_vocabulary")
         return {"intent": INTENT_EMPLOYMENT_REPORTING, "signals": signals,
@@ -297,8 +314,8 @@ def classify_intent(query: str, detected: Optional[Dict[str, Any]] = None) -> Di
                     "confidence": "medium", "query": text, "rule": "feature_keyword",
                     "feature": feature}
 
-    # 6. Procedure question.
-    if procedure_word:
+    # 6. Procedure question (근무처 변경·추가 counts even without 신청/허가 wording).
+    if procedure_word or workplace_permit:
         signals.append("procedure_vocabulary")
         return {"intent": INTENT_PROCEDURE_QUESTION, "signals": signals,
                 "confidence": "medium" if len(text) > 4 else "low",

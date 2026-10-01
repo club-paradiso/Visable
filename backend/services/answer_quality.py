@@ -1,6 +1,6 @@
-"""General AI answer-quality contract for Paradiso /api/ask.
+"""General AI answer-quality contract for Visable /api/ask.
 
-This module is the single source of truth for *how* Paradiso shapes an answer
+This module is the single source of truth for *how* Visable shapes an answer
 once the grounding pipeline has decided *what* sources are available. It is
 deliberately deterministic and side-effect free: every function here can be
 unit-tested without a live LLM, and the public ``classify_answer_quality``
@@ -653,7 +653,7 @@ def build_answer_directives(
         parts.append(
             "Because direct sources are limited, start with the strongest"
             " legally supportable practical posture from the backend-prepared"
-            " legal_analysis — NOT with \"Paradiso cannot verify...\","
+            " legal_analysis — NOT with \"Visable cannot verify...\","
             " \"Whether you can...\", \"It depends...\", or \"Specific manual"
             " guidance was not found...\". Keep the framing specific to the"
             " extracted immigration_facts, legal_issue_types, proposed_activity_type,"

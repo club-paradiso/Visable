@@ -1,6 +1,6 @@
 """Manual document-family / version / approval layer over the source registry.
 
-Paradiso's manual sources already carry identity and provenance in
+Visable's manual sources already carry identity and provenance in
 ``data/source_registry.json`` (id, authority, version, checksum, local path,
 active/deprecated). What they did not carry is the *review* dimension: whether a
 human has compared an extracted chunk against the original document and approved

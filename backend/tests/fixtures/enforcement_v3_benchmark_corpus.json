@@ -64,9 +64,9 @@
       "id": "nl-008",
       "kind": "narrative",
       "suite": "classification-boundary",
-      "provenance": {"sourceFile": "backend/tests/fixtures/enforcement_extraction_parity.json", "sourceTest": "an explicit change/이직 signal outranks designated-workplace wording"},
+      "provenance": {"sourceFile": "backend/tests/fixtures/enforcement_extraction_parity.json", "sourceTest": "designated-workplace and workplace-change wording together stay unresolved between 18(2) and 21(1)"},
       "text": "E-7인데 지정된 근무처가 아닌 다른 회사로 옮겨서 변경허가 없이 30일 일했습니다.",
-      "expected": {"violationCode": "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1", "durationDays": 30, "baselineAmountKrw": 1000000}
+      "expected": {"violationCode": null, "classificationState": "AMBIGUOUS", "violationCandidatesSet": ["UNAUTHORIZED_EMPLOYMENT_ART18_2", "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1"], "durationDays": 30, "requiredUnknownFacts": ["취업 가능 체류자격인지 및 지정 근무처·근무처 변경 관계"]}
     },
     {
       "id": "nl-009",
