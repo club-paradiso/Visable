@@ -33,6 +33,10 @@ _AMBIGUOUS_WORK_CODES = [
     "UNAUTHORIZED_EMPLOYMENT_ART18_2",
     "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1",
 ]
+_WORKPLACE_OVERLAP_CODES = [
+    "UNAUTHORIZED_EMPLOYMENT_ART18_2",
+    "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1",
+]
 _ALLOWED_VIOLATION_CODES = {
     "UNAUTHORIZED_STAY_OR_WORK_ART18_1",
     "UNAUTHORIZED_EMPLOYMENT_ART18_2",
@@ -75,6 +79,9 @@ _OUTSIDE_DESIGNATED_WORKPLACE_RE = re.compile(
     r"|허가(?:된)?\s*(?:근무처|사업장).*(?:외|아닌)",
     re.I,
 )
+# 취업활동 체류자격자가 "다른 사업장/회사"에서 일했다는 서술: 지정 근무처 밖 근무
+# (제18조제2항)의 표지다. 변경·추가 신호가 함께 있으면 제21조제1항이 우선한다.
+_OTHER_WORKPLACE_RE = re.compile(r"다른\s*(?:근무처|사업장|회사|업체)", re.I)
 _WORD_DURATIONS = (
     (re.compile(r"(?<![가-힣])하루(?![가-힣])"), 1),
     (re.compile(r"(?<![가-힣])이틀(?![가-힣])"), 2),
@@ -211,25 +218,12 @@ def _classify_violation(clean: str, status: Optional[str]) -> tuple[Optional[str
             re.I,
         )
     )
-    # 제21조제1항은 실제 근무처 변경·추가 또는 이직 신호가 있어야 확정한다.
-    # 단순히 "다른 회사에서 근무"했다는 사실만으로는 21-1로 올리지 않는다.
-    workplace_change = bool(
-        re.search(
-            r"(?:근무처|사업장|회사|업체).*(?:변경|추가|옮겼|옮긴|옮기|이직)"
-            r"|(?:변경|추가|옮겼|옮긴|옮기|이직).*(?:허가|신고)",
-            clean,
-            re.I,
-        )
-    )
-    outside_designated_workplace = bool(
-        re.search(
-            r"지정(?:된)?\s*(?:근무처|사업장).*(?:아닌|외)"
-            r"|다른\s*(?:근무처|사업장|회사|업체)"
-            r"|허가(?:된)?\s*(?:근무처|사업장).*(?:외|아닌)",
-            clean,
-            re.I,
-        )
-    )
+    # 조문 표지 정규식은 모듈 수준에 한 번만 정의하고 lib/enforcement-fallback.js와
+    # 똑같이 맞춘다. 여기서 따로 정의하면 백엔드 가용 여부에 따라 같은 문장이 다른
+    # 조문으로 분류된다.
+    workplace_change = bool(_WORKPLACE_CHANGE_RE.search(clean))
+    explicit_designated_workplace = bool(_OUTSIDE_DESIGNATED_WORKPLACE_RE.search(clean))
+    outside_designated_workplace = explicit_designated_workplace or bool(_OTHER_WORKPLACE_RE.search(clean))
     explicit_no_work_status = bool(
         re.search(
             r"취업활동을?\s*(?:할\s*수\s*)?없는\s*체류자격"
@@ -250,9 +244,14 @@ def _classify_violation(clean: str, status: Optional[str]) -> tuple[Optional[str
     if _STUDY_STATUS_RE.match(normalized_status):
         return "STATUS_OUTSIDE_ACTIVITY_ART20", ["STATUS_OUTSIDE_ACTIVITY_ART20"], unauthorized, work
 
-    # 변경/추가/이직처럼 제21조제1항을 직접 가리키는 더 구체적인 신호가
-    # "다른 회사" 같은 제18조제2항 신호와 함께 나타날 수 있다. 이 경우
-    # 구체적인 변경허가 위반 신호를 먼저 적용해야 복합 문장을 오분류하지 않는다.
+    # "지정된 근무처가 아닌 곳"(제18조제2항)과 근무처 변경·추가(제21조제1항)가 한
+    # 사안에 함께 명시되면 어느 조문으로 의율되는지 문장만으로 정할 수 없다.
+    # 제21조제3항은 같은 조 제1항 단서(신고 대상자)에 해당하면 제18조제2항을
+    # 적용하지 않는다고 정하므로, 결정적 사실은 허가 대상인지 신고 대상인지다.
+    # 승자를 지어내지 않고 두 후보만 남겨 사용자 확인을 받는다(이슈 #587).
+    if workplace_change and explicit_designated_workplace:
+        return None, list(_WORKPLACE_OVERLAP_CODES), unauthorized, work
+    # "다른 회사" 같은 서술에 변경/추가/이직 신호가 붙으면 제21조제1항이 더 구체적이다.
     if workplace_change:
         return "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1", ["UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1"], unauthorized, work
     if outside_designated_workplace and _WORK_STATUS_RE.match(normalized_status):

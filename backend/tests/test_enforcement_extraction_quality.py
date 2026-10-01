@@ -44,6 +44,7 @@ class EnforcementExtractionParityTests(unittest.IsolatedAsyncioTestCase):
     async def test_shared_parity_fixture(self):
         assessment_date = date.fromisoformat(PARITY_FIXTURE["assessmentDate"])
         ambiguous = PARITY_FIXTURE["ambiguousWorkCodes"]
+        overlap = PARITY_FIXTURE["workplaceOverlapCodes"]
         for case in PARITY_FIXTURE["cases"]:
             with self.subTest(case=case["name"]):
                 result = await extract_structured_case(
@@ -53,6 +54,8 @@ class EnforcementExtractionParityTests(unittest.IsolatedAsyncioTestCase):
                     actual = getattr(result, _CAMEL_TO_SNAKE[key])
                     if expected == "AMBIGUOUS":
                         expected = ambiguous
+                    elif expected == "WORKPLACE_OVERLAP":
+                        expected = overlap
                     elif key in ("violationStartDate", "violationEndDate") and expected:
                         expected = date.fromisoformat(expected)
                     self.assertEqual(actual, expected, f"{case['name']}: {key}")

@@ -85,9 +85,10 @@
       "id": "nl-008",
       "text": "E-7인데 지정된 근무처가 아닌 다른 회사로 옮겨서 변경허가 없이 30일 일했습니다.",
       "expected": {
-        "violationCode": "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1",
+        "violationCode": null,
+        "classificationState": "AMBIGUOUS",
         "durationDays": 30,
-        "baselineAmountKrw": 1000000
+        "deterministicBaselineStatus": "MISSING_FACTS"
       }
     },
     {
