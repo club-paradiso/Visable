@@ -77,6 +77,12 @@ _TRANSITION_RE = re.compile(
     r"([A-H]\s*-?\s*\d{1,2}(?:\s*-?\s*\d{1,3})?)\s*(?:에서|부터|->|→|to|from)\s*([A-H]\s*-?\s*\d{1,2}(?:\s*-?\s*\d{1,3})?)",
     re.IGNORECASE,
 )
+# "F-2로 바꿀 수 있나요": a single target code plus a change verb is a status
+# change even without a "<from> 에서" half (which _TRANSITION_RE requires).
+_TARGET_STATUS_CHANGE_RE = re.compile(
+    r"[A-H]\s*-?\s*\d{1,2}(?:\s*-?\s*\d{1,3})?\s*(?:으로|로)\s*(?:바꾸|바꿀|바꿔|바꿨|변경|전환)",
+    re.IGNORECASE,
+)
 _PARENT_STUDY = {"D-2", "D-4"}
 _PARENT_WORK = {"E-1", "E-2", "E-3", "E-4", "E-5", "E-6", "E-7", "E-9", "C-4", "H-2"}
 _RESTRICTED_WORK = {"C-3", "B-1", "B-2", "D-10", "H-1", "G-1"}
@@ -196,7 +202,7 @@ _REGISTRATION_EXCLUSION_TERMS = (
 )
 _EXPLICIT_WORK_TERMS = (
     "근무", "근로", "취업", "아르바이트", "알바", "일하", "일할",
-    "일을", "고용주", "보수", "급여", "임금", "프리랜서", "부업",
+    "일을", "일해", "일했", "단순노무", "고용주", "보수", "급여", "임금", "프리랜서", "부업",
     "계약형태", "근무처", "work", "job", "employment", "employer",
     "salary", "wage", "paid", "freelance", "side job", "contract",
 )
@@ -214,7 +220,11 @@ def is_registration_deadline_query(text: str) -> bool:
     low = _low(raw)
     # Match the procedure itself, not a card noun used merely as evidence of
     # current status. Negative lookahead deliberately excludes 외국인등록증.
-    explicit_foreigner_registration = bool(re.search(r"외국인\s*등록(?!증)", raw))
+    # 외국인등록 정보/사항/번호 is the registered record (등록사항 변경신고), not the
+    # initial 90-day registration procedure either.
+    explicit_foreigner_registration = bool(
+        re.search(r"외국인\s*등록(?!증|\s*(?:정보|사항|내용|번호))", raw)
+    )
     has_registration = (
         explicit_foreigner_registration
         or any(term in low for term in _REGISTRATION_DEADLINE_TERMS)
@@ -344,6 +354,8 @@ def classify_activity_types(question: str) -> List[str]:
         "근무처 변경", "근무처변경", "근무처를 변경", "근무처를 옮",
         "직장 변경", "직장변경", "직장을 변경", "직장을 옮", "직장 이동", "이직", "전직",
         "퇴사", "퇴직", "동종업계", "동종 업계", "동종업종", "다른 회사", "타 회사", "타사",
+        # 사업장 변경 (E-9/H-2 고용허가제 wording) is a workplace change too.
+        "사업장 변경", "사업장변경", "사업장을 변경", "사업장을 옮", "사업장 이동",
         "새 회사", "새로운 회사", "회사를 변경", "회사를 옮", "회사 이동",
         "고용주 변경", "고용주를 변경", "사업주 변경", "사업주를 변경",
         "change workplace", "workplace change", "change employer", "change of employer",
@@ -375,6 +387,13 @@ def classify_activity_types(question: str) -> List[str]:
         "근무처 변경신고", "근무처 변경 신고", "취업정보 신고", "출입국 신고",
         "residence report", "change of address report", "passport information report",
         "workplace change report", "immigration report", "reporting duty",
+        # 등록사항 변경신고: the registered record (passport, name, ...) changed.
+        "등록사항", "외국인등록 정보", "외국인등록정보", "외국인등록 사항",
+        "registration information", "registered information",
+    ) or (
+        _has_any(text, "여권", "passport")
+        and _has_any(text, "갱신", "새로 발급", "새로 받", "재발급", "바뀌", "바꿨", "renew", "new passport")
+        and _has_any(text, "신고", "report")
     )
     if registration_deadline or reporting_signal:
         add("registration_or_reporting")
@@ -393,7 +412,7 @@ def classify_activity_types(question: str) -> List[str]:
         "체류자격 변경", "비자 변경", "자격변경", "체류자격 전환",
         "change status", "status change", "change of status", "switch visa",
     )
-    if explicit_status_change or _TRANSITION_RE.search(text) or (
+    if explicit_status_change or _TRANSITION_RE.search(text) or _TARGET_STATUS_CHANGE_RE.search(text) or (
         not specific_change and _has_any(text, "변경", "전환", "switch")
     ):
         add("status_change_route")
@@ -515,6 +534,8 @@ def classify_legal_issue_types(question: str, immigration_facts: Optional[Dict[s
             text,
             "거소신고", "체류지 변경", "alien registration",
             "foreigner registration", "residence report",
+            "등록사항", "외국인등록 정보", "외국인등록정보", "외국인등록 사항",
+            "registration information", "registered information",
         ):
             add("registration_or_residence_report")
     # Preserve explicit reporting-duty questions without turning every civil or

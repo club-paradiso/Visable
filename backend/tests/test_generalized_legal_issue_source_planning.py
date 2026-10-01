@@ -127,6 +127,47 @@ def test_actual_foreigner_registration_queries_still_route_to_registration(quest
     assert "registration_or_reporting" in set(classify_activity_types(question))
 
 
+def test_eps_workplace_change_is_not_a_status_change():
+    # "사업장 변경" (고용허가제 wording) changes the workplace, not the status.
+    question = "E-9 사업장 변경 횟수 초과되면?"
+    activities = set(classify_activity_types(question))
+    issues = classify_legal_issue_types(question)
+    assert "workplace_change" in activities
+    assert "status_change_route" not in activities
+    assert "status_change" not in issues
+    assert "workplace_change_addition" in issues
+
+
+def test_colloquial_work_wording_is_an_activity_scope_question():
+    # "일해도 되나요" used to fall through to non_immigration_adjacent_issue.
+    question = "F-4 비자로 단순노무 일해도 되나요"
+    issues = classify_legal_issue_types(question)
+    assert "paid_work" in set(classify_activity_types(question))
+    assert {"activity_scope", "employment_restriction"} <= set(issues)
+    assert "non_immigration_adjacent_issue" not in issues
+
+
+def test_single_target_code_with_change_verb_is_a_status_change():
+    question = "E-7 연장 대신 F-2로 바꿀 수 있나요"
+    issues = classify_legal_issue_types(question)
+    assert "status_change" in issues
+    assert "extension" in issues
+
+
+@pytest.mark.parametrize("question", [
+    "여권 갱신했는데 외국인등록 정보도 바꿔야 하나요",
+    "외국인등록사항 변경은 며칠 안에 해야 하나요?",
+])
+def test_registration_record_change_is_not_the_initial_registration_deadline(question):
+    # 등록사항 변경신고 is a report about the registered record, not the
+    # initial 90-day foreigner registration.
+    issues = classify_legal_issue_types(question)
+    assert is_registration_deadline_query(question) is False
+    assert "registration_deadline" not in issues
+    assert "reporting_duty" in issues
+    assert "registration_or_residence_report" in issues
+
+
 @pytest.mark.parametrize("status", ["H-1", "G-1", "F-2-99", "D-2", "D-4", "D-10", "E-7", "F-4", "F-6", "B-2", "C-3"])
 def test_matrix_credit_study_non_study_statuses(status):
     issues = classify_legal_issue_types(f"I am on {status}. Can I take a credit-bearing course?")
