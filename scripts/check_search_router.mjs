@@ -220,6 +220,20 @@ check('false premises are not confirmed: original/copy varies by procedure, offi
 check('HTML escapes untrusted query text in every kind', () => {
   for (const q of ['<img src=x onerror=alert(1)> 외국인등록증 재발급', '<script>x</script> 체류기간 연장', '"><b>F-6 연장']) assert(!run(q).html.includes('<img src=x') && !run(q).html.includes('<script>x'), q);
 });
+check('a status change "A에서 B로" is answered for the TARGET status B, not the current status A', () => {
+  for (const [q, target] of [['D-2에서 D-10으로 변경하려면', 'D-10'], ['D-2 → D-10 변경', 'D-10'], ['E-7에서 F-2로 바꿀 수 있나요', 'F-2'], ['D-10으로 변경 D-2인데', 'D-10']]) {
+    const r = run(q);
+    assert(r.interp.procedure === 'status_change', `${q}: procedure ${r.interp.procedure}`);
+    assert(r.interp.codes[0].code === target, `${q}: target ${r.interp.codes[0].code}`);
+    assert(!r.text.includes('광역형 비자'), `${q}: must not show programs of the current status`);
+  }
+  assert(run('D-2에서 D-10으로 변경하려면').interp.transitionFrom === 'D-2', 'current status recorded');
+});
+check('a status-card mention of a parent and its subcode is not a status change', () => {
+  for (const q of ['등록증에 F-6로 적혀 있는데 F-6-1인가요?', 'F-6로 적혀있고 F-6-2로 바꾸려면']) {
+    assert(run(q).interp.procedure !== 'status_change', `${q}: ${run(q).interp.procedure}`);
+  }
+});
 check('router output shape', () => {
   const r = R.route('외국인등록증 재발급', bundle, { localPractice: bundle.local_practice });
   for (const k of ['intent', 'structure', 'isQuestion', 'facet', 'status', 'substatus', 'procedure', 'procedureCandidates', 'object', 'office', 'program', 'userProgram', 'conditions', 'contextRequirement', 'needs', 'confidence']) assert(k in r, `missing ${k}`);
