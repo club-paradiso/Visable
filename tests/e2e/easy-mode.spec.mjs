@@ -143,3 +143,21 @@ test.describe('easy mode content contract', () => {
     await expect(card).not.toHaveClass(/card-mode-easy/);
   });
 });
+
+test.describe('global Easy Mode entry under the civic shell', () => {
+  test('"전체 도구 보기" offers the global Easy Mode toggle and it persists', async ({ page }) => {
+    await page.goto('/index.html');
+    await page.waitForFunction(() => (typeof dataReady !== 'undefined' && dataReady) === true, null, { timeout: 30_000 });
+    const directory = page.locator('#civicLanding .cs-directory');
+    await directory.locator('summary').click();
+    const toggle = directory.locator('[data-action="toggle-easy-mode"]');
+    await expect(toggle).toBeVisible();
+    await expect(toggle).toHaveAttribute('aria-pressed', 'false');
+    await toggle.click();
+    await expect(toggle).toHaveAttribute('aria-pressed', 'true');
+    expect(await page.evaluate(() => localStorage.getItem('paradiso:easyMode'))).toBe('1');
+    await toggle.click();
+    await expect(toggle).toHaveAttribute('aria-pressed', 'false');
+    expect(await page.evaluate(() => localStorage.getItem('paradiso:easyMode'))).toBe('0');
+  });
+});

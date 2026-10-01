@@ -67,6 +67,15 @@ async function openSearch(page, url = '/index.html') {
       } catch (e) { return false; }
     },
     null, { timeout: 30_000 });
+  // Under the civic shell (body.civic-refresh, set statically in index.html and
+  // again by assets/js/civic-search.js) this layer is intentionally neither
+  // fetched nor rendered: runUnified() returns early via civicOwnsResults(), and
+  // #statusGuidance owns the results (covered by procedure-first-search.spec and
+  // ux10-a11y.spec). The suite runs again automatically if the layer is re-enabled.
+  test.skip(
+    await page.evaluate(() => document.body.classList.contains('civic-refresh')),
+    'unified-search layer is disabled under the civic shell (civicOwnsResults)',
+  );
   const input = page.locator('#q');
   if (!(await input.isVisible())) {
     await page.locator('#searchToggleBtn').click();
