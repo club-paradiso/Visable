@@ -178,7 +178,7 @@ Visable의 AI 경로는 가능한 한 **retrieval / deterministic logic → vali
 - provider 장애 시 허구의 답을 생성하는 대신 제한된 fallback 결과를 반환
 - AI 결과와 deterministic 검색 결과를 분리해, AI 기능이 실패해도 기본 검색이 함께 무너지지 않도록 구성
 
-현행 AI 구조는 [`docs/ai/AI_RUNTIME_INVENTORY.md`](./docs/ai/AI_RUNTIME_INVENTORY.md)를 우선 참고하세요. 오래된 AI 설계 문서는 현재 코드와 다를 수 있습니다.
+전체 구조 요약은 [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md), 현행 AI 구조는 [`docs/ai/AI_RUNTIME_INVENTORY.md`](./docs/ai/AI_RUNTIME_INVENTORY.md)를 우선 참고하세요. 오래된 AI 설계 문서는 현재 코드와 다를 수 있습니다.
 
 ## Legacy naming
 
@@ -187,6 +187,19 @@ Visable의 AI 경로는 가능한 한 **retrieval / deterministic logic → vali
 **이들은 현재 서비스 브랜드가 아닙니다.**
 
 현재 사용자-facing 서비스명과 저장소의 기준 브랜드는 **Visable**입니다. 신규 문서와 사용자-facing 카피에서는 Visable을 기준으로 작성해야 하며, 레거시 명칭은 호환성 또는 역사적 문맥이 필요한 경우에만 유지합니다.
+
+의도적으로 남겨 둔 이름(바꾸면 저장된 사용자 설정·배포 설정·API 계약이 깨짐):
+
+| 종류 | 예 | 유지 이유 |
+| --- | --- | --- |
+| 브라우저 저장 키 | `paradiso:language`, `paradiso:brightness`, `paradiso:easyMode`, `paradiso:editorial-theme`, `paradiso_ai_consent`, `paradiso_city`, `paradisoDevDiagnostics` | 기존 사용자의 언어·테마·동의 상태가 초기화됨 |
+| DOM 이벤트·전역 객체 | `paradiso:results-rendered`, `paradiso-language-applied`, `ParadisoRoute`, `ParadisoZhT` 등 | 여러 스크립트가 같은 이름으로 연결됨 |
+| 환경 변수·배포 설정 | `PARADISO_BACKEND_URL`, `PARADISO_CLIENT_DIAGNOSTICS`, `PARADISO_BUILD_COMMIT` 등 | Railway/Vercel 설정값과 연결됨 |
+| HTTP 헤더·로거·모듈 | `x-paradiso-diagnostics`, `paradiso.*` 로거, `backend/paradiso_backend.py` | 클라이언트·로그 수집·배포 진입점 계약 |
+| 팀·저작권 | `Club Paradiso`, 팀명 소개와 Diaspora→Paradiso 애너그램 | 제품명이 아니라 팀 이름 |
+| 별도 제품 | PreView (`preview.html`, "PreView by Paradiso") | Visable과 분리된 공모전 MVP, 독립성은 `check_preview_mvp`가 고정 |
+
+사용자에게 보이는 "… by Paradiso" 제품 표기는 모두 제거했습니다(Waymaker, New Home, Visable 푸터·로고 대체 텍스트 포함).
 
 ## Official-source reminder
 

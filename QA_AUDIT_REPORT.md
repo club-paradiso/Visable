@@ -1,4 +1,8 @@
 # Paradiso — Pre-Launch QA Audit Report
+
+> **역사 기록(2026-06-13 스냅샷).** 이 보고서는 서비스명이 Paradiso이던 시점의 GitHub Pages 배포를 감사한 결과다.
+> 현재 프로덕션(Visable)의 상태를 설명하지 않으며, 지적 사항 다수는 이후 PR에서 처리됐다.
+> 현재 검증은 `scripts/check_repo.sh`, `.github/workflows/repo-validation.yml`, `tests/e2e/`를 기준으로 한다.
 **감사 일자**: 2026-06-13  
 **대상**: https://lucanomics.github.io/Paradiso/ (로컬 정적 서버 http://127.0.0.1:8099 병행)  
 **감사 범위**: 39 체류자격 A-1 ~ G-1 전수 (Waymaker 제외)  

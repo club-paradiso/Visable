@@ -1,31 +1,35 @@
 ---
-version: alpha
-name: Paradiso
+version: "2026.10"
+name: Visable
 description: >
-  대한민국 비자·체류 정보 안내 플랫폼. 제주 출입국 특화 civic-tech.
+  대한민국 비자·체류 정보 안내 플랫폼(Visable). 공식 출처 기반 civic-tech.
   신뢰감 있고 차분하며 공적 질감을 유지하는 따뜻한 종이+잉크 시각 언어.
+  색 토큰의 단일 진실 출처는 index.html의 civic token layer
+  (":root:not([data-theme=\"archive_diary\"])", UX-10 Foundations)이며,
+  scripts/check_civic_tokens.mjs가 그 값으로 WCAG 대비 하한을 계산한다.
+  아래 colors 값은 그 층을 옮겨 적은 것이다. 값이 다르면 index.html이 맞다.
 
 colors:
-  # 브랜드 (컴포넌트에서 직접 참조)
-  primary:        "#0EA37B"
-  primary-deep:   "#085E48"
-  primary-hover:  "#0c8c69"
-  primary-mint:   "#7DD8B8"
-  accent:         "#FF6B5B"
-  accent-deep:    "#E0513E"
-  amber:          "#E68A3A"
+  # 브랜드 (civic layer CSS 변수 → 이 문서 키)
+  primary:        "#177366"   # --ac
+  primary-deep:   "#0B4F44"   # --cta / --ac2 (기본 CTA, AAA 7:1 하한)
+  primary-hover:  "#0B4F44"   # --ac2
+  primary-mint:   "#3BE4B8"   # 다크 테마 --ac
+  accent:         "#D95C47"   # --cy
+  accent-deep:    "#D95C47"   # --cy (별도 deep 토큰 없음)
+  amber:          "#F2C879"   # --cWk (경고는 color-mix(--cWk 38%, --t1))
   # 중립 — 따뜻한 종이+잉크
-  neutral:        "#F4EEE0"
-  surface:        "#FCFAF5"
-  surface-2:      "#FBF5E6"
-  text:           "#0E1F1A"
-  text-muted:     "#7A8580"
-  border:         "#C9BFA5"
-  # 다크모드 서피스
-  dark-bg:        "#0B2A24"
-  dark-surface:   "#113B32"
-  dark-text:      "#F3EEDF"
-  dark-primary:   "#34D4A8"
+  neutral:        "#F7F4EF"   # --bg0
+  surface:        "#FFFCF5"   # --bg1
+  surface-2:      "#F7F4EF"   # --bg0
+  text:           "#1C1F29"   # --t1 (본문 AA 4.5:1 하한)
+  text-muted:     "#4D5261"   # --t2
+  border:         "#E6E6EE"   # --bd
+  # 다크모드 서피스 ([data-theme="dark"] + body[data-theme="dark"] 재정의)
+  dark-bg:        "#062A22"   # --bg0
+  dark-surface:   "#0D3129"   # --bg1 (body[data-theme="dark"])
+  dark-text:      "#F4EFE4"   # --t1
+  dark-primary:   "#3BE4B8"   # --ac
 
 typography:
   hero-display:
@@ -223,7 +227,7 @@ components:
 
 ## Overview
 
-Paradiso의 시각 언어는 세 단어로 요약된다: **신뢰(Trust) · 온기(Warmth) · 명확성(Clarity)**.
+Visable의 시각 언어는 세 단어로 요약된다: **신뢰(Trust) · 온기(Warmth) · 명확성(Clarity)**.
 
 대한민국에서 체류 문제를 겪는 외국인 — 디지털 리터러시가 낮고 스트레스를 받는 사람이 주 사용자다. 이 플랫폼은 차갑고 관료적인 정부 UI가 아니라, 따뜻하되 공적 신뢰감이 있는 경험을 제공한다.
 
@@ -234,17 +238,18 @@ HeroGateway(기능적 진입 관문) → StatBridge(신뢰 수치) → FeatureTr
 
 ## Colors
 
-팔레트는 **Emerald(`#0EA37B`)를 단일 브랜드 강조**로 하고, 나머지는 따뜻한 종이+잉크 중성 톤으로 구성된다.
+팔레트는 **Civic Teal(`--ac #177366`)을 단일 브랜드 강조**로, CTA는 더 진한 `--cta #0B4F44`로 쓰고, 나머지는 따뜻한 종이+잉크 중성 톤이다. 값의 출처는 index.html civic token layer(UX-10 Foundations)이며, `scripts/check_civic_tokens.mjs`가 배포 CSS에서 직접 대비를 계산해 하한(본문 AA 4.5:1, 기본 CTA AAA 7:1)을 강제한다.
 
-전체 팔레트:
-- **Primary (`#0EA37B`, Emerald):** CTA 버튼 배경, 배지, 체크마크, 성공 상태. 화면당 3개 이하.
-- **Primary Deep (`#085E48`):** 히어로 헤더 배경, 버튼 텍스트 대비 기반색(대비율 충족), 다크 서피스. WCAG AA 준수를 위해 버튼 primary-deep에서 neutral 텍스트 조합 사용.
-- **Primary Mint (`#7DD8B8`):** Paradiso AI 테마, 어두운 배경에서의 민트 강조.
-- **Accent (`#FF6B5B`, Coral):** 카테고리 통계 숫자, 강조 타이포. 경계선·배경 사용 금지.
-- **Neutral (`#F4EEE0`, Paper):** 페이지 기본 배경. 순백 대신 따뜻한 오프화이트.
-- **Dark mode:** `dark-bg(#0B2A24)` 기반, `dark-primary(#34D4A8)` 강조. `[data-theme="dark"]` 어트리뷰트로 토글.
+전체 팔레트 (대비는 WCAG 2 공식으로 계산한 값):
+- **CTA (`--cta #0B4F44`):** 기본 버튼 배경. `--bg1 #FFFCF5` 대비 9.25:1(AAA).
+- **Primary (`--ac #177366`):** 링크, 배지, 체크마크, 성공 상태, 포커스. `--bg1` 대비 5.57:1, `--bg0` 대비 5.2:1(AA).
+- **Accent (`--cy #D95C47`, Coral):** 강조 타이포·아이콘. `--bg1` 대비 3.68:1이므로 본문 크기 텍스트 단독 사용 금지(큰 글자·비텍스트 요소만).
+- **Warning (`--cWk #F2C879`):** 직접 텍스트로 쓰지 않고 `color-mix(--cWk 38%, --t1)`로 만든 `--color-warning`을 쓴다.
+- **Paper (`--bg0 #F7F4EF`, `--bg1 #FFFCF5`):** 페이지·카드 배경. 본문 `--t1 #1C1F29`는 `--bg0` 대비 14.98:1, 보조 `--t2 #4D5261`은 7.1:1.
+- **Dark mode:** `[data-theme="dark"]`. `--bg0 #062A22`, `--t1 #F4EFE4`(13.45:1), `--ac #3BE4B8`(9.53:1).
+- **archive_diary 테마:** civic layer에서 의도적으로 제외(`:root:not([data-theme="archive_diary"])`).
 
-⚠️ **WCAG 경고:** Emerald(`#0EA37B`) + 흰 텍스트 대비율 3.21:1 — AA 미달. 따라서 Primary 버튼은 `primary-deep(#085E48)` 배경 + `neutral(#F4EEE0)` 텍스트 조합을 사용한다(대비율 8.4:1, AAA 통과).
+알려진 부채: index.html에는 이전 팔레트(초기 Emerald·Cyber Blue 포스터 테마) 변수 정의가 먼저 선언되고 civic layer가 뒤에서 덮어쓰는 구조가 남아 있다. 시각 회귀 테스트 없이 앞선 정의를 지우면 덮어쓰지 않은 변수가 바뀌므로, 정리는 화면 캡처 비교와 함께 별도로 한다.
 
 ## Typography
 
@@ -321,11 +326,11 @@ HeroGateway(기능적 진입 관문) → StatBridge(신뢰 수치) → FeatureTr
 
 ## Components
 
-모든 인터랙티브 컴포넌트: 44px 최소 터치 타겟, `:focus-visible` 시 `0 0 0 3px rgba(14,163,123,0.35)` 포커스 링.
+모든 인터랙티브 컴포넌트: 44px 최소 터치 타겟, `:focus-visible` 시 `--ac` 기반의 3px 포커스 링.
 
 **버튼 계층(한 화면에 동시 배치 규칙):**
 - Primary 버튼은 화면당 1개. 부득이 2개면 나머지는 Secondary.
-- Primary 컬러: `primary-deep(#085E48)` 배경 + `neutral(#F4EEE0)` 텍스트 (WCAG AAA). Emerald 배경+흰 텍스트는 AA 미달.
+- Primary 컬러: `--cta(#0B4F44)` 배경 + `--bg1(#FFFCF5)` 텍스트 (9.25:1, WCAG AAA).
 
 **Visa Result Card 정보 스캔 순서:**
 ① 코드 배지 + 한/영 명칭 → ② 매뉴얼 도메인 배지 → ③ 절차 컨트롤(세그먼티드) → ④ 해당 절차 문서만 → ⑤ 출처 블록.
@@ -347,11 +352,10 @@ HeroGateway(기능적 진입 관문) → StatBridge(신뢰 수치) → FeatureTr
 - `[data-theme="dark"]` 어트리뷰트 방식 유지.
 
 ### Don't
-- **"Paradiso 39" 표기 절대 금지.** 제품명은 "Paradiso"만.
+- **제품명은 "Visable".** 하위 화면은 "Waymaker"·"New Home"처럼 이름만 쓴다("… by Paradiso" 표기 금지). "Club Paradiso"는 팀·저작권 표기로만 쓴다.
 - 공식 법적 판정·자격 보증·HiKorea 대체 암시 금지.
 - `font-weight: 900`을 h2 이하 사용 금지 — 위계 붕괴.
 - 전 섹션에 동일한 `border-radius: 2rem` 적용 금지.
 - 글래스모피즘 히어로 외 남용 금지.
-- Coral(`#FF6B5B`)을 경계선·배경 사용 금지.
-- `!important` CSS 사용 금지.
-- Emerald(`#0EA37B`) + 흰 텍스트 조합 금지 — WCAG AA 미달(3.21:1).
+- Coral(`--cy #D95C47`)을 본문 크기 텍스트·경계선·배경에 사용 금지(대비 3.68:1).
+- 새 코드에 `!important` 추가 금지(기존 사용분은 cascade 부채로, 시각 회귀 확인과 함께 줄인다).
