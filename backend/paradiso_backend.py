@@ -1,6 +1,6 @@
 """Paradiso backend service.
 
-FastAPI application exposing the routes used by the Paradiso frontend:
+FastAPI application exposing the routes used by the Visable frontend:
 
 - GET  /
 - GET  /health
@@ -152,7 +152,7 @@ DATABASE_URL: Optional[str] = os.environ.get("DATABASE_URL")
 SUPABASE_URL: Optional[str] = os.environ.get("SUPABASE_URL")
 SUPABASE_SERVICE_KEY: Optional[str] = os.environ.get("SUPABASE_SERVICE_KEY")
 
-# Pin Paradiso AI to a deterministic OpenRouter model rather than the
+# Pin Visable AI to a deterministic OpenRouter model rather than the
 # variable `openrouter/auto` router. The model-role policy lives in
 # services.model_policy so the final-answer, router, translation, verifier, and
 # Chinese-language model choices remain explicit and testable.
@@ -175,9 +175,9 @@ OPENROUTER_MODEL: str = (
 
 # Explicit, predictable OpenRouter fallback candidates. When the primary model
 # is rate-limited (429) or its upstream is unavailable (503 / "no healthy
-# upstream"), Paradiso retries the NEXT OpenRouter candidate rather than
+# upstream"), Visable retries the NEXT OpenRouter candidate rather than
 # silently switching providers or surfacing raw provider JSON. Random
-# free-model routing (openrouter/auto) is intentionally NOT used — Paradiso
+# free-model routing (openrouter/auto) is intentionally NOT used — Visable
 # needs predictable model behaviour and auditable response metadata.
 _DEFAULT_OPENROUTER_MODEL_CANDIDATES: List[str] = list(DEFAULT_FINAL_ANSWER_MODEL_CANDIDATES)
 
@@ -307,7 +307,7 @@ _BUILD_COMMIT_ENV_NAMES: Tuple[str, ...] = (
 )
 _BUILD_COMMIT_RE = re.compile(r"^[0-9a-fA-F]{7,40}$")
 
-# Output-length cap for the final answer. Unbounded generation over Paradiso's
+# Output-length cap for the final answer. Unbounded generation over Visable's
 # large grounded prompt was a major perceived-latency source ("Waymaker is too
 # slow"): a long answer takes proportionally longer to generate and stream back.
 # Capping completion tokens keeps answers focused and materially faster without
@@ -401,7 +401,7 @@ def _sanitize_requested_model(requested: Optional[str], provider: str) -> Option
 SITE_URL: str = os.environ.get("SITE_URL", "")
 SITE_TITLE: str = os.environ.get("SITE_TITLE", "Paradiso")
 
-# Optional pointer to the human-facing Paradiso frontend (e.g. the
+# Optional pointer to the human-facing Visable frontend (e.g. the
 # GitHub Pages deployment). Surfaced by GET / so that a person who hits
 # the bare Railway URL on a phone is not greeted by a raw 404 detail
 # blob with no hint where the actual app lives.
@@ -543,7 +543,7 @@ app.add_middleware(
 
 class AskRequest(BaseModel):
     # Prompt aliases. Resolution order: message -> query -> question.
-    # `question` is the field the Paradiso frontend currently sends; the
+    # `question` is the field the Visable frontend currently sends; the
     # other two keep parity with curl-driven clients and earlier docs.
     message: Optional[str] = None
     query: Optional[str] = None
@@ -772,7 +772,7 @@ class AskResponse(BaseModel):
     related_manual_sources: List[Dict[str, Any]] = Field(default_factory=list)
     law_grounding_error: str = ""
     # OpenRouter model-candidate fallback transparency (non-secret). When the
-    # primary model is rate-limited / upstream-unavailable, Paradiso retries the
+    # primary model is rate-limited / upstream-unavailable, Visable retries the
     # next explicit OpenRouter candidate rather than switching providers.
     llm_provider: str = ""
     # Answer-speed tier transparency. `answer_mode` is the tier actually used;
@@ -2231,7 +2231,7 @@ def build_legal_analysis_fallback_answer(
 
     ``intro_mode`` controls the leading line:
       * ``"outage"`` (default): the provider was unavailable, so the note opens
-        by saying Paradiso is showing a structured analysis instead.
+        by saying Visable is showing a structured analysis instead.
       * ``"quality_repair"``: the live model DID answer but failed the
         answer-shape gate, so we lead directly with the practical answer (no
         outage line and no uncertainty-first opening — Part C / Part G).
@@ -4023,7 +4023,7 @@ def _grounding_source_summary(grounding: Dict[str, Any], bundle: Dict[str, Any])
 def _build_visa_data_context_block(visa_data: Optional[Dict[str, Any]]) -> str:
     """Build a compact local-catalog context block from frontend visa_data.
 
-    The Paradiso frontend (ai.html) sends a record from visa_data.json when
+    The Visable frontend (ai.html) sends a record from visa_data.json when
     the user question mentions a known visa code (D-2 / E-7 / F-6 / ...).
     This helper surfaces a small, conservative selection of safe fields so
     the LLM has some local context even when no deterministic manual
@@ -4659,7 +4659,7 @@ def _build_ungrounded_korea_scoped_prompt(
 async def root() -> Dict[str, Any]:
     """Service-info page for humans who hit the bare backend URL.
 
-    The Paradiso backend is API-only; the human-facing frontend is
+    The Visable backend is API-only; the human-facing frontend is
     served elsewhere (currently GitHub Pages). Without this route,
     FastAPI returns a bare `{"detail":"Not Found"}` for `GET /`, which
     is confusing for anyone (especially mobile users) who opens the
@@ -5376,7 +5376,7 @@ def _evaluate_request_safety(
 # ---------------------------------------------------------------------------
 # /api/ask public projection (provider/model abstraction)
 # ---------------------------------------------------------------------------
-# Waymaker is a Paradiso product. Which third-party provider or model produced
+# Waymaker is a Visable product. Which third-party provider or model produced
 # the wording is infrastructure: it stays in server telemetry
 # (_log_ask_routing_telemetry) and in the explicit developer-diagnostics
 # payload, and is removed from the ordinary response the browser receives.

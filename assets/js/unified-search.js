@@ -1,5 +1,5 @@
 /* ============================================================================
- * Visable by Paradiso — Unified Search layer
+ * Visable — Unified Search layer
  * ----------------------------------------------------------------------------
  * One hero input absorbs everything: a code (D-2-1, E74), a keyword (결혼이민),
  * a situation (졸업 후 취업), a question (회사 옮기려면 뭘 해야 하나요), a statute

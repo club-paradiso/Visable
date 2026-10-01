@@ -249,7 +249,7 @@
  "law_grounding_attempted": false,
  "law_grounding_display": {
   "evidence_role": "",
-  "notice": "Real-time legal-source lookup could not be verified for this answer, so it relies on Paradiso's stored manual/official materials. Specific article numbers below are not confirmed — verify them with HiKorea, 1345, or the competent immigration office.",
+  "notice": "Real-time legal-source lookup could not be verified for this answer, so it relies on Visable's stored manual/official materials. Specific article numbers below are not confirmed — verify them with HiKorea, 1345, or the competent immigration office.",
   "retrieval_timestamp": "<volatile>",
   "sources": [],
   "status_detail": "law_grounding_not_attempted",
@@ -261,7 +261,7 @@
  "law_grounding_status": "not_attempted",
  "law_grounding_status_detail": "law_grounding_not_attempted",
  "law_grounding_used": false,
- "law_grounding_user_notice": "Real-time legal-source lookup could not be verified for this answer, so it relies on Paradiso's stored manual/official materials. Specific article numbers below are not confirmed — verify them with HiKorea, 1345, or the competent immigration office.",
+ "law_grounding_user_notice": "Real-time legal-source lookup could not be verified for this answer, so it relies on Visable's stored manual/official materials. Specific article numbers below are not confirmed — verify them with HiKorea, 1345, or the competent immigration office.",
  "law_grounding_verified": false,
  "law_grounding_warnings": [],
  "law_lookup_error_type": "",

@@ -3,7 +3,7 @@
 Large models will happily emit confident-looking Korean statute citations —
 "출입국관리법 제24조 제1항", "시행규칙 제18조의2(별표 1)" — entirely from memory.
 When real-time law grounding was NOT verified and the cited article does not
-appear in the local manual / official evidence Paradiso actually retrieved, the
+appear in the local manual / official evidence Visable actually retrieved, the
 answer must not present those numbers as if they were confirmed law.
 
 This module is pure logic (no I/O, no secrets) so it is fully unit-testable and
@@ -57,7 +57,7 @@ def build_unverified_citation_notice(lang: Optional[str] = None) -> str:
     if str(lang or "").lower().startswith("en"):
         return (
             "Real-time legal-source lookup could not be verified for this answer, "
-            "so it relies on Paradiso's stored manual/official materials. Specific "
+            "so it relies on Visable's stored manual/official materials. Specific "
             "article numbers below are not confirmed — verify them with HiKorea, "
             "1345, or the competent immigration office."
         )

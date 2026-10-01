@@ -21,7 +21,7 @@
  * The pure builders (escapeHtml, safeSourceUrl, buildLawCardHtml,
  * buildPrecedentCardHtml, buildResultsHtml, classifyResponse) are exposed on
  * globalThis.ParadisoLegalSearch BEFORE the DOM wiring guard, so they unit-test
- * in plain Node (no jsdom) exactly like the other Paradiso standalone modules.
+ * in plain Node (no jsdom) exactly like the other Visable standalone modules.
  * ========================================================================== */
 (function () {
   'use strict';

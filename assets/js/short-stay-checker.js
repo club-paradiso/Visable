@@ -1,5 +1,5 @@
 /* ============================================================================
- * Paradiso — 국적별 단기입국 경로 확인 (Short-stay entry checker)
+ * Visable — 국적별 단기입국 경로 확인 (Short-stay entry checker)
  * ----------------------------------------------------------------------------
  * Answers, in plain language, whether a nationality can enter Korea without a
  * visa (B-1 agreement / B-2-1 general visa-free + K-ETA), whether Jeju-only

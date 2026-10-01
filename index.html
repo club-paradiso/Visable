@@ -44,7 +44,7 @@
    | 2. Search input field        | .sbar pill, border-radius:6px (searched) / 9999px (landing), glass bg         | rounded-2xl (~16px) glass pill, inline 자주찾는 toggle + green 탐색하기 CTA              | IMPROVE        |
    | 3. Search results card       | .vc, border-radius:4px, overflow:hidden, header inner radius 16/16/0/0        | rounded-2xl/3xl (16–24px) glass tiles w/ subtle shadow + accent hover                  | IMPROVE        |
    | 4. Document checklist tabs   | .docs-tabs three-tab section (initial/registration/extension) — Part 1 polish | No equivalent in Figma Make landing prototype                                          | DATA_MISSING   |
-   | 5. Footer                    | .ft single-line legal disclaimer (베타 안내, 1345 안내)                          | Minimal: Paradiso wordmark + Terms/Privacy/Contact links + © 2026                       | KEEP           |
+   | 5. Footer                    | .ft single-line legal disclaimer (베타 안내, 1345 안내)                          | Minimal: Visable wordmark + Terms/Privacy/Contact links + © 2026                       | KEEP           |
 
    Notes:
    - Header KEEP: current implementation is a full product header (language menu, city/time, theme, entry rail) — strictly superior to Figma's marketing-only nav. Touching it would regress JS-bound controls.
@@ -2700,7 +2700,7 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
 .doc-group.group-required { border-left-color: color-mix(in srgb, var(--ac) 62%, var(--bd)); }
 .doc-group.group-additional { border-left-color: color-mix(in srgb, var(--color-warning) 40%, var(--bd)); }
 .doc-group.group-conditional { border-left-color: color-mix(in srgb, var(--cy) 45%, var(--bd)); }
-/* User-facing display groups (Paradiso classification, not official headings) */
+/* User-facing display groups (Visable classification, not official headings) */
 .doc-group.group-basic { border-left-color: color-mix(in srgb, var(--ac) 62%, var(--bd)); }
 .doc-group.group-situational { border-left-color: color-mix(in srgb, var(--color-warning) 45%, var(--bd)); }
 .doc-group.doc-discretionary-note { border-left-color: color-mix(in srgb, var(--color-warning) 70%, var(--bd)); border-style: dashed; background: color-mix(in srgb, var(--color-warning) 7%, var(--bg1)); }
@@ -3644,7 +3644,7 @@ body.searched .es { padding: 5rem 1rem; }
    Source: docs/design/STYLE_SOFTENING_BRIEF.md
    Translates the editorial concept (texture felt not seen,
    organic rhythm without scrapbook chaos) into a CSS-only
-   refinement of the existing Paradiso surface. No new
+   refinement of the existing Visable surface. No new
    external deps; no HTML structural changes; no JS.
    ═══════════════════════════════════════════════════════════ */
 
@@ -3848,7 +3848,7 @@ body {
 }
 
 
-/* Phase 10E: enlarge Paradiso brush wordmark on landing */
+/* Phase 10E: enlarge Visable brush wordmark on landing */
 body:not(.searched) .brand-wordmark-img {
   height: clamp(72px, 9vw, 128px) !important;
   width: auto !important;
@@ -5144,10 +5144,10 @@ body.landing:not([data-theme="dark"]):not(.searched) .p-gw-util:hover,
 body.landing:not([data-theme="dark"]):not(.searched) .p-gw-util:focus-visible {
   border-color: #0B7357; background: rgba(11,115,87,0.08); color: #073B32;
 }
-/* "국적·귀화 안내" (New Home by Paradiso) banner — same issue as .p-gw-util
+/* "국적·귀화 안내" (New Home) banner — same issue as .p-gw-util
    above: near-white text (#fffaf2 etc.) sized for the old dark hero, with
    only a very faint coral/mint tint over the light cream surface, so the
-   title, "New Home by Paradiso" badge, description and tagline were all
+   title, "New Home" badge, description and tagline were all
    washed out to the point of being unreadable. */
 body.landing:not([data-theme="dark"]):not(.searched) .p-gw-newhome-label,
 body.landing:not([data-theme="dark"]):not(.searched) .p-gw-newhome-arrow {
@@ -8442,7 +8442,7 @@ body.searched .qb:hover,
   }
 }
 
-/* Landing already hosts a dedicated Waymaker by Paradiso gateway card and a
+/* Landing already hosts a dedicated Waymaker gateway card and a
    .hero-ai-secondary link, so the floating .ai-fab competes with both.
    Hide it on landing; keep it on .searching/.searched where the gateway
    is no longer visible. */
@@ -11562,7 +11562,7 @@ button[data-keyword]:focus-visible {
     Keeps the three primary cards visually balanced without changing actions:
     - Essential form builder (doc composer) first.
     - HiKorea visit reservation guidance second.
-    - Waymaker by Paradiso third.
+    - Waymaker third.
   */
   .p-gateway .p-gw-primary {
     display: grid;
@@ -14391,7 +14391,7 @@ html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important
                 <text class="k-stamp-sub" x="80" y="115" text-anchor="middle">ADMITTED</text>
             </svg>
             </span>
-            <img class="brand-wordmark-img" src="assets/brand/visable-wordmark-white.svg" alt="Visable by Paradiso" decoding="async" loading="eager" />
+            <img class="brand-wordmark-img" src="assets/brand/visable-wordmark-white.svg" alt="Visable" decoding="async" loading="eager" />
                         <!-- pages-refresh: 2026-05-20-bugfix-wordmark-counts -->
             <!-- Wordmark text removed: the brush image (.brand-wordmark-img) is the canonical wordmark in both landing and searched states. -->
             <!-- The previous .logo-brand contained interleaved .src/.tgt spans for an anagram morph that was never visible (always hidden behind the brush image) and rendered as "PpaarraadDiissoo" when the hide rule lost the cascade. -->
@@ -14481,12 +14481,12 @@ html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important
             <!-- New Home platform banner — distinct warm entry to the dedicated
                  nationality/citizenship platform. Plain <a> so it opens normally;
                  labels are localized in applyLanguage() via #gwNewHome* ids. -->
-            <a class="p-gw-newhome" id="gwNewHomeLink" href="new-home.html" aria-label="국적·귀화 안내 플랫폼 열기 (New Home by Paradiso)">
+            <a class="p-gw-newhome" id="gwNewHomeLink" href="new-home.html" aria-label="국적·귀화 안내 플랫폼 열기 (New Home)">
                 <span class="p-gw-newhome-icon" aria-hidden="true">🏡</span>
                 <span class="p-gw-newhome-body">
                     <span class="p-gw-newhome-titles">
                         <span class="p-gw-newhome-label" id="gwNewHomeLabel">New Home 국적·귀화</span>
-                        <span class="p-gw-newhome-brand" id="gwNewHomeSub">New Home by Paradiso</span>
+                        <span class="p-gw-newhome-brand" id="gwNewHomeSub">New Home</span>
                     </span>
                     <span class="p-gw-newhome-desc" id="gwNewHomeDesc">귀화 준비 점검·KIIP·국적업무·귀화 후 절차를 한곳에서 확인해요.</span>
                 </span>
@@ -14594,7 +14594,7 @@ html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important
         </div>
 
         <div class="hero-ai-secondary" aria-label="선택형 AI 도우미">
-            <a href="ai.html" class="hero-ai-link">AI로 더 자세히 묻기 <strong>Waymaker by Paradiso</strong></a>
+            <a href="ai.html" class="hero-ai-link">AI로 더 자세히 묻기 <strong>Waymaker</strong></a>
         </div>
     </div>
 </header>
@@ -15181,7 +15181,7 @@ html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important
             <div class="figma-footer-hero">
                 <div class="figma-footer-hero-overlay" aria-hidden="true"></div>
                 <div class="figma-footer-hero-content">
-                    <span class="footer-hero-eyebrow">Visable by Paradiso</span>
+                    <span class="footer-hero-eyebrow">Visable</span>
                     <h3 class="figma-footer-hero-title">대한민국 공식 39가지<br>체류자격, 한 곳에서 살펴보세요.</h3>
                     <div class="figma-footer-chips">
                         <span class="footer-chip">📑 공식 출처 확인 경로</span>
@@ -15228,7 +15228,7 @@ html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important
      고지문은 시안 문구 그대로다. -->
 <footer class="p-footer" role="contentinfo">
     <div class="p-footer-inner">
-        <img class="p-footer-logo" src="assets/brand/visable-wordmark.svg" alt="Visable by Paradiso" width="80" height="24" decoding="async" loading="lazy" />
+        <img class="p-footer-logo" src="assets/brand/visable-wordmark.svg" alt="Visable" width="80" height="24" decoding="async" loading="lazy" />
         <p class="p-footer-notice" id="pFooterNotice">Visable은 공식 정부 서비스가 아닙니다. 제공 정보는 참고용이며 법적 효력이 없습니다. 최종 판단은 HiKorea·1345·관할 출입국·외국인관서에서 확인하세요. © 2026 Club Paradiso.</p>
     </div>
 </footer>
@@ -15253,7 +15253,7 @@ html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important
             <button type="button" class="modal-close" data-action="close-ai-modal" aria-label="닫기">✕</button>
         </div>
         <div class="modal-body">
-            <p style="font-size:0.85rem; color:var(--t3); line-height:1.5;">현재 국적, 보유 중인 체류자격(비자), 직무, 거주지 등 본인의 상황을 상세히 적어주시면, Waymaker by Paradiso가 공개 자료와 입력하신 상황을 바탕으로 관련 체류자격과 확인해야 할 절차를 정리해 드립니다. 최종 판단과 신청 절차는 관할기관 안내를 확인해 주세요.</p>
+            <p style="font-size:0.85rem; color:var(--t3); line-height:1.5;">현재 국적, 보유 중인 체류자격(비자), 직무, 거주지 등 본인의 상황을 상세히 적어주시면, Waymaker가 공개 자료와 입력하신 상황을 바탕으로 관련 체류자격과 확인해야 할 절차를 정리해 드립니다. 최종 판단과 신청 절차는 관할기관 안내를 확인해 주세요.</p>
             <div id="aiModalContext" class="ai-modal-context" role="note" hidden></div>
             <label for="aiInput" class="sr-only">상황 입력</label>
             <textarea id="aiInput" class="ai-textarea" placeholder="예: 미국 국적이며 현재 이태원에 거주 중입니다. 한국 대학교 4년제 학사를 졸업했고 D-10 구직 비자 상태인데 E-7으로 취업하고 싶습니다."></textarea>
@@ -15776,10 +15776,10 @@ html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important
 </aside>
 
 <footer class="ft">
-    <span class="ft-logo">Visable by Paradiso</span> · 베타 서비스. 제공되는 정보는 법적 효력을 갖지 않으며, 최종 판단은 HiKorea·1345·관할 출입국·외국인관서에 확인하세요.
+    <span class="ft-logo">Visable</span> · 베타 서비스. 제공되는 정보는 법적 효력을 갖지 않으며, 최종 판단은 HiKorea·1345·관할 출입국·외국인관서에 확인하세요.
 </footer>
 
-<a href="ai.html" class="ai-fab">AI로 더 자세히 묻기 <strong>Waymaker by Paradiso</strong></a>
+<a href="ai.html" class="ai-fab">AI로 더 자세히 묻기 <strong>Waymaker</strong></a>
 
 <script src="assets/js/document-help.js"></script>
 <script>
@@ -19805,7 +19805,7 @@ function dedupeDocGroupsAcrossCategories(groups) {
 }
 
 /* User-facing UX regrouping (display only). The four internal buckets are a
-   Paradiso classification — the official manuals use varying local headings
+   Visable classification — the official manuals use varying local headings
    (제출서류·신청서류·첨부서류·기본서류·추가서류 …), so the UI presents three
    reader-friendly groups WITHOUT claiming they are official headings:
      항상 확인할 서류    ← commonDocs + requiredDocs
@@ -20150,7 +20150,7 @@ function renderProcedureSummaryBlock(value, keywords) {
     return `<div class="procedure-summary"><span class="vc-summary-preview">${hl(preview, keywords)}</span><details class="vc-summary-detail"><summary>${escapeHtml(tx('manualDetailToggle') || '상세 보기')}</summary><span class="vc-summary-rest">${hl(rest, keywords)}</span></details></div>`;
 }
 
-/* Three reader-friendly display groups (Paradiso classification, NOT official
+/* Three reader-friendly display groups (Visable classification, NOT official
    manual headings — the manuals use varying local headings per status and
    procedure). Empty groups are hidden; discretionary catch-all wording is
    shown as a caution note instead of checklist tiles. */
@@ -20570,7 +20570,7 @@ function renderProcedureVariants(v, proc, keywords, alreadyShownDocs = null) {
 // AI, and never stores personal information. See
 // docs/data/SELECTED_SCENARIO_ACTION_CHECKLIST_2026_05.md.
 const SCENARIO_CHECKLIST_STORAGE_PREFIX = 'paradiso:scenario-checklist:';
-// Display groups follow the user-facing Paradiso classification (the four
+// Display groups follow the user-facing Visable classification (the four
 // internal buckets remain the data model; see paradisoBuildDocDisplayGroups).
 const SCENARIO_CHECKLIST_GROUPS = [
     { key: 'basic', labelIndex: 0, fallback: '항상 확인할 서류' },
@@ -23655,8 +23655,8 @@ function applyLanguage(code, options = {}) {
     setText('#landingHintsTitle', tx('hintsTitle'));
     setAttr('#landingHints', 'aria-label', tx('hintsAria'));
     setAttr('.hero-ai-secondary', 'aria-label', tx('aiSecondaryAria'));
-    setHtml('.hero-ai-link', `${tx('aiLink')} <strong>Waymaker by Paradiso</strong>`);
-    setHtml('.ai-fab', `${tx('aiLink')} <strong>Waymaker by Paradiso</strong>`);
+    setHtml('.hero-ai-link', `${tx('aiLink')} <strong>Waymaker</strong>`);
+    setHtml('.ai-fab', `${tx('aiLink')} <strong>Waymaker</strong>`);
     setText('.reference-disclaimer', tx('reference'));
     setHtml('#brandHeroTitle', tx('brandHeroTitle'));
     setText('.brand-hero-subtitle', tx('brandHeroSubtitle'));
@@ -23757,7 +23757,7 @@ function applyLanguage(code, options = {}) {
     setText('.p-reminder-banner__cta', tx('reminderBannerCta'));
     setAttr('#reminderBannerClose', 'aria-label', tx('reminderBannerCloseAria'));
     setAttr('#qf', 'aria-label', tx('quickFiltersAria'));
-    setHtml('.ft', `<span class="ft-logo">Visable by Paradiso</span> ${tx('footerLegal')}`);
+    setHtml('.ft', `<span class="ft-logo">Visable</span> ${tx('footerLegal')}`);
     setAttr('.modal-close', 'aria-label', tx('closeModal'));
     setText('#docModalTitle', tx('docModalTitle'));
     setHtml('#faqModalTitle', tx('faqModalTitle'));
@@ -24085,7 +24085,7 @@ async function fetchOptionalJson(path) {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return await res.json();
     } catch (e) {
-        console.warn(`Optional Paradiso data not loaded: ${path}`, e);
+        console.warn(`Optional Visable data not loaded: ${path}`, e);
         return null;
     }
 }
@@ -25802,7 +25802,7 @@ function showVisaDocForAction(visaCode) {
           window.__paradisoDetailAliasData = Array.isArray(data) ? data : [];
         })
         .catch(function (err) {
-          console.warn("[Paradiso] detail-code resolver fallback unavailable:", err);
+          console.warn("[Visable] detail-code resolver fallback unavailable:", err);
           window.__paradisoDetailAliasData = [];
         });
     } catch (err) {

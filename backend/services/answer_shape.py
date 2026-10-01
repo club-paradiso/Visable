@@ -1,4 +1,4 @@
-"""Evidence-backed answer-shape contracts and quality gate for Paradiso.
+"""Evidence-backed answer-shape contracts and quality gate for Visable.
 
 This module is the *final* synthesis-layer guard described in
 ``docs/data/EVIDENCE_BACKED_ANSWER_SYNTHESIS_GATES_2026_05.md``. The retrieval /

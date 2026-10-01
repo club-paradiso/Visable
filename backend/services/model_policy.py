@@ -1,4 +1,4 @@
-"""Paradiso model role policy.
+"""Visable model role policy.
 
 This module keeps model routing policy explicit and testable:
 
@@ -124,7 +124,7 @@ DEFAULT_CHINESE_FALLBACK_MODELS: List[str] = [
 ]
 
 # These are public provider/model-family labels, not secrets.
-# They are excluded from Paradiso's default final-answer candidate chain unless a
+# They are excluded from Visable's default final-answer candidate chain unless a
 # Chinese-language route explicitly asks for them.
 CHINESE_ONLY_MODEL_PREFIXES = (
     "deepseek/", "qwen/", "moonshotai/", "z-ai/", "minimax/", "inclusionai/"

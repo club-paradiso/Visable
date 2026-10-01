@@ -75,7 +75,17 @@ ok(html.includes('한국 입국 전, 첫 공식 절차를 미리 확인하세요
 
 /* -------------------------------------------------- independence ------- */
 console.log('[check_preview_mvp] independence (no Visable / HiKorea CTA)');
-ok(!/visable/i.test(frontendBlob), 'preview frontend contains no Visable reference');
+// User-facing surface only. PreView shares the canonical backend-origin
+// resolver (window.VisableBackend, see assets/js/backend-origin.js), so a code
+// identifier or a developer comment naming it is wiring, not branding.
+const visibleHtml = html
+  .replace(/<!--[\s\S]*?-->/g, ' ')
+  .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+  .replace(/<style[\s\S]*?<\/style>/gi, ' ');
+const jsStringLiterals = [...(dataJs + '\n' + appJs).matchAll(/(['"`])((?:\\.|(?!\1)[^\\\n])*)\1/g)]
+  .map((m) => m[2]);
+ok(!/visable/i.test(visibleHtml), 'preview page markup contains no Visable reference');
+ok(!jsStringLiterals.some((s) => /visable/i.test(s)), 'preview scripts render no Visable string');
 ok(!/hikorea/i.test(frontendBlob), 'preview frontend contains no HiKorea reference');
 const internalLinks = [...html.matchAll(/href="([^"]+)"/g)]
   .map((m) => m[1])

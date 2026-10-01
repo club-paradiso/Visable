@@ -1,4 +1,4 @@
-"""Internal MCP-like law tool layer for Paradiso.
+"""Internal MCP-like law tool layer for Visable.
 
 This module is a small, typed, deterministic adapter over the Korean National
 Law Information Open API (open.law.go.kr — the ``DRF/lawSearch.do`` /
@@ -1908,7 +1908,7 @@ def localized_official_confirmation_questions(
         ],
         LQ_NATIONALITY: [
             "신청하려는 국적 절차(귀화 등)의 정확한 종류는 무엇인가요?",
-            "Paradiso는 체류·거주 중심이며 국적 세부 요건은 확인이 필요합니다.",
+            "Visable은 체류·거주 중심이며 국적 세부 요건은 확인이 필요합니다.",
         ],
         LQ_REFUGEE: [
             "현재 난민 절차 단계와 체류자격은 어떻게 되나요?",
@@ -1959,7 +1959,7 @@ def localized_official_confirmation_questions(
         ],
         LQ_NATIONALITY: [
             "Which nationality procedure (e.g. naturalization) applies?",
-            "Paradiso focuses on residence; nationality specifics need confirmation.",
+            "Visable focuses on residence; nationality specifics need confirmation.",
         ],
         LQ_REFUGEE: [
             "What stage is the refugee process at, and what is your status?",

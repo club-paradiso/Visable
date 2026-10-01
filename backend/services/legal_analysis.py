@@ -1,4 +1,4 @@
-"""Deterministic legal-analysis guidance layer for Paradiso.
+"""Deterministic legal-analysis guidance layer for Visable.
 
 The LLM may explain this object, but must not invent it. This module builds a
 small, secret-free model from extracted immigration facts, issue taxonomy,
@@ -834,7 +834,7 @@ def _main_issue(issues: Sequence[str], facts: Dict[str, Any]) -> str:
     if "overstay_or_risk" in issues:
         return "How a possible overstay affects status risk and what immediate official steps should be confirmed without inventing penalties."
     if "nationality_or_refugee_context" in issues:
-        return "How nationality/refugee law context affects Korean residence preparation while staying within Paradiso's visa/residence scope."
+        return "How nationality/refugee law context affects Korean residence preparation while staying within Visable's visa/residence scope."
     if any(i in issues for i in ("activity_scope", "outside_status_activity", "study_on_non_study_status", "work_on_non_work_status")):
         return f"Whether {', '.join(acts) or 'the proposed activity'} fits within {code}'s permitted activity scope or requires activities outside status permission, reporting, or a change of sojourn status."
     return "Identify the controlling Korean immigration issue and strongest official-source basis available."

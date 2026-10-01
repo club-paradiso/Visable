@@ -1,5 +1,5 @@
 /*
- * Paradiso - Simplified -> Traditional Chinese display layer (zh-TW).
+ * Visable - Simplified -> Traditional Chinese display layer (zh-TW).
  *
  * Traditional Chinese is built ON TOP of the Simplified (zh-CN) content: in
  * zh-TW mode the app renders every Simplified code path unchanged (so there is
