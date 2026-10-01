@@ -50,6 +50,17 @@ class ErrorClassificationTests(unittest.TestCase):
         self.assertEqual(e, rt.AIErrorType.RATE_LIMITED)
         self.assertTrue(rt.is_retryable(e))
 
+    def test_429_inside_a_larger_number_is_not_a_rate_limit(self):
+        # A 400 that mentions "4290 tokens" must stay a request error; reading
+        # it as a rate limit put a healthy model on cooldown for later users.
+        e = rt.classify_provider_error(400, "This request needs 14290 tokens; context length exceeded")
+        self.assertEqual(e, rt.AIErrorType.INVALID_REQUEST)
+        self.assertFalse(rt.is_retryable(e))
+        self.assertEqual(
+            rt.classify_provider_error(None, "upstream returned 429"),
+            rt.AIErrorType.RATE_LIMITED,
+        )
+
     def test_401_is_credentials_and_never_retried(self):
         e = rt.classify_provider_error(401, "No auth credentials found")
         self.assertEqual(e, rt.AIErrorType.INVALID_PROVIDER_CREDENTIALS)

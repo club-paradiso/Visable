@@ -35,6 +35,7 @@ only public model identifiers, booleans and classified error labels.
 from __future__ import annotations
 
 import os
+import re
 import time
 from dataclasses import dataclass, field
 from enum import Enum
@@ -200,7 +201,10 @@ def classify_provider_error(
         or "rate-limit" in msg
         or "too many requests" in msg
         or "quota" in msg
-        or "429" in msg
+        # Whole token only: "4290 tokens" or a request id containing 429 is not
+        # a rate limit, and misreading a 400 as one puts a healthy model on
+        # cooldown for every later user.
+        or re.search(r"(?<!\d)429(?!\d)", msg) is not None
     ):
         return AIErrorType.RATE_LIMITED
 
