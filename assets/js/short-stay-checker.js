@@ -964,8 +964,13 @@
   function jejuNoticeOutdatedWarning(rules) {
     var j = rules && rules.rules && rules.rules.b22JejuVisaFree;
     if (!j || !j.laterNoticeObserved) return null;
+    var corr = j.laterNoticeObserved.corroboration;
+    var deniedOk = corr && corr.entryDenied && corr.entryDenied.status === 'corroborated';
     return '반영된 제주 무사증 국가 목록은 ' + j.noticeNo + '(' + j.effectiveDate + ' 시행, 사본 ' + j.copyDate +
       ') 기준입니다. 이후 변경 고시가 게시된 것이 확인되었지만 그 내용은 아직 반영·대조하지 못했으므로, ' +
+      (deniedOk
+        ? '입국불허 국가(' + corr.entryDenied.count + '개국)는 이후 재외공관 공지와 같은 목록으로 확인되었으나 체류지역 확대허가 국가 목록은 다시 확인하지 못했어요. '
+        : '') +
       '제주 입국 전 법무부·관할 재외공관의 최신 고시로 국가 목록을 반드시 확인하세요.';
   }
   function pushJejuWarnings(r, rules, rest) {

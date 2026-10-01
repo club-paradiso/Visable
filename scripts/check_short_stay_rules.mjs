@@ -160,6 +160,13 @@ ok(vnJeju.primary.explanation.join(' ').includes('포함되어 있지 않습니�
 ok(!rules.rules.b22JejuVisaFree.laterNoticeObserved
   || vnJeju.warnings.some((w) => w.includes('이후 변경 고시가 게시된 것이 확인되었지만')),
   'VN jeju_only → outdated-notice warning shown while a later notice is unverified');
+const jejuCorr = rules.rules.b22JejuVisaFree.laterNoticeObserved && rules.rules.b22JejuVisaFree.laterNoticeObserved.corroboration;
+ok(!jejuCorr || (jejuCorr.entryDenied.count === rules.rules.b22JejuVisaFree.entryDeniedCount + rules.rules.b22JejuVisaFree.entryDeniedConflictCount),
+  'corroborated Jeju entry-denied count equals the listed + conflict-flagged countries (no silent add/remove)');
+ok(!jejuCorr || vnJeju.warnings.some((w) => w.includes('체류지역 확대허가 국가 목록은 다시 확인하지 못했어요')),
+  'a partial corroboration still says the stay-area expansion list was not re-confirmed');
+const irJeju = scenario('이란', 'ordinary', 'tourism', 'jeju_only', 10);
+ok(irJeju.primary.status === 'visa_required', 'IR jeju_only stays entry-denied (visa route)');
 ok(!rules.rules.b22JejuVisaFree.laterNoticeObserved
   || sources.sources.filter((s) => s.id.includes('jeju')).every((s) => s.confidence === 'low'),
   'Jeju notice sources are low confidence while a later notice is unverified');

@@ -391,6 +391,20 @@ const sources = {
           ? ` 이후 변경 게시물(${fxJeju.laterNoticeObserved.title}) 존재 확인(${fxJeju.laterNoticeObserved.observedAt}), 본문 미대조 — 목록이 최신이 아닐 수 있음.`
           : '')
     },
+    ...((fxJeju.laterNoticeObserved && fxJeju.laterNoticeObserved.corroboration) ? [{
+      id: 'mofa_sg_jeju_notice_2026_01_02',
+      type: 'official_mission_copy',
+      title: '주싱가포르 대한민국대사관 공지 — Visa-Free Entry to Jeju Island (2026-01-02 게시)',
+      url: 'https://overseas.mofa.go.kr/sg-en/brd/m_2435/view.do?seq=761394',
+      localPath: 'data/short-stay/fixtures/jeju_b22_notice.json',
+      retrievedAt: fxJeju.laterNoticeObserved.corroboration.checkedAt,
+      effectiveDate: null,
+      sourceDate: '2026-01-02',
+      hash: fixtureHash('jeju_b22_notice.json'),
+      scope: 'B-2-2 제주 무사증 입국불허 국가(23개국)만 교차확인. 체류지역 확대허가 목록은 미확인.',
+      confidence: 'low',
+      notes: '검색엔진 발췌로만 확인(본문 미수집). 입국불허 23개국 = 본 fixture 22개국 + 이란. 공지 원문 대조 필요.'
+    }] : []),
     {
       id: 'mofa_jeju_notice_copy_2023_09_18',
       type: 'official_mission_copy',
