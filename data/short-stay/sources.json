@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-01T06:42:30Z",
+  "generatedAt": "2026-10-01T13:52:08Z",
   "sourceStatus": "needs_refresh",
   "sources": [
     {
@@ -73,10 +73,24 @@
       "retrievedAt": null,
       "effectiveDate": "2022-06-01",
       "sourceDate": "2022-06-01",
-      "hash": "9736254bb1f7fe2e",
+      "hash": "a72190907d81b4f7",
       "scope": "B-2-2 제주 무사증 입국불허·체류지역 확대허가 국가군",
       "confidence": "low",
       "notes": "고시 원문 실시간 확인 불가 — 저장 사본 기준. 이란 포함 여부 출처 간 불일치 기록됨. 이후 변경 게시물(제주특별자치도 무사증 입국불허국가 변경(2025년 1월 업데이트)) 존재 확인(2026-10-01), 본문 미대조 — 목록이 최신이 아닐 수 있음."
+    },
+    {
+      "id": "mofa_sg_jeju_notice_2026_01_02",
+      "type": "official_mission_copy",
+      "title": "주싱가포르 대한민국대사관 공지 — Visa-Free Entry to Jeju Island (2026-01-02 게시)",
+      "url": "https://overseas.mofa.go.kr/sg-en/brd/m_2435/view.do?seq=761394",
+      "localPath": "data/short-stay/fixtures/jeju_b22_notice.json",
+      "retrievedAt": "2026-10-01",
+      "effectiveDate": null,
+      "sourceDate": "2026-01-02",
+      "hash": "a72190907d81b4f7",
+      "scope": "B-2-2 제주 무사증 입국불허 국가(23개국)만 교차확인. 체류지역 확대허가 목록은 미확인.",
+      "confidence": "low",
+      "notes": "검색엔진 발췌로만 확인(본문 미수집). 입국불허 23개국 = 본 fixture 22개국 + 이란. 공지 원문 대조 필요."
     },
     {
       "id": "mofa_jeju_notice_copy_2023_09_18",
@@ -87,7 +101,7 @@
       "retrievedAt": null,
       "effectiveDate": "2022-06-01",
       "sourceDate": "2023-09-18",
-      "hash": "9736254bb1f7fe2e",
+      "hash": "a72190907d81b4f7",
       "scope": "B-2-2 고시 사본(국가군 3그룹 34/1/29)",
       "confidence": "low",
       "notes": "재외공관 게시 사본 기준일 2023-09-18. 이후 변경 게시물 존재 확인, 본문 미대조."

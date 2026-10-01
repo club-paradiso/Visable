@@ -160,3 +160,54 @@ class EnforcementExtractionQualityTests(unittest.IsolatedAsyncioTestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class WorkplaceOverlapBaselineTests(unittest.IsolatedAsyncioTestCase):
+    """Issue #587: 제18조제2항 / 제21조제1항 overlap.
+
+    별표 7 (시행규칙, 2026-01-23) gives 더목 (18②) and 저목 (21① 본문) the same
+    tiers, so an unresolved overlap still has a baseline. E-1~E-7 신고 대상자
+    (21① 단서, 시행령 제26조의2) are excluded from 18② (21③) and face a 과태료
+    (제100조①3호) instead; that branch must be disclosed, never silently priced.
+    """
+
+    async def test_unresolved_overlap_still_has_the_shared_baseline(self):
+        from services.enforcement_rules import REPORT_PROVISO_NOTE, SHARED_TIER_NOTE, calculate_legal_baseline
+
+        case = await extract_structured_case(
+            "E-7인데 지정된 근무처가 아닌 다른 회사로 옮겨서 변경허가 없이 30일 일했습니다.",
+            assessment_date=date(2026, 8, 28),
+        )
+        self.assertIsNone(case.violation_code)
+        baseline = calculate_legal_baseline(case)
+        self.assertEqual(baseline.status, "AVAILABLE")
+        self.assertIsNone(baseline.violation_code)
+        self.assertEqual(baseline.baseline_amount_krw, 1_000_000)
+        self.assertIn("조문 미확정", baseline.violation_label)
+        self.assertIn(SHARED_TIER_NOTE, baseline.assumptions)
+        self.assertIn(REPORT_PROVISO_NOTE, baseline.assumptions)
+        self.assertIn("출입국관리법 제18조제2항", baseline.applied_rules)
+        self.assertIn("출입국관리법 제21조제1항", baseline.applied_rules)
+
+    async def test_proviso_note_is_limited_to_e1_to_e7_or_unknown_status(self):
+        from services.enforcement_rules import REPORT_PROVISO_NOTE, calculate_legal_baseline
+
+        e9 = await extract_structured_case(
+            "E-9인데 사업장 변경 허가 없이 다른 공장에서 40일 일했습니다.",
+            assessment_date=date(2026, 8, 28),
+        )
+        self.assertEqual(e9.violation_code, "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1")
+        self.assertNotIn(REPORT_PROVISO_NOTE, calculate_legal_baseline(e9).assumptions)
+        e7 = await extract_structured_case(
+            "E-7인데 근무처를 변경하고 변경허가 없이 2개월 근무했습니다.",
+            assessment_date=date(2026, 8, 28),
+        )
+        self.assertIn(REPORT_PROVISO_NOTE, calculate_legal_baseline(e7).assumptions)
+
+    async def test_candidates_with_different_tables_stay_missing_facts(self):
+        from services.enforcement_rules import calculate_legal_baseline
+
+        case = await extract_structured_case(
+            "F-2인데 다른 곳에서 허가 없이 10일 일했습니다.", assessment_date=date(2026, 8, 28)
+        )
+        self.assertEqual(calculate_legal_baseline(case).status, "MISSING_FACTS")

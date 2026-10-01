@@ -90,7 +90,13 @@ look contradictory, all fixed:
 * **Diagnostics opt-in.** `{"diagnostics": true}` or header
   `X-Paradiso-Diagnostics: 1` returns the full internal payload (model ids are
   public catalog identifiers, never secrets). Operators can refuse the opt-in
-  with `PARADISO_CLIENT_DIAGNOSTICS=0`.
+  with `PARADISO_CLIENT_DIAGNOSTICS=0`, or restrict it with
+  `PARADISO_DIAGNOSTICS_TOKEN`: once set, the opt-in also needs header
+  `X-Paradiso-Diagnostics-Token` with the same value (constant-time compare);
+  otherwise the public projection is returned. `/health` reports
+  `client_diagnostics_mode` (`off` / `token` / `open`), never the token. The
+  Railway live smoke and `scripts/smoke_ai_*.py` send the token from the
+  same-named environment variable / GitHub secret.
 * **Telemetry.** Every `/api/ask` logs one `ask_routing` JSON line: requested /
   effective mode, escalation + reasons, provider, primary / final / attempted
   models, fallback flags, provider error class, upstream statuses, latency.

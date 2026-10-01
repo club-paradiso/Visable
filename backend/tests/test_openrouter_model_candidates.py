@@ -1040,6 +1040,15 @@ class StreamingAnswerTests(unittest.TestCase):
         # Committed to the first (primary) candidate.
         self.assertEqual(calls[0], CANDS[0])
 
+    def test_streaming_stops_the_free_chain_after_a_shared_quota_429(self):
+        pb = _pb()
+        quota = '{"error":{"message":"Rate limit exceeded: free-models-per-day.","code":429}}'
+        resp, calls = self._stream(pb, {model: (429, quota) for model in CANDS})
+        self.assertEqual(resp.status_code, 200, resp.text)
+        self.assertEqual(calls, [CANDS[0]])
+        self.assertIn("event: fallback", resp.text)
+        pb._reset_openrouter_model_cooldowns_for_tests()
+
     def test_streaming_skips_bad_primary_model(self):
         # The Basic-mode bug, on the streaming path: a 404 primary must skip to
         # the next candidate rather than emitting only a fallback.
@@ -1075,6 +1084,54 @@ class StreamingAnswerTests(unittest.TestCase):
         self.assertEqual(resp.status_code, 200, resp.text)
         self.assertEqual(calls[0], "google/gemma-4-26b-a4b-it:free")
         self.assertIn("\"answer_mode\": \"fast\"", resp.text)
+
+
+
+class FreeTierQuotaChainTests(unittest.TestCase):
+    """A shared free-models-per-day 429 must not walk the rest of a :free chain."""
+
+    QUOTA = '{"error":{"message":"Rate limit exceeded: free-models-per-day. Add 10 credits","code":429}}'
+
+    def setUp(self):
+        self.pb = _pb()
+        self.pb._reset_openrouter_model_cooldowns_for_tests()
+
+    def tearDown(self):
+        self.pb._reset_openrouter_model_cooldowns_for_tests()
+
+    def _chain(self, behaviors, candidates):
+        import asyncio
+        fake, calls = _fake_openrouter(behaviors)
+        with patch.object(self.pb, "_call_openrouter", fake):
+            result = asyncio.run(self.pb._openrouter_complete_with_candidates("q", candidate_models=candidates))
+        return result, calls
+
+    def test_quota_429_skips_remaining_free_models_and_reaches_a_paid_one(self):
+        result, calls = self._chain({"a/one:free": (429, self.QUOTA), "b/two:free": (429, self.QUOTA)},
+                                    ["a/one:free", "b/two:free", "c/paid"])
+        self.assertTrue(result["ok"])
+        self.assertEqual(calls, ["a/one:free", "c/paid"])
+        self.assertEqual(result["skipped_models_due_to_cooldown"], ["b/two:free"])
+
+    def test_quota_429_sends_later_free_requests_straight_to_the_fallback(self):
+        result, calls = self._chain({"a/one:free": (429, self.QUOTA)}, ["a/one:free", "b/two:free"])
+        self.assertFalse(result["ok"])
+        self.assertEqual(calls, ["a/one:free"])
+        self.assertTrue(result["all_candidates_failed"])
+        self.assertTrue(result["retryable_provider_error"])
+        again, calls_again = self._chain({}, ["d/three:free"])
+        self.assertEqual(calls_again, [])
+        self.assertEqual(again["provider_error_type"], "all_candidates_cooling_down")
+        meta = self.pb._openrouter_cooldown_metadata()
+        self.assertEqual(meta["free_tier_quota_window"], "day")
+        self.assertGreater(meta["free_tier_quota_retry_after_seconds"], 0)
+
+    def test_per_model_upstream_429_still_tries_the_next_free_model(self):
+        result, calls = self._chain({"a/one:free": (429, "a/one:free is temporarily rate-limited upstream")},
+                                    ["a/one:free", "b/two:free"])
+        self.assertTrue(result["ok"])
+        self.assertEqual(calls, ["a/one:free", "b/two:free"])
+        self.assertEqual(self.pb._openrouter_cooldown_metadata()["free_tier_quota_window"], "")
 
 
 if __name__ == "__main__":

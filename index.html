@@ -103,9 +103,8 @@
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  --ff: "Pretendard", "Pretendard Variable", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --ff-logo: "Pretendard", "Pretendard Variable", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --ff-display: "Pretendard", "Pretendard Variable", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  /* Font-stack tokens (--ff, --ff-logo, --ff-display, --font-body/-display/-logo)
+     are declared once, in the "Phase 10F" :root block further down. */
   --fs: clamp(14px, 1.35vw, 16px);
 
   /* Visable theme palette (Figma design tokens): Ink #073B32, Mint #3BE4B8,
@@ -170,9 +169,7 @@
   --btn-fw: 700;
   --btn-tr: all 0.18s cubic-bezier(0.4,0,0.2,1);
 
-  --font-body: "Pretendard", "Pretendard Variable", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-display: "Pretendard", "Pretendard Variable", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-logo: "Pretendard", "Pretendard Variable", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;}
+}
 [data-theme="dark"] {
   --bg0: #062A22; --bg1: #0C3A30; --bg2: #184B40; --bg3: #205A4E;
   --bgI: #062A22; --bd: #2D5A50; --bd2: #224A41; --bd3: #2D5A50;
@@ -1939,7 +1936,6 @@ body.searched .section-divider { display: none; }
     --color-primary-green-deep: #085E48;
     --shadow-cta: 0 4px 18px rgba(14,163,123,0.32), 0 2px 4px rgba(14,163,123,0.18);
     --shadow-cta-hover: 0 8px 24px rgba(14,163,123,0.42), 0 4px 8px rgba(14,163,123,0.22);
-    --shadow-lift: 0 12px 34px rgba(14,31,26,0.10);
     --hikorea-primary-bg: var(--color-primary-green);
     --hikorea-primary-bg-hover: var(--color-primary-green-hover);
 }
@@ -3664,8 +3660,6 @@ body.searched .es { padding: 5rem 1rem; }
   --shadow-press:
     0 1px 2px rgba(11, 42, 36, 0.06);
   --highlight-top: inset 0 1px 0 rgba(255, 255, 255, 0.55);
-
-  --ff-serif: "Pretendard", "Pretendard Variable", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 [data-theme="dark"] {
   --shadow-float:
@@ -3835,14 +3829,7 @@ body:not(.searched) .brand-wordmark-img {
 }
 
 
-/* Phase 10D: Pretendard-first UI typography */
-:root {
-  --ff: "Pretendard", "Pretendard Variable", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --ff-display: "Pretendard", "Pretendard Variable", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --ff-logo: "Pretendard", "Pretendard Variable", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-body: "Pretendard", "Pretendard Variable", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-display: "Pretendard", "Pretendard Variable", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-}
+/* Phase 10D: Pretendard-first UI typography (font-stack tokens: Phase 10F :root below) */
 body {
   font-family: var(--ff) !important;
 }

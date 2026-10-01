@@ -160,6 +160,24 @@ check('client afterRender: AI unavailable (404/network) stays silent; provider f
   void scenario;
 });
 
+check('a shared free-tier 429 skips the remaining :free candidates but still tries a non-free one; a per-model 429 does not', async () => {
+  const saved = globalThis.fetch;
+  async function chain(body429) {
+    const called = [];
+    globalThis.fetch = async (url, init) => {
+      const model = JSON.parse(init.body).model; called.push(model);
+      if (model === 'a/one:free') return { ok: false, status: 429, text: async () => body429, json: async () => ({}) };
+      if (model.endsWith(':free')) return { ok: false, status: 429, text: async () => 'upstream busy', json: async () => ({}) };
+      return { ok: true, status: 200, json: async () => ({ model, choices: [{ message: { content: '{"summary":"ok"}' } }] }) };
+    };
+    try { return { called, out: await AI.callOpenRouter([], { key: 'k', models: ['a/one:free', 'b/two:free', 'c/three'], timeoutMs: 1000, siteUrl: '', siteTitle: '' }) }; } finally { globalThis.fetch = saved; }
+  }
+  const quota = await chain('{"error":{"message":"Rate limit exceeded: free-models-per-day. Add 10 credits","code":429}}');
+  assert(JSON.stringify(quota.called) === JSON.stringify(['a/one:free', 'c/three']) && quota.out.ok, JSON.stringify(quota));
+  const perModel = await chain('{"error":{"message":"a/one:free is temporarily rate-limited upstream","code":429}}');
+  assert(JSON.stringify(perModel.called) === JSON.stringify(['a/one:free', 'b/two:free', 'c/three']) && perModel.out.ok, JSON.stringify(perModel));
+});
+
 check('Quick Answer and Waymaker handoff never resurrect an unavailable F-6 online reduction', () => {
   const r = run('제주에서 F-6-1 연장할 때 체류지입증서류 필요해?', { f61_phase: 'normal' });
   assert(!r.html.includes('온라인 신청 시 20% 감경'), 'rendered Quick Answer must not show F-6 online reduction');

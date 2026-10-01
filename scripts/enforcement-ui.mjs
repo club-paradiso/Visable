@@ -475,7 +475,9 @@ function renderResult(data) {
         <p class="subtle">법령상 기준 범칙금</p>
         <p class="amount">${won(baseline.baselineAmountKrw)}</p>
         <p>법정 조정 가능 범위: <strong>${range(baseline.legallyAdjustableRange)}</strong></p>
+        ${baseline.violationLabel ? `<p class="subtle">적용 기준: ${escapeHtml(baseline.violationLabel)}</p>` : ''}
         <p><span class="tag">${escapeHtml(groundingLabel)}</span></p>
+        ${(baseline.assumptions || []).length ? `<ul class="baseline-assumptions">${baseline.assumptions.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>` : ''}
         ${boundaryNotice}
       </article>
       <article class="result-card prediction">
