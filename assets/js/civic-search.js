@@ -29,7 +29,7 @@
       visa: '사증 안내', stay: '체류 안내', original: '원문 보기', sourceLabel: '체류자격별 매뉴얼',
       language: '언어', languageTitle: '언어 선택', languageSearch: '언어 검색', languageNone: '일치하는 언어가 없어요.',
       disclaimer: 'Visable은 공식 정부 서비스가 아닙니다. 제공 정보는 참고용이며 법적 효력이 없습니다. 최종 판단은 HiKorea·1345·관할 출입국·외국인관서에서 확인하세요.',
-      allTools: '전체 도구 보기', theme: '화면 테마', guide: '체류자격 안내', all: '전체', sourceTab: '원문',
+      allTools: '전체 도구 보기', theme: '화면 테마', easyModeEasy: '쉬운 안내', guide: '체류자격 안내', all: '전체', sourceTab: '원문',
       manualTitle: '관련 공식 원문', sourceNote: '2026년 9월 기준 공식 안내 원문에서 찾은 구절이에요. 위 안내와 판본이 다를 수 있어요.',
       review: '원문 발췌 · 검토 전', caveat: '표·이미지의 내용과 적용 조건은 원문 페이지에서 확인하세요. 발췌문은 개별 요건을 확정하는 안내가 아닙니다.',
       page: '쪽', pages: '건', excerpt: '본문 펼치기', close: '닫기', loading: '공식 원문을 불러오는 중입니다.',
@@ -64,7 +64,7 @@
       visa: 'Visa guidance', stay: 'Stay guidance', original: 'Open original', sourceLabel: 'Official basis updated',
       language: 'Language', languageTitle: 'Choose language', languageSearch: 'Search languages', languageNone: 'No matching language.',
       disclaimer: 'Visable is not a government service. Information is for reference and has no legal effect. Confirm with HiKorea, 1345 or the relevant immigration office.',
-      allTools: 'All services', theme: 'Theme', guide: 'Status guides', all: 'All results', sourceTab: 'Sources',
+      allTools: 'All services', theme: 'Theme', easyModeEasy: 'Easy Mode', guide: 'Status guides', all: 'All results', sourceTab: 'Sources',
       manualTitle: 'Related official sources', sourceNote: 'Passages from the official guidance as of September 2026. The guidance above may cite a different edition.',
       review: 'Original excerpt · not reviewed', caveat: 'Check tables, images and applicable conditions on the original page. Excerpts do not establish individual requirements.',
       page: 'page', pages: 'passages', excerpt: 'Read page text', close: 'Close', loading: 'Loading official source text…',
@@ -103,6 +103,9 @@
     if (loc !== 'ko' && loc !== 'en') { var ko = packFor('ko'); if (ko && typeof ko[key] === 'string') return ko[key]; }
     return (copy[lang()] || copy.ko)[key];
   }
+  // The civic shell hides the old header controls, so the global Easy Mode toggle
+  // is offered here (same data-action and storage key as index.html).
+  function easyModeOn() { try { return localStorage.getItem('paradiso:easyMode') === '1'; } catch (e) { return false; } }
   function esc(value) { return String(value == null ? '' : value).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function icon(name) { return '<img class="cs-icon" src="assets/icons/civic/' + name + '.svg" alt="" aria-hidden="true">'; }
   var VISA_PDF = 'docs/source-manuals/2026-09/visa_manual_260901.pdf', STAY_PDF = 'docs/source-manuals/2026-09/stay_manual_260918.pdf';
@@ -214,7 +217,7 @@
       '<footer class="cs-footer"><img src="assets/brand/visable-wordmark.svg" alt="Visable"><p>' + esc(T('disclaimer')) + '</p></footer>' +
       '<details class="cs-directory"><summary>' + esc(T('allTools')) + '</summary><div>' +
       [['open-short-stay', 'short'], ['open-jobcode-modal', 'jobs'], ['open-jurisdiction-modal', 'office'], ['open-agent-finder', 'agencies'], ['open-med-finder', 'hospitals']].map(function (item) { return '<button type="button" data-action="' + item[0] + '">' + esc(T(item[1])) + '</button>'; }).join('') +
-      '<button type="button" data-action="reveal-home-section" data-target="visaManualSection">' + esc(T('pre')) + ' / ' + esc(T('post')) + '</button><button type="button" data-action="reveal-home-section" data-target="pathwaySection">' + esc(T('pathways')) + '</button><button type="button" data-action="reveal-home-section" data-target="reminderSection">' + esc(T('reminders')) + '</button><a href="form-helper.html">' + esc(T('paperwork')) + '</a><a href="new-home.html">' + esc(T('naturalization')) + '</a><a href="enforcement.html">' + esc(T('enforcement')) + '</a><a href="ai.html">Waymaker</a><button type="button" data-action="toggle-theme">' + esc(T('theme')) + '</button></div></details>' +
+      '<button type="button" data-action="reveal-home-section" data-target="visaManualSection">' + esc(T('pre')) + ' / ' + esc(T('post')) + '</button><button type="button" data-action="reveal-home-section" data-target="pathwaySection">' + esc(T('pathways')) + '</button><button type="button" data-action="reveal-home-section" data-target="reminderSection">' + esc(T('reminders')) + '</button><a href="form-helper.html">' + esc(T('paperwork')) + '</a><a href="new-home.html">' + esc(T('naturalization')) + '</a><a href="enforcement.html">' + esc(T('enforcement')) + '</a><a href="ai.html">Waymaker</a><button type="button" data-action="toggle-theme">' + esc(T('theme')) + '</button><button type="button" data-action="toggle-easy-mode" aria-pressed="' + (easyModeOn() ? 'true' : 'false') + '">' + esc(T('easyModeEasy')) + '</button></div></details>' +
       '<details id="civic-about" class="cs-about"><summary>' + esc(T('about')) + '</summary><p>' + esc(T('info')) + '</p><p>' + esc(T('pendingInfo')) + '</p><a href="https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&amp;BBS_GB_CD=BS10&amp;NTCCTT_SEQ=1062&amp;page=1" target="_blank" rel="noopener">HiKorea · ' + esc(T('original')) + '</a></details></main>';
   }
 
