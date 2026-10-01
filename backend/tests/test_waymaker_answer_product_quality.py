@@ -314,6 +314,37 @@ class PublicProjectionTests(_AskHarness):
             self.assertNotIn(term, lowered)
 
 
+    def test_streamed_text_is_scrubbed_like_the_buffered_answer(self):
+        # Deltas used to reach the client unscrubbed: a model citing its
+        # "source file" or the grounding packet leaked through stream=true even
+        # though the buffered path drops those lines.
+        async def fake_stream(prompt, model, max_tokens=None):
+            for token in (
+                "D-4 학력 증빙은 졸업증명서입니다 ",
+                "(외국인체류 안내매뉴얼 2026.6; source file 2026-06-23, pp. 43-44).\n",
+                "grounding packet 기준으로 정리했습니다.\n",
+                "최종 확인은 1345에서 하세요.",
+            ):
+                yield token
+
+        with patch.object(pb, "OPENROUTER_API_KEY", "sk-test-sentinel"), \
+                patch.object(pb, "_stream_openrouter_text", fake_stream):
+            resp = TestClient(pb.app).post(
+                "/api/ask",
+                json={"question": "D-4 자격 신청에 필요한 학력 증빙은 무엇인가요?", "answer_mode": "fast", "stream": True},
+            )
+        self.assertEqual(resp.status_code, 200)
+        streamed = "".join(
+            json.loads(line[len("data:"):])["text"]
+            for frame in resp.text.split("\n\n") if frame.startswith("event: delta")
+            for line in frame.split("\n") if line.startswith("data:")
+        )
+        self.assertIn("졸업증명서", streamed)
+        self.assertIn("(외국인체류 안내매뉴얼 2026.6, pp. 43-44)", streamed)
+        self.assertIn("최종 확인은 1345에서 하세요.", streamed)
+        self.assertFalse(sa.contains_internal_metadata(streamed), streamed)
+
+
 class FastRoutingTests(_AskHarness):
     SIMPLE_DOCUMENT_QUESTIONS = D2_QUERIES + (
         "What documents do I need to extend a D-2?",

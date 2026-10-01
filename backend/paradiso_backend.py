@@ -3173,6 +3173,40 @@ def _post_stream_safety_review_frames(
         return None
 
 
+class _StreamMetadataScrubber:
+    """Line-buffered version of ``scrub_internal_metadata`` for SSE deltas.
+
+    The buffered /api/ask path scrubs internal source metadata ("source file
+    2026-06-23", grounding/fixture wording) out of the complete answer, line by
+    line. Streamed deltas used to reach the client unscrubbed. The scrub rules
+    are per line, so holding text until a newline and scrubbing each completed
+    line gives the stream the same result the buffered path produces.
+    """
+
+    def __init__(self) -> None:
+        self._pending = ""
+
+    @staticmethod
+    def _scrub_line(line: str) -> str:
+        body, newline = (line[:-1], "\n") if line.endswith("\n") else (line, "")
+        cleaned = _structured_answer._SOURCE_FILE_TRAILER_RE.sub("", body)
+        if _structured_answer.contains_internal_metadata(cleaned):
+            return ""
+        return cleaned + newline
+
+    def feed(self, delta: str) -> str:
+        self._pending += delta or ""
+        out: List[str] = []
+        while "\n" in self._pending:
+            line, self._pending = self._pending.split("\n", 1)
+            out.append(self._scrub_line(line + "\n"))
+        return "".join(out)
+
+    def flush(self) -> str:
+        tail, self._pending = self._pending, ""
+        return self._scrub_line(tail) if tail else ""
+
+
 async def _sse_answer_stream(
     final_prompt: str,
     candidates: List[str],
@@ -3223,6 +3257,7 @@ async def _sse_answer_stream(
         )
         attempted.append(model)
         committed = False
+        scrubber = _StreamMetadataScrubber()
         answer_parts: List[str] = []
         stream = _stream_openrouter_text(final_prompt, model=model, max_tokens=max_tokens)
         try:
@@ -3243,14 +3278,21 @@ async def _sse_answer_stream(
                 "attempted_models": list(attempted),
             })
             answer_parts.append(first_delta)
-            yield _sse("delta", {"text": first_delta})
+            visible = scrubber.feed(first_delta)
+            if visible:
+                yield _sse("delta", {"text": visible})
             stream_remaining = OPENROUTER_CHAIN_BUDGET_SECONDS - (time.monotonic() - started)
             if stream_remaining <= 0:
                 raise TimeoutError
             async with asyncio.timeout(stream_remaining):
                 async for delta in stream:
                     answer_parts.append(delta)
-                    yield _sse("delta", {"text": delta})
+                    visible = scrubber.feed(delta)
+                    if visible:
+                        yield _sse("delta", {"text": visible})
+            visible = scrubber.flush()
+            if visible:
+                yield _sse("delta", {"text": visible})
             if committed:
                 # Post-generation safety re-check on the COMPLETE accumulated
                 # answer (H-7) — zero added latency before the first token.
@@ -3294,6 +3336,10 @@ async def _sse_answer_stream(
                 if review_frames:
                     for frame in review_frames:
                         yield frame
+                else:
+                    visible = scrubber.flush()
+                    if visible:
+                        yield _sse("delta", {"text": visible})
                 yield _sse("done", {"final_model": model, "attempted_models": list(attempted), "interrupted": True})
                 return
             detail = exc.detail if isinstance(exc.detail, dict) else {}
