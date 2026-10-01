@@ -1,6 +1,6 @@
 # Short-stay rules update report
 
-- Generated: 2026-06-15T05:08:46Z
+- Generated: 2026-10-01T06:42:30Z
 - Mode: --from-fixtures
 - Live fetch result: not used — --from-fixtures flag
 - sourceStatus: **needs_refresh**
