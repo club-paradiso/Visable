@@ -96,8 +96,8 @@ has('data-jc-filter="industry"', 'filter: industry missing');
 // separate panes + badges
 has('data-pane="occupation"', 'occupation pane missing');
 has('data-pane="industry"', 'industry pane missing');
-has('이건 직종입니다', 'occupation badge missing');
-has('이건 업종입니다', 'industry badge missing');
+has('이건 직종이에요', 'occupation badge missing');
+has('이건 업종이에요', 'industry badge missing');
 // selected summary + copy
 ['jcSelOcc', 'jcSelInd', 'jcIncome', 'jcCopyBtn'].forEach(id => has(`id="${id}"`, `summary element #${id} missing`));
 has('data-action="copy-jobcode-memo"', 'copy-memo action missing');
