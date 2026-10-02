@@ -200,7 +200,7 @@
             <span class="composer-hint" data-shell="composerHint">Enter 전송 · Shift+Enter 줄바꿈</span>
         </div>
     </footer>
-    <p id="referenceDisclaimer" class="reference-disclaimer">본 서비스는 공개 법령·매뉴얼 기반 참고용 정보 제공 도구이며, 법적 상담이나 민원 대행이 아닙니다. 최종 판단은 출입국·외국인청, 하이코리아, 또는 자격 있는 전문가에게 확인하세요.</p>
+    <p id="referenceDisclaimer" class="reference-disclaimer">이 서비스는 공개 법령·매뉴얼을 바탕으로 한 참고용 정보 제공 도구이며, 법적 상담이나 민원 대행이 아닙니다. 최종 판단은 출입국·외국인청, 하이코리아, 또는 자격 있는 전문가에게 확인하세요.</p>
 
     <!-- Other ways in. Shown on the empty welcome below 1024px, where the rail
          is a compact tab bar without its one-line explanations. -->
@@ -322,8 +322,8 @@
                 <p>본 AI 분석 시스템 이용을 위해 다음 사항에 동의해야 합니다.</p>
                 <ul>
                     <li><strong>데이터 활용:</strong> 입력하신 정보는 세션 내 문맥 유지 및 시스템 개선 목적으로만 임시 처리되며 영구 저장되지 않습니다.</li>
-                    <li><strong>개인정보 보호:</strong> 여권번호, 외국인등록번호 등 민감한 고유 식별 정보는 절대 입력하지 마십시오.</li>
-                    <li><strong>면책 조항:</strong> AI가 생성한 결과는 2026년 실무 매뉴얼을 바탕으로 한 <strong>참고용 정보</strong>일 뿐, 법적 효력을 갖지 않습니다. 최종 판단은 관할 출입국·외국인관서에 귀속됩니다.</li>
+                    <li><strong>개인정보 보호:</strong> 여권번호, 외국인등록번호 등 민감한 고유 식별 정보는 절대 입력하지 마세요.</li>
+                    <li><strong>면책 조항:</strong> AI가 생성한 결과는 2026년 실무 매뉴얼을 바탕으로 한 <strong>참고용 정보</strong>일 뿐, 법적 효력이 없습니다. 최종 판단은 관할 출입국·외국인관서가 내립니다.</li>
                 </ul>
             </div>
             <div class="modal-footer">
@@ -362,13 +362,13 @@
             if (grounded) {
                 return t(
                     lang,
-                    '※ 표시된 공식 매뉴얼 근거 범위 안에서 생성된 참고용 안내입니다. 최종 판단은 관할 관서 및 1345에 확인하십시오.',
+                    '※ 표시된 공식 매뉴얼 근거 범위 안에서 생성된 참고용 안내입니다. 최종 판단은 관할 관서 및 1345에 확인하세요.',
                     '※ This is reference guidance generated within the listed official manual source scope. Confirm final handling with 1345 or the competent immigration office.'
                 );
             }
             return t(
                 lang,
-                '※ 이 답변은 공식 매뉴얼 근거가 확인되지 않은 일반 참고 안내입니다. 구체적인 기한·요건·허가 가능성은 1345, HiKorea 또는 관할 출입국·외국인청에 확인하십시오.',
+                '※ 이 답변은 공식 매뉴얼 근거가 확인되지 않은 일반 참고 안내입니다. 구체적인 기한·요건·허가 가능성은 1345, HiKorea 또는 관할 출입국·외국인청에 확인하세요.',
                 '※ This is general reference guidance without confirmed official manual grounding. Confirm specific deadlines, requirements, and eligibility with 1345, HiKorea, or the competent immigration office.'
             );
         }
@@ -895,7 +895,7 @@
                 if (window.history.length > 1) {
                     window.history.back();
                 } else {
-                    alert('동의를 거부하셨습니다. 좌측 상단의 뒤로가기 버튼을 눌러 메인 화면으로 돌아가 주십시오.');
+                    alert('동의를 거부하셨습니다. 좌측 상단의 뒤로가기 버튼을 눌러 메인 화면으로 돌아가 주세요.');
                 }
             }
         }
@@ -1133,7 +1133,7 @@
         // Single source of truth for the footer/disclaimer text in four languages
         // (Part E i18n fix). Official Korean institution names stay in Korean.
         const SHELL_FOOTER_DISCLAIMER = {
-            ko: '본 서비스는 공개 법령·매뉴얼 기반 참고용 정보 제공 도구이며, 법적 상담이나 민원 대행이 아닙니다. 최종 판단은 출입국·외국인청, 하이코리아, 또는 자격 있는 전문가에게 확인하세요.',
+            ko: '이 서비스는 공개 법령·매뉴얼을 바탕으로 한 참고용 정보 제공 도구이며, 법적 상담이나 민원 대행이 아닙니다. 최종 판단은 출입국·외국인청, 하이코리아, 또는 자격 있는 전문가에게 확인하세요.',
             en: 'Waymaker provides public law/manual-based reference information and is not legal advice or a filing service. Confirm final decisions with the competent immigration office, HiKorea, 1345, or a qualified professional.',
             zh: 'Waymaker 提供基于公开法令与手册的参考信息，并非法律咨询或代办服务。最终决定请向管辖出入境·外国人机构、HiKorea、1345 或有资质的专业人士确认。',
             zhHant: 'Waymaker 提供基於公開法令與手冊的參考資訊，並非法律諮詢或代辦服務。最終決定請向管轄出入境·外國人機構、HiKorea、1345 或具資格的專業人士確認。'
@@ -2026,7 +2026,7 @@
 
             const disclosure = t(
                 lang,
-                '본 답변은 공개 자료에 기반한 참고 안내입니다. 최종 판단은 1345 · HiKorea · 관할 출입국·외국인청에 확인하세요.',
+                '이 답변은 공개 자료를 바탕으로 한 참고 안내입니다. 최종 판단은 1345 · HiKorea · 관할 출입국·외국인청에 확인하세요.',
                 'This answer is reference information based on public sources. Confirm final outcomes with 1345, HiKorea, or the competent immigration office.'
             );
 
@@ -2419,7 +2419,7 @@
             const rawMessage = detail && typeof detail === 'object' ? detail.message : (detail || (payload && payload.message));
             const userMessage = fallbackAnswer || (errorClass === 'timeout'
                 ? tt(lang, {
-                    ko: 'AI 응답이 지연되어 요청을 중단했습니다. 잠시 후 다시 시도해 주세요. 급한 경우 HiKorea(hikorea.go.kr), 1345 또는 관할 출입국·외국인관서로 확인하십시오.',
+                    ko: 'AI 응답이 지연되어 요청을 중단했습니다. 잠시 후 다시 시도해 주세요. 급한 경우 HiKorea(hikorea.go.kr), 1345 또는 관할 출입국·외국인관서로 확인하세요.',
                     en: 'The request was stopped because the AI response was taking too long. Please try again shortly. For urgent matters, confirm with HiKorea (hikorea.go.kr), 1345, or the competent immigration office.',
                     zh: 'AI 响应时间过长，已中止请求。请稍后重试。如属紧急情况，请通过 HiKorea（hikorea.go.kr）、1345 或主管出入境·外国人管理机关确认。',
                     zhHant: 'AI 回應時間過長，已中止請求。請稍後重試。如屬緊急情況，請透過 HiKorea（hikorea.go.kr）、1345 或主管出入境·外國人管理機關確認。'
@@ -3184,7 +3184,7 @@
                   if (didTimeout) {
                       return { ok: false, message: localeEn
                           ? 'The response is taking too long, so the request was stopped. Please try again shortly; for urgent matters, confirm via HiKorea (hikorea.go.kr) or 1345.'
-                          : 'AI 응답이 지연되어 요청을 중단했습니다. 잠시 후 다시 시도해 주세요. 급한 경우 HiKorea(hikorea.go.kr) 또는 1345로 확인하십시오.' };
+                          : 'AI 응답이 지연되어 요청을 중단했습니다. 잠시 후 다시 시도해 주세요. 급한 경우 HiKorea(hikorea.go.kr) 또는 1345로 확인하세요.' };
                   }
                   return { ok: false };
               });
