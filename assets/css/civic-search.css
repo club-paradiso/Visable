@@ -66,6 +66,15 @@ body.civic-refresh::before, body.civic-refresh::after { display: none !important
 .cs-home { max-width: 1600px; margin: 0 auto; padding: 0 68px; }
 .cs-hero { text-align: center; padding: 64px 0 52px; }
 .cs-hero h1 { font-size: clamp(38px, 5.15vw, 78px); font-weight: 780; line-height: 1.24; letter-spacing: -.045em; margin: 10px 0 15px; color: var(--cs-ink); word-break: keep-all; }
+
+.cs-hero-wordmark {
+  display: inline-block;
+  width: auto;
+  height: 0.78em;
+  margin-left: 0.12em;
+  vertical-align: -0.02em;
+}
+
 .cs-hero h1 em { font-style: normal; color: var(--cs-green); }
 .cs-hero > p { font-size: 26px; color: var(--cs-muted); margin: 0 0 36px; letter-spacing: -.025em; }
 #civicSearchForm { max-width: 844px; margin: 0 auto; }
