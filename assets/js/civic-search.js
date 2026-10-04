@@ -47,7 +47,7 @@
     },
     en: {
       search: 'Visa & stay search', forms: 'Forms', about: 'About', submit: 'Search', preparing: 'Preparing your search…', unavailable: 'Could not load the guides. Please reload the page.',
-      title: 'A <em>clearer</em> life in Korea.', sub: 'Search a visa code or describe your situation.',
+      title: 'Life in Korea, made <img class="cs-hero-wordmark" src="assets/brand/visable-wordmark-green.svg" alt="VISABLE">', sub: 'Tell us what you need help with, and we’ll point you to the right visa or stay information.',
       placeholder: 'e.g. F-6 extension', pre: 'Before entry · Visa issuance', post: 'After entry · Managing your stay',
       preSub: 'Explore visa types, requirements and documents.', postSub: 'Check extensions, status changes and reporting procedures.',
       journeyAria: 'Choose where to start: before or after entering Korea',
