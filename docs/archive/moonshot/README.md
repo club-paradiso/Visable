@@ -4,6 +4,67 @@ Audit snapshot: 2026-10-12. **Visable is the canonical active project.**
 Moonshot is retained for provenance and recovery, not as a supported application
 or a current source of immigration requirements.
 
+## Status update: 2026-10-12 (after the initial audit)
+
+This section records what changed after the initial audit snapshot. The
+sections below it are kept as written at that snapshot; where they say
+**BLOCKED** for the tag, this update supersedes them.
+
+| Item | Result | Evidence |
+| --- | --- | --- |
+| Historical tag published | **PASS** | [`archive/moonshot-2026-05-06`](https://github.com/club-paradiso/Visable/tree/archive/moonshot-2026-05-06) pushed by the owner's authenticated `gh`/Git session as a new tag (no force, no overwrite) |
+| Tag object type | **PASS** | Annotated (`tag` object), tagger `club-paradiso` |
+| Peeled commit | **PASS** | `686ee3e87e04ee1afefe3d0d9a302c5fd2f81b49`, re-fetched into a fresh empty repository |
+| Original `main` history reachable from the tag | **PASS** | 471 commits; `git fsck --full` clean |
+| Historical tree kept out of Visable `main` | **PASS** | The source commit is not an ancestor of Visable `main` (`283983fcbb9b43b80c1c9ce110785981b2b96f04`) |
+| Moonshot `main` unchanged since the audit | **PASS** | Still `686ee3e…`; 32 branches, 110 PR refs, 0 tags |
+| Persisted backup (`fb43f0d8…`) re-accessed | **NOT RUN** | Not reachable from the follow-up session; still held privately by the owner |
+| Independent re-verification of full history | **PASS** | A new mirror bundle (47,793,571 bytes, SHA-256 `038d8f00d793219027a162a30f90eea07e0ecbf7f5bd7348f7231eff2ce3132c`) passed `git bundle verify`, restored to a mirror with identical refs and object IDs, passed `git fsck --full`, and matched [`refs.tsv`](./refs.tsv) line for line. That regenerated file was **not persisted**; the owner's original bundle remains the backup of record |
+| Moonshot archived | **No** | `archived: false` |
+
+Tag scope: the tag preserves Moonshot `main` only. The 32 branches (including
+the unmerged `feat/postgres-migration`) and 110 PR refs are preserved by the
+full-history bundle, not by this tag.
+
+Tag pushes do not trigger Visable automation: no workflow has a `tags:`
+trigger, Railway deploys from `main`, and Vercel deploys from branches.
+
+### GitHub administration audit of `club-paradiso/moonshot`
+
+Checked with the owner's authenticated `gh` session (admin permission on both
+repositories). Secrets and full URLs were not recorded.
+
+| Check | Result |
+| --- | --- |
+| Repository webhooks | 0 |
+| Deploy keys | 0 |
+| GitHub Actions workflows | 1: GitHub-managed `pages build and deployment` (last run 2026-09-03); no workflow files on `main` |
+| GitHub Pages | **Enabled** |
+| Deployment environments | 2 (names not yet recorded) |
+| Installed GitHub Apps | **BLOCKED**: the token lacked the `admin:org` scope |
+| Railway sources | None of the 4 Railway projects use Moonshot (Visable backend: `club-paradiso/Visable`, `main`, `/backend`) |
+| Vercel projects | None linked to the Moonshot repository |
+| Last push to Moonshot | 2026-05-06 |
+
+No write dependency on Moonshot was found among the items that could be
+checked. The audit is still **incomplete**: the GitHub App inventory is
+unchecked, and the owner has not yet decided whether the Moonshot Pages site
+should stay published. Current Visable runtime code does not reference a
+`github.io` origin; only dated audit documents mention the former
+`lucanomics.github.io/Paradiso/` address.
+
+### Remaining before archiving Moonshot
+
+1. List the organization's GitHub App installations
+   (`gh auth refresh -s admin:org`) and confirm that none needs write access
+   to Moonshot.
+2. Decide what to do with the Moonshot GitHub Pages site and its two
+   environments. They serve outdated April 2026 immigration content.
+3. Confirm that no essential work remains only on `feat/postgres-migration`.
+   It is preserved in the bundle and in `refs.tsv`.
+4. Get the owner's separate approval to archive. Never delete, rename,
+   transfer, or change the visibility of the repository.
+
 ## Provenance and timeline
 
 - Original repository: <https://github.com/club-paradiso/moonshot>.
@@ -36,6 +97,8 @@ publication was **BLOCKED**: the Git CLI had no push credentials, and the
 available connector could create commits/branches but could not import the
 original object graph or create annotated tags. **Do not assume the tag exists
 on Visable's remote.** No archival application branch was published.
+*(Superseded: the tag was later published and verified. See the status update
+above.)*
 
 An authenticated maintainer can publish the historical reference independently
 of the documentation PR:
