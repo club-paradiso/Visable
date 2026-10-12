@@ -182,6 +182,10 @@ Visable의 AI 경로는 가능한 한 **retrieval / deterministic logic → vali
 
 ## Legacy naming
 
+Moonshot에서 Paradiso를 거쳐 Visable로 이어진 개발 이력과 전체 Git 백업 복원 절차는
+[`Moonshot historical archive`](./docs/archive/moonshot/README.md)에 기록되어 있습니다.
+현재 개발과 데이터의 기준 저장소는 Visable입니다.
+
 이 저장소는 과거 다른 브랜드명으로 개발된 이력이 있어 일부 오래된 문서, 함수명, 테스트명, 파일명에 `Paradiso` 또는 `PARADISO_*` 문자열이 남아 있습니다.
 
 **이들은 현재 서비스 브랜드가 아닙니다.**
