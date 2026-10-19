@@ -346,6 +346,9 @@ echo "[9d-5/14] Validating post-search status guidance (coverage manifest + docu
 #   * check_status_resolver.mjs → resolver flows A–H + cross-status matrix;
 #   * check_search_router.mjs → procedure-first routing (외국인등록증 재발급 never
 #     dead-ends on "체류자격을 찾지 못했어요"; context requirements come from the registry);
+#   * check_search_suggest.mjs → home search suggestions: the derived index is current
+#     and reads like the bundle, every suggested code exists, every suggestion reads
+#     back as the status/procedure its label promises, unknown codes are never matched;
 #   * check_document_physical_form.mjs → original/copy form only from a transcribed
 #     source phrase, SOURCE_DOES_NOT_SPECIFY otherwise (writes the form QA report);
 #   * check_fee_rules.mjs → fee registry: amounts, payment instruments, exemptions
@@ -364,6 +367,7 @@ if command -v node >/dev/null 2>&1; then
   node scripts/check_document_guidance.mjs
   node scripts/check_status_resolver.mjs
   node scripts/check_search_router.mjs
+  node scripts/check_search_suggest.mjs
   node scripts/check_document_physical_form.mjs
   echo "[13c/14] Validating the Form Helper (inventory, exclusions, template drift, engine, exports)..."
   node scripts/check_form_helper.mjs
