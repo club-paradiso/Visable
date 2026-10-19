@@ -6,6 +6,7 @@ on:
       - 'assets/js/immigration-checklists.js'
       - 'assets/css/immigration-checklists.css'
       - 'data/immigration-checklists/**'
+      - 'data/local-practice-202609.json'
       - 'tests/e2e/immigration-checklists.spec.mjs'
       - 'scripts/check_immigration_checklists.mjs'
       - '.github/workflows/immigration-checklists-mobile-qa.yml'
