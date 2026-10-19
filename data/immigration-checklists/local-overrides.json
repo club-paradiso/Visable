@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "policy_ko": "관서별 서류 차이는 전국 공통 기준을 변경하지 않습니다. 검증되거나 공식 확인된 항목만 표시됩니다. 미검증 제보와 편집 초안은 공개하지 않습니다.",
+  "rules": {
+    "approved_states": [
+      "OFFICIAL_LOCAL_GUIDANCE",
+      "VERIFIED_LOCAL_PRACTICE"
+    ],
+    "mandatory_keys": [
+      "id",
+      "office_id",
+      "item_id",
+      "procedure",
+      "review_state",
+      "changes",
+      "evidence"
+    ],
+    "official_requires": "evidence.type = office_notice with official URL",
+    "practice_requires": "evidence.type = corroborated_reports with count >= 2; operator review",
+    "draft_visible": false
+  },
+  "overrides": []
+}
