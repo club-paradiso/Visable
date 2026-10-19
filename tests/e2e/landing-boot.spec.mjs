@@ -1,13 +1,15 @@
-// Real-browser tests for the civic landing boot, the pre-entry / post-entry
-// journey state machine and the Waymaker / New Home entries.
+// Real-browser tests for the civic landing boot, the purpose-browse panel and
+// the Waymaker / New Home entries.
 //
 //   * first paint: the legacy hero is never displayed in any painted frame,
 //     under a fast and a throttled connection, desktop and iPhone-sized;
 //   * the static shell is reused by civic-search.js (no re-render, no shift);
-//   * journey: CLOSED → PRE → CLOSED (second click) → POST → PRE (switch),
-//     keyboard Enter/Space, ARIA state, focus after collapse;
-//   * the directory entry that targets the journey section routes through the
-//     same state machine;
+//   * the home is search-first: the pre-entry / post-entry journey cards are
+//     gone; the purpose pickers they opened (index.html startPreEntryTrack() /
+//     startInKoreaTrack()) stay reachable from the directory in a browse panel:
+//     CLOSED → PRE → POST (tabs) → CLOSED, keyboard, ARIA state, focus return;
+//   * the directory entry and the legacy reveal action route through the same
+//     state machine;
 //   * Waymaker and New Home entries are visible on the home, navigate to the
 //     right pages, and the browser Back restores the landing;
 //   * a failed civic script load shows the reload row instead of a dead page.
@@ -98,111 +100,106 @@ test('a failed civic script load leaves a usable page with a reload row, not a b
   await expect(page.locator('.cs-boot-failed')).toBeVisible();
   await expect(page.locator('.cs-boot-failed .cs-boot-reload')).toBeVisible();
   await expect(page.locator('#hero')).toBeHidden();
-  await expect(page.locator('#civicLanding .cs-route')).toHaveCount(2);
+  // the static shell still offers the search field and the tools, never the old journey cards
+  await expect(page.locator('#civicLanding #civicQuery')).toBeVisible();
+  await expect(page.locator('#civicLanding .cs-route')).toHaveCount(0);
+  await expect(page.locator('#civicLanding .cs-tool')).toHaveCount(6);
 });
 
-test.describe('journey state machine', () => {
-  test('second click collapses; PRE↔POST switching is deterministic; ARIA matches; focus stays sensible', async ({ page }) => {
-    await bootHome(page);
-    const pre = page.locator('.cs-route[data-cs-journey="pre"]');
-    const post = page.locator('.cs-route[data-cs-journey="post"]');
-    const panel = page.locator('#civicJourneyPanel');
-    const state = () => page.evaluate(() => window.VisableCivicSearch.journey.state());
-    await expect(pre).toHaveAttribute('aria-expanded', 'false');
-    await expect(pre).toHaveAttribute('aria-controls', 'civicJourneyPanel');
-    await expect(panel).toBeHidden();
-    expect(await state()).toBe('CLOSED');
+test.describe('purpose browse panel (the former journey content, reached from the directory)', () => {
+  const entry = (page) => page.locator('.cs-directory [data-action="reveal-home-section"][data-target="visaManualSection"]');
+  const state = (page) => page.evaluate(() => window.VisableCivicSearch.journey.state());
 
-    await pre.click();
-    expect(await state()).toBe('PRE_ENTRY_OPEN');
-    await expect(pre).toHaveAttribute('aria-expanded', 'true');
-    await expect(post).toHaveAttribute('aria-expanded', 'false');
+  test('the home has no pre/post journey cards; the pickers open from the directory and switch with tabs', async ({ page }) => {
+    await bootHome(page);
+    await expect(page.locator('.cs-route, .cs-journey, #civicJourneyPanel')).toHaveCount(0);
+    await expect(page.locator('#civicLanding')).not.toContainText('한국 입국 전');
+    const panel = page.locator('#civicBrowsePanel');
+    const pre = panel.locator('[data-cs-journey="pre"]');
+    const post = panel.locator('[data-cs-journey="post"]');
+    await expect(panel).toBeHidden();
+    expect(await state(page)).toBe('CLOSED');
+
+    await page.locator('.cs-directory summary').click();
+    await expect(entry(page)).toHaveAttribute('aria-controls', 'civicBrowsePanel');
+    await expect(entry(page)).toHaveAttribute('aria-expanded', 'false');
+    await entry(page).click();
+    expect(await state(page)).toBe('PRE_ENTRY_OPEN');
+    await expect(entry(page)).toHaveAttribute('aria-expanded', 'true');
     await expect(panel).toBeVisible();
+    await expect(pre).toHaveAttribute('aria-pressed', 'true');
+    await expect(post).toHaveAttribute('aria-pressed', 'false');
     await expect(panel.locator('#visaManualSection')).toBeVisible();
     await expect(panel.locator('#visaManualDynamic .visa-purpose-card').first()).toBeVisible();
     await expect(panel.locator('.visa-track-selector')).toBeHidden();
-    // the panel sits directly under the triggers, not below the footer
-    const order = await page.evaluate(() => {
-      const routes = document.querySelector('.cs-routes'), panel = document.getElementById('civicJourneyPanel'), footer = document.querySelector('.cs-footer');
-      return { panelAfterRoutes: !!(routes.compareDocumentPosition(panel) & Node.DOCUMENT_POSITION_FOLLOWING), panelBeforeFooter: !!(panel.compareDocumentPosition(footer) & Node.DOCUMENT_POSITION_FOLLOWING) };
-    });
-    expect(order).toEqual({ panelAfterRoutes: true, panelBeforeFooter: true });
-
-    await pre.click(); // second click collapses
-    expect(await state()).toBe('CLOSED');
-    await expect(pre).toHaveAttribute('aria-expanded', 'false');
-    await expect(panel).toBeHidden();
-    await expect(pre).toBeFocused();
-
-    await post.click();
-    expect(await state()).toBe('POST_ENTRY_OPEN');
-    await expect(post).toHaveAttribute('aria-expanded', 'true');
-    await expect(pre).toHaveAttribute('aria-expanded', 'false');
-    await expect(panel.locator('#visaManualDynamic')).toContainText(/체류기간 연장|Extension of stay/);
-
-    await pre.click(); // switch
-    expect(await state()).toBe('PRE_ENTRY_OPEN');
-    await expect(pre).toHaveAttribute('aria-expanded', 'true');
-    await expect(post).toHaveAttribute('aria-expanded', 'false');
     await expect(panel.locator('#visaManualDynamic')).toContainText(/유학·연수|Study/);
+    // the panel sits after the directory and before the about disclosure, below search and tools
+    const order = await page.evaluate(() => {
+      const after = (a, b) => !!(a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING);
+      const p = document.getElementById('civicBrowsePanel');
+      return { afterSearch: after(document.getElementById('civicSearchForm'), p), afterTools: after(document.querySelector('.cs-tools'), p), afterDirectory: after(document.querySelector('.cs-directory'), p), beforeAbout: after(p, document.getElementById('civic-about')) };
+    });
+    expect(order).toEqual({ afterSearch: true, afterTools: true, afterDirectory: true, beforeAbout: true });
 
-    // close button returns focus to the open trigger
+    await post.click(); // switch
+    expect(await state(page)).toBe('POST_ENTRY_OPEN');
+    await expect(post).toHaveAttribute('aria-pressed', 'true');
+    await expect(pre).toHaveAttribute('aria-pressed', 'false');
+    await expect(panel.locator('#visaManualDynamic')).toContainText(/체류기간 연장|Extension of stay/);
+    await post.click(); // the open tab keeps the panel open
+    expect(await state(page)).toBe('POST_ENTRY_OPEN');
+
+    // close returns focus to the control that opened the panel
     await panel.locator('.cs-journey-close').click();
-    expect(await state()).toBe('CLOSED');
-    await expect(pre).toBeFocused();
+    expect(await state(page)).toBe('CLOSED');
     await expect(panel).toBeHidden();
+    await expect(entry(page)).toBeFocused();
+    await expect(entry(page)).toHaveAttribute('aria-expanded', 'false');
   });
 
-  test('keyboard Enter and Space behave like click', async ({ page }) => {
-    await bootHome(page);
-    const pre = page.locator('.cs-route[data-cs-journey="pre"]');
-    const post = page.locator('.cs-route[data-cs-journey="post"]');
-    const state = () => page.evaluate(() => window.VisableCivicSearch.journey.state());
-    await pre.focus();
-    await page.keyboard.press('Enter');
-    expect(await state()).toBe('PRE_ENTRY_OPEN');
-    await page.keyboard.press('Enter');
-    expect(await state()).toBe('CLOSED');
-    await post.focus();
-    await page.keyboard.press('Space');
-    expect(await state()).toBe('POST_ENTRY_OPEN');
-    await expect(post).toHaveAttribute('aria-expanded', 'true');
-    // Escape inside the panel closes it and returns focus to the trigger
-    await page.locator('#civicJourneyPanel .visa-purpose-card').first().focus().catch(() => {});
-    await page.locator('#civicJourneyPanel .cs-journey-close').focus();
-    await page.keyboard.press('Escape');
-    expect(await state()).toBe('CLOSED');
-    await expect(post).toBeFocused();
-  });
-
-  test('the directory entry and the legacy reveal action route through the same state machine', async ({ page }) => {
+  test('keyboard: Enter opens from the directory, Escape inside the panel closes it and returns focus', async ({ page }) => {
     await bootHome(page);
     await page.locator('.cs-directory summary').click();
-    const entry = page.locator('.cs-directory [data-action="reveal-home-section"][data-target="visaManualSection"]');
-    await entry.click();
-    expect(await page.evaluate(() => window.VisableCivicSearch.journey.state())).toBe('PRE_ENTRY_OPEN');
+    await entry(page).focus();
+    await page.keyboard.press('Enter');
+    expect(await state(page)).toBe('PRE_ENTRY_OPEN');
+    await page.locator('#civicBrowsePanel [data-cs-journey="post"]').focus();
+    await page.keyboard.press('Space');
+    expect(await state(page)).toBe('POST_ENTRY_OPEN');
+    await page.locator('#civicBrowsePanel .cs-journey-close').focus();
+    await page.keyboard.press('Escape');
+    expect(await state(page)).toBe('CLOSED');
+    await expect(entry(page)).toBeFocused();
+  });
+
+  test('a search leaves the landing; coming back resets the panel to CLOSED', async ({ page }) => {
+    await bootHome(page);
+    await page.locator('.cs-directory summary').click();
+    await entry(page).click();
+    expect(await state(page)).toBe('PRE_ENTRY_OPEN');
     await expect(page.locator('#visaManualSection')).toBeVisible();
-    await expect(page.locator('.cs-route[data-cs-journey="pre"]')).toHaveAttribute('aria-expanded', 'true');
-    // a search leaves the landing; coming back resets the journey to CLOSED
     await page.fill('#civicQuery', 'F-6 연장');
     await page.press('#civicQuery', 'Enter');
     await expect(page.locator('body')).toHaveClass(/searched/);
     await expect(page.locator('#civicLanding')).toBeHidden();
     await page.locator('#hero .logo-area').click();
     await expect(page.locator('body')).not.toHaveClass(/searched/);
-    expect(await page.evaluate(() => window.VisableCivicSearch.journey.state())).toBe('CLOSED');
-    await expect(page.locator('.cs-route[data-cs-journey="pre"]')).toHaveAttribute('aria-expanded', 'false');
+    expect(await state(page)).toBe('CLOSED');
+    await expect(page.locator('#civicBrowsePanel')).toBeHidden();
   });
 
-  test('a language change keeps an open journey open and re-renders its copy', async ({ page }) => {
+  test('a language change keeps an open panel open and re-renders its copy', async ({ page }) => {
     await bootHome(page);
-    await page.locator('.cs-route[data-cs-journey="post"]').click();
+    await page.locator('.cs-directory summary').click();
+    await entry(page).click();
+    await page.locator('#civicBrowsePanel [data-cs-journey="post"]').click();
     await page.locator('[data-cs-lang-open]:visible').first().click();
     await page.locator('#csLangDialog .cs-lang-option[data-lang="en"]').click();
     await expect(page.locator('html')).toHaveAttribute('lang', 'en');
-    await expect(page.locator('.cs-route[data-cs-journey="post"] .cs-route-title')).toHaveText('Managing your stay');
-    expect(await page.evaluate(() => window.VisableCivicSearch.journey.state())).toBe('POST_ENTRY_OPEN');
-    await expect(page.locator('#civicJourneyPanel')).toBeVisible();
+    await expect(page.locator('#civicBrowsePanel [data-cs-journey="post"]')).toHaveText('After entry · Managing your stay');
+    await expect(page.locator('#civicBrowsePanel [data-cs-journey="post"]')).toHaveAttribute('aria-pressed', 'true');
+    expect(await state(page)).toBe('POST_ENTRY_OPEN');
+    await expect(page.locator('#civicBrowsePanel')).toBeVisible();
     await expect(page.locator('#visaManualDynamic')).toContainText('Extension of stay');
   });
 });
@@ -225,9 +222,15 @@ test.describe('Waymaker and New Home entries', () => {
     await expect(newHome.locator('small')).toContainText(/국적|Nationality/);
     await expect(waymaker).toHaveAttribute('href', 'ai.html');
     await expect(newHome).toHaveAttribute('href', 'new-home.html');
-    // search stays the primary control: it is above the tools and larger than any tool title
-    const sizes = await page.evaluate(() => ({ search: parseFloat(getComputedStyle(document.querySelector('.cs-hero h1')).fontSize), tool: parseFloat(getComputedStyle(document.querySelector('.cs-tools-core .cs-tool strong')).fontSize) }));
+    // search stays the primary control: it is in the first screen, above every tool, and its headline is larger
+    const sizes = await page.evaluate(() => {
+      const bar = document.querySelector('.cs-searchbar').getBoundingClientRect();
+      const tools = [...document.querySelectorAll('.cs-tools .cs-tool')].map((t) => t.getBoundingClientRect());
+      return { search: parseFloat(getComputedStyle(document.querySelector('.cs-hero h1')).fontSize), tool: parseFloat(getComputedStyle(document.querySelector('.cs-tools-core .cs-tool strong')).fontSize), barAbove: tools.every((t) => bar.bottom <= t.top), barInFirstScreen: bar.bottom <= innerHeight };
+    });
     expect(sizes.search).toBeGreaterThan(sizes.tool);
+    expect(sizes.barAbove).toBe(true);
+    expect(sizes.barInFirstScreen).toBe(true);
   });
 
   test('Waymaker opens the Waymaker workspace and Back restores the landing', async ({ page }) => {
@@ -261,12 +264,14 @@ test.describe('Waymaker and New Home entries', () => {
 });
 
 test.describe('localized layout', () => {
-  test('the mounted journey pickers are fully translated (no Korean left in de / ja / ar)', async ({ page }) => {
+  test('the mounted purpose pickers are fully translated (no Korean left in de / ja / ar)', async ({ page }) => {
     for (const lang of ['de', 'ja', 'ar']) {
       await bootHome(page, '/index.html?lang=' + lang);
+      await page.locator('.cs-directory summary').click();
+      await page.locator('.cs-directory [data-target="visaManualSection"]').click();
       for (const track of ['pre', 'post']) {
-        await page.click(`[data-cs-journey="${track}"]`);
-        await expect(page.locator('#civicJourneyPanel')).toBeVisible();
+        await page.click(`#civicBrowsePanel [data-cs-journey="${track}"]`);
+        await expect(page.locator('#civicBrowsePanel')).toBeVisible();
         const korean = await page.evaluate(() => [...document.querySelectorAll('.cs-journey-slot *')]
           .filter((e) => e.children.length === 0 && e.offsetParent && /[가-힣]/.test(e.textContent)).map((e) => e.textContent.trim()));
         expect(korean, `${lang} ${track}`).toEqual([]);
@@ -276,12 +281,12 @@ test.describe('localized layout', () => {
 
   // keep-all keeps Korean words whole but removes every break point from Japanese / Chinese
   for (const lang of ['ja', 'zh-CN']) {
-    test(`the ${lang} headline, journey leads and tool text wrap inside the viewport`, async ({ page }) => {
+    test(`the ${lang} headline, search copy, examples and tool text wrap inside the viewport`, async ({ page }) => {
       await bootHome(page, '/index.html?lang=' + lang);
       await expect(page.locator('html')).toHaveAttribute('lang', lang);
       const clipped = await page.evaluate(() => {
         const vw = document.documentElement.clientWidth;
-        return [...document.querySelectorAll('.cs-hero h1, .cs-route-title, .cs-route-lead, .cs-tool strong, .cs-tool small')]
+        return [...document.querySelectorAll('.cs-hero h1, .cs-hero > p, .cs-examples button, .cs-example-link, .cs-tool strong, .cs-tool small')]
           .filter((e) => { const r = e.getBoundingClientRect(); return r.width && (e.scrollWidth - e.clientWidth > 1 || r.right > vw + 1); })
           .map((e) => e.textContent.trim().slice(0, 20));
       });

@@ -12,14 +12,10 @@
   var copy = {
     ko: {
       search: '비자·체류 검색', forms: '서류 작성', about: '이용 안내', submit: '검색', preparing: '검색을 준비하고 있습니다.', unavailable: '안내 데이터를 불러오지 못했습니다. 페이지를 새로고침해 주세요.',
-      title: '답이 <em>보이는</em> 한국 생활.', sub: '비자 코드나 지금 상황을 검색하세요.',
-      placeholder: '예: F-6 체류기간 연장', pre: '입국 전 · 사증 발급', post: '입국 후 · 체류 관리',
-      preSub: '사증 종류, 발급 요건, 필요 서류를 확인하세요.', postSub: '체류기간 연장, 체류자격 변경, 신고 절차를 확인하세요.',
-      journeyAria: '입국 전과 입국 후, 어디에서 시작할지 고르세요',
-      preKicker: '한국 입국 전', preTitle: '사증 발급', preLead: '한국에 오기 전에 필요한 비자 종류와 발급 절차, 준비 서류를 확인해요.',
-      postKicker: '한국 입국 후', postTitle: '체류 관리', postLead: '체류기간 연장, 자격 변경, 외국인등록, 주소·근무처 신고 절차를 확인해요.',
-      journeyClose: '안내 닫기',
-      tools: '자주 찾는 업무', coreTools: '핵심 도구',
+      title: '답이 <em>보이는</em> 한국 생활.', sub: '비자 코드, 절차 이름, 지금 상황을 그대로 입력하세요.',
+      placeholder: '예: F-6 연장, 이사했어요', pre: '입국 전 · 사증 발급', post: '입국 후 · 체류 관리',
+      browse: '목적별로 둘러보기', journeyClose: '닫기',
+      coreTools: '바로 쓰는 도구',
       paperwork: '필수 서류 작성', paperworkSub: '통합신청서 등 공식 서식을 단계별로 채우고 PDF로 내려받아요.',
       waymaker: 'Waymaker', waymakerSub: '복잡한 상황을 설명하면 필요한 절차와 근거를 단계별로 정리하는 AI 안내예요.',
       newHome: 'New Home', newHomeSub: '국적·귀화와 한국 정착 준비를 한곳에서 안내해요.',
@@ -37,7 +33,20 @@
       empty: '일치하는 원문이 없습니다.', emptyHelp: '체류자격 코드와 짧은 키워드를 함께 입력해 보세요. 예: F-6 연장, E-7-4 소득',
       more: '관련 원문 더 보기', rawTitle: '관련 원문', filter: '원문 범위', both: '사증·체류 전체', ai: 'AI 보조 안내 보기',
       info: '공식 안내 원문과 체류자격별 안내를 함께 검색할 수 있습니다. 각 결과의 기준일과 적용 범위를 확인하고, 신청 전 공식 기관에 문의하세요.',
-      currentSource: '기준일 사증 2026.09.01 · 체류 2026.09.18', examples: '자주 찾는 질문', quickExtension: '체류기간 연장', quickAddress: '주소 변경', quickArc: '외국인등록증 재발급',
+      currentSource: '기준일 사증 2026.09.01 · 체류 2026.09.18', examples: '이렇게 검색해 보세요',
+      exF6Extension: 'F-6 체류기간 연장', exRegistration: '외국인등록', exAddress: '주소 변경 신고', exE7Workplace: 'E-7 근무처 변경', exForms: '통합신청서 작성',
+      clear: '검색어 지우기', suggestLabel: '검색 제안', suggestCount: '제안 {n}개가 있어요. 위아래 화살표로 고르고 Enter로 여세요.',
+      suggestEmpty: '맞는 제안이 없어요. Enter를 누르면 전체 검색 결과를 보여 드려요.', suggestFoot: 'Enter 전체 검색 · Esc 닫기',
+      suggestLimited: '제안 이름은 한국어·영어 공식 용어로 표시돼요.',
+      kindStatus: '체류자격', kindSubstatus: '세부 자격', kindProcedure: '절차', kindTool: '도구',
+      subOf: '{parent}의 세부 자격', statusSubs: '세부 자격 {n}개', statusKind: '체류자격 개요',
+      domainVisa: '입국 전 · 사증', domainStay: '입국 후 · 체류',
+      procAnyStatus: '체류자격과 관계없이 같은 절차', procNeedsStatus: '체류자격 코드를 함께 입력하면 더 정확해요',
+      stateNotApplicable: '이 자격에는 해당 없음', stateRestricted: '원칙적으로 제한 · 예외 확인 필요',
+      lifecycleLegacy: '기존 체류자만', lifecycleAbolished: '폐지된 자격', lifecycleUnverified: '확인 필요',
+      unknownCode: '{code}는 2026년 9월 공식 안내에서 찾을 수 없는 코드예요. 오타가 없는지 확인하거나 상위 코드를 살펴보세요.',
+      notACode: '{code}는 공식 안내에 있는 체류자격 코드가 아니에요. 코드 대신 지금 상황을 입력해 보세요.',
+      waymakerAsk: '상황을 설명하면 절차와 근거를 단계별로 정리해요',
       short: '단기입국 경로', jobs: '직업·산업분류', office: '관할 출입국관서', agencies: '등록 민원대행기관', hospitals: '법무부지정 병원',
       pathways: '생활 경로 8종', reminders: '체류 기한 계산·알림', naturalization: '국적·귀화 안내', enforcement: '출입국 사범처리 예상',
       pendingInfo: '2026년 9월판 공식 안내 원문은 검색용으로 반영되어 있고, 내용 검토는 별도로 진행 중이에요. 구조화된 안내에는 각 근거의 기준일이 함께 표시됩니다.',
@@ -47,14 +56,10 @@
     },
     en: {
       search: 'Visa & stay search', forms: 'Forms', about: 'About', submit: 'Search', preparing: 'Preparing your search…', unavailable: 'Could not load the guides. Please reload the page.',
-      title: 'Life in Korea, made <img class="cs-hero-wordmark" src="assets/brand/visable-wordmark-green.svg" alt="VISABLE">', sub: 'Tell us what you need help with, and we’ll point you to the right visa or stay information.',
-      placeholder: 'e.g. F-6 extension', pre: 'Before entry · Visa issuance', post: 'After entry · Managing your stay',
-      preSub: 'Explore visa types, requirements and documents.', postSub: 'Check extensions, status changes and reporting procedures.',
-      journeyAria: 'Choose where to start: before or after entering Korea',
-      preKicker: 'Before entering Korea', preTitle: 'Visa issuance', preLead: 'The visa types, issuance steps and documents to prepare before you arrive.',
-      postKicker: 'After entering Korea', postTitle: 'Managing your stay', postLead: 'Extensions, status changes, foreigner registration and the address or workplace reports you must file.',
-      journeyClose: 'Close this guide',
-      tools: 'Frequently used services', coreTools: 'Core tools',
+      title: 'Life in Korea, made <img class="cs-hero-wordmark" src="assets/brand/visable-wordmark-green.svg" alt="VISABLE">', sub: 'Type a visa code, a procedure, or just describe your situation.',
+      placeholder: 'e.g. F-6 extension, I moved', pre: 'Before entry · Visa issuance', post: 'After entry · Managing your stay',
+      browse: 'Browse by purpose', journeyClose: 'Close',
+      coreTools: 'Tools you can use now',
       paperwork: 'Prepare documents', paperworkSub: 'Fill official forms such as the integrated application step by step and download a PDF.',
       waymaker: 'Waymaker', waymakerSub: 'Describe a complex situation and get the steps and sources laid out in order, with AI assistance.',
       newHome: 'New Home', newHomeSub: 'Nationality, naturalization and settling in Korea, guided in one place.',
@@ -72,7 +77,20 @@
       empty: 'No matching passages.', emptyHelp: 'The originals are in Korean. Try a code with a short Korean keyword, such as F-6 연장 or E-7-4 소득.',
       more: 'More source passages', rawTitle: 'Related source passages', filter: 'Source scope', both: 'Visa and stay', ai: 'Show AI assistance',
       info: 'Search the official source text alongside the status guides. Check the basis date and scope of each result, and confirm with an official authority before applying.',
-      currentSource: 'Basis: visa 2026.09.01 · stay 2026.09.18', examples: 'Popular questions', quickExtension: 'Extend my stay', quickAddress: 'Report address change', quickArc: 'Reissue residence card',
+      currentSource: 'Basis: visa 2026.09.01 · stay 2026.09.18', examples: 'Try searching for',
+      exF6Extension: 'F-6 extension of stay', exRegistration: 'Foreign resident registration', exAddress: 'Report an address change', exE7Workplace: 'E-7 workplace change', exForms: 'Fill in the integrated application',
+      clear: 'Clear search', suggestLabel: 'Search suggestions', suggestCount: '{n} suggestions. Use the up and down arrows to choose, and Enter to open.',
+      suggestEmpty: 'No matching suggestions. Press Enter to see all search results.', suggestFoot: 'Enter to search · Esc to close',
+      suggestLimited: 'Suggestions use the official Korean and English terms.',
+      kindStatus: 'Status', kindSubstatus: 'Subcode', kindProcedure: 'Procedure', kindTool: 'Tool',
+      subOf: 'Subcode of {parent}', statusSubs: '{n} subcodes', statusKind: 'Status overview',
+      domainVisa: 'Before entry · Visa', domainStay: 'After entry · Stay',
+      procAnyStatus: 'Same procedure for every status', procNeedsStatus: 'Add your status code for a more precise answer',
+      stateNotApplicable: 'Does not apply to this status', stateRestricted: 'Generally restricted · check the exceptions',
+      lifecycleLegacy: 'Existing holders only', lifecycleAbolished: 'Abolished status', lifecycleUnverified: 'Needs checking',
+      unknownCode: '{code} is not a code in the September 2026 official guidance. Check for a typo, or look at the parent code.',
+      notACode: '{code} is not a status code in the official guidance. Try describing your situation instead.',
+      waymakerAsk: 'Describe your situation and get the steps and sources in order',
       short: 'Short-stay entry routes', jobs: 'Occupation & industry codes', office: 'Immigration offices', agencies: 'Registered agencies', hospitals: 'Designated hospitals',
       pathways: 'Eight life pathways', reminders: 'Dates & reminders', naturalization: 'Nationality & naturalization', enforcement: 'Immigration enforcement',
       pendingInfo: 'The September 2026 official guidance is indexed for search; its content review is a separate step. Structured guidance shows the basis date of each source.',
@@ -175,19 +193,21 @@
   /* ------------------------------------------------------------ home ----
    * homeHtml(T, ctx) is a pure builder: it is what the browser renders and
    * what scripts/build_landing_shell.mjs writes into index.html as the static
-   * first-paint shell. Keep it free of DOM access. */
-  function routeButton(T, track, iconName, kicker, title, lead) {
-    return '<button type="button" class="cs-route" data-cs-journey="' + track + '" aria-expanded="false" aria-controls="civicJourneyPanel">' +
-      '<span class="cs-route-icon">' + icon(iconName) + '</span>' +
-      '<span class="cs-route-body"><span class="cs-route-kicker">' + esc(T(kicker)) + '</span><strong class="cs-route-title">' + esc(T(title)) + '</strong><span class="cs-route-lead">' + esc(T(lead)) + '</span></span>' +
-      '<span class="cs-route-chevron">' + icon('chevron-down') + '</span></button>';
-  }
+   * first-paint shell. Keep it free of DOM access.
+   *
+   * Search is the one primary action. The page does not ask "before or after
+   * entering Korea?" first: the suggestions under the field say which side a
+   * procedure belongs to, and the purpose pickers that used to sit behind two
+   * large journey cards stay reachable from the directory ("목적별로 둘러보기"). */
   function toolLink(T, href, iconName, title, sub, extra) {
     return '<a class="cs-tool" href="' + href + '"' + (extra || '') + '><span class="cs-icon-circle">' + icon(iconName) + '</span><span class="cs-tool-body"><strong>' + esc(T(title)) + icon('chevron-right') + '</strong><small>' + esc(T(sub)) + '</small></span></a>';
   }
   function toolButton(T, attrs, iconName, title, sub) {
     return '<button type="button" class="cs-tool" ' + attrs + '><span class="cs-icon-circle">' + icon(iconName) + '</span><span class="cs-tool-body"><strong>' + esc(T(title)) + icon('chevron-right') + '</strong><small>' + esc(T(sub)) + '</small></span></button>';
   }
+  // Editorial examples, not usage data: each query is one the search resolves to
+  // a status × procedure or a procedure (scripts/check_search_suggest.mjs).
+  var EXAMPLES = [['F-6 체류기간 연장', 'exF6Extension'], ['외국인등록', 'exRegistration'], ['주소 변경 신고', 'exAddress'], ['E-7 근무처 변경', 'exE7Workplace']];
   function homeHtml(T, ctx) {
     ctx = ctx || {};
     var langHtml = ctx.langButton || langButton('cs-lang-home', ctx.langCode, T);
@@ -195,47 +215,55 @@
     return '<header class="cs-nav"><a class="cs-brand" href="./" aria-label="Visable"><img src="assets/brand/visable-wordmark.svg" alt="Visable"></a>' +
       '<nav aria-label="' + esc(T('about')) + '"><button type="button" data-cs-focus>' + esc(T('search')) + '</button><a href="form-helper.html">' + esc(T('forms')) + '</a><a href="#civic-about">' + esc(T('about')) + '</a>' +
       '<span class="cs-languages">' + langHtml + '</span></nav></header>' +
-      '<main class="cs-home"><section class="cs-hero"><h1>' + T('title') + '</h1><p>' + esc(T('sub')) + '</p>' +
-      '<form id="civicSearchForm" role="search"><label class="cs-sr" for="civicQuery">' + esc(T('search')) + '</label><div class="cs-searchbar">' + icon('search') +
-      '<input id="civicQuery" type="search" maxlength="300" autocomplete="off" placeholder="' + esc(T('placeholder')) + '"><button type="submit">' + esc(T('submit')) + '</button></div></form>' +
+      '<main class="cs-home"><section class="cs-hero"><h1>' + T('title') + '</h1><p id="civicSearchSub">' + esc(T('sub')) + '</p>' +
+      '<form id="civicSearchForm" role="search" novalidate><label class="cs-sr" for="civicQuery">' + esc(T('search')) + '</label><div class="cs-searchbar">' + icon('search') +
+      '<input id="civicQuery" type="search" maxlength="300" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="civicSuggest" aria-describedby="civicSearchSub" placeholder="' + esc(T('placeholder')) + '">' +
+      '<button type="button" class="cs-clear" data-cs-clear aria-label="' + esc(T('clear')) + '" hidden>' + icon('x') + '</button><button type="submit" class="cs-submit">' + esc(T('submit')) + '</button></div>' +
+      '<div class="cs-suggest" hidden><p class="cs-suggest-note" hidden></p><ul id="civicSuggest" class="cs-suggest-list" role="listbox" aria-label="' + esc(T('suggestLabel')) + '"></ul><p class="cs-suggest-foot"></p></div>' +
+      '<p class="cs-sr" role="status" aria-live="polite" data-cs-suggest-status></p></form>' +
       '<div class="cs-boot-failed" role="alert"><span>' + esc(T('bootFailed')) + '</span> <button type="button" class="cs-boot-reload" onclick="location.reload()">' + esc(T('reload')) + '</button><span class="cs-boot-links">' + esc(T('bootLinks')) + ' ' + sourceLinksHtml + ' · <a href="form-helper.html">' + esc(T('paperwork')) + '</a> · <a href="ai.html">Waymaker</a> · <a href="new-home.html">New Home</a></span></div>' +
       '<noscript><p class="cs-noscript">' + esc(T('noscript')) + ' ' + sourceLinksHtml + '</p></noscript>' +
-      '<div class="cs-examples" aria-label="' + esc(T('examples')) + '"><span class="cs-examples-label">' + esc(T('examples')) + '</span><button type="button" data-cs-query="체류기간 연장">' + icon('search') + esc(T('quickExtension')) + '</button><button type="button" data-cs-query="주소 변경 신고">' + icon('search') + esc(T('quickAddress')) + '</button><button type="button" data-cs-query="외국인등록증 재발급">' + icon('search') + esc(T('quickArc')) + '</button></div></section>' +
-      '<section class="cs-journey" aria-labelledby="csJourneyTitle"><h2 id="csJourneyTitle" class="cs-sr">' + esc(T('journeyAria')) + '</h2><div class="cs-routes">' +
-      routeButton(T, 'pre', 'plane', 'preKicker', 'preTitle', 'preLead') + routeButton(T, 'post', 'id-card', 'postKicker', 'postTitle', 'postLead') +
-      '</div><div id="civicJourneyPanel" class="cs-journey-panel" hidden><div class="cs-journey-panel-head"><p class="cs-journey-panel-title" id="csJourneyPanelTitle"></p><button type="button" class="cs-journey-close" data-cs-journey="close" aria-label="' + esc(T('journeyClose')) + '">' + icon('x') + '</button></div><div class="cs-journey-slot"></div></div></section>' +
+      '<div class="cs-examples" role="group" aria-labelledby="csExamplesLabel"><span class="cs-examples-label" id="csExamplesLabel">' + esc(T('examples')) + '</span>' +
+      EXAMPLES.map(function (ex) { return '<button type="button" data-cs-query="' + esc(ex[0]) + '">' + icon('search') + '<span>' + esc(T(ex[1])) + '</span></button>'; }).join('') +
+      '<a class="cs-example-link" href="form-helper.html">' + icon('file-text') + '<span>' + esc(T('exForms')) + '</span></a></div>' +
+      '<p class="cs-basis">' + esc(T('currentSource')) + '</p></section>' +
       '<section class="cs-tools cs-tools-core" aria-labelledby="csCoreTitle"><h2 id="csCoreTitle">' + esc(T('coreTools')) + '</h2><div class="cs-tool-grid">' +
       toolLink(T, 'form-helper.html', 'file-text', 'paperwork', 'paperworkSub', ' data-cs-tool="forms"') +
       toolLink(T, 'ai.html', 'compass', 'waymaker', 'waymakerSub', ' data-cs-tool="waymaker"') +
-      toolLink(T, 'new-home.html', 'house', 'newHome', 'newHomeSub', ' data-cs-tool="newhome"') + '</div></section>' +
-      '<section class="cs-tools cs-tools-support" aria-labelledby="csSupportTitle"><h2 id="csSupportTitle">' + esc(T('tools')) + '</h2><div class="cs-tool-grid">' +
-      toolButton(T, 'data-action="open-hikorea-guide"', 'calendar-days', 'reservation', 'reservationSub') +
-      toolButton(T, 'data-cs-focus data-cs-manual', 'book-open', 'manuals', 'manualsSub') +
-      toolButton(T, 'data-action="open-jurisdiction-modal"', 'landmark', 'office', 'officeSub') + '</div></section>' +
+      toolLink(T, 'new-home.html', 'house', 'newHome', 'newHomeSub', ' data-cs-tool="newhome"') +
+      toolButton(T, 'data-action="open-hikorea-guide" data-cs-tool="reservation"', 'calendar-days', 'reservation', 'reservationSub') +
+      toolButton(T, 'data-cs-focus data-cs-manual data-cs-tool="manuals"', 'book-open', 'manuals', 'manualsSub') +
+      toolButton(T, 'data-action="open-jurisdiction-modal" data-cs-tool="office"', 'landmark', 'office', 'officeSub') + '</div></section>' +
       '<div class="cs-source-strip"><span class="cs-source-strip-label">' + esc(T('sourceLabel')) + '</span><a href="' + VISA_PDF + '" target="_blank" rel="noopener">' + icon('file-text') + '<span>' + esc(T('visa')) + ' · 2026.09.01</span>' + icon('external-link') + '</a>' +
       '<a href="' + STAY_PDF + '" target="_blank" rel="noopener">' + icon('file-text') + '<span>' + esc(T('stay')) + ' · 2026.09.18</span>' + icon('external-link') + '</a></div>' +
       '<footer class="cs-footer"><img src="assets/brand/visable-wordmark.svg" alt="Visable"><p>' + esc(T('disclaimer')) + '</p></footer>' +
       '<details class="cs-directory"><summary>' + esc(T('allTools')) + '</summary><div>' +
+      '<button type="button" data-action="reveal-home-section" data-target="visaManualSection" aria-controls="civicBrowsePanel" aria-expanded="false">' + esc(T('browse')) + '</button>' +
       [['open-short-stay', 'short'], ['open-jobcode-modal', 'jobs'], ['open-jurisdiction-modal', 'office'], ['open-agent-finder', 'agencies'], ['open-med-finder', 'hospitals']].map(function (item) { return '<button type="button" data-action="' + item[0] + '">' + esc(T(item[1])) + '</button>'; }).join('') +
-      '<button type="button" data-action="reveal-home-section" data-target="visaManualSection">' + esc(T('pre')) + ' / ' + esc(T('post')) + '</button><button type="button" data-action="reveal-home-section" data-target="pathwaySection">' + esc(T('pathways')) + '</button><button type="button" data-action="reveal-home-section" data-target="reminderSection">' + esc(T('reminders')) + '</button><a href="form-helper.html">' + esc(T('paperwork')) + '</a><a href="new-home.html">' + esc(T('naturalization')) + '</a><a href="enforcement.html">' + esc(T('enforcement')) + '</a><a href="ai.html">Waymaker</a><button type="button" data-action="toggle-theme">' + esc(T('theme')) + '</button><button type="button" data-action="toggle-easy-mode" aria-pressed="' + (easyModeOn() ? 'true' : 'false') + '">' + esc(T('easyModeEasy')) + '</button></div></details>' +
+      '<button type="button" data-action="reveal-home-section" data-target="pathwaySection">' + esc(T('pathways')) + '</button><button type="button" data-action="reveal-home-section" data-target="reminderSection">' + esc(T('reminders')) + '</button><a href="form-helper.html">' + esc(T('paperwork')) + '</a><a href="new-home.html">' + esc(T('naturalization')) + '</a><a href="enforcement.html">' + esc(T('enforcement')) + '</a><a href="ai.html">Waymaker</a><button type="button" data-action="toggle-theme">' + esc(T('theme')) + '</button><button type="button" data-action="toggle-easy-mode" aria-pressed="' + (easyModeOn() ? 'true' : 'false') + '">' + esc(T('easyModeEasy')) + '</button></div></details>' +
+      '<section id="civicBrowsePanel" class="cs-browse" aria-labelledby="csBrowseTitle" hidden><div class="cs-browse-head"><h2 id="csBrowseTitle">' + esc(T('browse')) + '</h2>' +
+      '<div class="cs-browse-tabs" role="group" aria-labelledby="csBrowseTitle"><button type="button" data-cs-journey="pre" aria-pressed="false">' + esc(T('pre')) + '</button><button type="button" data-cs-journey="post" aria-pressed="false">' + esc(T('post')) + '</button></div>' +
+      '<button type="button" class="cs-journey-close" data-cs-journey="close" aria-label="' + esc(T('journeyClose')) + '">' + icon('x') + '</button></div><div class="cs-journey-slot"></div></section>' +
       '<details id="civic-about" class="cs-about"><summary>' + esc(T('about')) + '</summary><p>' + esc(T('info')) + '</p><p>' + esc(T('pendingInfo')) + '</p><a href="https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&amp;BBS_GB_CD=BS10&amp;NTCCTT_SEQ=1062&amp;page=1" target="_blank" rel="noopener">HiKorea · ' + esc(T('original')) + '</a></details></main>';
   }
 
-  /* ------------------------------------------------------------ journey ----
-   * One explicit state machine for the two journey controls:
+  /* ------------------------------------------------------------ browse ----
+   * The purpose pickers (index.html startPreEntryTrack() / startInKoreaTrack()
+   * into #visaManualDynamic) are a secondary, on-demand browse path:
    *   CLOSED | PRE_ENTRY_OPEN | POST_ENTRY_OPEN
-   * The immigration content itself is still produced by index.html's
-   * startPreEntryTrack() / startInKoreaTrack() into #visaManualDynamic; this
-   * layer owns only the shell, the ARIA state and where the panel lives. */
+   * The directory entry and index.html's `reveal-home-section` handler open it
+   * through window.VisableCivicSearch.journey; the two tabs inside the panel
+   * switch tracks. This layer owns only the panel, its ARIA state and where the
+   * legacy #visaManualSection node lives. */
   var TRACK_STATE = { pre: 'PRE_ENTRY_OPEN', post: 'POST_ENTRY_OPEN' };
-  var journey = { state: 'CLOSED' };
-  // The legacy #visaManualSection node is moved into the civic panel. A home()
-  // re-render (language change, landing reset) replaces the panel, so the node
-  // is held here and re-attached rather than looked up in a DOM it just left.
+  var journey = { state: 'CLOSED', opener: null };
+  // A home() re-render (language change, landing reset) replaces the panel, so the
+  // legacy node is held here and re-attached rather than looked up in a DOM it left.
   var journeySection = null;
   function journeyTrack(state) { return state === 'PRE_ENTRY_OPEN' ? 'pre' : state === 'POST_ENTRY_OPEN' ? 'post' : null; }
-  function journeyPanel() { return root ? root.querySelector('#civicJourneyPanel') : null; }
-  function journeyTrigger(track) { return root ? root.querySelector('.cs-route[data-cs-journey="' + track + '"]') : null; }
+  function journeyPanel() { return root ? root.querySelector('#civicBrowsePanel') : null; }
+  function journeyTab(track) { return root ? root.querySelector('.cs-browse-tabs [data-cs-journey="' + track + '"]') : null; }
+  function browseEntry() { return root ? root.querySelector('.cs-directory [data-target="visaManualSection"]') : null; }
   function mountJourneySection() {
     var slot = root && root.querySelector('.cs-journey-slot');
     if (!journeySection || !journeySection.isConnected) journeySection = document.getElementById('visaManualSection') || journeySection;
@@ -255,55 +283,225 @@
     journey.state = next;
     var track = journeyTrack(next);
     var panel = journeyPanel();
-    ['pre', 'post'].forEach(function (k) {
-      var b = journeyTrigger(k); if (!b) return;
-      var open = k === track;
-      b.setAttribute('aria-expanded', open ? 'true' : 'false');
-      b.setAttribute('data-state', open ? 'open' : 'closed');
-    });
+    ['pre', 'post'].forEach(function (k) { var b = journeyTab(k); if (b) b.setAttribute('aria-pressed', k === track ? 'true' : 'false'); });
+    var entry = browseEntry(); if (entry) entry.setAttribute('aria-expanded', track ? 'true' : 'false');
     if (root) root.setAttribute('data-cs-journey-state', next);
     if (!panel) return;
     if (!track) {
       panel.hidden = true; panel.removeAttribute('data-track');
-      if (opts.focus !== false && previous !== 'CLOSED') { var back = journeyTrigger(journeyTrack(previous)); if (back && opts.focusTrigger !== false) back.focus(); }
+      if (opts.focus !== false && previous !== 'CLOSED') { var back = journey.opener && journey.opener.isConnected ? journey.opener : entry; if (back) back.focus(); }
       return;
     }
     mountJourneySection();
     panel.hidden = false; panel.setAttribute('data-track', track);
-    var title = panel.querySelector('#csJourneyPanelTitle');
-    if (title) title.textContent = t(track === 'pre' ? 'preKicker' : 'postKicker') + ' · ' + t(track === 'pre' ? 'preTitle' : 'postTitle');
-    renderTrackContent(track);
-    if (opts.scroll !== false) {
-      var trigger = journeyTrigger(track);
-      if (trigger && typeof trigger.scrollIntoView === 'function') trigger.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' });
-    }
+    // Content renders only when the track changes: re-opening the same track keeps the picker the user was in.
+    if (previous !== next || opts.rerender) renderTrackContent(track);
+    if (opts.scroll !== false && previous === 'CLOSED' && typeof panel.scrollIntoView === 'function') panel.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' });
+  }
+  function openJourney(track) {
+    if (!TRACK_STATE[track]) return;
+    if (journey.state === 'CLOSED') journey.opener = document.activeElement && document.activeElement !== document.body ? document.activeElement : browseEntry();
+    setJourney(TRACK_STATE[track]);
   }
   function toggleJourney(track) {
     var target = TRACK_STATE[track];
     if (!target) return;
-    setJourney(journey.state === target ? 'CLOSED' : target);
+    if (journey.state === target) setJourney('CLOSED'); else openJourney(track);
   }
-  function openJourney(track) { if (TRACK_STATE[track]) setJourney(TRACK_STATE[track]); }
   function closeJourney() { setJourney('CLOSED'); }
 
+  /* --------------------------------------------------------- suggestions ----
+   * WAI-ARIA combobox (list autocomplete) on #civicQuery. Suggestions are local
+   * and deterministic (assets/js/search-suggest.js over the derived index): no
+   * request leaves the browser while typing, and nothing typed is stored. */
+  var SUGGEST_INDEX_URL = 'data/search-suggest-index.json';
+  var suggestIndex = null, suggestLoading = null, suggestFailed = false;
+  var sugg = { items: [], active: -1, frame: 0, announce: 0, composing: false, lastRender: 0, renderMs: 0 };
+  function loadSuggestIndex() {
+    if (suggestIndex) return Promise.resolve(suggestIndex);
+    if (suggestLoading) return suggestLoading;
+    suggestLoading = fetch(SUGGEST_INDEX_URL).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }).then(function (data) {
+      suggestIndex = data; suggestFailed = false;
+      if (window.VisableSearchSuggest) window.VisableSearchSuggest.hydrate(suggestIndex);
+      return suggestIndex;
+    }).catch(function (error) { suggestLoading = null; suggestFailed = true; throw error; });
+    return suggestLoading;
+  }
+  function el(sel) { return root ? root.querySelector(sel) : null; }
+  function fmt(text, vars) { return String(text || '').replace(/\{(\w+)\}/g, function (_, k) { return vars && vars[k] != null ? vars[k] : ''; }); }
+  function narrow() { try { return window.matchMedia('(max-width: 680px)').matches; } catch (e) { return false; } }
+  function highlight(label, query) {
+    var q = String(query || '').trim(), i = q ? label.toLowerCase().indexOf(q.toLowerCase()) : -1;
+    if (i < 0) return esc(label);
+    return esc(label.slice(0, i)) + '<mark>' + esc(label.slice(i, i + q.length)) + '</mark>' + esc(label.slice(i + q.length));
+  }
+  var KIND_KEY = { status: 'kindStatus', substatus: 'kindSubstatus', status_procedure: 'kindProcedure', procedure: 'kindProcedure', tool: 'kindTool' };
+  var SAFE_TOOL_HREF = /^(form-helper|ai|new-home)\.html$/;
+  var SAFE_TOOL_ACTION = { 'open-hikorea-guide': true, 'open-jurisdiction-modal': true };
+  function optionHtml(item, i, query) {
+    var label = item.kind === 'tool' ? t(item.labelKey) : item.label;
+    var labelLang = item.kind === 'tool' ? '' : ' lang="' + (item.labelLang === 'ko' ? 'ko' : 'en') + '"';
+    var sub = (item.sub || []).map(function (s) { return esc(fmt(t(s.key), s.vars)); }).filter(Boolean).join(' · ');
+    var attrs = '';
+    if (item.kind === 'tool' && item.action && SAFE_TOOL_ACTION[item.action]) attrs = ' data-action="' + esc(item.action) + '"';
+    return '<li id="civicSuggest-' + i + '" class="cs-sug" role="option" aria-selected="false" data-cs-sug="' + i + '" data-kind="' + esc(item.kind) + '" data-match="' + esc(item.match) + '"' + attrs + '>' +
+      '<span class="cs-sug-kind">' + esc(t(KIND_KEY[item.kind] || 'kindTool')) + '</span>' +
+      '<span class="cs-sug-main"><span class="cs-sug-label" dir="auto"' + labelLang + '>' + highlight(label, query) + '</span>' + (sub ? '<span class="cs-sug-sub">' + sub + '</span>' : '') + '</span>' +
+      icon(item.kind === 'tool' ? 'chevron-right' : 'search') + '</li>';
+  }
+  function setActive(i) {
+    var input = el('#civicQuery'), list = el('#civicSuggest');
+    if (!input || !list) return;
+    sugg.active = i;
+    var opts = list.querySelectorAll('[role="option"]');
+    opts.forEach(function (o, k) { o.setAttribute('aria-selected', k === i ? 'true' : 'false'); });
+    if (i >= 0 && opts[i]) { input.setAttribute('aria-activedescendant', opts[i].id); if (typeof opts[i].scrollIntoView === 'function') opts[i].scrollIntoView({ block: 'nearest' }); }
+    else input.removeAttribute('aria-activedescendant');
+  }
+  function announce(text) {
+    var live = el('[data-cs-suggest-status]'); if (!live) return;
+    clearTimeout(sugg.announce);
+    // Debounced so a screen reader hears the settled count, not one message per keystroke.
+    sugg.announce = setTimeout(function () { live.textContent = text; }, 450);
+  }
+  function closeSuggest() {
+    var box = el('.cs-suggest'), input = el('#civicQuery'), list = el('#civicSuggest');
+    cancelAnimationFrame(sugg.frame);
+    clearTimeout(sugg.announce);
+    var live = el('[data-cs-suggest-status]'); if (live) live.textContent = '';
+    sugg.items = []; sugg.active = -1;
+    if (list) list.innerHTML = '';
+    if (box) box.hidden = true;
+    if (input) { input.setAttribute('aria-expanded', 'false'); input.removeAttribute('aria-activedescendant'); }
+  }
+  function syncTyping() {
+    var input = el('#civicQuery'), hero = el('.cs-hero'), clear = el('[data-cs-clear]');
+    var has = !!(input && input.value.trim());
+    if (hero) hero.classList.toggle('cs-typing', has);
+    if (clear) clear.hidden = !(input && input.value);
+  }
+  function renderSuggest() {
+    var input = el('#civicQuery'), box = el('.cs-suggest'), list = el('#civicSuggest');
+    if (!input || !box || !list) return;
+    syncTyping();
+    var value = input.value;
+    if (!value.trim() || document.activeElement !== input) { closeSuggest(); return; }
+    var engine = window.VisableSearchSuggest;
+    // The engine script itself failed to load: suggestions are off for this page view (no retry loop).
+    if (!engine) { suggestFailed = true; closeSuggest(); return; }
+    if (!suggestIndex) {
+      if (!suggestFailed) loadSuggestIndex().then(function () { scheduleSuggest(); }).catch(function () { /* the plain search keeps working */ });
+      return;
+    }
+    var started = (window.performance && performance.now) ? performance.now() : Date.now();
+    var result = engine.suggest(value, suggestIndex, { lang: lang(), limit: narrow() ? 6 : 7 });
+    sugg.items = result.items; sugg.active = -1;
+    var note = el('.cs-suggest-note'), foot = el('.cs-suggest-foot');
+    var noteText = result.notes.map(function (n) { return fmt(t(n.key), n.vars); }).join(' ');
+    note.hidden = !noteText; note.textContent = noteText;
+    list.innerHTML = result.items.map(function (item, i) { return optionHtml(item, i, result.query); }).join('');
+    list.hidden = !result.items.length;
+    // Locales without their own procedure names see the official Korean/English terms, and are told so.
+    var limited = uiLang() !== 'ko' && uiLang() !== 'en' ? '<span>' + esc(t('suggestLimited')) + '</span> ' : '';
+    var footHtml = result.items.length ? limited + '<span class="cs-suggest-keys">' + esc(t('suggestFoot')) + '</span>' : esc(t('suggestEmpty'));
+    foot.hidden = !footHtml; foot.innerHTML = footHtml;
+    box.hidden = false;
+    input.setAttribute('aria-expanded', result.items.length ? 'true' : 'false');
+    input.removeAttribute('aria-activedescendant');
+    announce(result.items.length ? fmt(t('suggestCount'), { n: result.items.length }) : (noteText || t('suggestEmpty')));
+    sugg.renderMs = ((window.performance && performance.now) ? performance.now() : Date.now()) - started;
+    sugg.lastRender = Date.now();
+  }
+  function scheduleSuggest() {
+    cancelAnimationFrame(sugg.frame);
+    sugg.frame = requestAnimationFrame(renderSuggest);
+  }
+  function chooseSuggestion(i) {
+    var item = sugg.items[i], input = el('#civicQuery');
+    if (!item || !input) return;
+    if (item.kind === 'tool') {
+      closeSuggest();
+      if (item.href && SAFE_TOOL_HREF.test(item.href)) location.href = item.href;
+      // data-action tools are handled by index.html's delegated click handler on the option itself.
+      return;
+    }
+    input.value = item.query;
+    closeSuggest(); syncTyping();
+    searchFromHome(item.query);
+  }
+  function onQueryKeydown(event) {
+    // Korean (and every other IME) composition: arrows move the candidate window and
+    // Enter commits the syllable — never a suggestion selection or a search.
+    if (event.isComposing || event.keyCode === 229 || sugg.composing) return;
+    var input = event.target, box = el('.cs-suggest'), open = box && !box.hidden, n = sugg.items.length;
+    if (event.key === 'ArrowDown' || event.key === 'Down') {
+      event.preventDefault();
+      if (!open || !n) { renderSuggest(); n = sugg.items.length; if (n) setActive(0); return; }
+      setActive(sugg.active + 1 >= n ? 0 : sugg.active + 1);
+    } else if (event.key === 'ArrowUp' || event.key === 'Up') {
+      if (!open || !n) return;
+      event.preventDefault();
+      setActive(sugg.active <= 0 ? n - 1 : sugg.active - 1);
+    } else if (event.key === 'Enter') {
+      event.preventDefault();
+      if (open && sugg.active >= 0) { var opt = el('#civicSuggest-' + sugg.active); if (opt) opt.click(); }
+      else { closeSuggest(); searchFromHome(input.value); }
+    } else if (event.key === 'Escape' || event.key === 'Esc') {
+      if (open) { event.preventDefault(); closeSuggest(); }
+      else if (input.value) { event.preventDefault(); input.value = ''; syncTyping(); }
+    } else if (event.key === 'Tab') {
+      closeSuggest();
+    }
+  }
+  function bindSuggest() {
+    var form = el('#civicSearchForm'), input = el('#civicQuery'), list = el('#civicSuggest');
+    if (!form || !input || !list) return;
+    input.addEventListener('input', function () { setActive(-1); scheduleSuggest(); });
+    // A composition cancelled by blur may never send compositionend; focus starts clean.
+    input.addEventListener('focus', function () { sugg.composing = false; loadSuggestIndex().catch(function () {}); if (input.value.trim()) scheduleSuggest(); });
+    input.addEventListener('blur', function () { sugg.composing = false; });
+    input.addEventListener('keydown', onQueryKeydown);
+    input.addEventListener('compositionstart', function () { sugg.composing = true; });
+    // compositionend can precede the committing Enter's keydown (Safari): stay "composing" for that one task.
+    input.addEventListener('compositionend', function () { setTimeout(function () { sugg.composing = false; scheduleSuggest(); }, 0); });
+    // Leaving the field and the panel closes the panel; clicks inside it keep focus (mousedown below).
+    form.addEventListener('focusout', function (event) { if (!form.contains(event.relatedTarget)) closeSuggest(); });
+    list.addEventListener('mousedown', function (event) { event.preventDefault(); });
+    list.addEventListener('click', function (event) {
+      var option = event.target.closest('[data-cs-sug]'); if (!option) return;
+      chooseSuggestion(Number(option.getAttribute('data-cs-sug')));
+    });
+    var clear = el('[data-cs-clear]');
+    if (clear) clear.addEventListener('click', function () { input.value = ''; closeSuggest(); syncTyping(); input.focus(); });
+    syncTyping();
+  }
+
   function bindHome() {
-    root.querySelector('form').addEventListener('submit', function (event) { event.preventDefault(); searchFromHome(root.querySelector('input').value); });
+    var form = root.querySelector('#civicSearchForm');
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      if (sugg.composing) return;
+      closeSuggest();
+      searchFromHome(root.querySelector('#civicQuery').value);
+    });
     root.querySelector('a[href="#civic-about"]').addEventListener('click', function () { root.querySelector('#civic-about').open = true; });
     var panel = journeyPanel();
     if (panel) panel.addEventListener('keydown', function (e) { if ((e.key === 'Escape' || e.key === 'Esc') && journey.state !== 'CLOSED') { e.preventDefault(); e.stopPropagation(); closeJourney(); } });
+    bindSuggest();
     mountJourneySection();
   }
   function home(opts) {
     opts = opts || {};
     homeLanguage = uiLang();
     if (!journeySection) journeySection = document.getElementById('visaManualSection');
-    var reuse = Boolean(opts.reuse) && root.getAttribute('data-cs-shell') === homeLanguage && root.querySelector('#civicJourneyPanel') && root.querySelector('.cs-tools-core');
+    var reuse = Boolean(opts.reuse) && root.getAttribute('data-cs-shell') === homeLanguage && root.querySelector('#civicBrowsePanel') && root.querySelector('.cs-tools-core');
+    closeSuggest();
     if (!reuse) root.innerHTML = homeHtml(t, { langCode: currentLangCode() });
     root.setAttribute('data-cs-shell', homeLanguage);
     root.setAttribute('data-cs-hydrated', reuse ? 'reused' : 'rendered');
     bindHome();
     var state = opts.keepJourney ? journey.state : 'CLOSED';
-    setJourney(state, { scroll: false, focus: false });
+    setJourney(state, { scroll: false, focus: false, rerender: true });
   }
   function homeStatus(message) {
     var status = root.querySelector('.cs-home-status');
@@ -312,7 +510,8 @@
   }
   function searchFromHome(value) {
     value = String(value || '').trim();
-    if (!value) { root.querySelector('input').focus(); return; }
+    if (!value) { root.querySelector('#civicQuery').focus(); return; }
+    closeSuggest();
     document.getElementById('q').value = value;
     document.body.classList.remove('landing', 'launching', 'searching');
     document.body.classList.add('searched');
@@ -411,7 +610,9 @@
   }
   window.VisableCivicSearch = {
     load: load, openPage: openPage, homeHtml: homeHtml, copy: copy, langButton: langButton,
-    journey: { open: openJourney, close: closeJourney, toggle: toggleJourney, state: function () { return journey.state; } }
+    journey: { open: openJourney, close: closeJourney, toggle: toggleJourney, state: function () { return journey.state; } },
+    // Read-only view of the suggestion panel for tests and QA (no query text is kept anywhere else).
+    suggestions: { state: function () { return { ready: !!suggestIndex, failed: suggestFailed, count: sugg.items.length, active: sugg.active, renderMs: sugg.renderMs, items: sugg.items.map(function (i) { return { kind: i.kind, match: i.match, label: i.label || i.labelKey, query: i.query || null, href: i.href || null, action: i.action || null }; }) }; } }
   };
   // Pages (and the Node parity check) that have no landing DOM stop here: the API above is still published.
   if (!document.getElementById('mainContent')) return;
@@ -436,8 +637,9 @@
     document.addEventListener('click', function (event) {
       var target = event.target.closest('button'); if (!target) return;
       if (target.hasAttribute('data-cs-lang-open')) { openLangDialog(target); return; }
-      if (target.hasAttribute('data-cs-journey')) { var track = target.getAttribute('data-cs-journey'); if (track === 'close') closeJourney(); else toggleJourney(track); return; }
-      if (target.hasAttribute('data-cs-focus')) { if (target.hasAttribute('data-cs-manual')) rawFirst = true; root.querySelector('input').focus(); root.querySelector('input').scrollIntoView({ block: 'center', behavior: 'smooth' }); }
+      // Tabs inside the browse panel switch tracks; pressing the open tab again keeps it open.
+      if (target.hasAttribute('data-cs-journey')) { var track = target.getAttribute('data-cs-journey'); if (track === 'close') closeJourney(); else openJourney(track); return; }
+      if (target.hasAttribute('data-cs-focus')) { if (target.hasAttribute('data-cs-manual')) rawFirst = true; var field = root.querySelector('#civicQuery'); field.focus(); field.scrollIntoView({ block: 'center', behavior: prefersReducedMotion() ? 'auto' : 'smooth' }); }
       if (target.dataset.csQuery) searchFromHome(target.dataset.csQuery);
       if (target.hasAttribute('data-cs-page')) showPage(Number(target.dataset.csPage), target);
       if (target.hasAttribute('data-cs-close')) dialog.close();
@@ -452,6 +654,15 @@
       if (String(d.query || '').trim() === query && JSON.stringify(d.evidenceIntent || null) !== JSON.stringify(intent)) find(query, d.evidenceIntent || null);
       if (rawFirst) { rawFirst = false; openRaw(); raw.scrollIntoView({ block: 'start' }); }
     });
+    // Back from the first result reaches the bare home URL: show the search home again instead of an
+    // empty result page. Forward from the home to a ?q= entry runs that search again. (Moving between
+    // two ?q= entries is unified-search.js's popstate.)
+    window.addEventListener('popstate', function () {
+      var q = ''; try { q = new URL(location.href).searchParams.get('q') || ''; } catch (e) { /* keep the page as is */ return; }
+      var searched = document.body.classList.contains('searched');
+      if (!q.trim() && searched && typeof resetToLanding === 'function') resetToLanding();
+      else if (q.trim() && !searched) searchFromHome(q);
+    });
     document.addEventListener('paradiso:data-ready', function () { if (queuedQuery) searchFromHome(queuedQuery); });
     document.addEventListener('paradiso:data-failed', function () { if (queuedQuery) homeStatus(t('unavailable')); });
     document.addEventListener('paradiso:landing-reset', function () {
@@ -463,16 +674,20 @@
       if (langDialog && langDialog.open) langDialog.close();
       refreshLangButtons();
       if (uiLang() === homeLanguage) return;
-      var draft = root.querySelector('input') ? root.querySelector('input').value : '';
+      var draft = root.querySelector('#civicQuery') ? root.querySelector('#civicQuery').value : '';
       var directoryOpen = root.querySelector('.cs-directory') && root.querySelector('.cs-directory').open;
       var aboutOpen = root.querySelector('.cs-about') && root.querySelector('.cs-about').open;
       home({ keepJourney: true });
-      if (draft && root.querySelector('input')) root.querySelector('input').value = draft;
+      if (draft && root.querySelector('#civicQuery')) { root.querySelector('#civicQuery').value = draft; syncTyping(); }
       if (directoryOpen) root.querySelector('.cs-directory').open = true;
       if (aboutOpen) root.querySelector('.cs-about').open = true;
       if (query) find(query);
     });
     if (document.body.classList.contains('searched')) find(document.getElementById('q').value);
+    // The suggestion index is small (derived, ~12 KB gzipped): fetch it when the page is idle so the
+    // first keystroke never waits. A failure only disables suggestions; the search itself still works.
+    var warm = function () { loadSuggestIndex().catch(function () {}); };
+    if (typeof window.requestIdleCallback === 'function') window.requestIdleCallback(warm, { timeout: 2500 }); else setTimeout(warm, 1200);
   }
   function boot() {
     try { init(); }
