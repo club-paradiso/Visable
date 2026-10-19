@@ -183,7 +183,8 @@ test.describe('combobox behaviour', () => {
     await expect(page.locator('#civicQuery')).not.toBeFocused();
     await typeQuery(page, 'F-6');
     await expect(options(page).first()).toBeVisible();
-    await page.locator('.cs-hero h1').click();
+    // outside the field and the panel (the headline is folded away in the phone search sheet)
+    await page.locator('.cs-hero > .cs-basis').click();
     await expect(page.locator('.cs-suggest')).toBeHidden();
   });
 
@@ -295,6 +296,8 @@ test.describe('history, language and resilience', () => {
   test('a language switch keeps the draft and suggests in that language', async ({ page }) => {
     await bootHome(page);
     await typeQuery(page, 'E-7');
+    // on phones the search sheet folds the language control away: 닫기 first, as a person would
+    if (await page.locator('[data-cs-sheet-close]').isVisible()) await page.locator('[data-cs-sheet-close]').click();
     await page.locator('[data-cs-lang-open]:visible').first().click();
     await page.locator('#csLangDialog .cs-lang-option[data-lang="en"]').click();
     await expect(page.locator('html')).toHaveAttribute('lang', 'en');
@@ -356,6 +359,74 @@ test.describe('history, language and resilience', () => {
     await expect(page.locator('.cs-suggest')).toBeVisible();
     await page.waitForTimeout(300);
     expect(seen.filter((u) => /secretword|%EB%B9%84%EC%9E%90|\/api\//i.test(u))).toEqual([]);
+  });
+});
+
+test.describe('phone search sheet and result reading', () => {
+  test.skip(({ viewport }) => viewport.width > 680, 'phone layout');
+
+  test('focusing the field folds the headline away; 닫기 brings it back without losing the text', async ({ page }) => {
+    await bootHome(page);
+    await expect(page.locator('.cs-hero h1')).toBeVisible();
+    await expect(page.locator('[data-cs-sheet-close]')).toBeHidden();
+    await page.locator('#civicQuery').click();
+    await expect(page.locator('body')).toHaveClass(/cs-sheet/);
+    await expect(page.locator('.cs-hero h1')).toBeHidden();
+    await expect(page.locator('.cs-nav')).toBeHidden();
+    const close = page.locator('[data-cs-sheet-close]');
+    await expect(close).toBeVisible();
+    await expect(close).toHaveText('닫기');
+    const bar = await page.locator('.cs-searchbar').boundingBox();
+    expect(bar.y).toBeLessThan(40);
+    await page.keyboard.type('F-6');
+    await expect(options(page).first()).toBeVisible();
+    // more suggestions fit above a ~40% on-screen keyboard than the old two
+    const fit = await page.evaluate(() => [...document.querySelectorAll('#civicSuggest [role="option"]')].filter((o) => o.getBoundingClientRect().bottom <= innerHeight * 0.6).length);
+    expect(fit).toBeGreaterThanOrEqual(4);
+    // the type sits in the quiet second line, not as a separate badge row
+    await expect(options(page).first().locator('.cs-sug-kind')).toBeHidden();
+    await expect(options(page).first().locator('.cs-sug-kind-inline')).toHaveText('체류자격');
+    // the compact submit still searches
+    const submit = page.locator('#civicSearchForm .cs-submit');
+    const box = await submit.boundingBox();
+    expect(Math.min(box.width, box.height)).toBeGreaterThanOrEqual(44);
+    await close.click();
+    await expect(page.locator('body')).not.toHaveClass(/cs-sheet/);
+    await expect(page.locator('.cs-hero h1')).toBeVisible();
+    await expect(page.locator('#civicQuery')).toHaveValue('F-6');
+    await expect(page.locator('.cs-suggest')).toBeHidden();
+  });
+
+  test('a search from the sheet leaves it; the result header slides away while reading and returns on scroll up', async ({ page }) => {
+    await bootHome(page);
+    await page.locator('#civicQuery').click();
+    await page.keyboard.type('외국인등록증 재발급');
+    await page.keyboard.press('Enter');
+    await expect(page.locator('#statusGuidance[data-sg-kind]')).toBeVisible({ timeout: 20_000 });
+    await expect(page.locator('body')).not.toHaveClass(/cs-sheet/);
+    await page.mouse.wheel(0, 700);
+    await expect(page.locator('body')).toHaveClass(/cs-hdr-away/);
+    await page.mouse.wheel(0, -120);
+    await expect(page.locator('body')).not.toHaveClass(/cs-hdr-away/);
+    await page.mouse.wheel(0, 500);
+    await expect(page.locator('body')).toHaveClass(/cs-hdr-away/);
+    await page.locator('#q').focus();
+    await expect(page.locator('body')).not.toHaveClass(/cs-hdr-away/);
+    // next steps are full-width rows a thumb can hit
+    const rows = await page.locator('#statusGuidance .sg-next li > a, #statusGuidance .sg-next li > button').evaluateAll((els) => els.map((e) => { const r = e.getBoundingClientRect(); return { w: r.width, h: r.height }; }));
+    expect(rows.length).toBeGreaterThan(1);
+    for (const r of rows) { expect(r.h).toBeGreaterThanOrEqual(48); expect(r.w).toBeGreaterThan(page.viewportSize().width * 0.8); }
+  });
+
+  test('the result search bar draws one box and one clear button', async ({ page }) => {
+    await bootHome(page, '/index.html?q=' + encodeURIComponent('F-6 연장'));
+    await expect(page.locator('#statusGuidance[data-sg-kind]')).toBeVisible({ timeout: 20_000 });
+    await page.locator('#q').focus();
+    // getComputedStyle cannot read ::-webkit-search-cancel-button, so the rule itself is checked
+    const s = await page.evaluate(() => { const q = document.getElementById('q'); const cs = getComputedStyle(q); const rule = [...document.styleSheets].flatMap((sh) => { try { return [...sh.cssRules]; } catch (e) { return []; } }).find((r) => r.selectorText && r.selectorText.includes('#q::-webkit-search-cancel-button')); return { shadow: cs.boxShadow, outline: cs.outlineStyle, cancel: rule ? rule.style.getPropertyValue('appearance') : null }; });
+    expect(s.shadow === 'none' || /0px 0px 0px 0px/.test(s.shadow)).toBe(true);
+    expect(s.outline).toBe('none');
+    expect(s.cancel).toBe('none');
   });
 });
 

@@ -220,7 +220,8 @@
       '<main class="cs-home"><section class="cs-hero"><h1>' + T('title') + '</h1><p id="civicSearchSub">' + esc(T('sub')) + '</p>' +
       '<form id="civicSearchForm" role="search" novalidate><label class="cs-sr" for="civicQuery">' + esc(T('search')) + '</label><div class="cs-searchbar">' + icon('search') +
       '<input id="civicQuery" type="search" maxlength="300" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="civicSuggest" aria-describedby="civicSearchSub" placeholder="' + esc(T('placeholder')) + '">' +
-      '<button type="button" class="cs-clear" data-cs-clear aria-label="' + esc(T('clear')) + '" hidden>' + icon('x') + '</button><button type="submit" class="cs-submit">' + esc(T('submit')) + '</button></div>' +
+      '<button type="button" class="cs-clear" data-cs-clear aria-label="' + esc(T('clear')) + '" hidden>' + icon('x') + '</button><button type="submit" class="cs-submit"><span class="cs-submit-label">' + esc(T('submit')) + '</span>' + icon('search') + '</button></div>' +
+      '<button type="button" class="cs-sheet-close" data-cs-sheet-close>' + esc(T('close')) + '</button>' +
       '<div class="cs-suggest" hidden><p class="cs-suggest-note" hidden></p><ul id="civicSuggest" class="cs-suggest-list" role="listbox" aria-label="' + esc(T('suggestLabel')) + '"></ul><p class="cs-suggest-foot"></p></div>' +
       '<p class="cs-sr" role="status" aria-live="polite" data-cs-suggest-status></p></form>' +
       '<div class="cs-boot-failed" role="alert"><span>' + esc(T('bootFailed')) + '</span> <button type="button" class="cs-boot-reload" onclick="location.reload()">' + esc(T('reload')) + '</button><span class="cs-boot-links">' + esc(T('bootLinks')) + ' ' + sourceLinksHtml + ' · <a href="form-helper.html">' + esc(T('paperwork')) + '</a> · <a href="ai.html">Waymaker</a> · <a href="new-home.html">New Home</a></span></div>' +
@@ -345,11 +346,14 @@
     var label = item.kind === 'tool' ? t(item.labelKey) : item.label;
     var labelLang = item.kind === 'tool' ? '' : ' lang="' + (item.labelLang === 'ko' ? 'ko' : 'en') + '"';
     var sub = (item.sub || []).map(function (s) { return esc(fmt(t(s.key), s.vars)); }).filter(Boolean).join(' · ');
+    // Phones fold the type badge into the sub line, so a row is one label and one quiet line.
+    var kindText = esc(t(KIND_KEY[item.kind] || 'kindTool'));
+    var subHtml = '<span class="cs-sug-sub"><span class="cs-sug-kind-inline">' + kindText + '</span>' + (sub ? '<span class="cs-sug-sep" aria-hidden="true"> · </span>' + sub : '') + '</span>';
     var attrs = '';
     if (item.kind === 'tool' && item.action && SAFE_TOOL_ACTION[item.action]) attrs = ' data-action="' + esc(item.action) + '"';
     return '<li id="civicSuggest-' + i + '" class="cs-sug" role="option" aria-selected="false" data-cs-sug="' + i + '" data-kind="' + esc(item.kind) + '" data-match="' + esc(item.match) + '"' + attrs + '>' +
-      '<span class="cs-sug-kind">' + esc(t(KIND_KEY[item.kind] || 'kindTool')) + '</span>' +
-      '<span class="cs-sug-main"><span class="cs-sug-label" dir="auto"' + labelLang + '>' + highlight(label, query) + '</span>' + (sub ? '<span class="cs-sug-sub">' + sub + '</span>' : '') + '</span>' +
+      '<span class="cs-sug-kind">' + kindText + '</span>' +
+      '<span class="cs-sug-main"><span class="cs-sug-label" dir="auto"' + labelLang + '>' + highlight(label, query) + '</span>' + subHtml + '</span>' +
       icon(item.kind === 'tool' ? 'chevron-right' : 'search') + '</li>';
   }
   function setActive(i) {
@@ -406,7 +410,9 @@
     list.hidden = !result.items.length;
     // Locales without their own procedure names see the official Korean/English terms, and are told so.
     var limited = uiLang() !== 'ko' && uiLang() !== 'en' ? '<span>' + esc(t('suggestLimited')) + '</span> ' : '';
-    var footHtml = result.items.length ? limited + '<span class="cs-suggest-keys">' + esc(t('suggestFoot')) + '</span>' : esc(t('suggestEmpty'));
+    // Keyboard hints only where there is a keyboard to press them (not on touch-only screens).
+    var keys = ''; try { keys = window.matchMedia('(hover: none)').matches ? '' : '<span class="cs-suggest-keys">' + esc(t('suggestFoot')) + '</span>'; } catch (e) { keys = ''; }
+    var footHtml = result.items.length ? (limited || keys ? limited + keys : '') : esc(t('suggestEmpty'));
     foot.hidden = !footHtml; foot.innerHTML = footHtml;
     box.hidden = false;
     input.setAttribute('aria-expanded', result.items.length ? 'true' : 'false');
@@ -452,16 +458,34 @@
     } else if (event.key === 'Escape' || event.key === 'Esc') {
       if (open) { event.preventDefault(); closeSuggest(); }
       else if (input.value) { event.preventDefault(); input.value = ''; syncTyping(); }
+      else if (document.body.classList.contains('cs-sheet')) { event.preventDefault(); closeSheet(); }
     } else if (event.key === 'Tab') {
       closeSuggest();
     }
+  }
+  /* Phone search sheet: focusing the field folds the brand and headline away and pins the field
+   * to the top, so suggestions get the space above the on-screen keyboard. It closes only on an
+   * explicit act (닫기, Escape on an empty field, a search) — never on blur — so a tap that moves
+   * focus can never reflow the page under the finger. The CSS applies only at phone widths. */
+  function openSheet() {
+    if (document.body.classList.contains('cs-sheet') || !narrow()) return;
+    document.body.classList.add('cs-sheet');
+    try { window.scrollTo(0, 0); } catch (e) { /* ignore */ }
+  }
+  function closeSheet() {
+    if (!document.body.classList.contains('cs-sheet')) return;
+    document.body.classList.remove('cs-sheet');
+    closeSuggest();
+    var input = el('#civicQuery'); if (input) input.blur();
   }
   function bindSuggest() {
     var form = el('#civicSearchForm'), input = el('#civicQuery'), list = el('#civicSuggest');
     if (!form || !input || !list) return;
     input.addEventListener('input', function () { setActive(-1); scheduleSuggest(); });
     // A composition cancelled by blur may never send compositionend; focus starts clean.
-    input.addEventListener('focus', function () { sugg.composing = false; loadSuggestIndex().catch(function () {}); if (input.value.trim()) scheduleSuggest(); });
+    input.addEventListener('focus', function () { sugg.composing = false; openSheet(); loadSuggestIndex().catch(function () {}); if (input.value.trim()) scheduleSuggest(); });
+    var sheetClose = el('[data-cs-sheet-close]');
+    if (sheetClose) sheetClose.addEventListener('click', closeSheet);
     input.addEventListener('blur', function () { sugg.composing = false; });
     input.addEventListener('keydown', onQueryKeydown);
     input.addEventListener('compositionstart', function () { sugg.composing = true; });
@@ -515,6 +539,7 @@
     value = String(value || '').trim();
     if (!value) { root.querySelector('#civicQuery').focus(); return; }
     closeSuggest();
+    document.body.classList.remove('cs-sheet');
     document.getElementById('q').value = value;
     document.body.classList.remove('landing', 'launching', 'searching');
     document.body.classList.add('searched');
@@ -678,6 +703,7 @@
     document.addEventListener('paradiso:data-failed', function () { if (queuedQuery) homeStatus(t('unavailable')); });
     document.addEventListener('paradiso:landing-reset', function () {
       ++sequence; query = ''; queuedQuery = ''; intent = null; rawFirst = false; domain = ''; panel.innerHTML = ''; rawSummary(null); raw.open = false;
+      document.body.classList.remove('cs-sheet');
       var url = new URL(location.href); url.searchParams.delete('q'); history.replaceState(null, '', url);
       home();
     });
@@ -695,6 +721,20 @@
       if (query) find(query);
     });
     if (document.body.classList.contains('searched')) find(document.getElementById('q').value);
+    // Phones, result page: the sticky search header slides away while reading down and returns on
+    // any upward scroll or when focus enters it, so the answer gets the screen.
+    var lastY = window.scrollY || 0, ticking = false, header = document.getElementById('hero');
+    function syncHeader() {
+      ticking = false;
+      var y = window.scrollY || 0, dy = y - lastY;
+      var hide = document.body.classList.contains('searched') && narrow() && header && !header.contains(document.activeElement) && y > 160;
+      if (!hide) document.body.classList.remove('cs-hdr-away');
+      else if (dy > 8) document.body.classList.add('cs-hdr-away');
+      else if (dy < -8) document.body.classList.remove('cs-hdr-away');
+      if (Math.abs(dy) > 8 || !hide) lastY = y;
+    }
+    window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(syncHeader); } }, { passive: true });
+    if (header) header.addEventListener('focusin', function () { document.body.classList.remove('cs-hdr-away'); });
     // The suggestion index is small (derived, ~12 KB gzipped): fetch it when the page is idle so the
     // first keystroke never waits. A failure only disables suggestions; the search itself still works.
     var warm = function () { loadSuggestIndex().catch(function () {}); };
