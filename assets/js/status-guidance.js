@@ -197,7 +197,11 @@
     var lower = q.toLowerCase();
     var codes = bundle.codes;
     var out = { query: q, codes: [], unknownCodes: [], aliasCandidates: [], aliasQuestion: null, procedure: null, procedureCandidates: [], preAnswers: {}, confidence: 'LOW', program: null, keywords: [], route: null, office: null, conditions: {}, isQuestion: false, facet: null };
-    var codeRe = /([A-Ha-h])\s?-?\s?(\d{1,2})(?:\s?-?\s?([0-9A-Za-z]{1,6}))?(?![A-Za-z0-9])/g;
+    // A subcode segment follows a dash ("E-7-S", "E-7 - 1"), touches the number ("E7S", "e71"), or is
+    // digits after a space ("e 7 1"). A word after a space is never a subcode: "E-7 Change of status"
+    // must not read as the unknown code E-7-CHANGE.
+    // A number followed by a unit is a duration or a count, not a subcode: "F-6 3개월 연장" asks about F-6.
+    var codeRe = /([A-Ha-h])\s?-?\s?(\d{1,2})(?:\s?-\s?([0-9A-Za-z]{1,6})|\s(\d{1,3}[A-Za-z]{0,3})(?!\s?(?:년|개월|달|일|주|세|살|시간|학기|번|회|명|원|years?|yrs?|months?|weeks?|days?|hours?|times?|semesters?)(?![A-Za-z]))|([0-9A-Za-z]{1,6}))?(?![A-Za-z0-9])/g;
     var m;
     while ((m = codeRe.exec(q))) {
       var token = m[0].replace(/\s/g, '');
