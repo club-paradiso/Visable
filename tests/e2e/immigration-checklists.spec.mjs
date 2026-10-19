@@ -161,3 +161,117 @@ test('guided discovery stepper: completes end-to-end user journey with progress 
   await expect(page.locator('#guided-step-4')).toBeHidden();
 });
 
+test('adversarial parsing: protects commas in parentheses, identifies alternatives and conditions', async ({ page }) => {
+  await boot(page);
+  const result = await page.evaluate(() => {
+    const { splitParenSafe, parseRequiredDocsStructured } = window.__VISABLE_INTERNALS;
+    const raw = '통합신청서, 체류지 입증서류(임대차계약서, 숙소제공확인서 등), 사업자등록증명 또는 고유번호증, 학위증명서(해당자에 한함)';
+    const chunks = splitParenSafe(raw);
+    const structured = parseRequiredDocsStructured(raw);
+    return { chunks, structured };
+  });
+
+  // Verify commas inside parentheses were not split
+  expect(result.chunks).toEqual([
+    '통합신청서',
+    '체류지 입증서류(임대차계약서, 숙소제공확인서 등)',
+    '사업자등록증명 또는 고유번호증',
+    '학위증명서(해당자에 한함)'
+  ]);
+
+  // Verify document semantics
+  expect(result.structured.items[0].type).toBe('mandatory');
+  expect(result.structured.items[1].type).toBe('mandatory');
+  expect(result.structured.items[2].type).toBe('alternative');
+  expect(result.structured.items[3].type).toBe('conditional');
+});
+
+test('F-5 permanent resident extension displays legal restriction notice and no checkboxes', async ({ page }) => {
+  await boot(page);
+  await page.locator('#query').fill('F-5');
+  await expect(page.locator('.doc-card')).not.toHaveCount(0);
+
+  const quickBtn = page.locator('.doc-card').first().locator('.card-quick-cta');
+  await quickBtn.click();
+
+  await expect(page.locator('#guided-step-4')).toBeVisible();
+  await expect(page.locator('#summary-code-tag')).toContainText('F-5');
+  await expect(page.locator('#baseline-docs-list .restriction-card')).toBeVisible();
+  await expect(page.locator('#baseline-docs-list .restriction-card')).toContainText('신청 불가 또는 별도 절차 대상 안내');
+  await expect(page.locator('#baseline-docs-list .restriction-card')).toContainText('10년 주기 영주증');
+
+  // Must NOT render checkbox for ineligibility statement
+  const checkboxes = page.locator('#baseline-docs-list input[type="checkbox"]');
+  await expect(checkboxes).toHaveCount(0);
+  await expect(page.locator('#progress-fraction')).toContainText('신청 제한 / 별도 절차 대상');
+});
+
+test('domestic change prohibitions render restriction cards with overseas consulate guidance', async ({ page }) => {
+  await boot(page);
+  await page.getByRole('radio', { name: '체류자격 변경' }).check();
+  await page.locator('#query').fill('D-4-5');
+  await expect(page.locator('.doc-card')).not.toHaveCount(0);
+
+  const quickBtn = page.locator('.doc-card').first().locator('.card-quick-cta');
+  await quickBtn.click();
+
+  await expect(page.locator('#guided-step-4')).toBeVisible();
+  await expect(page.locator('#baseline-docs-list .restriction-card')).toBeVisible();
+  await expect(page.locator('#baseline-docs-list .restriction-card')).toContainText('신청 불가 또는 별도 절차 대상 안내');
+  await expect(page.locator('#baseline-docs-list .restriction-card')).toContainText('재외공관을 통한 신규 사증');
+  await expect(page.locator('#baseline-docs-list input[type="checkbox"]')).toHaveCount(0);
+});
+
+test('unlisted manual gap scenarios render advisory card without false checkboxes', async ({ page }) => {
+  await boot(page);
+  await page.getByRole('radio', { name: '체류자격 변경' }).check();
+  await page.locator('#query').fill('C-3-1');
+  await expect(page.locator('.doc-card')).not.toHaveCount(0);
+
+  const quickBtn = page.locator('.doc-card').first().locator('.card-quick-cta');
+  await quickBtn.click();
+
+  await expect(page.locator('#guided-step-4')).toBeVisible();
+  await expect(page.locator('#baseline-docs-list .unlisted-card')).toBeVisible();
+  await expect(page.locator('#baseline-docs-list .unlisted-card')).toContainText('원문 매뉴얼 상 독립 제출서류 목록 미기재');
+  await expect(page.locator('#baseline-docs-list input[type="checkbox"]')).toHaveCount(0);
+});
+
+test('office selection transparency and live editor diff preview behave accurately', async ({ page }) => {
+  await boot(page);
+  await page.locator('#query').fill('D-2-1');
+  await expect(page.locator('.doc-card')).not.toHaveCount(0);
+
+  // 1. Step 4 Office Transparency
+  await page.locator('.doc-card').first().locator('.card-quick-cta').click();
+  await expect(page.locator('#guided-step-4')).toBeVisible();
+  await expect(page.locator('#office-status-badge')).toContainText('전국 기준 안내');
+
+  await page.locator('#checklist-office-select').selectOption('incheon');
+  await expect(page.locator('#office-status-badge')).toContainText('인천출입국·외국인청 전국 기준 안내');
+  await expect(page.locator('#office-docs-content')).toContainText('이 관서에 대해 별도로 확인된 서류 차이가 아직 없습니다');
+
+  // 2. Editor Live Diff Preview
+  await page.locator('#guided-reset-btn').click();
+  await page.locator('#query').fill('D-2-1');
+  await page.locator('.doc-card').first().getByRole('button', { name: /문구 편집/ }).click();
+  await expect(page.locator('#edit-dialog')).toBeVisible();
+
+  const diffContainer = page.locator('#edit-diff-container');
+  await expect(diffContainer).toBeHidden();
+
+  // Modify text to trigger diff
+  const reqText = page.locator('textarea[name="required_text"]');
+  const originalVal = await reqText.inputValue();
+  await reqText.fill(originalVal + '\n- 추가 검증 서류');
+  await expect(diffContainer).toBeVisible();
+  await expect(diffContainer).toContainText('수정 내용 실시간 미리보기 (원문 대비)');
+  await expect(diffContainer).toContainText('+ 수정:');
+
+  // Revert back
+  await reqText.fill(originalVal);
+  await expect(diffContainer).toBeHidden();
+  await page.locator('#edit-cancel').click();
+  await expect(page.locator('#edit-dialog')).toBeHidden();
+});
+

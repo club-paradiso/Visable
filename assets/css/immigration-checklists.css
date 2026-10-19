@@ -1130,6 +1130,147 @@ main {
 .condition-card h4 { margin: 0 0 6px; font-size: 14px; color: #6e5200; }
 .condition-card p { margin: 0; color: #574618; white-space: pre-wrap; }
 
+/* Legal Restrictions & Ineligibility Card */
+.restriction-card {
+  background: #fff8f6;
+  border: 1.5px solid #e06a55;
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 14px rgba(186, 45, 23, 0.06);
+}
+.restriction-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.restriction-icon { font-size: 20px; line-height: 1; }
+.restriction-head h4 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 850;
+  color: #a82e18;
+}
+.restriction-body p {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: #4a2118;
+  line-height: 1.6;
+  font-weight: 600;
+}
+.restriction-note {
+  font-size: 13px !important;
+  color: #782918 !important;
+  background: #fbeee9;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border-left: 3.5px solid #d24e35;
+  margin-top: 10px !important;
+  font-weight: 500 !important;
+  line-height: 1.6;
+}
+
+/* Unlisted Manual Gap Card */
+.unlisted-card {
+  background: #f2f8fc;
+  border: 1.5px solid #75a8cc;
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 14px rgba(24, 82, 122, 0.06);
+}
+.unlisted-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.unlisted-icon { font-size: 20px; line-height: 1; }
+.unlisted-head h4 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 850;
+  color: #18527a;
+}
+.unlisted-card p {
+  margin: 0 0 8px;
+  font-size: 13.5px;
+  color: #1e4560;
+  line-height: 1.6;
+}
+
+/* Inline Badges for Alternative and Conditional Documents */
+.item-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 750;
+  padding: 2px 7px;
+  border-radius: 4px;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+.alternative-badge {
+  background: #eef2f9;
+  color: #1f4f89;
+  border: 1px solid #bfd3eb;
+}
+.conditional-badge-inline {
+  background: #fcf6e5;
+  color: #7f6006;
+  border: 1px solid #ebd998;
+}
+
+/* Editor Real-time Diff Preview Box */
+.diff-preview-box {
+  margin: 16px 0;
+  padding: 14px 16px;
+  background: #f5f9f6;
+  border: 1px solid #c2decb;
+  border-radius: 10px;
+  font-size: 12.5px;
+}
+.diff-title {
+  display: block;
+  font-weight: 800;
+  color: #1f5e3d;
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+.diff-row {
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed #d5e5db;
+}
+.diff-row:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+.diff-label {
+  font-weight: 700;
+  color: #325841;
+  display: block;
+  margin-bottom: 4px;
+}
+.diff-val {
+  display: block;
+  font-size: 12px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.diff-val-old {
+  color: #a33215;
+  text-decoration: line-through;
+  margin-bottom: 2px;
+}
+.diff-val-new {
+  color: #176840;
+  font-weight: 600;
+}
+
 .app-guidance-card {
   background: #f5f9fc;
   border: 1px solid #cde2f3;
