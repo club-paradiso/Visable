@@ -17,8 +17,11 @@ function meta(item) {return [item.status_code,item.scenario,item.required_text,i
 function note(parent,title,value,cls) {
  if(!value||value==='별도 기재 없음')return;
  var block=element('section','doc-block '+(cls||''));
- var h=element('h4','',title),p=element('p','',value);
- append(block,[h,p]);parent.appendChild(block);
+ var h=element('h4','',title);block.appendChild(h);
+ if(title==='기본·명시 서류'&&String(value).includes('; ')){
+  var ul=element('ul','doc-list');String(value).split(/;\s*/).map(function(v){return v.trim();}).filter(Boolean).forEach(function(v){ul.appendChild(element('li','',v));});block.appendChild(ul);
+ }else{block.appendChild(element('p','',value));}
+ parent.appendChild(block);
 }
 function getDataset() { return state.datasets[state.procedure]; }
 function activeRow(original) {
