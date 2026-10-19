@@ -37,6 +37,8 @@ jobs:
       - name: Install WebKit for iPhone Safari engine QA
         run: ./node_modules/.bin/playwright install --with-deps webkit
       - name: Test mobile Safari/WebKit at 320 and 390 px
+        env:
+          PARADISO_PW_EXECUTABLE: ''
         run: ./node_modules/.bin/playwright test --config=playwright.immigration-webkit.config.mjs
       - name: Keep failure screenshots and traces
         uses: actions/upload-artifact@v4
