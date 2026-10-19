@@ -403,3 +403,10 @@ html[dir="rtl"] .cs-boot-failed, html[dir="rtl"] .cs-noscript { border-left: 1px
   html[dir="rtl"] .cs-route { padding: 18px 0 16px; }
   html[dir="rtl"] .cs-route + .cs-route { padding-right: 0; border-right: 0; }
 }
+
+/* Manual reader entry (manual.html): four supporting tools share one row on wide screens,
+   two per row in between, one per row on phones (the 1fr rule above still wins there). */
+@media (min-width: 1100px) { .cs-tools-support .cs-tool-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (min-width: 681px) and (max-width: 1099px) { .cs-tools-support .cs-tool-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.cs-reader-link { margin: -6px 0 16px; font-size: 14px; }
+.cs-reader-link a { color: var(--cs-green); font-weight: 600; text-underline-offset: 3px; }

@@ -24,6 +24,10 @@ Awaiting content review (staged in `source_manifest.json` under `pending_review_
 > Change review artifacts, and the promotion procedure:
 > `audits/manual-refresh-260901/README.md`.
 
+Readable Markdown conversions (manual reader only, not a grounding source):
+
+- `2026-09/markdown/visa_manual_260901.md`, `2026-09/markdown/stay_manual_260918.md` (+ `images/`) - HWP→Markdown conversions of the 2026.9 visa (2026-09-01) and stay (2026-09-18) manuals, digest-pinned in `data/manual-reader/catalog.json` and cross-checked line-by-line against `2026-09/extracted/*.txt` (≥97% required). They feed `manual.html` only and do not change `source_manifest.json` `current` or any approval gate. See `docs/MANUAL_READER.md`.
+
 Special program manuals (also registered in `source_manifest.json` under `special_program_manuals`):
 
 - `backend/data/sources/manuals/260629_kcore_manual.hwp` - 「육성형 전문기술인력 제도」(K-CORE / E-7-M) 사증·체류관리 매뉴얼, 2026.6 (시행 2026-03-05, 배포 2026-06-29; standard HWP, body fully extracted)
