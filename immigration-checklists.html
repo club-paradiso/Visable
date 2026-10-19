@@ -648,6 +648,10 @@
    <textarea name="editor_note" rows="2" maxlength="2000" placeholder="예: 2026.10 관할청 공식 안내문 확인 예정" required></textarea>
   </label>
   <p class="muted">수정 내용은 이 기기에만 저장됩니다. 수출한 파일을 저장소에 적용하려면 근거·원문을 검토한 뒤 별도 코드 리뷰가 필요합니다.</p>
+  <div id="edit-diff-container" class="diff-preview-box" hidden aria-live="polite">
+   <span class="diff-title">수정 내용 실시간 미리보기 (원문 대비)</span>
+   <div id="edit-diff-content"></div>
+  </div>
   <div class="dialog-actions">
    <button type="button" id="edit-cancel" class="outline-button">취소</button>
    <button type="submit" class="primary-button">초안 저장</button>

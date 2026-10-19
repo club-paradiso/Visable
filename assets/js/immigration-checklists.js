@@ -48,10 +48,11 @@ var VISA_DESCRIPTIONS = {
   'D-2-4': { name: '박사 유학', en: 'Doctoral Degree', desc: '대학원 박사학위 정규과정' },
   'D-2-6': { name: '교환학생', en: 'Exchange Student', desc: '국내외 대학 협정에 따른 교환학생' },
   'D-2-7': { name: '정부초청 장학생', en: 'Govt Scholarship Student', desc: '대한민국 정부초청 외국인 장학생' },
-  'D-2-8': { name: '단기유학', en: 'Short-term Study', desc: '1년 이내의 정규 학위 연수' },
+  'D-2-8': { name: '단기유학', en: 'Short-term Study', desc: '1년 이하의 학점취득 및 단기 유학 연수' },
   'D-3': { name: '기술연수', en: 'Industrial Trainee', desc: '국내 기업체 기술·기능 연수' },
   'D-4': { name: '일반연수', en: 'General Training', desc: '대학 부설 어학원 어학연수 및 초중고 연수' },
   'D-4-1': { name: '어학연수', en: 'Korean Language Trainee', desc: '대학 어학당 한국어 어학연수과정' },
+  'D-4-2K': { name: '기업 맞춤형 연수(K-Trainee)', en: 'Customized Corporate Trainee', desc: '외투기업 및 해외투자 연계 맞춤형 기업 연수' },
   'D-5': { name: '취재', en: 'Journalism', desc: '외국 언론사 국내 상주 파견 기자' },
   'D-6': { name: '종교', en: 'Religion', desc: '외국 종교단체 파견 종교 활동' },
   'D-7': { name: '주재', en: 'Intra-Company Transferee', desc: '외국 본사에서 국내 지사·영업소 파견 주재원' },
@@ -62,6 +63,7 @@ var VISA_DESCRIPTIONS = {
   'D-10': { name: '구직', en: 'Job Seeking', desc: '전문인력 취업 준비 및 스타트업 창업 준비' },
   'D-10-1': { name: '일반 구직', en: 'General Job Seeking', desc: '국내외 대학 졸업자 전문직 구직활동' },
   'D-10-2': { name: '기술창업 준비', en: 'Tech Startup Prep', desc: '기술창업 OASIS 프로그램 및 법인설립 준비' },
+  'D-10-T': { name: '톱티어 구직', en: 'Top-Tier Job Seeking', desc: '세계 유수대학 졸업자 및 글로벌 첨단인재 국내 구직활동' },
   'E-1': { name: '교수', en: 'Professor', desc: '대학교원 및 전문대학 연구교수' },
   'E-2': { name: '회화지도', en: 'Foreign Language Instructor', desc: '외국어 학원 및 초중고 외국어 원어민 강사' },
   'E-3': { name: '연구', en: 'Research', desc: '연구기관의 자연과학·공학 등 전문 연구원' },
@@ -73,18 +75,37 @@ var VISA_DESCRIPTIONS = {
   'E-7-2': { name: '준전문인력', en: 'Semi-Professional Personnel', desc: '면세점 판매원, 항공운송 사무원 등' },
   'E-7-3': { name: '일반기능인력', en: 'General Skilled Worker', desc: '조선용접공, 뿌리기업 기능인력 등' },
   'E-7-4': { name: '숙련기능인력', en: 'Skilled Technician (K-point)', desc: 'E-9/E-10 장기근무자 숙련기능 점수제 전환' },
+  'E-7-4R': { name: '지역특화 숙련기능', en: 'Regional Skilled Technician', desc: '인구감소지역 장기체류 숙련기능 점수제 특례' },
+  'E-7-S': { name: '혁신인재 네거티브', en: 'Innovative Talent (Negative List)', desc: '첨단 신산업·혁신분야 네거티브 규제 적용 전문인력' },
+  'E-7-T': { name: '톱티어 전문인력', en: 'Top-Tier Professional', desc: 'AI·반도체 등 첨단 과학기술 분야 최고급 인재' },
+  'E-7-Y': { name: '청년 우수인재', en: 'Global Youth Talent', desc: '세계 유수대학 졸업 청년 대상 전문인력' },
   'E-8': { name: '계절근로', en: 'Seasonal Worker', desc: '농번기·어번기 단기 계절근로' },
   'E-9': { name: '비전문취업', en: 'Non-Professional (EPS)', desc: '고용허가제 제조업·농축산업·어업·건설업' },
   'E-10': { name: '선원취업', en: 'Vessel Crew', desc: '연근해 어선 및 내항여객선 선원' },
   'F-1': { name: '방문동거', en: 'Visiting & Joining Family', desc: '친척 방문, 가사보조, 동반 가족의 거주' },
   'F-2': { name: '거주', en: 'Resident', desc: '점수제 우수인재, 영주자격 이전 장기 거주' },
   'F-2-7': { name: '점수제 우수인재', en: 'Points-based Resident', desc: '학력·소득·한국어 점수제 우수인재 거주' },
-  'F-3': { name: '동반', en: 'Dependent Family', desc: '전문인력(D·E 계열) 등록자의 배우자 및 미성년 자녀' },
+  'F-2-7S': { name: 'K-STAR·잠재적 우수인재', en: 'K-STAR & Potential Talent', desc: '이공계 특성화대학 졸업자 및 K-STAR 우수인재 거주' },
+  'F-2-R': { name: '지역특화형 거주', en: 'Regional Specialized Resident', desc: '인구감소지역 우수인재 및 동포 정착 지원' },
+  'F-2-T': { name: '톱티어 우수인재', en: 'Top-Tier Resident', desc: '글로벌 톱티어 첨단인재 대상 장기 거주' },
+  'F-3': { name: '동반', en: 'Dependent Family', desc: '전문인력(D·E 계열) 및 동포(F-4·H-2) 등록자의 동반 가족' },
+  'F-3-19': { name: '재외동포 동반가족', en: 'Overseas Korean Dependent', desc: '재외동포(F-4) 자격 소지자의 배우자 및 미성년 자녀' },
+  'F-3-20': { name: '방문취업 동반가족', en: 'Working Visit Dependent', desc: '방문취업(H-2) 자격 소지자의 배우자 및 미성년 자녀' },
   'F-4': { name: '재외동포', en: 'Overseas Korean', desc: '대한민국 국적을 보유했던 자 및 직계비속 동포' },
-  'F-5': { name: '영주', en: 'Permanent Resident', desc: '체류기간 제한 없는 대한민국 영주자격' },
+  'F-4-R': { name: '지역특화 재외동포', en: 'Regional Overseas Korean', desc: '인구감소지역 거주 재외동포 특례 거소신고' },
+  'F-5': { name: '영주', en: 'Permanent Resident', desc: '체류기간 제한 없는 영주자격 (10년 주기 영주증 갱신 대상)' },
+  'F-5-S1': { name: 'K-STAR 영주', en: 'K-STAR Permanent Resident', desc: '이공계 첨단인재 K-STAR 트랙 영주' },
+  'F-5-T': { name: '톱티어 영주', en: 'Top-Tier Permanent Resident', desc: '세계 최고급 첨단인재 톱티어 패스트트랙 영주' },
   'F-6': { name: '결혼이민', en: 'Marriage Migrant', desc: '대한민국 국민과 혼인 관계를 유지하는 배우자' },
   'F-6-1': { name: '국민의 배우자', en: 'Spouse of Korean National', desc: '한국인 배우자와 정상적인 혼인 유지' },
+  'F-6-2': { name: '자녀양육', en: 'Child Rearing', desc: '국민과의 혼인관계 종료 후 미성년 자녀 양육' },
+  'F-6-3': { name: '귀책사유 혼인단절', en: 'Non-Fault Divorce', desc: '배우자 사망·실종 또는 배우자 귀책사유로 인한 이혼 후 체류' },
   'G-1': { name: '기타', en: 'Miscellaneous', desc: '산재 치료, 소송 수행, 난민인정 신청 등 인도적 체류' },
+  'G-1-1': { name: '산재 치료', en: 'Industrial Accident Care', desc: '업무상 재해로 인한 치료 및 요양' },
+  'G-1-2': { name: '질병·사고 치료', en: 'Medical Treatment', desc: '질병 또는 사고로 인한 치료 및 간병' },
+  'G-1-3': { name: '소송 수행', en: 'Lawsuit / Legal Action', desc: '임금체불 등 재판 및 소송 수행' },
+  'G-1-5': { name: '난민신청자', en: 'Refugee Applicant', desc: '대한민국 난민인정 심사 진행 중 체류' },
+  'G-1-6': { name: '인도적 체류자', en: 'Humanitarian Status', desc: '난민 불인정자 중 인도적 사유로 인한 체류' },
   'H-1': { name: '관광취업', en: 'Working Holiday', desc: '협정국 청년의 관광 및 단기취업' },
   'H-2': { name: '방문취업', en: 'Working Visit', desc: '외국국적동포(중국·CIS 등) 단순노무·서비스업 취업' }
 };
@@ -209,23 +230,120 @@ function getProcedureTitle(proc) {
   return proc;
 }
 
-function getVisaInfo(code) {
+function getVisaInfo(rawCode) {
+  if (!rawCode) return { name: '알 수 없음', en: 'Unknown', desc: '체류자격 정보' };
+  var clean = String(rawCode).trim();
+  var code = clean.split(' ')[0].split('·')[0].split('(')[0].trim();
+
+  if (VISA_DESCRIPTIONS[clean]) return VISA_DESCRIPTIONS[clean];
   if (VISA_DESCRIPTIONS[code]) return VISA_DESCRIPTIONS[code];
-  var baseCode = code.split('-').slice(0, 2).join('-');
-  if (VISA_DESCRIPTIONS[baseCode]) return VISA_DESCRIPTIONS[baseCode];
-  var root = code.split('-')[0];
-  if (VISA_DESCRIPTIONS[root]) return VISA_DESCRIPTIONS[root];
+
+  var parts = code.split('-');
+  if (parts.length >= 3) {
+    var sub = parts.slice(0, 3).join('-');
+    if (VISA_DESCRIPTIONS[sub]) return VISA_DESCRIPTIONS[sub];
+    var sub2 = parts.slice(0, 2).join('-');
+    if (VISA_DESCRIPTIONS[sub2]) return VISA_DESCRIPTIONS[sub2];
+  } else if (parts.length === 2) {
+    var root = parts[0];
+    if (VISA_DESCRIPTIONS[root]) return VISA_DESCRIPTIONS[root];
+  }
   return { name: code, en: code, desc: '체류자격 ' + code };
 }
 
+function splitParenSafe(text) {
+  if (!text) return [];
+  var chunks = [];
+  var current = '';
+  var parenDepth = 0;
+  var bracketDepth = 0;
+
+  for (var i = 0; i < text.length; i++) {
+    var ch = text[i];
+    if (ch === '(') parenDepth++;
+    else if (ch === ')') { if (parenDepth > 0) parenDepth--; }
+    else if (ch === '[') bracketDepth++;
+    else if (ch === ']') { if (bracketDepth > 0) bracketDepth--; }
+
+    var isDelimiter = (ch === ';' || ch === '\n' || ch === '、' ||
+      (ch === ',' && parenDepth === 0 && bracketDepth === 0 &&
+       /,\s*(?=[가-힣A-Za-z0-9]+[의·\s]*(?:서류|증명|신청서|사본|계약서|여권|사진|확인서|동의서|등록증|진술서|표|공문|영수증|소견서|통장|납세))/
+       .test(text.slice(i, i + 35))));
+
+    if (isDelimiter && parenDepth === 0 && bracketDepth === 0) {
+      if (current.trim()) chunks.push(current.trim());
+      current = '';
+    } else {
+      current += ch;
+    }
+  }
+  if (current.trim()) chunks.push(current.trim());
+  return chunks;
+}
+
+function parseRequiredDocsStructured(text, item) {
+  if (!text || text === '별도 기재 없음') {
+    return {
+      restrictions: [],
+      unlisted: true,
+      unlistedText: '원문에 명시된 기본 제출 서류가 기재되지 않았습니다. 관할 출입국·외국인관서 또는 1345에 확인하세요.',
+      items: []
+    };
+  }
+
+  var chunks = splitParenSafe(String(text));
+  var restrictions = [];
+  var docs = [];
+  var unlistedText = null;
+
+  chunks.forEach(function (c, idx) {
+    var trimmed = c.trim();
+    if (!trimmed) return;
+
+    // Check for ineligibility or domestic change prohibition
+    if (/대상\s*아님|해당\s*없음|변경\s*불가|자격변경\s*불가|신청\s*불가/i.test(trimmed)) {
+      restrictions.push(trimmed);
+      return;
+    }
+
+    // Check for unlisted standalone manual requirements
+    if (/확인\s*불가|원문\s*미기재|별도\s*기재\s*없음|목록\s*미기재/i.test(trimmed)) {
+      unlistedText = trimmed;
+      return;
+    }
+
+    var reqType = 'mandatory';
+    var isAlternative = /또는|혹은|택\s*1|갈음|대체\s*가능/i.test(trimmed);
+    var isConditional = /\(해당자\)|해당자에\s*한함|소지자에\s*한함|해당하는\s*경우/i.test(trimmed);
+
+    if (isAlternative) reqType = 'alternative';
+    else if (isConditional) reqType = 'conditional';
+
+    docs.push({
+      id: (item ? item.id : 'doc') + '-' + idx,
+      label: trimmed,
+      type: reqType,
+      isFormHelper: /통합신청서|신청서/i.test(trimmed)
+    });
+  });
+
+  return {
+    restrictions: restrictions,
+    unlisted: Boolean(unlistedText),
+    unlistedText: unlistedText,
+    items: docs
+  };
+}
+
 function parseRequiredDocs(text) {
-  if (!text || text === '별도 기재 없음') return [];
-  var items = String(text)
-    .split(/;\s*|\n|,\s*(?=[가-힣A-Za-z0-9]+[의·\s]*(?:서류|증명|신청서|사본|계약서|여권|사진|확인서|동의서|등록증|진술서|표|공문|영수증|소견서|통장|납세))/g)
-    .map(function (s) { return s.trim(); })
-    .filter(Boolean);
-  if (!items.length && text) items = [text.trim()];
-  return items;
+  var structured = parseRequiredDocsStructured(text);
+  if (structured.items.length) {
+    return structured.items.map(function (d) { return d.label; });
+  }
+  if (structured.restrictions.length || structured.unlisted) {
+    return [];
+  }
+  return text ? [text.trim()] : [];
 }
 
 /* ------------------------------------------------------------------------- */
@@ -552,10 +670,50 @@ function renderBaselineChecklist(item) {
   var container = $('baseline-docs-list');
   container.replaceChildren();
 
-  var docs = parseRequiredDocs(item.required_text);
+  var structured = parseRequiredDocsStructured(item.required_text, item);
+
+  // 1. Legal restrictions or ineligibility
+  if (structured.restrictions.length) {
+    var resCard = element('div', 'restriction-card');
+    var resHead = element('div', 'restriction-head');
+    resHead.appendChild(element('span', 'restriction-icon', '⛔'));
+    resHead.appendChild(element('h4', '', '신청 불가 또는 별도 절차 대상 안내'));
+    resCard.appendChild(resHead);
+
+    var resBody = element('div', 'restriction-body');
+    structured.restrictions.forEach(function (r) {
+      resBody.appendChild(element('p', '', r));
+    });
+
+    if (state.procedure === 'extension' && item.status_code.includes('F-5')) {
+      resBody.appendChild(element('p', 'restriction-note', '※ 영주(F-5) 자격은 체류기간 제한이 없으므로 체류기간 연장허가 대상이 아닙니다. 10년 주기 영주증(등록증) 만료 시에는 관할 출입국관서에서 영주증 재발급·갱신을 신청해야 합니다.'));
+    } else if (state.procedure === 'change') {
+      resBody.appendChild(element('p', 'restriction-note', '※ 이 체류자격은 출입국관리법령상 국내에서 다른 자격으로(또는 다른 자격에서 이 자격으로) 변경허가를 신청할 수 없는 원칙이 적용됩니다. 출국 후 재외공관을 통한 신규 사증(Visa) 발급 대상입니다.'));
+    }
+
+    resCard.appendChild(resBody);
+    container.appendChild(resCard);
+  }
+
+  // 2. Unlisted in manual
+  if (structured.unlisted) {
+    var unCard = element('div', 'unlisted-card');
+    var unHead = element('div', 'unlisted-head');
+    unHead.appendChild(element('span', 'unlisted-icon', 'ℹ️'));
+    unHead.appendChild(element('h4', '', '원문 매뉴얼 상 독립 제출서류 목록 미기재'));
+    unCard.appendChild(unHead);
+    unCard.appendChild(element('p', '', structured.unlistedText || '2026년 9월 공식 매뉴얼에 독립된 제출서류 목록이 수록되어 있지 않습니다. 관할 출입국관서 또는 1345에 확인하세요.'));
+    unCard.appendChild(element('p', 'muted', '출입국관리법령상 개별 심사관 판단에 따라 제출 서류가 정해지므로 방문 전 관할청에 문의하시기 바랍니다.'));
+    container.appendChild(unCard);
+  }
+
+  // 3. Document items
+  var docs = structured.items;
   if (!docs.length) {
-    container.appendChild(element('p', 'muted', '명시된 기본 제출 서류가 원문에 기재되지 않았습니다. 관할 출입국관서 또는 하이코리아에 서류 요건을 확인하세요.'));
-    updateProgressBar(0, 0);
+    if (!structured.restrictions.length && !structured.unlisted) {
+      container.appendChild(element('p', 'muted', '명시된 기본 제출 서류가 원문에 기재되지 않았습니다. 관할 출입국관서 또는 하이코리아에 서류 요건을 확인하세요.'));
+    }
+    updateProgressBar(0, 0, structured.restrictions.length > 0 ? '신청 제한 / 별도 절차 대상' : structured.unlisted ? '공식 서류 목록 개별 확인 필요' : '0 / 0개 준비 완료 (0%)');
     return;
   }
 
@@ -563,9 +721,9 @@ function renderBaselineChecklist(item) {
   var totalCount = docs.length;
   var checkedCount = 0;
 
-  docs.forEach(function (docTitle, idx) {
+  docs.forEach(function (docItem, idx) {
     var itemId = 'doc-chk-' + item.id + '-' + idx;
-    var isChecked = checkedSet.has(docTitle);
+    var isChecked = checkedSet.has(docItem.label);
     if (isChecked) checkedCount++;
 
     var row = element('div', 'checklist-item' + (isChecked ? ' checked' : ''));
@@ -575,17 +733,26 @@ function renderBaselineChecklist(item) {
     input.type = 'checkbox';
     input.id = itemId;
     input.checked = isChecked;
-    input.setAttribute('aria-label', docTitle + ' 준비 완료');
+    input.setAttribute('aria-label', docItem.label + ' 준비 완료');
     chkWrap.appendChild(input);
 
     var textWrap = element('div', 'checklist-text-wrap');
     var label = document.createElement('label');
     label.htmlFor = itemId;
     label.className = 'checklist-doc-name';
-    label.textContent = docTitle;
+    label.textContent = docItem.label;
+
+    if (docItem.type === 'alternative') {
+      var altBadge = element('span', 'item-badge alternative-badge', '택 1 제출 (대체 가능)');
+      label.appendChild(altBadge);
+    } else if (docItem.type === 'conditional') {
+      var condBadge = element('span', 'item-badge conditional-badge-inline', '해당자 제출');
+      label.appendChild(condBadge);
+    }
+
     textWrap.appendChild(label);
 
-    if (docTitle.includes('통합신청서') || docTitle.includes('신청서')) {
+    if (docItem.isFormHelper) {
       var link = document.createElement('a');
       link.href = 'form-helper.html';
       link.className = 'checklist-form-helper-link';
@@ -599,10 +766,10 @@ function renderBaselineChecklist(item) {
 
     input.addEventListener('change', function () {
       if (input.checked) {
-        checkedSet.add(docTitle);
+        checkedSet.add(docItem.label);
         row.classList.add('checked');
       } else {
-        checkedSet.delete(docTitle);
+        checkedSet.delete(docItem.label);
         row.classList.remove('checked');
       }
       state.checked_docs[item.id] = Array.from(checkedSet);
@@ -616,15 +783,21 @@ function renderBaselineChecklist(item) {
   updateProgressBar(checkedCount, totalCount);
 }
 
-function updateProgressBar(checked, total) {
+function updateProgressBar(checked, total, customText) {
   var percent = total > 0 ? Math.round((checked / total) * 100) : 0;
   var fill = $('checklist-progress-fill');
   var track = $('checklist-progress-track');
   var label = $('progress-fraction');
 
-  fill.style.width = percent + '%';
-  track.setAttribute('aria-valuenow', String(percent));
-  label.textContent = checked + ' / ' + total + '개 준비 완료 (' + percent + '%)';
+  if (fill) fill.style.width = percent + '%';
+  if (track) track.setAttribute('aria-valuenow', String(percent));
+  if (label) {
+    if (customText) {
+      label.textContent = customText;
+    } else {
+      label.textContent = checked + ' / ' + total + '개 준비 완료 (' + percent + '%)';
+    }
+  }
 }
 
 function renderConditionalDocs(item) {
@@ -666,10 +839,10 @@ function renderOfficeDifferences(item) {
 
   if (!state.office) {
     var notice = element('div', 'office-transparent-notice');
-    notice.appendChild(element('strong', '', '전국 공통 기준이 적용 중입니다.'));
-    notice.appendChild(element('p', '', '상단에서 방문하실 관할 출입국·외국인관서를 선택하시면 해당 관서에 대해 별도로 검증된 서류 요구사항이 있는지 확인할 수 있습니다.'));
+    notice.appendChild(element('strong', '', '전국 기준 안내가 적용 중입니다.'));
+    notice.appendChild(element('p', '', '방문 예정인 관할 출입국·외국인관서를 선택하시면 해당 관서에 대해 별도로 확인된 요구서류가 있는지 안내해 드립니다.'));
     container.appendChild(notice);
-    $('office-status-badge').textContent = '전국 공통';
+    $('office-status-badge').textContent = '전국 기준 안내';
     return;
   }
 
@@ -682,10 +855,10 @@ function renderOfficeDifferences(item) {
       container.appendChild(officeCallout(entry));
     });
   } else {
-    $('office-status-badge').textContent = oName + ' 공통 적용';
+    $('office-status-badge').textContent = oName + ' 전국 기준 안내';
     var notice2 = element('div', 'office-transparent-notice');
-    notice2.appendChild(element('strong', '', oName + ' 추가 서류 안내'));
-    notice2.appendChild(element('p', '', '이 관서에 대해 별도로 확인된 서류 차이는 아직 없어요. 방문 전 관할청의 최신 안내를 확인해 주세요.'));
+    notice2.appendChild(element('strong', '', oName + ' 서류 안내'));
+    notice2.appendChild(element('p', '', '이 관서에 대해 별도로 확인된 서류 차이가 아직 없습니다. 출입국관리법령상 관할 청장의 재량에 따라 추가 소명서류가 요구될 수 있으므로, 방문 전 관할청의 최신 공지를 확인해 주세요.'));
     container.appendChild(notice2);
   }
 }
@@ -749,6 +922,57 @@ function exportOffice() {
   });
 }
 
+function updateEditorDiff() {
+  var diffBox = $('edit-diff-container');
+  var diffContent = $('edit-diff-content');
+  if (!diffBox || !diffContent) return;
+
+  var item = state.selected_item;
+  if (!item) {
+    diffBox.hidden = true;
+    return;
+  }
+  var row = activeRow(item);
+  var form = $('edit-form');
+  var changes = [];
+
+  var fieldLabels = {
+    required_text: '기본·명시 서류',
+    conditional_text: '조건부·대체·생략',
+    application_text: '본인·대리 신청 안내',
+    note_text: '비고·근거'
+  };
+
+  FIELDS.forEach(function (k) {
+    var originalVal = String(row[k] || '').trim();
+    var fieldEl = form.elements.namedItem(k);
+    var currentVal = String(fieldEl ? fieldEl.value : '').trim();
+    if (originalVal !== currentVal) {
+      changes.push({
+        label: fieldLabels[k] || k,
+        oldVal: originalVal || '(기존 비어있음)',
+        newVal: currentVal || '(내용 삭제됨)'
+      });
+    }
+  });
+
+  if (!changes.length) {
+    diffBox.hidden = true;
+    diffContent.replaceChildren();
+    return;
+  }
+
+  diffBox.hidden = false;
+  diffContent.replaceChildren();
+  changes.forEach(function (ch) {
+    var rowEl = element('div', 'diff-row');
+    rowEl.appendChild(element('span', 'diff-label', ch.label));
+    rowEl.appendChild(element('span', 'diff-val diff-val-old', '- 원본: ' + ch.oldVal));
+    rowEl.appendChild(element('span', 'diff-val diff-val-new', '+ 수정: ' + ch.newVal));
+    diffContent.appendChild(rowEl);
+  });
+}
+
 function openEditor(item) {
   state.selected_item = item;
   var row = activeRow(item);
@@ -763,6 +987,7 @@ function openEditor(item) {
   });
   form.elements.namedItem('editor_note').value = (state.nationalDrafts[item.id] || {}).editor_note || '';
   toggleScope();
+  updateEditorDiff();
 
   if (typeof dialog.showModal === 'function') dialog.showModal();
   else dialog.setAttribute('open', '');
@@ -786,6 +1011,7 @@ function toggleScope() {
     form.elements.namedItem('editor_note').value = patch && patch.editor_note || '';
     $('edit-evidence').value = patch && patch.evidence?.[0]?.url || '';
   }
+  updateEditorDiff();
 }
 
 function saveDraft(e) {
@@ -1153,6 +1379,7 @@ $('draft-toggle').addEventListener('click', function () {
 
 $('edit-scope').addEventListener('change', toggleScope);
 $('edit-office').addEventListener('change', toggleScope);
+$('edit-form').addEventListener('input', updateEditorDiff);
 $('edit-cancel').addEventListener('click', function () {
   if (typeof $('edit-dialog').close === 'function') $('edit-dialog').close();
   else $('edit-dialog').removeAttribute('open');
@@ -1172,6 +1399,12 @@ $('lang-select').addEventListener('change', function (e) {
     $('page-title').innerHTML = '내 상황에 맞는 서류,<br><span>필요한 것부터 쉽고 확실하게.</span>';
   }
 });
+
+window.__VISABLE_INTERNALS = {
+  splitParenSafe: splitParenSafe,
+  parseRequiredDocsStructured: parseRequiredDocsStructured,
+  getVisaInfo: getVisaInfo
+};
 
 load();
 })();
