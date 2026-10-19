@@ -52,7 +52,8 @@
 - 검증 엔진: Github Actions Ubuntu의 실제 Chromium 브라우저를 Playwright가 제어.
 - 뷰포트: 320x568, 390x844, 768x1024, 1280x900.
 - 절차·검색·관할청 필터·모바일 가로 넘침·문구 초안·로컬 저장·JSON 내보내기·XSS·1.2초 지연 로딩을 포함한 **24개 테스트 통과**, run https://github.com/club-paradiso/Visable/actions/runs/39202987942
-- iOS WebKit 엔진에 대한 추가 테스트가 같은 PR 후속 커밋에서 실행되도록 GitHub Actions 확장. 결과 확정 전에는 iPhone Safari 통과라고 보고하지 않음.
+- iOS Safari 렌더링 엔진(WebKit)으로 320×568 및 390×844 에뮬레이션 **12개 테스트 통과**. 최초 실행에서 Chrome 실행 경로가 WebKit 런처로 전파되는 QA 설정 오류를 수정해 다시 실행하였으며 최종 결과는 성공. https://github.com/club-paradiso/Visable/actions/runs/39203444158
+- 최종 검증 합계는 Chromium 24개 + WebKit 12개 = **36개 브라우저 E2E 통과**.
 - 물리적 iPhone/Android 실기기 테스트는 수행하지 못했으며 에뮬레이션과 구분해야 함.
 
-**프로덕션 공개:** 법령 항목별 근거 확인과 모바일 WebKit 회귀 테스트를 마치기 전에는 PR을 Draft로 유지.
+**프로덕션 공개:** 모바일 WebKit 회귀 테스트는 통과했지만 법령상 고위험 항목과 647개 개별 서류의 독립적인 공식 원문 검토는 완료하지 않았으므로 PR을 Draft로 유지.
