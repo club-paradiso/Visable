@@ -61,7 +61,7 @@ function card(original) {
  var body=element('div','card-body');
  note(body,'기본·명시 서류',item.required_text);
  note(body,'해당자·대체·생략 조건',item.conditional_text,'conditional');
- note(body,'본인·대리 신청',item.application_text);
+ note(body,'본인·대리 신청',item.application_text|| (state.procedure==='registration' ? '신규 외국인등록 및 국내거소신고는 등록대상자의 연령·생체정보 등록 여부에 따라 본인 출석이 필요할 수 있습니다. 대리 접수 가능 여부와 생체정보 제공 절차는 별도로 확인해야 합니다.' : ''));
  note(body,'비고 및 원문 주의',item.note_text);
  card.appendChild(body);
  if(state.office)localNotes(item).forEach(function(o){card.appendChild(officeCallout(o));});
@@ -81,7 +81,7 @@ function render() {
  if(!results.length){var empty=element('div','empty');append(empty,[element('strong','','결과를 찾지 못했어요.'),element('p','','체류자격 코드나 서류명을 짧게 입력하거나 검색을 초기화해 보세요.')]);frag.appendChild(empty);}
  else results.slice(0,state.limit).forEach(function(i){frag.appendChild(card(i));});
  target.replaceChildren(frag);target.setAttribute('aria-busy','false');
- $('count').textContent=results.length+'건의 상황별 항목'+(state.query?' 검색됨':'')+(state.office?' · '+officeName(state.office)+' 선택':'');
+ $('count').textContent=results.length+'건의 상황별 항목'+(state.query?' 검색됨':'')+(state.office?' · '+officeName(state.office)+' 선택 (검증된 지역 차이만 표시)':'');
  var more=$('show-more');more.hidden=results.length<=state.limit;if(!more.hidden)more.textContent='더 보기 ('+(results.length-state.limit)+'건 남음) ↓';
  $('export-drafts').hidden=!Object.keys(state.nationalDrafts).some(function(id){return getDataset().items.some(function(i){return i.id===id;});});
  $('export-office-drafts').hidden=!Object.keys(state.officeDrafts).length;
