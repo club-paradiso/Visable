@@ -79,14 +79,14 @@ function filtered() {
  return q?data.items.filter(function(i){return normalize(meta(activeRow(i))).includes(q);}):data.items;
 }
 function render() {
- var results=filtered(),target=$('cards');target.setAttribute('aria-busy','true');
+ var results=filtered(),target=$('cards'),dataset=getDataset();if(!dataset)return;target.setAttribute('aria-busy','true');
  var frag=document.createDocumentFragment();
  if(!results.length){var empty=element('div','empty');append(empty,[element('strong','','결과를 찾지 못했어요.'),element('p','','체류자격 코드나 서류명을 짧게 입력하거나 검색을 초기화해 보세요.')]);frag.appendChild(empty);}
  else results.slice(0,state.limit).forEach(function(i){frag.appendChild(card(i));});
  target.replaceChildren(frag);target.setAttribute('aria-busy','false');
  $('count').textContent=results.length+'건의 상황별 항목'+(state.query?' 검색됨':'')+(state.office?' · '+officeName(state.office)+' 선택 (검증된 지역 차이만 표시)':'');
  var more=$('show-more');more.hidden=results.length<=state.limit;if(!more.hidden)more.textContent='더 보기 ('+(results.length-state.limit)+'건 남음) ↓';
- $('export-drafts').hidden=!Object.keys(state.nationalDrafts).some(function(id){return getDataset().items.some(function(i){return i.id===id;});});
+ $('export-drafts').hidden=!Object.keys(state.nationalDrafts).some(function(id){return dataset.items.some(function(i){return i.id===id;});});
  $('export-office-drafts').hidden=!Object.keys(state.officeDrafts).length;
 }
 function renderNotes(){
