@@ -109,6 +109,9 @@ body.civic-refresh::before, body.civic-refresh::after { display: none !important
 .cs-sug-label { font-size: 16px; font-weight: 600; line-height: 1.45; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .cs-sug-label mark { background: none; color: var(--cs-green); font-weight: 800; }
 .cs-sug-sub { font-size: 13px; line-height: 1.45; color: var(--cs-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cs-sug-kind-inline, .cs-sug-sep { display: none; }
+.cs-sheet-close { display: none; }
+.cs-submit > .cs-icon { display: none; }
 .cs-sug > .cs-icon { grid-area: go; width: 16px; height: 16px; opacity: .55; }
 .cs-suggest-foot { margin: 0; padding: 8px 16px 10px; font-size: 12px; color: var(--cs-muted); border-top: 1px solid var(--cs-line); }
 @media (hover: none) { .cs-suggest-keys { display: none; } }
@@ -417,4 +420,44 @@ html[dir="rtl"] .cs-boot-failed, html[dir="rtl"] .cs-noscript { border-left: 1px
 @media (min-width: 1100px) { .cs-tools-support .cs-tool-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 @media (min-width: 681px) and (max-width: 1099px) { .cs-tools-support .cs-tool-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .cs-reader-link { margin: -6px 0 16px; font-size: 14px; }
-.cs-reader-link a { color: var(--cs-green); font-weight: 600; text-underline-offset: 3px; }
+.cs-reader-link a { color: var(--cs-green); font-weight: 600; text-underline-offset: 3px; display: inline-flex; align-items: center; min-height: 44px; }
+
+/* ---- results header search: one bar, one clear button ----
+   The bar draws the focus ring; the input's own product-wide ring and the browser's built-in
+   search clear button would add a box and a second × inside it. */
+.civic-refresh.searched #q { --vp-focus: 0 0 0 0 transparent; }
+.civic-refresh.searched #q:focus-visible { outline: none; }
+.civic-refresh.searched #q::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; }
+
+/* ---- phones ---- */
+@media (max-width: 680px) {
+  /* search sheet: the field moves to the top and the space above the keyboard goes to suggestions */
+  body.cs-sheet .cs-nav, body.cs-sheet .cs-hero h1, body.cs-sheet #civicSearchSub { display: none; }
+  body.cs-sheet .cs-hero { padding-top: 10px; }
+  body.cs-sheet #civicSearchForm { position: sticky; top: 0; z-index: 5; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: 4px; padding: 8px 0 6px; background: var(--cs-bg); }
+  body.cs-sheet #civicSearchForm > .cs-suggest { grid-column: 1 / -1; }
+  /* in the sheet the keyboard's search key is the main submit; the bar keeps a compact one (44 px) */
+  body.cs-sheet .cs-searchbar > .cs-icon { display: none; }
+  body.cs-sheet .cs-searchbar > .cs-submit { width: 44px; min-height: 44px; padding: 0; display: inline-flex; align-items: center; justify-content: center; }
+  body.cs-sheet .cs-submit-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  body.cs-sheet .cs-submit > .cs-icon { display: block; width: 20px; height: 20px; filter: brightness(0) invert(1); }
+  body[data-theme="dark"].cs-sheet .cs-submit > .cs-icon { filter: brightness(0); }
+  body.cs-sheet .cs-searchbar { min-height: 52px; padding: 4px 4px 4px 14px; gap: 2px; }
+  body.cs-sheet .cs-sheet-close { display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; padding: 0 2px 0 10px; border: 0; background: none; color: var(--cs-green); font-size: 16px !important; font-weight: 600; white-space: nowrap; }
+  body.cs-sheet .cs-examples { margin-top: 12px; }
+  /* compact suggestion rows: the type moves into the quiet second line */
+  .cs-sug { grid-template-columns: minmax(0, 1fr) 16px; grid-template-areas: "main go"; min-height: 56px; padding: 9px 12px; }
+  .cs-sug-kind { display: none; }
+  .cs-sug-kind-inline { display: inline; color: var(--cs-green); font-weight: 600; }
+  .cs-sug-sep { display: inline; }
+  .cs-suggest-list { padding: 4px 4px 6px; }
+  .cs-sug + .cs-sug { border-top: 1px solid var(--cs-row); }
+  /* tools: two lines of description instead of a cut-off one */
+  .cs-tool small { -webkit-line-clamp: 2; }
+  /* results header: smaller brand, the bar gets the width */
+  .civic-refresh.searched #hero { padding: 10px 16px !important; }
+  .civic-refresh.searched #hero .brand-wordmark-img { max-height: 30px; width: auto; }
+  .civic-refresh.searched #hero { transition: transform .2s ease; }
+  body.cs-hdr-away.civic-refresh.searched #hero { transform: translateY(-100%); }
+}
+html[dir="rtl"] body.cs-sheet .cs-sheet-close { padding: 0 10px 0 2px; }
