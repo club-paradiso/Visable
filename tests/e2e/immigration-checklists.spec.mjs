@@ -39,7 +39,8 @@ test('user local drafts require evidence notes and never publish an unapproved o
   await page.locator('textarea[name="required_text"]').fill('검증되지 않은 가상 서류: 모의검증용');
   await page.locator('textarea[name="editor_note"]').fill('2026-10-19 가상 데이터: 배포 금지');
   await page.getByRole('button',{name:'초안 저장'}).click();
-  await expect(page.locator('.office-specific')).toContainText(['관서별 편집 초안','검증되지 않은 가상 서류']);
+  await expect(page.locator('.office-specific')).toContainText('관서별 편집 초안');
+  await expect(page.locator('.office-specific')).toContainText('검증되지 않은 가상 서류');
   await expect(page.locator('.doc-card').first().locator('.doc-block').first()).not.toContainText('검증되지 않은 가상 서류');
   const draft=await page.evaluate(()=>JSON.parse(localStorage.getItem('visable.checklists.officeDrafts.v1')));
   expect(Object.values(draft)[0].review_state).toBe('DRAFT');
