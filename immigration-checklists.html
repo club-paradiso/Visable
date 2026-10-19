@@ -3,74 +3,678 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#f6f9f7">
+<meta name="theme-color" content="#174d37">
 <meta name="description" content="Visable 체류기간 연장·자격변경·외국인등록 서류를 상황별로 검색하고 관서별 추가 안내를 구분해 확인하세요.">
 <title>서류 안내 | VISABLE</title>
 <link rel="icon" href="assets/brand/visable-favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/css/immigration-checklists.css">
 <script src="assets/js/immigration-checklists.js" defer></script>
 </head>
-<body>
-<a class="skip" href="#results">검색 결과로 이동</a>
-<header class="topbar">
- <a class="brand" href="index.html" aria-label="VISABLE 메인으로"><img src="assets/brand/visable-wordmark.svg" width="111" height="31" alt="VISABLE"></a>
- <span class="bar-divider" aria-hidden="true"></span><span class="bar-name">서류 안내</span>
- <div class="header-actions"><a href="index.html" class="quiet-link">홈으로</a><button type="button" id="draft-toggle" class="quiet-button" aria-expanded="false" aria-controls="draft-info">편집 안내</button></div>
+<body data-mode="guided" data-operator="false">
+<a class="skip" href="#main-content">본문 바로가기</a>
+<a class="skip" href="#results">전체 검색 결과로 이동</a>
+
+<header class="topbar" role="banner">
+ <div class="topbar-brand-area">
+  <a class="brand" href="index.html" aria-label="VISABLE 메인으로">
+   <img src="assets/brand/visable-wordmark.svg" width="111" height="31" alt="VISABLE">
+  </a>
+  <span class="bar-divider" aria-hidden="true"></span>
+  <span class="bar-name">서류 안내</span>
+ </div>
+
+ <nav class="mode-nav" aria-label="탐색 방식">
+  <a href="#guided-discovery" class="mode-nav-btn active" id="jump-guided-btn">
+   <span aria-hidden="true">✨</span>
+   <span>맞춤 안내</span>
+  </a>
+  <a href="#search-section" class="mode-nav-btn" id="jump-search-btn">
+   <span aria-hidden="true">🔍</span>
+   <span>전체 검색</span>
+  </a>
+ </nav>
+
+ <div class="header-actions">
+  <a href="form-helper.html" class="header-link quiet-link" title="공식 서식 작성 도우미">
+   <span>서식 작성</span>
+   <span class="ext-arrow" aria-hidden="true">↗</span>
+  </a>
+  <label class="lang-selector-wrap" aria-label="언어 선택">
+   <select id="lang-select" class="lang-select">
+    <option value="ko" selected>한국어</option>
+    <option value="en">English</option>
+   </select>
+  </label>
+  <button type="button" id="operator-mode-toggle" class="quiet-button operator-pill" aria-pressed="false" title="데이터 관리자 전용 편집 모드">
+   <span class="op-dot" aria-hidden="true"></span>
+   <span class="op-text">운영자 모드</span>
+  </button>
+ </div>
 </header>
-<main>
+
+<main id="main-content">
+ <!-- Hero Section -->
  <section class="hero" aria-labelledby="page-title">
   <div class="hero-content">
-   <p class="eyebrow">IMMIGRATION DOCUMENTS / 2026.09</p>
-   <h1 id="page-title">내 상황에 맞는 서류,<br><span>필요한 것부터.</span></h1>
-   <p class="hero-copy">체류자격과 신청 업무를 선택하면 필요한 준비사항을 확인할 수 있어요. 같은 자격이어도 신청 상황에 따라 서류가 달라질 수 있습니다.</p>
-   <div class="hero-meta"><span>연장 224</span><span>자격변경 251</span><span>등록·거소신고 172</span></div>
+   <p class="eyebrow" id="hero-eyebrow">IMMIGRATION DOCUMENTS / 2026.09</p>
+   <h1 id="page-title">내 상황에 맞는 서류,<br><span>필요한 것부터 쉽고 확실하게.</span></h1>
+   <p class="hero-copy" id="hero-copy">체류자격과 신청 업무를 선택하면 필요한 준비사항을 확인할 수 있어요. 같은 자격이어도 신청 상황에 따라 서류가 달라질 수 있습니다.</p>
+   <div class="hero-meta">
+    <span class="meta-badge"><strong id="hero-meta-cases">647개</strong> 세부 상황</span>
+    <span class="meta-badge"><strong id="hero-meta-offices">26개</strong> 관할관서 대응</span>
+    <span class="meta-badge">법무부 매뉴얼 편집본</span>
+   </div>
   </div>
-  <div class="hero-symbol" aria-hidden="true"><span>V</span><i>DOCUMENT GUIDE</i></div>
+  <div class="hero-symbol" aria-hidden="true">
+   <span>V</span>
+   <i>DOCUMENT GUIDE</i>
+  </div>
  </section>
- <section class="query-panel" aria-labelledby="search-title">
-  <div class="section-head"><div><p class="step">01 / FIND YOUR DOCUMENTS</p><h2 id="search-title">서류 찾아보기</h2></div><span class="scope-note">2026년 9월 편집본</span></div>
+
+ <!-- Operator Notification Bar (Visible in operator mode) -->
+ <section id="operator-banner" class="operator-banner" hidden aria-labelledby="op-banner-title">
+  <div class="op-banner-content">
+   <div>
+    <p class="step">FOR CONTENT MAINTAINERS</p>
+    <h2 id="op-banner-title">데이터 편집 및 검토 초안 모드</h2>
+    <p>각 항목의 <strong>문구 편집</strong>을 선택하면 이 브라우저에서 편집한 뒤 JSON을 내려받을 수 있어요. 저장한 초안은 서버나 GitHub에 자동 반영되지 않습니다. 관서별 차이는 전국 공통 안내를 덮어쓰지 않고 근거와 검토 상태를 별도로 관리해야 합니다.</p>
+   </div>
+   <div class="op-banner-actions">
+    <button type="button" id="draft-toggle" class="outline-button" aria-expanded="false" aria-controls="draft-info">편집 안내 펼치기</button>
+    <a href="https://github.com/club-paradiso/Visable/tree/main/backend/data/visa_authoring" target="_blank" rel="noopener noreferrer" class="outline-button">기존 자격별 데이터 구조 ↗</a>
+   </div>
+  </div>
+ </section>
+
+ <section id="draft-info" class="editor-intro" hidden aria-labelledby="editor-title">
+  <div>
+   <p class="step">DATA SPECIFICATION</p>
+   <h2 id="editor-title">데이터 편집은 초안부터</h2>
+   <p>각 항목의 <strong>문구 편집</strong>을 선택하면 이 브라우저에서 편집한 뒤 JSON을 내려받을 수 있어요. 저장한 초안은 서버나 GitHub에 자동 반영되지 않습니다. 관서별 차이는 전국 공통 안내를 덮어쓰지 않고 근거와 검토 상태를 별도로 관리해야 합니다.</p>
+  </div>
+  <a href="https://github.com/club-paradiso/Visable/tree/main/backend/data/visa_authoring" target="_blank" rel="noopener noreferrer">기존 자격별 데이터 구조 ↗</a>
+ </section>
+
+ <!-- =================================================================== -->
+ <!-- 01 / GUIDED DISCOVERY FLOW                                          -->
+ <!-- =================================================================== -->
+ <section id="guided-discovery" class="guided-container" aria-labelledby="guided-sec-title">
+  <div class="section-head guided-head">
+   <div>
+    <p class="step">01 / GUIDED DISCOVERY</p>
+    <h2 id="guided-sec-title">맞춤 서류 단계별 찾기</h2>
+   </div>
+   <span class="scope-note">초보자 추천 · 4단계 안내</span>
+  </div>
+
+  <!-- Stepper Bar -->
+  <nav class="guided-stepper" aria-label="서류 안내 단계">
+   <ol class="stepper-list">
+    <li class="stepper-item active" data-step="1">
+     <button type="button" class="stepper-btn" id="stepper-btn-1">
+      <span class="step-num">1</span>
+      <span class="step-label">업무 선택</span>
+     </button>
+    </li>
+    <li class="stepper-item" data-step="2">
+     <button type="button" class="stepper-btn" id="stepper-btn-2" disabled>
+      <span class="step-num">2</span>
+      <span class="step-label">체류자격</span>
+     </button>
+    </li>
+    <li class="stepper-item" data-step="3">
+     <button type="button" class="stepper-btn" id="stepper-btn-3" disabled>
+      <span class="step-num">3</span>
+      <span class="step-label">세부 상황</span>
+     </button>
+    </li>
+    <li class="stepper-item" data-step="4">
+     <button type="button" class="stepper-btn" id="stepper-btn-4" disabled>
+      <span class="step-num">4</span>
+      <span class="step-label">서류 체크리스트</span>
+     </button>
+    </li>
+   </ol>
+  </nav>
+
+  <!-- STEP 1: TASK DISCOVERY (FLOW A) -->
+  <div id="guided-step-1" class="guided-step active" aria-labelledby="step-1-title">
+   <div class="step-header">
+    <p class="step-badge">STEP 01</p>
+    <h3 id="step-1-title">한국에서 어떤 일을 하려고 하나요?</h3>
+    <p class="step-desc">원하는 업무를 선택해 주세요. 각 업무에 따라 준비해야 할 기본 법적 절차가 달라집니다.</p>
+   </div>
+
+   <div class="task-grid">
+    <button type="button" class="task-card" data-procedure="extension">
+     <div class="task-card-icon" aria-hidden="true">⏱️</div>
+     <div class="task-card-body">
+      <div class="task-pill">체류기간 연장</div>
+      <h4 class="task-title">한국에 더 머물고 싶어요</h4>
+      <p class="task-desc">현재 체류자격을 유지하면서 허가된 체류기간 만료일을 뒤로 연장하고자 할 때 신청합니다.</p>
+      <span class="task-subtext">일반적으로 만료 4개월 전부터 신청 가능 (224개 상황)</span>
+     </div>
+    </button>
+
+    <button type="button" class="task-card" data-procedure="change">
+     <div class="task-card-icon" aria-hidden="true">🔄</div>
+     <div class="task-card-body">
+      <div class="task-pill">체류자격 변경</div>
+      <h4 class="task-title">한국에서 하는 일이 바뀌었어요</h4>
+      <p class="task-desc">학업에서 취업, 직장 이직, 투자, 결혼 등 다른 체류자격(비자)으로 변경하고자 할 때 신청합니다.</p>
+      <span class="task-subtext">새로 부여받을 목표 자격 기준 서류 확인 (251개 상황)</span>
+     </div>
+    </button>
+
+    <button type="button" class="task-card" data-procedure="registration">
+     <div class="task-card-icon" aria-hidden="true">🪪</div>
+     <div class="task-card-body">
+      <div class="task-pill">외국인등록</div>
+      <h4 class="task-title">외국인등록증을 처음 만들고 싶어요</h4>
+      <p class="task-desc">대한민국에 90일을 초과하여 장기 체류하기 위해 입국 후 신규 외국인등록증을 발급받을 때 신청합니다.</p>
+      <span class="task-subtext">입국일로부터 90일 이내 관할 출입국 방문 필수</span>
+     </div>
+    </button>
+
+    <button type="button" class="task-card" data-procedure="registration" data-sub="residence">
+     <div class="task-card-icon" aria-hidden="true">🌏</div>
+     <div class="task-card-body">
+      <div class="task-pill">국내거소신고</div>
+      <h4 class="task-title">재외동포로 거소신고를 하고 싶어요</h4>
+      <p class="task-desc">재외동포(F-4) 자격 소지자가 대한민국 내에 거소를 정하여 국내거소신고증을 발급받을 때 신청합니다.</p>
+      <span class="task-subtext">재외동포법에 따른 거소신고 및 연계 서류 확인</span>
+     </div>
+    </button>
+   </div>
+
+   <div class="task-help-banner">
+    <div class="task-help-icon" aria-hidden="true">💡</div>
+    <div class="task-help-text">
+     <strong>어떤 절차에 해당하는지 잘 모르겠나요?</strong>
+     <span>상황별 차이점과 하이코리아·1345 공식 상담 번호를 확인하세요.</span>
+    </div>
+    <button type="button" id="task-help-btn" class="outline-button">절차 구별 가이드 보기</button>
+   </div>
+  </div>
+
+  <!-- STEP 2: VISA STATUS DISCOVERY (FLOW B) -->
+  <div id="guided-step-2" class="guided-step" aria-labelledby="step-2-title" hidden>
+   <div class="step-header">
+    <div class="step-nav-row">
+     <button type="button" class="back-link-btn" id="step-2-back">← 이전: 업무 선택으로</button>
+     <span class="active-proc-badge" id="step-2-proc-badge">체류기간 연장</span>
+    </div>
+    <p class="step-badge">STEP 02</p>
+    <h3 id="step-2-title">현재 어떤 체류자격으로 머무르고 있나요?</h3>
+    <p class="step-desc" id="step-2-desc">소지하고 계신 외국인등록증이나 사증(Visa)의 체류자격을 선택해 주세요.</p>
+   </div>
+
+   <div id="change-target-notice" class="notice info-notice" hidden>
+    <strong>체류자격 변경 안내</strong>
+    <p>체류자격 변경은 <strong>새로 허가받고자 하는 목표 체류자격</strong>을 기준으로 서류를 준비해야 합니다. (기존 매뉴얼 데이터의 변경 코드는 변경 후 목표 자격입니다.) 현재 자격에서 변경 허용 여부는 법령상 자격요건에 따릅니다.</p>
+   </div>
+
+   <!-- Subtabs: Know vs Don't Know -->
+   <div class="subtabs-bar" role="tablist" aria-label="체류자격 찾기 방식">
+    <button type="button" role="tab" id="subtab-know" class="subtab-btn active" aria-selected="true" aria-controls="subtab-panel-know">
+     체류자격을 알고 있어요
+    </button>
+    <button type="button" role="tab" id="subtab-dont-know" class="subtab-btn" aria-selected="false" aria-controls="subtab-panel-dont-know">
+     체류자격을 확인하고 싶어요 (등록증 보는 법)
+    </button>
+   </div>
+
+   <!-- Panel 1: Code Search & Popular Grid -->
+   <div id="subtab-panel-know" class="subtab-panel active" role="tabpanel" aria-labelledby="subtab-know">
+    <div class="status-search-box">
+     <label for="status-picker-input" class="status-search-label">
+      <span>체류자격 코드 또는 명칭 검색</span>
+      <input type="search" id="status-picker-input" autocomplete="off" placeholder="예: D-2, E-7-1, 유학, 특정활동, 결혼이민...">
+     </label>
+     <small class="muted-hint">코드(D-2, F-4, E-7), 공식명칭(유학, 재외동포), 영문명(Study, Work)으로 검색할 수 있습니다.</small>
+    </div>
+
+    <div class="popular-chips-wrap">
+     <span class="chips-label">자주 찾는 체류자격:</span>
+     <div class="popular-chips" id="popular-chips">
+      <button type="button" class="popular-chip" data-code="D-2">D-2 유학</button>
+      <button type="button" class="popular-chip" data-code="D-10-1">D-10 구직</button>
+      <button type="button" class="popular-chip" data-code="E-7-1">E-7-1 전문인력</button>
+      <button type="button" class="popular-chip" data-code="E-9">E-9 비전문취업</button>
+      <button type="button" class="popular-chip" data-code="F-2-7">F-2-7 우수인재</button>
+      <button type="button" class="popular-chip" data-code="F-4">F-4 재외동포</button>
+      <button type="button" class="popular-chip" data-code="F-5">F-5 영주</button>
+      <button type="button" class="popular-chip" data-code="F-6-1">F-6-1 국민의 배우자</button>
+      <button type="button" class="popular-chip" data-code="H-2">H-2 방문취업</button>
+     </div>
+    </div>
+
+    <div class="candidate-results-area">
+     <div class="candidate-header">
+      <span id="candidate-count" class="candidate-count">해당 업무 지원 자격 목록</span>
+     </div>
+     <div id="status-candidate-grid" class="status-candidate-grid" role="listbox" aria-label="체류자격 선택 목록"></div>
+    </div>
+   </div>
+
+   <!-- Panel 2: ARC Guidance Diagram -->
+   <div id="subtab-panel-dont-know" class="subtab-panel" role="tabpanel" aria-labelledby="subtab-dont-know" hidden>
+    <div class="arc-guide-card">
+     <div class="arc-guide-text">
+      <h4>외국인등록증(ARC)에서 체류자격 확인하기</h4>
+      <p>가지고 계신 등록증의 앞면 가운데에 <strong>체류자격(SOJOURN STATUS)</strong>과 <strong>체류기간(PERIOD OF SOJOURN)</strong>이 표시되어 있습니다.</p>
+      <ol class="arc-steps-list">
+       <li>외국인등록증 앞면 중앙의 <strong>'체류자격(SOJOURN STATUS)'</strong> 란을 확인하세요.</li>
+       <li>알파벳 대문자와 숫자 조합(예: <code>E-7-1</code>, <code>D-2-2</code>, <code>F-4-11</code>)이 적혀 있습니다.</li>
+       <li>아래 예시 카드의 강조된 위치를 확인하신 후, '체류자격을 알고 있어요' 탭에서 해당 코드를 선택해 주세요.</li>
+      </ol>
+      <div class="arc-external-routes">
+       <span class="ext-route-title">등록증이 없거나 확인이 어려우신가요?</span>
+       <a href="https://www.hikorea.go.kr/" target="_blank" rel="noopener noreferrer" class="link-external">
+        하이코리아 체류만료일 및 자격 조회 바로가기 ↗
+       </a>
+       <span class="call-1345-note">또는 법무부 출입국종합안내센터 <strong>국번 없이 1345</strong> (20개 국어 무료 상담)</span>
+      </div>
+     </div>
+
+     <!-- Fictitious Visual Mock Representation of ARC -->
+     <div class="arc-card-visual" aria-label="외국인등록증 체류자격 위치 예시도">
+      <div class="arc-card-header">
+       <span class="arc-kr">외국인등록증</span>
+       <span class="arc-en">ALIEN REGISTRATION CARD</span>
+      </div>
+      <div class="arc-card-inner">
+       <div class="arc-photo-placeholder" aria-hidden="true">
+        <div class="photo-icon">👤</div>
+        <span>예시 사진</span>
+       </div>
+       <div class="arc-fields">
+        <div class="arc-field"><span class="lbl">성명/NAME</span><span class="val">HONG GILDONG</span></div>
+        <div class="arc-field"><span class="lbl">등록번호/REG. NO</span><span class="val">950101-0000000 (모의 예시)</span></div>
+        <div class="arc-field arc-highlighted-field" tabindex="0" aria-label="체류자격 표시 위치">
+         <div class="arc-target-pin" aria-hidden="true">👈 이 위치를 확인하세요!</div>
+         <span class="lbl">체류자격 / SOJOURN STATUS</span>
+         <span class="val highlight-val">E-7-1 (특정활동)</span>
+        </div>
+        <div class="arc-field"><span class="lbl">발급일자/ISSUED DATE</span><span class="val">2026.01.15</span></div>
+       </div>
+      </div>
+      <div class="arc-card-footer">
+       <span>대한민국 법무부 / REPUBLIC OF KOREA (식별정보 없는 안내용 가상 이미지)</span>
+      </div>
+     </div>
+    </div>
+
+    <div class="arc-guide-cta">
+     <button type="button" id="switch-to-picker-btn" class="primary-button">체류자격 코드를 확인했어요 → 목록에서 선택하기</button>
+    </div>
+   </div>
+  </div>
+
+  <!-- STEP 3: SCENARIO SELECTION (FLOW C) -->
+  <div id="guided-step-3" class="guided-step" aria-labelledby="step-3-title" hidden>
+   <div class="step-header">
+    <div class="step-nav-row">
+     <button type="button" class="back-link-btn" id="step-3-back">← 이전: 체류자격 변경</button>
+     <div class="step-status-tag" id="step-3-status-tag">
+      <span class="code-pill" id="step-3-code-pill">D-2</span>
+      <span class="tag-name" id="step-3-name-label">유학</span>
+     </div>
+    </div>
+    <p class="step-badge">STEP 03</p>
+    <h3 id="step-3-title">어떤 세부 상황에 해당하시나요?</h3>
+    <p class="step-desc">같은 체류자격이라도 세부 신청 상황(직장 계약, 재학 상태, 가족관계 등)에 따라 필요한 서류가 달라집니다. 본인에게 맞는 상황을 선택해 주세요.</p>
+   </div>
+
+   <div id="scenario-selection-grid" class="scenario-grid" role="listbox" aria-label="신청 상황 선택 목록"></div>
+
+   <div class="scenario-disclaimer-note">
+    <span>※ 위 상황 목록은 2026년 9월 매뉴얼 공식 편제 항목을 기준으로 분류된 정본입니다. 임의로 조건을 추가하거나 생략하지 않았습니다.</span>
+   </div>
+  </div>
+
+  <!-- STEP 4: PERSONALIZED DOCUMENT CHECKLIST (FLOW D) -->
+  <div id="guided-step-4" class="guided-step" aria-labelledby="step-4-title" hidden>
+   <div class="step-header checklist-step-header">
+    <div class="step-nav-row">
+     <button type="button" class="back-link-btn" id="step-4-back">← 이전: 세부 상황 변경</button>
+     <button type="button" class="text-btn reset-flow-btn" id="guided-reset-btn">처음부터 다시 찾기 ↺</button>
+    </div>
+    <p class="step-badge">STEP 04 · PERSONALIZED CHECKLIST</p>
+    <h3 id="step-4-title">맞춤 서류 준비 체크리스트</h3>
+    <p class="step-desc">선택하신 조건에 맞춰 준비해야 할 서류를 정리했습니다. 준비한 서류를 체크하며 방문을 준비해 보세요.</p>
+   </div>
+
+   <!-- Summary Card of Selected Parameters -->
+   <div class="selected-summary-card" id="checklist-summary-card">
+    <div class="summary-top">
+     <div class="summary-pill-group">
+      <span class="summary-tag proc-tag" id="summary-proc-tag">체류기간 연장</span>
+      <span class="summary-tag code-tag" id="summary-code-tag">E-7-1 특정활동</span>
+      <span class="summary-tag review-tag" id="summary-review-tag">검토 필요</span>
+     </div>
+     <div class="summary-provenance" id="summary-provenance">2026.09 매뉴얼 편집본 기준</div>
+    </div>
+    <h4 class="summary-scenario-title" id="summary-scenario-title">외교: 공관원</h4>
+
+    <!-- Office Filter in Checklist View -->
+    <div class="summary-office-row">
+     <label class="office-select-field">
+      <span class="office-lbl">방문 예정 관할 출입국관서:</span>
+      <select id="checklist-office-select" class="office-select-input">
+       <option value="">전국 공통 기준</option>
+      </select>
+     </label>
+     <span class="office-notice-subtext" id="checklist-office-notice-text">관서 정보는 검증 단계에 따라 별도로 구분 표시됩니다.</span>
+    </div>
+   </div>
+
+   <!-- Interactive Progress Bar Tracker -->
+   <div class="checklist-progress-bar-card" aria-labelledby="progress-title">
+    <div class="progress-info-row">
+     <span id="progress-title" class="progress-title">기본 서류 준비 진행 상황</span>
+     <span id="progress-fraction" class="progress-fraction" aria-live="polite">0 / 0개 준비 완료 (0%)</span>
+    </div>
+    <div class="progress-track" role="progressbar" id="checklist-progress-track" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="서류 준비율">
+     <div class="progress-fill" id="checklist-progress-fill" style="width: 0%"></div>
+    </div>
+    <p class="progress-note">※ 숫자는 확정된 기본 제출서류만을 기준으로 계산되며, 조건부 서류는 개별 상황에 따라 별도 확인이 필요합니다.</p>
+   </div>
+
+   <!-- Document Checklist Groups -->
+   <div class="checklist-sections" id="checklist-sections-wrap">
+    <!-- 1. Baseline Required Docs -->
+    <section class="doc-group baseline-group" aria-labelledby="baseline-group-title">
+     <div class="group-header">
+      <div class="group-title-wrap">
+       <span class="group-icon" aria-hidden="true">📋</span>
+       <h4 id="baseline-group-title">기본 제출서류</h4>
+      </div>
+      <span class="group-badge required-badge">반드시 준비</span>
+     </div>
+     <p class="group-desc">해당 신청 업무와 상황에서 공통적으로 제출하도록 명시된 서류입니다.</p>
+     <div id="baseline-docs-list" class="checklist-item-list" role="group" aria-label="기본 제출서류 체크리스트"></div>
+    </section>
+
+    <!-- 2. Conditional Requirements -->
+    <section class="doc-group conditional-group" id="conditional-group-sec" aria-labelledby="conditional-group-title">
+     <div class="group-header">
+      <div class="group-title-wrap">
+       <span class="group-icon" aria-hidden="true">🔍</span>
+       <h4 id="conditional-group-title">상황에 따라 필요한 서류 (해당자 제출)</h4>
+      </div>
+      <span class="group-badge conditional-badge">조건부 확인</span>
+     </div>
+     <p class="group-desc">개별 체류조건, 소득 증명, 가족 동반, 고위험국 결핵검진 등 특정 요건이 충족될 때 제출합니다.</p>
+     <div id="conditional-docs-content" class="conditional-docs-content"></div>
+    </section>
+
+    <!-- 3. Attendance & Proxy Rules -->
+    <section class="doc-group application-group" id="application-group-sec" aria-labelledby="application-group-title">
+     <div class="group-header">
+      <div class="group-title-wrap">
+       <span class="group-icon" aria-hidden="true">👤</span>
+       <h4 id="application-group-title">방문 및 대리 신청 안내</h4>
+      </div>
+      <span class="group-badge info-badge">출석·대리 절차</span>
+     </div>
+     <p class="group-desc">서류 접수 대리와 본인 출석(지문·생체정보 등록, 인터뷰, 실물 등록증 수령)은 별개의 절차입니다.</p>
+     <div id="application-docs-content" class="application-docs-content"></div>
+    </section>
+
+    <!-- 4. Office-Specific Requirements / Transparency Notice -->
+    <section class="doc-group office-group" id="office-group-sec" aria-labelledby="office-group-title">
+     <div class="group-header">
+      <div class="group-title-wrap">
+       <span class="group-icon" aria-hidden="true">🏛️</span>
+       <h4 id="office-group-title">관할 출입국관서별 안내</h4>
+      </div>
+      <span class="group-badge office-badge" id="office-status-badge">지역별 안내</span>
+     </div>
+     <div id="office-docs-content" class="office-docs-content"></div>
+    </section>
+
+    <!-- 5. Pre-Visit Cautions & Legal Notices -->
+    <section class="doc-group cautions-group" aria-labelledby="cautions-group-title">
+     <div class="group-header">
+      <div class="group-title-wrap">
+       <span class="group-icon" aria-hidden="true">⚠️</span>
+       <h4 id="cautions-group-title">방문 전 확인사항 및 법적 한계</h4>
+      </div>
+      <span class="group-badge warning-badge">유의사항</span>
+     </div>
+     <div class="cautions-content" id="cautions-content">
+      <div class="caution-item">
+       <strong>체류허가 보장 여부</strong>
+       <p>체류서류를 모두 준비했다고 해서 법적으로 체류기간 연장이나 자격변경 허가가 보장되는 것은 아닙니다. 심사 과정에서 관할 청 심사관의 판단에 따라 추가 소명자료 제출을 요구받을 수 있습니다.</p>
+      </div>
+      <div class="caution-item">
+       <strong>자료 기준 시점 및 검증 상태</strong>
+       <p>본 체크리스트는 2026년 9월 출입국 매뉴얼을 기반으로 정리된 이관 편집자료(COMPILED_NEEDS_REVIEW)입니다. 최신 지침 고시나 관할관서 공지가 우선하므로, 중요한 신청 전에는 하이코리아 공지사항을 반드시 대조하세요.</p>
+      </div>
+      <div class="official-links-row">
+       <a href="https://www.hikorea.go.kr/" target="_blank" rel="noopener noreferrer" class="ext-btn">
+        하이코리아 바로가기 (온라인 방문예약·전자민원) ↗
+       </a>
+       <a href="data/immigration-checklists/snapshot-202609.md" class="ext-btn secondary-ext">
+        이관 원문표 대조 확인 ↗
+       </a>
+      </div>
+     </div>
+    </section>
+   </div>
+
+   <!-- Action Toolbar: Print, Share, Copy Link, Reset -->
+   <div class="checklist-actions-bar">
+    <div class="actions-left">
+     <button type="button" id="checklist-print-btn" class="primary-button action-btn">
+      <span aria-hidden="true">🖨️</span>
+      <span>체크리스트 인쇄 / PDF 저장</span>
+     </button>
+     <button type="button" id="checklist-copy-link-btn" class="outline-button action-btn">
+      <span aria-hidden="true">🔗</span>
+      <span>결과 링크 복사</span>
+     </button>
+    </div>
+    <div class="actions-right">
+     <button type="button" id="checklist-clear-checks-btn" class="text-btn">체크 상태 초기화</button>
+    </div>
+   </div>
+  </div>
+ </section>
+
+ <!-- =================================================================== -->
+ <!-- 02 / DIRECT SEARCH & ALL SCENARIOS SECTION                          -->
+ <!-- =================================================================== -->
+ <section id="search-section" class="query-panel" aria-labelledby="search-title">
+  <div class="section-head">
+   <div>
+    <p class="step">02 / SEARCH ALL DOCUMENTS</p>
+    <h2 id="search-title">서류 찾아보기</h2>
+   </div>
+   <span class="scope-note">2026년 9월 편집본 (647개 항목)</span>
+  </div>
+
   <fieldset class="segmented" aria-label="신청 업무">
    <legend>신청 업무 선택</legend>
    <label><input name="procedure" type="radio" value="extension" checked><span>체류기간 연장</span></label>
    <label><input name="procedure" type="radio" value="change"><span>체류자격 변경</span></label>
    <label><input name="procedure" type="radio" value="registration"><span>외국인등록·거소신고</span></label>
   </fieldset>
+
   <div class="filters">
-   <label class="field"><span>체류자격·서류 검색</span><input id="query" type="search" autocomplete="off" placeholder="예: E-7-1, D-2, 재학증명서"><small>코드·대상·서류명·비고 모두 검색</small></label>
-   <label class="field"><span>관할 출입국관서</span><select id="office"><option value="">전국 공통 기준</option></select><small>관서 정보는 검증 단계에 따라 별도 표시</small></label>
+   <label class="field">
+    <span>체류자격·서류 검색</span>
+    <input id="query" type="search" autocomplete="off" placeholder="예: E-7-1, D-2, 재학증명서">
+    <small>코드·대상·서류명·비고 모두 검색</small>
+   </label>
+   <label class="field">
+    <span>관할 출입국관서</span>
+    <select id="office">
+     <option value="">전국 공통 기준</option>
+    </select>
+    <small>관서 정보는 검증 단계에 따라 별도 표시</small>
+   </label>
   </div>
-  <div class="query-foot"><button type="button" id="reset" class="text-btn">선택 초기화 ↺</button><span id="count" role="status" aria-live="polite">자료를 불러오는 중...</span></div>
+
+  <div class="query-foot">
+   <button type="button" id="reset" class="text-btn">선택 초기화 ↺</button>
+   <span id="count" role="status" aria-live="polite">자료를 불러오는 중...</span>
+  </div>
  </section>
- <section id="draft-info" class="editor-intro" hidden aria-labelledby="editor-title"><div><p class="step">FOR CONTENT MAINTAINERS</p><h2 id="editor-title">데이터 편집은 초안부터</h2><p>각 항목의 <strong>워딩 수정</strong>을 선택하면 이 브라우저에서 편집한 뒤 JSON을 내려받을 수 있어요. 저장한 초안은 서버나 GitHub에 자동 반영되지 않습니다. 관서별 차이는 전국 공통 안내를 덮어쓰지 않고 근거와 검토 상태를 별도로 관리해야 합니다.</p></div><a href="https://github.com/club-paradiso/Visable/tree/main/backend/data/visa_authoring" target="_blank" rel="noopener noreferrer">기존 자격별 데이터 구조 ↗</a></section>
+
  <div class="work-area">
   <section class="results-section" id="results" tabindex="-1" aria-labelledby="results-title">
-   <div class="section-head"><div><p class="step">02 / REVIEW BY SCENARIO</p><h2 id="results-title">상황별 준비서류</h2></div><div class="export-actions"><button id="export-drafts" class="outline-button" type="button" hidden>공통 수정본 JSON ↓</button><button id="export-office-drafts" class="outline-button" type="button" hidden>관서별 초안 JSON ↓</button></div></div>
-   <div class="notice" role="note"><strong>확인할 사항</strong><p>이 목록은 2026년 9월 매뉴얼에 기반한 편집 자료이며 관서 공식 확정 목록이 아닙니다. '목록 미제시'는 서류가 필요 없다는 뜻이 아니에요. 최신 고시, 관할청 공지, 개별 보완 요청이 우선합니다.</p></div>
+   <div class="section-head">
+    <div>
+     <p class="step">03 / REVIEW BY SCENARIO</p>
+     <h2 id="results-title">상황별 준비서류</h2>
+    </div>
+    <div class="export-actions">
+     <button id="export-drafts" class="outline-button" type="button" hidden>공통 수정본 JSON ↓</button>
+     <button id="export-office-drafts" class="outline-button" type="button" hidden>관서별 초안 JSON ↓</button>
+    </div>
+   </div>
+
+   <div class="notice" role="note">
+    <strong>확인할 사항</strong>
+    <p>이 목록은 2026년 9월 매뉴얼에 기반한 편집 자료이며 관서 공식 확정 목록이 아닙니다. '목록 미제시'는 서류가 필요 없다는 뜻이 아니에요. 최신 고시, 관할청 공지, 개별 보완 요청이 우선합니다.</p>
+   </div>
+
    <div id="cards" class="cards" aria-live="polite" aria-busy="true"></div>
-   <div class="more-area"><button id="show-more" type="button" class="more-button" hidden>결과 더 보기 <span aria-hidden="true">↓</span></button></div>
+   <div class="more-area">
+    <button id="show-more" type="button" class="more-button" hidden>결과 더 보기 <span aria-hidden="true">↓</span></button>
+   </div>
   </section>
+
   <aside class="side-panel" aria-label="서류 안내 이용 전 확인">
-   <div class="aside-card"><p class="step">BEFORE YOU VISIT</p><h3>방문 전 확인</h3><ol><li>신청 업무와 체류자격 코드 확인</li><li>본인에게 맞는 세부 상황 선택</li><li>조건부·생략·대리 신청 내용 확인</li><li>관할 출입국관서에 최신 안내 확인</li></ol><a href="https://www.hikorea.go.kr/" target="_blank" rel="noopener noreferrer">하이코리아 ↗</a><p><a href="data/immigration-checklists/snapshot-202609.md">이관 원문표 확인 ↗</a></p></div>
-   <details class="aside-details"><summary>공통 유의사항과 법령 해석</summary><div id="common-notes"></div></details>
-   <div class="aside-note">이 페이지는 자동으로 체류허가 가능성을 판단하지 않으며, 신청서류를 갖췄다고 허가가 보장되지는 않습니다.</div>
+   <div class="aside-card">
+    <p class="step">BEFORE YOU VISIT</p>
+    <h3>방문 전 확인</h3>
+    <ol>
+     <li>신청 업무와 체류자격 코드 확인</li>
+     <li>본인에게 맞는 세부 상황 선택</li>
+     <li>조건부·생략·대리 신청 내용 확인</li>
+     <li>관할 출입국관서에 최신 안내 확인</li>
+    </ol>
+    <a href="https://www.hikorea.go.kr/" target="_blank" rel="noopener noreferrer">하이코리아 ↗</a>
+    <p><a href="data/immigration-checklists/snapshot-202609.md">이관 원문표 확인 ↗</a></p>
+   </div>
+   <details class="aside-details">
+    <summary>공통 유의사항과 법령 해석</summary>
+    <div id="common-notes"></div>
+   </details>
+   <div class="aside-note">
+    이 페이지는 자동으로 체류허가 가능성을 판단하지 않으며, 신청서류를 갖췄다고 허가가 보장되지는 않습니다.
+   </div>
   </aside>
  </div>
 </main>
+
+<!-- Dialog: Procedure Selection Help Modal -->
+<dialog id="task-help-dialog" class="help-dialog" aria-labelledby="task-help-title">
+ <div class="dialog-inner">
+  <div class="dialog-head">
+   <p class="step">PROCEDURE GUIDE</p>
+   <h2 id="task-help-title">출입국 행정 절차, 어떤 차이가 있나요?</h2>
+   <p class="muted">외국인이 한국에 체류할 때 거치게 되는 4대 핵심 절차입니다.</p>
+  </div>
+  <div class="procedure-guide-grid">
+   <div class="guide-item">
+    <h4>1. 외국인등록 (Foreigner Registration)</h4>
+    <p>대한민국에 90일을 초과하여 장기 체류할 예정인 외국인이 입국일로부터 90일 이내에 관할 청을 방문하여 등록증을 발급받는 절차입니다. 17세 이상은 지문 등 생체정보를 직접 제공해야 합니다.</p>
+   </div>
+   <div class="guide-item">
+    <h4>2. 체류기간 연장 (Extension of Stay)</h4>
+    <p>부여받은 체류기간의 만료일이 다가올 때, 동일한 체류자격을 유지하면서 기간만을 연장하고자 하는 경우입니다. 통상 만료일 4개월 전부터 만료 당일까지 신청할 수 있습니다.</p>
+   </div>
+   <div class="guide-item">
+    <h4>3. 체류자격 변경 (Change of Status)</h4>
+    <p>현재 체류자격에 해당하는 활동을 중지하고 다른 자격에 해당하는 활동(예: 어학연수→정규유학, 유학→취업, 취업→결혼 등)을 하고자 할 때, 새로운 활동 개시 전에 허가를 받아야 합니다.</p>
+   </div>
+   <div class="guide-item">
+    <h4>4. 국내거소신고 (Domestic Residence Report)</h4>
+    <p>재외동포(F-4) 자격 소지자 등이 대한민국 내에 거소를 정하고 국내거소신고증을 발급받는 특례 절차입니다.</p>
+   </div>
+  </div>
+  <div class="guide-help-foot">
+   <p>궁금한 점이 남아 있다면 법무부 외국인종합안내센터 <strong>국번 없이 1345</strong>로 문의하시면 20개 국어로 전문 상담을 받으실 수 있습니다.</p>
+   <button type="button" id="task-help-close" class="primary-button">이해했어요, 돌아가기</button>
+  </div>
+ </div>
+</dialog>
+
+<!-- Dialog: Content Maintainer Local Draft Editor -->
 <dialog id="edit-dialog" aria-labelledby="dialog-title" class="edit-dialog">
  <form id="edit-form">
-  <div class="dialog-head"><p class="step">LOCAL DRAFT / NOT PUBLISHED</p><h2 id="dialog-title">서류 문구 수정 초안</h2><p id="edit-context" class="muted"></p></div>
-  <label class="field"><span>수정 범위</span><select id="edit-scope" name="edit_scope"><option value="national">전국 기준 문구 초안</option><option value="office">특정 관서의 서류 차이 초안</option></select></label>
-  <label class="field" id="edit-office-wrap" hidden><span>관할 출입국관서</span><select id="edit-office" name="office_id"></select></label>
-  <label class="field" id="edit-evidence-wrap" hidden><span>관서 공식 안내·증빙 URL (검토에 필요)</span><input type="url" id="edit-evidence" name="evidence_url" placeholder="https://..."></label>
-  <label class="field"><span>기본·명시 서류</span><textarea name="required_text" rows="5" maxlength="12000"></textarea></label>
-  <label class="field"><span>조건부·대체·생략</span><textarea name="conditional_text" rows="4" maxlength="12000"></textarea></label>
-  <label class="field"><span>본인·대리 신청 안내</span><textarea name="application_text" rows="3" maxlength="12000"></textarea></label>
-  <label class="field"><span>비고·근거</span><textarea name="note_text" rows="4" maxlength="12000"></textarea></label>
-  <label class="field"><span>수정 근거·검토 메모</span><textarea name="editor_note" rows="2" maxlength="2000" placeholder="예: 2026.10 관할청 공식 안내문 확인 예정" required></textarea></label>
+  <div class="dialog-head">
+   <p class="step">LOCAL DRAFT / NOT PUBLISHED</p>
+   <h2 id="dialog-title">서류 문구 수정 초안</h2>
+   <p id="edit-context" class="muted"></p>
+  </div>
+  <label class="field">
+   <span>수정 범위</span>
+   <select id="edit-scope" name="edit_scope">
+    <option value="national">전국 기준 문구 초안</option>
+    <option value="office">특정 관서의 서류 차이 초안</option>
+   </select>
+  </label>
+  <label class="field" id="edit-office-wrap" hidden>
+   <span>관할 출입국관서</span>
+   <select id="edit-office" name="office_id"></select>
+  </label>
+  <label class="field" id="edit-evidence-wrap" hidden>
+   <span>관서 공식 안내·증빙 URL (검토에 필요)</span>
+   <input type="url" id="edit-evidence" name="evidence_url" placeholder="https://...">
+  </label>
+  <label class="field">
+   <span>기본·명시 서류</span>
+   <textarea name="required_text" rows="5" maxlength="12000"></textarea>
+  </label>
+  <label class="field">
+   <span>조건부·대체·생략</span>
+   <textarea name="conditional_text" rows="4" maxlength="12000"></textarea>
+  </label>
+  <label class="field">
+   <span>본인·대리 신청 안내</span>
+   <textarea name="application_text" rows="3" maxlength="12000"></textarea>
+  </label>
+  <label class="field">
+   <span>비고·근거</span>
+   <textarea name="note_text" rows="4" maxlength="12000"></textarea>
+  </label>
+  <label class="field">
+   <span>수정 근거·검토 메모</span>
+   <textarea name="editor_note" rows="2" maxlength="2000" placeholder="예: 2026.10 관할청 공식 안내문 확인 예정" required></textarea>
+  </label>
   <p class="muted">수정 내용은 이 기기에만 저장됩니다. 수출한 파일을 저장소에 적용하려면 근거·원문을 검토한 뒤 별도 코드 리뷰가 필요합니다.</p>
-  <div class="dialog-actions"><button type="button" id="edit-cancel" class="outline-button">취소</button><button type="submit" class="primary-button">초안 저장</button></div>
+  <div class="dialog-actions">
+   <button type="button" id="edit-cancel" class="outline-button">취소</button>
+   <button type="submit" class="primary-button">초안 저장</button>
+  </div>
  </form>
 </dialog>
-<footer><span>VISABLE · Life in Korea, made VISABLE</span><span>Last source edition: 2026.09 · Compilation: 2026.10.19</span></footer>
+
+<footer role="contentinfo">
+ <div class="footer-inner">
+  <div class="footer-left">
+   <strong>VISABLE</strong>
+   <p>Life in Korea, made VISABLE · 외국인을 위한 투명한 체류·행정 안내</p>
+   <div class="footer-meta">
+    <span>Last source edition: 2026.09</span>
+    <span>·</span>
+    <span>Compilation: 2026.10.19</span>
+    <span>·</span>
+    <span>647 Scenarios</span>
+   </div>
+  </div>
+  <div class="footer-links">
+   <a href="index.html">홈</a>
+   <a href="form-helper.html">서식 도우미</a>
+   <a href="https://www.hikorea.go.kr/" target="_blank" rel="noopener noreferrer">하이코리아 ↗</a>
+   <a href="https://github.com/club-paradiso/Visable" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+  </div>
+ </div>
+</footer>
 </body>
 </html>

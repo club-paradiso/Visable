@@ -88,3 +88,76 @@ test('untrusted strings are rendered as text only',async({page})=>{
   await expect(page.locator('.doc-card').first()).toContainText('<img src=x');
   expect(await page.evaluate(()=>window.__xss||0)).toBe(0);
 });
+
+test('guided discovery stepper: completes end-to-end user journey with progress tracking', async ({ page }) => {
+  await boot(page);
+
+  // 1. Initial State: Stepper Step 1 is active
+  await expect(page.locator('#guided-step-1')).toBeVisible();
+  await expect(page.locator('#guided-step-2')).toBeHidden();
+
+  // 2. Procedure helper modal opens and closes cleanly
+  await page.locator('#task-help-btn').click();
+  await expect(page.locator('#task-help-dialog')).toBeVisible();
+  await expect(page.locator('#task-help-dialog')).toContainText('출입국 행정 절차, 어떤 차이가 있나요?');
+  await page.locator('#task-help-close').click();
+  await expect(page.locator('#task-help-dialog')).toBeHidden();
+
+  // 3. Flow A: Select Task 1 (체류기간 연장) -> advances to Step 2
+  await page.locator('.task-card[data-procedure="extension"]').click();
+  await expect(page.locator('#guided-step-1')).toBeHidden();
+  await expect(page.locator('#guided-step-2')).toBeVisible();
+  await expect(page.locator('.stepper-item[data-step="2"]')).toHaveClass(/active/);
+
+  // 4. Flow B: ARC Visual Locator Tab switches cleanly
+  await page.locator('#subtab-dont-know').click();
+  await expect(page.locator('#subtab-panel-dont-know')).toBeVisible();
+  await expect(page.locator('.arc-card-visual')).toBeVisible();
+  await expect(page.locator('.arc-card-visual')).toContainText('체류자격 / SOJOURN STATUS');
+  // Switch back to search tab
+  await page.locator('#subtab-know').click();
+  await expect(page.locator('#subtab-panel-know')).toBeVisible();
+
+  // Select visa status via chip (D-2 유학) and then candidate card
+  await page.locator('.popular-chip[data-code="D-2"]').first().click();
+  await expect(page.locator('#status-candidate-grid .candidate-item-btn')).not.toHaveCount(0);
+  await page.locator('#status-candidate-grid .candidate-item-btn').first().click();
+
+  // 5. Flow C: Advances to Step 3 (Scenario Selection)
+  await expect(page.locator('#guided-step-2')).toBeHidden();
+  await expect(page.locator('#guided-step-3')).toBeVisible();
+  await expect(page.locator('#scenario-selection-grid .scenario-choice-card')).not.toHaveCount(0);
+
+  // Select first scenario card
+  const firstScenario = page.locator('#scenario-selection-grid .scenario-choice-card').first();
+  await firstScenario.click();
+
+  // 6. Flow D: Advances to Step 4 (Personalized Checklist)
+  await expect(page.locator('#guided-step-3')).toBeHidden();
+  await expect(page.locator('#guided-step-4')).toBeVisible();
+  await expect(page.locator('#summary-code-tag')).toContainText('D-2');
+  await expect(page.locator('#progress-fraction')).toContainText('0 /');
+
+  // Interactive Checklist: Check first document item and verify progress bar increases
+  const firstCheckbox = page.locator('#baseline-docs-list .checklist-item input[type="checkbox"]').first();
+  await firstCheckbox.check();
+  await expect(page.locator('#progress-fraction')).toContainText('1 /');
+  await expect(page.locator('#checklist-progress-fill')).not.toHaveAttribute('style', 'width: 0%');
+
+  // Check another item if exists
+  const count = await page.locator('#baseline-docs-list .checklist-item input[type="checkbox"]').count();
+  if (count > 1) {
+    await page.locator('#baseline-docs-list .checklist-item input[type="checkbox"]').nth(1).check();
+    await expect(page.locator('#progress-fraction')).toContainText('2 /');
+  }
+
+  // Office selection updates checklist office advisory
+  await page.locator('#checklist-office-select').selectOption('seoul');
+  await expect(page.locator('#office-docs-content')).toContainText('서울출입국·외국인청');
+
+  // Restart stepper returns to Step 1
+  await page.locator('#guided-reset-btn').click();
+  await expect(page.locator('#guided-step-1')).toBeVisible();
+  await expect(page.locator('#guided-step-4')).toBeHidden();
+});
+
