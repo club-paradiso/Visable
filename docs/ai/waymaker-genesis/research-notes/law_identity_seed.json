@@ -1,0 +1,404 @@
+[
+  {
+    "title": "출입국관리법",
+    "former_titles": [],
+    "source_family": "statute",
+    "law_id": "001707",
+    "version_id": "290729",
+    "promulgation_date": "2026-08-04",
+    "promulgation_no": "법률 제21857호",
+    "effective_date": "2026-10-02",
+    "amendment_type": "타법개정",
+    "pending_versions": [],
+    "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=290729&efYd=20261002",
+    "retrieved_at": "2026-10-19",
+    "verification_status": "VERIFIED_WEB",
+    "notes": "Amended by 법률 제21857호 (형사소송법 일부개정) 부칙 제15조<52>, itself marked <신설 2026. 9. 29.>; changes 제4조②, 제4조의4③2호, 제4조의6, 제29조의2①, 제85조② (검사/공소청 terminology). Host-law 부칙 제1조: 시행 2026-10-02 with '<단서 생략>' (provisos of the amending law not shown). Previous version 272921 (법률 제20992호, 2025-07-22, 시행 2026-01-23, single date: 공포 후 6개월). 연혁: 61 rows from 1963-03-05; no 시행예정 row. Route https://www.law.go.kr/법령/출입국관리법 resolves to this version."
+  },
+  {
+    "title": "출입국관리법 시행령",
+    "former_titles": [
+      "출입국관리법시행령"
+    ],
+    "source_family": "enforcement_decree",
+    "law_id": "005256",
+    "version_id": "290501",
+    "promulgation_date": "2026-09-29",
+    "promulgation_no": "대통령령 제36728호",
+    "effective_date": "2026-10-02",
+    "amendment_type": "타법개정",
+    "pending_versions": [],
+    "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=290501&efYd=20261002",
+    "retrieved_at": "2026-10-19",
+    "verification_status": "VERIFIED_WEB",
+    "notes": "Amended by the omnibus 대통령령 (「공소청법」 및 「중대범죄수사청 조직 및 운영에 관한 법률」의 제정과 「형사소송법」 개정에 따른 관계 법령의 정비를 위한 126개 법령의 일부개정에 관한 대통령령); 부칙 제1조 시행 2026-10-02 '<단서 생략>'. Previous version 289697 (대통령령 제36673호, 2026-09-15, 시행 2026-09-15, 공포한 날). Former title is a spacing variant used until 2004-08-17 promulgations. 연혁: 96 rows; no 시행예정 row."
+  },
+  {
+    "title": "출입국관리법 시행규칙",
+    "former_titles": [
+      "출입국관리법시행규칙"
+    ],
+    "source_family": "enforcement_rule",
+    "law_id": "008494",
+    "version_id": "289833",
+    "promulgation_date": "2026-09-15",
+    "promulgation_no": "법무부령 제1125호",
+    "effective_date": "2026-09-15",
+    "amendment_type": "일부개정",
+    "pending_versions": [
+      {
+        "version_id": "289833",
+        "promulgation_date": "2026-09-15",
+        "effective_date": "2027-09-16"
+      }
+    ],
+    "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=289833&efYd=20260915",
+    "retrieved_at": "2026-10-19",
+    "verification_status": "VERIFIED_WEB",
+    "notes": "Split effective dates in one promulgation: 부칙 제1조 '공포한 날부터 시행. 다만, 제73조의 개정규정은 공포 후 1년이 경과한 날부터 시행' -> law.go.kr carries the same lsiSeq 289833 twice (efYd 20260915 current, 20270916 시행예정). Version identity therefore needs (lsiSeq, efYd). 부칙 제2조: 적용례 for 제70조의2제5호. Previous version 283059 (법무부령 제1106호, 2026-01-23)."
+  },
+  {
+    "title": "난민법",
+    "former_titles": [],
+    "source_family": "statute",
+    "law_id": "011546",
+    "version_id": "188376",
+    "promulgation_date": "2016-12-20",
+    "promulgation_no": "법률 제14408호",
+    "effective_date": "2016-12-20",
+    "amendment_type": "일부개정",
+    "pending_versions": [],
+    "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=188376&efYd=20161220",
+    "retrieved_at": "2026-10-19",
+    "verification_status": "VERIFIED_WEB",
+    "notes": "부칙: 공포한 날부터 시행 (single date). 연혁 has only 3 rows: 제정 법률 제11298호 (2012-02-10, 시행 2013-07-01), 타법개정 법률 제12421호 (2014-03-18, 시행 2014-06-19), and this version."
+  },
+  {
+    "title": "난민법 시행령",
+    "former_titles": [],
+    "source_family": "enforcement_decree",
+    "law_id": "011878",
+    "version_id": "273705",
+    "promulgation_date": "2025-09-16",
+    "promulgation_no": "대통령령 제35747호",
+    "effective_date": "2025-09-19",
+    "amendment_type": "타법개정",
+    "pending_versions": [],
+    "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=273705&efYd=20250919",
+    "retrieved_at": "2026-10-19",
+    "verification_status": "VERIFIED_WEB",
+    "notes": "Amended by 온라인학교의 설립ㆍ운영에 관한 규정 부칙 제3조①: 제13조제2항 cross-reference 「초ㆍ중등교육법」 제60조의4 -> 제60조의5. 부칙 제1조 시행 2025-09-19 (single date). Previous: 266723 (대통령령 제35023호, 2024-12-03). 연혁: 10 rows."
+  },
+  {
+    "title": "난민법 시행규칙",
+    "former_titles": [],
+    "source_family": "enforcement_rule",
+    "law_id": "011885",
+    "version_id": "266929",
+    "promulgation_date": "2024-12-03",
+    "promulgation_no": "법무부령 제1084호",
+    "effective_date": "2024-12-03",
+    "amendment_type": "일부개정",
+    "pending_versions": [],
+    "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=266929&efYd=20241203",
+    "retrieved_at": "2026-10-19",
+    "verification_status": "VERIFIED_WEB",
+    "notes": "부칙: 공포한 날부터 시행 (single date). 연혁: 8 rows."
+  },
+  {
+    "title": "국적법",
+    "former_titles": [],
+    "source_family": "statute",
+    "law_id": "001435",
+    "version_id": "244609",
+    "promulgation_date": "2022-09-15",
+    "promulgation_no": "법률 제18978호",
+    "effective_date": "2022-10-01",
+    "amendment_type": "일부개정",
+    "pending_versions": [
+      {
+        "version_id": "286415",
+        "promulgation_date": "2026-06-02",
+        "effective_date": "2026-12-03"
+      }
+    ],
+    "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=244609&efYd=20221001",
+    "retrieved_at": "2026-10-19",
+    "verification_status": "VERIFIED_WEB",
+    "notes": "Current 부칙 제1조 시행 2022-10-01 (single date; 제2조·제3조 are 적용례/경과조치 for 제14조의2 and 제22조). 시행예정: 286415 = 법률 제21725호 (2026-06-02, 일부개정), 부칙 '공포 후 6개월이 경과한 날부터 시행' (single date, 2026-12-03), labelled '앞으로 시행될 법령' in 연혁. 연혁: 20 rows from 1948-12-20."
+  },
+  {
+    "title": "국적법 시행령",
+    "former_titles": [
+      "국적법시행령"
+    ],
+    "source_family": "enforcement_decree",
+    "law_id": "002922",
+    "version_id": "246165",
+    "promulgation_date": "2022-12-20",
+    "promulgation_no": "대통령령 제33082호",
+    "effective_date": "2022-12-20",
+    "amendment_type": "일부개정",
+    "pending_versions": [],
+    "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=246165&efYd=20221220",
+    "retrieved_at": "2026-10-19",
+    "verification_status": "VERIFIED_WEB",
+    "notes": "부칙 제1조 공포한 날 시행 (single date); 제2조 적용례 (제28조제1호, 특별귀화). Previous: 243829 (대통령령 제32790호, 2022-07-11, 타법개정, 시행 2022-07-12). 연혁: 26 rows; no 시행예정 row."
+  },
+  {
+    "title": "국적법 시행규칙",
+    "former_titles": [
+      "국적법시행규칙"
+    ],
+    "source_family": "enforcement_rule",
+    "law_id": "006766",
+    "version_id": "291055",
+    "promulgation_date": "2026-10-02",
+    "promulgation_no": "법무부령 제1161호",
+    "effective_date": "2026-10-02",
+    "amendment_type": "일부개정",
+    "pending_versions": [],
+    "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=291055&efYd=20261002",
+    "retrieved_at": "2026-10-19",
+    "verification_status": "VERIFIED_WEB",
+    "notes": "부칙: 이 규칙은 2026년 10월 2일부터 시행 (single date). Previous: 262177 (법무부령 제1076호, 2024-04-29). No 시행예정 row, i.e. no implementing rule yet published for the 2026-12-03 국적법 amendment as of retrieval. 연혁: 24 rows."
+  },
+  {
+    "title": "재외동포의 출입국과 법적 지위에 관한 법률",
+    "former_titles": [
+      "재외동포의 출입국과 법적지위에 관한 법률",
+      "재외동포의출입국과법적지위에관한법률"
+    ],
+    "source_family": "statute",
+    "law_id": "001999",
+    "version_id": "268553",
+    "promulgation_date": "2025-01-21",
+    "promulgation_no": "법률 제20677호",
+    "effective_date": "2025-07-22",
+    "amendment_type": "타법개정",
+    "pending_versions": [],
+    "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=268553&efYd=20250722",
+    "retrieved_at": "2026-10-19",
+    "verification_status": "VERIFIED_WEB",
+    "notes": "약칭 재외동포법 (shown on law.go.kr). Amended by 전기통신사업법 부칙 제6조④ (제7조제7항 cross-reference). Host-law 부칙 제1조: 공포 후 6개월 '<단서 생략>'. Former titles are spacing variants (2005-12-29..2007-07-13 used '법적지위'; 1999-2004 no spaces). 연혁: 24 rows; no 시행예정 row."
+  },
+  {
+    "title": "재외동포의 출입국과 법적 지위에 관한 법률 시행령",
+    "former_titles": [
+      "재외동포의출입국과법적지위에관한법률시행령"
+    ],
+    "source_family": "enforcement_decree",
+    "law_id": "004662",
+    "version_id": "284843",
+    "promulgation_date": "2026-03-24",
+    "promulgation_no": "대통령령 제36220호",
+    "effective_date": "2026-03-24",
+    "amendment_type": "타법개정",
+    "pending_versions": [],
+    "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=284843&efYd=20260324",
+    "retrieved_at": "2026-10-19",
+    "verification_status": "VERIFIED_WEB",
+    "notes": "약칭 재외동포법 시행령. Amended by 규제 재검토기한 정비를 위한 136개 법령의 일부개정에 관한 대통령령; 부칙 공포한 날 시행. A second former spacing variant (2007-10-15..2016-01-22) is shown truncated in the 연혁 list as '재외동포의 출입국과 법적지위에 관한 법률 시...' and is not spelled out here. 연혁: 29 rows; no 시행예정 row."
+  },
+  {
+    "title": "재외동포의 출입국과 법적 지위에 관한 법률 시행규칙",
+    "former_titles": [
+      "재외동포의출입국과법적지위에관한법률시행규칙"
+    ],
+    "source_family": "enforcement_rule",
+    "law_id": "008011",
+    "version_id": "267499",
+    "promulgation_date": "2024-12-24",
+    "promulgation_no": "법무부령 제1087호",
+    "effective_date": "2025-02-01",
+    "amendment_type": "일부개정",
+    "pending_versions": [
+      {
+        "version_id": "289831",
+        "promulgation_date": "2026-09-15",
+        "effective_date": "2027-09-16"
+      }
+    ],
+    "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=267499&efYd=20250201",
+    "retrieved_at": "2026-10-19",
+    "verification_status": "VERIFIED_WEB",
+    "notes": "Current version has split dates: 부칙 제1조 시행 2025-01-01, 다만 제11조제3항·별지 제7호서식·제7호의2서식 2025-02-01 (law.go.kr rows 267499@20250101 and @20250201). 시행예정: 289831 = 법무부령 제1124호 (2026-09-15), 부칙 '공포 후 1년이 경과한 날부터 시행' (single date 2027-09-16). A second former spacing variant (2007-10-15..2009-05-28) is shown truncated in the 연혁 list as '재외동포의 출입국과 법적지위에 관한 법률 시...' and is not spelled out here. 연혁: 23 rows."
+  },
+  {
+    "title": "외국인근로자의 고용 등에 관한 법률",
+    "former_titles": [
+      "외국인근로자의고용등에관한법률"
+    ],
+    "source_family": "statute",
+    "law_id": "009542",
+    "version_id": "276857",
+    "promulgation_date": "2025-10-01",
+    "promulgation_no": "법률 제21065호",
+    "effective_date": "2025-10-01",
+    "amendment_type": "타법개정",
+    "pending_versions": [
+      {
+        "version_id": "286817",
+        "promulgation_date": "2026-06-09",
+        "effective_date": "2026-12-10"
+      },
+      {
+        "version_id": "286817",
+        "promulgation_date": "2026-06-09",
+        "effective_date": "2027-06-10"
+      }
+    ],
+    "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=276857&efYd=20251001",
+    "retrieved_at": "2026-10-19",
+    "verification_status": "VERIFIED_WEB",
+    "notes": "약칭 외국인고용법. Current = 정부조직법 타법개정; 부칙 제1조 시행 공포일, but 단서 1호: certain provisions (재정경제부 관련) 2026-01-02 — law.go.kr shows an inline '[시행일: 2026. 1. 2.]' marker on 제4조제4항 instead of a separate 연혁 row. 시행예정: 286817 = 법률 제21786호 (2026-06-09, 일부개정): 공포 후 6개월 (2026-12-10); 제22조의2 및 제25조 개정규정 공포 후 1년 (2027-06-10). 연혁: 23 rows."
+  },
+  {
+    "title": "외국인근로자의 고용 등에 관한 법률 시행령",
+    "former_titles": [
+      "외국인근로자의고용등에관한법률시행령"
+    ],
+    "source_family": "enforcement_decree",
+    "law_id": "009657",
+    "version_id": "244037",
+    "promulgation_date": "2022-08-02",
+    "promulgation_no": "대통령령 제32844호",
+    "effective_date": "2023-02-03",
+    "amendment_type": "일부개정",
+    "pending_versions": [],
+    "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=244037&efYd=20230203",
+    "retrieved_at": "2026-10-19",
+    "verification_status": "VERIFIED_WEB",
+    "notes": "Current consolidated view is the 2023-02-03 시행일 of 대통령령 제32844호 (부칙: 공포한 날 시행, 다만 제13조의4제5호·제6호 공포 후 6개월). The latest-promulgated amendment is older in effect: 대통령령 제33028호 (2022-12-06, 시행 2022-12-11, lsiSeq 245799). 약칭 외국인고용법 시행령. 연혁: 37 rows; no 시행예정 row (no implementing decree yet for the 2026-12-10 statute amendment)."
+  },
+  {
+    "title": "외국인근로자의 고용 등에 관한 법률 시행규칙",
+    "former_titles": [
+      "외국인근로자의고용등에관한법률시행규칙"
+    ],
+    "source_family": "enforcement_rule",
+    "law_id": "009698",
+    "version_id": "271599",
+    "promulgation_date": "2025-06-02",
+    "promulgation_no": "고용노동부령 제442호",
+    "effective_date": "2025-06-02",
+    "amendment_type": "일부개정",
+    "pending_versions": [],
+    "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=271599&efYd=20250602",
+    "retrieved_at": "2026-10-19",
+    "verification_status": "VERIFIED_WEB",
+    "notes": "약칭 외국인고용법 시행규칙. 부칙 공포한 날 시행 (single date). 연혁: 29 rows; no 시행예정 row."
+  },
+  {
+    "title": "재외동포(F-4) 자격의 취업활동 제한범위 고시",
+    "former_titles": null,
+    "source_family": "administrative_rule",
+    "law_id": "2090230",
+    "version_id": "2100000275060",
+    "promulgation_date": "2026-02-12",
+    "promulgation_no": "법무부고시 제2026-65호",
+    "effective_date": "2026-02-12",
+    "amendment_type": "폐지제정",
+    "pending_versions": null,
+    "source_url": "https://www.law.go.kr/LSW/admRulLsInfoP.do?admRulSeq=2100000275060",
+    "retrieved_at": "2026-10-19",
+    "verification_status": "VERIFIED_WEB",
+    "notes": "Seen in admRulScListR name search and in the admRulLsInfoP page variables (admRulId 2090230, ancNo 2026-65, efYd 20260212). Waymaker's manual corpus cites it as '법무부 고시 제2026-35호, 2026.2.12.' — number mismatch (35 vs 65), needs manual review. pending_versions null: the search filter included 시행예정 and returned one row, but the rule's own history was not fetched."
+  },
+  {
+    "title": "해외투자기업 기술연수생 등에 대한 사증발급인정서 발급 및 관리에 관한 훈령",
+    "former_titles": null,
+    "source_family": "administrative_rule",
+    "law_id": null,
+    "version_id": "2100000210583",
+    "promulgation_date": "2022-04-14",
+    "promulgation_no": "법무부훈령 제1414호",
+    "effective_date": "2022-04-14",
+    "amendment_type": "일부개정",
+    "pending_versions": null,
+    "source_url": "https://www.law.go.kr/LSW/admRulLsInfoP.do?admRulSeq=2100000210583",
+    "retrieved_at": "2026-10-19",
+    "verification_status": "VERIFIED_WEB",
+    "notes": "From the admRulScListR name-search row only (행정규칙ID not retrieved). visa_data.json calls it '...관한 지침'. Former titles not checked. pending_versions null (history not fetched; the search filter included 시행예정 and returned one row)."
+  },
+  {
+    "title": "공익사업 투자이민제도 투자대상, 투자금액 등에 관한 기준 고시",
+    "former_titles": null,
+    "source_family": "administrative_rule",
+    "law_id": null,
+    "version_id": "2100000225532",
+    "promulgation_date": "2023-06-29",
+    "promulgation_no": "법무부고시 제2023-319호",
+    "effective_date": "2023-06-29",
+    "amendment_type": "일부개정",
+    "pending_versions": null,
+    "source_url": "https://www.law.go.kr/LSW/admRulLsInfoP.do?admRulSeq=2100000225532",
+    "retrieved_at": "2026-10-19",
+    "verification_status": "VERIFIED_WEB",
+    "notes": "Name-search row only. visa_data.json F-5-25 refers to '법무부장관이 정하여 고시하는 금액' without naming it; the amount stored by Waymaker was not checked against the notice text."
+  },
+  {
+    "title": "관광·휴양시설 투자이민제 대상지역 지정 절차 고시",
+    "former_titles": null,
+    "source_family": "administrative_rule",
+    "law_id": null,
+    "version_id": "2100000250386",
+    "promulgation_date": "2024-12-02",
+    "promulgation_no": "법무부고시 제2024-588호",
+    "effective_date": "2024-12-08",
+    "amendment_type": "일부개정",
+    "pending_versions": null,
+    "source_url": "https://www.law.go.kr/LSW/admRulLsInfoP.do?admRulSeq=2100000250386",
+    "retrieved_at": "2026-10-19",
+    "verification_status": "VERIFIED_WEB",
+    "notes": "Name-search row only. Referenced indirectly in Waymaker manual-derived text ('관광·휴양시설 투자이민으로 고시한 대상'). Not in visa_data.json by name."
+  },
+  {
+    "title": "국제결혼 안내프로그램 이수 대상 및 운영사항 고시",
+    "former_titles": null,
+    "source_family": "administrative_rule",
+    "law_id": null,
+    "version_id": "2100000232904",
+    "promulgation_date": "2023-12-19",
+    "promulgation_no": "법무부고시 제2023-695호",
+    "effective_date": "2024-01-01",
+    "amendment_type": "일부개정",
+    "pending_versions": null,
+    "source_url": "https://www.law.go.kr/LSW/admRulLsInfoP.do?admRulSeq=2100000232904",
+    "retrieved_at": "2026-10-19",
+    "verification_status": "VERIFIED_WEB",
+    "notes": "Name-search row only. visa_data.json refers to '법무부장관이 고시한 국제결혼 안내프로그램 대상 7개 국가' without naming it; the country count was not checked against the notice text."
+  },
+  {
+    "title": "제주특별자치도 무사증입국 불허국가 및 체류지역 확대허가 국가",
+    "former_titles": null,
+    "source_family": "administrative_rule",
+    "law_id": null,
+    "version_id": null,
+    "promulgation_date": null,
+    "promulgation_no": null,
+    "effective_date": null,
+    "amendment_type": null,
+    "pending_versions": null,
+    "source_url": null,
+    "retrieved_at": "2026-10-19",
+    "verification_status": "UNVERIFIED",
+    "notes": "Title as stored by Waymaker (data/short-stay/rules.json, fixtures/jeju_b22_notice.json: '법무부고시 제2022-189호', effective 2022-06-01, from a 2023-09-18 consular copy). law.go.kr 행정규칙 name searches for '무사증', '입국불허' and '확대허가' (현행+시행예정) each returned 0 rows on 2026-10-19, so it could not be verified on law.go.kr; visa_data.json cites a moj.go.kr board post instead."
+  },
+  {
+    "title": "외국인 결핵환자 사증발급 및 체류관리 지침",
+    "former_titles": null,
+    "source_family": "administrative_rule",
+    "law_id": null,
+    "version_id": null,
+    "promulgation_date": null,
+    "promulgation_no": null,
+    "effective_date": null,
+    "amendment_type": null,
+    "pending_versions": null,
+    "source_url": null,
+    "retrieved_at": "2026-10-19",
+    "verification_status": "UNVERIFIED",
+    "notes": "Named in visa_data.json (H-2 extension text). law.go.kr 행정규칙 name search '결핵' returned 6 rows, none from 법무부; probably an internal MOJ guideline not published as a 행정규칙 on law.go.kr. Not verifiable from law.go.kr."
+  }
+]
