@@ -296,7 +296,7 @@ body[data-theme="dark"] .cs-tool:hover .cs-icon-circle .cs-icon { filter: none; 
   .cs-languages button { min-width: 46px; min-height: 44px; }
   .cs-home { padding: 0 20px; }
   .cs-hero { padding: 32px 0 28px; }
-  .cs-hero h1 { font-size: 34px; max-width: 330px; margin: 0 auto 12px; letter-spacing: -.05em; }
+  .cs-hero h1 { font-size: 37px; line-height: 1.24; max-width: 330px; margin: 0 auto 12px; letter-spacing: -.05em; }
   .cs-hero > p { font-size: 16px; margin-bottom: 20px; }
   .cs-searchbar { gap: 6px; padding: 5px 5px 5px 14px; min-height: 58px; border-radius: 12px; }
   .cs-searchbar > .cs-icon { width: 20px; height: 20px; }
@@ -309,9 +309,11 @@ body[data-theme="dark"] .cs-tool:hover .cs-icon-circle .cs-icon { filter: none; 
   .cs-sug-kind { justify-self: start; min-width: 0; padding: 1px 6px; font-size: 11px; }
   .cs-sug-label { font-size: 15px; white-space: normal; overflow-wrap: anywhere; }
   .cs-sug-sub { white-space: normal; }
-  .cs-examples { justify-content: flex-start; gap: 8px; margin-top: 16px; }
+  /* one example per row: the row count cannot change when the web font replaces the fallback (no reflow shift) */
+  .cs-examples { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; margin-top: 16px; }
   .cs-examples-label { font-size: 13px; text-align: left; }
-  .cs-examples button, .cs-example-link { font-size: 14px !important; min-height: 44px; padding: 8px 12px; }
+  .cs-examples button, .cs-example-link { font-size: 14px !important; min-height: 44px; padding: 8px 14px; width: 100%; justify-content: flex-start; border-radius: 12px; }
+  .cs-examples button > span, .cs-example-link > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .cs-examples > button:nth-of-type(4) { display: none; }
   .cs-hero > .cs-basis { text-align: left; margin-top: 14px; font-size: 12px; }
   .cs-browse { padding: 14px 14px 16px; }
