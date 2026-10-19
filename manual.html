@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0B4F44">
+<meta name="description" content="사증발급·외국인체류 안내매뉴얼(2026. 9.) 원문을 체류자격과 업무별로 나눠 읽기 쉽게 보여 주는 Visable 매뉴얼 원문 읽기.">
+<title>매뉴얼 원문 읽기 | VISABLE</title>
+<link rel="icon" href="assets/brand/visable-favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="assets/css/manual-reader.css">
+<script>
+// Same theme key as index.html; "system" follows the OS. Runs before paint.
+(function(){try{var b=localStorage.getItem('paradiso:brightness');if(b==='system'||!b){b=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}if(b==='dark'||b==='light'){document.documentElement.setAttribute('data-theme',b);}}catch(e){}})();
+</script>
+<script src="assets/js/manual-reader-route.js" defer></script>
+<script src="assets/js/manual-reader.js" defer></script>
+</head>
+<body>
+<a class="mr-skip" href="#mr-app">본문 바로가기</a>
+<header class="mr-top">
+  <div class="mr-wrap mr-top-row">
+    <a class="mr-brand" href="index.html" aria-label="VISABLE 메인으로"><img src="assets/brand/visable-wordmark-white.svg" width="96" height="27" alt="VISABLE"></a>
+    <a class="mr-name" href="#home">매뉴얼 원문 읽기</a>
+    <div class="mr-search" role="search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="mr-q" type="search" placeholder="예: D-2 연장, 시간제취업, 결혼, 재입국" aria-label="매뉴얼 원문 검색" autocomplete="off" maxlength="120">
+    </div>
+    <div class="mr-tools" role="group" aria-label="글자 크기">
+      <button id="mr-fsm" type="button" aria-label="글자 작게">가−</button>
+      <button id="mr-fsp" type="button" aria-label="글자 크게">가+</button>
+    </div>
+  </div>
+</header>
+<main id="mr-app" class="mr-wrap" tabindex="-1">
+  <p class="mr-loading" role="status">매뉴얼 원문을 불러오는 중입니다.</p>
+  <noscript><p>JavaScript가 꺼져 있으면 원문 읽기를 쓸 수 없어요. 공식 원문 PDF를 바로 여세요: <a href="docs/source-manuals/2026-09/visa_manual_260901.pdf">사증발급 안내매뉴얼</a> · <a href="docs/source-manuals/2026-09/stay_manual_260918.pdf">외국인체류 안내매뉴얼</a></p></noscript>
+</main>
+</body>
+</html>

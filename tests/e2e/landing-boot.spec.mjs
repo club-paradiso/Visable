@@ -103,7 +103,7 @@ test('a failed civic script load leaves a usable page with a reload row, not a b
   // the static shell still offers the search field and the tools, never the old journey cards
   await expect(page.locator('#civicLanding #civicQuery')).toBeVisible();
   await expect(page.locator('#civicLanding .cs-route')).toHaveCount(0);
-  await expect(page.locator('#civicLanding .cs-tool')).toHaveCount(6);
+  await expect(page.locator('#civicLanding .cs-tool')).toHaveCount(7);
 });
 
 test.describe('purpose browse panel (the former journey content, reached from the directory)', () => {

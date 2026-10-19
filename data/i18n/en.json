@@ -1486,7 +1486,10 @@
     "lifecycleUnverified": "Needs checking",
     "unknownCode": "{code} is not a code in the September 2026 official guidance. Check for a typo, or look at the parent code.",
     "notACode": "{code} is not a status code in the official guidance. Try describing your situation instead.",
-    "waymakerAsk": "Describe your situation and get the steps and sources in order"
+    "waymakerAsk": "Describe your situation and get the steps and sources in order",
+    "reader": "Read the manuals",
+    "readerSub": "Read the visa and residence manuals by status and procedure (Korean original).",
+    "readerOpen": "Read this section of the manual"
   },
   "fh": {
     "title": "Form Helper",

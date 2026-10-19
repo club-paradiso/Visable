@@ -168,6 +168,17 @@ echo "[5c/14] Validating current PDF corpus and shipped search index..."
 node scripts/check_current_manual_corpus.mjs
 python3 scripts/tests/test_current_manual_index.py
 
+echo "[5d/14] Validating the manual reader (manual.html)..."
+# Offline, stdlib Node: data completeness, inert chapter HTML, text-preservation
+# budget, editorial links, and status/procedure → chapter routing.
+node scripts/check_manual_reader.mjs
+# Rebuild-and-compare needs the pinned parsers (scripts/requirements-manual-reader.txt).
+if python3 -c "import markdown_it, bs4, html5lib, PIL" 2>/dev/null; then
+  python3 scripts/build_manual_reader.py --check
+else
+  echo "  SKIP build_manual_reader.py --check (pip install -r scripts/requirements-manual-reader.txt)"
+fi
+
 echo "[6/12] Validating manual-grounding candidates (if any)..."
 # Passes cleanly when no candidate.json files exist. Only fails if a
 # committed candidate file is structurally invalid.

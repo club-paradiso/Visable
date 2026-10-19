@@ -1486,7 +1486,10 @@
     "lifecycleUnverified": "Requiere verificación",
     "unknownCode": "{code} no es un código de la guía oficial de septiembre de 2026. Compruebe si hay errores de escritura o consulte el código principal.",
     "notACode": "{code} no es un código de estatus de la guía oficial. Pruebe a describir su situación.",
-    "waymakerAsk": "Describa su situación y obtenga los pasos y las fuentes en orden"
+    "waymakerAsk": "Describa su situación y obtenga los pasos y las fuentes en orden",
+    "reader": "Leer los manuales",
+    "readerSub": "Lea los manuales de visado y estancia por estatus y trámite (texto original en coreano).",
+    "readerOpen": "Leer esta sección del manual"
   },
   "fh": {
     "title": "Asistente de formularios",

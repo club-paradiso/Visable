@@ -176,7 +176,7 @@ body.civic-refresh .visa-search-box .jc-search-input:focus { border-color: var(-
 /* ---- tools: secondary to search, one compact grid ---- */
 .cs-tools { padding: 28px 0 22px; border-top: 1px solid var(--cs-line); }
 .cs-tools h2 { font-size: 14px; font-weight: 700; letter-spacing: .01em; color: var(--cs-muted); margin: 0 0 12px; }
-.cs-tool-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px 16px; }
+.cs-tool-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px 16px; }
 .cs-tool { padding: 12px; margin: 0 -12px; display: flex; text-align: left; align-items: flex-start; gap: 14px; border: 0; background: none; border-radius: 12px; color: inherit; min-height: 44px; transition: background-color .15s ease; }
 .cs-tool:hover { background: var(--cs-row); }
 .cs-tool-body { display: flex; flex-direction: column; min-width: 0; }
@@ -409,3 +409,10 @@ html[dir="rtl"] .cs-boot-failed, html[dir="rtl"] .cs-noscript { border-left: 1px
 @media (max-width: 680px) {
   html[dir="rtl"] .cs-searchbar { padding: 5px 14px 5px 5px; }
 }
+
+/* Manual reader entry (manual.html): four supporting tools share one row on wide screens,
+   two per row in between, one per row on phones (the 1fr rule above still wins there). */
+@media (min-width: 1100px) { .cs-tools-support .cs-tool-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (min-width: 681px) and (max-width: 1099px) { .cs-tools-support .cs-tool-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.cs-reader-link { margin: -6px 0 16px; font-size: 14px; }
+.cs-reader-link a { color: var(--cs-green); font-weight: 600; text-underline-offset: 3px; }

@@ -1486,7 +1486,10 @@
     "lifecycleUnverified": "Prüfung nötig",
     "unknownCode": "{code} ist kein Code im amtlichen Leitfaden vom September 2026. Prüfen Sie die Eingabe oder sehen Sie sich den übergeordneten Code an.",
     "notACode": "{code} ist kein Statuscode im amtlichen Leitfaden. Beschreiben Sie stattdessen Ihre Situation.",
-    "waymakerAsk": "Beschreiben Sie Ihre Situation und erhalten Sie Schritte und Quellen der Reihe nach"
+    "waymakerAsk": "Beschreiben Sie Ihre Situation und erhalten Sie Schritte und Quellen der Reihe nach",
+    "reader": "Handbücher lesen",
+    "readerSub": "Visum- und Aufenthaltshandbücher nach Status und Verfahren lesen (koreanischer Originaltext).",
+    "readerOpen": "Diesen Abschnitt des Handbuchs lesen"
   },
   "fh": {
     "title": "Formularhelfer",

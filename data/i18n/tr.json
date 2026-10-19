@@ -1486,7 +1486,10 @@
     "lifecycleUnverified": "Kontrol gerekli",
     "unknownCode": "{code}, Eylül 2026 resmî kılavuzunda bulunan bir kod değil. Yazım hatası olup olmadığını kontrol edin veya üst koda bakın.",
     "notACode": "{code}, resmî kılavuzdaki bir statü kodu değil. Bunun yerine durumunuzu anlatmayı deneyin.",
-    "waymakerAsk": "Durumunuzu anlatın, adımları ve dayanakları sırayla alın"
+    "waymakerAsk": "Durumunuzu anlatın, adımları ve dayanakları sırayla alın",
+    "reader": "Kılavuzları oku",
+    "readerSub": "Vize ve ikamet kılavuzlarını statü ve işleme göre okuyun (Korece orijinal metin).",
+    "readerOpen": "Kılavuzun bu bölümünü oku"
   },
   "fh": {
     "title": "Form Yardımcısı",

@@ -113,6 +113,12 @@ check('통합신청서 → Form Helper', () => {
     assert(t && t.kind === 'tool' && t.href === 'form-helper.html', `${q}: ${show(run(q, 'en'))}`);
   }
 });
+check('매뉴얼 / manual → the manual reader', () => {
+  for (const q of ['매뉴얼', '매뉴얼 원문 읽기', 'read the manual']) {
+    const t = top(q, 'en');
+    assert(t && t.kind === 'tool' && t.href === 'manual.html', `${q}: ${show(run(q, 'en'))}`);
+  }
+});
 check('XYZ-999 → nothing matched, a not-a-code note', () => {
   for (const q of ['XYZ-999', 'Z-3', 'K-99']) {
     const r = run(q);
@@ -171,7 +177,7 @@ check('English UI: labels in English, queries the search reads', () => {
 const corpus = new Set(['E', 'E-', 'E-7', 'E-7-', 'E-7-S', 'F-', 'F-2-7', 'D-10-T', 'F-5-T', 'E-7-T', 'F-2-T', 'D-1', 'A-3', 'H-2', 'B-2-2', 'G-1', '난민', '결혼이민', '유학', '취업비자', '배우자 연장', '외국인등록증', '등록증 재발급', '재입국', '시간제 취업', '아르바이트', '체류자격 변경', 'D-2에서 E-7으로 변경', 'F-4 동포', '하이코리아 예약', '관할 출입국관서', '귀화', 'Waymaker', 'passport renewal', '여권 재발급', 'e-visa', 'K-ETA', 'student visa extension', 'E-9 이직', '근무처 변경', 'D-8 visa', 'what documents for F-6 extension?', '수수료 얼마', '체류지 변경']);
 for (const code of Object.keys(bundle.codes)) if (/^[A-H]-\d/.test(code) && !code.includes('~')) { corpus.add(code); corpus.add(code.toLowerCase().replace(/-/g, ' ')); }
 for (const p of bundle.procedures) { corpus.add(p.ko); corpus.add(p.en); corpus.add('F-6 ' + p.ko); corpus.add('E-7-1 ' + p.en); }
-const TOOL_HREFS = new Set(['form-helper.html', 'ai.html', 'new-home.html']);
+const TOOL_HREFS = new Set(['form-helper.html', 'ai.html', 'new-home.html', 'manual.html']);
 const TOOL_ACTIONS = new Set(['open-hikorea-guide', 'open-jurisdiction-modal']);
 let rows = 0;
 for (const q of corpus) {

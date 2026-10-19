@@ -21,6 +21,7 @@
       newHome: 'New Home', newHomeSub: '국적·귀화와 한국 정착 준비를 한곳에서 안내해요.',
       reservation: '방문예약 안내', reservationSub: '하이코리아 방문예약 방법과 준비사항을 확인하세요.',
       manuals: '공식 원문 찾기', manualsSub: '사증발급·외국인체류 공식 안내 원문에서 필요한 구절을 찾아보세요.',
+      reader: '매뉴얼 원문 읽기', readerSub: '사증발급·외국인체류 매뉴얼 원문을 체류자격·업무별로 나눠 읽어요.', readerOpen: '이 자격·업무의 원문 읽기',
       officeSub: '내 주소지를 담당하는 출입국·외국인관서를 확인하세요.',
       visa: '사증 안내', stay: '체류 안내', original: '원문 보기', sourceLabel: '체류자격별 매뉴얼',
       language: '언어', languageTitle: '언어 선택', languageSearch: '언어 검색', languageNone: '일치하는 언어가 없어요.',
@@ -65,6 +66,7 @@
       newHome: 'New Home', newHomeSub: 'Nationality, naturalization and settling in Korea, guided in one place.',
       reservation: 'Visit reservations', reservationSub: 'Find the steps and preparation for a HiKorea appointment.',
       manuals: 'Find official source text', manualsSub: 'Search the official visa and residence guidance for the passage you need.',
+      reader: 'Read the manuals', readerSub: 'Read the visa and residence manuals by status and procedure (Korean original).', readerOpen: 'Read this section of the manual',
       officeSub: 'Find the immigration office responsible for your address.',
       visa: 'Visa guidance', stay: 'Stay guidance', original: 'Open original', sourceLabel: 'Official basis updated',
       language: 'Language', languageTitle: 'Choose language', languageSearch: 'Search languages', languageNone: 'No matching language.',
@@ -232,7 +234,8 @@
       toolLink(T, 'ai.html', 'compass', 'waymaker', 'waymakerSub', ' data-cs-tool="waymaker"') +
       toolLink(T, 'new-home.html', 'house', 'newHome', 'newHomeSub', ' data-cs-tool="newhome"') +
       toolButton(T, 'data-action="open-hikorea-guide" data-cs-tool="reservation"', 'calendar-days', 'reservation', 'reservationSub') +
-      toolButton(T, 'data-cs-focus data-cs-manual data-cs-tool="manuals"', 'book-open', 'manuals', 'manualsSub') +
+      toolButton(T, 'data-cs-focus data-cs-manual data-cs-tool="manuals"', 'search', 'manuals', 'manualsSub') +
+      toolLink(T, 'manual.html', 'book-open', 'reader', 'readerSub', ' data-cs-tool="reader"') +
       toolButton(T, 'data-action="open-jurisdiction-modal" data-cs-tool="office"', 'landmark', 'office', 'officeSub') + '</div></section>' +
       '<div class="cs-source-strip"><span class="cs-source-strip-label">' + esc(T('sourceLabel')) + '</span><a href="' + VISA_PDF + '" target="_blank" rel="noopener">' + icon('file-text') + '<span>' + esc(T('visa')) + ' · 2026.09.01</span>' + icon('external-link') + '</a>' +
       '<a href="' + STAY_PDF + '" target="_blank" rel="noopener">' + icon('file-text') + '<span>' + esc(T('stay')) + ' · 2026.09.18</span>' + icon('external-link') + '</a></div>' +
@@ -240,7 +243,7 @@
       '<details class="cs-directory"><summary>' + esc(T('allTools')) + '</summary><div>' +
       '<button type="button" data-action="reveal-home-section" data-target="visaManualSection" aria-controls="civicBrowsePanel" aria-expanded="false">' + esc(T('browse')) + '</button>' +
       [['open-short-stay', 'short'], ['open-jobcode-modal', 'jobs'], ['open-jurisdiction-modal', 'office'], ['open-agent-finder', 'agencies'], ['open-med-finder', 'hospitals']].map(function (item) { return '<button type="button" data-action="' + item[0] + '">' + esc(T(item[1])) + '</button>'; }).join('') +
-      '<button type="button" data-action="reveal-home-section" data-target="pathwaySection">' + esc(T('pathways')) + '</button><button type="button" data-action="reveal-home-section" data-target="reminderSection">' + esc(T('reminders')) + '</button><a href="form-helper.html">' + esc(T('paperwork')) + '</a><a href="new-home.html">' + esc(T('naturalization')) + '</a><a href="enforcement.html">' + esc(T('enforcement')) + '</a><a href="ai.html">Waymaker</a><button type="button" data-action="toggle-theme">' + esc(T('theme')) + '</button><button type="button" data-action="toggle-easy-mode" aria-pressed="' + (easyModeOn() ? 'true' : 'false') + '">' + esc(T('easyModeEasy')) + '</button></div></details>' +
+      '<button type="button" data-action="reveal-home-section" data-target="pathwaySection">' + esc(T('pathways')) + '</button><button type="button" data-action="reveal-home-section" data-target="reminderSection">' + esc(T('reminders')) + '</button><a href="form-helper.html">' + esc(T('paperwork')) + '</a><a href="manual.html">' + esc(T('reader')) + '</a><a href="new-home.html">' + esc(T('naturalization')) + '</a><a href="enforcement.html">' + esc(T('enforcement')) + '</a><a href="ai.html">Waymaker</a><button type="button" data-action="toggle-theme">' + esc(T('theme')) + '</button><button type="button" data-action="toggle-easy-mode" aria-pressed="' + (easyModeOn() ? 'true' : 'false') + '">' + esc(T('easyModeEasy')) + '</button></div></details>' +
       '<section id="civicBrowsePanel" class="cs-browse" aria-labelledby="csBrowseTitle" hidden><div class="cs-browse-head"><h2 id="csBrowseTitle">' + esc(T('browse')) + '</h2>' +
       '<div class="cs-browse-tabs" role="group" aria-labelledby="csBrowseTitle"><button type="button" data-cs-journey="pre" aria-pressed="false">' + esc(T('pre')) + '</button><button type="button" data-cs-journey="post" aria-pressed="false">' + esc(T('post')) + '</button></div>' +
       '<button type="button" class="cs-journey-close" data-cs-journey="close" aria-label="' + esc(T('journeyClose')) + '">' + icon('x') + '</button></div><div class="cs-journey-slot"></div></section>' +
@@ -336,7 +339,7 @@
     return esc(label.slice(0, i)) + '<mark>' + esc(label.slice(i, i + q.length)) + '</mark>' + esc(label.slice(i + q.length));
   }
   var KIND_KEY = { status: 'kindStatus', substatus: 'kindSubstatus', status_procedure: 'kindProcedure', procedure: 'kindProcedure', tool: 'kindTool' };
-  var SAFE_TOOL_HREF = /^(form-helper|ai|new-home)\.html$/;
+  var SAFE_TOOL_HREF = /^(form-helper|ai|new-home|manual)\.html$/;
   var SAFE_TOOL_ACTION = { 'open-hikorea-guide': true, 'open-jurisdiction-modal': true };
   function optionHtml(item, i, query) {
     var label = item.kind === 'tool' ? t(item.labelKey) : item.label;
@@ -563,12 +566,20 @@
     var terms = intent.procedure && window.VisableManualSearch.PROCEDURE_TERMS ? (window.VisableManualSearch.PROCEDURE_TERMS[intent.procedure] || []) : [];
     return [intent.status || '', terms[terms.length - 1] || ''].join(' ').trim() || query;
   }
+  /* Deep link into manual.html (readable original, sectioned by status and procedure).
+   * Uses the guidance intent when present, else a status code typed in the query. */
+  function readerLink() {
+    var route = window.VisableManualReaderRoute;
+    var code = intent && intent.status ? intent.status : ((String(query).toUpperCase().match(/\b[A-H]-\d{1,2}(?:-[0-9A-Z]+)?\b/) || [])[0] || '');
+    var href = route ? route.href(code, intent ? intent.procedure : null, { domain: domain || (intent && intent.domain) }) : null;
+    return '<p class="cs-reader-link"><a href="' + esc(href || 'manual.html') + '">' + esc(t('readerOpen')) + ' →</a></p>';
+  }
   function renderResults() {
     hits = window.VisableManualSearch.search(corpus, query, { domain: domain, intent: intent });
     rawSummary(hits.length);
     var eq = evidenceQuery();
     panel.innerHTML = '<div class="cs-results-head"><div><h4>' + esc(t('manualTitle')) + '</h4><p>' + esc(t('currentSource')) + '</p></div><label><span class="cs-sr">' + esc(t('filter')) + '</span><select id="civicDomain"><option value="">' + esc(t('both')) + '</option><option value="visa_issuance">' + esc(t('visa')) + '</option><option value="stay">' + esc(t('stay')) + '</option></select></label></div>' +
-      '<p class="cs-source-note">' + esc(t('sourceNote')) + '</p>' +
+      '<p class="cs-source-note">' + esc(t('sourceNote')) + '</p>' + readerLink() +
       (hits.length ? '<ol class="cs-manual-list">' + hits.slice(0, shown).map(function (hit, i) {
         var source = hit.source, page = hit.page;
         return '<li><div class="cs-result-meta">' + esc(lang() === 'en' ? source.title_en : source.title) + ' · ' + esc(source.date) + ' · ' + page.page + ' ' + esc(t('page')) + '</div>' +
