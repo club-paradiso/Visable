@@ -198,7 +198,7 @@ class SchemaAndLifecycleTests(PlatformCase):
     def test_file_store_falls_back_to_memory_when_unwritable(self):
         store = KnowledgeStore("/proc/definitely/not/writable/knowledge.sqlite3")
         self.assertFalse(store.durable)
-        self.assertEqual(store.schema_version(), "0001_knowledge_foundation")
+        self.assertEqual(store.schema_version(), "0002_checklist_operations")
 
 
 # =============================================================================
