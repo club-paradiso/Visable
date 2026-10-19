@@ -59,6 +59,10 @@
   ];
   var PASSPORT_ONLY_REISSUE = /여권\s*(재발급|갱신|renew)|passport\s*(renew|reissue)/i;
   var FORM_WORDS = /원본|사본|original|copy|copies|photocop/i;
+  // Everyday phrasings the procedure keywords (근무처 변경, 이직, 외국인등록) do not cover. They are
+  // consulted only when nothing else matched, so an explicit procedure word always wins.
+  var WORKPLACE_MOVE = /(직장|회사|일자리|근무지|일터)\s*(을|를|이|가)?\s*(바꾸|바꿨|바꿔|바뀌|바뀐|옮기|옮겼|옮겨|옮길|변경)|\b(change|changed|changing|switch|switched|switching)\s+(my\s+|of\s+)?(job|jobs|employer|company)\b/i;
+  var FIRST_ARRIVAL = /처음|최초|입국\s*(후|하고|해서|했)|한국에\s*(와서|왔|도착)|막\s*왔|\bfirst\b|just arrived|newly arrived|after arriving/i;
 
   function lower(s) { return String(s || '').toLowerCase(); }
   function hasTerm(text, term) { return text.indexOf(lower(term)) >= 0; }
@@ -157,6 +161,10 @@
     var candidates = composed && composed.candidates && composed.candidates.length ? composed.candidates : (procedure ? [procedure] : []);
     // A keyword-only "registration" hit caused by an object word (arc / residence card) is not a procedure.
     if (!composed && interp.procedure === 'registration' && objects.card && !actions.register) { procedure = null; candidates = ['card_reissue', 'registration']; composed = { ambiguous: true, why: 'keyword registration from object word' }; }
+    if (!procedure && !candidates.length && !composed) {
+      if (WORKPLACE_MOVE.test(text)) { procedure = 'workplace_change'; candidates = [procedure]; composed = { procedure: procedure, candidates: candidates, why: 'phrase:workplace move' }; }
+      else if (actions.register && FIRST_ARRIVAL.test(text) && !objects.school && !objects.passport) { procedure = 'registration'; candidates = [procedure]; composed = { procedure: procedure, candidates: candidates, why: 'phrase:first registration' }; }
+    }
     var office = extractOffice(text, opts.localPractice || (bundle && bundle.local_practice) || null);
     var userProgram = extractUserProgram(text);
     var isQuestion = QUESTION_RE.test(q) || (q.length > 18 && /[가-힣]{2,}(요|죠|어|까|나)\s*$/.test(q));
@@ -215,7 +223,7 @@
     };
   }
 
-  var api = { route: route, INTENTS: INTENTS, OBJECTS: OBJECTS, ACTIONS: ACTIONS, facetOf: facetOf, extractOffice: extractOffice, composeProcedure: composeProcedure, registryFor: registryFor };
+  var api = { route: route, INTENTS: INTENTS, WORKPLACE_MOVE: WORKPLACE_MOVE, FIRST_ARRIVAL: FIRST_ARRIVAL, OBJECTS: OBJECTS, ACTIONS: ACTIONS, facetOf: facetOf, extractOffice: extractOffice, composeProcedure: composeProcedure, registryFor: registryFor };
   root.VisableSearchRouter = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this);

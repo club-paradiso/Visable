@@ -16,7 +16,7 @@ const profiles = [
   { name: 'iphone-landscape', width: 844, height: 390 },
 ];
 const criticalSelectors = [
-  '#civicLanding', '.cs-nav', '.cs-lang', '.cs-lang-dialog', '.cs-hero', '.cs-searchbar', '.cs-routes', '.cs-tool-grid', '.cs-source-strip', '#civicManualResults',
+  '#civicLanding', '.cs-nav', '.cs-lang', '.cs-lang-dialog', '.cs-hero', '.cs-searchbar', '.cs-suggest', '.cs-examples', '.cs-browse', '.cs-tool-grid', '.cs-source-strip', '#civicManualResults',
   '.top-ctrls', '.hero-container', '.p-hero-title', '.p-gateway', '.p-gw-search',
   '.p-gw-card', '.p-gw-util', '.p-gw-newhome', '.hero-actions', '.sbar', '#q',
   '.results-area', '.rlist', '.us-layer', '.us-interpret', '.us-ai', '.ai-fab',
@@ -96,7 +96,7 @@ async function inspect(page, profile, state) {
       .filter(visible)
       .map((el) => ({ tag: el.tagName.toLowerCase(), type: el.getAttribute('type') || '', fontSize: parseFloat(getComputedStyle(el).fontSize) || 0 }))
       .filter((entry) => entry.fontSize > 0 && entry.fontSize < 16);
-    const touchTargets = [...document.querySelectorAll('.cs-languages button, .cs-lang, .cs-lang-option, .cs-lang-close, #statusGuidance .sg-chip, #statusGuidance [data-sg-action="toggle-full"], .cs-examples button, .cs-searchbar button, .cs-routes button, .cs-tool-grid > *, .top-ctrls button, .top-ctrls [role="button"], .hero-actions .ha, .p-gw-search, .p-gw-card, .p-gw-util, .p-gw-newhome, .sbar button, .sbar [role="button"], #statusGuidance .sg-option, #statusGuidance .sg-btn, #statusGuidance .sg-candidate, #statusGuidance .sg-next a, #statusGuidance .sg-evidence-actions a')]
+    const touchTargets = [...document.querySelectorAll('.cs-languages button, .cs-lang, .cs-lang-option, .cs-lang-close, #statusGuidance .sg-chip, #statusGuidance [data-sg-action="toggle-full"], .cs-examples button, .cs-example-link, .cs-searchbar button, .cs-sug, .cs-browse-tabs button, .cs-tool-grid > *, .top-ctrls button, .top-ctrls [role="button"], .hero-actions .ha, .p-gw-search, .p-gw-card, .p-gw-util, .p-gw-newhome, .sbar button, .sbar [role="button"], #statusGuidance .sg-option, #statusGuidance .sg-btn, #statusGuidance .sg-candidate, #statusGuidance .sg-next a, #statusGuidance .sg-evidence-actions a')]
       .filter(visible)
       .map((el) => el.getBoundingClientRect())
       .filter((r) => r.width < 40 || r.height < 40)
@@ -243,23 +243,39 @@ try {
       for (const failure of langReport.failures) report.failures.push(`${profile.name}/language-sheet: ${failure}`);
     }
     if (profile.name === 'iphone-15' || profile.name === 'iphone-se') {
-      // Journey state machine (CLOSED → PRE_ENTRY_OPEN → CLOSED) and the Form Helper 2.0 phone flow
-      // (card → explain → editor → preview sheet) on real WebKit.
-      const fhReport = { name: 'journey+form-helper', failures: [] };
+      // Search-first home on real WebKit: typing opens the suggestion panel under the field (in the
+      // flow, not over the keyboard), the purpose pickers open from the directory and close again;
+      // then the Form Helper 2.0 phone flow (card → explain → editor → preview sheet).
+      const fhReport = { name: 'search-first+form-helper', failures: [] };
       try {
         await page.goto(`http://127.0.0.1:${PORT}/`, { waitUntil: 'domcontentloaded', timeout: 30000 });
-        await page.waitForSelector('#civicLanding [data-cs-journey="pre"]', { timeout: 20000 });
-        await page.locator('[data-cs-journey="pre"]').tap();
+        await page.waitForSelector('#civicLanding #civicQuery[role="combobox"]', { timeout: 20000 });
+        if (await page.locator('.cs-route, .cs-journey').count()) fhReport.failures.push('pre/post journey cards still rendered');
+        await page.locator('#civicQuery').tap();
+        await page.keyboard.type('F-6 연장');
+        await page.waitForSelector('#civicSuggest [role="option"]', { timeout: 10000 });
+        const sug = await page.evaluate(() => { const box = document.querySelector('.cs-suggest'); const r = box.getBoundingClientRect(); const bar = document.querySelector('.cs-searchbar').getBoundingClientRect(); return { options: document.querySelectorAll('#civicSuggest [role="option"]').length, expanded: document.getElementById('civicQuery').getAttribute('aria-expanded'), belowBar: r.top >= bar.bottom - 1, position: getComputedStyle(box).position, overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth }; });
+        if (!sug.options) fhReport.failures.push('no suggestions for "F-6 연장"');
+        if (sug.expanded !== 'true') fhReport.failures.push('combobox not expanded while suggestions show');
+        if (!sug.belowBar || sug.position === 'fixed') fhReport.failures.push('suggestion panel not in the flow under the field');
+        if (sug.overflow > 1) fhReport.failures.push(`suggestions overflow by ${sug.overflow}px`);
+        const suggestState = await inspect(page, profile, 'suggest');
+        profileReport.states.push(suggestState);
+        fhReport.failures.push(...suggestState.failures);
+        await page.locator('[data-cs-clear]').tap();
+        await page.locator('.cs-directory summary').tap();
+        await page.locator('.cs-directory [data-target="visaManualSection"]').tap();
         await page.waitForTimeout(300);
-        if ((await page.getAttribute('[data-cs-journey="pre"]', 'aria-expanded')) !== 'true') fhReport.failures.push('journey did not open on tap');
-        const panelShown = await page.evaluate(() => { const p = document.getElementById('civicJourneyPanel'); return !!p && !p.hidden && p.getBoundingClientRect().height > 40; });
-        if (!panelShown) fhReport.failures.push('journey panel not shown');
-        await page.locator('[data-cs-journey="pre"]').tap();
+        const browse = await page.evaluate(() => { const p = document.getElementById('civicBrowsePanel'); return { shown: !!p && !p.hidden && p.getBoundingClientRect().height > 40, state: window.VisableCivicSearch.journey.state() }; });
+        if (!browse.shown || browse.state !== 'PRE_ENTRY_OPEN') fhReport.failures.push(`browse panel did not open (${browse.state})`);
+        await page.locator('.cs-browse-tabs [data-cs-journey="post"]').tap();
+        if ((await page.getAttribute('.cs-browse-tabs [data-cs-journey="post"]', 'aria-pressed')) !== 'true') fhReport.failures.push('browse tab did not switch');
+        const browseState = await inspect(page, profile, 'browse');
+        profileReport.states.push(browseState);
+        fhReport.failures.push(...browseState.failures);
+        await page.locator('#civicBrowsePanel .cs-journey-close').tap();
         await page.waitForTimeout(200);
-        if ((await page.getAttribute('[data-cs-journey="pre"]', 'aria-expanded')) !== 'false') fhReport.failures.push('second tap did not collapse the journey');
-        const journeyState = await inspect(page, profile, 'journey');
-        profileReport.states.push(journeyState);
-        fhReport.failures.push(...journeyState.failures);
+        if (await page.evaluate(() => window.VisableCivicSearch.journey.state()) !== 'CLOSED') fhReport.failures.push('browse panel did not close');
         await page.goto(`http://127.0.0.1:${PORT}/form-helper.html`, { waitUntil: 'domcontentloaded', timeout: 30000 });
         await page.waitForSelector('body.fh-ready', { timeout: 20000 });
         await page.waitForTimeout(400);
@@ -294,7 +310,7 @@ try {
       }
       profileReport.guidanceFlows = profileReport.guidanceFlows || [];
       profileReport.guidanceFlows.push(fhReport);
-      for (const failure of fhReport.failures) report.failures.push(`${profile.name}/journey+form-helper: ${failure}`);
+      for (const failure of fhReport.failures) report.failures.push(`${profile.name}/search-first+form-helper: ${failure}`);
     }
     {
       // Waymaker answer card (ai.html) on real WebKit, every iPhone profile: the
