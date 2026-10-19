@@ -2,7 +2,7 @@
   "name": "visable",
   "version": "0.0.0",
   "private": true,
-  "description": "Visable \u2014 Korean visa/status-of-stay information platform (vanilla HTML/CSS/JS, no build system). This package.json only wraps existing Node scripts so common checks have npm aliases; the site itself needs no build. NOTE: no \"type\":\"module\" \u2014 the repo's .js scripts are CommonJS; analyzer modules are .mjs (ES) by extension.",
+  "description": "Visable — Korean visa/status-of-stay information platform (vanilla HTML/CSS/JS, no build system). This package.json only wraps existing Node scripts so common checks have npm aliases; the site itself needs no build. NOTE: no \"type\":\"module\" — the repo's .js scripts are CommonJS; analyzer modules are .mjs (ES) by extension.",
   "scripts": {
     "validate": "bash scripts/check_repo.sh",
     "test:i18n": "node scripts/check_i18n.js && node scripts/smoke_static_i18n.mjs",
@@ -33,7 +33,8 @@
     "test:current-manuals": "node scripts/check_current_manual_corpus.mjs && python3 scripts/tests/test_current_manual_index.py",
     "build:status-guidance": "python3 scripts/status_guidance/author_rules.py && python3 scripts/build_status_coverage_manifest.py",
     "test:status-guidance": "python3 scripts/status_guidance/author_rules.py --check && python3 scripts/build_status_coverage_manifest.py --check && node scripts/check_status_coverage_manifest.mjs && node scripts/check_document_guidance.mjs && node scripts/check_status_resolver.mjs && npm run test:search-waymaker",
-    "test:search-waymaker": "node scripts/check_search_router.mjs && node scripts/check_document_physical_form.mjs && node scripts/check_fee_rules.mjs && node scripts/check_local_practice.mjs && node scripts/check_waymaker_quick_answer.mjs && node scripts/check_search_result_unification.mjs"
+    "test:search-waymaker": "node scripts/check_search_router.mjs && node scripts/check_document_physical_form.mjs && node scripts/check_fee_rules.mjs && node scripts/check_local_practice.mjs && node scripts/check_waymaker_quick_answer.mjs && node scripts/check_search_result_unification.mjs",
+    "test:immigration-checklists": "node scripts/check_immigration_checklists.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.61.0",

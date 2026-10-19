@@ -253,3 +253,9 @@ body.fh-sheet-open { overflow: hidden; }
 }
 @media (max-width: 360px) { .fh-h1 { font-size: 26px; } .fh-lang { max-width: 40vw; padding: 0 8px; } .fh-mobile-bar .fh-btn { font-size: 14px; padding: 10px 6px; } }
 @media print { .fh-top, .fh-mobile-bar, .fh-aside, .fh-rail, .fh-footer, .fh-actions, .fh-nav { display: none !important; } }
+
+/* Cross-product document checklist entry: accessible on narrow screens. */
+.fh-checklist-link{display:inline-flex;align-items:center;gap:5px;min-height:40px;padding:8px 12px;border:1px solid #c7dfcc;border-radius:999px;background:rgba(247,252,248,.96);color:#175e40;text-decoration:none;font-size:12px;font-weight:700;white-space:nowrap}
+.fh-checklist-link:hover{background:#e5f4e8}
+.fh-checklist-link:focus-visible{outline:3px solid #63b580;outline-offset:2px}
+@media(max-width:520px){.fh-checklist-link{padding:7px 9px;font-size:11px}}
