@@ -31,28 +31,28 @@
 
   /* ------------------------------------------------------------- lexicons -- */
   var OBJECTS = {
-    card: ['외국인등록증', '등록증', '거소증', '영주증', 'arc', 'residence card', 'registration card', 'alien card', 'alien registration', 'foreigner card', 'id card'],
-    registration_info: ['외국인등록사항', '등록사항', 'registration information', 'registered information', 'registration details'],
-    passport: ['여권', 'passport'],
-    address: ['주소', '체류지', '거주지', '이사', '전입', 'address', 'moved', 'moving', 'new place', 'relocat'],
-    school: ['학교', '전학', '소속기관', '소속 기관', 'school', 'university', 'institution'],
-    name: ['이름', '성명', '개명', '국적 변경', '국적이 바뀌', '생년월일', 'my name', 'nationality change', 'date of birth'],
-    residence_proof: ['체류지입증', '체류지 입증', '체류지 증명', '체류지서류', '체류지 서류', '거주 증명', '주거 증명', '임대차', '숙소제공', 'proof of residence', 'lease', 'housing proof', 'proof of address'],
+    card: ['외국인등록증', '등록증', '거소증', '영주증', 'arc', 'residence card', 'registration card', 'alien card', 'alien registration', 'foreigner card', 'id card', '外国人登录证', '登录证', '居留卡', '外国人居留证', 'thẻ cư trú', 'thẻ người nước ngoài', 'thẻ arc', 'kartu tinggal', 'kartu registrasi orang asing', 'kartu arc'],
+    registration_info: ['외국인등록사항', '등록사항', 'registration information', 'registered information', 'registration details', '登录事项', '外国人登录事项', 'thông tin đăng ký người nước ngoài', 'informasi registrasi'],
+    passport: ['여권', 'passport', '护照', 'hộ chiếu', 'paspor'],
+    address: ['주소', '체류지', '거주지', '이사', '전입', 'address', 'moved', 'moving', 'new place', 'relocat', '地址', '居住地', '搬家', '迁入', 'địa chỉ', 'chuyển nhà', 'nơi cư trú', 'alamat', 'tempat tinggal', 'pindah rumah'],
+    school: ['학교', '전학', '소속기관', '소속 기관', 'school', 'university', 'institution', '学校', '大学', '机构', 'trường học', 'đại học', 'cơ quan', 'sekolah', 'universitas', 'lembaga'],
+    name: ['이름', '성명', '개명', '국적 변경', '국적이 바뀌', '생년월일', 'my name', 'nationality change', 'date of birth', '姓名', '改名', '国籍变更', 'họ tên', 'đổi tên', 'thay đổi quốc tịch', 'nama', 'ganti nama', 'perubahan kewarganegaraan'],
+    residence_proof: ['체류지입증', '체류지 입증', '체류지 증명', '체류지서류', '체류지 서류', '거주 증명', '주거 증명', '임대차', '숙소제공', 'proof of residence', 'lease', 'housing proof', 'proof of address', '滞留地证明', '居住证明', '租房合同', '租赁合同', 'chứng minh nơi cư trú', 'hợp đồng thuê nhà', 'bukti tempat tinggal', 'surat sewa rumah'],
   };
   var ACTIONS = {
-    reissue: ['재발급', '다시 발급', '재 발급', '잃어버', '잃었', '분실', '없어졌', '훼손', '헐어', '헐었', '찢어', '깨졌', '망가', '기재란', '적는 난', 'reissue', 're-issue', 'reissuance', 'lost', 'missing', 'damaged', 'broken', 'worn', 'replace', 'replacement', 'new card'],
-    register: ['외국인등록', '외국인 등록', '등록하', '등록 하', '발급받', '발급 받', '신규 발급', '처음 발급', '처음 받', 'register', 'registration', 'first card', 'get a card', 'apply for a card'],
-    change: ['변경', '바꾸', '바뀌', '바꿨', '바꿔', '신고', '갱신', '수정', '업데이트', 'change', 'changed', 'update', 'report', 'renewed passport', 'new passport'],
-    extend: ['연장', '기간 연장', 'extend', 'extension', 'renew'],
-    move: ['이사', '이사했', '이사 했', '전입', 'moved', 'move', 'relocat'],
+    reissue: ['재발급', '다시 발급', '재 발급', '잃어버', '잃었', '분실', '없어졌', '훼손', '헐어', '헐었', '찢어', '깨졌', '망가', '기재란', '적는 난', 'reissue', 're-issue', 'reissuance', 'lost', 'missing', 'damaged', 'broken', 'worn', 'replace', 'replacement', 'new card', '补发', '补办', '重新补发', '遗失', '丢失', '破损', '损坏', 'cấp lại', 'làm lại', 'bị mất', 'làm mất', 'bị hỏng', 'hư hỏng', 'penerbitan ulang', 'cetak ulang', 'hilang', 'kehilangan', 'rusak'],
+    register: ['외국인등록', '외국인 등록', '등록하', '등록 하', '발급받', '발급 받', '신규 발급', '처음 발급', '처음 받', 'register', 'registration', 'first card', 'get a card', 'apply for a card', '外国人登录', '新办', '首次办理', '申领', 'đăng ký cư trú', 'đăng ký người nước ngoài', 'làm thẻ lần đầu', 'cấp mới', 'pendaftaran orang asing', 'buat kartu pertama', 'bikin kartu baru'],
+    change: ['변경', '바꾸', '바뀌', '바꿨', '바꿔', '신고', '갱신', '수정', '업데이트', 'change', 'changed', 'update', 'report', 'renewed passport', 'new passport', '变更', '更改', '换签', '修改', '申报', 'thay đổi', 'chuyển đổi', 'khai báo', 'cập nhật', 'ubah', 'mengubah', 'perubahan', 'lapor', 'pembaruan'],
+    extend: ['연장', '기간 연장', 'extend', 'extension', 'renew', '延期', '续签', '延长', 'gia hạn', 'kéo dài thời gian cư trú', 'perpanjang', 'perpanjangan izin tinggal'],
+    move: ['이사', '이사했', '이사 했', '전입', 'moved', 'move', 'relocat', '搬家', '搬迁', 'chuyển nhà', 'chuyển địa chỉ', 'pindah', 'pindah rumah'],
   };
-  var QUESTION_RE = /\?|？|어떻게|어떡|뭐\s*필요|무엇|무슨|필요해|필요한가|필요하나|필요할까|필요 ?해요|얼마|되나요|되나|될까|돼\b|돼요|할 수 있|하려면|할려면|하고 싶|알려|가능해|가능한가|맞지|맞나|맞아|아닌가|\bhow\b|\bwhat\b|\bwhich\b|\bcan i\b|\bdo i\b|\bneed\b|\bshould\b|\bis it\b|\bare\b.*\brequired\b/i;
+  var QUESTION_RE = /\?|？|어떻게|어떡|뭐\s*필요|무엇|무슨|필요해|필요한가|필요하나|필요할까|필요 ?해요|얼마|되나요|되나|될까|돼\b|돼요|할 수 있|하려면|할려면|하고 싶|알려|가능해|가능한가|맞지|맞나|맞아|아닌가|\bhow\b|\bwhat\b|\bwhich\b|\bcan i\b|\bdo i\b|\bneed\b|\bshould\b|\bis it\b|\bare\b.*\brequired\b|怎么|如何|什么|需要什么|多少钱|可以吗|行不行|能否|làm sao|thế nào|cần gì|bao nhiêu|được không|có được không|bagaimana|gimana|apa saja|berapa|bisa tidak|apakah bisa/i;
   var FACETS = [
-    ['fee', /수수료|비용|얼마|납부|수입인지|면제|감경|할인|\bfee\b|\bcost\b|\bprice\b|\bpay\b|exempt/i],
-    ['documents', /서류|준비물|준비해|챙겨|뭐 필요|필요한 것|필요해|입증|증명서|사본|원본|documents?|papers?|\bneed\b|\bbring\b|prepare|checklist/i],
-    ['deadline', /기한|언제까지|며칠|일 이내|기간 안|deadline|within \d+|how long|by when/i],
-    ['eligibility', /가능|되나|될까|할 수 있|허용|자격이 되|해도 되|can i|allowed|eligible|possible/i],
-    ['how', /어떻게|어떡|절차|방법|순서|어디서|어디에|\bhow\b|\bwhere\b|process|procedure|steps/i],
+    ['fee', /수수료|비용|얼마|납부|수입인지|면제|감경|할인|\bfee\b|\bcost\b|\bprice\b|\bpay\b|exempt|费用|手续费|多少钱|lệ phí|chi phí|tiền|biaya|tarif|ongkos/i],
+    ['documents', /서류|준비물|준비해|챙겨|뭐 필요|필요한 것|필요해|입증|증명서|사본|원본|documents?|papers?|\bneed\b|\bbring\b|prepare|checklist|材料|文件|材料清单|hồ sơ|giấy tờ|dokumen|berkas|syarat/i],
+    ['deadline', /기한|언제까지|며칠|일 이내|기간 안|deadline|within \d+|how long|by when|期限|截止时间|几天以内|thời hạn|hạn chót|trong vòng|tenggat|batas waktu|berapa hari/i],
+    ['eligibility', /가능|되나|될까|할 수 있|허용|자격이 되|해도 되|can i|allowed|eligible|possible|可以吗|具备资格|được không|có được|bisa tidak|bolehkah/i],
+    ['how', /어떻게|어떡|절차|방법|순서|어디서|어디에|\bhow\b|\bwhere\b|process|procedure|steps|怎么|如何|流程|在哪|办理方式|thế nào|làm sao|thủ tục|ở đâu|bagaimana|cara|prosedur|di mana/i],
   ];
   var USER_PROGRAMS = [
     { id: 'gks', terms: ['gks', '정부초청장학', '정부 초청 장학', '정부초청 장학', 'korean government scholarship', 'government scholarship', '국비장학생', '국비 장학생'], statusCandidates: ['D-2', 'D-4'] },

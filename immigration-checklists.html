@@ -9,6 +9,8 @@
 <link rel="icon" href="assets/brand/visable-favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/css/immigration-checklists.css">
 <script src="assets/js/backend-origin.js" defer></script>
+<script src="assets/js/zh-traditional.js" defer></script>
+<script src="assets/js/visable-i18n.js" defer></script>
 <script src="assets/js/immigration-checklists.js" defer></script>
 </head>
 <body data-mode="guided" data-operator="false">
@@ -40,10 +42,23 @@
    <span>서식 작성</span>
    <span class="ext-arrow" aria-hidden="true">↗</span>
   </a>
-  <label class="lang-selector-wrap" aria-label="언어 선택">
-   <select id="lang-select" class="lang-select">
-    <option value="ko" selected>한국어</option>
-    <option value="en">English</option>
+  <label class="lang-selector-wrap" aria-label="언어 선택" id="lang-selector-label">
+   <select id="lang-select" class="lang-select" aria-label="언어 선택">
+    <option value="ko">한국어 (KO)</option>
+    <option value="en">English (EN)</option>
+    <option value="zh-CN">简体中文 (ZH)</option>
+    <option value="zh-TW">繁體中文 (ZH-TW)</option>
+    <option value="vi">Tiếng Việt (VI)</option>
+    <option value="id">Bahasa Indonesia (ID)</option>
+    <option value="ja">日本語 (JA)</option>
+    <option value="tl">Tagalog (TL)</option>
+    <option value="ru">Русский (RU)</option>
+    <option value="ar">العربية (AR)</option>
+    <option value="fr">Français (FR)</option>
+    <option value="es">Español (ES)</option>
+    <option value="de">Deutsch (DE)</option>
+    <option value="tr">Türkçe (TR)</option>
+    <option value="uk">Українська (UK)</option>
    </select>
   </label>
   <button type="button" id="operator-mode-toggle" class="quiet-button operator-pill" aria-pressed="false" title="데이터 관리자 전용 편집 모드">
