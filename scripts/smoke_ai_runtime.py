@@ -82,11 +82,11 @@ def diagnostics_headers(payload: Optional[Dict[str, Any]], headers: Dict[str, st
     """Add the operator diagnostics token when a diagnostics payload is sent.
 
     The backend accepts ``diagnostics: true`` only with a matching
-    ``X-Paradiso-Diagnostics-Token`` once ``PARADISO_DIAGNOSTICS_TOKEN`` is set
-    there; the value comes from the same-named environment variable and is
-    never printed.
+    ``X-Paradiso-Diagnostics-Token`` once ``VISABLE_DIAGNOSTICS_TOKEN`` (legacy
+    name ``PARADISO_DIAGNOSTICS_TOKEN``) is set there; the value comes from the
+    same-named environment variable and is never printed.
     """
-    token = (os.environ.get("PARADISO_DIAGNOSTICS_TOKEN") or "").strip()
+    token = (os.environ.get("VISABLE_DIAGNOSTICS_TOKEN") or os.environ.get("PARADISO_DIAGNOSTICS_TOKEN") or "").strip()
     if token and isinstance(payload, dict) and payload.get("diagnostics"):
         headers = {**headers, "X-Paradiso-Diagnostics-Token": token}
     return headers
