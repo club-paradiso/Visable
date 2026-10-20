@@ -32,82 +32,82 @@ var FIELDS = ['required_text', 'conditional_text', 'application_text', 'note_tex
 
 // Standard visa status dictionary for human-friendly plain language discovery
 var VISA_DESCRIPTIONS = {
-  'A-1': { name: '외교', en: 'Diplomat', desc: '주한 공관원 및 동등 외교관' },
-  'A-2': { name: '공무', en: 'Official Duty', desc: '외국 정부 또는 국제기구의 공무 수행자' },
-  'A-3': { name: '협정', en: 'Treaty', desc: '협정에 따른 주한미군 및 관계자' },
-  'B-1': { name: '사증면제', en: 'Visa Exemption', desc: '협정에 따른 단기 무사증 체류' },
-  'B-2': { name: '관광통과', en: 'Tourist/Transit', desc: '무사증 관광 및 통과 체류' },
-  'C-1': { name: '일시취재', en: 'Temporary Journalism', desc: '일시적인 보도·취재 활동' },
-  'C-3': { name: '단기방문', en: 'Short-term Visit', desc: '90일 이내 단기 관광·출장·친지방문' },
-  'C-4': { name: '단기취업', en: 'Short-term Employment', desc: '90일 이내의 일시 공연·계절근로·취업' },
-  'D-1': { name: '문화예술', en: 'Culture & Arts', desc: '학술·예술활동 및 전통문화 연구' },
-  'D-2': { name: '유학', en: 'Study (Degree)', desc: '대학·대학원의 전문학사, 학사, 석사, 박사 학위과정' },
-  'D-2-1': { name: '전문학사 유학', en: 'Associate Degree', desc: '전문대학 유학 학위과정' },
-  'D-2-2': { name: '학사 유학', en: 'Bachelor Degree', desc: '4년제 대학교 학부과정' },
-  'D-2-3': { name: '석사 유학', en: 'Master Degree', desc: '대학원 석사학위 정규과정' },
-  'D-2-4': { name: '박사 유학', en: 'Doctoral Degree', desc: '대학원 박사학위 정규과정' },
-  'D-2-6': { name: '교환학생', en: 'Exchange Student', desc: '국내외 대학 협정에 따른 교환학생' },
-  'D-2-7': { name: '정부초청 장학생', en: 'Govt Scholarship Student', desc: '대한민국 정부초청 외국인 장학생' },
-  'D-2-8': { name: '단기유학', en: 'Short-term Study', desc: '1년 이하의 학점취득 및 단기 유학 연수' },
-  'D-3': { name: '기술연수', en: 'Industrial Trainee', desc: '국내 기업체 기술·기능 연수' },
-  'D-4': { name: '일반연수', en: 'General Training', desc: '대학 부설 어학원 어학연수 및 초중고 연수' },
-  'D-4-1': { name: '어학연수', en: 'Korean Language Trainee', desc: '대학 어학당 한국어 어학연수과정' },
-  'D-4-2K': { name: '기업 맞춤형 연수(K-Trainee)', en: 'Customized Corporate Trainee', desc: '외투기업 및 해외투자 연계 맞춤형 기업 연수' },
-  'D-5': { name: '취재', en: 'Journalism', desc: '외국 언론사 국내 상주 파견 기자' },
-  'D-6': { name: '종교', en: 'Religion', desc: '외국 종교단체 파견 종교 활동' },
-  'D-7': { name: '주재', en: 'Intra-Company Transferee', desc: '외국 본사에서 국내 지사·영업소 파견 주재원' },
-  'D-8': { name: '기업투자', en: 'Foreign Investor', desc: '외국인투자촉진법에 따른 법인 투자 및 경영' },
-  'D-8-1': { name: '법인투자', en: 'Incorporated Enterprise', desc: '외국인투자기업 국내 경영·관리자' },
-  'D-8-4': { name: '기술창업', en: 'Tech Startup', desc: 'OASIS 기술창업 프로그램 참여 및 스타트업' },
-  'D-9': { name: '무역경영', en: 'Trade & Business', desc: '외국인 무역업 영위 및 전문설비 도입·선박 감리' },
-  'D-10': { name: '구직', en: 'Job Seeking', desc: '전문인력 취업 준비 및 스타트업 창업 준비' },
-  'D-10-1': { name: '일반 구직', en: 'General Job Seeking', desc: '국내외 대학 졸업자 전문직 구직활동' },
-  'D-10-2': { name: '기술창업 준비', en: 'Tech Startup Prep', desc: '기술창업 OASIS 프로그램 및 법인설립 준비' },
-  'D-10-T': { name: '톱티어 구직', en: 'Top-Tier Job Seeking', desc: '세계 유수대학 졸업자 및 글로벌 첨단인재 국내 구직활동' },
-  'E-1': { name: '교수', en: 'Professor', desc: '대학교원 및 전문대학 연구교수' },
-  'E-2': { name: '회화지도', en: 'Foreign Language Instructor', desc: '외국어 학원 및 초중고 외국어 원어민 강사' },
-  'E-3': { name: '연구', en: 'Research', desc: '연구기관의 자연과학·공학 등 전문 연구원' },
-  'E-4': { name: '기술지도', en: 'Technology Transfer', desc: '자연과학·첨단산업 기술 도입 제공자' },
-  'E-5': { name: '전문직업', en: 'Professional Employment', desc: '의사, 변호사, 회계사, 항공기 조종사 등' },
-  'E-6': { name: '예술흥행', en: 'Arts & Entertainment', desc: '방송·음악·공연·호텔공연 및 프로운동선수' },
-  'E-7': { name: '특정활동', en: 'Special Ability', desc: '대한민국 공·사기관 고용 전문인력 (87개 직종)' },
-  'E-7-1': { name: '전문인력', en: 'Professional Personnel', desc: '관리자 및 첨단·전문가 (IT, 엔지니어, 마케팅 등)' },
-  'E-7-2': { name: '준전문인력', en: 'Semi-Professional Personnel', desc: '면세점 판매원, 항공운송 사무원 등' },
-  'E-7-3': { name: '일반기능인력', en: 'General Skilled Worker', desc: '조선용접공, 뿌리기업 기능인력 등' },
-  'E-7-4': { name: '숙련기능인력', en: 'Skilled Technician (K-point)', desc: 'E-9/E-10 장기근무자 숙련기능 점수제 전환' },
-  'E-7-4R': { name: '지역특화 숙련기능', en: 'Regional Skilled Technician', desc: '인구감소지역 장기체류 숙련기능 점수제 특례' },
-  'E-7-S': { name: '혁신인재 네거티브', en: 'Innovative Talent (Negative List)', desc: '첨단 신산업·혁신분야 네거티브 규제 적용 전문인력' },
-  'E-7-T': { name: '톱티어 전문인력', en: 'Top-Tier Professional', desc: 'AI·반도체 등 첨단 과학기술 분야 최고급 인재' },
-  'E-7-Y': { name: '청년 우수인재', en: 'Global Youth Talent', desc: '세계 유수대학 졸업 청년 대상 전문인력' },
-  'E-8': { name: '계절근로', en: 'Seasonal Worker', desc: '농번기·어번기 단기 계절근로' },
-  'E-9': { name: '비전문취업', en: 'Non-Professional (EPS)', desc: '고용허가제 제조업·농축산업·어업·건설업' },
-  'E-10': { name: '선원취업', en: 'Vessel Crew', desc: '연근해 어선 및 내항여객선 선원' },
-  'F-1': { name: '방문동거', en: 'Visiting & Joining Family', desc: '친척 방문, 가사보조, 동반 가족의 거주' },
-  'F-2': { name: '거주', en: 'Resident', desc: '점수제 우수인재, 영주자격 이전 장기 거주' },
-  'F-2-7': { name: '점수제 우수인재', en: 'Points-based Resident', desc: '학력·소득·한국어 점수제 우수인재 거주' },
-  'F-2-7S': { name: 'K-STAR·잠재적 우수인재', en: 'K-STAR & Potential Talent', desc: '이공계 특성화대학 졸업자 및 K-STAR 우수인재 거주' },
-  'F-2-R': { name: '지역특화형 거주', en: 'Regional Specialized Resident', desc: '인구감소지역 우수인재 및 동포 정착 지원' },
-  'F-2-T': { name: '톱티어 우수인재', en: 'Top-Tier Resident', desc: '글로벌 톱티어 첨단인재 대상 장기 거주' },
-  'F-3': { name: '동반', en: 'Dependent Family', desc: '전문인력(D·E 계열) 및 동포(F-4·H-2) 등록자의 동반 가족' },
-  'F-3-19': { name: '재외동포 동반가족', en: 'Overseas Korean Dependent', desc: '재외동포(F-4) 자격 소지자의 배우자 및 미성년 자녀' },
-  'F-3-20': { name: '방문취업 동반가족', en: 'Working Visit Dependent', desc: '방문취업(H-2) 자격 소지자의 배우자 및 미성년 자녀' },
-  'F-4': { name: '재외동포', en: 'Overseas Korean', desc: '대한민국 국적을 보유했던 자 및 직계비속 동포' },
-  'F-4-R': { name: '지역특화 재외동포', en: 'Regional Overseas Korean', desc: '인구감소지역 거주 재외동포 특례 거소신고' },
-  'F-5': { name: '영주', en: 'Permanent Resident', desc: '체류기간 제한 없는 영주자격 (10년 주기 영주증 갱신 대상)' },
-  'F-5-S1': { name: 'K-STAR 영주', en: 'K-STAR Permanent Resident', desc: '이공계 첨단인재 K-STAR 트랙 영주' },
-  'F-5-T': { name: '톱티어 영주', en: 'Top-Tier Permanent Resident', desc: '세계 최고급 첨단인재 톱티어 패스트트랙 영주' },
-  'F-6': { name: '결혼이민', en: 'Marriage Migrant', desc: '대한민국 국민과 혼인 관계를 유지하는 배우자' },
-  'F-6-1': { name: '국민의 배우자', en: 'Spouse of Korean National', desc: '한국인 배우자와 정상적인 혼인 유지' },
-  'F-6-2': { name: '자녀양육', en: 'Child Rearing', desc: '국민과의 혼인관계 종료 후 미성년 자녀 양육' },
-  'F-6-3': { name: '귀책사유 혼인단절', en: 'Non-Fault Divorce', desc: '배우자 사망·실종 또는 배우자 귀책사유로 인한 이혼 후 체류' },
-  'G-1': { name: '기타', en: 'Miscellaneous', desc: '산재 치료, 소송 수행, 난민인정 신청 등 인도적 체류' },
-  'G-1-1': { name: '산재 치료', en: 'Industrial Accident Care', desc: '업무상 재해로 인한 치료 및 요양' },
-  'G-1-2': { name: '질병·사고 치료', en: 'Medical Treatment', desc: '질병 또는 사고로 인한 치료 및 간병' },
-  'G-1-3': { name: '소송 수행', en: 'Lawsuit / Legal Action', desc: '임금체불 등 재판 및 소송 수행' },
-  'G-1-5': { name: '난민신청자', en: 'Refugee Applicant', desc: '대한민국 난민인정 심사 진행 중 체류' },
-  'G-1-6': { name: '인도적 체류자', en: 'Humanitarian Status', desc: '난민 불인정자 중 인도적 사유로 인한 체류' },
-  'H-1': { name: '관광취업', en: 'Working Holiday', desc: '협정국 청년의 관광 및 단기취업' },
-  'H-2': { name: '방문취업', en: 'Working Visit', desc: '외국국적동포(중국·CIS 등) 단순노무·서비스업 취업' }
+  'A-1': { name: '외교', en: 'Diplomat', 'zh-CN': '外交', vi: 'Ngoại giao', id: 'Diplomat', ja: '外交', ar: 'دبلوماسي', desc: '주한 공관원 및 동등 외교관' },
+  'A-2': { name: '공무', en: 'Official Duty', 'zh-CN': '公务', vi: 'Công vụ', id: 'Tugas Resmi', ja: '公務', ar: 'مهمة رسمية', desc: '외국 정부 또는 국제기구의 공무 수행자' },
+  'A-3': { name: '협정', en: 'Treaty', 'zh-CN': '协定', vi: 'Hiệp định', id: 'Perjanjian', ja: '協定', ar: 'اتفاقية', desc: '협정에 따른 주한미군 및 관계자' },
+  'B-1': { name: '사증면제', en: 'Visa Exemption', 'zh-CN': '免签证协定', vi: 'Miễn thị thực', id: 'Bebas Visa', ja: '査証免除', ar: 'إعفاء من التأشيرة', desc: '협정에 따른 단기 무사증 체류' },
+  'B-2': { name: '관광통과', en: 'Tourist/Transit', 'zh-CN': '观光通过(免签证)', vi: 'Du lịch quá cảnh', id: 'Wisata & Transit', ja: '観光通過', ar: 'سياحة وعبور', desc: '무사증 관광 및 통과 체류' },
+  'C-1': { name: '일시취재', en: 'Temporary Journalism', 'zh-CN': '临时采访', vi: 'Báo chí tạm thời', id: 'Jurnalisme Sementara', ja: '一時取材', ar: 'صحافة مؤقتة', desc: '일시적인 보도·취재 활동' },
+  'C-3': { name: '단기방문', en: 'Short-term Visit', 'zh-CN': '短期访问', vi: 'Lưu trú ngắn hạn', id: 'Kunjungan Singkat', ja: '短期滞在', ar: 'زيارة قصيرة', desc: '90일 이내 단기 관광·출장·친지방문' },
+  'C-4': { name: '단기취업', en: 'Short-term Employment', 'zh-CN': '短期就业', vi: 'Lao động ngắn hạn', id: 'Bekerja Singkat', ja: '短期就労', ar: 'عمل قصير الأجل', desc: '90일 이내의 일시 공연·계절근로·취업' },
+  'D-1': { name: '문화예술', en: 'Culture & Arts', 'zh-CN': '文化艺术', vi: 'Văn hóa nghệ thuật', id: 'Seni Budaya', ja: '文化芸術', ar: 'ثقافة وفنون', desc: '학술·예술활동 및 전통문화 연구' },
+  'D-2': { name: '유학', en: 'Study (Degree)', 'zh-CN': '留学', vi: 'Du học', id: 'Studi (Gelar)', ja: '留学', ar: 'الدراسة (درجة جامعية)', desc: '대학·대학원의 전문학사, 학사, 석사, 박사 학위과정' },
+  'D-2-1': { name: '전문학사 유학', en: 'Associate Degree', 'zh-CN': '专科学位留学', vi: 'Du học cao đẳng', id: 'Studi Diploma', ja: '専門学士留学', ar: 'دراسة دبلوم', desc: '전문대학 유학 학위과정' },
+  'D-2-2': { name: '학사 유학', en: 'Bachelor Degree', 'zh-CN': '学士学位留学', vi: 'Du học cử nhân', id: 'Studi Sarjana', ja: '学士留学', ar: 'دراسة بكالوريوس', desc: '4년제 대학교 학부과정' },
+  'D-2-3': { name: '석사 유학', en: 'Master Degree', 'zh-CN': '硕士学位留学', vi: 'Du học thạc sĩ', id: 'Studi Magister', ja: '修士留学', ar: 'دراسة ماجستير', desc: '대학원 석사학위 정규과정' },
+  'D-2-4': { name: '박사 유학', en: 'Doctoral Degree', 'zh-CN': '博士学位留学', vi: 'Du học tiến sĩ', id: 'Studi Doktoral', ja: '博士留学', ar: 'دراسة دكتوراه', desc: '대학원 박사학위 정규과정' },
+  'D-2-6': { name: '교환학생', en: 'Exchange Student', 'zh-CN': '交换学生', vi: 'Sinh viên trao đổi', id: 'Pertukaran Pelajar', ja: '交換留学', ar: 'طالب تبادل', desc: '국내외 대학 협정에 따른 교환학생' },
+  'D-2-7': { name: '정부초청 장학생', en: 'Govt Scholarship Student', 'zh-CN': '政府奖学金生', vi: 'Học bổng chính phủ', id: 'Beasiswa Pemerintah', ja: '政府奨学生', ar: 'منحة حكومية', desc: '대한민국 정부초청 외국인 장학생' },
+  'D-2-8': { name: '단기유학', en: 'Short-term Study', 'zh-CN': '短期留学', vi: 'Du học ngắn hạn', id: 'Studi Singkat', ja: '短期留学', ar: 'دراسة قصيرة الأجل', desc: '1년 이하의 학점취득 및 단기 유학 연수' },
+  'D-3': { name: '기술연수', en: 'Industrial Trainee', 'zh-CN': '技术研修', vi: 'Thực tập kỹ thuật', id: 'Pelatihan Industri', ja: '技術研修', ar: 'تدريب صناعي', desc: '국내 기업체 기술·기능 연수' },
+  'D-4': { name: '일반연수', en: 'General Training', 'zh-CN': '一般研修', vi: 'Đào tạo tổng quát', id: 'Pelatihan Umum', ja: '一般研修', ar: 'تدريب عام', desc: '대학 부설 어학원 어학연수 및 초중고 연수' },
+  'D-4-1': { name: '어학연수', en: 'Korean Language Trainee', 'zh-CN': '韩国语研修(语学院)', vi: 'Học tiếng Hàn', id: 'Bahasa Korea', ja: '韓国語研修', ar: 'تدريب لغة كورية', desc: '대학 어학당 한국어 어학연수과정' },
+  'D-4-2K': { name: '기업 맞춤형 연수(K-Trainee)', en: 'Customized Corporate Trainee', 'zh-CN': '企业定制研修(K-Trainee)', vi: 'Thực tập doanh nghiệp K-Trainee', id: 'Pelatihan Perusahaan K-Trainee', ja: '企業研修(K-Trainee)', ar: 'تدريب 기업 K-Trainee', desc: '외투기업 및 해외투자 연계 맞춤형 기업 연수' },
+  'D-5': { name: '취재', en: 'Journalism', 'zh-CN': '采访', vi: 'Phóng viên thường trú', id: 'Jurnalisme', ja: '取材', ar: 'تغطية إخبارية', desc: '외국 언론사 국내 상주 파견 기자' },
+  'D-6': { name: '종교', en: 'Religion', 'zh-CN': '宗教', vi: 'Tôn giáo', id: 'Keagamaan', ja: '宗教', ar: 'شؤون دينية', desc: '외국 종교단체 파견 종교 활동' },
+  'D-7': { name: '주재', en: 'Intra-Company Transferee', 'zh-CN': '驻在', vi: 'Chuyển công tác nội bộ', id: 'Transfer Internal', ja: '駐在', ar: 'انتداب داخلي للشركة', desc: '외국 본사에서 국내 지사·영업소 파견 주재원' },
+  'D-8': { name: '기업투자', en: 'Foreign Investor', 'zh-CN': '企业投资', vi: 'Đầu tư doanh nghiệp', id: 'Investasi Perusahaan', ja: '企業投資', ar: 'استثمار شركات', desc: '외국인투자촉진법에 따른 법인 투자 및 경영' },
+  'D-8-1': { name: '법인투자', en: 'Incorporated Enterprise', 'zh-CN': '法人投资', vi: 'Đầu tư pháp nhân', id: 'Investasi Korporat', ja: '法人投資', ar: 'استثمار شركات اعتبارية', desc: '외국인투자기업 국내 경영·관리자' },
+  'D-8-4': { name: '기술창업', en: 'Tech Startup', 'zh-CN': '技术创业', vi: 'Khởi nghiệp công nghệ', id: 'Startup Teknologi', ja: '技術創業', ar: 'شركات تكنولوجية ناشئة', desc: 'OASIS 기술창업 프로그램 참여 및 스타트업' },
+  'D-9': { name: '무역경영', en: 'Trade & Business', 'zh-CN': '贸易经营', vi: 'Thương mại quản lý', id: 'Perdagangan & Manajemen', ja: '貿易経営', ar: 'إدارة وتجارة', desc: '외국인 무역업 영위 및 전문설비 도입·선박 감리' },
+  'D-10': { name: '구직', en: 'Job Seeking', 'zh-CN': '求职', vi: 'Tìm việc làm', id: 'Pencari Kerja', ja: '求職', ar: 'البحث عن عمل', desc: '전문인력 취업 준비 및 스타트업 창업 준비' },
+  'D-10-1': { name: '일반 구직', en: 'General Job Seeking', 'zh-CN': '一般求职', vi: 'Tìm việc thông thường', id: 'Pencari Kerja Umum', ja: '一般求職', ar: 'بحث عام عن عمل', desc: '국내외 대학 졸업자 전문직 구직활동' },
+  'D-10-2': { name: '기술창업 준비', en: 'Tech Startup Prep', 'zh-CN': '技术创业准备', vi: 'Chuẩn bị khởi nghiệp', id: 'Persiapan Startup Teknologi', ja: '技術創業準備', ar: 'إعداد شركات ناشئة', desc: '기술창업 OASIS 프로그램 및 법인설립 준비' },
+  'D-10-T': { name: '톱티어 구직', en: 'Top-Tier Job Seeking', 'zh-CN': '顶尖求职', vi: 'Tìm việc nhân tài hàng đầu', id: 'Pencari Kerja Top-Tier', ja: 'トップ層求職', ar: 'بحث عن عمل للنخبة', desc: '세계 유수대학 졸업자 및 글로벌 첨단인재 국내 구직활동' },
+  'E-1': { name: '교수', en: 'Professor', 'zh-CN': '教授', vi: 'Giáo sư', id: 'Profesor', ja: '教授', ar: 'أستاذ جامعي', desc: '대학교원 및 전문대학 연구교수' },
+  'E-2': { name: '회화지도', en: 'Foreign Language Instructor', 'zh-CN': '会话指导', vi: 'Giảng dạy ngoại ngữ', id: 'Pengajar Bahasa Asing', ja: '会話指導', ar: 'مدرس محادثة أجنبية', desc: '외국어 학원 및 초중고 외국어 원어민 강사' },
+  'E-3': { name: '연구', en: 'Research', 'zh-CN': '研究', vi: 'Nghiên cứu', id: 'Peneliti', ja: '研究', ar: 'أبحاث', desc: '연구기관의 자연과학·공학 등 전문 연구원' },
+  'E-4': { name: '기술지도', en: 'Technology Transfer', 'zh-CN': '技术指导', vi: 'Chuyển giao công nghệ', id: 'Instruktur Teknis', ja: '技術指導', ar: 'توجيه تقني', desc: '자연과학·첨단산업 기술 도입 제공자' },
+  'E-5': { name: '전문직업', en: 'Professional Employment', 'zh-CN': '专门职业', vi: 'Nghề nghiệp chuyên môn', id: 'Profesional', ja: '専門職業', ar: 'مهن متخصصة', desc: '의사, 변호사, 회계사, 항공기 조종사 등' },
+  'E-6': { name: '예술흥행', en: 'Arts & Entertainment', 'zh-CN': '艺术演艺', vi: 'Nghệ thuật giải trí', id: 'Seni & Hiburan', ja: '芸術興行', ar: 'فنون وترفيه', desc: '방송·음악·공연·호텔공연 및 프로운동선수' },
+  'E-7': { name: '특정활동', en: 'Special Ability', 'zh-CN': '特定活动', vi: 'Hoạt động chuyên biệt', id: 'Kegiatan Khusus', ja: '特定活動', ar: 'أنشطة محددة خاصة', desc: '대한민국 공·사기관 고용 전문인력 (87개 직종)' },
+  'E-7-1': { name: '전문인력', en: 'Professional Personnel', 'zh-CN': '专业人才', vi: 'Nhân lực chuyên môn', id: 'Tenaga Profesional', ja: '専門人材', ar: 'كوادر مهنية متخصصة', desc: '관리자 및 첨단·전문가 (IT, 엔지니어, 마케팅 등)' },
+  'E-7-2': { name: '준전문인력', en: 'Semi-Professional Personnel', 'zh-CN': '准专业人才', vi: 'Bán chuyên môn', id: 'Tenaga Semi-Profesional', ja: '準専門人材', ar: 'شبه متخصصين', desc: '면세점 판매원, 항공운송 사무원 등' },
+  'E-7-3': { name: '일반기능인력', en: 'General Skilled Worker', 'zh-CN': '一般技能人才', vi: 'Lao động kỹ năng', id: 'Pekerja Terampil Umum', ja: '一般技能人材', ar: 'عمالة ماهرة عامة', desc: '조선용접공, 뿌리기업 기능인력 등' },
+  'E-7-4': { name: '숙련기능인력', en: 'Skilled Technician (K-point)', 'zh-CN': '熟练技能人才', vi: 'Lao động lành nghề điểm số', id: 'Teknisi Terampil (K-point)', ja: '熟練技能人材', ar: 'فنيون مهرة', desc: 'E-9/E-10 장기근무자 숙련기능 점수제 전환' },
+  'E-7-4R': { name: '지역특화 숙련기능', en: 'Regional Skilled Technician', 'zh-CN': '地域特化熟练技能', vi: 'Lao động lành nghề khu vực', id: 'Teknisi Khusus Daerah', ja: '地域特化熟練技能', ar: 'فنيون مهرة مناطقيون', desc: '인구감소지역 장기체류 숙련기능 점수제 특례' },
+  'E-7-S': { name: '혁신인재 네거티브', en: 'Innovative Talent (Negative List)', 'zh-CN': '创新人才', vi: 'Nhân tài đổi mới', id: 'Talenta Inovatif', ja: '革新人材', ar: 'مواهب ابتكارية', desc: '첨단 신산업·혁신분야 네거티브 규제 적용 전문인력' },
+  'E-7-T': { name: '톱티어 전문인력', en: 'Top-Tier Professional', 'zh-CN': '顶尖专业人才', vi: 'Nhân tài đỉnh cao', id: 'Profesional Top-Tier', ja: 'トップ人材', ar: 'كوادر نخبة', desc: 'AI·반도체 등 첨단 과학기술 분야 최고급 인재' },
+  'E-7-Y': { name: '청년 우수인재', en: 'Global Youth Talent', 'zh-CN': '青年优秀人才', vi: 'Tài năng trẻ', id: 'Pemuda Berbakat', ja: '青年の優秀人材', ar: 'شباب موهوبون', desc: '세계 유수대학 졸업 청년 대상 전문인력' },
+  'E-8': { name: '계절근로', en: 'Seasonal Worker', 'zh-CN': '季节性劳动', vi: 'Lao động thời vụ', id: 'Pekerja Musiman', ja: '季節労働', ar: 'عمالة موسمية', desc: '농번기·어번기 단기 계절근로' },
+  'E-9': { name: '비전문취업', en: 'Non-Professional (EPS)', 'zh-CN': '非专门就业', vi: 'Lao động phổ thông (EPS)', id: 'Pekerja Non-Profesional', ja: '非専門就労', ar: 'توظيف غير مهني', desc: '고용허가제 제조업·농축산업·어업·건설업' },
+  'E-10': { name: '선원취업', en: 'Vessel Crew', 'zh-CN': '船员就业', vi: 'Thủy thủ tàu thuyền', id: 'Awak Kapal', ja: '船員就労', ar: 'طاقم سفن', desc: '연근해 어선 및 내항여객선 선원' },
+  'F-1': { name: '방문동거', en: 'Visiting & Joining Family', 'zh-CN': '访问同居', vi: 'Thăm thân cư trú', id: 'Tinggal Bersama Keluarga', ja: '訪問同居', ar: 'إقامة عائلية', desc: '친척 방문, 가사보조, 동반 가족의 거주' },
+  'F-2': { name: '거주', en: 'Resident', 'zh-CN': '居住', vi: 'Cư trú', id: 'Tempat Tinggal', ja: '居住', ar: 'إقامة', desc: '점수제 우수인재, 영주자격 이전 장기 거주' },
+  'F-2-7': { name: '점수제 우수인재', en: 'Points-based Resident', 'zh-CN': '打分制优秀人才', vi: 'Cư trú tính điểm', id: 'Poin Talenta Unggul', ja: '点数制優秀人材', ar: 'إقامة بنظام النقاط', desc: '학력·소득·한국어 점수제 우수인재 거주' },
+  'F-2-7S': { name: 'K-STAR·잠재적 우수인재', en: 'K-STAR & Potential Talent', 'zh-CN': 'K-STAR优秀人才', vi: 'Nhân tài K-STAR', id: 'Talenta K-STAR', ja: 'K-STAR優秀人材', ar: 'مواهب K-STAR', desc: '이공계 특성화대학 졸업자 및 K-STAR 우수인재 거주' },
+  'F-2-R': { name: '지역특화형 거주', en: 'Regional Specialized Resident', 'zh-CN': '地域特化型居住', vi: 'Cư trú vùng địa phương', id: 'Residen Khusus Daerah', ja: '地域特化型居住', ar: 'إقامة مخصصة للمناطق', desc: '인구감소지역 우수인재 및 동포 정착 지원' },
+  'F-2-T': { name: '톱티어 우수인재', en: 'Top-Tier Resident', 'zh-CN': '顶尖优秀人才居住', vi: 'Cư trú nhân tài hàng đầu', id: 'Residen Top-Tier', ja: 'トップ層居住', ar: 'إقامة نخبوية', desc: '글로벌 톱티어 첨단인재 대상 장기 거주' },
+  'F-3': { name: '동반', en: 'Dependent Family', 'zh-CN': '同伴', vi: 'Gia đình phụ thuộc', id: 'Keluarga Pendamping', ja: '家族滞在(同伴)', ar: 'مرافقون', desc: '전문인력(D·E 계열) 및 동포(F-4·H-2) 등록자의 동반 가족' },
+  'F-3-19': { name: '재외동포 동반가족', en: 'Overseas Korean Dependent', 'zh-CN': '在外同胞同伴家属', vi: 'Thân nhân Hàn kiều', id: 'Keluarga F-4', ja: '在外同胞同伴', ar: 'مرافقو الكوريين بالخارج', desc: '재외동포(F-4) 자격 소지자의 배우자 및 미성년 자녀' },
+  'F-3-20': { name: '방문취업 동반가족', en: 'Working Visit Dependent', 'zh-CN': '访问就业同伴家属', vi: 'Thân nhân thăm viếng', id: 'Keluarga H-2', ja: '訪問就業同伴', ar: 'مرافقو عمالة الزيارة', desc: '방문취업(H-2) 자격 소지자의 배우자 및 미성년 자녀' },
+  'F-4': { name: '재외동포', en: 'Overseas Korean', 'zh-CN': '在外同胞', vi: 'Hàn kiều', id: 'Warga Keturunan Korea', ja: '在外同胞', ar: 'كوري بالخارج', desc: '대한민국 국적을 보유했던 자 및 직계비속 동포' },
+  'F-4-R': { name: '지역특화 재외동포', en: 'Regional Overseas Korean', 'zh-CN': '地域特化在外同胞', vi: 'Hàn kiều vùng địa phương', id: 'Keturunan Korea Daerah', ja: '地域特化在外同胞', ar: 'كوريون بالخارج للمناطق', desc: '인구감소지역 거주 재외동포 특례 거소신고' },
+  'F-5': { name: '영주', en: 'Permanent Resident', 'zh-CN': '永住', vi: 'Vĩnh trú', id: 'Tinggal Tetap', ja: '永住', ar: 'إقامة دائمة', desc: '체류기간 제한 없는 영주자격 (10년 주기 영주증 갱신 대상)' },
+  'F-5-S1': { name: 'K-STAR 영주', en: 'K-STAR Permanent Resident', 'zh-CN': 'K-STAR永住', vi: 'Vĩnh trú K-STAR', id: 'Tinggal Tetap K-STAR', ja: 'K-STAR永住', ar: 'إقامة دائمة K-STAR', desc: '이공계 첨단인재 K-STAR 트랙 영주' },
+  'F-5-T': { name: '톱티어 영주', en: 'Top-Tier Permanent Resident', 'zh-CN': '顶尖永住', vi: 'Vĩnh trú nhân tài hàng đầu', id: 'Tinggal Tetap Top-Tier', ja: 'トップ層永住', ar: 'إقامة دائمة للنخبة', desc: '세계 최고급 첨단인재 톱티어 패스트트랙 영주' },
+  'F-6': { name: '결혼이민', en: 'Marriage Migrant', 'zh-CN': '结婚移民', vi: 'Kết hôn nhập cư', id: 'Imigran Menikah', ja: '結婚移民', ar: 'هجرة بالزواج', desc: '대한민국 국민과 혼인 관계를 유지하는 배우자' },
+  'F-6-1': { name: '국민의 배우자', en: 'Spouse of Korean National', 'zh-CN': '国民配偶', vi: 'Vợ/chồng người Hàn', id: 'Pasangan WN Korea', ja: '国民の配偶者', ar: 'زوج مواطن كوري', desc: '한국인 배우자와 정상적인 혼인 유지' },
+  'F-6-2': { name: '자녀양육', en: 'Child Rearing', 'zh-CN': '育儿', vi: 'Nuôi con nhỏ', id: 'Pengasuhan Anak', ja: '子育て', ar: 'تربية أطفال', desc: '국민과의 혼인관계 종료 후 미성년 자녀 양육' },
+  'F-6-3': { name: '귀책사유 혼인단절', en: 'Non-Fault Divorce', 'zh-CN': '无责破裂婚姻', vi: 'Ly hôn không lỗi', id: 'Perceraian Tanpa Kesalahan', ja: '帰責事由婚姻途絶', ar: 'طلاق بغير خطأ', desc: '배우자 사망·실종 또는 배우자 귀책사유로 인한 이혼 후 체류' },
+  'G-1': { name: '기타', en: 'Miscellaneous', 'zh-CN': '其他', vi: 'Lưu trú nhân đạo khác', id: 'Lainnya (Kemanusiaan)', ja: 'その他', ar: 'أخرى (إنسانية)', desc: '산재 치료, 소송 수행, 난민인정 신청 등 인도적 체류' },
+  'G-1-1': { name: '산재 치료', en: 'Industrial Accident Care', 'zh-CN': '工伤治疗', vi: 'Điều trị tai nạn lao động', id: 'Perawatan Kecelakaan Kerja', ja: '労災治療', ar: 'علاج إصابة عمل', desc: '업무상 재해로 인한 치료 및 요양' },
+  'G-1-2': { name: '질병·사고 치료', en: 'Medical Treatment', 'zh-CN': '医疗照护', vi: 'Điều trị y tế', id: 'Perawatan Medis', ja: '医療照護', ar: 'علاج طبي', desc: '질병 또는 사고로 인한 치료 및 간병' },
+  'G-1-3': { name: '소송 수행', en: 'Lawsuit / Legal Action', 'zh-CN': '诉讼进行', vi: 'Kiện tụng pháp lý', id: 'Proses Hukum', ja: '訴訟遂行', ar: 'إجراءات قضائية', desc: '임금체불 등 재판 및 소송 수행' },
+  'G-1-5': { name: '난민신청자', en: 'Refugee Applicant', 'zh-CN': '难民申请人', vi: 'Người xin tị nạn', id: 'Pemohon Suaka', ja: '難民申請者', ar: 'طالب لجوء', desc: '대한민국 난민인정 심사 진행 중 체류' },
+  'G-1-6': { name: '인도적 체류자', en: 'Humanitarian Status', 'zh-CN': '人道居留', vi: 'Cư trú nhân đạo', id: 'Tinggal Kemanusiaan', ja: '人道滞在', ar: 'إقامة إنسانية', desc: '난민 불인정자 중 인도적 사유로 인한 체류' },
+  'H-1': { name: '관광취업', en: 'Working Holiday', 'zh-CN': '观光就业', vi: 'Kỳ nghỉ làm việc', id: 'Liburan Kerja', ja: 'ワーキングホリデー', ar: 'عطلة عمل', desc: '협정국 청년의 관광 및 단기취업' },
+  'H-2': { name: '방문취업', en: 'Working Visit', 'zh-CN': '访问就业', vi: 'Thăm viếng việc làm', id: 'Kunjungan Kerja', ja: '訪問就業', ar: 'زيارة عمل', desc: '외국국적동포(중국·CIS 등) 단순노무·서비스업 취업' }
 };
 
 function element(tag, cls, textContent) {
@@ -145,6 +145,164 @@ function normalize(s) {
 
 function meta(item) {
   return [item.status_code, item.scenario, item.required_text, item.conditional_text, item.note_text, item.application_text].join(' ');
+}
+
+var DOCUMENT_ALIASES = [
+  {
+    canonical: '재학증명서',
+    terms: [
+      '재학증명서', '재학증명', '재학', 'certificate of enrollment', 'enrollment certificate', 'proof of enrollment',
+      'student certificate', 'certificate of student status', '在学证明', '在读证明', '在学证明书',
+      'giấy xác nhận nhập học', 'giấy chứng nhận sinh viên', 'chứng nhận đang học',
+      'surat keterangan mahasiswa', 'surat keterangan kuliah', 'bukti mahasiswa aktif',
+      '在学証明書', 'شهادة القيد', 'شهادة التسجيل الجامعي', 'إثبات الدراسة'
+    ]
+  },
+  {
+    canonical: '근로계약서',
+    terms: [
+      '근로계약서', '표준근로계약서', '고용계약서', '근로계약', '고용계약', 'employment contract', 'labor contract', 'standard labor contract',
+      'work contract', 'job contract', '劳动合同', '雇用合同', '标准劳动合同',
+      'hợp đồng lao động', 'hợp đồng làm việc',
+      'kontrak kerja', 'perjanjian kerja', 'kontrak ketenagakerjaan',
+      '雇用契約書', '労働契約書', 'عقد العمل', 'عقد توظيف'
+    ]
+  },
+  {
+    canonical: '체류지 입증서류',
+    terms: [
+      '체류지 입증서류', '체류지입증서류', '체류지 증명', '체류지입증', '임대차계약서', '임대차 계약서', '숙소제공확인서', '거주 증명',
+      'proof of residence', 'proof of address', 'proof of place of stay', 'lease agreement', 'rental contract', 'housing proof',
+      '滞留地证明', '居住证明', '租房合同', '租赁合同', '住宿提供确认书',
+      'chứng minh nơi cư trú', 'hợp đồng thuê nhà', 'giấy xác nhận chỗ ở',
+      'bukti tempat tinggal', 'surat sewa rumah', 'bukti domisili', 'konfirmasi tempat tinggal',
+      '滞在地立証書類', '賃貸借契約書', 'إثبات الإقامة', 'عقد الإيجار', 'إثبات السكن', 'تأكيد توفير السكن'
+    ]
+  },
+  {
+    canonical: '잔고증명서',
+    terms: [
+      '잔고증명서', '잔액증명서', '예금잔고증명서', '은행잔고', 'bank statement', 'bank balance certificate', 'certificate of balance',
+      'financial proof', 'proof of funds', 'bank balance', '存款证明', '银行存款证明', '余额证明',
+      'chứng minh tài chính', 'sổ tiết kiệm', 'sao kê ngân hàng', 'chứng nhận số dư',
+      'bukti saldo', 'rekening koran', 'surat referensi bank',
+      '残高証明書', 'كشف حساب بنكي', 'شهادة رصيد', 'إثبات مالي'
+    ]
+  },
+  {
+    canonical: '사업자등록증',
+    terms: [
+      '사업자등록증', '사업자등록증명', '사업자등록증 사본', 'business registration certificate', 'business license', 'certificate of business registration',
+      '营业执照', '营业执照复印件', 'giấy phép kinh doanh', 'đăng ký kinh doanh',
+      'surat izin usaha', 'nomor induk berusaha', 'nib', 'bukti registrasi bisnis',
+      '事業者登録証', 'السجل التجاري', 'رخصة العمل'
+    ]
+  },
+  {
+    canonical: '납세증명서',
+    terms: [
+      '납세증명서', '소득금액증명원', '소득금액증명', '원천징수영수증', 'tax certificate', 'certificate of income', 'proof of income', 'withholding tax receipt',
+      '纳税证明', '所得金额证明', '收入证明', 'giấy chứng nhận nộp thuế', 'chứng minh thu nhập',
+      'bukti pembayaran pajak', 'surat keterangan penghasilan', 'spt',
+      '納税証明書', '所得証明書', 'شهادة دفع الضرائب', 'إثبات الدخل'
+    ]
+  },
+  {
+    canonical: '결핵진단서',
+    terms: [
+      '결핵진단서', '결핵 검진', '결핵검진확인서', 'tuberculosis test', 'tb test', 'tb certificate', 'tuberculosis certificate',
+      '结核诊断书', '结核检查', 'giấy khám bệnh lao', 'chứng nhận kiểm tra lao',
+      'tes tbc', 'surat bebas tbc', 'hasil tes tuberkulosis',
+      '結核診断書', 'شهادة فحص السل', 'تقرير فحص السل'
+    ]
+  },
+  {
+    canonical: '여권',
+    terms: [
+      '여권', '여권 사본', 'passport', 'passport copy', '护照', '护照复印件',
+      'hộ chiếu', 'bản sao hộ chiếu', 'paspor', 'salinan paspor',
+      '旅券', 'パスポート', 'جواز السفر', 'نسخة من جواز السفر'
+    ]
+  },
+  {
+    canonical: '외국인등록증',
+    terms: [
+      '외국인등록증', '외국인등록증 사본', '거소신고증', 'alien registration card', 'residence card', 'arc', 'arc copy',
+      '外国人登录证', '居留证', '居留卡', 'thẻ cư trú', 'thẻ arc', 'thẻ người nước ngoài',
+      'kartu tinggal', 'kartu registrasi orang asing', 'kartu arc',
+      '外国人登録証', 'بطاقة الإقامة', 'بطاقة تسجيل الأجانب'
+    ]
+  },
+  {
+    canonical: '통합신청서',
+    terms: [
+      '통합신청서', '신청서', '신청서(별지 제34호)', 'integrated application form', 'application form', 'form 34',
+      '综合申请书', '申请书', 'đơn tổng hợp', 'đơn xin visa', 'formulir terpadu', 'formulir aplikasi',
+      '統合申請書', 'استمارة طلب موحدة', 'نموذج طلب'
+    ]
+  },
+  {
+    canonical: '표준입학허가서',
+    terms: [
+      '표준입학허가서', '입학허가서', 'standard admission letter', 'certificate of admission', 'admission letter',
+      '标准入学许可书', '录取通知书', 'giấy báo nhập học', 'thư mời nhập học',
+      'surat penerimaan universitas', 'loa', 'surat izin masuk kuliah',
+      '標準入学許可書', 'خطاب القبول الجامعي القياسي', 'إشعار القبول'
+    ]
+  }
+];
+
+function findDocumentAliases(query) {
+  var q = normalize(query);
+  if (!q) return [];
+  var matchedCanonicals = [];
+  DOCUMENT_ALIASES.forEach(function (doc) {
+    var match = doc.terms.some(function (term) {
+      var nTerm = normalize(term);
+      return nTerm === q || nTerm.includes(q) || (q.length >= 4 && q.includes(nTerm));
+    });
+    if (match && !matchedCanonicals.includes(doc.canonical)) {
+      matchedCanonicals.push(doc.canonical);
+    }
+  });
+  return matchedCanonicals;
+}
+
+function filterStatusCandidatesByQuery(candidateCodes, query, lang) {
+  var q = normalize(query);
+  if (!q) return candidateCodes.slice();
+  return candidateCodes.filter(function (code) {
+    var rawEntry = VISA_DESCRIPTIONS[code] || {};
+    var info = getVisaInfo(code, lang);
+    var combined = normalize(
+      code + ' ' +
+      info.name + ' ' +
+      (info.name_ko || '') + ' ' +
+      info.en + ' ' +
+      (rawEntry['zh-CN'] || '') + ' ' +
+      (rawEntry.vi || '') + ' ' +
+      (rawEntry.id || '') + ' ' +
+      (rawEntry.ja || '') + ' ' +
+      (rawEntry.ar || '') + ' ' +
+      info.desc
+    );
+    return combined.includes(q);
+  });
+}
+
+function searchChecklistsByDocQuery(query, items) {
+  var pool = items || (getDataset() && getDataset().items) || [];
+  var q = normalize(query);
+  if (!q) return pool;
+  var docAliases = findDocumentAliases(query);
+  return pool.filter(function (i) {
+    var itemMeta = normalize(meta(activeRow(i)));
+    if (itemMeta.includes(q)) return true;
+    for (var a = 0; a < docAliases.length; a++) {
+      if (itemMeta.includes(normalize(docAliases[a]))) return true;
+    }
+    return false;
+  });
 }
 
 function note(parent, title, value, cls) {
@@ -259,6 +417,11 @@ function getVisaInfo(rawCode, optLang) {
       name_ko: code,
       en: code,
       localized_name: code,
+      zh: code,
+      vi: code,
+      id: code,
+      ja: code,
+      ar: code,
       desc: (lang === 'en' ? 'Visa status ' : lang === 'zh-CN' ? '滞留资格 ' : lang === 'vi' ? 'Tư cách lưu trú ' : lang === 'id' ? 'Status visa ' : '체류자격 ') + code
     };
   }
@@ -305,6 +468,11 @@ function getVisaInfo(rawCode, optLang) {
     name_ko: nameKo,
     en: nameEn,
     localized_name: localizedName,
+    zh: rawEntry['zh-CN'] || nameEn,
+    vi: rawEntry.vi || nameEn,
+    id: rawEntry.id || nameEn,
+    ja: rawEntry.ja || nameEn,
+    ar: rawEntry.ar || nameEn,
     desc: desc
   };
 }
@@ -493,12 +661,21 @@ function card(original) {
 function filtered() {
   var data = getDataset();
   if (!data || !Array.isArray(data.items)) return [];
-  var q = normalize(state.query);
+  var rawQ = state.query;
+  var q = normalize(rawQ);
   if (!q) return data.items;
+
+  var docAliases = findDocumentAliases(rawQ);
+
   return data.items.filter(function (i) {
     var rawEntry = VISA_DESCRIPTIONS[i.status_code] || {};
-    var extra = ' ' + (rawEntry.en || '') + ' ' + (rawEntry['zh-CN'] || '') + ' ' + (rawEntry.vi || '') + ' ' + (rawEntry.id || '');
-    return normalize(meta(activeRow(i)) + extra).includes(q);
+    var extra = ' ' + (rawEntry.en || '') + ' ' + (rawEntry['zh-CN'] || '') + ' ' + (rawEntry.vi || '') + ' ' + (rawEntry.id || '') + ' ' + (rawEntry.ja || '') + ' ' + (rawEntry.ar || '');
+    var itemMeta = normalize(meta(activeRow(i)) + extra);
+    if (itemMeta.includes(q)) return true;
+    for (var a = 0; a < docAliases.length; a++) {
+      if (itemMeta.includes(normalize(docAliases[a]))) return true;
+    }
+    return false;
   });
 }
 
@@ -672,16 +849,11 @@ function renderStatusCandidates() {
     codesMap.get(code).push(item);
   });
 
-  var query = normalize($('status-picker-input').value);
+  var query = $('status-picker-input').value;
   var matchingCodes = Array.from(codesMap.keys()).sort();
 
   if (query) {
-    matchingCodes = matchingCodes.filter(function (code) {
-      var rawEntry = VISA_DESCRIPTIONS[code] || {};
-      var info = getVisaInfo(code, state.lang);
-      var combined = normalize(code + ' ' + info.name + ' ' + (info.name_ko || '') + ' ' + info.en + ' ' + (rawEntry['zh-CN'] || '') + ' ' + (rawEntry.vi || '') + ' ' + (rawEntry.id || '') + ' ' + (rawEntry.ja || '') + ' ' + info.desc);
-      return combined.includes(query);
-    });
+    matchingCodes = filterStatusCandidatesByQuery(matchingCodes, query, state.lang);
   }
 
   var t = function (k, vars, fallback) {
@@ -1628,6 +1800,128 @@ function updateLanguage(locale) {
 }
 
 /* ------------------------------------------------------------------------- */
+/* PRIVACY-PRESERVING BETA DIAGNOSTICS & FEEDBACK (R5)                       */
+/* ------------------------------------------------------------------------- */
+var PII_ARC_RE = /\b\d{6}[-\s]?[1-8]\d{6}\b/;
+var PII_PHONE_RE = /\b01[016789][-\s]?\d{3,4}[-\s]?\d{4}\b/;
+
+function containsPii(text) {
+  return PII_ARC_RE.test(String(text || '')) || PII_PHONE_RE.test(String(text || ''));
+}
+
+function sanitizeFeedbackText(text) {
+  var s = String(text || '');
+  s = s.replace(PII_ARC_RE, '[REDACTED_ARC]');
+  s = s.replace(PII_PHONE_RE, '[REDACTED_PHONE]');
+  return s.trim();
+}
+
+function setupFeedbackDialog() {
+  var openBtn = $('open-feedback-btn');
+  var dialog = $('feedback-dialog');
+  var form = $('feedback-form');
+  var cancelBtn = $('fb-cancel-btn');
+  var copyBtn = $('fb-copy-btn');
+  var piiWarn = $('fb-pii-warning');
+  var statusMsg = $('fb-status-message');
+
+  if (!openBtn || !dialog || !form) return;
+
+  openBtn.addEventListener('click', function () {
+    if ($('fb-context-proc')) $('fb-context-proc').textContent = '절차: ' + getProcedureTitle(state.procedure, state.lang);
+    if ($('fb-context-code')) $('fb-context-code').textContent = '체류자격: ' + (state.status_code || '전체');
+    if ($('fb-context-lang')) $('fb-context-lang').textContent = '언어: ' + (state.lang || 'ko');
+    $('fb-comment').value = '';
+    if (piiWarn) piiWarn.hidden = true;
+    if (statusMsg) statusMsg.hidden = true;
+    if (typeof dialog.showModal === 'function') dialog.showModal();
+    else dialog.setAttribute('open', '');
+  });
+
+  if (cancelBtn) {
+    cancelBtn.addEventListener('click', function () {
+      if (typeof dialog.close === 'function') dialog.close();
+      else dialog.removeAttribute('open');
+    });
+  }
+
+  function getDiagnosticPayload() {
+    var comment = $('fb-comment') ? $('fb-comment').value : '';
+    return {
+      id: 'fb-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7),
+      timestamp: new Date().toISOString(),
+      category: $('fb-category') ? $('fb-category').value : 'other',
+      rating: $('fb-rating') ? $('fb-rating').value : 'helpful',
+      comment: sanitizeFeedbackText(comment),
+      context: {
+        procedure: state.procedure,
+        statusCode: state.status_code || null,
+        step: state.step,
+        lang: state.lang,
+        office: state.office || null
+      }
+    };
+  }
+
+  if (copyBtn) {
+    copyBtn.addEventListener('click', function () {
+      var comment = $('fb-comment') ? $('fb-comment').value : '';
+      if (containsPii(comment)) {
+        if (piiWarn) piiWarn.hidden = false;
+        if (statusMsg) statusMsg.hidden = true;
+        return;
+      }
+      if (piiWarn) piiWarn.hidden = true;
+      var payload = getDiagnosticPayload();
+      var md = '```json\n' + JSON.stringify(payload, null, 2) + '\n```';
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(md).then(function () {
+          if (statusMsg) {
+            statusMsg.textContent = '진단 보고서가 클립보드에 복사되었습니다.';
+            statusMsg.hidden = false;
+          }
+        }).catch(function () {
+          if (statusMsg) {
+            statusMsg.textContent = '클립보드 접근이 거부되었습니다.';
+            statusMsg.hidden = false;
+          }
+        });
+      } else {
+        if (statusMsg) {
+          statusMsg.textContent = '클립보드 API가 지원되지 않는 브라우저입니다.';
+          statusMsg.hidden = false;
+        }
+      }
+    });
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var comment = $('fb-comment') ? $('fb-comment').value : '';
+    if (containsPii(comment)) {
+      if (piiWarn) piiWarn.hidden = false;
+      if (statusMsg) statusMsg.hidden = true;
+      return;
+    }
+    if (piiWarn) piiWarn.hidden = true;
+    var payload = getDiagnosticPayload();
+    try {
+      var existing = JSON.parse(localStorage.getItem('visable.beta.feedback.v1') || '[]');
+      existing.push(payload);
+      localStorage.setItem('visable.beta.feedback.v1', JSON.stringify(existing));
+    } catch (_) {}
+    if (statusMsg) {
+      statusMsg.textContent = '소중한 피드백이 안전하게 저장되었습니다. 감사합니다!';
+      statusMsg.hidden = false;
+    }
+    setTimeout(function () {
+      if (typeof dialog.close === 'function') dialog.close();
+      else dialog.removeAttribute('open');
+    }, 1200);
+  });
+}
+
+/* ------------------------------------------------------------------------- */
 /* INITIALIZATION & EVENT LISTENERS                                          */
 /* ------------------------------------------------------------------------- */
 async function load() {
@@ -1726,6 +2020,7 @@ async function load() {
     var currentLocale = (window.VisableI18n ? window.VisableI18n.getLocale() : 'ko');
     state.lang = currentLocale;
     updateLanguage(state.lang);
+    setupFeedbackDialog();
   } catch (err) {
     var cards = $('cards');
     if (cards) {
@@ -2065,11 +2360,31 @@ window.addEventListener('visable-language-changed', function (e) {
   }
 });
 
+var api = {
+  findDocumentAliases: findDocumentAliases,
+  filterStatusCandidatesByQuery: filterStatusCandidatesByQuery,
+  searchChecklistsByDocQuery: searchChecklistsByDocQuery,
+  getVisaInfo: getVisaInfo,
+  VISA_DESCRIPTIONS: VISA_DESCRIPTIONS,
+  DOCUMENT_ALIASES: DOCUMENT_ALIASES
+};
+if (typeof window !== 'undefined') {
+  window.VisableChecklistSearch = api;
+}
+if (typeof globalThis !== 'undefined') {
+  globalThis.VisableChecklistSearch = api;
+}
+
 window.__VISABLE_INTERNALS = {
   splitParenSafe: splitParenSafe,
   parseRequiredDocsStructured: parseRequiredDocsStructured,
   getVisaInfo: getVisaInfo,
   updateLanguage: updateLanguage,
+  findDocumentAliases: findDocumentAliases,
+  filterStatusCandidatesByQuery: filterStatusCandidatesByQuery,
+  searchChecklistsByDocQuery: searchChecklistsByDocQuery,
+  VISA_DESCRIPTIONS: VISA_DESCRIPTIONS,
+  DOCUMENT_ALIASES: DOCUMENT_ALIASES,
   state: state
 };
 
