@@ -1804,7 +1804,12 @@ footer {
   .bar-name { font-size: 13px; }
   .mode-switcher { order: 3; width: 100%; justify-content: center; }
   .mode-tab { flex: 1; justify-content: center; padding: 8px 12px; font-size: 13px; }
-  .header-actions { margin-left: auto; gap: 8px; }
+  .header-actions {
+    margin-inline-start: auto;
+    margin-left: unset;
+    gap: 8px;
+    max-width: 100%;
+  }
   .header-link span:not(.ext-arrow) { font-size: 12px; }
   .operator-pill { font-size: 11px; padding: 4px 8px; }
 
@@ -1835,6 +1840,10 @@ footer {
   .actions-right { text-align: center; }
 
   .edit-dialog, .help-dialog { padding: 20px 16px; }
+}
+
+@media (max-width: 480px) {
+  .header-link span:not(.ext-arrow) { display: none; }
 }
 
 @media (max-width: 360px) {
@@ -1996,4 +2005,64 @@ footer {
   }
   .checklist-doc-name { font-size: 11pt !important; color: #000 !important; }
   .ext-btn { border: 1pt solid #000 !important; color: #000 !important; background: none !important; }
+}
+
+/* ------------------------------------------------------------------------- */
+/* RTL & MULTILINGUAL DIRECTIONALITY SUPPORT                                 */
+/* ------------------------------------------------------------------------- */
+html[dir="rtl"],
+[dir="rtl"],
+body.rtl-layout {
+  direction: rtl;
+  text-align: right;
+  overflow-x: hidden;
+}
+
+[dir="rtl"] .code-pill,
+[dir="rtl"] .summary-tag,
+[dir="rtl"] code,
+[dir="rtl"] .release-preview-checksum,
+[dir="rtl"] input[type="search"],
+[dir="rtl"] input[type="url"],
+[dir="rtl"] .arc-fields .val {
+  direction: ltr;
+  unicode-bidi: isolate;
+  display: inline-block;
+}
+
+[dir="rtl"] .task-card-icon,
+[dir="rtl"] .group-icon,
+[dir="rtl"] .restriction-icon,
+[dir="rtl"] .unlisted-icon,
+[dir="rtl"] .task-help-icon {
+  margin-left: 12px;
+  margin-right: 0;
+}
+
+[dir="rtl"] .arc-steps-list {
+  padding-right: 20px;
+  padding-left: 0;
+}
+
+/* Legal Warning Banner in Checklist */
+.legal-warning-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: var(--pale-light);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin-top: 20px;
+  color: var(--ink);
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+.legal-warning-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+.legal-warning-banner p {
+  margin: 0;
 }
