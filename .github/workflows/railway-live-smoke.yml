@@ -18,7 +18,9 @@ jobs:
         env:
           BACKEND_URL: https://web-production-14f9a.up.railway.app
           EXPECTED_COMMIT: ${{ github.sha }}
-          PARADISO_DIAGNOSTICS_TOKEN: ${{ secrets.PARADISO_DIAGNOSTICS_TOKEN }}
+          # Repository secret VISABLE_DIAGNOSTICS_TOKEN; the legacy secret name
+          # PARADISO_DIAGNOSTICS_TOKEN is used only when the new one is absent.
+          VISABLE_DIAGNOSTICS_TOKEN: ${{ secrets.VISABLE_DIAGNOSTICS_TOKEN || secrets.PARADISO_DIAGNOSTICS_TOKEN }}
         run: |
           python3 -u - <<'PY'
           import json
@@ -47,9 +49,9 @@ jobs:
                   "Accept": "application/json",
                   "User-Agent": "Visable-Railway-Live-Smoke/7",
               }
-              # Diagnostics opt-in token (server: PARADISO_DIAGNOSTICS_TOKEN). Sent
+              # Diagnostics opt-in token (server: VISABLE_DIAGNOSTICS_TOKEN). Sent
               # only when the repository secret exists; never printed.
-              diagnostics_token = os.environ.get("PARADISO_DIAGNOSTICS_TOKEN", "").strip()
+              diagnostics_token = os.environ.get("VISABLE_DIAGNOSTICS_TOKEN", "").strip()
               if diagnostics_token and isinstance(payload, dict) and payload.get("diagnostics"):
                   headers["X-Paradiso-Diagnostics-Token"] = diagnostics_token
               if payload is not None:

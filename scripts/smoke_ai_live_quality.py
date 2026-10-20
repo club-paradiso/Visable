@@ -303,7 +303,7 @@ def _http_post(url, payload, timeout=60):
     data = json.dumps(payload).encode("utf-8")
     headers = {"Content-Type": "application/json", "Accept": "application/json"}
     # Operator diagnostics token (see smoke_ai_runtime.diagnostics_headers).
-    token = (os.environ.get("PARADISO_DIAGNOSTICS_TOKEN") or "").strip()
+    token = (os.environ.get("VISABLE_DIAGNOSTICS_TOKEN") or os.environ.get("PARADISO_DIAGNOSTICS_TOKEN") or "").strip()
     if token and isinstance(payload, dict) and payload.get("diagnostics"):
         headers["X-Paradiso-Diagnostics-Token"] = token
     req = urllib.request.Request(

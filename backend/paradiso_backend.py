@@ -5551,16 +5551,23 @@ def _client_diagnostics_allowed() -> bool:
     }
 
 
-# Optional operator token for the diagnostics opt-in. When PARADISO_DIAGNOSTICS_TOKEN
+# Optional operator token for the diagnostics opt-in. When VISABLE_DIAGNOSTICS_TOKEN
 # is set, a diagnostics request must also carry it in this header (constant-time
 # compare); without it the caller gets the ordinary public projection. Unset keeps
 # the previous open opt-in so nothing breaks before the operator configures it
 # (the Railway live smoke sends the same value from the GitHub secret).
+# PARADISO_DIAGNOSTICS_TOKEN is the legacy name of the same setting; it is still
+# read, after the Visable name, so an existing deploy keeps working.
 _CLIENT_DIAGNOSTICS_TOKEN_HEADER = "x-paradiso-diagnostics-token"
+_DIAGNOSTICS_TOKEN_ENV_NAMES: Tuple[str, ...] = ("VISABLE_DIAGNOSTICS_TOKEN", "PARADISO_DIAGNOSTICS_TOKEN")
 
 
 def _diagnostics_token() -> str:
-    return (os.environ.get("PARADISO_DIAGNOSTICS_TOKEN") or "").strip()
+    for name in _DIAGNOSTICS_TOKEN_ENV_NAMES:
+        value = (os.environ.get(name) or "").strip()
+        if value:
+            return value
+    return ""
 
 
 def _client_diagnostics_mode() -> str:
