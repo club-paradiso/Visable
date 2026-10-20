@@ -1114,6 +1114,51 @@ async function load() {
     state.overrides = Array.isArray(response[4].overrides) ? response[4].overrides : [];
     state.offices = Array.isArray(response[5].offices) ? response[5].offices : [];
 
+    // Candidate Preview & Published API integration (R3.1)
+    var params = new URLSearchParams(window.location.search);
+    var previewRelease = params.get('preview_release') || params.get('preview');
+
+    if (previewRelease) {
+      try {
+        var previewApiUrl = (window.VisableBackend && window.VisableBackend.url)
+          ? window.VisableBackend.url('/api/checklists/preview?release_id=' + encodeURIComponent(previewRelease))
+          : ('/api/checklists/preview?release_id=' + encodeURIComponent(previewRelease));
+        var prevRes = await fetch(previewApiUrl, { cache: 'no-cache' });
+        if (prevRes.ok) {
+          var prevData = await prevRes.json();
+          if (prevData && prevData.extension && prevData.change && prevData.registration) {
+            ['extension', 'change', 'registration'].forEach(function (t) {
+              if (prevData[t] && prevData[t].items) {
+                state.datasets[t] = prevData[t];
+              }
+            });
+            renderPreviewBanner(prevData);
+          }
+        }
+      } catch (prevErr) {
+        console.warn('Candidate preview fetch failed, using baseline:', prevErr);
+      }
+    } else {
+      try {
+        var pubApiUrl = (window.VisableBackend && window.VisableBackend.url)
+          ? window.VisableBackend.url('/api/checklists/published')
+          : '/api/checklists/published';
+        var pubRes = await fetch(pubApiUrl, { cache: 'no-cache' });
+        if (pubRes.ok) {
+          var pubData = await pubRes.json();
+          if (pubData && pubData.extension && pubData.change && pubData.registration) {
+            ['extension', 'change', 'registration'].forEach(function (t) {
+              if (pubData[t] && pubData[t].items) {
+                state.datasets[t] = pubData[t];
+              }
+            });
+          }
+        }
+      } catch (_) {
+        // Fallback to static datasets
+      }
+    }
+
     var officeSelect = $('office');
     var editorOffice = $('edit-office');
     var checkOffice = $('checklist-office-select');
@@ -1152,6 +1197,64 @@ async function load() {
       cards.setAttribute('aria-busy', 'false');
     }
     if ($('count')) $('count').textContent = '불러오기 실패';
+  }
+}
+
+function renderPreviewBanner(data) {
+  var existing = document.getElementById('release-preview-banner');
+  if (existing) existing.remove();
+
+  var banner = document.createElement('aside');
+  banner.id = 'release-preview-banner';
+  banner.className = 'release-preview-banner';
+  banner.setAttribute('role', 'status');
+  banner.setAttribute('aria-label', '배포 후보 릴리스 미리보기');
+
+  var content = document.createElement('div');
+  content.className = 'release-preview-content';
+
+  var badge = document.createElement('span');
+  badge.className = 'release-preview-badge';
+  badge.textContent = 'CANDIDATE PREVIEW';
+
+  var info = document.createElement('div');
+  info.className = 'release-preview-info';
+
+  var labelText = document.createElement('strong');
+  labelText.textContent = '배포 후보 미리보기 모드';
+
+  var tagSpan = document.createElement('span');
+  tagSpan.className = 'release-preview-tag';
+  tagSpan.textContent = data.release_tag || data.release_id || 'candidate';
+
+  info.appendChild(labelText);
+  info.appendChild(document.createTextNode(' · 릴리스: '));
+  info.appendChild(tagSpan);
+
+  if (data.checksum_sha256) {
+    var checkSpan = document.createElement('span');
+    checkSpan.className = 'release-preview-checksum';
+    checkSpan.textContent = 'SHA: ' + data.checksum_sha256.substring(0, 10) + '...';
+    info.appendChild(document.createTextNode(' · '));
+    info.appendChild(checkSpan);
+  }
+
+  content.appendChild(badge);
+  content.appendChild(info);
+
+  var exitLink = document.createElement('a');
+  exitLink.className = 'release-preview-exit';
+  exitLink.href = 'immigration-checklists.html';
+  exitLink.textContent = '미리보기 종료 ✕';
+
+  banner.appendChild(content);
+  banner.appendChild(exitLink);
+
+  var topbar = document.querySelector('.topbar');
+  if (topbar && topbar.parentNode) {
+    topbar.parentNode.insertBefore(banner, topbar);
+  } else {
+    document.body.prepend(banner);
   }
 }
 

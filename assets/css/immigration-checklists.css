@@ -1862,6 +1862,80 @@ footer {
   }
 }
 
+/* ------------------------------------------------------------------------- */
+/* RELEASE PREVIEW BANNER (R3.1)                                             */
+/* ------------------------------------------------------------------------- */
+.release-preview-banner {
+  background: linear-gradient(90deg, #1e3a8a, #1d4ed8);
+  color: #ffffff;
+  padding: 0.65rem 1.25rem;
+  font-size: 0.875rem;
+  box-shadow: 0 4px 12px rgba(30, 58, 138, 0.25);
+  position: sticky;
+  top: 0;
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  border-bottom: 2px solid #60a5fa;
+}
+.release-preview-content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+.release-preview-badge {
+  background: #f59e0b;
+  color: #0f172a;
+  font-weight: 800;
+  font-size: 0.7rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 9999px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+}
+.release-preview-info {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.release-preview-tag {
+  font-weight: 700;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+}
+.release-preview-checksum {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.75rem;
+  color: #bfdbfe;
+}
+.release-preview-exit {
+  background: #ffffff;
+  color: #1e3a8a;
+  border: 1px solid #ffffff;
+  border-radius: 6px;
+  padding: 0.35rem 0.8rem;
+  font-weight: 700;
+  font-size: 0.8125rem;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  transition: all 0.15s ease;
+}
+.release-preview-exit:hover {
+  background: #f1f5f9;
+  color: #1d4ed8;
+}
+
 @media print {
   body { background: #ffffff !important; color: #000000 !important; font-size: 12pt; }
   .topbar, .guided-stepper, .step-nav-row, .task-help-banner, .mode-switcher,

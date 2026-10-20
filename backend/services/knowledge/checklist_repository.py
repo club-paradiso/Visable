@@ -23,7 +23,9 @@ from .checklist_models import (
     OfficeOverrideIn,
     OperatorRole,
     PublishValidationReport,
+    ReleaseManifestOut,
     ReleaseRequestIn,
+    RollbackRequestIn,
     ScenarioDiffOut,
     can_edit,
     can_publish,
@@ -162,8 +164,8 @@ def get_operator_role(store: KnowledgeStore, operator_name: str) -> OperatorRole
             return OperatorRole(row["role"])
         except ValueError:
             pass
-    # Fallback to editor role if unspecified
-    return OperatorRole.EDITOR
+    # Fallback to viewer role if unspecified (least-privilege default)
+    return OperatorRole.VIEWER
 
 
 # ---------------------------------------------------------------------------
@@ -486,12 +488,30 @@ def act_on_draft(
             elif action == "approve":
                 if not can_review(actor_role):
                     raise KnowledgeError(PipelineError.TRANSITION_FORBIDDEN, "Reviewer permissions required to approve.")
+                if curr_state not in ("SUBMITTED", "UNDER_REVIEW"):
+                    raise KnowledgeError(
+                        PipelineError.TRANSITION_FORBIDDEN,
+                        f"Cannot approve draft in state '{curr_state}' (must be SUBMITTED or UNDER_REVIEW).",
+                    )
+                # Self-approval prevention (Phase 6)
+                if draft["created_by"] == actor and not getattr(action_in, "allow_self_approval", False):
+                    raise KnowledgeError(
+                        PipelineError.TRANSITION_FORBIDDEN,
+                        "Self-approval forbidden: An independent reviewer must approve changes. Use emergency override if authorized.",
+                    )
                 # STRICT EVIDENCE GATE: Cannot approve without valid HTTPS evidence!
                 ev_url = (draft["evidence_url"] or "").strip()
                 if not ev_url or not ev_url.startswith("https://"):
                     raise KnowledgeError(
                         PipelineError.REVIEW_REQUIRED,
                         "Evidence Gate Failed: Approval requires a verified official HTTPS URL (출처 근거 URL 필수).",
+                    )
+                ev_title = (draft["evidence_title"] or "").strip()
+                ev_issuer = (draft["evidence_issuer"] or "").strip()
+                if not ev_title and not ev_issuer:
+                    raise KnowledgeError(
+                        PipelineError.REVIEW_REQUIRED,
+                        "Evidence Governance Failed: Official evidence title or issuing authority must be documented before approval.",
                     )
                 store.conn.execute(
                     "UPDATE checklist_drafts SET lifecycle_state = 'APPROVED', reviewed_by = ?, reviewed_at = ?, review_comment = ? WHERE draft_id = ?",
@@ -748,42 +768,101 @@ def save_office_override(
 # Pre-publish Validation Gate & Safe Release Pipeline
 # ---------------------------------------------------------------------------
 def run_prepublish_validation(store: KnowledgeStore) -> PublishValidationReport:
-    """Pre-publish validation gate checking 647 item preservation and evidence integrity."""
+    """Pre-publish validation gate checking 647 item preservation, exact counts, canonical IDs, and evidence integrity."""
     errors: List[str] = []
     warnings: List[str] = []
+    checks: List[Dict[str, Any]] = []
 
     # 1. Check exact 647 items count
     total = store.one("SELECT COUNT(*) AS c FROM checklist_items")["c"]
-    if total < 647:
-        errors.append(f"Data Preservation Error: Only {total} scenarios found in database (expected >= 647).")
+    if total != 647:
+        errors.append(f"Data Preservation Error: Found {total} scenarios in database (expected exactly 647).")
+        checks.append({"name": "total_items_count_preserved", "status": "FAIL", "expected": 647, "actual": total})
+    else:
+        checks.append({"name": "total_items_count_preserved", "status": "PASS", "expected": 647, "actual": total, "details": "All 647 scenarios preserved"})
 
-    # 2. Check approved drafts without evidence
+    # 2. Check exact procedure counts (224 / 251 / 172)
+    ext_c = store.one("SELECT COUNT(*) AS c FROM checklist_items WHERE procedure = 'extension'")["c"]
+    chg_c = store.one("SELECT COUNT(*) AS c FROM checklist_items WHERE procedure = 'change'")["c"]
+    reg_c = store.one("SELECT COUNT(*) AS c FROM checklist_items WHERE procedure = 'registration'")["c"]
+
+    if ext_c != 224:
+        errors.append(f"Extension count mismatch: {ext_c} (expected exactly 224).")
+        checks.append({"name": "extension_items_preserved", "status": "FAIL", "expected": 224, "actual": ext_c})
+    else:
+        checks.append({"name": "extension_items_preserved", "status": "PASS", "expected": 224, "actual": ext_c})
+
+    if chg_c != 251:
+        errors.append(f"Change count mismatch: {chg_c} (expected exactly 251).")
+        checks.append({"name": "change_items_preserved", "status": "FAIL", "expected": 251, "actual": chg_c})
+    else:
+        checks.append({"name": "change_items_preserved", "status": "PASS", "expected": 251, "actual": chg_c})
+
+    if reg_c != 172:
+        errors.append(f"Registration count mismatch: {reg_c} (expected exactly 172).")
+        checks.append({"name": "registration_items_preserved", "status": "FAIL", "expected": 172, "actual": reg_c})
+    else:
+        checks.append({"name": "registration_items_preserved", "status": "PASS", "expected": 172, "actual": reg_c})
+
+    # 3. Canonical ID format checks (e-XXXX, c-XXXX, r-XXXX)
+    bad_ext_ids = store.one("SELECT COUNT(*) AS c FROM checklist_items WHERE procedure = 'extension' AND id NOT GLOB 'e-[0-9][0-9][0-9][0-9]'")["c"]
+    bad_chg_ids = store.one("SELECT COUNT(*) AS c FROM checklist_items WHERE procedure = 'change' AND id NOT GLOB 'c-[0-9][0-9][0-9][0-9]'")["c"]
+    bad_reg_ids = store.one("SELECT COUNT(*) AS c FROM checklist_items WHERE procedure = 'registration' AND id NOT GLOB 'r-[0-9][0-9][0-9][0-9]'")["c"]
+    if bad_ext_ids + bad_chg_ids + bad_reg_ids > 0:
+        errors.append(f"Canonical ID Error: Found non-conforming IDs (ext: {bad_ext_ids}, chg: {bad_chg_ids}, reg: {bad_reg_ids}). Expected e-XXXX, c-XXXX, r-XXXX.")
+        checks.append({"name": "id_format_integrity", "status": "FAIL", "details": "Malformed scenario IDs detected"})
+    else:
+        checks.append({"name": "id_format_integrity", "status": "PASS", "details": "All 647 scenario IDs conform to canonical e-*, c-*, r-* schemes"})
+
+    # 4. Check approved drafts without valid HTTPS evidence
     approved_no_ev = store.one(
         "SELECT COUNT(*) AS c FROM checklist_drafts WHERE lifecycle_state = 'APPROVED' AND (evidence_url = '' OR evidence_url NOT LIKE 'https://%')"
     )["c"]
     if approved_no_ev > 0:
         errors.append(f"Evidence Gate Error: {approved_no_ev} approved drafts lack valid HTTPS evidence URLs.")
+        checks.append({"name": "approved_evidence_gate", "status": "FAIL", "actual": approved_no_ev})
+    else:
+        checks.append({"name": "approved_evidence_gate", "status": "PASS", "details": "All approved drafts have verified HTTPS evidence"})
 
-    # 3. Check for open conflicting drafts
+    # 5. Check pending drafts
     open_drafts_count = store.one(
         "SELECT COUNT(*) AS c FROM checklist_drafts WHERE lifecycle_state IN ('SUBMITTED', 'UNDER_REVIEW')"
     )["c"]
     if open_drafts_count > 0:
-        warnings.append(f"Attention: {open_drafts_count} drafts are still pending review and will not be published in this release.")
+        warnings.append(f"Attention: {open_drafts_count} drafts are pending review and will not be published in this release.")
 
     approved_count = store.one(
         "SELECT COUNT(*) AS c FROM checklist_drafts WHERE lifecycle_state = 'APPROVED'"
     )["c"]
 
-    valid = len(errors) == 0
+    # 6. Check storage durability
+    is_durable = getattr(store, "durable", True)
+    if not is_durable:
+        warnings.append("경고: SQLite 저장소가 메모리(:memory:) 모드로 실행 중입니다. 서버 재시작 시 휘발될 수 있습니다.")
+
+    # 7. Compute combined canonical dataset checksum
+    all_rows = store.all(
+        "SELECT id, status_code, scenario, required_text, conditional_text, application_text, note_text, version_no FROM checklist_items ORDER BY id"
+    )
+    canonical_repr = json.dumps([dict(r) for r in all_rows], sort_keys=True, ensure_ascii=False)
+    dataset_checksum = hashlib.sha256(canonical_repr.encode("utf-8")).hexdigest()
+
+    passed = len(errors) == 0
 
     return PublishValidationReport(
-        valid=valid,
+        valid=passed,
+        passed=passed,
+        total_items=total,
         total_scenarios=total,
+        procedure_counts={"extension": ext_c, "change": chg_c, "registration": reg_c},
         approved_drafts_count=approved_count,
+        pending_drafts_count=open_drafts_count,
+        checks=checks,
         errors=errors,
         warnings=warnings,
         checked_at=utc_now(),
+        durable_storage=is_durable,
+        dataset_checksum=dataset_checksum,
     )
 
 
@@ -793,7 +872,7 @@ def execute_publish_release(
     actor: str,
     actor_role: OperatorRole,
 ) -> Dict[str, Any]:
-    """Executes safe release: applies approved drafts, updates JSON files, and logs release."""
+    """Executes safe atomic release: validates invariants, applies approved drafts, updates files, and records snapshot."""
     if not can_publish(actor_role):
         raise KnowledgeError(PipelineError.TRANSITION_FORBIDDEN, "Publisher permissions required for release.")
 
@@ -805,8 +884,18 @@ def execute_publish_release(
         )
 
     now = utc_now()
-    tag = f"release-{now[:10].replace('-', '')}-{datetime.now().strftime('%H%M%S')}"
+    tag = release_in.release_tag
+    if tag:
+        existing = store.one("SELECT release_id FROM checklist_releases WHERE release_tag = ?", (tag,))
+        if existing:
+            raise KnowledgeError(PipelineError.DUPLICATE_FACT, f"Release tag '{tag}' already exists. Please choose a unique tag.")
+    else:
+        tag = f"release-{now[:10].replace('-', '')}-{datetime.now().strftime('%H%M%S')}"
+
     release_id = new_id("rel")
+
+    # Snapshot existing items before changes for rollback
+    pre_snapshot = [dict(r) for r in store.all("SELECT * FROM checklist_items ORDER BY id")]
 
     with store._lock:
         store.conn.execute("BEGIN IMMEDIATE")
@@ -843,13 +932,14 @@ def execute_publish_release(
                     (actor, now, d["draft_id"]),
                 )
 
-            # 2. Export updated JSON datasets to disk
+            # 2. Export updated JSON datasets to disk atomically
             files_map = {
                 "extension": CHECKLISTS_DATA_DIR / "extension-202609.json",
                 "change": CHECKLISTS_DATA_DIR / "change-202609.json",
                 "registration": CHECKLISTS_DATA_DIR / "registration-202609.json",
             }
             checksums = {}
+            fs_persisted = True
 
             for proc, path in files_map.items():
                 items = [
@@ -859,24 +949,53 @@ def execute_publish_release(
                         (proc,),
                     )
                 ]
-                payload = {
-                    "procedure": proc,
-                    "count": len(items),
-                    "compiled_at": now[:10],
-                    "items": items,
-                }
+                existing_meta = {}
+                if path.is_file():
+                    try:
+                        existing_meta = json.loads(path.read_text(encoding="utf-8"))
+                    except Exception:
+                        pass
+                payload = dict(existing_meta) if existing_meta else {}
+                payload["schema_version"] = payload.get("schema_version", 1)
+                payload["procedure"] = proc
+                payload["row_count"] = len(items)
+                payload["compiled_date"] = now[:10]
+                payload["items"] = items
+
                 serialized = json.dumps(payload, ensure_ascii=False, indent=2) + "\n"
-                path.write_text(serialized, encoding="utf-8")
                 checksums[proc] = hashlib.sha256(serialized.encode("utf-8")).hexdigest()
 
-            # Record release entry
+                if store.durable:
+                    try:
+                        tmp_path = path.with_suffix(".tmp")
+                        tmp_path.write_text(serialized, encoding="utf-8")
+                        tmp_path.replace(path)
+                    except OSError as e:
+                        logger.warning("Filesystem unwritable for %s: %s", path, e)
+                        fs_persisted = False
+                else:
+                    fs_persisted = False
+
+            # Record release metadata and snapshot
+            rel_meta = {
+                "release_id": release_id,
+                "release_tag": tag,
+                "release_note": release_in.release_note,
+                "status": "PUBLISHED",
+                "checksums": checksums,
+                "fs_persisted": fs_persisted,
+                "snapshot": pre_snapshot,
+                "applied_draft_ids": [d["draft_id"] for d in approved_drafts],
+                "validation": report.model_dump(),
+            }
+
             store.conn.execute(
                 """
                 INSERT INTO checklist_releases (
                     release_id, release_tag, target_procedure, approved_draft_count,
                     total_scenario_count, validation_passed, validation_report,
                     payload_checksum, published_by, published_at, rollback_ref
-                ) VALUES (?, ?, ?, ?, ?, 1, ?, ?, ?, ?, 'git-HEAD')
+                ) VALUES (?, ?, ?, ?, ?, 1, ?, ?, ?, ?, ?)
                 """,
                 (
                     release_id,
@@ -884,10 +1003,11 @@ def execute_publish_release(
                     release_in.target_procedure,
                     len(approved_drafts),
                     report.total_scenarios,
-                    json.dumps(report.model_dump()),
+                    json.dumps(rel_meta, ensure_ascii=False),
                     json.dumps(checksums),
                     actor,
                     now,
+                    "self",
                 ),
             )
 
@@ -903,11 +1023,237 @@ def execute_publish_release(
             store.conn.execute("ROLLBACK")
             raise
 
-    logger.info("publish_release_success tag=%s applied_count=%d", tag, len(approved_drafts))
+    logger.info("publish_release_success release_id=%s tag=%s applied=%d", release_id, tag, len(approved_drafts))
     return {
         "release_id": release_id,
         "release_tag": tag,
+        "status": "PUBLISHED",
         "applied_count": len(approved_drafts),
+        "total_scenario_count": report.total_scenarios,
         "checksums": checksums,
         "published_at": now,
+        "fs_persisted": fs_persisted,
     }
+
+
+def execute_rollback_release(
+    store: KnowledgeStore,
+    release_id: str,
+    rollback_in: RollbackRequestIn,
+    actor: str,
+    actor_role: OperatorRole,
+) -> Dict[str, Any]:
+    """Rolls back checklist_items to the baseline snapshot of a release."""
+    if not can_publish(actor_role):
+        raise KnowledgeError(PipelineError.TRANSITION_FORBIDDEN, "Publisher permissions required for rollback.")
+
+    rel_row = store.one("SELECT * FROM checklist_releases WHERE release_id = ? OR release_tag = ?", (release_id, release_id))
+    if not rel_row:
+        raise KnowledgeError(PipelineError.NOT_FOUND, f"Release '{release_id}' not found.")
+
+    try:
+        report_data = json.loads(rel_row["validation_report"])
+    except Exception:
+        report_data = {}
+
+    snapshot = report_data.get("snapshot")
+    if not snapshot:
+        raise KnowledgeError(PipelineError.EXTRACTION_INVALID, f"Release '{release_id}' does not have a valid baseline snapshot for rollback.")
+
+    now = utc_now()
+    rollback_tag = f"rollback-{rel_row['release_tag']}-{now[:10].replace('-', '')}"
+    new_rel_id = new_id("rel")
+
+    with store._lock:
+        store.conn.execute("BEGIN IMMEDIATE")
+        try:
+            # 1. Restore checklist_items from snapshot
+            for item in snapshot:
+                store.conn.execute(
+                    """
+                    UPDATE checklist_items SET
+                        required_text = ?, conditional_text = ?, application_text = ?, note_text = ?,
+                        review_state = 'PUBLISHED', editor_note = ?, version_no = version_no + 1,
+                        updated_at = ?, updated_by = ?
+                    WHERE id = ?
+                    """,
+                    (
+                        item["required_text"],
+                        item["conditional_text"],
+                        item["application_text"],
+                        item["note_text"],
+                        f"Rolled back from {rel_row['release_tag']}: {rollback_in.rollback_note}",
+                        now,
+                        actor,
+                        item["id"],
+                    ),
+                )
+
+            # 2. Update files on disk
+            files_map = {
+                "extension": CHECKLISTS_DATA_DIR / "extension-202609.json",
+                "change": CHECKLISTS_DATA_DIR / "change-202609.json",
+                "registration": CHECKLISTS_DATA_DIR / "registration-202609.json",
+            }
+            checksums = {}
+            for proc, path in files_map.items():
+                items = [
+                    dict(r)
+                    for r in store.all(
+                        "SELECT id, status_code, scenario, required_text, conditional_text, application_text, note_text, source_line, source_section, review_state FROM checklist_items WHERE procedure = ? ORDER BY id",
+                        (proc,),
+                    )
+                ]
+                existing_meta = {}
+                if path.is_file():
+                    try:
+                        existing_meta = json.loads(path.read_text(encoding="utf-8"))
+                    except Exception:
+                        pass
+                payload = dict(existing_meta) if existing_meta else {}
+                payload["schema_version"] = payload.get("schema_version", 1)
+                payload["procedure"] = proc
+                payload["row_count"] = len(items)
+                payload["compiled_date"] = now[:10]
+                payload["items"] = items
+                serialized = json.dumps(payload, ensure_ascii=False, indent=2) + "\n"
+                checksums[proc] = hashlib.sha256(serialized.encode("utf-8")).hexdigest()
+                if store.durable:
+                    try:
+                        tmp = path.with_suffix(".tmp")
+                        tmp.write_text(serialized, encoding="utf-8")
+                        tmp.replace(path)
+                    except OSError:
+                        pass
+
+            # 3. Update original release status and record rollback release
+            report_data["status"] = "ROLLED_BACK"
+            report_data["rolled_back_at"] = now
+            report_data["rolled_back_by"] = actor
+            store.conn.execute(
+                "UPDATE checklist_releases SET validation_report = ? WHERE release_id = ?",
+                (json.dumps(report_data, ensure_ascii=False), rel_row["release_id"]),
+            )
+
+            rollback_meta = {
+                "release_id": new_rel_id,
+                "release_tag": rollback_tag,
+                "status": "ROLLED_BACK",
+                "release_note": rollback_in.rollback_note,
+                "target_release": rel_row["release_tag"],
+                "checksums": checksums,
+            }
+            store.conn.execute(
+                """
+                INSERT INTO checklist_releases (
+                    release_id, release_tag, target_procedure, approved_draft_count,
+                    total_scenario_count, validation_passed, validation_report,
+                    payload_checksum, published_by, published_at, rollback_ref
+                ) VALUES (?, ?, 'all', 0, 647, 1, ?, ?, ?, ?, ?)
+                """,
+                (
+                    new_rel_id,
+                    rollback_tag,
+                    json.dumps(rollback_meta, ensure_ascii=False),
+                    json.dumps(checksums),
+                    actor,
+                    now,
+                    rel_row["release_id"],
+                ),
+            )
+
+            store.conn.execute(
+                """
+                INSERT INTO audit_log (audit_id, entity_type, entity_id, action, actor, actor_kind, before_json, after_json, reason, at)
+                VALUES (?, 'checklist_release', ?, 'rollback_release', ?, 'human_operator', ?, ?, ?, ?)
+                """,
+                (new_id("aud"), new_rel_id, actor, json.dumps({"target": rel_row["release_tag"]}), json.dumps({"rollback_tag": rollback_tag}), rollback_in.rollback_note, now),
+            )
+            store.conn.execute("COMMIT")
+        except Exception:
+            store.conn.execute("ROLLBACK")
+            raise
+
+    return {
+        "release_id": new_rel_id,
+        "release_tag": rollback_tag,
+        "status": "ROLLED_BACK",
+        "restored_from": rel_row["release_tag"],
+        "checksums": checksums,
+        "rolled_back_at": now,
+    }
+
+
+def get_active_published_checklists(store: KnowledgeStore, procedure: Optional[str] = None) -> Dict[str, Any]:
+    """Returns currently published checklist dataset across all 3 procedures with checksums and latest release metadata."""
+    latest_rel = store.one("SELECT * FROM checklist_releases ORDER BY published_at DESC LIMIT 1")
+    ext_items = [dict(r) for r in store.all("SELECT id, status_code, scenario, required_text, conditional_text, application_text, note_text, source_line, source_section, review_state FROM checklist_items WHERE procedure = 'extension' ORDER BY id")]
+    chg_items = [dict(r) for r in store.all("SELECT id, status_code, scenario, required_text, conditional_text, application_text, note_text, source_line, source_section, review_state FROM checklist_items WHERE procedure = 'change' ORDER BY id")]
+    reg_items = [dict(r) for r in store.all("SELECT id, status_code, scenario, required_text, conditional_text, application_text, note_text, source_line, source_section, review_state FROM checklist_items WHERE procedure = 'registration' ORDER BY id")]
+
+    all_items = ext_items + chg_items + reg_items
+    canonical_repr = json.dumps(all_items, sort_keys=True, ensure_ascii=False)
+    checksum = hashlib.sha256(canonical_repr.encode("utf-8")).hexdigest()
+
+    rel_tag = latest_rel["release_tag"] if latest_rel else "baseline-202609"
+    pub_at = latest_rel["published_at"] if latest_rel else "2026-10-19T00:00:00Z"
+
+    res = {
+        "status": "active",
+        "release_tag": rel_tag,
+        "published_at": pub_at,
+        "checksum_sha256": checksum,
+        "total_items": len(all_items),
+        "extension": {"procedure": "extension", "row_count": len(ext_items), "items": ext_items},
+        "change": {"procedure": "change", "row_count": len(chg_items), "items": chg_items},
+        "registration": {"procedure": "registration", "row_count": len(reg_items), "items": reg_items},
+    }
+    if procedure and procedure in res:
+        res["filtered_procedure"] = procedure
+    return res
+
+
+def get_release_preview(store: KnowledgeStore, release_id: str) -> Dict[str, Any]:
+    """Returns preview dataset for a specified release candidate or release."""
+    rel = store.one("SELECT * FROM checklist_releases WHERE release_id = ? OR release_tag = ?", (release_id, release_id))
+    if not rel:
+        raise KnowledgeError(PipelineError.NOT_FOUND, f"Release '{release_id}' not found.")
+
+    try:
+        report_data = json.loads(rel["validation_report"])
+    except Exception:
+        report_data = {}
+
+    published_data = get_active_published_checklists(store)
+    published_data["status"] = report_data.get("status", "PREVIEW_READY")
+    published_data["release_tag"] = rel["release_tag"]
+    published_data["release_id"] = rel["release_id"]
+    published_data["published_at"] = rel["published_at"]
+    published_data["is_preview"] = True
+    return published_data
+
+
+def list_releases(store: KnowledgeStore) -> List[Dict[str, Any]]:
+    """Returns list of releases with status and audit references."""
+    rows = store.all("SELECT * FROM checklist_releases ORDER BY published_at DESC LIMIT 50")
+    out = []
+    for r in rows:
+        try:
+            v_report = json.loads(r["validation_report"])
+        except Exception:
+            v_report = {}
+        out.append({
+            "release_id": r["release_id"],
+            "release_tag": r["release_tag"],
+            "target_procedure": r["target_procedure"],
+            "approved_draft_count": r["approved_draft_count"],
+            "total_scenario_count": r["total_scenario_count"],
+            "validation_passed": bool(r["validation_passed"]),
+            "payload_checksum": r["payload_checksum"],
+            "published_by": r["published_by"],
+            "published_at": r["published_at"],
+            "status": v_report.get("status", "PUBLISHED"),
+            "release_note": v_report.get("release_note", ""),
+            "rollback_ref": r["rollback_ref"],
+        })
+    return out

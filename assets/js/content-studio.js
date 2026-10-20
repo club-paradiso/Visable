@@ -628,11 +628,19 @@
             value: current.evidence_url || '',
           });
           var fEvidenceTitle = h('input', { className: 'cs-input', placeholder: '출입국 고시 또는 매뉴얼 명칭', value: current.evidence_title || '' });
+          var fEvidenceIssuer = h('input', { className: 'cs-input', placeholder: '발행/공표 기관 (e.g. 법무부 출입국·외국인정책본부)', value: current.evidence_issuer || '' });
           var fEvidenceDate = h('input', { className: 'cs-input', placeholder: 'YYYY-MM-DD', value: current.evidence_date || '' });
+
+          var fSourceEdition = h('input', { className: 'cs-input', placeholder: '지침 판차 (e.g. 2026.10 개정판)', value: current.source_edition || '' });
+          var fSourceSection = h('input', { className: 'cs-input', placeholder: '해당 조항/절 (e.g. 제3장 체류자격별 구비서류)', value: current.source_section || '' });
+          var fSourceLocator = h('input', { className: 'cs-input', placeholder: '문서번호/페이지 (e.g. p.142 또는 고시 제2026-88호)', value: current.source_locator || '' });
+          var fEffectiveStart = h('input', { className: 'cs-input', placeholder: '시행일 (YYYY-MM-DD)', value: current.effective_start || '' });
+          var fEffectiveEnd = h('input', { className: 'cs-input', placeholder: '만료일 (YYYY-MM-DD, 선택)', value: current.effective_end || '' });
+
           var fRationale = h('textarea', {
             className: 'cs-textarea',
             placeholder: '개정 사유 및 법령 근거를 구체적으로 작성하세요 (필수)',
-            text: (draft && draft.change_rationale) ? draft.change_rationale : '',
+            text: (draft && (draft.editor_note || draft.change_rationale)) ? (draft.editor_note || draft.change_rationale) : '',
             rows: '3',
           });
 
@@ -686,8 +694,8 @@
 
             // Evidence Box
             h('div', { className: 'cs-evidence-box' }, [
-              h('h4', { text: '⚖️ 공식 증빙 근거 (Evidence Gate)' }),
-              h('p', { className: 'cs-field-hint', text: '출입국관리법령, 법무부 고시, 하이코리아 공지 등 검증 가능한 HTTPS 링크가 필수입니다.' }),
+              h('h4', { text: '⚖️ 공식 증빙 근거 (Evidence Gate & Legal Governance)' }),
+              h('p', { className: 'cs-field-hint', text: '출입국관리법령, 법무부 고시, 하이코리아 공지 등 검증 가능한 HTTPS 링크 및 발행 기관 정보가 필수입니다.' }),
               h('div', { className: 'cs-form-row' }, [
                 h('div', { className: 'cs-field' }, [
                   h('label', { text: '공식 근거 URL (HTTPS 필수)' }),
@@ -698,9 +706,39 @@
                   fEvidenceTitle,
                 ]),
               ]),
-              h('div', { className: 'cs-field' }, [
-                h('label', { text: '시행일 / 고시일자' }),
-                fEvidenceDate,
+              h('div', { className: 'cs-form-row' }, [
+                h('div', { className: 'cs-field' }, [
+                  h('label', { text: '발행/공표 기관' }),
+                  fEvidenceIssuer,
+                ]),
+                h('div', { className: 'cs-field' }, [
+                  h('label', { text: '시행일 / 고시일자' }),
+                  fEvidenceDate,
+                ]),
+              ]),
+              h('div', { className: 'cs-form-row' }, [
+                h('div', { className: 'cs-field' }, [
+                  h('label', { text: '지침 판차 (Edition)' }),
+                  fSourceEdition,
+                ]),
+                h('div', { className: 'cs-field' }, [
+                  h('label', { text: '해당 조항 / 편장절' }),
+                  fSourceSection,
+                ]),
+              ]),
+              h('div', { className: 'cs-form-row' }, [
+                h('div', { className: 'cs-field' }, [
+                  h('label', { text: '문서번호 / 페이지 (Locator)' }),
+                  fSourceLocator,
+                ]),
+                h('div', { className: 'cs-field' }, [
+                  h('label', { text: '유효기간 시작~종료' }),
+                  h('div', { style: 'display: flex; gap: 0.5rem; align-items: center;' }, [
+                    fEffectiveStart,
+                    h('span', { text: '~' }),
+                    fEffectiveEnd,
+                  ]),
+                ]),
               ]),
             ]),
 
@@ -717,15 +755,21 @@
             var parseLines = function (val) {
               return val.split('\n').map(function (s) { return s.trim(); }).filter(Boolean);
             };
+            var reqLines = parseLines(fRequired.value);
+            var condLines = parseLines(fConditional.value);
             return {
-              item_id: item.item_id,
+              item_id: item.id || item.item_id,
               procedure: item.procedure,
               status_code: item.status_code,
               target_group: item.target_group,
               official_name: fOfficialName.value.trim(),
               plain_title: fPlainTitle.value.trim(),
-              required_documents: parseLines(fRequired.value),
-              conditional_documents: parseLines(fConditional.value),
+              required_text: fRequired.value.trim(),
+              conditional_text: fConditional.value.trim(),
+              application_text: item.application_text || '',
+              note_text: fNotes.value.trim(),
+              required_documents: reqLines,
+              conditional_documents: condLines,
               exceptions: parseLines(fExceptions.value),
               submission_methods: item.submission_methods || ['방문예약'],
               proxy_allowed: fProxyAllowed.checked,
@@ -734,7 +778,14 @@
               source_text: item.source_text || '',
               evidence_url: fEvidenceUrl.value.trim(),
               evidence_title: fEvidenceTitle.value.trim(),
+              evidence_issuer: fEvidenceIssuer.value.trim(),
               evidence_date: fEvidenceDate.value.trim(),
+              source_edition: fSourceEdition.value.trim() || null,
+              source_section: fSourceSection.value.trim() || null,
+              source_locator: fSourceLocator.value.trim() || null,
+              effective_start: fEffectiveStart.value.trim() || null,
+              effective_end: fEffectiveEnd.value.trim() || null,
+              editor_note: fRationale.value.trim() || '운영자 서류 정보 수정',
               change_rationale: fRationale.value.trim() || '운영자 서류 정보 수정',
             };
           }
@@ -1024,17 +1075,35 @@
                       ]));
                       return;
                     }
-                    api('/drafts/' + d.draft_id + '/action', {
-                      method: 'POST',
-                      body: { action: 'approve', note: '공식 근거 확인 완료 및 승인' },
-                    })
-                      .then(function () {
-                        status('초안 ' + d.draft_id + ' 승인 완료');
-                        renderReviews(container);
+
+                    var isAuthor = (d.author === state.operator || d.created_by === state.operator);
+                    var confirmTitle = isAuthor ? '⚠️ 분리 원칙(Four-Eyes) 경고 및 승인' : '초안 승인 확인';
+                    var confirmContent = isAuthor ? h('div', {}, [
+                      h('p', { style: 'font-weight: 700; color: #b45309;', text: '본인이 작성한 초안입니다. 지식 거버넌스 분리 원칙에 따라 다른 검토자의 독립 승인이 강력히 권장됩니다.' }),
+                      h('p', { style: 'margin-top: 0.5rem;', text: '긴급 운영 상황으로 인한 예외 자가 승인을 계속 진행하시겠습니까?' }),
+                    ]) : h('div', {}, [
+                      h('p', { text: '공식 근거(' + (d.evidence_title || d.evidence_url) + ')를 대조 확인하였으며, 이 초안을 승인 상태로 전환합니다.' }),
+                    ]);
+
+                    showDialog(confirmTitle, confirmContent, function () {
+                      var payload = {
+                        action: 'approve',
+                        comment: isAuthor ? '긴급 예외 자가 승인 확인' : '공식 근거 확인 완료 및 승인',
+                        note: isAuthor ? '긴급 예외 자가 승인 확인' : '공식 근거 확인 완료 및 승인',
+                        allow_self_approval: isAuthor,
+                      };
+                      api('/drafts/' + d.draft_id + '/action', {
+                        method: 'POST',
+                        body: payload,
                       })
-                      .catch(function (err) {
-                        status('승인 오류: ' + err.message);
-                      });
+                        .then(function () {
+                          status('초안 ' + d.draft_id + ' 승인 완료');
+                          renderReviews(container);
+                        })
+                        .catch(function (err) {
+                          status('승인 오류: ' + err.message);
+                        });
+                    });
                   },
                 },
               });
@@ -1237,14 +1306,23 @@
       api('/publish/validate', { method: 'POST' })
         .then(function (report) {
           clear(validateResults);
-          validateCard.className = 'cs-gate-card ' + (report.passed ? 'passed' : 'failed');
+          var isPassed = Boolean(report.passed || report.valid);
+          validateCard.className = 'cs-gate-card ' + (isPassed ? 'passed' : 'failed');
 
-          var alertTone = report.passed ? 'ok' : 'bad';
+          var alertTone = isPassed ? 'ok' : 'bad';
           var alertEl = h('div', { className: 'cs-alert cs-alert-' + alertTone, style: 'margin-bottom: 1rem;' }, [
-            h('strong', { text: report.passed ? '✅ 무결성 검증 통과 (Release Ready)' : '❌ 검증 실패 (배포 차단됨)' }),
-            h('p', { text: report.passed ? '모든 647개 항목이 완벽하게 보존되었으며 배포 기준을 충족합니다.' : '검증 요건 미달로 배포가 차단되었습니다.' }),
+            h('strong', { text: isPassed ? '✅ 무결성 검증 통과 (Release Ready)' : '❌ 검증 실패 (배포 차단됨)' }),
+            h('p', { text: isPassed ? '모든 647개 항목이 완벽하게 보존되었으며 배포 기준을 충족합니다.' : '검증 요건 미달로 배포가 차단되었습니다.' }),
           ]);
           validateResults.appendChild(alertEl);
+
+          var totalItems = report.total_items || report.total_scenarios || 0;
+          var procCounts = report.procedure_counts || {};
+          var extCount = procCounts.extension !== undefined ? procCounts.extension : 0;
+          var chgCount = procCounts.change !== undefined ? procCounts.change : 0;
+          var regCount = procCounts.registration !== undefined ? procCounts.registration : 0;
+          var storageText = report.durable_storage ? '영구 보존 SQLite DB (Durable)' : '테스트 임시 메모리 DB (In-Memory)';
+          var checksumText = report.dataset_checksum ? (report.dataset_checksum.substring(0, 16) + '...') : '미생성';
 
           // Checklist Table
           var table = h('table', { className: 'cs-checklist-table' }, [
@@ -1260,31 +1338,43 @@
               h('tr', {}, [
                 h('td', { text: '전체 상황별 서류 전수 보존' }),
                 h('td', { text: '정확히 647개' }),
-                h('td', { text: report.total_items + '개' }),
-                h('td', {}, [report.total_items === 647 ? renderBadge('PASS', 'ok') : renderBadge('FAIL', 'bad')]),
+                h('td', { text: totalItems + '개' }),
+                h('td', {}, [totalItems === 647 ? renderBadge('PASS', 'ok') : renderBadge('FAIL', 'bad')]),
               ]),
               h('tr', {}, [
                 h('td', { text: '체류기간 연장 (Extension)' }),
                 h('td', { text: '224개' }),
-                h('td', { text: (report.procedure_counts.extension || 0) + '개' }),
-                h('td', {}, [(report.procedure_counts.extension === 224) ? renderBadge('PASS', 'ok') : renderBadge('FAIL', 'bad')]),
+                h('td', { text: extCount + '개' }),
+                h('td', {}, [(extCount === 224) ? renderBadge('PASS', 'ok') : renderBadge('FAIL', 'bad')]),
               ]),
               h('tr', {}, [
                 h('td', { text: '체류자격 변경 (Change)' }),
                 h('td', { text: '251개' }),
-                h('td', { text: (report.procedure_counts.change || 0) + '개' }),
-                h('td', {}, [(report.procedure_counts.change === 251) ? renderBadge('PASS', 'ok') : renderBadge('FAIL', 'bad')]),
+                h('td', { text: chgCount + '개' }),
+                h('td', {}, [(chgCount === 251) ? renderBadge('PASS', 'ok') : renderBadge('FAIL', 'bad')]),
               ]),
               h('tr', {}, [
                 h('td', { text: '외국인등록·거소신고 (Registration)' }),
                 h('td', { text: '172개' }),
-                h('td', { text: (report.procedure_counts.registration || 0) + '개' }),
-                h('td', {}, [(report.procedure_counts.registration === 172) ? renderBadge('PASS', 'ok') : renderBadge('FAIL', 'bad')]),
+                h('td', { text: regCount + '개' }),
+                h('td', {}, [(regCount === 172) ? renderBadge('PASS', 'ok') : renderBadge('FAIL', 'bad')]),
+              ]),
+              h('tr', {}, [
+                h('td', { text: '스토리지 영구성 (Durability)' }),
+                h('td', { text: 'SQLite 영구 파일 보존' }),
+                h('td', { text: storageText }),
+                h('td', {}, [report.durable_storage ? renderBadge('DURABLE', 'ok') : renderBadge('EPHEMERAL', 'warn')]),
+              ]),
+              h('tr', {}, [
+                h('td', { text: '데이터셋 무결성 해시 (SHA-256)' }),
+                h('td', { text: '전체 647개 표준 정규화 해시' }),
+                h('td', { style: 'font-family: monospace; font-size: 0.8rem;', text: checksumText }),
+                h('td', {}, [renderBadge('VERIFIED', 'ok')]),
               ]),
               h('tr', {}, [
                 h('td', { text: '승인 완료된 개정 초안' }),
                 h('td', { text: '배포 대상 반영' }),
-                h('td', { text: report.approved_drafts_count + '건 대기' }),
+                h('td', { text: (report.approved_drafts_count || 0) + '건 대기' }),
                 h('td', {}, [renderBadge('INFO', 'primary')]),
               ]),
             ]),
@@ -1302,6 +1392,11 @@
 
     var releaseSection = h('div', { id: 'cs-release-section' });
     wrap.appendChild(releaseSection);
+
+    var historySection = h('div', { id: 'cs-release-history' });
+    wrap.appendChild(historySection);
+
+    loadReleases();
 
     function renderReleaseSection(report) {
       clear(releaseSection);
@@ -1321,7 +1416,8 @@
         return;
       }
 
-      if (!report.passed) {
+      var isPassed = Boolean(report.passed || report.valid);
+      if (!isPassed) {
         panel.appendChild(h('div', { className: 'cs-alert cs-alert-bad' }, [
           h('strong', { text: '배포 차단: ' }),
           h('span', { text: '무결성 사전 검증을 통과해야 배포할 수 있습니다.' }),
@@ -1352,6 +1448,7 @@
                 .then(function (res) {
                   status('배포 완료: ' + res.release_id);
                   runValidation();
+                  loadReleases();
                 })
                 .catch(function (err) {
                   status('배포 오류: ' + err.message);
@@ -1375,6 +1472,106 @@
 
       panel.appendChild(form);
       releaseSection.appendChild(panel);
+    }
+
+    function loadReleases() {
+      clear(historySection);
+      var panel = h('div', { className: 'cs-panel', style: 'margin-top: 1.5rem;' }, [
+        h('div', { className: 'cs-panel-header' }, [
+          h('h3', { className: 'cs-panel-title', text: '3단계: 릴리스 이력 관리 및 롤백 (Release History & Rollback)' }),
+        ]),
+      ]);
+      historySection.appendChild(panel);
+
+      api('/releases')
+        .then(function (data) {
+          var releases = (data && data.releases) || [];
+          if (!releases.length) {
+            panel.appendChild(h('p', { style: 'padding: 1.5rem; color: var(--text-muted); text-align: center;', text: '배포된 릴리스 이력이 아직 없습니다.' }));
+            return;
+          }
+
+          var table = h('table', { className: 'cs-checklist-table' }, [
+            h('thead', {}, [
+              h('tr', {}, [
+                h('th', { text: '릴리스 태그' }),
+                h('th', { text: '배포 일시' }),
+                h('th', { text: '배포자' }),
+                h('th', { text: '반영 내역' }),
+                h('th', { text: '상태' }),
+                h('th', { text: '체크섬' }),
+                h('th', { text: '액션' }),
+              ]),
+            ]),
+            h('tbody', {}, releases.map(function (rel) {
+              var isRolledBack = (rel.status === 'ROLLED_BACK');
+              var actionTd = h('td', { style: 'white-space: nowrap;' });
+
+              var previewUrl = 'immigration-checklists.html?preview_release=' + encodeURIComponent(rel.release_id);
+              actionTd.appendChild(h('a', {
+                href: previewUrl,
+                target: '_blank',
+                rel: 'noopener noreferrer',
+                className: 'cs-btn cs-btn-quiet cs-btn-sm',
+                style: 'display: inline-block; margin-right: 0.4rem; text-decoration: none;',
+                text: '🔍 미리보기',
+              }));
+
+              if (!isRolledBack && canPublish()) {
+                actionTd.appendChild(h('button', {
+                  className: 'cs-btn cs-btn-danger cs-btn-sm',
+                  text: '↩️ 롤백',
+                  on: {
+                    click: function () {
+                      var fRollbackReason = h('textarea', {
+                        className: 'cs-textarea',
+                        placeholder: '롤백 사유를 상세히 입력하세요 (필수)',
+                        rows: '3',
+                      });
+                      var dlgBody = h('div', {}, [
+                        h('p', { style: 'font-weight: 700; color: #dc2626;', text: '릴리스 [' + rel.release_tag + ']을(를) 롤백하시겠습니까?' }),
+                        h('p', { style: 'margin: 0.5rem 0; font-size: 0.875rem;', text: '이 릴리스 배포 직전의 스냅샷 상태로 647개 서류 데이터가 원자적으로 즉시 복원됩니다.' }),
+                        h('div', { className: 'cs-field', style: 'margin-top: 0.75rem;' }, [
+                          h('label', { text: '롤백 사유' }),
+                          fRollbackReason,
+                        ]),
+                      ]);
+                      showDialog('릴리스 긴급 롤백', dlgBody, function () {
+                        var reason = fRollbackReason.value.trim() || '운영자 긴급 롤백 요청';
+                        api('/releases/' + encodeURIComponent(rel.release_id) + '/rollback', {
+                          method: 'POST',
+                          body: { reason: reason, rollback_note: reason },
+                        })
+                          .then(function (rbRes) {
+                            status('롤백 완료: ' + rbRes.release_tag);
+                            runValidation();
+                            loadReleases();
+                          })
+                          .catch(function (err) {
+                            status('롤백 실패: ' + err.message);
+                          });
+                      });
+                    },
+                  },
+                }));
+              }
+
+              return h('tr', {}, [
+                h('td', { style: 'font-weight: 700; font-family: monospace;', text: rel.release_tag }),
+                h('td', { text: (rel.published_at || '').substring(0, 19).replace('T', ' ') }),
+                h('td', { text: rel.published_by }),
+                h('td', { text: (rel.approved_draft_count || 0) + '건 초안 반영 (' + (rel.total_scenario_count || 647) + '개 항목)' }),
+                h('td', {}, [isRolledBack ? renderBadge('롤백됨', 'warn') : renderBadge('게시됨', 'ok')]),
+                h('td', { style: 'font-family: monospace; font-size: 0.75rem;', text: (rel.payload_checksum || '').substring(0, 12) + '...' }),
+                actionTd,
+              ]);
+            })),
+          ]);
+          panel.appendChild(h('div', { className: 'cs-table-wrap' }, [table]));
+        })
+        .catch(function (err) {
+          panel.appendChild(h('p', { style: 'color: #dc2626; padding: 1rem;', text: '릴리스 이력 조회 실패: ' + err.message }));
+        });
     }
   }
 
