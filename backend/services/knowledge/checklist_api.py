@@ -19,6 +19,7 @@ from .checklist_models import (
     OperatorRole,
     PublishValidationReport,
     ReleaseRequestIn,
+    RollbackRequestIn,
     ScenarioDiffOut,
 )
 from .checklist_repository import (
@@ -27,10 +28,14 @@ from .checklist_repository import (
     compute_draft_diff,
     create_or_update_draft,
     execute_publish_release,
+    execute_rollback_release,
+    get_active_published_checklists,
     get_dashboard_metrics,
     get_operator_role,
+    get_release_preview,
     get_scenario_detail,
     list_offices_status,
+    list_releases,
     list_scenarios,
     run_prepublish_validation,
     save_office_override,
@@ -185,9 +190,67 @@ def build_checklist_router(get_store: Callable[[], Any]) -> APIRouter:
         store = S()
         try:
             return execute_publish_release(
-                store, target_procedure=body.target_procedure, release_note=body.release_note, actor=operator, actor_role=role
+                store, release_in=body, actor=operator, actor_role=role
             )
         except KnowledgeError as exc:
             raise _err(exc)
 
+    # -----------------------------------------------------------------------
+    # Release Management & Rollback
+    # -----------------------------------------------------------------------
+    @router.get("/releases")
+    def get_releases_list(user: Tuple[str, OperatorRole] = Depends(require_role)) -> Dict[str, Any]:
+        store = S()
+        return {"releases": list_releases(store)}
+
+    @router.get("/releases/{release_id}/preview")
+    def get_release_preview_endpoint(
+        release_id: str, user: Tuple[str, OperatorRole] = Depends(require_role)
+    ) -> Dict[str, Any]:
+        store = S()
+        try:
+            return get_release_preview(store, release_id)
+        except KnowledgeError as exc:
+            raise _err(exc)
+
+    @router.post("/releases/{release_id}/rollback")
+    def rollback_release_endpoint(
+        release_id: str, body: RollbackRequestIn, user: Tuple[str, OperatorRole] = Depends(require_role)
+    ) -> Dict[str, Any]:
+        operator, role = user
+        store = S()
+        try:
+            return execute_rollback_release(store, release_id, rollback_in=body, actor=operator, actor_role=role)
+        except KnowledgeError as exc:
+            raise _err(exc)
+
     return router
+
+
+def build_public_checklist_router(get_store: Callable[[], Any]) -> APIRouter:
+    """Public read-only endpoints for published checklist data and preview."""
+    router = APIRouter(prefix="/api/checklists")
+
+    def S():
+        store = get_store()
+        bootstrap_checklist_items(store)
+        return store
+
+    @router.get("/published")
+    def published_checklists(procedure: Optional[str] = Query(default=None)) -> Dict[str, Any]:
+        store = S()
+        return get_active_published_checklists(store, procedure=procedure)
+
+    @router.get("/preview")
+    def preview_checklists(release_id: str = Query(..., min_length=1)) -> Dict[str, Any]:
+        store = S()
+        try:
+            return get_release_preview(store, release_id)
+        except KnowledgeError as exc:
+            raise _err(exc)
+
+    return router
+
+
+__all__ = ["build_checklist_router", "build_public_checklist_router"]
+

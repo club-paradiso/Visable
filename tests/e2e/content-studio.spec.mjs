@@ -222,6 +222,43 @@ async function setupStudio(page, { role = 'publisher', closed = false, wrongToke
       });
     }
 
+    if (path === '/releases' && req.method() === 'GET') {
+      return route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          releases: [
+            {
+              release_id: 'rel-20261020-01',
+              release_tag: 'rel-20261020-01',
+              target_procedure: 'all',
+              approved_draft_count: 1,
+              total_scenario_count: 647,
+              validation_passed: true,
+              payload_checksum: 'a1b2c3d4e5f6789012345678',
+              published_by: 'admin',
+              published_at: '2026-10-20T10:00:00Z',
+              status: 'PUBLISHED',
+              release_note: '정기 릴리스',
+            },
+          ],
+        }),
+      });
+    }
+
+    if (path.startsWith('/releases/') && path.endsWith('/rollback') && req.method() === 'POST') {
+      return route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          release_id: 'rel-rollback-01',
+          release_tag: 'rollback-rel-20261020-01-20261020',
+          status: 'ROLLED_BACK',
+          restored_from: 'rel-20261020-01',
+        }),
+      });
+    }
+
     return route.fulfill({ status: 404, contentType: 'application/json', body: '{"error":"not_found"}' });
   });
 
@@ -311,8 +348,56 @@ test.describe('VISABLE Content Operations Studio', () => {
     await login(page);
     await page.click('#tab-publish');
     await expect(page.locator('.cs-gate-card')).toContainText('무결성 검증 통과');
-    await expect(page.locator('.cs-checklist-table')).toContainText('정확히 647개');
+    await expect(page.locator('#cs-validate-results .cs-checklist-table')).toContainText('정확히 647개');
     await expect(page.locator('#cs-release-section')).toContainText('운영 게시 배포 실행');
+  });
+
+  test('publish pipeline displays release history with candidate preview link and executes rollback', async ({ page }) => {
+    await setupStudio(page, { role: 'publisher' });
+    await login(page);
+    await page.click('#tab-publish');
+    await expect(page.locator('#cs-release-history')).toContainText('릴리스 이력 관리 및 롤백');
+    await expect(page.locator('#cs-release-history')).toContainText('rel-20261020-01');
+
+    // Preview link points to candidate release
+    const previewLink = page.locator('#cs-release-history a:has-text("미리보기")');
+    await expect(previewLink).toHaveAttribute('href', /preview_release=rel-20261020-01/);
+
+    // Rollback action opens modal
+    await page.locator('#cs-release-history button:has-text("롤백")').click();
+    await expect(page.locator('#cs-dialog-title')).toContainText('릴리스 긴급 롤백');
+    await page.locator('#cs-dialog textarea').fill('E2E 테스트 긴급 롤백 수행');
+    await page.locator('#cs-dialog-confirm').click();
+    await expect(page.locator('#cs-status-bar')).toContainText('롤백 완료');
+  });
+
+  test('public checklist page in candidate preview mode displays top preview banner and exit button', async ({ page }) => {
+    await page.route('**/api/checklists/preview?release_id=rel-20261020-01', (route) => {
+      return route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          is_preview: true,
+          release_id: 'rel-20261020-01',
+          release_tag: 'rel-20261020-01',
+          checksum_sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+          total_items: 647,
+          extension: { procedure: 'extension', row_count: 224, items: [] },
+          change: { procedure: 'change', row_count: 251, items: [] },
+          registration: { procedure: 'registration', row_count: 172, items: [] },
+        }),
+      });
+    });
+
+    await page.goto('/immigration-checklists.html?preview_release=rel-20261020-01');
+    const banner = page.locator('#release-preview-banner');
+    await expect(banner).toBeVisible();
+    await expect(banner).toContainText('CANDIDATE PREVIEW');
+    await expect(banner).toContainText('rel-20261020-01');
+
+    const exitBtn = banner.locator('.release-preview-exit');
+    await expect(exitBtn).toBeVisible();
+    await expect(exitBtn).toHaveAttribute('href', 'immigration-checklists.html');
   });
 
   test('no horizontal page overflow across desktop and tablet', async ({ page }) => {
@@ -322,3 +407,4 @@ test.describe('VISABLE Content Operations Studio', () => {
     expect(overflow).toBeLessThanOrEqual(1);
   });
 });
+

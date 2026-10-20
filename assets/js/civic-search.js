@@ -442,6 +442,9 @@
     // Korean (and every other IME) composition: arrows move the candidate window and
     // Enter commits the syllable — never a suggestion selection or a search.
     if (event.isComposing || event.keyCode === 229 || sugg.composing) return;
+    if (event.key === 'ArrowDown' || event.key === 'Down' || event.key === 'ArrowUp' || event.key === 'Up' || event.key === 'Enter' || event.key === 'Escape' || event.key === 'Esc' || event.key === 'Tab') {
+      cancelAnimationFrame(sugg.frame);
+    }
     var input = event.target, box = el('.cs-suggest'), open = box && !box.hidden, n = sugg.items.length;
     if (event.key === 'ArrowDown' || event.key === 'Down') {
       event.preventDefault();
