@@ -38,6 +38,9 @@
  </nav>
 
  <div class="header-actions">
+  <button type="button" id="open-feedback-btn" class="header-link quiet-link" title="베타 개선 의견 보내기" style="background:none; border:none; cursor:pointer; font:inherit; color:inherit;">
+   <span>의견 보내기</span>
+  </button>
   <a href="form-helper.html" class="header-link quiet-link" title="공식 서식 작성 도우미">
    <span>서식 작성</span>
    <span class="ext-arrow" aria-hidden="true">↗</span>
@@ -619,6 +622,64 @@
    <button type="button" id="task-help-close" class="primary-button">이해했어요, 돌아가기</button>
   </div>
  </div>
+</dialog>
+
+<!-- Dialog: Privacy-Preserving Beta Diagnostics & Actionable Feedback -->
+<dialog id="feedback-dialog" class="help-dialog feedback-dialog" aria-labelledby="feedback-dialog-title">
+ <form method="dialog" id="feedback-form">
+  <div class="dialog-head">
+   <p class="step">PUBLIC BETA FEEDBACK</p>
+   <h2 id="feedback-dialog-title">베타 개선 의견 보내기</h2>
+   <p class="muted">실제 출입국 방문 경험이나 번역, 검색 결과에 대해 알려주세요. 개인 식별 정보는 저장되지 않습니다.</p>
+  </div>
+
+  <div class="privacy-alert" role="note" style="background:#fef7ea; border:1px solid #ebd39b; border-radius:10px; padding:12px; margin:14px 0; font-size:13px; color:#5c4207;">
+   <strong>개인정보 보호 안내 (Zero-PII):</strong> 외국인등록번호, 여권번호, 전화번호, 실명 등 개인 식별 정보를 절대 입력하지 마세요.
+  </div>
+
+  <div class="feedback-context-pills" style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; font-size:12px;">
+   <span class="badge" id="fb-context-proc" style="background:#eef6f1; padding:4px 8px; border-radius:6px; color:#1b6345; font-weight:600;">절차: 연장</span>
+   <span class="badge" id="fb-context-code" style="background:#eef6f1; padding:4px 8px; border-radius:6px; color:#1b6345; font-weight:600;">체류자격: 전체</span>
+   <span class="badge" id="fb-context-lang" style="background:#eef6f1; padding:4px 8px; border-radius:6px; color:#1b6345; font-weight:600;">언어: ko</span>
+  </div>
+
+  <label class="field" style="display:block; margin-bottom:12px;">
+   <span style="font-weight:600; font-size:14px;">의견 유형</span>
+   <select id="fb-category" class="lang-select" style="width:100%; margin-top:4px;" required>
+    <option value="translation">번역·다국어 표기 오류 / Translation or wording issue</option>
+    <option value="document_mismatch">실제 관서 요구 서류와 다름 / Document requirement mismatch</option>
+    <option value="search_issue">검색 결과에서 체류자격·절차를 못 찾음 / Search couldn't find status</option>
+    <option value="navigation">화면 이동 및 사용 방법 불편 / Confusing UI or workflow</option>
+    <option value="other">기타 개선 제안 / Other feedback</option>
+   </select>
+  </label>
+
+  <label class="field" style="display:block; margin-bottom:12px;">
+   <span style="font-weight:600; font-size:14px;">도움 정도</span>
+   <select id="fb-rating" class="lang-select" style="width:100%; margin-top:4px;">
+    <option value="helpful">도움이 되었어요 / Helpful</option>
+    <option value="needs_improvement">개선이 필요해요 / Needs improvement</option>
+    <option value="confusing">이해하기 어려워요 / Difficult to understand</option>
+   </select>
+  </label>
+
+  <label class="field" style="display:block; margin-bottom:12px;">
+   <span style="font-weight:600; font-size:14px;">상세 내용</span>
+   <textarea id="fb-comment" rows="4" maxlength="1500" placeholder="어떤 부분이 불편했거나 사실과 달랐는지 구체적인 상황을 적어주세요. (개인정보 제외)" required style="width:100%; margin-top:4px; box-sizing:border-box; border-radius:8px; border:1px solid #c9d6ce; padding:10px;"></textarea>
+  </label>
+
+  <div id="fb-pii-warning" class="pii-warning" hidden style="color:#b91c1c; font-weight:600; font-size:13px; margin:8px 0;" role="alert">
+   외국인등록번호 또는 여권번호 형태의 식별 번호가 포함되어 있습니다. 개인정보를 지우고 다시 시도해 주세요.
+  </div>
+
+  <div id="fb-status-message" class="status-message" hidden style="color:#1b6345; font-weight:600; font-size:13px; margin:8px 0;" role="status"></div>
+
+  <div class="dialog-actions">
+   <button type="button" id="fb-copy-btn" class="outline-button">진단 보고서 복사</button>
+   <button type="button" id="fb-cancel-btn" class="outline-button">닫기</button>
+   <button type="submit" id="fb-submit-btn" class="primary-button">의견 제출</button>
+  </div>
+ </form>
 </dialog>
 
 <!-- Dialog: Content Maintainer Local Draft Editor -->

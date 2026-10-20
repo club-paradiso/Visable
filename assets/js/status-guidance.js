@@ -215,15 +215,15 @@
     // status_change guidance is keyed by the target, so the target must come first;
     // without this the first-typed code (the current status) was answered as if
     // the user wanted to change INTO it.
-    var changeVerb = /변경|바꾸|바꿀|바꿔|바꿨|전환|->|→|\bchange\b|\bswitch\b/i.test(q);
+    var changeVerb = /변경|바꾸|바꿀|바꿔|바꿨|전환|->|→|\bchange\b|\bswitch\b|chuyển\s*đổi|ganti|ubah|变更|换签|変更|تغيير/i.test(q);
     var distinctParents = out.codes.length >= 2 && out.codes.some(function (c) { return parentOf(c.code) !== parentOf(out.codes[0].code); });
     if (changeVerb && distinctParents) {
       var targetIdx = -1, fromIdx = -1;
       out.codes.forEach(function (c, i) {
         if (typeof c.at !== 'number') return;
-        var after = q.slice(c.end, c.end + 8), before = q.slice(Math.max(0, c.at - 6), c.at);
-        if (targetIdx < 0 && (/^\s*(?:으로|로)(?![가-힣]*\s*(?:부터|에서))/.test(after) || /(?:->|→|\bto)\s*$/i.test(before))) targetIdx = i;
-        else if (fromIdx < 0 && (/^\s*(?:에서|부터)/.test(after) || /\bfrom\s*$/i.test(before))) fromIdx = i;
+        var after = q.slice(c.end, c.end + 8), before = q.slice(Math.max(0, c.at - 8), c.at);
+        if (targetIdx < 0 && (/^\s*(?:으로|로|へ|への|に)(?![가-힣]*\s*(?:부터|에서))/.test(after) || /(?:->|→|\bto\b|\bsang\b|\bke\b|\binto\b)\s*$/i.test(before))) targetIdx = i;
+        else if (fromIdx < 0 && (/^\s*(?:에서|부터|から)/.test(after) || /\b(?:from|từ|dari)\s*$/i.test(before))) fromIdx = i;
       });
       if (targetIdx > 0 && fromIdx !== targetIdx) {
         var target = out.codes.splice(targetIdx, 1)[0];
