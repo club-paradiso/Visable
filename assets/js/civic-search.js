@@ -342,9 +342,10 @@
         filter();
       });
     });
-    // Keep the seven main entry points visible; expand the full catalogue on demand.
-    // Deep links from other services must always reveal the catalogue.
-    directory.open = window.location.hash === '#csTools';
+    // Preserve the static shell's open directory during hydration.
+    // Closing it here would hide an early tap while slower i18n/action modules load.
+    // Users may still collapse it using the native details summary.
+    if (window.location.hash === '#csTools') directory.open = true;
     filter();
   }
 
