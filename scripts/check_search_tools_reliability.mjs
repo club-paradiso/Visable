@@ -107,3 +107,24 @@ const { classifyProviderError } = require('../lib/enforcement-grounded-ai.js');
 assert.equal(classifyProviderError(404, 'No endpoints found matching your data policy (Free model publication).'), 'provider_data_policy');
 assert.equal(classifyProviderError(429, 'free-models-per-day exceeded'), 'provider_rate_limit');
 assert.equal(classifyProviderError(404, 'No endpoints found for this model'), 'no_compatible_endpoint');
+
+// A provider's 429 must not disable unrelated free providers. Only the shared
+// account bucket or its data policy can justify skipping the remaining ids.
+const groundedSource = readFileSync(new URL('../lib/enforcement-grounded-ai.js', import.meta.url), 'utf8');
+const libRequire = createRequire(new URL('../lib/enforcement-grounded-ai.js', import.meta.url));
+async function checkProviderFailover(message, expectedAttempts, expectedOk) {
+  let attempts = 0;
+  const invoke = new Function('require','process','fetch','AbortController','setTimeout','clearTimeout','module','console',groundedSource + '\nreturn callOpenRouter;')(
+    libRequire,
+    { env: { OPENROUTER_API_KEY: 'synthetic-test-key', ENFORCEMENT_OPENROUTER_MODEL: 'test/first:free', ENFORCEMENT_OPENROUTER_MODEL_CANDIDATES: 'test/second:free' } },
+    async () => ++attempts === 1
+      ? { ok: false, status: 429, json: async () => ({ error: { message: 'Provider returned error', metadata: { raw: message } } }) }
+      : { ok: true, json: async () => ({ choices: [{ message: { content: '{"ok":true}' } }] }) },
+    AbortController,setTimeout,clearTimeout,{ exports: {} },{ warn() {} },
+  );
+  const result = await invoke([{ role: 'user', content: 'synthetic probe' }]);
+  assert.equal(attempts, expectedAttempts); assert.equal(result.ok, expectedOk);
+}
+await checkProviderFailover('provider rate limit exceeded', 2, true);
+await checkProviderFailover('free-models-per-day quota exceeded', 1, false);
+console.log('Provider failover passed: upstream 429 retries another model; shared quota stops.');

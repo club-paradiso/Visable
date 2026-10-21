@@ -1,17 +1,15 @@
 'use strict';
 
-// Enforcement has a Korean-first output surface. Prefer the current multilingual
-// Gemma 4 free endpoint, then fall back to gpt-oss-120b. Deployment-specific
-// ENFORCEMENT_OPENROUTER_MODEL / *_CANDIDATES values always win, so operators
-// can opt into a premium verifier (for example Gemini 3 Flash) without code edits.
+// The first free route passed a live synthetic generation probe on 2026-10-21.
+// Keep explicit operator overrides and strict output validation; no paid fallback.
 if (!String(process.env.ENFORCEMENT_OPENROUTER_MODEL || '').trim()) {
-  process.env.ENFORCEMENT_OPENROUTER_MODEL = 'google/gemma-4-31b-it:free';
+  process.env.ENFORCEMENT_OPENROUTER_MODEL = 'minimax/minimax-m3.1-flash:free';
 }
 if (!String(process.env.ENFORCEMENT_OPENROUTER_MODEL_CANDIDATES || '').trim()) {
   process.env.ENFORCEMENT_OPENROUTER_MODEL_CANDIDATES = [
-    'google/gemma-4-31b-it:free',
     'minimax/minimax-m3.1-flash:free',
-    'nvidia/nemotron-3-super-120b-a12b:free',
+    'google/gemma-4-31b-it:free',
+    'google/gemma-4-26b-a4b-it:free',
   ].join(',');
 }
 
