@@ -8,9 +8,9 @@ and every such step needs the owner's approval.
 
 | # | Decision | Why it blocks | Evidence |
 |---|---|---|---|
-| OD-1 | Fix the 시행규칙 제73조 data in `scripts/status_guidance/author_rules.py` and regenerate | The status-guidance runtime data presents the 2027-09-16 card-payment text as the text in force. One user-facing line says registration-card fees may be paid by card, but the provision in force on 2026-10-19 (제1호 가목) says cash or proof of cash payment only | [01 §9](01-existing-system-audit.md), [04 §8](04-official-api-capability-matrix.md) |
+| OD-1 | ~~Fix the 시행규칙 제73조 data~~ **Done in PR #673 (2026-10-21)**: the text in force is shown now (no card payment; 등록증 fees cash or proof of cash payment only, 제1호 가목) and the amended text switches in automatically at 2027-09-16 00:00 KST | — | [01 §9](01-existing-system-audit.md) ESA-01 |
 | OD-2 | Legal review of the production model channels | OpenRouter `:free` Nemotron routes are served under the NVIDIA API Trial terms, which forbid production use. The Thinking Machines free tier and the Google AI Studio unpaid tier also restrict personal data and output use. This affects the live answer path, not only distillation | [09 §6](09-training-and-distillation.md), [15](15-security-and-deployment.md) |
-| OD-3 | Provenance remedy for `backend/services/law_query_normalizer.py` | It closely translates korean-law-mcp code, some of which is labelled as ported from LexDiff (BSL 1.1 since 2026-04-13). The notices are incomplete and two docs say no code was copied | [03](03-reference-provenance.md) |
+| OD-3 | Provenance remedy for `backend/services/law_query_normalizer.py` | It closely translates korean-law-mcp code, some of which is labelled as ported from LexDiff (BSL 1.1 since 2026-04-13). The notices are incomplete and two docs say no code was copied | [03](03-reference-provenance.md). The inaccurate "no code copied" statements and the missing LexDiff note were corrected on 2026-10-21; the legal review and the clean-room replacement remain |
 | OD-4 | Merge or rebase `fix/waymaker-qa-2026-10-16` | The `/api/ask` wiring of the new guard, the reconciliation split and D4 all live in files that branch changes | [05 §3](05-legal-intelligence-architecture.md) |
 | OD-5 | Branch protection on `main` (required checks) | Merges currently need no green CI. GitHub auto-merge cannot be used safely for that reason (observed with PR #666) | [15](15-security-and-deployment.md) |
 | OD-6 | Who reviews benchmark labels | No label is human-verified. Only `PROVISIONAL_GO` is possible until the `critical` labels are reviewed by the owner or a licensed professional | [12](12-evaluation-methodology.md), [16](16-validation-results.md) |
@@ -18,7 +18,7 @@ and every such step needs the owner's approval.
 
 ## 1. Step 1 — close the user-facing and safety items (small, no new architecture)
 
-1. **Data fixes (after OD-1):** 제73조 quote and line; the superseded 출입국관리법
+1. **Data fixes:** (제73조 done in PR #673.) The superseded 출입국관리법
    (272921 → 290729) and 시행령 (289697 → 290501) versions in `author_rules.py`;
    the stale 국적법 시행령/시행규칙 ids; the F-4 notice number (제2026-35호 vs
    제2026-65호); the trainee-rule title; the stale `document_help.json` link.

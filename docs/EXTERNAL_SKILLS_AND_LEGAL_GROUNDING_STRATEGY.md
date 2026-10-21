@@ -73,6 +73,13 @@ An MCP server wrapping South Korea's 법제처 (Ministry of Government Legislati
 **How it helps Paradiso:**  
 The current `/api/ask` grounding layer in `backend/services/korean_law_client.py` already makes HTTP calls to a configurable `LAW_API_BASE_URL`. Setting `LAW_API_BASE_URL=https://korean-law-mcp.fly.dev` (or a self-hosted instance) and `LAW_GROUNDING_MODE=audit` is the minimal integration path. No new code required.
 
+> **Withdrawn (2026-10-21).** Do not point the law client at a third-party host: every
+> request carries the owner's Open Law API credential (OC). `LAW_API_BASE_URL` now
+> accepts only https law.go.kr origins (law-stack fix F8), and
+> `korean_law_client.py` is not the runtime client. User questions are not routed to
+> the hosted korean-law-mcp; see
+> `docs/ai/waymaker-genesis/05-legal-intelligence-architecture.md` §6.
+
 Specifically:
 - When a user asks "What is the legal basis for E-7 renewal?" the intent router (`law_grounding.py`) already detects the pattern ("법적 근거") and would route to the law client.
 - `citation_verifier.py` already extracts 법령 제N조 patterns and would call `law_client.get_article()` to verify them — currently this raises `CITATION_VERIFICATION_NOT_WIRED` because no client is connected.

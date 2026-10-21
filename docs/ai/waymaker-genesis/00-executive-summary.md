@@ -12,8 +12,9 @@ was merged by the owner.
    status-guidance runtime data: it presents the 2027-09-16 text of 출입국관리법
    시행규칙 제73조 as the text in force today. As a result, one line tells users
    that registration-card fees may be paid by card, while the provision in force on
-   2026-10-19 says cash or proof of cash payment only. That data was **not** changed;
-   it needs the owner's review (owner decision OD-1 in [17](17-mission-002-plan.md)).
+   2026-10-19 says cash or proof of cash payment only. At the owner's instruction this
+   is fixed in PR #673: the text in force is shown now, and the amended text switches
+   in automatically at 2027-09-16 00:00 KST.
 2. **The law-API client had measurable failure-as-absence defects, and 12 surgical
    fixes landed on this branch** (F1–F12,
    [research-notes/law-stack-fixes.md](research-notes/law-stack-fixes.md)). Among
@@ -61,7 +62,6 @@ was merged by the owner.
 
 The owner decisions are listed in [17 §0](17-mission-002-plan.md):
 
-- the 제73조 data;
 - **legal review of the production model channels**: OpenRouter `:free`
   Nemotron routes are served under NVIDIA API Trial terms that forbid production
   use;

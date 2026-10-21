@@ -331,6 +331,10 @@ Re-checked for this document on the branch base `fc896c2`:
      and the unmarked half. After the replacement, change the entry to an
      independent-development record (PR, reviewer).
    * Correct the `law_tools.py` docstring and the two docs listed in §4.1 item 6.
+     **Done 2026-10-21 (PR #671):** the docstring now points at the port, both docs
+     carry a dated correction, the §2.1 third-party-endpoint advice is marked withdrawn,
+     and `THIRD_PARTY_NOTICES.md` records the LexDiff header and the open question.
+     Legal review and the clean-room replacement remain open.
    * Withdraw the advice in `docs/EXTERNAL_SKILLS_AND_LEGAL_GROUNDING_STRATEGY.md`
      §2.1 to point the law client at a third-party hosted endpoint [NOTE law-stack Q15, R7].
    * Fix the doubtful "(Python)" label for `kordoc` in `docs/hikorea_manual_sync.md`

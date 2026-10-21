@@ -3,8 +3,11 @@
 This module is a small, typed, deterministic adapter over the Korean National
 Law Information Open API (open.law.go.kr — the ``DRF/lawSearch.do`` /
 ``DRF/lawService.do`` endpoints). It reflects the operating principles the user
-referenced from prior law/MCP discussions WITHOUT shipping a public MCP server
-or copying any third-party code:
+referenced from prior law/MCP discussions WITHOUT shipping a public MCP server.
+This module contains no third-party code; the query-normalization helpers it
+uses for ranked search (``law_query_normalizer``) are algorithms ported from
+korean-law-mcp (MIT) — see THIRD_PARTY_NOTICES.md for what was ported and the
+open provenance question:
 
 * **korean-law-mcp principle** — law retrieval is a backend *tool/verifier*
   layer, not free-form LLM reasoning. The LLM receives normalized evidence; it
