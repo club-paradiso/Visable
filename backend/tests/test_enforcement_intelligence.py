@@ -116,7 +116,8 @@ class RuleEngineTests(unittest.TestCase):
 
     def test_overstay_one_month_boundary(self):
         baseline = calculate_legal_baseline(sample_case(violation_code="OVERSTAY_ART25", duration_days=30))
-        self.assertEqual(baseline.baseline_amount_krw, 1_000_000)
+        self.assertEqual(baseline.status, "MISSING_FACTS")
+        self.assertIsNone(baseline.baseline_amount_krw)
 
     def test_calendar_month_boundary(self):
         baseline = calculate_legal_baseline(sample_case(violation_start_date=date(2026, 1, 31), violation_end_date=date(2026, 2, 27), duration_days=None))
