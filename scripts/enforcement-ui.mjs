@@ -432,7 +432,7 @@ function resultNotice(className, title, body) {
 }
 
 function renderAnalysisLoading() {
-  $('#result-root').setAttribute('aria-busy', String(Boolean(data.analysisPending)));
+  $('#result-root').setAttribute('aria-busy', 'true');
   $('#result-root').innerHTML = `
     <div class="analysis-loading" role="status">
       <span class="loading-spinner" aria-hidden="true"></span>
@@ -444,6 +444,7 @@ function renderAnalysisLoading() {
 }
 
 function renderResult(data) {
+  $('#result-root').setAttribute('aria-busy', String(Boolean(data.analysisPending)));
   const baseline = data.legalBaseline || {};
   const prediction = data.prediction || {};
   const grounding = data.lawGrounding || {};

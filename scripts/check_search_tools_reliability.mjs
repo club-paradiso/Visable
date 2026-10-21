@@ -69,3 +69,36 @@ const baseline = analyzeBaselineCase({ schemaVersion: '1', statusOfStay: 'D-2', 
 assert.equal(baseline.legalBaseline.status, 'AVAILABLE');
 assert.equal(baseline.lawGrounding.status, 'UNAVAILABLE');
 console.log('Search/tools reliability passed: simple vs complex questions, refresh selection, mounted catalogue filters, empty/reset states, body timeout and baseline fallback.');
+
+// Exercise the entire shipped enforcement controller, not just its helpers.
+const enforcementDom = new JSDOM(readFileSync(new URL('../enforcement.html', import.meta.url), 'utf8'), { url: 'https://visable.test/enforcement.html', runScripts: 'outside-only', pretendToBeVisual: true });
+const ew = enforcementDom.window;
+ew.HTMLElement.prototype.scrollIntoView = function () {};
+const { extractStructuredCaseV2 } = require('../lib/enforcement-grounded-ai.js');
+let analyzeCalls = 0;
+ew.fetch = async (url, options) => {
+  const body = JSON.parse(options.body);
+  const result = url.endsWith('/extract') ? { case: extractStructuredCaseV2(body.text, body.assessmentDate) } : analyzeBaselineCase(body.caseData);
+  if (url.endsWith('/analyze')) analyzeCalls++;
+  return { ok: true, headers: { get: () => 'application/json' }, json: async () => result };
+};
+ew.eval(src);
+const ed = ew.document;
+ed.querySelector('[data-example]').click();
+ed.querySelector('#case-form').dispatchEvent(new ew.Event('submit', { bubbles: true, cancelable: true }));
+await new Promise(resolve => setTimeout(resolve, 20));
+assert.equal(ed.body.dataset.enforcementStep, '2');
+ed.querySelector('#confirm-form').dispatchEvent(new ew.Event('submit', { bubbles: true, cancelable: true }));
+await new Promise(resolve => setTimeout(resolve, 30));
+assert.equal(ed.body.dataset.enforcementStep, '3');
+assert.equal(analyzeCalls, 2, 'return baseline, then attempt enrichment');
+assert(ed.querySelector('#result-root').textContent.includes('법령 기준'));
+assert(!ed.querySelector('#result-root .analysis-loading'), 'spinner must be replaced by results');
+assert.equal(ed.querySelector('#result-root').getAttribute('aria-busy'), 'false');
+const retry = [...ed.querySelectorAll('#result-root button')].find(b => b.textContent === 'AI 예상 다시 확인');
+assert(retry && !retry.disabled);
+retry.click();
+await new Promise(resolve => setTimeout(resolve, 30));
+assert.equal(analyzeCalls, 4, 'unavailable predictions must not be cached');
+enforcementDom.window.close();
+console.log('Full enforcement controller passed: input, confirmation, baseline, enrichment failure, enabled retry.');

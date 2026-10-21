@@ -201,6 +201,7 @@ echo "[8b/14] Validating the civic landing first-paint shell..."
 # critical hide rules must be inline, and every locale pack must carry the civic
 # copy. This is what keeps the legacy hero out of the first painted frame.
 node scripts/check_landing_shell.mjs
+node scripts/check_search_tools_reliability.mjs
 
 echo "[8c/14] Checking index.html for dead design-token declarations..."
 # Offline, stdlib Python. A token declared earlier in an identical unconditional
