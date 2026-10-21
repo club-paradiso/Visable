@@ -43,11 +43,47 @@ class CurrentManualIndexTest(unittest.TestCase):
             self.assertIn('E-7-4', hit['status_codes'])
             self.assertTrue(hit['excerpt'].strip())
             self.assertTrue(hit['usable_as_direct_evidence'])
-            self.assertIn(hit['source_id'], ('visa_manual_2026_09_01_pdf', 'stay_manual_2026_09_18_pdf'))
+            # PDF pages, or Markdown chunks page-mapped onto those PDF pages.
+            self.assertIn(hit['source_id'], ('visa_manual_2026_09_01_pdf', 'stay_manual_2026_09_18_pdf',
+                                             'visa_manual_2026_09_01_md', 'stay_manual_2026_09_18_md'))
+            self.assertGreater(hit['page'], 0)
         # Superseded editions are never offered as direct evidence.
         for bucket in ('needs_review', 'superseded'):
             for hit in result.get(bucket) or []:
                 self.assertFalse(hit['usable_as_direct_evidence'])
+
+    def test_markdown_chunks_cite_a_page_of_their_own_approved_edition(self):
+        """Owner-supplied HWP→Markdown chunks (2026-10-19) are direct evidence
+        only where they were page-mapped; everything else is needs_review with
+        no page, and stay and visa chunks never share a domain."""
+        manifest = json.loads((ROOT / 'docs/source-manuals/source_manifest.json').read_text())
+        catalog = {s['id']: s for s in json.loads((ROOT / 'data/manual-corpus/catalog.json').read_text())['sources']}
+        derived = [d for e in manifest['current'].values() for d in e.get('derived_texts') or []]
+        self.assertEqual(sorted(d['id'] for d in derived),
+                         ['stay_manual_2026_09_18_md', 'visa_manual_2026_09_01_md'])
+        with sqlite3.connect(manual_search.BACKEND_INDEX_PATH) as conn:
+            for d in derived:
+                corpus = json.loads((ROOT / d['page_map']).read_text())
+                parent = catalog[d['page_source_id']]
+                rows = conn.execute(
+                    'SELECT approval_state, direct_evidence, page, domain, manual_version, family_key'
+                    ' FROM chunk WHERE source_id=?', (d['id'],)).fetchall()
+                self.assertEqual(len(rows), len(corpus['sections']))
+                self.assertEqual({r[3] for r in rows}, {parent['domain']})
+                self.assertEqual({r[4] for r in rows}, {parent['version']})
+                direct = [r for r in rows if r[1]]
+                self.assertEqual(len(direct), corpus['summary']['direct_evidence_chunks'])
+                for state, is_direct, page, *_ in rows:
+                    if is_direct:
+                        self.assertEqual(state, 'approved')
+                        self.assertTrue(1 <= page <= parent['pages'])
+                    else:
+                        self.assertEqual(state, 'needs_review')
+                        self.assertEqual(page, 0)
+            # The PDF rows are untouched by the Markdown: still one row per page.
+            for sid, source in catalog.items():
+                self.assertEqual(conn.execute('SELECT count(*) FROM chunk WHERE source_id=?', (sid,)).fetchone()[0],
+                                 source['pages'])
 
     def test_domain_and_no_results_remain_distinct_from_unavailable(self):
         result = manual_search.search_manuals('F-6', domain='stay')

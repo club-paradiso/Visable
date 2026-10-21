@@ -148,6 +148,8 @@ def main() -> None:
                 if declared != actual:
                     fail(f"{rel} sha256 {actual[:12]}… does not match declared {declared[:12]}…")
 
+        check_derived_texts(key, entry)
+
     duplicates =[role for role, count in seen_roles.items() if count != 1]
     if duplicates:
         fail(f"duplicate or missing current manual role(s): {', '.join(duplicates)}")
@@ -156,6 +158,39 @@ def main() -> None:
 
     suffix = f" ({pending} pending-review edition(s) also pinned)" if pending else ""
     print(f"[check_source_manuals] OK - current source manuals are registered.{suffix}")
+
+
+def check_derived_texts(key: str, entry: dict) -> None:
+    """A derived text (the owner's HWP→Markdown conversion) is pinned like a
+    source file, points at the page map that gives it PDF pages, and must not
+    claim a human review it did not get."""
+    for index, derived in enumerate(entry.get("derived_texts") or []):
+        where = f"current.{key}.derived_texts[{index}]"
+        if not isinstance(derived, dict):
+            fail(f"{where} must be an object")
+        missing = sorted({"id", "file", "file_sha256", "provenance", "verification_status",
+                          "page_source_id", "page_map"} - set(derived))
+        if missing:
+            fail(f"{where} missing required field(s): {', '.join(missing)}")
+        path = ROOT / derived["file"]
+        if not path.is_file():
+            fail(f"{where}.file does not exist: {derived['file']}")
+        actual = hashlib.sha256(path.read_bytes()).hexdigest()
+        if actual != str(derived["file_sha256"]).lower():
+            fail(f"{derived['file']} sha256 {actual[:12]}… does not match declared "
+                 f"{str(derived['file_sha256'])[:12]}…")
+        status = str(derived["verification_status"])
+        if "approved" in status or "not_human_reviewed" not in status:
+            fail(f"{where}.verification_status must say it is not human-reviewed and must not claim approval")
+        page_map = ROOT / derived["page_map"]
+        if not page_map.is_file():
+            fail(f"{where}.page_map does not exist: {derived['page_map']}")
+        payload = json.loads(page_map.read_text(encoding="utf-8"))
+        if payload.get("source_id") != derived["id"] or payload.get("source_sha256") != actual:
+            fail(f"{derived['page_map']} was not built from {derived['file']} as pinned; "
+                 "run scripts/build_manual_markdown_corpus.py")
+        if payload.get("page_source_file") != entry.get("file") or payload.get("page_source_id") != derived["page_source_id"]:
+            fail(f"{derived['page_map']} must map onto this edition's PDF {entry.get('file')}")
 
 
 def check_pending_editions(manifest: dict) -> int:

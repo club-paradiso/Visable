@@ -1,0 +1,5674 @@
+{
+  "generatedBy": "scripts/audit_manual_refs_markdown_2026_09.py",
+  "input": "audits/manual-ref-edition-2026-09/manual_ref_verification.json",
+  "markdownSources": {
+    "visa": "docs/source-manuals/2026-09/derived/visa_manual_260901.md",
+    "stay": "docs/source-manuals/2026-09/derived/stay_manual_260918.md"
+  },
+  "note": "Read-only re-check. Nothing in visa_data.json was changed. A match locates the cited wording on a 2026.9 PDF page via a page-mapped Markdown chunk; it is not a human review and does not by itself relabel a ref.",
+  "summary": {
+    "refs": 298,
+    "byOutcome": {
+      "matches_cited_page": 24,
+      "near_cited_page": 6,
+      "located_elsewhere": 40,
+      "only_in_unmapped_chunks": 2,
+      "not_found": 222,
+      "out_of_scope": 4
+    },
+    "byPreviousStatusAndOutcome": {
+      "new_anchor_missing/matches_cited_page": 18,
+      "new_anchor_missing/near_cited_page": 6,
+      "new_anchor_missing/not_found": 6,
+      "old_anchor_missing/located_elsewhere": 6,
+      "old_anchor_missing/matches_cited_page": 6,
+      "old_anchor_missing/not_found": 188,
+      "out_of_scope/out_of_scope": 4,
+      "page_unmapped/located_elsewhere": 28,
+      "page_unmapped/not_found": 12,
+      "page_unmapped/only_in_unmapped_chunks": 2,
+      "unpaged_source/located_elsewhere": 6,
+      "unpaged_source/not_found": 16
+    },
+    "distinctSections": 140
+  },
+  "refs": [
+    {
+      "record": "B-1",
+      "path": "0/subCodes/0/manualRefs/0",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 16",
+      "section": "사증면제(B-1) — 사증(비자)면제협정 체결국가 일람표",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        16
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21
+      ],
+      "outcome": "matches_cited_page",
+      "matchedPages": [
+        15,
+        16,
+        17
+      ]
+    },
+    {
+      "record": "B-1",
+      "path": "0/subCodes/1/manualRefs/0",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 16",
+      "section": "사증면제(B-1) — 사증(비자)면제협정 체결국가 일람표(협정 일시정지국 포함)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        16
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "B-1",
+      "path": "0/subcodes/0/manualRefs/0",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 16",
+      "section": "사증면제(B-1) — 사증(비자)면제협정 체결국가 일람표",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        16
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21
+      ],
+      "outcome": "matches_cited_page",
+      "matchedPages": [
+        15,
+        16,
+        17
+      ]
+    },
+    {
+      "record": "B-1",
+      "path": "0/subcodes/1/manualRefs/0",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 16",
+      "section": "사증면제(B-1) — 사증(비자)면제협정 체결국가 일람표(협정 일시정지국 포함)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        16
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "B-2",
+      "path": "1/subCodes/0/manualRefs/0",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 23",
+      "section": "관광통과(B-2) — 무사증입국 허가대상 국가 일람표",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        23
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [
+        2,
+        3
+      ],
+      "outcome": "located_elsewhere"
+    },
+    {
+      "record": "B-2",
+      "path": "1/subCodes/1/manualRefs/0",
+      "manualType": "law",
+      "manualVersion": "2026",
+      "sourceFile": null,
+      "pageRange": "제주특별법 제197조·제198조",
+      "section": "제주 무사증입국(B-2-2) — 관광·통과 목적 30일 무사증 입국",
+      "previousStatus": "out_of_scope",
+      "outcome": "out_of_scope"
+    },
+    {
+      "record": "B-2",
+      "path": "1/subcodes/0/manualRefs/0",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 23",
+      "section": "관광통과(B-2) — 무사증입국 허가대상 국가 일람표",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        23
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [
+        2,
+        3
+      ],
+      "outcome": "located_elsewhere"
+    },
+    {
+      "record": "B-2",
+      "path": "1/subcodes/1/manualRefs/0",
+      "manualType": "law",
+      "manualVersion": "2026",
+      "sourceFile": null,
+      "pageRange": "제주특별법 제197조·제198조",
+      "section": "제주 무사증입국(B-2-2) — 관광·통과 목적 30일 무사증 입국",
+      "previousStatus": "out_of_scope",
+      "outcome": "out_of_scope"
+    },
+    {
+      "record": "C-3",
+      "path": "2/subCodes/0/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 27",
+      "section": "단기방문(C-3) 자격 해당자 및 활동범위",
+      "previousStatus": "new_anchor_missing",
+      "expectedPages2026_9": [
+        27
+      ],
+      "expectedBasis": "crosswalk recorded by the PDF audit",
+      "markdownPages2026_9": [
+        26,
+        27
+      ],
+      "outcome": "matches_cited_page",
+      "matchedPages": [
+        26,
+        27
+      ]
+    },
+    {
+      "record": "C-3",
+      "path": "2/subCodes/0/manualRefs/1",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 41",
+      "section": "단기방문 복수사증 / 종전 단기상용(C-2)자격 포함 안내",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        41
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "C-3",
+      "path": "2/subCodes/0/manualRefs/2",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 18",
+      "section": "사증면제협정 일람 (재입국허가 면제 단서: C-2, D-7, D-8, D-9)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        18
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "C-3",
+      "path": "2/subCodes/12/manualRefs/0",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 35",
+      "section": "공관장 재량으로 발급할 수 있는 사증 — 유효기간 10년(체류기간 90일) 사증발급 대상 ⑥",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        35
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "C-3",
+      "path": "2/subcodes/0/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 27",
+      "section": "단기방문(C-3) 자격 해당자 및 활동범위",
+      "previousStatus": "new_anchor_missing",
+      "expectedPages2026_9": [
+        27
+      ],
+      "expectedBasis": "crosswalk recorded by the PDF audit",
+      "markdownPages2026_9": [
+        26,
+        27
+      ],
+      "outcome": "matches_cited_page",
+      "matchedPages": [
+        26,
+        27
+      ]
+    },
+    {
+      "record": "C-3",
+      "path": "2/subcodes/0/manualRefs/1",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 41",
+      "section": "단기방문 복수사증 / 종전 단기상용(C-2)자격 포함 안내",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        41
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "C-3",
+      "path": "2/subcodes/0/manualRefs/2",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 18",
+      "section": "사증면제협정 일람 (재입국허가 면제 단서: C-2, D-7, D-8, D-9)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        18
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "C-3",
+      "path": "2/subcodes/12/manualRefs/0",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 35",
+      "section": "공관장 재량으로 발급할 수 있는 사증 — 유효기간 10년(체류기간 90일) 사증발급 대상 ⑥",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        35
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "D-1",
+      "path": "4/subCodes/0/manualRefs/0",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 60",
+      "section": "문화예술(D-1) 활동범위 및 해당자",
+      "previousStatus": "new_anchor_missing",
+      "expectedPages2026_9": [
+        60
+      ],
+      "expectedBasis": "crosswalk recorded by the PDF audit",
+      "markdownPages2026_9": [
+        59,
+        60,
+        61
+      ],
+      "outcome": "matches_cited_page",
+      "matchedPages": [
+        59,
+        60,
+        61
+      ]
+    },
+    {
+      "record": "D-1",
+      "path": "4/subcodes/0/manualRefs/0",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 60",
+      "section": "문화예술(D-1) 활동범위 및 해당자",
+      "previousStatus": "new_anchor_missing",
+      "expectedPages2026_9": [
+        60
+      ],
+      "expectedBasis": "crosswalk recorded by the PDF audit",
+      "markdownPages2026_9": [
+        59,
+        60,
+        61
+      ],
+      "outcome": "matches_cited_page",
+      "matchedPages": [
+        59,
+        60,
+        61
+      ]
+    },
+    {
+      "record": "D-2",
+      "path": "5/subCodes/5/manualRefs/3",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 64",
+      "section": "(D-2-6)",
+      "previousStatus": "page_unmapped",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited old page could not be crosswalked by content",
+      "markdownPages2026_9": [
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        132,
+        133,
+        134,
+        135
+      ],
+      "outcome": "located_elsewhere"
+    },
+    {
+      "record": "D-2",
+      "path": "5/subCodes/7/manualRefs/3",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 64",
+      "section": "(D-2-8)",
+      "previousStatus": "page_unmapped",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited old page could not be crosswalked by content",
+      "markdownPages2026_9": [
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69
+      ],
+      "outcome": "located_elsewhere"
+    },
+    {
+      "record": "D-2",
+      "path": "5/subcodes/5/manualRefs/3",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 64",
+      "section": "(D-2-6)",
+      "previousStatus": "page_unmapped",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited old page could not be crosswalked by content",
+      "markdownPages2026_9": [
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        132,
+        133,
+        134,
+        135
+      ],
+      "outcome": "located_elsewhere"
+    },
+    {
+      "record": "D-2",
+      "path": "5/subcodes/7/manualRefs/3",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 64",
+      "section": "(D-2-8)",
+      "previousStatus": "page_unmapped",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited old page could not be crosswalked by content",
+      "markdownPages2026_9": [
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69
+      ],
+      "outcome": "located_elsewhere"
+    },
+    {
+      "record": "D-4",
+      "path": "7/subCodes/1/manualRefs/2",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 133",
+      "section": "연수(D-4-2), 사설 기관 연수",
+      "previousStatus": "page_unmapped",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited old page could not be crosswalked by content",
+      "markdownPages2026_9": [
+        132,
+        133,
+        134,
+        135
+      ],
+      "outcome": "located_elsewhere"
+    },
+    {
+      "record": "D-4",
+      "path": "7/subCodes/3/manualRefs/3",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 78",
+      "section": "3. 고등학교 이하 교육기관 유학생에 대한 일반연수(D-4-3) 자격",
+      "previousStatus": "page_unmapped",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited old page could not be crosswalked by content",
+      "markdownPages2026_9": [],
+      "outcome": "only_in_unmapped_chunks"
+    },
+    {
+      "record": "D-4",
+      "path": "7/subcodes/1/manualRefs/2",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 133",
+      "section": "연수(D-4-2), 사설 기관 연수",
+      "previousStatus": "page_unmapped",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited old page could not be crosswalked by content",
+      "markdownPages2026_9": [
+        132,
+        133,
+        134,
+        135
+      ],
+      "outcome": "located_elsewhere"
+    },
+    {
+      "record": "D-4",
+      "path": "7/subcodes/3/manualRefs/3",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 78",
+      "section": "3. 고등학교 이하 교육기관 유학생에 대한 일반연수(D-4-3) 자격",
+      "previousStatus": "page_unmapped",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited old page could not be crosswalked by content",
+      "markdownPages2026_9": [],
+      "outcome": "only_in_unmapped_chunks"
+    },
+    {
+      "record": "D-4-1",
+      "path": "8/procedures/extension/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "pp. 83-94",
+      "section": "일반연수(D-4) 중 한국어연수(D-4-1) 관련 체류절차",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "D-4-1",
+      "path": "8/procedures/registration/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "pp. 83-94",
+      "section": "일반연수(D-4) 중 한국어연수(D-4-1) 관련 체류절차",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "D-4-1",
+      "path": "8/procedures/partTimeWork/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "pp. 37-40",
+      "section": "시간제취업 활동 허가 (유학·어학연수 공통)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        37,
+        38,
+        39,
+        40
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "D-7",
+      "path": "9/subCodes/0/manualRefs/0",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 94",
+      "section": "주재(D-7) 활동범위 및 해당자 — 1. 외국기업 국내지사 등에서 주재활동",
+      "previousStatus": "new_anchor_missing",
+      "expectedPages2026_9": [
+        94
+      ],
+      "expectedBasis": "crosswalk recorded by the PDF audit",
+      "markdownPages2026_9": [
+        91,
+        92,
+        93,
+        94,
+        95,
+        96
+      ],
+      "outcome": "matches_cited_page",
+      "matchedPages": [
+        94
+      ]
+    },
+    {
+      "record": "D-7",
+      "path": "9/subCodes/1/manualRefs/0",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 94",
+      "section": "주재(D-7) 활동범위 및 해당자 — 2. 해외진출 기업 근무 외국인력 국내 본사 주재활동",
+      "previousStatus": "new_anchor_missing",
+      "expectedPages2026_9": [
+        94
+      ],
+      "expectedBasis": "crosswalk recorded by the PDF audit",
+      "markdownPages2026_9": [
+        91,
+        92,
+        93,
+        94,
+        95,
+        96
+      ],
+      "outcome": "matches_cited_page",
+      "matchedPages": [
+        94
+      ]
+    },
+    {
+      "record": "D-7",
+      "path": "9/subCodes/2/manualRefs/0",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 98",
+      "section": "주재(D-7) — 한·인도 CEPA 등 FTA 협정상 기업내 전근자(intra-corporate transferee)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        97,
+        98
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "D-7",
+      "path": "9/subCodes/3/manualRefs/0",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 98",
+      "section": "주재(D-7) — FTA 협정상 계약서비스 공급자/독립전문가(contractual service supplier)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        97,
+        98
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "D-7",
+      "path": "9/subcodes/0/manualRefs/0",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 94",
+      "section": "주재(D-7) 활동범위 및 해당자 — 1. 외국기업 국내지사 등에서 주재활동",
+      "previousStatus": "new_anchor_missing",
+      "expectedPages2026_9": [
+        94
+      ],
+      "expectedBasis": "crosswalk recorded by the PDF audit",
+      "markdownPages2026_9": [
+        91,
+        92,
+        93,
+        94,
+        95,
+        96
+      ],
+      "outcome": "matches_cited_page",
+      "matchedPages": [
+        94
+      ]
+    },
+    {
+      "record": "D-7",
+      "path": "9/subcodes/1/manualRefs/0",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 94",
+      "section": "주재(D-7) 활동범위 및 해당자 — 2. 해외진출 기업 근무 외국인력 국내 본사 주재활동",
+      "previousStatus": "new_anchor_missing",
+      "expectedPages2026_9": [
+        94
+      ],
+      "expectedBasis": "crosswalk recorded by the PDF audit",
+      "markdownPages2026_9": [
+        91,
+        92,
+        93,
+        94,
+        95,
+        96
+      ],
+      "outcome": "matches_cited_page",
+      "matchedPages": [
+        94
+      ]
+    },
+    {
+      "record": "D-7",
+      "path": "9/subcodes/2/manualRefs/0",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 98",
+      "section": "주재(D-7) — 한·인도 CEPA 등 FTA 협정상 기업내 전근자(intra-corporate transferee)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        97,
+        98
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "D-7",
+      "path": "9/subcodes/3/manualRefs/0",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 98",
+      "section": "주재(D-7) — FTA 협정상 계약서비스 공급자/독립전문가(contractual service supplier)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        97,
+        98
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "D-8",
+      "path": "10/subCodes/4/manualRefs/0",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 115",
+      "section": "기업투자(D-8) — FTA 협정상 기업내 전근자(intra-corporate transferee)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        115
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "D-8",
+      "path": "10/subcodes/4/manualRefs/0",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 115",
+      "section": "기업투자(D-8) — FTA 협정상 기업내 전근자(intra-corporate transferee)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        115
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "D-9",
+      "path": "11/subCodes/1/manualRefs/0",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 118",
+      "section": "무역경영(D-9) 활동범위 및 해당자 — 2. 수출설비(기계) 설치·운영·보수",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        118
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "D-9",
+      "path": "11/subCodes/2/manualRefs/0",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 118",
+      "section": "무역경영(D-9) 활동범위 및 해당자 — 3. 선박건조 및 산업설비 제작·감독",
+      "previousStatus": "new_anchor_missing",
+      "expectedPages2026_9": [
+        118
+      ],
+      "expectedBasis": "crosswalk recorded by the PDF audit",
+      "markdownPages2026_9": [
+        118,
+        119
+      ],
+      "outcome": "matches_cited_page",
+      "matchedPages": [
+        118,
+        119
+      ]
+    },
+    {
+      "record": "D-9",
+      "path": "11/subcodes/1/manualRefs/0",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 118",
+      "section": "무역경영(D-9) 활동범위 및 해당자 — 2. 수출설비(기계) 설치·운영·보수",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        118
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "D-9",
+      "path": "11/subcodes/2/manualRefs/0",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 118",
+      "section": "무역경영(D-9) 활동범위 및 해당자 — 3. 선박건조 및 산업설비 제작·감독",
+      "previousStatus": "new_anchor_missing",
+      "expectedPages2026_9": [
+        118
+      ],
+      "expectedBasis": "crosswalk recorded by the PDF audit",
+      "markdownPages2026_9": [
+        118,
+        119
+      ],
+      "outcome": "matches_cited_page",
+      "matchedPages": [
+        118,
+        119
+      ]
+    },
+    {
+      "record": "E-1",
+      "path": "13/procedures/workplaceChange/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 171",
+      "section": "교수(E-1) 근무처의 변경·추가 신고",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        171
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "E-2",
+      "path": "14/subCodes/2/manualRefs/0",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 146",
+      "section": "공관장 재량으로 발급할 수 있는 사증 (회화지도 E-2)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        146
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "E-2",
+      "path": "14/subcodes/2/manualRefs/0",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 146",
+      "section": "공관장 재량으로 발급할 수 있는 사증 (회화지도 E-2)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        146
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "E-6",
+      "path": "18/subCodes/1/manualRefs/2",
+      "manualType": "visa",
+      "manualVersion": "2026.7",
+      "sourceFile": "backend/data/sources/manuals/260731_visa_manual_extracted.txt",
+      "pageRange": "예술흥행(E-6) 사증발급인정서 발급대상",
+      "section": "호텔·유흥(E-6-2) 경력요건",
+      "previousStatus": "unpaged_source",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited page has no crosswalk (unpaged source or no page number)",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "E-6",
+      "path": "18/subcodes/1/manualRefs/2",
+      "manualType": "visa",
+      "manualVersion": "2026.7",
+      "sourceFile": "backend/data/sources/manuals/260731_visa_manual_extracted.txt",
+      "pageRange": "예술흥행(E-6) 사증발급인정서 발급대상",
+      "section": "호텔·유흥(E-6-2) 경력요건",
+      "previousStatus": "unpaged_source",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited page has no crosswalk (unpaged source or no page number)",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "E-7",
+      "path": "19/subCodes/1/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 233",
+      "section": "(E-7-2)",
+      "previousStatus": "page_unmapped",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited old page could not be crosswalked by content",
+      "markdownPages2026_9": [
+        213,
+        214,
+        229,
+        230,
+        231,
+        232,
+        233,
+        373,
+        374,
+        723,
+        771
+      ],
+      "outcome": "located_elsewhere"
+    },
+    {
+      "record": "E-7",
+      "path": "19/subCodes/1/manualRefs/3",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 185",
+      "section": "(E-7-2)",
+      "previousStatus": "page_unmapped",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited old page could not be crosswalked by content",
+      "markdownPages2026_9": [
+        170,
+        171,
+        172,
+        181,
+        182,
+        183,
+        184,
+        185
+      ],
+      "outcome": "located_elsewhere"
+    },
+    {
+      "record": "E-7",
+      "path": "19/subCodes/4/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 234",
+      "section": "(E-7-S)",
+      "previousStatus": "page_unmapped",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited old page could not be crosswalked by content",
+      "markdownPages2026_9": [
+        213,
+        214,
+        234,
+        235,
+        293,
+        294,
+        295
+      ],
+      "outcome": "located_elsewhere"
+    },
+    {
+      "record": "E-7",
+      "path": "19/subCodes/4/manualRefs/3",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 185",
+      "section": "(E-7-S)",
+      "previousStatus": "page_unmapped",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited old page could not be crosswalked by content",
+      "markdownPages2026_9": [
+        170,
+        171,
+        172,
+        185,
+        186,
+        187,
+        248,
+        249,
+        250
+      ],
+      "outcome": "located_elsewhere"
+    },
+    {
+      "record": "E-7",
+      "path": "19/subCodes/7/manualRefs/1",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 171",
+      "section": "E-7-91",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        171
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [
+        170,
+        171,
+        172
+      ],
+      "outcome": "matches_cited_page",
+      "matchedPages": [
+        170,
+        171,
+        172
+      ]
+    },
+    {
+      "record": "E-7",
+      "path": "19/subCodes/8/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 234",
+      "section": "가. 고소득자 => E-7-S1",
+      "previousStatus": "page_unmapped",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited old page could not be crosswalked by content",
+      "markdownPages2026_9": [
+        234,
+        235
+      ],
+      "outcome": "located_elsewhere"
+    },
+    {
+      "record": "E-7",
+      "path": "19/subCodes/8/manualRefs/2",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 185",
+      "section": "가. 고소득자 => E-7-S1",
+      "previousStatus": "page_unmapped",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited old page could not be crosswalked by content",
+      "markdownPages2026_9": [
+        185,
+        186,
+        187
+      ],
+      "outcome": "located_elsewhere"
+    },
+    {
+      "record": "E-7",
+      "path": "19/subCodes/9/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 234",
+      "section": "나. 첨단산업분야 종사(예정)자 => E-7-S2",
+      "previousStatus": "page_unmapped",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited old page could not be crosswalked by content",
+      "markdownPages2026_9": [
+        234,
+        235
+      ],
+      "outcome": "located_elsewhere"
+    },
+    {
+      "record": "E-7",
+      "path": "19/subCodes/9/manualRefs/2",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 185",
+      "section": "나. 첨단산업분야 종사(예정)자 => E-7-S2",
+      "previousStatus": "page_unmapped",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited old page could not be crosswalked by content",
+      "markdownPages2026_9": [
+        185,
+        186,
+        187
+      ],
+      "outcome": "located_elsewhere"
+    },
+    {
+      "record": "E-7",
+      "path": "19/subCodes/9/manualRefs/3",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 250",
+      "section": "❍ 첨단산업분야 종사 예정자(E-7-S2) : E-7 도입직종에 해당되지 않는 경우에도 E-7-S",
+      "previousStatus": "new_anchor_missing",
+      "expectedPages2026_9": [
+        250
+      ],
+      "expectedBasis": "crosswalk recorded by the PDF audit",
+      "markdownPages2026_9": [
+        248,
+        249,
+        250
+      ],
+      "outcome": "matches_cited_page",
+      "matchedPages": [
+        249,
+        250
+      ]
+    },
+    {
+      "record": "E-7",
+      "path": "19/subCodes/11/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 214",
+      "section": "E-7 적용대상 및 도입기준 등 (신 약호 분류기준 표)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        214
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "E-7",
+      "path": "19/subCodes/11/manualRefs/1",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 171",
+      "section": "E-7 적용대상 및 도입기준 등 (신 약호 분류기준 표)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        171
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "E-7",
+      "path": "19/subCodes/12/manualRefs/0",
+      "manualType": "special_program",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260629_kcore_manual_readable.txt",
+      "pageRange": "Ⅲ-2 · Ⅳ",
+      "section": "[취업 시] K-CORE 자격 부여(E-7-M) — 체류자격 변경 / 행정사항(세부약호·직종코드 9991 신설)",
+      "previousStatus": "out_of_scope",
+      "outcome": "out_of_scope"
+    },
+    {
+      "record": "E-7",
+      "path": "19/subcodes/1/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 233",
+      "section": "(E-7-2)",
+      "previousStatus": "page_unmapped",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited old page could not be crosswalked by content",
+      "markdownPages2026_9": [
+        213,
+        214,
+        229,
+        230,
+        231,
+        232,
+        233,
+        373,
+        374,
+        723,
+        771
+      ],
+      "outcome": "located_elsewhere"
+    },
+    {
+      "record": "E-7",
+      "path": "19/subcodes/1/manualRefs/3",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 185",
+      "section": "(E-7-2)",
+      "previousStatus": "page_unmapped",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited old page could not be crosswalked by content",
+      "markdownPages2026_9": [
+        170,
+        171,
+        172,
+        181,
+        182,
+        183,
+        184,
+        185
+      ],
+      "outcome": "located_elsewhere"
+    },
+    {
+      "record": "E-7",
+      "path": "19/subcodes/4/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 234",
+      "section": "(E-7-S)",
+      "previousStatus": "page_unmapped",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited old page could not be crosswalked by content",
+      "markdownPages2026_9": [
+        213,
+        214,
+        234,
+        235,
+        293,
+        294,
+        295
+      ],
+      "outcome": "located_elsewhere"
+    },
+    {
+      "record": "E-7",
+      "path": "19/subcodes/4/manualRefs/3",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 185",
+      "section": "(E-7-S)",
+      "previousStatus": "page_unmapped",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited old page could not be crosswalked by content",
+      "markdownPages2026_9": [
+        170,
+        171,
+        172,
+        185,
+        186,
+        187,
+        248,
+        249,
+        250
+      ],
+      "outcome": "located_elsewhere"
+    },
+    {
+      "record": "E-7",
+      "path": "19/subcodes/7/manualRefs/1",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 171",
+      "section": "E-7-91",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        171
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [
+        170,
+        171,
+        172
+      ],
+      "outcome": "matches_cited_page",
+      "matchedPages": [
+        170,
+        171,
+        172
+      ]
+    },
+    {
+      "record": "E-7",
+      "path": "19/subcodes/8/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 234",
+      "section": "가. 고소득자 => E-7-S1",
+      "previousStatus": "page_unmapped",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited old page could not be crosswalked by content",
+      "markdownPages2026_9": [
+        234,
+        235
+      ],
+      "outcome": "located_elsewhere"
+    },
+    {
+      "record": "E-7",
+      "path": "19/subcodes/8/manualRefs/2",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 185",
+      "section": "가. 고소득자 => E-7-S1",
+      "previousStatus": "page_unmapped",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited old page could not be crosswalked by content",
+      "markdownPages2026_9": [
+        185,
+        186,
+        187
+      ],
+      "outcome": "located_elsewhere"
+    },
+    {
+      "record": "E-7",
+      "path": "19/subcodes/9/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 234",
+      "section": "나. 첨단산업분야 종사(예정)자 => E-7-S2",
+      "previousStatus": "page_unmapped",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited old page could not be crosswalked by content",
+      "markdownPages2026_9": [
+        234,
+        235
+      ],
+      "outcome": "located_elsewhere"
+    },
+    {
+      "record": "E-7",
+      "path": "19/subcodes/9/manualRefs/2",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 185",
+      "section": "나. 첨단산업분야 종사(예정)자 => E-7-S2",
+      "previousStatus": "page_unmapped",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited old page could not be crosswalked by content",
+      "markdownPages2026_9": [
+        185,
+        186,
+        187
+      ],
+      "outcome": "located_elsewhere"
+    },
+    {
+      "record": "E-7",
+      "path": "19/subcodes/9/manualRefs/3",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 250",
+      "section": "❍ 첨단산업분야 종사 예정자(E-7-S2) : E-7 도입직종에 해당되지 않는 경우에도 E-7-S",
+      "previousStatus": "new_anchor_missing",
+      "expectedPages2026_9": [
+        250
+      ],
+      "expectedBasis": "crosswalk recorded by the PDF audit",
+      "markdownPages2026_9": [
+        248,
+        249,
+        250
+      ],
+      "outcome": "matches_cited_page",
+      "matchedPages": [
+        249,
+        250
+      ]
+    },
+    {
+      "record": "E-7",
+      "path": "19/subcodes/11/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 214",
+      "section": "E-7 적용대상 및 도입기준 등 (신 약호 분류기준 표)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        214
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "E-7",
+      "path": "19/subcodes/11/manualRefs/1",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 171",
+      "section": "E-7 적용대상 및 도입기준 등 (신 약호 분류기준 표)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        171
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "E-7",
+      "path": "19/subcodes/12/manualRefs/0",
+      "manualType": "special_program",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260629_kcore_manual_readable.txt",
+      "pageRange": "Ⅲ-2 · Ⅳ",
+      "section": "[취업 시] K-CORE 자격 부여(E-7-M) — 체류자격 변경 / 행정사항(세부약호·직종코드 9991 신설)",
+      "previousStatus": "out_of_scope",
+      "outcome": "out_of_scope"
+    },
+    {
+      "record": "E-9",
+      "path": "21/subCodes/7/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 331",
+      "section": "비전문취업(E-9) 외국인등록 제출서류",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        331
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "E-9",
+      "path": "21/subCodes/8/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 330",
+      "section": "비전문취업(E-9) 체류기간 연장허가 — 3. 구직신청자 특례 가. 대상",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        330
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "E-9",
+      "path": "21/subCodes/8/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 331",
+      "section": "구직신청자 특례 — 나. 허가기간 / 다. 제출서류",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        331
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "E-9",
+      "path": "21/subcodes/7/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 331",
+      "section": "비전문취업(E-9) 외국인등록 제출서류",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        331
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "E-9",
+      "path": "21/subcodes/8/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 330",
+      "section": "비전문취업(E-9) 체류기간 연장허가 — 3. 구직신청자 특례 가. 대상",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        330
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "E-9",
+      "path": "21/subcodes/8/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 331",
+      "section": "구직신청자 특례 — 나. 허가기간 / 다. 제출서류",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        331
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "E-10",
+      "path": "22/procedures/workplaceChange/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "pp. 337-341",
+      "section": "선원취업(E-10) 근무처의 변경·추가",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        337,
+        338,
+        339,
+        340,
+        341
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-1",
+      "path": "23/subCodes/2/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 350",
+      "section": "(F-1-5) 」 준용",
+      "previousStatus": "new_anchor_missing",
+      "expectedPages2026_9": [
+        352
+      ],
+      "expectedBasis": "crosswalk recorded by the PDF audit",
+      "markdownPages2026_9": [
+        350,
+        351,
+        352,
+        353,
+        358,
+        359,
+        360,
+        361,
+        362
+      ],
+      "outcome": "matches_cited_page",
+      "matchedPages": [
+        351,
+        352,
+        353
+      ]
+    },
+    {
+      "record": "F-1",
+      "path": "23/subCodes/5/manualRefs/1",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 309",
+      "section": "3. 주한 외국공관원의 가사보조인(F-1-21)",
+      "previousStatus": "new_anchor_missing",
+      "expectedPages2026_9": [
+        310
+      ],
+      "expectedBasis": "crosswalk recorded by the PDF audit",
+      "markdownPages2026_9": [
+        308,
+        309,
+        310,
+        311
+      ],
+      "outcome": "matches_cited_page",
+      "matchedPages": [
+        309,
+        310,
+        311
+      ]
+    },
+    {
+      "record": "F-1",
+      "path": "23/subCodes/9/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 359",
+      "section": "14. 디지털노마드(워케이션) 비자(F-1-D)",
+      "previousStatus": "page_unmapped",
+      "expectedPages2026_9": [
+        360,
+        361,
+        362
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-1",
+      "path": "23/subCodes/11/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 358",
+      "section": "13. 결혼이민자의 전혼관계 출생 자녀(F-1-52)",
+      "previousStatus": "new_anchor_missing",
+      "expectedPages2026_9": [
+        360,
+        361,
+        362,
+        363
+      ],
+      "expectedBasis": "crosswalk recorded by the PDF audit",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-1",
+      "path": "23/subCodes/12/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 368",
+      "section": "거주(F-2-2, 국민의 미성년자녀) 체류자격 변경허가 — 나. 제출서류",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        370
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-1",
+      "path": "23/subCodes/13/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 492",
+      "section": "가사정리(F-1-6) 체류자격 변경허가",
+      "previousStatus": "page_unmapped",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited old page could not be crosswalked by content",
+      "markdownPages2026_9": [
+        496,
+        497,
+        498,
+        499
+      ],
+      "outcome": "located_elsewhere"
+    },
+    {
+      "record": "F-1",
+      "path": "23/subCodes/15/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 412",
+      "section": "3) 점수제 우수인재의 배우자 및 미성년 자녀로서 방문동거자(F-1-12)",
+      "previousStatus": "new_anchor_missing",
+      "expectedPages2026_9": [
+        414
+      ],
+      "expectedBasis": "crosswalk recorded by the PDF audit",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-1",
+      "path": "23/subCodes/15/manualRefs/2",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 357",
+      "section": "11. 점수제 우수인재(F-2-7)의 배우자 또는 미성년자녀 - 다. 제출서류",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        359
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-1",
+      "path": "23/subCodes/16/manualRefs/0",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 307",
+      "section": "사증발급인정서 발급대상 - 1. 우수인재, 투자자 및 유학생 부모(F-1-15)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        308
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-1",
+      "path": "23/subCodes/17/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 356",
+      "section": "체류기간 연장허가 — 10. 귀화자의 외국국적 부모 등(F-1-28)에 대한 체류허가 기준",
+      "previousStatus": "new_anchor_missing",
+      "expectedPages2026_9": [
+        358
+      ],
+      "expectedBasis": "crosswalk recorded by the PDF audit",
+      "markdownPages2026_9": [
+        358,
+        359,
+        360,
+        361,
+        362
+      ],
+      "outcome": "near_cited_page",
+      "matchedPages": [
+        358,
+        359,
+        360,
+        361,
+        362
+      ]
+    },
+    {
+      "record": "F-1",
+      "path": "23/subCodes/18/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.7",
+      "sourceFile": "backend/data/sources/manuals/260731_stay_manual_extracted.txt",
+      "pageRange": "p. 351",
+      "section": "11. 국제 입양 외국인(국내로 입양 아동, F-1-51)에 대한 체류자격 변경허가",
+      "previousStatus": "unpaged_source",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited page has no crosswalk (unpaged source or no page number)",
+      "markdownPages2026_9": [
+        350,
+        351,
+        352,
+        353
+      ],
+      "outcome": "located_elsewhere"
+    },
+    {
+      "record": "F-1",
+      "path": "23/subCodes/18/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.7",
+      "sourceFile": "backend/data/sources/manuals/260731_stay_manual_extracted.txt",
+      "pageRange": "p. 352",
+      "section": "다. 제출 서류 (F-1-51)",
+      "previousStatus": "unpaged_source",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited page has no crosswalk (unpaged source or no page number)",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-1",
+      "path": "23/subCodes/18/manualRefs/2",
+      "manualType": "visa",
+      "manualVersion": "2026.7",
+      "sourceFile": "backend/data/sources/manuals/260731_visa_manual_extracted.txt",
+      "pageRange": "p. 306",
+      "section": "9. 국제 입양 외국인(국내로 입양 아동, F-1-51)에 대한 사증발급",
+      "previousStatus": "unpaged_source",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited page has no crosswalk (unpaged source or no page number)",
+      "markdownPages2026_9": [
+        305,
+        306,
+        307
+      ],
+      "outcome": "located_elsewhere"
+    },
+    {
+      "record": "F-1",
+      "path": "23/subCodes/19/manualRefs/1",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 408",
+      "section": "외국국적동포가족 동반(F-3) 및 방문동거(F-1) 사증발급 및 체류 세부절차",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        409
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-1",
+      "path": "23/procedures/statusChange/variants/4/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.7",
+      "sourceFile": "backend/data/sources/manuals/260731_stay_manual_extracted.txt",
+      "pageRange": "p. 351",
+      "section": "11. 국제 입양 외국인(국내로 입양 아동, F-1-51)에 대한 체류자격 변경허가",
+      "previousStatus": "unpaged_source",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited page has no crosswalk (unpaged source or no page number)",
+      "markdownPages2026_9": [
+        350,
+        351,
+        352,
+        353
+      ],
+      "outcome": "located_elsewhere"
+    },
+    {
+      "record": "F-1",
+      "path": "23/procedures/extension/variants/0/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 359",
+      "section": "12. 자녀양육 지원 등 목적으로 입국한 결혼이민자의 부모 등 가족(F-1-5) - 나. 체류기간 연장",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        360,
+        361,
+        362
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-1",
+      "path": "23/procedures/extension/variants/1/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.7",
+      "sourceFile": "backend/data/sources/manuals/260731_stay_manual_extracted.txt",
+      "pageRange": "방문동거(F-1) 체류기간 연장허가 장",
+      "section": "13. 국제 입양 외국인(국내로 입양 아동, F-1-51)",
+      "previousStatus": "unpaged_source",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited page has no crosswalk (unpaged source or no page number)",
+      "markdownPages2026_9": [
+        360,
+        361,
+        362,
+        363
+      ],
+      "outcome": "located_elsewhere"
+    },
+    {
+      "record": "F-1",
+      "path": "23/subcodes/2/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 350",
+      "section": "(F-1-5) 」 준용",
+      "previousStatus": "new_anchor_missing",
+      "expectedPages2026_9": [
+        352
+      ],
+      "expectedBasis": "crosswalk recorded by the PDF audit",
+      "markdownPages2026_9": [
+        350,
+        351,
+        352,
+        353,
+        358,
+        359,
+        360,
+        361,
+        362
+      ],
+      "outcome": "matches_cited_page",
+      "matchedPages": [
+        351,
+        352,
+        353
+      ]
+    },
+    {
+      "record": "F-1",
+      "path": "23/subcodes/5/manualRefs/1",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 309",
+      "section": "3. 주한 외국공관원의 가사보조인(F-1-21)",
+      "previousStatus": "new_anchor_missing",
+      "expectedPages2026_9": [
+        310
+      ],
+      "expectedBasis": "crosswalk recorded by the PDF audit",
+      "markdownPages2026_9": [
+        308,
+        309,
+        310,
+        311
+      ],
+      "outcome": "matches_cited_page",
+      "matchedPages": [
+        309,
+        310,
+        311
+      ]
+    },
+    {
+      "record": "F-1",
+      "path": "23/subcodes/9/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 359",
+      "section": "14. 디지털노마드(워케이션) 비자(F-1-D)",
+      "previousStatus": "page_unmapped",
+      "expectedPages2026_9": [
+        360,
+        361,
+        362
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-1",
+      "path": "23/subcodes/11/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 358",
+      "section": "13. 결혼이민자의 전혼관계 출생 자녀(F-1-52)",
+      "previousStatus": "new_anchor_missing",
+      "expectedPages2026_9": [
+        360,
+        361,
+        362,
+        363
+      ],
+      "expectedBasis": "crosswalk recorded by the PDF audit",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-1",
+      "path": "23/subcodes/12/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 368",
+      "section": "거주(F-2-2, 국민의 미성년자녀) 체류자격 변경허가 — 나. 제출서류",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        370
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-1",
+      "path": "23/subcodes/13/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 492",
+      "section": "가사정리(F-1-6) 체류자격 변경허가",
+      "previousStatus": "page_unmapped",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited old page could not be crosswalked by content",
+      "markdownPages2026_9": [
+        496,
+        497,
+        498,
+        499
+      ],
+      "outcome": "located_elsewhere"
+    },
+    {
+      "record": "F-1",
+      "path": "23/subcodes/15/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 412",
+      "section": "3) 점수제 우수인재의 배우자 및 미성년 자녀로서 방문동거자(F-1-12)",
+      "previousStatus": "new_anchor_missing",
+      "expectedPages2026_9": [
+        414
+      ],
+      "expectedBasis": "crosswalk recorded by the PDF audit",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-1",
+      "path": "23/subcodes/15/manualRefs/2",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 357",
+      "section": "11. 점수제 우수인재(F-2-7)의 배우자 또는 미성년자녀 - 다. 제출서류",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        359
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-1",
+      "path": "23/subcodes/16/manualRefs/0",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 307",
+      "section": "사증발급인정서 발급대상 - 1. 우수인재, 투자자 및 유학생 부모(F-1-15)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        308
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-1",
+      "path": "23/subcodes/17/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 356",
+      "section": "체류기간 연장허가 — 10. 귀화자의 외국국적 부모 등(F-1-28)에 대한 체류허가 기준",
+      "previousStatus": "new_anchor_missing",
+      "expectedPages2026_9": [
+        358
+      ],
+      "expectedBasis": "crosswalk recorded by the PDF audit",
+      "markdownPages2026_9": [
+        358,
+        359,
+        360,
+        361,
+        362
+      ],
+      "outcome": "near_cited_page",
+      "matchedPages": [
+        358,
+        359,
+        360,
+        361,
+        362
+      ]
+    },
+    {
+      "record": "F-1",
+      "path": "23/subcodes/18/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.7",
+      "sourceFile": "backend/data/sources/manuals/260731_stay_manual_extracted.txt",
+      "pageRange": "p. 351",
+      "section": "11. 국제 입양 외국인(국내로 입양 아동, F-1-51)에 대한 체류자격 변경허가",
+      "previousStatus": "unpaged_source",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited page has no crosswalk (unpaged source or no page number)",
+      "markdownPages2026_9": [
+        350,
+        351,
+        352,
+        353
+      ],
+      "outcome": "located_elsewhere"
+    },
+    {
+      "record": "F-1",
+      "path": "23/subcodes/18/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.7",
+      "sourceFile": "backend/data/sources/manuals/260731_stay_manual_extracted.txt",
+      "pageRange": "p. 352",
+      "section": "다. 제출 서류 (F-1-51)",
+      "previousStatus": "unpaged_source",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited page has no crosswalk (unpaged source or no page number)",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-1",
+      "path": "23/subcodes/18/manualRefs/2",
+      "manualType": "visa",
+      "manualVersion": "2026.7",
+      "sourceFile": "backend/data/sources/manuals/260731_visa_manual_extracted.txt",
+      "pageRange": "p. 306",
+      "section": "9. 국제 입양 외국인(국내로 입양 아동, F-1-51)에 대한 사증발급",
+      "previousStatus": "unpaged_source",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited page has no crosswalk (unpaged source or no page number)",
+      "markdownPages2026_9": [
+        305,
+        306,
+        307
+      ],
+      "outcome": "located_elsewhere"
+    },
+    {
+      "record": "F-1",
+      "path": "23/subcodes/19/manualRefs/1",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 408",
+      "section": "외국국적동포가족 동반(F-3) 및 방문동거(F-1) 사증발급 및 체류 세부절차",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        409
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-2",
+      "path": "24/subCodes/4/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 677",
+      "section": "□ 최우수인재 거주(F-2-T)",
+      "previousStatus": "page_unmapped",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited old page could not be crosswalked by content",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-2",
+      "path": "24/subCodes/4/manualRefs/1",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 454",
+      "section": "□ 최우수인재 거주(F-2-T)",
+      "previousStatus": "page_unmapped",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited old page could not be crosswalked by content",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-2",
+      "path": "24/subCodes/10/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 499",
+      "section": "재입국허가 — 재입국허가 면제 / 복수 재입국허가",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        504
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-2",
+      "path": "24/subCodes/11/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 410",
+      "section": "체류기간 연장허가 — 거주(F-2) 체류기간연장 첨부서류 (난민인정자 F-2-4)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        412
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-2",
+      "path": "24/subCodes/12/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 410",
+      "section": "체류기간 연장허가 — 제출서류 표 (고액투자자(F-2-5))",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        412
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-2",
+      "path": "24/subCodes/13/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 420",
+      "section": "거주(F-2) 체류기간 연장 심사 기준 - 연간소득",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        422
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-2",
+      "path": "24/subCodes/14/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 499",
+      "section": "재입국허가 — 재입국허가 면제 / 복수 재입국허가",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        504
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-2",
+      "path": "24/subCodes/16/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 386",
+      "section": "거주(F-2)자격 변경 신청대상 — 공익사업투자 외국인의 거주(F-2) 체류자격변경 등 관리기준",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        388
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [
+        386,
+        387,
+        388
+      ],
+      "outcome": "matches_cited_page",
+      "matchedPages": [
+        387,
+        388
+      ]
+    },
+    {
+      "record": "F-2",
+      "path": "24/subCodes/17/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 388",
+      "section": "8. 대한민국에 특별한 기여를 했거나 공익 증진에 이바지한(F-2-16) 체류자격 변경허가 - 가. 신청대상",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        390
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-2",
+      "path": "24/subCodes/17/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 389",
+      "section": "나. 허가요건 (국가 독립·발전, 국제관계, 사회·복지·고용, 국가안전·사회질서, 기타분야 기여)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        391
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-2",
+      "path": "24/subCodes/17/manualRefs/2",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 391",
+      "section": "라. 제출서류 (공통서류 및 추가서류)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        393
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-2",
+      "path": "24/subCodes/18/manualRefs/0",
+      "manualType": "visa",
+      "manualVersion": "2026.7",
+      "sourceFile": "docs/source-manuals/2026-07-31/extracted/full_text/visa_manual_260731.txt",
+      "pageRange": null,
+      "section": "톱티어 비자(D-10-T, E-7-T, F-2-T, F-5-T) - 동반 가족 등",
+      "previousStatus": "unpaged_source",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited page has no crosswalk (unpaged source or no page number)",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-2",
+      "path": "24/subcodes/4/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 677",
+      "section": "□ 최우수인재 거주(F-2-T)",
+      "previousStatus": "page_unmapped",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited old page could not be crosswalked by content",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-2",
+      "path": "24/subcodes/4/manualRefs/1",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 454",
+      "section": "□ 최우수인재 거주(F-2-T)",
+      "previousStatus": "page_unmapped",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited old page could not be crosswalked by content",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-2",
+      "path": "24/subcodes/10/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 499",
+      "section": "재입국허가 — 재입국허가 면제 / 복수 재입국허가",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        504
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-2",
+      "path": "24/subcodes/11/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 410",
+      "section": "체류기간 연장허가 — 거주(F-2) 체류기간연장 첨부서류 (난민인정자 F-2-4)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        412
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-2",
+      "path": "24/subcodes/12/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 410",
+      "section": "체류기간 연장허가 — 제출서류 표 (고액투자자(F-2-5))",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        412
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-2",
+      "path": "24/subcodes/13/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 420",
+      "section": "거주(F-2) 체류기간 연장 심사 기준 - 연간소득",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        422
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-2",
+      "path": "24/subcodes/14/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 499",
+      "section": "재입국허가 — 재입국허가 면제 / 복수 재입국허가",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        504
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-2",
+      "path": "24/subcodes/16/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 386",
+      "section": "거주(F-2)자격 변경 신청대상 — 공익사업투자 외국인의 거주(F-2) 체류자격변경 등 관리기준",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        388
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [
+        386,
+        387,
+        388
+      ],
+      "outcome": "matches_cited_page",
+      "matchedPages": [
+        387,
+        388
+      ]
+    },
+    {
+      "record": "F-2",
+      "path": "24/subcodes/17/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 388",
+      "section": "8. 대한민국에 특별한 기여를 했거나 공익 증진에 이바지한(F-2-16) 체류자격 변경허가 - 가. 신청대상",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        390
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-2",
+      "path": "24/subcodes/17/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 389",
+      "section": "나. 허가요건 (국가 독립·발전, 국제관계, 사회·복지·고용, 국가안전·사회질서, 기타분야 기여)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        391
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-2",
+      "path": "24/subcodes/17/manualRefs/2",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 391",
+      "section": "라. 제출서류 (공통서류 및 추가서류)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        393
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-2",
+      "path": "24/subcodes/18/manualRefs/0",
+      "manualType": "visa",
+      "manualVersion": "2026.7",
+      "sourceFile": "docs/source-manuals/2026-07-31/extracted/full_text/visa_manual_260731.txt",
+      "pageRange": null,
+      "section": "톱티어 비자(D-10-T, E-7-T, F-2-T, F-5-T) - 동반 가족 등",
+      "previousStatus": "unpaged_source",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited page has no crosswalk (unpaged source or no page number)",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-3",
+      "path": "25/subCodes/0/manualRefs/0",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 315",
+      "section": "동반(F-3) 활동범위 및 해당자",
+      "previousStatus": "new_anchor_missing",
+      "expectedPages2026_9": [
+        316
+      ],
+      "expectedBasis": "crosswalk recorded by the PDF audit",
+      "markdownPages2026_9": [
+        314,
+        315,
+        316,
+        317
+      ],
+      "outcome": "matches_cited_page",
+      "matchedPages": [
+        316,
+        317
+      ]
+    },
+    {
+      "record": "F-3",
+      "path": "25/subCodes/1/manualRefs/0",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 315",
+      "section": "동반(F-3) 활동범위 및 해당자 — 동반가족 소득요건(2025.7.1. 개편)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        316
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-3",
+      "path": "25/subCodes/2/manualRefs/0",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 315",
+      "section": "동반(F-3) 활동범위 및 해당자 — 소득요건 면제 대상",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        316
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-3",
+      "path": "25/subCodes/3/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 401",
+      "section": "동반가족 체류 관리 - 동반(F-3-18) 자격 부여",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        403
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-3",
+      "path": "25/subCodes/6/manualRefs/0",
+      "manualType": "visa",
+      "manualVersion": "2026.7",
+      "sourceFile": "docs/source-manuals/2026-07-31/extracted/full_text/visa_manual_260731.txt",
+      "pageRange": null,
+      "section": "톱티어 비자(D-10-T, E-7-T, F-2-T, F-5-T) - 동반 가족 등",
+      "previousStatus": "unpaged_source",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited page has no crosswalk (unpaged source or no page number)",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-3",
+      "path": "25/subCodes/7/manualRefs/0",
+      "manualType": "visa",
+      "manualVersion": "2026.7",
+      "sourceFile": "docs/source-manuals/2026-07-31/extracted/full_text/visa_manual_260731.txt",
+      "pageRange": null,
+      "section": "톱티어 비자(D-10-T, E-7-T, F-2-T, F-5-T) - 동반 가족 등",
+      "previousStatus": "unpaged_source",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited page has no crosswalk (unpaged source or no page number)",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-3",
+      "path": "25/subcodes/0/manualRefs/0",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 315",
+      "section": "동반(F-3) 활동범위 및 해당자",
+      "previousStatus": "new_anchor_missing",
+      "expectedPages2026_9": [
+        316
+      ],
+      "expectedBasis": "crosswalk recorded by the PDF audit",
+      "markdownPages2026_9": [
+        314,
+        315,
+        316,
+        317
+      ],
+      "outcome": "matches_cited_page",
+      "matchedPages": [
+        316,
+        317
+      ]
+    },
+    {
+      "record": "F-3",
+      "path": "25/subcodes/1/manualRefs/0",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 315",
+      "section": "동반(F-3) 활동범위 및 해당자 — 동반가족 소득요건(2025.7.1. 개편)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        316
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-3",
+      "path": "25/subcodes/2/manualRefs/0",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 315",
+      "section": "동반(F-3) 활동범위 및 해당자 — 소득요건 면제 대상",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        316
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-3",
+      "path": "25/subcodes/3/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 401",
+      "section": "동반가족 체류 관리 - 동반(F-3-18) 자격 부여",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        403
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-3",
+      "path": "25/subcodes/6/manualRefs/0",
+      "manualType": "visa",
+      "manualVersion": "2026.7",
+      "sourceFile": "docs/source-manuals/2026-07-31/extracted/full_text/visa_manual_260731.txt",
+      "pageRange": null,
+      "section": "톱티어 비자(D-10-T, E-7-T, F-2-T, F-5-T) - 동반 가족 등",
+      "previousStatus": "unpaged_source",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited page has no crosswalk (unpaged source or no page number)",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-3",
+      "path": "25/subcodes/7/manualRefs/0",
+      "manualType": "visa",
+      "manualVersion": "2026.7",
+      "sourceFile": "docs/source-manuals/2026-07-31/extracted/full_text/visa_manual_260731.txt",
+      "pageRange": null,
+      "section": "톱티어 비자(D-10-T, E-7-T, F-2-T, F-5-T) - 동반 가족 등",
+      "previousStatus": "unpaged_source",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited page has no crosswalk (unpaged source or no page number)",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-4",
+      "path": "26/subCodes/13/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 532",
+      "section": "재외동포(F-4) 자격 변경 절차 / 세부대상",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        537
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-4",
+      "path": "26/subCodes/14/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 532",
+      "section": "재외동포(F-4) 사증발급 세부대상 및 자격 변경 절차",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        537
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-4",
+      "path": "26/procedures/extension/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "pp. 529-579",
+      "section": "알기쉬운 외국국적동포 업무 매뉴얼: 재외동포(F-4) 사증·체류관리",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        534,
+        535,
+        536,
+        537,
+        538,
+        539,
+        540,
+        541,
+        542,
+        543,
+        544,
+        545,
+        546,
+        547,
+        548,
+        549,
+        550,
+        551,
+        552,
+        553,
+        554,
+        555,
+        556,
+        557,
+        558,
+        559,
+        560,
+        561,
+        562,
+        563,
+        564,
+        565,
+        566,
+        567,
+        568,
+        569,
+        570,
+        571,
+        572,
+        573,
+        574,
+        575,
+        576,
+        577
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-4",
+      "path": "26/procedures/extension/variants/0/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "pp. 529-579",
+      "section": "알기쉬운 외국국적동포 업무 매뉴얼: 재외동포(F-4) 사증·체류관리",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        534,
+        535,
+        536,
+        537,
+        538,
+        539,
+        540,
+        541,
+        542,
+        543,
+        544,
+        545,
+        546,
+        547,
+        548,
+        549,
+        550,
+        551,
+        552,
+        553,
+        554,
+        555,
+        556,
+        557,
+        558,
+        559,
+        560,
+        561,
+        562,
+        563,
+        564,
+        565,
+        566,
+        567,
+        568,
+        569,
+        570,
+        571,
+        572,
+        573,
+        574,
+        575,
+        576,
+        577
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-4",
+      "path": "26/procedures/registration/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "pp. 529-579",
+      "section": "알기쉬운 외국국적동포 업무 매뉴얼: 재외동포(F-4) 사증·체류관리",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        534,
+        535,
+        536,
+        537,
+        538,
+        539,
+        540,
+        541,
+        542,
+        543,
+        544,
+        545,
+        546,
+        547,
+        548,
+        549,
+        550,
+        551,
+        552,
+        553,
+        554,
+        555,
+        556,
+        557,
+        558,
+        559,
+        560,
+        561,
+        562,
+        563,
+        564,
+        565,
+        566,
+        567,
+        568,
+        569,
+        570,
+        571,
+        572,
+        573,
+        574,
+        575,
+        576,
+        577
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-4",
+      "path": "26/procedures/registration/variants/0/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "pp. 529-579",
+      "section": "알기쉬운 외국국적동포 업무 매뉴얼: 재외동포(F-4) 사증·체류관리",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        534,
+        535,
+        536,
+        537,
+        538,
+        539,
+        540,
+        541,
+        542,
+        543,
+        544,
+        545,
+        546,
+        547,
+        548,
+        549,
+        550,
+        551,
+        552,
+        553,
+        554,
+        555,
+        556,
+        557,
+        558,
+        559,
+        560,
+        561,
+        562,
+        563,
+        564,
+        565,
+        566,
+        567,
+        568,
+        569,
+        570,
+        571,
+        572,
+        573,
+        574,
+        575,
+        576,
+        577
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-4",
+      "path": "26/procedures/statusChange/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "pp. 529-579",
+      "section": "알기쉬운 외국국적동포 업무 매뉴얼: 재외동포(F-4) 사증·체류관리",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        534,
+        535,
+        536,
+        537,
+        538,
+        539,
+        540,
+        541,
+        542,
+        543,
+        544,
+        545,
+        546,
+        547,
+        548,
+        549,
+        550,
+        551,
+        552,
+        553,
+        554,
+        555,
+        556,
+        557,
+        558,
+        559,
+        560,
+        561,
+        562,
+        563,
+        564,
+        565,
+        566,
+        567,
+        568,
+        569,
+        570,
+        571,
+        572,
+        573,
+        574,
+        575,
+        576,
+        577
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-4",
+      "path": "26/procedures/statusChange/variants/0/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "pp. 529-579",
+      "section": "알기쉬운 외국국적동포 업무 매뉴얼: 재외동포(F-4) 사증·체류관리",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        534,
+        535,
+        536,
+        537,
+        538,
+        539,
+        540,
+        541,
+        542,
+        543,
+        544,
+        545,
+        546,
+        547,
+        548,
+        549,
+        550,
+        551,
+        552,
+        553,
+        554,
+        555,
+        556,
+        557,
+        558,
+        559,
+        560,
+        561,
+        562,
+        563,
+        564,
+        565,
+        566,
+        567,
+        568,
+        569,
+        570,
+        571,
+        572,
+        573,
+        574,
+        575,
+        576,
+        577
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-4",
+      "path": "26/procedures/statusChange/variants/1/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "pp. 531-533",
+      "section": "4. 재외동포(F-4) 자격부여 제도 세부절차 - 다. 재외동포(F-4) 자격 변경 절차",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        536,
+        537,
+        538
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-4",
+      "path": "26/subcodes/13/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 532",
+      "section": "재외동포(F-4) 자격 변경 절차 / 세부대상",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        537
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-4",
+      "path": "26/subcodes/14/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 532",
+      "section": "재외동포(F-4) 사증발급 세부대상 및 자격 변경 절차",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        537
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/0/manualRefs/2",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 306",
+      "section": "결혼이민자 관련 F-5 안내 참조",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        307
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/4/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 679",
+      "section": "□ 최우수인재 영주(F-5-T)",
+      "previousStatus": "page_unmapped",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited old page could not be crosswalked by content",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/4/manualRefs/1",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 455",
+      "section": "□ 최우수인재 영주(F-5-T)",
+      "previousStatus": "page_unmapped",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited old page could not be crosswalked by content",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/8/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 449",
+      "section": "1. 일반 영주자〔F-5-1〕 가. 대상 / 나. 요건",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        451,
+        452
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/8/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 450",
+      "section": "다. 제출서류 (D-7/D-8·D-9/D-10·E-7)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        452
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/9/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 431",
+      "section": "영주자격 종류 및 세부 약호 (외국적동포를 제외한 영주(F-5) 체류자격 부여)",
+      "previousStatus": "new_anchor_missing",
+      "expectedPages2026_9": [
+        433
+      ],
+      "expectedBasis": "crosswalk recorded by the PDF audit",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/10/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 431",
+      "section": "영주자격 종류 및 세부 약호 (체류자격 변경허가)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        433
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/10/manualRefs/2",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 444",
+      "section": "영주(F-5)자격 신청자 기본 정보 (공통 제출 서류)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        446
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/11/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 541",
+      "section": "나. 외국국적동포로서 영주자격(F-5)을 부여 대상 및 신청서류 (체류자격 약호: F-5-6)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        546
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/12/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 431",
+      "section": "영주자격 종류 및 세부 약호 (외국적동포를 제외한 영주(F-5) 체류자격 부여 표)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        433
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/12/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 542",
+      "section": "외국국적동포로서 국적취득요건을 갖춘 사람(F-5-7) 대상 및 제출서류",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        547
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/12/manualRefs/2",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 539",
+      "section": "생계유지능력·기본소양 면제 대상 (국적취득 요건 구비 동포 F-5-7)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        544
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/13/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 458",
+      "section": "5. 대한민국 출생 재한화교〔F-5-8〕 (대상/요건)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        460,
+        461
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/13/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 431",
+      "section": "영주자격 종류 및 세부 약호 (F-5-8 대한민국 출생 재한화교, 시행령 별표1의3 6호)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        433
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/13/manualRefs/2",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 445",
+      "section": "영주자격별 제출 서류 (F-5-8: 화교협회 발행 호적등본, 출생증명서)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        449
+      ],
+      "expectedBasis": "old page crosswalked via alternate pagination 260617_stay_manual_readable.txt",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/14/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 459",
+      "section": "체류자격 변경허가 — 6. 첨단분야 박사〔F-5-9〕 및 일반분야 박사〔F-5-15〕",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        461,
+        462
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/14/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 460",
+      "section": "F-5-9 요건·생계유지능력·제출서류",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        462,
+        463
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/14/manualRefs/2",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 432",
+      "section": "영주 세부약호 표 — F-5-9 첨단산업 분야 박사학위 소지자",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        434
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/15/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 432",
+      "section": "체류자격 변경허가 — 영주자격 세부약호 일람",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        434
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/15/manualRefs/2",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 444",
+      "section": "영주(F-5)자격 신청자 기본 정보 — 영주자격세부약호 표",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        446
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/16/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 432",
+      "section": "체류자격 변경허가 - 영주(F-5) 세부약호 일람",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        434
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/16/manualRefs/2",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 444",
+      "section": "영주(F-5)자격 신청자 기본 정보 - 세부약호 표",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        446
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/17/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 466",
+      "section": "10. 연금 수혜자〔F-5-13〕 (대상/요건/제출서류)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        468,
+        469
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/17/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 439",
+      "section": "기본소양 요건 면제 대상 — 연금수혜자(F-5-13)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        441
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/18/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 543",
+      "section": "방문취업(H-2) 4년 이상 계속 근무자 영주자격 (약호 F-5-14)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        548
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/18/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 432",
+      "section": "영주(F-5) 체류자격 변경허가 대상 코드표 — F-5-14 방문취업자격 4년 이상 제조업종 등 근무자",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        434
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/19/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 432",
+      "section": "체류자격 변경허가 — 영주자격 종류 및 세부 약호(별표1의3)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        434
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/19/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 445",
+      "section": "체류자격 변경허가 — 영주자격별 제출 서류",
+      "previousStatus": "page_unmapped",
+      "expectedPages2026_9": [
+        449
+      ],
+      "expectedBasis": "old page crosswalked via alternate pagination 260617_stay_manual_readable.txt",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/19/manualRefs/2",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 439",
+      "section": "체류자격 변경허가 — 기본소양 요건 면제 대상",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        441
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/20/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 432",
+      "section": "체류자격 변경허가 — 영주(F-5) 세부약호 목록",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        434
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/20/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 468",
+      "section": "12. 관광·휴양시설 투자자〔F-5-17〕 및 그 배우자와 미혼 자녀〔F-5-19〕 — 대상·요건",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        470,
+        471
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/21/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 432",
+      "section": "체류자격 변경허가 — 영주(F-5) 세부약호 표",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        434
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/21/manualRefs/2",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 468",
+      "section": "F-5-18 미성년 자녀 요건 및 제출서류",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        470,
+        471
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/22/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 432",
+      "section": "체류자격 변경허가 — 영주(F-5) 세부약호표",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        434
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/22/manualRefs/2",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 445",
+      "section": "나) 영주자격별 제출 서류",
+      "previousStatus": "page_unmapped",
+      "expectedPages2026_9": [
+        449
+      ],
+      "expectedBasis": "old page crosswalked via alternate pagination 260617_stay_manual_readable.txt",
+      "markdownPages2026_9": [
+        446,
+        447
+      ],
+      "outcome": "located_elsewhere"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/23/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 432",
+      "section": "체류자격 변경허가 — 영주(F-5) 세부약호 일람",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        434
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/23/manualRefs/2",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 445",
+      "section": "영주자격별 제출 서류",
+      "previousStatus": "page_unmapped",
+      "expectedPages2026_9": [
+        449
+      ],
+      "expectedBasis": "old page crosswalked via alternate pagination 260617_stay_manual_readable.txt",
+      "markdownPages2026_9": [
+        446,
+        447
+      ],
+      "outcome": "located_elsewhere"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/24/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 432",
+      "section": "체류자격 변경허가 — 영주(F-5) 세부약호 표",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        434
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/24/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 471",
+      "section": "14. 공익사업 투자자〔F-5-21/23〕 가. 대상 / 나. 요건 — 1) 공익사업 일반투자자〔F-5-21〕",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        473,
+        474
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/24/manualRefs/2",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 472",
+      "section": "14. 공익사업 투자자 다. 제출서류",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        474,
+        475
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/25/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 432",
+      "section": "체류자격 변경허가 — 영주(F-5) 세부약호 표 (F-5-22)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        434
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/25/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 471",
+      "section": "14. 공익사업 투자자〔F-5-21/23〕 및 그 배우자와 미혼 자녀〔F-5-22〕 — 대상/요건",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        473,
+        474
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/25/manualRefs/2",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 445",
+      "section": "나) 영주자격별 제출 서류 (F-5-22)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        449
+      ],
+      "expectedBasis": "old page crosswalked via alternate pagination 260617_stay_manual_readable.txt",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/26/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 432",
+      "section": "체류자격 변경허가 — 영주(F-5) 세부약호표",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        434
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/26/manualRefs/2",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 445",
+      "section": "영주자격별 제출 서류 — F-5-17/21/23",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        449
+      ],
+      "expectedBasis": "old page crosswalked via alternate pagination 260617_stay_manual_readable.txt",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/27/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 432",
+      "section": "체류자격 변경허가 — 영주(F-5) 세부약호 표 (F-5-24 기술창업 투자자, 시행령 별표1의3 15호)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        434
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/27/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 473",
+      "section": "15. 기술창업 투자자〔F-5-24〕 — 대상·요건·제출서류",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        475,
+        476
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/27/manualRefs/2",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 445",
+      "section": "영주자격별 제출 서류 — F-5-24 투자금 유치 관련 서류 및 고용 입증 서류",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        449
+      ],
+      "expectedBasis": "old page crosswalked via alternate pagination 260617_stay_manual_readable.txt",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/28/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 473",
+      "section": "16. 조건부 고액투자자〔F-5-25〕 (대상·요건)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        475,
+        476
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/28/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 445",
+      "section": "영주자격별 제출 서류 (F-5-25)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        449
+      ],
+      "expectedBasis": "old page crosswalked via alternate pagination 260617_stay_manual_readable.txt",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/28/manualRefs/2",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 448",
+      "section": "조건부 영주(F-5-25) 펀드 인출 관련 규정",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        450
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/29/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 474",
+      "section": "17. 외국인투자기업의 연구개발 인력〔F-5-26〕 (체류자격 변경허가)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        481
+      ],
+      "expectedBasis": "old page crosswalked via alternate pagination 260617_stay_manual_readable.txt",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/29/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 445",
+      "section": "영주자격별 제출 서류 (F-5-26 연구개발시설 지정서·파견명령서/재직증명서)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        449
+      ],
+      "expectedBasis": "old page crosswalked via alternate pagination 260617_stay_manual_readable.txt",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/29/manualRefs/2",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 432",
+      "section": "체류자격 변경허가 영주세부약호 목록",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        434
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subCodes/30/manualRefs/0",
+      "manualType": "visa",
+      "manualVersion": "2026.7",
+      "sourceFile": "docs/source-manuals/2026-07-31/extracted/full_text/visa_manual_260731.txt",
+      "pageRange": null,
+      "section": "톱티어 비자(D-10-T, E-7-T, F-2-T, F-5-T) - 동반 가족 등",
+      "previousStatus": "unpaged_source",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited page has no crosswalk (unpaged source or no page number)",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/procedures/extension/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "pp. 539-544",
+      "section": "알기쉬운 외국국적동포 업무 매뉴얼: 외국국적동포 영주(F-5) 체류관리",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        544,
+        545,
+        546,
+        547,
+        548,
+        549
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/procedures/registration/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "pp. 539-544",
+      "section": "알기쉬운 외국국적동포 업무 매뉴얼: 외국국적동포 영주(F-5) 체류관리",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        544,
+        545,
+        546,
+        547,
+        548,
+        549
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/0/manualRefs/2",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 306",
+      "section": "결혼이민자 관련 F-5 안내 참조",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        307
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/4/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 679",
+      "section": "□ 최우수인재 영주(F-5-T)",
+      "previousStatus": "page_unmapped",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited old page could not be crosswalked by content",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/4/manualRefs/1",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "p. 455",
+      "section": "□ 최우수인재 영주(F-5-T)",
+      "previousStatus": "page_unmapped",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited old page could not be crosswalked by content",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/8/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 449",
+      "section": "1. 일반 영주자〔F-5-1〕 가. 대상 / 나. 요건",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        451,
+        452
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/8/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 450",
+      "section": "다. 제출서류 (D-7/D-8·D-9/D-10·E-7)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        452
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/9/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 431",
+      "section": "영주자격 종류 및 세부 약호 (외국적동포를 제외한 영주(F-5) 체류자격 부여)",
+      "previousStatus": "new_anchor_missing",
+      "expectedPages2026_9": [
+        433
+      ],
+      "expectedBasis": "crosswalk recorded by the PDF audit",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/10/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 431",
+      "section": "영주자격 종류 및 세부 약호 (체류자격 변경허가)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        433
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/10/manualRefs/2",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 444",
+      "section": "영주(F-5)자격 신청자 기본 정보 (공통 제출 서류)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        446
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/11/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 541",
+      "section": "나. 외국국적동포로서 영주자격(F-5)을 부여 대상 및 신청서류 (체류자격 약호: F-5-6)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        546
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/12/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 431",
+      "section": "영주자격 종류 및 세부 약호 (외국적동포를 제외한 영주(F-5) 체류자격 부여 표)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        433
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/12/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 542",
+      "section": "외국국적동포로서 국적취득요건을 갖춘 사람(F-5-7) 대상 및 제출서류",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        547
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/12/manualRefs/2",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 539",
+      "section": "생계유지능력·기본소양 면제 대상 (국적취득 요건 구비 동포 F-5-7)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        544
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/13/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 458",
+      "section": "5. 대한민국 출생 재한화교〔F-5-8〕 (대상/요건)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        460,
+        461
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/13/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 431",
+      "section": "영주자격 종류 및 세부 약호 (F-5-8 대한민국 출생 재한화교, 시행령 별표1의3 6호)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        433
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/13/manualRefs/2",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 445",
+      "section": "영주자격별 제출 서류 (F-5-8: 화교협회 발행 호적등본, 출생증명서)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        449
+      ],
+      "expectedBasis": "old page crosswalked via alternate pagination 260617_stay_manual_readable.txt",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/14/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 459",
+      "section": "체류자격 변경허가 — 6. 첨단분야 박사〔F-5-9〕 및 일반분야 박사〔F-5-15〕",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        461,
+        462
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/14/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 460",
+      "section": "F-5-9 요건·생계유지능력·제출서류",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        462,
+        463
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/14/manualRefs/2",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 432",
+      "section": "영주 세부약호 표 — F-5-9 첨단산업 분야 박사학위 소지자",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        434
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/15/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 432",
+      "section": "체류자격 변경허가 — 영주자격 세부약호 일람",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        434
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/15/manualRefs/2",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 444",
+      "section": "영주(F-5)자격 신청자 기본 정보 — 영주자격세부약호 표",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        446
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/16/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 432",
+      "section": "체류자격 변경허가 - 영주(F-5) 세부약호 일람",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        434
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/16/manualRefs/2",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 444",
+      "section": "영주(F-5)자격 신청자 기본 정보 - 세부약호 표",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        446
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/17/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 466",
+      "section": "10. 연금 수혜자〔F-5-13〕 (대상/요건/제출서류)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        468,
+        469
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/17/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 439",
+      "section": "기본소양 요건 면제 대상 — 연금수혜자(F-5-13)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        441
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/18/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 543",
+      "section": "방문취업(H-2) 4년 이상 계속 근무자 영주자격 (약호 F-5-14)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        548
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/18/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 432",
+      "section": "영주(F-5) 체류자격 변경허가 대상 코드표 — F-5-14 방문취업자격 4년 이상 제조업종 등 근무자",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        434
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/19/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 432",
+      "section": "체류자격 변경허가 — 영주자격 종류 및 세부 약호(별표1의3)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        434
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/19/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 445",
+      "section": "체류자격 변경허가 — 영주자격별 제출 서류",
+      "previousStatus": "page_unmapped",
+      "expectedPages2026_9": [
+        449
+      ],
+      "expectedBasis": "old page crosswalked via alternate pagination 260617_stay_manual_readable.txt",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/19/manualRefs/2",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 439",
+      "section": "체류자격 변경허가 — 기본소양 요건 면제 대상",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        441
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/20/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 432",
+      "section": "체류자격 변경허가 — 영주(F-5) 세부약호 목록",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        434
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/20/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 468",
+      "section": "12. 관광·휴양시설 투자자〔F-5-17〕 및 그 배우자와 미혼 자녀〔F-5-19〕 — 대상·요건",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        470,
+        471
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/21/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 432",
+      "section": "체류자격 변경허가 — 영주(F-5) 세부약호 표",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        434
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/21/manualRefs/2",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 468",
+      "section": "F-5-18 미성년 자녀 요건 및 제출서류",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        470,
+        471
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/22/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 432",
+      "section": "체류자격 변경허가 — 영주(F-5) 세부약호표",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        434
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/22/manualRefs/2",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 445",
+      "section": "나) 영주자격별 제출 서류",
+      "previousStatus": "page_unmapped",
+      "expectedPages2026_9": [
+        449
+      ],
+      "expectedBasis": "old page crosswalked via alternate pagination 260617_stay_manual_readable.txt",
+      "markdownPages2026_9": [
+        446,
+        447
+      ],
+      "outcome": "located_elsewhere"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/23/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 432",
+      "section": "체류자격 변경허가 — 영주(F-5) 세부약호 일람",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        434
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/23/manualRefs/2",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 445",
+      "section": "영주자격별 제출 서류",
+      "previousStatus": "page_unmapped",
+      "expectedPages2026_9": [
+        449
+      ],
+      "expectedBasis": "old page crosswalked via alternate pagination 260617_stay_manual_readable.txt",
+      "markdownPages2026_9": [
+        446,
+        447
+      ],
+      "outcome": "located_elsewhere"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/24/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 432",
+      "section": "체류자격 변경허가 — 영주(F-5) 세부약호 표",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        434
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/24/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 471",
+      "section": "14. 공익사업 투자자〔F-5-21/23〕 가. 대상 / 나. 요건 — 1) 공익사업 일반투자자〔F-5-21〕",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        473,
+        474
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/24/manualRefs/2",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 472",
+      "section": "14. 공익사업 투자자 다. 제출서류",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        474,
+        475
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/25/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 432",
+      "section": "체류자격 변경허가 — 영주(F-5) 세부약호 표 (F-5-22)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        434
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/25/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 471",
+      "section": "14. 공익사업 투자자〔F-5-21/23〕 및 그 배우자와 미혼 자녀〔F-5-22〕 — 대상/요건",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        473,
+        474
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/25/manualRefs/2",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 445",
+      "section": "나) 영주자격별 제출 서류 (F-5-22)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        449
+      ],
+      "expectedBasis": "old page crosswalked via alternate pagination 260617_stay_manual_readable.txt",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/26/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 432",
+      "section": "체류자격 변경허가 — 영주(F-5) 세부약호표",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        434
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/26/manualRefs/2",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 445",
+      "section": "영주자격별 제출 서류 — F-5-17/21/23",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        449
+      ],
+      "expectedBasis": "old page crosswalked via alternate pagination 260617_stay_manual_readable.txt",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/27/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 432",
+      "section": "체류자격 변경허가 — 영주(F-5) 세부약호 표 (F-5-24 기술창업 투자자, 시행령 별표1의3 15호)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        434
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/27/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 473",
+      "section": "15. 기술창업 투자자〔F-5-24〕 — 대상·요건·제출서류",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        475,
+        476
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/27/manualRefs/2",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 445",
+      "section": "영주자격별 제출 서류 — F-5-24 투자금 유치 관련 서류 및 고용 입증 서류",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        449
+      ],
+      "expectedBasis": "old page crosswalked via alternate pagination 260617_stay_manual_readable.txt",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/28/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 473",
+      "section": "16. 조건부 고액투자자〔F-5-25〕 (대상·요건)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        475,
+        476
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/28/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 445",
+      "section": "영주자격별 제출 서류 (F-5-25)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        449
+      ],
+      "expectedBasis": "old page crosswalked via alternate pagination 260617_stay_manual_readable.txt",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/28/manualRefs/2",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 448",
+      "section": "조건부 영주(F-5-25) 펀드 인출 관련 규정",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        450
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/29/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 474",
+      "section": "17. 외국인투자기업의 연구개발 인력〔F-5-26〕 (체류자격 변경허가)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        481
+      ],
+      "expectedBasis": "old page crosswalked via alternate pagination 260617_stay_manual_readable.txt",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/29/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 445",
+      "section": "영주자격별 제출 서류 (F-5-26 연구개발시설 지정서·파견명령서/재직증명서)",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        449
+      ],
+      "expectedBasis": "old page crosswalked via alternate pagination 260617_stay_manual_readable.txt",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/29/manualRefs/2",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 432",
+      "section": "체류자격 변경허가 영주세부약호 목록",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        434
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-5",
+      "path": "27/subcodes/30/manualRefs/0",
+      "manualType": "visa",
+      "manualVersion": "2026.7",
+      "sourceFile": "docs/source-manuals/2026-07-31/extracted/full_text/visa_manual_260731.txt",
+      "pageRange": null,
+      "section": "톱티어 비자(D-10-T, E-7-T, F-2-T, F-5-T) - 동반 가족 등",
+      "previousStatus": "unpaged_source",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited page has no crosswalk (unpaged source or no page number)",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "F-6",
+      "path": "28/subCodes/2/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 346",
+      "section": "국민과 혼인이 단절되었으나 혼인단절자(F-6-3)에 해당하지 않는 사람",
+      "previousStatus": "new_anchor_missing",
+      "expectedPages2026_9": [
+        347
+      ],
+      "expectedBasis": "crosswalk recorded by the PDF audit",
+      "markdownPages2026_9": [
+        347,
+        348,
+        349,
+        350,
+        357,
+        358,
+        497,
+        498,
+        499,
+        501,
+        502,
+        503,
+        504
+      ],
+      "outcome": "near_cited_page",
+      "matchedPages": [
+        347,
+        348,
+        349,
+        350
+      ]
+    },
+    {
+      "record": "F-6",
+      "path": "28/subCodes/2/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 346",
+      "section": "국민과 혼인이 단절되었으나 혼인단절자(F-6-3)에 해당하지 않는 사람으",
+      "previousStatus": "new_anchor_missing",
+      "expectedPages2026_9": [
+        347
+      ],
+      "expectedBasis": "crosswalk recorded by the PDF audit",
+      "markdownPages2026_9": [
+        347,
+        348,
+        349,
+        350,
+        357,
+        358,
+        497,
+        498,
+        499,
+        501,
+        502,
+        503,
+        504
+      ],
+      "outcome": "near_cited_page",
+      "matchedPages": [
+        347,
+        348,
+        349,
+        350
+      ]
+    },
+    {
+      "record": "F-6",
+      "path": "28/subcodes/2/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 346",
+      "section": "국민과 혼인이 단절되었으나 혼인단절자(F-6-3)에 해당하지 않는 사람",
+      "previousStatus": "new_anchor_missing",
+      "expectedPages2026_9": [
+        347
+      ],
+      "expectedBasis": "crosswalk recorded by the PDF audit",
+      "markdownPages2026_9": [
+        347,
+        348,
+        349,
+        350,
+        357,
+        358,
+        497,
+        498,
+        499,
+        501,
+        502,
+        503,
+        504
+      ],
+      "outcome": "near_cited_page",
+      "matchedPages": [
+        347,
+        348,
+        349,
+        350
+      ]
+    },
+    {
+      "record": "F-6",
+      "path": "28/subcodes/2/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 346",
+      "section": "국민과 혼인이 단절되었으나 혼인단절자(F-6-3)에 해당하지 않는 사람으",
+      "previousStatus": "new_anchor_missing",
+      "expectedPages2026_9": [
+        347
+      ],
+      "expectedBasis": "crosswalk recorded by the PDF audit",
+      "markdownPages2026_9": [
+        347,
+        348,
+        349,
+        350,
+        357,
+        358,
+        497,
+        498,
+        499,
+        501,
+        502,
+        503,
+        504
+      ],
+      "outcome": "near_cited_page",
+      "matchedPages": [
+        347,
+        348,
+        349,
+        350
+      ]
+    },
+    {
+      "record": "H-2",
+      "path": "31/procedures/extension/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "pp. 525-528",
+      "section": "알기쉬운 외국국적동포 업무 매뉴얼: 방문취업(H-2) 체류관리",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        530,
+        531,
+        532,
+        533
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "H-2",
+      "path": "31/procedures/extension/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "pp. 556-567",
+      "section": "알기쉬운 외국국적동포 업무 매뉴얼: 방문취업(H-2) 취업활동범위 및 건강상태 서식",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        561,
+        562,
+        563,
+        564,
+        565,
+        566,
+        567,
+        568,
+        569,
+        570,
+        571,
+        572
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "H-2",
+      "path": "31/procedures/registration/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "pp. 525-528",
+      "section": "알기쉬운 외국국적동포 업무 매뉴얼: 방문취업(H-2) 체류관리",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        530,
+        531,
+        532,
+        533
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "H-2",
+      "path": "31/procedures/registration/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "pp. 556-567",
+      "section": "알기쉬운 외국국적동포 업무 매뉴얼: 방문취업(H-2) 취업활동범위 및 건강상태 서식",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        561,
+        562,
+        563,
+        564,
+        565,
+        566,
+        567,
+        568,
+        569,
+        570,
+        571,
+        572
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "H-2",
+      "path": "31/procedures/registration/variants/0/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "pp. 525-528",
+      "section": "알기쉬운 외국국적동포 업무 매뉴얼: 방문취업(H-2) 체류관리",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        530,
+        531,
+        532,
+        533
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "H-2",
+      "path": "31/procedures/registration/variants/0/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "pp. 556-567",
+      "section": "알기쉬운 외국국적동포 업무 매뉴얼: 방문취업(H-2) 취업활동범위 및 건강상태 서식",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        561,
+        562,
+        563,
+        564,
+        565,
+        566,
+        567,
+        568,
+        569,
+        570,
+        571,
+        572
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "H-2",
+      "path": "31/procedures/workplaceChange/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "pp. 525-528",
+      "section": "알기쉬운 외국국적동포 업무 매뉴얼: 방문취업(H-2) 체류관리",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        530,
+        531,
+        532,
+        533
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "H-2",
+      "path": "31/procedures/workplaceChange/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "pp. 556-567",
+      "section": "알기쉬운 외국국적동포 업무 매뉴얼: 방문취업(H-2) 취업활동범위 및 건강상태 서식",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        561,
+        562,
+        563,
+        564,
+        565,
+        566,
+        567,
+        568,
+        569,
+        570,
+        571,
+        572
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "H-2",
+      "path": "31/procedures/workplaceChange/variants/0/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "pp. 525-528",
+      "section": "알기쉬운 외국국적동포 업무 매뉴얼: 방문취업(H-2) 체류관리",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        530,
+        531,
+        532,
+        533
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "H-2",
+      "path": "31/procedures/workplaceChange/variants/0/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "pp. 556-567",
+      "section": "알기쉬운 외국국적동포 업무 매뉴얼: 방문취업(H-2) 취업활동범위 및 건강상태 서식",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        561,
+        562,
+        563,
+        564,
+        565,
+        566,
+        567,
+        568,
+        569,
+        570,
+        571,
+        572
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "REGION-S",
+      "path": "40/subCodes/0/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.7",
+      "sourceFile": "backend/data/sources/manuals/260731_stay_manual_extracted.txt",
+      "pageRange": "지역특화형 우수인재(F-2-R) 장",
+      "section": "기본 요건 — 기본소양 및 제출서류",
+      "previousStatus": "unpaged_source",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited page has no crosswalk (unpaged source or no page number)",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "REGION-S",
+      "path": "40/subCodes/1/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.7",
+      "sourceFile": "backend/data/sources/manuals/260731_stay_manual_extracted.txt",
+      "pageRange": "지역특화형 숙련기능인력(E-7-4R) 장",
+      "section": "가점·감점 항목 및 고용기업 허용인원",
+      "previousStatus": "unpaged_source",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited page has no crosswalk (unpaged source or no page number)",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "REGION-S",
+      "path": "40/subCodes/4/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 1",
+      "section": "광역형 비자 시범사업",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited old page could not be crosswalked by content",
+      "markdownPages2026_9": [
+        2,
+        3,
+        720,
+        721
+      ],
+      "outcome": "located_elsewhere"
+    },
+    {
+      "record": "REGION-S",
+      "path": "40/subCodes/5/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 1",
+      "section": "광역형 비자 시범사업",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited old page could not be crosswalked by content",
+      "markdownPages2026_9": [
+        2,
+        3,
+        720,
+        721
+      ],
+      "outcome": "located_elsewhere"
+    },
+    {
+      "record": "REGION-S",
+      "path": "40/subcodes/0/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.7",
+      "sourceFile": "backend/data/sources/manuals/260731_stay_manual_extracted.txt",
+      "pageRange": "지역특화형 우수인재(F-2-R) 장",
+      "section": "기본 요건 — 기본소양 및 제출서류",
+      "previousStatus": "unpaged_source",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited page has no crosswalk (unpaged source or no page number)",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "REGION-S",
+      "path": "40/subcodes/1/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.7",
+      "sourceFile": "backend/data/sources/manuals/260731_stay_manual_extracted.txt",
+      "pageRange": "지역특화형 숙련기능인력(E-7-4R) 장",
+      "section": "가점·감점 항목 및 고용기업 허용인원",
+      "previousStatus": "unpaged_source",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited page has no crosswalk (unpaged source or no page number)",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "REGION-S",
+      "path": "40/subcodes/4/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 1",
+      "section": "광역형 비자 시범사업",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited old page could not be crosswalked by content",
+      "markdownPages2026_9": [
+        2,
+        3,
+        720,
+        721
+      ],
+      "outcome": "located_elsewhere"
+    },
+    {
+      "record": "REGION-S",
+      "path": "40/subcodes/5/manualRefs/0",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "p. 1",
+      "section": "광역형 비자 시범사업",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [],
+      "expectedBasis": "cited old page could not be crosswalked by content",
+      "markdownPages2026_9": [
+        2,
+        3,
+        720,
+        721
+      ],
+      "outcome": "located_elsewhere"
+    },
+    {
+      "record": "YOUTH-STAY",
+      "path": "41/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "pp. 145-159",
+      "section": "구직(D-10) 특례 중 국내 성장 기반 외국인 청소년 관련 항목",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        145,
+        146,
+        147,
+        148,
+        149,
+        150,
+        151,
+        152,
+        153,
+        154,
+        155,
+        156,
+        157,
+        158,
+        159
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "YOUTH-STAY",
+      "path": "41/manualRefs/2",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "pp. 214, 234",
+      "section": "특정활동(E-7) 국내성장인력(E-7-Y) 관련 항목",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        214
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "YOUTH-STAY",
+      "path": "41/manualRefs/3",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "pageRange": "pp. 171, 185-186",
+      "section": "특정활동(E-7) 국내성장인력(E-7-Y) 관련 항목",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        171
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "YOUTH-STAY",
+      "path": "41/procedures/statusChange/manualRefs/1",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "pp. 145-159",
+      "section": "구직(D-10) 특례 중 국내 성장 기반 외국인 청소년 관련 항목",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        145,
+        146,
+        147,
+        148,
+        149,
+        150,
+        151,
+        152,
+        153,
+        154,
+        155,
+        156,
+        157,
+        158,
+        159
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    },
+    {
+      "record": "YOUTH-STAY",
+      "path": "41/procedures/statusChange/manualRefs/2",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "pageRange": "pp. 214, 234",
+      "section": "특정활동(E-7) 국내성장인력(E-7-Y) 관련 항목",
+      "previousStatus": "old_anchor_missing",
+      "expectedPages2026_9": [
+        214
+      ],
+      "expectedBasis": "old page crosswalked via named sourceFile",
+      "markdownPages2026_9": [],
+      "outcome": "not_found"
+    }
+  ]
+}

@@ -47,7 +47,25 @@
         "extracted_text_file": "docs/source-manuals/2026-07-31/extracted/full_text/visa_manual_260731.txt",
         "extracted_text_sha256": "a80ec1f34da8ebf3b87e6cb306f69d3fd8e96a3919204de2989dbccb8419e080",
         "verification_status": "approved_2026-08-09_superseded_2026-10-16"
-      }
+      },
+      "derived_texts": [
+        {
+          "id": "visa_manual_2026_09_01_md",
+          "file": "docs/source-manuals/2026-09/derived/visa_manual_260901.md",
+          "file_sha256": "178d6817526c20562a04ad52ea1b665b63f5824020468094acbe0ed848dcb3c3",
+          "file_size_bytes": 1184253,
+          "format": "markdown",
+          "derived_from": "docs/source-manuals/2026-09-01/visa_manual_260901.hwp",
+          "provenance": "owner-supplied HWP→Markdown conversion, 2026-10-19",
+          "status": "derived_text",
+          "verification_status": "machine_verified_page_mapped_not_human_reviewed",
+          "verification_note": "Markdown conversion of this edition's HWP, supplied by the owner on 2026-10-19. It keeps headings and HTML <table>s but has no page numbers. scripts/build_manual_markdown_corpus.py splits it into chunks and maps every chunk to the approved PDF page(s) by matching normalized text against the page text in the page map below, recording a confidence per chunk. The Markdown is machine-verified against the approved edition text; nobody has reviewed it line by line. It inherits the edition's approval ONLY for chunks mapped to a PDF page with high or medium confidence, and such a chunk is cited by that PDF page. Unmapped or low-confidence chunks stay searchable as needs_review and are never direct evidence. Images from the owner's zip (images/260901) are not committed: they are not used for grounding.",
+          "page_source_id": "visa_manual_2026_09_01_pdf",
+          "page_map": "data/manual-corpus/visa_manual_2026_09_01_md.json",
+          "page_map_builder": "scripts/build_manual_markdown_corpus.py",
+          "compare_text_file": "docs/source-manuals/2026-09-01/extracted/full_text/visa_manual_260901.txt"
+        }
+      ]
     },
     "stay_residence_manual": {
       "title_ko": "외국인체류 안내매뉴얼",
@@ -97,7 +115,25 @@
         "extracted_text_file": "docs/source-manuals/2026-07-31/extracted/full_text/stay_manual_260731.txt",
         "extracted_text_sha256": "f9f040b10fb03de4697d8a84144627927580ad3fad121049ace8e932f84795c1",
         "verification_status": "approved_2026-08-09_superseded_2026-10-16"
-      }
+      },
+      "derived_texts": [
+        {
+          "id": "stay_manual_2026_09_18_md",
+          "file": "docs/source-manuals/2026-09/derived/stay_manual_260918.md",
+          "file_sha256": "9206a169f048a4937bf360e227d8b9e1f2e4214801fdf830b9b87138ce225260",
+          "file_size_bytes": 1783449,
+          "format": "markdown",
+          "derived_from": "docs/source-manuals/2026-09/stay_manual_260918.hwp",
+          "provenance": "owner-supplied HWP→Markdown conversion, 2026-10-19",
+          "status": "derived_text",
+          "verification_status": "machine_verified_page_mapped_not_human_reviewed",
+          "verification_note": "Markdown conversion of this edition's HWP, supplied by the owner on 2026-10-19. It keeps headings and HTML <table>s but has no page numbers. scripts/build_manual_markdown_corpus.py splits it into chunks and maps every chunk to the approved PDF page(s) by matching normalized text against the page text in the page map below, recording a confidence per chunk. The Markdown is machine-verified against the approved edition text; nobody has reviewed it line by line. It inherits the edition's approval ONLY for chunks mapped to a PDF page with high or medium confidence, and such a chunk is cited by that PDF page. Unmapped or low-confidence chunks stay searchable as needs_review and are never direct evidence. Images from the owner's zip (images/260918) are not committed: they are not used for grounding.",
+          "page_source_id": "stay_manual_2026_09_18_pdf",
+          "page_map": "data/manual-corpus/stay_manual_2026_09_18_md.json",
+          "page_map_builder": "scripts/build_manual_markdown_corpus.py",
+          "compare_text_file": "docs/source-manuals/2026-09/extracted/full_text/stay_manual_260918.txt"
+        }
+      ]
     }
   },
   "special_program_manuals": [

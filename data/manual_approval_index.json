@@ -312,6 +312,60 @@
         "별표/첨부서류 tables are flattened to paragraph text; cell and column boundaries are NOT preserved and must not be read as a structured table. This holds regardless of approval state."
       ],
       "approval_note": "Owner edition decision recorded 2026-10-16: the 2026-09-18 stay manual and the 2026-09-01 visa manual are the reference editions (owner-supplied files verified byte-identical to the committed copies, MD5 2507501da598b4d850f111011f779d13 / 13d25559c9255d9d41604dc6e9cad150). Runtime citations were re-checked page by page against this edition (D-2 pp.43-44, D-4 pp.90-92, E-7 p.227). The approval records the edition decision; it is not a line-by-line certification of every structured extract derived from it. See audits/manual-edition-2026-09-promotion/README.md for open review items."
+    },
+    "visa_manual_2026_09_01_md": {
+      "approval_state": "needs_review",
+      "document_role": "derived_text",
+      "chunk_approval": "inherited_per_mapped_pdf_page",
+      "inherits_page_approval_from": "visa_manual_2026_09_01_pdf",
+      "effective_date": "2026-09-01",
+      "parser": "scripts/build_manual_markdown_corpus.py (HTML table → '열이름: 값' rows; 10-char shingle page map)",
+      "reviewer": "",
+      "reviewed_at": "",
+      "source_confidence": "machine_verified",
+      "has_tables_or_annexes": true,
+      "section_locator": "pdf_page_via_page_map",
+      "source_path": "docs/source-manuals/2026-09/derived/visa_manual_260901.md",
+      "source_sha256": "178d6817526c20562a04ad52ea1b665b63f5824020468094acbe0ed848dcb3c3",
+      "page_map_path": "data/manual-corpus/visa_manual_2026_09_01_md.json",
+      "provenance": "owner-supplied HWP→Markdown conversion, 2026-10-19",
+      "manifest_slot": "current.visa_issuance_manual.derived_texts",
+      "extraction_warnings": [
+        "Owner-supplied HWP→Markdown conversion of the approved 2026.9 edition. It has no page numbers; pages come from scripts/build_manual_markdown_corpus.py matching each chunk's normalized text against the approved PDF page text.",
+        "Machine-verified, not human-reviewed line by line. The document as a whole stays needs_review. Only chunks mapped to a PDF page with high or medium confidence inherit the edition's approval (direct evidence, cited by that PDF page); low/none and out-of-sequence chunks are indexed as needs_review with page 0.",
+        "Images referenced by the Markdown (owner zip, images/260901) are not in the repository and carry no evidence."
+      ],
+      "table_extraction_warnings": [
+        "Tables are rendered from the converter's HTML/pipe tables as '열이름: 값' or '행 제목: 값' lines, with rowspans carried. Header detection is heuristic (short all-<th> leading rows); multi-level headers can be joined imperfectly, so a table row must be checked against the cited PDF page before it is quoted as a requirement."
+      ],
+      "approval_note": "Not a new approval. Recorded 2026-10-19 so the derived text is tracked: it inherits the owner's 2026-10-16 edition decision for visa_manual_2026_09_01_pdf only where a chunk is page-mapped to that approved PDF."
+    },
+    "stay_manual_2026_09_18_md": {
+      "approval_state": "needs_review",
+      "document_role": "derived_text",
+      "chunk_approval": "inherited_per_mapped_pdf_page",
+      "inherits_page_approval_from": "stay_manual_2026_09_18_pdf",
+      "effective_date": "2026-09-18",
+      "parser": "scripts/build_manual_markdown_corpus.py (HTML table → '열이름: 값' rows; 10-char shingle page map)",
+      "reviewer": "",
+      "reviewed_at": "",
+      "source_confidence": "machine_verified",
+      "has_tables_or_annexes": true,
+      "section_locator": "pdf_page_via_page_map",
+      "source_path": "docs/source-manuals/2026-09/derived/stay_manual_260918.md",
+      "source_sha256": "9206a169f048a4937bf360e227d8b9e1f2e4214801fdf830b9b87138ce225260",
+      "page_map_path": "data/manual-corpus/stay_manual_2026_09_18_md.json",
+      "provenance": "owner-supplied HWP→Markdown conversion, 2026-10-19",
+      "manifest_slot": "current.stay_residence_manual.derived_texts",
+      "extraction_warnings": [
+        "Owner-supplied HWP→Markdown conversion of the approved 2026.9 edition. It has no page numbers; pages come from scripts/build_manual_markdown_corpus.py matching each chunk's normalized text against the approved PDF page text.",
+        "Machine-verified, not human-reviewed line by line. The document as a whole stays needs_review. Only chunks mapped to a PDF page with high or medium confidence inherit the edition's approval (direct evidence, cited by that PDF page); low/none and out-of-sequence chunks are indexed as needs_review with page 0.",
+        "Images referenced by the Markdown (owner zip, images/260918) are not in the repository and carry no evidence."
+      ],
+      "table_extraction_warnings": [
+        "Tables are rendered from the converter's HTML/pipe tables as '열이름: 값' or '행 제목: 값' lines, with rowspans carried. Header detection is heuristic (short all-<th> leading rows); multi-level headers can be joined imperfectly, so a table row must be checked against the cited PDF page before it is quoted as a requirement."
+      ],
+      "approval_note": "Not a new approval. Recorded 2026-10-19 so the derived text is tracked: it inherits the owner's 2026-10-16 edition decision for stay_manual_2026_09_18_pdf only where a chunk is page-mapped to that approved PDF."
     }
   }
 }
