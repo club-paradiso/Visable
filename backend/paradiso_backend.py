@@ -59,6 +59,7 @@ from services import unified_search as _unified_search
 from services import manual_search as _manual_search
 from services import manual_registry as _manual_registry
 from services import manual_locator as _manual_locator
+from services import manual_evidence as _manual_evidence
 from services import statute_citation_guard as _statute_guard
 from services import employment_nl as _employment_nl
 from services import immigration_tools as _immigration_tools
@@ -693,7 +694,9 @@ class AskResponse(BaseModel):
     # Manual-to-law fallback transparency. Coarse, non-secret signals only.
     #   manual_grounding_status: "present" when deterministic manual / source-
     #     confirmed structured requirements were available for this question;
-    #     "absent" when no manual document grounding was found.
+    #     "approved_manual_excerpts" when neither was, but approved manual
+    #     excerpts were retrieved (manual_evidence_sources); "absent" when no
+    #     manual document grounding was found.
     #   manual_to_law_fallback_used: True when manual document grounding was
     #     absent for a legal/activity-scope question and the system therefore
     #     leaned on law-grounding (statute/enforcement-decree) context instead.
@@ -734,6 +737,19 @@ class AskResponse(BaseModel):
     # layer had no verified facts for. Location references only: they never
     # count as grounding and carry no requirement text.
     manual_location_references: List[Dict[str, Any]] = Field(default_factory=list)
+    # Approved 2026.9 manual excerpts retrieved from the FTS index for a
+    # question the knowledge layer has no verified facts for
+    # (services/manual_evidence.py). Kept apart from grounding_used /
+    # grounding_sources, which stay reserved for human-verified knowledge
+    # grounding: these excerpts are approved source text, but nobody chose them
+    # for this question. Items use the grounding_sources shape plus citation,
+    # manual_scope (stay / visa_issuance), applies_to and applicability.
+    #   manual_evidence_status: not_attempted / approved_excerpts / no_results /
+    #     index_unavailable / not_needed (verified grounding already present).
+    manual_evidence_used: bool = False
+    manual_evidence_status: str = "not_attempted"
+    manual_evidence_scopes: List[str] = Field(default_factory=list)
+    manual_evidence_sources: List[Dict[str, Any]] = Field(default_factory=list)
     # Set only when a structured answer was delivered without the optional
     # model summary. Diagnostics/telemetry only (hidden from the public view).
     summary_generation_status: Optional[str] = None
@@ -2406,6 +2422,12 @@ def build_legal_analysis_fallback_answer(
         base_meta.get("visa_code_detected"), base_meta.get("visa_sub_code_detected"),
         base_meta.get("task_type_detected"), is_ko=is_ko,
     )
+    # Approved manual excerpts retrieved for the question (services/
+    # manual_evidence.py): page, applicable codes and a short verbatim excerpt,
+    # so the note shows what the manual says instead of only generic questions.
+    excerpt_lines = _manual_evidence.note_lines(
+        base_meta.get("manual_evidence_sources") or [], is_ko=is_ko,
+    )
     source_state = str(base_meta.get("source_state") or la.get("analysis_mode") or "").lower()
     source_note = _localized_source_boundary_note(is_ko=is_ko, source_state=source_state, legal_analysis=la)
     # Part G: for registration/reporting answers, use concise source-limitation
@@ -2485,6 +2507,8 @@ def build_legal_analysis_fallback_answer(
             lines.extend(["", "확인할 사실:", *[f"* {item}" for item in fact_lines[:8]]])
         if questions:
             lines.extend(["", "공식 확인 질문:", *[f"* {q}" for q in questions]])
+        if excerpt_lines:
+            lines.extend(["", *excerpt_lines])
         if locator_lines:
             lines.extend(["", *locator_lines])
         lines.extend(["", source_note, "이 메모는 최종 판단이 아니며, 시작 전 1345, HiKorea 또는 관할 출입국·외국인청에 위 사실관계를 기준으로 확인하세요."])
@@ -2550,6 +2574,8 @@ def build_legal_analysis_fallback_answer(
         lines.extend(["", "Facts to confirm:", *[f"* {item}" for item in fact_lines[:8]]])
     if questions:
         lines.extend(["", "Questions to confirm with the official office:", *[f"* {q}" for q in questions]])
+    if excerpt_lines:
+        lines.extend(["", *excerpt_lines])
     if locator_lines:
         lines.extend(["", *locator_lines])
     lines.extend(["", source_note, "This is not a final determination. Before acting, confirm the fact pattern with 1345, HiKorea, or the competent immigration office."])
@@ -4197,6 +4223,32 @@ def _risk_level_for_task(task_type: Optional[str]) -> str:
 _knowledge_runtime.register_detectors(_detect_visa_codes, _detect_task_type, _risk_level_for_task)
 
 
+def _retrieve_ask_manual_evidence(
+    prompt: str,
+    *,
+    visa_code: Optional[str],
+    visa_sub_code: Optional[str],
+    task_type: Optional[str],
+    verified_present: bool,
+) -> Dict[str, Any]:
+    """Approved manual excerpts for /api/ask, or an explicit non-use status.
+
+    Only when no verified grounding exists (knowledge facts or source-confirmed
+    structured requirements): retrieved excerpts never sit next to, or compete
+    with, a human-verified document list. Never raises — a failure is reported
+    as ``index_unavailable`` and the answer keeps its "no manual basis" notices.
+    """
+    if verified_present:
+        return {"status": "not_needed", "scopes": [], "codes": {}, "excerpts": []}
+    try:
+        return _manual_evidence.retrieve_manual_evidence(
+            prompt, visa_code=visa_code, visa_sub_code=visa_sub_code, task_type=task_type,
+        )
+    except Exception:  # pragma: no cover - retrieval must never break /api/ask
+        logger.exception("manual evidence retrieval failed")
+        return {"status": _manual_evidence.STATUS_INDEX_UNAVAILABLE, "scopes": [], "codes": {}, "excerpts": []}
+
+
 def _select_grounding(
     visa_code: Optional[str],
     task_type: Optional[str],
@@ -4882,6 +4934,7 @@ def _build_ungrounded_korea_scoped_prompt(
     task_type: Optional[str] = None,
     risk_level: str = "low",
     lang: Optional[str] = None,
+    manual_excerpt_block: str = "",
 ) -> str:
     """Build a Korea-immigration-scoped system prompt for ungrounded answers.
 
@@ -4900,8 +4953,33 @@ def _build_ungrounded_korea_scoped_prompt(
 
     This intentionally does NOT include source attribution from
     외국인체류 안내매뉴얼 — there is no verified grounding here.
+
+    ``manual_excerpt_block`` (services/manual_evidence.prompt_block) carries
+    approved manual excerpts retrieved for the question. With it, the intro
+    says specifics may rest only on those excerpts, the ban on citing the
+    manual becomes a rule to cite only what the excerpts show, and the block is
+    placed before the question. Without it the prompt is unchanged.
     """
     answer_language_line = _answer_language_instruction(lang)
+    if manual_excerpt_block:
+        intro_line = (
+            "아래에 승인된 공식 매뉴얼(2026.9 판) 원문 발췌가 있습니다. 이 질문에 대해 사람이 검증한 서류 목록은 없으므로,"
+            " 구체적인 서류·수수료·기한·허가기간은 발췌에 적힌 범위에서만 안내하고, 그 밖의 설명은 일반 안내임을 밝히십시오.\n\n"
+        )
+        citation_rule = (
+            "- 공식 매뉴얼은 아래 발췌로 확인되는 내용에만 인용하십시오. 답변 전체가 매뉴얼에 근거한다고 쓰지 마십시오.\n"
+        )
+        excerpt_section = manual_excerpt_block + "\n\n"
+    else:
+        intro_line = (
+            "본 답변은 검증된 매뉴얼 발췌가 없는 상황에서 제공되는 일반 안내입니다."
+            " 이 답변은 공식 출입국·외국인정책본부 매뉴얼에 근거하지 않습니다.\n\n"
+        )
+        citation_rule = (
+            "- '본 답변은 외국인체류 안내매뉴얼에 근거합니다' 등 공식 매뉴얼 인용을 암시하는 표현을"
+            " 사용하지 마십시오.\n"
+        )
+        excerpt_section = ""
 
     code_label = visa_sub_code or visa_code or ""
     code_block = f"\n탐지된 체류자격: {code_label}" if code_label else ""
@@ -4945,15 +5023,13 @@ def _build_ungrounded_korea_scoped_prompt(
 
     return (
         "당신은 한국 비자·체류 안내 도우미 Waymaker입니다. 대한민국 출입국·외국인 체류 제도의 범위 안에서만 답하십시오.\n"
-        "본 답변은 검증된 매뉴얼 발췌가 없는 상황에서 제공되는 일반 안내입니다."
-        " 이 답변은 공식 출입국·외국인정책본부 매뉴얼에 근거하지 않습니다.\n\n"
+        f"{intro_line}"
         "[금지 사항 — 반드시 준수]\n"
         "- 사용자가 다른 국가를 명시적으로 요청하지 않는 한, 비한국(non-Korean) 이민제도,"
         " 외국 행정기관, 외국 법률절차 보일러플레이트를 언급하지 마십시오.\n"
         "- 검증된 출처 없이 다음을 임의로 제시하지 마십시오: 제출서류, 기한/유예기간,"
         " 수수료/비용, 양식/서식 번호, 법령 조문 번호, 자격요건, 절차상 보장·결과 보장.\n"
-        "- '본 답변은 외국인체류 안내매뉴얼에 근거합니다' 등 공식 매뉴얼 인용을 암시하는 표현을"
-        " 사용하지 마십시오.\n"
+        f"{citation_rule}"
         "- '해당 국가 기관에 문의', '현지 이민청에 문의', '외국 대사관/영사관 문의'"
         " 같은 외국 기관 유도 표현을 사용하지 마십시오.\n\n"
         "[탐지 정보]"
@@ -4969,6 +5045,7 @@ def _build_ungrounded_korea_scoped_prompt(
         " 문의하도록 안내하십시오(미국·영국 등 타국 기관 제외).\n\n"
         "[답변 지침]\n"
         f"{answer_language_line}\n\n"
+        f"{excerpt_section}"
         "[사용자 질문]\n"
         f"{user_prompt}"
     )
@@ -6070,6 +6147,19 @@ async def _ask_internal(req: AskRequest) -> AskResponse:
         if task_type_detected
         else ""
     )
+    # Approved manual excerpts (services/manual_evidence.py) for a question the
+    # knowledge layer has no verified facts for and no source-confirmed
+    # structured requirement covers. Verified grounding is never replaced or
+    # supplemented by retrieved excerpts.
+    manual_evidence = _retrieve_ask_manual_evidence(
+        prompt,
+        visa_code=visa_code_detected,
+        visa_sub_code=visa_sub_code_detected,
+        task_type=task_type_detected,
+        verified_present=(grounding is not None) or bool(structured_block),
+    )
+    manual_evidence_block = _manual_evidence.prompt_block(manual_evidence)
+    manual_evidence_sources = _manual_evidence.source_summaries(manual_evidence)
     if grounding is not None:
         bundle = _grounding_bundle(grounding)
         final_prompt = _build_grounded_prompt(prompt, grounding, bundle, lang=req.lang)
@@ -6092,6 +6182,7 @@ async def _ask_internal(req: AskRequest) -> AskResponse:
             task_type=task_type_detected,
             risk_level=risk_level_detected,
             lang=req.lang,
+            manual_excerpt_block=manual_evidence_block,
         )
         if visa_data_block:
             final_prompt += "\n\n" + visa_data_block
@@ -6198,7 +6289,12 @@ async def _ask_internal(req: AskRequest) -> AskResponse:
     # fabricates a required-document checklist — manual/HiKorea/office sources
     # remain authoritative for documents, fees, and operational steps.
     manual_present = (grounding is not None) or bool(structured_block)
-    manual_grounding_status = "present" if manual_present else "absent"
+    manual_excerpts_present = bool(manual_evidence_sources) and not manual_present
+    manual_grounding_status = (
+        "present" if manual_present
+        else "approved_manual_excerpts" if manual_excerpts_present
+        else "absent"
+    )
     manual_to_law_fallback_used = False
     manual_to_law_fallback_reason = ""
     if not manual_present and intent.get("should_attempt"):
@@ -6210,12 +6306,22 @@ async def _ask_internal(req: AskRequest) -> AskResponse:
             # and it must NOT invent a document checklist.
             final_prompt += (
                 "\n\n[Manual-to-law fallback]\n"
-                "- Specific manual document guidance was NOT found for this question.\n"
-                "- Do NOT invent or imply a required-document checklist.\n"
+                + (
+                    "- No verified document list exists for this question. Approved manual"
+                    " excerpts are supplied above: documents, fees and deadlines may come"
+                    " ONLY from those excerpts, cited with their manual and page.\n"
+                    if manual_excerpts_present else
+                    "- Specific manual document guidance was NOT found for this question.\n"
+                )
+                + "- Do NOT invent or imply a required-document checklist.\n"
                 "- You MAY explain legal basis, activity scope, activities outside status,"
                 " permission/reporting duties, deadlines, and definitions in general terms.\n"
-                "- State that manual-specific guidance was not found and that these points"
-                " should be confirmed with HiKorea / 1345 / the competent immigration office.\n"
+                + (
+                    "- Say which points the excerpts do not settle, and that those points"
+                    if manual_excerpts_present else
+                    "- State that manual-specific guidance was not found and that these points"
+                )
+                + " should be confirmed with HiKorea / 1345 / the competent immigration office.\n"
                 "- Preserve official Korean legal/administrative terms; any English/Chinese"
                 " rendering is a non-authoritative helper, not an official translation."
             )
@@ -6240,6 +6346,7 @@ async def _ask_internal(req: AskRequest) -> AskResponse:
         law_grounding_status=law_grounding_status,
         manual_to_law_fallback_used=manual_to_law_fallback_used,
         law_intent=bool(intent.get("should_attempt")),
+        manual_excerpts_present=manual_excerpts_present,
     )
 
     # Structured evidence pack (Part D). Reuses the already-fetched law_context
@@ -6299,7 +6406,12 @@ async def _ask_internal(req: AskRequest) -> AskResponse:
         visa_code=visa_code_detected,
         task_type=task_type_detected,
         direct_evidence_count=direct_evidence_count,
-        related_evidence_count=related_evidence_count,
+        # Retrieved manual excerpts are approved text whose fit to this exact
+        # question nobody confirmed: they lift an otherwise source-unavailable
+        # answer to source-limited, never to a direct-evidence state.
+        related_evidence_count=related_evidence_count + (
+            len(manual_evidence_sources) if manual_excerpts_present else 0
+        ),
         missing_direct_authority=missing_direct_authority,
         law_lookup_failed=law_lookup_failed,
         citation_specific=citation_specific,
@@ -6465,6 +6577,24 @@ async def _ask_internal(req: AskRequest) -> AskResponse:
 
     final_prompt += "\n\n" + build_answer_directives(quality, lang=req.lang)
 
+    if manual_excerpts_present:
+        # Repeated after the answer-quality contract on purpose: the style and
+        # natural-Korean directives above govern wording only, and must not be
+        # read as permission to fill gaps the excerpts leave.
+        final_prompt += (
+            "\n\n[Manual excerpt rule — overrides the style directives above]\n"
+            "- Documents, fees, deadlines, permitted periods and form numbers: only what the"
+            " supplied manual excerpts state. Never name a document the excerpts do not name.\n"
+            "- When the excerpts do not settle a point, say so and point to 1345 / HiKorea /"
+            " the competent immigration office.\n"
+            "- Cite each excerpt-based point once as 「manual edition」 p.N (e.g. "
+            + str(manual_evidence_sources[0].get("citation") or "")
+            + "). This is the one exception to the rule against restating sources in the prose.\n"
+            "- Keep each excerpt's applies-to label: a sub-code excerpt is not a rule for the"
+            " whole parent status. Never carry visa-issuance requirements into a stay"
+            " procedure, or the reverse."
+        )
+
     # Legal-citation safety directive. For ANY law-intent question, forbid the
     # model from inventing statute/article numbers from memory; when real-time
     # law grounding is not verified, require it to say the specific citation could
@@ -6587,6 +6717,10 @@ async def _ask_internal(req: AskRequest) -> AskResponse:
         manual_grounding_status=manual_grounding_status,
         manual_to_law_fallback_used=manual_to_law_fallback_used,
         manual_to_law_fallback_reason=manual_to_law_fallback_reason,
+        manual_evidence_used=manual_excerpts_present,
+        manual_evidence_status=str(manual_evidence.get("status") or "not_attempted"),
+        manual_evidence_scopes=[s["scope"] for s in manual_evidence.get("scopes") or []],
+        manual_evidence_sources=manual_evidence_sources if manual_excerpts_present else [],
         answer_quality_mode=quality["answer_quality_mode"],
         source_confidence_level=quality["source_confidence_level"],
         requires_official_confirmation=quality["requires_official_confirmation"],

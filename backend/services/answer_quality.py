@@ -403,6 +403,7 @@ def classify_answer_quality(
     manual_to_law_fallback_used: bool,
     law_intent: bool,
     provider_configured: bool = True,
+    manual_excerpts_present: bool = False,
 ) -> Dict[str, Any]:
     """Fold grounding state + user intent into the answer-quality contract.
 
@@ -420,6 +421,11 @@ def classify_answer_quality(
     elif procedure_variant_present:
         # Scenario-specific local catalog context: useful, but needs review and
         # is weaker than confirmed manual grounding.
+        mode = SOURCE_ASSISTED
+    elif manual_excerpts_present:
+        # Approved manual text retrieved for the question (services/
+        # manual_evidence.py): real source context, but nobody confirmed it
+        # answers this exact question, so official confirmation stays required.
         mode = SOURCE_ASSISTED
     elif manual_to_law_fallback_used or related:
         # Legal/activity-scope context or related comparison statuses exist, but
