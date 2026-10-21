@@ -38,7 +38,7 @@ w.eval(readFileSync(new URL('../assets/js/civic-search.js', import.meta.url), 'u
 w.document.dispatchEvent(new w.Event('DOMContentLoaded'));
 const doc = w.document;
 assert.equal(doc.querySelectorAll('.cs-service').length, 15);
-assert(doc.querySelector('.cs-directory').open);
+assert.equal(doc.querySelector('.cs-directory').open, false, 'catalogue should be collapsed by default');
 assert(doc.querySelector('.cs-directory').compareDocumentPosition(doc.querySelector('.cs-footer')) & w.Node.DOCUMENT_POSITION_FOLLOWING);
 const filter = doc.querySelector('[data-cs-tool-filter]');
 filter.value = '병원'; filter.dispatchEvent(new w.Event('input'));
@@ -51,6 +51,15 @@ assert([...doc.querySelectorAll('.cs-service')].filter(x => !x.hidden).every(x =
 assert.equal(doc.querySelector('[data-cs-tool-group="stay"]').getAttribute('aria-pressed'), 'true');
 doc.querySelector('[data-cs-tool-group="all"]').click();
 assert.equal([...doc.querySelectorAll('.cs-service')].filter(x => !x.hidden).length, 15);
+assert.equal(doc.querySelector('.cs-result-count').textContent, '15개 도구');
+filter.value = 'appointment'; filter.dispatchEvent(new w.Event('input'));
+assert.equal([...doc.querySelectorAll('.cs-service')].filter(x => !x.hidden).length, 1, 'English synonyms should find the reservation helper');
+filter.value = '체류기간연장'; filter.dispatchEvent(new w.Event('input'));
+assert([...doc.querySelectorAll('.cs-service')].some(x => !x.hidden), 'normalized Korean search should match unspaced terms');
+filter.value = ''; filter.dispatchEvent(new w.Event('input'));
+w.location.hash = '#csTools';
+w.document.dispatchEvent(new w.Event('paradiso:landing-reset'));
+assert.equal(doc.querySelector('.cs-directory').open, true, 'cross-page catalogue deep links must expand the directory');
 assert.equal(new Set([...doc.querySelectorAll('.cs-examples button')].map(x => x.dataset.csQuery)).size, 4);
 dom.window.close();
 
