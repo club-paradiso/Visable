@@ -332,9 +332,12 @@ class FastBasicModelRoutingTests(unittest.TestCase):
             DEFAULT_VERIFIER_MODEL,
         )
 
-        self.assertEqual(DEFAULT_VERIFIER_MODEL, "nvidia/nemotron-3-super-120b-a12b:free")
+        # With Gemma-only defaults (2026-10-21) there are two free models, so the
+        # verifier (Gemma 31B; no production caller today) necessarily equals the
+        # Basic primary. The original bug was Fast answering with the verifier
+        # model; Fast must still never start on it.
+        self.assertEqual(DEFAULT_VERIFIER_MODEL, "google/gemma-4-31b-it:free")
         self.assertNotEqual(resolve_answer_mode_models("fast")["primary"], DEFAULT_VERIFIER_MODEL)
-        self.assertNotEqual(resolve_answer_mode_models("basic")["primary"], DEFAULT_VERIFIER_MODEL)
 
     def test_fast_independent_of_basic_model_env(self):
         # Setting OPENROUTER_MODEL (basic) must NOT change the fast primary.
