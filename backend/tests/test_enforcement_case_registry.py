@@ -38,6 +38,8 @@ def fixture():
                      "decisionDate": "2026-10-21", "sourceIds": [source],
                      "sourcePage": 2, "reviewStatus": "INDEPENDENTLY_REVIEWED",
                      "independentFromPrediction": True,
+                     "reviewedAt": "2026-10-21",
+                     "reviewerRole": "LEGAL_REVIEWER",
                  }]},
                 {"subjectId": token("subject", "e"), "role": "FOREIGN_NATIONAL",
                  "statusOfStay": "UNKNOWN", "violationCode": None,
@@ -91,6 +93,16 @@ class CaseRegistryTests(unittest.TestCase):
             validate_case_registry(data)
         data = fixture()
         data["cases"][0]["subjects"][0]["observations"][0]["independentFromPrediction"] = False
+        with self.assertRaises(CaseRegistryError):
+            validate_case_registry(data)
+
+    def test_review_without_verifier_metadata_rejected(self):
+        data = fixture()
+        del data["cases"][0]["subjects"][0]["observations"][0]["reviewedAt"]
+        with self.assertRaises(CaseRegistryError):
+            validate_case_registry(data)
+        data = fixture()
+        data["cases"][0]["subjects"][0]["observations"][0]["reviewerRole"] = "anonymous-person"
         with self.assertRaises(CaseRegistryError):
             validate_case_registry(data)
 
