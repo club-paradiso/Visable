@@ -747,3 +747,11 @@ html[dir="rtl"] .cs-service:hover > .cs-icon { transform: translateX(-3px) scale
   #civicLanding .cs-directory > summary { transition: none; }
   #civicLanding .cs-tools-core .cs-tool:hover { transform: none; }
 }
+
+/* Restore compact search-sheet spacing above a phone's on-screen keyboard.
+   The landing-only hero rhythm must not reduce visible suggestions. */
+@media (max-width: 680px) {
+  body.cs-sheet #civicLanding .cs-hero {
+    padding-block: 8px 0;
+  }
+}
