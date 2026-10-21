@@ -38,6 +38,26 @@ def promote_verified_manual_refs(records: list[dict[str, Any]]) -> list[dict[str
             raise ValueError(f"manualRef is not an object: {row['path']}")
 
         record_index = int(parts[0])
+        source = manifest["newSources"][row["manualType"]]
+        if records[record_index].get("code") != row["record"]:
+            raise ValueError(f"record identity drift at {row['path']}")
+
+        # subCodes and subcodes are compatibility aliases of the SAME list
+        # object during reconstruction. A second path may revisit a ref
+        # already promoted through its alias; only accept an exact match.
+        if node.get("manualVersion") == EDITION:
+            already_current = (
+                node.get("sourceDate") == source["sourceDate"]
+                and node.get("sourceFile") == source["text"]
+                and node.get("pageRange") == row["newPageRange"]
+                and ("sourceId" not in node or node["sourceId"] == source["sourceId"])
+                and ("sourcePdf" not in node or node["sourcePdf"] == source["pdf"])
+            )
+            if not already_current:
+                raise ValueError(f"conflicting promoted alias at {row['path']}")
+            promoted += 1
+            continue
+
         expected = {
             "manualType": row["manualType"],
             "manualVersion": row["manualVersion"],
@@ -54,8 +74,6 @@ def promote_verified_manual_refs(records: list[dict[str, Any]]) -> list[dict[str
                     f"{node.get(key)!r} != {value!r}"
                 )
 
-        domain = row["manualType"]
-        source = manifest["newSources"][domain]
         node["manualVersion"] = EDITION
         node["sourceDate"] = source["sourceDate"]
         node["sourceFile"] = source["text"]
