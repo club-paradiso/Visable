@@ -102,3 +102,8 @@ await new Promise(resolve => setTimeout(resolve, 30));
 assert.equal(analyzeCalls, 4, 'unavailable predictions must not be cached');
 enforcementDom.window.close();
 console.log('Full enforcement controller passed: input, confirmation, baseline, enrichment failure, enabled retry.');
+
+const { classifyProviderError } = require('../lib/enforcement-grounded-ai.js');
+assert.equal(classifyProviderError(404, 'No endpoints found matching your data policy (Free model publication).'), 'provider_data_policy');
+assert.equal(classifyProviderError(429, 'free-models-per-day exceeded'), 'provider_rate_limit');
+assert.equal(classifyProviderError(404, 'No endpoints found for this model'), 'no_compatible_endpoint');
