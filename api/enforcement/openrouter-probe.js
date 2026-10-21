@@ -41,9 +41,10 @@ module.exports = async function handler(request, response) {
     let generation = null;
     if (request.query && request.query.diagnose === '1') {
       // Fixed synthetic probe only. Never accepts a user's case, prompt or key.
-      const { modelCandidates } = require('../../lib/enforcement-grounded-ai');
+      const { modelCandidates, classifyProviderError } = require('../../lib/enforcement-grounded-ai');
       const models = modelCandidates().slice(0, 3);
       generation = await Promise.all(models.map(async (model) => {
+      try {
       const probe = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
         headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
@@ -54,7 +55,10 @@ module.exports = async function handler(request, response) {
       try { result = await probe.json(); } catch {}
       const message = String(result.error?.metadata?.raw || result.error?.message || result.message || result.detail || '').split(key).join('[redacted]').slice(0, 500)
         .replace(/(?:sk-|Bearer\s+)[A-Za-z0-9_-]+/gi, '[redacted]');
-      return { model, status: probe.status, contentType: probe.headers.get('content-type'), code: result.error?.code || null, message };
+      return { model, status: probe.status, reason: probe.ok ? null : classifyProviderError(probe.status, message) };
+      } catch (error) {
+        return { model, status: null, reason: error?.name === 'AbortError' ? 'timeout' : 'network_error' };
+      }
       }));
     }
 
