@@ -38,7 +38,7 @@ w.eval(readFileSync(new URL('../assets/js/civic-search.js', import.meta.url), 'u
 w.document.dispatchEvent(new w.Event('DOMContentLoaded'));
 const doc = w.document;
 assert.equal(doc.querySelectorAll('.cs-service').length, 15);
-assert.equal(doc.querySelector('.cs-directory').open, false, 'catalogue should be collapsed by default');
+assert.equal(doc.querySelector('.cs-directory').open, true, 'catalogue remains accessible while delegated handlers initialize');
 assert(doc.querySelector('.cs-directory').compareDocumentPosition(doc.querySelector('.cs-footer')) & w.Node.DOCUMENT_POSITION_FOLLOWING);
 const filter = doc.querySelector('[data-cs-tool-filter]');
 filter.value = '병원'; filter.dispatchEvent(new w.Event('input'));
