@@ -307,7 +307,10 @@
     var tiles = Array.prototype.slice.call(directory.querySelectorAll('[data-service-group]'));
     tiles.forEach(function (tile, i) { tile.dataset.searchKeywords = keywords[i] || ''; });
     function normalized(value) {
-      return String(value || '').normalize('NFKC').toLocaleLowerCase().replace(/[\\s\\-_/·.,()]/g, '');
+      return String(value || '').normalize('NFKC').toLocaleLowerCase()
+        .replace(/\s/g, '').replaceAll('-', '').replaceAll('_', '')
+        .replaceAll('/', '').replaceAll('·', '').replaceAll('.', '')
+        .replaceAll(',', '').replaceAll('(', '').replaceAll(')', '');
     }
     function filter() {
       var needle = normalized(input.value), count = 0;
