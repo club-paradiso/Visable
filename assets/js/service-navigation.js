@@ -22,6 +22,13 @@
     document.querySelectorAll('[data-vs-service-nav] a').forEach(function (link, i) { link.textContent = text[i]; });
   }
   update();
+
+  // Keep active product visible in the shared service switcher.
+  var current = (window.location.pathname.split('/').pop() || 'index.html').toLowerCase();
+  document.querySelectorAll('[data-vs-service-nav] a').forEach(function (link) {
+    var path = (link.getAttribute('href') || '').split('#')[0].toLowerCase();
+    if (path === current && path !== 'index.html') link.setAttribute('aria-current', 'page');
+  });
   new MutationObserver(update).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
   document.addEventListener('paradiso-language-applied', update);
 })();
