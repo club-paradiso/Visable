@@ -29,6 +29,7 @@ reviewed outcome. No real adjudication/individual records are populated by this 
   is not seven independent penalty observations for seven workers.
 - `reviewed_observations()` gives narrow reviewed *candidates* only.
   It does not auto-populate or auto-promote the v3 prediction evaluator.
+- Independently reviewed observations require a controlled reviewer role and review date, not only a status flag.
 - An attestation of independent review is **not** a cryptographic guarantee.
   Operators must retain internal review proof, access controls, and lawful
   provenance outside the repository.
