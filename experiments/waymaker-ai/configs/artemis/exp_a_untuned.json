@@ -1,0 +1,231 @@
+{
+  "schema_version": "waymaker-artemis-experiment/0.1",
+  "id": "artemis-exp-a-untuned",
+  "arm": "A",
+  "title": "Artemis A: untuned Gemma 4 E4B-it, prompted, constrained JSON output",
+  "status": "NOT RUN",
+  "status_detail": "Prepared on 2026-10-19 in Mission 001. Nothing was served or evaluated: there is no GPU on the preparation machine and no paid compute is authorised. Arm A needs no training and no train split.",
+  "created": "2026-10-19",
+  "hypothesis": "Prompted with the evaluation runner's openai_compatible prompt and constrained to its 7-key JSON schema, untuned google/gemma-4-E4B-it matches the best deterministic baseline on text-only status_code detection and exceeds it on procedure detection for colloquial and non-ko/en questions, with zero parent-for-subcode substitutions and zero visa/stay scope mixes.",
+  "null_hypothesis": "The untuned model does not beat the best deterministic baseline after cheap rule fixes on any text-only classification metric, or it introduces critical errors the rules do not make. Then Artemis is not needed for these tasks and the rules stay authoritative.",
+  "baselines": [
+    {
+      "id": "B1-python",
+      "what": "Production /api/ask contract: _detect_visa_codes + _detect_task_type + understand(), PYTHONHASHSEED pinned to 0.",
+      "source": "research-notes/status-classifier.md §9 B1-python",
+      "known_limits": "Discards every subcode from free text (R4) and is hash-seed nondeterministic without the pin (R2)."
+    },
+    {
+      "id": "B2-js",
+      "what": "Search / quick-answer contract: VisableStatusGuidance.interpret + nextStep.",
+      "source": "research-notes/status-classifier.md §9 B2-js",
+      "known_limits": "English article false positives ('a 3' -> A-3, R3), token glue ('D-10 to' -> D-10-TO, R6), multilingual procedure loss (R12)."
+    },
+    {
+      "id": "B-fixed",
+      "what": "The better of B1/B2 after the cheap rule fixes listed in 13-artemis-experiment.md §6 (hash-seed pin, article/number guard, token-boundary fix, Python subcode reading). Not built in Mission 001.",
+      "source": "13-artemis-experiment.md §6",
+      "known_limits": "Does not exist yet; the decision rule cannot be applied until it does."
+    }
+  ],
+  "base_model": {
+    "role": "primary",
+    "repo_id": "google/gemma-4-E4B-it",
+    "revision": "ee0ef6023621cff504d758262d4e04895a5af4a2",
+    "license": "apache-2.0",
+    "gated": false,
+    "loader": "AutoModelForCausalLM",
+    "params": "8.00B total, 4.5B effective; dense with per-layer embeddings; text, image and audio towers; 131,072 context",
+    "source": "research-notes/models.md §3a (HF API, 2026-10-19, SHA re-checked by the verifier) and §5 Artemis rank 1",
+    "license_note": "HF cardData says apache-2.0 and gated: false. No Gemma 4 repo ships a LICENSE file; archive Google's licence page beside the SHA (models.md §3a verifier note). Whether the Gemma Prohibited Use Policy binds Apache-2.0 Gemma 4 is unresolved (models.md §4, §8).",
+    "loader_note": "The checkpoint class is Gemma4ForConditionalGeneration. Whether AutoModelForCausalLM loads it text-only is UNVERIFIED (models.md §8); the smoke step in training/README.md must confirm it or switch the loader."
+  },
+  "secondary_model": {
+    "role": "secondary",
+    "repo_id": "google/gemma-4-E2B-it",
+    "revision": "3e22461f65e89153144f8adb70e3b8c2cc9845a7",
+    "license": "apache-2.0",
+    "gated": false,
+    "loader": "AutoModelForCausalLM",
+    "params": "5.12B total, 2.3B effective; 131,072 context",
+    "source": "research-notes/models.md §3a and §5 Artemis rank 1 (cheaper sibling)",
+    "note": "Run the same arm on E2B only if E4B passes the safety gates; the smaller model is preferred when it scores within the CI of E4B (models.md §5 design note)."
+  },
+  "dataset": {
+    "tasks": [
+      "status_procedure_classification",
+      "entity_date_extraction"
+    ],
+    "benchmark_dir": "datasets/benchmark/v0",
+    "eval_splits": [
+      "dev",
+      "test",
+      "adversarial_holdout"
+    ],
+    "train": {
+      "status": "EMPTY",
+      "builder": "training/build_sft_dataset.py",
+      "examples_file": "datasets/benchmark/v0/train.jsonl",
+      "sft_file": "datasets/sft/artemis-v0/train.sft.jsonl",
+      "allow_teacher_generated": false,
+      "note": "Arm A trains nothing. The train definition is listed so that A, B and C share one data definition. Benchmark v0 has no train split, so the train file does not exist."
+    },
+    "leakage_guard": {
+      "ngram": 3,
+      "unit": "word",
+      "metric": "jaccard",
+      "max_overlap": 0.5,
+      "exact_duplicates": "refuse",
+      "why": "Template siblings that differ in one status code share most word 3-grams (about 0.6 Jaccard for a six-token question, INFERRED); 0.5 refuses them, and the fix is a re-split by case template (training-distill.md §4.6), never a higher threshold."
+    },
+    "scoring_rules": [
+      "Text-only items only: input.payload_status_code is null, so a code passed as payload cannot be scored as detection (status-classifier.md §9 rule 4).",
+      "A subcode is scored only from the explicit subcode field; an output equal to the parent code is a wrong subcode, never a hit (status-classifier.md §9 rule 1).",
+      "Procedures are scored on the 16 fine ids and also mapped through contracts.FINE_TO_COARSE; items whose fine id has no coarse equivalent are reported as not scorable for backend baselines."
+    ]
+  },
+  "prompt": {
+    "template_id": "artemis-sft/v1",
+    "sha256": "f488fd1b93eb495b2452a287bac3110dd0914bc87430e5134f1c50e1090d3f7f",
+    "defined_in": "waymaker_ai/evaluation/baselines/model.py (build_messages, system_prompt, DECODING) and waymaker_ai/evaluation/predictions.py (model_output_schema); sft_dataset.prompt_sha256 hashes all three",
+    "note": "Training and evaluation use the runner's own openai_compatible request: one system prompt and one 7-key schema for both Artemis tasks, user message = question (prefixed by the UI payload code when present). A change to the runner's prompt, schema or decoding changes this hash and the config stops loading."
+  },
+  "training": null,
+  "hardware": {
+    "assumption": "One 16-24 GB NVIDIA GPU (compute class C1, training-distill.md §2.0) for serving only.",
+    "fits": [
+      "L4 24 GB: E4B in bf16 (about 16 GB of weights, INFERRED from 8.00B parameters) with vLLM.",
+      "T4 16 GB: no native bf16, so serve in fp16; E4B in 16-bit does not leave room for the KV cache, so use E2B in fp16 or a 4-bit E4B (official QAT GGUF with llama.cpp). Estimates from models.md §3b and §6, all INFERRED."
+    ]
+  },
+  "compute": {
+    "paid_endpoint": false,
+    "managed_finetuning": null,
+    "note": "Local GPU, free Colab T4 or Kaggle only. A rented GPU is a paid run and is not authorised in Mission 001."
+  },
+  "cost": {
+    "paid_runs_authorised": false,
+    "estimate_usd": {
+      "low": 0,
+      "high": 2
+    },
+    "basis": "Inference only. $0 on a local GPU, free Colab or Kaggle. If an owner later authorises a rental: 1-3 hours of one L4 at RunPod Secure $0.59/h is about $0.6-1.8. Hours are INFERRED for a benchmark of a few hundred short items.",
+    "sources": [
+      "research-notes/cost.md §5: Colab free T4 (UNVERIFIED quota), Kaggle about 30 GPU-hours/week (UNVERIFIED)",
+      "research-notes/cost.md §6: RunPod Secure L4 $0.59/h (VERIFIED, accessed 2026-10-19)"
+    ]
+  },
+  "evaluation": {
+    "runner": "waymaker_ai.evaluation (built by a sibling task in Mission 001; confirm its command-line flags with --help)",
+    "baseline_kind": "openai_compatible",
+    "serving": [
+      "vLLM OpenAI-compatible server at the pinned revision, with JSON-schema structured outputs (training-distill.md §2.2, constrained decoding).",
+      "llama.cpp llama-server with the official QAT GGUF when the GPU is a T4."
+    ],
+    "decoding": {
+      "source": "waymaker_ai.evaluation.baselines.model.DECODING",
+      "temperature": 0,
+      "seed": 0,
+      "max_tokens": 512,
+      "constrained_json": true,
+      "schema": "waymaker_ai.evaluation.predictions.model_output_schema(task) (response_format json_schema, strict)",
+      "why": "The runner's own setting. Labels, not prose: greedy decoding with a fixed seed makes a run repeatable. training-distill.md §4.2 fixes temperature 0.2 for answer wording, which Artemis does not produce."
+    },
+    "splits": [
+      "dev",
+      "test",
+      "adversarial_holdout"
+    ],
+    "split_discipline": "Prompt and decoding choices are made on dev only. test and adversarial_holdout are scored once per configuration, against a frozen hash manifest of the benchmark files.",
+    "metrics": [
+      "status_exact",
+      "subcode_exact (a parent in the subcode field or a parent fallback is wrong)",
+      "flags parent_fallback + parent_in_subcode_field (critical; CLE-4): count must be 0",
+      "procedure_fine",
+      "procedure_coarse (via contracts.FINE_TO_COARSE; items with no coarse equivalent are reported as not scorable)",
+      "flag procedure_scope_mixed (critical; CLE-3: a visa-scope procedure for a stay question or the reverse): count must be 0",
+      "not_status_token_respected and flag code_from_non_code_token ('a 3 month' must not become A-3)",
+      "dates_exact and status_codes_exact (entity_date_extraction)",
+      "clarification (only where needs_clarification is labelled)",
+      "structured-output validity rate (answers with no schema violation)",
+      "latency p50 / p95 ms",
+      "per adversarial class and per language (ko, en, other) breakdown"
+    ],
+    "reporting": "Point estimate with a 95% bootstrap CI per split; per-language breakdown (ko, en, other)."
+  },
+  "gates": [
+    {
+      "id": "G0-eval-frozen",
+      "applies_to": [
+        "A",
+        "B",
+        "C"
+      ],
+      "condition": "dev, test and adversarial_holdout are frozen with a committed hash manifest before the first scored run.",
+      "threshold": null,
+      "source": "training-distill.md §4.7 G0; 12-evaluation-methodology.md governs the benchmark freeze",
+      "on_fail": "Do not score test or adversarial_holdout."
+    },
+    {
+      "id": "G1-safety",
+      "applies_to": [
+        "A",
+        "B",
+        "C"
+      ],
+      "condition": "The runner's flags parent_fallback, parent_in_subcode_field and procedure_scope_mixed occur 0 times on test and adversarial_holdout.",
+      "threshold": 0,
+      "source": "training-distill.md §4.5 CLE-3/CLE-4 and §4.7 G1; CLAUDE.md code hierarchy and procedure scope rules; 12-evaluation-methodology.md critical-error definitions",
+      "on_fail": "NO-GO: the arm ends; the model may not be used even as a fallback."
+    },
+    {
+      "id": "G4-format",
+      "applies_to": [
+        "A",
+        "B",
+        "C"
+      ],
+      "condition": "Structured-output validity is 1.0 (no schema violation) under constrained decoding.",
+      "threshold": 1.0,
+      "source": "training-distill.md §4.7 G4",
+      "on_fail": "NO-GO until the serving stack enforces the schema."
+    },
+    {
+      "id": "D1-need-for-a-model",
+      "applies_to": [
+        "A",
+        "B",
+        "C"
+      ],
+      "condition": "Decision rule: a model arm is pursued only if B-fixed is below the dev targets in 12-evaluation-methodology.md on text-only subcode_exact or procedure_fine, and the model arm beats B-fixed there with a 95% CI that excludes 0.",
+      "threshold": "targets set in 12-evaluation-methodology.md; this config sets none of its own",
+      "source": "13-artemis-experiment.md §6; training-distill.md §5; status-classifier.md §9",
+      "on_fail": "Keep the deterministic classifiers; do not start arm B."
+    },
+    {
+      "id": "G6-latency",
+      "applies_to": [
+        "A",
+        "B",
+        "C"
+      ],
+      "condition": "p95 latency fits inside the Quick Answer budget, so routing never consumes the whole timeout.",
+      "threshold": "p95 well under 7000 ms (the Quick Answer timeout, training-distill.md §4.7 G6); the exact routing budget comes from 12-evaluation-methodology.md",
+      "source": "training-distill.md §4.7 G6",
+      "on_fail": "NO-GO for online use; offline use only."
+    }
+  ],
+  "references": [
+    "docs/ai/waymaker-genesis/13-artemis-experiment.md",
+    "docs/ai/waymaker-genesis/12-evaluation-methodology.md",
+    "docs/ai/waymaker-genesis/research-notes/models.md",
+    "docs/ai/waymaker-genesis/research-notes/training-distill.md",
+    "docs/ai/waymaker-genesis/research-notes/cost.md",
+    "docs/ai/waymaker-genesis/research-notes/status-classifier.md"
+  ],
+  "limitations": [
+    "No Korean-specific benchmark exists for Gemma 4 (models.md §3b: MMMLU only, VENDOR-REPORTED); this arm is the first Korean measurement.",
+    "The benchmark labels are synthetic or machine-checked; none is human-verified yet (05-legal-intelligence-architecture.md §3).",
+    "The benchmark directory path is assumed (datasets/benchmark/v0); align it with the benchmark task's output before the first run."
+  ]
+}

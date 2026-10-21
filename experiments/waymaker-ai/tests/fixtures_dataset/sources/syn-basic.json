@@ -1,0 +1,73 @@
+{
+  "bundle_id": "syn-basic",
+  "bundle_version": 1,
+  "provenance": "synthetic_fixture",
+  "attribution": "Synthetic test fixture for the dataset validator. Fictional law; not legal information.",
+  "captured_at": null,
+  "title_index_coverage": "complete",
+  "history_coverage": {
+    "SYN-LAW-0001": "complete"
+  },
+  "identities": [
+    {
+      "provider": "synthetic",
+      "family": "statute",
+      "stable_id": "SYN-LAW-0001",
+      "official_title": "가상체류관리법",
+      "former_titles": [],
+      "short_titles": [],
+      "competent_ministry": null
+    }
+  ],
+  "versions": [
+    {
+      "stable_id": "SYN-LAW-0001",
+      "version_id": "SYN-V1",
+      "effective_date": "2026-01-01",
+      "promulgation_date": "2025-12-01",
+      "promulgation_no": "가상법률 제1호",
+      "amendment_type": "제정",
+      "end_date": null,
+      "provision_effective_dates": {},
+      "official_url": null,
+      "retrieved_at": null,
+      "content_sha256": null,
+      "parse_status": "complete",
+      "provenance": "synthetic_fixture",
+      "has_transitional_provisions": null,
+      "is_repeal": false,
+      "changed_provisions": null
+    }
+  ],
+  "provisions": [
+    {
+      "evidence_id": "syn-basic:SYN-LAW-0001:SYN-V1:제3조",
+      "stable_id": "SYN-LAW-0001",
+      "version_id": "SYN-V1",
+      "effective_date": "2026-01-01",
+      "provision_key": "제3조",
+      "unit_kind": "article",
+      "heading": "가상 신고기한",
+      "text": "제3조(가상 신고기한) 가상체류자는 가상 사유가 생긴 날부터 14일 이내에 가상 신고를 하여야 한다.",
+      "paragraphs": {},
+      "items": {},
+      "scope": null,
+      "official_url": null,
+      "provenance": "synthetic_fixture"
+    }
+  ],
+  "addenda": [],
+  "guidance": [],
+  "faults": [
+    {
+      "operation": "get_provision",
+      "match": {
+        "stable_id": "SYN-LAW-0001",
+        "provision_key": "제5조"
+      },
+      "status": "unavailable_timeout",
+      "raw_body_kind": "timeout",
+      "detail": "Synthetic timeout: get_provision for 제5조 never answers, so its absence is unknown."
+    }
+  ]
+}
