@@ -11,6 +11,8 @@
    * scripts/check_landing_shell.mjs asserts ko/en here == ko/en packs. */
   var copy = {
     ko: {
+      checklists: '서류 준비 목록', checklistsSub: '상황별 질문에 답하고 필요한 체류 서류를 확인해요.',
+      directoryIntro: "필요한 일을 고르면, 바로 시작할 수 있어요.", toolSearch: "도구 이름이나 필요한 일을 검색하세요", groupPrepare: "신청·서류", groupStay: "체류·생활", groupHelp: "상담·기관", toolEmpty: "맞는 도구가 없어요. 다른 이름으로 검색하거나 전체를 선택해 보세요.", browseSub: "체류자격과 업무를 골라 필요한 안내를 찾아요.", shortSub: "단기 방문의 목적에 맞는 입국 경로를 살펴봐요.", agenciesSub: "가까운 등록 민원대행기관을 찾아요.", hospitalsSub: "법무부 지정 의료기관과 위치를 확인해요.", jobsSub: "직업·산업분류 코드를 검색하고 확인해요.", pathwaysSub: "한국 생활에서 필요한 절차를 상황별로 살펴봐요.", remindersSub: "체류 관련 날짜를 계산하고 알림을 준비해요.", enforcementSub: "사실을 확인한 뒤 법령 기준과 AI 예상을 구분해 살펴봐요.",
       search: '비자·체류 검색', forms: '서류 작성', about: '이용 안내', submit: '검색', preparing: '검색을 준비하고 있습니다.', unavailable: '안내 데이터를 불러오지 못했습니다. 페이지를 새로고침해 주세요.',
       title: '답이 <em>보이는</em> 한국 생활.', sub: '비자 코드, 절차 이름, 지금 상황을 그대로 입력하세요.',
       placeholder: '예: F-6 연장, 이사했어요', pre: '입국 전 · 사증 발급', post: '입국 후 · 체류 관리',
@@ -56,6 +58,8 @@
       noscript: 'JavaScript가 꺼져 있으면 검색과 안내를 사용할 수 없어요. 공식 원문 PDF는 아래 링크에서 바로 열 수 있어요.'
     },
     en: {
+      checklists: 'Document checklists', checklistsSub: 'Answer a few questions to find the residence documents for your situation.',
+      directoryIntro: "Choose what you need to do. Start here.", toolSearch: "Search services or tasks", groupPrepare: "Applications & forms", groupStay: "Stay & daily life", groupHelp: "Advice & offices", toolEmpty: "No services match. Try another name or choose All results.", browseSub: "Choose a status and procedure to find the relevant guide.", shortSub: "Explore entry routes for a short visit.", agenciesSub: "Find a registered immigration agency near you.", hospitalsSub: "Find Ministry of Justice designated medical institutions.", jobsSub: "Search occupation and industry classification codes.", pathwaysSub: "Explore procedures for common situations in Korea.", remindersSub: "Calculate dates and prepare reminders for your stay.", enforcementSub: "Confirm the facts, then review legal criteria and AI estimates separately.",
       search: 'Visa & stay search', forms: 'Forms', about: 'About', submit: 'Search', preparing: 'Preparing your search…', unavailable: 'Could not load the guides. Please reload the page.',
       title: 'Life in Korea, made <img class="cs-hero-wordmark" src="assets/brand/visable-wordmark-green.svg" alt="VISABLE">', sub: 'Type a visa code, a procedure, or just describe your situation.',
       placeholder: 'e.g. F-6 extension, I moved', pre: 'Before entry · Visa issuance', post: 'After entry · Managing your stay',
@@ -210,12 +214,99 @@
   // Editorial examples, not usage data: each query is one the search resolves to
   // a status × procedure or a procedure (scripts/check_search_suggest.mjs).
   var EXAMPLES = [['F-6 체류기간 연장', 'exF6Extension'], ['외국인등록', 'exRegistration'], ['주소 변경 신고', 'exAddress'], ['E-7 근무처 변경', 'exE7Workplace']];
+  // Curated common tasks, not an analytics popularity ranking. Only the selected
+  // candidate IDs are stored; personal search text is never stored here.
+  var EXAMPLE_POOL = [
+    ['F-6 체류기간 연장', 'F-6 extension of stay'], ['외국인등록', 'Foreign resident registration'],
+    ['주소 변경 신고', 'Report an address change'], ['E-7 근무처 변경', 'E-7 workplace change'],
+    ['D-2 체류기간 연장', 'D-2 extension of stay'], ['D-4 체류기간 연장', 'D-4 extension of stay'],
+    ['D-10 체류기간 연장', 'D-10 extension of stay'], ['F-2 체류기간 연장', 'F-2 extension of stay'],
+    ['F-4 체류기간 연장', 'F-4 extension of stay'], ['외국인등록증 분실 재발급', 'Replace a lost residence card'],
+    ['여권 변경 신고', 'Report a new passport'], ['D-2 시간제취업', 'D-2 part-time work'],
+    ['D-2 체류자격 변경', 'D-2 change of status'], ['D-10 체류자격 변경', 'D-10 change of status'],
+    ['F-6 외국인등록', 'F-6 resident registration'], ['E-7 체류기간 연장', 'E-7 extension of stay']
+  ];
+  var selectedExamples = null;
+  function selectExamples(random, previous) {
+    var ids = EXAMPLE_POOL.map(function (_, i) { return i; });
+    for (var i = ids.length - 1; i > 0; i--) { var j = Math.floor(random() * (i + 1)); var n = ids[i]; ids[i] = ids[j]; ids[j] = n; }
+    var picked = ids.slice(0, 4);
+    // A refresh must change the visible set even if the shuffle repeats it.
+    if (previous && picked.slice().sort().join(',') === previous.slice().sort().join(',')) picked[3] = ids[4];
+    return picked;
+  }
+  function rotateExamples() {
+    if (!selectedExamples) {
+      var previous = null;
+      try { previous = JSON.parse(sessionStorage.getItem('visable.example-ids')); } catch (e) {}
+      selectedExamples = selectExamples(Math.random, Array.isArray(previous) ? previous : null);
+      try { sessionStorage.setItem('visable.example-ids', JSON.stringify(selectedExamples)); } catch (e) {}
+    }
+    var group = root.querySelector('.cs-examples');
+    if (!group) return;
+    group.querySelectorAll('button[data-cs-query]').forEach(function (button, i) {
+      var example = EXAMPLE_POOL[selectedExamples[i]];
+      button.setAttribute('data-cs-query', example[0]);
+      button.querySelector('span').textContent = lang() === 'ko' ? example[0] : example[1];
+      button.querySelector('span').setAttribute('lang', lang());
+    });
+  }
+  function directoryHtml(T) {
+    function tile(key, sub, ico, attrs, group) {
+      var link = attrs.indexOf('href=') === 0, tag = link ? 'a' : 'button';
+      return '<' + tag + (link ? ' ' : ' type="button" ') + attrs + ' class="cs-service" data-service-group="' + group + '"><span class="cs-service-icon">' + icon(ico) + '</span><span><strong>' + esc(T(key)) + '</strong><small>' + esc(T(sub)) + '</small></span>' + icon('chevron-right') + '</' + tag + '>';
+    }
+    return '<details id="csTools" class="cs-directory" open><summary>' + esc(T('allTools')) + '<span>' + esc(T('directoryIntro')) + '</span>' + icon('chevron-down') + '</summary><div class="cs-directory-content">' +
+      '<div class="cs-directory-controls"><label class="cs-tool-search">' + icon('search') + '<span class="cs-sr">' + esc(T('toolSearch')) + '</span><input type="search" data-cs-tool-filter placeholder="' + esc(T('toolSearch')) + '" autocomplete="off"></label><div class="cs-tool-tabs" role="group" aria-label="' + esc(T('allTools')) + '">' +
+      [['all','all'],['prepare','groupPrepare'],['stay','groupStay'],['help','groupHelp']].map(function (x) { return '<button type="button" data-cs-tool-group="' + x[0] + '" aria-pressed="' + (x[0] === 'all') + '">' + esc(T(x[1])) + '</button>'; }).join('') + '</div></div>' +
+      '<div class="cs-service-grid">' +
+      tile('paperwork','paperworkSub','file-text','href="form-helper.html"','prepare') +
+      tile('checklists','checklistsSub','id-card','href="immigration-checklists.html"','prepare') +
+      tile('browse','browseSub','id-card','data-action="reveal-home-section" data-target="visaManualSection" aria-controls="civicBrowsePanel" aria-expanded="false"','prepare') +
+      tile('short','shortSub','plane','data-action="open-short-stay"','prepare') +
+      tile('reservation','reservationSub','calendar-days','data-action="open-hikorea-guide"','prepare') +
+      tile('reader','readerSub','book-open','href="manual.html"','prepare') +
+      tile('office','officeSub','landmark','data-action="open-jurisdiction-modal"','help') +
+      tile('agencies','agenciesSub','user-round','data-action="open-agent-finder"','help') +
+      tile('hospitals','hospitalsSub','house','data-action="open-med-finder"','help') +
+      tile('jobs','jobsSub','search','data-action="open-jobcode-modal"','stay') +
+      tile('pathways','pathwaysSub','compass','data-action="reveal-home-section" data-target="pathwaySection"','stay') +
+      tile('reminders','remindersSub','calendar-days','data-action="reveal-home-section" data-target="reminderSection"','stay') +
+      tile('naturalization','newHomeSub','house','href="new-home.html"','stay') +
+      tile('enforcement','enforcementSub','landmark','href="enforcement.html"','help') +
+      tile('waymaker','waymakerSub','compass','href="ai.html"','help') +
+      '</div><p class="cs-tool-empty" hidden>' + esc(T('toolEmpty')) + '</p><p class="cs-sr" data-cs-tool-status role="status" aria-live="polite"></p>' +
+      '<div class="cs-tool-settings"><button type="button" data-action="toggle-theme">' + esc(T('theme')) + '</button><button type="button" data-action="toggle-easy-mode" aria-pressed="' + easyModeOn() + '">' + esc(T('easyModeEasy')) + '</button></div></div></details>';
+  }
+  function bindDirectory() {
+    var directory = root.querySelector('.cs-directory');
+    if (!directory) return;
+    var input = directory.querySelector('[data-cs-tool-filter]'), group = 'all';
+    function filter() {
+      var needle = input.value.trim().toLocaleLowerCase(), count = 0;
+      directory.querySelectorAll('[data-service-group]').forEach(function (tile) {
+        var match = (group === 'all' || tile.dataset.serviceGroup === group) && (!needle || tile.textContent.toLocaleLowerCase().indexOf(needle) >= 0);
+        tile.hidden = !match; if (match) count++;
+      });
+      directory.querySelector('.cs-tool-empty').hidden = count > 0;
+      directory.querySelector('[data-cs-tool-status]').textContent = String(count) + (lang() === 'ko' ? '개 도구' : ' services');
+    }
+    input.addEventListener('input', filter);
+    directory.querySelectorAll('[data-cs-tool-group]').forEach(function (button) {
+      button.addEventListener('click', function () {
+        group = button.dataset.csToolGroup;
+        directory.querySelectorAll('[data-cs-tool-group]').forEach(function (b) { b.setAttribute('aria-pressed', String(b === button)); });
+        filter();
+      });
+    });
+  }
+
   function homeHtml(T, ctx) {
     ctx = ctx || {};
     var langHtml = ctx.langButton || langButton('cs-lang-home', ctx.langCode, T);
     var sourceLinksHtml = '<a href="' + VISA_PDF + '" target="_blank" rel="noopener">' + esc(T('visa')) + ' PDF</a> · <a href="' + STAY_PDF + '" target="_blank" rel="noopener">' + esc(T('stay')) + ' PDF</a>';
     return '<header class="cs-nav"><a class="cs-brand" href="./" aria-label="Visable"><img src="assets/brand/visable-wordmark.svg" alt="Visable"></a>' +
-      '<nav aria-label="' + esc(T('about')) + '"><button type="button" data-cs-focus>' + esc(T('search')) + '</button><a href="form-helper.html">' + esc(T('forms')) + '</a><a href="#civic-about">' + esc(T('about')) + '</a>' +
+      '<nav aria-label="' + esc(T('about')) + '"><a href="#csTools" data-cs-open-tools>' + esc(T('allTools')) + '</a><button type="button" data-cs-focus>' + esc(T('search')) + '</button><a href="form-helper.html">' + esc(T('forms')) + '</a><a href="#civic-about">' + esc(T('about')) + '</a>' +
       '<span class="cs-languages">' + langHtml + '</span></nav></header>' +
       '<main class="cs-home"><section class="cs-hero"><h1>' + T('title') + '</h1><p id="civicSearchSub">' + esc(T('sub')) + '</p>' +
       '<form id="civicSearchForm" role="search" novalidate><label class="cs-sr" for="civicQuery">' + esc(T('search')) + '</label><div class="cs-searchbar">' + icon('search') +
@@ -238,13 +329,10 @@
       toolButton(T, 'data-cs-focus data-cs-manual data-cs-tool="manuals"', 'search', 'manuals', 'manualsSub') +
       toolLink(T, 'manual.html', 'book-open', 'reader', 'readerSub', ' data-cs-tool="reader"') +
       toolButton(T, 'data-action="open-jurisdiction-modal" data-cs-tool="office"', 'landmark', 'office', 'officeSub') + '</div></section>' +
+      directoryHtml(T) +
       '<div class="cs-source-strip"><span class="cs-source-strip-label">' + esc(T('sourceLabel')) + '</span><a href="' + VISA_PDF + '" target="_blank" rel="noopener">' + icon('file-text') + '<span>' + esc(T('visa')) + ' · 2026.09.01</span>' + icon('external-link') + '</a>' +
       '<a href="' + STAY_PDF + '" target="_blank" rel="noopener">' + icon('file-text') + '<span>' + esc(T('stay')) + ' · 2026.09.18</span>' + icon('external-link') + '</a></div>' +
       '<footer class="cs-footer"><img src="assets/brand/visable-wordmark.svg" alt="Visable"><p>' + esc(T('disclaimer')) + '</p></footer>' +
-      '<details class="cs-directory"><summary>' + esc(T('allTools')) + '</summary><div>' +
-      '<button type="button" data-action="reveal-home-section" data-target="visaManualSection" aria-controls="civicBrowsePanel" aria-expanded="false">' + esc(T('browse')) + '</button>' +
-      [['open-short-stay', 'short'], ['open-jobcode-modal', 'jobs'], ['open-jurisdiction-modal', 'office'], ['open-agent-finder', 'agencies'], ['open-med-finder', 'hospitals']].map(function (item) { return '<button type="button" data-action="' + item[0] + '">' + esc(T(item[1])) + '</button>'; }).join('') +
-      '<button type="button" data-action="reveal-home-section" data-target="pathwaySection">' + esc(T('pathways')) + '</button><button type="button" data-action="reveal-home-section" data-target="reminderSection">' + esc(T('reminders')) + '</button><a href="form-helper.html">' + esc(T('paperwork')) + '</a><a href="manual.html">' + esc(T('reader')) + '</a><a href="new-home.html">' + esc(T('naturalization')) + '</a><a href="enforcement.html">' + esc(T('enforcement')) + '</a><a href="ai.html">Waymaker</a><button type="button" data-action="toggle-theme">' + esc(T('theme')) + '</button><button type="button" data-action="toggle-easy-mode" aria-pressed="' + (easyModeOn() ? 'true' : 'false') + '">' + esc(T('easyModeEasy')) + '</button></div></details>' +
       '<section id="civicBrowsePanel" class="cs-browse" aria-labelledby="csBrowseTitle" hidden><div class="cs-browse-head"><h2 id="csBrowseTitle">' + esc(T('browse')) + '</h2>' +
       '<div class="cs-browse-tabs" role="group" aria-labelledby="csBrowseTitle"><button type="button" data-cs-journey="pre" aria-pressed="false">' + esc(T('pre')) + '</button><button type="button" data-cs-journey="post" aria-pressed="false">' + esc(T('post')) + '</button></div>' +
       '<button type="button" class="cs-journey-close" data-cs-journey="close" aria-label="' + esc(T('journeyClose')) + '">' + icon('x') + '</button></div><div class="cs-journey-slot"></div></section>' +
@@ -518,6 +606,10 @@
     var panel = journeyPanel();
     if (panel) panel.addEventListener('keydown', function (e) { if ((e.key === 'Escape' || e.key === 'Esc') && journey.state !== 'CLOSED') { e.preventDefault(); e.stopPropagation(); closeJourney(); } });
     bindSuggest();
+    rotateExamples();
+    bindDirectory();
+    var toolsLink = root.querySelector('[data-cs-open-tools]');
+    if (toolsLink) toolsLink.addEventListener('click', function () { root.querySelector('.cs-directory').open = true; });
     mountJourneySection();
   }
   function home(opts) {
@@ -542,6 +634,15 @@
     value = String(value || '').trim();
     if (!value) { root.querySelector('#civicQuery').focus(); return; }
     closeSuggest();
+    var assessment = window.VisableSearchRouter && window.VisableSearchRouter.assessComplexity(value);
+    if (assessment && assessment.complex) {
+      // Same-tab handoff; no question in URLs, analytics, or a provider call.
+      try {
+        sessionStorage.setItem('visable.search-handoff', JSON.stringify({ version: 1, at: Date.now(), query: value.slice(0, 300), lang: uiLang(), reason: assessment.reason }));
+        location.href = 'ai.html?handoff=search&lang=' + encodeURIComponent(uiLang());
+        return;
+      } catch (e) { /* blocked storage: keep the question in ordinary search */ }
+    }
     document.body.classList.remove('cs-sheet');
     document.getElementById('q').value = value;
     document.body.classList.remove('landing', 'launching', 'searching');
@@ -648,7 +749,7 @@
     }).catch(function () { /* the PDF link beside the button remains available */ });
   }
   window.VisableCivicSearch = {
-    load: load, openPage: openPage, homeHtml: homeHtml, copy: copy, langButton: langButton,
+    load: load, openPage: openPage, homeHtml: homeHtml, copy: copy, langButton: langButton, selectExamples: selectExamples, examplePool: EXAMPLE_POOL,
     journey: { open: openJourney, close: closeJourney, toggle: toggleJourney, state: function () { return journey.state; } },
     // Read-only view of the suggestion panel for tests and QA (no query text is kept anywhere else).
     suggestions: { state: function () { return { ready: !!suggestIndex, failed: suggestFailed, count: sugg.items.length, active: sugg.active, renderMs: sugg.renderMs, items: sugg.items.map(function (i) { return { kind: i.kind, match: i.match, label: i.label || i.labelKey, query: i.query || null, href: i.href || null, action: i.action || null }; }) }; } }

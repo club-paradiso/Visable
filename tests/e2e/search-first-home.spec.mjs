@@ -46,7 +46,7 @@ test.describe('search-first hierarchy', () => {
     const examples = page.locator('.cs-examples button:visible, .cs-example-link:visible');
     const n = await examples.count();
     expect(n).toBeGreaterThanOrEqual(3);
-    expect(n).toBeLessThanOrEqual(page.viewportSize().width <= 680 ? 4 : 5);
+    expect(n).toBeLessThanOrEqual(5);
     await expect(page.locator('.cs-examples-label')).toHaveText('이렇게 검색해 보세요');
     await expect(page.locator('.cs-footer')).toContainText('공식 정부 서비스가 아닙니다');
     await expect(page.locator('.cs-source-strip a')).toHaveCount(2);
@@ -62,9 +62,11 @@ test.describe('search-first hierarchy', () => {
 
   test('examples search; the forms example opens Form Helper', async ({ page }) => {
     await bootHome(page);
-    await page.locator('.cs-examples button[data-cs-query="주소 변경 신고"]').click();
+    const example = page.locator('.cs-examples button').first();
+    const exampleQuery = await example.getAttribute('data-cs-query');
+    await example.click();
     await expect(page.locator('body')).toHaveClass(/searched/);
-    await expect(page.locator('#q')).toHaveValue('주소 변경 신고');
+    await expect(page.locator('#q')).toHaveValue(exampleQuery);
     await expect(page.locator('#statusGuidance[data-sg-kind]')).toBeVisible({ timeout: 20_000 });
     await bootHome(page);
     await page.locator('.cs-example-link').click();
@@ -456,4 +458,35 @@ test.describe('small screens', () => {
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
     expect(overflow).toBeLessThanOrEqual(1);
   });
+});
+
+
+test('curated examples change on refresh and the service catalogue filters tasks', async ({ page }) => {
+  await bootHome(page);
+  const queries = () => page.locator('.cs-examples button').evaluateAll(items => items.map(x => x.dataset.csQuery).sort());
+  const before = await queries();
+  expect(new Set(before).size).toBe(4);
+  await page.reload();
+  await expect(page.locator('#civicLanding')).toHaveAttribute('data-cs-hydrated', /reused|rendered/);
+  expect(await queries()).not.toEqual(before);
+  await page.locator('[data-cs-tool-filter]').fill('병원');
+  await expect(page.locator('.cs-service:visible')).toHaveCount(1);
+  await expect(page.locator('.cs-service:visible')).toContainText('법무부지정 병원');
+  await page.locator('[data-cs-tool-filter]').fill('존재하지않는도구');
+  await expect(page.locator('.cs-tool-empty')).toBeVisible();
+  await page.locator('[data-cs-tool-filter]').fill('');
+  await page.locator('[data-cs-tool-group="stay"]').click();
+  await expect(page.locator('.cs-service:visible')).toHaveCount(4);
+});
+
+test('a linked multi-procedure question reaches Waymaker intact without auto-send', async ({ page }) => {
+  await bootHome(page);
+  const question = 'F-6 연장 심사 중인데 출국했다가 돌아와도 되나요?';
+  await page.locator('#civicQuery').fill(question);
+  await page.locator('#civicSearchForm').evaluate(form => form.requestSubmit());
+  await expect(page).toHaveURL(/ai\.html\?handoff=search&lang=ko/);
+  await expect(page.locator('#aiQ')).toHaveValue(question);
+  await expect(page.locator('.search-handoff-note')).toBeVisible();
+  expect(page.url()).not.toContain(encodeURIComponent(question));
+  await expect(page.locator('#sendBtn')).toBeEnabled();
 });

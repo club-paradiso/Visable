@@ -38,7 +38,8 @@
     "test:search-waymaker": "node scripts/check_search_router.mjs && node scripts/check_search_suggest.mjs && node scripts/check_document_physical_form.mjs && node scripts/check_fee_rules.mjs && node scripts/check_local_practice.mjs && node scripts/check_waymaker_quick_answer.mjs && node scripts/check_search_result_unification.mjs",
     "test:immigration-checklists": "node scripts/check_immigration_checklists.mjs",
     "build:manual-reader": "python3 scripts/build_manual_reader.py",
-    "test:manual-reader": "node scripts/check_manual_reader.mjs && python3 scripts/build_manual_reader.py --check"
+    "test:manual-reader": "node scripts/check_manual_reader.mjs && python3 scripts/build_manual_reader.py --check",
+    "test:search-tools": "node scripts/check_search_tools_reliability.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.61.0",

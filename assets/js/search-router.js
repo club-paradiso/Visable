@@ -251,7 +251,29 @@
     };
   }
 
-  var api = { route: route, INTENTS: INTENTS, WORKPLACE_MOVE: WORKPLACE_MOVE, FIRST_ARRIVAL: FIRST_ARRIVAL, OBJECTS: OBJECTS, ACTIONS: ACTIONS, facetOf: facetOf, extractOffice: extractOffice, composeProcedure: composeProcedure, registryFor: registryFor };
+  // Route on the relationships in a question, never length alone. Short factual
+  // questions and one status change stay in the deterministic search.
+  function assessComplexity(query) {
+    var q = String(query || '').trim();
+    var topics = [
+      /연장|만료|extend|extension|expir/i,
+      /자격\s*변경|비자\s*변경|change\s*(my\s*)?(visa|status)|switch\s*(visa|status)/i,
+      /출국|재입국|돌아오|다녀|leave\s*korea|re.?entry|travel|return\s*to/i,
+      /이사|주소|전입|address|moved/i,
+      /취업|근무처|이직|알바|아르바이트|workplace|employer|part.time|job/i,
+      /혼인|결혼|이혼|배우자|marri|divorc|spouse/i,
+      /등록증|외국인등록|residen(t|ce)\s*(card|registration)|\barc\b/i
+    ].filter(function (re) { return re.test(q); }).length;
+    var linked = /동시에|그런데|하지만|만약|경우|중인데|하면서|하고.*(싶|해야|가능)|뒤에|전에|후에|if\b|while\b|but\b|before\b|after\b|at the same time/i.test(q);
+    var questions = (q.match(/[?？]/g) || []).length;
+    var codes = q.toUpperCase().match(/[A-H]\s*-\s*\d{1,2}(?:\s*-\s*(?:\d+|T))?/g) || [];
+    var compare = /비교|어느|어떤.*(유리|낫)|중.*(유리|낫)|compare|which.*(better|best)/i.test(q);
+    var exception = /거절|불허|위반|초과체류|불법체류|기간.*(넘|지났)|refus|denied|overstay|violation/i.test(q);
+    var complex = (topics >= 2 && (linked || questions >= 2)) || (codes.length >= 2 && compare) || (exception && topics >= 2 && q.length >= 35);
+    return { complex: complex, reason: complex ? (compare ? 'comparison' : exception ? 'exception' : 'multiple_procedures') : 'single_lookup', topics: topics };
+  }
+
+  var api = { route: route, assessComplexity: assessComplexity, INTENTS: INTENTS, WORKPLACE_MOVE: WORKPLACE_MOVE, FIRST_ARRIVAL: FIRST_ARRIVAL, OBJECTS: OBJECTS, ACTIONS: ACTIONS, facetOf: facetOf, extractOffice: extractOffice, composeProcedure: composeProcedure, registryFor: registryFor };
   root.VisableSearchRouter = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this);

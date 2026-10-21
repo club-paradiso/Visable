@@ -263,7 +263,7 @@ try {
         profileReport.states.push(suggestState);
         fhReport.failures.push(...suggestState.failures);
         await page.locator('[data-cs-clear]').tap();
-        await page.locator('.cs-directory summary').tap();
+        if (await page.locator('.cs-directory').getAttribute('open') === null) await page.locator('.cs-directory summary').tap();
         await page.locator('.cs-directory [data-target="visaManualSection"]').tap();
         await page.waitForTimeout(300);
         const browse = await page.evaluate(() => { const p = document.getElementById('civicBrowsePanel'); return { shown: !!p && !p.hidden && p.getBoundingClientRect().height > 40, state: window.VisableCivicSearch.journey.state() }; });

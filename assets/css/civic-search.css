@@ -461,3 +461,68 @@ html[dir="rtl"] .cs-boot-failed, html[dir="rtl"] .cs-noscript { border-left: 1px
   body.cs-hdr-away.civic-refresh.searched #hero { transform: translateY(-100%); }
 }
 html[dir="rtl"] body.cs-sheet .cs-sheet-close { padding: 0 10px 0 2px; }
+
+/* Service catalogue: the same paper, ink and green, with a portfolio's hierarchy.
+   References and interaction decisions are recorded in docs/UX_SEARCH_20261021.md. */
+.cs-home { max-width: 1440px; }
+.cs-hero { padding-block: 64px 48px; }
+.cs-tools-core { padding-block: 28px 32px; }
+.cs-tools-core > h2 { color: var(--cs-ink); font-size: 18px; margin-bottom: 20px; }
+.cs-tool-grid { gap: 20px 28px; }
+.cs-tool small { -webkit-line-clamp: unset; overflow: visible; }
+#civicLanding .cs-directory { color: var(--cs-ink); border-top: 1px solid var(--cs-line); margin: 12px 0 40px; padding-top: 28px; }
+#civicLanding .cs-directory > summary { display: flex; align-items: center; gap: 20px; width: 100%; font-size: clamp(24px, 2.7vw, 34px); font-weight: 750; letter-spacing: -.04em; line-height: 1.3; padding: 8px 0; list-style: none; }
+#civicLanding .cs-directory > summary::-webkit-details-marker { display: none; }
+#civicLanding .cs-directory > summary > span { color: var(--cs-muted); font-size: 15px; font-weight: 400; letter-spacing: -.01em; margin-inline-start: auto; }
+#civicLanding .cs-directory > summary > .cs-icon { width: 24px; height: 24px; transition: transform .2s; }
+#civicLanding .cs-directory[open] > summary > .cs-icon { transform: rotate(180deg); }
+#civicLanding .cs-directory > .cs-directory-content { display: block; padding-block: 24px 0; }
+.cs-directory-controls { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-bottom: 28px; }
+.cs-tool-search { display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--cs-line); padding: 8px 0; width: min(360px, 100%); }
+.cs-tool-search > .cs-icon { width: 20px; height: 20px; }
+#civicLanding .cs-tool-search input { width: 100%; min-width: 0; border: 0; outline: 0; background: transparent; padding: 6px 0; font-size: 15px; color: var(--cs-ink); }
+.cs-tool-search:focus-within { border-bottom-color: var(--cs-green); box-shadow: 0 2px 0 var(--cs-green); }
+.cs-tool-tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+#civicLanding .cs-tool-tabs button { border-radius: 24px; padding: 10px 16px; text-decoration: none !important; color: var(--cs-muted); min-height: 44px; }
+#civicLanding .cs-tool-tabs button[aria-pressed="true"] { background: var(--cs-green); color: var(--cs-bg); }
+.cs-service-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 32px; }
+#civicLanding .cs-directory .cs-service { display: flex; align-items: flex-start; gap: 14px; padding: 24px 0; width: 100%; min-width: 0; border: 0; border-top: 1px solid var(--cs-line); background: transparent; text-align: start; text-decoration: none !important; transition: color .18s, background .18s; }
+#civicLanding .cs-service[hidden], .cs-tool-empty[hidden] { display: none; }
+.cs-service > span:nth-child(2) { flex: 1; min-width: 0; }
+.cs-service strong { display: block; font-size: 18px; font-weight: 680; line-height: 1.4; letter-spacing: -.025em; }
+.cs-service small { display: block; color: var(--cs-muted); font-size: 14px; line-height: 1.6; margin-top: 7px; word-break: keep-all; overflow-wrap: anywhere; }
+.cs-service-icon { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; flex-shrink: 0; border-radius: 10px; background: var(--cs-soft); }
+.cs-service-icon .cs-icon { width: 20px; height: 20px; }
+.cs-service > .cs-icon { width: 17px; height: 17px; margin-top: 4px; transition: transform .18s; }
+#civicLanding .cs-directory .cs-service:hover { background: var(--cs-row); color: var(--cs-green); }
+.cs-service:hover > .cs-icon { transform: translateX(3px); }
+.cs-tool-empty { padding: 30px 0; color: var(--cs-muted); }
+.cs-tool-settings { display: flex; gap: 24px; padding-top: 20px; border-top: 1px solid var(--cs-line); }
+#civicLanding .cs-tool-settings button { color: var(--cs-muted); min-height: 44px; }
+.search-handoff-note { padding: 12px 16px; margin: 12px 16px; border-inline-start: 3px solid var(--cs-green); background: var(--cs-soft); color: var(--cs-ink); font-size: 14px; line-height: 1.6; }
+html[dir="rtl"] .cs-service:hover > .cs-icon { transform: translateX(-3px) scaleX(-1); }
+@media (max-width: 1000px) {
+  .cs-service-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cs-directory-controls { align-items: flex-start; flex-direction: column; }
+  .cs-tool-search { width: 100%; }
+}
+@media (max-width: 680px) {
+  .cs-hero { padding-block: 36px 32px; }
+  #civicLanding .cs-directory > summary { flex-wrap: wrap; gap: 10px; }
+  #civicLanding .cs-directory > summary > span { order: 2; width: 100%; margin: 0; font-size: 14px; }
+  #civicLanding .cs-directory > summary > .cs-icon { margin-inline-start: auto; }
+  .cs-service-grid { grid-template-columns: 1fr; }
+  #civicLanding .cs-directory .cs-service { padding-block: 20px; }
+  .cs-tool-tabs { gap: 2px; }
+  #civicLanding .cs-tool-tabs button { padding-inline: 12px; font-size: 14px; }
+  .cs-nav nav { gap: 14px; }
+  .cs-nav nav > [data-cs-focus] { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cs-service > .cs-icon, #civicLanding .cs-directory > summary > .cs-icon { transition: none; }
+}
+
+@media (max-width: 680px) {
+  .cs-nav nav > a[data-cs-open-tools] { display: inline-flex; min-height: 44px; align-items: center; font-size: 13px; }
+  .cs-examples > button:nth-of-type(4) { display: flex; }
+}

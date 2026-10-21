@@ -5,7 +5,8 @@ const DIRECT_ACTIONS = [
   'open-jobcode-modal',
   'open-jurisdiction-modal',
   'open-agent-finder',
-  'open-med-finder'
+  'open-med-finder',
+  'open-hikorea-guide'
 ];
 
 const JOURNEY_TARGETS = [
@@ -14,10 +15,10 @@ const JOURNEY_TARGETS = [
   'reminderSection'
 ];
 
-test('all eight utilities remain reachable through the selected design service directory', async ({ page }) => {
+test('all utilities remain reachable through the selected design service directory', async ({ page }) => {
   await page.goto('/index.html');
 
-  await page.locator('.cs-directory summary').click();
+  if (await page.locator('.cs-directory').getAttribute('open') === null) await page.locator('.cs-directory summary').click();
   const utilityRow = page.locator('.cs-directory');
   await expect(utilityRow).toBeVisible();
   await expect(utilityRow.locator('button[data-action^="open-"], button[data-action="reveal-home-section"]')).toHaveCount(DIRECT_ACTIONS.length + JOURNEY_TARGETS.length);
@@ -40,7 +41,7 @@ test('all eight utilities remain reachable through the selected design service d
 test('restored short-stay entry opens the existing checker instead of a dead shell', async ({ page }) => {
   await page.goto('/index.html');
 
-  await page.locator('.cs-directory summary').click();
+  if (await page.locator('.cs-directory').getAttribute('open') === null) await page.locator('.cs-directory summary').click();
   await page.locator('.cs-directory [data-action="open-short-stay"]').click();
   const modal = page.locator('#shortStayModalOverlay');
   await expect(modal).toHaveClass(/active/);
@@ -56,7 +57,7 @@ test('an early short-stay tap is replayed after the deferred checker becomes rea
   });
 
   await page.goto('/index.html', { waitUntil: 'commit' });
-  await page.locator('.cs-directory summary').click();
+  if (await page.locator('.cs-directory').getAttribute('open') === null) await page.locator('.cs-directory summary').click();
   const entry = page.locator('.cs-directory [data-action="open-short-stay"]');
   await expect(entry).toBeVisible();
   await entry.click();
@@ -79,7 +80,7 @@ test('a utility tap before the action delegation is installed is replayed, not d
   });
 
   await page.goto('/index.html', { waitUntil: 'commit' });
-  await page.locator('.cs-directory summary').click();
+  if (await page.locator('.cs-directory').getAttribute('open') === null) await page.locator('.cs-directory summary').click();
   const entry = page.locator('.cs-directory [data-action="reveal-home-section"][data-target="visaManualSection"]');
   await expect(entry).toBeVisible();
   await entry.click();
@@ -105,7 +106,7 @@ test('an early short-stay tap opens the checker exactly once', async ({ page }) 
   });
 
   await page.goto('/index.html', { waitUntil: 'commit' });
-  await page.locator('.cs-directory summary').click();
+  if (await page.locator('.cs-directory').getAttribute('open') === null) await page.locator('.cs-directory summary').click();
   await page.locator('.cs-directory [data-action="open-short-stay"]').click();
 
   const modal = page.locator('#shortStayModalOverlay');
