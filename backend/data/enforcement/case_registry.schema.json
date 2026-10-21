@@ -1,0 +1,298 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://visable.local/schemas/enforcement-case-registry-v1.json",
+  "title": "Visable enforcement multi-subject case registry; de-identified, human-reviewed sources",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "datasetVersion",
+    "jurisdiction",
+    "sources",
+    "cases"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "datasetVersion": {
+      "type": "string",
+      "minLength": 1
+    },
+    "jurisdiction": {
+      "const": "KR"
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/source"
+      }
+    },
+    "cases": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/case"
+      }
+    }
+  },
+  "$defs": {
+    "sourceId": {
+      "type": "string",
+      "pattern": "^src_[0-9a-f]{24}$"
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sourceId",
+        "sourceType",
+        "authority",
+        "publicUrl",
+        "publicationDate",
+        "reviewStatus"
+      ],
+      "properties": {
+        "sourceId": {
+          "$ref": "#/$defs/sourceId"
+        },
+        "sourceType": {
+          "enum": [
+            "OFFICIAL_ADMINISTRATIVE_DECISION",
+            "COURT_DECISION",
+            "VERIFIED_ADMINISTRATIVE_RECORD"
+          ]
+        },
+        "authority": {
+          "type": "string",
+          "minLength": 1
+        },
+        "publicUrl": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://"
+        },
+        "publicationDate": {
+          "type": "string",
+          "format": "date"
+        },
+        "reviewStatus": {
+          "enum": [
+            "STAGED",
+            "SOURCE_VERIFIED"
+          ]
+        }
+      }
+    },
+    "case": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "caseId",
+        "sourceIds",
+        "subjects"
+      ],
+      "properties": {
+        "caseId": {
+          "type": "string",
+          "pattern": "^case_[0-9a-f]{24}$"
+        },
+        "sourceIds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/sourceId"
+          }
+        },
+        "subjects": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/subject"
+          }
+        }
+      }
+    },
+    "subject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "subjectId",
+        "role",
+        "observations"
+      ],
+      "properties": {
+        "subjectId": {
+          "type": "string",
+          "pattern": "^subject_[0-9a-f]{24}$"
+        },
+        "role": {
+          "enum": [
+            "FOREIGN_NATIONAL",
+            "EMPLOYER",
+            "BUSINESS_ENTITY",
+            "OTHER",
+            "UNKNOWN"
+          ]
+        },
+        "statusOfStay": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 100
+        },
+        "violationCode": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 100
+        },
+        "violationArticle": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 100
+        },
+        "observations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/observation"
+          }
+        }
+      }
+    },
+    "observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "observationId",
+        "type",
+        "stage",
+        "amountKrw",
+        "decisionDate",
+        "sourceIds",
+        "reviewStatus",
+        "independentFromPrediction"
+      ],
+      "properties": {
+        "observationId": {
+          "type": "string",
+          "pattern": "^obs_[0-9a-f]{24}$"
+        },
+        "type": {
+          "enum": [
+            "PENALTY_NOTICE",
+            "PENALTY_PAYMENT_CONFIRMED",
+            "COURT_FINE",
+            "DEPARTURE_ORDER",
+            "DEPORTATION",
+            "STAY_RESTRICTION",
+            "APPEAL_DISMISSED",
+            "APPEAL_REJECTED",
+            "APPEAL_ACCEPTED"
+          ]
+        },
+        "stage": {
+          "enum": [
+            "NOTIFIED",
+            "PAID",
+            "SENTENCED",
+            "FINAL",
+            "ORDERED",
+            "DECIDED"
+          ]
+        },
+        "amountKrw": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "decisionDate": {
+          "type": "string",
+          "format": "date"
+        },
+        "sourceIds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/sourceId"
+          }
+        },
+        "reviewStatus": {
+          "enum": [
+            "STAGED",
+            "INDEPENDENTLY_REVIEWED"
+          ]
+        },
+        "independentFromPrediction": {
+          "type": "boolean"
+        },
+        "sourcePage": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "enum": [
+                  "PENALTY_NOTICE",
+                  "PENALTY_PAYMENT_CONFIRMED",
+                  "COURT_FINE"
+                ]
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "properties": {
+              "amountKrw": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "amountKrw": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "reviewStatus": {
+                "const": "INDEPENDENTLY_REVIEWED"
+              }
+            },
+            "required": [
+              "reviewStatus"
+            ]
+          },
+          "then": {
+            "properties": {
+              "independentFromPrediction": {
+                "const": true
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
