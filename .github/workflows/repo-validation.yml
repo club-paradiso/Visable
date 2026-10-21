@@ -38,6 +38,14 @@ jobs:
       - name: Install the manual reader build dependencies (rebuild-and-compare of data/manual-reader)
         run: python3 -m pip install -r scripts/requirements-manual-reader.txt
 
+      - name: Set up Node for DOM regression checks
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install declared Node test dependencies
+        run: npm install --ignore-scripts --package-lock=false --no-audit --no-fund
+
       - name: Run repository validation
         run: bash scripts/check_repo.sh
 

@@ -120,7 +120,7 @@ test.describe('purpose browse panel (the former journey content, reached from th
     await expect(panel).toBeHidden();
     expect(await state(page)).toBe('CLOSED');
 
-    await page.locator('.cs-directory summary').click();
+    if (await page.locator('.cs-directory').getAttribute('open') === null) await page.locator('.cs-directory summary').click();
     await expect(entry(page)).toHaveAttribute('aria-controls', 'civicBrowsePanel');
     await expect(entry(page)).toHaveAttribute('aria-expanded', 'false');
     await entry(page).click();
@@ -159,7 +159,7 @@ test.describe('purpose browse panel (the former journey content, reached from th
 
   test('keyboard: Enter opens from the directory, Escape inside the panel closes it and returns focus', async ({ page }) => {
     await bootHome(page);
-    await page.locator('.cs-directory summary').click();
+    if (await page.locator('.cs-directory').getAttribute('open') === null) await page.locator('.cs-directory summary').click();
     await entry(page).focus();
     await page.keyboard.press('Enter');
     expect(await state(page)).toBe('PRE_ENTRY_OPEN');
@@ -174,7 +174,7 @@ test.describe('purpose browse panel (the former journey content, reached from th
 
   test('a search leaves the landing; coming back resets the panel to CLOSED', async ({ page }) => {
     await bootHome(page);
-    await page.locator('.cs-directory summary').click();
+    if (await page.locator('.cs-directory').getAttribute('open') === null) await page.locator('.cs-directory summary').click();
     await entry(page).click();
     expect(await state(page)).toBe('PRE_ENTRY_OPEN');
     await expect(page.locator('#visaManualSection')).toBeVisible();
@@ -190,7 +190,7 @@ test.describe('purpose browse panel (the former journey content, reached from th
 
   test('a language change keeps an open panel open and re-renders its copy', async ({ page }) => {
     await bootHome(page);
-    await page.locator('.cs-directory summary').click();
+    if (await page.locator('.cs-directory').getAttribute('open') === null) await page.locator('.cs-directory summary').click();
     await entry(page).click();
     await page.locator('#civicBrowsePanel [data-cs-journey="post"]').click();
     await page.locator('[data-cs-lang-open]:visible').first().click();
@@ -267,7 +267,7 @@ test.describe('localized layout', () => {
   test('the mounted purpose pickers are fully translated (no Korean left in de / ja / ar)', async ({ page }) => {
     for (const lang of ['de', 'ja', 'ar']) {
       await bootHome(page, '/index.html?lang=' + lang);
-      await page.locator('.cs-directory summary').click();
+      if (await page.locator('.cs-directory').getAttribute('open') === null) await page.locator('.cs-directory summary').click();
       await page.locator('.cs-directory [data-target="visaManualSection"]').click();
       for (const track of ['pre', 'post']) {
         await page.click(`#civicBrowsePanel [data-cs-journey="${track}"]`);
