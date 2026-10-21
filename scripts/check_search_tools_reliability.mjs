@@ -75,7 +75,7 @@ await assert.rejects(request('/api/enforcement/analyze', {}, { timeoutMs: 15 }),
 const { analyzeBaselineCase } = require('../lib/enforcement-grounded-ai.js');
 assert.throws(() => analyzeBaselineCase(null));
 const baseline = analyzeBaselineCase({ schemaVersion: '1', statusOfStay: 'D-2', violationCode: 'STATUS_OUTSIDE_ACTIVITY_ART20', durationDays: 30, authorizationObtained: false, assessmentDate: '2026-10-21', priorViolations: 0 });
-assert.equal(baseline.legalBaseline.status, 'AVAILABLE');
+assert.equal(baseline.legalBaseline.status, 'MISSING_FACTS');
 assert.equal(baseline.lawGrounding.status, 'UNAVAILABLE');
 console.log('Search/tools reliability passed: simple vs complex questions, refresh selection, mounted catalogue filters, empty/reset states, body timeout and baseline fallback.');
 
@@ -94,6 +94,8 @@ ew.fetch = async (url, options) => {
 ew.eval(src);
 const ed = ew.document;
 ed.querySelector('[data-example]').click();
+// Use an unambiguous legal duration so an AI-only outage should offer retry.
+ed.querySelector('#case-text').value = 'D-2 유학생이 음식점에서 허가 없이 18일 일했습니다. 처음 위반입니다.';
 ed.querySelector('#case-form').dispatchEvent(new ew.Event('submit', { bubbles: true, cancelable: true }));
 await new Promise(resolve => setTimeout(resolve, 20));
 assert.equal(ed.body.dataset.enforcementStep, '2');

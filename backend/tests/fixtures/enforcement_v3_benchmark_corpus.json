@@ -42,7 +42,7 @@
       "suite": "colloquial-extraction",
       "provenance": {"sourceFile": "backend/tests/fixtures/enforcement_extraction_parity.json", "sourceTest": "word duration and first-violation wording"},
       "text": "D-2인데 한 달 동안 음식점에서 불법 취업했어요. 첫 위반입니다",
-      "expected": {"statusOfStay": "D-2", "violationCode": "STATUS_OUTSIDE_ACTIVITY_ART20", "durationDays": 30, "priorViolations": 0, "baselineAmountKrw": 3000000, "boundaryAssumptionExpected": true}
+      "expected": {"statusOfStay": "D-2", "violationCode": "STATUS_OUTSIDE_ACTIVITY_ART20", "durationDays": 30, "priorViolations": 0, "deterministicBaselineStatus": "MISSING_FACTS"}
     },
     {
       "id": "nl-006",
@@ -276,7 +276,7 @@
       "suite": "rule-engine",
       "provenance": {"sourceFile": "backend/tests/test_enforcement_intelligence.py", "sourceTest": "test_overstay_one_month_boundary"},
       "caseData": {"statusOfStay": "D-2", "violationCode": "OVERSTAY_ART25", "durationDays": 30, "assessmentDate": "2026-08-19"},
-      "expected": {"deterministicBaselineStatus": "AVAILABLE", "baselineAmountKrw": 1000000}
+      "expected": {"deterministicBaselineStatus": "MISSING_FACTS"}
     },
     {
       "id": "rule-032",
