@@ -759,6 +759,21 @@ def reset_legal_evidence_cache_for_tests() -> None:
         _CACHE.clear()
 
 
+def _is_cacheable_response(resp: lt.LawHttpResponse) -> bool:
+    """Only a body that parses into at least one case record is cached.
+
+    An HTTP 200 can still carry an official error body (the parser's
+    ``official_error`` case, e.g. a credential or IP-allowlist problem) or be
+    empty. Caching those for the cache TTL (24 h by default) kept serving the
+    failure for up to a day after its cause was fixed (audit D8). Genuine
+    no-results answers are not cached either; repeating one costs a request.
+    """
+    if not (resp.ok and resp.status_code < 400):
+        return False
+    payload, error, _parser, _shape = lt._parse_payload(resp.text)
+    return not error and bool(_find_record(payload))
+
+
 # ---------------------------------------------------------------------------
 # The client
 # ---------------------------------------------------------------------------
@@ -834,7 +849,7 @@ class LawOpenDataClient:
                 # exponential backoff (only between retries; tests inject a no-op sleeper)
                 self._sleep(self.backoff_base_seconds * (2 ** attempt))
         assert last is not None
-        if last.ok and last.status_code < 400:
+        if _is_cacheable_response(last):
             _cache_put(cache_key, last)
         return last
 
@@ -957,7 +972,13 @@ class LawOpenDataClient:
                     c.url = sanitized
                 cases.append(c)
         if not cases:
-            return self._envelope(source_type, "no_results", target=target, sanitized_url=sanitized)
+            # "No results" needs an explicit empty answer (totalCnt 0, or an
+            # empty ``<target>`` list). A body of any other shape is a parse
+            # failure, never absence (spec 07 §2 invariant 1; F9).
+            if lt._explicit_empty_result(payload, (target,)):
+                return self._envelope(source_type, "no_results", target=target, sanitized_url=sanitized)
+            return self._envelope(source_type, "unavailable", error_type=lt.LAW_API_PARSE_ERROR,
+                                  warnings=["SOURCE_UNAVAILABLE"], target=target, sanitized_url=sanitized)
         return self._envelope(source_type, "available", cases=cases, target=target, sanitized_url=sanitized)
 
 

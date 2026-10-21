@@ -3,7 +3,7 @@ from __future__ import annotations
 import re
 import time
 from dataclasses import replace
-from typing import Any, Dict, List, Sequence
+from typing import Any, Dict, List, Mapping, Sequence
 
 from .citation_verifier import (
     build_law_evidence_citation_verification,
@@ -305,6 +305,36 @@ def _dedupe_law_results(items: Sequence[Dict[str, Any]]) -> List[Dict[str, Any]]
     return out[:_MAX_LAW_RESULTS]
 
 
+_NO_RESULTS_ERROR = "law_api_no_results"
+# At most this many cited provisions are fetched per question (one lawService
+# call each, inside the request budget).
+_MAX_CHECKED_CITATIONS = 3
+
+
+def _citation_key(law_name: Any, article: Any) -> tuple:
+    return (
+        re.sub(r"\s+", "", str(law_name or "")).lower(),
+        str(article or "").replace(" ", ""),
+    )
+
+
+def _failed_search_error(law_search_errors: Mapping[str, str] | None, law_name: str) -> str:
+    """The infrastructure error of the search for ``law_name``, if it failed.
+
+    The planner sends each cited law name as its own query. When that query
+    timed out or errored, "the law was not in the results" says nothing about
+    whether the law exists (audit D1). An authoritative no-results answer
+    (``law_api_no_results``) is not a failure and returns ``""``.
+    """
+    wanted = re.sub(r"\s+", "", law_name or "")
+    for query, error_type in (law_search_errors or {}).items():
+        if re.sub(r"\s+", "", query or "") != wanted:
+            continue
+        if error_type and error_type.lower() != _NO_RESULTS_ERROR:
+            return error_type
+    return ""
+
+
 def _verify_requested_articles(
     question: str,
     law_results: Sequence[Dict[str, Any]],
@@ -312,6 +342,7 @@ def _verify_requested_articles(
     law_tools: Any,
     config: Any,
     detail_cache: Dict[tuple, Dict[str, Any]] | None = None,
+    law_search_errors: Mapping[str, str] | None = None,
 ) -> Dict[str, Any]:
     extracted = extract_korean_legal_citations(question)
     requested = extracted.get("citations", [])
@@ -324,7 +355,8 @@ def _verify_requested_articles(
     article_evidence: List[Dict[str, Any]] = []
     cache = detail_cache if detail_cache is not None else {}
     cache_hits = 0
-    for requested_item in requested[:3]:
+    checked = requested[:_MAX_CHECKED_CITATIONS]
+    for requested_item in checked:
         law_name = str(requested_item.get("law_name") or "").strip()
         article = str(requested_item.get("article") or "").strip()
         normalized_name = re.sub(r"\s+", "", law_name).lower()
@@ -341,8 +373,14 @@ def _verify_requested_articles(
             "warnings": [],
         }
         if not candidate:
-            citation["verification_status"] = "failed_verification"
-            citation["warnings"].append("CITED_LAW_NOT_FOUND")
+            search_error = _failed_search_error(law_search_errors, law_name)
+            if search_error:
+                # Could not look the law up: unavailable, not "does not exist".
+                citation["verification_status"] = "error"
+                citation["warnings"].extend(["SOURCE_UNAVAILABLE", search_error.upper()])
+            else:
+                citation["verification_status"] = "failed_verification"
+                citation["warnings"].append("CITED_LAW_NOT_FOUND")
             citations.append(citation)
             continue
         citation["source_url"] = candidate.get("source_url") or ""
@@ -394,11 +432,36 @@ def _verify_requested_articles(
         })
         citations.append(citation)
 
+    # Citations past the cap were never looked up. They are listed as
+    # ``extracted_only`` so the overall status cannot read "verified" while a
+    # cited article went unchecked: "verified" makes ai.html drop the
+    # "특정 조문 번호는 확정하지 않습니다" notice (law-stack-fixes.md, F10).
+    # A repeat of a citation that was checked is not a new citation.
+    seen = {_citation_key(item.get("law_name"), item.get("article")) for item in checked}
+    for requested_item in requested[_MAX_CHECKED_CITATIONS:]:
+        law_name = str(requested_item.get("law_name") or "").strip()
+        article = str(requested_item.get("article") or "").strip()
+        key = _citation_key(law_name, article)
+        if key in seen:
+            continue
+        seen.add(key)
+        citations.append({
+            "raw": requested_item.get("matched_text") or f"{law_name} {article}",
+            "law_name": law_name,
+            "article": article,
+            "source_type": "law",
+            "verification_status": "extracted_only",
+            "warnings": [],
+        })
+
     statuses = {item.get("verification_status") for item in citations}
     if statuses == {"verified"}:
         overall = "verified"
     elif "failed_verification" in statuses:
         overall = "failed_verification"
+    elif "error" in statuses:
+        # At least one cited law could not be looked up at all.
+        overall = "error"
     elif "source_linked_unverified" in statuses:
         overall = "source_linked_unverified"
     else:
@@ -493,6 +556,11 @@ def build_law_grounding_context(question: str) -> Dict[str, Any]:
                 "LAW_GROUNDING_BUDGET_EXHAUSTED",
             ]
         else:
+            law_search_errors = {
+                query: str(outcome.get("error_type") or "")
+                for query, outcome in zip(law_search_queries, outcomes)
+                if outcome.get("status") != "ok"
+            }
             citation_verification = _verify_requested_articles(
                 question,
                 aggregate_results,
@@ -502,6 +570,7 @@ def build_law_grounding_context(question: str) -> Dict[str, Any]:
                     timeout_seconds=min(config.timeout_seconds, max(0.1, remaining)),
                 ),
                 detail_cache={},
+                law_search_errors=law_search_errors,
             )
         request_cache_hits += int(citation_verification.get("request_cache_hits") or 0)
         aggregate_results = _dedupe_law_results([
@@ -630,12 +699,25 @@ def derive_law_grounding_status_detail(
     * ``law_grounding_audit_only`` — LAW_GROUNDING_MODE=audit: the lookup runs as
       a diagnostic / citation-verifier posture, NOT as enabled grounding, so its
       output must never be presented as verified real-time law.
-    * ``law_grounding_verified`` — ``enabled`` (credentialed) and the lookup
-      returned usable law results.
+    * ``law_grounding_verified`` — ``enabled`` (credentialed), the question
+      cited specific provisions, and every cited article's text was fetched
+      from lawService and matched (``citation_verified``: the citation
+      verification status is ``verified``, which needs at least one such
+      article). The UI then drops the "특정 조문 번호는 확정하지 않습니다" notice
+      (ai.html ``buildLawGroundingStatusRow``), so a law-title list hit must
+      never produce it.
+    * ``law_grounding_source_linked_unverified`` — ``enabled`` lookup returned
+      law rows, but no cited article text was fetched and matched: title-level
+      list hits (with or without a citation in the question), or a cited
+      article that was not found in the fetched text. The rows still reach the
+      evidence pack; only the "verified" claim is withheld.
     * ``law_grounding_attempted_no_results`` — ``enabled`` lookup ran, found
       nothing citable.
     * ``law_grounding_attempted_failed`` — ``enabled`` lookup ran but errored
-      (timeout / bad response / transport / not-configured).
+      (timeout / bad response / transport / not-configured / budget). A real
+      ``error_type`` outranks ``LAW_API_NO_RESULTS`` warnings from the other
+      planned queries: one query finding nothing does not make an outage a
+      "no results" answer (audit D2).
     """
     if not intent_attempted:
         return LAW_GROUNDING_STATUS_NOT_ATTEMPTED
@@ -645,12 +727,17 @@ def derive_law_grounding_status_detail(
         # Audit is the diagnostics/verifier posture; never "verified" grounding.
         return LAW_GROUNDING_STATUS_AUDIT_ONLY
     # configured/effective enabled (credentialed) from here on.
-    if lookup_used and citation_specific and not citation_verified:
-        return LAW_GROUNDING_STATUS_SOURCE_LINKED_UNVERIFIED
     if lookup_used:
-        return LAW_GROUNDING_STATUS_VERIFIED
+        # Only fetched-and-matched article text is "verified". Law-title list
+        # hits used to be verified too, which R1 hid until F1 let the rows
+        # reach the pack (research-notes/law-stack-fixes.md, F10).
+        if citation_specific and citation_verified:
+            return LAW_GROUNDING_STATUS_VERIFIED
+        return LAW_GROUNDING_STATUS_SOURCE_LINKED_UNVERIFIED
     error_u = str(error_type or "").upper()
     warnings_u = {str(w or "").upper() for w in (warnings or [])}
+    if error_u and error_u not in _NO_RESULT_MARKERS:
+        return LAW_GROUNDING_STATUS_ATTEMPTED_FAILED
     if error_u in _NO_RESULT_MARKERS or (warnings_u & _NO_RESULT_MARKERS):
         return LAW_GROUNDING_STATUS_ATTEMPTED_NO_RESULTS
     if error_u or (warnings_u - {""}):
@@ -709,6 +796,14 @@ def law_grounding_preflight(sample_question: str = "") -> Dict[str, Any]:
         if not endpoint_configured:
             warnings.append("LAW_API_ENDPOINT_MISSING")
     warnings.extend(config.warnings)
+    # An untrusted LAW_API_BASE_URL is ignored by the tool layer (the OC only
+    # goes to https law.go.kr); say so, without echoing the configured value.
+    # Lazy import: law_tools imports this module.
+    from .law_tools import law_api_base_url_warning
+
+    base_url_warning = law_api_base_url_warning(config)
+    if base_url_warning:
+        warnings.append(base_url_warning)
 
     # The tool layer can call the fixed public DRF endpoints with just an OC,
     # so a real external call is possible once a credential is present.

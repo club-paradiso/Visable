@@ -195,8 +195,18 @@ class LawGroundingStatusDetailTests(unittest.TestCase):
             "law_grounding_audit_only",
         )
 
-    def test_verified_when_used(self):
-        self.assertEqual(self._detail(lookup_used=True), "law_grounding_verified")
+    def test_title_only_lookup_is_not_verified(self):
+        # Was test_verified_when_used, which asserted law_grounding_verified for
+        # any lookup that returned rows. A law-title list hit verifies no
+        # article, and "verified" makes ai.html drop the "특정 조문 번호는
+        # 확정하지 않습니다" notice (research-notes/law-stack-fixes.md, F10).
+        self.assertEqual(
+            self._detail(lookup_used=True), "law_grounding_source_linked_unverified"
+        )
+        self.assertEqual(
+            self._detail(lookup_used=True, citation_specific=True, citation_verified=True),
+            "law_grounding_verified",
+        )
 
     def test_attempted_no_results(self):
         self.assertEqual(
@@ -241,14 +251,20 @@ class CitationGuardTests(unittest.TestCase):
         self.assertNotEqual(out["answer"], HALLUCINATED_ANSWER)
         self.assertIn("특정 조문 번호는 확정하지 않습니다", out["answer"])
 
-    def test_verified_grounding_allows_citation(self):
+    def test_verified_flag_alone_does_not_allow_citation(self):
+        # Was test_verified_grounding_allows_citation, which asserted the audit
+        # R2 defect: the verified flag (also set by a law-title search hit)
+        # allowed every article number. Article numbers now need fetched
+        # article-level evidence for the named law; that positive case is in
+        # test_law_stack_genesis_regressions.F2CitationGuardTests.
         from services.law_citation_guard import guard_answer_citations
 
         out = guard_answer_citations(
             HALLUCINATED_ANSWER, law_grounding_verified=True, evidence_texts=[], lang="ko"
         )
-        self.assertFalse(out["unverified_law_citation_detected"])
-        self.assertEqual(out["answer"], HALLUCINATED_ANSWER)
+        self.assertTrue(out["unverified_law_citation_detected"])
+        self.assertEqual(out["law_citation_guard_action"], "notice_prepended")
+        self.assertNotEqual(out["answer"], HALLUCINATED_ANSWER)
 
     def test_local_evidence_backed_citation_allowed(self):
         from services.law_citation_guard import guard_answer_citations

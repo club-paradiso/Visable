@@ -30,11 +30,13 @@ Hard guarantees:
 from __future__ import annotations
 
 import json
+import logging
 import re
+import urllib.request
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass, field, asdict
 from datetime import datetime, timezone
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple
+from typing import Any, Callable, Dict, List, Optional, Sequence, Set, Tuple
 from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 from .grounding_config import GroundingConfig, load_grounding_config
@@ -103,6 +105,13 @@ SOURCE_STATUS_BAD_RESPONSE = "bad_response"
 SOURCE_STATUS_PARSE_ERROR = "parse_error"
 SOURCE_STATUS_UNSUPPORTED = "unsupported"
 SOURCE_STATUS_NOT_CONFIGURED = "not_configured"
+# Plan-level "tried but could not get an answer" status (legal_analysis uses
+# the same word); the public projection shows it as temporarily unavailable.
+SOURCE_STATUS_UNAVAILABLE = "unavailable"
+
+# Set by law_grounding.build_law_grounding_context, not by a tool call: the
+# statute stage ran out of its total time budget.
+LAW_GROUNDING_BUDGET_EXHAUSTED = "law_grounding_budget_exhausted"
 
 _ERROR_TO_SOURCE_STATUS = {
     LAW_API_NOT_CONFIGURED: SOURCE_STATUS_NOT_CONFIGURED,
@@ -114,10 +123,27 @@ _ERROR_TO_SOURCE_STATUS = {
     LAW_API_OFFICIAL_ERROR: SOURCE_STATUS_OFFICIAL_ERROR,
 }
 
+
+def _context_family_status(error_type: str) -> str:
+    """Statute-family status for a reused ``law_context`` that produced no rows.
+
+    Only an authoritative empty answer is ``no_results``. A budget stop is a
+    timeout, and any other code, including one this map has never seen, is
+    ``unavailable``: an outage must never read as "no such law" (audit D3).
+    """
+    if not error_type or error_type == LAW_API_NO_RESULTS:
+        return SOURCE_STATUS_NO_RESULTS
+    if error_type == LAW_GROUNDING_BUDGET_EXHAUSTED:
+        return SOURCE_STATUS_TIMEOUT
+    return _ERROR_TO_SOURCE_STATUS.get(error_type, SOURCE_STATUS_UNAVAILABLE)
+
+
 # Default DRF endpoints for the National Law Information Open API. These are
 # public, fixed endpoints (confirmed by scripts/probe_korean_law_open_api_2026_05.py);
-# only the OC value is a secret. A deployment that sets LAW_API_BASE_URL can
-# override the host (e.g. to a private proxy) without touching code.
+# only the OC value is a secret. LAW_API_BASE_URL may override the origin, but
+# only with another https law.go.kr origin: every request built here carries the
+# OC, so an override pointing anywhere else would hand the owner's credential to
+# a third party. Untrusted overrides are ignored (see ``_api_host``).
 #
 # HTTPS by default: cloud egress proxies (e.g. Railway) commonly block plaintext
 # outbound HTTP / port 80 — the live smoke "CONNECT tunnel failed (000)" symptom
@@ -135,6 +161,20 @@ _HARD_MAX_QUERIES = 8
 _DEFAULT_DISPLAY = 5
 
 _USER_AGENT = "Paradiso-law-tool-layer/2026.05"
+
+# Operator warnings only: a code and a fixed sentence, never a URL, a configured
+# value or the OC. Each code is logged once per process so a misconfigured deploy
+# does not log on every request.
+_logger = logging.getLogger("paradiso.law_tools")
+_WARNINGS_LOGGED: Set[str] = set()
+LAW_API_PLAINTEXT_RETRY = "LAW_API_PLAINTEXT_RETRY"
+
+
+def _warn_once(code: str, message: str) -> None:
+    if code in _WARNINGS_LOGGED:
+        return
+    _WARNINGS_LOGGED.add(code)
+    _logger.warning("%s: %s", code, message)
 
 
 def _now_iso() -> str:
@@ -162,11 +202,66 @@ class LawHttpResponse:
 LawTransport = Callable[[str, float], LawHttpResponse]
 
 
+LAW_API_REDIRECT_REFUSED = "LAW_API_REDIRECT_REFUSED"
+
+
+def _redirect_allowed(from_url: str, to_url: str) -> bool:
+    """Whether an OC-bearing request may follow a redirect from ``from_url`` to ``to_url``.
+
+    Every request built here carries the OC in its query string, and urllib's
+    default handler follows a redirect to any host (security note 15 §3.9,
+    SEC-06b). A hop is followed only when it stays on www.law.go.kr /
+    law.go.kr, on the scheme's default port, without userinfo, and never from
+    https to http. Checked on every hop, so a chain cannot step outside either.
+    """
+    try:
+        source = urlsplit(from_url)
+        target = urlsplit(to_url)
+        port = target.port
+    except ValueError:
+        return False
+    if target.scheme not in {"https", "http"}:
+        return False
+    if source.scheme == "https" and target.scheme != "https":
+        return False
+    if (target.hostname or "").lower() not in _TRUSTED_LAW_API_HOSTS:
+        return False
+    if target.username or target.password:
+        return False
+    return port in (None, 443 if target.scheme == "https" else 80)
+
+
+class _LawRedirectHandler(urllib.request.HTTPRedirectHandler):
+    """urllib redirect handler that refuses hops ``_redirect_allowed`` rejects.
+
+    Returning ``None`` makes urllib raise the redirect's own ``HTTPError``, so a
+    refused hop becomes a typed ``http_error`` (with the 3xx status) and is
+    never retried over the other scheme.
+    """
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):  # noqa: D102 - urllib hook
+        if not _redirect_allowed(req.full_url, newurl):
+            _warn_once(
+                LAW_API_REDIRECT_REFUSED,
+                "law.go.kr answered with a redirect to another host, port or plain "
+                "http; it was not followed",
+            )
+            return None
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
+def _build_law_opener() -> urllib.request.OpenerDirector:
+    """The urllib opener for law.go.kr requests (default handlers, checked redirects)."""
+    return urllib.request.build_opener(_LawRedirectHandler())
+
+
 def _http_get_once(url: str, timeout: float) -> LawHttpResponse:
-    """Single urllib GET (no scheme fallback). The URL is never logged here."""
+    """Single urllib GET (no scheme fallback). The URL is never logged here.
+
+    Redirects are followed only within law.go.kr (``_redirect_allowed``).
+    """
     import socket
     import urllib.error
-    import urllib.request
 
     request = urllib.request.Request(
         url,
@@ -176,7 +271,7 @@ def _http_get_once(url: str, timeout: float) -> LawHttpResponse:
         },
     )
     try:
-        with urllib.request.urlopen(request, timeout=timeout) as resp:  # noqa: S310
+        with _build_law_opener().open(request, timeout=timeout) as resp:  # noqa: S310
             raw = resp.read()
             text = raw.decode("utf-8", errors="replace")
             status = getattr(resp, "status", None) or getattr(resp, "code", 200) or 200
@@ -227,7 +322,17 @@ def _transport_with_scheme_fallback(url: str, timeout: float, sender: LawTranspo
         alt = _swap_scheme(url)
         if alt != url:
             alt_resp = sender(alt, timeout)
-            if alt_resp.ok or alt_resp.error_type == "http_error":
+            reached = alt_resp.ok or alt_resp.error_type == "http_error"
+            if alt.startswith("http://"):
+                # Behaviour kept on purpose (research-notes/law-stack-fixes.md,
+                # F8): the retry sends the OC in plaintext. The log tells the
+                # owner whether a deploy actually depends on it.
+                _warn_once(
+                    LAW_API_PLAINTEXT_RETRY + ("_REACHED" if reached else "_FAILED"),
+                    "https to law.go.kr failed at the connection level; the request "
+                    "was retried over plain http",
+                )
+            if reached:
                 return alt_resp
     return resp
 
@@ -414,6 +519,53 @@ def _normalize_candidate(obj: Dict[str, Any], source_type: str) -> Optional[Dict
     }
 
 
+def _normalize_context_law_row(row: Any) -> Optional[Dict[str, Any]]:
+    """Normalize one ``law_context["law_grounding"]`` row, idempotently.
+
+    ``build_law_grounding_context`` stores rows that ``search_laws`` has already
+    normalized (``law_name`` / ``law_id`` / ...), plus article-evidence rows that
+    carry ``article_verification_status``. ``_normalize_candidate`` reads only raw
+    DRF keys (``법령명한글`` ...), so running it a second time returned ``None`` for
+    every row and silently emptied ``law_sources`` on /api/ask (audit R1).
+    Normalized rows therefore pass through as a copy (private ``_`` keys
+    dropped); a raw DRF row is still normalized as before.
+    """
+    if not isinstance(row, dict):
+        return None
+    if row.get("source_type") == "law" and (row.get("law_name") or row.get("title")):
+        return {key: value for key, value in row.items() if not str(key).startswith("_")}
+    return _normalize_candidate(row, "law")
+
+
+def _law_row_family(row: Dict[str, Any]) -> str:
+    """Instrument family of a normalized ``law`` row, inferred the same way
+    ``_normalize_candidate`` does (it stores every row as ``source_type="law"``)."""
+    label = str(row.get("law_name") or row.get("law_division") or "")
+    if "시행령" in label:
+        return "enforcement_decree"
+    if "시행규칙" in label:
+        return "enforcement_rule"
+    return "statute"
+
+
+def _downgrade_decree_families_without_rows(
+    statuses: Dict[str, str], law_sources: Sequence[Dict[str, Any]]
+) -> None:
+    """Keep a reused law lookup from claiming 시행령/시행규칙 it did not return.
+
+    The source plan marks statute, decree and rule ``results_found`` for any
+    ``law`` row (legal_analysis.build_generalized_source_plan). Now that /api/ask
+    rows reach the pack (audit R1), a lone 법률 row would list the decree and rule
+    families as available sources with no title. Such a family is
+    ``no_results`` for this lookup unless a row of that instrument came back,
+    which is what the pack reported for it before R1 was fixed.
+    """
+    returned = {_law_row_family(row) for row in law_sources if isinstance(row, dict)}
+    for family in ("enforcement_decree", "enforcement_rule"):
+        if statuses.get(family) == SOURCE_STATUS_RESULTS_FOUND and family not in returned:
+            statuses[family] = SOURCE_STATUS_NO_RESULTS
+
+
 def _walk_candidates(payload: Any, source_type: str, limit: int) -> List[Dict[str, Any]]:
     """Defensively walk a parsed API payload collecting normalized candidates.
 
@@ -461,7 +613,20 @@ def _shape_hint(text: str) -> str:
     return "text"
 
 
-def _xml_to_obj(elem: ET.Element) -> Any:
+# Real DRF bodies are shallow: the deepest documented sample (the lawService
+# law body, 법령 > 조문 > 조문단위 > 항 > 호 > 목) nests about a dozen containers.
+# Anything deeper is not a DRF answer, and walking it recursively could raise
+# RecursionError out of a "never raises" tool (security note 15 §5).
+_MAX_PAYLOAD_DEPTH = 64
+
+
+class _PayloadTooDeep(ValueError):
+    """Raised while converting an XML body nested deeper than ``_MAX_PAYLOAD_DEPTH``."""
+
+
+def _xml_to_obj(elem: ET.Element, _depth: int = 1) -> Any:
+    if _depth > _MAX_PAYLOAD_DEPTH:
+        raise _PayloadTooDeep()
     children = list(elem)
     text = (elem.text or "").strip()
     if not children:
@@ -469,7 +634,7 @@ def _xml_to_obj(elem: ET.Element) -> Any:
     out: Dict[str, Any] = {}
     for child in children:
         key = child.tag.split("}", 1)[-1]
-        val = _xml_to_obj(child)
+        val = _xml_to_obj(child, _depth + 1)
         if key in out:
             if not isinstance(out[key], list):
                 out[key] = [out[key]]
@@ -490,9 +655,69 @@ def _safe_text(value: Any, *, limit: int = 160) -> str:
     return text
 
 
+# Where status envelopes sit: the root object, the family wrapper under it
+# (``{"LawSearch": {...}}``) and one level below that. Data rows live in lists
+# and are not read here, and only scalar values are compared, so the cost is
+# linear in the size of those few objects. The old walk visited every node
+# and stringified every subtree at every level, which grew faster than
+# quadratically with depth (security note 15 §5: 255 KiB took 1.4 s).
+_ENVELOPE_MAX_DEPTH = 3
+_ENVELOPE_MAX_NODES = 64
+_ENVELOPE_ROOT_LIST_ITEMS = 8
+_SUCCESS_VALUES = frozenset({"00", "0", "success", "ok", "정상"})
+_ERROR_CODE_KEYS = frozenset({"error", "errorcode", "errcode", "resultcode", "code"})
+_MESSAGE_KEYS = frozenset({"message", "msg", "errmsg", "errormessage", "resultmsg"})
+_ERROR_WORDS = ("error", "오류", "not", "invalid", "fail", "실패", "인증", "권한")
+
+
+def _near_root_dicts(payload: Any) -> List[Dict[str, Any]]:
+    """Dicts at depth <= ``_ENVELOPE_MAX_DEPTH`` (the root is depth 1), breadth
+    first, at most ``_ENVELOPE_MAX_NODES``. A list is entered only at the root."""
+    out: List[Dict[str, Any]] = []
+    queue: List[Tuple[Any, int]] = [(payload, 1)]
+    index = 0
+    while index < len(queue) and len(out) < _ENVELOPE_MAX_NODES:
+        node, depth = queue[index]
+        index += 1
+        if isinstance(node, list):
+            if depth == 1:
+                queue.extend((item, 2) for item in node[:_ENVELOPE_ROOT_LIST_ITEMS])
+            continue
+        if not isinstance(node, dict):
+            continue
+        out.append(node)
+        if depth >= _ENVELOPE_MAX_DEPTH:
+            continue
+        for value in node.values():
+            if len(queue) - index + len(out) >= _ENVELOPE_MAX_NODES:
+                break
+            if isinstance(value, dict):
+                queue.append((value, depth + 1))
+    return out
+
+
+def _scalar_text(value: Any) -> str:
+    if isinstance(value, (str, int, float)) and not isinstance(value, bool):
+        return str(value).strip()
+    return ""
+
+
 def _official_error_info(payload: Any) -> Tuple[bool, str, str]:
-    """Detect official API error objects and return safe code/message only."""
-    success_values = {"00", "0", "success", "ok", "정상"}
+    """Detect an official API error envelope near the root; safe code/message only.
+
+    Recognized, each only at known keys near the root (``_near_root_dicts``):
+
+    * an error/result code key with a non-success value (``resultCode`` "01"
+      is the documented failure code; the repo's ``resultCode`` "99" fixture is
+      synthetic);
+    * a message key (``msg``, ``message``, ``resultMsg``, ...) containing a
+      failure word;
+    * a scalar ``result`` with a non-success value next to a message key, or
+      containing a failure word. This is the envelope law.go.kr returns with
+      HTTP 200 when the OC is missing (``{"result": ..., "msg": ...}``, no
+      ``resultCode``; research-notes/official-api.md V-E). It used to read as
+      "no results".
+    """
     found = False
     code = ""
     message = ""
@@ -507,32 +732,33 @@ def _official_error_info(payload: Any) -> Tuple[bool, str, str]:
         if not message and value not in (None, ""):
             message = _safe_text(value, limit=180)
 
-    def walk(node: Any) -> bool:
-        nonlocal found
-        if isinstance(node, dict):
-            lowered = {str(k).lower(): v for k, v in node.items()}
-            for key, value in lowered.items():
-                sval = str(value).strip().lower()
-                # A success code (errorCode "0"/"00"/"OK") must NOT be flagged as
-                # an official error — otherwise a perfectly good search response
-                # carrying errorCode=0 would collapse into official_error and
-                # then look like a bad response downstream.
-                if key in {"error", "errorcode", "errcode"} and sval and sval not in success_values:
-                    found = True; set_code(value)
-                if key in {"resultcode", "code"} and sval and sval not in success_values:
-                    found = True; set_code(value)
-                if key in {"message", "msg", "errmsg", "errormessage"}:
-                    set_message(value)
-                    if sval and any(w in sval for w in ("error", "오류", "not", "invalid", "fail", "인증", "권한")):
-                        found = True
-            for value in node.values():
-                walk(value)
-        elif isinstance(node, list):
-            for value in node:
-                walk(value)
-        return found
-
-    walk(payload)
+    for node in _near_root_dicts(payload):
+        lowered = {str(k).lower(): v for k, v in node.items()}
+        has_message_key = any(_scalar_text(lowered.get(key)) for key in _MESSAGE_KEYS)
+        for key, value in lowered.items():
+            raw = _scalar_text(value)
+            sval = raw.lower()
+            if not sval:
+                continue
+            # A success code (errorCode "0"/"00"/"OK") must NOT be flagged as
+            # an official error — otherwise a perfectly good search response
+            # carrying errorCode=0 would collapse into official_error and
+            # then look like a bad response downstream.
+            if key in _ERROR_CODE_KEYS and sval not in _SUCCESS_VALUES:
+                found = True
+                set_code(raw)
+            elif key in _MESSAGE_KEYS:
+                set_message(raw)
+                if any(word in sval for word in _ERROR_WORDS):
+                    found = True
+            elif key == "result" and sval not in _SUCCESS_VALUES:
+                if has_message_key or any(word in sval for word in _ERROR_WORDS):
+                    found = True
+        if found and not message:
+            for key in ("result", *sorted(_MESSAGE_KEYS)):
+                if _scalar_text(lowered.get(key)):
+                    set_message(_scalar_text(lowered.get(key)))
+                    break
     return found, code, message
 
 
@@ -576,39 +802,137 @@ def inspect_law_api_response_shape(text: str) -> Dict[str, Any]:
     return info
 
 
+def _nesting_exceeds(payload: Any, limit: int) -> bool:
+    """True when ``payload`` nests containers deeper than ``limit`` (iterative)."""
+    stack: List[Tuple[Any, int]] = [(payload, 1)]
+    while stack:
+        node, depth = stack.pop()
+        if isinstance(node, dict):
+            children = node.values()
+        elif isinstance(node, list):
+            children = node
+        else:
+            continue
+        if depth > limit:
+            return True
+        stack.extend((child, depth + 1) for child in children if isinstance(child, (dict, list)))
+    return False
+
+
 def _parse_payload(text: str) -> Tuple[Optional[Any], Optional[str], str, str]:
-    """Parse response as JSON or XML. Returns (payload, error_type, parser_status, shape_hint)."""
+    """Parse response as JSON or XML. Returns (payload, error_type, parser_status, shape_hint).
+
+    Never raises. Failure is not absence (spec 07 §2 invariant 1): an empty
+    HTTP-200 body is a bad response, not "no results" (audit D6), and a body
+    nested deeper than any DRF answer is a parse error rather than a
+    RecursionError escaping the tool layer.
+    """
     stripped = (text or "").strip()
     shape = _shape_hint(stripped)
     if shape == "empty":
-        return None, LAW_API_NO_RESULTS, "empty", shape
+        return None, LAW_API_BAD_RESPONSE, "empty", shape
     if shape == "html":
         return None, LAW_API_BAD_RESPONSE, "unsupported_html", shape
-    if shape in {"json_object", "json_list"}:
-        try:
-            payload = json.loads(stripped)
-        except Exception:
-            return None, LAW_API_PARSE_ERROR, "json_parse_error", shape
+    if shape not in {"json_object", "json_list", "xml"}:
+        return None, LAW_API_BAD_RESPONSE, "unsupported_text", shape
+    try:
+        if shape == "xml":
+            try:
+                root = ET.fromstring(stripped)
+                payload = {root.tag.split("}", 1)[-1]: _xml_to_obj(root)}
+            except (RecursionError, _PayloadTooDeep):
+                return None, LAW_API_PARSE_ERROR, "nesting_too_deep", shape
+            except Exception:
+                return None, LAW_API_PARSE_ERROR, "xml_parse_error", shape
+            parsed_status = "parsed_xml"
+        else:
+            try:
+                payload = json.loads(stripped)
+            except RecursionError:
+                return None, LAW_API_PARSE_ERROR, "nesting_too_deep", shape
+            except Exception:
+                return None, LAW_API_PARSE_ERROR, "json_parse_error", shape
+            parsed_status = "parsed_json"
+        if _nesting_exceeds(payload, _MAX_PAYLOAD_DEPTH):
+            return None, LAW_API_PARSE_ERROR, "nesting_too_deep", shape
         if _contains_official_error(payload):
             return payload, LAW_API_OFFICIAL_ERROR, "official_error", shape
-        return payload, None, "parsed_json", shape
-    if shape == "xml":
-        try:
-            root = ET.fromstring(stripped)
-            payload = {root.tag.split("}", 1)[-1]: _xml_to_obj(root)}
-        except Exception:
-            return None, LAW_API_PARSE_ERROR, "xml_parse_error", shape
-        if _contains_official_error(payload):
-            return payload, LAW_API_OFFICIAL_ERROR, "official_error", shape
-        return payload, None, "parsed_xml", shape
-    return None, LAW_API_BAD_RESPONSE, "unsupported_text", shape
+        return payload, None, parsed_status, shape
+    except RecursionError:  # pragma: no cover - defensive; depth is capped above
+        return None, LAW_API_PARSE_ERROR, "nesting_too_deep", shape
 
 
-def parse_law_search_response(text: str, *, source_type: str = "law", limit: int = _DEFAULT_DISPLAY) -> Dict[str, Any]:
+# A count field that states how many rows the query matched. law.go.kr list
+# responses carry ``totalCnt`` (research-notes/official-api.md §2, S1, S3).
+_RESULT_COUNT_KEYS = frozenset({"totalcnt", "totalcount"})
+# The list container each source type's rows arrive in, besides the request's
+# own ``target`` (``{"LawSearch": {"law": [...]}}``).
+_LIST_KEYS_BY_SOURCE_TYPE = {"law": ("law",), "admin_rule": ("admrul",), "law_term": ("lstrm",)}
+
+
+def _result_count(value: Any) -> Optional[int]:
+    text = _scalar_text(value).replace(",", "")
+    if not text:
+        return None
+    try:
+        return int(text)
+    except ValueError:
+        return None
+
+
+def _explicit_empty_result(payload: Any, list_keys: Sequence[str]) -> bool:
+    """True only for positive evidence of an empty result near the root.
+
+    That is a ``totalCnt`` of 0, or (with no count at all) an expected list
+    container present as an empty list. A count above 0 with no parsed row is
+    a body the parser does not understand, never an empty answer (security
+    note 15 §3.6 rule 5; spec 07 §2 invariant 1).
+    """
+    wanted = {key.lower() for key in list_keys if key}
+    counts: List[int] = []
+    empty_list_seen = False
+    for node in _near_root_dicts(payload):
+        for key, value in node.items():
+            lowered = str(key).lower()
+            if lowered in _RESULT_COUNT_KEYS:
+                count = _result_count(value)
+                if count is not None:
+                    counts.append(count)
+            elif lowered in wanted:
+                if isinstance(value, list) and not value:
+                    empty_list_seen = True
+                elif isinstance(value, (list, dict)) and value:
+                    # Rows came back that no normalizer understood.
+                    return False
+    if counts:
+        return all(count == 0 for count in counts)
+    return empty_list_seen
+
+
+def parse_law_search_response(
+    text: str,
+    *,
+    source_type: str = "law",
+    limit: int = _DEFAULT_DISPLAY,
+    target: str = "",
+) -> Dict[str, Any]:
+    """Classify one DRF body. ``law_api_no_results`` only for an explicit empty
+    result; a well-formed body without one is ``law_api_parse_error``
+    (``unexpected_shape``) so that an envelope or schema change the parser
+    does not know never reads as "no such law"."""
     payload, error, parser_status, shape = _parse_payload(text)
-    results = [] if error else _walk_candidates(payload, source_type, limit)
+    results: List[Dict[str, Any]] = []
+    if not error:
+        try:
+            results = _walk_candidates(payload, source_type, limit)
+        except RecursionError:  # pragma: no cover - defensive; depth is capped at parse time
+            error, parser_status = LAW_API_PARSE_ERROR, "nesting_too_deep"
     if not error and not results:
-        error = LAW_API_NO_RESULTS
+        list_keys = (*_LIST_KEYS_BY_SOURCE_TYPE.get(source_type, ()), target)
+        if _explicit_empty_result(payload, list_keys):
+            error = LAW_API_NO_RESULTS
+        else:
+            error, parser_status = LAW_API_PARSE_ERROR, "unexpected_shape"
     return {"payload": payload if error is None else None, "results": results, "error_type": error or "", "parser_status": parser_status, "response_shape_hint": shape}
 
 
@@ -616,16 +940,61 @@ def parse_law_detail_response(text: str, *, limit: int = 1) -> Dict[str, Any]:
     return parse_law_search_response(text, source_type="law", limit=limit)
 
 
-def parse_admin_rule_response(text: str, *, limit: int = _DEFAULT_DISPLAY) -> Dict[str, Any]:
-    return parse_law_search_response(text, source_type="admin_rule", limit=limit)
+def parse_admin_rule_response(text: str, *, limit: int = _DEFAULT_DISPLAY, target: str = "") -> Dict[str, Any]:
+    return parse_law_search_response(text, source_type="admin_rule", limit=limit, target=target)
 
 
 # ---------------------------------------------------------------------------
 # Request building + execution
 # ---------------------------------------------------------------------------
+_TRUSTED_LAW_API_HOSTS = frozenset({"www.law.go.kr", "law.go.kr"})
+LAW_API_BASE_URL_IGNORED = "LAW_API_BASE_URL_IGNORED"
+
+
+def _trusted_base_url(base: str) -> str:
+    """Return ``base`` without a trailing slash when it is an https origin on
+    www.law.go.kr or law.go.kr, else ``""``.
+
+    Stricter than the JS client (lib/enforcement-law-grounding.js accepts any
+    ``*.law.go.kr`` host and port). Userinfo, a non-default port, a query or a
+    fragment are rejected too: the DRF API needs none of them, so an override
+    carrying one is treated as misconfigured rather than guessed at.
+    """
+    try:
+        parts = urlsplit(base)
+        port = parts.port
+    except ValueError:
+        return ""
+    if parts.scheme != "https" or parts.hostname not in _TRUSTED_LAW_API_HOSTS:
+        return ""
+    if parts.username or parts.password or port not in (None, 443):
+        return ""
+    if parts.query or parts.fragment:
+        return ""
+    return base.rstrip("/")
+
+
+def law_api_base_url_warning(config: GroundingConfig) -> str:
+    """Non-secret warning code when LAW_API_BASE_URL is set but not trusted."""
+    base = (config.law_api_base_url or "").strip()
+    if base and not _trusted_base_url(base):
+        return LAW_API_BASE_URL_IGNORED
+    return ""
+
+
 def _api_host(config: GroundingConfig) -> str:
     base = (config.law_api_base_url or "").strip()
-    return base.rstrip("/") if base else _DEFAULT_API_HOST
+    if not base:
+        return _DEFAULT_API_HOST
+    trusted = _trusted_base_url(base)
+    if trusted:
+        return trusted
+    # The configured value is never logged: it may carry userinfo.
+    _warn_once(
+        LAW_API_BASE_URL_IGNORED,
+        f"LAW_API_BASE_URL is not an https law.go.kr origin; using {_DEFAULT_API_HOST}",
+    )
+    return _DEFAULT_API_HOST
 
 
 def _build_request_url(config: GroundingConfig, path: str, params: Dict[str, str]) -> str:
@@ -695,7 +1064,12 @@ def _execute(
         return _tool_error(tool, query=query, target=target, error_type=LAW_API_HTTP_ERROR,
                            source_url=sanitized, raw_status=response.status_code, failure_reason="http_status")
 
-    parsed = parse_admin_rule_response(response.text, limit=limit) if source_type == "admin_rule" else parse_law_search_response(response.text, source_type=source_type, limit=limit)
+    try:
+        parsed = parse_law_search_response(response.text, source_type=source_type, limit=limit, target=target)
+    except Exception:  # pragma: no cover - the parser never raises; keep the tool contract anyway
+        return _tool_error(tool, query=query, target=target, error_type=LAW_API_PARSE_ERROR,
+                           source_url=sanitized, raw_status=response.status_code,
+                           parser_status="parser_exception", failure_reason="parser_exception")
     parse_error = parsed.get("error_type")
     if parse_error:
         return _tool_error(
@@ -824,8 +1198,12 @@ def search_laws_ranked(
             ladder.append(candidate)
 
     attempts: List[Dict[str, Any]] = []
-    last_error_type = ""
-    last_http_status: Optional[int] = None
+    # The FIRST infrastructure failure is the outcome's cause when no rung finds
+    # rows. Keeping the last one let "primary timed out, expansion came back
+    # empty" read as not_found (audit D5); not_found now needs every rung to be
+    # an authoritative no-results answer.
+    infrastructure_error = ""
+    infrastructure_http_status: Optional[int] = None
     source_url = ""
     rows: List[Dict[str, Any]] = []
 
@@ -845,27 +1223,26 @@ def search_laws_ranked(
         source_url = result.get("source_url") or source_url
         if result.get("status") == "ok":
             rows = result.get("results") or []
-            last_error_type = ""
-            last_http_status = None
             if rows:
                 break
             # An empty OK is a real "no rows for this phrasing" — keep laddering.
-            last_error_type = LAW_API_NO_RESULTS
             continue
-        # Infrastructure failures must not be laddered away into "not found";
-        # remember the last one so the outcome reports the real cause.
-        last_error_type = result.get("error_type") or LAW_API_BAD_RESPONSE
-        raw_status = result.get("raw_status")
-        last_http_status = raw_status if isinstance(raw_status, int) else None
-        if last_error_type == LAW_API_NOT_CONFIGURED:
+        error_type = result.get("error_type") or LAW_API_BAD_RESPONSE
+        if error_type == LAW_API_NO_RESULTS:
+            continue
+        if not infrastructure_error:
+            infrastructure_error = error_type
+            raw_status = result.get("raw_status")
+            infrastructure_http_status = raw_status if isinstance(raw_status, int) else None
+        if error_type == LAW_API_NOT_CONFIGURED:
             break
 
     ranked = annotate_lifecycle(rank_law_candidates(rows, expansion.original), today=today)
     outcome = summarize_search_outcome(
         ranked,
         query=expansion.original,
-        error_type="" if rows else last_error_type,
-        http_status=last_http_status,
+        error_type="" if rows else (infrastructure_error or LAW_API_NO_RESULTS),
+        http_status=None if rows else infrastructure_http_status,
     )
 
     hierarchy: Dict[str, List[Dict[str, Any]]] = {}
@@ -984,6 +1361,54 @@ def _article_parts(value: Any, branch_value: Any = "") -> Tuple[Optional[int], O
     return article_no, branch_no
 
 
+def _is_article_unit(node: Dict[str, Any]) -> bool:
+    """False for 조문단위 entries that are not articles.
+
+    lawService also lists 편/장/절 headings as 조문단위 with ``조문여부`` = ``전문``,
+    and a heading carries the 조문번호 of the article that follows it ("제1장 총칙"
+    and 제1조 are both 조문번호 1). Matching on the number alone let a heading
+    pass as the cited article (audit R5). Units without the field, as in older
+    synthetic fixtures, are still treated as articles.
+    """
+    kind = _first(node, "조문여부")
+    return kind is None or kind == "조문"
+
+
+def _unit_list(value: Any) -> List[Dict[str, Any]]:
+    """항 / 호 / 목 arrive as one dict or as a list of dicts."""
+    if isinstance(value, dict):
+        return [value]
+    if isinstance(value, list):
+        return [item for item in value if isinstance(item, dict)]
+    return []
+
+
+def _unit_text(value: Any) -> str:
+    """Text fields are usually a string; some 목내용 values are a list of lines."""
+    if isinstance(value, list):
+        return " ".join(_unit_text(item) for item in value)
+    if isinstance(value, str):
+        return value.strip()
+    return ""
+
+
+def _article_unit_text(node: Dict[str, Any]) -> str:
+    """조문내용 followed by every nested 항내용 / 호내용 / 목내용, in order.
+
+    Where an article's rule sits in its 항 and 호, 조문내용 is only the title line
+    ("제4조(국민의 권리와 의무)"), which used to be the whole "verified" snippet
+    (audit R5). See fixtures/law_api_shapes/genesis_law_detail_sample.json.
+    """
+    parts = [_unit_text(node.get("조문내용"))]
+    for paragraph in _unit_list(node.get("항")):
+        parts.append(_unit_text(paragraph.get("항내용")))
+        for item in _unit_list(paragraph.get("호")):
+            parts.append(_unit_text(item.get("호내용")))
+            for sub_item in _unit_list(item.get("목")):
+                parts.append(_unit_text(sub_item.get("목내용")))
+    return " ".join(part for part in parts if part)
+
+
 def _extract_articles(result: Dict[str, Any], article_filter: str) -> List[Dict[str, Any]]:
     """Best-effort article normalization from a service response (tolerant)."""
     # The normalized candidate path does not retain raw articles; service
@@ -995,11 +1420,11 @@ def _extract_articles(result: Dict[str, Any], article_filter: str) -> List[Dict[
 
     def visit(node: Any) -> None:
         if isinstance(node, dict):
-            if any(k in node for k in _ARTICLE_KEYS):
+            if any(k in node for k in _ARTICLE_KEYS) and _is_article_unit(node):
                 no = _first(node, "조문번호") or ""
                 branch = _first(node, "조문가지번호") or ""
                 title = _first(node, "조문제목") or ""
-                text = _first(node, "조문내용") or ""
+                text = _article_unit_text(node)
                 parts = _article_parts(no, branch)
                 matches = not target_no or parts == target_parts
                 if matches:
@@ -1060,7 +1485,8 @@ def search_law_terms(
     transport: Optional[LawTransport] = None,
 ) -> Dict[str, Any]:
     """Search legal terms (법령용어). Returns normalized term results where the
-    adapter/endpoint supports it; otherwise a graceful ``law_api_no_results``."""
+    adapter/endpoint supports it. ``law_api_no_results`` only for an explicit
+    empty result; a body of unknown shape is ``law_api_parse_error``."""
     cfg = config or load_grounding_config()
     q = (query or "").strip()
     if not q:
@@ -1219,16 +1645,19 @@ def retrieve_official_source_family(
         if family == "precedent":
             envelope = precedent_sources.search_precedents(q, limit=limit, config=config, transport=transport)
             return _official_result_from_precedent_envelope(family, q, envelope)
-        envelope = precedent_sources.normalize_source_family_response(
-            family,
-            "",
+        # Not queried: no confirmed live adapter for this family. The envelope
+        # is built directly. It used to come from parsing an empty body, which
+        # relied on "" reading as no results; an empty body is now a typed
+        # bad response (audit D6), which would add an unavailable item here.
+        envelope = precedent_sources._envelope(
+            family=family,
+            status=SOURCE_STATUS_UNSUPPORTED,
+            public_status="unavailable",
             result_kind="unavailable",
             query=q,
+            items=[],
             target=precedent_sources.SOURCE_FAMILY_LIST_TARGETS.get(family),
         )
-        envelope["status"] = SOURCE_STATUS_UNSUPPORTED
-        envelope["publicStatus"] = "unavailable"
-        envelope["errorType"] = ""
         return _official_result_from_precedent_envelope(family, q, envelope)
     if family not in _WIRED_SOURCE_FAMILIES:
         return asdict(OfficialSourceResult(source_family=family, status=SOURCE_STATUS_UNSUPPORTED, query=q, safe_error_message="planned_not_wired"))
@@ -2088,7 +2517,7 @@ def build_law_evidence_pack(
         law_api_attempted = bool(law_context.get("attempted"))
         context_used_hint = bool(law_context.get("law_grounding_used"))
         for candidate in (law_context.get("law_grounding") or []):
-            normalized = _normalize_candidate(candidate, "law") if isinstance(candidate, dict) else None
+            normalized = _normalize_context_law_row(candidate)
             if normalized:
                 law_sources.append(normalized)
         law_queries_attempted = list(law_context.get("law_search_queries") or [])
@@ -2103,7 +2532,7 @@ def build_law_evidence_pack(
         if law_api_attempted:
             ctx_status = (
                 SOURCE_STATUS_RESULTS_FOUND if context_used_hint and law_sources
-                else _ERROR_TO_SOURCE_STATUS.get(law_grounding_error or LAW_API_NO_RESULTS, SOURCE_STATUS_NO_RESULTS)
+                else _context_family_status(law_grounding_error)
             )
             source_family_retrieval["source_family_statuses"] = {"statute": ctx_status}
             source_family_retrieval["parser_statuses"] = {"statute": law_context.get("parser_status", "")}
@@ -2259,6 +2688,8 @@ def build_law_evidence_pack(
     if source_family_retrieval.get("source_family_statuses"):
         merged_statuses = dict(source_type_plan.get("statuses") or {})
         merged_statuses.update(source_family_retrieval.get("source_family_statuses") or {})
+        if law_context is not None:
+            _downgrade_decree_families_without_rows(merged_statuses, law_sources)
         source_type_plan["statuses"] = merged_statuses
         source_type_plan["source_family_statuses"] = merged_statuses
         attempted_families = list(dict.fromkeys([
