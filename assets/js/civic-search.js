@@ -282,23 +282,71 @@
     var directory = root.querySelector('.cs-directory');
     if (!directory) return;
     var input = directory.querySelector('[data-cs-tool-filter]'), group = 'all';
+    var counter = document.createElement('p');
+    counter.className = 'cs-result-count';
+    directory.querySelector('.cs-directory-controls').appendChild(counter);
+    var status = directory.querySelector('[data-cs-tool-status]');
+    // Synonyms are metadata for discovery, never a substitute for the actual tools.
+    var keywords = [
+      '서류 양식 pdf 신청서 paperwork form document',
+      '준비서류 체류기간 연장 자격변경 등록 checklist documents',
+      '목적별 비자 유학 취업 결혼 이민 browse visa',
+      '단기체류 무사증 입국 자격 여행 short stay visa waiver',
+      '방문 예약 하이코리아 hikorea booking appointment',
+      '매뉴얼 원문 법무부 규정 manual official source pdf',
+      '관할 출입국 사무소 청 위치 찾기 immigration office',
+      '행정사 대행 agency agent representative',
+      '병원 의료기관 진료 hospital medical',
+      '직종코드 고용 비자 e7 work job occupation',
+      '체류자격 전환 진로 경로 visa pathway',
+      '체류기간 만료 일정 알림 reminder expiration',
+      '귀화 국적 국적회복 naturalization citizenship',
+      '사범 처분 위반 enforcement violation',
+      '상담 ai 복잡한 질문 상담사 waymaker assistant'
+    ];
+    var tiles = Array.prototype.slice.call(directory.querySelectorAll('[data-service-group]'));
+    tiles.forEach(function (tile, i) { tile.dataset.searchKeywords = keywords[i] || ''; });
+    function normalized(value) {
+      return String(value || '').normalize('NFKC').toLocaleLowerCase()
+        .replace(/\s/g, '').replaceAll('-', '').replaceAll('_', '')
+        .replaceAll('/', '').replaceAll('·', '').replaceAll('.', '')
+        .replaceAll(',', '').replaceAll('(', '').replaceAll(')', '');
+    }
     function filter() {
-      var needle = input.value.trim().toLocaleLowerCase(), count = 0;
-      directory.querySelectorAll('[data-service-group]').forEach(function (tile) {
-        var match = (group === 'all' || tile.dataset.serviceGroup === group) && (!needle || tile.textContent.toLocaleLowerCase().indexOf(needle) >= 0);
-        tile.hidden = !match; if (match) count++;
+      var needle = normalized(input.value), count = 0;
+      tiles.forEach(function (tile) {
+        var haystack = normalized(tile.textContent + ' ' + tile.dataset.searchKeywords);
+        var match = (group === 'all' || tile.dataset.serviceGroup === group) && (!needle || haystack.indexOf(needle) >= 0);
+        tile.hidden = !match;
+        if (match) count++;
       });
       directory.querySelector('.cs-tool-empty').hidden = count > 0;
-      directory.querySelector('[data-cs-tool-status]').textContent = String(count) + (lang() === 'ko' ? '개 도구' : ' services');
+      var countText = lang() === 'ko' ? count + '개 도구' : count + ' services';
+      counter.textContent = countText;
+      status.textContent = countText;
     }
     input.addEventListener('input', filter);
+    input.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && input.value) {
+        input.value = '';
+        filter();
+        event.stopPropagation();
+      }
+    });
     directory.querySelectorAll('[data-cs-tool-group]').forEach(function (button) {
       button.addEventListener('click', function () {
         group = button.dataset.csToolGroup;
-        directory.querySelectorAll('[data-cs-tool-group]').forEach(function (b) { b.setAttribute('aria-pressed', String(b === button)); });
+        directory.querySelectorAll('[data-cs-tool-group]').forEach(function (b) {
+          b.setAttribute('aria-pressed', String(b === button));
+        });
         filter();
       });
     });
+    // Preserve the static shell's open directory during hydration.
+    // Closing it here would hide an early tap while slower i18n/action modules load.
+    // Users may still collapse it using the native details summary.
+    if (window.location.hash === '#csTools') directory.open = true;
+    filter();
   }
 
   function homeHtml(T, ctx) {

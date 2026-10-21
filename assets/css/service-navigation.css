@@ -1,6 +1,59 @@
-/* Common service-to-service navigation; follows each page's existing theme. */
-.vs-service-nav { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px 28px; padding: 10px 20px; border-bottom: 1px solid var(--cs-line, #d9e0df); background: var(--cs-bg, #fff); font: 550 14px/1.5 'Pretendard Variable', Pretendard, -apple-system, sans-serif; }
-.vs-service-nav a { display: inline-flex; align-items: center; min-height: 44px; color: var(--cs-green, #214f43); text-decoration: none; text-underline-offset: 5px; }
-.vs-service-nav a:hover { text-decoration: underline; }
-.vs-service-nav a:focus-visible { outline: 3px solid currentColor; outline-offset: 4px; border-radius: 3px; }
-@media (max-width: 480px) { .vs-service-nav { gap: 4px 20px; padding-block: 4px; font-size: 13px; } }
+/* Consistent service switcher for Visable's secondary applications. */
+.vs-service-nav {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 9px 16px;
+  border-block: 1px solid var(--cs-line, #d9e0df);
+  background: var(--cs-bg, #fff);
+  color: var(--cs-ink, #1c1f29);
+  font: 600 14px/1.45 'Pretendard Variable', Pretendard, -apple-system, sans-serif;
+}
+.vs-service-nav a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-height: 44px;
+  padding: 9px 16px;
+  border: 1px solid transparent;
+  border-radius: 11px;
+  color: var(--cs-muted, #475569);
+  text-decoration: none;
+  text-align: center;
+  transition: border-color .15s ease, background-color .15s ease, color .15s ease;
+}
+.vs-service-nav a:hover {
+  border-color: var(--cs-line, #d9e0df);
+  background: var(--cs-row, #f7f4ef);
+  color: var(--cs-green, #214f43);
+}
+.vs-service-nav a[aria-current="page"] {
+  border-color: var(--cs-line, #d9e0df);
+  background: var(--cs-soft, #f3f7f5);
+  color: var(--cs-green, #214f43);
+}
+.vs-service-nav a:focus-visible {
+  outline: 3px solid var(--cs-green, #214f43);
+  outline-offset: 2px;
+}
+@media (max-width: 540px) {
+  .vs-service-nav {
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    gap: 6px;
+    overflow-x: auto;
+    max-width: 100%;
+    padding: 7px 12px;
+    scrollbar-width: thin;
+    overscroll-behavior-inline: contain;
+    font-size: 13px;
+  }
+  .vs-service-nav a { flex: 0 0 auto; padding-inline: 12px; white-space: nowrap; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .vs-service-nav a { transition: none; }
+}
