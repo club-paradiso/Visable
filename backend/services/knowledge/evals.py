@@ -33,6 +33,7 @@ logger = logging.getLogger("paradiso.knowledge")
 
 SEED_CORPUS_PATH = Path(__file__).resolve().parents[2] / "data" / "knowledge" / "eval_corpus_seed.json"
 GOLDEN_PATH = Path(__file__).resolve().parents[2] / "data" / "eval" / "paradiso_ai_golden_questions.json"
+_SEED_ACTOR = "seed:eval_corpus_seed.json"
 
 _GOLDEN_TASK_PROCEDURE = {
     "extension": "extension", "status_change": "status_change", "workplace_change": "workplace_change",
@@ -125,14 +126,43 @@ class EvalService:
         data = json.loads(path.read_text(encoding="utf-8"))
         for raw in data.get("cases") or []:
             if self.store.one("SELECT 1 FROM eval_cases WHERE case_key = ?", (raw["case_key"],)):
+                self._refresh_seed_case(raw)
                 continue
             case = EvalCaseIn.model_validate({k: v for k, v in raw.items() if k != "state"})
-            self.create_case(case, actor="seed:eval_corpus_seed.json", origin="seed_foundation",
+            self.create_case(case, actor=_SEED_ACTOR, origin="seed_foundation",
                              state=raw.get("state", "approved"))
             added += 1
         if include_golden and GOLDEN_PATH.is_file():
             added += self._import_golden()
         return {"added": added}
+
+    def _refresh_seed_case(self, raw: Dict[str, Any]) -> None:
+        """Keep a seed-created case in step with the git-reviewed seed file.
+
+        A persistent store keeps its first copy of every case, so a re-verified
+        manual edition (new edition label or page range in the seed) would leave
+        the old expectation behind and fail forever. Only cases this importer
+        created are refreshed; an operator-authored case is left alone.
+        """
+        row = self.store.one("SELECT case_id, created_by, origin, assertions, expected FROM eval_cases"
+                             " WHERE case_key = ?", (raw["case_key"],))
+        if not row or row["created_by"] != _SEED_ACTOR or row["origin"] != "seed_foundation":
+            return
+        case = EvalCaseIn.model_validate({k: v for k, v in raw.items() if k != "state"})
+        expected = dict(case.expected)
+        if case.payload_visa_code:
+            expected["payload_visa_code"] = case.payload_visa_code
+        assertions = json.dumps([a.model_dump(mode="json") for a in case.assertions], ensure_ascii=False)
+        expected_json = json.dumps(expected, ensure_ascii=False)
+        if row["assertions"] == assertions and row["expected"] == expected_json:
+            return
+        with self.store.transaction():
+            self.store.execute("UPDATE eval_cases SET assertions = ?, expected = ?, updated_at = ? WHERE case_id = ?",
+                               (assertions, expected_json, utc_now(), row["case_id"]))
+            self.store.audit(actor=_SEED_ACTOR, actor_kind="system", entity_type="eval_case",
+                             entity_id=row["case_id"], action="seed_refresh",
+                             before={"assertions": json.loads(row["assertions"])},
+                             after={"assertions": json.loads(assertions)})
 
     def _import_golden(self) -> int:
         """Reference the routing golden set: status / sub-code / procedure assertions."""

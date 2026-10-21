@@ -109,7 +109,7 @@ class _Harness(unittest.TestCase):
         rendered = [d["source_text"] for bucket in docs.values() for d in bucket]
         self.assertEqual(sorted(rendered), sorted(self._canonical_d2()))
         self.assertEqual(structured["source"]["title"], "외국인체류 안내매뉴얼")
-        self.assertEqual(structured["source"]["edition"], "2026.6")
+        self.assertEqual(structured["source"]["edition"], "2026.9")
         self.assertEqual(structured["source"]["page_range"], "43-44")
         self.assertEqual(body["answer_mode_requested"], "fast")
         self.assertEqual(body["answer_mode"], "fast")

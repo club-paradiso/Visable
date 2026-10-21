@@ -20,10 +20,16 @@ const pages = catalog.sources.flatMap(source => {
     assert.ok(row.heading && row.heading.length <= 140);
   });
   assert.equal(source.characters, rows.reduce((n, row) => n + [...row.text].length, 0));
-  assert.equal(registry.sources.find(s => s.id === source.id).status, 'needs_manual_review');
-  assert.equal(approvals.documents[source.id].approval_state, 'needs_review');
-  assert.equal(approvals.documents[source.id].reviewer, '');
-  assert.equal(manifest.pending_review_editions.find(s => s.registry_id_when_promoted === source.id).file_sha256, source.sha256);
+  // The 2026.9 editions are the owner-approved current editions (2026-10-16):
+  // registry, approval index, catalog and manifest `current` must all agree.
+  assert.equal(registry.sources.find(s => s.id === source.id).status, 'active');
+  assert.equal(approvals.documents[source.id].approval_state, 'approved');
+  assert.ok(approvals.documents[source.id].reviewer && approvals.documents[source.id].reviewed_at);
+  assert.equal(source.approval_state, 'approved');
+  const current = Object.values(manifest.current).find(s => s.file === source.file);
+  assert.ok(current, `${source.id} must be a manifest current edition`);
+  assert.equal(current.file_sha256, source.sha256);
+  assert.ok(!(manifest.pending_review_editions || []).some(s => s.registry_id_when_promoted === source.id));
   return rows;
 });
 assert.equal(pages.length, 1329);

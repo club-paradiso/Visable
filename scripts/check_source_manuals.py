@@ -22,6 +22,8 @@ REQUIRED_ROLES = ("visa_issuance_manual", "stay_residence_manual")
 EXPECTED_PAGES = {
     "backend/data/sources/manuals/260617_visa_manual_exported.pdf": 487,
     "backend/data/sources/manuals/260623_stay_manual_exported.pdf": 780,
+    "docs/source-manuals/2026-09/visa_manual_260901.pdf": 519,
+    "docs/source-manuals/2026-09/stay_manual_260918.pdf": 810,
 }
 REQUIRED_FIELDS = {
     "title_ko",
@@ -130,7 +132,23 @@ def main() -> None:
                 fail(f"{rel_file} sha256 {actual[:12]}… does not match declared "
                      f"{declared[:12] or '(empty)'}…")
 
-    duplicates = [role for role, count in seen_roles.items() if count != 1]
+        # The other container of the same edition (e.g. the 배포용 HWP next to a
+        # current PDF) is approved with it, so it stays pinned to its bytes too.
+        for index, alt in enumerate(entry.get("alternate_source_files") or []):
+            where = f"current.{key}.alternate_source_files[{index}]"
+            alt_rel = alt.get("file") if isinstance(alt, dict) else None
+            if not isinstance(alt_rel, str) or not (ROOT / alt_rel).is_file():
+                fail(f"{where}.file does not exist: {alt_rel}")
+            for field, digest_field in (("file", "file_sha256"), ("extracted_text_file", "extracted_text_sha256")):
+                rel = alt.get(field)
+                declared = str(alt.get(digest_field) or "").lower()
+                if not rel or not declared:
+                    continue
+                actual = hashlib.sha256((ROOT / rel).read_bytes()).hexdigest()
+                if declared != actual:
+                    fail(f"{rel} sha256 {actual[:12]}… does not match declared {declared[:12]}…")
+
+    duplicates =[role for role, count in seen_roles.items() if count != 1]
     if duplicates:
         fail(f"duplicate or missing current manual role(s): {', '.join(duplicates)}")
 

@@ -60,10 +60,11 @@ class SchemaShapeTests(unittest.TestCase):
         self.assertIn("visa_issuance_manual", inv)
         self.assertIn("stay_residence_manual", inv)
         # Bumped when a new official edition is installed — the schema's own
-        # note says to update these intentionally. 2026-07-31 is the 배포용 HWP
-        # pair that superseded the 2026-06 PDF exports.
-        self.assertEqual(inv["visa_issuance_manual"]["published_or_updated_at"], "2026-07-31")
-        self.assertEqual(inv["stay_residence_manual"]["published_or_updated_at"], "2026-07-31")
+        # note says to update these intentionally. The owner chose the 2026.9
+        # editions (visa 2026-09-01, stay 2026-09-18) on 2026-10-16; they
+        # superseded the 2026-07-31 배포용 HWP pair.
+        self.assertEqual(inv["visa_issuance_manual"]["published_or_updated_at"], "2026-09-01")
+        self.assertEqual(inv["stay_residence_manual"]["published_or_updated_at"], "2026-09-18")
 
 
 class RegistryConsistencyTests(unittest.TestCase):
@@ -89,10 +90,10 @@ class RegistryConsistencyTests(unittest.TestCase):
                     by_kw["visa"] = src
         self.assertIn("stay", by_kw, "active stay manual must be registered")
         self.assertIn("visa", by_kw, "active visa manual must be registered")
-        self.assertEqual(by_kw["stay"]["version"], "2026.7")
-        self.assertEqual(by_kw["stay"]["source_date"], "2026-07-31")
-        self.assertEqual(by_kw["visa"]["version"], "2026.7")
-        self.assertEqual(by_kw["visa"]["source_date"], "2026-07-31")
+        self.assertEqual(by_kw["stay"]["version"], "2026.9")
+        self.assertEqual(by_kw["stay"]["source_date"], "2026-09-18")
+        self.assertEqual(by_kw["visa"]["version"], "2026.9")
+        self.assertEqual(by_kw["visa"]["source_date"], "2026-09-01")
 
 
 class AnswerGroundingFieldTests(unittest.TestCase):

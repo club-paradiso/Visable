@@ -109,7 +109,7 @@ class D2StructuredDocumentAnswerTests(_AskHarness):
                 self.assertNotIn("건강진단서", body["answer"])
                 # Canonical public citation.
                 self.assertEqual(structured["source"]["title"], "외국인체류 안내매뉴얼")
-                self.assertEqual(structured["source"]["edition"], "2026.6")
+                self.assertEqual(structured["source"]["edition"], "2026.9")
                 self.assertEqual(structured["source"]["page_range"], "43-44")
                 self.assertTrue(structured["source"]["verified"])
 
@@ -255,7 +255,7 @@ class PublicProjectionTests(_AskHarness):
         self.assertNotRegex(copy, r"(?m)^\s*#{1,6}\s")
         self.assertNotIn("**", copy)
         self.assertIn("기본 서류\n• 신청서", copy)
-        self.assertIn("출처\n외국인체류 안내매뉴얼 2026.6", copy)
+        self.assertIn("출처\n외국인체류 안내매뉴얼 2026.9", copy)
 
     def test_explicit_diagnostics_keep_engineering_observability(self):
         resp, _ = self._ask("D-2 연장시 필수 서류", headers={"X-Paradiso-Diagnostics": "1"})

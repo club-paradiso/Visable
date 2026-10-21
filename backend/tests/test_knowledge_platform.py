@@ -60,11 +60,26 @@ def _provider_ok(answer: str, candidates: List[str]) -> Dict[str, Any]:
     }
 
 
+# The verified grounding as it stood before the 2026-10-16 edition switch: the
+# same lists cited from the 2026.6 PDF. Tests of the edition-UPDATE mechanics
+# (a newer edition proposed over published facts, supersede, version diff)
+# need an older published baseline; the live seed now already cites 2026.9.
+BASELINE_2026_6_SEED = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures", "knowledge",
+                                    "stay_manual_grounding_2026_06_baseline.json")
+
+
 class PlatformCase(unittest.TestCase):
     """Fresh seeded platform per test, installed as the runtime singleton."""
 
+    #: Optional legacy seed to publish instead of the live one.
+    LEGACY_SEED: str = ""
+
     def setUp(self):
         self._previous = get_platform()
+        if self.LEGACY_SEED:
+            seed = patch.object(adapters, "LEGACY_GROUNDING_PATH", adapters.Path(self.LEGACY_SEED))
+            seed.start()
+            self.addCleanup(seed.stop)
         self.p = KnowledgePlatform.create(":memory:")
         set_platform_for_tests(self.p)
 
@@ -110,6 +125,14 @@ class PlatformCase(unittest.TestCase):
 
 # =============================================================================
 # Schema, lifecycle and database-level invariants
+
+
+class EditionUpdateCase(PlatformCase):
+    """Published facts cite the 2026.6 baseline; 2026.9 arrives as proposals."""
+
+    LEGACY_SEED = BASELINE_2026_6_SEED
+
+
 # =============================================================================
 class SchemaAndLifecycleTests(PlatformCase):
     def test_migrations_are_idempotent_and_immutable(self):
@@ -204,7 +227,7 @@ class SchemaAndLifecycleTests(PlatformCase):
 # =============================================================================
 # Ingestion: idempotency, dry-run, validation, source versions
 # =============================================================================
-class IngestionTests(PlatformCase):
+class IngestionTests(EditionUpdateCase):
     def test_bootstrap_is_idempotent(self):
         before = (self.p.repo.state_counts(), self.p.store.one("SELECT COUNT(*) FROM source_versions")[0])
         again = adapters.bootstrap(self.p.repo)
@@ -257,25 +280,31 @@ class IngestionTests(PlatformCase):
     def test_source_versions_keep_identity_lineage_and_state(self):
         stay = [s for s in self.p.repo.list_sources() if s["source_key"] == "stay_guide_manual"][0]
         by_ref = {v["edition_ref"]: v for v in stay["versions"]}
-        self.assertEqual(by_ref["stay_manual_2026_07_31_hwp"]["status"], "active")
-        self.assertEqual(by_ref["stay_manual_2026_07_31_hwp"]["content_review_state"], "approved")
-        self.assertEqual(by_ref["stay_manual_2026_07_31_hwp"]["effective_from"], "2026-07-31")
+        # Owner edition decision 2026-10-16: 2026-09-18 is the approved, active
+        # stay edition; the 2026-07-31 HWP it replaced and the 2026.6 PDF are superseded.
+        self.assertEqual(by_ref["stay_manual_2026_09_18_pdf"]["status"], "active")
+        self.assertEqual(by_ref["stay_manual_2026_09_18_pdf"]["content_review_state"], "approved")
+        self.assertEqual(by_ref["stay_manual_2026_09_18_pdf"]["effective_from"], "2026-09-18")
+        self.assertEqual(by_ref["stay_manual_2026_09_18_hwp"]["status"], "active")
+        self.assertEqual(by_ref["stay_manual_2026_09_18_hwp"]["content_review_state"], "approved")
+        self.assertEqual(by_ref["stay_manual_2026_07_31_hwp"]["status"], "superseded")
         self.assertEqual(by_ref["stay_manual_2026_06_23_pdf"]["status"], "superseded")
-        self.assertEqual(by_ref["stay_manual_2026_09_18_pdf"]["status"], "staged")
         # Effective dates come only from the approval record; absent = unknown (NULL), never invented.
         approvals = json.load(open(adapters.APPROVAL_INDEX_PATH, encoding="utf-8"))["documents"]
         for ref, version in by_ref.items():
             self.assertEqual(version["effective_from"], (approvals.get(ref) or {}).get("effective_date") or None, ref)
-        succ = by_ref["stay_manual_2026_07_31_hwp"]
-        self.assertEqual(succ["supersedes_version_id"], by_ref["stay_manual_2026_06_23_pdf"]["source_version_id"])
-        # Facts cite a superseded edition while an approved newer one exists.
+        self.assertEqual(by_ref["stay_manual_2026_07_31_hwp"]["supersedes_version_id"],
+                         by_ref["stay_manual_2026_06_23_pdf"]["source_version_id"])
+        self.assertEqual(by_ref["stay_manual_2026_09_18_pdf"]["supersedes_version_id"],
+                         by_ref["stay_manual_2026_07_31_hwp"]["source_version_id"])
+        # The baseline facts cite a superseded edition while an approved newer one exists.
         self.assertEqual(stay["refresh_state"], "refresh_due")
 
 
 # =============================================================================
 # Review workflow + acceptance cases 85 / 86 / 87
 # =============================================================================
-class ReviewWorkflowTests(PlatformCase):
+class ReviewWorkflowTests(EditionUpdateCase):
     def test_operator_created_fact_end_to_end(self):
         """[85] operator fact -> review -> verify -> publish -> retrieve -> eval."""
         rep = self.apply([self.proposal(value_text="여권", sort_order=0),
@@ -497,7 +526,7 @@ class RetrievalAndCoverageTests(PlatformCase):
         self.assertEqual([x["label"] for x in buckets["common"]], ["신청서", "여권", "외국인등록증", "수수료"])
         self.assertEqual(len(buckets["conditional"]), 1)
         self.assertIn("수료증명서", buckets["conditional"][0]["label"])
-        self.assertEqual(plan.structured["source_summary"], "외국인체류 안내매뉴얼 2026.6, 법무부 출입국·외국인정책본부, pp. 43-44")
+        self.assertEqual(plan.structured["source_summary"], "외국인체류 안내매뉴얼 2026.9, 법무부 출입국·외국인정책본부, pp. 43-44")
         blob = json.dumps(plan.structured, ensure_ascii=False)
         self.assertFalse(sa.contains_internal_metadata(blob))
         for term in INTERNAL_TERMS:
@@ -754,6 +783,95 @@ class LearningLoopTests(PlatformCase):
 
 # =============================================================================
 # Evals [23-26] and source diff [28, 77]
+
+class EvalSeedRefreshTests(PlatformCase):
+    def test_seed_cases_follow_the_seed_file_but_operator_cases_do_not(self):
+        key = "d2.extension.documents.ko"
+        row = self.p.store.one("SELECT case_id, assertions FROM eval_cases WHERE case_key = ?", (key,))
+        stale = row["assertions"].replace('"2026.9"', '"2026.6"')
+        self.assertNotEqual(stale, row["assertions"])
+        # A store seeded before the 2026-10-16 edition switch holds the old expectation.
+        self.p.store.execute("UPDATE eval_cases SET assertions = ? WHERE case_id = ?", (stale, row["case_id"]))
+        self.p.store.execute("UPDATE eval_cases SET assertions = ?, created_by = ? WHERE case_key = ?",
+                             (stale, OPERATOR, "d4.extension.documents.ko"))
+        self.p.evals.import_seed_corpus()
+        refreshed = self.p.store.one("SELECT assertions FROM eval_cases WHERE case_key = ?", (key,))["assertions"]
+        self.assertIn('"2026.9"', refreshed)
+        operator = self.p.store.one("SELECT assertions FROM eval_cases WHERE case_key = ?",
+                                    ("d4.extension.documents.ko",))["assertions"]
+        self.assertEqual(operator, stale)
+
+
+class VersionDiffTests(EditionUpdateCase):
+    def test_source_version_diff_d2(self):
+        """[77] 2026.6 (published) vs 2026.9 (proposals)."""
+        self.p.ingestion.run("sg", adapters.status_guidance_proposals(self.p.repo, statuses=["D-2", "D-4"]),
+                             mode="apply", actor="parser:sg", actor_kind="parser")
+        a, b = self.version("stay_manual_2026_06_23_pdf"), self.version("stay_manual_2026_09_18_pdf")
+        d = diff_versions(self.p.repo, a, b, status_code="D-2", properties=["required_document"])
+        self.assertEqual(d["summary"], {"ADDED": 0, "REMOVED": 0, "CHANGED": 4, "UNCHANGED": 4})
+        by_item = {r["slot_key"].rsplit("|", 1)[1]: r for r in d["records"]}
+        self.assertEqual(by_item["재정입증서류"]["change"], "CHANGED")
+        self.assertIn("requirement_level", by_item["재정입증서류"]["changed_fields"])
+        self.assertEqual(by_item["여권"]["change"], "UNCHANGED")
+        self.assertEqual(by_item["체류지입증서류"]["changed_fields"], ["wording"])
+        self.assertIn("d2.extension.documents.ko", by_item["재정입증서류"]["affected_eval_cases"])
+        d4 = diff_versions(self.p.repo, a, b, status_code="D-4", properties=["required_document"])
+        kinds = {r["slot_key"].rsplit("|", 1)[1]: r["change"] for r in d4["records"] if "|*|" in r["slot_key"]}
+        self.assertEqual(kinds["통합신청서"], "ADDED")
+        self.assertEqual(kinds["신청서"], "REMOVED")
+        visa = self.p.repo.find_source_version("visa_issuance_manual", "visa_manual_2026_09_01_pdf")
+        with self.assertRaises(KnowledgeError):
+            diff_versions(self.p.repo, a, visa["source_version_id"])
+
+
+# =============================================================================
+# Operator API: authentication and the Knowledge Studio workflow [37, 76]
+# =============================================================================
+
+class EditionSwitchReseedTests(EditionUpdateCase):
+    """A store published on the 2026.6 baseline, re-seeded with the live 2026.9 seed.
+
+    This is what a persistent deploy volume (WAYMAKER_KNOWLEDGE_DB) goes through
+    on the first boot after the 2026-10-16 edition switch.
+    """
+
+    def _published(self, status_code):
+        return self.p.repo.facts_where("f.lifecycle_state = 'PUBLISHED' AND v.status_code = ?", (status_code,))
+
+    def _reseed_live(self):
+        with patch.object(adapters, "LEGACY_GROUNDING_PATH", adapters.Path(adapters.__file__).resolve().parents[2]
+                          / "data" / "manual_grounding" / "stay_manual_grounding_2026_05.json"):
+            return adapters.seed_legacy(self.p.repo)
+
+    def test_legacy_facts_move_to_the_new_edition_and_old_notes_retire(self):
+        before = {c["version_label"] for f in self._published("D-2") for c in f["citations"]}
+        self.assertEqual(before, {"2026.6"})
+        result = self._reseed_live()
+        self.assertGreater(result["published"], 0)
+        self.assertGreater(result["retired"], 0)
+        for code, pages in (("D-2", "43-44"), ("D-4", "90-92"), ("E-7", "227")):
+            facts = self._published(code)
+            self.assertTrue(facts, code)
+            self.assertEqual({c["version_label"] for f in facts for c in f["citations"]}, {"2026.9"}, code)
+            self.assertFalse([f for f in facts if "2026.6" in (f.get("value_text") or "")], code)
+        again = self._reseed_live()
+        self.assertEqual((again["published"], again["retired"]), (0, 0))
+
+    def test_a_studio_published_fact_is_never_displaced(self):
+        rep = self.apply([self.proposal(
+            status_code="D-2", value_text="재정입증 서류", requirement_level="conditional",
+            section_title="유학(D-2) 체류기간 연장허가",
+            location={"source_version_id": self.version("stay_manual_2026_09_18_pdf"),
+                      "page_start": 43, "page_end": 43, "locator": "다. 제출서류"})])
+        studio_id = rep.items[0].fact_id
+        self.publish_path(studio_id)
+        self._reseed_live()
+        slot = self.p.repo.get_fact(studio_id)["slot_key"]
+        published = self.p.repo.published_for_slot(slot)
+        self.assertEqual([f["fact_id"] for f in published], [studio_id])
+
+
 # =============================================================================
 class EvalAndDiffTests(PlatformCase):
     def test_seed_corpus_passes(self):
@@ -782,32 +900,8 @@ class EvalAndDiffTests(PlatformCase):
                     "locale": "ko", "guard_checks": [], "gap_reason": None}
         self.assertEqual(len(self.p.evals.evaluate(case, observed)), 6)
 
-    def test_source_version_diff_d2(self):
-        """[77] 2026.6 (published) vs 2026.9 (proposals)."""
-        self.p.ingestion.run("sg", adapters.status_guidance_proposals(self.p.repo, statuses=["D-2", "D-4"]),
-                             mode="apply", actor="parser:sg", actor_kind="parser")
-        a, b = self.version("stay_manual_2026_06_23_pdf"), self.version("stay_manual_2026_09_18_pdf")
-        d = diff_versions(self.p.repo, a, b, status_code="D-2", properties=["required_document"])
-        self.assertEqual(d["summary"], {"ADDED": 0, "REMOVED": 0, "CHANGED": 4, "UNCHANGED": 4})
-        by_item = {r["slot_key"].rsplit("|", 1)[1]: r for r in d["records"]}
-        self.assertEqual(by_item["재정입증서류"]["change"], "CHANGED")
-        self.assertIn("requirement_level", by_item["재정입증서류"]["changed_fields"])
-        self.assertEqual(by_item["여권"]["change"], "UNCHANGED")
-        self.assertEqual(by_item["체류지입증서류"]["changed_fields"], ["wording"])
-        self.assertIn("d2.extension.documents.ko", by_item["재정입증서류"]["affected_eval_cases"])
-        d4 = diff_versions(self.p.repo, a, b, status_code="D-4", properties=["required_document"])
-        kinds = {r["slot_key"].rsplit("|", 1)[1]: r["change"] for r in d4["records"] if "|*|" in r["slot_key"]}
-        self.assertEqual(kinds["통합신청서"], "ADDED")
-        self.assertEqual(kinds["신청서"], "REMOVED")
-        visa = self.p.repo.find_source_version("visa_issuance_manual", "visa_manual_2026_09_01_pdf")
-        with self.assertRaises(KnowledgeError):
-            diff_versions(self.p.repo, a, visa["source_version_id"])
 
-
-# =============================================================================
-# Operator API: authentication and the Knowledge Studio workflow [37, 76]
-# =============================================================================
-class OperatorApiTests(PlatformCase):
+class OperatorApiTests(EditionUpdateCase):
     def client(self, token=TOKEN):
         headers = {"Authorization": f"Bearer {token}"} if token else {}
         return TestClient(pb.app, headers=headers)
@@ -892,7 +986,7 @@ class OperatorApiTests(PlatformCase):
             self.assertEqual(diff_resp.status_code, 200)
 
 
-class KnowledgeStudioContractTests(PlatformCase):
+class KnowledgeStudioContractTests(EditionUpdateCase):
     """Pins the response keys knowledge-studio.js reads (its E2E uses mocks)."""
 
     def test_studio_api_shapes(self):

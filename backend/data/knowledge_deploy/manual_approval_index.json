@@ -41,11 +41,17 @@
     "",
     "A missing or corrupt copy of this file fails CLOSED — every document falls",
     "back to needs_review — so a broken index can never widen what the assistant",
-    "is allowed to assert."
+    "is allowed to assert.",
+    "",
+    "As of 2026-10-16 the owner chose the reference editions: stay 2026-09-18 and visa 2026-09-01",
+    "  (both containers of each: HWP and PDF). They are 'approved' (reviewer recorded per document)",
+    "  and current; the 2026-07-31 pair is 'superseded'. The 2026-09-01 stay HWP was never approved",
+    "  and is superseded by 2026-09-18. The approval records an edition decision, not a line-by-line",
+    "  certification of every structured extract; see audits/manual-edition-2026-09-promotion/README.md."
   ],
   "documents": {
     "visa_manual_2026_07_31_hwp": {
-      "approval_state": "approved",
+      "approval_state": "superseded",
       "effective_date": "2026-07-31",
       "parser": "scripts/decrypt_hwp_distribution.py (배포용 HWP ViewText AES)",
       "reviewer": "michaelcool1009@gmail.com",
@@ -63,10 +69,11 @@
       ],
       "table_extraction_warnings": [
         "별표/첨부서류 tables are flattened to paragraph text; cell and column boundaries are NOT preserved and must not be read as a structured table. This holds regardless of approval state."
-      ]
+      ],
+      "superseded_date": "2026-09-01"
     },
     "stay_manual_2026_07_31_hwp": {
-      "approval_state": "approved",
+      "approval_state": "superseded",
       "effective_date": "2026-07-31",
       "parser": "scripts/decrypt_hwp_distribution.py (배포용 HWP ViewText AES)",
       "reviewer": "michaelcool1009@gmail.com",
@@ -84,7 +91,8 @@
       ],
       "table_extraction_warnings": [
         "별표/첨부서류 tables are flattened to paragraph text; cell and column boundaries are NOT preserved and must not be read as a structured table. This holds regardless of approval state."
-      ]
+      ],
+      "superseded_date": "2026-09-18"
     },
     "visa_manual_2026_06_17_pdf": {
       "approval_state": "superseded",
@@ -188,11 +196,11 @@
       "approval_state": "draft"
     },
     "visa_manual_2026_09_01_hwp": {
-      "approval_state": "needs_review",
+      "approval_state": "approved",
       "effective_date": "2026-09-01",
       "parser": "scripts/decrypt_hwp_distribution.py (배포용 HWP ViewText AES)",
-      "reviewer": "",
-      "reviewed_at": "",
+      "reviewer": "michaelcool1009@gmail.com",
+      "reviewed_at": "2026-10-16",
       "source_confidence": "high",
       "has_tables_or_annexes": true,
       "section_locator": "paragraph",
@@ -210,10 +218,11 @@
       ],
       "table_extraction_warnings": [
         "별표/첨부서류 tables are flattened to paragraph text; cell and column boundaries are NOT preserved and must not be read as a structured table. This holds regardless of approval state."
-      ]
+      ],
+      "approval_note": "Owner edition decision recorded 2026-10-16: the 2026-09-18 stay manual and the 2026-09-01 visa manual are the reference editions (owner-supplied files verified byte-identical to the committed copies, MD5 2507501da598b4d850f111011f779d13 / 13d25559c9255d9d41604dc6e9cad150). Runtime citations were re-checked page by page against this edition (D-2 pp.43-44, D-4 pp.90-92, E-7 p.227). The approval records the edition decision; it is not a line-by-line certification of every structured extract derived from it. See audits/manual-edition-2026-09-promotion/README.md for open review items."
     },
     "stay_manual_2026_09_01_hwp": {
-      "approval_state": "needs_review",
+      "approval_state": "superseded",
       "effective_date": "2026-09-01",
       "parser": "scripts/decrypt_hwp_distribution.py (배포용 HWP ViewText AES)",
       "reviewer": "",
@@ -235,14 +244,15 @@
       ],
       "table_extraction_warnings": [
         "별표/첨부서류 tables are flattened to paragraph text; cell and column boundaries are NOT preserved and must not be read as a structured table. This holds regardless of approval state."
-      ]
+      ],
+      "superseded_date": "2026-09-18"
     },
     "visa_manual_2026_09_01_pdf": {
-      "approval_state": "needs_review",
-      "effective_date": "",
+      "approval_state": "approved",
+      "effective_date": "2026-09-01",
       "parser": "scripts/build_current_manual_corpus.py / PyMuPDF 1.28.2",
-      "reviewer": "",
-      "reviewed_at": "",
+      "reviewer": "michaelcool1009@gmail.com",
+      "reviewed_at": "2026-10-16",
       "source_confidence": "high",
       "has_tables_or_annexes": true,
       "section_locator": "pdf_page",
@@ -254,14 +264,15 @@
       ],
       "table_extraction_warnings": [
         "PDF text layer only; image content and table cell relationships require checking the original page."
-      ]
+      ],
+      "approval_note": "Owner edition decision recorded 2026-10-16: the 2026-09-18 stay manual and the 2026-09-01 visa manual are the reference editions (owner-supplied files verified byte-identical to the committed copies, MD5 2507501da598b4d850f111011f779d13 / 13d25559c9255d9d41604dc6e9cad150). Runtime citations were re-checked page by page against this edition (D-2 pp.43-44, D-4 pp.90-92, E-7 p.227). The approval records the edition decision; it is not a line-by-line certification of every structured extract derived from it. See audits/manual-edition-2026-09-promotion/README.md for open review items."
     },
     "stay_manual_2026_09_18_pdf": {
-      "approval_state": "needs_review",
-      "effective_date": "",
+      "approval_state": "approved",
+      "effective_date": "2026-09-18",
       "parser": "scripts/build_current_manual_corpus.py / PyMuPDF 1.28.2",
-      "reviewer": "",
-      "reviewed_at": "",
+      "reviewer": "michaelcool1009@gmail.com",
+      "reviewed_at": "2026-10-16",
       "source_confidence": "high",
       "has_tables_or_annexes": true,
       "section_locator": "pdf_page",
@@ -273,14 +284,15 @@
       ],
       "table_extraction_warnings": [
         "PDF text layer only; image content and table cell relationships require checking the original page."
-      ]
+      ],
+      "approval_note": "Owner edition decision recorded 2026-10-16: the 2026-09-18 stay manual and the 2026-09-01 visa manual are the reference editions (owner-supplied files verified byte-identical to the committed copies, MD5 2507501da598b4d850f111011f779d13 / 13d25559c9255d9d41604dc6e9cad150). Runtime citations were re-checked page by page against this edition (D-2 pp.43-44, D-4 pp.90-92, E-7 p.227). The approval records the edition decision; it is not a line-by-line certification of every structured extract derived from it. See audits/manual-edition-2026-09-promotion/README.md for open review items."
     },
     "stay_manual_2026_09_18_hwp": {
-      "approval_state": "needs_review",
+      "approval_state": "approved",
       "effective_date": "2026-09-18",
       "parser": "scripts/decrypt_hwp_distribution.py (배포용 HWP ViewText AES)",
-      "reviewer": "",
-      "reviewed_at": "",
+      "reviewer": "michaelcool1009@gmail.com",
+      "reviewed_at": "2026-10-16",
       "source_confidence": "high",
       "has_tables_or_annexes": true,
       "section_locator": "paragraph",
@@ -298,7 +310,8 @@
       ],
       "table_extraction_warnings": [
         "별표/첨부서류 tables are flattened to paragraph text; cell and column boundaries are NOT preserved and must not be read as a structured table. This holds regardless of approval state."
-      ]
+      ],
+      "approval_note": "Owner edition decision recorded 2026-10-16: the 2026-09-18 stay manual and the 2026-09-01 visa manual are the reference editions (owner-supplied files verified byte-identical to the committed copies, MD5 2507501da598b4d850f111011f779d13 / 13d25559c9255d9d41604dc6e9cad150). Runtime citations were re-checked page by page against this edition (D-2 pp.43-44, D-4 pp.90-92, E-7 p.227). The approval records the edition decision; it is not a line-by-line certification of every structured extract derived from it. See audits/manual-edition-2026-09-promotion/README.md for open review items."
     }
   }
 }

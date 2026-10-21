@@ -261,7 +261,8 @@ def seed_legacy(repo: KnowledgeRepository) -> Dict[str, int]:
     """
     ingestion = IngestionService(repo)
     review = ReviewService(repo)
-    published = existing = 0
+    published = existing = retired = 0
+    seeded_slots: Dict[str, set] = {}
     for proposal, attrs in legacy_grounding_proposals(repo):
         validated, errors, _ = ingestion.validate(proposal)
         if validated is None:
@@ -274,6 +275,7 @@ def seed_legacy(repo: KnowledgeRepository) -> Dict[str, int]:
             variant_attributes=attrs, legacy_ref=str((attrs.get("legacy_grounding") or {}).get("grounding_id") or ""),
         )
         fact = repo.get_fact(fact_id)
+        seeded_slots.setdefault(fact["variant_id"], set()).add(fact["slot_key"])
         if fact["lifecycle_state"] != LifecycleState.HUMAN_REVIEW_REQUIRED.value:
             existing += 1
             continue
@@ -283,13 +285,43 @@ def seed_legacy(repo: KnowledgeRepository) -> Dict[str, int]:
                             actor_kind=ActorKind.LEGACY_IMPORT.value, reason=reason)
             repo.transition(fact_id, LifecycleState.VERIFIED, actor=LEGACY_ACTOR,
                             actor_kind=ActorKind.LEGACY_IMPORT.value, reason=reason)
-            if repo.published_for_slot(fact["slot_key"]):
+            if not _only_legacy_published(repo.published_for_slot(fact["slot_key"])):
                 # Never displace a Studio-published successor on re-seed.
                 existing += 1
                 continue
+            # Empty slot, or the slot holds an earlier legacy seed (e.g. the same
+            # list cited from an older manual edition): publish, superseding it.
             review.publish(fact_id, actor=LEGACY_ACTOR, actor_kind=ActorKind.LEGACY_IMPORT.value, reason=reason)
         published += int(created)
-    return {"published": published, "existing": existing}
+    retired = _retire_dropped_legacy_facts(repo, seeded_slots)
+    return {"published": published, "existing": existing, "retired": retired}
+
+
+def _only_legacy_published(facts: List[Dict[str, Any]]) -> bool:
+    """True when every published fact in a slot came from an earlier legacy seed."""
+    return all(f.get("created_by_kind") == ActorKind.LEGACY_IMPORT.value for f in facts)
+
+
+def _retire_dropped_legacy_facts(repo: KnowledgeRepository, seeded_slots: Dict[str, set]) -> int:
+    """Supersede legacy-seeded facts the current seed no longer contains.
+
+    A re-verified edition can change a note's wording ("매뉴얼(2026.6)" ->
+    "매뉴얼(2026.9)"), which gives it a new slot; without this the old note
+    would stay published beside the new one. Only facts the legacy seed itself
+    created are touched, and only in variants the seed just processed — a
+    Studio-published fact is never retired here.
+    """
+    retired = 0
+    for variant_id, slots in seeded_slots.items():
+        for old in repo.facts_where("f.variant_id = ? AND f.lifecycle_state = 'PUBLISHED'", (variant_id,),
+                                    with_citations=False):
+            if old["slot_key"] in slots or old.get("created_by_kind") != ActorKind.LEGACY_IMPORT.value:
+                continue
+            repo.transition(old["fact_id"], LifecycleState.SUPERSEDED, actor=LEGACY_ACTOR,
+                            actor_kind=ActorKind.LEGACY_IMPORT.value,
+                            reason="no longer in the repository grounding seed (re-verified edition)")
+            retired += 1
+    return retired
 
 
 def bootstrap(repo: KnowledgeRepository) -> Dict[str, Any]:

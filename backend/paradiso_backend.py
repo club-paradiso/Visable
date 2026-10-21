@@ -4280,8 +4280,10 @@ def _build_grounded_prompt(
     # PUBLIC source label only. Internal revision metadata (source file path,
     # source_revision_date, sha256) stays server-side: the model repeats
     # whatever citation format it is given, so it must never be handed the
-    # internal revision string ("2026.6; source file 2026-06-23").
-    source_date_label = bundle.get("source_date", "2026.6")
+    # internal revision string ("2026.9; source file 2026-09-18"). The bundle
+    # always carries the cited edition; the default is only a last resort and
+    # names the current stay edition (owner decision 2026-10-16).
+    source_date_label = bundle.get("source_date", "2026.9")
     issuing_body = bundle.get("issuing_body", "법무부 출입국·외국인정책본부")
     page_range = grounding.get("page_range")
     page_label = f", pp. {page_range}" if page_range else ""

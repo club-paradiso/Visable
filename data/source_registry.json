@@ -36,8 +36,9 @@
       ],
       "confidence": "high",
       "update_frequency": "irregular",
-      "status": "active",
-      "notes": "배포용 HWP (FileHeader flag 0x4): the body lives in ViewText, AES-128-ECB encrypted, and was read with scripts/decrypt_hwp_distribution.py — the procedure documented in Hancom's published 한글 문서 파일 형식 5.0 spec. The extracted text is the document's own text layer, so there are no OCR or glyph artifacts. 별표/첨부서류 tables are flattened to paragraph text and must not be read as structured tables."
+      "status": "deprecated",
+      "notes": "Superseded 2026-09-01 by visa_manual_2026_09_01_pdf (owner edition decision 2026-10-16). Retained for point-in-time questions. 배포용 HWP (FileHeader flag 0x4): the body lives in ViewText, AES-128-ECB encrypted, and was read with scripts/decrypt_hwp_distribution.py — the procedure documented in Hancom's published 한글 문서 파일 형식 5.0 spec. The extracted text is the document's own text layer, so there are no OCR or glyph artifacts. 별표/첨부서류 tables are flattened to paragraph text and must not be read as structured tables.",
+      "superseded_by": "visa_manual_2026_09_01_pdf"
     },
     {
       "id": "stay_manual_2026_07_31_hwp",
@@ -56,8 +57,9 @@
       ],
       "confidence": "high",
       "update_frequency": "irregular",
-      "status": "active",
-      "notes": "배포용 HWP (FileHeader flag 0x4): the body lives in ViewText, AES-128-ECB encrypted, and was read with scripts/decrypt_hwp_distribution.py — the procedure documented in Hancom's published 한글 문서 파일 형식 5.0 spec. The extracted text is the document's own text layer, so there are no OCR or glyph artifacts. 별표/첨부서류 tables are flattened to paragraph text and must not be read as structured tables."
+      "status": "deprecated",
+      "notes": "Superseded 2026-09-18 by stay_manual_2026_09_18_pdf (owner edition decision 2026-10-16). Retained for point-in-time questions. 배포용 HWP (FileHeader flag 0x4): the body lives in ViewText, AES-128-ECB encrypted, and was read with scripts/decrypt_hwp_distribution.py — the procedure documented in Hancom's published 한글 문서 파일 형식 5.0 spec. The extracted text is the document's own text layer, so there are no OCR or glyph artifacts. 별표/첨부서류 tables are flattened to paragraph text and must not be read as structured tables.",
+      "superseded_by": "stay_manual_2026_09_18_pdf"
     },
     {
       "id": "visa_manual_2026_06_17_pdf",
@@ -247,42 +249,42 @@
     {
       "id": "visa_manual_2026_09_01_pdf",
       "type": "pdf_manual",
-      "title": "사증발급 안내매뉴얼",
-      "title_en": "Visa Issuance Guide Manual",
+      "title": "사증발급 안내매뉴얼 (2026.9; 2026-09-01 PDF)",
+      "title_en": "Visa Issuance Guide Manual (2026.9; 2026-09-01 PDF)",
       "authority": "법무부 출입국·외국인정책본부",
       "version": "2026.9",
       "source_date": "2026-09-01",
       "local_path": "docs/source-manuals/2026-09/visa_manual_260901.pdf",
       "url": "https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&BBS_GB_CD=BS10&NTCCTT_SEQ=1062&page=1",
       "last_known_hash": "sha256:18f2c022d40ffe1a71cee5e388f0219fff6b435b6876da6ce119a398f0fb6fb8",
-      "last_checked_at": "2026-09-21T00:00:00+09:00",
+      "last_checked_at": "2026-10-16T00:00:00+09:00",
       "language": [
         "ko"
       ],
       "confidence": "high",
       "update_frequency": "irregular",
-      "status": "needs_manual_review",
-      "notes": "User-supplied PDF; searchable original, pending human content approval."
+      "status": "active",
+      "notes": "Reference visa edition chosen by the owner on 2026-10-16 (approved in data/manual_approval_index.json). Page-anchored PDF of the 2026-09-01 edition; the 배포용 HWP of the same edition is docs/source-manuals/2026-09-01/visa_manual_260901.hwp."
     },
     {
       "id": "stay_manual_2026_09_18_pdf",
       "type": "pdf_manual",
-      "title": "외국인체류 안내매뉴얼",
-      "title_en": "Foreigner Stay/Residence Guide Manual",
+      "title": "외국인체류 안내매뉴얼 (2026.9; 2026-09-18 PDF)",
+      "title_en": "Foreigner Stay/Residence Guide Manual (2026.9; 2026-09-18 PDF)",
       "authority": "법무부 출입국·외국인정책본부",
       "version": "2026.9",
       "source_date": "2026-09-18",
       "local_path": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
       "url": "https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&BBS_GB_CD=BS10&NTCCTT_SEQ=1062&page=1",
       "last_known_hash": "sha256:e464284cb85e5f0124db5e9b9b41fe2b95f1d44e79f8a43b1d10c6e42e178153",
-      "last_checked_at": "2026-09-21T00:00:00+09:00",
+      "last_checked_at": "2026-10-16T00:00:00+09:00",
       "language": [
         "ko"
       ],
       "confidence": "high",
       "update_frequency": "irregular",
-      "status": "needs_manual_review",
-      "notes": "User-supplied PDF; searchable original, pending human content approval."
+      "status": "active",
+      "notes": "Reference stay edition chosen by the owner on 2026-10-16 (approved in data/manual_approval_index.json). Page-anchored PDF of the 2026-09-18 edition; runtime grounding cites these PDF pages."
     },
     {
       "id": "stay_manual_2026_09_18_hwp",
@@ -295,14 +297,14 @@
       "local_path": "docs/source-manuals/2026-09/stay_manual_260918.hwp",
       "url": "https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&BBS_GB_CD=BS10&NTCCTT_SEQ=1062&page=1",
       "last_known_hash": "sha256:06abba5f7ca1b3029225114097b234391306f71e0fbeabbfea73a5b8824e5917",
-      "last_checked_at": "2026-09-22T00:00:00+09:00",
+      "last_checked_at": "2026-10-16T00:00:00+09:00",
       "language": [
         "ko"
       ],
       "confidence": "high",
       "update_frequency": "irregular",
-      "status": "needs_manual_review",
-      "notes": "User-supplied 배포용 HWP original of the 2026-09-18 stay edition, read with scripts/decrypt_hwp_distribution.py. Paragraph-anchored text; NOT indexed into the searchable corpus, which carries the page-anchored PDF of the same edition. Pending human content approval — the approved and current stay edition remains stay_manual_2026_07_31_hwp."
+      "status": "active",
+      "notes": "배포용 HWP original of the 2026-09-18 stay edition, read with scripts/decrypt_hwp_distribution.py. Approved with the PDF of the same edition on 2026-10-16. Paragraph-anchored; NOT indexed into the searchable corpus, which carries the page-anchored PDF. Locators are never merged across the two containers."
     }
   ]
 }

@@ -106,7 +106,12 @@ def build() -> dict:
         (ROOT / text_file).write_text(raw, encoding="utf-8")
         write_json(ROOT / section_file, sections)
         warnings = ["PDF text layer only; image content and table cell relationships require checking the original page."]
-        catalog.append({**source, "sections": section_file, "approval_state": "needs_review",
+        # A recorded human approval (e.g. the owner's 2026-10-16 edition decision)
+        # is kept as is: the rebuild re-extracts the text but never re-stages an
+        # approved, current edition as pending.
+        approved = (approval["documents"].get(sid) or {}).get("approval_state") == "approved"
+        catalog.append({**source, "sections": section_file,
+                        "approval_state": "approved" if approved else "needs_review",
                         "official_url": NOTICE, "image_pages": sum(s["has_images"] for s in sections),
                         "characters": sum(len(s["text"]) for s in sections)})
         record = {
@@ -119,6 +124,10 @@ def build() -> dict:
             "language": ["ko"], "confidence": "high", "update_frequency": "irregular",
             "status": "needs_manual_review", "notes": "User-supplied PDF; searchable original, pending human content approval."
         }
+        if approved:
+            entries = manifest.get("pending_review_editions") or []
+            entries[:] = [e for e in entries if e.get("registry_id_when_promoted") != sid]
+            continue
         registry["sources"] = [r for r in registry["sources"] if r["id"] != sid] + [record]
         # Rebuilding must never erase a review or manufacture one.
         approval["documents"].setdefault(sid, {
