@@ -94,6 +94,8 @@ ew.fetch = async (url, options) => {
 ew.eval(src);
 const ed = ew.document;
 ed.querySelector('[data-example]').click();
+// Use an unambiguous legal duration so an AI-only outage should offer retry.
+ed.querySelector('#case-text').value = 'D-2 유학생이 음식점에서 허가 없이 18일 일했습니다. 처음 위반입니다.';
 ed.querySelector('#case-form').dispatchEvent(new ew.Event('submit', { bubbles: true, cancelable: true }));
 await new Promise(resolve => setTimeout(resolve, 20));
 assert.equal(ed.body.dataset.enforcementStep, '2');
