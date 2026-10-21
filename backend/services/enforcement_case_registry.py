@@ -97,10 +97,11 @@ def _official_url(value: Any) -> str:
     if parsed.scheme != "https" or parsed.username or parsed.password or parsed.fragment:
         raise CaseRegistryError("source.publicUrl must be an uncredentialed https URL")
     try:
-        ip_address(host)
-        raise CaseRegistryError("source.publicUrl may not use an IP address")
+        numeric_host = ip_address(host)
     except ValueError:
-        pass
+        numeric_host = None
+    if numeric_host is not None:
+        raise CaseRegistryError("source.publicUrl may not use an IP address")
     if not any(host == base or host.endswith("." + base) for base in _OFFICIAL_HOSTS):
         raise CaseRegistryError("source.publicUrl must be from an approved official source host")
     if any(name in (parsed.query or "").lower() for name in ("oc=", "apikey=", "access_token=", "key=")):
