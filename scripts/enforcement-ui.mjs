@@ -585,7 +585,7 @@ async function analyzeCase(caseData, { form, errorTarget } = {}) {
     // Do not cache transient provider failures, so another attempt really retries.
     if (response.prediction?.status && response.prediction.status !== 'UNAVAILABLE') analysisCache.set(fingerprint, response);
     renderResult(response);
-    if (!response.prediction?.status || response.prediction.status === 'UNAVAILABLE') addAnalysisRetry();
+    if (response.legalBaseline?.status === 'AVAILABLE' && (!response.prediction?.status || response.prediction.status === 'UNAVAILABLE')) addAnalysisRetry();
   } catch (error) {
     if (generation !== analysisSequence) return;
     if (baselineResponse) {
