@@ -526,3 +526,224 @@ html[dir="rtl"] .cs-service:hover > .cs-icon { transform: translateX(-3px) scale
   .cs-nav nav > a[data-cs-open-tools] { display: inline-flex; min-height: 44px; align-items: center; font-size: 13px; }
   .cs-examples > button:nth-of-type(4) { display: flex; }
 }
+
+
+/* 2026-10-21: navigation-first usability pass.
+   Preserve existing brand tokens and functional controls. */
+#civicLanding .cs-hero { max-width: 900px; margin-inline: auto; }
+#civicLanding .cs-hero h1 { text-wrap: balance; }
+#civicLanding .cs-hero > p { max-width: 680px; text-wrap: pretty; }
+#civicLanding .cs-tools-core {
+  margin-block: 8px 24px;
+  padding-block: 32px;
+}
+#civicLanding .cs-tools-core > h2 {
+  font-size: clamp(19px, 2vw, 24px);
+  font-weight: 750;
+  margin-bottom: 18px;
+  letter-spacing: -.035em;
+}
+#civicLanding .cs-tools-core .cs-tool-grid { gap: 12px; }
+#civicLanding .cs-tools-core .cs-tool {
+  margin: 0;
+  padding: 20px;
+  min-height: 112px;
+  background: var(--cs-bg);
+  border: 1px solid var(--cs-line);
+  border-radius: 16px;
+  gap: 14px;
+  align-items: flex-start;
+  transition: border-color .18s ease, background-color .18s ease, transform .18s ease, box-shadow .18s ease;
+}
+#civicLanding .cs-tools-core .cs-tool:hover {
+  border-color: var(--cs-green);
+  background: var(--cs-row);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(9,36,29,.055);
+}
+#civicLanding .cs-tools-core .cs-tool:focus-visible {
+  border-color: var(--cs-green);
+  outline-offset: 3px;
+}
+#civicLanding .cs-tools-core .cs-tool strong { font-size: 16px; }
+#civicLanding .cs-tools-core .cs-tool small { font-size: 13px; line-height: 1.55; margin-top: 7px; }
+#civicLanding .cs-directory {
+  margin-block: 0 36px;
+  padding-top: 0;
+  border: 1px solid var(--cs-line);
+  background: var(--cs-bg);
+  border-radius: 18px;
+  overflow: clip;
+}
+#civicLanding .cs-directory > summary {
+  min-height: 82px;
+  padding: 20px 24px;
+  gap: 14px;
+  font-size: clamp(20px, 2.2vw, 27px);
+  cursor: pointer;
+  background: var(--cs-row);
+  transition: background-color .18s ease;
+}
+#civicLanding .cs-directory > summary:hover { background: var(--cs-soft); }
+#civicLanding .cs-directory > summary:focus-visible {
+  outline: 3px solid var(--cs-green);
+  outline-offset: -4px;
+}
+#civicLanding .cs-directory > summary > span {
+  font-size: 13px;
+  max-width: 300px;
+  line-height: 1.5;
+  text-align: end;
+}
+#civicLanding .cs-directory > summary > .cs-icon { flex-shrink: 0; }
+#civicLanding .cs-directory > .cs-directory-content {
+  padding: 22px 24px 24px;
+}
+#civicLanding .cs-directory-controls {
+  display: grid;
+  grid-template-columns: minmax(230px, 1fr) auto;
+  gap: 10px 20px;
+  align-items: center;
+  margin-bottom: 14px;
+}
+#civicLanding .cs-tool-search {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 50px;
+  padding: 8px 14px;
+  border: 1px solid var(--cs-line);
+  background: var(--cs-row);
+  border-radius: 12px;
+}
+#civicLanding .cs-tool-search:focus-within {
+  border-color: var(--cs-green);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--cs-green) 18%, transparent);
+}
+#civicLanding .cs-tool-search input {
+  outline: none;
+  background: transparent;
+  min-height: 30px;
+  font-size: 16px;
+}
+#civicLanding .cs-tool-tabs { gap: 6px; }
+#civicLanding .cs-tool-tabs button {
+  padding: 9px 14px;
+  border: 1px solid var(--cs-line);
+  border-radius: 10px;
+  background: var(--cs-bg);
+  color: var(--cs-ink);
+  white-space: nowrap;
+  font-weight: 600;
+}
+#civicLanding .cs-tool-tabs button[aria-pressed="true"] {
+  border-color: var(--cs-green);
+  background: var(--cs-green);
+  color: var(--cs-bg);
+}
+#civicLanding .cs-tool-tabs button:focus-visible { outline-offset: 2px; }
+#civicLanding .cs-result-count {
+  display: block;
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--cs-muted);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+#civicLanding .cs-service-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+#civicLanding .cs-directory .cs-service {
+  box-sizing: border-box;
+  align-items: flex-start;
+  gap: 12px;
+  min-height: 118px;
+  padding: 16px;
+  border: 1px solid var(--cs-line);
+  border-radius: 12px;
+  background: var(--cs-bg);
+}
+#civicLanding .cs-directory .cs-service:hover {
+  border-color: var(--cs-green);
+  background: var(--cs-row);
+}
+#civicLanding .cs-directory .cs-service strong {
+  font-size: 15px;
+  line-height: 1.45;
+}
+#civicLanding .cs-directory .cs-service small {
+  margin-top: 5px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+#civicLanding .cs-directory .cs-service[hidden],
+#civicLanding .cs-tool-empty[hidden] { display: none; }
+#civicLanding .cs-tool-empty {
+  padding: 24px;
+  margin: 0;
+  border-radius: 10px;
+  background: var(--cs-row);
+}
+#civicLanding .cs-tool-settings {
+  margin-top: 22px;
+  padding-top: 12px;
+}
+@media (max-width: 1100px) {
+  #civicLanding .cs-directory-controls {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  #civicLanding .cs-service-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 680px) {
+  #civicLanding .cs-hero { padding-block: 30px 24px; }
+  #civicLanding .cs-tools-core { padding-block: 22px 24px; margin-bottom: 16px; }
+  #civicLanding .cs-tools-core .cs-tool-grid { grid-template-columns: 1fr; gap: 8px; }
+  #civicLanding .cs-tools-core .cs-tool {
+    padding: 15px 16px;
+    min-height: 88px;
+    border-radius: 12px;
+  }
+  #civicLanding .cs-directory { border-radius: 14px; margin-bottom: 24px; }
+  #civicLanding .cs-directory > summary {
+    padding: 16px;
+    min-height: 70px;
+    font-size: 21px;
+  }
+  #civicLanding .cs-directory > summary > span {
+    width: 100%;
+    max-width: none;
+    text-align: start;
+    font-size: 12px;
+  }
+  #civicLanding .cs-directory > .cs-directory-content { padding: 16px 12px 18px; }
+  #civicLanding .cs-directory-controls { gap: 10px; margin-bottom: 12px; }
+  #civicLanding .cs-tool-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    padding-block: 3px 9px;
+    max-width: 100%;
+    overscroll-behavior-inline: contain;
+  }
+  #civicLanding .cs-tool-tabs button { flex-shrink: 0; }
+  #civicLanding .cs-service-grid { grid-template-columns: 1fr; gap: 8px; }
+  #civicLanding .cs-directory .cs-service {
+    min-height: 82px;
+    padding: 13px;
+  }
+  #civicLanding .cs-service-icon { width: 34px; height: 34px; }
+  #civicLanding .cs-nav nav > a[data-cs-open-tools] {
+    display: inline-flex;
+    align-items: center;
+    min-height: 42px;
+    padding: 0 11px;
+    border: 1px solid var(--cs-line);
+    border-radius: 11px;
+    white-space: nowrap;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  #civicLanding .cs-tools-core .cs-tool,
+  #civicLanding .cs-directory > summary { transition: none; }
+  #civicLanding .cs-tools-core .cs-tool:hover { transform: none; }
+}
