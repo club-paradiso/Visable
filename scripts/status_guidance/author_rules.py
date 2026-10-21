@@ -318,6 +318,15 @@ LAW_DECREE = {'law_id': '005256', 'mst': '289697', 'title_ko': '출입국관리�
 LAW_RULE = {'law_id': '008494', 'mst': '289833', 'title_ko': '출입국관리법 시행규칙', 'title_en': 'Enforcement Rule of the Immigration Act', 'tier': 3, 'kind': 'rule', 'effective': '2026-09-15'}
 
 
+# 시행규칙 제73조 (MST 289833) as in force from 2026-09-15: office payments are 수입인지 or
+# 전자화폐·전자결제 (제1호), and 외국인등록증 issue/reissue fees must be paid in cash or with a
+# cash-payment receipt (제1호 가목). 법무부령 제1125호 부칙 제1조 defers the amended 제73조
+# ("공포 후 1년이 경과한 날부터") to 2027-09-16, when card payment is added and 가목 is deleted.
+# Fees carry the amended values under `scheduled`; the runtime switches at KST midnight.
+RULE_73_AMENDED_AT = '2027-09-16T00:00:00+09:00'
+RULE_73_AMENDED_SOURCE = '출입국관리법 시행규칙 부칙 <법무부령 제1125호, 2026. 9. 15.> 제1조'
+
+
 def _law(base, article, label_ko, label_en, quote_ko):
     art_url = article.replace(' ', '')
     return dict(base, article=article, label_ko=label_ko, label_en=label_en, quote_ko=quote_ko,
@@ -336,10 +345,14 @@ LAW_SOURCES = {
     'rule_49_2': _law(LAW_RULE, '제49조의2', '외국인등록사항변경의 신고', 'Reportable registration changes', 'D-1, D-2, D-4~D-9 소속기관 변경·추가(명칭 변경 포함), 재학 여부 변경, D-10 연수개시·연수기관 변경, H-2 취업개시·고용업체 변경, 직업 또는 연간소득금액 변경(취업 가능 자격·D-7~D-9)'),
     'rule_49_3': _law(LAW_RULE, '제49조의3', '체류지 변경의 신고', 'Change-of-residence report forms and attachments', '출입국관서 제출 시 별지 제34호·34호의2·34호의3 서식, 시·군·구·읍·면·동 제출 시 별지 제34호의4~8 서식; 첨부서류는 임대차계약서, 매매계약서, 그 밖에 체류지를 이전한 사실을 확인할 수 있는 서류로서 법무부장관이 정하는 서류'),
     'rule_72': _law(LAW_RULE, '제72조', '각종 허가 등에 관한 수수료', 'Fees for permits', '체류자격 외 활동허가 12만원(D-2·D-4 시간제 취업 등 법무부장관이 인정하는 경우 2만원), 근무처 변경·추가 허가 12만원, 체류자격부여 8만원(F-6 4만원), 체류자격 변경 허가 10만원(F-5 20만원), 체류기간 연장 허가 6만원(F-6 3만원), 단수재입국허가 3만원, 복수재입국허가 5만원, 외국인등록증 발급 및 재발급 3만 5천원'),
-    'rule_73': _law(LAW_RULE, '제73조', '수수료의 납부방법', 'How fees are paid', '청·사무소·출장소 납부 시 수입인지(외국인등록증 발급 및 재발급 수수료의 경우에는 현금 또는 현금 납입을 증명하는 증표), 신용카드·직불카드 또는 정보통신망을 이용한 전자화폐·전자결제; 시·군·구·읍·면·동 납부 시 수입증지·카드·전자결제'),
+    'rule_73': _law(LAW_RULE, '제73조', '수수료의 납부방법', 'How fees are paid', '청·사무소·출장소 납부 시 수입인지 또는 정보통신망을 이용한 전자화폐·전자결제(다만 외국인등록증 발급 및 재발급 수수료는 현금 또는 현금 납입을 증명하는 증표); 시·군·구·읍·면·동 납부 시 수입증지 또는 전자화폐·전자결제'),
     'rule_74': _law(LAW_RULE, '제74조', '수수료의 감면', 'Fee exemptions and reductions', '면제: 정부·정부출연연구기관 등이 학비 등 국내체재비를 부담하고 초청한 D-1·D-2·D-4 활동자의 자격변경·연장·재입국(제2호), A-1~A-3·D-8(제3호), 등록증·영주증 발급상의 잘못으로 인한 재발급(제7호) 등; 감경: 온라인 근무처 변경·추가, 자격변경·연장, 재입국 신청은 10분의 2'),
     'rule_form_34': _law(LAW_RULE, '별지 제34호서식', '통합신청서(신고서)', 'Integrated application (report) form', '외국인 등록 / 등록증 재발급 / 체류기간 연장허가 / 체류자격 변경허가 / 체류자격 부여 / 근무처 변경·추가 / 재입국허가 / 체류지 변경신고 / 등록사항 변경신고 선택란; 사진은 외국인 등록 및 등록증 재발급 시에만 부착; 반환용 계좌번호는 외국인등록 및 등록증 재발급 신청 시에만 기재; 첨부서류는 별표 5의2 참고'),
 }
+# The amended 제73조 (same MST 289833, 시행 2027-09-16) replaces the quote at KST midnight.
+LAW_SOURCES['rule_73']['scheduled'] = [{'at': RULE_73_AMENDED_AT, 'source_ko': RULE_73_AMENDED_SOURCE, 'set': {
+    'effective': RULE_73_AMENDED_AT[:10],
+    'quote_ko': '청·사무소·출장소 납부 시 수입인지(외국인등록증 발급 및 재발급 수수료의 경우에는 현금 또는 현금 납입을 증명하는 증표), 신용카드·직불카드 또는 정보통신망을 이용한 전자화폐·전자결제; 시·군·구·읍·면·동 납부 시 수입증지·카드·전자결제'}}]
 LAW_SOURCES['rule_form_34']['url'] = 'https://www.law.go.kr/법령별표서식/(출입국관리법 시행규칙,20260915,별지제34호서식)'
 
 
@@ -1260,8 +1273,13 @@ REISSUE_REASON = {
 PAYMENT_INSTRUMENTS = ['REVENUE_STAMP', 'CASH_OR_CASH_RECEIPT', 'CARD', 'ELECTRONIC_PAYMENT', 'REVENUE_CERTIFICATE_STAMP']
 FEE_REVIEW_STATES = ['VERIFIED_REGULATION', 'MANUAL_EXPLICIT', 'CONDITIONAL_NEEDS_REVIEW', 'CONFLICT', 'NEEDS_REVIEW', 'NOT_FOUND']
 AMOUNT_STATES = ['FIXED', 'NO_FEE', 'NOT_LISTED', 'CONFLICT']
-STAMP_INSTRUMENTS = ['REVENUE_STAMP', 'CARD', 'ELECTRONIC_PAYMENT']
-CASH_INSTRUMENTS = ['CASH_OR_CASH_RECEIPT', 'CARD', 'ELECTRONIC_PAYMENT']
+# 시행규칙 제73조 payment methods: see RULE_73_AMENDED_AT above.
+STAMP_INSTRUMENTS = ['REVENUE_STAMP', 'ELECTRONIC_PAYMENT']
+CASH_INSTRUMENTS = ['CASH_OR_CASH_RECEIPT']
+_RULE_73_AMENDED_INSTRUMENTS = {
+    tuple(STAMP_INSTRUMENTS): ['REVENUE_STAMP', 'CARD', 'ELECTRONIC_PAYMENT'],
+    tuple(CASH_INSTRUMENTS): ['CASH_OR_CASH_RECEIPT', 'CARD', 'ELECTRONIC_PAYMENT'],
+}
 ONLINE_20 = {'rate': 0.2, 'law': 'rule_74', 'quote_ko': '온라인 신청 시 해당 수수료의 10분의 2를 감경 (시행규칙 제74조 제2항)', 'quote_en': '20% reduction for online applications (Rule Art. 74(2))'}
 
 
@@ -1287,12 +1305,24 @@ EX_WORKPLACE_REPORT = exemption('workplace_report_no_fee', '근무처 변경·�
 NOT_EXEMPT_CARD = {'ko': '정부초청장학생 등 수수료 면제 대상자도 외국인등록증 발급 및 재발급 수수료는 납부해야 합니다.', 'en': 'Even fee-exempt applicants such as government scholarship students must pay the card issue and reissue fee.', 'law': 'rule_74', 'manual_anchor': '정부초청장학생 등 수수료 면제 대상자도'}
 
 
-def fee(id_, procedure, amount, label_ko, label_en, *, scope=None, instruments, channels=('office',), online_reduction=None, exemptions=(), not_exempt=(), law='rule_72', law_quote='', payment_law='rule_73', manual_anchor=None, review_state='VERIFIED_REGULATION', amount_state='FIXED', notes_ko=(), notes_en=(), conflicts=(), investigations=()):
+def rule_73_amendment(instruments, notes_ko=None, notes_en=None):
+    """The fee fields the amended 제73조 changes, applied by the runtime at RULE_73_AMENDED_AT."""
+    amended = _RULE_73_AMENDED_INSTRUMENTS.get(tuple(instruments))
+    if amended is None and notes_ko is None:
+        return []
+    fields = {'payment_instruments': list(amended or instruments), 'effective_from': RULE_73_AMENDED_AT[:10]}
+    if notes_ko is not None:
+        fields['notes_ko'], fields['notes_en'] = list(notes_ko), list(notes_en or ())
+    return [{'at': RULE_73_AMENDED_AT, 'law': 'rule_73', 'source_ko': RULE_73_AMENDED_SOURCE, 'set': fields}]
+
+
+def fee(id_, procedure, amount, label_ko, label_en, *, scope=None, instruments, channels=('office',), online_reduction=None, exemptions=(), not_exempt=(), law='rule_72', law_quote='', payment_law='rule_73', manual_anchor=None, review_state='VERIFIED_REGULATION', amount_state='FIXED', notes_ko=(), notes_en=(), conflicts=(), investigations=(), amended_notes_ko=None, amended_notes_en=None):
     assert procedure in [p[0] for p in PROCEDURES], procedure
     assert review_state in FEE_REVIEW_STATES and amount_state in AMOUNT_STATES
     for i in instruments:
         assert i in PAYMENT_INSTRUMENTS, i
     return {'id': id_, 'procedure': procedure, 'scope': scope, 'amount': amount, 'currency': 'KRW', 'amount_state': amount_state, 'label_ko': label_ko, 'label_en': label_en,
+            'scheduled': rule_73_amendment(instruments, amended_notes_ko, amended_notes_en) if payment_law == 'rule_73' else [],
             'payment_instruments': list(instruments), 'payment_channels': list(channels), 'online_reduction': online_reduction, 'exemptions': list(exemptions), 'not_exempt': list(not_exempt),
             'law': law, 'law_quote': law_quote, 'payment_law': payment_law if instruments else None, 'manual': STAY, 'manual_anchor': manual_anchor, 'review_state': review_state,
             'notes_ko': list(notes_ko), 'notes_en': list(notes_en), 'conflicts': list(conflicts), 'investigations': list(investigations), 'effective_from': '2026-09-15'}
@@ -1402,10 +1432,12 @@ FEES = [
         law_quote='복수재입국허가: 5만원', manual_anchor='복수재입국허가 5만원', exemptions=(EX_REENTRY_1Y, EX_REENTRY_F5, EX_A_SERIES_D8, EX_GOV_INVITED)),
     fee('registration_card', 'registration', 35000, '외국인등록증 발급 수수료', 'Residence card issue fee', instruments=CASH_INSTRUMENTS,
         law_quote='외국인등록증 발급 및 재발급: 3만 5천원', manual_anchor='외국인등록증 발급 및 재발급 3만 5천원', not_exempt=(NOT_EXEMPT_CARD,),
-        notes_ko=('등록증 발급 수수료는 수입인지가 아니라 현금 또는 현금 납입을 증명하는 증표(또는 카드·전자결제)로 냅니다 (시행규칙 제73조 제1호).',), notes_en=('The card fee is paid in cash or with a cash-payment receipt (or card/e-payment), not with a revenue stamp (Rule Art. 73(1)).',)),
+        notes_ko=('등록증 발급 수수료는 수입인지가 아니라 현금 또는 현금 납입을 증명하는 증표로 냅니다 (시행규칙 제73조 제1호 가목).',), notes_en=('The card fee is paid in cash or with a cash-payment receipt, not with a revenue stamp (Rule Art. 73(1)(a)).',),
+        amended_notes_ko=('등록증 발급 수수료는 수입인지가 아니라 현금 또는 현금 납입을 증명하는 증표(또는 카드·전자결제)로 냅니다 (시행규칙 제73조 제1호).',), amended_notes_en=('The card fee is paid in cash or with a cash-payment receipt (or card/e-payment), not with a revenue stamp (Rule Art. 73(1)).',)),
     fee('card_reissue', 'card_reissue', 35000, '외국인등록증 재발급 수수료', 'Residence card reissue fee', instruments=CASH_INSTRUMENTS,
         law_quote='외국인등록증 발급 및 재발급: 3만 5천원', manual_anchor='외국인등록증 발급 및 재발급 3만 5천원', exemptions=(EX_ISSUING_ERROR,), not_exempt=(NOT_EXEMPT_CARD,),
-        notes_ko=('재발급 수수료는 수입인지가 아니라 현금 또는 현금 납입을 증명하는 증표(또는 카드·전자결제)로 냅니다 (시행규칙 제73조 제1호). 온라인 감경 대상이 아닙니다.',), notes_en=('Paid in cash or with a cash-payment receipt (or card/e-payment), not with a revenue stamp (Rule Art. 73(1)). No online reduction applies.',)),
+        notes_ko=('재발급 수수료는 수입인지가 아니라 현금 또는 현금 납입을 증명하는 증표로 냅니다 (시행규칙 제73조 제1호 가목). 온라인 감경 대상이 아닙니다.',), notes_en=('Paid in cash or with a cash-payment receipt, not with a revenue stamp (Rule Art. 73(1)(a)). No online reduction applies.',),
+        amended_notes_ko=('재발급 수수료는 수입인지가 아니라 현금 또는 현금 납입을 증명하는 증표(또는 카드·전자결제)로 냅니다 (시행규칙 제73조 제1호). 온라인 감경 대상이 아닙니다.',), amended_notes_en=('Paid in cash or with a cash-payment receipt (or card/e-payment), not with a revenue stamp (Rule Art. 73(1)). No online reduction applies.',)),
     fee('residence_report', 'residence_report', 0, '체류지 변경신고', 'Change-of-residence report', instruments=(), amount_state='NOT_LISTED', review_state='NEEDS_REVIEW',
         law_quote='시행규칙 제72조의 수수료 목록에 체류지 변경신고 항목이 없습니다.', notes_ko=('수수료 항목이 규정에 없어 별도 수수료가 없는 것으로 보이지만, 명시 문구는 아니므로 확인 필요로 표시합니다.',), notes_en=('No fee item exists in the regulation, which suggests no fee, but this is not an explicit statement, so it is marked for confirmation.',)),
     fee('registration_info_report', 'registration_info_report', 0, '외국인등록사항 변경신고', 'Registration-information change report', instruments=(), amount_state='NO_FEE', review_state='MANUAL_EXPLICIT',

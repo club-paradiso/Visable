@@ -1342,13 +1342,56 @@
     return { html: html, model: model };
   }
 
+  // Rules that change on a known date (출입국관리법 시행규칙 제73조: the amended payment
+  // methods take effect 2027-09-16) keep the text in force today in their ordinary fields
+  // and the amended fields under `scheduled` [{at, set}]. applySchedules returns a view of
+  // the bundle with every change whose instant has passed applied. `at` carries its +09:00
+  // offset, so the switch happens at KST midnight whatever the viewer's time zone.
+  function scheduledView(obj, nowMs) {
+    if (!obj || !obj.scheduled || !obj.scheduled.length) return obj;
+    var due = obj.scheduled.filter(function (c) { var t = Date.parse(c.at); return isFinite(t) && t <= nowMs; })
+      .sort(function (a, b) { return Date.parse(a.at) - Date.parse(b.at); });
+    if (!due.length) return obj;
+    var out = {}; Object.keys(obj).forEach(function (k) { out[k] = obj[k]; });
+    due.forEach(function (c) { Object.keys(c.set || {}).forEach(function (k) { out[k] = c.set[k]; }); out.scheduled_applied = c.at; });
+    return out;
+  }
+  function applySchedules(b, nowMs) {
+    if (!b) return b;
+    var now = typeof nowMs === 'number' ? nowMs : Date.now();
+    var out = {}; Object.keys(b).forEach(function (k) { out[k] = b[k]; });
+    if (b.law_sources) { out.law_sources = {}; Object.keys(b.law_sources).forEach(function (id) { out.law_sources[id] = scheduledView(b.law_sources[id], now); }); }
+    if (b.fees) out.fees = b.fees.map(function (f) { return scheduledView(f, now); });
+    return out;
+  }
+  // The next instant at which applySchedules would change something (null when none).
+  function nextScheduleAt(b, nowMs) {
+    var next = null;
+    function scan(o) { (o && o.scheduled || []).forEach(function (c) { var t = Date.parse(c.at); if (isFinite(t) && t > nowMs && (next === null || t < next)) next = t; }); }
+    if (b && b.law_sources) Object.keys(b.law_sources).forEach(function (id) { scan(b.law_sources[id]); });
+    ((b && b.fees) || []).forEach(scan);
+    return next;
+  }
+
   var api = { STR: STR, normalizeCode: normalizeCode, interpret: interpret, nextStep: nextStep, compose: compose, renderModel: renderModel, groupDocuments: groupDocuments, applicableOverlays: applicableOverlays, candidateEntries: candidateEntries, feesFor: feesFor, electronicServiceEligibility: electronicServiceEligibility, onlineReductionApplies: onlineReductionApplies, exemptionApplies: exemptionApplies, evidenceFor: evidenceFor, localPracticeFor: localPracticeFor, registryFor: registryFor, commonEntry: commonEntry, formLabel: formLabel, preparation: preparation, preparationLabel: preparationLabel, feeSummary: feeSummary, uniqueNotes: uniqueNotes, sameNote: sameNote, tierOverlays: tierOverlays, manualTitle: manualTitle, PROCEDURE_ORDER: PROCEDURE_ORDER, esc: esc, parentOf: parentOf, tr: tr, won: won };
+  api.applySchedules = applySchedules; api.nextScheduleAt = nextScheduleAt;
   root.VisableStatusGuidance = api;
 
   /* ------------------------------------------------------------------ DOM -- */
   if (typeof document === 'undefined') return;
 
-  var bundle = null, loadPromise = null, host = null, state = null, lastQuery = '';
+  var bundle = null, rawBundle = null, loadPromise = null, host = null, state = null, lastQuery = '';
+  // A page left open across a scheduled instant switches too: when the next instant is
+  // less than 36 hours away, re-apply the schedule one second after it. Further-off
+  // instants need no timer (the next page load applies them).
+  function watchSchedules() {
+    var next = rawBundle ? nextScheduleAt(rawBundle, Date.now()) : null;
+    if (next === null || next - Date.now() > 36 * 3600 * 1000) return;
+    setTimeout(function () {
+      var lp = bundle && bundle.local_practice; bundle = applySchedules(rawBundle, Date.now()); if (lp) bundle.local_practice = lp;
+      watchSchedules();
+    }, Math.max(next - Date.now(), 0) + 1000);
+  }
   // The structured guidance exists in Korean and English. Korean readers get
   // Korean; every other locale gets English rather than untranslated Korean.
   function lang() { var l = String(document.documentElement.lang || 'ko').toLowerCase(); return l === 'ko' || l.indexOf('ko-') === 0 ? 'ko' : 'en'; }
@@ -1357,7 +1400,9 @@
     if (bundle) return Promise.resolve(bundle);
     if (loadPromise) return loadPromise;
     loadPromise = fetch('data/status-guidance-202609.json').then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }).then(function (b) {
-      bundle = b;
+      rawBundle = b;
+      bundle = applySchedules(b, Date.now());
+      watchSchedules();
       // Local practice is optional: the national baseline never waits for it.
       return fetch('data/local-practice-202609.json').then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }).then(function (lp) { if (lp) bundle.local_practice = lp; return bundle; });
     }).catch(function (e) { loadPromise = null; throw e; });

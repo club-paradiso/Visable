@@ -104,7 +104,7 @@ check('EN rendering of the Quick Answer uses English copy and the same facts', (
 /* ------------------------------------------------ AI grounding tests ---- */
 check('validateEnhancement rejects new facts, numbers, forms, offices and overclaims; accepts a faithful rewrite', () => {
   const r = run('외국인등록증 재발급하려면 뭐 필요해?'); const qa = r.qa;
-  const ok = QA.validateEnhancement(qa, '외국인등록증 재발급은 통합신청서에 사진 1장을 붙여 내고, 수수료 ₩35,000은 현금 또는 카드로 냅니다. 잃어버린 경우가 아니면 기존 등록증도 함께 냅니다.');
+  const ok = QA.validateEnhancement(qa, '외국인등록증 재발급은 통합신청서에 사진 1장을 붙여 내고, 수수료 ₩35,000은 현금 또는 현금 납입 증표로 냅니다. 잃어버린 경우가 아니면 기존 등록증도 함께 냅니다.');
   assert(ok.ok, JSON.stringify(ok.reasons));
   const cases = [
     ['여권 원본과 사본 2부를 준비하세요. 수수료는 5만원입니다.', /number|fact word|off-topic/],
@@ -123,7 +123,7 @@ check('server enhancement shares the validator: faithful → ok; hallucinated �
   const r = run('외국인등록증 재발급하려면 뭐 필요해?'); const compact = QA.compactForAi(r.qa);
   const cfg = { key: 'test', models: ['stub'], timeoutMs: 1000, siteUrl: '', siteTitle: '' };
   let calls = 0;
-  const faithful = async () => { calls += 1; return { ok: true, model: 'stub', text: JSON.stringify({ summary: '외국인등록증 재발급은 통합신청서와 사진 1장을 내고 수수료 ₩35,000을 현금이나 카드로 냅니다. 분실이 아니면 기존 외국인등록증도 함께 냅니다.' }) }; };
+  const faithful = async () => { calls += 1; return { ok: true, model: 'stub', text: JSON.stringify({ summary: '외국인등록증 재발급은 통합신청서와 사진 1장을 내고 수수료 ₩35,000을 현금이나 현금 납입 증표로 냅니다. 분실이 아니면 기존 외국인등록증도 함께 냅니다.' }) }; };
   const out = await AI.enhanceQuickAnswer({ lang: 'ko', model: compact }, { config: cfg, callOpenRouter: faithful }); assert(out.ok && out.status === 'OK' && /₩35,000/.test(out.summary), JSON.stringify(out));
   const bad = await AI.enhanceQuickAnswer({ lang: 'ko', model: compact }, { config: cfg, callOpenRouter: async () => ({ ok: true, text: '{"summary":"여권 원본과 사본 2부, 수수료 5만원을 준비하세요."}' }) }); assert(!bad.ok && bad.status === 'REJECTED_OUTPUT', JSON.stringify(bad));
   const nokey = await AI.enhanceQuickAnswer({ lang: 'ko', model: compact }, { config: { key: '', models: [], timeoutMs: 1 } }); assert(!nokey.ok && nokey.status === 'NOT_CONFIGURED', 'not configured');
