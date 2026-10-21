@@ -420,7 +420,9 @@ class DeterministicRepairIntegrationTests(_AskHarness):
         self.assertIsInstance(b["missing_answer_slots"], list)
 
     def test_good_model_answer_is_not_repaired(self):
-        # A genuinely useful live answer must pass and be shown unmodified.
+        # A genuinely useful live answer must pass and be shown unmodified. The
+        # only addition is the deterministic manual-location block that every
+        # answer without verified grounding gets (Waymaker QA 2026-10-16).
         good = (
             "H-1 외국인등록은 입국일을 기준으로 정해진 기한 안에 해야 합니다. 본인의 입국일과 부여받은 "
             "체류기간을 먼저 확인하세요. 신고는 하이코리아 또는 관할 출입국·외국인청에서 접수합니다.\n\n"
@@ -430,7 +432,11 @@ class DeterministicRepairIntegrationTests(_AskHarness):
         b = self._ask("H-1 외국인등록은 언제 해야 하나요?", visa_code="H-1", model_answer=good)
         self.assertFalse(b["model_answer_repaired_by_deterministic_synthesis"])
         self.assertTrue(b["answer_quality_gate_passed"])
-        self.assertEqual(b["answer"], good)
+        import paradiso_backend as pb
+
+        location = pb._manual_locator.note_lines("H-1", None, "foreigner_registration", is_ko=True)
+        self.assertTrue(location)
+        self.assertEqual(b["answer"], good + "\n\n" + "\n".join(location))
 
 
 class RegistrationDeadlineClassifierTests(unittest.TestCase):

@@ -553,6 +553,17 @@ REFUSAL_IMMIGRATION_EN = (
     "arrangements, or ways to misuse immigration procedures. I can help explain lawful visa options, refugee "
     "procedures, work authorization rules, victim support, and official consultation channels."
 )
+# Document fraud, work brokering, enforcement evasion, personal data, spam:
+# the refugee-procedure and 1366 lines of the immigration copy were unrelated
+# to these requests (Waymaker QA 2026-10-16), so they get their own copy.
+REFUSAL_GENERAL_KO = (
+    "그 요청은 허위서류 작성·제출, 불법취업, 단속 회피처럼 법을 어기는 일을 돕는 내용일 수 있어 답변할 수 없습니다. "
+    "합법적인 체류자격, 취업 가능 여부와 공식 상담 경로에 대한 일반 정보는 안내할 수 있습니다."
+)
+REFUSAL_GENERAL_EN = (
+    "I can't help forge or falsify documents, arrange unauthorized work, evade immigration enforcement, or misuse "
+    "personal data. I can help explain lawful visa options, work authorization rules, and official consultation channels."
+)
 REFUSAL_VIOLENT_KO = (
     "타인에게 위해를 가하거나 범죄를 실행, 은폐, 추적, 협박하는 방법은 도울 수 없습니다. "
     "누군가 즉시 위험한 상황이라면 112 또는 가까운 경찰서에 신고해야 합니다. "
@@ -579,6 +590,16 @@ _ALT_IMMIGRATION_EN = [
     "Victim support: 1345 (immigration help line), 1366 (women's helpline)",
     "Official channels: HiKorea (hikorea.go.kr), the competent immigration office",
 ]
+_ALT_GENERAL_KO = [
+    "합법적인 체류자격·비자 종류와 요건",
+    "취업 가능 여부와 근무처 규정(합법적 범위)",
+    "공식 상담 경로: 1345(외국인종합안내), HiKorea(hikorea.go.kr), 관할 출입국·외국인관서",
+]
+_ALT_GENERAL_EN = [
+    "Lawful visa/status options and their requirements",
+    "Whether and how you may work lawfully under a given status",
+    "Official channels: 1345 (immigration help line), HiKorea (hikorea.go.kr), the competent immigration office",
+]
 _ALT_VIOLENT_KO = [
     "긴급 위험 시: 112(경찰), 119(구조·구급)",
     "가정폭력·성폭력 피해: 1366(여성긴급전화), 112",
@@ -599,11 +620,18 @@ def refusal_copy(decision: SafetyDecision) -> Tuple[str, List[str]]:
     if decision.category == CAT_VIOLENT:
         text = REFUSAL_VIOLENT_EN if is_en else REFUSAL_VIOLENT_KO
         alts = _ALT_VIOLENT_EN if is_en else _ALT_VIOLENT_KO
-    else:
-        # Immigration/document/work/evasion/PII all share the immigration-style
-        # neutral refusal + lawful alternatives.
+    elif decision.category == CAT_IMMIGRATION_FRAUD and any(
+        "refugee" in sig or "interview" in sig for sig in decision.matched_signals
+    ):
+        # Fabricated refugee claims / interview coaching: the refugee-procedure
+        # and victim-support lines are relevant here.
         text = REFUSAL_IMMIGRATION_EN if is_en else REFUSAL_IMMIGRATION_KO
         alts = _ALT_IMMIGRATION_EN if is_en else _ALT_IMMIGRATION_KO
+    else:
+        # Document fraud, work brokering, evasion, overstay/sham marriage,
+        # personal data, spam.
+        text = REFUSAL_GENERAL_EN if is_en else REFUSAL_GENERAL_KO
+        alts = _ALT_GENERAL_EN if is_en else _ALT_GENERAL_KO
     return text, list(alts)
 
 

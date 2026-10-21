@@ -23,6 +23,7 @@ import json
 import logging
 import os
 import re
+import sys
 import time
 import uuid
 import dataclasses
@@ -140,7 +141,47 @@ except Exception:  # pragma: no cover - import-time guard only
 
 
 logger = logging.getLogger("paradiso.backend")
-logging.basicConfig(level=os.environ.get("LOG_LEVEL", "INFO"))
+
+
+def _log_streams_split() -> bool:
+    """Whether INFO/WARNING should go to stdout instead of stderr.
+
+    ``LOG_STREAMS=split|stderr`` decides explicitly; otherwise the split is on
+    when running on Railway. Local scripts keep everything on stderr so a
+    ``--json`` report on stdout is never mixed with log lines.
+    """
+    mode = (os.environ.get("LOG_STREAMS") or "").strip().lower()
+    if mode in {"split", "stderr"}:
+        return mode == "split"
+    return bool(os.environ.get("RAILWAY_ENVIRONMENT_ID") or os.environ.get("RAILWAY_PROJECT_ID"))
+
+
+def _configure_logging(split: Optional[bool] = None) -> None:
+    """INFO/WARNING to stdout, ERROR+ to stderr (see ``_log_streams_split``).
+
+    basicConfig's single stderr handler made Railway tag every line, including
+    the per-request ``ask_routing`` INFO record, as severity "error", so real
+    errors were indistinguishable from routine logs. uvicorn's own loggers are
+    routed through the same split.
+    """
+    if not (_log_streams_split() if split is None else split):
+        logging.basicConfig(level=os.environ.get("LOG_LEVEL", "INFO"))
+        return
+    fmt = logging.Formatter("%(levelname)s:%(name)s:%(message)s")
+    out = logging.StreamHandler(sys.stdout)
+    out.setFormatter(fmt)
+    out.addFilter(lambda record: record.levelno < logging.ERROR)
+    err = logging.StreamHandler(sys.stderr)
+    err.setFormatter(fmt)
+    err.setLevel(logging.ERROR)
+    logging.basicConfig(level=os.environ.get("LOG_LEVEL", "INFO"), handlers=[out, err])
+    for name in ("uvicorn", "uvicorn.error", "uvicorn.access"):
+        uv = logging.getLogger(name)
+        uv.handlers = []
+        uv.propagate = True
+
+
+_configure_logging()
 
 
 # ---------------------------------------------------------------------------
@@ -688,6 +729,11 @@ class AskResponse(BaseModel):
     # source-confirmed manual list; the checklist buckets come from canonical
     # grounding data, never from the model. See services/structured_answer.py.
     structured_answer: Optional[Dict[str, Any]] = None
+    # Manual section/page locations (unreviewed 2026.9 status guidance, see
+    # services/manual_locator.py) appended to a model answer the knowledge
+    # layer had no verified facts for. Location references only: they never
+    # count as grounding and carry no requirement text.
+    manual_location_references: List[Dict[str, Any]] = Field(default_factory=list)
     # Set only when a structured answer was delivered without the optional
     # model summary. Diagnostics/telemetry only (hidden from the public view).
     summary_generation_status: Optional[str] = None
@@ -1747,6 +1793,11 @@ def _legal_analysis_facts_for_answer(base_meta: Dict[str, Any], legal_analysis: 
     return dict(base_meta.get("immigration_facts") or {})
 
 
+# Catch-all issue ids that carry no information for the user ("주요 쟁점: * 인접
+# 쟁점", Waymaker QA 2026-10-16). They are never listed in the memo.
+FALLBACK_HIDDEN_ISSUE_TYPES = frozenset({"legal_general", "non_immigration_adjacent_issue"})
+
+
 def _issue_labels_for_fallback(issues: List[str], *, is_ko: bool) -> List[str]:
     labels_ko = {
         "activity_scope": "현재 체류자격의 활동범위",
@@ -1768,8 +1819,6 @@ def _issue_labels_for_fallback(issues: List[str], *, is_ko: bool) -> List[str]:
         "work_on_non_work_status": "비취업·제한 체류자격에서의 근로/사업 활동",
         "post_status_change_residual_duty": "체류자격 변경 후 이전 자격 관련 잔존 신고 쟁점",
         "nationality_or_refugee_context": "국적·난민 관련 체류 맥락",
-        "legal_general": "일반 법률 쟁점",
-        "non_immigration_adjacent_issue": "인접 쟁점",
         "employment_condition": "근로 조건(임금·근무시간·직무)의 요건 충족",
         "denial_revocation_or_remedy": "불허·취소 처분과 불복 절차",
         "constitutional_or_fundamental_rights": "헌법·기본권 관련 쟁점",
@@ -1795,8 +1844,6 @@ def _issue_labels_for_fallback(issues: List[str], *, is_ko: bool) -> List[str]:
         "work_on_non_work_status": "work or business activity on a non-work/restricted status",
         "post_status_change_residual_duty": "residual duty after a status change",
         "nationality_or_refugee_context": "nationality/refugee residence context",
-        "legal_general": "general legal issue",
-        "non_immigration_adjacent_issue": "adjacent issue",
         "employment_condition": "whether the job's wage, hours and duties meet the conditions",
         "denial_revocation_or_remedy": "denial or revocation and the remedies against it",
         "constitutional_or_fundamental_rights": "constitutional or fundamental-rights issue",
@@ -1804,7 +1851,8 @@ def _issue_labels_for_fallback(issues: List[str], *, is_ko: bool) -> List[str]:
     }
     labels = labels_ko if is_ko else labels_en
     # Never print an internal issue id: an unlabelled issue is left out of the
-    # user-facing list rather than shown as "employment_condition".
+    # user-facing list rather than shown as "employment_condition". The
+    # catch-all ids in FALLBACK_HIDDEN_ISSUE_TYPES are left unlabelled on purpose.
     return [labels[issue] for issue in issues if issue in labels][:6]
 
 
@@ -2084,6 +2132,9 @@ def _fallback_confirmation_questions_localized(issues: List[str], facts: Dict[st
     kinds = _fallback_activity_kinds(issues, activities)
     work_limited = _is_work_limited_status(facts)
     current = facts.get("current_status") or ("현재 체류자격" if is_ko else "the current status")
+    # With no detected status the "is it X" questions read "현재 체류자격이 현재
+    # 체류자격인지"; ask for the status itself instead.
+    known = bool(facts.get("current_status"))
     if is_ko:
         if "post_status_change_residual_duty" in issue_set:
             return [
@@ -2128,14 +2179,14 @@ def _fallback_confirmation_questions_localized(issues: List[str], facts: Dict[st
         if kinds["status_change"] and facts.get("target_status"):
             target = facts.get("target_status")
             return [
-                f"현재 체류자격이 {current}인지, 세부 코드는 무엇인지",
+                (f"현재 체류자격이 {current}인지, 세부 코드는 무엇인지" if known else "현재 체류자격과 세부 코드가 무엇인지"),
                 f"{target}로의 변경 요건을 충족하는지",
                 "국내 변경인지, 재외공관 사증 신청인지",
                 "남은 체류기간과 변경 신청 시점",
             ]
         if kinds["work"] and work_limited:
             return [
-                f"현재 체류자격이 {current}인지와 활동범위",
+                (f"현재 체류자격이 {current}인지와 활동범위" if known else "현재 체류자격이 무엇인지와 그 활동범위"),
                 "국적별 워킹홀리데이·협정에서 정한 취업 가능 직종과 근무 기간·시간 제한",
                 "일의 형태: 단기 일반 통역·번역 보조 / 장기·전임 전문 통역사 취업 / 관광통역안내(가이드) / 외국어 교습·강의 중 무엇인지",
                 "관광통역안내사·교원 등 국내 자격·면허가 필요한 직종인지",
@@ -2143,7 +2194,7 @@ def _fallback_confirmation_questions_localized(issues: List[str], facts: Dict[st
             ]
         if kinds["work"]:
             return [
-                f"현재 체류자격이 {current}인지와 활동범위",
+                (f"현재 체류자격이 {current}인지와 활동범위" if known else "현재 체류자격이 무엇인지와 그 활동범위"),
                 "보수 발생 여부와 근로·사업 형태",
                 "고용주·업종·근무시간·계약형태",
                 "출입국이 이를 자격외활동 또는 신고/허가 대상으로 보는지",
@@ -2195,14 +2246,14 @@ def _fallback_confirmation_questions_localized(issues: List[str], facts: Dict[st
     if kinds["status_change"] and facts.get("target_status"):
         target = facts.get("target_status")
         return [
-            f"whether your current status is {current} and its sub-code",
+            (f"whether your current status is {current} and its sub-code" if known else "what your current status and sub-code are"),
             f"whether you meet the requirements to change to {target}",
             "whether this is an in-country change or a consular visa application",
             "your remaining period of stay and when you would apply",
         ]
     if kinds["work"] and work_limited:
         return [
-            f"whether your current status is {current} and its activity scope",
+            (f"whether your current status is {current} and its activity scope" if known else "what your current status is and its activity scope"),
             "the permitted work types and the work-period/hour limits under your nationality's working-holiday or agreement terms",
             "the work form: short-term general interpretation/translation, long-term professional interpreter employment, tourist-guide interpretation, or foreign-language teaching",
             "whether the job needs a domestic license or qualification (e.g. tourist guide, teaching)",
@@ -2210,7 +2261,7 @@ def _fallback_confirmation_questions_localized(issues: List[str], facts: Dict[st
         ]
     if kinds["work"]:
         return [
-            f"whether your current status is {current} and its activity scope",
+            (f"whether your current status is {current} and its activity scope" if known else "what your current status is and its activity scope"),
             "whether it is paid and the work/business form",
             "the employer, industry, working hours, and contract type",
             "whether immigration treats this as activities outside status or a reportable/permission-required change",
@@ -2540,11 +2591,101 @@ def _structured_answer_without_model_payload(
     return payload
 
 
+# Words that mark a question as being about Korean immigration even when no
+# status code or task was detected. A question with none of them, no code, no
+# task and only the catch-all issue id is outside Waymaker's scope.
+_IMMIGRATION_SCOPE_RE = re.compile(
+    r"(비자|사증|체류|출입국|외국인|이민|귀화|국적|난민|영주|하이코리아|등록증|여권|취업|고용|유학|어학연수|결혼|배우자"
+    r"|visa|immigra|residen|stay|permit|alien|foreign|passport|hikorea|naturali|refugee|status|arc\b|work|employ|student|spouse)",
+    re.IGNORECASE,
+)
+
+
+def _is_out_of_scope_question(prompt: str, base_meta: Dict[str, Any]) -> bool:
+    """True for weather, recipes, prompt injection and other non-immigration text.
+
+    Deliberately narrow: any detected status code, task, structured answer,
+    specific legal issue or immigration word keeps the normal preparation note.
+    """
+    if base_meta.get("visa_code_detected") or base_meta.get("task_type_detected"):
+        return False
+    if base_meta.get("structured_answer"):
+        return False
+    issues = [i for i in (base_meta.get("legal_issue_types") or []) if i]
+    if any(i not in FALLBACK_HIDDEN_ISSUE_TYPES for i in issues):
+        return False
+    return not _IMMIGRATION_SCOPE_RE.search(prompt or "")
+
+
+def _out_of_scope_notice(prompt: str, lang: Optional[str]) -> str:
+    # Same language rule as build_legal_analysis_fallback_answer.
+    if str(lang or "").lower().startswith("ko") or re.search(r"[가-힣]", prompt or ""):
+        return (
+            "Waymaker는 한국 체류·비자 관련 질문을 안내합니다. 이 질문은 안내 범위 밖이라 답변하지 않았습니다.\n\n"
+            "체류자격, 체류기간 연장, 체류자격 변경, 외국인등록·신고처럼 체류와 관련된 내용을 물어봐 주세요.\n\n"
+            "개별 사안의 최종 판단은 1345(외국인종합안내센터), 하이코리아, 관할 출입국·외국인관서에서 확인하세요."
+        )
+    return (
+        "Waymaker answers questions about Korean visas and residence. This question is outside that scope, "
+        "so it was not answered.\n\n"
+        "Please ask about a status of stay, an extension, a change of status, alien registration or reporting duties.\n\n"
+        "For a final decision on an individual case, check with 1345 (Immigration Contact Center), HiKorea "
+        "or the competent immigration office."
+    )
+
+
+def _append_manual_location(answer: str, prompt: str, lang: Optional[str],
+                            meta: Dict[str, Any]) -> Tuple[str, List[Dict[str, Any]]]:
+    """Give a model answer the same manual locations the fallback note shows.
+
+    Only when the knowledge layer had no verified facts (no grounding sources,
+    no structured answer): the preparation note already pointed at the manual
+    page for these questions while the model answer showed no source at all
+    (E-7 workplace change, F-6 extension; Waymaker QA 2026-10-16). The lines are
+    deterministic and labelled as the unreviewed edition, as in the note.
+    """
+    if meta.get("grounding_sources") or meta.get("structured_answer"):
+        return answer, []
+    code = meta.get("visa_code_detected")
+    sub = meta.get("visa_sub_code_detected")
+    task = meta.get("task_type_detected")
+    found = _manual_locator.locate(code, sub, task)
+    if not found:
+        return answer, []
+    is_ko = str(lang or "").lower().startswith("ko") or bool(re.search(r"[가-힣]", prompt or ""))
+    lines = _manual_locator.note_lines(code, sub, task, is_ko=is_ko)
+    refs = [
+        {
+            "target": e["target"],
+            "section": e["section"],
+            "page": e["page"],
+            "source_title": found["source"]["title_ko"] if is_ko else (found["source"]["title_en"] or found["source"]["title_ko"]),
+            "edition": found["source"]["edition"],
+            "official_url": found["source"]["official_url"],
+            "role": "location_reference",
+            "reviewed": False,
+        }
+        for e in found["entries"]
+    ]
+    if not lines or lines[0] in (answer or ""):
+        return answer, refs
+    return (answer or "").rstrip() + "\n\n" + "\n".join(lines), refs
+
+
 def _build_deterministic_fallback_payload(prompt: str, lang: Optional[str], base_meta: Dict[str, Any], attempt_meta: Dict[str, Any], reason: str) -> Dict[str, Any]:
     legal_analysis = base_meta.get("legal_analysis") if isinstance(base_meta.get("legal_analysis"), dict) else None
     structured = base_meta.get("structured_answer") if isinstance(base_meta.get("structured_answer"), dict) else None
     fallback_meta = dict(base_meta)
-    if structured is not None:
+    out_of_scope = structured is None and _is_out_of_scope_question(prompt, base_meta)
+    if out_of_scope:
+        # Weather, recipes, prompt injection: an immigration preparation memo
+        # is the wrong answer (Waymaker QA 2026-10-16). Say what Waymaker covers.
+        answer = _out_of_scope_notice(prompt, lang)
+        legal_analysis_exists = bool(legal_analysis)
+        fallback_meta["legal_analysis_exists"] = legal_analysis_exists
+        fallback_meta["fallback_answer_kind"] = "out_of_scope_notice"
+        fallback_meta["default_source_panel_should_show_raw_codes"] = False
+    elif structured is not None:
         # A source-confirmed checklist needs no model: show the canonical
         # document list itself (deterministic short answer), clearly marked as
         # the limited fallback view, instead of a generic preparation memo.
@@ -2562,7 +2703,7 @@ def _build_deterministic_fallback_payload(prompt: str, lang: Optional[str], base
         legal_analysis_exists = bool(legal_analysis)
         answer = _confidence_gate_answer_text(answer, fallback_meta)
         fallback_meta["legal_analysis_exists"] = legal_analysis_exists
-    if structured is not None:
+    if structured is not None or out_of_scope:
         pass
     elif legal_analysis_exists:
         fallback_meta["fallback_answer_kind"] = "legal_analysis_preparation_note"
@@ -6694,6 +6835,15 @@ async def _ask_internal(req: AskRequest) -> AskResponse:
                 return _build_safety_refusal_response(
                     postgen, lang=req.lang, event_id=postgen_event_id
                 )
+            answer_text, manual_refs = _append_manual_location(
+                answer_text, prompt, req.lang, {**base_meta, **response_meta},
+            )
+            if manual_refs:
+                response_meta["manual_location_references"] = manual_refs
+                if response_meta.get("copy_safe_answer"):
+                    response_meta["copy_safe_answer"], _ = _append_manual_location(
+                        response_meta["copy_safe_answer"], prompt, req.lang, {**base_meta, **response_meta},
+                    )
             response_meta["answer_first_sentence"] = (answer_text or "").strip().split(".", 1)[0].strip()
             response_meta["first_sentence_quality_warning"] = first_sentence_quality_warning(answer_text)
             return AskResponse(
