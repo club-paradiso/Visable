@@ -38,12 +38,31 @@ module.exports = async function handler(request, response) {
       });
     }
     await upstream.text();
+    let generation = null;
+    if (request.query && request.query.diagnose === '1') {
+      // Fixed synthetic probe only. Never accepts a user's case, prompt or key.
+      const { modelCandidates } = require('../../lib/enforcement-grounded-ai');
+      const model = modelCandidates()[0];
+      const probe = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ model, messages: [{ role: 'user', content: 'Reply with the word OK.' }], max_tokens: 16 }),
+        signal: controller.signal,
+      });
+      let result = {};
+      try { result = await probe.json(); } catch {}
+      const message = String(result.error?.message || result.message || result.detail || '').slice(0, 300)
+        .replace(/(?:sk-|Bearer\s+)[A-Za-z0-9_-]+/gi, '[redacted]');
+      generation = { model, status: probe.status, contentType: probe.headers.get('content-type'), code: result.error?.code || null, message };
+    }
+
     return response.status(200).json({
       service: 'visable-enforcement-openrouter-probe',
       configured: true,
       reachable: true,
       authorized: true,
       status: 'ok',
+      ...(generation ? { generation } : {}),
     });
   } catch (error) {
     return response.status(200).json({
