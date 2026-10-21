@@ -56,8 +56,7 @@
         "violationCode": "STATUS_OUTSIDE_ACTIVITY_ART20",
         "durationDays": 30,
         "priorViolations": 0,
-        "baselineAmountKrw": 3000000,
-        "boundaryAssumptionExpected": true
+        "deterministicBaselineStatus": "MISSING_FACTS"
       }
     },
     {

@@ -451,6 +451,8 @@ if command -v node >/dev/null 2>&1; then
   node scripts/check_enforcement_ui.mjs
   node scripts/check_enforcement_nl_ux.mjs
   node scripts/check_enforcement_extraction_quality.mjs
+  node scripts/check_enforcement_calendar_boundary.mjs
+  node scripts/check_enforcement_provider_reliability.mjs
 else
   echo "INFO: Node.js not found; skipping enforcement contract validation."
 fi
