@@ -21,6 +21,24 @@ for path in (str(BACKEND_DIR), str(SCRIPTS_DIR)):
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _i18n_pack_support import load_packs, localized, pack_blobs  # noqa: E402
 from check_required_documents_coverage import validate_procedure_variants  # noqa: E402
+import audit_manual_ref_editions_2026_09 as manual_ref_audit  # noqa: E402
+
+STAY_2026_6_TEXT = "backend/data/sources/manuals/260623_stay_manual_readable.txt"
+
+
+def assert_stay_ref_edition(case: unittest.TestCase, manual_ref: dict, msg=None) -> None:
+    """A variant's stay ref either still cites the 2026.6 export it was built
+    from, or was relabelled to 2026.9 (owner approval 2026-10-19,
+    audits/manual-ref-edition-2026-09). A 2026.9 ref must name the 2026.9 stay
+    text and carry its section wording verbatim on the cited 2026.9 page(s)."""
+    if manual_ref["manualVersion"] == "2026.6":
+        case.assertEqual(manual_ref["sourceFile"], STAY_2026_6_TEXT, msg)
+        return
+    case.assertEqual(manual_ref["manualVersion"], "2026.9", msg)
+    case.assertEqual(manual_ref["sourceFile"], manual_ref_audit.NEW["stay"]["text"], msg)
+    case.assertTrue(manual_ref_audit.anchored_2026_09(manual_ref),
+                    f"{msg}: {manual_ref['section']!r} not on 2026.9 {manual_ref['pageRange']}")
+
 
 # Localized scenario/checklist copy now lives in external per-locale JSON packs
 # (data/i18n/*.json); supported display locales are ko, en, zh-CN (zh-Hant aliases
@@ -173,8 +191,7 @@ class ScenarioProcedureVariantApiTests(unittest.TestCase):
                 self.assertTrue(any(groups[group] for group in groups), variant_id)
                 self.assertTrue(variant["manualRefs"], variant_id)
                 for manual_ref in variant["manualRefs"]:
-                    self.assertEqual(manual_ref["sourceFile"], "backend/data/sources/manuals/260623_stay_manual_readable.txt")
-                    self.assertEqual(manual_ref["manualVersion"], "2026.6")
+                    assert_stay_ref_edition(self, manual_ref, variant_id)
                     self.assertTrue(manual_ref["needsManualReview"])
                     self.assertIsNot(manual_ref.get("verified"), True)
                 exposed_count += 1
@@ -1196,12 +1213,7 @@ class ScenarioProcedureVariantBatch2Tests(unittest.TestCase):
                 # Source manualRefs present and provably needs-review.
                 self.assertTrue(variant["manualRefs"], variant_id)
                 for manual_ref in variant["manualRefs"]:
-                    self.assertEqual(
-                        manual_ref["sourceFile"],
-                        "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-                        variant_id,
-                    )
-                    self.assertEqual(manual_ref["manualVersion"], "2026.6", variant_id)
+                    assert_stay_ref_edition(self, manual_ref, variant_id)
                     self.assertTrue(manual_ref.get("pageRange"), variant_id)
                     self.assertTrue(manual_ref["needsManualReview"], variant_id)
                     # Never source-confirmed: verified must not be true.
@@ -1297,12 +1309,7 @@ class HardCaseScenarioVariantTests(unittest.TestCase):
                 self.assertTrue(groups["requiredDocs"], variant_id)
                 self.assertTrue(variant["manualRefs"], variant_id)
                 for manual_ref in variant["manualRefs"]:
-                    self.assertEqual(
-                        manual_ref["sourceFile"],
-                        "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-                        variant_id,
-                    )
-                    self.assertEqual(manual_ref["manualVersion"], "2026.6", variant_id)
+                    assert_stay_ref_edition(self, manual_ref, variant_id)
                     self.assertTrue(manual_ref.get("pageRange"), variant_id)
                     self.assertTrue(manual_ref["needsManualReview"], variant_id)
                     # Never source-confirmed: verified must not be true.
@@ -1452,12 +1459,7 @@ class RemainingComplexSubtypeScenarioVariantTests(unittest.TestCase):
                 self.assertTrue(groups["requiredDocs"], variant_id)
                 self.assertTrue(variant["manualRefs"], variant_id)
                 for manual_ref in variant["manualRefs"]:
-                    self.assertEqual(
-                        manual_ref["sourceFile"],
-                        "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-                        variant_id,
-                    )
-                    self.assertEqual(manual_ref["manualVersion"], "2026.6", variant_id)
+                    assert_stay_ref_edition(self, manual_ref, variant_id)
                     self.assertTrue(manual_ref.get("pageRange"), variant_id)
                     self.assertTrue(manual_ref["needsManualReview"], variant_id)
                     self.assertIsNot(manual_ref.get("verified"), True, variant_id)

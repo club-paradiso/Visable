@@ -382,9 +382,20 @@ class ModelCooldownRegistry:
         *,
         free_tier_minute_seconds: float = 60.0,
         free_tier_day_seconds: float = 3600.0,
+        transient_seconds: float = 45.0,
+        half_open_interval_seconds: float = 15.0,
     ) -> None:
         self.cooldown_seconds = max(0.0, float(cooldown_seconds))
-        self._failed_at: Dict[str, float] = {}
+        # A 502/504 or a timeout is usually one bad upstream hop, not a model
+        # that will keep failing for minutes. It gets a short cooldown so one
+        # unlucky request does not take the model away from every user.
+        self.transient_seconds = min(self.cooldown_seconds, max(0.0, float(transient_seconds)))
+        # When every candidate is cooling down, one probe (half-open) is
+        # allowed per interval instead of answering from the fallback until
+        # the longest cooldown expires.
+        self.half_open_interval_seconds = max(0.0, float(half_open_interval_seconds))
+        self._last_probe_at = float("-inf")
+        self._until: Dict[str, float] = {}
         # Account-wide block for every ``:free`` model after a shared-bucket
         # 429 (see free_tier_quota_window). The daily bucket's reset time is
         # not reported, so the block re-probes once per ``free_tier_day_seconds``
@@ -401,10 +412,33 @@ class ModelCooldownRegistry:
     def enabled(self) -> bool:
         return self.cooldown_seconds > 0
 
-    def mark(self, model: str, now: Optional[float] = None) -> None:
+    def mark(self, model: str, now: Optional[float] = None, *, transient: bool = False) -> None:
         if not model or not self.enabled:
             return
-        self._failed_at[model] = time.time() if now is None else now
+        ts = time.time() if now is None else now
+        seconds = self.transient_seconds if transient else self.cooldown_seconds
+        # A shorter transient mark never shortens a longer cooldown already set.
+        self._until[model] = max(self._until.get(model, 0.0), ts + seconds)
+
+    def half_open_candidate(self, chain: Sequence[str], now: Optional[float] = None) -> Optional[str]:
+        """One model to probe while the whole chain is cooling down, or None.
+
+        Picks the model whose cooldown ends soonest. Models held back by the
+        shared free-tier quota are never probed: that bucket is account-wide
+        and the probe would fail the same way. At most one probe is handed out
+        per ``half_open_interval_seconds`` so an outage is not hammered.
+        """
+        if not self.enabled:
+            return None
+        ts = time.time() if now is None else now
+        if ts - self._last_probe_at < self.half_open_interval_seconds:
+            return None
+        blocked = self.free_tier_blocked(ts)
+        probes = [m for m in chain if m and not (blocked and is_free_model(m))]
+        if not probes:
+            return None
+        self._last_probe_at = ts
+        return min(probes, key=lambda m: self._until.get(m, 0.0))
 
     def mark_free_tier_quota(self, window: str, now: Optional[float] = None) -> None:
         if not self.enabled or window not in self.free_tier_seconds:
@@ -436,9 +470,9 @@ class ModelCooldownRegistry:
         if not self.enabled:
             return []
         ts = time.time() if now is None else now
-        for model in [m for m, at in self._failed_at.items() if ts - at >= self.cooldown_seconds]:
-            self._failed_at.pop(model, None)
-        return [m for m, at in self._failed_at.items() if ts - at < self.cooldown_seconds]
+        for model in [m for m, until in self._until.items() if ts >= until]:
+            self._until.pop(model, None)
+        return list(self._until)
 
     def is_cooling(self, model: str, now: Optional[float] = None) -> bool:
         if is_free_model(model) and self.free_tier_blocked(now):
@@ -446,7 +480,8 @@ class ModelCooldownRegistry:
         return model in set(self.cooling_down(now))
 
     def clear(self) -> None:
-        self._failed_at.clear()
+        self._until.clear()
+        self._last_probe_at = float("-inf")
         self._free_tier_until, self._free_tier_window = 0.0, ""
 
     def metadata(self) -> Dict[str, Any]:

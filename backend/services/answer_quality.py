@@ -94,6 +94,16 @@ _CJK_LEGAL_FRAGMENTS = (
 # answer (we allow Korean *inside parentheses* as an official-term reference).
 _HANGUL_RE = re.compile(r"[가-힣]")
 _CJK_RE = re.compile(r"[一-鿿]")
+# Korean-mode leaks seen in live answers (Waymaker QA 2026-10-16): Japanese
+# kana ("만료前に") and a CJK ideograph glued to Hangul ("目的으로"). Hanja
+# written as an official gloss in parentheses, e.g. 체류자격(滯留資格), is
+# stripped before the check, the same way Korean is allowed in zh mode.
+_KANA_RE = re.compile(r"[\u3040-\u30ff\u31f0-\u31ff\uff66-\uff9f]")
+_IDEOGRAPH = r"\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff"
+_HANJA_ATTACHED_TO_HANGUL_RE = re.compile(
+    r"[%s][가-힣]|[가-힣][%s]" % (_IDEOGRAPH, _IDEOGRAPH)
+)
+_PARENTHETICAL_RE = re.compile(r"[\(（][^\)）]*[\)）]")
 
 
 # ---------------------------------------------------------------------------
@@ -393,6 +403,7 @@ def classify_answer_quality(
     manual_to_law_fallback_used: bool,
     law_intent: bool,
     provider_configured: bool = True,
+    manual_excerpts_present: bool = False,
 ) -> Dict[str, Any]:
     """Fold grounding state + user intent into the answer-quality contract.
 
@@ -410,6 +421,11 @@ def classify_answer_quality(
     elif procedure_variant_present:
         # Scenario-specific local catalog context: useful, but needs review and
         # is weaker than confirmed manual grounding.
+        mode = SOURCE_ASSISTED
+    elif manual_excerpts_present:
+        # Approved manual text retrieved for the question (services/
+        # manual_evidence.py): real source context, but nobody confirmed it
+        # answers this exact question, so official confirmation stays required.
         mode = SOURCE_ASSISTED
     elif manual_to_law_fallback_used or related:
         # Legal/activity-scope context or related comparison statuses exist, but
@@ -739,6 +755,9 @@ def scan_mixed_language_artifacts(text: str, lang: Optional[str]) -> List[str]:
     Chinese modes: Hangul *outside* parentheses is an artifact (inside
     parentheses it is an allowed official-term reference).
 
+    Korean mode: Japanese kana, or a CJK ideograph attached directly to
+    Hangul, outside parentheses is an artifact ("만료前に", "目的으로").
+
     This is intentionally conservative — it is a guard against the observed
     ``sojourn资格`` class of bug, not a full linguistic validator. Returns an
     empty list when ``text`` is clean.
@@ -757,9 +776,17 @@ def scan_mixed_language_artifacts(text: str, lang: Optional[str]) -> List[str]:
     if norm in {"zh-CN", "zh-TW"}:
         # Strip parenthetical content (both ASCII and full-width brackets) so an
         # official Korean term in parentheses is not flagged.
-        stripped = re.sub(r"[\(（][^\)）]*[\)）]", "", text)
+        stripped = _PARENTHETICAL_RE.sub("", text)
         if _HANGUL_RE.search(stripped):
             findings.append("hangul_outside_parentheses")
+        return findings
+
+    if norm == "ko":
+        stripped = _PARENTHETICAL_RE.sub("", text)
+        if _KANA_RE.search(stripped):
+            findings.append("kana_in_korean_answer")
+        if _HANJA_ATTACHED_TO_HANGUL_RE.search(stripped):
+            findings.append("hanja_attached_to_hangul")
         return findings
 
     return findings

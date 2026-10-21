@@ -383,13 +383,18 @@ def test_every_issue_and_activity_type_has_a_user_facing_label():
     # "document preparation, status extension") inside the Korean fallback memo.
     from services.legal_analysis import ACTIVITY_TYPES, LEGAL_ISSUE_TYPES
 
+    # The catch-all ids are hidden on purpose ("주요 쟁점: * 인접 쟁점" told
+    # the user nothing); every other id must have a label.
+    labelled = [i for i in LEGAL_ISSUE_TYPES if i not in pb.FALLBACK_HIDDEN_ISSUE_TYPES]
     for is_ko in (True, False):
-        issue_labels = pb._issue_labels_for_fallback(sorted(LEGAL_ISSUE_TYPES), is_ko=is_ko)
+        issue_labels = pb._issue_labels_for_fallback(sorted(labelled), is_ko=is_ko)
         activity_labels = pb._activity_labels_for_fallback(sorted(ACTIVITY_TYPES), is_ko=is_ko)
-        assert len(issue_labels) == min(6, len(LEGAL_ISSUE_TYPES))
+        assert len(issue_labels) == min(6, len(labelled))
         assert len(activity_labels) == min(6, len(ACTIVITY_TYPES))
-        for issue in LEGAL_ISSUE_TYPES:
+        for issue in labelled:
             assert pb._issue_labels_for_fallback([issue], is_ko=is_ko), issue
+        for issue in pb.FALLBACK_HIDDEN_ISSUE_TYPES:
+            assert pb._issue_labels_for_fallback([issue], is_ko=is_ko) == [], issue
         for activity in ACTIVITY_TYPES:
             assert pb._activity_labels_for_fallback([activity], is_ko=is_ko), activity
     assert pb._issue_labels_for_fallback(["not_a_real_issue"], is_ko=True) == []

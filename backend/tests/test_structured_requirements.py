@@ -332,21 +332,23 @@ class SourceConfirmedProcedureCoverageExpansionTests(unittest.TestCase):
     """
 
     # (statusCode, procedureType, page, expected document count)
+    # Pages in the 2026-09-18 stay PDF (owner edition decision 2026-10-16; each
+    # excerpt re-matched word for word, see audits/manual-edition-2026-09-promotion).
     PROMOTED = [
         ("D-1", "registration", 34, 3),
-        ("D-5", "registration", 104, 3),
-        ("D-5", "extension", 103, 3),
-        ("D-6", "registration", 107, 3),
-        ("D-6", "extension", 107, 3),
-        ("D-7", "registration", 113, 3),
-        ("D-8", "registration", 126, 3),
-        ("E-2", "registration", 173, 3),
-        ("E-3", "registration", 194, 3),
-        ("E-4", "registration", 199, 3),
-        ("E-5", "registration", 204, 3),
-        ("E-6", "registration", 211, 4),
-        ("E-7", "registration", 228, 4),
-        ("E-10", "registration", 339, 6),
+        ("D-5", "registration", 105, 3),
+        ("D-5", "extension", 104, 3),
+        ("D-6", "registration", 108, 3),
+        ("D-6", "extension", 108, 3),
+        ("D-7", "registration", 114, 3),
+        ("D-8", "registration", 127, 3),
+        ("E-2", "registration", 174, 3),
+        ("E-3", "registration", 195, 3),
+        ("E-4", "registration", 200, 3),
+        ("E-5", "registration", 205, 3),
+        ("E-6", "registration", 212, 4),
+        ("E-7", "registration", 229, 4),
+        ("E-10", "registration", 340, 6),
     ]
     # Statuses inspected but deliberately NOT promoted this pass.
     STILL_BLOCKED = ["E-9", "F-1", "F-6", "G-1", "H-2", "C-3", "D-10"]
@@ -370,7 +372,7 @@ class SourceConfirmedProcedureCoverageExpansionTests(unittest.TestCase):
             self.assertEqual(e["manualSource"]["pageEnd"], page)
             self.assertEqual(e["evidenceSource"], "pdf_verified")
             self.assertTrue(
-                e["manualSource"]["file"].endswith("stay_manual_2026_06_01.pdf")
+                e["manualSource"]["file"].endswith("stay_manual_260918.pdf")
             )
             self.assertEqual(len(e["documents"]), ndocs)
             # Conditions stay at document level; no doc carries a non-parent

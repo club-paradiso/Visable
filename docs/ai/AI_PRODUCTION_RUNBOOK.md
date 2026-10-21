@@ -166,7 +166,7 @@ Start from `/api/health/ai`, then the classified error.
 | `rate_limited` (429) | Free-tier limit | Expected; chain + cooldown absorb it. Persistent → deepen `OPENROUTER_MODEL_CANDIDATES` |
 | `model_not_found` (404) | Slug renamed or withdrawn | `check_model_catalog.py`, then update candidates |
 | `upstream_unavailable` (502/503/504) | Provider capacity | Transient; chain handles it |
-| `all_candidates_cooling_down` | Every model failed recently | **Zero requests are being issued** — deliberate. Check `cooldown.cooling_down_models` |
+| `all_candidates_cooling_down` | Every model failed recently | Deliberate: no request is issued, except that `/api/ask` sends one half-open probe per `OPENROUTER_HALF_OPEN_INTERVAL_SECONDS`. Check `cooldown.cooling_down_models` |
 | `policy_or_safety_rejection` (451) | Content filter. Never an outage | Do not retry as capacity |
 | Answers work but are shallow | Grounding, not the model | Check `grounding.manual.ready` and `grounding.law.citationsTrustworthy` |
 | `candidateWarnings` non-empty | Malformed id, random routing, or a stale env override | Inspect `llm.model_env_override` on `/health` |

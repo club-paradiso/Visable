@@ -7,6 +7,8 @@ import time
 from pathlib import Path
 from unittest.mock import patch
 
+from fastapi import HTTPException
+
 BACKEND_DIR = Path(__file__).resolve().parents[1]
 REPO_ROOT = BACKEND_DIR.parent
 for path in (BACKEND_DIR, REPO_ROOT / "scripts"):
@@ -191,7 +193,11 @@ def test_streaming_does_not_retry_models_when_all_are_cooling():
 
     async def collect():
         frames = []
+        # The half-open probe for this interval has already been used, so the
+        # stream must go straight to the fallback without touching a model.
         with patch.object(pb, "_cooling_down_models", return_value=["test/one", "test/two"]), patch.object(
+            pb._MODEL_COOLDOWNS, "half_open_candidate", return_value=None
+        ), patch.object(
             pb, "_stream_openrouter_text", must_not_run
         ), patch.object(pb, "_build_deterministic_fallback_payload", return_value={"answer": "safe note"}):
             async for frame in pb._sse_answer_stream(
@@ -204,6 +210,43 @@ def test_streaming_does_not_retry_models_when_all_are_cooling():
     frames = asyncio.run(collect())
     assert not calls
     assert any("all_candidates_cooling_down" in frame for frame in frames)
+    assert any("safe note" in frame for frame in frames)
+
+
+def test_streaming_half_open_probes_exactly_one_cooling_model():
+    # Waymaker QA 2026-10-16: with every candidate cooling down, one request
+    # per interval probes the model whose cooldown ends soonest instead of the
+    # whole chain staying dark for the full cooldown.
+    calls = []
+
+    async def still_down(*args, **kwargs):
+        calls.append(kwargs.get("model", args[1] if len(args) > 1 else None))
+        raise HTTPException(
+            status_code=502,
+            detail={"error": "openrouter_upstream_error", "status": 503, "message": "No healthy upstream"},
+        )
+        yield ""  # pragma: no cover - makes this an async generator
+
+    async def collect():
+        frames = []
+        pb._reset_openrouter_model_cooldowns_for_tests()
+        pb._MODEL_COOLDOWNS.mark("test/one", now=time.time() - 10)
+        pb._MODEL_COOLDOWNS.mark("test/two")
+        try:
+            with patch.object(pb, "_stream_openrouter_text", still_down), patch.object(
+                pb, "_build_deterministic_fallback_payload", return_value={"answer": "safe note"}
+            ):
+                async for frame in pb._sse_answer_stream(
+                    "synthetic", ["test/one", "test/two"], 10, {},
+                    prompt="synthetic", lang="ko",
+                ):
+                    frames.append(frame)
+        finally:
+            pb._reset_openrouter_model_cooldowns_for_tests()
+        return frames
+
+    frames = asyncio.run(collect())
+    assert calls == ["test/one"]
     assert any("safe note" in frame for frame in frames)
 
 

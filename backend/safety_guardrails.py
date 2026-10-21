@@ -226,6 +226,17 @@ _FACILITATION_SIGNALS: Tuple[_Signal, ...] = (
            r"|\b(immigration|visa|asylum)\b.{0,12}\binterview\b.{0,18}\b(lie|lying|false\s+answers?)\b"),
     ),
     _Signal(
+        CAT_IMMIGRATION_FRAUD, "imm.fabricate_interview_story", ACTION_BLOCK, 3,
+        # Paraphrase seen in QA 2026-10-16: "면접에서 어떤 이야기를 지어내면".
+        # The story noun comes BEFORE the fabrication verb, which the refugee
+        # pattern above does not cover, and needs an interview/review context
+        # so ordinary storytelling is not flagged. Bare 꾸미 is excluded: it
+        # also means polishing (자기소개서 꾸미는 법).
+        _c(r"(면접|인터뷰|심사|진술|사유서|소명|신청서).{0,25}"
+           r"(지어내|지어\s*내|꾸며내|꾸며\s*내|날조|지어서\s*(?:말|답|대답|진술)|거짓으로\s*(?:만들|지어|말|답|대답|진술))"
+           r"|(지어내|꾸며내|날조).{0,20}(면접|인터뷰|심사|진술)"),
+    ),
+    _Signal(
         CAT_IMMIGRATION_FRAUD, "imm.overstay_status_abuse", ACTION_BLOCK, 3,
         _c(r"(관광|단기|무비자|방문|여행).{0,6}(비자|입국|체류).{0,22}"
            r"(버티|눌러앉|불법\s*체류|오래\s*(머무|체류|있))"
@@ -265,6 +276,30 @@ _FACILITATION_SIGNALS: Tuple[_Signal, ...] = (
            r"|(고용계약서|재직증명서|초청장|진단서|잔고증명서|통장\s*사본).{0,10}(가짜로|허위로|위조해|위조한|조작해|날조해)"),
     ),
     _Signal(
+        CAT_DOCUMENT_FRAUD, "doc.make_document_secretly", ACTION_BLOCK, 3,
+        # "재직증명서를 회사 몰래 만들어서 제출": producing an issuer's document
+        # behind the issuer's back is forgery even without the word 위조.
+        # "직접 발급" is deliberately absent — self-service issuance is lawful.
+        _c(r"(서류|문서|계약서|고용계약서?|재직증명서?|경력증명서?|초청장|진단서|졸업증명서?|성적증명서?|"
+           r"잔고증명서?|통장\s*사본|증명서|명세서|직인|도장)"
+           r".{0,15}(몰래|임의로|마음대로|모르게|허락\s*없이|승인\s*없이).{0,10}(만들|작성|발급|찍|파서|제작|뽑)"
+           r"|(몰래|임의로|모르게|허락\s*없이).{0,10}"
+           r"(재직증명서?|경력증명서?|고용계약서?|초청장|진단서|졸업증명서?|잔고증명서?|직인|도장).{0,10}(만들|작성|발급|찍|파서|제작|뽑)"),
+    ),
+    _Signal(
+        CAT_DOCUMENT_FRAUD, "doc.falsify_document.en", ACTION_BLOCK, 3,
+        # "How can I fake a bank statement": "fake" used as a verb (directly
+        # followed by an article/possessive). "submit a fake bank statement"
+        # stays informational because there "fake" is an adjective, and a
+        # how/help/want framing is required so "is it illegal to fake a
+        # document?" stays an informational question.
+        _c(r"\b(how|help|can\s+i|could\s+i|should\s+i|ways?\s+to|tips?|want\s+to|need\s+to|trying\s+to|teach)\b.{0,25}"
+           r"\b(fake|faking|falsify|falsifying|photoshop|photoshopping|tamper\s+with)\s+"
+           r"(a|an|the|my|our|his|her|their|some)\s+(?:\w+\s+){0,2}"
+           r"(document|contract|certificate|invitation|letter|statement|bank\s+statement|payslip|pay\s+stub|"
+           r"passport|visa|diploma|transcript|stamp|seal|signature|records?)\b"),
+    ),
+    _Signal(
         CAT_DOCUMENT_FRAUD, "doc.forge_document.en", ACTION_BLOCK, 3,
         # forge/counterfeit/fabricate are themselves production verbs → standalone
         # near a document noun. "fake/forged" need a production/request verb so
@@ -282,6 +317,17 @@ _FACILITATION_SIGNALS: Tuple[_Signal, ...] = (
         CAT_LE_EVASION, "evasion.avoid_crackdown_work", ACTION_BLOCK, 3,
         _c(r"단속.{0,8}(안\s*걸리|안걸리|피하|벗어|걸리지\s*않|들키지\s*않|면하)"
            r"|(안\s*걸리고|안걸리고|들키지\s*않고|걸리지\s*않고|몰래).{0,12}(일하|취업|근무|체류|머무|숨|돈\s*벌)"),
+        downgradable=True,
+    ),
+    _Signal(
+        CAT_LE_EVASION, "evasion.find_hidden_work", ACTION_BLOCK, 3,
+        # "관광비자로 와서 몰래 일할 수 있는 곳": the conjugated 일할/취업할 forms
+        # slip past "몰래 … 일하" above. Needs a where/how/find tail so
+        # "몰래 일하다 걸리면 어떻게 되나요" style questions are judged by the
+        # pattern above alone.
+        _c(r"(몰래|숨어서|안\s*걸리게|들키지\s*않게|걸리지\s*않게).{0,8}"
+           r"(일할|일하는|일을\s*할|취업할|근무할|알바할|아르바이트할|돈\s*벌|돈을\s*벌)"
+           r".{0,12}(곳|자리|데|방법|법|팁|알려|소개|찾|구하|구할|어디|수\s*있)"),
         downgradable=True,
     ),
     _Signal(
@@ -507,6 +553,17 @@ REFUSAL_IMMIGRATION_EN = (
     "arrangements, or ways to misuse immigration procedures. I can help explain lawful visa options, refugee "
     "procedures, work authorization rules, victim support, and official consultation channels."
 )
+# Document fraud, work brokering, enforcement evasion, personal data, spam:
+# the refugee-procedure and 1366 lines of the immigration copy were unrelated
+# to these requests (Waymaker QA 2026-10-16), so they get their own copy.
+REFUSAL_GENERAL_KO = (
+    "그 요청은 허위서류 작성·제출, 불법취업, 단속 회피처럼 법을 어기는 일을 돕는 내용일 수 있어 답변할 수 없습니다. "
+    "합법적인 체류자격, 취업 가능 여부와 공식 상담 경로에 대한 일반 정보는 안내할 수 있습니다."
+)
+REFUSAL_GENERAL_EN = (
+    "I can't help forge or falsify documents, arrange unauthorized work, evade immigration enforcement, or misuse "
+    "personal data. I can help explain lawful visa options, work authorization rules, and official consultation channels."
+)
 REFUSAL_VIOLENT_KO = (
     "타인에게 위해를 가하거나 범죄를 실행, 은폐, 추적, 협박하는 방법은 도울 수 없습니다. "
     "누군가 즉시 위험한 상황이라면 112 또는 가까운 경찰서에 신고해야 합니다. "
@@ -533,6 +590,16 @@ _ALT_IMMIGRATION_EN = [
     "Victim support: 1345 (immigration help line), 1366 (women's helpline)",
     "Official channels: HiKorea (hikorea.go.kr), the competent immigration office",
 ]
+_ALT_GENERAL_KO = [
+    "합법적인 체류자격·비자 종류와 요건",
+    "취업 가능 여부와 근무처 규정(합법적 범위)",
+    "공식 상담 경로: 1345(외국인종합안내), HiKorea(hikorea.go.kr), 관할 출입국·외국인관서",
+]
+_ALT_GENERAL_EN = [
+    "Lawful visa/status options and their requirements",
+    "Whether and how you may work lawfully under a given status",
+    "Official channels: 1345 (immigration help line), HiKorea (hikorea.go.kr), the competent immigration office",
+]
 _ALT_VIOLENT_KO = [
     "긴급 위험 시: 112(경찰), 119(구조·구급)",
     "가정폭력·성폭력 피해: 1366(여성긴급전화), 112",
@@ -553,11 +620,18 @@ def refusal_copy(decision: SafetyDecision) -> Tuple[str, List[str]]:
     if decision.category == CAT_VIOLENT:
         text = REFUSAL_VIOLENT_EN if is_en else REFUSAL_VIOLENT_KO
         alts = _ALT_VIOLENT_EN if is_en else _ALT_VIOLENT_KO
-    else:
-        # Immigration/document/work/evasion/PII all share the immigration-style
-        # neutral refusal + lawful alternatives.
+    elif decision.category == CAT_IMMIGRATION_FRAUD and any(
+        "refugee" in sig or "interview" in sig for sig in decision.matched_signals
+    ):
+        # Fabricated refugee claims / interview coaching: the refugee-procedure
+        # and victim-support lines are relevant here.
         text = REFUSAL_IMMIGRATION_EN if is_en else REFUSAL_IMMIGRATION_KO
         alts = _ALT_IMMIGRATION_EN if is_en else _ALT_IMMIGRATION_KO
+    else:
+        # Document fraud, work brokering, evasion, overstay/sham marriage,
+        # personal data, spam.
+        text = REFUSAL_GENERAL_EN if is_en else REFUSAL_GENERAL_KO
+        alts = _ALT_GENERAL_EN if is_en else _ALT_GENERAL_KO
     return text, list(alts)
 
 

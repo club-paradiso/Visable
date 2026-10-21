@@ -29,6 +29,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import itertools
 import json
 import os
 import sqlite3
@@ -58,6 +59,17 @@ SECTION_SOURCES: Tuple[Tuple[str, str], ...] = (
     ("visa_manual_2026_06_17_pdf", "backend/data/sources/manuals/260617_visa_manual_sections.json"),
     ("stay_manual_2026_06_17_txt", "backend/data/sources/manuals/260617_stay_manual_sections.json"),
     ("dongpo_manual_2026_04_21", "backend/data/sources/manuals/260421_dongpo_manual_sections.json"),
+)
+
+# Markdown-derived chunks of the current editions (owner-supplied HWP→Markdown,
+# 2026-10-19; scripts/build_manual_markdown_corpus.py). They carry their own
+# source_id so they never count as, or overwrite, a PDF page row. A chunk is
+# direct evidence only when the page map matched it to an approved PDF page
+# with high/medium confidence; it then inherits that edition's approval and
+# cites that PDF page. Every other chunk is indexed as needs_review, page 0.
+MARKDOWN_SOURCES: Tuple[str, ...] = (
+    "data/manual-corpus/visa_manual_2026_09_01_md.json",
+    "data/manual-corpus/stay_manual_2026_09_18_md.json",
 )
 
 SCHEMA = """
@@ -205,6 +217,47 @@ def _iter_chunks(versions: Dict[str, mr.ManualDocumentVersion]) -> Iterable[Dict
             print(f"    ({skipped} sections had no extractable body text)")
 
 
+def _iter_markdown_chunks(versions: Dict[str, mr.ManualDocumentVersion]) -> Iterable[Dict[str, Any]]:
+    for rel_path in MARKDOWN_SOURCES:
+        path = REPO_ROOT / rel_path
+        if not path.exists():
+            print(f"  - {rel_path}: not present, skipping")
+            continue
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        parent = versions.get(payload.get("page_source_id") or "")
+        parent_state = parent.approval_state if parent else mr.STATE_NEEDS_REVIEW
+        parent_direct = parent_state in mr.DIRECT_EVIDENCE_STATES
+        family_key = parent.family_key if parent else mr.derive_family(payload["source_id"])[0]
+        rows = payload.get("sections") or []
+        direct_rows = 0
+        for row in rows:
+            body = str(row.get("text") or "").strip()
+            if not body:
+                continue
+            page = int(row.get("page") or 0)
+            # Inherit only for page-mapped chunks of an approved edition.
+            direct = bool(row.get("direct_evidence")) and parent_direct and page > 0
+            direct_rows += direct
+            codes = row.get("status_codes_detected") or []
+            yield {
+                "source_id": payload["source_id"],
+                "family_key": family_key,
+                "approval_state": parent_state if direct else mr.STATE_NEEDS_REVIEW,
+                "direct_evidence": 1 if direct else 0,
+                "domain": str(row.get("domain") or payload.get("domain") or ""),
+                "page": page if direct else 0,
+                "heading": str(row.get("heading") or ""),
+                "status_codes": " ".join(sorted({str(c) for c in codes if c})),
+                "subcodes": " ".join(str(c) for c in (row.get("subcodes_detected") or [])),
+                "source_file": str(row.get("source_file") or payload.get("source_file") or rel_path),
+                "manual_version": parent.version if parent else str(payload.get("manual_version") or ""),
+                "body": body,
+            }
+        print(f"  - {rel_path}: {len(rows)} chunks [{direct_rows} page-mapped direct evidence "
+              f"(inherits {payload.get('page_source_id')}: {parent_state}), "
+              f"{len(rows) - direct_rows} needs_review]")
+
+
 def build(out_path: Path) -> Dict[str, Any]:
     versions = _version_lookup()
     out_path.parent.mkdir(parents=True, exist_ok=True)
@@ -222,7 +275,7 @@ def build(out_path: Path) -> Dict[str, Any]:
         try:
             conn.executescript(SCHEMA)
             chunk_id = 0
-            for chunk in _iter_chunks(versions):
+            for chunk in itertools.chain(_iter_chunks(versions), _iter_markdown_chunks(versions)):
                 chunk_id += 1
                 conn.execute(
                     "INSERT INTO chunk (chunk_id, source_id, family_key, approval_state,"

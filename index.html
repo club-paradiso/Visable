@@ -16484,7 +16484,7 @@ function buildSubcodeModalView(visa, sub) {
     const refs = Array.isArray(sub.manualRefs) ? sub.manualRefs : [];
     const sourceHtml = refs.length
         ? `<ul class="subcode-modal-source">${refs.map(ref => {
-            const bits = [ref.manualName || tx('sourceManualFallback'), ref.manualVersion || ref.version || '2026.6', ref.pageRange || tx('pageNeedsReview'), `${tx('confidenceLabel')}: ${ref.confidence || tx('confidenceNeedsReview')}`];
+            const bits = [ref.manualName || tx('sourceManualFallback'), ref.manualVersion || ref.version || '2026.9', ref.pageRange || tx('pageNeedsReview'), `${tx('confidenceLabel')}: ${ref.confidence || tx('confidenceNeedsReview')}`];
             return `<li>${bits.map(escapeHtml).join(' · ')}</li>`;
         }).join('')}</ul>`
         : `<p class="subcode-modal-gap">${escapeHtml(tx('subcodeModalSourceGap'))}</p>`;
@@ -19177,7 +19177,7 @@ function sourceConfirmedManualRefs(entries) {
         const pageRange = pageStart && pageEnd && pageStart !== pageEnd ? `pp. ${pageStart}-${pageEnd}` : (pageStart ? `p. ${pageStart}` : '');
         return {
             manualName: source.manualName || entry.manualName || '외국인체류 안내매뉴얼',
-            manualVersion: source.manualVersion || entry.manualVersion || '2026.6',
+            manualVersion: source.manualVersion || entry.manualVersion || '2026.9',
             pageRange,
             sectionTitle: entry.sectionTitle || '',
             subCode: entry.subCode || '',
@@ -21586,12 +21586,12 @@ function renderSourceReferences(v) {
     const refs = Array.isArray(v.manualRefs) ? [...v.manualRefs] : [];
     const status = v.sourceManualStatus || {};
     if (!refs.length) {
-        if (getManualDomains(v).includes('visa_issuance')) refs.push({ manualName: txAt('domainLabels', 1, '사증발급'), manualVersion: status.visaManualVersion || '2026.6', pageRange: tx('manualNeedsReview'), confidence: 'needs_review' });
-        if (getManualDomains(v).includes('stay_sojourn')) refs.push({ manualName: txAt('domainLabels', 2, '체류민원'), manualVersion: status.stayManualVersion || '2026.6', pageRange: tx('manualNeedsReview'), confidence: 'needs_review' });
+        if (getManualDomains(v).includes('visa_issuance')) refs.push({ manualName: txAt('domainLabels', 1, '사증발급'), manualVersion: status.visaManualVersion || '2026.9', pageRange: tx('manualNeedsReview'), confidence: 'needs_review' });
+        if (getManualDomains(v).includes('stay_sojourn')) refs.push({ manualName: txAt('domainLabels', 2, '체류민원'), manualVersion: status.stayManualVersion || '2026.9', pageRange: tx('manualNeedsReview'), confidence: 'needs_review' });
     }
     const refItems = refs.map(ref => {
         const sourceDate = ref.sourceDate || ref.sourceRevisionDate || ref.revisionDate || '';
-        const versionLabel = sourceDate ? `${ref.manualVersion || ref.version || '2026.6'} (${sourceDate})` : (ref.manualVersion || ref.version || '2026.6');
+        const versionLabel = sourceDate ? `${ref.manualVersion || ref.version || '2026.9'} (${sourceDate})` : (ref.manualVersion || ref.version || '2026.9');
         const bits = [ref.manualName || ref.manual || tx('sourceManualFallback'), versionLabel, ref.pageRange || tx('pageNeedsReview'), ref.confidence ? `${tx('confidenceLabel')}: ${ref.confidence}` : `${tx('confidenceLabel')}: ${tx('confidenceNeedsReview')}`];
         return `<li>${bits.map(escapeHtml).join(' · ')}</li>`;
     }).join('');
@@ -22064,7 +22064,7 @@ function formatDocumentTabRefNote(refs) {
     if (!Array.isArray(refs) || !refs.length) return '';
     const bits = refs.map(ref => {
         const sourceDate = ref.sourceDate || ref.sourceRevisionDate || ref.revisionDate || '';
-        const versionLabel = sourceDate ? `${ref.manualVersion || ref.version || '2026.6'} (${sourceDate})` : (ref.manualVersion || ref.version || '2026.6');
+        const versionLabel = sourceDate ? `${ref.manualVersion || ref.version || '2026.9'} (${sourceDate})` : (ref.manualVersion || ref.version || '2026.9');
         return [ref.manualName || ref.manual || '체류민원', versionLabel, ref.pageRange || '페이지 확인 필요'].filter(Boolean).join(' · ');
     });
     return `${txAt('issuanceUiLabels', 9, '출처')}: ${bits.join(' / ')}`;

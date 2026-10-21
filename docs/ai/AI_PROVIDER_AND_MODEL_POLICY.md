@@ -115,9 +115,20 @@ One `ModelCooldownRegistry` process-wide, `OPENROUTER_MODEL_COOLDOWN_SECONDS`
 (default 300). Previously each feature kept its own map, so a model that had
 just rate-limited `/api/ask` was still tried at full cost by the next feature.
 
-When every candidate is cooling down, the runtime issues **zero** requests and
-returns `all_candidates_cooling_down` so the caller uses its deterministic
-fallback rather than paying the timeouts again.
+Transient upstream failures (502, 504, attempt timeout) use the shorter
+`OPENROUTER_TRANSIENT_COOLDOWN_SECONDS` (default 45); a transient mark never
+shortens a longer cooldown already set.
+
+When every candidate is cooling down, the shared `AIRuntime` issues **zero**
+requests and returns `all_candidates_cooling_down` so the caller uses its
+deterministic fallback rather than paying the timeouts again. The `/api/ask`
+chain (buffered and streamed) is half-open instead: one request per
+`OPENROUTER_HALF_OPEN_INTERVAL_SECONDS` (default 15) probes the model whose
+cooldown ends soonest (`half_open_probe` in the chain metadata); other requests
+in that interval still get `all_candidates_cooling_down`. Models held back by
+the shared free-tier quota are never probed. Added after the Waymaker QA of
+2026-10-16, where one failed chain sent every user to the fallback for five
+minutes.
 
 In-memory by design: a latency optimization, not state worth persisting.
 
@@ -133,7 +144,8 @@ Model selection: `OPENROUTER_MODEL`, `OPENROUTER_MODEL_CANDIDATES`,
 `AI_CHINESE_MODEL`, `AI_CHINESE_FALLBACK_MODELS`
 
 Behaviour: `ALLOW_GROQ_FALLBACK`, `OPENROUTER_TIMEOUT_SECONDS`,
-`OPENROUTER_MODEL_COOLDOWN_SECONDS`, `OPENROUTER_MAX_TOKENS`,
+`OPENROUTER_MODEL_COOLDOWN_SECONDS`, `OPENROUTER_TRANSIENT_COOLDOWN_SECONDS`,
+`OPENROUTER_HALF_OPEN_INTERVAL_SECONDS`, `OPENROUTER_MAX_TOKENS`,
 `OPENROUTER_FAST_MAX_TOKENS`, `ENABLE_OLLAMA_FALLBACK`, `OLLAMA_BASE_URL`,
 `OLLAMA_MODEL`, `OLLAMA_TIMEOUT_SECONDS`
 

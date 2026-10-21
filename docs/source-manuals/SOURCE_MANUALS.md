@@ -2,27 +2,39 @@
 
 The Ministry of Justice immigration manuals in this directory are Paradiso's official source artifacts for extraction and grounding work. `source_manifest.json` is the canonical current/archived pointer.
 
-Current manuals (see `source_manifest.json` for the authoritative pointer):
+Current manuals (see `source_manifest.json` `current` for the authoritative pointer). Both 2026.9 editions were made current by the owner's edition decision of 2026-10-16 (`audits/manual-edition-2026-09-promotion/README.md`); that decision is an edition choice, not a line-by-line certification of every extract derived from them.
 
-- `backend/data/sources/manuals/260617_visa_manual_exported.pdf` - 사증발급 안내매뉴얼, 2026.6 / source date 2026-06-17. (PDF, current primary extraction source; readable extraction + section index alongside it)
-- `backend/data/sources/manuals/260623_stay_manual_exported.pdf` - 외국인체류 안내매뉴얼, 2026.6 / source date 2026-06-23. (PDF, current primary extraction source; readable extraction + section index alongside it)
+- `2026-09/visa_manual_260901.pdf` - 사증발급 안내매뉴얼, 2026.9 / source date 2026-09-01, 519 pages. Page-anchored primary: `data/manual-corpus/visa_manual_2026_09_01_pdf.json`, text at `2026-09/extracted/visa_manual_2026_09_01_pdf.txt`.
+  - Same edition, other container: `2026-09-01/visa_manual_260901.hwp` (배포용 HWP; ViewText extraction at `2026-09-01/extracted/full_text/visa_manual_260901.txt`; paragraph-anchored, not indexed).
+- `2026-09/stay_manual_260918.pdf` - 외국인체류 안내매뉴얼, 2026.9 / source date 2026-09-18, 810 pages. Page-anchored primary: `data/manual-corpus/stay_manual_2026_09_18_pdf.json`, text at `2026-09/extracted/stay_manual_2026_09_18_pdf.txt`.
+  - Same edition, other container: `2026-09/stay_manual_260918.hwp` (배포용 HWP; ViewText extraction at `2026-09/extracted/full_text/stay_manual_260918.txt`; paragraph-anchored, not indexed).
 
-Awaiting content review (staged in `source_manifest.json` under `pending_review_editions`, deliberately NOT `current`):
+The 2026-07-31 HWP pair (`2026-07-31/`) is recorded as each role's `archived_previous_current`. The 2026.6 PDFs (`backend/data/sources/manuals/260617_visa_manual_exported.pdf`, `260623_stay_manual_exported.pdf`) stay in the repository and in the manifest history; their 2026-06-17 section extracts stay in the search index as `superseded`, never as direct evidence. `2026-09-01/stay_manual_260901.hwp` is the earlier 2026-09-01 stay edition, superseded by 2026-09-18 (`data/manual_approval_index.json`).
 
-- `2026-09-01/visa_manual_260901.hwp` - 사증발급 안내매뉴얼, 2026.9 / source date 2026-09-01. (배포용 HWP; body read from ViewText; full text at `2026-09-01/extracted/full_text/visa_manual_260901.txt`)
-- `2026-09-01/stay_manual_260901.hwp` - 외국인체류 안내매뉴얼, 2026.9 / source date 2026-09-01. (배포용 HWP; body read from ViewText; full text at `2026-09-01/extracted/full_text/stay_manual_260901.txt`)
+### Markdown derived texts (2026-10-19)
 
-> The *extraction* is mechanically verified: `scripts/decrypt_hwp_distribution.py`
-> reproduces both approved 2026-07-31 extractions byte-for-byte (SHA-256 match).
-> The *content* has not been compared against the original by a human, so these
-> editions stay out of `current` — that slot is approval-gated by
-> `backend/tests/test_source_grounding_pipeline.py`. The 2026-07-31 pair remains
-> current and approved, so the direct-evidence gate stays open on the reviewed
-> edition. Staged files are digest-pinned and verified by
-> `scripts/check_source_manuals.py` on every run, exactly like current ones.
->
-> Change review artifacts, and the promotion procedure:
-> `audits/manual-refresh-260901/README.md`.
+The owner supplied HWP→Markdown conversions of both current editions. They keep headings and HTML tables, which the PDF text layer flattens, but they have no page numbers.
+
+- `2026-09/derived/visa_manual_260901.md` - derived from `2026-09-01/visa_manual_260901.hwp`
+- `2026-09/derived/stay_manual_260918.md` - derived from `2026-09/stay_manual_260918.hwp`
+
+Each is registered under `current.<role>.derived_texts` in `source_manifest.json` (SHA-256 pinned, provenance "owner-supplied HWP→Markdown conversion, 2026-10-19") and tracked in `data/manual_approval_index.json` as `needs_review` at document level. They are not registry editions: `data/source_registry.json` keeps one entry per container of an edition, and these texts carry no edition of their own.
+
+`scripts/build_manual_markdown_corpus.py` splits each Markdown into chunks (by heading, table and PDF page; table rows rendered as "열이름: 값" text) and maps every chunk to the approved PDF page(s) by matching normalized text against the PDF page text. The result, with a confidence per chunk, is `data/manual-corpus/<id>.json`.
+
+- A chunk mapped with high or medium confidence inherits the approval of its PDF edition for that page. It is direct evidence and is cited by that PDF page.
+- Low, none, tied and out-of-sequence chunks are kept and searchable as `needs_review`, with no page. They are never direct evidence.
+- This is machine verification against the approved edition text. Nobody has read the Markdown line by line.
+- The images in the owner's zips (`images/260901`, `images/260918`) are not committed. They are not used for grounding, and image-only content stays checkable only on the PDF page.
+
+| derived text | chunks | table chunks | high | medium | low | none | page-mapped (direct) | PDF pages covered |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| visa 260901 | 1,793 | 536 | 1,224 | 107 | 358 | 104 | 1,331 | 504 / 519 |
+| stay 260918 | 1,504 | 904 | 1,004 | 130 | 239 | 131 | 1,134 | 775 / 810 |
+
+12-gram containment of the Markdown text: 99.1% (visa) and 99.2% (stay) in the HWP extraction, 95.8% and 96.4% in the PDF text.
+
+`scripts/build_manual_search_index.py` indexes these chunks into `backend/data/manual_search_index.sqlite3` under their own source ids (`visa_manual_2026_09_01_md`, `stay_manual_2026_09_18_md`), next to the unchanged one-row-per-page PDF rows. Rebuild everything with `npm run build:current-manuals`. Verify with `npm run test:current-manuals` and `python3 scripts/check_source_manuals.py`.
 
 Readable Markdown conversions (manual reader only, not a grounding source):
 

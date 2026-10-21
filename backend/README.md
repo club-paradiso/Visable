@@ -129,14 +129,16 @@ into the image. See `.env.example` for the full list.
 | `WAYMAKER_OBSERVATION_RETENTION_DAYS` | optional | Default 90. |
 | `OPENROUTER_MODEL`      | optional  | Defaults to `google/gemma-4-31b-it:free` (fallback `google/gemma-4-26b-a4b-it:free`). The Basic answer tier primary. Override per-deploy only after catalog verification. |
 | `OPENROUTER_ALLOW_MODEL_ENV_OVERRIDES` | optional | Defaults to `false`. Must be explicitly enabled before any deploy-time OpenRouter model or candidate override is honored. |
-| `OPENROUTER_MODEL_CANDIDATES` | optional | Ordered Basic fallback list. Ignored unless model env overrides are explicitly enabled; otherwise the catalog-reconciled Nemotron/Gemma/Inkling chain is authoritative. `/health` reports present/active/ignored state without exposing secrets. |
-| `OPENROUTER_FAST_MODEL` / `OPENROUTER_FAST_MODEL_CANDIDATES` | optional | Fast tier. Unset → Gemma 4 26B, Nemotron 3.5 Lightning, Inkling Small, then Gemma 4 31B. |
+| `OPENROUTER_MODEL_CANDIDATES` | optional | Ordered Basic fallback list. Ignored unless model env overrides are explicitly enabled; otherwise the catalog-reconciled Gemma-only chain is authoritative. `/health` reports present/active/ignored state without exposing secrets. |
+| `OPENROUTER_FAST_MODEL` / `OPENROUTER_FAST_MODEL_CANDIDATES` | optional | Fast tier. Unset → Gemma 4 26B, then Gemma 4 31B. |
 | `AI_ROUTER_MODEL` | optional | Defaults to `google/gemma-4-31b-it:free`. Used as the declared low-risk router / query-classification model policy. |
 | `AI_TRANSLATION_MODEL` | optional | Defaults to `google/gemma-4-31b-it:free`. Used as the declared UI/site translation model policy. |
 | `AI_VERIFIER_MODEL` | optional | Defaults to `google/gemma-4-31b-it:free`. Used as the declared verifier / structured answer-audit model policy. |
 | `AI_CHINESE_MODEL` | optional | Defaults to `minimax/minimax-m3`. Reserved for Chinese-language routes only. |
 | `AI_CHINESE_FALLBACK_MODELS` | optional | Defaults to two current InclusionAI Ling free variants. Reserved for Chinese-language fallback only. |
-| `OPENROUTER_MODEL_COOLDOWN_SECONDS` | optional | Defaults to `300`. Retryable per-model failures are remembered in memory and skipped during cooldown. If all models are cooling down, Paradiso returns deterministic limited preparation guidance instead of repeatedly hitting upstream. |
+| `OPENROUTER_MODEL_COOLDOWN_SECONDS` | optional | Defaults to `300`. Retryable failures (429/503 and model-scoped 403) trigger per-model cooldown; when all candidates cool, at most one half-open attempt per interval is made. |
+| `OPENROUTER_TRANSIENT_COOLDOWN_SECONDS` | optional | Defaults to `45`. Shorter cooldown for transient 502/504 and attempt timeouts. |
+| `OPENROUTER_HALF_OPEN_INTERVAL_SECONDS` | optional | Defaults to `15`. Interval between controlled attempts when all candidates cool, excluding free-tier-quota blocks. |
 | `OPENROUTER_CHAIN_BUDGET_SECONDS` | optional | Defaults to `45` (constrained to 1–60). Total wall-clock budget across the whole candidate chain, kept below the frontend's 75-second deadline. |
 | `OPENROUTER_FALLBACK_RESERVE_SECONDS` | optional | Defaults to `12` (constrained to 0–20). Prevents one slow candidate from consuming the entire chain budget before an alternate can run. |
 | `ENFORCEMENT_AI_BUDGET_SECONDS` | optional | Defaults to `8` (constrained to 1–12). Total wall-clock budget for the whole enforcement model chain. Enforcement is synchronous for the user, so a long fallback chain is worse than returning the deterministic legal baseline alone. The value is passed **into** the candidate chain, which sizes each attempt from it and reserves half of it for an alternate model — a slow first candidate can no longer consume the budget on its own. |

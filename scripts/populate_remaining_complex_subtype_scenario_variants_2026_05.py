@@ -17,6 +17,8 @@ import sys
 from pathlib import Path
 from typing import Any
 
+from audit_manual_ref_editions_2026_09 import anchored_2026_09
+
 ROOT = Path(__file__).resolve().parents[1]
 TARGETS = (ROOT / "visa_data.json", ROOT / "backend" / "data" / "visas.json")
 SOURCE_FILE = "backend/data/sources/manuals/260623_stay_manual_readable.txt"
@@ -552,10 +554,15 @@ def _has_current_review_gated_ref(value: Any) -> bool:
     for ref in value:
         if not isinstance(ref, dict):
             continue
-        if (
+        # The 2026.6 citation this script wrote, or its 2026.9 relabel
+        # (owner-approved 2026-10-19; wording checked on the cited page).
+        cited = anchored_2026_09(ref) or (
             ref.get("manualVersion") == MANUAL_VERSION
             and ref.get("sourceFile") == SOURCE_FILE
             and ref.get("sourceDate") == SOURCE_DATE
+        )
+        if (
+            cited
             and ref.get("needsManualReview") is True
             and ref.get("verified") is not True
         ):

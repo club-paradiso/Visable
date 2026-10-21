@@ -12,6 +12,7 @@ import asyncio
 import os
 import subprocess
 import sys
+import time
 import unittest
 from pathlib import Path
 from unittest.mock import patch
@@ -682,18 +683,52 @@ class CooldownAndFallbackBehaviorTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(second["skipped_models_due_to_cooldown"], [CANDS[0]])
         self.assertEqual(calls, [CANDS[0], CANDS[1], CANDS[1]])
 
-    async def test_all_cooling_down_skips_to_deterministic_path_metadata(self):
+    async def test_all_cooling_down_probes_one_model_then_holds_off(self):
+        # Waymaker QA 2026-10-16: one failed chain used to send every user to
+        # the fallback for the full cooldown. Now the next request probes the
+        # model whose cooldown ends soonest (half-open), and only requests
+        # inside the probe interval skip straight to the deterministic path.
         fake, calls = _fake_openrouter({c: (503, "No healthy upstream") for c in CANDS})
         with patch.object(self.pb, "OPENROUTER_MODEL", CANDS[0]), \
                 patch.object(self.pb, "OPENROUTER_MODEL_CANDIDATES", list(CANDS)), \
-                patch.object(self.pb, "OPENROUTER_MODEL_COOLDOWN_SECONDS", 300), \
                 patch.object(self.pb, "_call_openrouter", fake):
             await self.pb._openrouter_complete_with_candidates("x")
+            probed = await self.pb._openrouter_complete_with_candidates("x")
+            held = await self.pb._openrouter_complete_with_candidates("x")
+        self.assertEqual(calls, [*CANDS, CANDS[0]])
+        self.assertEqual(probed["half_open_probe"], CANDS[0])
+        self.assertEqual(probed["attempted_models"], [CANDS[0]])
+        self.assertEqual(probed["skipped_models_due_to_cooldown"], CANDS[1:])
+        self.assertFalse(probed["ok"])
+        self.assertTrue(probed["retryable_provider_error"])
+        self.assertEqual(held["attempted_models"], [])
+        self.assertEqual(held["skipped_models_due_to_cooldown"], CANDS)
+        self.assertEqual(held["provider_error_type"], "all_candidates_cooling_down")
+
+    async def test_half_open_probe_that_succeeds_returns_the_answer(self):
+        fake, _ = _fake_openrouter({c: (503, "No healthy upstream") for c in CANDS})
+        healed, calls = _fake_openrouter({})
+        with patch.object(self.pb, "OPENROUTER_MODEL", CANDS[0]), \
+                patch.object(self.pb, "OPENROUTER_MODEL_CANDIDATES", list(CANDS)):
+            with patch.object(self.pb, "_call_openrouter", fake):
+                await self.pb._openrouter_complete_with_candidates("x")
+            with patch.object(self.pb, "_call_openrouter", healed):
+                result = await self.pb._openrouter_complete_with_candidates("x")
+        self.assertTrue(result["ok"])
+        self.assertEqual(result["answer"], "ANSWER from %s" % CANDS[0])
+        self.assertEqual(calls, [CANDS[0]])
+
+    async def test_transient_502_gets_the_short_cooldown(self):
+        fake, _ = _fake_openrouter({CANDS[0]: (502, "Bad gateway"), CANDS[1]: (429, "rate limit"), CANDS[2]: "ok"})
+        reg = self.pb._MODEL_COOLDOWNS
+        with patch.object(self.pb, "OPENROUTER_MODEL", CANDS[0]), \
+                patch.object(self.pb, "OPENROUTER_MODEL_CANDIDATES", list(CANDS)), \
+                patch.object(self.pb, "_call_openrouter", fake):
             result = await self.pb._openrouter_complete_with_candidates("x")
-        self.assertEqual(calls, CANDS)
-        self.assertEqual(result["attempted_models"], [])
-        self.assertEqual(result["skipped_models_due_to_cooldown"], CANDS)
-        self.assertEqual(result["provider_error_type"], "all_candidates_cooling_down")
+        self.assertTrue(result["ok"])
+        now = time.time()
+        self.assertLessEqual(reg._until[CANDS[0]] - now, reg.transient_seconds)
+        self.assertGreater(reg._until[CANDS[1]] - now, reg.transient_seconds)
 
 
 class DeterministicFallbackAndOllamaTests(unittest.TestCase):
