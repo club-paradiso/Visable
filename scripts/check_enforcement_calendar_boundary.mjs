@@ -26,7 +26,7 @@ assert.ok(uncertain.missingFacts.some((fact) => fact.includes('시작일')));
 
 // Same inclusive duration, different calendar-month tier: exact dates matter.
 const before = calculateLegalBaseline(sample({
-  durationDays: 30, violationStartDate: '2026-01-01', violationEndDate: '2026-01-30',
+  durationDays: 30, violationStartDate: '2026-03-01', violationEndDate: '2026-03-30',
 }));
 const after = calculateLegalBaseline(sample({
   durationDays: 30, violationStartDate: '2026-02-01', violationEndDate: '2026-03-02',
