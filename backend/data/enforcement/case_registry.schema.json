@@ -239,6 +239,18 @@
             "null"
           ],
           "minimum": 1
+        },
+        "reviewedAt": {
+          "type": "string",
+          "format": "date"
+        },
+        "reviewerRole": {
+          "enum": [
+            "AUTHORIZED_ADMINISTRATIVE_REVIEWER",
+            "LEGAL_REVIEWER",
+            "DATA_QUALITY_REVIEWER",
+            "AUTHORIZED_RECORD_REVIEWER"
+          ]
         }
       },
       "allOf": [
@@ -289,7 +301,11 @@
               "independentFromPrediction": {
                 "const": true
               }
-            }
+            },
+            "required": [
+              "reviewedAt",
+              "reviewerRole"
+            ]
           }
         }
       ]
