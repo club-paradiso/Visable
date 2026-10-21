@@ -97,6 +97,30 @@ def _duration_days(case: StructuredCase) -> Optional[int]:
     return case.duration_days
 
 
+def _ambiguous_calendar_boundary(tiers: Iterable[Dict[str, Any]], duration_days: int) -> bool:
+    """Return True if the day count can straddle a statutory calendar-month tier.
+
+    A four-year cycle includes leap and common years, across all valid starting
+    days. An exact start/end date is needed when the tier depends on the month.
+    Do not assert 30 days always equals a legal calendar month.
+    """
+    thresholds = sorted({int(row["minimumMonths"]) for row in tiers
+                         if 0 < int(row["minimumMonths"]) <= 120})
+    for months in thresholds:
+        shortest = 10**9
+        longest = -1
+        for year in range(2024, 2028):
+            for month in range(1, 13):
+                for day in range(1, calendar.monthrange(year, month)[1] + 1):
+                    start = date(year, month, day)
+                    needed_days = (_add_months(start, months) - start).days + 1
+                    shortest = min(shortest, needed_days)
+                    longest = max(longest, needed_days)
+        if shortest <= duration_days < longest:
+            return True
+    return False
+
+
 def _tier_for_duration(tiers: Iterable[Dict[str, Any]], case: StructuredCase, duration_days: int) -> Dict[str, Any]:
     # Where exact dates exist, compare with true calendar-month anniversaries.
     # A duration-only answer cannot encode calendar shape, so the conservative
@@ -196,6 +220,18 @@ def calculate_legal_baseline(case: StructuredCase, *, database: Optional[Dict[st
             legal_snapshot_id=snapshot["id"],
             effective_from=date.fromisoformat(snapshot["effectiveFrom"]),
             missing_facts=["위반기간"],
+            sources=_source_refs(snapshot),
+            confidence="INSUFFICIENT",
+        )
+
+    if not (case.violation_start_date and case.violation_end_date) and _ambiguous_calendar_boundary(rule["tiers"], duration):
+        return LegalBaseline(
+            status="MISSING_FACTS",
+            violation_code=case.violation_code,
+            violation_label=rule["label"],
+            legal_snapshot_id=snapshot["id"],
+            effective_from=date.fromisoformat(snapshot["effectiveFrom"]),
+            missing_facts=["월 단위 범칙금 구간의 경계입니다. 정확한 위반 시작일과 종료일이 필요합니다."],
             sources=_source_refs(snapshot),
             confidence="INSUFFICIENT",
         )
