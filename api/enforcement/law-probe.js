@@ -37,7 +37,7 @@ function inspectLawResponse(data, lawName) {
     }
     if (totalCount === null) {
       const total = value.totalCnt ?? value.totalCount;
-      if (total !== undefined && total !== null && /^\\d{1,8}$/.test(String(total))) {
+      if (total !== undefined && total !== null && /^\d{1,8}$/.test(String(total))) {
         totalCount = Number(total);
       }
     }
@@ -46,7 +46,7 @@ function inspectLawResponse(data, lawName) {
     for (const field of ['errorMessage', 'resultMsg', 'message', 'msg', 'error', 'detail', '결과메시지']) {
       if (typeof value[field] !== 'string' || !value[field].trim()) continue;
       const message = value[field];
-      if (/인증|승인|권한|접근|등록되지|도메인|아이피|(?:\\bIP\\b)|(?:\\bOC\\b)|invalid|unauthori[sz]ed|forbidden/i.test(message)) {
+      if (/인증|승인|권한|접근|등록되지|도메인|아이피|(?:\bIP\b)|(?:\bOC\b)|invalid|unauthori[sz]ed|forbidden/i.test(message)) {
         upstreamErrorKind = 'authorization_or_registration';
       } else if (!upstreamErrorKind) {
         upstreamErrorKind = 'application_error';
