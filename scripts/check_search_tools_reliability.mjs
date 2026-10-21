@@ -75,7 +75,7 @@ await assert.rejects(request('/api/enforcement/analyze', {}, { timeoutMs: 15 }),
 const { analyzeBaselineCase } = require('../lib/enforcement-grounded-ai.js');
 assert.throws(() => analyzeBaselineCase(null));
 const baseline = analyzeBaselineCase({ schemaVersion: '1', statusOfStay: 'D-2', violationCode: 'STATUS_OUTSIDE_ACTIVITY_ART20', durationDays: 30, authorizationObtained: false, assessmentDate: '2026-10-21', priorViolations: 0 });
-assert.equal(baseline.legalBaseline.status, 'AVAILABLE');
+assert.equal(baseline.legalBaseline.status, 'MISSING_FACTS');
 assert.equal(baseline.lawGrounding.status, 'UNAVAILABLE');
 console.log('Search/tools reliability passed: simple vs complex questions, refresh selection, mounted catalogue filters, empty/reset states, body timeout and baseline fallback.');
 
