@@ -454,7 +454,7 @@ function renderResult(data) {
   const similar = prediction.similarCases || [];
   const limitations = prediction.limitations || [];
   const groundingLabel = groundingLabels[grounding.status] || '실시간 검증 없음 · 저장된 법령 기준';
-  const modelLabel = prediction.modelId ? `모델: ${prediction.modelId}` : '검증된 AI 결과 없음';
+  const modelLabel = data.analysisPending ? 'AI 예상 확인 중' : prediction.modelId ? '검증된 AI 예상' : '검증된 AI 결과 없음';
   const durationDays = Number(data.case?.durationDays ?? structuredCase?.durationDays);
   const boundaryNotice = durationDays === 30
     ? resultNotice('baseline-boundary-note', '30일은 월 단위 경계에 걸릴 수 있습니다', '별표 7은 “개월” 단위 기준을 사용합니다. 정확한 시작일·종료일을 적으면 경계 판단이 더 정확해집니다.')
@@ -482,8 +482,8 @@ function renderResult(data) {
         <p class="card-kicker">VISABLE AI PREDICTION</p>
         <h3>Visable AI 예상</h3>
         <p class="subtle">예상 범칙금</p>
-        <p class="amount">${monetary ? range(monetary.predictedLikelyRange) : 'AI 추정 보류'}</p>
-        <p>${monetary?.pointEstimateKrw != null ? `대표 추정액: <strong>${won(monetary.pointEstimateKrw)}</strong>` : monetary ? '근거가 충분하지 않아 대표 추정액을 표시하지 않습니다.' : '유효성 검증을 통과한 구조화 예측이 없어 금액을 임의로 만들지 않았습니다.'}</p>
+        <p class="amount">${data.analysisPending ? '확인 중' : monetary ? range(monetary.predictedLikelyRange) : 'AI 추정 보류'}</p>
+        <p>${data.analysisPending ? '법령 기준은 먼저 확인할 수 있어요. AI 예상은 검증 후 표시해요.' : monetary?.pointEstimateKrw != null ? `대표 추정액: <strong>${won(monetary.pointEstimateKrw)}</strong>` : monetary ? '근거가 충분하지 않아 대표 추정액을 표시하지 않습니다.' : '유효성 검증을 통과한 구조화 예측이 없어 금액을 임의로 만들지 않았습니다.'}</p>
         <p class="subtle">${escapeHtml(modelLabel)}</p>
         ${degradedNotice}
       </article>
@@ -492,13 +492,13 @@ function renderResult(data) {
     <article class="result-lead">
       <p class="card-kicker">DISPOSITION</p>
       <h3>예상 행정처분</h3>
-      ${disposition(prediction.primaryDisposition, true)}
+      ${data.analysisPending ? '<p class="subtle">AI 예상 결과를 확인하고 있어요.</p>' : disposition(prediction.primaryDisposition, true)}
       ${(prediction.alternativeDispositions || []).map((item) => disposition(item)).join('')}
     </article>
 
     <div class="result-details">
       <details>
-        <summary>예측 신뢰도 · ${escapeHtml(confidenceLabels[confidence.level] || confidence.level)}</summary>
+        <summary>예측 신뢰도 · ${data.analysisPending ? '분석 중' : escapeHtml(confidenceLabels[confidence.level] || confidence.level)}</summary>
         <div class="detail-body">
           <h3>예측 신뢰도</h3>
           ${factors((confidence.reasons || []).map((label, index) => ({ label, basis: index ? 'INFERRED' : 'SUPPORTED' })))}
