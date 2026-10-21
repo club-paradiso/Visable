@@ -39,7 +39,7 @@ const checks = [
   ['Gemma 4 preferred for confirmation copy', vercelConfirm.includes('google/gemma-4-31b-it:free')],
   ['legal baseline card', html.includes('법령상 기준') && js.includes('법령 기준')],
   ['AI prediction card', js.includes('Visable AI 예상') && js.includes('예상 범칙금')],
-  ['degraded prediction is explained without a DOM observer', js.includes('AI 추정 보류') && js.includes('법령 계산은 그대로 유효합니다') && !js.includes('MutationObserver')],
+  ['degraded prediction is explained without a DOM observer', js.includes('AI 추정 보류') && js.includes('법령 기준 산출에 필요한 사실 부족') && js.includes('무료 AI 모델의 호출 한도에 도달했습니다.') && !js.includes('MutationObserver')],
   ['30-day month-boundary warning is reliable', js.includes('durationDays === 30') && js.includes('30일은 월 단위 경계에 걸릴 수 있습니다') && !js.includes('hasExactDates')],
   ['result UX styles ship in the primary stylesheet', !html.includes('assets/css/enforcement-result-ux.css') && css.includes('.prediction-degraded-note') && css.includes('.baseline-boundary-note')],
   ['result UX runs in the primary module', !html.includes('scripts/enforcement-result-ux.js') && js.includes('function resultNotice(')],
