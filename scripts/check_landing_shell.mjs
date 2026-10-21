@@ -89,7 +89,7 @@ ok(at('<h1>') < at('id="civicSearchForm"') && at('id="civicSearchForm"') < at('c
 ok(/<footer class="cs-footer">[\s\S]*Visable은 공식 정부 서비스가 아닙니다/.test(current), 'the not-a-government-service disclaimer stays in the shell');
 ok(/visa_manual_260901\.pdf/.test(current) && /stay_manual_260918\.pdf/.test(current) && /2026\.09\.01/.test(current) && /2026\.09\.18/.test(current), 'official source PDFs and their basis dates stay on the home');
 ok(/<section id="civicBrowsePanel" class="cs-browse" aria-labelledby="csBrowseTitle" hidden>/.test(current) && at('class="cs-directory"') < at('id="civicBrowsePanel"'), 'the purpose pickers live in a hidden browse panel after the directory');
-ok(/<button type="button" data-action="reveal-home-section" data-target="visaManualSection" aria-controls="civicBrowsePanel" aria-expanded="false">/.test(current), 'the directory entry still reaches the purpose pickers (reveal-home-section → browse panel)');
+ok(/<button type="button" data-action="reveal-home-section" data-target="visaManualSection" aria-controls="civicBrowsePanel" aria-expanded="false"[^>]*>/.test(current), 'the directory entry still reaches the purpose pickers (reveal-home-section → browse panel)');
 ok((current.match(/<button type="button" data-cs-journey="(pre|post)" aria-pressed="false">/g) || []).length === 2, 'browse panel tabs switch tracks (aria-pressed)');
 
 // suggestion engine wiring

@@ -10,11 +10,12 @@ if (!String(process.env.ENFORCEMENT_OPENROUTER_MODEL || '').trim()) {
 if (!String(process.env.ENFORCEMENT_OPENROUTER_MODEL_CANDIDATES || '').trim()) {
   process.env.ENFORCEMENT_OPENROUTER_MODEL_CANDIDATES = [
     'google/gemma-4-31b-it:free',
-    'openai/gpt-oss-120b:free',
+    'minimax/minimax-m3.1-flash:free',
+    'nvidia/nemotron-3-super-120b-a12b:free',
   ].join(',');
 }
 
-const { analyzeGroundedCase, publicRuntimeConfig } = require('../../lib/enforcement-grounded-ai');
+const { analyzeGroundedCase, analyzeBaselineCase, publicRuntimeConfig } = require('../../lib/enforcement-grounded-ai');
 
 module.exports = async function handler(request, response) {
   if (request.method === 'GET') {
@@ -39,7 +40,7 @@ module.exports = async function handler(request, response) {
   }
 
   try {
-    return response.status(200).json(await analyzeGroundedCase(payload.caseData));
+    return response.status(200).json(payload.baselineOnly === true ? analyzeBaselineCase(payload.caseData) : await analyzeGroundedCase(payload.caseData));
   } catch (error) {
     console.error('Enforcement analysis rejected', { name: error && error.name, message: error && error.message });
     return response.status(422).json({ detail: 'invalid structured enforcement case' });
