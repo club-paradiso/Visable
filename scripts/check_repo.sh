@@ -453,10 +453,11 @@ if command -v node >/dev/null 2>&1; then
   node scripts/check_enforcement_extraction_quality.mjs
   node scripts/check_enforcement_calendar_boundary.mjs
   node scripts/check_enforcement_provider_reliability.mjs
+  node scripts/check_enforcement_law_validity.mjs
 else
   echo "INFO: Node.js not found; skipping enforcement contract validation."
 fi
-python3 -m unittest backend.tests.test_enforcement_intelligence backend.tests.test_enforcement_extraction_quality
+python3 -m unittest backend.tests.test_enforcement_intelligence backend.tests.test_enforcement_extraction_quality backend.tests.test_enforcement_case_registry
 
 echo "[10/14] Scanning key user-facing files for forbidden branding strings..."
 KEY_FILES=(
