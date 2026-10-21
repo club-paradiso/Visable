@@ -36,6 +36,10 @@ STAGES_BY_TYPE = {
 }
 VERIFICATION_STATES = frozenset({"STAGED", "INDEPENDENTLY_REVIEWED"})
 SOURCE_STATES = frozenset({"STAGED", "SOURCE_VERIFIED"})
+REVIEWER_ROLES = frozenset({
+    "AUTHORIZED_ADMINISTRATIVE_REVIEWER", "LEGAL_REVIEWER",
+    "DATA_QUALITY_REVIEWER", "AUTHORIZED_RECORD_REVIEWER",
+})
 SOURCE_TYPES = frozenset({
     "OFFICIAL_ADMINISTRATIVE_DECISION", "COURT_DECISION", "VERIFIED_ADMINISTRATIVE_RECORD",
 })
@@ -51,7 +55,8 @@ _SOURCE_FIELDS = {"sourceId", "sourceType", "authority", "publicUrl", "publicati
 _CASE_FIELDS = {"caseId", "sourceIds", "subjects"}
 _SUBJECT_FIELDS = {"subjectId", "role", "statusOfStay", "violationCode", "violationArticle", "observations"}
 _OBSERVATION_FIELDS = {"observationId", "type", "stage", "amountKrw", "decisionDate",
-                       "sourceIds", "reviewStatus", "independentFromPrediction", "sourcePage"}
+                       "sourceIds", "reviewStatus", "independentFromPrediction", "sourcePage",
+                       "reviewedAt", "reviewerRole"}
 _OFFICIAL_HOSTS = {"law.go.kr", "scourt.go.kr", "moj.go.kr", "simpan.go.kr", "ccourt.go.kr"}
 
 
@@ -208,6 +213,9 @@ def validate_case_registry(dataset: Any) -> dict:
                 ):
                     raise CaseRegistryError("sourcePage must be a positive page number")
                 if event["reviewStatus"] == "INDEPENDENTLY_REVIEWED":
+                    _date(event.get("reviewedAt"), "observation.reviewedAt")
+                    if event.get("reviewerRole") not in REVIEWER_ROLES:
+                        raise CaseRegistryError("reviewed observation requires an approved reviewerRole")
                     if not event["independentFromPrediction"] or any(
                         source_state[source_id] != "SOURCE_VERIFIED" for source_id in linked
                     ):
