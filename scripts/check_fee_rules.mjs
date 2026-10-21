@@ -61,6 +61,37 @@ check('payment instruments follow 제73조 (card fees: cash / cash receipt, neve
   for (const id of ['registration_card', 'card_reissue']) { assert(byId[id].payment_instruments.includes('CASH_OR_CASH_RECEIPT') && !byId[id].payment_instruments.includes('REVENUE_STAMP'), id); }
   for (const id of ['extension_general', 'status_change_general', 'reentry_single']) assert(byId[id].payment_instruments.includes('REVENUE_STAMP'), id);
 });
+/* 제73조 as in force (2026-09-15) vs the amended text deferred to 2027-09-16 (부칙 제1조) */
+const BEFORE = Date.parse('2027-09-15T23:59:59+09:00'); const AT = Date.parse('2027-09-16T00:00:00+09:00');
+check('제73조 in force today: no card payment anywhere; 등록증 fees cash / cash receipt only (제1호 가목)', () => {
+  for (const f of fees) assert(!f.payment_instruments.includes('CARD'), `${f.id} lists card before the amendment takes effect`);
+  for (const id of ['registration_card', 'card_reissue']) {
+    assert(byId[id].payment_instruments.join() === 'CASH_OR_CASH_RECEIPT', id);
+    assert(byId[id].notes_ko.every((n) => !/카드/.test(n)) && byId[id].notes_ko.some((n) => /제73조 제1호 가목/.test(n)), `${id} note`);
+  }
+  assert(!/카드/.test(bundle.law_sources.rule_73.quote_ko) && bundle.law_sources.rule_73.effective === '2026-09-15', 'rule_73 quote is the in-force text');
+});
+check('the amended 제73조 switches in at 2027-09-16 00:00 KST, not a second earlier', () => {
+  const pre = SG.applySchedules(bundle, BEFORE); const post = SG.applySchedules(bundle, AT);
+  const preBy = Object.fromEntries(pre.fees.map((f) => [f.id, f])); const postBy = Object.fromEntries(post.fees.map((f) => [f.id, f]));
+  for (const id of ['registration_card', 'card_reissue']) {
+    assert(preBy[id].payment_instruments.join() === 'CASH_OR_CASH_RECEIPT', `${id} before`);
+    assert(['CASH_OR_CASH_RECEIPT', 'CARD', 'ELECTRONIC_PAYMENT'].every((i) => postBy[id].payment_instruments.includes(i)), `${id} after`);
+    assert(postBy[id].notes_ko.some((n) => /카드·전자결제/.test(n)) && postBy[id].effective_from === '2027-09-16', `${id} amended note`);
+  }
+  for (const id of ['extension_general', 'status_change_general', 'reentry_single']) {
+    assert(!preBy[id].payment_instruments.includes('CARD') && postBy[id].payment_instruments.includes('CARD'), id);
+  }
+  assert(!/카드/.test(pre.law_sources.rule_73.quote_ko) && /신용카드·직불카드/.test(post.law_sources.rule_73.quote_ko), 'rule_73 quote switches');
+  assert(post.law_sources.rule_73.effective === '2027-09-16' && pre.law_sources.rule_73.effective === '2026-09-15', 'rule_73 effective date switches');
+  assert(SG.nextScheduleAt(bundle, BEFORE) === AT && SG.nextScheduleAt(bundle, AT) === null, 'next switch instant');
+  assert(bundle.fees.find((f) => f.id === 'registration_card').payment_instruments.join() === 'CASH_OR_CASH_RECEIPT', 'applySchedules never mutates the bundle');
+});
+check('every scheduled change names its instant (+09:00), its source and what it sets', () => {
+  for (const o of [...fees, ...Object.values(bundle.law_sources)]) for (const c of o.scheduled || []) {
+    assert(/^\d{4}-\d{2}-\d{2}T00:00:00\+09:00$/.test(c.at) && c.source_ko && c.set && Object.keys(c.set).length, JSON.stringify(c).slice(0, 80));
+  }
+});
 check('fee metadata keeps the statutory 20% reductions granted by 제74조 제2항', () => {
   for (const id of ['extension_general', 'extension_f6', 'status_change_general', 'workplace_change', 'reentry_single', 'reentry_multiple']) assert(byId[id].online_reduction && byId[id].online_reduction.rate === 0.2, id);
   for (const id of ['registration_card', 'card_reissue', 'activities_outside_status', 'status_grant_general']) assert(!byId[id].online_reduction, `${id} must not be reduced online`);

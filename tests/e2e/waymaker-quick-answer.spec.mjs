@@ -12,7 +12,7 @@
 //   * the follow-up hands the context to ai.html and prefills the question.
 import { test, expect } from '@playwright/test';
 
-const FAITHFUL = '외국인등록증 재발급은 통합신청서에 사진 1장을 붙여 내고, 수수료 ₩35,000은 현금 또는 카드로 냅니다. 잃어버린 경우가 아니면 기존 등록증도 함께 냅니다.';
+const FAITHFUL = '외국인등록증 재발급은 통합신청서에 사진 1장을 붙여 내고, 수수료 ₩35,000은 현금 또는 현금 납입 증표로 냅니다. 잃어버린 경우가 아니면 기존 등록증도 함께 냅니다.';
 const HALLUCINATED = '외국인등록증 재발급 수수료는 면제이고 여권 사본 2부와 아포스티유 출생증명서가 필요합니다.';
 
 async function boot(page, url = '/index.html', apiHandler = null) {

@@ -531,10 +531,20 @@
    "article": "제73조",
    "label_ko": "수수료의 납부방법",
    "label_en": "How fees are paid",
-   "quote_ko": "청·사무소·출장소 납부 시 수입인지(외국인등록증 발급 및 재발급 수수료의 경우에는 현금 또는 현금 납입을 증명하는 증표), 신용카드·직불카드 또는 정보통신망을 이용한 전자화폐·전자결제; 시·군·구·읍·면·동 납부 시 수입증지·카드·전자결제",
+   "quote_ko": "청·사무소·출장소 납부 시 수입인지 또는 정보통신망을 이용한 전자화폐·전자결제(다만 외국인등록증 발급 및 재발급 수수료는 현금 또는 현금 납입을 증명하는 증표); 시·군·구·읍·면·동 납부 시 수입증지 또는 전자화폐·전자결제",
    "url": "https://www.law.go.kr/법령/출입국관리법시행규칙/제73조",
    "checked_on": "2026-09-22",
-   "review_state": "CURRENT_TEXT_READ"
+   "review_state": "CURRENT_TEXT_READ",
+   "scheduled": [
+    {
+     "at": "2027-09-16T00:00:00+09:00",
+     "source_ko": "출입국관리법 시행규칙 부칙 <법무부령 제1125호, 2026. 9. 15.> 제1조",
+     "set": {
+      "effective": "2027-09-16",
+      "quote_ko": "청·사무소·출장소 납부 시 수입인지(외국인등록증 발급 및 재발급 수수료의 경우에는 현금 또는 현금 납입을 증명하는 증표), 신용카드·직불카드 또는 정보통신망을 이용한 전자화폐·전자결제; 시·군·구·읍·면·동 납부 시 수입증지·카드·전자결제"
+     }
+    }
+   ]
   },
   "rule_74": {
    "law_id": "008494",
@@ -1047,9 +1057,23 @@
    "amount_state": "FIXED",
    "label_ko": "체류기간 연장허가 심사수수료",
    "label_en": "Extension of stay fee",
+   "scheduled": [
+    {
+     "at": "2027-09-16T00:00:00+09:00",
+     "law": "rule_73",
+     "source_ko": "출입국관리법 시행규칙 부칙 <법무부령 제1125호, 2026. 9. 15.> 제1조",
+     "set": {
+      "payment_instruments": [
+       "REVENUE_STAMP",
+       "CARD",
+       "ELECTRONIC_PAYMENT"
+      ],
+      "effective_from": "2027-09-16"
+     }
+    }
+   ],
    "payment_instruments": [
     "REVENUE_STAMP",
-    "CARD",
     "ELECTRONIC_PAYMENT"
    ],
    "payment_channels": [
@@ -1145,9 +1169,23 @@
    "amount_state": "FIXED",
    "label_ko": "체류기간 연장허가 심사수수료 (결혼이민 F-6)",
    "label_en": "Extension of stay fee (F-6 marriage migrant)",
+   "scheduled": [
+    {
+     "at": "2027-09-16T00:00:00+09:00",
+     "law": "rule_73",
+     "source_ko": "출입국관리법 시행규칙 부칙 <법무부령 제1125호, 2026. 9. 15.> 제1조",
+     "set": {
+      "payment_instruments": [
+       "REVENUE_STAMP",
+       "CARD",
+       "ELECTRONIC_PAYMENT"
+      ],
+      "effective_from": "2027-09-16"
+     }
+    }
+   ],
    "payment_instruments": [
     "REVENUE_STAMP",
-    "CARD",
     "ELECTRONIC_PAYMENT"
    ],
    "payment_channels": [
@@ -1197,9 +1235,23 @@
    "amount_state": "FIXED",
    "label_ko": "체류자격 변경허가 심사수수료",
    "label_en": "Change of status fee",
+   "scheduled": [
+    {
+     "at": "2027-09-16T00:00:00+09:00",
+     "law": "rule_73",
+     "source_ko": "출입국관리법 시행규칙 부칙 <법무부령 제1125호, 2026. 9. 15.> 제1조",
+     "set": {
+      "payment_instruments": [
+       "REVENUE_STAMP",
+       "CARD",
+       "ELECTRONIC_PAYMENT"
+      ],
+      "effective_from": "2027-09-16"
+     }
+    }
+   ],
    "payment_instruments": [
     "REVENUE_STAMP",
-    "CARD",
     "ELECTRONIC_PAYMENT"
    ],
    "payment_channels": [
@@ -1283,9 +1335,23 @@
    "amount_state": "FIXED",
    "label_ko": "체류자격 변경허가 심사수수료 (영주 F-5로 변경)",
    "label_en": "Change of status fee (to F-5)",
+   "scheduled": [
+    {
+     "at": "2027-09-16T00:00:00+09:00",
+     "law": "rule_73",
+     "source_ko": "출입국관리법 시행규칙 부칙 <법무부령 제1125호, 2026. 9. 15.> 제1조",
+     "set": {
+      "payment_instruments": [
+       "REVENUE_STAMP",
+       "CARD",
+       "ELECTRONIC_PAYMENT"
+      ],
+      "effective_from": "2027-09-16"
+     }
+    }
+   ],
    "payment_instruments": [
     "REVENUE_STAMP",
-    "CARD",
     "ELECTRONIC_PAYMENT"
    ],
    "payment_channels": [
@@ -1321,9 +1387,23 @@
    "amount_state": "FIXED",
    "label_ko": "체류자격 부여 심사수수료",
    "label_en": "Status grant fee",
+   "scheduled": [
+    {
+     "at": "2027-09-16T00:00:00+09:00",
+     "law": "rule_73",
+     "source_ko": "출입국관리법 시행규칙 부칙 <법무부령 제1125호, 2026. 9. 15.> 제1조",
+     "set": {
+      "payment_instruments": [
+       "REVENUE_STAMP",
+       "CARD",
+       "ELECTRONIC_PAYMENT"
+      ],
+      "effective_from": "2027-09-16"
+     }
+    }
+   ],
    "payment_instruments": [
     "REVENUE_STAMP",
-    "CARD",
     "ELECTRONIC_PAYMENT"
    ],
    "payment_channels": [
@@ -1371,9 +1451,23 @@
    "amount_state": "FIXED",
    "label_ko": "체류자격 부여 심사수수료 (결혼이민 F-6)",
    "label_en": "Status grant fee (F-6)",
+   "scheduled": [
+    {
+     "at": "2027-09-16T00:00:00+09:00",
+     "law": "rule_73",
+     "source_ko": "출입국관리법 시행규칙 부칙 <법무부령 제1125호, 2026. 9. 15.> 제1조",
+     "set": {
+      "payment_instruments": [
+       "REVENUE_STAMP",
+       "CARD",
+       "ELECTRONIC_PAYMENT"
+      ],
+      "effective_from": "2027-09-16"
+     }
+    }
+   ],
    "payment_instruments": [
     "REVENUE_STAMP",
-    "CARD",
     "ELECTRONIC_PAYMENT"
    ],
    "payment_channels": [
@@ -1403,9 +1497,23 @@
    "amount_state": "FIXED",
    "label_ko": "체류자격 외 활동허가 심사수수료",
    "label_en": "Activities-outside-status permit fee",
+   "scheduled": [
+    {
+     "at": "2027-09-16T00:00:00+09:00",
+     "law": "rule_73",
+     "source_ko": "출입국관리법 시행규칙 부칙 <법무부령 제1125호, 2026. 9. 15.> 제1조",
+     "set": {
+      "payment_instruments": [
+       "REVENUE_STAMP",
+       "CARD",
+       "ELECTRONIC_PAYMENT"
+      ],
+      "effective_from": "2027-09-16"
+     }
+    }
+   ],
    "payment_instruments": [
     "REVENUE_STAMP",
-    "CARD",
     "ELECTRONIC_PAYMENT"
    ],
    "payment_channels": [
@@ -1454,9 +1562,23 @@
    "amount_state": "CONFLICT",
    "label_ko": "유학생 시간제 취업허가 수수료",
    "label_en": "Student part-time work permit fee",
+   "scheduled": [
+    {
+     "at": "2027-09-16T00:00:00+09:00",
+     "law": "rule_73",
+     "source_ko": "출입국관리법 시행규칙 부칙 <법무부령 제1125호, 2026. 9. 15.> 제1조",
+     "set": {
+      "payment_instruments": [
+       "REVENUE_STAMP",
+       "CARD",
+       "ELECTRONIC_PAYMENT"
+      ],
+      "effective_from": "2027-09-16"
+     }
+    }
+   ],
    "payment_instruments": [
     "REVENUE_STAMP",
-    "CARD",
     "ELECTRONIC_PAYMENT"
    ],
    "payment_channels": [
@@ -1495,9 +1617,23 @@
    "amount_state": "FIXED",
    "label_ko": "근무처 변경·추가 허가 심사수수료",
    "label_en": "Workplace change/addition permit fee",
+   "scheduled": [
+    {
+     "at": "2027-09-16T00:00:00+09:00",
+     "law": "rule_73",
+     "source_ko": "출입국관리법 시행규칙 부칙 <법무부령 제1125호, 2026. 9. 15.> 제1조",
+     "set": {
+      "payment_instruments": [
+       "REVENUE_STAMP",
+       "CARD",
+       "ELECTRONIC_PAYMENT"
+      ],
+      "effective_from": "2027-09-16"
+     }
+    }
+   ],
    "payment_instruments": [
     "REVENUE_STAMP",
-    "CARD",
     "ELECTRONIC_PAYMENT"
    ],
    "payment_channels": [
@@ -1560,9 +1696,23 @@
    "amount_state": "FIXED",
    "label_ko": "단수재입국허가 수수료",
    "label_en": "Single re-entry permit fee",
+   "scheduled": [
+    {
+     "at": "2027-09-16T00:00:00+09:00",
+     "law": "rule_73",
+     "source_ko": "출입국관리법 시행규칙 부칙 <법무부령 제1125호, 2026. 9. 15.> 제1조",
+     "set": {
+      "payment_instruments": [
+       "REVENUE_STAMP",
+       "CARD",
+       "ELECTRONIC_PAYMENT"
+      ],
+      "effective_from": "2027-09-16"
+     }
+    }
+   ],
    "payment_instruments": [
     "REVENUE_STAMP",
-    "CARD",
     "ELECTRONIC_PAYMENT"
    ],
    "payment_channels": [
@@ -1655,9 +1805,23 @@
    "amount_state": "FIXED",
    "label_ko": "복수재입국허가 수수료",
    "label_en": "Multiple re-entry permit fee",
+   "scheduled": [
+    {
+     "at": "2027-09-16T00:00:00+09:00",
+     "law": "rule_73",
+     "source_ko": "출입국관리법 시행규칙 부칙 <법무부령 제1125호, 2026. 9. 15.> 제1조",
+     "set": {
+      "payment_instruments": [
+       "REVENUE_STAMP",
+       "CARD",
+       "ELECTRONIC_PAYMENT"
+      ],
+      "effective_from": "2027-09-16"
+     }
+    }
+   ],
    "payment_instruments": [
     "REVENUE_STAMP",
-    "CARD",
     "ELECTRONIC_PAYMENT"
    ],
    "payment_channels": [
@@ -1750,10 +1914,29 @@
    "amount_state": "FIXED",
    "label_ko": "외국인등록증 발급 수수료",
    "label_en": "Residence card issue fee",
+   "scheduled": [
+    {
+     "at": "2027-09-16T00:00:00+09:00",
+     "law": "rule_73",
+     "source_ko": "출입국관리법 시행규칙 부칙 <법무부령 제1125호, 2026. 9. 15.> 제1조",
+     "set": {
+      "payment_instruments": [
+       "CASH_OR_CASH_RECEIPT",
+       "CARD",
+       "ELECTRONIC_PAYMENT"
+      ],
+      "effective_from": "2027-09-16",
+      "notes_ko": [
+       "등록증 발급 수수료는 수입인지가 아니라 현금 또는 현금 납입을 증명하는 증표(또는 카드·전자결제)로 냅니다 (시행규칙 제73조 제1호)."
+      ],
+      "notes_en": [
+       "The card fee is paid in cash or with a cash-payment receipt (or card/e-payment), not with a revenue stamp (Rule Art. 73(1))."
+      ]
+     }
+    }
+   ],
    "payment_instruments": [
-    "CASH_OR_CASH_RECEIPT",
-    "CARD",
-    "ELECTRONIC_PAYMENT"
+    "CASH_OR_CASH_RECEIPT"
    ],
    "payment_channels": [
     "office"
@@ -1775,10 +1958,10 @@
    "manual_anchor": "외국인등록증 발급 및 재발급 3만 5천원",
    "review_state": "VERIFIED_REGULATION",
    "notes_ko": [
-    "등록증 발급 수수료는 수입인지가 아니라 현금 또는 현금 납입을 증명하는 증표(또는 카드·전자결제)로 냅니다 (시행규칙 제73조 제1호)."
+    "등록증 발급 수수료는 수입인지가 아니라 현금 또는 현금 납입을 증명하는 증표로 냅니다 (시행규칙 제73조 제1호 가목)."
    ],
    "notes_en": [
-    "The card fee is paid in cash or with a cash-payment receipt (or card/e-payment), not with a revenue stamp (Rule Art. 73(1))."
+    "The card fee is paid in cash or with a cash-payment receipt, not with a revenue stamp (Rule Art. 73(1)(a))."
    ],
    "conflicts": [],
    "investigations": [],
@@ -1793,10 +1976,29 @@
    "amount_state": "FIXED",
    "label_ko": "외국인등록증 재발급 수수료",
    "label_en": "Residence card reissue fee",
+   "scheduled": [
+    {
+     "at": "2027-09-16T00:00:00+09:00",
+     "law": "rule_73",
+     "source_ko": "출입국관리법 시행규칙 부칙 <법무부령 제1125호, 2026. 9. 15.> 제1조",
+     "set": {
+      "payment_instruments": [
+       "CASH_OR_CASH_RECEIPT",
+       "CARD",
+       "ELECTRONIC_PAYMENT"
+      ],
+      "effective_from": "2027-09-16",
+      "notes_ko": [
+       "재발급 수수료는 수입인지가 아니라 현금 또는 현금 납입을 증명하는 증표(또는 카드·전자결제)로 냅니다 (시행규칙 제73조 제1호). 온라인 감경 대상이 아닙니다."
+      ],
+      "notes_en": [
+       "Paid in cash or with a cash-payment receipt (or card/e-payment), not with a revenue stamp (Rule Art. 73(1)). No online reduction applies."
+      ]
+     }
+    }
+   ],
    "payment_instruments": [
-    "CASH_OR_CASH_RECEIPT",
-    "CARD",
-    "ELECTRONIC_PAYMENT"
+    "CASH_OR_CASH_RECEIPT"
    ],
    "payment_channels": [
     "office"
@@ -1832,10 +2034,10 @@
    "manual_anchor": "외국인등록증 발급 및 재발급 3만 5천원",
    "review_state": "VERIFIED_REGULATION",
    "notes_ko": [
-    "재발급 수수료는 수입인지가 아니라 현금 또는 현금 납입을 증명하는 증표(또는 카드·전자결제)로 냅니다 (시행규칙 제73조 제1호). 온라인 감경 대상이 아닙니다."
+    "재발급 수수료는 수입인지가 아니라 현금 또는 현금 납입을 증명하는 증표로 냅니다 (시행규칙 제73조 제1호 가목). 온라인 감경 대상이 아닙니다."
    ],
    "notes_en": [
-    "Paid in cash or with a cash-payment receipt (or card/e-payment), not with a revenue stamp (Rule Art. 73(1)). No online reduction applies."
+    "Paid in cash or with a cash-payment receipt, not with a revenue stamp (Rule Art. 73(1)(a)). No online reduction applies."
    ],
    "conflicts": [],
    "investigations": [],
@@ -1850,6 +2052,7 @@
    "amount_state": "NOT_LISTED",
    "label_ko": "체류지 변경신고",
    "label_en": "Change-of-residence report",
+   "scheduled": [],
    "payment_instruments": [],
    "payment_channels": [
     "office"
@@ -1882,6 +2085,7 @@
    "amount_state": "NO_FEE",
    "label_ko": "외국인등록사항 변경신고",
    "label_en": "Registration-information change report",
+   "scheduled": [],
    "payment_instruments": [],
    "payment_channels": [
     "office"
