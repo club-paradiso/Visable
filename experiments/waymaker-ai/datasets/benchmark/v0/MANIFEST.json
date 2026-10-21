@@ -1,0 +1,276 @@
+{
+ "schema_version": "waymaker-benchmark-manifest/0.1",
+ "benchmark": "waymaker-benchmark-v0",
+ "created_at": "2026-10-19",
+ "updated_at": "2026-10-20",
+ "authored_by": "Claude Opus 5.5 (Mission 001)",
+ "example_schema": "waymaker-example/0.1",
+ "human_verified_examples": 0,
+ "notes": [
+  "No example has been reviewed by a person. machine_checked means the label's premises were checked mechanically (inventory codes, bundle facts, an independent re-application of spec 06 §3); it is not a legal review.",
+  "Split rule: adversarial_holdout for every example with an adversarial class; otherwise, for the examples created 2026-10-19, dev when int(sha256(id)[:8], 16) % 10 < 4, else test. The 13 examples created 2026-10-20 (ids ver-dev-*, tmp-dev-*) were written for dev, with case templates no test or adversarial_holdout example uses. There is no train split in v0.",
+  "Paths under files are relative to this directory; dependency paths are relative to experiments/waymaker-ai.",
+  "2026-10-20 (align-bench): labels aligned with the spec 06/07 rules decided 2026-10-20; every changed label has revision+1 and a revision_history entry naming the rule. 13 non-adversarial legal items were added to dev (8 citation_verification, 5 temporal_version_selection) with their own case templates. Both owned bundles are at bundle_version 2 (structure_complete on every provision).",
+  "Every example carries scenario.case_template. Variants written from one case (translations, re-dated or re-anchored variants, the same claim with a different citation or scope) share a template. case_templates.shared_by_dev_and_an_eval_split lists the templates that straddle dev and test/adversarial_holdout because v0 was split per example (hash rule) before templates existed; they were reported, not re-split."
+ ],
+ "totals": {
+  "examples": 188
+ },
+ "counts": {
+  "by_suite": {
+   "abstention": 11,
+   "classification": 91,
+   "legal_verification": 58,
+   "temporal": 28
+  },
+  "by_task": {
+   "abstention": 11,
+   "citation_verification": 58,
+   "entity_date_extraction": 12,
+   "status_procedure_classification": 79,
+   "temporal_version_selection": 28
+  },
+  "by_language": {
+   "en": 35,
+   "ja": 4,
+   "ko": 137,
+   "ru": 3,
+   "vi": 4,
+   "zh": 5
+  },
+  "by_split": {
+   "adversarial_holdout": 74,
+   "dev": 49,
+   "test": 65
+  },
+  "by_adversarial_class": {
+   "A": 5,
+   "B": 4,
+   "C": 3,
+   "D": 8,
+   "E": 15,
+   "F": 4,
+   "G": 5,
+   "H": 10,
+   "I": 5,
+   "J": 3,
+   "K": 4,
+   "L": 3,
+   "M": 3,
+   "N": 2,
+   "none": 114
+  },
+  "by_label_status": {
+   "machine_checked": 151,
+   "unreviewed": 37
+  },
+  "by_authoring": {
+   "derived_from_repository_data": 41,
+   "synthetic_authored": 147
+  },
+  "critical": {
+   "False": 91,
+   "True": 97
+  },
+  "by_fixture_set": {
+   "law_go_kr_capture_2026_10_19": 41,
+   "synthetic_adversarial": 44,
+   "synthetic_core": 1
+  },
+  "by_file_and_split": {
+   "abstention.jsonl": {
+    "adversarial_holdout": 8,
+    "dev": 2,
+    "test": 1
+   },
+   "classification.jsonl": {
+    "dev": 31,
+    "test": 60
+   },
+   "legal_verification.jsonl": {
+    "adversarial_holdout": 45,
+    "dev": 10,
+    "test": 3
+   },
+   "temporal.jsonl": {
+    "adversarial_holdout": 21,
+    "dev": 6,
+    "test": 1
+   }
+  },
+  "by_file_and_label_status": {
+   "abstention.jsonl": {
+    "unreviewed": 11
+   },
+   "classification.jsonl": {
+    "machine_checked": 65,
+    "unreviewed": 26
+   },
+   "legal_verification.jsonl": {
+    "machine_checked": 58
+   },
+   "temporal.jsonl": {
+    "machine_checked": 28
+   }
+  }
+ },
+ "case_templates": {
+  "total": 127,
+  "by_file": {
+   "abstention.jsonl": 5,
+   "classification.jsonl": 67,
+   "legal_verification.jsonl": 41,
+   "temporal.jsonl": 14
+  },
+  "examples_without_template": 0,
+  "shared_by_dev_and_an_eval_split": [
+   {
+    "case_template": "tpl-abs-outcome-prediction",
+    "splits": [
+     "dev",
+     "test"
+    ]
+   },
+   {
+    "case_template": "tpl-cls-d10-to-e71-status-change",
+    "splits": [
+     "dev",
+     "test"
+    ]
+   },
+   {
+    "case_template": "tpl-cls-d2-extension",
+    "splits": [
+     "dev",
+     "test"
+    ]
+   },
+   {
+    "case_template": "tpl-cls-e9-workplace-change",
+    "splits": [
+     "dev",
+     "test"
+    ]
+   },
+   {
+    "case_template": "tpl-cls-f5-reentry",
+    "splits": [
+     "dev",
+     "test"
+    ]
+   },
+   {
+    "case_template": "tpl-cls-f61-residence-report",
+    "splits": [
+     "dev",
+     "test"
+    ]
+   },
+   {
+    "case_template": "tpl-cv-syn-residence-report-deadline",
+    "splits": [
+     "adversarial_holdout",
+     "dev"
+    ]
+   },
+   {
+    "case_template": "tpl-ext-application-and-decision",
+    "splits": [
+     "dev",
+     "test"
+    ]
+   },
+   {
+    "case_template": "tpl-ext-move-and-report",
+    "splits": [
+     "dev",
+     "test"
+    ]
+   },
+   {
+    "case_template": "tpl-ext-question-and-stay-expiry",
+    "splits": [
+     "dev",
+     "test"
+    ]
+   },
+   {
+    "case_template": "tpl-tv-ewa-286817-rows",
+    "splits": [
+     "adversarial_holdout",
+     "dev"
+    ]
+   }
+  ],
+  "shared_by_test_and_adversarial_holdout_only": [
+   {
+    "case_template": "tpl-cv-r73-cash-method",
+    "splits": [
+     "adversarial_holdout",
+     "test"
+    ]
+   },
+   {
+    "case_template": "tpl-tv-nationality-286415",
+    "splits": [
+     "adversarial_holdout",
+     "test"
+    ]
+   }
+  ]
+ },
+ "files": {
+  "abstention.jsonl": {
+   "sha256": "bba4f4cc3f8b75ae6b74c52daae4e74cba53f8d75723c36a0420374c9db7453b",
+   "examples": 11,
+   "bytes": 18978
+  },
+  "classification.jsonl": {
+   "sha256": "436f560f0ee7752211b9c73884793a82478fc9518de6623da3beaf83aad061ef",
+   "examples": 91,
+   "bytes": 146067
+  },
+  "legal_verification.jsonl": {
+   "sha256": "da846849b6cc37532184912be1b1f302fe221f95b3055fb901a360fb6c5c55cc",
+   "examples": 58,
+   "bytes": 189406
+  },
+  "temporal.jsonl": {
+   "sha256": "9a2bd658abde8c3cdb4ac2f732923975a518eb2287396ec6325e01713db77ca6",
+   "examples": 28,
+   "bytes": 63715
+  },
+  "abstention_rubric.json": {
+   "sha256": "9ce095cc37ab8b732a29bc320a1ae3529a107cf0d263a8dc265e467749a0e9e5",
+   "examples": 0,
+   "bytes": 3328,
+   "role": "required_issue_keys for abstention.jsonl (not an example file)"
+  }
+ },
+ "dependencies": [
+  {
+   "path": "datasets/fixtures/sources/law_go_kr_capture_2026_10_19.json",
+   "sha256": "a14bb6c0569e93bc4b367d96627fbca6f4ebffb1988e0884b974c91015ed7781",
+   "bytes": 728422,
+   "role": "real law.go.kr capture bundle (verified_web)"
+  },
+  {
+   "path": "datasets/fixtures/sources/synthetic_adversarial.json",
+   "sha256": "d8f0845375fe3193a7db5f9476f23c2a44bddf0176bd439e02fdf45506962704",
+   "bytes": 74358,
+   "role": "fictional adversarial bundle (synthetic_fixture)"
+  },
+  {
+   "path": "datasets/fixtures/sources/synthetic_core.json",
+   "sha256": "45a72bcd005cf9013ff27fbeeb6ac8d4ecdd7ad6e163d551b61ddb9dd44c9935",
+   "bytes": 36544,
+   "role": "fictional core bundle, owned by another component; 1 example (ver-core-near-title-complete-index) depends on it"
+  },
+  {
+   "path": "datasets/registry/law_identity_2026-10-19.json",
+   "sha256": "1822d361e9799cde0b2c187f108b9c144e8ed16c21a610160d4e8f1993211b7f",
+   "bytes": 26721,
+   "role": "law identity registry (normalised research seed)"
+  }
+ ]
+}

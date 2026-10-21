@@ -1,0 +1,163 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/club-paradiso/Visable/experiments/waymaker-ai/schemas/source_bundle.schema.json",
+  "title": "WLIE source bundle",
+  "description": "Offline legal evidence for the WLIE fixture adapter, the benchmark and the evaluation runner: datasets/fixtures/sources/<bundle_id>.json. A bundle holds identities, effective-dated versions, provision text, 부칙, operational guidance and scripted lookup faults. It is read by waymaker_ai.legal.adapters (load_bundle / FixtureAdapter), whose validate_bundle enforces this schema plus the cross-record rules listed under x-cross-record-rules; the package does not depend on a JSON Schema library. Dates are YYYY-MM-DD. A version is addressed by [version_id, effective_date].",
+  "type": "object",
+  "required": ["bundle_id", "bundle_version", "provenance", "attribution", "title_index_coverage", "history_coverage", "identities", "versions", "provisions"],
+  "properties": {
+    "bundle_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$", "description": "Equals the file name without .json."},
+    "bundle_version": {"type": "integer", "minimum": 1},
+    "provenance": {"enum": ["synthetic_fixture", "verified_web", "verified_api"], "description": "synthetic_fixture bundles use obviously fictional law names and may only hold synthetic_fixture records; verified bundles may hold none."},
+    "attribution": {"type": "string", "description": "For law.go.kr captures: 출처: 법제처 국가법령정보센터 (law.go.kr)."},
+    "captured_at": {"type": ["string", "null"], "format": "date"},
+    "title_index_coverage": {"enum": ["complete", "partial"], "description": "partial = an index of current titles only (official and short titles, no former titles): a title missing from it is historical_lookup_required, never source_not_found."},
+    "history_coverage": {
+      "type": "object",
+      "description": "Per stable_id: complete when every version of the identity is listed. A stable_id without an entry is treated as partial.",
+      "additionalProperties": {"enum": ["complete", "partial"]}
+    },
+    "identities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["provider", "family", "stable_id", "official_title"],
+        "properties": {
+          "provider": {"type": "string"},
+          "family": {"enum": ["statute", "enforcement_decree", "enforcement_rule", "administrative_rule", "official_form", "immigration_manual", "public_guidance", "official_interpretation", "judicial_decision", "administrative_appeal", "constitutional_decision", "secondary"]},
+          "stable_id": {"type": "string", "description": "법령ID / 행정규칙ID / manual lineage id. The only identity; a title never is."},
+          "official_title": {"type": "string"},
+          "former_titles": {"type": "array", "items": {"type": "string"}},
+          "short_titles": {"type": "array", "items": {"type": "string"}, "description": "약칭 printed by the official source."},
+          "competent_ministry": {"type": ["string", "null"]}
+        }
+      }
+    },
+    "versions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["stable_id", "version_id", "effective_date"],
+        "properties": {
+          "stable_id": {"type": "string"},
+          "version_id": {"type": "string", "description": "법령일련번호 (MST). Not unique on its own: one promulgation can be listed once per effective date."},
+          "effective_date": {"type": ["string", "null"], "format": "date"},
+          "promulgation_date": {"type": ["string", "null"], "format": "date"},
+          "promulgation_no": {"type": ["string", "null"]},
+          "amendment_type": {"type": ["string", "null"], "description": "제개정구분 as printed (제정, 일부개정, 전부개정, 타법개정, 폐지 …)."},
+          "end_date": {"type": ["string", "null"], "format": "date"},
+          "provision_effective_dates": {"type": "object", "additionalProperties": {"type": "string", "format": "date"}, "description": "Provision key (ProvisionRef.key(), e.g. 제7조 or 제4조제4항) → its own 시행일, for a deferred provision without a separate history row."},
+          "official_url": {"type": ["string", "null"], "description": "Must be on contracts.OFFICIAL_SOURCE_HOSTS in a verified bundle; must be null or non-official in a synthetic one."},
+          "retrieved_at": {"type": ["string", "null"]},
+          "content_sha256": {"type": ["string", "null"], "description": "sha256 of the capture file the version was parsed from."},
+          "parse_status": {"enum": ["complete", "partial", "failed", "not_parsed"], "description": "complete = every provision of this version is in the bundle, so a missing provision is an authoritative absence; anything else makes a missing provision unavailable, never citation_not_found."},
+          "provenance": {"enum": ["verified_api", "verified_web", "repository_record", "synthetic_fixture", "unverified"]},
+          "has_transitional_provisions": {"type": ["boolean", "null"], "description": "null = 부칙 not read."},
+          "is_repeal": {"type": "boolean"},
+          "changed_provisions": {"type": ["array", "null"], "items": {"type": "string"}, "description": "Article keys this version changed; null = unknown (every pending version is then relevant to every provision)."}
+        }
+      }
+    },
+    "provisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["evidence_id", "stable_id", "version_id", "effective_date", "provision_key", "unit_kind", "text"],
+        "properties": {
+          "evidence_id": {"type": "string", "description": "Unique across returnable provisions (article, annex, addendum) and guidance. Heading units need one but may share it: they are never returned, and the official JSON puts a chapter and a section heading on one article number."},
+          "stable_id": {"type": "string"},
+          "version_id": {"type": "string"},
+          "effective_date": {"type": "string", "format": "date", "description": "With version_id, names an existing version."},
+          "provision_key": {"type": "string", "description": "Article-level key compared without spaces: 제73조, 제6조의2, 별표 1, 부칙제1조."},
+          "unit_kind": {"enum": ["article", "heading", "annex", "addendum"], "description": "heading = 조문여부 전문 (e.g. 제1장 총칙). Heading units exist only so adapters can prove they filter them; they are never returned, even when they share an article number."},
+          "heading": {"type": ["string", "null"]},
+          "text": {"type": "string"},
+          "paragraphs": {"type": "object", "additionalProperties": {"type": "string"}, "description": "Printed paragraph number (as a string) → text."},
+          "items": {"type": "object", "additionalProperties": {"type": "string"}, "description": "\"paragraph:item\" → text; paragraph 0 when the article has no paragraphs; a branch item is \"2:3의2\"."},
+          "structure_complete": {"type": "boolean", "default": false, "description": "true only when every 항 / 호 / 목 of this provision is in paragraphs / items (목 as printed markers in the item text). Only then is a cited sub-unit that is absent an authoritative absence (L3 citation_not_found); omitted or false makes it unavailable. Independent of the version's parse_status, which covers which provisions were captured, not their inner structure."},
+          "scope": {"$ref": "#/$defs/scope"},
+          "official_url": {"type": ["string", "null"]},
+          "provenance": {"enum": ["verified_api", "verified_web", "repository_record", "synthetic_fixture", "unverified"]}
+        }
+      }
+    },
+    "addenda": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["stable_id", "version_id", "effective_date", "text", "kind"],
+        "properties": {
+          "stable_id": {"type": "string"},
+          "version_id": {"type": "string"},
+          "effective_date": {"type": "string", "format": "date"},
+          "text": {"type": "string"},
+          "kind": {"enum": ["effective_date", "transitional", "application", "other"]},
+          "mentions": {"type": "array", "items": {"type": "string"}, "description": "Article keys the clause names. A transitional or application clause naming no article is treated as reaching any filing."}
+        }
+      }
+    },
+    "guidance": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["evidence_id", "family", "topic", "text"],
+        "properties": {
+          "evidence_id": {"type": "string"},
+          "family": {"enum": ["statute", "enforcement_decree", "enforcement_rule", "administrative_rule", "official_form", "immigration_manual", "public_guidance", "official_interpretation", "judicial_decision", "administrative_appeal", "constitutional_decision", "secondary"]},
+          "topic": {"type": "string"},
+          "text": {"type": "string"},
+          "value": {"type": ["string", "null"], "description": "Normalized comparable value, e.g. cash_only."},
+          "edition_date": {"type": ["string", "null"], "format": "date"},
+          "review_state": {"type": "string"},
+          "scope": {"$ref": "#/$defs/scope"}
+        }
+      }
+    },
+    "faults": {
+      "type": "array",
+      "description": "Scripted lookup failures. The first fault whose operation and match fit a call is returned with its status and no payload.",
+      "items": {
+        "type": "object",
+        "required": ["operation", "match", "status"],
+        "properties": {
+          "operation": {"enum": ["resolve_title", "list_versions", "get_provision", "get_addenda", "guidance"]},
+          "match": {
+            "type": "object",
+            "additionalProperties": false,
+            "description": "Every given key must equal the call's value (title compared after compact(), provision_key without spaces). An empty match fits every call of the operation. topic (or title) matches the guidance topic.",
+            "properties": {
+              "title": {"type": "string"},
+              "stable_id": {"type": "string"},
+              "provision_key": {"type": "string"},
+              "topic": {"type": "string"}
+            }
+          },
+          "status": {"enum": ["found", "not_found", "unavailable_network", "unavailable_timeout", "unavailable_auth", "unavailable_rate_limited", "unavailable_parse", "unavailable_budget", "upstream_error"]},
+          "raw_body_kind": {"enum": ["html", "empty", "malformed_json", "malformed_xml", "http_429", "timeout", "http_500", "official_error", null], "description": "When set, status must be a failure status (never found / not_found): failure is not absence."},
+          "detail": {"type": "string"}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "scope": {
+      "type": ["object", "null"],
+      "description": "Which statuses / procedures the text speaks to. subcodes empty with status_codes set means stated for the parent, which does not establish the rule for any subcode; all_subcodes_explicit only when the source itself says every subcode is covered.",
+      "properties": {
+        "status_codes": {"type": "array", "items": {"type": "string"}},
+        "subcodes": {"type": "array", "items": {"type": "string"}},
+        "procedures": {"type": "array", "items": {"type": "string"}},
+        "all_subcodes_explicit": {"type": "boolean"},
+        "condition_kind": {"enum": ["always", "conditional", "applicant_specific", "office_discretion"]},
+        "note": {"type": "string"}
+      }
+    }
+  },
+  "x-cross-record-rules": [
+    "identities[].stable_id is unique; versions[].stable_id names an identity.",
+    "(stable_id, version_id, effective_date) is unique across versions; provisions and addenda name an existing version.",
+    "evidence_id is unique across non-heading provisions and guidance; heading units may repeat one.",
+    "A synthetic_fixture bundle holds only synthetic_fixture records and no official URL; a verified bundle holds no synthetic_fixture record, and every official_url is on an allowlisted host.",
+    "A fault with raw_body_kind set never reports found or not_found."
+  ]
+}

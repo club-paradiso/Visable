@@ -359,3 +359,12 @@ HeroGateway(기능적 진입 관문) → StatBridge(신뢰 수치) → FeatureTr
 - 글래스모피즘 히어로 외 남용 금지.
 - Coral(`--cy #D95C47`)을 본문 크기 텍스트·경계선·배경에 사용 금지(대비 3.68:1).
 - 새 코드에 `!important` 추가 금지(기존 사용분은 cascade 부채로, 시각 회귀 확인과 함께 줄인다).
+
+
+## Service discovery, October 2026
+
+Keep the existing paper, ink and forest-green system. The home remains search-first. The service catalogue is an open, searchable grid with explicit task descriptions and filters for applications, daily life and support; settings remain separate. Reuse the civic icon assets. On phones, show the catalogue entry in the header and all four rotating example searches. Secondary service pages provide the same three routes back to services, search and Waymaker.
+
+Reference study: https://www.designerhoon.com/ (large type, whitespace, quiet separators) and https://www.neonnuri.com/ (grouped project discovery). Translate hierarchy and grouping into a civic service; do not copy branding or add portfolio decoration.
+
+Examples are editorial task suggestions, not a measured popularity ranking. Select four distinct IDs per page load and avoid repeating the previous set; store only candidate IDs. Route linked, multi-procedure questions to Waymaker with a same-tab, short-lived packet. Prefill for review, never auto-send, and never put question text in a URL.

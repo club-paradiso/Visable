@@ -1,0 +1,6 @@
+# scripts/build_manual_reader.py (manual.html data). Pinned: chapter JSON is compared
+# byte-for-byte by `--check`, and parser versions change how HWP layout tables nest.
+markdown-it-py==4.2.0
+beautifulsoup4==4.15.0
+html5lib==1.1
+Pillow==12.3.0

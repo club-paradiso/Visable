@@ -35,6 +35,17 @@ jobs:
       - name: Install the PDF QA dependency (Form Helper export verification + annex page map)
         run: python3 -m pip install pymupdf==1.28.2
 
+      - name: Install the manual reader build dependencies (rebuild-and-compare of data/manual-reader)
+        run: python3 -m pip install -r scripts/requirements-manual-reader.txt
+
+      - name: Set up Node for DOM regression checks
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install declared Node test dependencies
+        run: npm install --ignore-scripts --package-lock=false --no-audit --no-fund
+
       - name: Run repository validation
         run: bash scripts/check_repo.sh
 
@@ -134,8 +145,11 @@ jobs:
       - name: Verify restored landing services in Chrome
         run: ./node_modules/.bin/playwright test tests/e2e/landing-utilities.spec.mjs tests/e2e/post-search-guidance.spec.mjs --project=desktop-1280 --project=mobile-390
 
-      - name: Verify first paint (no legacy hero), the journey state machine and the Waymaker / New Home entries (desktop + iPhone)
+      - name: Verify first paint (no legacy hero), the purpose-browse panel and the Waymaker / New Home entries (desktop + iPhone)
         run: ./node_modules/.bin/playwright test tests/e2e/landing-boot.spec.mjs --project=desktop-1280 --project=mobile-390 --project=mobile-320
+
+      - name: Verify the search-first home (combobox keyboard + IME, suggestion matrix, unknown codes, history, language, backend/AI/index failures; 320–1280)
+        run: ./node_modules/.bin/playwright test tests/e2e/search-first-home.spec.mjs --project=desktop-1280 --project=tablet-768 --project=mobile-390 --project=mobile-320
 
       - name: Verify procedure-first search, Waymaker Quick Answer and the language control (320–1280)
         run: ./node_modules/.bin/playwright test tests/e2e/procedure-first-search.spec.mjs tests/e2e/waymaker-quick-answer.spec.mjs tests/e2e/language-control.spec.mjs --project=desktop-1280 --project=tablet-768 --project=mobile-390 --project=mobile-320
@@ -148,6 +162,9 @@ jobs:
 
       - name: Verify the Waymaker answer card (structured D-2 checklist, no provider/model or internal metadata, safe Markdown, clipboard, debug-only diagnostics; 320–1280)
         run: ./node_modules/.bin/playwright test tests/e2e/waymaker-answer-card.spec.mjs --project=desktop-1280 --project=tablet-768 --project=mobile-430 --project=mobile-390 --project=mobile-360 --project=mobile-320
+
+      - name: Verify the manual reader (deep links, 사증/체류 separation, checklist, search, landing entry)
+        run: ./node_modules/.bin/playwright test tests/e2e/manual-reader.spec.mjs --project=desktop-1280 --project=mobile-390 --project=mobile-320
 
       - name: Verify the Waymaker Knowledge Studio (operator auth, review diff/evidence, reason-gated actions, text-only rendering, keyboard) and answer feedback (320–1280)
         run: ./node_modules/.bin/playwright test tests/e2e/knowledge-studio.spec.mjs --project=desktop-1280 --project=tablet-768 --project=mobile-390 --project=mobile-320

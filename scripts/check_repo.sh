@@ -168,6 +168,17 @@ echo "[5c/14] Validating current PDF corpus and shipped search index..."
 node scripts/check_current_manual_corpus.mjs
 python3 scripts/tests/test_current_manual_index.py
 
+echo "[5d/14] Validating the manual reader (manual.html)..."
+# Offline, stdlib Node: data completeness, inert chapter HTML, text-preservation
+# budget, editorial links, and status/procedure → chapter routing.
+node scripts/check_manual_reader.mjs
+# Rebuild-and-compare needs the pinned parsers (scripts/requirements-manual-reader.txt).
+if python3 -c "import markdown_it, bs4, html5lib, PIL" 2>/dev/null; then
+  python3 scripts/build_manual_reader.py --check
+else
+  echo "  SKIP build_manual_reader.py --check (pip install -r scripts/requirements-manual-reader.txt)"
+fi
+
 echo "[6/12] Validating manual-grounding candidates (if any)..."
 # Passes cleanly when no candidate.json files exist. Only fails if a
 # committed candidate file is structurally invalid.
@@ -190,6 +201,7 @@ echo "[8b/14] Validating the civic landing first-paint shell..."
 # critical hide rules must be inline, and every locale pack must carry the civic
 # copy. This is what keeps the legacy hero out of the first painted frame.
 node scripts/check_landing_shell.mjs
+node scripts/check_search_tools_reliability.mjs
 
 echo "[8c/14] Checking index.html for dead design-token declarations..."
 # Offline, stdlib Python. A token declared earlier in an identical unconditional
@@ -346,6 +358,9 @@ echo "[9d-5/14] Validating post-search status guidance (coverage manifest + docu
 #   * check_status_resolver.mjs → resolver flows A–H + cross-status matrix;
 #   * check_search_router.mjs → procedure-first routing (외국인등록증 재발급 never
 #     dead-ends on "체류자격을 찾지 못했어요"; context requirements come from the registry);
+#   * check_search_suggest.mjs → home search suggestions: the derived index is current
+#     and reads like the bundle, every suggested code exists, every suggestion reads
+#     back as the status/procedure its label promises, unknown codes are never matched;
 #   * check_document_physical_form.mjs → original/copy form only from a transcribed
 #     source phrase, SOURCE_DOES_NOT_SPECIFY otherwise (writes the form QA report);
 #   * check_fee_rules.mjs → fee registry: amounts, payment instruments, exemptions
@@ -364,6 +379,7 @@ if command -v node >/dev/null 2>&1; then
   node scripts/check_document_guidance.mjs
   node scripts/check_status_resolver.mjs
   node scripts/check_search_router.mjs
+  node scripts/check_search_suggest.mjs
   node scripts/check_document_physical_form.mjs
   echo "[13c/14] Validating the Form Helper (inventory, exclusions, template drift, engine, exports)..."
   node scripts/check_form_helper.mjs

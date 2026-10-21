@@ -292,7 +292,7 @@ html[dir="rtl"] .sg:not([dir="ltr"]) .sg-evidence-details > summary::after { mar
 .sg-interp[data-sg-match] .sg-interp-name { color: var(--cs-ink); font-weight: 600; }
 .sg-interp-proc { color: var(--cs-green); font-weight: 650; }
 .sg-interp-sep { color: var(--cs-line); margin: 0 2px; }
-.sg-interp .sg-link { min-height: 44px; font-size: 14px; }
+.sg-interp .sg-link { min-height: 44px; min-width: 44px; justify-content: center; font-size: 14px; }
 
 /* B/C · answer */
 .sg-answer { margin-top: 20px; }
@@ -390,3 +390,13 @@ html[dir="rtl"] .sg:not([dir="ltr"]) .sg-evidence-details > summary::after { mar
 @media (max-width: 340px) { .sg-options-grid { grid-template-columns: 1fr; } }
 html[dir="rtl"] .sg:not([dir="ltr"]) .sg-wm { border-left: 0; border-right: 3px solid var(--cs-green); border-radius: 8px 0 0 8px; }
 html .sg[dir="ltr"] { text-align: left; }
+
+/* ---- phones: labels a little larger, next steps as full-width rows a thumb can hit ---- */
+@media (max-width: 680px) {
+  .sg-facts dt, .sg-doc-meta dt, .sg-quick-grid dt, .sg-fee-k { font-size: 13px; }
+  .sg-next ul { display: grid; gap: 0; border-top: 1px solid var(--cs-line); }
+  .sg-next li { min-height: 0; border-bottom: 1px solid var(--cs-line); }
+  .sg-next li > a, .sg-next li > button { display: flex; width: 100%; min-height: 52px; align-items: center; justify-content: space-between; gap: 12px; text-decoration: none; font-size: 16px; text-align: start; }
+  .sg-next li > a::after, .sg-next li > button::after { content: '›'; font-size: 20px; line-height: 1; color: var(--cs-muted); }
+  html[dir="rtl"] .sg-next li > a::after, html[dir="rtl"] .sg-next li > button::after { content: '‹'; }
+}

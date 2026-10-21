@@ -422,12 +422,15 @@ class TaskRoleTests(unittest.TestCase):
         fast = rt.resolve_task_models(rt.TaskRole.FAST_FINAL_ANSWER)["candidates"]
         verifier = rt.resolve_task_models(rt.TaskRole.VERIFIER)["candidates"][0]
         self.assertEqual(plan["task_role"], "enforcement_structured")
-        self.assertEqual(
-            plan["candidates"],
-            ["google/gemma-4-26b-a4b-it:free", "nvidia/nemotron-3-super-120b-a12b:free"],
-        )
+        self.assertEqual(plan["candidates"], ["google/gemma-4-26b-a4b-it:free", "google/gemma-4-31b-it:free"])
         self.assertEqual(len(plan["candidates"]), 2)
-        self.assertNotEqual(plan["candidates"], fast)
+        # With Gemma-only defaults (2026-10-21) the enforcement and Fast chains hold
+        # the same two models; what stays dedicated is the configuration: the
+        # enforcement chain comes from its own constants, not from the Fast chain
+        # or its env overrides (see test_enforcement_latency_budget).
+        from services import model_policy
+        self.assertEqual(plan["candidates"], model_policy.DEFAULT_ENFORCEMENT_STRUCTURED_MODEL_CANDIDATES)
+        self.assertIsNot(plan["candidates"], fast)
         self.assertEqual(plan["candidates"][1], verifier)
 
     def test_an_unknown_role_falls_back_to_the_final_answer_chain(self):
@@ -440,10 +443,16 @@ class TaskRoleTests(unittest.TestCase):
         self.assertEqual(extractor[0], fast[0])
 
     def test_an_extraction_task_still_has_a_deeper_fallback(self):
-        """A structured extraction that cannot run at all is the worst outcome."""
+        """A structured extraction that cannot run at all is the worst outcome.
+
+        With the Gemma-only defaults (2026-10-21) every chain draws on the same two
+        models, so the extractor can be no deeper than Fast; it must never be
+        shallower, and it must keep a fallback.
+        """
         fast = rt.resolve_task_models(rt.TaskRole.FAST_FINAL_ANSWER)["candidates"]
         extractor = rt.resolve_task_models(rt.TaskRole.FACT_EXTRACTOR)["candidates"]
-        self.assertGreater(len(extractor), len(fast))
+        self.assertGreaterEqual(len(extractor), len(fast))
+        self.assertGreaterEqual(len(extractor), 2)
 
     def test_candidate_chains_never_contain_random_routing(self):
         for role in rt.TaskRole:
@@ -458,9 +467,14 @@ class TaskRoleTests(unittest.TestCase):
             with self.subTest(role=role):
                 self.assertEqual(len(chain), len(set(chain)))
 
-    def test_a_final_answer_chain_is_deep_enough_to_survive_two_outages(self):
+    def test_a_final_answer_chain_keeps_a_fallback(self):
+        # Was "survives two outages" (>= 3 models). On 2026-10-21 the owner chose
+        # Gemma-only free routes (NVIDIA trial and Thinking Machines research-tier
+        # routes removed), which leaves two models from one provider: the chain
+        # survives one model outage, not two, and a provider outage falls back to
+        # the deterministic answer.
         chain = rt.resolve_task_models(rt.TaskRole.FINAL_ANSWER)["candidates"]
-        self.assertGreaterEqual(len(chain), 3)
+        self.assertGreaterEqual(len(chain), 2)
 
 
 class ProviderConfigurationTests(unittest.TestCase):

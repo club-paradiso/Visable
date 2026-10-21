@@ -1,0 +1,51 @@
+name: Immigration Checklists Mobile QA
+on:
+  pull_request:
+    paths:
+      - 'immigration-checklists.html'
+      - 'assets/js/immigration-checklists.js'
+      - 'assets/css/immigration-checklists.css'
+      - 'data/immigration-checklists/**'
+      - 'data/local-practice-202609.json'
+      - 'tests/e2e/immigration-checklists.spec.mjs'
+      - 'scripts/check_immigration_checklists.mjs'
+      - '.github/workflows/immigration-checklists-mobile-qa.yml'
+      - 'playwright.immigration-webkit.config.mjs'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  checklists:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Playwright test runner
+        run: npm install --no-save --package-lock=false @playwright/test@1.61.0
+      - name: Find Chrome
+        run: |
+          CHROME_BIN="$(command -v google-chrome || command -v chromium || command -v chromium-browser)"
+          test -n "$CHROME_BIN"
+          echo "PARADISO_PW_EXECUTABLE=$CHROME_BIN" >> "$GITHUB_ENV"
+          "$CHROME_BIN" --version
+      - name: Validate legal data and office moderation rules
+        run: node scripts/check_immigration_checklists.mjs
+      - name: Test actual Chromium rendering at mobile, tablet and desktop widths
+        run: ./node_modules/.bin/playwright test tests/e2e/immigration-checklists.spec.mjs --project=mobile-320 --project=mobile-390 --project=tablet-768 --project=desktop-1280
+      - name: Install WebKit for iPhone Safari engine QA
+        run: ./node_modules/.bin/playwright install --with-deps webkit
+      - name: Test mobile Safari/WebKit at 320 and 390 px
+        env:
+          PARADISO_PW_EXECUTABLE: ''
+        run: ./node_modules/.bin/playwright test --config=playwright.immigration-webkit.config.mjs
+      - name: Keep failure screenshots and traces
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: immigration-checklists-mobile-qa
+          path: test-results/
+          if-no-files-found: ignore
+          retention-days: 7

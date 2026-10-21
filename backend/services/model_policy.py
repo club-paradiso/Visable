@@ -3,10 +3,20 @@
 This module keeps model routing policy explicit and testable:
 
 - Gemma is the default low-risk router / translation model.
-- Nemotron 3 Ultra is the Basic final-answer model, with a catalog-reconciled
-  multi-provider fallback chain.
-- Nemotron 3 Super is the verifier / structured audit model.
+- Gemma 4 31B is the Basic final-answer model (Gemma 4 26B as fallback), and
+  Gemma 4 26B is the Fast model (31B as fallback).
+- Gemma 4 31B is the verifier / structured audit model.
 - China-origin model families are reserved for Chinese-language tasks only by policy.
+
+Why Gemma only (2026-10-21): on OpenRouter a ':free' route is governed by the
+terms of the provider that serves it, not by the model licence. The NVIDIA
+(Nemotron) ':free' routes are served under the NVIDIA API Trial terms, which
+exclude production use and personal data, and the Thinking Machines (Inkling)
+':free' routes under a free research tier that excludes personal data and keeps
+a licence to train on prompts and outputs. Of the free routes that remain, only
+Gemma 4 (served by Google AI Studio) is a general chat model outside the
+China-only families. See docs/ai/waymaker-genesis/09-training-and-distillation.md
+§6 and 15-security-and-deployment.md (SEC-02).
 
 The module never reads or exposes provider secrets. It only resolves public model
 catalog identifiers from environment variables.
@@ -23,19 +33,15 @@ OPENROUTER_MODEL_OVERRIDE_OPT_IN_ENV = "OPENROUTER_ALLOW_MODEL_ENV_OVERRIDES"
 DEFAULT_ROUTER_MODEL = "google/gemma-4-31b-it:free"
 DEFAULT_TRANSLATION_MODEL = "google/gemma-4-31b-it:free"
 
-# Basic answer tier (final answers): every identifier below was reconciled
-# against OpenRouter's public catalog during the 2026-09 production audit.
-# A 4-candidate chain prevents the "all online model candidates failed" fallback
-# banner when 1–2 models are simultaneously rate-limited or their upstream is
-# temporarily down — a common occurrence on OpenRouter's free tier.
-DEFAULT_FINAL_ANSWER_MODEL = "nvidia/nemotron-3-ultra-550b-a55b:free"
+# Basic answer tier (final answers). Both identifiers were checked against
+# OpenRouter's public catalog on 2026-10-21. Both are served by one provider
+# (Google AI Studio), so an outage there takes the whole chain down and the
+# deterministic answer is shown; that is the accepted cost of leaving the
+# NVIDIA trial and Thinking Machines research-tier routes (see the module
+# docstring).
+DEFAULT_FINAL_ANSWER_MODEL = "google/gemma-4-31b-it:free"
 DEFAULT_FINAL_ANSWER_MODEL_CANDIDATES: List[str] = [
-    "nvidia/nemotron-3-ultra-550b-a55b:free",
     "google/gemma-4-31b-it:free",
-    "nvidia/nemotron-3-super-120b-a12b:free",
-    # thinkingmachines/inkling:free was dropped after it answered every call
-    # with 403 model_access_denied (Waymaker QA 2026-10-16). The light Gemma 4
-    # model already proven as the Fast primary keeps the chain four deep.
     "google/gemma-4-26b-a4b-it:free",
 ]
 
@@ -90,20 +96,15 @@ _PROCEDURE_RISK_RE = re.compile(
     re.IGNORECASE,
 )
 
-# Fast tier: a light, low-latency primary with a 4-deep fallback chain.
-# Each fallback is tried in order when the previous model is rate-limited
-# (429) or its upstream is temporarily unavailable (503). A 4-candidate chain
-# means all four models must fail simultaneously before the "no candidates
-# available" deterministic fallback is shown — substantially less likely than
-# with a 2-candidate chain.
+# Fast tier: the light Gemma 4 MoE first, the dense 31B as fallback when it is
+# rate-limited (429) or unavailable (503). The same single-provider caveat as the
+# Basic chain applies.
 #
 # qwen/* is intentionally NOT used here — it is reserved for Chinese-language
 # routes by policy.
 DEFAULT_FAST_ANSWER_MODEL = "google/gemma-4-26b-a4b-it:free"
 DEFAULT_FAST_ANSWER_MODEL_CANDIDATES: List[str] = [
     "google/gemma-4-26b-a4b-it:free",
-    "nvidia/nemotron-3.5-lightning:free",
-    "thinkingmachines/inkling-small:free",
     "google/gemma-4-31b-it:free",
 ]
 
@@ -111,14 +112,14 @@ DEFAULT_FAST_ANSWER_MODEL_CANDIDATES: List[str] = [
 # the deploy-wide Fast answer env overrides. Railway can carry older Fast-tier
 # settings for unrelated features; enforcement must not inherit those silently.
 # Keep this chain short: both models are current free OpenRouter endpoints with
-# structured-output support, and the caller applies a hard total latency budget.
+# JSON-mode support, and the caller applies a hard total latency budget.
 DEFAULT_ENFORCEMENT_STRUCTURED_MODEL = "google/gemma-4-26b-a4b-it:free"
 DEFAULT_ENFORCEMENT_STRUCTURED_MODEL_CANDIDATES: List[str] = [
     "google/gemma-4-26b-a4b-it:free",
-    "nvidia/nemotron-3-super-120b-a12b:free",
+    "google/gemma-4-31b-it:free",
 ]
 
-DEFAULT_VERIFIER_MODEL = "nvidia/nemotron-3-super-120b-a12b:free"
+DEFAULT_VERIFIER_MODEL = "google/gemma-4-31b-it:free"
 
 DEFAULT_CHINESE_MODEL = "minimax/minimax-m3"
 DEFAULT_CHINESE_FALLBACK_MODELS: List[str] = [

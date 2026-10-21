@@ -54,7 +54,7 @@ const checks = [
   ['raw narrative discarded from textarea after extraction', js.includes("$('#case-text').value = ''")],
   ['extract endpoint wired', js.includes('/api/enforcement/extract')],
   ['analyze endpoint wired', js.includes('/api/enforcement/analyze')],
-  ['Railway resolver is production primary for enforcement', !html.includes('<meta name="api-base" content=".">') && backendOrigin.includes('https://web-production-14f9a.up.railway.app')],
+  ['enforcement uses the deployed same-origin API', html.includes('<meta name="api-base" content=".">') && js.includes('const configured =')],
   ['Vercel extract v2 exists', vercelExtract.includes('extractStructuredCaseV2') && vercelExtract.includes('legal-aware-extraction-v2')],
   ['Vercel grounded analyzer exists', vercelAnalyze.includes('analyzeGroundedCase') && vercelAnalyze.includes('grounded-ai-v2')],
   ['runtime reads OpenRouter only server-side', groundedRuntime.includes('process.env.OPENROUTER_API_KEY') && !html.includes('OPENROUTER_API_KEY')],

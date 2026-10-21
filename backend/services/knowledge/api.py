@@ -339,6 +339,9 @@ def build_knowledge_router(get_platform: Callable[[], Any], feedback_rate_limit=
         return P().export_published()
 
     router.include_router(op)
+    from .checklist_api import build_checklist_router, build_public_checklist_router
+    router.include_router(build_checklist_router(lambda: P().store))
+    router.include_router(build_public_checklist_router(lambda: P().store))
     return router
 
 

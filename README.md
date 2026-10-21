@@ -10,6 +10,7 @@
 
 - **비자·체류자격 탐색** — 체류자격 코드, 목적, 세부 자격별 정보 확인
 - **통합 검색** — 비자, 체류, 서류, 절차와 관련된 정보를 한 번에 검색
+- **매뉴얼 원문 읽기** (`manual.html`) — 사증발급·외국인체류 안내매뉴얼 원문을 체류자격·업무별로 나눠 읽기, 서류 체크리스트 ([문서](./docs/MANUAL_READER.md))
 - **절차별 안내** — 사증발급, 체류기간 연장, 체류자격 변경, 외국인등록, 근무처 변경·추가 등 서로 다른 행정 절차를 구분
 - **서류 정보 구조화** — 제출 서류, 참고사항, 검토 필요 상태를 데이터 기반으로 표시
 - **Waymaker / Visable AI** — 저장된 데이터와 검색된 근거를 바탕으로 비자·체류 질문에 답변
@@ -198,7 +199,7 @@ Moonshot에서 Paradiso를 거쳐 Visable로 이어진 개발 이력과 전체 G
 | --- | --- | --- |
 | 브라우저 저장 키 | `paradiso:language`, `paradiso:brightness`, `paradiso:easyMode`, `paradiso:editorial-theme`, `paradiso_ai_consent`, `paradiso_city`, `paradisoDevDiagnostics` | 기존 사용자의 언어·테마·동의 상태가 초기화됨 |
 | DOM 이벤트·전역 객체 | `paradiso:results-rendered`, `paradiso-language-applied`, `ParadisoRoute`, `ParadisoZhT` 등 | 여러 스크립트가 같은 이름으로 연결됨 |
-| 환경 변수·배포 설정 | `PARADISO_BACKEND_URL`, `PARADISO_CLIENT_DIAGNOSTICS`, `PARADISO_DIAGNOSTICS_TOKEN`, `PARADISO_BUILD_COMMIT` 등 | Railway/Vercel 설정값과 연결됨 |
+| 환경 변수·배포 설정 | `PARADISO_BACKEND_URL`, `PARADISO_CLIENT_DIAGNOSTICS`, `PARADISO_BUILD_COMMIT` 등. 진단 토큰은 `VISABLE_DIAGNOSTICS_TOKEN`으로 바꿨고, 예전 이름 `PARADISO_DIAGNOSTICS_TOKEN`은 새 이름이 없을 때만 읽음 | Railway/Vercel 설정값과 연결됨 |
 | HTTP 헤더·로거·모듈 | `x-paradiso-diagnostics`, `paradiso.*` 로거, `backend/paradiso_backend.py` | 클라이언트·로그 수집·배포 진입점 계약 |
 | 팀·저작권 | `Club Paradiso`, 팀명 소개와 Diaspora→Paradiso 애너그램 | 제품명이 아니라 팀 이름 |
 | 별도 제품 | PreView (`preview.html`, "PreView by Paradiso") | Visable과 분리된 공모전 MVP, 독립성은 `check_preview_mvp`가 고정 |

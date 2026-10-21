@@ -1,0 +1,93 @@
+name: Waymaker AI Experiments
+
+# Offline checks for experiments/waymaker-ai (docs/ai/waymaker-genesis/11, 12):
+# - the experiment package tests,
+# - the dataset validator on benchmark v0,
+# - the evaluation runner on dev, test and adversarial_holdout, failing the job
+#   when the WLIE reference implementation fails (or has no evidence for) a
+#   hard gate.
+#
+# It never makes a network call after the dependency install, reads no secret
+# and starts no model: every baseline answers from source-bundle fixtures, the
+# backend drivers disable sockets before importing backend code, and the model
+# adapter (openai_compatible) is not among the baselines. The runner writes its
+# report to the runner's temp directory and nothing is uploaded, so per-item
+# adversarial_holdout results do not leave the job; the held-out ledger is not
+# written by CI (12 §6).
+#
+# The six backend paths are the law stack the existing_law baseline measures
+# (research-notes/law-stack-fixes.md): a change there re-runs the comparison.
+on:
+  pull_request:
+    paths:
+      - 'experiments/waymaker-ai/**'
+      - 'backend/services/law_tools.py'
+      - 'backend/services/law_grounding.py'
+      - 'backend/services/law_citation_guard.py'
+      - 'backend/services/legal_evidence.py'
+      - 'backend/services/citation_verifier.py'
+      - 'backend/services/law_cloud_fallback.py'
+      - '.github/workflows/waymaker-ai-experiments.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'experiments/waymaker-ai/**'
+      - 'backend/services/law_tools.py'
+      - 'backend/services/law_grounding.py'
+      - 'backend/services/law_citation_guard.py'
+      - 'backend/services/legal_evidence.py'
+      - 'backend/services/citation_verifier.py'
+      - 'backend/services/law_cloud_fallback.py'
+      - '.github/workflows/waymaker-ai-experiments.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: waymaker-ai-experiments-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  experiments:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: experiments/waymaker-ai
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: backend/requirements-dev.txt
+
+      - name: Set up Node (JS resolver baseline)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install backend dependencies (the B1 and existing_law drivers import the backend)
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install -r ../../backend/requirements-dev.txt
+
+      - name: Run the experiment package tests (offline)
+        run: python3 -m pytest -q -p no:cacheprovider tests
+
+      - name: Validate benchmark v0
+        run: python3 -m waymaker_ai.dataset.validate datasets/benchmark/v0 --json "$RUNNER_TEMP/waymaker-dataset-validation.json"
+
+      - name: Score the baselines offline and gate on the WLIE hard gates
+        run: |
+          python3 -m waymaker_ai.evaluation.runner \
+            --benchmark datasets/benchmark/v0 \
+            --baselines wlie,b1_python,b2_js,existing_law,mock_model \
+            --splits dev,test,adversarial_holdout \
+            --out "$RUNNER_TEMP/waymaker-eval.json" \
+            --fail-on-hard-gates wlie

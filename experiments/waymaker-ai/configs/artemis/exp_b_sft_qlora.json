@@ -1,0 +1,375 @@
+{
+  "schema_version": "waymaker-artemis-experiment/0.1",
+  "id": "artemis-exp-b-sft-qlora",
+  "arm": "B",
+  "title": "Artemis B: QLoRA SFT of Gemma 4 E4B-it on reviewed classification labels",
+  "status": "NOT RUN",
+  "status_detail": "Prepared on 2026-10-19 in Mission 001. Not trained: benchmark v0 has no train split, there is no GPU on the preparation machine, and paid training is not authorised. train_qlora.py refuses this config today (train file missing).",
+  "created": "2026-10-19",
+  "hypothesis": "QLoRA SFT on human-reviewed, benchmark-format classification examples (structured labels only, no legal facts) raises text-only subcode_exact and procedure_fine over arm A on test and adversarial_holdout, with a 95% CI that excludes 0, without any increase in parent-for-subcode substitutions or visa/stay scope mixes.",
+  "null_hypothesis": "SFT does not improve on arm A beyond the CI, or it improves the averages while adding critical errors. Then prompting (arm A) or the rules (B-fixed) are enough and the adapter is discarded.",
+  "baselines": [
+    {
+      "id": "artemis-exp-a-untuned",
+      "what": "Same base model, same prompt, same decoding, no adapter.",
+      "source": "configs/artemis/exp_a_untuned.json",
+      "known_limits": "None beyond arm A's."
+    },
+    {
+      "id": "B-fixed",
+      "what": "Best deterministic classifier after cheap rule fixes.",
+      "source": "13-artemis-experiment.md §6",
+      "known_limits": "Not built in Mission 001."
+    },
+    {
+      "id": "B1-python / B2-js",
+      "what": "Existing deterministic classifiers, unchanged.",
+      "source": "research-notes/status-classifier.md §9",
+      "known_limits": "See arm A config."
+    }
+  ],
+  "base_model": {
+    "role": "primary",
+    "repo_id": "google/gemma-4-E4B-it",
+    "revision": "ee0ef6023621cff504d758262d4e04895a5af4a2",
+    "license": "apache-2.0",
+    "gated": false,
+    "loader": "AutoModelForCausalLM",
+    "params": "8.00B total, 4.5B effective; 131,072 context",
+    "source": "research-notes/models.md §3a and §5 Artemis rank 1",
+    "license_note": "Apache-2.0 per HF cardData; keep the licence text and NOTICE with any distributed adapter. Gemma Prohibited Use Policy applicability unresolved (models.md §4, §8).",
+    "loader_note": "Gemma4ForConditionalGeneration checkpoint; AutoModelForCausalLM text-only loading is UNVERIFIED (models.md §8). Confirm in the smoke step or set loader to the class that loads it."
+  },
+  "secondary_model": {
+    "role": "secondary",
+    "repo_id": "google/gemma-4-E2B-it",
+    "revision": "3e22461f65e89153144f8adb70e3b8c2cc9845a7",
+    "license": "apache-2.0",
+    "gated": false,
+    "loader": "AutoModelForCausalLM",
+    "params": "5.12B total, 2.3B effective",
+    "source": "research-notes/models.md §3a",
+    "note": "Fits a free T4 for QLoRA (about 6-8 GB, models.md §3b, INFERRED). Train it with the same hyper-parameters only after E4B passes G1."
+  },
+  "dataset": {
+    "tasks": [
+      "status_procedure_classification",
+      "entity_date_extraction"
+    ],
+    "benchmark_dir": "datasets/benchmark/v0",
+    "eval_splits": [
+      "dev",
+      "test",
+      "adversarial_holdout"
+    ],
+    "train": {
+      "status": "EMPTY",
+      "builder": "training/build_sft_dataset.py",
+      "examples_file": "datasets/benchmark/v0/train.jsonl",
+      "sft_file": "datasets/sft/artemis-v0/train.sft.jsonl",
+      "allow_teacher_generated": false,
+      "note": "EMPTY: benchmark v0 has dev, test and adversarial_holdout only, and no train split. A train split must be authored as validated benchmark-format examples with split 'train' (11-dataset-governance.md), split by case template so no template appears on both sides, reviewed (critical labels human_verified), and then built with training/build_sft_dataset.py. Target size 1,500-3,000 reviewed examples (training-distill.md §4.2 arm B, INFERRED for Artemis)."
+    },
+    "leakage_guard": {
+      "ngram": 3,
+      "unit": "word",
+      "metric": "jaccard",
+      "max_overlap": 0.5,
+      "exact_duplicates": "refuse",
+      "why": "Template siblings that differ in one status code share most word 3-grams (about 0.6 Jaccard for a six-token question, INFERRED); 0.5 refuses them, and the fix is a re-split by case template (training-distill.md §4.6), never a higher threshold."
+    },
+    "label_rules": [
+      "One SFT record per question. The runner asks one prompt and one 7-key schema for both Artemis tasks, so a train question needs both its status_procedure_classification and its entity_date_extraction example (same exact question text and payload code); a question with only one label is refused, never completed with a guess.",
+      "The classification label must state current_status and target_status (null allowed) and needs_clarification (true or false) explicitly; dates come from the entity label. not_status_tokens and status_codes are scoring labels, not target keys.",
+      "The target is that 7-key object as compact JSON in the runner's schema key order; no reasoning text, no evidence text, no legal content.",
+      "Critical examples need label_review.status human_verified with a named reviewer and date; disputed and unreviewed labels are refused.",
+      "teacher_generated examples are refused in this arm."
+    ]
+  },
+  "prompt": {
+    "template_id": "artemis-sft/v1",
+    "sha256": "f488fd1b93eb495b2452a287bac3110dd0914bc87430e5134f1c50e1090d3f7f",
+    "defined_in": "waymaker_ai/evaluation/baselines/model.py (build_messages, system_prompt, DECODING) and waymaker_ai/evaluation/predictions.py (model_output_schema); sft_dataset.prompt_sha256 hashes all three",
+    "note": "Training and evaluation use the runner's own openai_compatible request: one system prompt and one 7-key schema for both Artemis tasks, user message = question (prefixed by the UI payload code when present). A change to the runner's prompt, schema or decoding changes this hash and the config stops loading."
+  },
+  "training": {
+    "method": "qlora",
+    "framework": "TRL SFTTrainer + PEFT LoRA + bitsandbytes 4-bit (training/train_qlora.py)",
+    "data_format": "TRL conversational prompt-completion records (prompt = system + user, completion = assistant JSON)",
+    "quantization": {
+      "load_in_4bit": {
+        "value": true,
+        "why": "QLoRA keeps the frozen base in 4 bits so E4B fits one 16-24 GB GPU (training-distill.md §2.1 QLoRA row; models.md §6)."
+      },
+      "bnb_4bit_quant_type": {
+        "value": "nf4",
+        "why": "NF4 is the QLoRA data type and the arm B setting in training-distill.md §4.2."
+      },
+      "bnb_4bit_use_double_quant": {
+        "value": true,
+        "why": "Double-quantised constants are assumed by the models.md §6 VRAM rule (about 0.6-0.65 GB per billion parameters)."
+      },
+      "compute_dtype": {
+        "value": "auto",
+        "why": "bf16 where the GPU supports it (L4, A100); fp16 on a T4, which has no native bf16. The old scaffold hard-codes bf16 (knowledge-platform.md §4 defect 3)."
+      }
+    },
+    "lora": {
+      "r": {
+        "value": 16,
+        "why": "Arm B setting in training-distill.md §4.2 (Unsloth LoRA guide); the old scaffold's r=8 is an ablation to try only if r=16 overfits dev."
+      },
+      "alpha": {
+        "value": 32,
+        "why": "alpha = 2r, the training-distill.md §4.2 setting."
+      },
+      "dropout": {
+        "value": 0.05,
+        "why": "Not set in the notes (INFERRED): light regularisation for a train set of a few thousand short examples; try 0.0 if dev loss stalls."
+      },
+      "target_modules": {
+        "value": [
+          "q_proj",
+          "k_proj",
+          "v_proj",
+          "o_proj",
+          "gate_proj",
+          "up_proj",
+          "down_proj"
+        ],
+        "why": "All linear projections of the language model (training-distill.md §4.2). Whether all seven names exist in Gemma 4 is UNVERIFIED (models.md §8); train_qlora.py targets only language-model projections: matches inside a vision or audio tower are excluded and listed in run_record.json, and it refuses if a configured name matches no language-model layer."
+      },
+      "bias": {
+        "value": "none",
+        "why": "Only the adapter matrices train; nothing else in the base changes."
+      }
+    },
+    "optimization": {
+      "learning_rate": {
+        "value": 0.0002,
+        "why": "2e-4, the training-distill.md §4.2 setting (Unsloth guide; TRL SFT docs)."
+      },
+      "num_train_epochs": {
+        "value": 2,
+        "why": "The notes give 1-3 epochs; 2 is the midpoint, and dev loss alone decides a move to 1 or 3 before test is scored."
+      },
+      "max_seq_length": {
+        "value": 2048,
+        "why": "Questions are capped at 2,000 characters (example.schema.json); the runner's system prompt is about 1,400 characters and the JSON target is short, so 2048 tokens leaves room; 2048 is also the length behind the models.md §6 VRAM rule. train_qlora.py refuses any record that would be truncated (token counts INFERRED until measured)."
+      },
+      "per_device_train_batch_size": {
+        "value": 1,
+        "why": "Micro-batch 1 is the models.md §6 VRAM assumption and fits a 16 GB T4."
+      },
+      "gradient_accumulation_steps": {
+        "value": 16,
+        "why": "Effective batch 16 (INFERRED): about 90-190 optimiser steps per epoch for 1,500-3,000 examples, enough for a readable loss curve."
+      },
+      "optimizer": {
+        "value": "paged_adamw_8bit",
+        "why": "Paged 8-bit AdamW on the adapters is the models.md §6 VRAM assumption."
+      },
+      "lr_scheduler": {
+        "value": "cosine",
+        "why": "Common default (INFERRED); decays smoothly from the 2e-4 peak."
+      },
+      "warmup_ratio": {
+        "value": 0.03,
+        "why": "Common default (INFERRED): about 3% of steps of warmup avoids an early spike at 2e-4."
+      },
+      "gradient_checkpointing": {
+        "value": true,
+        "why": "Part of the models.md §6 VRAM rule; trades speed for activation memory."
+      },
+      "loss": {
+        "value": "completion_only",
+        "why": "Loss on the assistant JSON only (training-distill.md §4.2: TRL completion_only_loss VERIFIED). Prompt-completion records avoid depending on chat-template generation markers."
+      },
+      "seeds": {
+        "value": [
+          1,
+          2,
+          3
+        ],
+        "why": "Three seeds per arm, reported as mean with a 95% bootstrap CI (training-distill.md §4.2 controls)."
+      }
+    },
+    "outputs": "One LoRA adapter per seed under training/runs/<config id>/<primary|secondary>-seed<k>/adapter (git-ignored) plus run_record.json (config sha256, SFT file sha256, base revision, package versions, GPU, dtype, wall-clock, train loss).",
+    "smoke_run": "Before the real run: train_qlora.py --model secondary --seed 1 --max-steps 5 (the same config on the pinned E2B), to confirm the loader, chat template, target modules, adapter save and the package versions to pin. A smoke run's adapter is never evaluated (run_record.json says evaluate: false)."
+  },
+  "hardware": {
+    "assumption": "One 16-24 GB NVIDIA GPU (compute class C1, training-distill.md §2.0). L4 24 GB is the comfortable fit; T4 16 GB is borderline for E4B and runs in fp16.",
+    "vram_estimate": "E4B QLoRA about 9-12 GB, E2B about 6-8 GB at sequence 2048 with gradient checkpointing (models.md §3b and §6, INFERRED; README of the old scaffold warns E4B may OOM on a T4).",
+    "fits": [
+      "L4 24 GB (Colab Pro, local, or rented): E4B and E2B, bf16 compute.",
+      "T4 16 GB (free Colab, Kaggle): E2B safely; E4B may OOM; fp16 compute, never bf16.",
+      "A100 40/80 GB: everything, bf16."
+    ]
+  },
+  "compute": {
+    "paid_endpoint": false,
+    "managed_finetuning": null,
+    "note": "Local or free GPU only. Managed fine-tuning APIs (Together, Fireworks) and rented GPUs are paid endpoints and are refused by train_qlora.py. No --i-understand-this-may-cost-money flag exists, because local GPUs need none and paid endpoints are refused outright."
+  },
+  "cost": {
+    "paid_runs_authorised": false,
+    "estimate_usd": {
+      "low": 0,
+      "high": 15
+    },
+    "basis": "Training tokens: 1,500-3,000 examples x about 600 tokens x 2 epochs = 1.8-3.6M per seed, 5.4-10.8M for 3 seeds (token count INFERRED). At the cost.md §7 assumption of 1,500-3,000 tokens/s for an 8B-class QLoRA on one A100-80GB this is 0.5-2 GPU-hours, about $0.9-3.6 at RunPod Secure $1.79/h, plus 30-100% for failed runs and evaluation (cost.md §7), plus three arm-A-style evaluation passes. $0 on a local GPU, free Colab T4 or Kaggle (slower, fp16). Colab Pro is $9.99/month if a T4 is not enough.",
+    "dominant_cost": "Human review of the train labels, not GPU time (cost.md §7, last bullet).",
+    "sources": [
+      "research-notes/cost.md §5: Colab Pro $9.99/month (VERIFIED); Kaggle quota (UNVERIFIED)",
+      "research-notes/cost.md §6: RunPod Secure A100-80GB $1.79/h, L4 $0.59/h (VERIFIED, accessed 2026-10-19)",
+      "research-notes/cost.md §7: worked example, throughput assumption and the 30-100% overhead (INFERRED)"
+    ]
+  },
+  "evaluation": {
+    "runner": "waymaker_ai.evaluation (sibling task; confirm flags with --help)",
+    "baseline_kind": "openai_compatible",
+    "serving": [
+      "vLLM with --enable-lora serving the base at the pinned revision plus the seed adapter, JSON-schema structured outputs.",
+      "llama.cpp llama-server with the adapter converted to GGUF, for T4-only setups (UNVERIFIED for Gemma 4 adapters)."
+    ],
+    "decoding": {
+      "source": "waymaker_ai.evaluation.baselines.model.DECODING",
+      "temperature": 0,
+      "seed": 0,
+      "max_tokens": 512,
+      "constrained_json": true,
+      "schema": "waymaker_ai.evaluation.predictions.model_output_schema(task) (response_format json_schema, strict)",
+      "why": "Same as arm A; differences must come from the adapter only."
+    },
+    "splits": [
+      "dev",
+      "test",
+      "adversarial_holdout"
+    ],
+    "split_discipline": "Epoch count and checkpoint choice use dev only; test and adversarial_holdout are scored once per seed.",
+    "metrics": [
+      "status_exact",
+      "subcode_exact (a parent in the subcode field or a parent fallback is wrong)",
+      "flags parent_fallback + parent_in_subcode_field (critical; CLE-4): count must be 0",
+      "procedure_fine",
+      "procedure_coarse (via contracts.FINE_TO_COARSE; items with no coarse equivalent are reported as not scorable)",
+      "flag procedure_scope_mixed (critical; CLE-3: a visa-scope procedure for a stay question or the reverse): count must be 0",
+      "not_status_token_respected and flag code_from_non_code_token ('a 3 month' must not become A-3)",
+      "dates_exact and status_codes_exact (entity_date_extraction)",
+      "clarification (only where needs_clarification is labelled)",
+      "structured-output validity rate (answers with no schema violation)",
+      "latency p50 / p95 ms",
+      "per adversarial class and per language (ko, en, other) breakdown",
+      "train_loss and dev_loss curves (from run_record.json)"
+    ],
+    "reporting": "Mean over 3 seeds with a 95% bootstrap CI; paired comparison against arm A on the same items."
+  },
+  "gates": [
+    {
+      "id": "G0-data",
+      "applies_to": [
+        "B",
+        "C"
+      ],
+      "condition": "A train split exists; the dataset validator passes on it; every critical label is human_verified; the leakage guard reports 0 pairs above max_overlap against dev, test and adversarial_holdout; the SFT file is a byte-identical fresh build.",
+      "threshold": 0,
+      "source": "training-distill.md §4.6 and §4.7 G0; 11-dataset-governance.md; enforced by waymaker_ai/distillation/preflight.py",
+      "on_fail": "train_qlora.py refuses to start."
+    },
+    {
+      "id": "G0-eval-frozen",
+      "applies_to": [
+        "A",
+        "B",
+        "C"
+      ],
+      "condition": "Evaluation splits frozen with a committed hash manifest before the first scored run.",
+      "threshold": null,
+      "source": "training-distill.md §4.7 G0; 12-evaluation-methodology.md",
+      "on_fail": "Do not score test or adversarial_holdout."
+    },
+    {
+      "id": "D1-need-for-a-model",
+      "applies_to": [
+        "B",
+        "C"
+      ],
+      "condition": "Arm B starts only if arm A and B-fixed were scored on dev and B-fixed is below the 12-evaluation-methodology.md target on text-only subcode_exact or procedure_fine.",
+      "threshold": "targets set in 12-evaluation-methodology.md",
+      "source": "13-artemis-experiment.md §6",
+      "on_fail": "Do not train; keep the rules."
+    },
+    {
+      "id": "G1-safety",
+      "applies_to": [
+        "A",
+        "B",
+        "C"
+      ],
+      "condition": "The runner's flags parent_fallback, parent_in_subcode_field and procedure_scope_mixed occur 0 times on test and adversarial_holdout for every seed, and no metric is worse than arm A beyond its CI.",
+      "threshold": 0,
+      "source": "training-distill.md §4.5, §4.7 G1; 12-evaluation-methodology.md",
+      "on_fail": "NO-GO: the arm ends. Thresholds are never relaxed to let an arm pass."
+    },
+    {
+      "id": "G2-improvement",
+      "applies_to": [
+        "B",
+        "C"
+      ],
+      "condition": "subcode_exact or procedure_fine improves over arm A on test with a 95% bootstrap CI lower bound above 0, and adversarial_holdout is not worse.",
+      "threshold": "CI lower bound > 0",
+      "source": "training-distill.md §4.1 H1, §4.2 controls; 12-evaluation-methodology.md",
+      "on_fail": "NO-GO: discard the adapter."
+    },
+    {
+      "id": "G4-format",
+      "applies_to": [
+        "A",
+        "B",
+        "C"
+      ],
+      "condition": "Structured-output validity is 1.0 (no schema violation) under constrained decoding.",
+      "threshold": 1.0,
+      "source": "training-distill.md §4.7 G4",
+      "on_fail": "NO-GO."
+    },
+    {
+      "id": "G5-human-review",
+      "applies_to": [
+        "B",
+        "C"
+      ],
+      "condition": "200 stratified outputs read by two reviewers, agreement measured, every disagreement adjudicated.",
+      "threshold": "kappa >= 0.6 (proposal)",
+      "source": "training-distill.md §4.7 G5",
+      "on_fail": "NO-GO for any use beyond offline research."
+    },
+    {
+      "id": "G6-latency",
+      "applies_to": [
+        "A",
+        "B",
+        "C"
+      ],
+      "condition": "p95 latency fits the routing budget inside the Quick Answer timeout.",
+      "threshold": "p95 well under 7000 ms; exact budget from 12-evaluation-methodology.md",
+      "source": "training-distill.md §4.7 G6",
+      "on_fail": "Offline use only."
+    }
+  ],
+  "references": [
+    "docs/ai/waymaker-genesis/13-artemis-experiment.md",
+    "docs/ai/waymaker-genesis/12-evaluation-methodology.md",
+    "docs/ai/waymaker-genesis/11-dataset-governance.md",
+    "docs/ai/waymaker-genesis/research-notes/training-distill.md",
+    "docs/ai/waymaker-genesis/research-notes/models.md",
+    "docs/ai/waymaker-genesis/research-notes/cost.md",
+    "experiments/waymaker-ai/training/README.md"
+  ],
+  "limitations": [
+    "The TRL / PEFT / bitsandbytes calls in train_qlora.py were written against the TRL v1.16.0 documentation the notes cite but were never executed (no GPU, no packages installed).",
+    "Token counts, throughput and VRAM figures are estimates (INFERRED) until the smoke run measures them.",
+    "Only one primary base model is pinned; a Korean-native alternative (Kanana-2-3B) is out of scope for this config (models.md §5)."
+  ]
+}

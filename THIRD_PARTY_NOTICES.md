@@ -15,6 +15,16 @@ forms are catalogued separately in [`ATTRIBUTIONS.md`](ATTRIBUTIONS.md).
 - **Relationship:** algorithms **ported to Python**. No upstream file is vendored,
   bundled, or executed; Paradiso does not depend on the npm package at build or
   runtime.
+- **Provenance note (added 2026-10-21):** in the upstream repository, one of the
+  source files these functions were ported from, `src/lib/search-normalizer.ts`,
+  carries a header saying it was ported from the same author's earlier project
+  LexDiff (the law-search helpers do not). LexDiff has been published under the Business
+  Source License 1.1 (non-production use) since 2026-04-13; korean-law-mcp
+  distributes these files under MIT. Whether the MIT grant covers the
+  LexDiff-derived parts has not been reviewed. Until it is, the ported functions
+  are frozen (not extended or copied into new modules) and a clean-room
+  replacement is planned. See
+  [`docs/ai/waymaker-genesis/03-reference-provenance.md`](docs/ai/waymaker-genesis/03-reference-provenance.md) §4.
 
 ### What was ported
 

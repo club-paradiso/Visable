@@ -1,0 +1,893 @@
+{
+  "schema_version": "waymaker-teacher-policy/0.1",
+  "accessed": "2026-10-19",
+  "status": "NOT LEGAL ADVICE. Every entry below is a reading recorded in research-notes/training-distill.md section 3 and models.md section 4 on 2026-10-19. No distillation run may start until counsel signs off (gate G0 in training-distill.md section 4.7).",
+  "source_notes": [
+    "docs/ai/waymaker-genesis/research-notes/training-distill.md#3-distillation-policy",
+    "docs/ai/waymaker-genesis/research-notes/models.md#4-licence-matrix-key-terms-read-from-the-license-file-at-the-pinned-sha-unless-stated"
+  ],
+  "default_decision": "deny",
+  "legal_signoff": {
+    "status": "pending",
+    "reviewer": null,
+    "date": null,
+    "scope": "Every entry below, the channel terms they rely on, and the provenance record kept per distilled example (training-distill.md §3.2).",
+    "note": "While status is not 'approved', waymaker_ai.distillation.teacher_policy.gate_record refuses every teacher record, whatever the entry says. Only a person changes this block, after counsel has read the captured terms."
+  },
+  "decision_rule": [
+    "1. The weights licence (or, for a closed model, the provider terms) allows outputs to train a student that is distributed or used commercially.",
+    "2. The terms of the serving channel actually used allow production use, retention and redistribution of outputs, and the kind of data sent.",
+    "3. Waymaker's own model policy accepts the model family (backend/services/model_policy.py CHINESE_ONLY_MODEL_PREFIXES).",
+    "All three must say yes. Anything not listed here is denied. The most restrictive matching entry wins."
+  ],
+  "quote_policy": "clause_ref.quote holds a verbatim fragment only where the verified notes recorded one verbatim; everywhere else it is null and clause_ref.paraphrase carries the notes' paraphrase. The full captured texts are kept for a legal reviewer outside the repository (scratchpad/research/td_raw/*.txt) and are not reproduced.",
+  "channels": {
+    "self_hosted": {
+      "description": "Weights downloaded at a pinned revision and served on infrastructure Waymaker controls (vLLM, llama.cpp, transformers).",
+      "terms_url": null
+    },
+    "openrouter_free": {
+      "description": "OpenRouter ':free' model ids. OpenRouter ToS section 5 passes model terms through, so the upstream provider's terms decide.",
+      "terms_url": "https://openrouter.ai/terms"
+    },
+    "openrouter_paid": {
+      "description": "OpenRouter paid model ids, served by third-party hosts (DeepInfra, CoreWeave, Parasail, AkashML and others) whose own ToS were not reviewed.",
+      "terms_url": "https://openrouter.ai/terms"
+    },
+    "nvidia_api_catalog_trial": {
+      "description": "build.nvidia.com / integrate.api.nvidia.com trial endpoints (the backend NIM scaffold).",
+      "terms_url": "https://assets.ngc.nvidia.com/products/api-catalog/legal/NVIDIA%20API%20Trial%20Terms%20of%20Service.pdf"
+    },
+    "nvidia_nim_subscription": {
+      "description": "Paid NVIDIA NIM / NVIDIA AI Enterprise subscription (the production route the trial terms point to). Its terms were not reviewed.",
+      "terms_url": null
+    },
+    "google_ai_studio": {
+      "description": "Google AI Studio / Gemini API unpaid or paid services.",
+      "terms_url": "https://ai.google.dev/gemini-api/terms"
+    },
+    "gemini_api": {
+      "description": "Gemini models through the Gemini API.",
+      "terms_url": "https://ai.google.dev/gemini-api/terms"
+    },
+    "tml_free_research_api": {
+      "description": "Thinking Machines free research API tier.",
+      "terms_url": "https://thinkingmachines.ai/legal/tml-free-research-api-tier-terms-of-service.pdf"
+    },
+    "openai_api": {
+      "description": "OpenAI API under the OpenAI Services Agreement.",
+      "terms_url": "https://cdn.openai.com/osa/openai-services-agreement.pdf"
+    },
+    "anthropic_api": {
+      "description": "Anthropic API under the Commercial Terms.",
+      "terms_url": "https://www.anthropic.com/legal/commercial-terms"
+    },
+    "groq": {
+      "description": "Groq cloud inference.",
+      "terms_url": "https://console.groq.com/docs/legal/services-agreement"
+    },
+    "ollama_local": {
+      "description": "A local Ollama server (backend fallback qwen3:8b at localhost:11434).",
+      "terms_url": null
+    },
+    "deepseek_api": {
+      "description": "DeepSeek first-party API (ToS not reviewed).",
+      "terms_url": null
+    },
+    "minimax_platform": {
+      "description": "MiniMax platform API (ToS page rendered only with JavaScript; not reviewed).",
+      "terms_url": null
+    }
+  },
+  "entries": [
+    {
+      "id": "nvidia-trial-via-openrouter-free",
+      "provider": "nvidia",
+      "channel": "openrouter_free",
+      "models": [
+        "nvidia/nemotron-3-ultra-550b-a55b:free",
+        "nvidia/nemotron-3-super-120b-a12b:free",
+        "nvidia/nemotron-3.5-lightning:free"
+      ],
+      "weights_license": "openmdw-1.1 / nvidia-nemotron-open-model-license (weights only; the channel terms govern this route)",
+      "output_use_for_training": "not_permitted",
+      "waymaker_policy": "accepted",
+      "conditions": [],
+      "clause_ref": {
+        "url": "https://assets.ngc.nvidia.com/products/api-catalog/legal/NVIDIA%20API%20Trial%20Terms%20of%20Service.pdf",
+        "accessed": "2026-10-19",
+        "section": "NVIDIA API Trial ToS v. September 19, 2025: §1.2 (also §1.4, §3.3(iv), §4.2, §4.3, §4.12)",
+        "quote": "without use of the API Service or Generated Content in production",
+        "paraphrase": "Trial purposes only; Generated Content may not be copied, transferred or distributed (§4.2), no personal information (§4.3), no use to build competing products (§4.12); NVIDIA may use content to improve its models (§3.3(iv)); production needs a Subscription (§1.4)."
+      },
+      "evidence": "training-distill.md §3.1 row 2 (VERIFIED, LIVE L14, L16); OpenRouter's provider registry links the Nvidia provider to this document.",
+      "notes": "The same Nemotron weights are OpenMDW / Nemotron OML licensed; that permission does not transfer to the trial channel."
+    },
+    {
+      "id": "nvidia-trial-api-catalog",
+      "provider": "nvidia",
+      "channel": "nvidia_api_catalog_trial",
+      "models": [
+        "*"
+      ],
+      "weights_license": "n/a (channel terms govern)",
+      "output_use_for_training": "not_permitted",
+      "waymaker_policy": "accepted",
+      "conditions": [],
+      "clause_ref": {
+        "url": "https://assets.ngc.nvidia.com/products/api-catalog/legal/NVIDIA%20API%20Trial%20Terms%20of%20Service.pdf",
+        "accessed": "2026-10-19",
+        "section": "§1.2, §1.4, §4.2",
+        "quote": null,
+        "paraphrase": "Same trial terms as the OpenRouter Nvidia free route; covers the backend NIM scaffold endpoint (backend/services/providers/nvidia_nim.py, wired_to_api_ask False)."
+      },
+      "evidence": "training-distill.md §3.1 row 2 and §3.3 'Not permissible' (VERIFIED).",
+      "notes": "Internal research use is itself REQUIRES LEGAL REVIEW per the notes; training data is not permitted."
+    },
+    {
+      "id": "nvidia-nim-subscription",
+      "provider": "nvidia",
+      "channel": "nvidia_nim_subscription",
+      "models": [
+        "*"
+      ],
+      "weights_license": "n/a (subscription terms govern; not reviewed)",
+      "output_use_for_training": "requires_legal_review",
+      "waymaker_policy": "accepted",
+      "conditions": [],
+      "clause_ref": {
+        "url": "https://assets.ngc.nvidia.com/products/api-catalog/legal/NVIDIA%20API%20Trial%20Terms%20of%20Service.pdf",
+        "accessed": "2026-10-19",
+        "section": "Trial ToS §1.4 (points production use to a separate Subscription)",
+        "quote": null,
+        "paraphrase": "Production use needs a separate Subscription; the paid or self-hosted NIM licence (NVIDIA AI Enterprise) was not reviewed in the notes."
+      },
+      "evidence": "training-distill.md §0 item 3 (verifier addition on §1.4) and the verifier's 'Not filled' item 2 (REQUIRES LEGAL REVIEW).",
+      "notes": "Listed so the subscription route is denied explicitly rather than by omission."
+    },
+    {
+      "id": "nemotron-openmdw-self-hosted",
+      "provider": "nvidia",
+      "channel": "self_hosted",
+      "models": [
+        "nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B*",
+        "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B*"
+      ],
+      "weights_license": "openmdw-1.1",
+      "output_use_for_training": "permitted_with_conditions",
+      "waymaker_policy": "accepted",
+      "conditions": [
+        {
+          "id": "openmdw-retain-notices",
+          "text": "Redistributed copies of the model materials keep the OpenMDW-1.1 licence and notices."
+        },
+        {
+          "id": "openmdw-litigation-termination",
+          "text": "Suing over patents or copyright in the materials ends the licence; legal must confirm no such action is planned."
+        },
+        {
+          "id": "pinned-weights-revision",
+          "text": "Teacher weights are pulled at a recorded revision SHA and the SHA is stored on every TeacherRecord."
+        }
+      ],
+      "clause_ref": {
+        "url": "https://openmdw.ai/license/1-1/",
+        "accessed": "2026-10-19",
+        "section": "OpenMDW-1.1 grant and outputs clause",
+        "quote": null,
+        "paraphrase": "Users may deal in the model materials without restriction; no restriction or obligation on using, modifying or sharing outputs; redistributed copies keep the licence and notices; patent or copyright suits end the licence."
+      },
+      "evidence": "training-distill.md §3.1 row 3a (VERIFIED, LIVE L8, L9); models.md §4 OpenMDW row.",
+      "notes": "Nemotron 3 Ultra (550B total) needs a C3-C4 multi-GPU node to self-host (training-distill.md §3.3, INFERRED); not a practical first teacher."
+    },
+    {
+      "id": "nemotron-super-oml-self-hosted",
+      "provider": "nvidia",
+      "channel": "self_hosted",
+      "models": [
+        "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B*"
+      ],
+      "weights_license": "nvidia-nemotron-open-model-license",
+      "output_use_for_training": "permitted_with_conditions",
+      "waymaker_policy": "accepted",
+      "conditions": [
+        {
+          "id": "nemotron-oml-notice",
+          "text": "Redistribution of the model or a derivative includes a copy of the NVIDIA Nemotron Open Model License and its notice line."
+        },
+        {
+          "id": "nemotron-oml-litigation-termination",
+          "text": "Litigation over the works ends the licence; legal must confirm no such action is planned."
+        },
+        {
+          "id": "pinned-weights-revision",
+          "text": "Teacher weights are pulled at a recorded revision SHA and the SHA is stored on every TeacherRecord."
+        }
+      ],
+      "clause_ref": {
+        "url": "https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-nemotron-open-model-license/",
+        "accessed": "2026-10-19",
+        "section": "NVIDIA Nemotron Open Model License (last modified 2025-12-15)",
+        "quote": null,
+        "paraphrase": "Commercially usable; derivative works may be created and distributed; NVIDIA claims no ownership of outputs; redistribution needs a copy of the licence and a notice line; litigation ends the licence."
+      },
+      "evidence": "training-distill.md §3.1 row 3b (VERIFIED, LIVE L10).",
+      "notes": "models.md §8 records that its own pass did not read this licence; training-distill.md read it (L10)."
+    },
+    {
+      "id": "gemini-api",
+      "provider": "google",
+      "channel": "gemini_api",
+      "models": [
+        "*"
+      ],
+      "weights_license": "proprietary (Gemini API Additional Terms)",
+      "output_use_for_training": "requires_legal_review",
+      "waymaker_policy": "not_in_use",
+      "conditions": [],
+      "clause_ref": {
+        "url": "https://ai.google.dev/gemini-api/terms",
+        "accessed": "2026-10-19",
+        "section": "Gemini API Additional Terms (effective 2026-03-23): Use Restrictions; Unpaid Services",
+        "quote": null,
+        "paraphrase": "The Services may not be used to develop competing models, and no part may be extracted or replicated; on Unpaid Services Google uses content to improve its products, human reviewers may read traffic, and personal information must not be submitted; grounded results may not be used for training."
+      },
+      "evidence": "training-distill.md §3.1 row 4 (VERIFIED, LIVE L4).",
+      "notes": "The verifier asks that the OpenAI, Anthropic and Gemini 'competing model' clauses be treated consistently; all three are denied here."
+    },
+    {
+      "id": "gemma-4-via-openrouter-free",
+      "provider": "google",
+      "channel": "openrouter_free",
+      "models": [
+        "google/gemma-4-31b-it:free",
+        "google/gemma-4-26b-a4b-it:free"
+      ],
+      "weights_license": "apache-2.0 (weights only; the channel terms govern this route)",
+      "output_use_for_training": "requires_legal_review",
+      "waymaker_policy": "accepted",
+      "conditions": [],
+      "clause_ref": {
+        "url": "https://ai.google.dev/gemini-api/terms",
+        "accessed": "2026-10-19",
+        "section": "Unpaid Services",
+        "quote": null,
+        "paraphrase": "OpenRouter's Gemma ':free' ids are served by Google AI Studio; whether the Unpaid Services terms bind that route is INFERRED, not verified (OpenRouter links Google AI Studio to cloud.google.com/terms)."
+      },
+      "evidence": "training-distill.md §0 item 3 and §3.1 row 4 with the verifier correction (REQUIRES LEGAL REVIEW).",
+      "notes": "Notes verdict: avoid; self-host Gemma 4 instead."
+    },
+    {
+      "id": "gemma-4-via-google-ai-studio",
+      "provider": "google",
+      "channel": "google_ai_studio",
+      "models": [
+        "*"
+      ],
+      "weights_license": "apache-2.0 (weights only; the channel terms govern this route)",
+      "output_use_for_training": "requires_legal_review",
+      "waymaker_policy": "accepted",
+      "conditions": [],
+      "clause_ref": {
+        "url": "https://ai.google.dev/gemini-api/terms",
+        "accessed": "2026-10-19",
+        "section": "Use Restrictions; Unpaid Services",
+        "quote": null,
+        "paraphrase": "Same Gemini API Additional Terms; Gemma 4 is free-tier only on the Gemini API (cost.md §3) and free-tier content is used to improve Google's products."
+      },
+      "evidence": "training-distill.md §3.1 row 4; cost.md §3 (VERIFIED).",
+      "notes": "Notes verdict: avoid; self-host Gemma 4 instead."
+    },
+    {
+      "id": "gemma-4-self-hosted",
+      "provider": "google",
+      "channel": "self_hosted",
+      "models": [
+        "google/gemma-4-*"
+      ],
+      "weights_license": "apache-2.0",
+      "output_use_for_training": "permitted_with_conditions",
+      "waymaker_policy": "accepted",
+      "conditions": [
+        {
+          "id": "apache-2.0-notice",
+          "text": "Keep the Apache-2.0 licence text, NOTICE and attribution when redistributing weights or adapters."
+        },
+        {
+          "id": "gemma-prohibited-use-policy-unresolved",
+          "text": "Whether Google's Gemma Prohibited Use Policy (unlicensed-practice clauses §2.2, §3.6) binds Apache-2.0 Gemma 4 is unresolved; keep Waymaker 'information, not legal advice' and have counsel confirm before any distribution."
+        },
+        {
+          "id": "pinned-weights-revision",
+          "text": "Teacher weights are pulled at a recorded revision SHA and the SHA is stored on every TeacherRecord."
+        }
+      ],
+      "clause_ref": {
+        "url": "https://ai.google.dev/gemma/docs/gemma_4_license",
+        "accessed": "2026-10-19",
+        "section": "Apache License 2.0 · Gemma (page now marked deprecated, points to gemma.ai)",
+        "quote": null,
+        "paraphrase": "The Gemma 4 licence page carries the standard Apache-2.0 text; the HF cards for 31B, 26B-A4B, 12B, E4B and E2B say apache-2.0 and gated: false. No Gemma 4 repo ships a LICENSE file."
+      },
+      "evidence": "training-distill.md §3.1 row 5a (VERIFIED, LIVE L5); models.md §0 item 2, §3a, §4 Apache row with verifier notes.",
+      "notes": "Practical first teacher together with gpt-oss-120b (training-distill.md §3.3). Gemma 4 31B self-hosted needs a 40-80 GB GPU."
+    },
+    {
+      "id": "gemma-1-to-3-terms",
+      "provider": "google",
+      "channel": "self_hosted",
+      "models": [
+        "google/gemma-1*",
+        "google/gemma-2*",
+        "google/gemma-3*",
+        "google/gemma-7b*"
+      ],
+      "weights_license": "Gemma Terms of Use (updated 2026-04-01)",
+      "output_use_for_training": "not_permitted",
+      "waymaker_policy": "accepted",
+      "conditions": [],
+      "clause_ref": {
+        "url": "https://ai.google.dev/gemma/terms",
+        "accessed": "2026-10-19",
+        "section": "§1(e) Model Derivatives",
+        "quote": null,
+        "paraphrase": "Model Derivatives include any model built by transferring patterns from Gemma's outputs, explicitly including distillation through synthetic data; the student would be bound by Gemma's use restrictions."
+      },
+      "evidence": "training-distill.md §3.1 row 5b and §3.3 'Not permissible' (VERIFIED, LIVE L6).",
+      "notes": "Permissible only if the student accepts the Gemma Terms, which this project does not plan; prefer Gemma 4."
+    },
+    {
+      "id": "tml-free-research-via-openrouter-free",
+      "provider": "thinkingmachines",
+      "channel": "openrouter_free",
+      "models": [
+        "thinkingmachines/inkling:free",
+        "thinkingmachines/inkling-small:free"
+      ],
+      "weights_license": "apache-2.0 (weights only; the channel terms govern this route)",
+      "output_use_for_training": "not_permitted",
+      "waymaker_policy": "accepted",
+      "conditions": [],
+      "clause_ref": {
+        "url": "https://thinkingmachines.ai/legal/tml-free-research-api-tier-terms-of-service.pdf",
+        "accessed": "2026-10-19",
+        "section": "Free Research API Tier ToS (last updated 2026-08-20): acceptable use; licence to TML",
+        "quote": null,
+        "paraphrase": "Without written consent, users may not develop, train, fine-tune or distil a competing model or systematically collect outputs for such datasets; users grant TML a perpetual licence to use prompts and outputs, including for training; no personal, children's or sensitive data."
+      },
+      "evidence": "training-distill.md §3.1 row 6 (VERIFIED, LIVE L17).",
+      "notes": "The owner's branch removes inkling:free from the Basic chain after a 403 model_access_denied."
+    },
+    {
+      "id": "tml-free-research-direct",
+      "provider": "thinkingmachines",
+      "channel": "tml_free_research_api",
+      "models": [
+        "*"
+      ],
+      "weights_license": "n/a (channel terms govern)",
+      "output_use_for_training": "not_permitted",
+      "waymaker_policy": "accepted",
+      "conditions": [],
+      "clause_ref": {
+        "url": "https://thinkingmachines.ai/legal/tml-free-research-api-tier-terms-of-service.pdf",
+        "accessed": "2026-10-19",
+        "section": "acceptable use",
+        "quote": null,
+        "paraphrase": "Same terms as the OpenRouter route; weights may not be obtained or trained through the API."
+      },
+      "evidence": "training-distill.md §3.1 row 6 (VERIFIED).",
+      "notes": ""
+    },
+    {
+      "id": "inkling-self-hosted",
+      "provider": "thinkingmachines",
+      "channel": "self_hosted",
+      "models": [
+        "thinkingmachines/Inkling*"
+      ],
+      "weights_license": "apache-2.0",
+      "output_use_for_training": "permitted_with_conditions",
+      "waymaker_policy": "accepted",
+      "conditions": [
+        {
+          "id": "apache-2.0-notice",
+          "text": "Keep the Apache-2.0 licence text, NOTICE and attribution when redistributing weights or adapters."
+        },
+        {
+          "id": "pinned-weights-revision",
+          "text": "Teacher weights are pulled at a recorded revision SHA and the SHA is stored on every TeacherRecord."
+        }
+      ],
+      "clause_ref": {
+        "url": "https://huggingface.co/thinkingmachines/Inkling",
+        "accessed": "2026-10-19",
+        "section": "HF model card licence field",
+        "quote": null,
+        "paraphrase": "HF lists Inkling and Inkling-Small as apache-2.0, not gated."
+      },
+      "evidence": "training-distill.md §3.1 row 6 verdict and §3.3 (VERIFIED, LIVE L8; verifier V9).",
+      "notes": "975B total parameters; self-hosting needs C3-C4 hardware (INFERRED). Not a practical first teacher."
+    },
+    {
+      "id": "openai-api",
+      "provider": "openai",
+      "channel": "openai_api",
+      "models": [
+        "*"
+      ],
+      "weights_license": "proprietary (OpenAI Services Agreement ONLINE v. 010126)",
+      "output_use_for_training": "not_permitted",
+      "waymaker_policy": "not_in_use",
+      "conditions": [],
+      "clause_ref": {
+        "url": "https://cdn.openai.com/osa/openai-services-agreement.pdf",
+        "accessed": "2026-10-19",
+        "section": "§3.3(e), §3.3(f)",
+        "quote": null,
+        "paraphrase": "Output may not be used to develop AI models that compete with OpenAI's products; the only Permitted Exception covers internal, non-distributed classifiers or embedding models and fine-tuning OpenAI's own models; no extracting data outside the Services."
+      },
+      "evidence": "training-distill.md §3.1 row 7 (VERIFIED, LIVE L19); the openai.com policy pages returned HTTP 403.",
+      "notes": "A non-distributed internal classifier may fit the exception: REQUIRES LEGAL REVIEW before anyone relies on it. Denied here."
+    },
+    {
+      "id": "gpt-oss-self-hosted",
+      "provider": "openai",
+      "channel": "self_hosted",
+      "models": [
+        "openai/gpt-oss-20b",
+        "openai/gpt-oss-120b"
+      ],
+      "weights_license": "apache-2.0 + gpt-oss USAGE_POLICY",
+      "output_use_for_training": "permitted_with_conditions",
+      "waymaker_policy": "accepted",
+      "conditions": [
+        {
+          "id": "apache-2.0-notice",
+          "text": "Keep the Apache-2.0 licence text, NOTICE and attribution when redistributing weights or adapters."
+        },
+        {
+          "id": "gpt-oss-usage-policy",
+          "text": "Use complies with the gpt-oss usage policy (safe, responsible use that complies with applicable law)."
+        },
+        {
+          "id": "pinned-weights-revision",
+          "text": "Teacher weights are pulled at a recorded revision SHA and the SHA is stored on every TeacherRecord."
+        }
+      ],
+      "clause_ref": {
+        "url": "https://raw.githubusercontent.com/openai/gpt-oss/main/USAGE_POLICY",
+        "accessed": "2026-10-19",
+        "section": "USAGE_POLICY; HF licence field apache-2.0",
+        "quote": null,
+        "paraphrase": "Apache-2.0 permits use, modification and distribution; the usage policy asks only for safe, responsible use that complies with applicable law."
+      },
+      "evidence": "training-distill.md §3.1 row 8 (VERIFIED, LIVE L8, L23, L31); models.md §4 verifier note.",
+      "notes": "gpt-oss-120b fits one 80 GB GPU with MXFP4 (LIVE L31). Practical first teacher."
+    },
+    {
+      "id": "gpt-oss-via-openrouter-paid-hosts",
+      "provider": "openai",
+      "channel": "openrouter_paid",
+      "models": [
+        "openai/gpt-oss-20b",
+        "openai/gpt-oss-120b"
+      ],
+      "weights_license": "apache-2.0 (weights only; each host's ToS governs this route)",
+      "output_use_for_training": "requires_legal_review",
+      "waymaker_policy": "accepted",
+      "conditions": [],
+      "clause_ref": {
+        "url": "https://openrouter.ai/terms",
+        "accessed": "2026-10-19",
+        "section": "OpenRouter ToS §5 (model terms pass through)",
+        "quote": null,
+        "paraphrase": "Paid OpenRouter hosts (DeepInfra, CoreWeave, Parasail, AkashML and others) add their own ToS, which were not reviewed."
+      },
+      "evidence": "training-distill.md §3.1 rows 1 and 8, §3.3 'REQUIRES LEGAL REVIEW' (VERIFIED that the host terms were not reviewed).",
+      "notes": "Also a paid channel; paid generation is not authorised in Mission 001."
+    },
+    {
+      "id": "gpt-oss-via-openrouter-free",
+      "provider": "openai",
+      "channel": "openrouter_free",
+      "models": [
+        "openai/gpt-oss-120b:free",
+        "openai/gpt-oss-20b:free"
+      ],
+      "weights_license": "apache-2.0 (weights only; the upstream free host's terms govern this route)",
+      "output_use_for_training": "requires_legal_review",
+      "waymaker_policy": "accepted",
+      "conditions": [],
+      "clause_ref": {
+        "url": "https://openrouter.ai/terms",
+        "accessed": "2026-10-19",
+        "section": "OpenRouter ToS §5 (model terms pass through)",
+        "quote": null,
+        "paraphrase": "Upstream model and host terms decide; the free host for these ids was not reviewed, and openai/gpt-oss-120b:free is absent from the OpenRouter catalog on 2026-10-19."
+      },
+      "evidence": "training-distill.md §1 table (live verifier chain leads with openai/gpt-oss-120b:free) and §7 L7 (id absent, VERIFIED).",
+      "notes": "Self-host gpt-oss instead (entry gpt-oss-self-hosted)."
+    },
+    {
+      "id": "gemma-4-via-openrouter-paid-hosts",
+      "provider": "google",
+      "channel": "openrouter_paid",
+      "models": [
+        "google/gemma-4-31b-it",
+        "google/gemma-4-26b-a4b-it"
+      ],
+      "weights_license": "apache-2.0 (weights only; each host's ToS governs this route)",
+      "output_use_for_training": "requires_legal_review",
+      "waymaker_policy": "accepted",
+      "conditions": [],
+      "clause_ref": {
+        "url": "https://openrouter.ai/terms",
+        "accessed": "2026-10-19",
+        "section": "OpenRouter ToS §5",
+        "quote": null,
+        "paraphrase": "Each paid host's ToS decides; none was reviewed."
+      },
+      "evidence": "training-distill.md §3.3 'The ToS of every paid OpenRouter host' (REQUIRES LEGAL REVIEW).",
+      "notes": "Also a paid channel; paid generation is not authorised in Mission 001."
+    },
+    {
+      "id": "anthropic-api",
+      "provider": "anthropic",
+      "channel": "anthropic_api",
+      "models": [
+        "*"
+      ],
+      "weights_license": "proprietary (Anthropic Commercial Terms, effective 2025-06-17)",
+      "output_use_for_training": "not_permitted",
+      "waymaker_policy": "not_in_use",
+      "conditions": [],
+      "clause_ref": {
+        "url": "https://www.anthropic.com/legal/commercial-terms",
+        "accessed": "2026-10-19",
+        "section": "Commercial Terms §D.4; Consumer Terms §3",
+        "quote": null,
+        "paraphrase": "No accessing the Services to build a competing product, including training competing AI models, unless Anthropic approves; no reverse engineering."
+      },
+      "evidence": "training-distill.md §3.1 row 9 (VERIFIED, LIVE L2, L3).",
+      "notes": "Waymaker does not use Anthropic today."
+    },
+    {
+      "id": "groq-llama",
+      "provider": "meta",
+      "channel": "groq",
+      "models": [
+        "llama-3.1-8b-instant"
+      ],
+      "weights_license": "llama3.1 community licence (plus Groq Services Agreement)",
+      "output_use_for_training": "requires_legal_review",
+      "waymaker_policy": "accepted",
+      "conditions": [],
+      "clause_ref": {
+        "url": "https://console.groq.com/docs/legal/services-agreement",
+        "accessed": "2026-10-19",
+        "section": "Groq Services Agreement (last modified 2026-06-22) §6.3(e), §4.1",
+        "quote": null,
+        "paraphrase": "The Cloud Services may not be used to develop similar or competing offerings; each model's own terms control its use; outputs are Customer Data and Groq does not train on them."
+      },
+      "evidence": "training-distill.md §3.1 row 10 (clause VERIFIED, LIVE L20).",
+      "notes": "The notes' 'permitted' reading rests on an INFERRED judgement that a domain student does not compete with an inference cloud, with 'light legal review'; recorded here as requires_legal_review until that review happens. Llama conditions would also apply."
+    },
+    {
+      "id": "llama-3x-self-hosted",
+      "provider": "meta",
+      "channel": "self_hosted",
+      "models": [
+        "meta-llama/Llama-3.1-*",
+        "meta-llama/Llama-3.3-*",
+        "meta-llama/Meta-Llama-3.1-*"
+      ],
+      "weights_license": "llama3.1 / llama3.3 community licence",
+      "output_use_for_training": "permitted_with_conditions",
+      "waymaker_policy": "accepted",
+      "conditions": [
+        {
+          "id": "llama-name-prefix",
+          "text": "If a student trained on Llama outputs is distributed or made available, its name must start with 'Llama'."
+        },
+        {
+          "id": "llama-built-with-notice",
+          "text": "Display 'Built with Llama' (in UI chrome or an about page, never inside model answers)."
+        },
+        {
+          "id": "llama-aup-unverified",
+          "text": "Comply with the Llama Acceptable Use Policy; its text could not be fetched (HTTP 404) and is UNVERIFIED in the notes, so counsel must read it before use."
+        },
+        {
+          "id": "pinned-weights-revision",
+          "text": "Teacher weights are pulled at a recorded revision SHA and the SHA is stored on every TeacherRecord."
+        }
+      ],
+      "clause_ref": {
+        "url": "https://raw.githubusercontent.com/meta-llama/llama-models/main/models/llama3_3/LICENSE",
+        "accessed": "2026-10-19",
+        "section": "§1.b.i",
+        "quote": null,
+        "paraphrase": "If Llama outputs are used to create or improve an AI model that is then distributed or made available, the model's name must start with 'Llama'; a 'Built with Llama' notice and AUP compliance are required; a clause covers services above 700M monthly users (release-date snapshot)."
+      },
+      "evidence": "training-distill.md §3.1 row 11 and §3.3 (VERIFIED, LIVE L21; verifier V12); models.md §0 item 4 verifier note on the AUP.",
+      "notes": "Gated on HF (manual). Korean is not an officially supported Llama 3.1 language (models.md §5)."
+    },
+    {
+      "id": "llama-via-openrouter-free",
+      "provider": "meta",
+      "channel": "openrouter_free",
+      "models": [
+        "meta-llama/llama-3.3-70b-instruct:free"
+      ],
+      "weights_license": "llama3.3 community licence (weights only; upstream free-tier terms not reviewed)",
+      "output_use_for_training": "requires_legal_review",
+      "waymaker_policy": "accepted",
+      "conditions": [],
+      "clause_ref": {
+        "url": "https://openrouter.ai/terms",
+        "accessed": "2026-10-19",
+        "section": "OpenRouter ToS §5",
+        "quote": null,
+        "paraphrase": "Upstream model and provider terms decide; the upstream free host terms for this id were not reviewed, and the id is absent from the OpenRouter catalog on 2026-10-19."
+      },
+      "evidence": "training-distill.md §1 table and §7 L7 (id absent, VERIFIED).",
+      "notes": ""
+    },
+    {
+      "id": "hermes-3-via-openrouter-free",
+      "provider": "nousresearch",
+      "channel": "openrouter_free",
+      "models": [
+        "nousresearch/hermes-3-llama-3.1-405b:free"
+      ],
+      "weights_license": "llama3 (HF tag)",
+      "output_use_for_training": "requires_legal_review",
+      "waymaker_policy": "accepted",
+      "conditions": [],
+      "clause_ref": {
+        "url": "https://openrouter.ai/terms",
+        "accessed": "2026-10-19",
+        "section": "OpenRouter ToS §5",
+        "quote": null,
+        "paraphrase": "Hermes 3 is tagged llama3, so the Llama conditions would apply; upstream host terms not reviewed; id absent from the catalog on 2026-10-19."
+      },
+      "evidence": "training-distill.md §3.1 row 11 (Hermes 3 tagged llama3) and §7 L7.",
+      "notes": ""
+    },
+    {
+      "id": "qwen-family",
+      "provider": "qwen",
+      "channel": "self_hosted",
+      "models": [
+        "Qwen/*",
+        "qwen/*"
+      ],
+      "weights_license": "apache-2.0 for Qwen3-8B, Qwen3.5, Qwen3.6, Qwen3.8-27B; qwen-community-1.0 for Qwen3.8-Flash-Next; qwen3.8-max for Qwen3.8-2.4T-A95B",
+      "output_use_for_training": "requires_legal_review",
+      "waymaker_policy": "chinese_routes_only",
+      "conditions": [],
+      "clause_ref": {
+        "url": "https://huggingface.co/Qwen/Qwen3-8B",
+        "accessed": "2026-10-19",
+        "section": "HF licence fields",
+        "quote": null,
+        "paraphrase": "Licence permits it for the Apache-licensed sizes, but Waymaker's model policy reserves qwen/ for Chinese-language routes (model_policy.py CHINESE_ONLY_MODEL_PREFIXES); the owner must decide."
+      },
+      "evidence": "training-distill.md §3.1 row 12 with verifier correction; models.md §0 item 3.",
+      "notes": "Whether the policy covers self-hosted fine-tunes is an open owner decision (models.md Rec. 2)."
+    },
+    {
+      "id": "qwen-ollama-local",
+      "provider": "qwen",
+      "channel": "ollama_local",
+      "models": [
+        "qwen3:8b"
+      ],
+      "weights_license": "apache-2.0 (Qwen3-8B)",
+      "output_use_for_training": "requires_legal_review",
+      "waymaker_policy": "chinese_routes_only",
+      "conditions": [],
+      "clause_ref": {
+        "url": "https://huggingface.co/Qwen/Qwen3-8B",
+        "accessed": "2026-10-19",
+        "section": "HF licence field",
+        "quote": null,
+        "paraphrase": "Same Qwen policy conflict; the backend Ollama fallback is off unless ENABLE_OLLAMA_FALLBACK is set."
+      },
+      "evidence": "training-distill.md §1 table and §3.1 row 12.",
+      "notes": ""
+    },
+    {
+      "id": "deepseek-family",
+      "provider": "deepseek",
+      "channel": "self_hosted",
+      "models": [
+        "deepseek-ai/*"
+      ],
+      "weights_license": "mit",
+      "output_use_for_training": "requires_legal_review",
+      "waymaker_policy": "chinese_routes_only",
+      "conditions": [],
+      "clause_ref": {
+        "url": "https://huggingface.co/deepseek-ai/DeepSeek-R1",
+        "accessed": "2026-10-19",
+        "section": "R1 model card licence section",
+        "quote": null,
+        "paraphrase": "MIT; the R1 card explicitly allows derivative works including distillation; Waymaker's policy reserves deepseek/ for Chinese routes."
+      },
+      "evidence": "training-distill.md §3.1 row 13 (VERIFIED, LIVE L22).",
+      "notes": "Owner decision required."
+    },
+    {
+      "id": "deepseek-api",
+      "provider": "deepseek",
+      "channel": "deepseek_api",
+      "models": [
+        "*"
+      ],
+      "weights_license": "n/a (DeepSeek API ToS not reviewed)",
+      "output_use_for_training": "requires_legal_review",
+      "waymaker_policy": "chinese_routes_only",
+      "conditions": [],
+      "clause_ref": {
+        "url": "https://huggingface.co/deepseek-ai/DeepSeek-R1",
+        "accessed": "2026-10-19",
+        "section": "DeepSeek API ToS: not reviewed (the URL is the weights card, not the API terms)",
+        "quote": null,
+        "paraphrase": "The notes did not review the DeepSeek API ToS."
+      },
+      "evidence": "training-distill.md §3.1 row 13 and verifier 'not filled' item 2.",
+      "notes": ""
+    },
+    {
+      "id": "minimax-m3-weights",
+      "provider": "minimax",
+      "channel": "self_hosted",
+      "models": [
+        "MiniMaxAI/MiniMax-M3*"
+      ],
+      "weights_license": "minimax-community",
+      "output_use_for_training": "requires_legal_review",
+      "waymaker_policy": "chinese_routes_only",
+      "conditions": [],
+      "clause_ref": {
+        "url": "https://huggingface.co/MiniMaxAI/MiniMax-M3",
+        "accessed": "2026-10-19",
+        "section": "MiniMax Community License (LICENSE file at f0e1c1e04d40177e4673a22097036854f536e9c0)",
+        "quote": null,
+        "paraphrase": "The grant sentence names non-commercial purposes while clause 2 provides for commercial use under US$20M yearly revenue with a 'Built with MiniMax M3' notice and a one-time notice email; internally ambiguous; prohibited uses include discrimination based on immigration status; outputs are not mentioned."
+      },
+      "evidence": "training-distill.md §3.1 row 14 with verifier correction (REQUIRES LEGAL REVIEW); models.md §4 MiniMax row.",
+      "notes": ""
+    },
+    {
+      "id": "minimax-m3-via-openrouter",
+      "provider": "minimax",
+      "channel": "openrouter_paid",
+      "models": [
+        "minimax/minimax-m3"
+      ],
+      "weights_license": "minimax-community (weights); platform ToS not reviewed",
+      "output_use_for_training": "requires_legal_review",
+      "waymaker_policy": "chinese_routes_only",
+      "conditions": [],
+      "clause_ref": {
+        "url": "https://openrouter.ai/terms",
+        "accessed": "2026-10-19",
+        "section": "OpenRouter ToS §5",
+        "quote": null,
+        "paraphrase": "Upstream terms decide; the MiniMax platform ToS redirected to a JavaScript-only page with no retrievable text."
+      },
+      "evidence": "training-distill.md §3.1 row 14 and §7 L24.",
+      "notes": "Paid channel; not authorised in Mission 001."
+    },
+    {
+      "id": "inclusionai-ling",
+      "provider": "inclusionai",
+      "channel": "openrouter_free",
+      "models": [
+        "inclusionai/ling-3.0-flash-sante:free",
+        "inclusionai/ling-3.0-flash-fin:free"
+      ],
+      "weights_license": "mit",
+      "output_use_for_training": "requires_legal_review",
+      "waymaker_policy": "chinese_routes_only",
+      "conditions": [],
+      "clause_ref": {
+        "url": "https://huggingface.co/inclusionAI",
+        "accessed": "2026-10-19",
+        "section": "HF licence field (exact repo URL not recorded in the notes)",
+        "quote": null,
+        "paraphrase": "MIT; the configured ':free' ids are absent from the OpenRouter catalog, and policy reserves this family for Chinese routes."
+      },
+      "evidence": "training-distill.md §3.1 row 15 (VERIFIED, LIVE L13, L7).",
+      "notes": ""
+    },
+    {
+      "id": "exaone-4x-nc-self-hosted",
+      "provider": "lgai-exaone",
+      "channel": "self_hosted",
+      "models": [
+        "LGAI-EXAONE/EXAONE-4.0*",
+        "LGAI-EXAONE/EXAONE-4.5*"
+      ],
+      "weights_license": "EXAONE AI Model License Agreement 1.2 - NC",
+      "output_use_for_training": "not_permitted",
+      "waymaker_policy": "accepted",
+      "conditions": [],
+      "clause_ref": {
+        "url": "https://huggingface.co/LGAI-EXAONE/EXAONE-4.5-33B",
+        "accessed": "2026-10-19",
+        "section": "LICENSE at 570aa4b15a4f45ba1133072b45f50198f6e3b4fd (byte-identical for 4.0-1.2B and 4.0.1-32B): §2.1(a), §3.1",
+        "quote": null,
+        "paraphrase": "Research and education use only; commercial use is barred, and the Model, its Derivatives and its Output may not be used to develop competing models."
+      },
+      "evidence": "models.md §4 EXAONE 1.2-NC row and verifier claim 3 (VERIFIED: LICENSE read at the pinned SHAs).",
+      "notes": "models.md §9 Rec. 5: never adopt EXAONE 4.x for production. K-EXAONE 2.0 (Apache-2.0) and K-EXAONE-236B are not covered by these patterns; no note assessed them as teachers, so they are denied by default."
+    },
+    {
+      "id": "hyperclova-x-seed-self-hosted",
+      "provider": "naver-hyperclovax",
+      "channel": "self_hosted",
+      "models": [
+        "naver-hyperclovax/HyperCLOVAX-SEED-*"
+      ],
+      "weights_license": "HyperCLOVA X SEED model licence agreements (per model, e.g. HyperCLOVA X SEED 32B Think)",
+      "output_use_for_training": "not_permitted",
+      "waymaker_policy": "accepted",
+      "conditions": [],
+      "clause_ref": {
+        "url": "https://huggingface.co/naver-hyperclovax/HyperCLOVAX-SEED-Think-32B",
+        "accessed": "2026-10-19",
+        "section": "LICENSE at 3c2b6338613c4e5ede30788d868363125a262934: §3.1, §4, Addendum A 1.d",
+        "quote": null,
+        "paraphrase": "A model distilled from the outputs is a Derivative Model that carries the 'HyperCLOVA X' name prefix and the 'Powered by HyperCLOVA X' notice when distributed or made available; the acceptable-use addendum bars unauthorised or unlicensed professional services, legal services included; a product that competes with any NAVER product needs a separate licence; NAVER may amend the agreement unilaterally."
+      },
+      "evidence": "models.md §4 HyperCLOVA X SEED row and verifier claim 5 (VERIFIED: LICENSE read at the pinned SHA).",
+      "notes": "models.md §9 Rec. 5: never adopt HyperCLOVA X SEED for production (legal-services AUP and competition clause). A student distilled from it would be a Derivative Model under the same terms, so it is denied as a teacher."
+    },
+    {
+      "id": "muse-spark-open-self-hosted",
+      "provider": "meta",
+      "channel": "self_hosted",
+      "models": [
+        "meta-models/Muse-Spark-Open-*"
+      ],
+      "weights_license": "Muse Model License",
+      "output_use_for_training": "requires_legal_review",
+      "waymaker_policy": "accepted",
+      "conditions": [],
+      "clause_ref": {
+        "url": "https://huggingface.co/meta-models/Muse-Spark-Open-816B-A42B",
+        "accessed": "2026-10-19",
+        "section": "LICENSE.md at 0fb02478b02565b2ce7fc57e6051c91172774ac9: §2, §3, Exhibit A 1.4",
+        "quote": null,
+        "paraphrase": "Distillation is allowed, but a model distilled from the outputs is a Derivative bound by the licence: 'Built with Muse Spark Open' must be displayed, the incorporated usage policy bars the unauthorised or unlicensed practice of a profession including legal practice, and Model-as-a-Service providers above US$20M 12-month revenue need an agreement."
+      },
+      "evidence": "models.md §4 Muse Model License row and verifier claim 6 (VERIFIED; the separate USE_POLICY.md returned HTTP 401, and Exhibit A of LICENSE.md is the incorporated policy).",
+      "notes": "models.md §9 Rec. 5: acceptable only with counsel sign-off on the unlicensed-practice clause and mandatory UI attribution. 822B total parameters (C3-C4 hardware, INFERRED) and gated on HF (manual)."
+    },
+    {
+      "id": "kanana-2-self-hosted",
+      "provider": "kakao",
+      "channel": "self_hosted",
+      "models": [
+        "kakaocorp/kanana-2-*"
+      ],
+      "weights_license": "Kanana Open License (kanana-2-3b, kanana-2-1.3b) / Kanana License (kanana-2-30b-a3b-instruct-2601)",
+      "output_use_for_training": "requires_legal_review",
+      "waymaker_policy": "accepted",
+      "conditions": [],
+      "clause_ref": {
+        "url": "https://huggingface.co/kakaocorp/kanana-2-3b-instruct",
+        "accessed": "2026-10-19",
+        "section": "LICENSE at 6a5d7889964c4c590299d16e309eabab1f73f8a9 (Kanana Open License) §3.1(v), §4.1-4.2, §9.4; kanana-2-30b-a3b-instruct-2601 LICENSE at 4a781fe5027da4af8d8208cb21bc5108b913bb62 §4.2",
+        "quote": null,
+        "paraphrase": "Derivative Works include models trained by distillation or on synthetic data from Kanana outputs; a distributed model trained on Kanana or its outputs takes the 'Kanana' name prefix, and a product containing Kanana shows 'Powered by Kanana'; offering API, SI/on-prem or on-device access to third parties needs a separate licence; Model Weights may not be used to train new models except as expressly permitted."
+      },
+      "evidence": "models.md §4 Kanana rows, §9 Rec. 4 with the verifier correction, and verifier claim 7 (VERIFIED: LICENSE read at the pinned SHAs).",
+      "notes": "Kanana-2-3B is the Korean-native Artemis alternative (models.md §5 rank 2), not a teacher candidate in the notes. The Kanana License 10M MAU test is a release-date snapshot. Its Qwen3 architecture (not weights) may raise an owner policy question (models.md §5)."
+    }
+  ]
+}

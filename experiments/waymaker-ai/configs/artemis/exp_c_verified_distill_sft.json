@@ -1,0 +1,418 @@
+{
+  "schema_version": "waymaker-artemis-experiment/0.1",
+  "id": "artemis-exp-c-verified-distill-sft",
+  "arm": "C",
+  "title": "Artemis C: arm B data plus gated, human-reviewed teacher labels, QLoRA SFT",
+  "status": "NOT RUN",
+  "status_detail": "Prepared on 2026-10-19 in Mission 001. Blocked three ways: benchmark v0 has no train split, the teacher policy has no counsel sign-off (legal_signoff pending), and no teacher was served. No teacher output exists.",
+  "created": "2026-10-19",
+  "hypothesis": "At equal training tokens and steps, adding teacher labels from self-hosted gpt-oss-120b and Gemma 4 31B-it that passed the deterministic checks, the teacher gate and human review improves over arm B on adversarial_holdout (classes I subcode confusion and K real-world dates) and on non-ko/en questions, because the student sees more phrasings of the same verified labels (training-distill.md §4.1 H2).",
+  "null_hypothesis": "Arm C is not better than arm B beyond the CI, or it adds critical errors inherited from the teachers. Then distillation is not worth its review and licence cost, and arm B (or the rules) stands.",
+  "baselines": [
+    {
+      "id": "artemis-exp-b-sft-qlora",
+      "what": "Same student, same hyper-parameters, human-reviewed gold only.",
+      "source": "configs/artemis/exp_b_sft_qlora.json",
+      "known_limits": "Must have passed G1 itself; otherwise arm C is not run."
+    },
+    {
+      "id": "artemis-exp-a-untuned",
+      "what": "Same student, no adapter.",
+      "source": "configs/artemis/exp_a_untuned.json",
+      "known_limits": "None beyond arm A's."
+    },
+    {
+      "id": "B-fixed",
+      "what": "Best deterministic classifier after cheap rule fixes.",
+      "source": "13-artemis-experiment.md §6",
+      "known_limits": "Not built in Mission 001."
+    }
+  ],
+  "base_model": {
+    "role": "primary",
+    "repo_id": "google/gemma-4-E4B-it",
+    "revision": "ee0ef6023621cff504d758262d4e04895a5af4a2",
+    "license": "apache-2.0",
+    "gated": false,
+    "loader": "AutoModelForCausalLM",
+    "params": "8.00B total, 4.5B effective; 131,072 context",
+    "source": "research-notes/models.md §3a and §5 Artemis rank 1",
+    "license_note": "Apache-2.0 per HF cardData; keep licence text and NOTICE with any distributed adapter. A student trained on Gemma 4 or gpt-oss outputs carries no extra naming duty under Apache-2.0 (models.md §4), but every teacher condition in configs/teacher_policy.json must be acknowledged on each record.",
+    "loader_note": "Same UNVERIFIED loader question as arm B (models.md §8)."
+  },
+  "secondary_model": {
+    "role": "secondary",
+    "repo_id": "google/gemma-4-E2B-it",
+    "revision": "3e22461f65e89153144f8adb70e3b8c2cc9845a7",
+    "license": "apache-2.0",
+    "gated": false,
+    "loader": "AutoModelForCausalLM",
+    "params": "5.12B total, 2.3B effective",
+    "source": "research-notes/models.md §3a",
+    "note": "Only after E4B passes G1 in arm C."
+  },
+  "teachers": [
+    {
+      "policy_entry": "gpt-oss-self-hosted",
+      "provider": "openai",
+      "model": "openai/gpt-oss-120b",
+      "channel": "self_hosted",
+      "revision": "b5c939de8f754692c1647ca79fbf85e8c1e70f8a",
+      "weights_license": "apache-2.0 + gpt-oss USAGE_POLICY",
+      "hardware": "one 80 GB GPU with native MXFP4 (training-distill.md §3.1 row 8, LIVE L31)",
+      "source": "research-notes/models.md §3a (SHA); training-distill.md §3.3 practical first teacher"
+    },
+    {
+      "policy_entry": "gemma-4-self-hosted",
+      "provider": "google",
+      "model": "google/gemma-4-31B-it",
+      "channel": "self_hosted",
+      "revision": "842da3794eaa0b77d5f08bae87a17459d91ff475",
+      "weights_license": "apache-2.0",
+      "hardware": "one 40-80 GB GPU (training-distill.md §3.3; models.md §3b about 20 GB at 4-bit, INFERRED)",
+      "source": "research-notes/models.md §3a (SHA); training-distill.md §3.3 practical first teacher"
+    }
+  ],
+  "dataset": {
+    "tasks": [
+      "status_procedure_classification",
+      "entity_date_extraction"
+    ],
+    "benchmark_dir": "datasets/benchmark/v0",
+    "eval_splits": [
+      "dev",
+      "test",
+      "adversarial_holdout"
+    ],
+    "train": {
+      "status": "EMPTY",
+      "builder": "training/build_sft_dataset.py",
+      "examples_file": "datasets/benchmark/v0/train_with_teacher.jsonl",
+      "sft_file": "datasets/sft/artemis-v0/train_with_teacher.sft.jsonl",
+      "teacher_records_file": "datasets/teacher/artemis-v0/teacher_records.jsonl",
+      "allow_teacher_generated": true,
+      "note": "EMPTY: there is no train split and no teacher ledger. Build order: (1) arm B's reviewed gold; (2) teachers label the train prompts only, never dev/test/adversarial_holdout prompts (training-distill.md §4.6); (3) each answer becomes a TeacherRecord with structured labels only; (4) deterministic checks, the teacher gate and human review; (5) survivors become teacher_generated examples whose expected equals the gated output; (6) mix with the gold about 1:1 and subsample to arm B's tokens and steps (training-distill.md §4.2). Every train question needs both Artemis labels (classification and entity extraction) because the runner asks one prompt for both tasks."
+    },
+    "leakage_guard": {
+      "ngram": 3,
+      "unit": "word",
+      "metric": "jaccard",
+      "max_overlap": 0.5,
+      "exact_duplicates": "refuse",
+      "why": "Same guard as arm B; teacher paraphrases of eval questions are the main new leakage risk, so the threshold is not relaxed for this arm."
+    },
+    "label_rules": [
+      "One SFT record per question. The runner asks one prompt and one 7-key schema for both Artemis tasks, so a train question needs both its status_procedure_classification and its entity_date_extraction example (same exact question text and payload code); a question with only one label is refused, never completed with a guess.",
+      "The classification label must state current_status and target_status (null allowed) and needs_clarification (true or false) explicitly; dates come from the entity label. not_status_tokens and status_codes are scoring labels, not target keys.",
+      "The target is that 7-key object as compact JSON in the runner's schema key order; no reasoning text, no evidence text, no legal content.",
+      "A teacher label is a candidate, never gold: it needs passing deterministic checks, a teacher gate pass and human review (machine_checked at least; human_verified for critical examples).",
+      "A teacher is never asked for reasoning; records keep the final JSON only and the gate refuses reasoning keys or <think> markers.",
+      "Teachers see train prompts only."
+    ]
+  },
+  "prompt": {
+    "template_id": "artemis-sft/v1",
+    "sha256": "f488fd1b93eb495b2452a287bac3110dd0914bc87430e5134f1c50e1090d3f7f",
+    "defined_in": "waymaker_ai/evaluation/baselines/model.py (build_messages, system_prompt, DECODING) and waymaker_ai/evaluation/predictions.py (model_output_schema); sft_dataset.prompt_sha256 hashes all three",
+    "note": "Training and evaluation use the runner's own openai_compatible request: one system prompt and one 7-key schema for both Artemis tasks, user message = question (prefixed by the UI payload code when present). A change to the runner's prompt, schema or decoding changes this hash and the config stops loading."
+  },
+  "training": {
+    "method": "qlora",
+    "framework": "TRL SFTTrainer + PEFT LoRA + bitsandbytes 4-bit (training/train_qlora.py)",
+    "data_format": "TRL conversational prompt-completion records",
+    "distillation": {
+      "kind": "response-level (sequence) distillation of structured labels, filtered; no logit distillation",
+      "why": "Teacher and student vocabularies differ (gpt-oss vs Gemma) and API-style serving returns no full distributions (training-distill.md §2.1 logit-KD row with verifier correction). Label-only targets keep the student from imitating a teacher's prose.",
+      "teacher_decoding": {
+        "temperature": 0,
+        "constrained_json": true,
+        "reasoning": "never requested; use the lowest reasoning setting the serving stack exposes and keep only the final channel"
+      },
+      "gate": "waymaker_ai.distillation.teacher_policy.gate_record (policy recomputed at build time; legal_signoff must be approved)",
+      "human_review": "at least 10% of kept items and 100% of critical items (training-distill.md §4.8)",
+      "mix": "about 1:1 teacher:gold, subsampled to arm B's training tokens and steps"
+    },
+    "quantization": {
+      "load_in_4bit": {
+        "value": true,
+        "why": "Same as arm B, so the only difference is the data."
+      },
+      "bnb_4bit_quant_type": {
+        "value": "nf4",
+        "why": "Same as arm B (training-distill.md §4.2)."
+      },
+      "bnb_4bit_use_double_quant": {
+        "value": true,
+        "why": "Same as arm B (models.md §6)."
+      },
+      "compute_dtype": {
+        "value": "auto",
+        "why": "bf16 where supported, fp16 on a T4; same rule as arm B."
+      }
+    },
+    "lora": {
+      "r": {
+        "value": 16,
+        "why": "Same as arm B: equal capacity, so a difference comes from the data."
+      },
+      "alpha": {
+        "value": 32,
+        "why": "Same as arm B."
+      },
+      "dropout": {
+        "value": 0.05,
+        "why": "Same as arm B (INFERRED value)."
+      },
+      "target_modules": {
+        "value": [
+          "q_proj",
+          "k_proj",
+          "v_proj",
+          "o_proj",
+          "gate_proj",
+          "up_proj",
+          "down_proj"
+        ],
+        "why": "Same as arm B; existence in Gemma 4 UNVERIFIED; train_qlora.py excludes vision/audio tower matches and refuses a name with no language-model match."
+      },
+      "bias": {
+        "value": "none",
+        "why": "Same as arm B."
+      }
+    },
+    "optimization": {
+      "learning_rate": {
+        "value": 0.0002,
+        "why": "Same as arm B."
+      },
+      "num_train_epochs": {
+        "value": 2,
+        "why": "Same as arm B; equal steps are enforced by subsampling, not by changing epochs."
+      },
+      "max_seq_length": {
+        "value": 2048,
+        "why": "Questions are capped at 2,000 characters (example.schema.json); the runner's system prompt is about 1,400 characters and the JSON target is short, so 2048 tokens leaves room; 2048 is also the length behind the models.md §6 VRAM rule. train_qlora.py refuses any record that would be truncated (token counts INFERRED until measured)."
+      },
+      "per_device_train_batch_size": {
+        "value": 1,
+        "why": "Same as arm B."
+      },
+      "gradient_accumulation_steps": {
+        "value": 16,
+        "why": "Same as arm B."
+      },
+      "optimizer": {
+        "value": "paged_adamw_8bit",
+        "why": "Same as arm B."
+      },
+      "lr_scheduler": {
+        "value": "cosine",
+        "why": "Same as arm B."
+      },
+      "warmup_ratio": {
+        "value": 0.03,
+        "why": "Same as arm B."
+      },
+      "gradient_checkpointing": {
+        "value": true,
+        "why": "Same as arm B."
+      },
+      "loss": {
+        "value": "completion_only",
+        "why": "Same as arm B."
+      },
+      "seeds": {
+        "value": [
+          1,
+          2,
+          3
+        ],
+        "why": "Same as arm B (training-distill.md §4.2)."
+      }
+    },
+    "outputs": "Adapter and run_record.json per seed, plus the teacher provenance table (one row per TeacherRecord: teacher id, revision, serving host, terms URL and version, request date, prompt hash, gate result, reviewer).",
+    "smoke_run": "As arm B."
+  },
+  "hardware": {
+    "assumption": "Student: one 16-24 GB GPU, as arm B. Teachers: one 80 GB GPU for gpt-oss-120b and one 40-80 GB GPU for Gemma 4 31B-it (compute class C2), only for the labelling pass.",
+    "vram_estimate": "gpt-oss-120b about 65-70 GB with MXFP4; Gemma 4 31B about 20 GB at 4-bit (models.md §3b, INFERRED).",
+    "fits": [
+      "Student: as arm B.",
+      "Teachers: no free tier offers an 80 GB GPU, so the teacher pass is a paid rental and is not authorised in Mission 001."
+    ]
+  },
+  "compute": {
+    "paid_endpoint": false,
+    "managed_finetuning": null,
+    "note": "Student training is local or free only. The teacher pass needs a rented 80 GB GPU, which is a paid run: it needs the owner's explicit authorisation and the policy sign-off first. No hosted teacher API is permitted by the policy."
+  },
+  "cost": {
+    "paid_runs_authorised": false,
+    "estimate_usd": {
+      "low": 10,
+      "high": 50
+    },
+    "basis": "Arm B's $0-15 plus the teacher pass: gpt-oss-120b on one H100 80 GB at RunPod Secure $2.89/h (PCIe) to $3.99/h (SXM) and Gemma 4 31B on one A100-80GB at $1.79/h, about 2-6 hours each for 5-20k short structured labels (hours INFERRED), so about $9-35 (2 h x ($2.89 + $1.79) to 6 h x ($3.99 + $1.79)); with arm B's $0-15 the total is about $10-50. The human review of kept items dominates the real cost.",
+    "dominant_cost": "Human review of teacher labels (at least 10% of kept items, 100% of critical ones) and counsel time for the policy sign-off.",
+    "sources": [
+      "research-notes/cost.md §6: RunPod Secure H100 PCIe $2.89/h, SXM $3.99/h, A100-80GB $1.79/h (VERIFIED, accessed 2026-10-19)",
+      "research-notes/cost.md §7: overhead and data-cost note (INFERRED)",
+      "research-notes/training-distill.md §4.2 arm C: 5-20k teacher candidates, 30-60% pass rate (INFERRED)"
+    ]
+  },
+  "evaluation": {
+    "runner": "waymaker_ai.evaluation (sibling task; confirm flags with --help)",
+    "baseline_kind": "openai_compatible",
+    "serving": [
+      "vLLM with --enable-lora serving the student base at the pinned revision plus the seed adapter, JSON-schema structured outputs."
+    ],
+    "decoding": {
+      "source": "waymaker_ai.evaluation.baselines.model.DECODING",
+      "temperature": 0,
+      "seed": 0,
+      "max_tokens": 512,
+      "constrained_json": true,
+      "schema": "waymaker_ai.evaluation.predictions.model_output_schema(task) (response_format json_schema, strict)",
+      "why": "Same as arm A; differences must come from the adapter only."
+    },
+    "splits": [
+      "dev",
+      "test",
+      "adversarial_holdout"
+    ],
+    "split_discipline": "As arm B. Teachers never see any evaluation prompt.",
+    "metrics": [
+      "status_exact",
+      "subcode_exact (a parent in the subcode field or a parent fallback is wrong)",
+      "flags parent_fallback + parent_in_subcode_field (critical; CLE-4): count must be 0",
+      "procedure_fine",
+      "procedure_coarse (via contracts.FINE_TO_COARSE; items with no coarse equivalent are reported as not scorable)",
+      "flag procedure_scope_mixed (critical; CLE-3: a visa-scope procedure for a stay question or the reverse): count must be 0",
+      "not_status_token_respected and flag code_from_non_code_token ('a 3 month' must not become A-3)",
+      "dates_exact and status_codes_exact (entity_date_extraction)",
+      "clarification (only where needs_clarification is labelled)",
+      "structured-output validity rate (answers with no schema violation)",
+      "latency p50 / p95 ms",
+      "per adversarial class and per language (ko, en, other) breakdown",
+      "teacher gate pass rate and refusal reasons (from the build report)"
+    ],
+    "reporting": "Mean over 3 seeds with a 95% bootstrap CI; paired comparison against arm B on the same items."
+  },
+  "gates": [
+    {
+      "id": "G0-legal",
+      "applies_to": [
+        "C"
+      ],
+      "condition": "configs/teacher_policy.json legal_signoff is approved by a named reviewer, and every configured teacher is permitted by its entry.",
+      "threshold": null,
+      "source": "training-distill.md §3.2, §4.7 G0; enforced by waymaker_ai/distillation/preflight.py",
+      "on_fail": "No teacher may be served for labelling; train_qlora.py refuses."
+    },
+    {
+      "id": "G0-data",
+      "applies_to": [
+        "B",
+        "C"
+      ],
+      "condition": "As arm B, plus every teacher_generated example has exactly one accepted TeacherRecord whose output equals its expected labels.",
+      "threshold": 0,
+      "source": "training-distill.md §3.3 mandatory rules, §4.6; preflight.py",
+      "on_fail": "train_qlora.py refuses to start."
+    },
+    {
+      "id": "G0-eval-frozen",
+      "applies_to": [
+        "A",
+        "B",
+        "C"
+      ],
+      "condition": "Evaluation splits frozen with a committed hash manifest; teachers never received an evaluation prompt.",
+      "threshold": null,
+      "source": "training-distill.md §4.6, §4.7 G0; 12-evaluation-methodology.md",
+      "on_fail": "Do not score test or adversarial_holdout."
+    },
+    {
+      "id": "D1-need-for-a-model",
+      "applies_to": [
+        "B",
+        "C"
+      ],
+      "condition": "Arm C starts only after arm B passed G1 and D1 held for arm B.",
+      "threshold": null,
+      "source": "13-artemis-experiment.md §6",
+      "on_fail": "Do not run arm C."
+    },
+    {
+      "id": "G1-safety",
+      "applies_to": [
+        "A",
+        "B",
+        "C"
+      ],
+      "condition": "The runner's flags parent_fallback, parent_in_subcode_field and procedure_scope_mixed occur 0 times on test and adversarial_holdout for every seed, and no metric is worse than arm B beyond its CI.",
+      "threshold": 0,
+      "source": "training-distill.md §4.5, §4.7 G1; 12-evaluation-methodology.md",
+      "on_fail": "NO-GO: the arm ends."
+    },
+    {
+      "id": "G2-improvement",
+      "applies_to": [
+        "B",
+        "C"
+      ],
+      "condition": "Arm C beats arm B on adversarial_holdout or non-ko/en items with a 95% bootstrap CI lower bound above 0, at equal training tokens.",
+      "threshold": "CI lower bound > 0",
+      "source": "training-distill.md §4.1 H2; 12-evaluation-methodology.md",
+      "on_fail": "NO-GO: keep arm B."
+    },
+    {
+      "id": "G4-format",
+      "applies_to": [
+        "A",
+        "B",
+        "C"
+      ],
+      "condition": "Structured-output validity is 1.0 (no schema violation) under constrained decoding.",
+      "threshold": 1.0,
+      "source": "training-distill.md §4.7 G4",
+      "on_fail": "NO-GO."
+    },
+    {
+      "id": "G5-human-review",
+      "applies_to": [
+        "B",
+        "C"
+      ],
+      "condition": "As arm B.",
+      "threshold": "kappa >= 0.6 (proposal)",
+      "source": "training-distill.md §4.7 G5",
+      "on_fail": "NO-GO for any use beyond offline research."
+    },
+    {
+      "id": "G6-latency",
+      "applies_to": [
+        "A",
+        "B",
+        "C"
+      ],
+      "condition": "As arm A.",
+      "threshold": "p95 well under 7000 ms; exact budget from 12-evaluation-methodology.md",
+      "source": "training-distill.md §4.7 G6",
+      "on_fail": "Offline use only."
+    }
+  ],
+  "references": [
+    "docs/ai/waymaker-genesis/13-artemis-experiment.md",
+    "docs/ai/waymaker-genesis/12-evaluation-methodology.md",
+    "docs/ai/waymaker-genesis/research-notes/training-distill.md",
+    "docs/ai/waymaker-genesis/research-notes/models.md",
+    "docs/ai/waymaker-genesis/research-notes/cost.md",
+    "experiments/waymaker-ai/configs/teacher_policy.json"
+  ],
+  "limitations": [
+    "Teacher agreement is not legal truth; disagreement between the two teachers routes an item to human review, it never votes a label in (training-distill.md §2.1 multi-teacher row).",
+    "The teacher generation harness (serving, prompting, ledger writing) is specified here but not built.",
+    "Every paid step (teacher rental) needs explicit owner authorisation in addition to the legal sign-off."
+  ]
+}

@@ -98,6 +98,7 @@
             <svg class="wm-nav-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3v18"/><path d="m19 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1"/><path d="m5 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M7 21h10"/></svg>
             <span class="wm-nav-text"><span class="wm-nav-label" data-shell="navResearch">법령·판례 찾기</span><span class="wm-nav-desc" data-shell="navResearchDesc">공식 근거를 직접 검색</span></span>
           </a>
+        <a href="index.html#csTools" class="wm-workspace-nav-link"><img class="wm-nav-icon" src="assets/icons/civic/compass.svg" width="20" height="20" alt=""><span class="wm-nav-text"><span class="wm-nav-label">전체 도구</span><span class="wm-nav-desc">Visable 서비스 둘러보기</span></span></a>
         </nav>
         <div class="wm-workspace-links">
           <p class="wm-workspace-links-label" data-shell="navMore">다른 도구</p>
@@ -2945,7 +2946,7 @@
             loadVisaData();
             setupAiModeSelector();
             // Quick Answer handoff: bring the original question into the box so the user continues, not restarts.
-            const handoffPacket = qaHandoff();
+            const handoffPacket = new URLSearchParams(location.search).get('handoff') === 'quick-answer' ? qaHandoff() : null;
             if (handoffPacket && handoffPacket.query) {
                 const box = document.getElementById('aiQ');
                 if (box && !box.value) { box.value = handoffPacket.query; try { box.dispatchEvent(new Event('input', { bubbles: true })); } catch (e) {} box.focus(); }
@@ -2981,6 +2982,25 @@
             } catch (e) {}
             applyNationalityDomainHint();
             applyScenarioHandoffHint();
+            if (new URLSearchParams(location.search).get('handoff') === 'search') {
+                try {
+                    const raw = sessionStorage.getItem('visable.search-handoff');
+                    const packet = raw ? JSON.parse(raw) : null;
+                    const age = packet ? Date.now() - packet.at : -1;
+                    if (packet && packet.version === 1 && age >= 0 && age < 30 * 60 * 1000 && typeof packet.query === 'string') {
+                        const box = document.getElementById('aiQ');
+                        if (box) {
+                            box.value = packet.query.slice(0, 300);
+                            box.dispatchEvent(new Event('input', { bubbles: true }));
+                            const note = document.createElement('p');
+                            note.className = 'search-handoff-note'; note.setAttribute('role', 'status');
+                            note.textContent = packet.lang === 'ko' ? '여러 절차를 함께 살펴볼 질문이라 Waymaker로 연결했어요. 내용을 확인한 뒤 전송해 주세요.' : 'This question involves several steps. Review it here, then send when ready.';
+                            box.parentElement.before(note); box.focus();
+                        }
+                    }
+                    sessionStorage.removeItem('visable.search-handoff');
+                } catch (e) { /* a direct visit keeps the normal chat available */ }
+            }
 
             const qEl = document.getElementById('aiQ');
             if (qEl) {

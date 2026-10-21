@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="referrer" content="no-referrer">
+  <meta name="description" content="VISABLE 출입국 행정·서류 콘텐츠 운영 스튜디오. 안전한 데이터 관리, 검토 및 무결성 게시 파이프라인.">
+  <title>VISABLE 콘텐츠 운영 스튜디오</title>
+  <link rel="icon" href="assets/brand/visable-favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/css/content-studio.css">
+</head>
+<body>
+  <a class="cs-skip" href="#cs-main">본문으로 건너뛰기</a>
+
+  <!-- Header -->
+  <header class="cs-header" role="banner">
+    <div class="cs-brand">
+      <a href="immigration-checklists.html" class="cs-brand-link" title="공개 서류 안내로 이동">
+        <span class="cs-brand-mark" aria-hidden="true">V</span>
+      </a>
+      <div>
+        <h1 class="cs-brand-title">VISABLE 콘텐츠 운영 스튜디오</h1>
+        <p class="cs-brand-sub">체류자격 서류 관리 · 인간 검토 · 관서별 차이 · 무결성 배포</p>
+      </div>
+    </div>
+    <div class="cs-header-meta">
+      <a href="immigration-checklists.html" class="cs-link-quiet" target="_blank" rel="noopener noreferrer">공개 서류 안내 ↗</a>
+      <a href="knowledge-studio.html" class="cs-link-quiet" target="_blank" rel="noopener noreferrer">지식 스튜디오 ↗</a>
+      <div class="cs-session" id="cs-session" hidden>
+        <span class="cs-role-badge" id="cs-role-badge" data-role="editor">편집자</span>
+        <span id="cs-operator" class="cs-operator-name"></span>
+        <button type="button" class="cs-btn cs-btn-quiet" id="cs-signout">로그아웃</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Login Section -->
+  <section class="cs-login-section" id="cs-login-section" aria-labelledby="cs-login-title">
+    <div class="cs-login-card">
+      <div class="cs-login-badge">OPERATOR AUTHENTICATION</div>
+      <h2 id="cs-login-title">운영자 인증</h2>
+      <p class="cs-muted">
+        출입국 서류 정보의 수정, 법령 검토 및 배포는 인증된 운영자만 수행할 수 있습니다.<br>
+        토큰은 현재 브라우저 세션에만 안전하게 보관됩니다.
+      </p>
+      <form id="cs-login-form" class="cs-login-form" autocomplete="off">
+        <div class="cs-form-group">
+          <label for="cs-token">운영자 보안 토큰 (Operator Token)</label>
+          <input id="cs-token" name="token" type="password" required minlength="16" placeholder="토큰을 입력하세요" autocomplete="off" spellcheck="false">
+        </div>
+        <div class="cs-login-actions">
+          <button type="submit" class="cs-btn cs-btn-primary" id="cs-login-submit">스튜디오 연결</button>
+        </div>
+      </form>
+      <div id="cs-login-error" class="cs-alert cs-alert-bad" role="alert" hidden></div>
+      <div class="cs-login-notice">
+        <strong>운영 권한 체계 (RBAC)</strong>
+        <ul>
+          <li><strong>조회자 (Viewer)</strong>: 전체 647개 항목 및 변경 이력 열람</li>
+          <li><strong>편집자 (Editor)</strong>: 서류 안내 수정 및 개정 초안 제출</li>
+          <li><strong>검토자 (Reviewer)</strong>: 공식 HTTPS 근거 대조 및 초안 승인·반려</li>
+          <li><strong>게시자 (Publisher)</strong>: 647개 전수 무결성 검증 및 운영 배포 확정</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main App Surface -->
+  <div class="cs-app" id="cs-app" hidden>
+    <nav class="cs-nav" aria-label="콘텐츠 스튜디오 메뉴">
+      <ul role="tablist" id="cs-tabs" class="cs-tablist">
+        <li role="presentation">
+          <button type="button" role="tab" data-view="dashboard" id="tab-dashboard" aria-selected="true" aria-controls="view-dashboard">
+            <span class="cs-tab-icon" aria-hidden="true">📊</span>
+            <span>대시보드</span>
+          </button>
+        </li>
+        <li role="presentation">
+          <button type="button" role="tab" data-view="editor" id="tab-editor" aria-selected="false" aria-controls="view-editor">
+            <span class="cs-tab-icon" aria-hidden="true">📝</span>
+            <span>자격·서류 편집기</span>
+          </button>
+        </li>
+        <li role="presentation">
+          <button type="button" role="tab" data-view="offices" id="tab-offices" aria-selected="false" aria-controls="view-offices">
+            <span class="cs-tab-icon" aria-hidden="true">🏛️</span>
+            <span>관서별 차이 관리</span>
+          </button>
+        </li>
+        <li role="presentation">
+          <button type="button" role="tab" data-view="reviews" id="tab-reviews" aria-selected="false" aria-controls="view-reviews">
+            <span class="cs-tab-icon" aria-hidden="true">⚖️</span>
+            <span>검토·승인 대기열</span>
+            <span class="cs-tab-badge" id="cs-pending-badge" hidden>0</span>
+          </button>
+        </li>
+        <li role="presentation">
+          <button type="button" role="tab" data-view="diff" id="tab-diff" aria-selected="false" aria-controls="view-diff">
+            <span class="cs-tab-icon" aria-hidden="true">🔍</span>
+            <span>버전 비교 (Diff)</span>
+          </button>
+        </li>
+        <li role="presentation">
+          <button type="button" role="tab" data-view="publish" id="tab-publish" aria-selected="false" aria-controls="view-publish">
+            <span class="cs-tab-icon" aria-hidden="true">🚀</span>
+            <span>게시 파이프라인</span>
+          </button>
+        </li>
+      </ul>
+    </nav>
+
+    <main id="cs-main" class="cs-main" tabindex="-1">
+      <div id="cs-status-bar" class="cs-status-bar" role="status" aria-live="polite"></div>
+      <div id="cs-view-container" class="cs-view-container">
+        <!-- Views are rendered dynamically into this container -->
+      </div>
+    </main>
+  </div>
+
+  <!-- Reusable Dialog -->
+  <dialog id="cs-dialog" class="cs-dialog" aria-labelledby="cs-dialog-title">
+    <form method="dialog" id="cs-dialog-form">
+      <h2 id="cs-dialog-title" class="cs-dialog-title"></h2>
+      <div id="cs-dialog-body" class="cs-dialog-body"></div>
+      <div class="cs-dialog-actions">
+        <button type="button" class="cs-btn cs-btn-quiet" id="cs-dialog-cancel">취소</button>
+        <button type="submit" class="cs-btn cs-btn-primary" id="cs-dialog-confirm">확인</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="assets/js/backend-origin.js"></script>
+  <script src="assets/js/content-studio.js"></script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+# Adapters and trainer checkpoints never go into git (README section 8).
+# run_record.json files do: they are the audit record of each run.
+runs/**/adapter/
+runs/**/trainer/

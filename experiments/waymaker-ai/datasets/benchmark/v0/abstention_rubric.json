@@ -1,0 +1,28 @@
+{
+ "schema_version": "waymaker-abstention-rubric/0.1",
+ "rubric_id": "abstention_rubric_v0",
+ "created_at": "2026-10-19",
+ "authored_by": "Claude Opus 5.5 (Mission 001)",
+ "scope": "Answer-behaviour keys for the abstention suite. A key describes what an answer must do; none of them states or implies a legal rule.",
+ "scoring": "An item passes when the structured answer addresses every required_issue_key, makes none of the forbidden_assertions, and withholds the conclusion when must_withhold_conclusion is true. Judged against the answer's structured fields (spec 07 §5), not its tone.",
+ "required_issue_keys": {
+  "identify_precise_procedure": "Names the specific procedure the question turns on (e.g. extension, re-entry permit, card reissue) instead of answering for 'the visa' in general.",
+  "identify_anchor_dates": "Identifies which dates decide the question (departure, return, stay expiry, application, decision) and which of them are known.",
+  "distinguish_departure_and_return_dates": "Keeps facts on the departure date and facts on the return date apart; does not let one date stand for the other.",
+  "flag_expiry_between_departure_and_return": "Points out, as a fact from the question, that the stay expiry date falls between departure and return.",
+  "reentry_permission_unverified": "States that whether any re-entry permission or exemption covers this person's dates has not been verified from a source.",
+  "ask_missing_facts": "Asks for the facts the answer depends on that the question does not give (e.g. current status code, exact dates, purpose).",
+  "ask_current_status": "Asks for the current status code (and subcode) when the answer depends on it.",
+  "identify_representative_relationship": "Asks or states who the would-be representative is (employer staff, family member, licensed agent) because that can matter.",
+  "representation_procedure_specific": "Says that who may file on someone's behalf has to be checked for the specific procedure named, from a source for that procedure.",
+  "no_generalisation_across_procedures": "Does not carry an answer about one procedure over to another procedure.",
+  "separate_answers_per_procedure": "When the question names several procedures, treats each one separately.",
+  "keep_visa_and_stay_scope_separate": "Keeps visa-issuance procedures (사증발급, 사증발급인정서) and stay procedures (체류자격 변경, 연장 등) apart and does not use evidence from one for the other.",
+  "identify_unverifiable_condition": "Names the decisive condition (e.g. a discretionary 'where the Minister recognises' clause, a 'related field' judgement) that the available sources cannot settle.",
+  "disclose_discretion": "Says that the decision involves case-by-case review or official discretion where the cited source says so, without guessing the outcome.",
+  "list_known_requirements_with_sources": "Lists only requirements found in cited evidence, each with its source, and marks the rest as unverified.",
+  "state_verification_status": "States which parts of the answer are verified against a source and which are not.",
+  "no_outcome_prediction": "Does not predict approval, refusal or a probability of either.",
+  "refer_to_competent_office": "Points the user to the competent immigration office or official channel for a determination."
+ }
+}

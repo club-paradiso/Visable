@@ -3,6 +3,7 @@ const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 
 let structuredCase = null;
 let currentStep = 1;
+let analysisSequence = 0;
 let sessionNarrative = '';
 let sessionLocale = 'ko-KR';
 const skippedClarifications = new Set();
@@ -114,41 +115,34 @@ async function request(path, payload, { timeoutMs = 30000 } = {}) {
   const url = `${apiBase}${path}`;
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
-  let response;
   try {
-    response = await fetch(url, {
+    const response = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify(payload),
-      cache: 'no-store',
-      signal: controller.signal,
+      body: JSON.stringify(payload), cache: 'no-store', signal: controller.signal,
     });
-  } catch (error) {
-    console.error('Enforcement API connection failure', { url, error });
-    if (error?.name === 'AbortError') {
-      throw new Error('분석 시간이 길어져 요청을 멈췄습니다. 잠시 후 다시 시도해 주세요.');
+    // Keep the abort active through the body, not just until response headers.
+    if (!(response.headers.get('content-type') || '').includes('application/json')) {
+      throw new Error(`분석 서버 응답 형식을 확인하지 못했습니다. (${response.status})`);
     }
-    throw new Error('Visable 분석 서버에 연결하지 못했습니다. 잠시 후 다시 시도해 주세요.');
+    const data = await response.json();
+    if (!response.ok) {
+      const friendly = {
+        'case text is required': '사례 설명을 입력해 주세요.',
+        'invalid assessmentDate': '분석 기준일 형식을 확인해 주세요.',
+        'invalid structured enforcement case': '확인한 사실 중 형식이 맞지 않는 항목이 있습니다. 입력값을 다시 확인해 주세요.',
+      }[data.detail];
+      throw new Error(friendly || `분석 서버 요청에 실패했습니다. (${response.status})`);
+    }
+    if (!data || typeof data !== 'object') throw new Error('분석 서버의 응답을 확인하지 못했습니다. 다시 시도해 주세요.');
+    return data;
+  } catch (error) {
+    if (error?.name === 'AbortError') throw new Error('분석 시간이 길어져 요청을 멈췄습니다. 잠시 후 다시 시도해 주세요.');
+    if (error instanceof TypeError || error instanceof SyntaxError) throw new Error('Visable 분석 서버에 연결하지 못했습니다. 잠시 후 다시 시도해 주세요.');
+    throw error;
   } finally {
     clearTimeout(timer);
   }
-
-  const contentType = response.headers.get('content-type') || '';
-  const data = contentType.includes('application/json')
-    ? await response.json().catch(() => ({}))
-    : {};
-
-  if (!response.ok) {
-    console.error('Enforcement API request failure', { url, status: response.status });
-    const detail = typeof data.detail === 'string' ? data.detail : '';
-    const friendly = {
-      'case text is required': '사례 설명을 입력해 주세요.',
-      'invalid assessmentDate': '분석 기준일 형식을 확인해 주세요.',
-      'invalid structured enforcement case': '확인한 사실 중 형식이 맞지 않는 항목이 있습니다. 입력값을 다시 확인해 주세요.',
-    }[detail];
-    throw new Error(friendly || detail || `분석 서버 요청에 실패했습니다. (${response.status})`);
-  }
-  return data;
 }
 
 function detectLocale(text) {
@@ -438,6 +432,7 @@ function resultNotice(className, title, body) {
 }
 
 function renderAnalysisLoading() {
+  $('#result-root').setAttribute('aria-busy', 'true');
   $('#result-root').innerHTML = `
     <div class="analysis-loading" role="status">
       <span class="loading-spinner" aria-hidden="true"></span>
@@ -449,6 +444,7 @@ function renderAnalysisLoading() {
 }
 
 function renderResult(data) {
+  $('#result-root').setAttribute('aria-busy', String(Boolean(data.analysisPending)));
   const baseline = data.legalBaseline || {};
   const prediction = data.prediction || {};
   const grounding = data.lawGrounding || {};
@@ -457,13 +453,15 @@ function renderResult(data) {
   const sources = prediction.evidence || [];
   const similar = prediction.similarCases || [];
   const limitations = prediction.limitations || [];
-  const groundingLabel = groundingLabels[grounding.status] || grounding.status || '상태 확인 불가';
-  const modelLabel = prediction.modelId ? `모델: ${prediction.modelId}` : '검증된 AI 결과 없음';
+  const groundingLabel = groundingLabels[grounding.status] || '실시간 검증 없음 · 저장된 법령 기준';
+  const modelLabel = data.analysisPending ? 'AI 예상 확인 중' : prediction.modelId ? '검증된 AI 예상' : '검증된 AI 결과 없음';
   const durationDays = Number(data.case?.durationDays ?? structuredCase?.durationDays);
   const boundaryNotice = durationDays === 30
     ? resultNotice('baseline-boundary-note', '30일은 월 단위 경계에 걸릴 수 있습니다', '별표 7은 “개월” 단위 기준을 사용합니다. 정확한 시작일·종료일을 적으면 경계 판단이 더 정확해집니다.')
     : '';
-  const degradedNotice = monetary
+  const degradedNotice = data.analysisPending
+    ? resultNotice('prediction-degraded-note', '법령 기준을 먼저 확인하세요', 'AI 예상은 확인 중입니다. 검증이 끝나면 이 화면에서 이어서 표시해요.')
+    : monetary
     ? ''
     : resultNotice('prediction-degraded-note', '법령 계산은 그대로 유효합니다', 'AI 예측 실패와 법령 기준 산출 실패는 다른 상태입니다. 왼쪽 법령 기준을 우선 확인하세요.');
 
@@ -484,8 +482,8 @@ function renderResult(data) {
         <p class="card-kicker">VISABLE AI PREDICTION</p>
         <h3>Visable AI 예상</h3>
         <p class="subtle">예상 범칙금</p>
-        <p class="amount">${monetary ? range(monetary.predictedLikelyRange) : 'AI 추정 보류'}</p>
-        <p>${monetary?.pointEstimateKrw != null ? `대표 추정액: <strong>${won(monetary.pointEstimateKrw)}</strong>` : monetary ? '근거가 충분하지 않아 대표 추정액을 표시하지 않습니다.' : '유효성 검증을 통과한 구조화 예측이 없어 금액을 임의로 만들지 않았습니다.'}</p>
+        <p class="amount">${data.analysisPending ? '확인 중' : monetary ? range(monetary.predictedLikelyRange) : 'AI 추정 보류'}</p>
+        <p>${data.analysisPending ? '법령 기준은 먼저 확인할 수 있어요. AI 예상은 검증 후 표시해요.' : monetary?.pointEstimateKrw != null ? `대표 추정액: <strong>${won(monetary.pointEstimateKrw)}</strong>` : monetary ? '근거가 충분하지 않아 대표 추정액을 표시하지 않습니다.' : '유효성 검증을 통과한 구조화 예측이 없어 금액을 임의로 만들지 않았습니다.'}</p>
         <p class="subtle">${escapeHtml(modelLabel)}</p>
         ${degradedNotice}
       </article>
@@ -494,13 +492,13 @@ function renderResult(data) {
     <article class="result-lead">
       <p class="card-kicker">DISPOSITION</p>
       <h3>예상 행정처분</h3>
-      ${disposition(prediction.primaryDisposition, true)}
+      ${data.analysisPending ? '<p class="subtle">AI 예상 결과를 확인하고 있어요.</p>' : disposition(prediction.primaryDisposition, true)}
       ${(prediction.alternativeDispositions || []).map((item) => disposition(item)).join('')}
     </article>
 
     <div class="result-details">
       <details>
-        <summary>예측 신뢰도 · ${escapeHtml(confidenceLabels[confidence.level] || confidence.level)}</summary>
+        <summary>예측 신뢰도 · ${data.analysisPending ? '분석 중' : escapeHtml(confidenceLabels[confidence.level] || confidence.level)}</summary>
         <div class="detail-body">
           <h3>예측 신뢰도</h3>
           ${factors((confidence.reasons || []).map((label, index) => ({ label, basis: index ? 'INFERRED' : 'SUPPORTED' })))}
@@ -549,6 +547,7 @@ function renderResult(data) {
 }
 
 async function analyzeCase(caseData, { form, errorTarget } = {}) {
+  const generation = ++analysisSequence;
   const normalizedCase = { ...caseData, assessmentDate: resolveAssessmentDate() };
   structuredCase = normalizedCase;
   const fingerprint = analysisFingerprint(normalizedCase);
@@ -561,17 +560,39 @@ async function analyzeCase(caseData, { form, errorTarget } = {}) {
   setBusy(form, true);
   renderAnalysisLoading();
   showStep(3);
+  let baselineResponse = null;
   try {
-    const response = await request('/api/enforcement/analyze', { caseData: normalizedCase }, { timeoutMs: 30000 });
-    analysisCache.set(fingerprint, response);
+    baselineResponse = await request('/api/enforcement/analyze', { caseData: normalizedCase, baselineOnly: true }, { timeoutMs: 10000 });
+    if (generation !== analysisSequence) return;
+    if (!baselineResponse.legalBaseline) throw new Error('법령 기준 응답이 비어 있습니다. 다시 시도해 주세요.');
+    renderResult({ ...baselineResponse, analysisPending: true });
+    const response = await request('/api/enforcement/analyze', { caseData: normalizedCase }, { timeoutMs: 28000 });
+    if (generation !== analysisSequence) return;
+    if (!response.legalBaseline) throw new Error('분석 응답이 비어 있습니다. 다시 시도해 주세요.');
+    // Do not cache transient provider failures, so another attempt really retries.
+    if (response.prediction?.status && response.prediction.status !== 'UNAVAILABLE') analysisCache.set(fingerprint, response);
     renderResult(response);
+    if (!response.prediction?.status || response.prediction.status === 'UNAVAILABLE') addAnalysisRetry();
   } catch (error) {
-    if (errorTarget) setError(errorTarget, error.message);
-    showStep(2);
-    throw error;
+    if (generation !== analysisSequence) return;
+    if (baselineResponse) {
+      renderResult(baselineResponse);
+      const note = document.createElement('p'); note.className = 'prediction-degraded-note'; note.setAttribute('role', 'status');
+      note.textContent = error.message; $('#result-root').append(note); addAnalysisRetry();
+    } else {
+      if (errorTarget) setError(errorTarget, error.message);
+      showStep(2);
+    }
   } finally {
     setBusy(form, false);
   }
+}
+
+function addAnalysisRetry() {
+  const button = document.createElement('button');
+  button.type = 'button'; button.className = 'button secondary'; button.textContent = 'AI 예상 다시 확인';
+  button.addEventListener('click', () => { button.disabled = true; analyzeCase(structuredCase); }, { once: true });
+  $('#result-root').append(button);
 }
 
 $('#case-form').addEventListener('submit', async (event) => {
@@ -632,6 +653,7 @@ function restoreNarrativeForEditing() {
 }
 
 $$('[data-back]').forEach((button) => button.addEventListener('click', () => {
+  analysisSequence++;
   const target = Number(button.dataset.back);
   if (target === 1) restoreNarrativeForEditing();
   if (target === 2 && structuredCase) renderConfirmation(structuredCase);
@@ -641,6 +663,7 @@ $$('[data-back]').forEach((button) => button.addEventListener('click', () => {
 $$('[data-step-nav]').forEach((button) => button.addEventListener('click', () => {
   const target = Number(button.dataset.stepNav);
   if (target >= currentStep) return;
+  analysisSequence++;
   if (target === 1) restoreNarrativeForEditing();
   if (target === 2 && structuredCase) renderConfirmation(structuredCase);
   showStep(target);
@@ -668,6 +691,7 @@ $('#case-text').addEventListener('input', () => {
 $('#assessment-date-today').addEventListener('click', () => setAssessmentDateToday({ force: true }));
 
 $('#restart').addEventListener('click', () => {
+  analysisSequence++;
   structuredCase = null;
   sessionNarrative = '';
   sessionLocale = 'ko-KR';

@@ -31,25 +31,22 @@ class ModelRolePolicyTests(unittest.TestCase):
 
     def test_default_final_answer_chain_matches_catalog_reconciled_policy(self):
         policy = model_policy.resolve_model_role_policy()
-        self.assertEqual(policy["final_answer_model"], "nvidia/nemotron-3-ultra-550b-a55b:free")
-        self.assertEqual(
-            policy["final_answer_model_candidates"],
-            [
-                "nvidia/nemotron-3-ultra-550b-a55b:free",
-                "google/gemma-4-31b-it:free",
-                "nvidia/nemotron-3-super-120b-a12b:free",
-                "google/gemma-4-26b-a4b-it:free",
-            ],
-        )
+        # 2026-10-21: Gemma only. The NVIDIA ':free' routes run under the NVIDIA API
+        # Trial terms (no production use) and Inkling ':free' under a research tier
+        # (no personal data); see model_policy's module docstring.
+        self.assertEqual(policy["final_answer_model"], "google/gemma-4-31b-it:free")
+        self.assertEqual(policy["final_answer_model_candidates"], ["google/gemma-4-31b-it:free", "google/gemma-4-26b-a4b-it:free"])
+        for model in policy["final_answer_model_candidates"]:
+            self.assertFalse(model.startswith(("nvidia/", "thinkingmachines/")), model)
 
     def test_gemma_is_router_and_translation_default(self):
         policy = model_policy.resolve_model_role_policy()
         self.assertEqual(policy["router_model"], "google/gemma-4-31b-it:free")
         self.assertEqual(policy["translation_model"], "google/gemma-4-31b-it:free")
 
-    def test_nemotron_super_is_verifier_default(self):
+    def test_gemma_31b_is_verifier_default(self):
         policy = model_policy.resolve_model_role_policy()
-        self.assertEqual(policy["verifier_model"], "nvidia/nemotron-3-super-120b-a12b:free")
+        self.assertEqual(policy["verifier_model"], "google/gemma-4-31b-it:free")
 
     def test_chinese_models_are_separate_from_default_final_chain(self):
         policy = model_policy.resolve_model_role_policy()
@@ -76,16 +73,8 @@ class AnswerModeTierTests(unittest.TestCase):
         plan = model_policy.resolve_answer_mode_models("basic")
         self.assertEqual(plan["mode"], "basic")
         self.assertTrue(plan["available"])
-        self.assertEqual(plan["primary"], "nvidia/nemotron-3-ultra-550b-a55b:free")
-        self.assertEqual(
-            plan["candidates"],
-            [
-                "nvidia/nemotron-3-ultra-550b-a55b:free",
-                "google/gemma-4-31b-it:free",
-                "nvidia/nemotron-3-super-120b-a12b:free",
-                "google/gemma-4-26b-a4b-it:free",
-            ],
-        )
+        self.assertEqual(plan["primary"], "google/gemma-4-31b-it:free")
+        self.assertEqual(plan["candidates"], ["google/gemma-4-31b-it:free", "google/gemma-4-26b-a4b-it:free"])
 
     def test_fast_mode_uses_light_gemma_primary_then_fast_fallback(self):
         plan = model_policy.resolve_answer_mode_models("fast")
@@ -95,12 +84,7 @@ class AnswerModeTierTests(unittest.TestCase):
         # current public-catalog identifier.
         self.assertEqual(plan["primary"], "google/gemma-4-26b-a4b-it:free")
         cands = plan["candidates"]
-        self.assertEqual(cands, [
-            "google/gemma-4-26b-a4b-it:free",
-            "nvidia/nemotron-3.5-lightning:free",
-            "thinkingmachines/inkling-small:free",
-            "google/gemma-4-31b-it:free",
-        ])
+        self.assertEqual(cands, ["google/gemma-4-26b-a4b-it:free", "google/gemma-4-31b-it:free"])
         # The fast primary is also the basic fallback, so the two tiers share a
         # proven model and the fast tier can never be left without a reachable
         # model while basic-mode models are answering fine.

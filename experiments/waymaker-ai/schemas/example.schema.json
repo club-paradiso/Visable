@@ -1,0 +1,368 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/club-paradiso/Visable/experiments/waymaker-ai/schemas/example.schema.json",
+  "title": "Waymaker benchmark / training example",
+  "description": "One evaluation or training example. Factual legal evidence lives in source bundles (datasets/fixtures/sources/*.json) and is referenced, never embedded as a label. The deterministic validator (waymaker_ai.dataset.validate) enforces this schema plus the cross-record rules documented in docs/ai/waymaker-genesis/11-dataset-governance.md; it does not depend on a JSON Schema library.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "schema_version",
+    "suite",
+    "task",
+    "language",
+    "input",
+    "expected",
+    "scenario",
+    "source_refs",
+    "provenance",
+    "label_review",
+    "split",
+    "critical",
+    "revision",
+    "revision_history"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{3,80}$"
+    },
+    "schema_version": {
+      "const": "waymaker-example/0.1"
+    },
+    "suite": {
+      "enum": [
+        "classification",
+        "legal_verification",
+        "temporal",
+        "abstention"
+      ]
+    },
+    "task": {
+      "enum": [
+        "status_procedure_classification",
+        "entity_date_extraction",
+        "citation_verification",
+        "temporal_version_selection",
+        "abstention"
+      ]
+    },
+    "language": {
+      "type": "string",
+      "pattern": "^[a-z]{2}(-[A-Za-z]{2,4})?$"
+    },
+    "input": {
+      "type": "object",
+      "required": [
+        "question"
+      ],
+      "properties": {
+        "question": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "payload_status_code": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Only when the example deliberately simulates a UI that already sent a code. Text-detection examples leave it null."
+        },
+        "claim": {
+          "type": "object",
+          "description": "citation_verification only: the statement to verify.",
+          "required": [
+            "text",
+            "citations"
+          ],
+          "properties": {
+            "text": {
+              "type": "string"
+            },
+            "citations": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "quoted_text": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "scope": {
+              "type": "object"
+            },
+            "numbers": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "context_title": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "Law that 같은 법 / 영 / 규칙 in the claim refer to."
+            }
+          }
+        },
+        "fixture_set": {
+          "type": "string",
+          "description": "Source bundle id under datasets/fixtures/sources/."
+        },
+        "temporal_query": {
+          "type": "object",
+          "description": "temporal_version_selection only.",
+          "required": [
+            "stable_id",
+            "anchor"
+          ],
+          "properties": {
+            "stable_id": {
+              "type": "string"
+            },
+            "provision": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "anchor": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "expected": {
+      "type": "object",
+      "description": "Task-specific. Required keys per task are enforced by the validator (see TASK_EXPECTED_KEYS)."
+    },
+    "scenario": {
+      "type": "object",
+      "required": [
+        "adversarial_class",
+        "relevant_dates"
+      ],
+      "properties": {
+        "adversarial_class": {
+          "enum": [
+            null,
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "F",
+            "G",
+            "H",
+            "I",
+            "J",
+            "K",
+            "L",
+            "M",
+            "N"
+          ]
+        },
+        "facts": {
+          "type": "object"
+        },
+        "relevant_dates": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "anchor": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "notes": {
+          "type": "string"
+        },
+        "case_template": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Identifier of the case template an example was written from. Splits are assigned per template, never per example, so near-identical variants cannot straddle train and test."
+        }
+      }
+    },
+    "source_refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "kind",
+          "ref"
+        ],
+        "properties": {
+          "kind": {
+            "enum": [
+              "law_identity",
+              "source_bundle",
+              "visa_data",
+              "status_guidance",
+              "manual",
+              "none"
+            ]
+          },
+          "ref": {
+            "type": "string"
+          },
+          "version_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "effective_date": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date"
+          },
+          "provision": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "required": [
+        "authoring",
+        "authored_by",
+        "created_at",
+        "license",
+        "contains_personal_data"
+      ],
+      "properties": {
+        "authoring": {
+          "enum": [
+            "synthetic_authored",
+            "derived_from_repository_data",
+            "human_authored",
+            "teacher_generated"
+          ]
+        },
+        "authored_by": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date"
+        },
+        "license": {
+          "type": "string"
+        },
+        "contains_personal_data": {
+          "const": false
+        },
+        "teacher": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "teacher_generated only: {provider, model, channel, terms_ref, permitted}. Permission is decided per (provider, model, serving channel) by configs/teacher_policy.json."
+        },
+        "derived_from": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "label_review": {
+      "type": "object",
+      "required": [
+        "status",
+        "checks"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "unreviewed",
+            "machine_checked",
+            "human_verified",
+            "disputed"
+          ]
+        },
+        "checks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "reviewer": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "reviewed_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "split": {
+      "enum": [
+        "dev",
+        "test",
+        "adversarial_holdout",
+        "train"
+      ]
+    },
+    "critical": {
+      "type": "boolean",
+      "description": "True when a wrong answer would be a critical legal error (see 12-evaluation-methodology.md)."
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "revision_history": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "revision",
+          "date",
+          "change"
+        ],
+        "properties": {
+          "revision": {
+            "type": "integer"
+          },
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "change": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

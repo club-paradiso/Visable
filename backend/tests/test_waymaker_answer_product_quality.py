@@ -296,12 +296,36 @@ class PublicProjectionTests(_AskHarness):
         self.assertIn("final_model", ok.json())
         self.assertNotIn(token, ok.text)
 
+    def test_visable_token_name_gates_the_opt_in_and_wins_over_the_legacy_name(self):
+        token, legacy = "visable-diag-sentinel", "legacy-diag-sentinel"
+        env = {"VISABLE_DIAGNOSTICS_TOKEN": token, "PARADISO_DIAGNOSTICS_TOKEN": legacy}
+        with patch.dict(os.environ, env):
+            missing, _ = self._ask("D-2 연장시 필수 서류", headers={"X-Paradiso-Diagnostics": "1"})
+            legacy_value, _ = self._ask(
+                "D-2 연장시 필수 서류",
+                headers={"X-Paradiso-Diagnostics": "1", "X-Paradiso-Diagnostics-Token": legacy},
+            )
+            ok, _ = self._ask(
+                "D-2 연장시 필수 서류",
+                headers={"X-Paradiso-Diagnostics": "1", "X-Paradiso-Diagnostics-Token": token},
+            )
+        for resp in (missing, legacy_value):
+            self.assertEqual(resp.status_code, 200)
+            for key in pb.ASK_INTERNAL_ROUTING_FIELDS:
+                self.assertNotIn(key, resp.json())
+        self.assertIn("final_model", ok.json())
+        for resp in (missing, legacy_value, ok):
+            self.assertNotIn(token, resp.text)
+            self.assertNotIn(legacy, resp.text)
+
     def test_health_reports_diagnostics_mode_without_the_token(self):
         token = "diag-token-sentinel"
         cases = (
-            ({"PARADISO_DIAGNOSTICS_TOKEN": "", "PARADISO_CLIENT_DIAGNOSTICS": ""}, "open"),
-            ({"PARADISO_DIAGNOSTICS_TOKEN": token, "PARADISO_CLIENT_DIAGNOSTICS": ""}, "token"),
-            ({"PARADISO_DIAGNOSTICS_TOKEN": token, "PARADISO_CLIENT_DIAGNOSTICS": "0"}, "off"),
+            ({"VISABLE_DIAGNOSTICS_TOKEN": "", "PARADISO_DIAGNOSTICS_TOKEN": "", "PARADISO_CLIENT_DIAGNOSTICS": ""}, "open"),
+            ({"VISABLE_DIAGNOSTICS_TOKEN": "", "PARADISO_DIAGNOSTICS_TOKEN": token, "PARADISO_CLIENT_DIAGNOSTICS": ""}, "token"),
+            ({"VISABLE_DIAGNOSTICS_TOKEN": token, "PARADISO_DIAGNOSTICS_TOKEN": "", "PARADISO_CLIENT_DIAGNOSTICS": ""}, "token"),
+            ({"VISABLE_DIAGNOSTICS_TOKEN": "", "PARADISO_DIAGNOSTICS_TOKEN": token, "PARADISO_CLIENT_DIAGNOSTICS": "0"}, "off"),
+            ({"VISABLE_DIAGNOSTICS_TOKEN": token, "PARADISO_DIAGNOSTICS_TOKEN": "", "PARADISO_CLIENT_DIAGNOSTICS": "0"}, "off"),
         )
         for env, expected in cases:
             with self.subTest(expected=expected), patch.dict(os.environ, env):

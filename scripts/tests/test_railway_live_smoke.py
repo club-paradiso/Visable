@@ -413,9 +413,9 @@ class RailwayLiveSmokeBudgetTests(unittest.TestCase):
         )
 
         wait_budget = attempts * sleep_seconds
-        # A Railway build of this backend takes minutes; 30 seconds never
-        # covered it, which is how every post-merge run tested the old deploy.
-        self.assertGreaterEqual(wait_budget, 240)
+        # A Railway build of this backend takes minutes; the deploy wait must
+        # be long enough that a typical build can land before the smoke fails.
+        self.assertGreaterEqual(wait_budget, 360)
         # The wait plus the probes it guards must still fit the job timeout.
         self.assertLess(wait_budget, timeout_minutes * 60 * 0.6)
 

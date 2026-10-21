@@ -2,7 +2,7 @@
   "name": "visable",
   "version": "0.0.0",
   "private": true,
-  "description": "Visable \u2014 Korean visa/status-of-stay information platform (vanilla HTML/CSS/JS, no build system). This package.json only wraps existing Node scripts so common checks have npm aliases; the site itself needs no build. NOTE: no \"type\":\"module\" \u2014 the repo's .js scripts are CommonJS; analyzer modules are .mjs (ES) by extension.",
+  "description": "Visable — Korean visa/status-of-stay information platform (vanilla HTML/CSS/JS, no build system). This package.json only wraps existing Node scripts so common checks have npm aliases; the site itself needs no build. NOTE: no \"type\":\"module\" — the repo's .js scripts are CommonJS; analyzer modules are .mjs (ES) by extension.",
   "scripts": {
     "validate": "bash scripts/check_repo.sh",
     "test:i18n": "node scripts/check_i18n.js && node scripts/smoke_static_i18n.mjs",
@@ -19,6 +19,8 @@
     "test:public-dummy": "node scripts/check_public_dummy_text.mjs",
     "test:legal-search": "node scripts/check_legal_source_search.mjs && node scripts/check_legal_source_search_dom.mjs",
     "test:unified-search": "node scripts/check_unified_search.mjs",
+    "build:search-suggest": "node scripts/build_search_suggest_index.mjs",
+    "test:search-suggest": "node scripts/check_search_suggest.mjs",
     "build:manual-index": "python3 scripts/build_manual_search_index.py",
     "test:hikorea-reservation-helper": "node scripts/check_hikorea_reservation_helper.mjs",
     "test:feature-surface": "node scripts/check_live_feature_surface.mjs",
@@ -27,13 +29,17 @@
     "test:waymaker-navigator": "node scripts/check_waymaker_navigator.mjs && node scripts/check_waymaker_navigator_dom.mjs",
     "test:nationality-services": "node scripts/check_nationality_services_data.mjs && node scripts/check_naturalization_interview_data.mjs",
     "test:preview": "node scripts/check_preview_mvp.mjs",
-    "test:enforcement": "node scripts/check_enforcement_ui.mjs && node scripts/check_enforcement_nl_ux.mjs && node scripts/check_enforcement_extraction_quality.mjs && python3 -m unittest backend.tests.test_enforcement_intelligence backend.tests.test_enforcement_extraction_quality",
+    "test:enforcement": "node scripts/check_law_probe.js && node scripts/check_enforcement_ui.mjs && node scripts/check_enforcement_nl_ux.mjs && node scripts/check_enforcement_extraction_quality.mjs && python3 -m unittest backend.tests.test_enforcement_intelligence backend.tests.test_enforcement_extraction_quality",
     "import:naturalization-videos": "node scripts/import_naturalization_video_metadata.mjs",
     "build:current-manuals": "python3 scripts/build_current_manual_corpus.py && python3 scripts/build_current_manual_review.py && python3 scripts/build_manual_markdown_corpus.py && python3 scripts/build_manual_search_index.py --out backend/data/manual_search_index.sqlite3",
     "test:current-manuals": "python3 scripts/build_manual_markdown_corpus.py --check && node scripts/check_current_manual_corpus.mjs && python3 scripts/tests/test_current_manual_index.py",
-    "build:status-guidance": "python3 scripts/status_guidance/author_rules.py && python3 scripts/build_status_coverage_manifest.py",
+    "build:status-guidance": "python3 scripts/status_guidance/author_rules.py && python3 scripts/build_status_coverage_manifest.py && node scripts/build_search_suggest_index.mjs",
     "test:status-guidance": "python3 scripts/status_guidance/author_rules.py --check && python3 scripts/build_status_coverage_manifest.py --check && node scripts/check_status_coverage_manifest.mjs && node scripts/check_document_guidance.mjs && node scripts/check_status_resolver.mjs && npm run test:search-waymaker",
-    "test:search-waymaker": "node scripts/check_search_router.mjs && node scripts/check_document_physical_form.mjs && node scripts/check_fee_rules.mjs && node scripts/check_local_practice.mjs && node scripts/check_waymaker_quick_answer.mjs && node scripts/check_search_result_unification.mjs"
+    "test:search-waymaker": "node scripts/check_search_router.mjs && node scripts/check_search_suggest.mjs && node scripts/check_document_physical_form.mjs && node scripts/check_fee_rules.mjs && node scripts/check_local_practice.mjs && node scripts/check_waymaker_quick_answer.mjs && node scripts/check_search_result_unification.mjs",
+    "test:immigration-checklists": "node scripts/check_immigration_checklists.mjs",
+    "build:manual-reader": "python3 scripts/build_manual_reader.py",
+    "test:manual-reader": "node scripts/check_manual_reader.mjs && python3 scripts/build_manual_reader.py --check",
+    "test:search-tools": "node scripts/check_search_tools_reliability.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.61.0",

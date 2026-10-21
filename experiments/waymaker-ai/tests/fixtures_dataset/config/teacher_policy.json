@@ -1,0 +1,55 @@
+{
+  "schema_version": "waymaker-teacher-policy/0.1",
+  "accessed": "2026-10-19",
+  "status": "TEST FIXTURE ONLY. The providers, models and the sign-off below are fictional; nothing here is a reading of any real terms of service.",
+  "default_decision": "deny",
+  "legal_signoff": {
+    "status": "approved",
+    "reviewer": "fixture-reviewer",
+    "date": "2026-10-19",
+    "scope": "fixture entries only",
+    "note": "Fictional sign-off so the validator tests can exercise the permitted path."
+  },
+  "channels": {
+    "self_hosted": {"description": "Fixture channel: weights served on infrastructure the project controls.", "terms_url": null},
+    "fixture_api": {"description": "Fixture channel: a hosted API whose terms deny training use.", "terms_url": null}
+  },
+  "entries": [
+    {
+      "id": "fixture-permitted",
+      "provider": "fixture-lab",
+      "channel": "self_hosted",
+      "models": ["fixture-lab/teacher-1"],
+      "weights_license": "fixture licence (fictional)",
+      "output_use_for_training": "permitted_with_conditions",
+      "waymaker_policy": "accepted",
+      "conditions": [{"id": "fixture-condition", "text": "Fixture condition for validator tests."}],
+      "clause_ref": {
+        "url": "https://example.invalid/fixture-terms",
+        "accessed": "2026-10-19",
+        "section": "n/a",
+        "quote": null,
+        "paraphrase": "Fixture entry; no real terms were read."
+      },
+      "notes": "test fixture"
+    },
+    {
+      "id": "fixture-denied",
+      "provider": "fixture-lab",
+      "channel": "fixture_api",
+      "models": ["*"],
+      "weights_license": "n/a (fixture channel terms govern)",
+      "output_use_for_training": "not_permitted",
+      "waymaker_policy": "accepted",
+      "conditions": [],
+      "clause_ref": {
+        "url": "https://example.invalid/fixture-api-terms",
+        "accessed": "2026-10-19",
+        "section": "n/a",
+        "quote": null,
+        "paraphrase": "Fixture entry that denies training on outputs."
+      },
+      "notes": "test fixture"
+    }
+  ]
+}

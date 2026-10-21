@@ -483,19 +483,23 @@ class LawToolTests(unittest.TestCase):
         self.assertEqual(result["error_type"], lt.LAW_API_OFFICIAL_ERROR)
         self.assertEqual(result["parser_status"], "official_error")
 
-    def test_empty_result_maps_to_no_results_with_shape_hint(self):
+    def test_empty_body_maps_to_bad_response_with_shape_hint(self):
+        # An empty HTTP-200 body is a failure, not "no results" (audit D6;
+        # research-notes/law-stack-fixes.md F9).
         cfg = _audit_oc_cfg()
         result = lt.search_laws("x", config=cfg, transport=_RecordingTransport(""))
-        self.assertEqual(result["error_type"], lt.LAW_API_NO_RESULTS)
+        self.assertEqual(result["error_type"], lt.LAW_API_BAD_RESPONSE)
         self.assertEqual(result["response_shape_hint"], "empty")
 
-    def test_unexpected_json_maps_to_no_results(self):
+    def test_unexpected_json_maps_to_parse_error(self):
+        # A well-formed body with no result list and no totalCnt is not an
+        # empty answer (F9).
         cfg = _audit_oc_cfg()
         def transport(url, timeout):
             return lt.LawHttpResponse(ok=True, status_code=200, text='{"LawSearch": {}}')
         self.assertEqual(
             lt.search_laws("x", config=cfg, transport=transport)["error_type"],
-            lt.LAW_API_NO_RESULTS,
+            lt.LAW_API_PARSE_ERROR,
         )
 
     def test_network_error_maps_to_bad_response(self):
@@ -551,11 +555,17 @@ class LawParserTaxonomyTests(unittest.TestCase):
         self.assertNotIn("invalid request", json.dumps(result, ensure_ascii=False))
 
     def test_xml_success_zero_error_code_is_not_official_error(self):
-        # A success response that carries errorCode=0 must parse to no_results,
-        # not be misread as an official error (regression for the collapse bug).
+        # A success response that carries errorCode=0 must not be misread as an
+        # official error (regression for the collapse bug). With no result list
+        # and no totalCnt it is not an empty answer either (F9): parse_error.
         cfg = _audit_oc_cfg()
         body = "<?xml version='1.0' encoding='UTF-8'?><LawSearch><errorCode>0</errorCode></LawSearch>"
         result = lt.search_laws("x", config=cfg, transport=_RecordingTransport(body))
+        self.assertNotEqual(result["error_type"], lt.LAW_API_OFFICIAL_ERROR)
+        self.assertEqual(result["error_type"], lt.LAW_API_PARSE_ERROR)
+        # The same success envelope with an explicit zero count is an empty answer.
+        counted = body.replace("</LawSearch>", "<totalCnt>0</totalCnt></LawSearch>")
+        result = lt.search_laws("x", config=cfg, transport=_RecordingTransport(counted))
         self.assertEqual(result["error_type"], lt.LAW_API_NO_RESULTS)
 
     def test_json_nested_empty_result_maps_to_no_results(self):
@@ -615,10 +625,14 @@ class OfficialSourceFamilyAdapterTests(unittest.TestCase):
         self.assertEqual(result["status"], lt.SOURCE_STATUS_NOT_CONFIGURED)
         self.assertNotIn("OC=", json.dumps(result, ensure_ascii=False))
 
-    def test_empty_results_family_is_no_results_not_bad_response(self):
+    def test_body_without_result_list_is_parse_error_not_no_results(self):
+        # Was test_empty_results_family_is_no_results_not_bad_response, which
+        # asserted no_results for this body. It carries no result list and no
+        # totalCnt, so it is not an empty answer (F9); still not bad_response.
         cfg = _audit_oc_cfg()
         result = lt.retrieve_official_source_family("statute", "출입국관리법", config=cfg, transport=_RecordingTransport('{"LawSearch": {}}'))
-        self.assertEqual(result["status"], lt.SOURCE_STATUS_NO_RESULTS)
+        self.assertEqual(result["status"], lt.SOURCE_STATUS_PARSE_ERROR)
+        self.assertNotEqual(result["status"], lt.SOURCE_STATUS_BAD_RESPONSE)
 
     def test_official_error_family_is_official_error_not_bad_response(self):
         cfg = _audit_oc_cfg()
@@ -978,10 +992,11 @@ class OfficialSourceAdapterParserTests(unittest.TestCase):
         self.assertEqual(result["status"], "official_error")
         self.assertEqual(result["error_type"], lt.LAW_API_OFFICIAL_ERROR)
 
-    def test_empty_response_maps_no_results(self):
+    def test_empty_response_maps_bad_response(self):
+        # An empty HTTP-200 body is a failure, not "no results" (audit D6; F9).
         result = lt.retrieve_official_source_family("statute", "출입국관리법", config=self.cfg(), transport=_RecordingTransport(""))
-        self.assertEqual(result["status"], "no_results")
-        self.assertEqual(result["error_type"], lt.LAW_API_NO_RESULTS)
+        self.assertEqual(result["status"], "bad_response")
+        self.assertEqual(result["error_type"], lt.LAW_API_BAD_RESPONSE)
 
     def test_html_text_and_malformed_payloads_are_safe(self):
         html = lt.retrieve_official_source_family("statute", "출입국관리법", config=self.cfg(), transport=_RecordingTransport("<html><body>maintenance</body></html>"))
@@ -1015,7 +1030,11 @@ class OfficialSourceFamilyStatusTests(unittest.TestCase):
     def test_results_no_results_official_error_and_timeout_statuses(self):
         ok = lt.retrieve_official_source_family("administrative_rule", "체류", config=self.cfg(), transport=_RecordingTransport(admin_body()))
         self.assertEqual(ok["status"], "results_found")
-        no = lt.retrieve_official_source_family("legal_term", "체류", config=self.cfg(), transport=_RecordingTransport(""))
+        # An empty body is a bad response (F9); "no results" needs an explicit
+        # empty answer (synthetic shape: totalCnt 0).
+        empty = lt.retrieve_official_source_family("legal_term", "체류", config=self.cfg(), transport=_RecordingTransport(""))
+        self.assertEqual(empty["status"], "bad_response")
+        no = lt.retrieve_official_source_family("legal_term", "체류", config=self.cfg(), transport=_RecordingTransport(json.dumps({"LawSearch": {"target": "lstrm", "totalCnt": "0"}})))
         self.assertEqual(no["status"], "no_results")
         err = lt.retrieve_official_source_family("statute", "체류", config=self.cfg(), transport=_RecordingTransport(json.dumps({"errorCode": "X", "message": "error"})))
         self.assertEqual(err["status"], "official_error")
