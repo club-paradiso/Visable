@@ -33,7 +33,10 @@ DEFAULT_FINAL_ANSWER_MODEL_CANDIDATES: List[str] = [
     "nvidia/nemotron-3-ultra-550b-a55b:free",
     "google/gemma-4-31b-it:free",
     "nvidia/nemotron-3-super-120b-a12b:free",
-    "thinkingmachines/inkling:free",
+    # thinkingmachines/inkling:free was dropped after it answered every call
+    # with 403 model_access_denied (Waymaker QA 2026-10-16). The light Gemma 4
+    # model already proven as the Fast primary keeps the chain four deep.
+    "google/gemma-4-26b-a4b-it:free",
 ]
 
 # ---------------------------------------------------------------------------

@@ -249,9 +249,19 @@ OPENROUTER_MODEL_COOLDOWN_SECONDS: float = _env_float("OPENROUTER_MODEL_COOLDOWN
 # free-models-per-day), every ``:free`` id is skipped for this long; the daily
 # bucket reports no reset time, so it is re-probed hourly by default.
 OPENROUTER_FREE_TIER_DAILY_COOLDOWN_SECONDS: float = _env_float("OPENROUTER_FREE_TIER_DAILY_COOLDOWN_SECONDS", 3600.0)
+# 502/504 and attempt timeouts are transient upstream hiccups. A full 300s
+# cooldown for them let one slow request empty the whole free chain for every
+# user for five minutes (Waymaker QA 2026-10-16), so they get a short one.
+OPENROUTER_TRANSIENT_COOLDOWN_SECONDS: float = _env_float("OPENROUTER_TRANSIENT_COOLDOWN_SECONDS", 45.0)
+# While every candidate is cooling down, one request per interval still probes
+# the model whose cooldown ends soonest (half-open) instead of every request
+# going straight to the deterministic fallback.
+OPENROUTER_HALF_OPEN_INTERVAL_SECONDS: float = _env_float("OPENROUTER_HALF_OPEN_INTERVAL_SECONDS", 15.0)
 _MODEL_COOLDOWNS = _ai_runtime.ModelCooldownRegistry(
     OPENROUTER_MODEL_COOLDOWN_SECONDS,
     free_tier_day_seconds=OPENROUTER_FREE_TIER_DAILY_COOLDOWN_SECONDS,
+    transient_seconds=OPENROUTER_TRANSIENT_COOLDOWN_SECONDS,
+    half_open_interval_seconds=OPENROUTER_HALF_OPEN_INTERVAL_SECONDS,
 )
 
 ENABLE_OLLAMA_FALLBACK: bool = _env_bool("ENABLE_OLLAMA_FALLBACK", False)
@@ -1643,8 +1653,13 @@ def _cooling_down_models(now: Optional[float] = None) -> List[str]:
     return _MODEL_COOLDOWNS.cooling_down(now)
 
 
-def _mark_openrouter_model_cooling_down(model: str, now: Optional[float] = None) -> None:
-    _MODEL_COOLDOWNS.mark(model, now)
+_TRANSIENT_UPSTREAM_STATUSES = frozenset({502, 504})
+
+
+def _mark_openrouter_model_cooling_down(
+    model: str, now: Optional[float] = None, *, transient: bool = False
+) -> None:
+    _MODEL_COOLDOWNS.mark(model, now, transient=transient)
 
 
 def _partition_runnable_models(candidates: List[str]) -> Tuple[List[str], List[str]]:
@@ -2406,7 +2421,9 @@ def build_legal_analysis_fallback_answer(
         fact_lines: List[str] = []
         if current:
             fact_lines.append(f"현재 ARC상 체류자격/세부자격이 {current}인지")
-        if previous:
+        # A planned change records the source as previous_status too; only a
+        # status the user has already left is a "previous" one.
+        if previous and previous != current:
             fact_lines.append(f"이전 체류자격 {previous}의 승인 조건이나 신고 이력이 남아 있는지")
         if target:
             fact_lines.append(f"목표 체류자격/절차가 {target}인지")
@@ -2471,7 +2488,7 @@ def build_legal_analysis_fallback_answer(
     fact_lines = []
     if current:
         fact_lines.append(f"current ARC status/sub-status: {current}")
-    if previous:
+    if previous and previous != current:
         fact_lines.append(f"previous-status approval/reporting conditions tied to {previous}")
     if target:
         fact_lines.append(f"target status/procedure: {target}")
@@ -2864,9 +2881,13 @@ async def _openrouter_complete_with_candidates(
 
     Retryable failures (429/503/timeout/temporary upstream unavailability) mark
     that model in an in-memory cooldown map. Later requests skip cooling models.
-    If every candidate is cooling down, this function does not hammer any model;
-    it returns deterministic metadata so /api/ask can use the preparation-note
-    fallback (or an explicitly enabled provider-family/private fallback).
+    Transient 502/504 and attempt timeouts get the short
+    ``OPENROUTER_TRANSIENT_COOLDOWN_SECONDS`` cooldown instead of the full one.
+    If every candidate is cooling down, one request per
+    ``OPENROUTER_HALF_OPEN_INTERVAL_SECONDS`` probes the model whose cooldown
+    ends soonest (``half_open_probe``); the others return deterministic
+    metadata so /api/ask can use the preparation-note fallback (or an
+    explicitly enabled provider-family/private fallback).
 
     ``chain_budget_seconds`` lets a caller with a tighter deadline than
     ``OPENROUTER_CHAIN_BUDGET_SECONDS`` size the chain to its own budget.
@@ -2888,6 +2909,12 @@ async def _openrouter_complete_with_candidates(
         candidates = list(base_candidates) or [OPENROUTER_MODEL]
 
     runnable, skipped = _partition_runnable_models(candidates)
+    half_open_probe: Optional[str] = None
+    if not runnable:
+        half_open_probe = _MODEL_COOLDOWNS.half_open_candidate(candidates)
+        if half_open_probe:
+            runnable = [half_open_probe]
+            skipped = [m for m in skipped if m != half_open_probe]
 
     if not runnable:
         return {
@@ -2964,7 +2991,7 @@ async def _openrouter_complete_with_candidates(
             last_retryable = True
             capacity_failure_seen = True
             key_proven = True
-            _mark_openrouter_model_cooling_down(model)
+            _mark_openrouter_model_cooling_down(model, transient=True)
             continue
         except HTTPException as exc:
             detail = exc.detail if isinstance(exc.detail, dict) else {}
@@ -2979,7 +3006,11 @@ async def _openrouter_complete_with_candidates(
             if last_retryable:
                 capacity_failure_seen = True
                 key_proven = True
-                _mark_openrouter_model_cooling_down(model)
+                try:
+                    transient = int(upstream) in _TRANSIENT_UPSTREAM_STATUSES
+                except (TypeError, ValueError):
+                    transient = False
+                _mark_openrouter_model_cooling_down(model, transient=transient)
                 window = (
                     _ai_runtime.free_tier_quota_window(detail.get("message"))
                     if _ai_runtime.is_free_model(model) else None
@@ -3022,6 +3053,7 @@ async def _openrouter_complete_with_candidates(
             "all_candidates_failed": False,
             "chain_budget_seconds": chain_budget,
             "chain_budget_exhausted": chain_budget_exhausted,
+            "half_open_probe": half_open_probe,
             "latency_ms": int((time.monotonic() - started) * 1000),
         }
 
@@ -3051,6 +3083,7 @@ async def _openrouter_complete_with_candidates(
         ),
         "chain_budget_seconds": chain_budget,
         "chain_budget_exhausted": chain_budget_exhausted,
+        "half_open_probe": half_open_probe,
         "latency_ms": int((time.monotonic() - started) * 1000),
     }
 
@@ -3319,6 +3352,11 @@ async def _sse_answer_stream(
     started = time.monotonic()
     chain_budget_exhausted = False
     runnable, skipped = _partition_runnable_models(candidates)
+    if not runnable:
+        half_open_probe = _MODEL_COOLDOWNS.half_open_candidate(candidates)
+        if half_open_probe:
+            runnable = [half_open_probe]
+            skipped = [m for m in skipped if m != half_open_probe]
     attempted: List[str] = []
     # Set once any candidate got a non-auth upstream response (see
     # _is_model_scoped_forbidden).
@@ -3399,7 +3437,7 @@ async def _sse_answer_stream(
             continue
         except TimeoutError:
             stream_key_proven = True
-            _mark_openrouter_model_cooling_down(model)
+            _mark_openrouter_model_cooling_down(model, transient=True)
             if committed:
                 chain_budget_exhausted = True
                 last_error_type = "openrouter_chain_budget_exhausted"
@@ -3435,7 +3473,11 @@ async def _sse_answer_stream(
             last_error_type = etype
             if retryable:
                 stream_key_proven = True
-                _mark_openrouter_model_cooling_down(model)
+                try:
+                    transient = int(detail.get("status", exc.status_code)) in _TRANSIENT_UPSTREAM_STATUSES
+                except (TypeError, ValueError):
+                    transient = False
+                _mark_openrouter_model_cooling_down(model, transient=transient)
                 window = (
                     _ai_runtime.free_tier_quota_window(detail.get("message"))
                     if _ai_runtime.is_free_model(model) else None

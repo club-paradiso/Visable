@@ -226,6 +226,17 @@ _FACILITATION_SIGNALS: Tuple[_Signal, ...] = (
            r"|\b(immigration|visa|asylum)\b.{0,12}\binterview\b.{0,18}\b(lie|lying|false\s+answers?)\b"),
     ),
     _Signal(
+        CAT_IMMIGRATION_FRAUD, "imm.fabricate_interview_story", ACTION_BLOCK, 3,
+        # Paraphrase seen in QA 2026-10-16: "면접에서 어떤 이야기를 지어내면".
+        # The story noun comes BEFORE the fabrication verb, which the refugee
+        # pattern above does not cover, and needs an interview/review context
+        # so ordinary storytelling is not flagged. Bare 꾸미 is excluded: it
+        # also means polishing (자기소개서 꾸미는 법).
+        _c(r"(면접|인터뷰|심사|진술|사유서|소명|신청서).{0,25}"
+           r"(지어내|지어\s*내|꾸며내|꾸며\s*내|날조|지어서\s*(?:말|답|대답|진술)|거짓으로\s*(?:만들|지어|말|답|대답|진술))"
+           r"|(지어내|꾸며내|날조).{0,20}(면접|인터뷰|심사|진술)"),
+    ),
+    _Signal(
         CAT_IMMIGRATION_FRAUD, "imm.overstay_status_abuse", ACTION_BLOCK, 3,
         _c(r"(관광|단기|무비자|방문|여행).{0,6}(비자|입국|체류).{0,22}"
            r"(버티|눌러앉|불법\s*체류|오래\s*(머무|체류|있))"
@@ -265,6 +276,30 @@ _FACILITATION_SIGNALS: Tuple[_Signal, ...] = (
            r"|(고용계약서|재직증명서|초청장|진단서|잔고증명서|통장\s*사본).{0,10}(가짜로|허위로|위조해|위조한|조작해|날조해)"),
     ),
     _Signal(
+        CAT_DOCUMENT_FRAUD, "doc.make_document_secretly", ACTION_BLOCK, 3,
+        # "재직증명서를 회사 몰래 만들어서 제출": producing an issuer's document
+        # behind the issuer's back is forgery even without the word 위조.
+        # "직접 발급" is deliberately absent — self-service issuance is lawful.
+        _c(r"(서류|문서|계약서|고용계약서?|재직증명서?|경력증명서?|초청장|진단서|졸업증명서?|성적증명서?|"
+           r"잔고증명서?|통장\s*사본|증명서|명세서|직인|도장)"
+           r".{0,15}(몰래|임의로|마음대로|모르게|허락\s*없이|승인\s*없이).{0,10}(만들|작성|발급|찍|파서|제작|뽑)"
+           r"|(몰래|임의로|모르게|허락\s*없이).{0,10}"
+           r"(재직증명서?|경력증명서?|고용계약서?|초청장|진단서|졸업증명서?|잔고증명서?|직인|도장).{0,10}(만들|작성|발급|찍|파서|제작|뽑)"),
+    ),
+    _Signal(
+        CAT_DOCUMENT_FRAUD, "doc.falsify_document.en", ACTION_BLOCK, 3,
+        # "How can I fake a bank statement": "fake" used as a verb (directly
+        # followed by an article/possessive). "submit a fake bank statement"
+        # stays informational because there "fake" is an adjective, and a
+        # how/help/want framing is required so "is it illegal to fake a
+        # document?" stays an informational question.
+        _c(r"\b(how|help|can\s+i|could\s+i|should\s+i|ways?\s+to|tips?|want\s+to|need\s+to|trying\s+to|teach)\b.{0,25}"
+           r"\b(fake|faking|falsify|falsifying|photoshop|photoshopping|tamper\s+with)\s+"
+           r"(a|an|the|my|our|his|her|their|some)\s+(?:\w+\s+){0,2}"
+           r"(document|contract|certificate|invitation|letter|statement|bank\s+statement|payslip|pay\s+stub|"
+           r"passport|visa|diploma|transcript|stamp|seal|signature|records?)\b"),
+    ),
+    _Signal(
         CAT_DOCUMENT_FRAUD, "doc.forge_document.en", ACTION_BLOCK, 3,
         # forge/counterfeit/fabricate are themselves production verbs → standalone
         # near a document noun. "fake/forged" need a production/request verb so
@@ -282,6 +317,17 @@ _FACILITATION_SIGNALS: Tuple[_Signal, ...] = (
         CAT_LE_EVASION, "evasion.avoid_crackdown_work", ACTION_BLOCK, 3,
         _c(r"단속.{0,8}(안\s*걸리|안걸리|피하|벗어|걸리지\s*않|들키지\s*않|면하)"
            r"|(안\s*걸리고|안걸리고|들키지\s*않고|걸리지\s*않고|몰래).{0,12}(일하|취업|근무|체류|머무|숨|돈\s*벌)"),
+        downgradable=True,
+    ),
+    _Signal(
+        CAT_LE_EVASION, "evasion.find_hidden_work", ACTION_BLOCK, 3,
+        # "관광비자로 와서 몰래 일할 수 있는 곳": the conjugated 일할/취업할 forms
+        # slip past "몰래 … 일하" above. Needs a where/how/find tail so
+        # "몰래 일하다 걸리면 어떻게 되나요" style questions are judged by the
+        # pattern above alone.
+        _c(r"(몰래|숨어서|안\s*걸리게|들키지\s*않게|걸리지\s*않게).{0,8}"
+           r"(일할|일하는|일을\s*할|취업할|근무할|알바할|아르바이트할|돈\s*벌|돈을\s*벌)"
+           r".{0,12}(곳|자리|데|방법|법|팁|알려|소개|찾|구하|구할|어디|수\s*있)"),
         downgradable=True,
     ),
     _Signal(

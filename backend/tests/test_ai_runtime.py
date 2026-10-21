@@ -14,6 +14,7 @@ from __future__ import annotations
 import asyncio
 import os
 import sys
+import time
 import unittest
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
@@ -158,6 +159,32 @@ class CooldownTests(unittest.TestCase):
         reg = rt.ModelCooldownRegistry(300.0)
         reg.mark("a/b", now=1000.0)
         self.assertNotIn("a/b", reg.cooling_down(now=1400.0))
+
+    def test_transient_failure_gets_a_short_cooldown(self):
+        reg = rt.ModelCooldownRegistry(300.0, transient_seconds=45.0)
+        reg.mark("a/b", now=1000.0, transient=True)
+        self.assertIn("a/b", reg.cooling_down(now=1040.0))
+        self.assertNotIn("a/b", reg.cooling_down(now=1046.0))
+
+    def test_transient_mark_never_shortens_a_full_cooldown(self):
+        reg = rt.ModelCooldownRegistry(300.0, transient_seconds=45.0)
+        reg.mark("a/b", now=1000.0)
+        reg.mark("a/b", now=1001.0, transient=True)
+        self.assertIn("a/b", reg.cooling_down(now=1200.0))
+
+    def test_half_open_probes_the_soonest_model_once_per_interval(self):
+        reg = rt.ModelCooldownRegistry(300.0, half_open_interval_seconds=15.0)
+        reg.mark("a/b", now=1000.0)
+        reg.mark("c/d", now=900.0)
+        self.assertEqual(reg.half_open_candidate(["a/b", "c/d"], now=1010.0), "c/d")
+        self.assertIsNone(reg.half_open_candidate(["a/b", "c/d"], now=1020.0))
+        self.assertEqual(reg.half_open_candidate(["a/b", "c/d"], now=1026.0), "c/d")
+
+    def test_half_open_never_probes_into_the_shared_free_quota(self):
+        reg = rt.ModelCooldownRegistry(300.0)
+        reg.mark_free_tier_quota("day", now=time.time())
+        self.assertIsNone(reg.half_open_candidate(["a/one:free", "b/two:free"]))
+        self.assertEqual(reg.half_open_candidate(["a/one:free", "c/paid"]), "c/paid")
 
     def test_zero_seconds_disables_the_breaker_entirely(self):
         reg = rt.ModelCooldownRegistry(0.0)

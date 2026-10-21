@@ -83,6 +83,30 @@ _TARGET_STATUS_CHANGE_RE = re.compile(
     r"[A-H]\s*-?\s*\d{1,2}(?:\s*-?\s*\d{1,3})?\s*(?:으로|로)\s*(?:바꾸|바꿀|바꿔|바꿨|변경|전환)",
     re.IGNORECASE,
 )
+# A detected A→B pair is a *completed* change only when the wording says so
+# ("E-7에서 F-2-99로 변경 후", "after I changed to"). Without it the user is
+# asking about a change they want to make, so A stays the current status:
+# "D-10 상태인데 E-7 취업 희망" used to read as current E-7 and the
+# deterministic answer said "E-7에서 E-7로" (Waymaker QA 2026-10-16).
+_COMPLETED_TRANSITION_RE = re.compile(
+    r"(?:변경|전환|바꾼|바뀐)\s*(?:후|뒤|이후|다음)|"
+    r"변경\s*(?:했|하였|됐|되었|된|받았|받은|허가를\s*받)|전환\s*(?:했|하였|됐|되었|된)|"
+    r"바꿨|바꾸었|바뀌었|바뀐|"
+    r"\b(?:changed|switched|converted|transferred)\b|\bafter\s+(?:changing|switching|converting)\b|"
+    r"\bnow\s+(?:on|hold(?:ing)?|have)\b|\bwas\s+(?:on|holding)\b|\bpreviously\b",
+    re.IGNORECASE,
+)
+# 국적 as a *procedure* (취득·회복·이탈·귀화 …), not as the user's nationality.
+# "미국 국적인데 D-2 연장" is an ordinary stay question; bare 국적/nationality
+# used to add the nationality/refugee issue to it.
+_NATIONALITY_PROCEDURE_RE = re.compile(
+    r"국적\s*(?:을|를)?\s*(?:취득|회복|상실|이탈|포기|선택|판정|신청|심사|면접|시험|허가|보유\s*판정)|"
+    r"(?:이중|복수)\s*국적|국적법|국적\s*업무|"
+    r"\b(?:acquire|acquiring|acquisition\s+of|obtain|obtaining|renounce|renouncing|restore|restoration\s+of|"
+    r"dual|multiple|korean)\s+(?:korean\s+)?(?:nationality|citizenship)\b|"
+    r"\bnationality\s+act\b|\bcitizenship\s+(?:test|exam|interview|application)\b",
+    re.IGNORECASE,
+)
 _PARENT_STUDY = {"D-2", "D-4"}
 _PARENT_WORK = {"E-1", "E-2", "E-3", "E-4", "E-5", "E-6", "E-7", "E-9", "C-4", "H-2"}
 _RESTRICTED_WORK = {"C-3", "B-1", "B-2", "D-10", "H-1", "G-1"}
@@ -447,10 +471,13 @@ def extract_immigration_facts(question: str, *, visa_code: Optional[str] = None)
                 break
     target_status: Optional[str] = None
     transition = _TRANSITION_RE.search(text)
+    completed_transition = bool(_COMPLETED_TRANSITION_RE.search(text))
     if transition:
         previous_status = _norm_code(transition.group(1))
         target_status = _norm_code(transition.group(2))
-        current_status = target_status
+        # A planned change keeps the source as the current status; the existing
+        # hint convention below records it as previous_status as well.
+        current_status = target_status if completed_transition else previous_status
     elif explicit_hint and codes and len(codes) < 2 and _has_any(
         text,
         "체류자격 변경", "비자 변경", "자격변경", "체류자격 전환",
@@ -466,7 +493,7 @@ def extract_immigration_facts(question: str, *, visa_code: Optional[str] = None)
     elif len(codes) >= 2 and _has_any(text, "from", "에서", "->", "→", "to", "변경", "전환"):
         previous_status = codes[0]
         target_status = codes[-1] if _has_any(text, "변경", "전환", "change", "switch") else codes[1]
-        current_status = target_status
+        current_status = target_status if completed_transition else previous_status
 
     acts = classify_activity_types(text)
     paid = "true" if any(a in acts for a in ("paid_work", "paid_internship", "freelance_work", "side_job", "additional_employment", "business_activity")) else _tri(text, ("paid", "유급", "급여", "보수"), ("unpaid", "무급"))
@@ -563,7 +590,7 @@ def classify_legal_issue_types(question: str, immigration_facts: Optional[Dict[s
         add("overstay_or_risk")
     if facts.get("activity_facts", {}).get("approval_condition_issue") == "true":
         add("approval_condition")
-    if _has_any(text, "귀화", "국적", "naturalization", "nationality", "citizenship", "난민", "refugee", "asylum", "인도적"):
+    if _has_any(text, "귀화", "naturalization", "난민", "refugee", "asylum", "인도적") or _NATIONALITY_PROCEDURE_RE.search(text):
         add("nationality_or_refugee_context")
     study_acts = acts & {"credit_bearing_study", "formal_enrollment", "non_credit_audit", "non_credit_cultural_or_hobby", "language_training"}
     work_acts = acts & {"paid_work", "paid_internship", "freelance_work", "side_job", "additional_employment", "business_activity", "workplace_change", "workplace_addition"}
@@ -584,7 +611,10 @@ def classify_legal_issue_types(question: str, immigration_facts: Optional[Dict[s
                 add("outside_status_activity"); add("work_on_non_work_status")
             if current_parent in _RESTRICTED_WORK or current_parent in {"F-4", "D-4"}:
                 add("employment_restriction")
-    if facts.get("status_transition_detected") and (acts & {"side_job", "workplace_change", "workplace_addition", "additional_employment"} or _has_any(text, "이전", "previous", "old status", "residual")):
+    # Residual duties of an old status only exist once the change has happened;
+    # a planned change keeps previous_status == current_status.
+    completed_change = facts.get("previous_status") != facts.get("current_status")
+    if facts.get("status_transition_detected") and completed_change and (acts & {"side_job", "workplace_change", "workplace_addition", "additional_employment"} or _has_any(text, "이전", "previous", "old status", "residual")):
         add("post_status_change_residual_duty")
     # Concept-level question about activities-outside-status permission itself
     # (e.g. "체류자격외활동허가가 필요한 경우는?"). Recognize the concept even when

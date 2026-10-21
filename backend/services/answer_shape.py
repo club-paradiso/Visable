@@ -31,6 +31,8 @@ from __future__ import annotations
 import re
 from typing import Any, Dict, List, Optional, Sequence
 
+from services.answer_quality import scan_mixed_language_artifacts
+
 # Bumped when the contract set or gate semantics change in a way the smoke
 # harness / frontend should be able to detect.
 ANSWER_SHAPE_VERSION = "2026-05-answer-shape-gate-v1"
@@ -823,6 +825,17 @@ def evaluate_answer_shape(
     if asks_for_entry_date:
         warnings.append("asks_for_entry_date_already_provided")
 
+    # 7d) Another script leaking into a Korean answer ("만료前に", "目的으로").
+    #     The user cannot read it as Korean, so it is a hard failure.
+    #     Only for answers that are mostly Hangul, so a zh answer quoting a
+    #     Korean term is left to the zh-mode checks.
+    hangul_count = len(re.findall(r"[가-힣]", answer or ""))
+    ideograph_count = len(re.findall(r"[\u4e00-\u9fff]", answer or ""))
+    mostly_korean = hangul_count > 2 * ideograph_count
+    mixed_language = scan_mixed_language_artifacts(answer, "ko") if mostly_korean else []
+    if mixed_language:
+        warnings.append("mixed_language_artifact:%s" % ",".join(mixed_language))
+
     # 8) Missing current status / activity classification / decisive facts /
     #    source confidence (cross-contract minimums, reported as warnings too).
     if c["current"] and not _slot_current_status_primary(c):
@@ -845,6 +858,7 @@ def evaluate_answer_shape(
         or missing_registration_deadline_date
         or asks_for_entry_date
         or irrelevant
+        or mixed_language
     )
     # A substantive, on-topic answer that merely misses >= 2 structured template
     # slots is NOT a non-answer. Keep the model's real answer (soft source note)
