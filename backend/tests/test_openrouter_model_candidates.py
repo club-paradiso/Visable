@@ -134,14 +134,9 @@ class CandidateListParsingTests(unittest.TestCase):
     def test_default_candidate_list_matches_approved_policy(self):
         pb = _pb()
         os.environ.pop("OPENROUTER_MODEL_CANDIDATES", None)
-        with patch.object(pb, "OPENROUTER_MODEL", "nvidia/nemotron-3-ultra-550b-a55b:free"):
+        with patch.object(pb, "OPENROUTER_MODEL", "google/gemma-4-31b-it:free"):
             cands = pb._resolve_openrouter_candidates()
-        self.assertEqual(cands, [
-            "nvidia/nemotron-3-ultra-550b-a55b:free",
-            "google/gemma-4-31b-it:free",
-            "nvidia/nemotron-3-super-120b-a12b:free",
-            "thinkingmachines/inkling:free",
-        ])
+        self.assertEqual(cands, ["google/gemma-4-31b-it:free", "google/gemma-4-26b-a4b-it:free"])
 
     def test_default_candidate_list_excludes_random_routing(self):
         pb = _pb()
@@ -365,11 +360,8 @@ class CandidateFallbackBehaviorTests(unittest.TestCase):
         self.assertEqual(resp.status_code, 200, resp.text)
         body = resp.json()
         # Walked past the dead light primary and answered on the fast fallback.
-        self.assertEqual(calls, [
-            "google/gemma-4-26b-a4b-it:free",
-            "nvidia/nemotron-3.5-lightning:free",
-        ])
-        self.assertEqual(body["final_model"], "nvidia/nemotron-3.5-lightning:free")
+        self.assertEqual(calls, ["google/gemma-4-26b-a4b-it:free", "google/gemma-4-31b-it:free"])
+        self.assertEqual(body["final_model"], "google/gemma-4-31b-it:free")
         self.assertTrue(body["model_fallback_used"])
         self.assertEqual(body["answer_mode"], "fast")
         # The deterministic "all candidates failed" note must NOT be used.
@@ -841,7 +833,7 @@ class HealthCandidateExposureTests(unittest.TestCase):
             client = _client(pb)
             llm = client.get("/health").json()["llm"]
         self.assertEqual(llm["primary_model"], "stale/example-model:free")
-        self.assertEqual(llm["code_default_model"], "nvidia/nemotron-3-ultra-550b-a55b:free")
+        self.assertEqual(llm["code_default_model"], "google/gemma-4-31b-it:free")
         self.assertTrue(llm["model_env_override"])
         self.assertIn("OPENROUTER_MODEL_ENV_OVERRIDE", llm["candidate_warnings"])
 
@@ -867,7 +859,7 @@ class HealthCandidateExposureTests(unittest.TestCase):
                 llm = client.get("/health").json()["llm"]
         self.assertFalse(llm["model_env_override"])
         self.assertNotIn("OPENROUTER_MODEL_ENV_OVERRIDE", llm["candidate_warnings"])
-        self.assertEqual(llm["code_default_model"], "nvidia/nemotron-3-ultra-550b-a55b:free")
+        self.assertEqual(llm["code_default_model"], "google/gemma-4-31b-it:free")
 
 
 # ---------------------------------------------------------------------------

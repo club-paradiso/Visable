@@ -127,13 +127,13 @@ into the image. See `.env.example` for the full list.
 | `WAYMAKER_OPERATOR_TOKENS` | optional | `name:token,…` for the Knowledge Studio API (tokens ≥ 16 chars). Unset keeps the Studio closed (503). |
 | `WAYMAKER_QUERY_TEXT_RETENTION` | optional | `sanitized` (default) keeps a redacted ≤200-char excerpt per observation; `none` keeps features only. |
 | `WAYMAKER_OBSERVATION_RETENTION_DAYS` | optional | Default 90. |
-| `OPENROUTER_MODEL`      | optional  | Defaults to `nvidia/nemotron-3-ultra-550b-a55b:free`. The Basic answer tier primary. Override per-deploy only after catalog verification. |
+| `OPENROUTER_MODEL`      | optional  | Defaults to `google/gemma-4-31b-it:free` (fallback `google/gemma-4-26b-a4b-it:free`). The Basic answer tier primary. Override per-deploy only after catalog verification. |
 | `OPENROUTER_ALLOW_MODEL_ENV_OVERRIDES` | optional | Defaults to `false`. Must be explicitly enabled before any deploy-time OpenRouter model or candidate override is honored. |
 | `OPENROUTER_MODEL_CANDIDATES` | optional | Ordered Basic fallback list. Ignored unless model env overrides are explicitly enabled; otherwise the catalog-reconciled Nemotron/Gemma/Inkling chain is authoritative. `/health` reports present/active/ignored state without exposing secrets. |
 | `OPENROUTER_FAST_MODEL` / `OPENROUTER_FAST_MODEL_CANDIDATES` | optional | Fast tier. Unset → Gemma 4 26B, Nemotron 3.5 Lightning, Inkling Small, then Gemma 4 31B. |
 | `AI_ROUTER_MODEL` | optional | Defaults to `google/gemma-4-31b-it:free`. Used as the declared low-risk router / query-classification model policy. |
 | `AI_TRANSLATION_MODEL` | optional | Defaults to `google/gemma-4-31b-it:free`. Used as the declared UI/site translation model policy. |
-| `AI_VERIFIER_MODEL` | optional | Defaults to `nvidia/nemotron-3-super-120b-a12b:free`. Used as the declared verifier / structured answer-audit model policy. |
+| `AI_VERIFIER_MODEL` | optional | Defaults to `google/gemma-4-31b-it:free`. Used as the declared verifier / structured answer-audit model policy. |
 | `AI_CHINESE_MODEL` | optional | Defaults to `minimax/minimax-m3`. Reserved for Chinese-language routes only. |
 | `AI_CHINESE_FALLBACK_MODELS` | optional | Defaults to two current InclusionAI Ling free variants. Reserved for Chinese-language fallback only. |
 | `OPENROUTER_MODEL_COOLDOWN_SECONDS` | optional | Defaults to `300`. Retryable per-model failures are remembered in memory and skipped during cooldown. If all models are cooling down, Paradiso returns deterministic limited preparation guidance instead of repeatedly hitting upstream. |
