@@ -226,6 +226,10 @@ Design goals:
 ### Recommended Paradiso approach
 
 - Treat `korean-law-mcp` as **conceptual inspiration only** for architecture patterns.
+  > **Correction (2026-10-21):** this did not hold. Algorithms were later ported from
+  > korean-law-mcp into `backend/services/law_query_normalizer.py` (PR #545,
+  > 2026-07-27); see `THIRD_PARTY_NOTICES.md` and
+  > `docs/ai/waymaker-genesis/03-reference-provenance.md` §4.
 - Build Paradiso-native Python service clients, error envelopes, and response contracts.
 - If conceptual ideas are influenced (e.g., citation verification, NOT_FOUND marker style, timeout/fallback/cache framing), document attribution in Paradiso docs.
 

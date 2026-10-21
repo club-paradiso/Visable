@@ -2,9 +2,11 @@
 
 Large models will happily emit confident-looking Korean statute citations —
 "출입국관리법 제24조 제1항", "시행규칙 제18조의2(별표 1)" — entirely from memory.
-When real-time law grounding was NOT verified and the cited article does not
-appear in the local manual / official evidence Visable actually retrieved, the
-answer must not present those numbers as if they were confirmed law.
+When the cited article does not appear in the local manual / official evidence
+Visable actually retrieved, the answer must not present those numbers as if they
+were confirmed law. A "verified" grounding state is not enough on its own: it can
+come from a law-title search hit, so it authorizes an article number only when
+that article of that law was fetched and matched (``article_evidence``).
 
 This module is pure logic (no I/O, no secrets) so it is fully unit-testable and
 can run on both the buffered ``/api/ask`` path and inside regression tests. The
@@ -14,7 +16,7 @@ streamed path additionally relies on the in-prompt constraint built by
 from __future__ import annotations
 
 import re
-from typing import Any, Dict, Iterable, List, Optional, Sequence
+from typing import Any, Dict, Iterable, Iterator, List, Mapping, Optional, Sequence, Set, Tuple
 
 # Statute / decree / rule article references the model might fabricate:
 #   제24조, 제24조 제1항, 제18조의2, 제46조제1항제8호 ...
@@ -23,10 +25,150 @@ _ARTICLE_RE = re.compile(
 )
 # 별표 references (often cited alongside 시행규칙): 별표 1, 별표 1의2 ...
 _ATTACHMENT_RE = re.compile(r"별표\s*\d+(?:\s*의\s*\d+)?")
+# The part of a token that article-level evidence is keyed by: 제24조제1항 and
+# 제24조 both belong to 제24조 (its 항/호 are inside the fetched article text).
+_ARTICLE_KEY_RE = re.compile(r"제\d+조(?:의\d+)?|별표\d+(?:의\d+)?")
+
+# One law reference in prose. At each position the alternatives are tried in
+# order, so "동법" is a back-reference rather than a law called 동법, and the 시행령
+# in "출입국관리법 시행령" belongs to the name instead of standing alone.
+_LAW_REFERENCE_RE = re.compile(
+    r"""
+      (?P<same>같은\s*법|동법)(?P<same_suffix>\s*시행령|\s*시행규칙)?   # 같은 법, 동법 시행령
+    | (?P<name>[가-힣]+(?:법률|법))(?P<suffix>\s*시행령|\s*시행규칙)?   # 출입국관리법 (시행규칙)
+    | (?P<unnamed>시행령|시행규칙|법률)                                 # 시행령, "…에 관한 법률"
+    """,
+    re.VERBOSE,
+)
+# Common words that end in 법 but are not law names.
+_NOT_LAW_NAMES = frozenset({
+    "방법", "불법", "위법", "적법", "합법", "편법", "용법", "문법", "해법", "수법", "기법", "어법",
+})
+# A law named in an earlier sentence does not govern a bare article number.
+_SENTENCE_END_RE = re.compile(r"[.?!。\n]")
+_DECREE_SUFFIXES = ("시행령", "시행규칙")
 
 
 def _normalize(text: str) -> str:
     return re.sub(r"\s+", "", text or "")
+
+
+def _citation_occurrences(text: str) -> Iterator[Tuple[int, str]]:
+    """``(position, normalized token)`` for every article / 별표 citation."""
+    for pattern in (_ARTICLE_RE, _ATTACHMENT_RE):
+        for match in pattern.finditer(text or ""):
+            token = _normalize(match.group(0))
+            if token:
+                yield match.start(), token
+
+
+def _base_act(law_name: str) -> str:
+    """출입국관리법시행규칙 -> 출입국관리법 (names are already space-free)."""
+    for suffix in _DECREE_SUFFIXES:
+        if law_name.endswith(suffix):
+            return law_name[: -len(suffix)]
+    return law_name
+
+
+def _law_references(text: str) -> List[Tuple[int, str]]:
+    """``(end position, space-free law name)`` for each law the text refers to.
+
+    A reference whose law the text does not name (a bare 시행령, the tail of a
+    multi-word title such as "…에 관한 법률", a "같은 법" with nothing before it)
+    gets an empty name. It still ends the reach of the law named before it, so a
+    later article number is never bound to the wrong law.
+    """
+    references: List[Tuple[int, str]] = []
+    last_named = ""
+    for match in _LAW_REFERENCE_RE.finditer(text or ""):
+        if match.group("unnamed"):
+            name = last_named = ""
+        elif match.group("same"):
+            suffix = _normalize(match.group("same_suffix") or "")
+            name = _base_act(last_named) + suffix if last_named else ""
+        elif match.group("name") in _NOT_LAW_NAMES:
+            continue
+        else:
+            name = last_named = _normalize(match.group("name") + (match.group("suffix") or ""))
+        references.append((match.end(), name))
+    return references
+
+
+def _governing_law(text: str, references: Sequence[Tuple[int, str]], position: int) -> str:
+    """The law a citation at ``position`` belongs to: the nearest law reference
+    before it in the same sentence, or ``""`` when there is none or it names no
+    law."""
+    preceding = [(end, name) for end, name in references if end <= position]
+    if not preceding:
+        return ""
+    end, name = preceding[-1]
+    if _SENTENCE_END_RE.search(text[end:position]):
+        return ""
+    return name
+
+
+def _article_key(token: str) -> str:
+    match = _ARTICLE_KEY_RE.match(_normalize(token))
+    return match.group(0) if match else ""
+
+
+def _fetched_article_keys(article_evidence: Optional[Iterable[Mapping[str, Any]]]) -> Set[Tuple[str, str]]:
+    keys: Set[Tuple[str, str]] = set()
+    for row in article_evidence or []:
+        if not isinstance(row, Mapping) or row.get("article_verification_status") != "verified":
+            continue
+        law_name = _normalize(str(row.get("law_name") or ""))
+        article = _article_key(str(row.get("article") or ""))
+        if law_name and article:
+            keys.add((law_name, article))
+    return keys
+
+
+def _tokens_backed_by_article_evidence(
+    answer: str, article_evidence: Optional[Iterable[Mapping[str, Any]]]
+) -> Set[str]:
+    """Citation tokens whose every occurrence names a law + article that was
+    fetched and matched. A bare "제24조" names no law, so it is never backed."""
+    fetched = _fetched_article_keys(article_evidence)
+    if not fetched:
+        return set()
+    references = _law_references(answer)
+    backed: Set[str] = set()
+    unbacked: Set[str] = set()
+    for position, token in _citation_occurrences(answer):
+        law_name = _governing_law(answer, references, position)
+        if law_name and (law_name, _article_key(token)) in fetched:
+            backed.add(token)
+        else:
+            unbacked.add(token)
+    return backed - unbacked
+
+
+def article_evidence_from_law_pack(pack: Optional[Mapping[str, Any]]) -> List[Dict[str, str]]:
+    """Article-level evidence rows from a law evidence pack, for
+    ``guard_answer_citations(article_evidence=...)``.
+
+    Only rows that law_grounding fetched from lawService and matched by article
+    number carry ``article_verification_status == "verified"``; title-list hits
+    never do. /api/ask does not pass these to the guard yet, because the call
+    site is in paradiso_backend.py (see research-notes/law-stack-fixes.md).
+    """
+    pack = pack or {}
+    verification = pack.get("citation_verification") or {}
+    candidates = [*(pack.get("law_sources") or []), *(verification.get("article_evidence") or [])]
+    rows: List[Dict[str, str]] = []
+    seen: Set[Tuple[str, str]] = set()
+    for row in candidates:
+        if not isinstance(row, Mapping) or row.get("article_verification_status") != "verified":
+            continue
+        law_name = str(row.get("law_name") or "").strip()
+        article = str(row.get("article") or "").strip()
+        key = (_normalize(law_name), _normalize(article))
+        if not all(key) or key in seen:
+            continue
+        seen.add(key)
+        rows.append({"law_name": law_name, "article": article, "article_verification_status": "verified"})
+    return rows
 
 
 def detect_legal_article_citations(text: str) -> List[str]:
@@ -36,11 +178,9 @@ def detect_legal_article_citations(text: str) -> List[str]:
     cleanly against evidence text regardless of spacing.
     """
     found: List[str] = []
-    for pattern in (_ARTICLE_RE, _ATTACHMENT_RE):
-        for match in pattern.finditer(text or ""):
-            token = _normalize(match.group(0))
-            if token and token not in found:
-                found.append(token)
+    for _position, token in _citation_occurrences(text):
+        if token not in found:
+            found.append(token)
     return found
 
 
@@ -103,14 +243,22 @@ def guard_answer_citations(
     law_grounding_verified: bool,
     evidence_texts: Optional[Sequence[str]] = None,
     lang: Optional[str] = None,
+    article_evidence: Optional[Sequence[Mapping[str, Any]]] = None,
 ) -> Dict[str, Any]:
     """Post-hoc guardrail for a completed answer.
 
     Returns a dict with the (possibly augmented) ``answer`` plus non-secret
     metadata describing what was detected and what action was taken. When the
-    answer cites specific articles, real-time grounding is NOT verified, and the
-    citations are not backed by local evidence, a clear notice is prepended so a
-    hallucinated citation is never silently presented as official.
+    answer cites specific articles that are backed neither by fetched
+    article-level evidence nor by local evidence, a clear notice is prepended so
+    a hallucinated citation is never silently presented as official.
+
+    ``allowed_verified`` needs ``law_grounding_verified`` AND every cited
+    article in ``article_evidence`` (rows with ``article_verification_status ==
+    "verified"``) under the law the answer names for it. The flag alone used to
+    allow every article number, but it is also set by a law-title search hit
+    (audit R2). Callers that pass no ``article_evidence`` get the local-evidence
+    check whatever the flag says.
     """
     evidence = list(evidence_texts or [])
     citations = detect_legal_article_citations(answer or "")
@@ -123,13 +271,20 @@ def guard_answer_citations(
     if not citations:
         return {"answer": answer, **meta}
 
-    if law_grounding_verified:
+    fetched_tokens = (
+        _tokens_backed_by_article_evidence(answer or "", article_evidence)
+        if law_grounding_verified else set()
+    )
+    if fetched_tokens.issuperset(citations):
         meta["law_citation_guard_action"] = "allowed_verified"
         return {"answer": answer, **meta}
 
-    unsupported = [c for c in citations if not citation_supported_by_evidence(c, evidence)]
+    unsupported = [
+        c for c in citations
+        if c not in fetched_tokens and not citation_supported_by_evidence(c, evidence)
+    ]
     if not unsupported:
-        # Every cited article is backed by local manual/official evidence.
+        # Every cited article is backed by fetched articles or local evidence.
         meta["law_citation_guard_action"] = "allowed_local_evidence"
         return {"answer": answer, **meta}
 

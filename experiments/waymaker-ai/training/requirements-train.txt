@@ -1,0 +1,31 @@
+# Artemis QLoRA training dependencies (training/train_qlora.py only).
+#
+# NOT INSTALLED in Mission 001: there is no GPU on the preparation machine and
+# no package or model download was allowed. Nothing in waymaker_ai/ needs these
+# packages; the experiment package stays standard-library only.
+#
+# Line grammar (train_qlora.py parses this file and enforces it):
+#   name==version        pinned; a real run refuses if the installed version differs
+#   # TODO(pin): name    required but not yet pinned; a real run refuses until it is
+#   # RECORDED: name     version written to run_record.json, not enforced
+#
+# A smoke run (--max-steps) may start with TODO pins and records whatever is
+# installed. Before the first real run, replace every TODO line with the exact
+# version the smoke run recorded (runs/<config id>/smoke-seed<k>/run_record.json,
+# "packages"), commit the file, and only then train.
+
+# Pinned from the notes: the TRL documentation read on 2026-10-19 was v1.16.0
+# (research-notes/training-distill.md section 7, LIVE L26-L27). SFTConfig
+# completion_only_loss and the prompt-completion format were checked there.
+trl==1.16.0
+
+# TODO(pin): transformers  Gemma 4 needs a transformers v5.x release (research-notes/models.md section 3b, "native transformers (needs v5.x)"); the exact release was not recorded.
+# TODO(pin): peft  LoRA adapters; version not recorded in the notes.
+# TODO(pin): bitsandbytes  4-bit NF4 base; version not recorded in the notes. Check it supports the GPU (T4, L4, A100).
+# TODO(pin): accelerate  device placement used by transformers and TRL; version not recorded.
+# TODO(pin): datasets  in-memory Dataset.from_list only; version not recorded.
+
+# torch comes with the CUDA build of the machine (Colab and Kaggle preinstall it).
+# Reinstalling it to match a pin would download about 2 GB, so its version and
+# CUDA build are recorded, not enforced.
+# RECORDED: torch

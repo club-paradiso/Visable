@@ -203,12 +203,24 @@ class LegalSourceSearchApiTests(unittest.TestCase):
 
     # ---- no results is a successful empty search ----------------------
     def test_no_results_is_ok_empty(self):
-        law_tools._default_transport = _transport(json.dumps({"LawSearch": {}}))
+        # "No results" needs an explicit empty answer (totalCnt 0). The body
+        # used here before, {"LawSearch": {}}, carries no result list and no
+        # count, so it is unreadable, not empty (law-stack-fixes.md F9).
+        law_tools._default_transport = _transport(json.dumps({"LawSearch": {"totalCnt": "0"}}))
         r = self.client.get("/api/legal/laws/search", params={"q": "존재하지않는법령zzz"})
         self.assertEqual(r.status_code, 200)
         body = r.json()
         self.assertTrue(body["ok"])
         self.assertEqual(body["count"], 0)
+        self.assertEqual(body["results"], [])
+
+        law_tools._default_transport = _transport(json.dumps({"LawSearch": {}}))
+        r = self.client.get("/api/legal/laws/search", params={"q": "존재하지않는법령zzz"})
+        self.assertEqual(r.status_code, 200)
+        body = r.json()
+        self.assertFalse(body["ok"])
+        self.assertEqual(body["error"], "search_failed")
+        self.assertEqual(body["reason"], "law_api_parse_error")
         self.assertEqual(body["results"], [])
 
     # ---- query length cap ---------------------------------------------

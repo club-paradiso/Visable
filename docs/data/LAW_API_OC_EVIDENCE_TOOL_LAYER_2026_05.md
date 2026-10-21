@@ -65,6 +65,11 @@ Inspired only by the operating principles discussed previously
 (`korean-law-mcp`, `dot-studio`, `korean-privacy-terms`) — no third-party code
 is used and no public MCP server is shipped:
 
+> **Correction (2026-10-21):** true when written (2026-05), but no longer: algorithms
+> from korean-law-mcp were ported into `backend/services/law_query_normalizer.py`
+> on 2026-07-27 (PR #545). See `THIRD_PARTY_NOTICES.md` and
+> `docs/ai/waymaker-genesis/03-reference-provenance.md` §4.
+
 - **Typed internal tools** — `search_laws`, `get_law_detail`,
   `search_admin_rules`, `search_law_terms` take typed inputs and return
   deterministic, normalized dicts.

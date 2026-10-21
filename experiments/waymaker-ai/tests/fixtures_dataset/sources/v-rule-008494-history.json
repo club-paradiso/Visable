@@ -1,0 +1,62 @@
+{
+  "bundle_id": "v-rule-008494-history",
+  "bundle_version": 1,
+  "provenance": "verified_web",
+  "attribution": "출처: 법제처 국가법령정보센터 (law.go.kr). Two history rows of 출입국관리법 시행규칙 read from the law.go.kr history list (lsId=008494) on 2026-10-19. Metadata only: this validator test fixture carries no statute text.",
+  "captured_at": "2026-10-19",
+  "title_index_coverage": "partial",
+  "history_coverage": {"008494": "partial"},
+  "identities": [
+    {
+      "provider": "law.go.kr",
+      "family": "enforcement_rule",
+      "stable_id": "008494",
+      "official_title": "출입국관리법 시행규칙",
+      "former_titles": ["출입국관리법시행규칙"],
+      "short_titles": [],
+      "competent_ministry": null
+    }
+  ],
+  "versions": [
+    {
+      "stable_id": "008494",
+      "version_id": "289833",
+      "effective_date": "2026-09-15",
+      "promulgation_date": "2026-09-15",
+      "promulgation_no": "법무부령 제1125호",
+      "amendment_type": "일부개정",
+      "end_date": null,
+      "provision_effective_dates": {},
+      "official_url": "https://www.law.go.kr/LSW/lsHstListR.do?lsId=008494&chrClsCd=010202",
+      "retrieved_at": "2026-10-19T04:35:43Z",
+      "content_sha256": "9ab640c0e1e6bf684d80cad61284bb9ee30f362a5984abf28ad14c498fb9c2c8",
+      "parse_status": "partial",
+      "provenance": "verified_web",
+      "has_transitional_provisions": null,
+      "is_repeal": false,
+      "changed_provisions": null
+    },
+    {
+      "stable_id": "008494",
+      "version_id": "289833",
+      "effective_date": "2027-09-16",
+      "promulgation_date": "2026-09-15",
+      "promulgation_no": "법무부령 제1125호",
+      "amendment_type": "일부개정",
+      "end_date": null,
+      "provision_effective_dates": {},
+      "official_url": "https://www.law.go.kr/LSW/lsHstListR.do?lsId=008494&chrClsCd=010202",
+      "retrieved_at": "2026-10-19T04:35:43Z",
+      "content_sha256": "9ab640c0e1e6bf684d80cad61284bb9ee30f362a5984abf28ad14c498fb9c2c8",
+      "parse_status": "partial",
+      "provenance": "verified_web",
+      "has_transitional_provisions": null,
+      "is_repeal": false,
+      "changed_provisions": null
+    }
+  ],
+  "provisions": [],
+  "addenda": [],
+  "guidance": [],
+  "faults": []
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "description": "TEST FIXTURE ONLY. Same shape as data/manual_approval_index.json, with fictional edition ids, so the validator tests do not depend on the approval state of the real manual editions.",
+  "documents": {
+    "fixture_stay_manual_approved": {
+      "approval_state": "approved",
+      "effective_date": "2026-01-01"
+    },
+    "fixture_stay_manual_pending": {
+      "approval_state": "needs_review",
+      "effective_date": "2026-02-01"
+    }
+  }
+}

@@ -1,0 +1,20 @@
+[
+  {
+    "title": "출입국관리법 시행규칙",
+    "former_titles": ["출입국관리법시행규칙"],
+    "source_family": "enforcement_rule",
+    "law_id": "008494",
+    "version_id": "289833",
+    "promulgation_date": "2026-09-15",
+    "promulgation_no": "법무부령 제1125호",
+    "effective_date": "2026-09-15",
+    "amendment_type": "일부개정",
+    "pending_versions": [
+      {"version_id": "289833", "promulgation_date": "2026-09-15", "effective_date": "2027-09-16"}
+    ],
+    "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=289833&efYd=20260915",
+    "retrieved_at": "2026-10-19",
+    "verification_status": "VERIFIED_WEB",
+    "notes": "Test fixture: fields copied without change from docs/ai/waymaker-genesis/research-notes/law_identity_seed.json (verified 2026-10-19); the seed's long notes field is omitted. 출처: 법제처 국가법령정보센터 (law.go.kr)."
+  }
+]

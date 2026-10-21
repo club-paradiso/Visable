@@ -1,0 +1,15 @@
+{
+  "_provenance": {
+    "attribution": "출처: 법제처 국가법령정보센터 (law.go.kr)",
+    "provenance": "documented_observation",
+    "request": "GET https://www.law.go.kr/DRF/lawSearch.do?target=law&type=JSON&query=test (no OC parameter)",
+    "observed_at": "2026-10-19T04:30:50Z",
+    "observed_response": "HTTP 200, application/json, 170 bytes",
+    "recorded_in": "docs/ai/waymaker-genesis/research-notes/official-api.md, Verification pass, request R5 and item V-E; docs/ai/waymaker-genesis/04-official-api-capability-matrix.md section 3.2",
+    "note": "The body below is the error envelope text as recorded in those notes; the raw capture was not kept, so whitespace and key order may differ from the 170 bytes served. It contains no credential: the request carried no OC. It is an error message, not statute text. Whether an invalid OC or an unregistered IP returns the same envelope is UNVERIFIED."
+  },
+  "body": {
+    "result": "필수입력요소 검증에 실패하였습니다.",
+    "msg": "필수 입력값이 존재하지 않습니다. 요청 URL을 확인해 주세요."
+  }
+}
