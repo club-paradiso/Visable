@@ -413,6 +413,9 @@ class RailwayLiveSmokeBudgetTests(unittest.TestCase):
         )
 
         wait_budget = attempts * sleep_seconds
+        # Keep enough buffer beyond the previous 7-minute ceiling so routine
+        # Railway deploy lag does not immediately exhaust readiness waiting.
+        self.assertGreater(wait_budget, 420)
         # A Railway build of this backend takes minutes; the deploy wait must
         # be long enough that a typical build can land before the smoke fails.
         self.assertGreaterEqual(wait_budget, 360)
