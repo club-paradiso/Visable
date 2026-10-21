@@ -40,7 +40,7 @@ jobs:
           # when the backend reports a commit that is not yet ours. A backend
           # that reports no commit at all is not worth waiting on, because
           # nothing in its response will ever change to say the deploy landed.
-          deploy_attempts = 30
+          deploy_attempts = 42
           deploy_sleep_seconds = 10.0
 
           def request_json(path: str, *, method: str = "GET", payload=None, timeout: float = request_timeout):
