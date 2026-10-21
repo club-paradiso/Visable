@@ -454,6 +454,16 @@ function renderResult(data) {
   const similar = prediction.similarCases || [];
   const limitations = prediction.limitations || [];
   const groundingLabel = groundingLabels[grounding.status] || '실시간 검증 없음 · 저장된 법령 기준';
+  const baselineReady = baseline.status === 'AVAILABLE';
+  const failureMessages = {
+    provider_rate_limit: ['AI 서비스 요청 제한', '무료 AI 모델의 호출 한도에 도달했습니다. 잠시 후 다시 시도할 수 있습니다.'],
+    timeout: ['AI 응답 시간 초과', 'AI 제공자가 제한 시간 내 응답하지 않았습니다.'],
+    network_error: ['AI 네트워크 연결 실패', 'AI 제공자 연결에 문제가 발생했습니다.'],
+    invalid_structured_prediction: ['AI 응답 형식 검증 실패', 'AI의 응답이 법적 근거 또는 데이터 형식 검증을 통과하지 못했습니다.'],
+    openrouter_not_configured: ['AI 제공자 설정 필요', '서버의 AI 제공자 인증 설정을 확인해야 합니다.'],
+  };
+  const failureNotice = failureMessages[prediction.failureCategory]
+    || ['AI 추정 근거 부족', '안전하게 표시할 수 있는 검증된 AI 예측이 없습니다.'];
   const modelLabel = data.analysisPending ? 'AI 예상 확인 중' : prediction.modelId ? '검증된 AI 예상' : '검증된 AI 결과 없음';
   const durationDays = Number(data.case?.durationDays ?? structuredCase?.durationDays);
   const boundaryNotice = durationDays === 30
@@ -463,7 +473,9 @@ function renderResult(data) {
     ? resultNotice('prediction-degraded-note', '법령 기준을 먼저 확인하세요', 'AI 예상은 확인 중입니다. 검증이 끝나면 이 화면에서 이어서 표시해요.')
     : monetary
     ? ''
-    : resultNotice('prediction-degraded-note', '법령 계산은 그대로 유효합니다', 'AI 예측 실패와 법령 기준 산출 실패는 다른 상태입니다. 왼쪽 법령 기준을 우선 확인하세요.');
+    : resultNotice('prediction-degraded-note',
+      baselineReady ? failureNotice[0] : '법령 기준 산출에 필요한 사실 부족',
+      baselineReady ? failureNotice[1] : '먼저 위반 유형과 정확한 시작·종료일을 확인해 주세요. 검증되지 않은 범칙금은 표시하지 않습니다.');
 
   $('#result-root').innerHTML = `
     <div class="result-summary">
@@ -475,6 +487,7 @@ function renderResult(data) {
         <p>법정 조정 가능 범위: <strong>${range(baseline.legallyAdjustableRange)}</strong></p>
         ${baseline.violationLabel ? `<p class="subtle">적용 기준: ${escapeHtml(baseline.violationLabel)}</p>` : ''}
         <p><span class="tag">${escapeHtml(groundingLabel)}</span></p>
+        ${(baseline.missingFacts || []).length ? `<div class="baseline-boundary-note" role="status"><strong>추가 확인 필요</strong><ul>${baseline.missingFacts.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul></div>` : ''}
         ${(baseline.assumptions || []).length ? `<ul class="baseline-assumptions">${baseline.assumptions.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>` : ''}
         ${boundaryNotice}
       </article>
@@ -576,7 +589,11 @@ async function analyzeCase(caseData, { form, errorTarget } = {}) {
   } catch (error) {
     if (generation !== analysisSequence) return;
     if (baselineResponse) {
-      renderResult(baselineResponse);
+      renderResult({
+        ...baselineResponse,
+        analysisPending: false,
+        prediction: { ...(baselineResponse.prediction || {}), failureCategory: 'timeout', status: 'UNAVAILABLE' },
+      });
       const note = document.createElement('p'); note.className = 'prediction-degraded-note'; note.setAttribute('role', 'status');
       note.textContent = error.message; $('#result-root').append(note); addAnalysisRetry();
     } else {
