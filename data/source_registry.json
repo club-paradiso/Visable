@@ -308,7 +308,7 @@
     },
     {
       "id": "visa_manual_2026_10_19_hwp_text",
-      "type": "hwp_extracted_text",
+      "type": "hwp_manual",
       "title": "사증민원 자격별 안내 매뉴얼 (2026-10-19, 추출본·검토 전)",
       "title_en": "Visa manual dated 2026-10-19 (unreviewed extracted text)",
       "authority": "법무부 출입국·외국인정책본부",
@@ -327,12 +327,12 @@
       ],
       "confidence": "unreviewed",
       "update_frequency": "irregular",
-      "status": "pending_review",
+      "status": "needs_manual_review",
       "notes": "User-supplied 261019 HWP. Text is stored to enable review; ordering, paragraph placement and table cell boundaries have not been independently verified. Not the current approved source. Do not use as direct AI evidence or automatically update eligibility, documents, periods or fees."
     },
     {
       "id": "stay_manual_2026_10_19_hwp_text",
-      "type": "hwp_extracted_text",
+      "type": "hwp_manual",
       "title": "체류민원 자격별 안내 매뉴얼 (2026-10-19, 추출본·검토 전)",
       "title_en": "Stay manual dated 2026-10-19 (unreviewed extracted text)",
       "authority": "법무부 출입국·외국인정책본부",
@@ -351,7 +351,7 @@
       ],
       "confidence": "unreviewed",
       "update_frequency": "irregular",
-      "status": "pending_review",
+      "status": "needs_manual_review",
       "notes": "User-supplied 261019 HWP. Text is stored to enable review; ordering, paragraph placement and table cell boundaries have not been independently verified. Not the current approved source. Do not use as direct AI evidence or automatically update eligibility, documents, periods or fees."
     }
   ]
