@@ -18,7 +18,7 @@ class TestManualStaging(unittest.TestCase):
         for kind, (source_id, role, filename, min_chars) in expected.items():
             with self.subTest(kind=kind):
                 entry = by_id[source_id]
-                self.assertEqual(entry["status"], "pending_review")
+                self.assertEqual(entry["status"], "needs_manual_review")
                 self.assertEqual(approval["documents"][source_id]["approval_state"], "needs_review")
                 self.assertFalse(approval["documents"][source_id]["reviewer"])
                 self.assertEqual(next(x["registry_id_when_promoted"] for x in manifest["pending_review_editions"] if x["role"] == role), source_id)
