@@ -366,6 +366,56 @@
         "Tables are rendered from the converter's HTML/pipe tables as '열이름: 값' or '행 제목: 값' lines, with rowspans carried. Header detection is heuristic (short all-<th> leading rows); multi-level headers can be joined imperfectly, so a table row must be checked against the cited PDF page before it is quoted as a requirement."
       ],
       "approval_note": "Not a new approval. Recorded 2026-10-19 so the derived text is tracked: it inherits the owner's 2026-10-16 edition decision for stay_manual_2026_09_18_pdf only where a chunk is page-mapped to that approved PDF."
+    },
+    "visa_manual_2026_10_19_hwp_text": {
+      "approval_state": "needs_review",
+      "effective_date": "",
+      "parser": "ChatGPT Files document parsing of user-supplied distribution-mode HWP",
+      "reviewer": "",
+      "reviewed_at": "",
+      "source_confidence": "unreviewed",
+      "has_tables_or_annexes": true,
+      "section_locator": "none_verified",
+      "source_path": "docs/source-manuals/2026-10-19/extracted/visa_manual_261019.txt",
+      "source_sha256": "",
+      "source_original_hwp_sha256": "8f9f2e049b3cf09d46bf563e2d97fde596c3743318635f985bf35b51f79a5e8f",
+      "extracted_text_path": "docs/source-manuals/2026-10-19/extracted/visa_manual_261019.txt",
+      "extraction_warnings": [
+        "The original HWP SHA-256 is recorded separately, but the HWP binary is not stored in this GitHub PR.",
+        "The parsed plain-text extraction has not been checked against the original HWP for reading order, section order, omission or duplication.",
+        "Do not interpret the date embedded in the filename as a verified legal effective date.",
+        "Not approved: MUST NOT support direct legal or administrative claims in AI answers."
+      ],
+      "table_extraction_warnings": [
+        "HWP tables may be flattened or out of reading order. Never infer row/column relationships, conditional document requirements or exemptions without checking the original."
+      ],
+      "would_supersede": "visa_manual_2026_09_01_pdf",
+      "change_review_artifact": "audits/manual-refresh-20261019/README.md"
+    },
+    "stay_manual_2026_10_19_hwp_text": {
+      "approval_state": "needs_review",
+      "effective_date": "",
+      "parser": "ChatGPT Files document parsing of user-supplied distribution-mode HWP",
+      "reviewer": "",
+      "reviewed_at": "",
+      "source_confidence": "unreviewed",
+      "has_tables_or_annexes": true,
+      "section_locator": "none_verified",
+      "source_path": "docs/source-manuals/2026-10-19/extracted/stay_manual_261019.txt",
+      "source_sha256": "",
+      "source_original_hwp_sha256": "7effc9d03389e87dc3613db6da873a5d3807ddf4f506df2960f2b017fefabc07",
+      "extracted_text_path": "docs/source-manuals/2026-10-19/extracted/stay_manual_261019.txt",
+      "extraction_warnings": [
+        "The original HWP SHA-256 is recorded separately, but the HWP binary is not stored in this GitHub PR.",
+        "The parsed plain-text extraction has not been checked against the original HWP for reading order, section order, omission or duplication.",
+        "Do not interpret the date embedded in the filename as a verified legal effective date.",
+        "Not approved: MUST NOT support direct legal or administrative claims in AI answers."
+      ],
+      "table_extraction_warnings": [
+        "HWP tables may be flattened or out of reading order. Never infer row/column relationships, conditional document requirements or exemptions without checking the original."
+      ],
+      "would_supersede": "stay_manual_2026_09_18_pdf",
+      "change_review_artifact": "audits/manual-refresh-20261019/README.md"
     }
   }
 }
