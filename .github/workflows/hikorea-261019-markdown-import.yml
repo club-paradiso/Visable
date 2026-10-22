@@ -1,0 +1,61 @@
+name: HiKorea 261019 Markdown intake
+
+# Upload the EXACT original ZIP (SHA-pinned by importer) to the incoming path.
+# This stages it for review; never auto-promotes legal criteria or merges PRs.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'docs/source-manuals/incoming/261019_hikorea_markdown_2.zip'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: hikorea-261019-md-stage
+  cancel-in-progress: false
+
+jobs:
+  intake:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Check exact incoming ZIP exists
+        shell: bash
+        run: test -f docs/source-manuals/incoming/261019_hikorea_markdown_2.zip
+      - name: Ingest verified Markdown without promoting active rules
+        shell: bash
+        run: |
+          python3 scripts/ingest_hikorea_markdown_261019.py \
+            docs/source-manuals/incoming/261019_hikorea_markdown_2.zip \
+            > /tmp/markdown-intake-report.json
+          python3 scripts/ingest_hikorea_markdown_261019.py \
+            docs/source-manuals/incoming/261019_hikorea_markdown_2.zip --check
+          python3 -m unittest backend.tests.test_hikorea_markdown_ingest_20261019
+          python3 scripts/check_source_manuals.py
+          python3 scripts/check_source_grounding_metadata.py
+      - name: Create human-review PR only
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: auto/hikorea-261019-markdown-intake
+          base: main
+          draft: true
+          title: 'HiKorea 2026-10-19 Markdown sources staged — manual review required'
+          commit-message: 'chore(manuals): stage digest-verified 2026-10-19 Markdown pair'
+          body: |
+            Staged user-supplied October Markdown conversions for source review only.
+            The September approved manuals remain current. This PR MUST NOT be
+            approved based on hash checks alone: verify original HWP table geometry,
+            section-level differences, procedure-specific documentation and dates.
+            No live eligibility/fee/checklist/AI grounding data was promoted.
+          add-paths: |
+            docs/source-manuals/2026-10-19/markdown/**
+            docs/source-manuals/source_manifest.json
+            data/manual_approval_index.json
+            backend/data/knowledge_deploy/manual_approval_index.json
+            audits/manual-refresh-20261019/markdown-intake.json
