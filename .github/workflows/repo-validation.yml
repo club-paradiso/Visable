@@ -46,6 +46,9 @@ jobs:
       - name: Install declared Node test dependencies
         run: npm install --ignore-scripts --package-lock=false --no-audit --no-fund
 
+      - name: Check HiKorea October Markdown importer safety
+        run: python3 -m unittest backend.tests.test_hikorea_markdown_ingest_20261019
+
       - name: Run repository validation
         run: bash scripts/check_repo.sh
 
