@@ -305,6 +305,54 @@
       "update_frequency": "irregular",
       "status": "active",
       "notes": "배포용 HWP original of the 2026-09-18 stay edition, read with scripts/decrypt_hwp_distribution.py. Approved with the PDF of the same edition on 2026-10-16. Paragraph-anchored; NOT indexed into the searchable corpus, which carries the page-anchored PDF. Locators are never merged across the two containers."
+    },
+    {
+      "id": "visa_manual_2026_10_19_hwp_text",
+      "type": "hwp_manual",
+      "title": "사증민원 자격별 안내 매뉴얼 (2026-10-19, 추출본·검토 전)",
+      "title_en": "Visa manual dated 2026-10-19 (unreviewed extracted text)",
+      "authority": "법무부 출입국·외국인정책본부",
+      "version": "2026-10-19 (filename date; not separately verified)",
+      "source_date": "2026-10-19",
+      "local_path": "docs/source-manuals/2026-10-19/extracted/visa_manual_261019.txt",
+      "url": null,
+      "original_format": "HWP 5.0 distribution document",
+      "original_sha256": "sha256:8f9f2e049b3cf09d46bf563e2d97fde596c3743318635f985bf35b51f79a5e8f",
+      "original_binary_in_repository": false,
+      "extraction_method": "Files document-text extraction from user-supplied HWP; original binary SHA-256 independently computed",
+      "last_known_hash": null,
+      "last_checked_at": null,
+      "language": [
+        "ko"
+      ],
+      "confidence": "unreviewed",
+      "update_frequency": "irregular",
+      "status": "needs_manual_review",
+      "notes": "User-supplied 261019 HWP. Text is stored to enable review; ordering, paragraph placement and table cell boundaries have not been independently verified. Not the current approved source. Do not use as direct AI evidence or automatically update eligibility, documents, periods or fees."
+    },
+    {
+      "id": "stay_manual_2026_10_19_hwp_text",
+      "type": "hwp_manual",
+      "title": "체류민원 자격별 안내 매뉴얼 (2026-10-19, 추출본·검토 전)",
+      "title_en": "Stay manual dated 2026-10-19 (unreviewed extracted text)",
+      "authority": "법무부 출입국·외국인정책본부",
+      "version": "2026-10-19 (filename date; not separately verified)",
+      "source_date": "2026-10-19",
+      "local_path": "docs/source-manuals/2026-10-19/extracted/stay_manual_261019.txt",
+      "url": null,
+      "original_format": "HWP 5.0 distribution document",
+      "original_sha256": "sha256:7effc9d03389e87dc3613db6da873a5d3807ddf4f506df2960f2b017fefabc07",
+      "original_binary_in_repository": false,
+      "extraction_method": "Files document-text extraction from user-supplied HWP; original binary SHA-256 independently computed",
+      "last_known_hash": null,
+      "last_checked_at": null,
+      "language": [
+        "ko"
+      ],
+      "confidence": "unreviewed",
+      "update_frequency": "irregular",
+      "status": "needs_manual_review",
+      "notes": "User-supplied 261019 HWP. Text is stored to enable review; ordering, paragraph placement and table cell boundaries have not been independently verified. Not the current approved source. Do not use as direct AI evidence or automatically update eligibility, documents, periods or fees."
     }
   ]
 }

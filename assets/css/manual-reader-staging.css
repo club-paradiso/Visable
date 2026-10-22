@@ -1,0 +1,4 @@
+.mr-pending-source{box-sizing:border-box;margin:16px auto 8px;padding:14px 18px;border:1px solid var(--line, #d3dad7);border-radius:14px;display:flex;flex-wrap:wrap;align-items:center;gap:10px 24px;background:var(--surface, #f7f9f8);color:var(--ink, #173f39)}
+.mr-pending-source__info{flex:1 1 340px}.mr-pending-source strong{font-size:.93rem}.mr-pending-source p{font-size:.81rem;line-height:1.55;margin:5px 0 0;color:var(--muted, #516963)}
+.mr-pending-source__links{display:flex;flex-wrap:wrap;gap:8px}.mr-pending-source__links a{display:inline-block;padding:7px 11px;border:1px solid currentColor;border-radius:9px;font-size:.82rem;color:var(--accent-ink, #0b5d4f);text-decoration:none;font-weight:650}
+.mr-pending-source__links a:hover,.mr-pending-source__links a:focus-visible{text-decoration:underline}

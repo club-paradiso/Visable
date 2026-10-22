@@ -435,5 +435,39 @@
     "The 'extraction_primary_format' field declares the format actually used for downstream text extraction (TOC, crosswalk, audit). The 'source_file_format_available' array lists every format committed under the canonical source-manual directory. For the 2026.5 manuals, 'pdf' is the primary extraction format; the matching HWP companion files are distribution-mode and their body text cannot be extracted by available tooling.",
     "The 2026-06-26 PDF refresh uses readable desktop PDF exports as the primary extraction format; HWP/HWPX distribution-mode diagnostics are not used as readable production text.",
     "The optional top-level 'pending_review_editions' array stages an officially received edition that has been extracted and pinned but NOT yet content-approved by a human. It deliberately sits outside 'current': backend/tests/test_source_grounding_pipeline.py asserts that every 'current' entry is human-approved, so a new edition waits here until a reviewer records the approval in data/manual_approval_index.json and moves the entry into 'current' (archiving the edition it replaces under 'archived_previous_current'). Digests of staged files are verified against their bytes by scripts/check_source_manuals.py on every run, exactly like 'current'."
+  ],
+  "pending_review_editions": [
+    {
+      "role": "visa_issuance_manual",
+      "file": "docs/source-manuals/2026-10-19/extracted/visa_manual_261019.txt",
+      "file_sha256": "e7e41875e2fcd1fedc0ed6fac1b7724ef94e0ab19bbe3f4df7b7a317c4e43b10",
+      "extracted_text_file": "docs/source-manuals/2026-10-19/extracted/visa_manual_261019.txt",
+      "extracted_text_sha256": "e7e41875e2fcd1fedc0ed6fac1b7724ef94e0ab19bbe3f4df7b7a317c4e43b10",
+      "version": "2026.10 (unverified file-date edition)",
+      "source_date": "2026-10-19",
+      "source_date_basis": "filename date; not verified as legal effective date",
+      "status": "pending_review",
+      "registry_id_when_promoted": "visa_manual_2026_10_19_hwp_text",
+      "verification_status": "user_supplied_unreviewed_text_extraction",
+      "original_hwp_sha256": "8f9f2e049b3cf09d46bf563e2d97fde596c3743318635f985bf35b51f79a5e8f",
+      "original_file_stored": false,
+      "warning": "Parsed HWP text is NOT an approved, page-faithful edition. Do not promote to runtime legal grounding or use table relationships without checking source."
+    },
+    {
+      "role": "stay_residence_manual",
+      "file": "docs/source-manuals/2026-10-19/extracted/stay_manual_261019.txt",
+      "file_sha256": "391867374e72e02ac94f7b0da08cbd4ef11b98eddf072a21359ace8820321f7e",
+      "extracted_text_file": "docs/source-manuals/2026-10-19/extracted/stay_manual_261019.txt",
+      "extracted_text_sha256": "391867374e72e02ac94f7b0da08cbd4ef11b98eddf072a21359ace8820321f7e",
+      "version": "2026.10 (unverified file-date edition)",
+      "source_date": "2026-10-19",
+      "source_date_basis": "filename date; not verified as legal effective date",
+      "status": "pending_review",
+      "registry_id_when_promoted": "stay_manual_2026_10_19_hwp_text",
+      "verification_status": "user_supplied_unreviewed_text_extraction",
+      "original_hwp_sha256": "7effc9d03389e87dc3613db6da873a5d3807ddf4f506df2960f2b017fefabc07",
+      "original_file_stored": false,
+      "warning": "Parsed HWP text is NOT an approved, page-faithful edition. Do not promote to runtime legal grounding or use table relationships without checking source."
+    }
   ]
 }
