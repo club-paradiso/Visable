@@ -21,7 +21,7 @@ class TestManualStaging(unittest.TestCase):
                 self.assertEqual(entry["status"], "pending_review")
                 self.assertEqual(approval["documents"][source_id]["approval_state"], "needs_review")
                 self.assertFalse(approval["documents"][source_id]["reviewer"])
-                self.assertEqual(manifest["pending_review_editions"][role]["source_id"], source_id)
+                self.assertEqual(next(x["registry_id_when_promoted"] for x in manifest["pending_review_editions"] if x["role"] == role), source_id)
                 text_path = ROOT / entry["local_path"]
                 self.assertEqual(text_path.name, filename)
                 self.assertGreater(len(text_path.read_text(encoding="utf-8")), min_chars)
