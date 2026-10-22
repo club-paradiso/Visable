@@ -451,7 +451,8 @@
       "verification_status": "user_supplied_unreviewed_text_extraction",
       "original_hwp_sha256": "8f9f2e049b3cf09d46bf563e2d97fde596c3743318635f985bf35b51f79a5e8f",
       "original_file_stored": false,
-      "warning": "Parsed HWP text is NOT an approved, page-faithful edition. Do not promote to runtime legal grounding or use table relationships without checking source."
+      "warning": "Parsed HWP text is NOT an approved, page-faithful edition. Do not promote to runtime legal grounding or use table relationships without checking source.",
+      "change_review_artifact": "audits/manual-refresh-20261019/edition-comparison.md"
     },
     {
       "role": "stay_residence_manual",
@@ -467,7 +468,8 @@
       "verification_status": "user_supplied_unreviewed_text_extraction",
       "original_hwp_sha256": "7effc9d03389e87dc3613db6da873a5d3807ddf4f506df2960f2b017fefabc07",
       "original_file_stored": false,
-      "warning": "Parsed HWP text is NOT an approved, page-faithful edition. Do not promote to runtime legal grounding or use table relationships without checking source."
+      "warning": "Parsed HWP text is NOT an approved, page-faithful edition. Do not promote to runtime legal grounding or use table relationships without checking source.",
+      "change_review_artifact": "audits/manual-refresh-20261019/edition-comparison.md"
     }
   ]
 }
