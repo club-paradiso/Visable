@@ -16847,7 +16847,7 @@
       {
         "code": "E-7-4",
         "name": "숙련기능인력(K-point E74, 점수제)",
-        "addReq": "선발인원 33,000명. 최근 10년간 E-9, E-10, H-2 자격으로 4년 이상 체류한 현재 등록외국인으로 현 근무처에서 정상 근로 중이어야 함. 현 근무처에서 연봉 2,600만원 이상으로 향후 2년 이상 E-7-4 고용계약이 필요하며, 농·축산업·어업·내항상선은 연봉 2,589만원 이상으로 완화. 현재 1년 이상 근무 중인 기업의 추천이 필수이고, 평균소득·한국어능력 기본항목이 각각 50점 이상이면서 총점 300점 만점에 200점 이상이어야 함. 한국어 외 점수요건 충족자는 총점 150점 이상 시 최초 연장까지 한국어 보완 조건으로 한시 유예 가능(~2026.12.31). 최근 2년 소득을 입증하기 어려운 재입국 공백 등의 경우에는 2021년~2025년 중 연간 소득금액이 높은 2개년의 소득금액으로 대체할 수 있음.",
+        "addReq": "선발인원 33,000명. 최근 10년간 E-9, E-10, H-2 자격으로 4년 이상 체류한 현재 등록외국인으로 현 근무처에서 정상 근로 중이어야 함. 현 근무처에서 연봉 2,600만원 이상으로 향후 2년 이상 E-7-4 고용계약이 필요하며, 농·축산업·어업·내항상선은 연봉 2,589만원 이상으로 완화. 현재 1년 이상 근무 중인 기업의 추천이 필수이고, 평균소득·한국어능력 기본항목이 각각 50점 이상이면서 총점 300점 만점에 200점 이상이어야 함. 한국어 외 점수요건 충족자는 총점 150점 이상 시 최초 연장까지 한국어 보완 조건으로 한시 유예 가능(~2026.12.31). 점수제의 최근 2년 연간 평균소득 기준은 2,500만원 이상(농·축산업·어업·내항상선 종사자는 2,400만원 이상으로 완화)이며, 최근 2년 소득을 입증하기 어려운 재입국 공백 등의 경우에는 2021년~2025년 중 연간 소득금액이 높은 2개년의 소득금액으로 대체할 수 있음.",
         "addReqDocs": [
           "doc_app_form",
           "doc_passport_copy",
@@ -18645,10 +18645,24 @@
           "scope": "E-7-4 only",
           "verification": "owner_supplied_manual_excerpt_verified_not_independently_approved",
           "text": "E-7-4 연봉 예외 2,589만원, 재입국 공백 시 2021~2025년 소득 상위 2개년 대체"
+        },
+        {
+          "manualVersion": "2026.10",
+          "sourceDate": "2026-10-19",
+          "sourceDateProvenance": "owner_filename",
+          "sourceId": "stay_manual_2026_10_19_hwp_text",
+          "sourceFile": "docs/source-manuals/2026-10-19/extracted/stay_manual_261019.txt",
+          "markdownArchive": "docs/source-manuals/incoming/261019_hikorea_markdown_2.zip",
+          "markdownMember": "261019 체류민원 자격별 안내 매뉴얼.md",
+          "markdownLines": "6979-6987",
+          "scope": "E-7-4 point-system minimum annual average income only",
+          "verification": "owner_supplied_manual_excerpt_verified_not_independently_approved",
+          "text": "최근 2년 평균소득 2,500만원, 농·축산/어업/내항상선 2,400만원, 2021~2025년 중 대체 연도"
         }
       ],
       "affected_fields": [
-        "subCodes.E-7-4.addReq"
+        "subCodes.E-7-4.addReq",
+        "subCodes.E-7-4.addReq.average_income_requirement"
       ]
     }
   },
