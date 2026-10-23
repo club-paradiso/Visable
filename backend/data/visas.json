@@ -22409,7 +22409,7 @@
         "code": "F-1-D",
         "name": "디지털노마드(워케이션) 비자",
         "nameKo": "디지털노마드(워케이션) 비자",
-        "addReq": "해외 사업체 소유자 또는 해외 기업 소속 원격근무 가능자로 동일 업종 1년 이상 종사, 성인 신청자는 만 18세 이상. 소득 기준은 나이·체류지역·가족 동반 여부별로 차등 적용하며, 비수도권 및 인구감소(관심)지역 기준의 소득요건 완화는 해당 지역의 체류지 입증이 조건",
+        "addReq": "해외사업체 소유자 또는 해외기업 소속 원격근무 가능자로 동일 업종 1년 이상 종사하고 만 18세 이상인 자(동반 자녀는 연령 예외). 신청 직전 한국은행 고시 전년도 GNI 기준 소득: 수도권은 18~34세 GNI 1.5배, 35세 이상 GNI 2배; 비수도권 및 인구감소(관심)지역은 각각 GNI 1배, 1.5배. 배우자·미성년 자녀 동반 시 수도권 GNI 2배, 비수도권 및 인구감소(관심)지역 GNI 1.5배. 병원치료·본국후송 보장액 1억원 이상의 개인 의료보험 필요.",
         "addReqDocs": [
           "doc_remote_work_employment_proof",
           "doc_digital_nomad_income_proof",
@@ -22535,6 +22535,46 @@
               ]
             },
             "summary": "F-1-D 외국인등록: 체류지 증빙은 비수도권 등록 시 본인 명의 조건 적용"
+          },
+          "visaIssuance": {
+            "available": true,
+            "summary": "디지털노마드(F-1-D) 입국 전 사증발급. 해외 사업체/해외기업 원격근무, 동일 업종 1년 이상 경력과 지역·가족별 GNI 기준 및 보험보장금액을 충족하고 제출서류를 갖춘 경우 재외공관 심사.",
+            "requiredDocs": {
+              "commonDocs": [
+                "사증발급신청서(별지 제17호 서식)",
+                "여권",
+                "표준규격사진 1매",
+                "수수료"
+              ],
+              "requiredDocs": [
+                "동일 업종 1년 이상 종사 입증 가능한 재직증명서",
+                "급여명세서·잔고증명 등 소득증빙자료",
+                "범죄경력증명서",
+                "개인 의료보험 가입증명서(병원 치료 및 본국 후송 보장액 1억원 이상)"
+              ],
+              "additionalDocs": [],
+              "conditionalDocs": [
+                "배우자·자녀 동반 시 가족관계 입증서류",
+                "비수도권 또는 인구감소(관심)지역 소득완화 적용 시 1개월 이상 임대차계약서, 워케이션 특화시설 또는 숙소 예약확인서 등 지역 체류 예정 입증서류",
+                "출입국·재외공관의 장이 필요하다고 인정하는 추가서류",
+                "범죄경력증명서: 만 14세 미만, 일정 국내출생/거주 이력, 사증 발급 시 제출 후 3개월 이내 국내 변경신청 등 면제사유는 별도 확인"
+              ]
+            },
+            "manual202610Review": [
+              {
+                "manualVersion": "2026.10",
+                "sourceDate": "2026-10-19",
+                "sourceDateProvenance": "owner_filename",
+                "sourceId": "visa_manual_2026_10_19_hwp_text",
+                "sourceFile": "docs/source-manuals/2026-10-19/extracted/visa_manual_261019.txt",
+                "markdownArchive": "docs/source-manuals/incoming/261019_hikorea_markdown_2.zip",
+                "markdownMember": "261019 사증민원 자격별 안내 매뉴얼.md",
+                "markdownLines": "6932-6955",
+                "scope": "F-1-D visa issuance only",
+                "verification": "owner_supplied_manual_excerpt_verified_not_independently_approved",
+                "text": "F-1-D visa requirement GNI by age/region/accompanying family and insurance; consular filing docs"
+              }
+            ]
           }
         }
       },
@@ -24933,13 +24973,27 @@
           "scope": "F-1-D substatus only",
           "verification": "owner_supplied_manual_excerpt_verified_not_independently_approved",
           "text": "F-1-D 등록 서류"
+        },
+        {
+          "manualVersion": "2026.10",
+          "sourceDate": "2026-10-19",
+          "sourceDateProvenance": "owner_filename",
+          "sourceId": "visa_manual_2026_10_19_hwp_text",
+          "sourceFile": "docs/source-manuals/2026-10-19/extracted/visa_manual_261019.txt",
+          "markdownArchive": "docs/source-manuals/incoming/261019_hikorea_markdown_2.zip",
+          "markdownMember": "261019 사증민원 자격별 안내 매뉴얼.md",
+          "markdownLines": "6932-6955",
+          "scope": "F-1-D visa issuance only",
+          "verification": "owner_supplied_manual_excerpt_verified_not_independently_approved",
+          "text": "F-1-D visa requirement GNI by age/region/accompanying family and insurance; consular filing docs"
         }
       ],
       "affected_fields": [
         "subCodes.F-1-D.addReq",
         "subCodes.F-1-D.procedures.statusChange",
         "subCodes.F-1-D.procedures.extension",
-        "subCodes.F-1-D.procedures.registration"
+        "subCodes.F-1-D.procedures.registration",
+        "subCodes.F-1-D.procedures.visaIssuance"
       ]
     }
   },
