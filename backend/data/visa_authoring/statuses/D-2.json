@@ -23,54 +23,54 @@
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
           "pageRange": "p. 35",
           "section": "D-2-1",
-          "confidence": "manual_reconciled_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         },
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
           "pageRange": "p. 37",
           "section": "- 유학(D-2) 체류자격 중 세부 체류자격 D-2-1~D-2-4, D-2-6, D-2-7 해",
-          "confidence": "manual_reconciled_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         },
         {
           "manualName": "사증민원",
           "manualType": "visa",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-01",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/visa_manual_2026_09_01_pdf.txt",
           "pageRange": "p. 62",
           "section": "D-2-1",
-          "confidence": "manual_reconciled_260617_pdf",
+          "confidence": "section_anchor_verified_260901_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
-          "sourceId": "visa_manual_2026_06_17_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/visa_manual_260901.pdf",
+          "sourceId": "visa_manual_2026_09_01_pdf"
         },
         {
           "manualName": "사증민원",
           "manualType": "visa",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-01",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/visa_manual_2026_09_01_pdf.txt",
           "pageRange": "p. 63",
           "section": "(D-2-1~",
-          "confidence": "manual_reconciled_260617_pdf",
+          "confidence": "section_anchor_verified_260901_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
-          "sourceId": "visa_manual_2026_06_17_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/visa_manual_260901.pdf",
+          "sourceId": "visa_manual_2026_09_01_pdf"
         }
       ],
       "status": "active",
@@ -95,54 +95,54 @@
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
           "pageRange": "p. 35",
           "section": "D-2-2",
-          "confidence": "manual_reconciled_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         },
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
           "pageRange": "p. 46",
           "section": "학위과정으로 이동(󰃚 D-2-3 → D-2-2 또는 D-2-1)하더라도 이동 전 학",
-          "confidence": "manual_reconciled_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         },
         {
           "manualName": "사증민원",
           "manualType": "visa",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-01",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/visa_manual_2026_09_01_pdf.txt",
           "pageRange": "p. 62",
           "section": "D-2-2",
-          "confidence": "manual_reconciled_260617_pdf",
+          "confidence": "section_anchor_verified_260901_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
-          "sourceId": "visa_manual_2026_06_17_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/visa_manual_260901.pdf",
+          "sourceId": "visa_manual_2026_09_01_pdf"
         },
         {
           "manualName": "사증민원",
           "manualType": "visa",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-01",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/visa_manual_2026_09_01_pdf.txt",
           "pageRange": "p. 67",
           "section": "D-2-2 ~ D-2-4",
-          "confidence": "manual_reconciled_260617_pdf",
+          "confidence": "section_anchor_verified_260901_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
-          "sourceId": "visa_manual_2026_06_17_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/visa_manual_260901.pdf",
+          "sourceId": "visa_manual_2026_09_01_pdf"
         }
       ],
       "status": "active",
@@ -167,54 +167,54 @@
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
           "pageRange": "p. 35",
           "section": "D-2-3",
-          "confidence": "manual_reconciled_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         },
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
           "pageRange": "p. 46",
           "section": "학위과정으로 이동(󰃚 D-2-3 → D-2-2 또는 D-2-1)하더라도 이동 전 학",
-          "confidence": "manual_reconciled_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         },
         {
           "manualName": "사증민원",
           "manualType": "visa",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-01",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/visa_manual_2026_09_01_pdf.txt",
           "pageRange": "p. 62",
           "section": "D-2-3",
-          "confidence": "manual_reconciled_260617_pdf",
+          "confidence": "section_anchor_verified_260901_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
-          "sourceId": "visa_manual_2026_06_17_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/visa_manual_260901.pdf",
+          "sourceId": "visa_manual_2026_09_01_pdf"
         },
         {
           "manualName": "사증민원",
           "manualType": "visa",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-01",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/visa_manual_2026_09_01_pdf.txt",
           "pageRange": "p. 68",
           "section": "❍ 인증대 : 석사(D-2-3) 또는 박사(D-2-4) 과정 입학생",
-          "confidence": "manual_reconciled_260617_pdf",
+          "confidence": "section_anchor_verified_260901_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
-          "sourceId": "visa_manual_2026_06_17_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/visa_manual_260901.pdf",
+          "sourceId": "visa_manual_2026_09_01_pdf"
         }
       ],
       "status": "active",
@@ -239,54 +239,54 @@
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
           "pageRange": "p. 35",
           "section": "D-2-4",
-          "confidence": "manual_reconciled_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         },
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
           "pageRange": "p. 37",
           "section": "- 유학(D-2) 체류자격 중 세부 체류자격 D-2-1~D-2-4, D-2-6, D-2-7 해",
-          "confidence": "manual_reconciled_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         },
         {
           "manualName": "사증민원",
           "manualType": "visa",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-01",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/visa_manual_2026_09_01_pdf.txt",
           "pageRange": "p. 62",
           "section": "D-2-4",
-          "confidence": "manual_reconciled_260617_pdf",
+          "confidence": "section_anchor_verified_260901_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
-          "sourceId": "visa_manual_2026_06_17_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/visa_manual_260901.pdf",
+          "sourceId": "visa_manual_2026_09_01_pdf"
         },
         {
           "manualName": "사증민원",
           "manualType": "visa",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-01",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/visa_manual_2026_09_01_pdf.txt",
           "pageRange": "p. 63",
           "section": "D-2-4)",
-          "confidence": "manual_reconciled_260617_pdf",
+          "confidence": "section_anchor_verified_260901_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
-          "sourceId": "visa_manual_2026_06_17_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/visa_manual_260901.pdf",
+          "sourceId": "visa_manual_2026_09_01_pdf"
         }
       ],
       "status": "active",
@@ -311,41 +311,41 @@
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
           "pageRange": "p. 35",
           "section": "D-2-5",
-          "confidence": "manual_reconciled_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         },
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
           "pageRange": "p. 42",
           "section": "❍ 연구유학 자격(D-2-5)",
-          "confidence": "manual_reconciled_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         },
         {
           "manualName": "사증민원",
           "manualType": "visa",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-01",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/visa_manual_2026_09_01_pdf.txt",
           "pageRange": "p. 62",
           "section": "D-2-5",
-          "confidence": "manual_reconciled_260617_pdf",
+          "confidence": "section_anchor_verified_260901_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
-          "sourceId": "visa_manual_2026_06_17_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/visa_manual_260901.pdf",
+          "sourceId": "visa_manual_2026_09_01_pdf"
         }
       ],
       "status": "active",
@@ -369,41 +369,41 @@
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
           "pageRange": "p. 35",
           "section": "D-2-6",
-          "confidence": "manual_reconciled_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         },
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
           "pageRange": "p. 37",
           "section": "- 유학(D-2) 체류자격 중 세부 체류자격 D-2-1~D-2-4, D-2-6, D-2-7 해",
-          "confidence": "manual_reconciled_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         },
         {
           "manualName": "사증민원",
           "manualType": "visa",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-01",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/visa_manual_2026_09_01_pdf.txt",
           "pageRange": "p. 62",
           "section": "D-2-6",
-          "confidence": "manual_reconciled_260617_pdf",
+          "confidence": "section_anchor_verified_260901_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
-          "sourceId": "visa_manual_2026_06_17_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/visa_manual_260901.pdf",
+          "sourceId": "visa_manual_2026_09_01_pdf"
         },
         {
           "manualName": "사증민원",
@@ -441,54 +441,54 @@
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
           "pageRange": "p. 35",
           "section": "D-2-7",
-          "confidence": "manual_reconciled_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         },
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
           "pageRange": "p. 37",
           "section": "- 유학(D-2) 체류자격 중 세부 체류자격 D-2-1~D-2-4, D-2-6, D-2-7 해",
-          "confidence": "manual_reconciled_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         },
         {
           "manualName": "사증민원",
           "manualType": "visa",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-01",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/visa_manual_2026_09_01_pdf.txt",
           "pageRange": "p. 62",
           "section": "D-2-7",
-          "confidence": "manual_reconciled_260617_pdf",
+          "confidence": "section_anchor_verified_260901_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
-          "sourceId": "visa_manual_2026_06_17_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/visa_manual_260901.pdf",
+          "sourceId": "visa_manual_2026_09_01_pdf"
         },
         {
           "manualName": "사증민원",
           "manualType": "visa",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-01",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/visa_manual_2026_09_01_pdf.txt",
           "pageRange": "p. 173",
           "section": "이상의 경우 1년 이상의 경력 요건 면제), 일/학습연계유학(D-2-7)자",
-          "confidence": "manual_reconciled_260617_pdf",
+          "confidence": "section_anchor_verified_260901_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
-          "sourceId": "visa_manual_2026_06_17_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/visa_manual_260901.pdf",
+          "sourceId": "visa_manual_2026_09_01_pdf"
         }
       ],
       "status": "active",
@@ -512,41 +512,41 @@
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
           "pageRange": "p. 35",
           "section": "D-2-8",
-          "confidence": "manual_reconciled_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         },
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
           "pageRange": "p. 37",
           "section": "- 어학연수(D-4-1, D-4-7)자격 및 방문학생(D-2-8)자격은 변경일(사증소지자",
-          "confidence": "manual_reconciled_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         },
         {
           "manualName": "사증민원",
           "manualType": "visa",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-01",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/visa_manual_2026_09_01_pdf.txt",
           "pageRange": "p. 62",
           "section": "D-2-8",
-          "confidence": "manual_reconciled_260617_pdf",
+          "confidence": "section_anchor_verified_260901_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
-          "sourceId": "visa_manual_2026_06_17_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/visa_manual_260901.pdf",
+          "sourceId": "visa_manual_2026_09_01_pdf"
         },
         {
           "manualName": "사증민원",
@@ -588,7 +588,8 @@
           "D-4에서 D-2로 변경하는 경우 이전 과정의 성적 또는 출석·연수 증명서",
           "정부초청장학생은 학력증명서를 국립국제교육원 또는 대학 발행 사본으로 대체 가능",
           "부모의 잔고증명서 등을 제출하는 경우 가족관계 입증서류",
-          "비자심사강화대학 입학·진학 예정자로 장관 고시국가 및 중점관리국가 국민인 경우 한국어 또는 영어 능력 요건 증빙"
+          "비자심사강화대학 입학·진학 예정자로 장관 고시국가 및 중점관리국가 국민인 경우 한국어 또는 영어 능력 요건 증빙",
+          "재정능력 입증서류: 국내·외 은행 잔고증명서(신청인 또는 부모 명의, 부모 사망 시 형제자매 명의). 신청일 기준 30일 이내 발급, 체류허가기간 동안 잔고 유지. 단기 입출금은 잔고 재확인 가능. 원칙적으로 해외 조달하되 적법한 시간제취업 소득은 예외 인정"
         ]
       },
       "notes": [
@@ -600,15 +601,30 @@
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
           "pageRange": "pp. 35-55",
           "section": "유학(D-2)",
-          "confidence": "status_source_map_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
+        }
+      ],
+      "manual202610Review": [
+        {
+          "manualVersion": "2026.10",
+          "sourceDate": "2026-10-19",
+          "sourceDateProvenance": "owner_filename",
+          "sourceId": "stay_manual_2026_10_19_hwp_text",
+          "sourceFile": "docs/source-manuals/2026-10-19/extracted/stay_manual_261019.txt",
+          "markdownArchive": "docs/source-manuals/incoming/261019_hikorea_markdown_2.zip",
+          "markdownMember": "261019 체류민원 자격별 안내 매뉴얼.md",
+          "markdownLines": "832-838",
+          "scope": "D-2 status change only",
+          "verification": "owner_supplied_manual_excerpt_verified_not_independently_approved",
+          "text": "유학(D-2) 체류자격 변경: 국내·외 은행 잔고증명서, 신청인/부모/부모 사망 시 형제자매 명의, 신청 전 30일 이내 발급, 체류허가기간 잔고 유지; 적법한 시간제취업 소득 예외 인정"
         }
       ]
     },
@@ -645,15 +661,15 @@
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
           "pageRange": "pp. 35-55",
           "section": "유학(D-2)",
-          "confidence": "status_source_map_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         }
       ]
     },
@@ -686,15 +702,15 @@
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
           "pageRange": "pp. 35-55",
           "section": "유학(D-2)",
-          "confidence": "status_source_map_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         }
       ]
     },
@@ -732,15 +748,15 @@
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
           "pageRange": "pp. 35-55",
           "section": "유학(D-2)",
-          "confidence": "status_source_map_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         }
       ]
     },
@@ -768,15 +784,15 @@
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
           "pageRange": "pp. 35-55",
           "section": "유학(D-2)",
-          "confidence": "status_source_map_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         }
       ]
     },
@@ -811,15 +827,15 @@
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
           "pageRange": "pp. 35-55",
           "section": "유학(D-2)",
-          "confidence": "status_source_map_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         }
       ]
     },
@@ -843,7 +859,8 @@
         "conditionalDocs": [
           "결핵진단서(해당자)",
           "부모의 잔고증명서 등을 제출하는 경우 가족관계 입증서류",
-          "아포스티유 또는 영사확인 대상 학력서류"
+          "아포스티유 또는 영사확인 대상 학력서류",
+          "재정능력 입증서류(사증발급): 1년 등록금 및 체재비 상당액의 국내·외 은행 잔고증명서. 신청인 또는 부모 명의(부모 사망 시 형제자매), 사증·사증발급인정서 신청일 기준 30일 이내 발급, 체류허가기간 잔고 유지"
         ]
       },
       "notes": [
@@ -853,15 +870,30 @@
         {
           "manualName": "사증민원",
           "manualType": "visa",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-01",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/visa_manual_2026_09_01_pdf.txt",
           "pageRange": "pp. 62-69",
           "section": "유학(D-2)",
-          "confidence": "status_source_map_260617_pdf",
+          "confidence": "section_anchor_verified_260901_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
-          "sourceId": "visa_manual_2026_06_17_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/visa_manual_260901.pdf",
+          "sourceId": "visa_manual_2026_09_01_pdf"
+        }
+      ],
+      "manual202610Review": [
+        {
+          "manualVersion": "2026.10",
+          "sourceDate": "2026-10-19",
+          "sourceDateProvenance": "owner_filename",
+          "sourceId": "visa_manual_2026_10_19_hwp_text",
+          "sourceFile": "docs/source-manuals/2026-10-19/extracted/visa_manual_261019.txt",
+          "markdownArchive": "docs/source-manuals/incoming/261019_hikorea_markdown_2.zip",
+          "markdownMember": "261019 사증민원 자격별 안내 매뉴얼.md",
+          "markdownLines": "1440-1447",
+          "scope": "D-2 visa issuance only",
+          "verification": "owner_supplied_manual_excerpt_verified_not_independently_approved",
+          "text": "D-2 사증: 1년 등록금 및 체재비 상당액, 국내·외 은행 잔고증명서, 신청인/부모/부모 사망 시 형제자매 명의, 신청일부터 30일 이내 발급, 체류허가기간 잔고 유지"
         }
       ]
     },
@@ -899,15 +931,15 @@
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
           "pageRange": "pp. 35-55",
           "section": "유학(D-2)",
-          "confidence": "status_source_map_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         }
       ]
     }
@@ -1001,9 +1033,7 @@
     "stay_sojourn"
   ],
   "reviewStatus": "needs_review",
-  "editorNotes": [
-    "2026-06-17 refresh pass: source refs normalized to extracted official manuals; unresolved legal/document/procedure details remain marked for manual review."
-  ],
+  "editorNotes": "",
   "_generated": {
     "compat": {
       "dataBadge": "D-2-1~D-2-8 세부약호 반영",
@@ -1126,7 +1156,607 @@
           "note": "임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등"
         }
       ],
-      "hikorea_task_type": "체류기간 연장허가"
+      "hikorea_task_type": "체류기간 연장허가",
+      "subcodes": [
+        {
+          "code": "D-2-1",
+          "name": "전문학사과정",
+          "addReq": "전문학사 정규 학위과정에서 교육을 받으려는 사람.",
+          "addReqDocs": [
+            "doc_enroll",
+            "doc_biz_reg",
+            "doc_degree",
+            "doc_finance"
+          ],
+          "note": "체류기간 연장 특례 상한은 입학 후 최대 3년, 3년제 전문학사는 최대 4년입니다.",
+          "searchAliases": [
+            "D-2-1",
+            "D21"
+          ],
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-18",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+              "pageRange": "p. 35",
+              "section": "D-2-1",
+              "confidence": "section_anchor_verified_260918_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+              "sourceId": "stay_manual_2026_09_18_pdf"
+            },
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-18",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+              "pageRange": "p. 37",
+              "section": "- 유학(D-2) 체류자격 중 세부 체류자격 D-2-1~D-2-4, D-2-6, D-2-7 해",
+              "confidence": "section_anchor_verified_260918_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+              "sourceId": "stay_manual_2026_09_18_pdf"
+            },
+            {
+              "manualName": "사증민원",
+              "manualType": "visa",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-01",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/visa_manual_2026_09_01_pdf.txt",
+              "pageRange": "p. 62",
+              "section": "D-2-1",
+              "confidence": "section_anchor_verified_260901_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/visa_manual_260901.pdf",
+              "sourceId": "visa_manual_2026_09_01_pdf"
+            },
+            {
+              "manualName": "사증민원",
+              "manualType": "visa",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-01",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/visa_manual_2026_09_01_pdf.txt",
+              "pageRange": "p. 63",
+              "section": "(D-2-1~",
+              "confidence": "section_anchor_verified_260901_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/visa_manual_260901.pdf",
+              "sourceId": "visa_manual_2026_09_01_pdf"
+            }
+          ],
+          "status": "active",
+          "needsManualReview": false
+        },
+        {
+          "code": "D-2-2",
+          "name": "학사과정",
+          "addReq": "학사 정규 학위과정에서 교육을 받으려는 사람.",
+          "addReqDocs": [
+            "doc_enroll",
+            "doc_biz_reg",
+            "doc_degree",
+            "doc_finance"
+          ],
+          "note": "체류기간 연장 특례 상한은 입학 후 최대 6년, 5년제 학사는 최대 7년입니다.",
+          "searchAliases": [
+            "D-2-2",
+            "D22"
+          ],
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-18",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+              "pageRange": "p. 35",
+              "section": "D-2-2",
+              "confidence": "section_anchor_verified_260918_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+              "sourceId": "stay_manual_2026_09_18_pdf"
+            },
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-18",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+              "pageRange": "p. 46",
+              "section": "학위과정으로 이동(󰃚 D-2-3 → D-2-2 또는 D-2-1)하더라도 이동 전 학",
+              "confidence": "section_anchor_verified_260918_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+              "sourceId": "stay_manual_2026_09_18_pdf"
+            },
+            {
+              "manualName": "사증민원",
+              "manualType": "visa",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-01",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/visa_manual_2026_09_01_pdf.txt",
+              "pageRange": "p. 62",
+              "section": "D-2-2",
+              "confidence": "section_anchor_verified_260901_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/visa_manual_260901.pdf",
+              "sourceId": "visa_manual_2026_09_01_pdf"
+            },
+            {
+              "manualName": "사증민원",
+              "manualType": "visa",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-01",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/visa_manual_2026_09_01_pdf.txt",
+              "pageRange": "p. 67",
+              "section": "D-2-2 ~ D-2-4",
+              "confidence": "section_anchor_verified_260901_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/visa_manual_260901.pdf",
+              "sourceId": "visa_manual_2026_09_01_pdf"
+            }
+          ],
+          "status": "active",
+          "needsManualReview": false
+        },
+        {
+          "code": "D-2-3",
+          "name": "석사과정",
+          "addReq": "석사 정규 학위과정에서 교육을 받으려는 사람.",
+          "addReqDocs": [
+            "doc_enroll",
+            "doc_biz_reg",
+            "doc_degree",
+            "doc_finance"
+          ],
+          "note": "체류기간 연장 특례 상한은 입학 후 최대 5년, 3년제 석사는 최대 6년입니다.",
+          "searchAliases": [
+            "D-2-3",
+            "D23"
+          ],
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-18",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+              "pageRange": "p. 35",
+              "section": "D-2-3",
+              "confidence": "section_anchor_verified_260918_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+              "sourceId": "stay_manual_2026_09_18_pdf"
+            },
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-18",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+              "pageRange": "p. 46",
+              "section": "학위과정으로 이동(󰃚 D-2-3 → D-2-2 또는 D-2-1)하더라도 이동 전 학",
+              "confidence": "section_anchor_verified_260918_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+              "sourceId": "stay_manual_2026_09_18_pdf"
+            },
+            {
+              "manualName": "사증민원",
+              "manualType": "visa",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-01",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/visa_manual_2026_09_01_pdf.txt",
+              "pageRange": "p. 62",
+              "section": "D-2-3",
+              "confidence": "section_anchor_verified_260901_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/visa_manual_260901.pdf",
+              "sourceId": "visa_manual_2026_09_01_pdf"
+            },
+            {
+              "manualName": "사증민원",
+              "manualType": "visa",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-01",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/visa_manual_2026_09_01_pdf.txt",
+              "pageRange": "p. 68",
+              "section": "❍ 인증대 : 석사(D-2-3) 또는 박사(D-2-4) 과정 입학생",
+              "confidence": "section_anchor_verified_260901_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/visa_manual_260901.pdf",
+              "sourceId": "visa_manual_2026_09_01_pdf"
+            }
+          ],
+          "status": "active",
+          "needsManualReview": false
+        },
+        {
+          "code": "D-2-4",
+          "name": "박사과정",
+          "addReq": "박사 정규 학위과정에서 교육을 받으려는 사람.",
+          "addReqDocs": [
+            "doc_enroll",
+            "doc_biz_reg",
+            "doc_degree",
+            "doc_finance"
+          ],
+          "note": "체류기간 연장 특례 상한은 입학 후 최대 8년입니다.",
+          "searchAliases": [
+            "D-2-4",
+            "D24"
+          ],
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-18",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+              "pageRange": "p. 35",
+              "section": "D-2-4",
+              "confidence": "section_anchor_verified_260918_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+              "sourceId": "stay_manual_2026_09_18_pdf"
+            },
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-18",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+              "pageRange": "p. 37",
+              "section": "- 유학(D-2) 체류자격 중 세부 체류자격 D-2-1~D-2-4, D-2-6, D-2-7 해",
+              "confidence": "section_anchor_verified_260918_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+              "sourceId": "stay_manual_2026_09_18_pdf"
+            },
+            {
+              "manualName": "사증민원",
+              "manualType": "visa",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-01",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/visa_manual_2026_09_01_pdf.txt",
+              "pageRange": "p. 62",
+              "section": "D-2-4",
+              "confidence": "section_anchor_verified_260901_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/visa_manual_260901.pdf",
+              "sourceId": "visa_manual_2026_09_01_pdf"
+            },
+            {
+              "manualName": "사증민원",
+              "manualType": "visa",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-01",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/visa_manual_2026_09_01_pdf.txt",
+              "pageRange": "p. 63",
+              "section": "D-2-4)",
+              "confidence": "section_anchor_verified_260901_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/visa_manual_260901.pdf",
+              "sourceId": "visa_manual_2026_09_01_pdf"
+            }
+          ],
+          "status": "active",
+          "needsManualReview": false
+        },
+        {
+          "code": "D-2-5",
+          "name": "연구과정",
+          "addReq": "학술 연구기관 등에서 특정 연구를 하려는 사람.",
+          "addReqDocs": [
+            "doc_enroll",
+            "doc_biz_reg",
+            "doc_plan",
+            "doc_finance"
+          ],
+          "note": "연구유학생은 2년을 초과하여 체류할 수 없고, 1회 부여할 수 있는 체류기간 상한은 1년입니다.",
+          "searchAliases": [
+            "D-2-5",
+            "D25"
+          ],
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-18",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+              "pageRange": "p. 35",
+              "section": "D-2-5",
+              "confidence": "section_anchor_verified_260918_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+              "sourceId": "stay_manual_2026_09_18_pdf"
+            },
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-18",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+              "pageRange": "p. 42",
+              "section": "❍ 연구유학 자격(D-2-5)",
+              "confidence": "section_anchor_verified_260918_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+              "sourceId": "stay_manual_2026_09_18_pdf"
+            },
+            {
+              "manualName": "사증민원",
+              "manualType": "visa",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-01",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/visa_manual_2026_09_01_pdf.txt",
+              "pageRange": "p. 62",
+              "section": "D-2-5",
+              "confidence": "section_anchor_verified_260901_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/visa_manual_260901.pdf",
+              "sourceId": "visa_manual_2026_09_01_pdf"
+            }
+          ],
+          "status": "active",
+          "needsManualReview": false
+        },
+        {
+          "code": "D-2-6",
+          "name": "교환학생",
+          "addReq": "교환학생 과정에서 교육을 받으려는 사람.",
+          "addReqDocs": [
+            "doc_enroll",
+            "doc_biz_reg",
+            "doc_finance"
+          ],
+          "note": "외국인등록 및 변경·연장 시 해당 과정 종료일로부터 1개월 범위 내에서 1월 말 또는 7월 말로 조정하여 허가될 수 있습니다.",
+          "searchAliases": [
+            "D-2-6",
+            "D26"
+          ],
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-18",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+              "pageRange": "p. 35",
+              "section": "D-2-6",
+              "confidence": "section_anchor_verified_260918_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+              "sourceId": "stay_manual_2026_09_18_pdf"
+            },
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-18",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+              "pageRange": "p. 37",
+              "section": "- 유학(D-2) 체류자격 중 세부 체류자격 D-2-1~D-2-4, D-2-6, D-2-7 해",
+              "confidence": "section_anchor_verified_260918_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+              "sourceId": "stay_manual_2026_09_18_pdf"
+            },
+            {
+              "manualName": "사증민원",
+              "manualType": "visa",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-01",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/visa_manual_2026_09_01_pdf.txt",
+              "pageRange": "p. 62",
+              "section": "D-2-6",
+              "confidence": "section_anchor_verified_260901_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/visa_manual_260901.pdf",
+              "sourceId": "visa_manual_2026_09_01_pdf"
+            },
+            {
+              "manualName": "사증민원",
+              "manualType": "visa",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+              "pageRange": "p. 64",
+              "section": "(D-2-6)",
+              "confidence": "manual_reconciled_260617_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
+              "sourceId": "visa_manual_2026_06_17_pdf"
+            }
+          ],
+          "status": "active",
+          "needsManualReview": false
+        },
+        {
+          "code": "D-2-7",
+          "name": "일-학습연계 유학",
+          "addReq": "일-학습연계 유학 과정에 해당하는 사람.",
+          "addReqDocs": [
+            "doc_enroll",
+            "doc_biz_reg",
+            "doc_degree",
+            "doc_finance"
+          ],
+          "note": "D-2-1~D-2-4와 같이 학사일정을 고려하여 체류기간이 부여될 수 있습니다.",
+          "searchAliases": [
+            "D-2-7",
+            "D27"
+          ],
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-18",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+              "pageRange": "p. 35",
+              "section": "D-2-7",
+              "confidence": "section_anchor_verified_260918_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+              "sourceId": "stay_manual_2026_09_18_pdf"
+            },
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-18",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+              "pageRange": "p. 37",
+              "section": "- 유학(D-2) 체류자격 중 세부 체류자격 D-2-1~D-2-4, D-2-6, D-2-7 해",
+              "confidence": "section_anchor_verified_260918_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+              "sourceId": "stay_manual_2026_09_18_pdf"
+            },
+            {
+              "manualName": "사증민원",
+              "manualType": "visa",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-01",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/visa_manual_2026_09_01_pdf.txt",
+              "pageRange": "p. 62",
+              "section": "D-2-7",
+              "confidence": "section_anchor_verified_260901_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/visa_manual_260901.pdf",
+              "sourceId": "visa_manual_2026_09_01_pdf"
+            },
+            {
+              "manualName": "사증민원",
+              "manualType": "visa",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-01",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/visa_manual_2026_09_01_pdf.txt",
+              "pageRange": "p. 173",
+              "section": "이상의 경우 1년 이상의 경력 요건 면제), 일/학습연계유학(D-2-7)자",
+              "confidence": "section_anchor_verified_260901_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/visa_manual_260901.pdf",
+              "sourceId": "visa_manual_2026_09_01_pdf"
+            }
+          ],
+          "status": "active",
+          "needsManualReview": false
+        },
+        {
+          "code": "D-2-8",
+          "name": "방문학생",
+          "addReq": "방문학생 과정에서 교육을 받으려는 사람.",
+          "addReqDocs": [
+            "doc_enroll",
+            "doc_biz_reg",
+            "doc_finance"
+          ],
+          "note": "시간제취업은 변경일 또는 사증소지자는 입국일부터 6개월이 경과된 사람을 대상으로 합니다.",
+          "searchAliases": [
+            "D-2-8",
+            "D28"
+          ],
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-18",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+              "pageRange": "p. 35",
+              "section": "D-2-8",
+              "confidence": "section_anchor_verified_260918_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+              "sourceId": "stay_manual_2026_09_18_pdf"
+            },
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-18",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+              "pageRange": "p. 37",
+              "section": "- 어학연수(D-4-1, D-4-7)자격 및 방문학생(D-2-8)자격은 변경일(사증소지자",
+              "confidence": "section_anchor_verified_260918_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+              "sourceId": "stay_manual_2026_09_18_pdf"
+            },
+            {
+              "manualName": "사증민원",
+              "manualType": "visa",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-01",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/visa_manual_2026_09_01_pdf.txt",
+              "pageRange": "p. 62",
+              "section": "D-2-8",
+              "confidence": "section_anchor_verified_260901_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/visa_manual_260901.pdf",
+              "sourceId": "visa_manual_2026_09_01_pdf"
+            },
+            {
+              "manualName": "사증민원",
+              "manualType": "visa",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+              "pageRange": "p. 64",
+              "section": "(D-2-8)",
+              "confidence": "manual_reconciled_260617_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
+              "sourceId": "visa_manual_2026_06_17_pdf"
+            }
+          ],
+          "status": "active",
+          "needsManualReview": false
+        }
+      ],
+      "manual202610StructuredUpdate": {
+        "edition": "2026.10",
+        "source_date_origin": "filename_and_cover_month_not_effective_date",
+        "status": "source_text_integrated_conditional_review",
+        "source_refs": [
+          {
+            "manualVersion": "2026.10",
+            "sourceDate": "2026-10-19",
+            "sourceDateProvenance": "owner_filename",
+            "sourceId": "stay_manual_2026_10_19_hwp_text",
+            "sourceFile": "docs/source-manuals/2026-10-19/extracted/stay_manual_261019.txt",
+            "markdownArchive": "docs/source-manuals/incoming/261019_hikorea_markdown_2.zip",
+            "markdownMember": "261019 체류민원 자격별 안내 매뉴얼.md",
+            "markdownLines": "832-838",
+            "scope": "D-2 status change only",
+            "verification": "owner_supplied_manual_excerpt_verified_not_independently_approved",
+            "text": "유학(D-2) 체류자격 변경: 국내·외 은행 잔고증명서, 신청인/부모/부모 사망 시 형제자매 명의, 신청 전 30일 이내 발급, 체류허가기간 잔고 유지; 적법한 시간제취업 소득 예외 인정"
+          },
+          {
+            "manualVersion": "2026.10",
+            "sourceDate": "2026-10-19",
+            "sourceDateProvenance": "owner_filename",
+            "sourceId": "visa_manual_2026_10_19_hwp_text",
+            "sourceFile": "docs/source-manuals/2026-10-19/extracted/visa_manual_261019.txt",
+            "markdownArchive": "docs/source-manuals/incoming/261019_hikorea_markdown_2.zip",
+            "markdownMember": "261019 사증민원 자격별 안내 매뉴얼.md",
+            "markdownLines": "1440-1447",
+            "scope": "D-2 visa issuance only",
+            "verification": "owner_supplied_manual_excerpt_verified_not_independently_approved",
+            "text": "D-2 사증: 1년 등록금 및 체재비 상당액, 국내·외 은행 잔고증명서, 신청인/부모/부모 사망 시 형제자매 명의, 신청일부터 30일 이내 발급, 체류허가기간 잔고 유지"
+          }
+        ],
+        "affected_fields": [
+          "procedures.statusChange.requiredDocs.conditionalDocs",
+          "procedures.visaIssuance.requiredDocs.conditionalDocs"
+        ]
+      }
     }
   },
   "_authoring": {
@@ -1160,7 +1790,9 @@
       "_searchAliasAudit",
       "feeInfo",
       "structuredRequirementsRef",
-      "manualDomains"
+      "manualDomains",
+      "subcodes",
+      "manual202610StructuredUpdate"
     ],
     "keySource": {
       "code": "identity",
@@ -1190,7 +1822,9 @@
       "_searchAliasAudit": "audit:search_alias_audit",
       "feeInfo": "feeRef",
       "structuredRequirementsRef": "audit:structured_requirements_refs",
-      "manualDomains": "identity"
+      "manualDomains": "identity",
+      "subcodes": "compat",
+      "manual202610StructuredUpdate": "compat"
     },
     "procOrder": [
       "statusChange",
@@ -1208,7 +1842,8 @@
         "summary",
         "requiredDocs",
         "notes",
-        "manualRefs"
+        "manualRefs",
+        "manual202610Review"
       ],
       "extension": [
         "available",
@@ -1250,7 +1885,8 @@
         "summary",
         "requiredDocs",
         "notes",
-        "manualRefs"
+        "manualRefs",
+        "manual202610Review"
       ],
       "activitiesOutsideStatus": [
         "available",
@@ -1261,33 +1897,5 @@
       ]
     },
     "note": "GENERATED by extract_authoring_from_visa_data.py. Edit the human-editable top-level fields; do not hand-edit _generated/_authoring."
-  },
-  "manualRefs": [
-    {
-      "manualName": "체류민원",
-      "manualType": "stay",
-      "manualVersion": "2026.6",
-      "sourceDate": "2026-06-23",
-      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-      "pageRange": "pp. 35-55",
-      "section": "유학(D-2)",
-      "confidence": "status_source_map_260623_pdf",
-      "needsManualReview": false,
-      "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-      "sourceId": "stay_manual_2026_06_23_pdf"
-    },
-    {
-      "manualName": "사증민원",
-      "manualType": "visa",
-      "manualVersion": "2026.6",
-      "sourceDate": "2026-06-17",
-      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
-      "pageRange": "pp. 62-69",
-      "section": "유학(D-2)",
-      "confidence": "status_source_map_260617_pdf",
-      "needsManualReview": false,
-      "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
-      "sourceId": "visa_manual_2026_06_17_pdf"
-    }
-  ]
+  }
 }

@@ -25,11 +25,17 @@ class OctoberRequirementsTest(unittest.TestCase):
         self.assertTrue(any("1년 등록금" in x and "30일 이내" in x for x in visa_docs))
 
     def test_nomad_requires_substatus_specific_documents(self):
-        sub = next(s for s in self.visas["F-1"]["subCodes"] if s["code"]=="F-1-D")
+        # F-1-D stay checklists live in the F-1 parent's procedures.extension.variants[]
+        # (statusCode "F-1-D") so the subcode modal renders them.
+        variant = next(
+            v for v in self.visas["F-1"]["procedures"]["extension"]["variants"]
+            if v.get("statusCode") == "F-1-D"
+        )
         self.assertIn("1회 1년씩 최장 3년", self.stay_original)
         self.assertIn("체류기간 연장은 불가", self.stay_original)
-        self.assertIn("3년", sub["procedures"]["extension"]["summary"])
-        docs=sub["procedures"]["extension"]["requiredDocs"]["conditionalDocs"]
+        self.assertIn("3년", variant["scenarioKo"])
+        docs=variant["requiredDocs"]["conditionalDocs"]
+        self.assertTrue(all(r["manualType"] == "stay" for r in variant["manualRefs"]))
         self.assertTrue(any("숙소 이용기록" in x and "본인 명의" in x for x in docs))
         self.assertEqual(self.visas["F-1"]["procedures"]["statusChange"]["requiredDocs"]["requiredDocs"], [])
 

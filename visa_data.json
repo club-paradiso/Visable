@@ -18068,7 +18068,7 @@
       {
         "code": "E-7-4",
         "name": "숙련기능인력(K-point E74, 점수제)",
-        "addReq": "선발인원 33,000명. 최근 10년간 E-9, E-10, H-2 자격으로 4년 이상 체류한 현재 등록외국인으로 현 근무처에서 정상 근로 중이어야 함. 현 근무처에서 연봉 2,600만원 이상으로 향후 2년 이상 E-7-4 고용계약이 필요하며, 농·축산업·어업·내항상선은 연봉 2,500만원 이상으로 완화. 현재 1년 이상 근무 중인 기업의 추천이 필수이고, 평균소득·한국어능력 기본항목이 각각 50점 이상이면서 총점 300점 만점에 200점 이상이어야 함. 한국어 외 점수요건 충족자는 총점 150점 이상 시 최초 연장까지 한국어 보완 조건으로 한시 유예 가능(~2026.12.31).",
+        "addReq": "선발인원 33,000명. 최근 10년간 E-9, E-10, H-2 자격으로 4년 이상 체류한 현재 등록외국인으로 현 근무처에서 정상 근로 중이어야 함. 현 근무처에서 연봉 2,600만원 이상으로 향후 2년 이상 E-7-4 고용계약이 필요하며, 농·축산업·어업·내항상선은 연봉 2,589만원 이상으로 완화. 현재 1년 이상 근무 중인 기업의 추천이 필수이고, 평균소득·한국어능력 기본항목이 각각 50점 이상이면서 총점 300점 만점에 200점 이상이어야 함. 한국어 외 점수요건 충족자는 총점 150점 이상 시 최초 연장까지 한국어 보완 조건으로 한시 유예 가능(~2026.12.31). 점수제의 최근 2년 연간 평균소득 기준은 2,500만원 이상(농·축산업·어업·내항상선 종사자는 2,400만원 이상으로 완화)이며, 최근 2년 소득을 입증하기 어려운 재입국 공백 등의 경우에는 2021년~2025년 중 연간 소득금액이 높은 2개년의 소득금액으로 대체할 수 있음.",
         "addReqDocs": [
           "doc_app_form",
           "doc_passport_copy",
@@ -18086,7 +18086,7 @@
           "doc_specialty",
           "doc_degree"
         ],
-        "note": "체류민원 안내매뉴얼 2026-06-17 PDF pp.298-309 기준. 필수서류에는 통합신청서, 여권 사본, 점수제 자체 심사표, 신상기술서, E-7-4 표준근로계약서, 최근 2년 소득금액증명원, 한국어능력 입증, 신원보증서, 사업자등록증 또는 농업경영체등록, 국세·지방세 납세증명서, 4대보험 사업장 가입자 명부 등, 고용기업 추천서 및 추천자 신분증 사본이 포함됨. 자격증·국내학위·운전면허증·뿌리기업·조선업·내항정기운송 등은 해당자 추가서류.",
+        "note": "2026.10 체류민원 매뉴얼 E-7-4 숙련기능인력 규정 참조. 고용계약·연봉요건·2개년 소득대체·고용기업 추천·점수요건은 E-7-4에 한정하며 E-7 일반자격에 확대 적용하지 않음. 서류별 조건부 제출 및 예외는 원문 확인.",
         "searchAliases": [
           "E-7-4",
           "E74"
@@ -18120,7 +18120,7 @@
           }
         ],
         "status": "active",
-        "needsManualReview": false
+        "needsManualReview": true
       },
       {
         "code": "E-7-S",
@@ -22471,71 +22471,6 @@
         "group": "기타",
         "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified.",
         "procedures": {
-          "statusChange": {
-            "available": true,
-            "requiredDocs": {
-              "commonDocs": [
-                "신청서(별지 제34호 서식)",
-                "여권",
-                "표준규격사진 1매",
-                "수수료"
-              ],
-              "requiredDocs": [
-                "해외법인 재직증명서(동일 업종 1년 이상 종사 입증)",
-                "급여명세서·잔고증명 등 소득 증빙서류",
-                "범죄경력증명서",
-                "의료보험 가입증명서"
-              ],
-              "additionalDocs": [],
-              "conditionalDocs": [
-                "가족 동반 시 가족관계 입증서류",
-                "비수도권 및 인구감소(관심)지역 소득요건 완화 적용 시 1개월 이상 임대차계약서, 워케이션 특화시설 또는 숙소 예약확인서 등(비수도권 지역 등록자는 본인 명의 제출 필요)"
-              ]
-            },
-            "summary": "해외 사업체 소유자 또는 해외 기업 소속 원격근무 가능자로 동일 업종 1년 이상 종사, 성인 신청자는 만 18세 이상. 소득 기준은 나이·체류지역·가족 동반 여부별로 차등 적용하며, 비수도권 및 인구감소(관심)지역 기준의 소득요건 완화는 해당 지역의 체류지 입증이 조건"
-          },
-          "extension": {
-            "available": true,
-            "requiredDocs": {
-              "commonDocs": [
-                "신청서(별지 제34호 서식)",
-                "여권",
-                "표준규격사진 1매",
-                "수수료"
-              ],
-              "requiredDocs": [
-                "해외기업 재직증명서(동일 업종 1년 이상 종사 증빙)",
-                "급여명세서·잔고증명 등 소득 증빙서류",
-                "범죄경력증명서",
-                "의료보험 가입증명서"
-              ],
-              "additionalDocs": [],
-              "conditionalDocs": [
-                "가족 동반 시 가족관계 입증서류",
-                "비수도권·인구감소(관심)지역 소득요건 완화 적용 시 1개월 이상 임대차계약서, 워케이션 특화시설 또는 숙소 이용기록 등(비수도권 지역 등록자는 본인 명의 필요)"
-              ]
-            },
-            "summary": "F-1-D 체류기간 연장은 1회 1년씩 최장 3년. 비수도권 또는 인구감소(관심)지역 소득요건 완화 적용자는 실제 해당 지역 체류 여부 확인. 허가기간 내 수도권으로 옮기면 수도권 소득기준 충족 또는 비수도권 재이동을 조건으로 6개월 부여. 입국 후 중도 실직 시 신고·출국 의무는 없으나 체류기간 연장 불가"
-          },
-          "registration": {
-            "available": true,
-            "requiredDocs": {
-              "commonDocs": [
-                "신청서(별지 제34호 서식)",
-                "여권 원본",
-                "표준규격사진 1매",
-                "수수료"
-              ],
-              "requiredDocs": [
-                "체류지 입증서류"
-              ],
-              "additionalDocs": [],
-              "conditionalDocs": [
-                "비수도권 지역 등록자는 체류지 입증서류 본인 명의 제출 필요"
-              ]
-            },
-            "summary": "F-1-D 외국인등록: 체류지 증빙은 비수도권 등록 시 본인 명의 조건 적용"
-          },
           "visaIssuance": {
             "available": true,
             "summary": "디지털노마드(F-1-D) 입국 전 사증발급. 해외 사업체/해외기업 원격근무, 동일 업종 1년 이상 경력과 지역·가족별 GNI 기준 및 보험보장금액을 충족하고 제출서류를 갖춘 경우 재외공관 심사.",
@@ -23327,6 +23262,62 @@
               "해외 발급 서류는 아포스티유 또는 대한민국 공관 영사확인과 번역문 첨부가 필요합니다."
             ],
             "statusCode": "F-1-52"
+          },
+          {
+            "id": "f-1-d-status-change",
+            "labelKo": "디지털노마드(워케이션) 비자(F-1-D) 체류자격 변경",
+            "scenarioKo": "해외 사업체 소유자 또는 해외 기업 소속 원격근무 가능자로 동일 업종 1년 이상 종사, 성인 신청자는 만 18세 이상. 소득 기준은 나이·체류지역·가족 동반 여부별로 차등 적용하며, 비수도권 및 인구감소(관심)지역 기준의 소득요건 완화는 해당 지역의 체류지 입증이 조건",
+            "requiredDocs": {
+              "commonDocs": [
+                "신청서(별지 제34호 서식)",
+                "여권",
+                "표준규격사진 1매",
+                "수수료"
+              ],
+              "requiredDocs": [
+                "해외법인 재직증명서(동일 업종 1년 이상 종사 입증)",
+                "급여명세서·잔고증명 등 소득 증빙서류",
+                "범죄경력증명서",
+                "의료보험 가입증명서"
+              ],
+              "additionalDocs": [],
+              "conditionalDocs": [
+                "가족 동반 시 가족관계 입증서류",
+                "비수도권 및 인구감소(관심)지역 소득요건 완화 적용 시 1개월 이상 임대차계약서, 워케이션 특화시설 또는 숙소 예약확인서 등(비수도권 지역 등록자는 본인 명의 제출 필요)"
+              ]
+            },
+            "manualRefs": [
+              {
+                "manualName": "체류민원",
+                "manualType": "stay",
+                "manualVersion": "2026.9",
+                "sourceDate": "2026-09-18",
+                "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+                "pageRange": "p. 353",
+                "section": "13. 디지털노마드(워케이션) 비자(F-1-D)",
+                "confidence": "section_anchor_verified_260918_pdf",
+                "needsManualReview": true,
+                "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+                "sourceId": "stay_manual_2026_09_18_pdf",
+                "reviewReason": "F-1-D 하위 코드의 중첩 절차 항목을 부모 variants로 이관한 항목입니다. 서류 목록은 기존 데이터 그대로이며 매뉴얼 원문 대조 전까지 검수 필요 상태로 유지합니다."
+              },
+              {
+                "manualName": "체류민원",
+                "manualType": "stay",
+                "manualVersion": "2026.6",
+                "sourceDate": "2026-06-23",
+                "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+                "pageRange": "p. 359",
+                "section": "14. 디지털노마드(워케이션) 비자(F-1-D)",
+                "confidence": "manual_reconciled_260623_pdf",
+                "needsManualReview": true,
+                "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+                "sourceId": "stay_manual_2026_06_23_pdf",
+                "reviewReason": "F-1-D 하위 코드의 중첩 절차 항목을 부모 variants로 이관한 항목입니다. 서류 목록은 기존 데이터 그대로이며 매뉴얼 원문 대조 전까지 검수 필요 상태로 유지합니다."
+              }
+            ],
+            "notes": [],
+            "statusCode": "F-1-D"
           }
         ],
         "manualRefs": [
@@ -23468,6 +23459,62 @@
               "직전 체류허가 만료일부터 1년 이내로 허가하며, 국제입양법상 입양 자격을 유지해야 합니다."
             ],
             "statusCode": "F-1-51"
+          },
+          {
+            "id": "f-1-d-extension",
+            "labelKo": "디지털노마드(워케이션) 비자(F-1-D) 체류기간 연장",
+            "scenarioKo": "F-1-D 체류기간 연장은 1회 1년씩 최장 3년. 비수도권 또는 인구감소(관심)지역 소득요건 완화 적용자는 실제 해당 지역 체류 여부 확인. 허가기간 내 수도권으로 옮기면 수도권 소득기준 충족 또는 비수도권 재이동을 조건으로 6개월 부여. 입국 후 중도 실직 시 신고·출국 의무는 없으나 체류기간 연장 불가",
+            "requiredDocs": {
+              "commonDocs": [
+                "신청서(별지 제34호 서식)",
+                "여권",
+                "표준규격사진 1매",
+                "수수료"
+              ],
+              "requiredDocs": [
+                "해외기업 재직증명서(동일 업종 1년 이상 종사 증빙)",
+                "급여명세서·잔고증명 등 소득 증빙서류",
+                "범죄경력증명서",
+                "의료보험 가입증명서"
+              ],
+              "additionalDocs": [],
+              "conditionalDocs": [
+                "가족 동반 시 가족관계 입증서류",
+                "비수도권·인구감소(관심)지역 소득요건 완화 적용 시 1개월 이상 임대차계약서, 워케이션 특화시설 또는 숙소 이용기록 등(비수도권 지역 등록자는 본인 명의 필요)"
+              ]
+            },
+            "manualRefs": [
+              {
+                "manualName": "체류민원",
+                "manualType": "stay",
+                "manualVersion": "2026.9",
+                "sourceDate": "2026-09-18",
+                "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+                "pageRange": "p. 353",
+                "section": "13. 디지털노마드(워케이션) 비자(F-1-D)",
+                "confidence": "section_anchor_verified_260918_pdf",
+                "needsManualReview": true,
+                "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+                "sourceId": "stay_manual_2026_09_18_pdf",
+                "reviewReason": "F-1-D 하위 코드의 중첩 절차 항목을 부모 variants로 이관한 항목입니다. 서류 목록은 기존 데이터 그대로이며 매뉴얼 원문 대조 전까지 검수 필요 상태로 유지합니다."
+              },
+              {
+                "manualName": "체류민원",
+                "manualType": "stay",
+                "manualVersion": "2026.6",
+                "sourceDate": "2026-06-23",
+                "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+                "pageRange": "p. 359",
+                "section": "14. 디지털노마드(워케이션) 비자(F-1-D)",
+                "confidence": "manual_reconciled_260623_pdf",
+                "needsManualReview": true,
+                "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+                "sourceId": "stay_manual_2026_06_23_pdf",
+                "reviewReason": "F-1-D 하위 코드의 중첩 절차 항목을 부모 variants로 이관한 항목입니다. 서류 목록은 기존 데이터 그대로이며 매뉴얼 원문 대조 전까지 검수 필요 상태로 유지합니다."
+              }
+            ],
+            "notes": [],
+            "statusCode": "F-1-D"
           }
         ]
       },
@@ -23497,6 +23544,60 @@
             "needsManualReview": false,
             "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
             "sourceId": "stay_manual_2026_09_18_pdf"
+          }
+        ],
+        "variants": [
+          {
+            "id": "f-1-d-registration",
+            "labelKo": "디지털노마드(워케이션) 비자(F-1-D) 외국인등록",
+            "scenarioKo": "F-1-D 외국인등록: 체류지 증빙은 비수도권 등록 시 본인 명의 조건 적용",
+            "requiredDocs": {
+              "commonDocs": [
+                "신청서(별지 제34호 서식)",
+                "여권 원본",
+                "표준규격사진 1매",
+                "수수료"
+              ],
+              "requiredDocs": [
+                "체류지 입증서류"
+              ],
+              "additionalDocs": [],
+              "conditionalDocs": [
+                "비수도권 지역 등록자는 체류지 입증서류 본인 명의 제출 필요"
+              ]
+            },
+            "manualRefs": [
+              {
+                "manualName": "체류민원",
+                "manualType": "stay",
+                "manualVersion": "2026.9",
+                "sourceDate": "2026-09-18",
+                "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+                "pageRange": "p. 353",
+                "section": "13. 디지털노마드(워케이션) 비자(F-1-D)",
+                "confidence": "section_anchor_verified_260918_pdf",
+                "needsManualReview": true,
+                "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+                "sourceId": "stay_manual_2026_09_18_pdf",
+                "reviewReason": "F-1-D 하위 코드의 중첩 절차 항목을 부모 variants로 이관한 항목입니다. 서류 목록은 기존 데이터 그대로이며 매뉴얼 원문 대조 전까지 검수 필요 상태로 유지합니다."
+              },
+              {
+                "manualName": "체류민원",
+                "manualType": "stay",
+                "manualVersion": "2026.6",
+                "sourceDate": "2026-06-23",
+                "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+                "pageRange": "p. 359",
+                "section": "14. 디지털노마드(워케이션) 비자(F-1-D)",
+                "confidence": "manual_reconciled_260623_pdf",
+                "needsManualReview": true,
+                "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+                "sourceId": "stay_manual_2026_06_23_pdf",
+                "reviewReason": "F-1-D 하위 코드의 중첩 절차 항목을 부모 variants로 이관한 항목입니다. 서류 목록은 기존 데이터 그대로이며 매뉴얼 원문 대조 전까지 검수 필요 상태로 유지합니다."
+              }
+            ],
+            "notes": [],
+            "statusCode": "F-1-D"
           }
         ]
       },
@@ -24367,13 +24468,13 @@
         "code": "F-1-D",
         "name": "디지털노마드(워케이션) 비자",
         "nameKo": "디지털노마드(워케이션) 비자",
-        "addReq": "해외 소속 기업 재직·원격근무 입증서류, 소득요건 입증서류, 민간 의료보험 가입 입증서류 등.",
+        "addReq": "해외사업체 소유자 또는 해외기업 소속 원격근무 가능자로 동일 업종 1년 이상 종사하고 만 18세 이상인 자(동반 자녀는 연령 예외). 신청 직전 한국은행 고시 전년도 GNI 기준 소득: 수도권은 18~34세 GNI 1.5배, 35세 이상 GNI 2배; 비수도권 및 인구감소(관심)지역은 각각 GNI 1배, 1.5배. 배우자·미성년 자녀 동반 시 수도권 GNI 2배, 비수도권 및 인구감소(관심)지역 GNI 1.5배. 병원치료·본국후송 보장액 1억원 이상의 개인 의료보험 필요.",
         "addReqDocs": [
           "doc_remote_work_employment_proof",
           "doc_digital_nomad_income_proof",
           "doc_private_medical_insurance"
         ],
-        "note": "해외 기업 소속으로 원격근무하며 국내 체류하는 디지털노마드. 세부 요건·소득 기준은 사증발급 안내매뉴얼 확인.",
+        "note": "F-1-D 체류기간 연장은 1회 1년씩 최장 3년. 비수도권 또는 인구감소(관심)지역 소득요건 완화 적용자는 실제 해당 지역 체류 여부 확인. 허가기간 내 수도권으로 옮기면 수도권 소득기준 충족 또는 비수도권 재이동을 조건으로 6개월 부여. 입국 후 중도 실직 시 신고·출국 의무는 없으나 체류기간 연장 불가",
         "searchAliases": [
           "F-1-D",
           "F1D",
@@ -24427,7 +24528,49 @@
           }
         ],
         "group": "기타",
-        "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
+        "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified.",
+        "procedures": {
+          "visaIssuance": {
+            "available": true,
+            "summary": "디지털노마드(F-1-D) 입국 전 사증발급. 해외 사업체/해외기업 원격근무, 동일 업종 1년 이상 경력과 지역·가족별 GNI 기준 및 보험보장금액을 충족하고 제출서류를 갖춘 경우 재외공관 심사.",
+            "requiredDocs": {
+              "commonDocs": [
+                "사증발급신청서(별지 제17호 서식)",
+                "여권",
+                "표준규격사진 1매",
+                "수수료"
+              ],
+              "requiredDocs": [
+                "동일 업종 1년 이상 종사 입증 가능한 재직증명서",
+                "급여명세서·잔고증명 등 소득증빙자료",
+                "범죄경력증명서",
+                "개인 의료보험 가입증명서(병원 치료 및 본국 후송 보장액 1억원 이상)"
+              ],
+              "additionalDocs": [],
+              "conditionalDocs": [
+                "배우자·자녀 동반 시 가족관계 입증서류",
+                "비수도권 또는 인구감소(관심)지역 소득완화 적용 시 1개월 이상 임대차계약서, 워케이션 특화시설 또는 숙소 예약확인서 등 지역 체류 예정 입증서류",
+                "출입국·재외공관의 장이 필요하다고 인정하는 추가서류",
+                "범죄경력증명서: 만 14세 미만, 일정 국내출생/거주 이력, 사증 발급 시 제출 후 3개월 이내 국내 변경신청 등 면제사유는 별도 확인"
+              ]
+            },
+            "manual202610Review": [
+              {
+                "manualVersion": "2026.10",
+                "sourceDate": "2026-10-19",
+                "sourceDateProvenance": "owner_filename",
+                "sourceId": "visa_manual_2026_10_19_hwp_text",
+                "sourceFile": "docs/source-manuals/2026-10-19/extracted/visa_manual_261019.txt",
+                "markdownArchive": "docs/source-manuals/incoming/261019_hikorea_markdown_2.zip",
+                "markdownMember": "261019 사증민원 자격별 안내 매뉴얼.md",
+                "markdownLines": "6932-6955",
+                "scope": "F-1-D visa issuance only",
+                "verification": "owner_supplied_manual_excerpt_verified_not_independently_approved",
+                "text": "F-1-D visa requirement GNI by age/region/accompanying family and insurance; consular filing docs"
+              }
+            ]
+          }
+        }
       },
       {
         "code": "F-1-16",
