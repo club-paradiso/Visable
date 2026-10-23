@@ -138,7 +138,7 @@
 /* Text that sits on an accent fill must use the accent's own ink. */
 :root[data-vt] :is(.skip-link,.mr-skip,.pv-sr-only):focus,:root[data-vt] :is(.skip-link,.mr-skip){color:var(--vs-ac-ink)!important}
 :root[data-vt] .sg-interp-sep{color:var(--vs-ink3)!important}
-:root[data-vt][data-vt-page="immigration-checklists"] .hero :is(strong,span,em,b,i,p,h1,h2){color:var(--vs-hdr-ink)!important}
+@media screen{:root[data-vt][data-vt-page="immigration-checklists"] .hero :is(strong,span,em,b,i,p,h1,h2){color:var(--vs-hdr-ink)!important}}
 
 /* Agency directory: its own token names */
 :root[data-vt][data-vt-page="agency-directory"],:root[data-vt][data-vt-page="agency-directory"] body{

@@ -34,6 +34,15 @@
     root.setAttribute('data-vt-page', id);
   })();
 
+  /* Knowledge Studio follows the OS colour scheme with no brightness attribute;
+     expose it so the skins pick their dark face there too. */
+  if (root.getAttribute('data-vt-page') === 'knowledge-studio' && window.matchMedia) {
+    var mq = window.matchMedia('(prefers-color-scheme: dark)');
+    var syncScheme = function () { if (mq.matches) root.setAttribute('data-theme', 'dark'); else root.removeAttribute('data-theme'); };
+    syncScheme();
+    if (mq.addEventListener) mq.addEventListener('change', syncScheme); else if (mq.addListener) mq.addListener(syncScheme);
+  }
+
   var current = resolve();
   if (current) root.setAttribute('data-vt', current);
 
@@ -159,6 +168,27 @@
     return fs;
   }
 
+  /* Re-apply picker copy for the current document language (home loads its
+     locale pack after mount, and visitors can switch language later). */
+  function relabel() {
+    var c = lang();
+    var groups = document.querySelectorAll('.vt-picker');
+    for (var i = 0; i < groups.length; i++) groups[i].setAttribute('aria-label', c.title);
+    var opts = document.querySelectorAll('.vt-opt');
+    for (var j = 0; j < opts.length; j++) {
+      var small = opts[j].querySelector('small');
+      if (small) small.textContent = c[opts[j].getAttribute('data-vt-value')];
+    }
+    var fabs = document.querySelectorAll('.vt-fab');
+    for (var k = 0; k < fabs.length; k++) {
+      fabs[k].setAttribute('aria-label', c.title);
+      var lbl = fabs[k].querySelector('.vt-fab-label');
+      if (lbl) lbl.textContent = c.fab;
+    }
+    var t = document.getElementById('vtPopTitle');
+    if (t) t.textContent = c.title;
+  }
+
   function mount() {
     var c = lang();
     // Home: the global settings sheet already has an "interface theme" block — the picker replaces its old two-way toggle there.
@@ -233,6 +263,7 @@
         document.body.appendChild(fabs[1]);
       } else document.body.appendChild(fab);
     }
+    relabel();
     ensureFonts(current);
     syncPickers();
     syncWordmarks();
@@ -247,6 +278,7 @@
       });
       mo.observe(document.body, { attributes: true, attributeFilter: ['data-theme'], childList: true, subtree: true });
       mo.observe(root, { attributes: true, attributeFilter: ['data-theme', 'lang'] });
+      new MutationObserver(relabel).observe(root, { attributes: true, attributeFilter: ['lang'] });
     }
   }
 
