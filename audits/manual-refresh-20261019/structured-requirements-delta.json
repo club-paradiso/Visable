@@ -218,6 +218,40 @@
         "verification": "owner_supplied_manual_excerpt_verified_not_independently_approved",
         "text": "최근 2년 평균소득 2,500만원, 농·축산/어업/내항상선 2,400만원, 2021~2025년 중 대체 연도"
       }
+    },
+    {
+      "code": "F-1",
+      "field": "subCodes.F-1-D.procedures.visaIssuance",
+      "reference": {
+        "manualVersion": "2026.10",
+        "sourceDate": "2026-10-19",
+        "sourceDateProvenance": "owner_filename",
+        "sourceId": "visa_manual_2026_10_19_hwp_text",
+        "sourceFile": "docs/source-manuals/2026-10-19/extracted/visa_manual_261019.txt",
+        "markdownArchive": "docs/source-manuals/incoming/261019_hikorea_markdown_2.zip",
+        "markdownMember": "261019 사증민원 자격별 안내 매뉴얼.md",
+        "markdownLines": "6932-6955",
+        "scope": "F-1-D visa issuance only",
+        "verification": "owner_supplied_manual_excerpt_verified_not_independently_approved",
+        "text": "F-1-D visa requirement GNI by age/region/accompanying family and insurance; consular filing docs"
+      }
+    },
+    {
+      "code": "F-1",
+      "field": "subCodes.F-1-D.addReq.age_region_family_income_conditions",
+      "reference": {
+        "manualVersion": "2026.10",
+        "sourceDate": "2026-10-19",
+        "sourceDateProvenance": "owner_filename",
+        "sourceId": "visa_manual_2026_10_19_hwp_text",
+        "sourceFile": "docs/source-manuals/2026-10-19/extracted/visa_manual_261019.txt",
+        "markdownArchive": "docs/source-manuals/incoming/261019_hikorea_markdown_2.zip",
+        "markdownMember": "261019 사증민원 자격별 안내 매뉴얼.md",
+        "markdownLines": "6932-6955",
+        "scope": "F-1-D visa issuance only",
+        "verification": "owner_supplied_manual_excerpt_verified_not_independently_approved",
+        "text": "F-1-D visa requirement GNI by age/region/accompanying family and insurance; consular filing docs"
+      }
     }
   ],
   "unreviewed": [
