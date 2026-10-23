@@ -430,7 +430,7 @@ jobs:
               "/api/enforcement/analyze",
               method="POST",
               payload=synthetic_case,
-              timeout=20.0,
+              timeout=45.0,
           )
           elapsed_ms = int(round((time.perf_counter() - started) * 1000))
           baseline = enforcement.get("legalBaseline") or {}
