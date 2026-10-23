@@ -35,7 +35,7 @@ from urllib.parse import quote
 from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, StreamingResponse
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 from rate_limit import rate_limit
 from services import legal_evidence
 from services.law_grounding import (
@@ -95,7 +95,9 @@ from services.model_policy import (
     DEFAULT_FINAL_ANSWER_MODEL,
     DEFAULT_FINAL_ANSWER_MODEL_CANDIDATES,
     MODEL_POLICY_VERSION,
+    drop_policy_blocked_models,
     model_env_overrides_allowed,
+    model_is_policy_blocked,
     normalize_answer_mode,
     resolve_answer_mode_models,
     resolve_question_answer_mode,
@@ -201,10 +203,10 @@ SUPABASE_SERVICE_KEY: Optional[str] = os.environ.get("SUPABASE_SERVICE_KEY")
 # services.model_policy so the final-answer, router, translation, verifier, and
 # Chinese-language model choices remain explicit and testable.
 #
-# Core policy:
-# - final answers: Nemotron Ultra -> Nemotron Super -> gpt-oss -> Gemma
-# - router / translation: Gemma
-# - verifier: gpt-oss
+# Core policy (2026-10-21, see services/model_policy.py):
+# - final answers, router, translation, verifier: Gemma 4 only
+# - NVIDIA (Nemotron) and Thinking Machines (Inkling) ':free' routes are
+#   excluded and are dropped even when a Railway override lists them
 # - Chinese-language route only: DeepSeek / Qwen / Kimi family
 #
 # Override per-deploy with OPENROUTER_MODEL and OPENROUTER_MODEL_CANDIDATES only
@@ -212,10 +214,12 @@ SUPABASE_SERVICE_KEY: Optional[str] = os.environ.get("SUPABASE_SERVICE_KEY")
 # a forgotten Railway variable from pinning removed catalog entries forever.
 _DEFAULT_OPENROUTER_MODEL: str = DEFAULT_FINAL_ANSWER_MODEL
 OPENROUTER_MODEL_ENV_OVERRIDES_ALLOWED: bool = model_env_overrides_allowed()
-OPENROUTER_MODEL: str = (
-    (os.environ.get("OPENROUTER_MODEL", "").strip() if OPENROUTER_MODEL_ENV_OVERRIDES_ALLOWED else "")
-    or _DEFAULT_OPENROUTER_MODEL
+_OPENROUTER_MODEL_ENV: str = (
+    os.environ.get("OPENROUTER_MODEL", "").strip() if OPENROUTER_MODEL_ENV_OVERRIDES_ALLOWED else ""
 )
+OPENROUTER_MODEL: str = (
+    "" if model_is_policy_blocked(_OPENROUTER_MODEL_ENV) else _OPENROUTER_MODEL_ENV
+) or _DEFAULT_OPENROUTER_MODEL
 
 # Explicit, predictable OpenRouter fallback candidates. When the primary model
 # is rate-limited (429) or its upstream is unavailable (503 / "no healthy
@@ -253,11 +257,9 @@ def _resolve_openrouter_candidates() -> List[str]:
         if model_env_overrides_allowed()
         else ""
     )
-    configured = (
-        [c.strip() for c in raw.split(",")]
-        if raw
-        else list(_DEFAULT_OPENROUTER_MODEL_CANDIDATES)
-    )
+    configured = drop_policy_blocked_models(
+        [c.strip() for c in raw.split(",")] if raw else []
+    ) or list(_DEFAULT_OPENROUTER_MODEL_CANDIDATES)
     # Primary model is always first; duplicates are collapsed preserving order.
     return _dedupe_preserve_order([OPENROUTER_MODEL, *configured])
 
@@ -655,6 +657,11 @@ class AskRequest(BaseModel):
 
 
 class AskResponse(BaseModel):
+    # Public fields such as model_candidates / model_fallback_used start with
+    # "model_", which pydantic v2 reserves. Allowing them removes a dozen
+    # UserWarnings that Railway logs at error severity on every start-up.
+    model_config = ConfigDict(protected_namespaces=())
+
     answer: str
     provider: str
     model: str

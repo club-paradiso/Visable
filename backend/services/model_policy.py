@@ -135,9 +135,33 @@ CHINESE_ONLY_MODEL_PREFIXES = (
 )
 
 
+# Providers whose ':free' routes are excluded by policy (see the module
+# docstring). This is enforced in code, not only in the defaults, because a
+# deploy-time override (Railway variables, opted in via
+# OPENROUTER_ALLOW_MODEL_ENV_OVERRIDES) can otherwise pin an excluded model
+# again: on 2026-10-23 production was still routing /api/ask to Nemotron through
+# stale OPENROUTER_*_CANDIDATES values even though the committed defaults were
+# Gemma-only.
+POLICY_BLOCKED_MODEL_PREFIXES = ("nvidia/", "thinkingmachines/")
+
+
+def model_is_policy_blocked(model_id: str) -> bool:
+    """True when ``model_id`` belongs to a provider excluded by policy."""
+    low = (model_id or "").strip().lower()
+    return any(low.startswith(prefix) for prefix in POLICY_BLOCKED_MODEL_PREFIXES)
+
+
+def drop_policy_blocked_models(items: Sequence[str]) -> List[str]:
+    """Return ``items`` without policy-blocked models, order preserved."""
+    return [item for item in items if not model_is_policy_blocked(item)]
+
+
 def _env(name: str, default: str) -> str:
+    """Read a model id from the environment, ignoring policy-blocked values."""
     value = os.environ.get(name, "").strip()
-    return value or default
+    if not value or model_is_policy_blocked(value):
+        return default
+    return value
 
 
 def model_env_overrides_allowed() -> bool:
@@ -169,7 +193,7 @@ def _csv_env(name: str, default: List[str]) -> List[str]:
     seen = set()
     for item in raw.split(","):
         clean = item.strip()
-        if clean and clean not in seen:
+        if clean and clean not in seen and not model_is_policy_blocked(clean):
             out.append(clean)
             seen.add(clean)
     return out or list(default)
@@ -218,9 +242,8 @@ def resolve_model_role_policy() -> Dict[str, Any]:
         "chinese_fallback_models": _csv_env("AI_CHINESE_FALLBACK_MODELS", DEFAULT_CHINESE_FALLBACK_MODELS),
         "chinese_only_model_prefixes": list(CHINESE_ONLY_MODEL_PREFIXES),
         "policy_notes": [
-            "Gemma is reserved for translation, language detection, and low-risk routing by default.",
-            "Nemotron 3 Ultra is the default Basic final-answer model, with catalog-reconciled fallbacks.",
-            "Nemotron 3 Super is the default verifier / structured audit model.",
+            "Gemma 4 is the default for routing, translation, Basic and Fast final answers, the verifier, and structured enforcement extraction.",
+            "NVIDIA (Nemotron) and Thinking Machines (Inkling) ':free' routes are excluded by policy and are dropped even when a deploy-time override lists them.",
             "DeepSeek, Qwen, Kimi, Z.ai, MiniMax, and InclusionAI families are reserved for Chinese-language routes by policy.",
             "Random OpenRouter routing such as openrouter/auto or openrouter/free is not allowed.",
         ],
