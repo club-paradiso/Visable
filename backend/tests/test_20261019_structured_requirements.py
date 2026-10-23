@@ -35,7 +35,7 @@ class OctoberRequirementsTest(unittest.TestCase):
 
     def test_e74_salary_and_income_history(self):
         self.assertIn("2,589만원", self.stay_original)
-        self.assertIn("’21년~’25년", self.stay_original)
+        self.assertIn("‘21년~’25년", self.stay_original)
         sub=next(s for s in self.visas["E-7"]["subCodes"] if s["code"]=="E-7-4")
         self.assertIn("2,589만원",sub["addReq"])
         self.assertIn("2021년~2025년",sub["addReq"])
