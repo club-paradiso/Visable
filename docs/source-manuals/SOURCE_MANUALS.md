@@ -39,7 +39,7 @@ Each is registered under `current.<role>.derived_texts` in `source_manifest.json
 
 Readable Markdown conversions (manual reader only, not a grounding source):
 
-- (The manual reader still reads the 2026.9 conversions; it has not been rebuilt for 2026.10.) `2026-09/markdown/visa_manual_260901.md`, `2026-09/markdown/stay_manual_260918.md` (+ `images/`) - HWP→Markdown conversions of the 2026.9 visa (2026-09-01) and stay (2026-09-18) manuals, digest-pinned in `data/manual-reader/catalog.json` and cross-checked line-by-line against `2026-09/extracted/*.txt` (≥97% required). They feed `manual.html` only and do not change `source_manifest.json` `current` or any approval gate. See `docs/MANUAL_READER.md`.
+- `2026-10-19/markdown/visa_manual_261019.md`, `2026-10-19/markdown/stay_manual_261019.md` (+ `images/261019-visa`, `images/261019-stay`) - `npx kordoc@^4` (4.24.1) conversions of the 2026.10 HWPs, made the same way as the 2026.9 ones (same images, same layout, same chapter start lines; only the changed passages differ). `scripts/build_manual_reader.py` builds `data/manual-reader/` from them. The 2026.9 conversions stay in `2026-09/markdown/` for point-in-time reading.
 
 Special program manuals (also registered in `source_manifest.json` under `special_program_manuals`):
 

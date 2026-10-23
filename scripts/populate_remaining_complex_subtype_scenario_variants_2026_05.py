@@ -17,7 +17,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from audit_manual_ref_editions_2026_09 import anchored_2026_09
+from audit_manual_ref_editions_2026_10 import anchored_ref
 
 ROOT = Path(__file__).resolve().parents[1]
 TARGETS = (ROOT / "visa_data.json", ROOT / "backend" / "data" / "visas.json")
@@ -556,7 +556,7 @@ def _has_current_review_gated_ref(value: Any) -> bool:
             continue
         # The 2026.6 citation this script wrote, or its 2026.9 relabel
         # (owner-approved 2026-10-19; wording checked on the cited page).
-        cited = anchored_2026_09(ref) or (
+        cited = anchored_ref(ref) or (
             ref.get("manualVersion") == MANUAL_VERSION
             and ref.get("sourceFile") == SOURCE_FILE
             and ref.get("sourceDate") == SOURCE_DATE

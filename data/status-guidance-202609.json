@@ -5631,6 +5631,8 @@
      "requirement_level": "CONDITIONAL_REQUIRED",
      "applies_when_ko": "비수도권·인구감소(관심)지역 체류를 이유로 소득요건을 완화받는 경우",
      "applies_when_en": "If claiming the relaxed income test for staying outside the capital region",
+     "notes_ko": "비수도권 지역 등록자는 본인 명의로 제출해야 합니다. (2026.10 판)",
+     "notes_en": "Registrants outside the capital region must submit it in their own name. (2026.10 edition)",
      "submission_form": "SOURCE_DOES_NOT_SPECIFY",
      "form_basis": "NONE",
      "name_ko": "비수도권·인구감소(관심)지역 체류 예정 입증서류(1개월 이상 임대차계약서, 워케이션 시설·숙소 이용기록 등)",
@@ -5673,10 +5675,12 @@
    "notes_ko": [],
    "notes_en": [],
    "conditions_ko": [
-    "소득요건 완화 후 허가기간 내 수도권으로 이주하면 수도권 소득기준 충족 또는 비수도권 재이동을 조건으로 6개월만 부여됩니다."
+    "소득요건 완화 후 허가기간 내 수도권으로 이주하면 수도권 소득기준 충족 또는 비수도권 재이동을 조건으로 6개월만 부여됩니다.",
+    "입국 후 중도 실직한 경우 신고하거나 출국할 의무는 없으나, 체류기간 연장은 허용되지 않습니다. (2026.10 판)"
    ],
    "conditions_en": [
-    "If you move to the capital region after a relaxed income test, only 6 months are granted unless you meet the capital-region income standard or move back."
+    "If you move to the capital region after a relaxed income test, only 6 months are granted unless you meet the capital-region income standard or move back.",
+    "If you lose your job after entry you are not obliged to report it or leave, but your stay cannot be extended. (2026.10 edition)"
    ],
    "covers": [],
    "law_sources": [],

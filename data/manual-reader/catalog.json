@@ -5,40 +5,40 @@
  "note": "원문 문장은 바꾸지 않음. 쪽 넘김 때문에 반복된 항목명·목차 링크·장 제목 줄·표지 이미지만 제외.",
  "sources": {
   "v": {
-   "id": "visa_manual_2026_09_01_md",
-   "file": "visa_manual_260901.md",
+   "id": "visa_manual_2026_10_19_reader_md",
+   "file": "visa_manual_261019.md",
    "title": "사증발급 안내매뉴얼",
    "title_en": "Visa Issuance Guide Manual",
-   "date": "2026-09-01",
-   "version": "2026.9",
-   "pdf": "docs/source-manuals/2026-09/visa_manual_260901.pdf",
-   "pdf_text": "docs/source-manuals/2026-09/extracted/visa_manual_2026_09_01_pdf.txt",
-   "markdown": "docs/source-manuals/2026-09/markdown/visa_manual_260901.md",
-   "sha256": "178d6817526c20562a04ad52ea1b665b63f5824020468094acbe0ed848dcb3c3",
+   "date": "2026-10-19",
+   "version": "2026.10",
+   "pdf": "docs/source-manuals/2026-10-19/visa_manual_261019.pdf",
+   "pdf_text": "docs/source-manuals/2026-10-19/extracted/visa_manual_2026_10_19_pdf.txt",
+   "markdown": "docs/source-manuals/2026-10-19/markdown/visa_manual_261019.md",
+   "sha256": "87b1c9568d98cbf4111e020d7152d28c4ed30815da40c39fe10fd1fb82f6bb3f",
    "official_url": "https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&BBS_GB_CD=BS10&NTCCTT_SEQ=1062&page=1",
    "approval_state": "needs_review",
    "pdf_crosscheck": {
-    "probes": 6305,
-    "matched": 6203,
+    "probes": 6309,
+    "matched": 6207,
     "ratio": 0.9838
    }
   },
   "s": {
-   "id": "stay_manual_2026_09_18_md",
-   "file": "stay_manual_260918.md",
+   "id": "stay_manual_2026_10_19_reader_md",
+   "file": "stay_manual_261019.md",
    "title": "외국인체류 안내매뉴얼",
    "title_en": "Foreigner Stay/Residence Guide Manual",
-   "date": "2026-09-18",
-   "version": "2026.9",
-   "pdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
-   "pdf_text": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
-   "markdown": "docs/source-manuals/2026-09/markdown/stay_manual_260918.md",
-   "sha256": "9206a169f048a4937bf360e227d8b9e1f2e4214801fdf830b9b87138ce225260",
+   "date": "2026-10-19",
+   "version": "2026.10",
+   "pdf": "docs/source-manuals/2026-10-19/stay_manual_261019.pdf",
+   "pdf_text": "docs/source-manuals/2026-10-19/extracted/stay_manual_2026_10_19_pdf.txt",
+   "markdown": "docs/source-manuals/2026-10-19/markdown/stay_manual_261019.md",
+   "sha256": "461368133bde8b495ef96d473af004ddcf6706e56b9b7d93aee3c9c891696cd9",
    "official_url": "https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&BBS_GB_CD=BS10&NTCCTT_SEQ=1062&page=1",
    "approval_state": "needs_review",
    "pdf_crosscheck": {
-    "probes": 9984,
-    "matched": 9842,
+    "probes": 9996,
+    "matched": 9854,
     "ratio": 0.9858
    }
   }
@@ -758,7 +758,7 @@
    "key": "D-2",
    "v": {
     "title": "유학(D-2)",
-    "bytes": 12634,
+    "bytes": 13048,
     "sections": [
      {
       "t": "sec",
@@ -799,7 +799,7 @@
    },
    "s": {
     "title": "유학(D-2)",
-    "bytes": 33474,
+    "bytes": 34023,
     "sections": [
      {
       "t": "sec",
@@ -1439,7 +1439,7 @@
    },
    "s": {
     "title": "무역경영(D-9)",
-    "bytes": 21157,
+    "bytes": 21254,
     "sections": [
      {
       "t": "sec",
@@ -2604,7 +2604,7 @@
    },
    "s": {
     "title": "방문동거(F-1)",
-    "bytes": 36874,
+    "bytes": 37210,
     "sections": [
      {
       "t": "sec",
@@ -3440,7 +3440,7 @@
   {
    "src": "v",
    "key": "D-2",
-   "chars": 4048,
+   "chars": 4174,
    "missing": 16,
    "added": 0
   },
@@ -3720,7 +3720,7 @@
   {
    "src": "s",
    "key": "D-2",
-   "chars": 10724,
+   "chars": 10897,
    "missing": 96,
    "added": 0
   },
@@ -3769,7 +3769,7 @@
   {
    "src": "s",
    "key": "D-9",
-   "chars": 7172,
+   "chars": 7205,
    "missing": 35,
    "added": 0
   },
@@ -3853,7 +3853,7 @@
   {
    "src": "s",
    "key": "F-1",
-   "chars": 14617,
+   "chars": 14750,
    "missing": 61,
    "added": 0
   },

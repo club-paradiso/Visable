@@ -108,7 +108,7 @@ ok(route.href('', null) === null, 'no code → no deep link');
 // page wiring
 const page = read('manual.html');
 ok(/assets\/js\/manual-reader-route\.js/.test(page) && /assets\/js\/manual-reader\.js/.test(page), 'manual.html loads route + reader scripts');
-ok(/visa_manual_260901\.pdf/.test(page) && /stay_manual_260918\.pdf/.test(page), 'manual.html keeps official PDF fallbacks (noscript)');
+ok(/visa_manual_261019\.pdf/.test(page) && /stay_manual_261019\.pdf/.test(page), 'manual.html keeps official PDF fallbacks (noscript)');
 const reader = read('assets/js/manual-reader.js');
 ok(/원문 발췌 · 검토 전/.test(reader), 'reader shows the needs-review state');
 ok(/법적 요건이 아니며|법적 요건이 아닙니다/.test(reader), 'reader footer separates Visable editorial text from requirements');
