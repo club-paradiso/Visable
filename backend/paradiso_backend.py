@@ -4165,8 +4165,19 @@ def _detect_task_type(text: str) -> Optional[str]:
         "근무처 변경", "근무처를 변경", "근무처를 바꾸", "근무처 추가", "근무처를 추가",
         "근무처 변경신고", "이직", "직장을 바꾸", "직장 변경", "고용주 변경",
     )
+    # Everyday wording ("회사를 옮기려면", "직장 바꾸고 싶어요", "다른 회사로 가려면")
+    # never says 근무처; without it the question fell through to a generic
+    # activity-scope lookup and cited unrelated manual pages (QA 2026-10-23).
+    workplace_ko_re = (
+        r"(?:회사|직장|일자리|근무지)\s*(?:를|을)?\s*(?:옮기|옮겨|옮길|옮긴|바꾸|바꿔|바꿀|바꾼|변경)"
+        r"|(?:다른|새|새로운)\s*(?:회사|직장)\s*(?:로|으로|에)\s*(?:옮기|옮겨|옮길|이직|가|갈|취업|입사)"
+    )
     workplace_en = r"\b(change (?:of )?workplace|change employer|switch (?:jobs?|employer)|add (?:a )?second job)\b"
-    if any(sig in text for sig in workplace_ko) or re.search(workplace_en, text, flags=re.IGNORECASE):
+    if (
+        any(sig in text for sig in workplace_ko)
+        or re.search(workplace_ko_re, text)
+        or re.search(workplace_en, text, flags=re.IGNORECASE)
+    ):
         return "workplace_change"
 
     # --- activities_outside_status / 체류자격외활동 ---
@@ -7054,13 +7065,34 @@ async def _ask_internal(req: AskRequest) -> AskResponse:
             if groq_answer is not None:
                 fam = dict(attempt_meta)
                 fam["llm_provider"] = "groq"
+                groq_meta = dict(base_meta)
+                answer_text = groq_answer
+                if structured_answer is not None:
+                    # A Groq answer is a model answer like any other: run the
+                    # same structured finalization as the OpenRouter success
+                    # path, so its lead prose becomes the short summary. This
+                    # branch previously returned the raw text with base_meta
+                    # untouched, which left the deterministic summary in place
+                    # (short_answer_source stayed "deterministic") even though
+                    # a live model had answered — the Fast-summary gap.
+                    answer_text = _structured_answer.scrub_internal_metadata(
+                        _confidence_gate_answer_text(groq_answer, groq_meta)
+                    )
+                    answer_text, gate_meta = _finalize_structured_document_answer(
+                        answer_text,
+                        groq_meta,
+                        structured_answer,
+                        answer_shape_contract,
+                        lang=req.lang,
+                    )
+                    groq_meta.update(gate_meta)
                 return AskResponse(
-                    answer=groq_answer,
+                    answer=answer_text,
                     provider="groq",
                     model=GROQ_MODEL,
                     provider_family_fallback_used=True,
                     **fam,
-                    **base_meta,
+                    **groq_meta,
                 )
         # Optional private Ollama fallback scaffold. Disabled by default; never
         # reached unless the operator explicitly enables it and OpenRouter failed.
