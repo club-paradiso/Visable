@@ -1031,6 +1031,45 @@ class KnowledgeStudioContractTests(EditionUpdateCase):
             self.assertEqual(c.get(f"{base}/conflicts").json(), {"conflicts": []})
 
 
+class CorpusPageCountShapeTests(unittest.TestCase):
+    """Regression: corpus files whose records live under an envelope key.
+
+    The 2026-10 HWP-text corpora wrap section dicts in an object
+    (``{"sections": [...]}``) instead of the bare page list the PDF
+    corpora use. ``_corpus_page_count`` iterated the dict's string keys
+    and raised AttributeError, which failed platform bootstrap and
+    cascaded into every knowledge/grounding test module on main.
+    """
+
+    def _count_with_files(self, files: Dict[str, Any], rid: str):
+        import tempfile
+        from pathlib import Path
+
+        with tempfile.TemporaryDirectory() as tmp:
+            for name, payload in files.items():
+                (Path(tmp) / name).write_text(json.dumps(payload), encoding="utf-8")
+            with patch.object(adapters, "MANUAL_CORPUS_DIR", Path(tmp)):
+                return adapters._corpus_page_count(rid)
+
+    def test_bare_page_list_still_counts(self):
+        files = {"rid_a.json": [{"page": 3}, {"page": 17}, {"page": 5}]}
+        self.assertEqual(self._count_with_files(files, "rid_a"), 17)
+
+    def test_sections_envelope_counts(self):
+        files = {
+            "rid_b.json": {
+                "schema_version": 1,
+                "sections": [{"page": 2}, {"page": 42}, {"section_index": 1}],
+            }
+        }
+        self.assertEqual(self._count_with_files(files, "rid_b"), 42)
+
+    def test_unknown_shapes_yield_none_not_an_exception(self):
+        self.assertIsNone(self._count_with_files({"rid_c.json": {"meta": 1}}, "rid_c"))
+        self.assertIsNone(self._count_with_files({"rid_d.json": ["not-a-dict"]}, "rid_d"))
+        self.assertIsNone(self._count_with_files({}, "rid_missing"))
+
+
 if __name__ == "__main__":
     unittest.main()
 
