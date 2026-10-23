@@ -1,0 +1,191 @@
+/* ==========================================================================
+   Visable theme skins — Default (Period) · Stamp · Chrome · Neon (2026.10)
+   --------------------------------------------------------------------------
+   Selected theme lives on <html data-vt="default|stamp|chrome|neon">, set
+   before first paint by assets/js/visable-theme.js. Brightness stays where
+   each page already keeps it (body[data-theme="dark"], or html[data-theme=
+   "dark"] on the manual reader), so every theme has a light and a dark face:
+     Default → Period / Night     Stamp → Passport / Cover
+     Chrome  → Glass / Graphite   Neon  → Night (dark) / Day (light)
+   This file only re-points the colour tokens the existing stylesheets already
+   read (--bg0/--t1/--ac…, --cs-*, --vp-*, --wm-*, --ks-*, page-local names).
+   It never changes copy, layout, disclaimers or data. No html[data-vt] → the
+   legacy look (incl. archive_diary) renders untouched.
+   ========================================================================== */
+
+/* ---- 1. Canonical palette per theme (light face) ------------------------ */
+:root[data-vt="default"]{
+  --vs-bg:#F3F2EE;--vs-bg2:#EAE8E1;--vs-surface:#FFFFFF;--vs-line:#E2E0D9;--vs-line2:#CFCCC3;
+  --vs-ink:#0F1218;--vs-ink2:#474D59;--vs-ink3:#5F6573;
+  --vs-ac:#4E5FBA;--vs-ac-ink:#FFFFFF;--vs-ac-text:#3A4796;--vs-ac-soft:#E7E9F8;
+  --vs-hdr:#3A4796;--vs-hdr-ink:#FFFFFF;
+  --vs-display:'Pretendard Variable',Pretendard,-apple-system,'Apple SD Gothic Neo','Noto Sans KR',system-ui,sans-serif;
+  --vs-display-w:800;--vs-mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  --vs-pattern:none;--vs-meta:#F3F2EE;
+}
+:root[data-vt="stamp"]{
+  --vs-bg:#F5EEDF;--vs-bg2:#EADFC8;--vs-surface:#FBF7EE;--vs-line:#D9CDB3;--vs-line2:#B9A57E;
+  --vs-ink:#18213D;--vs-ink2:#3B4258;--vs-ink3:#5A5F73;
+  --vs-ac:#2E4DA7;--vs-ac-ink:#FFFFFF;--vs-ac-text:#1F347A;--vs-ac-soft:#DCE4F5;
+  --vs-hdr:#1F347A;--vs-hdr-ink:#F5EEDF;
+  --vs-display:'Gowun Batang','Pretendard Variable',Pretendard,serif;
+  --vs-display-w:700;--vs-mono:'IBM Plex Mono',ui-monospace,monospace;
+  --vs-pattern:radial-gradient(rgba(46,77,167,.07) 1px,transparent 1.2px);--vs-pattern-size:7px 7px;--vs-meta:#F5EEDF;
+}
+:root[data-vt="chrome"]{
+  --vs-bg:#EEF1F8;--vs-bg2:#E3E8F5;--vs-surface:#FAFBFE;--vs-line:#D5DBEB;--vs-line2:#B9C3DE;
+  --vs-ink:#0B1233;--vs-ink2:#323B5C;--vs-ink3:#4D5675;
+  --vs-ac:#2546C2;--vs-ac-ink:#FFFFFF;--vs-ac-text:#1F3BA8;--vs-ac-soft:#DDE5FB;
+  --vs-hdr:#142B7A;--vs-hdr-ink:#FFFFFF;
+  --vs-display:'Pretendard Variable',Pretendard,-apple-system,'Apple SD Gothic Neo',sans-serif;
+  --vs-display-w:850;--vs-mono:'Unbounded',ui-sans-serif,sans-serif;
+  --vs-pattern:radial-gradient(60% 50% at 85% 0%,rgba(91,124,240,.22),transparent 70%),radial-gradient(50% 40% at 0% 30%,rgba(183,196,255,.38),transparent 70%);--vs-pattern-size:auto;--vs-meta:#EEF1F8;
+}
+/* Neon's light face is "Day" */
+:root[data-vt="neon"]{
+  --vs-bg:#EEF2F7;--vs-bg2:#E3EAF2;--vs-surface:#FFFFFF;--vs-line:#C6DDE4;--vs-line2:#94C2CF;
+  --vs-ink:#0B1430;--vs-ink2:#2B3756;--vs-ink3:#4A5878;
+  --vs-ac:#086A83;--vs-ac-ink:#FFFFFF;--vs-ac-text:#0B6075;--vs-ac-soft:#E0EEF3;
+  --vs-hdr:#0B6075;--vs-hdr-ink:#FFFFFF;
+  --vs-display:'Pretendard Variable',Pretendard,-apple-system,'Apple SD Gothic Neo',sans-serif;
+  --vs-display-w:800;--vs-mono:'JetBrains Mono',ui-monospace,monospace;
+  --vs-pattern:linear-gradient(180deg,#DCE6F1 0%,rgba(238,242,247,0) 420px);--vs-pattern-size:auto;--vs-meta:#EEF2F7;
+}
+
+/* ---- 2. Dark faces (body-level brightness, or html-level on the reader) - */
+:root[data-vt="default"] body[data-theme="dark"],:root[data-vt="default"][data-theme="dark"]{
+  --vs-bg:#0E1116;--vs-bg2:#161A21;--vs-surface:#171B23;--vs-line:#272C37;--vs-line2:#3A4150;
+  --vs-ink:#F2F1EC;--vs-ink2:#C3C6CE;--vs-ink3:#A2A7B2;
+  --vs-ac:#9BA3E8;--vs-ac-ink:#0F1218;--vs-ac-text:#C3C8F2;--vs-ac-soft:#23284A;
+  --vs-hdr:#161A21;--vs-hdr-ink:#F2F1EC;--vs-meta:#0E1116;
+}
+:root[data-vt="stamp"] body[data-theme="dark"],:root[data-vt="stamp"][data-theme="dark"]{
+  --vs-bg:#101A3C;--vs-bg2:#1A2550;--vs-surface:#172453;--vs-line:#33416F;--vs-line2:#55669A;
+  --vs-ink:#F3EAD3;--vs-ink2:#D8D1BE;--vs-ink3:#BDB8A9;
+  --vs-ac:#D9B865;--vs-ac-ink:#101A3C;--vs-ac-text:#F0D98F;--vs-ac-soft:#22305F;
+  --vs-hdr:#0B1430;--vs-hdr-ink:#F3EAD3;
+  --vs-pattern:radial-gradient(rgba(217,184,101,.09) 1px,transparent 1.2px);--vs-meta:#101A3C;
+}
+:root[data-vt="chrome"] body[data-theme="dark"],:root[data-vt="chrome"][data-theme="dark"]{
+  --vs-bg:#0E1220;--vs-bg2:#151A2B;--vs-surface:#1A2033;--vs-line:#2A3148;--vs-line2:#3E4866;
+  --vs-ink:#EEF1F8;--vs-ink2:#C5CCE4;--vs-ink3:#A3ABC8;
+  --vs-ac:#8FA8FF;--vs-ac-ink:#0B1233;--vs-ac-text:#AFC2FF;--vs-ac-soft:#1E2A55;
+  --vs-hdr:#151A2B;--vs-hdr-ink:#EEF1F8;
+  --vs-pattern:radial-gradient(60% 50% at 85% 0%,rgba(61,99,224,.28),transparent 70%),radial-gradient(50% 40% at 0% 30%,rgba(120,90,255,.14),transparent 70%);--vs-meta:#0E1220;
+}
+:root[data-vt="neon"] body[data-theme="dark"],:root[data-vt="neon"][data-theme="dark"]{
+  --vs-bg:#050B2B;--vs-bg2:#081236;--vs-surface:#0B1640;--vs-line:#1D3270;--vs-line2:#2E4B96;
+  --vs-ink:#E8F6FF;--vs-ink2:#C3D3EE;--vs-ink3:#A6B9DD;
+  --vs-ac:#7FE8FF;--vs-ac-ink:#050B2B;--vs-ac-text:#7FE8FF;--vs-ac-soft:#0F2152;
+  --vs-hdr:#081236;--vs-hdr-ink:#E8F6FF;
+  --vs-pattern:radial-gradient(1px 1px at 12% 18%,rgba(232,246,255,.7),transparent),radial-gradient(1px 1px at 72% 12%,rgba(232,246,255,.55),transparent),radial-gradient(1.5px 1.5px at 40% 66%,rgba(127,232,255,.6),transparent),radial-gradient(1px 1px at 88% 52%,rgba(232,246,255,.5),transparent),radial-gradient(70% 40% at 50% 0%,rgba(47,123,255,.2),transparent 70%);--vs-meta:#050B2B;
+}
+
+/* ---- 3. Re-point every token family the site already reads --------------
+   Applied on the elements that (re)declare those families: :root, body,
+   .us-layer and .wm-root. !important is required because the legacy layers
+   redeclare the same names under higher-specificity selectors. */
+:root[data-vt],:root[data-vt] body,:root[data-vt] .us-layer,:root[data-vt] .wm-root{
+  /* legacy index / preview / interview hub */
+  --bg0:var(--vs-bg)!important;--bg1:var(--vs-surface)!important;--bg2:var(--vs-bg2)!important;--bg3:var(--vs-bg2)!important;--bgI:var(--vs-bg2)!important;
+  --bd:var(--vs-line2)!important;--bd2:var(--vs-line)!important;--bd3:var(--vs-line)!important;
+  --t1:var(--vs-ink)!important;--t2:var(--vs-ink2)!important;--t3:var(--vs-ink3)!important;
+  --ac:var(--vs-ac)!important;--ac2:var(--vs-ac-text)!important;--acL:var(--vs-ac-soft)!important;--acG:var(--vs-ac-soft)!important;
+  --k-ink:var(--vs-ink)!important;--k-blue:var(--vs-ac)!important;--k-blue-deep:var(--vs-ac-text)!important;
+  --p-emerald:var(--vs-ac)!important;--p-emerald-deep:var(--vs-ac-text)!important;--pf-emerald:var(--vs-ac)!important;--pf-emerald-deep:var(--vs-ac-text)!important;
+  --p-green:var(--vs-ac)!important;--p-green-deep:var(--vs-ac-text)!important;--p-mint:var(--vs-ac-soft)!important;--p-mint-soft:var(--vs-ac-soft)!important;
+  --p-ink:var(--vs-ink)!important;--p-ink-2:var(--vs-ink2)!important;--p-ink-3:var(--vs-ink3)!important;--p-ink-mute:var(--vs-ink3)!important;
+  --p-line:var(--vs-line)!important;--p-line-2:var(--vs-line2)!important;--p-paper:var(--vs-bg)!important;--p-paper-surface-2:var(--vs-bg2)!important;
+  --color-primary:var(--vs-ac)!important;--color-primary-ink:var(--vs-ac-text)!important;--color-primary-green:var(--vs-ac)!important;--color-primary-green-hover:var(--vs-ac-text)!important;--color-primary-soft:var(--vs-ac-soft)!important;
+  --color-accent:var(--vs-ac)!important;--color-accent-soft:var(--vs-ac-soft)!important;--color-accent-deep:var(--vs-ac-text)!important;--accent-strong:var(--vs-ac-text)!important;
+  --color-border:var(--vs-line)!important;--color-surface:var(--vs-surface)!important;--color-text:var(--vs-ink)!important;--color-text-muted:var(--vs-ink3)!important;
+  --cta:var(--vs-ac)!important;--result-page-bg:var(--vs-bg)!important;--search-suggestion-text:var(--vs-ink2)!important;
+  --us-accent:var(--vs-ac)!important;--us-ink:var(--vs-ink)!important;--us-muted:var(--vs-ink3)!important;--us-line:var(--vs-line)!important;--us-surface:var(--vs-surface)!important;--us-surface-alt:var(--vs-bg2)!important;--us-sug-tint:var(--vs-ac-soft)!important;
+  /* civic search shell (home, form helper) */
+  --cs-green:var(--vs-ac)!important;--cs-ink:var(--vs-ink)!important;--cs-muted:var(--vs-ink3)!important;--cs-line:var(--vs-line)!important;--cs-bg:var(--vs-surface)!important;--cs-row:var(--vs-bg)!important;--cs-soft:var(--vs-ac-soft)!important;
+  /* product 2026 (Waymaker, New Home, form helper, interview hub) */
+  --vp-ink:var(--vs-ink)!important;--vp-ink-2:var(--vs-ink2)!important;--vp-ink-3:var(--vs-ink3)!important;
+  --vp-line:var(--vs-line)!important;--vp-line-soft:var(--vs-line)!important;--vp-line-strong:var(--vs-line2)!important;
+  --vp-green:var(--vs-ac)!important;--vp-green-2:var(--vs-ac-text)!important;--vp-mint:var(--vs-ac-soft)!important;
+  --vp-surface:var(--vs-surface)!important;--vp-paper:var(--vs-bg)!important;--vp-paper-strong:var(--vs-surface)!important;
+  --vp-cta:var(--vs-ac)!important;--vp-on-cta:var(--vs-ac-ink)!important;
+  /* Waymaker navigator */
+  --wm-ac:var(--vs-ac)!important;--wm-ac2:var(--vs-ac-text)!important;--wm-acL:var(--vs-ac-soft)!important;--wm-t1:var(--vs-ink)!important;--wm-t2:var(--vs-ink2)!important;--wm-t3:var(--vs-ink3)!important;
+  --wm-bd:var(--vs-line)!important;--wm-card:var(--vs-surface)!important;--wm-card2:var(--vs-bg2)!important;--wm-bg:var(--vs-bg)!important;
+  /* knowledge studio */
+  --ks-surface:var(--vs-surface)!important;--ks-paper:var(--vs-bg)!important;--ks-ink:var(--vs-ink)!important;--ks-ink-2:var(--vs-ink2)!important;--ks-ink-3:var(--vs-ink3)!important;
+  --ks-line:var(--vs-line2)!important;--ks-line-soft:var(--vs-line)!important;--ks-green:var(--vs-ac)!important;--ks-mint:var(--vs-ac-soft)!important;--ks-on-cta:var(--vs-ac-ink)!important;
+  /* content studio */
+  --primary:var(--vs-ac)!important;--text:var(--vs-ink)!important;--text-muted:var(--vs-ink3)!important;--surface-alt:var(--vs-bg2)!important;--border:var(--vs-line)!important;--border-focus:var(--vs-ac)!important;
+  /* page-local names (enforcement, checklists, manual reader) */
+  --ink:var(--vs-ink)!important;--ink2:var(--vs-ink2)!important;--muted:var(--vs-ink3)!important;--quiet:var(--vs-ink2)!important;
+  --line:var(--vs-line)!important;--line-strong:var(--vs-line2)!important;--paper:var(--vs-surface)!important;--surface:var(--vs-surface)!important;--canvas:var(--vs-bg)!important;--bg:var(--vs-bg)!important;--tint:var(--vs-bg2)!important;
+  --green:var(--vs-ac)!important;--green-2:var(--vs-ac-text)!important;--green-hover:var(--vs-ac-text)!important;--green-dark:var(--vs-hdr)!important;--mint:var(--vs-ac)!important;--mint-soft:var(--vs-ac-soft)!important;--pale:var(--vs-ac-soft)!important;--pale-light:var(--vs-bg2)!important;
+  --blue:var(--vs-ac)!important;--blue-soft:var(--vs-ac-soft)!important;--navy:var(--vs-ink)!important;
+  --accent:var(--vs-ac)!important;--accent-ink:var(--vs-ac-text)!important;--accent-soft:var(--vs-ac-soft)!important;
+  --hdr:var(--vs-hdr)!important;--hdr-ink:var(--vs-hdr-ink)!important;
+}
+
+/* ---- 4. Page ground + type ------------------------------------------------ */
+:root[data-vt]{background-color:var(--vs-bg)}
+:root[data-vt] body:not(#vt-a):not(#vt-b){background-color:var(--vs-bg)!important;background-image:var(--vs-pattern)!important;background-size:var(--vs-pattern-size,auto)!important;background-attachment:fixed;color:var(--vs-ink)}
+:root[data-vt] ::selection{background:var(--vs-ac);color:var(--vs-ac-ink)}
+:root[data-vt] :focus-visible{outline-color:var(--vs-ac)}
+:root[data-vt="stamp"] h1:not(#vt-a):not(#vt-b),:root[data-vt="stamp"] h2:not(#vt-a):not(#vt-b){font-family:var(--vs-display)!important;letter-spacing:-.02em}
+:root[data-vt="chrome"] h1{letter-spacing:-.045em}
+:root[data-vt="neon"] body[data-theme="dark"] h1:not(#vt-a):not(#vt-b){text-shadow:0 0 14px rgba(127,232,255,.45),0 0 34px rgba(47,123,255,.35)}
+
+/* Text that sits on an accent fill must use the accent's own ink. */
+:root[data-vt] :is(.skip-link,.mr-skip,.pv-sr-only):focus,:root[data-vt] :is(.skip-link,.mr-skip){color:var(--vs-ac-ink)!important}
+:root[data-vt] .sg-interp-sep{color:var(--vs-ink3)!important}
+:root[data-vt][data-vt-page="immigration-checklists"] .hero :is(strong,span,em,b,i,p,h1,h2){color:var(--vs-hdr-ink)!important}
+
+/* Agency directory: its own token names */
+:root[data-vt][data-vt-page="agency-directory"],:root[data-vt][data-vt-page="agency-directory"] body{
+  --brand:var(--vs-ac-text)!important;--brand-hover:var(--vs-ac)!important;--soft:var(--vs-ac-soft)!important;--soft-strong:var(--vs-line)!important;
+  --card:var(--vs-surface)!important;--accent:#F2C46F!important;
+}
+:root[data-vt][data-vt-page="agency-directory"] :is(.disclaimer,.disclaimer a,.footer-links a){color:var(--vs-ink3)!important}
+
+:root[data-vt][data-vt-page="agency-directory"] .staff-link a{color:var(--vs-ink3)!important}
+:root[data-vt] .fh-checklist-link{background:var(--vs-surface)!important;border-color:var(--vs-line2)!important;color:var(--vs-ac-text)!important}
+:root[data-vt] .pv-btn-primary{color:var(--vs-ac-ink)!important}
+
+/* Interview hub coach band (hard-coded civic green in visable-product-2026.css) */
+:root[data-vt] body.product-nationality-hub .ni-coachband:not(#vt-a){background:var(--vs-hdr)!important}
+:root[data-vt] body.product-nationality-hub .ni-coachband-text strong:not(#vt-a){color:var(--vs-hdr-ink)!important}
+:root[data-vt] body.product-nationality-hub .ni-coachband-text span:not(#vt-a){color:var(--vs-hdr-ink)!important;opacity:.86}
+:root[data-vt] body.product-nationality-hub .ni-coachband-cta:not(#vt-a){background:var(--vs-ac-soft)!important;color:var(--vs-ac-text)!important}
+:root[data-vt] body[data-theme="dark"].product-nationality-hub .ni-coachband-cta:not(#vt-a){background:var(--vs-ac)!important;color:var(--vs-ac-ink)!important}
+:root[data-vt] body.product-nationality-hub{--vp-on-accent:var(--vs-ac-ink)!important;--ac-ink:var(--vs-ac-ink)!important}
+:root[data-vt],:root[data-vt] body{--ks-cta:var(--vs-ac)!important;--primary-border:var(--vs-line2)!important}
+/* Checklists: muted greys that sat under 4.5:1 */
+:root[data-vt][data-vt-page="immigration-checklists"] :is(.card-provenance,.aside-note,.field small){color:var(--vs-ink3)!important}
+:root[data-vt][data-vt-page="immigration-checklists"] .stepper-item:not(.active):not(.completed) .step-num{color:var(--vs-ink)}
+
+/* new-home's old two-way editorial toggle is superseded by the skin picker while a skin is active */
+:root[data-vt] .nh-style-btn[data-action="toggle-theme"]{display:none!important}
+
+/* ---- 5. Theme picker (settings sheet + floating pill on other pages) ---- */
+.vt-picker{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:0;padding:0;border:0}
+.vt-picker legend{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.vt-opt{display:flex;align-items:center;gap:10px;min-height:48px;padding:8px 12px;border-radius:12px;border:1.5px solid var(--vs-line2,#CFCCC3);background:var(--vs-surface,#fff);color:var(--vs-ink,#0F1218);font:inherit;font-size:14px;font-weight:700;text-align:left;cursor:pointer}
+.vt-opt[aria-checked="true"]{border-color:var(--vs-ac,#4E5FBA);box-shadow:0 0 0 2px var(--vs-ac,#4E5FBA) inset}
+.vt-opt:focus-visible{outline:3px solid var(--vs-ac,#4E5FBA);outline-offset:2px}
+.vt-coin{width:26px;height:26px;border-radius:50%;flex:none;display:inline-block;box-shadow:inset 0 0 0 1.5px rgba(0,0,0,.18)}
+.vt-coin[data-c="default"]{background:conic-gradient(#4E5FBA 0 50%,#F3F2EE 0)}
+.vt-coin[data-c="stamp"]{background:radial-gradient(circle,#F5EEDF 0 38%,#2E4DA7 40% 52%,#F5EEDF 54%)}
+.vt-coin[data-c="chrome"]{background:linear-gradient(160deg,#FFFFFF 0%,#C9D2EA 50%,#2546C2 100%)}
+.vt-coin[data-c="neon"]{background:radial-gradient(circle,#7FE8FF 0 30%,#050B2B 34%);box-shadow:0 0 0 1.5px #7FE8FF,0 0 10px rgba(127,232,255,.6)}
+.vt-opt small{display:block;font-size:12px;font-weight:500;color:var(--vs-ink3,#5F6573)}
+.vt-fab{position:fixed;left:14px;bottom:14px;z-index:900;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:6px 14px 6px 8px;border-radius:999px;border:1.5px solid var(--vs-line2,#CFCCC3);background:var(--vs-surface,#fff);color:var(--vs-ink,#0F1218);font:inherit;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 8px 24px -12px rgba(0,0,0,.35)}
+.vt-fab .vt-coin{width:28px;height:28px}
+.vt-pop{position:fixed;left:14px;bottom:68px;z-index:901;width:min(340px,calc(100vw - 28px));padding:14px;border-radius:16px;border:1.5px solid var(--vs-line2,#CFCCC3);background:var(--vs-surface,#fff);color:var(--vs-ink,#0F1218);box-shadow:0 24px 60px -24px rgba(0,0,0,.45)}
+.vt-pop[hidden]{display:none}
+.vt-pop h2{margin:0 0 10px;font-size:15px;font-weight:800;font-family:inherit;letter-spacing:0;text-shadow:none}
+.vt-fab.vt-inline{position:static;box-shadow:none;width:40px;height:40px;min-height:40px;padding:0;justify-content:center;flex:none;margin-inline-start:6px;background:transparent}
+.vt-fab.vt-inline .vt-coin{width:22px;height:22px}
+.vt-fab.vt-inline .vt-fab-label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media (max-width:640px){.vt-fab{padding:6px}.vt-fab .vt-fab-label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}}
+@media print{.vt-fab,.vt-pop{display:none!important}}
+@media (prefers-reduced-motion:reduce){:root[data-vt] body{background-attachment:scroll}}
