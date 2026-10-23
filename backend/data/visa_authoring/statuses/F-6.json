@@ -27,28 +27,28 @@
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 406",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+          "pageRange": "p. 410",
           "section": "○ 국내 계속 체류기간 : 국민의 배우자(F-6-1), 자녀양육(F-6-2), 혼인단",
-          "confidence": "manual_reconciled_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         },
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 448",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+          "pageRange": "p. 452",
           "section": "배우자로서, 국민의 배우자(F-6-1) 자격으로 2년 이상 국내에 계속 체",
-          "confidence": "manual_reconciled_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         }
       ],
       "status": "active",
@@ -77,28 +77,28 @@
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 406",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+          "pageRange": "p. 410",
           "section": "11. 자녀가 성년이 된 자녀양육자(F-6-2)에 대한 거주(F-2) 자격변경",
-          "confidence": "manual_reconciled_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         },
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 406",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+          "pageRange": "p. 410",
           "section": "○ 신청자의 체류자격 : 신청일 현재 자녀양육(F-6-2) 자격으로 적법하게 체류",
-          "confidence": "manual_reconciled_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         }
       ],
       "status": "active",
@@ -184,7 +184,9 @@
           "doc_topik"
         ],
         "additionalDocs": [],
-        "conditionalDocs": []
+        "conditionalDocs": [
+          "외국인 배우자 의사소통 요건 해당 시 TOPIK 1급 이상 성적증명서(TOPIK IBT 포함) 등 인정 가능한 자료 중 하나. 면제대상은 별도 확인"
+        ]
       },
       "notes": [
         "다음 단계: ① 한국인 배우자측·외국인 신청인측 서류를 각각 준비 → ② 거주지 관할 재외공관에 결혼이민(F-6) 사증 신청 → ③ 국제결혼 안내프로그램 이수 등 사전요건을 재외공관·하이코리아(HiKorea)에서 확인."
@@ -193,15 +195,30 @@
         {
           "manualName": "사증민원",
           "manualType": "visa",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
-          "pageRange": "pp. 326-337",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-01",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/visa_manual_2026_09_01_pdf.txt",
+          "pageRange": "pp. 327-338",
           "section": "결혼이민(F-6)",
-          "confidence": "status_source_map_260617_pdf",
+          "confidence": "section_anchor_verified_260901_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
-          "sourceId": "visa_manual_2026_06_17_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/visa_manual_260901.pdf",
+          "sourceId": "visa_manual_2026_09_01_pdf"
+        }
+      ],
+      "manual202610Review": [
+        {
+          "manualVersion": "2026.10",
+          "sourceDate": "2026-10-19",
+          "sourceDateProvenance": "owner_filename",
+          "sourceId": "visa_manual_2026_10_19_hwp_text",
+          "sourceFile": "docs/source-manuals/2026-10-19/extracted/visa_manual_261019.txt",
+          "markdownArchive": "docs/source-manuals/incoming/261019_hikorea_markdown_2.zip",
+          "markdownMember": "261019 사증민원 자격별 안내 매뉴얼.md",
+          "markdownLines": "7558-7563",
+          "scope": "F-6 communication proof, where condition applies",
+          "verification": "owner_supplied_manual_excerpt_verified_not_independently_approved",
+          "text": "F-6 외국인 배우자 의사소통요건 입증: TOPIK 1급 이상 성적증명서에 TOPIK IBT 포함, 의사소통 입증 면제·대체서류 분기"
         }
       ]
     },
@@ -235,15 +252,15 @@
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "pp. 475-498",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+          "pageRange": "pp. 479-503",
           "section": "결혼이민(F-6)",
-          "confidence": "status_source_map_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         }
       ],
       "variants": [
@@ -277,16 +294,16 @@
             {
               "manualName": "체류민원",
               "manualType": "stay",
-              "manualVersion": "2026.6",
-              "sourceDate": "2026-06-23",
-              "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-              "pageRange": "pp. 475-498",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-18",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+              "pageRange": "pp. 479-503",
               "section": "결혼이민(F-6)",
-              "confidence": "status_source_map_260623_pdf",
+              "confidence": "section_anchor_verified_260918_pdf",
               "needsManualReview": true,
               "reviewReason": "Variant-specific eligibility/document wording still requires line-by-line certification against the cited procedure section; parent procedure source range is attached only as the locator.",
-              "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-              "sourceId": "stay_manual_2026_06_23_pdf"
+              "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+              "sourceId": "stay_manual_2026_09_18_pdf"
             }
           ],
           "notes": [
@@ -324,16 +341,16 @@
             {
               "manualName": "체류민원",
               "manualType": "stay",
-              "manualVersion": "2026.6",
-              "sourceDate": "2026-06-23",
-              "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-              "pageRange": "pp. 475-498",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-18",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+              "pageRange": "pp. 479-503",
               "section": "결혼이민(F-6)",
-              "confidence": "status_source_map_260623_pdf",
+              "confidence": "section_anchor_verified_260918_pdf",
               "needsManualReview": true,
               "reviewReason": "Variant-specific eligibility/document wording still requires line-by-line certification against the cited procedure section; parent procedure source range is attached only as the locator.",
-              "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-              "sourceId": "stay_manual_2026_06_23_pdf"
+              "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+              "sourceId": "stay_manual_2026_09_18_pdf"
             }
           ],
           "notes": [
@@ -368,16 +385,16 @@
             {
               "manualName": "체류민원",
               "manualType": "stay",
-              "manualVersion": "2026.6",
-              "sourceDate": "2026-06-23",
-              "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-              "pageRange": "pp. 475-498",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-18",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+              "pageRange": "pp. 479-503",
               "section": "결혼이민(F-6)",
-              "confidence": "status_source_map_260623_pdf",
+              "confidence": "section_anchor_verified_260918_pdf",
               "needsManualReview": true,
               "reviewReason": "Variant-specific eligibility/document wording still requires line-by-line certification against the cited procedure section; parent procedure source range is attached only as the locator.",
-              "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-              "sourceId": "stay_manual_2026_06_23_pdf"
+              "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+              "sourceId": "stay_manual_2026_09_18_pdf"
             }
           ],
           "notes": [
@@ -413,16 +430,16 @@
             {
               "manualName": "체류민원",
               "manualType": "stay",
-              "manualVersion": "2026.6",
-              "sourceDate": "2026-06-23",
-              "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-              "pageRange": "pp. 475-498",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-18",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+              "pageRange": "pp. 479-503",
               "section": "결혼이민(F-6)",
-              "confidence": "status_source_map_260623_pdf",
+              "confidence": "section_anchor_verified_260918_pdf",
               "needsManualReview": true,
               "reviewReason": "Variant-specific eligibility/document wording still requires line-by-line certification against the cited procedure section; parent procedure source range is attached only as the locator.",
-              "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-              "sourceId": "stay_manual_2026_06_23_pdf"
+              "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+              "sourceId": "stay_manual_2026_09_18_pdf"
             }
           ],
           "notes": [
@@ -451,15 +468,15 @@
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "pp. 475-498",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+          "pageRange": "pp. 479-503",
           "section": "결혼이민(F-6)",
-          "confidence": "status_source_map_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         }
       ],
       "variants": [
@@ -487,16 +504,16 @@
             {
               "manualName": "체류민원",
               "manualType": "stay",
-              "manualVersion": "2026.6",
-              "sourceDate": "2026-06-23",
-              "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-              "pageRange": "pp. 475-498",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-18",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+              "pageRange": "pp. 479-503",
               "section": "결혼이민(F-6)",
-              "confidence": "status_source_map_260623_pdf",
+              "confidence": "section_anchor_verified_260918_pdf",
               "needsManualReview": true,
               "reviewReason": "Variant-specific eligibility/document wording still requires line-by-line certification against the cited procedure section; parent procedure source range is attached only as the locator.",
-              "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-              "sourceId": "stay_manual_2026_06_23_pdf"
+              "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+              "sourceId": "stay_manual_2026_09_18_pdf"
             }
           ],
           "notes": [
@@ -528,16 +545,16 @@
             {
               "manualName": "체류민원",
               "manualType": "stay",
-              "manualVersion": "2026.6",
-              "sourceDate": "2026-06-23",
-              "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-              "pageRange": "pp. 475-498",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-18",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+              "pageRange": "pp. 479-503",
               "section": "결혼이민(F-6)",
-              "confidence": "status_source_map_260623_pdf",
+              "confidence": "section_anchor_verified_260918_pdf",
               "needsManualReview": true,
               "reviewReason": "Variant-specific eligibility/document wording still requires line-by-line certification against the cited procedure section; parent procedure source range is attached only as the locator.",
-              "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-              "sourceId": "stay_manual_2026_06_23_pdf"
+              "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+              "sourceId": "stay_manual_2026_09_18_pdf"
             }
           ],
           "notes": [
@@ -566,15 +583,15 @@
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "pp. 475-498",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+          "pageRange": "pp. 479-503",
           "section": "결혼이민(F-6)",
-          "confidence": "status_source_map_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         }
       ]
     },
@@ -610,16 +627,16 @@
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "pp. 475-498",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+          "pageRange": "pp. 479-503",
           "section": "결혼이민(F-6)",
-          "confidence": "status_source_map_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": true,
           "reviewReason": "증명사진 생략 조건, 수입인지 금액, 조기적응프로그램 이수증·임신진단서·결핵진단서 항목은 편집자 지시로 추가되어 매뉴얼 원문 페이지 대조가 아직 필요합니다.",
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         }
       ]
     },
@@ -636,15 +653,15 @@
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "pp. 475-498",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+          "pageRange": "pp. 479-503",
           "section": "결혼이민(F-6)",
-          "confidence": "status_source_map_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         }
       ]
     },
@@ -661,15 +678,15 @@
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "pp. 475-498",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+          "pageRange": "pp. 479-503",
           "section": "결혼이민(F-6)",
-          "confidence": "status_source_map_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         }
       ]
     },
@@ -690,15 +707,15 @@
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "pp. 475-498",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+          "pageRange": "pp. 479-503",
           "section": "결혼이민(F-6)",
-          "confidence": "status_source_map_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         }
       ]
     }
@@ -707,28 +724,28 @@
     {
       "manualName": "체류민원",
       "manualType": "stay",
-      "manualVersion": "2026.6",
-      "sourceDate": "2026-06-23",
-      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-      "pageRange": "pp. 475-498",
+      "manualVersion": "2026.9",
+      "sourceDate": "2026-09-18",
+      "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+      "pageRange": "pp. 479-503",
       "section": "결혼이민(F-6)",
-      "confidence": "status_source_map_260623_pdf",
+      "confidence": "section_anchor_verified_260918_pdf",
       "needsManualReview": false,
-      "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-      "sourceId": "stay_manual_2026_06_23_pdf"
+      "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+      "sourceId": "stay_manual_2026_09_18_pdf"
     },
     {
       "manualName": "사증민원",
       "manualType": "visa",
-      "manualVersion": "2026.6",
-      "sourceDate": "2026-06-17",
-      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
-      "pageRange": "pp. 326-337",
+      "manualVersion": "2026.9",
+      "sourceDate": "2026-09-01",
+      "sourceFile": "docs/source-manuals/2026-09/extracted/visa_manual_2026_09_01_pdf.txt",
+      "pageRange": "pp. 327-338",
       "section": "결혼이민(F-6)",
-      "confidence": "status_source_map_260617_pdf",
+      "confidence": "section_anchor_verified_260901_pdf",
       "needsManualReview": false,
-      "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
-      "sourceId": "visa_manual_2026_06_17_pdf"
+      "sourcePdf": "docs/source-manuals/2026-09/visa_manual_260901.pdf",
+      "sourceId": "visa_manual_2026_09_01_pdf"
     }
   ],
   "sourceManualStatus": {
@@ -796,9 +813,7 @@
     "F-5-3"
   ],
   "reviewStatus": "needs_review",
-  "editorNotes": [
-    "2026-06-17 refresh pass: source refs normalized to extracted official manuals; unresolved legal/document/procedure details remain marked for manual review."
-  ],
+  "editorNotes": "",
   "_generated": {
     "compat": {
       "newReq": "[한국인] 기본/가족/혼인증명, 등본, 소득/주거, 초청장. [외국인] 혼인/출생(공증), 범죄/건강, 한국어.",
@@ -877,12 +892,40 @@
             "doc_purpose"
           ],
           "note": "(소득요건 수치는 체류민원 안내매뉴얼 2026.6(2026-06-23) p.481 '2026년 기준 소득요건' 표와 일치 확인) 소득요건: 2026년 기준 2인 25,195,752원, 3인 32,154,216원, 4인 38,968,428원, 5인 45,340,314원, 6인 51,335,712원, 7인 57,090,900원, 8인 이상은 1인 증가당 5,755,188원 추가.",
-          "nameKo": "국민배우자",
-          "summary": "(소득요건 수치는 체류민원 안내매뉴얼 2026.6(2026-06-23) p.481 '2026년 기준 소득요건' 표와 일치 확인) 소득요건: 2026년 기준 2인 25,195,752원, 3인 32,154,216원, 4인 38,968,428원, 5인 45,340,314원, 6인 51,335,712원, 7인 57,090,900원, 8인 이상은 1인 증가당 5,755,188원 추가.",
-          "eligibility": [
-            "[정상혼인] 혼인관계증명서(상세), 기본증명서, 가족관계증명서, 주민등록등본, 소득 입증, 주거지 입증, 신원보증서, 직업신고서. [별거·이혼소송·실종 시] 혼인관계증명서(상세), 주민등록등본, 자녀 명의 가족관계증명서(자녀 있을 경우), 직업신고서, 체류지 입증서류. 별거 추가: 가출신고서·상해진단서·증거사진·보호시설입소확인서·형사판결문·주변인확인서·공인여성단체확인서 등. 이혼소송 추가: 소제기증명원 등. 실종 추가: 실종선고심판청구서·실종신고서·주변인확인서 등."
+          "searchAliases": [
+            "F-6-1",
+            "F61"
           ],
-          "manualRefs": []
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-18",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+              "pageRange": "p. 410",
+              "section": "○ 국내 계속 체류기간 : 국민의 배우자(F-6-1), 자녀양육(F-6-2), 혼인단",
+              "confidence": "section_anchor_verified_260918_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+              "sourceId": "stay_manual_2026_09_18_pdf"
+            },
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-18",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+              "pageRange": "p. 452",
+              "section": "배우자로서, 국민의 배우자(F-6-1) 자격으로 2년 이상 국내에 계속 체",
+              "confidence": "section_anchor_verified_260918_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+              "sourceId": "stay_manual_2026_09_18_pdf"
+            }
+          ],
+          "status": "active",
+          "needsManualReview": false
         },
         {
           "code": "F-6-2",
@@ -898,13 +941,41 @@
             "doc_job_report",
             "doc_address"
           ],
-          "note": "체류민원 안내매뉴얼 2026.5 기준 — 정확한 항목·페이지 수동 검토 필요.",
-          "nameKo": "자녀양육자",
-          "summary": "체류민원 안내매뉴얼 2026.5 기준 — 정확한 항목·페이지 수동 검토 필요.",
-          "eligibility": [
-            "① 통합신청서(별지 제34호 서식), 여권, 수수료 ② 자녀 명의 기본증명서·가족관계증명서(자녀가 국민인 경우) ③ 자녀 양육 계속 입증서류(학비 영수증, 자녀 병원비 영수증 등) ④ 외국인 직업 신고서 ⑤ 체류지 입증서류."
+          "note": "체류민원 안내매뉴얼 2026.6 기준 — 정확한 항목·페이지 수동 검토 필요.",
+          "searchAliases": [
+            "F-6-2",
+            "F62"
           ],
-          "manualRefs": []
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-18",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+              "pageRange": "p. 410",
+              "section": "11. 자녀가 성년이 된 자녀양육자(F-6-2)에 대한 거주(F-2) 자격변경",
+              "confidence": "section_anchor_verified_260918_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+              "sourceId": "stay_manual_2026_09_18_pdf"
+            },
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-18",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+              "pageRange": "p. 410",
+              "section": "○ 신청자의 체류자격 : 신청일 현재 자녀양육(F-6-2) 자격으로 적법하게 체류",
+              "confidence": "section_anchor_verified_260918_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+              "sourceId": "stay_manual_2026_09_18_pdf"
+            }
+          ],
+          "status": "active",
+          "needsManualReview": false
         },
         {
           "code": "F-6-3",
@@ -921,13 +992,41 @@
             "doc_job_report",
             "doc_address"
           ],
-          "note": "제25조의2 적용. 가정폭력 피해 시 고소장·보호명령·상담소 확인서 등 추가 제출. 체류민원 안내매뉴얼 2026.5 기준 — 정확한 항목·페이지 수동 검토 필요.",
-          "nameKo": "혼인단절자(배우자 사망)",
-          "summary": "제25조의2 적용. 가정폭력 피해 시 고소장·보호명령·상담소 확인서 등 추가 제출. 체류민원 안내매뉴얼 2026.5 기준 — 정확한 항목·페이지 수동 검토 필요.",
-          "eligibility": [
-            "① 통합신청서(별지 제34호 서식), 여권, 외국인등록증, 수수료 ② 배우자 사망 입증서류(사망진단서, 사망 기재 기본증명서 등) ③ 가족관계 입증서류(혼인관계증명서(상세) 등) ④ 자녀 명의 가족관계증명서(자녀 있을 경우) ⑤ 외국인 직업 신고서 ⑥ 체류지 입증서류."
+          "note": "제25조의2 적용. 가정폭력 피해 시 고소장·보호명령·상담소 확인서 등 추가 제출. 체류민원 안내매뉴얼 2026.6 기준 — 정확한 항목·페이지 수동 검토 필요.",
+          "searchAliases": [
+            "F-6-3",
+            "F63"
           ],
-          "manualRefs": []
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-23",
+              "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+              "pageRange": "p. 346",
+              "section": "국민과 혼인이 단절되었으나 혼인단절자(F-6-3)에 해당하지 않는 사람",
+              "confidence": "manual_reconciled_260623_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+              "sourceId": "stay_manual_2026_06_23_pdf"
+            },
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-23",
+              "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+              "pageRange": "p. 346",
+              "section": "국민과 혼인이 단절되었으나 혼인단절자(F-6-3)에 해당하지 않는 사람으",
+              "confidence": "manual_reconciled_260623_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+              "sourceId": "stay_manual_2026_06_23_pdf"
+            }
+          ],
+          "status": "active",
+          "needsManualReview": false
         }
       ],
       "commonWarnings": [
@@ -1031,7 +1130,30 @@
           "note": "해당 시"
         }
       ],
-      "hikorea_task_type": "체류기간 연장허가"
+      "hikorea_task_type": "체류기간 연장허가",
+      "manual202610StructuredUpdate": {
+        "edition": "2026.10",
+        "source_date_origin": "filename_and_cover_month_not_effective_date",
+        "status": "source_text_integrated_conditional_review",
+        "source_refs": [
+          {
+            "manualVersion": "2026.10",
+            "sourceDate": "2026-10-19",
+            "sourceDateProvenance": "owner_filename",
+            "sourceId": "visa_manual_2026_10_19_hwp_text",
+            "sourceFile": "docs/source-manuals/2026-10-19/extracted/visa_manual_261019.txt",
+            "markdownArchive": "docs/source-manuals/incoming/261019_hikorea_markdown_2.zip",
+            "markdownMember": "261019 사증민원 자격별 안내 매뉴얼.md",
+            "markdownLines": "7558-7563",
+            "scope": "F-6 communication proof, where condition applies",
+            "verification": "owner_supplied_manual_excerpt_verified_not_independently_approved",
+            "text": "F-6 외국인 배우자 의사소통요건 입증: TOPIK 1급 이상 성적증명서에 TOPIK IBT 포함, 의사소통 입증 면제·대체서류 분기"
+          }
+        ],
+        "affected_fields": [
+          "procedures.visaIssuance.requiredDocs.conditionalDocs"
+        ]
+      }
     },
     "removedSummaries": {
       "procedures.visaIssuance.summary": "[입국 전 · 재외공관 신청] 사증(비자)은 한국 입국 전에 거주지 관할 재외공관(대사관·총영사관)에서 신청합니다. 입국 후의 외국인등록·체류기간 연장과는 별개의 절차입니다. [한국인] 기본/가족/혼인증명, 등본, 소득/주거, 초청장. [외국인] 혼인/출생(공증), 범죄/건강, 한국어."
@@ -1072,7 +1194,8 @@
       "searchAliases",
       "_searchAliasAudit",
       "feeInfo",
-      "structuredRequirementsRef"
+      "structuredRequirementsRef",
+      "manual202610StructuredUpdate"
     ],
     "keySource": {
       "code": "identity",
@@ -1106,7 +1229,8 @@
       "searchAliases": "identity",
       "_searchAliasAudit": "audit:search_alias_audit",
       "feeInfo": "feeRef",
-      "structuredRequirementsRef": "audit:structured_requirements_refs"
+      "structuredRequirementsRef": "audit:structured_requirements_refs",
+      "manual202610StructuredUpdate": "compat"
     },
     "procOrder": [
       "visaIssuance",
@@ -1124,7 +1248,8 @@
         "summary",
         "requiredDocs",
         "notes",
-        "manualRefs"
+        "manualRefs",
+        "manual202610Review"
       ],
       "extension": [
         "available",

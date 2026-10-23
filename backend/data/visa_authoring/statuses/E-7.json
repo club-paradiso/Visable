@@ -23,28 +23,28 @@
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
           "pageRange": "p. 214",
           "section": "E-7-1",
-          "confidence": "manual_reconciled_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         },
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
           "pageRange": "p. 230",
           "section": "외국인 고용인원에서 제외하되, 교수(E-1) 내지 특정활동(E-7-1~3) 등",
-          "confidence": "manual_reconciled_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         }
       ],
       "status": "active",
@@ -66,15 +66,15 @@
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
           "pageRange": "p. 214",
           "section": "E-7-2",
-          "confidence": "manual_reconciled_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         },
         {
           "manualName": "체류민원",
@@ -92,15 +92,15 @@
         {
           "manualName": "사증민원",
           "manualType": "visa",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-01",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/visa_manual_2026_09_01_pdf.txt",
           "pageRange": "p. 171",
           "section": "E-7-2",
-          "confidence": "manual_reconciled_260617_pdf",
+          "confidence": "section_anchor_verified_260901_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
-          "sourceId": "visa_manual_2026_06_17_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/visa_manual_260901.pdf",
+          "sourceId": "visa_manual_2026_09_01_pdf"
         },
         {
           "manualName": "사증민원",
@@ -135,28 +135,28 @@
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
           "pageRange": "p. 214",
           "section": "E-7-3",
-          "confidence": "manual_reconciled_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         },
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
           "pageRange": "p. 230",
           "section": "* 전문인력(E-7-1) 67개 직종 및 일반기능인력(E-7-3) 중 조선용접공,",
-          "confidence": "manual_reconciled_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         }
       ],
       "status": "active",
@@ -165,7 +165,7 @@
     {
       "code": "E-7-4",
       "name": "숙련기능인력(K-point E74, 점수제)",
-      "addReq": "선발인원 33,000명. 최근 10년간 E-9, E-10, H-2 자격으로 4년 이상 체류한 현재 등록외국인으로 현 근무처에서 정상 근로 중이어야 함. 현 근무처에서 연봉 2,600만원 이상으로 향후 2년 이상 E-7-4 고용계약이 필요하며, 농·축산업·어업·내항상선은 연봉 2,500만원 이상으로 완화. 현재 1년 이상 근무 중인 기업의 추천이 필수이고, 평균소득·한국어능력 기본항목이 각각 50점 이상이면서 총점 300점 만점에 200점 이상이어야 함. 한국어 외 점수요건 충족자는 총점 150점 이상 시 최초 연장까지 한국어 보완 조건으로 한시 유예 가능(~2026.12.31).",
+      "addReq": "선발인원 33,000명. 최근 10년간 E-9, E-10, H-2 자격으로 4년 이상 체류한 현재 등록외국인으로 현 근무처에서 정상 근로 중이어야 함. 현 근무처에서 연봉 2,600만원 이상으로 향후 2년 이상 E-7-4 고용계약이 필요하며, 농·축산업·어업·내항상선은 연봉 2,589만원 이상으로 완화. 현재 1년 이상 근무 중인 기업의 추천이 필수이고, 평균소득·한국어능력 기본항목이 각각 50점 이상이면서 총점 300점 만점에 200점 이상이어야 함. 한국어 외 점수요건 충족자는 총점 150점 이상 시 최초 연장까지 한국어 보완 조건으로 한시 유예 가능(~2026.12.31). 점수제의 최근 2년 연간 평균소득 기준은 2,500만원 이상(농·축산업·어업·내항상선 종사자는 2,400만원 이상으로 완화)이며, 최근 2년 소득을 입증하기 어려운 재입국 공백 등의 경우에는 2021년~2025년 중 연간 소득금액이 높은 2개년의 소득금액으로 대체할 수 있음.",
       "addReqDocs": [
         "doc_app_form",
         "doc_passport_copy",
@@ -183,7 +183,7 @@
         "doc_specialty",
         "doc_degree"
       ],
-      "note": "체류민원 안내매뉴얼 2026-06-17 PDF pp.298-309 기준. 필수서류에는 통합신청서, 여권 사본, 점수제 자체 심사표, 신상기술서, E-7-4 표준근로계약서, 최근 2년 소득금액증명원, 한국어능력 입증, 신원보증서, 사업자등록증 또는 농업경영체등록, 국세·지방세 납세증명서, 4대보험 사업장 가입자 명부 등, 고용기업 추천서 및 추천자 신분증 사본이 포함됨. 자격증·국내학위·운전면허증·뿌리기업·조선업·내항정기운송 등은 해당자 추가서류.",
+      "note": "2026.10 체류민원 매뉴얼 E-7-4 숙련기능인력 규정 참조. 고용계약·연봉요건·2개년 소득대체·고용기업 추천·점수요건은 E-7-4에 한정하며 E-7 일반자격에 확대 적용하지 않음. 서류별 조건부 제출 및 예외는 원문 확인.",
       "searchAliases": [
         "E-7-4",
         "E74"
@@ -192,32 +192,32 @@
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
           "pageRange": "p. 14",
           "section": "󰋻특정활동(E-7) [단, 숙련기능점수제(E-7-4) 제외]",
-          "confidence": "manual_reconciled_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         },
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
           "pageRange": "p. 18",
           "section": "󰋻특정활동(E-7) [단, 숙련기능점수제(E-7-4) 제외]",
-          "confidence": "manual_reconciled_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         }
       ],
       "status": "active",
-      "needsManualReview": false
+      "needsManualReview": true
     },
     {
       "code": "E-7-S",
@@ -236,15 +236,15 @@
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
           "pageRange": "p. 214",
           "section": "E-7-S",
-          "confidence": "manual_reconciled_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         },
         {
           "manualName": "체류민원",
@@ -262,15 +262,15 @@
         {
           "manualName": "사증민원",
           "manualType": "visa",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-01",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/visa_manual_2026_09_01_pdf.txt",
           "pageRange": "p. 171",
           "section": "E-7-S",
-          "confidence": "manual_reconciled_260617_pdf",
+          "confidence": "section_anchor_verified_260901_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
-          "sourceId": "visa_manual_2026_06_17_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/visa_manual_260901.pdf",
+          "sourceId": "visa_manual_2026_09_01_pdf"
         },
         {
           "manualName": "사증민원",
@@ -307,28 +307,28 @@
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
           "pageRange": "p. 214",
           "section": "E-7-Y",
-          "confidence": "manual_reconciled_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         },
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
           "pageRange": "p. 214",
           "section": "- 세부 약호 : E-7-Y(국내성장인력)",
-          "confidence": "manual_reconciled_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         }
       ],
       "status": "active",
@@ -362,28 +362,28 @@
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
           "pageRange": "p. 214",
           "section": "E-7-T",
-          "confidence": "manual_reconciled_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         },
         {
           "manualName": "사증민원",
           "manualType": "visa",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-01",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/visa_manual_2026_09_01_pdf.txt",
           "pageRange": "p. 171",
           "section": "E-7-T",
-          "confidence": "manual_reconciled_260617_pdf",
+          "confidence": "section_anchor_verified_260901_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
-          "sourceId": "visa_manual_2026_06_17_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/visa_manual_260901.pdf",
+          "sourceId": "visa_manual_2026_09_01_pdf"
         }
       ],
       "status": "active",
@@ -410,15 +410,15 @@
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
           "pageRange": "p. 214",
           "section": "E-7-91",
-          "confidence": "manual_reconciled_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         },
         {
           "manualName": "사증민원",
@@ -472,15 +472,15 @@
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
           "pageRange": "p. 294",
           "section": "❍ 고소득자(E-7-S1) : 학력, 경력, 분야에 관계없이 사증(E-7) 발급",
-          "confidence": "manual_reconciled_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         },
         {
           "manualName": "사증민원",
@@ -498,15 +498,15 @@
         {
           "manualName": "사증민원",
           "manualType": "visa",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-01",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/visa_manual_2026_09_01_pdf.txt",
           "pageRange": "p. 249",
           "section": "❍ 고소득자(E-7-S1) : 학력, 경력, 분야에 관계없이 사증(E-7) 발급",
-          "confidence": "manual_reconciled_260617_pdf",
+          "confidence": "section_anchor_verified_260901_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
-          "sourceId": "visa_manual_2026_06_17_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/visa_manual_260901.pdf",
+          "sourceId": "visa_manual_2026_09_01_pdf"
         }
       ],
       "group": "특별요건",
@@ -549,15 +549,15 @@
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
           "pageRange": "p. 294",
           "section": "❍ 첨단산업분야 종사 예정자(E-7-S2) : E-7 도입직종에 해당되지 않는 경우에도 E-7-S",
-          "confidence": "manual_reconciled_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         },
         {
           "manualName": "사증민원",
@@ -613,28 +613,28 @@
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
           "pageRange": "p. 303",
           "section": "- (다른 자격 외국인 고용인원 포함 여부) E-7-4 및 E-7-4R 이외의 E-7·E-9·E-10·H-2",
-          "confidence": "manual_reconciled_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         },
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 588",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+          "pageRange": "p. 595",
           "section": "E-7-4R",
-          "confidence": "manual_reconciled_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         }
       ],
       "group": "지역특화",
@@ -756,15 +756,15 @@
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
           "pageRange": "pp. 213-324",
           "section": "특정활동(E-7)",
-          "confidence": "status_source_map_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         }
       ]
     },
@@ -787,23 +787,22 @@
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
           "pageRange": "pp. 213-324",
           "section": "특정활동(E-7)",
-          "confidence": "status_source_map_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         }
       ]
     },
     "workplaceChange": {
       "available": true,
-      "summaryQuality": "generated_legacy",
-      "summaryHiddenInUi": true,
-      "summaryCleanupStatus": "compat_only",
+      "summary": "근무처 변경·추가 제출서류는 세부 자격과 신청 사유별로 다릅니다.",
+      "summaryQuality": "source_backed",
       "requiredDocs": {
         "commonDocs": [],
         "requiredDocs": [],
@@ -832,16 +831,16 @@
             {
               "manualName": "체류민원",
               "manualType": "stay",
-              "manualVersion": "2026.6",
-              "sourceDate": "2026-06-23",
-              "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-18",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
               "pageRange": "pp. 213-324",
               "section": "특정활동(E-7)",
-              "confidence": "status_source_map_260623_pdf",
+              "confidence": "section_anchor_verified_260918_pdf",
               "needsManualReview": true,
               "reviewReason": "Variant-specific eligibility/document wording still requires line-by-line certification against the cited procedure section; parent procedure source range is attached only as the locator.",
-              "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-              "sourceId": "stay_manual_2026_06_23_pdf"
+              "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+              "sourceId": "stay_manual_2026_09_18_pdf"
             }
           ],
           "notes": [
@@ -856,15 +855,15 @@
         {
           "manualName": "체류민원",
           "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "manualVersion": "2026.9",
+          "sourceDate": "2026-09-18",
+          "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
           "pageRange": "pp. 213-324",
           "section": "특정활동(E-7)",
-          "confidence": "status_source_map_260623_pdf",
+          "confidence": "section_anchor_verified_260918_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+          "sourceId": "stay_manual_2026_09_18_pdf"
         }
       ],
       "notes": [
@@ -948,9 +947,7 @@
     "고용사유서"
   ],
   "reviewStatus": "needs_review",
-  "editorNotes": [
-    "2026-06-17 refresh pass: source refs normalized to extracted official manuals; unresolved legal/document/procedure details remain marked for manual review."
-  ],
+  "editorNotes": "",
   "_generated": {
     "compat": {
       "newReq": "고용계약서, 학력/경력, 고용추천서(필요직종), 임금증빙(전년도 1인당 GNI 1배 이상). 직종: E-7-1 전문인력(67개), E-7-2 준전문(10개), E-7-3 일반기능(14개), E-7-4 숙련기능점수제(3개). 2026-06-01 체류민원 매뉴얼은 E-7-4 K-point E74 선발인원 33,000명, 최근 10년 E-9/E-10/H-2 4년 이상 체류, 현 근무처에서 향후 2년 이상 E-7-4 고용계약 및 연봉요건, 고용기업 추천, 300점 만점 200점 이상 기준을 반영.",
@@ -1079,12 +1076,770 @@
       ],
       "_quarantineNotes": {
         "E-7-H": "내부 전산기호: 기타(G-1) 등에 대한 체류자격외활동 허가를 출입국관리시스템에 입력할 때 사용하는 전산기호이며(체류민원 p. 499), 사용자 안내용 체류자격 코드가 아니므로 검색/표시 대상에서 제외(internal_system_marker)."
+      },
+      "subcodes": [
+        {
+          "code": "E-7-1",
+          "name": "전문인력(67개 직종)",
+          "addReq": "학사↑ 또는 경력, 고용추천서, GNI 기준. 관리자(15개) + 전문가 및 관련종사자(52개) 직종.",
+          "addReqDocs": [
+            "doc_degree",
+            "doc_career",
+            "doc_emp_recom",
+            "doc_inc_proof"
+          ],
+          "note": "",
+          "searchAliases": [
+            "E-7-1",
+            "E71"
+          ],
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-18",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+              "pageRange": "p. 214",
+              "section": "E-7-1",
+              "confidence": "section_anchor_verified_260918_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+              "sourceId": "stay_manual_2026_09_18_pdf"
+            },
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-18",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+              "pageRange": "p. 230",
+              "section": "외국인 고용인원에서 제외하되, 교수(E-1) 내지 특정활동(E-7-1~3) 등",
+              "confidence": "section_anchor_verified_260918_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+              "sourceId": "stay_manual_2026_09_18_pdf"
+            }
+          ],
+          "status": "active",
+          "needsManualReview": false
+        },
+        {
+          "code": "E-7-2",
+          "name": "준전문인력(10개 직종)",
+          "addReq": "사무종사자(5개) + 서비스종사자(5개) 직종.",
+          "addReqDocs": [
+            "doc_purpose"
+          ],
+          "note": "",
+          "searchAliases": [
+            "E-7-2",
+            "E72"
+          ],
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-18",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+              "pageRange": "p. 214",
+              "section": "E-7-2",
+              "confidence": "section_anchor_verified_260918_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+              "sourceId": "stay_manual_2026_09_18_pdf"
+            },
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-23",
+              "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+              "pageRange": "p. 233",
+              "section": "(E-7-2)",
+              "confidence": "manual_reconciled_260623_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+              "sourceId": "stay_manual_2026_06_23_pdf"
+            },
+            {
+              "manualName": "사증민원",
+              "manualType": "visa",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-01",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/visa_manual_2026_09_01_pdf.txt",
+              "pageRange": "p. 171",
+              "section": "E-7-2",
+              "confidence": "section_anchor_verified_260901_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/visa_manual_260901.pdf",
+              "sourceId": "visa_manual_2026_09_01_pdf"
+            },
+            {
+              "manualName": "사증민원",
+              "manualType": "visa",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+              "pageRange": "p. 185",
+              "section": "(E-7-2)",
+              "confidence": "manual_reconciled_260617_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
+              "sourceId": "visa_manual_2026_06_17_pdf"
+            }
+          ],
+          "status": "active",
+          "needsManualReview": false
+        },
+        {
+          "code": "E-7-3",
+          "name": "일반기능인력(14개 직종)",
+          "addReq": "동물사육사, 양식기술자, 할랄도축원 등 기능원 및 관련 기능인력.",
+          "addReqDocs": [
+            "doc_purpose"
+          ],
+          "note": "",
+          "searchAliases": [
+            "E-7-3",
+            "E73"
+          ],
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-18",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+              "pageRange": "p. 214",
+              "section": "E-7-3",
+              "confidence": "section_anchor_verified_260918_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+              "sourceId": "stay_manual_2026_09_18_pdf"
+            },
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-18",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+              "pageRange": "p. 230",
+              "section": "* 전문인력(E-7-1) 67개 직종 및 일반기능인력(E-7-3) 중 조선용접공,",
+              "confidence": "section_anchor_verified_260918_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+              "sourceId": "stay_manual_2026_09_18_pdf"
+            }
+          ],
+          "status": "active",
+          "needsManualReview": false
+        },
+        {
+          "code": "E-7-4",
+          "name": "숙련기능인력(K-point E74, 점수제)",
+          "addReq": "선발인원 33,000명. 최근 10년간 E-9, E-10, H-2 자격으로 4년 이상 체류한 현재 등록외국인으로 현 근무처에서 정상 근로 중이어야 함. 현 근무처에서 연봉 2,600만원 이상으로 향후 2년 이상 E-7-4 고용계약이 필요하며, 농·축산업·어업·내항상선은 연봉 2,589만원 이상으로 완화. 현재 1년 이상 근무 중인 기업의 추천이 필수이고, 평균소득·한국어능력 기본항목이 각각 50점 이상이면서 총점 300점 만점에 200점 이상이어야 함. 한국어 외 점수요건 충족자는 총점 150점 이상 시 최초 연장까지 한국어 보완 조건으로 한시 유예 가능(~2026.12.31). 점수제의 최근 2년 연간 평균소득 기준은 2,500만원 이상(농·축산업·어업·내항상선 종사자는 2,400만원 이상으로 완화)이며, 최근 2년 소득을 입증하기 어려운 재입국 공백 등의 경우에는 2021년~2025년 중 연간 소득금액이 높은 2개년의 소득금액으로 대체할 수 있음.",
+          "addReqDocs": [
+            "doc_app_form",
+            "doc_passport_copy",
+            "doc_point_table",
+            "doc_personal_statement",
+            "doc_emp_contract",
+            "doc_inc_proof",
+            "doc_topik",
+            "doc_kiip",
+            "doc_guarantee",
+            "doc_biz_reg",
+            "doc_tax_cert",
+            "doc_employment_insurance_list",
+            "doc_emp_recom",
+            "doc_specialty",
+            "doc_degree"
+          ],
+          "note": "2026.10 체류민원 매뉴얼 E-7-4 숙련기능인력 규정 참조. 고용계약·연봉요건·2개년 소득대체·고용기업 추천·점수요건은 E-7-4에 한정하며 E-7 일반자격에 확대 적용하지 않음. 서류별 조건부 제출 및 예외는 원문 확인.",
+          "searchAliases": [
+            "E-7-4",
+            "E74"
+          ],
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-18",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+              "pageRange": "p. 14",
+              "section": "󰋻특정활동(E-7) [단, 숙련기능점수제(E-7-4) 제외]",
+              "confidence": "section_anchor_verified_260918_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+              "sourceId": "stay_manual_2026_09_18_pdf"
+            },
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-18",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+              "pageRange": "p. 18",
+              "section": "󰋻특정활동(E-7) [단, 숙련기능점수제(E-7-4) 제외]",
+              "confidence": "section_anchor_verified_260918_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+              "sourceId": "stay_manual_2026_09_18_pdf"
+            }
+          ],
+          "status": "active",
+          "needsManualReview": true
+        },
+        {
+          "code": "E-7-S",
+          "name": "네거티브 방식 전문인력",
+          "addReq": "고소득자, 첨단산업분야 종사(예정)자.",
+          "addReqDocs": [
+            "doc_inc_proof",
+            "doc_purpose"
+          ],
+          "note": "",
+          "searchAliases": [
+            "E-7-S",
+            "E7S"
+          ],
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-18",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+              "pageRange": "p. 214",
+              "section": "E-7-S",
+              "confidence": "section_anchor_verified_260918_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+              "sourceId": "stay_manual_2026_09_18_pdf"
+            },
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-23",
+              "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+              "pageRange": "p. 234",
+              "section": "(E-7-S)",
+              "confidence": "manual_reconciled_260623_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+              "sourceId": "stay_manual_2026_06_23_pdf"
+            },
+            {
+              "manualName": "사증민원",
+              "manualType": "visa",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-01",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/visa_manual_2026_09_01_pdf.txt",
+              "pageRange": "p. 171",
+              "section": "E-7-S",
+              "confidence": "section_anchor_verified_260901_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/visa_manual_260901.pdf",
+              "sourceId": "visa_manual_2026_09_01_pdf"
+            },
+            {
+              "manualName": "사증민원",
+              "manualType": "visa",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+              "pageRange": "p. 185",
+              "section": "(E-7-S)",
+              "confidence": "manual_reconciled_260617_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
+              "sourceId": "visa_manual_2026_06_17_pdf"
+            }
+          ],
+          "status": "active",
+          "needsManualReview": false,
+          "statusNote": "2026.6 official manual special-track code; track-specific procedure/document details require source-aware review before broad reuse."
+        },
+        {
+          "code": "E-7-Y",
+          "name": "국내성장인력",
+          "addReq": "국내 대학 석사↑ 학위 취득(예정)자 중 첨단산업분야 종사(예정)자.",
+          "addReqDocs": [
+            "doc_degree",
+            "doc_purpose"
+          ],
+          "note": "직종코드 9999(국내성장취업).",
+          "searchAliases": [
+            "E-7-Y",
+            "E7Y"
+          ],
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-18",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+              "pageRange": "p. 214",
+              "section": "E-7-Y",
+              "confidence": "section_anchor_verified_260918_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+              "sourceId": "stay_manual_2026_09_18_pdf"
+            },
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-18",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+              "pageRange": "p. 214",
+              "section": "- 세부 약호 : E-7-Y(국내성장인력)",
+              "confidence": "section_anchor_verified_260918_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+              "sourceId": "stay_manual_2026_09_18_pdf"
+            }
+          ],
+          "status": "active",
+          "needsManualReview": false,
+          "statusNote": "2026.6 official manual special-track code; track-specific procedure/document details require source-aware review before broad reuse."
+        },
+        {
+          "code": "E-7-T",
+          "name": "최우수인재 특정활동",
+          "addReq": "[연장 제출서류] ① 공통서류(통합신청서(별지 제34호 서식), 여권 사본, 체류지 입증서류, 수수료, 표준규격사진 1매) ② 재직증명서(이직 시 첨단분야 해당 여부 확인) ③ 사업자등록증·법인등기사항전부증명서 ④ 소득금액증명원 ⑤ 해외 범죄경력증명서(6개월↑ 출국 시) ⑥ 사회통합프로그램 1단계 이수확인서 또는 TOPIK 1급.",
+          "addReqDocs": [
+            "doc_app_form",
+            "doc_passport_copy",
+            "doc_address",
+            "doc_fee",
+            "doc_photo",
+            "doc_career",
+            "doc_biz_reg",
+            "doc_corp_reg",
+            "doc_inc_proof",
+            "doc_crim",
+            "doc_kiip",
+            "doc_topik"
+          ],
+          "note": "연간 근로소득 GNI 2배↑, 부처 추천 필수. 체류민원 안내매뉴얼 2026.6 기준 — 정확한 항목·페이지 수동 검토 필요.",
+          "searchAliases": [
+            "E-7-T",
+            "E7T"
+          ],
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-18",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+              "pageRange": "p. 214",
+              "section": "E-7-T",
+              "confidence": "section_anchor_verified_260918_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+              "sourceId": "stay_manual_2026_09_18_pdf"
+            },
+            {
+              "manualName": "사증민원",
+              "manualType": "visa",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-01",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/visa_manual_2026_09_01_pdf.txt",
+              "pageRange": "p. 171",
+              "section": "E-7-T",
+              "confidence": "section_anchor_verified_260901_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/visa_manual_260901.pdf",
+              "sourceId": "visa_manual_2026_09_01_pdf"
+            }
+          ],
+          "status": "active",
+          "needsManualReview": false,
+          "statusNote": "2026.6 official manual special-track code; track-specific procedure/document details require source-aware review before broad reuse."
+        },
+        {
+          "code": "E-7-91",
+          "name": "FTA독립전문가",
+          "addReq": "FTA 요건. 서비스공급계약 체결 독립전문가. 최대 1년 단수사증.",
+          "addReqDocs": [
+            "doc_emp_contract",
+            "doc_purpose"
+          ],
+          "note": "체류기간 연장·근무처 변경·자격변경·자격외활동 제한.",
+          "searchAliases": [
+            "E-7-91",
+            "E-7-91FTA",
+            "E791FTA",
+            "FTA독립전문가",
+            "E791"
+          ],
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-18",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+              "pageRange": "p. 214",
+              "section": "E-7-91",
+              "confidence": "section_anchor_verified_260918_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+              "sourceId": "stay_manual_2026_09_18_pdf"
+            },
+            {
+              "manualName": "사증민원",
+              "manualType": "visa",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+              "pageRange": "p. 171",
+              "section": "E-7-91",
+              "confidence": "manual_reconciled_260617_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
+              "sourceId": "visa_manual_2026_06_17_pdf"
+            }
+          ],
+          "status": "active",
+          "needsManualReview": false
+        },
+        {
+          "code": "E-7-S1",
+          "name": "네거티브 방식 전문인력 — 고소득자",
+          "nameKo": "네거티브 방식 전문인력 — 고소득자",
+          "addReq": "고소득 요건(소득) 입증서류 등 (매뉴얼 확인).",
+          "addReqDocs": [
+            "doc_inc_proof",
+            "doc_specialty"
+          ],
+          "note": "네거티브 방식 전문인력 중 고소득자. 학력·경력·분야와 무관하게 소득만 확인하여 E-7 발급.",
+          "searchAliases": [
+            "E-7-S1",
+            "E7S1",
+            "고소득자 전문인력",
+            "네거티브 고소득"
+          ],
+          "status": "active",
+          "needsManualReview": true,
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-23",
+              "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+              "pageRange": "p. 234",
+              "section": "가. 고소득자 => E-7-S1",
+              "confidence": "manual_reconciled_260623_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+              "sourceId": "stay_manual_2026_06_23_pdf"
+            },
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-18",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+              "pageRange": "p. 294",
+              "section": "❍ 고소득자(E-7-S1) : 학력, 경력, 분야에 관계없이 사증(E-7) 발급",
+              "confidence": "section_anchor_verified_260918_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+              "sourceId": "stay_manual_2026_09_18_pdf"
+            },
+            {
+              "manualName": "사증민원",
+              "manualType": "visa",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+              "pageRange": "p. 185",
+              "section": "가. 고소득자 => E-7-S1",
+              "confidence": "manual_reconciled_260617_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
+              "sourceId": "visa_manual_2026_06_17_pdf"
+            },
+            {
+              "manualName": "사증민원",
+              "manualType": "visa",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-01",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/visa_manual_2026_09_01_pdf.txt",
+              "pageRange": "p. 249",
+              "section": "❍ 고소득자(E-7-S1) : 학력, 경력, 분야에 관계없이 사증(E-7) 발급",
+              "confidence": "section_anchor_verified_260901_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/visa_manual_260901.pdf",
+              "sourceId": "visa_manual_2026_09_01_pdf"
+            }
+          ],
+          "group": "특별요건",
+          "statusNote": "2026.6 official manual special-track code; track-specific procedure/document details require source-aware review before broad reuse.",
+          "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
+        },
+        {
+          "code": "E-7-S2",
+          "name": "네거티브 방식 전문인력 — 첨단산업분야 종사(예정)자",
+          "nameKo": "네거티브 방식 전문인력 — 첨단산업분야 종사(예정)자",
+          "addReq": "점수제 요건(60점 이상) 및 사회통합프로그램 이수 등 입증서류 (매뉴얼 확인).",
+          "addReqDocs": [
+            "doc_point_table",
+            "doc_specialty",
+            "doc_kiip"
+          ],
+          "note": "네거티브 방식 전문인력 중 첨단산업분야 종사(예정)자. E-7 도입직종이 아니어도 점수제 요건 충족 시 발급.",
+          "searchAliases": [
+            "E-7-S2",
+            "E7S2",
+            "네거티브 첨단산업",
+            "첨단산업 전문인력"
+          ],
+          "status": "active",
+          "needsManualReview": true,
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-23",
+              "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+              "pageRange": "p. 234",
+              "section": "나. 첨단산업분야 종사(예정)자 => E-7-S2",
+              "confidence": "manual_reconciled_260623_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+              "sourceId": "stay_manual_2026_06_23_pdf"
+            },
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-18",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+              "pageRange": "p. 294",
+              "section": "❍ 첨단산업분야 종사 예정자(E-7-S2) : E-7 도입직종에 해당되지 않는 경우에도 E-7-S",
+              "confidence": "section_anchor_verified_260918_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+              "sourceId": "stay_manual_2026_09_18_pdf"
+            },
+            {
+              "manualName": "사증민원",
+              "manualType": "visa",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+              "pageRange": "p. 185",
+              "section": "나. 첨단산업분야 종사(예정)자 => E-7-S2",
+              "confidence": "manual_reconciled_260617_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
+              "sourceId": "visa_manual_2026_06_17_pdf"
+            },
+            {
+              "manualName": "사증민원",
+              "manualType": "visa",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+              "pageRange": "p. 250",
+              "section": "❍ 첨단산업분야 종사 예정자(E-7-S2) : E-7 도입직종에 해당되지 않는 경우에도 E-7-S",
+              "confidence": "manual_reconciled_260617_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
+              "sourceId": "visa_manual_2026_06_17_pdf"
+            }
+          ],
+          "group": "특별요건",
+          "statusNote": "2026.6 official manual special-track code; track-specific procedure/document details require source-aware review before broad reuse.",
+          "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
+        },
+        {
+          "code": "E-7-4R",
+          "name": "지역특화형 숙련기능인력 (지역숙련인력)",
+          "nameKo": "지역특화형 숙련기능인력 (지역숙련인력)",
+          "addReq": "지역특화형 비자 대상 및 광역/기초 지자체 추천 입증서류 등 (매뉴얼 확인).",
+          "addReqDocs": [
+            "doc_local_recommendation",
+            "doc_point_table"
+          ],
+          "note": "지역특화형 비자 숙련기능인력. 지역특화형 우수인재(F-2-R) 자격변경과 연계.",
+          "searchAliases": [
+            "E-7-4R",
+            "E74R",
+            "지역숙련인력",
+            "지역특화 숙련기능",
+            "지역특화형 숙련기능인력"
+          ],
+          "status": "active",
+          "needsManualReview": true,
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-18",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+              "pageRange": "p. 303",
+              "section": "- (다른 자격 외국인 고용인원 포함 여부) E-7-4 및 E-7-4R 이외의 E-7·E-9·E-10·H-2",
+              "confidence": "section_anchor_verified_260918_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+              "sourceId": "stay_manual_2026_09_18_pdf"
+            },
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.9",
+              "sourceDate": "2026-09-18",
+              "sourceFile": "docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt",
+              "pageRange": "p. 595",
+              "section": "E-7-4R",
+              "confidence": "section_anchor_verified_260918_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
+              "sourceId": "stay_manual_2026_09_18_pdf"
+            }
+          ],
+          "group": "지역특화",
+          "statusNote": "2026.6 official manual special-track code; track-specific procedure/document details require source-aware review before broad reuse.",
+          "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
+        },
+        {
+          "code": "E-7-91FTA",
+          "name": "FTA 독립전문가",
+          "addReq": "한·미 FTA 등 자유무역협정에 따라 입국·체류가 허용되는 독립전문가(independent professional)로 분류되는 E-7 특정활동 인력으로, 구 약호 T6에 해당한다. 해당 페이지는 E-7 세부 약호 분류표만 제시하며 별도의 세부 자격요건은 명시하지 않는다.",
+          "addReqDocs": [],
+          "note": "상위 체류자격의 제출서류를 따르는 분류 약호로 별도 제출서류 목록이 없습니다.",
+          "searchAliases": [
+            "E-7-91FTA",
+            "E791FTA"
+          ],
+          "status": "active",
+          "needsManualReview": false,
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-23",
+              "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+              "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+              "sourceId": "stay_manual_2026_06_23_pdf",
+              "confidence": "manual_reconciled_260623_pdf",
+              "needsManualReview": false,
+              "pageRange": "p. 214",
+              "section": "E-7 적용대상 및 도입기준 등 (신 약호 분류기준 표)"
+            },
+            {
+              "manualName": "사증민원",
+              "manualType": "visa",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+              "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
+              "sourceId": "visa_manual_2026_06_17_pdf",
+              "confidence": "manual_reconciled_260617_pdf",
+              "needsManualReview": false,
+              "pageRange": "p. 171",
+              "section": "E-7 적용대상 및 도입기준 등 (신 약호 분류기준 표)"
+            }
+          ]
+        },
+        {
+          "code": "E-7-M",
+          "name": "K-CORE(육성형 전문기술인력)",
+          "summary": "전문대 ‘육성형 전문기술학과’ 졸업(예정) 유학생이 취득하는 K-CORE 취업비자. 사회통합프로그램 4단계 이상(또는 TOPIK 5급 이상)을 갖추고 전공 연관 업체와 1년 이상·연봉 2,600만원 이상 고용계약을 체결하면 E-7-M로 체류자격을 변경할 수 있습니다. 체류기간은 고용계약기간+3개월 범위 내 최대 3년, 직종코드 9991, 2년 시범운영(2026.3.5.~2027.12.31.).",
+          "addReq": "전문대 육성형 전문기술학과 졸업(예정)자가 취득하는 취업비자(K-CORE, 지역 산업의 핵심 중간기술인력). 사회통합프로그램 4단계 이상 이수(또는 TOPIK 5급 이상)하고, 전공 연관 업체와 1년 이상·연봉 2,600만원 이상 고용계약을 체결한 경우 체류자격 변경. 육성형 전문기술학과 유학생(D-2-1) 외 다른 체류자격자는 E-7-M로 변경 불가.",
+          "addReqDocs": [
+            "doc_degree",
+            "doc_topik",
+            "doc_kiip_cert",
+            "doc_emp_contract"
+          ],
+          "note": "직종코드 9991(육성형 전문기술이민), 세부약호 E-7-M(K-CORE 비자) 신설. 체류기간은 고용계약기간+3개월 범위 내 최대 3년. 2년 시범운영(시행 2026.3.5. ~ 2027.12.31., 매뉴얼 배포 2026.6.29.).",
+          "searchAliases": [
+            "E-7-M",
+            "E7M",
+            "K-CORE",
+            "KCORE",
+            "케이코어",
+            "육성형 전문기술인력",
+            "육성형전문기술인력",
+            "육성형 전문기술학과"
+          ],
+          "manualRefs": [
+            {
+              "manualName": "「육성형 전문기술인력 제도」 사증·체류관리 매뉴얼",
+              "manualType": "special_program",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-29",
+              "effectiveDate": "2026-03-05",
+              "sourceFile": "backend/data/sources/manuals/260629_kcore_manual_readable.txt",
+              "pageRange": "Ⅲ-2 · Ⅳ",
+              "section": "[취업 시] K-CORE 자격 부여(E-7-M) — 체류자격 변경 / 행정사항(세부약호·직종코드 9991 신설)",
+              "confidence": "manual_extracted_260629_hwp",
+              "needsManualReview": true,
+              "sourceHwp": "backend/data/sources/manuals/260629_kcore_manual.hwp",
+              "sourceId": "kcore_manual_2026_06_29"
+            }
+          ],
+          "status": "active",
+          "needsManualReview": true,
+          "statusNote": "2026.6.29. 배포된 「육성형 전문기술인력 제도」 사증·체류관리 매뉴얼로 신설된 체류자격(2년 시범운영). 체류자격 변경·연장·근무처 변경 등 트랙별 세부 절차와 제출서류는 원문(backend/data/sources/manuals/260629_kcore_manual_readable.txt) 및 관할 출입국·외국인관서 확인이 필요합니다."
+        }
+      ],
+      "manual202610StructuredUpdate": {
+        "edition": "2026.10",
+        "source_date_origin": "filename_and_cover_month_not_effective_date",
+        "status": "source_text_integrated_conditional_review",
+        "source_refs": [
+          {
+            "manualVersion": "2026.10",
+            "sourceDate": "2026-10-19",
+            "sourceDateProvenance": "owner_filename",
+            "sourceId": "stay_manual_2026_10_19_hwp_text",
+            "sourceFile": "docs/source-manuals/2026-10-19/extracted/stay_manual_261019.txt",
+            "markdownArchive": "docs/source-manuals/incoming/261019_hikorea_markdown_2.zip",
+            "markdownMember": "261019 체류민원 자격별 안내 매뉴얼.md",
+            "markdownLines": "6944-6988",
+            "scope": "E-7-4 only",
+            "verification": "owner_supplied_manual_excerpt_verified_not_independently_approved",
+            "text": "E-7-4 연봉 예외 2,589만원, 재입국 공백 시 2021~2025년 소득 상위 2개년 대체"
+          },
+          {
+            "manualVersion": "2026.10",
+            "sourceDate": "2026-10-19",
+            "sourceDateProvenance": "owner_filename",
+            "sourceId": "stay_manual_2026_10_19_hwp_text",
+            "sourceFile": "docs/source-manuals/2026-10-19/extracted/stay_manual_261019.txt",
+            "markdownArchive": "docs/source-manuals/incoming/261019_hikorea_markdown_2.zip",
+            "markdownMember": "261019 체류민원 자격별 안내 매뉴얼.md",
+            "markdownLines": "6979-6987",
+            "scope": "E-7-4 point-system minimum annual average income only",
+            "verification": "owner_supplied_manual_excerpt_verified_not_independently_approved",
+            "text": "최근 2년 평균소득 2,500만원, 농·축산/어업/내항상선 2,400만원, 2021~2025년 중 대체 연도"
+          }
+        ],
+        "affected_fields": [
+          "subCodes.E-7-4.addReq",
+          "subCodes.E-7-4.addReq.average_income_requirement"
+        ]
       }
     },
     "removedSummaries": {
       "procedures.extension.summary": "체류기간 연장허가 체류기간 1. 제출 서류 및 확인사항 가. 제출서류 ① 통합신청서(별지 제34호 서식), 여권 및 외국인등록증, 수수료 ② 고용계약서 ③ 개인 소득금액 증명(필수) - 소득금액증명원(세무서 발급) 또는 근로소득원천징수부(소속회사 발급) ④ 사업자등록증 사본 또는 법인등기부등본 ⑤ 신원보증서 원본(아래 직종에 한해 징구)기계공학기술자(2351), 제도사(2395), 해외영업원(2742) 중 해외 온라인상품판매원, 디자이너(285), 판매사무원(31215), 주방장 및 조리사(441), 고객상담사무원(3991), 호텔접수사무원(3922), 의료코디네이터(S3922), 양식기술자(6301), 조선용접공(7430), 숙련기능 점수제 종사자[뿌리산업체 숙련기능공(S740), 농림축산어업 숙련기능인(S610), 일반 제조업체 및 건설업체 숙련기능공(S700)] ⑥ 체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비) ⑦ 고용주 납부내역증명, 납세증명",
-      "procedures.registration.summary": "[입국 후 · 국내 체류절차] 특정활동(E-7) 자격으로 90일을 초과하여 체류하는 경우, 입국일로부터 90일 이내에 체류지 관할 출입국·외국인관서에서 외국인등록(외국인등록증 발급)을 해야 합니다. 자격별 제출서류는 세부약호·국적·체류 이력에 따라 달라 공식 확인이 필요합니다.",
-      "procedures.workplaceChange.summary": "근무처 변경·추가 제출서류는 세부 자격과 신청 사유별로 다릅니다."
+      "procedures.registration.summary": "[입국 후 · 국내 체류절차] 특정활동(E-7) 자격으로 90일을 초과하여 체류하는 경우, 입국일로부터 90일 이내에 체류지 관할 출입국·외국인관서에서 외국인등록(외국인등록증 발급)을 해야 합니다. 자격별 제출서류는 세부약호·국적·체류 이력에 따라 달라 공식 확인이 필요합니다."
     }
   },
   "_authoring": {
@@ -1116,7 +1871,9 @@
       "feeInfo",
       "structuredRequirementsRef",
       "commonWarnings",
-      "_quarantineNotes"
+      "_quarantineNotes",
+      "subcodes",
+      "manual202610StructuredUpdate"
     ],
     "keySource": {
       "code": "identity",
@@ -1144,7 +1901,9 @@
       "feeInfo": "feeRef",
       "structuredRequirementsRef": "audit:structured_requirements_refs",
       "commonWarnings": "compat",
-      "_quarantineNotes": "compat"
+      "_quarantineNotes": "compat",
+      "subcodes": "compat",
+      "manual202610StructuredUpdate": "compat"
     },
     "procOrder": [
       "extension",
@@ -1176,33 +1935,5 @@
       ]
     },
     "note": "GENERATED by extract_authoring_from_visa_data.py. Edit the human-editable top-level fields; do not hand-edit _generated/_authoring."
-  },
-  "manualRefs": [
-    {
-      "manualName": "체류민원",
-      "manualType": "stay",
-      "manualVersion": "2026.6",
-      "sourceDate": "2026-06-23",
-      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-      "pageRange": "pp. 213-324",
-      "section": "특정활동(E-7)",
-      "confidence": "status_source_map_260623_pdf",
-      "needsManualReview": false,
-      "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-      "sourceId": "stay_manual_2026_06_23_pdf"
-    },
-    {
-      "manualName": "사증민원",
-      "manualType": "visa",
-      "manualVersion": "2026.6",
-      "sourceDate": "2026-06-17",
-      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
-      "pageRange": "pp. 170-279",
-      "section": "특정활동(E-7)",
-      "confidence": "status_source_map_260617_pdf",
-      "needsManualReview": false,
-      "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
-      "sourceId": "visa_manual_2026_06_17_pdf"
-    }
-  ]
+  }
 }
