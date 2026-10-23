@@ -79,7 +79,9 @@ class SubcodeOnlyPagesTests(unittest.TestCase):
         _, task, ev = _retrieve("F-6 결혼이민 체류기간 연장 준비는 어떻게 하나요?")
         self.assertEqual(task, "extension")
         pages = [e["page"] for e in ev["excerpts"]]
-        self.assertTrue(pages and all(498 <= p <= 503 for p in pages), pages)
+        # The F-6 extension section (F-6-1 연장 … F-6-3 "최초 기간연장 후
+        # 혼인단절") is pp.500-505 in the 2026.10 stay manual (pp.498-503 in 2026.9).
+        self.assertTrue(pages and all(500 <= p <= 505 for p in pages), pages)
         self.assertTrue(all(e["applicability"] == "subcode_specific" for e in ev["excerpts"]))
 
     def test_exact_subcode_question_is_unchanged(self):
