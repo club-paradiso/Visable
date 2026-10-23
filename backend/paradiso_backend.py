@@ -7054,13 +7054,34 @@ async def _ask_internal(req: AskRequest) -> AskResponse:
             if groq_answer is not None:
                 fam = dict(attempt_meta)
                 fam["llm_provider"] = "groq"
+                groq_meta = dict(base_meta)
+                answer_text = groq_answer
+                if structured_answer is not None:
+                    # A Groq answer is a model answer like any other: run the
+                    # same structured finalization as the OpenRouter success
+                    # path, so its lead prose becomes the short summary. This
+                    # branch previously returned the raw text with base_meta
+                    # untouched, which left the deterministic summary in place
+                    # (short_answer_source stayed "deterministic") even though
+                    # a live model had answered — the Fast-summary gap.
+                    answer_text = _structured_answer.scrub_internal_metadata(
+                        _confidence_gate_answer_text(groq_answer, groq_meta)
+                    )
+                    answer_text, gate_meta = _finalize_structured_document_answer(
+                        answer_text,
+                        groq_meta,
+                        structured_answer,
+                        answer_shape_contract,
+                        lang=req.lang,
+                    )
+                    groq_meta.update(gate_meta)
                 return AskResponse(
-                    answer=groq_answer,
+                    answer=answer_text,
                     provider="groq",
                     model=GROQ_MODEL,
                     provider_family_fallback_used=True,
                     **fam,
-                    **base_meta,
+                    **groq_meta,
                 )
         # Optional private Ollama fallback scaffold. Disabled by default; never
         # reached unless the operator explicitly enables it and OpenRouter failed.
