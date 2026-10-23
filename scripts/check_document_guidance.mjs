@@ -5,7 +5,7 @@
  *
  * For every displayed document it asserts that it
  *   - belongs to the correct procedure and status/substatus/path (entry-level target)
- *   - has a valid 2026.9 source reference (page inside the manual, near the section page)
+ *   - has a valid 2026.10 source reference (page inside the manual, near the section page)
  *   - has a requirement level from the enum and an applicant role
  *   - carries conditional logic when its level is conditional / applicable / alternative
  * and that
@@ -36,7 +36,7 @@ function assert(c, m) { if (!c) throw new Error(m || 'assertion failed'); }
 const LEVELS = new Set(rules.enums.requirement_levels);
 const ROLES = new Set(rules.enums.roles);
 const CONDITIONAL_LEVELS = new Set(['CONDITIONAL_REQUIRED', 'ADDITIONAL_IF_APPLICABLE', 'ALTERNATIVE_DOCUMENT']);
-const corpusPages = { stay_manual_2026_09_18: 810, visa_manual_2026_09_01: 519 };
+const corpusPages = { stay_manual_2026_10_19: 812, visa_manual_2026_10_19: 519 };
 let itemCount = 0;
 
 for (const g of bundle.guidance) {
@@ -67,7 +67,7 @@ for (const g of bundle.guidance) {
         assert(d.source.quote && d.source.quote.length > 10, 'regulation item must carry the quoted clause');
         assert(d.review_state === 'REGULATION_TEXT_20260922', 'review state must name the regulation reading');
       } else {
-        assert(d.source && Number.isInteger(d.source.pdf_page) && d.source.pdf_page >= 1 && d.source.pdf_page <= corpusPages[g.source.manual], 'no valid 2026.9 page');
+        assert(d.source && Number.isInteger(d.source.pdf_page) && d.source.pdf_page >= 1 && d.source.pdf_page <= corpusPages[g.source.manual], 'no valid 2026.10 page');
         // COMMON rules cite the 공통사항 fee table and the 별지 제34호 form page, which are far apart by design.
         if (!common) assert(Math.abs(d.source.pdf_page - g.source.pdf_page) <= 3, `item page ${d.source.pdf_page} far from section page ${g.source.pdf_page}`);
         assert(d.review_state === 'SEPT_2026_ORIGINAL_UNREVIEWED', 'review state must stay explicit');

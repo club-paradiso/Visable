@@ -28,8 +28,8 @@ const manifest = JSON.parse(readFileSync(join(ROOT, 'data/status-coverage-202609
 const bundle = JSON.parse(readFileSync(join(ROOT, 'data/status-guidance-202609.json'), 'utf8'));
 const rules = JSON.parse(readFileSync(join(ROOT, 'data/guidance-rules-202609.json'), 'utf8'));
 const corpora = {
-  stay_manual_2026_09_18: JSON.parse(readFileSync(join(ROOT, 'data/manual-corpus/stay_manual_2026_09_18_pdf.json'), 'utf8')),
-  visa_manual_2026_09_01: JSON.parse(readFileSync(join(ROOT, 'data/manual-corpus/visa_manual_2026_09_01_pdf.json'), 'utf8')),
+  stay_manual_2026_10_19: JSON.parse(readFileSync(join(ROOT, 'data/manual-corpus/stay_manual_2026_10_19_pdf.json'), 'utf8')),
+  visa_manual_2026_10_19: JSON.parse(readFileSync(join(ROOT, 'data/manual-corpus/visa_manual_2026_10_19_pdf.json'), 'utf8')),
 };
 const pageText = {};
 for (const [id, pages] of Object.entries(corpora)) { pageText[id] = new Map(pages.map((p) => [p.page, norm(p.text)])); }
@@ -63,7 +63,7 @@ const byCode = new Map(records.map((r) => [r.code, r]));
 /* ---------------------------------------------------------- chapters ---- */
 const EXPECTED_STAY = ['A-1', 'A-2', 'A-3', 'B-1', 'B-2', 'C-1', 'C-3', 'C-4', 'D-1', 'D-2', 'D-3', 'D-4', 'D-5', 'D-6', 'D-7', 'D-8', 'D-9', 'D-10', 'E-1', 'E-2', 'E-3', 'E-4', 'E-5', 'E-6', 'E-7', 'E-8', 'E-9', 'E-10', 'F-1', 'F-2', 'F-3', 'F-5', 'F-6', 'G-1', 'H-1', 'DONGPO', 'REGION', 'YOUTH', 'TOPTIER', 'METRO', 'KSTAR'];
 const EXPECTED_VISA = ['A-1', 'A-2', 'A-3', 'B-1', 'B-2', 'C-1', 'C-3', 'C-4', 'D-1', 'D-2', 'D-3', 'D-4', 'D-5', 'D-6', 'D-7', 'D-8', 'D-9', 'D-10', 'E-1', 'E-2', 'E-3', 'E-4', 'E-5', 'E-6', 'E-7', 'E-8', 'E-9', 'E-10', 'F-1', 'F-2', 'F-3', 'F-4', 'F-5', 'F-6', 'G-1', 'H-1', 'H-2', 'DONGPO', 'TOPTIER', 'KSTAR'];
-for (const [manual, expected] of [['stay_manual_2026_09_18', EXPECTED_STAY], ['visa_manual_2026_09_01', EXPECTED_VISA]]) {
+for (const [manual, expected] of [['stay_manual_2026_10_19', EXPECTED_STAY], ['visa_manual_2026_10_19', EXPECTED_VISA]]) {
   const chapters = manifest.chapters[manual];
   const keys = new Set(chapters.map((c) => c.key));
   for (const key of expected) {
@@ -89,7 +89,7 @@ check('every top-level status in the manuals has a status record', () => {
 for (const r of records) {
   check(`record ${r.code}: explicit states and provenance`, () => {
     assert(COVERAGE.has(r.coverage_state), `coverage_state ${r.coverage_state} not in enum`);
-    assert(r.temporal && r.temporal.source_edition === '2026.9', 'source edition not recorded');
+    assert(r.temporal && r.temporal.source_edition === '2026.10', 'source edition not recorded');
     assert(typeof r.lifecycle === 'string', 'lifecycle missing');
     assert(DOCSTATES.has(r.document_guidance), `document_guidance ${r.document_guidance} not explicit`);
     assert(typeof r.source_verification === 'string', 'source_verification missing');
@@ -125,7 +125,7 @@ for (const r of records) {
     }
     if (r.lifecycle === 'legacy_holders_only' || r.lifecycle === 'abolished') {
       assert(r.temporal.legacy_source && r.temporal.legacy_source.pdf_page, 'legacy marker must be anchored to a page');
-      assert(pageHas(r.temporal.legacy_source.anchor && (r.temporal.legacy_source.pdf_page > 400 ? 'stay_manual_2026_09_18' : 'stay_manual_2026_09_18'), r.temporal.legacy_source.pdf_page, r.temporal.legacy_source.anchor), 'legacy anchor text not on the recorded page');
+      assert(pageHas(r.temporal.legacy_source.anchor && (r.temporal.legacy_source.pdf_page > 400 ? 'stay_manual_2026_10_19' : 'stay_manual_2026_10_19'), r.temporal.legacy_source.pdf_page, r.temporal.legacy_source.anchor), 'legacy anchor text not on the recorded page');
       assert(r.temporal.new_application_allowed === false || r.temporal.legacy_holder_rule, 'legacy record must say new applications are not allowed or carry a holder rule');
     }
   });
@@ -137,7 +137,7 @@ for (const g of bundle.guidance) {
     assert(PROCEDURES.includes(g.procedure), 'unknown procedure');
     assert(PROC.has(g.state), 'state not in enum');
     assert(['FULLY_STRUCTURED', 'PARTIALLY_STRUCTURED', 'SOURCE_ONLY', 'REQUIRES_CLARIFICATION', 'UNVERIFIED'].includes(g.completeness), 'completeness not explicit');
-    assert(g.source && g.source.edition === '2026.9' && Number.isInteger(g.source.pdf_page), 'no 2026.9 page provenance');
+    assert(g.source && g.source.edition === '2026.10' && Number.isInteger(g.source.pdf_page), 'no 2026.10 page provenance');
     assert(pageText[g.source.manual].has(g.source.pdf_page), 'page not in corpus');
     const authored = rules.guidance.find((r) => r.target === g.target && r.procedure === g.procedure && (r.scenario || null) === (g.scenario || null));
     assert(authored, 'no authored rule behind the compiled entry');
@@ -171,7 +171,7 @@ check('state overrides are anchored inside their chapter', () => {
 check('programs are first-class records with chapter provenance', () => {
   for (const p of bundle.programs) {
     const rec = byCode.get('PROGRAM:' + p.id); assert(rec, `program ${p.id} missing`);
-    assert(Number.isInteger(p.pdf_page) && pageHas('stay_manual_2026_09_18', p.pdf_page, rules.programs.find((x) => x.id === p.id).anchor), `program ${p.id} anchor not on page`);
+    assert(Number.isInteger(p.pdf_page) && pageHas('stay_manual_2026_10_19', p.pdf_page, rules.programs.find((x) => x.id === p.id).anchor), `program ${p.id} anchor not on page`);
     assert(rec.source.stay.pdf_page_start, `program ${p.id} has no chapter range`);
     for (const code of p.codes) assert(byCode.has(code), `program ${p.id} code ${code} not in manifest`);
     for (const code of p.codes) assert((byCode.get(code).programs || []).includes(p.id), `${code} does not list program ${p.id}`);

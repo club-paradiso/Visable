@@ -24,36 +24,36 @@ Full document accuracy is **not** claimed: most rules are silent on physical for
 
 | Target | Procedure | Document | Form | Basis | Source |
 | --- | --- | --- | --- | --- | --- |
-| F-1~domestic-helper#domestic-helper | extension | 외국인투자신고서(법인등기사항전부증명서 또는 사업자등록증 사본) 또는 투자기업등록증 사본 | VARIES_BY_ITEM | SOURCE_PHRASE | p.357 |
-| F-1-12 | extension | 주체류자와 그 배우자의 여권 및 외국인등록증 사본 | VARIES_BY_ITEM | SOURCE_PHRASE | p.359 |
+| F-1~domestic-helper#domestic-helper | extension | 외국인투자신고서(법인등기사항전부증명서 또는 사업자등록증 사본) 또는 투자기업등록증 사본 | VARIES_BY_ITEM | SOURCE_PHRASE | p.358 |
+| F-1-12 | extension | 주체류자와 그 배우자의 여권 및 외국인등록증 사본 | VARIES_BY_ITEM | SOURCE_PHRASE | p.360 |
 | D-2 | part_time_work | 사업자등록증 사본 및 고용주 신분증 사본 | COPY_ONLY | SOURCE_PHRASE | p.39 |
 | D-2 | part_time_work | 표준근로계약서 사본(시급·근무내용·시간 포함) | COPY_ONLY | SOURCE_PHRASE | p.39 |
 | D-2 | registration | 여권 및 사본 1부 | ORIGINAL_AND_COPY ×1 | SOURCE_PHRASE | p.44 |
-| E-9 | extension | 고용허가서 사본 | COPY_ONLY | SOURCE_PHRASE | p.329 |
-| E-9 | extension | 표준근로계약서 사본 | COPY_ONLY | SOURCE_PHRASE | p.329 |
-| E-9 | extension | 사업자등록증 사본 | COPY_ONLY | SOURCE_PHRASE | p.330 |
-| E-9 | workplace_change | 고용허가서 사본 | COPY_ONLY | SOURCE_PHRASE | p.329 |
-| E-9 | workplace_change | 표준근로계약서 사본 | COPY_ONLY | SOURCE_PHRASE | p.329 |
-| E-7 | extension | 사업자등록증 사본 또는 법인등기부등본 | VARIES_BY_ITEM | SOURCE_PHRASE | p.227 |
-| E-7 | extension | 신원보증서 원본 | ORIGINAL_ONLY | SOURCE_PHRASE | p.227 |
-| G-1-3 | extension | 소장 사본, 소송제기 증명원, 법률구조결정서 사본 등 청구권 존재 확인 서류 | VARIES_BY_ITEM | SOURCE_PHRASE | p.518 |
-| D-10-1#points | extension | 여권 사본 | COPY_ONLY | SOURCE_PHRASE | p.156 |
-| D-10-1#points | extension | 신분증 사본 | COPY_ONLY | SOURCE_PHRASE | p.156 |
-| D-10-1#exempt-korean-graduate | extension | 여권 사본 | COPY_ONLY | SOURCE_PHRASE | p.156 |
-| D-10-1#exempt-korean-graduate | extension | 신분증 사본 | COPY_ONLY | SOURCE_PHRASE | p.156 |
-| D-10-1#exempt-domestic-youth | extension | 여권 사본 | COPY_ONLY | SOURCE_PHRASE | p.156 |
-| D-10-1#exempt-domestic-youth | extension | 신분증 사본 | COPY_ONLY | SOURCE_PHRASE | p.156 |
-| D-10-1#exempt-promising-talent | extension | 여권 사본 | COPY_ONLY | SOURCE_PHRASE | p.156 |
-| D-10-1#exempt-promising-talent | extension | 신분증 사본 | COPY_ONLY | SOURCE_PHRASE | p.156 |
-| D-10-1#exempt-caregiver-trainee | extension | 여권 사본 | COPY_ONLY | SOURCE_PHRASE | p.156 |
-| D-10-1#exempt-caregiver-trainee | extension | 신분증 사본 | COPY_ONLY | SOURCE_PHRASE | p.156 |
-| D-10-1#exempt-professional-experience | extension | 여권 사본 | COPY_ONLY | SOURCE_PHRASE | p.156 |
-| D-10-1#exempt-professional-experience | extension | 신분증 사본 | COPY_ONLY | SOURCE_PHRASE | p.156 |
-| D-10-2 | extension | 여권 사본 | COPY_ONLY | SOURCE_PHRASE | p.157 |
-| D-10-2 | extension | 신분증 사본 | COPY_ONLY | SOURCE_PHRASE | p.157 |
-| D-10-3 | extension | 여권 사본 | COPY_ONLY | SOURCE_PHRASE | p.157 |
-| D-10-3 | extension | 신분증 사본 | COPY_ONLY | SOURCE_PHRASE | p.157 |
-| D-10-T | extension | 여권 사본 | COPY_ONLY | SOURCE_PHRASE | p.158 |
+| E-9 | extension | 고용허가서 사본 | COPY_ONLY | SOURCE_PHRASE | p.330 |
+| E-9 | extension | 표준근로계약서 사본 | COPY_ONLY | SOURCE_PHRASE | p.330 |
+| E-9 | extension | 사업자등록증 사본 | COPY_ONLY | SOURCE_PHRASE | p.331 |
+| E-9 | workplace_change | 고용허가서 사본 | COPY_ONLY | SOURCE_PHRASE | p.330 |
+| E-9 | workplace_change | 표준근로계약서 사본 | COPY_ONLY | SOURCE_PHRASE | p.330 |
+| E-7 | extension | 사업자등록증 사본 또는 법인등기부등본 | VARIES_BY_ITEM | SOURCE_PHRASE | p.228 |
+| E-7 | extension | 신원보증서 원본 | ORIGINAL_ONLY | SOURCE_PHRASE | p.228 |
+| G-1-3 | extension | 소장 사본, 소송제기 증명원, 법률구조결정서 사본 등 청구권 존재 확인 서류 | VARIES_BY_ITEM | SOURCE_PHRASE | p.520 |
+| D-10-1#points | extension | 여권 사본 | COPY_ONLY | SOURCE_PHRASE | p.157 |
+| D-10-1#points | extension | 신분증 사본 | COPY_ONLY | SOURCE_PHRASE | p.157 |
+| D-10-1#exempt-korean-graduate | extension | 여권 사본 | COPY_ONLY | SOURCE_PHRASE | p.157 |
+| D-10-1#exempt-korean-graduate | extension | 신분증 사본 | COPY_ONLY | SOURCE_PHRASE | p.157 |
+| D-10-1#exempt-domestic-youth | extension | 여권 사본 | COPY_ONLY | SOURCE_PHRASE | p.157 |
+| D-10-1#exempt-domestic-youth | extension | 신분증 사본 | COPY_ONLY | SOURCE_PHRASE | p.157 |
+| D-10-1#exempt-promising-talent | extension | 여권 사본 | COPY_ONLY | SOURCE_PHRASE | p.157 |
+| D-10-1#exempt-promising-talent | extension | 신분증 사본 | COPY_ONLY | SOURCE_PHRASE | p.157 |
+| D-10-1#exempt-caregiver-trainee | extension | 여권 사본 | COPY_ONLY | SOURCE_PHRASE | p.157 |
+| D-10-1#exempt-caregiver-trainee | extension | 신분증 사본 | COPY_ONLY | SOURCE_PHRASE | p.157 |
+| D-10-1#exempt-professional-experience | extension | 여권 사본 | COPY_ONLY | SOURCE_PHRASE | p.157 |
+| D-10-1#exempt-professional-experience | extension | 신분증 사본 | COPY_ONLY | SOURCE_PHRASE | p.157 |
+| D-10-2 | extension | 여권 사본 | COPY_ONLY | SOURCE_PHRASE | p.158 |
+| D-10-2 | extension | 신분증 사본 | COPY_ONLY | SOURCE_PHRASE | p.158 |
+| D-10-3 | extension | 여권 사본 | COPY_ONLY | SOURCE_PHRASE | p.158 |
+| D-10-3 | extension | 신분증 사본 | COPY_ONLY | SOURCE_PHRASE | p.158 |
+| D-10-T | extension | 여권 사본 | COPY_ONLY | SOURCE_PHRASE | p.159 |
 | B-1 | extension | 여권 원본 | ORIGINAL_ONLY | SOURCE_PHRASE | p.24 |
 | B-2 | extension | 여권 원본 | ORIGINAL_ONLY | SOURCE_PHRASE | p.24 |
 | C-1 | extension | 여권 원본 | ORIGINAL_ONLY | SOURCE_PHRASE | p.25 |
@@ -69,13 +69,13 @@ Full document accuracy is **not** claimed: most rules are silent on physical for
 | D-8-1 | extension | 투자기업등록증 사본 | COPY_ONLY | SOURCE_PHRASE | p.124 |
 | D-8-2 | extension | 사업자등록증 사본, 법인등기사항전부증명서 | VARIES_BY_ITEM | SOURCE_PHRASE | p.124 |
 | D-9-1 | extension | 사업자등록증 사본 | COPY_ONLY | SOURCE_PHRASE | p.135 |
-| E-1 | extension | 고용계약서 원본 및 사본 | ORIGINAL_AND_COPY | SOURCE_PHRASE | p.173 |
-| E-2 | extension | 고용계약서 원본 및 사본 | ORIGINAL_AND_COPY | SOURCE_PHRASE | p.184 |
-| E-2 | extension | 사업자등록증 사본 | COPY_ONLY | SOURCE_PHRASE | p.184 |
-| E-2 | extension | 학원설립운영등록증 사본(해당자) | COPY_ONLY | SOURCE_PHRASE | p.184 |
-| E-5 | extension | 여권 원본 | ORIGINAL_ONLY | SOURCE_PHRASE | p.204 |
-| E-6 | extension | 사업자등록증 사본 | COPY_ONLY | SOURCE_PHRASE | p.211 |
-| E-10 | extension | 사업자등록증 사본 | COPY_ONLY | SOURCE_PHRASE | p.338 |
-| E-10#reemployment | extension | 사업자등록증 사본 | COPY_ONLY | SOURCE_PHRASE | p.339 |
+| E-1 | extension | 고용계약서 원본 및 사본 | ORIGINAL_AND_COPY | SOURCE_PHRASE | p.174 |
+| E-2 | extension | 고용계약서 원본 및 사본 | ORIGINAL_AND_COPY | SOURCE_PHRASE | p.185 |
+| E-2 | extension | 사업자등록증 사본 | COPY_ONLY | SOURCE_PHRASE | p.185 |
+| E-2 | extension | 학원설립운영등록증 사본(해당자) | COPY_ONLY | SOURCE_PHRASE | p.185 |
+| E-5 | extension | 여권 원본 | ORIGINAL_ONLY | SOURCE_PHRASE | p.205 |
+| E-6 | extension | 사업자등록증 사본 | COPY_ONLY | SOURCE_PHRASE | p.212 |
+| E-10 | extension | 사업자등록증 사본 | COPY_ONLY | SOURCE_PHRASE | p.339 |
+| E-10#reemployment | extension | 사업자등록증 사본 | COPY_ONLY | SOURCE_PHRASE | p.340 |
 | COMMON | card_reissue | 원래의 외국인등록증 | ORIGINAL_ONLY (kept) | REGULATION | 출입국관리법 시행령 제42조 |
 | COMMON | residence_report | 외국인등록증 | ORIGINAL_ONLY (returned) | REGULATION | 출입국관리법 제36조 |

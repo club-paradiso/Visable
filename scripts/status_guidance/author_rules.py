@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Authoring source for data/guidance-rules-202609.json.
 
-Every rule here is transcribed from the September 2026 Ministry of Justice
-manuals. Each guidance entry and each document item carries an `anchor`: a
+Every rule here is transcribed from the Ministry of Justice manuals (the
+2026.9 editions, re-anchored on the 2026.10 editions on 2026-10-23). Each guidance entry and each document item carries an `anchor`: a
 verbatim (whitespace-insensitive) substring of the manual text. The build
 (scripts/build_status_coverage_manifest.py) resolves anchors to PDF pages and
 HWP line numbers and FAILS when an anchor cannot be found, so nothing in this
@@ -18,8 +18,8 @@ import sys
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 OUT = os.path.join(ROOT, 'data', 'guidance-rules-202609.json')
 
-STAY = 'stay_manual_2026_09_18'
-VISA = 'visa_manual_2026_09_01'
+STAY = 'stay_manual_2026_10_19'
+VISA = 'visa_manual_2026_10_19'
 
 # --------------------------------------------------------------------------
 # Procedure catalog (one domain each — never mixed)
@@ -1118,7 +1118,7 @@ guidance('H-2', 'registration', completeness='PARTIALLY_STRUCTURED', section='�
 # headings ("해당사항 없음", "억제", "불가 원칙"). Anchored like everything else.
 # ==========================================================================
 # ==========================================================================
-# COMMON (status-independent) procedures — the 2026.9 stay manual has no
+# COMMON (status-independent) procedures — the 2026.10 stay manual has no
 # chapter for these; the regulation is the source. Manual anchors bind the
 # 공통사항 fee table (p. 4) and the 별지 제34호 통합신청서 page where the manual
 # reproduces them. target 'COMMON' is never a status: the resolver serves it
@@ -1411,7 +1411,7 @@ FEES = [
     fee('extension_general', 'extension', 60000, '체류기간 연장허가 심사수수료', 'Extension of stay fee', instruments=STAMP_INSTRUMENTS, channels=('office', 'online'), online_reduction=ONLINE_20,
         law_quote='체류기간 연장 허가: 6만원', manual_anchor='체류기간 연장허가 6만원', exemptions=(EX_A_SERIES_D8, EX_GOV_INVITED, EX_D2_REG_WITH_EXT),
         notes_ko=('심사수수료이므로 접수 후 반환되지 않습니다.',), notes_en=('An examination fee: not refunded once the application is accepted.',),
-        investigations=({'topic': 'g1_99_exemption', 'ko': '기타(G-1-99) 연장 수수료 면제 근거는 시행규칙 제74조와 2026.9 체류매뉴얼에서 확인되지 않았습니다(매뉴얼: "수수료는 일반 체류외국인과 동일").', 'en': 'No basis for a G-1-99 extension-fee exemption was found in Rule Art. 74 or the 2026.9 stay manual ("same fee as other residents").', 'manual_anchor': '수수료는 일반 체류외국인과 동일', 'state': 'NOT_FOUND'},)),
+        investigations=({'topic': 'g1_99_exemption', 'ko': '기타(G-1-99) 연장 수수료 면제 근거는 시행규칙 제74조와 2026.10 체류매뉴얼에서 확인되지 않았습니다(매뉴얼: "수수료는 일반 체류외국인과 동일").', 'en': 'No basis for a G-1-99 extension-fee exemption was found in Rule Art. 74 or the 2026.10 stay manual ("same fee as other residents").', 'manual_anchor': '수수료는 일반 체류외국인과 동일', 'state': 'NOT_FOUND'},)),
     fee('extension_f6', 'extension', 30000, '체류기간 연장허가 심사수수료 (결혼이민 F-6)', 'Extension of stay fee (F-6 marriage migrant)', scope={'parents': ['F-6']}, instruments=STAMP_INSTRUMENTS, channels=('office', 'online'), online_reduction=ONLINE_20,
         law_quote='결혼이민(F-6) 체류자격을 가지고 있는 경우에는 3만원', manual_anchor='결혼이민(F-6) 3만원', exemptions=(EX_A_SERIES_D8,)),
     fee('status_change_general', 'status_change', 100000, '체류자격 변경허가 심사수수료', 'Change of status fee', instruments=STAMP_INSTRUMENTS, channels=('office', 'online'), online_reduction=ONLINE_20,
@@ -1423,7 +1423,7 @@ FEES = [
     fee('activities_outside_status', 'activities_outside_status', 120000, '체류자격 외 활동허가 심사수수료', 'Activities-outside-status permit fee', instruments=STAMP_INSTRUMENTS, law_quote='체류자격 외 활동허가: 12만원', manual_anchor='체류자격 외 활동허가 12만원', exemptions=(EX_A_SERIES_D8,)),
     fee('part_time_work', 'part_time_work', 20000, '유학생 시간제 취업허가 수수료', 'Student part-time work permit fee', scope={'parents': ['D-2', 'D-4']}, instruments=STAMP_INSTRUMENTS, amount_state='CONFLICT', review_state='CONFLICT',
         law_quote='영 별표 1의2 중 5. 유학(D-2) 또는 7. 일반연수(D-4) 체류자격을 가지고 있는 사람에 대한 시간제 취업 허용 등 법무부장관이 인정하는 경우에는 2만원', manual_anchor='신청서, 여권, 외국인등록증 ※ 수수료 면제',
-        conflicts=({'regulation_ko': '시행규칙 제72조 제2호 단서: 2만원', 'regulation_en': 'Rule Art. 72(2) proviso: KRW 20,000', 'manual_ko': '2026.9 체류매뉴얼 유학(D-2) 시간제취업 절: "※ 수수료 면제"', 'manual_en': '2026.9 stay manual, D-2 part-time section: "fee exempt"', 'interim_ko': '금액을 단정하지 않고 두 근거를 함께 표시합니다. 신청 전 관할 관서에서 확인하세요.', 'interim_en': 'Both values are shown; confirm with the office before applying.'},)),
+        conflicts=({'regulation_ko': '시행규칙 제72조 제2호 단서: 2만원', 'regulation_en': 'Rule Art. 72(2) proviso: KRW 20,000', 'manual_ko': '2026.10 체류매뉴얼 유학(D-2) 시간제취업 절: "※ 수수료 면제"', 'manual_en': '2026.10 stay manual, D-2 part-time section: "fee exempt"', 'interim_ko': '금액을 단정하지 않고 두 근거를 함께 표시합니다. 신청 전 관할 관서에서 확인하세요.', 'interim_en': 'Both values are shown; confirm with the office before applying.'},)),
     fee('workplace_change', 'workplace_change', 120000, '근무처 변경·추가 허가 심사수수료', 'Workplace change/addition permit fee', instruments=STAMP_INSTRUMENTS, channels=('office', 'online'), online_reduction=ONLINE_20,
         law_quote='근무처의 변경·추가 허가: 12만원', manual_anchor='근무처의 변경․추가 12만원', exemptions=(EX_A_SERIES_D8, EX_WORKPLACE_REPORT)),
     fee('reentry_single', 'reentry', 30000, '단수재입국허가 수수료', 'Single re-entry permit fee', instruments=STAMP_INSTRUMENTS, channels=('office', 'online'), online_reduction=ONLINE_20,

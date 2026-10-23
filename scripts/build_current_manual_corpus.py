@@ -100,7 +100,8 @@ def build() -> dict:
     for source, sections in all_sections:
         sid = source["id"]
         section_file = f"data/manual-corpus/{sid}.json"
-        text_file = f"docs/source-manuals/2026-09/extracted/{sid}.txt"
+        # The extracted text sits next to the PDF it was read from.
+        text_file = f"{Path(source['file']).parent.as_posix()}/extracted/{sid}.txt"
         raw = "\n\n".join(f"===== PDF page {s['page']} =====\n{s['text']}" for s in sections) + "\n"
         (ROOT / text_file).parent.mkdir(parents=True, exist_ok=True)
         (ROOT / text_file).write_text(raw, encoding="utf-8")

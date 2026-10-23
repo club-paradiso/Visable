@@ -106,7 +106,7 @@ def _pages(body):
 
 
 def _cited_titles(prompt: str):
-    return set(re.findall(r"「(외국인체류 안내매뉴얼|사증발급 안내매뉴얼) 2026\.9」 p\.\d+", prompt))
+    return set(re.findall(r"「(외국인체류 안내매뉴얼|사증발급 안내매뉴얼) 2026\.10」 p\.\d+", prompt))
 
 
 @unittest.skipUnless(_index_has_approved_evidence(), "manual search index with approved chunks not present")
@@ -122,13 +122,14 @@ class StayProcedureEvidenceTests(unittest.TestCase):
         for src in sources:
             self.assertEqual(src["manual_scope"], me.SCOPE_STAY)
             self.assertEqual(src["source_title"], STAY_TITLE)
-            self.assertEqual(src["source_date"], "2026.9")
+            self.assertEqual(src["source_date"], "2026.10")
             self.assertRegex(src["page_range"], r"^\d+$")
             self.assertEqual(src["procedure_type"], "근무처 변경·추가")
             self.assertFalse(src["reviewed_for_question"])
             self.assertTrue(all(c == "E-7" or c.startswith("E-7-") for c in src["applies_to"]))
-        # The 근무처 변경·추가 section of the E-7 chapter (p.221-222 in the 2026.9 PDF).
-        self.assertTrue(any(220 <= p <= 223 for p in _pages(body)), _pages(body))
+        # The 근무처 변경·추가 section of the E-7 chapter (p.222-223 in the 2026.10 PDF;
+        # p.221-222 in the 2026.9 PDF, one page earlier).
+        self.assertTrue(any(221 <= p <= 224 for p in _pages(body)), _pages(body))
 
         prompt = prompts[0]
         self.assertIn("[공식 매뉴얼 발췌", prompt)
@@ -153,7 +154,7 @@ class StayProcedureEvidenceTests(unittest.TestCase):
         body, prompts = _ask(F6_EXTENSION)
         self.assertEqual(body["manual_evidence_scopes"], [me.SCOPE_STAY])
         pages = _pages(body)
-        self.assertTrue(any(498 <= p <= 503 for p in pages), pages)
+        self.assertTrue(any(500 <= p <= 505 for p in pages), pages)  # 2026.10 PDF (498-503 in 2026.9)
         for src in body["manual_evidence_sources"]:
             self.assertEqual(src["manual_scope"], me.SCOPE_STAY)
             self.assertTrue(all(c.startswith("F-6") for c in src["applies_to"]), src["applies_to"])
@@ -164,7 +165,7 @@ class StayProcedureEvidenceTests(unittest.TestCase):
     def test_the_manual_location_lines_are_still_appended(self):
         body, _ = _ask(F6_EXTENSION)
         self.assertIn("공식 매뉴얼 위치", body["answer"])
-        self.assertIn("p.498", body["answer"])
+        self.assertIn("p.500", body["answer"])  # F-6 extension, 2026.10 PDF (p.498 in 2026.9)
 
 
 @unittest.skipUnless(_index_has_approved_evidence(), "manual search index with approved chunks not present")
@@ -301,17 +302,17 @@ class MarkdownPreferenceTests(unittest.TestCase):
 
     def test_markdown_chunk_wins_its_page_and_keeps_the_best_score(self):
         ranked = [
-            {"source_id": "stay_manual_2026_09_18_pdf", "page": 498, "score": 9.0, "chunk_id": 1},
-            {"source_id": "stay_manual_2026_09_18_md", "page": 498, "score": 4.0, "chunk_id": 2},
-            {"source_id": "stay_manual_2026_09_18_md", "page": 498, "score": 5.0, "chunk_id": 3},
-            {"source_id": "stay_manual_2026_09_18_pdf", "page": 499, "score": 6.0, "chunk_id": 4},
+            {"source_id": "stay_manual_2026_10_19_pdf", "page": 498, "score": 9.0, "chunk_id": 1},
+            {"source_id": "stay_manual_2026_10_19_md", "page": 498, "score": 4.0, "chunk_id": 2},
+            {"source_id": "stay_manual_2026_10_19_md", "page": 498, "score": 5.0, "chunk_id": 3},
+            {"source_id": "stay_manual_2026_10_19_pdf", "page": 499, "score": 6.0, "chunk_id": 4},
         ]
         picked = me.pick_per_page(ranked)
         self.assertEqual([(c["page"], c["chunk_id"]) for c in picked], [(498, 3), (499, 4)])
         self.assertEqual(picked[0]["score"], 9.0)
 
     def test_page_zero_chunks_are_never_evidence(self):
-        ranked = [{"source_id": "stay_manual_2026_09_18_md", "page": 0, "score": 9.0, "chunk_id": 5}]
+        ranked = [{"source_id": "stay_manual_2026_10_19_md", "page": 0, "score": 9.0, "chunk_id": 5}]
         self.assertEqual(me.pick_per_page(ranked), [])
 
     @unittest.skipUnless(_index_has_approved_evidence(), "manual search index not present")
@@ -345,7 +346,7 @@ class MarkdownPreferenceTests(unittest.TestCase):
                     seen_md = True
                     self.assertEqual(ex["text_kind"], "markdown", (question, ex["page"]))
                 # The citation is the edition + the chunk's PDF page either way.
-                self.assertTrue(ex["citation"].endswith(f"2026.9」 p.{ex['page']}"))
+                self.assertTrue(ex["citation"].endswith(f"2026.10」 p.{ex['page']}"))
         self.assertTrue(seen_md)
 
 
@@ -356,7 +357,7 @@ class DeterministicNoteTests(unittest.TestCase):
         answer = body["answer"]
         self.assertTrue(body["deterministic_fallback_answer_used"])
         self.assertIn("공식 매뉴얼 발췌", answer)
-        self.assertRegex(answer, r"「외국인체류 안내매뉴얼 2026\.9」 p\.(49[89]|50[0-3])")
+        self.assertRegex(answer, r"「외국인체류 안내매뉴얼 2026\.10」 p\.(50[0-5])")
         self.assertIn("사람이 검토한 목록은 아닙니다", answer)
         # Uncertainty notices stay.
         self.assertIn("이 메모는 최종 판단이 아니며", answer)
@@ -364,12 +365,12 @@ class DeterministicNoteTests(unittest.TestCase):
 
     def test_fallback_note_for_visa_issuance_cites_the_visa_manual(self):
         body, _ = _ask(E9_CCVI, live=False)
-        self.assertIn(f"「{VISA_TITLE} 2026.9」 p.", body["answer"])
-        self.assertNotIn(f"「{STAY_TITLE} 2026.9」 p.", body["answer"])
+        self.assertIn(f"「{VISA_TITLE} 2026.10」 p.", body["answer"])
+        self.assertNotIn(f"「{STAY_TITLE} 2026.10」 p.", body["answer"])
 
     def test_note_snippet_never_quotes_a_phrase_the_confidence_gate_rewrites(self):
         lines = me.note_lines([{
-            "citation": "「외국인체류 안내매뉴얼 2026.9」 p.10", "page_range": "10",
+            "citation": "「외국인체류 안내매뉴얼 2026.10」 p.10", "page_range": "10",
             "applies_to": ["D-2"], "excerpt": "유학생의 시간제취업은 허가를 받은 경우 주당 일정 시간 근무가 가능합니다. 다만",
         }], is_ko=True)
         self.assertNotIn("가능합니다", "\n".join(lines))

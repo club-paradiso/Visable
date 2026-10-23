@@ -682,7 +682,7 @@ def prompt_block(evidence: Dict[str, Any]) -> str:
         if label not in scopes:
             scopes.append(label)
     lines = [
-        "[공식 매뉴얼 발췌 — 승인된 2026.9 판 원문에서 자동 검색]",
+        "[공식 매뉴얼 발췌 — 승인된 현행 판 원문에서 자동 검색]",
         "- 절차 범위: " + " / ".join(scopes),
         "- 이 발췌는 승인된 매뉴얼 원문에서 질문과 관련 있어 보이는 쪽을 자동으로 고른 것입니다."
         " 사람이 이 질문에 맞춰 검토한 목록은 아닙니다.",
@@ -757,9 +757,9 @@ def note_lines(sources: Sequence[Dict[str, Any]], *, is_ko: bool, max_items: int
         return []
     lines: List[str] = []
     if is_ko:
-        lines.append("공식 매뉴얼 발췌 (승인된 2026.9 판 원문에서 자동으로 찾은 쪽이며, 이 질문에 맞춰 사람이 검토한 목록은 아닙니다):")
+        lines.append("공식 매뉴얼 발췌 (승인된 현행 판 원문에서 자동으로 찾은 쪽이며, 이 질문에 맞춰 사람이 검토한 목록은 아닙니다):")
     else:
-        lines.append("Official manual excerpts (found automatically in the approved 2026.9 editions; not reviewed for this question by a person):")
+        lines.append("Official manual excerpts (found automatically in the approved current editions; not reviewed for this question by a person):")
     for src in items:
         text = str(src.get("excerpt") or "")
         snippet = " ".join(ln.strip() for ln in text.splitlines() if ln.strip() and ln.strip() != "…")

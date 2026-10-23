@@ -20,7 +20,7 @@ const pages = catalog.sources.flatMap(source => {
     assert.ok(row.heading && row.heading.length <= 140);
   });
   assert.equal(source.characters, rows.reduce((n, row) => n + [...row.text].length, 0));
-  // The 2026.9 editions are the owner-approved current editions (2026-10-16):
+  // The 2026.10 editions are the owner-approved current editions (2026-10-23):
   // registry, approval index, catalog and manifest `current` must all agree.
   assert.equal(registry.sources.find(s => s.id === source.id).status, 'active');
   assert.equal(approvals.documents[source.id].approval_state, 'approved');
@@ -32,8 +32,8 @@ const pages = catalog.sources.flatMap(source => {
   assert.ok(!(manifest.pending_review_editions || []).some(s => s.registry_id_when_promoted === source.id));
   return rows;
 });
-assert.equal(pages.length, 1329);
-assert.deepEqual(catalog.sources.map(s => s.pages), [519, 810]);
+assert.equal(pages.length, 1331);
+assert.deepEqual(catalog.sources.map(s => s.pages), [519, 812]);
 const context = vm.createContext({});
 vm.runInContext(fs.readFileSync('assets/js/manual-corpus-search.js', 'utf8'), context);
 const api = context.VisableManualSearch;
@@ -117,7 +117,7 @@ for (const entry of Object.values(manifest.current)) {
 }
 // Pinned so a converter or mapping change shows up as a reviewed diff.
 assert.deepEqual(derivedCounts, {
-  visa_manual_2026_09_01_md: [1793, 1331],
-  stay_manual_2026_09_18_md: [1504, 1134],
+  visa_manual_2026_10_19_md: [1078, 831],
+  stay_manual_2026_10_19_md: [1531, 1175],
 });
 console.log(`PASS current manual corpus: ${pages.length} pinned pages; code aliases, exact subcodes, AND keywords, domain filter, empty state, immutability; Markdown derived texts ${JSON.stringify(derivedCounts)} [chunks, page-mapped]`);

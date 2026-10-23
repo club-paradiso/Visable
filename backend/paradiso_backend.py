@@ -754,7 +754,7 @@ class AskResponse(BaseModel):
     # layer had no verified facts for. Location references only: they never
     # count as grounding and carry no requirement text.
     manual_location_references: List[Dict[str, Any]] = Field(default_factory=list)
-    # Approved 2026.9 manual excerpts retrieved from the FTS index for a
+    # Approved current-edition manual excerpts retrieved from the FTS index for a
     # question the knowledge layer has no verified facts for
     # (services/manual_evidence.py). Kept apart from grounding_used /
     # grounding_sources, which stay reserved for human-verified knowledge
@@ -4349,10 +4349,10 @@ def _build_grounded_prompt(
     # PUBLIC source label only. Internal revision metadata (source file path,
     # source_revision_date, sha256) stays server-side: the model repeats
     # whatever citation format it is given, so it must never be handed the
-    # internal revision string ("2026.9; source file 2026-09-18"). The bundle
+    # internal revision string ("2026.10; source file 2026-10-19"). The bundle
     # always carries the cited edition; the default is only a last resort and
-    # names the current stay edition (owner decision 2026-10-16).
-    source_date_label = bundle.get("source_date", "2026.9")
+    # names the current stay edition (owner decision 2026-10-23).
+    source_date_label = bundle.get("source_date", "2026.10")
     issuing_body = bundle.get("issuing_body", "법무부 출입국·외국인정책본부")
     page_range = grounding.get("page_range")
     page_label = f", pp. {page_range}" if page_range else ""
@@ -4980,7 +4980,7 @@ def _build_ungrounded_korea_scoped_prompt(
     answer_language_line = _answer_language_instruction(lang)
     if manual_excerpt_block:
         intro_line = (
-            "아래에 승인된 공식 매뉴얼(2026.9 판) 원문 발췌가 있습니다. 이 질문에 대해 사람이 검증한 서류 목록은 없으므로,"
+            "아래에 승인된 공식 매뉴얼(현행 판) 원문 발췌가 있습니다. 이 질문에 대해 사람이 검증한 서류 목록은 없으므로,"
             " 구체적인 서류·수수료·기한·허가기간은 발췌에 적힌 범위에서만 안내하고, 그 밖의 설명은 일반 안내임을 밝히십시오.\n\n"
         )
         citation_rule = (

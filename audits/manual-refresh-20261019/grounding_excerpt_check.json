@@ -1,0 +1,399 @@
+{
+ "old": "stay_manual_2026_09_18_pdf",
+ "new": "stay_manual_2026_10_19_pdf",
+ "results": [
+  {
+   "window": [
+    42,
+    43,
+    44,
+    45,
+    46
+   ],
+   "pages": [
+    44
+   ],
+   "missing": [],
+   "interleaved_lines": 1,
+   "ok": true,
+   "kind": "grounding",
+   "id": "d2_extension_2026_05",
+   "old_pages": "43-44",
+   "new_pages": "44"
+  },
+  {
+   "window": [
+    89,
+    90,
+    91,
+    92,
+    93
+   ],
+   "pages": [
+    90,
+    91,
+    92
+   ],
+   "missing": [],
+   "interleaved_lines": 0,
+   "ok": true,
+   "kind": "grounding",
+   "id": "d4_extension_2026_05",
+   "old_pages": "90-92",
+   "new_pages": "90-92"
+  },
+  {
+   "window": [
+    227,
+    228,
+    229
+   ],
+   "pages": [
+    228
+   ],
+   "missing": [],
+   "interleaved_lines": 0,
+   "ok": true,
+   "kind": "grounding",
+   "id": "e7_extension_2026_05",
+   "old_pages": "227",
+   "new_pages": "228"
+  },
+  {
+   "window": [
+    42,
+    43,
+    44,
+    45,
+    46
+   ],
+   "pages": [
+    44
+   ],
+   "missing": [],
+   "interleaved_lines": 1,
+   "ok": true,
+   "kind": "structured",
+   "id": "D-2/extension",
+   "index": 334,
+   "old_pages": "43-44",
+   "new_pages": "44"
+  },
+  {
+   "window": [
+    89,
+    90,
+    91,
+    92,
+    93
+   ],
+   "pages": [
+    90,
+    91,
+    92
+   ],
+   "missing": [],
+   "interleaved_lines": 0,
+   "ok": true,
+   "kind": "structured",
+   "id": "D-4/extension",
+   "index": 335,
+   "old_pages": "90-92",
+   "new_pages": "90-92"
+  },
+  {
+   "window": [
+    227,
+    228,
+    229,
+    230
+   ],
+   "pages": [
+    228
+   ],
+   "missing": [],
+   "interleaved_lines": 0,
+   "ok": true,
+   "kind": "structured",
+   "id": "E-7/extension",
+   "index": 336,
+   "old_pages": "227-228",
+   "new_pages": "228"
+  },
+  {
+   "window": [
+    43,
+    44,
+    45,
+    46
+   ],
+   "pages": [
+    44,
+    45
+   ],
+   "missing": [],
+   "interleaved_lines": 0,
+   "ok": true,
+   "kind": "structured",
+   "id": "D-2/registration",
+   "index": 337,
+   "old_pages": "44-44",
+   "new_pages": "44-45"
+  },
+  {
+   "window": [
+    33,
+    34,
+    35
+   ],
+   "pages": [
+    34
+   ],
+   "missing": [],
+   "interleaved_lines": 0,
+   "ok": true,
+   "kind": "structured",
+   "id": "D-1/registration",
+   "index": 338,
+   "old_pages": "34-34",
+   "new_pages": "34"
+  },
+  {
+   "window": [
+    103,
+    104,
+    105,
+    106
+   ],
+   "pages": [
+    105
+   ],
+   "missing": [],
+   "interleaved_lines": 0,
+   "ok": true,
+   "kind": "structured",
+   "id": "D-5/registration",
+   "index": 339,
+   "old_pages": "105-105",
+   "new_pages": "105"
+  },
+  {
+   "window": [
+    103,
+    104,
+    105
+   ],
+   "pages": [
+    104
+   ],
+   "missing": [],
+   "interleaved_lines": 0,
+   "ok": true,
+   "kind": "structured",
+   "id": "D-5/extension",
+   "index": 340,
+   "old_pages": "104-104",
+   "new_pages": "104"
+  },
+  {
+   "window": [
+    107,
+    108,
+    109
+   ],
+   "pages": [
+    108
+   ],
+   "missing": [],
+   "interleaved_lines": 0,
+   "ok": true,
+   "kind": "structured",
+   "id": "D-6/registration",
+   "index": 341,
+   "old_pages": "108-108",
+   "new_pages": "108"
+  },
+  {
+   "window": [
+    107,
+    108,
+    109
+   ],
+   "pages": [
+    108
+   ],
+   "missing": [],
+   "interleaved_lines": 0,
+   "ok": true,
+   "kind": "structured",
+   "id": "D-6/extension",
+   "index": 342,
+   "old_pages": "108-108",
+   "new_pages": "108"
+  },
+  {
+   "window": [
+    113,
+    114,
+    115
+   ],
+   "pages": [
+    114
+   ],
+   "missing": [],
+   "interleaved_lines": 0,
+   "ok": true,
+   "kind": "structured",
+   "id": "D-7/registration",
+   "index": 343,
+   "old_pages": "114-114",
+   "new_pages": "114"
+  },
+  {
+   "window": [
+    126,
+    127,
+    128
+   ],
+   "pages": [
+    127
+   ],
+   "missing": [],
+   "interleaved_lines": 0,
+   "ok": true,
+   "kind": "structured",
+   "id": "D-8/registration",
+   "index": 344,
+   "old_pages": "127-127",
+   "new_pages": "127"
+  },
+  {
+   "window": [
+    174,
+    175,
+    176
+   ],
+   "pages": [
+    175
+   ],
+   "missing": [],
+   "interleaved_lines": 0,
+   "ok": true,
+   "kind": "structured",
+   "id": "E-2/registration",
+   "index": 345,
+   "old_pages": "174-174",
+   "new_pages": "175"
+  },
+  {
+   "window": [
+    195,
+    196,
+    197
+   ],
+   "pages": [
+    196
+   ],
+   "missing": [],
+   "interleaved_lines": 0,
+   "ok": true,
+   "kind": "structured",
+   "id": "E-3/registration",
+   "index": 346,
+   "old_pages": "195-195",
+   "new_pages": "196"
+  },
+  {
+   "window": [
+    199,
+    200,
+    201,
+    202
+   ],
+   "pages": [
+    201
+   ],
+   "missing": [],
+   "interleaved_lines": 0,
+   "ok": true,
+   "kind": "structured",
+   "id": "E-4/registration",
+   "index": 347,
+   "old_pages": "200-200",
+   "new_pages": "201"
+  },
+  {
+   "window": [
+    205,
+    206,
+    207
+   ],
+   "pages": [
+    205,
+    206
+   ],
+   "missing": [],
+   "interleaved_lines": 0,
+   "ok": true,
+   "kind": "structured",
+   "id": "E-5/registration",
+   "index": 348,
+   "old_pages": "205-205",
+   "new_pages": "205-206"
+  },
+  {
+   "window": [
+    212,
+    213,
+    214
+   ],
+   "pages": [
+    213
+   ],
+   "missing": [],
+   "interleaved_lines": 0,
+   "ok": true,
+   "kind": "structured",
+   "id": "E-6/registration",
+   "index": 349,
+   "old_pages": "212-212",
+   "new_pages": "213"
+  },
+  {
+   "window": [
+    229,
+    230,
+    231
+   ],
+   "pages": [
+    230
+   ],
+   "missing": [],
+   "interleaved_lines": 0,
+   "ok": true,
+   "kind": "structured",
+   "id": "E-7/registration",
+   "index": 350,
+   "old_pages": "229-229",
+   "new_pages": "230"
+  },
+  {
+   "window": [
+    340,
+    341,
+    342
+   ],
+   "pages": [
+    341
+   ],
+   "missing": [],
+   "interleaved_lines": 0,
+   "ok": true,
+   "kind": "structured",
+   "id": "E-10/registration",
+   "index": 351,
+   "old_pages": "340-340",
+   "new_pages": "341"
+  }
+ ]
+}

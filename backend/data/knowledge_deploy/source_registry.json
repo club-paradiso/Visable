@@ -263,8 +263,9 @@
       ],
       "confidence": "high",
       "update_frequency": "irregular",
-      "status": "active",
-      "notes": "Reference visa edition chosen by the owner on 2026-10-16 (approved in data/manual_approval_index.json). Page-anchored PDF of the 2026-09-01 edition; the 배포용 HWP of the same edition is docs/source-manuals/2026-09-01/visa_manual_260901.hwp."
+      "status": "deprecated",
+      "notes": "Superseded 2026-10-19 by visa_manual_2026_10_19_pdf (owner edition decision 2026-10-23). Retained for point-in-time questions. Reference visa edition chosen by the owner on 2026-10-16 (approved in data/manual_approval_index.json). Page-anchored PDF of the 2026-09-01 edition; the 배포용 HWP of the same edition is docs/source-manuals/2026-09-01/visa_manual_260901.hwp.",
+      "superseded_by": "visa_manual_2026_10_19_pdf"
     },
     {
       "id": "stay_manual_2026_09_18_pdf",
@@ -283,8 +284,9 @@
       ],
       "confidence": "high",
       "update_frequency": "irregular",
-      "status": "active",
-      "notes": "Reference stay edition chosen by the owner on 2026-10-16 (approved in data/manual_approval_index.json). Page-anchored PDF of the 2026-09-18 edition; runtime grounding cites these PDF pages."
+      "status": "deprecated",
+      "notes": "Superseded 2026-10-19 by stay_manual_2026_10_19_pdf (owner edition decision 2026-10-23). Retained for point-in-time questions. Reference stay edition chosen by the owner on 2026-10-16 (approved in data/manual_approval_index.json). Page-anchored PDF of the 2026-09-18 edition; runtime grounding cites these PDF pages.",
+      "superseded_by": "stay_manual_2026_10_19_pdf"
     },
     {
       "id": "stay_manual_2026_09_18_hwp",
@@ -303,8 +305,9 @@
       ],
       "confidence": "high",
       "update_frequency": "irregular",
-      "status": "active",
-      "notes": "배포용 HWP original of the 2026-09-18 stay edition, read with scripts/decrypt_hwp_distribution.py. Approved with the PDF of the same edition on 2026-10-16. Paragraph-anchored; NOT indexed into the searchable corpus, which carries the page-anchored PDF. Locators are never merged across the two containers."
+      "status": "deprecated",
+      "notes": "Superseded 2026-10-19 by stay_manual_2026_10_19_hwp (owner edition decision 2026-10-23). Retained for point-in-time questions. 배포용 HWP original of the 2026-09-18 stay edition, read with scripts/decrypt_hwp_distribution.py. Approved with the PDF of the same edition on 2026-10-16. Paragraph-anchored; NOT indexed into the searchable corpus, which carries the page-anchored PDF. Locators are never merged across the two containers.",
+      "superseded_by": "stay_manual_2026_10_19_hwp"
     },
     {
       "id": "visa_manual_2026_10_19_hwp_text",
@@ -318,7 +321,7 @@
       "url": null,
       "original_format": "HWP 5.0 distribution document",
       "original_sha256": "sha256:8f9f2e049b3cf09d46bf563e2d97fde596c3743318635f985bf35b51f79a5e8f",
-      "original_binary_in_repository": false,
+      "original_binary_in_repository": true,
       "extraction_method": "Files document-text extraction from user-supplied HWP; original binary SHA-256 independently computed",
       "last_known_hash": null,
       "last_checked_at": null,
@@ -328,7 +331,8 @@
       "confidence": "unreviewed",
       "update_frequency": "irregular",
       "status": "needs_manual_review",
-      "notes": "User-supplied 261019 HWP. Text is stored to enable review; ordering, paragraph placement and table cell boundaries have not been independently verified. Not the current approved source. Do not use as direct AI evidence or automatically update eligibility, documents, periods or fees."
+      "notes": "User-supplied 261019 HWP. Text is stored to enable review; ordering, paragraph placement and table cell boundaries have not been independently verified. Not the current approved source. Do not use as direct AI evidence or automatically update eligibility, documents, periods or fees.",
+      "original_binary_path": "docs/source-manuals/2026-10-19/visa_manual_261019.hwp"
     },
     {
       "id": "stay_manual_2026_10_19_hwp_text",
@@ -342,7 +346,7 @@
       "url": null,
       "original_format": "HWP 5.0 distribution document",
       "original_sha256": "sha256:7effc9d03389e87dc3613db6da873a5d3807ddf4f506df2960f2b017fefabc07",
-      "original_binary_in_repository": false,
+      "original_binary_in_repository": true,
       "extraction_method": "Files document-text extraction from user-supplied HWP; original binary SHA-256 independently computed",
       "last_known_hash": null,
       "last_checked_at": null,
@@ -352,7 +356,88 @@
       "confidence": "unreviewed",
       "update_frequency": "irregular",
       "status": "needs_manual_review",
-      "notes": "User-supplied 261019 HWP. Text is stored to enable review; ordering, paragraph placement and table cell boundaries have not been independently verified. Not the current approved source. Do not use as direct AI evidence or automatically update eligibility, documents, periods or fees."
+      "notes": "User-supplied 261019 HWP. Text is stored to enable review; ordering, paragraph placement and table cell boundaries have not been independently verified. Not the current approved source. Do not use as direct AI evidence or automatically update eligibility, documents, periods or fees.",
+      "original_binary_path": "docs/source-manuals/2026-10-19/stay_manual_261019.hwp"
+    },
+    {
+      "id": "visa_manual_2026_10_19_pdf",
+      "type": "pdf_manual",
+      "title": "사증발급 안내매뉴얼 (2026.10; 2026-10-19 PDF)",
+      "title_en": "Visa Issuance Guide Manual (2026.10; 2026-10-19 PDF)",
+      "authority": "법무부 출입국·외국인정책본부",
+      "version": "2026.10",
+      "source_date": "2026-10-19",
+      "local_path": "docs/source-manuals/2026-10-19/visa_manual_261019.pdf",
+      "url": "https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&BBS_GB_CD=BS10&NTCCTT_SEQ=1062&page=1",
+      "last_known_hash": "sha256:a2547f04ee484b77e1058ac15969127404c1c700db9fdc5e6127fa3b16cb6f68",
+      "last_checked_at": "2026-10-23T00:00:00+09:00",
+      "language": [
+        "ko"
+      ],
+      "confidence": "high",
+      "update_frequency": "irregular",
+      "status": "active",
+      "notes": "Reference edition chosen by the owner on 2026-10-23 (approved in data/manual_approval_index.json). Page-anchored PDF printed from the 배포용 HWP of the same edition; runtime citations use these PDF pages. Filename date 2026-10-19; cover month 2026.10 verified, legal effective date not verified."
+    },
+    {
+      "id": "stay_manual_2026_10_19_pdf",
+      "type": "pdf_manual",
+      "title": "외국인체류 안내매뉴얼 (2026.10; 2026-10-19 PDF)",
+      "title_en": "Foreigner Stay/Residence Guide Manual (2026.10; 2026-10-19 PDF)",
+      "authority": "법무부 출입국·외국인정책본부",
+      "version": "2026.10",
+      "source_date": "2026-10-19",
+      "local_path": "docs/source-manuals/2026-10-19/stay_manual_261019.pdf",
+      "url": "https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&BBS_GB_CD=BS10&NTCCTT_SEQ=1062&page=1",
+      "last_known_hash": "sha256:4b176173f4c09ca1522f74e9a3e58cc0477a69aa6a28142bd675ca103f60397d",
+      "last_checked_at": "2026-10-23T00:00:00+09:00",
+      "language": [
+        "ko"
+      ],
+      "confidence": "high",
+      "update_frequency": "irregular",
+      "status": "active",
+      "notes": "Reference edition chosen by the owner on 2026-10-23 (approved in data/manual_approval_index.json). Page-anchored PDF printed from the 배포용 HWP of the same edition; runtime citations use these PDF pages. Filename date 2026-10-19; cover month 2026.10 verified, legal effective date not verified."
+    },
+    {
+      "id": "visa_manual_2026_10_19_hwp",
+      "type": "hwp_manual",
+      "title": "사증발급 안내매뉴얼 (2026.10; 2026-10-19 배포용 HWP)",
+      "title_en": "Visa Issuance Guide Manual (2026.10; 2026-10-19 distribution HWP)",
+      "authority": "법무부 출입국·외국인정책본부",
+      "version": "2026.10",
+      "source_date": "2026-10-19",
+      "local_path": "docs/source-manuals/2026-10-19/visa_manual_261019.hwp",
+      "url": "https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&BBS_GB_CD=BS10&NTCCTT_SEQ=1062&page=1",
+      "last_known_hash": "sha256:8f9f2e049b3cf09d46bf563e2d97fde596c3743318635f985bf35b51f79a5e8f",
+      "last_checked_at": "2026-10-23T00:00:00+09:00",
+      "language": [
+        "ko"
+      ],
+      "confidence": "high",
+      "update_frequency": "irregular",
+      "status": "active",
+      "notes": "배포용 HWP original of the 2026-10-19 edition, read with scripts/decrypt_hwp_distribution.py. Approved with the PDF of the same edition on 2026-10-23. Paragraph-anchored; NOT indexed into the searchable corpus, which carries the page-anchored PDF. Locators are never merged across the two containers."
+    },
+    {
+      "id": "stay_manual_2026_10_19_hwp",
+      "type": "hwp_manual",
+      "title": "외국인체류 안내매뉴얼 (2026.10; 2026-10-19 배포용 HWP)",
+      "title_en": "Foreigner Stay/Residence Guide Manual (2026.10; 2026-10-19 distribution HWP)",
+      "authority": "법무부 출입국·외국인정책본부",
+      "version": "2026.10",
+      "source_date": "2026-10-19",
+      "local_path": "docs/source-manuals/2026-10-19/stay_manual_261019.hwp",
+      "url": "https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&BBS_GB_CD=BS10&NTCCTT_SEQ=1062&page=1",
+      "last_known_hash": "sha256:7effc9d03389e87dc3613db6da873a5d3807ddf4f506df2960f2b017fefabc07",
+      "last_checked_at": "2026-10-23T00:00:00+09:00",
+      "language": [
+        "ko"
+      ],
+      "confidence": "high",
+      "update_frequency": "irregular",
+      "status": "active",
+      "notes": "배포용 HWP original of the 2026-10-19 edition, read with scripts/decrypt_hwp_distribution.py. Approved with the PDF of the same edition on 2026-10-23. Paragraph-anchored; NOT indexed into the searchable corpus, which carries the page-anchored PDF. Locators are never merged across the two containers."
     }
   ]
 }

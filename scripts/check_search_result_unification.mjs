@@ -133,18 +133,18 @@ function intentFor(query, extra = {}) {
   const proc = bundle.procedures.find((p) => p.id === r.model.procedure);
   return { status: r.model.status, procedure: r.model.procedure, chapters, anchors, domain: proc ? (proc.domain === 'visa' ? 'visa_issuance' : 'stay') : null };
 }
-const STAY = 'stay_manual_2026_09_18_pdf';
-check('D-2 연장 evidence: D-2 extension pages first; D-2 → E-1 (p.173) and D-2 → D-10 (p.210) out of the top results', () => {
+const STAY = 'stay_manual_2026_10_19_pdf';
+check('D-2 연장 evidence: D-2 extension pages first; D-2 → E-1 (p.174) and D-2 → D-10 (p.211) out of the top results', () => {
   const intent = intentFor('D-2 연장');
   const hits = MS.search(index, 'D-2 연장', { intent });
   const top = hits.slice(0, 5).map((h) => `${h.source.id}:${h.page.page}`);
   assert(hits[0].source.id === STAY && hits[0].page.page === 43, `top ${top}`);
-  assert(!top.includes(`${STAY}:173`) && !top.includes(`${STAY}:210`), `transition pages in top 5: ${top}`);
+  assert(!top.includes(`${STAY}:174`) && !top.includes(`${STAY}:211`), `transition pages in top 5: ${top}`);
   const [a, b] = intent.chapters[STAY];
   assert(hits.slice(0, 3).every((h) => h.source.id === STAY && h.page.page >= a && h.page.page <= b), `top 3 inside the D-2 chapter: ${top}`);
   // the raw keyword search (no intent) still reproduces the old failure, proving the intent path is what fixes it
   const rawTop = MS.search(index, 'D-2 연장', {})[0];
-  assert(rawTop.page.page === 173, `raw baseline top ${rawTop.page.page}`);
+  assert(rawTop.page.page === 174, `raw baseline top ${rawTop.page.page}`);  // p.173 in the 2026.9 PDF
 });
 check('D-2 evidence (status only): the chapter opening outranks transition pages', () => {
   const intent = intentFor('D-2');
@@ -181,8 +181,8 @@ for (const q of MATRIX) {
   }
 }
 check('evidence rows use human manual titles, never the internal id, even when a title is missing', () => {
-  assert(SG.manualTitle('ko', { manual: 'stay_manual_2026_09_18', title_ko: '' }) === '외국인체류 안내매뉴얼', 'stay fallback');
-  assert(SG.manualTitle('en', { manual: 'visa_manual_2026_09_01', title_en: '' }) === 'Visa issuance manual', 'visa fallback');
+  assert(SG.manualTitle('ko', { manual: 'stay_manual_2026_10_19', title_ko: '' }) === '외국인체류 안내매뉴얼', 'stay fallback');
+  assert(SG.manualTitle('en', { manual: 'visa_manual_2026_10_19', title_en: '' }) === 'Visa issuance manual', 'visa fallback');
 });
 
 if (failures.length) {

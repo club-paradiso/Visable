@@ -275,15 +275,16 @@ class StructuredRequirementsPromotionTests(unittest.TestCase):
         )
         self.assertEqual(procs, ["extension", "registration"])
 
-    def test_d2_registration_is_parent_level_page_44(self):
+    def test_d2_registration_is_parent_level_pages_44_45(self):
         reg = self.sr.get_source_confirmed_structured_requirements(
             "D-2", {"procedureType": "registration"}
         )
         self.assertEqual(len(reg), 1)
         e = reg[0]
         self.assertEqual(e["boundaryType"], "parent_code_level")
+        # 2026.10 PDF: the registration list now runs over a page break (44-45).
         self.assertEqual(e["manualSource"]["pageStart"], 44)
-        self.assertEqual(e["manualSource"]["pageEnd"], 44)
+        self.assertEqual(e["manualSource"]["pageEnd"], 45)
         self.assertEqual(e["confidence"], "HIGH")
         self.assertEqual(e["readinessLabel"], "STRUCTURED_EVIDENCE_READY")
         # 4 parent-level documents; conditional alternatives captured in conditionKo,
@@ -331,24 +332,25 @@ class SourceConfirmedProcedureCoverageExpansionTests(unittest.TestCase):
     verified stay-manual pages, and that blocked statuses stay hidden.
     """
 
-    # (statusCode, procedureType, page, expected document count)
-    # Pages in the 2026-09-18 stay PDF (owner edition decision 2026-10-16; each
-    # excerpt re-matched word for word, see audits/manual-edition-2026-09-promotion).
+    # (statusCode, procedureType, (pageStart, pageEnd), expected document count)
+    # Pages in the 2026-10-19 stay PDF (owner edition decision 2026-10-23; each
+    # excerpt re-matched word for word, see audits/manual-refresh-20261019/
+    # grounding_excerpt_check.json).
     PROMOTED = [
-        ("D-1", "registration", 34, 3),
-        ("D-5", "registration", 105, 3),
-        ("D-5", "extension", 104, 3),
-        ("D-6", "registration", 108, 3),
-        ("D-6", "extension", 108, 3),
-        ("D-7", "registration", 114, 3),
-        ("D-8", "registration", 127, 3),
-        ("E-2", "registration", 174, 3),
-        ("E-3", "registration", 195, 3),
-        ("E-4", "registration", 200, 3),
-        ("E-5", "registration", 205, 3),
-        ("E-6", "registration", 212, 4),
-        ("E-7", "registration", 229, 4),
-        ("E-10", "registration", 340, 6),
+        ("D-1", "registration", (34, 34), 3),
+        ("D-5", "registration", (105, 105), 3),
+        ("D-5", "extension", (104, 104), 3),
+        ("D-6", "registration", (108, 108), 3),
+        ("D-6", "extension", (108, 108), 3),
+        ("D-7", "registration", (114, 114), 3),
+        ("D-8", "registration", (127, 127), 3),
+        ("E-2", "registration", (175, 175), 3),
+        ("E-3", "registration", (196, 196), 3),
+        ("E-4", "registration", (201, 201), 3),
+        ("E-5", "registration", (205, 206), 3),
+        ("E-6", "registration", (213, 213), 4),
+        ("E-7", "registration", (230, 230), 4),
+        ("E-10", "registration", (341, 341), 6),
     ]
     # Statuses inspected but deliberately NOT promoted this pass.
     STILL_BLOCKED = ["E-9", "F-1", "F-6", "G-1", "H-2", "C-3", "D-10"]
@@ -368,11 +370,11 @@ class SourceConfirmedProcedureCoverageExpansionTests(unittest.TestCase):
             self.assertEqual(e["boundaryType"], "parent_code_level")
             self.assertEqual(e["confidence"], "HIGH")
             self.assertEqual(e["readinessLabel"], "STRUCTURED_EVIDENCE_READY")
-            self.assertEqual(e["manualSource"]["pageStart"], page)
-            self.assertEqual(e["manualSource"]["pageEnd"], page)
+            self.assertEqual(e["manualSource"]["pageStart"], page[0])
+            self.assertEqual(e["manualSource"]["pageEnd"], page[1])
             self.assertEqual(e["evidenceSource"], "pdf_verified")
             self.assertTrue(
-                e["manualSource"]["file"].endswith("stay_manual_260918.pdf")
+                e["manualSource"]["file"].endswith("stay_manual_261019.pdf")
             )
             self.assertEqual(len(e["documents"]), ndocs)
             # Conditions stay at document level; no doc carries a non-parent
