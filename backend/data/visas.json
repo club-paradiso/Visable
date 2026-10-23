@@ -4788,7 +4788,8 @@
             "D-4에서 D-2로 변경하는 경우 이전 과정의 성적 또는 출석·연수 증명서",
             "정부초청장학생은 학력증명서를 국립국제교육원 또는 대학 발행 사본으로 대체 가능",
             "부모의 잔고증명서 등을 제출하는 경우 가족관계 입증서류",
-            "비자심사강화대학 입학·진학 예정자로 장관 고시국가 및 중점관리국가 국민인 경우 한국어 또는 영어 능력 요건 증빙"
+            "비자심사강화대학 입학·진학 예정자로 장관 고시국가 및 중점관리국가 국민인 경우 한국어 또는 영어 능력 요건 증빙",
+            "재정능력 입증서류: 국내·외 은행 잔고증명서(신청인 또는 부모 명의, 부모 사망 시 형제자매 명의). 신청일 기준 30일 이내 발급, 체류허가기간 동안 잔고 유지. 단기 입출금은 잔고 재확인 가능. 원칙적으로 해외 조달하되 적법한 시간제취업 소득은 예외 인정"
           ]
         },
         "notes": [
@@ -4809,6 +4810,21 @@
             "needsManualReview": false,
             "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
             "sourceId": "stay_manual_2026_09_18_pdf"
+          }
+        ],
+        "manual202610Review": [
+          {
+            "manualVersion": "2026.10",
+            "sourceDate": "2026-10-19",
+            "sourceDateProvenance": "owner_filename",
+            "sourceId": "stay_manual_2026_10_19_hwp_text",
+            "sourceFile": "docs/source-manuals/2026-10-19/extracted/stay_manual_261019.txt",
+            "markdownArchive": "docs/source-manuals/incoming/261019_hikorea_markdown_2.zip",
+            "markdownMember": "261019 체류민원 자격별 안내 매뉴얼.md",
+            "markdownLines": "832-838",
+            "scope": "D-2 status change only",
+            "verification": "owner_supplied_manual_excerpt_verified_not_independently_approved",
+            "text": "유학(D-2) 체류자격 변경: 국내·외 은행 잔고증명서, 신청인/부모/부모 사망 시 형제자매 명의, 신청 전 30일 이내 발급, 체류허가기간 잔고 유지; 적법한 시간제취업 소득 예외 인정"
           }
         ]
       },
@@ -5037,7 +5053,8 @@
           "conditionalDocs": [
             "결핵진단서(해당자)",
             "부모의 잔고증명서 등을 제출하는 경우 가족관계 입증서류",
-            "아포스티유 또는 영사확인 대상 학력서류"
+            "아포스티유 또는 영사확인 대상 학력서류",
+            "재정능력 입증서류(사증발급): 1년 등록금 및 체재비 상당액의 국내·외 은행 잔고증명서. 신청인 또는 부모 명의(부모 사망 시 형제자매), 사증·사증발급인정서 신청일 기준 30일 이내 발급, 체류허가기간 잔고 유지"
           ]
         },
         "notes": [
@@ -5056,6 +5073,21 @@
             "needsManualReview": false,
             "sourcePdf": "docs/source-manuals/2026-09/visa_manual_260901.pdf",
             "sourceId": "visa_manual_2026_09_01_pdf"
+          }
+        ],
+        "manual202610Review": [
+          {
+            "manualVersion": "2026.10",
+            "sourceDate": "2026-10-19",
+            "sourceDateProvenance": "owner_filename",
+            "sourceId": "visa_manual_2026_10_19_hwp_text",
+            "sourceFile": "docs/source-manuals/2026-10-19/extracted/visa_manual_261019.txt",
+            "markdownArchive": "docs/source-manuals/incoming/261019_hikorea_markdown_2.zip",
+            "markdownMember": "261019 사증민원 자격별 안내 매뉴얼.md",
+            "markdownLines": "1440-1447",
+            "scope": "D-2 visa issuance only",
+            "verification": "owner_supplied_manual_excerpt_verified_not_independently_approved",
+            "text": "D-2 사증: 1년 등록금 및 체재비 상당액, 국내·외 은행 잔고증명서, 신청인/부모/부모 사망 시 형제자매 명의, 신청일부터 30일 이내 발급, 체류허가기간 잔고 유지"
           }
         ]
       },
@@ -6081,7 +6113,44 @@
         "status": "active",
         "needsManualReview": false
       }
-    ]
+    ],
+    "manual202610StructuredUpdate": {
+      "edition": "2026.10",
+      "source_date_origin": "filename_and_cover_month_not_effective_date",
+      "status": "source_text_integrated_conditional_review",
+      "source_refs": [
+        {
+          "manualVersion": "2026.10",
+          "sourceDate": "2026-10-19",
+          "sourceDateProvenance": "owner_filename",
+          "sourceId": "stay_manual_2026_10_19_hwp_text",
+          "sourceFile": "docs/source-manuals/2026-10-19/extracted/stay_manual_261019.txt",
+          "markdownArchive": "docs/source-manuals/incoming/261019_hikorea_markdown_2.zip",
+          "markdownMember": "261019 체류민원 자격별 안내 매뉴얼.md",
+          "markdownLines": "832-838",
+          "scope": "D-2 status change only",
+          "verification": "owner_supplied_manual_excerpt_verified_not_independently_approved",
+          "text": "유학(D-2) 체류자격 변경: 국내·외 은행 잔고증명서, 신청인/부모/부모 사망 시 형제자매 명의, 신청 전 30일 이내 발급, 체류허가기간 잔고 유지; 적법한 시간제취업 소득 예외 인정"
+        },
+        {
+          "manualVersion": "2026.10",
+          "sourceDate": "2026-10-19",
+          "sourceDateProvenance": "owner_filename",
+          "sourceId": "visa_manual_2026_10_19_hwp_text",
+          "sourceFile": "docs/source-manuals/2026-10-19/extracted/visa_manual_261019.txt",
+          "markdownArchive": "docs/source-manuals/incoming/261019_hikorea_markdown_2.zip",
+          "markdownMember": "261019 사증민원 자격별 안내 매뉴얼.md",
+          "markdownLines": "1440-1447",
+          "scope": "D-2 visa issuance only",
+          "verification": "owner_supplied_manual_excerpt_verified_not_independently_approved",
+          "text": "D-2 사증: 1년 등록금 및 체재비 상당액, 국내·외 은행 잔고증명서, 신청인/부모/부모 사망 시 형제자매 명의, 신청일부터 30일 이내 발급, 체류허가기간 잔고 유지"
+        }
+      ],
+      "affected_fields": [
+        "procedures.statusChange.requiredDocs.conditionalDocs",
+        "procedures.visaIssuance.requiredDocs.conditionalDocs"
+      ]
+    }
   },
   {
     "code": "D-3",
@@ -11027,7 +11096,9 @@
           "commonDocs": [],
           "requiredDocs": [],
           "additionalDocs": [],
-          "conditionalDocs": []
+          "conditionalDocs": [
+            "점수제 무역업(D-9-1) 체류자격 변경 신청자는 사업자등록증 사본, 무역업 고유번호부여증, 사업장 존재 입증서류, 점수제 해당 입증서류 제출. 공동사업자는 공동사업 약정서 원본·사본 추가 제출."
+          ]
         },
         "variants": [
           {
@@ -11167,7 +11238,23 @@
           }
         ],
         "notes": [
-          "세부 자격 또는 신청 사유에 따라 제출서류가 달라질 수 있습니다."
+          "세부 자격 또는 신청 사유에 따라 제출서류가 달라질 수 있습니다.",
+          "D-9-1 점수제 무역업 자격변경의 결격사유: 범칙금 처분 등을 받은 자에 대한 체류허가 제한 통합기준에 해당하는 자. 모든 D-9 유형에 일괄 적용하지 않음."
+        ],
+        "manual202610Review": [
+          {
+            "manualVersion": "2026.10",
+            "sourceDate": "2026-10-19",
+            "sourceDateProvenance": "owner_filename",
+            "sourceId": "stay_manual_2026_10_19_hwp_text",
+            "sourceFile": "docs/source-manuals/2026-10-19/extracted/stay_manual_261019.txt",
+            "markdownArchive": "docs/source-manuals/incoming/261019_hikorea_markdown_2.zip",
+            "markdownMember": "261019 체류민원 자격별 안내 매뉴얼.md",
+            "markdownLines": "2729-2734",
+            "scope": "D-9-1 points-based trade business status change only",
+            "verification": "owner_supplied_manual_excerpt_verified_not_independently_approved",
+            "text": "무역비자 점수제(D-9-1) 자격변경 결격사유와 제출서류"
+          }
         ]
       },
       "reentry": {
@@ -11630,7 +11717,31 @@
         "group": "경영",
         "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
       }
-    ]
+    ],
+    "manual202610StructuredUpdate": {
+      "edition": "2026.10",
+      "source_date_origin": "filename_and_cover_month_not_effective_date",
+      "status": "source_text_integrated_conditional_review",
+      "source_refs": [
+        {
+          "manualVersion": "2026.10",
+          "sourceDate": "2026-10-19",
+          "sourceDateProvenance": "owner_filename",
+          "sourceId": "stay_manual_2026_10_19_hwp_text",
+          "sourceFile": "docs/source-manuals/2026-10-19/extracted/stay_manual_261019.txt",
+          "markdownArchive": "docs/source-manuals/incoming/261019_hikorea_markdown_2.zip",
+          "markdownMember": "261019 체류민원 자격별 안내 매뉴얼.md",
+          "markdownLines": "2729-2734",
+          "scope": "D-9-1 points-based trade business status change only",
+          "verification": "owner_supplied_manual_excerpt_verified_not_independently_approved",
+          "text": "무역비자 점수제(D-9-1) 자격변경 결격사유와 제출서류"
+        }
+      ],
+      "affected_fields": [
+        "procedures.statusChange.requiredDocs.conditionalDocs",
+        "procedures.statusChange.notes"
+      ]
+    }
   },
   {
     "code": "D-10",
@@ -16736,7 +16847,7 @@
       {
         "code": "E-7-4",
         "name": "숙련기능인력(K-point E74, 점수제)",
-        "addReq": "선발인원 33,000명. 최근 10년간 E-9, E-10, H-2 자격으로 4년 이상 체류한 현재 등록외국인으로 현 근무처에서 정상 근로 중이어야 함. 현 근무처에서 연봉 2,600만원 이상으로 향후 2년 이상 E-7-4 고용계약이 필요하며, 농·축산업·어업·내항상선은 연봉 2,500만원 이상으로 완화. 현재 1년 이상 근무 중인 기업의 추천이 필수이고, 평균소득·한국어능력 기본항목이 각각 50점 이상이면서 총점 300점 만점에 200점 이상이어야 함. 한국어 외 점수요건 충족자는 총점 150점 이상 시 최초 연장까지 한국어 보완 조건으로 한시 유예 가능(~2026.12.31).",
+        "addReq": "선발인원 33,000명. 최근 10년간 E-9, E-10, H-2 자격으로 4년 이상 체류한 현재 등록외국인으로 현 근무처에서 정상 근로 중이어야 함. 현 근무처에서 연봉 2,600만원 이상으로 향후 2년 이상 E-7-4 고용계약이 필요하며, 농·축산업·어업·내항상선은 연봉 2,589만원 이상으로 완화. 현재 1년 이상 근무 중인 기업의 추천이 필수이고, 평균소득·한국어능력 기본항목이 각각 50점 이상이면서 총점 300점 만점에 200점 이상이어야 함. 한국어 외 점수요건 충족자는 총점 150점 이상 시 최초 연장까지 한국어 보완 조건으로 한시 유예 가능(~2026.12.31). 최근 2년 소득을 입증하기 어려운 재입국 공백 등의 경우에는 2021년~2025년 중 연간 소득금액이 높은 2개년의 소득금액으로 대체할 수 있음.",
         "addReqDocs": [
           "doc_app_form",
           "doc_passport_copy",
@@ -16754,7 +16865,7 @@
           "doc_specialty",
           "doc_degree"
         ],
-        "note": "체류민원 안내매뉴얼 2026-06-17 PDF pp.298-309 기준. 필수서류에는 통합신청서, 여권 사본, 점수제 자체 심사표, 신상기술서, E-7-4 표준근로계약서, 최근 2년 소득금액증명원, 한국어능력 입증, 신원보증서, 사업자등록증 또는 농업경영체등록, 국세·지방세 납세증명서, 4대보험 사업장 가입자 명부 등, 고용기업 추천서 및 추천자 신분증 사본이 포함됨. 자격증·국내학위·운전면허증·뿌리기업·조선업·내항정기운송 등은 해당자 추가서류.",
+        "note": "2026.10 체류민원 매뉴얼 E-7-4 숙련기능인력 규정 참조. 고용계약·연봉요건·2개년 소득대체·고용기업 추천·점수요건은 E-7-4에 한정하며 E-7 일반자격에 확대 적용하지 않음. 서류별 조건부 제출 및 예외는 원문 확인.",
         "searchAliases": [
           "E-7-4",
           "E74"
@@ -16788,7 +16899,7 @@
           }
         ],
         "status": "active",
-        "needsManualReview": false
+        "needsManualReview": true
       },
       {
         "code": "E-7-S",
@@ -18516,7 +18627,30 @@
         "needsManualReview": true,
         "statusNote": "2026.6.29. 배포된 「육성형 전문기술인력 제도」 사증·체류관리 매뉴얼로 신설된 체류자격(2년 시범운영). 체류자격 변경·연장·근무처 변경 등 트랙별 세부 절차와 제출서류는 원문(backend/data/sources/manuals/260629_kcore_manual_readable.txt) 및 관할 출입국·외국인관서 확인이 필요합니다."
       }
-    ]
+    ],
+    "manual202610StructuredUpdate": {
+      "edition": "2026.10",
+      "source_date_origin": "filename_and_cover_month_not_effective_date",
+      "status": "source_text_integrated_conditional_review",
+      "source_refs": [
+        {
+          "manualVersion": "2026.10",
+          "sourceDate": "2026-10-19",
+          "sourceDateProvenance": "owner_filename",
+          "sourceId": "stay_manual_2026_10_19_hwp_text",
+          "sourceFile": "docs/source-manuals/2026-10-19/extracted/stay_manual_261019.txt",
+          "markdownArchive": "docs/source-manuals/incoming/261019_hikorea_markdown_2.zip",
+          "markdownMember": "261019 체류민원 자격별 안내 매뉴얼.md",
+          "markdownLines": "6944-6988",
+          "scope": "E-7-4 only",
+          "verification": "owner_supplied_manual_excerpt_verified_not_independently_approved",
+          "text": "E-7-4 연봉 예외 2,589만원, 재입국 공백 시 2021~2025년 소득 상위 2개년 대체"
+        }
+      ],
+      "affected_fields": [
+        "subCodes.E-7-4.addReq"
+      ]
+    }
   },
   {
     "code": "E-8",
@@ -22261,13 +22395,13 @@
         "code": "F-1-D",
         "name": "디지털노마드(워케이션) 비자",
         "nameKo": "디지털노마드(워케이션) 비자",
-        "addReq": "해외 소속 기업 재직·원격근무 입증서류, 소득요건 입증서류, 민간 의료보험 가입 입증서류 등.",
+        "addReq": "해외 사업체 소유자 또는 해외 기업 소속 원격근무 가능자로 동일 업종 1년 이상 종사, 성인 신청자는 만 18세 이상. 소득 기준은 나이·체류지역·가족 동반 여부별로 차등 적용하며, 비수도권 및 인구감소(관심)지역 기준의 소득요건 완화는 해당 지역의 체류지 입증이 조건",
         "addReqDocs": [
           "doc_remote_work_employment_proof",
           "doc_digital_nomad_income_proof",
           "doc_private_medical_insurance"
         ],
-        "note": "해외 기업 소속으로 원격근무하며 국내 체류하는 디지털노마드. 세부 요건·소득 기준은 사증발급 안내매뉴얼 확인.",
+        "note": "F-1-D 체류기간 연장은 1회 1년씩 최장 3년. 비수도권 또는 인구감소(관심)지역 소득요건 완화 적용자는 실제 해당 지역 체류 여부 확인. 허가기간 내 수도권으로 옮기면 수도권 소득기준 충족 또는 비수도권 재이동을 조건으로 6개월 부여. 입국 후 중도 실직 시 신고·출국 의무는 없으나 체류기간 연장 불가",
         "searchAliases": [
           "F-1-D",
           "F1D",
@@ -22321,7 +22455,74 @@
           }
         ],
         "group": "기타",
-        "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
+        "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified.",
+        "procedures": {
+          "statusChange": {
+            "available": true,
+            "requiredDocs": {
+              "commonDocs": [
+                "신청서(별지 제34호 서식)",
+                "여권",
+                "표준규격사진 1매",
+                "수수료"
+              ],
+              "requiredDocs": [
+                "해외법인 재직증명서(동일 업종 1년 이상 종사 입증)",
+                "급여명세서·잔고증명 등 소득 증빙서류",
+                "범죄경력증명서",
+                "의료보험 가입증명서"
+              ],
+              "additionalDocs": [],
+              "conditionalDocs": [
+                "가족 동반 시 가족관계 입증서류",
+                "비수도권 및 인구감소(관심)지역 소득요건 완화 적용 시 1개월 이상 임대차계약서, 워케이션 특화시설 또는 숙소 예약확인서 등(비수도권 지역 등록자는 본인 명의 제출 필요)"
+              ]
+            },
+            "summary": "해외 사업체 소유자 또는 해외 기업 소속 원격근무 가능자로 동일 업종 1년 이상 종사, 성인 신청자는 만 18세 이상. 소득 기준은 나이·체류지역·가족 동반 여부별로 차등 적용하며, 비수도권 및 인구감소(관심)지역 기준의 소득요건 완화는 해당 지역의 체류지 입증이 조건"
+          },
+          "extension": {
+            "available": true,
+            "requiredDocs": {
+              "commonDocs": [
+                "신청서(별지 제34호 서식)",
+                "여권",
+                "표준규격사진 1매",
+                "수수료"
+              ],
+              "requiredDocs": [
+                "해외기업 재직증명서(동일 업종 1년 이상 종사 증빙)",
+                "급여명세서·잔고증명 등 소득 증빙서류",
+                "범죄경력증명서",
+                "의료보험 가입증명서"
+              ],
+              "additionalDocs": [],
+              "conditionalDocs": [
+                "가족 동반 시 가족관계 입증서류",
+                "비수도권·인구감소(관심)지역 소득요건 완화 적용 시 1개월 이상 임대차계약서, 워케이션 특화시설 또는 숙소 이용기록 등(비수도권 지역 등록자는 본인 명의 필요)"
+              ]
+            },
+            "summary": "F-1-D 체류기간 연장은 1회 1년씩 최장 3년. 비수도권 또는 인구감소(관심)지역 소득요건 완화 적용자는 실제 해당 지역 체류 여부 확인. 허가기간 내 수도권으로 옮기면 수도권 소득기준 충족 또는 비수도권 재이동을 조건으로 6개월 부여. 입국 후 중도 실직 시 신고·출국 의무는 없으나 체류기간 연장 불가"
+          },
+          "registration": {
+            "available": true,
+            "requiredDocs": {
+              "commonDocs": [
+                "신청서(별지 제34호 서식)",
+                "여권 원본",
+                "표준규격사진 1매",
+                "수수료"
+              ],
+              "requiredDocs": [
+                "체류지 입증서류"
+              ],
+              "additionalDocs": [],
+              "conditionalDocs": [
+                "비수도권 지역 등록자는 체류지 입증서류 본인 명의 제출 필요"
+              ]
+            },
+            "summary": "F-1-D 외국인등록: 체류지 증빙은 비수도권 등록 시 본인 명의 조건 적용"
+          }
+        }
       },
       {
         "code": "F-1-16",
@@ -24660,7 +24861,73 @@
         ],
         "statusNote": "2026.6 체류 안내매뉴얼(p. 547)에서 영주(F-5-7) 신청자의 배우자·미성년 자녀에게 부여하던 방문동거(F-1-72)는 폐지된 것으로 확인됩니다. 영주(F-5-7) 신청자가 가족 동거를 희망하는 경우 재외동포(F-4) 자격 변경 후 가족에게 동반(F-3) 자격이 부여됩니다. 현재 활성 세부코드로 안내하지 않습니다."
       }
-    ]
+    ],
+    "manual202610StructuredUpdate": {
+      "edition": "2026.10",
+      "source_date_origin": "filename_and_cover_month_not_effective_date",
+      "status": "source_text_integrated_conditional_review",
+      "source_refs": [
+        {
+          "manualVersion": "2026.10",
+          "sourceDate": "2026-10-19",
+          "sourceDateProvenance": "owner_filename",
+          "sourceId": "visa_manual_2026_10_19_hwp_text",
+          "sourceFile": "docs/source-manuals/2026-10-19/extracted/visa_manual_261019.txt",
+          "markdownArchive": "docs/source-manuals/incoming/261019_hikorea_markdown_2.zip",
+          "markdownMember": "261019 사증민원 자격별 안내 매뉴얼.md",
+          "markdownLines": "6933-6956",
+          "scope": "F-1-D substatus only",
+          "verification": "owner_supplied_manual_excerpt_verified_not_independently_approved",
+          "text": "F-1-D 사증 발급 요건 및 지역별 소득요건",
+          "manualType": "visa"
+        },
+        {
+          "manualVersion": "2026.10",
+          "sourceDate": "2026-10-19",
+          "sourceDateProvenance": "owner_filename",
+          "sourceId": "stay_manual_2026_10_19_hwp_text",
+          "sourceFile": "docs/source-manuals/2026-10-19/extracted/stay_manual_261019.txt",
+          "markdownArchive": "docs/source-manuals/incoming/261019_hikorea_markdown_2.zip",
+          "markdownMember": "261019 체류민원 자격별 안내 매뉴얼.md",
+          "markdownLines": "8352-8385",
+          "scope": "F-1-D substatus only",
+          "verification": "owner_supplied_manual_excerpt_verified_not_independently_approved",
+          "text": "F-1-D 체류자격 변경 및 조건부 제출서류"
+        },
+        {
+          "manualVersion": "2026.10",
+          "sourceDate": "2026-10-19",
+          "sourceDateProvenance": "owner_filename",
+          "sourceId": "stay_manual_2026_10_19_hwp_text",
+          "sourceFile": "docs/source-manuals/2026-10-19/extracted/stay_manual_261019.txt",
+          "markdownArchive": "docs/source-manuals/incoming/261019_hikorea_markdown_2.zip",
+          "markdownMember": "261019 체류민원 자격별 안내 매뉴얼.md",
+          "markdownLines": "8567-8579",
+          "scope": "F-1-D substatus only",
+          "verification": "owner_supplied_manual_excerpt_verified_not_independently_approved",
+          "text": "F-1-D 체류기간 연장요건 및 조건부 제출서류"
+        },
+        {
+          "manualVersion": "2026.10",
+          "sourceDate": "2026-10-19",
+          "sourceDateProvenance": "owner_filename",
+          "sourceId": "stay_manual_2026_10_19_hwp_text",
+          "sourceFile": "docs/source-manuals/2026-10-19/extracted/stay_manual_261019.txt",
+          "markdownArchive": "docs/source-manuals/incoming/261019_hikorea_markdown_2.zip",
+          "markdownMember": "261019 체류민원 자격별 안내 매뉴얼.md",
+          "markdownLines": "8606-8611",
+          "scope": "F-1-D substatus only",
+          "verification": "owner_supplied_manual_excerpt_verified_not_independently_approved",
+          "text": "F-1-D 등록 서류"
+        }
+      ],
+      "affected_fields": [
+        "subCodes.F-1-D.addReq",
+        "subCodes.F-1-D.procedures.statusChange",
+        "subCodes.F-1-D.procedures.extension",
+        "subCodes.F-1-D.procedures.registration"
+      ]
+    }
   },
   {
     "code": "F-2",
@@ -25624,7 +25891,8 @@
         "notes": [
           "다음 단계: ① 체류기간 만료 전 하이코리아(HiKorea)에서 연장 신청 또는 방문 예약 → ② 자격별 제출서류는 하이코리아(HiKorea)·1345 또는 관할 출입국·외국인관서에서 확인.",
           "2026.6 체류민원 매뉴얼 PDF에서 보수적으로 자동 추출한 제출서류입니다. 세부약호·국적·기관·체류 이력별 예외가 있어 수동 검토가 필요합니다.",
-          "자동 추출 결과에 인접 절차 문구가 섞여 UI 표시용 서류 목록은 보류했습니다."
+          "자동 추출 결과에 인접 절차 문구가 섞여 UI 표시용 서류 목록은 보류했습니다.",
+          "국내법 위반사실이 확인된 F-2 변경·연장 신청자의 시민교육 대상 여부 검토: 자격변경 시 신청일 기준 최근 10년, 연장 시 최근 5년의 법 위반기간 기준. 면제대상은 매뉴얼 원문에 따라 별도 확인"
         ],
         "manualRefs": [
           {
@@ -25639,6 +25907,21 @@
             "needsManualReview": false,
             "sourcePdf": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
             "sourceId": "stay_manual_2026_09_18_pdf"
+          }
+        ],
+        "manual202610Review": [
+          {
+            "manualVersion": "2026.10",
+            "sourceDate": "2026-10-19",
+            "sourceDateProvenance": "owner_filename",
+            "sourceId": "stay_manual_2026_10_19_hwp_text",
+            "sourceFile": "docs/source-manuals/2026-10-19/extracted/stay_manual_261019.txt",
+            "markdownArchive": "docs/source-manuals/incoming/261019_hikorea_markdown_2.zip",
+            "markdownMember": "261019 체류민원 자격별 안내 매뉴얼.md",
+            "markdownLines": "15364-15384",
+            "scope": "F-2 with relevant law violation; exclusion cases in manual",
+            "verification": "owner_supplied_manual_excerpt_verified_not_independently_approved",
+            "text": "거주(F-2) 자격변경·연장 예정자 중 국내 법 위반 이력 확인 시 시민교육 대상 여부 검토(전환 10년/연장 5년 범위, 개별 제외자 존재)"
           }
         ]
       },
@@ -25971,7 +26254,23 @@
         ],
         "notes": [
           "세부 자격 또는 신청 사유에 따라 제출서류가 달라질 수 있습니다.",
-          "이 항목은 안내된 세부 상황에만 적용됩니다. 실제 제출 범위와 허가 여부는 관할 출입국·외국인관서가 신청인의 구체적 사정에 따라 최종 확인합니다."
+          "이 항목은 안내된 세부 상황에만 적용됩니다. 실제 제출 범위와 허가 여부는 관할 출입국·외국인관서가 신청인의 구체적 사정에 따라 최종 확인합니다.",
+          "국내법 위반사실이 확인된 F-2 변경·연장 신청자의 시민교육 대상 여부 검토: 자격변경 시 신청일 기준 최근 10년, 연장 시 최근 5년의 법 위반기간 기준. 면제대상은 매뉴얼 원문에 따라 별도 확인"
+        ],
+        "manual202610Review": [
+          {
+            "manualVersion": "2026.10",
+            "sourceDate": "2026-10-19",
+            "sourceDateProvenance": "owner_filename",
+            "sourceId": "stay_manual_2026_10_19_hwp_text",
+            "sourceFile": "docs/source-manuals/2026-10-19/extracted/stay_manual_261019.txt",
+            "markdownArchive": "docs/source-manuals/incoming/261019_hikorea_markdown_2.zip",
+            "markdownMember": "261019 체류민원 자격별 안내 매뉴얼.md",
+            "markdownLines": "15364-15384",
+            "scope": "F-2 with relevant law violation; exclusion cases in manual",
+            "verification": "owner_supplied_manual_excerpt_verified_not_independently_approved",
+            "text": "거주(F-2) 자격변경·연장 예정자 중 국내 법 위반 이력 확인 시 시민교육 대상 여부 검토(전환 10년/연장 5년 범위, 개별 제외자 존재)"
+          }
         ]
       }
     },
@@ -27187,7 +27486,44 @@
         "status": "active",
         "needsManualReview": false
       }
-    ]
+    ],
+    "manual202610StructuredUpdate": {
+      "edition": "2026.10",
+      "source_date_origin": "filename_and_cover_month_not_effective_date",
+      "status": "source_text_integrated_conditional_review",
+      "source_refs": [
+        {
+          "manualVersion": "2026.10",
+          "sourceDate": "2026-10-19",
+          "sourceDateProvenance": "owner_filename",
+          "sourceId": "stay_manual_2026_10_19_hwp_text",
+          "sourceFile": "docs/source-manuals/2026-10-19/extracted/stay_manual_261019.txt",
+          "markdownArchive": "docs/source-manuals/incoming/261019_hikorea_markdown_2.zip",
+          "markdownMember": "261019 체류민원 자격별 안내 매뉴얼.md",
+          "markdownLines": "15364-15384",
+          "scope": "F-2 with relevant law violation; exclusion cases in manual",
+          "verification": "owner_supplied_manual_excerpt_verified_not_independently_approved",
+          "text": "거주(F-2) 자격변경·연장 예정자 중 국내 법 위반 이력 확인 시 시민교육 대상 여부 검토(전환 10년/연장 5년 범위, 개별 제외자 존재)"
+        },
+        {
+          "manualVersion": "2026.10",
+          "sourceDate": "2026-10-19",
+          "sourceDateProvenance": "owner_filename",
+          "sourceId": "stay_manual_2026_10_19_hwp_text",
+          "sourceFile": "docs/source-manuals/2026-10-19/extracted/stay_manual_261019.txt",
+          "markdownArchive": "docs/source-manuals/incoming/261019_hikorea_markdown_2.zip",
+          "markdownMember": "261019 체류민원 자격별 안내 매뉴얼.md",
+          "markdownLines": "15364-15384",
+          "scope": "F-2 with relevant law violation; exclusion cases in manual",
+          "verification": "owner_supplied_manual_excerpt_verified_not_independently_approved",
+          "text": "거주(F-2) 자격변경·연장 예정자 중 국내 법 위반 이력 확인 시 시민교육 대상 여부 검토(전환 10년/연장 5년 범위, 개별 제외자 존재)"
+        }
+      ],
+      "affected_fields": [
+        "procedures.statusChange.notes",
+        "procedures.extension.notes"
+      ]
+    }
   },
   {
     "code": "F-3",
@@ -34247,7 +34583,9 @@
             "doc_topik"
           ],
           "additionalDocs": [],
-          "conditionalDocs": []
+          "conditionalDocs": [
+            "외국인 배우자 의사소통 요건 해당 시 TOPIK 1급 이상 성적증명서(TOPIK IBT 포함) 등 인정 가능한 자료 중 하나. 면제대상은 별도 확인"
+          ]
         },
         "notes": [
           "다음 단계: ① 한국인 배우자측·외국인 신청인측 서류를 각각 준비 → ② 거주지 관할 재외공관에 결혼이민(F-6) 사증 신청 → ③ 국제결혼 안내프로그램 이수 등 사전요건을 재외공관·하이코리아(HiKorea)에서 확인."
@@ -34265,6 +34603,21 @@
             "needsManualReview": false,
             "sourcePdf": "docs/source-manuals/2026-09/visa_manual_260901.pdf",
             "sourceId": "visa_manual_2026_09_01_pdf"
+          }
+        ],
+        "manual202610Review": [
+          {
+            "manualVersion": "2026.10",
+            "sourceDate": "2026-10-19",
+            "sourceDateProvenance": "owner_filename",
+            "sourceId": "visa_manual_2026_10_19_hwp_text",
+            "sourceFile": "docs/source-manuals/2026-10-19/extracted/visa_manual_261019.txt",
+            "markdownArchive": "docs/source-manuals/incoming/261019_hikorea_markdown_2.zip",
+            "markdownMember": "261019 사증민원 자격별 안내 매뉴얼.md",
+            "markdownLines": "7558-7563",
+            "scope": "F-6 communication proof, where condition applies",
+            "verification": "owner_supplied_manual_excerpt_verified_not_independently_approved",
+            "text": "F-6 외국인 배우자 의사소통요건 입증: TOPIK 1급 이상 성적증명서에 TOPIK IBT 포함, 의사소통 입증 면제·대체서류 분기"
           }
         ]
       },
@@ -35095,6 +35448,29 @@
       "requiresHumanReview": true,
       "sourceDate": "2026-06-01",
       "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+    },
+    "manual202610StructuredUpdate": {
+      "edition": "2026.10",
+      "source_date_origin": "filename_and_cover_month_not_effective_date",
+      "status": "source_text_integrated_conditional_review",
+      "source_refs": [
+        {
+          "manualVersion": "2026.10",
+          "sourceDate": "2026-10-19",
+          "sourceDateProvenance": "owner_filename",
+          "sourceId": "visa_manual_2026_10_19_hwp_text",
+          "sourceFile": "docs/source-manuals/2026-10-19/extracted/visa_manual_261019.txt",
+          "markdownArchive": "docs/source-manuals/incoming/261019_hikorea_markdown_2.zip",
+          "markdownMember": "261019 사증민원 자격별 안내 매뉴얼.md",
+          "markdownLines": "7558-7563",
+          "scope": "F-6 communication proof, where condition applies",
+          "verification": "owner_supplied_manual_excerpt_verified_not_independently_approved",
+          "text": "F-6 외국인 배우자 의사소통요건 입증: TOPIK 1급 이상 성적증명서에 TOPIK IBT 포함, 의사소통 입증 면제·대체서류 분기"
+        }
+      ],
+      "affected_fields": [
+        "procedures.visaIssuance.requiredDocs.conditionalDocs"
+      ]
     }
   },
   {

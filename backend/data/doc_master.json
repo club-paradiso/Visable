@@ -147,7 +147,8 @@
     "id": "doc_fee",
     "ko_name": "수수료 납부증빙",
     "en_name": "Fee Payment Receipt",
-    "description": "체류민원 정부수입인지 납부 항목. 절차별 금액은 외국인체류 안내매뉴얼(2026.5) 공통사항 수수료 표 기준으로 화면에 별도 안내합니다."
+    "description": "체류민원 정부수입인지 납부 항목. 절차별 금액은 외국인체류 안내매뉴얼(2026.10) 공통사항 수수료 표 기준으로 화면에 별도 안내합니다.",
+    "sourceVerification": "2026-10-19 owner-supplied residence manual, 공통사항 1. 각종 체류허가 등에 관한 심사수수료. Numerical fee list unchanged in the checked excerpt; effective date not independently confirmed."
   },
   {
     "id": "doc_fee_ext",
