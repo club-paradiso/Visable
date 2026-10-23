@@ -1,12 +1,12 @@
 name: HiKorea 261019 Markdown intake
 
-# Use the exact SHA-pinned ZIP already committed at repository root.
+# Read the exact owner-supplied SHA-pinned ZIP from the intake directory.
 # This stages it for review; never auto-promotes legal criteria or merges PRs.
 on:
   push:
     branches: [main]
     paths:
-      - '261019_hikorea_markdown_2.zip'
+      - 'docs/source-manuals/incoming/261019_hikorea_markdown_2.zip'
       - '.github/workflows/hikorea-261019-markdown-import.yml'
   workflow_dispatch:
 
@@ -28,15 +28,15 @@ jobs:
           python-version: '3.11'
       - name: Check exact incoming ZIP exists
         shell: bash
-        run: test -f 261019_hikorea_markdown_2.zip
+        run: test -f docs/source-manuals/incoming/261019_hikorea_markdown_2.zip
       - name: Ingest verified Markdown without promoting active rules
         shell: bash
         run: |
           python3 scripts/ingest_hikorea_markdown_261019.py \
-            261019_hikorea_markdown_2.zip \
+            docs/source-manuals/incoming/261019_hikorea_markdown_2.zip \
             > /tmp/markdown-intake-report.json
           python3 scripts/ingest_hikorea_markdown_261019.py \
-            261019_hikorea_markdown_2.zip --check
+            docs/source-manuals/incoming/261019_hikorea_markdown_2.zip --check
           python3 -m unittest backend.tests.test_hikorea_markdown_ingest_20261019
           python3 scripts/check_source_manuals.py
           python3 scripts/check_source_grounding_metadata.py
