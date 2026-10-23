@@ -97,8 +97,8 @@
       opts[i].setAttribute('aria-checked', opts[i].getAttribute('data-vt-value') === current ? 'true' : 'false');
       opts[i].tabIndex = opts[i].getAttribute('data-vt-value') === (current || 'default') ? 0 : -1;
     }
-    var coin = document.querySelector('.vt-fab .vt-coin');
-    if (coin) coin.setAttribute('data-c', current || 'default');
+    var coins = document.querySelectorAll('.vt-fab .vt-coin');
+    for (var j = 0; j < coins.length; j++) coins[j].setAttribute('data-c', current || 'default');
   }
 
   function setBrightnessDark() {
@@ -190,25 +190,48 @@
       h.textContent = c.title;
       pop.appendChild(h);
       pop.appendChild(buildGroup(c, 'vt-pop-'));
-      function close(focusFab) { pop.hidden = true; fab.setAttribute('aria-expanded', 'false'); if (focusFab) fab.focus(); }
-      fab.addEventListener('click', function () {
-        var open = pop.hidden;
-        if (open && fab.classList.contains('vt-inline')) {
-          var r = fab.getBoundingClientRect();
-          pop.style.top = Math.round(r.bottom + 8) + 'px';
-          pop.style.right = Math.max(14, Math.round(window.innerWidth - r.right)) + 'px';
-          pop.style.left = 'auto';
-          pop.style.bottom = 'auto';
-        }
-        pop.hidden = !open;
-        fab.setAttribute('aria-expanded', open ? 'true' : 'false');
-        if (open) { var on = pop.querySelector('[aria-checked="true"]') || pop.querySelector('.vt-opt'); if (on) on.focus(); }
+      // Narrow screens: the header has no room for one more button, so a floating pill takes over.
+      var fabs = [fab];
+      if (anchor) {
+        var narrow = fab.cloneNode(true);
+        narrow.className = 'vt-fab vt-fab-narrow';
+        fabs.push(narrow);
+      }
+      var opener = fab;
+      function close(focusFab) {
+        pop.hidden = true;
+        fabs.forEach(function (f) { f.setAttribute('aria-expanded', 'false'); });
+        if (focusFab) opener.focus();
+      }
+      fabs.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var open = pop.hidden;
+          opener = btn;
+          if (btn.classList.contains('vt-inline')) {
+            var r = btn.getBoundingClientRect();
+            pop.style.top = Math.round(r.bottom + 8) + 'px';
+            pop.style.right = Math.max(14, Math.round(window.innerWidth - r.right)) + 'px';
+            pop.style.left = 'auto';
+            pop.style.bottom = 'auto';
+          } else {
+            pop.style.top = pop.style.right = pop.style.left = pop.style.bottom = '';
+          }
+          pop.hidden = !open;
+          btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+          if (open) { var on = pop.querySelector('[aria-checked="true"]') || pop.querySelector('.vt-opt'); if (on) on.focus(); }
+        });
       });
       document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !pop.hidden) close(true); });
-      document.addEventListener('click', function (e) { if (!pop.hidden && !pop.contains(e.target) && !fab.contains(e.target)) close(false); });
+      document.addEventListener('click', function (e) {
+        if (pop.hidden || pop.contains(e.target)) return;
+        for (var i = 0; i < fabs.length; i++) if (fabs[i].contains(e.target)) return;
+        close(false);
+      });
       document.body.appendChild(pop);
-      if (anchor && anchor.parentNode) anchor.parentNode.insertBefore(fab, anchor.nextSibling);
-      else document.body.appendChild(fab);
+      if (anchor && anchor.parentNode) {
+        anchor.parentNode.insertBefore(fab, anchor.nextSibling);
+        document.body.appendChild(fabs[1]);
+      } else document.body.appendChild(fab);
     }
     ensureFonts(current);
     syncPickers();

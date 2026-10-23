@@ -186,6 +186,8 @@
 .vt-fab.vt-inline{position:static;box-shadow:none;width:40px;height:40px;min-height:40px;padding:0;justify-content:center;flex:none;margin-inline-start:6px;background:transparent}
 .vt-fab.vt-inline .vt-coin{width:22px;height:22px}
 .vt-fab.vt-inline .vt-fab-label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.vt-fab-narrow{display:none}
+@media (max-width:480px){.vt-fab.vt-inline{display:none}.vt-fab-narrow{display:inline-flex}}
 @media (max-width:640px){.vt-fab{padding:6px}.vt-fab .vt-fab-label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}}
 @media print{.vt-fab,.vt-pop{display:none!important}}
 @media (prefers-reduced-motion:reduce){:root[data-vt] body{background-attachment:scroll}}
