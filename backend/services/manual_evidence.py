@@ -609,6 +609,18 @@ def retrieve_manual_evidence(
     finally:
         con.close()
 
+    # A parent-code question (E-7, no sub-code asked) whose best page is
+    # parent-level does not also get sub-code-only pages (E-7-H, E-7-T): the
+    # model read an E-7-H page as an E-7-wide rule despite its label (QA
+    # 2026-10-23). When the best page is itself sub-code specific — F-6, whose
+    # extension rules exist only per F-6-1/2/3 — the ranking is kept as is.
+    if not exact:
+        per_scope = [
+            [c for c in chunks if c["level"] != "subcode_specific"]
+            if chunks and chunks[0]["level"] != "subcode_specific" else chunks
+            for chunks in per_scope
+        ]
+
     # Split the budget between scopes; a single scope gets all of it.
     share_n = max(1, max_excerpts // len(per_scope))
     share_chars = max(400, max_chars // len(per_scope))

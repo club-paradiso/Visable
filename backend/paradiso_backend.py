@@ -4165,8 +4165,19 @@ def _detect_task_type(text: str) -> Optional[str]:
         "근무처 변경", "근무처를 변경", "근무처를 바꾸", "근무처 추가", "근무처를 추가",
         "근무처 변경신고", "이직", "직장을 바꾸", "직장 변경", "고용주 변경",
     )
+    # Everyday wording ("회사를 옮기려면", "직장 바꾸고 싶어요", "다른 회사로 가려면")
+    # never says 근무처; without it the question fell through to a generic
+    # activity-scope lookup and cited unrelated manual pages (QA 2026-10-23).
+    workplace_ko_re = (
+        r"(?:회사|직장|일자리|근무지)\s*(?:를|을)?\s*(?:옮기|옮겨|옮길|옮긴|바꾸|바꿔|바꿀|바꾼|변경)"
+        r"|(?:다른|새|새로운)\s*(?:회사|직장)\s*(?:로|으로|에)\s*(?:옮기|옮겨|옮길|이직|가|갈|취업|입사)"
+    )
     workplace_en = r"\b(change (?:of )?workplace|change employer|switch (?:jobs?|employer)|add (?:a )?second job)\b"
-    if any(sig in text for sig in workplace_ko) or re.search(workplace_en, text, flags=re.IGNORECASE):
+    if (
+        any(sig in text for sig in workplace_ko)
+        or re.search(workplace_ko_re, text)
+        or re.search(workplace_en, text, flags=re.IGNORECASE)
+    ):
         return "workplace_change"
 
     # --- activities_outside_status / 체류자격외활동 ---
