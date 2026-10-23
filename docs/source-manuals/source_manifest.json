@@ -452,7 +452,17 @@
       "original_hwp_sha256": "8f9f2e049b3cf09d46bf563e2d97fde596c3743318635f985bf35b51f79a5e8f",
       "original_file_stored": false,
       "warning": "Parsed HWP text is NOT an approved, page-faithful edition. Do not promote to runtime legal grounding or use table relationships without checking source.",
-      "change_review_artifact": "audits/manual-refresh-20261019/edition-comparison.md"
+      "change_review_artifact": "audits/manual-refresh-20261019/edition-comparison.md",
+      "derived_texts": [
+        {
+          "id": "visa_manual_2026_10_19_md",
+          "file": "docs/source-manuals/2026-10-19/markdown/visa_manual_261019.md",
+          "file_sha256": "c98677f307dcb362012bfa4935e746390cd80e7e59603201529ea5f352698959",
+          "source_date": "2026-10-19",
+          "status": "needs_review",
+          "verification_status": "byte_verified_not_content_approved"
+        }
+      ]
     },
     {
       "role": "stay_residence_manual",
@@ -469,7 +479,17 @@
       "original_hwp_sha256": "7effc9d03389e87dc3613db6da873a5d3807ddf4f506df2960f2b017fefabc07",
       "original_file_stored": false,
       "warning": "Parsed HWP text is NOT an approved, page-faithful edition. Do not promote to runtime legal grounding or use table relationships without checking source.",
-      "change_review_artifact": "audits/manual-refresh-20261019/edition-comparison.md"
+      "change_review_artifact": "audits/manual-refresh-20261019/edition-comparison.md",
+      "derived_texts": [
+        {
+          "id": "stay_manual_2026_10_19_md",
+          "file": "docs/source-manuals/2026-10-19/markdown/stay_manual_261019.md",
+          "file_sha256": "dd15cc8221c26e55f4d67aa5d4766782d1d79ba3b84efb9a0fb988981c76b563",
+          "source_date": "2026-10-19",
+          "status": "needs_review",
+          "verification_status": "byte_verified_not_content_approved"
+        }
+      ]
     }
   ]
 }

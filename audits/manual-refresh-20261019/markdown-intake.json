@@ -1,0 +1,26 @@
+{
+  "status": "needs_review",
+  "legal_effective_date_verified": false,
+  "original_hwp_table_geometry_verified": false,
+  "runtime_grounding_approved": false,
+  "files": {
+    "visa": {
+      "path": "docs/source-manuals/2026-10-19/markdown/visa_manual_261019.md",
+      "sha256": "c98677f307dcb362012bfa4935e746390cd80e7e59603201529ea5f352698959",
+      "role": "visa_issuance_manual",
+      "id": "visa_manual_2026_10_19_md",
+      "bytes": 1113926,
+      "lines": 12010,
+      "table_lines": 2458
+    },
+    "stay": {
+      "path": "docs/source-manuals/2026-10-19/markdown/stay_manual_261019.md",
+      "sha256": "dd15cc8221c26e55f4d67aa5d4766782d1d79ba3b84efb9a0fb988981c76b563",
+      "role": "stay_residence_manual",
+      "id": "stay_manual_2026_10_19_md",
+      "bytes": 1679699,
+      "lines": 20291,
+      "table_lines": 3270
+    }
+  }
+}

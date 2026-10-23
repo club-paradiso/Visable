@@ -416,6 +416,40 @@
       ],
       "would_supersede": "stay_manual_2026_09_18_pdf",
       "change_review_artifact": "audits/manual-refresh-20261019/README.md"
+    },
+    "visa_manual_2026_10_19_md": {
+      "approval_state": "needs_review",
+      "effective_date": "",
+      "reviewer": "",
+      "reviewed_at": "",
+      "parser": "owner-supplied HWP-to-Markdown conversion",
+      "source_path": "docs/source-manuals/2026-10-19/markdown/visa_manual_261019.md",
+      "source_sha256": "c98677f307dcb362012bfa4935e746390cd80e7e59603201529ea5f352698959",
+      "has_tables_or_annexes": true,
+      "section_locator": "no_verified_pdf_pages",
+      "extraction_warnings": [
+        "Not approved as direct evidence. Compare against source HWP."
+      ],
+      "table_extraction_warnings": [
+        "Merged-cell and table geometry need independent manual review."
+      ]
+    },
+    "stay_manual_2026_10_19_md": {
+      "approval_state": "needs_review",
+      "effective_date": "",
+      "reviewer": "",
+      "reviewed_at": "",
+      "parser": "owner-supplied HWP-to-Markdown conversion",
+      "source_path": "docs/source-manuals/2026-10-19/markdown/stay_manual_261019.md",
+      "source_sha256": "dd15cc8221c26e55f4d67aa5d4766782d1d79ba3b84efb9a0fb988981c76b563",
+      "has_tables_or_annexes": true,
+      "section_locator": "no_verified_pdf_pages",
+      "extraction_warnings": [
+        "Not approved as direct evidence. Compare against source HWP."
+      ],
+      "table_extraction_warnings": [
+        "Merged-cell and table geometry need independent manual review."
+      ]
     }
   }
 }
