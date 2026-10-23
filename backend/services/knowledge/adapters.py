@@ -139,14 +139,34 @@ def _date_from_id(rid: str) -> Optional[str]:
     return f"{m.group(1)}-{m.group(2)}-{m.group(3)}" if m else None
 
 
+def _corpus_pages(data: Any) -> List[Dict[str, Any]]:
+    """Page/section records from a corpus file, whatever envelope it uses.
+
+    PDF-extracted corpora are a bare list of page dicts. The markdown and
+    HWP-text corpora added in 2026-10 wrap their records in an object under
+    a ``sections`` key (``pages``/``entries``/``chunks`` are accepted too).
+    Iterating a dict yields its keys, so the old list-only read raised
+    ``AttributeError: 'str' object has no attribute 'get'`` on the new
+    files and took down platform bootstrap with it.
+    """
+    if isinstance(data, list):
+        return [p for p in data if isinstance(p, dict)]
+    if isinstance(data, dict):
+        for key in ("pages", "sections", "entries", "chunks"):
+            items = data.get(key)
+            if isinstance(items, list):
+                return [p for p in items if isinstance(p, dict)]
+    return []
+
+
 def _corpus_page_count(rid: str) -> Optional[int]:
     path = MANUAL_CORPUS_DIR / f"{rid}.json"
     if not path.is_file():
         return None
     try:
-        pages = _load(path)
+        pages = _corpus_pages(_load(path))
         return max(int(p.get("page") or 0) for p in pages) or None
-    except (OSError, ValueError, TypeError):
+    except (OSError, ValueError, TypeError, AttributeError):
         return None
 
 
