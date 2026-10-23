@@ -55,6 +55,8 @@ DEFAULT_OUT = REPO_ROOT / "build" / "manual_search_index.sqlite3"
 # them to the current edition would misdate every stay-manual search hit.
 SECTION_SOURCES: Tuple[Tuple[str, str], ...] = (
     ("visa_manual_2026_09_01_pdf", "data/manual-corpus/visa_manual_2026_09_01_pdf.json"),
+    ("visa_manual_2026_10_19_hwp_text", "data/manual-corpus/visa_manual_2026_10_19_hwp_text.json"),
+    ("stay_manual_2026_10_19_hwp_text", "data/manual-corpus/stay_manual_2026_10_19_hwp_text.json"),
     ("stay_manual_2026_09_18_pdf", "data/manual-corpus/stay_manual_2026_09_18_pdf.json"),
     ("visa_manual_2026_06_17_pdf", "backend/data/sources/manuals/260617_visa_manual_sections.json"),
     ("stay_manual_2026_06_17_txt", "backend/data/sources/manuals/260617_stay_manual_sections.json"),
@@ -67,6 +69,13 @@ SECTION_SOURCES: Tuple[Tuple[str, str], ...] = (
 # direct evidence only when the page map matched it to an approved PDF page
 # with high/medium confidence; it then inherits that edition's approval and
 # cites that PDF page. Every other chunk is indexed as needs_review, page 0.
+# These 2026-10 extractions lack independently verified page/table mapping.
+# They are searchable for comparison ONLY, regardless of future registry edits.
+OCTOBER_REVIEW_ONLY = frozenset({
+    "visa_manual_2026_10_19_hwp_text",
+    "stay_manual_2026_10_19_hwp_text",
+})
+
 MARKDOWN_SOURCES: Tuple[str, ...] = (
     "data/manual-corpus/visa_manual_2026_09_01_md.json",
     "data/manual-corpus/stay_manual_2026_09_18_md.json",
@@ -189,7 +198,9 @@ def _iter_chunks(versions: Dict[str, mr.ManualDocumentVersion]) -> Iterable[Dict
             family_key = version.family_key
             manual_version = version.version
 
-        direct = 1 if approval_state in mr.DIRECT_EVIDENCE_STATES else 0
+        if source_id in OCTOBER_REVIEW_ONLY:
+            approval_state = mr.STATE_NEEDS_REVIEW
+        direct = 1 if (source_id not in OCTOBER_REVIEW_ONLY and approval_state in mr.DIRECT_EVIDENCE_STATES) else 0
         rows = _load_sections(path)
         print(f"  - {rel_path}: {len(rows)} sections "
               f"[{approval_state}{'' if direct else ' · not direct evidence'}]")
@@ -205,7 +216,7 @@ def _iter_chunks(versions: Dict[str, mr.ManualDocumentVersion]) -> Iterable[Dict
                 "approval_state": approval_state,
                 "direct_evidence": direct,
                 "domain": section["domain"],
-                "page": section["page"],
+                "page": 0 if source_id in OCTOBER_REVIEW_ONLY else section["page"],
                 "heading": section["heading"],
                 "status_codes": section["status_codes"],
                 "subcodes": section["subcodes"],

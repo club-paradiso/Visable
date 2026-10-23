@@ -1,0 +1,67 @@
+name: Rebuild HiKorea October review search index
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'data/manual-corpus/*2026_10_19*'
+      - 'scripts/build_manual_search_index.py'
+      - 'backend/tests/test_hikorea_october_review_corpus.py'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: hikorea-review-index
+  cancel-in-progress: false
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Check October source corpus
+        run: python3 -m unittest backend.tests.test_hikorea_october_review_corpus
+      - name: Build backend-shipped search index
+        run: python3 scripts/build_manual_search_index.py --out backend/data/manual_search_index.sqlite3
+      - name: Assert October sources searchable but never direct evidence
+        run: |
+          python3 - <<'PY'
+          import sqlite3
+          db = sqlite3.connect('backend/data/manual_search_index.sqlite3')
+          expected = {
+              'visa_manual_2026_10_19_hwp_text': 400,
+              'stay_manual_2026_10_19_hwp_text': 600,
+          }
+          for source_id, minimum in expected.items():
+              row = db.execute(
+                  'SELECT COUNT(*), SUM(direct_evidence), MIN(page), MAX(page) '
+                  'FROM chunk WHERE source_id=?', (source_id,)
+              ).fetchone()
+              assert row[0] >= minimum, (source_id, row)
+              assert row[1] == 0 and row[2] == 0 and row[3] == 0, (source_id, row)
+              wrong = db.execute(
+                  "SELECT COUNT(*) FROM chunk WHERE source_id=? AND approval_state!='needs_review'",
+                  (source_id,),
+              ).fetchone()[0]
+              assert wrong == 0, (source_id, wrong)
+          assert db.execute('PRAGMA integrity_check').fetchone()[0] == 'ok'
+          db.close()
+          PY
+      - name: Open artifact update PR
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: auto/hikorea-october-review-search-index
+          base: main
+          add-paths: backend/data/manual_search_index.sqlite3
+          title: 'data(manuals): ship searchable October 2026 review-only index'
+          commit-message: 'data(manuals): rebuild deployment search index with October review-only chunks'
+          body: |
+            Rebuilds the backend-shipped SQLite FTS index to include the 2026-10
+            visa/stay extracted text as **needs_review** search candidates.
+            Every October chunk has direct_evidence=0 and page=0 by test.
+            This does not approve new eligibility, submission requirements or fees.
