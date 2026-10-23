@@ -649,9 +649,54 @@ class ProviderFamilyFallbackTests(unittest.TestCase):
         body = resp.json()
         self.assertEqual(body["provider"], "groq")
         self.assertTrue(body["provider_family_fallback_used"])
-        self.assertEqual(body["answer"], "GROQ ANSWER")
+        # The question builds a structured answer, so the Groq text goes
+        # through structured finalization: the public answer is the composed
+        # checklist text, not the raw model text. ("GROQ ANSWER" also trips
+        # the Answer Guard's provider-leak check, so the summary itself
+        # stays deterministic here — see the model-summary test below.)
+        self.assertIn("신청서", body["answer"])
+        self.assertEqual(
+            body["structured_answer"]["short_answer_source"], "deterministic"
+        )
         # Candidate attempt metadata is preserved for audit.
         self.assertEqual(body["attempted_models"], CANDS)
+
+    def test_groq_fallback_answer_becomes_the_structured_summary(self):
+        # Regression (2026-10-23): the Groq family-fallback branch returned
+        # base_meta untouched, so a structured answer kept its deterministic
+        # short summary even though a live model had answered — the reason
+        # Fast summaries stayed deterministic in production. With realistic
+        # model prose, the finalized structured answer must carry it as a
+        # model summary, exactly like the OpenRouter success path.
+        pb = _pb()
+        fake, _ = _fake_openrouter({c: (503, "No healthy upstream") for c in CANDS})
+
+        async def groq_prose(prompt, model=None, max_tokens=None):
+            return (
+                "D-2 체류기간 연장을 위해서는 신청서, 여권, 외국인등록증과 "
+                "수수료를 준비해야 하며, 재학증명서와 성적증명서 같은 학업 "
+                "관련 서류도 필요합니다."
+            )
+
+        with patch.dict(os.environ, {"OPENROUTER_MODEL": CANDS[0],
+                                     "OPENROUTER_MODEL_CANDIDATES": ",".join(CANDS),
+                                     "OPENROUTER_ALLOW_MODEL_ENV_OVERRIDES": "true"}, clear=False), \
+                patch.object(pb, "OPENROUTER_API_KEY", "or-key"), \
+                patch.object(pb, "GROQ_API_KEY", "groq-key"), \
+                patch.object(pb, "ALLOW_GROQ_FALLBACK", True), \
+                patch.object(pb, "OPENROUTER_MODEL", CANDS[0]), \
+                patch.object(pb, "OPENROUTER_MODEL_CANDIDATES", list(CANDS)), \
+                patch.object(pb, "_call_openrouter", fake), \
+                patch.object(pb, "_call_groq", groq_prose):
+            client = _client(pb)
+            resp = client.post("/api/ask", json={"question": "D-2 연장 서류"})
+        self.assertEqual(resp.status_code, 200, resp.text)
+        body = resp.json()
+        self.assertEqual(body["provider"], "groq")
+        self.assertTrue(body["provider_family_fallback_used"])
+        structured = body["structured_answer"]
+        self.assertEqual(structured["short_answer_source"], "model_summary")
+        self.assertTrue(structured["short_answer"].startswith("D-2 체류기간 연장"))
 
 class CooldownAndFallbackBehaviorTests(unittest.IsolatedAsyncioTestCase):
     async def asyncSetUp(self):
