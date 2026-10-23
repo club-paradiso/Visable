@@ -2016,7 +2016,7 @@ class AskLawGroundingPhase4Tests(unittest.TestCase):
 
 
 class ModelConfigResolutionTests(unittest.TestCase):
-    """Provider/model resolution + Nemotron Ultra free primary model policy."""
+    """Provider/model resolution + Gemma 4 free primary model policy."""
 
     def _pb(self):
         import paradiso_backend  # noqa: WPS433
@@ -2025,6 +2025,32 @@ class ModelConfigResolutionTests(unittest.TestCase):
     def test_code_default_openrouter_model_is_gemma_4_31b_free(self):
         pb = self._pb()
         self.assertEqual(pb._DEFAULT_OPENROUTER_MODEL, "google/gemma-4-31b-it:free")
+
+    def test_stale_blocked_candidates_are_dropped_from_backend_chain(self):
+        pb = self._pb()
+        stale = (
+            "google/gemma-4-31b-it:free,nvidia/nemotron-3-super-120b-a12b:free,"
+            "nvidia/nemotron-3-ultra-550b-a55b:free"
+        )
+        with patch.dict(os.environ, {
+            "OPENROUTER_ALLOW_MODEL_ENV_OVERRIDES": "true",
+            "OPENROUTER_MODEL_CANDIDATES": stale,
+        }, clear=False):
+            chain = pb._resolve_openrouter_candidates()
+        self.assertEqual(chain[0], pb.OPENROUTER_MODEL)
+        self.assertIn("google/gemma-4-31b-it:free", chain)
+        self.assertFalse([m for m in chain if m.startswith("nvidia/")], chain)
+
+    def test_blocked_only_candidate_override_falls_back_to_committed_chain(self):
+        pb = self._pb()
+        with patch.dict(os.environ, {
+            "OPENROUTER_ALLOW_MODEL_ENV_OVERRIDES": "true",
+            "OPENROUTER_MODEL_CANDIDATES": "nvidia/nemotron-3-super-120b-a12b:free",
+        }, clear=False):
+            chain = pb._resolve_openrouter_candidates()
+        for model in pb._DEFAULT_OPENROUTER_MODEL_CANDIDATES:
+            self.assertIn(model, chain)
+        self.assertFalse([m for m in chain if m.startswith("nvidia/")], chain)
 
     def test_resolve_prefers_openrouter_with_its_model(self):
         pb = self._pb()

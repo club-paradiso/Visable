@@ -37,12 +37,14 @@ from _i18n_pack_support import SUPPORTED_LOCALES, load_packs, localized  # noqa:
 
 # Synthetic 4-model fixture used purely to exercise the candidate-fallback
 # machinery (every test below patches it in via OPENROUTER_MODEL_CANDIDATES). It
-# is intentionally DECOUPLED from the production default chain (Hermes 3 ->
-# Gemma 4); the real default is asserted in
-# test_default_candidate_list_matches_approved_policy.
+# is intentionally DECOUPLED from the production default chain (Gemma 4 only);
+# the real default is asserted in
+# test_default_candidate_list_matches_approved_policy. The ids are neutral on
+# purpose: nvidia/* and thinkingmachines/* are policy-blocked and would be
+# stripped from env overrides (see test_model_policy.PolicyBlockedModelTests).
 CANDS = [
-    "nvidia/nemotron-3-ultra-550b-a55b:free",
-    "nvidia/nemotron-3-super-120b-a12b:free",
+    "test-vendor/primary-model:free",
+    "test-vendor/secondary-model:free",
     "openai/gpt-oss-120b:free",
     "google/gemma-4-31b-it:free",
 ]

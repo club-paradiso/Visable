@@ -192,5 +192,98 @@ class AnswerModeTierTests(unittest.TestCase):
         )
 
 
+# The Railway variables that were live on 2026-10-23: the pre-#674 chains,
+# opted in through OPENROUTER_ALLOW_MODEL_ENV_OVERRIDES.
+_STALE_RAILWAY_ENV = {
+    "OPENROUTER_ALLOW_MODEL_ENV_OVERRIDES": "true",
+    "OPENROUTER_MODEL": "google/gemma-4-31b-it:free",
+    "OPENROUTER_MODEL_CANDIDATES": (
+        "google/gemma-4-31b-it:free,google/gemma-4-26b-a4b-it:free,"
+        "nvidia/nemotron-3-super-120b-a12b:free,nvidia/nemotron-3-ultra-550b-a55b:free"
+    ),
+    "OPENROUTER_FAST_MODEL": "nvidia/nemotron-3-super-120b-a12b:free",
+    "OPENROUTER_FAST_MODEL_CANDIDATES": (
+        "nvidia/nemotron-3-super-120b-a12b:free,nvidia/nemotron-3-ultra-550b-a55b:free"
+    ),
+    "OPENROUTER_ENFORCEMENT_MODEL": "nvidia/nemotron-3-super-120b-a12b:free",
+    "OPENROUTER_ENFORCEMENT_MODEL_CANDIDATES": "nvidia/nemotron-3-super-120b-a12b:free",
+    "AI_VERIFIER_MODEL": "nvidia/nemotron-3-super-120b-a12b:free",
+}
+
+
+class PolicyBlockedModelTests(unittest.TestCase):
+    """Excluded providers must stay out even when an override lists them."""
+
+    def test_blocked_prefix_detection(self):
+        for model in (
+            "nvidia/nemotron-3-ultra-550b-a55b:free",
+            "NVIDIA/Nemotron-3-Super:free",
+            " thinkingmachines/inkling:free ",
+        ):
+            self.assertTrue(model_policy.model_is_policy_blocked(model), model)
+        for model in ("google/gemma-4-31b-it:free", "openai/gpt-oss-120b:free", "", None):
+            self.assertFalse(model_policy.model_is_policy_blocked(model), model)
+
+    def test_drop_policy_blocked_models_keeps_order(self):
+        self.assertEqual(
+            model_policy.drop_policy_blocked_models(
+                ["a/one", "nvidia/x:free", "b/two", "thinkingmachines/y:free"]
+            ),
+            ["a/one", "b/two"],
+        )
+
+    def test_stale_railway_overrides_cannot_reintroduce_blocked_models(self):
+        with patch.dict(os.environ, _STALE_RAILWAY_ENV, clear=False):
+            self.assertTrue(model_policy.model_env_overrides_allowed())
+            policy = model_policy.resolve_model_role_policy()
+            basic = model_policy.resolve_answer_mode_models("basic")
+            fast = model_policy.resolve_answer_mode_models("fast")
+        self.assertEqual(
+            policy["final_answer_model_candidates"],
+            ["google/gemma-4-31b-it:free", "google/gemma-4-26b-a4b-it:free"],
+        )
+        self.assertEqual(
+            basic["candidates"], ["google/gemma-4-31b-it:free", "google/gemma-4-26b-a4b-it:free"]
+        )
+        # Every Fast override was blocked, so Fast falls back to the committed chain.
+        self.assertEqual(fast["primary"], model_policy.DEFAULT_FAST_ANSWER_MODEL)
+        self.assertEqual(fast["candidates"], model_policy.DEFAULT_FAST_ANSWER_MODEL_CANDIDATES)
+        self.assertEqual(
+            policy["enforcement_structured_model"],
+            model_policy.DEFAULT_ENFORCEMENT_STRUCTURED_MODEL,
+        )
+        self.assertEqual(
+            policy["enforcement_structured_model_candidates"],
+            model_policy.DEFAULT_ENFORCEMENT_STRUCTURED_MODEL_CANDIDATES,
+        )
+        self.assertEqual(policy["verifier_model"], model_policy.DEFAULT_VERIFIER_MODEL)
+        for chain in (
+            policy["final_answer_model_candidates"],
+            basic["candidates"],
+            fast["candidates"],
+            policy["enforcement_structured_model_candidates"],
+        ):
+            for model in chain:
+                self.assertFalse(model_policy.model_is_policy_blocked(model), model)
+
+    def test_allowed_overrides_still_work_next_to_blocked_ones(self):
+        with patch.dict(
+            os.environ,
+            {
+                "OPENROUTER_ALLOW_MODEL_ENV_OVERRIDES": "true",
+                "OPENROUTER_MODEL": "x/primary:free",
+                "OPENROUTER_MODEL_CANDIDATES": "nvidia/blocked:free,a/b:free,x/primary:free",
+            },
+            clear=False,
+        ):
+            policy = model_policy.resolve_model_role_policy()
+        self.assertEqual(policy["final_answer_model_candidates"], ["x/primary:free", "a/b:free"])
+
+    def test_policy_notes_no_longer_claim_nemotron_defaults(self):
+        notes = " ".join(model_policy.resolve_model_role_policy()["policy_notes"]).lower()
+        self.assertNotIn("nemotron 3 ultra is the default", notes)
+        self.assertNotIn("nemotron 3 super is the default", notes)
+
+
 if __name__ == "__main__":
     unittest.main()
