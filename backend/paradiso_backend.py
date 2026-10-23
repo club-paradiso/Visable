@@ -335,8 +335,18 @@ OPENROUTER_FALLBACK_RESERVE_SECONDS: float = min(
 # Enforcement is synchronous from the user's perspective, so a long provider
 # fallback chain is worse than returning the deterministic legal baseline.
 # This is a total budget for the whole enforcement model chain, not per model.
+#
+# The cap was 12.0 (default 8.0) until 2026-10-23. Production evidence that
+# day: the budget is sliced across the structured candidates, so three
+# candidates received ~4s each — enough for the minimal provider probe
+# (~3s) but not for the real enforcement prompt, and /api/enforcement/analyze
+# returned an UNAVAILABLE prediction in every live check (Railway Live Smoke
+# runs #122/#123) while the standalone probe succeeded seconds later on the
+# same deployment. The 30.0 cap (default 20.0) keeps ~10s slices for a
+# three-candidate chain; clear cases never reach this path because the
+# deterministic baseline answers them locally.
 ENFORCEMENT_AI_BUDGET_SECONDS: float = min(
-    12.0, max(1.0, _env_float("ENFORCEMENT_AI_BUDGET_SECONDS", 8.0))
+    30.0, max(1.0, _env_float("ENFORCEMENT_AI_BUDGET_SECONDS", 20.0))
 )
 # The candidate chain is given the budget above and returns its own structured
 # metadata when it runs out. The outer asyncio.wait_for is only a backstop for a
