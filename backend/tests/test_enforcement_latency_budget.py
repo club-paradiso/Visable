@@ -311,6 +311,27 @@ class CandidateAttemptTimeoutTests(unittest.TestCase):
         )
         self.assertAlmostEqual(attempt, 4.0)
 
+    def test_production_scale_budget_gives_each_candidate_a_viable_slice(self):
+        # Regression for the 2026-10-23 production failure: with the old 12s
+        # cap, a three-candidate enforcement chain sliced the budget to ~4s
+        # per attempt and cut off the real structured prompt, so analyze
+        # always degraded while the minimal probe succeeded. At the raised
+        # 30s operating point each candidate keeps a ~10s slice.
+        first = self.pb._openrouter_candidate_attempt_timeout(
+            30.0, has_fallback=True, budget=30.0, remaining_candidates=3
+        )
+        self.assertAlmostEqual(first, 10.0)
+
+    def test_enforcement_budget_default_is_above_the_old_cap(self):
+        # The module constant is resolved from the environment at import
+        # time; only pin the shipped default when no override is in force.
+        if os.environ.get("ENFORCEMENT_AI_BUDGET_SECONDS"):
+            self.skipTest("operator override in force")
+        import paradiso_backend as pb
+
+        self.assertGreaterEqual(pb.ENFORCEMENT_AI_BUDGET_SECONDS, 20.0)
+        self.assertLessEqual(pb.ENFORCEMENT_AI_BUDGET_SECONDS, 30.0)
+
     def test_a_supplied_budget_is_shared_across_every_remaining_candidate(self):
         """Successes cluster around three seconds and failures hang to their cap,
         so what raises the hit rate on a short deadline is more independent
