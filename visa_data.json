@@ -11096,7 +11096,9 @@
           "commonDocs": [],
           "requiredDocs": [],
           "additionalDocs": [],
-          "conditionalDocs": []
+          "conditionalDocs": [
+            "점수제 무역업(D-9-1) 체류자격 변경 신청자는 사업자등록증 사본, 무역업 고유번호부여증, 사업장 존재 입증서류, 점수제 해당 입증서류 제출. 공동사업자는 공동사업 약정서 원본·사본 추가 제출."
+          ]
         },
         "variants": [
           {
@@ -11236,7 +11238,23 @@
           }
         ],
         "notes": [
-          "세부 자격 또는 신청 사유에 따라 제출서류가 달라질 수 있습니다."
+          "세부 자격 또는 신청 사유에 따라 제출서류가 달라질 수 있습니다.",
+          "D-9-1 점수제 무역업 자격변경의 결격사유: 범칙금 처분 등을 받은 자에 대한 체류허가 제한 통합기준에 해당하는 자. 모든 D-9 유형에 일괄 적용하지 않음."
+        ],
+        "manual202610Review": [
+          {
+            "manualVersion": "2026.10",
+            "sourceDate": "2026-10-19",
+            "sourceDateProvenance": "owner_filename",
+            "sourceId": "stay_manual_2026_10_19_hwp_text",
+            "sourceFile": "docs/source-manuals/2026-10-19/extracted/stay_manual_261019.txt",
+            "markdownArchive": "docs/source-manuals/incoming/261019_hikorea_markdown_2.zip",
+            "markdownMember": "261019 체류민원 자격별 안내 매뉴얼.md",
+            "markdownLines": "2729-2734",
+            "scope": "D-9-1 points-based trade business status change only",
+            "verification": "owner_supplied_manual_excerpt_verified_not_independently_approved",
+            "text": "무역비자 점수제(D-9-1) 자격변경 결격사유와 제출서류"
+          }
         ]
       },
       "reentry": {
@@ -11699,7 +11717,31 @@
         "group": "경영",
         "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
       }
-    ]
+    ],
+    "manual202610StructuredUpdate": {
+      "edition": "2026.10",
+      "source_date_origin": "filename_and_cover_month_not_effective_date",
+      "status": "source_text_integrated_conditional_review",
+      "source_refs": [
+        {
+          "manualVersion": "2026.10",
+          "sourceDate": "2026-10-19",
+          "sourceDateProvenance": "owner_filename",
+          "sourceId": "stay_manual_2026_10_19_hwp_text",
+          "sourceFile": "docs/source-manuals/2026-10-19/extracted/stay_manual_261019.txt",
+          "markdownArchive": "docs/source-manuals/incoming/261019_hikorea_markdown_2.zip",
+          "markdownMember": "261019 체류민원 자격별 안내 매뉴얼.md",
+          "markdownLines": "2729-2734",
+          "scope": "D-9-1 points-based trade business status change only",
+          "verification": "owner_supplied_manual_excerpt_verified_not_independently_approved",
+          "text": "무역비자 점수제(D-9-1) 자격변경 결격사유와 제출서류"
+        }
+      ],
+      "affected_fields": [
+        "procedures.statusChange.requiredDocs.conditionalDocs",
+        "procedures.statusChange.notes"
+      ]
+    }
   },
   {
     "code": "D-10",
@@ -24829,14 +24871,15 @@
           "manualVersion": "2026.10",
           "sourceDate": "2026-10-19",
           "sourceDateProvenance": "owner_filename",
-          "sourceId": "stay_manual_2026_10_19_hwp_text",
-          "sourceFile": "docs/source-manuals/2026-10-19/extracted/stay_manual_261019.txt",
+          "sourceId": "visa_manual_2026_10_19_hwp_text",
+          "sourceFile": "docs/source-manuals/2026-10-19/extracted/visa_manual_261019.txt",
           "markdownArchive": "docs/source-manuals/incoming/261019_hikorea_markdown_2.zip",
-          "markdownMember": "261019 체류민원 자격별 안내 매뉴얼.md",
+          "markdownMember": "261019 사증민원 자격별 안내 매뉴얼.md",
           "markdownLines": "6933-6956",
           "scope": "F-1-D substatus only",
           "verification": "owner_supplied_manual_excerpt_verified_not_independently_approved",
-          "text": "F-1-D 사증 발급 요건 및 지역별 소득요건"
+          "text": "F-1-D 사증 발급 요건 및 지역별 소득요건",
+          "manualType": "visa"
         },
         {
           "manualVersion": "2026.10",
@@ -25875,7 +25918,7 @@
             "sourceFile": "docs/source-manuals/2026-10-19/extracted/stay_manual_261019.txt",
             "markdownArchive": "docs/source-manuals/incoming/261019_hikorea_markdown_2.zip",
             "markdownMember": "261019 체류민원 자격별 안내 매뉴얼.md",
-            "markdownLines": "~12790",
+            "markdownLines": "15364-15384",
             "scope": "F-2 with relevant law violation; exclusion cases in manual",
             "verification": "owner_supplied_manual_excerpt_verified_not_independently_approved",
             "text": "거주(F-2) 자격변경·연장 예정자 중 국내 법 위반 이력 확인 시 시민교육 대상 여부 검토(전환 10년/연장 5년 범위, 개별 제외자 존재)"
@@ -26223,7 +26266,7 @@
             "sourceFile": "docs/source-manuals/2026-10-19/extracted/stay_manual_261019.txt",
             "markdownArchive": "docs/source-manuals/incoming/261019_hikorea_markdown_2.zip",
             "markdownMember": "261019 체류민원 자격별 안내 매뉴얼.md",
-            "markdownLines": "~12790",
+            "markdownLines": "15364-15384",
             "scope": "F-2 with relevant law violation; exclusion cases in manual",
             "verification": "owner_supplied_manual_excerpt_verified_not_independently_approved",
             "text": "거주(F-2) 자격변경·연장 예정자 중 국내 법 위반 이력 확인 시 시민교육 대상 여부 검토(전환 10년/연장 5년 범위, 개별 제외자 존재)"
@@ -27457,7 +27500,7 @@
           "sourceFile": "docs/source-manuals/2026-10-19/extracted/stay_manual_261019.txt",
           "markdownArchive": "docs/source-manuals/incoming/261019_hikorea_markdown_2.zip",
           "markdownMember": "261019 체류민원 자격별 안내 매뉴얼.md",
-          "markdownLines": "~12790",
+          "markdownLines": "15364-15384",
           "scope": "F-2 with relevant law violation; exclusion cases in manual",
           "verification": "owner_supplied_manual_excerpt_verified_not_independently_approved",
           "text": "거주(F-2) 자격변경·연장 예정자 중 국내 법 위반 이력 확인 시 시민교육 대상 여부 검토(전환 10년/연장 5년 범위, 개별 제외자 존재)"
@@ -27470,7 +27513,7 @@
           "sourceFile": "docs/source-manuals/2026-10-19/extracted/stay_manual_261019.txt",
           "markdownArchive": "docs/source-manuals/incoming/261019_hikorea_markdown_2.zip",
           "markdownMember": "261019 체류민원 자격별 안내 매뉴얼.md",
-          "markdownLines": "~12790",
+          "markdownLines": "15364-15384",
           "scope": "F-2 with relevant law violation; exclusion cases in manual",
           "verification": "owner_supplied_manual_excerpt_verified_not_independently_approved",
           "text": "거주(F-2) 자격변경·연장 예정자 중 국내 법 위반 이력 확인 시 시민교육 대상 여부 검토(전환 10년/연장 5년 범위, 개별 제외자 존재)"
