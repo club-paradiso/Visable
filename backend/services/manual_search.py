@@ -189,9 +189,10 @@ def search_manuals(
     if domain:
         sql += " AND c.domain = ?"
         params.append(domain)
-    # bm25() returns a negative score where more negative is more relevant.
-    sql += " ORDER BY score LIMIT ?"
-    params.append(capped * 3)
+    # Run approved and review-only searches independently. A large new pending
+    # edition must never push the approved citations out of a shared BM25 LIMIT.
+    # bm25() returns a negative score; lower is more relevant within each pool.
+    sql += " AND c.direct_evidence = ? ORDER BY score LIMIT ?"
 
     try:
         conn = sqlite3.connect(f"file:{resolved}?mode=ro", uri=True)
@@ -201,7 +202,9 @@ def search_manuals(
 
     try:
         conn.row_factory = sqlite3.Row
-        rows = conn.execute(sql, params).fetchall()
+        approved_rows = conn.execute(sql, params + [1, capped]).fetchall()
+        review_rows = conn.execute(sql, params + [0, capped]).fetchall()
+        rows = approved_rows + review_rows
     except sqlite3.Error:
         return {"status": STATUS_INDEX_UNAVAILABLE, "query": query, "approved": [],
                 "needs_review": [], "total": 0, "index_available": True}
