@@ -93,17 +93,23 @@ check('evidence: the procedure page first, fee law behind a disclosure, counts u
   assert(!/id="sgEvidence" open/.test(d2), 'structured answers keep the evidence collapsed');
 });
 
-check('next actions are labelled rows; a source-only answer leads with its page, a structured one with the visit guide', () => {
+check('next actions are labelled rows and every call to action appears once on the page', () => {
   const f4 = run('F-4 체류기간 연장').html;
   const next = f4.slice(at(f4, 'class="sg-next"'), at(f4, 'class="sg-wm"'));
   assert(next.startsWith('class="sg-next"') && next.includes('<ul class="sg-actions">'), 'action list');
-  assert(/<li class="sg-action-primary"><button type="button" class="sg-action" data-sg-action="open-page"[^>]*data-sg-page="537"/.test(next), 'first row opens page 537');
-  assert(count(next, /class="sg-action-body"/g) === 6, `six rows with a body (${count(next, /class="sg-action-body"/g)})`);
-  for (const s of ['data-action="open-hikorea-guide"', 'href="form-helper.html"', 'href="tel:1345"', 'data-sg-action="legacy-card"', 'class="sg-next-ai"']) assert(next.includes(s), s);
+  // source-only: the manual page is the answer head's primary button, not repeated as a row;
+  // Waymaker follows as its own block, so there is no follow-up row either.
+  assert(count(f4, /data-sg-action="open-page" data-sg-source="stay_manual_2026_10_19_pdf" data-sg-page="537"/g) === 2, 'page 537: answer-head button + evidence item only');
+  assert(!next.includes('data-sg-action="open-page"') && !next.includes('class="sg-next-ai"'), 'no duplicate source / follow-up rows');
+  assert(count(f4, /data-sg-action="followup"/g) === 1, 'one Waymaker call to action');
+  assert(count(next, /class="sg-action-body"/g) === 4, `four rows with a body (${count(next, /class="sg-action-body"/g)})`);
+  for (const s of ['data-action="open-hikorea-guide"', 'href="form-helper.html"', 'href="tel:1345"', 'data-sg-action="legacy-card"']) assert(next.includes(s), s);
+  assert(!next.includes('sg-action-primary'), 'no primary row when the head already carries the primary action');
   const d2 = run('D-2 체류기간 연장').html;
-  const next2 = d2.slice(at(d2, 'class="sg-next"'));
-  assert(!next2.includes('data-sg-action="open-page"') || next2.indexOf('data-sg-action="open-page"') > next2.indexOf('class="sg-evidence"'), 'structured answers do not lead with a raw page');
-  assert(/<li class="sg-action-primary"><button type="button" class="sg-action" data-action="open-hikorea-guide"/.test(next2), 'first row is the visit guide');
+  const next2 = d2.slice(at(d2, 'class="sg-next"'), at(d2, 'class="sg-evidence"'));
+  assert(/<li class="sg-action-primary"><button type="button" class="sg-action" data-action="open-hikorea-guide"/.test(next2), 'structured: first row is the visit guide');
+  assert(next2.includes('class="sg-next-ai"') && count(d2, /data-sg-action="followup"/g) === 1, 'structured: the follow-up row is the one Waymaker call to action');
+  assert(count(next2, /class="sg-action-body"/g) === 5, 'structured: five rows');
 });
 
 check('structured answers: overview sits between the answer and the documents; a common procedure gets one too', () => {
@@ -120,6 +126,7 @@ check('English copy and the edition label follow the bundle', () => {
   const r = run('F-4 extension', 'en');
   assert(r.step.kind === 'source-only', r.step.kind);
   for (const s of ['At a glance', 'Confirmed', 'Depends on your case', 'Check in the source', 'Special schemes that may apply', 'some holders only', 'Open the source, p.537', 'The October 2026 source text has not yet been reviewed']) assert(r.text.includes(s), s);
+  assert(count(r.html, /Open the source, p\.537/g) === 1, 'the source action is printed once');
   assert(!/September/.test(r.text), 'no hard-coded September');
   const unknown = run('Z-9 연장');
   assert(unknown.text.includes('Z-9') && unknown.text.includes('2026년 10월판') && !unknown.text.includes('9월 기준'), 'unknown-code warning names the current edition');

@@ -74,12 +74,15 @@ test.describe('F-4 extension result (source-only)', () => {
     await ready(page, 'source-only');
     const sg = page.locator('#statusGuidance');
     const rows = sg.locator('.sg-next .sg-actions li > .sg-action');
-    await expect(rows).toHaveCount(6);
-    await expect(rows.first()).toContainText('공식 원문 537쪽 보기');
+    await expect(rows).toHaveCount(4);
+    // one call to action each: the page lives in the answer head, Waymaker in its own block
+    await expect(sg.locator('[data-sg-action="open-page"][data-sg-page="537"]')).toHaveCount(2);
+    await expect(sg.locator('[data-sg-action="followup"]')).toHaveCount(1);
+    await expect(rows.first()).toContainText('방문예약 안내');
     await page.waitForSelector('#statusGuidance[data-sg-state="ready"], body[data-sg-state="ready"]');
     await page.waitForTimeout(300);
     const rects = await page.evaluate(() => [...document.querySelectorAll('#statusGuidance .sg-next .sg-actions li > .sg-action')].map((e) => { const r = e.getBoundingClientRect(); return { w: r.width, h: r.height }; }));
-    expect(rects.length).toBe(6);
+    expect(rects.length).toBe(4);
     for (const r of rects) { expect(r.h).toBeGreaterThanOrEqual(44); expect(r.w).toBeGreaterThanOrEqual(44); }
     // the phone-only F-4 band does not sit over the structured answer
     const band = page.locator('#f4gStickyCta');
@@ -113,7 +116,8 @@ test.describe('F-4 extension result (source-only)', () => {
     await expect(sg.locator('.sg-overview h3')).toHaveText('At a glance', { timeout: 10_000 });
     await expect(sg.locator('.sg-overview')).toContainText('October 2026');
     await expect(sg.locator('.sg-program h3')).toHaveText('Special schemes that may apply');
-    await expect(sg.locator('.sg-next .sg-action').first()).toContainText('Open the source, p.537');
+    await expect(sg.locator('.sg-answer .sg-btn-source')).toContainText('Open the source, p.537');
+    await expect(sg.locator('.sg-next .sg-action').first()).toContainText('Visit reservation guide');
     await expect(sg).not.toContainText('September');
     await noHorizontalScroll(page);
   });
@@ -125,8 +129,24 @@ test.describe('F-4 extension result (source-only)', () => {
     const sg = page.locator('#statusGuidance');
     await expect(sg.locator('.sg-overview')).toBeVisible();
     await expect(sg.locator('.sg-next .sg-action').first()).toBeVisible();
-    const colors = await sg.locator('.sg-ov-group li').first().evaluate((el) => { const cs = getComputedStyle(el); return { fg: cs.color, bg: getComputedStyle(el.closest('.sg-overview')).backgroundColor }; });
-    expect(colors.fg).not.toBe(colors.bg);
+    // Contrast of overview text on its panel (WCAG AA body text ≥ 4.5:1). Query fresh inside
+    // the page: the result re-renders once more when the legacy list loads, so a locator
+    // handle taken earlier can point at a detached node.
+    await page.waitForSelector('body[data-sg-state="ready"]');
+    await page.waitForTimeout(300);
+    const ratio = await page.evaluate(() => {
+      const li = document.querySelector('#statusGuidance .sg-ov-group li');
+      const rgb = (s) => { const m = s.match(/[\d.]+/g) || []; return m.length >= 3 ? m.slice(0, 3).map(Number) : null; };
+      const lum = ([r, g, b]) => { const f = (c) => { c /= 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); }; return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b); };
+      let el = li, bg = null;
+      while (el && !bg) { const c = getComputedStyle(el).backgroundColor; const p = rgb(c); if (p && !/rgba\(.*, 0\)$/.test(c)) bg = p; el = el.parentElement; }
+      const fg = rgb(getComputedStyle(li).color);
+      if (!fg || !bg) return null;
+      const [a, b] = [lum(fg), lum(bg)].sort((x, y) => y - x);
+      return (a + 0.05) / (b + 0.05);
+    });
+    expect(ratio).not.toBeNull();
+    expect(ratio).toBeGreaterThanOrEqual(4.5);
     await noHorizontalScroll(page);
   });
 });

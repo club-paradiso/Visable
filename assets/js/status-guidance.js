@@ -1234,29 +1234,30 @@
   function aiHref(model) {
     return 'ai.html?' + (model.status ? 'visa_code=' + encodeURIComponent(model.status) + '&' : '') + (model.procedure ? 'selected_procedure_key=' + encodeURIComponent(model.procedure) + '&' : '') + 'lang=' + model.lang;
   }
-  /* E · next actions: one list of labelled rows (44px+ targets), ordered by what the
-   * query needs. A source-only answer leads with its own manual page; a structured
-   * answer leads with the visit reservation. */
+  // Result kinds whose answer depends on more context: Waymaker is offered as the resolver once, after the actions.
+  var WAYMAKER_RESOLVER_KINDS = { unresolved: true, 'need-status': true, 'no-status': true, 'source-only': true };
+  /* E · next actions: one list of labelled rows (44px+ targets). Each call to action
+   * appears once on the page: a source-only answer carries its manual page in the
+   * answer head (not repeated here), and when the Waymaker resolver block follows
+   * this list the follow-up row is left out. */
   function renderNext(model, step) {
     var lang = model.lang;
     function row(inner, cls) { return '<li' + (cls ? ' class="' + cls + '"' : '') + '>' + inner + '</li>'; }
     function label(key, subKey, vars) { return '<span class="sg-action-body"><span class="sg-action-label">' + esc(tr(lang, key, vars)) + '</span><small>' + esc(tr(lang, subKey, vars)) + '</small></span>'; }
-    var sourceFirst = !!(step && step.kind === 'source-only');
-    var sourceRow = sourceFirst ? sourceButton(model, 'sg-action') : '';
+    var sourceOnly = !!(step && step.kind === 'source-only');
+    var waymakerFollows = !!(step && WAYMAKER_RESOLVER_KINDS[step.kind]);
     return '<section class="sg-next" aria-labelledby="sgNextTitle"><h3 id="sgNextTitle">' + esc(tr(lang, 'nextTitle')) + '</h3><ul class="sg-actions">' +
-      (sourceRow ? row(sourceRow, 'sg-action-primary') : '') +
-      row('<button type="button" class="sg-action" data-action="open-hikorea-guide" data-vcode="' + esc(model.status || '') + '">' + label('nextReserve', 'nextReserveSub') + '</button>', sourceRow ? '' : 'sg-action-primary') +
+      row('<button type="button" class="sg-action" data-action="open-hikorea-guide" data-vcode="' + esc(model.status || '') + '">' + label('nextReserve', 'nextReserveSub') + '</button>', sourceOnly ? '' : 'sg-action-primary') +
       row('<a class="sg-action" href="form-helper.html">' + label('nextForms', 'nextFormsSub') + '</a>') +
       row('<a class="sg-action" href="tel:1345">' + label('nextCall', 'nextCallSub') + '</a>') +
       (model.status ? row('<button type="button" class="sg-action" data-sg-action="legacy-card">' + label('nextLegacy', 'nextLegacySub', { status: model.status }) + '</button>') : '') +
-      row('<a class="sg-action" href="' + esc(aiHref(model)) + '" data-sg-action="followup">' + label('nextAi', 'nextAiSub') + '</a>', 'sg-next-ai') + '</ul></section>';
+      (waymakerFollows ? '' : row('<a class="sg-action" href="' + esc(aiHref(model)) + '" data-sg-action="followup">' + label('nextAi', 'nextAiSub') + '</a>', 'sg-next-ai')) + '</ul></section>';
   }
   /* Waymaker's place on a result page: the structured answer owns the page.
    * Exact results carry only the compact follow-up link in 다음 할 일; when the
    * answer depends on more context (a question, an unresolved subtype, a
    * procedure that needs a status, nothing matched) Waymaker is offered as the
    * resolver, once, right after the answer. The full navigator lives on ai.html. */
-  var WAYMAKER_RESOLVER_KINDS = { unresolved: true, 'need-status': true, 'no-status': true, 'source-only': true };
   function renderWaymaker(model, step) {
     if (!step || !WAYMAKER_RESOLVER_KINDS[step.kind]) return '';
     var lang = model.lang;

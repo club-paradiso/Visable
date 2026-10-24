@@ -98,13 +98,6 @@ body[data-theme="dark"] .sg-state-exception_only, body[data-theme="dark"] .sg-st
 .sg-rules summary { padding: 10px 0; font-size: 15px; cursor: pointer; min-height: 44px; display: flex; align-items: center; word-break: keep-all; }
 .sg-rules details p { font-size: 14px; line-height: 1.6; padding: 0 0 10px; max-width: 760px; word-break: keep-all; }
 
-/* 6 · next actions */
-.sg-next ul { display: grid; gap: 4px; }
-.sg-next li { min-height: 44px; display: flex; align-items: center; }
-.sg-next a { font-size: 15px; min-height: 44px; display: inline-flex; align-items: center; }
-.sg-next-ai { margin-top: 6px; }
-.sg-next-ai a { color: var(--cs-muted); }
-
 /* 7 · evidence */
 .sg-evidence-list { counter-reset: ev; }
 .sg-evidence-list li { padding: 12px 0; border-bottom: 1px solid var(--cs-line); }
@@ -353,11 +346,6 @@ html[dir="rtl"] .sg:not([dir="ltr"]) .sg-evidence-details > summary::after { mar
 .sg-local-details > summary::after { content: ''; width: 8px; height: 8px; border-right: 1.5px solid var(--cs-muted); border-bottom: 1.5px solid var(--cs-muted); transform: rotate(45deg); margin-left: auto; margin-right: 8px; align-self: center; }
 .sg-local-details[open] > summary::after { transform: rotate(225deg); }
 
-/* H · next actions — one quiet row */
-.sg-next ul { display: flex; flex-wrap: wrap; gap: 0 20px; }
-.sg-next li { min-height: 44px; }
-.sg-next-ai { margin-top: 0; }
-
 /* I · Waymaker resolver (only when the answer needs more context) */
 .sg-wm { margin-top: 26px; padding: 16px 18px; border-left: 3px solid var(--cs-green); background: var(--cs-row); border-radius: 0 8px 8px 0; }
 .sg-wm-title { font-weight: 700; font-size: 16px; }
@@ -391,14 +379,9 @@ html[dir="rtl"] .sg:not([dir="ltr"]) .sg-evidence-details > summary::after { mar
 html[dir="rtl"] .sg:not([dir="ltr"]) .sg-wm { border-left: 0; border-right: 3px solid var(--cs-green); border-radius: 8px 0 0 8px; }
 html .sg[dir="ltr"] { text-align: left; }
 
-/* ---- phones: labels a little larger, next steps as full-width rows a thumb can hit ---- */
+/* ---- phones: labels a little larger ---- */
 @media (max-width: 680px) {
   .sg-facts dt, .sg-doc-meta dt, .sg-quick-grid dt, .sg-fee-k { font-size: 13px; }
-  .sg-next ul { display: grid; gap: 0; border-top: 1px solid var(--cs-line); }
-  .sg-next li { min-height: 0; border-bottom: 1px solid var(--cs-line); }
-  .sg-next li > a, .sg-next li > button { display: flex; width: 100%; min-height: 52px; align-items: center; justify-content: space-between; gap: 12px; text-decoration: none; font-size: 16px; text-align: start; }
-  .sg-next li > a::after, .sg-next li > button::after { content: '›'; font-size: 20px; line-height: 1; color: var(--cs-muted); }
-  html[dir="rtl"] .sg-next li > a::after, html[dir="rtl"] .sg-next li > button::after { content: '‹'; }
 }
 
 /* ===================================================================== */
@@ -439,7 +422,7 @@ body[data-theme="dark"] .sg-ov-conditional dt::before { color: #efdfb1; }
 .sg-program-details > p { font-size: 15px; line-height: 1.65; max-width: 640px; word-break: keep-all; margin-bottom: 10px; }
 .sg-program-details > p.sg-muted { font-size: 13px; }
 
-/* E · actions: one list of labelled rows */
+/* H · next actions: one list of labelled rows (the only .sg-next rules; phones get one column) */
 .sg-next .sg-actions { display: grid; gap: 0; border-top: 1px solid var(--cs-line); }
 .sg-next .sg-actions li { min-height: 0; border-bottom: 1px solid var(--cs-line); display: block; }
 .sg .sg-action, .sg a.sg-action { display: flex; width: 100%; min-height: 56px; align-items: center; justify-content: space-between; gap: 12px; padding: 9px 4px; border: 0; background: none; color: var(--cs-ink); text-decoration: none; text-align: start; font-size: 16px; font-weight: 600; line-height: 1.35; cursor: pointer; border-radius: 6px; }
@@ -451,10 +434,7 @@ body[data-theme="dark"] .sg-ov-conditional dt::before { color: #efdfb1; }
 .sg-action::after { content: '›'; flex: none; font-size: 20px; line-height: 1; color: var(--cs-muted); }
 .sg .sg-action-primary .sg-action { color: var(--cs-green); }
 .sg-action:hover { background: var(--cs-row); }
-.sg-next .sg-next-ai { margin-top: 0; }
-.sg-next .sg-next-ai .sg-action { color: var(--cs-ink); }
-@media (min-width: 681px) { .sg-next .sg-actions { grid-template-columns: 1fr 1fr; gap: 0 28px; } .sg-next .sg-actions li { border-bottom: 1px solid var(--cs-line); } }
-@media (max-width: 680px) { .sg-next li > .sg-action { min-height: 56px; font-size: 16px; } .sg-next li > .sg-action::after { content: '›'; } }
+@media (min-width: 681px) { .sg-next .sg-actions { grid-template-columns: 1fr 1fr; gap: 0 28px; } }
 html[dir="rtl"] .sg:not([dir="ltr"]) .sg-action::after { content: '‹'; }
 
 /* evidence: the procedure's own sources first, fee law behind a disclosure */
@@ -476,5 +456,3 @@ html[dir="rtl"] .sg:not([dir="ltr"]) .sg-action::after { content: '‹'; }
    action list and covers it while reading. It stays available from the legacy
    status card (기존 체류자격 카드 보기); the band shows only once that card is open. */
 .civic-refresh.searched[data-sg-state="ready"]:not([data-legacy-card="open"]) #f4gStickyCta { display: none !important; }
-/* The guidance block keeps LTR order on an RTL page (status-guidance.js sets dir="ltr"), so its row chevrons point forward there too. */
-html[dir="rtl"] .sg[dir="ltr"] .sg-next li > .sg-action::after, html[dir="rtl"] .sg[dir="ltr"] .sg-action::after { content: '›'; }

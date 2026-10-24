@@ -8,6 +8,9 @@ description: >
   (":root:not([data-theme=\"archive_diary\"])", UX-10 Foundations)이며,
   scripts/check_civic_tokens.mjs가 그 값으로 WCAG 대비 하한을 계산한다.
   아래 colors 값은 그 층을 옮겨 적은 것이다. 값이 다르면 index.html이 맞다.
+  단, 사용자가 스킨(Default/Stamp/Chrome/Neon, assets/css/visable-theme-skins.css)을
+  고른 상태에서는 그 스킨의 --vs-* 값이 --cs-*/--vp-* 토큰을 !important로 덮어쓴다.
+  화면에 보이는 색이 아래 값과 다르면 먼저 활성 스킨을 확인할 것(2026-10-24 메모).
 
 colors:
   # 브랜드 (civic layer CSS 변수 → 이 문서 키)

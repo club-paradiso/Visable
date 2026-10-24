@@ -60,7 +60,14 @@ pre-answer; unknown-code reporting (resolver + suggestion note); comparison rout
 exemption scopes (bundle regenerated with `npm run build:status-guidance`); router
 checks extended (+3); catalogue-filter e2e opens the directory first.
 
-Phase 3 (this commit): overview section, conditional scheme disclosure, grouped
+Follow-up (same PR): every call to action appears once — a source-only answer keeps
+its manual page only in the answer head and the Waymaker block replaces the follow-up
+row (4 action rows instead of 6); the superseded `.sg-next` rules (two older blocks and
+the phone-only row rules) were removed so the action list is styled in one place;
+DESIGN.md notes that an active skin overrides the civic colour tokens; the two new
+specs also run on mobile-430 and mobile-360.
+
+Phase 3: overview section, conditional scheme disclosure, grouped
 evidence, action rows, source-first fallback, reading width 820px, edition labels from
 the bundle, landmark/heading fixes, F-4 phone band hidden while the structured answer
 owns the page; `scripts/check_result_hierarchy.mjs` (wired into
@@ -78,6 +85,10 @@ owns the page; `scripts/check_result_hierarchy.mjs` (wired into
 | Unknown code `Z-9 연장`, phone | — | `after-unknown-code-phone-390.png` |
 | F-4, phone, Arabic (RTL page, LTR guidance) | — | `after-f4-extension-phone-390-arabic.png` |
 | F-4, phone, dark face | — | `after-f4-extension-phone-390-dark.png` |
+| F-4, phone, header slides away while reading | — | `after-f4-extension-phone-390-reading.png` |
+| Search suggestions ("F-4 연장"), phone / iPad | — | `after-search-suggestions-phone-390.png`, `after-search-suggestions-ipad-820.png` |
+| D-2, expanded official evidence, desktop | — | `after-d2-evidence-expanded-desktop-1280.png` |
+| Home, phone, dark face | — | `after-home-phone-390-dark.png` |
 
 ## 5. Search QA matrix (router → resolver → renderer, Node)
 
@@ -134,7 +145,7 @@ filtered inside the directory that this branch collapses — the spec now opens 
 | `npm run test:current-manuals` | pass |
 | `npm run test:i18n` | pass |
 | `npm run validate` | steps 1–13 pass; step 14 (`test:enforcement`) errors in this container only because `fastapi` is not installed for the backend unit tests (CI installs `backend/requirements-dev.txt`); after `pip install -r backend/requirements-dev.txt` the three enforcement unit modules run 52 tests, all OK |
-| Playwright: `tools-directory` + `result-hierarchy` (desktop-1280, tablet-768, mobile-390, mobile-320) | 20 + 36 passed |
+| Playwright: `tools-directory` + `result-hierarchy` (desktop-1280, tablet-768, mobile-430, mobile-390, mobile-360, mobile-320) | pass on every project (see PR) |
 | Playwright: `result-hierarchy`, `tools-directory`, `ux10-a11y`, `landing-boot`, `post-search-guidance`, `procedure-first-search`, `waymaker-quick-answer`, `search-result-unification`, `language-control` (desktop-1280 + mobile-390) | 172 passed |
 | Playwright: `search-first-home` + `easy-mode` (desktop-1280 + mobile-390) | 83 passed |
 | axe-core 4.10, 5 pages × 3 viewports | result pages clean; home: 1 minor `aria-allowed-role` (see §6) |
