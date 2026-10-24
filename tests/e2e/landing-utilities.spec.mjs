@@ -136,9 +136,10 @@ test('Current-edition original search preserves source scope, page links and exa
   await expect(results.locator('.cs-more')).toHaveCount(1);
   await expect(results.locator('.cs-result-title').first()).toContainText('E-7-4');
   await results.locator('#civicDomain').selectOption('visa_issuance');
-  await expect(results.locator('.cs-result-meta').first()).toContainText('2026-09-01');
+  // The visa-only filter must cite the promoted October 2026 edition, not the superseded September PDF.
+  await expect(results.locator('.cs-result-meta').first()).toContainText('2026-10-19');
   const link = results.locator('.cs-result-actions a').first();
-  await expect(link).toHaveAttribute('href', /visa_manual_260901\.pdf#page=\d+/);
+  await expect(link).toHaveAttribute('href', /docs\/source-manuals\/2026-10-19\/visa_manual_261019\.pdf#page=\d+/);
   await results.locator('.cs-result-title').first().click();
   await expect(page.locator('#civicPageDialog')).toBeVisible();
   await expect(page.locator('#civicPageDialog pre')).toContainText('E-7-4');
