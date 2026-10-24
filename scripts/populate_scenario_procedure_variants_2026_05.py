@@ -17,7 +17,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from audit_manual_ref_editions_2026_09 import anchored_2026_09
+from audit_manual_ref_editions_2026_10 import anchored_ref
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "visa_data.json"
@@ -639,7 +639,7 @@ def _compatible_existing_variant(existing: dict[str, Any], expected: dict[str, A
             return False
         # The 2026.6 citation this script wrote, or its 2026.9 relabel
         # (owner-approved 2026-10-19; wording checked on the cited page).
-        if not anchored_2026_09(ref) and (
+        if not anchored_ref(ref) and (
                 ref.get("manualVersion") != "2026.6" or ref.get("sourceFile") != SOURCE_FILE):
             return False
         if ref.get("needsManualReview") is not True:

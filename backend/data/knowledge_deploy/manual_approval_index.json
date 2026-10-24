@@ -196,7 +196,7 @@
       "approval_state": "draft"
     },
     "visa_manual_2026_09_01_hwp": {
-      "approval_state": "approved",
+      "approval_state": "superseded",
       "effective_date": "2026-09-01",
       "parser": "scripts/decrypt_hwp_distribution.py (배포용 HWP ViewText AES)",
       "reviewer": "michaelcool1009@gmail.com",
@@ -219,7 +219,9 @@
       "table_extraction_warnings": [
         "별표/첨부서류 tables are flattened to paragraph text; cell and column boundaries are NOT preserved and must not be read as a structured table. This holds regardless of approval state."
       ],
-      "approval_note": "Owner edition decision recorded 2026-10-16: the 2026-09-18 stay manual and the 2026-09-01 visa manual are the reference editions (owner-supplied files verified byte-identical to the committed copies, MD5 2507501da598b4d850f111011f779d13 / 13d25559c9255d9d41604dc6e9cad150). Runtime citations were re-checked page by page against this edition (D-2 pp.43-44, D-4 pp.90-92, E-7 p.227). The approval records the edition decision; it is not a line-by-line certification of every structured extract derived from it. See audits/manual-edition-2026-09-promotion/README.md for open review items."
+      "approval_note": "Owner edition decision recorded 2026-10-16: the 2026-09-18 stay manual and the 2026-09-01 visa manual are the reference editions (owner-supplied files verified byte-identical to the committed copies, MD5 2507501da598b4d850f111011f779d13 / 13d25559c9255d9d41604dc6e9cad150). Runtime citations were re-checked page by page against this edition (D-2 pp.43-44, D-4 pp.90-92, E-7 p.227). The approval records the edition decision; it is not a line-by-line certification of every structured extract derived from it. See audits/manual-edition-2026-09-promotion/README.md for open review items.",
+      "superseded_date": "2026-10-19",
+      "superseded_by": "visa_manual_2026_10_19_hwp"
     },
     "stay_manual_2026_09_01_hwp": {
       "approval_state": "superseded",
@@ -248,7 +250,7 @@
       "superseded_date": "2026-09-18"
     },
     "visa_manual_2026_09_01_pdf": {
-      "approval_state": "approved",
+      "approval_state": "superseded",
       "effective_date": "2026-09-01",
       "parser": "scripts/build_current_manual_corpus.py / PyMuPDF 1.28.2",
       "reviewer": "michaelcool1009@gmail.com",
@@ -265,10 +267,12 @@
       "table_extraction_warnings": [
         "PDF text layer only; image content and table cell relationships require checking the original page."
       ],
-      "approval_note": "Owner edition decision recorded 2026-10-16: the 2026-09-18 stay manual and the 2026-09-01 visa manual are the reference editions (owner-supplied files verified byte-identical to the committed copies, MD5 2507501da598b4d850f111011f779d13 / 13d25559c9255d9d41604dc6e9cad150). Runtime citations were re-checked page by page against this edition (D-2 pp.43-44, D-4 pp.90-92, E-7 p.227). The approval records the edition decision; it is not a line-by-line certification of every structured extract derived from it. See audits/manual-edition-2026-09-promotion/README.md for open review items."
+      "approval_note": "Owner edition decision recorded 2026-10-16: the 2026-09-18 stay manual and the 2026-09-01 visa manual are the reference editions (owner-supplied files verified byte-identical to the committed copies, MD5 2507501da598b4d850f111011f779d13 / 13d25559c9255d9d41604dc6e9cad150). Runtime citations were re-checked page by page against this edition (D-2 pp.43-44, D-4 pp.90-92, E-7 p.227). The approval records the edition decision; it is not a line-by-line certification of every structured extract derived from it. See audits/manual-edition-2026-09-promotion/README.md for open review items.",
+      "superseded_date": "2026-10-19",
+      "superseded_by": "visa_manual_2026_10_19_pdf"
     },
     "stay_manual_2026_09_18_pdf": {
-      "approval_state": "approved",
+      "approval_state": "superseded",
       "effective_date": "2026-09-18",
       "parser": "scripts/build_current_manual_corpus.py / PyMuPDF 1.28.2",
       "reviewer": "michaelcool1009@gmail.com",
@@ -285,10 +289,12 @@
       "table_extraction_warnings": [
         "PDF text layer only; image content and table cell relationships require checking the original page."
       ],
-      "approval_note": "Owner edition decision recorded 2026-10-16: the 2026-09-18 stay manual and the 2026-09-01 visa manual are the reference editions (owner-supplied files verified byte-identical to the committed copies, MD5 2507501da598b4d850f111011f779d13 / 13d25559c9255d9d41604dc6e9cad150). Runtime citations were re-checked page by page against this edition (D-2 pp.43-44, D-4 pp.90-92, E-7 p.227). The approval records the edition decision; it is not a line-by-line certification of every structured extract derived from it. See audits/manual-edition-2026-09-promotion/README.md for open review items."
+      "approval_note": "Owner edition decision recorded 2026-10-16: the 2026-09-18 stay manual and the 2026-09-01 visa manual are the reference editions (owner-supplied files verified byte-identical to the committed copies, MD5 2507501da598b4d850f111011f779d13 / 13d25559c9255d9d41604dc6e9cad150). Runtime citations were re-checked page by page against this edition (D-2 pp.43-44, D-4 pp.90-92, E-7 p.227). The approval records the edition decision; it is not a line-by-line certification of every structured extract derived from it. See audits/manual-edition-2026-09-promotion/README.md for open review items.",
+      "superseded_date": "2026-10-19",
+      "superseded_by": "stay_manual_2026_10_19_pdf"
     },
     "stay_manual_2026_09_18_hwp": {
-      "approval_state": "approved",
+      "approval_state": "superseded",
       "effective_date": "2026-09-18",
       "parser": "scripts/decrypt_hwp_distribution.py (배포용 HWP ViewText AES)",
       "reviewer": "michaelcool1009@gmail.com",
@@ -311,7 +317,9 @@
       "table_extraction_warnings": [
         "별표/첨부서류 tables are flattened to paragraph text; cell and column boundaries are NOT preserved and must not be read as a structured table. This holds regardless of approval state."
       ],
-      "approval_note": "Owner edition decision recorded 2026-10-16: the 2026-09-18 stay manual and the 2026-09-01 visa manual are the reference editions (owner-supplied files verified byte-identical to the committed copies, MD5 2507501da598b4d850f111011f779d13 / 13d25559c9255d9d41604dc6e9cad150). Runtime citations were re-checked page by page against this edition (D-2 pp.43-44, D-4 pp.90-92, E-7 p.227). The approval records the edition decision; it is not a line-by-line certification of every structured extract derived from it. See audits/manual-edition-2026-09-promotion/README.md for open review items."
+      "approval_note": "Owner edition decision recorded 2026-10-16: the 2026-09-18 stay manual and the 2026-09-01 visa manual are the reference editions (owner-supplied files verified byte-identical to the committed copies, MD5 2507501da598b4d850f111011f779d13 / 13d25559c9255d9d41604dc6e9cad150). Runtime citations were re-checked page by page against this edition (D-2 pp.43-44, D-4 pp.90-92, E-7 p.227). The approval records the edition decision; it is not a line-by-line certification of every structured extract derived from it. See audits/manual-edition-2026-09-promotion/README.md for open review items.",
+      "superseded_date": "2026-10-19",
+      "superseded_by": "stay_manual_2026_10_19_hwp"
     },
     "visa_manual_2026_09_01_md": {
       "approval_state": "needs_review",
@@ -416,6 +424,150 @@
       ],
       "would_supersede": "stay_manual_2026_09_18_pdf",
       "change_review_artifact": "audits/manual-refresh-20261019/README.md"
+    },
+    "visa_manual_2026_10_19_pdf": {
+      "approval_state": "approved",
+      "effective_date": "2026-10-19",
+      "parser": "scripts/build_current_manual_corpus.py / PyMuPDF 1.28.2",
+      "reviewer": "michaelcool1009@gmail.com",
+      "reviewed_at": "2026-10-23",
+      "source_confidence": "high",
+      "has_tables_or_annexes": true,
+      "section_locator": "pdf_page",
+      "source_path": "docs/source-manuals/2026-10-19/visa_manual_261019.pdf",
+      "source_sha256": "a2547f04ee484b77e1058ac15969127404c1c700db9fdc5e6127fa3b16cb6f68",
+      "extracted_text_path": "docs/source-manuals/2026-10-19/extracted/visa_manual_2026_10_19_pdf.txt",
+      "extraction_warnings": [
+        "PDF text layer only; image content and table cell relationships require checking the original page."
+      ],
+      "table_extraction_warnings": [
+        "PDF text layer only; image content and table cell relationships require checking the original page."
+      ],
+      "approval_note": "Owner edition decision recorded 2026-10-23 (stated in chat): the 2026-10-19 stay and visa manuals (cover '2026. 10.') are the reference editions. The owner-supplied HWPs are pinned by SHA-256 (visa 8f9f2e04…, stay 7effc9d0…, equal to the earlier staging record). The PDFs were printed from those HWPs with Hancom Office HWP Viewer 12.31 (macOS Quartz PDFContext); the same procedure reproduces the committed 2026-09-01 visa PDF with identical text on all 519 pages. Runtime citations were re-checked page by page (see audits/manual-refresh-20261019/). The approval records the edition decision; it is not a line-by-line certification of every structured extract derived from it, and the filename date is not a verified legal effective date."
+    },
+    "stay_manual_2026_10_19_pdf": {
+      "approval_state": "approved",
+      "effective_date": "2026-10-19",
+      "parser": "scripts/build_current_manual_corpus.py / PyMuPDF 1.28.2",
+      "reviewer": "michaelcool1009@gmail.com",
+      "reviewed_at": "2026-10-23",
+      "source_confidence": "high",
+      "has_tables_or_annexes": true,
+      "section_locator": "pdf_page",
+      "source_path": "docs/source-manuals/2026-10-19/stay_manual_261019.pdf",
+      "source_sha256": "4b176173f4c09ca1522f74e9a3e58cc0477a69aa6a28142bd675ca103f60397d",
+      "extracted_text_path": "docs/source-manuals/2026-10-19/extracted/stay_manual_2026_10_19_pdf.txt",
+      "extraction_warnings": [
+        "PDF text layer only; image content and table cell relationships require checking the original page."
+      ],
+      "table_extraction_warnings": [
+        "PDF text layer only; image content and table cell relationships require checking the original page."
+      ],
+      "approval_note": "Owner edition decision recorded 2026-10-23 (stated in chat): the 2026-10-19 stay and visa manuals (cover '2026. 10.') are the reference editions. The owner-supplied HWPs are pinned by SHA-256 (visa 8f9f2e04…, stay 7effc9d0…, equal to the earlier staging record). The PDFs were printed from those HWPs with Hancom Office HWP Viewer 12.31 (macOS Quartz PDFContext); the same procedure reproduces the committed 2026-09-01 visa PDF with identical text on all 519 pages. Runtime citations were re-checked page by page (see audits/manual-refresh-20261019/). The approval records the edition decision; it is not a line-by-line certification of every structured extract derived from it, and the filename date is not a verified legal effective date."
+    },
+    "visa_manual_2026_10_19_hwp": {
+      "approval_state": "approved",
+      "effective_date": "2026-10-19",
+      "parser": "scripts/decrypt_hwp_distribution.py (배포용 HWP ViewText AES)",
+      "reviewer": "michaelcool1009@gmail.com",
+      "reviewed_at": "2026-10-23",
+      "source_confidence": "high",
+      "has_tables_or_annexes": true,
+      "section_locator": "paragraph",
+      "source_path": "docs/source-manuals/2026-10-19/visa_manual_261019.hwp",
+      "source_sha256": "8f9f2e049b3cf09d46bf563e2d97fde596c3743318635f985bf35b51f79a5e8f",
+      "extracted_text_path": "docs/source-manuals/2026-10-19/extracted/full_text/visa_manual_261019.txt",
+      "would_supersede": "visa_manual_2026_09_01_hwp",
+      "manifest_slot": "current.visa_issuance_manual.alternate_source_files",
+      "change_review_artifact": "audits/manual-refresh-20261019/same-method-review.md",
+      "extraction_warnings": [
+        "Extracted from the 배포용 HWP ViewText stream via scripts/decrypt_hwp_distribution.py. The text layer is the document's own, so there are no OCR or glyph artifacts.",
+        "Paragraph-based, not page-based. It does not share locators with visa_manual_2026_10_19_pdf, which is the same edition read from the PDF export and is the one the searchable corpus indexes. Never merge paragraph locators, page numbers or counts across the two containers.",
+        "The same script reproduces the approved 2026-09-01 visa extraction byte for byte (SHA-256 fed18d94…), which establishes that the extraction METHOD is sound; the CONTENT has not been compared against the original by a human."
+      ],
+      "table_extraction_warnings": [
+        "별표/첨부서류 tables are flattened to paragraph text; cell and column boundaries are NOT preserved and must not be read as a structured table. This holds regardless of approval state."
+      ],
+      "approval_note": "Owner edition decision recorded 2026-10-23 (stated in chat): the 2026-10-19 stay and visa manuals (cover '2026. 10.') are the reference editions. The owner-supplied HWPs are pinned by SHA-256 (visa 8f9f2e04…, stay 7effc9d0…, equal to the earlier staging record). The PDFs were printed from those HWPs with Hancom Office HWP Viewer 12.31 (macOS Quartz PDFContext); the same procedure reproduces the committed 2026-09-01 visa PDF with identical text on all 519 pages. Runtime citations were re-checked page by page (see audits/manual-refresh-20261019/). The approval records the edition decision; it is not a line-by-line certification of every structured extract derived from it, and the filename date is not a verified legal effective date."
+    },
+    "stay_manual_2026_10_19_hwp": {
+      "approval_state": "approved",
+      "effective_date": "2026-10-19",
+      "parser": "scripts/decrypt_hwp_distribution.py (배포용 HWP ViewText AES)",
+      "reviewer": "michaelcool1009@gmail.com",
+      "reviewed_at": "2026-10-23",
+      "source_confidence": "high",
+      "has_tables_or_annexes": true,
+      "section_locator": "paragraph",
+      "source_path": "docs/source-manuals/2026-10-19/stay_manual_261019.hwp",
+      "source_sha256": "7effc9d03389e87dc3613db6da873a5d3807ddf4f506df2960f2b017fefabc07",
+      "extracted_text_path": "docs/source-manuals/2026-10-19/extracted/full_text/stay_manual_261019.txt",
+      "would_supersede": "stay_manual_2026_09_18_hwp",
+      "manifest_slot": "current.stay_residence_manual.alternate_source_files",
+      "change_review_artifact": "audits/manual-refresh-20261019/same-method-review.md",
+      "extraction_warnings": [
+        "Extracted from the 배포용 HWP ViewText stream via scripts/decrypt_hwp_distribution.py. The text layer is the document's own, so there are no OCR or glyph artifacts.",
+        "Paragraph-based, not page-based. It does not share locators with stay_manual_2026_10_19_pdf, which is the same edition read from the PDF export and is the one the searchable corpus indexes. Never merge paragraph locators, page numbers or counts across the two containers.",
+        "The same script reproduces the approved 2026-09-01 visa extraction byte for byte (SHA-256 fed18d94…), which establishes that the extraction METHOD is sound; the CONTENT has not been compared against the original by a human."
+      ],
+      "table_extraction_warnings": [
+        "별표/첨부서류 tables are flattened to paragraph text; cell and column boundaries are NOT preserved and must not be read as a structured table. This holds regardless of approval state."
+      ],
+      "approval_note": "Owner edition decision recorded 2026-10-23 (stated in chat): the 2026-10-19 stay and visa manuals (cover '2026. 10.') are the reference editions. The owner-supplied HWPs are pinned by SHA-256 (visa 8f9f2e04…, stay 7effc9d0…, equal to the earlier staging record). The PDFs were printed from those HWPs with Hancom Office HWP Viewer 12.31 (macOS Quartz PDFContext); the same procedure reproduces the committed 2026-09-01 visa PDF with identical text on all 519 pages. Runtime citations were re-checked page by page (see audits/manual-refresh-20261019/). The approval records the edition decision; it is not a line-by-line certification of every structured extract derived from it, and the filename date is not a verified legal effective date."
+    },
+    "visa_manual_2026_10_19_md": {
+      "approval_state": "needs_review",
+      "document_role": "derived_text",
+      "chunk_approval": "inherited_per_mapped_pdf_page",
+      "inherits_page_approval_from": "visa_manual_2026_10_19_pdf",
+      "effective_date": "2026-10-19",
+      "parser": "scripts/build_manual_markdown_corpus.py (HTML table → '열이름: 값' rows; 10-char shingle page map)",
+      "reviewer": "",
+      "reviewed_at": "",
+      "source_confidence": "machine_verified",
+      "has_tables_or_annexes": true,
+      "section_locator": "pdf_page_via_page_map",
+      "source_path": "docs/source-manuals/2026-10-19/derived/visa_manual_261019.md",
+      "source_sha256": "c98677f307dcb362012bfa4935e746390cd80e7e59603201529ea5f352698959",
+      "page_map_path": "data/manual-corpus/visa_manual_2026_10_19_md.json",
+      "provenance": "owner-supplied HWP→Markdown conversion (261019_hikorea_markdown_2.zip, 2026-10-22)",
+      "manifest_slot": "current.visa_issuance_manual.derived_texts",
+      "extraction_warnings": [
+        "Owner-supplied HWP→Markdown conversion of the approved 2026.10 edition. It has no page numbers; pages come from scripts/build_manual_markdown_corpus.py matching each chunk's normalized text against the approved PDF page text.",
+        "Machine-verified, not human-reviewed line by line. The document as a whole stays needs_review. Only chunks mapped to a PDF page with high or medium confidence inherit the edition's approval (direct evidence, cited by that PDF page); low/none and out-of-sequence chunks are indexed as needs_review with page 0.",
+        "Images referenced by the Markdown (owner zip, images/261019) are not in the repository and carry no evidence."
+      ],
+      "table_extraction_warnings": [
+        "Tables are rendered from the converter's HTML/pipe tables as '열이름: 값' or '행 제목: 값' lines, with rowspans carried. Header detection is heuristic (short all-<th> leading rows); multi-level headers can be joined imperfectly, so a table row must be checked against the cited PDF page before it is quoted as a requirement."
+      ],
+      "approval_note": "Not a new approval. Recorded 2026-10-23 so the derived text is tracked: it inherits the owner's 2026-10-23 edition decision for visa_manual_2026_10_19_pdf only where a chunk is page-mapped to that approved PDF."
+    },
+    "stay_manual_2026_10_19_md": {
+      "approval_state": "needs_review",
+      "document_role": "derived_text",
+      "chunk_approval": "inherited_per_mapped_pdf_page",
+      "inherits_page_approval_from": "stay_manual_2026_10_19_pdf",
+      "effective_date": "2026-10-19",
+      "parser": "scripts/build_manual_markdown_corpus.py (HTML table → '열이름: 값' rows; 10-char shingle page map)",
+      "reviewer": "",
+      "reviewed_at": "",
+      "source_confidence": "machine_verified",
+      "has_tables_or_annexes": true,
+      "section_locator": "pdf_page_via_page_map",
+      "source_path": "docs/source-manuals/2026-10-19/derived/stay_manual_261019.md",
+      "source_sha256": "dd15cc8221c26e55f4d67aa5d4766782d1d79ba3b84efb9a0fb988981c76b563",
+      "page_map_path": "data/manual-corpus/stay_manual_2026_10_19_md.json",
+      "provenance": "owner-supplied HWP→Markdown conversion (261019_hikorea_markdown_2.zip, 2026-10-22)",
+      "manifest_slot": "current.stay_residence_manual.derived_texts",
+      "extraction_warnings": [
+        "Owner-supplied HWP→Markdown conversion of the approved 2026.10 edition. It has no page numbers; pages come from scripts/build_manual_markdown_corpus.py matching each chunk's normalized text against the approved PDF page text.",
+        "Machine-verified, not human-reviewed line by line. The document as a whole stays needs_review. Only chunks mapped to a PDF page with high or medium confidence inherit the edition's approval (direct evidence, cited by that PDF page); low/none and out-of-sequence chunks are indexed as needs_review with page 0.",
+        "Images referenced by the Markdown (owner zip, images/261019) are not in the repository and carry no evidence."
+      ],
+      "table_extraction_warnings": [
+        "Tables are rendered from the converter's HTML/pipe tables as '열이름: 값' or '행 제목: 값' lines, with rowspans carried. Header detection is heuristic (short all-<th> leading rows); multi-level headers can be joined imperfectly, so a table row must be checked against the cited PDF page before it is quoted as a requirement."
+      ],
+      "approval_note": "Not a new approval. Recorded 2026-10-23 so the derived text is tracked: it inherits the owner's 2026-10-23 edition decision for stay_manual_2026_10_19_pdf only where a chunk is page-mapped to that approved PDF."
     }
   }
 }

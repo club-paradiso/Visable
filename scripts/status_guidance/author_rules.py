@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Authoring source for data/guidance-rules-202609.json.
 
-Every rule here is transcribed from the September 2026 Ministry of Justice
-manuals. Each guidance entry and each document item carries an `anchor`: a
+Every rule here is transcribed from the Ministry of Justice manuals (the
+2026.9 editions, re-anchored on the 2026.10 editions on 2026-10-23). Each guidance entry and each document item carries an `anchor`: a
 verbatim (whitespace-insensitive) substring of the manual text. The build
 (scripts/build_status_coverage_manifest.py) resolves anchors to PDF pages and
 HWP line numbers and FAILS when an anchor cannot be found, so nothing in this
@@ -18,8 +18,8 @@ import sys
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 OUT = os.path.join(ROOT, 'data', 'guidance-rules-202609.json')
 
-STAY = 'stay_manual_2026_09_18'
-VISA = 'visa_manual_2026_09_01'
+STAY = 'stay_manual_2026_10_19'
+VISA = 'visa_manual_2026_10_19'
 
 # --------------------------------------------------------------------------
 # Procedure catalog (one domain each — never mixed)
@@ -644,14 +644,16 @@ guidance('F-1-D', 'extension',
          summary_ko='해외 법인과의 근로계약을 유지하며 소득요건을 충족하는 워케이션 체류자는 1회 1년씩 최장 3년까지 연장할 수 있습니다. 비수도권·인구감소지역 체류를 이유로 소득요건을 완화받았다면 실제 거주 여부를 확인합니다.',
          summary_en='Workation (digital nomad) residents who keep a contract with an overseas employer and meet the income test may extend one year at a time up to three years. If the income test was relaxed for staying outside the capital region, actual residence there is checked.',
          period_ko='1회 1년씩 최장 3년', period_en='1 year at a time, up to 3 years',
-         conditions_ko=['소득요건 완화 후 허가기간 내 수도권으로 이주하면 수도권 소득기준 충족 또는 비수도권 재이동을 조건으로 6개월만 부여됩니다.'],
-         conditions_en=['If you move to the capital region after a relaxed income test, only 6 months are granted unless you meet the capital-region income standard or move back.'],
+         conditions_ko=['소득요건 완화 후 허가기간 내 수도권으로 이주하면 수도권 소득기준 충족 또는 비수도권 재이동을 조건으로 6개월만 부여됩니다.',
+                        '입국 후 중도 실직한 경우 신고하거나 출국할 의무는 없으나, 체류기간 연장은 허용되지 않습니다. (2026.10 판)'],
+         conditions_en=['If you move to the capital region after a relaxed income test, only 6 months are granted unless you meet the capital-region income standard or move back.',
+                        'If you lose your job after entry you are not obliged to report it or leave, but your stay cannot be extended. (2026.10 edition)'],
          docs=[item('app_form_34', anchor='① 신청서(별지 34호 서식), 여권, 표준규격사진 1매, 수수료'), item('passport', anchor='① 신청서(별지 34호 서식), 여권, 표준규격사진 1매, 수수료'), item('photo', anchor='여권, 표준규격사진 1매, 수수료'), item('fee', anchor='여권, 표준규격사진 1매, 수수료'),
                item('employment_cert_1y', anchor='재직증명서(동일 업종에 1년 이상 종사 입증 필요)', role='employer'),
                item('income_proof', anchor='급여명세서, 잔고증명 등 소득 증빙 서류'),
                item('criminal_record_health_ins', anchor='범죄경력증명서, 의료보험 가입 증명서', notes_ko='해외범죄경력증명서 제출기준은 F-1-D 붙임을 따릅니다.', notes_en='Overseas criminal-record rules follow the F-1-D annex.'),
                item('family_relation', 'CONDITIONAL_REQUIRED', anchor='가족관계 입증서류(가족 동반시)', applies_when_ko='가족을 동반하는 경우', applies_when_en='If family members accompany you'),
-               item('regional_stay_proof', 'CONDITIONAL_REQUIRED', anchor='(해당 시) 비수도권 및 인구감소(관심)지역에 체류할 예정임을 입증하는 서류', applies_when_ko='비수도권·인구감소(관심)지역 체류를 이유로 소득요건을 완화받는 경우', applies_when_en='If claiming the relaxed income test for staying outside the capital region'),
+               item('regional_stay_proof', 'CONDITIONAL_REQUIRED', anchor='(해당 시) 비수도권 및 인구감소(관심)지역에 체류할 예정임을 입증하는 서류', applies_when_ko='비수도권·인구감소(관심)지역 체류를 이유로 소득요건을 완화받는 경우', applies_when_en='If claiming the relaxed income test for staying outside the capital region', notes_ko='비수도권 지역 등록자는 본인 명의로 제출해야 합니다. (2026.10 판)', notes_en='Registrants outside the capital region must submit it in their own name. (2026.10 edition)'),
                item('other_officer_docs', 'MAY_BE_REQUESTED_BY_OFFICER', anchor='기타 출입국관서의 장이 심사에 필요하다고 인정하는 서류')])
 
 # ==========================================================================
@@ -1118,7 +1120,7 @@ guidance('H-2', 'registration', completeness='PARTIALLY_STRUCTURED', section='�
 # headings ("해당사항 없음", "억제", "불가 원칙"). Anchored like everything else.
 # ==========================================================================
 # ==========================================================================
-# COMMON (status-independent) procedures — the 2026.9 stay manual has no
+# COMMON (status-independent) procedures — the 2026.10 stay manual has no
 # chapter for these; the regulation is the source. Manual anchors bind the
 # 공통사항 fee table (p. 4) and the 별지 제34호 통합신청서 page where the manual
 # reproduces them. target 'COMMON' is never a status: the resolver serves it
@@ -1411,7 +1413,7 @@ FEES = [
     fee('extension_general', 'extension', 60000, '체류기간 연장허가 심사수수료', 'Extension of stay fee', instruments=STAMP_INSTRUMENTS, channels=('office', 'online'), online_reduction=ONLINE_20,
         law_quote='체류기간 연장 허가: 6만원', manual_anchor='체류기간 연장허가 6만원', exemptions=(EX_A_SERIES_D8, EX_GOV_INVITED, EX_D2_REG_WITH_EXT),
         notes_ko=('심사수수료이므로 접수 후 반환되지 않습니다.',), notes_en=('An examination fee: not refunded once the application is accepted.',),
-        investigations=({'topic': 'g1_99_exemption', 'ko': '기타(G-1-99) 연장 수수료 면제 근거는 시행규칙 제74조와 2026.9 체류매뉴얼에서 확인되지 않았습니다(매뉴얼: "수수료는 일반 체류외국인과 동일").', 'en': 'No basis for a G-1-99 extension-fee exemption was found in Rule Art. 74 or the 2026.9 stay manual ("same fee as other residents").', 'manual_anchor': '수수료는 일반 체류외국인과 동일', 'state': 'NOT_FOUND'},)),
+        investigations=({'topic': 'g1_99_exemption', 'ko': '기타(G-1-99) 연장 수수료 면제 근거는 시행규칙 제74조와 2026.10 체류매뉴얼에서 확인되지 않았습니다(매뉴얼: "수수료는 일반 체류외국인과 동일").', 'en': 'No basis for a G-1-99 extension-fee exemption was found in Rule Art. 74 or the 2026.10 stay manual ("same fee as other residents").', 'manual_anchor': '수수료는 일반 체류외국인과 동일', 'state': 'NOT_FOUND'},)),
     fee('extension_f6', 'extension', 30000, '체류기간 연장허가 심사수수료 (결혼이민 F-6)', 'Extension of stay fee (F-6 marriage migrant)', scope={'parents': ['F-6']}, instruments=STAMP_INSTRUMENTS, channels=('office', 'online'), online_reduction=ONLINE_20,
         law_quote='결혼이민(F-6) 체류자격을 가지고 있는 경우에는 3만원', manual_anchor='결혼이민(F-6) 3만원', exemptions=(EX_A_SERIES_D8,)),
     fee('status_change_general', 'status_change', 100000, '체류자격 변경허가 심사수수료', 'Change of status fee', instruments=STAMP_INSTRUMENTS, channels=('office', 'online'), online_reduction=ONLINE_20,
@@ -1423,7 +1425,7 @@ FEES = [
     fee('activities_outside_status', 'activities_outside_status', 120000, '체류자격 외 활동허가 심사수수료', 'Activities-outside-status permit fee', instruments=STAMP_INSTRUMENTS, law_quote='체류자격 외 활동허가: 12만원', manual_anchor='체류자격 외 활동허가 12만원', exemptions=(EX_A_SERIES_D8,)),
     fee('part_time_work', 'part_time_work', 20000, '유학생 시간제 취업허가 수수료', 'Student part-time work permit fee', scope={'parents': ['D-2', 'D-4']}, instruments=STAMP_INSTRUMENTS, amount_state='CONFLICT', review_state='CONFLICT',
         law_quote='영 별표 1의2 중 5. 유학(D-2) 또는 7. 일반연수(D-4) 체류자격을 가지고 있는 사람에 대한 시간제 취업 허용 등 법무부장관이 인정하는 경우에는 2만원', manual_anchor='신청서, 여권, 외국인등록증 ※ 수수료 면제',
-        conflicts=({'regulation_ko': '시행규칙 제72조 제2호 단서: 2만원', 'regulation_en': 'Rule Art. 72(2) proviso: KRW 20,000', 'manual_ko': '2026.9 체류매뉴얼 유학(D-2) 시간제취업 절: "※ 수수료 면제"', 'manual_en': '2026.9 stay manual, D-2 part-time section: "fee exempt"', 'interim_ko': '금액을 단정하지 않고 두 근거를 함께 표시합니다. 신청 전 관할 관서에서 확인하세요.', 'interim_en': 'Both values are shown; confirm with the office before applying.'},)),
+        conflicts=({'regulation_ko': '시행규칙 제72조 제2호 단서: 2만원', 'regulation_en': 'Rule Art. 72(2) proviso: KRW 20,000', 'manual_ko': '2026.10 체류매뉴얼 유학(D-2) 시간제취업 절: "※ 수수료 면제"', 'manual_en': '2026.10 stay manual, D-2 part-time section: "fee exempt"', 'interim_ko': '금액을 단정하지 않고 두 근거를 함께 표시합니다. 신청 전 관할 관서에서 확인하세요.', 'interim_en': 'Both values are shown; confirm with the office before applying.'},)),
     fee('workplace_change', 'workplace_change', 120000, '근무처 변경·추가 허가 심사수수료', 'Workplace change/addition permit fee', instruments=STAMP_INSTRUMENTS, channels=('office', 'online'), online_reduction=ONLINE_20,
         law_quote='근무처의 변경·추가 허가: 12만원', manual_anchor='근무처의 변경․추가 12만원', exemptions=(EX_A_SERIES_D8, EX_WORKPLACE_REPORT)),
     fee('reentry_single', 'reentry', 30000, '단수재입국허가 수수료', 'Single re-entry permit fee', instruments=STAMP_INSTRUMENTS, channels=('office', 'online'), online_reduction=ONLINE_20,

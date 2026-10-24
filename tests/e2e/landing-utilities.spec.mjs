@@ -120,7 +120,7 @@ test('an early short-stay tap opens the checker exactly once', async ({ page }) 
   await expect(page.locator('#shortStayModalOverlay')).toHaveCount(1);
 });
 
-test('September original search preserves source scope, page links and exact code aliases', async ({ page }) => {
+test('Current-edition original search preserves source scope, page links and exact code aliases', async ({ page }) => {
   await page.goto('/index.html');
   await page.locator('#civicQuery').fill('E74');
   await page.locator('#civicSearchForm button[type="submit"]').click();
@@ -130,7 +130,7 @@ test('September original search preserves source scope, page links and exact cod
   await expect(page.locator('#statusGuidance[data-sg-kind]')).toBeVisible({ timeout: 20_000 });
   await expect(raw).not.toHaveAttribute('open', /.*/);
   await raw.locator('summary').click();
-  await expect(results).toContainText('2026.09.18');
+  await expect(results).toContainText('2026-10-19');
   // 3 hits to start; 결과 더 보기 loads more.
   await expect(results.locator('.cs-manual-list li')).toHaveCount(3);
   await expect(results.locator('.cs-more')).toHaveCount(1);

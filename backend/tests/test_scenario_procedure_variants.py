@@ -21,23 +21,26 @@ for path in (str(BACKEND_DIR), str(SCRIPTS_DIR)):
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _i18n_pack_support import load_packs, localized, pack_blobs  # noqa: E402
 from check_required_documents_coverage import validate_procedure_variants  # noqa: E402
-import audit_manual_ref_editions_2026_09 as manual_ref_audit  # noqa: E402
+import audit_manual_ref_editions_2026_10 as manual_ref_audit  # noqa: E402
 
 STAY_2026_6_TEXT = "backend/data/sources/manuals/260623_stay_manual_readable.txt"
 
 
 def assert_stay_ref_edition(case: unittest.TestCase, manual_ref: dict, msg=None) -> None:
     """A variant's stay ref either still cites the 2026.6 export it was built
-    from, or was relabelled to 2026.9 (owner approval 2026-10-19,
-    audits/manual-ref-edition-2026-09). A 2026.9 ref must name the 2026.9 stay
-    text and carry its section wording verbatim on the cited 2026.9 page(s)."""
-    if manual_ref["manualVersion"] == "2026.6":
+    from, or was relabelled (2026.9 on 2026-10-19, 2026.10 on 2026-10-23;
+    audits/manual-ref-edition-2026-09 and -2026-10). A relabelled ref must name
+    its edition's stay text and carry its section wording verbatim on the
+    cited page(s) of that edition."""
+    version = manual_ref["manualVersion"]
+    if version == "2026.6":
         case.assertEqual(manual_ref["sourceFile"], STAY_2026_6_TEXT, msg)
         return
-    case.assertEqual(manual_ref["manualVersion"], "2026.9", msg)
-    case.assertEqual(manual_ref["sourceFile"], manual_ref_audit.NEW["stay"]["text"], msg)
-    case.assertTrue(manual_ref_audit.anchored_2026_09(manual_ref),
-                    f"{msg}: {manual_ref['section']!r} not on 2026.9 {manual_ref['pageRange']}")
+    case.assertIn(version, ("2026.9", "2026.10"), msg)
+    expected = manual_ref_audit.NEW["stay"] if version == "2026.10" else manual_ref_audit.PREVIOUS["stay"]
+    case.assertEqual(manual_ref["sourceFile"], expected["text"], msg)
+    case.assertTrue(manual_ref_audit.anchored_ref(manual_ref),
+                    f"{msg}: {manual_ref['section']!r} not on {version} {manual_ref['pageRange']}")
 
 
 # Localized scenario/checklist copy now lives in external per-locale JSON packs

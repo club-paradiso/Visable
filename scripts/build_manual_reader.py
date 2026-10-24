@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
-"""Build the readable manual reader (manual.html) from the 2026.9 Markdown sources.
+"""Build the readable manual reader (manual.html) from the 2026.10 Markdown sources.
 
 Sources (digest-pinned in data/manual-reader/catalog.json):
-  docs/source-manuals/2026-09/markdown/visa_manual_260901.md  사증발급 안내매뉴얼 2026.9 (2026-09-01)
-  docs/source-manuals/2026-09/markdown/stay_manual_260918.md  외국인체류 안내매뉴얼 2026.9 (2026-09-18)
+  docs/source-manuals/2026-10-19/markdown/visa_manual_261019.md  사증발급 안내매뉴얼 2026.10 (2026-10-19)
+  docs/source-manuals/2026-10-19/markdown/stay_manual_261019.md  외국인체류 안내매뉴얼 2026.10 (2026-10-19)
+
+The two Markdown files are `npx kordoc@^4` (4.24.1) conversions of the 배포용 HWPs
+(docs/source-manuals/2026-10-19/*.hwp), made the same way as the 2026.9 ones: same
+images, same layout, same chapter start lines (only the changed passages differ).
 
 What this does: split each manual into status chapters, turn the HWP layout tables
 (label cell | content cell) into labelled sections, classify each <br>-line by its
@@ -26,16 +30,16 @@ from bs4 import BeautifulSoup, NavigableString, Tag
 from markdown_it import MarkdownIt
 
 ROOT = Path(__file__).resolve().parents[1]
-SRC_DIR = ROOT / 'docs/source-manuals/2026-09/markdown'
+SRC_DIR = ROOT / 'docs/source-manuals/2026-10-19/markdown'
 OUT_DIR = ROOT / 'data/manual-reader'
 IMG_OUT = ROOT / 'assets/manual-reader/img'
 SOURCES = {
-    'v': {'id': 'visa_manual_2026_09_01_md', 'file': 'visa_manual_260901.md', 'images': 'images/260901',
-          'title': '사증발급 안내매뉴얼', 'title_en': 'Visa Issuance Guide Manual', 'date': '2026-09-01', 'version': '2026.9',
-          'pdf': 'docs/source-manuals/2026-09/visa_manual_260901.pdf', 'pdf_text': 'docs/source-manuals/2026-09/extracted/visa_manual_2026_09_01_pdf.txt'},
-    's': {'id': 'stay_manual_2026_09_18_md', 'file': 'stay_manual_260918.md', 'images': 'images/260918',
-          'title': '외국인체류 안내매뉴얼', 'title_en': 'Foreigner Stay/Residence Guide Manual', 'date': '2026-09-18', 'version': '2026.9',
-          'pdf': 'docs/source-manuals/2026-09/stay_manual_260918.pdf', 'pdf_text': 'docs/source-manuals/2026-09/extracted/stay_manual_2026_09_18_pdf.txt'},
+    'v': {'id': 'visa_manual_2026_10_19_reader_md', 'file': 'visa_manual_261019.md', 'images': 'images/261019-visa',
+          'title': '사증발급 안내매뉴얼', 'title_en': 'Visa Issuance Guide Manual', 'date': '2026-10-19', 'version': '2026.10',
+          'pdf': 'docs/source-manuals/2026-10-19/visa_manual_261019.pdf', 'pdf_text': 'docs/source-manuals/2026-10-19/extracted/visa_manual_2026_10_19_pdf.txt'},
+    's': {'id': 'stay_manual_2026_10_19_reader_md', 'file': 'stay_manual_261019.md', 'images': 'images/261019-stay',
+          'title': '외국인체류 안내매뉴얼', 'title_en': 'Foreigner Stay/Residence Guide Manual', 'date': '2026-10-19', 'version': '2026.10',
+          'pdf': 'docs/source-manuals/2026-10-19/stay_manual_261019.pdf', 'pdf_text': 'docs/source-manuals/2026-10-19/extracted/stay_manual_2026_10_19_pdf.txt'},
 }
 OFFICIAL_URL = 'https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&BBS_GB_CD=BS10&NTCCTT_SEQ=1062&page=1'
 # Chapter starts (1-based line numbers in each Markdown file). A chapter runs to the next start.
@@ -619,7 +623,7 @@ def build():
         probes = [c for c in (compact(l) for l in md_plain.split('\n')) if len(c) >= 15]
         matched = sum(1 for c in probes if c[:15] in pdf_compact)
         sources[tag] = dict({k: v for k, v in meta.items() if k not in ('images',)},
-                            markdown=f'docs/source-manuals/2026-09/markdown/{meta["file"]}',
+                            markdown=f'docs/source-manuals/2026-10-19/markdown/{meta["file"]}',
                             sha256=hashlib.sha256(raw).hexdigest(), official_url=OFFICIAL_URL,
                             approval_state='needs_review',
                             pdf_crosscheck={'probes': len(probes), 'matched': matched,

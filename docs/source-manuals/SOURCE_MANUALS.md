@@ -2,43 +2,44 @@
 
 The Ministry of Justice immigration manuals in this directory are Paradiso's official source artifacts for extraction and grounding work. `source_manifest.json` is the canonical current/archived pointer.
 
-Current manuals (see `source_manifest.json` `current` for the authoritative pointer). Both 2026.9 editions were made current by the owner's edition decision of 2026-10-16 (`audits/manual-edition-2026-09-promotion/README.md`); that decision is an edition choice, not a line-by-line certification of every extract derived from them.
+Current manuals (see `source_manifest.json` `current` for the authoritative pointer). Both 2026.10 editions (file date 2026-10-19; the cover reads "2026. 10.") were made current by the owner's edition decision of 2026-10-23 (`audits/manual-edition-2026-10-promotion/README.md`). The owner supplied the HWPs and the HWP→Markdown conversions; the PDFs were printed from those HWPs with Hancom Office HWP Viewer 12.31 (the same procedure reproduces the committed 2026-09-01 visa PDF, identical text on all 519 pages).
 
-- `2026-09/visa_manual_260901.pdf` - 사증발급 안내매뉴얼, 2026.9 / source date 2026-09-01, 519 pages. Page-anchored primary: `data/manual-corpus/visa_manual_2026_09_01_pdf.json`, text at `2026-09/extracted/visa_manual_2026_09_01_pdf.txt`.
-  - Same edition, other container: `2026-09-01/visa_manual_260901.hwp` (배포용 HWP; ViewText extraction at `2026-09-01/extracted/full_text/visa_manual_260901.txt`; paragraph-anchored, not indexed).
-- `2026-09/stay_manual_260918.pdf` - 외국인체류 안내매뉴얼, 2026.9 / source date 2026-09-18, 810 pages. Page-anchored primary: `data/manual-corpus/stay_manual_2026_09_18_pdf.json`, text at `2026-09/extracted/stay_manual_2026_09_18_pdf.txt`.
-  - Same edition, other container: `2026-09/stay_manual_260918.hwp` (배포용 HWP; ViewText extraction at `2026-09/extracted/full_text/stay_manual_260918.txt`; paragraph-anchored, not indexed).
+- `2026-10-19/visa_manual_261019.pdf` - 사증발급 안내매뉴얼, 2026.10 / file date 2026-10-19, 519 pages. Page-anchored primary: `data/manual-corpus/visa_manual_2026_10_19_pdf.json`, text at `2026-10-19/extracted/visa_manual_2026_10_19_pdf.txt`.
+  - Same edition, other container: `2026-10-19/visa_manual_261019.hwp` (배포용 HWP; ViewText extraction at `2026-10-19/extracted/full_text/visa_manual_261019.txt`; paragraph-anchored, not indexed).
+- `2026-10-19/stay_manual_261019.pdf` - 외국인체류 안내매뉴얼, 2026.10 / file date 2026-10-19, 812 pages. Page-anchored primary: `data/manual-corpus/stay_manual_2026_10_19_pdf.json`, text at `2026-10-19/extracted/stay_manual_2026_10_19_pdf.txt`.
+  - Same edition, other container: `2026-10-19/stay_manual_261019.hwp` (배포용 HWP; ViewText extraction at `2026-10-19/extracted/full_text/stay_manual_261019.txt`; paragraph-anchored, not indexed).
+
+The file date is the filename date. The legal effective date of the 2026.10 changes is not verified.
+
+The 2026.9 PDF/HWP pairs (`2026-09/`, `2026-09-01/`) are recorded as each role's `archived_previous_current`; they stay approved-then-superseded in the registry and in the search index (as `superseded`, never direct evidence) for point-in-time questions. The `2026-10-19/extracted/*.txt` files named `visa_manual_261019.txt` / `stay_manual_261019.txt` (not in `full_text/`) are the earlier review-only connector extractions; they remain `needs_review`.
 
 The 2026-07-31 HWP pair (`2026-07-31/`) is recorded as each role's `archived_previous_current`. The 2026.6 PDFs (`backend/data/sources/manuals/260617_visa_manual_exported.pdf`, `260623_stay_manual_exported.pdf`) stay in the repository and in the manifest history; their 2026-06-17 section extracts stay in the search index as `superseded`, never as direct evidence. `2026-09-01/stay_manual_260901.hwp` is the earlier 2026-09-01 stay edition, superseded by 2026-09-18 (`data/manual_approval_index.json`).
 
-### Markdown derived texts (2026-10-19)
+### Markdown derived texts (2026.10)
 
-The owner supplied HWP→Markdown conversions of both current editions. They keep headings and HTML tables, which the PDF text layer flattens, but they have no page numbers.
+The owner supplied HWP→Markdown conversions of both current editions (`incoming/261019_hikorea_markdown_2.zip`, 2026-10-22). They keep headings and tables, which the PDF text layer flattens, but they have no page numbers.
 
-- `2026-09/derived/visa_manual_260901.md` - derived from `2026-09-01/visa_manual_260901.hwp`
-- `2026-09/derived/stay_manual_260918.md` - derived from `2026-09/stay_manual_260918.hwp`
+- `2026-10-19/derived/visa_manual_261019.md` - derived from `2026-10-19/visa_manual_261019.hwp`
+- `2026-10-19/derived/stay_manual_261019.md` - derived from `2026-10-19/stay_manual_261019.hwp`
 
-Each is registered under `current.<role>.derived_texts` in `source_manifest.json` (SHA-256 pinned, provenance "owner-supplied HWP→Markdown conversion, 2026-10-19") and tracked in `data/manual_approval_index.json` as `needs_review` at document level. They are not registry editions: `data/source_registry.json` keeps one entry per container of an edition, and these texts carry no edition of their own.
-
-`scripts/build_manual_markdown_corpus.py` splits each Markdown into chunks (by heading, table and PDF page; table rows rendered as "열이름: 값" text) and maps every chunk to the approved PDF page(s) by matching normalized text against the PDF page text. The result, with a confidence per chunk, is `data/manual-corpus/<id>.json`.
+Each is registered under `current.<role>.derived_texts` in `source_manifest.json` (SHA-256 pinned) and tracked in `data/manual_approval_index.json` as `needs_review` at document level. `scripts/build_manual_markdown_corpus.py` splits each Markdown into chunks (by heading, table and PDF page; table rows rendered as "열이름: 값" text) and maps every chunk to the approved PDF page(s) by matching normalized text against the PDF page text, recording a confidence per chunk.
 
 - A chunk mapped with high or medium confidence inherits the approval of its PDF edition for that page. It is direct evidence and is cited by that PDF page.
 - Low, none, tied and out-of-sequence chunks are kept and searchable as `needs_review`, with no page. They are never direct evidence.
+- A chunk whose wording is not found on its mapped page by the independent text probe (the same probe `scripts/check_current_manual_corpus.mjs` runs) is demoted to low: repeated bilingual form text can fool the page vote. One visa chunk and four stay chunks were demoted this way.
 - This is machine verification against the approved edition text. Nobody has read the Markdown line by line.
-- The images in the owner's zips (`images/260901`, `images/260918`) are not committed. They are not used for grounding, and image-only content stays checkable only on the PDF page.
+- The images in the owner's zips are not committed. They are not used for grounding.
 
-| derived text | chunks | table chunks | high | medium | low | none | page-mapped (direct) | PDF pages covered |
-|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| visa 260901 | 1,793 | 536 | 1,224 | 107 | 358 | 104 | 1,331 | 504 / 519 |
-| stay 260918 | 1,504 | 904 | 1,004 | 130 | 239 | 131 | 1,134 | 775 / 810 |
+| derived text | chunks | high | medium | low | none | page-mapped (direct) |
+|---|---:|---:|---:|---:|---:|---:|
+| visa 261019 | 1,078 | 730 | 101 | 178 | 69 | 831 |
+| stay 261019 | 1,531 | 1,038 | 137 | 249 | 107 | 1,175 |
 
-12-gram containment of the Markdown text: 99.1% (visa) and 99.2% (stay) in the HWP extraction, 95.8% and 96.4% in the PDF text.
-
-`scripts/build_manual_search_index.py` indexes these chunks into `backend/data/manual_search_index.sqlite3` under their own source ids (`visa_manual_2026_09_01_md`, `stay_manual_2026_09_18_md`), next to the unchanged one-row-per-page PDF rows. Rebuild everything with `npm run build:current-manuals`. Verify with `npm run test:current-manuals` and `python3 scripts/check_source_manuals.py`.
+`scripts/build_manual_search_index.py` indexes these chunks into `backend/data/manual_search_index.sqlite3` under their own source ids (`visa_manual_2026_10_19_md`, `stay_manual_2026_10_19_md`), next to the one-row-per-page PDF rows. The 2026.9 PDF pages and Markdown chunks stay in the index as `superseded`.
 
 Readable Markdown conversions (manual reader only, not a grounding source):
 
-- `2026-09/markdown/visa_manual_260901.md`, `2026-09/markdown/stay_manual_260918.md` (+ `images/`) - HWP→Markdown conversions of the 2026.9 visa (2026-09-01) and stay (2026-09-18) manuals, digest-pinned in `data/manual-reader/catalog.json` and cross-checked line-by-line against `2026-09/extracted/*.txt` (≥97% required). They feed `manual.html` only and do not change `source_manifest.json` `current` or any approval gate. See `docs/MANUAL_READER.md`.
+- `2026-10-19/markdown/visa_manual_261019.md`, `2026-10-19/markdown/stay_manual_261019.md` (+ `images/261019-visa`, `images/261019-stay`) - `npx kordoc@^4` (4.24.1) conversions of the 2026.10 HWPs, made the same way as the 2026.9 ones (same images, same layout, same chapter start lines; only the changed passages differ). `scripts/build_manual_reader.py` builds `data/manual-reader/` from them. The 2026.9 conversions stay in `2026-09/markdown/` for point-in-time reading.
 
 Special program manuals (also registered in `source_manifest.json` under `special_program_manuals`):
 

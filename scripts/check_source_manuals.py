@@ -24,6 +24,8 @@ EXPECTED_PAGES = {
     "backend/data/sources/manuals/260623_stay_manual_exported.pdf": 780,
     "docs/source-manuals/2026-09/visa_manual_260901.pdf": 519,
     "docs/source-manuals/2026-09/stay_manual_260918.pdf": 810,
+    "docs/source-manuals/2026-10-19/visa_manual_261019.pdf": 519,
+    "docs/source-manuals/2026-10-19/stay_manual_261019.pdf": 812,
 }
 REQUIRED_FIELDS = {
     "title_ko",

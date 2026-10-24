@@ -605,6 +605,22 @@ def found_on(idx: "PageIndex", lines: list[dict], pages: list[int]) -> int:
                sum(len(x) for x in l["map"]["short"] if x in joined) for l in lines)
 
 
+PROBE_SPLIT = re.compile(r"\n| \| | / ")
+
+
+def probe_result(text: str, is_table: bool, pages: list[int], idx: "PageIndex"):
+    """None when the chunk has too few probe-able fragments; else whether enough
+    of them start with text that is literally on the mapped page(s). Mirrors the
+    independent per-line probe in scripts/check_current_manual_corpus.mjs."""
+    probes = [norm(t.split(": ")[-1])[:8] for t in PROBE_SPLIT.split(text)]
+    probes = [t for t, raw in zip(probes, PROBE_SPLIT.split(text)) if len(norm(raw.split(": ")[-1])) >= 12]
+    if len(probes) < 3 or not pages:
+        return None
+    hay = "".join(idx.text.get(p, "") for p in pages)
+    found = sum(1 for t in probes if t in hay)
+    return found / len(probes) >= (0.25 if is_table else 0.5)
+
+
 def make_chunk(lines: list[dict], number: int, idx: "PageIndex") -> dict:
     out, last_label = [], None
     for k, l in enumerate(lines):
@@ -661,6 +677,12 @@ def make_chunk(lines: list[dict], number: int, idx: "PageIndex") -> dict:
                 tie = tie_weight > 0.2 * weight
     conf = confidence(coverage, pages, tie, bool(anchored))
     text = "\n".join(out)
+    probe = probe_result(text, any(l["kind"] == "table" for l in lines), pages, idx)
+    if conf in DIRECT and probe is not None and not probe:
+        # The text probe (the same independent check scripts/check_current_manual_corpus.mjs
+        # runs) found too little of this chunk's wording on its mapped page(s): repeated
+        # bilingual form text can fool the shingle vote. Such a chunk is not direct evidence.
+        conf = "low"
     heads = lines[0]["headings"]
     heading = " › ".join(heads[-2:]) if heads else ""
     first = next((l["text"] for l in lines if l["kind"] != "heading"), lines[0]["text"])

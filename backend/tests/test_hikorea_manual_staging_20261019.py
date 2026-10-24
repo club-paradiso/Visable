@@ -25,7 +25,17 @@ class TestManualStaging(unittest.TestCase):
                 text_path = ROOT / entry["local_path"]
                 self.assertEqual(text_path.name, filename)
                 self.assertGreater(len(text_path.read_text(encoding="utf-8")), min_chars)
-                self.assertNotEqual(manifest["current"][role]["source_date"], "2026-10-19")
+                # The staged connector text itself never becomes the current edition. The
+                # 2026-10-19 edition is current only through the owner-approved PDF (decision
+                # recorded 2026-10-23): its approval record names a reviewer and a date.
+                current = manifest["current"][role]
+                self.assertNotEqual(current["file"], entry["local_path"])
+                if current["source_date"] == "2026-10-19":
+                    pdf_id = source_id.replace("_hwp_text", "_pdf")
+                    self.assertEqual(approval["documents"][pdf_id]["approval_state"], "approved")
+                    self.assertTrue(approval["documents"][pdf_id]["reviewer"])
+                    self.assertTrue(approval["documents"][pdf_id]["reviewed_at"])
+                    self.assertTrue(current["approved_by"] and current["approved_at"])
 
 if __name__ == "__main__":
     unittest.main()

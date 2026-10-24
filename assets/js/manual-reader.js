@@ -103,10 +103,10 @@ function renderHome(){
   let html = `
   <section class="intro">
     <div>
-      <div class="eyebrow">OFFICIAL MANUALS / 2026.09</div>
+      <div class="eyebrow">OFFICIAL MANUALS / 2026.10</div>
       <h1>매뉴얼 원문을,<br>내 자격과 업무만 골라 읽어요</h1>
-      <p>법무부 「사증발급 안내매뉴얼」(2026. 9. 1.)과 「외국인체류 안내매뉴얼」(2026. 9. 18.) 원문을 고치지 않고 체류자격·업무별로 나눠 보여 드려요. 쉬운 말 제목과 서류 체크리스트는 Visable이 덧붙인 것이에요.</p>
-      <p class="srcline"><span class="state">원문 발췌 · 검토 전</span><a href="docs/source-manuals/2026-09/visa_manual_260901.pdf" target="_blank" rel="noopener">사증발급 PDF</a><a href="docs/source-manuals/2026-09/stay_manual_260918.pdf" target="_blank" rel="noopener">외국인체류 PDF</a><a href="${esc(CAT.sources.v.official_url)}" target="_blank" rel="noopener">HiKorea 공지</a></p>
+      <p>법무부 「사증발급 안내매뉴얼」(2026. 10. 19.)과 「외국인체류 안내매뉴얼」(2026. 10. 19.) 원문을 고치지 않고 체류자격·업무별로 나눠 보여 드려요. 쉬운 말 제목과 서류 체크리스트는 Visable이 덧붙인 것이에요.</p>
+      <p class="srcline"><span class="state">원문 발췌 · 검토 전</span><a href="docs/source-manuals/2026-10-19/visa_manual_261019.pdf" target="_blank" rel="noopener">사증발급 PDF</a><a href="docs/source-manuals/2026-10-19/stay_manual_261019.pdf" target="_blank" rel="noopener">외국인체류 PDF</a><a href="${esc(CAT.sources.v.official_url)}" target="_blank" rel="noopener">HiKorea 공지</a></p>
     </div>
     <ol class="howto" aria-label="이용 방법">
       <li>하려는 일을 고르세요. (선택)</li>
@@ -162,7 +162,7 @@ function quickHref(x){
 }
 function footer(){
   return `<footer class="foot">
-    <p><b>법무부 출입국·외국인정책본부 「사증발급 안내매뉴얼」(2026. 9. 1.)·「외국인체류 안내매뉴얼」(2026. 9. 18.) 원문을 Visable이 읽기 쉽게 나눠 보여 주는 화면입니다.</b> 원문 문장은 고치지 않았고, 쪽 넘김 때문에 반복된 항목명과 표지 그림만 뺐습니다. 쉬운 말 제목·자격 소개·용어 풀이·서류 체크는 Visable 편집 안내이며 법적 요건이 아닙니다. 원문 내용 검토는 아직 진행 중이므로, 표·그림과 적용 조건은 공식 PDF에서 확인하세요. 허가 여부는 심사로 결정되며, 출입국·외국인관서는 필요하면 제출서류를 더하거나 줄일 수 있습니다.</p>
+    <p><b>법무부 출입국·외국인정책본부 「사증발급 안내매뉴얼」(2026. 10. 19.)·「외국인체류 안내매뉴얼」(2026. 10. 19.) 원문을 Visable이 읽기 쉽게 나눠 보여 주는 화면입니다.</b> 원문 문장은 고치지 않았고, 쪽 넘김 때문에 반복된 항목명과 표지 그림만 뺐습니다. 쉬운 말 제목·자격 소개·용어 풀이·서류 체크는 Visable 편집 안내이며 법적 요건이 아닙니다. 원문 내용 검토는 아직 진행 중이므로, 표·그림과 적용 조건은 공식 PDF에서 확인하세요. 허가 여부는 심사로 결정되며, 출입국·외국인관서는 필요하면 제출서류를 더하거나 줄일 수 있습니다.</p>
     <p>문의: 외국인종합안내센터 <span class="sel">1345</span> · 하이코리아 <a href="https://www.hikorea.go.kr" target="_blank" rel="noopener">www.hikorea.go.kr</a> · <a href="index.html">Visable로 돌아가기</a></p>
     <p lang="en">This reader shows the Korean original text. Use your browser's translate feature to read it in another language.</p>
   </footer>`;
@@ -196,7 +196,7 @@ function renderChapter(key, tab, secIdx, opts){
     drawChapter(key, tab, ch, resolved >= 0 ? String(resolved) : null, opts);
   }).catch(err => {
     if (seq !== renderSeq) return;
-    app.innerHTML = `<div class="mr-err" role="alert">원문을 불러오지 못했어요. <button type="button" id="mr-retry">다시 시도</button> 또는 <a href="docs/source-manuals/2026-09/${tab === 'v' ? 'visa_manual_260901' : 'stay_manual_260918'}.pdf" target="_blank" rel="noopener">공식 PDF</a>를 여세요.</div>`;
+    app.innerHTML = `<div class="mr-err" role="alert">원문을 불러오지 못했어요. <button type="button" id="mr-retry">다시 시도</button> 또는 <a href="docs/source-manuals/2026-10-19/${tab === 'v' ? 'visa_manual_261019' : 'stay_manual_261019'}.pdf" target="_blank" rel="noopener">공식 PDF</a>를 여세요.</div>`;
     $('#mr-retry').onclick = () => renderChapter(key, tab, secIdx, opts);
     console.error(err);
   });
@@ -536,6 +536,6 @@ Promise.all([fetchJson(BASE + 'catalog.json'), fetchJson(BASE + 'editorial.json'
   route();
 }).catch(err => {
   console.error(err);
-  app.innerHTML = '<div class="mr-err" role="alert">매뉴얼 원문을 불러오지 못했어요. 새로고침하거나 공식 PDF를 여세요: <a href="docs/source-manuals/2026-09/visa_manual_260901.pdf">사증발급</a> · <a href="docs/source-manuals/2026-09/stay_manual_260918.pdf">외국인체류</a></div>';
+  app.innerHTML = '<div class="mr-err" role="alert">매뉴얼 원문을 불러오지 못했어요. 새로고침하거나 공식 PDF를 여세요: <a href="docs/source-manuals/2026-10-19/visa_manual_261019.pdf">사증발급</a> · <a href="docs/source-manuals/2026-10-19/stay_manual_261019.pdf">외국인체류</a></div>';
 });
 })();

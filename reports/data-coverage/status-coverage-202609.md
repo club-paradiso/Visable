@@ -34,7 +34,7 @@ Procedure states across status/substatus records: {"SOURCE_ONLY": 1744, "UNVERIF
 
 ## Chapters
 
-### stay_manual_2026_09_18
+### stay_manual_2026_10_19
 
 | # | Chapter | Code | PDF pages | HWP line | Detection |
 | --- | --- | --- | --- | --- | --- |
@@ -50,39 +50,39 @@ Procedure states across status/substatus records: {"SOURCE_ONLY": 1744, "UNVERIF
 | 10 | 단기취업(C-4) | C-4 | 29–31 | 775 | heading |
 | 11 | 문화예술(D-1) | D-1 | 32–34 | 830 | heading |
 | 12 | 유학(D-2) | D-2 | 35–55 | 909 | heading |
-| 13 | 기술연수(D-3) | D-3 | 56–82 | 1709 | heading |
-| 14 | 일반연수(D-4) | D-4 | 83–102 | 2246 | heading |
-| 15 | 취재(D-5) | D-5 | 103–105 | 2744 | heading |
-| 16 | 종교(D-6) | D-6 | 106–108 | 2813 | heading |
-| 17 | 주재(D-7) | D-7 | 109–115 | 2888 | heading |
-| 18 | 기업투자(D-8) | D-8 | 116–130 | 3051 | heading |
-| 19 | 무역경영(D-9) | D-9 | 131–142 | 3450 | heading |
-| 20 | 구직(D-10) | D-10 | 143–166 | 3917 | heading |
-| 21 | 교수(E-1) | E-1 | 167–176 | 4864 | heading |
-| 22 | 회화지도(E-2) | E-2 | 177–185 | 5038 | text-head |
-| 23 | 연구(E-3) | E-3 | 186–195 | 5303 | heading |
-| 24 | 기술지도(E-4) | E-4 | 196–200 | 5543 | heading |
-| 25 | 전문직업(E-5) | E-5 | 201–205 | 5655 | heading |
-| 26 | 예술흥행(E-6) | E-6 | 206–212 | 5760 | heading |
-| 27 | 특정활동(E-7) | E-7 | 213–324 | 5919 | heading |
-| 28 | 계절근로(E-8) | E-8 | 325–326 | 9138 | heading |
-| 29 | 비전문취업(E-9) | E-9 | 327–336 | 9204 | heading |
-| 30 | 선원취업(E-10) | E-10 | 337–341 | 9494 | heading |
-| 31 | 방문동거(F-1) | F-1 | 342–364 | 9619 | heading |
-| 32 | 거주(F-2) | F-2 | 365–425 | 10168 | content |
-| 33 | 동반(F-3) | F-3 | 426–430 | 11767 | heading |
-| 34 | 영주(F-5):동포,난민제외 | F-5 | 431–481 | 11930 | heading |
-| 35 | 결혼이민(F-6) | F-6 | 482–505 | 13402 | heading |
-| 36 | 기타(G-1) | G-1 | 506–521 | 14454 | heading |
-| 37 | 관광취업(H-1) | H-1 | 522–525 | 14864 | heading |
-| 38 | 외국국적동포 관련 (C-3-8, F-1, H-2, F-4, F-5) | — | 526–592 | 14988 | heading |
-| 39 | 지역특화형비자 | — | 593–662 | 16706 | heading |
-| 40 | 국내 성장 기반 외국인 청소년 취업‧정주 체류제도 | — | 663–679 | 18691 | heading |
-| 41 | 톱티어(Top-Tier) 비자(D-10-T, E-7-T, F-2-T, F-5-T) | — | 680–718 | 19054 | heading |
-| 42 | 광역형 비자 시범사업 | — | 719–781 | 19975 | heading |
-| 43 | K-STAR 비자트랙 제도 | — | 782–810 | 22535 | heading |
+| 13 | 기술연수(D-3) | D-3 | 56–82 | 1716 | heading |
+| 14 | 일반연수(D-4) | D-4 | 83–102 | 2253 | heading |
+| 15 | 취재(D-5) | D-5 | 103–105 | 2751 | heading |
+| 16 | 종교(D-6) | D-6 | 106–108 | 2820 | heading |
+| 17 | 주재(D-7) | D-7 | 109–115 | 2895 | heading |
+| 18 | 기업투자(D-8) | D-8 | 116–130 | 3058 | heading |
+| 19 | 무역경영(D-9) | D-9 | 131–143 | 3457 | heading |
+| 20 | 구직(D-10) | D-10 | 144–167 | 3926 | heading |
+| 21 | 교수(E-1) | E-1 | 168–177 | 4873 | heading |
+| 22 | 회화지도(E-2) | E-2 | 178–186 | 5047 | text-head |
+| 23 | 연구(E-3) | E-3 | 187–196 | 5312 | heading |
+| 24 | 기술지도(E-4) | E-4 | 197–201 | 5552 | heading |
+| 25 | 전문직업(E-5) | E-5 | 202–206 | 5664 | heading |
+| 26 | 예술흥행(E-6) | E-6 | 207–213 | 5769 | heading |
+| 27 | 특정활동(E-7) | E-7 | 214–325 | 5928 | heading |
+| 28 | 계절근로(E-8) | E-8 | 326–327 | 9147 | heading |
+| 29 | 비전문취업(E-9) | E-9 | 328–337 | 9213 | heading |
+| 30 | 선원취업(E-10) | E-10 | 338–342 | 9503 | heading |
+| 31 | 방문동거(F-1) | F-1 | 343–366 | 9628 | heading |
+| 32 | 거주(F-2) | F-2 | 367–427 | 10184 | content |
+| 33 | 동반(F-3) | F-3 | 428–432 | 11783 | heading |
+| 34 | 영주(F-5):동포,난민제외 | F-5 | 433–483 | 11946 | heading |
+| 35 | 결혼이민(F-6) | F-6 | 484–507 | 13418 | heading |
+| 36 | 기타(G-1) | G-1 | 508–523 | 14470 | heading |
+| 37 | 관광취업(H-1) | H-1 | 524–527 | 14880 | heading |
+| 38 | 외국국적동포 관련 (C-3-8, F-1, H-2, F-4, F-5) | — | 528–594 | 15004 | heading |
+| 39 | 지역특화형비자 | — | 595–664 | 16722 | heading |
+| 40 | 국내 성장 기반 외국인 청소년 취업‧정주 체류제도 | — | 665–681 | 18707 | heading |
+| 41 | 톱티어(Top-Tier) 비자(D-10-T, E-7-T, F-2-T, F-5-T) | — | 682–720 | 19070 | heading |
+| 42 | 광역형 비자 시범사업 | — | 721–783 | 19991 | heading |
+| 43 | K-STAR 비자트랙 제도 | — | 784–812 | 22551 | heading |
 
-### visa_manual_2026_09_01
+### visa_manual_2026_10_19
 
 | # | Chapter | Code | PDF pages | HWP line | Detection |
 | --- | --- | --- | --- | --- | --- |
@@ -98,36 +98,36 @@ Procedure states across status/substatus records: {"SOURCE_ONLY": 1744, "UNVERIF
 | 10 | 단기취업(C-4) | C-4 | 51–59 | 1762 | heading |
 | 11 | 문화예술(D-1) | D-1 | 60–61 | 1977 | heading |
 | 12 | 유학(D-2) | D-2 | 62–69 | 2016 | heading |
-| 13 | 기술연수(D-3) | D-3 | 70–72 | 2417 | heading |
-| 14 | 일반연수(D-4) | D-4 | 73–89 | 2475 | heading |
-| 15 | 취재(D-5) | D-5 | 90–91 | 3025 | heading |
-| 16 | 종교(D-6) | D-6 | 92–93 | 3065 | heading |
-| 17 | 주재(D-7) | D-7 | 94–103 | 3115 | heading |
-| 18 | 기업투자(D-8) | D-8 | 104–117 | 3353 | heading |
-| 19 | 무역경영(D-9) | D-9 | 118–123 | 3681 | heading |
-| 20 | 구직(D-10) | D-10 | 124–137 | 3825 | heading |
-| 21 | 교수(E-1) | E-1 | 138–143 | 4309 | heading |
-| 22 | 회화지도(E-2) | E-2 | 144–151 | 4503 | heading |
-| 23 | 연구(E-3) | E-3 | 152–158 | 4681 | heading |
-| 24 | 기술지도(E-4) | E-4 | 159–161 | 4861 | heading |
-| 25 | 전문직업(E-5) | E-5 | 162–164 | 4932 | heading |
-| 26 | 예술흥행(E-6) | E-6 | 165–169 | 4993 | heading |
-| 27 | 특정활동(E-7) | E-7 | 170–278 | 5104 | heading |
-| 28 | 계절근로(E-8) | E-8 | 279–284 | 8198 | heading |
-| 29 | 비전문취업(E-9) | E-9 | 285–294 | 8491 | heading |
-| 30 | 선원취업(E-10) | E-10 | 295–297 | 8836 | heading |
-| 31 | 방문동거(F-1) | F-1 | 298–310 | 8922 | heading |
-| 32 | 거주(F-2) | F-2 | 311–315 | 9246 | heading |
-| 33 | 동반(F-3) | F-3 | 316–326 | 9355 | heading |
-| 34 | 재외동포(F-4) ※ 38.번 참조 | F-4 | 383–457 | 11519 | reference:DONGPO |
-| 35 | 영주(F-5) ※ 동포는 38.번 참조 | F-5 | 383–457 | 11519 | reference:DONGPO |
-| 36 | 결혼이민(F-6) | F-6 | 327–338 | 9773 | heading |
-| 37 | 기타(G-1) | G-1 | 339–346 | 10552 | heading |
-| 38 | 관광취업(H-1) | H-1 | 347–382 | 10766 | heading |
-| 39 | 방문취업(H-2) ※ 38.번 참조 | H-2 | 383–457 | 11519 | reference:DONGPO |
-| 40 | 알기쉬운 외국국적동포 업무매뉴얼 | — | 383–457 | 11519 | heading |
-| 41 | 톱티어 비자(D-10-T, E-7-T, F-2-T, F-5-T) | — | 458–490 | 13242 | heading |
-| 42 | K-STAR 비자트랙 제도 | — | 491–519 | 14609 | heading |
+| 13 | 기술연수(D-3) | D-3 | 70–72 | 2422 | heading |
+| 14 | 일반연수(D-4) | D-4 | 73–89 | 2480 | heading |
+| 15 | 취재(D-5) | D-5 | 90–91 | 3030 | heading |
+| 16 | 종교(D-6) | D-6 | 92–93 | 3070 | heading |
+| 17 | 주재(D-7) | D-7 | 94–103 | 3120 | heading |
+| 18 | 기업투자(D-8) | D-8 | 104–117 | 3358 | heading |
+| 19 | 무역경영(D-9) | D-9 | 118–123 | 3686 | heading |
+| 20 | 구직(D-10) | D-10 | 124–137 | 3830 | heading |
+| 21 | 교수(E-1) | E-1 | 138–143 | 4314 | heading |
+| 22 | 회화지도(E-2) | E-2 | 144–151 | 4508 | heading |
+| 23 | 연구(E-3) | E-3 | 152–158 | 4686 | heading |
+| 24 | 기술지도(E-4) | E-4 | 159–161 | 4866 | heading |
+| 25 | 전문직업(E-5) | E-5 | 162–164 | 4937 | heading |
+| 26 | 예술흥행(E-6) | E-6 | 165–169 | 4998 | heading |
+| 27 | 특정활동(E-7) | E-7 | 170–278 | 5109 | heading |
+| 28 | 계절근로(E-8) | E-8 | 279–284 | 8203 | heading |
+| 29 | 비전문취업(E-9) | E-9 | 285–294 | 8496 | heading |
+| 30 | 선원취업(E-10) | E-10 | 295–297 | 8841 | heading |
+| 31 | 방문동거(F-1) | F-1 | 298–310 | 8927 | heading |
+| 32 | 거주(F-2) | F-2 | 311–315 | 9251 | heading |
+| 33 | 동반(F-3) | F-3 | 316–326 | 9360 | heading |
+| 34 | 재외동포(F-4) ※ 38.번 참조 | F-4 | 383–457 | 11524 | reference:DONGPO |
+| 35 | 영주(F-5) ※ 동포는 38.번 참조 | F-5 | 383–457 | 11524 | reference:DONGPO |
+| 36 | 결혼이민(F-6) | F-6 | 327–338 | 9778 | heading |
+| 37 | 기타(G-1) | G-1 | 339–346 | 10557 | heading |
+| 38 | 관광취업(H-1) | H-1 | 347–382 | 10771 | heading |
+| 39 | 방문취업(H-2) ※ 38.번 참조 | H-2 | 383–457 | 11524 | reference:DONGPO |
+| 40 | 알기쉬운 외국국적동포 업무매뉴얼 | — | 383–457 | 11524 | heading |
+| 41 | 톱티어 비자(D-10-T, E-7-T, F-2-T, F-5-T) | — | 458–490 | 13247 | heading |
+| 42 | K-STAR 비자트랙 제도 | — | 491–519 | 14614 | heading |
 
 ## Status records
 
@@ -413,47 +413,47 @@ Procedure states across status/substatus records: {"SOURCE_ONLY": 1744, "UNVERIF
 | PROGRAM:metro | 광역형 비자 시범사업 | PARTIAL |
 | PROGRAM:k-star | K-STAR 비자트랙 | PARTIAL |
 
-## Conflicts with legacy structured data (77)
+## Conflicts with legacy structured data (76)
 
 | Status | Procedure | Kind | Structured | Manual | Resolution |
 | --- | --- | --- | --- | --- | --- |
-| B-1 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.9 (stay 2026-09-18, visa 2026-09-01) | new guidance layer cites 2026.9 pages; legacy card labelled with its own edition |
-| B-2 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.9 (stay 2026-09-18, visa 2026-09-01) | new guidance layer cites 2026.9 pages; legacy card labelled with its own edition |
-| C-3 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.9 (stay 2026-09-18, visa 2026-09-01) | new guidance layer cites 2026.9 pages; legacy card labelled with its own edition |
-| C-4 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.9 (stay 2026-09-18, visa 2026-09-01) | new guidance layer cites 2026.9 pages; legacy card labelled with its own edition |
-| D-1 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.9 (stay 2026-09-18, visa 2026-09-01) | new guidance layer cites 2026.9 pages; legacy card labelled with its own edition |
-| D-2 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.9 (stay 2026-09-18, visa 2026-09-01) | new guidance layer cites 2026.9 pages; legacy card labelled with its own edition |
-| D-3 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.9 (stay 2026-09-18, visa 2026-09-01) | new guidance layer cites 2026.9 pages; legacy card labelled with its own edition |
-| D-4 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.9 (stay 2026-09-18, visa 2026-09-01) | new guidance layer cites 2026.9 pages; legacy card labelled with its own edition |
-| D-7 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.9 (stay 2026-09-18, visa 2026-09-01) | new guidance layer cites 2026.9 pages; legacy card labelled with its own edition |
-| D-8 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.9 (stay 2026-09-18, visa 2026-09-01) | new guidance layer cites 2026.9 pages; legacy card labelled with its own edition |
-| D-9 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.9 (stay 2026-09-18, visa 2026-09-01) | new guidance layer cites 2026.9 pages; legacy card labelled with its own edition |
-| D-10 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.9 (stay 2026-09-18, visa 2026-09-01) | new guidance layer cites 2026.9 pages; legacy card labelled with its own edition |
-| E-1 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.9 (stay 2026-09-18, visa 2026-09-01) | new guidance layer cites 2026.9 pages; legacy card labelled with its own edition |
-| E-2 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.9 (stay 2026-09-18, visa 2026-09-01) | new guidance layer cites 2026.9 pages; legacy card labelled with its own edition |
-| E-3 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.9 (stay 2026-09-18, visa 2026-09-01) | new guidance layer cites 2026.9 pages; legacy card labelled with its own edition |
-| E-4 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.9 (stay 2026-09-18, visa 2026-09-01) | new guidance layer cites 2026.9 pages; legacy card labelled with its own edition |
-| E-5 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.9 (stay 2026-09-18, visa 2026-09-01) | new guidance layer cites 2026.9 pages; legacy card labelled with its own edition |
-| E-6 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.9 (stay 2026-09-18, visa 2026-09-01) | new guidance layer cites 2026.9 pages; legacy card labelled with its own edition |
-| E-7 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.9 (stay 2026-09-18, visa 2026-09-01) | new guidance layer cites 2026.9 pages; legacy card labelled with its own edition |
-| E-8 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.9 (stay 2026-09-18, visa 2026-09-01) | new guidance layer cites 2026.9 pages; legacy card labelled with its own edition |
-| E-9 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.9 (stay 2026-09-18, visa 2026-09-01) | new guidance layer cites 2026.9 pages; legacy card labelled with its own edition |
-| E-10 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.9 (stay 2026-09-18, visa 2026-09-01) | new guidance layer cites 2026.9 pages; legacy card labelled with its own edition |
-| F-1 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.9 (stay 2026-09-18, visa 2026-09-01) | new guidance layer cites 2026.9 pages; legacy card labelled with its own edition |
-| F-2 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.9 (stay 2026-09-18, visa 2026-09-01) | new guidance layer cites 2026.9 pages; legacy card labelled with its own edition |
-| F-3 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.9 (stay 2026-09-18, visa 2026-09-01) | new guidance layer cites 2026.9 pages; legacy card labelled with its own edition |
-| F-4 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.9 (stay 2026-09-18, visa 2026-09-01) | new guidance layer cites 2026.9 pages; legacy card labelled with its own edition |
-| F-5 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.9 (stay 2026-09-18, visa 2026-09-01) | new guidance layer cites 2026.9 pages; legacy card labelled with its own edition |
-| F-6 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.9 (stay 2026-09-18, visa 2026-09-01) | new guidance layer cites 2026.9 pages; legacy card labelled with its own edition |
-| G-1 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.9 (stay 2026-09-18, visa 2026-09-01) | new guidance layer cites 2026.9 pages; legacy card labelled with its own edition |
-| H-1 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.9 (stay 2026-09-18, visa 2026-09-01) | new guidance layer cites 2026.9 pages; legacy card labelled with its own edition |
-| H-2 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.9 (stay 2026-09-18, visa 2026-09-01) | new guidance layer cites 2026.9 pages; legacy card labelled with its own edition |
-| A-1 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.9 (stay 2026-09-18, visa 2026-09-01) | new guidance layer cites 2026.9 pages; legacy card labelled with its own edition |
-| A-2 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.9 (stay 2026-09-18, visa 2026-09-01) | new guidance layer cites 2026.9 pages; legacy card labelled with its own edition |
-| A-3 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.9 (stay 2026-09-18, visa 2026-09-01) | new guidance layer cites 2026.9 pages; legacy card labelled with its own edition |
-| C-1 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.9 (stay 2026-09-18, visa 2026-09-01) | new guidance layer cites 2026.9 pages; legacy card labelled with its own edition |
-| D-5 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.9 (stay 2026-09-18, visa 2026-09-01) | new guidance layer cites 2026.9 pages; legacy card labelled with its own edition |
-| D-6 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.9 (stay 2026-09-18, visa 2026-09-01) | new guidance layer cites 2026.9 pages; legacy card labelled with its own edition |
+| B-1 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.10 (stay 2026-10-19, visa 2026-10-19) | new guidance layer cites 2026.10 pages; legacy card labelled with its own edition |
+| B-2 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.10 (stay 2026-10-19, visa 2026-10-19) | new guidance layer cites 2026.10 pages; legacy card labelled with its own edition |
+| C-3 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.10 (stay 2026-10-19, visa 2026-10-19) | new guidance layer cites 2026.10 pages; legacy card labelled with its own edition |
+| C-4 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.10 (stay 2026-10-19, visa 2026-10-19) | new guidance layer cites 2026.10 pages; legacy card labelled with its own edition |
+| D-1 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.10 (stay 2026-10-19, visa 2026-10-19) | new guidance layer cites 2026.10 pages; legacy card labelled with its own edition |
+| D-2 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.10 (stay 2026-10-19, visa 2026-10-19) | new guidance layer cites 2026.10 pages; legacy card labelled with its own edition |
+| D-3 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.10 (stay 2026-10-19, visa 2026-10-19) | new guidance layer cites 2026.10 pages; legacy card labelled with its own edition |
+| D-4 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.10 (stay 2026-10-19, visa 2026-10-19) | new guidance layer cites 2026.10 pages; legacy card labelled with its own edition |
+| D-7 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.10 (stay 2026-10-19, visa 2026-10-19) | new guidance layer cites 2026.10 pages; legacy card labelled with its own edition |
+| D-8 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.10 (stay 2026-10-19, visa 2026-10-19) | new guidance layer cites 2026.10 pages; legacy card labelled with its own edition |
+| D-9 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.10 (stay 2026-10-19, visa 2026-10-19) | new guidance layer cites 2026.10 pages; legacy card labelled with its own edition |
+| D-10 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.10 (stay 2026-10-19, visa 2026-10-19) | new guidance layer cites 2026.10 pages; legacy card labelled with its own edition |
+| E-1 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.10 (stay 2026-10-19, visa 2026-10-19) | new guidance layer cites 2026.10 pages; legacy card labelled with its own edition |
+| E-2 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.10 (stay 2026-10-19, visa 2026-10-19) | new guidance layer cites 2026.10 pages; legacy card labelled with its own edition |
+| E-3 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.10 (stay 2026-10-19, visa 2026-10-19) | new guidance layer cites 2026.10 pages; legacy card labelled with its own edition |
+| E-4 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.10 (stay 2026-10-19, visa 2026-10-19) | new guidance layer cites 2026.10 pages; legacy card labelled with its own edition |
+| E-5 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.10 (stay 2026-10-19, visa 2026-10-19) | new guidance layer cites 2026.10 pages; legacy card labelled with its own edition |
+| E-6 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.10 (stay 2026-10-19, visa 2026-10-19) | new guidance layer cites 2026.10 pages; legacy card labelled with its own edition |
+| E-7 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.10 (stay 2026-10-19, visa 2026-10-19) | new guidance layer cites 2026.10 pages; legacy card labelled with its own edition |
+| E-8 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.10 (stay 2026-10-19, visa 2026-10-19) | new guidance layer cites 2026.10 pages; legacy card labelled with its own edition |
+| E-9 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.10 (stay 2026-10-19, visa 2026-10-19) | new guidance layer cites 2026.10 pages; legacy card labelled with its own edition |
+| E-10 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.10 (stay 2026-10-19, visa 2026-10-19) | new guidance layer cites 2026.10 pages; legacy card labelled with its own edition |
+| F-1 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.10 (stay 2026-10-19, visa 2026-10-19) | new guidance layer cites 2026.10 pages; legacy card labelled with its own edition |
+| F-2 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.10 (stay 2026-10-19, visa 2026-10-19) | new guidance layer cites 2026.10 pages; legacy card labelled with its own edition |
+| F-3 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.10 (stay 2026-10-19, visa 2026-10-19) | new guidance layer cites 2026.10 pages; legacy card labelled with its own edition |
+| F-4 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.10 (stay 2026-10-19, visa 2026-10-19) | new guidance layer cites 2026.10 pages; legacy card labelled with its own edition |
+| F-5 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.10 (stay 2026-10-19, visa 2026-10-19) | new guidance layer cites 2026.10 pages; legacy card labelled with its own edition |
+| F-6 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.10 (stay 2026-10-19, visa 2026-10-19) | new guidance layer cites 2026.10 pages; legacy card labelled with its own edition |
+| G-1 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.10 (stay 2026-10-19, visa 2026-10-19) | new guidance layer cites 2026.10 pages; legacy card labelled with its own edition |
+| H-1 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.10 (stay 2026-10-19, visa 2026-10-19) | new guidance layer cites 2026.10 pages; legacy card labelled with its own edition |
+| H-2 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.10 (stay 2026-10-19, visa 2026-10-19) | new guidance layer cites 2026.10 pages; legacy card labelled with its own edition |
+| A-1 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.10 (stay 2026-10-19, visa 2026-10-19) | new guidance layer cites 2026.10 pages; legacy card labelled with its own edition |
+| A-2 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.10 (stay 2026-10-19, visa 2026-10-19) | new guidance layer cites 2026.10 pages; legacy card labelled with its own edition |
+| A-3 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.10 (stay 2026-10-19, visa 2026-10-19) | new guidance layer cites 2026.10 pages; legacy card labelled with its own edition |
+| C-1 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.10 (stay 2026-10-19, visa 2026-10-19) | new guidance layer cites 2026.10 pages; legacy card labelled with its own edition |
+| D-5 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.10 (stay 2026-10-19, visa 2026-10-19) | new guidance layer cites 2026.10 pages; legacy card labelled with its own edition |
+| D-6 | all | edition_lag | 2026.6 / 2026-06-23 | 2026.10 (stay 2026-10-19, visa 2026-10-19) | new guidance layer cites 2026.10 pages; legacy card labelled with its own edition |
 | B-1-1 | taxonomy | code_not_in_manuals | B-1 일반여권 유효 67개국 | not found in either September manual | manifest marks UNVERIFIED; resolver never targets it |
 | B-1-2 | taxonomy | code_not_in_manuals | B-1 일시정지 3개국 | not found in either September manual | manifest marks UNVERIFIED; resolver never targets it |
 | B-2-1 | taxonomy | code_not_in_manuals | 일반 무사증 (45개국·지역) | not found in either September manual | manifest marks UNVERIFIED; resolver never targets it |
@@ -492,5 +492,4 @@ Procedure states across status/substatus records: {"SOURCE_ONLY": 1744, "UNVERIF
 | REGIONAL-D-2 | taxonomy | code_not_in_manuals | 광역형 비자 유학생 (시범사업) | not found in either September manual | manifest marks UNVERIFIED; resolver never targets it |
 | REGIONAL-E-7 | taxonomy | code_not_in_manuals | 광역형 비자 특정활동 (시범사업) | not found in either September manual | manifest marks UNVERIFIED; resolver never targets it |
 | F-5-27 | taxonomy | code_missing_from_legacy | absent from visa_data.json | present in September manual | manifest + resolver carry it (SOURCE_ONLY or SUPPORTED) |
-| E-7-4 | status_change | value_changed | 소득요건 2,500만원 (2026.6 text) | 2,589만원 (2026.9) | not edited (protected file); flagged for manual review |
 | F-2-6 | taxonomy | abolished_code | 숙련기능 거주 | 2019-10-01 폐지, F-2-99로 직권 정정 | manifest marks LEGACY_ONLY / superseded_by F-2-99 |

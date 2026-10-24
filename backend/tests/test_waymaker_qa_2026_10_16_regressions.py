@@ -226,7 +226,7 @@ class ModelAnswerManualLocationTests(unittest.TestCase):
         body = _ask_answered("F-6 결혼이민 체류기간 연장하려면 어떻게 해야 하나요?")
         self.assertTrue(body["answer"].startswith(MODEL_ANSWER_KO[:20]))
         self.assertIn("공식 매뉴얼 위치", body["answer"])
-        self.assertIn("p.498", body["answer"])
+        self.assertIn("p.500", body["answer"])  # F-6 extension, 2026.10 PDF (p.498 in 2026.9)
         refs = body["manual_location_references"]
         self.assertTrue(refs)
         self.assertTrue(all(r["role"] == "location_reference" and r["reviewed"] is False for r in refs))
@@ -237,7 +237,7 @@ class ModelAnswerManualLocationTests(unittest.TestCase):
 
     def test_e7_workplace_change_model_answer_names_the_manual_page(self):
         body = _ask_answered("E-7 비자로 일하고 있는데 회사를 옮기려고 합니다. 근무처 변경은 어떻게 하나요?")
-        self.assertIn("p.221", body["answer"])
+        self.assertIn("p.222", body["answer"])  # E-7 workplace change, 2026.10 PDF (p.221 in 2026.9)
         self.assertEqual(body["manual_location_references"][0]["target"], "E-7")
 
     def test_verified_grounding_is_left_alone(self):

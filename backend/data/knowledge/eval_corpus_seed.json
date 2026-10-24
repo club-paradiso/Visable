@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "purpose": "Seed regression corpus for the Waymaker Knowledge Platform. Deterministic (offline) cases asserting facts and behaviour, not prose. Imported idempotently into the eval tables at platform bootstrap; cases added in Knowledge Studio live in the knowledge DB.",
   "is_training_data": false,
-  "provenance": "Expected facts are the repository's verified stay-manual grounding (backend/data/manual_grounding/stay_manual_grounding_2026_05.json, 외국인체류 안내매뉴얼 2026.9, 2026-09-18 PDF). Coverage expectations reflect what the VERIFIED knowledge layer holds today; statuses answered only by unreviewed layers are expected to be knowledge gaps.",
+  "provenance": "Expected facts are the repository's verified stay-manual grounding (backend/data/manual_grounding/stay_manual_grounding_2026_05.json, 외국인체류 안내매뉴얼 2026.10, 2026-10-19 PDF). Coverage expectations reflect what the VERIFIED knowledge layer holds today; statuses answered only by unreviewed layers are expected to be knowledge gaps.",
   "cases": [
     {
       "case_key": "d2.extension.documents.ko",
@@ -21,7 +21,7 @@
         {"type": "EXPECTED_BUCKET", "value": {"item": "수료증명서", "bucket": "conditional"}},
         {"type": "EXPECTED_BUCKET", "value": {"item": "여권", "bucket": "common"}},
         {"type": "MUST_NOT_INCLUDE_FACT", "value": ["고용계약서", "건강진단서", "모집요강", "사업자등록증"]},
-        {"type": "SOURCE_MUST_BE", "value": {"title": "외국인체류 안내매뉴얼", "edition": "2026.9", "pages": "43-44"}},
+        {"type": "SOURCE_MUST_BE", "value": {"title": "외국인체류 안내매뉴얼", "edition": "2026.10", "pages": "44"}},
         {"type": "MUST_NOT_CLARIFY"},
         {"type": "MUST_NOT_RECORD_GAP"},
         {"type": "MUST_NOT_CLAIM_CERTAINTY"},
@@ -68,7 +68,7 @@
         {"type": "EXPECTED_COVERAGE_STATE", "value": "VERIFIED_WITH_CONDITIONS"},
         {"type": "MUST_INCLUDE_FACT", "value": ["모집요강", "재학을 입증하는 서류", "재정입증 서류 (국내 본인계좌 예치금만 인정)"]},
         {"type": "MUST_NOT_INCLUDE_FACT", "value": ["고용계약서", "지도교수"]},
-        {"type": "SOURCE_MUST_BE", "value": {"edition": "2026.9", "pages": "90-92"}},
+        {"type": "SOURCE_MUST_BE", "value": {"edition": "2026.10", "pages": "90-92"}},
         {"type": "MUST_NOT_RECORD_GAP"}
       ]
     },
@@ -97,7 +97,7 @@
         {"type": "MUST_INCLUDE_FACT", "value": ["고용계약서", "사업자등록증 사본 또는 법인등기부등본", "개인 소득금액 증명"]},
         {"type": "EXPECTED_BUCKET", "value": {"item": "신원보증서 원본", "bucket": "conditional"}},
         {"type": "MUST_NOT_INCLUDE_FACT", "value": ["지도교수", "모집요강"]},
-        {"type": "SOURCE_MUST_BE", "value": {"edition": "2026.9", "pages": "227"}}
+        {"type": "SOURCE_MUST_BE", "value": {"edition": "2026.10", "pages": "228"}}
       ]
     },
     {

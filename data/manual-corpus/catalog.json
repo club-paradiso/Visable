@@ -1,39 +1,39 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-09-21",
+  "updated_at": "2026-10-23",
   "sources": [
     {
-      "id": "visa_manual_2026_09_01_pdf",
+      "id": "visa_manual_2026_10_19_pdf",
       "domain": "visa_issuance",
       "title": "사증발급 안내매뉴얼",
       "title_en": "Visa Issuance Guide Manual",
-      "date": "2026-09-01",
-      "version": "2026.9",
+      "date": "2026-10-19",
+      "version": "2026.10",
       "pages": 519,
-      "file": "docs/source-manuals/2026-09/visa_manual_260901.pdf",
-      "sha256": "18f2c022d40ffe1a71cee5e388f0219fff6b435b6876da6ce119a398f0fb6fb8",
-      "sections": "data/manual-corpus/visa_manual_2026_09_01_pdf.json",
+      "file": "docs/source-manuals/2026-10-19/visa_manual_261019.pdf",
+      "sha256": "a2547f04ee484b77e1058ac15969127404c1c700db9fdc5e6127fa3b16cb6f68",
+      "sections": "data/manual-corpus/visa_manual_2026_10_19_pdf.json",
       "approval_state": "approved",
       "official_url": "https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&BBS_GB_CD=BS10&NTCCTT_SEQ=1062&page=1",
       "image_pages": 135,
-      "characters": 467886
+      "characters": 468076
     },
     {
-      "id": "stay_manual_2026_09_18_pdf",
+      "id": "stay_manual_2026_10_19_pdf",
       "domain": "stay",
       "title": "외국인체류 안내매뉴얼",
       "title_en": "Foreigner Stay/Residence Guide Manual",
-      "date": "2026-09-18",
-      "version": "2026.9",
-      "pages": 810,
-      "file": "docs/source-manuals/2026-09/stay_manual_260918.pdf",
-      "sha256": "e464284cb85e5f0124db5e9b9b41fe2b95f1d44e79f8a43b1d10c6e42e178153",
-      "sections": "data/manual-corpus/stay_manual_2026_09_18_pdf.json",
+      "date": "2026-10-19",
+      "version": "2026.10",
+      "pages": 812,
+      "file": "docs/source-manuals/2026-10-19/stay_manual_261019.pdf",
+      "sha256": "4b176173f4c09ca1522f74e9a3e58cc0477a69aa6a28142bd675ca103f60397d",
+      "sections": "data/manual-corpus/stay_manual_2026_10_19_pdf.json",
       "approval_state": "approved",
       "official_url": "https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&BBS_GB_CD=BS10&NTCCTT_SEQ=1062&page=1",
       "image_pages": 199,
-      "characters": 713904
+      "characters": 714449
     }
   ],
-  "total_pages": 1329
+  "total_pages": 1331
 }

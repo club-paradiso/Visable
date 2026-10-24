@@ -280,13 +280,16 @@ class IngestionTests(EditionUpdateCase):
     def test_source_versions_keep_identity_lineage_and_state(self):
         stay = [s for s in self.p.repo.list_sources() if s["source_key"] == "stay_guide_manual"][0]
         by_ref = {v["edition_ref"]: v for v in stay["versions"]}
-        # Owner edition decision 2026-10-16: 2026-09-18 is the approved, active
-        # stay edition; the 2026-07-31 HWP it replaced and the 2026.6 PDF are superseded.
-        self.assertEqual(by_ref["stay_manual_2026_09_18_pdf"]["status"], "active")
-        self.assertEqual(by_ref["stay_manual_2026_09_18_pdf"]["content_review_state"], "approved")
-        self.assertEqual(by_ref["stay_manual_2026_09_18_pdf"]["effective_from"], "2026-09-18")
-        self.assertEqual(by_ref["stay_manual_2026_09_18_hwp"]["status"], "active")
-        self.assertEqual(by_ref["stay_manual_2026_09_18_hwp"]["content_review_state"], "approved")
+        # Owner edition decision 2026-10-23: 2026-10-19 is the approved, active
+        # stay edition; the 2026-09-18 pair it replaced, the 2026-07-31 HWP and
+        # the 2026.6 PDF are superseded.
+        self.assertEqual(by_ref["stay_manual_2026_10_19_pdf"]["status"], "active")
+        self.assertEqual(by_ref["stay_manual_2026_10_19_pdf"]["content_review_state"], "approved")
+        self.assertEqual(by_ref["stay_manual_2026_10_19_pdf"]["effective_from"], "2026-10-19")
+        self.assertEqual(by_ref["stay_manual_2026_10_19_hwp"]["status"], "active")
+        self.assertEqual(by_ref["stay_manual_2026_10_19_hwp"]["content_review_state"], "approved")
+        self.assertEqual(by_ref["stay_manual_2026_09_18_pdf"]["status"], "superseded")
+        self.assertEqual(by_ref["stay_manual_2026_09_18_hwp"]["status"], "superseded")
         self.assertEqual(by_ref["stay_manual_2026_07_31_hwp"]["status"], "superseded")
         self.assertEqual(by_ref["stay_manual_2026_06_23_pdf"]["status"], "superseded")
         # Effective dates come only from the approval record; absent = unknown (NULL), never invented.
@@ -297,6 +300,8 @@ class IngestionTests(EditionUpdateCase):
                          by_ref["stay_manual_2026_06_23_pdf"]["source_version_id"])
         self.assertEqual(by_ref["stay_manual_2026_09_18_pdf"]["supersedes_version_id"],
                          by_ref["stay_manual_2026_07_31_hwp"]["source_version_id"])
+        self.assertEqual(by_ref["stay_manual_2026_10_19_pdf"]["supersedes_version_id"],
+                         by_ref["stay_manual_2026_09_18_pdf"]["source_version_id"])
         # The baseline facts cite a superseded edition while an approved newer one exists.
         self.assertEqual(stay["refresh_state"], "refresh_due")
 
@@ -526,7 +531,7 @@ class RetrievalAndCoverageTests(PlatformCase):
         self.assertEqual([x["label"] for x in buckets["common"]], ["신청서", "여권", "외국인등록증", "수수료"])
         self.assertEqual(len(buckets["conditional"]), 1)
         self.assertIn("수료증명서", buckets["conditional"][0]["label"])
-        self.assertEqual(plan.structured["source_summary"], "외국인체류 안내매뉴얼 2026.9, 법무부 출입국·외국인정책본부, pp. 43-44")
+        self.assertEqual(plan.structured["source_summary"], "외국인체류 안내매뉴얼 2026.10, 법무부 출입국·외국인정책본부, pp. 44")
         blob = json.dumps(plan.structured, ensure_ascii=False)
         self.assertFalse(sa.contains_internal_metadata(blob))
         for term in INTERNAL_TERMS:
@@ -788,15 +793,15 @@ class EvalSeedRefreshTests(PlatformCase):
     def test_seed_cases_follow_the_seed_file_but_operator_cases_do_not(self):
         key = "d2.extension.documents.ko"
         row = self.p.store.one("SELECT case_id, assertions FROM eval_cases WHERE case_key = ?", (key,))
-        stale = row["assertions"].replace('"2026.9"', '"2026.6"')
+        stale = row["assertions"].replace('"2026.10"', '"2026.6"')
         self.assertNotEqual(stale, row["assertions"])
-        # A store seeded before the 2026-10-16 edition switch holds the old expectation.
+        # A store seeded before the 2026-10-23 edition switch holds the old expectation.
         self.p.store.execute("UPDATE eval_cases SET assertions = ? WHERE case_id = ?", (stale, row["case_id"]))
         self.p.store.execute("UPDATE eval_cases SET assertions = ?, created_by = ? WHERE case_key = ?",
                              (stale, OPERATOR, "d4.extension.documents.ko"))
         self.p.evals.import_seed_corpus()
         refreshed = self.p.store.one("SELECT assertions FROM eval_cases WHERE case_key = ?", (key,))["assertions"]
-        self.assertIn('"2026.9"', refreshed)
+        self.assertIn('"2026.10"', refreshed)
         operator = self.p.store.one("SELECT assertions FROM eval_cases WHERE case_key = ?",
                                     ("d4.extension.documents.ko",))["assertions"]
         self.assertEqual(operator, stale)
@@ -804,10 +809,10 @@ class EvalSeedRefreshTests(PlatformCase):
 
 class VersionDiffTests(EditionUpdateCase):
     def test_source_version_diff_d2(self):
-        """[77] 2026.6 (published) vs 2026.9 (proposals)."""
+        """[77] 2026.6 (published) vs 2026.10 (proposals)."""
         self.p.ingestion.run("sg", adapters.status_guidance_proposals(self.p.repo, statuses=["D-2", "D-4"]),
                              mode="apply", actor="parser:sg", actor_kind="parser")
-        a, b = self.version("stay_manual_2026_06_23_pdf"), self.version("stay_manual_2026_09_18_pdf")
+        a, b = self.version("stay_manual_2026_06_23_pdf"), self.version("stay_manual_2026_10_19_pdf")
         d = diff_versions(self.p.repo, a, b, status_code="D-2", properties=["required_document"])
         self.assertEqual(d["summary"], {"ADDED": 0, "REMOVED": 0, "CHANGED": 4, "UNCHANGED": 4})
         by_item = {r["slot_key"].rsplit("|", 1)[1]: r for r in d["records"]}
@@ -850,10 +855,10 @@ class EditionSwitchReseedTests(EditionUpdateCase):
         result = self._reseed_live()
         self.assertGreater(result["published"], 0)
         self.assertGreater(result["retired"], 0)
-        for code, pages in (("D-2", "43-44"), ("D-4", "90-92"), ("E-7", "227")):
+        for code, pages in (("D-2", "44"), ("D-4", "90-92"), ("E-7", "228")):
             facts = self._published(code)
             self.assertTrue(facts, code)
-            self.assertEqual({c["version_label"] for f in facts for c in f["citations"]}, {"2026.9"}, code)
+            self.assertEqual({c["version_label"] for f in facts for c in f["citations"]}, {"2026.10"}, code)
             self.assertFalse([f for f in facts if "2026.6" in (f.get("value_text") or "")], code)
         again = self._reseed_live()
         self.assertEqual((again["published"], again["retired"]), (0, 0))
@@ -963,8 +968,8 @@ class OperatorApiTests(EditionUpdateCase):
             body = self.ask("D-2 연장시 필수 서류", "요약").json()
             conditional = [d["label"] for d in body["structured_answer"]["required_documents"]["conditional"]]
             self.assertIn("재정입증 서류", conditional)
-            self.assertIn("2026.9 / 2026.6", body["structured_answer"]["source_summary"])
-            self.assertIn("43 (2026.9); 43-44 (2026.6)", body["structured_answer"]["source_summary"])
+            self.assertIn("2026.10 / 2026.6", body["structured_answer"]["source_summary"])
+            self.assertIn("43 (2026.10); 43-44 (2026.6)", body["structured_answer"]["source_summary"])
             self.ask("H-2 체류기간 연장 필요 서류", "안내")
             gap = c.get(f"{base}/gaps?kind=unknown").json()["gaps"][0]
             self.assertEqual(gap["status_code"], "H-2")
@@ -982,7 +987,7 @@ class OperatorApiTests(EditionUpdateCase):
             self.assertTrue(any(a["actor"] == OPERATOR and a["action"] == "transition:PUBLISHED" for a in audit))
             diff_resp = c.get(f"{base}/diff", params={
                 "from_version": self.version("stay_manual_2026_06_23_pdf"),
-                "to_version": self.version("stay_manual_2026_09_18_pdf"), "status_code": "D-2"})
+                "to_version": self.version("stay_manual_2026_10_19_pdf"), "status_code": "D-2"})
             self.assertEqual(diff_resp.status_code, 200)
 
 

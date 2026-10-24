@@ -1,0 +1,113 @@
+{
+  "meta": {
+    "role": "visa",
+    "old_label": "260901",
+    "new_label": "261019",
+    "old_path": "docs/source-manuals/2026-09-01/extracted/full_text/visa_manual_260901.txt",
+    "new_path": "docs/source-manuals/2026-10-19/extracted/full_text/visa_manual_261019.txt",
+    "old_paragraphs": 14556,
+    "new_paragraphs": 14561,
+    "hunks": 5,
+    "added_lines": 6,
+    "removed_lines": 1,
+    "changed_hunks": 2,
+    "changed_ratio": 0.00037778617302606723,
+    "extraction_mismatch_suspected": false,
+    "review_status": "candidates_for_human_review"
+  },
+  "affected_status_codes": [
+    {
+      "parent": "D-2",
+      "codes": [
+        "D-2"
+      ],
+      "hunks": 1,
+      "added": 0,
+      "removed": 0,
+      "changed": 1
+    },
+    {
+      "parent": "D-4",
+      "codes": [
+        "D-4-1"
+      ],
+      "hunks": 3,
+      "added": 2,
+      "removed": 1,
+      "changed": 0
+    }
+  ],
+  "hunks": [
+    {
+      "kind": "changed",
+      "old_start": 7,
+      "new_start": 7,
+      "anchor": "",
+      "codes": [],
+      "old_lines": [
+        "2026. 9."
+      ],
+      "new_lines": [
+        "2026. 10."
+      ]
+    },
+    {
+      "kind": "changed",
+      "old_start": 2016,
+      "new_start": 2016,
+      "anchor": "유학(D-2)",
+      "codes": [
+        "D-2"
+      ],
+      "old_lines": [
+        "유 학(D-2)"
+      ],
+      "new_lines": [
+        "유학(D-2)"
+      ]
+    },
+    {
+      "kind": "added",
+      "old_start": null,
+      "new_start": 2226,
+      "anchor": "어학연수(D-4-1) 과정",
+      "codes": [
+        "D-4-1"
+      ],
+      "old_lines": [],
+      "new_lines": [
+        "- (발급기관) 국내‧외 은행이 발급한 잔고증명서",
+        "- (통장명의) ➀신청인 또는 ➁신청인의 부모, ➂형제자매(부모가 사망한 경우에 한함)",
+        "- (유효기간) 사증·사증발급인정서 신청일 기준 30일 이내 발급된 증명서",
+        "- (잔고유지) 체류허가기간 동안 유지",
+        "※ 단기 입출금 등으로 발행된 경우 심사 시 시차를 두어 잔고 보유 여부를 재확인할 수 있음"
+      ]
+    },
+    {
+      "kind": "removed",
+      "old_start": 2411,
+      "new_start": null,
+      "anchor": "어학연수(D-4-1) 과정",
+      "codes": [
+        "D-4-1"
+      ],
+      "old_lines": [
+        "참고사항"
+      ],
+      "new_lines": []
+    },
+    {
+      "kind": "added",
+      "old_start": null,
+      "new_start": 2418,
+      "anchor": "어학연수(D-4-1) 과정",
+      "codes": [
+        "D-4-1"
+      ],
+      "old_lines": [],
+      "new_lines": [
+        "참고사항"
+      ]
+    }
+  ]
+}

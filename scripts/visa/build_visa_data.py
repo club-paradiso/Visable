@@ -29,13 +29,14 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import _visa_pipeline_common as C  # noqa: E402
 from manual_ref_promotion_2026_09 import promote_verified_manual_refs  # noqa: E402
+from manual_ref_promotion_2026_10 import promote_verified_manual_refs as promote_2026_10  # noqa: E402
 
 
 def build_records() -> list:
     ctx = C.load_build_context()
     records = C.load_status_files()
     reconstructed = [C.reconstruct_record(r, ctx) for r in records]
-    return promote_verified_manual_refs(reconstructed)
+    return promote_2026_10(promote_verified_manual_refs(reconstructed))
 
 
 def main() -> int:

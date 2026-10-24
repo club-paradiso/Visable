@@ -29,14 +29,14 @@
       language: '언어', languageTitle: '언어 선택', languageSearch: '언어 검색', languageNone: '일치하는 언어가 없어요.',
       disclaimer: 'Visable은 공식 정부 서비스가 아닙니다. 제공 정보는 참고용이며 법적 효력이 없습니다. 최종 판단은 HiKorea·1345·관할 출입국·외국인관서에서 확인하세요.',
       allTools: '전체 도구 보기', theme: '화면 테마', easyModeEasy: '쉬운 안내', guide: '체류자격 안내', all: '전체', sourceTab: '원문',
-      manualTitle: '관련 공식 원문', sourceNote: '2026년 9월 기준 공식 안내 원문에서 찾은 구절이에요. 위 안내와 판본이 다를 수 있어요.',
+      manualTitle: '관련 공식 원문', sourceNote: '2026년 10월판 공식 안내 원문에서 찾은 구절이에요. 위 안내와 판본이 다를 수 있어요.',
       review: '원문 발췌 · 검토 전', caveat: '표·이미지의 내용과 적용 조건은 원문 페이지에서 확인하세요. 발췌문은 개별 요건을 확정하는 안내가 아닙니다.',
       page: '쪽', pages: '건', excerpt: '본문 펼치기', close: '닫기', loading: '공식 원문을 불러오는 중입니다.',
       error: '원문을 불러오지 못했습니다. 다시 시도하거나 원문 PDF를 열어 확인하세요.', retry: '다시 시도',
       empty: '일치하는 원문이 없습니다.', emptyHelp: '체류자격 코드와 짧은 키워드를 함께 입력해 보세요. 예: F-6 연장, E-7-4 소득',
       more: '관련 원문 더 보기', rawTitle: '관련 원문', filter: '원문 범위', both: '사증·체류 전체', ai: 'AI 보조 안내 보기',
       info: '공식 안내 원문과 체류자격별 안내를 함께 검색할 수 있습니다. 각 결과의 기준일과 적용 범위를 확인하고, 신청 전 공식 기관에 문의하세요.',
-      currentSource: '기준일 사증 2026.09.01 · 체류 2026.09.18', examples: '이렇게 검색해 보세요',
+      currentSource: '기준일 사증 2026.10.19 · 체류 2026.10.19', examples: '이렇게 검색해 보세요',
       exF6Extension: 'F-6 체류기간 연장', exRegistration: '외국인등록', exAddress: '주소 변경 신고', exE7Workplace: 'E-7 근무처 변경', exForms: '통합신청서 작성',
       clear: '검색어 지우기', suggestLabel: '검색 제안', suggestCount: '제안 {n}개가 있어요. 위아래 화살표로 고르고 Enter로 여세요.',
       suggestEmpty: '맞는 제안이 없어요. Enter를 누르면 전체 검색 결과를 보여 드려요.', suggestFoot: 'Enter 전체 검색 · Esc 닫기',
@@ -47,12 +47,12 @@
       procAnyStatus: '체류자격과 관계없이 같은 절차', procNeedsStatus: '체류자격 코드를 함께 입력하면 더 정확해요',
       stateNotApplicable: '이 자격에는 해당 없음', stateRestricted: '원칙적으로 제한 · 예외 확인 필요',
       lifecycleLegacy: '기존 체류자만', lifecycleAbolished: '폐지된 자격', lifecycleUnverified: '확인 필요',
-      unknownCode: '{code}는 2026년 9월 공식 안내에서 찾을 수 없는 코드예요. 오타가 없는지 확인하거나 상위 코드를 살펴보세요.',
+      unknownCode: '{code}는 현재 수록된 공식 안내에서 찾을 수 없는 코드예요. 오타가 없는지 확인하거나 상위 코드를 살펴보세요.',
       notACode: '{code}는 공식 안내에 있는 체류자격 코드가 아니에요. 코드 대신 지금 상황을 입력해 보세요.',
       waymakerAsk: '상황을 설명하면 절차와 근거를 단계별로 정리해요',
       short: '단기입국 경로', jobs: '직업·산업분류', office: '관할 출입국관서', agencies: '등록 민원대행기관', hospitals: '법무부지정 병원',
       pathways: '생활 경로 8종', reminders: '체류 기한 계산·알림', naturalization: '국적·귀화 안내', enforcement: '출입국 사범처리 예상',
-      pendingInfo: '2026년 9월판 공식 안내 원문은 검색용으로 반영되어 있고, 내용 검토는 별도로 진행 중이에요. 구조화된 안내에는 각 근거의 기준일이 함께 표시됩니다.',
+      pendingInfo: '2026년 10월판 공식 안내 원문은 검색용으로 반영되어 있고, 일부 항목의 내용 검토는 별도로 진행 중이에요. 구조화된 안내에는 각 근거의 기준일이 함께 표시됩니다.',
       bootFailed: '화면을 준비하지 못했어요. 새로고침하면 대부분 해결돼요.', reload: '새로고침',
       bootLinks: '그래도 안 되면 공식 원문(PDF)과 다른 도구를 바로 열 수 있어요.',
       noscript: 'JavaScript가 꺼져 있으면 검색과 안내를 사용할 수 없어요. 공식 원문 PDF는 아래 링크에서 바로 열 수 있어요.'
@@ -83,7 +83,7 @@
       empty: 'No matching passages.', emptyHelp: 'The originals are in Korean. Try a code with a short Korean keyword, such as F-6 연장 or E-7-4 소득.',
       more: 'More source passages', rawTitle: 'Related source passages', filter: 'Source scope', both: 'Visa and stay', ai: 'Show AI assistance',
       info: 'Search the official source text alongside the status guides. Check the basis date and scope of each result, and confirm with an official authority before applying.',
-      currentSource: 'Basis: visa 2026.09.01 · stay 2026.09.18', examples: 'Try searching for',
+      currentSource: 'Basis: visa 2026.10.19 · stay 2026.10.19', examples: 'Try searching for',
       exF6Extension: 'F-6 extension of stay', exRegistration: 'Foreign resident registration', exAddress: 'Report an address change', exE7Workplace: 'E-7 workplace change', exForms: 'Fill in the integrated application',
       clear: 'Clear search', suggestLabel: 'Search suggestions', suggestCount: '{n} suggestions. Use the up and down arrows to choose, and Enter to open.',
       suggestEmpty: 'No matching suggestions. Press Enter to see all search results.', suggestFoot: 'Enter to search · Esc to close',
@@ -132,7 +132,7 @@
   function easyModeOn() { try { return localStorage.getItem('paradiso:easyMode') === '1'; } catch (e) { return false; } }
   function esc(value) { return String(value == null ? '' : value).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function icon(name) { return '<img class="cs-icon" src="assets/icons/civic/' + name + '.svg" alt="" aria-hidden="true">'; }
-  var VISA_PDF = 'docs/source-manuals/2026-09/visa_manual_260901.pdf', STAY_PDF = 'docs/source-manuals/2026-09/stay_manual_260918.pdf';
+  var VISA_PDF = 'docs/source-manuals/2026-10-19/visa_manual_261019.pdf', STAY_PDF = 'docs/source-manuals/2026-10-19/stay_manual_261019.pdf';
   var root = null;
   var catalog, corpus, loadPromise, query = '', domain = '', shown = 3, hits = [], sequence = 0, intent = null, rawFirst = false;
   var panel, raw, dialog, dialogReturn, queuedQuery = '', homeLanguage = '';
@@ -378,8 +378,8 @@
       toolLink(T, 'manual.html', 'book-open', 'reader', 'readerSub', ' data-cs-tool="reader"') +
       toolButton(T, 'data-action="open-jurisdiction-modal" data-cs-tool="office"', 'landmark', 'office', 'officeSub') + '</div></section>' +
       directoryHtml(T) +
-      '<div class="cs-source-strip"><span class="cs-source-strip-label">' + esc(T('sourceLabel')) + '</span><a href="' + VISA_PDF + '" target="_blank" rel="noopener">' + icon('file-text') + '<span>' + esc(T('visa')) + ' · 2026.09.01</span>' + icon('external-link') + '</a>' +
-      '<a href="' + STAY_PDF + '" target="_blank" rel="noopener">' + icon('file-text') + '<span>' + esc(T('stay')) + ' · 2026.09.18</span>' + icon('external-link') + '</a></div>' +
+      '<div class="cs-source-strip"><span class="cs-source-strip-label">' + esc(T('sourceLabel')) + '</span><a href="' + VISA_PDF + '" target="_blank" rel="noopener">' + icon('file-text') + '<span>' + esc(T('visa')) + ' · 2026.10.19</span>' + icon('external-link') + '</a>' +
+      '<a href="' + STAY_PDF + '" target="_blank" rel="noopener">' + icon('file-text') + '<span>' + esc(T('stay')) + ' · 2026.10.19</span>' + icon('external-link') + '</a></div>' +
       '<footer class="cs-footer"><img src="assets/brand/visable-wordmark.svg" alt="Visable"><p>' + esc(T('disclaimer')) + '</p></footer>' +
       '<section id="civicBrowsePanel" class="cs-browse" aria-labelledby="csBrowseTitle" hidden><div class="cs-browse-head"><h2 id="csBrowseTitle">' + esc(T('browse')) + '</h2>' +
       '<div class="cs-browse-tabs" role="group" aria-labelledby="csBrowseTitle"><button type="button" data-cs-journey="pre" aria-pressed="false">' + esc(T('pre')) + '</button><button type="button" data-cs-journey="post" aria-pressed="false">' + esc(T('post')) + '</button></div>' +
