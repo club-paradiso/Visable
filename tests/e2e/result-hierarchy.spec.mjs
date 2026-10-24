@@ -25,7 +25,7 @@ test.describe('F-4 extension result (source-only)', () => {
     await ready(page, 'source-only');
     const sg = page.locator('#statusGuidance');
     await expect(sg.locator('#sgAnswerTitle')).toContainText('F-4');
-    await expect(sg.locator('.sg-source-only .sg-lead')).toContainText('구조화된 안내가 아직 없어요');
+    await expect(sg.locator('.sg-source-only .sg-lead')).toContainText('정리된 안내가 아직 없어요');
     const srcBtn = sg.locator('.sg-answer .sg-btn-source');
     await expect(srcBtn).toBeVisible();
     await expect(srcBtn).toContainText('공식 원문 537쪽 보기');
@@ -157,7 +157,7 @@ test.describe('structured and unknown results', () => {
     await ready(page, 'resolved');
     const sg = page.locator('#statusGuidance');
     await expect(sg.locator('.sg-overview .sg-ov-confirmed')).toContainText('필수 서류 6개');
-    await expect(sg.locator('.sg-overview .sg-ov-conditional')).toContainText('조건부·해당자만 서류 1개');
+    await expect(sg.locator('.sg-overview .sg-ov-conditional')).toContainText('조건에 따라 내는 서류 1개');
     const order = [sg.locator('.sg-answer'), sg.locator('.sg-overview'), sg.locator('.sg-docs'), sg.locator('.sg-fee'), sg.locator('.sg-cond-section'), sg.locator('.sg-next'), sg.locator('.sg-evidence')];
     let last = -1;
     for (const loc of order) { const t = await topOf(loc); expect(t).toBeGreaterThan(last); last = t; }

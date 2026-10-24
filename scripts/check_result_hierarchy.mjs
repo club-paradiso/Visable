@@ -115,7 +115,7 @@ check('next actions are labelled rows and every call to action appears once on t
 check('structured answers: overview sits between the answer and the documents; a common procedure gets one too', () => {
   const d2 = run('D-2 체류기간 연장');
   assert(d2.step.kind === 'resolved', d2.step.kind);
-  ordered(d2.html, 'class="sg-answer"', 'class="sg-overview"', '필수 서류 6개', '조건부·해당자만 서류 1개', 'class="sg-docs"', 'class="sg-fee"', 'class="sg-cond-section"');
+  ordered(d2.html, 'class="sg-answer"', 'class="sg-overview"', '필수 서류 6개', '조건에 따라 내는 서류 1개', 'class="sg-docs"', 'class="sg-fee"', 'class="sg-cond-section"');
   assert(!d2.html.includes('class="sg-program"'), 'D-2 has no scheme block');
   const card = run('외국인등록증 재발급');
   assert(card.step.kind === 'procedure', card.step.kind);
