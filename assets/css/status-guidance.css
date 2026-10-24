@@ -400,3 +400,81 @@ html .sg[dir="ltr"] { text-align: left; }
   .sg-next li > a::after, .sg-next li > button::after { content: '›'; font-size: 20px; line-height: 1; color: var(--cs-muted); }
   html[dir="rtl"] .sg-next li > a::after, html[dir="rtl"] .sg-next li > button::after { content: '‹'; }
 }
+
+/* ===================================================================== */
+/* Pre-launch rescue (2026-10-24): result hierarchy.
+   Identity → overview (confirmed · conditional · check in source) → sections →
+   actions → evidence. Reading width is capped; special schemes and fee law sit
+   behind disclosures; every action is a labelled 44px+ row. Tokens: --cs-*. */
+#statusGuidance.sg { max-width: 820px; }
+
+/* B · overview */
+.sg-overview { margin-top: 22px; padding: 16px 18px 14px; border: 1px solid var(--cs-line); border-radius: 10px; background: var(--cs-row); }
+.sg-overview h3 { font-size: 13px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--cs-muted); margin-bottom: 10px; }
+.sg-ov { display: grid; gap: 10px; margin: 0; }
+.sg-ov-group { display: grid; grid-template-columns: 148px minmax(0, 1fr); gap: 4px 14px; align-items: start; }
+.sg-ov-group dt { display: flex; gap: 6px; align-items: baseline; font-size: 14px; font-weight: 700; color: var(--cs-ink); padding-top: 1px; }
+.sg-ov-group dt::before { content: '✓'; flex: none; font-weight: 800; color: var(--cs-green); }
+.sg-ov-conditional dt::before { content: '△'; color: #6b5420; }
+.sg-ov-source dt::before { content: '↗'; color: var(--cs-muted); }
+body[data-theme="dark"] .sg-ov-conditional dt::before { color: #efdfb1; }
+.sg-ov-group dd { margin: 0; min-width: 0; }
+.sg-ov-group li { font-size: 15px; line-height: 1.55; word-break: keep-all; padding: 1px 0; }
+.sg-ov-basis { margin-top: 10px; font-size: 13px; }
+
+/* answer head: source-only reads as a clear state, with its page as the action */
+.sg-source-only .sg-lead { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; color: var(--cs-ink); font-weight: 600; }
+.sg-source-body { margin-top: 6px; font-size: 15px; color: var(--cs-muted); max-width: 640px; word-break: keep-all; }
+.sg-btn-source { flex-direction: column; align-items: flex-start !important; gap: 2px; padding: 10px 18px; text-align: start; }
+.sg-btn-source small { font-size: 12px; font-weight: 500; opacity: .85; }
+
+/* schemes that may apply: collapsed, explicitly conditional */
+.sg-program-details { border-top: 1px solid var(--cs-line); }
+.sg-program-details:last-of-type { border-bottom: 1px solid var(--cs-line); }
+.sg-program-details > summary { list-style: none; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; min-height: 48px; padding: 8px 28px 8px 0; position: relative; cursor: pointer; font-size: 16px; font-weight: 600; word-break: keep-all; }
+.sg-program-details > summary::-webkit-details-marker { display: none; }
+.sg-program-details > summary::after { content: ''; position: absolute; right: 8px; top: 50%; width: 8px; height: 8px; margin-top: -6px; border-right: 1.5px solid var(--cs-muted); border-bottom: 1.5px solid var(--cs-muted); transform: rotate(45deg); transition: transform .15s; }
+.sg-program-details[open] > summary::after { transform: rotate(225deg); margin-top: -2px; }
+.sg-program-note { font-size: 14px; color: var(--cs-muted); margin: 0 0 6px !important; }
+.sg-program-details > p { font-size: 15px; line-height: 1.65; max-width: 640px; word-break: keep-all; margin-bottom: 10px; }
+.sg-program-details > p.sg-muted { font-size: 13px; }
+
+/* E · actions: one list of labelled rows */
+.sg-next .sg-actions { display: grid; gap: 0; border-top: 1px solid var(--cs-line); }
+.sg-next .sg-actions li { min-height: 0; border-bottom: 1px solid var(--cs-line); display: block; }
+.sg .sg-action, .sg a.sg-action { display: flex; width: 100%; min-height: 56px; align-items: center; justify-content: space-between; gap: 12px; padding: 9px 4px; border: 0; background: none; color: var(--cs-ink); text-decoration: none; text-align: start; font-size: 16px; font-weight: 600; line-height: 1.35; cursor: pointer; border-radius: 6px; }
+.sg-action-body { display: block; flex: 1 1 auto; min-width: 0; }
+.sg-action .sg-action-label { display: block; }
+.sg-action small { display: block; font-size: 13px; font-weight: 400; color: var(--cs-muted); margin-top: 2px; word-break: keep-all; }
+.sg-btn-source .sg-action-body, .sg-btn-source .sg-action-label, .sg-btn-source small { display: block; }
+.sg-btn-source .sg-action-label { font-weight: 700; }
+.sg-action::after { content: '›'; flex: none; font-size: 20px; line-height: 1; color: var(--cs-muted); }
+.sg .sg-action-primary .sg-action { color: var(--cs-green); }
+.sg-action:hover { background: var(--cs-row); }
+.sg-next .sg-next-ai { margin-top: 0; }
+.sg-next .sg-next-ai .sg-action { color: var(--cs-ink); }
+@media (min-width: 681px) { .sg-next .sg-actions { grid-template-columns: 1fr 1fr; gap: 0 28px; } .sg-next .sg-actions li { border-bottom: 1px solid var(--cs-line); } }
+@media (max-width: 680px) { .sg-next li > .sg-action { min-height: 56px; font-size: 16px; } .sg-next li > .sg-action::after { content: '›'; } }
+html[dir="rtl"] .sg:not([dir="ltr"]) .sg-action::after { content: '‹'; }
+
+/* evidence: the procedure's own sources first, fee law behind a disclosure */
+.sg-ev-group { font-size: 13px; font-weight: 700; color: var(--cs-muted); margin-top: 12px; letter-spacing: .02em; }
+.sg-ev-primary .sg-evidence-section { font-weight: 700; }
+.sg-ev-more { margin-top: 4px; }
+.sg-ev-more > summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; font-size: 14px; color: var(--cs-green); list-style: none; }
+.sg-ev-more > summary::-webkit-details-marker { display: none; }
+.sg-ev-more > summary::before { content: '+'; width: 18px; font-weight: 700; }
+.sg-ev-more[open] > summary::before { content: '−'; }
+
+@media (max-width: 680px) {
+  .sg-overview { margin-top: 16px; padding: 14px 14px 12px; }
+  .sg-ov-group { grid-template-columns: 1fr; gap: 2px; }
+  .sg-btn-source { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) { .sg-program-details > summary::after { transition: none; } }
+/* The F-4 route guide's phone-only fixed band duplicates the structured answer's
+   action list and covers it while reading. It stays available from the legacy
+   status card (기존 체류자격 카드 보기); the band shows only once that card is open. */
+.civic-refresh.searched[data-sg-state="ready"]:not([data-legacy-card="open"]) #f4gStickyCta { display: none !important; }
+/* The guidance block keeps LTR order on an RTL page (status-guidance.js sets dir="ltr"), so its row chevrons point forward there too. */
+html[dir="rtl"] .sg[dir="ltr"] .sg-next li > .sg-action::after, html[dir="rtl"] .sg[dir="ltr"] .sg-action::after { content: '›'; }

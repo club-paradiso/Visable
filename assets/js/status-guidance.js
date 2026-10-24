@@ -71,20 +71,27 @@
       localKind: '정보 성격', localChecked: '최근 확인일', localUnchecked: '아직 확인되지 않음', localReports: '제보 {n}건', localBaseline: '전국 기준', localDetail: '자세히', localReport: '실제 방문 내용이 달랐나요?', localNotPolicy: '전국 기준을 바꾸는 정보가 아니에요. 서류는 전국 기준대로 준비하세요.',
       layers: { NATIONAL_OFFICIAL_BASELINE: '전국 공식 기준', OFFICIAL_LOCAL_GUIDANCE: '관서 공식 안내', VERIFIED_LOCAL_PRACTICE: '검토된 실무 정보', REVIEWED_USER_REPORT: '검토된 이용자 제보', UNVERIFIED_USER_REPORT: '확인되지 않은 이용자 제보', CONFLICTING_REPORTS: '제보 간 불일치', STALE_REPORT: '오래된 제보', UNKNOWN: '정보 없음' },
       nextTitle: '다음 할 일', nextDocs: '준비 서류 {n}개 보기', nextReserve: '방문예약 안내', nextForms: '통합신청서 작성', nextCall: '1345 외국인종합안내센터', nextAi: '이어서 질문하기', nextLegacy: '기존 체류자격 카드 보기', nextFull: '전체 안내', nextEvidence: '근거 보기',
-      evidenceTitle: '공식 근거', evidenceShow: '근거 보기', evidenceReview: '2026년 9월판 원문은 아직 사람이 한 줄씩 대조 검토하지 않았어요.', evidenceCount: '{n}건', evidenceBasis: '최신 기준일 {date}', evidenceRegulation: '법령', evidenceManual: '공식 안내', open: '본문 펼치기', original: '원문 보기', reviewState: '검토 전 원문', moreManual: '관련 원문 더 보기', lawChecked: '{date} 확인',
+      evidenceTitle: '공식 근거', evidenceShow: '근거 보기', evidenceReview: '{edition}판 원문은 아직 사람이 한 줄씩 대조 검토하지 않았어요.', evidenceCount: '{n}건', evidenceBasis: '최신 기준일 {date}', evidenceRegulation: '법령', evidenceManual: '공식 안내', open: '본문 펼치기', original: '원문 보기', reviewState: '검토 전 원문', moreManual: '관련 원문 더 보기', lawChecked: '{date} 확인',
       stayManual: '외국인체류 안내매뉴얼', visaManual: '사증발급 안내매뉴얼',
       relatedTitle: '관련 절차', programTitle: '특별 제도', transitionTitle: '체류자격 변경 경로', currentStatus: '현재 체류자격', from: '현재', to: '목표',
       legacyStop: '이 체류자격은 {date}부터 신규 발급이 중단되었어요. 기존 소지자에게만 적용돼요.', abolished: '이 세부약호는 폐지되었어요({date}). {superseded}로 정정된 기준을 확인하세요.',
       loading: '안내를 불러오는 중이에요.', failed: '안내를 불러오지 못했어요. 아래 원문 검색은 그대로 사용할 수 있어요.', retry: '다시 시도',
-      unknownCode: '{code}은(는) 2026년 9월 기준 자료에서 확인되지 않는 코드예요. 오타가 아닌지 확인하거나 상위 코드로 검색해 보세요.',
+      unknownCode: '{code}은(는) 현재 기준 자료({edition}판)에서 확인되지 않는 코드예요. 오타가 아닌지 확인하거나 상위 코드로 검색해 보세요.',
       noStatus: '무엇을 찾으시는지 조금 더 알려주세요', noStatusBody: '하려는 일(예: 외국인등록증 재발급, 주소 변경 신고), 체류자격 코드(예: F-6, D-2-1), 또는 상황(예: 배우자 비자 연장)으로 검색해 보세요.', noStatusTry: '자주 찾는 업무', passportHint: '여권 재발급은 자국 대사관·영사관 업무예요. 새 여권을 받은 뒤에는 15일 이내에 등록사항 변경신고를 해야 해요.',
       confidenceLow: '해석이 확실하지 않아요. 맞지 않으면 수정해 주세요.',
       disclaimer: '공식 자료를 바탕으로 정리한 참고 안내예요. 법률 상담이나 민원 대행이 아니며, 최종 판단은 관할 기관에서 이루어집니다.', disclaimerMore: '안내 기준 보기',
+      overviewTitle: '한눈에 보기', ovConfirmed: '확인된 내용', ovConditional: '조건에 따라 달라요', ovSource: '원문에서 확인할 내용',
+      ovFee: '수수료 {amount} · {review}', ovFeeNone: '수수료 없음', ovDocs: '필수 서류 {n}개', ovDocsCond: '조건부·해당자만 서류 {n}개', ovDocsPartial: '기본 서류만 확인됨 · 세부유형을 확인하면 정확해져요',
+      ovNoDocs: '서류·요건 목록은 아직 구조화되지 않았어요 · {manual} {page}쪽', ovProgram: '{name} — 일부 대상자에게만 해당', ovExempt: '수수료 면제·감경 조건 {n}개', ovState: '{label} · 조건과 예외는 원문에서 확인', ovOfficer: '심사 과정에서 서류가 추가·생략될 수 있어요',
+      ovBasis: '기준일 {date} · 공식 근거 {n}건', ovReview: '{edition}판 원문은 아직 사람이 대조 검토하지 않았어요',
+      programsTitle: '해당될 수 있는 특별 제도', programScope: '일부 대상자만',
+      evPrimary: '이 절차의 공식 안내', evMore: '수수료·법령 근거 {n}건',
+      nextSource: '공식 원문 {page}쪽 보기', nextReserveSub: '하이코리아 방문예약 방법과 준비사항', nextFormsSub: '공식 서식을 단계별로 채우고 PDF로 저장', nextCallSub: '외국인종합안내센터 전화 상담', nextLegacySub: '{status} 체류자격 전체 안내 카드', nextAiSub: '지금 상황을 Waymaker에 이어서 설명하기',
       interpLabel: '검색 해석', wmTitle: '내 상황이 조금 다르다면', wmBody: 'Waymaker에 지금 상황을 설명하면 필요한 절차와 근거를 단계별로 정리해 드려요.', wmCta: 'Waymaker로 이어서 보기',
-      disclaimerDetail: ['이 안내는 법무부 출입국·외국인정책본부의 공식 안내자료(사증발급 안내매뉴얼 2026-10-19판, 외국인체류 안내매뉴얼 2026-10-19판)와 출입국관리법·시행령·시행규칙(2026-09-22 확인)을 구조화한 참고 정보이며 법적 효력이 없습니다.', '출입국·외국인청(사무소·출장소)장은 심사를 위해 필요하면 제출서류를 가감할 수 있고, 허가 여부는 심사로 결정됩니다.', '2026년 9월판 안내자료의 원문은 아직 사람이 한 줄씩 대조 검토하지 않았어요. 각 근거의 검토 상태를 함께 표시합니다.', '최종 확인은 관할 출입국·외국인관서, 하이코리아(hikorea.go.kr), 1345 외국인종합안내센터에서 하세요. Visable은 공식 정부 서비스가 아닙니다.'],
+      disclaimerDetail: ['이 안내는 법무부 출입국·외국인정책본부의 공식 안내자료(사증발급 안내매뉴얼 2026-10-19판, 외국인체류 안내매뉴얼 2026-10-19판)와 출입국관리법·시행령·시행규칙(2026-09-22 확인)을 구조화한 참고 정보이며 법적 효력이 없습니다.', '출입국·외국인청(사무소·출장소)장은 심사를 위해 필요하면 제출서류를 가감할 수 있고, 허가 여부는 심사로 결정됩니다.', '{edition}판 안내자료의 원문은 아직 사람이 한 줄씩 대조 검토하지 않았어요. 각 근거의 검토 상태를 함께 표시합니다.', '최종 확인은 관할 출입국·외국인관서, 하이코리아(hikorea.go.kr), 1345 외국인종합안내센터에서 하세요. Visable은 공식 정부 서비스가 아닙니다.'],
       sourceOnlyEvidence: '원문 확인', stateLabel: { SUPPORTED: '안내 가능', CONDITIONAL: '조건부', NOT_APPLICABLE: '해당 없음', GENERALLY_NOT_PERMITTED: '원칙적 불가', EXCEPTION_ONLY: '예외적 허용', LEGACY_ONLY: '기존 소지자', SOURCE_ONLY: '원문 확인', UNVERIFIED: '미확인' },
       exclusions: '변경이 제한되는 경우', exceptions: '예외', transitionDocs: '제출서류',
-      programNote: '일반 코드만으로는 판단할 수 없어요. 아래 조건이 추가로 적용돼요.', dims: '확인 항목', variantsTitle: '특례·예외 상황', relatedPrograms: '일부 대상자에게 적용되는 별도 제도:', understoodProgram: '{program}(으)로 이해했어요',
+      programNote: '일부 대상자에게만 적용되는 별도 제도예요. 아래 확인 항목에 해당하면 함께 확인하세요.', dims: '확인 항목', variantsTitle: '특례·예외 상황', relatedPrograms: '일부 대상자에게 적용되는 별도 제도:', understoodProgram: '{program}(으)로 이해했어요',
       reasonTitle: '재발급 사유 (선택)', reasonWhy: '사유에 따라 기존 등록증을 함께 내는지가 달라져요.',
       formVaries: '원본·사본 여부는 서류 이름이 아니라 절차별 원문 표기에 따라 달라요. 확인된 예시:', formVariesAsk: '어떤 절차인지 알려주시면 그 절차의 표기를 보여드려요.', formNoMark: '표기 없음',
       localPremise: '관할 관서별 실무 정보는 전국 기준을 바꾸지 않아요. 서류는 전국 기준대로 준비하고, 아래 정보는 참고만 하세요.', localPremiseNone: '{office}에 대해 확인된 차이 정보가 없어요.',
@@ -131,20 +138,27 @@
       localKind: 'Type of information', localChecked: 'Last checked', localUnchecked: 'Not yet checked', localReports: '{n} report(s)', localBaseline: 'National baseline', localDetail: 'Details', localReport: 'Was your visit different?', localNotPolicy: 'This does not change the national baseline. Prepare documents per the baseline.',
       layers: { NATIONAL_OFFICIAL_BASELINE: 'National official baseline', OFFICIAL_LOCAL_GUIDANCE: 'Official local guidance', VERIFIED_LOCAL_PRACTICE: 'Verified local practice', REVIEWED_USER_REPORT: 'Reviewed user report', UNVERIFIED_USER_REPORT: 'Unverified user report', CONFLICTING_REPORTS: 'Conflicting reports', STALE_REPORT: 'Stale report', UNKNOWN: 'Unknown' },
       nextTitle: 'Next steps', nextDocs: 'See the {n} documents', nextReserve: 'Visit reservation guide', nextForms: 'Fill in the application form', nextCall: 'Call 1345 (Immigration Contact Center)', nextAi: 'Ask a follow-up', nextLegacy: 'Open the existing status card', nextFull: 'Full guidance', nextEvidence: 'See evidence',
-      evidenceTitle: 'Official evidence', evidenceShow: 'Show evidence', evidenceReview: 'The September 2026 guides have not yet been reviewed line by line by a person.', evidenceCount: '{n} sources', evidenceBasis: 'Latest basis {date}', evidenceRegulation: 'Regulation', evidenceManual: 'Official guidance', open: 'Read page text', original: 'Open original', reviewState: 'original text, not yet reviewed', moreManual: 'More source passages', lawChecked: 'checked {date}',
+      evidenceTitle: 'Official evidence', evidenceShow: 'Show evidence', evidenceReview: 'The {edition} guides have not yet been reviewed line by line by a person.', evidenceCount: '{n} sources', evidenceBasis: 'Latest basis {date}', evidenceRegulation: 'Regulation', evidenceManual: 'Official guidance', open: 'Read page text', original: 'Open original', reviewState: 'original text, not yet reviewed', moreManual: 'More source passages', lawChecked: 'checked {date}',
       stayManual: 'Residence manual', visaManual: 'Visa issuance manual',
       relatedTitle: 'Related procedures', programTitle: 'Special program', transitionTitle: 'Change-of-status path', currentStatus: 'Current status', from: 'From', to: 'To',
       legacyStop: 'New issuance of this status stopped on {date}. It applies to existing holders only.', abolished: 'This subcode was abolished ({date}). See the rule now filed under {superseded}.',
       loading: 'Loading guidance…', failed: 'Guidance could not be loaded. The source search below still works.', retry: 'Try again',
-      unknownCode: '{code} is not a code found in the September 2026 sources. Check for a typo or search the parent code.',
+      unknownCode: '{code} is not a code found in the current ({edition}) sources. Check for a typo or search the parent code.',
       noStatus: 'Tell us a little more about what you are looking for', noStatusBody: 'Search with a task (e.g. residence card reissue, address change report), a status code (e.g. F-6, D-2-1) or a situation (e.g. spouse visa extension).', noStatusTry: 'Common tasks', passportHint: 'Passport renewal is done by your own embassy or consulate. After receiving the new passport, report the change within 15 days.',
       confidenceLow: 'This reading is uncertain. Edit it if it is wrong.',
       disclaimer: 'Reference guidance compiled from official sources — not legal advice and not an application agency. The final decision is made by the competent office.', disclaimerMore: 'How this guidance is compiled',
+      overviewTitle: 'At a glance', ovConfirmed: 'Confirmed', ovConditional: 'Depends on your case', ovSource: 'Check in the source',
+      ovFee: 'Fee {amount} · {review}', ovFeeNone: 'No fee', ovDocs: '{n} required documents', ovDocsCond: '{n} conditional / if-applicable documents', ovDocsPartial: 'Basic documents only · confirm the subtype for the exact list',
+      ovNoDocs: 'The document and eligibility list is not structured yet · {manual} p.{page}', ovProgram: '{name} — applies to some holders only', ovExempt: '{n} fee exemption / reduction conditions', ovState: '{label} · conditions and exceptions are in the source', ovOfficer: 'The examining officer may add or waive documents',
+      ovBasis: 'Basis {date} · {n} official sources', ovReview: 'The {edition} source text has not yet been reviewed by a person',
+      programsTitle: 'Special schemes that may apply', programScope: 'some holders only',
+      evPrimary: 'Official guidance for this procedure', evMore: '{n} fee and regulation sources',
+      nextSource: 'Open the source, p.{page}', nextReserveSub: 'How to book a HiKorea visit and what to bring', nextFormsSub: 'Fill in the official form step by step and save a PDF', nextCallSub: 'Immigration Contact Center by phone', nextLegacySub: 'Full {status} status card', nextAiSub: 'Describe your situation to Waymaker',
       interpLabel: 'Search interpreted as', wmTitle: 'If your situation is different', wmBody: 'Describe it to Waymaker and it lays out the procedure and the sources step by step.', wmCta: 'Continue in Waymaker',
-      disclaimerDetail: ['Compiled from the Ministry of Justice official guides (visa issuance guide 2026-10-19, residence guide 2026-10-19) and the Immigration Act, its Decree and its Rule (read 2026-09-22). It has no legal effect.', 'The head of the immigration office may add or waive documents for examination, and outcomes are decided by examination.', 'The September 2026 guides have not yet been reviewed line by line by a person; each source shows its review state.', 'Confirm with your immigration office, HiKorea (hikorea.go.kr) or the 1345 Immigration Contact Center. Visable is not a government service.'],
+      disclaimerDetail: ['Compiled from the Ministry of Justice official guides (visa issuance guide 2026-10-19, residence guide 2026-10-19) and the Immigration Act, its Decree and its Rule (read 2026-09-22). It has no legal effect.', 'The head of the immigration office may add or waive documents for examination, and outcomes are decided by examination.', 'The {edition} guides have not yet been reviewed line by line by a person; each source shows its review state.', 'Confirm with your immigration office, HiKorea (hikorea.go.kr) or the 1345 Immigration Contact Center. Visable is not a government service.'],
       sourceOnlyEvidence: 'Source only', stateLabel: { SUPPORTED: 'Guidance available', CONDITIONAL: 'Conditional', NOT_APPLICABLE: 'Not applicable', GENERALLY_NOT_PERMITTED: 'Generally not permitted', EXCEPTION_ONLY: 'Exception only', LEGACY_ONLY: 'Existing holders', SOURCE_ONLY: 'Source only', UNVERIFIED: 'Unverified' },
       exclusions: 'When the change is restricted', exceptions: 'Exceptions', transitionDocs: 'Documents',
-      programNote: 'The ordinary code alone is not enough. These extra conditions apply.', dims: 'What is checked', variantsTitle: 'Special cases', relatedPrograms: 'Separate schemes that apply to some holders:', understoodProgram: 'We read this as {program}',
+      programNote: 'A separate scheme that applies only to some holders. Check it if the items below describe you.', dims: 'What is checked', variantsTitle: 'Special cases', relatedPrograms: 'Separate schemes that apply to some holders:', understoodProgram: 'We read this as {program}',
       reasonTitle: 'Reason for reissue (optional)', reasonWhy: 'The reason decides whether you hand in the existing card.',
       formVaries: 'Whether an original or a copy is needed depends on the procedure\'s own source wording, not on the document name. Confirmed examples:', formVariesAsk: 'Tell us the procedure to see its exact wording.', formNoMark: 'not specified',
       localPremise: 'Office-level practice never changes the national baseline. Prepare documents per the baseline and treat the information below as reference only.', localPremiseNone: 'No confirmed differences are on record for {office}.',
@@ -161,6 +175,17 @@
   // Verbatim Korean (source headings, Korean-only data fields) inside English guidance is marked as Korean.
   function koIf(lang, text) { return lang !== 'ko' && /[가-힣]/.test(String(text || '')) ? ' lang="ko"' : ''; }
   function won(n) { return '₩' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
+  // The edition the guides come from, named from the bundle (never hard-coded in copy):
+  // "2026.10" → ko 2026년 10월 · en October 2026.
+  var MONTHS_EN = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  function editionLabel(bundle, lang) {
+    var src = bundle && bundle.sources || {};
+    var ids = Object.keys(src);
+    var stay = ids.filter(function (k) { return src[k].domain === 'stay'; })[0] || ids[0];
+    var ed = String(stay && src[stay].edition || '').match(/^(\d{4})\.(\d{1,2})$/);
+    if (!ed) return lang === 'en' ? 'current' : '현재';
+    return lang === 'en' ? MONTHS_EN[Number(ed[2]) - 1] + ' ' + ed[1] : ed[1] + '년 ' + Number(ed[2]) + '월';
+  }
 
   var PROCEDURE_ORDER = ['extension', 'status_change', 'registration', 'part_time_work', 'activities_outside_status', 'workplace_change', 'reentry', 'registration_info_report', 'residence_report', 'card_reissue', 'status_grant', 'visa_issuance', 'visa_issuance_confirmation', 'electronic_visa', 'workplace_report', 'program_condition_change'];
   var SHORT_STAY = ['B-1', 'B-2', 'C-1', 'C-3', 'C-4'];
@@ -672,18 +697,23 @@
   function evidenceFor(bundle, step, entries, fees) {
     var list = [];
     var seen = {};
+    // Each item carries the group it supports: 'main' (the procedure's own guidance,
+    // documents, transition, state page) or 'fee' (fee table, payment, exemptions), so
+    // the evidence section can show the procedure sources first and keep the fee
+    // regulations behind a disclosure.
+    var group = 'main';
     function pushManual(manual, page, section, kind) {
       if (!page || !manual) return;
       var k = manual + ':' + page;
       if (seen[k]) return; seen[k] = true;
-      list.push({ type: 'manual', manual: manual, page: page, section: section, kind: kind });
+      list.push({ type: 'manual', manual: manual, page: page, section: section, kind: kind, group: group });
     }
     function pushLaw(id, claim) {
       if (!id || !bundle.law_sources || !bundle.law_sources[id]) return;
       var k = 'law:' + id;
       if (seen[k]) { if (claim) seen[k].claims.push(claim); return; }
       var ls = bundle.law_sources[id];
-      var ev = { type: 'regulation', id: id, law: ls, claims: claim ? [claim] : [] };
+      var ev = { type: 'regulation', id: id, law: ls, claims: claim ? [claim] : [], group: group };
       seen[k] = ev; list.push(ev);
     }
     (entries || []).forEach(function (e) {
@@ -695,6 +725,7 @@
     if (step.page) pushManual(step.manual === 'visa' ? 'visa_manual_2026_10_19' : 'stay_manual_2026_10_19', step.page, '', 'state');
     (step.candidates || []).forEach(function (c) { if (c.source) pushManual(c.source.manual, c.source.pdf_page, c.source.section, 'candidate'); });
     if (fees) {
+      group = 'fee';
       fees.primary.concat(fees.variants).forEach(function (f) {
         pushLaw(f.law, f.label_ko); if (f.payment_law) pushLaw(f.payment_law, tr('ko', 'feeInstrument'));
         if (f.pdf_page) pushManual(f.manual, f.pdf_page, f.label_ko, 'fee');
@@ -837,7 +868,7 @@
   }
   function interpEditor(model, state, bundle) {
     var lang = model.lang; var interp = state.interp; var status = model.status; var html = '';
-    (interp.unknownCodes || []).forEach(function (c) { html += '<p class="sg-warn">' + esc(tr(lang, 'unknownCode', { code: c })) + '</p>'; });
+    (interp.unknownCodes || []).forEach(function (c) { html += '<p class="sg-warn">' + esc(tr(lang, 'unknownCode', { code: c, edition: editionLabel(bundle, lang) })) + '</p>'; });
     if (state.editing) {
       var opts = PROCEDURE_ORDER.filter(function (pid) { var c = bundle.codes[status]; var st = c && c.procedures && c.procedures[pid]; return st && st.s !== 'UNVERIFIED'; });
       if (!opts.length) opts = PROCEDURE_ORDER.slice(0, 10);
@@ -1118,9 +1149,13 @@
     var lang = model.lang;
     var related = model.relatedPrograms.length ? '<p class="sg-muted sg-related-programs">' + esc(tr(lang, 'relatedPrograms')) + ' ' + model.relatedPrograms.map(function (p) { return '<button type="button" class="sg-link sg-link-inline" data-sg-action="search" data-sg-value="' + esc(lang === 'en' ? p.name_en : p.name_ko) + '">' + esc(LL(lang, { ko: p.name_ko, en: p.name_en })) + '</button>'; }).join(', ') + '</p>' : '';
     if (!model.programs.length) return related;
-    return related + model.programs.map(function (p) {
-      return '<section class="sg-program" aria-label="' + esc(tr(lang, 'programTitle')) + '"><p class="sg-kicker">' + esc(tr(lang, 'programTitle')) + '</p><h3>' + esc(LL(lang, { ko: p.name_ko, en: p.name_en })) + '</h3><p>' + esc(tr(lang, 'programNote')) + '</p><p>' + esc(L(lang, p, 'summary')) + '</p><p class="sg-muted">' + esc(tr(lang, 'dims')) + ': ' + esc((lang === 'en' ? p.dimensions_en : p.dimensions_ko).join(' · ')) + ' · ' + esc(tr(lang, 'evidenceManual')) + ' ' + esc(p.pdf_page) + tr(lang, 'page') + '</p></section>';
-    }).join('');
+    // A special scheme attached to a status applies to SOME of its holders (the scheme
+    // lists what it checks). It is offered as a collapsed, clearly conditional block after
+    // the general answer — never as a universal rule above it.
+    return related + '<section class="sg-program" aria-labelledby="sgProgramTitle"><h3 id="sgProgramTitle">' + esc(tr(lang, 'programsTitle')) + '</h3>' + model.programs.map(function (p) {
+      return '<details class="sg-program-details"><summary><span class="sg-program-name">' + esc(LL(lang, { ko: p.name_ko, en: p.name_en })) + '</span> <span class="sg-state sg-state-conditional">' + esc(tr(lang, 'programScope')) + '</span></summary>' +
+        '<p class="sg-program-note">' + esc(tr(lang, 'programNote')) + '</p><p>' + esc(L(lang, p, 'summary')) + '</p><p class="sg-muted">' + esc(tr(lang, 'dims')) + ': ' + esc((lang === 'en' ? p.dimensions_en : p.dimensions_ko).join(' · ')) + ' · ' + esc(tr(lang, 'evidenceManual')) + ' ' + esc(p.pdf_page) + tr(lang, 'page') + '</p></details>';
+    }).join('') + '</section>';
   }
 
   function renderLocal(model, bundle) {
@@ -1150,17 +1185,71 @@
     return html;
   }
 
+  // The page the structured layer points at for this status × procedure (its own
+  // guidance page, or the source-only state page) — used for the primary action.
+  function primarySource(model) {
+    return (model.evidence || []).filter(function (e) { return e.type === 'manual' && e.group !== 'fee' && (e.kind === 'guidance' || e.kind === 'state'); })[0] || (model.evidence || []).filter(function (e) { return e.type === 'manual' && e.group !== 'fee'; })[0] || null;
+  }
+  function sourceButton(model, cls) {
+    var src = primarySource(model); if (!src) return '';
+    var lang = model.lang;
+    return '<button type="button" class="' + cls + '" data-sg-action="open-page" data-sg-source="' + esc(src.corpusId) + '" data-sg-page="' + src.page + '"><span class="sg-action-body"><span class="sg-action-label">' + esc(tr(lang, 'nextSource', { page: src.page })) + '</span><small>' + esc(manualTitle(lang, src)) + ' · ' + esc(src.date || '') + '</small></span></button>';
+  }
+  /* B · answer overview: what is confirmed, what depends on the case, what must be
+   * read in the source. Every line is derived from the composed model (fee registry
+   * state, document completeness, attached schemes, applicable exemptions, state), so
+   * the overview can never claim more than the sections below it. */
+  function renderOverview(model, step) {
+    var lang = model.lang;
+    var confirmed = [], conditional = [], source = [];
+    var fee = model.fees && model.fees.primary[0];
+    if (fee) {
+      if (fee.amount_state === 'NO_FEE') confirmed.push(tr(lang, 'ovFeeNone'));
+      else if (fee.amount_state === 'FIXED' && (fee.review_state === 'VERIFIED_REGULATION' || fee.review_state === 'MANUAL_EXPLICIT')) confirmed.push(tr(lang, 'ovFee', { amount: feeSummary(lang, model) || won(fee.amount), review: tr(lang, 'feeReview')[fee.review_state] || fee.review_state }));
+      else conditional.push(tr(lang, 'ovFee', { amount: feeAmountLine(lang, fee), review: tr(lang, 'feeReview')[fee.review_state] || fee.review_state }));
+      var ex = (fee.exemptions || []).filter(function (e) { return exemptionApplies(e, model.status, model.target, model.userProgram); });
+      if (ex.length) conditional.push(tr(lang, 'ovExempt', { n: ex.length }));
+    }
+    var e = model.entry;
+    if (e && e.completeness === 'FULLY_STRUCTURED') {
+      if (model.docCounts.required) confirmed.push(tr(lang, 'ovDocs', { n: model.docCounts.required }));
+      if (model.docCounts.conditional) conditional.push(tr(lang, 'ovDocsCond', { n: model.docCounts.conditional }));
+    } else if (e && model.documentGroups.length) conditional.push(tr(lang, 'ovDocsPartial'));
+    if (model.state === 'CONDITIONAL' || model.state === 'EXCEPTION_ONLY') conditional.push(tr(lang, 'ovState', { label: tr(lang, 'stateLabel')[model.state] || model.state }));
+    model.programs.forEach(function (p) { conditional.push(tr(lang, 'ovProgram', { name: LL(lang, { ko: p.name_ko, en: p.name_en }) })); });
+    var src = primarySource(model);
+    if (model.completeness === 'SOURCE_ONLY' && src) source.push(tr(lang, 'ovNoDocs', { manual: manualTitle(lang, src), page: src.page }));
+    var needsReview = (model.evidence || []).some(function (ev) { return ev.type === 'manual' && ev.review === 'needs_review'; });
+    if (needsReview) source.push(tr(lang, 'ovReview', { edition: editionLabel(model.bundle, lang) }));
+    if (e || model.completeness === 'SOURCE_ONLY') source.push(tr(lang, 'ovOfficer'));
+    if (!confirmed.length && !conditional.length && !source.length) return '';
+    function group(key, labelKey, items) {
+      if (!items.length) return '';
+      return '<div class="sg-ov-group sg-ov-' + key + '"><dt>' + esc(tr(lang, labelKey)) + '</dt><dd><ul>' + items.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul></dd></div>';
+    }
+    return '<section class="sg-overview" aria-labelledby="sgOverviewTitle"><h3 id="sgOverviewTitle">' + esc(tr(lang, 'overviewTitle')) + '</h3><dl class="sg-ov">' +
+      group('confirmed', 'ovConfirmed', confirmed) + group('conditional', 'ovConditional', conditional) + group('source', 'ovSource', source) + '</dl>' +
+      (model.basisDate ? '<p class="sg-muted sg-ov-basis">' + esc(tr(lang, 'ovBasis', { date: model.basisDate, n: model.evidence.length })) + '</p>' : '') + '</section>';
+  }
   function aiHref(model) {
     return 'ai.html?' + (model.status ? 'visa_code=' + encodeURIComponent(model.status) + '&' : '') + (model.procedure ? 'selected_procedure_key=' + encodeURIComponent(model.procedure) + '&' : '') + 'lang=' + model.lang;
   }
-  function renderNext(model) {
+  /* E · next actions: one list of labelled rows (44px+ targets), ordered by what the
+   * query needs. A source-only answer leads with its own manual page; a structured
+   * answer leads with the visit reservation. */
+  function renderNext(model, step) {
     var lang = model.lang;
-    return '<section class="sg-next" aria-labelledby="sgNextTitle"><h3 id="sgNextTitle">' + esc(tr(lang, 'nextTitle')) + '</h3><ul>' +
-      '<li><button type="button" class="sg-link" data-action="open-hikorea-guide" data-vcode="' + esc(model.status || '') + '">' + esc(tr(lang, 'nextReserve')) + '</button></li>' +
-      '<li><a href="form-helper.html">' + esc(tr(lang, 'nextForms')) + '</a></li>' +
-      '<li><a href="tel:1345">' + esc(tr(lang, 'nextCall')) + '</a></li>' +
-      (model.status ? '<li><button type="button" class="sg-link" data-sg-action="legacy-card">' + esc(tr(lang, 'nextLegacy')) + '</button></li>' : '') +
-      '<li class="sg-next-ai"><a href="' + esc(aiHref(model)) + '" data-sg-action="followup">' + esc(tr(lang, 'nextAi')) + '</a></li></ul></section>';
+    function row(inner, cls) { return '<li' + (cls ? ' class="' + cls + '"' : '') + '>' + inner + '</li>'; }
+    function label(key, subKey, vars) { return '<span class="sg-action-body"><span class="sg-action-label">' + esc(tr(lang, key, vars)) + '</span><small>' + esc(tr(lang, subKey, vars)) + '</small></span>'; }
+    var sourceFirst = !!(step && step.kind === 'source-only');
+    var sourceRow = sourceFirst ? sourceButton(model, 'sg-action') : '';
+    return '<section class="sg-next" aria-labelledby="sgNextTitle"><h3 id="sgNextTitle">' + esc(tr(lang, 'nextTitle')) + '</h3><ul class="sg-actions">' +
+      (sourceRow ? row(sourceRow, 'sg-action-primary') : '') +
+      row('<button type="button" class="sg-action" data-action="open-hikorea-guide" data-vcode="' + esc(model.status || '') + '">' + label('nextReserve', 'nextReserveSub') + '</button>', sourceRow ? '' : 'sg-action-primary') +
+      row('<a class="sg-action" href="form-helper.html">' + label('nextForms', 'nextFormsSub') + '</a>') +
+      row('<a class="sg-action" href="tel:1345">' + label('nextCall', 'nextCallSub') + '</a>') +
+      (model.status ? row('<button type="button" class="sg-action" data-sg-action="legacy-card">' + label('nextLegacy', 'nextLegacySub', { status: model.status }) + '</button>') : '') +
+      row('<a class="sg-action" href="' + esc(aiHref(model)) + '" data-sg-action="followup">' + label('nextAi', 'nextAiSub') + '</a>', 'sg-next-ai') + '</ul></section>';
   }
   /* Waymaker's place on a result page: the structured answer owns the page.
    * Exact results carry only the compact follow-up link in 다음 할 일; when the
@@ -1171,7 +1260,8 @@
   function renderWaymaker(model, step) {
     if (!step || !WAYMAKER_RESOLVER_KINDS[step.kind]) return '';
     var lang = model.lang;
-    return '<aside class="sg-wm" aria-labelledby="sgWmTitle"><p class="sg-wm-title" id="sgWmTitle">' + esc(tr(lang, 'wmTitle')) + '</p><p class="sg-wm-body">' + esc(tr(lang, 'wmBody')) + '</p><a class="sg-btn" href="' + esc(aiHref(model)) + '" data-sg-action="followup">' + esc(tr(lang, 'wmCta')) + '</a></aside>';
+    // A labelled region, not an <aside>: a complementary landmark may not sit inside main.
+    return '<section class="sg-wm" aria-labelledby="sgWmTitle"><p class="sg-wm-title" id="sgWmTitle">' + esc(tr(lang, 'wmTitle')) + '</p><p class="sg-wm-body">' + esc(tr(lang, 'wmBody')) + '</p><a class="sg-btn" href="' + esc(aiHref(model)) + '" data-sg-action="followup">' + esc(tr(lang, 'wmCta')) + '</a></section>';
   }
 
   function manualTitle(lang, ev) {
@@ -1184,7 +1274,8 @@
     var lang = model.lang;
     if (!model.evidence.length) return '';
     var open = opts && opts.open;
-    var items = model.evidence.map(function (ev) {
+    var items = model.evidence.map(function (ev, i) {
+      var primary = ev.type === 'manual' && ev.group !== 'fee' && !model.evidence.slice(0, i).some(function (p) { return p.type === 'manual' && p.group !== 'fee'; });
       if (ev.type === 'regulation') {
         var ls = ev.law;
         var claims = ev.claims.filter(function (c, i, a) { return c && a.indexOf(c) === i; }).slice(0, 4).join(' · ');
@@ -1193,14 +1284,19 @@
           '<div class="sg-evidence-section">' + esc(lang === 'en' ? ls.label_en : ls.label_ko) + '</div>' + (claims ? '<div class="sg-evidence-claims"' + koIf(lang, claims) + '>' + esc(claims) + '</div>' : '') +
           '<div class="sg-evidence-actions"><a href="' + esc(ls.url) + '" target="_blank" rel="noopener">' + esc(tr(lang, 'original')) + '</a></div></li>';
       }
-      return '<li class="sg-ev sg-ev-manual"><div class="sg-evidence-meta">' + esc(manualTitle(lang, ev)) + ' · ' + esc(ev.date || '') + ' · ' + ev.page + esc(tr(lang, 'page')) + '</div>' + (ev.section ? '<div class="sg-evidence-section"' + koIf(lang, ev.section) + '>' + esc(ev.section) + '</div>' : '') +
+      return '<li class="sg-ev sg-ev-manual' + (primary ? ' sg-ev-primary' : '') + '"><div class="sg-evidence-meta">' + esc(manualTitle(lang, ev)) + ' · ' + esc(ev.date || '') + ' · ' + ev.page + esc(tr(lang, 'page')) + '</div>' + (ev.section ? '<div class="sg-evidence-section"' + koIf(lang, ev.section) + '>' + esc(ev.section) + '</div>' : '') +
         '<div class="sg-evidence-actions"><button type="button" class="sg-link" data-sg-action="open-page" data-sg-source="' + esc(ev.corpusId) + '" data-sg-page="' + ev.page + '">' + esc(tr(lang, 'open')) + '</button><a href="' + esc(ev.file) + '#page=' + ev.page + '" target="_blank" rel="noopener">' + esc(tr(lang, 'original')) + '</a></div></li>';
-    }).join('');
+    });
     var hasManual = model.evidence.some(function (e) { return e.type === 'manual'; });
+    var mainItems = [], feeItems = [];
+    model.evidence.forEach(function (ev, i) { (ev.group === 'fee' ? feeItems : mainItems).push(items[i]); });
+    var lists = '';
+    if (mainItems.length) lists += '<p class="sg-ev-group">' + esc(tr(lang, 'evPrimary')) + '</p><ol class="sg-evidence-list">' + mainItems.join('') + '</ol>';
+    if (feeItems.length) lists += mainItems.length ? '<details class="sg-ev-more"><summary>' + esc(tr(lang, 'evMore', { n: feeItems.length })) + '</summary><ol class="sg-evidence-list">' + feeItems.join('') + '</ol></details>' : '<ol class="sg-evidence-list">' + feeItems.join('') + '</ol>';
     return '<section class="sg-evidence" aria-labelledby="sgEvidenceTitle"><details class="sg-evidence-details" id="sgEvidence"' + (open ? ' open' : '') + '><summary><h3 id="sgEvidenceTitle">' + esc(tr(lang, 'evidenceTitle')) + ' <span class="sg-ev-count">' + esc(tr(lang, 'evidenceCount', { n: model.evidence.length })) + '</span></h3><span class="sg-ev-show">' + esc(tr(lang, 'evidenceShow')) + '</span></summary>' +
       (model.basisDate ? '<p class="sg-muted sg-ev-basis">' + esc(tr(lang, 'evidenceBasis', { date: model.basisDate })) + '</p>' : '') +
-      (hasManual ? '<p class="sg-muted sg-ev-review">' + esc(tr(lang, 'evidenceReview')) + '</p>' : '') +
-      '<ol class="sg-evidence-list">' + items + '</ol><div class="sg-raw-slot" id="sgRawSlot"></div></details></section>';
+      (hasManual ? '<p class="sg-muted sg-ev-review">' + esc(tr(lang, 'evidenceReview', { edition: editionLabel(bundle, lang) })) + '</p>' : '') +
+      lists + '<div class="sg-raw-slot" id="sgRawSlot"></div></details></section>';
   }
 
   function renderRelated(model, bundle) {
@@ -1227,8 +1323,10 @@
 
   // C core guidance (above) · D documents · E fees · F conditions / exceptions ·
   // G local office · H next actions · I Waymaker (resolver only) · J evidence · K related.
+  // Reading order: overview → transition → documents → cost → conditions → schemes that
+  // may apply → office → next actions → evidence → related.
   function detailSections(model, step, bundle, state) {
-    return renderTransition(model) + renderPrograms(model) + renderDocuments(model, bundle) + renderFees(model, bundle) + renderConditionsSection(model, step) + renderLocal(model, bundle) + renderNext(model) + renderWaymaker(model, step) + renderEvidence(model, bundle, { open: !!state.evidenceOpen }) + renderRelated(model, bundle);
+    return renderOverview(model, step) + renderTransition(model) + renderDocuments(model, bundle) + renderFees(model, bundle) + renderConditionsSection(model, step) + renderPrograms(model) + renderLocal(model, bundle) + renderNext(model, step) + renderWaymaker(model, step) + renderEvidence(model, bundle, { open: !!state.evidenceOpen }) + renderRelated(model, bundle);
   }
   // One immediate next action inside the first screen.
   function answerActions(model) {
@@ -1282,7 +1380,7 @@
       var sec = g.source ? g.source.section : '';
       return '<li><button type="button" class="sg-candidate" data-sg-action="pick-target" data-sg-target="' + esc(targetKey(g)) + '"><span class="sg-code">' + esc(code) + '</span> ' + esc(name || '') + (sec ? '<small>' + esc(sec) + '</small>' : '') + '</button>' + (g.state ? stateBadge(lang, g.state) : '') + '</li>';
     }).join('') + '</ul></section>';
-    html += renderTransition(model) + renderPrograms(model) + renderFees(model, bundle) + renderNext(model) + renderWaymaker(model, step) + renderEvidence(model, bundle, { open: true }) + renderRelated(model, bundle);
+    html += renderTransition(model) + renderFees(model, bundle) + renderPrograms(model) + renderNext(model, step) + renderWaymaker(model, step) + renderEvidence(model, bundle, { open: true }) + renderRelated(model, bundle);
     return html;
   }
 
@@ -1291,8 +1389,11 @@
     var key = step.state === 'NOT_APPLICABLE' ? 'notApplicable' : step.state === 'GENERALLY_NOT_PERMITTED' ? 'notPermitted' : step.state === 'EXCEPTION_ONLY' ? 'exceptionOnly' : null;
     var html = '<section class="sg-answer sg-source-only" aria-labelledby="sgAnswerTitle">' + renderAnswered(model, step, lang) + '<p class="sg-kicker">' + esc(model.procedureLabel) + '</p><h2 id="sgAnswerTitle" class="sg-answer-title" tabindex="-1"><span class="sg-code">' + esc(model.status) + '</span>' + (model.statusName ? ' <span class="sg-name">' + esc(lang === 'en' ? (model.statusNameEn || model.statusName) : model.statusName) + '</span>' : '') + '</h2>' + renderLifecycle(model);
     if (key) html += '<p class="sg-warn">' + stateBadge(lang, step.state) + ' ' + esc(tr(lang, key, { status: model.status })) + '</p>';
-    else html += '<p class="sg-lead">' + stateBadge(lang, step.state || 'SOURCE_ONLY') + ' ' + esc(tr(lang, 'sourceOnlyTitle')) + '</p><p>' + esc(tr(lang, 'sourceOnlyBody')) + '</p>';
-    html += '</section>' + renderTransition(model) + renderPrograms(model) + (key ? '' : renderFees(model, bundle)) + renderNext(model) + renderWaymaker(model, step) + renderEvidence(model, bundle, { open: true }) + renderRelated(model, bundle);
+    else html += '<p class="sg-lead">' + stateBadge(lang, step.state || 'SOURCE_ONLY') + ' ' + esc(tr(lang, 'sourceOnlyTitle')) + '</p><p class="sg-source-body">' + esc(tr(lang, 'sourceOnlyBody')) + '</p>';
+    // The source page is the answer here: it is the one immediate action in the first screen.
+    var srcBtn = sourceButton(model, 'sg-btn sg-btn-primary sg-btn-source');
+    if (srcBtn) html += '<div class="sg-answer-actions">' + srcBtn + '</div>';
+    html += '</section>' + renderOverview(model, step) + renderTransition(model) + (key ? '' : renderFees(model, bundle)) + renderPrograms(model) + renderNext(model, step) + renderWaymaker(model, step) + renderEvidence(model, bundle, { open: true }) + renderRelated(model, bundle);
     return html;
   }
 
@@ -1343,8 +1444,9 @@
     return html;
   }
 
-  function renderDisclaimer(lang) {
-    return '<div class="sg-disclaimer"><p>' + esc(tr(lang, 'disclaimer')) + ' <details class="sg-disclaimer-more"><summary>' + esc(tr(lang, 'disclaimerMore')) + '</summary><ul>' + tr(lang, 'disclaimerDetail').map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul></details></p></div>';
+  function renderDisclaimer(lang, bundle) {
+    var vars = { edition: editionLabel(bundle, lang) };
+    return '<div class="sg-disclaimer"><p>' + esc(tr(lang, 'disclaimer')) + ' <details class="sg-disclaimer-more"><summary>' + esc(tr(lang, 'disclaimerMore')) + '</summary><ul>' + tr(lang, 'disclaimerDetail').map(function (t) { return '<li>' + esc(fmt(t, vars)) + '</li>'; }).join('') + '</ul></details></p></div>';
   }
 
   function renderModel(step, state, bundle) {
@@ -1371,7 +1473,7 @@
       var open = !!state.fullOpen;
       html += '<div class="sg-full" id="sgFull"' + (open ? '' : ' hidden') + '>' + body + '</div>';
     } else html += body;
-    html += renderDisclaimer(lang);
+    html += renderDisclaimer(lang, bundle);
     model.quick = quick ? quick.model : null;
     return { html: html, model: model };
   }
@@ -1487,7 +1589,9 @@
     state.lang = lang();
     var step = nextStep(state, bundle);
     var out = renderModel(step, state, bundle);
-    h.innerHTML = '<h2 id="sgHeading" class="sg-sr">' + esc(tr(state.lang, 'answerTitle')) + '</h2>' + out.html;
+    // The result page's document heading: the legacy hero h1 is hidden once a search runs,
+    // so the guidance names the page (screen-reader only); the answer title is the h2 below it.
+    h.innerHTML = '<h1 id="sgHeading" class="sg-sr">' + esc(tr(state.lang, 'answerTitle')) + ' · ' + esc(state.query) + '</h1>' + out.html;
     // Content language of the block; on an RTL page the Korean/English guidance keeps LTR order.
     h.setAttribute('lang', state.lang);
     if (document.documentElement.dir === 'rtl') h.setAttribute('dir', 'ltr'); else h.removeAttribute('dir');

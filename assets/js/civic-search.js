@@ -76,7 +76,7 @@
       language: 'Language', languageTitle: 'Choose language', languageSearch: 'Search languages', languageNone: 'No matching language.',
       disclaimer: 'Visable is not a government service. Information is for reference and has no legal effect. Confirm with HiKorea, 1345 or the relevant immigration office.',
       allTools: 'All services', theme: 'Theme', easyModeEasy: 'Easy Mode', guide: 'Status guides', all: 'All results', sourceTab: 'Sources',
-      manualTitle: 'Related official sources', sourceNote: 'Passages from the official guidance as of September 2026. The guidance above may cite a different edition.',
+      manualTitle: 'Related official sources', sourceNote: 'Passages from the official guidance as of October 2026. The guidance above may cite a different edition.',
       review: 'Original excerpt · not reviewed', caveat: 'Check tables, images and applicable conditions on the original page. Excerpts do not establish individual requirements.',
       page: 'page', pages: 'passages', excerpt: 'Read page text', close: 'Close', loading: 'Loading official source text…',
       error: 'The source text could not be loaded. Try again or open the original PDFs.', retry: 'Try again',
@@ -94,12 +94,12 @@
       procAnyStatus: 'Same procedure for every status', procNeedsStatus: 'Add your status code for a more precise answer',
       stateNotApplicable: 'Does not apply to this status', stateRestricted: 'Generally restricted · check the exceptions',
       lifecycleLegacy: 'Existing holders only', lifecycleAbolished: 'Abolished status', lifecycleUnverified: 'Needs checking',
-      unknownCode: '{code} is not a code in the September 2026 official guidance. Check for a typo, or look at the parent code.',
+      unknownCode: '{code} is not a code in the October 2026 official guidance. Check for a typo, or look at the parent code.',
       notACode: '{code} is not a status code in the official guidance. Try describing your situation instead.',
       waymakerAsk: 'Describe your situation and get the steps and sources in order',
       short: 'Short-stay entry routes', jobs: 'Occupation & industry codes', office: 'Immigration offices', agencies: 'Registered agencies', hospitals: 'Designated hospitals',
       pathways: 'Eight life pathways', reminders: 'Dates & reminders', naturalization: 'Nationality & naturalization', enforcement: 'Immigration enforcement',
-      pendingInfo: 'The September 2026 official guidance is indexed for search; its content review is a separate step. Structured guidance shows the basis date of each source.',
+      pendingInfo: 'The October 2026 official guidance is indexed for search; its content review is a separate step. Structured guidance shows the basis date of each source.',
       bootFailed: 'The page could not finish loading. Reloading usually fixes it.', reload: 'Reload',
       bootLinks: 'If it still fails, the official source PDFs and the other tools open directly.',
       noscript: 'Search and guidance need JavaScript. The official source PDFs open from the links below.'
@@ -686,9 +686,18 @@
     });
     mountJourneySection();
   }
+  // One main landmark per state: the civic shell is the main on the landing, the legacy
+  // results container (#mainContent) is the main once a search has run. On the landing
+  // the legacy container only hosts sections revealed on demand, so it steps down to a
+  // plain region there instead of a second <main>.
+  function syncMainRole() {
+    var legacy = document.getElementById('mainContent'); if (!legacy) return;
+    if (document.body.classList.contains('searched')) legacy.removeAttribute('role'); else legacy.setAttribute('role', 'region');
+  }
   function home(opts) {
     opts = opts || {};
     homeLanguage = uiLang();
+    syncMainRole();
     if (!journeySection) journeySection = document.getElementById('visaManualSection');
     var reuse = Boolean(opts.reuse) && root.getAttribute('data-cs-shell') === homeLanguage && root.querySelector('#civicBrowsePanel') && root.querySelector('.cs-tools-core');
     closeSuggest();
@@ -722,6 +731,7 @@
     document.body.classList.remove('landing', 'launching', 'searching');
     document.body.classList.add('searched');
     document.body.setAttribute('data-scene', 'searched');
+    syncMainRole();
     find(value);
     if (typeof dataReady !== 'undefined' && !dataReady) {
       queuedQuery = value; return;
