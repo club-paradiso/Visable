@@ -210,6 +210,18 @@
       if (typeof n === 'object') { out.unknownCodes.push(n.unknownSub); if (out.codes.every(function (c) { return c.code !== n.parent; })) out.codes.push({ code: n.parent, exact: false, fromUnknown: n.unknownSub }); continue; }
       if (out.codes.every(function (c) { return c.code !== n; })) out.codes.push({ code: n, exact: isSubcode(n), at: m.index, end: m.index + m[0].length });
     }
+    // A token shaped like a status code that no edition knows ("Z-9", "F-99", "D-2-99")
+    // is reported instead of silently dropped, so the answer never pretends the query
+    // was only about the procedure.
+    var shapeRe = /(^|[^A-Za-z0-9가-힣])([A-Za-z])\s?-\s?(\d{1,2})(?:\s?-\s?([0-9A-Za-z]{1,3}))?(?![A-Za-z0-9])/g;
+    var sm;
+    while ((sm = shapeRe.exec(q))) {
+      var shaped = (sm[2] + '-' + sm[3] + (sm[4] ? '-' + sm[4] : '')).toUpperCase();
+      var known = normalizeCode(shaped, codes);
+      if (known) continue;
+      if (/^[A-H]-\d{1,2}$/.test(shaped) && codes[shaped]) continue;
+      if (out.unknownCodes.indexOf(shaped) < 0 && out.codes.every(function (c) { return c.code !== shaped; })) out.unknownCodes.push(shaped);
+    }
     // "D-2에서 D-10으로 변경" / "D-2 → D-10": the code marked by (으)로 / → / to is the
     // TARGET of a status change and the 에서/부터/from code is the current status.
     // status_change guidance is keyed by the target, so the target must come first;
@@ -225,6 +237,9 @@
         if (targetIdx < 0 && (/^\s*(?:으로|로|へ|への|に)(?![가-힣]*\s*(?:부터|에서))/.test(after) || /(?:->|→|\bto\b|\bsang\b|\bke\b|\binto\b)\s*$/i.test(before))) targetIdx = i;
         else if (fromIdx < 0 && (/^\s*(?:에서|부터|から)/.test(after) || /\b(?:from|từ|dari)\s*$/i.test(before))) fromIdx = i;
       });
+      // "D-2에서 D-10 변경": only the current status is marked (에서/from); with exactly
+      // two codes the other one is the target.
+      if (targetIdx < 0 && fromIdx >= 0 && out.codes.length === 2) targetIdx = fromIdx === 0 ? 1 : 0;
       if (targetIdx > 0 && fromIdx !== targetIdx) {
         var target = out.codes.splice(targetIdx, 1)[0];
         out.codes.unshift(target);
@@ -390,6 +405,12 @@
     }
     // 2. status change into a target with a transition rule → current status matters
     var transition = procedure === 'status_change' ? transitionFor(bundle, status, procedure) : null;
+    // "D-2에서 F-2로": the current status named in the query answers the current-status
+    // question when it maps to one of its classes; the answer stays editable (확인한 내용).
+    if (transition && transition.exclusions && transition.exclusions.length && !answers.current_status && interp.transitionFrom) {
+      var fromClass = currentStatusClass(bundle, interp.transitionFrom);
+      if (fromClass) answers.current_status = fromClass;
+    }
     if (transition && transition.exclusions && transition.exclusions.length && !answers.current_status) {
       var cq = bundle.current_status_question;
       return { kind: 'question', dimension: 'current_status', question_ko: cq.question_ko, question_en: cq.question_en, options: cq.options, allowUnsure: true, unsure_ko: cq.unsure_ko, unsure_en: cq.unsure_en, why: 'transition' };
@@ -466,6 +487,15 @@
     return { kind: 'resolved', status: status, procedure: procedure, entries: [entry], target: entry.target, scenario: entry.scenario, inherited: inherited || covered || (!!chosenCode && chosenCode !== entry.target.split('~')[0]), displayCode: displayCode, exact: exact, answered: answeredDims, transition: transition, variants: [], confidence: (exact || !dims.length || chosenCode) ? 'HIGH' : 'MEDIUM' };
   }
 
+  // Map a status code to the current-status question's class option (LONG_TERM / SHORT_STAY / H-1).
+  function currentStatusClass(bundle, code) {
+    var cq = bundle.current_status_question; if (!cq || !code) return null;
+    var parent = parentOf(code);
+    var cls = parent === 'H-1' ? 'H-1' : /^[DEFGH]-/.test(parent) ? 'LONG_TERM' : /^[BC]-/.test(parent) ? 'SHORT_STAY' : null;
+    if (!cls) return null;
+    var opt = cq.options.filter(function (o) { return (o.targets || []).indexOf(cls) >= 0; })[0];
+    return opt ? opt.id : null;
+  }
   function inherits(bundle, code, procedure) { var c = bundle.codes[code]; var st = c && c.procedures && c.procedures[procedure]; return !!(st && st.i); }
   function scenarioBases(dim) {
     if (dim.__sb) return dim.__sb;
@@ -820,7 +850,11 @@
 
   function renderAnswered(model, step, lang) {
     var list = (step.answered || []).slice();
-    if (model.currentStatus) list.push({ dimension: { id: 'current_status' }, option: { ko: tr('ko', 'currentStatus') + ': ' + model.currentStatus, en: tr('en', 'currentStatus') + ': ' + model.currentStatus } });
+    if (model.currentStatus) {
+      var cqo = ((model.bundle && model.bundle.current_status_question) || { options: [] }).options.filter(function (o) { return o.id === model.currentStatus; })[0];
+      var cqLabel = model.currentStatus === 'unsure' ? { ko: tr('ko', 'unsure'), en: tr('en', 'unsure') } : (cqo || { ko: model.currentStatus, en: model.currentStatus });
+      list.push({ dimension: { id: 'current_status' }, option: { ko: tr('ko', 'currentStatus') + ': ' + cqLabel.ko, en: tr('en', 'currentStatus') + ': ' + cqLabel.en } });
+    }
     if (!list.length) return '';
     return '<div class="sg-answered"><span class="sg-answered-label">' + esc(tr(lang, 'answered')) + '</span>' + list.map(function (a) {
       return '<span class="sg-answered-item">' + esc(LL(lang, a.option)) + ' <button type="button" class="sg-link" data-sg-action="reopen" data-sg-dim="' + esc(a.dimension.id) + '">' + esc(tr(lang, 'change')) + '</button></span>';

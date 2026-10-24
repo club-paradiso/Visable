@@ -234,6 +234,31 @@ check('a status-card mention of a parent and its subcode is not a status change'
     assert(run(q).interp.procedure !== 'status_change', `${q}: ${run(q).interp.procedure}`);
   }
 });
+check('"A에서 B 변경" without (으)로 still answers for the target B and records A as the current status', () => {
+  for (const [q, target, from] of [['D-2에서 D-10 변경', 'D-10', 'D-2'], ['H-2에서 F-4 변경', 'F-4', 'H-2'], ['E-7에서 F-2 자격변경', 'F-2', 'E-7']]) {
+    const r = run(q);
+    assert(r.interp.procedure === 'status_change', `${q}: procedure ${r.interp.procedure}`);
+    assert(r.interp.codes[0].code === target, `${q}: target ${r.interp.codes[0].code}`);
+    assert(r.interp.transitionFrom === from, `${q}: from ${r.interp.transitionFrom}`);
+  }
+  // The current status named in the query answers the current-status question (editable, not re-asked).
+  const r2 = run('D-2에서 F-2 변경');
+  assert(r2.step.kind !== 'question' || r2.step.dimension !== 'current_status', `D-2에서 F-2: must not re-ask the current status (${r2.step.kind}/${r2.step.dimension})`);
+  const r3 = run('C-3에서 F-6 변경');
+  assert(r3.step.kind !== 'question' || r3.step.dimension !== 'current_status', 'short-stay current status is pre-answered too');
+});
+check('unknown status codes are reported, never silently dropped', () => {
+  for (const [q, code] of [['Z-9 연장', 'Z-9'], ['F-99 체류기간 연장', 'F-99'], ['X-1 비자 서류', 'X-1'], ['D-2-99 연장', 'D-2-99']]) {
+    const r = run(q);
+    assert(r.interp.unknownCodes.includes(code), `${q}: unknownCodes ${JSON.stringify(r.interp.unknownCodes)}`);
+    assert(r.text.includes(code) && r.text.includes('확인되지 않는 코드'), `${q}: warning rendered`);
+  }
+  for (const q of ['F-6 체류기간 연장', 'D-2 2026-10-19 기준', 'E-7-1 근무처 변경', '3개월 연장']) assert(run(q).interp.unknownCodes.length === 0, `${q}: no false unknown code`);
+});
+check('comparing two statuses is a comparison, not a lookup of the first code', () => {
+  for (const q of ['F-4와 F-5 차이', 'F-2 vs F-5', 'difference between D-2 and D-10', 'F-4와 F-5의 다른 점']) assert(R.assessComplexity(q).complex && R.assessComplexity(q).reason === 'comparison', q);
+  for (const q of ['F-4 체류기간 연장', 'F-6 연장 서류 차이가 있나요', 'D-2 연장']) assert(!R.assessComplexity(q).complex, `${q} stays a single lookup`);
+});
 check('router output shape', () => {
   const r = R.route('외국인등록증 재발급', bundle, { localPractice: bundle.local_practice });
   for (const k of ['intent', 'structure', 'isQuestion', 'facet', 'status', 'substatus', 'procedure', 'procedureCandidates', 'object', 'office', 'program', 'userProgram', 'conditions', 'contextRequirement', 'needs', 'confidence']) assert(k in r, `missing ${k}`);
