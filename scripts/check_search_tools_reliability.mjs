@@ -38,7 +38,28 @@ w.eval(readFileSync(new URL('../assets/js/civic-search.js', import.meta.url), 'u
 w.document.dispatchEvent(new w.Event('DOMContentLoaded'));
 const doc = w.document;
 assert.equal(doc.querySelectorAll('.cs-service').length, 15);
-assert.equal(doc.querySelector('.cs-directory').open, true, 'catalogue remains accessible while delegated handlers initialize');
+// The full catalogue starts collapsed: the search field and the core tools own the first screen.
+const directory = doc.querySelector('.cs-directory');
+assert.equal(directory.open, false, 'the full tools directory is collapsed on a fresh visit');
+assert.equal(directory.tagName, 'DETAILS');
+const toolsLink = doc.querySelector('[data-cs-open-tools]');
+assert.equal(toolsLink.getAttribute('aria-controls'), 'csTools');
+assert.equal(toolsLink.getAttribute('aria-expanded'), 'false');
+// The header link expands it; selecting it again collapses it; aria-expanded mirrors the state.
+toolsLink.click();
+assert.equal(directory.open, true, 'header link expands the directory');
+assert.equal(toolsLink.getAttribute('aria-expanded'), 'true');
+toolsLink.click();
+assert.equal(directory.open, false, 'header link collapses an open directory');
+assert.equal(toolsLink.getAttribute('aria-expanded'), 'false');
+// Native disclosure: the summary toggles it and the link follows.
+directory.open = true; directory.dispatchEvent(new w.Event('toggle'));
+assert.equal(toolsLink.getAttribute('aria-expanded'), 'true', 'native toggle updates the header link');
+assert.equal(w.VisableCivicSearch.directory.isOpen(), true);
+directory.open = false; directory.dispatchEvent(new w.Event('toggle'));
+assert.equal(toolsLink.getAttribute('aria-expanded'), 'false');
+// Filters work inside the expanded catalogue.
+directory.open = true;
 assert(doc.querySelector('.cs-directory').compareDocumentPosition(doc.querySelector('.cs-footer')) & w.Node.DOCUMENT_POSITION_FOLLOWING);
 const filter = doc.querySelector('[data-cs-tool-filter]');
 filter.value = '병원'; filter.dispatchEvent(new w.Event('input'));
@@ -57,9 +78,25 @@ assert.equal([...doc.querySelectorAll('.cs-service')].filter(x => !x.hidden).len
 filter.value = '체류기간연장'; filter.dispatchEvent(new w.Event('input'));
 assert([...doc.querySelectorAll('.cs-service')].some(x => !x.hidden), 'normalized Korean search should match unspaced terms');
 filter.value = ''; filter.dispatchEvent(new w.Event('input'));
+w.document.dispatchEvent(new w.Event('paradiso:landing-reset'));
+assert.equal(doc.querySelector('.cs-directory').open, false, 'a landing reset re-renders the directory collapsed');
 w.location.hash = '#csTools';
+w.dispatchEvent(new w.Event('hashchange'));
+assert.equal(doc.querySelector('.cs-directory').open, true, 'navigating to #csTools expands the directory');
+assert.equal(doc.querySelector('[data-cs-open-tools]').getAttribute('aria-expanded'), 'true');
 w.document.dispatchEvent(new w.Event('paradiso:landing-reset'));
 assert.equal(doc.querySelector('.cs-directory').open, true, 'cross-page catalogue deep links must expand the directory');
+// A language re-render keeps an intentional expansion.
+w.location.hash = '';
+w.document.dispatchEvent(new w.Event('paradiso:landing-reset'));
+assert.equal(doc.querySelector('.cs-directory').open, false);
+doc.querySelector('.cs-directory').open = true;
+w.document.documentElement.lang = 'en';
+w.dispatchEvent(new w.Event('paradiso-language-applied'));
+assert.equal(doc.querySelector('.cs-directory').open, true, 'a language change must not cancel an intentional expansion');
+assert.equal(doc.querySelector('[data-cs-open-tools]').getAttribute('aria-expanded'), 'true');
+w.document.documentElement.lang = 'ko';
+w.dispatchEvent(new w.Event('paradiso-language-applied'));
 assert.equal(new Set([...doc.querySelectorAll('.cs-examples button')].map(x => x.dataset.csQuery)).size, 4);
 dom.window.close();
 

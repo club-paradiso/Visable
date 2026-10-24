@@ -256,7 +256,7 @@
       var link = attrs.indexOf('href=') === 0, tag = link ? 'a' : 'button';
       return '<' + tag + (link ? ' ' : ' type="button" ') + attrs + ' class="cs-service" data-service-group="' + group + '"><span class="cs-service-icon">' + icon(ico) + '</span><span><strong>' + esc(T(key)) + '</strong><small>' + esc(T(sub)) + '</small></span>' + icon('chevron-right') + '</' + tag + '>';
     }
-    return '<details id="csTools" class="cs-directory" open><summary>' + esc(T('allTools')) + '<span>' + esc(T('directoryIntro')) + '</span>' + icon('chevron-down') + '</summary><div class="cs-directory-content">' +
+    return '<details id="csTools" class="cs-directory"><summary>' + esc(T('allTools')) + '<span>' + esc(T('directoryIntro')) + '</span>' + icon('chevron-down') + '</summary><div class="cs-directory-content">' +
       '<div class="cs-directory-controls"><label class="cs-tool-search">' + icon('search') + '<span class="cs-sr">' + esc(T('toolSearch')) + '</span><input type="search" data-cs-tool-filter placeholder="' + esc(T('toolSearch')) + '" autocomplete="off"></label><div class="cs-tool-tabs" role="group" aria-label="' + esc(T('allTools')) + '">' +
       [['all','all'],['prepare','groupPrepare'],['stay','groupStay'],['help','groupHelp']].map(function (x) { return '<button type="button" data-cs-tool-group="' + x[0] + '" aria-pressed="' + (x[0] === 'all') + '">' + esc(T(x[1])) + '</button>'; }).join('') + '</div></div>' +
       '<div class="cs-service-grid">' +
@@ -342,11 +342,31 @@
         filter();
       });
     });
-    // Preserve the static shell's open directory during hydration.
-    // Closing it here would hide an early tap while slower i18n/action modules load.
-    // Users may still collapse it using the native details summary.
-    if (window.location.hash === '#csTools') directory.open = true;
+    // The directory is a native <details> that starts closed: the search field and
+    // the core tools own the first screen. It opens from its own summary, from the
+    // header link ("전체 도구 보기", which mirrors the state through aria-expanded)
+    // and from a direct #csTools link, so cross-page deep links still land on an
+    // expanded catalogue. A re-render (language change) restores a user's open state.
+    directory.addEventListener('toggle', syncDirectoryLink);
+    openDirectoryForHash();
+    syncDirectoryLink();
     filter();
+  }
+  function directoryEl() { return root ? root.querySelector('.cs-directory') : null; }
+  function syncDirectoryLink() {
+    var directory = directoryEl(), link = root && root.querySelector('[data-cs-open-tools]');
+    if (link && directory) link.setAttribute('aria-expanded', directory.open ? 'true' : 'false');
+  }
+  function openDirectoryForHash() {
+    var directory = directoryEl();
+    if (directory && window.location.hash === '#csTools') { directory.open = true; syncDirectoryLink(); }
+  }
+  function toggleDirectory(open) {
+    var directory = directoryEl();
+    if (!directory) return false;
+    directory.open = typeof open === 'boolean' ? open : !directory.open;
+    syncDirectoryLink();
+    return directory.open;
   }
 
   function homeHtml(T, ctx) {
@@ -354,7 +374,7 @@
     var langHtml = ctx.langButton || langButton('cs-lang-home', ctx.langCode, T);
     var sourceLinksHtml = '<a href="' + VISA_PDF + '" target="_blank" rel="noopener">' + esc(T('visa')) + ' PDF</a> · <a href="' + STAY_PDF + '" target="_blank" rel="noopener">' + esc(T('stay')) + ' PDF</a>';
     return '<header class="cs-nav"><a class="cs-brand" href="./" aria-label="Visable"><img src="assets/brand/visable-wordmark.svg" alt="Visable"></a>' +
-      '<nav aria-label="' + esc(T('about')) + '"><a href="#csTools" data-cs-open-tools>' + esc(T('allTools')) + '</a><button type="button" data-cs-focus>' + esc(T('search')) + '</button><a href="form-helper.html">' + esc(T('forms')) + '</a><a href="#civic-about">' + esc(T('about')) + '</a>' +
+      '<nav aria-label="' + esc(T('about')) + '"><a href="#csTools" data-cs-open-tools aria-controls="csTools" aria-expanded="false">' + esc(T('allTools')) + '</a><button type="button" data-cs-focus>' + esc(T('search')) + '</button><a href="form-helper.html">' + esc(T('forms')) + '</a><a href="#civic-about">' + esc(T('about')) + '</a>' +
       '<span class="cs-languages">' + langHtml + '</span></nav></header>' +
       '<main class="cs-home"><section class="cs-hero"><h1>' + T('title') + '</h1><p id="civicSearchSub">' + esc(T('sub')) + '</p>' +
       '<form id="civicSearchForm" role="search" novalidate><label class="cs-sr" for="civicQuery">' + esc(T('search')) + '</label><div class="cs-searchbar">' + icon('search') +
@@ -657,7 +677,13 @@
     rotateExamples();
     bindDirectory();
     var toolsLink = root.querySelector('[data-cs-open-tools]');
-    if (toolsLink) toolsLink.addEventListener('click', function () { root.querySelector('.cs-directory').open = true; });
+    if (toolsLink) toolsLink.addEventListener('click', function (event) {
+      var directory = directoryEl();
+      if (!directory) return;
+      // Open: let the anchor jump to #csTools and expand. Open already: collapse in place.
+      if (directory.open) { event.preventDefault(); toggleDirectory(false); return; }
+      toggleDirectory(true);
+    });
     mountJourneySection();
   }
   function home(opts) {
@@ -799,6 +825,7 @@
   window.VisableCivicSearch = {
     load: load, openPage: openPage, homeHtml: homeHtml, copy: copy, langButton: langButton, selectExamples: selectExamples, examplePool: EXAMPLE_POOL,
     journey: { open: openJourney, close: closeJourney, toggle: toggleJourney, state: function () { return journey.state; } },
+    directory: { toggle: toggleDirectory, isOpen: function () { var d = directoryEl(); return !!(d && d.open); } },
     // Read-only view of the suggestion panel for tests and QA (no query text is kept anywhere else).
     suggestions: { state: function () { return { ready: !!suggestIndex, failed: suggestFailed, count: sugg.items.length, active: sugg.active, renderMs: sugg.renderMs, items: sugg.items.map(function (i) { return { kind: i.kind, match: i.match, label: i.label || i.labelKey, query: i.query || null, href: i.href || null, action: i.action || null }; }) }; } }
   };
@@ -851,6 +878,7 @@
       if (!q.trim() && searched && typeof resetToLanding === 'function') resetToLanding();
       else if (q.trim() && !searched) searchFromHome(q);
     });
+    window.addEventListener('hashchange', openDirectoryForHash);
     document.addEventListener('paradiso:data-ready', function () { if (queuedQuery) searchFromHome(queuedQuery); });
     document.addEventListener('paradiso:data-failed', function () { if (queuedQuery) homeStatus(t('unavailable')); });
     document.addEventListener('paradiso:landing-reset', function () {
@@ -868,7 +896,7 @@
       var aboutOpen = root.querySelector('.cs-about') && root.querySelector('.cs-about').open;
       home({ keepJourney: true });
       if (draft && root.querySelector('#civicQuery')) { root.querySelector('#civicQuery').value = draft; syncTyping(); }
-      if (directoryOpen) root.querySelector('.cs-directory').open = true;
+      if (directoryOpen) toggleDirectory(true);
       if (aboutOpen) root.querySelector('.cs-about').open = true;
       if (query) find(query);
     });
