@@ -1097,7 +1097,14 @@
      "evidence_required_ko": null,
      "evidence_required_en": null,
      "program": null,
-     "scope": null,
+     "scope": {
+      "parents": [
+       "A-1",
+       "A-2",
+       "A-3",
+       "D-8"
+      ]
+     },
      "review_state": "VERIFIED_REGULATION"
     },
     {
@@ -1110,7 +1117,13 @@
      "evidence_required_ko": "초청기관의 체재비 부담을 확인할 수 있는 서류(장학증서 등) — 관할 관서가 판단",
      "evidence_required_en": "Proof that the inviting body bears the costs (scholarship certificate etc.) — decided by the office",
      "program": "gks",
-     "scope": null,
+     "scope": {
+      "parents": [
+       "D-1",
+       "D-2",
+       "D-4"
+      ]
+     },
      "review_state": "CONDITIONAL_NEEDS_REVIEW"
     },
     {
@@ -1209,7 +1222,14 @@
      "evidence_required_ko": null,
      "evidence_required_en": null,
      "program": null,
-     "scope": null,
+     "scope": {
+      "parents": [
+       "A-1",
+       "A-2",
+       "A-3",
+       "D-8"
+      ]
+     },
      "review_state": "VERIFIED_REGULATION"
     }
    ],
@@ -1275,7 +1295,14 @@
      "evidence_required_ko": null,
      "evidence_required_en": null,
      "program": null,
-     "scope": null,
+     "scope": {
+      "parents": [
+       "A-1",
+       "A-2",
+       "A-3",
+       "D-8"
+      ]
+     },
      "review_state": "VERIFIED_REGULATION"
     },
     {
@@ -1288,7 +1315,13 @@
      "evidence_required_ko": "초청기관의 체재비 부담을 확인할 수 있는 서류(장학증서 등) — 관할 관서가 판단",
      "evidence_required_en": "Proof that the inviting body bears the costs (scholarship certificate etc.) — decided by the office",
      "program": "gks",
-     "scope": null,
+     "scope": {
+      "parents": [
+       "D-1",
+       "D-2",
+       "D-4"
+      ]
+     },
      "review_state": "CONDITIONAL_NEEDS_REVIEW"
     },
     {
@@ -1421,7 +1454,14 @@
      "evidence_required_ko": null,
      "evidence_required_en": null,
      "program": null,
-     "scope": null,
+     "scope": {
+      "parents": [
+       "A-1",
+       "A-2",
+       "A-3",
+       "D-8"
+      ]
+     },
      "review_state": "VERIFIED_REGULATION"
     }
    ],
@@ -1531,7 +1571,14 @@
      "evidence_required_ko": null,
      "evidence_required_en": null,
      "program": null,
-     "scope": null,
+     "scope": {
+      "parents": [
+       "A-1",
+       "A-2",
+       "A-3",
+       "D-8"
+      ]
+     },
      "review_state": "VERIFIED_REGULATION"
     }
    ],
@@ -1657,7 +1704,14 @@
      "evidence_required_ko": null,
      "evidence_required_en": null,
      "program": null,
-     "scope": null,
+     "scope": {
+      "parents": [
+       "A-1",
+       "A-2",
+       "A-3",
+       "D-8"
+      ]
+     },
      "review_state": "VERIFIED_REGULATION"
     },
     {
@@ -1766,7 +1820,14 @@
      "evidence_required_ko": null,
      "evidence_required_en": null,
      "program": null,
-     "scope": null,
+     "scope": {
+      "parents": [
+       "A-1",
+       "A-2",
+       "A-3",
+       "D-8"
+      ]
+     },
      "review_state": "VERIFIED_REGULATION"
     },
     {
@@ -1779,7 +1840,13 @@
      "evidence_required_ko": "초청기관의 체재비 부담을 확인할 수 있는 서류(장학증서 등) — 관할 관서가 판단",
      "evidence_required_en": "Proof that the inviting body bears the costs (scholarship certificate etc.) — decided by the office",
      "program": "gks",
-     "scope": null,
+     "scope": {
+      "parents": [
+       "D-1",
+       "D-2",
+       "D-4"
+      ]
+     },
      "review_state": "CONDITIONAL_NEEDS_REVIEW"
     }
    ],
@@ -1875,7 +1942,14 @@
      "evidence_required_ko": null,
      "evidence_required_en": null,
      "program": null,
-     "scope": null,
+     "scope": {
+      "parents": [
+       "A-1",
+       "A-2",
+       "A-3",
+       "D-8"
+      ]
+     },
      "review_state": "VERIFIED_REGULATION"
     },
     {
@@ -1888,7 +1962,13 @@
      "evidence_required_ko": "초청기관의 체재비 부담을 확인할 수 있는 서류(장학증서 등) — 관할 관서가 판단",
      "evidence_required_en": "Proof that the inviting body bears the costs (scholarship certificate etc.) — decided by the office",
      "program": "gks",
-     "scope": null,
+     "scope": {
+      "parents": [
+       "D-1",
+       "D-2",
+       "D-4"
+      ]
+     },
      "review_state": "CONDITIONAL_NEEDS_REVIEW"
     }
    ],

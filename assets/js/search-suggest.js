@@ -274,7 +274,9 @@
     }
 
     // 6. a code-shaped token the sources do not know ("XYZ-999") is said, never matched
-    if (!primary && !(I.unknownCodes || []).length) {
+    if (!primary && (I.unknownCodes || []).length) {
+      out.notes.push({ key: 'notACode', vars: { code: I.unknownCodes[0] } });
+    } else if (!primary) {
       var shape = q.match(CODE_SHAPE) || q.match(CODE_SHAPE_WHOLE);
       if (shape) out.notes.push({ key: 'notACode', vars: { code: (shape[2] + '-' + shape[3] + (shape[4] ? '-' + shape[4] : '')).toUpperCase() } });
     }

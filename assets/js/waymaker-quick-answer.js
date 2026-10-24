@@ -38,7 +38,7 @@
       focusRequired: '{doc}: 필수예요', focusConditional: '{doc}: 상황에 따라 필요해요', focusMissing: '{doc}: 이 절차의 목록에 없어요', focusForms: '제출 형태: {form}', focusUnspecified: '공식 안내에 제출 형태(원본·사본) 표기는 없어요. 원본을 지참하고, 필요할 때를 대비해 사본도 준비해 두세요.',
       feeTitle: '{subject} 수수료', feeSentence: '{amount}이에요.', feeSentenceLabel: '{label}은(는) {amount}이에요.', feeInstrument: '납부 방식: {list}.', feeOnlineSentence: '온라인 신청 시 {pct}% 감경돼요.', feeExemptGks: '정부초청장학생(GKS) 면제는 조건부예요: {cond}', feeNoExempt: '면제 근거는 확인되지 않았어요.', feeNoneSentence: '수수료가 없어요.', feeNotListedSentence: '규정에 수수료 항목이 없어요. 별도 수수료가 없는 것으로 보이지만 관서 확인이 필요해요.', feeConflictSentence: '근거마다 달라요: {reg} / {man}. 관서 확인이 필요해요.',
       docsSentence: '필수 {n}개', docsCondSentence: '조건부 {m}개', docsLead: '준비할 서류: {list}{more}.', more: ' 외 {k}개',
-      unc: { review: '2026년 9월판 공식 안내 원문은 아직 검토 전이에요.', feeReview: '수수료 근거에 확인이 필요한 항목이 있어요.', local: '관서 정보 중 확인되지 않은 제보가 있어요. 서류는 전국 기준대로 준비하세요.', forms: '원본·사본 표기가 없는 서류 {n}개는 원본 지참을 권장해요(제출용 사본도 준비 가능).', officer: '심사관이 서류를 가감할 수 있어요.' },
+      unc: { review: '2026년 10월판 공식 안내 원문은 아직 검토 전이에요.', feeReview: '수수료 근거에 확인이 필요한 항목이 있어요.', local: '관서 정보 중 확인되지 않은 제보가 있어요. 서류는 전국 기준대로 준비하세요.', forms: '원본·사본 표기가 없는 서류 {n}개는 원본 지참을 권장해요(제출용 사본도 준비 가능).', officer: '심사관이 서류를 가감할 수 있어요.' },
       commonNote: '체류자격과 관계없이 같은 기준이에요.',
     },
     en: {
@@ -51,7 +51,7 @@
       focusRequired: '{doc}: required', focusConditional: '{doc}: depends on your situation', focusMissing: '{doc}: not on this procedure\'s list', focusForms: 'Submission: {form}', focusUnspecified: 'The source does not state a submission form (original or copy): bring the original and keep a copy ready in case it is asked for.',
       feeTitle: '{subject} fee', feeSentence: 'It is {amount}.', feeSentenceLabel: '{label} is {amount}.', feeInstrument: 'Paid by {list}.', feeOnlineSentence: '{pct}% less when filed online.', feeExemptGks: 'The GKS exemption is conditional: {cond}', feeNoExempt: 'No exemption basis was found.', feeNoneSentence: 'There is no fee.', feeNotListedSentence: 'The regulation lists no fee item; there appears to be none, but confirm with the office.', feeConflictSentence: 'Sources disagree: {reg} / {man}. Confirm with the office.',
       docsSentence: '{n} required', docsCondSentence: '{m} conditional', docsLead: 'Prepare {list}{more}.', more: ' and {k} more',
-      unc: { review: 'The September 2026 official guides have not yet been reviewed line by line.', feeReview: 'Some fee items need confirmation.', local: 'Some office information is an unverified report. Prepare documents per the national baseline.', forms: '{n} document(s) carry no original/copy marking in the source: bring the originals and prepare copies.', officer: 'The officer may add or waive documents.' },
+      unc: { review: 'The October 2026 official guides have not yet been reviewed line by line.', feeReview: 'Some fee items need confirmation.', local: 'Some office information is an unverified report. Prepare documents per the national baseline.', forms: '{n} document(s) carry no original/copy marking in the source: bring the originals and prepare copies.', officer: 'The officer may add or waive documents.' },
       commonNote: 'The same rule applies regardless of status.',
     }
   };

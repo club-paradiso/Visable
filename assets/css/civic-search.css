@@ -368,7 +368,13 @@ body[data-theme="dark"] .cs-tool:hover .cs-icon-circle .cs-icon { filter: none; 
 .cs-lang-code { display: inline-flex; align-items: center; justify-content: center; min-width: 26px; height: 26px; padding: 0 6px; border-radius: 13px; background: var(--cs-green); color: var(--cs-bg); font-size: 12px; font-weight: 800; letter-spacing: .02em; }
 .cs-lang-name { white-space: nowrap; }
 .civic-refresh.searched #hero .header-inner { position: relative; }
-.civic-refresh.searched #hero .cs-lang-searched { margin-left: 12px; flex: 0 0 auto; }
+.civic-refresh.searched #hero .cs-lang-searched { margin-left: 12px; flex: 0 0 auto; justify-self: end; align-self: center; width: auto; max-width: max-content; }
+/* 681–820px: the searched header is a two-column grid (search bar on its own row, see
+   visable-mobile-iphone-20260904.css). The language control is a grid item there and
+   must never stretch across the column: keep it at its intrinsic 44px, on the right. */
+@media (max-width: 820px) and (min-width: 681px) {
+  .civic-refresh.searched #hero .cs-lang-searched { grid-column: 2; grid-row: 1; justify-self: end; margin: 0; }
+}
 .civic-refresh.searched #hero .cs-lang-searched .cs-lang-name { display: none; }
 .civic-refresh.searched #hero .cs-lang-searched { padding: 0 6px; min-width: 44px; justify-content: center; }
 .civic-refresh.landing #hero .cs-lang-searched { display: none; }
