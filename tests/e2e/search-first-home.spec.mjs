@@ -469,6 +469,10 @@ test('curated examples change on refresh and the service catalogue filters tasks
   await page.reload();
   await expect(page.locator('#civicLanding')).toHaveAttribute('data-cs-hydrated', /reused|rendered/);
   expect(await queries()).not.toEqual(before);
+  // The full catalogue starts collapsed (tests/e2e/tools-directory.spec.mjs); open it to filter.
+  await expect(page.locator('#csTools')).toHaveJSProperty('open', false);
+  await page.locator('#csTools summary').click();
+  await expect(page.locator('#csTools')).toHaveJSProperty('open', true);
   await page.locator('[data-cs-tool-filter]').fill('병원');
   await expect(page.locator('.cs-service:visible')).toHaveCount(1);
   await expect(page.locator('.cs-service:visible')).toContainText('법무부지정 병원');
