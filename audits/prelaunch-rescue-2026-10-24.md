@@ -105,7 +105,11 @@ owns the page; `scripts/check_result_hierarchy.mjs` (wired into
 Automated: axe-core 4.10 (wcag2a/aa, wcag21a/aa, wcag22aa, best-practice) on home,
 home with the directory open, F-4, D-2 and an unknown-code result at 390/820/1280.
 Before: `landmark-no-duplicate-main` + `landmark-unique` (home), `page-has-heading-one`
-and `landmark-complementary-is-top-level` (results). After: see §7.
+and `landmark-complementary-is-top-level` (results). After: result pages are clean at
+all three widths; the home reports one minor `aria-allowed-role` because the legacy
+`#mainContent` element is a `<main>` that steps down to `role="region"` on the landing
+(the civic shell is the main there). Removing the legacy element from the landing DOM
+is the clean fix and is out of scope for this pass.
 
 Manual (Playwright, Chromium): keyboard Enter/Space on the directory summary; focus
 returns to the source button after the page dialog closes; one h2 then h3s in the
@@ -116,7 +120,27 @@ container; CI's `mobile-webkit-qa` job covers WebKit on pull requests).
 
 ## 7. Regression results
 
-See the PR description for the exact commands and outcomes (filled from the final run).
+Environment: Node 22, Python 3.13, Chromium (pre-installed Playwright build,
+`PARADISO_PW_EXECUTABLE=/opt/pw-browsers/chromium`). Baseline on `main` @ `5e0545a`
+before any change: all Node suites below green; CI Playwright subset 201 passed / 2
+failed (both in `search-first-home.spec.mjs` "service catalogue filters tasks", which
+filtered inside the directory that this branch collapses — the spec now opens it first).
+
+| Command | Result |
+|---|---|
+| `npm run test:search-tools` | pass |
+| `npm run test:status-guidance` (incl. `test:search-waymaker` + new `check_result_hierarchy.mjs`) | pass — 475/936/61/32/1251/633/33/11/23/38/9 checks |
+| `npm run test:search-suggest` | pass (1251) |
+| `npm run test:current-manuals` | pass |
+| `npm run test:i18n` | pass |
+| `npm run validate` | steps 1–13 pass; step 14 (`test:enforcement`) errors in this container only because `fastapi` is not installed for the backend unit tests (CI installs `backend/requirements-dev.txt`); after `pip install -r backend/requirements-dev.txt` the three enforcement unit modules run 52 tests, all OK |
+| Playwright: `tools-directory` + `result-hierarchy` (desktop-1280, tablet-768, mobile-390, mobile-320) | 20 + 36 passed |
+| Playwright: `result-hierarchy`, `tools-directory`, `ux10-a11y`, `landing-boot`, `post-search-guidance`, `procedure-first-search`, `waymaker-quick-answer`, `search-result-unification`, `language-control` (desktop-1280 + mobile-390) | 172 passed |
+| Playwright: `search-first-home` + `easy-mode` (desktop-1280 + mobile-390) | 83 passed |
+| axe-core 4.10, 5 pages × 3 viewports | result pages clean; home: 1 minor `aria-allowed-role` (see §6) |
+
+WebKit was not available in this container; the `mobile-webkit-qa` CI job covers it on
+the pull request.
 
 ## 8. Deployment
 
