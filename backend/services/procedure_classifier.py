@@ -123,9 +123,8 @@ def classify_procedure(question: str) -> ProcedureDecision:
     if "card" in objects and first_card and not lost_card:
         return decide("registration", "first_card_registration")
     if "card" in objects and "reissue" in actions:
-        # "new card" alone does not reveal first registration vs replacement.
-        if not lost_card and not re.search(r"재발급|분실|re-?issu|replac|again|다시", text, re.I):
-            return ProcedureDecision(candidates=("card_reissue", "registration"), reason="card_action_missing")
+        # Shared action vocabulary covers KO/EN/ZH/JA/VI and more. Requiring
+        # only KO/EN loss keywords here erased correct non-English requests.
         return decide("card_reissue", "card_reissue")
     if "card" in objects and "register" in actions:
         return decide("registration", "first_card_registration")
