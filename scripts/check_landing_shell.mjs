@@ -45,7 +45,7 @@ const headEnd = html.indexOf('</head>');
 const head = html.slice(0, headEnd);
 ok(/body\.civic-refresh\.landing #hero\s*\{[^}]*display:\s*none\s*!important/.test(head), 'critical inline CSS hides the legacy hero in <head>');
 ok(/body\.civic-refresh #topCtrls[^{]*\{[^}]*display:\s*none\s*!important/.test(head), 'critical inline CSS hides the legacy top controls in <head>');
-ok(/<script defer src="assets\/js\/civic-search\.js" onerror="document\.body\.classList\.add\('civic-boot-failed'\)">/.test(html), 'civic-search.js load failure flips the boot-failed state');
+ok(/<script defer src="assets\/js\/civic-search\.js(?:\?v=[a-zA-Z0-9-]+)?" onerror="document\.body\.classList\.add\('civic-boot-failed'\)">/.test(html), 'civic-search.js load failure flips the boot-failed state');
 ok(current.includes('class="cs-boot-failed" role="alert"') && current.includes('<noscript>'), 'shell carries the reload row and the <noscript> fallback');
 const googleFontLinks = [...head.matchAll(/<link rel="stylesheet" href="https:\/\/fonts\.googleapis\.com[^>]*>/g)];
 ok(googleFontLinks.length > 0 && googleFontLinks.every((m) => /media="print" onload=/.test(m[0]) || head.slice(Math.max(0, m.index - 12), m.index).includes('<noscript>')), 'decorative Google Fonts are not render-blocking (media=print swap or <noscript> only)');
