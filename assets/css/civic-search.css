@@ -63,6 +63,19 @@ body.civic-refresh::before, body.civic-refresh::after { display: none !important
 .cs-languages { display: flex; gap: 12px; border-left: 1px solid var(--cs-line); padding-left: 28px; }
 .cs-languages button { min-width: 58px; min-height: 44px; border: 1px solid var(--cs-line); border-radius: 24px; background: var(--cs-bg); font-size: 14px !important; }
 .cs-languages button[aria-pressed="true"] { background: var(--cs-green); color: var(--cs-bg) !important; border-color: var(--cs-green); }
+/* Active civic header controls: language immediately followed by the brightness toggle. */
+.cs-theme-toggle, .cs-languages .cs-theme-toggle {
+  display: inline-flex; flex: 0 0 44px; align-items: center; justify-content: center;
+  width: 44px; min-width: 44px; max-width: 44px; height: 44px; min-height: 44px;
+  padding: 0; border: 1px solid var(--cs-line); border-radius: 22px;
+  background: var(--cs-bg); color: var(--cs-ink); cursor: pointer; box-sizing: border-box;
+}
+.cs-theme-toggle:hover { border-color: var(--cs-green); }
+.cs-theme-toggle:focus-visible { outline: 3px solid var(--cs-green); outline-offset: 2px; }
+.cs-theme-toggle .cs-theme-icon { flex: 0 0 20px; width: 20px; height: 20px; }
+.cs-languages { align-items: center; flex: 0 0 auto; }
+.cs-languages .cs-lang { flex: 0 0 auto; width: auto; max-width: max-content; }
+
 .cs-home { max-width: 1600px; margin: 0 auto; padding: 0 68px; }
 /* ---- search-first hero: headline, one dominant field, suggestions, examples ---- */
 .cs-hero { text-align: center; padding: 56px 0 40px; }
@@ -368,16 +381,21 @@ body[data-theme="dark"] .cs-tool:hover .cs-icon-circle .cs-icon { filter: none; 
 .cs-lang-code { display: inline-flex; align-items: center; justify-content: center; min-width: 26px; height: 26px; padding: 0 6px; border-radius: 13px; background: var(--cs-green); color: var(--cs-bg); font-size: 12px; font-weight: 800; letter-spacing: .02em; }
 .cs-lang-name { white-space: nowrap; }
 .civic-refresh.searched #hero .header-inner { position: relative; }
-.civic-refresh.searched #hero .cs-lang-searched { margin-left: 12px; flex: 0 0 auto; justify-self: end; align-self: center; width: auto; max-width: max-content; }
-/* 681–820px: the searched header is a two-column grid (search bar on its own row, see
-   visable-mobile-iphone-20260904.css). The language control is a grid item there and
-   must never stretch across the column: keep it at its intrinsic 44px, on the right. */
+.civic-refresh.searched #hero .cs-header-settings {
+  display: inline-flex; align-items: center; gap: 8px; flex: 0 0 auto;
+  margin-left: 12px; justify-self: end; align-self: center;
+  width: max-content; max-width: 100%;
+}
+/* 681–820px uses a two-column results header, with search on its own row. */
 @media (max-width: 820px) and (min-width: 681px) {
-  .civic-refresh.searched #hero .cs-lang-searched { grid-column: 2; grid-row: 1; justify-self: end; margin: 0; }
+  .civic-refresh.searched #hero .cs-header-settings { grid-column: 2; grid-row: 1; justify-self: end; margin: 0; }
 }
 .civic-refresh.searched #hero .cs-lang-searched .cs-lang-name { display: none; }
-.civic-refresh.searched #hero .cs-lang-searched { padding: 0 6px; min-width: 44px; justify-content: center; }
-.civic-refresh.landing #hero .cs-lang-searched { display: none; }
+.civic-refresh.searched #hero .cs-lang-searched {
+  margin: 0; padding: 0 6px; min-width: 44px; width: auto; max-width: 72px;
+  flex: 0 0 auto; justify-content: center;
+}
+.civic-refresh.landing #hero .cs-header-settings { display: none; }
 .cs-lang-dialog { position: fixed; margin: 0; padding: 0; border: 1px solid var(--cs-line); border-radius: 12px; width: 320px; max-width: calc(100vw - 24px); max-height: min(70vh, 560px); background: var(--cs-bg); color: var(--cs-ink); box-shadow: 0 12px 32px rgba(23, 37, 33, .12); font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, sans-serif; overflow: hidden; display: none; flex-direction: column; }
 .cs-lang-dialog[open] { display: flex; }
 .cs-lang-dialog::backdrop { background: rgba(23, 37, 33, .18); }
@@ -403,12 +421,12 @@ body[data-theme="dark"] .cs-tool:hover .cs-icon-circle .cs-icon { filter: none; 
   .cs-lang-head { padding-top: 10px; }
   .cs-lang-option { min-height: 52px; }
   .cs-source-strip-label { padding: 6px 0 2px; white-space: normal; }
-  .civic-refresh.searched #hero .cs-lang-searched { position: absolute; top: 0; right: 0; margin: 0; }
+  .civic-refresh.searched #hero .cs-header-settings { position: absolute; top: 0; right: 0; margin: 0; }
 }
 html[dir="rtl"] .cs-lang-dialog { text-align: right; }
 html[dir="rtl"] .cs-lang-option { grid-template-columns: 24px auto 1fr; }
-html[dir="rtl"] .civic-refresh.searched #hero .cs-lang-searched { margin-left: 0; margin-right: 12px; }
-@media (max-width: 680px) { html[dir="rtl"] .civic-refresh.searched #hero .cs-lang-searched { right: auto; left: 0; } }
+html[dir="rtl"] .civic-refresh.searched #hero .cs-header-settings { margin-left: 0; margin-right: 12px; }
+@media (max-width: 680px) { html[dir="rtl"] .civic-refresh.searched #hero .cs-header-settings { right: auto; left: 0; margin: 0; } }
 @media (prefers-reduced-motion: reduce) { .cs-lang-dialog { transition: none; } }
 html[dir="rtl"] .cs-tool, html[dir="rtl"] #civicSearchForm, html[dir="rtl"] .cs-sug { text-align: right; }
 html[dir="rtl"] .cs-searchbar { padding: 7px 20px 7px 7px; }
