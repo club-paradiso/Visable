@@ -4078,17 +4078,15 @@ def _detect_visa_codes(
     all resolve to ``D-2`` and ``d42k``, ``D4-2K``, ``D-4-2K`` all resolve
     to ``D-4-2K`` (top ``D-4``, sub ``D-4-2K``).
 
-    Sub-code detection is intentionally **payload-only**. Free-text
-    detection still returns ``(top, None)`` even if the prompt mentions a
-    sub-code in passing — sub-code routing is a binding declaration about
-    *which* document list applies and must come from the caller, not from
-    a free-text guess.
+    An explicit free-text subcode is preserved as an identity. It does not
+    certify eligibility or inherit a parent's document checklist.
 
     Text detection preserves explicit status-code mentions before any LLM call,
     even for statuses without deterministic manual grounding (for example H-1
     activity-scope questions). Manual grounding remains a separate decision.
     """
     import re
+    from services.status_code_parser import explicit_codes, transition_pair
 
     for candidate in (
         payload_code,
@@ -4100,17 +4098,18 @@ def _detect_visa_codes(
             return _split_visa_code(normalized)
     if not text:
         return None, None
-    # Match explicit status codes like "H-1", "D2", "F-6" before the LLM call.
-    # Preserve intent/status metadata even when the status has no deterministic
-    # manual grounding fixture. The negative lookahead avoids claiming D-4 for
-    # a longer D-4-2 sub-code; free-text sub-code routing still stays disabled.
-    for code in sorted(_VALID_MAIN_CODES, key=len, reverse=True):
-        letter, digit = code.split("-", 1)
-        # Lookarounds instead of \b: Hangul counts as a word character, so
-        # "\b" missed codes glued to Korean text ("D-2비자", "E-7으로").
-        pattern = rf"(?<![A-Za-z0-9]){letter}[\s-]?{re.escape(digit)}(?![A-Za-z0-9])(?!-?\d)"
-        if re.search(pattern, text, flags=re.IGNORECASE):
-            return code, None
+    codes = explicit_codes(text)
+    pair = transition_pair(text)
+    if pair:
+        codes = [pair[1]]
+    if len(codes) > 1 and not pair:
+        # A declared current status is distinct from a transition target.
+        current = [c for c in codes if re.search(rf"{re.escape(c)}\s*(?:비자\s*)?(?:상태|체류|현재)", text, re.I)]
+        if len(current) != 1:
+            return None, None
+        codes = current
+    if codes:
+        return _split_visa_code(codes[0])
     return None, None
 
 
@@ -4125,6 +4124,7 @@ def _detect_task_type(text: str) -> Optional[str]:
     Korean and English wording are both checked for each task type.
     """
     import re
+    from services.status_code_parser import supplemental_task
 
     if not text:
         return None
@@ -4153,6 +4153,10 @@ def _detect_task_type(text: str) -> Optional[str]:
     overstay_en = r"\b(overstay(?:ed)?|visa expired|expired visa|stay expired)\b"
     if any(sig in text for sig in overstay_ko) or re.search(overstay_en, text, flags=re.IGNORECASE):
         return "overstay_deadline_risk"
+
+    extra = supplemental_task(text)
+    if extra:
+        return extra
 
     # --- status_change (체류자격 변경) ---
     status_change_ko = ("체류자격 변경", "자격 변경", "변경허가", "체류 자격을 바꾸")
@@ -4239,6 +4243,9 @@ _TASK_RISK_LEVELS: Dict[str, str] = {
     "marriage_divorce_status_change": "high",
     "overstay_deadline_risk": "high",
     "general_status_summary": "low",
+    "reentry": "medium",
+    "visa_issuance": "medium",
+    "visa_issuance_confirmation": "medium",
 }
 
 

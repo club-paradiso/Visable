@@ -69,22 +69,22 @@ def test_child_environment_inherits_nothing(tmp_path, monkeypatch):
     assert not any("KEY" in name or name.endswith("_OC") for name in env)
 
 
-def test_b1_python_reads_no_subcode_from_text_but_keeps_a_payload_subcode(tmp_path, backend_python):
+def test_b1_python_keeps_explicit_text_and_payload_subcodes(tmp_path, backend_python):
     bench = write_benchmark(tmp_path, make_examples())
     report = runner.run_evaluation(config_for(tmp_path, bench, ["b1_python", "b1_python_raw"], ["dev", "test"]))
     assert report["baselines"]["b1_python"]["available"], report["baselines"]["b1_python"]
     b1 = items_of(report, "b1_python")
     assert {r["status"] for r in b1.values()} == {"ok"}, {k: r["error"] for k, r in b1.items()}
     text_item = b1["cls-0001"]["prediction"]                    # "E-7-4 연장 서류"
-    assert (text_item["status_code"], text_item["subcode"]) == ("E-7", None)
+    assert (text_item["status_code"], text_item["subcode"]) == ("E-7", "E-7-4")
     assert text_item["procedure_coarse"] == "extension" and text_item["procedure_fine"] is None
-    assert b1["cls-0001"]["flags"] == ["parent_fallback"]
+    assert b1["cls-0001"]["flags"] == []
     assert b1["cls-0003"]["prediction"]["subcode"] == "E-7-1"   # payload_status_code reaches the backend
     assert b1["cls-0001"]["metrics"]["procedure_fine"] == ["not_scorable", "baseline_emits_coarse_only"]
     process = report["baselines"]["b1_python"]["process"]
     assert process["pythonhashseed"] == "0" and process["hash_randomization"] == 0
     raw_view = items_of(report, "b1_python_raw")["cls-0001"]["prediction"]
-    assert raw_view["subcode"] is None
+    assert raw_view["subcode"] == "E-7-4"
 
 
 def test_existing_law_against_the_fake_drf_server(tmp_path, backend_python):
