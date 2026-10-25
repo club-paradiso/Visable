@@ -68,11 +68,12 @@
     return (b && b.getAttribute('data-theme') === 'dark') || root.getAttribute('data-theme') === 'dark';
   }
 
-  /* Display and numeral faces from the approved canvas, loaded only for the
-     skin that uses them: Stamp → Gowun Batang + IBM Plex Mono, Chrome →
-     Unbounded (numerals/codes), Default and Neon → JetBrains Mono. */
+  /* Display and numeral faces from the approved canvas, fetched only after a
+     visitor picks that skin: Stamp → Gowun Batang + IBM Plex Mono, Chrome →
+     Unbounded (numerals/codes), Neon → JetBrains Mono. The default skin makes
+     no extra font request (privacy pages such as Form Helper allow only the
+     Pretendard CDN); its mono face falls back to the system monospace. */
   var FONTS = {
-    default: 'family=JetBrains+Mono:wght@400;500;600',
     stamp: 'family=Gowun+Batang:wght@400;700&family=IBM+Plex+Mono:wght@400;500;600',
     chrome: 'family=Unbounded:wght@500;700',
     neon: 'family=JetBrains+Mono:wght@400;500;600'

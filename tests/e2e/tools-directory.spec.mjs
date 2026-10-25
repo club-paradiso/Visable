@@ -72,13 +72,21 @@ test.describe('tools directory is collapsed by default', () => {
       await expect(page.locator('html')).toHaveAttribute('data-vt', name);
       await expect(page.locator('body')).toHaveAttribute('data-theme', before);
       expect(await page.evaluate(() => localStorage.getItem('visable:theme'))).toBe(name);
-      await expect(picker).toBeHidden();
-      if (name !== 'default') await theme.click();
+      // Applied at once; the panel stays open so the faces can be compared.
+      await expect(picker).toBeVisible();
+      await expect(picker.locator('[data-vt-value="' + name + '"]')).toHaveAttribute('aria-checked', 'true');
+      await expect(theme.locator('.vt-coin')).toHaveAttribute('data-c', name);
     }
-    // Brightness remains a separately controlled option.
-    await theme.click();
-    await picker.locator('#vtCivicBrightness').click();
+    // Brightness remains a separately controlled option inside the same panel.
+    const other = before === 'dark' ? 'light' : 'dark';
+    await picker.locator('.vt-seg [data-bright="' + other + '"]').click();
     await expect(page.locator('body')).not.toHaveAttribute('data-theme', before);
+    await expect(page.locator('html')).toHaveAttribute('data-vt', 'default');
+    await expect(picker).toBeVisible();
+    await page.keyboard.press('Escape');
+    await expect(picker).toBeHidden();
+    await expect(theme).toBeFocused();
+    await expect(theme).toHaveAttribute('aria-expanded', 'false');
     await page.reload();
     await hydrated(page);
     await expect(page.locator('html')).toHaveAttribute('data-vt', 'default');
@@ -161,5 +169,9 @@ test('searched header also opens the canonical four-skin picker', async ({ page 
   await expect(picker).toBeVisible();
   await picker.locator('[data-vt-value="chrome"]').click();
   await expect(page.locator('html')).toHaveAttribute('data-vt', 'chrome');
+  await expect(picker).toBeVisible();
+  await expect(header.locator('[data-vt-open] .vt-coin')).toHaveAttribute('data-c', 'chrome');
+  await page.keyboard.press('Escape');
   await expect(picker).toBeHidden();
+  await expect(header.locator('[data-vt-open]')).toBeFocused();
 });
