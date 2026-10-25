@@ -4207,9 +4207,14 @@ def _detect_task_type(text: str) -> Optional[str]:
 
     # --- passport_info_report ---
     passport_ko = ("여권 재발급 신고", "여권 정보 변경", "여권정보 변경", "새 여권 신고")
-    passport_en = r"\b(report (?:new|renewed|reissued) passport|passport (?:renewed|reissued|information change))\b"
+    passport_en = r"\b(report (?:my )?(?:new|renewed|reissued) passport|passport information change|passport (?:change )?report|update (?:my )?passport (?:information|details))\b"
     if any(sig in text for sig in passport_ko) or re.search(passport_en, text, flags=re.IGNORECASE):
         return "passport_info_report"
+    # An embassy passport renewal is not a Korean immigration filing, and
+    # generic "renew" must not fall through to a stay-extension classifier.
+    from services.procedure_classifier import classify_procedure
+    if classify_procedure(text).reason == "passport_service_not_immigration":
+        return None
 
     # --- family_status_change ---
     family_ko = (
@@ -6140,6 +6145,23 @@ async def _ask_internal(req: AskRequest) -> AskResponse:
     )
     task_type_detected = _detect_task_type(prompt)
     risk_level_detected = _risk_level_for_task(task_type_detected)
+    # Mission 002 NO_GO: unrecognized or ambiguous status routing must never
+    # silently continue to an LLM, manual excerpt, or structured checklist.
+    # This gate applies to streamed and buffered /api/ask requests alike.
+    from services.classification_safety import assess_classification
+    classification_block = assess_classification(
+        prompt, payload_code=req.visa_code, visa_data=req.visa_data, lang=req.lang,
+    )
+    if classification_block is not None:
+        return AskResponse(
+            answer=classification_block.message,
+            provider="deterministic", model="classification_guard",
+            grounding_used=False, visa_code_detected=None, visa_sub_code_detected=None,
+            task_type_detected=task_type_detected, risk_level_detected="high",
+            answer_quality_mode="source_unavailable", source_confidence_level="none",
+            requires_official_confirmation=True, grounded_answer_limited=True,
+            source_panel_status="needs_clarification",
+        )
     grounding = _select_grounding(
         visa_code_detected, task_type_detected, visa_sub_code_detected
     )
