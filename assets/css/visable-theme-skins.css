@@ -189,5 +189,13 @@
 .vt-fab-narrow{display:none}
 @media (max-width:480px){.vt-fab.vt-inline{display:none}.vt-fab-narrow{display:inline-flex}}
 @media (max-width:640px){.vt-fab{padding:6px}.vt-fab .vt-fab-label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}}
+/* Civic search header is the canonical four-skin entry on index.html. */
+.vt-civic-pop{z-index:1600;max-height:min(74vh,550px);overflow-y:auto;overscroll-behavior:contain}
+.vt-civic-pop .vt-picker{grid-template-columns:repeat(2,minmax(0,1fr))}
+.vt-civic-pop .vt-opt{min-width:0;min-height:64px}
+.vt-civic-pop .vt-opt .vt-name{display:block}
+.vt-civic-pop .vt-civic-brightness{display:block;width:100%;min-height:44px;margin-top:12px;border:1px solid var(--vs-line2,#CFCCC3);border-radius:10px;background:var(--vs-bg2,#EAE8E1);color:var(--vs-ink,#0F1218);font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+.vt-civic-pop .vt-civic-brightness:focus-visible{outline:3px solid var(--vs-ac,#4E5FBA);outline-offset:2px}
+@media(max-width:380px){.vt-civic-pop .vt-picker{grid-template-columns:minmax(0,1fr)}.vt-civic-pop .vt-opt{min-height:50px}}
 @media print{.vt-fab,.vt-pop{display:none!important}}
 @media (prefers-reduced-motion:reduce){:root[data-vt] body{background-attachment:scroll}}
