@@ -59,7 +59,7 @@ class PostMergeClassificationGuardTests(unittest.TestCase):
             ("D-2 및 E-7 제출서류", "multiple_statuses"),
             ("F-6에서 E-9으로 변경 가능할까요?", "transition_requires_review"),
             ("대사관에서 여권을 갱신했습니다", "passport_service"),
-            ("외국인등록증 처음인가 재발급인가", "card_action_missing"),
+            ("외국인등록증이 있어요", "card_action_missing"),
         )
         for question, reason in samples:
             with self.subTest(reason=reason), \
