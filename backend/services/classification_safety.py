@@ -100,7 +100,18 @@ def assess_classification(
         for code in codes for selected in declared
     ):
         # A selected parent G-1 and an explicit child G-1-5 are compatible.
-        reason = "conflicting_status_context"
+        # The caller may also declare the *current* status H-1 while the
+        # question explicitly names a *target* F-2-99 ("change to ...").
+        # Preserve the existing source-limited transition analysis for that
+        # case; do not mislabel it as a conflicting user selection.
+        target_clause = bool(re.search(
+            r"\b(?:change|switch|convert|transition)\b.{0,25}\bto\b"
+            r"|\bto\s+[A-HKM]-?\d"
+            r"|(?:로|으로)\s*(?:체류자격\s*)?(?:변경|전환|바꾸|바꿔)",
+            question, re.I,
+        ))
+        if not target_clause:
+            reason = "conflicting_status_context"
     else:
         fine = classify_procedure(question)
         if fine.reason == "passport_service_not_immigration":
