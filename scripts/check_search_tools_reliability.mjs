@@ -43,7 +43,7 @@ const directory = doc.querySelector('.cs-directory');
 assert.equal(directory.open, false, 'the full tools directory is collapsed on a fresh visit');
 assert.equal(directory.tagName, 'DETAILS');
 assert.equal(doc.querySelector('.cs-nav [data-cs-open-tools]'), null, 'the top nav must not replace the theme button with an all-tools link');
-assert.equal(doc.querySelectorAll('.cs-nav .cs-theme-toggle[data-action="toggle-theme"]').length, 1, 'active home header has one working theme action');
+assert.equal(doc.querySelectorAll('.cs-nav .cs-theme-toggle[data-vt-open][aria-controls="vtCivicPop"]').length, 1, 'active home header opens the four visual themes, not brightness');
 const langControl = doc.querySelector('.cs-nav .cs-lang-home');
 assert.equal(langControl.nextElementSibling.classList.contains('cs-theme-toggle'), true, 'theme control follows language immediately');
 // The native directory summary owns expansion; a direct deep link may expand it.
