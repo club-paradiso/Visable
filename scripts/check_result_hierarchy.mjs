@@ -132,6 +132,30 @@ check('English copy and the edition label follow the bundle', () => {
   assert(unknown.text.includes('Z-9') && unknown.text.includes('2026년 10월판') && !unknown.text.includes('9월 기준'), 'unknown-code warning names the current edition');
 });
 
+check('the overview respects applicability: no confirmed fee for a procedure that does not apply', () => {
+  const r = run('D-2 근무처 변경');
+  assert(r.step.kind === 'source-only' && r.step.state === 'NOT_APPLICABLE', `${r.step.kind}/${r.step.state}`);
+  assert(!r.html.includes('class="sg-overview"'), 'no overview for an inapplicable procedure');
+  assert(!r.html.includes('class="sg-fee"') && !r.text.includes('₩120,000'), 'no fee section either');
+  assert(r.text.includes('해당하지 않아요'), 'the not-applicable warning stays');
+  const ok = run('D-2 체류기간 연장');
+  assert(ok.html.includes('class="sg-overview"') && ok.text.includes('수수료 ₩60,000 · 시행규칙 기준'), 'applicable procedures keep the confirmed fee');
+});
+check('the inferred current status can be reopened and changed', () => {
+  const q = 'C-3에서 F-6 변경';
+  const interp = SG.interpret(q, bundle);
+  const state = { query: q, interp, answers: {}, procedure: null, status: null, history: [], lang: 'ko' };
+  let step = SG.nextStep(state, bundle);
+  assert(step.kind !== 'question' && state.answers.current_status === 'short_stay', `inferred: ${step.kind} ${JSON.stringify(state.answers)}`);
+  // "변경" on the answered line: the question must come back instead of being re-inferred
+  delete state.answers.current_status; state.answers.__ask_current_status = true;
+  step = SG.nextStep(state, bundle);
+  assert(step.kind === 'question' && step.dimension === 'current_status', `reopened: ${step.kind}/${step.dimension}`);
+  state.answers.current_status = 'illegal'; delete state.answers.__ask_current_status;
+  step = SG.nextStep(state, bundle);
+  assert(step.kind !== 'question' && state.answers.current_status === 'illegal', 'the chosen answer is kept');
+});
+
 check('no raw markup or stray characters leak into the result', () => {
   for (const q of ['F-4 체류기간 연장', 'D-2 체류기간 연장', '외국인등록증 재발급', 'H-2에서 F-4 변경', 'Z-9 연장']) {
     const r = run(q);

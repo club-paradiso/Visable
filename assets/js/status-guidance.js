@@ -432,7 +432,8 @@
     var transition = procedure === 'status_change' ? transitionFor(bundle, status, procedure) : null;
     // "D-2에서 F-2로": the current status named in the query answers the current-status
     // question when it maps to one of its classes; the answer stays editable (확인한 내용).
-    if (transition && transition.exclusions && transition.exclusions.length && !answers.current_status && interp.transitionFrom) {
+    // Inferred once; "변경" on the answered line sets __ask_current_status so the question comes back.
+    if (transition && transition.exclusions && transition.exclusions.length && !answers.current_status && !answers.__ask_current_status && interp.transitionFrom) {
       var fromClass = currentStatusClass(bundle, interp.transitionFrom);
       if (fromClass) answers.current_status = fromClass;
     }
@@ -1202,9 +1203,15 @@
   function renderOverview(model, step) {
     var lang = model.lang;
     var confirmed = [], conditional = [], source = [];
+    // A procedure that does not apply (or is generally not permitted) for this status has
+    // nothing to confirm: the answer head carries the warning and no overview is shown.
+    // An exception-only procedure keeps its fee as a case-dependent line, never as confirmed.
+    if (model.state === 'NOT_APPLICABLE' || model.state === 'GENERALLY_NOT_PERMITTED') return '';
+    var exceptionOnly = model.state === 'EXCEPTION_ONLY';
     var fee = model.fees && model.fees.primary[0];
     if (fee) {
       if (fee.amount_state === 'NO_FEE') confirmed.push(tr(lang, 'ovFeeNone'));
+      else if (exceptionOnly) conditional.push(tr(lang, 'ovFee', { amount: feeAmountLine(lang, fee), review: tr(lang, 'stateLabel')[model.state] }));
       else if (fee.amount_state === 'FIXED' && (fee.review_state === 'VERIFIED_REGULATION' || fee.review_state === 'MANUAL_EXPLICIT')) confirmed.push(tr(lang, 'ovFee', { amount: feeSummary(lang, model) || won(fee.amount), review: tr(lang, 'feeReview')[fee.review_state] || fee.review_state }));
       else conditional.push(tr(lang, 'ovFee', { amount: feeAmountLine(lang, fee), review: tr(lang, 'feeReview')[fee.review_state] || fee.review_state }));
       var ex = (fee.exemptions || []).filter(function (e) { return exemptionApplies(e, model.status, model.target, model.userProgram); });
@@ -1676,11 +1683,11 @@
       else if (dim === '__alias') { state.answers.__alias = val; if (val !== 'unsure') { var o = state.interp.aliasQuestion.options.filter(function (x) { return x.id === val; })[0]; if (o) state.status = o.targets[0]; } }
       else if (dim === '__status') { state.answers.__status = val; if (val !== 'unsure') { var so = bundle.status_prompt.options.filter(function (x) { return x.id === val; })[0]; if (so && so.targets.length === 1) state.status = so.targets[0]; } }
       else if (dim === '__status2') { if (val !== 'unsure') state.status = val; else state.answers.__status = 'unsure'; }
-      else state.answers[dim] = val;
+      else { state.answers[dim] = val; if (dim === 'current_status') delete state.answers.__ask_current_status; }
       render(true); return;
     }
     if (action === 'back') { var prev = state.history.pop(); if (prev) { state.answers = prev.answers; state.procedure = prev.procedure; state.status = prev.status; state.variant = prev.variant || null; state.askStatus = !!prev.askStatus; } render(true); return; }
-    if (action === 'reopen') { var d = btn.getAttribute('data-sg-dim'); state.history.push(snapshot()); delete state.answers[d]; if (d === 'current_status') delete state.answers.current_status; render(true); return; }
+    if (action === 'reopen') { var d = btn.getAttribute('data-sg-dim'); state.history.push(snapshot()); delete state.answers[d]; if (d === 'current_status') state.answers.__ask_current_status = true; render(true); return; }
     if (action === 'edit') { state.editing = !state.editing; render(false); if (state.editing) { var inp = host.querySelector('#sgCodeInput'); if (inp) inp.focus(); } return; }
     if (action === 'set-procedure') { state.history.push(snapshot()); state.procedure = btn.getAttribute('data-sg-value'); state.editing = false; render(true); return; }
     if (action === 'ask-status') { state.history.push(snapshot()); state.askStatus = true; delete state.answers.__status; render(true); return; }
