@@ -21,7 +21,8 @@ import re
 from dataclasses import asdict, dataclass, field
 from typing import Any, Dict, List, Optional, Sequence
 
-from .models import TASK_TYPE_TO_PROCEDURE, AmbiguityState, Intent
+from .models import OFFICIAL_STATUS_PARENTS, TASK_TYPE_TO_PROCEDURE, AmbiguityState, Intent
+from ..procedure_classifier import classify_procedure
 
 _FACETS = (
     (Intent.CASE_RESEARCH, r"판례|재결|판결|precedent|case\s*law|court\s+decision"),
@@ -74,6 +75,8 @@ class QueryUnderstanding:
     source_requirement: str = "official_manual"
     mentioned_statuses: List[str] = field(default_factory=list)
     legal_issue_types: List[str] = field(default_factory=list)
+    procedure_fine: Optional[str] = None
+    procedure_candidates: List[str] = field(default_factory=list)
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
@@ -112,6 +115,7 @@ def understand(
     if _FAMILY_RE.search(raw):
         intents.append(Intent.FAMILY_DEPENDENT.value)
     procedure = TASK_TYPE_TO_PROCEDURE.get(task_type or "")
+    fine = classify_procedure(raw)
     if procedure is None and Intent.REENTRY.value in intents:
         # The backend task detector has no re-entry branch; the facet does.
         procedure = "reentry"
@@ -123,25 +127,40 @@ def understand(
 
     mentioned = _mentioned_statuses(raw)
     parents = {_parent(c) for c in mentioned}
-    if not status_code and len(parents) == 1:
+    if not status_code and len(parents) == 1 and len(mentioned) == 1:
         # The backend text detector misses codes glued to Korean particles
-        # ("D-2에서") and free-text sub-codes ("F-6-3"). Use the single parent
-        # family the user named; a sub-code is still never guessed from text
-        # (sub-code routing stays a payload-only declaration).
+        # ("D-2에서") and explicit free-text sub-codes ("F-6-3"). Preserve
+        # a single explicit sub-code as identity, without certifying its
+        # eligibility or inheriting any document requirements.
         status_code = next(iter(parents))
+        subcode = mentioned[0] if mentioned[0] != status_code else None
     missing: List[str] = []
     ambiguity = AmbiguityState.CLEAR.value
     needs_status = primary in (Intent.REQUIRED_DOCUMENTS.value, Intent.FEE.value, Intent.DEADLINE.value,
                                Intent.ONLINE_APPLICATION.value, Intent.ELIGIBILITY.value) or procedure is not None
-    if len(parents) > 1 and not status_code:
+    if (len(parents) > 1 or len(mentioned) > 1) and not status_code:
         ambiguity = AmbiguityState.MULTIPLE_STATUSES.value
         missing.append("status_code")
     elif needs_status and not status_code:
         ambiguity = AmbiguityState.MISSING_STATUS.value
         missing.append("status_code")
-    if primary == Intent.REQUIRED_DOCUMENTS.value and status_code and not procedure:
+    unrecognized = bool(status_code) and re.fullmatch(r"[A-H]-\d{1,2}", _parent(status_code)) is not None \
+        and _parent(status_code) not in OFFICIAL_STATUS_PARENTS
+    if unrecognized:
+        # A syntactically valid but non-existent symbol (e.g. F-10) must be
+        # confirmed by the user; it never selects a status-specific answer.
+        ambiguity = AmbiguityState.UNRECOGNIZED_STATUS.value
+        missing.append("status_code_confirmation")
+    if primary == Intent.REQUIRED_DOCUMENTS.value and status_code and not procedure and not fine.fine:
         ambiguity = AmbiguityState.MISSING_PROCEDURE.value if ambiguity == AmbiguityState.CLEAR.value else ambiguity
         missing.append("procedure")
+    retrieval_procedure = GROUNDABLE_TASKS.get(task_type or "") or ("reentry" if procedure == "reentry" else None)
+    if (fine.fine and fine.fine != retrieval_procedure) or fine.candidates and not fine.fine:
+        retrieval_procedure = None
+    if fine.reason == "passport_service_not_immigration":
+        retrieval_procedure = None
+    if unrecognized:
+        retrieval_procedure = None
 
     return QueryUnderstanding(
         query_language=detect_language(raw, lang),
@@ -149,7 +168,9 @@ def understand(
         subcode=subcode,
         procedure=procedure,
         task_type=task_type,
-        retrieval_procedure=GROUNDABLE_TASKS.get(task_type or "") or ("reentry" if procedure == "reentry" else None),
+        # Fine identities without a legacy equivalent (e.g. part-time work or
+        # card reissue) must never inherit a coarse procedure's checklist.
+        retrieval_procedure=retrieval_procedure,
         intent=primary,
         intents=intents,
         risk_level="high" if task_type in _HIGH_RISK_TASKS else (risk_level or "low"),
@@ -163,6 +184,8 @@ def understand(
                             else "official_manual"),
         mentioned_statuses=mentioned,
         legal_issue_types=issues,
+        procedure_fine=fine.fine,
+        procedure_candidates=list(fine.candidates),
     )
 
 

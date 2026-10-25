@@ -27,6 +27,18 @@ on:
       - 'backend/services/legal_evidence.py'
       - 'backend/services/citation_verifier.py'
       - 'backend/services/law_cloud_fallback.py'
+      - 'backend/services/status_code_parser.py'
+      - 'backend/paradiso_backend.py'
+      - 'backend/services/knowledge/**'
+      - 'backend/services/legal_analysis.py'
+      - 'backend/services/immigration_tools.py'
+      - 'assets/js/search-router.js'
+      - 'assets/js/status-guidance.js'
+      - 'data/status-guidance-202609.json'
+      - 'backend/data/procedure_classifier_lexicon.json'
+      - 'scripts/build_procedure_classifier_lexicon.cjs'
+      - 'scripts/check_bfixed_metrics.py'
+      - 'audits/mission-002-phase-1-1/comparison.json'
       - '.github/workflows/waymaker-ai-experiments.yml'
   push:
     branches:
@@ -39,6 +51,18 @@ on:
       - 'backend/services/legal_evidence.py'
       - 'backend/services/citation_verifier.py'
       - 'backend/services/law_cloud_fallback.py'
+      - 'backend/services/status_code_parser.py'
+      - 'backend/paradiso_backend.py'
+      - 'backend/services/knowledge/**'
+      - 'backend/services/legal_analysis.py'
+      - 'backend/services/immigration_tools.py'
+      - 'assets/js/search-router.js'
+      - 'assets/js/status-guidance.js'
+      - 'data/status-guidance-202609.json'
+      - 'backend/data/procedure_classifier_lexicon.json'
+      - 'scripts/build_procedure_classifier_lexicon.cjs'
+      - 'scripts/check_bfixed_metrics.py'
+      - 'audits/mission-002-phase-1-1/comparison.json'
       - '.github/workflows/waymaker-ai-experiments.yml'
   workflow_dispatch:
 
@@ -80,6 +104,9 @@ jobs:
       - name: Run the experiment package tests (offline)
         run: python3 -m pytest -q -p no:cacheprovider tests
 
+      - name: Verify shared procedure vocabulary
+        run: node ../../scripts/build_procedure_classifier_lexicon.cjs --check
+
       - name: Validate benchmark v0
         run: python3 -m waymaker_ai.dataset.validate datasets/benchmark/v0 --json "$RUNNER_TEMP/waymaker-dataset-validation.json"
 
@@ -87,7 +114,10 @@ jobs:
         run: |
           python3 -m waymaker_ai.evaluation.runner \
             --benchmark datasets/benchmark/v0 \
-            --baselines wlie,b1_python,b2_js,existing_law,mock_model \
+            --baselines wlie,b1_python,b2_js,b_fixed,existing_law,mock_model \
             --splits dev,test,adversarial_holdout \
             --out "$RUNNER_TEMP/waymaker-eval.json" \
             --fail-on-hard-gates wlie
+
+      - name: Gate B-fixed engineering regressions (not legal release approval)
+        run: python3 ../../scripts/check_bfixed_metrics.py "$RUNNER_TEMP/waymaker-eval.json" ../../audits/mission-002-phase-1-1/comparison.json

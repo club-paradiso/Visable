@@ -732,7 +732,7 @@ def analyze_enforcement_rules(case: Any, *, calculate_fn: Optional[Callable] = N
 # Fact extraction (deterministic — the model does not get to invent these)
 # ---------------------------------------------------------------------------
 
-_STATUS_CODE_RE = re.compile(r"(?<![A-Z0-9])([A-HKM]-\d{1,2}(?:-\d{1,2})?(?:-T)?)(?![A-Z0-9])", re.I)
+from .status_code_parser import CODE_RE as _STATUS_CODE_RE, normalize_explicit
 
 
 def extract_immigration_facts(text: str) -> Dict[str, Any]:
@@ -758,7 +758,7 @@ def extract_immigration_facts(text: str) -> Dict[str, Any]:
 
     seen: List[str] = []
     for match in _STATUS_CODE_RE.finditer(raw):
-        code = match.group(1).upper()
+        code = normalize_explicit(match.group(1))
         if code not in seen:
             seen.append(code)
     facts["statusCodes"] = seen

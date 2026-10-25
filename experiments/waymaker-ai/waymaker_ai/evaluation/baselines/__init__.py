@@ -9,6 +9,7 @@ from typing import Callable, Dict, List
 
 from waymaker_ai.evaluation.baselines.b1_python import B1Python, B1PythonRaw
 from waymaker_ai.evaluation.baselines.b2_js import B2Js
+from waymaker_ai.evaluation.baselines.b_fixed import BFixed
 from waymaker_ai.evaluation.baselines.base import Baseline
 from waymaker_ai.evaluation.baselines.existing_law import ExistingLaw
 from waymaker_ai.evaluation.baselines.model import MockModel, OpenAICompatible
@@ -18,6 +19,7 @@ BASELINES: Dict[str, Callable[[], Baseline]] = {
     "b1_python": B1Python,
     "b1_python_raw": B1PythonRaw,
     "b2_js": B2Js,
+    "b_fixed": BFixed,
     "existing_law": ExistingLaw,
     "wlie": Wlie,
     "mock_model": MockModel,

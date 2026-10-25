@@ -791,7 +791,8 @@ def test_missing_manual_index_is_an_error():
 
 def test_real_manual_index_states_are_read_only_and_respected():
     real = replace(OPTIONS, manual_index_path=v.DEFAULT_MANUAL_INDEX_PATH)
-    assert_clean(run(_manual({"ref": "stay_manual_2026_07_31_hwp"}), options=real))
+    assert_clean(run(_manual({"ref": "stay_manual_2026_10_19_pdf"}), options=real))
+    assert_only(run(_manual({"ref": "stay_manual_2026_07_31_hwp"}), options=real), "manual_edition", WARNING)
     assert_only(run(_manual({"ref": "stay_manual_2026_06_01_pdf"}), options=real), "manual_edition", WARNING)
 
 

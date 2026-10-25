@@ -1,0 +1,86 @@
+# v0 項目別比較 / 항목별 비교
+
+기존 evaluator의 판정을 그대로 옮겼다. 라벨은 사람 검증 전이며 법적 정확성 판정이 아니다.
+dev/test는 이미 노출된 사후 비교다. 실패·미출력 항목은 JSON에 모두 남긴다.
+
+| 항목 | split | 기대 절차 | 기존 B-fixed | 개선 B-fixed | B2 | 변화 |
+|---|---|---|---|---|---|---|
+| cls-en-2nd-year-trap | dev | part_time_work | — | part_time_work | part_time_work | fixed |
+| cls-en-d10-to-e7 | dev | status_change | status_change | status_change | status_change | unchanged |
+| cls-en-d23-other-activities | dev | activities_outside_status | — | activities_outside_status | activities_outside_status | fixed |
+| cls-en-d84s-visa-issuance | dev | visa_issuance | visa_issuance | visa_issuance | visa_issuance | unchanged |
+| cls-en-e7-evisa | dev | electronic_visa | visa_issuance | electronic_visa | electronic_visa | fixed |
+| cls-en-e7-visa-issuance | dev | visa_issuance | visa_issuance | visa_issuance | visa_issuance | unchanged |
+| cls-en-e71-cvi | dev | visa_issuance_confirmation | visa_issuance | visa_issuance_confirmation | visa_issuance_confirmation | fixed |
+| cls-en-e9-change-employer | dev | workplace_change | workplace_change | workplace_change | workplace_change | unchanged |
+| cls-en-f27-card-reissue | dev | card_reissue | — | card_reissue | card_reissue | fixed |
+| cls-en-f5-reentry | dev | reentry | reentry | reentry | reentry | unchanged |
+| cls-en-g15-register | dev | registration | — | registration | registration | fixed |
+| cls-ja-f61-address | dev | residence_report | — | residence_report | residence_report | fixed |
+| cls-ko-c39-visa-issuance | dev | visa_issuance | visa_issuance | visa_issuance | visa_issuance | unchanged |
+| cls-ko-d2-evisa | dev | electronic_visa | visa_issuance | electronic_visa | visa_issuance | fixed |
+| cls-ko-d2-outside-status | dev | activities_outside_status | activities_outside_status | activities_outside_status | activities_outside_status | unchanged |
+| cls-ko-d41-to-d21 | dev | status_change | status_change | status_change | status_change | unchanged |
+| cls-ko-d42k-registration | dev | registration | registration | registration | registration | unchanged |
+| cls-ko-e74r-condition-change | dev | program_condition_change | — | program_condition_change | program_condition_change | fixed |
+| cls-ko-e74r-extension | dev | extension | extension | extension | extension | unchanged |
+| cls-ko-e9-workplace-change | dev | workplace_change | — | workplace_change | workplace_change | fixed |
+| cls-ko-work-visa-issuance | dev | visa_issuance | visa_issuance | visa_issuance | visa_issuance | unchanged |
+| cls-ru-e71-extension | dev | extension | — | extension | — | fixed |
+| cls-zh-d10-to-e71 | dev | status_change | status_change | status_change | — | unchanged |
+| cls-zh-d2-extension | dev | extension | — | extension | extension | fixed |
+| cls-en-a3-month-trap | test | extension | extension | extension | extension | unchanged |
+| cls-en-d2-switch-d101 | test | status_change | status_change | status_change | status_change | unchanged |
+| cls-en-d21-extension | test | extension | extension | extension | extension | unchanged |
+| cls-en-d26-passport-report | test | registration_info_report | extension | registration_info_report | registration_info_report | fixed |
+| cls-en-d41-part-time | test | part_time_work | — | part_time_work | part_time_work | fixed |
+| cls-en-e2-outside-status | test | activities_outside_status | — | activities_outside_status | — | fixed |
+| cls-en-e74-workplace-change | test | workplace_change | — | workplace_change | workplace_change | fixed |
+| cls-en-e74r-card-reissue | test | card_reissue | — | card_reissue | card_reissue | fixed |
+| cls-en-e7s1-extension | test | extension | extension | extension | extension | unchanged |
+| cls-en-f10-visa-application | test | visa_issuance | — | visa_issuance | visa_issuance | fixed |
+| cls-en-f2r-condition-change | test | program_condition_change | — | program_condition_change | status_change | fixed |
+| cls-en-f61-moved | test | residence_report | — | residence_report | residence_report | fixed |
+| cls-en-h2-workplace-report | test | workplace_report | — | workplace_report | status_change | fixed |
+| cls-en-newborn-status-grant | test | status_grant | status_grant | status_grant | status_grant | unchanged |
+| cls-en-student-visa-extension | test | extension | extension | extension | extension | unchanged |
+| cls-ja-d41-extension | test | extension | — | extension | extension | fixed |
+| cls-ja-e7-cvi | test | visa_issuance_confirmation | visa_issuance_confirmation | visa_issuance_confirmation | — | unchanged |
+| cls-ja-e74r-card-reissue | test | card_reissue | — | card_reissue | card_reissue | fixed |
+| cls-ko-d10-to-e71 | test | status_change | status_change | status_change | status_change | unchanged |
+| cls-ko-d10t-extension | test | extension | extension | extension | extension | unchanged |
+| cls-ko-d2-extension | test | extension | extension | extension | extension | unchanged |
+| cls-ko-d2-part-time | test | part_time_work | — | part_time_work | part_time_work | fixed |
+| cls-ko-d21-glued-extension | test | extension | extension | extension | extension | unchanged |
+| cls-ko-d22-school-change | test | registration_info_report | — | registration_info_report | registration_info_report | fixed |
+| cls-ko-d41-part-time | test | part_time_work | activities_outside_status | part_time_work | part_time_work | fixed |
+| cls-ko-d81-residence-report | test | residence_report | residence_report | residence_report | residence_report | unchanged |
+| cls-ko-e1-outside-status | test | activities_outside_status | activities_outside_status | activities_outside_status | activities_outside_status | unchanged |
+| cls-ko-e2-registration-info | test | registration_info_report | — | registration_info_report | registration_info_report | fixed |
+| cls-ko-e7-cvi-employer | test | visa_issuance_confirmation | visa_issuance_confirmation | visa_issuance_confirmation | visa_issuance_confirmation | unchanged |
+| cls-ko-e71-evisa | test | electronic_visa | visa_issuance | electronic_visa | electronic_visa | fixed |
+| cls-ko-e71-workplace-change | test | workplace_change | workplace_change | workplace_change | workplace_change | unchanged |
+| cls-ko-e7t-cvi | test | visa_issuance_confirmation | visa_issuance_confirmation | visa_issuance_confirmation | visa_issuance_confirmation | unchanged |
+| cls-ko-e9-to-e74 | test | status_change | status_change | status_change | status_change | unchanged |
+| cls-ko-e9-workplace-report | test | workplace_report | — | workplace_report | workplace_report | fixed |
+| cls-ko-e91-card-reissue | test | card_reissue | — | card_reissue | card_reissue | fixed |
+| cls-ko-f10-nonexistent | test | extension | extension | extension | extension | unchanged |
+| cls-ko-f27s-extension | test | extension | extension | extension | extension | unchanged |
+| cls-ko-f2t-card-reissue | test | card_reissue | — | card_reissue | card_reissue | fixed |
+| cls-ko-f31-status-grant | test | status_grant | status_grant | status_grant | status_grant | unchanged |
+| cls-ko-f4-reentry | test | reentry | reentry | reentry | reentry | unchanged |
+| cls-ko-f6-to-e9 | test | status_change | — | status_change | status_change | fixed |
+| cls-ko-f61-residence-report | test | residence_report | — | residence_report | residence_report | fixed |
+| cls-ko-g15-extension | test | extension | extension | extension | extension | unchanged |
+| cls-ko-h2-workplace-report | test | workplace_report | — | workplace_report | workplace_report | fixed |
+| cls-ko-newborn-status-grant | test | status_grant | status_grant | status_grant | status_grant | unchanged |
+| cls-ko-spouse-visa-extension | test | extension | extension | extension | extension | unchanged |
+| cls-ko-student-visa-extension | test | extension | extension | extension | extension | unchanged |
+| cls-ko-to-f5t | test | status_change | status_change | status_change | status_change | unchanged |
+| cls-ru-d2-part-time | test | part_time_work | — | — | — | unchanged |
+| cls-ru-f5-reentry | test | reentry | reentry | reentry | — | unchanged |
+| cls-vi-d21-extension | test | extension | — | extension | extension | fixed |
+| cls-vi-e9-workplace-change | test | workplace_change | — | workplace_change | workplace_change | fixed |
+| cls-vi-f6-to-f5 | test | status_change | status_change | status_change | — | unchanged |
+| cls-zh-e9-workplace-change | test | workplace_change | — | workplace_change | workplace_change | fixed |
+| cls-zh-f4-reentry | test | reentry | reentry | reentry | — | unchanged |

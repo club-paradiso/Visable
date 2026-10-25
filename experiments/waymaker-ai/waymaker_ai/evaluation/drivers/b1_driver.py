@@ -69,6 +69,7 @@ def main() -> int:
             "status_code": understood.get("status_code"),
             "subcode": understood.get("subcode"),
             "procedure": understood.get("procedure"),
+            "procedure_fine": understood.get("procedure_fine"),
             "intent": understood.get("intent"),
             "ambiguity": understood.get("ambiguity"),
             "missing_decisive_facts": understood.get("missing_decisive_facts"),

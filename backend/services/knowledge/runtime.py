@@ -184,7 +184,8 @@ class KnowledgePlatform:
             verified_facts=(r.facts if r else []), coverage_state=plan.decision.state,
             status_code=plan.understanding.status_code,
             user_mentioned_statuses=plan.understanding.mentioned_statuses,
-            procedure_family="stay" if plan.understanding.procedure not in ("visa_issuance",) else "visa",
+            procedure_family="visa" if plan.understanding.procedure_fine in
+                ("visa_issuance", "visa_issuance_confirmation", "electronic_visa") else "stay",
             cited_pages=pages, summary_only=summary_only)
         plan.guard = result.to_dict()
         if result.findings:
