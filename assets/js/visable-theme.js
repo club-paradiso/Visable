@@ -152,7 +152,7 @@
       b.innerHTML = '<span class="vt-coin" data-c="' + t + '" aria-hidden="true"></span><span><span class="vt-name"></span><small></small></span>';
       b.querySelector('.vt-name').textContent = NAMES[t];
       b.querySelector('small').textContent = c[t];
-      b.addEventListener('click', function () { apply(t); });
+      b.addEventListener('click', function () { apply(t, { keepBrightness: true }); });
       fs.appendChild(b);
     });
     fs.addEventListener('keydown', function (e) {
@@ -161,7 +161,7 @@
       e.preventDefault();
       var i = THEMES.indexOf(current || 'default');
       var n = THEMES[(i + keys[e.key] + THEMES.length) % THEMES.length];
-      apply(n);
+      apply(n, { keepBrightness: true });
       var el = fs.querySelector('[data-vt-value="' + n + '"]');
       if (el) el.focus();
     });
@@ -187,6 +187,114 @@
     }
     var t = document.getElementById('vtPopTitle');
     if (t) t.textContent = c.title;
+    var quickTitle = document.getElementById('vtCivicTitle');
+    if (quickTitle) quickTitle.textContent = c.title;
+    document.querySelectorAll('[data-vt-open]').forEach(function (btn) {
+      btn.setAttribute('aria-label', c.title);
+      btn.setAttribute('title', c.title);
+      var label = btn.querySelector('.cs-theme-label');
+      if (label) label.textContent = c.title;
+    });
+    syncCivicBrightnessLabel();
+  }
+
+  /* The Civic homepage/result headers are rebuilt by civic-search.js. Bind to
+     one delegated trigger, and reuse the same canonical four-theme picker as
+     the global settings sheet. No second theme state or dark-mode shortcut. */
+  function syncCivicBrightnessLabel() {
+    var btn = document.querySelector('#vtCivicBrightness');
+    if (!btn) return;
+    var l = (root.getAttribute('lang') || 'ko').toLowerCase();
+    var label = l.indexOf('ko') === 0 ? '밝기' : l.indexOf('zh') === 0 ? '亮度' : 'Brightness';
+    var value = isDark() ? (l.indexOf('ko') === 0 ? '다크' : l.indexOf('zh') === 0 ? '深色' : 'Dark')
+      : (l.indexOf('ko') === 0 ? '라이트' : l.indexOf('zh') === 0 ? '浅色' : 'Light');
+    btn.textContent = label + ': ' + value;
+  }
+
+  function mountCivicPicker(c) {
+    if (!document.getElementById('civicLanding') || document.getElementById('vtCivicPop')) return;
+    var pop = document.createElement('div');
+    pop.id = 'vtCivicPop';
+    pop.className = 'vt-pop vt-civic-pop';
+    pop.setAttribute('role', 'dialog');
+    pop.setAttribute('aria-labelledby', 'vtCivicTitle');
+    pop.hidden = true;
+    var title = document.createElement('h2');
+    title.id = 'vtCivicTitle';
+    title.textContent = c.title;
+    pop.appendChild(title);
+    var choices = buildGroup(c, 'vt-civic-');
+    pop.appendChild(choices);
+    var brightness = document.createElement('button');
+    brightness.type = 'button';
+    brightness.id = 'vtCivicBrightness';
+    brightness.className = 'vt-civic-brightness';
+    brightness.addEventListener('click', function () {
+      // Brightness is independent of the four visual skins.
+      if (typeof window.toggleTheme === 'function') window.toggleTheme();
+      else {
+        var existing = document.getElementById('mainThemeBtn');
+        if (existing) existing.click();
+      }
+      syncCivicBrightnessLabel();
+    });
+    pop.appendChild(brightness);
+    document.body.appendChild(pop);
+    syncCivicBrightnessLabel();
+    var opener = null;
+
+    function setExpanded(open) {
+      document.querySelectorAll('[data-vt-open]').forEach(function (b) {
+        b.setAttribute('aria-expanded', open && b === opener ? 'true' : 'false');
+      });
+    }
+    function close(focus) {
+      if (pop.hidden) return;
+      pop.hidden = true;
+      setExpanded(false);
+      if (focus && opener && opener.isConnected) opener.focus();
+    }
+    function open(btn) {
+      opener = btn;
+      pop.hidden = false;
+      syncPickers();
+      relabel();
+      var r = btn.getBoundingClientRect();
+      // Keep the panel in the visual viewport on narrow phones/tablets.
+      pop.style.left = 'auto';
+      pop.style.right = Math.max(12, window.innerWidth - r.right) + 'px';
+      pop.style.bottom = 'auto';
+      var top = r.bottom + 8;
+      if (top + pop.offsetHeight + 12 > window.innerHeight) top = Math.max(12, r.top - pop.offsetHeight - 8);
+      pop.style.top = Math.max(12, top) + 'px';
+      setExpanded(true);
+      var selected = pop.querySelector('.vt-opt[aria-checked="true"]') || pop.querySelector('.vt-opt');
+      if (selected) selected.focus();
+    }
+
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-vt-open]');
+      if (btn) {
+        e.preventDefault();
+        if (!pop.hidden && btn === opener) close(true);
+        else open(btn);
+        return;
+      }
+      if (!pop.hidden && !pop.contains(e.target)) close(false);
+    });
+    choices.addEventListener('click', function (e) {
+      if (e.target.closest('.vt-opt')) close(true);
+    });
+    choices.addEventListener('keydown', function (e) {
+      // Arrow keys select themes without closing; Enter/Space is handled by the
+      // native button click above.
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !pop.hidden) { e.preventDefault(); close(true); }
+    });
+    window.addEventListener('resize', function () { close(false); });
+    // In results state civic-search.js mounts a second header after the first
+    // render; the delegated listener above serves both without duplicate popups.
   }
 
   function mount() {
@@ -263,6 +371,7 @@
         document.body.appendChild(fabs[1]);
       } else document.body.appendChild(fab);
     }
+    mountCivicPicker(c);
     relabel();
     ensureFonts(current);
     syncPickers();
