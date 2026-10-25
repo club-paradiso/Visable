@@ -6,6 +6,7 @@ This module neither determines legal eligibility nor publishes a rule.
 from __future__ import annotations
 
 from dataclasses import dataclass
+import re
 from typing import Mapping, Optional
 
 from .knowledge.models import OFFICIAL_STATUS_PARENTS
@@ -86,11 +87,19 @@ def assess_classification(
         reason = "unknown_status"
     elif len(codes) > 1:
         pair = transition_pair(question)
-        if not pair or len(codes) != 2 or set(codes) != set(pair):
+        # Unambiguous changes must keep the existing source-limited fallback
+        # and its directional metadata. Only unresolved comparisons are gated.
+        directional = bool(len(codes) == 2 and (
+            (pair and set(codes) == set(pair))
+            or re.search(r"(?:상태인데|현재|체류\s*중).{0,45}(?:로|으로)\s*(?:변경|전환|바꾸|바꿔)", question, re.I)
+        ))
+        if not directional:
             reason = "multiple_statuses"
-        else:
-            reason = "transition_requires_review"
-    elif codes and declared and any(code not in codes for code in declared):
+    elif codes and declared and any(
+        code != selected and "-".join(code.split("-")[:2]) != "-".join(selected.split("-")[:2])
+        for code in codes for selected in declared
+    ):
+        # A selected parent G-1 and an explicit child G-1-5 are compatible.
         reason = "conflicting_status_context"
     else:
         fine = classify_procedure(question)
