@@ -4207,14 +4207,19 @@ def _detect_task_type(text: str) -> Optional[str]:
 
     # --- passport_info_report ---
     passport_ko = ("여권 재발급 신고", "여권 정보 변경", "여권정보 변경", "새 여권 신고")
-    passport_en = r"\b(report (?:my )?(?:new|renewed|reissued) passport|passport information change|passport (?:change )?report|update (?:my )?passport (?:information|details))\b"
+    passport_en = r"\b(report (?:(?:my|the) )?(?:new|renewed|reissued) passport|passport information change|passport (?:change )?report|update (?:(?:my|the) )?passport (?:information|details))\b"
     if any(sig in text for sig in passport_ko) or re.search(passport_en, text, flags=re.IGNORECASE):
         return "passport_info_report"
     # An embassy passport renewal is not a Korean immigration filing, and
     # generic "renew" must not fall through to a stay-extension classifier.
     from services.procedure_classifier import classify_procedure
-    if classify_procedure(text).reason == "passport_service_not_immigration":
+    passport_decision = classify_procedure(text)
+    if passport_decision.reason == "passport_service_not_immigration":
         return None
+    if passport_decision.fine == "registration_info_report" and re.search(
+        r"여권|passport|护照|hộ chiếu|paspor|パスポート", text, re.I
+    ):
+        return "passport_info_report"
 
     # --- family_status_change ---
     family_ko = (
