@@ -307,14 +307,15 @@ def _form_markers(text):
 
 
 # --------------------------------------------------------------------------
-# Regulation sources (tier 1–3). Text read from law.go.kr on 2026-09-22 (current
-# editions: 출입국관리법 시행 2026-01-23, 시행령·시행규칙 시행 2026-09-15). The
+# Regulation sources (tier 1–3). Article summaries read on 2026-09-22.
+# Act/decree version identities rechecked 2026-10-25 (effective 2026-10-02);
+# this metadata repair does not certify a fresh article-body review. The
 # manual stays authoritative for status-specific document lists; the statute /
 # decree / rule are authoritative for fees, payment method, exemptions and the
 # status-independent procedures the manual has no chapter for.
 # --------------------------------------------------------------------------
-LAW_ACT = {'law_id': '001707', 'mst': '272921', 'title_ko': '출입국관리법', 'title_en': 'Immigration Act', 'tier': 1, 'kind': 'act', 'effective': '2026-01-23'}
-LAW_DECREE = {'law_id': '005256', 'mst': '289697', 'title_ko': '출입국관리법 시행령', 'title_en': 'Enforcement Decree of the Immigration Act', 'tier': 2, 'kind': 'decree', 'effective': '2026-09-15'}
+LAW_ACT = {'law_id': '001707', 'mst': '290729', 'title_ko': '출입국관리법', 'title_en': 'Immigration Act', 'tier': 1, 'kind': 'act', 'effective': '2026-10-02'}
+LAW_DECREE = {'law_id': '005256', 'mst': '290501', 'title_ko': '출입국관리법 시행령', 'title_en': 'Enforcement Decree of the Immigration Act', 'tier': 2, 'kind': 'decree', 'effective': '2026-10-02'}
 LAW_RULE = {'law_id': '008494', 'mst': '289833', 'title_ko': '출입국관리법 시행규칙', 'title_en': 'Enforcement Rule of the Immigration Act', 'tier': 3, 'kind': 'rule', 'effective': '2026-09-15'}
 
 
