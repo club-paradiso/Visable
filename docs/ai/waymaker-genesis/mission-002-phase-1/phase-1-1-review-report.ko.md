@@ -28,6 +28,8 @@ B1은 현재 main 백엔드에서, B2는 변경하지 않은 resolver/catalog에
 평가 scorer·라벨·분모를 바꾸지 않았다. 상세 모든 항목은
 [comparison.json](../../../../audits/mission-002-phase-1-1/comparison.json) 및
 [항목별 표](../../../../audits/mission-002-phase-1-1/per-item-comparison.ko.md)를 참조한다.
+[모든 기준선의 중요 오류 37사례별 위험 분류](../../../../audits/mission-002-phase-1-1/critical-risk-review.ko.md)에는
+틀린 항목과 잠재적인 자격·방향·도메인·절차 위험을 기록했다.
 
 | test 분류 55건 | main B1 | B2 | 기존 B-fixed | 개선 B-fixed |
 |---|---:|---:|---:|---:|

@@ -67,6 +67,38 @@ def main():
         pred=lambda n: r["views"][n]["prediction"].get("procedure_fine") or "—"
         lines.append("| "+" | ".join([r["id"],r["split"],r["expected"].get("procedure") or "—",pred("B_fixed_before"),pred("B_fixed_after"),pred("B2"),r["procedure_change"]])+" |")
     (args.output/"per-item-comparison.ko.md").write_text("\n".join(lines)+"\n")
+    risk_lines = [
+        "# 중요 라벨 사례별 잠재 위험 검토", "",
+        "v0 라벨의 오류이며 실제 법적 오답이나 위해 발생을 인적으로 확정한 표가 아니다.",
+        "모든 기준선에서 중요 오류로 표시된 사례의 합집합을 포함한다. B1의 fine 미출력은 오류로 추가하지 않는다.", "",
+        "| 분류 | 잠재 영향 |",
+        "|---|---|",
+        "| H-identity | 잘못된 자격·세부 자격·존재성으로 요건과 서류를 선택할 위험 |",
+        "| H-direction | 현재·목표 자격을 혼동해 전환 경로를 잘못 안내할 위험 |",
+        "| H-domain | 체류와 사증발급 절차를 섞어 담당 기관·신청 경로를 잘못 안내할 위험 |",
+        "| M-procedure | 같은 도메인에서 절차나 신고 유형을 놓쳐 서류·기한·접수 흐름을 잘못 제시할 위험 |",
+        "| M-clarify | 필요한 확인을 생략하거나 불필요한 확인을 요구할 위험 |", "",
+        "| 사례 | 기준선별 틀린 항목 | 위험 분류 | 개선판 잔여 중요 오류 |",
+        "|---|---|---|---|",
+    ]
+    for r in rows:
+        if not any(v["critical_categories"] for v in r["views"].values()):
+            continue
+        failures_by_system=[]
+        risks=set()
+        for name, v in r["views"].items():
+            if not v["critical_categories"]:
+                continue
+            wrong=[k for k,m in v["metrics"].items() if m[0]=="wrong"]
+            failures_by_system.append(name+": "+", ".join(wrong))
+            if set(wrong)&{"status_exact","subcode_exact","subcode_expected_absent","not_status_token_respected"}: risks.add("H-identity")
+            if set(wrong)&{"current_status_exact","target_status_exact"}: risks.add("H-direction")
+            if "procedure_scope_respected" in wrong: risks.add("H-domain")
+            if set(wrong)&{"procedure_fine","procedure_coarse"}: risks.add("M-procedure")
+            if "clarification" in wrong: risks.add("M-clarify")
+        residual="잔여" if r["views"]["B_fixed_after"]["critical_categories"] else "해소(v0 라벨 기준)"
+        risk_lines.append("| "+" | ".join([r["id"],"; ".join(failures_by_system),", ".join(sorted(risks)),residual])+" |")
+    (args.output/"critical-risk-review.ko.md").write_text("\n".join(risk_lines)+"\n")
     print(json.dumps(report["procedure_changes"],ensure_ascii=False))
 
 
