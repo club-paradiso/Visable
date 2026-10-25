@@ -42,22 +42,15 @@ assert.equal(doc.querySelectorAll('.cs-service').length, 15);
 const directory = doc.querySelector('.cs-directory');
 assert.equal(directory.open, false, 'the full tools directory is collapsed on a fresh visit');
 assert.equal(directory.tagName, 'DETAILS');
-const toolsLink = doc.querySelector('[data-cs-open-tools]');
-assert.equal(toolsLink.getAttribute('aria-controls'), 'csTools');
-assert.equal(toolsLink.getAttribute('aria-expanded'), 'false');
-// The header link expands it; selecting it again collapses it; aria-expanded mirrors the state.
-toolsLink.click();
-assert.equal(directory.open, true, 'header link expands the directory');
-assert.equal(toolsLink.getAttribute('aria-expanded'), 'true');
-toolsLink.click();
-assert.equal(directory.open, false, 'header link collapses an open directory');
-assert.equal(toolsLink.getAttribute('aria-expanded'), 'false');
-// Native disclosure: the summary toggles it and the link follows.
+assert.equal(doc.querySelector('.cs-nav [data-cs-open-tools]'), null, 'the top nav must not replace the theme button with an all-tools link');
+assert.equal(doc.querySelectorAll('.cs-nav .cs-theme-toggle[data-action="toggle-theme"]').length, 1, 'active home header has one working theme action');
+const langControl = doc.querySelector('.cs-nav .cs-lang-home');
+assert.equal(langControl.nextElementSibling.classList.contains('cs-theme-toggle'), true, 'theme control follows language immediately');
+// The native directory summary owns expansion; a direct deep link may expand it.
 directory.open = true; directory.dispatchEvent(new w.Event('toggle'));
-assert.equal(toolsLink.getAttribute('aria-expanded'), 'true', 'native toggle updates the header link');
 assert.equal(w.VisableCivicSearch.directory.isOpen(), true);
 directory.open = false; directory.dispatchEvent(new w.Event('toggle'));
-assert.equal(toolsLink.getAttribute('aria-expanded'), 'false');
+assert.equal(directory.open, false);
 // Filters work inside the expanded catalogue.
 directory.open = true;
 assert(doc.querySelector('.cs-directory').compareDocumentPosition(doc.querySelector('.cs-footer')) & w.Node.DOCUMENT_POSITION_FOLLOWING);
@@ -83,7 +76,7 @@ assert.equal(doc.querySelector('.cs-directory').open, false, 'a landing reset re
 w.location.hash = '#csTools';
 w.dispatchEvent(new w.Event('hashchange'));
 assert.equal(doc.querySelector('.cs-directory').open, true, 'navigating to #csTools expands the directory');
-assert.equal(doc.querySelector('[data-cs-open-tools]').getAttribute('aria-expanded'), 'true');
+assert.equal(doc.querySelector('.cs-nav [data-cs-open-tools]'), null);
 w.document.dispatchEvent(new w.Event('paradiso:landing-reset'));
 assert.equal(doc.querySelector('.cs-directory').open, true, 'cross-page catalogue deep links must expand the directory');
 // A language re-render keeps an intentional expansion.
@@ -94,7 +87,7 @@ doc.querySelector('.cs-directory').open = true;
 w.document.documentElement.lang = 'en';
 w.dispatchEvent(new w.Event('paradiso-language-applied'));
 assert.equal(doc.querySelector('.cs-directory').open, true, 'a language change must not cancel an intentional expansion');
-assert.equal(doc.querySelector('[data-cs-open-tools]').getAttribute('aria-expanded'), 'true');
+assert.equal(doc.querySelector('.cs-nav [data-cs-open-tools]'), null);
 w.document.documentElement.lang = 'ko';
 w.dispatchEvent(new w.Event('paradiso-language-applied'));
 assert.equal(new Set([...doc.querySelectorAll('.cs-examples button')].map(x => x.dataset.csQuery)).size, 4);
