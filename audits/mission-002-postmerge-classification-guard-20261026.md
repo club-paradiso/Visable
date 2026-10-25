@@ -23,9 +23,9 @@ requests phrased as “first residence card” were not consistently recognized.
 
 1. `services/classification_safety.py` evaluates only deterministic identity
    and ambiguity conditions; unrecognized parent status, conflicting selected
-   code, multiple unbound codes, directional change routes lacking per-case
-   verification, standalone passport issuance/renewal, and unclear card action
-   return a language-aware clarification.
+   code, multiple codes without a clear direction, conflicting selected codes
+   without an explicit target-change expression, standalone passport issuance/
+   renewal, and unclear card action return a language-aware clarification.
 2. `_ask_internal` enforces this guard before selecting grounding, building
    structured requirements, retrieving source material, or calling an LLM
    provider. Both streaming and buffered requests use the same preflight.
@@ -39,10 +39,11 @@ requests phrased as “first residence card” were not consistently recognized.
 
 ## Important trade-offs and remaining NO_GO items
 
-- A conservative gate deliberately withholds a direct answer for **all**
-  two-status change questions until a separately grounded route is established.
-  The product owner should decide whether a less restrictive source-verified
-  transition path is worth enabling. It must not imply eligibility.
+- The gate **preserves** the existing source-limited answer path for
+  directional changes (including a selected current status and explicit target).
+  Only truly ambiguous multi-status questions receive immediate clarification.
+  Transition analysis still needs source and legal-claim guards; allowing this
+  route to continue does not imply legal eligibility.
 - Parent status identity uses the repository's official parent inventory
   (currently linked to the 2026-10-02 Enforcement Decree). It is **not**
   substantive verification of every parent, subcode, or eligibility rule.
