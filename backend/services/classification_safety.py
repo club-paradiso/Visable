@@ -67,6 +67,8 @@ def assess_classification(
     payload_code: Optional[str] = None,
     visa_data: Optional[Mapping] = None,
     lang: Optional[str] = None,
+    detected_top: Optional[str] = None,
+    detected_subcode: Optional[str] = None,
 ) -> Optional[ClassificationBlock]:
     """Return a conservative clarification, or None for the normal pipeline.
 
@@ -75,11 +77,17 @@ def assess_classification(
     """
     codes = explicit_codes(question)
     declared = []
-    for value in (payload_code, (visa_data or {}).get("detected_code"), (visa_data or {}).get("code")):
-        if isinstance(value, str):
-            normalized = normalize_explicit(value)
-            if normalized and normalized not in declared:
-                declared.append(normalized)
+    # The live backend already canonicalizes compact caller values (e74 ->
+    # E-7-4, f61 -> F-6-1) using its complete parent/subcode oracle.
+    # Do not reinterpret them here with free-text parsing (E-74 / F-61).
+    if detected_top:
+        declared.append(detected_subcode or detected_top)
+    else:
+        for value in (payload_code, (visa_data or {}).get("detected_code"), (visa_data or {}).get("code")):
+            if isinstance(value, str):
+                normalized = normalize_explicit(value)
+                if normalized and normalized not in declared:
+                    declared.append(normalized)
     all_codes = list(dict.fromkeys([*codes, *declared]))
     parents = {"-".join(code.split("-")[:2]) for code in all_codes}
     reason = None
@@ -92,6 +100,13 @@ def assess_classification(
         directional = bool(len(codes) == 2 and (
             (pair and set(codes) == set(pair))
             or re.search(r"(?:상태인데|현재|체류\s*중).{0,45}(?:로|으로)\s*(?:변경|전환|바꾸|바꿔)", question, re.I)
+            # "B-2로 들어와서 F-4로 바꿀 수 있나요?" has clear
+            # arrival/current and intended-target cues.
+            or re.search(
+                r"(?:로|으로)\s*(?:입국|들어왔|들어와서|체류).{0,65}?(?:로|으로)\s*"
+                r"(?:자격\s*)?(?:변경|전환|바꾸|바꿔|바꿀)",
+                question, re.I,
+            )
             # "I'm on D-4 and want to change to D-2" conveys a clear
             # current/target direction even though codes are not adjacent.
             # Require both a current-status cue and an explicit change-to
