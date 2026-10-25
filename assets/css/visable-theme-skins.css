@@ -433,3 +433,24 @@ body[data-theme="dark"] .vt-mini[data-p="neon"],html[data-theme="dark"] .vt-mini
   :root[data-vt] body :is(.cs-tool,.cs-service,.cs-example-link,.sg-option,.sg-chip,.sg-btn,.cs-submit,.cs-icon-circle)::after,
   :root[data-vt] body :is(.cs-tool,.cs-service,.cs-example-link,.sg-option,.sg-chip,.sg-btn,.cs-submit,.cs-icon-circle){transition-duration:.01ms!important;transform:none!important}
 }
+
+/* ---- 6.7 Autocomplete rows follow the skin --------------------------------
+   6.6 paints the .auto-list panel with the skin's card surface, but the rows
+   kept the legacy dark-glass literals (near-white text): on a light skin the
+   suggestion was almost invisible. Point the --auto-* palette at the same
+   skin tokens so the panel and its text always come from one theme. */
+:root[data-vt] body{
+  --auto-list-border:var(--vs-line);
+  --auto-item-bg:transparent;
+  --auto-item-border:transparent;
+  --auto-item-text:var(--vs-ink);
+  --auto-item-icon:var(--vs-ac);
+  --auto-item-hover-bg:var(--vs-ac-soft);
+  --auto-item-hover-border:var(--vs-ac);
+  --auto-item-hover-text:var(--vs-ink);
+  --auto-item-focus-ring:color-mix(in srgb,var(--vs-ac) 42%,transparent);
+  --auto-item-mark-bg:var(--vs-ac-soft);
+  --auto-item-mark-text:var(--vs-ac-ink);
+}
+:root[data-vt] body .auto-item.us-sug{--us-sug-tint:var(--vs-ac)}
+:root[data-vt] body .auto-item.us-sug .us-sug-sub{color:var(--vs-ink3)!important}

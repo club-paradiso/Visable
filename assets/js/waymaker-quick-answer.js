@@ -30,7 +30,7 @@
   var COPY = {
     ko: {
       brand: 'Waymaker', badge: '빠른 답', clarifyTitle: '먼저 하나만 확인할게요', clarifyLead: '이 답은 여기에 따라 달라져요.',
-      fallbackTitle: '확인된 안내만 보여드려요', fallbackLead: '이 조합은 아직 구조화된 답이 없어 공식 원문으로 안내해요. 아래에서 근거를 확인하세요.',
+      fallbackTitle: '확인된 안내만 보여드려요', fallbackLead: '아직 정리된 안내가 없는 내용이에요. 아래 공식 원문에서 직접 확인하세요.',
       prepare: '준비할 것', cost: '비용', office: '관할 관서', national: '전국 기준', officeHas: '{office} · 확인된 차이 있음', officeNone: '{office} · 차이 정보 없음',
       required: '필수 {n}개', conditional: '조건부 {n}개', noDocs: '원문 확인', feeNone: '수수료 없음', feeNotListed: '수수료 항목 없음(확인 필요)', feeConflict: '확인 필요', online: '온라인 −{pct}%',
       full: '전체 안내', evidence: '근거 보기', followup: '이어서 질문하기',
@@ -38,12 +38,12 @@
       focusRequired: '{doc}: 필수예요', focusConditional: '{doc}: 상황에 따라 필요해요', focusMissing: '{doc}: 이 절차의 목록에 없어요', focusForms: '제출 형태: {form}', focusUnspecified: '공식 안내에 제출 형태(원본·사본) 표기는 없어요. 원본을 지참하고, 필요할 때를 대비해 사본도 준비해 두세요.',
       feeTitle: '{subject} 수수료', feeSentence: '{amount}이에요.', feeSentenceLabel: '{label}은(는) {amount}이에요.', feeInstrument: '납부 방식: {list}.', feeOnlineSentence: '온라인 신청 시 {pct}% 감경돼요.', feeExemptGks: '정부초청장학생(GKS) 면제는 조건부예요: {cond}', feeNoExempt: '면제 근거는 확인되지 않았어요.', feeNoneSentence: '수수료가 없어요.', feeNotListedSentence: '규정에 수수료 항목이 없어요. 별도 수수료가 없는 것으로 보이지만 관서 확인이 필요해요.', feeConflictSentence: '근거마다 달라요: {reg} / {man}. 관서 확인이 필요해요.',
       docsSentence: '필수 {n}개', docsCondSentence: '조건부 {m}개', docsLead: '준비할 서류: {list}{more}.', more: ' 외 {k}개',
-      unc: { review: '2026년 10월판 공식 안내 원문은 아직 검토 전이에요.', feeReview: '수수료 근거에 확인이 필요한 항목이 있어요.', local: '관서 정보 중 확인되지 않은 제보가 있어요. 서류는 전국 기준대로 준비하세요.', forms: '원본·사본 표기가 없는 서류 {n}개는 원본 지참을 권장해요(제출용 사본도 준비 가능).', officer: '심사관이 서류를 가감할 수 있어요.' },
+      unc: { review: '2026년 10월판 매뉴얼을 기준으로 정리했지만, 원문과 한 줄씩 맞춰 보는 검토는 아직 끝나지 않았어요.', reviewWithLaw: '2026년 10월판 매뉴얼과 현행 법령 판을 기준으로 정리했지만, 원문·조문과 한 줄씩 맞춰 보는 검토는 아직 끝나지 않았어요.', feeReview: '수수료 근거에 확인이 필요한 항목이 있어요.', local: '관서 정보 중 확인되지 않은 제보가 있어요. 서류는 전국 기준대로 준비하세요.', forms: '원본·사본 표기가 없는 서류 {n}개는 원본 지참을 권장해요(제출용 사본도 준비 가능).', officer: '심사관이 서류를 가감할 수 있어요.' },
       commonNote: '체류자격과 관계없이 같은 기준이에요.',
     },
     en: {
       brand: 'Waymaker', badge: 'Quick answer', clarifyTitle: 'One quick check first', clarifyLead: 'The answer depends on this.',
-      fallbackTitle: 'Showing only what is confirmed', fallbackLead: 'No structured answer exists for this combination yet, so we point to the official source. Check the evidence below.',
+      fallbackTitle: 'Showing only what is confirmed', fallbackLead: 'There is no summarised guidance for this yet. Check the official source below.',
       prepare: 'To prepare', cost: 'Cost', office: 'Office', national: 'National baseline', officeHas: '{office} · a reported difference', officeNone: '{office} · no differences on record',
       required: '{n} required', conditional: '{n} conditional', noDocs: 'See source', feeNone: 'No fee', feeNotListed: 'No fee item (confirm)', feeConflict: 'confirm', online: 'online −{pct}%',
       full: 'Full guidance', evidence: 'See evidence', followup: 'Ask a follow-up',
@@ -51,7 +51,7 @@
       focusRequired: '{doc}: required', focusConditional: '{doc}: depends on your situation', focusMissing: '{doc}: not on this procedure\'s list', focusForms: 'Submission: {form}', focusUnspecified: 'The source does not state a submission form (original or copy): bring the original and keep a copy ready in case it is asked for.',
       feeTitle: '{subject} fee', feeSentence: 'It is {amount}.', feeSentenceLabel: '{label} is {amount}.', feeInstrument: 'Paid by {list}.', feeOnlineSentence: '{pct}% less when filed online.', feeExemptGks: 'The GKS exemption is conditional: {cond}', feeNoExempt: 'No exemption basis was found.', feeNoneSentence: 'There is no fee.', feeNotListedSentence: 'The regulation lists no fee item; there appears to be none, but confirm with the office.', feeConflictSentence: 'Sources disagree: {reg} / {man}. Confirm with the office.',
       docsSentence: '{n} required', docsCondSentence: '{m} conditional', docsLead: 'Prepare {list}{more}.', more: ' and {k} more',
-      unc: { review: 'The October 2026 official guides have not yet been reviewed line by line.', feeReview: 'Some fee items need confirmation.', local: 'Some office information is an unverified report. Prepare documents per the national baseline.', forms: '{n} document(s) carry no original/copy marking in the source: bring the originals and prepare copies.', officer: 'The officer may add or waive documents.' },
+      unc: { review: 'Based on the October 2026 manuals; a line-by-line check against the source is still in progress.', reviewWithLaw: 'Based on the October 2026 manuals and the current law versions; a line-by-line check against the source and article text is still in progress.', feeReview: 'Some fee items need confirmation.', local: 'Some office information is an unverified report. Prepare documents per the national baseline.', forms: '{n} document(s) carry no original/copy marking in the source: bring the originals and prepare copies.', officer: 'The officer may add or waive documents.' },
       commonNote: 'The same rule applies regardless of status.',
     }
   };
@@ -119,8 +119,11 @@
   }
   function collectUncertainties(model, lang, docs) {
     var u = [];
-    if ((model.evidence || []).some(function (e) { return e.type === 'regulation' && e.law.body_review_state === 'PREVIOUS_VERSION_SUMMARY_ONLY'; })) u.push({ id: 'law_body_review', text: lang === 'en' ? 'The law version identity was checked; the current article text and forms have not been fully revalidated.' : '법령 버전 신원은 확인했지만 현행 조문·서식 전체를 다시 검증한 것은 아니에요.' });
-    if ((model.evidence || []).some(function (e) { return e.type === 'manual'; })) u.push({ id: 'review', text: t(lang, 'unc').review });
+    // One plain sentence for both the manual review and the law-body review (same caveat, two sources).
+    var lawBody = (model.evidence || []).some(function (e) { return e.type === 'regulation' && e.law.body_review_state === 'PREVIOUS_VERSION_SUMMARY_ONLY'; });
+    var manualReview = (model.evidence || []).some(function (e) { return e.type === 'manual'; });
+    if (lawBody) u.push({ id: 'law_body_review', text: manualReview ? t(lang, 'unc').reviewWithLaw : (lang === 'en' ? 'Based on the current law version; the full article text has not been rechecked.' : '현행 법령 판을 기준으로 했지만, 조문 내용 전체를 다시 확인하지는 않았어요.') });
+    else if (manualReview) u.push({ id: 'review', text: t(lang, 'unc').review });
     if (model.fees && model.fees.primary.some(function (f) { return f.review_state !== 'VERIFIED_REGULATION' && f.review_state !== 'MANUAL_EXPLICIT'; })) u.push({ id: 'fee_review', text: t(lang, 'unc').feeReview });
     if ((model.localPractice && model.localPractice.variations || []).some(function (v) { return /UNVERIFIED|CONFLICTING|STALE/.test(v.effectiveLayer); })) u.push({ id: 'local', text: t(lang, 'unc').local });
     var unspecified = docs.required.filter(function (d) { return d.form === 'SOURCE_DOES_NOT_SPECIFY'; }).length;
