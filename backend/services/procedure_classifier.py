@@ -102,9 +102,9 @@ def classify_procedure(question: str) -> ProcedureDecision:
             text, re.I,
         ))
         passport_service = bool(re.search(
-            r"여권\s*(?:갱신|연장|재발급|발급|교체)"
-            r"|\bpassport\b.{0,20}\b(?:renew\w*|reissu\w*|replac\w*|extend\w*)\b"
-            r"|\b(?:renew\w*|reissu\w*|replac\w*|extend\w*)\b.{0,22}\bpassport\b",
+            r"여권(?:을|은|이|의)?\s*(?:갱신|연장|재발급|발급|교체|분실|잃어버|잃었)"
+            r"|\bpassport\b.{0,20}\b(?:renew\w*|reissu\w*|replac\w*|extend\w*|lost|missing)\b"
+            r"|\b(?:renew\w*|reissu\w*|replac\w*|extend\w*|lost)\b.{0,22}\b(?:my\s+)?passport\b",
             text, re.I,
         ))
         if immigration_filing and not (embassy_only and not re.search(r"출입국|immigration", text, re.I)):
