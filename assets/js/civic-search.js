@@ -158,6 +158,14 @@
     var cur = langOptions().filter(function (o) { return o.code === want; })[0] || langOptions()[0];
     return '<button type="button" class="cs-lang ' + (cls || '') + '" data-cs-lang-open aria-haspopup="dialog" aria-expanded="false" aria-controls="csLangDialog" aria-label="' + esc(T('language')) + ': ' + esc(cur.name) + '"><span class="cs-lang-code" aria-hidden="true">' + esc(cur.short) + '</span><span class="cs-lang-name" lang="' + esc(cur.html) + '">' + esc(cur.name) + '</span></button>';
   }
+  // The active civic headers, not the hidden legacy #topCtrls, own the brightness
+  // control. Reuse the existing delegated toggle-theme action and persistence.
+  function themeButton(cls, T) {
+    T = T || t;
+    var label = esc(T('theme'));
+    return '<button type="button" class="cs-theme-toggle ' + (cls || '') + '" data-action="toggle-theme" aria-label="' + label + '" title="' + label + '">' +
+      '<svg class="cs-theme-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.2 14.2A8.4 8.4 0 0 1 9.8 3.8a8.4 8.4 0 1 0 10.4 10.4z"/></svg></button>';
+  }
   var langDialog = null, langOpener = null;
   function renderLangDialog(filter) {
     var cur = currentLangCode(); var f = String(filter || '').trim().toLowerCase();
@@ -192,8 +200,10 @@
   }
   function refreshLangButtons() { document.querySelectorAll('.cs-lang').forEach(function (b) { var tmp = document.createElement('div'); tmp.innerHTML = langButton(b.classList.contains('cs-lang-searched') ? 'cs-lang-searched' : 'cs-lang-home'); b.replaceWith(tmp.firstChild); }); }
   function mountSearchedLangButton() {
-    var header = document.querySelector('#hero .header-inner'); if (!header || header.querySelector('.cs-lang-searched')) return;
-    var tmp = document.createElement('div'); tmp.innerHTML = langButton('cs-lang-searched'); header.append(tmp.firstChild);
+    var header = document.querySelector('#hero .header-inner'); if (!header || header.querySelector('.cs-header-settings')) return;
+    var tmp = document.createElement('div');
+    tmp.innerHTML = '<div class="cs-header-settings">' + langButton('cs-lang-searched') + themeButton('cs-theme-searched') + '</div>';
+    header.append(tmp.firstChild);
   }
 
   /* ------------------------------------------------------------ home ----
@@ -342,11 +352,10 @@
         filter();
       });
     });
-    // The directory is a native <details> that starts closed: the search field and
-    // the core tools own the first screen. It opens from its own summary, from the
-    // header link ("전체 도구 보기", which mirrors the state through aria-expanded)
-    // and from a direct #csTools link, so cross-page deep links still land on an
-    // expanded catalogue. A re-render (language change) restores a user's open state.
+    // The directory is a native <details> that starts closed. Only its own
+    // summary opens it on the home; direct #csTools deep links also expand it.
+    // The active header reserves its space for language and theme controls.
+    // A language re-render preserves the visitor's intentional expansion.
     directory.addEventListener('toggle', syncDirectoryLink);
     openDirectoryForHash();
     syncDirectoryLink();
@@ -374,8 +383,8 @@
     var langHtml = ctx.langButton || langButton('cs-lang-home', ctx.langCode, T);
     var sourceLinksHtml = '<a href="' + VISA_PDF + '" target="_blank" rel="noopener">' + esc(T('visa')) + ' PDF</a> · <a href="' + STAY_PDF + '" target="_blank" rel="noopener">' + esc(T('stay')) + ' PDF</a>';
     return '<header class="cs-nav"><a class="cs-brand" href="./" aria-label="Visable"><img src="assets/brand/visable-wordmark.svg" alt="Visable"></a>' +
-      '<nav aria-label="' + esc(T('about')) + '"><a href="#csTools" data-cs-open-tools aria-controls="csTools" aria-expanded="false">' + esc(T('allTools')) + '</a><button type="button" data-cs-focus>' + esc(T('search')) + '</button><a href="form-helper.html">' + esc(T('forms')) + '</a><a href="#civic-about">' + esc(T('about')) + '</a>' +
-      '<span class="cs-languages">' + langHtml + '</span></nav></header>' +
+      '<nav aria-label="' + esc(T('about')) + '"><button type="button" data-cs-focus>' + esc(T('search')) + '</button><a href="form-helper.html">' + esc(T('forms')) + '</a><a href="#civic-about">' + esc(T('about')) + '</a>' +
+      '<span class="cs-languages">' + langHtml + themeButton('cs-theme-home', T) + '</span></nav></header>' +
       '<main class="cs-home"><section class="cs-hero"><h1>' + T('title') + '</h1><p id="civicSearchSub">' + esc(T('sub')) + '</p>' +
       '<form id="civicSearchForm" role="search" novalidate><label class="cs-sr" for="civicQuery">' + esc(T('search')) + '</label><div class="cs-searchbar">' + icon('search') +
       '<input id="civicQuery" type="search" maxlength="300" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="civicSuggest" aria-describedby="civicSearchSub" placeholder="' + esc(T('placeholder')) + '">' +
@@ -676,14 +685,6 @@
     bindSuggest();
     rotateExamples();
     bindDirectory();
-    var toolsLink = root.querySelector('[data-cs-open-tools]');
-    if (toolsLink) toolsLink.addEventListener('click', function (event) {
-      var directory = directoryEl();
-      if (!directory) return;
-      // Open: let the anchor jump to #csTools and expand. Open already: collapse in place.
-      if (directory.open) { event.preventDefault(); toggleDirectory(false); return; }
-      toggleDirectory(true);
-    });
     mountJourneySection();
   }
   // One main landmark per state: the civic shell is the main on the landing, the legacy
