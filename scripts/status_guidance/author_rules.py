@@ -122,6 +122,28 @@ DOCDEFS = {
     'finance_proof': ('재정입증 서류', 'Proof of finances', 'applicant', 'bank'),
     'finance_proof_domestic': ('재정입증 서류(국내 본인계좌 예치금만 인정)', 'Proof of finances (own domestic account balance only)', 'applicant', 'bank'),
     'transcript_or_attendance': ('성적 또는 출석 증명서', 'Transcript or attendance certificate', 'educational_institution', 'school'),
+    'app_form_dongpo': ('재외동포 통합신청서 (별지 제1호서식)', 'Overseas Korean integrated application (Form 1)', 'applicant', 'hikorea'),
+    'passport_with_copy': ('여권 및 사본', 'Passport and a copy', 'applicant', None),
+    'early_adaptation_cert': ('조기적응프로그램 이수증', 'Early-adaptation program completion certificate', 'applicant', None),
+    'biz_reg_vat': ("'부가가치세법'에 따른 사업자등록증", 'Business registration certificate (VAT Act)', 'employer', None),
+    'biz_reg_vat_copy': ("'부가가치세법'에 따른 사업자등록증 사본", 'Copy of the business registration certificate (VAT Act)', 'employer', None),
+    'biz_reg_flc': ('사업자등록증 (외국법자문법률사무소 등록증 : 해당자에 한함)', 'Business registration (foreign legal consultant office registration, where applicable)', 'employer', None),
+    'biz_reg_corp_d8': ('사업자등록증, 법인등기사항전부증명서(법인기업인 경우)', 'Business registration; corporate register (for corporations)', 'business_entity', None),
+    'press_branch_permit': ("지국․지사의 설치허가증 또는 '부가가치세법'에 따른 사업자등록증", 'Bureau/branch establishment permit or business registration (VAT Act)', 'employer', None),
+    'religious_org_docs': ("'종교단체 또는 사회복지단체 설립' 관련 서류", 'Documents on the establishment of the religious or social-welfare organization', 'employer', None),
+    'recruit_medical_sealed': ('채용신체검사서 (반드시 봉투에 밀봉된 상태로 제출, 개봉 불가)', 'Pre-employment medical report (submit sealed; do not open)', 'applicant', 'designated_hospital'),
+    'recruit_medical_e62': ('채용신체검사서 1부 (E-6-2만 제출)', 'Pre-employment medical report, 1 copy (E-6-2 only)', 'applicant', 'designated_hospital'),
+    'recruit_medical_e7': ('채용신체검사서(외국인학교 등의 교사만 해당)', 'Pre-employment medical report (foreign-school teachers etc. only)', 'applicant', 'designated_hospital'),
+    'drug_test_e9': ('법무부 지정 의료기관에서 발급한 "마약검사확인서"', 'Drug-test confirmation from a Ministry of Justice designated clinic', 'applicant', 'designated_hospital'),
+    'shipping_license': ('내항여객운송사업면허증 또는 내항화물운송등록증', 'Coastal passenger transport licence or coastal cargo transport registration', 'ship_owner', None),
+    'health_check_sealed': ('건강검진서 (반드시 봉투에 밀봉된 상태로 제출, 개봉 불가)', 'Health check report (submit sealed; do not open)', 'applicant', 'designated_hospital'),
+    'drug_test_sealed': ('마약검사 확인서 (반드시 봉투에 밀봉된 상태로 제출, 개봉 불가)', 'Drug-test confirmation (submit sealed; do not open)', 'applicant', 'designated_hospital'),
+    'injury_insurance_e10': ('산업재해보상보험 또는 상해보험 가입증명원', 'Industrial-accident or accident insurance certificate', 'ship_owner', None),
+    'intern_biz_reg_d103': ('인턴예정기업의 사업자등록증(또는 고유번호증) 사본 및 재직증명서', "Intern company's business registration (or unique number) copy and employment certificate", 'employer', None),
+    'family_relation_f3_reg': ('가족관계 입증서류(연장 등 추가 체류허가가 필요한 경우에만 제출, 공적확인 불요, 사본 제출 가능)', 'Proof of family relationship (only when a further permit such as an extension is needed; no legalisation; copies accepted)', 'applicant', None),
+    'travel_activity_plan': ('여행일정 및 활동계획서', 'Travel itinerary and activity plan', 'applicant', None),
+    'h1_work_docs': ('근무처의 사업자등록증 사본 및 계약서 등(취업중인 경우)', "Employer's business registration copy and contract, etc. (if working)", 'employer', None),
+    'korean_proof_dongpo': ('한국어능력 입증서류', 'Proof of Korean-language ability', 'applicant', None),
     'korean_ability_proof': ('한국어 능력(영어 능력) 증빙서류', 'Proof of Korean (or English) proficiency', 'applicant', None),
     'pt_confirmation_univ': ('외국인 유학생 시간제취업 확인서', 'University confirmation for part-time work', 'educational_institution', 'school'),
     'pt_compliance_employer': ('외국인 유학생 시간제취업 요건 준수 확인서', "Employer's compliance confirmation for part-time work", 'employer', None),
@@ -1138,6 +1160,101 @@ guidance('H-2', 'extension', completeness='PARTIALLY_STRUCTURED', section='알�
 guidance('H-2', 'registration', completeness='PARTIALLY_STRUCTURED', section='알기쉬운 외국국적동포 업무 매뉴얼 — 3. 방문취업제 체류관리 절차 □ 먼저 외국인등록을 하여야 합니다', anchor='방문취업 사증으로 입국한 동포는 입국일로부터 90일 이내에 체류지 관할 출입국ㆍ외국인청(사무소ㆍ출장소)에 아래 서류를 준비하여 외국인등록을 신고',
          summary_ko='방문취업(H-2) 사증으로 입국한 동포는 입국일로부터 90일 이내에 체류지 관할 관서에 외국인등록을 합니다. 건강상태 확인 절차가 있습니다.', summary_en='Compatriots who entered on an H-2 visa register within 90 days of entry at the office for their address; a health-status check is part of the process.',
          timing_ko='입국일로부터 90일 이내', timing_en='Within 90 days of entry')
+
+F4_SECTION = '알기쉬운 외국국적동포 업무 매뉴얼 — 4. 재외동포(F-4) 자격부여 제도 세부절차 라. 재외동포 자격 체류관리 절차'
+F4_EXT_ANCHOR = '신청서, 수수료, 한국어능력 입증서류, 체류지 입증서류(임대차 계약서 등) 등'
+guidance('F-4', 'extension', completeness='PARTIALLY_STRUCTURED', section=F4_SECTION + ' □ 체류기간연장', anchor='체류기간연장 신청 시 제출서류는 다음과 같습니다',
+         summary_ko='재외동포(F-4)로 계속 체류하려면 체류기간 연장허가를 받습니다. 매뉴얼은 신청서, 수수료, 한국어능력 입증서류, 체류지 입증서류(임대차 계약서 등)를 제출서류로 듭니다. 체류기간은 한국어능력 입증 여부에 따라 최대 3년까지 부여되고, 법을 위반한 사람은 연장이 제한될 수 있습니다.',
+         summary_en='F-4 holders who want to stay longer apply for an extension. The manual lists the application form, the fee, proof of Korean-language ability and proof of residence (such as a lease). Up to 3 years is granted depending on Korean-language proof, and extensions may be restricted for anyone who has broken the law.',
+         period_ko='한국어능력 입증 시 최대 3년 · 미제출 시 1년(사회통합프로그램 등록·수강 시 2년)', period_en='Up to 3 years with Korean-language proof; 1 year without it (2 years if enrolled in the Social Integration Program)',
+         docs=[item('app_form', anchor=F4_EXT_ANCHOR), item('fee', anchor=F4_EXT_ANCHOR),
+               item('korean_proof_dongpo', 'CONDITIONAL_REQUIRED', anchor=F4_EXT_ANCHOR,
+                    does_not_apply_when_ko='만 13세 이하, 만 60세 이상, 과거 대한민국 국적 보유자, 2019-09-02 이전에 F-4 사증을 받았거나 F-4로 체류 중이던 사람 등 면제 대상(별첨 2)',
+                    does_not_apply_when_en='Exempt groups in Annex 2, e.g. age 13 or under, age 60 or over, former Korean nationals, and people issued an F-4 visa or staying on F-4 before 2019-09-02',
+                    notes_ko=['인정 서류: 사회통합프로그램 사전평가 점수표(21점 이상), 사회통합프로그램 교육확인서(1단계 이수 이상), TOPIK 성적증명서(1급 이상), 세종학당 수료증(초급 1B 이상), 교육부 한국교육원 한국어강좌 수료증(2단계 이상). 사전평가·TOPIK 점수는 성적발표일부터 2년 이내.'],
+                    notes_en=['Accepted: Social Integration Program pre-assessment score sheet (21+), SIP completion record (level 1+), TOPIK transcript (level 1+), King Sejong Institute certificate (Beginner 1B+), or a Ministry of Education Korean Education Center course certificate (level 2+). Pre-assessment and TOPIK scores are valid for 2 years from the result date.']),
+               residence(anchor=F4_EXT_ANCHOR, alts=[{'ko': '임대차 계약서 등', 'en': 'Lease contract, etc.'}])],
+         conditions_ko=['한국어능력 입증서류를 내지 않으면 체류기간이 1년(사회통합프로그램 등록·수강 시 2년)만 부여됩니다.', '법을 위반한 사람은 체류기간 연장허가가 제한될 수 있습니다.'],
+         conditions_en=['Without Korean-language proof only 1 year is granted (2 years if enrolled in the Social Integration Program).', 'Extensions may be restricted for anyone who has broken the law.'],
+         notes_ko=[OFFICER_NOTE_KO], notes_en=[OFFICER_NOTE_EN],
+         extra_sources=[{'manual': STAY, 'section': '별첨 2 한국어능력 입증서류 제출기준', 'anchor': '국내에서 재외동포(F-4) 거소신고, 체류기간 연장 및 체류자격 변경허가를'}])
+
+F4_GEOSO_ANCHOR = '재외동포 통합신청서(별지 제1호서식), 여권 및 사본, 표준 규격사진 1매, 체류지 입증서류, 조기적응프로그램 이수증*, 수수료'
+guidance('F-4', 'registration', completeness='FULLY_STRUCTURED', section=F4_SECTION + ' □ 국내 거소신고 절차', anchor='90일 이상 체류하고자 하는 경우 입국일부터 90일 이내 거소신고',
+         summary_ko='재외동포(F-4) 사증으로 입국한 동포는 외국인등록 대신 체류지 관할 출입국·외국인관서에 거소신고를 합니다. 90일 이상 머물 경우 입국일부터 90일 이내에 신고합니다.',
+         summary_en='Overseas Koreans who entered on an F-4 visa file a domestic residence report (거소신고) instead of foreign-resident registration, at the immigration office for their address, within 90 days of entry if staying 90 days or more.',
+         timing_ko='입국일부터 90일 이내 (90일 이상 체류하는 경우)', timing_en='Within 90 days of entry (if staying 90 days or more)',
+         docs=[item('app_form_dongpo', anchor=F4_GEOSO_ANCHOR), item('passport_with_copy', anchor=F4_GEOSO_ANCHOR), item('photo', anchor=F4_GEOSO_ANCHOR),
+               item('residence_proof', anchor=F4_GEOSO_ANCHOR),
+               item('early_adaptation_cert', 'CONDITIONAL_REQUIRED', anchor=F4_GEOSO_ANCHOR,
+                    does_not_apply_when_ko='국내 초·중·고교 재학·졸업자, 만 6세 이하 또는 만 65세 이상, 장기체류 자격으로 국내 3년 이상 체류자, 이전 이수자, 사회통합프로그램 1단계 이상 이수(중)자, 중증장애인',
+                    does_not_apply_when_en='Exempt: students or graduates of Korean primary/secondary schools, age 6 or under or 65 or over, 3+ years in Korea on a long-term status, previous completers, Social Integration Program level 1+ (in progress or completed), people with severe disabilities',
+                    notes_ko=['과거 범죄경력이 없으면 1회에 한해 제출 유예가 허용됩니다.'], notes_en=['Without a past criminal record, submission can be deferred once.']),
+               item('fee', anchor=F4_GEOSO_ANCHOR)],
+         notes_ko=[OFFICER_NOTE_KO], notes_en=[OFFICER_NOTE_EN])
+guidance('F-4', 'status_change', state='SOURCE_ONLY', completeness='SOURCE_ONLY', section=F4_SECTION.replace('라. 재외동포 자격 체류관리 절차', '다. 재외동포(F-4) 자격 변경 절차'), anchor='대상별 제출서류가 국내에서 발급되거나 출입국정보시스템으로 확인이 가',
+         summary_ko='재외동포(F-4)로의 체류자격 변경은 대상별 제출서류가 국내에서 발급되거나 출입국정보시스템으로 확인되는 경우에만 국내에서 할 수 있습니다. 대상별 서류가 다르므로 원문을 확인하세요.',
+         summary_en='Changing to F-4 inside Korea is possible only when the documents for your category are issued in Korea or can be checked in the immigration system. The documents differ by category, so check the source.')
+
+guidance('F-4', 'activities_outside_status', state='SOURCE_ONLY', completeness='SOURCE_ONLY', section=F4_SECTION.replace('라. 재외동포 자격 체류관리 절차', '마. 재외동포 자격의 체류자격 외 활동허가'), anchor='방문취업(H-2)으로 체류하며 취업개시 신고를 한 사실이 있는 동포는',
+         summary_ko='방문취업(H-2)에서 재외동포(F-4)로 바꾼 동포가 H-2 때 취업개시 신고를 한 사업장에서 계속 일하려면 체류자격 외 활동허가를 받을 수 있습니다. 대상과 서류는 원문을 확인하세요.',
+         summary_en='Compatriots who moved from H-2 to F-4 can get permission for activities outside their status to keep working at the workplace they reported under H-2. Check the source for eligibility and documents.')
+guidance('H-2', 'status_change', state='SOURCE_ONLY', completeness='SOURCE_ONLY', section='알기쉬운 외국국적동포 업무 매뉴얼 — 3. 방문취업제 체류관리 절차 □ 방문취업 자격으로 변경허가', anchor='다른 체류자격에서 방문취업(H-2) 자격으로 자격변경할 수 없습니다',
+         summary_ko='다른 체류자격에서 방문취업(H-2)으로 체류자격을 변경할 수 없습니다.', summary_en='No other status can be changed to H-2.')
+
+# ==========================================================================
+# 외국인등록 — status-chapter "외국인등록 신청서류" blocks (stay manual 2026.10)
+REG_BASE = '신청서(별지34호 서식), 여권원본, 표준규격사진1장, 수수료'
+def reg_base(anchor=REG_BASE, passport='passport_original'):
+    docs = [item('app_form_34', anchor=anchor)] + ([item(passport, anchor=anchor)] if passport else [])
+    return docs + [item('photo', anchor=anchor), item('fee', anchor=anchor)]
+def reg(code, name_ko, name_en, extra, anchor='1. 외국인등록 신청서류', base_anchor=REG_BASE, residence_anchor='체류지 입증서류', completeness='FULLY_STRUCTURED', passport='passport_original', notes_ko=None, notes_en=None, extra_sum_ko='', extra_sum_en=''):
+    docs = reg_base(base_anchor, passport) + extra + ([residence(anchor=residence_anchor)] if residence_anchor else [])
+    guidance(code, 'registration', completeness=completeness, section=f'{name_ko} 외국인등록 신청서류', anchor=anchor,
+             summary_ko=f'{name_ko} 자격으로 외국인등록할 때 내는 서류입니다. 공통 서류에 더해 이 자격에 필요한 서류를 함께 준비하세요.' + extra_sum_ko,
+             summary_en=f'Documents for registering as {name_en}: the common set plus what this status requires.' + extra_sum_en,
+             docs=docs, notes_ko=notes_ko or [OFFICER_NOTE_KO], notes_en=notes_en or [OFFICER_NOTE_EN])
+
+reg('D-1', '문화예술(D-1)', 'Culture and arts (D-1)', [item('culture_org_proof', anchor='사업자등록증 등 문화예술 단체입증 서류')])
+reg('D-5', '취재(D-5)', 'Journalism (D-5)', [item('press_branch_permit', anchor='지국․지사의 설치허가증 또는')],
+    extra_sum_ko=' 국내 지국·지사가 없거나 증명을 받을 수 없는 외신은 주무부처 협조공문으로 갈음할 수 있습니다.', extra_sum_en=' Foreign media without a bureau in Korea may use a cooperation letter from the competent ministry instead.')
+reg('D-6', '종교(D-6)', 'Religion (D-6)', [item('religious_org_docs', anchor='종교단체 또는 사회복지단체 설립')])
+reg('D-7', '주재(D-7)', 'Intra-company transfer (D-7)', [item('biz_reg_flc', anchor='외국법자문법률사무소 등록증 : 해당자에 한함')])
+reg('D-8', '기업투자(D-8)', 'Corporate investment (D-8)', [item('biz_reg_corp_d8', anchor='법인등기사항전부증명서(법인기업인 경우)')], residence_anchor='체류지입증서류(부동산 임대차계약서 등)',
+    extra_sum_ko=' 재외공관에서 D-8 사증을 직접 받아 입국했다면 체류자격 변경 신청 서류를 준용합니다(사증발급인정서로 받은 경우 제외).', extra_sum_en=' Those who got the D-8 visa directly at a mission (not via a visa issuance certificate) submit the status-change documents instead.')
+reg('D-10', '구직(D-10)', 'Job seeking (D-10)', [item('intern_biz_reg_d103', 'CONDITIONAL_REQUIRED', anchor='인턴예정기업의 사업자등록증(또는 고유번호증) 사본 및 재직증명서', applies_when_ko='첨단기술인턴(D-10-3)인 경우', applies_when_en='Advanced-technology interns (D-10-3) only')],
+    anchor='1. 외국인등록 제출서류', base_anchor='신청서, 여권 및 사본 1부, 표준규격사진 1매', passport='passport_and_copy',
+    extra_sum_ko=' 1회 부여 체류기간이 1년이면 체류기간 연장·조정을 함께 하며 연장 수수료는 면제됩니다.', extra_sum_en=' Where one year is granted at a time, the stay is extended/adjusted at the same time and the extension fee is waived.')
+reg('E-1', '교수(E-1)', 'Professor (E-1)', [item('biz_reg_vat', anchor='부가가치세법')])
+reg('E-2', '회화지도(E-2)', 'Foreign language instructor (E-2)', [item('biz_reg_vat', anchor='부가가치세법'),
+    item('recruit_medical_sealed', 'CONDITIONAL_REQUIRED', anchor='채용신체검사서 (반드시 봉투에 밀봉된 상태로 제출, 개봉 불가)', does_not_apply_when_ko='시·도교육감이 채용한 원어민 영어보조교사와 정부초청 해외 영어봉사장학생은 면제(관할 교육관청 자율 검증)', does_not_apply_when_en='Exempt: native English assistant teachers hired by a provincial education office and government-invited English-teaching scholars', notes_ko=['법무부장관이 지정한 채용신체검사 의료기관에서 발행한 것이어야 합니다.'], notes_en=['Must be issued by a medical institution designated by the Minister of Justice.'])])
+reg('E-3', '연구(E-3)', 'Research (E-3)', [item('biz_reg_vat', anchor='부가가치세법')])
+reg('E-4', '기술지도(E-4)', 'Technology transfer (E-4)', [item('biz_reg_vat', anchor='부가가치세법')])
+reg('E-5', '전문직업(E-5)', 'Professional (E-5)', [item('biz_reg_vat', anchor='부가가치세법')])
+reg('E-6', '예술흥행(E-6)', 'Arts and entertainment (E-6)', [item('biz_reg_vat_copy', anchor='부가가치세법'),
+    item('recruit_medical_e62', 'CONDITIONAL_REQUIRED', anchor='채용신체검사서* 1부 (E-6-2만 제출)', applies_when_ko='E-6-2인 경우만', applies_when_en='E-6-2 only')],
+    anchor='1. 외국인등록 신청서류 및 확인사항')
+reg('E-7', '특정활동(E-7)', 'Specific activities (E-7)', [item('biz_reg_vat', anchor='부가가치세법'),
+    item('recruit_medical_e7', 'CONDITIONAL_REQUIRED', anchor='채용신체검사서(외국인학교 등의 교사만 해당)', applies_when_ko='외국인학교 등의 교사인 경우만', applies_when_en='Teachers at foreign schools etc. only')])
+reg('E-9', '비전문취업(E-9)', 'Non-professional employment (E-9)', [item('business_reg_copy', anchor='사업자등록증 사본'),
+    item('drug_test_e9', anchor='마약검사확인서', notes_ko=['등록 시 기준 3개월 이내에 발급된 확인서여야 하며, 봉투에 밀봉된 상태로 제출합니다(개봉 불가).'], notes_en=['Must be issued within 3 months before registration and submitted sealed (do not open).'])],
+    base_anchor='신청서(별지34호 서식), 여권원본, 표준규격사진 1장, 수수료',
+    extra_sum_ko=' 교육 중이거나 등록 전 사업장 폐업 등으로 고용노동부가 사업장을 바꿔 준 경우에는 변경된 사업장으로 등록하며 고용허가서·표준근로계약서 사본을 추가로 냅니다.', extra_sum_en=' If the Ministry of Employment and Labor reassigned the workplace before registration (closure etc.), register at the new workplace and add copies of the employment permit and standard contract.')
+reg('E-10', '선원취업(E-10)', 'Crew employment (E-10)', [item('shipping_license', anchor='내항여객운송사업면허증 또는 내항화물운송등록증'),
+    item('health_check_sealed', anchor='건강검진서 (반드시 봉투에 밀봉된 상태로 제출, 개봉 불가)'), item('drug_test_sealed', anchor='마약검사 확인서 (반드시 봉투에 밀봉된 상태로 제출, 개봉 불가)'),
+    item('injury_insurance_e10', anchor='산업재해보상보험 또는 상해보험 가입증명원')])
+reg('F-1', '방문동거(F-1)', 'Visiting or joining family (F-1)', [], completeness='PARTIALLY_STRUCTURED',
+    extra_sum_ko=' 외국인유학생 동반부모(F-1-13)와 디지털노마드(F-1-D)는 추가 서류가 다르니 원문을 확인하세요.', extra_sum_en=' Parents of international students (F-1-13) and digital nomads (F-1-D) have different additional documents; check the source.')
+reg('F-2', '거주(F-2)', 'Residence (F-2)', [], anchor='① 신청서(별지 34호 서식), 표준규격사진 1매, 수수료', base_anchor='신청서(별지 34호 서식), 표준규격사진 1매, 수수료', passport=None,
+    notes_ko=['필요하면 추가 서류를 요구할 수 있습니다.', OFFICER_NOTE_KO], notes_en=['Additional documents may be requested where needed.', OFFICER_NOTE_EN])
+reg('F-3', '동반(F-3)', 'Dependent family (F-3)', [item('family_relation_f3_reg', 'CONDITIONAL_REQUIRED', anchor='가족관계 입증서류(연장 등 추가 체류허가가 필요한 경우에만 제출', applies_when_ko='연장 등 추가 체류허가가 필요한 경우', applies_when_en='Only when a further permit such as an extension is needed')],
+    anchor='② 체류지 입증서류(임대차계약서, 부동산 등기부등본, 전세계약서, 매매계약서 등 및 숙소제공 확인서)', base_anchor='신청서(별지 34호 서식), 여권, 표준규격사진 1매, 수수료', passport='passport', residence_anchor='체류지 입증서류(임대차계약서, 부동산 등기부등본')
+reg('F-5', '영주(F-5)', 'Permanent residence (F-5)', [], anchor='신청서(별지 34호 서식), 표준규격사진 1매, 수수료', base_anchor='신청서(별지 34호 서식), 표준규격사진 1매, 수수료', passport=None)
+reg('G-1', '기타(G-1)', 'Miscellaneous (G-1)', [], anchor='① 신청서(별지 34호 서식), 여권, 표준규격사진 1매, 수수료', base_anchor='신청서(별지 34호 서식), 여권, 표준규격사진 1매, 수수료', passport='passport')
+reg('H-1', '관광취업(H-1)', 'Working holiday (H-1)', [item('travel_activity_plan', anchor='여행일정 및 활동계획서'),
+    item('h1_work_docs', 'CONDITIONAL_REQUIRED', anchor='근무처의 사업자등록증 사본 및 계약서 등(취업중인 경우)', applies_when_ko='취업 중인 경우', applies_when_en='If you are working')],
+    anchor='90일을 초과하여 체류하려는 자 (협정상 예외 없음)', base_anchor='신청서(별지 34호 서식), 여권, 표준규격사진 1매, 수수료', passport='passport', residence_anchor='체류지 입증서류*(월세계약서 등)',
+    extra_sum_ko=' 90일을 넘게 머무는 경우 등록합니다.', extra_sum_en=' Register if staying longer than 90 days.')
 
 # ==========================================================================
 # Procedure-state overrides read directly from the stay manual section

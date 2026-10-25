@@ -48,7 +48,7 @@
       candidates: '가능한 유형', sourceOnlyTitle: '정리된 안내가 아직 없어요', sourceOnlyBody: '이 항목은 공식 원문으로만 확인할 수 있어요. 원문 페이지를 열어 확인하세요.',
       notApplicable: '이 절차는 {status}에 해당하지 않아요.', notPermitted: '{status}에서는 이 절차가 원칙적으로 허용되지 않아요.', exceptionOnly: '{status}에서는 예외적인 경우에만 허가돼요.', conditional: '조건에 따라 달라져요.',
       answerTitle: '안내', period: '체류기간', timing: '신청 시기', channel: '신청 방법', filer: '신청 주체', conditions: '확인할 조건',
-      docsTitle: '준비할 서류', docsPartial: '현재 확인된 기본 서류', docsClarify: '세부유형을 확인하면 정확한 서류 목록을 보여드릴 수 있어요.', docsSourceOnly: '서류 목록은 원문에서 확인하세요.',
+      docsTitle: '준비할 서류', docsPartial: '현재 확인된 기본 서류', docsClarify: '세부유형을 확인하면 정확한 서류 목록을 보여드릴 수 있어요.', docsPartialFlat: '원문 목록이 "등"으로 끝나거나 일부만 적혀 있어, 관서에서 서류를 더 요청할 수 있어요.', docsSourceOnly: '서류 목록은 원문에서 확인하세요.',
       docsCount: '필수 {n}개', docsCountCond: '조건부 {n}개',
       grpRequired: '필수', grpConditional: '조건부', grpApplicable: '해당자만', grpAlternative: '대체 가능', grpOfficer: '추가 요청 가능', grpAdmin: '생략 가능 · 행정정보 공동이용 동의 시', grpPrev: '생략 가능 · 이미 제출한 경우', grpSource: '원문 언급 · 구조화 전', grpNA: '이번에는 해당 없음', grpLegacy: '기존 소지자만',
       oneOf: '다음 중 하나', role: '준비하는 사람', where: '발급처', validity: '유효기간', apostille: '아포스티유·영사확인 필요', translation: '번역 필요', applies: '적용 조건', notApplies: '생략 조건', notes: '참고', source: '근거', page: '쪽',
@@ -81,7 +81,7 @@
       confidenceLow: '해석이 확실하지 않아요. 맞지 않으면 수정해 주세요.',
       disclaimer: '공식 자료를 바탕으로 정리한 참고 안내예요. 법률 상담이나 민원 대행이 아니며, 최종 판단은 관할 기관에서 이루어집니다.', disclaimerMore: '안내 기준 보기',
       overviewTitle: '한눈에 보기', ovConfirmed: '확인된 내용', ovConditional: '조건에 따라 달라요', ovSource: '원문에서 확인할 내용',
-      ovFee: '수수료 {amount} · {review}', ovFeeNone: '수수료 없음', ovDocs: '필수 서류 {n}개', ovDocsCond: '조건에 따라 내는 서류 {n}개', ovDocsPartial: '기본 서류만 확인됐어요 · 세부유형을 확인하면 정확한 목록이 나와요',
+      ovFee: '수수료 {amount} · {review}', ovFeeNone: '수수료 없음', ovDocs: '필수 서류 {n}개', ovDocsCond: '조건에 따라 내는 서류 {n}개', ovDocsPartial: '기본 서류만 확인됐어요 · 세부유형을 확인하면 정확한 목록이 나와요', ovDocsPartialFlat: '원문에 적힌 기본 서류예요 · 관서에서 서류를 더 요청할 수 있어요',
       ovNoDocs: '서류와 요건은 아직 정리된 안내가 없어요 · {manual} {page}쪽 원문에서 확인하세요', ovProgram: '{name} — 일부 대상자에게만 해당', ovExempt: '수수료 면제·감경 조건 {n}개', ovState: '{label} · 조건과 예외는 원문에서 확인', ovOfficer: '심사 과정에서 서류를 더 요청하거나 일부를 생략할 수 있어요',
       ovBasis: '기준일 {date} · 공식 근거 {n}건', ovReview: '{edition}판 원문은 아직 사람이 대조 검토하지 않았어요',
       programsTitle: '해당될 수 있는 특별 제도', programScope: '일부 대상자만',
@@ -115,7 +115,7 @@
       candidates: 'Possible types', sourceOnlyTitle: 'No structured guidance yet', sourceOnlyBody: 'This item is only available as official source text. Open the evidence below.',
       notApplicable: 'This procedure does not apply to {status}.', notPermitted: 'This procedure is generally not permitted for {status}.', exceptionOnly: 'For {status} this is granted only in exceptional cases.', conditional: 'It depends on conditions.',
       answerTitle: 'Guidance', period: 'Period of stay', timing: 'When to apply', channel: 'How to apply', filer: 'Who files', conditions: 'Conditions to check',
-      docsTitle: 'Documents to prepare', docsPartial: 'Basic documents confirmed so far', docsClarify: 'Confirm the subtype to see the exact document list.', docsSourceOnly: 'See the source for the document list.',
+      docsTitle: 'Documents to prepare', docsPartial: 'Basic documents confirmed so far', docsClarify: 'Confirm the subtype to see the exact document list.', docsPartialFlat: 'The source list is open-ended ("etc.") or partial, so the office may ask for more.', docsSourceOnly: 'See the source for the document list.',
       docsCount: '{n} required', docsCountCond: '{n} conditional',
       grpRequired: 'Required', grpConditional: 'Conditional', grpApplicable: 'Only if it applies to you', grpAlternative: 'Alternatives accepted', grpOfficer: 'May be requested', grpAdmin: 'May be skipped · with consent to administrative data sharing', grpPrev: 'May be skipped · if already submitted', grpSource: 'Mentioned in the source · not structured yet', grpNA: 'Not needed in your case', grpLegacy: 'Existing holders only',
       oneOf: 'One of', role: 'Prepared by', where: 'Where to get it', validity: 'Validity', apostille: 'Apostille or consular confirmation required', translation: 'Translation required', applies: 'Applies when', notApplies: 'May be omitted when', notes: 'Notes', source: 'Source', page: 'p.',
@@ -148,7 +148,7 @@
       confidenceLow: 'This reading is uncertain. Edit it if it is wrong.',
       disclaimer: 'Reference guidance compiled from official sources — not legal advice and not an application agency. The final decision is made by the competent office.', disclaimerMore: 'How this guidance is compiled',
       overviewTitle: 'At a glance', ovConfirmed: 'Confirmed', ovConditional: 'Depends on your case', ovSource: 'Check in the source',
-      ovFee: 'Fee {amount} · {review}', ovFeeNone: 'No fee', ovDocs: '{n} required documents', ovDocsCond: '{n} conditional / if-applicable documents', ovDocsPartial: 'Basic documents only · confirm the subtype for the exact list',
+      ovFee: 'Fee {amount} · {review}', ovFeeNone: 'No fee', ovDocs: '{n} required documents', ovDocsCond: '{n} conditional / if-applicable documents', ovDocsPartial: 'Basic documents only · confirm the subtype for the exact list', ovDocsPartialFlat: 'The basic documents the source lists · the office may ask for more',
       ovNoDocs: 'The document and eligibility list is not structured yet · {manual} p.{page}', ovProgram: '{name} — applies to some holders only', ovExempt: '{n} fee exemption / reduction conditions', ovState: '{label} · conditions and exceptions are in the source', ovOfficer: 'The examining officer may add or waive documents',
       ovBasis: 'Basis {date} · {n} official sources', ovReview: 'The {edition} source text has not yet been reviewed by a person',
       programsTitle: 'Special schemes that may apply', programScope: 'some holders only',
@@ -216,6 +216,12 @@
   function isSubcode(code) { return /^[A-H]-\d{1,2}-/.test(code) || code.indexOf('~') > 0; }
 
   /* ----------------------------------------------------------- interpret --- */
+  // Whether the status family asks a subtype question for this procedure; only then can
+  // "confirm the subtype" lead to a more exact list.
+  function hasSubtypeQuestion(bundle, status, procedure) {
+    var fam = status && bundle && bundle.families ? bundle.families[parentOf(status)] : null;
+    return !!(fam && (fam.dimensions || []).some(function (d) { return !d.procedures || d.procedures.indexOf(procedure) >= 0; }));
+  }
   function interpret(query, bundle, opts) {
     opts = opts || {};
     var q = String(query || '').trim();
@@ -1028,7 +1034,7 @@
       html += '<div class="sg-doc-group sg-doc-group-' + g.key + '"><h4>' + esc(tr(lang, g.labelKey)) + ' <span class="sg-doc-group-n">' + g.items.length + '</span></h4><ul class="sg-doc-list">' + g.items.map(function (d) { return renderDocItem(d, lang, bundle, entry); }).join('') + '</ul></div>';
     });
     if (recommended) html += '<p class="sg-doc-prep-note">' + esc(tr(lang, 'prepSection')) + '</p>';
-    if (!full) html += '<p class="sg-muted">' + esc(tr(lang, 'docsClarify')) + '</p>';
+    if (!full) html += '<p class="sg-muted">' + esc(tr(lang, hasSubtypeQuestion(bundle, model.status, model.procedure) ? 'docsClarify' : 'docsPartialFlat')) + '</p>';
     html += '<p class="sg-officer">' + esc(model.officerNote) + '</p></section>';
     return html;
   }
@@ -1221,7 +1227,7 @@
     if (e && e.completeness === 'FULLY_STRUCTURED') {
       if (model.docCounts.required) confirmed.push(tr(lang, 'ovDocs', { n: model.docCounts.required }));
       if (model.docCounts.conditional) conditional.push(tr(lang, 'ovDocsCond', { n: model.docCounts.conditional }));
-    } else if (e && model.documentGroups.length) conditional.push(tr(lang, 'ovDocsPartial'));
+    } else if (e && model.documentGroups.length) conditional.push(tr(lang, hasSubtypeQuestion(bundle, model.status, model.procedure) ? 'ovDocsPartial' : 'ovDocsPartialFlat'));
     if (model.state === 'CONDITIONAL' || model.state === 'EXCEPTION_ONLY') conditional.push(tr(lang, 'ovState', { label: tr(lang, 'stateLabel')[model.state] || model.state }));
     model.programs.forEach(function (p) { conditional.push(tr(lang, 'ovProgram', { name: LL(lang, { ko: p.name_ko, en: p.name_en }) })); });
     var src = primarySource(model);
