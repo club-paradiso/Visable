@@ -56,7 +56,8 @@ check('F-4 overview is derived from the model: fee confirmed, scheme conditional
   const ov = r.html.slice(at(r.html, 'class="sg-overview"'), at(r.html, 'class="sg-fee"'));
   ordered(ov, '확인된 내용', '수수료 ₩60,000 · 시행규칙 기준', '조건에 따라 달라요', '외국국적동포 통합 체류제도 (F-4 통합) — 일부 대상자에게만 해당', '원문에서 확인할 내용', '537쪽');
   assert(ov.includes('2026년 10월판 원문은 아직 사람이 대조 검토하지 않았어요'), 'review notice names the current edition');
-  assert(ov.includes('기준일 2026-10-19 · 공식 근거 6건'), 'basis line');
+  assert(ov.includes('기준일 2026-10-23 · 공식 근거 6건'), 'basis line includes the current regulation version date');
+  assert(r.html.includes('해당 조문만 대조했습니다. 법령·서식 전체 검증은 아닙니다.'), 'the latest source check must not claim whole-law review');
 });
 
 check('the 동포 scheme is a collapsed, conditional disclosure after the fee — never a universal rule', () => {
@@ -130,6 +131,30 @@ check('English copy and the edition label follow the bundle', () => {
   assert(!/September/.test(r.text), 'no hard-coded September');
   const unknown = run('Z-9 연장');
   assert(unknown.text.includes('Z-9') && unknown.text.includes('2026년 10월판') && !unknown.text.includes('9월 기준'), 'unknown-code warning names the current edition');
+});
+
+check('the overview respects applicability: no confirmed fee for a procedure that does not apply', () => {
+  const r = run('D-2 근무처 변경');
+  assert(r.step.kind === 'source-only' && r.step.state === 'NOT_APPLICABLE', `${r.step.kind}/${r.step.state}`);
+  assert(!r.html.includes('class="sg-overview"'), 'no overview for an inapplicable procedure');
+  assert(!r.html.includes('class="sg-fee"') && !r.text.includes('₩120,000'), 'no fee section either');
+  assert(r.text.includes('해당하지 않아요'), 'the not-applicable warning stays');
+  const ok = run('D-2 체류기간 연장');
+  assert(ok.html.includes('class="sg-overview"') && ok.text.includes('수수료 ₩60,000 · 시행규칙 기준'), 'applicable procedures keep the confirmed fee');
+});
+check('the inferred current status can be reopened and changed', () => {
+  const q = 'C-3에서 F-6 변경';
+  const interp = SG.interpret(q, bundle);
+  const state = { query: q, interp, answers: {}, procedure: null, status: null, history: [], lang: 'ko' };
+  let step = SG.nextStep(state, bundle);
+  assert(step.kind !== 'question' && state.answers.current_status === 'short_stay', `inferred: ${step.kind} ${JSON.stringify(state.answers)}`);
+  // "변경" on the answered line: the question must come back instead of being re-inferred
+  delete state.answers.current_status; state.answers.__ask_current_status = true;
+  step = SG.nextStep(state, bundle);
+  assert(step.kind === 'question' && step.dimension === 'current_status', `reopened: ${step.kind}/${step.dimension}`);
+  state.answers.current_status = 'illegal'; delete state.answers.__ask_current_status;
+  step = SG.nextStep(state, bundle);
+  assert(step.kind !== 'question' && state.answers.current_status === 'illegal', 'the chosen answer is kept');
 });
 
 check('no raw markup or stray characters leak into the result', () => {

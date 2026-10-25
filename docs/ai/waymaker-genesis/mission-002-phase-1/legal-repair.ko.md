@@ -1,5 +1,8 @@
 # Mission 002 Phase 1 — 법령 데이터 수리
 
+후속 재검토: [Phase 1.1 검증 범위·최신 시행규칙·서식 영향](legal-phase-1-1-review.ko.md).
+아래 표는 최초 수리 내역이며, 시행규칙은 후속 검토에서 MST 291289 / 2026-10-23으로 갱신했다.
+
 2026-10-25 · 기준 main `601b514e1ef08829a1df7b164dfe63eccbc073d0`에서 독립 분기.
 `CLAUDE.md`, Mission 001 보고서, `17-mission-002-plan.md`, `law-identity.md`,
 2026.10 매뉴얼 승격·manualRef 감사 기록을 먼저 확인했다.

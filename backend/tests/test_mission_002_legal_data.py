@@ -14,10 +14,18 @@ def test_repaired_law_versions_and_unchanged_article_review_dates():
     for key in ('act_35', 'act_36', 'act_87'):
         assert (rules[key]['law_id'], rules[key]['mst'], rules[key]['effective']) == ('001707', '290729', '2026-10-02')
         assert rules[key]['checked_on'] == '2026-09-22'  # not a newly verified article body
+        assert rules[key]['review_state'] == 'BODY_REVALIDATION_PENDING'
+        assert rules[key]['body_review_mst'] == '272921'
+        assert rules[key]['identity_checked_on'] == '2026-10-26'
+        assert rules[key]['checked_on_scope'] == 'listed_article_summary'
     for key in ('decree_40','decree_42','decree_44','decree_45'):
         assert (rules[key]['law_id'], rules[key]['mst'], rules[key]['effective']) == ('005256','290501','2026-10-02')
+        assert rules[key]['body_review_mst'] == '289697'
+        assert rules[key]['body_review_state'] == 'PREVIOUS_VERSION_SUMMARY_ONLY'
     rule = rules['rule_73']
-    assert rule['effective'] == '2026-09-15'
+    assert (rule['mst'], rule['effective']) == ('291289', '2026-10-23')
+    assert rule['body_reference_date'] == '2026-10-26'
+    assert rule['review_state'] == 'ARTICLE_TEXT_AT_REFERENCE_DATE_READ'
     assert '신용카드' not in rule['quote_ko']
     assert rule['scheduled'][0]['at'] == '2027-09-16T00:00:00+09:00'
     assert '신용카드' in rule['scheduled'][0]['set']['quote_ko']

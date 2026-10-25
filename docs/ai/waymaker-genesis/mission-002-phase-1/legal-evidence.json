@@ -103,5 +103,39 @@
     "url": "https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000275060&chrClsCd=010201",
     "retrieval": "law.go.kr public text via connected 법령mcp search_law and get_admin_rule, 2026-10-25; direct web body retrieval was incomplete. No copied third-party code.",
     "scope": "Authored extraction label now identifies both numbers and conflict. Source PDF/HWP/raw corpus transcription unchanged. No automatic employment-rule or document-list changes."
+  },
+  "phase_1_1": {
+    "rechecked_on": "2026-10-26",
+    "main": "0d6171a0df1c3f4f48d3c4dffc8f13b9ab7e0752",
+    "nationality_rule_amendment": {
+      "mst": "291055",
+      "promulgation_number": "1161",
+      "effective": "2026-10-02",
+      "scope": "별지 제2호서식 귀화허가 신청서 제8쪽의 기관명 검찰청 → 공소청",
+      "amendment_url": "https://www.law.go.kr/LSW/lsRvsDocListP.do?chrClsCd=010202&lsId=006766&lsRvsGubun=all",
+      "form_url": "https://www.law.go.kr/법령별표서식/(국적법시행규칙,서식2)",
+      "method": "공식 제개정문 + 법령mcp get_annexes lawName=국적법 시행규칙, bylSeq=000200, knd=2 원문 제8쪽 대조",
+      "verified": "amendment scope and named institution on page 8 only",
+      "not_verified": [
+        "all forms against every historical version",
+        "individual eligibility",
+        "completeness of document checklists"
+      ]
+    },
+    "immigration_rule": {
+      "before_mst": "289833",
+      "after_mst": "291289",
+      "number": "1172",
+      "promulgated": "2026-10-23",
+      "effective": "2026-10-23",
+      "url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=291289",
+      "article73_current_query": {
+        "mst": "291289",
+        "efYd": "20261026",
+        "jo": "제73조"
+      },
+      "article73_scope": "current Article 73 and the 1125 supplementary commencement clause only; other summaries/forms pending",
+      "unqualified_body_warning": "get_law_text mst=291289 without efYd returned the promulgated future card-payment wording; date-qualified response returned the in-force wording. Never treat header identity as article effectiveness."
+    }
   }
 }
