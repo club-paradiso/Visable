@@ -6156,6 +6156,7 @@ async def _ask_internal(req: AskRequest) -> AskResponse:
     from services.classification_safety import assess_classification
     classification_block = assess_classification(
         prompt, payload_code=req.visa_code, visa_data=req.visa_data, lang=req.lang,
+        detected_top=visa_code_detected, detected_subcode=visa_sub_code_detected,
     )
     if classification_block is not None:
         return AskResponse(
