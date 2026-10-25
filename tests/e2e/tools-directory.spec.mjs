@@ -40,6 +40,23 @@ test.describe('tools directory is collapsed by default', () => {
     const theme = page.locator('.cs-nav .cs-theme-toggle');
     await expect(theme).toBeVisible();
     await expect(theme).toHaveAttribute('data-action', 'toggle-theme');
+    await expect(theme.locator('.cs-theme-label')).toBeVisible();
+    await expect(theme.locator('.cs-theme-label')).not.toBeEmpty();
+    await expect(page.locator('.cs-directory .cs-tool-settings [data-action="toggle-theme"]')).toHaveCount(0);
+    for (const [width, height] of [[320, 780], [390, 844], [768, 1024], [1024, 768]]) {
+      await page.setViewportSize({ width, height });
+      const geometry = await theme.evaluate((button) => {
+        const r = button.getBoundingClientRect(), lang = button.previousElementSibling.getBoundingClientRect();
+        return { left: r.left, right: r.right, width: r.width, height: r.height, afterLanguage: r.left >= lang.right, display: getComputedStyle(button).display, visibility: getComputedStyle(button).visibility };
+      });
+      expect(geometry.display, 'theme must render at ' + width).not.toBe('none');
+      expect(geometry.visibility, 'theme must show at ' + width).toBe('visible');
+      expect(geometry.width, 'theme touch width at ' + width).toBeGreaterThanOrEqual(44);
+      expect(geometry.height, 'theme touch height at ' + width).toBeGreaterThanOrEqual(44);
+      expect(geometry.afterLanguage, 'theme immediately follows language at ' + width).toBe(true);
+      expect(geometry.right, 'theme remains inside viewport at ' + width).toBeLessThanOrEqual(width);
+    }
+    await page.setViewportSize({ width: 390, height: 844 });
     expect(await lang.evaluate((el) => el.nextElementSibling?.classList.contains('cs-theme-toggle'))).toBe(true);
     const before = await page.locator('body').getAttribute('data-theme');
     await theme.click();

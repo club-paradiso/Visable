@@ -164,7 +164,7 @@
     T = T || t;
     var label = esc(T('theme'));
     return '<button type="button" class="cs-theme-toggle ' + (cls || '') + '" data-action="toggle-theme" aria-label="' + label + '" title="' + label + '">' +
-      '<svg class="cs-theme-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.2 14.2A8.4 8.4 0 0 1 9.8 3.8a8.4 8.4 0 1 0 10.4 10.4z"/></svg></button>';
+      '<svg class="cs-theme-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.2 14.2A8.4 8.4 0 0 1 9.8 3.8a8.4 8.4 0 1 0 10.4 10.4z"/></svg><span class="cs-theme-label">' + label + '</span></button>';
   }
   var langDialog = null, langOpener = null;
   function renderLangDialog(filter) {
@@ -286,7 +286,7 @@
       tile('enforcement','enforcementSub','landmark','href="enforcement.html"','help') +
       tile('waymaker','waymakerSub','compass','href="ai.html"','help') +
       '</div><p class="cs-tool-empty" hidden>' + esc(T('toolEmpty')) + '</p><p class="cs-sr" data-cs-tool-status role="status" aria-live="polite"></p>' +
-      '<div class="cs-tool-settings"><button type="button" data-action="toggle-theme">' + esc(T('theme')) + '</button><button type="button" data-action="toggle-easy-mode" aria-pressed="' + easyModeOn() + '">' + esc(T('easyModeEasy')) + '</button></div></div></details>';
+      '<div class="cs-tool-settings"><button type="button" data-action="toggle-easy-mode" aria-pressed="' + easyModeOn() + '">' + esc(T('easyModeEasy')) + '</button></div></div></details>';
   }
   function bindDirectory() {
     var directory = root.querySelector('.cs-directory');
