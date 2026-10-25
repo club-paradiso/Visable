@@ -115,7 +115,7 @@ def classify_procedure(question: str) -> ProcedureDecision:
     # such as "new card" also appears in the reissue vocabulary.
     first_card = bool(re.search(
         r"외국인등록증.{0,15}(?:처음|최초)|(?:처음|최초|첫\s*번째).{0,20}(?:외국인등록증|등록증|거소증)"
-        r"|\b(?:first\s*(?:time|ever)|initial|never\s+had)\b.{0,45}\b(?:card|arc)\b"
+        r"|\b(?:first(?:\s*(?:time|ever))?|initial|never\s+had)\b.{0,45}\b(?:card|arc)\b"
         r"|\b(?:card|arc)\b.{0,45}\b(?:first\s*(?:time|ever)|initial)\b",
         text, re.I,
     ))
