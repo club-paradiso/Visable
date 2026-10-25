@@ -39,7 +39,8 @@ test.describe('tools directory is collapsed by default', () => {
     const lang = page.locator('.cs-nav .cs-lang-home');
     const theme = page.locator('.cs-nav .cs-theme-toggle');
     await expect(theme).toBeVisible();
-    await expect(theme).toHaveAttribute('data-action', 'toggle-theme');
+    await expect(theme).toHaveAttribute('data-vt-open', '');
+    await expect(theme).toHaveAttribute('aria-controls', 'vtCivicPop');
     await expect(theme.locator('.cs-theme-label')).toBeVisible();
     await expect(theme.locator('.cs-theme-label')).not.toBeEmpty();
     await expect(page.locator('.cs-directory .cs-tool-settings [data-action="toggle-theme"]')).toHaveCount(0);
@@ -60,7 +61,31 @@ test.describe('tools directory is collapsed by default', () => {
     expect(await lang.evaluate((el) => el.nextElementSibling?.classList.contains('cs-theme-toggle'))).toBe(true);
     const before = await page.locator('body').getAttribute('data-theme');
     await theme.click();
+    const picker = page.locator('#vtCivicPop');
+    await expect(picker).toBeVisible();
+    await expect(theme).toHaveAttribute('aria-expanded', 'true');
+    await expect(picker.locator('.vt-opt')).toHaveCount(4);
+    expect(await picker.locator('.vt-opt').evaluateAll((els) => els.map((el) => el.getAttribute('data-vt-value')))).toEqual(['default', 'stamp', 'chrome', 'neon']);
+    await expect(page.locator('body')).toHaveAttribute('data-theme', before);
+    for (const name of ['stamp', 'chrome', 'neon', 'default']) {
+      await picker.locator('[data-vt-value="' + name + '"]').click();
+      await expect(page.locator('html')).toHaveAttribute('data-vt', name);
+      await expect(page.locator('body')).toHaveAttribute('data-theme', before);
+      expect(await page.evaluate(() => localStorage.getItem('visable:theme'))).toBe(name);
+      await expect(picker).toBeHidden();
+      if (name !== 'default') await theme.click();
+    }
+    // Brightness remains a separately controlled option.
+    await theme.click();
+    await picker.locator('#vtCivicBrightness').click();
     await expect(page.locator('body')).not.toHaveAttribute('data-theme', before);
+    await page.reload();
+    await hydrated(page);
+    await expect(page.locator('html')).toHaveAttribute('data-vt', 'default');
+    await page.locator('.cs-nav [data-vt-open]').click();
+    await expect(page.locator('#vtCivicPop .vt-opt')).toHaveCount(4);
+    await page.keyboard.press('Escape');
+    await expect(page.locator('#vtCivicPop')).toBeHidden();
 
   });
 
@@ -124,4 +149,17 @@ test.describe('result page header geometry', () => {
       expect(geo.scrollW, `no horizontal page overflow at ${w}px`).toBeLessThanOrEqual(geo.innerW);
     }
   });
+});
+
+test('searched header also opens the canonical four-skin picker', async ({ page }) => {
+  await page.goto('/?q=' + encodeURIComponent('F-4 체류기간 연장'));
+  await page.waitForSelector('#statusGuidance[data-sg-kind]', { timeout: 30_000 });
+  const header = page.locator('#hero .cs-header-settings');
+  await expect(header.locator('[data-vt-open]')).toBeVisible();
+  await header.locator('[data-vt-open]').click();
+  const picker = page.locator('#vtCivicPop');
+  await expect(picker).toBeVisible();
+  await picker.locator('[data-vt-value="chrome"]').click();
+  await expect(page.locator('html')).toHaveAttribute('data-vt', 'chrome');
+  await expect(picker).toBeHidden();
 });
