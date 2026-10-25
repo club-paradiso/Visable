@@ -160,11 +160,17 @@
   }
   // Active Civic headers open the canonical four-skin picker from visable-theme.js.
   // Brightness remains a separate setting and is never the header button action.
+  // The button shows the active theme's coin (the canvas "logo coin").
+  function currentSkin() {
+    var de = document.documentElement;
+    var v = de && typeof de.getAttribute === 'function' ? de.getAttribute('data-vt') : null;
+    return /^(default|stamp|chrome|neon)$/.test(v || '') ? v : 'default';
+  }
   function themeButton(cls, T) {
     T = T || t;
     var label = esc(T('theme'));
     return '<button type="button" class="cs-theme-toggle ' + (cls || '') + '" data-vt-open aria-haspopup="dialog" aria-expanded="false" aria-controls="vtCivicPop" aria-label="' + label + '" title="' + label + '">' +
-      '<svg class="cs-theme-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="8" cy="9" r="1"/><circle cx="15" cy="7" r="1"/><circle cx="17" cy="13" r="1"/><circle cx="10" cy="16" r="1"/></svg><span class="cs-theme-label">' + label + '</span></button>';
+      '<span class="vt-coin" data-c="' + esc(currentSkin()) + '" aria-hidden="true"></span><span class="cs-theme-label">' + label + '</span></button>';
   }
   var langDialog = null, langOpener = null;
   function renderLangDialog(filter) {
