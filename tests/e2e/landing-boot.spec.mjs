@@ -93,7 +93,7 @@ test('the static shell is reused, not re-rendered, and the legacy hero stays hid
 });
 
 test('a failed civic script load leaves a usable page with a reload row, not a blank or legacy page', async ({ page }) => {
-  await page.route('**/assets/js/civic-search.js', (route) => route.abort());
+  await page.route('**/assets/js/civic-search.js*', (route) => route.abort());
   await page.route('**/api/**', (route) => route.abort());
   await page.goto('/index.html');
   await expect(page.locator('body')).toHaveClass(/civic-boot-failed/);
