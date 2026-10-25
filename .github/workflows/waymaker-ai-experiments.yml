@@ -32,6 +32,13 @@ on:
       - 'backend/services/knowledge/**'
       - 'backend/services/legal_analysis.py'
       - 'backend/services/immigration_tools.py'
+      - 'assets/js/search-router.js'
+      - 'assets/js/status-guidance.js'
+      - 'data/status-guidance-202609.json'
+      - 'backend/data/procedure_classifier_lexicon.json'
+      - 'scripts/build_procedure_classifier_lexicon.cjs'
+      - 'scripts/check_bfixed_metrics.py'
+      - 'audits/mission-002-phase-1-1/comparison.json'
       - '.github/workflows/waymaker-ai-experiments.yml'
   push:
     branches:
@@ -49,6 +56,13 @@ on:
       - 'backend/services/knowledge/**'
       - 'backend/services/legal_analysis.py'
       - 'backend/services/immigration_tools.py'
+      - 'assets/js/search-router.js'
+      - 'assets/js/status-guidance.js'
+      - 'data/status-guidance-202609.json'
+      - 'backend/data/procedure_classifier_lexicon.json'
+      - 'scripts/build_procedure_classifier_lexicon.cjs'
+      - 'scripts/check_bfixed_metrics.py'
+      - 'audits/mission-002-phase-1-1/comparison.json'
       - '.github/workflows/waymaker-ai-experiments.yml'
   workflow_dispatch:
 
