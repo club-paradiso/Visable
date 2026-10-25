@@ -2,8 +2,8 @@
 //
 //  - The full catalogue is a native <details> that starts CLOSED on a fresh visit.
 //    The search field and the core tools own the first screen.
-//  - Its summary toggles it (mouse, keyboard); the header link toggles it too and
-//    mirrors the state through aria-expanded / aria-controls.
+//  - Its native summary toggles it (mouse, keyboard). The header instead displays
+//    a working theme control immediately after language settings.
 //  - A direct #csTools link (cross-page deep link) expands it so linked content
 //    stays reachable; a language re-render keeps an intentional expansion.
 //  - On a result page the language control keeps its intrinsic width at every
@@ -14,7 +14,7 @@ import { test, expect } from '@playwright/test';
 const hydrated = (page) => page.waitForSelector('#civicLanding[data-cs-hydrated="reused"], #civicLanding[data-cs-hydrated="rendered"]', { timeout: 30_000 });
 
 test.describe('tools directory is collapsed by default', () => {
-  test('fresh visit: closed; summary and header link toggle it; state is announced', async ({ page }) => {
+  test('fresh visit: closed, summary toggles, and the active header contains a theme button', async ({ page }) => {
     await page.goto('/');
     await hydrated(page);
     const dir = page.locator('#csTools');
@@ -34,17 +34,17 @@ test.describe('tools directory is collapsed by default', () => {
     await expect(dir).toHaveJSProperty('open', false);
     await expect(dir.locator('.cs-service').first()).toBeHidden();
 
-    const link = page.locator('[data-cs-open-tools]');
-    await expect(link).toHaveAttribute('aria-controls', 'csTools');
-    await expect(link).toHaveAttribute('aria-expanded', 'false');
-    if (await link.isVisible()) {
-      await link.click();
-      await expect(dir).toHaveJSProperty('open', true);
-      await expect(link).toHaveAttribute('aria-expanded', 'true');
-      await link.click();
-      await expect(dir).toHaveJSProperty('open', false);
-      await expect(link).toHaveAttribute('aria-expanded', 'false');
-    }
+    // The active header shows theme beside language, never an all-tools link.
+    await expect(page.locator('.cs-nav [data-cs-open-tools]')).toHaveCount(0);
+    const lang = page.locator('.cs-nav .cs-lang-home');
+    const theme = page.locator('.cs-nav .cs-theme-toggle');
+    await expect(theme).toBeVisible();
+    await expect(theme).toHaveAttribute('data-action', 'toggle-theme');
+    expect(await lang.evaluate((el) => el.nextElementSibling?.classList.contains('cs-theme-toggle'))).toBe(true);
+    const before = await page.locator('body').getAttribute('data-theme');
+    await theme.click();
+    await expect(page.locator('body')).not.toHaveAttribute('data-theme', before);
+
   });
 
   test('keyboard: Enter and Space on the summary expand and collapse', async ({ page }) => {
@@ -54,10 +54,10 @@ test.describe('tools directory is collapsed by default', () => {
     await dir.locator('summary').focus();
     await page.keyboard.press('Enter');
     await expect(dir).toHaveJSProperty('open', true);
-    await expect(page.locator('[data-cs-open-tools]')).toHaveAttribute('aria-expanded', 'true');
+    await expect(page.locator('.cs-nav [data-cs-open-tools]')).toHaveCount(0);
     await page.keyboard.press('Space');
     await expect(dir).toHaveJSProperty('open', false);
-    await expect(page.locator('[data-cs-open-tools]')).toHaveAttribute('aria-expanded', 'false');
+    await expect(page.locator('.cs-nav [data-cs-open-tools]')).toHaveCount(0);
   });
 
   test('direct #csTools navigation expands the directory', async ({ page }) => {
@@ -66,7 +66,7 @@ test.describe('tools directory is collapsed by default', () => {
     const dir = page.locator('#csTools');
     await expect(dir).toHaveJSProperty('open', true);
     await expect(dir.locator('.cs-service').first()).toBeVisible();
-    await expect(page.locator('[data-cs-open-tools]')).toHaveAttribute('aria-expanded', 'true');
+    await expect(page.locator('.cs-nav [data-cs-open-tools]')).toHaveCount(0);
   });
 
   test('an intentional expansion survives a language change', async ({ page }) => {
@@ -79,7 +79,7 @@ test.describe('tools directory is collapsed by default', () => {
     await page.locator('#csLangDialog [data-action="apply-language"][data-lang="en"]').click();
     await expect(page.locator('html')).toHaveAttribute('lang', 'en');
     await expect(page.locator('#csTools')).toHaveJSProperty('open', true);
-    await expect(page.locator('[data-cs-open-tools]')).toHaveAttribute('aria-expanded', 'true');
+    await expect(page.locator('.cs-nav [data-cs-open-tools]')).toHaveCount(0);
     // and a fresh visit in that language still starts closed
     await page.goto('/');
     await hydrated(page);
