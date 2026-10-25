@@ -166,36 +166,270 @@
 /* new-home's old two-way editorial toggle is superseded by the skin picker while a skin is active */
 :root[data-vt] .nh-style-btn[data-action="toggle-theme"]{display:none!important}
 
-/* ---- 5. Theme picker (settings sheet + floating pill on other pages) ---- */
-.vt-picker{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:0;padding:0;border:0}
-.vt-picker legend{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
-.vt-opt{display:flex;align-items:center;gap:10px;min-height:48px;padding:8px 12px;border-radius:12px;border:1.5px solid var(--vs-line2,#CFCCC3);background:var(--vs-surface,#fff);color:var(--vs-ink,#0F1218);font:inherit;font-size:14px;font-weight:700;text-align:left;cursor:pointer}
-.vt-opt[aria-checked="true"]{border-color:var(--vs-ac,#4E5FBA);box-shadow:0 0 0 2px var(--vs-ac,#4E5FBA) inset}
-.vt-opt:focus-visible{outline:3px solid var(--vs-ac,#4E5FBA);outline-offset:2px}
-.vt-coin{width:26px;height:26px;border-radius:50%;flex:none;display:inline-block;box-shadow:inset 0 0 0 1.5px rgba(0,0,0,.18)}
-.vt-coin[data-c="default"]{background:conic-gradient(#4E5FBA 0 50%,#F3F2EE 0)}
-.vt-coin[data-c="stamp"]{background:radial-gradient(circle,#F5EEDF 0 38%,#2E4DA7 40% 52%,#F5EEDF 54%)}
-.vt-coin[data-c="chrome"]{background:linear-gradient(160deg,#FFFFFF 0%,#C9D2EA 50%,#2546C2 100%)}
-.vt-coin[data-c="neon"]{background:radial-gradient(circle,#7FE8FF 0 30%,#050B2B 34%);box-shadow:0 0 0 1.5px #7FE8FF,0 0 10px rgba(127,232,255,.6)}
-.vt-opt small{display:block;font-size:12px;font-weight:500;color:var(--vs-ink3,#5F6573)}
+/* ---- 5. Theme picker ------------------------------------------------------
+   Restores the canvas "logo coins": each theme is chosen by its own round
+   badge (Default = the Visable mark, A/B/C = the Club Paradiso badges in
+   assets/brand/logos, resized to assets/brand/themes). Each option also shows
+   a miniature of the face it will render at the current brightness, so the
+   choice is made by seeing the design, not a colour dot. Choosing applies at
+   once and keeps the panel open for comparison; brightness is a separate
+   two-way control inside the same panel. */
+.vt-coin{width:26px;height:26px;border-radius:50%;flex:none;display:inline-block;background:#4E5FBA url(../brand/themes/coin-default.svg) center/cover no-repeat;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
+.vt-coin[data-c="stamp"]{background-image:url(../brand/themes/coin-stamp.webp);background-color:#F5EEDF}
+.vt-coin[data-c="chrome"]{background-image:url(../brand/themes/coin-chrome.webp);background-color:#EEF1F8}
+.vt-coin[data-c="neon"]{background-image:url(../brand/themes/coin-neon.webp);background-color:#050B2B}
+.vt-picker{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:0;padding:0;border:0}
+.vt-opt{position:relative;display:flex;flex-direction:column;align-items:stretch;gap:8px;min-width:0;min-height:44px;padding:8px;border-radius:14px;border:1.5px solid var(--vs-line2,#CFCCC3);background:var(--vs-surface,#fff);color:var(--vs-ink,#0F1218);font:inherit;text-align:left;cursor:pointer;transition:border-color .16s ease,box-shadow .16s ease,transform .16s cubic-bezier(.2,.7,.3,1)}
+.vt-opt:hover{border-color:var(--vs-ink3,#5F6573)}
+.vt-opt:active{transform:scale(.98)}
+.vt-opt[aria-checked="true"]{border-color:var(--vs-ac,#4E5FBA);box-shadow:0 0 0 2px var(--vs-ac,#4E5FBA)}
+.vt-opt:focus-visible{outline:3px solid var(--vs-ac,#4E5FBA);outline-offset:3px}
+.vt-opt-row{display:flex;align-items:center;gap:8px;min-width:0;padding-inline-end:26px}
+.vt-opt-row .vt-coin{width:30px;height:30px}
+.vt-opt-txt{display:flex;flex-direction:column;min-width:0}
+.vt-name{font-size:14px;font-weight:800;letter-spacing:-.01em;line-height:1.25}
+.vt-opt small{display:block;font-size:12px;font-weight:500;line-height:1.35;color:var(--vs-ink3,#5F6573);overflow-wrap:anywhere}
+.vt-check{position:absolute;bottom:10px;right:8px;width:22px;height:22px;border-radius:50%;display:none;align-items:center;justify-content:center;background:var(--vs-ac,#4E5FBA);color:var(--vs-ac-ink,#fff)}
+.vt-check svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.vt-opt[aria-checked="true"] .vt-check{display:inline-flex}
+html[dir="rtl"] .vt-check{right:auto;left:8px}
+
+/* Miniature of each face: page ground, search bar and one card, drawn with
+   that theme's real values (light and dark). Decorative only (aria-hidden). */
+.vt-mini{position:relative;display:block;height:64px;border-radius:9px;overflow:hidden;padding:9px 8px;background:var(--m-bg);background-image:var(--m-pat,none);background-size:var(--m-pat-size,auto)}
+.vt-mini i{display:block;height:13px;border-radius:var(--m-r-bar);background:var(--m-bar);border:var(--m-bar-bd);box-shadow:var(--m-bar-sh)}
+.vt-mini i::after{content:"";float:right;width:18px;height:100%;border-radius:var(--m-r-bar);background:var(--m-pri)}
+.vt-mini b{display:block;margin-top:8px;width:72%;height:24px;border-radius:var(--m-r-card);background:var(--m-card);border:var(--m-card-bd);box-shadow:var(--m-card-sh)}
+.vt-mini b::before{content:"";display:block;margin:6px 0 0 7px;width:46%;height:4px;border-radius:2px;background:var(--m-ink);opacity:.8}
+.vt-mini b::after{content:"";display:block;margin:4px 0 0 7px;width:28%;height:4px;border-radius:2px;background:var(--m-ac)}
+.vt-mini[data-p="default"]{--m-bg:#F3F2EE;--m-bar:#FFFFFF;--m-bar-bd:1px solid #0F1218;--m-bar-sh:0 6px 12px -8px rgba(15,18,24,.4);--m-r-bar:999px;--m-pri:#4E5FBA;--m-card:#FFFFFF;--m-card-bd:1px solid #E2E0D9;--m-card-sh:0 2px 6px rgba(15,18,24,.06);--m-r-card:8px;--m-ink:#0F1218;--m-ac:#4E5FBA}
+.vt-mini[data-p="stamp"]{--m-bg:#F5EEDF;--m-pat:radial-gradient(rgba(46,77,167,.12) 1px,transparent 1.2px);--m-pat-size:5px 5px;--m-bar:#FFFDF7;--m-bar-bd:1px solid #2E4DA7;--m-bar-sh:2px 2px 0 #2E4DA7;--m-r-bar:3px;--m-pri:#2E4DA7;--m-card:#FBF7EE;--m-card-bd:1px solid #2E4DA7;--m-card-sh:3px 3px 0 #2E4DA7;--m-r-card:3px;--m-ink:#18213D;--m-ac:#2E4DA7}
+.vt-mini[data-p="chrome"]{--m-bg:#EEF1F8;--m-pat:radial-gradient(70% 70% at 90% 0%,rgba(91,124,240,.35),transparent 70%);--m-bar:linear-gradient(180deg,#FFFFFF 0%,#E3E8F5 48%,#C9D2EA 52%,#F4F6FC 100%);--m-bar-bd:1px solid #FFFFFF;--m-bar-sh:0 6px 12px -6px rgba(20,43,122,.5);--m-r-bar:999px;--m-pri:linear-gradient(180deg,#3D63E0,#2546C2);--m-card:rgba(255,255,255,.7);--m-card-bd:1px solid #FFFFFF;--m-card-sh:0 8px 14px -10px rgba(20,43,122,.45);--m-r-card:10px;--m-ink:#0B1233;--m-ac:#2F55D4}
+.vt-mini[data-p="neon"]{--m-bg:#EEF2F7;--m-pat:linear-gradient(180deg,#DCE6F1,#EEF2F7);--m-bar:#FFFFFF;--m-bar-bd:1px solid #0B7894;--m-bar-sh:none;--m-r-bar:5px;--m-pri:#0B7894;--m-card:#FFFFFF;--m-card-bd:1px solid rgba(11,120,148,.3);--m-card-sh:0 4px 10px -6px rgba(11,20,48,.3);--m-r-card:7px;--m-ink:#0B1430;--m-ac:#0B7894}
+body[data-theme="dark"] .vt-mini[data-p="default"],html[data-theme="dark"] .vt-mini[data-p="default"]{--m-bg:#0E1116;--m-bar:#171B23;--m-bar-bd:1px solid #3A4150;--m-pri:#9BA3E8;--m-card:#171B23;--m-card-bd:1px solid #272C37;--m-ink:#F2F1EC;--m-ac:#9BA3E8}
+body[data-theme="dark"] .vt-mini[data-p="stamp"],html[data-theme="dark"] .vt-mini[data-p="stamp"]{--m-bg:#101A3C;--m-pat:radial-gradient(rgba(217,184,101,.16) 1px,transparent 1.2px);--m-bar:#0F1838;--m-bar-bd:1px solid #D9B865;--m-bar-sh:2px 2px 0 #D9B865;--m-pri:#D9B865;--m-card:#172453;--m-card-bd:1px solid #D9B865;--m-card-sh:3px 3px 0 #D9B865;--m-ink:#F3EAD3;--m-ac:#D9B865}
+body[data-theme="dark"] .vt-mini[data-p="chrome"],html[data-theme="dark"] .vt-mini[data-p="chrome"]{--m-bg:#0E1220;--m-pat:radial-gradient(70% 70% at 90% 0%,rgba(61,99,224,.45),transparent 70%);--m-bar:linear-gradient(180deg,#2C3249 0%,#1B2033 48%,#12162A 52%,#252B43 100%);--m-bar-bd:1px solid rgba(255,255,255,.16);--m-card:rgba(26,32,51,.85);--m-card-bd:1px solid rgba(255,255,255,.12);--m-ink:#EEF1F8;--m-ac:#8FA8FF}
+body[data-theme="dark"] .vt-mini[data-p="neon"],html[data-theme="dark"] .vt-mini[data-p="neon"]{--m-bg:#050B2B;--m-pat:radial-gradient(1px 1px at 20% 30%,#E8F6FF,transparent),radial-gradient(1px 1px at 80% 70%,#7FE8FF,transparent);--m-bar:#081236;--m-bar-bd:1px solid #7FE8FF;--m-bar-sh:0 0 8px rgba(127,232,255,.6);--m-pri:#7FE8FF;--m-card:#0B1640;--m-card-bd:1px solid rgba(127,232,255,.35);--m-card-sh:0 0 12px -2px rgba(47,123,255,.6);--m-ink:#E8F6FF;--m-ac:#7FE8FF}
+
+/* Panel: anchored popover from 601px, bottom sheet below. */
+.vt-pop{position:fixed;left:14px;bottom:68px;z-index:901;width:min(380px,calc(100vw - 24px));padding:16px;border-radius:18px;border:1.5px solid var(--vs-line2,#CFCCC3);background:var(--vs-surface,#fff);color:var(--vs-ink,#0F1218);box-shadow:0 24px 60px -24px rgba(0,0,0,.45);max-height:min(82vh,640px);overflow-y:auto;overscroll-behavior:contain}
+.vt-pop[hidden]{display:none}
+.vt-pop-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 12px}
+.vt-pop h2{margin:0;font-size:16px;font-weight:800;font-family:inherit;letter-spacing:-.01em;text-shadow:none;color:inherit}
+.vt-pop-close{width:44px;height:44px;margin:-8px -8px -8px 0;border:0;border-radius:999px;background:transparent;color:inherit;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;flex:none}
+.vt-pop-close:hover{background:var(--vs-bg2,#EAE8E1)}
+.vt-pop-close:focus-visible{outline:3px solid var(--vs-ac,#4E5FBA);outline-offset:1px}
+.vt-pop-close svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+.vt-bright{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px;padding-top:14px;border-top:1px solid var(--vs-line,#E2E0D9)}
+.vt-bright-label{font-size:14px;font-weight:700}
+.vt-bright-label small{display:block;font-size:12px;font-weight:500;color:var(--vs-ink3,#5F6573)}
+.vt-seg{display:inline-flex;padding:3px;border-radius:999px;background:var(--vs-bg2,#EAE8E1);flex:none}
+.vt-seg button{min-width:64px;min-height:40px;padding:0 14px;border:0;border-radius:999px;background:transparent;color:var(--vs-ink2,#474D59);font:inherit;font-size:13.5px;font-weight:700;cursor:pointer}
+.vt-seg button[aria-pressed="true"]{background:var(--vs-surface,#fff);color:var(--vs-ink,#0F1218);box-shadow:0 1px 3px rgba(0,0,0,.18)}
+.vt-seg button:focus-visible{outline:3px solid var(--vs-ac,#4E5FBA);outline-offset:1px}
+.vt-scrim{position:fixed;inset:0;z-index:1599;background:rgba(10,12,20,.42)}
+.vt-scrim[hidden]{display:none}
+.vt-civic-pop{z-index:1600}
+@media (max-width:600px){
+  .vt-civic-pop{left:0!important;right:0!important;top:auto!important;bottom:0!important;width:100%;max-height:86vh;border-radius:22px 22px 0 0;border-bottom:0;padding:10px 16px calc(16px + env(safe-area-inset-bottom));animation:vt-sheet-up .22s cubic-bezier(.2,.8,.2,1) both}
+  .vt-civic-pop::before{content:"";display:block;width:40px;height:4px;border-radius:2px;margin:0 auto 10px;background:var(--vs-line2,#CFCCC3)}
+}
+@media (max-width:340px){.vt-picker{grid-template-columns:minmax(0,1fr)}.vt-mini{height:52px}}
+@keyframes vt-sheet-up{from{transform:translateY(24px);opacity:0}to{transform:none;opacity:1}}
+@media (min-width:601px){.vt-civic-pop{animation:vt-pop-in .16s ease-out both}}
+@keyframes vt-pop-in{from{transform:translateY(-6px);opacity:0}to{transform:none;opacity:1}}
+
+/* Header trigger (civic home + results): current theme's coin + label. */
+.cs-theme-toggle .vt-coin{width:24px;height:24px}
+/* Floating / inline triggers on other pages keep their existing placement. */
 .vt-fab{position:fixed;left:14px;bottom:14px;z-index:900;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:6px 14px 6px 8px;border-radius:999px;border:1.5px solid var(--vs-line2,#CFCCC3);background:var(--vs-surface,#fff);color:var(--vs-ink,#0F1218);font:inherit;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 8px 24px -12px rgba(0,0,0,.35)}
 .vt-fab .vt-coin{width:28px;height:28px}
-.vt-pop{position:fixed;left:14px;bottom:68px;z-index:901;width:min(340px,calc(100vw - 28px));padding:14px;border-radius:16px;border:1.5px solid var(--vs-line2,#CFCCC3);background:var(--vs-surface,#fff);color:var(--vs-ink,#0F1218);box-shadow:0 24px 60px -24px rgba(0,0,0,.45)}
-.vt-pop[hidden]{display:none}
-.vt-pop h2{margin:0 0 10px;font-size:15px;font-weight:800;font-family:inherit;letter-spacing:0;text-shadow:none}
-.vt-fab.vt-inline{position:static;box-shadow:none;width:40px;height:40px;min-height:40px;padding:0;justify-content:center;flex:none;margin-inline-start:6px;background:transparent}
-.vt-fab.vt-inline .vt-coin{width:22px;height:22px}
+.vt-fab.vt-inline{position:static;box-shadow:none;width:44px;height:44px;min-height:44px;padding:0;justify-content:center;flex:none;margin-inline-start:6px;background:transparent}
+.vt-fab.vt-inline .vt-coin{width:24px;height:24px}
 .vt-fab.vt-inline .vt-fab-label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .vt-fab-narrow{display:none}
 @media (max-width:480px){.vt-fab.vt-inline{display:none}.vt-fab-narrow{display:inline-flex}}
 @media (max-width:640px){.vt-fab{padding:6px}.vt-fab .vt-fab-label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}}
-/* Civic search header is the canonical four-skin entry on index.html. */
-.vt-civic-pop{z-index:1600;max-height:min(74vh,550px);overflow-y:auto;overscroll-behavior:contain}
-.vt-civic-pop .vt-picker{grid-template-columns:repeat(2,minmax(0,1fr))}
-.vt-civic-pop .vt-opt{min-width:0;min-height:64px}
-.vt-civic-pop .vt-opt .vt-name{display:block}
-.vt-civic-pop .vt-civic-brightness{display:block;width:100%;min-height:44px;margin-top:12px;border:1px solid var(--vs-line2,#CFCCC3);border-radius:10px;background:var(--vs-bg2,#EAE8E1);color:var(--vs-ink,#0F1218);font:inherit;font-size:14px;font-weight:600;cursor:pointer}
-.vt-civic-pop .vt-civic-brightness:focus-visible{outline:3px solid var(--vs-ac,#4E5FBA);outline-offset:2px}
-@media(max-width:380px){.vt-civic-pop .vt-picker{grid-template-columns:minmax(0,1fr)}.vt-civic-pop .vt-opt{min-height:50px}}
+
+/* Theme change: one short cross-fade of ground and ink, never a layout move. */
+:root.vt-switching,:root.vt-switching body,:root.vt-switching body *{transition:background-color .24s ease,color .24s ease,border-color .24s ease,box-shadow .24s ease!important}
+@media (prefers-reduced-motion:reduce){.vt-civic-pop{animation:none!important}:root.vt-switching,:root.vt-switching body,:root.vt-switching body *{transition:none!important}}
 @media print{.vt-fab,.vt-pop{display:none!important}}
 @media (prefers-reduced-motion:reduce){:root[data-vt] body{background-attachment:scroll}}
+
+/* ==========================================================================
+   6. Form layer — restores the shape language of the approved Claude Design
+      canvas ("Visable Rebrand — Clear Passage", 2026.10), not just colours.
+      Source of truth per theme:
+        Default · Period  → System.dc.html / MobileHome.dc.html (r2 tokens)
+        A · Stamp / Cover → theme skin sheet .t-stamp / .t-stamp.m-cover
+        B · Chrome / Graphite → .t-chrome / .t-chrome.m-graphite
+        C · Neon (night) / Day → .t-neon / .t-neon.m-day
+      Every value below is lifted from those sheets. Shapes are expressed as
+      --vf-* variables per theme × brightness, then applied once to the shared
+      civic components (home, search results, status guide). No copy, data,
+      layout order or disclaimer is touched.
+   ========================================================================== */
+
+/* ---- 6.1 Shape tokens: Default · Period ---------------------------------- */
+:root[data-vt="default"] body{
+  --vf-r-card:20px;--vf-r-ctl:999px;--vf-r-btn:999px;--vf-r-bar:999px;--vf-r-tag:6px;
+  --vf-card-bg:var(--vs-surface);--vf-card-bd:1px solid var(--vs-line);--vf-card-sh:0 1px 2px rgba(15,18,24,.05),0 4px 14px rgba(15,18,24,.04);
+  --vf-card-hover-sh:0 24px 60px -24px rgba(15,18,24,.28);--vf-card-hover-tf:translateY(-2px);
+  --vf-ctl-bg:var(--vs-surface);--vf-ctl-bd:1px solid var(--vs-line2);
+  --vf-bar-bg:var(--vs-surface);--vf-bar-bd:1.5px solid var(--vs-ink);--vf-bar-sh:0 24px 60px -24px rgba(15,18,24,.28);
+  --vf-pri-bg:var(--vs-ac);--vf-pri-sh:none;
+  --vf-tag-bd:1px solid var(--vs-line2);--vf-tag-bg:transparent;
+  --vf-ico-bg:var(--vs-ac-soft);--vf-ico-bd:0;--vf-ico-r:50%;--vf-ico-sh:none;
+  --vf-rule:1px solid var(--vs-line);--vf-hl:#C9CEF4;
+  --vf-press:scale(.98);
+}
+:root[data-vt="default"] body[data-theme="dark"]{
+  --vf-card-sh:0 1px 2px rgba(0,0,0,.3);--vf-card-hover-sh:0 24px 60px -24px rgba(0,0,0,.6);
+  --vf-bar-bd:1.5px solid var(--vs-line2);--vf-bar-sh:0 24px 60px -24px rgba(0,0,0,.6);--vf-hl:#3A4796;
+}
+
+/* ---- 6.2 Shape tokens: A · Stamp (passport booklet) / Cover (night) ------ */
+:root[data-vt="stamp"] body{
+  --vf-r-card:6px;--vf-r-ctl:8px;--vf-r-btn:12px;--vf-r-bar:8px;--vf-r-tag:4px;
+  --vf-card-bg:var(--vs-surface);--vf-card-bd:1.5px solid var(--vs-ac);--vf-card-sh:4px 4px 0 var(--vs-ac);
+  --vf-card-hover-sh:6px 6px 0 var(--vs-ac);--vf-card-hover-tf:translate(-2px,-2px);
+  --vf-ctl-bg:transparent;--vf-ctl-bd:1.5px dashed var(--vs-ac);
+  --vf-bar-bg:#FFFDF7;--vf-bar-bd:1.5px solid var(--vs-ac);--vf-bar-sh:4px 4px 0 var(--vs-ac);
+  --vf-pri-bg:var(--vs-ac);--vf-pri-sh:0 0 0 2px var(--vs-bg),0 0 0 3.5px var(--vs-ac);
+  --vf-tag-bd:1.5px solid var(--vs-ac);--vf-tag-bg:transparent;
+  --vf-ico-bg:transparent;--vf-ico-bd:1.5px solid var(--vs-ac);--vf-ico-r:6px;--vf-ico-sh:none;
+  --vf-rule:2px dashed rgba(46,77,167,.55);--vf-hl:transparent;
+  --vf-press:translate(1px,1px) rotate(-.8deg);
+}
+:root[data-vt="stamp"] body[data-theme="dark"]{
+  --vf-bar-bg:#0F1838;--vf-rule:2px dashed rgba(217,184,101,.55);
+}
+
+/* ---- 6.3 Shape tokens: B · Chrome (glass) / Graphite --------------------- */
+:root[data-vt="chrome"] body{
+  --vf-r-card:28px;--vf-r-ctl:999px;--vf-r-btn:999px;--vf-r-bar:999px;--vf-r-tag:999px;
+  --vf-card-bg:rgba(255,255,255,.66);--vf-card-bd:1px solid rgba(255,255,255,.95);--vf-card-sh:0 1px 0 rgba(255,255,255,.9) inset,0 24px 48px -28px rgba(20,43,122,.35);
+  --vf-card-hover-sh:0 1px 0 rgba(255,255,255,.9) inset,0 34px 56px -28px rgba(20,43,122,.5);--vf-card-hover-tf:translateY(-3px);
+  --vf-ctl-bg:rgba(255,255,255,.6);--vf-ctl-bd:1px solid rgba(20,43,122,.16);
+  --vf-bar-bg:linear-gradient(180deg,#FFFFFF 0%,#E3E8F5 48%,#C9D2EA 52%,#F4F6FC 100%);--vf-bar-bd:1px solid #FFFFFF;--vf-bar-sh:0 1px 0 #fff inset,0 20px 40px -20px rgba(20,43,122,.5);
+  --vf-pri-bg:linear-gradient(180deg,#3D63E0 0%,#2546C2 100%);--vf-pri-sh:inset 0 1px 0 rgba(255,255,255,.45),0 10px 24px -10px rgba(37,70,194,.7);
+  --vf-tag-bd:1px solid rgba(20,43,122,.25);--vf-tag-bg:#DDE5FB;
+  --vf-ico-bg:linear-gradient(160deg,#FFFFFF 0%,#DCE3F6 55%,#B9C6EC 100%);--vf-ico-bd:1px solid #FFFFFF;--vf-ico-r:14px;--vf-ico-sh:0 1px 0 #fff inset,0 10px 20px -10px rgba(20,43,122,.55);
+  --vf-rule:1px solid rgba(11,18,51,.1);--vf-hl:transparent;--vf-blur:blur(18px);
+  --vf-press:scale(.96);
+}
+:root[data-vt="chrome"] body[data-theme="dark"]{
+  --vf-card-bg:rgba(26,32,51,.74);--vf-card-bd:1px solid rgba(255,255,255,.1);--vf-card-sh:0 1px 0 rgba(255,255,255,.08) inset,0 24px 48px -28px rgba(0,0,0,.8);
+  --vf-card-hover-sh:0 1px 0 rgba(255,255,255,.08) inset,0 34px 56px -28px rgba(0,0,0,.9);
+  --vf-ctl-bg:rgba(255,255,255,.06);--vf-ctl-bd:1px solid rgba(255,255,255,.14);
+  --vf-bar-bg:linear-gradient(180deg,#2C3249 0%,#1B2033 48%,#12162A 52%,#252B43 100%);--vf-bar-bd:1px solid rgba(255,255,255,.14);--vf-bar-sh:0 1px 0 rgba(255,255,255,.12) inset,0 20px 40px -20px rgba(0,0,0,.85);
+  --vf-pri-bg:linear-gradient(180deg,#3D63E0 0%,#2546C2 100%);
+  --vf-tag-bd:1px solid rgba(160,180,255,.3);--vf-tag-bg:rgba(61,99,224,.2);
+  --vf-ico-bg:linear-gradient(160deg,#3A4260 0%,#222840 55%,#161B2D 100%);--vf-ico-bd:1px solid rgba(255,255,255,.14);--vf-ico-sh:0 1px 0 rgba(255,255,255,.12) inset,0 10px 20px -10px rgba(0,0,0,.8);
+  --vf-rule:1px solid rgba(255,255,255,.1);
+}
+
+/* ---- 6.4 Shape tokens: C · Neon — Day (light) / Night (dark) ------------- */
+:root[data-vt="neon"] body{
+  --vf-r-card:20px;--vf-r-ctl:999px;--vf-r-btn:999px;--vf-r-bar:16px;--vf-r-tag:6px;
+  --vf-card-bg:#FFFFFF;--vf-card-bd:1px solid rgba(11,120,148,.22);--vf-card-sh:0 1px 2px rgba(11,20,48,.06),0 12px 28px -18px rgba(11,20,48,.25);
+  --vf-card-hover-sh:0 1px 2px rgba(11,20,48,.06),0 18px 34px -18px rgba(11,20,48,.35);--vf-card-hover-tf:translateY(-2px);
+  --vf-ctl-bg:#FFFFFF;--vf-ctl-bd:1px solid rgba(11,120,148,.35);
+  --vf-bar-bg:#FFFFFF;--vf-bar-bd:1.5px solid #0B7894;--vf-bar-sh:inset 0 0 0 1px rgba(11,120,148,.1);
+  --vf-pri-bg:var(--vs-ac);--vf-pri-sh:0 6px 16px -8px rgba(11,120,148,.7);
+  --vf-tag-bd:1px solid rgba(11,120,148,.5);--vf-tag-bg:rgba(11,120,148,.06);
+  --vf-ico-bg:transparent;--vf-ico-bd:1.5px solid #0B7894;--vf-ico-r:50%;--vf-ico-sh:none;
+  --vf-rule:1px solid rgba(11,120,148,.22);--vf-hl:transparent;
+  --vf-press:scale(.98);
+}
+:root[data-vt="neon"] body[data-theme="dark"]{
+  --vf-card-bg:#0B1640;--vf-card-bd:1px solid rgba(127,232,255,.22);--vf-card-sh:0 0 0 1px rgba(47,123,255,.12),0 0 40px -12px rgba(47,123,255,.45);
+  --vf-card-hover-sh:0 0 0 1px rgba(127,232,255,.35),0 0 44px -10px rgba(47,123,255,.7);
+  --vf-ctl-bg:rgba(11,22,64,.6);--vf-ctl-bd:1px solid rgba(127,232,255,.35);
+  --vf-bar-bg:#081236;--vf-bar-bd:1.5px solid #7FE8FF;--vf-bar-sh:0 0 0 1px rgba(127,232,255,.2),0 0 18px rgba(127,232,255,.45),inset 0 0 14px rgba(127,232,255,.18);
+  --vf-pri-bg:#7FE8FF;--vf-pri-sh:0 0 0 1px #7FE8FF,0 0 22px rgba(127,232,255,.55);
+  --vf-tag-bd:1px solid rgba(127,232,255,.6);--vf-tag-bg:rgba(127,232,255,.06);
+  --vf-ico-bd:1.5px solid #7FE8FF;--vf-ico-sh:0 0 12px rgba(127,232,255,.45);
+  --vf-rule:1px solid rgba(127,232,255,.18);
+}
+
+/* ---- 6.5 Apply: search bar ---------------------------------------------- */
+:root[data-vt] body :is(.cs-searchbar,.civic-refresh .sbar):not(#vt-a){
+  background:var(--vf-bar-bg)!important;border:var(--vf-bar-bd)!important;border-radius:var(--vf-r-bar)!important;box-shadow:var(--vf-bar-sh)!important;
+}
+:root[data-vt] body :is(.cs-searchbar,.civic-refresh .sbar):not(#vt-a) input{background:transparent!important}
+:root[data-vt] body :is(.cs-submit,.sg-btn-primary,.fh-btn-primary):not(#vt-a){
+  background:var(--vf-pri-bg)!important;color:var(--vs-ac-ink)!important;border-color:transparent!important;border-radius:var(--vf-r-btn)!important;box-shadow:var(--vf-pri-sh)!important;
+}
+:root[data-vt="chrome"] body :is(.cs-submit,.sg-btn-primary):hover{filter:brightness(1.08) saturate(1.1)}
+/* Graphite keeps the light-face cobalt gradient, so its label stays white (canvas .dock a.on) */
+:root[data-vt="chrome"] body :is(.cs-submit,.sg-btn-primary,.fh-btn-primary):not(#vt-a){color:#FFFFFF!important}
+:root[data-vt="chrome"] body .cs-submit:not(#vt-a) .cs-icon{filter:brightness(0) invert(1)}
+:root[data-vt="stamp"] body :is(.cs-submit,.sg-btn-primary):hover{background:var(--vs-ac-text)!important}
+:root[data-vt="stamp"] body[data-theme="dark"] :is(.cs-submit,.sg-btn-primary):hover{background:#F0D98F!important}
+:root[data-vt="neon"] body[data-theme="dark"] :is(.cs-submit,.sg-btn-primary):hover{box-shadow:0 0 0 1px #7FE8FF,0 0 34px rgba(127,232,255,.85)!important}
+
+/* ---- 6.6 Apply: cards and panels ----------------------------------------- */
+:root[data-vt] body :is(.cs-tool,.cs-service,.cs-directory,.sg-question,.sg-overview,.cs-suggest,.auto-list:not(:empty),.cs-lang-dialog,.vt-pop):not(#vt-a){
+  background:var(--vf-card-bg)!important;border:var(--vf-card-bd)!important;border-radius:var(--vf-r-card)!important;box-shadow:var(--vf-card-sh)!important;
+}
+:root[data-vt="chrome"] body :is(.cs-tool,.cs-service,.cs-directory,.sg-question,.sg-overview,.cs-suggest,.vt-pop):not(#vt-a){-webkit-backdrop-filter:var(--vf-blur);backdrop-filter:var(--vf-blur)}
+:root[data-vt] body :is(a.cs-tool,button.cs-tool,a.cs-service,button.cs-service):not(#vt-a){margin:0!important;transition:transform .16s cubic-bezier(.2,.7,.3,1),box-shadow .16s ease,background-color .16s ease,border-color .16s ease}
+:root[data-vt] body :is(a.cs-tool,button.cs-tool,a.cs-service,button.cs-service):not(#vt-a):hover{transform:var(--vf-card-hover-tf);box-shadow:var(--vf-card-hover-sh)!important;background:var(--vf-card-bg)!important}
+:root[data-vt="stamp"] body :is(a.cs-tool,button.cs-tool,a.cs-service,button.cs-service):not(#vt-a):active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--vs-ac)!important}
+
+/* ---- 6.7 Apply: controls (examples, options, chips, secondary buttons) --- */
+:root[data-vt] body :is(.cs-example-link,.cs-examples button,.sg-option,.sg-chip,.sg-btn:not(.sg-btn-primary),.cs-more,.cs-lang,.cs-theme-toggle,.cs-tool-search):not(#vt-a){
+  background:var(--vf-ctl-bg)!important;border:var(--vf-ctl-bd)!important;border-radius:var(--vf-r-ctl)!important;box-shadow:none!important;
+}
+:root[data-vt] body :is(.cs-example-link,.cs-examples button,.sg-option,.sg-chip,.sg-btn,.cs-more,.cs-submit,.cs-lang,.cs-theme-toggle):not(#vt-a){transition:transform .16s cubic-bezier(.2,.7,.3,1),box-shadow .16s ease,background-color .16s ease,border-color .16s ease,filter .16s ease}
+:root[data-vt] body :is(.cs-example-link,.cs-examples button,.sg-option,.sg-chip,.sg-btn,.cs-more,.cs-submit):active{transform:var(--vf-press)}
+:root[data-vt="stamp"] body :is(.cs-example-link,.cs-examples button,.sg-option,.sg-chip,.sg-btn:not(.sg-btn-primary),.cs-more):not(#vt-a):hover{background:var(--vs-bg2)!important;border-style:solid!important}
+:root[data-vt="chrome"] body :is(.cs-example-link,.cs-examples button,.sg-option,.sg-chip,.sg-btn:not(.sg-btn-primary),.cs-more):not(#vt-a):hover{background:rgba(255,255,255,.96)!important}
+:root[data-vt="chrome"] body[data-theme="dark"] :is(.cs-example-link,.cs-examples button,.sg-option,.sg-chip,.sg-btn:not(.sg-btn-primary),.cs-more):not(#vt-a):hover{background:rgba(255,255,255,.12)!important}
+:root[data-vt="neon"] body :is(.cs-example-link,.cs-examples button,.sg-option,.sg-chip,.sg-btn:not(.sg-btn-primary),.cs-more):not(#vt-a):hover{border-color:var(--vs-ac)!important}
+:root[data-vt="neon"] body[data-theme="dark"] :is(.cs-example-link,.cs-examples button,.sg-option,.sg-chip,.sg-btn:not(.sg-btn-primary),.cs-more):not(#vt-a):hover{border-color:#7FE8FF!important;color:#FFFFFF!important;box-shadow:0 0 14px rgba(127,232,255,.35)!important}
+:root[data-vt="default"] body :is(.cs-example-link,.cs-examples button,.sg-option,.sg-chip,.sg-btn:not(.sg-btn-primary),.cs-more):not(#vt-a):hover{border-color:var(--vs-ink)!important}
+/* the "잘 모르겠어요" option keeps its dashed outline as its meaning marker */
+:root[data-vt] body .sg-option.sg-option-unsure:not(#vt-a){border-style:dashed!important}
+
+/* ---- 6.8 Apply: code/meta tags (status layer, fee review, document tags) - */
+:root[data-vt] body :is(.sg-doc-tag,.sg-fee-review,.sg-layer,.sg-doc-form):not(#vt-a){
+  border:var(--vf-tag-bd)!important;background:var(--vf-tag-bg)!important;border-radius:var(--vf-r-tag)!important;color:var(--vs-ac-text)!important;font-family:var(--vs-mono);font-weight:600;letter-spacing:0;
+}
+:root[data-vt] body .sg-doc-form.sg-doc-form-rec:not(#vt-a){border-style:dashed!important}
+
+/* ---- 6.9 Apply: tool icons --------------------------------------------- */
+:root[data-vt] body .cs-icon-circle:not(#vt-a){background:var(--vf-ico-bg)!important;border:var(--vf-ico-bd)!important;border-radius:var(--vf-ico-r)!important;box-shadow:var(--vf-ico-sh)!important}
+:root[data-vt] body :is(.cs-tool,.cs-service):hover .cs-icon-circle:not(#vt-a){background:var(--vs-ac)!important}
+:root[data-vt="chrome"] body .cs-icon-circle{position:relative;overflow:hidden}
+:root[data-vt="chrome"] body .cs-icon-circle::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 32%,rgba(255,255,255,.9) 48%,transparent 62%);transform:translateX(-130%);transition:transform .7s cubic-bezier(.2,.7,.3,1);pointer-events:none}
+:root[data-vt="chrome"] body[data-theme="dark"] .cs-icon-circle::after{background:linear-gradient(115deg,transparent 32%,rgba(255,255,255,.35) 48%,transparent 62%)}
+:root[data-vt="chrome"] body :is(.cs-tool,.cs-service):hover .cs-icon-circle::after{transform:translateX(130%)}
+:root[data-vt="chrome"] body :is(.cs-tool,.cs-service):hover .cs-icon-circle:not(#vt-a){background:var(--vf-pri-bg)!important}
+
+/* ---- 6.10 Apply: rules, headings, numerals -------------------------------- */
+:root[data-vt] body :is(.cs-tools,.sg-docs,.sg-fee,.sg-cond-section,.sg-local,.sg-next,.sg-evidence,.sg-related,.sg-disclaimer,.cs-raw):not(#vt-a){border-top:var(--vf-rule)!important}
+:root[data-vt="default"] body .cs-hero h1 em{background:var(--vf-hl);color:inherit!important;border-radius:.14em;padding:0 .08em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+:root[data-vt="stamp"] body .cs-hero h1 em{color:var(--vs-ac-text)!important;font-style:normal;background:linear-gradient(transparent 62%,rgba(46,77,167,.16) 62%)}
+:root[data-vt="stamp"] body[data-theme="dark"] .cs-hero h1 em{color:#F0D98F!important;background:linear-gradient(transparent 62%,rgba(217,184,101,.22) 62%)}
+:root[data-vt="chrome"] body .cs-hero h1:not(#vt-a){letter-spacing:-.045em!important;font-weight:850!important}
+:root[data-vt="chrome"] body .cs-hero h1 em{background:linear-gradient(180deg,#0B1233 0%,#2F55D4 55%,#0B1233 100%);-webkit-background-clip:text;background-clip:text;color:transparent!important}
+:root[data-vt="chrome"] body[data-theme="dark"] .cs-hero h1 em{background:linear-gradient(180deg,#FFFFFF 0%,#8FA8FF 55%,#FFFFFF 100%);-webkit-background-clip:text;background-clip:text}
+:root[data-vt="neon"] body[data-theme="dark"] .cs-hero h1 em{color:#7FE8FF!important;text-shadow:0 0 12px rgba(127,232,255,.75),0 0 32px rgba(47,123,255,.6)}
+:root[data-vt] body :is(.cs-basis,.cs-source-strip-label,.cs-results-head .cs-count):not(#vt-a){font-family:var(--vs-mono)}
+:root[data-vt="chrome"] body .cs-basis:not(#vt-a){font-size:12px;letter-spacing:-.01em}
+/* Stamp: the hero ends on a perforation, like a booklet page */
+:root[data-vt="stamp"] body .cs-hero:not(#vt-a){position:relative}
+
+/* ---- 6.11 Motion: once per page, honouring reduced motion ----------------- */
+@keyframes vt-ignite{0%{opacity:.25}8%{opacity:1}12%{opacity:.35}18%{opacity:1}26%{opacity:.6}30%,100%{opacity:1}}
+@keyframes vt-stamp-in{0%{transform:scale(1.25) rotate(-3deg);opacity:0}60%{transform:scale(.97) rotate(.5deg);opacity:1}100%{transform:none;opacity:1}}
+:root[data-vt="neon"] body[data-theme="dark"] :is(.cs-hero h1 em,.cs-searchbar){animation:vt-ignite 1.4s steps(1,end) .15s both}
+:root[data-vt="stamp"] body .cs-searchbar{animation:vt-stamp-in .55s cubic-bezier(.2,1.5,.4,1) both}
+@media (prefers-reduced-motion:reduce){
+  :root[data-vt] body :is(.cs-hero h1 em,.cs-searchbar){animation:none!important}
+  :root[data-vt] body :is(.cs-tool,.cs-service,.cs-example-link,.sg-option,.sg-chip,.sg-btn,.cs-submit,.cs-icon-circle)::after,
+  :root[data-vt] body :is(.cs-tool,.cs-service,.cs-example-link,.sg-option,.sg-chip,.sg-btn,.cs-submit,.cs-icon-circle){transition-duration:.01ms!important;transform:none!important}
+}

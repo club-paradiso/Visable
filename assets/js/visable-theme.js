@@ -48,9 +48,12 @@
 
   /* ---- copy (brand names stay Latin; descriptions per language) ---- */
   var COPY = {
-    ko: { title: '화면 테마', fab: '테마', default: '기본 · 맑은 파랑', stamp: '여권 도장', chrome: '유리와 금속', neon: '밤의 네온 · 라이트 모드는 낮 화면' },
-    en: { title: 'Display theme', fab: 'Theme', default: 'Default · clear blue', stamp: 'Passport stamps', chrome: 'Glass and metal', neon: 'Night neon · light mode is Day' },
-    zh: { title: '界面主题', fab: '主题', default: '默认 · 清蓝', stamp: '护照印章', chrome: '玻璃与金属', neon: '夜间霓虹 · 浅色为白天' }
+    ko: { title: '화면 테마', fab: '테마', close: '닫기', bright: '밝기', brightHint: '테마는 그대로, 밝기만 바뀌어요', light: '라이트', dark: '다크',
+      default: '기본 · 맑은 파랑', stamp: '여권 수첩 · 밤에는 표지', chrome: '유리와 금속 · 어두우면 그래파이트', neon: '네온 간판 · 라이트는 낮 화면' },
+    en: { title: 'Display theme', fab: 'Theme', close: 'Close', bright: 'Brightness', brightHint: 'Keeps the theme, changes only brightness', light: 'Light', dark: 'Dark',
+      default: 'Default · clear blue', stamp: 'Passport booklet · Cover at night', chrome: 'Glass and metal · Graphite when dark', neon: 'Neon signs · light mode is Day' },
+    zh: { title: '界面主题', fab: '主题', close: '关闭', bright: '亮度', brightHint: '只改变亮度，不改变主题', light: '浅色', dark: '深色',
+      default: '默认 · 清蓝', stamp: '护照手册 · 深色为封面', chrome: '玻璃与金属 · 深色为石墨', neon: '霓虹招牌 · 浅色为白天' }
   };
   var NAMES = { default: 'Visable', stamp: 'Stamp', chrome: 'Chrome', neon: 'Neon' };
   function lang() {
@@ -65,13 +68,23 @@
     return (b && b.getAttribute('data-theme') === 'dark') || root.getAttribute('data-theme') === 'dark';
   }
 
-  /* Stamp is the only skin with a display face the site doesn't already load. */
+  /* Display and numeral faces from the approved canvas, fetched only after a
+     visitor picks that skin: Stamp → Gowun Batang + IBM Plex Mono, Chrome →
+     Unbounded (numerals/codes), Neon → JetBrains Mono. The default skin makes
+     no extra font request (privacy pages such as Form Helper allow only the
+     Pretendard CDN); its mono face falls back to the system monospace. */
+  var FONTS = {
+    stamp: 'family=Gowun+Batang:wght@400;700&family=IBM+Plex+Mono:wght@400;500;600',
+    chrome: 'family=Unbounded:wght@500;700',
+    neon: 'family=JetBrains+Mono:wght@400;500;600'
+  };
   function ensureFonts(t) {
-    if (t !== 'stamp' || document.getElementById('vt-font-stamp')) return;
+    var q = FONTS[t];
+    if (!q || !document.head || document.getElementById('vt-font-' + t)) return;
     var l = document.createElement('link');
-    l.id = 'vt-font-stamp';
+    l.id = 'vt-font-' + t;
     l.rel = 'stylesheet';
-    l.href = 'https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap';
+    l.href = 'https://fonts.googleapis.com/css2?' + q + '&display=swap';
     document.head.appendChild(l);
   }
 
@@ -106,8 +119,35 @@
       opts[i].setAttribute('aria-checked', opts[i].getAttribute('data-vt-value') === current ? 'true' : 'false');
       opts[i].tabIndex = opts[i].getAttribute('data-vt-value') === (current || 'default') ? 0 : -1;
     }
-    var coins = document.querySelectorAll('.vt-fab .vt-coin');
+    var coins = document.querySelectorAll('.vt-fab .vt-coin, [data-vt-open] .vt-coin');
     for (var j = 0; j < coins.length; j++) coins[j].setAttribute('data-c', current || 'default');
+    syncBrightnessSeg();
+  }
+
+  /* Brightness lives on each page's own control; the panel only mirrors and
+     drives it, so theme and brightness never change each other. */
+  function syncBrightnessSeg() {
+    var dark = isDark();
+    var segs = document.querySelectorAll('.vt-seg button');
+    for (var i = 0; i < segs.length; i++) {
+      var want = segs[i].getAttribute('data-bright') === 'dark';
+      segs[i].setAttribute('aria-pressed', want === dark ? 'true' : 'false');
+    }
+  }
+  /* Programmatic clicks on the page's own brightness control must not be
+     read as an outside click that closes the panel. */
+  var internalClick = false;
+  function clickInternal(el) { internalClick = true; try { el.click(); } finally { internalClick = false; } }
+  function setBrightness(dark) {
+    if (isDark() === dark) return;
+    var direct = document.querySelector('[data-action="set-brightness"][data-brightness="' + (dark ? 'dark' : 'light') + '"]');
+    if (direct) clickInternal(direct);
+    if (isDark() !== dark && typeof window.toggleTheme === 'function') window.toggleTheme();
+    if (isDark() !== dark) {
+      var existing = document.getElementById('mainThemeBtn');
+      if (existing) clickInternal(existing);
+    }
+    syncBrightnessSeg();
   }
 
   function setBrightnessDark() {
@@ -125,6 +165,11 @@
     if (THEMES.indexOf(t) < 0) t = 'default';
     var changed = t !== current;
     current = t;
+    if (changed && document.body) {
+      root.classList.add('vt-switching');
+      clearTimeout(apply._t);
+      apply._t = setTimeout(function () { root.classList.remove('vt-switching'); }, 320);
+    }
     root.setAttribute('data-vt', t);
     write(KEY, t);
     if (read(EDITORIAL_KEY) === 'archive_diary') write(EDITORIAL_KEY, 'civic_editorial');
@@ -149,7 +194,10 @@
       b.id = idPrefix + t;
       b.setAttribute('role', 'radio');
       b.setAttribute('data-vt-value', t);
-      b.innerHTML = '<span class="vt-coin" data-c="' + t + '" aria-hidden="true"></span><span><span class="vt-name"></span><small></small></span>';
+      b.innerHTML = '<span class="vt-mini" data-p="' + t + '" aria-hidden="true"><i></i><b></b></span>' +
+        '<span class="vt-opt-row"><span class="vt-coin" data-c="' + t + '" aria-hidden="true"></span>' +
+        '<span class="vt-opt-txt"><span class="vt-name"></span><small></small></span></span>' +
+        '<span class="vt-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>';
       b.querySelector('.vt-name').textContent = NAMES[t];
       b.querySelector('small').textContent = c[t];
       b.addEventListener('click', function () { apply(t, { keepBrightness: true }); });
@@ -195,84 +243,119 @@
       var label = btn.querySelector('.cs-theme-label');
       if (label) label.textContent = c.title;
     });
-    syncCivicBrightnessLabel();
+    document.querySelectorAll('.vt-pop-close').forEach(function (x) { x.setAttribute('aria-label', c.close); });
+    document.querySelectorAll('.vt-bright').forEach(function (row) { labelBrightness(row, c); });
+    syncBrightnessSeg();
   }
 
-  /* The Civic homepage/result headers are rebuilt by civic-search.js. Bind to
-     one delegated trigger, and reuse the same canonical four-theme picker as
-     the global settings sheet. No second theme state or dark-mode shortcut. */
+  /* Shared panel head: title + close button (44px). */
+  function buildHead(c, titleId, onClose) {
+    var head = document.createElement('div');
+    head.className = 'vt-pop-head';
+    var h = document.createElement('h2');
+    h.id = titleId;
+    h.textContent = c.title;
+    var x = document.createElement('button');
+    x.type = 'button';
+    x.className = 'vt-pop-close';
+    x.setAttribute('aria-label', c.close);
+    x.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+    x.addEventListener('click', onClose);
+    head.appendChild(h);
+    head.appendChild(x);
+    return head;
+  }
+
+  function buildBrightness(c) {
+    var row = document.createElement('div');
+    row.className = 'vt-bright';
+    row.innerHTML = '<span class="vt-bright-label" id="vtBrightLabel"></span>' +
+      '<span class="vt-seg" role="group" aria-labelledby="vtBrightLabel">' +
+      '<button type="button" data-bright="light" aria-pressed="false"></button>' +
+      '<button type="button" data-bright="dark" aria-pressed="false"></button></span>';
+    row.querySelectorAll('.vt-seg button').forEach(function (b) {
+      b.addEventListener('click', function () { setBrightness(b.getAttribute('data-bright') === 'dark'); });
+    });
+    labelBrightness(row, c);
+    return row;
+  }
+  function labelBrightness(row, c) {
+    var l = row.querySelector('.vt-bright-label');
+    if (l) { l.textContent = c.bright; var sm = document.createElement('small'); sm.textContent = c.brightHint; l.appendChild(sm); }
+    var lb = row.querySelector('[data-bright="light"]'); if (lb) lb.textContent = c.light;
+    var db = row.querySelector('[data-bright="dark"]'); if (db) db.textContent = c.dark;
+  }
+  /* Kept for callers from the previous release (labels the brightness row). */
   function syncCivicBrightnessLabel() {
-    var btn = document.querySelector('#vtCivicBrightness');
-    if (!btn) return;
-    var l = (root.getAttribute('lang') || 'ko').toLowerCase();
-    var label = l.indexOf('ko') === 0 ? '밝기' : l.indexOf('zh') === 0 ? '亮度' : 'Brightness';
-    var value = isDark() ? (l.indexOf('ko') === 0 ? '다크' : l.indexOf('zh') === 0 ? '深色' : 'Dark')
-      : (l.indexOf('ko') === 0 ? '라이트' : l.indexOf('zh') === 0 ? '浅色' : 'Light');
-    btn.textContent = label + ': ' + value;
+    var row = document.querySelector('#vtCivicPop .vt-bright');
+    if (row) labelBrightness(row, lang());
+    syncBrightnessSeg();
   }
 
+  /* The Civic homepage/result headers are rebuilt by civic-search.js. One
+     delegated trigger ([data-vt-open]) serves both headers. Popover from
+     601px, bottom sheet with a scrim below. Picking applies at once and keeps
+     the panel open so the four faces can be compared; Escape, the close
+     button, the scrim or an outside click closes it and focus returns to the
+     header button. */
   function mountCivicPicker(c) {
     if (!document.getElementById('civicLanding') || document.getElementById('vtCivicPop')) return;
+    var opener = null;
+    var scrim = document.createElement('div');
+    scrim.className = 'vt-scrim';
+    scrim.hidden = true;
     var pop = document.createElement('div');
     pop.id = 'vtCivicPop';
     pop.className = 'vt-pop vt-civic-pop';
     pop.setAttribute('role', 'dialog');
+    pop.setAttribute('aria-modal', 'false');
     pop.setAttribute('aria-labelledby', 'vtCivicTitle');
     pop.hidden = true;
-    var title = document.createElement('h2');
-    title.id = 'vtCivicTitle';
-    title.textContent = c.title;
-    pop.appendChild(title);
+    pop.appendChild(buildHead(c, 'vtCivicTitle', function () { close(true); }));
     var choices = buildGroup(c, 'vt-civic-');
     pop.appendChild(choices);
-    var brightness = document.createElement('button');
-    brightness.type = 'button';
-    brightness.id = 'vtCivicBrightness';
-    brightness.className = 'vt-civic-brightness';
-    brightness.addEventListener('click', function () {
-      // Brightness is independent of the four visual skins.
-      if (typeof window.toggleTheme === 'function') window.toggleTheme();
-      else {
-        var existing = document.getElementById('mainThemeBtn');
-        if (existing) existing.click();
-      }
-      syncCivicBrightnessLabel();
-    });
-    pop.appendChild(brightness);
+    pop.appendChild(buildBrightness(c));
+    document.body.appendChild(scrim);
     document.body.appendChild(pop);
-    syncCivicBrightnessLabel();
-    var opener = null;
 
+    function narrow() { return window.matchMedia ? window.matchMedia('(max-width: 600px)').matches : window.innerWidth <= 600; }
     function setExpanded(open) {
       document.querySelectorAll('[data-vt-open]').forEach(function (b) {
         b.setAttribute('aria-expanded', open && b === opener ? 'true' : 'false');
       });
     }
+    function place() {
+      if (!opener || narrow()) { pop.style.left = pop.style.right = pop.style.top = pop.style.bottom = ''; return; }
+      var r = opener.getBoundingClientRect();
+      pop.style.left = 'auto';
+      pop.style.right = Math.max(12, window.innerWidth - r.right) + 'px';
+      pop.style.bottom = 'auto';
+      var top = r.bottom + 8;
+      if (top + pop.offsetHeight + 12 > window.innerHeight) top = Math.max(12, window.innerHeight - pop.offsetHeight - 12);
+      pop.style.top = Math.max(12, top) + 'px';
+    }
     function close(focus) {
       if (pop.hidden) return;
       pop.hidden = true;
+      scrim.hidden = true;
       setExpanded(false);
       if (focus && opener && opener.isConnected) opener.focus();
     }
     function open(btn) {
       opener = btn;
       pop.hidden = false;
+      scrim.hidden = !narrow();
+      pop.setAttribute('aria-modal', narrow() ? 'true' : 'false');
       syncPickers();
       relabel();
-      var r = btn.getBoundingClientRect();
-      // Keep the panel in the visual viewport on narrow phones/tablets.
-      pop.style.left = 'auto';
-      pop.style.right = Math.max(12, window.innerWidth - r.right) + 'px';
-      pop.style.bottom = 'auto';
-      var top = r.bottom + 8;
-      if (top + pop.offsetHeight + 12 > window.innerHeight) top = Math.max(12, r.top - pop.offsetHeight - 8);
-      pop.style.top = Math.max(12, top) + 'px';
+      place();
       setExpanded(true);
       var selected = pop.querySelector('.vt-opt[aria-checked="true"]') || pop.querySelector('.vt-opt');
-      if (selected) selected.focus();
+      if (selected) selected.focus({ preventScroll: true });
     }
 
     document.addEventListener('click', function (e) {
+      if (internalClick) return;
       var btn = e.target.closest('[data-vt-open]');
       if (btn) {
         e.preventDefault();
@@ -282,19 +365,21 @@
       }
       if (!pop.hidden && !pop.contains(e.target)) close(false);
     });
-    choices.addEventListener('click', function (e) {
-      if (e.target.closest('.vt-opt')) close(true);
-    });
-    choices.addEventListener('keydown', function (e) {
-      // Arrow keys select themes without closing; Enter/Space is handled by the
-      // native button click above.
-    });
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && !pop.hidden) { e.preventDefault(); close(true); }
+      if (pop.hidden) return;
+      if (e.key === 'Escape') { e.preventDefault(); close(true); return; }
+      // Keep keyboard focus inside the sheet while it is modal.
+      if (e.key === 'Tab' && pop.getAttribute('aria-modal') === 'true') {
+        var f = pop.querySelectorAll('button:not([disabled])');
+        var vis = Array.prototype.filter.call(f, function (el) { return el.tabIndex !== -1; });
+        if (!vis.length) return;
+        var first = vis[0], last = vis[vis.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
     });
-    window.addEventListener('resize', function () { close(false); });
-    // In results state civic-search.js mounts a second header after the first
-    // render; the delegated listener above serves both without duplicate popups.
+    window.addEventListener('resize', function () { if (!pop.hidden) { scrim.hidden = !narrow(); place(); } });
+    window.addEventListener('orientationchange', function () { if (!pop.hidden) place(); });
   }
 
   function mount() {
@@ -323,10 +408,7 @@
       pop.setAttribute('role', 'dialog');
       pop.setAttribute('aria-labelledby', 'vtPopTitle');
       pop.hidden = true;
-      var h = document.createElement('h2');
-      h.id = 'vtPopTitle';
-      h.textContent = c.title;
-      pop.appendChild(h);
+      pop.appendChild(buildHead(c, 'vtPopTitle', function () { close(true); }));
       pop.appendChild(buildGroup(c, 'vt-pop-'));
       // Narrow screens: the header has no room for one more button, so a floating pill takes over.
       var fabs = [fab];
@@ -383,7 +465,7 @@
       var mo = new MutationObserver(function () {
         if (pending) return;
         pending = true;
-        (window.requestAnimationFrame || setTimeout)(function () { pending = false; syncWordmarks(); syncMeta(); });
+        (window.requestAnimationFrame || setTimeout)(function () { pending = false; syncWordmarks(); syncMeta(); syncPickers(); });
       });
       mo.observe(document.body, { attributes: true, attributeFilter: ['data-theme'], childList: true, subtree: true });
       mo.observe(root, { attributes: true, attributeFilter: ['data-theme', 'lang'] });
