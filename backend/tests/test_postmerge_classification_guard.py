@@ -24,6 +24,7 @@ class PostMergeClassificationGuardTests(unittest.TestCase):
         self.assertIsNone(assess_classification("F-6에서 E-9으로 체류자격 변경", lang="ko"))
         self.assertIsNone(assess_classification("D-10 상태인데 E-7로 변경해서 취업하고 싶어요", lang="ko"))
         self.assertIsNone(assess_classification("G-1-5 연장", payload_code="G-1", lang="ko"))
+        self.assertIsNone(assess_classification("Can I change status to F-2-99?", payload_code="H-1", lang="en"))
         self.assertEqual(assess_classification("F-6 E-9 변경 가능?", lang="ko").reason,
                          "multiple_statuses")
         self.assertEqual(assess_classification("D-2 -> E-7 -> F-2 switch").reason,
