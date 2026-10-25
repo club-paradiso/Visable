@@ -18,6 +18,29 @@ async function noHorizontalScroll(page) {
   expect(o.s, 'no horizontal overflow').toBeLessThanOrEqual(o.w);
 }
 const topOf = (loc) => loc.evaluate((el) => el.getBoundingClientRect().top + window.scrollY);
+// Reading order. One column: every block sits below the one before it. When a
+// visual theme arranges the answer in columns (visable-theme-layout.js sets
+// #statusGuidance[data-vl]), the answer still comes first, above every column,
+// and each column keeps the original order of the blocks it holds.
+async function expectReadingOrder(sg, order) {
+  const info = await Promise.all(order.map((loc) => loc.evaluate((el) => {
+    const col = el.closest('.vl-col:not(.vl-grid)');
+    const r = el.getBoundingClientRect();
+    return { col: col ? [...col.classList].find((c) => c !== 'vl-col') : 'flow', top: r.top + window.scrollY, bottom: r.bottom + window.scrollY };
+  })));
+  const columns = await sg.getAttribute('data-vl');
+  if (!columns) {
+    let last = -1;
+    for (const i of info) { expect(i.top).toBeGreaterThan(last); last = i.top; }
+    return;
+  }
+  const answer = info[0];
+  for (const i of info.slice(1)) expect(i.top, 'answer comes first, above every column').toBeGreaterThanOrEqual(answer.top);
+  for (const name of ['vl-head', 'vl-main', 'vl-side', 'vl-tail']) {
+    let last = -1;
+    for (const i of info.filter((x) => x.col === name)) { expect(i.top, name + ' keeps the reading order').toBeGreaterThan(last); last = i.top; }
+  }
+}
 
 test.describe('F-4 extension result (source-only)', () => {
   test('hierarchy: identity, source action, overview, fee, collapsed scheme, actions, grouped evidence', async ({ page }) => {
@@ -40,8 +63,7 @@ test.describe('F-4 extension result (source-only)', () => {
 
     // order on the page
     const order = [sg.locator('.sg-answer'), overview, sg.locator('.sg-fee'), sg.locator('.sg-program'), sg.locator('.sg-next'), sg.locator('.sg-evidence')];
-    let last = -1;
-    for (const loc of order) { const t = await topOf(loc); expect(t).toBeGreaterThan(last); last = t; }
+    await expectReadingOrder(sg, order);
 
     // the scheme is collapsed and explicitly conditional; the old universal wording is gone
     const scheme = sg.locator('.sg-program-details');
@@ -159,8 +181,7 @@ test.describe('structured and unknown results', () => {
     await expect(sg.locator('.sg-overview .sg-ov-confirmed')).toContainText('필수 서류 6개');
     await expect(sg.locator('.sg-overview .sg-ov-conditional')).toContainText('조건에 따라 내는 서류 1개');
     const order = [sg.locator('.sg-answer'), sg.locator('.sg-overview'), sg.locator('.sg-docs'), sg.locator('.sg-fee'), sg.locator('.sg-cond-section'), sg.locator('.sg-next'), sg.locator('.sg-evidence')];
-    let last = -1;
-    for (const loc of order) { const t = await topOf(loc); expect(t).toBeGreaterThan(last); last = t; }
+    await expectReadingOrder(sg, order);
     await expect(sg.locator('.sg-program')).toHaveCount(0);
     await expect(sg.locator('#sgEvidence')).not.toHaveAttribute('open', /.*/);
     await expect(sg.locator('.sg-fee')).toContainText('면제·감경 조건 · 2');
