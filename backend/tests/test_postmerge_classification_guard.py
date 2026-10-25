@@ -21,8 +21,11 @@ class PostMergeClassificationGuardTests(unittest.TestCase):
         self.assertEqual(assess_classification("D-2 및 E-7 서류", lang="ko").reason, "multiple_statuses")
         self.assertEqual(assess_classification("D-2 또는 E-7 가능?", payload_code="D-2").reason,
                          "multiple_statuses")
-        self.assertEqual(assess_classification("F-6에서 E-9으로 체류자격 변경", lang="ko").reason,
-                         "transition_requires_review")
+        self.assertIsNone(assess_classification("F-6에서 E-9으로 체류자격 변경", lang="ko"))
+        self.assertIsNone(assess_classification("D-10 상태인데 E-7로 변경해서 취업하고 싶어요", lang="ko"))
+        self.assertIsNone(assess_classification("G-1-5 연장", payload_code="G-1", lang="ko"))
+        self.assertEqual(assess_classification("F-6 E-9 변경 가능?", lang="ko").reason,
+                         "multiple_statuses")
         self.assertEqual(assess_classification("D-2 -> E-7 -> F-2 switch").reason,
                          "multiple_statuses")
 
@@ -57,7 +60,7 @@ class PostMergeClassificationGuardTests(unittest.TestCase):
         samples = (
             ("F-10 연장 가능한가요?", "unknown_status"),
             ("D-2 및 E-7 제출서류", "multiple_statuses"),
-            ("F-6에서 E-9으로 변경 가능할까요?", "transition_requires_review"),
+            ("F-6 E-9 변경 가능?", "multiple_statuses"),
             ("대사관에서 여권을 갱신했습니다", "passport_service"),
             ("외국인등록증이 있어요", "card_action_missing"),
         )
