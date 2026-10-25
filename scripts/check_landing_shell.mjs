@@ -94,7 +94,7 @@ ok((current.match(/<button type="button" data-cs-journey="(pre|post)" aria-press
 
 // suggestion engine wiring
 const suggestTag = html.indexOf('<script defer src="assets/js/search-suggest.js"></script>');
-ok(suggestTag > 0 && suggestTag < html.indexOf('<script defer src="assets/js/civic-search.js"'), 'search-suggest.js loads (deferred) before civic-search.js');
+ok(suggestTag > 0 && suggestTag < html.indexOf('<script defer src="assets/js/civic-search.js'), 'search-suggest.js loads (deferred) before civic-search.js');
 let indexCurrent = false;
 try { indexCurrent = readFileSync(join(ROOT, SUGGEST_INDEX), 'utf8') === serialize(buildIndex()); } catch (e) { indexCurrent = false; }
 ok(indexCurrent, `${SUGGEST_INDEX} is current with the guidance bundle (run: node scripts/build_search_suggest_index.mjs)`);
