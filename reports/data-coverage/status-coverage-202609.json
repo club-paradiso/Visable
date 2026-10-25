@@ -17,15 +17,15 @@
   "total_scenario_records": 5,
   "total_special_program_records": 6,
   "coverage_states_all": {
-   "PARTIAL": 50,
-   "SUPPORTED": 67,
+   "PARTIAL": 46,
+   "SUPPORTED": 71,
    "SOURCE_ONLY": 116,
    "UNVERIFIED": 35,
    "LEGACY_ONLY": 1
   },
   "coverage_states_status": {
-   "PARTIAL": 11,
-   "SUPPORTED": 26
+   "PARTIAL": 7,
+   "SUPPORTED": 30
   },
   "coverage_states_substatus": {
    "SOURCE_ONLY": 116,
@@ -34,18 +34,18 @@
    "SUPPORTED": 36,
    "LEGACY_ONLY": 1
   },
-  "guidance_entries": 115,
-  "document_items": 700,
+  "guidance_entries": 141,
+  "document_items": 838,
   "document_completeness": {
-   "FULLY_STRUCTURED": 88,
-   "PARTIALLY_STRUCTURED": 9,
-   "SOURCE_ONLY": 18
+   "FULLY_STRUCTURED": 109,
+   "PARTIALLY_STRUCTURED": 11,
+   "SOURCE_ONLY": 21
   },
   "procedure_states": {
-   "SOURCE_ONLY": 1744,
-   "UNVERIFIED": 1739,
-   "SUPPORTED": 205,
+   "SOURCE_ONLY": 1605,
+   "SUPPORTED": 406,
    "CONDITIONAL": 31,
+   "UNVERIFIED": 1677,
    "NOT_APPLICABLE": 355,
    "EXCEPTION_ONLY": 14,
    "GENERALLY_NOT_PERMITTED": 40
@@ -183,7 +183,7 @@
   {
    "code": "E-4",
    "kind": "status",
-   "coverage_state": "PARTIAL",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
@@ -243,7 +243,7 @@
   {
    "code": "F-5",
    "kind": "status",
-   "coverage_state": "PARTIAL",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
@@ -261,13 +261,13 @@
   {
    "code": "H-1",
    "kind": "status",
-   "coverage_state": "PARTIAL",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "F-4",
    "kind": "status",
-   "coverage_state": "PARTIAL",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {

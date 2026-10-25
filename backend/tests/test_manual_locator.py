@@ -46,10 +46,10 @@ class LocateTests(unittest.TestCase):
         self.assertFalse(found["needs_subcode"])
 
     def test_unstructured_procedure_uses_the_code_index_page(self):
-        self.assertEqual(_guidance("F-4", "extension"), [])
-        found = ml.locate("F-4", None, "extension")
-        page = DATA["codes"]["F-4"]["procedures"]["extension"]["p"]
-        self.assertEqual(found["entries"], [{"target": "F-4", "section": "", "page": page}])
+        self.assertEqual(_guidance("D-3", "extension"), [])
+        found = ml.locate("D-3", None, "extension")
+        page = DATA["codes"]["D-3"]["procedures"]["extension"]["p"]
+        self.assertEqual(found["entries"], [{"target": "D-3", "section": "", "page": page}])
 
     def test_single_entry_status(self):
         found = ml.locate("H-1", None, "extension")
@@ -133,10 +133,15 @@ class PreparationNoteTests(unittest.TestCase):
         # The note's closing caveat stays last.
         self.assertTrue(answer.rstrip().endswith("확인하세요."))
 
-    def test_f4_extension_note_points_at_the_unstructured_page(self):
+    def test_unstructured_extension_note_points_at_the_unstructured_page(self):
+        answer = self._ask("D-3 연장 서류")["answer"]
+        page = DATA["codes"]["D-3"]["procedures"]["extension"]["p"]
+        self.assertIn(f"* D-3: p.{page} (구조화 전 원문)", answer)
+
+    def test_f4_extension_note_points_at_the_f4_section_not_h2(self):
         answer = self._ask("F-4 연장 서류")["answer"]
-        page = DATA["codes"]["F-4"]["procedures"]["extension"]["p"]
-        self.assertIn(f"* F-4: p.{page} (구조화 전 원문)", answer)
+        self.assertIn("* F-4: p.540", answer)
+        self.assertNotIn("p.537", answer)
 
     def test_verified_structured_answer_is_unchanged(self):
         body = self._ask("D-2 연장시 필수 서류")

@@ -1,6 +1,6 @@
 // Search result hierarchy (pre-launch rescue 2026-10-24).
 //
-//  F-4 체류기간 연장 (source-only) must read, top to bottom: identity → the manual
+//  D-3 체류기간 연장 (source-only) must read, top to bottom: identity → the manual
 //  page as the primary action → an "at a glance" overview (confirmed / depends on
 //  the case / check in the source) → cost → the 동포 scheme as a COLLAPSED,
 //  conditional block → labelled next-action rows → evidence with the procedure's
@@ -42,63 +42,70 @@ async function expectReadingOrder(sg, order) {
   }
 }
 
-test.describe('F-4 extension result (source-only)', () => {
-  test('hierarchy: identity, source action, overview, fee, collapsed scheme, actions, grouped evidence', async ({ page }) => {
+test.describe('F-4 extension result (structured from the compatriot handbook)', () => {
+  test('lists the manual documents and cites the F-4 page, not the H-2 page', async ({ page }) => {
     await page.goto(q('F-4 체류기간 연장'));
-    await ready(page, 'source-only');
+    await ready(page, 'resolved');
     const sg = page.locator('#statusGuidance');
     await expect(sg.locator('#sgAnswerTitle')).toContainText('F-4');
+    await expect(sg).toContainText('한국어능력 입증서류');
+    await expect(sg).toContainText('체류지 입증서류');
+    await expect(sg).not.toContainText('정리된 안내가 아직 없어요');
+    await expect(sg.locator('[data-sg-page="537"]')).toHaveCount(0);
+    await expect(sg).not.toContainText('세부유형을 확인하면');
+    await noHorizontalScroll(page);
+  });
+});
+
+test.describe('D-3 extension result (source-only)', () => {
+  test('hierarchy: identity, source action, overview, fee, collapsed scheme, actions, grouped evidence', async ({ page }) => {
+    await page.goto(q('D-3 체류기간 연장'));
+    await ready(page, 'source-only');
+    const sg = page.locator('#statusGuidance');
+    await expect(sg.locator('#sgAnswerTitle')).toContainText('D-3');
     await expect(sg.locator('.sg-source-only .sg-lead')).toContainText('정리된 안내가 아직 없어요');
     const srcBtn = sg.locator('.sg-answer .sg-btn-source');
     await expect(srcBtn).toBeVisible();
-    await expect(srcBtn).toContainText('공식 원문 537쪽 보기');
+    await expect(srcBtn).toContainText('공식 원문 56쪽 보기');
 
     const overview = sg.locator('.sg-overview');
     await expect(overview).toBeVisible();
     await expect(overview.locator('.sg-ov-confirmed')).toContainText('수수료 ₩60,000');
-    await expect(overview.locator('.sg-ov-conditional')).toContainText('일부 대상자에게만 해당');
-    await expect(overview.locator('.sg-ov-source')).toContainText('537쪽');
+    await expect(overview.locator('.sg-ov-source')).toContainText('56쪽');
     await expect(overview).toContainText('2026년 10월판');
     await expect(sg).not.toContainText('9월판');
 
     // order on the page
-    const order = [sg.locator('.sg-answer'), overview, sg.locator('.sg-fee'), sg.locator('.sg-program'), sg.locator('.sg-next'), sg.locator('.sg-evidence')];
+    const order = [sg.locator('.sg-answer'), overview, sg.locator('.sg-fee'), sg.locator('.sg-next'), sg.locator('.sg-evidence')];
     await expectReadingOrder(sg, order);
 
-    // the scheme is collapsed and explicitly conditional; the old universal wording is gone
-    const scheme = sg.locator('.sg-program-details');
-    await expect(scheme).toHaveCount(1);
-    await expect(scheme).toHaveJSProperty('open', false);
-    await expect(scheme.locator('summary')).toContainText('일부 대상자만');
-    await expect(sg).not.toContainText('아래 조건이 추가로 적용돼요');
-    await scheme.locator('summary').click();
-    await expect(scheme).toHaveJSProperty('open', true);
-    await expect(scheme).toContainText('일부 대상자에게만 적용되는 별도 제도예요');
+    // D-3 belongs to no special scheme
+    await expect(sg.locator('.sg-program-details')).toHaveCount(0);
 
-    // no inapplicable fee exemptions for F-4
+    // no inapplicable fee exemptions for D-3
     await expect(sg.locator('.sg-fee')).not.toContainText('면제·감경 조건');
 
     // evidence: open, procedure page first, fee law behind a disclosure
     const ev = sg.locator('#sgEvidence');
     await expect(ev).toHaveAttribute('open', /.*/);
     await expect(ev.locator('.sg-ev-group')).toContainText('이 절차의 공식 안내');
-    await expect(ev.locator('.sg-ev-primary')).toContainText('537쪽');
+    await expect(ev.locator('.sg-ev-primary')).toContainText('56쪽');
     const more = ev.locator('.sg-ev-more');
     await expect(more).toHaveJSProperty('open', false);
-    await expect(more.locator('> summary')).toContainText('수수료·법령 근거 5건');
+    await expect(more.locator('> summary')).toContainText(/수수료·법령 근거 \d+건/);
     await more.locator('> summary').click();
     await expect(more.locator('.sg-ev-law').first()).toBeVisible();
     await noHorizontalScroll(page);
   });
 
   test('the primary source action opens the manual page; action rows are 44px+ targets', async ({ page }) => {
-    await page.goto(q('F-4 체류기간 연장'));
+    await page.goto(q('D-3 체류기간 연장'));
     await ready(page, 'source-only');
     const sg = page.locator('#statusGuidance');
     const rows = sg.locator('.sg-next .sg-actions li > .sg-action');
     await expect(rows).toHaveCount(4);
     // one call to action each: the page lives in the answer head, Waymaker in its own block
-    await expect(sg.locator('[data-sg-action="open-page"][data-sg-page="537"]')).toHaveCount(2);
+    await expect(sg.locator('[data-sg-action="open-page"][data-sg-page="56"]')).toHaveCount(2);
     await expect(sg.locator('[data-sg-action="followup"]')).toHaveCount(1);
     await expect(rows.first()).toContainText('방문예약 안내');
     await page.waitForSelector('#statusGuidance[data-sg-state="ready"], body[data-sg-state="ready"]');
@@ -120,7 +127,7 @@ test.describe('F-4 extension result (source-only)', () => {
   });
 
   test('heading structure nests: one h2 answer title, then h3 sections', async ({ page }) => {
-    await page.goto(q('F-4 체류기간 연장'));
+    await page.goto(q('D-3 체류기간 연장'));
     await ready(page, 'source-only');
     const levels = await page.locator('#statusGuidance h2, #statusGuidance h3').evaluateAll((els) => els.filter((e) => !e.classList.contains('sg-sr')).map((e) => e.tagName));
     expect(levels[0]).toBe('H2');
@@ -129,7 +136,7 @@ test.describe('F-4 extension result (source-only)', () => {
   });
 
   test('English copy mirrors the structure and names the edition from the bundle', async ({ page }) => {
-    await page.goto(q('F-4 체류기간 연장'));
+    await page.goto(q('D-3 체류기간 연장'));
     await ready(page, 'source-only');
     await page.locator('#hero .cs-lang-searched').click();
     await page.locator('#csLangDialog [data-action="apply-language"][data-lang="en"]').click();
@@ -138,14 +145,14 @@ test.describe('F-4 extension result (source-only)', () => {
     await expect(sg.locator('.sg-overview h3')).toHaveText('At a glance', { timeout: 10_000 });
     await expect(sg.locator('.sg-overview')).toContainText('October 2026');
     await expect(sg.locator('.sg-program h3')).toHaveText('Special schemes that may apply');
-    await expect(sg.locator('.sg-answer .sg-btn-source')).toContainText('Open the source, p.537');
+    await expect(sg.locator('.sg-answer .sg-btn-source')).toContainText('Open the source, p.56');
     await expect(sg.locator('.sg-next .sg-action').first()).toContainText('Visit reservation guide');
     await expect(sg).not.toContainText('September');
     await noHorizontalScroll(page);
   });
 
   test('dark face keeps the overview and action rows visible', async ({ page }) => {
-    await page.goto(q('F-4 체류기간 연장'));
+    await page.goto(q('D-3 체류기간 연장'));
     await ready(page, 'source-only');
     await page.evaluate(() => { document.documentElement.setAttribute('data-theme', 'dark'); document.body.setAttribute('data-theme', 'dark'); });
     const sg = page.locator('#statusGuidance');

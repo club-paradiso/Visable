@@ -102,6 +102,13 @@ PROCEDURE_SECTION_LABELS = {  # stay manual section headings per procedure
     'registration_info_report': ['등록사항 변경신고', '외국인등록사항 변경신고'], 'residence_report': ['체류지 변경'], 'card_reissue': ['재발급'], 'workplace_report': ['취업개시 신고', '고용주 신고'],
     'program_condition_change': ['허가조건'],
 }
+# Compatriot handbook pages read and confirmed per status (2026-10-19 stay manual).
+DONGPO_CONFIRMED_PAGES = {
+    ('H-2', 'workplace_report'): 535,   # □ 방문취업 동포는 취업개시 신고를 하여야 합니다
+    ('H-2', 'workplace_change'): 532,   # 근무처 변경도 신고만으로 가능
+    ('F-4', 'status_grant'): 532,       # □ 재외동포(F-4) 체류자격 부여
+}
+COMMON_PROCEDURES = ('reentry', 'card_reissue', 'residence_report', 'registration_info_report')
 VISA_PROCEDURES = ['visa_issuance', 'visa_issuance_confirmation', 'electronic_visa']
 STAY_PROCEDURES = ['status_grant', 'status_change', 'extension', 'registration', 'card_reissue', 'activities_outside_status', 'part_time_work', 'workplace_change', 'workplace_report', 'reentry', 'residence_report', 'registration_info_report', 'program_condition_change']
 
@@ -649,9 +656,66 @@ def main():
             guidance_index[(c, g['procedure'])].append(g)
     override_index = {(o['target'], o['procedure']): o for o in overrides}
 
-    def section_page(manual, ch, procedure):
+    def heading_page(manual, ch, procedure):
+        """PDF page of the procedure's own section heading inside the chapter.
+
+        The HWP text carries each section label (외국인등록, 체류기간 연장허가 ...) on a line of
+        its own; a label merely mentioned in running text ("외국인등록을 마친 합법 체류자")
+        is not a heading. The first two content lines after the heading pin the PDF page.
+        """
+        if not ch or not ch.get('hwp_start') or not ch.get('pdf_start') or ch.get('key') == 'DONGPO':
+            # The compatriot handbook mixes C-3-8 / H-2 / F-4 / F-1·F-3 sections under the
+            # same labels; its pages are anchored by authored guidance instead.
+            return None
+        lo, hi = ch['hwp_start'] - 1, min(ch.get('hwp_end') or len(manual.lines), len(manual.lines))
+        for label in PROCEDURE_SECTION_LABELS.get(procedure, []):
+            ln = norm(label).replace(' ', '').replace('\n', '')
+            for i in range(lo, hi):
+                one = manual.norm_lines[i].strip().replace(' ', '')
+                two = one + (manual.norm_lines[i + 1].strip().replace(' ', '') if i + 1 < hi else '')
+                if one == ln:
+                    start = i + 1
+                elif one and two == ln:  # heading split over two table lines (체류자격 / 부 여)
+                    start = i + 2
+                else:
+                    continue
+                body = [manual.lines[j].strip() for j in range(start, min(start + 12, hi))]
+                body = [b for b in body if len(b) >= 10 and '목차' not in b]
+                if not body:
+                    continue
+                first = body[0][:28]
+                hits = manual.find_pages(first, ch['pdf_start'], ch.get('pdf_end') or manual.max_page)
+                if len(hits) > 1 and len(body) > 1:
+                    second = body[1][:20]
+                    narrowed = [pg for pg in hits if manual.find_pages(second, pg, pg + 1)]
+                    hits = narrowed or hits
+                if hits:
+                    # Generic first lines (신청서, 사진, 수수료) recur across sections: take the hit
+                    # closest to the heading's proportional position in the chapter.
+                    end = ch.get('pdf_end') or manual.max_page
+                    expected = ch['pdf_start'] + (i - lo) / max(1, hi - lo) * max(0, end - ch['pdf_start'])
+                    return min(hits, key=lambda pg: (abs(pg - expected), pg))
+        return None
+
+    def section_page(manual, ch, procedure, code_hint=None):
         """First page inside the chapter whose text carries the procedure's section label."""
         if not ch or not ch['pdf_start']:
+            return None
+        hp = heading_page(manual, ch, procedure)
+        if hp:
+            return hp
+        if ch.get('key') == 'DONGPO':
+            # A bare label match in the compatriot handbook lands in another status's
+            # section (H-2 extension for F-4, F-5 영주증 for F-4 재발급). Only pages read
+            # and confirmed for that status are used; status-independent procedures
+            # (재입국·재발급·신고) resolve through their COMMON rule, so the chapter start
+            # only keeps them listed.
+            parent = (code_hint or '').split('-')
+            parent = '-'.join(parent[:2]) if len(parent) >= 2 else code_hint
+            if (parent, procedure) in DONGPO_CONFIRMED_PAGES:
+                return DONGPO_CONFIRMED_PAGES[(parent, procedure)]
+            if procedure in COMMON_PROCEDURES:
+                return ch['pdf_start']
             return None
         for label in PROCEDURE_SECTION_LABELS.get(procedure, []):
             ln = norm(label)
@@ -693,7 +757,7 @@ def main():
                 else:
                     rec['state'] = 'NOT_APPLICABLE' if parent in ('F-5',) or not visa_ch else 'UNVERIFIED'
             else:
-                pg = section_page(stay, stay_ch, pid)
+                pg = section_page(stay, stay_ch, pid, code)
                 if pg:
                     rec['state'] = 'SOURCE_ONLY'
                     rec['document_guidance'] = 'SOURCE_ONLY'
