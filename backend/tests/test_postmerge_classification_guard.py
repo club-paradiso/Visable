@@ -44,6 +44,7 @@ class PostMergeClassificationGuardTests(unittest.TestCase):
             with self.subTest(text=text):
                 self.assertEqual(classify_procedure(text).fine, "registration_info_report")
                 self.assertIsNone(assess_classification(text))
+                self.assertEqual(pb._detect_task_type(text), "passport_info_report")
         self.assertEqual(classify_procedure("stay extension documents include a passport copy").fine,
                          "extension")
         self.assertIsNone(pb._detect_task_type("I renewed my passport at the embassy"))
