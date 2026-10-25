@@ -215,7 +215,7 @@ def main() -> int:
             bucket = "known"
         else:
             bucket = "new"
-            failure_output[name] = str(outcome["output"])[-4000:]
+            failure_output[name] = str(outcome["output"])
 
         results[bucket].append(name)
         details.append({
@@ -275,7 +275,20 @@ def main() -> int:
         print("\nERROR: NEW failures not in the register (regressions):")
         for name in results["new"]:
             print(f"\n----- {name} -----")
-            print(failure_output.get(name, "")[-2000:])
+            output = failure_output.get(name, "")
+            # Pytest's final failed-test identifiers can be buried ahead of a
+            # huge response-body dump. Preserve them in CI rather than cutting
+            # the captured output to the final 2,000 characters.
+            failure_lines = [
+                line for line in output.splitlines()
+                if line.startswith(("FAILED ", "ERROR ", "SUBFAILED "))
+            ]
+            if failure_lines:
+                print("Failure identifiers:")
+                for line in failure_lines[:40]:
+                    print("  " + line[:500])
+            print("Diagnostic tail:")
+            print(output[-2000:])
 
     if exit_code == 0 and results["known"]:
         print("\nResult: no regressions. "
