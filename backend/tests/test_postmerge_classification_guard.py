@@ -28,6 +28,11 @@ class PostMergeClassificationGuardTests(unittest.TestCase):
         self.assertEqual(assess_classification("Should I choose D-4 or D-2?", lang="en").reason,
                          "multiple_statuses")
         self.assertIsNone(assess_classification("G-1-5 연장", payload_code="G-1", lang="ko"))
+        self.assertIsNone(assess_classification("B-2로 들어와서 F-4로 바꿀 수 있나요?", lang="ko"))
+        self.assertIsNone(assess_classification("E-7-4 연장", payload_code="e74",
+                                               detected_top="E-7", detected_subcode="E-7-4"))
+        self.assertIsNone(assess_classification("F-6-1 자격 문의", payload_code="f61",
+                                               detected_top="F-6", detected_subcode="F-6-1"))
         self.assertIsNone(assess_classification("Can I change status to F-2-99?", payload_code="H-1", lang="en"))
         self.assertEqual(assess_classification("F-6 E-9 변경 가능?", lang="ko").reason,
                          "multiple_statuses")
