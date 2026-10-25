@@ -151,6 +151,9 @@ TASK_TYPE_TO_PROCEDURE: Dict[str, str] = {
     "marriage_divorce_status_change": "status_change",
     "academic_status_change": "reporting_duty",
     "overstay_deadline_risk": "extension",
+    "reentry": "reentry",
+    "visa_issuance": "visa_issuance",
+    "visa_issuance_confirmation": "visa_issuance_confirmation",
 }
 
 

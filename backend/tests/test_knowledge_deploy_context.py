@@ -20,7 +20,12 @@ from pathlib import Path
 BACKEND_DIR = Path(__file__).resolve().parents[1]
 
 _PROBE = r"""
-import json, sys
+import json, sys, socket
+def no_network(*args, **kwargs):
+    raise AssertionError("deployment context probe must remain offline")
+socket.socket.connect = no_network
+socket.socket.connect_ex = no_network
+socket.create_connection = no_network
 from services.knowledge import paths
 from services.knowledge.runtime import KnowledgePlatform
 platform = KnowledgePlatform.create(":memory:")
@@ -31,13 +36,16 @@ versions = manual_registry.load_manual_versions()
 
 # The Fast public /api/ask request in the state Railway Live Smoke #73 saw:
 # every Fast model cooling down (the model contributes nothing).
-from unittest.mock import patch
+from unittest.mock import patch, AsyncMock
 from fastapi.testclient import TestClient
 import paradiso_backend as pb
 from services.model_policy import resolve_answer_mode_models
 for model in resolve_answer_mode_models("fast")["candidates"]:
     pb._mark_openrouter_model_cooling_down(model)
-with patch.object(pb, "OPENROUTER_API_KEY", "sk-test-sentinel"):
+with patch.object(pb, "OPENROUTER_API_KEY", "sk-test-sentinel"), patch.object(
+    pb, "_call_openrouter", new=AsyncMock(side_effect=pb.HTTPException(
+        status_code=503, detail={"error": "upstream_unavailable", "status": 503,
+                                 "message": "offline provider unavailable"}))):
     ask = TestClient(pb.app).post("/api/ask", json={
         "question": "D-2 연장시 필수 서류", "visa_code": "D-2",
         "answer_mode": "fast", "stream": False,

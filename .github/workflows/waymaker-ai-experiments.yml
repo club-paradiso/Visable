@@ -27,6 +27,11 @@ on:
       - 'backend/services/legal_evidence.py'
       - 'backend/services/citation_verifier.py'
       - 'backend/services/law_cloud_fallback.py'
+      - 'backend/services/status_code_parser.py'
+      - 'backend/paradiso_backend.py'
+      - 'backend/services/knowledge/**'
+      - 'backend/services/legal_analysis.py'
+      - 'backend/services/immigration_tools.py'
       - '.github/workflows/waymaker-ai-experiments.yml'
   push:
     branches:
@@ -39,6 +44,11 @@ on:
       - 'backend/services/legal_evidence.py'
       - 'backend/services/citation_verifier.py'
       - 'backend/services/law_cloud_fallback.py'
+      - 'backend/services/status_code_parser.py'
+      - 'backend/paradiso_backend.py'
+      - 'backend/services/knowledge/**'
+      - 'backend/services/legal_analysis.py'
+      - 'backend/services/immigration_tools.py'
       - '.github/workflows/waymaker-ai-experiments.yml'
   workflow_dispatch:
 
@@ -87,7 +97,7 @@ jobs:
         run: |
           python3 -m waymaker_ai.evaluation.runner \
             --benchmark datasets/benchmark/v0 \
-            --baselines wlie,b1_python,b2_js,existing_law,mock_model \
+            --baselines wlie,b1_python,b2_js,b_fixed,existing_law,mock_model \
             --splits dev,test,adversarial_holdout \
             --out "$RUNNER_TEMP/waymaker-eval.json" \
             --fail-on-hard-gates wlie

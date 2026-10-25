@@ -123,17 +123,18 @@ def understand(
 
     mentioned = _mentioned_statuses(raw)
     parents = {_parent(c) for c in mentioned}
-    if not status_code and len(parents) == 1:
+    if not status_code and len(parents) == 1 and len(mentioned) == 1:
         # The backend text detector misses codes glued to Korean particles
         # ("D-2에서") and free-text sub-codes ("F-6-3"). Use the single parent
         # family the user named; a sub-code is still never guessed from text
         # (sub-code routing stays a payload-only declaration).
         status_code = next(iter(parents))
+        subcode = mentioned[0] if mentioned[0] != status_code else None
     missing: List[str] = []
     ambiguity = AmbiguityState.CLEAR.value
     needs_status = primary in (Intent.REQUIRED_DOCUMENTS.value, Intent.FEE.value, Intent.DEADLINE.value,
                                Intent.ONLINE_APPLICATION.value, Intent.ELIGIBILITY.value) or procedure is not None
-    if len(parents) > 1 and not status_code:
+    if (len(parents) > 1 or len(mentioned) > 1) and not status_code:
         ambiguity = AmbiguityState.MULTIPLE_STATUSES.value
         missing.append("status_code")
     elif needs_status and not status_code:

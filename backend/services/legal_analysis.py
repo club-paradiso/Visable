@@ -72,7 +72,7 @@ SOURCE_FAMILIES = (
     "intelligent_search",
 )
 
-_STATUS_RE = re.compile(r"(?<![A-Za-z0-9])([A-H])\s*-?\s*(\d{1,2})(?:\s*-?\s*(\d{1,3}))?(?![0-9])", re.IGNORECASE)
+from .status_code_parser import CODE_RE as _STATUS_RE, normalize_explicit, transition_pair
 _TRANSITION_RE = re.compile(
     r"([A-H]\s*-?\s*\d{1,2}(?:\s*-?\s*\d{1,3})?)\s*(?:에서|부터|->|→|to|from)\s*([A-H]\s*-?\s*\d{1,2}(?:\s*-?\s*\d{1,3})?)",
     re.IGNORECASE,
@@ -146,23 +146,20 @@ def status_work_capability(parent_code: Optional[str]) -> str:
 
 def _norm_code(raw: str) -> str:
     m = _STATUS_RE.search(raw or "")
-    if not m:
-        return (raw or "").upper()
-    base = f"{m.group(1).upper()}-{int(m.group(2))}"
-    return f"{base}-{int(m.group(3))}" if m.group(3) else base
+    return normalize_explicit(m.group(0)) if m else (raw or "").upper()
 
 
 def _parent_status(code: Optional[str]) -> Optional[str]:
     if not code:
         return None
-    m = re.match(r"^([A-H]-\d{1,2})(?:-\d{1,3})?$", code)
+    m = re.match(r"^([A-HKM]-\d{1,2})(?:-[0-9A-Z]{1,4})?$", code)
     return m.group(1) if m else code
 
 
 def _sub_status(code: Optional[str]) -> Optional[str]:
     if not code:
         return None
-    return code if re.match(r"^[A-H]-\d{1,2}-\d{1,3}$", code) else None
+    return code if re.match(r"^[A-HKM]-\d{1,2}-[0-9A-Z]{1,4}$", code) else None
 
 
 def _codes(text: str) -> List[str]:
@@ -470,11 +467,10 @@ def extract_immigration_facts(question: str, *, visa_code: Optional[str] = None)
                 current_status = code
                 break
     target_status: Optional[str] = None
-    transition = _TRANSITION_RE.search(text)
+    transition = transition_pair(text)
     completed_transition = bool(_COMPLETED_TRANSITION_RE.search(text))
     if transition:
-        previous_status = _norm_code(transition.group(1))
-        target_status = _norm_code(transition.group(2))
+        previous_status, target_status = transition
         # A planned change keeps the source as the current status; the existing
         # hint convention below records it as previous_status as well.
         current_status = target_status if completed_transition else previous_status
