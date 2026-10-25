@@ -64,17 +64,34 @@ body.civic-refresh::before, body.civic-refresh::after { display: none !important
 .cs-languages button { min-width: 58px; min-height: 44px; border: 1px solid var(--cs-line); border-radius: 24px; background: var(--cs-bg); font-size: 14px !important; }
 .cs-languages button[aria-pressed="true"] { background: var(--cs-green); color: var(--cs-bg) !important; border-color: var(--cs-green); }
 /* Active civic header controls: language immediately followed by the brightness toggle. */
+/* Brightness action is visually explicit; do not rely on an unlabeled icon.
+   Exactly one of the home/results headers is visible in any application state. */
 .cs-theme-toggle, .cs-languages .cs-theme-toggle {
-  display: inline-flex; flex: 0 0 44px; align-items: center; justify-content: center;
-  width: 44px; min-width: 44px; max-width: 44px; height: 44px; min-height: 44px;
-  padding: 0; border: 1px solid var(--cs-line); border-radius: 22px;
-  background: var(--cs-bg); color: var(--cs-ink); cursor: pointer; box-sizing: border-box;
+  display: inline-flex; flex: 0 0 auto; align-items: center; justify-content: center; gap: 6px;
+  width: auto; min-width: 44px; max-width: none; height: 44px; min-height: 44px;
+  padding: 0 12px; border: 1px solid var(--cs-line); border-radius: 22px;
+  background: var(--cs-bg); color: var(--cs-ink); cursor: pointer;
+  box-sizing: border-box; white-space: nowrap; font: inherit; font-weight: 650;
 }
 .cs-theme-toggle:hover { border-color: var(--cs-green); }
 .cs-theme-toggle:focus-visible { outline: 3px solid var(--cs-green); outline-offset: 2px; }
 .cs-theme-toggle .cs-theme-icon { flex: 0 0 20px; width: 20px; height: 20px; }
+.cs-theme-toggle .cs-theme-label { font-size: 13px; line-height: 1.1; }
 .cs-languages { align-items: center; flex: 0 0 auto; }
 .cs-languages .cs-lang { flex: 0 0 auto; width: auto; max-width: max-content; }
+#civicLanding .cs-nav .cs-languages > .cs-theme-toggle {
+  display: inline-flex; visibility: visible; opacity: 1;
+  flex-shrink: 0; position: relative; z-index: 1;
+}
+@media (max-width: 680px) {
+  #civicLanding .cs-nav .cs-languages { gap: 8px; min-width: 0; }
+  #civicLanding .cs-nav .cs-lang-home { min-width: 46px; width: 46px; padding: 0 6px; justify-content: center; }
+  #civicLanding .cs-nav .cs-lang-home .cs-lang-name { display: none; }
+  #civicLanding .cs-nav .cs-languages > .cs-theme-toggle { padding-inline: 9px; }
+  #civicLanding .cs-nav .cs-theme-label { font-size: 12px; }
+  .civic-refresh.searched #hero .cs-theme-searched { width: 44px; min-width: 44px; padding: 0; }
+  .civic-refresh.searched #hero .cs-theme-searched .cs-theme-label { display: none; }
+}
 
 .cs-home { max-width: 1600px; margin: 0 auto; padding: 0 68px; }
 /* ---- search-first hero: headline, one dominant field, suggestions, examples ---- */
