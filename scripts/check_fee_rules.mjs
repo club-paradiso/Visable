@@ -61,7 +61,7 @@ check('payment instruments follow 제73조 (card fees: cash / cash receipt, neve
   for (const id of ['registration_card', 'card_reissue']) { assert(byId[id].payment_instruments.includes('CASH_OR_CASH_RECEIPT') && !byId[id].payment_instruments.includes('REVENUE_STAMP'), id); }
   for (const id of ['extension_general', 'status_change_general', 'reentry_single']) assert(byId[id].payment_instruments.includes('REVENUE_STAMP'), id);
 });
-/* 제73조 as in force (2026-09-15) vs the amended text deferred to 2027-09-16 (부칙 제1조) */
+/* Current 2026-10-23 version identity vs Article 73 deferred to 2027-09-16. */
 const BEFORE = Date.parse('2027-09-15T23:59:59+09:00'); const AT = Date.parse('2027-09-16T00:00:00+09:00');
 check('제73조 in force today: no card payment anywhere; 등록증 fees cash / cash receipt only (제1호 가목)', () => {
   for (const f of fees) assert(!f.payment_instruments.includes('CARD'), `${f.id} lists card before the amendment takes effect`);
@@ -69,7 +69,7 @@ check('제73조 in force today: no card payment anywhere; 등록증 fees cash / 
     assert(byId[id].payment_instruments.join() === 'CASH_OR_CASH_RECEIPT', id);
     assert(byId[id].notes_ko.every((n) => !/카드/.test(n)) && byId[id].notes_ko.some((n) => /제73조 제1호 가목/.test(n)), `${id} note`);
   }
-  assert(!/카드/.test(bundle.law_sources.rule_73.quote_ko) && bundle.law_sources.rule_73.effective === '2026-09-15', 'rule_73 quote is the in-force text');
+  assert(!/카드/.test(bundle.law_sources.rule_73.quote_ko) && bundle.law_sources.rule_73.effective === '2026-10-23' && bundle.law_sources.rule_73.mst === '291289', 'rule_73 quote is the in-force text in the verified current version');
 });
 check('the amended 제73조 switches in at 2027-09-16 00:00 KST, not a second earlier', () => {
   const pre = SG.applySchedules(bundle, BEFORE); const post = SG.applySchedules(bundle, AT);
@@ -83,7 +83,7 @@ check('the amended 제73조 switches in at 2027-09-16 00:00 KST, not a second ea
     assert(!preBy[id].payment_instruments.includes('CARD') && postBy[id].payment_instruments.includes('CARD'), id);
   }
   assert(!/카드/.test(pre.law_sources.rule_73.quote_ko) && /신용카드·직불카드/.test(post.law_sources.rule_73.quote_ko), 'rule_73 quote switches');
-  assert(post.law_sources.rule_73.effective === '2027-09-16' && pre.law_sources.rule_73.effective === '2026-09-15', 'rule_73 effective date switches');
+  assert(post.law_sources.rule_73.effective === '2027-09-16' && pre.law_sources.rule_73.effective === '2026-10-23', 'rule_73 effective date switches');
   assert(SG.nextScheduleAt(bundle, BEFORE) === AT && SG.nextScheduleAt(bundle, AT) === null, 'next switch instant');
   assert(bundle.fees.find((f) => f.id === 'registration_card').payment_instruments.join() === 'CASH_OR_CASH_RECEIPT', 'applySchedules never mutates the bundle');
 });

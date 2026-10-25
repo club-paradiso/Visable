@@ -119,6 +119,7 @@
   }
   function collectUncertainties(model, lang, docs) {
     var u = [];
+    if ((model.evidence || []).some(function (e) { return e.type === 'regulation' && e.law.body_review_state === 'PREVIOUS_VERSION_SUMMARY_ONLY'; })) u.push({ id: 'law_body_review', text: lang === 'en' ? 'The law version identity was checked; the current article text and forms have not been fully revalidated.' : '법령 버전 신원은 확인했지만 현행 조문·서식 전체를 다시 검증한 것은 아니에요.' });
     if ((model.evidence || []).some(function (e) { return e.type === 'manual'; })) u.push({ id: 'review', text: t(lang, 'unc').review });
     if (model.fees && model.fees.primary.some(function (f) { return f.review_state !== 'VERIFIED_REGULATION' && f.review_state !== 'MANUAL_EXPLICIT'; })) u.push({ id: 'fee_review', text: t(lang, 'unc').feeReview });
     if ((model.localPractice && model.localPractice.variations || []).some(function (v) { return /UNVERIFIED|CONFLICTING|STALE/.test(v.effectiveLayer); })) u.push({ id: 'local', text: t(lang, 'unc').local });

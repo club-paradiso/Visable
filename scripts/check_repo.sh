@@ -384,6 +384,7 @@ if command -v node >/dev/null 2>&1; then
   echo "[13c/14] Validating the Form Helper (inventory, exclusions, template drift, engine, exports)..."
   node scripts/check_form_helper.mjs
   node scripts/check_fee_rules.mjs
+  node scripts/check_legal_verification_scope.mjs
   node scripts/check_local_practice.mjs
   node scripts/check_waymaker_quick_answer.mjs
   node scripts/check_search_result_unification.mjs

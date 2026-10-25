@@ -307,15 +307,16 @@ def _form_markers(text):
 
 
 # --------------------------------------------------------------------------
-# Regulation sources (tier 1–3). Text read from law.go.kr on 2026-09-22 (current
-# editions: 출입국관리법 시행 2026-01-23, 시행령·시행규칙 시행 2026-09-15). The
+# Regulation sources (tier 1–3). Article summaries read on 2026-09-22.
+# Act/decree version identities rechecked 2026-10-25 (effective 2026-10-02);
+# this metadata repair does not certify a fresh article-body review. The
 # manual stays authoritative for status-specific document lists; the statute /
 # decree / rule are authoritative for fees, payment method, exemptions and the
 # status-independent procedures the manual has no chapter for.
 # --------------------------------------------------------------------------
-LAW_ACT = {'law_id': '001707', 'mst': '272921', 'title_ko': '출입국관리법', 'title_en': 'Immigration Act', 'tier': 1, 'kind': 'act', 'effective': '2026-01-23'}
-LAW_DECREE = {'law_id': '005256', 'mst': '289697', 'title_ko': '출입국관리법 시행령', 'title_en': 'Enforcement Decree of the Immigration Act', 'tier': 2, 'kind': 'decree', 'effective': '2026-09-15'}
-LAW_RULE = {'law_id': '008494', 'mst': '289833', 'title_ko': '출입국관리법 시행규칙', 'title_en': 'Enforcement Rule of the Immigration Act', 'tier': 3, 'kind': 'rule', 'effective': '2026-09-15'}
+LAW_ACT = {'law_id': '001707', 'mst': '290729', 'title_ko': '출입국관리법', 'title_en': 'Immigration Act', 'tier': 1, 'kind': 'act', 'effective': '2026-10-02'}
+LAW_DECREE = {'law_id': '005256', 'mst': '290501', 'title_ko': '출입국관리법 시행령', 'title_en': 'Enforcement Decree of the Immigration Act', 'tier': 2, 'kind': 'decree', 'effective': '2026-10-02'}
+LAW_RULE = {'law_id': '008494', 'mst': '291289', 'title_ko': '출입국관리법 시행규칙', 'title_en': 'Enforcement Rule of the Immigration Act', 'tier': 3, 'kind': 'rule', 'effective': '2026-10-23'}
 
 
 # 시행규칙 제73조 (MST 289833) as in force from 2026-09-15: office payments are 수입인지 or
@@ -329,8 +330,16 @@ RULE_73_AMENDED_SOURCE = '출입국관리법 시행규칙 부칙 <법무부령 �
 
 def _law(base, article, label_ko, label_en, quote_ko):
     art_url = article.replace(' ', '')
+    historical_mst = {'001707': '272921', '005256': '289697', '008494': '289833'}.get(base['law_id'])
     return dict(base, article=article, label_ko=label_ko, label_en=label_en, quote_ko=quote_ko,
-                url=f"https://www.law.go.kr/법령/{base['title_ko'].replace(' ', '')}/{art_url}", checked_on='2026-09-22', review_state='CURRENT_TEXT_READ')
+                url=f"https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq={base['mst']}",
+                checked_on='2026-09-22', checked_on_scope='listed_article_summary',
+                identity_checked_on='2026-10-26',
+                identity_review_state='VERSION_HEADER_VERIFIED',
+                body_checked_on='2026-09-22', body_review_mst=historical_mst or base['mst'],
+                body_review_state='PREVIOUS_VERSION_SUMMARY_ONLY' if historical_mst else 'LISTED_ARTICLE_SUMMARY_ONLY',
+                verification_scope='Listed article summary only; no whole-law, eligibility or form certification.',
+                review_state='BODY_REVALIDATION_PENDING' if historical_mst else 'CURRENT_TEXT_READ')
 
 
 LAW_SOURCES = {
@@ -354,6 +363,21 @@ LAW_SOURCES['rule_73']['scheduled'] = [{'at': RULE_73_AMENDED_AT, 'source_ko': R
     'effective': RULE_73_AMENDED_AT[:10],
     'quote_ko': '청·사무소·출장소 납부 시 수입인지(외국인등록증 발급 및 재발급 수수료의 경우에는 현금 또는 현금 납입을 증명하는 증표), 신용카드·직불카드 또는 정보통신망을 이용한 전자화폐·전자결제; 시·군·구·읍·면·동 납부 시 수입증지·카드·전자결제'}}]
 LAW_SOURCES['rule_form_34']['url'] = 'https://www.law.go.kr/법령별표서식/(출입국관리법 시행규칙,20260915,별지제34호서식)'
+# Only this named article was re-read at the reference date. An unqualified
+# lawService body can contain the already-promulgated 2027 text: efYd matters.
+LAW_SOURCES['rule_73'].update(
+    checked_on='2026-10-26', body_checked_on='2026-10-26',
+    body_review_mst='291289', body_reference_date='2026-10-26',
+    body_review_state='ARTICLE_AT_REFERENCE_DATE_READ',
+    review_state='ARTICLE_TEXT_AT_REFERENCE_DATE_READ',
+    url='https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=291289&efYd=20261023',
+    verification_scope='Article 73 at 2026-10-26 and its deferred commencement only; no whole-law or form certification.')
+LAW_SOURCES['rule_73']['scheduled'][0]['set'].update(
+    mst='289833', body_review_mst='289833', body_reference_date='2027-09-16',
+    body_review_state='PROMULGATED_FUTURE_ARTICLE_READ',
+    review_state='PROMULGATED_FUTURE_ARTICLE_READ',
+    verification_scope='Promulgated Article 73 for deferred commencement only; no prediction of later amendments or whole-law/form certification.',
+    url='https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=289833&efYd=20270916')
 
 
 def docdef(id_):

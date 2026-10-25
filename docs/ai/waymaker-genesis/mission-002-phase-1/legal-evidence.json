@@ -1,0 +1,141 @@
+{
+  "checked_on": "2026-10-25",
+  "base_main": "601b514e1ef08829a1df7b164dfe63eccbc073d0",
+  "method": "Official public law.go.kr version headers read via web retrieval; no OC, no API key, no institutional records. Header identity only, not full article/form revalidation. No unavailable page treated as absence.",
+  "records": [
+    {
+      "key": "immigration_act",
+      "stable_id": "001707",
+      "before": {
+        "version": "272921",
+        "effective": "2026-01-23"
+      },
+      "after": {
+        "version": "290729",
+        "effective": "2026-10-02",
+        "promulgated": "2026-08-04",
+        "number": "21857"
+      },
+      "url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=290729"
+    },
+    {
+      "key": "immigration_decree",
+      "stable_id": "005256",
+      "before": {
+        "version": "289697",
+        "effective": "2026-09-15"
+      },
+      "after": {
+        "version": "290501",
+        "effective": "2026-10-02",
+        "promulgated": "2026-09-29",
+        "number": "36728"
+      },
+      "url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=290501"
+    },
+    {
+      "key": "nationality_decree",
+      "stable_id": "002922",
+      "before": {
+        "version": "243829",
+        "effective": "2022-07-12"
+      },
+      "after": {
+        "version": "246165",
+        "effective": "2022-12-20",
+        "promulgated": "2022-12-20",
+        "number": "33082"
+      },
+      "url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=246165"
+    },
+    {
+      "key": "nationality_rule",
+      "stable_id": "006766",
+      "before": {
+        "version": "262177",
+        "effective": "2024-04-29"
+      },
+      "after": {
+        "version": "291055",
+        "effective": "2026-10-02",
+        "promulgated": "2026-10-02",
+        "number": "1161"
+      },
+      "url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=291055"
+    },
+    {
+      "key": "document_help_rule_link",
+      "stable_id": "008494",
+      "before": {
+        "version": "266161"
+      },
+      "after": {
+        "version": "289833",
+        "effective": "2026-09-15",
+        "promulgated": "2026-09-15",
+        "number": "1125"
+      },
+      "url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=289833"
+    }
+  ],
+  "trainee_title": {
+    "before": "해외투자기업 기술연수생 등에 대한 사증발급인정서 발급 및 관리에 관한 지침",
+    "after": "해외투자기업 기술연수생 등에 대한 사증발급인정서 발급 및 관리에 관한 훈령",
+    "number": "법무부훈령 제1414호",
+    "effective": "2022-04-14",
+    "url": "https://www.moj.go.kr/bbs/moj/154/558261/artclView.do",
+    "scope": "Only authored D-3 extension note title corrected. Raw extracts and manual quotations unchanged."
+  },
+  "manual_sha256": {
+    "docs/source-manuals/2026-10-19/stay_manual_261019.hwp": "7effc9d03389e87dc3613db6da873a5d3807ddf4f506df2960f2b017fefabc07",
+    "docs/source-manuals/2026-10-19/visa_manual_261019.hwp": "8f9f2e049b3cf09d46bf563e2d97fde596c3743318635f985bf35b51f79a5e8f",
+    "docs/source-manuals/2026-10-19/stay_manual_261019.pdf": "4b176173f4c09ca1522f74e9a3e58cc0477a69aa6a28142bd675ca103f60397d",
+    "docs/source-manuals/2026-10-19/visa_manual_261019.pdf": "a2547f04ee484b77e1058ac15969127404c1c700db9fdc5e6127fa3b16cb6f68"
+  },
+  "f4_notice": {
+    "title": "재외동포(F-4) 자격의 취업활동 제한범위 고시",
+    "source_number": "제2026-35호",
+    "official_number": "제2026-65호",
+    "admRulId": "2090230",
+    "admRulSeq": "2100000275060",
+    "promulgated": "2026-02-12",
+    "effective": "2026-02-12",
+    "url": "https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000275060&chrClsCd=010201",
+    "retrieval": "law.go.kr public text via connected 법령mcp search_law and get_admin_rule, 2026-10-25; direct web body retrieval was incomplete. No copied third-party code.",
+    "scope": "Authored extraction label now identifies both numbers and conflict. Source PDF/HWP/raw corpus transcription unchanged. No automatic employment-rule or document-list changes."
+  },
+  "phase_1_1": {
+    "rechecked_on": "2026-10-26",
+    "main": "0d6171a0df1c3f4f48d3c4dffc8f13b9ab7e0752",
+    "nationality_rule_amendment": {
+      "mst": "291055",
+      "promulgation_number": "1161",
+      "effective": "2026-10-02",
+      "scope": "별지 제2호서식 귀화허가 신청서 제8쪽의 기관명 검찰청 → 공소청",
+      "amendment_url": "https://www.law.go.kr/LSW/lsRvsDocListP.do?chrClsCd=010202&lsId=006766&lsRvsGubun=all",
+      "form_url": "https://www.law.go.kr/법령별표서식/(국적법시행규칙,서식2)",
+      "method": "공식 제개정문 + 법령mcp get_annexes lawName=국적법 시행규칙, bylSeq=000200, knd=2 원문 제8쪽 대조",
+      "verified": "amendment scope and named institution on page 8 only",
+      "not_verified": [
+        "all forms against every historical version",
+        "individual eligibility",
+        "completeness of document checklists"
+      ]
+    },
+    "immigration_rule": {
+      "before_mst": "289833",
+      "after_mst": "291289",
+      "number": "1172",
+      "promulgated": "2026-10-23",
+      "effective": "2026-10-23",
+      "url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=291289",
+      "article73_current_query": {
+        "mst": "291289",
+        "efYd": "20261026",
+        "jo": "제73조"
+      },
+      "article73_scope": "current Article 73 and the 1125 supplementary commencement clause only; other summaries/forms pending",
+      "unqualified_body_warning": "get_law_text mst=291289 without efYd returned the promulgated future card-payment wording; date-qualified response returned the in-force wording. Never treat header identity as article effectiveness."
+    }
+  }
+}

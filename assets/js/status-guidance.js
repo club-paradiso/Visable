@@ -1288,7 +1288,14 @@
         var ls = ev.law;
         var claims = ev.claims.filter(function (c, i, a) { return c && a.indexOf(c) === i; }).slice(0, 4).join(' · ');
         var lawTitle = (lang === 'en' ? ls.title_en : ls.title_ko) + ' ' + ls.article;
+        var reviewScope = ls.body_review_state === 'PREVIOUS_VERSION_SUMMARY_ONLY'
+          ? (lang === 'en' ? 'Version identity checked ' + ls.identity_checked_on + '; the current article text needs revalidation. The summary was reviewed on ' + ls.body_checked_on + ' against a previous version.'
+            : '버전 신원 확인 ' + ls.identity_checked_on + ' · 현행 조문 내용은 재검토 필요. 요약 검토일 ' + ls.body_checked_on + '은 이전 판본 기준입니다.')
+          : (ls.body_review_state === 'ARTICLE_AT_REFERENCE_DATE_READ'
+            ? (lang === 'en' ? 'Only this article was checked for reference date ' + ls.body_reference_date + '; this is not a review of the whole law or its forms.'
+              : '기준일 ' + ls.body_reference_date + '에 해당 조문만 대조했습니다. 법령·서식 전체 검증은 아닙니다.') : '');
         return '<li class="sg-ev sg-ev-law"><div class="sg-evidence-meta">' + esc(tr(lang, 'evidenceRegulation')) + ' · <span' + koIf(lang, lawTitle) + '>' + esc(lawTitle) + '</span> · ' + esc(tr(lang, 'lawChecked', { date: ls.checked_on })) + '</div>' +
+          (reviewScope ? '<p class="sg-muted sg-law-review-scope">' + esc(reviewScope) + '</p>' : '') +
           '<div class="sg-evidence-section">' + esc(lang === 'en' ? ls.label_en : ls.label_ko) + '</div>' + (claims ? '<div class="sg-evidence-claims"' + koIf(lang, claims) + '>' + esc(claims) + '</div>' : '') +
           '<div class="sg-evidence-actions"><a href="' + esc(ls.url) + '" target="_blank" rel="noopener">' + esc(tr(lang, 'original')) + '</a></div></li>';
       }

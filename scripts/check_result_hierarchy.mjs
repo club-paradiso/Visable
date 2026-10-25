@@ -56,7 +56,8 @@ check('F-4 overview is derived from the model: fee confirmed, scheme conditional
   const ov = r.html.slice(at(r.html, 'class="sg-overview"'), at(r.html, 'class="sg-fee"'));
   ordered(ov, '확인된 내용', '수수료 ₩60,000 · 시행규칙 기준', '조건에 따라 달라요', '외국국적동포 통합 체류제도 (F-4 통합) — 일부 대상자에게만 해당', '원문에서 확인할 내용', '537쪽');
   assert(ov.includes('2026년 10월판 원문은 아직 사람이 대조 검토하지 않았어요'), 'review notice names the current edition');
-  assert(ov.includes('기준일 2026-10-19 · 공식 근거 6건'), 'basis line');
+  assert(ov.includes('기준일 2026-10-23 · 공식 근거 6건'), 'basis line includes the current regulation version date');
+  assert(r.html.includes('해당 조문만 대조했습니다. 법령·서식 전체 검증은 아닙니다.'), 'the latest source check must not claim whole-law review');
 });
 
 check('the 동포 scheme is a collapsed, conditional disclosure after the fee — never a universal rule', () => {
