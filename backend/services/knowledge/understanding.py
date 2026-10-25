@@ -21,7 +21,7 @@ import re
 from dataclasses import asdict, dataclass, field
 from typing import Any, Dict, List, Optional, Sequence
 
-from .models import TASK_TYPE_TO_PROCEDURE, AmbiguityState, Intent
+from .models import OFFICIAL_STATUS_PARENTS, TASK_TYPE_TO_PROCEDURE, AmbiguityState, Intent
 from ..procedure_classifier import classify_procedure
 
 _FACETS = (
@@ -144,6 +144,13 @@ def understand(
     elif needs_status and not status_code:
         ambiguity = AmbiguityState.MISSING_STATUS.value
         missing.append("status_code")
+    unrecognized = bool(status_code) and re.fullmatch(r"[A-H]-\d{1,2}", _parent(status_code)) is not None \
+        and _parent(status_code) not in OFFICIAL_STATUS_PARENTS
+    if unrecognized:
+        # A syntactically valid but non-existent symbol (e.g. F-10) must be
+        # confirmed by the user; it never selects a status-specific answer.
+        ambiguity = AmbiguityState.UNRECOGNIZED_STATUS.value
+        missing.append("status_code_confirmation")
     if primary == Intent.REQUIRED_DOCUMENTS.value and status_code and not procedure and not fine.fine:
         ambiguity = AmbiguityState.MISSING_PROCEDURE.value if ambiguity == AmbiguityState.CLEAR.value else ambiguity
         missing.append("procedure")
@@ -151,6 +158,8 @@ def understand(
     if (fine.fine and fine.fine != retrieval_procedure) or fine.candidates and not fine.fine:
         retrieval_procedure = None
     if fine.reason == "passport_service_not_immigration":
+        retrieval_procedure = None
+    if unrecognized:
         retrieval_procedure = None
 
     return QueryUnderstanding(

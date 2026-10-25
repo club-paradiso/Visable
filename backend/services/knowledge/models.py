@@ -206,6 +206,19 @@ class AmbiguityState(str, Enum):
     MISSING_PROCEDURE = "missing_procedure"
     MISSING_SUBCODE = "missing_subcode"
     MULTIPLE_STATUSES = "multiple_statuses"
+    UNRECOGNIZED_STATUS = "unrecognized_status"
+
+
+# Status symbols that exist in the Enforcement Decree of the Immigration Act
+# (MST 290501, in force 2026-10-02): Annex 1 (short-term), Annex 1-2
+# (long-term, amended 2026-09-15) and Annex 1-3 (F-5). Recognising a token
+# such as "F-10" syntactically must not route it as a real status.
+OFFICIAL_STATUS_PARENTS = frozenset({
+    "B-1", "B-2", "C-1", "C-3", "C-4",
+    "A-1", "A-2", "A-3", "D-1", "D-2", "D-3", "D-4", "D-5", "D-6", "D-7", "D-8", "D-9", "D-10",
+    "E-1", "E-2", "E-3", "E-4", "E-5", "E-6", "E-7", "E-8", "E-9", "E-10",
+    "F-1", "F-2", "F-3", "F-4", "F-5", "F-6", "G-1", "H-1", "H-2",
+})
 
 
 # ---------------------------------------------------------------------------
