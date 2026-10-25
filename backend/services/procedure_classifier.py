@@ -90,13 +90,41 @@ def classify_procedure(question: str) -> ProcedureDecision:
     if "registration_info" in objects:
         return decide("registration_info_report", "registration_information")
     if "passport" in objects:
-        # Reissuing a passport is outside the immigration filing taxonomy.
-        # Filing the changed passport information is a distinct procedure.
-        if "change" in actions:
+        # A passport is issued/renewed by a passport authority, not by Korean
+        # immigration. "renewed passport" and "new passport" in the shared
+        # vocabulary are NOT evidence that a change report was requested.
+        embassy_only = bool(re.search(r"대사관|영사관|embassy|consulat|공관", text, re.I))
+        immigration_filing = bool(re.search(
+            r"여권.{0,25}(?:정보\s*(?:변경|신고)|변경\s*신고|신고)"
+            r"|(?:신고|통보|등록사항\s*변경).{0,25}여권"
+            r"|\b(?:report|notify|declare|update|file)\b.{0,55}\bpassport\b"
+            r"|\bpassport\b.{0,55}\b(?:report|notification|filing|update)\b",
+            text, re.I,
+        ))
+        passport_service = bool(re.search(
+            r"여권(?:을|은|이|의)?\s*(?:갱신|연장|재발급|발급|교체|분실|잃어버|잃었)"
+            r"|\bpassport\b.{0,20}\b(?:renew\w*|reissu\w*|replac\w*|extend\w*|lost|missing)\b"
+            r"|\b(?:renew\w*|reissu\w*|replac\w*|extend\w*|lost)\b.{0,22}\b(?:my\s+)?passport\b",
+            text, re.I,
+        ))
+        if immigration_filing and not (embassy_only and not re.search(r"출입국|immigration", text, re.I)):
             return decide("registration_info_report", "passport_information_report")
-        if "reissue" in actions or re.search(r"여권\s*(?:갱신|연장)|passport\s*(?:renew|extend)|(?:renew|extend)\w*\s+(?:my\s+)?passport", text, re.I):
+        if passport_service:
             return ProcedureDecision(reason="passport_service_not_immigration")
+    # "First ever card" is an initial registration even if informal wording
+    # such as "new card" also appears in the reissue vocabulary.
+    first_card = bool(re.search(
+        r"외국인등록증.{0,15}(?:처음|최초)|(?:처음|최초|첫\s*번째).{0,20}(?:외국인등록증|등록증|거소증)"
+        r"|\b(?:first(?:\s*(?:time|ever))?|initial|never\s+had)\b.{0,45}\b(?:card|arc)\b"
+        r"|\b(?:card|arc)\b.{0,45}\b(?:first\s*(?:time|ever)|initial)\b",
+        text, re.I,
+    ))
+    lost_card = bool(re.search(r"분실|잃어버|잃었|lost|replac|reissu|훼손|damaged", text, re.I))
+    if "card" in objects and first_card and not lost_card:
+        return decide("registration", "first_card_registration")
     if "card" in objects and "reissue" in actions:
+        # Shared action vocabulary covers KO/EN/ZH/JA/VI and more. Requiring
+        # only KO/EN loss keywords here erased correct non-English requests.
         return decide("card_reissue", "card_reissue")
     if "card" in objects and "register" in actions:
         return decide("registration", "first_card_registration")
