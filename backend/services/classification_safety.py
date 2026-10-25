@@ -92,6 +92,17 @@ def assess_classification(
         directional = bool(len(codes) == 2 and (
             (pair and set(codes) == set(pair))
             or re.search(r"(?:상태인데|현재|체류\s*중).{0,45}(?:로|으로)\s*(?:변경|전환|바꾸|바꿔)", question, re.I)
+            # "I'm on D-4 and want to change to D-2" conveys a clear
+            # current/target direction even though codes are not adjacent.
+            # Require both a current-status cue and an explicit change-to
+            # target so mere two-code comparisons stay gated.
+            or re.search(
+                r"\b(?:on|have|hold|holding|currently\s+on|my\s+(?:current\s+)?(?:visa|status)\s+is)\s+"
+                r"(?:an?\s+)?[A-HKM]-?\d{1,2}(?:-[0-9A-Z]{1,4})?\b"
+                r".{0,90}?\b(?:change|switch|convert|transition)\s+(?:my\s+(?:visa|status)\s+)?"
+                r"to\s+[A-HKM]-?\d{1,2}(?:-[0-9A-Z]{1,4})?\b",
+                question, re.I,
+            )
         ))
         if not directional:
             reason = "multiple_statuses"
