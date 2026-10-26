@@ -336,6 +336,14 @@ What it shows:
 - **"both (as run)" exposed a simulation bug, not a defense bug:** after the confirmation had already corrected the button, the runner still applied the case's `on_label: switch`, which describes a user seeing the label of the button they first pressed — so it switched them back to the wrong manual (K-13 harmful). The runner now skips the label switch once the confirmation changed the button. Re-grading the recorded answers given before that extra switch (`first_output`, no model run) gives the last column; it is post hoc and was not re-run.
 - Remaining misses: P K-02, K-04 and W K-16, K-20 gave answers the strict string check rejects; W K-19 (a user who does not notice the label, and whose question the detector does not route) ended in an abstention.
 
+## Human label review (stage 3, started 2026-10-27)
+
+Every real-manual number above rests on machine-drafted labels and a verbatim string check. Before any of them is quoted as quality, a person reviews the labels.
+
+- **Review sheet:** https://claude.ai/artifact/DNXDQ7BKcRodGsJunQ7Gq4 (private to the owner until shared). It shows the 140 frozen real-manual cases (six sets), each with its question, the user-behaviour assumptions, the label (expected status, pages to cite or not, strings that must or must not appear), the full text of every evidence page with the expected strings highlighted, and E4B's answer from the run that measured that set. The reviewer marks each label *라벨 맞음*, *기대 문구 고침*, *기대 상태 고침* or *문항 빼기*, with the correction and a note; answers are stored in the page's `reviews` collection.
+- **Data:** `build_review_sheet.py --out <dir>/cases.json` rebuilds the bundle from the frozen case files, the page ledger and the run records.
+- **Applying the review (not done yet):** export the `reviews` collection into `reviews/label_review_<date>.json`; write corrected labels into *new* case files (`<set>_cases.v2.json`), never into the frozen ones; drop the cases marked *문항 빼기*; re-grade the recorded answers against the reviewed labels without re-running the model, and report those numbers as "human-reviewed labels" next to the machine-label numbers. Any later change to a defense is measured on cases written after the review.
+
 ## Existing repository boundaries
 - Mission 001 Artemis classifier configs in experiments/waymaker-ai/configs/artemis are prepared but never run; do NOT overwrite with QA experiment results.
 - Original configs assume AutoModelForCausalLM; Gemma 4's official Hugging Face text/multimodal loader uses AutoProcessor + AutoModelForMultimodalLM. Verify compatibility before any cloud SFT.
