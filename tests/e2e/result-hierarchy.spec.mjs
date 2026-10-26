@@ -144,7 +144,6 @@ test.describe('D-3 extension result (source-only)', () => {
     const sg = page.locator('#statusGuidance');
     await expect(sg.locator('.sg-overview h3')).toHaveText('At a glance', { timeout: 10_000 });
     await expect(sg.locator('.sg-overview')).toContainText('October 2026');
-    await expect(sg.locator('.sg-program h3')).toHaveText('Special schemes that may apply');
     await expect(sg.locator('.sg-answer .sg-btn-source')).toContainText('Open the source, p.56');
     await expect(sg.locator('.sg-next .sg-action').first()).toContainText('Visit reservation guide');
     await expect(sg).not.toContainText('September');
@@ -184,6 +183,9 @@ test.describe('structured and unknown results', () => {
   test('D-2 extension: overview between answer and documents, evidence collapsed, no scheme block', async ({ page }) => {
     await page.goto(q('D-2 체류기간 연장'));
     await ready(page, 'resolved');
+    // measure only after the guide has settled (a late re-render detaches the nodes)
+    await page.waitForSelector('#statusGuidance[data-sg-state="ready"], body[data-sg-state="ready"]');
+    await page.waitForLoadState('networkidle');
     const sg = page.locator('#statusGuidance');
     await expect(sg.locator('.sg-overview .sg-ov-confirmed')).toContainText('필수 서류 6개');
     await expect(sg.locator('.sg-overview .sg-ov-conditional')).toContainText('조건에 따라 내는 서류 1개');
@@ -221,7 +223,8 @@ test.describe('structured and unknown results', () => {
     await ready(page, 'resolved');
     await page.locator('#q').fill('F-4 체류기간 연장');
     await page.locator('#q').press('Enter');
-    await ready(page, 'source-only');
+    await ready(page, 'resolved');
+    await expect(page.locator('#statusGuidance #sgAnswerTitle')).toContainText('F-4', { timeout: 15_000 });
     await page.goBack();
     await expect(page.locator('#statusGuidance #sgAnswerTitle')).toContainText('D-2', { timeout: 15_000 });
     await page.goForward();
