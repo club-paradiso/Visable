@@ -212,6 +212,32 @@ No failure in this run traced to a page-extraction error. The post-check passed 
 
 What follows: the domain errors need a deterministic fix, not a prompt — route each question to the manual its procedure belongs to before evidence is chosen (the backend already has `manual_evidence.procedure_scopes`), and refuse to hand cross-domain pages to the model. Labels need human review before any number here is quoted as quality.
 
+### Stage 2 — procedure-to-manual routing (held-out)
+
+`procedure_route.py` decides which manual a question's procedure belongs to with the backend's own detector (`manual_evidence.procedure_scopes` and its stay-procedure regex, imported read-only) and withholds pages from the other manual, from the model and from the post-check. A question that names no procedure gets no manual (the backend's "no manual basis" state).
+
+`manual_routing_cases.json` (SHA-256 `4acdc57a…0dd1`, committed in `3433887` before the runs; `procedure_route.py` as of `61b56fc`): 24 questions over real 2026.10 pages, machine-drafted by a separate agent that read only the two corpus files and saw no routing code; **labels not human-reviewed**. Groups: **G** 8 same-manual distractors, **M** 6 with a wrong-manual distractor, **X** 6 given only wrong-manual pages, **I** 4 implicit procedure wording ("한국에 더 있고 싶어요"). 6 questions are in English.
+
+Two E4B runs with `--source-gate --integrity`, without and with `--route`, 2026-10-26:
+
+| | without route | with route |
+|---|---|---|
+| correct | 17/24 | 14/24 |
+| answers citing a wrong-manual page | **2** (M: N-09, N-11) | **0** |
+| harmful | 0 | 0 |
+| safe_abstain | 0 | 7 |
+| G / M / X / I correct | 7 / 3 / 6 / 1 | 4 / 4 / 6 / 0 |
+
+Records: [routing-unrouted](runs/2026-10-26-e4b-it-4bit-m1-8gb-routing-unrouted/run_record.json), [routing-routed](runs/2026-10-26-e4b-it-4bit-m1-8gb-routing-routed/run_record.json).
+
+What it shows:
+- Routing removed every wrong-manual citation (2 → 0) and fixed both M cases that had mixed manuals.
+- **It costs recall: 7 questions lost their gold page and were abstained on.** Five got no route because the question names no procedure the detector knows (N-03 and N-24 in English, N-07 "초청하려는 농가", N-21 "무비자로 … 좀 더 있고 싶어요", N-22 "불러서 … 비자는 어떻게"); two were routed to the wrong manual (N-05 "비자 받으면 유효기간이랑 체류기간" → stay because of "체류기간"; N-12, English, → stay).
+- Without routing the model handled X (only wrong-manual pages) by itself in this set (6/6); the first set had 2 of 4 wrong.
+- The remaining non-harmful misses in both runs are expected strings the answer did not contain (N-02, N-14, N-23), not wrong facts as far as the grader can tell.
+
+Nothing was changed after seeing this set. The next step is not to widen the regexes against these 24 questions: when the route is empty or ambiguous, the answer contract already has a `clarify` mode (Mission 002 Artemis v2 plan) — ask the user which procedure they mean instead of abstaining silently — and any detector change is measured on a new held-out set.
+
 ## Existing repository boundaries
 - Mission 001 Artemis classifier configs in experiments/waymaker-ai/configs/artemis are prepared but never run; do NOT overwrite with QA experiment results.
 - Original configs assume AutoModelForCausalLM; Gemma 4's official Hugging Face text/multimodal loader uses AutoProcessor + AutoModelForMultimodalLM. Verify compatibility before any cloud SFT.
