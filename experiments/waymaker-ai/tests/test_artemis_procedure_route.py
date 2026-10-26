@@ -50,3 +50,36 @@ def test_route_gate_keeps_only_the_routed_manual():
 
 def test_scope_names_are_the_corpus_domains():
     assert (pr.SCOPE_STAY, pr.SCOPE_VISA) == ("stay", "visa_issuance")
+
+
+def test_clarify_output_is_fixed_and_carries_no_claims():
+    tg = load_module("trust_gate")
+    out = pr.clarify_output()
+    assert out["status"] == "clarify" and out["citations"] == []
+    assert tg.extract_claims(out["answer"]) == []
+    assert "사증" in out["answer"] and "체류기간 연장" in out["answer"]
+
+
+def test_a_reply_that_names_the_procedure_routes_the_second_turn():
+    q = "가족을 한국으로 데려오려면 어떻게 하나요?"
+    assert pr.route(q) == []
+    assert {d for d, _ in pr.route(pr.with_reply(q, "아직 해외에 있고 사증발급인정서를 받아야 해요"))} == {"visa_issuance"}
+    assert {d for d, _ in pr.route(pr.with_reply(q, "지금 한국에 있고 체류기간을 연장하려고요"))} == {"stay"}
+
+
+def test_grader_counts_a_clarifying_question_as_its_own_outcome():
+    import json
+    grader = load_module("smoke_grader")
+    case = {"evidence": [{"id": "s1", "title": "t", "text": "x"}],
+            "expect": {"status": ["answered"], "must_cite": ["s1"]}}
+    g = grader.grade(case, json.dumps(pr.clarify_output(), ensure_ascii=False))
+    assert grader.classify(g) == "clarify"
+    ok = {"evidence": case["evidence"], "expect": {"status": ["clarify", "insufficient_evidence"]}}
+    assert grader.classify(grader.grade(ok, json.dumps(pr.clarify_output(), ensure_ascii=False))) == "correct"
+
+
+def test_runner_refuses_clarify_without_route(tmp_path):
+    runner = load_module("run_smoke")
+    with pytest.raises(SystemExit):
+        runner.main(["--model", "x/y", "--revision", "0" * 40, "--out", str(tmp_path / "r"), "--clarify"])
+    assert not (tmp_path / "r").exists()

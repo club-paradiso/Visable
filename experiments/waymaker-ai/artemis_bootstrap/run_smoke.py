@@ -159,6 +159,8 @@ def run(args: argparse.Namespace) -> int:
     cases = manual_ledger.resolve_cases(smoke_grader.load_cases(cases_path))
     if args.source_gate and not all(trust_gate.has_source_labels(c) for c in cases):
         raise SystemExit(f"--source-gate needs source labels on every evidence item; {cases_path.name} has none")
+    if args.clarify and not args.route:
+        raise SystemExit("--clarify needs --route")
     if args.integrity and not any("approved_sha256" in (e.get("source") or {}) for c in cases for e in c["evidence"]):
         raise SystemExit(f"--integrity needs approval hashes (source.approved_sha256); {cases_path.name} has none")
     prepare_out_dir(out)
@@ -186,6 +188,7 @@ def run(args: argparse.Namespace) -> int:
         "source_gate": args.source_gate,
         "integrity": args.integrity,
         "route": args.route,
+        "clarify": args.clarify,
         "post_check": "applied offline to every output when the cases carry source labels",
         "prompts_persisted": False,
         "status": "started",
@@ -230,19 +233,30 @@ def run(args: argparse.Namespace) -> int:
         for case in cases:
             record["stage"] = f"case:{case['id']}"
             prompt_case, gate_withheld = trust_gate.gate(case, args.integrity) if args.source_gate else (case, [])
-            route_withheld, scopes = [], []
+            route_withheld, scopes, turns, clarified = [], [], 1, False
             if args.route:
-                prompt_case, route_withheld, scopes = procedure_route.route_gate(prompt_case)
-            messages = smoke_grader.build_messages(prompt_case, guard=args.evidence_guard)
+                gated_case = prompt_case
+                prompt_case, route_withheld, scopes = procedure_route.route_gate(gated_case)
+                if args.clarify and not scopes:
+                    reply = case.get("clarification_reply")
+                    if reply:  # the user answers the clarifying question; route again
+                        turns = 2
+                        asked = {**gated_case, "question": procedure_route.with_reply(case["question"], reply)}
+                        prompt_case, route_withheld, scopes = procedure_route.route_gate(asked)
+                    clarified = not scopes
             flagged = smoke_grader.screen_evidence(prompt_case) if args.evidence_guard != "off" else {}
-            prompt = tokenizer.apply_chat_template(
-                messages, add_generation_prompt=True, tokenize=False, enable_thinking=False
-            )
-            text, last = "", None
+            text, last, prompt = "", None, ""
             t0 = time.perf_counter()
-            for resp in stream_generate(model, tokenizer, prompt, max_tokens=args.max_tokens, sampler=sampler):
-                text += resp.text
-                last = resp
+            if clarified:  # no route even after a reply: the fixed question goes back, no model call
+                text = json.dumps(procedure_route.clarify_output(), ensure_ascii=False)
+            else:
+                messages = smoke_grader.build_messages(prompt_case, guard=args.evidence_guard)
+                prompt = tokenizer.apply_chat_template(
+                    messages, add_generation_prompt=True, tokenize=False, enable_thinking=False
+                )
+                for resp in stream_generate(model, tokenizer, prompt, max_tokens=args.max_tokens, sampler=sampler):
+                    text += resp.text
+                    last = resp
             wall = time.perf_counter() - t0
             graded = smoke_grader.grade(case, text)
             checked: Dict[str, Any] = {}
@@ -250,7 +264,10 @@ def run(args: argparse.Namespace) -> int:
                 trusted = [e for e in case["evidence"] if trust_gate.is_trusted(e, args.integrity)]
                 if args.route:  # the post-check trusts only what the route allowed
                     trusted = [e for e in trusted if e["id"] not in route_withheld]
-                verdict = trust_gate.post_check(graded["parsed"], trusted)
+                verdict = (
+                    {"verdict": "clarify", "claims": [], "unsupported": [], "final": procedure_route.clarify_output()}
+                    if clarified else trust_gate.post_check(graded["parsed"], trusted)
+                )
                 final_grade = smoke_grader.grade(case, json.dumps(verdict["final"], ensure_ascii=False))
                 checked = {
                     "post_check": {k: v for k, v in verdict.items() if k != "final"},
@@ -266,6 +283,8 @@ def run(args: argparse.Namespace) -> int:
                 "source_gate_withheld": gate_withheld,
                 "route_scopes": [list(s) for s in scopes],
                 "route_withheld": route_withheld,
+                "turns": turns,
+                "clarified": clarified,
                 "integrity_failed": [e["id"] for e in case["evidence"]
                                      if trust_gate.is_trusted(e) and not trust_gate.integrity_ok(e)]
                 if args.integrity else [],
@@ -321,6 +340,8 @@ def main(argv: Optional[List[str]] = None) -> int:
                    help="(라) an approved item counts only if source.approved_sha256 matches its text (gate and post-check)")
     p.add_argument("--route", action="store_true",
                    help="show the model only pages from the manual the question's procedure belongs to")
+    p.add_argument("--clarify", action="store_true",
+                   help="with --route: when no manual can be chosen, ask which procedure; use the case's clarification_reply as turn 2")
     p.add_argument("--max-tokens", type=int, default=400)
     p.add_argument("--evidence-guard", choices=smoke_grader.GUARD_MODES, default="off",
                    help="screen evidence with WLIE's injection detector: off, mark it untrusted, or drop it")

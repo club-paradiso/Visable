@@ -48,3 +48,25 @@ def route_gate(case: Mapping[str, Any]) -> Tuple[Dict[str, Any], List[str], List
     kept = [e for e in case["evidence"] if (e.get("source") or {}).get("domain") in domains]
     withheld = [e["id"] for e in case["evidence"] if e not in kept]
     return {**case, "evidence": kept}, withheld, scopes
+
+
+# --- clarify -----------------------------------------------------------------
+# Measured on held-out routing cases (2026-10-26): an empty route withheld every
+# page and 5 of 24 questions were abstained on silently. A question that names
+# no procedure now gets one fixed question back instead (the "clarify" mode of
+# the Mission 002 answer contract). The user's reply is appended and routed
+# again; the model never sees pages before a route exists.
+
+CLARIFY_ANSWER = (
+    "어떤 절차를 물으시는지 먼저 확인할게요. 아직 해외에 계시고 사증(비자)이나 사증발급인정서를 새로 받으시려는 건가요, "
+    "아니면 지금 한국에 계시면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경 같은 절차를 하시려는 건가요?"
+)
+
+
+def clarify_output() -> Dict[str, Any]:
+    return {"status": "clarify", "answer": CLARIFY_ANSWER, "citations": []}
+
+
+def with_reply(question: str, reply: str) -> str:
+    """The question as routed and shown to the model after the user answers the clarifying question."""
+    return f"{question}\n(확인 질문에 대한 답) {reply}"
