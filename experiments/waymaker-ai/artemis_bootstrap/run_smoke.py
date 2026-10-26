@@ -46,6 +46,7 @@ from typing import Any, Callable, Dict, List, Optional
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import smoke_grader  # noqa: E402  (also puts experiments/waymaker-ai on sys.path for waymaker_ai)
 import trust_gate  # noqa: E402
+import manual_ledger  # noqa: E402
 
 LAYERS_TO_SIZE_CLASS = {42: "E4B", 35: "E2B"}
 PACKAGES = ("mlx", "mlx-metal", "mlx-lm", "transformers", "huggingface-hub", "tokenizers")
@@ -154,7 +155,7 @@ def run(args: argparse.Namespace) -> int:
     if free_disk_gb() < args.min_free_disk_gb:
         raise SystemExit(f"refusing to start: {free_disk_gb()} GB free, need {args.min_free_disk_gb} GB for swap headroom")
     cases_path = Path(args.cases).resolve()
-    cases = smoke_grader.load_cases(cases_path)
+    cases = manual_ledger.resolve_cases(smoke_grader.load_cases(cases_path))
     if args.source_gate and not all(trust_gate.has_source_labels(c) for c in cases):
         raise SystemExit(f"--source-gate needs source labels on every evidence item; {cases_path.name} has none")
     if args.integrity and not any("approved_sha256" in (e.get("source") or {}) for c in cases for e in c["evidence"]):

@@ -41,7 +41,10 @@ def nfc(text):
     return unicodedata.normalize("NFC", text).strip()
 
 
-CASE_FILES = sorted(BOOTSTRAP_DIR.glob("*_cases.json"))
+# Fictional case files carry their evidence text; real-manual case files carry
+# page references only (tests/test_artemis_manual_ledger.py checks those).
+CASE_FILES = sorted(p for p in BOOTSTRAP_DIR.glob("*_cases.json")
+                    if all("text" in e for c in grader.load_cases(p) for e in c["evidence"]))
 EXPECT_KEYS = {
     "status", "must_cite", "must_not_cite", "answer_must_contain", "answer_must_not_contain",
     "answer_must_contain_any_of_each", "answer_must_not_contain_money",
