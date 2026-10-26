@@ -100,3 +100,10 @@ def test_gate_to_a_button_route_withholds_the_other_manual():
     case = {"question": "q", "evidence": [page("v1", "visa_issuance"), page("s1", "stay")]}
     kept, withheld = pr.gate_to(case, pr.route_choice("visa_abroad"))
     assert [e["id"] for e in kept["evidence"]] == ["v1"] and withheld == ["s1"]
+
+
+def test_runner_always_ask_cannot_be_combined_with_route(tmp_path):
+    runner = load_module("run_smoke")
+    with pytest.raises(SystemExit):
+        runner.main(["--model", "x/y", "--revision", "0" * 40, "--out", str(tmp_path / "r"), "--always-ask", "--route"])
+    assert not (tmp_path / "r").exists()

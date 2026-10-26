@@ -159,6 +159,8 @@ def run(args: argparse.Namespace) -> int:
     cases = manual_ledger.resolve_cases(smoke_grader.load_cases(cases_path))
     if args.source_gate and not all(trust_gate.has_source_labels(c) for c in cases):
         raise SystemExit(f"--source-gate needs source labels on every evidence item; {cases_path.name} has none")
+    if args.always_ask and (args.route or args.clarify):
+        raise SystemExit("--always-ask replaces --route/--clarify; use it alone")
     if args.clarify and not args.route:
         raise SystemExit("--clarify needs --route")
     if args.integrity and not any("approved_sha256" in (e.get("source") or {}) for c in cases for e in c["evidence"]):
@@ -189,6 +191,7 @@ def run(args: argparse.Namespace) -> int:
         "integrity": args.integrity,
         "route": args.route,
         "clarify": args.clarify,
+        "always_ask": args.always_ask,
         "post_check": "applied offline to every output when the cases carry source labels",
         "prompts_persisted": False,
         "status": "started",
@@ -234,12 +237,24 @@ def run(args: argparse.Namespace) -> int:
             record["stage"] = f"case:{case['id']}"
             prompt_case, gate_withheld = trust_gate.gate(case, args.integrity) if args.source_gate else (case, [])
             route_withheld, scopes, turns, clarified = [], [], 1, False
-            if args.route:
+            if args.always_ask:  # every question gets the two buttons; the pressed one is the route
+                gated_case = prompt_case
+                choice = case.get("user_choice") or case.get("clarification_choice")
+                scopes = procedure_route.route_choice(choice) if choice else []
+                if scopes:
+                    turns = 2
+                    label = dict(procedure_route.CLARIFY_CHOICES)[choice][1]
+                    asked = {**gated_case, "question": procedure_route.with_reply(case["question"], label)}
+                    prompt_case, route_withheld = procedure_route.gate_to(asked, scopes)
+                else:
+                    prompt_case, route_withheld = procedure_route.gate_to(gated_case, [])
+                clarified = not scopes
+            elif args.route:
                 gated_case = prompt_case
                 prompt_case, route_withheld, scopes = procedure_route.route_gate(gated_case)
                 if args.clarify and not scopes:
                     reply = case.get("clarification_reply")
-                    choice = case.get("clarification_choice")
+                    choice = case.get("clarification_choice") or case.get("user_choice")
                     if choice:  # the user pressed one of the two buttons: the route is the button
                         turns = 2
                         label = dict(procedure_route.CLARIFY_CHOICES).get(choice, ("", choice))[1]
@@ -269,7 +284,7 @@ def run(args: argparse.Namespace) -> int:
             checked: Dict[str, Any] = {}
             if trust_gate.has_source_labels(case):
                 trusted = [e for e in case["evidence"] if trust_gate.is_trusted(e, args.integrity)]
-                if args.route:  # the post-check trusts only what the route allowed
+                if args.route or args.always_ask:  # the post-check trusts only what the route allowed
                     trusted = [e for e in trusted if e["id"] not in route_withheld]
                 verdict = (
                     {"verdict": "clarify", "claims": [], "unsupported": [], "final": procedure_route.clarify_output()}
@@ -349,6 +364,8 @@ def main(argv: Optional[List[str]] = None) -> int:
                    help="show the model only pages from the manual the question's procedure belongs to")
     p.add_argument("--clarify", action="store_true",
                    help="with --route: when no manual can be chosen, ask which procedure; use the case's clarification_reply as turn 2")
+    p.add_argument("--always-ask", action="store_true",
+                   help="show the two buttons for every question; the pressed button (user_choice) is the only route")
     p.add_argument("--max-tokens", type=int, default=400)
     p.add_argument("--evidence-guard", choices=smoke_grader.GUARD_MODES, default="off",
                    help="screen evidence with WLIE's injection detector: off, mark it untrusted, or drop it")
