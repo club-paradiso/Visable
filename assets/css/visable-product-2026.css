@@ -1915,7 +1915,7 @@ body.product-nationality-hub .ni-page-foot {
 /* 3-f. 게이트웨이 그리드 — Pop 에서 `.p-gateway` 가 flex 로 떨어져 확정 시안의
    3열 배치(grid-column)가 통째로 무시되고 카드가 비대칭으로 흘렀다.
    확정 구조인 3열 그리드를 되돌린다. */
-:root[data-theme="archive_diary"] body.product-visable .p-gateway {
+:root[data-theme="archive_diary"] body.product-visable:not(.searched) .p-gateway {
   display: grid !important;
   grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
 }
