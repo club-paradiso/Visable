@@ -47,6 +47,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import smoke_grader  # noqa: E402  (also puts experiments/waymaker-ai on sys.path for waymaker_ai)
 import trust_gate  # noqa: E402
 import manual_ledger  # noqa: E402
+import procedure_route  # noqa: E402
 
 LAYERS_TO_SIZE_CLASS = {42: "E4B", 35: "E2B"}
 PACKAGES = ("mlx", "mlx-metal", "mlx-lm", "transformers", "huggingface-hub", "tokenizers")
@@ -184,6 +185,7 @@ def run(args: argparse.Namespace) -> int:
         "evidence_guard": args.evidence_guard,
         "source_gate": args.source_gate,
         "integrity": args.integrity,
+        "route": args.route,
         "post_check": "applied offline to every output when the cases carry source labels",
         "prompts_persisted": False,
         "status": "started",
@@ -228,6 +230,9 @@ def run(args: argparse.Namespace) -> int:
         for case in cases:
             record["stage"] = f"case:{case['id']}"
             prompt_case, gate_withheld = trust_gate.gate(case, args.integrity) if args.source_gate else (case, [])
+            route_withheld, scopes = [], []
+            if args.route:
+                prompt_case, route_withheld, scopes = procedure_route.route_gate(prompt_case)
             messages = smoke_grader.build_messages(prompt_case, guard=args.evidence_guard)
             flagged = smoke_grader.screen_evidence(prompt_case) if args.evidence_guard != "off" else {}
             prompt = tokenizer.apply_chat_template(
@@ -243,6 +248,8 @@ def run(args: argparse.Namespace) -> int:
             checked: Dict[str, Any] = {}
             if trust_gate.has_source_labels(case):
                 trusted = [e for e in case["evidence"] if trust_gate.is_trusted(e, args.integrity)]
+                if args.route:  # the post-check trusts only what the route allowed
+                    trusted = [e for e in trusted if e["id"] not in route_withheld]
                 verdict = trust_gate.post_check(graded["parsed"], trusted)
                 final_grade = smoke_grader.grade(case, json.dumps(verdict["final"], ensure_ascii=False))
                 checked = {
@@ -257,6 +264,8 @@ def run(args: argparse.Namespace) -> int:
                 "evidence_flags": {k: list(v) for k, v in flagged.items()},
                 "evidence_withheld": sorted(flagged) if args.evidence_guard == "drop" else [],
                 "source_gate_withheld": gate_withheld,
+                "route_scopes": [list(s) for s in scopes],
+                "route_withheld": route_withheld,
                 "integrity_failed": [e["id"] for e in case["evidence"]
                                      if trust_gate.is_trusted(e) and not trust_gate.integrity_ok(e)]
                 if args.integrity else [],
@@ -310,6 +319,8 @@ def main(argv: Optional[List[str]] = None) -> int:
                    help="(가) show the model only evidence whose source.approval_state is approved")
     p.add_argument("--integrity", action="store_true",
                    help="(라) an approved item counts only if source.approved_sha256 matches its text (gate and post-check)")
+    p.add_argument("--route", action="store_true",
+                   help="show the model only pages from the manual the question's procedure belongs to")
     p.add_argument("--max-tokens", type=int, default=400)
     p.add_argument("--evidence-guard", choices=smoke_grader.GUARD_MODES, default="off",
                    help="screen evidence with WLIE's injection detector: off, mark it untrusted, or drop it")
