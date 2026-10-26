@@ -263,6 +263,29 @@ What it shows:
 
 Options, not done here: (1) make the clarifying question a two-button choice (abroad/visa vs. in Korea/stay) so the reply is structured and routing is exact — a product decision, deterministic; (2) improve `manual_evidence.procedure_scopes` itself — that is production code used by `/api/ask`, so it belongs in a separate PR with the owner's approval and its own tests; (3) let the model classify the procedure into two labels — measurable, but it moves a hard rule onto a model.
 
+### Stage 2 — two-button clarify (held-out)
+
+The clarify output now carries two choices, "해외에서 비자 받기" (`visa_abroad` → visa manual) and "한국에서 체류 절차" (`stay_in_korea` → stay manual); a pressed button is the route, so turn 2 needs no text understanding.
+
+`manual_buttons_cases.json` (SHA-256 `2994b812…dd42a`, committed in `64b1099` before the runs; code as of `7c7058c`): 24 real-page cases, each with a wrong-manual distractor, machine-drafted by a separate agent that saw no routing code; **labels not human-reviewed**. **E** 8 name the procedure; **C** 10 do not, and carry the button the user would press; **N** 6 do not, and press nothing (correct: clarify or abstain).
+
+| | route only | route + two buttons |
+|---|---|---|
+| correct | 8/24 | 12/24 (11 after the post-check) |
+| C correct | 1/10 | 4/10 |
+| wrong-manual citations | 3 | 3 |
+| harmful | 0 | 0 |
+
+Records: [buttons-route-only](runs/2026-10-26-e4b-it-4bit-m1-8gb-buttons-route-only/run_record.json), [buttons-buttons](runs/2026-10-26-e4b-it-4bit-m1-8gb-buttons-buttons/run_record.json).
+
+What it shows:
+- **Every pressed button routed to the right manual.** The free-text problem of the previous set is gone.
+- **The remaining wrong-manual citations come from turn 1:** the detector confidently routed B-09, B-12 (visa intent) and N cases B-21, B-22 to the stay manual, so no button was ever shown.
+- Three questions that do name their procedure (B-02, B-04 in English, B-08) got no route and were asked to press a button — one extra click, not an error.
+- Several `other` outcomes are correct answers the strict string check rejects (B-05 "신고 사유 발생일로부터 15일 이내" against "신고사유 발생일로부터 15일 이내"; B-14). Human label review would raise the counts; it is not done.
+
+Next option (not done): show the two buttons for every question, not only when the route is empty, so the route always comes from the user and the detector can no longer misroute. Cost: one click per question.
+
 ## Existing repository boundaries
 - Mission 001 Artemis classifier configs in experiments/waymaker-ai/configs/artemis are prepared but never run; do NOT overwrite with QA experiment results.
 - Original configs assume AutoModelForCausalLM; Gemma 4's official Hugging Face text/multimodal loader uses AutoProcessor + AutoModelForMultimodalLM. Verify compatibility before any cloud SFT.

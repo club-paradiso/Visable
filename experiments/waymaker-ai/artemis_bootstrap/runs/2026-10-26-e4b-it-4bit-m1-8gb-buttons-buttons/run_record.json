@@ -1,0 +1,1619 @@
+{
+  "kind": "artemis_bootstrap_smoke",
+  "started_utc": "2026-10-26T14:07:10+00:00",
+  "machine": {
+    "model": "MacBookAir10,1",
+    "chip": "Apple M1",
+    "memory_bytes": 8589934592,
+    "macos": "15.6.1",
+    "python": "3.11.15"
+  },
+  "versions": {
+    "mlx": "0.32.4",
+    "mlx-metal": "0.32.4",
+    "mlx-lm": "0.32.2",
+    "transformers": "5.20.2",
+    "huggingface-hub": "2.3.0",
+    "tokenizers": "0.23.3"
+  },
+  "device": {
+    "device_name": "Apple M1",
+    "max_recommended_working_set_size": 5726633984,
+    "memory_size": 8589934592,
+    "architecture": "applegpu_g13g",
+    "max_buffer_length": 4294967296,
+    "resource_limit": 499000
+  },
+  "swap_before": "total = 4096.00M  used = 2543.38M  free = 1552.62M  (encrypted)",
+  "free_disk_gb_before": 9.32,
+  "cases_file": "manual_buttons_cases.json",
+  "cases_sha256": "2994b8126848d777918b13dd1eef0033fc93524063fc6011736b5941438dd42a",
+  "detector_on_labelled_evidence": null,
+  "decoding": {
+    "temperature": 0.0,
+    "max_tokens": 400,
+    "enable_thinking": false
+  },
+  "evidence_guard": "off",
+  "source_gate": true,
+  "integrity": true,
+  "route": true,
+  "clarify": true,
+  "post_check": "applied offline to every output when the cases carry source labels",
+  "prompts_persisted": false,
+  "status": "completed",
+  "stage": "done",
+  "model": {
+    "repo": "mlx-community/gemma-4-e4b-it-4bit",
+    "revision": "475b9088d29754a3379866cf5aeb6b41acd313c2",
+    "size_class_from_weights": "E4B",
+    "quantization": {
+      "group_size": 64,
+      "bits": 4,
+      "mode": "affine"
+    },
+    "loader": "mlx_lm.load (text tower only; vision/audio weights dropped by mlx_lm sanitize)",
+    "base_model": "google/gemma-4-E4B-it",
+    "source_revision": "fee6332c1abaafb77f6f9624236c63aa2f1d0187",
+    "license_in_card": "gemma"
+  },
+  "load_seconds": 7.18,
+  "memory_after_load_gb": 4.201,
+  "results": [
+    {
+      "case": "B-01-e3-visa-researcher-qualification",
+      "prompt_sha256": "fb7e07bbcbbd751711e401dfadfdea88749232ae1ec9bf6950223a542294a43d",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "visa_issuance",
+          "사증발급"
+        ]
+      ],
+      "route_withheld": [
+        "stay_manual_2026_10_19_pdf#p191"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 990,
+      "prompt_tps": 65.82,
+      "generation_tokens": 191,
+      "generation_tps": 6.08,
+      "finish_reason": "stop",
+      "wall_seconds": 49.6,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"국내 대학을 졸업한 석사 학위 소지자는 TIMES誌 선정 세계 200대 대학 또는 QS 세계 해외 우수대학 순위 500위 이내 해외 우수대학을 졸업하고 SCIE, A&HCI, SCI, SSCI 등재 논문의 주저자, 공저자(제2저자 이하), 교신저자로 확인되는 경우 경력 요건 면제 대상이 될 수 있습니다. 또한, 국내 석사 학위 소지자로서 해당 요건을 갖추지 않은 경우, 석사 학위 소지자는 3년 이상 경력자가 되어야 합니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p152\"\n  ]\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "partial",
+        "answer": "국내 대학을 졸업한 석사 학위 소지자는 TIMES誌 선정 세계 200대 대학 또는 QS 세계 해외 우수대학 순위 500위 이내 해외 우수대학을 졸업하고 SCIE, A&HCI, SCI, SSCI 등재 논문의 주저자, 공저자(제2저자 이하), 교신저자로 확인되는 경우 경력 요건 면제 대상이 될 수 있습니다. 또한, 국내 석사 학위 소지자로서 해당 요건을 갖추지 않은 경우, 석사 학위 소지자는 3년 이상 경력자가 되어야 합니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p152"
+        ]
+      },
+      "failures": [
+        "answer_missing:석사 학위 소지자로서 3년 이상 경력자"
+      ],
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "3년"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "partial",
+          "answer": "국내 대학을 졸업한 석사 학위 소지자는 TIMES誌 선정 세계 200대 대학 또는 QS 세계 해외 우수대학 순위 500위 이내 해외 우수대학을 졸업하고 SCIE, A&HCI, SCI, SSCI 등재 논문의 주저자, 공저자(제2저자 이하), 교신저자로 확인되는 경우 경력 요건 면제 대상이 될 수 있습니다. 또한, 국내 석사 학위 소지자로서 해당 요건을 갖추지 않은 경우, 석사 학위 소지자는 3년 이상 경력자가 되어야 합니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p152"
+          ]
+        },
+        "failures": [
+          "answer_missing:석사 학위 소지자로서 3년 이상 경력자"
+        ]
+      },
+      "outcome_raw": "other",
+      "outcome_checked": "other"
+    },
+    {
+      "case": "B-02-india-business-multiple-visa",
+      "prompt_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p43",
+        "stay_manual_2026_10_19_pdf#p27"
+      ],
+      "turns": 1,
+      "clarified": true,
+      "integrity_failed": [],
+      "prompt_tokens": null,
+      "prompt_tps": null,
+      "generation_tokens": null,
+      "generation_tps": null,
+      "finish_reason": null,
+      "wall_seconds": 0.0,
+      "output": "{\"status\": \"clarify\", \"answer\": \"어떤 절차를 물으시는지 먼저 확인할게요. 아래에서 골라 주세요. '해외에서 비자 받기'는 해외에서 사증(비자)이나 사증발급인정서를 새로 받는 경우이고, '한국에서 체류 절차'는 한국에 있으면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경을 하는 경우입니다.\", \"citations\": [], \"choices\": [{\"id\": \"visa_abroad\", \"label\": \"해외에서 비자 받기\"}, {\"id\": \"stay_in_korea\", \"label\": \"한국에서 체류 절차\"}]}",
+      "passed": false,
+      "parsed": {
+        "status": "clarify",
+        "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 아래에서 골라 주세요. '해외에서 비자 받기'는 해외에서 사증(비자)이나 사증발급인정서를 새로 받는 경우이고, '한국에서 체류 절차'는 한국에 있으면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경을 하는 경우입니다.",
+        "citations": [],
+        "choices": [
+          {
+            "id": "visa_abroad",
+            "label": "해외에서 비자 받기"
+          },
+          {
+            "id": "stay_in_korea",
+            "label": "한국에서 체류 절차"
+          }
+        ]
+      },
+      "failures": [
+        "status:clarify≠answered|partial",
+        "missing_citation:visa_manual_2026_10_19_pdf#p43",
+        "answer_missing:5년 복수사증 발급"
+      ],
+      "post_check": {
+        "verdict": "clarify",
+        "claims": [],
+        "unsupported": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "clarify",
+          "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 아래에서 골라 주세요. '해외에서 비자 받기'는 해외에서 사증(비자)이나 사증발급인정서를 새로 받는 경우이고, '한국에서 체류 절차'는 한국에 있으면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경을 하는 경우입니다.",
+          "citations": [],
+          "choices": [
+            {
+              "id": "visa_abroad",
+              "label": "해외에서 비자 받기"
+            },
+            {
+              "id": "stay_in_korea",
+              "label": "한국에서 체류 절차"
+            }
+          ]
+        },
+        "failures": [
+          "status:clarify≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p43",
+          "answer_missing:5년 복수사증 발급"
+        ]
+      },
+      "outcome_raw": "clarify",
+      "outcome_checked": "clarify"
+    },
+    {
+      "case": "B-03-d10-jobseeker-visa-length",
+      "prompt_sha256": "b3ef99d39550e924aa3f2dfac7e87d52ac4c9b4790e449fe34a2073be0894dba",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "visa_issuance",
+          "사증발급"
+        ],
+        [
+          "stay",
+          "체류 절차(질문에 명시)"
+        ]
+      ],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 1877,
+      "prompt_tps": 56.75,
+      "generation_tokens": 91,
+      "generation_tps": 6.27,
+      "finish_reason": "stop",
+      "wall_seconds": 47.78,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"재외공관장이 재량으로 체류기간 6개월의 단수 구직(D-10)사증을 발급할 수 있습니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p128\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "재외공관장이 재량으로 체류기간 6개월의 단수 구직(D-10)사증을 발급할 수 있습니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p128"
+        ]
+      },
+      "failures": [],
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "6개월"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "재외공관장이 재량으로 체류기간 6개월의 단수 구직(D-10)사증을 발급할 수 있습니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p128"
+          ]
+        },
+        "failures": []
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "B-04-e2-visa-degree-requirement",
+      "prompt_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p144",
+        "stay_manual_2026_10_19_pdf#p174"
+      ],
+      "turns": 1,
+      "clarified": true,
+      "integrity_failed": [],
+      "prompt_tokens": null,
+      "prompt_tps": null,
+      "generation_tokens": null,
+      "generation_tps": null,
+      "finish_reason": null,
+      "wall_seconds": 0.0,
+      "output": "{\"status\": \"clarify\", \"answer\": \"어떤 절차를 물으시는지 먼저 확인할게요. 아래에서 골라 주세요. '해외에서 비자 받기'는 해외에서 사증(비자)이나 사증발급인정서를 새로 받는 경우이고, '한국에서 체류 절차'는 한국에 있으면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경을 하는 경우입니다.\", \"citations\": [], \"choices\": [{\"id\": \"visa_abroad\", \"label\": \"해외에서 비자 받기\"}, {\"id\": \"stay_in_korea\", \"label\": \"한국에서 체류 절차\"}]}",
+      "passed": false,
+      "parsed": {
+        "status": "clarify",
+        "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 아래에서 골라 주세요. '해외에서 비자 받기'는 해외에서 사증(비자)이나 사증발급인정서를 새로 받는 경우이고, '한국에서 체류 절차'는 한국에 있으면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경을 하는 경우입니다.",
+        "citations": [],
+        "choices": [
+          {
+            "id": "visa_abroad",
+            "label": "해외에서 비자 받기"
+          },
+          {
+            "id": "stay_in_korea",
+            "label": "한국에서 체류 절차"
+          }
+        ]
+      },
+      "failures": [
+        "status:clarify≠answered|partial",
+        "missing_citation:visa_manual_2026_10_19_pdf#p144",
+        "answer_missing:학사이상의 학위를 소지한 자"
+      ],
+      "post_check": {
+        "verdict": "clarify",
+        "claims": [],
+        "unsupported": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "clarify",
+          "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 아래에서 골라 주세요. '해외에서 비자 받기'는 해외에서 사증(비자)이나 사증발급인정서를 새로 받는 경우이고, '한국에서 체류 절차'는 한국에 있으면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경을 하는 경우입니다.",
+          "citations": [],
+          "choices": [
+            {
+              "id": "visa_abroad",
+              "label": "해외에서 비자 받기"
+            },
+            {
+              "id": "stay_in_korea",
+              "label": "한국에서 체류 절차"
+            }
+          ]
+        },
+        "failures": [
+          "status:clarify≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p144",
+          "answer_missing:학사이상의 학위를 소지한 자"
+        ]
+      },
+      "outcome_raw": "clarify",
+      "outcome_checked": "clarify"
+    },
+    {
+      "case": "B-05-e3-workplace-change-report",
+      "prompt_sha256": "85131ac0f3b39d49360f52505a93d452f26459d0fdb7fd6a6c3228f1fcd10b13",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "활동범위"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p152"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 1081,
+      "prompt_tps": 57.71,
+      "generation_tokens": 102,
+      "generation_tps": 6.13,
+      "finish_reason": "stop",
+      "wall_seconds": 35.62,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"신고의무자인 외국인은 신고 사유 발생일로부터 15일 이내에 관할 출입국·외국인청(사무소·출장소)장에게 신고해야 합니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p191\"\n  ]\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "answered",
+        "answer": "신고의무자인 외국인은 신고 사유 발생일로부터 15일 이내에 관할 출입국·외국인청(사무소·출장소)장에게 신고해야 합니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p191"
+        ]
+      },
+      "failures": [
+        "answer_missing:신고사유 발생일로부터 15일 이내"
+      ],
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "15일"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "answered",
+          "answer": "신고의무자인 외국인은 신고 사유 발생일로부터 15일 이내에 관할 출입국·외국인청(사무소·출장소)장에게 신고해야 합니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p191"
+          ]
+        },
+        "failures": [
+          "answer_missing:신고사유 발생일로부터 15일 이내"
+        ]
+      },
+      "outcome_raw": "other",
+      "outcome_checked": "other"
+    },
+    {
+      "case": "B-06-d10-multiple-reentry-permit",
+      "prompt_sha256": "dde2c382fcfdfca6fae1546249dfe71356818cdadcc020f75233702ee766854c",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "재입국허가"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p128"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 1118,
+      "prompt_tps": 55.8,
+      "generation_tokens": 148,
+      "generation_tps": 5.98,
+      "finish_reason": "stop",
+      "wall_seconds": 45.1,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"출국 후 체류기간 범위 내에서 1년을 초과하여 2년 내에 재입국을 하려는 경우 복수재입국허가를 받아야 합니다. 다만, 사우디아라비아, 이란, 리비아의 국민 중 결혼이민(F-6), 유학(D-2), 일반연수(D-4)의 경우에는 복수재입국이 가능합니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p161\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "partial",
+        "answer": "출국 후 체류기간 범위 내에서 1년을 초과하여 2년 내에 재입국을 하려는 경우 복수재입국허가를 받아야 합니다. 다만, 사우디아라비아, 이란, 리비아의 국민 중 결혼이민(F-6), 유학(D-2), 일반연수(D-4)의 경우에는 복수재입국이 가능합니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p161"
+        ]
+      },
+      "failures": [],
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "1년"
+          },
+          {
+            "kind": "period",
+            "text": "2년"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "partial",
+          "answer": "출국 후 체류기간 범위 내에서 1년을 초과하여 2년 내에 재입국을 하려는 경우 복수재입국허가를 받아야 합니다. 다만, 사우디아라비아, 이란, 리비아의 국민 중 결혼이민(F-6), 유학(D-2), 일반연수(D-4)의 경우에는 복수재입국이 가능합니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p161"
+          ]
+        },
+        "failures": []
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "B-07-e9-extension-cap",
+      "prompt_sha256": "e325f2edcf898cb1873bd27f18860fe10dbcc57a66583fb6043d73a979a1d55b",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "활동범위"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p285"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 966,
+      "prompt_tps": 54.94,
+      "generation_tokens": 111,
+      "generation_tps": 6.19,
+      "finish_reason": "stop",
+      "wall_seconds": 35.81,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"체류기간 연장허가 상한은 최초 입국일로부터 3년이며, 재고용에 의한 취업기간 연장 허가기간 중에는 최초 입국일로부터 4년 10개월을 초과할 수 없습니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p330\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "체류기간 연장허가 상한은 최초 입국일로부터 3년이며, 재고용에 의한 취업기간 연장 허가기간 중에는 최초 입국일로부터 4년 10개월을 초과할 수 없습니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p330"
+        ]
+      },
+      "failures": [],
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "3년"
+          },
+          {
+            "kind": "period",
+            "text": "4년"
+          },
+          {
+            "kind": "period",
+            "text": "10개월"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "체류기간 연장허가 상한은 최초 입국일로부터 3년이며, 재고용에 의한 취업기간 연장 허가기간 중에는 최초 입국일로부터 4년 10개월을 초과할 수 없습니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p330"
+          ]
+        },
+        "failures": []
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "B-08-c3-extension-limit",
+      "prompt_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [
+        "stay_manual_2026_10_19_pdf#p27",
+        "visa_manual_2026_10_19_pdf#p43"
+      ],
+      "turns": 1,
+      "clarified": true,
+      "integrity_failed": [],
+      "prompt_tokens": null,
+      "prompt_tps": null,
+      "generation_tokens": null,
+      "generation_tps": null,
+      "finish_reason": null,
+      "wall_seconds": 0.0,
+      "output": "{\"status\": \"clarify\", \"answer\": \"어떤 절차를 물으시는지 먼저 확인할게요. 아래에서 골라 주세요. '해외에서 비자 받기'는 해외에서 사증(비자)이나 사증발급인정서를 새로 받는 경우이고, '한국에서 체류 절차'는 한국에 있으면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경을 하는 경우입니다.\", \"citations\": [], \"choices\": [{\"id\": \"visa_abroad\", \"label\": \"해외에서 비자 받기\"}, {\"id\": \"stay_in_korea\", \"label\": \"한국에서 체류 절차\"}]}",
+      "passed": false,
+      "parsed": {
+        "status": "clarify",
+        "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 아래에서 골라 주세요. '해외에서 비자 받기'는 해외에서 사증(비자)이나 사증발급인정서를 새로 받는 경우이고, '한국에서 체류 절차'는 한국에 있으면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경을 하는 경우입니다.",
+        "citations": [],
+        "choices": [
+          {
+            "id": "visa_abroad",
+            "label": "해외에서 비자 받기"
+          },
+          {
+            "id": "stay_in_korea",
+            "label": "한국에서 체류 절차"
+          }
+        ]
+      },
+      "failures": [
+        "status:clarify≠answered|partial",
+        "missing_citation:stay_manual_2026_10_19_pdf#p27",
+        "answer_missing:입국일로부터 체류기간 90일 범위 내 연장 가능"
+      ],
+      "post_check": {
+        "verdict": "clarify",
+        "claims": [],
+        "unsupported": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "clarify",
+          "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 아래에서 골라 주세요. '해외에서 비자 받기'는 해외에서 사증(비자)이나 사증발급인정서를 새로 받는 경우이고, '한국에서 체류 절차'는 한국에 있으면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경을 하는 경우입니다.",
+          "citations": [],
+          "choices": [
+            {
+              "id": "visa_abroad",
+              "label": "해외에서 비자 받기"
+            },
+            {
+              "id": "stay_in_korea",
+              "label": "한국에서 체류 절차"
+            }
+          ]
+        },
+        "failures": [
+          "status:clarify≠answered|partial",
+          "missing_citation:stay_manual_2026_10_19_pdf#p27",
+          "answer_missing:입국일로부터 체류기간 90일 범위 내 연장 가능"
+        ]
+      },
+      "outcome_raw": "clarify",
+      "outcome_checked": "clarify"
+    },
+    {
+      "case": "B-09-d4-language-course-length",
+      "prompt_sha256": "d004427a52c852d615aff862b0b3128b59d8cc8a105802fae0200371be4a6d90",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "체류 절차(질문에 명시)"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p74"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 980,
+      "prompt_tps": 57.85,
+      "generation_tokens": 239,
+      "generation_tps": 5.47,
+      "finish_reason": "stop",
+      "wall_seconds": 60.88,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"일반연수(D-4) 자격 소지자가 어학연수(D-4-1) 자격으로 체류할 경우, 어학연수(D-4-1) 자격 취득일부터 6개월이 경과된 경우 체류자격외 활동이 가능합니다. 또한, 체류자격 변경허가 시에는 외국인 등록 후 국내에서 합법적으로 체류 중인 장기체류자의 경우 자격 변경이 허용될 수 있으나, 단기체류자(B, C 계열 자격)에 대해서는 원칙적으로 자격 변경이 제한됩니다. 어학연수 체류자격 변경허가는 고등학교 졸업 이상 학력 소지자에게 가능하며, 외국어 연수(D-4-7)의 경우 고등학교 이하의 학교 재학생도 가능합니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p83\"\n  ]\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "partial",
+        "answer": "일반연수(D-4) 자격 소지자가 어학연수(D-4-1) 자격으로 체류할 경우, 어학연수(D-4-1) 자격 취득일부터 6개월이 경과된 경우 체류자격외 활동이 가능합니다. 또한, 체류자격 변경허가 시에는 외국인 등록 후 국내에서 합법적으로 체류 중인 장기체류자의 경우 자격 변경이 허용될 수 있으나, 단기체류자(B, C 계열 자격)에 대해서는 원칙적으로 자격 변경이 제한됩니다. 어학연수 체류자격 변경허가는 고등학교 졸업 이상 학력 소지자에게 가능하며, 외국어 연수(D-4-7)의 경우 고등학교 이하의 학교 재학생도 가능합니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p83"
+        ]
+      },
+      "failures": [
+        "missing_citation:visa_manual_2026_10_19_pdf#p74",
+        "forbidden_citation:stay_manual_2026_10_19_pdf#p83",
+        "answer_missing:체류기간 6개월 이하 단수 일반연수(D-4) 사증"
+      ],
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "6개월"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "partial",
+          "answer": "일반연수(D-4) 자격 소지자가 어학연수(D-4-1) 자격으로 체류할 경우, 어학연수(D-4-1) 자격 취득일부터 6개월이 경과된 경우 체류자격외 활동이 가능합니다. 또한, 체류자격 변경허가 시에는 외국인 등록 후 국내에서 합법적으로 체류 중인 장기체류자의 경우 자격 변경이 허용될 수 있으나, 단기체류자(B, C 계열 자격)에 대해서는 원칙적으로 자격 변경이 제한됩니다. 어학연수 체류자격 변경허가는 고등학교 졸업 이상 학력 소지자에게 가능하며, 외국어 연수(D-4-7)의 경우 고등학교 이하의 학교 재학생도 가능합니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p83"
+          ]
+        },
+        "failures": [
+          "missing_citation:visa_manual_2026_10_19_pdf#p74",
+          "forbidden_citation:stay_manual_2026_10_19_pdf#p83",
+          "answer_missing:체류기간 6개월 이하 단수 일반연수(D-4) 사증"
+        ]
+      },
+      "outcome_raw": "other",
+      "outcome_checked": "other"
+    },
+    {
+      "case": "B-10-f6-sponsor-income",
+      "prompt_sha256": "9810db4cc7277599b86ee053f3da49237ab626f8da84784318c5850c7cda1ef6",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "visa_issuance",
+          "해외에서 비자 받기"
+        ]
+      ],
+      "route_withheld": [
+        "stay_manual_2026_10_19_pdf#p489"
+      ],
+      "turns": 2,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 1451,
+      "prompt_tps": 57.33,
+      "generation_tokens": 130,
+      "generation_tps": 5.54,
+      "finish_reason": "stop",
+      "wall_seconds": 49.33,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"2025년 기준 소득 요건은 가구 구성원에 따라 다릅니다. 두 분이서만 거주할 경우(2인 가구)의 소득 기준은 초청인의 과거 1년간 연간 소득(세전)이 23,595,948원 이상이어야 합니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p335\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "partial",
+        "answer": "2025년 기준 소득 요건은 가구 구성원에 따라 다릅니다. 두 분이서만 거주할 경우(2인 가구)의 소득 기준은 초청인의 과거 1년간 연간 소득(세전)이 23,595,948원 이상이어야 합니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p335"
+        ]
+      },
+      "failures": [],
+      "post_check": {
+        "verdict": "withheld",
+        "claims": [
+          {
+            "kind": "money",
+            "text": "23,595,948원"
+          },
+          {
+            "kind": "period",
+            "text": "2025년"
+          },
+          {
+            "kind": "period",
+            "text": "1년"
+          }
+        ],
+        "unsupported": [
+          "23,595,948원"
+        ],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "citations": [],
+          "answer": "공식 근거로 확인되지 않은 금액·기간·날짜·서류가 들어 있어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+        },
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p335",
+          "answer_missing:23,595,948"
+        ]
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "safe_abstain"
+    },
+    {
+      "case": "B-11-h1-insurance-amount",
+      "prompt_sha256": "5ed5199f63583bf84e4acdeadb20b66883841c272c2a5217988698caa28dd3f1",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "visa_issuance",
+          "해외에서 비자 받기"
+        ]
+      ],
+      "route_withheld": [
+        "stay_manual_2026_10_19_pdf#p526"
+      ],
+      "turns": 2,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 896,
+      "prompt_tps": 49.26,
+      "generation_tokens": 128,
+      "generation_tps": 5.41,
+      "finish_reason": "stop",
+      "wall_seconds": 42.37,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"대한민국 체류 기간 중 4,000만원 이상 보장액의 의료보험 등에 가입하는 것이 권장됩니다. 이는 병원 치료와 본국 후송 비용을 보장하기 위함입니다. 다만, 상호주의에 따라 보험 증서 제출 여부 및 보험 보장액은 결정될 수 있습니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p350\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "대한민국 체류 기간 중 4,000만원 이상 보장액의 의료보험 등에 가입하는 것이 권장됩니다. 이는 병원 치료와 본국 후송 비용을 보장하기 위함입니다. 다만, 상호주의에 따라 보험 증서 제출 여부 및 보험 보장액은 결정될 수 있습니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p350"
+        ]
+      },
+      "failures": [],
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "money",
+            "text": "4,000만원"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "대한민국 체류 기간 중 4,000만원 이상 보장액의 의료보험 등에 가입하는 것이 권장됩니다. 이는 병원 치료와 본국 후송 비용을 보장하기 위함입니다. 다만, 상호주의에 따라 보험 증서 제출 여부 및 보험 보장액은 결정될 수 있습니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p350"
+          ]
+        },
+        "failures": []
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "B-12-f1d-digital-nomad-validity",
+      "prompt_sha256": "662d9ec8268238eb64150c678d5b264324ff6cc89f3bb208068ec530f66cfe2a",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "활동범위"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p305"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 889,
+      "prompt_tps": 48.42,
+      "generation_tokens": 70,
+      "generation_tps": 5.66,
+      "finish_reason": "stop",
+      "wall_seconds": 31.16,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"체류허가 기간은 1년이 부여됩니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p355\"\n  ]\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "answered",
+        "answer": "체류허가 기간은 1년이 부여됩니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p355"
+        ]
+      },
+      "failures": [
+        "missing_citation:visa_manual_2026_10_19_pdf#p305",
+        "forbidden_citation:stay_manual_2026_10_19_pdf#p355",
+        "answer_missing:복수비자 발급(유효기간 1년)"
+      ],
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "1년"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "answered",
+          "answer": "체류허가 기간은 1년이 부여됩니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p355"
+          ]
+        },
+        "failures": [
+          "missing_citation:visa_manual_2026_10_19_pdf#p305",
+          "forbidden_citation:stay_manual_2026_10_19_pdf#p355",
+          "answer_missing:복수비자 발급(유효기간 1년)"
+        ]
+      },
+      "outcome_raw": "other",
+      "outcome_checked": "other"
+    },
+    {
+      "case": "B-13-c45-lecture-days",
+      "prompt_sha256": "30379f4a5f94552f107d87f939b67665c64191b44e96b4f67cf386671f9e914c",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "visa_issuance",
+          "해외에서 비자 받기"
+        ]
+      ],
+      "route_withheld": [
+        "stay_manual_2026_10_19_pdf#p188"
+      ],
+      "turns": 2,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 914,
+      "prompt_tps": 51.64,
+      "generation_tokens": 86,
+      "generation_tps": 5.68,
+      "finish_reason": "stop",
+      "wall_seconds": 33.06,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"체류기간이 30일인 경우, 강의·강연·자문 등의 활동은 7일을 초과할 수 없습니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p58\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "partial",
+        "answer": "체류기간이 30일인 경우, 강의·강연·자문 등의 활동은 7일을 초과할 수 없습니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p58"
+        ]
+      },
+      "failures": [],
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "30일"
+          },
+          {
+            "kind": "period",
+            "text": "7일"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "partial",
+          "answer": "체류기간이 30일인 경우, 강의·강연·자문 등의 활동은 7일을 초과할 수 없습니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p58"
+          ]
+        },
+        "failures": []
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "B-14-d2-outside-research-pay",
+      "prompt_sha256": "2ffdcfa5b7abd15310aa713a6e591a6578b13cb19bbfaa9a0f91e72abd62bf97",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "한국에서 체류 절차"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p62"
+      ],
+      "turns": 2,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 1100,
+      "prompt_tps": 53.2,
+      "generation_tokens": 99,
+      "generation_tps": 5.81,
+      "finish_reason": "stop",
+      "wall_seconds": 38.03,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"소속대학 외 기관으로부터 연구비를 지급받는 경우, 학업과 무관한 연구·인턴 참여 시에는 체류자격외활동허가(E-3)가 필요합니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p40\"\n  ]\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "answered",
+        "answer": "소속대학 외 기관으로부터 연구비를 지급받는 경우, 학업과 무관한 연구·인턴 참여 시에는 체류자격외활동허가(E-3)가 필요합니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p40"
+        ]
+      },
+      "failures": [
+        "answer_missing:체류자격외활동허가(E-3) 필요"
+      ],
+      "post_check": {
+        "verdict": "pass",
+        "claims": [],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "answered",
+          "answer": "소속대학 외 기관으로부터 연구비를 지급받는 경우, 학업과 무관한 연구·인턴 참여 시에는 체류자격외활동허가(E-3)가 필요합니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p40"
+          ]
+        },
+        "failures": [
+          "answer_missing:체류자격외활동허가(E-3) 필요"
+        ]
+      },
+      "outcome_raw": "other",
+      "outcome_checked": "other"
+    },
+    {
+      "case": "B-15-d2-delivery-rider",
+      "prompt_sha256": "db61f344aa83ab9ef8116acdb9121c3e0de39bd61e9d2494c77edb42dadc2c21",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "한국에서 체류 절차"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p62"
+      ],
+      "turns": 2,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 1077,
+      "prompt_tps": 56.38,
+      "generation_tokens": 98,
+      "generation_tps": 5.77,
+      "finish_reason": "stop",
+      "wall_seconds": 36.3,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"택배기사, 배달대행업체 라이더 등의 활동은 (특수형태근로종사자의 활동)에 해당하며, 이는 허가 면제 대상에서 제외됩니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p38\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "택배기사, 배달대행업체 라이더 등의 활동은 (특수형태근로종사자의 활동)에 해당하며, 이는 허가 면제 대상에서 제외됩니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p38"
+        ]
+      },
+      "failures": [],
+      "post_check": {
+        "verdict": "pass",
+        "claims": [],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "택배기사, 배달대행업체 라이더 등의 활동은 (특수형태근로종사자의 활동)에 해당하며, 이는 허가 면제 대상에서 제외됩니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p38"
+          ]
+        },
+        "failures": []
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "B-16-h1-job-change",
+      "prompt_sha256": "9d0eae12cde86c49bdb8c04bb7eecdcce7274b201827792600a9c3f7c6d80151",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "한국에서 체류 절차"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p350"
+      ],
+      "turns": 2,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 929,
+      "prompt_tps": 53.61,
+      "generation_tokens": 122,
+      "generation_tps": 5.8,
+      "finish_reason": "stop",
+      "wall_seconds": 38.59,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"근거에는 근무처의 추가 또는 변경 없이 취업 활동이 가능한 경우와, 일정한 자격요건이나 자격증을 요하거나 E-7(특정활동) 직종에 해당하는 경우에 제한이 있다는 내용이 있습니다. 자세한 사항은 근거에 명시되어 있지 않습니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p526\"\n  ]\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "partial",
+        "answer": "근거에는 근무처의 추가 또는 변경 없이 취업 활동이 가능한 경우와, 일정한 자격요건이나 자격증을 요하거나 E-7(특정활동) 직종에 해당하는 경우에 제한이 있다는 내용이 있습니다. 자세한 사항은 근거에 명시되어 있지 않습니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p526"
+        ]
+      },
+      "failures": [
+        "answer_missing:별도의 근무처 추가 또는 변경없이 취업 활동 가능"
+      ],
+      "post_check": {
+        "verdict": "pass",
+        "claims": [],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "partial",
+          "answer": "근거에는 근무처의 추가 또는 변경 없이 취업 활동이 가능한 경우와, 일정한 자격요건이나 자격증을 요하거나 E-7(특정활동) 직종에 해당하는 경우에 제한이 있다는 내용이 있습니다. 자세한 사항은 근거에 명시되어 있지 않습니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p526"
+          ]
+        },
+        "failures": [
+          "answer_missing:별도의 근무처 추가 또는 변경없이 취업 활동 가능"
+        ]
+      },
+      "outcome_raw": "other",
+      "outcome_checked": "other"
+    },
+    {
+      "case": "B-17-f3-spouse-farm-work",
+      "prompt_sha256": "1b89f896a2d6f4a792c30fe0419c36b91ea82517065f9eb28be079ef984ad363",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "활동범위"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p316"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 1134,
+      "prompt_tps": 53.02,
+      "generation_tokens": 109,
+      "generation_tps": 5.84,
+      "finish_reason": "stop",
+      "wall_seconds": 40.27,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"H-2 비자 소지자의 배우자가 농업·임업·축산업 분야에서 활동하려면, 한국어능력 증빙서류로 TOPIK 2급 또는 사회통합프로그램 2급 이상이 필요합니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p428\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "H-2 비자 소지자의 배우자가 농업·임업·축산업 분야에서 활동하려면, 한국어능력 증빙서류로 TOPIK 2급 또는 사회통합프로그램 2급 이상이 필요합니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p428"
+        ]
+      },
+      "failures": [],
+      "post_check": {
+        "verdict": "pass",
+        "claims": [],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "H-2 비자 소지자의 배우자가 농업·임업·축산업 분야에서 활동하려면, 한국어능력 증빙서류로 TOPIK 2급 또는 사회통합프로그램 2급 이상이 필요합니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p428"
+          ]
+        },
+        "failures": []
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "B-18-e3-guest-lecture",
+      "prompt_sha256": "3e1ee6d14004d05e5b3d62896b190f6647bd9dd799501d210007b546cd2cc108",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "한국에서 체류 절차"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p58"
+      ],
+      "turns": 2,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 1107,
+      "prompt_tps": 59.28,
+      "generation_tokens": 172,
+      "generation_tps": 6.03,
+      "finish_reason": "stop",
+      "wall_seconds": 47.53,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"E-3 연구원 자격으로 다른 대학에서 강의 활동을 하려는 경우, 체류자격외 활동에 대한 정보가 있습니다. 본문에 따르면, E-1 또는 E-3 자격을 소지한 외국 고급과학 기술인력에 대한 교수 활동에 대한 내용이 있습니다. 또한, 90일을 초과하여 정기적으로 대학에서 강의 활동을 하고자 하는 경우에는 본부 승인 상신이 필요합니다. 구체적인 절차에 대해서는 본문에 언급된 내용 외에 추가적인 정보가 필요합니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p188\"\n  ]\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "partial",
+        "answer": "E-3 연구원 자격으로 다른 대학에서 강의 활동을 하려는 경우, 체류자격외 활동에 대한 정보가 있습니다. 본문에 따르면, E-1 또는 E-3 자격을 소지한 외국 고급과학 기술인력에 대한 교수 활동에 대한 내용이 있습니다. 또한, 90일을 초과하여 정기적으로 대학에서 강의 활동을 하고자 하는 경우에는 본부 승인 상신이 필요합니다. 구체적인 절차에 대해서는 본문에 언급된 내용 외에 추가적인 정보가 필요합니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p188"
+        ]
+      },
+      "failures": [
+        "answer_missing:90일 이내 강의활동"
+      ],
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "90일"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "partial",
+          "answer": "E-3 연구원 자격으로 다른 대학에서 강의 활동을 하려는 경우, 체류자격외 활동에 대한 정보가 있습니다. 본문에 따르면, E-1 또는 E-3 자격을 소지한 외국 고급과학 기술인력에 대한 교수 활동에 대한 내용이 있습니다. 또한, 90일을 초과하여 정기적으로 대학에서 강의 활동을 하고자 하는 경우에는 본부 승인 상신이 필요합니다. 구체적인 절차에 대해서는 본문에 언급된 내용 외에 추가적인 정보가 필요합니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p188"
+          ]
+        },
+        "failures": [
+          "answer_missing:90일 이내 강의활동"
+        ]
+      },
+      "outcome_raw": "other",
+      "outcome_checked": "other"
+    },
+    {
+      "case": "B-19-d2-cyber-university",
+      "prompt_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p62",
+        "stay_manual_2026_10_19_pdf#p35"
+      ],
+      "turns": 1,
+      "clarified": true,
+      "integrity_failed": [],
+      "prompt_tokens": null,
+      "prompt_tps": null,
+      "generation_tokens": null,
+      "generation_tps": null,
+      "finish_reason": null,
+      "wall_seconds": 0.0,
+      "output": "{\"status\": \"clarify\", \"answer\": \"어떤 절차를 물으시는지 먼저 확인할게요. 아래에서 골라 주세요. '해외에서 비자 받기'는 해외에서 사증(비자)이나 사증발급인정서를 새로 받는 경우이고, '한국에서 체류 절차'는 한국에 있으면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경을 하는 경우입니다.\", \"citations\": [], \"choices\": [{\"id\": \"visa_abroad\", \"label\": \"해외에서 비자 받기\"}, {\"id\": \"stay_in_korea\", \"label\": \"한국에서 체류 절차\"}]}",
+      "passed": true,
+      "parsed": {
+        "status": "clarify",
+        "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 아래에서 골라 주세요. '해외에서 비자 받기'는 해외에서 사증(비자)이나 사증발급인정서를 새로 받는 경우이고, '한국에서 체류 절차'는 한국에 있으면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경을 하는 경우입니다.",
+        "citations": [],
+        "choices": [
+          {
+            "id": "visa_abroad",
+            "label": "해외에서 비자 받기"
+          },
+          {
+            "id": "stay_in_korea",
+            "label": "한국에서 체류 절차"
+          }
+        ]
+      },
+      "failures": [],
+      "post_check": {
+        "verdict": "clarify",
+        "claims": [],
+        "unsupported": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "clarify",
+          "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 아래에서 골라 주세요. '해외에서 비자 받기'는 해외에서 사증(비자)이나 사증발급인정서를 새로 받는 경우이고, '한국에서 체류 절차'는 한국에 있으면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경을 하는 경우입니다.",
+          "citations": [],
+          "choices": [
+            {
+              "id": "visa_abroad",
+              "label": "해외에서 비자 받기"
+            },
+            {
+              "id": "stay_in_korea",
+              "label": "한국에서 체류 절차"
+            }
+          ]
+        },
+        "failures": []
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "B-20-f3-family-of-researcher",
+      "prompt_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p316",
+        "stay_manual_2026_10_19_pdf#p428"
+      ],
+      "turns": 1,
+      "clarified": true,
+      "integrity_failed": [],
+      "prompt_tokens": null,
+      "prompt_tps": null,
+      "generation_tokens": null,
+      "generation_tps": null,
+      "finish_reason": null,
+      "wall_seconds": 0.0,
+      "output": "{\"status\": \"clarify\", \"answer\": \"어떤 절차를 물으시는지 먼저 확인할게요. 아래에서 골라 주세요. '해외에서 비자 받기'는 해외에서 사증(비자)이나 사증발급인정서를 새로 받는 경우이고, '한국에서 체류 절차'는 한국에 있으면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경을 하는 경우입니다.\", \"citations\": [], \"choices\": [{\"id\": \"visa_abroad\", \"label\": \"해외에서 비자 받기\"}, {\"id\": \"stay_in_korea\", \"label\": \"한국에서 체류 절차\"}]}",
+      "passed": true,
+      "parsed": {
+        "status": "clarify",
+        "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 아래에서 골라 주세요. '해외에서 비자 받기'는 해외에서 사증(비자)이나 사증발급인정서를 새로 받는 경우이고, '한국에서 체류 절차'는 한국에 있으면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경을 하는 경우입니다.",
+        "citations": [],
+        "choices": [
+          {
+            "id": "visa_abroad",
+            "label": "해외에서 비자 받기"
+          },
+          {
+            "id": "stay_in_korea",
+            "label": "한국에서 체류 절차"
+          }
+        ]
+      },
+      "failures": [],
+      "post_check": {
+        "verdict": "clarify",
+        "claims": [],
+        "unsupported": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "clarify",
+          "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 아래에서 골라 주세요. '해외에서 비자 받기'는 해외에서 사증(비자)이나 사증발급인정서를 새로 받는 경우이고, '한국에서 체류 절차'는 한국에 있으면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경을 하는 경우입니다.",
+          "citations": [],
+          "choices": [
+            {
+              "id": "visa_abroad",
+              "label": "해외에서 비자 받기"
+            },
+            {
+              "id": "stay_in_korea",
+              "label": "한국에서 체류 절차"
+            }
+          ]
+        },
+        "failures": []
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "B-21-e9-eligible-countries",
+      "prompt_sha256": "18f186ef5b211f69373feb465ac3f261fc33c003d3e3c5ff289673cdbe9ede5e",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "활동범위"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p285"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 966,
+      "prompt_tps": 57.72,
+      "generation_tokens": 160,
+      "generation_tps": 6.64,
+      "finish_reason": "stop",
+      "wall_seconds": 41.05,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"근거에는 E-9 비자격으로 근무하는 외국인근로자가 있다는 사실은 언급되어 있으나, 해당 근거만으로는 어느 나라 사람이어야 하는지에 대한 정보는 없습니다. 체류 기간과 관련하여, 체류기간연장 허가 상한은 최초 입국일로부터 3년이며, 재고용에 의한 취업기간 연장 허가 기간 중에는 최초 입국일로부터 4년 10개월을 초과할 수 없습니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p330\"\n  ]\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "partial",
+        "answer": "근거에는 E-9 비자격으로 근무하는 외국인근로자가 있다는 사실은 언급되어 있으나, 해당 근거만으로는 어느 나라 사람이어야 하는지에 대한 정보는 없습니다. 체류 기간과 관련하여, 체류기간연장 허가 상한은 최초 입국일로부터 3년이며, 재고용에 의한 취업기간 연장 허가 기간 중에는 최초 입국일로부터 4년 10개월을 초과할 수 없습니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p330"
+        ]
+      },
+      "failures": [
+        "status:partial≠clarify|insufficient_evidence",
+        "forbidden_citation:stay_manual_2026_10_19_pdf#p330"
+      ],
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "3년"
+          },
+          {
+            "kind": "period",
+            "text": "4년"
+          },
+          {
+            "kind": "period",
+            "text": "10개월"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "partial",
+          "answer": "근거에는 E-9 비자격으로 근무하는 외국인근로자가 있다는 사실은 언급되어 있으나, 해당 근거만으로는 어느 나라 사람이어야 하는지에 대한 정보는 없습니다. 체류 기간과 관련하여, 체류기간연장 허가 상한은 최초 입국일로부터 3년이며, 재고용에 의한 취업기간 연장 허가 기간 중에는 최초 입국일로부터 4년 10개월을 초과할 수 없습니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p330"
+          ]
+        },
+        "failures": [
+          "status:partial≠clarify|insufficient_evidence",
+          "forbidden_citation:stay_manual_2026_10_19_pdf#p330"
+        ]
+      },
+      "outcome_raw": "other",
+      "outcome_checked": "other"
+    },
+    {
+      "case": "B-22-d4-work-while-studying",
+      "prompt_sha256": "3851de03115f50c978a21737f859c310ac76e08c1ac93ed74688878a1ad8e7cb",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "활동범위"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p74"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 974,
+      "prompt_tps": 61.83,
+      "generation_tokens": 106,
+      "generation_tps": 7.53,
+      "finish_reason": "stop",
+      "wall_seconds": 30.11,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"어학연수(D-4-1) 자격 소지자는 어학연수(D-4-1) 자격 취득일부터 6개월이 경과된 경우 체류자격 외 활동이 가능합니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p83\"\n  ]\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "partial",
+        "answer": "어학연수(D-4-1) 자격 소지자는 어학연수(D-4-1) 자격 취득일부터 6개월이 경과된 경우 체류자격 외 활동이 가능합니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p83"
+        ]
+      },
+      "failures": [
+        "status:partial≠clarify|insufficient_evidence"
+      ],
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "6개월"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "partial",
+          "answer": "어학연수(D-4-1) 자격 소지자는 어학연수(D-4-1) 자격 취득일부터 6개월이 경과된 경우 체류자격 외 활동이 가능합니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p83"
+          ]
+        },
+        "failures": [
+          "status:partial≠clarify|insufficient_evidence"
+        ]
+      },
+      "outcome_raw": "other",
+      "outcome_checked": "other"
+    },
+    {
+      "case": "B-23-e9-going-home-briefly",
+      "prompt_sha256": "50209021037186f16c59b573aa95d920cab29d56703f269908ad4afdc24b76ae",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "활동범위"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p285"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 1079,
+      "prompt_tps": 70.28,
+      "generation_tokens": 63,
+      "generation_tps": 7.51,
+      "finish_reason": "stop",
+      "wall_seconds": 23.97,
+      "output": "```json\n{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"제공된 근거에는 E-9 비자로 한국에서 근무하며 가족을 방문하기 위해 필요한 비용이나 준비물에 대한 정보가 없습니다.\",\n  \"citations\": []\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 E-9 비자로 한국에서 근무하며 가족을 방문하기 위해 필요한 비용이나 준비물에 대한 정보가 없습니다.",
+        "citations": []
+      },
+      "failures": [],
+      "post_check": {
+        "verdict": "pass",
+        "claims": [],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "answer": "제공된 근거에는 E-9 비자로 한국에서 근무하며 가족을 방문하기 위해 필요한 비용이나 준비물에 대한 정보가 없습니다.",
+          "citations": []
+        },
+        "failures": []
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "B-24-f1d-stay-length",
+      "prompt_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [
+        "stay_manual_2026_10_19_pdf#p355",
+        "visa_manual_2026_10_19_pdf#p305"
+      ],
+      "turns": 1,
+      "clarified": true,
+      "integrity_failed": [],
+      "prompt_tokens": null,
+      "prompt_tps": null,
+      "generation_tokens": null,
+      "generation_tps": null,
+      "finish_reason": null,
+      "wall_seconds": 0.0,
+      "output": "{\"status\": \"clarify\", \"answer\": \"어떤 절차를 물으시는지 먼저 확인할게요. 아래에서 골라 주세요. '해외에서 비자 받기'는 해외에서 사증(비자)이나 사증발급인정서를 새로 받는 경우이고, '한국에서 체류 절차'는 한국에 있으면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경을 하는 경우입니다.\", \"citations\": [], \"choices\": [{\"id\": \"visa_abroad\", \"label\": \"해외에서 비자 받기\"}, {\"id\": \"stay_in_korea\", \"label\": \"한국에서 체류 절차\"}]}",
+      "passed": true,
+      "parsed": {
+        "status": "clarify",
+        "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 아래에서 골라 주세요. '해외에서 비자 받기'는 해외에서 사증(비자)이나 사증발급인정서를 새로 받는 경우이고, '한국에서 체류 절차'는 한국에 있으면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경을 하는 경우입니다.",
+        "citations": [],
+        "choices": [
+          {
+            "id": "visa_abroad",
+            "label": "해외에서 비자 받기"
+          },
+          {
+            "id": "stay_in_korea",
+            "label": "한국에서 체류 절차"
+          }
+        ]
+      },
+      "failures": [],
+      "post_check": {
+        "verdict": "clarify",
+        "claims": [],
+        "unsupported": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "clarify",
+          "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 아래에서 골라 주세요. '해외에서 비자 받기'는 해외에서 사증(비자)이나 사증발급인정서를 새로 받는 경우이고, '한국에서 체류 절차'는 한국에 있으면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경을 하는 경우입니다.",
+          "citations": [],
+          "choices": [
+            {
+              "id": "visa_abroad",
+              "label": "해외에서 비자 받기"
+            },
+            {
+              "id": "stay_in_korea",
+              "label": "한국에서 체류 절차"
+            }
+          ]
+        },
+        "failures": []
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    }
+  ],
+  "summary": {
+    "cases": 24,
+    "passed": 12,
+    "failed": 12,
+    "outcomes_raw": {
+      "correct": 12,
+      "clarify": 3,
+      "safe_abstain": 0,
+      "harmful": 0,
+      "other": 9
+    },
+    "outcomes_checked": {
+      "correct": 11,
+      "clarify": 3,
+      "safe_abstain": 1,
+      "harmful": 0,
+      "other": 9
+    }
+  },
+  "peak_memory_gb": 4.982,
+  "max_rss_gb": 1.675,
+  "swap_after": "total = 4096.00M  used = 3345.56M  free = 750.44M  (encrypted)",
+  "free_disk_gb_after": 9.23,
+  "finished_utc": "2026-10-26T14:19:25+00:00"
+}
