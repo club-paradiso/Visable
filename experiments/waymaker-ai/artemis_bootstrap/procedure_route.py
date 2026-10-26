@@ -58,13 +58,39 @@ def route_gate(case: Mapping[str, Any]) -> Tuple[Dict[str, Any], List[str], List
 # again; the model never sees pages before a route exists.
 
 CLARIFY_ANSWER = (
-    "어떤 절차를 물으시는지 먼저 확인할게요. 아직 해외에 계시고 사증(비자)이나 사증발급인정서를 새로 받으시려는 건가요, "
-    "아니면 지금 한국에 계시면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경 같은 절차를 하시려는 건가요?"
+    "어떤 절차를 물으시는지 먼저 확인할게요. 아래에서 골라 주세요. "
+    "'해외에서 비자 받기'는 해외에서 사증(비자)이나 사증발급인정서를 새로 받는 경우이고, "
+    "'한국에서 체류 절차'는 한국에 있으면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경을 하는 경우입니다."
 )
 
 
+#: Two buttons instead of a free-text reply (2026-10-26): on held-out clarify
+#: cases the backend detector could not route 4 of 10 natural replies ("사증을
+#: 새로 받으려는 거예요", "I need to apply for …"). A pressed button names the
+#: manual exactly, so the second turn needs no text understanding at all.
+CLARIFY_CHOICES: Dict[str, Tuple[str, str]] = {
+    "visa_abroad": (SCOPE_VISA, "해외에서 비자 받기"),
+    "stay_in_korea": (SCOPE_STAY, "한국에서 체류 절차"),
+}
+
+
 def clarify_output() -> Dict[str, Any]:
-    return {"status": "clarify", "answer": CLARIFY_ANSWER, "citations": []}
+    return {
+        "status": "clarify", "answer": CLARIFY_ANSWER, "citations": [],
+        "choices": [{"id": k, "label": label} for k, (_, label) in CLARIFY_CHOICES.items()],
+    }
+
+
+def route_choice(choice: str) -> List[Tuple[str, str]]:
+    """The route a pressed button stands for; an unknown id routes nowhere."""
+    return [CLARIFY_CHOICES[choice]] if choice in CLARIFY_CHOICES else []
+
+
+def gate_to(case: Mapping[str, Any], scopes: List[Tuple[str, str]]) -> Tuple[Dict[str, Any], List[str]]:
+    """Keep only evidence from the given route's manual(s)."""
+    domains = {d for d, _ in scopes}
+    kept = [e for e in case["evidence"] if (e.get("source") or {}).get("domain") in domains]
+    return {**case, "evidence": kept}, [e["id"] for e in case["evidence"] if e not in kept]
 
 
 def with_reply(question: str, reply: str) -> str:

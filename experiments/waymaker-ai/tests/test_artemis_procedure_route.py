@@ -83,3 +83,20 @@ def test_runner_refuses_clarify_without_route(tmp_path):
     with pytest.raises(SystemExit):
         runner.main(["--model", "x/y", "--revision", "0" * 40, "--out", str(tmp_path / "r"), "--clarify"])
     assert not (tmp_path / "r").exists()
+
+
+def test_clarify_offers_exactly_two_buttons_that_route_exactly():
+    out = pr.clarify_output()
+    assert [c["id"] for c in out["choices"]] == ["visa_abroad", "stay_in_korea"]
+    assert [c["label"] for c in out["choices"]] == ["해외에서 비자 받기", "한국에서 체류 절차"]
+    assert pr.route_choice("visa_abroad")[0][0] == "visa_issuance"
+    assert pr.route_choice("stay_in_korea")[0][0] == "stay"
+    assert pr.route_choice("something_else") == []
+
+
+def test_gate_to_a_button_route_withholds_the_other_manual():
+    def page(i, domain):
+        return {"id": i, "title": "t", "text": "x", "source": {"domain": domain}}
+    case = {"question": "q", "evidence": [page("v1", "visa_issuance"), page("s1", "stay")]}
+    kept, withheld = pr.gate_to(case, pr.route_choice("visa_abroad"))
+    assert [e["id"] for e in kept["evidence"]] == ["v1"] and withheld == ["s1"]

@@ -239,7 +239,14 @@ def run(args: argparse.Namespace) -> int:
                 prompt_case, route_withheld, scopes = procedure_route.route_gate(gated_case)
                 if args.clarify and not scopes:
                     reply = case.get("clarification_reply")
-                    if reply:  # the user answers the clarifying question; route again
+                    choice = case.get("clarification_choice")
+                    if choice:  # the user pressed one of the two buttons: the route is the button
+                        turns = 2
+                        label = dict(procedure_route.CLARIFY_CHOICES).get(choice, ("", choice))[1]
+                        asked = {**gated_case, "question": procedure_route.with_reply(case["question"], label)}
+                        scopes = procedure_route.route_choice(choice)
+                        prompt_case, route_withheld = procedure_route.gate_to(asked, scopes)
+                    elif reply:  # free-text answer to the clarifying question; route again
                         turns = 2
                         asked = {**gated_case, "question": procedure_route.with_reply(case["question"], reply)}
                         prompt_case, route_withheld, scopes = procedure_route.route_gate(asked)
