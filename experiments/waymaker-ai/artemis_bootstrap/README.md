@@ -312,6 +312,30 @@ What it shows:
 
 Mitigations, not done: label every answer with the manual it came from ("'해외에서 비자 받기' 기준 안내") and offer a one-tap switch to the other button, so a mis-click is visible; and keep the detector as a cross-check that asks again when it confidently disagrees with the pressed button.
 
+### Stage 2 — mis-click guards (held-out)
+
+With `--always-ask`: `--cross-check` asks once ("'X'를 고르셨는데 질문은 'Y'에 더 가까워 보여요") when the backend detector routes the question to exactly one manual that is not the pressed button's — an empty or two-way route never overrides the user; `--label-switch` labels every answer "X 기준 안내" with a one-tap switch to the other button.
+
+`manual_misclick_cases.json` (SHA-256 `b04bb7f9…7166`, committed in `e4e4635` before the runs; code as of `bf3c6f6`): 24 real-page cases, machine-drafted by a separate agent that saw no routing, confirmation or labelling code; **labels not human-reviewed**. **P** 12 right button; **W** 8 mis-clicks, each recording what the user answers when asked to confirm (`confirm_choice`) and whether they tap the switch on seeing the label (`on_label`: 6 switch, 2 do not notice); **N** 4 no press. 11 questions in English.
+
+Four E4B runs (`--source-gate --integrity --always-ask`), 2026-10-27, partly on battery (one run took ~35 min):
+
+| | none | cross-check | label + switch | both (as run) | **both (simulation fixed, post hoc)** |
+|---|---|---|---|---|---|
+| correct | 14/24 | 17/24 | **19/24** | 16/24 | **19/24** |
+| W correct | 0/8 | 3/8 | 5/8 | 2/8 | 5/8 |
+| harmful | 1 | 0 | 0 | 1 | 0 |
+| P correct | 10/12 | 10/12 | 10/12 | 10/12 | 10/12 |
+| confirmations asked | — | 4 (all on W) | — | 4 | 4 |
+
+Records: [misclick-none](runs/2026-10-27-e4b-it-4bit-m1-8gb-misclick-none/run_record.json), [misclick-cross](runs/2026-10-27-e4b-it-4bit-m1-8gb-misclick-cross/run_record.json), [misclick-label](runs/2026-10-27-e4b-it-4bit-m1-8gb-misclick-label/run_record.json), [misclick-both](runs/2026-10-27-e4b-it-4bit-m1-8gb-misclick-both/run_record.json).
+
+What it shows:
+- Each guard alone removed the harmful mis-click answer. The cross-check asked 4 times, every time on a real mis-click, never on the 12 correct presses.
+- The label + switch recovered more mis-clicks (5/8) than the cross-check (3/8), because it also reaches users the detector cannot judge.
+- **"both (as run)" exposed a simulation bug, not a defense bug:** after the confirmation had already corrected the button, the runner still applied the case's `on_label: switch`, which describes a user seeing the label of the button they first pressed — so it switched them back to the wrong manual (K-13 harmful). The runner now skips the label switch once the confirmation changed the button. Re-grading the recorded answers given before that extra switch (`first_output`, no model run) gives the last column; it is post hoc and was not re-run.
+- Remaining misses: P K-02, K-04 and W K-16, K-20 gave answers the strict string check rejects; W K-19 (a user who does not notice the label, and whose question the detector does not route) ended in an abstention.
+
 ## Existing repository boundaries
 - Mission 001 Artemis classifier configs in experiments/waymaker-ai/configs/artemis are prepared but never run; do NOT overwrite with QA experiment results.
 - Original configs assume AutoModelForCausalLM; Gemma 4's official Hugging Face text/multimodal loader uses AutoProcessor + AutoModelForMultimodalLM. Verify compatibility before any cloud SFT.

@@ -308,8 +308,12 @@ def run(args: argparse.Namespace) -> int:
                 text = json.dumps(out, ensure_ascii=False)
             else:
                 text, last, prompt = generate(prompt_case)
-                if args.label_switch and choice and case.get("on_label") == "switch":
-                    # The answer was labelled with its manual; the user tapped the switch.
+                if (args.label_switch and choice and case.get("on_label") == "switch"
+                        and "confirm_switched" not in events):
+                    # The answer was labelled with its manual; the user tapped the switch. on_label
+                    # describes a user who sees the label of the button they first pressed; once
+                    # the confirmation has already changed the button, they have no reason to
+                    # switch back (simulation fix after the 2026-10-27 mis-click run, case K-13).
                     events.append("label_switched")
                     first_output = text
                     choice = procedure_route.other_choice(choice)
