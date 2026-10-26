@@ -286,6 +286,32 @@ What it shows:
 
 Next option (not done): show the two buttons for every question, not only when the route is empty, so the route always comes from the user and the detector can no longer misroute. Cost: one click per question.
 
+### Stage 2 — always show the two buttons (held-out)
+
+`--always-ask`: every question gets the two buttons and the pressed one (`user_choice`) is the only route; the detector is not used. No press → the clarify output.
+
+`manual_always_ask_cases.json` (SHA-256 `28bf2fef…4bba`, committed in `2fbfd54` before the runs; code as of `9485a84`): 24 real-page cases, each with a wrong-manual distractor, machine-drafted by a separate agent that saw no routing code; **labels not human-reviewed**. **P** 16 press the right button (8/8; 7 implicit questions); **W** 4 press the wrong one (a realistic slip — the correct answer is excluded by their own choice; correct behaviour is not to answer from the wrong manual); **N** 4 press nothing. 11 questions are in English.
+
+Three E4B runs with `--source-gate --integrity`:
+
+| | route only | buttons when no route | **always buttons** |
+|---|---|---|---|
+| correct | 12/24 | 20/24 | **22/24** |
+| P correct | 6/16 | 15/16 | 15/16 |
+| W correct | 3/4 | 2/4 | 3/4 |
+| N correct | 3/4 | 3/4 | 4/4 |
+| harmful | 0 | 1 | 1 |
+| buttons shown | 0 | 16 | 24 |
+
+Records: [always-ask-route-only](runs/2026-10-26-e4b-it-4bit-m1-8gb-always-ask-route-only/run_record.json), [always-ask-buttons-when-needed](runs/2026-10-26-e4b-it-4bit-m1-8gb-always-ask-buttons-when-needed/run_record.json), [always-ask-always-ask](runs/2026-10-26-e4b-it-4bit-m1-8gb-always-ask-always-ask/run_record.json).
+
+What it shows:
+- Always asking gives the best result on this set (22/24) and removes detector misroutes by construction.
+- **The new failure mode is the user's own mis-click.** In A-17 a person in Korea needing treatment pressed "해외에서 비자 받기"; the model saw only visa pages and told them about "1년 이내의 복수사증" (harmful by the grader). In the other three W cases the model declined to answer from the wrong manual.
+- The remaining P miss (A-01) answered with other true details from the page but not the expected one.
+
+Mitigations, not done: label every answer with the manual it came from ("'해외에서 비자 받기' 기준 안내") and offer a one-tap switch to the other button, so a mis-click is visible; and keep the detector as a cross-check that asks again when it confidently disagrees with the pressed button.
+
 ## Existing repository boundaries
 - Mission 001 Artemis classifier configs in experiments/waymaker-ai/configs/artemis are prepared but never run; do NOT overwrite with QA experiment results.
 - Original configs assume AutoModelForCausalLM; Gemma 4's official Hugging Face text/multimodal loader uses AutoProcessor + AutoModelForMultimodalLM. Verify compatibility before any cloud SFT.
