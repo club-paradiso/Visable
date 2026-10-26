@@ -251,3 +251,86 @@ html[dir="rtl"]:root[data-vt="neon"] #statusGuidance .sg-interp-text { border-ra
 @media print {
   #statusGuidance .vl-grid { display: block !important; }
 }
+
+/* ======================================================================= */
+/* D · ALIGNMENT AND PROPORTION FIXES (live audit 2026-10-26)               */
+/* Measured on the live site: the results header sat on its own grid      */
+/* (1200px + 40px + 19px padding) while the answer used the 1120px results */
+/* column, so logo, search bar and buttons never lined up with the content */
+/* below. Layout only: no copy, data or notices change.                    */
+/* ======================================================================= */
+
+/* results header uses the same column as #mainContent (1120px, 24px / 20px gutters) */
+body.civic-refresh.searched #hero.hero-container:not(#vt-a) { padding-left: 0 !important; padding-right: 0 !important; }
+body.civic-refresh.searched #hero .header-inner:not(#vt-a) { box-sizing: border-box !important; width: 100% !important; max-width: 1120px !important; margin-left: auto !important; margin-right: auto !important; padding-left: 24px !important; padding-right: 24px !important; }
+body.civic-refresh.searched #hero .logo-area:not(#vt-a) { justify-content: flex-start !important; margin-left: 0 !important; margin-right: 0 !important; padding-left: 0 !important; padding-right: 0 !important; }
+body.civic-refresh.searched #hero .logo-area .brand-wordmark-img:not(#vt-a) { margin-left: 0 !important; margin-right: 0 !important; }
+@media (max-width: 680px) {
+  body.civic-refresh.searched #hero .header-inner:not(#vt-a) { padding-left: 20px !important; padding-right: 20px !important; }
+}
+/* below desktop the mark shrank to 22px tall, a third smaller than the home mark */
+@media (max-width: 1023.98px) {
+  body.civic-refresh.searched #hero .brand-wordmark-img:not(#vt-a) { width: auto !important; height: 30px !important; max-height: 30px !important; }
+}
+
+/* results logo: the same theme-blue wordmark the home page shows (light only;
+   dark keeps its own white mark) */
+:root[data-vt] body.civic-refresh.searched:not([data-theme="dark"]) #hero .brand-wordmark-img:not(#vt-a) { content: url("../brand/logos/visable-wordmark-blue.svg") !important; filter: none !important; }
+
+/* Visable (default) result: the dark answer card painted the "확인한 내용" answers
+   in the same ink as the card (contrast 1.0) and greyed the scenario line */
+:root[data-vt="default"] #statusGuidance .sg-answer .sg-answered-item { color: #F2F1EC; }
+:root[data-vt="default"] #statusGuidance .sg-answer :is(.sg-answered-label, .sg-scenario) { color: #C3C6CE; }
+:root[data-vt="default"] #statusGuidance .sg-answer .sg-link { color: #C3C8F2; }
+
+/* side column starts level with the main column */
+@media (min-width: 1024px) {
+  :root[data-vt] #statusGuidance[data-vl="aside"] .vl-grid { margin-top: 24px; }
+  :root[data-vt] #statusGuidance[data-vl="aside"] .vl-main > :first-child { margin-top: 0 !important; }
+  :root[data-vt] #statusGuidance[data-vl="aside"] .vl-side { padding-top: 0; }
+}
+
+/* home, phones: the title keeps the left edge the rest of the hero uses */
+@media (max-width: 680px) {
+  :root[data-vt]:not([data-vt="neon"]) #civicLanding .cs-hero h1 { margin-left: 0; margin-right: 0; }
+  /* example searches: two columns instead of five full-width rows */
+  :root[data-vt] #civicLanding .cs-examples { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  :root[data-vt] #civicLanding .cs-examples-label { grid-column: 1 / -1; }
+  /* Stamp contents page: one entry per line, as on desktop, instead of two
+     cramped columns that broke tool names over two lines */
+  :root[data-vt="stamp"] #civicLanding .cs-tools-core .cs-tool-grid { grid-template-columns: minmax(0, 1fr); }
+  :root[data-vt="stamp"] #civicLanding .cs-tools-core .cs-tool { min-height: 0; }
+  :root[data-vt] #civicLanding .cs-examples > :is(button, a):last-child:nth-child(even) { grid-column: 1 / -1; }
+}
+
+/* Visable (default) home: the seventh tool no longer sits alone under the bento */
+:root[data-vt="default"] #civicLanding .cs-tools-core .cs-tool:nth-child(7):last-child { grid-column: 1 / -1; min-height: 0; }
+@media (min-width: 681px) {
+  :root[data-vt="default"] #civicLanding .cs-tools-core .cs-tool:nth-child(7):last-child { flex-direction: row; align-items: center; }
+}
+
+/* Neon home: sidebar descriptions stay inside their cards */
+@media (min-width: 1024px) {
+  :root[data-vt="neon"] #civicLanding .cs-tools-core .cs-tool-grid { grid-auto-rows: auto; }
+  :root[data-vt="neon"] #civicLanding .cs-tools-core .cs-tool small { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+}
+
+/* Chrome home: the manual dates and "이용 안내" share one row, footer below */
+@media (min-width: 1024px) {
+  :root[data-vt="chrome"] #civicLanding .cs-home { grid-auto-flow: row dense; }
+}
+/* Chrome app grid below desktop: the odd seventh icon sits centred under the pairs */
+@media (max-width: 1023.98px) {
+  :root[data-vt="chrome"] #civicLanding .cs-tools-core .cs-tool:nth-child(7):last-child { grid-column: 1 / -1; justify-self: center; width: calc(50% - 6px); }
+}
+/* results header: the wordmark is centred on the same 44px line as the
+   language and theme buttons instead of riding 6-8px above them */
+body.civic-refresh.searched #hero .logo-area:not(#vt-a) { align-items: center !important; align-self: center !important; min-height: 44px !important; margin-top: 0 !important; margin-bottom: 0 !important; }
+/* dark only drew a hairline pill around the mark that light never had; with the
+   pill's inner padding gone the letters touched it */
+body.civic-refresh.searched #hero .logo-area:not(#vt-a) { border: 0 !important; border-radius: 0 !important; }
+/* phones: the absolutely placed buttons follow the 20px gutter, not the edge */
+@media (max-width: 680px) {
+  body.civic-refresh.searched #hero .cs-header-settings:not(#vt-a) { right: 20px; }
+  html[dir="rtl"] body.civic-refresh.searched #hero .cs-header-settings:not(#vt-a) { right: auto; left: 20px; }
+}
