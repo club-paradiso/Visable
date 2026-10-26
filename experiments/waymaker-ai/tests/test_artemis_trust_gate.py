@@ -204,3 +204,9 @@ def test_runner_refuses_integrity_without_hashes(tmp_path):
         runner.main(["--model", "x/y", "--revision", "0" * 40, "--out", str(out),
                      "--cases", str(BOOTSTRAP_DIR / "heldout_v2_cases.json"), "--source-gate", "--integrity"])
     assert not out.exists()
+
+
+def test_post_check_normalizes_decomposed_evidence():
+    import unicodedata
+    nfd = ev("NFD-1", unicodedata.normalize("NFD", "[가상 자료] 허가 기간은 최대 1년이다."))
+    assert tg.post_check(answer("최대 1년입니다.", citations=("NFD-1",)), [nfd])["verdict"] == "pass"

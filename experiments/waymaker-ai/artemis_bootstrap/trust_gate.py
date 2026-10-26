@@ -206,8 +206,11 @@ def post_check(parsed: Optional[Mapping[str, Any]], trusted: Sequence[Mapping[st
         return {"verdict": "no_trusted_evidence", "claims": [], "unsupported": [],
                 "final": {**abstain, "answer": NO_EVIDENCE_ANSWER}}
     answer = parsed.get("answer") if isinstance(parsed.get("answer"), str) else ""
+    answer = unicodedata.normalize("NFC", answer)
     trusted_ids = {e["id"] for e in trusted}
-    trusted_text = "\n".join(f"{e['title']}\n{e['text']}" for e in trusted)
+    # NFC, as approval_hash does: decomposed Hangul (NFD) would hide "1년" from the
+    # extractors. Found on held-out v3 case R-25 (2026-10-26), fixed after that run.
+    trusted_text = unicodedata.normalize("NFC", "\n".join(f"{e['title']}\n{e['text']}" for e in trusted))
     trusted_claims = extract_claims(trusted_text)
     claims = extract_claims(answer)
     unsupported = [c.text for c in claims if not _supported(c, trusted_claims, trusted_text)]

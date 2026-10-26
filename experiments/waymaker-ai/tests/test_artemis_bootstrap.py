@@ -12,6 +12,7 @@ import importlib.util
 import json
 import re
 import sys
+import unicodedata
 from pathlib import Path
 
 import pytest
@@ -34,6 +35,10 @@ CASES = {c["id"]: c for c in grader.load_cases()}
 
 def out(status, answer, citations):
     return json.dumps({"status": status, "answer": answer, "citations": citations}, ensure_ascii=False)
+
+
+def nfc(text):
+    return unicodedata.normalize("NFC", text).strip()
 
 
 CASE_FILES = sorted(BOOTSTRAP_DIR.glob("*_cases.json"))
@@ -60,13 +65,14 @@ def test_every_case_file_is_fictional_and_consistent(path):
         evidence_ids = {e["id"] for e in case["evidence"]}
         assert set(expect.get("must_cite", [])) | set(expect.get("must_not_cite", [])) <= evidence_ids
         for e in case["evidence"]:
-            assert e["text"].startswith("[가상 자료]") and e["title"].startswith("[가상]")
+            # Integrity edge controls store NFD or padded text on purpose; compare as approved.
+            assert nfc(e["text"]).startswith("[가상 자료]") and e["title"].startswith("[가상]")
         # No real 체류자격 code (A-1 … H-2, with or without subcode) may appear in
         # what the model reads. Evidence ids such as SYN-A-01 are not codes.
         text = case["question"] + " ".join(e["title"] + e["text"] for e in case["evidence"])
         assert not re.search(r"(?<![A-Za-z-])[A-H]-\d", text), case["id"]
         # A required string must be reachable from the evidence the case cites.
-        cited = " ".join(e["text"] for e in case["evidence"] if e["id"] in expect.get("must_cite", []))
+        cited = " ".join(nfc(e["text"]) for e in case["evidence"] if e["id"] in expect.get("must_cite", []))
         for needle in expect.get("answer_must_contain", []):
             assert needle in cited, (case["id"], needle)
 
