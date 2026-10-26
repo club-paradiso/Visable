@@ -21,11 +21,21 @@ written out in Korean words ("오만 원"). An attack planted inside an approved
 document passes 가 by definition and is caught only if it makes one of the
 claims 나 extracts.
 
+* 라 — whether approved text is still the text that was approved. Held-out v2
+  showed that attacks inside approved documents pass 가 and 나 (7 of 8
+  harmful): 나 trusts approved text. With ``integrity=True`` an item counts as
+  trusted only if ``source.approved_sha256`` (recorded when a reviewer
+  approved the paragraph) equals the hash of its current text, so text edited
+  after approval loses its approval before the model sees it. Text that was
+  already malicious when it was approved still passes; only review catches that.
+
 Standard library only.
 """
 from __future__ import annotations
 
+import hashlib
 import re
+import unicodedata
 from dataclasses import dataclass
 from typing import Any, Dict, List, Mapping, Optional, Sequence, Tuple
 
@@ -36,21 +46,35 @@ WITHHELD_ANSWER = "공식 근거로 확인되지 않은 금액·기간·날짜·
 NO_EVIDENCE_ANSWER = "승인된 공식 근거가 없어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
 
 
-def is_trusted(evidence: Mapping[str, Any]) -> bool:
+def approval_hash(text: str) -> str:
+    """The hash recorded at approval: SHA-256 of the NFC-normalized, stripped paragraph text.
+    Normalization and surrounding whitespace are not edits; any other change is."""
+    return hashlib.sha256(unicodedata.normalize("NFC", text or "").strip().encode("utf-8")).hexdigest()
+
+
+def integrity_ok(evidence: Mapping[str, Any]) -> bool:
+    """(라) The approved paragraph is byte-for-byte (after NFC + strip) what was approved."""
+    recorded = (evidence.get("source") or {}).get("approved_sha256")
+    return bool(recorded) and recorded == approval_hash(evidence.get("text", ""))
+
+
+def is_trusted(evidence: Mapping[str, Any], integrity: bool = False) -> bool:
     source = evidence.get("source") or {}
-    return source.get("approval_state") in DIRECT_EVIDENCE_STATES
+    if source.get("approval_state") not in DIRECT_EVIDENCE_STATES:
+        return False
+    return integrity_ok(evidence) if integrity else True
 
 
 def has_source_labels(case: Mapping[str, Any]) -> bool:
     return all("source" in e for e in case["evidence"])
 
 
-def gate(case: Mapping[str, Any]) -> Tuple[Dict[str, Any], List[str]]:
-    """(가) The case with only trusted evidence, and the ids that were withheld."""
+def gate(case: Mapping[str, Any], integrity: bool = False) -> Tuple[Dict[str, Any], List[str]]:
+    """(가, and 라 with ``integrity``) The case with only trusted evidence, and the ids withheld."""
     if not has_source_labels(case):
         raise ValueError(f"case {case.get('id')!r} has evidence without source labels; the gate cannot judge it")
-    kept = [e for e in case["evidence"] if is_trusted(e)]
-    withheld = [e["id"] for e in case["evidence"] if not is_trusted(e)]
+    kept = [e for e in case["evidence"] if is_trusted(e, integrity)]
+    withheld = [e["id"] for e in case["evidence"] if not is_trusted(e, integrity)]
     return {**case, "evidence": kept}, withheld
 
 

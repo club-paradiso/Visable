@@ -157,6 +157,8 @@ def run(args: argparse.Namespace) -> int:
     cases = smoke_grader.load_cases(cases_path)
     if args.source_gate and not all(trust_gate.has_source_labels(c) for c in cases):
         raise SystemExit(f"--source-gate needs source labels on every evidence item; {cases_path.name} has none")
+    if args.integrity and not any("approved_sha256" in (e.get("source") or {}) for c in cases for e in c["evidence"]):
+        raise SystemExit(f"--integrity needs approval hashes (source.approved_sha256); {cases_path.name} has none")
     prepare_out_dir(out)
     os.environ["HF_HUB_OFFLINE"] = "1"
     os.environ.setdefault("HF_HUB_DISABLE_TELEMETRY", "1")
@@ -180,6 +182,7 @@ def run(args: argparse.Namespace) -> int:
         "decoding": {"temperature": 0.0, "max_tokens": args.max_tokens, "enable_thinking": False},
         "evidence_guard": args.evidence_guard,
         "source_gate": args.source_gate,
+        "integrity": args.integrity,
         "post_check": "applied offline to every output when the cases carry source labels",
         "prompts_persisted": False,
         "status": "started",
@@ -223,7 +226,7 @@ def run(args: argparse.Namespace) -> int:
         results: List[Dict[str, Any]] = []
         for case in cases:
             record["stage"] = f"case:{case['id']}"
-            prompt_case, gate_withheld = trust_gate.gate(case) if args.source_gate else (case, [])
+            prompt_case, gate_withheld = trust_gate.gate(case, args.integrity) if args.source_gate else (case, [])
             messages = smoke_grader.build_messages(prompt_case, guard=args.evidence_guard)
             flagged = smoke_grader.screen_evidence(prompt_case) if args.evidence_guard != "off" else {}
             prompt = tokenizer.apply_chat_template(
@@ -238,7 +241,7 @@ def run(args: argparse.Namespace) -> int:
             graded = smoke_grader.grade(case, text)
             checked: Dict[str, Any] = {}
             if trust_gate.has_source_labels(case):
-                trusted = [e for e in case["evidence"] if trust_gate.is_trusted(e)]
+                trusted = [e for e in case["evidence"] if trust_gate.is_trusted(e, args.integrity)]
                 verdict = trust_gate.post_check(graded["parsed"], trusted)
                 final_grade = smoke_grader.grade(case, json.dumps(verdict["final"], ensure_ascii=False))
                 checked = {
@@ -253,6 +256,9 @@ def run(args: argparse.Namespace) -> int:
                 "evidence_flags": {k: list(v) for k, v in flagged.items()},
                 "evidence_withheld": sorted(flagged) if args.evidence_guard == "drop" else [],
                 "source_gate_withheld": gate_withheld,
+                "integrity_failed": [e["id"] for e in case["evidence"]
+                                     if trust_gate.is_trusted(e) and not trust_gate.integrity_ok(e)]
+                if args.integrity else [],
                 "prompt_tokens": last.prompt_tokens if last else None,
                 "prompt_tps": round(last.prompt_tps, 2) if last else None,
                 "generation_tokens": last.generation_tokens if last else None,
@@ -301,6 +307,8 @@ def main(argv: Optional[List[str]] = None) -> int:
                    help="case file (default smoke_cases.json); see heldout_injection_cases.json, expansion_cases.json")
     p.add_argument("--source-gate", action="store_true",
                    help="(가) show the model only evidence whose source.approval_state is approved")
+    p.add_argument("--integrity", action="store_true",
+                   help="(라) an approved item counts only if source.approved_sha256 matches its text (gate and post-check)")
     p.add_argument("--max-tokens", type=int, default=400)
     p.add_argument("--evidence-guard", choices=smoke_grader.GUARD_MODES, default="off",
                    help="screen evidence with WLIE's injection detector: off, mark it untrusted, or drop it")
