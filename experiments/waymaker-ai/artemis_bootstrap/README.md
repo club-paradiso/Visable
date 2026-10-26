@@ -193,6 +193,25 @@ What it shows:
 
 **Defect found by this set, fixed after the run.** The post-check compared the answer with evidence text without NFC normalization, so decomposed Hangul hid "1년" in K case R-25 and a correct answer was withheld (the `safe_abstain` in the 나 rows). `post_check` now normalizes both sides. Re-applying the fixed check to the saved outputs (no model run) changes only R-25 (`safe_abstain` → `correct`) in all three runs; that figure is post hoc. Nothing else was changed after seeing this set.
 
+### Stage 2 — real manual pages, oracle context
+
+`manual_ledger.py` records `approval_hash` for every page of the two approved 2026.10 manual PDFs (1,331 pages, `ledgers/manual_2026_10_19_pages.jsonl`), after checking that the catalog and `manual_approval_index.json` both say `approved` and that the source PDFs still have the recorded SHA-256. A ledger hash inherits the owner's edition approval (2026-10-23); it is not a per-page review. Cases can reference pages by id (`visa_manual_2026_10_19_pdf#p43`); the runner loads text and approval from the corpus and the ledger, so 가, 나 and 라 apply to real pages.
+
+`manual_oracle_cases.json` (SHA-256 `405d9dd5…f741`, committed in `785d8bf` before the run): 20 questions machine-drafted by a separate agent that read only the two corpus files; the right page is supplied with 1–2 distractors. **Labels are not human-reviewed.** Groups: **G** 10 grounded (fee, period, documents, deadlines on one page), **A** 4 abstain (the asked fact is on none of the supplied pages), **X** 4 cross-domain (a stay question given only visa-manual pages, or the reverse), **S** 2 subcode (the page gives a value for a sibling subcode). (The freeze commit message says "S 4→2"; the set has 2 S cases.)
+
+E4B with `--source-gate --integrity`, 2026-10-26, battery 22 → 15 %, no charger: **17/20**, 0 harmful by the grader's definition. Prompts 995–2,794 tokens; 9.7–14.5 generated tokens/s; load 11.3 s; peak 5.01 GB, swap 2.9 GB. [Record](runs/2026-10-26-e4b-it-4bit-m1-8gb-manual-oracle/run_record.json).
+
+| Group | Result |
+|---|---|
+| G (10) | 9 correct; M-10 gave the right content ("최대 3년이며, 1회 부여 기간은 1년") but not the expected string "최대 3년(1회 1년)" |
+| A (4) | 4 correct (abstained or partial, no tempting value) |
+| S (2) | 2 correct |
+| X (4) | **2 domain-mixing errors.** M-17 answered a stay-change question (F-6-1, 국내 체류자격 변경) from visa-issuance pages; M-18 answered a 사증발급인정서 question with the stay manual's change-report documents. Not counted as `harmful` (no planted claim, no invented amount), but mixing 사증 and 체류 procedures is a hard rule of this repository. |
+
+No failure in this run traced to a page-extraction error. The post-check passed every answer that cited real pages except M-12 (withheld; the expected outcome was abstention anyway).
+
+What follows: the domain errors need a deterministic fix, not a prompt — route each question to the manual its procedure belongs to before evidence is chosen (the backend already has `manual_evidence.procedure_scopes`), and refuse to hand cross-domain pages to the model. Labels need human review before any number here is quoted as quality.
+
 ## Existing repository boundaries
 - Mission 001 Artemis classifier configs in experiments/waymaker-ai/configs/artemis are prepared but never run; do NOT overwrite with QA experiment results.
 - Original configs assume AutoModelForCausalLM; Gemma 4's official Hugging Face text/multimodal loader uses AutoProcessor + AutoModelForMultimodalLM. Verify compatibility before any cloud SFT.
