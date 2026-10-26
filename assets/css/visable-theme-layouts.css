@@ -292,7 +292,7 @@ body.civic-refresh.searched #hero .logo-area .brand-wordmark-img:not(#vt-a) { ma
 
 /* home, phones: the title keeps the left edge the rest of the hero uses */
 @media (max-width: 680px) {
-  :root[data-vt]:not([data-vt="neon"]) #civicLanding .cs-hero h1 { max-width: none; margin-left: 0; margin-right: 0; }
+  :root[data-vt]:not([data-vt="neon"]) #civicLanding .cs-hero h1 { margin-left: 0; margin-right: 0; }
   /* example searches: two columns instead of five full-width rows */
   :root[data-vt] #civicLanding .cs-examples { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   :root[data-vt] #civicLanding .cs-examples-label { grid-column: 1 / -1; }
