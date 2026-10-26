@@ -1,0 +1,45 @@
+{
+  "kind": "artemis_bootstrap_smoke",
+  "started_utc": "2026-10-26T06:21:53+00:00",
+  "machine": {
+    "model": "MacBookAir10,1",
+    "chip": "Apple M1",
+    "memory_bytes": 8589934592,
+    "macos": "15.6.1",
+    "python": "3.11.15"
+  },
+  "versions": {
+    "mlx": "0.32.4",
+    "mlx-metal": "0.32.4",
+    "mlx-lm": "0.32.2",
+    "transformers": "5.20.2",
+    "huggingface-hub": "2.3.0",
+    "tokenizers": "0.23.3"
+  },
+  "device": {
+    "device_name": "Apple M1",
+    "max_recommended_working_set_size": 5726633984,
+    "memory_size": 8589934592,
+    "architecture": "applegpu_g13g",
+    "max_buffer_length": 4294967296,
+    "resource_limit": 499000
+  },
+  "swap_before": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+  "free_disk_gb_before": 19.69,
+  "cases_file": "smoke_cases.json",
+  "cases_sha256": "10a353fc9b538247726e93deda594ce6f2e2193c69ebdf185717e8de971c9520",
+  "decoding": {
+    "temperature": 0.0,
+    "max_tokens": 400,
+    "enable_thinking": false
+  },
+  "prompts_persisted": false,
+  "status": "error",
+  "stage": "resolve",
+  "error": "LocalEntryNotFoundError: Cannot find an appropriate cached snapshot folder for the specified revision on the local disk and outgoing traffic has been disabled. To enable repo look-ups and downloads online, set 'HF_HUB_OFFLINE=0' as environment variable.",
+  "peak_memory_gb": 0.0,
+  "max_rss_gb": 0.102,
+  "swap_after": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+  "free_disk_gb_after": 19.69,
+  "finished_utc": "2026-10-26T06:21:53+00:00"
+}
