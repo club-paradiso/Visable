@@ -107,3 +107,28 @@ def test_runner_always_ask_cannot_be_combined_with_route(tmp_path):
     with pytest.raises(SystemExit):
         runner.main(["--model", "x/y", "--revision", "0" * 40, "--out", str(tmp_path / "r"), "--always-ask", "--route"])
     assert not (tmp_path / "r").exists()
+
+
+def test_cross_check_disagrees_only_on_a_confident_single_other_manual():
+    assert pr.cross_check("D-2 체류기간 연장 서류가 뭐예요?", "visa_abroad")["disagrees"] is True
+    assert pr.cross_check("D-2 체류기간 연장 서류가 뭐예요?", "stay_in_korea")["disagrees"] is False
+    assert pr.cross_check("한국에 더 있으려면?", "visa_abroad")["disagrees"] is False  # no route: user stands
+
+
+def test_confirm_and_label_name_both_buttons_and_carry_no_claims():
+    tg = load_module("trust_gate")
+    c = pr.confirm_output("visa_abroad")
+    assert c["status"] == "clarify" and "해외에서 비자 받기" in c["answer"] and "한국에서 체류 절차" in c["answer"]
+    assert tg.extract_claims(c["answer"]) == []
+    labelled = pr.label_answer({"status": "answered", "answer": "x", "citations": ["p1"]}, "stay_in_korea")
+    assert labelled["basis"]["label"] == "한국에서 체류 절차 기준 안내"
+    assert labelled["switch"]["id"] == "visa_abroad" and labelled["citations"] == ["p1"]
+    assert pr.other_choice("visa_abroad") == "stay_in_korea"
+
+
+def test_runner_guards_need_always_ask(tmp_path):
+    runner = load_module("run_smoke")
+    for flag in ("--cross-check", "--label-switch"):
+        with pytest.raises(SystemExit):
+            runner.main(["--model", "x/y", "--revision", "0" * 40, "--out", str(tmp_path / "r"), flag])
+    assert not (tmp_path / "r").exists()

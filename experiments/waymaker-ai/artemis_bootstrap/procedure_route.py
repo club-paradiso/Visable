@@ -96,3 +96,42 @@ def gate_to(case: Mapping[str, Any], scopes: List[Tuple[str, str]]) -> Tuple[Dic
 def with_reply(question: str, reply: str) -> str:
     """The question as routed and shown to the model after the user answers the clarifying question."""
     return f"{question}\n(확인 질문에 대한 답) {reply}"
+
+
+# --- mis-click guards ----------------------------------------------------------
+# Measured 2026-10-26: with the two buttons always shown, the one harmful answer
+# was a user's own mis-click (in Korea, pressed "해외에서 비자 받기"). Two guards:
+# the detector cross-checks the pressed button and asks once when it confidently
+# disagrees, and every answer names the manual it came from with a one-tap switch.
+
+def other_choice(choice: str) -> str:
+    return next(k for k in CLARIFY_CHOICES if k != choice)
+
+
+def cross_check(question: str, choice: str) -> Dict[str, Any]:
+    """``{"disagrees": bool, ...}``: True only when the detector routes the question to
+    exactly one manual and it is not the pressed button's. An empty or two-manual
+    route never overrides the user."""
+    detected = {d for d, _ in route(question)}
+    pressed = CLARIFY_CHOICES[choice][0]
+    return {"detected": sorted(detected), "pressed": pressed,
+            "disagrees": len(detected) == 1 and pressed not in detected}
+
+
+def confirm_output(choice: str) -> Dict[str, Any]:
+    """Asked once when the cross-check disagrees with the pressed button."""
+    pressed, other = CLARIFY_CHOICES[choice][1], CLARIFY_CHOICES[other_choice(choice)][1]
+    return {
+        "status": "clarify",
+        "answer": f"'{pressed}'를 고르셨는데, 질문 내용은 '{other}'에 더 가까워 보여요. 어느 쪽으로 안내할까요?",
+        "citations": [],
+        "choices": [{"id": k, "label": label} for k, (_, label) in CLARIFY_CHOICES.items()],
+    }
+
+
+def label_answer(output: Mapping[str, Any], choice: str) -> Dict[str, Any]:
+    """The answer with the manual it came from and a one-tap switch to the other button."""
+    other = other_choice(choice)
+    return {**output,
+            "basis": {"id": choice, "label": f"{CLARIFY_CHOICES[choice][1]} 기준 안내"},
+            "switch": {"id": other, "label": f"'{CLARIFY_CHOICES[other][1]}'로 다시 보기"}}

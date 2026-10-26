@@ -159,6 +159,8 @@ def run(args: argparse.Namespace) -> int:
     cases = manual_ledger.resolve_cases(smoke_grader.load_cases(cases_path))
     if args.source_gate and not all(trust_gate.has_source_labels(c) for c in cases):
         raise SystemExit(f"--source-gate needs source labels on every evidence item; {cases_path.name} has none")
+    if (args.cross_check or args.label_switch) and not args.always_ask:
+        raise SystemExit("--cross-check and --label-switch need --always-ask")
     if args.always_ask and (args.route or args.clarify):
         raise SystemExit("--always-ask replaces --route/--clarify; use it alone")
     if args.clarify and not args.route:
@@ -192,6 +194,8 @@ def run(args: argparse.Namespace) -> int:
         "route": args.route,
         "clarify": args.clarify,
         "always_ask": args.always_ask,
+        "cross_check": args.cross_check,
+        "label_switch": args.label_switch,
         "post_check": "applied offline to every output when the cases carry source labels",
         "prompts_persisted": False,
         "status": "started",
@@ -237,20 +241,40 @@ def run(args: argparse.Namespace) -> int:
             record["stage"] = f"case:{case['id']}"
             prompt_case, gate_withheld = trust_gate.gate(case, args.integrity) if args.source_gate else (case, [])
             route_withheld, scopes, turns, clarified = [], [], 1, False
+            gated_case = prompt_case
+            events: List[str] = []
+            choice: Optional[str] = None
+            pending_confirm = False
+
+            def select(chosen: Optional[str]):
+                """The gated case restricted to the chosen button's manual."""
+                sc = procedure_route.route_choice(chosen) if chosen else []
+                if not sc:
+                    return procedure_route.gate_to(gated_case, [])[0], [e["id"] for e in gated_case["evidence"]], sc
+                label = procedure_route.CLARIFY_CHOICES[chosen][1]
+                asked = {**gated_case, "question": procedure_route.with_reply(case["question"], label)}
+                pc, wh = procedure_route.gate_to(asked, sc)
+                return pc, wh, sc
+
             if args.always_ask:  # every question gets the two buttons; the pressed one is the route
                 gated_case = prompt_case
                 choice = case.get("user_choice") or case.get("clarification_choice")
-                scopes = procedure_route.route_choice(choice) if choice else []
-                if scopes:
-                    turns = 2
-                    label = dict(procedure_route.CLARIFY_CHOICES)[choice][1]
-                    asked = {**gated_case, "question": procedure_route.with_reply(case["question"], label)}
-                    prompt_case, route_withheld = procedure_route.gate_to(asked, scopes)
-                else:
-                    prompt_case, route_withheld = procedure_route.gate_to(gated_case, [])
-                clarified = not scopes
+                if choice and args.cross_check:
+                    cc = procedure_route.cross_check(case["question"], choice)
+                    if cc["disagrees"]:  # ask once; the user's answer stands, whatever it is
+                        events.append(f"confirm_asked:{','.join(cc['detected'])}")
+                        turns += 1
+                        if case.get("confirm_choice"):
+                            if case["confirm_choice"] != choice:
+                                events.append("confirm_switched")
+                            choice = case["confirm_choice"]
+                        else:
+                            pending_confirm = True
+                prompt_case, route_withheld, scopes = select(choice)
+                if choice:
+                    turns += 1
+                clarified = not scopes or pending_confirm
             elif args.route:
-                gated_case = prompt_case
                 prompt_case, route_withheld, scopes = procedure_route.route_gate(gated_case)
                 if args.clarify and not scopes:
                     reply = case.get("clarification_reply")
@@ -269,16 +293,29 @@ def run(args: argparse.Namespace) -> int:
             flagged = smoke_grader.screen_evidence(prompt_case) if args.evidence_guard != "off" else {}
             text, last, prompt = "", None, ""
             t0 = time.perf_counter()
-            if clarified:  # no route even after a reply: the fixed question goes back, no model call
-                text = json.dumps(procedure_route.clarify_output(), ensure_ascii=False)
+            def generate(pc):
+                msgs = smoke_grader.build_messages(pc, guard=args.evidence_guard)
+                pr_ = tokenizer.apply_chat_template(msgs, add_generation_prompt=True, tokenize=False, enable_thinking=False)
+                out, lst = "", None
+                for resp in stream_generate(model, tokenizer, pr_, max_tokens=args.max_tokens, sampler=sampler):
+                    out += resp.text
+                    lst = resp
+                return out, lst, pr_
+
+            first_output = None
+            if clarified:  # no route (or a confirmation still open): a fixed question goes back, no model call
+                out = procedure_route.confirm_output(choice) if pending_confirm else procedure_route.clarify_output()
+                text = json.dumps(out, ensure_ascii=False)
             else:
-                messages = smoke_grader.build_messages(prompt_case, guard=args.evidence_guard)
-                prompt = tokenizer.apply_chat_template(
-                    messages, add_generation_prompt=True, tokenize=False, enable_thinking=False
-                )
-                for resp in stream_generate(model, tokenizer, prompt, max_tokens=args.max_tokens, sampler=sampler):
-                    text += resp.text
-                    last = resp
+                text, last, prompt = generate(prompt_case)
+                if args.label_switch and choice and case.get("on_label") == "switch":
+                    # The answer was labelled with its manual; the user tapped the switch.
+                    events.append("label_switched")
+                    first_output = text
+                    choice = procedure_route.other_choice(choice)
+                    prompt_case, route_withheld, scopes = select(choice)
+                    turns += 1
+                    text, last, prompt = generate(prompt_case)
             wall = time.perf_counter() - t0
             graded = smoke_grader.grade(case, text)
             checked: Dict[str, Any] = {}
@@ -287,11 +324,14 @@ def run(args: argparse.Namespace) -> int:
                 if args.route or args.always_ask:  # the post-check trusts only what the route allowed
                     trusted = [e for e in trusted if e["id"] not in route_withheld]
                 verdict = (
-                    {"verdict": "clarify", "claims": [], "unsupported": [], "final": procedure_route.clarify_output()}
+                    {"verdict": "clarify", "claims": [], "unsupported": [], "final": json.loads(text)}
                     if clarified else trust_gate.post_check(graded["parsed"], trusted)
                 )
+                if args.label_switch and choice and not clarified:
+                    verdict["final"] = procedure_route.label_answer(verdict["final"], choice)
                 final_grade = smoke_grader.grade(case, json.dumps(verdict["final"], ensure_ascii=False))
                 checked = {
+                    "final_output": verdict["final"],
                     "post_check": {k: v for k, v in verdict.items() if k != "final"},
                     "checked": final_grade,
                     "outcome_raw": smoke_grader.classify(graded),
@@ -307,6 +347,10 @@ def run(args: argparse.Namespace) -> int:
                 "route_withheld": route_withheld,
                 "turns": turns,
                 "clarified": clarified,
+                "final_choice": choice,
+                "events": events,
+                "first_output": first_output,
+                "final_output": checked.get("final_output"),
                 "integrity_failed": [e["id"] for e in case["evidence"]
                                      if trust_gate.is_trusted(e) and not trust_gate.integrity_ok(e)]
                 if args.integrity else [],
@@ -366,6 +410,10 @@ def main(argv: Optional[List[str]] = None) -> int:
                    help="with --route: when no manual can be chosen, ask which procedure; use the case's clarification_reply as turn 2")
     p.add_argument("--always-ask", action="store_true",
                    help="show the two buttons for every question; the pressed button (user_choice) is the only route")
+    p.add_argument("--cross-check", action="store_true",
+                   help="with --always-ask: ask once when the detector confidently disagrees with the pressed button")
+    p.add_argument("--label-switch", action="store_true",
+                   help="with --always-ask: label each answer with its manual; a case's on_label=switch taps the switch")
     p.add_argument("--max-tokens", type=int, default=400)
     p.add_argument("--evidence-guard", choices=smoke_grader.GUARD_MODES, default="off",
                    help="screen evidence with WLIE's injection detector: off, mark it untrusted, or drop it")
