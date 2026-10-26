@@ -279,3 +279,8 @@ body.fh-sheet-open { overflow: hidden; }
 .fh-checklist-link{display:inline-flex;align-items:center;gap:5px;min-height:40px;padding:8px 12px;border:1px solid #c7dfcc;border-radius:999px;background:rgba(247,252,248,.96);color:#175e40;text-decoration:none;font-size:12px;font-weight:700;white-space:nowrap;flex-shrink:0}
 .fh-checklist-link:hover{background:#e5f4e8}
 .fh-checklist-link:focus-visible{outline:3px solid #63b580;outline-offset:2px}
+/* The base rule above is declared after the narrow-screen blocks, so it used to
+   cancel their smaller link. Re-apply them here; at 360px and below the link may
+   also wrap so the header never pushes the brightness button off screen (RTL). */
+@media (max-width: 520px) { .fh-checklist-link { padding: 6px 8px; font-size: 11px; min-height: 36px; } }
+@media (max-width: 360px) { .fh-checklist-link { padding: 4px 5px; font-size: 9.5px; min-height: 32px; flex-shrink: 1; min-width: 0; white-space: normal; line-height: 1.15; text-align: center; } }
