@@ -238,6 +238,31 @@ What it shows:
 
 Nothing was changed after seeing this set. The next step is not to widen the regexes against these 24 questions: when the route is empty or ambiguous, the answer contract already has a `clarify` mode (Mission 002 Artemis v2 plan) — ask the user which procedure they mean instead of abstaining silently — and any detector change is measured on a new held-out set.
 
+### Stage 2 — clarify when no manual can be chosen (held-out)
+
+With `--clarify` (needs `--route`), an empty route returns one fixed question ("are you abroad getting a visa / 사증발급인정서, or in Korea doing 연장·변경·등록·재입국·근무처 변경?") instead of a silent abstention; the case's `clarification_reply` is appended as turn 2 and routed again. No model call happens while no route exists.
+
+`manual_clarify_cases.json` (SHA-256 `410798ed…bdc1b`, committed in `4095396` before the runs; code as of `ef6f38e`): 24 real-page cases, each with a wrong-manual distractor, machine-drafted by a separate agent that saw no routing or clarification code; **labels not human-reviewed**. **E** 8 name the procedure; **R** 10 do not, and carry a natural reply; **N** 6 do not, and have no reply (correct: clarify or abstain). 10 questions are in English.
+
+Two E4B runs with `--source-gate --integrity --route`, without and with `--clarify`:
+
+| | route only | route + clarify |
+|---|---|---|
+| correct | 10/24 | 12/24 |
+| R correct | 1/10 | 3/10 |
+| R still unroutable after the reply (clarify again) | — | 4 |
+| wrong-manual citations / harmful | 0 / 0 | 0 / 0 |
+| N correct | 6/6 | 6/6 |
+
+Records: [clarify-route-only](runs/2026-10-26-e4b-it-4bit-m1-8gb-clarify-route-only/run_record.json), [clarify-route-clarify](runs/2026-10-26-e4b-it-4bit-m1-8gb-clarify-route-clarify/run_record.json).
+
+What it shows:
+- Clarifying is safe (no mixing, nothing harmful) but gains little (+2), because **the backend's procedure detector does not understand natural replies**: "해외에서 D-10 사증을 새로 받으려는 거예요", "she needs to get the marriage visa", "I need to apply for…", "I want to extend my period of stay" all stay unroutable (its visa pattern wants "사증 발급"/"사증 신청"/"비자 발급").
+- It also misroutes some questions before any clarification: Q-12 and Q-17 (visa intent) and one E case went to the stay manual because the question contains stay words.
+- The bottleneck is the detector's recall and precision on natural wording, in both turns.
+
+Options, not done here: (1) make the clarifying question a two-button choice (abroad/visa vs. in Korea/stay) so the reply is structured and routing is exact — a product decision, deterministic; (2) improve `manual_evidence.procedure_scopes` itself — that is production code used by `/api/ask`, so it belongs in a separate PR with the owner's approval and its own tests; (3) let the model classify the procedure into two labels — measurable, but it moves a hard rule onto a model.
+
 ## Existing repository boundaries
 - Mission 001 Artemis classifier configs in experiments/waymaker-ai/configs/artemis are prepared but never run; do NOT overwrite with QA experiment results.
 - Original configs assume AutoModelForCausalLM; Gemma 4's official Hugging Face text/multimodal loader uses AutoProcessor + AutoModelForMultimodalLM. Verify compatibility before any cloud SFT.
