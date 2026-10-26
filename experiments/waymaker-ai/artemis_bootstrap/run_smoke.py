@@ -44,7 +44,7 @@ from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-import smoke_grader  # noqa: E402
+import smoke_grader  # noqa: E402  (also puts experiments/waymaker-ai on sys.path for waymaker_ai)
 
 LAYERS_TO_SIZE_CLASS = {42: "E4B", 35: "E2B"}
 PACKAGES = ("mlx", "mlx-metal", "mlx-lm", "transformers", "huggingface-hub", "tokenizers")
@@ -172,6 +172,7 @@ def run(args: argparse.Namespace) -> int:
         "cases_file": smoke_grader.CASES_PATH.name,
         "cases_sha256": hashlib.sha256(smoke_grader.CASES_PATH.read_bytes()).hexdigest(),
         "decoding": {"temperature": 0.0, "max_tokens": args.max_tokens, "enable_thinking": False},
+        "evidence_guard": args.evidence_guard,
         "prompts_persisted": False,
         "status": "started",
         "stage": "resolve",
@@ -214,7 +215,8 @@ def run(args: argparse.Namespace) -> int:
         results: List[Dict[str, Any]] = []
         for case in smoke_grader.load_cases():
             record["stage"] = f"case:{case['id']}"
-            messages = smoke_grader.build_messages(case)
+            messages = smoke_grader.build_messages(case, guard=args.evidence_guard)
+            flagged = smoke_grader.screen_evidence(case) if args.evidence_guard != "off" else {}
             prompt = tokenizer.apply_chat_template(
                 messages, add_generation_prompt=True, tokenize=False, enable_thinking=False
             )
@@ -228,6 +230,8 @@ def run(args: argparse.Namespace) -> int:
             results.append({
                 "case": case["id"],
                 "prompt_sha256": hashlib.sha256(prompt.encode("utf-8")).hexdigest(),
+                "evidence_flags": {k: list(v) for k, v in flagged.items()},
+                "evidence_withheld": sorted(flagged) if args.evidence_guard == "drop" else [],
                 "prompt_tokens": last.prompt_tokens if last else None,
                 "prompt_tps": round(last.prompt_tps, 2) if last else None,
                 "generation_tokens": last.generation_tokens if last else None,
@@ -267,6 +271,8 @@ def main(argv: Optional[List[str]] = None) -> int:
     p.add_argument("--revision", required=True, help="40-character commit of that repo")
     p.add_argument("--out", required=True, help="new run directory; an existing one is refused")
     p.add_argument("--max-tokens", type=int, default=400)
+    p.add_argument("--evidence-guard", choices=smoke_grader.GUARD_MODES, default="off",
+                   help="screen evidence with WLIE's injection detector: off, mark it untrusted, or drop it")
     p.add_argument("--min-free-disk-gb", type=float, default=2.0, help="refuse to start below this much free disk")
     p.add_argument("--abort-below-free-disk-gb", type=float, default=1.5,
                    help="stop the run, with a saved record, if free disk falls below this while it runs")

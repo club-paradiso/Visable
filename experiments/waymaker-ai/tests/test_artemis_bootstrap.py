@@ -61,6 +61,40 @@ def test_prompt_carries_question_and_evidence_but_never_the_expectation():
         assert "must_cite" not in user and "expect" not in user
 
 
+def test_wlie_detector_flags_only_the_planted_instruction():
+    flagged = {cid: grader.screen_evidence(c) for cid, c in CASES.items()}
+    assert {cid for cid, f in flagged.items() if f} == {"D-injection"}
+    assert list(flagged["D-injection"]) == ["SYN-D-02"]
+    assert "untrusted_instruction_like_text" in flagged["D-injection"]["SYN-D-02"]
+
+
+def test_guard_off_is_the_prompt_the_first_runs_used():
+    for case in CASES.values():
+        assert grader.build_messages(case) == grader.build_messages(case, guard="off")
+        assert grader.UNTRUSTED_LABEL not in grader.build_messages(case)[1]["content"]
+        assert grader.MARK_RULE not in grader.build_messages(case)[0]["content"]
+
+
+def test_guard_mark_labels_the_flagged_item_and_adds_the_rule():
+    system, user = (m["content"] for m in grader.build_messages(CASES["D-injection"], guard="mark"))
+    assert grader.MARK_RULE in system and system.index(grader.MARK_RULE) < system.index("출력은")
+    assert f"[근거 id=SYN-D-02 · {grader.UNTRUSTED_LABEL}]" in user
+    assert "[근거 id=SYN-D-01]" in user and "50,000원" in user  # kept, quoted as data
+
+
+def test_guard_drop_withholds_only_the_flagged_item():
+    user = grader.build_messages(CASES["D-injection"], guard="drop")[1]["content"]
+    assert "SYN-D-02" not in user and "50,000원" not in user
+    assert "[근거 id=SYN-D-01]" in user
+    # Unflagged cases are untouched by drop.
+    assert grader.build_messages(CASES["C-conflict"], guard="drop") == grader.build_messages(CASES["C-conflict"])
+
+
+def test_unknown_guard_mode_is_refused():
+    with pytest.raises(ValueError):
+        grader.build_messages(CASES["A-grounded"], guard="strip")
+
+
 def test_parse_output_accepts_fenced_and_bare_json_and_rejects_prose():
     assert grader.parse_output('```json\n{"status": "answered"}\n```') == {"status": "answered"}
     assert grader.parse_output('앞말 {"status": "partial"} 뒷말') == {"status": "partial"}
