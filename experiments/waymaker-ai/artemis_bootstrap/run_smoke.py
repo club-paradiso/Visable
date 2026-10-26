@@ -1,0 +1,280 @@
+"""Artemis bootstrap: load a Gemma 4 MLX conversion and run the fictional smoke cases.
+
+What this proves and what it does not: a run shows that this machine can load
+the named conversion, that the chat template works, and how the model behaves
+on five made-up questions (grounded answer, abstention, conflict, planted
+instruction, partial answer). It says nothing about Korean immigration law and
+is not a benchmark. Benchmark v0 is never read here, so its adversarial_holdout
+is not looked at.
+
+Why the size class is recorded from the weights and not from a flag: an E2B
+pipeline check must never be reported as an E4B result. The record carries the
+repository id, its pinned revision, and the text model's layer count read from
+the downloaded config (E4B has 42 layers, E2B 35).
+
+The run is offline: HF_HUB_OFFLINE is set before huggingface_hub is imported,
+so the weights must already be in the cache (see README). There is no server
+and no port; generation happens in this process. MLX is imported only inside
+``run``, so ``--help`` and the tests work without it.
+
+Usage, from experiments/waymaker-ai/artemis_bootstrap::
+
+    HF_HOME=~/.cache/waymaker-artemis/hf .venv/bin/python run_smoke.py \\
+        --model mlx-community/gemma-4-e4b-it-4bit \\
+        --revision 475b9088d29754a3379866cf5aeb6b41acd313c2 \\
+        --out runs/2026-10-26-e4b-4bit
+"""
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import os
+import platform
+import resource
+import shutil
+import signal
+import subprocess
+import sys
+import threading
+import time
+from datetime import datetime, timezone
+from importlib import metadata
+from pathlib import Path
+from typing import Any, Callable, Dict, List, Optional
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import smoke_grader  # noqa: E402
+
+LAYERS_TO_SIZE_CLASS = {42: "E4B", 35: "E2B"}
+PACKAGES = ("mlx", "mlx-metal", "mlx-lm", "transformers", "huggingface-hub", "tokenizers")
+
+
+def size_class(config: Dict[str, Any]) -> str:
+    layers = (config.get("text_config") or config).get("num_hidden_layers")
+    return LAYERS_TO_SIZE_CLASS.get(layers, f"UNKNOWN(num_hidden_layers={layers})")
+
+
+def prepare_out_dir(out: Path) -> None:
+    """Refuse to reuse a run directory: earlier records are never overwritten."""
+    if out.exists():
+        raise SystemExit(f"refusing to overwrite existing run directory: {out}")
+    out.mkdir(parents=True)
+
+
+def _sh(*cmd: str) -> str:
+    try:
+        return subprocess.run(cmd, capture_output=True, text=True, timeout=10).stdout.strip()
+    except (OSError, subprocess.SubprocessError):
+        return ""
+
+
+def machine() -> Dict[str, Any]:
+    return {
+        "model": _sh("sysctl", "-n", "hw.model"),
+        "chip": _sh("sysctl", "-n", "machdep.cpu.brand_string"),
+        "memory_bytes": int(_sh("sysctl", "-n", "hw.memsize") or 0),
+        "macos": _sh("sw_vers", "-productVersion"),
+        "python": platform.python_version(),
+    }
+
+
+def swap_usage() -> str:
+    return _sh("sysctl", "-n", "vm.swapusage")
+
+
+def free_disk_gb() -> float:
+    """Free space where swap and the model cache live. On an 8 GB Mac a 4 GB
+    model pushes other apps into swap, and swap files grow on this disk."""
+    return round(shutil.disk_usage(Path.home()).free / 1e9, 2)
+
+
+def start_disk_guard(
+    record: Dict[str, Any],
+    save: Callable[[], None],
+    floor_gb: float,
+    interval: float = 2.0,
+    free_fn: Callable[[], float] = free_disk_gb,
+    exit_fn: Callable[[int], None] = os._exit,
+) -> threading.Event:
+    """Abort the run, with a saved record, before swap fills the disk.
+
+    Why a thread: the first attempt on the owner's Mac (2026-10-26) grew swap by
+    about 3 GB while ``load`` was still running, and an outside watchdog had to
+    kill the process before any record existed. Loading is one blocking call, so
+    the check has to run beside it. Returns an event that stops the guard."""
+    stop = threading.Event()
+
+    def watch() -> None:
+        while not stop.wait(interval):
+            free = free_fn()
+            if free < floor_gb:
+                record["status"] = "aborted_low_disk"
+                record["error"] = f"free disk {free} GB fell below {floor_gb} GB during stage {record.get('stage')}"
+                record["free_disk_gb_at_abort"] = free
+                record["swap_at_abort"] = swap_usage()
+                record["finished_utc"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
+                save()
+                exit_fn(3)
+                return
+
+    threading.Thread(target=watch, daemon=True).start()
+    return stop
+
+
+def versions() -> Dict[str, Optional[str]]:
+    out: Dict[str, Optional[str]] = {}
+    for name in PACKAGES:
+        try:
+            out[name] = metadata.version(name)
+        except metadata.PackageNotFoundError:
+            out[name] = None
+    return out
+
+
+def base_model_of(snapshot: Path) -> Dict[str, Optional[str]]:
+    """base_model and source revision as the conversion's model card states them."""
+    card = snapshot / "README.md"
+    text = card.read_text(encoding="utf-8") if card.exists() else ""
+    info: Dict[str, Optional[str]] = {"base_model": None, "source_revision": None, "license_in_card": None}
+    for line in text.splitlines():
+        s = line.strip()
+        if s.startswith("base_model:"):
+            info["base_model"] = s.split(":", 1)[1].strip()
+        elif s.startswith("license:"):
+            info["license_in_card"] = s.split(":", 1)[1].strip()
+        elif "Source revision:" in s:
+            info["source_revision"] = s.split("Source revision:", 1)[1].strip(" `")
+    return info
+
+
+def run(args: argparse.Namespace) -> int:
+    out = Path(args.out)
+    if free_disk_gb() < args.min_free_disk_gb:
+        raise SystemExit(f"refusing to start: {free_disk_gb()} GB free, need {args.min_free_disk_gb} GB for swap headroom")
+    prepare_out_dir(out)
+    os.environ["HF_HUB_OFFLINE"] = "1"
+    os.environ.setdefault("HF_HUB_DISABLE_TELEMETRY", "1")
+
+    from huggingface_hub import snapshot_download
+    import mlx.core as mx
+    from mlx_lm import load, stream_generate
+    from mlx_lm.sample_utils import make_sampler
+
+    record: Dict[str, Any] = {
+        "kind": "artemis_bootstrap_smoke",
+        "started_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "machine": machine(),
+        "versions": versions(),
+        "device": {k: v for k, v in mx.device_info().items() if isinstance(v, (int, float, str))},
+        "swap_before": swap_usage(),
+        "free_disk_gb_before": free_disk_gb(),
+        "cases_file": smoke_grader.CASES_PATH.name,
+        "cases_sha256": hashlib.sha256(smoke_grader.CASES_PATH.read_bytes()).hexdigest(),
+        "decoding": {"temperature": 0.0, "max_tokens": args.max_tokens, "enable_thinking": False},
+        "prompts_persisted": False,
+        "status": "started",
+        "stage": "resolve",
+    }
+    record_path = out / "run_record.json"
+    save_lock = threading.Lock()
+
+    def save() -> None:
+        with save_lock:
+            record_path.write_text(json.dumps(record, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+    def on_sigterm(signum, frame):  # an outside kill still leaves a record (finally below)
+        raise SystemExit(f"terminated by signal {signum}")
+
+    signal.signal(signal.SIGTERM, on_sigterm)
+    save()
+    guard = start_disk_guard(record, save, args.abort_below_free_disk_gb)
+
+    try:
+        snapshot = Path(snapshot_download(args.model, revision=args.revision))
+        config = json.loads((snapshot / "config.json").read_text(encoding="utf-8"))
+        record["model"] = {
+            "repo": args.model,
+            "revision": args.revision,
+            "size_class_from_weights": size_class(config),
+            "quantization": config.get("quantization"),
+            "loader": "mlx_lm.load (text tower only; vision/audio weights dropped by mlx_lm sanitize)",
+            **base_model_of(snapshot),
+        }
+        record["stage"] = "load"
+        save()
+        t0 = time.perf_counter()
+        model, tokenizer = load(str(snapshot))
+        mx.eval(model.parameters())
+        record["load_seconds"] = round(time.perf_counter() - t0, 2)
+        record["memory_after_load_gb"] = round(mx.get_active_memory() / 1e9, 3)
+        save()
+
+        sampler = make_sampler(temp=0.0)
+        results: List[Dict[str, Any]] = []
+        for case in smoke_grader.load_cases():
+            record["stage"] = f"case:{case['id']}"
+            messages = smoke_grader.build_messages(case)
+            prompt = tokenizer.apply_chat_template(
+                messages, add_generation_prompt=True, tokenize=False, enable_thinking=False
+            )
+            text, last = "", None
+            t0 = time.perf_counter()
+            for resp in stream_generate(model, tokenizer, prompt, max_tokens=args.max_tokens, sampler=sampler):
+                text += resp.text
+                last = resp
+            wall = time.perf_counter() - t0
+            graded = smoke_grader.grade(case, text)
+            results.append({
+                "case": case["id"],
+                "prompt_sha256": hashlib.sha256(prompt.encode("utf-8")).hexdigest(),
+                "prompt_tokens": last.prompt_tokens if last else None,
+                "prompt_tps": round(last.prompt_tps, 2) if last else None,
+                "generation_tokens": last.generation_tokens if last else None,
+                "generation_tps": round(last.generation_tps, 2) if last else None,
+                "finish_reason": last.finish_reason if last else None,
+                "wall_seconds": round(wall, 2),
+                "output": text,
+                **graded,
+            })
+            record["results"] = results
+            save()
+            mark = "PASS" if graded["passed"] else "FAIL " + ";".join(graded["failures"])
+            print(f"[{case['id']}] {mark}  ({last.generation_tps if last else 0:.1f} tok/s)", flush=True)
+
+        record["summary"] = smoke_grader.summarize(results)
+        record["status"] = "completed"
+        record["stage"] = "done"
+    except BaseException as exc:  # recorded, then re-raised: a failed load is a result too
+        record["status"] = "error"
+        record["error"] = f"{type(exc).__name__}: {exc}"
+        raise
+    finally:
+        guard.set()
+        record["peak_memory_gb"] = round(mx.get_peak_memory() / 1e9, 3)
+        record["max_rss_gb"] = round(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1e9, 3)
+        record["swap_after"] = swap_usage()
+        record["free_disk_gb_after"] = free_disk_gb()
+        record["finished_utc"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
+        save()
+    print(json.dumps(record["summary"], ensure_ascii=False))
+    return 0 if record["summary"]["failed"] == 0 else 1
+
+
+def main(argv: Optional[List[str]] = None) -> int:
+    p = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    p.add_argument("--model", required=True, help="MLX conversion repo id, e.g. mlx-community/gemma-4-e4b-it-4bit")
+    p.add_argument("--revision", required=True, help="40-character commit of that repo")
+    p.add_argument("--out", required=True, help="new run directory; an existing one is refused")
+    p.add_argument("--max-tokens", type=int, default=400)
+    p.add_argument("--min-free-disk-gb", type=float, default=2.0, help="refuse to start below this much free disk")
+    p.add_argument("--abort-below-free-disk-gb", type=float, default=1.5,
+                   help="stop the run, with a saved record, if free disk falls below this while it runs")
+    args = p.parse_args(argv)
+    if len(args.revision) != 40:
+        p.error("--revision must be a pinned 40-character commit")
+    return run(args)
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
