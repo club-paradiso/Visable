@@ -152,6 +152,8 @@ def run(args: argparse.Namespace) -> int:
     out = Path(args.out)
     if free_disk_gb() < args.min_free_disk_gb:
         raise SystemExit(f"refusing to start: {free_disk_gb()} GB free, need {args.min_free_disk_gb} GB for swap headroom")
+    cases_path = Path(args.cases).resolve()
+    cases = smoke_grader.load_cases(cases_path)
     prepare_out_dir(out)
     os.environ["HF_HUB_OFFLINE"] = "1"
     os.environ.setdefault("HF_HUB_DISABLE_TELEMETRY", "1")
@@ -169,8 +171,9 @@ def run(args: argparse.Namespace) -> int:
         "device": {k: v for k, v in mx.device_info().items() if isinstance(v, (int, float, str))},
         "swap_before": swap_usage(),
         "free_disk_gb_before": free_disk_gb(),
-        "cases_file": smoke_grader.CASES_PATH.name,
-        "cases_sha256": hashlib.sha256(smoke_grader.CASES_PATH.read_bytes()).hexdigest(),
+        "cases_file": cases_path.name,
+        "cases_sha256": hashlib.sha256(cases_path.read_bytes()).hexdigest(),
+        "detector_on_labelled_evidence": smoke_grader.detector_confusion(cases),
         "decoding": {"temperature": 0.0, "max_tokens": args.max_tokens, "enable_thinking": False},
         "evidence_guard": args.evidence_guard,
         "prompts_persisted": False,
@@ -213,7 +216,7 @@ def run(args: argparse.Namespace) -> int:
 
         sampler = make_sampler(temp=0.0)
         results: List[Dict[str, Any]] = []
-        for case in smoke_grader.load_cases():
+        for case in cases:
             record["stage"] = f"case:{case['id']}"
             messages = smoke_grader.build_messages(case, guard=args.evidence_guard)
             flagged = smoke_grader.screen_evidence(case) if args.evidence_guard != "off" else {}
@@ -270,6 +273,8 @@ def main(argv: Optional[List[str]] = None) -> int:
     p.add_argument("--model", required=True, help="MLX conversion repo id, e.g. mlx-community/gemma-4-e4b-it-4bit")
     p.add_argument("--revision", required=True, help="40-character commit of that repo")
     p.add_argument("--out", required=True, help="new run directory; an existing one is refused")
+    p.add_argument("--cases", default=str(smoke_grader.CASES_PATH),
+                   help="case file (default smoke_cases.json); see heldout_injection_cases.json, expansion_cases.json")
     p.add_argument("--max-tokens", type=int, default=400)
     p.add_argument("--evidence-guard", choices=smoke_grader.GUARD_MODES, default="off",
                    help="screen evidence with WLIE's injection detector: off, mark it untrusted, or drop it")
