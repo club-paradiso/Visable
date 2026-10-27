@@ -92,6 +92,14 @@ _MONEY_RE = re.compile(
     rf"(?P<n>{_NUM})\s*(?P<mul>만|천)?\s*(?P<cur>원|달러|USD|KRW|VND|đồng|dong|元|韩元|won\b)"
     rf"|(?P<cur2>USD|KRW|VND|\$|₩|￦)\s*(?P<n2>{_NUM})"
 )
+#: Korean amounts written in units: "3만5천원", "1억 2천만원", "5만 원".
+_KRW_COMPOUND_RE = re.compile(r"(?P<amt>(?:\d[\d,.]*\s*(?:억|만|천)\s*)+\d*)\s*(?:원|won\b)")
+#: Numbers standing alone in the evidence (table cells such as "소득기준 23,595,948"):
+#: at least four digits, not part of a date and not followed by a non-money unit.
+_BARE_AMOUNT_RE = re.compile(
+    r"(?<![\d,.])(?P<n>\d{1,3}(?:,\d{3})+|\d{4,})(?![\d,.])"
+    r"(?!\s*(?:개월|개|달|주|일|년|월|명|%|퍼센트|점|시간|회|세|쪽|호|조|항|번|차|건|kg|km|m\b|원))"
+)
 _FREE_RE = re.compile(r"무료|free of charge|免费|miễn phí", re.IGNORECASE)
 _DATE_FULL_RE = re.compile(r"(?P<y>\d{4})\s*(?:년|[.\-/])\s*(?P<m>\d{1,2})\s*(?:월|[.\-/])\s*(?P<d>\d{1,2})\s*일?")
 _DATE_MD_RE = re.compile(r"(?P<m>\d{1,2})\s*월\s*(?P<d>\d{1,2})\s*일")
@@ -99,6 +107,9 @@ _PERIOD_RE = re.compile(
     r"(?P<n>\d+)\s*(?P<u>개월|달|주일|주|일|년|days?\b|weeks?\b|months?\b|years?\b|个月|天|周|年|ngày|tuần|tháng|năm)",
     re.IGNORECASE,
 )
+#: "1월 이내", "6월 이상", "3월간", "1월이 경과": the manuals' older way of writing N months.
+#: Only with a duration word after it, so "3월에 접수" (March) is never read as a period.
+_MONTH_SPAN_RE = re.compile(r"(?P<n>\d+)\s*월(?=\s*(?:이내|이상|이하|미만|초과|간|동안|이\s*경과|이\s*지나|을\s*초과|를\s*초과|을\s*넘|를\s*넘))")
 _UNIT = {
     "개월": "month", "달": "month", "months": "month", "month": "month", "个月": "month", "tháng": "month",
     "주": "week", "주일": "week", "weeks": "week", "week": "week", "周": "week", "tuần": "week",
@@ -122,8 +133,24 @@ def _number(text: str) -> Optional[float]:
         return None
 
 
+def _krw_compound(amount: str) -> Optional[float]:
+    total, seen = 0.0, False
+    for n, unit in re.findall(r"(\d[\d,.]*)\s*(억|만|천)?", amount):
+        value = _number(n)
+        if value is None:
+            return None
+        total += value * {"억": 100_000_000, "만": 10_000, "천": 1_000}.get(unit, 1)
+        seen = True
+    return total if seen else None
+
+
 def _money_claims(text: str) -> List[Claim]:
     claims: List[Claim] = []
+    for m in _KRW_COMPOUND_RE.finditer(text):
+        value = _krw_compound(m.group("amt"))
+        if value is not None:
+            claims.append(Claim("money", m.group(0), ("money", "krw", value)))
+    text = _KRW_COMPOUND_RE.sub(lambda m: " " * len(m.group(0)), text)
     for m in _MONEY_RE.finditer(text):
         value = _number(m.group("n") or m.group("n2") or "")
         if value is None:
@@ -159,7 +186,13 @@ def _period_claims(text: str) -> List[Claim]:
         if unit == "week":              # "2주" and "14일" are the same period
             unit, n = "day", n * 7
         claims.append(Claim("period", m.group(0), ("period", unit, n)))
+    for m in _MONTH_SPAN_RE.finditer(text):
+        claims.append(Claim("period", m.group(0), ("period", "month", int(m.group("n")))))
     return claims
+
+
+def _bare_amounts(text: str) -> set:
+    return {_number(m.group("n")) for m in _BARE_AMOUNT_RE.finditer(text)}
 
 
 def _document_claims(text: str) -> List[Claim]:
@@ -190,7 +223,13 @@ def _supported(claim: Claim, trusted_claims: Sequence[Claim], trusted_text: str)
     if claim.kind == "date":
         return any(t.kind == "date" and t.key[2:] == claim.key[2:] and t.key[1] in (None, claim.key[1])
                    for t in trusted_claims)
-    return any(t.key == claim.key for t in trusted_claims)
+    if any(t.key == claim.key for t in trusted_claims):
+        return True
+    # A won amount the evidence prints as a bare number ("소득기준 23,595,948" in a
+    # table whose header carries the unit). Found on manual_buttons B-10, 2026-10-28.
+    if claim.kind == "money" and claim.key[1] == "krw" and claim.key[2] >= 1000:
+        return claim.key[2] in _bare_amounts(trusted_text)
+    return False
 
 
 def post_check(parsed: Optional[Mapping[str, Any]], trusted: Sequence[Mapping[str, Any]]) -> Dict[str, Any]:

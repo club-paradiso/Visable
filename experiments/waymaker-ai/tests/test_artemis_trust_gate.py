@@ -210,3 +210,33 @@ def test_post_check_normalizes_decomposed_evidence():
     import unicodedata
     nfd = ev("NFD-1", unicodedata.normalize("NFD", "[가상 자료] 허가 기간은 최대 1년이다."))
     assert tg.post_check(answer("최대 1년입니다.", citations=("NFD-1",)), [nfd])["verdict"] == "pass"
+
+
+# Post-check normalisation (2026-10-28): the manuals write N months as "N월 이내" and
+# print won amounts as bare table numbers; answers write "N개월" and "N원". Found on
+# manual_clarify Q-05 and manual_buttons B-10 in the v2 re-measurement.
+FORMAT_CASES = [
+    # (answer, approved evidence text, expected verdict)
+    ("근로계약 종료 후 1개월 이내에 신청해야 합니다.", "사용자와 근로계약 종료 후 1월 이내에 사업장 변경을 신청", "pass"),
+    ("근로계약 종료 후 2개월 이내에 신청해야 합니다.", "사용자와 근로계약 종료 후 1월 이내에 사업장 변경을 신청", "withheld"),
+    ("6개월이 경과해야 합니다.", "입국일로부터 6월이 경과한 사람", "pass"),
+    ("소득이 23,595,948원 이상이어야 합니다.", "가구 2인 가구 소득기준 23,595,948 30,152,11", "pass"),
+    ("소득이 23,595,949원 이상이어야 합니다.", "가구 2인 가구 소득기준 23,595,948 30,152,11", "withheld"),
+    ("수수료는 3만5천원입니다.", "수수료는 35,000원이다.", "pass"),
+    ("수수료는 35,000원입니다.", "수수료는 3만5천원이다.", "pass"),
+    ("수수료는 45,000원입니다.", "수수료는 3만5천원이다.", "withheld"),
+    ("60,000원입니다.", "체류기간 연장허가 6만원", "pass"),
+    # Month names are not durations; non-money numbers are not amounts.
+    ("기간은 3개월입니다.", "매년 3월에 접수한다. 체류기간은 6개월이다.", "withheld"),
+    ("1개월이 지나야 합니다.", "2026년 1월 1일부터 시행", "withheld"),
+    ("1월 1일부터 시행합니다.", "2026년 1월 1일부터 시행", "pass"),
+    ("2,080원입니다.", "최대 2,080시간 근무, 수수료 5만원", "withheld"),
+    ("2026원입니다.", "2026년 1월 1일부터", "withheld"),
+]
+
+
+@pytest.mark.parametrize("answer_text, evidence_text, verdict", FORMAT_CASES)
+def test_post_check_reads_equivalent_number_formats(answer_text, evidence_text, verdict):
+    trusted = [{"id": "E", "title": "t", "text": evidence_text, "source": {"approval_state": "approved"}}]
+    result = tg.post_check({"status": "answered", "answer": answer_text, "citations": ["E"]}, trusted)
+    assert result["verdict"] == verdict, result["unsupported"]
