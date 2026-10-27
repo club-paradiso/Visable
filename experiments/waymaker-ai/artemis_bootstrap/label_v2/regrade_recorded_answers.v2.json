@@ -12,10 +12,10 @@
   },
   "summary": {
     "cases": 140,
-    "passed_original": 96,
-    "auto_correct_v2": 99,
+    "passed_original": 95,
+    "auto_correct_v2": 97,
     "needs_review_v2": 4,
-    "failed_v2": 36,
+    "failed_v2": 38,
     "comparable": 139,
     "not_comparable": [
       "manual_misclick/K-14-d8-4-where-to-apply-misclick"
@@ -25,7 +25,6 @@
       "manual_routing/N-14-f6-consular-visa-90days",
       "manual_routing/N-23-c4-seasonal-second-farm-implicit",
       "manual_clarify/Q-03-d2-visa-photo-admission",
-      "manual_clarify/Q-05-e9-workplace-change-deadline",
       "manual_clarify/Q-06-d2-parttime-permit-places",
       "manual_clarify/Q-10-f6-working-allowed",
       "manual_buttons/B-01-e3-visa-researcher-qualification",
@@ -57,6 +56,7 @@
       "manual_clarify/Q-03-d2-visa-photo-admission",
       "manual_clarify/Q-11-e9-change-jobs-count",
       "manual_buttons/B-01-e3-visa-researcher-qualification",
+      "manual_buttons/B-10-f6-sponsor-income",
       "manual_always_ask/A-16-e6-2-agency-change"
     ]
   },
@@ -902,14 +902,22 @@
       "original": {
         "passed": false,
         "failures": [
-          "answer_missing:1월 이내에 사업장 변경을 신청"
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:stay_manual_2026_10_19_pdf#p329",
+          "answer_missing:1월 이내에 사업장 변경을 신청",
+          "answer_missing:3개월 이내에 근무처 변경"
         ]
       },
       "v2": {
-        "passed": true,
-        "failures": [],
+        "passed": false,
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:stay_manual_2026_10_19_pdf#p329",
+          "answer_missing_pattern:근로계약 종료 후 1개월(1월) 이내 사업장 변경 신청",
+          "answer_missing_pattern:변경 신청일부터 3개월 이내 근무처 변경허가"
+        ],
         "flags": [],
-        "outcome": "correct"
+        "outcome": "safe_abstain"
       }
     },
     {
@@ -1436,14 +1444,24 @@
       "changed": true,
       "comparable": true,
       "original": {
-        "passed": true,
-        "failures": []
+        "passed": false,
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p335",
+          "answer_missing:23,595,948"
+        ]
       },
       "v2": {
-        "passed": true,
-        "failures": [],
-        "flags": [],
-        "outcome": "correct"
+        "passed": false,
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p335",
+          "answer_missing_pattern:2인 가구 23,595,948원"
+        ],
+        "flags": [
+          "flag:2025년 기준 표시 누락"
+        ],
+        "outcome": "safe_abstain"
       }
     },
     {
@@ -1686,17 +1704,22 @@
       "original": {
         "passed": false,
         "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p49",
           "answer_missing:1년 이내의 복수사증"
         ]
       },
       "v2": {
         "passed": false,
         "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p49",
           "answer_missing_pattern:G-1-10 자격",
-          "answer_missing_pattern:체류기간 1년 이내"
+          "answer_missing_pattern:체류기간 1년 이내",
+          "answer_missing_pattern:복수사증"
         ],
         "flags": [],
-        "outcome": "other"
+        "outcome": "safe_abstain"
       }
     },
     {

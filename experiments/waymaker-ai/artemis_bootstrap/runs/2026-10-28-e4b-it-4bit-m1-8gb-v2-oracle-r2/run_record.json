@@ -1,0 +1,557 @@
+{
+  "kind": "artemis_bootstrap_smoke",
+  "started_utc": "2026-10-27T17:44:23+00:00",
+  "machine": {
+    "model": "MacBookAir10,1",
+    "chip": "Apple M1",
+    "memory_bytes": 8589934592,
+    "macos": "15.6.1",
+    "python": "3.11.15"
+  },
+  "versions": {
+    "mlx": "0.32.4",
+    "mlx-metal": "0.32.4",
+    "mlx-lm": "0.32.2",
+    "transformers": "5.20.2",
+    "huggingface-hub": "2.3.0",
+    "tokenizers": "0.23.3"
+  },
+  "device": {
+    "device_name": "Apple M1",
+    "max_recommended_working_set_size": 5726633984,
+    "memory_size": 8589934592,
+    "architecture": "applegpu_g13g",
+    "max_buffer_length": 4294967296,
+    "resource_limit": 499000
+  },
+  "swap_before": "total = 4096.00M  used = 2572.00M  free = 1524.00M  (encrypted)",
+  "free_disk_gb_before": 9.36,
+  "cases_file": "manual_oracle_cases.v2.json",
+  "cases_sha256": "a86ae80195a881291ba2c03e38a90140ee67d9f9608ef0be7c4149db526d7a4d",
+  "detector_on_labelled_evidence": null,
+  "decoding": {
+    "temperature": 0.0,
+    "max_tokens": 400,
+    "enable_thinking": false
+  },
+  "evidence_guard": "off",
+  "source_gate": true,
+  "integrity": true,
+  "route": false,
+  "clarify": false,
+  "always_ask": false,
+  "cross_check": false,
+  "label_switch": false,
+  "post_check": "applied offline to every output when the cases carry source labels",
+  "prompts_persisted": false,
+  "status": "aborted_low_disk",
+  "stage": "case:M-08-e10-criminal-record-validity",
+  "model": {
+    "repo": "mlx-community/gemma-4-e4b-it-4bit",
+    "revision": "475b9088d29754a3379866cf5aeb6b41acd313c2",
+    "size_class_from_weights": "E4B",
+    "quantization": {
+      "group_size": 64,
+      "bits": 4,
+      "mode": "affine"
+    },
+    "loader": "mlx_lm.load (text tower only; vision/audio weights dropped by mlx_lm sanitize)",
+    "base_model": "google/gemma-4-E4B-it",
+    "source_revision": "fee6332c1abaafb77f6f9624236c63aa2f1d0187",
+    "license_in_card": "gemma"
+  },
+  "load_seconds": 18.58,
+  "memory_after_load_gb": 4.201,
+  "results": [
+    {
+      "case": "M-01-stay-extension-fee",
+      "prompt_sha256": "bb909d46a7bae6fcdd6225922889e0e13c130ee0d50e1a6af693159ab72ca68a",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "체류기간 연장허가에 관한 심사수수료는 6만원입니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p5"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1471,
+      "prompt_tps": 171.18,
+      "generation_tokens": 75,
+      "generation_tps": 14.32,
+      "finish_reason": "stop",
+      "wall_seconds": 39.66,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"체류기간 연장허가에 관한 심사수수료는 6만원입니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p5\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "체류기간 연장허가에 관한 심사수수료는 6만원입니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p5"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "money",
+            "text": "6만원"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "체류기간 연장허가에 관한 심사수수료는 6만원입니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p5"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "M-02-f6-reentry-exemption",
+      "prompt_sha256": "0461fe974d23d745bf3dff57c7b6d94d286631beb0333668a142fabf527b8232",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "결혼이민(F-6, 기존 F-2-1, F-2-10 포함) 자격으로 등록을 필한 사람으로서 출국한 날로부터 1년 이내에 재입국하려는 경우 재입국허가 면제 대상입니다. 다만, 체류기간 만료일이 1년보다 적게 남아있는 경우 체류기간 범위 내에서 재입국허가 면제됩니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p506"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1641,
+      "prompt_tps": 173.63,
+      "generation_tokens": 150,
+      "generation_tps": 13.69,
+      "finish_reason": "stop",
+      "wall_seconds": 20.72,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"결혼이민(F-6, 기존 F-2-1, F-2-10 포함) 자격으로 등록을 필한 사람으로서 출국한 날로부터 1년 이내에 재입국하려는 경우 재입국허가 면제 대상입니다. 다만, 체류기간 만료일이 1년보다 적게 남아있는 경우 체류기간 범위 내에서 재입국허가 면제됩니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p506\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "결혼이민(F-6, 기존 F-2-1, F-2-10 포함) 자격으로 등록을 필한 사람으로서 출국한 날로부터 1년 이내에 재입국하려는 경우 재입국허가 면제 대상입니다. 다만, 체류기간 만료일이 1년보다 적게 남아있는 경우 체류기간 범위 내에서 재입국허가 면제됩니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p506"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "1년"
+          },
+          {
+            "kind": "period",
+            "text": "1년"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "결혼이민(F-6, 기존 F-2-1, F-2-10 포함) 자격으로 등록을 필한 사람으로서 출국한 날로부터 1년 이내에 재입국하려는 경우 재입국허가 면제 대상입니다. 다만, 체류기간 만료일이 1년보다 적게 남아있는 경우 체류기간 범위 내에서 재입국허가 면제됩니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p506"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "M-03-d2-masters-extension-cap",
+      "prompt_sha256": "e688ccb25ce49296be92eadc7d94c077e8b1622593a06d5997d80eb3afd29807",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "석사 과정의 경우 입학 후 최대 5년까지 체류할 수 있으며, 3년제 석사 과정의 경우에는 최대 6년까지 가능합니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p43"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 2437,
+      "prompt_tps": 82.54,
+      "generation_tokens": 92,
+      "generation_tps": 16.28,
+      "finish_reason": "stop",
+      "wall_seconds": 38.44,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"석사 과정의 경우 입학 후 최대 5년까지 체류할 수 있으며, 3년제 석사 과정의 경우에는 최대 6년까지 가능합니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p43\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "석사 과정의 경우 입학 후 최대 5년까지 체류할 수 있으며, 3년제 석사 과정의 경우에는 최대 6년까지 가능합니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p43"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "5년"
+          },
+          {
+            "kind": "period",
+            "text": "3년"
+          },
+          {
+            "kind": "period",
+            "text": "6년"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "석사 과정의 경우 입학 후 최대 5년까지 체류할 수 있으며, 3년제 석사 과정의 경우에는 최대 6년까지 가능합니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p43"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "M-04-d4-parttime-wait",
+      "prompt_sha256": "e571a4b7538282c6d8c3edba38789a143b3824e2326335dc58d751d9182e0a97",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "partial",
+        "answer": "어학연수(D-4-1)의 경우, 해당 활동을 하려는 시점으로부터 6개월이 경과된 경우 시간제취업 활동이 가능합니다. 또한, 시간제취업 활동을 하려면 일정 수준의 한국어 능력을 보유하고 유학 본연의 활동에 전념하며, 대학 유학생 담당자의 확인을 받아야 합니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p37"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 2648,
+      "prompt_tps": 70.4,
+      "generation_tokens": 136,
+      "generation_tps": 16.22,
+      "finish_reason": "stop",
+      "wall_seconds": 71.99,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"어학연수(D-4-1)의 경우, 해당 활동을 하려는 시점으로부터 6개월이 경과된 경우 시간제취업 활동이 가능합니다. 또한, 시간제취업 활동을 하려면 일정 수준의 한국어 능력을 보유하고 유학 본연의 활동에 전념하며, 대학 유학생 담당자의 확인을 받아야 합니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p37\"\n  ]\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "partial",
+        "answer": "어학연수(D-4-1)의 경우, 해당 활동을 하려는 시점으로부터 6개월이 경과된 경우 시간제취업 활동이 가능합니다. 또한, 시간제취업 활동을 하려면 일정 수준의 한국어 능력을 보유하고 유학 본연의 활동에 전념하며, 대학 유학생 담당자의 확인을 받아야 합니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p37"
+        ]
+      },
+      "failures": [
+        "answer_missing_pattern:기산점: 변경일 또는 (사증소지자) 입국일로부터"
+      ],
+      "flags": [
+        "flag:기산점을 활동·신청 시점으로 쓴 표현"
+      ],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "6개월"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "partial",
+          "answer": "어학연수(D-4-1)의 경우, 해당 활동을 하려는 시점으로부터 6개월이 경과된 경우 시간제취업 활동이 가능합니다. 또한, 시간제취업 활동을 하려면 일정 수준의 한국어 능력을 보유하고 유학 본연의 활동에 전념하며, 대학 유학생 담당자의 확인을 받아야 합니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p37"
+          ]
+        },
+        "failures": [
+          "answer_missing_pattern:기산점: 변경일 또는 (사증소지자) 입국일로부터"
+        ],
+        "flags": [
+          "flag:기산점을 활동·신청 시점으로 쓴 표현"
+        ],
+        "needs_review": false
+      },
+      "outcome_raw": "other",
+      "outcome_checked": "other"
+    },
+    {
+      "case": "M-05-d10-3-intern-change-deadline",
+      "prompt_sha256": "e4116343b051ef44b323729ab426d411560fb8a0cacd8bf25a6c1eb5fde8a327",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "소속기업(기관)을 변경하여 첨단기술분야 인턴 활동을 계속하고자 하는 경우, 소속기업(기관) 변경일로부터 15일 이내에 신고해야 합니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p162"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 2309,
+      "prompt_tps": 104.77,
+      "generation_tokens": 100,
+      "generation_tps": 14.51,
+      "finish_reason": "stop",
+      "wall_seconds": 55.32,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"소속기업(기관)을 변경하여 첨단기술분야 인턴 활동을 계속하고자 하는 경우, 소속기업(기관) 변경일로부터 15일 이내에 신고해야 합니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p162\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "소속기업(기관)을 변경하여 첨단기술분야 인턴 활동을 계속하고자 하는 경우, 소속기업(기관) 변경일로부터 15일 이내에 신고해야 합니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p162"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "15일"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "소속기업(기관)을 변경하여 첨단기술분야 인턴 활동을 계속하고자 하는 경우, 소속기업(기관) 변경일로부터 15일 이내에 신고해야 합니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p162"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "M-06-d4-visa-stay-period",
+      "prompt_sha256": "7e441fa52cc3229bdcc7cd226329e3e640dd12d7cb1d19d3360beceb75f1d87d",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "어학연수생(D-4-1)의 경우 체류기간은 6개월 이내이며, 단수입니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p68"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1993,
+      "prompt_tps": 138.96,
+      "generation_tokens": 85,
+      "generation_tps": 13.87,
+      "finish_reason": "stop",
+      "wall_seconds": 42.12,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"어학연수생(D-4-1)의 경우 체류기간은 6개월 이내이며, 단수입니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p68\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "어학연수생(D-4-1)의 경우 체류기간은 6개월 이내이며, 단수입니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p68"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "6개월"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "어학연수생(D-4-1)의 경우 체류기간은 6개월 이내이며, 단수입니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p68"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "M-07-e8-ccvi-processing",
+      "prompt_sha256": "c0c6ecda5212511b80915adc1554a0720e604618d64df48c64dff0f6b88946dd",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "사증발급인정서 발급에는 신청일로부터 약 10일이 소요됩니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p283"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 2794,
+      "prompt_tps": 127.95,
+      "generation_tokens": 80,
+      "generation_tps": 14.97,
+      "finish_reason": "stop",
+      "wall_seconds": 79.79,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"사증발급인정서 발급에는 신청일로부터 약 10일이 소요됩니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p283\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "사증발급인정서 발급에는 신청일로부터 약 10일이 소요됩니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p283"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "10일"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "사증발급인정서 발급에는 신청일로부터 약 10일이 소요됩니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p283"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    }
+  ],
+  "error": "free disk 1.49 GB fell below 1.5 GB during stage case:M-08-e10-criminal-record-validity",
+  "peak_memory_gb": 4.98,
+  "max_rss_gb": 0.578,
+  "free_disk_gb_at_abort": 1.49,
+  "swap_after": "total = 7168.00M  used = 3381.81M  free = 3786.19M  (encrypted)",
+  "free_disk_gb_after": 1.46,
+  "swap_at_abort": "total = 7168.00M  used = 3381.81M  free = 3786.19M  (encrypted)",
+  "finished_utc": "2026-10-27T17:53:55+00:00"
+}

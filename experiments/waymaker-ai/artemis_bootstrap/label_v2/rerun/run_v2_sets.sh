@@ -11,8 +11,12 @@ mkdir -p $LOG
 free_gb() { python3 -I -c "print(round(__import__('shutil').disk_usage('$HOME').free/1e9,2))"; }
 run() {
   local set=$1 suffix=$2; shift 2
-  local out=runs/2026-10-28-e4b-it-4bit-m1-8gb-v2-$suffix-r2
-  [[ -e $out ]] && { echo "$set: $out exists, stopping"; exit 3; }
+  local out=runs/2026-10-28-e4b-it-4bit-m1-8gb-v2-$suffix-${RUN_SUFFIX:-r2}
+  status() { python3 -I -c "import json;print(json.load(open('$out/run_record.json')).get('status'))" 2>/dev/null; }
+  if [[ -e $out ]]; then
+    [[ $(status) == completed ]] && { echo "$set: $out already completed, skipping"; return 0; }
+    echo "$set: $out exists but is not completed, stopping"; exit 3
+  fi
   for i in {1..15}; do
     [[ $(python3 -c "print(1 if $(free_gb) >= 5.0 else 0)") == 1 ]] && break
     echo "$(date +%T) $set: waiting for 5 GB free (now $(free_gb) GB)"; sleep 60
@@ -23,7 +27,8 @@ run() {
   local rc=$?
   echo "$(date +%T) END $set rc=$rc (free $(free_gb) GB)"
   tail -3 $LOG/$set.log
-  [[ $rc == 0 ]] || { echo "stopping after $set"; exit $rc; }
+  # run_smoke exits 1 when any case fails; only a record that is not "completed" stops the batch.
+  [[ $(status) == completed ]] || { echo "stopping after $set (rc=$rc, status $(status))"; exit 4; }
 }
 run manual_oracle oracle --source-gate --integrity
 run manual_routing routing-routed --source-gate --integrity --route

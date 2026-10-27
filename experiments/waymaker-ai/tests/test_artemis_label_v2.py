@@ -381,3 +381,34 @@ def test_if_answered_checks_apply_only_to_direct_answers():
     assert grader.classify(ask) == "correct"
     vague = grader.grade(case, answer("가족 방문은 가능합니다.", ["stay_manual_2026_10_19_pdf#p332"], status="partial"))
     assert not vague["passed"] and any(f.startswith("answer_missing_pattern:") for f in vague["failures"])
+
+
+# --- the v2 re-measurement (2026-10-28) ---------------------------------------
+
+V2_RUNS = {
+    "manual_oracle": "2026-10-28-e4b-it-4bit-m1-8gb-v2-oracle-r3",
+    "manual_routing": "2026-10-28-e4b-it-4bit-m1-8gb-v2-routing-routed-r3",
+    "manual_clarify": "2026-10-28-e4b-it-4bit-m1-8gb-v2-clarify-route-clarify-r3",
+    "manual_buttons": "2026-10-28-e4b-it-4bit-m1-8gb-v2-buttons-buttons-r3",
+    "manual_always_ask": "2026-10-28-e4b-it-4bit-m1-8gb-v2-always-ask-r3",
+    "manual_misclick": "2026-10-28-e4b-it-4bit-m1-8gb-v2-misclick-label-r3",
+}
+
+
+def test_v2_rerun_reproduces_the_post_hoc_regrade():
+    """E4B at temperature 0 with the original settings, re-run on the v2 files: every
+    comparable case lands on the outcome the post-hoc regrade predicted, and every
+    model-written answer is byte-identical to the earlier run."""
+    regrade = {r["key"]: r for r in lv.regrade(write=False)["rows"]}
+    for set_name, run in V2_RUNS.items():
+        record = json.loads((BOOTSTRAP_DIR / "runs" / run / "run_record.json").read_text(encoding="utf-8"))
+        assert record["status"] == "completed" and record["cases_file"] == f"{set_name}_cases.v2.json"
+        old = {r["case"]: r for r in json.loads((BOOTSTRAP_DIR / "runs" / lv.RUNS[set_name] / "run_record.json").read_text(encoding="utf-8"))["results"]}
+        assert [r["case"] for r in record["results"]] == [c["id"] for c in frozen(set_name)]
+        for r in record["results"]:
+            key = f"{set_name}/{r['case']}"
+            if regrade[key]["comparable"]:
+                assert r["outcome_checked"] == regrade[key]["v2"]["outcome"], key
+            model_written = not (r.get("clarified") and (r.get("parsed") or {}).get("status") == "clarify")
+            if model_written and regrade[key]["comparable"]:
+                assert r["output"] == old[r["case"]]["output"], key

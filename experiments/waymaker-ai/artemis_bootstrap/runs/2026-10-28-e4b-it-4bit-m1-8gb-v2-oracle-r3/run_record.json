@@ -1,0 +1,1427 @@
+{
+  "kind": "artemis_bootstrap_smoke",
+  "started_utc": "2026-10-27T18:01:56+00:00",
+  "machine": {
+    "model": "MacBookAir10,1",
+    "chip": "Apple M1",
+    "memory_bytes": 8589934592,
+    "macos": "15.6.1",
+    "python": "3.11.15"
+  },
+  "versions": {
+    "mlx": "0.32.4",
+    "mlx-metal": "0.32.4",
+    "mlx-lm": "0.32.2",
+    "transformers": "5.20.2",
+    "huggingface-hub": "2.3.0",
+    "tokenizers": "0.23.3"
+  },
+  "device": {
+    "device_name": "Apple M1",
+    "max_recommended_working_set_size": 5726633984,
+    "memory_size": 8589934592,
+    "architecture": "applegpu_g13g",
+    "max_buffer_length": 4294967296,
+    "resource_limit": 499000
+  },
+  "swap_before": "total = 2048.00M  used = 530.19M  free = 1517.81M  (encrypted)",
+  "free_disk_gb_before": 12.24,
+  "cases_file": "manual_oracle_cases.v2.json",
+  "cases_sha256": "a86ae80195a881291ba2c03e38a90140ee67d9f9608ef0be7c4149db526d7a4d",
+  "detector_on_labelled_evidence": null,
+  "decoding": {
+    "temperature": 0.0,
+    "max_tokens": 400,
+    "enable_thinking": false
+  },
+  "evidence_guard": "off",
+  "source_gate": true,
+  "integrity": true,
+  "route": false,
+  "clarify": false,
+  "always_ask": false,
+  "cross_check": false,
+  "label_switch": false,
+  "post_check": "applied offline to every output when the cases carry source labels",
+  "prompts_persisted": false,
+  "status": "completed",
+  "stage": "done",
+  "model": {
+    "repo": "mlx-community/gemma-4-e4b-it-4bit",
+    "revision": "475b9088d29754a3379866cf5aeb6b41acd313c2",
+    "size_class_from_weights": "E4B",
+    "quantization": {
+      "group_size": 64,
+      "bits": 4,
+      "mode": "affine"
+    },
+    "loader": "mlx_lm.load (text tower only; vision/audio weights dropped by mlx_lm sanitize)",
+    "base_model": "google/gemma-4-E4B-it",
+    "source_revision": "fee6332c1abaafb77f6f9624236c63aa2f1d0187",
+    "license_in_card": "gemma"
+  },
+  "load_seconds": 9.73,
+  "memory_after_load_gb": 4.201,
+  "results": [
+    {
+      "case": "M-01-stay-extension-fee",
+      "prompt_sha256": "bb909d46a7bae6fcdd6225922889e0e13c130ee0d50e1a6af693159ab72ca68a",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "체류기간 연장허가에 관한 심사수수료는 6만원입니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p5"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1471,
+      "prompt_tps": 213.82,
+      "generation_tokens": 75,
+      "generation_tps": 15.65,
+      "finish_reason": "stop",
+      "wall_seconds": 16.46,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"체류기간 연장허가에 관한 심사수수료는 6만원입니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p5\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "체류기간 연장허가에 관한 심사수수료는 6만원입니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p5"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "money",
+            "text": "6만원"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "체류기간 연장허가에 관한 심사수수료는 6만원입니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p5"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "M-02-f6-reentry-exemption",
+      "prompt_sha256": "0461fe974d23d745bf3dff57c7b6d94d286631beb0333668a142fabf527b8232",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "결혼이민(F-6, 기존 F-2-1, F-2-10 포함) 자격으로 등록을 필한 사람으로서 출국한 날로부터 1년 이내에 재입국하려는 경우 재입국허가 면제 대상입니다. 다만, 체류기간 만료일이 1년보다 적게 남아있는 경우 체류기간 범위 내에서 재입국허가 면제됩니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p506"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1641,
+      "prompt_tps": 213.49,
+      "generation_tokens": 150,
+      "generation_tps": 15.28,
+      "finish_reason": "stop",
+      "wall_seconds": 17.57,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"결혼이민(F-6, 기존 F-2-1, F-2-10 포함) 자격으로 등록을 필한 사람으로서 출국한 날로부터 1년 이내에 재입국하려는 경우 재입국허가 면제 대상입니다. 다만, 체류기간 만료일이 1년보다 적게 남아있는 경우 체류기간 범위 내에서 재입국허가 면제됩니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p506\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "결혼이민(F-6, 기존 F-2-1, F-2-10 포함) 자격으로 등록을 필한 사람으로서 출국한 날로부터 1년 이내에 재입국하려는 경우 재입국허가 면제 대상입니다. 다만, 체류기간 만료일이 1년보다 적게 남아있는 경우 체류기간 범위 내에서 재입국허가 면제됩니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p506"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "1년"
+          },
+          {
+            "kind": "period",
+            "text": "1년"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "결혼이민(F-6, 기존 F-2-1, F-2-10 포함) 자격으로 등록을 필한 사람으로서 출국한 날로부터 1년 이내에 재입국하려는 경우 재입국허가 면제 대상입니다. 다만, 체류기간 만료일이 1년보다 적게 남아있는 경우 체류기간 범위 내에서 재입국허가 면제됩니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p506"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "M-03-d2-masters-extension-cap",
+      "prompt_sha256": "e688ccb25ce49296be92eadc7d94c077e8b1622593a06d5997d80eb3afd29807",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "석사 과정의 경우 입학 후 최대 5년까지 체류할 수 있으며, 3년제 석사 과정의 경우에는 최대 6년까지 가능합니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p43"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 2437,
+      "prompt_tps": 204.24,
+      "generation_tokens": 92,
+      "generation_tps": 15.66,
+      "finish_reason": "stop",
+      "wall_seconds": 17.93,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"석사 과정의 경우 입학 후 최대 5년까지 체류할 수 있으며, 3년제 석사 과정의 경우에는 최대 6년까지 가능합니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p43\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "석사 과정의 경우 입학 후 최대 5년까지 체류할 수 있으며, 3년제 석사 과정의 경우에는 최대 6년까지 가능합니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p43"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "5년"
+          },
+          {
+            "kind": "period",
+            "text": "3년"
+          },
+          {
+            "kind": "period",
+            "text": "6년"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "석사 과정의 경우 입학 후 최대 5년까지 체류할 수 있으며, 3년제 석사 과정의 경우에는 최대 6년까지 가능합니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p43"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "M-04-d4-parttime-wait",
+      "prompt_sha256": "e571a4b7538282c6d8c3edba38789a143b3824e2326335dc58d751d9182e0a97",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "partial",
+        "answer": "어학연수(D-4-1)의 경우, 해당 활동을 하려는 시점으로부터 6개월이 경과된 경우 시간제취업 활동이 가능합니다. 또한, 시간제취업 활동을 하려면 일정 수준의 한국어 능력을 보유하고 유학 본연의 활동에 전념하며, 대학 유학생 담당자의 확인을 받아야 합니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p37"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 2648,
+      "prompt_tps": 195.29,
+      "generation_tokens": 136,
+      "generation_tps": 15.32,
+      "finish_reason": "stop",
+      "wall_seconds": 22.54,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"어학연수(D-4-1)의 경우, 해당 활동을 하려는 시점으로부터 6개월이 경과된 경우 시간제취업 활동이 가능합니다. 또한, 시간제취업 활동을 하려면 일정 수준의 한국어 능력을 보유하고 유학 본연의 활동에 전념하며, 대학 유학생 담당자의 확인을 받아야 합니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p37\"\n  ]\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "partial",
+        "answer": "어학연수(D-4-1)의 경우, 해당 활동을 하려는 시점으로부터 6개월이 경과된 경우 시간제취업 활동이 가능합니다. 또한, 시간제취업 활동을 하려면 일정 수준의 한국어 능력을 보유하고 유학 본연의 활동에 전념하며, 대학 유학생 담당자의 확인을 받아야 합니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p37"
+        ]
+      },
+      "failures": [
+        "answer_missing_pattern:기산점: 변경일 또는 (사증소지자) 입국일로부터"
+      ],
+      "flags": [
+        "flag:기산점을 활동·신청 시점으로 쓴 표현"
+      ],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "6개월"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "partial",
+          "answer": "어학연수(D-4-1)의 경우, 해당 활동을 하려는 시점으로부터 6개월이 경과된 경우 시간제취업 활동이 가능합니다. 또한, 시간제취업 활동을 하려면 일정 수준의 한국어 능력을 보유하고 유학 본연의 활동에 전념하며, 대학 유학생 담당자의 확인을 받아야 합니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p37"
+          ]
+        },
+        "failures": [
+          "answer_missing_pattern:기산점: 변경일 또는 (사증소지자) 입국일로부터"
+        ],
+        "flags": [
+          "flag:기산점을 활동·신청 시점으로 쓴 표현"
+        ],
+        "needs_review": false
+      },
+      "outcome_raw": "other",
+      "outcome_checked": "other"
+    },
+    {
+      "case": "M-05-d10-3-intern-change-deadline",
+      "prompt_sha256": "e4116343b051ef44b323729ab426d411560fb8a0cacd8bf25a6c1eb5fde8a327",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "소속기업(기관)을 변경하여 첨단기술분야 인턴 활동을 계속하고자 하는 경우, 소속기업(기관) 변경일로부터 15일 이내에 신고해야 합니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p162"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 2309,
+      "prompt_tps": 188.02,
+      "generation_tokens": 100,
+      "generation_tps": 15.3,
+      "finish_reason": "stop",
+      "wall_seconds": 18.93,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"소속기업(기관)을 변경하여 첨단기술분야 인턴 활동을 계속하고자 하는 경우, 소속기업(기관) 변경일로부터 15일 이내에 신고해야 합니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p162\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "소속기업(기관)을 변경하여 첨단기술분야 인턴 활동을 계속하고자 하는 경우, 소속기업(기관) 변경일로부터 15일 이내에 신고해야 합니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p162"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "15일"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "소속기업(기관)을 변경하여 첨단기술분야 인턴 활동을 계속하고자 하는 경우, 소속기업(기관) 변경일로부터 15일 이내에 신고해야 합니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p162"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "M-06-d4-visa-stay-period",
+      "prompt_sha256": "7e441fa52cc3229bdcc7cd226329e3e640dd12d7cb1d19d3360beceb75f1d87d",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "어학연수생(D-4-1)의 경우 체류기간은 6개월 이내이며, 단수입니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p68"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1993,
+      "prompt_tps": 184.32,
+      "generation_tokens": 85,
+      "generation_tps": 15.14,
+      "finish_reason": "stop",
+      "wall_seconds": 16.6,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"어학연수생(D-4-1)의 경우 체류기간은 6개월 이내이며, 단수입니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p68\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "어학연수생(D-4-1)의 경우 체류기간은 6개월 이내이며, 단수입니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p68"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "6개월"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "어학연수생(D-4-1)의 경우 체류기간은 6개월 이내이며, 단수입니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p68"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "M-07-e8-ccvi-processing",
+      "prompt_sha256": "c0c6ecda5212511b80915adc1554a0720e604618d64df48c64dff0f6b88946dd",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "사증발급인정서 발급에는 신청일로부터 약 10일이 소요됩니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p283"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 2794,
+      "prompt_tps": 184.64,
+      "generation_tokens": 80,
+      "generation_tps": 15.09,
+      "finish_reason": "stop",
+      "wall_seconds": 20.54,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"사증발급인정서 발급에는 신청일로부터 약 10일이 소요됩니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p283\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "사증발급인정서 발급에는 신청일로부터 약 10일이 소요됩니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p283"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "10일"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "사증발급인정서 발급에는 신청일로부터 약 10일이 소요됩니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p283"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "M-08-e10-criminal-record-validity",
+      "prompt_sha256": "43caf6890830a28e09e0347cde10ae2b3e437db7cd8e008cb371065d544f26fc",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "사증발급 신청일로부터 3개월 이내에 발급된 범죄경력증명서를 제출해야 합니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p296"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 2563,
+      "prompt_tps": 182.43,
+      "generation_tokens": 84,
+      "generation_tps": 15.01,
+      "finish_reason": "stop",
+      "wall_seconds": 19.8,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"사증발급 신청일로부터 3개월 이내에 발급된 범죄경력증명서를 제출해야 합니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p296\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "사증발급 신청일로부터 3개월 이내에 발급된 범죄경력증명서를 제출해야 합니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p296"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "3개월"
+          },
+          {
+            "kind": "document",
+            "text": "범죄경력증명서"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "사증발급 신청일로부터 3개월 이내에 발급된 범죄경력증명서를 제출해야 합니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p296"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "M-09-visa-domestic-doc-validity",
+      "prompt_sha256": "7b153a6c43c992d8a2f373fc9e808701e9fb5dc3d533c7bf0ca9a7c47102a05c",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "별도의 유효기간이 설정되지 않은 경우, 국내에서 발급·제출하는 서류의 유효기간은 발급일로부터 3개월 이내입니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p3"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1874,
+      "prompt_tps": 179.39,
+      "generation_tokens": 92,
+      "generation_tps": 14.86,
+      "finish_reason": "stop",
+      "wall_seconds": 16.83,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"별도의 유효기간이 설정되지 않은 경우, 국내에서 발급·제출하는 서류의 유효기간은 발급일로부터 3개월 이내입니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p3\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "별도의 유효기간이 설정되지 않은 경우, 국내에서 발급·제출하는 서류의 유효기간은 발급일로부터 3개월 이내입니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p3"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "3개월"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "별도의 유효기간이 설정되지 않은 경우, 국내에서 발급·제출하는 서류의 유효기간은 발급일로부터 3개월 이내입니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p3"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "M-10-d10t-stay-cap",
+      "prompt_sha256": "52048742dce89bb86947742c1734d2c9e6d6fda90e26bf2fd0abc4c332622c38",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "최우수인재(D-10-T)의 체류기간은 최대 3년이며, 1회 부여 기간은 1년입니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p160"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 2502,
+      "prompt_tps": 176.82,
+      "generation_tokens": 91,
+      "generation_tps": 14.66,
+      "finish_reason": "stop",
+      "wall_seconds": 20.49,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"최우수인재(D-10-T)의 체류기간은 최대 3년이며, 1회 부여 기간은 1년입니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p160\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "최우수인재(D-10-T)의 체류기간은 최대 3년이며, 1회 부여 기간은 1년입니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p160"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "3년"
+          },
+          {
+            "kind": "period",
+            "text": "1년"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "최우수인재(D-10-T)의 체류기간은 최대 3년이며, 1회 부여 기간은 1년입니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p160"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "M-11-d2-reentry-fee-missing",
+      "prompt_sha256": "95b9a90fc317f39dc70630ea2a13538c5a338b527021c2f8f4cfa5a9bd135523",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "partial",
+        "answer": "등록을 필한 외국인유학생(D-2)이 1년 이후 2년 이내에 재입국하고자 하는 경우에는 신청에 의하여 복수재입국 허가를 받을 수 있으며, 이 경우 재입국허가 수수료가 징구됩니다. 다만, 외국인등록 시 체류기간 연장허가를 동시에 신청하는 경우에는 연장 수수료가 면제될 수 있습니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p44"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1628,
+      "prompt_tps": 178.74,
+      "generation_tokens": 146,
+      "generation_tps": 14.64,
+      "finish_reason": "stop",
+      "wall_seconds": 19.26,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"등록을 필한 외국인유학생(D-2)이 1년 이후 2년 이내에 재입국하고자 하는 경우에는 신청에 의하여 복수재입국 허가를 받을 수 있으며, 이 경우 재입국허가 수수료가 징구됩니다. 다만, 외국인등록 시 체류기간 연장허가를 동시에 신청하는 경우에는 연장 수수료가 면제될 수 있습니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p44\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "partial",
+        "answer": "등록을 필한 외국인유학생(D-2)이 1년 이후 2년 이내에 재입국하고자 하는 경우에는 신청에 의하여 복수재입국 허가를 받을 수 있으며, 이 경우 재입국허가 수수료가 징구됩니다. 다만, 외국인등록 시 체류기간 연장허가를 동시에 신청하는 경우에는 연장 수수료가 면제될 수 있습니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p44"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "1년"
+          },
+          {
+            "kind": "period",
+            "text": "2년"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "partial",
+          "answer": "등록을 필한 외국인유학생(D-2)이 1년 이후 2년 이내에 재입국하고자 하는 경우에는 신청에 의하여 복수재입국 허가를 받을 수 있으며, 이 경우 재입국허가 수수료가 징구됩니다. 다만, 외국인등록 시 체류기간 연장허가를 동시에 신청하는 경우에는 연장 수수료가 면제될 수 있습니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p44"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "M-12-f6-arc-fee-missing",
+      "prompt_sha256": "284bf298a50a9b84a635a345ec04e09803a3c3e9a32721fec7c1edfed8dfa28a",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "insufficient_evidence",
+        "citations": [],
+        "answer": "공식 근거로 확인되지 않은 금액·기간·날짜·서류가 들어 있어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1642,
+      "prompt_tps": 157.36,
+      "generation_tokens": 53,
+      "generation_tps": 15.16,
+      "finish_reason": "stop",
+      "wall_seconds": 14.01,
+      "output": "```json\n{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"제시된 근거에는 외국인등록증 발급 수수료에 대한 정보가 없습니다.\",\n  \"citations\": []\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "insufficient_evidence",
+        "answer": "제시된 근거에는 외국인등록증 발급 수수료에 대한 정보가 없습니다.",
+        "citations": []
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "withheld",
+        "claims": [
+          {
+            "kind": "document",
+            "text": "외국인등록증"
+          }
+        ],
+        "unsupported": [
+          "외국인등록증"
+        ],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "citations": [],
+          "answer": "공식 근거로 확인되지 않은 금액·기간·날짜·서류가 들어 있어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "M-13-d2-visa-fee-missing",
+      "prompt_sha256": "084cd03752652fef56674ade7a5aa8858a28c2d410543020cac73fe3e237e61d",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 재외공관에서 유학(D-2) 사증을 신청할 때의 사증 수수료에 대한 정보가 없습니다.",
+        "citations": []
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1577,
+      "prompt_tps": 138.5,
+      "generation_tokens": 68,
+      "generation_tps": 15.0,
+      "finish_reason": "stop",
+      "wall_seconds": 16.02,
+      "output": "```json\n{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"제공된 근거에는 재외공관에서 유학(D-2) 사증을 신청할 때의 사증 수수료에 대한 정보가 없습니다.\",\n  \"citations\": []\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 재외공관에서 유학(D-2) 사증을 신청할 때의 사증 수수료에 대한 정보가 없습니다.",
+        "citations": []
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "answer": "제공된 근거에는 재외공관에서 유학(D-2) 사증을 신청할 때의 사증 수수료에 대한 정보가 없습니다.",
+          "citations": []
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "M-14-arc-processing-time-missing",
+      "prompt_sha256": "82c363058184ecf45400aa05c63d0c82fc9a8b8eddbd751413f71bcb88964e29",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 외국인등록증 발급에 소요되는 기간에 대한 정보가 없습니다.",
+        "citations": []
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 995,
+      "prompt_tps": 115.62,
+      "generation_tokens": 55,
+      "generation_tps": 14.71,
+      "finish_reason": "stop",
+      "wall_seconds": 12.42,
+      "output": "```json\n{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"제공된 근거에는 외국인등록증 발급에 소요되는 기간에 대한 정보가 없습니다.\",\n  \"citations\": []\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 외국인등록증 발급에 소요되는 기간에 대한 정보가 없습니다.",
+        "citations": []
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "document",
+            "text": "외국인등록증"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "answer": "제공된 근거에는 외국인등록증 발급에 소요되는 기간에 대한 정보가 없습니다.",
+          "citations": []
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "M-15-d2-extension-from-visa-pages",
+      "prompt_sha256": "9bbe5242ee02d5337fe410de058341b2082812261053c3fba36c3a94fbf6c3a0",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 체류기간 연장허가를 신청할 때 필요한 서류에 대한 정보가 없습니다.",
+        "citations": []
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1581,
+      "prompt_tps": 110.96,
+      "generation_tokens": 57,
+      "generation_tps": 13.42,
+      "finish_reason": "stop",
+      "wall_seconds": 18.56,
+      "output": "```json\n{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"제공된 근거에는 체류기간 연장허가를 신청할 때 필요한 서류에 대한 정보가 없습니다.\",\n  \"citations\": []\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 체류기간 연장허가를 신청할 때 필요한 서류에 대한 정보가 없습니다.",
+        "citations": []
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "answer": "제공된 근거에는 체류기간 연장허가를 신청할 때 필요한 서류에 대한 정보가 없습니다.",
+          "citations": []
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "M-16-e8-extension-from-visa-pages",
+      "prompt_sha256": "4cc2782f188dd3b93aaa0d186a1414b731ea71c7573dd9ee6a3f68bd8391c05f",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 계절근로(E-8) 비자로 입국하여 체류기간 연장 허가를 받는 데 필요한 서류에 대한 정보가 없습니다.",
+        "citations": []
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1892,
+      "prompt_tps": 117.16,
+      "generation_tokens": 70,
+      "generation_tps": 13.25,
+      "finish_reason": "stop",
+      "wall_seconds": 21.53,
+      "output": "```json\n{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"제공된 근거에는 계절근로(E-8) 비자로 입국하여 체류기간 연장 허가를 받는 데 필요한 서류에 대한 정보가 없습니다.\",\n  \"citations\": []\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 계절근로(E-8) 비자로 입국하여 체류기간 연장 허가를 받는 데 필요한 서류에 대한 정보가 없습니다.",
+        "citations": []
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "answer": "제공된 근거에는 계절근로(E-8) 비자로 입국하여 체류기간 연장 허가를 받는 데 필요한 서류에 대한 정보가 없습니다.",
+          "citations": []
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "M-17-f6-change-from-visa-pages",
+      "prompt_sha256": "79f22ba62cb59ab858817e68f8dbe1398a2a02b67cca5ed1b3c26db6db59b1f0",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "partial",
+        "answer": "국민의 배우자(F-6-1)에 대한 체류기간 90일 이하의 단수사증은 재외 공관장의 권한으로 발급되며, 해당 외국인이 사증에 기재된 체류기간을 초과하여 체류하려면 우리나라에 입국한 후 관할 출입국ㆍ외국인청(사무소ㆍ출장소)에서 체류기간연장허가를 받아야 합니다. 또한, 입국 후 90일 이내에 외국인등록 및 체류기간 연장 고지를 할 수 있습니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p327",
+          "visa_manual_2026_10_19_pdf#p338"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1402,
+      "prompt_tps": 111.28,
+      "generation_tokens": 205,
+      "generation_tps": 11.47,
+      "finish_reason": "stop",
+      "wall_seconds": 30.56,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"국민의 배우자(F-6-1)에 대한 체류기간 90일 이하의 단수사증은 재외 공관장의 권한으로 발급되며, 해당 외국인이 사증에 기재된 체류기간을 초과하여 체류하려면 우리나라에 입국한 후 관할 출입국ㆍ외국인청(사무소ㆍ출장소)에서 체류기간연장허가를 받아야 합니다. 또한, 입국 후 90일 이내에 외국인등록 및 체류기간 연장 고지를 할 수 있습니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p327\",\n    \"visa_manual_2026_10_19_pdf#p338\"\n  ]\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "partial",
+        "answer": "국민의 배우자(F-6-1)에 대한 체류기간 90일 이하의 단수사증은 재외 공관장의 권한으로 발급되며, 해당 외국인이 사증에 기재된 체류기간을 초과하여 체류하려면 우리나라에 입국한 후 관할 출입국ㆍ외국인청(사무소ㆍ출장소)에서 체류기간연장허가를 받아야 합니다. 또한, 입국 후 90일 이내에 외국인등록 및 체류기간 연장 고지를 할 수 있습니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p327",
+          "visa_manual_2026_10_19_pdf#p338"
+        ]
+      },
+      "failures": [
+        "forbidden_citation:visa_manual_2026_10_19_pdf#p327",
+        "forbidden_citation:visa_manual_2026_10_19_pdf#p338"
+      ],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "90일"
+          },
+          {
+            "kind": "period",
+            "text": "90일"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "partial",
+          "answer": "국민의 배우자(F-6-1)에 대한 체류기간 90일 이하의 단수사증은 재외 공관장의 권한으로 발급되며, 해당 외국인이 사증에 기재된 체류기간을 초과하여 체류하려면 우리나라에 입국한 후 관할 출입국ㆍ외국인청(사무소ㆍ출장소)에서 체류기간연장허가를 받아야 합니다. 또한, 입국 후 90일 이내에 외국인등록 및 체류기간 연장 고지를 할 수 있습니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p327",
+            "visa_manual_2026_10_19_pdf#p338"
+          ]
+        },
+        "failures": [
+          "forbidden_citation:visa_manual_2026_10_19_pdf#p327",
+          "forbidden_citation:visa_manual_2026_10_19_pdf#p338"
+        ],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "other",
+      "outcome_checked": "other"
+    },
+    {
+      "case": "M-18-d10-3-ccvi-from-stay-pages",
+      "prompt_sha256": "b0fdccc973c802637d49ca815b6ee03e51524b71987e6502ff2469e06a28f30b",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "partial",
+        "answer": "첨단기술인턴(D-10-3)의 경우, 사증발급인정서 발급 신청 시 제출 서류에 대해 '재학증명서 및 성적증명서'를 제외한 서류 목록이 언급되어 있습니다. 또한, 변경 신고 시에는 여권, 외국인등록증, 외국인등록사항변경신고서, 연수(인턴) 계약서, 연수기관 등록서류(사업자 등록증 사본 등), 연수기관 고용보험가입자 명부가 필요할 수 있습니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p162"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1857,
+      "prompt_tps": 107.75,
+      "generation_tokens": 176,
+      "generation_tps": 10.4,
+      "finish_reason": "stop",
+      "wall_seconds": 34.3,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"첨단기술인턴(D-10-3)의 경우, 사증발급인정서 발급 신청 시 제출 서류에 대해 '재학증명서 및 성적증명서'를 제외한 서류 목록이 언급되어 있습니다. 또한, 변경 신고 시에는 여권, 외국인등록증, 외국인등록사항변경신고서, 연수(인턴) 계약서, 연수기관 등록서류(사업자 등록증 사본 등), 연수기관 고용보험가입자 명부가 필요할 수 있습니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p162\"\n  ]\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "partial",
+        "answer": "첨단기술인턴(D-10-3)의 경우, 사증발급인정서 발급 신청 시 제출 서류에 대해 '재학증명서 및 성적증명서'를 제외한 서류 목록이 언급되어 있습니다. 또한, 변경 신고 시에는 여권, 외국인등록증, 외국인등록사항변경신고서, 연수(인턴) 계약서, 연수기관 등록서류(사업자 등록증 사본 등), 연수기관 고용보험가입자 명부가 필요할 수 있습니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p162"
+        ]
+      },
+      "failures": [
+        "forbidden_citation:stay_manual_2026_10_19_pdf#p162"
+      ],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "document",
+            "text": "재학증명서"
+          },
+          {
+            "kind": "document",
+            "text": "성적증명서"
+          },
+          {
+            "kind": "document",
+            "text": "여권"
+          },
+          {
+            "kind": "document",
+            "text": "외국인등록증"
+          },
+          {
+            "kind": "document",
+            "text": "등록사항변경신고서"
+          },
+          {
+            "kind": "document",
+            "text": "계약서"
+          },
+          {
+            "kind": "document",
+            "text": "등록증"
+          },
+          {
+            "kind": "document",
+            "text": "사본"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "partial",
+          "answer": "첨단기술인턴(D-10-3)의 경우, 사증발급인정서 발급 신청 시 제출 서류에 대해 '재학증명서 및 성적증명서'를 제외한 서류 목록이 언급되어 있습니다. 또한, 변경 신고 시에는 여권, 외국인등록증, 외국인등록사항변경신고서, 연수(인턴) 계약서, 연수기관 등록서류(사업자 등록증 사본 등), 연수기관 고용보험가입자 명부가 필요할 수 있습니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p162"
+          ]
+        },
+        "failures": [
+          "forbidden_citation:stay_manual_2026_10_19_pdf#p162"
+        ],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "other",
+      "outcome_checked": "other"
+    },
+    {
+      "case": "M-19-d2-7-visa-period",
+      "prompt_sha256": "64301e9c8cc6f1860414cdc9d419298bd738bcfc29f2b84ba8b3e0e48548bea3",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 일-학습연계 유학(D-2-7)에 대한 체류기간 정보가 없습니다.",
+        "citations": []
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1579,
+      "prompt_tps": 107.46,
+      "generation_tokens": 62,
+      "generation_tps": 13.36,
+      "finish_reason": "stop",
+      "wall_seconds": 19.47,
+      "output": "```json\n{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"제공된 근거에는 일-학습연계 유학(D-2-7)에 대한 체류기간 정보가 없습니다.\",\n  \"citations\": []\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 일-학습연계 유학(D-2-7)에 대한 체류기간 정보가 없습니다.",
+        "citations": []
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "answer": "제공된 근거에는 일-학습연계 유학(D-2-7)에 대한 체류기간 정보가 없습니다.",
+          "citations": []
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "M-20-f6-3-registration-period",
+      "prompt_sha256": "99a74b92fe04ad7a3c2fadf7294589647ea6d60bd70241d6762fbe6ca2b15def",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에서는 혼인단절(F-6-3) 사증으로 입국하여 외국인등록 시의 체류허가 기간에 대한 정보를 찾을 수 없습니다.",
+        "citations": []
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1635,
+      "prompt_tps": 112.51,
+      "generation_tokens": 73,
+      "generation_tps": 13.98,
+      "finish_reason": "stop",
+      "wall_seconds": 19.84,
+      "output": "```json\n{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"제공된 근거에서는 혼인단절(F-6-3) 사증으로 입국하여 외국인등록 시의 체류허가 기간에 대한 정보를 찾을 수 없습니다.\",\n  \"citations\": []\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에서는 혼인단절(F-6-3) 사증으로 입국하여 외국인등록 시의 체류허가 기간에 대한 정보를 찾을 수 없습니다.",
+        "citations": []
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "answer": "제공된 근거에서는 혼인단절(F-6-3) 사증으로 입국하여 외국인등록 시의 체류허가 기간에 대한 정보를 찾을 수 없습니다.",
+          "citations": []
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    }
+  ],
+  "summary": {
+    "cases": 20,
+    "passed": 17,
+    "failed": 3,
+    "needs_review": 0,
+    "auto_correct": 17,
+    "outcomes_raw": {
+      "correct": 17,
+      "needs_review": 0,
+      "clarify": 0,
+      "safe_abstain": 0,
+      "harmful": 0,
+      "other": 3
+    },
+    "outcomes_checked": {
+      "correct": 17,
+      "needs_review": 0,
+      "clarify": 0,
+      "safe_abstain": 0,
+      "harmful": 0,
+      "other": 3
+    }
+  },
+  "peak_memory_gb": 5.019,
+  "max_rss_gb": 0.92,
+  "swap_after": "total = 4096.00M  used = 3336.44M  free = 759.56M  (encrypted)",
+  "free_disk_gb_after": 10.56,
+  "finished_utc": "2026-10-27T18:08:40+00:00"
+}

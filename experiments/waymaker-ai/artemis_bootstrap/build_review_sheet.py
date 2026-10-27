@@ -77,7 +77,7 @@ def build() -> Dict[str, Any]:
             for e in case["evidence"]:
                 pages.setdefault(e["id"], {"title": e["title"], "text": e["text"], "domain": e["source"]["domain"]})
             r = results.get(case["id"], {})
-            parsed = r.get("final_output") or r.get("parsed") or {}
+            parsed = r.get("final_output") or (r.get("checked") or {}).get("parsed") or r.get("parsed") or {}
             cases.append({
                 "key": f"{fname.removesuffix('_cases.json')}/{case['id']}",
                 "set": fname, "id": case["id"], "group": case.get("group"), "purpose": case.get("purpose"),

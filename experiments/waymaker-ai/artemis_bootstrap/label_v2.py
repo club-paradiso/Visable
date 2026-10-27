@@ -381,7 +381,9 @@ def regrade(write: bool = True) -> Dict[str, Any]:
             r = results.get(old["id"])
             if r is None:
                 continue
-            shown = r.get("final_output") or r.get("parsed")
+            # The answer the user saw: after the post-check when the run had one. Older
+            # records keep it only under checked.parsed (final_output came later).
+            shown = r.get("final_output") or (r.get("checked") or {}).get("parsed") or r.get("parsed")
             text = json.dumps(shown, ensure_ascii=False) if shown is not None else r.get("output", "")
             a, b = smoke_grader.grade(old, text), smoke_grader.grade(new, text)
             rows.append({
