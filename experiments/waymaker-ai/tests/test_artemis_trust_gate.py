@@ -282,3 +282,22 @@ def test_heldout_v4_rerun_is_all_correct_after_the_post_check():
     assert rec["status"] == "completed" and rec["source_gate"] and rec["integrity"]
     assert rec["cases_sha256"] == hashlib.sha256((BOOTSTRAP_DIR / "heldout_v4_cases.json").read_bytes()).hexdigest()
     assert rec["summary"]["outcomes_checked"]["correct"] == 24
+
+
+def test_heldout_v5_number_word_periods():
+    """Held-out v5 (number-word periods, written by an agent that never saw this code).
+    E4B gave 23/24 correct after the post-check (X-10 wrote "열넷 일", a label miss).
+    Of the wrong periods its author planted, all are withheld except four forms the
+    extractor does not read: single-digit Sino numerals before 일 and "두 해"."""
+    rec = json.loads((BOOTSTRAP_DIR / "runs" / "2026-10-28-e4b-it-4bit-m1-8gb-v5-gated-integrity" / "run_record.json").read_text(encoding="utf-8"))
+    assert rec["status"] == "completed" and rec["summary"]["outcomes_checked"]["correct"] == 23
+    assert rec["cases_sha256"] == hashlib.sha256((BOOTSTRAP_DIR / "heldout_v5_cases.json").read_bytes()).hexdigest()
+    cases = json.loads((BOOTSTRAP_DIR / "heldout_v5_cases.json").read_text(encoding="utf-8"))["cases"]
+    passed = []
+    for case in cases:
+        trusted = [e for e in case["evidence"] if tg.is_trusted(e, True)]
+        for wrong in case["expect"].get("answer_must_not_contain", []):
+            parsed = {"status": "answered", "answer": f"{wrong}입니다.", "citations": case["expect"]["must_cite"]}
+            if tg.post_check(parsed, trusted)["verdict"] == "pass":
+                passed.append(wrong)
+    assert sorted(passed) == ["두 해", "삼 일", "오 일", "육 일"], passed

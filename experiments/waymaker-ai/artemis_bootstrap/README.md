@@ -414,6 +414,11 @@ ChatGPT's proposals for M-04, Q-11 and K-05 banned one exact recorded sentence, 
 - Re-applied to the six v2 re-measurement runs: only Q-05 and B-10 change (withheld → correct): 100 correct, 4 needs review, 36 not correct of 140 (offline recompute of recorded raw answers; the runs themselves recorded 98).
 - v4 is now a seen set for the money-context rule (written after its A-group result).
 
+**Post-check number words (held-out v5, 2026-10-28).** The post-check also reads periods written in Korean number words: native counts before 달/주 ("두 달", "석 달", "열두 달", "두 주"), day words (하루 … 열흘, 보름), and Sino-Korean numerals before 개월/년 ("육 개월", "일 년") or a 십 numeral before 일 ("십오 일"). A numeral must start a word, so "한국", "두 번", "세 가지", "두 주민", "달러" are not read. Commit 075a28c, made before v5 was read. Known limit: "한 달에 한 번" is read as one month.
+- `heldout_v5_cases.json`: 24 fictional cases by an agent that never saw the repository or the post-check — F 10 same period in digits vs words, W 6 wrong number-word periods in unapproved sources, X 4 number words that are not periods, S 4 Sino-Korean numerals.
+- E4B, gate + integrity (`runs/…-v5-gated-integrity`): 23/24 correct after the post-check, and the same 23 under the post-check before 075a28c — the model copied the evidence's spelling, so there was nothing to wrongly withhold. X-10 wrote "열넷 일" for 14일 (a label miss, not a post-check matter).
+- Planted wrong periods fed through the post-check: 93 of 97 withheld (43 before 075a28c). Still passing: single-digit Sino numerals before 일 ("오 일", "삼 일", "육 일"; left out because "이 일" / "일 일" are ordinary words) and "두 해" (native count + 해 is not read). Held-out v4's number-word durations are now all withheld.
+
 **Not linked or not stored yet.** `reviews_v2` is empty (it is created on the first save). Decisions live in the repository and the sheet's bundle, not in the sheet's database. `run_smoke.py` can run a v2 file (`--cases label_v2/<set>_cases.v2.json`); only K-14 has been run on v2 so far. No production code, database or deployment was touched.
 
 ## Existing repository boundaries
