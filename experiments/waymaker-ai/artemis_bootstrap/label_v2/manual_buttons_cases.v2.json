@@ -1,0 +1,849 @@
+{
+  "version": "artemis-manual-buttons-v1-label-v2",
+  "derived_from": {
+    "file": "manual_buttons_cases.json",
+    "sha256": "2994b8126848d777918b13dd1eef0033fc93524063fc6011736b5941438dd42a"
+  },
+  "label_version": "v2",
+  "notice": "동결 원본의 라벨 버전 2. 같은 140개 ID와 순서를 유지하며, decisions.v2.json의 결정만 반영했다. 검증 보류: 라벨을 제공된 매뉴얼 쪽에 맞춘 것이며 법률 검증이나 사람 검토 완료가 아니다.",
+  "cases": [
+    {
+      "id": "B-01-e3-visa-researcher-qualification",
+      "group": "E",
+      "purpose": "연구(E-3) 사증발급 자격요건 확인",
+      "procedure_named_in_question": true,
+      "question": "연구(E-3) 사증을 재외공관에서 발급받으려고 합니다. 석사 학위만 있으면 경력이 얼마나 있어야 사증 발급 대상이 되나요?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p152",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 152,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p191",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 191,
+          "domain": "stay"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "visa_manual_2026_10_19_pdf#p152"
+        ],
+        "must_not_cite": [
+          "stay_manual_2026_10_19_pdf#p191"
+        ],
+        "answer_must_contain": [
+          "석사 학위 소지자로서 3년 이상 경력자"
+        ]
+      }
+    },
+    {
+      "id": "B-02-india-business-multiple-visa",
+      "group": "E",
+      "purpose": "인도 상용방문자 복수사증 유효기간",
+      "procedure_named_in_question": true,
+      "question": "인도 회사 직원입니다. 인도 상공회의소 요청서를 받아서 한국 단기상용 사증을 신청하면 몇 년짜리 복수사증이 발급되나요?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p43",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 43,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p27",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 27,
+          "domain": "stay"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "visa_manual_2026_10_19_pdf#p43"
+        ],
+        "must_not_cite": [
+          "stay_manual_2026_10_19_pdf#p27"
+        ],
+        "answer_must_contain": [
+          "5년 복수사증 발급"
+        ]
+      }
+    },
+    {
+      "id": "B-03-d10-jobseeker-visa-length",
+      "group": "E",
+      "purpose": "구직(D-10) 사증 공관장 재량 발급 기간",
+      "procedure_named_in_question": true,
+      "question": "해외 공관에서 구직(D-10) 사증을 신청하려고 해요. 공관장 재량으로 발급되는 구직 사증은 체류기간이 얼마인가요?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p128",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 128,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p161",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 161,
+          "domain": "stay"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "visa_manual_2026_10_19_pdf#p128"
+        ],
+        "must_not_cite": [
+          "stay_manual_2026_10_19_pdf#p161"
+        ],
+        "answer_must_contain": [
+          "체류기간 6개월의 단수 구직(D-10)사증"
+        ]
+      }
+    },
+    {
+      "id": "B-04-e2-visa-degree-requirement",
+      "group": "E",
+      "purpose": "회화지도(E-2) 사증 강사 학력요건",
+      "procedure_named_in_question": true,
+      "question": "I'm a native English speaker applying for an E-2 visa at the Korean embassy to teach at a language academy. What degree do I need to qualify?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p144",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 144,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p174",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 174,
+          "domain": "stay"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "visa_manual_2026_10_19_pdf#p144"
+        ],
+        "must_not_cite": [
+          "stay_manual_2026_10_19_pdf#p174"
+        ],
+        "answer_must_contain": [
+          "학사이상의 학위를 소지한 자"
+        ]
+      }
+    },
+    {
+      "id": "B-05-e3-workplace-change-report",
+      "group": "E",
+      "purpose": "연구(E-3) 근무처 변경 신고 기한",
+      "procedure_named_in_question": true,
+      "question": "E-3 연구원으로 외국인등록하고 한국에서 일하고 있습니다. 다른 연구소로 근무처 변경 신고를 하려면 언제까지 해야 하나요?",
+      "evidence": [
+        {
+          "id": "stay_manual_2026_10_19_pdf#p191",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 191,
+          "domain": "stay"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p152",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 152,
+          "domain": "visa_issuance"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "stay_manual_2026_10_19_pdf#p191"
+        ],
+        "must_not_cite": [
+          "visa_manual_2026_10_19_pdf#p152"
+        ],
+        "answer_must_contain": [
+          "신고사유 발생일로부터 15일 이내"
+        ]
+      }
+    },
+    {
+      "id": "B-06-d10-multiple-reentry-permit",
+      "group": "E",
+      "purpose": "구직(D-10) 복수재입국허가 대상",
+      "procedure_named_in_question": true,
+      "question": "구직(D-10) 자격으로 한국에 체류 중입니다. 복수재입국허가는 어떤 경우에 받아야 하나요?",
+      "evidence": [
+        {
+          "id": "stay_manual_2026_10_19_pdf#p161",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 161,
+          "domain": "stay"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p128",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 128,
+          "domain": "visa_issuance"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "stay_manual_2026_10_19_pdf#p161"
+        ],
+        "must_not_cite": [
+          "visa_manual_2026_10_19_pdf#p128"
+        ],
+        "answer_must_contain": [
+          "1년을 초과하여 2년 내에 재입국"
+        ]
+      }
+    },
+    {
+      "id": "B-07-e9-extension-cap",
+      "group": "E",
+      "purpose": "비전문취업(E-9) 체류기간 연장 상한",
+      "procedure_named_in_question": true,
+      "question": "E-9로 일하고 있는데 체류기간 연장허가를 받으면 최대 언제까지 연장할 수 있나요?",
+      "evidence": [
+        {
+          "id": "stay_manual_2026_10_19_pdf#p330",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 330,
+          "domain": "stay"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p285",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 285,
+          "domain": "visa_issuance"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "stay_manual_2026_10_19_pdf#p330"
+        ],
+        "must_not_cite": [
+          "visa_manual_2026_10_19_pdf#p285"
+        ],
+        "answer_must_contain": [
+          "최초 입국일로부터 3년"
+        ]
+      }
+    },
+    {
+      "id": "B-08-c3-extension-limit",
+      "group": "E",
+      "purpose": "단기방문(C-3) 체류기간 연장 범위",
+      "procedure_named_in_question": true,
+      "question": "I entered Korea on a C-3 short-term visit. Can I apply for an extension of my period of stay, and how long can it be extended?",
+      "evidence": [
+        {
+          "id": "stay_manual_2026_10_19_pdf#p27",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 27,
+          "domain": "stay"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p43",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 43,
+          "domain": "visa_issuance"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "stay_manual_2026_10_19_pdf#p27"
+        ],
+        "must_not_cite": [
+          "visa_manual_2026_10_19_pdf#p43"
+        ],
+        "answer_must_contain": [
+          "입국일로부터 체류기간 90일 범위 내 연장 가능"
+        ]
+      }
+    },
+    {
+      "id": "B-09-d4-language-course-length",
+      "group": "C",
+      "purpose": "어학연수(D-4) 사증 체류기간",
+      "procedure_named_in_question": false,
+      "question": "베트남에 살고 있는데 한국 대학 어학당에서 한국어를 배우고 싶어요. D-4로 가면 체류기간은 얼마나 받을 수 있어요?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p74",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 74,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p83",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 83,
+          "domain": "stay"
+        }
+      ],
+      "clarification_choice": "visa_abroad",
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "visa_manual_2026_10_19_pdf#p74"
+        ],
+        "must_not_cite": [
+          "stay_manual_2026_10_19_pdf#p83"
+        ],
+        "answer_must_contain": [
+          "체류기간 6개월 이하 단수 일반연수(D-4) 사증"
+        ]
+      }
+    },
+    {
+      "id": "B-10-f6-sponsor-income",
+      "group": "C",
+      "purpose": "결혼이민(F-6) 초청인 소득요건",
+      "procedure_named_in_question": false,
+      "question": "한국인 남편과 결혼했고 저는 지금 필리핀에 있어요. 남편 소득이 얼마 이상이어야 F-6를 받을 수 있나요? 둘이서만 살 거예요.",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p335",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 335,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p489",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 489,
+          "domain": "stay"
+        }
+      ],
+      "clarification_choice": "visa_abroad",
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "visa_manual_2026_10_19_pdf#p335"
+        ],
+        "must_not_cite": [
+          "stay_manual_2026_10_19_pdf#p489"
+        ],
+        "answer_must_contain": [
+          "23,595,948"
+        ]
+      }
+    },
+    {
+      "id": "B-11-h1-insurance-amount",
+      "group": "C",
+      "purpose": "관광취업(H-1) 의료보험 보장액",
+      "procedure_named_in_question": false,
+      "question": "I'm in my home country preparing for a working holiday (H-1) in Korea. How much health insurance coverage do I need?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p350",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 350,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p526",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 526,
+          "domain": "stay"
+        }
+      ],
+      "clarification_choice": "visa_abroad",
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "visa_manual_2026_10_19_pdf#p350"
+        ],
+        "must_not_cite": [
+          "stay_manual_2026_10_19_pdf#p526"
+        ],
+        "answer_must_contain": [
+          "4,000만원 이상"
+        ]
+      }
+    },
+    {
+      "id": "B-12-f1d-digital-nomad-validity",
+      "group": "C",
+      "purpose": "디지털노마드(F-1-D) 비자 유효기간",
+      "procedure_named_in_question": false,
+      "question": "I work remotely for a company abroad and I'd like to come to Korea as a digital nomad (F-1-D). What kind of visa would I get and for how long?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p305",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 305,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p355",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 355,
+          "domain": "stay"
+        }
+      ],
+      "clarification_choice": "visa_abroad",
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "visa_manual_2026_10_19_pdf#p305"
+        ],
+        "must_not_cite": [
+          "stay_manual_2026_10_19_pdf#p355"
+        ],
+        "answer_must_contain": [
+          "복수비자 발급(유효기간 1년)"
+        ]
+      }
+    },
+    {
+      "id": "B-13-c45-lecture-days",
+      "group": "C",
+      "purpose": "단기취업(C-4-5) 강연 활동기간 제한",
+      "procedure_named_in_question": false,
+      "question": "해외 대학 교수인데 한국 비영리기관 몇 곳에서 초청 강연을 하려고 해요. 한 달 머물면 강연은 며칠까지 할 수 있나요?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p58",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 58,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p188",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 188,
+          "domain": "stay"
+        }
+      ],
+      "clarification_choice": "visa_abroad",
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "visa_manual_2026_10_19_pdf#p58"
+        ],
+        "must_not_cite": [
+          "stay_manual_2026_10_19_pdf#p188"
+        ],
+        "answer_must_contain": [
+          "7일을 초과할 수"
+        ]
+      }
+    },
+    {
+      "id": "B-14-d2-outside-research-pay",
+      "group": "C",
+      "purpose": "유학생 외부기관 연구 참여 허가",
+      "procedure_named_in_question": false,
+      "question": "대학원생(D-2)인데 학교 밖 기관에서 연구비를 받고 제 전공과 상관없는 연구에 참여하게 됐어요. 그냥 해도 되나요?",
+      "evidence": [
+        {
+          "id": "stay_manual_2026_10_19_pdf#p40",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 40,
+          "domain": "stay"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p62",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 62,
+          "domain": "visa_issuance"
+        }
+      ],
+      "clarification_choice": "stay_in_korea",
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "stay_manual_2026_10_19_pdf#p40"
+        ],
+        "must_not_cite": [
+          "visa_manual_2026_10_19_pdf#p62"
+        ],
+        "answer_must_contain": [
+          "체류자격외활동허가(E-3) 필요"
+        ]
+      }
+    },
+    {
+      "id": "B-15-d2-delivery-rider",
+      "group": "C",
+      "purpose": "유학생 배달 라이더 시간제취업 제한",
+      "procedure_named_in_question": false,
+      "question": "I'm an international student at a Korean university. Can I work part-time as a delivery rider for a delivery agency?",
+      "evidence": [
+        {
+          "id": "stay_manual_2026_10_19_pdf#p38",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 38,
+          "domain": "stay"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p62",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 62,
+          "domain": "visa_issuance"
+        }
+      ],
+      "clarification_choice": "stay_in_korea",
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "stay_manual_2026_10_19_pdf#p38"
+        ],
+        "must_not_cite": [
+          "visa_manual_2026_10_19_pdf#p62"
+        ],
+        "answer_must_contain": [
+          "배달대행업체 라이더"
+        ]
+      }
+    },
+    {
+      "id": "B-16-h1-job-change",
+      "group": "C",
+      "purpose": "관광취업(H-1) 근무처 변경",
+      "procedure_named_in_question": false,
+      "question": "워킹홀리데이로 한국에 와서 카페에서 일하고 있어요. 다른 가게로 옮기려면 따로 허가를 받아야 하나요?",
+      "evidence": [
+        {
+          "id": "stay_manual_2026_10_19_pdf#p526",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 526,
+          "domain": "stay"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p350",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 350,
+          "domain": "visa_issuance"
+        }
+      ],
+      "clarification_choice": "stay_in_korea",
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "stay_manual_2026_10_19_pdf#p526"
+        ],
+        "must_not_cite": [
+          "visa_manual_2026_10_19_pdf#p350"
+        ],
+        "answer_must_contain": [
+          "별도의 근무처 추가 또는 변경없이 취업 활동 가능"
+        ]
+      }
+    },
+    {
+      "id": "B-17-f3-spouse-farm-work",
+      "group": "C",
+      "purpose": "동반(F-3) 배우자 단순노무 취업 한국어 요건",
+      "procedure_named_in_question": false,
+      "question": "남편이 H-2로 일하고 저는 F-3로 같이 살고 있어요. 저도 농장에서 일하고 싶은데 한국어 실력이 어느 정도 필요해요?",
+      "evidence": [
+        {
+          "id": "stay_manual_2026_10_19_pdf#p428",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 428,
+          "domain": "stay"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p316",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 316,
+          "domain": "visa_issuance"
+        }
+      ],
+      "clarification_choice": "stay_in_korea",
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "stay_manual_2026_10_19_pdf#p428"
+        ],
+        "must_not_cite": [
+          "visa_manual_2026_10_19_pdf#p316"
+        ],
+        "answer_must_contain": [
+          "TOPIK 2급 또는 사회통합프로그램 2급 이상"
+        ]
+      }
+    },
+    {
+      "id": "B-18-e3-guest-lecture",
+      "group": "C",
+      "purpose": "연구(E-3) 소지자 대학 강연활동",
+      "procedure_named_in_question": false,
+      "question": "저는 E-3 연구원으로 연구소에 다니고 있는데, 다른 대학에서 한 학기 동안 특강을 맡아 달라고 해요. 어떻게 해야 하나요?",
+      "evidence": [
+        {
+          "id": "stay_manual_2026_10_19_pdf#p188",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 188,
+          "domain": "stay"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p58",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 58,
+          "domain": "visa_issuance"
+        }
+      ],
+      "clarification_choice": "stay_in_korea",
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "stay_manual_2026_10_19_pdf#p188"
+        ],
+        "must_not_cite": [
+          "visa_manual_2026_10_19_pdf#p58"
+        ],
+        "answer_must_contain": [
+          "90일 이내 강의활동"
+        ]
+      }
+    },
+    {
+      "id": "B-19-d2-cyber-university",
+      "group": "N",
+      "purpose": "원격대학 유학(D-2) 해당 여부",
+      "procedure_named_in_question": false,
+      "question": "사이버대학에 입학하면 유학(D-2) 자격을 받을 수 있나요?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p62",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 62,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p35",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 35,
+          "domain": "stay"
+        }
+      ],
+      "expect": {
+        "status": [
+          "clarify",
+          "insufficient_evidence"
+        ],
+        "must_not_cite": [
+          "stay_manual_2026_10_19_pdf#p35"
+        ]
+      }
+    },
+    {
+      "id": "B-20-f3-family-of-researcher",
+      "group": "N",
+      "purpose": "연구원 가족의 동반(F-3) 자격",
+      "procedure_named_in_question": false,
+      "question": "남편이 E-3 연구원이에요. 저랑 아이도 동반(F-3) 자격을 받을 수 있나요? 서류는 뭐가 필요해요?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p316",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 316,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p428",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 428,
+          "domain": "stay"
+        }
+      ],
+      "expect": {
+        "status": [
+          "clarify",
+          "insufficient_evidence"
+        ],
+        "must_not_cite": [
+          "stay_manual_2026_10_19_pdf#p428"
+        ]
+      }
+    },
+    {
+      "id": "B-21-e9-eligible-countries",
+      "group": "N",
+      "purpose": "고용허가제(E-9) 대상 국가와 기간",
+      "procedure_named_in_question": false,
+      "question": "E-9 고용허가제로 일하려면 어느 나라 사람이어야 하고, 몇 년까지 일할 수 있나요?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p285",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 285,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p330",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 330,
+          "domain": "stay"
+        }
+      ],
+      "expect": {
+        "status": [
+          "clarify",
+          "insufficient_evidence"
+        ],
+        "must_not_cite": [
+          "stay_manual_2026_10_19_pdf#p330"
+        ]
+      }
+    },
+    {
+      "id": "B-22-d4-work-while-studying",
+      "group": "N",
+      "purpose": "어학연수(D-4-1) 중 아르바이트",
+      "procedure_named_in_question": false,
+      "question": "어학연수(D-4-1)로 한국어 공부하면서 아르바이트도 하고 싶은데 가능한가요?",
+      "evidence": [
+        {
+          "id": "stay_manual_2026_10_19_pdf#p83",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 83,
+          "domain": "stay"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p74",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 74,
+          "domain": "visa_issuance"
+        }
+      ],
+      "expect": {
+        "status": [
+          "clarify",
+          "insufficient_evidence"
+        ],
+        "must_not_cite": [
+          "visa_manual_2026_10_19_pdf#p74"
+        ]
+      }
+    },
+    {
+      "id": "B-23-e9-going-home-briefly",
+      "group": "N",
+      "purpose": "E-9 근로자 일시 귀국",
+      "procedure_named_in_question": false,
+      "question": "I work in Korea on an E-9 visa and want to visit my family back home for a few weeks. What do I need to pay or prepare?",
+      "evidence": [
+        {
+          "id": "stay_manual_2026_10_19_pdf#p332",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 332,
+          "domain": "stay"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p285",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 285,
+          "domain": "visa_issuance"
+        }
+      ],
+      "expect": {
+        "status": [
+          "clarify",
+          "insufficient_evidence"
+        ],
+        "must_not_cite": [
+          "visa_manual_2026_10_19_pdf#p285"
+        ]
+      }
+    },
+    {
+      "id": "B-24-f1d-stay-length",
+      "group": "N",
+      "purpose": "디지털노마드(F-1-D) 체류기간",
+      "procedure_named_in_question": false,
+      "question": "Thinking about the digital nomad (F-1-D) route. How long would I be allowed to stay in Korea?",
+      "evidence": [
+        {
+          "id": "stay_manual_2026_10_19_pdf#p355",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 355,
+          "domain": "stay"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p305",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 305,
+          "domain": "visa_issuance"
+        }
+      ],
+      "expect": {
+        "status": [
+          "clarify",
+          "insufficient_evidence"
+        ],
+        "must_not_cite": [
+          "visa_manual_2026_10_19_pdf#p305"
+        ]
+      }
+    }
+  ]
+}

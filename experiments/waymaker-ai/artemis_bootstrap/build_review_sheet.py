@@ -25,6 +25,8 @@ from typing import Any, Dict, List
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import manual_ledger  # noqa: E402
 
+LABEL_V2_DIR = Path(__file__).resolve().parent / "label_v2"
+
 HERE = Path(__file__).resolve().parent
 
 #: Case set → (Korean name, the run whose answers are shown next to each case).
@@ -40,7 +42,17 @@ BEHAVIOUR_FIELDS = ("user_choice", "clarification_choice", "clarification_reply"
                     "on_label", "procedure_named_in_question")
 
 
+def _label_v2() -> Dict[str, Any]:
+    """Decision rows and the post-hoc regrade by case key, when label v2 has been built."""
+    ledger = LABEL_V2_DIR / "decisions.v2.json"
+    regrade = LABEL_V2_DIR / "regrade_recorded_answers.v2.json"
+    rows = {d["key"]: d for d in json.loads(ledger.read_text(encoding="utf-8"))["decisions"]} if ledger.exists() else {}
+    grades = {r["key"]: r for r in json.loads(regrade.read_text(encoding="utf-8"))["rows"]} if regrade.exists() else {}
+    return {"rows": rows, "grades": grades}
+
+
 def build() -> Dict[str, Any]:
+    v2 = _label_v2()
     pages: Dict[str, Dict[str, Any]] = {}
     cases: List[Dict[str, Any]] = []
     sets = []
@@ -52,8 +64,15 @@ def build() -> Dict[str, Any]:
         rec = HERE / "runs" / run / "run_record.json"
         if rec.exists():
             results = {r["case"]: r for r in json.loads(rec.read_text(encoding="utf-8")).get("results", [])}
+        v2_path = LABEL_V2_DIR / fname.replace("_cases.json", "_cases.v2.json")
         sets.append({"file": fname, "label": label, "run": run, "version": raw.get("version"),
-                     "sha256": hashlib.sha256(path.read_bytes()).hexdigest(), "count": len(resolved)})
+                     "sha256": hashlib.sha256(path.read_bytes()).hexdigest(), "count": len(resolved),
+                     "v2_file": v2_path.name if v2_path.exists() else None,
+                     "v2_sha256": hashlib.sha256(v2_path.read_bytes()).hexdigest() if v2_path.exists() else None})
+        if v2_path.exists():  # v2 evidence can differ (K-14): include its pages too
+            for case in manual_ledger.resolve_cases(json.loads(v2_path.read_text(encoding="utf-8"))["cases"]):
+                for e in case["evidence"]:
+                    pages.setdefault(e["id"], {"title": e["title"], "text": e["text"], "domain": e["source"]["domain"]})
         for case in resolved:
             for e in case["evidence"]:
                 pages.setdefault(e["id"], {"title": e["title"], "text": e["text"], "domain": e["source"]["domain"]})
@@ -66,13 +85,36 @@ def build() -> Dict[str, Any]:
                 "behaviour": {k: case[k] for k in BEHAVIOUR_FIELDS if k in case},
                 "evidence": [e["id"] for e in case["evidence"]],
                 "expect": case["expect"],
+                "label_v2": _label_entry(v2, f"{fname.removesuffix('_cases.json')}/{case['id']}"),
                 "model": {
                     "status": parsed.get("status"), "answer": parsed.get("answer"),
                     "citations": parsed.get("citations"), "outcome": r.get("outcome_checked"),
                     "failures": r.get("failures", []),
                 } if r else None,
             })
-    return {"version": "artemis-label-review-v1", "sets": sets, "cases": cases, "pages": pages}
+    return {"version": "artemis-label-review-v2", "label_version_available": bool(v2["rows"]),
+            "sets": sets, "cases": cases, "pages": pages}
+
+
+def _label_entry(v2: Dict[str, Any], key: str) -> Any:
+    row = v2["rows"].get(key)
+    if row is None:
+        return None
+    g = v2["grades"].get(key)
+    return {
+        "decision": row["decision"], "changed": row["changed"],
+        "v2_expect": row["v2"]["expect"] if row["v2"] else None,
+        "v2_evidence_ids": row["v2"]["evidence_ids"] if row["v2"] else None,
+        "rationale": row["rationale"], "page_evidence": row["page_evidence"], "not_adopted": row.get("not_adopted"),
+        "open_issues": row["open_issues"], "verification": row["verification"],
+        "recorded_answer_comparable": row["recorded_answer_comparable"],
+        "sources": {
+            "saved_verdict_provenance": (row["sources"].get("saved_verdict") or {}).get("provenance"),
+            "ai_first_pass": (row["sources"].get("ai_first_pass") or {}).get("verdict"),
+            "chatgpt_partial_v2": row["sources"].get("chatgpt_partial_v2"),
+        },
+        "regrade_post_hoc": {"original": g["original"], "v2": g["v2"]} if g else None,
+    }
 
 
 def main() -> int:

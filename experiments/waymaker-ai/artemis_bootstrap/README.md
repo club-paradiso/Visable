@@ -345,6 +345,39 @@ Every real-manual number above rests on machine-drafted labels and a verbatim st
 - **AI first pass (2026-10-27, not a human review):** four Claude subagents, each given only the case bundle with page text, judged every label: **70 ok, 65 fix_expect, 5 fix_status, 0 drop**. Most findings are expected strings too strict for a correct paraphrase (a whole clause, a "․" middle dot, spacing such as "90일이하", brackets copied from a table); five abstain/clarify labels are contradicted by pages that do answer the question; one gold page is wrong (K-14 should be visa p108). Of the 45 cases E4B failed across the six sets, 36 have a label the first pass flags, so many reported failures may be label problems rather than model errors — not re-scored until a human confirms. Stored in the sheet's `ai_reviews` collection (shown beside each case, never in the human verdict) and in [reviews/ai_first_pass_2026-10-27.json](reviews/ai_first_pass_2026-10-27.json).
 - **Applying the review (not done yet):** export the `reviews` collection into `reviews/label_review_<date>.json`; write corrected labels into *new* case files (`<set>_cases.v2.json`), never into the frozen ones; drop the cases marked *문항 빼기*; re-grade the recorded answers against the reviewed labels without re-running the model, and report those numbers as "human-reviewed labels" next to the machine-label numbers. Any later change to a defense is measured on cases written after the review.
 
+## Label version 2 (2026-10-27)
+
+**Status: 검증 보류.** v2 changes test labels to match the supplied manual page text. It is not a legal verification and not a completed human review; 140 saved verdicts on the review sheet are not 140 legal reviews.
+
+**Path, and what stays frozen.** The six `*_cases.json` files are untouched (SHA-256 pinned in `tests/test_artemis_label_v2.py`). `label_v2.py build` copies them to `label_v2/<set>_cases.v2.json` with the same 140 ids in the same order and applies only the decisions written in `label_v2.DECISIONS`; `label_v2.py check` fails if a committed v2 file differs from a fresh build, so v2 files are never hand-edited. `label_v2/decisions.v2.json` has one row per case: the frozen label, the v2 label (if changed), each source's input, the decision, the page text it rests on, what was not adopted, open issues, and `verification: 검증 보류`.
+
+**Sources kept apart.**
+- *Saved verdicts* (`reviews` collection on the sheet): exported read-only to `reviews/live_review_export_2026-10-27.json` (140 docs, versions recorded). All 140 carry the same reviewer id; the split into 2 existing human verdicts (M-01, M-10) and 138 ChatGPT second-opinion entries comes only from the handoff index, a UI transcription. The export before and after this work is identical.
+- *AI first pass* (`ai_reviews`): unchanged, in `reviews/ai_first_pass_2026-10-27.json`.
+- *ChatGPT second opinion and partial v2 proposals*: copied as received into `reviews/second_opinion_chatgpt_2026-10-27/` with a SHA-256 `MANIFEST.json` (the handoff's `originals/` equal the frozen files and were not copied; its zip backup stays where it is).
+
+**Decisions (9 of 140 changed; 131 pending, original label kept).**
+
+| Case | Decision | What v2 checks | Recorded answer: frozen → v2 (post hoc) |
+|---|---|---|---|
+| M-01 | adopted, modified | 6만원 with format variants (60,000원, 6만 원), not 16만원. The human verdict's online discount / exemptions are not on p5 and were not adopted. | pass → pass |
+| M-04 | adopted, modified | "6개월" **and** the start point (변경일/입국일); a start point given as the time of the activity is flagged for a person, not failed | pass → **fail** (+flag) |
+| M-10 | adopted, modified | total cap 3년 and per-grant 1년 in their places; a swapped answer fails; "1회 3년이 아니라…" passes | fail → **pass** |
+| N-10 | adopted (= partial) | 설치허가증 or 운영자금 도입실적 | pass → pass |
+| Q-11 | adopted, modified | 3회 as a limit (까지 / 초과할 수 없음 / 최대); "초과하여 변경할 수 있" flagged | pass → **fail** (+flag) |
+| K-05 | adopted, modified | fails "제외대상자에게/만 … 적용/발급" unless negated | pass → **fail** |
+| K-06 | adopted (= partial) | 진단서/의사소견서 and 예약 입증 variants | pass → pass |
+| K-10 | adopted (= partial) | 고용추천서 or 고용필요성 입증 | pass → pass |
+| K-14 | adopted, modified | gold p108; evidence p107 + p108 + stay p119 (the partial dropped p107) | **not comparable** — that run never showed p108 |
+
+ChatGPT's proposals for M-04, Q-11 and K-05 banned one exact recorded sentence, and for M-10 allowed one exact recorded sentence; v2 replaces them with structural checks because an exact ban misses reworded errors and fails an answer that quotes the error to correct it. `tests/test_artemis_label_v2.py` holds 30 control answers for these (correct paraphrases, swapped totals, reversed limits, quoted-and-corrected errors) and also asserts that the frozen labels got four of them wrong. Re-grading all recorded answers (`label_v2/regrade_recorded_answers.v2.json`): 96 → 93 of 139 comparable pass; flips are the four rows above. This is post hoc and not a model score.
+
+**Open issues kept with each row.** M-04 does not check which start point applies to the person; Q-11 passes (with a flag) an answer that states the 3-time limit correctly and the 2-time extension limit backwards; K-05 does not catch other reversed phrasings; M-10's discretionary exception in the enforcement rule table is not in the label; K-14 needs a model re-run and a person to judge the p107/p108 page boundary; English answers are not pattern-checked.
+
+**Review sheet link.** The sheet (version 1793086447-3237) now loads bundle `artemis-label-review-v2`: each case shows the v2 decision, rules, rationale, open issues and post-hoc regrade, and the saved verdict read-only with its handoff-based provenance. New verdicts are written to a new collection `reviews_v2`; the page no longer writes `reviews`, and a db rule now limits `reviews` writes to editors. Checked by `review_sheet/render_check.js` (jsdom, published `cases.json`, a fake db with the exported verdicts): 12/12, including that a save goes only to `reviews_v2`. The live page itself could not be opened from this session (claude.ai sign-in), so the check ran on the published files, not in a signed-in browser.
+
+**Not linked or not stored yet.** `reviews_v2` is empty (it is created on the first save). Decisions live in the repository and the sheet's bundle, not in the sheet's database. `run_smoke.py` can run a v2 file (`--cases label_v2/<set>_cases.v2.json`) but no model run used v2. No production code, database or deployment was touched.
+
 ## Existing repository boundaries
 - Mission 001 Artemis classifier configs in experiments/waymaker-ai/configs/artemis are prepared but never run; do NOT overwrite with QA experiment results.
 - Original configs assume AutoModelForCausalLM; Gemma 4's official Hugging Face text/multimodal loader uses AutoProcessor + AutoModelForMultimodalLM. Verify compatibility before any cloud SFT.

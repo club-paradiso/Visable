@@ -1,0 +1,4351 @@
+{
+ "kind": "artemis_label_review_live_export",
+ "exported": "2026-10-27",
+ "artifact": "https://claude.ai/artifact/DNXDQ7BKcRodGsJunQ7Gq4",
+ "method": "ArtifactData list (read-only), limit 1000; document versions from the listing",
+ "warning": "140 saved verdicts are not 140 completed legal reviews. Every document carries the same reviewer id; human vs ChatGPT provenance comes only from the handoff index (UI transcription), not from the database.",
+ "reviews": [
+  {
+   "doc_id": "manual_always_ask_A-01-medical-tourism-long-treatment",
+   "version": 1,
+   "data": {
+    "case_id": "A-01-medical-tourism-long-treatment",
+    "correction": "91일 이상 치료·여행은 해당 안내에 따라 G-1-10, 체류기간 1년 이내 복수사증 대상이 될 수 있음을 설명한다. 표현 변형을 허용하되 G-1-10과 장기 체류기간을 별개로 확인하고, 90일 이하 C-3-3만 답한 결과를 정답으로 취급하지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-01-medical-tourism-long-treatment",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 시행령 별표 1의2 G-1의 일반 범위와 사증 안내 49쪽 원문 확인. 장기 91일 이상 G-1-10은 구체적 사증발급인정서 운영기준이며 실제 발급은 신청·심사에 좌우된다. 적용 경로와 현행 운영 추가 확인. PARTIALLY_VERIFIED, 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_always_ask_cases.json",
+    "updated_at": "2026-10-27T05:59:20.155Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_always_ask_A-02-d1-kf-invitee-consular-visa",
+   "version": 1,
+   "data": {
+    "case_id": "A-02-d1-kf-invitee-consular-visa",
+    "correction": "한국국제교류재단 초청 시 공관장 재량으로 체류기간 1년 이하 단수사증을 발급할 수 있음을 안내하되, 같은 뜻의 한국어·영어 표현을 정답으로 허용한다. 법령의 D-1 1회 부여 상한 2년과 공관 재량 발급기준 1년을 혼동하지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-02-d1-kf-invitee-consular-visa",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 시행규칙 별표 1 D-1 2년 상한과 사증 안내 60쪽 공관장 재량 1년 이하를 직접 대조. 단일 고정 문자열은 적절한 동의표현을 배제할 수 있다. 현행 공관 운영기준 및 채점 구현은 추가 확인. PARTIALLY_VERIFIED, 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_always_ask_cases.json",
+    "updated_at": "2026-10-27T05:59:50.390Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_always_ask_A-03-d6-who-can-invite",
+   "version": 1,
+   "data": {
+    "case_id": "A-03-d6-who-can-invite",
+    "correction": "사증 안내상 외국 종교단체 파견 선교인의 초청은 종단·교단 대표자 기준이며 단위 교회 목사는 초청자가 될 수 없다는 의미를 동의어로 설명한 답을 허용한다. 사증 신청의 대리인과 법적 초청자를 혼동하지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-03-d6-who-can-invite",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 시행령 별표 1의2 D-6 범위와 사증 안내 93쪽 초청자 기준을 확인. 교단 대표자 요건은 시행령 원문이 아니라 해당 사증 안내의 운영기준이다. 정답 문자열 고정의 대체 표현 검증 및 최신 공관 운영은 추가 확인. PARTIALLY_VERIFIED, 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_always_ask_cases.json",
+    "updated_at": "2026-10-27T06:00:36.038Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_always_ask_A-04-d5-korean-media-contract",
+   "version": 1,
+   "data": {
+    "case_id": "A-04-d5-korean-media-contract",
+    "correction": "한국 보도기관과 계약한 활동이 질문에 제시된 범위에서는 D-5에 해당하지 않는다는 결론을 평가한다. 질문의 계약 사실만 반복한 답은 통과시키지 않고 다양한 부정 표현을 허용한다. 다른 적합 자격은 계약과 업무를 확인한 후 판단한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-04-d5-korean-media-contract",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 시행령 별표 1의2 D-5는 외국 보도기관의 파견·계약을 규정하고 사증 안내 91쪽은 국내 보도기관과의 계약 활동은 D-5에 해당하지 않는다고 설명한다. 채점 동의어 구현 및 개별 사례의 다른 자격은 추가 확인. PARTIALLY_VERIFIED, 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_always_ask_cases.json",
+    "updated_at": "2026-10-27T06:01:12.386Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_always_ask_A-05-intl-org-meeting-visa-validity",
+   "version": 1,
+   "data": {
+    "case_id": "A-05-intl-org-meeting-visa-validity",
+    "correction": "국제기구 공무 목적 일시 회의 참석자의 해당 조건에서 유효기간 3개월 단수사증이 일반적이라는 점과 상호주의에 따른 복수사증 가능성을 구분한다. 3개월만 언급하는 답이 충분한 완전 답변으로 채점되지 않도록 하고 영문 동의표현을 허용한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-05-intl-org-meeting-visa-validity",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 출입국관리법 제8조 단수·복수 구분과 사증 안내 11–12쪽 대상·발급기준 및 상호주의 예외를 확인. 3개월은 사증 유효기간이지 반드시 허가 체류기간이 아니다. 개인 자격·협정과 공관 기준 추가 확인. PARTIALLY_VERIFIED, 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_always_ask_cases.json",
+    "updated_at": "2026-10-27T06:01:40.625Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_always_ask_A-06-evisa-confirmation-reprint",
+   "version": 1,
+   "data": {
+    "case_id": "A-06-evisa-confirmation-reprint",
+    "correction": "안내서의 전자사증 확인서 1회 출력 제한 및 분실 시 제한 해제 요청을 설명하되, 휴넷 접근 주체·현재 이용경로를 확인한 뒤 구체 안내한다. 실제 해제 요청 방법이 확인되지 않은 상태에서 누구나 휴넷에 직접 접속할 수 있다고 단정하지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-06-evisa-confirmation-reprint",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 시행규칙 제9조의2는 사증 심사 기준이며 출력제한 규정은 아니다. 사증 안내 141쪽에 1회 제한과 휴넷을 통한 해제 요청이 있으나 현재 일반인 접근·운영 여부는 미확인. 요청 채널을 확인하기 전 PARTIALLY_VERIFIED, 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_always_ask_cases.json",
+    "updated_at": "2026-10-27T06:02:25.074Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_always_ask_A-07-d7-overseas-branch-tenure",
+   "version": 1,
+   "data": {
+    "case_id": "A-07-d7-overseas-branch-tenure",
+    "correction": "해당 해외진출기업 본사 파견 유형에서 원칙적으로 과장 또는 선임연구원급 이상이라는 운영기준을 설명하되 예외 가능성을 지운 확정 표현은 피한다. 해외지사 1년 이상 전문인력 경력, 본사 요건 및 파견 요건을 함께 확인하고 동의표현을 허용한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-07-d7-overseas-branch-tenure",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 시행령 별표 1의2 D-7 나목은 상장법인·공공기관의 해외 현지법인·지점, 1년 경력 및 전문성 등을 규정한다. 과장·선임연구원급은 사증 안내 103쪽의 원칙 기준으로 법령 문언과 구별한다. 개별 회사 적용 여부 미확인. PARTIALLY_VERIFIED, 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_always_ask_cases.json",
+    "updated_at": "2026-10-27T06:02:58.664Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_always_ask_A-08-e5-ship-officer-recommendation",
+   "version": 1,
+   "data": {
+    "case_id": "A-08-e5-ship-officer-recommendation",
+    "correction": "해양수산부장관 추천 및 E-5의 1회 부여기간 상한 5년을 각각 평가한다. 5년은 모든 신청자에게 보장되는 기간이나 총 체류기간이 아니라 상한이라는 표현이 필요하다. 영어와 한국어의 동등한 답을 허용한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-08-e5-ship-officer-recommendation",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 시행규칙 별표 1 E-5 상한 5년과 사증 안내 162쪽 해기사 추천·자격을 확인. 실제 외국 면허의 인정·승무자격 및 선박별 적용은 별도 확인이 필요하다. 모델 답의 5년 확정 표현은 상한으로 수정 필요. PARTIALLY_VERIFIED, 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_always_ask_cases.json",
+    "updated_at": "2026-10-27T06:03:40.945Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_always_ask_A-09-d2-school-transfer-korean-level",
+   "version": 1,
+   "data": {
+    "case_id": "A-09-d2-school-transfer-korean-level",
+    "correction": "TOPIK 3급 이상 외에 사회통합프로그램 3단계 이수 또는 사전평가 61점 이상을 대안으로 허용한다. 인증대학 변경, 폐교·통폐합 등 불가피한 변경, 영어트랙 간 변경은 각각 별개의 예외다. 모델 답변처럼 폐교와 영어트랙 변경을 동시에 요구하지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-09-d2-school-transfer-korean-level",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 출입국관리법 제35조 및 체류 안내 45–46쪽 확인. 15일 등록사항 변경신고와 학위과정 학교변경 심사 운영기준을 구분한다. 모델은 독립적 예외들을 결합하므로 실제 답 보완 필요. 고정문구 채점은 대안 기준을 배제한다. PARTIALLY_VERIFIED, 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_always_ask_cases.json",
+    "updated_at": "2026-10-27T06:04:24.411Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_always_ask_A-10-e10-job-loss-extension",
+   "version": 1,
+   "data": {
+    "case_id": "A-10-e10-job-loss-extension",
+    "correction": "고용해지 후 구직 시 요건 충족 및 심사에 따라 해지일부터 3개월 범위 연장이 가능함을 설명한다. 총 체류가능기간 3년 기준 잔여 4개월 이상이라는 안내 조건과 별도 수수료 면제 기준을 누락하지 않는다. 3개월만 언급한 답은 완전한 정답으로 취급하지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-10-e10-job-loss-extension",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 출입국관리법 제25조의 기한 전 연장허가와 체류 안내 340쪽의 E-10 구직 연장 대상·기간·수수료 기준을 대조. 3개월은 자동 보장 기간이 아니며 재고용 특례와 구별된다. 현행 실무 운영 및 신청자 구체 사실은 추가 확인. PARTIALLY_VERIFIED, 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_always_ask_cases.json",
+    "updated_at": "2026-10-27T06:05:37.459Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_always_ask_A-11-refugee-applicant-work-permit",
+   "version": 1,
+   "data": {
+    "case_id": "A-11-refugee-applicant-work-permit",
+    "correction": "난민신청 후 6개월 경과 시 취업허가를 받을 수 있다는 원칙과 법무부 안내상 건설업 제한을 각각 평가한다. 사전 허가가 필요하며 자동 취업권은 아니다. 취업제한 업종과 제한 예외·개별 허가 사정을 구분하고 영어 동의표현을 허용한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-11-refugee-applicant-work-permit",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 난민법 제40조 제2항은 6개월 경과 후 취업허가 가능을 규정하고, 체류 안내 511쪽은 심사기간 계산과 건설업 제한 등 세부 기준을 제시한다. 전문분야 등 개별 적용 및 현행 운영기준 추가 확인. PARTIALLY_VERIFIED, 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_always_ask_cases.json",
+    "updated_at": "2026-10-27T06:06:23.390Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_always_ask_A-12-ceo-university-lecture",
+   "version": 1,
+   "data": {
+    "case_id": "A-12-ceo-university-lecture",
+    "correction": "총장 또는 학장 추천서뿐 아니라 원근무처장 동의서, 계약서 등 실제 안내된 제출서류와 사전허가를 함께 설명한다. 총(학)장만을 고정 문자열로 요구하지 말고 동등한 표현을 허용한다. 90일 초과 정기 강의는 별도 절차를 확인한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-12-ceo-university-lecture",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 출입국관리법 제20조 및 체류 안내 117쪽의 D-8 상근이사 대학 강연 기준·제출서류 확인. 90일 이내 사례라는 전제와 원근무처 동의 등 필요, 추가 심사와 최신 운영 확인 전 PARTIALLY_VERIFIED. 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_always_ask_cases.json",
+    "updated_at": "2026-10-27T06:07:06.776Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_always_ask_A-13-child-school-enrollment-report",
+   "version": 1,
+   "data": {
+    "case_id": "A-13-child-school-enrollment-report",
+    "correction": "등록된 6~18세 외국인의 초등학교 최초 입학 등 재학 여부 변경은 15일 이내 신고하고 재학 사실을 증명하는 서류를 제출해야 한다고 안내한다. 재학증명서라는 단어만이 아니라 기한과 신고를 평가하고 증명 가능한 다른 서류의 표현도 허용한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-13-child-school-enrollment-report",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 시행규칙 제49조의2 제2호 및 출입국관리법 제35조의 15일 신고와 체류 안내 8쪽 대상·서류를 대조. 기존 모델 답은 15일 기한을 빠뜨렸는데 정답 처리된다. 거소신고자의 개별 적용은 추가 확인. PARTIALLY_VERIFIED, 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_always_ask_cases.json",
+    "updated_at": "2026-10-27T06:07:31.032Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_always_ask_A-14-occupation-income-report",
+   "version": 1,
+   "data": {
+    "case_id": "A-14-occupation-income-report",
+    "correction": "E-7 체류기간 연장 시 직업은 외국인 직업 신고서, 연간소득금액은 통합신청서의 해당 란에 적는다는 두 부분을 평가한다. 직업 신고서만 쓰고 소득 신고방법을 빠뜨린 답을 완전한 답으로 취급하지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-14-occupation-income-report",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 시행규칙 제47조 제6호 직업·연간소득 등록사항 및 체류 안내 7쪽 제출방법 확인. F-4의 안내상 소득란 예외를 E-7에 적용하지 않는다. 신청 채널별 최신 양식 확인 전 PARTIALLY_VERIFIED, 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_always_ask_cases.json",
+    "updated_at": "2026-10-27T06:07:52.357Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_always_ask_A-15-d9-points-first-grant-period",
+   "version": 1,
+   "data": {
+    "case_id": "A-15-d9-points-first-grant-period",
+    "correction": "무역업 D-9-1 점수제의 최초 사증발급인정·자격변경 기준으로 1년을 부여한다는 내용을 표현에 관계없이 인정한다. 일반 D-9 전부의 총 체류기간이나 1회 부여 법령 상한으로 오인하지 않도록 유형과 최초 허가임을 명시한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-15-d9-points-first-grant-period",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 시행규칙 별표 1의 D-9 1회 상한 2년, 체류 안내 138–139쪽 점수제 사증발급인정·자격변경의 최초 1년 운영기준을 대조했다. 실제 허가와 현행 세부 운영 확인 필요. PARTIALLY_VERIFIED, 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_always_ask_cases.json",
+    "updated_at": "2026-10-27T06:08:31.354Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_always_ask_A-16-e6-2-agency-change",
+   "version": 1,
+   "data": {
+    "case_id": "A-16-e6-2-agency-change",
+    "correction": "고용주가 바뀌는 E-6-2는 사전 근무처변경 허가 대상이고 심사 후 고용계약기간 내 최대 1년 부여 가능함을 평가한다. 원근무처 동의서는 안내상 제출서류이나 면제 가능 여부는 별도 확인한다. 다른 절의 면제 단서를 E-6-2에 자동 적용하지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-16-e6-2-agency-change",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 출입국관리법 제21조 및 체류 안내 209쪽 확인. 모델은 신고 대상 절의 동의서 면제 단서를 E-6-2 허가 절에 옮겼으므로 근거 부족; 반면 1년 상한과 사전허가는 확인. 예외 현행 실무 재확인 필요. PARTIALLY_VERIFIED / CONFLICT, 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_always_ask_cases.json",
+    "updated_at": "2026-10-27T06:08:52.263Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_always_ask_A-17-in-korea-medical-pressed-visa",
+   "version": 1,
+   "data": {
+    "case_id": "A-17-in-korea-medical-pressed-visa",
+    "correction": "잘못 누른 해외 사증 버튼에만 의존하지 말고 국내 체류 중 장기치료라는 질문을 인식하여 체류자격 변경 절차로 안내한다. 일정 조건에서 G-1-10 변경 가능성을 조건부로 답하는 정답과 체류 안내 514쪽 인용을 허용하되, 해외 복수사증을 국내 변경의 확정 답으로 제시하지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-17-in-korea-medical-pressed-visa",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 출입국관리법 제24조 및 체류 안내 514쪽 검진 후 장기치료 G-1-10 변경대상을 확인. B-1/B-2/C-3 등 입국자격, 의료기관 소견, 비용과 심사 필요. 버튼 오선택 자체만으로 유용한 국내 답변을 금지하는 채점은 부적절. PARTIALLY_VERIFIED, 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_always_ask_cases.json",
+    "updated_at": "2026-10-27T06:09:13.239Z",
+    "verdict": "fix_status"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_always_ask_A-18-visa-free-to-e3-pressed-visa",
+   "version": 1,
+   "data": {
+    "case_id": "A-18-visa-free-to-e3-pressed-visa",
+    "correction": "국내 체류 중 E-3 변경 문의임을 인식해 국내 절차로 전환하고 조건부 부분답변을 허용한다. 부득이한 사유로 무사증 입국한 고급인력의 석사 자격은 원칙적으로 경력 3년 이상, 국내 석사는 경력요건 면제라는 안내를 적용대상과 함께 설명한다. 부득이한 사유와 연구기관 등은 추가 확인한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-18-visa-free-to-e3-pressed-visa",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 출입국관리법 제24조 및 체류 안내 192쪽의 예외적 E-3 변경 기준 확인. 석사만으로 모든 무사증 입국자가 자동 변경된다고 단정하지 않고 학위 취득국·경력·입국 사유를 확인. 버튼 오선택이 무조건 근거 없음의 이유가 아님. PARTIALLY_VERIFIED, 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_always_ask_cases.json",
+    "updated_at": "2026-10-27T06:09:39.177Z",
+    "verdict": "fix_status"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_always_ask_A-19-f3-spouse-abroad-pressed-stay",
+   "version": 1,
+   "data": {
+    "case_id": "A-19-f3-spouse-abroad-pressed-stay",
+    "correction": "해외 거주 배우자의 F-3 사증 질문으로 절차를 바로잡고, 사증 안내의 E-1 배우자 생계유지능력 입증서류 제출 면제를 조건부로 설명하는 답변을 허용한다. 다만 공관이 심사상 서류를 가감할 수 있으므로 마닐라 공관의 최신 요구사항 확인을 안내한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-19-f3-spouse-abroad-pressed-stay",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 시행령 별표 1의2 F-3 대상과 사증 안내 317쪽 ③·⑤ 서류 제출 면제 및 공관장 가감 가능을 직접 확인. 부적절한 버튼 선택 때문에 근거 있는 답을 배제하지 않는다. 현지 공관 기준 확인 전 PARTIALLY_VERIFIED, 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_always_ask_cases.json",
+    "updated_at": "2026-10-27T06:10:25.946Z",
+    "verdict": "fix_status"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_always_ask_A-20-d9-trade-points-abroad-pressed-stay",
+   "version": 1,
+   "data": {
+    "case_id": "A-20-d9-trade-points-abroad-pressed-stay",
+    "correction": "해외 사증발급인정서 절차로 전환하여 D-9 무역비자 점수제의 총 160점 중 60점 이상과 필수항목 10점 이상을 함께 답하는 것을 허용한다. 필수항목 최대 65점은 합격기준이 아니지만, 이 사실을 정확히 구분해 설명한 답까지 금지하지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-20-d9-trade-points-abroad-pressed-stay",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 시행령 별표 1의2 D-9 일반 활동범위, 사증 안내 120쪽 및 체류 안내 138–139쪽 점수기준 확인. 점수는 세부 운영기준이며 사업자등록 등 추가 요건 존재. 출처·버튼에 대한 일률 금지는 올바른 답을 배제할 수 있다. PARTIALLY_VERIFIED, 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_always_ask_cases.json",
+    "updated_at": "2026-10-27T06:11:08.688Z",
+    "verdict": "fix_status"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_always_ask_A-21-permanent-resident-long-absence",
+   "version": 1,
+   "data": {
+    "case_id": "A-21-permanent-resident-long-absence",
+    "correction": "영주자격자는 일반적으로 출국일부터 2년 이내 재입국할 때 재입국허가가 면제되며, 허가·면제기간 안에 돌아오지 않으면 자격 상실 문제가 생길 수 있다고 조건부로 답하는 것을 허용한다. 별도 허가·연장, 입국 제한 사유와 실제 출국일을 확인한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-21-permanent-resident-long-absence",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 출입국관리법 제30조 및 시행규칙 제44조의2의 F-5 면제 2년과 체류 안내 452쪽 상실 설명을 대조. 면제기간 연장·예외 및 상실 법적 근거 조항은 추가 확인 필요. 이민·입국 제한을 즉시 확정하지 않음. PARTIALLY_VERIFIED, 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_always_ask_cases.json",
+    "updated_at": "2026-10-27T06:12:19.778Z",
+    "verdict": "fix_status"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_always_ask_A-22-e2-medical-check",
+   "version": 1,
+   "data": {
+    "case_id": "A-22-e2-medical-check",
+    "correction": "절차와 고용주를 확인하면서, E-2 외국인등록 시 지정 의료기관의 채용신체검사서가 일반적으로 요구되나 교육감 채용 원어민 보조교사 및 정부초청 해외 영어봉사장학생 등은 제출 면제 안내가 있음을 조건부로 답하는 것을 허용한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-22-e2-medical-check",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 시행규칙 제76조 및 체류 안내 186쪽 확인. 검진서 요구·면제는 절차와 채용형태에 따라 다르고 사증 안내 147쪽은 적용대상 설명임. 일률적 필수 또는 일률적 면제로 답하지 않으며 현재 지정기관과 공관 기준은 재확인. PARTIALLY_VERIFIED, 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_always_ask_cases.json",
+    "updated_at": "2026-10-27T06:13:06.861Z",
+    "verdict": "fix_status"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_always_ask_A-23-pro-footballer-status",
+   "version": 1,
+   "data": {
+    "case_id": "A-23-pro-footballer-status",
+    "correction": "프로 축구선수는 통상 E-6-3 운동 분야가 검토될 수 있다는 부분답변을 허용한다. 활동기간이 90일 이하이면 C-4-5 안내가 적용될 수 있으므로 계약 기간과 현재 국내외 위치를 확인하고 실제 자격을 확정하지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-23-pro-footballer-status",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 시행령 별표 1의2 E-6의 수익 목적 운동경기와 사증 안내 165쪽 E-6-3 및 90일 이하 단기취업 설명, 체류 안내 207쪽 대조. 절차를 묻는 질문과 자격 일반 설명은 구분하되 근거 있는 부분답을 오답 처리하지 않는다. PARTIALLY_VERIFIED, 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_always_ask_cases.json",
+    "updated_at": "2026-10-27T06:13:53.842Z",
+    "verdict": "fix_status"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_always_ask_A-24-venture-investor-documents",
+   "version": 1,
+   "data": {
+    "case_id": "A-24-venture-investor-documents",
+    "correction": "국내 자격변경인지 해외 사증 신청인지와 D-8 세부유형을 확인하되, D-8-2 해당 시 벤처확인 및 기술력 입증 등 대표적인 서류를 절차별 조건부 예시로 제시하는 부분답변을 허용한다. 확정 서류목록은 공관·관할 관서에서 확인한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-24-venture-investor-documents",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 시행규칙 제76조는 절차별 별표 5 또는 5의2를 구분하고 체류 안내 121쪽 및 사증 안내 105쪽은 다른 절차·유형의 목록을 제시한다. 회사의 유형·신청 위치와 최신 서류 확인 필요. PARTIALLY_VERIFIED, 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_always_ask_cases.json",
+    "updated_at": "2026-10-27T06:14:27.228Z",
+    "verdict": "fix_status"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_buttons_B-01-e3-visa-researcher-qualification",
+   "version": 1,
+   "data": {
+    "case_id": "B-01-e3-visa-researcher-qualification",
+    "correction": "원칙적으로 석사와 관련 경력 3년 이상을 설명하되, 국내 석사·일정 해외 우수대학 석사·일정 우수 학술논문 저자의 경력 면제 대상을 서로 누적요건으로 잘못 묶지 않는다. 숫자만으로 정답 처리하지 않고 면제 예외의 왜곡 여부도 검증한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-01-e3-visa-researcher-qualification",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 법령 MCP 시행령 별표 1의2 E-3는 연구활동 범위를 규정하며 경력 3년·면제는 사증 매뉴얼 152쪽의 운영기준이다. 매뉴얼의 면제 표는 국내 석사, 해외 우수대학 석사, 우수 논문 저자를 별도 항목으로 제시하는데 모델은 이를 모두 충족해야 하는 것처럼 잘못 결합하고 국내 석사에게도 경력 3년을 요구한다. 표현 완화만으로는 이 오답이 정답 처리될 수 있다. 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_buttons_cases.json",
+    "updated_at": "2026-10-27T01:15:41.016Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_buttons_B-02-india-business-multiple-visa",
+   "version": 1,
+   "data": {
+    "case_id": "B-02-india-business-multiple-visa",
+    "correction": "상공회의소가 협정에 따라 지정된 기관인지 확인하고, 해당 요청서를 제출하는 상용방문자는 5년 유효 복수사증 발급 대상이 될 수 있다고 조건부 설명한다. 5년은 사증 유효기간이며 1회 체류기간 90일과 구별한다. 숫자 하나만으로 채점하지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-02-india-business-multiple-visa",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 법령 MCP 한·인도 사증절차 간소화 협정(조약 제2088호, 2012-03-25 발효) 제1조 제2항과 제6조 및 사증 매뉴얼 43쪽 확인. 정당하게 지정된 기관의 요청서가 필요하고 5년 사증은 발급 가능 규정이다. 질문은 상공회의소가 지정기관인지 불명확하다. 사증 매뉴얼과 체류 매뉴얼의 약호 차이는 별도 확인 필요. 실제 모델은 질문에서 절차가 명시됐는데도 되물었다. 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_buttons_cases.json",
+    "updated_at": "2026-10-27T01:16:00.120Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_buttons_B-03-d10-jobseeker-visa-length",
+   "version": 1,
+   "data": {
+    "case_id": "B-03-d10-jobseeker-visa-length",
+    "correction": "공관장 재량 발급의 6개월 체류기간 단수 사증이라는 동등한 설명을 허용하되, 구직사증 복수사증협정 체결국 국민은 2년 유효·체류기간 6개월의 복수사증을 받을 수 있는 예외를 함께 반영한다. 사증유효기간과 체류기간을 구별한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-03-d10-jobseeker-visa-length",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 법령 MCP 출입국관리법 제8조의 단수·복수 및 사증 매뉴얼 128쪽의 공관장 재량 기준 대조. 기존 답은 일반 기준을 정확히 인용하나 협정국 복수사증 예외를 빠뜨림. 표제와 전후 문맥에 따른 적용범위 및 최신 공관 운영은 추가 확인 필요(PARTIALLY_VERIFIED). 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_buttons_cases.json",
+    "updated_at": "2026-10-27T01:16:18.717Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_buttons_B-04-e2-visa-degree-requirement",
+   "version": 1,
+   "data": {
+    "case_id": "B-04-e2-visa-degree-requirement",
+    "correction": "학사 이상 학위 또는 동등 이상의 학력이 필요하다는 동등한 한영 표현을 허용한다. 국내 대학 졸업 특례와 모국어 국가·기관에 대한 별도 요건을 구별하며 영어 원어민이라는 사실만으로 사증 적격성을 단정하지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-04-e2-visa-degree-requirement",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 법령 MCP 출입국관리법 제18조 및 시행령 별표 1의2 E-2는 취업 자격과 활동 범위를 규정한다. 사증 매뉴얼 144쪽은 학사 이상 또는 동등 학력과 국내 대학 졸업 특례를 제시한다. 모델은 공관 신청이 명시됐음에도 절차를 되묻고 실질적인 학력 답을 하지 않았다. 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_buttons_cases.json",
+    "updated_at": "2026-10-27T01:16:31.505Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_buttons_B-05-e3-workplace-change-report",
+   "version": 1,
+   "data": {
+    "case_id": "B-05-e3-workplace-change-report",
+    "correction": "요건을 갖춘 E-3 전문인력은 근무처 변경·추가한 날부터 15일 이내 신고한다는 동등 표현을 허용한다. 고시의 신고 대상 요건을 갖추지 못하면 원칙적으로 사전허가가 필요하다는 점을 안내한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-05-e3-workplace-change-report",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 법령 MCP 출입국관리법 제21조 제1항과 시행령 제26조의2 및 체류 매뉴얼 191쪽 확인. 15일의 법정 기산점은 근무처 변경·추가한 날이고, 고시상 신고대상 요건을 충족해야 한다. 모델의 띄어쓰기 차이만으로 오답 처리한 것은 부당하나 자격요건 누락은 보완 필요. 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_buttons_cases.json",
+    "updated_at": "2026-10-27T01:16:44.123Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_buttons_B-06-d10-multiple-reentry-permit",
+   "version": 1,
+   "data": {
+    "case_id": "B-06-d10-multiple-reentry-permit",
+    "correction": "등록된 D-10의 재입국허가 면제 범위와 예외, 체류기간을 먼저 확인하고, 1년을 초과해 체류기간 내 2년까지 여러 차례 재입국하려는 경우 복수허가를 신청할 수 있다고 설명한다. 단수허가 가능성 및 국적별 제한을 구분한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-06-d10-multiple-reentry-permit",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 법령 MCP 출입국관리법 제30조는 단수·복수허가를 구분하고 시행규칙 제44조의2는 면제기준과 예외를 정한다. 체류 매뉴얼 161쪽은 국적별 복수허가 제한 및 체류기간 내 1년 초과 2년 이내의 신청을 제시한다. 기존 모델은 모든 1년 초과 출국에 복수허가가 반드시 필요하다고 쓰고 제한 대상은 명확하게 밝히지 않는다. 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_buttons_cases.json",
+    "updated_at": "2026-10-27T01:16:56.816Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_buttons_B-07-e9-extension-cap",
+   "version": 1,
+   "data": {
+    "case_id": "B-07-e9-extension-cap",
+    "correction": "통상 최초 입국일부터 3년 범위의 취업과 재고용 요건 충족 시 정해진 추가 기간을 구분하고, 재고용 시 일반적인 4년 10개월을 설명한다. 숫자만 제시하면 통과시키지 않으며 감염병·천재지변에 따른 법정 특례와 출국 후 재입국 취업은 별도로 구분한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-07-e9-extension-cap",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 법령 MCP 외국인근로자고용법 제18조는 3년, 제18조의2 제1항은 사용자의 재고용 요청 등을 전제로 한 차례 2년 미만 연장을 정한다. 같은 조 제2항은 감염병·천재지변 등 요건 충족 시 별도 연장 가능성을 둔다. 체류 매뉴얼 330쪽의 4년 10개월은 해당 문맥의 일반 기준이며 예외를 배제한 절대 상한으로 단정하지 않는다. 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_buttons_cases.json",
+    "updated_at": "2026-10-27T01:17:10.902Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_buttons_B-08-c3-extension-limit",
+   "version": 1,
+   "data": {
+    "case_id": "B-08-c3-extension-limit",
+    "correction": "연장 필요성이 인정되는 경우 일반적으로 입국일부터 총 90일 범위 내에서 허가될 수 있음을 설명하고, 조건과 기산점을 확인한다. 90일 추가 또는 무조건 연장으로 해석하지 않으며 협정·특별사유 등 해당 예외는 별도 확인한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-08-c3-extension-limit",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 법령 MCP 출입국관리법 제25조는 체류기간 종료 전 허가를, 제10조의2는 단기체류의 90일과 협정·상호주의 예외를 규정한다. 체류 매뉴얼 27~28쪽은 연장 필요성 심사와 입국일부터 90일 범위의 일반 기준 및 예외적인 사유를 설명한다. 모델은 신청 절차가 명확한데도 되물었다. 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_buttons_cases.json",
+    "updated_at": "2026-10-27T01:17:22.524Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_buttons_B-09-d4-language-course-length",
+   "version": 1,
+   "data": {
+    "case_id": "B-09-d4-language-course-length",
+    "correction": "공관장 재량 발급의 해당 한국어연수 사증은 체류기간 6개월 이하의 단수 사증이라는 의미를 확인한다. 대학·신청인 국적에 따라 사증발급인정서가 필요한 경우를 구분하며, 단순히 6개월만 들어간 답을 정답 처리하지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-09-d4-language-course-length",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 이전에 법령 MCP로 확인한 출입국관리법 제8조, 시행규칙 제18조의3·별표1과 사증 매뉴얼 73~74쪽 대조. D-4의 법령상 1회 상한과 공관장 재량 사증의 체류기간을 구분한다. 베트남 국적·대학 유형에 따른 사증발급인정서 예외와 최신 공관 기준은 추가 확인 필요. 이번 조회는 MCP 일일 한도 초과로 재조회 실패(PARTIALLY_VERIFIED). 모델은 체류자격 변경과 시간제취업을 답해 질문에 답하지 못했다. 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_buttons_cases.json",
+    "updated_at": "2026-10-27T05:22:43.361Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_buttons_B-10-f6-sponsor-income",
+   "version": 1,
+   "data": {
+    "case_id": "B-10-f6-sponsor-income",
+    "correction": "현행 2026년 2인 가구의 연간 소득기준 25,195,752원으로 정정하고, 2025년 23,595,948원은 해당 연도의 과거 참고값으로 구분한다. 법정·고시상 소득 심사 면제와 재산 등 보충 가능성은 해당 요건 충족 여부에 따라 안내한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-10-f6-sponsor-income",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 사증 매뉴얼 335쪽의 23,595,948원은 명시적으로 2025년 참고값이다. 앞서 법령 MCP 시행규칙 제9조의5 제1항 제4호 및 단서 원문, 주밴쿠버 총영사관 2026년 안내 https://overseas.mofa.go.kr/ca-vancouver-ko/brd/m_4574/view.do?page=1&seq=1311023 의 2인 가구 25,195,752원을 대조했다. 현재 MCP 신규 조회는 일일 한도 초과. OUTDATED, 심각도 High. 현재 모델과 정답 라벨 모두 2025년 값을 현재 질문에 적용했다.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_buttons_cases.json",
+    "updated_at": "2026-10-27T05:22:56.912Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_buttons_B-11-h1-insurance-amount",
+   "version": 1,
+   "data": {
+    "case_id": "B-11-h1-insurance-amount",
+    "correction": "대한민국 체류 전 기간에 유효한 의료보험과 보장액 일반 기준 4,000만원을 안내하되, 국적별 협정과 상호주의에 따라 공관의 증서 제출·보장액 기준이 달라질 수 있음을 함께 확인한다. 숫자만으로 정답 처리하지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-11-h1-insurance-amount",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 사증 매뉴얼 350쪽은 4,000만원 이상을 권장하면서 상호주의에 따른 공관별 결정 가능성을 명시한다. 재외동포청 워킹홀리데이 안내 https://whic.mofa.go.kr/contents.do?contentsNo=38 는 체류기간 내 4,000만원 이상을 일반 제출서류로 제시하고 공관별 최신 조건 확인을 안내한다. 국적 미상으로 개별 확정은 보류. MCP는 일일 한도 초과로 이번 항목 신규 조회 불가. PARTIALLY_VERIFIED, 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_buttons_cases.json",
+    "updated_at": "2026-10-27T05:23:14.378Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_buttons_B-12-f1d-digital-nomad-validity",
+   "version": 1,
+   "data": {
+    "case_id": "B-12-f1d-digital-nomad-validity",
+    "correction": "F-1-D 워케이션 사증의 복수 입국과 사증 유효기간 1년을 의미 관계까지 확인한다. 체류기간 1년과 사증 유효기간은 구별하며, 개별 심사 결과를 보장하지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-12-f1d-digital-nomad-validity",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 사증 매뉴얼 305쪽과 주니가타 총영사관 2026-03-17 안내 https://overseas.mofa.go.kr/jp-niigata-ko/brd/m_249/view.do?seq=1345262 의 복수비자·유효기간 1년·체류기간 1년을 대조. 모델은 체류기간만 답하고 복수사증과 유효기간을 직접 답하지 않았다. MCP 일일 한도로 신규 조회 실패, 이전 확인한 출입국관리법 제8조의 사증 구분을 참조. PARTIALLY_VERIFIED, 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_buttons_cases.json",
+    "updated_at": "2026-10-27T05:23:30.741Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_buttons_B-13-c45-lecture-days",
+   "version": 1,
+   "data": {
+    "case_id": "B-13-c45-lecture-days",
+    "correction": "7일 이하·최대 5개 기관 등은 공익목적 초청에 따른 C-4-5 면제 조건의 일부로 설명한다. C-4-5 전체에 7일 제한이 적용된다고 표기한 문항 목적과 기대값을 바로잡고, 고용계약이 아닌 일회성 활동 등 나머지 요건도 함께 확인한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-13-c45-lecture-days",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 사증 매뉴얼 57~58쪽 전체를 확인하면 7일·5기관은 C-4-5 자체의 일반 제한이 아니라 C-3/B-1/B-2 소지자가 공익목적 초청 활동을 할 때 C-4-5 사증을 면제받는 누적 조건이다. 현재 문항 목적은 법적 범위를 오인하게 한다. 사전 MCP로 확인한 출입국관리법 제18조 및 시행령의 취업자격 일반 규정과 구분. 신규 MCP는 일일 한도 초과. PARTIALLY_VERIFIED, 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_buttons_cases.json",
+    "updated_at": "2026-10-27T05:24:14.913Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_buttons_B-14-d2-outside-research-pay",
+   "version": 1,
+   "data": {
+    "case_id": "B-14-d2-outside-research-pay",
+    "correction": "외부기관에서 연구비를 받고 학업과 무관한 연구에 참여하는 경우 E-3 분야 체류자격 외 활동허가가 필요하다는 동등 표현을 허용한다. 허가 필요성을 부정하거나 허가 취득이 보장된다고 하는 답은 정답으로 처리하지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-14-d2-outside-research-pay",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP로 현행 출입국관리법 제20조 원문을 조회하여 다른 체류자격에 해당하는 활동의 사전 허가 원칙을 확인. 체류 매뉴얼 40쪽은 외부기관 연구비와 학업 무관 연구에 E-3 활동허가 필요를 명시한다. 모델은 이를 설명했으나 조사·종결어미 차이로 오답 처리됨. 심각도 Medium. 검토 의견 저장이며 원본 채점 조건은 미변경.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_buttons_cases.json",
+    "updated_at": "2026-10-27T05:49:05.451Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_buttons_B-15-d2-delivery-rider",
+   "version": 1,
+   "data": {
+    "case_id": "B-15-d2-delivery-rider",
+    "correction": "배달대행업체 라이더는 유학생 시간제취업 제한 분야라는 결론을 확인한다. 단순히 해당 직종을 언급하거나 ‘허가 면제 대상이 아니다’라고만 답한 경우를 정답으로 보지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-15-d2-delivery-rider",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP로 시행규칙 제27조의2 원문 조회. 해당 조문은 재외동포의 취업제한에 관한 것이며 라이더 제한을 직접 규정하지 않는다. 유학생의 배달대행 라이더 제한은 체류 매뉴얼 38쪽 운영기준이다. 모델은 허가 면제에서 제외된다고만 답해 허가받으면 가능한 것처럼 오해될 수 있는데 자동 채점은 맞음으로 처리한다. 심각도 High. 원본 채점기와 모델 출력은 미수정.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_buttons_cases.json",
+    "updated_at": "2026-10-27T05:49:31.526Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_buttons_B-16-h1-job-change",
+   "version": 1,
+   "data": {
+    "case_id": "B-16-h1-job-change",
+    "correction": "체류 매뉴얼의 H-1 근무처 변경 운영과 법 제21조의 일반 원칙의 적용 관계를 확인한 후 답을 확정한다. 직종·국적별 협정 제한을 구분하고, 단순히 변경 없이란 문자열만으로 채점하지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-16-h1-job-change",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 출입국관리법 제21조와 시행령 제23조 제5항·제26조 원문을 확인. 법 제21조는 근무처 변경 시 원칙적 사전허가를 정하고, 체류 매뉴얼 526쪽은 H-1에 별도 근무처 변경 없이 취업 가능하다고 안내한다. 두 자료의 적용 관계를 직접 연결하는 현행 근거를 아직 확인하지 못해 CONFLICT로 보류한다. 기존 답은 질문의 허가 필요 여부를 명료히 답하지 않는다. 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_buttons_cases.json",
+    "updated_at": "2026-10-27T05:51:52.760Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_buttons_B-17-f3-spouse-farm-work",
+   "version": 1,
+   "data": {
+    "case_id": "B-17-f3-spouse-farm-work",
+    "correction": "성년 F-3 배우자의 해당 농업 분야 취업은 사전 체류자격 외 활동허가 대상임을 안내하고, TOPIK 2급 또는 사회통합프로그램 2급 이상의 대안적 한국어 증빙을 허용한다. 어느 한 종류만 유일한 정답으로 만들지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-17-f3-spouse-farm-work",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 출입국관리법 제20조는 다른 체류자격 활동의 사전허가를 요구한다. 체류 매뉴얼 428쪽은 H-2 소지자의 성년 배우자, 허용 분야 및 한국어 증빙을 운영기준으로 제시한다. 모델은 언어 요건은 설명하지만 사전허가를 명시하지 않는다. AI 1차 제안처럼 TOPIK만 인정하면 사회통합프로그램 대안을 부당하게 배제한다. 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_buttons_cases.json",
+    "updated_at": "2026-10-27T05:52:17.693Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_buttons_B-18-e3-guest-lecture",
+   "version": 1,
+   "data": {
+    "case_id": "B-18-e3-guest-lecture",
+    "correction": "다른 대학의 강의에 필요한 사전 체류자격 외 활동허가와 원근무처 동의 등 요건을 안내한다. 실제 강의 일정과 활동 내용에 따라 90일 이내 단기활동 및 90일 초과 정기강의의 처리기준을 구분하고, 한 학기를 무조건 90일 이내로 단정하지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-18-e3-guest-lecture",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 출입국관리법 제20조의 사전허가 원문과 체류 매뉴얼 188쪽의 E-3 대학 강의, 원근무처 동의, 90일 초과 정기강의 본부 승인상신을 대조했다. 기대문구가 90일 이내만 강제하면 실제 한 학기 일정에 맞는 답을 배제할 수 있다. 개인별 허가 및 적용절차는 확인 필요. 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_buttons_cases.json",
+    "updated_at": "2026-10-27T05:52:33.558Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_buttons_B-19-d2-cyber-university",
+   "version": 1,
+   "data": {
+    "case_id": "B-19-d2-cyber-university",
+    "correction": "기대 상태에 답변 완료를 허용하고 근거 없음만을 정답으로 취급하지 않는다. 법무부 안내상 사이버대학은 D-2 대상 교육기관에서 제외됨을 설명하는 답과 체류 매뉴얼 35쪽 인용을 허용한다. 다른 체류자격으로 수학 가능한 경우와 구별한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-19-d2-cyber-university",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP로 출입국관리법 시행령 별표 1의2 제5호 D-2 일반 범위를 확인했고, 체류 매뉴얼 35쪽은 원격대학을 D-2 대상 교육기관에서 제외한다고 명시한다. 원격대학 제외는 법령 조문 자체가 아니라 공개 업무안내의 운영기준이다. 검증상태 PARTIALLY_VERIFIED; 출처·현행 운영 여부 추가 확인 필요. 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_buttons_cases.json",
+    "updated_at": "2026-10-27T05:55:54.945Z",
+    "verdict": "fix_status"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_buttons_B-20-f3-family-of-researcher",
+   "version": 1,
+   "data": {
+    "case_id": "B-20-f3-family-of-researcher",
+    "correction": "E-3 연구자의 배우자와 배우자 없는 미성년 자녀는 F-3 대상이 될 수 있다는 부분 답변을 허용한다. 자녀 나이·혼인 여부와 국내외 신청 경로를 확인하고, 서류는 신청 경로와 공관별 심사기준에 따라 안내한다. 관련 체류 매뉴얼 428쪽 인용을 일률적으로 금지하지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-20-f3-family-of-researcher",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP로 출입국관리법 시행령 별표 1의2 제25호를 확인했고 사증 안내 316쪽·체류 안내 428쪽을 대조했다. 자격에 관한 부분 답변이 가능하므로 무조건 되묻기만 통과시키면 부당하다. 제출서류 전부는 절차·공관별 추가 확인 필요. PARTIALLY_VERIFIED, 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_buttons_cases.json",
+    "updated_at": "2026-10-27T05:56:19.045Z",
+    "verdict": "fix_status"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_buttons_B-21-e9-eligible-countries",
+   "version": 1,
+   "data": {
+    "case_id": "B-21-e9-eligible-countries",
+    "correction": "취업기간에 대한 근거 있는 부분답변과 체류 매뉴얼 330쪽 인용을 허용한다. 기본 3년 및 요건 충족 시 재고용 연장과 4년 10개월 운영기준을 구분하고 재입국·특례까지 평생 상한으로 단정하지 않는다. 송출국 명단은 최신 공식 목록 확인 후 제시한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-21-e9-eligible-countries",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 외국인근로자 고용법 제18조·제18조의2 원문과 사증 안내 285쪽, 체류 안내 330쪽 확인. 제18조의2는 재고용 시 2년 미만 범위를 규정하고 안내는 4년 10개월을 제시한다. 사증 안내 한 페이지에 MOU 16개국과 선정 17개국이 병존하므로 현재 명단·예외는 확인 보류. PARTIALLY_VERIFIED / CONFLICT, 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_buttons_cases.json",
+    "updated_at": "2026-10-27T05:56:47.545Z",
+    "verdict": "fix_status"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_buttons_B-22-d4-work-while-studying",
+   "version": 1,
+   "data": {
+    "case_id": "B-22-d4-work-while-studying",
+    "correction": "시간제취업은 6개월 경과만으로 자동 허용되는 것이 아니라 원칙적으로 사전 체류자격외 활동허가와 해당 요건 심사가 필요함을 답한다. 6개월 기산점은 자격변경일 또는 사증 소지자의 입국일을 구분한다. 근거를 갖춘 부분 답변을 허용하고 허가 없는 취업을 유도하는 문구는 정답으로 확정하지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-22-d4-work-while-studying",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 출입국관리법 제20조 및 체류 안내 37–39쪽, 83쪽 확인. 모델의 6개월만 경과하면 가능하다는 답은 사전허가 등 누락. 83쪽은 회화지도와 함께 배치되어 있으므로 일반 시간제취업은 37–39쪽을 함께 확인. 세부 시간·요건은 최신 기준 추가 확인. PARTIALLY_VERIFIED, 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_buttons_cases.json",
+    "updated_at": "2026-10-27T05:57:17.949Z",
+    "verdict": "fix_status"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_buttons_B-23-e9-going-home-briefly",
+   "version": 1,
+   "data": {
+    "case_id": "B-23-e9-going-home-briefly",
+    "correction": "등록된 E-9 근로자가 출국 후 1년 이내이면서 남은 체류기간 내 재입국하고 제외 사유가 없다면 통상 재입국허가가 면제됨을 조건부로 안내하는 답변을 허용한다. 출입국 규제 등 예외와 유효 여권·외국인등록증 및 체류기간 확인을 안내하고 비용을 일률 확정하지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-23-e9-going-home-briefly",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 출입국관리법 제30조, 시행규칙 제44조의2 원문 및 체류 안내 332쪽 확인. 면제는 1년과 남은 체류기간 중 짧은 기간, 법령상 제외 사유를 함께 고려한다. 별도 휴가·보험·출입국 사정은 추가 확인. PARTIALLY_VERIFIED, 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_buttons_cases.json",
+    "updated_at": "2026-10-27T05:58:24.418Z",
+    "verdict": "fix_status"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_buttons_B-24-f1d-stay-length",
+   "version": 1,
+   "data": {
+    "case_id": "B-24-f1d-stay-length",
+    "correction": "디지털노마드 체류기간의 일반적 안내로 국내 자격변경 시 1년 부여 기준을 설명하는 답변을 허용한다. 사증 유효기간과 허가된 체류기간 및 1회 부여 상한을 구별하고, 추가 연장 또는 총 체류기간은 별도 현행 운영기준 확인 전 단정하지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-24-f1d-stay-length",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 시행규칙 별표 1은 F-1의 1회 부여 상한 2년임을 확인. 체류 안내 355쪽은 F-1-D 자격변경 허가기간 1년, 사증 안내 305쪽의 1년은 사증 유효기간이다. 국내 변경기준을 모든 입국·연장 사례에 확장하면 안 됨. PARTIALLY_VERIFIED, 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_buttons_cases.json",
+    "updated_at": "2026-10-27T05:58:55.129Z",
+    "verdict": "fix_status"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_clarify_Q-01-e9-visa-criminal-record",
+   "version": 1,
+   "data": {
+    "case_id": "Q-01-e9-visa-criminal-record",
+    "correction": "사증 신청일을 기준으로 발급된 지 3개월 이내라는 관계를 유지하면서 “신청일 기준 최근 3개월 이내 발급” 등 같은 뜻의 표현을 허용한다. “3개월 이내”라는 숫자만으로 다른 기산점의 잘못된 답을 정답 처리하지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-01-e9-visa-criminal-record",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 법령 MCP 시행규칙 제76조·별표 5의 E-9 범죄경력증명서와 사증 매뉴얼 287쪽의 발급 시점 기준을 확인했다. 3개월 기준은 매뉴얼 운영기준으로 구분하며, 1차 의견처럼 숫자만 검사하면 기산점을 검증하지 못한다. 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_clarify_cases.json",
+    "updated_at": "2026-10-27T01:07:01.709Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_clarify_Q-02-e2-epik-visa-where-apply",
+   "version": 1,
+   "data": {
+    "case_id": "Q-02-e2-epik-visa-where-apply",
+    "correction": "EPIK 영어보조교사에 관한 제공 매뉴얼상 해외 소재 대한민국 공관에서 신청 가능하다는 의미를 유지하며 영어 의역도 허용한다. 단 “어디라도” 또는 “공관” 한 단어만 검사하여 다른 결론도 정답 처리하지 않는다. 해당 공관의 실제 접수 운영을 확인한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-02-e2-epik-visa-where-apply",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 법령 MCP 시행령 제7조·시행규칙 제9조의 사증발급 및 권한 위임 구조를 확인했고 사증 매뉴얼 146쪽의 EPIK와 CPIK 구분을 확인했다. 해외 공관 어디서나 가능하다는 구체 기준은 매뉴얼에 근거하며 법령 조문에 직접 적힌 내용이 아니다. 개별 공관 접수 조건 최신 확인이 필요해 부분 검증. 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_clarify_cases.json",
+    "updated_at": "2026-10-27T01:07:15.980Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_clarify_Q-03-d2-visa-photo-admission",
+   "version": 1,
+   "data": {
+    "case_id": "Q-03-d2-visa-photo-admission",
+    "correction": "사진 1매의 촬영기간과 표준입학허가서의 발행 주체를 의미상 동등한 표현으로 인정하되, 다른 사실과 잘못 연결된 답을 통과시키지 않는다. 모델 답의 “학사 신입학에 석사 또는 박사 졸업증명서 필요”는 삭제·수정한다. 매뉴얼 표는 신입학 학사에 고교 졸업증명서, 석사에 학사 졸업증명서, 박사에 석사 졸업증명서를 구분한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-03-d2-visa-photo-admission",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 시행규칙 제76조·별표 5 D-2와 사증 매뉴얼 63쪽 표를 대조. 기존 모델 답은 표의 행과 열을 혼동해 학사 신입학에 석사 또는 박사 졸업증명서가 필요하다고 잘못 설명한다. 1차 의견의 “답은 맞음”을 수용하지 않는다. 채점은 정확한 괄호·문장부호를 요구하는 문제도 있다. 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_clarify_cases.json",
+    "updated_at": "2026-10-27T01:07:41.226Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_clarify_Q-04-d9-sole-proprietor-visa-mission",
+   "version": 1,
+   "data": {
+    "case_id": "Q-04-d9-sole-proprietor-visa-mission",
+    "correction": "매뉴얼상 본국 소재 대한민국 공관이 원칙이고, 해외에 주재하며 사업체 운영 등 장기거주하는 경우 주재국 소재 대한민국 공관 신청이 가능하다는 예외를 함께 반영한다. 영어와 한국어의 동등한 표현을 인정하되 “본국” 한 단어만으로 올바른 장소 관계를 판단하지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-04-d9-sole-proprietor-visa-mission",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 법령 MCP 시행규칙 제9조의 공관 사증발급권한과 사증 매뉴얼 119쪽의 개인사업자 신청기관 원칙·예외를 대조했다. 1차 제안처럼 예외를 생략한 답만 허용하면 해외 장기거주 조건을 놓칠 수 있다. 공관별 실제 접수기준은 추가 확인 필요. 부분 검증, 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_clarify_cases.json",
+    "updated_at": "2026-10-27T01:07:53.691Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_clarify_Q-05-e9-workplace-change-deadline",
+   "version": 1,
+   "data": {
+    "case_id": "Q-05-e9-workplace-change-deadline",
+    "correction": "근로계약 종료일부터 1개월 이내 사업장 변경 신청, 신청일부터 3개월 이내 근무처 변경허가라는 각각의 기산점과 기관을 구분한다. “1월”과 “1개월”의 동등한 표현을 허용하고 업무상 재해·질병·임신·출산 등의 기간 계산 예외를 안내한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-05-e9-workplace-change-deadline",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 법령 MCP 외국인근로자의 고용 등에 관한 법률 제25조제3항(현행 2025-10-01 시행), 출입국관리법 제21조 및 체류 매뉴얼 329쪽을 대조했다. 현재 기대 문자열은 1개월 표현을 오답 처리하고 1차 제안처럼 숫자만 검사하면 각 기간의 기산점을 확인할 수 없다. 법령상 예외는 해당 사유가 없어진 날부터 계산한다. 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_clarify_cases.json",
+    "updated_at": "2026-10-27T01:08:14.296Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_clarify_Q-06-d2-parttime-permit-places",
+   "version": 1,
+   "data": {
+    "case_id": "Q-06-d2-parttime-permit-places",
+    "correction": "제공 매뉴얼상 허용 시간 범위 내에서 동시에 취업하는 장소가 최대 2곳이라는 조건을 확인한다. “장소는 2곳” 등 동등한 조사를 허용하되 숫자만으로 잘못된 대상을 채점하지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-06-d2-parttime-permit-places",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 법령 MCP 법 제20조와 시행령 제25조의 사전허가를 확인하고 체류 매뉴얼 39쪽의 D-2 장소 2곳·허용시간 범위를 대조. 2곳은 매뉴얼 운영기준이고 법 제20조 조문에 직접 쓰인 수치가 아니다. 기존 답은 장소는 2곳이라고 하여 조사 차이로 부당하게 탈락한다. 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_clarify_cases.json",
+    "updated_at": "2026-10-27T01:08:27.158Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_clarify_Q-07-d9-multiple-reentry-permit",
+   "version": 1,
+   "data": {
+    "case_id": "Q-07-d9-multiple-reentry-permit",
+    "correction": "매뉴얼상 출국 후 체류기간 범위에서 1년을 초과해 2년 내 재입국하려는 경우 복수재입국허가를 신청할 수 있다는 관계를 설명하고, 국적별 제한과 입국규제 등 예외를 확인한다. 횟수에 따라 단수허가가 가능한지 및 면제협정 적용은 별도 확인한다. “1년 초과”, “2년 내”의 의역을 허용한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-07-d9-multiple-reentry-permit",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 법령 MCP 법 제30조는 단수·복수 허가를 구분하고 시행규칙 제44조의2는 D-9 등 등록자의 통상 1년 면제와 잔여 체류기간·제외 조건을 규정한다. 체류 매뉴얼 137쪽은 복수허가 기간 및 특정 국적 제한을 안내한다. 질문은 국적·출입국 횟수·잔여기간이 없어 모든 사람에게 복수허가가 필요하다고 단정할 수 없다. 부분 검증, 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_clarify_cases.json",
+    "updated_at": "2026-10-27T01:09:21.659Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_clarify_Q-08-student-residence-change-report",
+   "version": 1,
+   "data": {
+    "case_id": "Q-08-student-residence-change-report",
+    "correction": "등록외국인의 경우 전입한 날부터 15일 이내 신고한다는 기산점을 유지하면서 “이사한 날부터 15일” 같은 의미를 허용한다. 새로운 체류지의 읍·면·동장도 법령상 신고받는 기관에 포함하므로 매뉴얼의 축약 목록을 전부로 단정하지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-08-student-residence-change-report",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 법령 MCP 출입국관리법 제36조제1항은 등록외국인의 전입일부터 15일 이내 신고를 규정하고 시·군·구 또는 읍·면·동의 장과 관할 출입국관서를 열거한다. 체류 매뉴얼 95쪽은 읍·면·동을 별도로 나열하지 않는다. 기존 모델 답은 기한은 맞으나 기관 목록을 열거할 때 법령상 선택지를 반영해야 한다. 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_clarify_cases.json",
+    "updated_at": "2026-10-27T01:10:17.539Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_clarify_Q-09-bring-wife-income",
+   "version": 1,
+   "data": {
+    "case_id": "Q-09-bring-wife-income",
+    "correction": "2026년 2인 가구의 일반 소득기준 25,195,752원은 연간 기준임을 명시하고, 심사 면제나 소득·재산 보충이 적용될 수 있는지 사실관계를 확인한다. 숫자만 포함하면 다른 연도나 가구에 잘못 적용한 답도 통과하므로 연도·가구·기준 관계를 검증한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-09-bring-wife-income",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 법령 MCP 시행규칙 제9조의5 제1항제4호와 단서의 연도별 소득 심사·일부 면제 구조를 확인. 사증 매뉴얼 330쪽과 주밴쿠버 총영사관의 2026년 2인 기준 25,195,752원을 대조했다(https://overseas.mofa.go.kr/ca-vancouver-ko/brd/m_4574/view.do?page=1&seq=1311023). 개별 면제·보충 여부는 사실 확인 필요. 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_clarify_cases.json",
+    "updated_at": "2026-10-27T01:10:48.303Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_clarify_Q-10-f6-working-allowed",
+   "version": 1,
+   "data": {
+    "case_id": "Q-10-f6-working-allowed",
+    "correction": "F-6에 적용되는 체류자격 구분상 취업 제한이 없다는 뜻이 확인되는 자연스러운 어미를 허용한다. 단순 부분문자열만으로 부정문까지 정답 처리하지 않도록 문맥을 확인한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-10-f6-working-allowed",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 법령 MCP 출입국관리법 제18조 및 시행령 제23조 제2항 제3호 원문과 체류 매뉴얼 484쪽 확인. 기존 모델 답은 제한을 받지 않는다고 올바르게 설명하지만 종결 어미 차이로 오답 처리된다. 심각도 Medium. 채점 조건 수정 의견이며 원본 자동채점기는 아직 변경되지 않았다.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_clarify_cases.json",
+    "updated_at": "2026-10-27T01:11:39.344Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_clarify_Q-11-e9-change-jobs-count",
+   "version": 1,
+   "data": {
+    "case_id": "Q-11-e9-change-jobs-count",
+    "correction": "답변은 최초 취업기간 중 원칙적으로 3회, 재고용으로 연장된 기간 중 2회를 초과할 수 없다고 고친다. 근로자 책임이 아닌 법정 사유의 변경은 횟수에서 제외한다. 채점은 숫자만이 아니라 기간별 상한과 초과 금지를 확인한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-11-e9-change-jobs-count",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 법령 MCP 외국인근로자의 고용 등에 관한 법률 제25조 제4항(시행 2025-10-01) 및 체류 매뉴얼 328쪽 확인. 실제 모델 답은 두 횟수를 초과하여 변경할 수 있다고 반대로 쓰지만 자동 채점은 맞음으로 판정함. 단순히 3회만 찾으면 위험한 오답이 통과한다. 심각도 Critical. 이 기록은 수정 의견이며 모델 답과 채점기 원본은 아직 고쳐지지 않았다.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_clarify_cases.json",
+    "updated_at": "2026-10-27T01:11:54.398Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_clarify_Q-12-e9-rehire-return-group",
+   "version": 1,
+   "data": {
+    "case_id": "Q-12-e9-rehire-return-group",
+    "correction": "재입국 취업특례의 사증발급인정서에 따른 신청은 송출기관의 단체 신청으로 이루어지며 개별 발급이 불가하다는 관계를 확인한다. “단체 신청” 또는 “송출기관” 중 한 단어만 있어도 통과시키지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-12-e9-rehire-return-group",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 법령 MCP 외국인근로자고용법 제18조의4는 재입국 후 고용허가의 법정 요건을 규정하며 단체 사증신청 자체는 법 조문에 적혀 있지 않다. 사증 매뉴얼 287쪽의 운영기준에서 송출기관 단체 신청과 개별발급 불가를 확인. 실제 모델은 근거 부족으로 답변 보류. 문장 표면형 완화는 필요하나 의미 관계와 절차 구별을 유지한다. 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_clarify_cases.json",
+    "updated_at": "2026-10-27T01:12:07.697Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_clarify_Q-13-korean-language-course-education",
+   "version": 1,
+   "data": {
+    "case_id": "Q-13-korean-language-course-education",
+    "correction": "대학 부설 한국어연수(D-4-1)의 일반 학력 기준을 고등학교 졸업 이상으로 설명하는 동등 표현을 허용한다. D-4-7 외국어연수의 별도 예외를 D-4 전체에 적용하지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-13-korean-language-course-education",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 법령 MCP 시행령 별표 1의2 D-4는 교육·연수 활동과 법무부장관이 정하는 기관 요건을 규정하나 고졸 기준을 직접 쓰지 않는다. 사증 매뉴얼 73쪽은 대학부설 한국어연수의 고등학교 졸업 이상 기준과 D-4-7 예외를 제시한다. 실제 모델은 추가 질문을 반복하여 아직 답하지 못함. 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_clarify_cases.json",
+    "updated_at": "2026-10-27T01:12:25.784Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_clarify_Q-14-d4-parttime-duration",
+   "version": 1,
+   "data": {
+    "case_id": "Q-14-d4-parttime-duration",
+    "correction": "어학연수생의 시간제취업 허가기간은 체류기간 내에서 한 번에 최장 6개월이고 장소 1곳이라는 의미가 드러나야 한다. 이를 총 누적 취업기간이 6개월이라는 뜻으로 오인하지 않도록 한다. 취업 전 허가 필요 여부와 심사조건도 안내한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-14-d4-parttime-duration",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 법령 MCP 출입국관리법 제20조는 체류자격 외 활동의 사전 허가를 규정한다. 6개월 및 장소 1곳은 체류 매뉴얼 39쪽의 운영기준이며 총 누적 체류기간과 구분해야 한다. 기존 답은 기간과 장소를 적었으나 신청·허가 전제는 별도로 명확히 할 여지가 있다. 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_clarify_cases.json",
+    "updated_at": "2026-10-27T01:12:41.513Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_clarify_Q-15-d10-points-exemption-after-leaving",
+   "version": 1,
+   "data": {
+    "case_id": "Q-15-d10-points-exemption-after-leaving",
+    "correction": "국내 전문학사 이상 졸업 후 출국하여 졸업일로부터 1년 이내 최초 D-10-1 사증을 받는 경우의 점수제 면제와 과거 D-10 보유자는 이 특례 대상이 아니라는 점을 함께 검증한다. 1년이라는 숫자만 포함하면 안 된다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-15-d10-points-exemption-after-leaving",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 법령 MCP 출입국관리법 제10조 및 시행령 별표 1의2 D-10은 구직자격의 법적 범위만 규정하며 점수제 면제의 구체적인 1년 요건은 사증 매뉴얼 125쪽 운영기준에 있다. 과거 D-10 보유자의 제외 단서가 중요하다. 실제 모델은 절차를 재질문해 실질 답변을 하지 못했다. 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_clarify_cases.json",
+    "updated_at": "2026-10-27T01:12:53.696Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_clarify_Q-16-c3-stay-longer-flight-cancelled",
+   "version": 1,
+   "data": {
+    "case_id": "Q-16-c3-stay-longer-flight-cancelled",
+    "correction": "항공편 취소 등 연장 필요성을 입증하는 자료와 신청서·여권·수수료 안내를 평가한다. 취소만으로 연장이 자동 허가된다고 표현하지 않으며, 체류기간 종료 전 절차를 안내한다. 동등한 영어 설명도 수용한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-16-c3-stay-longer-flight-cancelled",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 법령 MCP 출입국관리법 제25조는 기간 종료 전 연장허가를 요구한다. 체류 매뉴얼 28쪽은 C-3 연장사유와 필요성 소명서류, 신청서·여권·수수료를 제시한다. 항공편 취소에 대한 심사·허가는 별도이며 실제 모델은 답변 대신 되물었다. 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_clarify_cases.json",
+    "updated_at": "2026-10-27T01:13:06.328Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_clarify_Q-17-d8-minimum-investment",
+   "version": 1,
+   "data": {
+    "case_id": "Q-17-d8-minimum-investment",
+    "correction": "D-8-1 외국인투자기업의 해당 투자 유형에 대해 1인당 1억원 이상 및 의결권 10% 이상 또는 지분 보유와 임원 파견·선임 요건을 설명한다. 단순히 1억원이라는 숫자가 포함되었다는 이유로 정답 처리하지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-17-d8-minimum-investment",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 법령 MCP 외국인투자 촉진법 시행령 제2조 제2·3항(2026-03-24 시행)과 사증 매뉴얼 104쪽 확인. 1억원 이상 및 10% 또는 임원 파견·선임의 선택 요건이 있으며 취득 이후 지분 감소의 법정 단서도 있다. 사증은 별도 자격 심사 대상. 모델은 근거 부족으로 보류했다. 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_clarify_cases.json",
+    "updated_at": "2026-10-27T01:13:34.013Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_clarify_Q-18-e2-trip-home-reentry",
+   "version": 1,
+   "data": {
+    "case_id": "Q-18-e2-trip-home-reentry",
+    "correction": "등록 E-2는 일반적으로 출국일부터 1년 이내이면서 체류기간 이내의 재입국허가 면제 대상임을 설명하고, 입국금지·사증발급규제 등의 법정 예외를 확인한다. 1년만 단독 채점하지 않는다. 1년 초과 시 단수와 복수허가 선택 및 국적별 제한을 구분한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-18-e2-trip-home-reentry",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 법령 MCP 출입국관리법 제30조 및 시행규칙 제44조의2 제1항 제2호·단서와 체류 매뉴얼 175쪽 확인. 체류기간이 짧으면 그 기간이 한도이며 입국규제자 등 예외가 있다. 기존 답변은 면제 기준은 설명하나 장기 출국 시 복수허가만 안내하고 단수허가 및 국적별 제한을 빠뜨린다. 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_clarify_cases.json",
+    "updated_at": "2026-10-27T01:13:45.351Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_clarify_Q-19-live-with-korean-husband-docs",
+   "version": 1,
+   "data": {
+    "case_id": "Q-19-live-with-korean-husband-docs",
+    "correction": "",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-19-live-with-korean-husband-docs",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 법령 MCP 출입국관리법 제24조와 시행규칙 제9조의5를 대조하면 국내 자격변경과 해외 결혼동거 사증은 별도 절차다. 질문에 현재 위치·보유 자격이 없어 해당 절차를 먼저 확인하는 모델의 되묻기는 타당하다. 사증 매뉴얼 328쪽·체류 매뉴얼 486쪽의 서류는 절차별로 구분해야 한다. 근거 부족 보류를 함께 허용하는 채점 정책의 적정성은 별도 판단이 필요하다. 심각도 Low.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_clarify_cases.json",
+    "updated_at": "2026-10-27T01:14:03.023Z",
+    "verdict": "ok"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_clarify_Q-20-d2-study-docs",
+   "version": 1,
+   "data": {
+    "case_id": "Q-20-d2-study-docs",
+    "correction": "",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-20-d2-study-docs",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 법령 MCP 출입국관리법 제8조와 제24조에서 사증과 국내 체류자격 변경이 별도 절차임을 확인. 사증 매뉴얼 63쪽과 체류 매뉴얼 47쪽은 서로 다른 신청 상황의 서류이므로 현재 위치와 필요한 절차를 확인하는 되묻기는 타당하다. 근거 부족 보류까지 허용할지의 평가 정책은 추가 검토가 필요하다. 심각도 Low.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_clarify_cases.json",
+    "updated_at": "2026-10-27T01:14:15.311Z",
+    "verdict": "ok"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_clarify_Q-21-e9-factory-work-docs",
+   "version": 1,
+   "data": {
+    "case_id": "Q-21-e9-factory-work-docs",
+    "correction": "",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-21-e9-factory-work-docs",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 법령 MCP 외국인근로자의 고용 등에 관한 법률 제8조와 제25조에서 사용자 고용허가와 근로자의 사업장 변경이 구별됨을 확인. 사증 매뉴얼 288쪽의 사증발급인정서 서류와 체류 매뉴얼 328쪽의 변경 규정은 같은 서류목록이 아니다. 현재 위치·단계가 불명확하므로 되묻기 타당. 모델은 보류했으며 이 보류를 정답으로 볼지 평가 정책은 추가 확인 필요. 심각도 Low.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_clarify_cases.json",
+    "updated_at": "2026-10-27T01:14:28.432Z",
+    "verdict": "ok"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_clarify_Q-22-d10-how-long",
+   "version": 1,
+   "data": {
+    "case_id": "Q-22-d10-how-long",
+    "correction": "법령과 공통 매뉴얼의 D-10 1회 부여 상한 1년을 조건과 함께 정확히 설명하고, 일부 유형 6개월 운영기준 및 실제 부여·총 체류기간의 차이를 밝힌 답변은 정답 또는 부분답으로 허용하도록 검토한다. 사증 매뉴얼 124쪽을 일률적으로 인용 금지할 근거가 약하다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-22-d10-how-long",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 법령 MCP 시행규칙 별표 1은 D-10의 1회 체류기간 상한 1년과 연장에 관한 단서를 규정한다. 사증 매뉴얼 124쪽과 체류 매뉴얼 144쪽 모두 1회 상한 1년 및 일부 6개월 운영기준을 제시한다. 이는 총 체류 가능기간 확정이 아니다. 유형별 사실을 확인하는 되묻기는 가능하되 정당한 조건부 답변을 일괄 오답 처리할 이유는 부족하다. 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_clarify_cases.json",
+    "updated_at": "2026-10-27T01:14:54.683Z",
+    "verdict": "fix_status"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_clarify_Q-23-h2-father-how-long",
+   "version": 1,
+   "data": {
+    "case_id": "Q-23-h2-father-how-long",
+    "correction": "현 H-2 보유·등록 여부와 해외 신규 사증 신청 여부를 먼저 확인한다. 답변이 정확한 근거에 따라 사증 신규 발급의 현행 운영상 제한과 국내 등록자의 체류기간을 구분하여 설명한다면 사증 매뉴얼 389쪽 인용을 일률적으로 금지하지 않도록 검토한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-23-h2-father-how-long",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 법령 MCP 시행규칙 제18조의3 및 별표 1의 H-2 1회 상한 3년은 자동 부여기간이나 총 체류 가능기간을 의미하지 않는다. 체류 매뉴얼 537쪽은 등록자의 조건별 기간을, 사증 매뉴얼 389쪽은 2026-02-12 신규발급 중단을 기재한다. 이 중단의 현재 유지 및 예외는 공관 최신 안내 추가 확인 필요(UNVERIFIED). 질문의 실제 상황에 맞는 공식 근거까지 일괄 금지하면 안 된다. 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_clarify_cases.json",
+    "updated_at": "2026-10-27T01:15:10.744Z",
+    "verdict": "fix_status"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_clarify_Q-24-d9-sole-proprietor-docs",
+   "version": 1,
+   "data": {
+    "case_id": "Q-24-d9-sole-proprietor-docs",
+    "correction": "",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-24-d9-sole-proprietor-docs",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 법령 MCP 출입국관리법 제31조의 외국인등록과 제8조의 사증은 다른 절차다. 체류 매뉴얼 137쪽은 외국인 개인사업자의 등록서류이고 사증 매뉴얼 119쪽은 사증 관련 항목이므로 질문만으로 어느 절차인지 확인하기 어렵다. 실제 모델의 되묻기는 타당하며 보류 허용 여부는 채점 정책의 추가 확인이 필요하다. 심각도 Low.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_clarify_cases.json",
+    "updated_at": "2026-10-27T01:15:23.243Z",
+    "verdict": "ok"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_misclick_K-01-c3-business-subcode",
+   "version": 1,
+   "data": {
+    "case_id": "K-01-c3-business-subcode",
+    "correction": "일반상용 C-3-4를 다양한 표기로 인정한다. 단기 상용 상담·계약과 보수를 받는 실제 취업활동을 구별한다. APEC 카드 소지라는 이유만으로 의료관광 C-3-3까지 해당한다고 말한 모델 답은 오류로 평가한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-01-c3-business-subcode",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 시행령 별표 1 C-3의 상용활동·영리 제외와 사증 안내 27쪽 세부약호 확인. C-3-3은 의료관광이며 카드 소지 자체가 그 요건이 아니다. 카드 국적별 입국 가능·실무는 추가 확인. PARTIALLY_VERIFIED, 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_misclick_cases.json",
+    "updated_at": "2026-10-27T06:16:00.215Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_misclick_K-02-e1-electronic-visa",
+   "version": 1,
+   "data": {
+    "case_id": "K-02-e1-electronic-visa",
+    "correction": "E-1은 안내된 전자사증 대상에 포함되며 영사 인터뷰가 필요 없는 대상자는 공관 방문 없이 온라인 발급받을 수 있다는 조건부 답을 허용한다. “인터뷰 없이”, “without visiting” 등 동등한 표현을 인정하고 심사 없이 무조건 발급된다고 표현하지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-02-e1-electronic-visa",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 시행규칙 제9조의2의 사증심사 기준과 사증 안내 138쪽 전자사증 E-1 대상·인터뷰 조건 확인. 모델의 동의어 답변이 고정 문구 때문에 실제 오답 처리된다. 최신 온라인 신청 자격과 절차 추가 확인. PARTIALLY_VERIFIED, 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_misclick_cases.json",
+    "updated_at": "2026-10-27T06:16:51.439Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_misclick_K-03-e6-minor-performer",
+   "version": 1,
+   "data": {
+    "case_id": "K-03-e6-minor-performer",
+    "correction": "사증발급인정서 신청에서 미성년 피초청인의 법정대리인 동의서가 안내된다는 사실을 인정하되, 같은 뜻의 부모 또는 법정대리인 동의 표현을 허용한다. 다른 공통서류 및 공연 유형별 추가 요건은 별도로 안내한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-03-e6-minor-performer",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 시행규칙 제76조의 사증발급인정서 첨부서류 근거 및 사증 안내 166쪽 미성년자 법정대리인 동의서 확인. 원문 요건과 최신 담당관서 추가서류·동의 자격 확인 전 PARTIALLY_VERIFIED, 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_misclick_cases.json",
+    "updated_at": "2026-10-27T06:17:27.373Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_misclick_K-04-f1-13-parent-quota",
+   "version": 1,
+   "data": {
+    "case_id": "K-04-f1-13-parent-quota",
+    "correction": "해당 F-1-13 운영기준은 요건을 갖춘 유학생 1명당 2촌 이내 친인척 1명 허용이라는 점을 띄어쓰기와 동의표현에 관계없이 채점한다. 입학 예정 학교가 허용 교육기관인지, 의무·무상교육기관 제외 등 자격과 재정요건을 확인하고 자동 발급으로 단정하지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-04-f1-13-parent-quota",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 시행령 별표 1의2 F-1 일반 범위와 사증 안내 298쪽의 F-1-13 인원·대상 및 제외 요건 확인. 모델 답은 띄어쓰기 차이로 실제 오답 처리. 질문의 중학교 유형과 적용 여부 미확인. PARTIALLY_VERIFIED, 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_misclick_cases.json",
+    "updated_at": "2026-10-27T06:18:10.829Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_misclick_K-05-f2-2-child-of-national",
+   "version": 1,
+   "data": {
+    "case_id": "K-05-f2-2-child-of-national",
+    "correction": "조건을 갖춘 외국인 자녀에 대해 공관장 재량으로 F-2-2 복수사증의 유효기간 5년, 체류기간 1년 이하를 구별해 설명하고 동등한 표현을 인정한다. 국적과 병역 관련 제외 요건을 확인하며 제외 대상에게 발급된다는 반대 의미는 오답 처리한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-05-f2-2-child-of-national",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 시행령 별표 1의2 F-2 나목 및 사증 안내 313쪽 확인. 모델 답은 “제외대상자에게 적용”이라고 하여 제외의 의미를 거꾸로 설명했지만 현재 채점은 통과한다. 신청인의 현재 국적, 병역 상태·시행일 및 공관 심사 추가 확인. PARTIALLY_VERIFIED, 심각도 Critical.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_misclick_cases.json",
+    "updated_at": "2026-10-27T06:18:47.185Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_misclick_K-06-c3-3-medical-docs",
+   "version": 1,
+   "data": {
+    "case_id": "K-06-c3-3-medical-docs",
+    "correction": "의사소견서뿐 아니라 치료 필요성을 소명하는 병원진단서 등 동등한 자료를 허용하고, 국내 의료기관 예약 증빙과 치료·체재비 조달능력도 구분해 평가한다. 공관별 제출 기준과 추가서류 가능성을 안내한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-06-c3-3-medical-docs",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 시행규칙 제76조 사증 첨부서류 틀과 사증 안내 339쪽 C-3-3 유치기관 미초청 환자의 진단·예약·재정 자료를 확인. G-1 문서 제목만 보고 C-3-3 사례를 G-1으로 오인하지 않는다. 공관 기준 최신 여부 추가 확인. PARTIALLY_VERIFIED, 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_misclick_cases.json",
+    "updated_at": "2026-10-27T06:19:38.486Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_misclick_K-07-e5-registration-change",
+   "version": 1,
+   "data": {
+    "case_id": "K-07-e5-registration-change",
+    "correction": "여권 번호·발급일자·유효기간 변경 시 변경일부터 15일 이내 신고라는 기산점과 기한을 함께 평가하고 동등한 표현을 허용한다. 15일이라는 숫자만으로 기산점을 잘못 쓴 답이 통과되지 않게 한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-07-e5-registration-change",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 출입국관리법 제35조 제2호와 체류 안내 206쪽 대조. 등록 외국인에게 적용되는 법정 기한을 확인했다. 세부 제출 채널 및 변경일 산정 실무는 추가 검증. PARTIALLY_VERIFIED, 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_misclick_cases.json",
+    "updated_at": "2026-10-27T06:20:23.082Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_misclick_K-08-multiple-reentry",
+   "version": 1,
+   "data": {
+    "case_id": "K-08-multiple-reentry",
+    "correction": "체류자격과 국적, 출입국 제한 및 재입국 횟수를 먼저 확인한다. F-5는 결격사유가 없으면 2년 이내 재입국허가 면제 대상이므로 모든 등록외국인에게 복수허가를 강제하는 라벨을 수정한다. 다른 자격은 잔여 체류기간과 1년 면제 범위·허가 유형을 확인한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-08-multiple-reentry",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 시행규칙 제44조의2 제1항 제1호는 F-5의 2년 내 재입국 면제를 명시한다. 체류 안내 427쪽의 복수허가 기준을 체류자격 미상의 모든 등록외국인에게 적용한 기존 정답과 모델 답은 과도한 일반화. 신청자 체류자격 확인 전 CONFLICT / PARTIALLY_VERIFIED, 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_misclick_cases.json",
+    "updated_at": "2026-10-27T06:20:59.968Z",
+    "verdict": "fix_status"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_misclick_K-09-e6-tryout-change",
+   "version": 1,
+   "data": {
+    "case_id": "K-09-e6-tryout-change",
+    "correction": "입단 테스트 등으로 입국한 선수의 E-6 변경은 불가피한 사유 또는 국익상 필요, 입증자료와 관서 재량을 전제로 하며 체류기간의 기산점은 입국일이라는 설명을 동의표현으로 허용한다. 모든 단기입국자에게 변경이 보장되는 것처럼 채점하지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-09-e6-tryout-change",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 출입국관리법 제24조와 체류 안내 211쪽의 예외적 허가, 기산일 및 E-6-2 제한 확인. 모델 답 첫 문장만 보면 무조건 허용으로 오인될 소지가 있다. 개별 사례와 현행 운영은 추가 확인. PARTIALLY_VERIFIED, 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_misclick_cases.json",
+    "updated_at": "2026-10-27T06:22:07.689Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_misclick_K-10-f1-ethnic-korean-activity",
+   "version": 1,
+   "data": {
+    "case_id": "K-10-f1-ethnic-korean-activity",
+    "correction": "주무부처장 고용추천서 또는 고용필요성 입증서류 중 적용되는 대안을 허용하고, 고용계약서·사업자등록증·학위 또는 자격증 등 안내된 서류를 함께 확인한다. 특정 자격 및 신청인의 F-1 세부유형에 따라 사전 허가와 추가 심사가 필요하다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-10-f1-ethnic-korean-activity",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 출입국관리법 제20조의 사전허가 및 체류 안내 343쪽 전문 취업자격 요건을 갖춘 중국동포의 추천서 또는 고용필요성 자료를 확인. 고정 문자열이 대체 서류를 배제하는 오류. 직종별 최신 기준 추가 확인. PARTIALLY_VERIFIED, 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_misclick_cases.json",
+    "updated_at": "2026-10-27T06:22:38.608Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_misclick_K-11-a1-reentry-exemption",
+   "version": 1,
+   "data": {
+    "case_id": "K-11-a1-reentry-exemption",
+    "correction": "A-1은 입국금지 등 제외 사유가 없고 출국일부터 1년 이내 및 남은 체류기간 내 재입국할 때 면제된다는 조건부 답을 허용한다. “1년 이내 면제”라는 문구만 강제하지 말고 체류기간과 예외를 함께 평가하며 영문 표현도 허용한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-11-a1-reentry-exemption",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 시행규칙 제44조의2 제1항 제2호의 A-1 범위·1년·잔여기간 및 제외 사유를 확인했고 체류 안내 17쪽과 대조했다. 외교 신분·재임기간과 추가 예외의 실제 적용은 확인 필요. PARTIALLY_VERIFIED, 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_misclick_cases.json",
+    "updated_at": "2026-10-27T06:23:04.894Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_misclick_K-12-e10-2-extra-activity",
+   "version": 1,
+   "data": {
+    "case_id": "K-12-e10-2-extra-activity",
+    "correction": "동일 고용주의 어획물 건조·포장도 어획에서 위판까지 생산에 부수되는 작업 등 요건을 충족하고 사전 체류자격외 활동허가를 받은 경우 가능하다. 조업기·인원 및 기간 제한을 함께 안내하며 단순히 같은 사장이라는 이유만으로 바로 가능하다고 채점하지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-12-e10-2-extra-activity",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 출입국관리법 제20조 및 체류 안내 338–339쪽 확인. 안내는 동일 고용주 외 부수성, 조업기, 선원 인원 1/3 및 기간 1/3 제한을 함께 명시한다. 모델 답은 사전허가와 여러 요건을 생략한다. PARTIALLY_VERIFIED, 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_misclick_cases.json",
+    "updated_at": "2026-10-27T06:23:27.968Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_misclick_K-13-d7-branch-ccvi-misclick",
+   "version": 1,
+   "data": {
+    "case_id": "K-13-d7-branch-ccvi-misclick",
+    "correction": "국내지점 또는 연락사무소의 설치 입증자료로 설치허가서 사본 또는 신고수리서 사본 중 해당 자료를 허용한다. 두 표현을 동시에 강제하지 않으며 인력·재직·파견과 지점 운영 증빙 등 다른 필수자료도 함께 확인한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-13-d7-branch-ccvi-misclick",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 시행규칙 제76조 사증발급인정서 첨부서류 틀 및 사증 안내 96쪽의 설치허가서 또는 신고수리서 대안을 확인. 1차 제안의 “설치허가서”만 허용하는 식으로 바꾸면 신고수리서 대안이 또 배제된다. 공관·관서별 추가요건 확인 필요. PARTIALLY_VERIFIED, 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_misclick_cases.json",
+    "updated_at": "2026-10-27T06:23:53.370Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_misclick_K-14-d8-4-where-to-apply-misclick",
+   "version": 1,
+   "data": {
+    "case_id": "K-14-d8-4-where-to-apply-misclick",
+    "correction": "D-8-4 신청기관 근거를 사증 안내 107쪽 앞 항목에서 108쪽의 D-8-4 신청기관으로 바로잡는다. 원칙적으로 본국 대한민국 공관, 해외 장기거주·사업 운영 등의 경우 주재국 공관 신청 가능성을 조건부 안내한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-14-d8-4-where-to-apply-misclick",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 출입국관리법 제8조의 사증발급 권한과 사증 안내 107–108쪽 원문을 대조했다. 107쪽의 신청기관 문장은 앞 유형에 속하며 D-8-4 자체 근거는 108쪽이다. 최신 공관 관할 기준 추가 확인. PARTIALLY_VERIFIED, 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_misclick_cases.json",
+    "updated_at": "2026-10-27T06:24:19.707Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_misclick_K-15-e5-doctor-ccvi-misclick",
+   "version": 1,
+   "data": {
+    "case_id": "K-15-e5-doctor-ccvi-misclick",
+    "correction": "사증발급인정신청서와 발급 결과인 사증발급인정서를 구별한다. 초청사유서, 학위증·자격증, 추천서 또는 고용 필요성 자료 및 계약서를 문맥에 맞게 평가하고 신청 단계에서 이미 발급된 인정서를 제출하라는 오류는 정답 처리하지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-15-e5-doctor-ccvi-misclick",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 시행규칙 제76조 및 사증 안내 164쪽 확인. 모델은 사증발급인정신청의 제출서류로 결과물인 “사증발급인정서”를 추가했으나 채점이 통과시켰다. 실제 서류 가감 및 적용 경로는 담당관서 확인. PARTIALLY_VERIFIED, 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_misclick_cases.json",
+    "updated_at": "2026-10-27T06:25:12.198Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_misclick_K-16-e1-ccvi-docs-misclick-keep",
+   "version": 1,
+   "data": {
+    "case_id": "K-16-e1-ccvi-docs-misclick-keep",
+    "correction": "사증발급인정신청서·여권·사진과 고용계약서 또는 임용예정확인서, 초청학교 설립 관련 자료를 안내한다. 경력증명서 및 학위증은 조교수 이상 자격기준에 해당하는 전임교수 등의 경우 제출 생략 가능하므로 무조건 필수로 채점하지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-16-e1-ccvi-docs-misclick-keep",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 시행규칙 제76조 및 사증 안내 142–143쪽을 함께 확인해 다음 페이지 서류와 제출생략 조건을 대조했다. 단순 조교수 임용만으로 전임 여부를 단정하지 않고 확인한다. 현행 관할 제출기준 추가 확인. PARTIALLY_VERIFIED, 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_misclick_cases.json",
+    "updated_at": "2026-10-27T06:26:18.928Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_misclick_K-17-d10-to-e1-change-misclick",
+   "version": 1,
+   "data": {
+    "case_id": "K-17-d10-to-e1-change-misclick",
+    "correction": "국내 D-10에서 E-1 변경 시 신청서·여권·등록증·수수료, 고용계약서와 기관 설립 관련 서류를 안내한다. 학위증 또는 경력증명서는 해당 전임교수의 자격기준을 충족하면 제출 생략 가능하므로 고정 필수 문구로 요구하지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-17-d10-to-e1-change-misclick",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 출입국관리법 제24조 및 체류 안내 174쪽 확인. 생략 대상은 모든 제출서류가 아니라 학위증 또는 경력증명서임을 명확히 한다. 전임교수의 직급·자격기준 및 최신 관서 제출기준 추가 확인. PARTIALLY_VERIFIED, 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_misclick_cases.json",
+    "updated_at": "2026-10-27T06:41:10.515Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_misclick_K-18-e9-reemployment-extension-misclick",
+   "version": 1,
+   "data": {
+    "case_id": "K-18-e9-reemployment-extension-misclick",
+    "correction": "재고용 조건을 충족한 경우 추가 체류기간 최대 1년 10개월이라는 운영기준과 고용노동부 발급 연장확인서를 각각 안내하고 서류명 띄어쓰기 차이를 허용한다. 최초 3년과 재고용, 별도의 법령상 특례를 구별하고 연장이 자동으로 보장된다고 말하지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-18-e9-reemployment-extension-misclick",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 외국인근로자 고용법 제18조의2는 재고용 시 2년 미만 1회 연장 및 별도 특례를 규정하며, 체류 안내 331쪽은 최대 1년 10개월과 확인서를 제시한다. 실제 사업주 허가·증빙과 현행 운영 추가 확인. PARTIALLY_VERIFIED, 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_misclick_cases.json",
+    "updated_at": "2026-10-27T06:41:43.843Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_misclick_K-19-d8-4-change-grant-misclick-keep",
+   "version": 1,
+   "data": {
+    "case_id": "K-19-d8-4-change-grant-misclick-keep",
+    "correction": "해당 고기술 기반 정부 창업지원사업 유형의 점수제 면제 요건 중 직접 사업비 3천만 원 이상을 동등한 표현으로 허용한다. 최근 2년 이내 선정·지원, 법인 설립, 중기부장관 추천 등 나머지 요건도 필요하며 금액만으로 면제된다고 단정하지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-19-d8-4-change-grant-misclick-keep",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 출입국관리법 제24조 및 체류 안내 119쪽 원문 확인. 3천만 원은 특정 면제 유형의 필요조건이며 추천서·2년 등 미충족 시 OASIS 점수 인정 가능성을 구분한다. 최신 공고와 개별 요건은 추가 확인. PARTIALLY_VERIFIED, 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_misclick_cases.json",
+    "updated_at": "2026-10-27T06:42:27.277Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_misclick_K-20-g1-99-newborn-misclick",
+   "version": 1,
+   "data": {
+    "case_id": "K-20-g1-99-newborn-misclick",
+    "correction": "G-1-99는 합법체류 중인 G-1-5 부모와 국내 출생·난민신청 전·17세 미만 등 요건을 확인한다. 해당 부모의 체류기간 만료일까지 부여되는 기준을 설명하고, 출생증명서뿐 아니라 관계와 연령을 입증하는 다른 적절한 서류의 표현도 허용한다. 출생 후 자격부여 신청기한도 확인한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-20-g1-99-newborn-misclick",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 출입국관리법 제23조의 국내 출생 외국인 90일 자격부여와 체류 안내 513쪽 G-1-99 조건·기간·증빙을 대조. 출생증명서만 강제해 관계·연령 입증자료를 설명한 모델 답이 오답 처리된다. 실제 서류 인정 및 적용대상 추가 확인. PARTIALLY_VERIFIED, 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_misclick_cases.json",
+    "updated_at": "2026-10-27T06:42:57.574Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_misclick_K-21-e7-docs-unclear",
+   "version": 1,
+   "data": {
+    "case_id": "K-21-e7-docs-unclear",
+    "correction": "",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-21-e7-docs-unclear",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 시행규칙 제76조는 사증과 국내 체류허가의 첨부서류를 별표 5·5의2로 구분한다. 사증 안내 170쪽과 체류 안내 214쪽은 E-7 직종별 기준이 다름을 설명한다. 신청 위치·절차·직종을 확인하는 기존 되묻기는 타당하나 실제 직종별 서류는 추가 확인이 필요하다. PARTIALLY_VERIFIED, 심각도 Low.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_misclick_cases.json",
+    "updated_at": "2026-10-27T06:43:33.993Z",
+    "verdict": "ok"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_misclick_K-22-d10-period-unclear",
+   "version": 1,
+   "data": {
+    "case_id": "K-22-d10-period-unclear",
+    "correction": "D-10 세부유형, 해외 신청·국내 변경·연장 여부를 확인하되 시행규칙상 1회 부여 상한 1년과 총 체류 가능기간이 다르다는 조건부 일반 설명을 허용한다. 서류·총 기간은 유형별 지침을 확인하며 D-10-T를 포함한 특정 수치를 추정하지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-22-d10-period-unclear",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 시행규칙 별표 1의 D-10 1회 상한 1년과 사증 안내 130쪽·체류 안내 151쪽의 신청유형별 서류 차이를 확인했다. 명확화는 적절하나 근거 있는 부분 답변도 허용할 필요가 있다. 총 체류기간·예외 미확인. PARTIALLY_VERIFIED, 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_misclick_cases.json",
+    "updated_at": "2026-10-27T06:44:27.022Z",
+    "verdict": "fix_status"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_misclick_K-23-f6-income-docs-unclear",
+   "version": 1,
+   "data": {
+    "case_id": "K-23-f6-income-docs-unclear",
+    "correction": "사증 발급인지 국내 자격변경·연장인지와 활용할 소득 종류를 확인한다. 안내서의 공통 소득금액증명·신용정보조회서 및 해당 소득별 추가서류를 조건부 예시로 설명하는 부분답변을 허용한다. 면제 대상과 신청 경로에 따라 서류를 일률적으로 요구하지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-23-f6-income-docs-unclear",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 시행규칙 제9조의5의 사증심사 및 일부 면제 가능성과 사증 안내 334쪽·체류 안내 492쪽 소득증빙 안내를 대조. 안내서의 2025년 금액을 현행 금액으로 전용하지 않는다. 면제 사유와 실제 절차별 최신 요구서류는 추가 확인. PARTIALLY_VERIFIED, 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_misclick_cases.json",
+    "updated_at": "2026-10-27T06:44:54.853Z",
+    "verdict": "fix_status"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_misclick_K-24-d8-docs-unclear",
+   "version": 1,
+   "data": {
+    "case_id": "K-24-d8-docs-unclear",
+    "correction": "",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-24-d8-docs-unclear",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 개인 키 법령 MCP 시행규칙 제76조는 사증발급과 체류자격 변경 등 절차별 첨부서류를 구분한다. 체류 안내 116쪽은 D-8 세부유형이 여러 가지임을 확인해 신청 절차와 투자 유형을 되묻는 판단은 타당하다. 사증 안내 116쪽의 앞부분 서류는 이전 항목의 문맥일 수 있어 D-8 서류로 바로 인용하지 않는다. PARTIALLY_VERIFIED, 심각도 Low.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_misclick_cases.json",
+    "updated_at": "2026-10-27T06:45:17.971Z",
+    "verdict": "ok"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_oracle_M-01-stay-extension-fee",
+   "version": 1,
+   "data": {
+    "case_id": "M-01-stay-extension-fee",
+    "correction": "한국에서 체류기간 연장허가를 신청하는 경우, 일반적인 수수료는 **60,000원**입니다.\n\n다만, 체류자격과 신청 방법에 따라 수수료가 달라질 수 있습니다.\n\n| 구분 | 수수료 |\n|---|---:|\n| 일반 체류기간 연장허가 | 60,000원 |\n| 결혼이민(F-6) 체류기간 연장허가 | 30,000원 |\n| 온라인 신청이 가능한 일반 체류기간 연장허가 (20% 감면) | 48,000원 |\n| 법령상 수수료 면제 요건을 충족하는 경우 | 0원 |\n| 출국을 위한 체류기간 연장허가 (시행규칙 제32조에 해당하는 경우) | 0원 |\n\n**수수료 면제 대상에는** 외교(A-1), 공무(A-2), 협정(A-3), 기업투자(D-8) 체류자격 소지자 등이 포함됩니다.\n\n또한 일정한 요건을 충족하는 정부·연구기관 초청 외국인(D-1·D-2·D-4)이나 국가이익·인도적 사유 등을 고려하여 법무부장관이 면제가 필요하다고 인정하는 경우에도 수수료가 면제될 수 있습니다.\n\n**유의사항**\n- 온라인 신청은 일부 체류자격에만 허용됩니다. 결혼이민(F-6) 등은 일반적인 온라인 체류기간 연장 신청 대상에서 제외됩니다.\n- 조건부 면제의 경우, 구체적인 요건 충족 여부와 관련 기관의 확인이 필요할 수 있습니다.\n\n**법적 근거**\n- 「출입국관리법 시행규칙」 제72조 제6호 (체류기간 연장허가 수수료)\n- 같은 규칙 제74조 제1항 (수수료 면제)\n- 같은 규칙 제74조 제2항 제2호 (온라인 신청 수수료 20% 감면)\n- 같은 규칙 제32조 제3항 (출국을 위한 체류기간 연장허가의 수수료)\n\n현재 체류자격을 알려주시면 적용되는 수수료와 감면·면제 가능성을 더 정확하게 안내해 드리겠습니다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_oracle/M-01-stay-extension-fee",
+    "note": "법적 근거\n\n「출입국관리법 시행규칙」 제72조 제6호 (체류기간 연장허가 수수료)\n\n같은 규칙 제74조 제1항 (수수료 면제)\n\n같은 규칙 제74조 제2항 제2호 (온라인 신청 수수료 20% 감면)\n\n같은 규칙 제32조 제3항 (출국을 위한 체류기간 연장허가의 수수료)",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_oracle_cases.json",
+    "updated_at": "2026-10-27T00:20:41.629Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "existing_human"
+  },
+  {
+   "doc_id": "manual_oracle_M-02-f6-reentry-exemption",
+   "version": 2,
+   "data": {
+    "case_id": "M-02-f6-reentry-exemption",
+    "correction": "기대 답에 출국일부터 1년 이내라는 원칙과 남은 체류기간이 1년 미만이면 그 기간 내에 재입국해야 한다는 조건을 함께 반영. 입국금지 등 시행규칙 제44조의2 제1항 단서의 제외 대상은 별도 안내. 같은 뜻의 표현도 정답으로 인정하도록 채점 조건을 보완한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_oracle/M-02-f6-reentry-exemption",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 출입국관리법 제30조제1항·제5항 및 시행규칙 제44조의2 제1항제2호와 단서(현행 2026-10-23 시행)를 법령 MCP 원문으로 확인. 제공된 체류 매뉴얼 506쪽도 남은 체류기간 제한을 명시. 기존 모델 답은 이 제한을 설명하지만 현재 기대 문구만으로는 누락 답변도 통과할 수 있음. 심각도 Medium.\n\n추가 재대조: 제44조의2 제1항 단서는 법 제11조의 입국금지 대상자와 시행규칙 제10조 각 호 해당자를 제외한다. “면제기간”이라는 단어만으로 1년의 기간과 조건을 확인할 수 없으므로 AI 1차 제안의 단독 대안으로 사용하지 않는다. 이 문항은 일부 답함(partial)도 허용하므로 완전한 답과 부분 답의 채점 기준은 구분해 설계해야 한다. PARTIALLY_VERIFIED.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_oracle_cases.json",
+    "updated_at": "2026-10-27T07:18:48.967Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_oracle_M-03-d2-masters-extension-cap",
+   "version": 1,
+   "data": {
+    "case_id": "M-03-d2-masters-extension-cap",
+    "correction": "제공된 매뉴얼상 유학활동 종료자 등 연장 특례는 석사 입학 후 최대 5년이나, 3년제 석사는 최대 6년이다. 과정 연한과 해당 특례 적용 여부를 확인해야 한다. 두 조건을 답에 반영하고 5년만을 모든 석사에 일률 적용하지 않는다. 실제 연장은 심사를 거친다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_oracle/M-03-d2-masters-extension-cap",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 체류 매뉴얼 43쪽의 특례 문구와 3년제 예외를 직접 대조. 출입국관리법 제25조, 시행규칙 제18조의3 및 별표 1(D-2 2년)은 법령 MCP 원문으로 확인. 2년은 별표의 부여기간 상한이며 매뉴얼상 입학 후 특례 상한과 구별. 질문에 과정 연한이 없어 예외 누락 시 오해 가능. 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_oracle_cases.json",
+    "updated_at": "2026-10-27T00:42:29.403Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_oracle_M-04-d4-parttime-wait",
+   "version": 2,
+   "data": {
+    "case_id": "M-04-d4-parttime-wait",
+    "correction": "매뉴얼에 따르면 D-4-1은 자격 변경일(해당 사증 소지자는 입국일)부터 6개월 경과 후, 한국어 능력·유학생 담당자 확인 등 요건을 충족하고 사전에 체류자격 외 활동허가를 받아야 한다. 6개월의 기산점을 채점에 반영하고, 허가 전 취업이 가능하다고 오인하는 답은 통과시키지 않는다.\n\n확인된 오답: “해당 활동을 하려는 시점으로부터 6개월”은 매뉴얼상 기산점이 아니다. 이 표현만 차단하는 문자열 조건은 다른 오답을 모두 검출하지 못하므로 추가 회귀 검증이 필요하다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_oracle/M-04-d4-parttime-wait",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 출입국관리법 제20조, 시행령 제25조의 사전허가를 법령 MCP 원문으로 확인. 체류 매뉴얼 37쪽은 6개월의 기산점을 변경일 또는 사증 소지자의 입국일로 명시. 현재 모델 답의 “해당 활동을 하려는 시점으로부터”는 잘못된 기산점인데 현 채점 조건이 통과시킴. 심각도 High.\n\n추가 원문 재대조 2026-10-27: 법 제20조 및 시행령 제25조는 2026-10-02 시행본. 6개월과 기산점은 법 조문 자체가 아니라 제공된 체류 매뉴얼 37쪽의 운영기준이다. 최신 세부 운영과 실제 채점 로직 반영 여부는 별도 확인 필요. PARTIALLY_VERIFIED.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_oracle_cases.json",
+    "updated_at": "2026-10-27T07:15:57.421Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_oracle_M-05-d10-3-intern-change-deadline",
+   "version": 1,
+   "data": {
+    "case_id": "M-05-d10-3-intern-change-deadline",
+    "correction": "변경일로부터 15일 이내에 관할 출입국관서에 신고해야 한다는 기산점까지 채점한다. D-10-3의 인턴기관 요건 및 신고 수리 여부는 별도로 확인하며, 15일이라는 숫자만으로 정답 처리하지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_oracle/M-05-d10-3-intern-change-deadline",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 법령 MCP에서 출입국관리법 제35조, 시행령 제44조, 시행규칙 제49조의2 제3호 확인. 체류 매뉴얼 162쪽의 첨단기술인턴 기관 변경 기한 및 신고 반려 요건 대조. 기존 답은 변경일을 정확히 제시하나 기대 문구는 기산점을 검사하지 않음. 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_oracle_cases.json",
+    "updated_at": "2026-10-27T00:43:16.168Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_oracle_M-06-d4-visa-stay-period",
+   "version": 1,
+   "data": {
+    "case_id": "M-06-d4-visa-stay-period",
+    "correction": "",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_oracle/M-06-d4-visa-stay-period",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 사증 매뉴얼 68쪽은 어학연수생 D-4-1·D-4-7의 사증 발급 내용을 체류기간 6개월 이내, 단수로 기재. 법령 MCP로 출입국관리법 제7조, 시행령 제7조, 시행규칙 제18조의3·별표 1을 대조했다. 6개월은 매뉴얼상의 사증 발급 기준이며 D-4 전체 체류기간의 법령상 일률적 총상한으로 해석하지 않는다. 심각도 Low.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_oracle_cases.json",
+    "updated_at": "2026-10-27T00:43:30.417Z",
+    "verdict": "ok"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_oracle_M-07-e8-ccvi-processing",
+   "version": 1,
+   "data": {
+    "case_id": "M-07-e8-ccvi-processing",
+    "correction": "해외 체류 계절근로자에 대한 사증발급인정서 신청자는 기초자치단체장이다. 매뉴얼은 신청일부터 약 10일을 예상 소요기간으로 안내하며, 보장된 법정 처리기한으로 단정하지 않는다. 농가는 지자체 배정·신청 절차를 확인해야 한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_oracle/M-07-e8-ccvi-processing",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 출입국관리법 제9조 및 시행규칙 제17조를 법령 MCP 원문으로 확인. 사증 매뉴얼 283쪽의 신청자(시·군·구 기초자치단체장) 및 약 10일을 대조. 질문이 농가가 직접 신청하는 것처럼 읽힐 수 있는데 기존 라벨은 이를 점검하지 않음. 10일은 법령 조문상의 확정 기한으로 확인하지 못함. 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_oracle_cases.json",
+    "updated_at": "2026-10-27T00:43:42.601Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_oracle_M-08-e10-criminal-record-validity",
+   "version": 1,
+   "data": {
+    "case_id": "M-08-e10-criminal-record-validity",
+    "correction": "사증발급 신청일을 기준으로 발급된 지 3개월 이내인 범죄경력증명서라는 관계를 검증한다. 국적국 권한기관의 범죄경력 포함 공적 문서가 원칙이며, 매뉴얼의 대체 가능 사유도 필요한 경우 안내한다. 단순히 “3개월 이내”만 있는 답은 기산점이 틀려도 통과하므로 보완한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_oracle/M-08-e10-criminal-record-validity",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 시행규칙 제76조 및 별표 5 E-10의 국적국 범죄경력 증명서 요구를 법령 MCP 원문으로 확인. 사증 매뉴얼 296쪽의 3개월 기준은 운영기준으로 구분. 실제 답은 매뉴얼 문구를 옮겼으나 신청일 기준 관계가 명확해야 함. 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_oracle_cases.json",
+    "updated_at": "2026-10-27T00:43:59.212Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_oracle_M-09-visa-domestic-doc-validity",
+   "version": 1,
+   "data": {
+    "case_id": "M-09-visa-domestic-doc-validity",
+    "correction": "별도 유효기간이 정해지지 않은 경우에만 발급일로부터 3개월 이내라는 매뉴얼 기준을 적용한다. 행정정보 공동이용으로 확인할 수 있으면 제출을 생략할 수 있고 동의하지 않으면 제출한다는 점을 필요에 따라 안내한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_oracle/M-09-visa-domestic-doc-validity",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 사증 매뉴얼 3쪽의 별도 기준 예외와 공동이용 설명을 확인. 법령 MCP 시행규칙 제76조제3항은 공동이용 확인에 따른 제출 대체를 규정한다. 3개월은 매뉴얼 기준이며 해당 조항의 수치로 인용하지 않는다. 현재 문자열만으로 별도 기준 예외가 빠진 답을 검출할 수 없음. 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_oracle_cases.json",
+    "updated_at": "2026-10-27T00:44:08.733Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_oracle_M-10-d10t-stay-cap",
+   "version": 1,
+   "data": {
+    "case_id": "M-10-d10t-stay-cap",
+    "correction": "최우수인재 구직(D-10-T) 체류자격은 **최대 3년까지 체류할 수 있으며, 한 번에 부여받을 수 있는 체류기간은 최대 1년**입니다.\n\n| 구분 | 체류기간 |\n|---|---|\n| 총 체류기간 상한 | 최대 3년 |\n| 1회 체류기간 부여 상한 | 최대 1년 |\n\n예를 들어 최초 1년의 체류기간을 부여받았다면, 구직활동을 계속하는 경우 체류기간 연장허가를 신청하여 추가로 체류할 수 있습니다. 다만, 총 체류기간은 원칙적으로 3년을 초과할 수 없습니다.\n\n**유의사항**\n- 최대 3년의 체류가 자동으로 보장되는 것은 아닙니다. 체류기간 연장 시 구직활동 내용과 향후 계획 등에 대한 심사를 받아야 합니다.\n- 연장 신청 시에는 일반적인 신청서류 외에 지난 1년간의 구직활동 내역과 향후 계획을 포함한 구직활동계획서 등을 제출해야 합니다.\n- 실제 허가기간은 신청자의 상황과 심사 결과에 따라 달라질 수 있습니다.\n\n**근거:** 법무부 「체류민원 자격별 안내 매뉴얼」의 구직(D-10) 체류기간 상한 및 최우수인재(D-10-T) 체류관리 기준\n\n현재까지 D-10-T 자격으로 체류한 기간을 알려주시면 앞으로 연장 신청이 가능한 잔여 기간을 안내해 드리겠습니다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_oracle/M-10-d10t-stay-cap",
+    "note": "법적 근거를 더 정확하게 표시한다면\n두 가지 기간의 근거를 분리하는 것이 좋습니다.\n- 1회 최대 1년: 「출입국관리법 시행규칙」 제18조의3 관련 별표 1에서 구직(D-10)의 체류기간 상한을 1년으로 규정합니다.\n- 총 최대 3년: 법무부 「체류민원 자격별 안내 매뉴얼」의 구직(D-10) 체류기간 상한 및 D-10-T 세부 기준에 따릅니다.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_oracle_cases.json",
+    "updated_at": "2026-10-27T00:27:47.550Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "existing_human"
+  },
+  {
+   "doc_id": "manual_oracle_M-11-d2-reentry-fee-missing",
+   "version": 1,
+   "data": {
+    "case_id": "M-11-d2-reentry-fee-missing",
+    "correction": "제공된 43~44쪽에는 복수재입국허가 금액이 없으므로 금액에 관한 보류를 유지한다. 금지 문자열 “5만원” 하나만으로는 “50,000원” 등 같은 금액이나 다른 근거 없는 금액을 검출하지 못하므로 채점 보완이 필요하다. 면제는 해당 요건에 한정한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_oracle/M-11-d2-reentry-fee-missing",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 제공된 체류 매뉴얼 PDF 43~44쪽을 확인. 44쪽은 수수료 징구만 명시하고 액수는 없다. 법령 MCP 시행규칙 제72조제8호는 복수재입국허가 5만원, 제74조는 조건부 면제·온라인 감경을 규정하나 본 실험의 제공 근거 밖이다. 실제 법률 정답과 문맥 제한 평가를 구별한다. 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_oracle_cases.json",
+    "updated_at": "2026-10-27T00:45:05.373Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_oracle_M-12-f6-arc-fee-missing",
+   "version": 1,
+   "data": {
+    "case_id": "M-12-f6-arc-fee-missing",
+    "correction": "제공된 485·506쪽에는 등록증 발급액이 없으므로 금액에 대한 근거 부족 판정을 유지한다. “3만 5천원” 한 표기만 금지하면 “35,000원” 등 근거 없는 다른 표기가 통과하므로 금액 표현 검사를 보완한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_oracle/M-12-f6-arc-fee-missing",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 체류 매뉴얼 PDF 485·506쪽 원문을 확인했다. 506쪽은 등록 수수료를 열거하지만 액수는 없다. 법령 MCP 시행규칙 제72조제10호의 일반 발급·재발급액은 3만 5천원이나 해당 법령은 실험에서 공급된 두 쪽의 근거가 아니다. 법적 실제 금액과 근거 제한 평가를 구별한다. 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_oracle_cases.json",
+    "updated_at": "2026-10-27T00:45:18.626Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_oracle_M-13-d2-visa-fee-missing",
+   "version": 1,
+   "data": {
+    "case_id": "M-13-d2-visa-fee-missing",
+    "correction": "제공된 사증 매뉴얼 67·68쪽은 수수료 금액을 제시하지 않으므로 근거 부족 판정은 유지한다. “70불” 한 가지만 금지하면 다른 금액 표기나 다른 금액을 근거 없이 제시해도 통과하므로 금액 검사를 보완한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_oracle/M-13-d2-visa-fee-missing",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 제공된 사증 매뉴얼 PDF 67·68쪽을 대조했다. 법령 MCP 시행규칙 제71조는 사증 종류와 체류기간별 금액 및 상호주의 등에 따른 조정을 규정한다. 이 조문은 본 실험에 제공되지 않았고 국적·발급유형도 불충분해 특정액을 확정하지 않는다. 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_oracle_cases.json",
+    "updated_at": "2026-10-27T00:45:32.985Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_oracle_M-14-arc-processing-time-missing",
+   "version": 1,
+   "data": {
+    "case_id": "M-14-arc-processing-time-missing",
+    "correction": "제공된 5·6쪽에 등록증 발급 소요기간이 없으므로 보류를 유지한다. 금지 표현을 “10일” 하나로 한정하지 않고 근거 없는 다른 기간도 정답으로 처리되지 않도록 채점 조건을 보완한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_oracle/M-14-arc-processing-time-missing",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 체류 매뉴얼 PDF 5·6쪽 원문은 각각 수수료와 여권 유효기간에 관한 내용으로 등록증 처리기간을 제시하지 않는다. 법령 MCP 출입국관리법 제31조와 시행령 제40조를 확인했으며 법 제31조의 90일은 등록 의무 기한이지 처리기간이 아니다. 정확한 실제 처리기간은 확인하지 못해 별도 보류. 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_oracle_cases.json",
+    "updated_at": "2026-10-27T00:45:46.646Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_oracle_M-15-d2-extension-from-visa-pages",
+   "version": 1,
+   "data": {
+    "case_id": "M-15-d2-extension-from-visa-pages",
+    "correction": "",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_oracle/M-15-d2-extension-from-visa-pages",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 사증 매뉴얼 67·68쪽은 사증발급 내용으로 체류기간 연장 제출서류 목록을 제공하지 않는다. 근거 제한 실험에서 보류는 타당. 법령 MCP로 법 제25조, 시행령 제31조, 시행규칙 제76조 및 별표 5의2 D-2 연장허가 서류를 대조했다. 실제 서비스에서는 관련 체류 근거를 검색해 안내할 수 있으나 이를 공급된 쪽의 내용으로 간주하지 않는다. 심각도 Low.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_oracle_cases.json",
+    "updated_at": "2026-10-27T00:46:04.550Z",
+    "verdict": "ok"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_oracle_M-16-e8-extension-from-visa-pages",
+   "version": 1,
+   "data": {
+    "case_id": "M-16-e8-extension-from-visa-pages",
+    "correction": "",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_oracle/M-16-e8-extension-from-visa-pages",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 제공 사증 매뉴얼 PDF 280·283쪽은 선정 및 사증발급인정서 절차로 국내 연장 서류 목록이 아니다. 법령 MCP 시행령 제31조와 시행규칙 제76조·별표 5의2는 별도로 확인했으며 E-8 연장에 고용계약서 및 지자체장 추천서를 열거한다. 실험에 제공되지 않은 법령 근거와 문맥 제한 보류를 구별한다. 심각도 Low.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_oracle_cases.json",
+    "updated_at": "2026-10-27T00:46:19.965Z",
+    "verdict": "ok"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_oracle_M-17-f6-change-from-visa-pages",
+   "version": 1,
+   "data": {
+    "case_id": "M-17-f6-change-from-visa-pages",
+    "correction": "",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_oracle/M-17-f6-change-from-visa-pages",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 사증 매뉴얼 PDF 327·338쪽은 사증 발급 및 입국 후 연장을 설명하며 단기방문자의 국내 F-6-1 변경 여부를 정하지 않는다. 법령 MCP 법 제24조·시행령 제30조를 대조하고 체류 매뉴얼 485쪽에서 단기사증의 원칙적 제한과 예외를 확인했다. 해당 체류쪽은 공급되지 않았으므로 이 실험의 보류가 타당. 모델은 질문과 다른 연장 절차를 답했다. 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_oracle_cases.json",
+    "updated_at": "2026-10-27T00:46:31.797Z",
+    "verdict": "ok"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_oracle_M-18-d10-3-ccvi-from-stay-pages",
+   "version": 1,
+   "data": {
+    "case_id": "M-18-d10-3-ccvi-from-stay-pages",
+    "correction": "",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_oracle/M-18-d10-3-ccvi-from-stay-pages",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 체류 매뉴얼 PDF 160·162쪽은 국내 체류·기관 변경 신고이며, 162쪽은 인정서 서류 목록을 열거하지 않고 변경 신고에서 일부 예외를 언급한다. 법령 MCP 법 제9조·시행규칙 제17조·제76조를 대조했다. 해외 사증발급인정서의 제출서류와 국내 변경신고 서류를 혼동한 모델 답을 정답으로 처리해서는 안 된다. 제공 근거 기준 보류 타당. 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_oracle_cases.json",
+    "updated_at": "2026-10-27T00:46:44.525Z",
+    "verdict": "ok"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_oracle_M-19-d2-7-visa-period",
+   "version": 1,
+   "data": {
+    "case_id": "M-19-d2-7-visa-period",
+    "correction": "제공된 67·68쪽에 D-2-7 사증 체류기간이 없어 해당 값은 보류한다. 다만 D-2-1~4의 “2년 이내”를 비교하면서 D-2-7은 근거 부족이라고 정확히 답한 경우까지 무조건 오답 처리하지 않도록 채점을 보완한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_oracle/M-19-d2-7-visa-period",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 사증 매뉴얼 67·68쪽 원문에서 D-2-7의 발급기간 미기재를 확인. 법령 MCP 시행규칙 제18조의3·별표 1의 D-2 2년은 체류자격별 부여 상한으로서 이 특정 사증의 발급기간을 증명하지 않는다. D-2-7 실제 발급기간은 추가 공식 근거가 필요해 보류. 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_oracle_cases.json",
+    "updated_at": "2026-10-27T00:46:52.742Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_oracle_M-20-f6-3-registration-period",
+   "version": 1,
+   "data": {
+    "case_id": "M-20-f6-3-registration-period",
+    "correction": "제공된 485·506쪽에 F-6-3 외국인등록 시 기간이 없어 해당 값은 보류한다. F-6-2는 입국일부터 1년이나 F-6-3은 근거가 없다고 구분한 정답까지 금지 문자열만으로 오답 처리하지 않도록 채점을 보완한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_oracle/M-20-f6-3-registration-period",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 체류 매뉴얼 PDF 485·506쪽을 확인. 506쪽의 입국일부터 1년은 F-6-2에 속하며 F-6-3의 등록 시 기간은 해당 쪽에 없다. 법령 MCP 시행규칙 제18조의3·별표 1의 F-6 3년은 일반 부여 상한이며 F-6-3 등록 시 특정 기간을 뜻하지 않는다. 실제 세부 기준은 추가 확인 필요. 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_oracle_cases.json",
+    "updated_at": "2026-10-27T00:47:00.431Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_routing_N-01-c1-visa-attachments",
+   "version": 1,
+   "data": {
+    "case_id": "N-01-c1-visa-attachments",
+    "correction": "시행규칙 별표 5와 사증 매뉴얼 25쪽의 소속회사 파견증명서·재직증명서 또는 외신보도증 관련 조건을 반영하되, 문장 전체의 쉼표·어순까지 동일해야 하는 채점은 완화한다. 개별 서류 조합의 정확한 허용범위는 공관 기준을 추가 확인하고, 외신보도증 하나를 배제하는 조건을 임의로 확정하지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-01-c1-visa-attachments",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 법령 MCP 시행규칙 제76조 및 별표 5 C-1 원문과 사증 매뉴얼 25쪽을 대조. 현재 문장 일치 조건은 적절한 문장 변형을 거부한다. AI 1차 제안은 파견증명서와 외신보도증을 각각 요구하는 구조여서 법령의 “또는”을 좁힐 우려가 있다. 구체 채점 조합은 확인 보류. 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_routing_cases.json",
+    "updated_at": "2026-10-27T00:47:16.240Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_routing_N-02-d5-alien-registration-docs",
+   "version": 1,
+   "data": {
+    "case_id": "N-02-d5-alien-registration-docs",
+    "correction": "설치허가증 또는 사업자등록증을 제시하는 답의 띄어쓰기·가운뎃점 차이와 대체 서류를 허용하도록 채점 조건을 보완한다. 지국·지사가 없는 경우 대체서류의 정확한 요건은 법령과 매뉴얼을 추가 대조하고 관할 기관에 확인한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-02-d5-alien-registration-docs",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 시행규칙 제76조 및 별표 5의2 D-5 등록을 법령 MCP로 확인. 별표는 지국 등이 없으면 본사 파견명령서 및 관련 기관 추천서로 갈음할 수 있다고 기재한다. 체류 매뉴얼 105쪽은 조건에 따라 협조공문으로 갈음한다고 안내해 적용 관계 확인이 필요하다. 현재 기대 문자열은 “지국이나 지사의” 또는 사업자등록증만 제시하는 답을 놓칠 수 있다. 인용한 103쪽의 충분성은 별도 확인 필요. 부분 검증·심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_routing_cases.json",
+    "updated_at": "2026-10-27T00:47:34.304Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_routing_N-03-d9-equipment-visa-docs",
+   "version": 1,
+   "data": {
+    "case_id": "N-03-d9-equipment-visa-docs",
+    "correction": "사증 매뉴얼 118쪽의 설비도입계약서 또는 설비도입 입증서류, 파견명령서, 초청회사 사업자등록증 사본 또는 법인등기사항전부증명서, 연간 납세사실증명서 등과 공통서류를 안내한다. 대체 가능한 서류와 영어 답변을 포함한 의미상 동등한 표현을 정확히 채점하도록 보완한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-03-d9-equipment-visa-docs",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 사증 매뉴얼 118쪽과 법령 MCP 시행규칙 제76조·별표 5의 D-9 설비 기술자 서류를 대조했다. 매뉴얼과 별표의 구체 열거가 동일하지 않아 실제 공관별 요구 및 적용 관계는 추가 확인이 필요하다. 원래 조건은 대안 두 가지를 연결한 정확한 한 문장만 요구한다. 부분 검증·심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_routing_cases.json",
+    "updated_at": "2026-10-27T00:47:49.693Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_routing_N-04-d3-extension-docs",
+   "version": 1,
+   "data": {
+    "case_id": "N-04-d3-extension-docs",
+    "correction": "연수기간 연장신청 사유서와 공통서류 외에도 시행규칙 별표 5의2에서 해당 산업체 발급 연수실적 평가서 등 추가 서류를 규정하므로 완전한 목록과 일부 답변을 구별한다. “연장 신청 사유서” 등 같은 뜻의 띄어쓰기를 허용한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-04-d3-extension-docs",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 법령 MCP 시행규칙 제76조 및 별표 5의2 D-3 연장허가 서류와 체류 매뉴얼 56쪽을 대조. 사유서 한 표현만 채점하면 전체 목록을 요구하는 질문의 불완전한 답도 통과할 수 있다. 기존 결과는 일부 답함이므로 일부 답변이라는 표시를 유지. 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_routing_cases.json",
+    "updated_at": "2026-10-27T00:47:59.402Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_routing_N-05-h1-uk-visa-validity",
+   "version": 1,
+   "data": {
+    "case_id": "N-05-h1-uk-visa-validity",
+    "correction": "사증 유효기간과 체류기간이 각각 2년이라는 두 관계를 확인하고 “2년”, “24개월” 등 동일한 표현을 허용한다. 한 곳에 2년이 한 번만 나타나도 두 기간이 모두 옳다고 처리하는 방식은 피한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-05-h1-uk-visa-validity",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 사증 매뉴얼 347쪽은 영국 H-1 복수사증의 유효기간과 체류기간을 각각 2년으로 표시한다. 법령 MCP 시행규칙 제12조는 복수사증의 협정상 기간 등을 규정하나 구체 2년은 이 조문 자체의 수치가 아니다. 관련 협정 원문은 조회하지 못해 최신 운영기준은 추가 확인 필요. AI 1차 제안의 “2년” 단일 문자열만으로 두 관계를 검증할 수 없음. 부분 검증·심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_routing_cases.json",
+    "updated_at": "2026-10-27T00:48:12.201Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_routing_N-06-h1-canada-weekly-hours",
+   "version": 1,
+   "data": {
+    "case_id": "N-06-h1-canada-weekly-hours",
+    "correction": "제공된 체류 매뉴얼의 캐나다 항목은 주당 최대 40시간이다. 40이라는 숫자만 등장해도 통과시키지 말고 캐나다의 주당 한도와 연결되는지 확인한다. 동일 답변에서 25시간을 무조건 적용하는 모순도 검출한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-06-h1-canada-weekly-hours",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 법령 MCP 출입국관리법 시행령 별표 1의2 H-1은 협정 등에 따른 활동과 제한 업종을 규정한다. 매뉴얼 524쪽은 캐나다 항목에 주당 40시간을 표시하나 기존 모델 답은 일반 25시간과 캐나다 40시간을 혼동하고 기간을 시간으로 표현하는데도 채점이 통과한다. 협정 원문과 현행 운영기준은 추가 확인 필요. 부분 검증, 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_routing_cases.json",
+    "updated_at": "2026-10-27T01:01:12.559Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_routing_N-07-e8-farm-allocation-cap",
+   "version": 1,
+   "data": {
+    "case_id": "N-07-e8-farm-allocation-cap",
+    "correction": "제공 매뉴얼은 농가 등에 연간 최대 14명(면적 기준 9명과 추가 5명 가능)을 기재하면서 지자체 자체 인센티브 기준과 전년도 우수 지자체 등에 따른 추가 가능성도 기재한다. 14명을 모든 경우의 절대적 상한으로 단정하지 않고 해당 지자체 기준과 추가 가능 여부를 확인한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-07-e8-farm-allocation-cap",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 사증 매뉴얼 PDF 279쪽 전체와 법령 MCP 시행령 별표 1의2 E-8 활동범위를 대조. 14명 및 추가 가능성은 매뉴얼 운영기준으로, 조문에 직접 기재된 숫자가 아니다. 실제 현행 세부 배정기준 확인 전 부분 검증. 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_routing_cases.json",
+    "updated_at": "2026-10-27T01:01:30.215Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_routing_N-08-g1-wage-arrears-eligibility",
+   "version": 1,
+   "data": {
+    "case_id": "N-08-g1-wage-arrears-eligibility",
+    "correction": "",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-08-g1-wage-arrears-eligibility",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 법령 MCP 시행령 별표 1의2 G-1의 장관 인정 구조, 시행규칙 제18조의3 및 별표 1의 G-1 1년 상한을 대조. 체류 매뉴얼 508쪽은 임금체불로 노동관서 중재 중인 사람을 운영상 대상에 포함한다. 구체 신청은 심사 대상이며 1년이 자동 보장되는 총 체류기간은 아니다. 기존 답은 “해당될 수 있음”과 1회 상한을 구분한다. 심각도 Low.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_routing_cases.json",
+    "updated_at": "2026-10-27T01:01:57.146Z",
+    "verdict": "ok"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_routing_N-09-c1-extension-limit",
+   "version": 1,
+   "data": {
+    "case_id": "N-09-c1-extension-limit",
+    "correction": "체류 매뉴얼은 90일 미만 사증 또는 체류기간을 받은 사람에게 입국일부터 90일까지 연장할 수 있다고 안내한다. 90일 숫자만 등장하면 통과하는 조건 대신 기산점·대상·허가 필요성을 확인하고, 특별한 출국 목적 연장 등 별도 규정을 일반 취재 연장과 구분한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-09-c1-extension-limit",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 법령 MCP 출입국관리법 제25조, 시행령 별표 1 C-1 및 시행규칙 제32조 원문을 확인. 체류 매뉴얼 26쪽은 일반 일시취재 연장 조건을 제시한다. 모델의 입국일부터 90일 답은 방향이 맞지만 단정형이며 기존 검사 “90일”은 잘못된 기산점도 통과시킬 수 있다. 특별사유는 별도 심사. 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_routing_cases.json",
+    "updated_at": "2026-10-27T01:02:18.420Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_routing_N-10-d5-consular-visa-bureau-docs",
+   "version": 1,
+   "data": {
+    "case_id": "N-10-d5-consular-visa-bureau-docs",
+    "correction": "국내 지국·지사의 설치허가증 또는 운영자금 도입실적 증빙서류라는 대안을 각각 허용한다. 지국·지사 사이의 문장부호나 조사 차이만으로 틀린 답이 되지 않게 수정한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-10-d5-consular-visa-bureau-docs",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 법령 MCP 시행규칙 제76조 및 별표 5 D-5의 지국 서류 대안을 원문 확인하고 사증 매뉴얼 90쪽과 대조. 기존 한 문자열은 운영자금 증빙만 제시한 정답 및 문장부호가 다른 답을 배제한다. 체류 매뉴얼의 등록 서류와 구별해야 한다. 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_routing_cases.json",
+    "updated_at": "2026-10-27T01:02:31.434Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_routing_N-11-e8-registration-drug-test",
+   "version": 1,
+   "data": {
+    "case_id": "N-11-e8-registration-drug-test",
+    "correction": "마약검사 확인서와 보험 요구를 별도로 검증한다. 제공 매뉴얼에는 산재보험 가입증명원 또는 농·어업인 안전보험 보험증권에 더해 여행자보험 가입증명서가 열거되어 있으므로, 보험 하나만 언급해도 모든 질문에 답한 것으로 판단하지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-11-e8-registration-drug-test",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 법령 MCP 시행규칙 제76조 및 별표 5의2 E-8은 지정 병원 마약검사확인서와 산재보험 또는 상해보험 가입증명원을 열거한다. 체류 매뉴얼 326쪽은 보건소 등 검사기관 및 여행자보험을 추가 안내한다. 법령과 매뉴얼의 구체 적용 관계는 확인이 필요하다. 기존 채점은 여행자보험 또는 산재보험 중 하나만 검사해 누락을 놓친다. 부분 검증, 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_routing_cases.json",
+    "updated_at": "2026-10-27T01:02:58.254Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_routing_N-12-d6-welfare-consular-visa-docs",
+   "version": 1,
+   "data": {
+    "case_id": "N-12-d6-welfare-consular-visa-docs",
+    "correction": "사증 매뉴얼상 파견명령서, 종교단체 또는 사회복지단체 설립허가서 사본, 소속단체 체류경비 지원 관련서류와 공통 제출사항을 안내한다. 두 문자열만 포함하면 모든 서류를 답한 것으로 처리하지 말고, 공관의 서류 가감 가능성을 반영한다. 영어로 같은 내용을 답하는 경우도 검토한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-12-d6-welfare-consular-visa-docs",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 법령 MCP 시행규칙 제76조·별표 5 D-6 원문과 사증 매뉴얼 92쪽에서 세 서류를 대조. 현재 기대 조건은 파견명령서·설립허가서만 검사하므로 체류경비 지원 서류를 빠뜨린 답을 완전 답으로 허용할 수 있다. 국내 단체 초청 사례에서 파견명령서의 실제 적용은 공관 추가 확인 필요. 부분 검증, 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_routing_cases.json",
+    "updated_at": "2026-10-27T01:03:26.500Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_routing_N-13-d9-university-lecture-docs",
+   "version": 1,
+   "data": {
+    "case_id": "N-13-d9-university-lecture-docs",
+    "correction": "제공된 체류 매뉴얼의 상근이사 이상 대상 대학 90일 이내 강의 기준을 명시하고, 고용계약서·원근무처장 동의서 외 총(학)장 추천서와 고유번호증 등 필요한 서류도 안내한다. 모델 답의 “총 제출서류 (학)장의 추천서”라는 오류는 “총(학)장의 추천서”로 고친다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-13-d9-university-lecture-docs",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 출입국관리법 제20조 사전허가 및 시행규칙 제76조·별표 5의2를 법령 MCP로 확인하고 체류 매뉴얼 PDF 131쪽을 직접 대조. 매뉴얼 특례는 D-9 상근이사 이상 등 대학 90일 이내 강의로 범위가 제한된다. 채점상 두 서류만으로 전체 서류를 묻는 질문에 완전 답변으로 인정될 우려. 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_routing_cases.json",
+    "updated_at": "2026-10-27T01:03:41.321Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_routing_N-14-f6-consular-visa-90days",
+   "version": 1,
+   "data": {
+    "case_id": "N-14-f6-consular-visa-90days",
+    "correction": "매뉴얼의 공관장 재량 사증에 대해 체류기간 90일 이하라는 원칙과 국내에서 기간 연장허가를 신청할 수 있음을 구분한다. “90일 이하” 같은 띄어쓰기와 허가의 적절한 표현을 허용한다. 미국인 예외 등 국적별 사증 종류를 단정하기 전에 확인한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-14-f6-consular-visa-90days",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 법령 MCP 시행규칙 제9조의4·제12조 및 법 제25조를 확인. 사증 매뉴얼 338쪽 Q&A는 90일 이하 단수사증을 제시하나 327쪽은 미국인 복수사증 예외를 기재한다. 질문은 국적을 밝히지 않아 단수사증을 무조건 요구하는 기준은 확인 필요. 띄어쓰기 때문에 실제 적합 답이 탈락한 문제도 확인. 부분 검증, 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_routing_cases.json",
+    "updated_at": "2026-10-27T01:03:55.229Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_routing_N-15-d1-extension-visa-pages-only",
+   "version": 1,
+   "data": {
+    "case_id": "N-15-d1-extension-visa-pages-only",
+    "correction": "",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-15-d1-extension-visa-pages-only",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 제공 사증 매뉴얼 PDF 25·60쪽은 사증 발급 자료이며 국내 D-1 연장 서류 목록이 없다. 법령 MCP 법 제25조, 시행령 제31조, 시행규칙 제76조 및 별표 5의2의 체류기간 연장 서류 체계를 확인했다. 실제 법령에 관련 서류가 있는 것과 제공된 두 쪽만으로 답할 수 있는지는 별개이므로 이 실험의 근거 부족 판정이 타당하다. 심각도 Low.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_routing_cases.json",
+    "updated_at": "2026-10-27T01:04:12.886Z",
+    "verdict": "ok"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_routing_N-16-e10-cci-stay-pages-only",
+   "version": 1,
+   "data": {
+    "case_id": "N-16-e10-cci-stay-pages-only",
+    "correction": "",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-16-e10-cci-stay-pages-only",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 제공 체류 매뉴얼 PDF 338·340쪽은 선원 체류자격 및 연장·재고용 등의 자료이며 사증발급인정서 서류 전체가 아니다. 법령 MCP 법 제9조 및 시행규칙 제76조·별표 5 E-10 서류를 대조했으나 이 법령은 실험에 공급되지 않았다. 따라서 제한된 근거에서의 보류 판정은 타당하다. 심각도 Low.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_routing_cases.json",
+    "updated_at": "2026-10-27T01:04:30.798Z",
+    "verdict": "ok"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_routing_N-17-d9-reentry-visa-pages-only",
+   "version": 1,
+   "data": {
+    "case_id": "N-17-d9-reentry-visa-pages-only",
+    "correction": "",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-17-d9-reentry-visa-pages-only",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 사증 매뉴얼 PDF 118·119쪽은 D-9 사증발급 사항으로 재입국허가 필요성과 서류를 설명하지 않아 주어진 근거에서 보류가 적절하다. 법령 MCP 법 제30조와 시행규칙 제44조의2는 등록자 재입국허가 및 통상 1년 이내 면제 등을 규정하지만, 국적별 협정과 잔여 체류기간 등 추가 사실 확인 없이 실제 사례를 단정하지 않는다. 심각도 Low.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_routing_cases.json",
+    "updated_at": "2026-10-27T01:04:46.763Z",
+    "verdict": "ok"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_routing_N-18-e9-cci-applicant-stay-pages-only",
+   "version": 1,
+   "data": {
+    "case_id": "N-18-e9-cci-applicant-stay-pages-only",
+    "correction": "",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-18-e9-cci-applicant-stay-pages-only",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 제공 체류 매뉴얼 PDF 328·329쪽은 고용허가제와 근무처 변경을 설명하며 사증발급인정서 신청 관서를 명시하지 않는다. 법령 MCP 시행규칙 제17조제2항은 초청자의 주소지 관할 출입국관서 제출을 규정하지만 이 조문은 모델에 공급되지 않았다. 근거 제한 실험에서 보류가 타당하다. 심각도 Low.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_routing_cases.json",
+    "updated_at": "2026-10-27T01:05:03.318Z",
+    "verdict": "ok"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_routing_N-19-e8-workplace-change-visa-pages-only",
+   "version": 1,
+   "data": {
+    "case_id": "N-19-e8-workplace-change-visa-pages-only",
+    "correction": "",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-19-e8-workplace-change-visa-pages-only",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 제공 사증 매뉴얼 279·280쪽은 계절근로 도입·선정과 사증 절차이며 변경서류가 없다. 법령 MCP 법 제21조 및 시행규칙 제76조·별표 5의2의 E-8 변경서류를 별도 확인하였으나 모델에 공급된 근거는 아니다. 실제 사건의 동의서 예외는 구체 사유에 따라 심사하므로 이 실험은 보류가 타당하다. 심각도 Low.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_routing_cases.json",
+    "updated_at": "2026-10-27T01:05:18.619Z",
+    "verdict": "ok"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_routing_N-20-h1-austria-embassy-stay-pages-only",
+   "version": 1,
+   "data": {
+    "case_id": "N-20-h1-austria-embassy-stay-pages-only",
+    "correction": "",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-20-h1-austria-embassy-stay-pages-only",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 체류 매뉴얼 PDF 524·525쪽은 관광취업자의 취업·학업 범위를 다루며 오스트리아 국민의 사증 신청 공관 목록이 없다. 법령 MCP 시행령 제7조를 확인했고 사증 매뉴얼 347쪽의 신청 공관은 별도 자료로서 본 실험에 공급되지 않았다. 근거 제한 보류가 적절하다. 실제 공관 목록은 변경될 수 있어 확인이 필요하다. 심각도 Low.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_routing_cases.json",
+    "updated_at": "2026-10-27T01:05:39.845Z",
+    "verdict": "ok"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_routing_N-21-b1-stay-longer-implicit",
+   "version": 1,
+   "data": {
+    "case_id": "N-21-b1-stay-longer-implicit",
+    "correction": "제공된 매뉴얼의 “원칙적으로” 연장·변경을 허가하지 않는다는 취지를 유지하되, 예외 가능성을 배제하는 절대 표현으로 채점하지 않는다. “원칙적으로 연장이나 변경이 어렵다” 등 동등한 표현을 허용하며 국적, 입국 유형, 사유를 확인한다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-21-b1-stay-longer-implicit",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 법령 MCP 법 제24조·제25조와 시행규칙 제32조의 절차·출국 목적 연장 예외를 확인. 체류 매뉴얼 24쪽은 사증면제 또는 관광통과 입국자에 대해 원칙을 안내하므로 법령상 모든 예외를 배제하는 절대 금지로 인용할 수 없다. 현재 긴 문자열은 합당한 의역을 배제하고 일부 문구만으로 두 질문을 모두 충족할 수 있다. 심각도 High.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_routing_cases.json",
+    "updated_at": "2026-10-27T01:05:57.963Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_routing_N-22-d3-trainee-invite-implicit",
+   "version": 1,
+   "data": {
+    "case_id": "N-22-d3-trainee-invite-implicit",
+    "correction": "D-3 기술연수 대상에 해당하는지 해외 현지법인과 직원·연수 요건을 확인한 뒤 사증발급인정서 신청 절차를 안내한다. “사증발급인정서” 한 단어만으로 대상·요건과 절차를 충분히 설명한 것으로 처리하지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-22-d3-trainee-invite-implicit",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 법령 MCP 법 제9조와 시행령 제24조의4의 기술연수생 모집 범위·제한을 확인하고 사증 매뉴얼 70쪽의 해외현지법인 생산직과 사증발급인정서 설명을 대조했다. 현지법인·근무 및 연수요건 등 확인 없이 발급을 확정할 수 없다. 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_routing_cases.json",
+    "updated_at": "2026-10-27T01:06:14.194Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_routing_N-23-c4-seasonal-second-farm-implicit",
+   "version": 1,
+   "data": {
+    "case_id": "N-23-c4-seasonal-second-farm-implicit",
+    "correction": "제공 매뉴얼상 C-4-1~4는 근무처 추가 불가, 변경은 사유와 지자체 담당자 동반 등 요건을 확인한다. “담당자의 동반”처럼 같은 의미의 조사 변형을 허용하되, 단순히 담당자라는 단어만 있어도 동반 의무를 충족한 것으로 채점하지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-23-c4-seasonal-second-farm-implicit",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 법령 MCP 법 제21조의 근무처 변경허가 원칙과 체류 매뉴얼 29쪽의 C-4-1~4 운영조건을 대조. 사증 매뉴얼 279쪽은 2025년부터 해당 세부 사증 발급 중단을 기재하므로 현재 체류 가능 사례인지도 확인해야 한다. 기존 답은 담당자의 동반이라고 하였으나 조사 차이로 탈락한다. 부분 검증, 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_routing_cases.json",
+    "updated_at": "2026-10-27T01:06:25.412Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  },
+  {
+   "doc_id": "manual_routing_N-24-d7-chinese-staff-multiple-visa-implicit",
+   "version": 1,
+   "data": {
+    "case_id": "N-24-d7-chinese-staff-multiple-visa-implicit",
+    "correction": "제공된 매뉴얼상 해당 중국인 주재원의 복수사증 유효기간은 2년 이내이나, 실제 발급은 필수 전문인력 여부 등 D-7 요건과 공관 심사에 달려 있다. 숫자 2년을 체류기간으로 잘못 연결한 답이나 무조건 발급 보장 답은 통과시키지 않는다.",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-24-d7-chinese-staff-multiple-visa-implicit",
+    "note": "ChatGPT 독립 2차 검토 2026-10-27: 법령 MCP 시행령 별표 1의2 D-7은 관련 기관의 필수 전문인력 등 요건을 규정하며 시행규칙 제12조는 복수사증 유효기간 체계를 규정한다. 사증 매뉴얼 94쪽은 특정 중국인 주재원에 유효기간 2년 이내 복수사증을 안내한다. 질문에 업무 내용이 없어 요건을 확인해야 하며 숫자만으로 유효기간과 체류기간을 구분할 수 없다. 부분 검증, 심각도 Medium.",
+    "reviewer": "u_ARLpF2K9HGona0Ct_SemzQ",
+    "set": "manual_routing_cases.json",
+    "updated_at": "2026-10-27T01:06:44.709Z",
+    "verdict": "fix_expect"
+   },
+   "provenance_per_handoff_index": "chatgpt_round2"
+  }
+ ],
+ "ai_reviews": [
+  {
+   "doc_id": "manual_always_ask_A-01-medical-tourism-long-treatment",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "\"1년 이내의 복수사증\" 대신 any_of [[\"G-1-10\"],[\"1년 이내\"]]로 변경.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-01-medical-tourism-long-treatment",
+    "note": "p49(사증 매뉴얼 의료관광) \"치료 및 여행기간이 91일 이상 장기인 경우 : 체류자격 G-1-10, 체류기간 1년 이내의 복수사증\". 4개월은 이 항목. 자격 코드 G-1-10이 핵심 사실인데 기대 문자열에 빠져 있고, 현재 문자열은 조사까지 고정.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_always_ask_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_always_ask_A-02-d1-kf-invitee-consular-visa",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-02-d1-kf-invitee-consular-visa",
+    "note": "p60 \"한국국제교류재단 및 한국문화예술위원회의 초청을 받아 ... 체류기간 1년 이하의 단수사증\". 문자열이 짧고 정확. (선택) \"1년 이하\"만으로 완화 가능.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_always_ask_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_always_ask_A-03-d6-who-can-invite",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-03-d6-who-can-invite",
+    "note": "p93 \"초청자는 종단이나 교단의 대표자이며, 단위 교회 목사 등은 초청자가 될 수 없음\". 정확.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_always_ask_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_always_ask_A-04-d5-korean-media-contract",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "\"대한민국의 보도기관과 계약\" 대신(또는 추가로) any_of [[\"해당되지 않\",\"해당하지 않\"]]로 결론을 요구.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-04-d5-korean-media-contract",
+    "note": "p91 \"외국인이 대한민국의 보도기관과 계약을 맺고 행하는 활동은 취재(D-5)의 체류자격에는 해당되지 않는다\". 현재 문자열은 질문의 전제를 되풀이할 뿐이고, '한국 언론사와 계약' 같은 패러프레이즈를 실패시킴.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_always_ask_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_always_ask_A-05-intl-org-meeting-visa-validity",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-05-intl-org-meeting-visa-validity",
+    "note": "p12 \"주재 목적이 아닌 일시적인 회의참석, 공무수행 등의 목적으로 ... 유효기간 3개월의 단수사증\". \"3개월\"은 짧아 적절하나 any_of [[\"단수\"]] 추가 권장.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_always_ask_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_always_ask_A-06-evisa-confirmation-reprint",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-06-evisa-confirmation-reprint",
+    "note": "p141 \"출력횟수는 1회로 제한\", \"휴넷을 통하여 출력제한 해제 요청\" 그대로. any_of 구성 적절.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_always_ask_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_always_ask_A-07-d7-overseas-branch-tenure",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-07-d7-overseas-branch-tenure",
+    "note": "p103 \"원칙적으로 과장이나 선임연구원급 이상 직원을 대상\", \"해외지사에서 1년 이상 근무한 자\". 정확. (선택) \"1년 이상\" 추가 가능.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_always_ask_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_always_ask_A-08-e5-ship-officer-recommendation",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "answer_must_contain에 \"5년\" 추가(any_of [[\"해양수산부장관\"],[\"5년\"]]로 바꾸는 것도 가능).",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-08-e5-ship-officer-recommendation",
+    "note": "p162 \"해기사 면허 ... 1급 항해사 ... 중 해양수산부장관의 추천을 받은 자\", \"1회 부여 체류기간의 5년 상한\". 질문 후반(기간)을 검증하는 문자열이 없음. \"해양수산부장관의 추천\"은 조사 고정이라 \"해양수산부장관\"으로 줄이는 것도 권장.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_always_ask_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_always_ask_A-09-d2-school-transfer-korean-level",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-09-d2-school-transfer-korean-level",
+    "note": "p46 학교 변경 제한 대상 \"한국어능력시험(TOPIK) 3급 이상 또는 사회통합프로그램 3단계 이상 ... 사전평가 61점 이상\" 및 예외. \"3급 이상\" 적절.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_always_ask_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_always_ask_A-10-e10-job-loss-extension",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-10-e10-job-loss-extension",
+    "note": "p340 \"고용해지 등으로 구직 중인 자는 고용해지일로부터 3개월의 범위 내에서 체류기간 연장허가\", 대상 조건(잔여 4개월 이상) 있음. \"3개월\" 적절, partial 허용 타당.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_always_ask_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_always_ask_A-11-refugee-applicant-work-permit",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-11-refugee-applicant-work-permit",
+    "note": "p511 \"난민인정의 신청을 한 후 6개월이 경과한 자\", 취업제한 업종 \"건설업(... 취업 불가 ...)\". any_of 구성 적절.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_always_ask_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_always_ask_A-12-ceo-university-lecture",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "\"총(학)장의 추천서\" 대신 any_of [[\"총(학)장\",\"총장\"]]로 완화.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-12-ceo-university-lecture",
+    "note": "p117 D-8 상근이사 이상의 \"대학에서 90일 이내 강의활동 ... (C-4-5)\" 제출서류 \"②총(학)장의 추천서 ... ⑤원근무처장의 동의서\". 근거 정확, 괄호 포함 문자열이 과엄격.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_always_ask_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_always_ask_A-13-child-school-enrollment-report",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-13-child-school-enrollment-report",
+    "note": "p8 \"만 6세 이상 만 18세 이하 ... 재학여부를 신고\", \"초·중·고교 최초 입학 ... 시 15일 이내\", \"재학증명서 등\". 라벨 타당. (선택) any_of [[\"15일\"]] 추가 권장.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_always_ask_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_always_ask_A-14-occupation-income-report",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-14-occupation-income-report",
+    "note": "체류 매뉴얼 p7에 '직업 : 각종 체류허가 신청 시 「외국인 직업 신고서」작성하여 제출', 신고시기에 '체류기간 연장허가 신청 시' 명시. 기대 문자열 그대로 있음.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_always_ask_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_always_ask_A-15-d9-points-first-grant-period",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "answer_must_contain ['1년만 부여'] → ['1년'] 으로 완화(또는 any_of [['1년만 부여','1년']]).",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-15-d9-points-first-grant-period",
+    "note": "p139 첫 줄 '최초 허가 시 체류기간은 1년만 부여함'. 사실은 맞지만 '체류기간은 1년입니다' 같은 정답 환언이 탈락함. 페이지 상단이 잘려 어떤 허가(변경/연장) 문맥인지는 페이지만으로 확정 안 됨.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_always_ask_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_always_ask_A-16-e6-2-agency-change",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-16-e6-2-agency-change",
+    "note": "p209 E-6-2 사전 허가대상: '최대 1년의 범위 내에서 고용계약기간 동안 체류기간을 부여', 제출서류 '③ 근무처의 원 근무처 장의 동의서'. 참고: 동의서 면제 단서(계약기간 만료 등)는 같은 페이지 윗부분(신고 대상 절)에 붙은 것이라 E-6-2 허가에 그대로 적용된다고 볼 근거는 페이지에 없음. 필요하면 any_of로 '동의서'까지 완화 가능.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_always_ask_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_always_ask_A-17-in-korea-medical-pressed-visa",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-17-in-korea-medical-pressed-visa",
+    "note": "해외 버튼 오선택 케이스. 체류 매뉴얼 p514가 'G-1-10으로 변경 대상'이라고 답을 갖고 있으나 버튼이 visa_abroad이므로 insufficient/partial/clarify 허용은 타당. 사증 페이지의 '복수사증' 금지도 적절.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_always_ask_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_always_ask_A-18-visa-free-to-e3-pressed-visa",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-18-visa-free-to-e3-pressed-visa",
+    "note": "체류 p192가 무사증 입국 고급인력의 E-3 변경, '석사 학위 소지자로서 3년 이상 경력자 (단, 국내 석사학위 소지자 경력 요건 면제)'를 담고 있으나 오선택 케이스라 기권/확인 허용 라벨은 일관됨.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_always_ask_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_always_ask_A-19-f3-spouse-abroad-pressed-stay",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-19-f3-spouse-abroad-pressed-stay",
+    "note": "사증 p317 '③ 생계유지능력 입증서류 (E-1, E-3, E-4, E-5, F-4, H-2의 경우 제출 면제)'가 답이지만 국내 체류 버튼 오선택이라 기권/확인 허용 타당. 체류 p429(자격외 활동) 인용 금지도 적절.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_always_ask_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_always_ask_A-20-d9-trade-points-abroad-pressed-stay",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-20-d9-trade-points-abroad-pressed-stay",
+    "note": "사증 p120 '총160점 중 60점 이상 득점자로서, 필수항목 점수가 10점 이상'. 체류 p139의 '최대 65점' 유입 금지는 합리적.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_always_ask_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_always_ask_A-21-permanent-resident-long-absence",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-21-permanent-resident-long-absence",
+    "note": "always_ask 정책상 clarify/insufficient 라벨은 일관됨. 다만 체류 p452 '재입국면제 기간(출국한 날부터 2년 이내) 또는 재입국허가 기간까지 대한민국에 미입국한 경우' 영주자격 상실로 사실상 답이 있음 — 정책이 '체류 전용 질문은 바로 답' 허용으로 바뀌면 answered/partial 추가 필요.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_always_ask_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_always_ask_A-22-e2-medical-check",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-22-e2-medical-check",
+    "note": "E-2 채용신체검사서는 체류(외국인등록, p186)와 사증 양쪽 문맥이 있어 절차 확인 필요. 라벨 타당.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_always_ask_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_always_ask_A-23-pro-footballer-status",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-23-pro-footballer-status",
+    "note": "사증 p165·체류 p207 모두 E-6(E-6-3 운동) 관련. 절차 미지정이므로 clarify 타당.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_always_ask_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_always_ask_A-24-venture-investor-documents",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_always_ask/A-24-venture-investor-documents",
+    "note": "사증 p105(D-8-2 사증)와 체류 p121(D-8-2 변경) 서류가 달라 절차 확인 필요. 라벨 타당.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_always_ask_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_buttons_B-01-e3-visa-researcher-qualification",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "\"석사 학위 소지자로서 3년 이상 경력자\" → \"3년 이상\"으로 완화(p152 '◦ ②석사 학위 소지자로서 3년 이상 경력자'). 경력요건 면제 대상(국내 석사, 해외 우수대학 석사, 우수 논문 저자)은 선택 항목.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-01-e3-visa-researcher-qualification",
+    "note": "골드 p152가 정확히 답함. 모델 '석사 학위 소지자는 3년 이상 경력자'가 조사 차이로 실패.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_buttons_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_buttons_B-02-india-business-multiple-visa",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "\"5년 복수사증 발급\" → any_of [[\"5년\"]] 또는 [\"5년 복수사증\"]으로 완화(p43 '① 5년 복수사증 발급 ․대상 : … 상공회의소 … 가 발급한 요청서(a letter of request)를 제출한 상용방문자').",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-02-india-business-multiple-visa",
+    "note": "골드 p43이 정확히 답함. 참고로 p43은 체류자격을 'C-3-4'로, p27은 인도·칠레 협정상 단기상용을 'C-3-5'로 적어 약호가 서로 다르니 약호를 기대값으로 쓰지 말 것.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_buttons_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_buttons_B-03-d10-jobseeker-visa-length",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "answer_must_contain을 \"체류기간 6개월의 단수 구직(D-10)사증\" 대신 answer_must_contain_any_of_each [[\"6개월\",\"6월\"],[\"단수\"]]로 완화.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-03-d10-jobseeker-visa-length",
+    "note": "p128에 \"재외공관장이 재량으로 체류기간 6개월의 단수 구직(D-10)사증 발급\" 있음. 다만 기대 문자열이 너무 길어 \"6개월 단수 사증\" 같은 정답 패러프레이즈가 실패함. 페이지 머리가 '최우수인재(D-10-T)' 결격사유 목록 바로 뒤라 D-10 전체에 대한 공관장 재량 조항인지 사람 확인 권장.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_buttons_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_buttons_B-04-e2-visa-degree-requirement",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "\"학사이상의 학위를 소지한 자\" 대신 any_of [[\"학사이상\",\"학사 이상\"]]로 완화(페이지에 두 표기 모두 존재: \"학사이상의 학위를 소지한 자\", \"학사 이상의 학위를 취득한\").",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-04-e2-visa-degree-requirement",
+    "note": "p144(사증 매뉴얼 E-2)가 정답 근거로 적절. 기대 문자열이 띄어쓰기·조사까지 고정되어 있어 정답도 떨어질 수 있음.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_buttons_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_buttons_B-05-e3-workplace-change-report",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "\"신고사유 발생일로부터 15일 이내\" 대신 \"15일 이내\"로 축약.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-05-e3-workplace-change-report",
+    "note": "p191(체류 매뉴얼 E-3 근무처 변경·추가 신고) \"신고사유 발생일로부터 15일 이내에 ... 신고\"가 정답. 모델처럼 \"신고 사유\"로 띄어 쓰면 실패하는 전형적 과엄격 사례.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_buttons_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_buttons_B-06-d10-multiple-reentry-permit",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "\"1년을 초과하여 2년 내에 재입국\" 대신 any_of [[\"1년을 초과\",\"1년 초과\"],[\"2년\"]]로 완화.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-06-d10-multiple-reentry-permit",
+    "note": "p161은 D-10 체류 페이지(첨단기술인턴(D-10-3) 언급)이며 \"출국 후 체류기간 범위 내에서 1년을 초과하여 2년 내에 재입국을 하려는 경우\"가 정답. 문구가 길어 \"1년 초과 2년 이내\" 같은 표현이 실패함.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_buttons_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_buttons_B-07-e9-extension-cap",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "\"최초 입국일로부터 3년\" 대신 any_of [[\"3년\",\"4년 10개월\"]] 또는 [[\"3년\"]]로 완화.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-07-e9-extension-cap",
+    "note": "p330 \"체류기간 연장허가 상한은 최초 입국일로부터 3년, 재고용에 의한 취업기간 연장 허가기간 중에는 최초 입국일로부터 4년 10개월을 초과할 수 없음\". '최대 언제까지' 질문에 4년 10개월도 정답이 될 수 있음. 해당 문단이 사업장 변경 관련 특수 연장 절차 안에 있으므로 일반 E-9 연장 전체 규정인지는 사람 확인 권장.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_buttons_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_buttons_B-08-c3-extension-limit",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "\"입국일로부터 체류기간 90일 범위 내 연장 가능\" 대신 \"90일\"로 축약.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-08-c3-extension-limit",
+    "note": "p27(체류 매뉴얼 C-3) \"... 연장의 필요성이 인정되는 경우에 입국일로부터 체류기간 90일 범위 내 연장 가능\". 한 절 전체를 요구해 정답 패러프레이즈가 실패함. 조건부 허용이므로 partial 허용도 적절.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_buttons_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_buttons_B-09-d4-language-course-length",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "\"체류기간 6개월 이하 단수 일반연수(D-4) 사증\" 대신 any_of [[\"6개월\"],[\"단수\"]]로 완화.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-09-d4-language-course-length",
+    "note": "p74 \"라. 사증발급 내용 ❍ 체류기간 6개월 이하 단수 일반연수(D-4) 사증\"이 정답. 문자열이 지나치게 길다. 이 조항은 교육기관 요건(강사 비율 등)을 충족한 한국어 연수 과정에 대한 것이라 partial도 타당.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_buttons_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_buttons_B-10-f6-sponsor-income",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-10-f6-sponsor-income",
+    "note": "p335 \"2025년 기준 소득요건 ... 2인 가구 23,595,948\" 그대로. 숫자 하나만 요구해 적절. '(참고) 2025년 기준'이라는 단서도 페이지에 있음.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_buttons_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_buttons_B-11-h1-insurance-amount",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "\"4,000만원 이상\" 대신 any_of [[\"4,000만\"]]로 완화(\"4,000만 원\" 띄어쓰기 허용).",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-11-h1-insurance-amount",
+    "note": "p350 \"보장액 4,000만원 이상 의료보험 등에 가입\" 및 \"권장하나, 상호주의에 따라 ... 보장액 결정 가능\". 정답 근거는 맞음.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_buttons_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_buttons_B-12-f1d-digital-nomad-validity",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "\"복수비자 발급(유효기간 1년)\" 대신 any_of [[\"복수\"],[\"1년\"]]로 완화.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-12-f1d-digital-nomad-validity",
+    "note": "p305 \"F-1-D(워케이션), 복수비자 발급(유효기간 1년)\". 괄호까지 포함한 문자열은 과엄격.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_buttons_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_buttons_B-13-c45-lecture-days",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "\"7일을 초과할 수\" 대신 \"7일\"로 축약.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-13-c45-lecture-days",
+    "note": "p58 \"체류기간 중 강의·강연·자문 등의 활동기간은 7일을 초과할 수 없음\", 예시로 30일 체류도 7일 제한. \"최대 7일\" 같은 정답이 실패하지 않도록 축약.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_buttons_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_buttons_B-14-d2-outside-research-pay",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "\"체류자격외활동허가(E-3) 필요\" 대신 any_of [[\"체류자격외활동허가\",\"체류자격외 활동허가\",\"체류자격외 활동 허가\"],[\"E-3\"]]로 완화.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-14-d2-outside-research-pay",
+    "note": "p40 \"(소속대학 외 연구활동) ... ⅱ) 학업과 무관한 연구·인턴 참여: 체류자격외활동허가(E-3) 필요\"가 정확히 해당. 문자열이 띄어쓰기에 민감.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_buttons_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_buttons_B-15-d2-delivery-rider",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-15-d2-delivery-rider",
+    "note": "p38 시간제취업 \"(1) 제한분야 ... (특수형태근로종사자의 활동) 택배기사, 배달대행업체 라이더\"가 정답. 다만 문자열만으로는 '불가'라는 결론을 확인하지 못하므로 any_of [[\"제한\",\"불가\",\"할 수 없\"]] 추가를 고려. 질문이 D-2/D-4를 특정하지 않음.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_buttons_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_buttons_B-16-h1-job-change",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "\"별도의 근무처 추가 또는 변경없이 취업 활동 가능\" 대신 any_of [[\"변경없이\",\"변경 없이\"]]로 완화.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-16-h1-job-change",
+    "note": "p526(체류 매뉴얼 관광취업 H-1) \"별도의 근무처 추가 또는 변경없이 취업 활동 가능 - 다만, 일정한 자격요건, 자격증을 요하거나 E-7 직종 ... 제한\". 모델의 \"근무처의 추가 또는 변경 없이\"도 실패할 만큼 문자열이 김.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_buttons_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_buttons_B-17-f3-spouse-farm-work",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "\"TOPIK 2급 또는 사회통합프로그램 2급 이상\" 대신 any_of [[\"TOPIK 2급\",\"한국어능력시험 2급\"]]로 완화.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-17-f3-spouse-farm-work",
+    "note": "p428(체류 매뉴얼 F-3) 허용대상에 \"방문취업(H-2) 자격의 성년 배우자\", 허용분야 \"H-2의 취업범위 중 농업·임업·축산업\", 추가서류 \"④ 한국어능력 증빙서류(TOPIK 2급 또는 사회통합프로그램 2급 이상)\". 근거는 정확하나 문자열이 김.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_buttons_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_buttons_B-18-e3-guest-lecture",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "\"90일 이내 강의활동\" 대신 any_of [[\"90일\"]]로 완화하고, 한 학기(90일 초과 가능)이므로 정답에 \"본부 승인\" 언급을 기대한다면 별도 any_of [[\"90일 이내\",\"90일을 초과\",\"본부 승인\"]] 고려.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-18-e3-guest-lecture",
+    "note": "p188: E-3 등 전문인력의 \"대학에서 90일 이내 강의활동 ... (C-4-5)자격으로의 자격외 활동\", \"90일을 초과하여 정기적으로 대학에서 강의활동을 하고자 하는 자는 본부 승인상신\", 또한 \"교수(E-1), 연구(E-3)간 상호 체류자격외 활동\" 조항도 있음. 한 학기는 90일을 넘을 수 있어 '90일 이내'만 고정하면 오도 가능. partial 허용은 적절.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_buttons_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_buttons_B-19-d2-cyber-university",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "status에 answered/partial 추가(clarify 유지 가능), insufficient_evidence는 제거, must_not_cite에서 stay p35 제거, 답변 시 any_of [[\"사이버대학\",\"원격대학\"]] 및 [[\"제외\"]] 요구.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-19-d2-cyber-university",
+    "note": "사증 p62와 체류 p35가 똑같이 \"방송대학‧통신대학‧방송통신대학 및 사이버대학(원격대학)\"을 유학 대상 교육기관에서 \"제외\"한다고 명시. 절차와 무관하게 근거가 답을 주므로 insufficient_evidence는 부적절하고, p35 인용 금지도 정답을 벌함.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_buttons_cases.json",
+    "verdict": "fix_status"
+   }
+  },
+  {
+   "doc_id": "manual_buttons_B-20-f3-family-of-researcher",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-20-f3-family-of-researcher",
+    "note": "절차 미지정이고 배우자·자녀가 해외인지 국내인지 불명. 사증 p316은 F-3 대상·전자사증 대상 정도만 있고 서류 목록은 불완전, 체류 p428은 자격외활동 위주. clarify/insufficient 라벨 타당.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_buttons_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_buttons_B-21-e9-eligible-countries",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "clarify는 유지하되 insufficient_evidence 대신(또는 추가로) answered/partial 허용, must_cite visa p285, any_of [[\"4년 10개월\",\"3년\"]] 고려. must_not_cite stay p330은 유지 가능.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-21-e9-eligible-countries",
+    "note": "사증 p285에 \"고용허가제 선정국가(17개국) 태국, 필리핀, ...\"과 \"최장 4년 10개월간 취업을 허용\", \"1회 부여 3년\"이 있어 두 질문 모두 답할 수 있음 → insufficient_evidence는 틀린 기대. 같은 페이지에 \"16개국과 MOU\"와 \"선정국가(17개국)\"가 함께 있어 국가 수 불일치(사람 확인 필요, 국가 수 숫자는 기대 문자열로 쓰지 말 것).",
+    "reviewer": "ai-first-pass",
+    "set": "manual_buttons_cases.json",
+    "verdict": "fix_status"
+   }
+  },
+  {
+   "doc_id": "manual_buttons_B-22-d4-work-while-studying",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "clarify 외에 answered/partial 허용, must_cite stay p83, any_of [[\"6개월\"]] 요구.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-22-d4-work-while-studying",
+    "note": "질문이 이미 D-4-1로 공부 중인 국내 체류자의 아르바이트(체류자격외 활동) 문의라 체류 절차가 분명. 체류 p83 \"어학연수(D-4-1)자격 소지자는 ... 취득일부터 6개월 경과된 경우 체류자격외 활동 가능\"이 직접 답함. insufficient_evidence는 근거상 틀림.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_buttons_cases.json",
+    "verdict": "fix_status"
+   }
+  },
+  {
+   "doc_id": "manual_buttons_B-23-e9-going-home-briefly",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "clarify 외에 answered/partial 허용, must_cite stay p332, any_of [[\"1년 이내\"],[\"면제\"]] 요구. 수수료(단수 3만원)는 입국규제자 대상이므로 일반 답에서 '반드시 납부'로 쓰지 않게 answer_must_not_contain_money 검토.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-23-e9-going-home-briefly",
+    "note": "국내에서 E-9로 일하다 몇 주 귀국하는 경우는 재입국(체류 절차)로 분명. p332 \"등록을 필한 외국인이 출국한 날부터 1년 이내에 재입국하려는 경우 재입국허가 면제\", \"단, 입국규제 및 사증발급규제자는 ... 재입국허가를 받아야 하며 수수료 제출 대상\". insufficient_evidence는 근거상 틀림.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_buttons_cases.json",
+    "verdict": "fix_status"
+   }
+  },
+  {
+   "doc_id": "manual_buttons_B-24-f1d-stay-length",
+   "version": 1,
+   "data": {
+    "confidence": "low",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_buttons/B-24-f1d-stay-length",
+    "note": "절차 미지정이며 사증 p305는 \"복수비자 발급(유효기간 1년)\"(사증 유효기간), 체류 p355는 \"체류허가 기간 : 체류기간 1년 부여\"로 개념이 달라 clarify 타당. 다만 두 쪽 모두 1년이라 answered도 사실상 틀리지 않음 → insufficient_evidence는 부적절하므로 허용 목록에서 빼는 것을 고려.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_buttons_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_clarify_Q-01-e9-visa-criminal-record",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "answer_must_contain을 [\"3개월 이내\"]로 줄일 것(p287 '사증발급 신청일로부터 3개월 이내에 발급된 증명서 일 것'). 현재 문자열은 절 전체라 '신청일 기준 3개월 이내 발급' 같은 올바른 의역이 실패함.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-01-e9-visa-criminal-record",
+    "note": "골드 p287(사증 매뉴얼 E-9 범죄경력증명서 요건)이 정확히 답함. 문자열만 과도.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_clarify_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_clarify_Q-02-e2-epik-visa-where-apply",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "answer_must_contain을 [\"어디라도\"]로 줄이거나 any_of [[\"어디라도\",\"해외 소재 대한민국 공관\"]]로 변경(p146 '해외 소재 대한민국 공관이면 어디라도 신청 가능'). 중국어보조교사 예외('주중 대한민국공관에만')도 참고.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-02-e2-epik-visa-where-apply",
+    "note": "골드 p146 EPIK 사증발급 신청 항목이 정확히 답함. 기대 문자열이 긴 절.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_clarify_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_clarify_Q-03-d2-visa-photo-admission",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "answer_must_contain을 [\"6개월 이내\", \"표준입학허가서\"]로 줄일 것. 현재 '사진 1매(6개월 이내 촬영 반명함)', '표준입학허가서 (대학 총․학장 발행)'은 괄호·특수문자(․)·공백까지 일치해야 해서 '대학 총·학장이 발행한 표준입학허가서' 같은 정답도 실패함.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-03-d2-visa-photo-admission",
+    "note": "골드 p63 '공통서류 ① … 사진 1매(6개월 이내 촬영 반명함) … ③ 표준입학허가서 (대학 총․학장 발행)'로 답은 맞음. 문자열이 지나치게 엄격.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_clarify_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_clarify_Q-04-d9-sole-proprietor-visa-mission",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "answer_must_contain을 [\"본국\"] 또는 [\"본국에 소재한\"]으로 줄일 것(p119 '나. 신청기관 원칙적으로 신청자의 본국에 소재한 대한민국 공관'). 예외('주재하고 있는 국가 소재 대한민국공관에서 신청가능')는 선택 항목으로 두어도 됨.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-04-d9-sole-proprietor-visa-mission",
+    "note": "골드 p119 D-9 외국인 개인사업자 사증 신청기관 항목이 정확히 답함. 모델은 통과했지만 '본국의 한국 공관' 식 의역은 실패함.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_clarify_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_clarify_Q-05-e9-workplace-change-deadline",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "\"1월 이내에 사업장 변경을 신청\" → any_of [[\"1월 이내\",\"1개월 이내\"]], \"3개월 이내에 근무처 변경\" → [\"3개월 이내\"]로 완화(p329 '근로계약 종료 후 1월 이내에 사업장 변경을 신청 … 3개월 이내에 근무처 변경 허가'). '1개월'은 원문 '1월'의 표준 표기라 허용 권장.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-05-e9-workplace-change-deadline",
+    "note": "골드 p329가 정확히 답함. 모델이 '1개월 이내'로 정답을 말하고도 실패한 사례.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_clarify_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_clarify_Q-06-d2-parttime-permit-places",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "\"장소 2곳\" → \"2곳\"으로 완화(p39 '유학생(D-2): … 동시에 취업할 수 있는 장소 2곳으로 한정').",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-06-d2-parttime-permit-places",
+    "note": "골드 p39가 정확히 답함. 모델 '장소는 2곳'이 조사 하나로 실패.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_clarify_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_clarify_Q-07-d9-multiple-reentry-permit",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "\"1년을 초과하여 2년 내\" → 그룹 [[\"1년을 초과\",\"1년 초과\"],[\"2년\"]]로 완화(p137 '출국 후 체류기간 범위 내에서 1년을 초과하여 2년 내에 재입국을 하려는 경우').",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-07-d9-multiple-reentry-permit",
+    "note": "골드 p137(체류 매뉴얼, D-9 등록·재입국 항목)이 정확히 답함. 1년 이내 면제 규정도 같은 페이지에 있어 함께 답하는 것이 자연스러움.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_clarify_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_clarify_Q-08-student-residence-change-report",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "\"전입한 날로부터 15일 이내\" → \"15일 이내\"로 완화(p95 '6. 외국인유학생 체류지변경신고 가. 전입한 날로부터 15일 이내에 … 신고').",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-08-student-residence-change-report",
+    "note": "골드 p95가 정확히 답함. '이사한 날부터 15일 이내' 같은 의역이 실패하지 않도록.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_clarify_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_clarify_Q-09-bring-wife-income",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-09-bring-wife-income",
+    "note": "p330 '2026년 기준 소득요건 … 2인 가구 25,195,752'. 숫자만 요구해 적절. clarify 응답(베트남에서 사증 신청)과 사증 매뉴얼 골드 일치.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_clarify_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_clarify_Q-10-f6-working-allowed",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "\"취업활동의 제한을 받지 않음\" → \"제한을 받지 않\"으로 완화(p484 체류자격외 활동 '체류자격 구분에 따른 취업활동의 제한을 받지 않음').",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-10-f6-working-allowed",
+    "note": "골드 p484가 정확히 답함. 모델 '취업활동의 제한을 받지 않습니다'가 어미 차이로 실패.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_clarify_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_clarify_Q-11-e9-change-jobs-count",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "\"원칙적으로 3회\" → \"3회\"로 완화(p328 '입국한 날부터 3년 이내의 취업가능기간 중에는 원칙적으로 3회, 재고용 … 2회').",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-11-e9-change-jobs-count",
+    "note": "골드 p328이 정확히 답함. 모델은 통과했지만 '원칙적으로' 없이 '최대 3회'라 해도 정답임.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_clarify_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_clarify_Q-12-e9-rehire-return-group",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "\"송출기관에 의한 단체 신청만 가능\" → any_of [[\"단체 신청\",\"송출기관\"]]로 완화(p287 '사증 신청은 송출기관에 의한 단체 신청만 가능하고 외국인에 대한 개별 발급은 불가'). '개별 발급은 불가'는 OCR 줄바꿈 때문에 원문과 그대로 일치하지 않으니 후보로 쓰지 말 것.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-12-e9-rehire-return-group",
+    "note": "골드 p287 재입국 취업특례자 사증 항목이 정확히 답함. 절 단위 문자열이라 과도.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_clarify_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_clarify_Q-13-korean-language-course-education",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "\"고등학교 졸업 이상의 학력 소지자\" → \"고등학교 졸업 이상\"으로 완화(p73 '나. 해당자 ❍ 고등학교 졸업 이상의 학력 소지자로 상기 교육기관에서 어학연수를').",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-13-korean-language-course-education",
+    "note": "골드 p73(사증 매뉴얼 D-4 어학연수)이 정확히 답함. 체류 p83에도 같은 요건이 있으나 clarify 응답상 사증 매뉴얼이 맞음.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_clarify_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_clarify_Q-14-d4-parttime-duration",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-14-d4-parttime-duration",
+    "note": "p39 '어학연수생(D-4): 체류기간 내에서 최장 6개월, 장소 1곳 한정'. '최장 6개월' 짧고 정확.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_clarify_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_clarify_Q-15-d10-points-exemption-after-leaving",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "\"출국 후 졸업일로부터 1년 이내\" → any_of [[\"졸업일로부터 1년 이내\",\"1년 이내\"]]로 완화(p125 '출국 후 졸업일로부터 1년 이내 구직(D-10) 사증을 받는 경우도 점수제 면제 대상에 포함').",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-15-d10-points-exemption-after-leaving",
+    "note": "골드 p125가 정확히 답함. '과거 구직(D-10) 자격을 받았던 사람'은 점수제 적용이라는 단서도 같은 문장에 있음.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_clarify_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_clarify_Q-16-c3-stay-longer-flight-cancelled",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "\"체류기간 연장의 필요성을 소명하는 서류\" → any_of [[\"필요성을 소명\",\"필요성을 소명하는 서류\"]]로 완화. 신청서(34호 서식)·여권·수수료도 선택 그룹으로 고려(p28 '3. 제출서류 ① 신청서(34호 서식), 여권 원본, 수수료 ② 체류기간 연장의 필요성을 소명하는 서류').",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-16-c3-stay-longer-flight-cancelled",
+    "note": "골드 p28(체류 매뉴얼 C-3)이 답함. 연장사유 예시 '출국할 선박 등이 없거나'도 질문과 일치.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_clarify_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_clarify_Q-17-d8-minimum-investment",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "\"투자금액이 1억원 이상\" → \"1억원\"으로 완화(p104 '투자금액이 1억원 이상으로, 투자한 법인의 의결권 있는 주식총수의 100분의 10이상을 소유').",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-17-d8-minimum-investment",
+    "note": "골드 p104 D-8-1 공관장 재량 사증 기본요건이 정확히 답함. '최소 1억원'이라는 정답이 조사 차이로 실패할 수 있음.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_clarify_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_clarify_Q-18-e2-trip-home-reentry",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "\"출국한 날로부터 1년 이내\" → \"1년 이내\"로 완화(p175 '등록을 필한 외국인이 출국한 날로부터 1년 이내에 재입국하려는 경우 재입국허가 면제').",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-18-e2-trip-home-reentry",
+    "note": "답 자체는 맞음. 다만 p175는 '회화지도(E-2)' 제목이 페이지 맨 끝에 있어, 이 재입국 항목이 E-2 절인지 앞 자격 절인지 텍스트만으로는 확실하지 않음. 규정 내용이 공통이라 영향은 작지만 사람이 확인할 필요가 있음.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_clarify_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_clarify_Q-19-live-with-korean-husband-docs",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-19-live-with-korean-husband-docs",
+    "note": "해외(사증발급 p328)인지 국내 자격변경(p486 '체류자격 변경허가(F-6-1)')인지에 따라 서류가 다르므로 clarify가 맞음. 참고: 두 페이지 모두 답을 담고 있어 insufficient_evidence는 사실과 맞지 않음. 허용할지는 정책 문제로 남김.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_clarify_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_clarify_Q-20-d2-study-docs",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-20-d2-study-docs",
+    "note": "사증(p63 공통서류) vs 체류(p47 하위과정 이동 서류)가 갈리므로 clarify 타당. insufficient_evidence 허용은 관대하지만 위험하지는 않음.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_clarify_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_clarify_Q-21-e9-factory-work-docs",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-21-e9-factory-work-docs",
+    "note": "p288은 고용주의 사증발급인정서 첨부서류, p328은 근무처 변경 규정으로 서로 다른 절차라 clarify 타당. p328에는 서류 목록이 없음.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_clarify_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_clarify_Q-22-d10-how-long",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "status에 \"answered\", \"partial\"을 추가하고 must_not_cite에서 visa p124를 빼거나, 두 페이지 중 하나를 인용하면 통과하도록 바꿀 것. 두 매뉴얼 모두 같은 답: 체류 p144 '1회에 부여할 수 있는 체류기간 상한 ❍ 1년 - 단, 아래 대상자의 경우 1회 최대 6개월', 사증 p124 '1년 - 단, 아래 대상자의 경우 1회 최대 6개월 부여'.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-22-d10-how-long",
+    "note": "절차와 무관하게 답이 동일해서 clarify를 강제할 근거가 약함. 현재 must_not_cite p124는 정답 인용을 감점함.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_clarify_cases.json",
+    "verdict": "fix_status"
+   }
+  },
+  {
+   "doc_id": "manual_clarify_Q-23-h2-father-how-long",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-23-h2-father-how-long",
+    "note": "clarify 타당. 사증 p389 ''26. 2. 12.자로 방문취업(H-2) 사증의 신규 발급이 중단', 체류 p537 '외국인등록 시 … 최대 3년(한국어능력 미입증 시 1년)'으로 절차에 따라 답이 크게 다름. 해외 거주자라면 오히려 p389가 핵심이므로 must_not_cite p389는 clarify 상태에서만 의미가 있음.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_clarify_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_clarify_Q-24-d9-sole-proprietor-docs",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_clarify/Q-24-d9-sole-proprietor-docs",
+    "note": "체류 p137 '2. 외국인 개인사업자 제출서류'(외국인등록)와 사증 p119(D-9 개인사업자 대상·신청기관)가 갈리므로 clarify 타당. p119에는 개인사업자 사증 첨부서류가 잘려 없어 insufficient_evidence도 일부 근거 있음.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_clarify_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_misclick_K-01-c3-business-subcode",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "answer_must_contain ['C-3-4 일반상용'] → ['C-3-4'] 로 완화(또는 any_of [['C-3-4']]).",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-01-c3-business-subcode",
+    "note": "p27 'C-3-4 일반상용 … 시장조사, 업무연락, 상담, 계약 … 상용활동자 및 사증없이 입국하는 APEC카드 소지자'. 사실은 맞으나 'C-3-4(일반상용)' 같은 표기가 탈락.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_misclick_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_misclick_K-02-e1-electronic-visa",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "'영사 인터뷰가 필요 없는' 삭제하고 any_of [['재외공관 방문','온라인','영사 인터뷰']] (페이지 원문은 '재외공관 방문' 뒤 줄바꿈이라 '방문 없이'는 축자 일치 안 됨) 로 대체. '전자사증'은 유지. 가능하면 E-1이 발급대상에 포함된다는 점 확인용으로 ['E-1'] 추가 고려.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-02-e1-electronic-visa",
+    "note": "질문 핵심은 '공관 방문 없이 온라인 발급 가능한가'이고 페이지는 '재외공관 방문 없이 온라인으로 사증을 발급 받을 수 있는 제도', 발급대상 '전문인력(E-1, …)'. 현 문자열은 수식어 구절이라 '영사 인터뷰 없이'라는 정답 환언도 탈락(E4B 실제로 탈락).",
+    "reviewer": "ai-first-pass",
+    "set": "manual_misclick_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_misclick_K-03-e6-minor-performer",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-03-e6-minor-performer",
+    "note": "p166 사증발급인정서 첨부서류 '⑥ 피초청인이 미성년자인 경우, 법정대리인의 동의서'. 짧고 정확.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_misclick_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_misclick_K-04-f1-13-parent-quota",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "['외국인유학생 1명당 1명 허용'] → ['1명당 1명'] 으로 완화.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-04-f1-13-parent-quota",
+    "note": "p298 '외국인유학생 1명당 1명 허용**'. '외국인 유학생 1명당 1명'처럼 띄어쓰기만 다른 정답이 탈락함(E4B 실제 탈락).",
+    "reviewer": "ai-first-pass",
+    "set": "manual_misclick_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_misclick_K-05-f2-2-child-of-national",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "['F-2-2','5년간 유효한'] → ['F-2-2'] + any_of [['5년간 유효','5년']] 로 완화. 선택적으로 any_of [['복수사증']] 추가.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-05-f2-2-child-of-national",
+    "note": "p313 '3. 국민과 혼인관계(사실상의 혼인관계 포함)에서 출생한 자녀에 대한 … 5년간 유효한 체류기간 1년 이하의 거주(F-2-2) 복수사증'. 사실은 맞지만 '5년 동안 유효' 등 환언 탈락 위험.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_misclick_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_misclick_K-06-c3-3-medical-docs",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "['의사소견서','예약 입증자료'] → any_of [['의사소견서','병원진단서','진단서'],['예약 입증자료','예약']] 로 완화.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-06-c3-3-medical-docs",
+    "note": "p339 G-1 장 아래 '외국인 환자에 대한 의료관광(C-3-3) 단수사증' 첨부서류 '② … 병원진단서, 의사소견서 등 입증자료 ③ … 예약 입증자료'. 유치기관 초청 없음이라는 질문 조건과 일치. 진단서만 언급한 정답도 허용해야 함.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_misclick_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_misclick_K-07-e5-registration-change",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "['변경일로부터 15일 이내'] → ['15일 이내'] 로 완화.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-07-e5-registration-change",
+    "note": "p206 E-5 체류 '외국인등록사항 변경신고 … 신고사항 : … 여권 변경 사항 / 신고기한 : 변경일로부터 15일 이내 신고'. 핵심은 기한 숫자.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_misclick_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_misclick_K-08-multiple-reentry",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "['복수재입국허가','2년 내에 재입국'] → ['복수재입국허가'] + any_of [['2년']] 로 완화.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-08-multiple-reentry",
+    "note": "p427 '복수재입국허가 … 출국 후 체류기간 범위 내에서 1년을 초과하여 2년 내에 재입국을 하려는 경우'. 18개월 → 복수재입국허가가 정답. '2년 이내'로 쓰면 현재 문자열이 탈락.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_misclick_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_misclick_K-09-e6-tryout-change",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "['입단 테스트','자격변경일이 아닌 입국일'] → ['입국일'] 중심으로 완화(예: any_of [['입국일']]); '입단 테스트'는 질문 반복어라 변별력 낮으니 삭제 또는 유지 선택.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-09-e6-tryout-change",
+    "note": "p211 '입단 테스트 등을 받기 위해 입국한 운동선수 … 청장 등이 재량으로 체류자격 변경 허가(체류기간 기산일 기준은 자격변경일이 아닌 입국일임)'. 절 전체를 요구하면 '입국일부터 계산' 같은 정답이 탈락.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_misclick_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_misclick_K-10-f1-ethnic-korean-activity",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "['주무부처 장의 고용추천서'] → any_of [['고용추천서','고용필요성 입증서류']] 로 완화.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-10-f1-ethnic-korean-activity",
+    "note": "p343 '② 주무부처 장의 고용추천서 또는 고용필요성 입증서류'. '주무부처장의'·'주무부처의' 등 띄어쓰기/조사 차이로 정답 탈락 위험.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_misclick_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_misclick_K-11-a1-reentry-exemption",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "['출국한 날로부터 1년 이내 재입국하려는 경우 면제'] → any_of [['면제']] + any_of [['1년']] 으로 분리·완화. 덧붙여 '재임기간 중 유효한 복수사증이 있는 경우는 재입국이 불필요'도 허용 근거로 메모.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-11-a1-reentry-exemption",
+    "note": "p17 첫 줄 '출국한 날로부터 1년 이내 재입국하려는 경우 면제'는 페이지가 그 줄부터 잘려 시작해 주어(대상)가 페이지에 안 보임 — 외교 장 문맥상 A-1~A-3로 읽히나 확정은 사람 검토 필요. 한 문장 전체 일치는 과도하게 엄격.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_misclick_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_misclick_K-12-e10-2-extra-activity",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "['어획물에 대한 건조, 포장'] → any_of [['건조']] 로 완화, 허용요건 확인용으로 any_of [['동일']] 추가 고려.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-12-e10-2-extra-activity",
+    "note": "p338 '(해당활동) 어획물에 대한 건조, 포장 등 어획물과의 연계 작업활동 / (허용요건) 원 고용주와 체류자격 외 활동 예정 근무지 고용주가 동일할 것'. '건조·포장' 표기면 현 문자열 탈락.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_misclick_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_misclick_K-13-d7-branch-ccvi-misclick",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "['국내지점 등 설치 입증서류','지사나 연락사무소 설치허가서 사본'] → any_of [['설치 입증서류','설치허가서']] 하나로 축소. '개인 납세사실증명' 금지는 유지.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-13-d7-branch-ccvi-misclick",
+    "note": "p96 '⑥ 국내지점 등 설치 입증서류 - 지사나 연락사무소 설치허가서 사본 또는 신고수리서 사본'. 두 문자열이 같은 항목의 중복이고 둘 다 긴 구절이라 과도함. 체류 p113 연장서류 유입 금지는 타당.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_misclick_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_misclick_K-14-d8-4-where-to-apply-misclick",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "must_cite를 visa_manual_2026_10_19_pdf#p108 로 교체하고 evidence에 p108 추가(현 p107 대체). 기대 문자열 '본국에 소재한 대한민국 공관'은 p108에도 그대로 있음.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-14-d8-4-where-to-apply-misclick",
+    "note": "p107 첫 줄 '원칙적으로 신청자의 본국에 소재한 대한민국 공관'은 바로 아래 첨부서류(공동사업자인 국민의 사업자금 등)로 보아 앞 항목(개인기업 투자 계열) 사증의 신청기관이고, D-8-4 항목(4.)은 같은 페이지 하단에서 시작함. D-8-4의 '나. 신청기관 원칙적으로 신청자의 본국에 소재한 대한민국 공관'은 p108에 있음 — 세부약호 오귀속.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_misclick_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_misclick_K-15-e5-doctor-ccvi-misclick",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "['초청사유서','학위증 및 자격증 사본'] → ['초청사유서'] + any_of [['학위증','자격증']] 로 완화.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-15-e5-doctor-ccvi-misclick",
+    "note": "p164 사증발급인정서 첨부서류 '② 초청사유서 ③ 학위증 및 자격증 사본'(공관장 재량 쪽은 '학위증 및 자격증(면허증) 사본'). 초청사유서는 사증발급인정서 구분에 좋은 문자열이나 두 번째는 표기 차이로 탈락 위험.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_misclick_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_misclick_K-16-e1-ccvi-docs-misclick-keep",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "['사증발급인정신청서 (별지 제21호 서식)','경력증명서 및 학위증'] → ['사증발급인정신청서'] + any_of [['경력증명서','학위증']] 로 완화. 질문자가 조교수이므로 any_of [['생략']] 추가 고려.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-16-e1-ccvi-docs-misclick-keep",
+    "note": "p142 '① 사증발급인정신청서 (별지 제21호 서식) … ② 경력증명서 및 학위증 - 조교수 이상의 자격기준에 해당하는 전임교수 등의 경우 제출 생략'. 괄호 앞 공백까지 요구하는 건 과도. 페이지가 ②에서 끊겨 나머지 서류가 안 보이므로 partial 허용은 타당.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_misclick_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_misclick_K-17-d10-to-e1-change-misclick",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "['학위증 또는 경력증명서'] → any_of [['학위증','경력증명서']] 로 완화; 전임교수이므로 any_of [['생략']] 추가 고려. '임용예정확인서' 금지는 유지.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-17-d10-to-e1-change-misclick",
+    "note": "p174 'D-10 ➠ E-1 변경' 제출서류 '③ 학위증 또는 경력증명서 - 조교수 이상의 자격기준에 해당하는 전임교수 등의 경우 제출 생략'. 질문자가 '전임교수'라 생략 단서가 핵심 정보임. '임용예정확인서'는 사증 p142 공관장 재량 서류라 금지 타당.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_misclick_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_misclick_K-18-e9-reemployment-extension-misclick",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "['1년 10개월','취업기간만료자 취업활동기간 연장확인서'] → ['1년 10개월'] + any_of [['연장확인서']] 로 완화.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-18-e9-reemployment-extension-misclick",
+    "note": "p331 '⑤ 입국 후 3년 만료 재고용에 따른 최대 1년 10개월 추가 연장의 경우 ‘취업기간만료자 취업활동기간 연장확인서(고용노동부 발급)’' — 같은 페이지에 '취업기간 만료자'로 띄어 쓴 표기도 있어 긴 서류명 일치는 불안정. '출국 1개월 경과 후' 금지는 타당(사증 p290 재입국 특례).",
+    "reviewer": "ai-first-pass",
+    "set": "manual_misclick_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_misclick_K-19-d8-4-change-grant-misclick-keep",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "['직접 사업비 3천만 원 이상'] → any_of [['3천만원','3천만 원']] 로 완화.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-19-d8-4-change-grant-misclick-keep",
+    "note": "p119 '중앙행정기관 또는 지방자치단체로부터 3천만원 이상의 직접 사업비를 지원받았을 것'(본문, 붙여 씀)과 '직접 사업비 3천만 원 이상'(※주석, 띄어 씀)이 공존. 본문대로 답하면 현 문자열이 탈락. 체류자격 변경 절이므로 체류 매뉴얼 귀속은 맞음.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_misclick_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_misclick_K-20-g1-99-newborn-misclick",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "['체류기간 만료일까지','출생증명서'] → ['체류기간 만료일까지'] + any_of [['출생증명서','부모와의 관계']] 로 완화.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-20-g1-99-newborn-misclick",
+    "note": "p513 '3. 난민 신청자(G-1-5)의 국내 출생 미성년 자녀 (G-1-99) … 해당 난민신청자(G-1-5)의 체류기간 만료일까지 부여 … 출생증명서 등 부모와의 관계를 입증할 수 있는 서류'. '출생증명서'는 예시(등)라 생략한 정답이 탈락(E4B 실제 탈락). 세부약호 G-1-99 귀속은 정확.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_misclick_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_misclick_K-21-e7-docs-unclear",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-21-e7-docs-unclear",
+    "note": "E-7 서류는 사증(p170)·체류(p214) 모두 해당, 절차 미지정 → clarify 타당.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_misclick_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_misclick_K-22-d10-period-unclear",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-22-d10-period-unclear",
+    "note": "D-10 서류가 사증 p130과 체류 p151에서 다름(체류는 '체류지 입증서류' 추가). clarify 타당.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_misclick_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_misclick_K-23-f6-income-docs-unclear",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-23-f6-income-docs-unclear",
+    "note": "사증 p334와 체류 p492의 소득요건 서류 목록이 사실상 동일해 절차 확인 없이도 답할 수 있으나, always-ask 정책상 clarify 라벨은 일관됨. 정책 재검토 시 partial 허용 후보.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_misclick_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_misclick_K-24-d8-docs-unclear",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_misclick/K-24-d8-docs-unclear",
+    "note": "D-8 서류는 사증발급인정서(p116 사증)와 체류(p116 체류) 경로·세부약호별로 다름. clarify 타당.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_misclick_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_oracle_M-01-stay-extension-fee",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_oracle/M-01-stay-extension-fee",
+    "note": "p5 표 '체류기간 연장허가 6만원' 그대로. 결혼이민(F-6) 3만원 행과 구별되는 '일반적인 경우' 질문이라 적절. '60,000원' 표기까지 허용하려면 any_of 확장 고려 가능.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_oracle_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_oracle_M-02-f6-reentry-exemption",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_oracle/M-02-f6-reentry-exemption",
+    "note": "p506 '출국한 날로부터 1년 이내에 재입국하려는 사람 / 면제기간 : 1년'. '1년 이내' 문자열 존재. '1년간'처럼 바꿔 말하면 실패할 수 있어 필요하면 any_of [\"1년 이내\",\"면제기간\"] 정도로 완화 고려.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_oracle_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_oracle_M-03-d2-masters-extension-cap",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_oracle/M-03-d2-masters-extension-cap",
+    "note": "p43 '(석사) 입학 후 최대 5년(단, 3년제 석사의 경우 최대 6년)'. 체류 매뉴얼·연장 절차 일치.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_oracle_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_oracle_M-04-d4-parttime-wait",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_oracle/M-04-d4-parttime-wait",
+    "note": "p37 '어학연수(D-4-1, D-4-7)자격 ... 변경일(사증소지자는 입국일)로부터 6개월이 경과된 사람'. 문자열 일치, 체류자격외 활동은 체류 매뉴얼로 맞음.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_oracle_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_oracle_M-05-d10-3-intern-change-deadline",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_oracle/M-05-d10-3-intern-change-deadline",
+    "note": "p162 '(신고기간) 소속기업(기관) 변경일로부터 15일 이내'. 첨단기술인턴 인턴 기관 변경 신고 항목과 정확히 일치.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_oracle_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_oracle_M-06-d4-visa-stay-period",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_oracle/M-06-d4-visa-stay-period",
+    "note": "사증 매뉴얼 p68 발급 내용표 '어학연수생 D-4-1, D-4-7 체류기간 6개월 이내, 단수'. 사증발급 질문에 사증 매뉴얼 근거로 맞음.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_oracle_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_oracle_M-07-e8-ccvi-processing",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_oracle/M-07-e8-ccvi-processing",
+    "note": "p283 '사증발급인정서 발급 소요 기간(신청일로부터 약 10일 소요)'. 사증발급인정서 절차, 사증 매뉴얼로 맞음.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_oracle_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_oracle_M-08-e10-criminal-record-validity",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_oracle/M-08-e10-criminal-record-validity",
+    "note": "p296 '사증발급 신청일로부터 3개월 이내에 발급된 증명서 일 것'.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_oracle_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_oracle_M-09-visa-domestic-doc-validity",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_oracle/M-09-visa-domestic-doc-validity",
+    "note": "사증 매뉴얼 p3 유의사항 1 '주민등록등본 등 국내에서 발급․제출하는 서류의 유효기간은 ... 발급일로부터 3개월 이내임'.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_oracle_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_oracle_M-10-d10t-stay-cap",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "answer_must_contain [\"최대 3년(1회 1년)\"]을 answer_must_contain_any_of_each [[\"3년\"],[\"1회 1년\",\"1년\"]]로 바꾼다. 쪽 원문 '4) 최우수인재(D-10-T) : 최대 3년(1회 1년)'의 괄호 표기를 그대로 요구하면 '최대 3년, 1회 1년' 같은 정답 풀이가 떨어진다.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_oracle/M-10-d10t-stay-cap",
+    "note": "근거 쪽 p160은 맞으나 기대 문자열이 괄호 포함 원문 표기라 지나치게 엄격함. 실제로 '최대 3년이며, 1회 부여 기간은 1년' 답이 탈락함.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_oracle_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_oracle_M-11-d2-reentry-fee-missing",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_oracle/M-11-d2-reentry-fee-missing",
+    "note": "p44는 '복수재입국 허가하고, 재입국허가 수수료 징구'라고만 하고 금액이 없음. p43에도 없음. 보류 라벨 타당, '5만원' 금지도 타당(공급 쪽 밖의 값).",
+    "reviewer": "ai-first-pass",
+    "set": "manual_oracle_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_oracle_M-12-f6-arc-fee-missing",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_oracle/M-12-f6-arc-fee-missing",
+    "note": "p506 제출서류에 '수수료'만 있고 금액 없음, p485에도 없음. '3만 5천원' 금지 타당.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_oracle_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_oracle_M-13-d2-visa-fee-missing",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_oracle/M-13-d2-visa-fee-missing",
+    "note": "p67·p68에 사증 수수료 금액 없음. 보류 라벨 타당.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_oracle_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_oracle_M-14-arc-processing-time-missing",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_oracle/M-14-arc-processing-time-missing",
+    "note": "p5는 수수료표, p6은 여권 유효기간 기준뿐이며 처리 기간 없음. 보류 타당.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_oracle_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_oracle_M-15-d2-extension-from-visa-pages",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_oracle/M-15-d2-extension-from-visa-pages",
+    "note": "연장허가 서류 질문인데 증거가 사증 매뉴얼 p67·p68(사증 발급 유형·발급 내용)뿐. 절차 분리 원칙상 보류와 인용 금지가 맞음.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_oracle_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_oracle_M-16-e8-extension-from-visa-pages",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_oracle/M-16-e8-extension-from-visa-pages",
+    "note": "p283·p280은 사증발급인정서·선정 방식만 다룸. 국내 연장 서류 없음, 인용 금지 타당.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_oracle_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_oracle_M-17-f6-change-from-visa-pages",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_oracle/M-17-f6-change-from-visa-pages",
+    "note": "p327·p338은 공관장 재량 사증과 사증 첨부서류. p338 Q&A의 '입국한 후 ... 체류기간연장허가'는 연장 이야기이지 국내 자격변경 가능 여부가 아님. 보류·인용 금지 타당.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_oracle_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_oracle_M-18-d10-3-ccvi-from-stay-pages",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_oracle/M-18-d10-3-ccvi-from-stay-pages",
+    "note": "p162는 변경 신고 서류로 '사증발급인정서 발급 신청 서류(※ 단, 재학증명서 및 성적증명서 제외)'를 참조만 할 뿐 목록이 없음. 체류 매뉴얼로 사증발급인정서 서류를 답하면 안 되므로 라벨 타당.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_oracle_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_oracle_M-19-d2-7-visa-period",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_oracle/M-19-d2-7-visa-period",
+    "note": "p68 표에 D-2-1~D-2-6, D-2-8만 있고 D-2-7 체류기간 없음. 다만 'D-2-1~D-2-4는 2년 이내지만 D-2-7은 없다'처럼 대조하며 정확히 보류하는 답도 '2년 이내' 금지에 걸린다는 점은 사람 검수 때 확인 필요.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_oracle_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_oracle_M-20-f6-3-registration-period",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_oracle/M-20-f6-3-registration-period",
+    "note": "p506에는 F-6-2 '체류허가 기간 : 입국일로부터 1년'만 있고 F-6-3 값 없음. 대조 설명형 정답이 '입국일로부터 1년' 금지에 걸릴 수 있는 위험은 M-19와 같음.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_oracle_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_routing_N-01-c1-visa-attachments",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "answer_must_contain [\"소속회사의 파견증명서, 재직증명서 또는 외신보도증\"]을 answer_must_contain_any_of_each [[\"파견증명서\"],[\"외신보도증\"]]로 바꾼다. '재직증명서'는 D-5 쪽 p90('파견명령서 또는 재직증명서')에도 있어 구별력이 없으므로 넣지 않는다.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-01-c1-visa-attachments",
+    "note": "p25 '② 소속회사의 파견증명서, 재직증명서 또는 외신보도증'이 맞는 근거이나 쉼표까지 포함한 한 문장 전체를 요구해 나열 순서·조사만 달라도 실패함.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_routing_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_routing_N-02-d5-alien-registration-docs",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "answer_must_contain [\"지국․지사의 설치허가증\"]을 [\"설치허가증\"]으로 줄이고, 필요하면 any_of [[\"설치허가증\",\"사업자등록증\"]]로 둔다. 원문 '② 지국․지사의 설치허가증 또는 ‘부가가치세법’에 따른 사업자등록증'.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-02-d5-alien-registration-docs",
+    "note": "근거 쪽 p105(체류 매뉴얼, D-5 외국인등록)는 맞음. 기대 문자열에 특수 가운뎃점(․)이 들어 있어 '지국이나 지사의 설치허가증'으로 정확히 답한 모델도 탈락함. p103 인용도 허용 가능.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_routing_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_routing_N-03-d9-equipment-visa-docs",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "answer_must_contain [\"설비도입계약서 또는 산업설비도입 입증서류\"]를 answer_must_contain_any_of_each [[\"설비도입계약서\",\"산업설비도입 입증서류\"],[\"파견명령서\"]]로 바꾼다. 질문이 영어이므로 한국어 문자열 요구가 영어 답변을 떨어뜨리지 않는지(답변 언어 정책) 사람이 확인.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-03-d9-equipment-visa-docs",
+    "note": "p118 공관장 재량 사증 '② 설비도입계약서 또는 산업설비도입 입증서류 ③ 파견명령서'가 맞는 근거. 기대 문자열이 항목 전체라 엄격함.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_routing_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_routing_N-04-d3-extension-docs",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-04-d3-extension-docs",
+    "note": "p56 체류기간 연장허가 신청서류 '② 연수기간 연장신청 사유서(별도서식)'. 문자열 원문 그대로. '연장 신청 사유서' 띄어쓰기 변형까지 허용하려면 [\"사유서\"]로 완화 고려.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_routing_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_routing_N-05-h1-uk-visa-validity",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "answer_must_contain [\"2년(24개월)\"]을 answer_must_contain_any_of_each [[\"2년\",\"24개월\"]]로 바꾼다. 원문 표 '캐나다, 영국 H-1(복수) 2년(24개월) 2년(24개월)'.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-05-h1-uk-visa-validity",
+    "note": "p347이 유효기간·체류기간을 모두 답함. 괄호 포함 표기를 그대로 요구하면 '유효기간 2년, 체류기간 2년' 같은 정답이 실패함.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_routing_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_routing_N-06-h1-canada-weekly-hours",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-06-h1-canada-weekly-hours",
+    "note": "p524 '캐나다 H-1 체류기간 40시간 2,080시간'. 같은 쪽 원칙 '1주당 최대 ... 25시간 이내'와 표의 캐나다 예외가 함께 있어 모델이 혼동할 수 있으나 라벨은 정확함.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_routing_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_routing_N-07-e8-farm-allocation-cap",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-07-e8-farm-allocation-cap",
+    "note": "p279 '연간 최대 14명까지 배정 가능(면적 기준 9명 + 추가 5명 가능)'. any_of에 '14명' 포함돼 엄격하지 않음.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_routing_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_routing_N-08-g1-wage-arrears-eligibility",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-08-g1-wage-arrears-eligibility",
+    "note": "p508 '임금체불로 노동관서에서 중재 중인 사람', '1회에 부여할 수 있는 체류기간 상한 1년'. 두 문자열 모두 짧고 원문에 있음.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_routing_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_routing_N-09-c1-extension-limit",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-09-c1-extension-limit",
+    "note": "체류 매뉴얼 p26 '입국일로부터 90일까지 연장'. 연장 질문에 사증 매뉴얼 p25 인용 금지 타당.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_routing_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_routing_N-10-d5-consular-visa-bureau-docs",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "answer_must_contain [\"국내 지국․지사 설치허가증\"]을 any_of [[\"설치허가증\",\"운영자금 도입실적\"]]로 바꾼다. 원문 '③ 국내 지국․지사 설치허가증이나 국내 지국․지사 운영자금 도입실적 증빙 서류'.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-10-d5-consular-visa-bureau-docs",
+    "note": "p90 공관장 재량 사증 첨부서류가 맞는 근거이고 p105(체류 매뉴얼 외국인등록) 인용 금지도 타당. 다만 특수 가운뎃점(․) 포함 문자열이라 '지국·지사'(U+00B7)나 '지국 또는 지사'로 쓴 정답이 실패함.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_routing_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_routing_N-11-e8-registration-drug-test",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-11-e8-registration-drug-test",
+    "note": "p326 외국인등록 제출서류 '③ 산재보험 가입증명원 ... ④ 여행자보험 가입증명서 ⑤ 마약검사 확인서'. 외국인등록은 체류 매뉴얼, 사증 쪽 p279 인용 금지 타당.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_routing_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_routing_N-12-d6-welfare-consular-visa-docs",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-12-d6-welfare-consular-visa-docs",
+    "note": "p92 사회복지활동 공관장 재량 사증 '② 파견명령서 ③ 종교단체 설립허가서 또는 사회복지단체 설립허가서 사본'. 문자열 짧고 적절. 영어 질문이라 영어로 답하면 한국어 문자열이 실패하는지는 답변 언어 정책 확인 필요.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_routing_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_routing_N-13-d9-university-lecture-docs",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-13-d9-university-lecture-docs",
+    "note": "p131 체류자격외 활동 '④고용계약서원본 및 사본 ⑤원근무처장의 동의서'. 체류 매뉴얼 근거, 사증 쪽 인용 금지 타당.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_routing_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_routing_N-14-f6-consular-visa-90days",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "그룹 [\"90일이하의 단수사증\"]을 [\"90일이하\",\"90일 이하\"]로 바꾼다. p338 Q&A는 '90일이하의 단수사증'(붙임), 같은 내용을 담은 p327은 '90일 이하의 단수사증'(띄움)으로 원문 자체가 띄어쓰기가 갈림.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-14-f6-consular-visa-90days",
+    "note": "근거 쪽과 두 번째 그룹 '체류기간연장허가'는 맞음. 띄어쓰기 하나 차이로 정확한 답('체류기간 90일 이하의 단수사증')이 탈락함.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_routing_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_routing_N-15-d1-extension-visa-pages-only",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-15-d1-extension-visa-pages-only",
+    "note": "p60(D-1 사증)·p25(C-1 사증)뿐이라 연장 서류 없음. 보류·인용 금지 타당.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_routing_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_routing_N-16-e10-cci-stay-pages-only",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-16-e10-cci-stay-pages-only",
+    "note": "체류 매뉴얼 p338·p340은 E-10 활동범위·연장·재고용·재입국만 다루고 사증발급인정서 첨부서류는 없음. 기권 라벨 타당.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_routing_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_routing_N-17-d9-reentry-visa-pages-only",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-17-d9-reentry-visa-pages-only",
+    "note": "사증 매뉴얼 p118·p119는 D-9 공관장 재량 사증·첨부서류만 있고 재입국허가 내용 없음. 기권 라벨 타당.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_routing_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_routing_N-18-e9-cci-applicant-stay-pages-only",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-18-e9-cci-applicant-stay-pages-only",
+    "note": "p328·p329는 고용허가제·근무처 변경만 다룸. 사증발급인정서 신청 관서(사증 매뉴얼 p288 '사업장 주소지를 관할하는 출입국ㆍ외국인청')는 증거에 없음.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_routing_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_routing_N-19-e8-workplace-change-visa-pages-only",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-19-e8-workplace-change-visa-pages-only",
+    "note": "사증 매뉴얼 p279·p280은 E-8 제도·선정방식·사증발급인정 절차만 있고 근무처 변경 서류는 없음.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_routing_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_routing_N-20-h1-austria-embassy-stay-pages-only",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-20-h1-austria-embassy-stay-pages-only",
+    "note": "p524·p525에 오스트리아는 학업기간 표('6개월')에만 나오고 신청 공관 정보 없음. 학업기간을 신청 공관 답으로 쓰면 안 됨.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_routing_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_routing_N-21-b1-stay-longer-implicit",
+   "version": 1,
+   "data": {
+    "confidence": "medium",
+    "correction": "any_of 그룹을 더 짧은 문구로 넓힐 것: [\"변경허가를 하지 아니\", \"사증을 발급 받아\"] (p24 '체류기간 연장이나 체류자격 변경허가를 하지 아니하므로 … 반드시 사증을 발급 받아 입국하도록 안내'). 현재 두 후보는 절 단위라 '연장·변경이 원칙적으로 안 된다' 같은 올바른 의역이 실패함. 주의: p24 OCR에서 '원칙적으'와 '로' 사이에 '체류자격변경'이 끼어 있어 '원칙적으로'는 원문 그대로 일치하지 않음.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-21-b1-stay-longer-implicit",
+    "note": "골드 p24(체류 매뉴얼 B-1)가 질문에 정확히 답함. 상태·인용 라벨은 타당하나 기대 문자열이 지나치게 김.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_routing_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_routing_N-22-d3-trainee-invite-implicit",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-22-d3-trainee-invite-implicit",
+    "note": "p70 '기술연수에 대한 사증발급은 반드시 … 사증발급인정서를 제출 받아', 연수허용 대상 '우리기업의 해외현지법인의 생산직 직원'. '사증발급인정서' 짧고 정확.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_routing_cases.json",
+    "verdict": "ok"
+   }
+  },
+  {
+   "doc_id": "manual_routing_N-23-c4-seasonal-second-farm-implicit",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "두 번째 그룹 \"지자체 담당자 동반\"을 [\"지자체 담당자\"]로 완화(p29 '근무처 변경시 지자체 담당자 동반 필요'). 첫 그룹도 [\"추가는 불가\"]로 줄이는 것을 권장.",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-23-c4-seasonal-second-farm-implicit",
+    "note": "골드 p29가 C-4-1~4 근무처 추가 불가·변경 요건을 그대로 답함. 모델의 '지자체 담당자의 동반'처럼 조사 하나로 실패하는 과도한 엄격성.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_routing_cases.json",
+    "verdict": "fix_expect"
+   }
+  },
+  {
+   "doc_id": "manual_routing_N-24-d7-chinese-staff-multiple-visa-implicit",
+   "version": 1,
+   "data": {
+    "confidence": "high",
+    "correction": "",
+    "created": "2026-10-27",
+    "data_version": "artemis-label-review-v1",
+    "key": "manual_routing/N-24-d7-chinese-staff-multiple-visa-implicit",
+    "note": "p94 공관장 재량 사증 '중국인 국내주재지사 등의 주재원(… 1년 이상 고용된 직원) … 유효기간 2년 이내의 복수사증 발급'. 기대값 '2년'/'복수사증' 적절.",
+    "reviewer": "ai-first-pass",
+    "set": "manual_routing_cases.json",
+    "verdict": "ok"
+   }
+  }
+ ]
+}

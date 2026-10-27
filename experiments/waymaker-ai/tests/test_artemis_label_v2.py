@@ -1,0 +1,236 @@
+"""Label version 2: frozen originals preserved, 140 ids and order kept, and every
+changed label tested against correct paraphrases, swapped or reversed answers,
+answers that quote an error to correct it, and the recorded model answers.
+
+None of this checks legal correctness. It checks that the v2 labels say what
+the supplied manual page says, and that they fail and pass the answers they
+claim to.
+"""
+from __future__ import annotations
+
+import hashlib
+import importlib.util
+import json
+import sys
+from pathlib import Path
+
+import pytest
+
+BOOTSTRAP_DIR = Path(__file__).resolve().parents[1] / "artemis_bootstrap"
+
+
+def load_module(name: str):
+    spec = importlib.util.spec_from_file_location(name, BOOTSTRAP_DIR / f"{name}.py")
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[name] = module
+    spec.loader.exec_module(module)
+    return module
+
+
+lv = load_module("label_v2")
+grader = load_module("smoke_grader")
+ml = load_module("manual_ledger")
+
+V2 = BOOTSTRAP_DIR / "label_v2"
+LEDGER = json.loads((V2 / "decisions.v2.json").read_text(encoding="utf-8"))
+#: SHA-256 of the frozen case files, as recorded when they were frozen and in the review sheet bundle.
+FROZEN_SHA256 = {
+    "manual_oracle": "405d9dd5f3a331ae846c583b610924031ad20100714724cb7159ee117c3f9741",
+    "manual_routing": "4acdc57a53f945b87f9996a27d628a5a0367b61766d77fdb72df2053448dd0d1",
+    "manual_clarify": "410798edef4ecab2dd37a5ad5e85065c81e721815577c2e0d41514969ccbdc1b",
+    "manual_buttons": "2994b8126848d777918b13dd1eef0033fc93524063fc6011736b5941438dd42a",
+    "manual_always_ask": "28bf2fefbcb1c267de62b611d0b83cbecaf377227275e7e4056b17b265e34bba",
+    "manual_misclick": "b04bb7f932884d8f16dc41463aecf3055b26be7fc7222af4c1135c157d357166",
+}
+
+
+def frozen(set_name):
+    return json.loads((BOOTSTRAP_DIR / f"{set_name}_cases.json").read_text(encoding="utf-8"))["cases"]
+
+
+def v2(set_name):
+    return json.loads((V2 / f"{set_name}_cases.v2.json").read_text(encoding="utf-8"))
+
+
+def v2_case(key):
+    set_name, cid = key.split("/")
+    return next(c for c in v2(set_name)["cases"] if c["id"] == cid)
+
+
+def answer(text, cites, status="answered"):
+    return json.dumps({"status": status, "answer": text, "citations": cites}, ensure_ascii=False)
+
+
+# --- preservation -----------------------------------------------------------
+
+@pytest.mark.parametrize("set_name", lv.SETS)
+def test_frozen_originals_are_untouched(set_name):
+    path = BOOTSTRAP_DIR / f"{set_name}_cases.json"
+    assert hashlib.sha256(path.read_bytes()).hexdigest() == FROZEN_SHA256[set_name]
+    assert v2(set_name)["derived_from"] == {"file": path.name, "sha256": FROZEN_SHA256[set_name]}
+
+
+@pytest.mark.parametrize("set_name", lv.SETS)
+def test_v2_keeps_ids_order_and_every_unchanged_case(set_name):
+    old, new = frozen(set_name), v2(set_name)["cases"]
+    assert [c["id"] for c in old] == [c["id"] for c in new]
+    changed = {d["id"] for d in LEDGER["decisions"] if d["set"] == f"{set_name}_cases.json" and d["changed"]}
+    for o, n in zip(old, new):
+        if o["id"] not in changed:
+            assert o == n, o["id"]
+        else:
+            assert o["question"] == n["question"] and o.get("group") == n.get("group")
+
+
+def test_ledger_has_one_row_per_case_in_order_and_claims_no_verification():
+    keys = [f"{s}/{c['id']}" for s in lv.SETS for c in frozen(s)]
+    assert [d["key"] for d in LEDGER["decisions"]] == keys and len(keys) == 140
+    for d in LEDGER["decisions"]:
+        assert d["verification"].startswith("검증 보류")
+        assert d["decision"] in ("adopted", "adopted_modified", "not_adopted", "pending")
+        assert d["changed"] == (d["decision"] in ("adopted", "adopted_modified"))
+        if not d["changed"]:
+            assert d["v2"] is None
+    assert LEDGER["counts"]["changed"] == len(lv.DECISIONS) == 9
+
+
+def test_committed_v2_files_match_a_fresh_build():
+    assert lv.check() == []
+
+
+def test_every_v2_page_reference_resolves_and_passes_integrity():
+    for set_name in lv.SETS:
+        for case in ml.resolve_cases(v2(set_name)["cases"]):
+            for e in case["evidence"]:
+                assert e["source"]["approval_state"] == "approved", (case["id"], e["id"])
+            cited = " ".join(e["text"] for e in case["evidence"] if e["id"] in case["expect"].get("must_cite", []))
+            for needle in case["expect"].get("answer_must_contain", []):
+                assert needle in cited, (case["id"], needle)
+
+
+def test_saved_review_verdicts_are_preserved_in_the_snapshot_and_linked():
+    live = json.loads((BOOTSTRAP_DIR / "reviews" / "live_review_export_2026-10-27.json").read_text(encoding="utf-8"))
+    keys = [f"{s}/{c['id']}" for s in lv.SETS for c in frozen(s)]
+    assert sorted(r["data"]["key"] for r in live["reviews"]) == sorted(keys)
+    human = {r["data"]["case_id"] for r in live["reviews"] if r["provenance_per_handoff_index"] == "existing_human"}
+    assert human == {"M-01-stay-extension-fee", "M-10-d10t-stay-cap"}
+    by_key = {d["key"]: d for d in LEDGER["decisions"]}
+    for r in live["reviews"]:
+        assert by_key[r["data"]["key"]]["sources"]["saved_verdict"]["verdict"] == r["data"]["verdict"]
+
+
+# --- structural checks on the changed labels -----------------------------------
+
+P5, P37, P160 = "stay_manual_2026_10_19_pdf#p5", "stay_manual_2026_10_19_pdf#p37", "stay_manual_2026_10_19_pdf#p160"
+P328, P313, P108 = "stay_manual_2026_10_19_pdf#p328", "visa_manual_2026_10_19_pdf#p313", "visa_manual_2026_10_19_pdf#p108"
+
+CONTROLS = [
+    # (case key, answer, citations, should pass, flagged)
+    ("manual_oracle/M-10-d10t-stay-cap", "최우수인재(D-10-T)의 체류기간은 최대 3년이며, 1회 부여 기간은 1년입니다.", [P160], True, False),
+    ("manual_oracle/M-10-d10t-stay-cap", "체류기간 상한은 3년(1회 1년)입니다.", [P160], True, False),
+    ("manual_oracle/M-10-d10t-stay-cap", "한 번에 1년씩 받고, 총 3년까지 머물 수 있습니다.", [P160], True, False),
+    ("manual_oracle/M-10-d10t-stay-cap", "1회 1년씩, 최대 3년까지입니다.", [P160], True, False),
+    ("manual_oracle/M-10-d10t-stay-cap", "1회 3년이 아니라 1회 1년이고, 총 3년까지입니다.", [P160], True, False),
+    ("manual_oracle/M-10-d10t-stay-cap", "최대 1년이고, 1회 3년씩 받을 수 있습니다.", [P160], False, False),
+    ("manual_oracle/M-10-d10t-stay-cap", "총 1년까지 머물 수 있고 한 번에 3년을 받습니다.", [P160], False, False),
+    ("manual_oracle/M-10-d10t-stay-cap", "체류기간은 최대 3년입니다.", [P160], False, False),
+    ("manual_oracle/M-01-stay-extension-fee", "일반 체류기간 연장 수수료는 60,000원입니다.", [P5], True, False),
+    ("manual_oracle/M-01-stay-extension-fee", "6만원입니다.", [P5], True, False),
+    ("manual_oracle/M-01-stay-extension-fee", "6만 원입니다.", [P5], True, False),
+    ("manual_oracle/M-01-stay-extension-fee", "16만원입니다.", [P5], False, False),
+    ("manual_oracle/M-01-stay-extension-fee", "3만원입니다.", [P5], False, False),
+    ("manual_oracle/M-04-d4-parttime-wait", "D-4-1은 변경일(사증소지자는 입국일)로부터 6개월이 경과해야 허가를 받을 수 있습니다.", [P37], True, False),
+    ("manual_oracle/M-04-d4-parttime-wait", "입국일부터 6개월이 지나면 신청할 수 있습니다.", [P37], True, False),
+    ("manual_oracle/M-04-d4-parttime-wait", "해당 활동을 하려는 시점으로부터 6개월이 경과된 경우 가능합니다.", [P37], False, True),
+    ("manual_oracle/M-04-d4-parttime-wait", "아르바이트를 시작하는 날부터 6개월 뒤에 가능합니다.", [P37], False, True),
+    ("manual_oracle/M-04-d4-parttime-wait", "활동을 하려는 시점부터 6개월이 아니라, 입국일부터 6개월이 경과해야 합니다.", [P37], True, True),
+    ("manual_oracle/M-04-d4-parttime-wait", "6개월이 지나면 됩니다.", [P37], False, False),
+    ("manual_clarify/Q-11-e9-change-jobs-count", "최초 3년 동안은 원칙적으로 3회를 초과할 수 없고, 연장된 기간에는 2회를 초과할 수 없습니다.", [P328], True, False),
+    ("manual_clarify/Q-11-e9-change-jobs-count", "원칙적으로 3회까지 사업장을 바꿀 수 있습니다.", [P328], True, False),
+    ("manual_clarify/Q-11-e9-change-jobs-count", "최대 3회 변경할 수 있어요.", [P328], True, False),
+    ("manual_clarify/Q-11-e9-change-jobs-count", "원칙적으로 3회, 연장 기간에는 2회를 초과하여 사업장을 변경할 수 있습니다.", [P328], False, True),
+    ("manual_clarify/Q-11-e9-change-jobs-count", "3회 이상 자유롭게 변경 가능합니다.", [P328], False, False),
+    ("manual_clarify/Q-11-e9-change-jobs-count", "'3회를 초과하여 변경할 수 있다'는 말은 틀립니다. 원칙적으로 3회를 초과할 수 없습니다.", [P328], True, True),
+    ("manual_misclick/K-05-f2-2-child-of-national", "공관장 재량으로 5년간 유효한 체류기간 1년 이하의 F-2-2 복수사증을 받을 수 있습니다.", [P313], True, False),
+    ("manual_misclick/K-05-f2-2-child-of-national", "F-2-2 복수사증(5년간 유효한)을 받을 수 있습니다. 다만 병역을 이행하지 않고 국적을 이탈한 남성 등 제외대상자에게는 발급되지 않습니다.", [P313], True, False),
+    ("manual_misclick/K-05-f2-2-child-of-national", "F-2-2 사증은 5년간 유효한 복수사증이며, 제외대상자에 해당하면 발급이 제한됩니다.", [P313], True, False),
+    ("manual_misclick/K-05-f2-2-child-of-national", "공관장 재량으로 5년간 유효한 F-2-2 복수사증을 받을 수 있습니다. 다만, 이는 사증발급 제외대상자에게 적용되는 사항입니다.", [P313], False, False),
+    ("manual_misclick/K-05-f2-2-child-of-national", "F-2-2, 5년간 유효한 사증은 제외 대상자만 받을 수 있습니다.", [P313], False, False),
+]
+
+
+@pytest.mark.parametrize("key, text, cites, should_pass, flagged", CONTROLS)
+def test_structural_label_controls(key, text, cites, should_pass, flagged):
+    case = ml.resolve_cases([v2_case(key)])[0]
+    g = grader.grade(case, answer(text, cites))
+    assert g["passed"] is should_pass, g["failures"]
+    assert bool(g["flags"]) is flagged, g["flags"]
+
+
+def test_original_labels_got_these_controls_wrong():
+    """The point of v2: the frozen labels passed the reversed answers and failed a right one."""
+    cases = {f"{s}/{c['id']}": c for s in ("manual_oracle", "manual_clarify", "manual_misclick") for c in ml.resolve_cases(frozen(s))}
+    wrong = [
+        ("manual_clarify/Q-11-e9-change-jobs-count", "원칙적으로 3회, 연장 기간에는 2회를 초과하여 사업장을 변경할 수 있습니다.", [P328], True),
+        ("manual_misclick/K-05-f2-2-child-of-national", "공관장 재량으로 5년간 유효한 F-2-2 복수사증을 받을 수 있습니다. 다만, 이는 사증발급 제외대상자에게 적용되는 사항입니다.", [P313], True),
+        ("manual_oracle/M-04-d4-parttime-wait", "해당 활동을 하려는 시점으로부터 6개월이 경과된 경우 가능합니다.", [P37], True),
+        ("manual_oracle/M-10-d10t-stay-cap", "최우수인재(D-10-T)의 체류기간은 최대 3년이며, 1회 부여 기간은 1년입니다.", [P160], False),
+    ]
+    for key, text, cites, old_passes in wrong:
+        assert grader.grade(cases[key], answer(text, cites))["passed"] is old_passes, key
+
+
+def test_k14_moves_the_gold_page_and_marks_recorded_answers_not_comparable():
+    case = v2_case("manual_misclick/K-14-d8-4-where-to-apply-misclick")
+    assert case["expect"]["must_cite"] == [P108]
+    assert P108 in [e["id"] for e in case["evidence"]] and "visa_manual_2026_10_19_pdf#p107" in [e["id"] for e in case["evidence"]]
+    row = next(d for d in LEDGER["decisions"] if d["id"] == case["id"])
+    assert row["recorded_answer_comparable"] is False and row["open_issues"]
+
+
+def test_partial_v2_proposals_are_recorded_but_not_adopted_verbatim():
+    rows = {d["key"]: d for d in LEDGER["decisions"]}
+    for key in ("manual_oracle/M-04-d4-parttime-wait", "manual_clarify/Q-11-e9-change-jobs-count", "manual_misclick/K-05-f2-2-child-of-national", "manual_oracle/M-10-d10t-stay-cap"):
+        proposal = rows[key]["sources"]["chatgpt_partial_v2"]["proposed_expect"]
+        assert proposal != rows[key]["v2"]["expect"], key
+        assert rows[key]["decision"] == "adopted_modified"
+    for key in ("manual_routing/N-10-d5-consular-visa-bureau-docs", "manual_misclick/K-06-c3-3-medical-docs", "manual_misclick/K-10-f1-ethnic-korean-activity"):
+        assert rows[key]["sources"]["chatgpt_partial_v2"]["proposed_expect"] == rows[key]["v2"]["expect"], key
+
+
+def test_regrade_report_matches_a_fresh_regrade():
+    committed = json.loads((V2 / "regrade_recorded_answers.v2.json").read_text(encoding="utf-8"))
+    fresh = lv.regrade(write=False)
+    assert committed["summary"] == fresh["summary"] and committed["post_hoc"] is True
+    assert fresh["summary"]["not_comparable"] == ["manual_misclick/K-14-d8-4-where-to-apply-misclick"]
+
+
+def test_imported_second_opinion_files_match_their_manifest():
+    root = BOOTSTRAP_DIR / "reviews" / "second_opinion_chatgpt_2026-10-27"
+    manifest = json.loads((root / "MANIFEST.json").read_text(encoding="utf-8"))
+    for f in manifest["files"]:
+        assert hashlib.sha256((root / f["path"]).read_bytes()).hexdigest() == f["sha256"], f["path"]
+    originals = next(n for n in manifest["not_copied"] if n["path"] == "originals/*.json")
+    assert originals["equal_to_repo_frozen"] is True
+    for name, sha in originals["sha256"].items():
+        assert FROZEN_SHA256[name.replace("_cases.json", "")] == sha
+
+
+def test_review_sheet_bundle_links_every_case_to_label_v2_in_order(tmp_path):
+    rs = load_module("build_review_sheet")
+    data = rs.build()
+    keys = [f"{s}/{c['id']}" for s in lv.SETS for c in frozen(s)]
+    assert [c["key"] for c in data["cases"]] == keys
+    assert data["version"] == "artemis-label-review-v2" and data["label_version_available"] is True
+    assert all(c["label_v2"] is not None for c in data["cases"])
+    changed = [c["key"] for c in data["cases"] if c["label_v2"]["changed"]]
+    assert sorted(changed) == sorted(lv.DECISIONS)
+    assert "visa_manual_2026_10_19_pdf#p108" in data["pages"]
+    for s in data["sets"]:
+        assert s["v2_file"] and len(s["v2_sha256"]) == 64
+
+
+def test_review_sheet_page_never_writes_the_legacy_reviews_collection():
+    page = (BOOTSTRAP_DIR / "review_sheet" / "index.html").read_text(encoding="utf-8")
+    assert 'collection("reviews_v2").doc(' in page
+    assert 'collection("reviews").doc(' not in page

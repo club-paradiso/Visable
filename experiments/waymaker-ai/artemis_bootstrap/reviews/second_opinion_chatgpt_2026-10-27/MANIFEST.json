@@ -1,0 +1,76 @@
+{
+ "kind": "artemis_second_opinion_import",
+ "imported": "2026-10-27",
+ "copied_from": [
+  "/Users/seonjaekim/Documents/Codex/2026-10-27/plugin-computer-use-openai-bundled-mcp/outputs/artemis-claude-handoff-20261027",
+  "/Users/seonjaekim/Documents/Codex/2026-10-27/plugin-computer-use-openai-bundled-mcp/outputs/artemis-20261027-additional"
+ ],
+ "status": "ChatGPT 2차 의견과 부분 수정본(partial-v2). 사람이 검증한 정답이 아니며 법률 검증 완료가 아니다. 받은 그대로 복사했고 수정하지 않았다.",
+ "not_copied": [
+  {
+   "path": "Artemis-label-review-backup-20261027.zip",
+   "sha256": "ba52d220a759d7a5e7ea91b6fd86fa4d0bfb3f2edae651bc92483a76f2de1eed",
+   "reason": "검토표 화면 코드와 원래 문항 데이터만 담긴 백업(판정 저장소 백업 아님). 원래 위치에 그대로 둠."
+  },
+  {
+   "path": "originals/*.json",
+   "reason": "저장소의 동결 원본과 SHA-256이 같아 복사하지 않음",
+   "sha256": {
+    "manual_always_ask_cases.json": "28bf2fefbcb1c267de62b611d0b83cbecaf377227275e7e4056b17b265e34bba",
+    "manual_buttons_cases.json": "2994b8126848d777918b13dd1eef0033fc93524063fc6011736b5941438dd42a",
+    "manual_clarify_cases.json": "410798edef4ecab2dd37a5ad5e85065c81e721815577c2e0d41514969ccbdc1b",
+    "manual_misclick_cases.json": "b04bb7f932884d8f16dc41463aecf3055b26be7fc7222af4c1135c157d357166",
+    "manual_oracle_cases.json": "405d9dd5f3a331ae846c583b610924031ad20100714724cb7159ee117c3f9741",
+    "manual_routing_cases.json": "4acdc57a53f945b87f9996a27d628a5a0367b61766d77fdb72df2053448dd0d1"
+   },
+   "equal_to_repo_frozen": true
+  }
+ ],
+ "files": [
+  {
+   "path": "README.md",
+   "sha256": "9cccb70a011be751aa88edaca49e8294b791adc91f61b1914cfa5c600d30888b",
+   "bytes": 5888
+  },
+  {
+   "path": "additional-진행기록.md",
+   "sha256": "cbf0607b0ca8f24625aab02c20173e766e45104b42d0d37b955b8974e79bc776",
+   "bytes": 2235
+  },
+  {
+   "path": "check_integrity.py",
+   "sha256": "4040c471cbb1a8cbebc8961269707618e3c6a90f225a317b5db2e58b27a6a289",
+   "bytes": 1544
+  },
+  {
+   "path": "handoff-index.json",
+   "sha256": "510b0f3f685b47d7257b34cf3497d6325f885694a5f7359f6768731119fff01e",
+   "bytes": 188132
+  },
+  {
+   "path": "label_review_2026-10-27-ax-reinspection.json",
+   "sha256": "030ca001b63ed8c95481bdc0b103a9954e8672b7c460e8fc6c94aa7c7b93c4c3",
+   "bytes": 143466
+  },
+  {
+   "path": "partial-v2/manual_clarify_cases.v2-partial.json",
+   "sha256": "0c38edc20aee8e8d61052a7cf0b2c2ec2aa167ef1da93c96ad9b61c2f339921a",
+   "bytes": 26468
+  },
+  {
+   "path": "partial-v2/manual_misclick_cases.v2-partial.json",
+   "sha256": "5e66a46d42e64c01ad947bc168345b3e06073c44453cf1994c794f87d3d220f9",
+   "bytes": 28377
+  },
+  {
+   "path": "partial-v2/manual_oracle_cases.v2-partial.json",
+   "sha256": "21aa98db5794e3b4474e0f12cd9bb980fe405dd0169afa97e815e3709dd641b5",
+   "bytes": 21171
+  },
+  {
+   "path": "partial-v2/manual_routing_cases.v2-partial.json",
+   "sha256": "98c0706766731b836e07d824f5942ee2a2939b0bc519562497e2bfdcbd9e3a55",
+   "bytes": 26771
+  }
+ ]
+}

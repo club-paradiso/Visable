@@ -1,0 +1,2285 @@
+{
+  "kind": "artemis_label_v2_regrade",
+  "post_hoc": true,
+  "warning": "v2 labels were written after reading these recorded answers; this is a label check, not a model score.",
+  "runs": {
+    "manual_oracle": "2026-10-26-e4b-it-4bit-m1-8gb-manual-oracle",
+    "manual_routing": "2026-10-26-e4b-it-4bit-m1-8gb-routing-routed",
+    "manual_clarify": "2026-10-26-e4b-it-4bit-m1-8gb-clarify-route-clarify",
+    "manual_buttons": "2026-10-26-e4b-it-4bit-m1-8gb-buttons-buttons",
+    "manual_always_ask": "2026-10-26-e4b-it-4bit-m1-8gb-always-ask-always-ask",
+    "manual_misclick": "2026-10-27-e4b-it-4bit-m1-8gb-misclick-label"
+  },
+  "summary": {
+    "cases": 140,
+    "passed_original": 96,
+    "passed_v2": 93,
+    "not_comparable": [
+      "manual_misclick/K-14-d8-4-where-to-apply-misclick"
+    ],
+    "flipped_to_pass": [
+      "manual_oracle/M-10-d10t-stay-cap"
+    ],
+    "flipped_to_fail": [
+      "manual_oracle/M-04-d4-parttime-wait",
+      "manual_clarify/Q-11-e9-change-jobs-count",
+      "manual_misclick/K-05-f2-2-child-of-national"
+    ],
+    "flagged_for_human": [
+      "manual_oracle/M-04-d4-parttime-wait",
+      "manual_clarify/Q-11-e9-change-jobs-count"
+    ]
+  },
+  "rows": [
+    {
+      "key": "manual_oracle/M-01-stay-extension-fee",
+      "changed": true,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_oracle/M-02-f6-reentry-exemption",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_oracle/M-03-d2-masters-extension-cap",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_oracle/M-04-d4-parttime-wait",
+      "changed": true,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "answer_missing_pattern:기산점: 변경일 또는 (사증소지자) 입국일"
+        ],
+        "flags": [
+          "flag:기산점을 활동·신청 시점으로 쓴 표현"
+        ]
+      }
+    },
+    {
+      "key": "manual_oracle/M-05-d10-3-intern-change-deadline",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_oracle/M-06-d4-visa-stay-period",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_oracle/M-07-e8-ccvi-processing",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_oracle/M-08-e10-criminal-record-validity",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_oracle/M-09-visa-domestic-doc-validity",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_oracle/M-10-d10t-stay-cap",
+      "changed": true,
+      "comparable": true,
+      "original": {
+        "passed": false,
+        "failures": [
+          "answer_missing:최대 3년(1회 1년)"
+        ]
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_oracle/M-11-d2-reentry-fee-missing",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_oracle/M-12-f6-arc-fee-missing",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_oracle/M-13-d2-visa-fee-missing",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_oracle/M-14-arc-processing-time-missing",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_oracle/M-15-d2-extension-from-visa-pages",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_oracle/M-16-e8-extension-from-visa-pages",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_oracle/M-17-f6-change-from-visa-pages",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": false,
+        "failures": [
+          "forbidden_citation:visa_manual_2026_10_19_pdf#p327",
+          "forbidden_citation:visa_manual_2026_10_19_pdf#p338"
+        ]
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "forbidden_citation:visa_manual_2026_10_19_pdf#p327",
+          "forbidden_citation:visa_manual_2026_10_19_pdf#p338"
+        ],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_oracle/M-18-d10-3-ccvi-from-stay-pages",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": false,
+        "failures": [
+          "forbidden_citation:stay_manual_2026_10_19_pdf#p162"
+        ]
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "forbidden_citation:stay_manual_2026_10_19_pdf#p162"
+        ],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_oracle/M-19-d2-7-visa-period",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_oracle/M-20-f6-3-registration-period",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_routing/N-01-c1-visa-attachments",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_routing/N-02-d5-alien-registration-docs",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": false,
+        "failures": [
+          "missing_citation:stay_manual_2026_10_19_pdf#p105",
+          "answer_missing:지국․지사의 설치허가증"
+        ]
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "missing_citation:stay_manual_2026_10_19_pdf#p105",
+          "answer_missing:지국․지사의 설치허가증"
+        ],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_routing/N-03-d9-equipment-visa-docs",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": false,
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p118",
+          "answer_missing:설비도입계약서 또는 산업설비도입 입증서류"
+        ]
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p118",
+          "answer_missing:설비도입계약서 또는 산업설비도입 입증서류"
+        ],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_routing/N-04-d3-extension-docs",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_routing/N-05-h1-uk-visa-validity",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": false,
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p347",
+          "answer_missing:2년(24개월)"
+        ]
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p347",
+          "answer_missing:2년(24개월)"
+        ],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_routing/N-06-h1-canada-weekly-hours",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_routing/N-07-e8-farm-allocation-cap",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": false,
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p279",
+          "answer_missing_one_of:연간 최대 14명|14명"
+        ]
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p279",
+          "answer_missing_one_of:연간 최대 14명|14명"
+        ],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_routing/N-08-g1-wage-arrears-eligibility",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_routing/N-09-c1-extension-limit",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_routing/N-10-d5-consular-visa-bureau-docs",
+      "changed": true,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_routing/N-11-e8-registration-drug-test",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_routing/N-12-d6-welfare-consular-visa-docs",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": false,
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p92",
+          "answer_missing_one_of:파견명령서",
+          "answer_missing_one_of:설립허가서"
+        ]
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p92",
+          "answer_missing_one_of:파견명령서",
+          "answer_missing_one_of:설립허가서"
+        ],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_routing/N-13-d9-university-lecture-docs",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_routing/N-14-f6-consular-visa-90days",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": false,
+        "failures": [
+          "answer_missing_one_of:90일이하의 단수사증"
+        ]
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "answer_missing_one_of:90일이하의 단수사증"
+        ],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_routing/N-15-d1-extension-visa-pages-only",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_routing/N-16-e10-cci-stay-pages-only",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_routing/N-17-d9-reentry-visa-pages-only",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_routing/N-18-e9-cci-applicant-stay-pages-only",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_routing/N-19-e8-workplace-change-visa-pages-only",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_routing/N-20-h1-austria-embassy-stay-pages-only",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_routing/N-21-b1-stay-longer-implicit",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": false,
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:stay_manual_2026_10_19_pdf#p24",
+          "answer_missing_one_of:체류기간 연장이나 체류자격 변경허가를 하지 아니|반드시 사증을 발급 받아 입국"
+        ]
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:stay_manual_2026_10_19_pdf#p24",
+          "answer_missing_one_of:체류기간 연장이나 체류자격 변경허가를 하지 아니|반드시 사증을 발급 받아 입국"
+        ],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_routing/N-22-d3-trainee-invite-implicit",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": false,
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p70",
+          "answer_missing:사증발급인정서"
+        ]
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p70",
+          "answer_missing:사증발급인정서"
+        ],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_routing/N-23-c4-seasonal-second-farm-implicit",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": false,
+        "failures": [
+          "answer_missing_one_of:지자체 담당자 동반"
+        ]
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "answer_missing_one_of:지자체 담당자 동반"
+        ],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_routing/N-24-d7-chinese-staff-multiple-visa-implicit",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": false,
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p94",
+          "answer_missing_one_of:유효기간 2년 이내의|2년",
+          "answer_missing_one_of:복수사증"
+        ]
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p94",
+          "answer_missing_one_of:유효기간 2년 이내의|2년",
+          "answer_missing_one_of:복수사증"
+        ],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_clarify/Q-01-e9-visa-criminal-record",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": false,
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p287",
+          "answer_missing:사증발급 신청일로부터 3개월 이내에 발급된 증명서"
+        ]
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p287",
+          "answer_missing:사증발급 신청일로부터 3개월 이내에 발급된 증명서"
+        ],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_clarify/Q-02-e2-epik-visa-where-apply",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": false,
+        "failures": [
+          "status:clarify≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p146",
+          "answer_missing:해외 소재 대한민국 공관이면 어디라도 신청 가능"
+        ]
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "status:clarify≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p146",
+          "answer_missing:해외 소재 대한민국 공관이면 어디라도 신청 가능"
+        ],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_clarify/Q-03-d2-visa-photo-admission",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": false,
+        "failures": [
+          "answer_missing:사진 1매(6개월 이내 촬영 반명함)",
+          "answer_missing:표준입학허가서 (대학 총․학장 발행)"
+        ]
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "answer_missing:사진 1매(6개월 이내 촬영 반명함)",
+          "answer_missing:표준입학허가서 (대학 총․학장 발행)"
+        ],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_clarify/Q-04-d9-sole-proprietor-visa-mission",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_clarify/Q-05-e9-workplace-change-deadline",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": false,
+        "failures": [
+          "answer_missing:1월 이내에 사업장 변경을 신청"
+        ]
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "answer_missing:1월 이내에 사업장 변경을 신청"
+        ],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_clarify/Q-06-d2-parttime-permit-places",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": false,
+        "failures": [
+          "answer_missing:장소 2곳"
+        ]
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "answer_missing:장소 2곳"
+        ],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_clarify/Q-07-d9-multiple-reentry-permit",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_clarify/Q-08-student-residence-change-report",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_clarify/Q-09-bring-wife-income",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": false,
+        "failures": [
+          "status:clarify≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p330",
+          "answer_missing:25,195,752"
+        ]
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "status:clarify≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p330",
+          "answer_missing:25,195,752"
+        ],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_clarify/Q-10-f6-working-allowed",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": false,
+        "failures": [
+          "answer_missing:취업활동의 제한을 받지 않음"
+        ]
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "answer_missing:취업활동의 제한을 받지 않음"
+        ],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_clarify/Q-11-e9-change-jobs-count",
+      "changed": true,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "answer_missing_pattern:3회의 상한(초과 불가·까지)"
+        ],
+        "flags": [
+          "flag:횟수를 초과해 변경할 수 있다는 표현"
+        ]
+      }
+    },
+    {
+      "key": "manual_clarify/Q-12-e9-rehire-return-group",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": false,
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p287",
+          "answer_missing:송출기관에 의한 단체 신청만 가능"
+        ]
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p287",
+          "answer_missing:송출기관에 의한 단체 신청만 가능"
+        ],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_clarify/Q-13-korean-language-course-education",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": false,
+        "failures": [
+          "status:clarify≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p73",
+          "answer_missing:고등학교 졸업 이상의 학력 소지자"
+        ]
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "status:clarify≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p73",
+          "answer_missing:고등학교 졸업 이상의 학력 소지자"
+        ],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_clarify/Q-14-d4-parttime-duration",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_clarify/Q-15-d10-points-exemption-after-leaving",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": false,
+        "failures": [
+          "status:clarify≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p125",
+          "answer_missing:출국 후 졸업일로부터 1년 이내"
+        ]
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "status:clarify≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p125",
+          "answer_missing:출국 후 졸업일로부터 1년 이내"
+        ],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_clarify/Q-16-c3-stay-longer-flight-cancelled",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": false,
+        "failures": [
+          "status:clarify≠answered|partial",
+          "missing_citation:stay_manual_2026_10_19_pdf#p28",
+          "answer_missing:체류기간 연장의 필요성을 소명하는 서류"
+        ]
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "status:clarify≠answered|partial",
+          "missing_citation:stay_manual_2026_10_19_pdf#p28",
+          "answer_missing:체류기간 연장의 필요성을 소명하는 서류"
+        ],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_clarify/Q-17-d8-minimum-investment",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": false,
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p104",
+          "answer_missing:투자금액이 1억원 이상"
+        ]
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p104",
+          "answer_missing:투자금액이 1억원 이상"
+        ],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_clarify/Q-18-e2-trip-home-reentry",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_clarify/Q-19-live-with-korean-husband-docs",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_clarify/Q-20-d2-study-docs",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_clarify/Q-21-e9-factory-work-docs",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_clarify/Q-22-d10-how-long",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_clarify/Q-23-h2-father-how-long",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_clarify/Q-24-d9-sole-proprietor-docs",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_buttons/B-01-e3-visa-researcher-qualification",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": false,
+        "failures": [
+          "answer_missing:석사 학위 소지자로서 3년 이상 경력자"
+        ]
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "answer_missing:석사 학위 소지자로서 3년 이상 경력자"
+        ],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_buttons/B-02-india-business-multiple-visa",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": false,
+        "failures": [
+          "status:clarify≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p43",
+          "answer_missing:5년 복수사증 발급"
+        ]
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "status:clarify≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p43",
+          "answer_missing:5년 복수사증 발급"
+        ],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_buttons/B-03-d10-jobseeker-visa-length",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_buttons/B-04-e2-visa-degree-requirement",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": false,
+        "failures": [
+          "status:clarify≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p144",
+          "answer_missing:학사이상의 학위를 소지한 자"
+        ]
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "status:clarify≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p144",
+          "answer_missing:학사이상의 학위를 소지한 자"
+        ],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_buttons/B-05-e3-workplace-change-report",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": false,
+        "failures": [
+          "answer_missing:신고사유 발생일로부터 15일 이내"
+        ]
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "answer_missing:신고사유 발생일로부터 15일 이내"
+        ],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_buttons/B-06-d10-multiple-reentry-permit",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_buttons/B-07-e9-extension-cap",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_buttons/B-08-c3-extension-limit",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": false,
+        "failures": [
+          "status:clarify≠answered|partial",
+          "missing_citation:stay_manual_2026_10_19_pdf#p27",
+          "answer_missing:입국일로부터 체류기간 90일 범위 내 연장 가능"
+        ]
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "status:clarify≠answered|partial",
+          "missing_citation:stay_manual_2026_10_19_pdf#p27",
+          "answer_missing:입국일로부터 체류기간 90일 범위 내 연장 가능"
+        ],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_buttons/B-09-d4-language-course-length",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": false,
+        "failures": [
+          "missing_citation:visa_manual_2026_10_19_pdf#p74",
+          "forbidden_citation:stay_manual_2026_10_19_pdf#p83",
+          "answer_missing:체류기간 6개월 이하 단수 일반연수(D-4) 사증"
+        ]
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "missing_citation:visa_manual_2026_10_19_pdf#p74",
+          "forbidden_citation:stay_manual_2026_10_19_pdf#p83",
+          "answer_missing:체류기간 6개월 이하 단수 일반연수(D-4) 사증"
+        ],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_buttons/B-10-f6-sponsor-income",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_buttons/B-11-h1-insurance-amount",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_buttons/B-12-f1d-digital-nomad-validity",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": false,
+        "failures": [
+          "missing_citation:visa_manual_2026_10_19_pdf#p305",
+          "forbidden_citation:stay_manual_2026_10_19_pdf#p355",
+          "answer_missing:복수비자 발급(유효기간 1년)"
+        ]
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "missing_citation:visa_manual_2026_10_19_pdf#p305",
+          "forbidden_citation:stay_manual_2026_10_19_pdf#p355",
+          "answer_missing:복수비자 발급(유효기간 1년)"
+        ],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_buttons/B-13-c45-lecture-days",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_buttons/B-14-d2-outside-research-pay",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": false,
+        "failures": [
+          "answer_missing:체류자격외활동허가(E-3) 필요"
+        ]
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "answer_missing:체류자격외활동허가(E-3) 필요"
+        ],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_buttons/B-15-d2-delivery-rider",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_buttons/B-16-h1-job-change",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": false,
+        "failures": [
+          "answer_missing:별도의 근무처 추가 또는 변경없이 취업 활동 가능"
+        ]
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "answer_missing:별도의 근무처 추가 또는 변경없이 취업 활동 가능"
+        ],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_buttons/B-17-f3-spouse-farm-work",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_buttons/B-18-e3-guest-lecture",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": false,
+        "failures": [
+          "answer_missing:90일 이내 강의활동"
+        ]
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "answer_missing:90일 이내 강의활동"
+        ],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_buttons/B-19-d2-cyber-university",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_buttons/B-20-f3-family-of-researcher",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_buttons/B-21-e9-eligible-countries",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": false,
+        "failures": [
+          "status:partial≠clarify|insufficient_evidence",
+          "forbidden_citation:stay_manual_2026_10_19_pdf#p330"
+        ]
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "status:partial≠clarify|insufficient_evidence",
+          "forbidden_citation:stay_manual_2026_10_19_pdf#p330"
+        ],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_buttons/B-22-d4-work-while-studying",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": false,
+        "failures": [
+          "status:partial≠clarify|insufficient_evidence"
+        ]
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "status:partial≠clarify|insufficient_evidence"
+        ],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_buttons/B-23-e9-going-home-briefly",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_buttons/B-24-f1d-stay-length",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_always_ask/A-01-medical-tourism-long-treatment",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": false,
+        "failures": [
+          "answer_missing:1년 이내의 복수사증"
+        ]
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "answer_missing:1년 이내의 복수사증"
+        ],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_always_ask/A-02-d1-kf-invitee-consular-visa",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_always_ask/A-03-d6-who-can-invite",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_always_ask/A-04-d5-korean-media-contract",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_always_ask/A-05-intl-org-meeting-visa-validity",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_always_ask/A-06-evisa-confirmation-reprint",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_always_ask/A-07-d7-overseas-branch-tenure",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_always_ask/A-08-e5-ship-officer-recommendation",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_always_ask/A-09-d2-school-transfer-korean-level",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_always_ask/A-10-e10-job-loss-extension",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_always_ask/A-11-refugee-applicant-work-permit",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_always_ask/A-12-ceo-university-lecture",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_always_ask/A-13-child-school-enrollment-report",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_always_ask/A-14-occupation-income-report",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_always_ask/A-15-d9-points-first-grant-period",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_always_ask/A-16-e6-2-agency-change",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_always_ask/A-17-in-korea-medical-pressed-visa",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": false,
+        "failures": [
+          "forbidden_citation:visa_manual_2026_10_19_pdf#p49",
+          "answer_relays:복수사증"
+        ]
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "forbidden_citation:visa_manual_2026_10_19_pdf#p49",
+          "answer_relays:복수사증"
+        ],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_always_ask/A-18-visa-free-to-e3-pressed-visa",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_always_ask/A-19-f3-spouse-abroad-pressed-stay",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_always_ask/A-20-d9-trade-points-abroad-pressed-stay",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_always_ask/A-21-permanent-resident-long-absence",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_always_ask/A-22-e2-medical-check",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_always_ask/A-23-pro-footballer-status",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_always_ask/A-24-venture-investor-documents",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_misclick/K-01-c3-business-subcode",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_misclick/K-02-e1-electronic-visa",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": false,
+        "failures": [
+          "answer_missing:영사 인터뷰가 필요 없는"
+        ]
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "answer_missing:영사 인터뷰가 필요 없는"
+        ],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_misclick/K-03-e6-minor-performer",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_misclick/K-04-f1-13-parent-quota",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": false,
+        "failures": [
+          "answer_missing:외국인유학생 1명당 1명 허용"
+        ]
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "answer_missing:외국인유학생 1명당 1명 허용"
+        ],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_misclick/K-05-f2-2-child-of-national",
+      "changed": true,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "answer_contradicts:5년 사증을 제외대상자에게 적용된다고 씀"
+        ],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_misclick/K-06-c3-3-medical-docs",
+      "changed": true,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_misclick/K-07-e5-registration-change",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_misclick/K-08-multiple-reentry",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_misclick/K-09-e6-tryout-change",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_misclick/K-10-f1-ethnic-korean-activity",
+      "changed": true,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_misclick/K-11-a1-reentry-exemption",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_misclick/K-12-e10-2-extra-activity",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_misclick/K-13-d7-branch-ccvi-misclick",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_misclick/K-14-d8-4-where-to-apply-misclick",
+      "changed": true,
+      "comparable": false,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "missing_citation:visa_manual_2026_10_19_pdf#p108"
+        ],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_misclick/K-15-e5-doctor-ccvi-misclick",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_misclick/K-16-e1-ccvi-docs-misclick-keep",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": false,
+        "failures": [
+          "missing_citation:visa_manual_2026_10_19_pdf#p142",
+          "forbidden_citation:stay_manual_2026_10_19_pdf#p174",
+          "answer_missing:사증발급인정신청서 (별지 제21호 서식)",
+          "answer_missing:경력증명서 및 학위증"
+        ]
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "missing_citation:visa_manual_2026_10_19_pdf#p142",
+          "forbidden_citation:stay_manual_2026_10_19_pdf#p174",
+          "answer_missing:사증발급인정신청서 (별지 제21호 서식)",
+          "answer_missing:경력증명서 및 학위증"
+        ],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_misclick/K-17-d10-to-e1-change-misclick",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_misclick/K-18-e9-reemployment-extension-misclick",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_misclick/K-19-d8-4-change-grant-misclick-keep",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": false,
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:stay_manual_2026_10_19_pdf#p119",
+          "answer_missing:직접 사업비 3천만 원 이상"
+        ]
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:stay_manual_2026_10_19_pdf#p119",
+          "answer_missing:직접 사업비 3천만 원 이상"
+        ],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_misclick/K-20-g1-99-newborn-misclick",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": false,
+        "failures": [
+          "answer_missing:출생증명서"
+        ]
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "answer_missing:출생증명서"
+        ],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_misclick/K-21-e7-docs-unclear",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_misclick/K-22-d10-period-unclear",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_misclick/K-23-f6-income-docs-unclear",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    },
+    {
+      "key": "manual_misclick/K-24-d8-docs-unclear",
+      "changed": false,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": []
+      }
+    }
+  ]
+}
