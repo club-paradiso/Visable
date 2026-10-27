@@ -1,0 +1,184 @@
+{
+  "kind": "artemis_bootstrap_smoke",
+  "started_utc": "2026-10-27T07:59:28+00:00",
+  "machine": {
+    "model": "MacBookAir10,1",
+    "chip": "Apple M1",
+    "memory_bytes": 8589934592,
+    "macos": "15.6.1",
+    "python": "3.11.15"
+  },
+  "versions": {
+    "mlx": "0.32.4",
+    "mlx-metal": "0.32.4",
+    "mlx-lm": "0.32.2",
+    "transformers": "5.20.2",
+    "huggingface-hub": "2.3.0",
+    "tokenizers": "0.23.3"
+  },
+  "device": {
+    "device_name": "Apple M1",
+    "max_recommended_working_set_size": 5726633984,
+    "memory_size": 8589934592,
+    "architecture": "applegpu_g13g",
+    "max_buffer_length": 4294967296,
+    "resource_limit": 499000
+  },
+  "swap_before": "total = 5120.00M  used = 4097.44M  free = 1022.56M  (encrypted)",
+  "free_disk_gb_before": 7.11,
+  "cases_file": "k14_misclick_cases.v2.json",
+  "cases_sha256": "dafb9b53b606d32c0426699016e99f50891a681787441566c550916e1d8ccdc3",
+  "detector_on_labelled_evidence": null,
+  "decoding": {
+    "temperature": 0.0,
+    "max_tokens": 400,
+    "enable_thinking": false
+  },
+  "evidence_guard": "off",
+  "source_gate": true,
+  "integrity": true,
+  "route": false,
+  "clarify": false,
+  "always_ask": true,
+  "cross_check": false,
+  "label_switch": true,
+  "post_check": "applied offline to every output when the cases carry source labels",
+  "prompts_persisted": false,
+  "status": "completed",
+  "stage": "done",
+  "model": {
+    "repo": "mlx-community/gemma-4-e4b-it-4bit",
+    "revision": "475b9088d29754a3379866cf5aeb6b41acd313c2",
+    "size_class_from_weights": "E4B",
+    "quantization": {
+      "group_size": 64,
+      "bits": 4,
+      "mode": "affine"
+    },
+    "loader": "mlx_lm.load (text tower only; vision/audio weights dropped by mlx_lm sanitize)",
+    "base_model": "google/gemma-4-E4B-it",
+    "source_revision": "fee6332c1abaafb77f6f9624236c63aa2f1d0187",
+    "license_in_card": "gemma"
+  },
+  "load_seconds": 23.2,
+  "memory_after_load_gb": 4.201,
+  "results": [
+    {
+      "case": "K-14-d8-4-where-to-apply-misclick",
+      "prompt_sha256": "0a14910cbb487cc1c7638ba2ff2477d96aa9362fdf406bcc47d07cbf74f7a1ce",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "visa_issuance",
+          "해외에서 비자 받기"
+        ]
+      ],
+      "route_withheld": [
+        "stay_manual_2026_10_19_pdf#p119"
+      ],
+      "turns": 3,
+      "clarified": false,
+      "final_choice": "visa_abroad",
+      "events": [
+        "label_switched"
+      ],
+      "first_output": "```json\n{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"제공된 근거에는 D-8-4 비자 신청을 위해 어느 한국 공관에 신청해야 하는지에 대한 정보가 없습니다.\",\n  \"citations\": []\n}\n```",
+      "final_output": {
+        "status": "answered",
+        "answer": "원칙적으로 신청자의 본국에 소재한 대한민국 공관에서 신청할 수 있습니다. 다만, 신청인이 해외에 주재하며 사업체 등을 운영(영주권 소지 등 장기거주자 포함)하고 있을 경우에는 주재하고 있는 국가 소재 재외공관에서 신청 가능합니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p107",
+          "visa_manual_2026_10_19_pdf#p108"
+        ],
+        "basis": {
+          "id": "visa_abroad",
+          "label": "해외에서 비자 받기 기준 안내"
+        },
+        "switch": {
+          "id": "stay_in_korea",
+          "label": "'한국에서 체류 절차'로 다시 보기"
+        }
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1745,
+      "prompt_tps": 153.33,
+      "generation_tokens": 146,
+      "generation_tps": 10.51,
+      "finish_reason": "stop",
+      "wall_seconds": 83.96,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"원칙적으로 신청자의 본국에 소재한 대한민국 공관에서 신청할 수 있습니다. 다만, 신청인이 해외에 주재하며 사업체 등을 운영(영주권 소지 등 장기거주자 포함)하고 있을 경우에는 주재하고 있는 국가 소재 재외공관에서 신청 가능합니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p107\",\n    \"visa_manual_2026_10_19_pdf#p108\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "원칙적으로 신청자의 본국에 소재한 대한민국 공관에서 신청할 수 있습니다. 다만, 신청인이 해외에 주재하며 사업체 등을 운영(영주권 소지 등 장기거주자 포함)하고 있을 경우에는 주재하고 있는 국가 소재 재외공관에서 신청 가능합니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p107",
+          "visa_manual_2026_10_19_pdf#p108"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "원칙적으로 신청자의 본국에 소재한 대한민국 공관에서 신청할 수 있습니다. 다만, 신청인이 해외에 주재하며 사업체 등을 운영(영주권 소지 등 장기거주자 포함)하고 있을 경우에는 주재하고 있는 국가 소재 재외공관에서 신청 가능합니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p107",
+            "visa_manual_2026_10_19_pdf#p108"
+          ],
+          "basis": {
+            "id": "visa_abroad",
+            "label": "해외에서 비자 받기 기준 안내"
+          },
+          "switch": {
+            "id": "stay_in_korea",
+            "label": "'한국에서 체류 절차'로 다시 보기"
+          }
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    }
+  ],
+  "summary": {
+    "cases": 1,
+    "passed": 1,
+    "failed": 0,
+    "needs_review": 0,
+    "auto_correct": 1,
+    "outcomes_raw": {
+      "correct": 1,
+      "needs_review": 0,
+      "clarify": 0,
+      "safe_abstain": 0,
+      "harmful": 0,
+      "other": 0
+    },
+    "outcomes_checked": {
+      "correct": 1,
+      "needs_review": 0,
+      "clarify": 0,
+      "safe_abstain": 0,
+      "harmful": 0,
+      "other": 0
+    }
+  },
+  "peak_memory_gb": 4.917,
+  "max_rss_gb": 0.69,
+  "swap_after": "total = 8192.00M  used = 7145.12M  free = 1046.88M  (encrypted)",
+  "free_disk_gb_after": 3.88,
+  "finished_utc": "2026-10-27T08:01:16+00:00"
+}
