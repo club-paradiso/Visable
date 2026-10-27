@@ -113,6 +113,24 @@ _PERIOD_RE = re.compile(
 #: "1월 이내", "6월 이상", "3월간", "1월이 경과": the manuals' older way of writing N months.
 #: Only with a duration word after it, so "3월에 접수" (March) is never read as a period.
 _MONTH_SPAN_RE = re.compile(r"(?P<n>\d+)\s*월(?=\s*(?:이내|이상|이하|미만|초과|간|동안|이\s*경과|이\s*지나|을\s*초과|를\s*초과|을\s*넘|를\s*넘))")
+#: Periods written with Korean number words: "두 달", "석 달", "두 주", "열흘", "보름",
+#: and Sino-Korean numerals before 개월/년 ("육 개월", "일 년") or a 십 numeral before 일
+#: ("십오 일"). The numeral must start a word, so "한국", "두 번", "세 가지" are not read.
+_NATIVE_COUNT = {"한": 1, "두": 2, "세": 3, "석": 3, "서": 3, "네": 4, "넉": 4, "너": 4, "다섯": 5, "여섯": 6,
+                 "일곱": 7, "여덟": 8, "아홉": 9, "열": 10, "열한": 11, "열두": 12}
+_PARTICLE = r"(?=$|[^가-힣]|간|일|이|가|을|를|은|는|에|의|도|만|씩|째|후|뒤|전|내|동안)"
+_NATIVE_PERIOD_RE = re.compile(
+    r"(?<![가-힣])(?P<w>열한|열두|다섯|여섯|일곱|여덟|아홉|한|두|세|석|서|네|넉|너|열)\s*"
+    r"(?:(?P<m>달)(?!러|력|리|성|라)|(?P<wk>주)" + _PARTICLE + r")"
+)
+_DAY_WORDS = {"하루": 1, "이틀": 2, "사흘": 3, "나흘": 4, "닷새": 5, "엿새": 6, "이레": 7, "여드레": 8,
+              "아흐레": 9, "열흘": 10, "보름": 15}
+_DAY_WORD_RE = re.compile(r"(?<![가-힣])(?P<w>" + "|".join(sorted(_DAY_WORDS, key=len, reverse=True)) + r")")
+_SINO_DIGIT = {"일": 1, "이": 2, "삼": 3, "사": 4, "오": 5, "육": 6, "칠": 7, "팔": 8, "구": 9}
+_SINO_PERIOD_RE = re.compile(
+    r"(?<![가-힣])(?:(?P<n>(?:[이삼사오육칠팔구]?십)?[일이삼사오육칠팔구]|[이삼사오육칠팔구]?십)\s*(?P<u>개월|년)"
+    r"|(?P<n2>[이삼사오육칠팔구]?십[일이삼사오육칠팔구]?)\s*일)"
+)
 _UNIT = {
     "개월": "month", "달": "month", "months": "month", "month": "month", "个月": "month", "tháng": "month",
     "주": "week", "주일": "week", "weeks": "week", "week": "week", "周": "week", "tuần": "week",
@@ -191,7 +209,23 @@ def _period_claims(text: str) -> List[Claim]:
         claims.append(Claim("period", m.group(0), ("period", unit, n)))
     for m in _MONTH_SPAN_RE.finditer(text):
         claims.append(Claim("period", m.group(0), ("period", "month", int(m.group("n")))))
+    for m in _NATIVE_PERIOD_RE.finditer(text):
+        n = _NATIVE_COUNT[m.group("w")]
+        claims.append(Claim("period", m.group(0), ("period", "month", n) if m.group("m") else ("period", "day", n * 7)))
+    for m in _DAY_WORD_RE.finditer(text):
+        claims.append(Claim("period", m.group(0), ("period", "day", _DAY_WORDS[m.group("w")])))
+    for m in _SINO_PERIOD_RE.finditer(text):
+        unit = {"개월": "month", "년": "year"}.get(m.group("u"), "day")
+        claims.append(Claim("period", m.group(0), ("period", unit, _sino(m.group("n") or m.group("n2")))))
     return claims
+
+
+def _sino(word: str) -> int:
+    """"육" -> 6, "십오" -> 15, "이십" -> 20."""
+    if "십" not in word:
+        return _SINO_DIGIT[word]
+    tens, _, ones = word.partition("십")
+    return (_SINO_DIGIT[tens] if tens else 1) * 10 + (_SINO_DIGIT[ones] if ones else 0)
 
 
 def _bare_amounts(text: str) -> set:

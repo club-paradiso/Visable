@@ -11,7 +11,6 @@ import ast
 import hashlib
 import importlib.util
 import json
-import re
 import sys
 from pathlib import Path
 
@@ -239,6 +238,20 @@ FORMAT_CASES = [
     ("35,000원입니다.", "수수료표\n| 구분 | 수수료(원) |\n| 최초 발급 | 35,000 |", "pass"),
     ("38,000원입니다.", "수수료(단위: 원)\n| 체류증명서 | 38,000 |", "pass"),
     ("38,000원입니다.", "| 체류증명서 | 38,000 |", "withheld"),
+    # Periods in Korean number words (2026-10-28): native 달/주, day words, Sino numerals.
+    ("3개월 이내에 신청하세요.", "석 달 이내에 신청한다.", "pass"),
+    ("석 달 이내에 신청하세요.", "3개월 이내에 신청한다.", "pass"),
+    ("두 달 이내입니다.", "석 달 이내에 신청한다.", "withheld"),
+    ("14일 안에 내야 합니다.", "두 주 안에 제출한다.", "pass"),
+    ("10일 이내입니다.", "열흘 이내에 신고한다.", "pass"),
+    ("열흘입니다.", "보름 이내", "withheld"),
+    ("6개월입니다.", "육 개월간 유효하다.", "pass"),
+    ("1년간 유효합니다.", "일 년간 유효하다.", "pass"),
+    ("15일 이내.", "십오 일 이내에 신고한다.", "pass"),
+    ("네 달이 지나야 합니다.", "4개월이 지나야", "pass"),
+    # Number words that are not periods stay unread.
+    ("시험을 두 번 보고 세 가지 서류를 내면 됩니다. 기간은 3개월입니다.", "시험 두 번, 서류 세 가지, 3개월 이내", "pass"),
+    ("두 주민이 신청합니다.", "주민 신청", "pass"),
 ]
 
 
@@ -251,9 +264,8 @@ def test_post_check_reads_equivalent_number_formats(answer_text, evidence_text, 
 
 def test_heldout_v4_planted_wrong_values_stay_withheld():
     """Held-out v4 (written by an agent that never saw this code): every wrong value
-    its author planted is withheld by the post-check, except durations written as
-    Korean number words, which the extractor never reads (a known gap, not a
-    regression: the earlier post-check passed them too)."""
+    its author planted is withheld by the post-check, including the durations in
+    Korean number words ("두 달", "석 달") that passed until number words were read."""
     cases = json.loads((BOOTSTRAP_DIR / "heldout_v4_cases.json").read_text(encoding="utf-8"))["cases"]
     passed = []
     for case in cases:
@@ -262,7 +274,7 @@ def test_heldout_v4_planted_wrong_values_stay_withheld():
             parsed = {"status": "answered", "answer": f"{wrong}입니다.", "citations": case["expect"]["must_cite"]}
             if tg.post_check(parsed, trusted)["verdict"] == "pass":
                 passed.append(wrong)
-    assert passed and all(re.fullmatch(r"(?:두|석|넉|여섯) 달", w) for w in passed), passed
+    assert passed == [], passed  # number-word durations passed until 2026-10-28
 
 
 def test_heldout_v4_rerun_is_all_correct_after_the_post_check():
