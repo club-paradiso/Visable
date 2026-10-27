@@ -400,6 +400,8 @@ ChatGPT's proposals for M-04, Q-11 and K-05 banned one exact recorded sentence, 
 - Still with a person: **B-16** (H-1 workplace change). 법 제21조①, 시행령 제26조 and the H-1 row of 시행령 별표 1의2 contain no H-1 exception to prior permission, so the manual's "no separate change needed" cannot be confirmed from statute. Its label is unchanged.
 - Regrade (post hoc): 98 automatic correct, 4 needs review, 37 fail of 139 comparable. Sheet version 1793090372-ee0e; render check 16/16; live `reviews` identical; `reviews_v2` empty.
 
+**B-16 decided by the owner (2026-10-28).** The owner decided to grade B-16 by the manual ("매뉴얼을 기준으로 판단해서 결정짓자"). The label now requires the p526 conclusion that an H-1 holder can change workplace without a separate permit (wording variants and English accepted) and fails an answer that says an ordinary workplace move needs a 근무처 변경허가; the qualified-job / E-7 caveat is not required. The statute check stays on record as `differs` (법 제21조①; no H-1 exception found), the row carries `owner_decision`, and the ledger decision is `owner_decided`. No case is left for a person. Regrade (post hoc): 99 automatic correct, 4 needs review, 36 fail of 139. Sheet version 1793117857-e099; render check 16/16; live `reviews` identical; `reviews_v2` empty.
+
 **Not linked or not stored yet.** `reviews_v2` is empty (it is created on the first save). Decisions live in the repository and the sheet's bundle, not in the sheet's database. `run_smoke.py` can run a v2 file (`--cases label_v2/<set>_cases.v2.json`); only K-14 has been run on v2 so far. No production code, database or deployment was touched.
 
 ## Existing repository boundaries

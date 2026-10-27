@@ -13,9 +13,9 @@
   "summary": {
     "cases": 140,
     "passed_original": 96,
-    "auto_correct_v2": 98,
+    "auto_correct_v2": 99,
     "needs_review_v2": 4,
-    "failed_v2": 37,
+    "failed_v2": 36,
     "comparable": 139,
     "not_comparable": [
       "manual_misclick/K-14-d8-4-where-to-apply-misclick"
@@ -31,6 +31,7 @@
       "manual_buttons/B-01-e3-visa-researcher-qualification",
       "manual_buttons/B-05-e3-workplace-change-report",
       "manual_buttons/B-14-d2-outside-research-pay",
+      "manual_buttons/B-16-h1-job-change",
       "manual_buttons/B-18-e3-guest-lecture",
       "manual_buttons/B-21-e9-eligible-countries",
       "manual_buttons/B-22-d4-work-while-studying",
@@ -1534,7 +1535,7 @@
     },
     {
       "key": "manual_buttons/B-16-h1-job-change",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": false,
@@ -1543,12 +1544,10 @@
         ]
       },
       "v2": {
-        "passed": false,
-        "failures": [
-          "answer_missing:별도의 근무처 추가 또는 변경없이 취업 활동 가능"
-        ],
+        "passed": true,
+        "failures": [],
         "flags": [],
-        "outcome": "other"
+        "outcome": "correct"
       }
     },
     {

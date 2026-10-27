@@ -60,7 +60,7 @@ VERIFICATION = "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞�
 #: verified by ``check_round3`` before it is applied. Not a human review.
 ROUND3 = OUT / "review_round3_ai_2026-10-27.json"
 #: Decision values. ``changed`` is true exactly for the first three.
-CHANGING = ("adopted", "adopted_modified", "ai_review_changed")
+CHANGING = ("adopted", "adopted_modified", "ai_review_changed", "owner_decided")
 DECISION_VALUES = CHANGING + ("ai_review_kept", "needs_human", "not_adopted", "pending")
 
 # Patterns shared by the decisions. Korean answers are matched after NFC.
@@ -283,7 +283,7 @@ def _round3() -> Dict[str, Dict[str, Any]]:
 
 
 def _round3_summary(r: Dict[str, Any]) -> Dict[str, Any]:
-    return {k: r.get(k) for k in ("verdict", "page_id", "page_quote", "rationale", "legal_check", "human_question", "open_issues")}
+    return {k: r.get(k) for k in ("verdict", "page_id", "page_quote", "rationale", "legal_check", "human_question", "open_issues", "owner_decision")}
 
 
 def build(write: bool = True) -> Dict[str, Any]:
@@ -302,7 +302,7 @@ def build(write: bool = True) -> Dict[str, Any]:
             r3 = round3.get(key)
             if dec is None and r3 is not None:
                 dec = {
-                    "decision": {"change": "ai_review_changed", "keep": "ai_review_kept", "needs_human": "needs_human"}[r3["verdict"]],
+                    "decision": "owner_decided" if r3.get("owner_decision") else {"change": "ai_review_changed", "keep": "ai_review_kept", "needs_human": "needs_human"}[r3["verdict"]],
                     "drop_expect": (r3.get("expect_patch") or {}).get("drop", []) if r3["verdict"] == "change" else [],
                     "set_expect": (r3.get("expect_patch") or {}).get("set", {}) if r3["verdict"] == "change" else {},
                     "raised_by": ["ai_review_round3"],
@@ -444,8 +444,8 @@ def check_round3() -> List[str]:
         lc = r.get("legal_check") or {}
         if lc.get("result") not in ("consistent", "differs", "not_in_statute", "not_checked"):
             problems.append(f"{key}: legal_check.result {lc.get('result')!r}")
-        if lc.get("result") == "differs" and r["verdict"] != "needs_human":
-            problems.append(f"{key}: statute differs but verdict is {r['verdict']}")
+        if lc.get("result") == "differs" and r["verdict"] != "needs_human" and not r.get("owner_decision"):
+            problems.append(f"{key}: statute differs but verdict is {r['verdict']} without an owner decision")
         if key in DECISIONS and r["verdict"] == "change":
             problems.append(f"{key}: decided earlier; round 3 may not re-label it")
         if r["verdict"] == "needs_human" and not r.get("human_question"):

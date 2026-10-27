@@ -4,13 +4,14 @@
   "warning": "140 rows = 140 cases, not 140 legal reviews. 'changed' rows were checked against the supplied page text only.",
   "counts": {
     "cases": 140,
-    "changed": 115,
+    "changed": 116,
     "by_decision": {
       "adopted": 3,
       "adopted_modified": 7,
       "ai_review_changed": 105,
+      "owner_decided": 1,
       "ai_review_kept": 24,
-      "needs_human": 1,
+      "needs_human": 0,
       "not_adopted": 0,
       "pending": 0
     }
@@ -104,7 +105,8 @@
           "note": "2026-10-19 시점 시행본(MST 289833, 2026-09-15 시행)과 현행(MST 291289) 제72조 제6호 문구가 같다. 온라인 감면·면제(제74조)는 쪽에 없으므로 라벨에 넣지 않는다."
         },
         "human_question": null,
-        "open_issues": []
+        "open_issues": [],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -212,7 +214,8 @@
         "open_issues": [
           "잔여 체류기간 단서 패턴은 '체류기간'과 범위·이내·만료 등 낱말의 근접만 본다. '체류기간 연장 범위 내에서 신청' 같은 무관한 문장도 통과할 수 있다.",
           "입국규제자의 본부 승인 단서는 요구하지 않았다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -312,7 +315,8 @@
         "open_issues": [
           "질문에 과정 연한이 없으므로 3년제 석사 예외(최대 6년)를 빠뜨린 답도 통과한다. 예외 언급을 필수로 할지는 사람이 정할 수 있다.",
           "'석사'와 숫자 사이에 다른 숫자가 끼면(예: '석사 2년제는 최대 6년') 오답 패턴이 잡지 못한다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -443,7 +447,8 @@
           "note": "6개월 경과 요건과 기산점은 매뉴얼의 시간제취업 운영기준이다. 사전허가 의무 자체(법 제20조)는 이 라벨의 사실이 아니므로 조회하지 않았다."
         },
         "human_question": null,
-        "open_issues": []
+        "open_issues": [],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -545,7 +550,8 @@
         "human_question": null,
         "open_issues": [
           "기산점(변경일) 언급 자체는 요구하지 않았다. 기산점 없이 '15일 이내'만 쓴 답도 통과한다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -643,7 +649,8 @@
         "human_question": null,
         "open_issues": [
           "'단수' 여부는 질문 범위 밖이라 요구하지 않았다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -743,7 +750,8 @@
         "open_issues": [
           "'10일 이내 보장' 같은 단정 표현은 잡지 않는다.",
           "신청자(기초자치단체장) 언급은 요구하지 않고, 농가가 '직접' 신청한다고 쓴 경우만 검토로 돌린다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -841,7 +849,8 @@
         "human_question": null,
         "open_issues": [
           "기산점(사증발급 신청일) 언급 자체는 요구하지 않았다. '3개월 이내'만 쓴 답도 통과한다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -939,7 +948,8 @@
         "human_question": null,
         "open_issues": [
           "'별도의 유효기간이 설정되지 않은 경우' 단서와 행정정보 공동이용 시 제출 생략은 요구하지 않았다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -1065,7 +1075,8 @@
           "note": "별표 1의 구직(D-10) 1회 부여 상한 1년은 라벨의 '1회 1년'과 같다. 총 3년은 매뉴얼 운영기준으로 법령 비교 대상이 없다. 별표 1 개정 표시가 2024.12.24라 2026-10-19 이후 변경은 없다."
         },
         "human_question": null,
-        "open_issues": []
+        "open_issues": [],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -1147,7 +1158,8 @@
         "human_question": null,
         "open_issues": [
           "금액 감지는 채점기의 money 판정 범위에 달려 있다. '오만 원'처럼 한글 숫자로 쓴 금액은 걸러지지 않을 수 있다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -1229,7 +1241,8 @@
         "human_question": null,
         "open_issues": [
           "금액 감지는 채점기의 money 판정 범위에 달려 있다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -1311,7 +1324,8 @@
         "human_question": null,
         "open_issues": [
           "금액 감지는 채점기의 money 판정 범위에 달려 있다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -1398,7 +1412,8 @@
         "human_question": null,
         "open_issues": [
           "'처리기간은 2주입니다'처럼 동사 없이 기간만 쓴 문장은 패턴이 잡지 못한다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -1466,7 +1481,8 @@
         "human_question": null,
         "open_issues": [
           "인용 없이 일반 지식으로 서류를 나열한 partial 답은 통과한다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -1534,7 +1550,8 @@
         "human_question": null,
         "open_issues": [
           "인용 없이 283쪽 사증발급인정서 서류를 연장 서류처럼 옮긴 partial 답은 통과한다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -1602,7 +1619,8 @@
         "human_question": null,
         "open_issues": [
           "인용 없이 '변경 가능' 또는 '불가'로 단정한 partial 답은 통과한다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -1670,7 +1688,8 @@
         "human_question": null,
         "open_issues": [
           "인용 없이 162쪽 변경 신고 서류를 사증발급인정서 서류처럼 나열한 partial 답은 통과한다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -1762,7 +1781,8 @@
         "open_issues": [
           "'D-2-7'과 기간 사이에 45자 넘게 떨어지거나 문장이 나뉘면 오답 패턴이 잡지 못한다.",
           "기존 '2년 이내' 금지 문자열을 지웠으므로, D-2-7을 언급하지 않고 '2년 이내'만 답한 partial 답은 통과한다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -1852,7 +1872,8 @@
         "human_question": null,
         "open_issues": [
           "'F-6-3'과 기간 사이에 45자 넘게 떨어지거나 문장이 나뉘면 오답 패턴이 잡지 못한다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -1950,7 +1971,8 @@
         "human_question": null,
         "open_issues": [
           "'재직증명서'만 답한 경우는 D-5 서류와 구별되지 않아 실패한다. 페이지상 택일 서류이므로 정답일 수 있으나 구별력이 없어 받아들이지 않았다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -2044,7 +2066,8 @@
         "open_issues": [
           "기록된 모델 답은 C-1 연장 서류(p26)를 D-5 답에 섞었고 p105를 인용하지 않아 계속 실패한다. 인용 실패는 타당하다.",
           "지국이 없을 때의 대체서류가 법령과 매뉴얼에서 다르게 적혀 있다(라벨 밖 사항)."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -2138,7 +2161,8 @@
         "open_issues": [
           "질문이 영어라 한국어 문자열만 요구하면 영어 답이 떨어진다. 위 제안 패턴에 영어 표현을 넣었다.",
           "p119의 '수주계약서 사본'(선박건조 감독)을 설비기술자 서류로 답하는 오답은 제안 패턴으로 실패한다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -2230,7 +2254,8 @@
         "human_question": null,
         "open_issues": [
           "법령(별표 5의2)은 연수실적 평가서·사업자등록증·신원보증서 등을 더 들지만 p56에는 없다. 매뉴얼과 법령의 서류 범위 차이는 라벨 밖 사항으로 남긴다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -2328,7 +2353,8 @@
         "open_issues": [
           "'2년 유효기간'처럼 숫자를 앞에 둔 어순은 패턴이 받지 않는다(어순을 넓히면 '유효기간 2년, 체류기간 1년'이 통과하므로 넣지 않았다).",
           "시행규칙 제9조제1항제7호(공관 위임 H-1은 체류기간 1년 이하)와 p347(공관장 재량 사증표의 영국 2년)의 관계는 사람이 확인할 사항이다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -2435,7 +2461,8 @@
           "note": "주당 취업시간(25시간·캐나다 40시간)은 관광취업 협정과 H-1 지침의 운영기준이며 시행령 별표 1의2 H-1란은 협정에 따른 활동만 정한다. 법령 수치가 없어 조회하지 않았다."
         },
         "human_question": null,
-        "open_issues": []
+        "open_issues": [],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -2509,7 +2536,8 @@
         "human_question": null,
         "open_issues": [
           "p279는 '지자체 자체 인센티브 부여 기준, 전년도 우수 기초지자체 등 추가 가능'도 적는다. '14명을 어떤 경우에도 넘을 수 없다'고 단정하는 답을 잡는 패턴은 없다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -2606,7 +2634,8 @@
         "human_question": null,
         "open_issues": [
           "대상 여부를 '반드시 받을 수 있다'고 보장하는 과잉 단정은 패턴으로 잡지 않는다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -2717,7 +2746,8 @@
         "human_question": null,
         "open_issues": [
           "출국을 위한 체류기간 연장 등 별도 사유는 p26에 없어 라벨에서 다루지 않는다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -2834,7 +2864,8 @@
           "note": "현행본(MST 291289, 시행 2026-10-23)으로 조회했고 별표 개정일이 2024-12-24이므로 매뉴얼 기준일(2026-10-19)에도 같은 내용이다."
         },
         "human_question": null,
-        "open_issues": []
+        "open_issues": [],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -2950,7 +2981,8 @@
         "human_question": null,
         "open_issues": [
           "p326은 ④ 여행자보험 가입증명서도 요구하지만 법령 목록에 없어 필수로 넣지 않았다. 여행자보험까지 필수로 할지는 사람이 정할 수 있다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -3055,7 +3087,8 @@
         "human_question": null,
         "open_issues": [
           "④ 소속단체의 체류경비 지원 관련서류는 기존 라벨처럼 요구하지 않는다. 완전한 목록을 요구할지는 사람이 정할 수 있다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -3166,7 +3199,8 @@
         "human_question": null,
         "open_issues": [
           "기록된 모델 답은 '총 제출서류 (학)장의 추천서'라는 OCR 병합 문자열을 옮겨 이제 검토 필요로 분류된다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -3277,7 +3311,8 @@
         "human_question": null,
         "open_issues": [
           "질문자 국적이 없어 미국인 복수사증 예외(사증 매뉴얼 p327, 이 사례에 공급되지 않음)는 판단하지 않는다. 그래서 제안 패턴은 '단수'를 요구하지 않는다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -3366,7 +3401,8 @@
         "human_question": null,
         "open_issues": [
           "partial 답이 근거 없는 일반 지식을 쓰면 패턴에 걸리지 않을 수 있다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -3451,7 +3487,8 @@
           "note": "기권(근거 부족) 라벨이다. 공급된 쪽에 답이 없다는 사실은 법령과 대조할 대상이 아니다."
         },
         "human_question": null,
-        "open_issues": []
+        "open_issues": [],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -3519,7 +3556,8 @@
         "human_question": null,
         "open_issues": [
           "status에 partial이 있어 근거 없는 일반 지식(예: 1년 이내 재입국허가 면제)을 인용 없이 쓴 partial 답도 통과한다. 공급 쪽에 유혹이 되는 문구가 없어 패턴을 더하지 않았다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -3604,7 +3642,8 @@
           "note": "기권(근거 부족) 라벨이다. 공급된 쪽에 답이 없다는 사실은 법령과 대조할 대상이 아니다."
         },
         "human_question": null,
-        "open_issues": []
+        "open_issues": [],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -3672,7 +3711,8 @@
         "human_question": null,
         "open_issues": [
           "status에 partial이 있어 인용 없는 일반 지식 답이 통과할 수 있다. 공급 쪽에 유혹이 되는 서류 목록이 없어 패턴을 더하지 않았다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -3761,7 +3801,8 @@
         "human_question": null,
         "open_issues": [
           "실제 정답(사증 매뉴얼 p347의 오스트리아 신청 공관 목록)은 이 사례에 공급되지 않았다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -3868,7 +3909,8 @@
         "open_issues": [
           "'원칙적으로'를 빼고 예외 없이 절대 불가라고 단정한 답은 패턴으로 구별하지 않는다.",
           "p24 OCR에서 '원칙적으'와 '로' 사이에 '체류자격변경'이 끼어 있다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -3970,7 +4012,8 @@
         "human_question": null,
         "open_issues": [
           "해외현지법인 3개월 가동·연수생 요건 등 대상 요건을 언급했는지는 라벨이 보지 않는다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -4075,7 +4118,8 @@
         "human_question": null,
         "open_issues": [
           "사증 매뉴얼 p279(이 사례에 공급되지 않음)는 2025년부터 C-4-1~4 사증 발급 중단을 적는다. 질문 전제가 현재 가능한 사례인지는 라벨에서 다루지 않는다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -4187,7 +4231,8 @@
         "human_question": null,
         "open_issues": [
           "D-7 필수전문인력 요건 충족 여부와 공관 심사 유보는 라벨이 보지 않는다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -4293,7 +4338,8 @@
         "human_question": null,
         "open_issues": [
           "'신청 3개월 전부터 발급된 것' 같은 드문 어순은 패턴이 못 잡을 수 있다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -4399,7 +4445,8 @@
         "human_question": null,
         "open_issues": [
           "'any embassy' 뒤에 조건을 붙여 실제로는 제한하는 답(예: any embassy in your region)은 패턴이 구분하지 못한다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -4518,7 +4565,8 @@
         "open_issues": [
           "사진 크기(반명함)와 발행 주체(총·학장)는 요구하지 않았다. 필요하면 사람이 추가 여부를 정한다.",
           "학력 증명서 표 오독은 flag로만 잡으며 다른 형태의 오독은 놓칠 수 있다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -4626,7 +4674,8 @@
         "open_issues": [
           "주재국 공관 예외는 요구하지 않았다. 예외를 필수로 할지는 사람이 정한다.",
           "'the country where you live' 같은 표현만 쓰고 본국을 말하지 않는 답은 실패한다(페이지상 원칙은 본국)."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -4737,7 +4786,8 @@
         "human_question": null,
         "open_issues": [
           "업무상 재해·질병 등 사유해소일 기산 예외는 요구하지 않았다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -4835,7 +4885,8 @@
           "note": "D-2 시간제취업 장소 2곳은 체류 매뉴얼 운영기준이며 법 제20조·시행령 조문에 수치가 없다."
         },
         "human_question": null,
-        "open_issues": []
+        "open_issues": [],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -4945,7 +4996,8 @@
         "open_issues": [
           "사우디아라비아·이란·리비아 국적 복수재입국 제한은 요구하지 않았다.",
           "영문 오답은 flag로만 잡는다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -5047,7 +5099,8 @@
         "human_question": null,
         "open_issues": [
           "p95의 '외국인유학생' 항목이 어학연수생(D-4)에게도 해당하는 절인지는 페이지만으로 확정하기 어렵다(같은 페이지에 D-4 현장실습 항목이 이어짐)."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -5148,7 +5201,8 @@
         "open_issues": [
           "3인 가구 등 다른 가구 기준을 2인 가구로 잘못 적용한 답은 숫자가 달라 실패하므로 별도 패턴이 필요 없다.",
           "소득 보충·면제 예외는 요구하지 않았다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -5250,7 +5304,8 @@
           "note": "현행본(시행 2026-10-02)으로 2026-10-19에도 시행 중이었다."
         },
         "human_question": null,
-        "open_issues": []
+        "open_issues": [],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -5388,7 +5443,8 @@
           "note": "2026-12-10 시행 예정본(MST 286817) 제25조제4항도 같은 문언이다."
         },
         "human_question": null,
-        "open_issues": []
+        "open_issues": [],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -5491,7 +5547,8 @@
           "note": "외국인고용법 제18조의4는 재입국 취업의 요건을 정하지만 송출기관 단체 신청 방식은 사증 매뉴얼 운영기준이다(조회하지 않음)."
         },
         "human_question": null,
-        "open_issues": []
+        "open_issues": [],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -5593,7 +5650,8 @@
         "human_question": null,
         "open_issues": [
           "'high school graduation is not required' 같은 부정문은 패턴이 정답으로 볼 수 있다(드문 오답)."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -5695,7 +5753,8 @@
         "human_question": null,
         "open_issues": [
           "페이지는 '최장 6개월'이 1회 허가 기간인지 누적 기간인지 밝히지 않아, '총 6개월' 같은 표현의 정오는 패턴으로 판정하지 않았다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -5805,7 +5864,8 @@
         "open_issues": [
           "과거 D-10 보유자 제외 단서는 요구하지 않았다. 필수로 할지는 사람이 정한다.",
           "한국어 우수자 '학위 취득 후 3년' 특례를 함께 쓴 정답은 flag로 검토에 갈 수 있다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -5913,7 +5973,8 @@
         "open_issues": [
           "수수료는 요구하지 않았다.",
           "'documents' 같은 일반어만 쓰고 필요성 소명을 말하지 않는 답은 실패한다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -6015,7 +6076,8 @@
         "human_question": null,
         "open_issues": [
           "10% 지분 또는 임원 파견·선임 요건은 요구하지 않았다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -6132,7 +6194,8 @@
         "open_issues": [
           "p175는 '회화지도(E-2)' 표제가 페이지 맨 끝에 있어 이 재입국 항목이 E-2 절인지 앞 자격 절인지 텍스트만으로 확정할 수 없다. 규정이 공통이라 라벨 사실에는 영향이 없지만 사람이 확인하면 좋다.",
           "'없이' 같은 짧은 후보는 '허가 없이 출국하면 안 된다' 같은 문장에서도 맞을 수 있다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -6199,7 +6262,8 @@
         "human_question": null,
         "open_issues": [
           "두 페이지 모두 서류를 담고 있어 insufficient_evidence 허용은 관대하다. 허용 여부는 채점 정책 문제로 남긴다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -6266,7 +6330,8 @@
         "human_question": null,
         "open_issues": [
           "insufficient_evidence 허용은 관대하다(사증 p63이 서류를 담고 있음). 채점 정책 문제로 남긴다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -6333,7 +6398,8 @@
         "human_question": null,
         "open_issues": [
           "기록된 답(insufficient_evidence)이 통과한다. 보류를 정답으로 볼지는 채점 정책 문제다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -6426,7 +6492,8 @@
         "human_question": null,
         "open_issues": [
           "현재 라벨에서 answered 답은 내용과 무관하게 모두 실패한다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -6493,7 +6560,8 @@
         "human_question": null,
         "open_issues": [
           "해외 거주자라면 p389가 핵심 근거라 must_not_cite p389는 되묻기 상태에서만 의미가 있다(현재 상태 제한 때문에 실제 영향은 없음)."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -6560,7 +6628,8 @@
         "human_question": null,
         "open_issues": [
           "p119에는 개인사업자 사증 첨부서류가 잘려 없어, 해외 신청자에게는 insufficient_evidence가 사실에 가깝다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -6672,7 +6741,8 @@
         "human_question": null,
         "open_issues": [
           "면제 표 세 항목이 각각 독립 면제 사유라는 점(누적요건 아님)은 정규식으로 완전히 판정할 수 없어 플래그로만 잡는다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -6768,7 +6838,8 @@
         "human_question": null,
         "open_issues": [
           "질문 속 '인도 상공회의소'가 협정상 지정기관인지는 질문만으로 알 수 없다. 조건부 표현을 요구할지는 라벨에 넣지 않았다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -6870,7 +6941,8 @@
         "human_question": null,
         "open_issues": [
           "p128 머리가 최우수인재(D-10-T) 결격사유 목록이어서, 공관장 재량 조항이 D-10 전체에 적용되는 위치인지는 앞쪽 페이지로 확인이 필요하다(라벨 수치에는 영향 없음)."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -6972,7 +7044,8 @@
         "human_question": null,
         "open_issues": [
           "'국내 대학 졸업자 특례'(모국어 국가 고교·전문대 졸업 후 국내 학사)는 요구하지 않았다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -7074,7 +7147,8 @@
         "human_question": null,
         "open_issues": [
           "고시 요건을 갖추지 못한 경우(본인 귀책 해고 등) 사전허가 대상이라는 점은 요구하지 않았다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -7180,7 +7254,8 @@
         "human_question": null,
         "open_issues": [
           "사우디아라비아·이란·리비아 국적 제한(같은 쪽)과 등록 여부는 요구하지 않았다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -7288,7 +7363,8 @@
         "open_issues": [
           "p330 문단은 사업장 변경 관련 연장 절차 안에 있어 일반 E-9 연장 전체 기준인지 앞쪽 페이지 확인이 필요하다.",
           "'최대 4년 10개월'만 답하고 3년을 빠뜨린 답은 기존 라벨처럼 실패한다. 이를 정답으로 볼지는 별도 판단 사항이다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -7398,7 +7474,8 @@
         "human_question": null,
         "open_issues": [
           "연장 조건(활동범위 해당, 불법취업 의심 없음, 필요성 인정)을 언급하는지는 요구하지 않았다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -7502,7 +7579,8 @@
         "open_issues": [
           "'단수' 여부는 질문이 묻지 않아 요구하지 않았다.",
           "베트남 국적·대학 유형에 따른 사증발급인정서 경로는 공급 페이지에 없어 다루지 않았다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -7604,7 +7682,8 @@
         "human_question": null,
         "open_issues": [
           "매뉴얼(2026-10-19판)이 2025년 기준값을 싣고 있어, 2026년 고시값과 다를 가능성이 있다. 라벨은 페이지 값을 유지하고 기준연도 누락만 검토로 보낸다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -7700,7 +7779,8 @@
         "human_question": null,
         "open_issues": [
           "'권장'이며 상호주의에 따라 공관이 결정할 수 있다는 단서는 요구하지 않았다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -7806,7 +7886,8 @@
         "human_question": null,
         "open_issues": [
           "사증 유효기간 1년과 체류기간 1년(p355)을 구분했는지는 판정하지 않는다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -7908,7 +7989,8 @@
         "human_question": null,
         "open_issues": [
           "ChatGPT는 p57 문맥상 7일 제한이 C-3 등 소지자의 공익목적 초청 시 C-4-5 사증 면제 조건이라고 보지만, p57은 공급되지 않아 확인할 수 없다. 숫자 7일은 p58로 확인되므로 라벨은 유지하되 적용 범위는 사람 확인 권장."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -8010,7 +8092,8 @@
           "note": "사전 체류자격 외 활동허가 원칙은 맞는다. 외부기관·학업무관 연구를 E-3 활동으로 분류하는 기준은 매뉴얼 운영기준이다."
         },
         "human_question": null,
-        "open_issues": []
+        "open_issues": [],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -8120,7 +8203,8 @@
         "human_question": null,
         "open_issues": [
           "답이 D-2 외 D-4 유학생을 구분하는지는 판정하지 않는다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -8128,8 +8212,8 @@
       "key": "manual_buttons/B-16-h1-job-change",
       "set": "manual_buttons_cases.json",
       "id": "B-16-h1-job-change",
-      "changed": false,
-      "decision": "needs_human",
+      "changed": true,
+      "decision": "owner_decided",
       "original": {
         "expect": {
           "status": [
@@ -8151,7 +8235,36 @@
           "visa_manual_2026_10_19_pdf#p350"
         ]
       },
-      "v2": null,
+      "v2": {
+        "expect": {
+          "status": [
+            "answered",
+            "partial"
+          ],
+          "must_cite": [
+            "stay_manual_2026_10_19_pdf#p526"
+          ],
+          "must_not_cite": [
+            "visa_manual_2026_10_19_pdf#p350"
+          ],
+          "answer_must_match": [
+            {
+              "label": "별도 근무처 변경·추가 허가 없이 취업 가능",
+              "pattern": "근무처\\s*(?:의\\s*)?(?:추가|변경)[^.\\n]{0,15}없이[^.\\n]{0,15}(?:가능|할\\s*수\\s*있)|따로\\s*허가[^.\\n]{0,10}(?:필요\\s*(?:없|하지\\s*않)|받지\\s*않아도)|(?:별도|따로)?\\s*허가\\s*(?:없이|는\\s*필요\\s*없|가\\s*필요\\s*없|불필요)|(?i:no\\s+(?:separate\\s+)?(?:permit|permission)|without\\s+(?:a\\s+)?(?:separate\\s+)?(?:permit|permission|workplace\\s+change)|do(?:es)?\\s*n[o']t\\s+need)"
+            }
+          ],
+          "answer_must_not_match": [
+            {
+              "label": "일반 업종 이동에 근무처 변경허가가 필요하다고 씀",
+              "pattern": "(?:^|[.\\n])(?![^.\\n]*(?:자격\\s*요건|자격증|E-7|전문\\s*직종|특정활동))[^.\\n]*(?:근무처\\s*(?:변경|추가)\\s*허가|별도\\s*(?:의\\s*)?허가)[^.\\n]{0,10}(?:받아야|필요합니다|필요해요)(?![^.\\n]{0,15}(?:아니|틀|잘못|오류|사실이\\s*아))"
+            }
+          ]
+        },
+        "evidence_ids": [
+          "stay_manual_2026_10_19_pdf#p526",
+          "visa_manual_2026_10_19_pdf#p350"
+        ]
+      },
       "sources": {
         "saved_verdict": {
           "verdict": "fix_expect",
@@ -8170,19 +8283,18 @@
       ],
       "raised_after_first_v2": [],
       "page_evidence": "stay_manual_2026_10_19_pdf#p526: '별도의 근무처 추가 또는 변경없이 취업 활동 가능'",
-      "rationale": "p526은 H-1에 대해 '별도의 근무처 추가 또는 변경없이 취업 활동 가능'(자격요건·E-7 직종은 제한)이라고 적어 라벨의 사실은 페이지에 있다. 그러나 출입국관리법 제21조제1항은 근무처 변경·추가에 사전허가를 요구하고, H-1을 명시적으로 면제하지 않는다(신고 대상은 E-1~E-7). 법령과 매뉴얼의 관계를 사람이 정해야 한다.",
+      "rationale": "소유자 결정(2026-10-28)에 따라 매뉴얼을 기준으로 채점한다. 526쪽은 관광취업(H-1)에 대해 '별도의 근무처 추가 또는 변경없이 취업 활동 가능'이라고 적으므로, 카페에서 다른 가게로 옮길 때 따로 허가가 필요 없다는 결론을 표현 변형·영어로 허용해 요구한다. 일반 업종 이동에 근무처 변경허가가 필요하다고 쓰면 실패한다. 자격요건·E-7 직종 제한 단서는 질문(카페→다른 가게)에 직접 해당하지 않아 요구하지 않고, 그 단서를 말하며 '허가를 받아야'라고 쓴 문장은 실패로 보지 않는다.",
       "not_adopted": null,
       "open_issues": [
-        "사람이 정할 것: 관광취업(H-1) 소지자가 일반 카페에서 다른 가게로 옮길 때, 체류 매뉴얼 526쪽의 '별도의 근무처 추가 또는 변경없이 취업 활동 가능'을 정답으로 채점할지, 아니면 출입국관리법 제21조제1항의 사전 근무처변경허가 원칙과의 관계가 확인될 때까지 이 문항을 보류(또는 flag 처리)할지 결정해 주십시오. 유지한다면 '허가 불필요' 결론과 '자격요건·E-7 직종은 제한' 단서 중 무엇을 필수로 할지도 정해야 합니다.",
-        "기존 문자열은 '근무처의 추가 또는 변경 없이'처럼 조금만 달라도 실패한다. 사람 결정 뒤 표현 변형 허용이 필요하다.",
-        "기록된 모델 답은 '자세한 사항은 근거에 명시되어 있지 않습니다'로 결론을 피했다."
+        "법령 대조는 '다름'으로 남아 있다: 출입국관리법 제21조 제1항은 근무처 변경·추가에 사전허가를 원칙으로 하고, 법·시행령 제26조·시행령 별표 1의2 관광취업(H-1)란에서 H-1 예외 문언을 찾지 못했다. 라벨은 소유자 결정으로 매뉴얼을 따른다.",
+        "'다만 일정한 자격요건·자격증을 요하거나 E-7 직종이면 제한' 단서는 요구하지 않는다."
       ],
       "recorded_answer_comparable": true,
       "ai_review_round3": {
-        "verdict": "needs_human",
+        "verdict": "change",
         "page_id": "stay_manual_2026_10_19_pdf#p526",
         "page_quote": "별도의 근무처 추가 또는 변경없이 취업 활동 가능",
-        "rationale": "p526은 H-1에 대해 '별도의 근무처 추가 또는 변경없이 취업 활동 가능'(자격요건·E-7 직종은 제한)이라고 적어 라벨의 사실은 페이지에 있다. 그러나 출입국관리법 제21조제1항은 근무처 변경·추가에 사전허가를 요구하고, H-1을 명시적으로 면제하지 않는다(신고 대상은 E-1~E-7). 법령과 매뉴얼의 관계를 사람이 정해야 한다.",
+        "rationale": "소유자 결정(2026-10-28)에 따라 매뉴얼을 기준으로 채점한다. 526쪽은 관광취업(H-1)에 대해 '별도의 근무처 추가 또는 변경없이 취업 활동 가능'이라고 적으므로, 카페에서 다른 가게로 옮길 때 따로 허가가 필요 없다는 결론을 표현 변형·영어로 허용해 요구한다. 일반 업종 이동에 근무처 변경허가가 필요하다고 쓰면 실패한다. 자격요건·E-7 직종 제한 단서는 질문(카페→다른 가게)에 직접 해당하지 않아 요구하지 않고, 그 단서를 말하며 '허가를 받아야'라고 쓴 문장은 실패로 보지 않는다.",
         "legal_check": {
           "result": "differs",
           "law": "출입국관리법",
@@ -8192,11 +8304,17 @@
           "excerpt": "① 대한민국에 체류하는 외국인이 그 체류자격의 범위에서 그의 근무처를 변경하거나 추가하려면 대통령령으로 정하는 바에 따라 미리 법무부장관의 허가를 받아야 한다.",
           "note": "시행령 제23조제5항(MST 290501)은 'H-1 체류자격을 가지고 있는 사람이 취업활동을 하는 경우에는 제1항에 따른 취업활동을 할 수 있는 체류자격에 해당하는 것으로 본다'고 한다. 제21조 단서·시행령 제26조의2의 신고 특례는 E-1~E-7만 대상이며 H-1 면제 조문은 찾지 못했다. 매뉴얼 운영(허가 불요)과 법 문언이 다르게 읽힌다. [주 검토자 재확인 2026-10-27] 법 제21조 제1항(MST 290729)과 시행령 제26조(MST 290501), 시행령 별표 1의2 관광취업(H-1)란을 다시 읽었다. H-1을 근무처 변경허가에서 빼는 문언은 찾지 못했다. 매뉴얼 526쪽의 '별도의 근무처 추가 또는 변경없이 취업 활동 가능'을 법령으로 확인할 수 없어 사람(법률 검토)에게 남긴다."
         },
-        "human_question": "관광취업(H-1) 소지자가 일반 카페에서 다른 가게로 옮길 때, 체류 매뉴얼 526쪽의 '별도의 근무처 추가 또는 변경없이 취업 활동 가능'을 정답으로 채점할지, 아니면 출입국관리법 제21조제1항의 사전 근무처변경허가 원칙과의 관계가 확인될 때까지 이 문항을 보류(또는 flag 처리)할지 결정해 주십시오. 유지한다면 '허가 불필요' 결론과 '자격요건·E-7 직종은 제한' 단서 중 무엇을 필수로 할지도 정해야 합니다.",
+        "human_question": null,
         "open_issues": [
-          "기존 문자열은 '근무처의 추가 또는 변경 없이'처럼 조금만 달라도 실패한다. 사람 결정 뒤 표현 변형 허용이 필요하다.",
-          "기록된 모델 답은 '자세한 사항은 근거에 명시되어 있지 않습니다'로 결론을 피했다."
-        ]
+          "법령 대조는 '다름'으로 남아 있다: 출입국관리법 제21조 제1항은 근무처 변경·추가에 사전허가를 원칙으로 하고, 법·시행령 제26조·시행령 별표 1의2 관광취업(H-1)란에서 H-1 예외 문언을 찾지 못했다. 라벨은 소유자 결정으로 매뉴얼을 따른다.",
+          "'다만 일정한 자격요건·자격증을 요하거나 E-7 직종이면 제한' 단서는 요구하지 않는다."
+        ],
+        "owner_decision": {
+          "date": "2026-10-28",
+          "decision": "매뉴얼을 기준으로 판단해서 결정짓자",
+          "by": "owner, in the Claude Code session (not saved through the review sheet)",
+          "applied": "체류 매뉴얼 526쪽 '별도의 근무처 추가 또는 변경없이 취업 활동 가능'을 정답 사실로 채점한다. 법령과의 차이는 legal_check에 '다름'으로 그대로 남긴다."
+        }
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -8298,7 +8416,8 @@
         "human_question": null,
         "open_issues": [
           "사전 체류자격외 활동허가가 필요하다는 점은 요구하지 않았다(질문은 한국어 수준만 묻는다)."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -8400,7 +8519,8 @@
         "human_question": null,
         "open_issues": [
           "기록된 모델 답은 '추가적인 정보가 필요합니다'로 끝나 결론이 약하다. 공통 사실만 요구하면 이런 답도 통과할 수 있어 flag 검토가 필요하다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -8493,7 +8613,8 @@
         "human_question": null,
         "open_issues": [
           "insufficient_evidence는 두 페이지 모두 답을 주므로 페이지 근거와 맞지 않는다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -8560,7 +8681,8 @@
         "human_question": null,
         "open_issues": [
           "E-3 배우자와 배우자 없는 미성년 자녀가 F-3 대상이라는 부분 답은 p316·p428로 가능하다. partial 허용 여부는 N 그룹 설계 결정에 따른다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -8659,7 +8781,8 @@
         "human_question": null,
         "open_issues": [
           "p285 한 쪽에 '16개국과 MOU'와 '선정국가(17개국)'가 함께 있어 국가 수를 기대값으로 쓰면 안 된다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -8755,7 +8878,8 @@
         "human_question": null,
         "open_issues": [
           "기록된 모델 답은 사전허가 필요를 빠뜨렸다. partial을 허용한다면 '허가' 언급을 요구해야 한다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -8855,7 +8979,8 @@
         "human_question": null,
         "open_issues": [
           "남은 체류기간이 1년보다 짧으면 그 범위 내에서만 면제된다는 단서도 p332에 있다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -8922,7 +9047,8 @@
         "human_question": null,
         "open_issues": [
           "두 쪽 모두 '1년'이라 1년이라고 답해도 사실상 틀리지 않는다. N 그룹 설계를 바꿀 때 함께 검토 필요."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -9026,7 +9152,8 @@
         "human_question": null,
         "open_issues": [
           "4개월 체류에 C-3-3을 답하면서 G-1-10도 함께 나열한 답(기간 대응을 뒤바꾼 답)은 패턴으로 잡지 못함."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -9126,7 +9253,8 @@
         "human_question": null,
         "open_issues": [
           "\"1년\"이 사증 체류기간이 아닌 다른 맥락(예: 다른 자격 설명)에 나오고 결론은 2년이라고 한 답은 통과할 수 있음."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -9232,7 +9360,8 @@
         "human_question": null,
         "open_issues": [
           "불가 표현 그룹이 넓어 다른 문장의 \"불가\"(예: 국내 교회 취임 시 사증발급 불가)로 채워질 수 있음. 긍정 오답 차단 패턴은 \"초청할 수 있/초청 가능\" 류 표현만 잡음."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -9334,7 +9463,8 @@
         "human_question": null,
         "open_issues": [
           "결론 그룹(\"해당하지 않\", \"불가\" 등)이 다른 문장(행정요원 제외 등)으로 채워지고 D-5 가능이라는 결론을 다른 동사로 쓰면 통과할 수 있음."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -9434,7 +9564,8 @@
         "human_question": null,
         "open_issues": [
           "\"90 days\" 등 3개월과 같은 뜻으로 볼 수도 있는 표현은 페이지 문구가 아니라 받지 않음."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -9540,7 +9671,8 @@
         "human_question": null,
         "open_issues": [
           "\"한 번\"이 출력 횟수가 아닌 다른 맥락에 쓰여도 첫 그룹이 채워짐."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -9640,7 +9772,8 @@
         "human_question": null,
         "open_issues": [
           "\"과장 이하도 가능\" 같이 직급 이름을 쓰면서 기준을 뒤집은 답은 잡지 못함."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -9740,7 +9873,8 @@
         "human_question": null,
         "open_issues": [
           "5년을 상한이 아니라 보장 기간처럼 단정한 표현(기록 답 \"1회 부여 시 5년입니다\")은 구분하지 못함."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -9842,7 +9976,8 @@
         "human_question": null,
         "open_issues": [
           "기록 답처럼 서로 다른 예외(폐교·통폐합, 영어트랙 간 변경)를 하나의 조건으로 합친 오독은 패턴으로 잡지 못함."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -9915,7 +10050,8 @@
         "human_question": null,
         "open_issues": [
           "\"고용해지일부터 3개월 안에 출국해야 한다\"처럼 3개월을 다른 뜻으로 쓴 오답은 현재 라벨로 통과함."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -10020,7 +10156,8 @@
         "human_question": null,
         "open_issues": [
           "\"construction ... is not restricted\"처럼 부정어를 반대 뜻으로 쓴 영어 답은 제한 그룹을 채울 수 있음(6개월 그룹이 함께 맞으면 통과)."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -10120,7 +10257,8 @@
         "human_question": null,
         "open_issues": [
           "D-8이 근무처 변경 대상이 아니라는 같은 페이지 내용과 혼동한 답은 따로 검사하지 않음."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -10222,7 +10360,8 @@
         "open_issues": [
           "신고 기한을 30일 등으로 틀리게 쓰면서 다른 문장에 \"15일\"이 나오면 통과할 수 있음.",
           "체류허가 신청 시 함께 신고하는 경로만 안내한 답은 페이지상 틀리지 않지만 기한이 없어 실패함 — 의도된 엄격화."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -10322,7 +10461,8 @@
         "human_question": null,
         "open_issues": [
           "F-4 소득란 예외를 E-7에 잘못 적용한 답은 따로 검사하지 않음."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -10424,7 +10564,8 @@
         "human_question": null,
         "open_issues": [
           "페이지 첫 줄이 잘려 있어 \"최초 허가\"가 사증발급인정·자격변경 중 어느 절차를 가리키는지는 이 페이지만으로 확인되지 않음(라벨 사실 자체는 페이지 문구 그대로)."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -10535,7 +10676,8 @@
         "human_question": null,
         "open_issues": [
           "동의서 면제 단서가 E-6-2 허가 절에도 적용되는지는 사람이 매뉴얼 원문 배치를 보고 정해야 함. 그 전까지 면제를 언급한 답은 needs_review로 빠짐."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -10608,7 +10750,8 @@
         "open_issues": [
           "answer_must_not_contain \"복수사증\"은 한국어만 잡으므로 영어 \"multiple-entry visa\" 답은 걸리지 않음(49쪽을 인용하면 must_not_cite로 실패).",
           "버튼 오선택 시 answered를 허용할지는 제품 정책 문제로, 페이지로 정할 사항이 아님."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -10701,7 +10844,8 @@
         "human_question": null,
         "open_issues": [
           "\"부득이한 사유로 무사증 입국\" 조건을 빼고 모든 무사증 입국자가 변경 가능하다고 한 답은 잡지 못함."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -10794,7 +10938,8 @@
         "human_question": null,
         "open_issues": [
           "\"재정\"·\"support\" 같은 단어 없이 재직증명서·납세증명서 제출이 필요하다고만 한 답은 잡지 못함."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -10889,7 +11034,8 @@
         "human_question": null,
         "open_issues": [
           "\"최대 65점\"을 합격선이 아니라고 구분해 설명한 정답도 기존 answer_must_not_contain에 걸림 — 기존 금지어 유지 여부는 사람이 정할 수 있음."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -10953,7 +11099,8 @@
         "human_question": null,
         "open_issues": [
           "정책이 \"체류 전용 질문은 바로 답\"으로 바뀌면 answered/partial과 2년 기준을 라벨에 넣어야 함."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -11013,7 +11160,8 @@
           "note": "라벨이 상태만 검사해 대조할 내용 사실이 없음."
         },
         "human_question": null,
-        "open_issues": []
+        "open_issues": [],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -11073,7 +11221,8 @@
           "note": "라벨은 상태만 검사. 페이지의 프로 운동선수=E-6 사실이 법령 활동범위(운동경기)와 일치. E-6-3 세부 약호는 매뉴얼 분류."
         },
         "human_question": null,
-        "open_issues": []
+        "open_issues": [],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -11133,7 +11282,8 @@
           "note": "라벨이 상태만 검사해 대조할 내용 사실이 없음."
         },
         "human_question": null,
-        "open_issues": []
+        "open_issues": [],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -11235,7 +11385,8 @@
         "human_question": null,
         "open_issues": [
           "APEC카드의 국적별 사용 가능 여부는 페이지에 없어 라벨에 넣지 않았다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -11342,7 +11493,8 @@
         "human_question": null,
         "open_issues": [
           "전자사증이 심사 없이 자동 발급된다고 쓰는 답은 패턴으로 잡지 못한다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -11434,7 +11586,8 @@
           "note": "별표 5의 E-6 첨부서류에는 법정대리인 동의서가 없다. 별표 5 유의사항 1이 첨부서류를 '더하거나 뺄 수 있다'고 하므로 모순은 아니며, 미성년자 동의서는 매뉴얼 운영기준이다."
         },
         "human_question": null,
-        "open_issues": []
+        "open_issues": [],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -11542,7 +11695,8 @@
         "human_question": null,
         "open_issues": [
           "질문의 중학교가 허용 교육기관(의무·무상교육기관 제외 등)에 해당하는지는 질문에 없어 라벨로 판단하지 않는다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -11668,7 +11822,8 @@
         "human_question": null,
         "open_issues": [
           "'5년간 유효한' 축자 요구는 v2 결정대로 두었다. '5년 동안 유효' 같은 환언이 떨어질 수 있다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -11798,7 +11953,8 @@
           "note": "별표 5는 C-3에 대해 입국목적 증명서류만 정한다. 진단서·예약 입증자료 목록은 매뉴얼 운영기준이다."
         },
         "human_question": null,
-        "open_issues": []
+        "open_issues": [],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -11900,7 +12056,8 @@
           "note": "같은 조 제2호가 '여권의 번호, 발급일자 및 유효기간'이다. 15일 이내 신고는 법률과 같다."
         },
         "human_question": null,
-        "open_issues": []
+        "open_issues": [],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -12009,7 +12166,8 @@
         "open_issues": [
           "현재 '2년 내에 재입국' 축자 요구는 '2년 이내' 같은 환언을 떨어뜨린다.",
           "F-5 면제 규정은 공급된 페이지에 없어 페이지만으로는 라벨에 넣을 수 없다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -12125,7 +12283,8 @@
         "human_question": null,
         "open_issues": [
           "호텔·흥행(E-6-2) 변경 금지는 라벨에 넣지 않았다. E-6-2로 바꿀 수 있다고 쓰는 답은 패턴으로 잡지 못한다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -12241,7 +12400,8 @@
           "note": "별표 5의2의 방문동거(F-1) 칸에는 체류자격 부여·변경·연장만 있고 체류자격 외 활동허가 서류가 없다. 중국동포 F-1의 E-1~E-7 자격외 활동 서류는 매뉴얼 운영기준이다."
         },
         "human_question": null,
-        "open_issues": []
+        "open_issues": [],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -12349,7 +12509,8 @@
         "open_issues": [
           "p17은 이 행의 주어가 잘린 채 시작한다. 외교 장 문맥과 시행규칙 제44조의2로 A-1 적용을 확인했지만, 페이지 단독으로는 주어가 보이지 않는다.",
           "'2년 이내 면제'처럼 숫자를 바꾼 답은 1년 문구가 없으면 실패하지만, 1년과 2년을 함께 쓰면 통과할 수 있다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -12459,7 +12620,8 @@
         "human_question": null,
         "open_issues": [
           "p338은 허용요건 첫 항목(고용주 동일)에서 끊긴다. 다음 쪽의 나머지 요건은 공급되지 않아 라벨에 넣지 않았고, partial 허용은 그대로 둔다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -12564,7 +12726,8 @@
           "note": "별표 5는 2024-12-24 개정본으로 2026-10-19 이후 바뀌지 않았다."
         },
         "human_question": null,
-        "open_issues": []
+        "open_issues": [],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -12699,7 +12862,8 @@
           "note": "D-8-4 사증 신청 공관(본국 공관 원칙, 주재국 공관 예외)은 매뉴얼 운영기준이다. 출입국관리법 제8조는 사증발급 권한 근거만 둔다."
         },
         "human_question": null,
-        "open_issues": []
+        "open_issues": [],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -12806,7 +12970,8 @@
         "human_question": null,
         "open_issues": [
           "'사증발급인정서'가 쉼표 목록이 아닌 문장 속에서 제출서류로 쓰이면 패턴이 놓친다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -12922,7 +13087,8 @@
         "human_question": null,
         "open_issues": [
           "p142가 ②에서 끊겨 다음 쪽 서류가 보이지 않으므로 partial 허용은 유지한다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -13033,7 +13199,8 @@
           "note": "학위증 또는 경력증명서는 별표 5의2와 같다. 전임교수 제출 생략은 매뉴얼 운영기준이다."
         },
         "human_question": null,
-        "open_issues": []
+        "open_issues": [],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -13140,7 +13307,8 @@
         "human_question": null,
         "open_issues": [
           "'2년 미만'이라고만 답하면 페이지 수치가 없어 실패한다. 법률상 틀린 말은 아니므로 사람이 판단할 경계 사례다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -13236,7 +13404,8 @@
         "human_question": null,
         "open_issues": [
           "3천만원만 맞히고 2년 이내 선정·법인 설립·중기부장관 추천 등 나머지 요건을 빼거나 금액만으로 면제된다고 단정한 답은 패턴으로 가려내지 못한다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -13349,7 +13518,8 @@
         "human_question": null,
         "open_issues": [
           "17세 미만·난민 미신청 등 심사기준을 빼먹은 답은 패턴으로 잡지 못한다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -13409,7 +13579,8 @@
           "note": "라벨이 status(clarify/insufficient_evidence)만 요구하고 대조할 사실 문구가 없어 법령 대조 대상이 아님."
         },
         "human_question": null,
-        "open_issues": []
+        "open_issues": [],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -13473,7 +13644,8 @@
         "human_question": null,
         "open_issues": [
           "ChatGPT 2차는 근거 있는 부분답변(partial) 허용을 제안했지만, 공급된 두 페이지에 체류기간이 없어 채택하지 않았다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -13539,7 +13711,8 @@
         "open_issues": [
           "두 페이지의 소득요건 서류 목록이 사실상 같아, 두 절차에 공통이라고 밝힌 근거 있는 partial 답을 허용할지는 제품 정책 문제다(페이지가 막지 않음).",
           "p492의 2025년 기준 소득 금액을 현행 금액처럼 쓰는 답은 이 라벨로 걸러지지 않는다."
-        ]
+        ],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     },
@@ -13599,7 +13772,8 @@
           "note": "라벨이 status(clarify/insufficient_evidence)만 요구하고 대조할 사실 문구가 없어 법령 대조 대상이 아님."
         },
         "human_question": null,
-        "open_issues": []
+        "open_issues": [],
+        "owner_decision": null
       },
       "verification": "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
     }

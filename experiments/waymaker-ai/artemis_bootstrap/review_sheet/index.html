@@ -198,7 +198,7 @@ textarea { background: var(--bg); border: 1px solid var(--line); border-radius: 
   // before v2 (collection reviews), shown read-only so they are never overwritten from this page.
   let data = null, reviews = {}, legacy = {}, aiReviews = {}, db = null, canWrite = true, myId = null, current = null;
   const V2_OUTCOME_KO = { correct: "자동 정답", needs_review: "검토 필요(자동 정답 아님)", harmful: "실패: 원문과 모순", clarify: "되물음", safe_abstain: "보류", other: "실패" };
-  const DECISION_KO = { adopted: "v2 채택", adopted_modified: "v2 수정 채택", ai_review_changed: "AI 3차 검토로 바뀜", ai_review_kept: "AI 3차 검토: 원본 유지", needs_human: "사람 판단 필요(원본 유지)", not_adopted: "v2 채택 안 함", pending: "v2 보류(원본 유지)" };
+  const DECISION_KO = { adopted: "v2 채택", adopted_modified: "v2 수정 채택", ai_review_changed: "AI 3차 검토로 바뀜", ai_review_kept: "AI 3차 검토: 원본 유지", owner_decided: "소유자 결정(매뉴얼 기준)", needs_human: "사람 판단 필요(원본 유지)", not_adopted: "v2 채택 안 함", pending: "v2 보류(원본 유지)" };
   const LEGAL_KO = { consistent: "법령과 같음", differs: "법령과 다름", not_in_statute: "법령에 없는 매뉴얼 운영기준", not_checked: "법령 대조 안 함" };
   const PROV_KO = { existing_human: "기존 사람 판정(인계 기록 기준)", chatgpt_round2: "ChatGPT 2차 의견(인계 기록 기준)" };
   const CONF_KO = { high: "확신 높음", medium: "확신 보통", low: "확신 낮음" };
@@ -351,6 +351,7 @@ textarea { background: var(--bg); border: 1px solid var(--line); border-radius: 
         <p>${esc(lv.rationale)}</p>
         ${lv.not_adopted ? `<p><b>반영하지 않은 것:</b> ${esc(lv.not_adopted)}</p>` : ""}
         ${(lv.open_issues || []).length ? `<div><b>열린 쟁점</b><ul class="fails">${lv.open_issues.map((x) => `<li>${esc(x)}</li>`).join("")}</ul></div>` : ""}
+        ${lv.ai_review_round3 && lv.ai_review_round3.owner_decision ? `<p><b>소유자 결정(${esc(lv.ai_review_round3.owner_decision.date)}):</b> ${esc(lv.ai_review_round3.owner_decision.decision)} — ${esc(lv.ai_review_round3.owner_decision.applied)}</p>` : ""}
         ${lv.ai_review_round3 && lv.ai_review_round3.legal_check ? `<div class="${lv.ai_review_round3.legal_check.result === "differs" ? "banner" : ""}"><b>법령 교차 확인(AI, 법률 검증 아님):</b> ${esc(LEGAL_KO[lv.ai_review_round3.legal_check.result] || lv.ai_review_round3.legal_check.result)}
           ${lv.ai_review_round3.legal_check.law ? `<br><span class="mono">${esc(lv.ai_review_round3.legal_check.law)} ${esc(lv.ai_review_round3.legal_check.provision || "")} · MST ${esc(lv.ai_review_round3.legal_check.mst || "-")} · 조회 ${esc(lv.ai_review_round3.legal_check.queried_as_of || "-")}</span>` : ""}
           ${lv.ai_review_round3.legal_check.excerpt ? `<blockquote class="purpose">${esc(lv.ai_review_round3.legal_check.excerpt)}</blockquote>` : ""}

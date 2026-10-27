@@ -92,7 +92,7 @@ def test_ledger_has_one_row_per_case_in_order_and_claims_no_verification():
         if not d["changed"]:
             assert d["v2"] is None
     assert len(lv.DECISIONS) == 10
-    round3_changes = sum(1 for d in LEDGER["decisions"] if d["decision"] == "ai_review_changed")
+    round3_changes = sum(1 for d in LEDGER["decisions"] if d["decision"] in ("ai_review_changed", "owner_decided"))
     assert LEDGER["counts"]["changed"] == len(lv.DECISIONS) + round3_changes
 
 
@@ -346,7 +346,7 @@ def test_round3_never_relabels_to_a_statute_and_leaves_needs_human_cases_untouch
     for r in ROUND3["cases"]:
         row = next(d for d in LEDGER["decisions"] if d["key"] == r["key"])
         if r["legal_check"]["result"] == "differs":
-            assert r["verdict"] == "needs_human", r["key"]
+            assert r["verdict"] == "needs_human" or r.get("owner_decision"), r["key"]
         if r["verdict"] == "needs_human":
             assert row["decision"] in ("needs_human",) + lv.CHANGING[:2]
             if r["key"] not in lv.DECISIONS:
@@ -361,16 +361,18 @@ def test_round3_needs_human_set_and_statute_conflicts_are_the_reviewed_ones():
     """After the lead cross-check only B-16 stays with a person; every case the lead
     settled records what it was before and why."""
     needs = sorted(r["key"].split("/")[1][:4] for r in ROUND3["cases"] if r["verdict"] == "needs_human")
-    assert needs == ["B-16"]
+    assert needs == []
     differs = sorted(r["key"].split("/")[1][:4] for r in ROUND3["cases"] if r["legal_check"]["result"] == "differs")
-    assert differs == ["B-16"]
+    assert differs == ["B-16"]  # kept on record although the owner decided the label
     settled = sorted(r["key"].split("/")[1][:4] for r in ROUND3["cases"] if r.get("lead_override"))
     assert settled == ["B-18", "B-19", "B-21", "B-22", "B-23", "K-08", "N-03", "N-14", "Q-22"]
     for r in ROUND3["cases"]:
         if r.get("lead_override"):
             assert r["lead_override"]["was"]["verdict"] == "needs_human" and r["lead_override"]["why"]
     b16 = next(d for d in LEDGER["decisions"] if d["key"].endswith("B-16-h1-job-change"))
-    assert b16["decision"] == "needs_human" and b16["v2"] is None
+    assert b16["decision"] == "owner_decided" and b16["changed"]
+    assert b16["ai_review_round3"]["owner_decision"]["decision"] == "매뉴얼을 기준으로 판단해서 결정짓자"
+    assert b16["ai_review_round3"]["legal_check"]["result"] == "differs"
 
 
 def test_if_answered_checks_apply_only_to_direct_answers():
