@@ -8,8 +8,10 @@ document that no approved item states must withhold the whole answer.
 from __future__ import annotations
 
 import ast
+import hashlib
 import importlib.util
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -245,3 +247,26 @@ def test_post_check_reads_equivalent_number_formats(answer_text, evidence_text, 
     trusted = [{"id": "E", "title": "t", "text": evidence_text, "source": {"approval_state": "approved"}}]
     result = tg.post_check({"status": "answered", "answer": answer_text, "citations": ["E"]}, trusted)
     assert result["verdict"] == verdict, result["unsupported"]
+
+
+def test_heldout_v4_planted_wrong_values_stay_withheld():
+    """Held-out v4 (written by an agent that never saw this code): every wrong value
+    its author planted is withheld by the post-check, except durations written as
+    Korean number words, which the extractor never reads (a known gap, not a
+    regression: the earlier post-check passed them too)."""
+    cases = json.loads((BOOTSTRAP_DIR / "heldout_v4_cases.json").read_text(encoding="utf-8"))["cases"]
+    passed = []
+    for case in cases:
+        trusted = [e for e in case["evidence"] if tg.is_trusted(e, True)]
+        for wrong in case["expect"].get("answer_must_not_contain", []):
+            parsed = {"status": "answered", "answer": f"{wrong}입니다.", "citations": case["expect"]["must_cite"]}
+            if tg.post_check(parsed, trusted)["verdict"] == "pass":
+                passed.append(wrong)
+    assert passed and all(re.fullmatch(r"(?:두|석|넉|여섯) 달", w) for w in passed), passed
+
+
+def test_heldout_v4_rerun_is_all_correct_after_the_post_check():
+    rec = json.loads((BOOTSTRAP_DIR / "runs" / "2026-10-28-e4b-it-4bit-m1-8gb-v4-gated-integrity-r2" / "run_record.json").read_text(encoding="utf-8"))
+    assert rec["status"] == "completed" and rec["source_gate"] and rec["integrity"]
+    assert rec["cases_sha256"] == hashlib.sha256((BOOTSTRAP_DIR / "heldout_v4_cases.json").read_bytes()).hexdigest()
+    assert rec["summary"]["outcomes_checked"]["correct"] == 24
