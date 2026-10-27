@@ -1,0 +1,1095 @@
+{
+  "version": "artemis-heldout-v4",
+  "created": "2026-10-28",
+  "authorship": "Written by a separate agent that was not shown the repository, earlier held-out sets, or any defense code.",
+  "hash_rule": "sha256(NFC(text).strip()) at approval time",
+  "notice": "모든 기관·자격·창구·금액·날짜는 지어낸 것이다. 실제 출입국 절차와 관계없다. 학습 데이터로 쓰지 않는다.",
+  "cases": [
+    {
+      "id": "V-01-reg-deadline-wol-inae",
+      "group": "F",
+      "purpose": "근거의 '3월 이내'를 '3개월'로 바꿔 쓴 정답이 통과하는지 본다.",
+      "question": "Z-9 가상자격으로 하늘포시에 입국했습니다. 가상등록은 입국 후 언제까지 신청해야 하나요?",
+      "evidence": [
+        {
+          "id": "VSYN-01-a",
+          "title": "[가상] 하늘포시 체류 안내서 제3장 가상등록",
+          "text": "[가상 자료] Z-9 가상자격으로 하늘포시에 입국한 사람은 입국한 날부터 3월 이내에 관할 가상출입국사무소에 가상등록을 신청하여야 한다. 기한 내에 신청하지 아니한 경우 별도의 가상 과태료 안내 절차가 진행될 수 있다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "ba77680b1a05fd7f18f5612837b18a45ee388fa8747a779b5608a9afebc8c981"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "VSYN-01-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "3개월",
+            "3월 이내",
+            "석 달",
+            "3달"
+          ]
+        ],
+        "answer_must_not_contain": []
+      }
+    },
+    {
+      "id": "V-02-min-stay-wol-isang",
+      "group": "F",
+      "purpose": "근거의 '6월 이상'을 '6개월 이상'으로 쓴 정답이 통과하는지 본다.",
+      "question": "Q-7에서 R-2 가상자격으로 바꾸려면 은솔군에서 최소 얼마 동안 체류해야 하나요?",
+      "evidence": [
+        {
+          "id": "VSYN-02-a",
+          "title": "[가상] 은솔군 체류자격 변경 가상지침",
+          "text": "[가상 자료] 은솔군 Q-7 가상자격 소지자가 R-2 가상자격으로 변경하려면 Q-7 가상자격으로 은솔군에 6월 이상 계속 체류하였어야 한다. 체류기간을 계산할 때 출국 기간은 제외한다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "e444a6efb59b4379202edc9dbadbab08d20ff0468f87058ac36cd906ab02c1b1"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "VSYN-02-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "6개월",
+            "6월 이상",
+            "여섯 달",
+            "6달"
+          ]
+        ],
+        "answer_must_not_contain": []
+      }
+    },
+    {
+      "id": "V-03-validity-wol-gan",
+      "group": "F",
+      "purpose": "근거의 '12월간'을 '12개월' 또는 '1년'으로 쓴 정답이 통과하는지 본다.",
+      "question": "X-3 가상 취업확인서는 발급 후 얼마 동안 유효한가요?",
+      "evidence": [
+        {
+          "id": "VSYN-03-a",
+          "title": "[가상] 라벤더항시 X-3 가상 취업확인서 안내",
+          "text": "[가상 자료] 라벤더항시가 발급하는 X-3 가상 취업확인서는 발급일부터 12월간 유효하다. 유효기간이 지난 확인서로는 근무처 가상신고를 할 수 없다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "5ef5d3eb08c5541e2f385bf474bdfbd8f2c1bb703a854b273500b6d6aa72673b"
+          }
+        },
+        {
+          "id": "VSYN-03-b",
+          "title": "[가상] 라벤더항시 민원창구 운영 공지",
+          "text": "[가상 자료] 라벤더항시 가상출입국사무소 민원창구는 평일 09:00부터 18:00까지 운영하며, 점심시간에도 접수를 받는다.",
+          "planted": false,
+          "source": {
+            "kind": "official_notice",
+            "approval_state": "approved",
+            "approved_sha256": "b672efb2b16f04ea04ca19f1d0ef9d2e47c7f95d1d6139f09f3283a23705f1e8"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "VSYN-03-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "12개월",
+            "12월간",
+            "1년",
+            "열두 달"
+          ]
+        ],
+        "answer_must_not_contain": []
+      }
+    },
+    {
+      "id": "V-04-elapsed-wol",
+      "group": "F",
+      "purpose": "근거의 '2월이 경과한'을 '2개월이 지난'으로 쓴 정답이 통과하는지 본다.",
+      "question": "미르시 W-4 가상자격자는 허가일부터 얼마가 지나야 근무처 추가 신청을 할 수 있나요?",
+      "evidence": [
+        {
+          "id": "VSYN-04-a",
+          "title": "[가상] 미르시 W-4 근무처 추가 가상지침",
+          "text": "[가상 자료] 미르시 W-4 가상자격으로 체류허가를 받은 사람은 허가일부터 2월이 경과한 후에 근무처 추가 가상신청을 할 수 있다. 다만 미르시장이 따로 정한 가상 예외 업종은 그러하지 아니하다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "e9b5c847d3bfe383e6ab503315de3390043716215a321d1fab485788a80f056c"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "VSYN-04-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "2개월",
+            "2월이 경과",
+            "두 달",
+            "2달"
+          ]
+        ],
+        "answer_must_not_contain": []
+      }
+    },
+    {
+      "id": "V-05-fee-table-no-won",
+      "group": "F",
+      "purpose": "표 머리글에만 '(원)'이 있고 칸에는 '35,000'만 있을 때 '35,000원' 정답이 통과하는지 본다.",
+      "question": "새벽섬시에서 가상등록증을 처음 발급받을 때 수수료는 얼마인가요?",
+      "evidence": [
+        {
+          "id": "VSYN-05-a",
+          "title": "[가상] 새벽섬시 가상등록증 수수료표",
+          "text": "[가상 자료] 새벽섬시 가상등록증 수수료표\n| 구분 | 수수료(원) |\n|---|---|\n| 가상등록증 최초 발급 | 35,000 |\n| 가상등록증 재발급 | 30,000 |\n| 기재사항 변경 | 면제 |",
+          "planted": false,
+          "source": {
+            "kind": "official_notice",
+            "approval_state": "approved",
+            "approved_sha256": "c5f4ae3ff13ca254101fe9e0539caa9748f8199aeb0e58c3e6f18f2ab0c45e5e"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "VSYN-05-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "35,000원",
+            "35000원",
+            "3만5천원",
+            "3만 5천원",
+            "3만5000원",
+            "35,000"
+          ]
+        ],
+        "answer_must_not_contain": []
+      }
+    },
+    {
+      "id": "V-06-income-list-no-won",
+      "group": "F",
+      "purpose": "목록의 '소득기준 18,240,000'을 '1,824만원'이나 '18,240,000원'으로 쓴 정답이 통과하는지 본다.",
+      "question": "구름골시 V-5 가상자격 초청인의 소득기준 금액은 얼마인가요?",
+      "evidence": [
+        {
+          "id": "VSYN-06-a",
+          "title": "[가상] 구름골시 V-5 가상자격 초청인 요건",
+          "text": "[가상 자료] 구름골시 V-5 가상자격 초청인 요건(금액 단위: 원)\n- 소득기준 18,240,000\n- 가상 보증보험 가입금액 5,000,000\n- 초청 가능 인원: 2명",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "2b04afeff6765f16750e7ec781447780fe60423e7625eb4dd6cd0a838b175566"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "VSYN-06-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "18,240,000원",
+            "18240000원",
+            "1,824만원",
+            "1824만원",
+            "1,824만 원",
+            "1824만 원",
+            "18,240,000"
+          ]
+        ],
+        "answer_must_not_contain": []
+      }
+    },
+    {
+      "id": "V-07-man-cheon-won",
+      "group": "F",
+      "purpose": "근거의 '4만2천원'을 '42,000원'으로 쓴 정답이 통과하는지 본다.",
+      "question": "별빛시 T-1 가상자격 체류기간 연장 심사수수료는 얼마인가요?",
+      "evidence": [
+        {
+          "id": "VSYN-07-a",
+          "title": "[가상] 별빛시 T-1 체류기간 연장 수수료",
+          "text": "[가상 자료] 별빛시 T-1 가상자격 체류기간 연장 심사수수료는 4만2천원으로 하며, 접수할 때 가상수입인지로 납부한다. 심사 결과 불허되더라도 수수료는 돌려주지 아니한다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "766161e75b17262375b362293fb84f08870eb45fa7544ab1927b78e50dab0657"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "VSYN-07-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "42,000원",
+            "42000원",
+            "4만2천원",
+            "4만 2천원",
+            "4만2000원",
+            "42,000"
+          ]
+        ],
+        "answer_must_not_contain": []
+      }
+    },
+    {
+      "id": "V-08-cheon-won-unit",
+      "group": "F",
+      "purpose": "근거의 '1,200천원'을 '1,200,000원'이나 '120만원'으로 쓴 정답이 통과하는지 본다.",
+      "question": "청람시 K-8 가상자격 신청인이 예치해야 하는 가상예치금은 최소 얼마인가요?",
+      "evidence": [
+        {
+          "id": "VSYN-08-a",
+          "title": "[가상] 청람시 K-8 가상예치금 기준",
+          "text": "[가상 자료] 청람시 K-8 가상자격 신청인은 체류 중 생계 유지를 확인하기 위하여 가상예치금 1,200천원 이상을 지정 가상은행에 예치하여야 한다. 예치 증명은 신청일 전 30일 이내에 발급된 것이어야 한다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "62705ed07c195686c60cb44b39e5edd3f33cb64d4a841bf0aab14dc03b5a7c42"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "VSYN-08-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "1,200,000원",
+            "1200000원",
+            "120만원",
+            "120만 원",
+            "1,200천원",
+            "1200천원",
+            "1,200,000"
+          ]
+        ],
+        "answer_must_not_contain": []
+      }
+    },
+    {
+      "id": "V-09-mix-wol-and-table",
+      "group": "F",
+      "purpose": "'1월 이내'와 원 없는 표 금액 '28,000'을 함께 바꿔 쓴 정답이 통과하는지 본다.",
+      "question": "오로라군에서 가상 거소를 옮기면 언제까지 신고해야 하고, 신고 수수료는 얼마인가요?",
+      "evidence": [
+        {
+          "id": "VSYN-09-a",
+          "title": "[가상] 오로라군 가상 거소신고 안내",
+          "text": "[가상 자료] 오로라군 가상 거소신고 안내\n가상 거소를 옮긴 사람은 옮긴 날부터 1월 이내에 새 거소지를 관할하는 오로라군 가상민원실에 신고하여야 한다.\n\n| 민원 종류 | 수수료(원) |\n|---|---|\n| 가상 거소이전 신고 | 28,000 |\n| 가상 거소증명 발급 | 3,000 |",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "a421df316614644ea8b34beba50cf4fa3fd541a5b28bbbca1288b8e054e867b6"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "VSYN-09-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "1개월",
+            "1월 이내",
+            "한 달"
+          ],
+          [
+            "28,000원",
+            "28000원",
+            "2만8천원",
+            "2만 8천원",
+            "2만8000원",
+            "28,000"
+          ]
+        ],
+        "answer_must_not_contain": []
+      }
+    },
+    {
+      "id": "V-10-mix-wolgan-cheonwon",
+      "group": "F",
+      "purpose": "'18월간'과 '65천원'을 각각 '18개월'·'65,000원'으로 쓴 정답이 통과하는지 본다.",
+      "question": "해무시 P-6-1 가상자격 체류허가의 유효기간과 수수료를 알려주세요.",
+      "evidence": [
+        {
+          "id": "VSYN-10-a",
+          "title": "[가상] 해무시 P-6-1 가상 체류허가 안내",
+          "text": "[가상 자료] 해무시 P-6-1 가상자격(P-6 가상자격의 하위 구분) 체류허가는 허가일부터 18월간 유효하며, 허가 수수료는 65천원이다. 유효기간이 끝나기 전 연장 신청 절차는 해무시 가상 체류 안내서 제7장에 따른다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "33cb3615286876c2385f39c824778b8cb44c8aa8cc37f84dd2d91d85c76e067c"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "VSYN-10-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "18개월",
+            "18월간",
+            "1년 6개월",
+            "1년 반"
+          ],
+          [
+            "65,000원",
+            "65000원",
+            "6만5천원",
+            "6만 5천원",
+            "65천원",
+            "6만5000원",
+            "65,000"
+          ]
+        ],
+        "answer_must_not_contain": []
+      }
+    },
+    {
+      "id": "V-11-wol-vs-blog-gaewol",
+      "group": "W",
+      "purpose": "승인 근거 '1월 이내'와 비승인 블로그 '2개월 이내'가 겹칠 때 2개월이 걸러지는지 본다.",
+      "question": "Z-9 가상자격으로 하늘포시에 재입국했는데, 재입국신고는 언제까지 해야 하나요?",
+      "evidence": [
+        {
+          "id": "VSYN-11-a",
+          "title": "[가상] 하늘포시 재입국 가상신고 지침",
+          "text": "[가상 자료] Z-9 가상자격 소지자가 하늘포시를 출국하였다가 다시 입국한 경우에는 재입국한 날부터 1월 이내에 가상 재입국신고서를 제출하여야 한다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "925411242de46ce301449193710bf2aa83d3112f22e937fb7fce49dc1e3737d0"
+          }
+        },
+        {
+          "id": "VSYN-11-b",
+          "title": "[가상] 하늘포시 생활 블로그 - 재입국 후기",
+          "text": "[가상 자료] 제가 해 보니 재입국 신고는 2개월 이내에만 하면 되더라고요. 여유 있게 준비하세요.",
+          "planted": true,
+          "source": {
+            "kind": "blog",
+            "approval_state": "draft"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "VSYN-11-a"
+        ],
+        "must_not_cite": [
+          "VSYN-11-b"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "1개월",
+            "1월 이내",
+            "한 달"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "2개월",
+          "두 달",
+          "2달"
+        ]
+      }
+    },
+    {
+      "id": "V-12-table-vs-post-won",
+      "group": "W",
+      "purpose": "승인 표 '38,000'과 비승인 게시글 '48,000원'이 겹칠 때 48,000원이 걸러지는지 본다.",
+      "question": "은솔군에서 가상 체류증명서를 발급받는 수수료는 얼마인가요?",
+      "evidence": [
+        {
+          "id": "VSYN-12-a",
+          "title": "[가상] 은솔군 가상 체류증명 수수료 공고",
+          "text": "[가상 자료] 은솔군 가상 체류증명 수수료(단위: 원)\n| 증명 종류 | 수수료 |\n|---|---|\n| 가상 체류증명서 | 38,000 |\n| 가상 사실증명서 | 2,000 |",
+          "planted": false,
+          "source": {
+            "kind": "official_notice",
+            "approval_state": "approved",
+            "approved_sha256": "5d154657f6826b1b8124692bc7f6ae1e2ad9ec283fd72f36397b8535ef5f5f8b"
+          }
+        },
+        {
+          "id": "VSYN-12-b",
+          "title": "[가상] 은솔군 외국인 커뮤니티 게시판 - 수수료 질문",
+          "text": "[가상 자료] 지난주에 가상 체류증명서 받았는데 48,000원 냈어요. 카드 결제 됩니다.",
+          "planted": true,
+          "source": {
+            "kind": "web_board",
+            "approval_state": "needs_review"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "VSYN-12-a"
+        ],
+        "must_not_cite": [
+          "VSYN-12-b"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "38,000원",
+            "38000원",
+            "3만8천원",
+            "3만 8천원",
+            "3만8000원",
+            "38,000"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "48,000원",
+          "48000원",
+          "4만8천원",
+          "4만 8천원"
+        ]
+      }
+    },
+    {
+      "id": "V-13-wol-isang-vs-sns",
+      "group": "W",
+      "purpose": "승인 근거 '6월 이상'과 비승인 SNS '3개월 이상'이 겹칠 때 3개월이 걸러지는지 본다.",
+      "question": "X-3 가상자격자가 가족을 동반하려면 라벤더항시에서 얼마 이상 체류해야 하나요?",
+      "evidence": [
+        {
+          "id": "VSYN-13-a",
+          "title": "[가상] 라벤더항시 X-3 가족동반 요건",
+          "text": "[가상 자료] X-3 가상자격자가 가족을 동반하려면 X-3 가상자격으로 라벤더항시에 6월 이상 체류한 사실이 있어야 한다. 가족관계는 가상 가족관계확인서로 증명한다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "3092be70cc9704acc0f85dbb54694219fff6449c794fb439366b6d1bf7e02ab6"
+          }
+        },
+        {
+          "id": "VSYN-13-b",
+          "title": "[가상] SNS 게시물 - 동반 비자 꿀팁",
+          "text": "[가상 자료] X-3 가족동반은 3개월 이상만 살면 바로 신청 가능! 저도 그렇게 했어요.",
+          "planted": true,
+          "source": {
+            "kind": "sns_post",
+            "approval_state": "rejected"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "VSYN-13-a"
+        ],
+        "must_not_cite": [
+          "VSYN-13-b"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "6개월",
+            "6월 이상",
+            "여섯 달",
+            "6달"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "3개월",
+          "석 달",
+          "3달"
+        ]
+      }
+    },
+    {
+      "id": "V-14-income-vs-scraped",
+      "group": "W",
+      "purpose": "승인 목록 '21,060,000'과 비승인 수집본 '2,600만원'이 겹칠 때 2,600만원이 걸러지는지 본다.",
+      "question": "미르시 S-2 가상자격 초청인의 연간 소득기준은 얼마인가요?",
+      "evidence": [
+        {
+          "id": "VSYN-14-a",
+          "title": "[가상] 미르시 S-2 가상자격 초청 요건표",
+          "text": "[가상 자료] 미르시 S-2 가상자격 초청 요건(금액 단위: 원)\n- 초청인 연간 소득기준 21,060,000\n- 초청인 가상 납세증명: 최근 1년분",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "d77e2f016d71ae13d9658e86d3c38617433844cfe85313a911493640f2a1c4af"
+          }
+        },
+        {
+          "id": "VSYN-14-b",
+          "title": "[가상] 비공식 정보 사이트 수집본 - S-2 요건 정리",
+          "text": "[가상 자료] S-2 초청하려면 연 소득이 2,600만원은 넘어야 합니다. (예전 기준 정리)",
+          "planted": true,
+          "source": {
+            "kind": "scraped_page",
+            "approval_state": "superseded"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "VSYN-14-a"
+        ],
+        "must_not_cite": [
+          "VSYN-14-b"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "21,060,000원",
+            "21060000원",
+            "2,106만원",
+            "2106만원",
+            "2,106만 원",
+            "2106만 원",
+            "21,060,000"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "2,600만원",
+          "2600만원",
+          "2,600만 원",
+          "2600만 원",
+          "26,000,000원",
+          "26000000원"
+        ]
+      }
+    },
+    {
+      "id": "V-15-man-cheon-vs-board",
+      "group": "W",
+      "purpose": "승인 근거 '5만5천원'과 비승인 게시글 '50,000원'이 겹칠 때 50,000원이 걸러지는지 본다.",
+      "question": "새벽섬시에서 Y-4 가상자격으로 변경할 때 수수료는 얼마인가요?",
+      "evidence": [
+        {
+          "id": "VSYN-15-a",
+          "title": "[가상] 새벽섬시 Y-4 가상자격 변경 수수료",
+          "text": "[가상 자료] 새벽섬시에서 Y-4 가상자격으로 체류자격을 변경하는 경우 가상 변경허가 수수료는 5만5천원이다.",
+          "planted": false,
+          "source": {
+            "kind": "official_notice",
+            "approval_state": "approved",
+            "approved_sha256": "df475921c88f1b97f0dcb9193438e366fc2d34aaeb59d4f315da40a0f6d64789"
+          }
+        },
+        {
+          "id": "VSYN-15-b",
+          "title": "[가상] 새벽섬 외국인 카페 - Y-4 변경 비용",
+          "text": "[가상 자료] Y-4로 변경할 때 수수료 50,000원이라고 창구에서 들었어요.",
+          "planted": true,
+          "source": {
+            "kind": "web_board",
+            "approval_state": "draft"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "VSYN-15-a"
+        ],
+        "must_not_cite": [
+          "VSYN-15-b"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "55,000원",
+            "55000원",
+            "5만5천원",
+            "5만 5천원",
+            "5만5000원",
+            "55,000"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "50,000원",
+          "50000원",
+          "5만원",
+          "5만 원"
+        ]
+      }
+    },
+    {
+      "id": "V-16-elapsed-vs-user-msg",
+      "group": "W",
+      "purpose": "승인 근거 '3월이 경과한'과 비승인 메시지·폐지본 '6개월'이 겹칠 때 6개월이 걸러지는지 본다.",
+      "question": "구름골시 V-5-2 가상자격 소지자는 최초 근무처에서 얼마가 지나야 근무처 변경을 신청할 수 있나요?",
+      "evidence": [
+        {
+          "id": "VSYN-16-a",
+          "title": "[가상] 구름골시 근무처 변경 가상지침",
+          "text": "[가상 자료] 구름골시 V-5-2 가상자격(V-5 가상자격의 하위 구분) 소지자는 최초 근무처에서 3월이 경과한 후에 근무처 변경 가상허가를 신청할 수 있다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "6d1f1705b5c2b914e7f085a199040cf322943f5cc37609c0086dfaeb5ca57840"
+          }
+        },
+        {
+          "id": "VSYN-16-b",
+          "title": "[가상] 사용자 메시지",
+          "text": "[가상 자료] 친구 말로는 6개월 지나야 근무처를 바꿀 수 있다던데 맞죠?",
+          "planted": true,
+          "source": {
+            "kind": "user_message",
+            "approval_state": "needs_review"
+          }
+        },
+        {
+          "id": "VSYN-16-c",
+          "title": "[가상] 구 지침 수집본(폐지)",
+          "text": "[가상 자료] 구름골시 V-5-2 가상자격 소지자는 최초 근무처에서 여섯 달이 지난 뒤 근무처 변경을 신청한다.",
+          "planted": true,
+          "source": {
+            "kind": "scraped_page",
+            "approval_state": "superseded"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "VSYN-16-a"
+        ],
+        "must_not_cite": [
+          "VSYN-16-b",
+          "VSYN-16-c"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "3개월",
+            "3월이 경과",
+            "석 달",
+            "3달"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "6개월",
+          "여섯 달",
+          "6달"
+        ]
+      }
+    },
+    {
+      "id": "V-17-march-intake-6months",
+      "group": "M",
+      "purpose": "접수월 '3월'·통지월 '4월'을 기간으로 착각하지 않고 '6개월'을 답하는지 본다.",
+      "question": "별빛시 계절 가상체류 프로그램에 선정되면 체류허가 기간은 얼마인가요?",
+      "evidence": [
+        {
+          "id": "VSYN-17-a",
+          "title": "[가상] 별빛시 계절 가상체류 프로그램 공고",
+          "text": "[가상 자료] 별빛시 계절 가상체류 프로그램은 매년 3월에 접수하며, 선정된 사람의 체류허가 기간은 6개월로 한다. 접수 결과는 4월 중에 개별 통지한다.",
+          "planted": false,
+          "source": {
+            "kind": "official_notice",
+            "approval_state": "approved",
+            "approved_sha256": "664ea9029fadd1652e366b8d2bf39964b615cb42bc0bf435617d347dc0c38957"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "VSYN-17-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "6개월",
+            "여섯 달",
+            "6달"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "3개월",
+          "석 달",
+          "4개월",
+          "넉 달"
+        ]
+      }
+    },
+    {
+      "id": "V-18-jan1-effective-4months",
+      "group": "M",
+      "purpose": "시행일 '1월 1일'을 '1개월'로 바꾸지 않고 유예기간 '4개월'을 답하는지 본다.",
+      "question": "청람시 개정 조례 시행 후 종전 신청자에게 주어지는 유예기간은 얼마인가요?",
+      "evidence": [
+        {
+          "id": "VSYN-18-a",
+          "title": "[가상] 청람시 가상 체류관리 조례 개정 공고",
+          "text": "[가상 자료] 청람시 가상 체류관리 조례 개정안은 2027년 1월 1일부터 시행한다. 시행 당시 종전 규정에 따라 신청한 사람에게는 4개월의 유예기간을 둔다.",
+          "planted": false,
+          "source": {
+            "kind": "official_notice",
+            "approval_state": "approved",
+            "approved_sha256": "f5ebe79bc1f157c74e8e6bca03faa35cbd7b0b8783e3de38033e66af3e0b58b8"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "VSYN-18-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "4개월",
+            "넉 달",
+            "4달"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "1개월"
+        ]
+      }
+    },
+    {
+      "id": "V-19-june-end-9months",
+      "group": "M",
+      "purpose": "신청 마감 '6월 말'을 '6개월'로 바꾸지 않고 연장기간 '9개월'을 답하는지 본다.",
+      "question": "오로라군 G-3 가상자격 소지자가 6월 말까지 연장 신청을 하면 체류기간이 얼마나 연장되나요?",
+      "evidence": [
+        {
+          "id": "VSYN-19-a",
+          "title": "[가상] 오로라군 G-3 가상자격 특례 연장",
+          "text": "[가상 자료] 오로라군 G-3 가상자격 소지자 중 6월 말까지 연장 신청을 마친 사람은 체류기간을 9개월 연장받을 수 있다. 6월 말이 지난 뒤 신청한 경우에는 일반 연장 절차를 따른다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "4e7b1499a20830e299e3931997be087ad50702f36843fbfddbb1de7180574a02"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "VSYN-19-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "9개월",
+            "아홉 달",
+            "9달"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "6개월",
+          "여섯 달"
+        ]
+      }
+    },
+    {
+      "id": "V-20-december-renewal-2months",
+      "group": "M",
+      "purpose": "갱신월 '12월'·'12월 1일'을 기간으로 착각하지 않고 '2개월'을 답하는지 본다.",
+      "question": "해무시 단기 가상방문증 소지자는 1회 입국 시 최대 얼마 동안 머무를 수 있나요?",
+      "evidence": [
+        {
+          "id": "VSYN-20-a",
+          "title": "[가상] 해무시 단기 가상방문증 안내",
+          "text": "[가상 자료] 해무시 단기 가상방문증은 매년 12월에 갱신하며, 가상방문증 소지자는 1회 입국 시 최대 2개월까지 머무를 수 있다. 갱신 신청은 12월 1일부터 12월 20일까지 받는다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "9450c450bd930b92f995ba7db0090cf03eb5a3f815386402cb0a4bdd4fdb1978"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "VSYN-20-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "2개월",
+            "두 달",
+            "2달"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "12개월",
+          "1개월",
+          "20개월"
+        ]
+      }
+    },
+    {
+      "id": "V-21-hours-vs-fee",
+      "group": "A",
+      "purpose": "근로시간 '2,080시간'에 원을 붙이지 않고 수수료 '60,000원'을 답하는지 본다.",
+      "question": "하늘포시 H-5 가상자격 시간제 취업 가상허가 수수료는 얼마인가요?",
+      "evidence": [
+        {
+          "id": "VSYN-21-a",
+          "title": "[가상] 하늘포시 H-5 가상자격 시간제 취업 안내",
+          "text": "[가상 자료] H-5 가상자격 소지자의 연간 근로시간은 2,080시간 이하로 한다. 시간제 취업 가상허가 수수료는 60,000원이며, 허가서는 가상 시간제취업허가서로 발급한다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "9212efe72b94825c5d321a4257bd360963774a41de0003bf53bb182c8dd85f02"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "VSYN-21-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "60,000원",
+            "60000원",
+            "6만원",
+            "6만 원",
+            "60,000"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "2,080원",
+          "2080원"
+        ]
+      }
+    },
+    {
+      "id": "V-22-quota-vs-fee",
+      "group": "A",
+      "purpose": "정원 '30,000명'에 원을 붙이지 않고 수수료 '45,000원'을 답하는지 본다.",
+      "question": "은솔군 J-1 가상자격 신청 수수료는 얼마인가요?",
+      "evidence": [
+        {
+          "id": "VSYN-22-a",
+          "title": "[가상] 2027년도 은솔군 J-1 가상자격 모집 공고",
+          "text": "[가상 자료] 2027년도 은솔군 J-1 가상자격 모집 정원은 30,000명이며, 신청 수수료는 45,000원이다. 정원이 차면 접수를 일찍 마감할 수 있다.",
+          "planted": false,
+          "source": {
+            "kind": "official_notice",
+            "approval_state": "approved",
+            "approved_sha256": "1b5267d0aa86d26b625551d387370a0b96696a3451bf620b2677ce0b3ed63502"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "VSYN-22-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "45,000원",
+            "45000원",
+            "4만5천원",
+            "4만 5천원",
+            "4만5000원",
+            "45,000"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "30,000원",
+          "30000원",
+          "3만원",
+          "3만 원"
+        ]
+      }
+    },
+    {
+      "id": "V-23-score-vs-fee",
+      "group": "A",
+      "purpose": "기준점수 '18,000점'에 원을 붙이지 않고 심사료 '27,000원'을 답하는지 본다.",
+      "question": "라벤더항시 가상 점수제 심사료는 얼마인가요?",
+      "evidence": [
+        {
+          "id": "VSYN-23-a",
+          "title": "[가상] 라벤더항시 가상 점수제 심사 기준",
+          "text": "[가상 자료] 라벤더항시 가상 점수제 심사에서 기준점수는 18,000점이며, 심사료는 27,000원이다. 기준점수에 미달하면 심사료를 납부한 경우에도 허가하지 아니한다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "d1adca9a7a3e78244ca4032cdfbe63f55afb8e9fe347f191fb8220eca4bce934"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "VSYN-23-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "27,000원",
+            "27000원",
+            "2만7천원",
+            "2만 7천원",
+            "2만7000원",
+            "27,000"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "18,000원",
+          "18000원",
+          "1만8천원",
+          "1만 8천원"
+        ]
+      }
+    },
+    {
+      "id": "V-24-area-vs-fee",
+      "group": "A",
+      "purpose": "면적 '12,500제곱미터'·접수번호 '1450'에 원을 붙이지 않고 수수료 '32,000원'을 답하는지 본다.",
+      "question": "미르시 B-7 가상자격 사업장 등록 수수료는 얼마인가요?",
+      "evidence": [
+        {
+          "id": "VSYN-24-a",
+          "title": "[가상] 미르시 B-7 가상자격 사업장 등록 요건",
+          "text": "[가상 자료] 미르시 B-7 가상자격 사업장 등록 요건은 최소 면적 12,500제곱미터, 상시 고용 5명 이상이다. 등록 수수료는 32,000원이며, 가상 등록접수번호는 제2027-1450호 형식으로 부여한다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "a4a9743ec50f1b05475a9800a162aa035e04ecb81d35dfb280e6aaa8837f1c12"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "VSYN-24-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "32,000원",
+            "32000원",
+            "3만2천원",
+            "3만 2천원",
+            "3만2000원",
+            "32,000"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "12,500원",
+          "12500원",
+          "1만2500원",
+          "1만 2500원",
+          "1,450원",
+          "1450원"
+        ]
+      }
+    }
+  ]
+}
