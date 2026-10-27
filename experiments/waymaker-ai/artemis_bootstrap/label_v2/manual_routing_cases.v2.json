@@ -618,16 +618,24 @@
         "must_cite": [
           "visa_manual_2026_10_19_pdf#p338"
         ],
-        "answer_must_contain_any_of_each": [
-          [
-            "90일이하의 단수사증"
-          ],
-          [
-            "체류기간연장허가"
-          ]
-        ],
         "must_not_cite": [
           "stay_manual_2026_10_19_pdf#p485"
+        ],
+        "answer_must_match": [
+          {
+            "label": "공관 발급은 체류기간 90일 이하",
+            "pattern": "90\\s*일\\s*이하|(?i:90\\s*days\\s*or\\s*less|up\\s+to\\s+90\\s+days)"
+          },
+          {
+            "label": "입국 후 체류기간 연장허가",
+            "pattern": "체류\\s*기간\\s*연장\\s*허가|(?i:extension\\s+of\\s+(?:the\\s+)?(?:period\\s+of\\s+)?stay)"
+          }
+        ],
+        "answer_flag_if_match": [
+          {
+            "label": "공관에서 1년 사증을 받을 수 있다고 씀(시행규칙 제9조 특례인지 확인)",
+            "pattern": "(?:공관|재외공관|(?i:embassy|consulate))[^.\\n]{0,25}1\\s*년[^.\\n]{0,15}(?:받을\\s*수\\s*있|발급\\s*가능|가능합니다)"
+          }
         ]
       }
     },

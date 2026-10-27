@@ -343,6 +343,7 @@ textarea { background: var(--bg); border: 1px solid var(--line); border-radius: 
           ${(v2e.answer_must_match || []).length ? `<dt>v2 있어야 할 사실 구조</dt><dd>${v2e.answer_must_match.map(rule).join("")}</dd>` : ""}
           ${(v2e.answer_must_not_match || []).length ? `<dt>v2 실패 처리하는 모순</dt><dd>${v2e.answer_must_not_match.map((r) => `<span class="str bad">${esc(r.label)}</span>`).join("")}</dd>` : ""}
           ${(v2e.answer_flag_if_match || []).length ? `<dt>v2 검토 필요로 돌리는 표현(실패도 자동 정답도 아님)</dt><dd>${v2e.answer_flag_if_match.map(rule).join("")}</dd>` : ""}
+          ${v2e.if_answered ? `<dt>바로 답한 경우에만 보는 것</dt><dd>${[...(v2e.if_answered.answer_must_match || []).map(rule), ...(v2e.if_answered.answer_must_not_match || []).map((r) => `<span class="str bad">${esc(r.label)}</span>`), ...(v2e.if_answered.answer_flag_if_match || []).map((r) => `<span class="str">검토 필요: ${esc(r.label)}</span>`)].join("")}</dd>` : ""}
           ${lv.v2_evidence_ids ? `<dt>v2 근거 쪽</dt><dd class="mono">${esc(lv.v2_evidence_ids.join(", "))}</dd>` : ""}
           <dt>v2 인용해야 할 쪽</dt><dd class="mono">${esc((v2e.must_cite || []).join(", ") || "-")}</dd>
         </dl>` : ""}

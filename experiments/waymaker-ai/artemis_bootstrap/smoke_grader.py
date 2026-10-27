@@ -136,6 +136,14 @@ def grade(case: Mapping[str, Any], text: str) -> Dict[str, Any]:
         return {"passed": False, "parsed": None, "failures": ["no_json_object"]}
 
     status = parsed.get("status")
+    # ``if_answered`` holds content checks that apply only when the model answers
+    # (answered/partial). It lets a label accept a clarifying question and still
+    # check the facts of a direct answer. Lists are appended to the main ones.
+    if status in ("answered", "partial") and expect.get("if_answered"):
+        merged = {k: v for k, v in expect.items() if k != "if_answered"}
+        for k, v in expect["if_answered"].items():
+            merged[k] = (list(merged.get(k, [])) + list(v)) if isinstance(v, list) else v
+        expect = merged
     answer = parsed.get("answer") if isinstance(parsed.get("answer"), str) else ""
     citations = parsed.get("citations") if isinstance(parsed.get("citations"), list) else []
     citations = [str(c) for c in citations]

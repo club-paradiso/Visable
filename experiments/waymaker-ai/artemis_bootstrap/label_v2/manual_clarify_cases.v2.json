@@ -1023,11 +1023,23 @@
       "expect": {
         "status": [
           "clarify",
-          "insufficient_evidence"
+          "answered",
+          "partial"
         ],
-        "must_not_cite": [
-          "visa_manual_2026_10_19_pdf#p124"
-        ]
+        "if_answered": {
+          "answer_must_match": [
+            {
+              "label": "1회 체류기간 상한 1년",
+              "pattern": "1\\s*년|(?i:one\\s+year|1\\s*year|12\\s*months)"
+            }
+          ],
+          "answer_must_not_match": [
+            {
+              "label": "상한을 1년이 아닌 기간으로 씀",
+              "pattern": "(?:최대|상한|1회)[^.\\n]{0,12}(?:[23]\\s*년|90\\s*일)(?![^.\\n]{0,15}(?:아니|틀|잘못|오류|사실이\\s*아))"
+            }
+          ]
+        }
       }
     },
     {

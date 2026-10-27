@@ -372,9 +372,21 @@
         "must_not_cite": [
           "visa_manual_2026_10_19_pdf#p15"
         ],
-        "answer_must_contain": [
-          "복수재입국허가",
-          "2년 내에 재입국"
+        "answer_must_match": [
+          {
+            "label": "복수재입국허가",
+            "pattern": "복수\\s*재입국\\s*허가|(?i:multiple[\\s-]*re-?entry)"
+          },
+          {
+            "label": "2년 내 재입국",
+            "pattern": "2\\s*년\\s*(?:이내|내|안)|(?i:(?:two|2)\\s+years)"
+          }
+        ],
+        "answer_flag_if_match": [
+          {
+            "label": "영주(F-5) 언급 없이 재입국허가가 필요 없다고 씀",
+            "pattern": "(?:^|[.\\n])(?![^.\\n]*(?:영주|F-5|(?i:permanent)))[^.\\n]*(?:재입국\\s*허가[^.\\n]{0,10}(?:필요\\s*없|불필요|면제)|(?i:no\\s+re-?entry\\s+permit|not\\s+need\\s+a\\s+re-?entry))"
+          }
         ]
       },
       "user_choice": "stay_in_korea",

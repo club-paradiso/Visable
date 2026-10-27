@@ -461,7 +461,7 @@ def check_round3() -> List[str]:
             if v2[key] == frozen[key]:
                 problems.append(f"{key}: change verdict but the patch changes nothing")
             for field in ("answer_must_match", "answer_must_not_match", "answer_flag_if_match"):
-                for rule in v2[key]["expect"].get(field, []):
+                for rule in v2[key]["expect"].get(field, []) + v2[key]["expect"].get("if_answered", {}).get(field, []):
                     try:
                         re.compile(rule["pattern"])
                     except re.error as e:

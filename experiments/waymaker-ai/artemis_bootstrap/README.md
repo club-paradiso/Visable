@@ -392,6 +392,14 @@ ChatGPT's proposals for M-04, Q-11 and K-05 banned one exact recorded sentence, 
 - Re-grading recorded answers: 96 of 139 comparable passed the frozen labels; under v2, 95 automatic correct, 4 needs review, 40 fail. Post hoc, not a model score.
 - The sheet (version 1793089607-58e5) shows each case's round-3 verdict, statute provision, MST, query date and quoted text, with filters for "사람 판단 필요" and "법령과 다름". Render check 14/14; the live `reviews` export after republishing is identical to the one before; `reviews_v2` is still empty.
 
+**Round 3, lead cross-check of the 9 left for a person (2026-10-27, owner's request to settle what can be settled).** The lead reviewer re-read each case's pages and statutes and settled 8; each row keeps a `lead_override` with what it was and why. The grader gained `if_answered`: content checks that apply only when the model answers, so a label can accept a clarifying question and still check a direct answer.
+- K-08: re-classified to consistent — non-F-5 holders are exempt only within 1 year (시행규칙 제44조의2), so 18 months needs the multiple permit on p427; answers that add the F-5 2-year exemption still pass.
+- N-14: re-classified to consistent — 제9조①9호's 1 year is the outer limit for persons the Minister specially recognises and 제9조② lets the Minister set detailed standards; the manual's 90 days is read as such a standard. Answers claiming a 1-year consular visa go to review.
+- Q-22, B-19, B-21, B-22, B-23: both a clarifying question and a direct answer count; a direct answer must state the page's fact (D-10 1-year cap; cyber universities excluded; 3 years / 4 years 10 months, with country counts sent to review; 6 months for D-4-1, confirmed within the manual by stay p37; re-entry exemption within 1 year). B-23's recorded abstention now fails because the page answers.
+- B-18: both routes on p188 accepted; only the shared fact (a permit for activities outside the status) is required.
+- Still with a person: **B-16** (H-1 workplace change). 법 제21조①, 시행령 제26조 and the H-1 row of 시행령 별표 1의2 contain no H-1 exception to prior permission, so the manual's "no separate change needed" cannot be confirmed from statute. Its label is unchanged.
+- Regrade (post hoc): 98 automatic correct, 4 needs review, 37 fail of 139 comparable. Sheet version 1793090372-ee0e; render check 16/16; live `reviews` identical; `reviews_v2` empty.
+
 **Not linked or not stored yet.** `reviews_v2` is empty (it is created on the first save). Decisions live in the repository and the sheet's bundle, not in the sheet's database. `run_smoke.py` can run a v2 file (`--cases label_v2/<set>_cases.v2.json`); only K-14 has been run on v2 so far. No production code, database or deployment was touched.
 
 ## Existing repository boundaries

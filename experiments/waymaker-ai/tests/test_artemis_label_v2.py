@@ -358,9 +358,24 @@ def test_round3_never_relabels_to_a_statute_and_leaves_needs_human_cases_untouch
 
 
 def test_round3_needs_human_set_and_statute_conflicts_are_the_reviewed_ones():
+    """After the lead cross-check only B-16 stays with a person; every case the lead
+    settled records what it was before and why."""
     needs = sorted(r["key"].split("/")[1][:4] for r in ROUND3["cases"] if r["verdict"] == "needs_human")
-    assert needs == ["B-16", "B-18", "B-19", "B-21", "B-22", "B-23", "K-08", "N-14", "Q-22"]
+    assert needs == ["B-16"]
     differs = sorted(r["key"].split("/")[1][:4] for r in ROUND3["cases"] if r["legal_check"]["result"] == "differs")
-    assert differs == ["B-16", "K-08", "N-14"]
-    n03 = next(r for r in ROUND3["cases"] if r["key"].endswith("N-03-d9-equipment-visa-docs"))
-    assert n03["lead_override"]["was"]["legal_check_result"] == "differs" and n03["verdict"] == "change"
+    assert differs == ["B-16"]
+    settled = sorted(r["key"].split("/")[1][:4] for r in ROUND3["cases"] if r.get("lead_override"))
+    assert settled == ["B-18", "B-19", "B-21", "B-22", "B-23", "K-08", "N-03", "N-14", "Q-22"]
+    for r in ROUND3["cases"]:
+        if r.get("lead_override"):
+            assert r["lead_override"]["was"]["verdict"] == "needs_human" and r["lead_override"]["why"]
+    b16 = next(d for d in LEDGER["decisions"] if d["key"].endswith("B-16-h1-job-change"))
+    assert b16["decision"] == "needs_human" and b16["v2"] is None
+
+
+def test_if_answered_checks_apply_only_to_direct_answers():
+    case = ml.resolve_cases([v2_case("manual_buttons/B-23-e9-going-home-briefly")])[0]
+    ask = grader.grade(case, answer("어떤 절차를 물으시는지 먼저 확인할게요.", [], status="clarify"))
+    assert grader.classify(ask) == "correct"
+    vague = grader.grade(case, answer("가족 방문은 가능합니다.", ["stay_manual_2026_10_19_pdf#p332"], status="partial"))
+    assert not vague["passed"] and any(f.startswith("answer_missing_pattern:") for f in vague["failures"])

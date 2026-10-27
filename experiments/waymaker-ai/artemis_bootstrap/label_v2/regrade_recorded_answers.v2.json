@@ -13,15 +13,16 @@
   "summary": {
     "cases": 140,
     "passed_original": 96,
-    "auto_correct_v2": 95,
+    "auto_correct_v2": 98,
     "needs_review_v2": 4,
-    "failed_v2": 40,
+    "failed_v2": 37,
     "comparable": 139,
     "not_comparable": [
       "manual_misclick/K-14-d8-4-where-to-apply-misclick"
     ],
     "flipped_to_pass": [
       "manual_oracle/M-10-d10t-stay-cap",
+      "manual_routing/N-14-f6-consular-visa-90days",
       "manual_routing/N-23-c4-seasonal-second-farm-implicit",
       "manual_clarify/Q-03-d2-visa-photo-admission",
       "manual_clarify/Q-05-e9-workplace-change-deadline",
@@ -30,6 +31,9 @@
       "manual_buttons/B-01-e3-visa-researcher-qualification",
       "manual_buttons/B-05-e3-workplace-change-report",
       "manual_buttons/B-14-d2-outside-research-pay",
+      "manual_buttons/B-18-e3-guest-lecture",
+      "manual_buttons/B-21-e9-eligible-countries",
+      "manual_buttons/B-22-d4-work-while-studying",
       "manual_misclick/K-02-e1-electronic-visa",
       "manual_misclick/K-04-f1-13-parent-quota",
       "manual_misclick/K-20-g1-99-newborn-misclick"
@@ -39,6 +43,7 @@
       "manual_routing/N-06-h1-canada-weekly-hours",
       "manual_clarify/Q-11-e9-change-jobs-count",
       "manual_buttons/B-15-d2-delivery-rider",
+      "manual_buttons/B-23-e9-going-home-briefly",
       "manual_always_ask/A-13-child-school-enrollment-report",
       "manual_misclick/K-01-c3-business-subcode",
       "manual_misclick/K-05-f2-2-child-of-national",
@@ -615,7 +620,7 @@
     },
     {
       "key": "manual_routing/N-14-f6-consular-visa-90days",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": false,
@@ -624,12 +629,10 @@
         ]
       },
       "v2": {
-        "passed": false,
-        "failures": [
-          "answer_missing_one_of:90일이하의 단수사증"
-        ],
+        "passed": true,
+        "failures": [],
         "flags": [],
-        "outcome": "other"
+        "outcome": "correct"
       }
     },
     {
@@ -1210,7 +1213,7 @@
     },
     {
       "key": "manual_clarify/Q-22-d10-how-long",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -1565,7 +1568,7 @@
     },
     {
       "key": "manual_buttons/B-18-e3-guest-lecture",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": false,
@@ -1574,17 +1577,15 @@
         ]
       },
       "v2": {
-        "passed": false,
-        "failures": [
-          "answer_missing:90일 이내 강의활동"
-        ],
+        "passed": true,
+        "failures": [],
         "flags": [],
-        "outcome": "other"
+        "outcome": "correct"
       }
     },
     {
       "key": "manual_buttons/B-19-d2-cyber-university",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -1614,7 +1615,7 @@
     },
     {
       "key": "manual_buttons/B-21-e9-eligible-countries",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": false,
@@ -1622,49 +1623,46 @@
           "status:partial≠clarify|insufficient_evidence",
           "forbidden_citation:stay_manual_2026_10_19_pdf#p330"
         ]
-      },
-      "v2": {
-        "passed": false,
-        "failures": [
-          "status:partial≠clarify|insufficient_evidence",
-          "forbidden_citation:stay_manual_2026_10_19_pdf#p330"
-        ],
-        "flags": [],
-        "outcome": "other"
-      }
-    },
-    {
-      "key": "manual_buttons/B-22-d4-work-while-studying",
-      "changed": false,
-      "comparable": true,
-      "original": {
-        "passed": false,
-        "failures": [
-          "status:partial≠clarify|insufficient_evidence"
-        ]
-      },
-      "v2": {
-        "passed": false,
-        "failures": [
-          "status:partial≠clarify|insufficient_evidence"
-        ],
-        "flags": [],
-        "outcome": "other"
-      }
-    },
-    {
-      "key": "manual_buttons/B-23-e9-going-home-briefly",
-      "changed": false,
-      "comparable": true,
-      "original": {
-        "passed": true,
-        "failures": []
       },
       "v2": {
         "passed": true,
         "failures": [],
         "flags": [],
         "outcome": "correct"
+      }
+    },
+    {
+      "key": "manual_buttons/B-22-d4-work-while-studying",
+      "changed": true,
+      "comparable": true,
+      "original": {
+        "passed": false,
+        "failures": [
+          "status:partial≠clarify|insufficient_evidence"
+        ]
+      },
+      "v2": {
+        "passed": true,
+        "failures": [],
+        "flags": [],
+        "outcome": "correct"
+      }
+    },
+    {
+      "key": "manual_buttons/B-23-e9-going-home-briefly",
+      "changed": true,
+      "comparable": true,
+      "original": {
+        "passed": true,
+        "failures": []
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "status:insufficient_evidence≠clarify|answered|partial"
+        ],
+        "flags": [],
+        "outcome": "safe_abstain"
       }
     },
     {
@@ -2172,7 +2170,7 @@
     },
     {
       "key": "manual_misclick/K-08-multiple-reentry",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,

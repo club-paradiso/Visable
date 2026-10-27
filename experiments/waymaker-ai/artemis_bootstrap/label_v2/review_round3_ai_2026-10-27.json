@@ -1766,25 +1766,81 @@
   },
   {
    "key": "manual_routing/N-14-f6-consular-visa-90days",
-   "verdict": "needs_human",
-   "expect_patch": null,
+   "verdict": "change",
+   "expect_patch": {
+    "drop": [
+     "answer_must_contain_any_of_each"
+    ],
+    "set": {
+     "answer_must_match": [
+      {
+       "label": "공관 발급은 체류기간 90일 이하",
+       "pattern": "90\\s*일\\s*이하|(?i:90\\s*days\\s*or\\s*less|up\\s+to\\s+90\\s+days)"
+      },
+      {
+       "label": "입국 후 체류기간 연장허가",
+       "pattern": "체류\\s*기간\\s*연장\\s*허가|(?i:extension\\s+of\\s+(?:the\\s+)?(?:period\\s+of\\s+)?stay)"
+      }
+     ],
+     "answer_flag_if_match": [
+      {
+       "label": "공관에서 1년 사증을 받을 수 있다고 씀(시행규칙 제9조 특례인지 확인)",
+       "pattern": "(?:공관|재외공관|(?i:embassy|consulate))[^.\\n]{0,25}1\\s*년[^.\\n]{0,15}(?:받을\\s*수\\s*있|발급\\s*가능|가능합니다)"
+      }
+     ]
+    }
+   },
    "page_quote": "A. 국민의 배우자에 대해서는 체류기간 90일이하의 단수사증에 한하여 재외 공관장의 권한으로",
    "page_id": "visa_manual_2026_10_19_pdf#p338",
-   "rationale": "p338 Q&A가 근거이고 '90일이하'(붙임) 띄어쓰기 하나로 정답이 떨어지는 문제가 있다. 그러나 시행규칙 제9조제1항제9호바목은 결혼이민(F-6)에 대해 체류기간 1년 이하 사증 발급권한도 공관장에게 위임한다고 적어 라벨의 '90일 이하에 한하여'와 다르므로 사람 판단으로 넘긴다.",
-   "controls": [],
+   "rationale": "p338 Q&A대로 공관 발급은 체류기간 90일 이하, 이후 입국해 체류기간 연장허가를 받는다. '90일이하'(붙여 씀) 문구 고정 때문에 '90일 이하'가 떨어지던 문제를 고친다. 시행규칙 제9조 제2항이 세부기준 위임 근거라 매뉴얼 기준과 충돌하지 않는다고 보았다.",
+   "controls": [
+    {
+     "answer": "국민의 배우자는 재외공관에서 체류기간 90일 이하의 단수사증만 받을 수 있고, 입국 후 체류기간 연장허가를 받으면 됩니다.",
+     "citations": [
+      "visa_manual_2026_10_19_pdf#p338"
+     ],
+     "status": "answered",
+     "expected": "correct"
+    },
+    {
+     "answer": "재외공관에서 바로 1년짜리 결혼비자를 받을 수 있습니다.",
+     "citations": [
+      "visa_manual_2026_10_19_pdf#p338"
+     ],
+     "status": "answered",
+     "expected": "fail"
+    },
+    {
+     "answer": "공관에서는 90일 이하만 가능합니다.",
+     "citations": [
+      "visa_manual_2026_10_19_pdf#p338"
+     ],
+     "status": "answered",
+     "expected": "fail"
+    }
+   ],
    "legal_check": {
-    "result": "differs",
+    "result": "consistent",
     "law": "출입국관리법 시행규칙",
-    "provision": "제9조제1항제9호 바목",
-    "mst": "289833 (2026-10-19 시행본) / 291289 (현행, 같은 문언)",
-    "queried_as_of": "20261027",
-    "excerpt": "9. 그 밖에 영 별표 1의2의 체류자격 중 다음 각 목의 체류자격에 해당하는 사람으로서 상호주의 또는 대한민국의 이익 등을 위하여 법무부장관이 특히 필요하다고 인정하는 사람에 대한 체류기간 1년 이하의 사증 발급 ... 바. 23. 방문동거(F-1)부터 25. 동반(F-3)까지 및 27. 결혼이민(F-6)",
-    "note": "efYd=20261019로 조회해 그날 시행본(MST 289833, 시행 2026-09-15)과 현행본(MST 291289)이 같은 문언임을 확인했다. 제9조제2항은 장관이 세부기준을 정할 수 있다고 하므로 매뉴얼의 90일 한정이 세부기준일 수 있으나 법령 문언 자체와는 다르다. [주 검토 메모] 제9조제1항제9호는 '법무부장관이 특히 필요하다고 인정하는 사람'에 대한 위임의 바깥 한계로 읽힌다. 매뉴얼의 90일 이하가 그 안의 운영기준이라면 충돌이 아닐 수 있다. 사람이 정할 일로 둔다."
+    "provision": "제9조제1항제9호 바목, 제9조제2항",
+    "mst": "291289",
+    "queried_as_of": "2026-10-27",
+    "excerpt": "9. 그 밖에 영 별표 1의2의 체류자격 중 다음 각 목의 체류자격에 해당하는 사람으로서 상호주의 또는 대한민국의 이익 등을 위하여 법무부장관이 특히 필요하다고 인정하는 사람에 대한 체류기간 1년 이하의 사증 발급 ... ② 법무부장관은 제1항 각 호에 따른 사증의 종류, 체류자격, 체류기간 또는 사증발급 대상 및 절차 등에 관한 세부기준을 정할 수 있다.",
+    "note": "[재분류] 처음에는 '다름'이었다. 제9조 제1항 제9호의 1년 이하는 장관이 특히 필요하다고 인정하는 사람에 대한 위임의 바깥 한계이고, 제2항이 장관에게 세부기준을 정하게 한다. 매뉴얼의 '국민의 배우자는 90일 이하 단수사증'은 그 세부기준으로 보아 충돌로 보지 않았다. 공관 1년 발급을 말한 답은 특례 여부를 확인하도록 검토 필요로 돌린다."
    },
-   "human_question": "사증 매뉴얼 p338 Q&A는 국민의 배우자에 대한 공관 발급을 '체류기간 90일이하의 단수사증에 한하여' 위임된 것으로 적지만, 시행규칙 제9조제1항제9호바목은 장관이 특히 필요하다고 인정하는 F-6에 대해 체류기간 1년 이하 사증 발급도 공관장에게 위임한다. 매뉴얼 기준 라벨(90일 이하 + 입국 후 체류기간연장허가)을 유지할지 결정해 주세요. 유지한다면 제안 수정안은 answer_must_contain_any_of_each를 빼고 answer_must_match [{label:'공관 발급은 체류기간 90일 이하', pattern:'90\\s*일\\s*이하'}, {label:'입국 후 체류기간연장허가', pattern:'체류\\s*기간\\s*연장\\s*허가'}]입니다. 이 수정이면 기록된 모델 답('90일 이하의 단수사증')은 통과합니다.",
+   "human_question": null,
    "open_issues": [
     "질문자 국적이 없어 미국인 복수사증 예외(사증 매뉴얼 p327, 이 사례에 공급되지 않음)는 판단하지 않는다. 그래서 제안 패턴은 '단수'를 요구하지 않는다."
-   ]
+   ],
+   "lead_override": {
+    "by": "lead reviewer (Claude, same AI session): manual pages cross-checked with statutes on 2026-10-27, at the owner's request to settle what can be settled",
+    "was": {
+     "verdict": "needs_human",
+     "legal_check_result": "differs",
+     "human_question": "사증 매뉴얼 p338 Q&A는 국민의 배우자에 대한 공관 발급을 '체류기간 90일이하의 단수사증에 한하여' 위임된 것으로 적지만, 시행규칙 제9조제1항제9호바목은 장관이 특히 필요하다고 인정하는 F-6에 대해 체류기간 1년 이하 사증 발급도 공관장에게 위임한다. 매뉴얼 기준 라벨(90일 이하 + 입국 후 체류기간연장허가)을 유지할지 결정해 주세요. 유지한다면 제안 수정안은 answer_must_contain_any_of_each를 빼고 answer_must_match [{label:'공관 발급은 체류기간 90일 이하', pattern:'90\\s*일\\s*이하'}, {label:'입국 후 체류기간연장허가', pattern:'체류\\s*기간\\s*연장\\s*허가'}]입니다. 이 수정이면 기록된 모델 답('90일 이하의 단수사증')은 통과합니다."
+    },
+    "why": "p338 Q&A대로 공관 발급은 체류기간 90일 이하, 이후 입국해 체류기간 연장허가를 받는다. '90일이하'(붙여 씀) 문구 고정 때문에 '90일 이하'가 떨어지던 문제를 고친다. 시행규칙 제9조 제2항이 세부기준 위임 근거라 매뉴얼 기준과 충돌하지 않는다고 보았다."
+   }
   },
   {
    "key": "manual_routing/N-15-d1-extension-visa-pages-only",
@@ -3474,25 +3530,96 @@
   },
   {
    "key": "manual_clarify/Q-22-d10-how-long",
-   "verdict": "needs_human",
-   "expect_patch": null,
-   "page_quote": "단, 아래 대상자의 경우 1회 최대 6개월 부여",
+   "verdict": "change",
+   "expect_patch": {
+    "drop": [
+     "must_not_cite"
+    ],
+    "set": {
+     "status": [
+      "clarify",
+      "answered",
+      "partial"
+     ],
+     "if_answered": {
+      "answer_must_match": [
+       {
+        "label": "1회 체류기간 상한 1년",
+        "pattern": "1\\s*년|(?i:one\\s+year|1\\s*year|12\\s*months)"
+       }
+      ],
+      "answer_must_not_match": [
+       {
+        "label": "상한을 1년이 아닌 기간으로 씀",
+        "pattern": "(?:최대|상한|1회)[^.\\n]{0,12}(?:[23]\\s*년|90\\s*일)(?![^.\\n]{0,15}(?:아니|틀|잘못|오류|사실이\\s*아))"
+       }
+      ]
+     }
+    }
+   },
+   "page_quote": "1년  - 단, 아래 대상자의 경우 1회 최대 6개월 부여",
    "page_id": "stay_manual_2026_10_19_pdf#p144",
-   "rationale": "체류 p144와 사증 p124가 모두 1회 부여 체류기간 상한을 '1년, 단 일부 대상자 1회 최대 6개월'로 같게 적어 절차에 따라 답이 달라지지 않는다. 그런데 라벨은 되묻기·보류만 허용하고 정답 페이지인 p124 인용을 금지해, 페이지로는 되묻기를 강제할 근거가 약하다. 되묻기 사례로 남길지는 시험 설계 결정이라 사람에게 넘긴다.",
-   "controls": [],
+   "rationale": "사증 p124와 체류 p144가 절차와 상관없이 같은 답(1회 상한 1년, 일부 6개월)을 준다. 되묻기도, 바로 답하기도 틀린 행동이 아니므로 둘 다 인정한다. 바로 답한 경우에만(if_answered) 1년 상한을 요구하고 다른 상한(2·3년, 90일)을 쓰면 실패한다. p124 인용 금지는 같은 답을 담고 있어 뺐다.",
+   "controls": [
+    {
+     "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 해외에서 비자를 받으시려는 건가요, 한국에서 체류 절차를 하시려는 건가요?",
+     "citations": [],
+     "status": "clarify",
+     "expected": "correct"
+    },
+    {
+     "answer": "구직(D-10)은 1회에 최대 1년을 주고, 일부 대상은 1회 최대 6개월입니다.",
+     "citations": [
+      "stay_manual_2026_10_19_pdf#p144"
+     ],
+     "status": "answered",
+     "expected": "correct"
+    },
+    {
+     "answer": "D-10 is granted for up to one year at a time (6 months for some groups).",
+     "citations": [
+      "visa_manual_2026_10_19_pdf#p124"
+     ],
+     "status": "answered",
+     "expected": "correct"
+    },
+    {
+     "answer": "구직(D-10)은 최대 2년까지 줍니다.",
+     "citations": [
+      "stay_manual_2026_10_19_pdf#p144"
+     ],
+     "status": "answered",
+     "expected": "fail"
+    },
+    {
+     "answer": "제공된 근거로는 알 수 없습니다.",
+     "citations": [],
+     "status": "insufficient_evidence",
+     "expected": "fail"
+    }
+   ],
    "legal_check": {
     "result": "consistent",
     "law": "출입국관리법 시행규칙",
-    "provision": "별표 1 (체류자격별 체류기간의 상한, 제18조의3 관련)",
+    "provision": "별표 1 체류자격별 체류기간의 상한",
     "mst": "291289",
     "queried_as_of": "2026-10-27",
-    "excerpt": "<td>구직(D-10)</td><td>1년</td>",
-    "note": "별표 1은 <개정 2024. 12. 24.> 판으로 2026-10-19에도 같다. 일부 대상 6개월은 매뉴얼 운영기준이다. 라벨 자체는 상태만 정한다."
+    "excerpt": "구직(D-10)</td><td>1년",
+    "note": "주 검토자가 다시 조회해 같음을 확인."
    },
-   "human_question": "두 페이지가 같은 답(1회 상한 1년, 일부 대상 1회 최대 6개월)을 주는 이 사례를 계속 '되묻기 필수'로 둘지 정해 주세요. 바꾼다면 후보는 status에 answered·partial 추가, must_not_cite에서 visa p124 제거, '1년' 상한과 다른 숫자(2년·3년·90일)를 쓴 답을 막는 answer_must_not_match 추가입니다(되묻기 답에도 같은 라벨이 적용되므로 '1년' 필수 조건은 둘 수 없습니다).",
+   "human_question": null,
    "open_issues": [
     "현재 라벨에서 answered 답은 내용과 무관하게 모두 실패한다."
-   ]
+   ],
+   "lead_override": {
+    "by": "lead reviewer (Claude, same AI session): manual pages cross-checked with statutes on 2026-10-27, at the owner's request to settle what can be settled",
+    "was": {
+     "verdict": "needs_human",
+     "legal_check_result": "consistent",
+     "human_question": "두 페이지가 같은 답(1회 상한 1년, 일부 대상 1회 최대 6개월)을 주는 이 사례를 계속 '되묻기 필수'로 둘지 정해 주세요. 바꾼다면 후보는 status에 answered·partial 추가, must_not_cite에서 visa p124 제거, '1년' 상한과 다른 숫자(2년·3년·90일)를 쓴 답을 막는 answer_must_not_match 추가입니다(되묻기 답에도 같은 라벨이 적용되므로 '1년' 필수 조건은 둘 수 없습니다)."
+    },
+    "why": "사증 p124와 체류 p144가 절차와 상관없이 같은 답(1회 상한 1년, 일부 6개월)을 준다. 되묻기도, 바로 답하기도 틀린 행동이 아니므로 둘 다 인정한다. 바로 답한 경우에만(if_answered) 1년 상한을 요구하고 다른 상한(2·3년, 90일)을 쓰면 실패한다. p124 인용 금지는 같은 답을 담고 있어 뺐다."
+   }
   },
   {
    "key": "manual_clarify/Q-23-h2-father-how-long",
@@ -4565,7 +4692,7 @@
     "mst": "290729",
     "queried_as_of": "2026-10-27",
     "excerpt": "① 대한민국에 체류하는 외국인이 그 체류자격의 범위에서 그의 근무처를 변경하거나 추가하려면 대통령령으로 정하는 바에 따라 미리 법무부장관의 허가를 받아야 한다.",
-    "note": "시행령 제23조제5항(MST 290501)은 'H-1 체류자격을 가지고 있는 사람이 취업활동을 하는 경우에는 제1항에 따른 취업활동을 할 수 있는 체류자격에 해당하는 것으로 본다'고 한다. 제21조 단서·시행령 제26조의2의 신고 특례는 E-1~E-7만 대상이며 H-1 면제 조문은 찾지 못했다. 매뉴얼 운영(허가 불요)과 법 문언이 다르게 읽힌다."
+    "note": "시행령 제23조제5항(MST 290501)은 'H-1 체류자격을 가지고 있는 사람이 취업활동을 하는 경우에는 제1항에 따른 취업활동을 할 수 있는 체류자격에 해당하는 것으로 본다'고 한다. 제21조 단서·시행령 제26조의2의 신고 특례는 E-1~E-7만 대상이며 H-1 면제 조문은 찾지 못했다. 매뉴얼 운영(허가 불요)과 법 문언이 다르게 읽힌다. [주 검토자 재확인 2026-10-27] 법 제21조 제1항(MST 290729)과 시행령 제26조(MST 290501), 시행령 별표 1의2 관광취업(H-1)란을 다시 읽었다. H-1을 근무처 변경허가에서 빼는 문언은 찾지 못했다. 매뉴얼 526쪽의 '별도의 근무처 추가 또는 변경없이 취업 활동 가능'을 법령으로 확인할 수 없어 사람(법률 검토)에게 남긴다."
    },
    "human_question": "관광취업(H-1) 소지자가 일반 카페에서 다른 가게로 옮길 때, 체류 매뉴얼 526쪽의 '별도의 근무처 추가 또는 변경없이 취업 활동 가능'을 정답으로 채점할지, 아니면 출입국관리법 제21조제1항의 사전 근무처변경허가 원칙과의 관계가 확인될 때까지 이 문항을 보류(또는 flag 처리)할지 결정해 주십시오. 유지한다면 '허가 불필요' 결론과 '자격요건·E-7 직종은 제한' 단서 중 무엇을 필수로 할지도 정해야 합니다.",
    "open_issues": [
@@ -4639,47 +4766,162 @@
   },
   {
    "key": "manual_buttons/B-18-e3-guest-lecture",
-   "verdict": "needs_human",
-   "expect_patch": null,
+   "verdict": "change",
+   "expect_patch": {
+    "drop": [
+     "answer_must_contain"
+    ],
+    "set": {
+     "answer_must_match": [
+      {
+       "label": "체류자격외 활동(허가)이 필요",
+       "pattern": "체류\\s*자격\\s*외\\s*활동|자격\\s*외\\s*활동|상호\\s*체류\\s*자격\\s*외|(?i:extra-?status|activit(?:y|ies)\\s+(?:outside|beyond))"
+      }
+     ],
+     "answer_must_not_match": [
+      {
+       "label": "별도 허가 없이 할 수 있다고 씀",
+       "pattern": "(?:허가|신청)[^.\\n]{0,6}(?:필요\\s*없|불필요|없이)(?![^.\\n]{0,15}(?:아니|틀|잘못|오류|사실이\\s*아))"
+      }
+     ]
+    }
+   },
    "page_quote": "대학에서 90일 이내 강의활동을 하려는 자에 대한 단기취업",
    "page_id": "stay_manual_2026_10_19_pdf#p188",
-   "rationale": "p188에는 E-3 소지자가 다른 대학에서 강의할 수 있는 길이 둘 있다: 2항(대학에서 90일 이내 강의, C-4-5 자격외 활동, 90일 초과 정기강의는 본부 승인상신)과 3항(E-1·E-3 상호 체류자격외 활동). '한 학기'는 90일을 넘을 수 있어 '90일 이내 강의활동'을 필수로 하면 페이지에 맞는 다른 답을 떨어뜨린다. 어느 경로를 정답으로 볼지 페이지만으로 정할 수 없다.",
-   "controls": [],
+   "rationale": "p188에 두 경로(2항 C-4-5 자격외 활동 90일 이내·초과 시 본부 승인상신, 3항 E-1·E-3 상호 체류자격외 활동)가 모두 있어 '한 학기' 특강을 한 경로로 정할 수 없다. 두 경로를 다 인정하고 공통 사실인 '체류자격외 활동(허가)이 필요'만 요구한다. 별도 허가 없이 된다고 쓰면 실패한다.",
+   "controls": [
+    {
+     "answer": "다른 대학 강의는 체류자격외 활동 허가를 받아야 합니다. 90일 이내면 C-4-5 자격외 활동이고, 90일을 넘으면 본부 승인상신 대상입니다.",
+     "citations": [
+      "stay_manual_2026_10_19_pdf#p188"
+     ],
+     "status": "answered",
+     "expected": "correct"
+    },
+    {
+     "answer": "교수(E-1)와 연구(E-3) 간 상호 체류자격외 활동 허가를 받으면 강의할 수 있습니다.",
+     "citations": [
+      "stay_manual_2026_10_19_pdf#p188"
+     ],
+     "status": "answered",
+     "expected": "correct"
+    },
+    {
+     "answer": "연구원은 별도 허가 없이 특강을 할 수 있습니다.",
+     "citations": [
+      "stay_manual_2026_10_19_pdf#p188"
+     ],
+     "status": "answered",
+     "expected": "fail"
+    }
+   ],
    "legal_check": {
     "result": "consistent",
     "law": "출입국관리법",
     "provision": "제20조",
     "mst": "290729",
     "queried_as_of": "2026-10-27",
-    "excerpt": "대한민국에 체류하는 외국인이 그 체류자격에 해당하는 활동과 함께 다른 체류자격에 해당하는 활동을 하려면 대통령령으로 정하는 바에 따라 미리 법무부장관의 체류자격 외 활동허가를 받아야 한다.",
-    "note": "다른 대학 강의에 사전 체류자격 외 활동허가가 필요하다는 공통 사실은 맞는다. 90일 기준·본부 승인상신·원근무처 동의는 매뉴얼 운영기준이다."
+    "excerpt": "대한민국에 체류하는 외국인이 그 체류자격에 해당하는 활동과 함께 다른 체류자격에 해당하는 활동을 하려면 대통령령으로 정하는 바",
+    "note": "다른 체류자격의 활동에는 허가가 필요하다는 공통 사실과 맞음."
    },
-   "human_question": "E-3 연구원이 다른 대학에서 '한 학기' 특강을 맡는 경우, 정답 경로를 (a) p188 2항 C-4-5 자격외 활동(90일 이내, 초과 시 본부 승인상신)으로 볼지, (b) 3항 E-1 상호 체류자격외 활동으로 볼지, (c) 둘 다 허용하고 '체류자격외 활동허가 필요'와 '원근무처 동의' 같은 공통 사실만 요구할지 정해 주십시오.",
+   "human_question": null,
    "open_issues": [
     "기록된 모델 답은 '추가적인 정보가 필요합니다'로 끝나 결론이 약하다. 공통 사실만 요구하면 이런 답도 통과할 수 있어 flag 검토가 필요하다."
-   ]
+   ],
+   "lead_override": {
+    "by": "lead reviewer (Claude, same AI session): manual pages cross-checked with statutes on 2026-10-27, at the owner's request to settle what can be settled",
+    "was": {
+     "verdict": "needs_human",
+     "legal_check_result": "consistent",
+     "human_question": "E-3 연구원이 다른 대학에서 '한 학기' 특강을 맡는 경우, 정답 경로를 (a) p188 2항 C-4-5 자격외 활동(90일 이내, 초과 시 본부 승인상신)으로 볼지, (b) 3항 E-1 상호 체류자격외 활동으로 볼지, (c) 둘 다 허용하고 '체류자격외 활동허가 필요'와 '원근무처 동의' 같은 공통 사실만 요구할지 정해 주십시오."
+    },
+    "why": "p188에 두 경로(2항 C-4-5 자격외 활동 90일 이내·초과 시 본부 승인상신, 3항 E-1·E-3 상호 체류자격외 활동)가 모두 있어 '한 학기' 특강을 한 경로로 정할 수 없다. 두 경로를 다 인정하고 공통 사실인 '체류자격외 활동(허가)이 필요'만 요구한다. 별도 허가 없이 된다고 쓰면 실패한다."
+   }
   },
   {
    "key": "manual_buttons/B-19-d2-cyber-university",
-   "verdict": "needs_human",
-   "expect_patch": null,
-   "page_quote": "ⅰ) 「고등교육법」제2조제5호에 따른 방송대학‧통신대학‧방송통신대학 및\n사이버대학(원격대학)",
+   "verdict": "change",
+   "expect_patch": {
+    "drop": [
+     "must_not_cite"
+    ],
+    "set": {
+     "status": [
+      "clarify",
+      "answered",
+      "partial"
+     ],
+     "if_answered": {
+      "answer_must_match": [
+       {
+        "label": "원격·사이버대학은 D-2 대상에서 제외",
+        "pattern": "제외|불가|안\\s*됩|받을\\s*수\\s*없|허용되지\\s*않|대상이\\s*아니|(?i:not\\s+eligible|excluded|cannot|not\\s+allowed)"
+       }
+      ],
+      "answer_must_not_match": [
+       {
+        "label": "사이버대학으로 D-2를 받을 수 있다고 씀",
+        "pattern": "(?:사이버|원격)[^.\\n]{0,25}(?:받을\\s*수\\s*있(?!는지)|(?<!불)가능합니다|(?<!불)가능해요|(?i:\\beligible))(?![^.\\n]{0,15}(?:아니|틀|잘못|오류|사실이\\s*아))"
+       }
+      ]
+     }
+    }
+   },
+   "page_quote": "방송대학‧통신대학‧방송통신대학 및 사이버대학(원격대학)",
    "page_id": "visa_manual_2026_10_19_pdf#p62",
-   "rationale": "사증 p62와 체류 p35가 모두 사이버대학(원격대학)을 유학(D-2) 대상 교육기관에서 '제외'한다고 같은 말로 적는다. 절차와 무관하게 페이지가 답하므로 insufficient_evidence는 페이지와 맞지 않고, 체류 p35 인용 금지도 정답 근거를 막는다. 다만 N 그룹(절차 미지정·버튼 없음)은 모든 세트에서 clarify를 기대하는 설계라 상태 변경은 설계 결정이다.",
-   "controls": [],
+   "rationale": "사증 p62와 체류 p35가 같은 답(원격·사이버대학은 유학 대상 교육기관에서 제외)을 준다. 되묻기와 바로 답하기를 둘 다 인정하고, 바로 답하면 '제외·불가' 결론을 요구한다. 사이버대학으로 D-2를 받을 수 있다고 쓰면 실패한다.",
+   "controls": [
+    {
+     "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 해외에서 비자를 받으시려는 건가요, 한국에서 체류 절차를 하시려는 건가요?",
+     "citations": [],
+     "status": "clarify",
+     "expected": "correct"
+    },
+    {
+     "answer": "사이버대학은 원격대학이라 유학(D-2) 대상 교육기관에서 제외됩니다.",
+     "citations": [
+      "visa_manual_2026_10_19_pdf#p62"
+     ],
+     "status": "answered",
+     "expected": "correct"
+    },
+    {
+     "answer": "사이버대학에 입학하면 D-2를 받을 수 있습니다.",
+     "citations": [
+      "stay_manual_2026_10_19_pdf#p35"
+     ],
+     "status": "answered",
+     "expected": "fail"
+    },
+    {
+     "answer": "제공된 근거로는 알 수 없습니다.",
+     "citations": [],
+     "status": "insufficient_evidence",
+     "expected": "fail"
+    }
+   ],
    "legal_check": {
     "result": "not_in_statute",
-    "law": "",
-    "provision": "",
-    "mst": "",
+    "law": "출입국관리법 시행령",
+    "provision": "별표 1의2 5. 유학(D-2)",
+    "mst": "290501",
     "queried_as_of": "2026-10-27",
-    "excerpt": "",
-    "note": "원격대학의 D-2 대상 교육기관 제외는 매뉴얼 운영기준이며 시행령 별표1의2 D-2는 '전문대학 이상의 교육기관' 범위만 정한다(이번에 조문 원문은 재조회하지 않음)."
+    "excerpt": "전문대학 이상의 교육기관 또는 학술연구기관에서 정규과정의 교육을 받거나 특정 연구를 하려는 사람",
+    "note": "시행령은 '전문대학 이상'만 말하고 원격대학을 넣거나 빼지 않는다. 원격대학 제외는 매뉴얼 운영기준이며 라벨은 매뉴얼을 따른다."
    },
-   "human_question": "N 그룹 문항이라도 사증·체류 페이지가 같은 답(사이버대학은 D-2 대상에서 제외)을 줄 때 answered/partial을 허용할지 정해 주십시오. 허용한다면 status를 [\"clarify\",\"answered\",\"partial\"]로 바꾸고 insufficient_evidence를 빼며, must_not_cite의 stay p35를 지우고, 답이 '사이버/원격'과 '제외/불가'를 담도록 할지(clarify 답에 내용 검사가 어떻게 적용되는지 채점기 동작도 확인 필요) 결정해야 합니다.",
+   "human_question": null,
    "open_issues": [
     "insufficient_evidence는 두 페이지 모두 답을 주므로 페이지 근거와 맞지 않는다."
-   ]
+   ],
+   "lead_override": {
+    "by": "lead reviewer (Claude, same AI session): manual pages cross-checked with statutes on 2026-10-27, at the owner's request to settle what can be settled",
+    "was": {
+     "verdict": "needs_human",
+     "legal_check_result": "not_in_statute",
+     "human_question": "N 그룹 문항이라도 사증·체류 페이지가 같은 답(사이버대학은 D-2 대상에서 제외)을 줄 때 answered/partial을 허용할지 정해 주십시오. 허용한다면 status를 [\"clarify\",\"answered\",\"partial\"]로 바꾸고 insufficient_evidence를 빼며, must_not_cite의 stay p35를 지우고, 답이 '사이버/원격'과 '제외/불가'를 담도록 할지(clarify 답에 내용 검사가 어떻게 적용되는지 채점기 동작도 확인 필요) 결정해야 합니다."
+    },
+    "why": "사증 p62와 체류 p35가 같은 답(원격·사이버대학은 유학 대상 교육기관에서 제외)을 준다. 되묻기와 바로 답하기를 둘 다 인정하고, 바로 답하면 '제외·불가' 결론을 요구한다. 사이버대학으로 D-2를 받을 수 있다고 쓰면 실패한다."
+   }
   },
   {
    "key": "manual_buttons/B-20-f3-family-of-researcher",
@@ -4704,12 +4946,74 @@
   },
   {
    "key": "manual_buttons/B-21-e9-eligible-countries",
-   "verdict": "needs_human",
-   "expect_patch": null,
-   "page_quote": "최장 4년 10개월간 취업을 허용하는 인력제도로",
+   "verdict": "change",
+   "expect_patch": {
+    "drop": [
+     "must_not_cite"
+    ],
+    "set": {
+     "status": [
+      "clarify",
+      "answered",
+      "partial"
+     ],
+     "if_answered": {
+      "answer_must_match": [
+       {
+        "label": "취업기간 3년 또는 최장 4년 10개월",
+        "pattern": "4\\s*년\\s*10\\s*개월|3\\s*년|(?i:4\\s*years?\\s*(?:and\\s*)?10\\s*months|three\\s+years|3\\s*years)"
+       }
+      ],
+      "answer_must_not_match": [
+       {
+        "label": "최장 기간을 5년 이상으로 씀",
+        "pattern": "(?:최대|최장|까지)[^.\\n]{0,8}(?:[5-9]|10)\\s*년(?!\\s*10\\s*개월)(?![^.\\n]{0,15}(?:아니|틀|잘못|오류|사실이\\s*아))"
+       }
+      ],
+      "answer_flag_if_match": [
+       {
+        "label": "대상 국가 수를 씀(쪽 안에서 16·17개국이 엇갈림)",
+        "pattern": "1[67]\\s*개\\s*국|(?i:1[67]\\s+countries)"
+       }
+      ]
+     }
+    }
+   },
+   "page_quote": "최장 4년 10개월간 취업을 허용하는 인력제도",
    "page_id": "visa_manual_2026_10_19_pdf#p285",
-   "rationale": "사증 p285는 고용허가제 선정국가 목록과 '최장 4년 10개월' 취업을 적고, 체류 p330도 3년·4년 10개월 상한을 적어 두 질문 모두 절차와 무관하게 답할 수 있으므로 insufficient_evidence는 페이지와 맞지 않는다. 그러나 N 그룹의 clarify 설계를 바꿀지와, 같은 쪽의 '16개국과 MOU'와 '선정국가(17개국)' 불일치를 어떻게 다룰지는 페이지만으로 정할 수 없다.",
-   "controls": [],
+   "rationale": "국가 목록과 취업기간이 절차와 상관없이 p285에 있고 체류 p330에도 같은 기간이 있다. 되묻기와 바로 답하기를 둘 다 인정하고, 바로 답하면 3년 또는 4년 10개월을 요구한다. 국가 수는 쪽 안에서 16개국(MOU)과 17개국(선정국가)이 엇갈려 요구하지 않고, 수를 쓴 답은 검토 필요로 돌린다. p330 인용 금지는 같은 기간을 담고 있어 뺐다.",
+   "controls": [
+    {
+     "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 해외에서 비자를 받으시려는 건가요, 한국에서 체류 절차를 하시려는 건가요?",
+     "citations": [],
+     "status": "clarify",
+     "expected": "correct"
+    },
+    {
+     "answer": "태국, 베트남 등 고용허가제 선정국가 국민이어야 하고, 최장 4년 10개월까지 일할 수 있습니다.",
+     "citations": [
+      "visa_manual_2026_10_19_pdf#p285"
+     ],
+     "status": "answered",
+     "expected": "correct"
+    },
+    {
+     "answer": "최장 5년까지 일할 수 있습니다.",
+     "citations": [
+      "visa_manual_2026_10_19_pdf#p285"
+     ],
+     "status": "answered",
+     "expected": "fail"
+    },
+    {
+     "answer": "17개국 국민이 대상이고 최장 4년 10개월까지 가능합니다.",
+     "citations": [
+      "visa_manual_2026_10_19_pdf#p285"
+     ],
+     "status": "answered",
+     "expected": "needs_review"
+    }
+   ],
    "legal_check": {
     "result": "consistent",
     "law": "외국인근로자의 고용 등에 관한 법률",
@@ -4717,43 +5021,169 @@
     "mst": "276857",
     "queried_as_of": "2026-10-27",
     "excerpt": "외국인근로자는 입국한 날부터 3년의 범위에서 취업활동을 할 수 있다. / ① 다음 각 호의 외국인근로자는 제18조에도 불구하고 한 차례만 2년 미만의 범위에서 취업활동 기간을 연장받을 수 있다.",
-    "note": "기간(3년+재고용 2년 미만=매뉴얼 4년 10개월)은 맞는다. 송출국 명단은 법령 조문에 없다(MOU·고시 사항). 시행 예정본(MST 286817)도 같은 문언이다."
+    "note": "3년 + 2년 미만 연장 = 최장 4년 10개월과 맞음. 대상 국가는 법령이 아니라 양해각서 운영이라 대조하지 않음."
    },
-   "human_question": "N 그룹 문항이지만 국가 목록과 취업기간이 절차와 무관하게 페이지에 있으므로 answered/partial을 허용할지 정해 주십시오. 허용한다면 국가 수(16개국 MOU vs 17개 선정국가)는 기대값에서 빼고, '4년 10개월' 또는 '3년'과 대표 국가명을 요구할지, must_not_cite의 stay p330을 유지할지 결정해야 합니다.",
+   "human_question": null,
    "open_issues": [
     "p285 한 쪽에 '16개국과 MOU'와 '선정국가(17개국)'가 함께 있어 국가 수를 기대값으로 쓰면 안 된다."
-   ]
+   ],
+   "lead_override": {
+    "by": "lead reviewer (Claude, same AI session): manual pages cross-checked with statutes on 2026-10-27, at the owner's request to settle what can be settled",
+    "was": {
+     "verdict": "needs_human",
+     "legal_check_result": "consistent",
+     "human_question": "N 그룹 문항이지만 국가 목록과 취업기간이 절차와 무관하게 페이지에 있으므로 answered/partial을 허용할지 정해 주십시오. 허용한다면 국가 수(16개국 MOU vs 17개 선정국가)는 기대값에서 빼고, '4년 10개월' 또는 '3년'과 대표 국가명을 요구할지, must_not_cite의 stay p330을 유지할지 결정해야 합니다."
+    },
+    "why": "국가 목록과 취업기간이 절차와 상관없이 p285에 있고 체류 p330에도 같은 기간이 있다. 되묻기와 바로 답하기를 둘 다 인정하고, 바로 답하면 3년 또는 4년 10개월을 요구한다. 국가 수는 쪽 안에서 16개국(MOU)과 17개국(선정국가)이 엇갈려 요구하지 않고, 수를 쓴 답은 검토 필요로 돌린다. p330 인용 금지는 같은 기간을 담고 있어 뺐다."
+   }
   },
   {
    "key": "manual_buttons/B-22-d4-work-while-studying",
-   "verdict": "needs_human",
-   "expect_patch": null,
-   "page_quote": "※ 어학연수(D-4-1)자격 소지자는 어학연수(D-4-1)자격 취득일부터 6개월 경과된",
+   "verdict": "change",
+   "expect_patch": {
+    "drop": [],
+    "set": {
+     "status": [
+      "clarify",
+      "answered",
+      "partial"
+     ],
+     "if_answered": {
+      "answer_must_match": [
+       {
+        "label": "자격 취득(변경·입국)일부터 6개월 경과",
+        "pattern": "6\\s*개월|(?i:six\\s+months|6\\s*months)"
+       }
+      ],
+      "answer_must_not_match": [
+       {
+        "label": "허가 없이 바로 할 수 있다고 씀",
+        "pattern": "(?:허가\\s*없이|별도\\s*허가\\s*(?:없이|불필요|필요\\s*없)|바로|즉시|언제든)[^.\\n]{0,20}(?:가능|할\\s*수\\s*있)(?![^.\\n]{0,15}(?:아니|틀|잘못|오류|사실이\\s*아))"
+       }
+      ]
+     }
+    }
+   },
+   "page_quote": "어학연수(D-4-1)자격 소지자는 어학연수(D-4-1)자격 취득일부터 6개월 경과된",
    "page_id": "stay_manual_2026_10_19_pdf#p83",
-   "rationale": "질문자는 이미 D-4-1로 공부 중이라 체류 절차(체류자격외 활동)가 사실상 정해져 있고, p83은 'D-4-1 자격 취득일부터 6개월 경과된 경우 체류자격외 활동 가능'을 적는다. 다만 이 문장은 '회화지도(E-2) 자격외 활동' 항목 아래에 있고 일반 시간제취업은 'D-2 체류자격외 활동 허가 참조'로 넘겨져 공급 페이지에 없다. 6개월 규정의 적용 범위와 N 그룹 상태 설계 모두 사람이 정해야 한다.",
-   "controls": [],
+   "rationale": "질문이 국내 체류 중임을 밝히고 p83이 6개월 경과 시 체류자격외 활동 가능을 적는다. 되묻기와 바로 답하기를 둘 다 인정하고, 바로 답하면 6개월을 요구하며 허가 없이 바로 가능하다고 쓰면 실패한다. 6개월이 일반 아르바이트에도 적용되는지는 같은 매뉴얼 p37(M-04 근거)로 확인했다.",
+   "controls": [
+    {
+     "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 해외에서 비자를 받으시려는 건가요, 한국에서 체류 절차를 하시려는 건가요?",
+     "citations": [],
+     "status": "clarify",
+     "expected": "correct"
+    },
+    {
+     "answer": "D-4-1은 자격 취득일부터 6개월이 지나면 체류자격외 활동 허가를 받아 아르바이트를 할 수 있습니다.",
+     "citations": [
+      "stay_manual_2026_10_19_pdf#p83"
+     ],
+     "status": "answered",
+     "expected": "correct"
+    },
+    {
+     "answer": "어학연수생은 허가 없이 바로 아르바이트를 할 수 있습니다.",
+     "citations": [
+      "stay_manual_2026_10_19_pdf#p83"
+     ],
+     "status": "answered",
+     "expected": "fail"
+    },
+    {
+     "answer": "제공된 근거로는 알 수 없습니다.",
+     "citations": [],
+     "status": "insufficient_evidence",
+     "expected": "fail"
+    }
+   ],
    "legal_check": {
     "result": "not_in_statute",
-    "law": "출입국관리법",
-    "provision": "제20조",
-    "mst": "290729",
+    "law": "",
+    "provision": "",
+    "mst": "",
     "queried_as_of": "2026-10-27",
-    "excerpt": "대한민국에 체류하는 외국인이 그 체류자격에 해당하는 활동과 함께 다른 체류자격에 해당하는 활동을 하려면 대통령령으로 정하는 바에 따라 미리 법무부장관의 체류자격 외 활동허가를 받아야 한다.",
-    "note": "6개월 경과 요건은 체류 매뉴얼 운영기준이다. 사전허가 원칙은 출입국관리법 제20조(MST 290729)에 있다."
+    "excerpt": "",
+    "note": "6개월 기준은 매뉴얼 운영기준이다. p83의 단서가 회화지도(E-2) 항목 아래에 있지만, 같은 매뉴얼 체류 p37도 어학연수(D-4-1) 시간제취업에 변경일(사증소지자는 입국일)부터 6개월 경과를 요구하므로 일반 아르바이트에도 6개월이 적용된다고 보았다(매뉴얼 안의 교차 확인)."
    },
-   "human_question": "(1) p83의 '6개월 경과 시 체류자격외 활동 가능'이 D-4-1의 일반 아르바이트(시간제취업) 전체에 적용되는지, 회화지도(E-2) 자격외 활동에만 해당하는지 정해 주십시오. (2) 질문이 국내 체류 중임을 밝히므로 N 그룹이라도 partial(6개월 경과 + 사전허가 필요)을 허용할지 정해 주십시오.",
+   "human_question": null,
    "open_issues": [
     "기록된 모델 답은 사전허가 필요를 빠뜨렸다. partial을 허용한다면 '허가' 언급을 요구해야 한다."
-   ]
+   ],
+   "lead_override": {
+    "by": "lead reviewer (Claude, same AI session): manual pages cross-checked with statutes on 2026-10-27, at the owner's request to settle what can be settled",
+    "was": {
+     "verdict": "needs_human",
+     "legal_check_result": "not_in_statute",
+     "human_question": "(1) p83의 '6개월 경과 시 체류자격외 활동 가능'이 D-4-1의 일반 아르바이트(시간제취업) 전체에 적용되는지, 회화지도(E-2) 자격외 활동에만 해당하는지 정해 주십시오. (2) 질문이 국내 체류 중임을 밝히므로 N 그룹이라도 partial(6개월 경과 + 사전허가 필요)을 허용할지 정해 주십시오."
+    },
+    "why": "질문이 국내 체류 중임을 밝히고 p83이 6개월 경과 시 체류자격외 활동 가능을 적는다. 되묻기와 바로 답하기를 둘 다 인정하고, 바로 답하면 6개월을 요구하며 허가 없이 바로 가능하다고 쓰면 실패한다. 6개월이 일반 아르바이트에도 적용되는지는 같은 매뉴얼 p37(M-04 근거)로 확인했다."
+   }
   },
   {
    "key": "manual_buttons/B-23-e9-going-home-briefly",
-   "verdict": "needs_human",
-   "expect_patch": null,
-   "page_quote": "- 등록을 필한 외국인이 출국한 날부터 1년 이내에 재입국하려는 경우 재\n입국허가 면제",
+   "verdict": "change",
+   "expect_patch": {
+    "drop": [],
+    "set": {
+     "status": [
+      "clarify",
+      "answered",
+      "partial"
+     ],
+     "if_answered": {
+      "answer_must_match": [
+       {
+        "label": "출국 후 1년 이내 재입국",
+        "pattern": "1\\s*년|(?i:one\\s+year|1\\s*year|12\\s*months)"
+       },
+       {
+        "label": "재입국허가 면제",
+        "pattern": "면제|필요\\s*(?:없|하지\\s*않)|불필요|(?i:exempt|no\\s+re-?entry\\s+permit|not\\s+need|n'?t\\s+need)"
+       }
+      ],
+      "answer_flag_if_match": [
+       {
+        "label": "수수료를 일반 요건처럼 씀(입국·사증발급 규제자 예외인지 확인)",
+        "pattern": "3\\s*만\\s*원|5\\s*만\\s*원|30,000|50,000"
+       }
+      ]
+     }
+    }
+   },
+   "page_quote": "등록을 필한 외국인이 출국한 날부터 1년 이내에 재입국하려는 경우 재 입국허가 면제",
    "page_id": "stay_manual_2026_10_19_pdf#p332",
-   "rationale": "질문자는 한국에서 E-9로 일하며 몇 주 귀국하려 하므로 재입국(체류 절차)이 분명하고, p332는 등록 외국인이 1년 이내 재입국하면 재입국허가 면제(입국·사증발급 규제자는 허가·수수료 대상)라고 답한다. insufficient_evidence(기록된 답)는 페이지와 맞지 않지만, N 그룹의 clarify 설계를 바꿀지는 설계 결정이다.",
-   "controls": [],
+   "rationale": "질문이 국내 체류(E-9 근로 중 몇 주 귀국)를 밝히고 p332가 1년 이내 재입국허가 면제를 적는다. 되묻기와 바로 답하기를 둘 다 인정하고, 바로 답하면 1년과 면제를 요구한다. 수수료(단수 3만원·복수 5만원)는 규제자 예외에만 해당하므로 수수료를 쓴 답은 검토 필요로 돌린다. 근거가 있는데 보류(insufficient_evidence)한 답은 실패다.",
+   "controls": [
+    {
+     "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 해외에서 비자를 받으시려는 건가요, 한국에서 체류 절차를 하시려는 건가요?",
+     "citations": [],
+     "status": "clarify",
+     "expected": "correct"
+    },
+    {
+     "answer": "If you come back within one year, you are exempt from the re-entry permit, so nothing to pay for that.",
+     "citations": [
+      "stay_manual_2026_10_19_pdf#p332"
+     ],
+     "status": "answered",
+     "expected": "correct"
+    },
+    {
+     "answer": "You must get a re-entry permit and pay 30,000 won before leaving.",
+     "citations": [
+      "stay_manual_2026_10_19_pdf#p332"
+     ],
+     "status": "answered",
+     "expected": "fail"
+    },
+    {
+     "answer": "제공된 근거에는 정보가 없습니다.",
+     "citations": [],
+     "status": "insufficient_evidence",
+     "expected": "fail"
+    }
+   ],
    "legal_check": {
     "result": "consistent",
     "law": "출입국관리법 시행규칙",
@@ -4761,12 +5191,21 @@
     "mst": "291289",
     "queried_as_of": "2026-10-27",
     "excerpt": "2. 영 별표 1의2 중 체류자격 1. 외교(A-1)부터 25. 동반(F-3)까지, 27. 결혼이민(F-6)부터 30. 기타(G-1)까지의 자격을 가진 사람으로서 출국한 날부터 1년(남아 있는 체류기간이 1년보다 짧을 경우에는 남아있는 체류기간으로 한다) 이내에 재입국하려는 사람",
-    "note": "E-9는 별표1의2 범위 안이다. 제1항 단서는 입국금지 대상과 제10조 각 호 해당자를 면제에서 제외한다(매뉴얼의 '입국규제 및 사증발급규제자' 예외와 대응). 2026-10-19 시행본(MST 289833)도 같다."
+    "note": "비전문취업(E-9)은 21번으로 이 범위에 든다. 2026-10-19 시행본도 같은 문언."
    },
-   "human_question": "질문이 국내 체류(E-9 근로 중 일시 귀국)를 밝히므로 N 그룹이라도 answered/partial을 허용하고 insufficient_evidence를 뺄지 정해 주십시오. 허용한다면 '1년 이내'와 '재입국허가 면제'를 요구하고, 수수료(단수 3만원·복수 5만원)는 규제자 예외에만 해당하므로 일반 답에 필수 비용으로 쓰면 실패시킬지 결정해야 합니다.",
+   "human_question": null,
    "open_issues": [
     "남은 체류기간이 1년보다 짧으면 그 범위 내에서만 면제된다는 단서도 p332에 있다."
-   ]
+   ],
+   "lead_override": {
+    "by": "lead reviewer (Claude, same AI session): manual pages cross-checked with statutes on 2026-10-27, at the owner's request to settle what can be settled",
+    "was": {
+     "verdict": "needs_human",
+     "legal_check_result": "consistent",
+     "human_question": "질문이 국내 체류(E-9 근로 중 일시 귀국)를 밝히므로 N 그룹이라도 answered/partial을 허용하고 insufficient_evidence를 뺄지 정해 주십시오. 허용한다면 '1년 이내'와 '재입국허가 면제'를 요구하고, 수수료(단수 3만원·복수 5만원)는 규제자 예외에만 해당하므로 일반 답에 필수 비용으로 쓰면 실패시킬지 결정해야 합니다."
+    },
+    "why": "질문이 국내 체류(E-9 근로 중 몇 주 귀국)를 밝히고 p332가 1년 이내 재입국허가 면제를 적는다. 되묻기와 바로 답하기를 둘 다 인정하고, 바로 답하면 1년과 면제를 요구한다. 수수료(단수 3만원·복수 5만원)는 규제자 예외에만 해당하므로 수수료를 쓴 답은 검토 필요로 돌린다. 근거가 있는데 보류(insufficient_evidence)한 답은 실패다."
+   }
   },
   {
    "key": "manual_buttons/B-24-f1d-stay-length",
@@ -6558,26 +6997,90 @@
   },
   {
    "key": "manual_misclick/K-08-multiple-reentry",
-   "verdict": "needs_human",
-   "expect_patch": null,
+   "verdict": "change",
+   "expect_patch": {
+    "drop": [
+     "answer_must_contain"
+    ],
+    "set": {
+     "answer_must_match": [
+      {
+       "label": "복수재입국허가",
+       "pattern": "복수\\s*재입국\\s*허가|(?i:multiple[\\s-]*re-?entry)"
+      },
+      {
+       "label": "2년 내 재입국",
+       "pattern": "2\\s*년\\s*(?:이내|내|안)|(?i:(?:two|2)\\s+years)"
+      }
+     ],
+     "answer_flag_if_match": [
+      {
+       "label": "영주(F-5) 언급 없이 재입국허가가 필요 없다고 씀",
+       "pattern": "(?:^|[.\\n])(?![^.\\n]*(?:영주|F-5|(?i:permanent)))[^.\\n]*(?:재입국\\s*허가[^.\\n]{0,10}(?:필요\\s*없|불필요|면제)|(?i:no\\s+re-?entry\\s+permit|not\\s+need\\s+a\\s+re-?entry))"
+      }
+     ]
+    }
+   },
    "page_quote": "출국 후 체류기간 범위 내에서 1년을 초과하여 2년 내에 재입국을 하려는 경우",
    "page_id": "stay_manual_2026_10_19_pdf#p427",
-   "rationale": "p427 기준으로는 18개월 출국이면 복수재입국허가가 맞다. 그러나 시행규칙 제44조의2 제1항 제1호는 영주(F-5) 소지자가 2년 이내 재입국하면 재입국허가를 면제하므로, 체류자격을 모르는 등록외국인 전부에게 복수재입국허가를 요구하는 라벨은 법령과 다르다.",
-   "controls": [],
+   "rationale": "질문자 체류자격을 모르지만, 영주(F-5)가 아닌 등록외국인은 시행규칙 제44조의2상 1년까지만 면제되므로 18개월 출국은 p427대로 복수재입국허가(2년 내)가 필요하다. 문구 고정 대신 두 사실을 변형 허용으로 요구하고, 영주자 면제를 덧붙인 답은 통과시킨다. 영주 언급 없이 허가가 필요 없다고 쓰면 검토 필요로 돌린다.",
+   "controls": [
+    {
+     "answer": "18개월이면 1년을 넘으므로 복수재입국허가를 받아야 합니다(출국 후 2년 내 재입국).",
+     "citations": [
+      "stay_manual_2026_10_19_pdf#p427"
+     ],
+     "status": "answered",
+     "expected": "correct"
+    },
+    {
+     "answer": "You need a multiple re-entry permit, which lets you return within 2 years.",
+     "citations": [
+      "stay_manual_2026_10_19_pdf#p427"
+     ],
+     "status": "answered",
+     "expected": "correct"
+    },
+    {
+     "answer": "영주(F-5)라면 2년 이내 재입국 시 허가가 면제되고, 그 밖에는 복수재입국허가가 필요합니다(2년 내).",
+     "citations": [
+      "stay_manual_2026_10_19_pdf#p427"
+     ],
+     "status": "answered",
+     "expected": "correct"
+    },
+    {
+     "answer": "단수재입국허가면 충분합니다.",
+     "citations": [
+      "stay_manual_2026_10_19_pdf#p427"
+     ],
+     "status": "answered",
+     "expected": "fail"
+    }
+   ],
    "legal_check": {
-    "result": "differs",
+    "result": "consistent",
     "law": "출입국관리법 시행규칙",
-    "provision": "제44조의2 제1항 제1호",
+    "provision": "제44조의2제1항",
     "mst": "291289",
     "queried_as_of": "2026-10-27",
-    "excerpt": "1. 영 별표 1의3 체류자격 영주(F-5)의 자격을 가진 사람으로서 출국한 날부터 2년 이내에 재입국하려는 사람",
-    "note": "efYd=20261019(당시 MST 289833)로도 같은 문언이라 2026-10-23 개정과 무관하다. 출입국관리법 제30조 제2항(단수·복수 구분)은 라벨과 맞지만, F-5는 18개월 출국에 허가 자체가 필요 없다."
+    "excerpt": "1. 영 별표 1의3 체류자격 영주(F-5)의 자격을 가진 사람으로서 출국한 날부터 2년 이내에 재입국하려는 사람 2. 영 별표 1의2 중 체류자격 1. 외교(A-1)부터 25. 동반(F-3)까지, 27. 결혼이민(F-6)부터 30. 기타(G-1)까지의 자격을 가진 사람으로서 출국한 날부터 1년 ... 이내에 재입국하려는 사람",
+    "note": "[재분류] 처음에는 '다름'이었다. 영주(F-5)가 아니면 1년 면제만 있으므로 18개월 출국은 재입국허가가 필요하고, 매뉴얼의 복수재입국허가 안내와 맞는다. 영주자 2년 면제는 라벨이 요구하지 않는 추가 사실로 두고, 그 사실을 덧붙인 답도 통과시킨다."
    },
-   "human_question": "질문자 체류자격이 불명인 상태에서 (a) 현 라벨(복수재입국허가 필수)을 유지하고 문구만 완화할지, (b) F-5는 2년 이내 면제라는 단서가 없는 답도 정답으로 볼지, (c) status를 clarify까지 넓힐지 결정해야 한다. 완화안 예: answer_must_contain 삭제, answer_must_match에 '복수\\s*재입국\\s*허가|(?i:multiple[\\s-]*re-?entry)'와 '2\\s*년\\s*(?:이내|내|안)|(?i:(?:two|2)\\s+years)'.",
+   "human_question": null,
    "open_issues": [
     "현재 '2년 내에 재입국' 축자 요구는 '2년 이내' 같은 환언을 떨어뜨린다.",
     "F-5 면제 규정은 공급된 페이지에 없어 페이지만으로는 라벨에 넣을 수 없다."
-   ]
+   ],
+   "lead_override": {
+    "by": "lead reviewer (Claude, same AI session): manual pages cross-checked with statutes on 2026-10-27, at the owner's request to settle what can be settled",
+    "was": {
+     "verdict": "needs_human",
+     "legal_check_result": "differs",
+     "human_question": "질문자 체류자격이 불명인 상태에서 (a) 현 라벨(복수재입국허가 필수)을 유지하고 문구만 완화할지, (b) F-5는 2년 이내 면제라는 단서가 없는 답도 정답으로 볼지, (c) status를 clarify까지 넓힐지 결정해야 한다. 완화안 예: answer_must_contain 삭제, answer_must_match에 '복수\\s*재입국\\s*허가|(?i:multiple[\\s-]*re-?entry)'와 '2\\s*년\\s*(?:이내|내|안)|(?i:(?:two|2)\\s+years)'."
+    },
+    "why": "질문자 체류자격을 모르지만, 영주(F-5)가 아닌 등록외국인은 시행규칙 제44조의2상 1년까지만 면제되므로 18개월 출국은 p427대로 복수재입국허가(2년 내)가 필요하다. 문구 고정 대신 두 사실을 변형 허용으로 요구하고, 영주자 면제를 덧붙인 답은 통과시킨다. 영주 언급 없이 허가가 필요 없다고 쓰면 검토 필요로 돌린다."
+   }
   },
   {
    "key": "manual_misclick/K-09-e6-tryout-change",

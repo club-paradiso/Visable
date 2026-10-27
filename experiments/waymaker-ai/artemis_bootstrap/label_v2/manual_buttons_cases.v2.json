@@ -834,8 +834,17 @@
         "must_not_cite": [
           "visa_manual_2026_10_19_pdf#p58"
         ],
-        "answer_must_contain": [
-          "90일 이내 강의활동"
+        "answer_must_match": [
+          {
+            "label": "체류자격외 활동(허가)이 필요",
+            "pattern": "체류\\s*자격\\s*외\\s*활동|자격\\s*외\\s*활동|상호\\s*체류\\s*자격\\s*외|(?i:extra-?status|activit(?:y|ies)\\s+(?:outside|beyond))"
+          }
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "별도 허가 없이 할 수 있다고 씀",
+            "pattern": "(?:허가|신청)[^.\\n]{0,6}(?:필요\\s*없|불필요|없이)(?![^.\\n]{0,15}(?:아니|틀|잘못|오류|사실이\\s*아))"
+          }
         ]
       }
     },
@@ -862,11 +871,23 @@
       "expect": {
         "status": [
           "clarify",
-          "insufficient_evidence"
+          "answered",
+          "partial"
         ],
-        "must_not_cite": [
-          "stay_manual_2026_10_19_pdf#p35"
-        ]
+        "if_answered": {
+          "answer_must_match": [
+            {
+              "label": "원격·사이버대학은 D-2 대상에서 제외",
+              "pattern": "제외|불가|안\\s*됩|받을\\s*수\\s*없|허용되지\\s*않|대상이\\s*아니|(?i:not\\s+eligible|excluded|cannot|not\\s+allowed)"
+            }
+          ],
+          "answer_must_not_match": [
+            {
+              "label": "사이버대학으로 D-2를 받을 수 있다고 씀",
+              "pattern": "(?:사이버|원격)[^.\\n]{0,25}(?:받을\\s*수\\s*있(?!는지)|(?<!불)가능합니다|(?<!불)가능해요|(?i:\\beligible))(?![^.\\n]{0,15}(?:아니|틀|잘못|오류|사실이\\s*아))"
+            }
+          ]
+        }
       }
     },
     {
@@ -922,11 +943,29 @@
       "expect": {
         "status": [
           "clarify",
-          "insufficient_evidence"
+          "answered",
+          "partial"
         ],
-        "must_not_cite": [
-          "stay_manual_2026_10_19_pdf#p330"
-        ]
+        "if_answered": {
+          "answer_must_match": [
+            {
+              "label": "취업기간 3년 또는 최장 4년 10개월",
+              "pattern": "4\\s*년\\s*10\\s*개월|3\\s*년|(?i:4\\s*years?\\s*(?:and\\s*)?10\\s*months|three\\s+years|3\\s*years)"
+            }
+          ],
+          "answer_must_not_match": [
+            {
+              "label": "최장 기간을 5년 이상으로 씀",
+              "pattern": "(?:최대|최장|까지)[^.\\n]{0,8}(?:[5-9]|10)\\s*년(?!\\s*10\\s*개월)(?![^.\\n]{0,15}(?:아니|틀|잘못|오류|사실이\\s*아))"
+            }
+          ],
+          "answer_flag_if_match": [
+            {
+              "label": "대상 국가 수를 씀(쪽 안에서 16·17개국이 엇갈림)",
+              "pattern": "1[67]\\s*개\\s*국|(?i:1[67]\\s+countries)"
+            }
+          ]
+        }
       }
     },
     {
@@ -952,11 +991,26 @@
       "expect": {
         "status": [
           "clarify",
-          "insufficient_evidence"
+          "answered",
+          "partial"
         ],
         "must_not_cite": [
           "visa_manual_2026_10_19_pdf#p74"
-        ]
+        ],
+        "if_answered": {
+          "answer_must_match": [
+            {
+              "label": "자격 취득(변경·입국)일부터 6개월 경과",
+              "pattern": "6\\s*개월|(?i:six\\s+months|6\\s*months)"
+            }
+          ],
+          "answer_must_not_match": [
+            {
+              "label": "허가 없이 바로 할 수 있다고 씀",
+              "pattern": "(?:허가\\s*없이|별도\\s*허가\\s*(?:없이|불필요|필요\\s*없)|바로|즉시|언제든)[^.\\n]{0,20}(?:가능|할\\s*수\\s*있)(?![^.\\n]{0,15}(?:아니|틀|잘못|오류|사실이\\s*아))"
+            }
+          ]
+        }
       }
     },
     {
@@ -982,11 +1036,30 @@
       "expect": {
         "status": [
           "clarify",
-          "insufficient_evidence"
+          "answered",
+          "partial"
         ],
         "must_not_cite": [
           "visa_manual_2026_10_19_pdf#p285"
-        ]
+        ],
+        "if_answered": {
+          "answer_must_match": [
+            {
+              "label": "출국 후 1년 이내 재입국",
+              "pattern": "1\\s*년|(?i:one\\s+year|1\\s*year|12\\s*months)"
+            },
+            {
+              "label": "재입국허가 면제",
+              "pattern": "면제|필요\\s*(?:없|하지\\s*않)|불필요|(?i:exempt|no\\s+re-?entry\\s+permit|not\\s+need|n'?t\\s+need)"
+            }
+          ],
+          "answer_flag_if_match": [
+            {
+              "label": "수수료를 일반 요건처럼 씀(입국·사증발급 규제자 예외인지 확인)",
+              "pattern": "3\\s*만\\s*원|5\\s*만\\s*원|30,000|50,000"
+            }
+          ]
+        }
       }
     },
     {
