@@ -96,6 +96,9 @@ _MONEY_RE = re.compile(
 _KRW_COMPOUND_RE = re.compile(r"(?P<amt>(?:\d[\d,.]*\s*(?:억|만|천)\s*)+\d*)\s*(?:원|won\b)")
 #: Numbers standing alone in the evidence (table cells such as "소득기준 23,595,948"):
 #: at least four digits, not part of a date and not followed by a non-money unit.
+#: They count as won amounts only in a money context (see _bare_amounts).
+_MONEY_WORD_RE = re.compile(r"수수료|소득|금액|비용|예치금|급여|임금|보수|보증금|기준액|심사료|요금|원\s*\)")
+_WON_UNIT_DECLARED_RE = re.compile(r"\(\s*원\s*\)|단위\s*[:：]?\s*원")
 _BARE_AMOUNT_RE = re.compile(
     r"(?<![\d,.])(?P<n>\d{1,3}(?:,\d{3})+|\d{4,})(?![\d,.])"
     r"(?!\s*(?:개월|개|달|주|일|년|월|명|%|퍼센트|점|시간|회|세|쪽|호|조|항|번|차|건|kg|km|m\b|원))"
@@ -192,7 +195,17 @@ def _period_claims(text: str) -> List[Claim]:
 
 
 def _bare_amounts(text: str) -> set:
-    return {_number(m.group("n")) for m in _BARE_AMOUNT_RE.finditer(text)}
+    """Bare numbers that the evidence itself marks as won: a money word shortly before
+    the number on its line, or a table row in text that declares the unit as 원.
+    "최소 면적 12,500제곱미터" is not an amount (held-out v4 V-24, 2026-10-28)."""
+    declared = bool(_WON_UNIT_DECLARED_RE.search(text))
+    amounts = set()
+    for line in text.splitlines():
+        for m in _BARE_AMOUNT_RE.finditer(line):
+            before = line[max(0, m.start() - 30):m.start()]
+            if _MONEY_WORD_RE.search(before) or (declared and line.lstrip().startswith("|")):
+                amounts.add(_number(m.group("n")))
+    return amounts
 
 
 def _document_claims(text: str) -> List[Claim]:
