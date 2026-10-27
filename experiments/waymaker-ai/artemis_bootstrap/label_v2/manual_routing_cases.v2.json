@@ -40,8 +40,17 @@
         "must_cite": [
           "visa_manual_2026_10_19_pdf#p25"
         ],
-        "answer_must_contain": [
-          "소속회사의 파견증명서, 재직증명서 또는 외신보도증"
+        "answer_must_contain_any_of_each": [
+          [
+            "파견증명서",
+            "외신보도증"
+          ]
+        ],
+        "answer_flag_if_match": [
+          {
+            "label": "C-1 사증에 D-5 지국 서류를 섞음",
+            "pattern": "설치\\s*허가증|운영\\s*자금\\s*도입\\s*실적"
+          }
         ]
       }
     },
@@ -78,8 +87,11 @@
         "must_cite": [
           "stay_manual_2026_10_19_pdf#p105"
         ],
-        "answer_must_contain": [
-          "지국․지사의 설치허가증"
+        "answer_must_contain_any_of_each": [
+          [
+            "설치허가증",
+            "사업자등록증"
+          ]
         ]
       }
     },
@@ -116,8 +128,11 @@
         "must_cite": [
           "visa_manual_2026_10_19_pdf#p118"
         ],
-        "answer_must_contain": [
-          "설비도입계약서 또는 산업설비도입 입증서류"
+        "answer_must_match": [
+          {
+            "label": "설비도입계약서 또는 산업설비도입 입증서류",
+            "pattern": "설비\\s*도입\\s*계약서|산업\\s*설비\\s*도입\\s*입증\\s*서류|(?i:(?:equipment|facility|machinery|plant)\\s*(?:import|introduction|purchase|installation)\\s*contract|contract\\s*for\\s*the\\s*(?:import|introduction|purchase)\\s*of\\s*(?:the\\s*)?(?:equipment|machinery|facilit))"
+          }
         ]
       }
     },
@@ -154,8 +169,11 @@
         "must_cite": [
           "stay_manual_2026_10_19_pdf#p56"
         ],
-        "answer_must_contain": [
-          "연수기간 연장신청 사유서"
+        "answer_must_match": [
+          {
+            "label": "연수기간 연장신청 사유서",
+            "pattern": "연장\\s*(?:신청\\s*)?사유서"
+          }
         ]
       }
     },
@@ -192,8 +210,15 @@
         "must_cite": [
           "visa_manual_2026_10_19_pdf#p347"
         ],
-        "answer_must_contain": [
-          "2년(24개월)"
+        "answer_must_match": [
+          {
+            "label": "영국 H-1 사증 유효기간 2년(24개월)",
+            "pattern": "유효\\s*기간[^.\\n\\d]{0,15}(?:2\\s*년|24\\s*개월)|(?i:valid(?:ity)?[^.\\n\\d]{0,30}(?:(?:2|two)\\s*-?\\s*years?|24\\s*-?\\s*months?))"
+          },
+          {
+            "label": "영국 H-1 체류기간 2년(24개월)",
+            "pattern": "체류\\s*기간[^.\\n\\d]{0,15}(?:2\\s*년|24\\s*개월)|(?i:(?:stay|sojourn)[^.\\n\\d]{0,30}(?:(?:2|two)\\s*-?\\s*years?|24\\s*-?\\s*months?))"
+          }
         ]
       }
     },
@@ -327,6 +352,12 @@
         "answer_must_contain": [
           "임금체불",
           "1년"
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "임금체불 중재자를 G-1 대상에서 뺌",
+            "pattern": "임금\\s*체불[^.\\n]{0,40}(?:해당(?:하지|되지)\\s*않|대상(?:이|에|자가)?\\s*(?:아닙|아니|되지\\s*않|포함되지\\s*않))(?![^.\\n]{0,15}(?:아니|아닙|틀|잘못|오류|오해))"
+          }
         ]
       }
     },
@@ -365,6 +396,18 @@
         ],
         "must_not_cite": [
           "visa_manual_2026_10_19_pdf#p25"
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "연장 시 90일을 추가로 더함(기산점 오류)",
+            "pattern": "(?:추가(?:로)?\\s*(?:최대\\s*)?90\\s*일|90\\s*일\\s*(?:을|를|이)?\\s*(?:더|추가)|(?:연장\\s*허가|연장|허가|만료)\\s*(?:일|한\\s*날|된\\s*날)\\s*(?:로)?부터[^.\\n\\d]{0,10}90\\s*일)(?![^.\\n]{0,15}(?:아니|아닙|틀|잘못|오류|오해))"
+          }
+        ],
+        "answer_flag_if_match": [
+          {
+            "label": "90일의 기산점(입국일·최장/총 체류기간)을 밝히지 않음",
+            "pattern": "^(?![\\s\\S]*(?:입국|최장|총\\s*체류|전체\\s*체류))[\\s\\S]*90\\s*일"
+          }
         ]
       }
     },
@@ -433,17 +476,28 @@
         "must_cite": [
           "stay_manual_2026_10_19_pdf#p326"
         ],
-        "answer_must_contain_any_of_each": [
-          [
-            "마약검사 확인서"
-          ],
-          [
-            "여행자보험",
-            "산재보험"
-          ]
-        ],
         "must_not_cite": [
           "visa_manual_2026_10_19_pdf#p279"
+        ],
+        "answer_must_match": [
+          {
+            "label": "마약검사 확인서",
+            "pattern": "마약\\s*검사\\s*(?:결과\\s*)?확인서"
+          }
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "산재보험",
+            "산업재해보상보험",
+            "산업재해보험",
+            "안전보험"
+          ]
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "마약검사 확인서가 필요 없다고 함",
+            "pattern": "마약\\s*검사[^.\\n]{0,20}(?:필요\\s*(?:없|하지\\s*않)|제출하지\\s*않|불필요|면제|안\\s*내도)(?![^.\\n]{0,15}(?:아니|아닙|틀|잘못|오류|오해))"
+          }
         ]
       }
     },
@@ -474,16 +528,18 @@
         "must_cite": [
           "visa_manual_2026_10_19_pdf#p92"
         ],
-        "answer_must_contain_any_of_each": [
-          [
-            "파견명령서"
-          ],
-          [
-            "설립허가서"
-          ]
-        ],
         "must_not_cite": [
           "stay_manual_2026_10_19_pdf#p106"
+        ],
+        "answer_must_match": [
+          {
+            "label": "파견명령서(dispatch order)",
+            "pattern": "파견\\s*명령서|(?i:dispatch(?:ing)?\\s*order|order\\s*of\\s*dispatch|letter\\s*of\\s*dispatch|dispatch\\s*letter|assignment\\s*order)"
+          },
+          {
+            "label": "종교·사회복지단체 설립허가서(establishment permit)",
+            "pattern": "설립\\s*허가서|(?i:(?:establishment|incorporation|foundation)\\s*(?:permit|permission|approval|licen[cs]e|authori[sz]ation)|(?:permit|permission|approval|licen[cs]e|authori[sz]ation)\\s*(?:for|of)\\s*(?:the\\s*)?(?:establishment|incorporation|foundation))"
+          }
         ]
       }
     },
@@ -514,16 +570,24 @@
         "must_cite": [
           "stay_manual_2026_10_19_pdf#p131"
         ],
-        "answer_must_contain_any_of_each": [
-          [
-            "원근무처장의 동의서"
-          ],
-          [
-            "고용계약서"
-          ]
-        ],
         "must_not_cite": [
           "visa_manual_2026_10_19_pdf#p118"
+        ],
+        "answer_must_match": [
+          {
+            "label": "원근무처장의 동의서",
+            "pattern": "원\\s*근무처\\s*(?:의\\s*)?장\\s*(?:의\\s*)?동의서"
+          },
+          {
+            "label": "고용계약서",
+            "pattern": "고용\\s*계약서"
+          }
+        ],
+        "answer_flag_if_match": [
+          {
+            "label": "OCR 병합 '총 제출서류 (학)장'을 서류명으로 옮김",
+            "pattern": "제출\\s*서류\\s*\\(\\s*학\\s*\\)\\s*장"
+          }
         ]
       }
     },
@@ -594,6 +658,12 @@
         "must_not_cite": [
           "visa_manual_2026_10_19_pdf#p60",
           "visa_manual_2026_10_19_pdf#p25"
+        ],
+        "answer_flag_if_match": [
+          {
+            "label": "사증(공관) 첨부서류를 연장 서류로 제시",
+            "pattern": "사증\\s*발급\\s*신청서|별지\\s*제?\\s*17\\s*호|초청장|경비\\s*지불\\s*능력|문화\\s*예술\\s*단체임을"
+          }
         ]
       }
     },
@@ -624,6 +694,12 @@
         "must_not_cite": [
           "stay_manual_2026_10_19_pdf#p338",
           "stay_manual_2026_10_19_pdf#p340"
+        ],
+        "answer_flag_if_match": [
+          {
+            "label": "체류(연장·재고용) 서류를 사증발급인정서 서류로 제시",
+            "pattern": "별지\\s*제?\\s*34\\s*호|고용\\s*추천서|선원\\s*근로\\s*계약서|각서"
+          }
         ]
       }
     },
@@ -684,6 +760,12 @@
         "must_not_cite": [
           "stay_manual_2026_10_19_pdf#p328",
           "stay_manual_2026_10_19_pdf#p329"
+        ],
+        "answer_flag_if_match": [
+          {
+            "label": "근무처 변경 신청처를 사증발급인정서 신청처로 제시",
+            "pattern": "(?:고용\\s*센터|고용\\s*노동부|출입국[^.\\n]{0,15}(?:청|사무소|관서)|주소지[^.\\n]{0,10}관할)[^.\\n]{0,20}신청"
+          }
         ]
       }
     },
@@ -744,6 +826,12 @@
         "must_not_cite": [
           "stay_manual_2026_10_19_pdf#p524",
           "stay_manual_2026_10_19_pdf#p525"
+        ],
+        "answer_flag_if_match": [
+          {
+            "label": "공급되지 않은 신청 공관명 또는 학업기간 6개월을 답으로 씀",
+            "pattern": "(?i:japan|china|shanghai|hong\\s*kong|taipei|tokyo|beijing|vienna|6\\s*months?|six\\s*months?)|일본|중국|상하이|홍콩|타이베이|도쿄|베이징|비엔나|6\\s*개월"
+          }
         ]
       }
     },
@@ -774,14 +862,20 @@
         "must_cite": [
           "stay_manual_2026_10_19_pdf#p24"
         ],
-        "answer_must_contain_any_of_each": [
-          [
-            "체류기간 연장이나 체류자격 변경허가를 하지 아니",
-            "반드시 사증을 발급 받아 입국"
-          ]
-        ],
         "must_not_cite": [
           "visa_manual_2026_10_19_pdf#p14"
+        ],
+        "answer_must_match": [
+          {
+            "label": "무사증 입국자는 원칙적으로 연장·변경 불가 또는 사증 발급 후 입국",
+            "pattern": "(?:연장|변경)[^.\\n]{0,30}(?:하지\\s*(?:아니|않)|불가(?!능하지)|안\\s*됩|어렵(?!지\\s*않)|허용되지\\s*않|허가되지\\s*않|할\\s*수\\s*없)|사증을?\\s*(?:새로\\s*)?(?:발급\\s*)?받아(?:서)?\\s*(?:다시\\s*)?입국"
+          }
+        ],
+        "answer_flag_if_match": [
+          {
+            "label": "무사증 입국자의 연장·변경이 가능하다고 단정",
+            "pattern": "(?:연장|변경)(?:은|는|이|가|도|을|를)?\\s*(?:허가\\s*(?:를|가)?\\s*)?(?:받을\\s*수\\s*있|가능합|할\\s*수\\s*있)"
+          }
         ]
       }
     },
@@ -812,11 +906,20 @@
         "must_cite": [
           "visa_manual_2026_10_19_pdf#p70"
         ],
-        "answer_must_contain": [
-          "사증발급인정서"
-        ],
         "must_not_cite": [
           "stay_manual_2026_10_19_pdf#p56"
+        ],
+        "answer_must_match": [
+          {
+            "label": "사증발급인정서",
+            "pattern": "사증\\s*발급\\s*인정서"
+          }
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "사증발급인정서가 필요 없다고 함",
+            "pattern": "사증\\s*발급\\s*인정서\\s*(?:가|는|이|를|을)?\\s*(?:없이(?!\\s*는)|필요\\s*(?:없|하지\\s*않)|불필요|받지\\s*않)(?![^.\\n]{0,15}(?:아니|아닙|틀|잘못|오류|오해))"
+          }
         ]
       }
     },
@@ -847,16 +950,18 @@
         "must_cite": [
           "stay_manual_2026_10_19_pdf#p29"
         ],
-        "answer_must_contain_any_of_each": [
-          [
-            "근무처의 추가는 불가"
-          ],
-          [
-            "지자체 담당자 동반"
-          ]
-        ],
         "must_not_cite": [
           "visa_manual_2026_10_19_pdf#p51"
+        ],
+        "answer_must_match": [
+          {
+            "label": "근무처 추가 불가",
+            "pattern": "근무처\\s*(?:의\\s*)?추가[^.\\n\\d]{0,8}?(?:불가|허용되지\\s*않|할\\s*수\\s*없|안\\s*됩|되지\\s*않)"
+          },
+          {
+            "label": "변경 시 지자체 담당자 동반",
+            "pattern": "(?:지자체|지방\\s*자치\\s*단체)\\s*(?:의\\s*)?담당자(?:의|가|와|를)?\\s*(?:동반|동행|함께)"
+          }
         ]
       }
     },
@@ -887,17 +992,24 @@
         "must_cite": [
           "visa_manual_2026_10_19_pdf#p94"
         ],
-        "answer_must_contain_any_of_each": [
-          [
-            "유효기간 2년 이내의",
-            "2년"
-          ],
-          [
-            "복수사증"
-          ]
-        ],
         "must_not_cite": [
           "stay_manual_2026_10_19_pdf#p109"
+        ],
+        "answer_must_match": [
+          {
+            "label": "사증 유효기간 2년 이내",
+            "pattern": "유효\\s*기간[^.\\n\\d]{0,15}2\\s*년|2\\s*년\\s*(?:이내|이하)?\\s*(?:의\\s*)?유효\\s*기간|(?i:valid(?:ity)?[^.\\n\\d]{0,30}(?:2|two)\\s*-?\\s*years?|(?:2|two)\\s*-?\\s*years?\\s*(?:of\\s*)?validity)"
+          },
+          {
+            "label": "복수사증(multiple-entry)",
+            "pattern": "복수\\s*(?:사증|비자)|(?i:multiple[\\s-]*entr(?:y|ies)|multiple\\s*visa)"
+          }
+        ],
+        "answer_flag_if_match": [
+          {
+            "label": "2년을 체류기간으로 씀",
+            "pattern": "체류\\s*기간[^.\\n\\d]{0,10}2\\s*년|(?i:(?:period\\s*of\\s*stay|stay)[^.\\n\\d]{0,15}(?:2|two)\\s*-?\\s*years?)"
+          }
         ]
       }
     }

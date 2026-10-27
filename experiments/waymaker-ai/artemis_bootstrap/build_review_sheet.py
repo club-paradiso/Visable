@@ -114,6 +114,7 @@ def _label_entry(v2: Dict[str, Any], key: str) -> Any:
             "chatgpt_partial_v2": row["sources"].get("chatgpt_partial_v2"),
         },
         "regrade_post_hoc": {"original": g["original"], "v2": g["v2"]} if g else None,
+        "ai_review_round3": row.get("ai_review_round3"),
     }
 
 

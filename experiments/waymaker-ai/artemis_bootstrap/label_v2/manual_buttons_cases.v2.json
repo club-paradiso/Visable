@@ -38,8 +38,27 @@
         "must_not_cite": [
           "stay_manual_2026_10_19_pdf#p191"
         ],
-        "answer_must_contain": [
-          "석사 학위 소지자로서 3년 이상 경력자"
+        "answer_must_match": [
+          {
+            "label": "석사 + 3년 이상 경력",
+            "pattern": "석사[^.\\n]{0,40}3\\s*년\\s*이상"
+          }
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "석사 경력 연수 오류",
+            "pattern": "석사[^.\\n]{0,40}(?<![0-9])(?:1|2|4|5|10)\\s*년\\s*이상\\s*(?:의\\s*)?경력(?![^.\\n]{0,15}(?:아니|틀|잘못|오류))"
+          }
+        ],
+        "answer_flag_if_match": [
+          {
+            "label": "국내 석사에게 3년 경력 요구(면제 대상 왜곡 의심)",
+            "pattern": "국내[^.\\n]{0,30}석사[^.\\n]{0,60}3\\s*년"
+          },
+          {
+            "label": "경력요건 면제 항목을 누적요건으로 결합 의심",
+            "pattern": "졸업하고[^.\\n]{0,80}논문"
+          }
         ]
       }
     },
@@ -74,8 +93,11 @@
         "must_not_cite": [
           "stay_manual_2026_10_19_pdf#p27"
         ],
-        "answer_must_contain": [
-          "5년 복수사증 발급"
+        "answer_must_match": [
+          {
+            "label": "5년 복수사증",
+            "pattern": "(?<!또는 )5\\s*년[^.\\n]{0,15}복수|복수\\s*사증[^.\\n]{0,15}(?<!또는 )5\\s*년"
+          }
         ]
       }
     },
@@ -110,8 +132,17 @@
         "must_not_cite": [
           "stay_manual_2026_10_19_pdf#p161"
         ],
-        "answer_must_contain": [
-          "체류기간 6개월의 단수 구직(D-10)사증"
+        "answer_must_match": [
+          {
+            "label": "체류기간 6개월",
+            "pattern": "6\\s*(?:개월|월)"
+          }
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "체류기간 수치 오류",
+            "pattern": "체류\\s*기간\\s*(?:은|이|는)?\\s*(?:최대\\s*)?(?:90\\s*일|[1-5]\\s*년|3\\s*개월)(?![^.\\n]{0,15}(?:아니|틀|잘못|오류))"
+          }
         ]
       }
     },
@@ -146,8 +177,17 @@
         "must_not_cite": [
           "stay_manual_2026_10_19_pdf#p174"
         ],
-        "answer_must_contain": [
-          "학사이상의 학위를 소지한 자"
+        "answer_must_match": [
+          {
+            "label": "학사 이상 학위",
+            "pattern": "학사\\s*이상|[Bb]achelor"
+          }
+        ],
+        "answer_flag_if_match": [
+          {
+            "label": "석사 이상 요구 의심",
+            "pattern": "(?:석사|[Mm]aster)[^.\\n]{0,40}(?:필요|요구|required|need)"
+          }
         ]
       }
     },
@@ -182,8 +222,17 @@
         "must_not_cite": [
           "visa_manual_2026_10_19_pdf#p152"
         ],
-        "answer_must_contain": [
-          "신고사유 발생일로부터 15일 이내"
+        "answer_must_match": [
+          {
+            "label": "15일 이내",
+            "pattern": "15\\s*일\\s*(?:이내|안에|내)"
+          }
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "신고기한 수치 오류",
+            "pattern": "(?<![0-9])(?:7|10|14|30)\\s*일\\s*이내(?![^.\\n]{0,15}(?:아니|틀|잘못|오류))"
+          }
         ]
       }
     },
@@ -218,8 +267,21 @@
         "must_not_cite": [
           "visa_manual_2026_10_19_pdf#p128"
         ],
-        "answer_must_contain": [
-          "1년을 초과하여 2년 내에 재입국"
+        "answer_must_match": [
+          {
+            "label": "1년 초과",
+            "pattern": "1\\s*년\\s*(?:을\\s*)?(?:초과|넘)"
+          },
+          {
+            "label": "2년 내",
+            "pattern": "2\\s*년"
+          }
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "초과 기준 연수 오류",
+            "pattern": "(?<![0-9])(?:2|3)\\s*년\\s*(?:을\\s*)?초과(?![^.\\n]{0,15}(?:아니|틀|잘못|오류))"
+          }
         ]
       }
     },
@@ -254,8 +316,21 @@
         "must_not_cite": [
           "visa_manual_2026_10_19_pdf#p285"
         ],
-        "answer_must_contain": [
-          "최초 입국일로부터 3년"
+        "answer_must_match": [
+          {
+            "label": "3년 상한",
+            "pattern": "(?<![0-9])3\\s*년"
+          },
+          {
+            "label": "최초 입국 기산",
+            "pattern": "입국"
+          }
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "기산 연수 오류",
+            "pattern": "입국[^.\\n]{0,10}부터\\s*(?:1|2|4|5)\\s*년(?!\\s*10\\s*개월)(?![^.\\n]{0,15}(?:아니|틀|잘못|오류))"
+          }
         ]
       }
     },
@@ -290,8 +365,25 @@
         "must_not_cite": [
           "visa_manual_2026_10_19_pdf#p43"
         ],
-        "answer_must_contain": [
-          "입국일로부터 체류기간 90일 범위 내 연장 가능"
+        "answer_must_match": [
+          {
+            "label": "90일",
+            "pattern": "90\\s*(?:일|days?)"
+          },
+          {
+            "label": "입국일 기산 또는 총 기간",
+            "pattern": "입국|[Ee]ntry|entered|arriv|[Tt]otal|총"
+          }
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "90일 추가 연장(오류)",
+            "pattern": "(?:추가로?\\s*90\\s*일|90\\s*일\\s*(?:을\\s*|씩\\s*)?(?:더|추가))(?![^.\\n]{0,15}(?:아니|틀|잘못|오류))"
+          },
+          {
+            "label": "additional 90 days (wrong)",
+            "pattern": "(?<!not )(?<!not an )(?:additional|another|extra|further)\\s+90\\s*days?|90\\s+more\\s+days"
+          }
         ]
       }
     },
@@ -327,8 +419,17 @@
         "must_not_cite": [
           "stay_manual_2026_10_19_pdf#p83"
         ],
-        "answer_must_contain": [
-          "체류기간 6개월 이하 단수 일반연수(D-4) 사증"
+        "answer_must_match": [
+          {
+            "label": "체류기간 6개월 이하",
+            "pattern": "6\\s*개월\\s*(?:이하|이내|까지)|최대\\s*6\\s*개월|체류\\s*기간\\s*(?:은|이|는)?\\s*(?:최대\\s*)?6\\s*개월(?!\\s*(?:이|가)?\\s*(?:경과|지난|지나))"
+          }
+        ],
+        "answer_flag_if_match": [
+          {
+            "label": "체류기간 2년(국내 1회 상한) 혼동 의심",
+            "pattern": "체류\\s*기간[^.\\n]{0,15}2\\s*년|2\\s*년[^.\\n]{0,10}체류"
+          }
         ]
       }
     },
@@ -364,8 +465,17 @@
         "must_not_cite": [
           "stay_manual_2026_10_19_pdf#p489"
         ],
-        "answer_must_contain": [
-          "23,595,948"
+        "answer_must_match": [
+          {
+            "label": "2인 가구 23,595,948원",
+            "pattern": "23,?595,?948|2,?359\\s*만\\s*5,?948"
+          }
+        ],
+        "answer_flag_if_match": [
+          {
+            "label": "2025년 기준 표시 누락",
+            "pattern": "^(?![\\s\\S]*2025)"
+          }
         ]
       }
     },
@@ -401,8 +511,11 @@
         "must_not_cite": [
           "stay_manual_2026_10_19_pdf#p526"
         ],
-        "answer_must_contain": [
-          "4,000만원 이상"
+        "answer_must_match": [
+          {
+            "label": "보장액 4,000만원",
+            "pattern": "(?<![0-9,])4,?000\\s*만|4천\\s*만|(?<![0-9])40\\s*million|40,000,000"
+          }
         ]
       }
     },
@@ -438,8 +551,21 @@
         "must_not_cite": [
           "stay_manual_2026_10_19_pdf#p355"
         ],
-        "answer_must_contain": [
-          "복수비자 발급(유효기간 1년)"
+        "answer_must_match": [
+          {
+            "label": "복수사증",
+            "pattern": "복수|[Mm]ultiple"
+          },
+          {
+            "label": "유효기간 1년",
+            "pattern": "1\\s*년|(?:1|one)[\\s-]*year|12\\s*months"
+          }
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "단수사증(오류)",
+            "pattern": "단수(?![^.\\n]{0,15}(?:아니|틀|잘못|오류))|(?<!not )(?<!not a )single[\\s-]*entry"
+          }
         ]
       }
     },
@@ -475,8 +601,17 @@
         "must_not_cite": [
           "stay_manual_2026_10_19_pdf#p188"
         ],
-        "answer_must_contain": [
-          "7일을 초과할 수"
+        "answer_must_match": [
+          {
+            "label": "활동기간 7일",
+            "pattern": "(?<![0-9])7\\s*(?:일|days?)"
+          }
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "체류기간 전체 강연 가능(오류)",
+            "pattern": "(?:30\\s*일|한\\s*달)\\s*(?:동안\\s*)?(?:모두|전부|내내)(?![^.\\n]{0,15}(?:아니|틀|잘못|오류))"
+          }
         ]
       }
     },
@@ -512,8 +647,21 @@
         "must_not_cite": [
           "visa_manual_2026_10_19_pdf#p62"
         ],
-        "answer_must_contain": [
-          "체류자격외활동허가(E-3) 필요"
+        "answer_must_match": [
+          {
+            "label": "체류자격외활동허가",
+            "pattern": "체류\\s*자격\\s*외\\s*활동\\s*허가"
+          },
+          {
+            "label": "E-3",
+            "pattern": "E\\s*[-‐–]\\s*3"
+          }
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "허가 불필요(오류)",
+            "pattern": "허가(?:\\s*\\(E\\s*-\\s*3\\))?(?:가|는)?\\s*(?:필요\\s*(?:없|하지\\s*않)|없이도?\\s*(?:가능|할\\s*수\\s*있|해도))(?![^.\\n]{0,15}(?:아니|틀|잘못|오류))"
+          }
         ]
       }
     },
@@ -549,8 +697,25 @@
         "must_not_cite": [
           "visa_manual_2026_10_19_pdf#p62"
         ],
-        "answer_must_contain": [
-          "배달대행업체 라이더"
+        "answer_must_match": [
+          {
+            "label": "배달대행 라이더 언급",
+            "pattern": "배달\\s*대행|라이더|[Dd]elivery"
+          },
+          {
+            "label": "제한(불가) 결론",
+            "pattern": "제한|불가|할\\s*수\\s*없|안\\s*됩|허용되지\\s*않|[Nn]ot\\s+(?:allowed|permitted|eligible)|cannot|can't|can not|prohibited|restricted"
+          }
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "허가받으면 가능(오류)",
+            "pattern": "허가를?\\s*받으면\\s*(?:가능|할\\s*수\\s*있)(?![^.\\n]{0,15}(?:아니|틀|잘못|오류))|[Yy]es,?\\s+you\\s+can"
+          },
+          {
+            "label": "제한분야 아님(오류)",
+            "pattern": "제한\\s*(?:분야|대상)?(?:에\\s*해당하지\\s*않|가\\s*아니|이\\s*아니)(?![^.\\n]{0,15}(?:아니|틀|잘못|오류))|not\\s+(?:a\\s+)?restricted"
+          }
         ]
       }
     },
@@ -623,8 +788,17 @@
         "must_not_cite": [
           "visa_manual_2026_10_19_pdf#p316"
         ],
-        "answer_must_contain": [
-          "TOPIK 2급 또는 사회통합프로그램 2급 이상"
+        "answer_must_match": [
+          {
+            "label": "TOPIK 2급 또는 사회통합프로그램 2급",
+            "pattern": "(?:TOPIK|토픽|한국어\\s*능력\\s*시험)\\s*(?:2\\s*급|[Ll]evel\\s*2)|(?:사회\\s*통합\\s*프로그램|KIIP)\\s*(?:\\(KIIP\\)\\s*)?2\\s*급"
+          }
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "급수 오류",
+            "pattern": "(?:TOPIK|토픽|한국어\\s*능력\\s*시험|사회\\s*통합\\s*프로그램)\\s*[3-6]\\s*급\\s*이상(?![^.\\n]{0,15}(?:아니|틀|잘못|오류))"
+          }
         ]
       }
     },

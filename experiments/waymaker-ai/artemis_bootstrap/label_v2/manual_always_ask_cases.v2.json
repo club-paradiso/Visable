@@ -38,8 +38,19 @@
         "must_not_cite": [
           "stay_manual_2026_10_19_pdf#p517"
         ],
-        "answer_must_contain": [
-          "1년 이내의 복수사증"
+        "answer_must_match": [
+          {
+            "label": "G-1-10 자격",
+            "pattern": "G-1-10"
+          },
+          {
+            "label": "체류기간 1년 이내",
+            "pattern": "(?<!\\d)1\\s*년|12\\s*개월|(?i:one[- ]year|(?<!\\d)1[- ]year|12 months|up to a year|within a year)"
+          },
+          {
+            "label": "복수사증",
+            "pattern": "복수|(?i:multiple[- ]?entry|multi[- ]entry)"
+          }
         ]
       }
     },
@@ -74,8 +85,15 @@
         "must_not_cite": [
           "stay_manual_2026_10_19_pdf#p32"
         ],
-        "answer_must_contain": [
-          "1년 이하의 단수사증"
+        "answer_must_match": [
+          {
+            "label": "체류기간 1년 이하",
+            "pattern": "(?<!\\d)1\\s*년"
+          },
+          {
+            "label": "단수사증",
+            "pattern": "단수"
+          }
         ]
       }
     },
@@ -110,8 +128,21 @@
         "must_not_cite": [
           "stay_manual_2026_10_19_pdf#p108"
         ],
-        "answer_must_contain": [
-          "종단이나 교단의 대표자"
+        "answer_must_match": [
+          {
+            "label": "종단·교단 대표자",
+            "pattern": "(?:종단|교단)[^.\\n]{0,15}대표"
+          },
+          {
+            "label": "단위 교회 목사는 초청 불가",
+            "pattern": "될\\s*수\\s*없|할\\s*수\\s*없|불가|안\\s*됩|안됩|아닙니다"
+          }
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "개별 교회 목사 초청 가능이라고 답함",
+            "pattern": "(?:담임\\s*목사|단위\\s*교회|개별\\s*교회)[^.\\n]{0,30}(?:초청할 수 있|초청이 가능|초청 가능(?!하지)|초청해도 됩|초청자가 될 수 있)(?![^.\\n]{0,15}(?:아니|틀|잘못|오류))"
+          }
         ]
       }
     },
@@ -146,8 +177,17 @@
         "must_not_cite": [
           "stay_manual_2026_10_19_pdf#p103"
         ],
-        "answer_must_contain": [
-          "대한민국의 보도기관과 계약"
+        "answer_must_match": [
+          {
+            "label": "D-5에 해당하지 않음",
+            "pattern": "해당(?:되|하)지\\s*(?:않|아니)|해당\\s*안\\s*|해당이\\s*안|대상이\\s*아닙|대상이\\s*되지\\s*않|받을\\s*수\\s*없|신청할\\s*수\\s*없|불가"
+          }
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "D-5 신청 가능이라고 답함",
+            "pattern": "D-5[^.\\n]{0,25}(?:신청하시면 됩|신청하면 됩|신청 가능(?!하지)|신청할 수 있|받으실 수 있|받을 수 있)(?![^.\\n]{0,15}(?:아니|틀|잘못|오류))"
+          }
         ]
       }
     },
@@ -182,8 +222,15 @@
         "must_not_cite": [
           "stay_manual_2026_10_19_pdf#p16"
         ],
-        "answer_must_contain": [
-          "3개월"
+        "answer_must_match": [
+          {
+            "label": "유효기간 3개월",
+            "pattern": "3\\s*개월|(?i:three[- ]months?|(?<!\\d)3[- ]months?)"
+          },
+          {
+            "label": "단수사증",
+            "pattern": "단수|(?i:single[- ]?entry)"
+          }
         ]
       }
     },
@@ -218,14 +265,15 @@
         "must_not_cite": [
           "stay_manual_2026_10_19_pdf#p684"
         ],
-        "answer_must_contain_any_of_each": [
-          [
-            "1회로 제한"
-          ],
-          [
-            "출력제한 해제",
-            "휴넷"
-          ]
+        "answer_must_match": [
+          {
+            "label": "출력 1회 제한",
+            "pattern": "1\\s*회|한\\s*번|(?i:once|one time)"
+          },
+          {
+            "label": "휴넷/출력제한 해제 요청",
+            "pattern": "휴넷|출력\\s*제한[^.\\n]{0,6}해제"
+          }
         ]
       }
     },
@@ -260,8 +308,15 @@
         "must_not_cite": [
           "stay_manual_2026_10_19_pdf#p114"
         ],
-        "answer_must_contain": [
-          "과장이나 선임연구원급"
+        "answer_must_match": [
+          {
+            "label": "과장급",
+            "pattern": "과장"
+          },
+          {
+            "label": "선임연구원급",
+            "pattern": "선임\\s*연구원"
+          }
         ]
       }
     },
@@ -296,8 +351,15 @@
         "must_not_cite": [
           "stay_manual_2026_10_19_pdf#p202"
         ],
-        "answer_must_contain": [
-          "해양수산부장관의 추천"
+        "answer_must_match": [
+          {
+            "label": "해양수산부장관 추천",
+            "pattern": "해양수산부|(?i:oceans and fisheries)"
+          },
+          {
+            "label": "1회 부여 상한 5년",
+            "pattern": "(?<!\\d)5\\s*년|(?i:five[- ]years?|(?<!\\d)5[- ]years?)"
+          }
         ]
       }
     },
@@ -332,8 +394,17 @@
         "must_not_cite": [
           "visa_manual_2026_10_19_pdf#p64"
         ],
-        "answer_must_contain": [
-          "3급 이상"
+        "answer_must_match": [
+          {
+            "label": "TOPIK 3급/KIIP 3단계/사전평가 61점",
+            "pattern": "3\\s*급|3\\s*단계|61\\s*점"
+          }
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "다른 TOPIK 급수를 기준으로 답함",
+            "pattern": "(?:TOPIK|토픽|한국어능력시험)[^.\\n]{0,12}(?<!\\d)[124-6]\\s*급\\s*이상(?![^.\\n]{0,15}(?:아니|틀|잘못|오류))"
+          }
         ]
       }
     },
@@ -404,13 +475,15 @@
         "must_not_cite": [
           "visa_manual_2026_10_19_pdf#p339"
         ],
-        "answer_must_contain_any_of_each": [
-          [
-            "6개월"
-          ],
-          [
-            "건설업"
-          ]
+        "answer_must_match": [
+          {
+            "label": "신청 후 6개월",
+            "pattern": "6\\s*개월|(?i:six[- ]months?|(?<!\\d)6[- ]months?)"
+          },
+          {
+            "label": "건설업 취업 제한",
+            "pattern": "건설[^.\\n]{0,40}(?:불가|제한|제외|안\\s*됩|할\\s*수\\s*없)|(?:취업\\s*제한|제외|불가)[^.\\n]{0,40}건설|(?i:construction[^.\\n]{0,60}(?:not|restrict|prohibit|exclud|barred|cannot|can\\'t)|(?:not|restrict|prohibit|exclud|barred|cannot|can\\'t)[^.\\n]{0,60}construction)"
+          }
         ]
       }
     },
@@ -445,8 +518,15 @@
         "must_not_cite": [
           "visa_manual_2026_10_19_pdf#p57"
         ],
-        "answer_must_contain": [
-          "총(학)장의 추천서"
+        "answer_must_match": [
+          {
+            "label": "총(학)장 추천서",
+            "pattern": "(?:총\\s*\\(\\s*학\\s*\\)\\s*장|총장|학장)[^.\\n]{0,10}추천"
+          },
+          {
+            "label": "원근무처장 동의서",
+            "pattern": "(?:원|기존|현)\\s*근무처\\s*장?[^.\\n]{0,8}동의"
+          }
         ]
       }
     },
@@ -481,8 +561,15 @@
         "must_not_cite": [
           "visa_manual_2026_10_19_pdf#p317"
         ],
-        "answer_must_contain": [
-          "재학증명서"
+        "answer_must_match": [
+          {
+            "label": "15일 이내 신고",
+            "pattern": "15\\s*일|(?i:15\\s*days|fifteen days)"
+          },
+          {
+            "label": "재학증명서 등 증명서류",
+            "pattern": "재학\\s*증명|재학\\s*중임을\\s*증명|(?i:(?:certificate|proof|confirmation)\\s+of\\s+(?:enroll?ment|school attendance|attendance|study)|(?:enroll?ment|school|attendance)\\s+certificate)"
+          }
         ]
       }
     },
@@ -517,8 +604,15 @@
         "must_not_cite": [
           "visa_manual_2026_10_19_pdf#p170"
         ],
-        "answer_must_contain": [
-          "외국인 직업 신고서"
+        "answer_must_match": [
+          {
+            "label": "외국인 직업 신고서",
+            "pattern": "외국인\\s*직업\\s*신고서"
+          },
+          {
+            "label": "통합신청서 연 소득금액란",
+            "pattern": "통합\\s*신청서"
+          }
         ]
       }
     },
@@ -553,8 +647,17 @@
         "must_not_cite": [
           "visa_manual_2026_10_19_pdf#p120"
         ],
-        "answer_must_contain": [
-          "1년만 부여"
+        "answer_must_match": [
+          {
+            "label": "최초 체류기간 1년",
+            "pattern": "(?<!\\d)1\\s*년"
+          }
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "체류기간을 다른 연수로 답함",
+            "pattern": "체류\\s*기간[^.\\n]{0,10}(?<!\\d)(?:2|3|5)\\s*년(?![^.\\n]{0,15}(?:아니|틀|잘못|오류))"
+          }
         ]
       }
     },
@@ -589,13 +692,21 @@
         "must_not_cite": [
           "visa_manual_2026_10_19_pdf#p167"
         ],
-        "answer_must_contain_any_of_each": [
-          [
-            "최대 1년"
-          ],
-          [
-            "원 근무처 장의 동의서"
-          ]
+        "answer_must_match": [
+          {
+            "label": "최대 1년",
+            "pattern": "최대\\s*1\\s*년|(?<!\\d)1\\s*년[^.\\n]{0,8}(?:범위|이내|이하)"
+          },
+          {
+            "label": "원 근무처 장의 동의서",
+            "pattern": "원\\s*근무처\\s*장?[^.\\n]{0,8}동의"
+          }
+        ],
+        "answer_flag_if_match": [
+          {
+            "label": "신고 절의 동의서 면제 단서를 E-6-2 허가에 적용(페이지로 판정 불가)",
+            "pattern": "동의서[^.\\n]{0,60}면제|면제[^.\\n]{0,30}동의서"
+          }
         ]
       }
     },
@@ -661,6 +772,16 @@
         ],
         "must_not_cite": [
           "visa_manual_2026_10_19_pdf#p153"
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "석사 경력 요건 연수를 틀리게 답함",
+            "pattern": "석사[^.\\n]{0,40}(?<!\\d)(?:1|2|4|5|6|7|8|9|10)\\s*년\\s*이상(?![^.\\n]{0,15}(?:아니|틀|잘못|오류))"
+          },
+          {
+            "label": "국내 석사 구분 없이 경력 불필요라고 답함",
+            "pattern": "^(?![\\s\\S]*국내[^.\\n]{0,15}석사)[\\s\\S]*경력[^.\\n]{0,15}(?:필요\\s*(?:가\\s*)?없|필요하지\\s*않|불필요|요건\\s*면제)"
+          }
         ]
       }
     },
@@ -692,6 +813,16 @@
         ],
         "must_not_cite": [
           "stay_manual_2026_10_19_pdf#p429"
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "E-1 배우자에게 재정 입증서류가 필요하다고 단정(한국어)",
+            "pattern": "(?:재정|생계유지|소득)(?:(?!면제)[^.\\n]){0,30}(?:제출해야|제출하여야|필요합니다|필수)(?![^.\\n]{0,30}면제)"
+          },
+          {
+            "label": "E-1 배우자에게 재정 입증서류가 필요하다고 단정(영어)",
+            "pattern": "(?i:(?:you|she|i)\\s+(?:will\\s+)?(?:need|must|have)\\s+to\\s+(?:submit|provide)(?:(?!exempt|not required|waived)[^.\\n]){0,50}(?:financial|support|income|livelihood|maintenance)(?![^.\\n]{0,40}(?:exempt|not required|waived))|(?:financial|support|income)[^.\\n]{0,40}(?:is|are) required)"
+          }
         ]
       }
     },
@@ -726,6 +857,12 @@
         ],
         "answer_must_not_contain": [
           "최대 65점"
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "합격선을 65/95/160점 이상으로 답함",
+            "pattern": "(?<!\\d)(?:65|95|160)\\s*점\\s*이상(?![^.\\n]{0,15}(?:아니|틀|잘못|오류))"
+          }
         ]
       }
     },

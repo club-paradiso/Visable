@@ -38,8 +38,21 @@
         "must_not_cite": [
           "stay_manual_2026_10_19_pdf#p328"
         ],
-        "answer_must_contain": [
-          "사증발급 신청일로부터 3개월 이내에 발급된 증명서"
+        "answer_must_match": [
+          {
+            "label": "사증발급 신청일 기준 3개월 이내 발급",
+            "pattern": "(?i:신청\\s*(?:일|한\\s*날|날짜|일자|시점)[^.\\n]{0,25}(?<!\\d)3\\s*개월\\s*(?:이내|내|안)|(?<!\\d)3\\s*개월\\s*(?:이내|내|안)(?:에)?\\s*발급[^.\\n]{0,25}신청|발급(?:일|받은\\s*날|된\\s*날)?\\s*(?:로)?부터\\s*3\\s*개월\\s*(?:이내|내|안)(?:에)?[^.\\n]{0,15}신청|within\\s+(?:the\\s+)?(?:last\\s+|past\\s+)?(?:three|3)\\s+months[^.\\n]{0,60}(?:application|apply|applying)|(?:application|apply|applying)[^.\\n]{0,60}within\\s+(?:the\\s+)?(?:last\\s+|past\\s+)?(?:three|3)\\s+months)"
+          }
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "발급 시점 기간을 3개월이 아닌 숫자로 씀",
+            "pattern": "(?i:(?<!\\d)(?:[124-9]|1[0-2])\\s*개월\\s*(?:이내|내|안)(?:에)?\\s*(?:발급|발행)(?![^.\\n]{0,20}(?:아니|틀|잘못|오류|incorrect|not correct|not true|wrong)))"
+          },
+          {
+            "label": "기산점을 신청일이 아닌 입국·출국 등으로 씀",
+            "pattern": "(?i:(?:입국|출국|체류|접수|심사)\\s*(?:일|한\\s*날)?\\s*(?:로)?부터\\s*3\\s*개월(?![^.\\n]{0,20}(?:아니|틀|잘못|오류|incorrect|not correct|not true|wrong)))"
+          }
         ]
       }
     },
@@ -74,8 +87,21 @@
         "must_not_cite": [
           "stay_manual_2026_10_19_pdf#p175"
         ],
-        "answer_must_contain": [
-          "해외 소재 대한민국 공관이면 어디라도 신청 가능"
+        "answer_must_match": [
+          {
+            "label": "해외 어느 대한민국 공관에서나 신청 가능",
+            "pattern": "(?i:공관이?면?\\s*어디(?:라도|든지?|서나|에서나)|(?:어느|어떤|모든)\\s*(?:해외\\s*)?(?:대한민국\\s*|한국\\s*)?(?:공관|대사관|영사관)(?:이든|에서나|에서든|이라도|에서도)|(?:any|every)\\s+(?:overseas\\s+|foreign\\s+)?(?:South\\s+)?(?:Korean\\s+)?(?:embassy|consulate|mission|diplomatic\\s+mission)|(?:embassy|consulate|mission)\\w*[^.\\n]{0,40}\\banywhere\\b|(?:do\\s+not|don't|does\\s+not|doesn't|not)\\s+(?:have\\s+to|need\\s+to|required\\s+to)[^.\\n]{0,15}apply[^.\\n]{0,25}(?:home|own|native)\\s+country)"
+          }
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "본국에서만 신청해야 한다고 씀(영문)",
+            "pattern": "(?i:(?<!not )(?<!n't )(?:must|have\\s+to|need\\s+to|required\\s+to|should)\\s+apply[^.\\n]{0,25}(?:in|from|at)\\s+(?:your|the|his|her)\\s+(?:home|own|native)\\s+country(?![^.\\n]{0,20}(?:아니|틀|잘못|오류|incorrect|not correct|not true|wrong)))"
+          },
+          {
+            "label": "본국에서만 신청해야 한다고 씀(국문)",
+            "pattern": "(?i:(?:본국(?:에서만|의?\\s*(?:대한민국\\s*)?공관에서만)|본국에서\\s*신청해야)(?![^.\\n]{0,20}(?:아니|틀|잘못|오류|incorrect|not correct|not true|wrong)))"
+          }
         ]
       }
     },
@@ -116,9 +142,29 @@
         "must_not_cite": [
           "stay_manual_2026_10_19_pdf#p47"
         ],
-        "answer_must_contain": [
-          "사진 1매(6개월 이내 촬영 반명함)",
-          "표준입학허가서 (대학 총․학장 발행)"
+        "answer_must_match": [
+          {
+            "label": "사진: 6개월 이내 촬영",
+            "pattern": "(?i:6\\s*개월\\s*(?:이내|내|안)|(?:within|in)\\s+the\\s+(?:last|past)\\s+(?:six|6)\\s+months|taken\\s+within\\s+(?:six|6)\\s+months)"
+          }
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "표준입학허가서",
+            "표준 입학허가서"
+          ]
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "사진 촬영 기한을 6개월이 아닌 숫자로 씀",
+            "pattern": "(?i:(?<!\\d)(?:[1-57-9]|1[0-2])\\s*개월\\s*(?:이내|내|안)(?:에)?\\s*(?:촬영|찍은)(?![^.\\n]{0,20}(?:아니|틀|잘못|오류|incorrect|not correct|not true|wrong)))"
+          }
+        ],
+        "answer_flag_if_match": [
+          {
+            "label": "학사 신입학에 석사·박사 졸업증명서가 필요하다고 씀(표 행·열 혼동)",
+            "pattern": "(?i:학사\\s*(?:신입학|과정)[^.\\n]{0,40}(?:석사|박사)\\s*(?:또는\\s*(?:석사|박사)\\s*)?졸업\\s*증명서)"
+          }
         ]
       }
     },
@@ -153,8 +199,21 @@
         "must_not_cite": [
           "stay_manual_2026_10_19_pdf#p137"
         ],
-        "answer_must_contain": [
-          "원칙적으로 신청자의 본국에 소재한 대한민국 공관"
+        "answer_must_match": [
+          {
+            "label": "원칙: 본국 소재 대한민국 공관",
+            "pattern": "(?i:본국[^.\\n]{0,15}(?:대한민국\\s*|한국\\s*)?(?:공관|대사관|영사관)|(?:home|own|native)\\s+country[^.\\n]{0,40}(?:mission|embassy|consulate)|(?:mission|embassy|consulate)\\w*[^.\\n]{0,40}(?:home|own|native)\\s+country|country\\s+of\\s+(?:your\\s+)?(?:nationality|citizenship))"
+          }
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "아무 공관에서나 신청 가능하다고 씀(영문)",
+            "pattern": "(?i:(?<!not )(?<!not at )(?<!just )(?:any|every)\\s+(?:overseas\\s+)?(?:South\\s+)?(?:Korean\\s+)?(?:embassy|consulate|mission)(?![^.\\n]{0,20}(?:아니|틀|잘못|오류|incorrect|not correct|not true|wrong)))"
+          },
+          {
+            "label": "아무 공관에서나 신청 가능하다고 씀(국문)",
+            "pattern": "(?i:(?:(?:어느|모든|어떤)\\s*(?:나라의?\\s*)?(?:대한민국\\s*)?(?:공관|대사관)(?:이든|에서나|에서든|이라도)|공관이면\\s*어디(?:라도|든|서나))(?![^.\\n]{0,20}(?:아니|틀|잘못|오류|incorrect|not correct|not true|wrong)))"
+          }
         ]
       }
     },
@@ -189,9 +248,25 @@
         "must_not_cite": [
           "visa_manual_2026_10_19_pdf#p288"
         ],
-        "answer_must_contain": [
-          "1월 이내에 사업장 변경을 신청",
-          "3개월 이내에 근무처 변경"
+        "answer_must_match": [
+          {
+            "label": "근로계약 종료 후 1개월(1월) 이내 사업장 변경 신청",
+            "pattern": "(?i:계약[^.\\n]{0,15}(?:종료|만료|끝)[^.\\n]{0,20}(?<!\\d)1\\s*(?:개)?월\\s*(?:이내|내|안))"
+          },
+          {
+            "label": "변경 신청일부터 3개월 이내 근무처 변경허가",
+            "pattern": "(?i:신청\\s*(?:한\\s*날|일)[^.\\n]{0,15}(?<!\\d)3\\s*개월\\s*(?:이내|내|안))"
+          }
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "계약 종료 후 신청 기한을 1개월이 아닌 숫자로 씀",
+            "pattern": "(?i:(?:종료|만료|끝)[^.\\n]{0,20}(?<!\\d)(?:[2-9]|1[0-2])\\s*개월\\s*(?:이내|내|안)(?![^.\\n]{0,20}(?:아니|틀|잘못|오류|incorrect|not correct|not true|wrong)))"
+          },
+          {
+            "label": "신청일부터 허가 기한을 3개월이 아닌 숫자로 씀",
+            "pattern": "(?i:신청\\s*(?:한\\s*날|일)[^.\\n]{0,15}(?<!\\d)(?:1|2|[4-9])\\s*(?:개)?월\\s*(?:이내|내|안)(?![^.\\n]{0,20}(?:아니|틀|잘못|오류|incorrect|not correct|not true|wrong)))"
+          }
         ]
       }
     },
@@ -226,8 +301,17 @@
         "must_not_cite": [
           "visa_manual_2026_10_19_pdf#p63"
         ],
-        "answer_must_contain": [
-          "장소 2곳"
+        "answer_must_match": [
+          {
+            "label": "동시 취업 장소 2곳",
+            "pattern": "(?i:(?<!\\d)2\\s*(?:곳|군데|개\\s*(?:장소|사업장|업체|곳)|개소)|(?:two|2)\\s+(?:places|workplaces|employers|jobs|locations))"
+          }
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "D-2 장소 수를 2곳이 아닌 숫자로 씀",
+            "pattern": "(?i:(?:유학생?|D-2)(?:(?!D-4|어학)[^.\\n]){0,40}(?<!\\d)(?:1|3|4|5)\\s*(?:곳|군데)(?![^.\\n]{0,20}(?:아니|틀|잘못|오류|incorrect|not correct|not true|wrong)))"
+          }
         ]
       }
     },
@@ -262,8 +346,23 @@
         "must_not_cite": [
           "visa_manual_2026_10_19_pdf#p119"
         ],
-        "answer_must_contain": [
-          "1년을 초과하여 2년 내"
+        "answer_must_match": [
+          {
+            "label": "출국 후 1년 초과 2년 이내 재입국 시 복수재입국허가",
+            "pattern": "(?i:1\\s*년\\s*(?:을\\s*)?(?:초과|넘)[^.\\n]{0,25}2\\s*년\\s*(?:이내|내|안|까지)|(?:more\\s+than|over|longer\\s+than|exceed\\w*|beyond|after)\\s+(?:one|1|a)\\s+year[^.\\n]{0,60}(?:within|up\\s+to|no\\s+more\\s+than|less\\s+than|under|not\\s+exceeding|before)\\s+(?:two|2)\\s+years|(?:between|from)\\s+(?:one|1)\\s+(?:year\\s+)?(?:and|to)\\s+(?:two|2)\\s+years)"
+          }
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "1년 이내 재입국에도 재입국허가가 필요하다고 씀",
+            "pattern": "(?i:(?<!\\d)1\\s*년\\s*(?:이내|내|안)(?:에)?\\s*재입국[^.\\n]{0,20}재입국\\s*허가(?:를)?\\s*(?:받아야|신청해야)(?![^.\\n]{0,20}(?:아니|틀|잘못|오류|incorrect|not correct|not true|wrong)))"
+          }
+        ],
+        "answer_flag_if_match": [
+          {
+            "label": "1년 이내 재입국에도 허가가 필요하다는 영문 표현",
+            "pattern": "(?i:within\\s+(?:one|1|a)\\s+year[^.\\n]{0,40}(?<!not )(?<!n't )(?:need|must|have\\s+to|required)\\w*[^.\\n]{0,20}re-?entry\\s+permit)"
+          }
         ]
       }
     },
@@ -298,8 +397,17 @@
         "must_not_cite": [
           "visa_manual_2026_10_19_pdf#p73"
         ],
-        "answer_must_contain": [
-          "전입한 날로부터 15일 이내"
+        "answer_must_match": [
+          {
+            "label": "전입(이사)한 날부터 15일 이내",
+            "pattern": "(?i:(?:전입|이사|이전|옮긴|옮겨\\s*온|입주)[^.\\n]{0,20}(?<!\\d)15\\s*일\\s*(?:이내|내|안))"
+          }
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "신고 기한을 15일이 아닌 숫자로 씀",
+            "pattern": "(?i:(?<!\\d)(?:7|10|14|30|90)\\s*일\\s*(?:이내|내|안)(?![^.\\n]{0,20}(?:아니|틀|잘못|오류|incorrect|not correct|not true|wrong)))"
+          }
         ]
       }
     },
@@ -337,6 +445,12 @@
         ],
         "answer_must_contain": [
           "25,195,752"
+        ],
+        "answer_flag_if_match": [
+          {
+            "label": "연간 소득기준을 월 소득으로 씀",
+            "pattern": "(?i:25,?195,?752[^.\\n]{0,30}(?:per\\s+month|a\\s+month|monthly|매월|월\\s*소득|월급)|(?:monthly|per\\s+month|매월|월\\s*소득|월급)[^.\\n]{0,30}25,?195,?752)"
+          }
         ]
       }
     },
@@ -372,8 +486,21 @@
         "must_not_cite": [
           "visa_manual_2026_10_19_pdf#p330"
         ],
-        "answer_must_contain": [
-          "취업활동의 제한을 받지 않음"
+        "answer_must_match": [
+          {
+            "label": "F-6는 취업활동 제한을 받지 않음(별도 허가 불요)",
+            "pattern": "(?i:(?:취업|일|근무|고용|활동)[^.\\n]{0,20}제한(?:을|이)?\\s*(?:받지\\s*않|없)|(?:별도(?:의)?|따로|추가)\\s*(?:의\\s*)?(?:허가|체류자격\\s*외\\s*활동\\s*허가)[^.\\n]{0,10}(?:필요\\s*없|필요하지\\s*않|받지\\s*않아도|없이)|허가\\s*없이[^.\\n]{0,15}(?:일|취업|근무))"
+          }
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "체류자격외 활동 허가가 필요하다고 씀",
+            "pattern": "(?i:(?:체류자격\\s*외|자격외)\\s*활동\\s*허가[^.\\n]{0,15}(?:받아야|필요합|필요해요|신청해야)(?![^.\\n]{0,20}(?:아니|틀|잘못|오류|incorrect|not correct|not true|wrong)))"
+          },
+          {
+            "label": "취업 제한을 받는다고 씀",
+            "pattern": "(?i:취업[^.\\n]{0,10}제한(?:을|이)?\\s*(?:받습|받아요|있습|있어요)(?![^.\\n]{0,20}(?:아니|틀|잘못|오류|incorrect|not correct|not true|wrong)))"
+          }
         ]
       }
     },
@@ -465,8 +592,22 @@
         "must_not_cite": [
           "stay_manual_2026_10_19_pdf#p328"
         ],
-        "answer_must_contain": [
-          "송출기관에 의한 단체 신청만 가능"
+        "answer_must_contain_any_of_each": [
+          [
+            "송출기관"
+          ]
+        ],
+        "answer_must_match": [
+          {
+            "label": "단체 신청",
+            "pattern": "(?i:단체\\s*(?:로\\s*|로만\\s*)?(?:신청|접수))"
+          }
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "개인(개별) 신청이 가능하다고 씀",
+            "pattern": "(?i:(?:개인|개별)(?:적으로|적인|별로)?\\s*(?:으로\\s*)?(?:도\\s*)?(?:신청|발급)(?:이|은|을|도)?\\s*(?:할\\s*수\\s*있(?!는지|을지|지)|가능(?!하지|한지|한가|할까|\\s*여부))(?![^.\\n]{0,20}(?:아니|틀|잘못|오류|incorrect|not correct|not true|wrong)))"
+          }
         ]
       }
     },
@@ -502,8 +643,17 @@
         "must_not_cite": [
           "stay_manual_2026_10_19_pdf#p83"
         ],
-        "answer_must_contain": [
-          "고등학교 졸업 이상의 학력 소지자"
+        "answer_must_match": [
+          {
+            "label": "고등학교 졸업 이상",
+            "pattern": "(?i:고(?:등학교|교)\\s*졸업|high[\\s-]*school\\s+(?:diploma|graduat\\w*|education|degree|level|or\\s+(?:higher|above))|graduat\\w*\\s+(?:from\\s+)?(?:a\\s+|at\\s+least\\s+)?(?:high|secondary)[\\s-]*school|secondary\\s+(?:school\\s+)?(?:diploma|graduat\\w*|education))"
+          }
+        ],
+        "answer_flag_if_match": [
+          {
+            "label": "대학 학위가 필요하다고 씀",
+            "pattern": "(?i:(?<!not )(?<!n't )(?:need|require|must\\s+have)\\w*\\s+(?:a\\s+|an\\s+)?(?:bachelor|university|college|undergraduate)\\w*|학사\\s*(?:학위|이상)[^.\\n]{0,15}(?:필요|이상이어야)|대학\\s*졸업\\s*이상)"
+          }
         ]
       }
     },
@@ -539,8 +689,17 @@
         "must_not_cite": [
           "visa_manual_2026_10_19_pdf#p73"
         ],
-        "answer_must_contain": [
-          "최장 6개월"
+        "answer_must_match": [
+          {
+            "label": "D-4 시간제취업 최장 6개월",
+            "pattern": "(?i:(?:최장|최대)\\s*6\\s*개월|6\\s*개월\\s*(?:까지|이내|한도)|(?:up\\s+to|maximum\\s+(?:of\\s+)?|max\\.?\\s+|at\\s+most|no\\s+more\\s+than|not\\s+(?:more\\s+than|exceed\\w*)|a\\s+maximum\\s+of)\\s*(?:six|6)\\s*months|(?:six|6)[\\s-]*months?\\s+(?:at\\s+most|maximum|max))"
+          }
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "D-4 기간을 1년(D-2 기준)으로 씀",
+            "pattern": "(?i:(?:D-4|어학연수|language)(?:(?!D-2|유학|degree)[^.\\n]){0,40}(?:최장|최대|up\\s+to|maximum\\s+(?:of\\s+)?|a\\s+maximum\\s+of)\\s*(?:1\\s*년|one\\s+year|1\\s+year|12\\s+months)(?![^.\\n]{0,20}(?:아니|틀|잘못|오류|incorrect|not correct|not true|wrong)))"
+          }
         ]
       }
     },
@@ -576,8 +735,23 @@
         "must_not_cite": [
           "stay_manual_2026_10_19_pdf#p144"
         ],
-        "answer_must_contain": [
-          "출국 후 졸업일로부터 1년 이내"
+        "answer_must_match": [
+          {
+            "label": "졸업일로부터 1년 이내 D-10 사증",
+            "pattern": "(?i:졸업(?:일|한\\s*날|\\s*후)?[^.\\n]{0,12}(?<!\\d)1\\s*년\\s*(?:이내|내|안))"
+          }
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "기산점을 출국일로 씀",
+            "pattern": "(?i:출국(?:일|한\\s*날)\\s*(?:로)?부터\\s*1\\s*년(?![^.\\n]{0,20}(?:아니|틀|잘못|오류|incorrect|not correct|not true|wrong)))"
+          }
+        ],
+        "answer_flag_if_match": [
+          {
+            "label": "졸업 후 기간을 1년이 아닌 숫자로 씀",
+            "pattern": "(?i:졸업(?:일|한\\s*날|\\s*후)?[^.\\n]{0,12}(?<!\\d)[2-9]\\s*년\\s*(?:이내|내|안))"
+          }
         ]
       }
     },
@@ -613,8 +787,21 @@
         "must_not_cite": [
           "visa_manual_2026_10_19_pdf#p27"
         ],
-        "answer_must_contain": [
-          "체류기간 연장의 필요성을 소명하는 서류"
+        "answer_must_match": [
+          {
+            "label": "연장 필요성을 소명하는 서류",
+            "pattern": "(?i:필요성[^.\\n]{0,10}(?:소명|입증|증명)|(?:소명|입증|증명)(?:하는|할\\s*수\\s*있는)\\s*(?:서류|자료)|(?:document|proof|evidence|paper)\\w*[^.\\n]{0,60}(?:need|necessity|reason|why)\\w*[^.\\n]{0,40}(?:extend|extension|stay)|(?:prov|show|demonstrat|justif|explain|substantiat)\\w*[^.\\n]{0,40}(?:need|necessity|reason|why)\\w*[^.\\n]{0,40}(?:extend|extension|stay)|cancel\\w*[^.\\n]{0,40}(?:proof|document|evidence|confirmation|notice)|(?:proof|document|evidence|confirmation|notice)\\w*[^.\\n]{0,40}cancel)"
+          },
+          {
+            "label": "신청서·여권",
+            "pattern": "(?i:신청서|여권|application\\s+form|passport)"
+          }
+        ],
+        "answer_flag_if_match": [
+          {
+            "label": "연장이 자동이라는 표현",
+            "pattern": "(?i:automatic\\w*|자동\\s*(?:으로|적으로)?\\s*(?:연장|허가))"
+          }
         ]
       }
     },
@@ -650,8 +837,17 @@
         "must_not_cite": [
           "stay_manual_2026_10_19_pdf#p116"
         ],
-        "answer_must_contain": [
-          "투자금액이 1억원 이상"
+        "answer_must_match": [
+          {
+            "label": "최소 투자금액 1억원 이상",
+            "pattern": "(?i:(?<![\\d,])1\\s*억\\s*원?\\s*(?:이상|부터)|최소\\s*(?:투자\\s*(?:금액|액)?\\s*(?:은|이|는)?\\s*)?1\\s*억|100,000,000\\s*원|(?:KRW|₩)\\s*100\\s*million)"
+          }
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "최소 금액을 1억원이 아닌 금액으로 씀",
+            "pattern": "(?i:(?:(?<![\\d,])(?:[2-9]|[1-9]\\d)\\s*억\\s*원?\\s*(?:이상)|5\\s*천\\s*만\\s*원\\s*(?:이상))(?![^.\\n]{0,20}(?:아니|틀|잘못|오류|incorrect|not correct|not true|wrong)))"
+          }
         ]
       }
     },
@@ -687,8 +883,30 @@
         "must_not_cite": [
           "visa_manual_2026_10_19_pdf#p146"
         ],
-        "answer_must_contain": [
-          "출국한 날로부터 1년 이내"
+        "answer_must_match": [
+          {
+            "label": "출국일부터 1년 이내",
+            "pattern": "(?i:출국(?:한\\s*날|일|\\s*후|\\s*뒤)[^.\\n]{0,15}(?<!\\d)1\\s*년\\s*(?:이내|안|내))"
+          }
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "면제",
+            "받지 않아도",
+            "필요 없",
+            "필요하지 않",
+            "없이"
+          ]
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "1년 이내 재입국에도 재입국허가가 필요하다고 씀",
+            "pattern": "(?i:(?<!\\d)1\\s*년\\s*(?:이내|안|내)(?:에)?\\s*(?:재입국|돌아)[^.\\n]{0,25}재입국\\s*허가(?:를)?\\s*(?:받아야|신청해야)(?![^.\\n]{0,20}(?:아니|틀|잘못|오류|incorrect|not correct|not true|wrong)))"
+          },
+          {
+            "label": "면제 기간을 1년이 아닌 기간으로 씀",
+            "pattern": "(?i:(?<!\\d)(?:2\\s*년|6\\s*개월)\\s*(?:이내|안|내)(?:에)?\\s*재입국[^.\\n]{0,20}면제(?![^.\\n]{0,20}(?:아니|틀|잘못|오류|incorrect|not correct|not true|wrong)))"
+          }
         ]
       }
     },

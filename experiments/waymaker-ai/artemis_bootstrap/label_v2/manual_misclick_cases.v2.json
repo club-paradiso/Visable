@@ -37,8 +37,17 @@
         "must_not_cite": [
           "stay_manual_2026_10_19_pdf#p30"
         ],
-        "answer_must_contain": [
-          "C-3-4 일반상용"
+        "answer_must_match": [
+          {
+            "label": "C-3-4 세부약호",
+            "pattern": "C\\s*[-‐‑–]\\s*3\\s*[-‐‑–]\\s*4"
+          }
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "상용 방문 APEC카드 소지자를 C-3-3 의료관광으로도 안내",
+            "pattern": "(?:C\\s*-\\s*3\\s*-\\s*3[^.\\n]{0,15}(?:또는|이나|혹은|\\bor\\b)[^.\\n]{0,15}C\\s*-\\s*3\\s*-\\s*4|C\\s*-\\s*3\\s*-\\s*4[^.\\n]{0,15}(?:또는|이나|혹은|\\bor\\b)[^.\\n]{0,15}C\\s*-\\s*3\\s*-\\s*3)(?![^.\\n]{0,15}(?:아니|틀|잘못|오류))"
+          }
         ]
       },
       "user_choice": "visa_abroad",
@@ -75,9 +84,21 @@
         "must_not_cite": [
           "stay_manual_2026_10_19_pdf#p168"
         ],
-        "answer_must_contain": [
-          "전자사증",
-          "영사 인터뷰가 필요 없는"
+        "answer_must_match": [
+          {
+            "label": "전자사증 언급",
+            "pattern": "전자\\s*사증|(?i:e-?visa|electronic\\s+visa)"
+          },
+          {
+            "label": "공관 방문 없이 온라인 발급",
+            "pattern": "온라인|방문\\s*(?:하지\\s*않고|없이)|(?i:online|without\\s+(?:visiting|going\\s+to))"
+          }
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "E-1이 전자사증 대상이 아니라고 씀",
+            "pattern": "E\\s*-\\s*1[^.\\n]{0,30}(?:대상이\\s*아니|(?i:not\\s+eligible|is\\s*n[o']t\\s+eligible))"
+          }
         ]
       },
       "user_choice": "visa_abroad",
@@ -114,8 +135,11 @@
         "must_not_cite": [
           "stay_manual_2026_10_19_pdf#p210"
         ],
-        "answer_must_contain": [
-          "법정대리인의 동의서"
+        "answer_must_match": [
+          {
+            "label": "미성년 피초청인의 법정대리인 동의서",
+            "pattern": "법정\\s*대리인\\s*(?:의\\s*)?동의서"
+          }
         ]
       },
       "user_choice": "visa_abroad",
@@ -152,8 +176,23 @@
         "must_not_cite": [
           "stay_manual_2026_10_19_pdf#p343"
         ],
-        "answer_must_contain": [
-          "외국인유학생 1명당 1명 허용"
+        "answer_must_match": [
+          {
+            "label": "유학생 1명당 1명",
+            "pattern": "(?:1|한)\\s*(?:명|인)\\s*당[^.\\n]{0,12}?(?:1|한)\\s*명"
+          }
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "1명당 2명 허용으로 씀",
+            "pattern": "(?:1|한)\\s*(?:명|인)\\s*당\\s*(?:2|두)\\s*명(?![^.\\n]{0,15}(?:아니|틀|잘못|오류|불가|않))"
+          }
+        ],
+        "answer_flag_if_match": [
+          {
+            "label": "부부 모두 발급 가능하다고 씀",
+            "pattern": "(?:부부|부모)\\s*(?:모두|둘\\s*다|두\\s*분\\s*(?:모두|다))[^.\\n]{0,20}(?:가능|발급|받을\\s*수)(?![^.\\n]{0,10}(?:없|않|불가))"
+          }
         ]
       },
       "user_choice": "visa_abroad",
@@ -282,8 +321,21 @@
         "must_not_cite": [
           "visa_manual_2026_10_19_pdf#p164"
         ],
-        "answer_must_contain": [
-          "변경일로부터 15일 이내"
+        "answer_must_match": [
+          {
+            "label": "15일 이내",
+            "pattern": "15\\s*일\\s*(?:이내|내|안에|안으로)"
+          },
+          {
+            "label": "기산점: 변경일",
+            "pattern": "(?:변경|바뀐|바꾼)\\s*(?:일|된\\s*날|한\\s*날|된\\s*날짜|날)\\s*(?:로\\s*)?부터|(?:재)?발급\\s*(?:받은|된)\\s*날\\s*(?:로\\s*)?부터"
+          }
+        ],
+        "answer_flag_if_match": [
+          {
+            "label": "입국일부터 15일로 씀",
+            "pattern": "입국\\s*(?:일|한\\s*날)\\s*(?:로\\s*)?부터\\s*15\\s*일"
+          }
         ]
       },
       "user_choice": "stay_in_korea",
@@ -359,9 +411,30 @@
         "must_not_cite": [
           "visa_manual_2026_10_19_pdf#p166"
         ],
-        "answer_must_contain": [
-          "입단 테스트",
-          "자격변경일이 아닌 입국일"
+        "answer_must_match": [
+          {
+            "label": "기산일은 입국일",
+            "pattern": "입국\\s*(?:일|한\\s*날|날짜)"
+          }
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "재량",
+            "불가피",
+            "국익",
+            "입증자료",
+            "입증 자료"
+          ]
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "자격변경일부터 기산한다고 씀",
+            "pattern": "(?:자격\\s*)?변경\\s*(?:허가\\s*)?(?:일|된\\s*날|한\\s*날)\\s*(?:을\\s*기준으로|기준|로\\s*부터|부터)(?![^.\\n]{0,15}(?:아니|틀|잘못|오류))"
+          },
+          {
+            "label": "입국일이 기산일이 아니라고 씀",
+            "pattern": "입국\\s*일\\s*이\\s*아닌"
+          }
         ]
       },
       "user_choice": "stay_in_korea",
@@ -440,8 +513,21 @@
         "must_not_cite": [
           "visa_manual_2026_10_19_pdf#p7"
         ],
-        "answer_must_contain": [
-          "출국한 날로부터 1년 이내 재입국하려는 경우 면제"
+        "answer_must_match": [
+          {
+            "label": "출국일부터 1년 이내",
+            "pattern": "1\\s*년\\s*(?:이내|내|안)|(?i:within\\s+(?:one|1|a)\\s+year)"
+          },
+          {
+            "label": "재입국허가 면제",
+            "pattern": "면제|필요\\s*(?:가\\s*)?없|불필요|(?i:exempt|not\\s+(?:need|required)|no\\s+need|do\\s*n[o']t\\s+need|does\\s*n[o']t\\s+need)"
+          }
+        ],
+        "answer_flag_if_match": [
+          {
+            "label": "1년 이내에도 재입국허가가 필요하다고 씀",
+            "pattern": "(?:반드시|꼭)[^.\\n]{0,20}재입국\\s*허가[^.\\n]{0,10}(?:받아야|필요)|(?i:must\\s+(?:obtain|get|apply\\s+for)\\s+a\\s+re-?entry\\s+permit)"
+          }
         ]
       },
       "user_choice": "stay_in_korea",
@@ -478,8 +564,25 @@
         "must_not_cite": [
           "visa_manual_2026_10_19_pdf#p295"
         ],
-        "answer_must_contain": [
-          "어획물에 대한 건조, 포장"
+        "answer_must_contain_any_of_each": [
+          [
+            "건조",
+            "포장",
+            "연계 작업",
+            "연계작업"
+          ],
+          [
+            "체류자격 외 활동",
+            "체류자격외 활동",
+            "체류자격외활동",
+            "허가"
+          ]
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "허가 없이 가능하다고 씀",
+            "pattern": "허가\\s*(?:없이|(?:가|는)?\\s*필요\\s*(?:없|하지\\s*않))(?![^.\\n]{0,15}(?:아니|틀|잘못|오류|안\\s*되|안\\s*됩|불가|않))"
+          }
         ]
       },
       "user_choice": "stay_in_korea",
@@ -516,12 +619,20 @@
         "must_not_cite": [
           "stay_manual_2026_10_19_pdf#p113"
         ],
-        "answer_must_contain": [
-          "국내지점 등 설치 입증서류",
-          "지사나 연락사무소 설치허가서 사본"
-        ],
         "answer_must_not_contain": [
           "개인 납세사실증명"
+        ],
+        "answer_must_match": [
+          {
+            "label": "국내지점 등 설치 입증서류(설치허가서 또는 신고수리서)",
+            "pattern": "설치\\s*입증\\s*서류|설치\\s*허가서|(?:지사|연락사무소|국내\\s*지점)[^.\\n]{0,25}신고\\s*수리서"
+          }
+        ],
+        "answer_flag_if_match": [
+          {
+            "label": "해외진출 기업 본사 주재(2번 항목) 서류를 섞음",
+            "pattern": "해외\\s*직접\\s*투자\\s*신고\\s*수리서|해외\\s*지점\\s*설치\\s*신고\\s*수리서|본사의\\s*등기사항전부증명서"
+          }
         ]
       },
       "user_choice": "stay_in_korea",
@@ -605,9 +716,21 @@
         "must_not_cite": [
           "stay_manual_2026_10_19_pdf#p202"
         ],
-        "answer_must_contain": [
-          "초청사유서",
-          "학위증 및 자격증 사본"
+        "answer_must_match": [
+          {
+            "label": "초청사유서",
+            "pattern": "초청\\s*사유서|(?i:reasons?\\s+for\\s+(?:the\\s+)?invitation|invitation\\s+(?:reason|statement)|statement\\s+of\\s+(?:the\\s+)?reasons?\\s+for)"
+          },
+          {
+            "label": "학위증·자격증(면허증) 사본",
+            "pattern": "학위증|자격증|면허증|(?i:degree|diploma|licen[cs]e)"
+          }
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "결과물인 사증발급인정서를 제출서류로 나열",
+            "pattern": "[①-⑩]\\s*사증발급인정서\\s*[,，]|[,，]\\s*사증발급인정서\\s*[,，]"
+          }
         ]
       },
       "user_choice": "stay_in_korea",
@@ -644,12 +767,27 @@
         "must_not_cite": [
           "stay_manual_2026_10_19_pdf#p174"
         ],
-        "answer_must_contain": [
-          "사증발급인정신청서 (별지 제21호 서식)",
-          "경력증명서 및 학위증"
-        ],
         "answer_must_not_contain": [
           "고용업체 등 설립관련 서류"
+        ],
+        "answer_must_match": [
+          {
+            "label": "사증발급인정신청서(별지 21호)",
+            "pattern": "사증\\s*발급\\s*인정\\s*신청서|별지\\s*(?:제\\s*)?21\\s*호"
+          }
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "경력증명서",
+            "학위증",
+            "생략"
+          ]
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "체류자격 변경 신청서(별지 34호) 혼입",
+            "pattern": "별지\\s*(?:제\\s*)?34\\s*호(?![^.\\n]{0,15}(?:아니|틀|잘못|오류))"
+          }
         ]
       },
       "user_choice": "stay_in_korea",
@@ -686,11 +824,27 @@
         "must_not_cite": [
           "visa_manual_2026_10_19_pdf#p142"
         ],
-        "answer_must_contain": [
-          "학위증 또는 경력증명서"
-        ],
         "answer_must_not_contain": [
           "임용예정확인서"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "학위증",
+            "경력증명서",
+            "생략"
+          ]
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "사증발급인정서 서류(별지 21호) 혼입",
+            "pattern": "(?:사증\\s*발급\\s*인정\\s*신청서|별지\\s*(?:제\\s*)?21\\s*호)(?![^.\\n]{0,15}(?:아니|틀|잘못|오류))"
+          }
+        ],
+        "answer_flag_if_match": [
+          {
+            "label": "전임교수는 모든 서류가 생략된다고 씀",
+            "pattern": "(?:모든|전부|모두)[^.\\n]{0,10}생략"
+          }
         ]
       },
       "user_choice": "visa_abroad",
@@ -727,12 +881,18 @@
         "must_not_cite": [
           "visa_manual_2026_10_19_pdf#p290"
         ],
-        "answer_must_contain": [
-          "1년 10개월",
-          "취업기간만료자 취업활동기간 연장확인서"
-        ],
         "answer_must_not_contain": [
           "출국 1개월 경과 후"
+        ],
+        "answer_must_match": [
+          {
+            "label": "추가 최대 1년 10개월",
+            "pattern": "1\\s*년\\s*10\\s*개월|(?i:(?:1|one)\\s+years?\\s+(?:and\\s+)?(?:10|ten)\\s+months|22\\s+months)"
+          },
+          {
+            "label": "취업활동기간 연장확인서",
+            "pattern": "연장\\s*확인서|(?i:confirmation[^.\\n]{0,50}extension|extension[^.\\n]{0,50}confirmation)"
+          }
         ]
       },
       "user_choice": "visa_abroad",
@@ -769,8 +929,11 @@
         "must_not_cite": [
           "visa_manual_2026_10_19_pdf#p108"
         ],
-        "answer_must_contain": [
-          "직접 사업비 3천만 원 이상"
+        "answer_must_match": [
+          {
+            "label": "직접 사업비 3천만원 이상",
+            "pattern": "3\\s*천\\s*만\\s*원|3,?000\\s*만\\s*원|30,?000,?000\\s*원|(?i:30\\s*million\\s*won|KRW\\s*30\\s*million)"
+          }
         ]
       },
       "user_choice": "visa_abroad",
@@ -807,9 +970,27 @@
         "must_not_cite": [
           "visa_manual_2026_10_19_pdf#p339"
         ],
-        "answer_must_contain": [
-          "체류기간 만료일까지",
-          "출생증명서"
+        "answer_must_match": [
+          {
+            "label": "부모(G-1-5) 체류기간 만료일까지",
+            "pattern": "체류\\s*기간\\s*(?:의\\s*)?만료\\s*일\\s*까지|(?i:until[^.\\n]{0,80}(?:expir|end\\s+of))"
+          }
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "출생증명서",
+            "부모와의 관계",
+            "관계를 입증",
+            "관계 입증",
+            "birth certificate",
+            "relationship"
+          ]
+        ],
+        "answer_flag_if_match": [
+          {
+            "label": "인도적 체류허가자 자녀(G-1-12) 기준을 섞음",
+            "pattern": "G\\s*-\\s*1\\s*-\\s*12|인도적\\s*체류\\s*허가자의\\s*체류\\s*기간\\s*범위"
+          }
         ]
       },
       "user_choice": "visa_abroad",

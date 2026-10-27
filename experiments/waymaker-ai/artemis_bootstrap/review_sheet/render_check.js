@@ -49,7 +49,7 @@ const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 (async () => {
   await wait(300);
   const counts = doc.getElementById("counts").textContent;
-  check("counts show v2 verdicts, read-only legacy count 140/140 and no legal completion", /v2 기준 새 판정 0 \/ 140/.test(counts) && /기존 저장 판정 140 \/ 140 \(읽기 전용\)/.test(counts) && /법률 검증 완료: 확인된 것 없음/.test(counts) && /v2에서 바뀐 라벨 10/.test(counts) && /기록 답 v2 검토 필요 표시 3 \(자동 정답에서 제외\)/.test(counts), counts);
+  check("counts show v2 verdicts, read-only legacy count 140/140 and no legal completion", /v2 기준 새 판정 0 \/ 140/.test(counts) && /기존 저장 판정 140 \/ 140 \(읽기 전용\)/.test(counts) && /법률 검증 완료: 확인된 것 없음/.test(counts) && /v2에서 바뀐 라벨 107/.test(counts) && /사람 판단 필요 9/.test(counts) && /법령과 다름 3/.test(counts) && /기록 답 v2 검토 필요 표시 \d+ \(자동 정답에서 제외\)/.test(counts), counts);
   const items = [...doc.querySelectorAll("#list .item")];
   check("list has all 140 cases in bundle order", items.length === 140 && items[0].dataset.key === cases.cases[0].key && items[139].dataset.key === cases.cases[139].key, String(items.length));
 
@@ -69,8 +69,11 @@ const wait = (ms) => new Promise((r) => setTimeout(r, ms));
   t = await open("manual_routing/N-06-h1-canada-weekly-hours");
   check("N-06 shows the new rule, the post-hoc failure and the guide kept out of the label", t.includes("40시간을 체류기간으로 씀") && t.includes("원본 통과 → v2 실패: 원문과 모순") && t.includes("whic.mofa.go.kr") && t.includes("검증 보류"), "");
 
-  t = await open("manual_routing/N-01-c1-visa-attachments");
-  check("an unchanged case says pending / original kept", t.includes("v2 보류(원본 유지)") && !t.includes("v2 있어야 할 사실 구조"), "");
+  t = await open("manual_misclick/K-08-multiple-reentry");
+  check("K-08 shows needs-human, the statute conflict and its source", t.includes("사람 판단 필요(원본 유지)") && t.includes("법령과 다름") && t.includes("제44조의2") && t.includes("사람이 정할 것:") && !t.includes("v2 있어야 할 사실 구조"), "");
+
+  t = await open("manual_routing/N-03-d9-equipment-visa-docs");
+  check("N-03 shows the AI round-3 change and the manual-standard note", t.includes("AI 3차 검토로 바뀜") && t.includes("법령에 없는 매뉴얼 운영기준") && t.includes("유의 사항 1") && t.includes("법률 검증 아님"), "");
 
   // Save a verdict: it must go to reviews_v2 and never to reviews.
   await open("manual_oracle/M-10-d10t-stay-cap");

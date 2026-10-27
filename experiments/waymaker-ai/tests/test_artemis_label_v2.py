@@ -87,11 +87,13 @@ def test_ledger_has_one_row_per_case_in_order_and_claims_no_verification():
     assert [d["key"] for d in LEDGER["decisions"]] == keys and len(keys) == 140
     for d in LEDGER["decisions"]:
         assert d["verification"].startswith("검증 보류")
-        assert d["decision"] in ("adopted", "adopted_modified", "not_adopted", "pending")
-        assert d["changed"] == (d["decision"] in ("adopted", "adopted_modified"))
+        assert d["decision"] in lv.DECISION_VALUES
+        assert d["changed"] == (d["decision"] in lv.CHANGING)
         if not d["changed"]:
             assert d["v2"] is None
-    assert LEDGER["counts"]["changed"] == len(lv.DECISIONS) == 10
+    assert len(lv.DECISIONS) == 10
+    round3_changes = sum(1 for d in LEDGER["decisions"] if d["decision"] == "ai_review_changed")
+    assert LEDGER["counts"]["changed"] == len(lv.DECISIONS) + round3_changes
 
 
 def test_committed_v2_files_match_a_fresh_build():
@@ -307,7 +309,8 @@ def test_review_sheet_bundle_links_every_case_to_label_v2_in_order(tmp_path):
     assert data["version"] == "artemis-label-review-v2" and data["label_version_available"] is True
     assert all(c["label_v2"] is not None for c in data["cases"])
     changed = [c["key"] for c in data["cases"] if c["label_v2"]["changed"]]
-    assert sorted(changed) == sorted(lv.DECISIONS)
+    assert sorted(changed) == sorted(d["key"] for d in LEDGER["decisions"] if d["changed"])
+    assert set(lv.DECISIONS) <= set(changed)
     assert "visa_manual_2026_10_19_pdf#p108" in data["pages"]
     for s in data["sets"]:
         assert s["v2_file"] and len(s["v2_sha256"]) == 64
@@ -317,3 +320,47 @@ def test_review_sheet_page_never_writes_the_legacy_reviews_collection():
     page = (BOOTSTRAP_DIR / "review_sheet" / "index.html").read_text(encoding="utf-8")
     assert 'collection("reviews_v2").doc(' in page
     assert 'collection("reviews").doc(' not in page
+
+
+# --- round 3: AI review of every case, statutes as a cross-check -----------------
+
+ROUND3 = json.loads(lv.ROUND3.read_text(encoding="utf-8"))
+
+
+def test_round3_review_file_passes_its_own_verification():
+    """Every row quotes its page exactly, every pattern compiles, and every control
+    in the file grades as the reviewer said under the real grader."""
+    assert lv.check_round3() == []
+
+
+def test_round3_covers_all_140_cases_in_order_and_claims_no_human_or_legal_verification():
+    keys = [f"{s}/{c['id']}" for s in lv.SETS for c in frozen(s)]
+    assert [r["key"] for r in ROUND3["cases"]] == keys
+    assert "not a human review" in ROUND3["reviewer"] and "not a legal verification" in ROUND3["reviewer"]
+    for d in LEDGER["decisions"]:
+        assert d["verification"].startswith("검증 보류")
+        assert d["ai_review_round3"] is not None
+
+
+def test_round3_never_relabels_to_a_statute_and_leaves_needs_human_cases_untouched():
+    for r in ROUND3["cases"]:
+        row = next(d for d in LEDGER["decisions"] if d["key"] == r["key"])
+        if r["legal_check"]["result"] == "differs":
+            assert r["verdict"] == "needs_human", r["key"]
+        if r["verdict"] == "needs_human":
+            assert row["decision"] in ("needs_human",) + lv.CHANGING[:2]
+            if r["key"] not in lv.DECISIONS:
+                assert row["changed"] is False and row["v2"] is None
+                assert any(i.startswith("사람이 정할 것:") for i in row["open_issues"])
+        if r["key"] in lv.DECISIONS:
+            assert r["verdict"] != "change"
+            assert row["decision"] == lv.DECISIONS[r["key"]]["decision"]
+
+
+def test_round3_needs_human_set_and_statute_conflicts_are_the_reviewed_ones():
+    needs = sorted(r["key"].split("/")[1][:4] for r in ROUND3["cases"] if r["verdict"] == "needs_human")
+    assert needs == ["B-16", "B-18", "B-19", "B-21", "B-22", "B-23", "K-08", "N-14", "Q-22"]
+    differs = sorted(r["key"].split("/")[1][:4] for r in ROUND3["cases"] if r["legal_check"]["result"] == "differs")
+    assert differs == ["B-16", "K-08", "N-14"]
+    n03 = next(r for r in ROUND3["cases"] if r["key"].endswith("N-03-d9-equipment-visa-docs"))
+    assert n03["lead_override"]["was"]["legal_check_result"] == "differs" and n03["verdict"] == "change"

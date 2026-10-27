@@ -32,7 +32,9 @@ import argparse
 import copy
 import hashlib
 import json
+import re
 import sys
+import unicodedata
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -54,6 +56,12 @@ RUNS = {
     "manual_misclick": "2026-10-27-e4b-it-4bit-m1-8gb-misclick-label",
 }
 VERIFICATION = "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞춘 것이며 법률 검증이 아니다"
+#: Round 3: an AI review of every case (page text first, statutes as a cross-check only),
+#: verified by ``check_round3`` before it is applied. Not a human review.
+ROUND3 = OUT / "review_round3_ai_2026-10-27.json"
+#: Decision values. ``changed`` is true exactly for the first three.
+CHANGING = ("adopted", "adopted_modified", "ai_review_changed")
+DECISION_VALUES = CHANGING + ("ai_review_kept", "needs_human", "not_adopted", "pending")
 
 # Patterns shared by the decisions. Korean answers are matched after NFC.
 PER_GRANT = r"(?:1\s*회|한\s*번에|회당|매회|1번에)"
@@ -267,8 +275,20 @@ def _load_sources() -> Dict[str, Dict[str, Any]]:
     return out
 
 
+def _round3() -> Dict[str, Dict[str, Any]]:
+    """Round-3 AI review rows by case key; empty when the file is absent."""
+    if not ROUND3.exists():
+        return {}
+    return {r["key"]: r for r in json.loads(ROUND3.read_text(encoding="utf-8"))["cases"]}
+
+
+def _round3_summary(r: Dict[str, Any]) -> Dict[str, Any]:
+    return {k: r.get(k) for k in ("verdict", "page_id", "page_quote", "rationale", "legal_check", "human_question", "open_issues")}
+
+
 def build(write: bool = True) -> Dict[str, Any]:
     sources = _load_sources()
+    round3 = _round3()
     decisions: List[Dict[str, Any]] = []
     files: Dict[str, Dict[str, Any]] = {}
     seen = set()
@@ -279,6 +299,18 @@ def build(write: bool = True) -> Dict[str, Any]:
         for case in raw["cases"]:
             key = _key(set_name, case["id"])
             dec = DECISIONS.get(key)
+            r3 = round3.get(key)
+            if dec is None and r3 is not None:
+                dec = {
+                    "decision": {"change": "ai_review_changed", "keep": "ai_review_kept", "needs_human": "needs_human"}[r3["verdict"]],
+                    "drop_expect": (r3.get("expect_patch") or {}).get("drop", []) if r3["verdict"] == "change" else [],
+                    "set_expect": (r3.get("expect_patch") or {}).get("set", {}) if r3["verdict"] == "change" else {},
+                    "raised_by": ["ai_review_round3"],
+                    "page_evidence": f"{r3.get('page_id')}: '{r3.get('page_quote')}'" if r3.get("page_quote") else None,
+                    "rationale": r3.get("rationale"),
+                    "open_issues": ([f"사람이 정할 것: {r3['human_question']}"] if r3.get("human_question") else []) + list(r3.get("open_issues") or []),
+                }
+                seen.add(key)
             new = copy.deepcopy(case)
             if dec:
                 seen.add(key)
@@ -302,6 +334,7 @@ def build(write: bool = True) -> Dict[str, Any]:
                 "not_adopted": dec.get("not_adopted") if dec else None,
                 "open_issues": dec.get("open_issues", []) if dec else [],
                 "recorded_answer_comparable": dec.get("recorded_answer_comparable", True) if dec else True,
+                "ai_review_round3": _round3_summary(r3) if r3 else None,
                 "verification": VERIFICATION,
             })
         files[set_name] = {
@@ -321,7 +354,7 @@ def build(write: bool = True) -> Dict[str, Any]:
         "counts": {
             "cases": len(decisions),
             "changed": sum(d["changed"] for d in decisions),
-            "by_decision": {k: sum(1 for d in decisions if d["decision"] == k) for k in ("adopted", "adopted_modified", "not_adopted", "pending")},
+            "by_decision": {k: sum(1 for d in decisions if d["decision"] == k) for k in DECISION_VALUES},
         },
         "decisions": decisions,
     }
@@ -383,6 +416,69 @@ def regrade(write: bool = True) -> Dict[str, Any]:
     return report
 
 
+def _norm(text: str) -> str:
+    return re.sub(r"\s+", " ", unicodedata.normalize("NFC", text)).strip()
+
+
+def check_round3() -> List[str]:
+    """Problems in the round-3 review file; an empty list means it may be applied.
+
+    Each row must quote its page exactly, compile, and grade its own controls as
+    it says; a statute that differs from the label forces ``needs_human``; cases
+    decided earlier in ``DECISIONS`` are not re-labelled here."""
+    rows = _round3()
+    problems: List[str] = []
+    if not rows:
+        return ["round-3 file missing or empty"]
+    frozen = {_key(s, c["id"]): c for s in SETS for c in json.loads((HERE / f"{s}_cases.json").read_text(encoding="utf-8"))["cases"]}
+    if set(rows) != set(frozen):
+        problems.append(f"keys differ from the 140 cases: missing {sorted(set(frozen) - set(rows))[:5]}, extra {sorted(set(rows) - set(frozen))[:5]}")
+    built = build(write=False)
+    v2 = {_key(s, c["id"]): c for s, f in built["files"].items() for c in f["cases"]}
+    for key, r in rows.items():
+        if key not in frozen:
+            continue
+        if r.get("verdict") not in ("keep", "change", "needs_human"):
+            problems.append(f"{key}: verdict {r.get('verdict')!r}")
+            continue
+        lc = r.get("legal_check") or {}
+        if lc.get("result") not in ("consistent", "differs", "not_in_statute", "not_checked"):
+            problems.append(f"{key}: legal_check.result {lc.get('result')!r}")
+        if lc.get("result") == "differs" and r["verdict"] != "needs_human":
+            problems.append(f"{key}: statute differs but verdict is {r['verdict']}")
+        if key in DECISIONS and r["verdict"] == "change":
+            problems.append(f"{key}: decided earlier; round 3 may not re-label it")
+        if r["verdict"] == "needs_human" and not r.get("human_question"):
+            problems.append(f"{key}: needs_human without a human_question")
+        if r["verdict"] in ("keep", "change"):
+            case = manual_ledger.resolve_cases([v2[key]])[0]
+            page = next((e for e in case["evidence"] if e["id"] == r.get("page_id")), None)
+            if page is None:
+                problems.append(f"{key}: page_id {r.get('page_id')!r} is not in the evidence")
+            elif not r.get("page_quote") or _norm(r["page_quote"]) not in _norm(page["text"]):
+                problems.append(f"{key}: page_quote is not on {r.get('page_id')}")
+        if r["verdict"] == "change":
+            if v2[key] == frozen[key]:
+                problems.append(f"{key}: change verdict but the patch changes nothing")
+            for field in ("answer_must_match", "answer_must_not_match", "answer_flag_if_match"):
+                for rule in v2[key]["expect"].get(field, []):
+                    try:
+                        re.compile(rule["pattern"])
+                    except re.error as e:
+                        problems.append(f"{key}: {field} {rule['label']}: {e}")
+            controls = r.get("controls") or []
+            if not any(c["expected"] == "correct" for c in controls) or not any(c["expected"] == "fail" for c in controls):
+                problems.append(f"{key}: needs at least one correct and one fail control")
+            case = manual_ledger.resolve_cases([v2[key]])[0]
+            for c in controls:
+                g = smoke_grader.grade(case, json.dumps({"status": c.get("status", "answered"), "answer": c["answer"], "citations": c["citations"]}, ensure_ascii=False))
+                got = smoke_grader.classify(g)
+                got = got if got in ("correct", "needs_review") else "fail"
+                if got != c["expected"]:
+                    problems.append(f"{key}: control expected {c['expected']} got {got}: {c['answer'][:60]} {g['failures']} {g['flags']}")
+    return problems
+
+
 def check() -> List[str]:
     """Committed v2 files that differ from a fresh build (should be none)."""
     built = build(write=False)
@@ -399,12 +495,16 @@ def check() -> List[str]:
 
 def main(argv: Optional[List[str]] = None) -> int:
     p = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    p.add_argument("command", choices=("build", "regrade", "check"))
+    p.add_argument("command", choices=("build", "regrade", "check", "check-round3"))
     args = p.parse_args(argv)
     if args.command == "build":
         print(json.dumps(build()["ledger"]["counts"], ensure_ascii=False))
     elif args.command == "regrade":
         print(json.dumps(regrade()["summary"], ensure_ascii=False, indent=1))
+    elif args.command == "check-round3":
+        problems = check_round3()
+        print(json.dumps({"problems": problems}, ensure_ascii=False, indent=1))
+        return 1 if problems else 0
     else:
         stale = check()
         print(json.dumps({"stale": stale}))

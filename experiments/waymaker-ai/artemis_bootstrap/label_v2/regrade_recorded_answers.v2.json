@@ -13,26 +13,45 @@
   "summary": {
     "cases": 140,
     "passed_original": 96,
-    "auto_correct_v2": 92,
-    "needs_review_v2": 0,
-    "failed_v2": 47,
+    "auto_correct_v2": 95,
+    "needs_review_v2": 4,
+    "failed_v2": 40,
     "comparable": 139,
     "not_comparable": [
       "manual_misclick/K-14-d8-4-where-to-apply-misclick"
     ],
     "flipped_to_pass": [
-      "manual_oracle/M-10-d10t-stay-cap"
+      "manual_oracle/M-10-d10t-stay-cap",
+      "manual_routing/N-23-c4-seasonal-second-farm-implicit",
+      "manual_clarify/Q-03-d2-visa-photo-admission",
+      "manual_clarify/Q-05-e9-workplace-change-deadline",
+      "manual_clarify/Q-06-d2-parttime-permit-places",
+      "manual_clarify/Q-10-f6-working-allowed",
+      "manual_buttons/B-01-e3-visa-researcher-qualification",
+      "manual_buttons/B-05-e3-workplace-change-report",
+      "manual_buttons/B-14-d2-outside-research-pay",
+      "manual_misclick/K-02-e1-electronic-visa",
+      "manual_misclick/K-04-f1-13-parent-quota",
+      "manual_misclick/K-20-g1-99-newborn-misclick"
     ],
     "flipped_to_fail": [
       "manual_oracle/M-04-d4-parttime-wait",
       "manual_routing/N-06-h1-canada-weekly-hours",
       "manual_clarify/Q-11-e9-change-jobs-count",
-      "manual_misclick/K-05-f2-2-child-of-national"
+      "manual_buttons/B-15-d2-delivery-rider",
+      "manual_always_ask/A-13-child-school-enrollment-report",
+      "manual_misclick/K-01-c3-business-subcode",
+      "manual_misclick/K-05-f2-2-child-of-national",
+      "manual_misclick/K-15-e5-doctor-ccvi-misclick"
     ],
     "flagged_for_human": [
       "manual_oracle/M-04-d4-parttime-wait",
       "manual_routing/N-06-h1-canada-weekly-hours",
-      "manual_clarify/Q-11-e9-change-jobs-count"
+      "manual_routing/N-13-d9-university-lecture-docs",
+      "manual_clarify/Q-03-d2-visa-photo-admission",
+      "manual_clarify/Q-11-e9-change-jobs-count",
+      "manual_buttons/B-01-e3-visa-researcher-qualification",
+      "manual_always_ask/A-16-e6-2-agency-change"
     ]
   },
   "rows": [
@@ -53,7 +72,7 @@
     },
     {
       "key": "manual_oracle/M-02-f6-reentry-exemption",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -68,7 +87,7 @@
     },
     {
       "key": "manual_oracle/M-03-d2-masters-extension-cap",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -102,7 +121,7 @@
     },
     {
       "key": "manual_oracle/M-05-d10-3-intern-change-deadline",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -117,7 +136,7 @@
     },
     {
       "key": "manual_oracle/M-06-d4-visa-stay-period",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -132,7 +151,7 @@
     },
     {
       "key": "manual_oracle/M-07-e8-ccvi-processing",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -147,7 +166,7 @@
     },
     {
       "key": "manual_oracle/M-08-e10-criminal-record-validity",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -162,7 +181,7 @@
     },
     {
       "key": "manual_oracle/M-09-visa-domestic-doc-validity",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -194,7 +213,7 @@
     },
     {
       "key": "manual_oracle/M-11-d2-reentry-fee-missing",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -209,7 +228,7 @@
     },
     {
       "key": "manual_oracle/M-12-f6-arc-fee-missing",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -224,7 +243,7 @@
     },
     {
       "key": "manual_oracle/M-13-d2-visa-fee-missing",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -239,7 +258,7 @@
     },
     {
       "key": "manual_oracle/M-14-arc-processing-time-missing",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -324,7 +343,7 @@
     },
     {
       "key": "manual_oracle/M-19-d2-7-visa-period",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -339,7 +358,7 @@
     },
     {
       "key": "manual_oracle/M-20-f6-3-registration-period",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -354,7 +373,7 @@
     },
     {
       "key": "manual_routing/N-01-c1-visa-attachments",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -369,7 +388,7 @@
     },
     {
       "key": "manual_routing/N-02-d5-alien-registration-docs",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": false,
@@ -381,8 +400,7 @@
       "v2": {
         "passed": false,
         "failures": [
-          "missing_citation:stay_manual_2026_10_19_pdf#p105",
-          "answer_missing:지국․지사의 설치허가증"
+          "missing_citation:stay_manual_2026_10_19_pdf#p105"
         ],
         "flags": [],
         "outcome": "other"
@@ -390,7 +408,7 @@
     },
     {
       "key": "manual_routing/N-03-d9-equipment-visa-docs",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": false,
@@ -405,7 +423,7 @@
         "failures": [
           "status:insufficient_evidence≠answered|partial",
           "missing_citation:visa_manual_2026_10_19_pdf#p118",
-          "answer_missing:설비도입계약서 또는 산업설비도입 입증서류"
+          "answer_missing_pattern:설비도입계약서 또는 산업설비도입 입증서류"
         ],
         "flags": [],
         "outcome": "safe_abstain"
@@ -413,7 +431,7 @@
     },
     {
       "key": "manual_routing/N-04-d3-extension-docs",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -428,7 +446,7 @@
     },
     {
       "key": "manual_routing/N-05-h1-uk-visa-validity",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": false,
@@ -443,7 +461,8 @@
         "failures": [
           "status:insufficient_evidence≠answered|partial",
           "missing_citation:visa_manual_2026_10_19_pdf#p347",
-          "answer_missing:2년(24개월)"
+          "answer_missing_pattern:영국 H-1 사증 유효기간 2년(24개월)",
+          "answer_missing_pattern:영국 H-1 체류기간 2년(24개월)"
         ],
         "flags": [],
         "outcome": "safe_abstain"
@@ -494,7 +513,7 @@
     },
     {
       "key": "manual_routing/N-08-g1-wage-arrears-eligibility",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -509,7 +528,7 @@
     },
     {
       "key": "manual_routing/N-09-c1-extension-limit",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -539,7 +558,7 @@
     },
     {
       "key": "manual_routing/N-11-e8-registration-drug-test",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -554,7 +573,7 @@
     },
     {
       "key": "manual_routing/N-12-d6-welfare-consular-visa-docs",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": false,
@@ -570,8 +589,8 @@
         "failures": [
           "status:insufficient_evidence≠answered|partial",
           "missing_citation:visa_manual_2026_10_19_pdf#p92",
-          "answer_missing_one_of:파견명령서",
-          "answer_missing_one_of:설립허가서"
+          "answer_missing_pattern:파견명령서(dispatch order)",
+          "answer_missing_pattern:종교·사회복지단체 설립허가서(establishment permit)"
         ],
         "flags": [],
         "outcome": "safe_abstain"
@@ -579,7 +598,7 @@
     },
     {
       "key": "manual_routing/N-13-d9-university-lecture-docs",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -588,8 +607,10 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": [],
-        "outcome": "correct"
+        "flags": [
+          "flag:OCR 병합 '총 제출서류 (학)장'을 서류명으로 옮김"
+        ],
+        "outcome": "needs_review"
       }
     },
     {
@@ -613,7 +634,7 @@
     },
     {
       "key": "manual_routing/N-15-d1-extension-visa-pages-only",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -628,7 +649,7 @@
     },
     {
       "key": "manual_routing/N-16-e10-cci-stay-pages-only",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -658,7 +679,7 @@
     },
     {
       "key": "manual_routing/N-18-e9-cci-applicant-stay-pages-only",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -688,7 +709,7 @@
     },
     {
       "key": "manual_routing/N-20-h1-austria-embassy-stay-pages-only",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -703,7 +724,7 @@
     },
     {
       "key": "manual_routing/N-21-b1-stay-longer-implicit",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": false,
@@ -718,7 +739,7 @@
         "failures": [
           "status:insufficient_evidence≠answered|partial",
           "missing_citation:stay_manual_2026_10_19_pdf#p24",
-          "answer_missing_one_of:체류기간 연장이나 체류자격 변경허가를 하지 아니|반드시 사증을 발급 받아 입국"
+          "answer_missing_pattern:무사증 입국자는 원칙적으로 연장·변경 불가 또는 사증 발급 후 입국"
         ],
         "flags": [],
         "outcome": "safe_abstain"
@@ -726,7 +747,7 @@
     },
     {
       "key": "manual_routing/N-22-d3-trainee-invite-implicit",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": false,
@@ -741,7 +762,7 @@
         "failures": [
           "status:insufficient_evidence≠answered|partial",
           "missing_citation:visa_manual_2026_10_19_pdf#p70",
-          "answer_missing:사증발급인정서"
+          "answer_missing_pattern:사증발급인정서"
         ],
         "flags": [],
         "outcome": "safe_abstain"
@@ -749,7 +770,7 @@
     },
     {
       "key": "manual_routing/N-23-c4-seasonal-second-farm-implicit",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": false,
@@ -758,17 +779,15 @@
         ]
       },
       "v2": {
-        "passed": false,
-        "failures": [
-          "answer_missing_one_of:지자체 담당자 동반"
-        ],
+        "passed": true,
+        "failures": [],
         "flags": [],
-        "outcome": "other"
+        "outcome": "correct"
       }
     },
     {
       "key": "manual_routing/N-24-d7-chinese-staff-multiple-visa-implicit",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": false,
@@ -784,8 +803,8 @@
         "failures": [
           "status:insufficient_evidence≠answered|partial",
           "missing_citation:visa_manual_2026_10_19_pdf#p94",
-          "answer_missing_one_of:유효기간 2년 이내의|2년",
-          "answer_missing_one_of:복수사증"
+          "answer_missing_pattern:사증 유효기간 2년 이내",
+          "answer_missing_pattern:복수사증(multiple-entry)"
         ],
         "flags": [],
         "outcome": "safe_abstain"
@@ -793,7 +812,7 @@
     },
     {
       "key": "manual_clarify/Q-01-e9-visa-criminal-record",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": false,
@@ -808,7 +827,7 @@
         "failures": [
           "status:insufficient_evidence≠answered|partial",
           "missing_citation:visa_manual_2026_10_19_pdf#p287",
-          "answer_missing:사증발급 신청일로부터 3개월 이내에 발급된 증명서"
+          "answer_missing_pattern:사증발급 신청일 기준 3개월 이내 발급"
         ],
         "flags": [],
         "outcome": "safe_abstain"
@@ -816,7 +835,7 @@
     },
     {
       "key": "manual_clarify/Q-02-e2-epik-visa-where-apply",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": false,
@@ -831,7 +850,7 @@
         "failures": [
           "status:clarify≠answered|partial",
           "missing_citation:visa_manual_2026_10_19_pdf#p146",
-          "answer_missing:해외 소재 대한민국 공관이면 어디라도 신청 가능"
+          "answer_missing_pattern:해외 어느 대한민국 공관에서나 신청 가능"
         ],
         "flags": [],
         "outcome": "clarify"
@@ -839,7 +858,7 @@
     },
     {
       "key": "manual_clarify/Q-03-d2-visa-photo-admission",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": false,
@@ -849,18 +868,17 @@
         ]
       },
       "v2": {
-        "passed": false,
-        "failures": [
-          "answer_missing:사진 1매(6개월 이내 촬영 반명함)",
-          "answer_missing:표준입학허가서 (대학 총․학장 발행)"
+        "passed": true,
+        "failures": [],
+        "flags": [
+          "flag:학사 신입학에 석사·박사 졸업증명서가 필요하다고 씀(표 행·열 혼동)"
         ],
-        "flags": [],
-        "outcome": "other"
+        "outcome": "needs_review"
       }
     },
     {
       "key": "manual_clarify/Q-04-d9-sole-proprietor-visa-mission",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -875,7 +893,7 @@
     },
     {
       "key": "manual_clarify/Q-05-e9-workplace-change-deadline",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": false,
@@ -884,17 +902,15 @@
         ]
       },
       "v2": {
-        "passed": false,
-        "failures": [
-          "answer_missing:1월 이내에 사업장 변경을 신청"
-        ],
+        "passed": true,
+        "failures": [],
         "flags": [],
-        "outcome": "other"
+        "outcome": "correct"
       }
     },
     {
       "key": "manual_clarify/Q-06-d2-parttime-permit-places",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": false,
@@ -903,17 +919,15 @@
         ]
       },
       "v2": {
-        "passed": false,
-        "failures": [
-          "answer_missing:장소 2곳"
-        ],
+        "passed": true,
+        "failures": [],
         "flags": [],
-        "outcome": "other"
+        "outcome": "correct"
       }
     },
     {
       "key": "manual_clarify/Q-07-d9-multiple-reentry-permit",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -928,7 +942,7 @@
     },
     {
       "key": "manual_clarify/Q-08-student-residence-change-report",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -943,7 +957,7 @@
     },
     {
       "key": "manual_clarify/Q-09-bring-wife-income",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": false,
@@ -966,7 +980,7 @@
     },
     {
       "key": "manual_clarify/Q-10-f6-working-allowed",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": false,
@@ -975,12 +989,10 @@
         ]
       },
       "v2": {
-        "passed": false,
-        "failures": [
-          "answer_missing:취업활동의 제한을 받지 않음"
-        ],
+        "passed": true,
+        "failures": [],
         "flags": [],
-        "outcome": "other"
+        "outcome": "correct"
       }
     },
     {
@@ -1006,7 +1018,7 @@
     },
     {
       "key": "manual_clarify/Q-12-e9-rehire-return-group",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": false,
@@ -1021,7 +1033,8 @@
         "failures": [
           "status:insufficient_evidence≠answered|partial",
           "missing_citation:visa_manual_2026_10_19_pdf#p287",
-          "answer_missing:송출기관에 의한 단체 신청만 가능"
+          "answer_missing_one_of:송출기관",
+          "answer_missing_pattern:단체 신청"
         ],
         "flags": [],
         "outcome": "safe_abstain"
@@ -1029,7 +1042,7 @@
     },
     {
       "key": "manual_clarify/Q-13-korean-language-course-education",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": false,
@@ -1044,7 +1057,7 @@
         "failures": [
           "status:clarify≠answered|partial",
           "missing_citation:visa_manual_2026_10_19_pdf#p73",
-          "answer_missing:고등학교 졸업 이상의 학력 소지자"
+          "answer_missing_pattern:고등학교 졸업 이상"
         ],
         "flags": [],
         "outcome": "clarify"
@@ -1052,7 +1065,7 @@
     },
     {
       "key": "manual_clarify/Q-14-d4-parttime-duration",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -1067,7 +1080,7 @@
     },
     {
       "key": "manual_clarify/Q-15-d10-points-exemption-after-leaving",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": false,
@@ -1082,7 +1095,7 @@
         "failures": [
           "status:clarify≠answered|partial",
           "missing_citation:visa_manual_2026_10_19_pdf#p125",
-          "answer_missing:출국 후 졸업일로부터 1년 이내"
+          "answer_missing_pattern:졸업일로부터 1년 이내 D-10 사증"
         ],
         "flags": [],
         "outcome": "clarify"
@@ -1090,7 +1103,7 @@
     },
     {
       "key": "manual_clarify/Q-16-c3-stay-longer-flight-cancelled",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": false,
@@ -1105,7 +1118,8 @@
         "failures": [
           "status:clarify≠answered|partial",
           "missing_citation:stay_manual_2026_10_19_pdf#p28",
-          "answer_missing:체류기간 연장의 필요성을 소명하는 서류"
+          "answer_missing_pattern:연장 필요성을 소명하는 서류",
+          "answer_missing_pattern:신청서·여권"
         ],
         "flags": [],
         "outcome": "clarify"
@@ -1113,7 +1127,7 @@
     },
     {
       "key": "manual_clarify/Q-17-d8-minimum-investment",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": false,
@@ -1128,7 +1142,7 @@
         "failures": [
           "status:insufficient_evidence≠answered|partial",
           "missing_citation:visa_manual_2026_10_19_pdf#p104",
-          "answer_missing:투자금액이 1억원 이상"
+          "answer_missing_pattern:최소 투자금액 1억원 이상"
         ],
         "flags": [],
         "outcome": "safe_abstain"
@@ -1136,7 +1150,7 @@
     },
     {
       "key": "manual_clarify/Q-18-e2-trip-home-reentry",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -1241,7 +1255,7 @@
     },
     {
       "key": "manual_buttons/B-01-e3-visa-researcher-qualification",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": false,
@@ -1250,17 +1264,18 @@
         ]
       },
       "v2": {
-        "passed": false,
-        "failures": [
-          "answer_missing:석사 학위 소지자로서 3년 이상 경력자"
+        "passed": true,
+        "failures": [],
+        "flags": [
+          "flag:국내 석사에게 3년 경력 요구(면제 대상 왜곡 의심)",
+          "flag:경력요건 면제 항목을 누적요건으로 결합 의심"
         ],
-        "flags": [],
-        "outcome": "other"
+        "outcome": "needs_review"
       }
     },
     {
       "key": "manual_buttons/B-02-india-business-multiple-visa",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": false,
@@ -1275,7 +1290,7 @@
         "failures": [
           "status:clarify≠answered|partial",
           "missing_citation:visa_manual_2026_10_19_pdf#p43",
-          "answer_missing:5년 복수사증 발급"
+          "answer_missing_pattern:5년 복수사증"
         ],
         "flags": [],
         "outcome": "clarify"
@@ -1283,7 +1298,7 @@
     },
     {
       "key": "manual_buttons/B-03-d10-jobseeker-visa-length",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -1298,7 +1313,7 @@
     },
     {
       "key": "manual_buttons/B-04-e2-visa-degree-requirement",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": false,
@@ -1313,7 +1328,7 @@
         "failures": [
           "status:clarify≠answered|partial",
           "missing_citation:visa_manual_2026_10_19_pdf#p144",
-          "answer_missing:학사이상의 학위를 소지한 자"
+          "answer_missing_pattern:학사 이상 학위"
         ],
         "flags": [],
         "outcome": "clarify"
@@ -1321,7 +1336,7 @@
     },
     {
       "key": "manual_buttons/B-05-e3-workplace-change-report",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": false,
@@ -1330,17 +1345,15 @@
         ]
       },
       "v2": {
-        "passed": false,
-        "failures": [
-          "answer_missing:신고사유 발생일로부터 15일 이내"
-        ],
+        "passed": true,
+        "failures": [],
         "flags": [],
-        "outcome": "other"
+        "outcome": "correct"
       }
     },
     {
       "key": "manual_buttons/B-06-d10-multiple-reentry-permit",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -1355,7 +1368,7 @@
     },
     {
       "key": "manual_buttons/B-07-e9-extension-cap",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -1370,7 +1383,7 @@
     },
     {
       "key": "manual_buttons/B-08-c3-extension-limit",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": false,
@@ -1385,7 +1398,7 @@
         "failures": [
           "status:clarify≠answered|partial",
           "missing_citation:stay_manual_2026_10_19_pdf#p27",
-          "answer_missing:입국일로부터 체류기간 90일 범위 내 연장 가능"
+          "answer_missing_pattern:90일"
         ],
         "flags": [],
         "outcome": "clarify"
@@ -1393,7 +1406,7 @@
     },
     {
       "key": "manual_buttons/B-09-d4-language-course-length",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": false,
@@ -1408,7 +1421,7 @@
         "failures": [
           "missing_citation:visa_manual_2026_10_19_pdf#p74",
           "forbidden_citation:stay_manual_2026_10_19_pdf#p83",
-          "answer_missing:체류기간 6개월 이하 단수 일반연수(D-4) 사증"
+          "answer_missing_pattern:체류기간 6개월 이하"
         ],
         "flags": [],
         "outcome": "other"
@@ -1416,7 +1429,7 @@
     },
     {
       "key": "manual_buttons/B-10-f6-sponsor-income",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -1431,7 +1444,7 @@
     },
     {
       "key": "manual_buttons/B-11-h1-insurance-amount",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -1446,7 +1459,7 @@
     },
     {
       "key": "manual_buttons/B-12-f1d-digital-nomad-validity",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": false,
@@ -1461,7 +1474,7 @@
         "failures": [
           "missing_citation:visa_manual_2026_10_19_pdf#p305",
           "forbidden_citation:stay_manual_2026_10_19_pdf#p355",
-          "answer_missing:복수비자 발급(유효기간 1년)"
+          "answer_missing_pattern:복수사증"
         ],
         "flags": [],
         "outcome": "other"
@@ -1469,7 +1482,7 @@
     },
     {
       "key": "manual_buttons/B-13-c45-lecture-days",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -1484,7 +1497,7 @@
     },
     {
       "key": "manual_buttons/B-14-d2-outside-research-pay",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": false,
@@ -1493,27 +1506,27 @@
         ]
       },
       "v2": {
-        "passed": false,
-        "failures": [
-          "answer_missing:체류자격외활동허가(E-3) 필요"
-        ],
+        "passed": true,
+        "failures": [],
         "flags": [],
-        "outcome": "other"
+        "outcome": "correct"
       }
     },
     {
       "key": "manual_buttons/B-15-d2-delivery-rider",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
         "failures": []
       },
       "v2": {
-        "passed": true,
-        "failures": [],
+        "passed": false,
+        "failures": [
+          "answer_missing_pattern:제한(불가) 결론"
+        ],
         "flags": [],
-        "outcome": "correct"
+        "outcome": "other"
       }
     },
     {
@@ -1537,7 +1550,7 @@
     },
     {
       "key": "manual_buttons/B-17-f3-spouse-farm-work",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -1671,7 +1684,7 @@
     },
     {
       "key": "manual_always_ask/A-01-medical-tourism-long-treatment",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": false,
@@ -1682,7 +1695,8 @@
       "v2": {
         "passed": false,
         "failures": [
-          "answer_missing:1년 이내의 복수사증"
+          "answer_missing_pattern:G-1-10 자격",
+          "answer_missing_pattern:체류기간 1년 이내"
         ],
         "flags": [],
         "outcome": "other"
@@ -1690,7 +1704,7 @@
     },
     {
       "key": "manual_always_ask/A-02-d1-kf-invitee-consular-visa",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -1705,7 +1719,7 @@
     },
     {
       "key": "manual_always_ask/A-03-d6-who-can-invite",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -1720,7 +1734,7 @@
     },
     {
       "key": "manual_always_ask/A-04-d5-korean-media-contract",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -1735,7 +1749,7 @@
     },
     {
       "key": "manual_always_ask/A-05-intl-org-meeting-visa-validity",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -1750,7 +1764,7 @@
     },
     {
       "key": "manual_always_ask/A-06-evisa-confirmation-reprint",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -1765,7 +1779,7 @@
     },
     {
       "key": "manual_always_ask/A-07-d7-overseas-branch-tenure",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -1780,7 +1794,7 @@
     },
     {
       "key": "manual_always_ask/A-08-e5-ship-officer-recommendation",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -1795,7 +1809,7 @@
     },
     {
       "key": "manual_always_ask/A-09-d2-school-transfer-korean-level",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -1825,7 +1839,7 @@
     },
     {
       "key": "manual_always_ask/A-11-refugee-applicant-work-permit",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -1840,7 +1854,7 @@
     },
     {
       "key": "manual_always_ask/A-12-ceo-university-lecture",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -1855,22 +1869,24 @@
     },
     {
       "key": "manual_always_ask/A-13-child-school-enrollment-report",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
         "failures": []
       },
       "v2": {
-        "passed": true,
-        "failures": [],
+        "passed": false,
+        "failures": [
+          "answer_missing_pattern:15일 이내 신고"
+        ],
         "flags": [],
-        "outcome": "correct"
+        "outcome": "other"
       }
     },
     {
       "key": "manual_always_ask/A-14-occupation-income-report",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -1885,7 +1901,7 @@
     },
     {
       "key": "manual_always_ask/A-15-d9-points-first-grant-period",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -1900,7 +1916,7 @@
     },
     {
       "key": "manual_always_ask/A-16-e6-2-agency-change",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -1909,8 +1925,10 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": [],
-        "outcome": "correct"
+        "flags": [
+          "flag:신고 절의 동의서 면제 단서를 E-6-2 허가에 적용(페이지로 판정 불가)"
+        ],
+        "outcome": "needs_review"
       }
     },
     {
@@ -1936,7 +1954,7 @@
     },
     {
       "key": "manual_always_ask/A-18-visa-free-to-e3-pressed-visa",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -1951,7 +1969,7 @@
     },
     {
       "key": "manual_always_ask/A-19-f3-spouse-abroad-pressed-stay",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -1966,7 +1984,7 @@
     },
     {
       "key": "manual_always_ask/A-20-d9-trade-points-abroad-pressed-stay",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -2041,11 +2059,30 @@
     },
     {
       "key": "manual_misclick/K-01-c3-business-subcode",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
         "failures": []
+      },
+      "v2": {
+        "passed": false,
+        "failures": [
+          "answer_contradicts:상용 방문 APEC카드 소지자를 C-3-3 의료관광으로도 안내"
+        ],
+        "flags": [],
+        "outcome": "harmful"
+      }
+    },
+    {
+      "key": "manual_misclick/K-02-e1-electronic-visa",
+      "changed": true,
+      "comparable": true,
+      "original": {
+        "passed": false,
+        "failures": [
+          "answer_missing:영사 인터뷰가 필요 없는"
+        ]
       },
       "v2": {
         "passed": true,
@@ -2055,27 +2092,8 @@
       }
     },
     {
-      "key": "manual_misclick/K-02-e1-electronic-visa",
-      "changed": false,
-      "comparable": true,
-      "original": {
-        "passed": false,
-        "failures": [
-          "answer_missing:영사 인터뷰가 필요 없는"
-        ]
-      },
-      "v2": {
-        "passed": false,
-        "failures": [
-          "answer_missing:영사 인터뷰가 필요 없는"
-        ],
-        "flags": [],
-        "outcome": "other"
-      }
-    },
-    {
       "key": "manual_misclick/K-03-e6-minor-performer",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -2090,7 +2108,7 @@
     },
     {
       "key": "manual_misclick/K-04-f1-13-parent-quota",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": false,
@@ -2099,12 +2117,10 @@
         ]
       },
       "v2": {
-        "passed": false,
-        "failures": [
-          "answer_missing:외국인유학생 1명당 1명 허용"
-        ],
+        "passed": true,
+        "failures": [],
         "flags": [],
-        "outcome": "other"
+        "outcome": "correct"
       }
     },
     {
@@ -2141,7 +2157,7 @@
     },
     {
       "key": "manual_misclick/K-07-e5-registration-change",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -2171,7 +2187,7 @@
     },
     {
       "key": "manual_misclick/K-09-e6-tryout-change",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -2201,7 +2217,7 @@
     },
     {
       "key": "manual_misclick/K-11-a1-reentry-exemption",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -2216,7 +2232,7 @@
     },
     {
       "key": "manual_misclick/K-12-e10-2-extra-activity",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -2231,7 +2247,7 @@
     },
     {
       "key": "manual_misclick/K-13-d7-branch-ccvi-misclick",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -2263,22 +2279,24 @@
     },
     {
       "key": "manual_misclick/K-15-e5-doctor-ccvi-misclick",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
         "failures": []
       },
       "v2": {
-        "passed": true,
-        "failures": [],
+        "passed": false,
+        "failures": [
+          "answer_contradicts:결과물인 사증발급인정서를 제출서류로 나열"
+        ],
         "flags": [],
-        "outcome": "correct"
+        "outcome": "harmful"
       }
     },
     {
       "key": "manual_misclick/K-16-e1-ccvi-docs-misclick-keep",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": false,
@@ -2294,8 +2312,7 @@
         "failures": [
           "missing_citation:visa_manual_2026_10_19_pdf#p142",
           "forbidden_citation:stay_manual_2026_10_19_pdf#p174",
-          "answer_missing:사증발급인정신청서 (별지 제21호 서식)",
-          "answer_missing:경력증명서 및 학위증"
+          "answer_missing_pattern:사증발급인정신청서(별지 21호)"
         ],
         "flags": [],
         "outcome": "other"
@@ -2303,7 +2320,7 @@
     },
     {
       "key": "manual_misclick/K-17-d10-to-e1-change-misclick",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -2318,7 +2335,7 @@
     },
     {
       "key": "manual_misclick/K-18-e9-reemployment-extension-misclick",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
@@ -2333,7 +2350,7 @@
     },
     {
       "key": "manual_misclick/K-19-d8-4-change-grant-misclick-keep",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": false,
@@ -2348,7 +2365,7 @@
         "failures": [
           "status:insufficient_evidence≠answered|partial",
           "missing_citation:stay_manual_2026_10_19_pdf#p119",
-          "answer_missing:직접 사업비 3천만 원 이상"
+          "answer_missing_pattern:직접 사업비 3천만원 이상"
         ],
         "flags": [],
         "outcome": "safe_abstain"
@@ -2356,7 +2373,7 @@
     },
     {
       "key": "manual_misclick/K-20-g1-99-newborn-misclick",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": false,
@@ -2365,12 +2382,10 @@
         ]
       },
       "v2": {
-        "passed": false,
-        "failures": [
-          "answer_missing:출생증명서"
-        ],
+        "passed": true,
+        "failures": [],
         "flags": [],
-        "outcome": "other"
+        "outcome": "correct"
       }
     },
     {
