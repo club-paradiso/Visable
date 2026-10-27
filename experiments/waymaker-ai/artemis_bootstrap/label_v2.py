@@ -59,6 +59,15 @@ VERIFICATION = "검증 보류: 라벨을 제공된 매뉴얼 쪽 원문에 맞�
 PER_GRANT = r"(?:1\s*회|한\s*번에|회당|매회|1번에)"
 TOTAL = r"(?:최대|총|통산|상한)"
 NOT_NEGATED = r"(?![^.\n]{0,8}아니)"
+#: After a stated error: the same sentence goes on to call it wrong (a quoted correction).
+CORRECTED = r"(?![^.\n]{0,15}(?:아니|틀|잘못|오류|사실이\s*아))"
+#: M-04 start points from stay p37, and the forms that tie one to the 6 months.
+ANCHOR = r"(?:변경일|입국일|변경한\s*날|입국한\s*날|변경된\s*날)"
+#: Q-11 second limit: no more than 2 changes in the re-employment extension.
+LIMIT2 = r"2\s*회\s*(?:까지|이내)|(?:최대|최고)\s*2\s*회|2\s*회[^.\n]{0,40}(?:초과할\s*수\s*없|초과하지\s*못|초과\s*불가|넘을\s*수\s*없|넘지\s*못)"
+#: N-06: 40 hours tied to a week.
+WEEK40 = (r"(?:1\s*주(?:일)?\s*(?:당|에|동안)?|주\s*당|매\s*주|(?<![가-힣])주\s*(?=40)|per\s*week|a\s*week|weekly)"
+          r"[^.\n]{0,40}40\s*(?:시간|hours?)|40\s*(?:시간|hours?)\s*(?:/\s*주|per\s*week|a\s*week|weekly)")
 
 
 def _r(label: str, pattern: str) -> Dict[str, str]:
@@ -86,7 +95,12 @@ DECISIONS: Dict[str, Dict[str, Any]] = {
         "set_expect": {
             "answer_must_match": [
                 _r("6개월", r"6\s*개월"),
-                _r("기산점: 변경일 또는 (사증소지자) 입국일", r"변경일|입국일|변경한\s*날|입국한\s*날|변경된\s*날"),
+                _r("기산점: 변경일 또는 (사증소지자) 입국일로부터",
+                   ANCHOR + r"(?:\s*\([^)\n]{0,40}\))?\s*(?:로부터|으로부터|부터|을\s*기준|를\s*기준|기준|이후|후)"),
+            ],
+            "answer_must_not_match": [
+                _r("기산점이 변경일·입국일과 무관하다고 씀",
+                   ANCHOR + r"(?:과는|와는|과|와|은|는)?\s*(?:무관|관계\s*없|상관\s*없)" + CORRECTED),
             ],
             "answer_flag_if_match": [
                 _r("기산점을 활동·신청 시점으로 쓴 표현", r"(?:하려는|하고자\s*하는|시작하는|시작한|신청하는|신청한)\s*(?:시점|날|때)\S*\s*부터[^.\n]{0,6}6\s*개월"),
@@ -94,8 +108,9 @@ DECISIONS: Dict[str, Dict[str, Any]] = {
         },
         "raised_by": ["chatgpt_second_opinion", "chatgpt_partial_v2"],
         "page_evidence": "stay p37: '어학연수(D-4-1, D-4-7)자격 및 방문학생(D-2-8)자격은 변경일(사증소지자는 입국일)로부터 6개월이 경과된 사람'",
-        "rationale": "부분 수정본은 기록된 오답 문장('해당 활동을 하려는 시점으로부터 6개월이 경과')만 막았다. 대신 원문의 기산점(변경일·입국일)이 답에 있어야 통과하게 한다. 잘못된 기산점 표현은 떨어뜨리지 않고 사람이 보도록 표시만 한다(오답을 인용해 바로잡는 정답을 떨어뜨리지 않기 위해).",
-        "open_issues": ["변경일과 입국일 중 어느 것이 그 사람에게 맞는지는 검사하지 않는다.", "기산점을 맞게 쓰고 다른 곳에 틀린 기산점을 함께 쓴 답은 통과하되 표시된다(사람 확인 필요).", "6개월·기산점은 법 조문이 아니라 매뉴얼 운영기준이다(2차 의견 메모)."],
+        "rationale": "부분 수정본은 기록된 오답 문장('해당 활동을 하려는 시점으로부터 6개월이 경과')만 막았다. 대신 원문의 기산점(변경일·입국일)이 '…로부터/부터/기준'으로 기산점 자리에 있어야 통과하게 한다(낱말만 있으면 안 된다). 기산점이 변경일·입국일과 무관하다고 쓰면 실패한다. 활동·신청 시점을 기산점으로 쓴 표현은 떨어뜨리지 않고 검토 필요로 돌린다(오답을 인용해 바로잡는 정답을 오답으로 단정하지 않기 위해). 1차 v2(96eb71c)는 '입국일' 낱말만 확인해 '입국일과는 무관하며 … 시작하려는 날부터 6개월'을 통과시켰다(소유자 독립 시험).",
+        "raised_by_after_v2": ["owner_independent_check_2026-10-27"],
+        "open_issues": ["변경일과 입국일 중 어느 것이 그 사람에게 맞는지는 검사하지 않는다.", "기산점을 맞게 쓰고 다른 곳에 틀린 기산점을 함께 쓴 답은 자동 정답이 아니라 검토 필요로 분류된다.", "'무관' 외의 다른 부정 표현(예: '입국일은 상관이 없고')은 일부만 잡는다.", "6개월·기산점은 법 조문이 아니라 매뉴얼 운영기준이다(2차 의견 메모)."],
     },
     "manual_oracle/M-10-d10t-stay-cap": {
         "decision": "adopted_modified",
@@ -124,6 +139,26 @@ DECISIONS: Dict[str, Dict[str, Any]] = {
         "rationale": "원문이 두 서류 중 하나를 요구하고, 특수 가운뎃점(․) 때문에 '지국·지사'로 쓴 정답이 떨어졌다. 부분 수정본과 같다.",
         "open_issues": ["체류 매뉴얼 p105에도 비슷한 문구가 있어 문자열만으로 출처를 가리지 못한다(인용 검사로만 구분)."],
     },
+    "manual_routing/N-06-h1-canada-weekly-hours": {
+        "decision": "adopted_modified",
+        "drop_expect": ["answer_must_contain_any_of_each"],
+        "set_expect": {
+            "answer_must_match": [_r("주당 40시간(캐나다)", WEEK40)],
+            "answer_must_not_match": [
+                _r("40시간을 체류기간으로 씀",
+                   r"(?:체류\s*기간[^.\n]{0,6}?(?:은|는|이)?\s*40\s*시간|40\s*시간[^.\n]{0,4}(?:의|인)\s*체류\s*기간)" + CORRECTED),
+            ],
+            "answer_flag_if_match": [
+                _r("캐나다 언급 없이 25시간 상한을 씀",
+                   r"(?:^|[.\n])(?![^.\n]*(?:캐나다|Canad))[^.\n]*25\s*(?:시간|hours?)"),
+            ],
+        },
+        "raised_by": ["owner_independent_check_2026-10-27"],
+        "page_evidence": "stay p524 《국가별 취업기간》 표: '캐나다 | H-1 체류기간 | 40시간 | 2,080시간(40시간×52주)'. 열 제목은 '취업 기간 | 1주당 최대 | 최대 취업 가능 시간'이다.",
+        "rationale": "원본 라벨은 숫자 '40'만 확인했다. 기록된 답은 '1주당 최대 25시간 이내'라고 쓴 뒤 'H-1 체류 기간은 40시간'이라고 해 표의 열을 섞었는데도 통과했다. 40시간이 1주당 시간으로 답에 있어야 통과하고, 40시간을 체류기간으로 쓰면 실패한다. 캐나다 언급 없이 25시간 상한을 쓴 문장은 자동 정답이 아니라 검토 필요로 돌린다.",
+        "not_adopted": "소유자가 함께 준 재외동포청 영문 워킹홀리데이 안내(whic.mofa.go.kr, 19페이지)는 운영 안내이며 제공된 매뉴얼 원본이 아니어서 라벨 근거로 쓰지 않았다. 이 세션에서 그 PDF를 열어 보지 않았다. 라벨은 p524 표만 근거로 한다.",
+        "open_issues": ["p524는 매뉴얼 운영기준 표다. 협정 원문과 개별 허가 조건은 확인하지 않았다(검증 보류).", "'주 40시간'을 다른 문장 구조로 쓴 답은 놓칠 수 있다.", "기록된 답은 v2에서 실패한다. 기존 저장 판정(ChatGPT 2차 의견 기준)은 그대로 두고, 그 판정을 안전한 정답으로 확정하지 않는다."],
+    },
     "manual_clarify/Q-11-e9-change-jobs-count": {
         "decision": "adopted_modified",
         "drop_expect": ["answer_must_contain"],
@@ -131,14 +166,22 @@ DECISIONS: Dict[str, Dict[str, Any]] = {
             "answer_must_match": [
                 _r("3회의 상한(초과 불가·까지)", r"3\s*회\s*(?:까지|이내)|(?:최대|최고)\s*3\s*회|3\s*회[^.\n]{0,40}(?:초과할\s*수\s*없|초과하지\s*못|초과\s*불가|넘을\s*수\s*없|넘지\s*못)"),
             ],
+            "answer_must_not_match": [
+                _r("횟수 상한을 넘어 변경할 수 있다고 씀(3회·2회 뒤집힘)",
+                   r"[23]\s*회\s*(?:를|을)?\s*(?:넘게|넘어서?|넘겨서?|초과하여|초과해서?|초과해도|이상)[^.\n]{0,25}"
+                   r"(?:변경|옮기|옮길|이동|바꾸|바꿀)[^.\n]{0,8}(?:수\s*있(?!는|다는|다고)|(?<!불)가능(?!한\s*경우))" + CORRECTED),
+            ],
             "answer_flag_if_match": [
                 _r("횟수를 초과해 변경할 수 있다는 표현", r"초과하여[^.\n]{0,15}(?:변경할\s*수\s*있|변경이\s*가능|변경\s*가능)"),
+                _r("재고용(연장) 기간을 말하면서 2회 상한을 쓰지 않음",
+                   r"(?:^|[.\n])(?=[^.\n]*(?:재고용|연장된?\s*기간))(?![^.\n]*(?:" + LIMIT2 + r"))"),
             ],
         },
         "raised_by": ["chatgpt_second_opinion", "chatgpt_partial_v2"],
         "page_evidence": "stay p328: '취업가능기간 중에는 원칙적으로 3회, 재고용절차에 따라 체류기간이 연장된 기간 중에는 2회를 초과할 수 없음'",
-        "rationale": "기록된 답은 '2회를 초과하여 사업장을 변경할 수 있습니다'로 뜻이 뒤집혔는데 '원칙적으로 3회' 글자만 보고 통과했다. 부분 수정본은 그 문장만 막았다. 대신 3회가 상한이라는 뜻(까지·초과할 수 없음 등)이 있어야 통과하게 하고, '초과하여 변경 가능' 표현은 표시만 한다.",
-        "open_issues": ["3회 상한은 맞게 쓰고 연장 기간의 2회는 거꾸로 쓴 답은 통과하되 표시된다(사람 확인 필요).", "변경 횟수에 넣지 않는 예외(휴·폐업 등)는 검사하지 않는다.", "법 제25조 제4항의 2026-12-10, 2027-06-10 시행 예정 개정은 반영하지 않았다(2차 의견 메모)."],
+        "rationale": "기록된 답은 '2회를 초과하여 사업장을 변경할 수 있습니다'로 뜻이 뒤집혔는데 '원칙적으로 3회' 글자만 보고 통과했다. 부분 수정본은 그 문장만 막았다. 대신 3회가 상한이라는 뜻(까지·초과할 수 없음 등)이 있어야 통과하게 하고, 3회나 2회를 넘어(초과하여·넘게·이상) 변경할 수 있다고 쓰면 실패한다. 같은 문장에서 그 말이 틀렸다고 바로잡으면 실패로 보지 않는다. 재고용 기간을 말하면서 2회 상한을 쓰지 않은 답과 '초과하여 변경 가능'이 남은 답은 자동 정답이 아니라 검토 필요로 돌린다. 1차 v2(96eb71c)는 '최대 3회까지, 재고용 기간에는 2회 넘게 변경할 수 있습니다'를 표시 없이 통과시켰다(소유자 독립 시험).",
+        "raised_by_after_v2": ["owner_independent_check_2026-10-27"],
+        "open_issues": ["재고용 기간을 아예 말하지 않은 답은 2회 상한을 검사하지 않는다(질문이 횟수만 묻기 때문).", "'넘게·초과하여·이상' 외의 다른 표현으로 상한을 뒤집은 답은 잡지 못할 수 있다.", "변경 횟수에 넣지 않는 예외(휴·폐업 등)는 검사하지 않는다.", "법 제25조 제4항의 2026-12-10, 2027-06-10 시행 예정 개정은 반영하지 않았다(2차 의견 메모)."],
     },
     "manual_misclick/K-05-f2-2-child-of-national": {
         "decision": "adopted_modified",
@@ -253,6 +296,7 @@ def build(write: bool = True) -> Dict[str, Any]:
                 "v2": {"expect": new["expect"], "evidence_ids": [e["id"] for e in new["evidence"]]} if new != case else None,
                 "sources": sources.get(key, {}),
                 "raised_by": dec.get("raised_by", []) if dec else [],
+                "raised_after_first_v2": dec.get("raised_by_after_v2", []) if dec else [],
                 "page_evidence": dec.get("page_evidence") if dec else None,
                 "rationale": dec.get("rationale") if dec else "v2에서 아직 검토하지 않았다. 원본 라벨을 그대로 둔다.",
                 "not_adopted": dec.get("not_adopted") if dec else None,
@@ -311,16 +355,21 @@ def regrade(write: bool = True) -> Dict[str, Any]:
                 "key": _key(set_name, old["id"]), "changed": dec[old["id"]]["changed"],
                 "comparable": dec[old["id"]]["recorded_answer_comparable"],
                 "original": {"passed": a["passed"], "failures": a["failures"]},
-                "v2": {"passed": b["passed"], "failures": b["failures"], "flags": b.get("flags", [])},
+                "v2": {"passed": b["passed"], "failures": b["failures"], "flags": b.get("flags", []),
+                       "outcome": smoke_grader.classify(b)},
             })
     report = {
         "kind": "artemis_label_v2_regrade", "post_hoc": True,
-        "warning": "v2 labels were written after reading these recorded answers; this is a label check, not a model score.",
+        "warning": "v2 labels were written after reading these recorded answers; this is a label check, not a model score. "
+                   "needs_review answers passed every check but were flagged for a person and are not counted as correct.",
         "runs": RUNS,
         "summary": {
             "cases": len(rows),
             "passed_original": sum(r["original"]["passed"] for r in rows),
-            "passed_v2": sum(r["v2"]["passed"] for r in rows if r["comparable"]),
+            "auto_correct_v2": sum(r["v2"]["passed"] and not r["v2"]["flags"] for r in rows if r["comparable"]),
+            "needs_review_v2": sum(r["v2"]["passed"] and bool(r["v2"]["flags"]) for r in rows if r["comparable"]),
+            "failed_v2": sum(not r["v2"]["passed"] for r in rows if r["comparable"]),
+            "comparable": sum(r["comparable"] for r in rows),
             "not_comparable": [r["key"] for r in rows if not r["comparable"]],
             "flipped_to_pass": [r["key"] for r in rows if r["comparable"] and not r["original"]["passed"] and r["v2"]["passed"]],
             "flipped_to_fail": [r["key"] for r in rows if r["comparable"] and r["original"]["passed"] and not r["v2"]["passed"]],

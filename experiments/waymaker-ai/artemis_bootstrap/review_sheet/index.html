@@ -162,7 +162,7 @@ textarea { background: var(--bg); border: 1px solid var(--line); border-radius: 
         <option value="">전체</option><option value="todo">아직 안 봄</option><option value="done">검토함</option>
         <option value="needs">고칠 것 있음</option><option value="model_fail">모델이 틀린 문항</option>
         <option value="ai_flag">AI 1차 의견: 문제 있음</option>
-        <option value="v2_changed">라벨 v2에서 바뀐 문항</option><option value="v2_open">v2 열린 쟁점 있음</option>
+        <option value="v2_changed">라벨 v2에서 바뀐 문항</option><option value="v2_open">v2 열린 쟁점 있음</option><option value="v2_review">v2 검토 필요 표시 있음</option>
       </select></label>
       <label>찾기<input id="fText" type="search" placeholder="문항 번호나 질문 내용"></label>
     </div>
@@ -197,6 +197,7 @@ textarea { background: var(--bg); border: 1px solid var(--line); border-radius: 
   // reviews: new verdicts against label v2 (collection reviews_v2). legacy: the verdicts saved
   // before v2 (collection reviews), shown read-only so they are never overwritten from this page.
   let data = null, reviews = {}, legacy = {}, aiReviews = {}, db = null, canWrite = true, myId = null, current = null;
+  const V2_OUTCOME_KO = { correct: "자동 정답", needs_review: "검토 필요(자동 정답 아님)", harmful: "실패: 원문과 모순", clarify: "되물음", safe_abstain: "보류", other: "실패" };
   const DECISION_KO = { adopted: "v2 채택", adopted_modified: "v2 수정 채택", not_adopted: "v2 채택 안 함", pending: "v2 보류(원본 유지)" };
   const PROV_KO = { existing_human: "기존 사람 판정(인계 기록 기준)", chatgpt_round2: "ChatGPT 2차 의견(인계 기록 기준)" };
   const CONF_KO = { high: "확신 높음", medium: "확신 보통", low: "확신 낮음" };
@@ -250,6 +251,7 @@ textarea { background: var(--bg); border: 1px solid var(--line); border-radius: 
       if (st === "ai_flag") { const a = aiReviews[docId(c.key)]; if (!(a && a.verdict !== "ok")) return false; }
       if (st === "v2_changed" && !(c.label_v2 && c.label_v2.changed)) return false;
       if (st === "v2_open" && !(c.label_v2 && c.label_v2.open_issues && c.label_v2.open_issues.length)) return false;
+      if (st === "v2_review" && !(c.label_v2 && c.label_v2.regrade_post_hoc && (c.label_v2.regrade_post_hoc.v2.flags || []).length)) return false;
       if (t && !(c.id.toLowerCase().includes(t) || c.question.toLowerCase().includes(t))) return false;
       return true;
     });
@@ -266,7 +268,8 @@ textarea { background: var(--bg); border: 1px solid var(--line); border-radius: 
     $("barDrop").style.width = (drop / n * 100) + "%";
     const changed = data.cases.filter((c) => c.label_v2 && c.label_v2.changed).length;
     $("counts").innerHTML = `<span>v2 기준 새 판정 <b>${ok + fix + drop}</b> / ${n}</span><span>라벨 맞음 <b>${ok}</b></span><span>고칠 것 <b>${fix}</b></span><span>빼기 <b>${drop}</b></span>`
-      + `<span>기존 저장 판정 <b>${Object.keys(legacy).length}</b> / ${n} (읽기 전용)</span><span>v2에서 바뀐 라벨 <b>${changed}</b></span><span>법률 검증 완료: 확인된 것 없음</span>`;
+      + `<span>기존 저장 판정 <b>${Object.keys(legacy).length}</b> / ${n} (읽기 전용)</span><span>v2에서 바뀐 라벨 <b>${changed}</b></span>`
+      + `<span>기록 답 v2 검토 필요 표시 <b>${data.cases.filter((c) => c.label_v2 && c.label_v2.regrade_post_hoc && (c.label_v2.regrade_post_hoc.v2.flags || []).length).length}</b> (자동 정답에서 제외)</span><span>법률 검증 완료: 확인된 것 없음</span>`;
   }
 
   function renderList() {
@@ -335,7 +338,7 @@ textarea { background: var(--bg); border: 1px solid var(--line); border-radius: 
           ${(v2e.answer_must_contain_any_of_each || []).length ? `<dt>v2 각 묶음에서 하나 이상</dt><dd>${v2e.answer_must_contain_any_of_each.map((grp) => grp.map((x) => `<span class="str">${esc(x)}</span>`).join(" 또는 ")).join("<br>")}</dd>` : ""}
           ${(v2e.answer_must_match || []).length ? `<dt>v2 있어야 할 사실 구조</dt><dd>${v2e.answer_must_match.map(rule).join("")}</dd>` : ""}
           ${(v2e.answer_must_not_match || []).length ? `<dt>v2 실패 처리하는 모순</dt><dd>${v2e.answer_must_not_match.map((r) => `<span class="str bad">${esc(r.label)}</span>`).join("")}</dd>` : ""}
-          ${(v2e.answer_flag_if_match || []).length ? `<dt>v2 사람 확인 표시만</dt><dd>${v2e.answer_flag_if_match.map(rule).join("")}</dd>` : ""}
+          ${(v2e.answer_flag_if_match || []).length ? `<dt>v2 검토 필요로 돌리는 표현(실패도 자동 정답도 아님)</dt><dd>${v2e.answer_flag_if_match.map(rule).join("")}</dd>` : ""}
           ${lv.v2_evidence_ids ? `<dt>v2 근거 쪽</dt><dd class="mono">${esc(lv.v2_evidence_ids.join(", "))}</dd>` : ""}
           <dt>v2 인용해야 할 쪽</dt><dd class="mono">${esc((v2e.must_cite || []).join(", ") || "-")}</dd>
         </dl>` : ""}
@@ -343,7 +346,9 @@ textarea { background: var(--bg); border: 1px solid var(--line); border-radius: 
         <p>${esc(lv.rationale)}</p>
         ${lv.not_adopted ? `<p><b>반영하지 않은 것:</b> ${esc(lv.not_adopted)}</p>` : ""}
         ${(lv.open_issues || []).length ? `<div><b>열린 쟁점</b><ul class="fails">${lv.open_issues.map((x) => `<li>${esc(x)}</li>`).join("")}</ul></div>` : ""}
-        ${g ? `<p class="purpose">기록된 답 다시 채점(라벨을 고친 뒤 계산, 모델 성능 아님): 원본 ${g.original.passed ? "통과" : "실패"} → v2 ${lv.recorded_answer_comparable ? (g.v2.passed ? "통과" : "실패") : "비교 불가(근거 쪽이 바뀜)"}${g.v2.flags && g.v2.flags.length ? " · 사람 확인 표시" : ""}</p>` : ""}
+        ${g ? `<p class="purpose">기록된 답 다시 채점(라벨을 고친 뒤 계산, 모델 성능 아님): 원본 ${g.original.passed ? "통과" : "실패"} → v2 ${lv.recorded_answer_comparable ? esc(V2_OUTCOME_KO[g.v2.outcome] || (g.v2.passed ? "통과" : "실패")) : "비교 불가(근거 쪽이 바뀜)"}</p>
+        ${(g.v2.flags || []).length ? `<div class="banner" role="note"><b>검토 필요:</b> 이 답에 자동으로 판정할 수 없는 표현이 있습니다. ${g.v2.passed ? "검사는 모두 통과했지만 자동 정답으로 세지 않습니다." : "검사에서도 실패했습니다."} 사람이 원문과 대조해 확인해야 합니다.<ul class="fails">${g.v2.flags.map((f) => `<li>${esc(f.replace(/^flag:/, ""))}</li>`).join("")}</ul></div>` : ""}
+        ${(g.v2.failures || []).length && lv.recorded_answer_comparable ? `<div><b>v2 실패 사유</b><ul class="fails">${g.v2.failures.map((f) => `<li>${esc(f)}</li>`).join("")}</ul></div>` : ""}` : ""}
         ${lv.sources && lv.sources.chatgpt_partial_v2 ? `<p class="purpose">ChatGPT 부분 수정본 제안이 있었음(${esc(lv.sources.chatgpt_partial_v2.file)}). 그대로 채택하지 않고 원문과 대조해 결정함.</p>` : ""}
       </section>` : "";
     const aiHtml = a ? `<section class="ai"><h2>AI 1차 의견 (참고)</h2>

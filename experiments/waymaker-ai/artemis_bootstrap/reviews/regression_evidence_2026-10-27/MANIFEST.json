@@ -1,0 +1,18 @@
+{
+  "kind": "artemis_regression_evidence_import",
+  "received": "2026-10-27",
+  "source_dir": "~/Documents/Codex/2026-10-27/plugin-computer-use-openai-bundled-mcp/work/artemis/regression-evidence",
+  "status": "소유자가 96eb71c를 별도 체크아웃에서 독립 시험해 찾은 반례와 N-06 메모. 받은 그대로 복사했다(수정 없음). 사람 검토 완료나 법률 검증을 뜻하지 않는다. N-06 메모가 가리키는 재외동포청 영문 안내 PDF는 운영 안내이며 이 저장소에 복사하지 않았고 이 세션에서 열어 보지 않았다.",
+  "files": [
+    {
+      "path": "adversarial_examples.json",
+      "sha256": "9c402302ba24eaf546dc0415e28a2ce30ceeded9ba6c8656b525f0a7920253b8",
+      "bytes": 1145
+    },
+    {
+      "path": "n06.md",
+      "sha256": "db35ea7a74554f4707b28a10e9bb5e2625a627e5d96436ccb517efbfbde4847a",
+      "bytes": 935
+    }
+  ]
+}

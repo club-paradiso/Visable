@@ -49,7 +49,7 @@ const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 (async () => {
   await wait(300);
   const counts = doc.getElementById("counts").textContent;
-  check("counts show v2 verdicts, read-only legacy count 140/140 and no legal completion", /v2 기준 새 판정 0 \/ 140/.test(counts) && /기존 저장 판정 140 \/ 140 \(읽기 전용\)/.test(counts) && /법률 검증 완료: 확인된 것 없음/.test(counts) && /v2에서 바뀐 라벨 9/.test(counts), counts);
+  check("counts show v2 verdicts, read-only legacy count 140/140 and no legal completion", /v2 기준 새 판정 0 \/ 140/.test(counts) && /기존 저장 판정 140 \/ 140 \(읽기 전용\)/.test(counts) && /법률 검증 완료: 확인된 것 없음/.test(counts) && /v2에서 바뀐 라벨 10/.test(counts) && /기록 답 v2 검토 필요 표시 3 \(자동 정답에서 제외\)/.test(counts), counts);
   const items = [...doc.querySelectorAll("#list .item")];
   check("list has all 140 cases in bundle order", items.length === 140 && items[0].dataset.key === cases.cases[0].key && items[139].dataset.key === cases.cases[139].key, String(items.length));
 
@@ -57,14 +57,17 @@ const wait = (ms) => new Promise((r) => setTimeout(r, ms));
   let t = await open("manual_oracle/M-10-d10t-stay-cap");
   check("M-10 shows label v2 decision and structural rules", t.includes("v2 수정 채택") && t.includes("총 체류기간 상한 3년") && t.includes("1회 기간을 3년으로 씀(뒤바뀜)") && t.includes("검증 보류"), "");
   check("M-10 shows saved human verdict read-only with provenance", t.includes("기존 저장 판정 (읽기 전용") && t.includes("기존 사람 판정(인계 기록 기준)"), "");
-  check("M-10 shows the post-hoc regrade (실패 → 통과)", t.includes("원본 실패 → v2 통과"), "");
+  check("M-10 shows the post-hoc regrade (실패 → 자동 정답)", t.includes("원본 실패 → v2 자동 정답"), "");
 
   t = await open("manual_misclick/K-14-d8-4-where-to-apply-misclick");
   check("K-14 shows new evidence page and 'not comparable'", t.includes("visa_manual_2026_10_19_pdf#p108") && t.includes("비교 불가(근거 쪽이 바뀜)") && t.includes("열린 쟁점"), "");
   check("K-14 renders the p108 page text", t.includes("나. 신청기관"), "");
 
   t = await open("manual_clarify/Q-11-e9-change-jobs-count");
-  check("Q-11 shows the flag-only rule and ChatGPT proposal note", t.includes("사람 확인 표시만") && t.includes("ChatGPT 부분 수정본 제안이 있었음") && t.includes("ChatGPT 2차 의견(인계 기록 기준)"), "");
+  check("Q-11 shows the review-only rule, the review banner and ChatGPT proposal note", t.includes("v2 검토 필요로 돌리는 표현") && t.includes("검토 필요:") && t.includes("재고용(연장) 기간을 말하면서 2회 상한을 쓰지 않음") && t.includes("v2 실패: 원문과 모순") && t.includes("ChatGPT 부분 수정본 제안이 있었음") && t.includes("ChatGPT 2차 의견(인계 기록 기준)"), "");
+
+  t = await open("manual_routing/N-06-h1-canada-weekly-hours");
+  check("N-06 shows the new rule, the post-hoc failure and the guide kept out of the label", t.includes("40시간을 체류기간으로 씀") && t.includes("원본 통과 → v2 실패: 원문과 모순") && t.includes("whic.mofa.go.kr") && t.includes("검증 보류"), "");
 
   t = await open("manual_routing/N-01-c1-visa-attachments");
   check("an unchanged case says pending / original kept", t.includes("v2 보류(원본 유지)") && !t.includes("v2 있어야 할 사실 구조"), "");

@@ -1,7 +1,7 @@
 {
   "kind": "artemis_label_v2_regrade",
   "post_hoc": true,
-  "warning": "v2 labels were written after reading these recorded answers; this is a label check, not a model score.",
+  "warning": "v2 labels were written after reading these recorded answers; this is a label check, not a model score. needs_review answers passed every check but were flagged for a person and are not counted as correct.",
   "runs": {
     "manual_oracle": "2026-10-26-e4b-it-4bit-m1-8gb-manual-oracle",
     "manual_routing": "2026-10-26-e4b-it-4bit-m1-8gb-routing-routed",
@@ -13,7 +13,10 @@
   "summary": {
     "cases": 140,
     "passed_original": 96,
-    "passed_v2": 93,
+    "auto_correct_v2": 92,
+    "needs_review_v2": 0,
+    "failed_v2": 47,
+    "comparable": 139,
     "not_comparable": [
       "manual_misclick/K-14-d8-4-where-to-apply-misclick"
     ],
@@ -22,11 +25,13 @@
     ],
     "flipped_to_fail": [
       "manual_oracle/M-04-d4-parttime-wait",
+      "manual_routing/N-06-h1-canada-weekly-hours",
       "manual_clarify/Q-11-e9-change-jobs-count",
       "manual_misclick/K-05-f2-2-child-of-national"
     ],
     "flagged_for_human": [
       "manual_oracle/M-04-d4-parttime-wait",
+      "manual_routing/N-06-h1-canada-weekly-hours",
       "manual_clarify/Q-11-e9-change-jobs-count"
     ]
   },
@@ -42,7 +47,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -56,7 +62,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -70,7 +77,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -84,11 +92,12 @@
       "v2": {
         "passed": false,
         "failures": [
-          "answer_missing_pattern:기산점: 변경일 또는 (사증소지자) 입국일"
+          "answer_missing_pattern:기산점: 변경일 또는 (사증소지자) 입국일로부터"
         ],
         "flags": [
           "flag:기산점을 활동·신청 시점으로 쓴 표현"
-        ]
+        ],
+        "outcome": "other"
       }
     },
     {
@@ -102,7 +111,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -116,7 +126,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -130,7 +141,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -144,7 +156,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -158,7 +171,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -174,7 +188,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -188,7 +203,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -202,7 +218,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -216,7 +233,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -230,7 +248,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -244,7 +263,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -258,7 +278,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -278,7 +299,8 @@
           "forbidden_citation:visa_manual_2026_10_19_pdf#p327",
           "forbidden_citation:visa_manual_2026_10_19_pdf#p338"
         ],
-        "flags": []
+        "flags": [],
+        "outcome": "other"
       }
     },
     {
@@ -296,7 +318,8 @@
         "failures": [
           "forbidden_citation:stay_manual_2026_10_19_pdf#p162"
         ],
-        "flags": []
+        "flags": [],
+        "outcome": "other"
       }
     },
     {
@@ -310,7 +333,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -324,7 +348,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -338,7 +363,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -358,7 +384,8 @@
           "missing_citation:stay_manual_2026_10_19_pdf#p105",
           "answer_missing:지국․지사의 설치허가증"
         ],
-        "flags": []
+        "flags": [],
+        "outcome": "other"
       }
     },
     {
@@ -380,7 +407,8 @@
           "missing_citation:visa_manual_2026_10_19_pdf#p118",
           "answer_missing:설비도입계약서 또는 산업설비도입 입증서류"
         ],
-        "flags": []
+        "flags": [],
+        "outcome": "safe_abstain"
       }
     },
     {
@@ -394,7 +422,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -416,21 +445,28 @@
           "missing_citation:visa_manual_2026_10_19_pdf#p347",
           "answer_missing:2년(24개월)"
         ],
-        "flags": []
+        "flags": [],
+        "outcome": "safe_abstain"
       }
     },
     {
       "key": "manual_routing/N-06-h1-canada-weekly-hours",
-      "changed": false,
+      "changed": true,
       "comparable": true,
       "original": {
         "passed": true,
         "failures": []
       },
       "v2": {
-        "passed": true,
-        "failures": [],
-        "flags": []
+        "passed": false,
+        "failures": [
+          "answer_missing_pattern:주당 40시간(캐나다)",
+          "answer_contradicts:40시간을 체류기간으로 씀"
+        ],
+        "flags": [
+          "flag:캐나다 언급 없이 25시간 상한을 씀"
+        ],
+        "outcome": "harmful"
       }
     },
     {
@@ -452,7 +488,8 @@
           "missing_citation:visa_manual_2026_10_19_pdf#p279",
           "answer_missing_one_of:연간 최대 14명|14명"
         ],
-        "flags": []
+        "flags": [],
+        "outcome": "safe_abstain"
       }
     },
     {
@@ -466,7 +503,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -480,7 +518,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -494,7 +533,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -508,7 +548,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -532,7 +573,8 @@
           "answer_missing_one_of:파견명령서",
           "answer_missing_one_of:설립허가서"
         ],
-        "flags": []
+        "flags": [],
+        "outcome": "safe_abstain"
       }
     },
     {
@@ -546,7 +588,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -564,7 +607,8 @@
         "failures": [
           "answer_missing_one_of:90일이하의 단수사증"
         ],
-        "flags": []
+        "flags": [],
+        "outcome": "other"
       }
     },
     {
@@ -578,7 +622,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -592,7 +637,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -606,7 +652,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -620,7 +667,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -634,7 +682,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -648,7 +697,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -670,7 +720,8 @@
           "missing_citation:stay_manual_2026_10_19_pdf#p24",
           "answer_missing_one_of:체류기간 연장이나 체류자격 변경허가를 하지 아니|반드시 사증을 발급 받아 입국"
         ],
-        "flags": []
+        "flags": [],
+        "outcome": "safe_abstain"
       }
     },
     {
@@ -692,7 +743,8 @@
           "missing_citation:visa_manual_2026_10_19_pdf#p70",
           "answer_missing:사증발급인정서"
         ],
-        "flags": []
+        "flags": [],
+        "outcome": "safe_abstain"
       }
     },
     {
@@ -710,7 +762,8 @@
         "failures": [
           "answer_missing_one_of:지자체 담당자 동반"
         ],
-        "flags": []
+        "flags": [],
+        "outcome": "other"
       }
     },
     {
@@ -734,7 +787,8 @@
           "answer_missing_one_of:유효기간 2년 이내의|2년",
           "answer_missing_one_of:복수사증"
         ],
-        "flags": []
+        "flags": [],
+        "outcome": "safe_abstain"
       }
     },
     {
@@ -756,7 +810,8 @@
           "missing_citation:visa_manual_2026_10_19_pdf#p287",
           "answer_missing:사증발급 신청일로부터 3개월 이내에 발급된 증명서"
         ],
-        "flags": []
+        "flags": [],
+        "outcome": "safe_abstain"
       }
     },
     {
@@ -778,7 +833,8 @@
           "missing_citation:visa_manual_2026_10_19_pdf#p146",
           "answer_missing:해외 소재 대한민국 공관이면 어디라도 신청 가능"
         ],
-        "flags": []
+        "flags": [],
+        "outcome": "clarify"
       }
     },
     {
@@ -798,7 +854,8 @@
           "answer_missing:사진 1매(6개월 이내 촬영 반명함)",
           "answer_missing:표준입학허가서 (대학 총․학장 발행)"
         ],
-        "flags": []
+        "flags": [],
+        "outcome": "other"
       }
     },
     {
@@ -812,7 +869,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -830,7 +888,8 @@
         "failures": [
           "answer_missing:1월 이내에 사업장 변경을 신청"
         ],
-        "flags": []
+        "flags": [],
+        "outcome": "other"
       }
     },
     {
@@ -848,7 +907,8 @@
         "failures": [
           "answer_missing:장소 2곳"
         ],
-        "flags": []
+        "flags": [],
+        "outcome": "other"
       }
     },
     {
@@ -862,7 +922,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -876,7 +937,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -898,7 +960,8 @@
           "missing_citation:visa_manual_2026_10_19_pdf#p330",
           "answer_missing:25,195,752"
         ],
-        "flags": []
+        "flags": [],
+        "outcome": "clarify"
       }
     },
     {
@@ -916,7 +979,8 @@
         "failures": [
           "answer_missing:취업활동의 제한을 받지 않음"
         ],
-        "flags": []
+        "flags": [],
+        "outcome": "other"
       }
     },
     {
@@ -930,11 +994,14 @@
       "v2": {
         "passed": false,
         "failures": [
-          "answer_missing_pattern:3회의 상한(초과 불가·까지)"
+          "answer_missing_pattern:3회의 상한(초과 불가·까지)",
+          "answer_contradicts:횟수 상한을 넘어 변경할 수 있다고 씀(3회·2회 뒤집힘)"
         ],
         "flags": [
-          "flag:횟수를 초과해 변경할 수 있다는 표현"
-        ]
+          "flag:횟수를 초과해 변경할 수 있다는 표현",
+          "flag:재고용(연장) 기간을 말하면서 2회 상한을 쓰지 않음"
+        ],
+        "outcome": "harmful"
       }
     },
     {
@@ -956,7 +1023,8 @@
           "missing_citation:visa_manual_2026_10_19_pdf#p287",
           "answer_missing:송출기관에 의한 단체 신청만 가능"
         ],
-        "flags": []
+        "flags": [],
+        "outcome": "safe_abstain"
       }
     },
     {
@@ -978,7 +1046,8 @@
           "missing_citation:visa_manual_2026_10_19_pdf#p73",
           "answer_missing:고등학교 졸업 이상의 학력 소지자"
         ],
-        "flags": []
+        "flags": [],
+        "outcome": "clarify"
       }
     },
     {
@@ -992,7 +1061,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -1014,7 +1084,8 @@
           "missing_citation:visa_manual_2026_10_19_pdf#p125",
           "answer_missing:출국 후 졸업일로부터 1년 이내"
         ],
-        "flags": []
+        "flags": [],
+        "outcome": "clarify"
       }
     },
     {
@@ -1036,7 +1107,8 @@
           "missing_citation:stay_manual_2026_10_19_pdf#p28",
           "answer_missing:체류기간 연장의 필요성을 소명하는 서류"
         ],
-        "flags": []
+        "flags": [],
+        "outcome": "clarify"
       }
     },
     {
@@ -1058,7 +1130,8 @@
           "missing_citation:visa_manual_2026_10_19_pdf#p104",
           "answer_missing:투자금액이 1억원 이상"
         ],
-        "flags": []
+        "flags": [],
+        "outcome": "safe_abstain"
       }
     },
     {
@@ -1072,7 +1145,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -1086,7 +1160,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -1100,7 +1175,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -1114,7 +1190,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -1128,7 +1205,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -1142,7 +1220,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -1156,7 +1235,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -1174,7 +1254,8 @@
         "failures": [
           "answer_missing:석사 학위 소지자로서 3년 이상 경력자"
         ],
-        "flags": []
+        "flags": [],
+        "outcome": "other"
       }
     },
     {
@@ -1196,7 +1277,8 @@
           "missing_citation:visa_manual_2026_10_19_pdf#p43",
           "answer_missing:5년 복수사증 발급"
         ],
-        "flags": []
+        "flags": [],
+        "outcome": "clarify"
       }
     },
     {
@@ -1210,7 +1292,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -1232,7 +1315,8 @@
           "missing_citation:visa_manual_2026_10_19_pdf#p144",
           "answer_missing:학사이상의 학위를 소지한 자"
         ],
-        "flags": []
+        "flags": [],
+        "outcome": "clarify"
       }
     },
     {
@@ -1250,7 +1334,8 @@
         "failures": [
           "answer_missing:신고사유 발생일로부터 15일 이내"
         ],
-        "flags": []
+        "flags": [],
+        "outcome": "other"
       }
     },
     {
@@ -1264,7 +1349,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -1278,7 +1364,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -1300,7 +1387,8 @@
           "missing_citation:stay_manual_2026_10_19_pdf#p27",
           "answer_missing:입국일로부터 체류기간 90일 범위 내 연장 가능"
         ],
-        "flags": []
+        "flags": [],
+        "outcome": "clarify"
       }
     },
     {
@@ -1322,7 +1410,8 @@
           "forbidden_citation:stay_manual_2026_10_19_pdf#p83",
           "answer_missing:체류기간 6개월 이하 단수 일반연수(D-4) 사증"
         ],
-        "flags": []
+        "flags": [],
+        "outcome": "other"
       }
     },
     {
@@ -1336,7 +1425,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -1350,7 +1440,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -1372,7 +1463,8 @@
           "forbidden_citation:stay_manual_2026_10_19_pdf#p355",
           "answer_missing:복수비자 발급(유효기간 1년)"
         ],
-        "flags": []
+        "flags": [],
+        "outcome": "other"
       }
     },
     {
@@ -1386,7 +1478,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -1404,7 +1497,8 @@
         "failures": [
           "answer_missing:체류자격외활동허가(E-3) 필요"
         ],
-        "flags": []
+        "flags": [],
+        "outcome": "other"
       }
     },
     {
@@ -1418,7 +1512,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -1436,7 +1531,8 @@
         "failures": [
           "answer_missing:별도의 근무처 추가 또는 변경없이 취업 활동 가능"
         ],
-        "flags": []
+        "flags": [],
+        "outcome": "other"
       }
     },
     {
@@ -1450,7 +1546,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -1468,7 +1565,8 @@
         "failures": [
           "answer_missing:90일 이내 강의활동"
         ],
-        "flags": []
+        "flags": [],
+        "outcome": "other"
       }
     },
     {
@@ -1482,7 +1580,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -1496,7 +1595,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -1516,7 +1616,8 @@
           "status:partial≠clarify|insufficient_evidence",
           "forbidden_citation:stay_manual_2026_10_19_pdf#p330"
         ],
-        "flags": []
+        "flags": [],
+        "outcome": "other"
       }
     },
     {
@@ -1534,7 +1635,8 @@
         "failures": [
           "status:partial≠clarify|insufficient_evidence"
         ],
-        "flags": []
+        "flags": [],
+        "outcome": "other"
       }
     },
     {
@@ -1548,7 +1650,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -1562,7 +1665,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -1580,7 +1684,8 @@
         "failures": [
           "answer_missing:1년 이내의 복수사증"
         ],
-        "flags": []
+        "flags": [],
+        "outcome": "other"
       }
     },
     {
@@ -1594,7 +1699,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -1608,7 +1714,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -1622,7 +1729,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -1636,7 +1744,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -1650,7 +1759,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -1664,7 +1774,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -1678,7 +1789,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -1692,7 +1804,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -1706,7 +1819,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -1720,7 +1834,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -1734,7 +1849,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -1748,7 +1864,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -1762,7 +1879,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -1776,7 +1894,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -1790,7 +1909,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -1810,7 +1930,8 @@
           "forbidden_citation:visa_manual_2026_10_19_pdf#p49",
           "answer_relays:복수사증"
         ],
-        "flags": []
+        "flags": [],
+        "outcome": "harmful"
       }
     },
     {
@@ -1824,7 +1945,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -1838,7 +1960,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -1852,7 +1975,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -1866,7 +1990,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -1880,7 +2005,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -1894,7 +2020,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -1908,7 +2035,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -1922,7 +2050,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -1940,7 +2069,8 @@
         "failures": [
           "answer_missing:영사 인터뷰가 필요 없는"
         ],
-        "flags": []
+        "flags": [],
+        "outcome": "other"
       }
     },
     {
@@ -1954,7 +2084,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -1972,7 +2103,8 @@
         "failures": [
           "answer_missing:외국인유학생 1명당 1명 허용"
         ],
-        "flags": []
+        "flags": [],
+        "outcome": "other"
       }
     },
     {
@@ -1988,7 +2120,8 @@
         "failures": [
           "answer_contradicts:5년 사증을 제외대상자에게 적용된다고 씀"
         ],
-        "flags": []
+        "flags": [],
+        "outcome": "harmful"
       }
     },
     {
@@ -2002,7 +2135,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -2016,7 +2150,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -2030,7 +2165,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -2044,7 +2180,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -2058,7 +2195,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -2072,7 +2210,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -2086,7 +2225,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -2100,7 +2240,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -2116,7 +2257,8 @@
         "failures": [
           "missing_citation:visa_manual_2026_10_19_pdf#p108"
         ],
-        "flags": []
+        "flags": [],
+        "outcome": "other"
       }
     },
     {
@@ -2130,7 +2272,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -2154,7 +2297,8 @@
           "answer_missing:사증발급인정신청서 (별지 제21호 서식)",
           "answer_missing:경력증명서 및 학위증"
         ],
-        "flags": []
+        "flags": [],
+        "outcome": "other"
       }
     },
     {
@@ -2168,7 +2312,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -2182,7 +2327,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -2204,7 +2350,8 @@
           "missing_citation:stay_manual_2026_10_19_pdf#p119",
           "answer_missing:직접 사업비 3천만 원 이상"
         ],
-        "flags": []
+        "flags": [],
+        "outcome": "safe_abstain"
       }
     },
     {
@@ -2222,7 +2369,8 @@
         "failures": [
           "answer_missing:출생증명서"
         ],
-        "flags": []
+        "flags": [],
+        "outcome": "other"
       }
     },
     {
@@ -2236,7 +2384,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -2250,7 +2399,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -2264,7 +2414,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     },
     {
@@ -2278,7 +2429,8 @@
       "v2": {
         "passed": true,
         "failures": [],
-        "flags": []
+        "flags": [],
+        "outcome": "correct"
       }
     }
   ]

@@ -91,7 +91,7 @@ def test_ledger_has_one_row_per_case_in_order_and_claims_no_verification():
         assert d["changed"] == (d["decision"] in ("adopted", "adopted_modified"))
         if not d["changed"]:
             assert d["v2"] is None
-    assert LEDGER["counts"]["changed"] == len(lv.DECISIONS) == 9
+    assert LEDGER["counts"]["changed"] == len(lv.DECISIONS) == 10
 
 
 def test_committed_v2_files_match_a_fresh_build():
@@ -123,6 +123,11 @@ def test_saved_review_verdicts_are_preserved_in_the_snapshot_and_linked():
 
 P5, P37, P160 = "stay_manual_2026_10_19_pdf#p5", "stay_manual_2026_10_19_pdf#p37", "stay_manual_2026_10_19_pdf#p160"
 P328, P313, P108 = "stay_manual_2026_10_19_pdf#p328", "visa_manual_2026_10_19_pdf#p313", "visa_manual_2026_10_19_pdf#p108"
+P524 = "stay_manual_2026_10_19_pdf#p524"
+N06 = "manual_routing/N-06-h1-canada-weekly-hours"
+#: The recorded N-06 answer (routing run): 25 hours as the general cap, then 40 hours as a "stay period".
+N06_RECORDED = ("H-1 비자 소지자의 경우, 상대 국가에서 우리 국민 대상 취업 기간을 변동한 경우 상호주의에 따라 동일하게 취업 기간을 변동하며, "
+                "1주당 최대 취업 가능 시간은 25시간 이내입니다. 캐나다의 경우 H-1 체류 기간은 40시간으로 2,080시간(40시간×52주)입니다.")
 
 CONTROLS = [
     # (case key, answer, citations, should pass, flagged)
@@ -169,15 +174,93 @@ def test_structural_label_controls(key, text, cites, should_pass, flagged):
 
 def test_original_labels_got_these_controls_wrong():
     """The point of v2: the frozen labels passed the reversed answers and failed a right one."""
-    cases = {f"{s}/{c['id']}": c for s in ("manual_oracle", "manual_clarify", "manual_misclick") for c in ml.resolve_cases(frozen(s))}
+    cases = {f"{s}/{c['id']}": c for s in ("manual_oracle", "manual_clarify", "manual_misclick", "manual_routing") for c in ml.resolve_cases(frozen(s))}
     wrong = [
         ("manual_clarify/Q-11-e9-change-jobs-count", "원칙적으로 3회, 연장 기간에는 2회를 초과하여 사업장을 변경할 수 있습니다.", [P328], True),
         ("manual_misclick/K-05-f2-2-child-of-national", "공관장 재량으로 5년간 유효한 F-2-2 복수사증을 받을 수 있습니다. 다만, 이는 사증발급 제외대상자에게 적용되는 사항입니다.", [P313], True),
         ("manual_oracle/M-04-d4-parttime-wait", "해당 활동을 하려는 시점으로부터 6개월이 경과된 경우 가능합니다.", [P37], True),
         ("manual_oracle/M-10-d10t-stay-cap", "최우수인재(D-10-T)의 체류기간은 최대 3년이며, 1회 부여 기간은 1년입니다.", [P160], False),
+        (N06, N06_RECORDED, [P524], True),
     ]
     for key, text, cites, old_passes in wrong:
         assert grader.grade(cases[key], answer(text, cites))["passed"] is old_passes, key
+
+
+# --- regressions found after the first v2 (96eb71c) ------------------------------
+# Outcome is what the grader's classify() reports: "correct" is counted as right
+# automatically, "needs_review" passed every check but goes to a person, "harmful"
+# contradicts the page, "other" is wrong without a contradiction.
+
+OUTCOME_CONTROLS = [
+    # Owner's independent check of 96eb71c: these passed (Q-11 with no flag, M-04 with only a flag).
+    ("manual_clarify/Q-11-e9-change-jobs-count", "최초에는 최대 3회까지, 재고용 기간에는 2회 넘게 변경할 수 있습니다.", [P328], "harmful"),
+    ("manual_oracle/M-04-d4-parttime-wait", "입국일과는 무관하며 시간제 취업을 시작하려는 날부터 6개월이 경과하면 됩니다.", [P37], "harmful"),
+    # Q-11: both limits right, either wording; the 2-time limit left out while 재고용 is mentioned goes to a person.
+    ("manual_clarify/Q-11-e9-change-jobs-count", "취업가능기간 중에는 원칙적으로 3회까지, 재고용으로 연장된 기간에는 2회까지 변경할 수 있습니다.", [P328], "correct"),
+    ("manual_clarify/Q-11-e9-change-jobs-count", "원칙적으로 3회를 초과할 수 없고, 재고용 연장 기간 중에는 2회를 초과할 수 없습니다.", [P328], "correct"),
+    ("manual_clarify/Q-11-e9-change-jobs-count", "3회까지 변경할 수 있고, 재고용 기간에도 변경할 수 있습니다.", [P328], "needs_review"),
+    ("manual_clarify/Q-11-e9-change-jobs-count", "3회까지 가능하며 3회 이상 변경은 불가능합니다.", [P328], "correct"),
+    ("manual_clarify/Q-11-e9-change-jobs-count", "'2회를 초과하여 변경할 수 있다'는 설명은 틀렸습니다. 원칙적으로 3회까지이고 재고용 기간에는 2회를 넘을 수 없습니다.", [P328], "needs_review"),
+    # M-04: the start point has to be in the start-point position, not just named.
+    ("manual_oracle/M-04-d4-parttime-wait", "입국일로부터 6개월이 지나면 됩니다.", [P37], "correct"),
+    ("manual_oracle/M-04-d4-parttime-wait", "입국한 날부터 6개월이 지나야 합니다.", [P37], "correct"),
+    ("manual_oracle/M-04-d4-parttime-wait", "입국일과 무관하다는 안내는 잘못입니다. 입국일로부터 6개월이 지나야 합니다.", [P37], "correct"),
+    ("manual_oracle/M-04-d4-parttime-wait", "시작하려는 날부터 6개월이라는 설명은 틀렸고, 변경일 또는 입국일로부터 6개월이 경과해야 합니다.", [P37], "needs_review"),
+    ("manual_oracle/M-04-d4-parttime-wait", "입국일은 참고만 하고, 시간제 취업을 시작하려는 날부터 6개월이 지나면 됩니다.", [P37], "other"),
+    # N-06: 40 hours must be per week; 40 hours as a stay period fails; a bare 25-hour cap goes to a person.
+    (N06, N06_RECORDED, [P524], "harmful"),
+    (N06, "캐나다 참가자는 1주당 최대 40시간까지 일할 수 있습니다.", [P524], "correct"),
+    (N06, "다른 나라는 1주당 25시간이지만 캐나다는 1주당 최대 40시간입니다.", [P524], "correct"),
+    (N06, "Canadian participants may work up to 40 hours per week.", [P524], "correct"),
+    (N06, "캐나다: 취업기간 H-1 체류기간, 1주당 최대 40시간, 최대 2,080시간입니다.", [P524], "correct"),
+    (N06, "1주당 최대 25시간입니다. 캐나다는 주 40시간입니다.", [P524], "needs_review"),
+    (N06, "40시간입니다.", [P524], "other"),
+    (N06, "'캐나다 체류기간이 40시간'이라는 설명은 잘못이며, 캐나다는 1주당 40시간까지 일할 수 있습니다.", [P524], "correct"),
+]
+
+
+@pytest.mark.parametrize("key, text, cites, outcome", OUTCOME_CONTROLS)
+def test_regression_controls_by_outcome(key, text, cites, outcome):
+    case = ml.resolve_cases([v2_case(key)])[0]
+    g = grader.grade(case, answer(text, cites))
+    assert grader.classify(g) == outcome, (g["failures"], g["flags"])
+
+
+def test_imported_adversarial_examples_are_never_counted_correct():
+    """Owner's regression evidence (copied unmodified): each example answer must fail
+    or go to a person under v2, never be an automatic correct."""
+    root = BOOTSTRAP_DIR / "reviews" / "regression_evidence_2026-10-27"
+    manifest = json.loads((root / "MANIFEST.json").read_text(encoding="utf-8"))
+    for f in manifest["files"]:
+        assert hashlib.sha256((root / f["path"]).read_bytes()).hexdigest() == f["sha256"], f["path"]
+    keys = {c["id"]: f"{s}/{c['id']}" for s in lv.SETS for c in frozen(s)}
+    gold = {"Q-11-e9-change-jobs-count": [P328], "M-04-d4-parttime-wait": [P37], "M-10-d10t-stay-cap": [P160]}
+    examples = json.loads((root / "adversarial_examples.json").read_text(encoding="utf-8"))
+    assert len(examples) == 3
+    for ex in examples:
+        case = ml.resolve_cases([v2_case(keys[ex["record_id"]])])[0]
+        g = grader.grade(case, answer(ex["answer"], gold[ex["record_id"]]))
+        assert grader.classify(g) != "correct", ex["record_id"]
+
+
+def test_flagged_answers_are_kept_out_of_the_automatic_correct_count():
+    case = ml.resolve_cases([v2_case("manual_oracle/M-04-d4-parttime-wait")])[0]
+    g = grader.grade(case, answer("활동을 하려는 시점부터 6개월이 아니라, 입국일부터 6개월이 경과해야 합니다.", [P37]))
+    assert g["passed"] and g["flags"] and g["needs_review"]
+    assert grader.classify(g) == "needs_review"
+    assert grader.summarize([g, {"passed": True, "flags": []}]) == {
+        "cases": 2, "passed": 2, "failed": 0, "needs_review": 1, "auto_correct": 1}
+    s = lv.regrade(write=False)["summary"]
+    assert s["auto_correct_v2"] + s["needs_review_v2"] + s["failed_v2"] == s["comparable"] == 139
+    assert "passed_v2" not in s
+
+
+def test_n06_recorded_answer_is_not_confirmed_as_safe():
+    row = next(d for d in LEDGER["decisions"] if d["key"] == N06)
+    assert row["decision"] == "adopted_modified" and row["verification"].startswith("검증 보류")
+    assert "whic.mofa.go.kr" in row["not_adopted"]  # the guide is noted, not used as label evidence
+    graded = next(r for r in lv.regrade(write=False)["rows"] if r["key"] == N06)
+    assert graded["original"]["passed"] is True and graded["v2"]["outcome"] == "harmful"
 
 
 def test_k14_moves_the_gold_page_and_marks_recorded_answers_not_comparable():

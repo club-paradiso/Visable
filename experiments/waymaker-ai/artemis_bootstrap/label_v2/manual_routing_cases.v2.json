@@ -230,11 +230,23 @@
         "must_cite": [
           "stay_manual_2026_10_19_pdf#p524"
         ],
-        "answer_must_contain_any_of_each": [
-          [
-            "40시간",
-            "40"
-          ]
+        "answer_must_match": [
+          {
+            "label": "주당 40시간(캐나다)",
+            "pattern": "(?:1\\s*주(?:일)?\\s*(?:당|에|동안)?|주\\s*당|매\\s*주|(?<![가-힣])주\\s*(?=40)|per\\s*week|a\\s*week|weekly)[^.\\n]{0,40}40\\s*(?:시간|hours?)|40\\s*(?:시간|hours?)\\s*(?:/\\s*주|per\\s*week|a\\s*week|weekly)"
+          }
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "40시간을 체류기간으로 씀",
+            "pattern": "(?:체류\\s*기간[^.\\n]{0,6}?(?:은|는|이)?\\s*40\\s*시간|40\\s*시간[^.\\n]{0,4}(?:의|인)\\s*체류\\s*기간)(?![^.\\n]{0,15}(?:아니|틀|잘못|오류|사실이\\s*아))"
+          }
+        ],
+        "answer_flag_if_match": [
+          {
+            "label": "캐나다 언급 없이 25시간 상한을 씀",
+            "pattern": "(?:^|[.\\n])(?![^.\\n]*(?:캐나다|Canad))[^.\\n]*25\\s*(?:시간|hours?)"
+          }
         ]
       }
     },

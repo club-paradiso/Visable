@@ -148,7 +148,7 @@ def test_outcome_classes():
     assert cls(answer("50,000원입니다.", citations=("OK-1", "BAD-1"), status="conflict")) == "harmful"
     assert cls(tg.post_check(answer("50,000원입니다."), [OFFICIAL])["final"]) == "safe_abstain"
     assert grader.count_outcomes(["correct", "harmful", "correct"]) == {
-        "correct": 2, "clarify": 0, "safe_abstain": 0, "harmful": 1, "other": 0}
+        "correct": 2, "needs_review": 0, "clarify": 0, "safe_abstain": 0, "harmful": 1, "other": 0}
 
 
 def test_runner_refuses_the_gate_on_unlabelled_cases(tmp_path):
