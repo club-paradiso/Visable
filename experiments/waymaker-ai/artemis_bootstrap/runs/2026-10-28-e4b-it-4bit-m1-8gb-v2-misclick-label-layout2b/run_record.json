@@ -1,0 +1,2454 @@
+{
+  "kind": "artemis_bootstrap_smoke",
+  "started_utc": "2026-10-28T05:59:58+00:00",
+  "machine": {
+    "model": "MacBookAir10,1",
+    "chip": "Apple M1",
+    "memory_bytes": 8589934592,
+    "macos": "15.6.1",
+    "python": "3.11.15"
+  },
+  "versions": {
+    "mlx": "0.32.4",
+    "mlx-metal": "0.32.4",
+    "mlx-lm": "0.32.2",
+    "transformers": "5.20.2",
+    "huggingface-hub": "2.3.0",
+    "tokenizers": "0.23.3"
+  },
+  "device": {
+    "device_name": "Apple M1",
+    "max_recommended_working_set_size": 5726633984,
+    "memory_size": 8589934592,
+    "architecture": "applegpu_g13g",
+    "max_buffer_length": 4294967296,
+    "resource_limit": 499000
+  },
+  "swap_before": "total = 2048.00M  used = 1172.50M  free = 875.50M  (encrypted)",
+  "free_disk_gb_before": 8.66,
+  "cases_file": "manual_misclick_cases.v2.json",
+  "cases_sha256": "807b2d5e8fc21050cf6e200545b2367b745ab2a8cbd20bc3d200a0c71ed328de",
+  "detector_on_labelled_evidence": null,
+  "decoding": {
+    "temperature": 0.0,
+    "max_tokens": 400,
+    "enable_thinking": false
+  },
+  "evidence_guard": "off",
+  "source_gate": true,
+  "integrity": true,
+  "route": false,
+  "clarify": false,
+  "always_ask": true,
+  "cross_check": true,
+  "label_switch": true,
+  "facts": "ledgers/manual_2026_10_19_facts.jsonl",
+  "layout": true,
+  "post_check": "applied offline to every output when the cases carry source labels",
+  "prompts_persisted": false,
+  "status": "completed",
+  "stage": "done",
+  "model": {
+    "repo": "mlx-community/gemma-4-e4b-it-4bit",
+    "revision": "475b9088d29754a3379866cf5aeb6b41acd313c2",
+    "size_class_from_weights": "E4B",
+    "quantization": {
+      "group_size": 64,
+      "bits": 4,
+      "mode": "affine"
+    },
+    "loader": "mlx_lm.load (text tower only; vision/audio weights dropped by mlx_lm sanitize)",
+    "base_model": "google/gemma-4-E4B-it",
+    "source_revision": "fee6332c1abaafb77f6f9624236c63aa2f1d0187",
+    "license_in_card": "gemma"
+  },
+  "load_seconds": 13.69,
+  "memory_after_load_gb": 4.201,
+  "results": [
+    {
+      "case": "K-01-c3-business-subcode",
+      "prompt_sha256": "52bbc0f4b68cee5e33e5a988d81abf2aaec4b30f0914b1c1a1c1756ba78e13c2",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "visa_issuance",
+          "해외에서 비자 받기"
+        ]
+      ],
+      "route_withheld": [
+        "stay_manual_2026_10_19_pdf#p30"
+      ],
+      "turns": 2,
+      "clarified": false,
+      "final_choice": "visa_abroad",
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "partial",
+        "answer": "상담 및 계약 등의 상용활동을 목적으로 하거나, 시장조사, 업무연락, 상담, 계약, 소규모 무역활동 등의 상용활동을 목적으로 하신다면 단기방문(C-3) 활동범위 내에 해당하며, 세부 구분으로는 C-3-4 일반상용에 해당할 수 있습니다. 또한, APEC카드 소지자도 C-3-4 일반상용에 해당합니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p27"
+        ],
+        "basis": {
+          "id": "visa_abroad",
+          "label": "해외에서 비자 받기 기준 안내"
+        },
+        "switch": {
+          "id": "stay_in_korea",
+          "label": "'한국에서 체류 절차'로 다시 보기"
+        }
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 973,
+      "prompt_tps": 32.35,
+      "generation_tokens": 153,
+      "generation_tps": 17.18,
+      "finish_reason": "stop",
+      "wall_seconds": 55.44,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"상담 및 계약 등의 상용활동을 목적으로 하거나, 시장조사, 업무연락, 상담, 계약, 소규모 무역활동 등의 상용활동을 목적으로 하신다면 단기방문(C-3) 활동범위 내에 해당하며, 세부 구분으로는 C-3-4 일반상용에 해당할 수 있습니다. 또한, APEC카드 소지자도 C-3-4 일반상용에 해당합니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p27\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "partial",
+        "answer": "상담 및 계약 등의 상용활동을 목적으로 하거나, 시장조사, 업무연락, 상담, 계약, 소규모 무역활동 등의 상용활동을 목적으로 하신다면 단기방문(C-3) 활동범위 내에 해당하며, 세부 구분으로는 C-3-4 일반상용에 해당할 수 있습니다. 또한, APEC카드 소지자도 C-3-4 일반상용에 해당합니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p27"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": [],
+        "start_point_mismatches": [],
+        "citations_added": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "partial",
+          "answer": "상담 및 계약 등의 상용활동을 목적으로 하거나, 시장조사, 업무연락, 상담, 계약, 소규모 무역활동 등의 상용활동을 목적으로 하신다면 단기방문(C-3) 활동범위 내에 해당하며, 세부 구분으로는 C-3-4 일반상용에 해당할 수 있습니다. 또한, APEC카드 소지자도 C-3-4 일반상용에 해당합니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p27"
+          ],
+          "basis": {
+            "id": "visa_abroad",
+            "label": "해외에서 비자 받기 기준 안내"
+          },
+          "switch": {
+            "id": "stay_in_korea",
+            "label": "'한국에서 체류 절차'로 다시 보기"
+          }
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "K-02-e1-electronic-visa",
+      "prompt_sha256": "9cda046b2f1e46420b713abf655332c3e35d05cee940b6fd5422e9a510bebfb5",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "visa_issuance",
+          "해외에서 비자 받기"
+        ]
+      ],
+      "route_withheld": [
+        "stay_manual_2026_10_19_pdf#p168"
+      ],
+      "turns": 2,
+      "clarified": false,
+      "final_choice": "visa_abroad",
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "E-1 비자는 고등교육법에 의한 자격요건을 갖춘 외국인으로서 전문대 이상의 교육기관이나 이에 준하는 기관에서 교육 또는 연구지도를 하는 경우에 해당하며, 한국과학기술원 등 학술기관의 교수, 전문대학 이상의 교육기관에서 임용하는 전임강사 이상의 교수활동 범위, 또는 대학 또는 대학부설연구소의 특수분야 연구교수 해당자가 해당됩니다. 전자사증 제도는 해외 우수인력 유치 지원을 위한 사증발급 절차 간소화의 일환으로, 영사 인터뷰 없이 온라인으로 사증을 발급받을 수 있는 제도입니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p138"
+        ],
+        "basis": {
+          "id": "visa_abroad",
+          "label": "해외에서 비자 받기 기준 안내"
+        },
+        "switch": {
+          "id": "stay_in_korea",
+          "label": "'한국에서 체류 절차'로 다시 보기"
+        }
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 885,
+      "prompt_tps": 175.43,
+      "generation_tokens": 197,
+      "generation_tps": 16.52,
+      "finish_reason": "stop",
+      "wall_seconds": 17.33,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"E-1 비자는 고등교육법에 의한 자격요건을 갖춘 외국인으로서 전문대 이상의 교육기관이나 이에 준하는 기관에서 교육 또는 연구지도를 하는 경우에 해당하며, 한국과학기술원 등 학술기관의 교수, 전문대학 이상의 교육기관에서 임용하는 전임강사 이상의 교수활동 범위, 또는 대학 또는 대학부설연구소의 특수분야 연구교수 해당자가 해당됩니다. 전자사증 제도는 해외 우수인력 유치 지원을 위한 사증발급 절차 간소화의 일환으로, 영사 인터뷰 없이 온라인으로 사증을 발급받을 수 있는 제도입니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p138\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "E-1 비자는 고등교육법에 의한 자격요건을 갖춘 외국인으로서 전문대 이상의 교육기관이나 이에 준하는 기관에서 교육 또는 연구지도를 하는 경우에 해당하며, 한국과학기술원 등 학술기관의 교수, 전문대학 이상의 교육기관에서 임용하는 전임강사 이상의 교수활동 범위, 또는 대학 또는 대학부설연구소의 특수분야 연구교수 해당자가 해당됩니다. 전자사증 제도는 해외 우수인력 유치 지원을 위한 사증발급 절차 간소화의 일환으로, 영사 인터뷰 없이 온라인으로 사증을 발급받을 수 있는 제도입니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p138"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": [],
+        "start_point_mismatches": [],
+        "citations_added": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "E-1 비자는 고등교육법에 의한 자격요건을 갖춘 외국인으로서 전문대 이상의 교육기관이나 이에 준하는 기관에서 교육 또는 연구지도를 하는 경우에 해당하며, 한국과학기술원 등 학술기관의 교수, 전문대학 이상의 교육기관에서 임용하는 전임강사 이상의 교수활동 범위, 또는 대학 또는 대학부설연구소의 특수분야 연구교수 해당자가 해당됩니다. 전자사증 제도는 해외 우수인력 유치 지원을 위한 사증발급 절차 간소화의 일환으로, 영사 인터뷰 없이 온라인으로 사증을 발급받을 수 있는 제도입니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p138"
+          ],
+          "basis": {
+            "id": "visa_abroad",
+            "label": "해외에서 비자 받기 기준 안내"
+          },
+          "switch": {
+            "id": "stay_in_korea",
+            "label": "'한국에서 체류 절차'로 다시 보기"
+          }
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "K-03-e6-minor-performer",
+      "prompt_sha256": "2ee5459ede0f1956bbaa30db39a261aa9f32138348978ab130388a8fc46c781b",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "visa_issuance",
+          "해외에서 비자 받기"
+        ]
+      ],
+      "route_withheld": [
+        "stay_manual_2026_10_19_pdf#p210"
+      ],
+      "turns": 2,
+      "clarified": false,
+      "final_choice": "visa_abroad",
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "피초청인이 미성년자인 경우, 법정대리인의 동의서를 첨부해야 합니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p166"
+        ],
+        "basis": {
+          "id": "visa_abroad",
+          "label": "해외에서 비자 받기 기준 안내"
+        },
+        "switch": {
+          "id": "stay_in_korea",
+          "label": "'한국에서 체류 절차'로 다시 보기"
+        }
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1021,
+      "prompt_tps": 213.63,
+      "generation_tokens": 80,
+      "generation_tps": 17.63,
+      "finish_reason": "stop",
+      "wall_seconds": 9.61,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"피초청인이 미성년자인 경우, 법정대리인의 동의서를 첨부해야 합니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p166\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "피초청인이 미성년자인 경우, 법정대리인의 동의서를 첨부해야 합니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p166"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": [],
+        "start_point_mismatches": [],
+        "citations_added": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "피초청인이 미성년자인 경우, 법정대리인의 동의서를 첨부해야 합니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p166"
+          ],
+          "basis": {
+            "id": "visa_abroad",
+            "label": "해외에서 비자 받기 기준 안내"
+          },
+          "switch": {
+            "id": "stay_in_korea",
+            "label": "'한국에서 체류 절차'로 다시 보기"
+          }
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "K-04-f1-13-parent-quota",
+      "prompt_sha256": "457262bc0e2b9107ff35e617e0936a88abbca0678bbb6cfef809af6a5c98f40a",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "visa_issuance",
+          "해외에서 비자 받기"
+        ]
+      ],
+      "route_withheld": [
+        "stay_manual_2026_10_19_pdf#p343"
+      ],
+      "turns": 2,
+      "clarified": false,
+      "final_choice": "visa_abroad",
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "해당 교육기관에서 입학허가를 받고 입학 예정이거나 재학 중인 자비 부담 외국인유학생의 2촌 이내의 친인척으로서 재정요건 등 아래 요건을 갖춘 경우, 외국인유학생 1명당 1명까지 허용됩니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p298"
+        ],
+        "basis": {
+          "id": "visa_abroad",
+          "label": "해외에서 비자 받기 기준 안내"
+        },
+        "switch": {
+          "id": "stay_in_korea",
+          "label": "'한국에서 체류 절차'로 다시 보기"
+        }
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1086,
+      "prompt_tps": 151.56,
+      "generation_tokens": 123,
+      "generation_tps": 15.62,
+      "finish_reason": "stop",
+      "wall_seconds": 15.18,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"해당 교육기관에서 입학허가를 받고 입학 예정이거나 재학 중인 자비 부담 외국인유학생의 2촌 이내의 친인척으로서 재정요건 등 아래 요건을 갖춘 경우, 외국인유학생 1명당 1명까지 허용됩니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p298\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "해당 교육기관에서 입학허가를 받고 입학 예정이거나 재학 중인 자비 부담 외국인유학생의 2촌 이내의 친인척으로서 재정요건 등 아래 요건을 갖춘 경우, 외국인유학생 1명당 1명까지 허용됩니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p298"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": [],
+        "start_point_mismatches": [],
+        "citations_added": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "해당 교육기관에서 입학허가를 받고 입학 예정이거나 재학 중인 자비 부담 외국인유학생의 2촌 이내의 친인척으로서 재정요건 등 아래 요건을 갖춘 경우, 외국인유학생 1명당 1명까지 허용됩니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p298"
+          ],
+          "basis": {
+            "id": "visa_abroad",
+            "label": "해외에서 비자 받기 기준 안내"
+          },
+          "switch": {
+            "id": "stay_in_korea",
+            "label": "'한국에서 체류 절차'로 다시 보기"
+          }
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "K-05-f2-2-child-of-national",
+      "prompt_sha256": "fcdf5cd97a5d5e770789d096733bddb31abda3fc2c5eff447d870257dcd5a681",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "visa_issuance",
+          "해외에서 비자 받기"
+        ]
+      ],
+      "route_withheld": [
+        "stay_manual_2026_10_19_pdf#p367"
+      ],
+      "turns": 2,
+      "clarified": false,
+      "final_choice": "visa_abroad",
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "partial",
+        "answer": "귀하의 아버지께서 대한민국 국민이시고 귀하가 부모님의 혼인 관계에서 태어나셨다면, 국민과 해당 미성년자와의 관계를 입증할 수 있는 서류와 함께 사증발급신청서(별지 제17호 서식), 여권, 표준규격사진 1매, 수수료가 필요합니다. 또한, 대한민국 국민인 부 또는 모의 신원보증서가 필요합니다. 재외공관의 장은 심사를 통해 필요한 경우 첨부서류를 일부 가감할 수 있습니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p313"
+        ],
+        "basis": {
+          "id": "visa_abroad",
+          "label": "해외에서 비자 받기 기준 안내"
+        },
+        "switch": {
+          "id": "stay_in_korea",
+          "label": "'한국에서 체류 절차'로 다시 보기"
+        }
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1202,
+      "prompt_tps": 163.91,
+      "generation_tokens": 177,
+      "generation_tps": 12.25,
+      "finish_reason": "stop",
+      "wall_seconds": 22.17,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"귀하의 아버지께서 대한민국 국민이시고 귀하가 부모님의 혼인 관계에서 태어나셨다면, 국민과 해당 미성년자와의 관계를 입증할 수 있는 서류와 함께 사증발급신청서(별지 제17호 서식), 여권, 표준규격사진 1매, 수수료가 필요합니다. 또한, 대한민국 국민인 부 또는 모의 신원보증서가 필요합니다. 재외공관의 장은 심사를 통해 필요한 경우 첨부서류를 일부 가감할 수 있습니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p313\"\n  ]\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "partial",
+        "answer": "귀하의 아버지께서 대한민국 국민이시고 귀하가 부모님의 혼인 관계에서 태어나셨다면, 국민과 해당 미성년자와의 관계를 입증할 수 있는 서류와 함께 사증발급신청서(별지 제17호 서식), 여권, 표준규격사진 1매, 수수료가 필요합니다. 또한, 대한민국 국민인 부 또는 모의 신원보증서가 필요합니다. 재외공관의 장은 심사를 통해 필요한 경우 첨부서류를 일부 가감할 수 있습니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p313"
+        ]
+      },
+      "failures": [
+        "answer_missing:F-2-2",
+        "answer_missing:5년간 유효한"
+      ],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "document",
+            "text": "사증발급신청서"
+          },
+          {
+            "kind": "document",
+            "text": "여권"
+          },
+          {
+            "kind": "document",
+            "text": "표준규격사진"
+          },
+          {
+            "kind": "document",
+            "text": "신원보증서"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": [],
+        "start_point_mismatches": [],
+        "citations_added": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "partial",
+          "answer": "귀하의 아버지께서 대한민국 국민이시고 귀하가 부모님의 혼인 관계에서 태어나셨다면, 국민과 해당 미성년자와의 관계를 입증할 수 있는 서류와 함께 사증발급신청서(별지 제17호 서식), 여권, 표준규격사진 1매, 수수료가 필요합니다. 또한, 대한민국 국민인 부 또는 모의 신원보증서가 필요합니다. 재외공관의 장은 심사를 통해 필요한 경우 첨부서류를 일부 가감할 수 있습니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p313"
+          ],
+          "basis": {
+            "id": "visa_abroad",
+            "label": "해외에서 비자 받기 기준 안내"
+          },
+          "switch": {
+            "id": "stay_in_korea",
+            "label": "'한국에서 체류 절차'로 다시 보기"
+          }
+        },
+        "failures": [
+          "answer_missing:F-2-2",
+          "answer_missing:5년간 유효한"
+        ],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "other",
+      "outcome_checked": "other"
+    },
+    {
+      "case": "K-06-c3-3-medical-docs",
+      "prompt_sha256": "b1793e0dd32117ffdbd81cc547ee5d75b779472a40c7710cd0c1c0e903a19c71",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "visa_issuance",
+          "해외에서 비자 받기"
+        ]
+      ],
+      "route_withheld": [
+        "stay_manual_2026_10_19_pdf#p521"
+      ],
+      "turns": 2,
+      "clarified": false,
+      "final_choice": "visa_abroad",
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "partial",
+        "answer": "본인이 예약한 국내 의료기관에서 진료 또는 요양 목적으로 입국하고자 하는 외국인 환자 및 그 동반가족의 경우, 다음과 같은 서류가 필요합니다:\n\n1. 사증발급신청서 (별지 제17호 서식), 여권, 표준규격사진 1매, 수수료\n2. 국․내외 의료기관 또는 요양기관에서 발급한 치료 또는 요양을 소명할 수 있는 병원진단서, 의사소견서 등 입증자료\n3. 국내 의료기관 또는 요양기관에서 치료 또는 요양관련 예약 입증자료\n4. 치료비·체재비 등 부담능력 또는 재정능력 입증서류\n5. 가족관계 및 간병인 입증서류\n\n※ 재외공관장은 초청의 진정성, 초청자 및 피초청자의 자격 확인 등을 심사하기 위해 추가 서류를 요구할 수 있습니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p339"
+        ],
+        "basis": {
+          "id": "visa_abroad",
+          "label": "해외에서 비자 받기 기준 안내"
+        },
+        "switch": {
+          "id": "stay_in_korea",
+          "label": "'한국에서 체류 절차'로 다시 보기"
+        }
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 847,
+      "prompt_tps": 120.71,
+      "generation_tokens": 279,
+      "generation_tps": 13.89,
+      "finish_reason": "stop",
+      "wall_seconds": 27.54,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"본인이 예약한 국내 의료기관에서 진료 또는 요양 목적으로 입국하고자 하는 외국인 환자 및 그 동반가족의 경우, 다음과 같은 서류가 필요합니다:\\n\\n1. 사증발급신청서 (별지 제17호 서식), 여권, 표준규격사진 1매, 수수료\\n2. 국․내외 의료기관 또는 요양기관에서 발급한 치료 또는 요양을 소명할 수 있는 병원진단서, 의사소견서 등 입증자료\\n3. 국내 의료기관 또는 요양기관에서 치료 또는 요양관련 예약 입증자료\\n4. 치료비·체재비 등 부담능력 또는 재정능력 입증서류\\n5. 가족관계 및 간병인 입증서류\\n\\n※ 재외공관장은 초청의 진정성, 초청자 및 피초청자의 자격 확인 등을 심사하기 위해 추가 서류를 요구할 수 있습니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p339\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "partial",
+        "answer": "본인이 예약한 국내 의료기관에서 진료 또는 요양 목적으로 입국하고자 하는 외국인 환자 및 그 동반가족의 경우, 다음과 같은 서류가 필요합니다:\n\n1. 사증발급신청서 (별지 제17호 서식), 여권, 표준규격사진 1매, 수수료\n2. 국․내외 의료기관 또는 요양기관에서 발급한 치료 또는 요양을 소명할 수 있는 병원진단서, 의사소견서 등 입증자료\n3. 국내 의료기관 또는 요양기관에서 치료 또는 요양관련 예약 입증자료\n4. 치료비·체재비 등 부담능력 또는 재정능력 입증서류\n5. 가족관계 및 간병인 입증서류\n\n※ 재외공관장은 초청의 진정성, 초청자 및 피초청자의 자격 확인 등을 심사하기 위해 추가 서류를 요구할 수 있습니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p339"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "document",
+            "text": "사증발급신청서"
+          },
+          {
+            "kind": "document",
+            "text": "여권"
+          },
+          {
+            "kind": "document",
+            "text": "표준규격사진"
+          },
+          {
+            "kind": "document",
+            "text": "병원진단서"
+          },
+          {
+            "kind": "document",
+            "text": "의사소견서"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": [],
+        "start_point_mismatches": [],
+        "citations_added": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "partial",
+          "answer": "본인이 예약한 국내 의료기관에서 진료 또는 요양 목적으로 입국하고자 하는 외국인 환자 및 그 동반가족의 경우, 다음과 같은 서류가 필요합니다:\n\n1. 사증발급신청서 (별지 제17호 서식), 여권, 표준규격사진 1매, 수수료\n2. 국․내외 의료기관 또는 요양기관에서 발급한 치료 또는 요양을 소명할 수 있는 병원진단서, 의사소견서 등 입증자료\n3. 국내 의료기관 또는 요양기관에서 치료 또는 요양관련 예약 입증자료\n4. 치료비·체재비 등 부담능력 또는 재정능력 입증서류\n5. 가족관계 및 간병인 입증서류\n\n※ 재외공관장은 초청의 진정성, 초청자 및 피초청자의 자격 확인 등을 심사하기 위해 추가 서류를 요구할 수 있습니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p339"
+          ],
+          "basis": {
+            "id": "visa_abroad",
+            "label": "해외에서 비자 받기 기준 안내"
+          },
+          "switch": {
+            "id": "stay_in_korea",
+            "label": "'한국에서 체류 절차'로 다시 보기"
+          }
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "K-07-e5-registration-change",
+      "prompt_sha256": "703097f38ddc2eabfa9be8659c1853d32dfa9dd3f5c5dfb28ed86a88ad525b68",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "한국에서 체류 절차"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p164"
+      ],
+      "turns": 2,
+      "clarified": false,
+      "final_choice": "stay_in_korea",
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "외국인등록사항 변경신고 시, 변경일로부터 15일 이내에 신고해야 합니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p206"
+        ],
+        "basis": {
+          "id": "stay_in_korea",
+          "label": "한국에서 체류 절차 기준 안내"
+        },
+        "switch": {
+          "id": "visa_abroad",
+          "label": "'해외에서 비자 받기'로 다시 보기"
+        }
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 627,
+      "prompt_tps": 131.57,
+      "generation_tokens": 81,
+      "generation_tps": 13.85,
+      "finish_reason": "stop",
+      "wall_seconds": 10.88,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"외국인등록사항 변경신고 시, 변경일로부터 15일 이내에 신고해야 합니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p206\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "외국인등록사항 변경신고 시, 변경일로부터 15일 이내에 신고해야 합니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p206"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "15일"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": [],
+        "start_point_mismatches": [],
+        "citations_added": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "외국인등록사항 변경신고 시, 변경일로부터 15일 이내에 신고해야 합니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p206"
+          ],
+          "basis": {
+            "id": "stay_in_korea",
+            "label": "한국에서 체류 절차 기준 안내"
+          },
+          "switch": {
+            "id": "visa_abroad",
+            "label": "'해외에서 비자 받기'로 다시 보기"
+          }
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "K-08-multiple-reentry",
+      "prompt_sha256": "e18986d213c8290254a1ebfc54df3b5f37d13d817527559d808a723376fdd294",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "한국에서 체류 절차"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p15"
+      ],
+      "turns": 2,
+      "clarified": false,
+      "final_choice": "stay_in_korea",
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "partial",
+        "answer": "체류 기간이 만료되기 전에 돌아오시는 경우, 방문하여 재입국허가를 받으셔야 합니다. 또한, 출국 후 체류기간 범위 내에서 1년을 초과하여 2년 내에 재입국을 하려는 경우 복수재입국허가 신청이 가능하며, 이때 필요한 서류는 신청서(별지 34호 서식), 여권 원본, 외국인등록증, 수수료, 체류지 입증서류 등이 있습니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p427"
+        ],
+        "basis": {
+          "id": "stay_in_korea",
+          "label": "한국에서 체류 절차 기준 안내"
+        },
+        "switch": {
+          "id": "visa_abroad",
+          "label": "'해외에서 비자 받기'로 다시 보기"
+        }
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 564,
+      "prompt_tps": 118.42,
+      "generation_tokens": 164,
+      "generation_tps": 15.07,
+      "finish_reason": "stop",
+      "wall_seconds": 16.23,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"체류 기간이 만료되기 전에 돌아오시는 경우, 방문하여 재입국허가를 받으셔야 합니다. 또한, 출국 후 체류기간 범위 내에서 1년을 초과하여 2년 내에 재입국을 하려는 경우 복수재입국허가 신청이 가능하며, 이때 필요한 서류는 신청서(별지 34호 서식), 여권 원본, 외국인등록증, 수수료, 체류지 입증서류 등이 있습니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p427\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "partial",
+        "answer": "체류 기간이 만료되기 전에 돌아오시는 경우, 방문하여 재입국허가를 받으셔야 합니다. 또한, 출국 후 체류기간 범위 내에서 1년을 초과하여 2년 내에 재입국을 하려는 경우 복수재입국허가 신청이 가능하며, 이때 필요한 서류는 신청서(별지 34호 서식), 여권 원본, 외국인등록증, 수수료, 체류지 입증서류 등이 있습니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p427"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "1년"
+          },
+          {
+            "kind": "period",
+            "text": "2년"
+          },
+          {
+            "kind": "document",
+            "text": "신청서"
+          },
+          {
+            "kind": "document",
+            "text": "여권"
+          },
+          {
+            "kind": "document",
+            "text": "외국인등록증"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": [],
+        "start_point_mismatches": [],
+        "citations_added": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "partial",
+          "answer": "체류 기간이 만료되기 전에 돌아오시는 경우, 방문하여 재입국허가를 받으셔야 합니다. 또한, 출국 후 체류기간 범위 내에서 1년을 초과하여 2년 내에 재입국을 하려는 경우 복수재입국허가 신청이 가능하며, 이때 필요한 서류는 신청서(별지 34호 서식), 여권 원본, 외국인등록증, 수수료, 체류지 입증서류 등이 있습니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p427"
+          ],
+          "basis": {
+            "id": "stay_in_korea",
+            "label": "한국에서 체류 절차 기준 안내"
+          },
+          "switch": {
+            "id": "visa_abroad",
+            "label": "'해외에서 비자 받기'로 다시 보기"
+          }
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "K-09-e6-tryout-change",
+      "prompt_sha256": "c0285e4899db36c3f3af33072c6f4b47826e9ddf6c6e1b05b4ef8a6c26cdf2df",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "한국에서 체류 절차"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p166"
+      ],
+      "turns": 2,
+      "clarified": false,
+      "final_choice": "stay_in_korea",
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "무사증(B-1․B-2자격) 또는 단기사증(C-3자격)으로 입국한 경우, 불가피한 사유가 있거나 국익차원에서 필요시에는 자격변경 허가가 가능합니다. 입단 테스트 등을 받기 위해 입국한 운동선수․연주자․무용가 및 상금이 걸린 국제대회 참가자의 경우 관련 입증자료 등을 제출받아 청장 등이 재량으로 체류자격 변경허가가 가능하며, 체류기간 기산일은 자격변경일이 아닌 입국일입니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p211"
+        ],
+        "basis": {
+          "id": "stay_in_korea",
+          "label": "한국에서 체류 절차 기준 안내"
+        },
+        "switch": {
+          "id": "visa_abroad",
+          "label": "'해외에서 비자 받기'로 다시 보기"
+        }
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 962,
+      "prompt_tps": 109.23,
+      "generation_tokens": 187,
+      "generation_tps": 9.82,
+      "finish_reason": "stop",
+      "wall_seconds": 28.16,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"무사증(B-1․B-2자격) 또는 단기사증(C-3자격)으로 입국한 경우, 불가피한 사유가 있거나 국익차원에서 필요시에는 자격변경 허가가 가능합니다. 입단 테스트 등을 받기 위해 입국한 운동선수․연주자․무용가 및 상금이 걸린 국제대회 참가자의 경우 관련 입증자료 등을 제출받아 청장 등이 재량으로 체류자격 변경허가가 가능하며, 체류기간 기산일은 자격변경일이 아닌 입국일입니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p211\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "무사증(B-1․B-2자격) 또는 단기사증(C-3자격)으로 입국한 경우, 불가피한 사유가 있거나 국익차원에서 필요시에는 자격변경 허가가 가능합니다. 입단 테스트 등을 받기 위해 입국한 운동선수․연주자․무용가 및 상금이 걸린 국제대회 참가자의 경우 관련 입증자료 등을 제출받아 청장 등이 재량으로 체류자격 변경허가가 가능하며, 체류기간 기산일은 자격변경일이 아닌 입국일입니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p211"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": [],
+        "start_point_mismatches": [],
+        "citations_added": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "무사증(B-1․B-2자격) 또는 단기사증(C-3자격)으로 입국한 경우, 불가피한 사유가 있거나 국익차원에서 필요시에는 자격변경 허가가 가능합니다. 입단 테스트 등을 받기 위해 입국한 운동선수․연주자․무용가 및 상금이 걸린 국제대회 참가자의 경우 관련 입증자료 등을 제출받아 청장 등이 재량으로 체류자격 변경허가가 가능하며, 체류기간 기산일은 자격변경일이 아닌 입국일입니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p211"
+          ],
+          "basis": {
+            "id": "stay_in_korea",
+            "label": "한국에서 체류 절차 기준 안내"
+          },
+          "switch": {
+            "id": "visa_abroad",
+            "label": "'해외에서 비자 받기'로 다시 보기"
+          }
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "K-10-f1-ethnic-korean-activity",
+      "prompt_sha256": "0e4d227acfb561b2fa9fd3de88eee443263e2ba02756924a82c760bb104165b6",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "한국에서 체류 절차"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p298"
+      ],
+      "turns": 2,
+      "clarified": false,
+      "final_choice": "stay_in_korea",
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "방문동거(F-1) 자격을 소지한 중국동포 중 취업자격 구비 등 일정요건에 해당하는 자가 교수(E-1) 또는 특정활동(E-7)으로의 자격외 활동 허가를 받으려면 다음 서류가 필요합니다:\n• 주무부처 장의 고용추천서 또는 고용필요성 입증서류\n• 고용계약서\n‣ 사업자등록증\n․ 학위증 또는 자격증",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p343"
+        ],
+        "basis": {
+          "id": "stay_in_korea",
+          "label": "한국에서 체류 절차 기준 안내"
+        },
+        "switch": {
+          "id": "visa_abroad",
+          "label": "'해외에서 비자 받기'로 다시 보기"
+        }
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 953,
+      "prompt_tps": 96.72,
+      "generation_tokens": 190,
+      "generation_tps": 10.93,
+      "finish_reason": "stop",
+      "wall_seconds": 27.72,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"방문동거(F-1) 자격을 소지한 중국동포 중 취업자격 구비 등 일정요건에 해당하는 자가 교수(E-1) 또는 특정활동(E-7)으로의 자격외 활동 허가를 받으려면 다음 서류가 필요합니다:\\n\\u2022 주무부처 장의 고용추천서 또는 고용필요성 입증서류\\n\\u2022 고용계약서\\n\\u2023 사업자등록증\\n\\u2024 학위증 또는 자격증\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p343\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "방문동거(F-1) 자격을 소지한 중국동포 중 취업자격 구비 등 일정요건에 해당하는 자가 교수(E-1) 또는 특정활동(E-7)으로의 자격외 활동 허가를 받으려면 다음 서류가 필요합니다:\n• 주무부처 장의 고용추천서 또는 고용필요성 입증서류\n• 고용계약서\n‣ 사업자등록증\n․ 학위증 또는 자격증",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p343"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "document",
+            "text": "고용계약서"
+          },
+          {
+            "kind": "document",
+            "text": "사업자등록증"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": [],
+        "start_point_mismatches": [],
+        "citations_added": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "방문동거(F-1) 자격을 소지한 중국동포 중 취업자격 구비 등 일정요건에 해당하는 자가 교수(E-1) 또는 특정활동(E-7)으로의 자격외 활동 허가를 받으려면 다음 서류가 필요합니다:\n• 주무부처 장의 고용추천서 또는 고용필요성 입증서류\n• 고용계약서\n‣ 사업자등록증\n․ 학위증 또는 자격증",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p343"
+          ],
+          "basis": {
+            "id": "stay_in_korea",
+            "label": "한국에서 체류 절차 기준 안내"
+          },
+          "switch": {
+            "id": "visa_abroad",
+            "label": "'해외에서 비자 받기'로 다시 보기"
+          }
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "K-11-a1-reentry-exemption",
+      "prompt_sha256": "090b81eef5da825b3f138adadde97f2666ba69844497ad19a610615a9b2fee8c",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "한국에서 체류 절차"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p7"
+      ],
+      "turns": 2,
+      "clarified": false,
+      "final_choice": "stay_in_korea",
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "출국한 날로부터 1년 이내 재입국하려는 경우 면제됩니다. 또한, 단수사증을 소지한 외교(A-1) 소지자 중 재임기간(공무수행기간, 신분존속기간 또는 협정상의 체류기간) 내에 재입국하고자 하는 경우 대상자의 요청이 있으면 재입국허가 가능하며, 재임기간 중 유효한 복수사증이 있는 경우는 재입국이 불필요합니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p17"
+        ],
+        "basis": {
+          "id": "stay_in_korea",
+          "label": "한국에서 체류 절차 기준 안내"
+        },
+        "switch": {
+          "id": "visa_abroad",
+          "label": "'해외에서 비자 받기'로 다시 보기"
+        }
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 675,
+      "prompt_tps": 106.62,
+      "generation_tokens": 164,
+      "generation_tps": 15.9,
+      "finish_reason": "stop",
+      "wall_seconds": 17.2,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"출국한 날로부터 1년 이내 재입국하려는 경우 면제됩니다. 또한, 단수사증을 소지한 외교(A-1) 소지자 중 재임기간(공무수행기간, 신분존속기간 또는 협정상의 체류기간) 내에 재입국하고자 하는 경우 대상자의 요청이 있으면 재입국허가 가능하며, 재임기간 중 유효한 복수사증이 있는 경우는 재입국이 불필요합니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p17\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "출국한 날로부터 1년 이내 재입국하려는 경우 면제됩니다. 또한, 단수사증을 소지한 외교(A-1) 소지자 중 재임기간(공무수행기간, 신분존속기간 또는 협정상의 체류기간) 내에 재입국하고자 하는 경우 대상자의 요청이 있으면 재입국허가 가능하며, 재임기간 중 유효한 복수사증이 있는 경우는 재입국이 불필요합니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p17"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "1년"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": [],
+        "start_point_mismatches": [],
+        "citations_added": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "출국한 날로부터 1년 이내 재입국하려는 경우 면제됩니다. 또한, 단수사증을 소지한 외교(A-1) 소지자 중 재임기간(공무수행기간, 신분존속기간 또는 협정상의 체류기간) 내에 재입국하고자 하는 경우 대상자의 요청이 있으면 재입국허가 가능하며, 재임기간 중 유효한 복수사증이 있는 경우는 재입국이 불필요합니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p17"
+          ],
+          "basis": {
+            "id": "stay_in_korea",
+            "label": "한국에서 체류 절차 기준 안내"
+          },
+          "switch": {
+            "id": "visa_abroad",
+            "label": "'해외에서 비자 받기'로 다시 보기"
+          }
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "K-12-e10-2-extra-activity",
+      "prompt_sha256": "7375d447edf2f13e81af2b9251c1eed868694339f703ad6bead3f25a43e4ab68",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "한국에서 체류 절차"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p295"
+      ],
+      "turns": 2,
+      "clarified": false,
+      "final_choice": "stay_in_korea",
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "어선원(E-10-2)의 경우, 같은 고용주 밑에서 잡은 어획물에 대한 건조, 포장 등 어획물과의 연계 작업활동을 할 수 있으며, 이를 위해서는 아래 사항을 모두 충족해야 합니다: 원 고용주와 체류자격 외 활동 예정 근무지 고용주가 동일해야 합니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p338"
+        ],
+        "basis": {
+          "id": "stay_in_korea",
+          "label": "한국에서 체류 절차 기준 안내"
+        },
+        "switch": {
+          "id": "visa_abroad",
+          "label": "'해외에서 비자 받기'로 다시 보기"
+        }
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1073,
+      "prompt_tps": 60.5,
+      "generation_tokens": 136,
+      "generation_tps": 17.24,
+      "finish_reason": "stop",
+      "wall_seconds": 26.0,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"어선원(E-10-2)의 경우, 같은 고용주 밑에서 잡은 어획물에 대한 건조, 포장 등 어획물과의 연계 작업활동을 할 수 있으며, 이를 위해서는 아래 사항을 모두 충족해야 합니다: 원 고용주와 체류자격 외 활동 예정 근무지 고용주가 동일해야 합니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p338\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "어선원(E-10-2)의 경우, 같은 고용주 밑에서 잡은 어획물에 대한 건조, 포장 등 어획물과의 연계 작업활동을 할 수 있으며, 이를 위해서는 아래 사항을 모두 충족해야 합니다: 원 고용주와 체류자격 외 활동 예정 근무지 고용주가 동일해야 합니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p338"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": [],
+        "start_point_mismatches": [],
+        "citations_added": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "어선원(E-10-2)의 경우, 같은 고용주 밑에서 잡은 어획물에 대한 건조, 포장 등 어획물과의 연계 작업활동을 할 수 있으며, 이를 위해서는 아래 사항을 모두 충족해야 합니다: 원 고용주와 체류자격 외 활동 예정 근무지 고용주가 동일해야 합니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p338"
+          ],
+          "basis": {
+            "id": "stay_in_korea",
+            "label": "한국에서 체류 절차 기준 안내"
+          },
+          "switch": {
+            "id": "visa_abroad",
+            "label": "'해외에서 비자 받기'로 다시 보기"
+          }
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "K-13-d7-branch-ccvi-misclick",
+      "prompt_sha256": "29175ecc662ba88886f926031df9196b76dc4bde81621c8ffa7a50dba92a16d6",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "visa_issuance",
+          "해외에서 비자 받기"
+        ]
+      ],
+      "route_withheld": [
+        "stay_manual_2026_10_19_pdf#p113"
+      ],
+      "turns": 3,
+      "clarified": false,
+      "final_choice": "visa_abroad",
+      "events": [
+        "confirm_asked:visa_issuance",
+        "confirm_switched"
+      ],
+      "first_output": null,
+      "final_output": {
+        "status": "partial",
+        "answer": "외국기업 국내지사 등에서 주재활동의 경우, 사증발급인정신청서(별지 제21호 서식), 여권, 표준규격사진 1매, 초청사유서, 필수전문인력임을 입증하는 서류(이력서, 경력증명서 등), 외국 소재 회사 등 재직증명서, 파견명령서, 국내지점 등 설치 입증서류(지사나 연락사무소 설치허가서 사본 또는 신고수리서 사본), 지사 또는 연락사무소가 정상적으로 운영되고 있음을 입증하는 서류(영업자금 또는 연락사무소 운영자금 도입실적 또는 신규일 경우 지사 또는 연락사무소 운영계획서, 납세실적 등)가 필요합니다. 대리인이 신청할 경우 위임장, 대리인 재직증명서, 대리인 신분증을 추가로 제출해야 합니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p96"
+        ],
+        "basis": {
+          "id": "visa_abroad",
+          "label": "해외에서 비자 받기 기준 안내"
+        },
+        "switch": {
+          "id": "stay_in_korea",
+          "label": "'한국에서 체류 절차'로 다시 보기"
+        }
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 924,
+      "prompt_tps": 137.31,
+      "generation_tokens": 268,
+      "generation_tps": 10.35,
+      "finish_reason": "stop",
+      "wall_seconds": 32.96,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"외국기업 국내지사 등에서 주재활동의 경우, 사증발급인정신청서(별지 제21호 서식), 여권, 표준규격사진 1매, 초청사유서, 필수전문인력임을 입증하는 서류(이력서, 경력증명서 등), 외국 소재 회사 등 재직증명서, 파견명령서, 국내지점 등 설치 입증서류(지사나 연락사무소 설치허가서 사본 또는 신고수리서 사본), 지사 또는 연락사무소가 정상적으로 운영되고 있음을 입증하는 서류(영업자금 또는 연락사무소 운영자금 도입실적 또는 신규일 경우 지사 또는 연락사무소 운영계획서, 납세실적 등)가 필요합니다. 대리인이 신청할 경우 위임장, 대리인 재직증명서, 대리인 신분증을 추가로 제출해야 합니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p96\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "partial",
+        "answer": "외국기업 국내지사 등에서 주재활동의 경우, 사증발급인정신청서(별지 제21호 서식), 여권, 표준규격사진 1매, 초청사유서, 필수전문인력임을 입증하는 서류(이력서, 경력증명서 등), 외국 소재 회사 등 재직증명서, 파견명령서, 국내지점 등 설치 입증서류(지사나 연락사무소 설치허가서 사본 또는 신고수리서 사본), 지사 또는 연락사무소가 정상적으로 운영되고 있음을 입증하는 서류(영업자금 또는 연락사무소 운영자금 도입실적 또는 신규일 경우 지사 또는 연락사무소 운영계획서, 납세실적 등)가 필요합니다. 대리인이 신청할 경우 위임장, 대리인 재직증명서, 대리인 신분증을 추가로 제출해야 합니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p96"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "document",
+            "text": "사증발급인정신청서"
+          },
+          {
+            "kind": "document",
+            "text": "여권"
+          },
+          {
+            "kind": "document",
+            "text": "표준규격사진"
+          },
+          {
+            "kind": "document",
+            "text": "경력증명서"
+          },
+          {
+            "kind": "document",
+            "text": "재직증명서"
+          },
+          {
+            "kind": "document",
+            "text": "사본"
+          },
+          {
+            "kind": "document",
+            "text": "사본"
+          },
+          {
+            "kind": "document",
+            "text": "위임장"
+          },
+          {
+            "kind": "document",
+            "text": "재직증명서"
+          },
+          {
+            "kind": "document",
+            "text": "신분증"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": [],
+        "start_point_mismatches": [],
+        "citations_added": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "partial",
+          "answer": "외국기업 국내지사 등에서 주재활동의 경우, 사증발급인정신청서(별지 제21호 서식), 여권, 표준규격사진 1매, 초청사유서, 필수전문인력임을 입증하는 서류(이력서, 경력증명서 등), 외국 소재 회사 등 재직증명서, 파견명령서, 국내지점 등 설치 입증서류(지사나 연락사무소 설치허가서 사본 또는 신고수리서 사본), 지사 또는 연락사무소가 정상적으로 운영되고 있음을 입증하는 서류(영업자금 또는 연락사무소 운영자금 도입실적 또는 신규일 경우 지사 또는 연락사무소 운영계획서, 납세실적 등)가 필요합니다. 대리인이 신청할 경우 위임장, 대리인 재직증명서, 대리인 신분증을 추가로 제출해야 합니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p96"
+          ],
+          "basis": {
+            "id": "visa_abroad",
+            "label": "해외에서 비자 받기 기준 안내"
+          },
+          "switch": {
+            "id": "stay_in_korea",
+            "label": "'한국에서 체류 절차'로 다시 보기"
+          }
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "K-14-d8-4-where-to-apply-misclick",
+      "prompt_sha256": "0a14910cbb487cc1c7638ba2ff2477d96aa9362fdf406bcc47d07cbf74f7a1ce",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "visa_issuance",
+          "해외에서 비자 받기"
+        ]
+      ],
+      "route_withheld": [
+        "stay_manual_2026_10_19_pdf#p119"
+      ],
+      "turns": 3,
+      "clarified": false,
+      "final_choice": "visa_abroad",
+      "events": [
+        "label_switched"
+      ],
+      "first_output": "```json\n{\n\t\"status\": \"insufficient_evidence\",\n\t\"answer\": \"제공된 근거에는 D-8-4 비자 신청을 위해 어느 한국 공관에 신청해야 하는지에 대한 정보가 없습니다.\",\n\t\"citations\": []\n}\n```",
+      "final_output": {
+        "status": "answered",
+        "answer": "원칙적으로 신청자의 본국에 소재한 대한민국 공관에서 신청할 수 있습니다. 다만, 신청인이 해외에 주재하며 사업체 등을 운영(영주권 소지 등 장기거주자 포함)하고 있을 경우에는 주재하고 있는 국가 소재 재외공관에서 신청 가능합니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p107",
+          "visa_manual_2026_10_19_pdf#p108"
+        ],
+        "basis": {
+          "id": "visa_abroad",
+          "label": "해외에서 비자 받기 기준 안내"
+        },
+        "switch": {
+          "id": "stay_in_korea",
+          "label": "'한국에서 체류 절차'로 다시 보기"
+        }
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1745,
+      "prompt_tps": 156.55,
+      "generation_tokens": 146,
+      "generation_tps": 11.36,
+      "finish_reason": "stop",
+      "wall_seconds": 62.36,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"원칙적으로 신청자의 본국에 소재한 대한민국 공관에서 신청할 수 있습니다. 다만, 신청인이 해외에 주재하며 사업체 등을 운영(영주권 소지 등 장기거주자 포함)하고 있을 경우에는 주재하고 있는 국가 소재 재외공관에서 신청 가능합니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p107\",\n    \"visa_manual_2026_10_19_pdf#p108\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "원칙적으로 신청자의 본국에 소재한 대한민국 공관에서 신청할 수 있습니다. 다만, 신청인이 해외에 주재하며 사업체 등을 운영(영주권 소지 등 장기거주자 포함)하고 있을 경우에는 주재하고 있는 국가 소재 재외공관에서 신청 가능합니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p107",
+          "visa_manual_2026_10_19_pdf#p108"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": [],
+        "start_point_mismatches": [],
+        "citations_added": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "원칙적으로 신청자의 본국에 소재한 대한민국 공관에서 신청할 수 있습니다. 다만, 신청인이 해외에 주재하며 사업체 등을 운영(영주권 소지 등 장기거주자 포함)하고 있을 경우에는 주재하고 있는 국가 소재 재외공관에서 신청 가능합니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p107",
+            "visa_manual_2026_10_19_pdf#p108"
+          ],
+          "basis": {
+            "id": "visa_abroad",
+            "label": "해외에서 비자 받기 기준 안내"
+          },
+          "switch": {
+            "id": "stay_in_korea",
+            "label": "'한국에서 체류 절차'로 다시 보기"
+          }
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "K-15-e5-doctor-ccvi-misclick",
+      "prompt_sha256": "c02e55608fe2d8f44e53ecd3265ca12bd917a7ecd49e2ae6be74c2dc4c6fa4fc",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "visa_issuance",
+          "해외에서 비자 받기"
+        ]
+      ],
+      "route_withheld": [
+        "stay_manual_2026_10_19_pdf#p202"
+      ],
+      "turns": 3,
+      "clarified": false,
+      "final_choice": "visa_abroad",
+      "events": [
+        "confirm_asked:visa_issuance",
+        "confirm_switched"
+      ],
+      "first_output": null,
+      "final_output": {
+        "status": "partial",
+        "answer": "E-5 비자 발급 확인을 위해 제출해야 할 서류는 다음과 같습니다. ① 사증발급인정신청서(별지 제21호 서식), 여권, 표준규격사진 1매, ② 초청사유서, ③ 학위증 및 자격증 사본, ④ 소관 중앙행정기관의 장의 고용추천서 또는 고용의 필요성을 입증할 수 있는 서류 (단, 경제자유구역 내에서 취업활동을 하려는 경우 관할 특별시장․광역시장․도지사의 고용추천서 또는 고용의 필요성을 입증할 수 있는 서류 또는 고용의 필요성을 입증할 수 있는 서류), ⑤ 고용계약서가 필요합니다. 다만, 출입국ㆍ외국인청(사무소ㆍ출장소)장은 초청의 진정성, 초청자 및 피초청자의 자격 확인 등을 심사하기 위해 첨부서류의 일부를 가감할 수 있습니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p164"
+        ],
+        "basis": {
+          "id": "visa_abroad",
+          "label": "해외에서 비자 받기 기준 안내"
+        },
+        "switch": {
+          "id": "stay_in_korea",
+          "label": "'한국에서 체류 절차'로 다시 보기"
+        }
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 819,
+      "prompt_tps": 155.92,
+      "generation_tokens": 280,
+      "generation_tps": 9.6,
+      "finish_reason": "stop",
+      "wall_seconds": 34.72,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"E-5 비자 발급 확인을 위해 제출해야 할 서류는 다음과 같습니다. ① 사증발급인정신청서(별지 제21호 서식), 여권, 표준규격사진 1매, ② 초청사유서, ③ 학위증 및 자격증 사본, ④ 소관 중앙행정기관의 장의 고용추천서 또는 고용의 필요성을 입증할 수 있는 서류 (단, 경제자유구역 내에서 취업활동을 하려는 경우 관할 특별시장․광역시장․도지사의 고용추천서 또는 고용의 필요성을 입증할 수 있는 서류 또는 고용의 필요성을 입증할 수 있는 서류), ⑤ 고용계약서가 필요합니다. 다만, 출입국ㆍ외국인청(사무소ㆍ출장소)장은 초청의 진정성, 초청자 및 피초청자의 자격 확인 등을 심사하기 위해 첨부서류의 일부를 가감할 수 있습니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p164\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "partial",
+        "answer": "E-5 비자 발급 확인을 위해 제출해야 할 서류는 다음과 같습니다. ① 사증발급인정신청서(별지 제21호 서식), 여권, 표준규격사진 1매, ② 초청사유서, ③ 학위증 및 자격증 사본, ④ 소관 중앙행정기관의 장의 고용추천서 또는 고용의 필요성을 입증할 수 있는 서류 (단, 경제자유구역 내에서 취업활동을 하려는 경우 관할 특별시장․광역시장․도지사의 고용추천서 또는 고용의 필요성을 입증할 수 있는 서류 또는 고용의 필요성을 입증할 수 있는 서류), ⑤ 고용계약서가 필요합니다. 다만, 출입국ㆍ외국인청(사무소ㆍ출장소)장은 초청의 진정성, 초청자 및 피초청자의 자격 확인 등을 심사하기 위해 첨부서류의 일부를 가감할 수 있습니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p164"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "document",
+            "text": "사증발급인정신청서"
+          },
+          {
+            "kind": "document",
+            "text": "여권"
+          },
+          {
+            "kind": "document",
+            "text": "표준규격사진"
+          },
+          {
+            "kind": "document",
+            "text": "사본"
+          },
+          {
+            "kind": "document",
+            "text": "고용계약서"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": [],
+        "start_point_mismatches": [],
+        "citations_added": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "partial",
+          "answer": "E-5 비자 발급 확인을 위해 제출해야 할 서류는 다음과 같습니다. ① 사증발급인정신청서(별지 제21호 서식), 여권, 표준규격사진 1매, ② 초청사유서, ③ 학위증 및 자격증 사본, ④ 소관 중앙행정기관의 장의 고용추천서 또는 고용의 필요성을 입증할 수 있는 서류 (단, 경제자유구역 내에서 취업활동을 하려는 경우 관할 특별시장․광역시장․도지사의 고용추천서 또는 고용의 필요성을 입증할 수 있는 서류 또는 고용의 필요성을 입증할 수 있는 서류), ⑤ 고용계약서가 필요합니다. 다만, 출입국ㆍ외국인청(사무소ㆍ출장소)장은 초청의 진정성, 초청자 및 피초청자의 자격 확인 등을 심사하기 위해 첨부서류의 일부를 가감할 수 있습니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p164"
+          ],
+          "basis": {
+            "id": "visa_abroad",
+            "label": "해외에서 비자 받기 기준 안내"
+          },
+          "switch": {
+            "id": "stay_in_korea",
+            "label": "'한국에서 체류 절차'로 다시 보기"
+          }
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "K-16-e1-ccvi-docs-misclick-keep",
+      "prompt_sha256": "862590b8a3c39ded5104ce67b1d93b53aa56ed359ceb9d52da774eda88710354",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "visa_issuance",
+          "해외에서 비자 받기"
+        ]
+      ],
+      "route_withheld": [
+        "stay_manual_2026_10_19_pdf#p174"
+      ],
+      "turns": 3,
+      "clarified": false,
+      "final_choice": "visa_abroad",
+      "events": [
+        "confirm_asked:visa_issuance",
+        "confirm_switched"
+      ],
+      "first_output": null,
+      "final_output": {
+        "status": "partial",
+        "answer": "사증발급인정신청 시에는 ① 사증발급인정신청서(별지 제21호 서식), 여권, 표준규격사진 1매가 필요하며, ③ 고용계약서 또는 임용예정확인서가 필요합니다. 또한, 재외공관의 장은 심사를 위해 필요한 경우 첨부서류를 일부 가감할 수 있습니다. 또한, ② 경력증명서 및 학위증은 조교수 이상의 자격기준에 해당하는 전임교수 등의 경우 제출을 생략할 수 있습니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p142"
+        ],
+        "basis": {
+          "id": "visa_abroad",
+          "label": "해외에서 비자 받기 기준 안내"
+        },
+        "switch": {
+          "id": "stay_in_korea",
+          "label": "'한국에서 체류 절차'로 다시 보기"
+        }
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1184,
+      "prompt_tps": 106.53,
+      "generation_tokens": 181,
+      "generation_tps": 10.05,
+      "finish_reason": "stop",
+      "wall_seconds": 29.51,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"사증발급인정신청 시에는 ① 사증발급인정신청서(별지 제21호 서식), 여권, 표준규격사진 1매가 필요하며, ③ 고용계약서 또는 임용예정확인서가 필요합니다. 또한, 재외공관의 장은 심사를 위해 필요한 경우 첨부서류를 일부 가감할 수 있습니다. 또한, ② 경력증명서 및 학위증은 조교수 이상의 자격기준에 해당하는 전임교수 등의 경우 제출을 생략할 수 있습니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p142\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "partial",
+        "answer": "사증발급인정신청 시에는 ① 사증발급인정신청서(별지 제21호 서식), 여권, 표준규격사진 1매가 필요하며, ③ 고용계약서 또는 임용예정확인서가 필요합니다. 또한, 재외공관의 장은 심사를 위해 필요한 경우 첨부서류를 일부 가감할 수 있습니다. 또한, ② 경력증명서 및 학위증은 조교수 이상의 자격기준에 해당하는 전임교수 등의 경우 제출을 생략할 수 있습니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p142"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "document",
+            "text": "사증발급인정신청서"
+          },
+          {
+            "kind": "document",
+            "text": "여권"
+          },
+          {
+            "kind": "document",
+            "text": "표준규격사진"
+          },
+          {
+            "kind": "document",
+            "text": "고용계약서"
+          },
+          {
+            "kind": "document",
+            "text": "임용예정확인서"
+          },
+          {
+            "kind": "document",
+            "text": "경력증명서"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": [],
+        "start_point_mismatches": [],
+        "citations_added": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "partial",
+          "answer": "사증발급인정신청 시에는 ① 사증발급인정신청서(별지 제21호 서식), 여권, 표준규격사진 1매가 필요하며, ③ 고용계약서 또는 임용예정확인서가 필요합니다. 또한, 재외공관의 장은 심사를 위해 필요한 경우 첨부서류를 일부 가감할 수 있습니다. 또한, ② 경력증명서 및 학위증은 조교수 이상의 자격기준에 해당하는 전임교수 등의 경우 제출을 생략할 수 있습니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p142"
+          ],
+          "basis": {
+            "id": "visa_abroad",
+            "label": "해외에서 비자 받기 기준 안내"
+          },
+          "switch": {
+            "id": "stay_in_korea",
+            "label": "'한국에서 체류 절차'로 다시 보기"
+          }
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "K-17-d10-to-e1-change-misclick",
+      "prompt_sha256": "a3c5f9b10519b1aa2174a4c7b249272eb9b9e9cce3d5b4dc60d07ee0e9502dd8",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "한국에서 체류 절차"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p142"
+      ],
+      "turns": 3,
+      "clarified": false,
+      "final_choice": "stay_in_korea",
+      "events": [
+        "label_switched"
+      ],
+      "first_output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"91일 이상 교육 또는 연구·지도활동을 하는 대학의 장(총장·학장), 교수·부교수·조교수, 겸임교원·명예교수·초빙교원, 교환교수 등으로서 비자를 신청할 때 필요한 서류 중에는 사증발급인정신청서(별지 제21호 서식), 여권, 표준규격사진 1매가 있습니다. 또한, 고용계약서 또는 임용예정확인서가 필요할 수 있습니다. 재외공관의 장은 심사를 위해 필요한 경우 첨부서류를 일부 가감할 수 있습니다. 또한, 경력증명서 및 학위증은 조교수 이상의 자격기준에 해당하는 전임교수 등의 경우 제출을 생략할 수 있습니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p142\"\n  ]\n}\n```",
+      "final_output": {
+        "status": "partial",
+        "answer": "교수(E-1) 자격으로 변경하려면 다음 요건을 충족해야 합니다. ① 구직(D-10) 자격 또는 유학(D-2) 자격을 소지하고 합법 체류 중인 자여야 하며, ② 취업하려는 분야가 교수(E-1) 체류자격에 해당하고 해당 자격요건 등을 구비해야 하며, ③ 취업하려는 해당 기관·단체 등의 대표자와 고용계약을 체결해야 합니다. 제출 서류로는 신청서(별지 34호서식), 여권 및 외국인등록증, 수수료, 고용계약서, 학위증 또는 경력증명서, 그리고 고용업체 등의 설립 관련 서류(사업자등록증, 등기부등본 등)가 필요합니다. 조교수 이상의 자격기준에 해당하는 전임교수의 경우 제출 서류가 생략될 수 있습니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p174"
+        ],
+        "basis": {
+          "id": "stay_in_korea",
+          "label": "한국에서 체류 절차 기준 안내"
+        },
+        "switch": {
+          "id": "visa_abroad",
+          "label": "'해외에서 비자 받기'로 다시 보기"
+        }
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1030,
+      "prompt_tps": 149.61,
+      "generation_tokens": 260,
+      "generation_tps": 12.25,
+      "finish_reason": "stop",
+      "wall_seconds": 59.95,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"교수(E-1) 자격으로 변경하려면 다음 요건을 충족해야 합니다. ① 구직(D-10) 자격 또는 유학(D-2) 자격을 소지하고 합법 체류 중인 자여야 하며, ② 취업하려는 분야가 교수(E-1) 체류자격에 해당하고 해당 자격요건 등을 구비해야 하며, ③ 취업하려는 해당 기관·단체 등의 대표자와 고용계약을 체결해야 합니다. 제출 서류로는 신청서(별지 34호서식), 여권 및 외국인등록증, 수수료, 고용계약서, 학위증 또는 경력증명서, 그리고 고용업체 등의 설립 관련 서류(사업자등록증, 등기부등본 등)가 필요합니다. 조교수 이상의 자격기준에 해당하는 전임교수의 경우 제출 서류가 생략될 수 있습니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p174\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "partial",
+        "answer": "교수(E-1) 자격으로 변경하려면 다음 요건을 충족해야 합니다. ① 구직(D-10) 자격 또는 유학(D-2) 자격을 소지하고 합법 체류 중인 자여야 하며, ② 취업하려는 분야가 교수(E-1) 체류자격에 해당하고 해당 자격요건 등을 구비해야 하며, ③ 취업하려는 해당 기관·단체 등의 대표자와 고용계약을 체결해야 합니다. 제출 서류로는 신청서(별지 34호서식), 여권 및 외국인등록증, 수수료, 고용계약서, 학위증 또는 경력증명서, 그리고 고용업체 등의 설립 관련 서류(사업자등록증, 등기부등본 등)가 필요합니다. 조교수 이상의 자격기준에 해당하는 전임교수의 경우 제출 서류가 생략될 수 있습니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p174"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "document",
+            "text": "신청서"
+          },
+          {
+            "kind": "document",
+            "text": "여권"
+          },
+          {
+            "kind": "document",
+            "text": "외국인등록증"
+          },
+          {
+            "kind": "document",
+            "text": "고용계약서"
+          },
+          {
+            "kind": "document",
+            "text": "경력증명서"
+          },
+          {
+            "kind": "document",
+            "text": "사업자등록증"
+          },
+          {
+            "kind": "document",
+            "text": "등기부등본"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": [],
+        "start_point_mismatches": [],
+        "citations_added": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "partial",
+          "answer": "교수(E-1) 자격으로 변경하려면 다음 요건을 충족해야 합니다. ① 구직(D-10) 자격 또는 유학(D-2) 자격을 소지하고 합법 체류 중인 자여야 하며, ② 취업하려는 분야가 교수(E-1) 체류자격에 해당하고 해당 자격요건 등을 구비해야 하며, ③ 취업하려는 해당 기관·단체 등의 대표자와 고용계약을 체결해야 합니다. 제출 서류로는 신청서(별지 34호서식), 여권 및 외국인등록증, 수수료, 고용계약서, 학위증 또는 경력증명서, 그리고 고용업체 등의 설립 관련 서류(사업자등록증, 등기부등본 등)가 필요합니다. 조교수 이상의 자격기준에 해당하는 전임교수의 경우 제출 서류가 생략될 수 있습니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p174"
+          ],
+          "basis": {
+            "id": "stay_in_korea",
+            "label": "한국에서 체류 절차 기준 안내"
+          },
+          "switch": {
+            "id": "visa_abroad",
+            "label": "'해외에서 비자 받기'로 다시 보기"
+          }
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "K-18-e9-reemployment-extension-misclick",
+      "prompt_sha256": "64210010c35c9e4ec231f6c293e96e700adac7f2a0ba942fa2a3eb1870bea949",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "한국에서 체류 절차"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p290"
+      ],
+      "turns": 3,
+      "clarified": false,
+      "final_choice": "stay_in_korea",
+      "events": [
+        "confirm_asked:stay",
+        "confirm_switched"
+      ],
+      "first_output": null,
+      "final_output": {
+        "status": "partial",
+        "answer": "비전문취업자(E-9)의 경우, 최초 체류 기간은 3년이며, 3년 만기 체류자 중 고용주가 재고용한 경우 최대 1년 10개월까지 체류 기간을 연장할 수 있습니다. 이 경우 필요한 서류 중 하나로 '취업기간만료자 취업활동기간 연장확인서(고용노동부 발급)'가 있습니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p331"
+        ],
+        "basis": {
+          "id": "stay_in_korea",
+          "label": "한국에서 체류 절차 기준 안내"
+        },
+        "switch": {
+          "id": "visa_abroad",
+          "label": "'해외에서 비자 받기'로 다시 보기"
+        }
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1284,
+      "prompt_tps": 145.55,
+      "generation_tokens": 152,
+      "generation_tps": 12.05,
+      "finish_reason": "stop",
+      "wall_seconds": 21.77,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"비전문취업자(E-9)의 경우, 최초 체류 기간은 3년이며, 3년 만기 체류자 중 고용주가 재고용한 경우 최대 1년 10개월까지 체류 기간을 연장할 수 있습니다. 이 경우 필요한 서류 중 하나로 '취업기간만료자 취업활동기간 연장확인서(고용노동부 발급)'가 있습니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p331\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "partial",
+        "answer": "비전문취업자(E-9)의 경우, 최초 체류 기간은 3년이며, 3년 만기 체류자 중 고용주가 재고용한 경우 최대 1년 10개월까지 체류 기간을 연장할 수 있습니다. 이 경우 필요한 서류 중 하나로 '취업기간만료자 취업활동기간 연장확인서(고용노동부 발급)'가 있습니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p331"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "1년 10개월"
+          },
+          {
+            "kind": "period",
+            "text": "3년"
+          },
+          {
+            "kind": "period",
+            "text": "3년"
+          },
+          {
+            "kind": "document",
+            "text": "연장확인서"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": [],
+        "start_point_mismatches": [],
+        "citations_added": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "partial",
+          "answer": "비전문취업자(E-9)의 경우, 최초 체류 기간은 3년이며, 3년 만기 체류자 중 고용주가 재고용한 경우 최대 1년 10개월까지 체류 기간을 연장할 수 있습니다. 이 경우 필요한 서류 중 하나로 '취업기간만료자 취업활동기간 연장확인서(고용노동부 발급)'가 있습니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p331"
+          ],
+          "basis": {
+            "id": "stay_in_korea",
+            "label": "한국에서 체류 절차 기준 안내"
+          },
+          "switch": {
+            "id": "visa_abroad",
+            "label": "'해외에서 비자 받기'로 다시 보기"
+          }
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "K-19-d8-4-change-grant-misclick-keep",
+      "prompt_sha256": "51b7993f5719945a9f8dcaca0d8e4ceccf827c6a70c9935d557b617c1e3ee813",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "visa_issuance",
+          "해외에서 비자 받기"
+        ]
+      ],
+      "route_withheld": [
+        "stay_manual_2026_10_19_pdf#p119"
+      ],
+      "turns": 2,
+      "clarified": false,
+      "final_choice": "visa_abroad",
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 기술창업 비자로 체류 자격을 변경하거나 사증을 발급받을 때 점수제 면제에 필요한 사업비 금액에 대한 정보는 없습니다.",
+        "citations": [],
+        "basis": {
+          "id": "visa_abroad",
+          "label": "해외에서 비자 받기 기준 안내"
+        },
+        "switch": {
+          "id": "stay_in_korea",
+          "label": "'한국에서 체류 절차'로 다시 보기"
+        }
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1065,
+      "prompt_tps": 156.02,
+      "generation_tokens": 73,
+      "generation_tps": 14.14,
+      "finish_reason": "stop",
+      "wall_seconds": 12.35,
+      "output": "```json\n{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"제공된 근거에는 기술창업 비자로 체류 자격을 변경하거나 사증을 발급받을 때 점수제 면제에 필요한 사업비 금액에 대한 정보는 없습니다.\",\n  \"citations\": []\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 기술창업 비자로 체류 자격을 변경하거나 사증을 발급받을 때 점수제 면제에 필요한 사업비 금액에 대한 정보는 없습니다.",
+        "citations": []
+      },
+      "failures": [
+        "status:insufficient_evidence≠answered|partial",
+        "missing_citation:stay_manual_2026_10_19_pdf#p119",
+        "answer_missing_pattern:직접 사업비 3천만원 이상"
+      ],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": [],
+        "start_point_mismatches": [],
+        "citations_added": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "answer": "제공된 근거에는 기술창업 비자로 체류 자격을 변경하거나 사증을 발급받을 때 점수제 면제에 필요한 사업비 금액에 대한 정보는 없습니다.",
+          "citations": [],
+          "basis": {
+            "id": "visa_abroad",
+            "label": "해외에서 비자 받기 기준 안내"
+          },
+          "switch": {
+            "id": "stay_in_korea",
+            "label": "'한국에서 체류 절차'로 다시 보기"
+          }
+        },
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:stay_manual_2026_10_19_pdf#p119",
+          "answer_missing_pattern:직접 사업비 3천만원 이상"
+        ],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "safe_abstain",
+      "outcome_checked": "safe_abstain"
+    },
+    {
+      "case": "K-20-g1-99-newborn-misclick",
+      "prompt_sha256": "512ca81dc374df29907e887bbe0800724b2d419be2577858e437eca7e61ee855",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "한국에서 체류 절차"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p339"
+      ],
+      "turns": 3,
+      "clarified": false,
+      "final_choice": "stay_in_korea",
+      "events": [
+        "label_switched"
+      ],
+      "first_output": "```json\n{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"제공된 근거에는 현재 한국에 거주하는 난민 신청자(G-1-5)의 아기가 국내에 체류할 수 있는 기간이나 제출해야 할 서류에 대한 정보가 포함되어 있지 않습니다.\",\n  \"citations\": []\n}\n```",
+      "final_output": {
+        "status": "answered",
+        "answer": "부 또는 모가 난민신청자(G-1-5)로 합법 체류 중이고, 국내 출생 자녀가 난민 신청을 하지 않은 상태로 17세 미만인 경우, 해당 난민신청자(G-1-5)의 체류기간 만료일까지 체류허가 기간이 부여됩니다. 제출 서류로는 출생증명서 등 부모와의 관계를 입증할 수 있는 서류 및 미성년 자녀의 나이를 확인할 수 있는 서류가 필요합니다. 난민 신청의 특수성으로 여권이 없을 경우 그 사유서로 갈음할 수 있습니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p513"
+        ],
+        "basis": {
+          "id": "stay_in_korea",
+          "label": "한국에서 체류 절차 기준 안내"
+        },
+        "switch": {
+          "id": "visa_abroad",
+          "label": "'해외에서 비자 받기'로 다시 보기"
+        }
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 970,
+      "prompt_tps": 180.31,
+      "generation_tokens": 197,
+      "generation_tps": 12.56,
+      "finish_reason": "stop",
+      "wall_seconds": 33.36,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"부 또는 모가 난민신청자(G-1-5)로 합법 체류 중이고, 국내 출생 자녀가 난민 신청을 하지 않은 상태로 17세 미만인 경우, 해당 난민신청자(G-1-5)의 체류기간 만료일까지 체류허가 기간이 부여됩니다. 제출 서류로는 출생증명서 등 부모와의 관계를 입증할 수 있는 서류 및 미성년 자녀의 나이를 확인할 수 있는 서류가 필요합니다. 난민 신청의 특수성으로 여권이 없을 경우 그 사유서로 갈음할 수 있습니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p513\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "부 또는 모가 난민신청자(G-1-5)로 합법 체류 중이고, 국내 출생 자녀가 난민 신청을 하지 않은 상태로 17세 미만인 경우, 해당 난민신청자(G-1-5)의 체류기간 만료일까지 체류허가 기간이 부여됩니다. 제출 서류로는 출생증명서 등 부모와의 관계를 입증할 수 있는 서류 및 미성년 자녀의 나이를 확인할 수 있는 서류가 필요합니다. 난민 신청의 특수성으로 여권이 없을 경우 그 사유서로 갈음할 수 있습니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p513"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "document",
+            "text": "출생증명서"
+          },
+          {
+            "kind": "document",
+            "text": "여권"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": [],
+        "start_point_mismatches": [],
+        "citations_added": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "부 또는 모가 난민신청자(G-1-5)로 합법 체류 중이고, 국내 출생 자녀가 난민 신청을 하지 않은 상태로 17세 미만인 경우, 해당 난민신청자(G-1-5)의 체류기간 만료일까지 체류허가 기간이 부여됩니다. 제출 서류로는 출생증명서 등 부모와의 관계를 입증할 수 있는 서류 및 미성년 자녀의 나이를 확인할 수 있는 서류가 필요합니다. 난민 신청의 특수성으로 여권이 없을 경우 그 사유서로 갈음할 수 있습니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p513"
+          ],
+          "basis": {
+            "id": "stay_in_korea",
+            "label": "한국에서 체류 절차 기준 안내"
+          },
+          "switch": {
+            "id": "visa_abroad",
+            "label": "'해외에서 비자 받기'로 다시 보기"
+          }
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "K-21-e7-docs-unclear",
+      "prompt_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p170",
+        "stay_manual_2026_10_19_pdf#p214"
+      ],
+      "turns": 1,
+      "clarified": true,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "clarify",
+        "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 아래에서 골라 주세요. '해외에서 비자 받기'는 해외에서 사증(비자)이나 사증발급인정서를 새로 받는 경우이고, '한국에서 체류 절차'는 한국에 있으면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경을 하는 경우입니다.",
+        "citations": [],
+        "choices": [
+          {
+            "id": "visa_abroad",
+            "label": "해외에서 비자 받기"
+          },
+          {
+            "id": "stay_in_korea",
+            "label": "한국에서 체류 절차"
+          }
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": null,
+      "prompt_tps": null,
+      "generation_tokens": null,
+      "generation_tps": null,
+      "finish_reason": null,
+      "wall_seconds": 0.0,
+      "output": "{\"status\": \"clarify\", \"answer\": \"어떤 절차를 물으시는지 먼저 확인할게요. 아래에서 골라 주세요. '해외에서 비자 받기'는 해외에서 사증(비자)이나 사증발급인정서를 새로 받는 경우이고, '한국에서 체류 절차'는 한국에 있으면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경을 하는 경우입니다.\", \"citations\": [], \"choices\": [{\"id\": \"visa_abroad\", \"label\": \"해외에서 비자 받기\"}, {\"id\": \"stay_in_korea\", \"label\": \"한국에서 체류 절차\"}]}",
+      "passed": true,
+      "parsed": {
+        "status": "clarify",
+        "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 아래에서 골라 주세요. '해외에서 비자 받기'는 해외에서 사증(비자)이나 사증발급인정서를 새로 받는 경우이고, '한국에서 체류 절차'는 한국에 있으면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경을 하는 경우입니다.",
+        "citations": [],
+        "choices": [
+          {
+            "id": "visa_abroad",
+            "label": "해외에서 비자 받기"
+          },
+          {
+            "id": "stay_in_korea",
+            "label": "한국에서 체류 절차"
+          }
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "clarify",
+        "claims": [],
+        "unsupported": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "clarify",
+          "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 아래에서 골라 주세요. '해외에서 비자 받기'는 해외에서 사증(비자)이나 사증발급인정서를 새로 받는 경우이고, '한국에서 체류 절차'는 한국에 있으면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경을 하는 경우입니다.",
+          "citations": [],
+          "choices": [
+            {
+              "id": "visa_abroad",
+              "label": "해외에서 비자 받기"
+            },
+            {
+              "id": "stay_in_korea",
+              "label": "한국에서 체류 절차"
+            }
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "K-22-d10-period-unclear",
+      "prompt_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p130",
+        "stay_manual_2026_10_19_pdf#p151"
+      ],
+      "turns": 1,
+      "clarified": true,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "clarify",
+        "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 아래에서 골라 주세요. '해외에서 비자 받기'는 해외에서 사증(비자)이나 사증발급인정서를 새로 받는 경우이고, '한국에서 체류 절차'는 한국에 있으면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경을 하는 경우입니다.",
+        "citations": [],
+        "choices": [
+          {
+            "id": "visa_abroad",
+            "label": "해외에서 비자 받기"
+          },
+          {
+            "id": "stay_in_korea",
+            "label": "한국에서 체류 절차"
+          }
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": null,
+      "prompt_tps": null,
+      "generation_tokens": null,
+      "generation_tps": null,
+      "finish_reason": null,
+      "wall_seconds": 0.0,
+      "output": "{\"status\": \"clarify\", \"answer\": \"어떤 절차를 물으시는지 먼저 확인할게요. 아래에서 골라 주세요. '해외에서 비자 받기'는 해외에서 사증(비자)이나 사증발급인정서를 새로 받는 경우이고, '한국에서 체류 절차'는 한국에 있으면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경을 하는 경우입니다.\", \"citations\": [], \"choices\": [{\"id\": \"visa_abroad\", \"label\": \"해외에서 비자 받기\"}, {\"id\": \"stay_in_korea\", \"label\": \"한국에서 체류 절차\"}]}",
+      "passed": true,
+      "parsed": {
+        "status": "clarify",
+        "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 아래에서 골라 주세요. '해외에서 비자 받기'는 해외에서 사증(비자)이나 사증발급인정서를 새로 받는 경우이고, '한국에서 체류 절차'는 한국에 있으면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경을 하는 경우입니다.",
+        "citations": [],
+        "choices": [
+          {
+            "id": "visa_abroad",
+            "label": "해외에서 비자 받기"
+          },
+          {
+            "id": "stay_in_korea",
+            "label": "한국에서 체류 절차"
+          }
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "clarify",
+        "claims": [],
+        "unsupported": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "clarify",
+          "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 아래에서 골라 주세요. '해외에서 비자 받기'는 해외에서 사증(비자)이나 사증발급인정서를 새로 받는 경우이고, '한국에서 체류 절차'는 한국에 있으면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경을 하는 경우입니다.",
+          "citations": [],
+          "choices": [
+            {
+              "id": "visa_abroad",
+              "label": "해외에서 비자 받기"
+            },
+            {
+              "id": "stay_in_korea",
+              "label": "한국에서 체류 절차"
+            }
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "K-23-f6-income-docs-unclear",
+      "prompt_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p334",
+        "stay_manual_2026_10_19_pdf#p492"
+      ],
+      "turns": 1,
+      "clarified": true,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "clarify",
+        "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 아래에서 골라 주세요. '해외에서 비자 받기'는 해외에서 사증(비자)이나 사증발급인정서를 새로 받는 경우이고, '한국에서 체류 절차'는 한국에 있으면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경을 하는 경우입니다.",
+        "citations": [],
+        "choices": [
+          {
+            "id": "visa_abroad",
+            "label": "해외에서 비자 받기"
+          },
+          {
+            "id": "stay_in_korea",
+            "label": "한국에서 체류 절차"
+          }
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": null,
+      "prompt_tps": null,
+      "generation_tokens": null,
+      "generation_tps": null,
+      "finish_reason": null,
+      "wall_seconds": 0.0,
+      "output": "{\"status\": \"clarify\", \"answer\": \"어떤 절차를 물으시는지 먼저 확인할게요. 아래에서 골라 주세요. '해외에서 비자 받기'는 해외에서 사증(비자)이나 사증발급인정서를 새로 받는 경우이고, '한국에서 체류 절차'는 한국에 있으면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경을 하는 경우입니다.\", \"citations\": [], \"choices\": [{\"id\": \"visa_abroad\", \"label\": \"해외에서 비자 받기\"}, {\"id\": \"stay_in_korea\", \"label\": \"한국에서 체류 절차\"}]}",
+      "passed": true,
+      "parsed": {
+        "status": "clarify",
+        "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 아래에서 골라 주세요. '해외에서 비자 받기'는 해외에서 사증(비자)이나 사증발급인정서를 새로 받는 경우이고, '한국에서 체류 절차'는 한국에 있으면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경을 하는 경우입니다.",
+        "citations": [],
+        "choices": [
+          {
+            "id": "visa_abroad",
+            "label": "해외에서 비자 받기"
+          },
+          {
+            "id": "stay_in_korea",
+            "label": "한국에서 체류 절차"
+          }
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "clarify",
+        "claims": [],
+        "unsupported": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "clarify",
+          "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 아래에서 골라 주세요. '해외에서 비자 받기'는 해외에서 사증(비자)이나 사증발급인정서를 새로 받는 경우이고, '한국에서 체류 절차'는 한국에 있으면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경을 하는 경우입니다.",
+          "citations": [],
+          "choices": [
+            {
+              "id": "visa_abroad",
+              "label": "해외에서 비자 받기"
+            },
+            {
+              "id": "stay_in_korea",
+              "label": "한국에서 체류 절차"
+            }
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "K-24-d8-docs-unclear",
+      "prompt_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p116",
+        "stay_manual_2026_10_19_pdf#p116"
+      ],
+      "turns": 1,
+      "clarified": true,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "clarify",
+        "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 아래에서 골라 주세요. '해외에서 비자 받기'는 해외에서 사증(비자)이나 사증발급인정서를 새로 받는 경우이고, '한국에서 체류 절차'는 한국에 있으면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경을 하는 경우입니다.",
+        "citations": [],
+        "choices": [
+          {
+            "id": "visa_abroad",
+            "label": "해외에서 비자 받기"
+          },
+          {
+            "id": "stay_in_korea",
+            "label": "한국에서 체류 절차"
+          }
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": null,
+      "prompt_tps": null,
+      "generation_tokens": null,
+      "generation_tps": null,
+      "finish_reason": null,
+      "wall_seconds": 0.0,
+      "output": "{\"status\": \"clarify\", \"answer\": \"어떤 절차를 물으시는지 먼저 확인할게요. 아래에서 골라 주세요. '해외에서 비자 받기'는 해외에서 사증(비자)이나 사증발급인정서를 새로 받는 경우이고, '한국에서 체류 절차'는 한국에 있으면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경을 하는 경우입니다.\", \"citations\": [], \"choices\": [{\"id\": \"visa_abroad\", \"label\": \"해외에서 비자 받기\"}, {\"id\": \"stay_in_korea\", \"label\": \"한국에서 체류 절차\"}]}",
+      "passed": true,
+      "parsed": {
+        "status": "clarify",
+        "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 아래에서 골라 주세요. '해외에서 비자 받기'는 해외에서 사증(비자)이나 사증발급인정서를 새로 받는 경우이고, '한국에서 체류 절차'는 한국에 있으면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경을 하는 경우입니다.",
+        "citations": [],
+        "choices": [
+          {
+            "id": "visa_abroad",
+            "label": "해외에서 비자 받기"
+          },
+          {
+            "id": "stay_in_korea",
+            "label": "한국에서 체류 절차"
+          }
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "clarify",
+        "claims": [],
+        "unsupported": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "clarify",
+          "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 아래에서 골라 주세요. '해외에서 비자 받기'는 해외에서 사증(비자)이나 사증발급인정서를 새로 받는 경우이고, '한국에서 체류 절차'는 한국에 있으면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경을 하는 경우입니다.",
+          "citations": [],
+          "choices": [
+            {
+              "id": "visa_abroad",
+              "label": "해외에서 비자 받기"
+            },
+            {
+              "id": "stay_in_korea",
+              "label": "한국에서 체류 절차"
+            }
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    }
+  ],
+  "summary": {
+    "cases": 24,
+    "passed": 22,
+    "failed": 2,
+    "needs_review": 0,
+    "auto_correct": 22,
+    "outcomes_raw": {
+      "correct": 22,
+      "needs_review": 0,
+      "clarify": 0,
+      "safe_abstain": 1,
+      "harmful": 0,
+      "other": 1
+    },
+    "outcomes_checked": {
+      "correct": 22,
+      "needs_review": 0,
+      "clarify": 0,
+      "safe_abstain": 1,
+      "harmful": 0,
+      "other": 1
+    }
+  },
+  "peak_memory_gb": 4.917,
+  "max_rss_gb": 0.89,
+  "swap_after": "total = 4096.00M  used = 3537.00M  free = 559.00M  (encrypted)",
+  "free_disk_gb_after": 6.84,
+  "finished_utc": "2026-10-28T06:09:37+00:00"
+}

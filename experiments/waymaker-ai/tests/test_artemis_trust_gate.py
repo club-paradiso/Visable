@@ -628,3 +628,27 @@ def test_layout_pages_keep_the_tables_and_check_against_the_approved_page():
     plain, laid = ml.resolve_cases([case])[0]["evidence"][0], ml.resolve_cases([case], layout=True)[0]["evidence"][0]
     assert plain["source"]["text_form"] == "pdf_text" and laid["source"]["text_form"] == "hwp_layout"
     assert tg.is_trusted(plain, True) and tg.is_trusted(laid, True)
+
+
+def test_real_manual_sets_with_the_fixes_for_the_fifteen_wrong_answers():
+    """The six real-manual sets on label v2, E4B, after layout pages, route cues, the
+    three checks and the cross-check on the always-ask and mis-click sets (432b43f).
+    Against r3: correct 98 -> 113, harmful 6 -> 0. One correct answer was lost: A-03,
+    whose content is right but which E4B now labels insufficient_evidence (it labelled
+    it "conflict" on the first layout run). The mis-click set was cut at case 14 when
+    the session restarted (runs/*-misclick-label-layout2, kept) and ran again whole."""
+    runs = {"oracle": "layout2", "routing-routed": "layout2", "clarify-route-clarify": "layout2",
+            "buttons-buttons": "layout2", "always-ask": "layout2", "misclick-label": "layout2b"}
+    before, after, lost = Counter(), Counter(), []
+    for name, tag in runs.items():
+        old = json.loads((BOOTSTRAP_DIR / "runs" / f"2026-10-28-e4b-it-4bit-m1-8gb-v2-{name}-r3" / "run_record.json").read_text(encoding="utf-8"))
+        new = json.loads((BOOTSTRAP_DIR / "runs" / f"2026-10-28-e4b-it-4bit-m1-8gb-v2-{name}-{tag}" / "run_record.json").read_text(encoding="utf-8"))
+        assert new["status"] == "completed" and new["layout"] and new["facts"]
+        o = {r["case"]: r["outcome_checked"] for r in old["results"]}
+        n = {r["case"]: r["outcome_checked"] for r in new["results"]}
+        before.update(o.values())
+        after.update(n.values())
+        lost += [c for c in o if o[c] == "correct" and n[c] != "correct"]
+    assert before["correct"] == 98 and before["harmful"] == 6
+    assert after == {"correct": 113, "other": 6, "safe_abstain": 13, "needs_review": 2, "clarify": 6}, after
+    assert lost == ["A-03-d6-who-can-invite"]
