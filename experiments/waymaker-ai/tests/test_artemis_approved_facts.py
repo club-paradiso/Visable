@@ -235,3 +235,34 @@ def test_facts_do_not_mark_any_recorded_correct_real_manual_answer():
                     g.classify(g.grade(c, json.dumps(res["final"], ensure_ascii=False))) != "correct":
                 moved.append((rp, r["case"]))
     assert moved == []
+
+
+def test_facts_change_no_outcome_on_the_six_real_manual_sets():
+    """The six real-manual sets on label v2 (E4B, r3 runs). --facts only feeds the
+    post-check (run_smoke.py), and E4B at temperature 0 reproduced these outputs byte for
+    byte, so re-checking the recorded outputs is what a facts-on run would give. With the
+    current post-check, the facts move no answer at all: 0 correct answers to review or
+    withheld, and none of the 15 wrong ones caught. Those 15 are procedure, document and
+    scope errors, a wrong sub-code or count, or (N-06) weekly hours, which no fact holds."""
+    import glob
+    from collections import Counter
+    lv = load_module("label_v2")
+    g = sys.modules["smoke_grader"]
+    seen = Counter()
+    for rp in sorted(glob.glob(str(BOOTSTRAP_DIR / "runs" / "2026-10-28-*-v2-*-r3" / "run_record.json"))):
+        rec = json.loads(Path(rp).read_text(encoding="utf-8"))
+        cf = rec["cases_file"]
+        path = lv.OUT / cf if (lv.OUT / cf).exists() else lv.OUT / "rerun" / cf
+        cases = {c["id"]: c for c in af.manual_ledger.resolve_cases(json.loads(path.read_text(encoding="utf-8"))["cases"])}
+        for r in rec["results"]:
+            c = cases[r["case"]]
+            if (r.get("clarified") and (r.get("parsed") or {}).get("status") == "clarify") or r.get("parsed") is None:
+                continue
+            trusted = [e for e in c["evidence"] if tg.is_trusted(e, rec.get("integrity")) and e["id"] not in (r.get("route_withheld") or [])]
+            if not trusted:
+                continue
+            with_facts, without = (g.classify(g.grade(c, json.dumps(tg.post_check(r["parsed"], trusted, facts=f, question=c["question"])["final"], ensure_ascii=False)))
+                                   for f in (FACTS, None))
+            assert with_facts == without, (rp, r["case"], without, with_facts)
+            seen[with_facts] += 1
+    assert seen == {"correct": 78, "harmful": 6, "other": 9, "safe_abstain": 7, "needs_review": 4}, seen
