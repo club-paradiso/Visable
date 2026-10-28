@@ -1,0 +1,1661 @@
+{
+ "version": "heldout-v11-tables",
+ "created": "2026-10-28",
+ "authorship": "written by an agent that saw only pages.json and this brief",
+ "notice": "실제 2026-10-19 매뉴얼 쪽으로 쓴 독립 문항. 라벨은 쪽 원문에 맞춘 것이며 법률 검증이나 사람 검토가 아니다.",
+ "cases": [
+  {
+   "id": "T-01-e7s-income-age27",
+   "group": "T",
+   "purpose": "소득 9,000만원 이상 행·8,000만~9,000만원 행과 20~29세·~35세 열을 혼동",
+   "question": "해외에서 첨단분야 E-7-S 비자를 신청하려는 만 27살 엔지니어예요. 고용계약서상 연봉이 8,500만 원인데, 점수표 소득 항목에서 몇 점을 받나요?",
+   "evidence": [
+    {
+     "id": "visa_manual_2026_10_19_pdf#p251",
+     "source_id": "visa_manual_2026_10_19_pdf",
+     "page": 251,
+     "domain": "visa_issuance"
+    }
+   ],
+   "right": {
+    "text": "40점"
+   },
+   "right_answers": [
+    "8,000만원 이상 ~ 9,000만원 미만 행의 20~29세 칸이라 소득 점수는 40점입니다.",
+    "소득 항목 배점은 40 점입니다(연봉 8천5백만 원, 20대 기준).",
+    "20대 후반이고 계약 연봉이 8,500만 원이면 소득 점수로 40점을 받아요."
+   ],
+   "wrong_answers": [
+    {
+     "text": "연봉 8,500만 원에 20대면 소득 점수는 45점입니다. 20~29세는 가장 높은 배점을 받아요.",
+     "value": {
+      "text": "45점"
+     },
+     "mixed_with": "9,000만원 이상 행의 20~29세 칸",
+     "kind": "row"
+    },
+    {
+     "text": "8,000만~9,000만원 구간이므로 소득 점수는 35점입니다.",
+     "value": {
+      "text": "35점"
+     },
+     "mixed_with": "같은 8,000만~9,000만원 행의 ~35세 칸",
+     "kind": "other"
+    },
+    {
+     "text": "만 27세, 연봉 8,500만 원이면 소득 항목은 30점입니다.",
+     "value": {
+      "text": "30점"
+     },
+     "mixed_with": "7,000만~8,000만원 행의 20~29세 칸",
+     "kind": "row"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "visa_manual_2026_10_19_pdf#p251"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "40점",
+      "40 점"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "연봉 8,500만 원에 20대면 소득 점수는 45점입니다. 20~29세는 가장 높은 배점을 받아요.",
+     "8,000만~9,000만원 구간이므로 소득 점수는 35점입니다.",
+     "만 27세, 연봉 8,500만 원이면 소득 항목은 30점입니다."
+    ]
+   }
+  },
+  {
+   "id": "T-02-health-drug-test-items",
+   "group": "T",
+   "purpose": "건강진단서의 검사내용 표(결핵·매독·간염 등)와 마약검사 표를 혼동",
+   "question": "한국에서 체류 허가 신청하려면 건강진단서를 내야 한대요. 그 서식에서 마약검사는 어떤 약물을 검사하나요?",
+   "evidence": [
+    {
+     "id": "stay_manual_2026_10_19_pdf#p577",
+     "source_id": "stay_manual_2026_10_19_pdf",
+     "page": 577,
+     "domain": "stay"
+    }
+   ],
+   "right": {
+    "text": "필로폰, 코카인, 아편, 대마, 기타"
+   },
+   "right_answers": [
+    "마약검사 항목은 필로폰, 코카인, 아편, 대마, 기타입니다.",
+    "필로폰·코카인·아편·대마를 검사하고, 그 밖의 약물은 '기타' 칸에 적습니다.",
+    "한국에서 체류 허가를 준비 중이시면, 건강진단서 마약검사란에는 필로폰, 코카인, 아편, 대마 항목이 있어요."
+   ],
+   "wrong_answers": [
+    {
+     "text": "마약검사 항목은 결핵, 매독, 간염(HBs Ag)입니다.",
+     "value": {
+      "text": "결핵, 매독, 간염(HBs Ag)"
+     },
+     "mixed_with": "검사내용 표의 결핵·매독·간염 칸",
+     "kind": "row"
+    },
+    {
+     "text": "마약검사란에서는 정신질환과 결핵 여부를 확인합니다.",
+     "value": {
+      "text": "정신질환, 결핵"
+     },
+     "mixed_with": "검사내용 표의 결핵·정신질환 칸",
+     "kind": "row"
+    },
+    {
+     "text": "마약검사는 혈압, (교정)시력, (교정)청력 검사로 이루어집니다.",
+     "value": {
+      "text": "혈압, (교정)시력, (교정)청력"
+     },
+     "mixed_with": "검사내용 표의 신체 계측 칸",
+     "kind": "row"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "stay_manual_2026_10_19_pdf#p577"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "필로폰"
+     ],
+     [
+      "코카인"
+     ],
+     [
+      "대마"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "마약검사 항목은 결핵, 매독, 간염(HBs Ag)입니다.",
+     "마약검사란에서는 정신질환과 결핵 여부를 확인합니다.",
+     "마약검사는 혈압, (교정)시력, (교정)청력 검사로 이루어집니다."
+    ]
+   }
+  },
+  {
+   "id": "T-03-kiip-pretest-july-round",
+   "group": "T",
+   "purpose": "6차 평가일과 5차·7차 평가일, 6차 결과발표일을 혼동",
+   "question": "사회통합프로그램 사전평가 점수가 필요해서 7월 중순에 접수하려고 해요. 전국 동시 시험 기준으로 그 차수 시험일이 언제예요?",
+   "evidence": [
+    {
+     "id": "visa_manual_2026_10_19_pdf#p272",
+     "source_id": "visa_manual_2026_10_19_pdf",
+     "page": 272,
+     "domain": "visa_issuance"
+    }
+   ],
+   "right": {
+    "text": "8. 3.(토)"
+   },
+   "right_answers": [
+    "7. 16.~7. 20. 접수하는 6차는 평가일이 8. 3.(토)입니다.",
+    "6차 사전평가로 시험일은 8월 3일 토요일이에요(’24년 일정 기준).",
+    "7월 중순에 접수하시는 분은 6차 시험을 보게 되고, 평가일은 8월 3일(토)입니다."
+   ],
+   "wrong_answers": [
+    {
+     "text": "7월 중순 접수분은 6월 22일(토)에 시험을 봅니다.",
+     "value": {
+      "text": "6. 22.(토)"
+     },
+     "mixed_with": "5차 평가일",
+     "kind": "row"
+    },
+    {
+     "text": "7월 중순에 접수하면 평가일은 8월 16일(금)입니다.",
+     "value": {
+      "text": "8. 16.(금)"
+     },
+     "mixed_with": "6차 결과발표일",
+     "kind": "other"
+    },
+    {
+     "text": "그 차수 평가일은 10월 19일(토)입니다.",
+     "value": {
+      "text": "10. 19.(토)"
+     },
+     "mixed_with": "7차 평가일",
+     "kind": "row"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "visa_manual_2026_10_19_pdf#p272"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "8. 3.",
+      "8월 3일",
+      "8.3."
+     ]
+    ],
+    "answer_must_not_contain": [
+     "7월 중순 접수분은 6월 22일(토)에 시험을 봅니다.",
+     "7월 중순에 접수하면 평가일은 8월 16일(금)입니다.",
+     "그 차수 평가일은 10월 19일(토)입니다."
+    ]
+   }
+  },
+  {
+   "id": "T-04-gyeongnam-korean-reading-max",
+   "group": "T",
+   "purpose": "읽기 만점(40점)과 듣기·말하기 만점(30점)을 혼동",
+   "question": "경남 광역형 비자 때문에 기량검증단 한국어 평가를 봐요. 읽기 영역은 몇 점 만점이에요?",
+   "evidence": [
+    {
+     "id": "stay_manual_2026_10_19_pdf#p782",
+     "source_id": "stay_manual_2026_10_19_pdf",
+     "page": 782,
+     "domain": "stay"
+    }
+   ],
+   "right": {
+    "text": "40점"
+   },
+   "right_answers": [
+    "읽기는 /40점, 즉 40점 만점입니다.",
+    "읽기 영역 만점은 40 점입니다.",
+    "경남 광역형 비자 한국어 평가를 보시는 분이라면 읽기는 40점 만점이에요."
+   ],
+   "wrong_answers": [
+    {
+     "text": "읽기 영역은 30점 만점입니다.",
+     "value": {
+      "text": "30점"
+     },
+     "mixed_with": "듣기 영역 만점",
+     "kind": "row"
+    },
+    {
+     "text": "읽기도 말하기와 마찬가지로 30점 만점입니다.",
+     "value": {
+      "text": "30점"
+     },
+     "mixed_with": "말하기 영역 만점",
+     "kind": "row"
+    },
+    {
+     "text": "읽기 만점은 30점이고, 다른 영역 점수와 합산해 통과 여부를 정합니다.",
+     "value": {
+      "text": "30점"
+     },
+     "mixed_with": "듣기 영역 만점",
+     "kind": "row"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "stay_manual_2026_10_19_pdf#p782"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "40점",
+      "40 점"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "읽기 영역은 30점 만점입니다.",
+     "읽기도 말하기와 마찬가지로 30점 만점입니다.",
+     "읽기 만점은 30점이고, 다른 영역 점수와 합산해 통과 여부를 정합니다."
+    ]
+   }
+  },
+  {
+   "id": "T-05-coal-mining-not-allowed",
+   "group": "T",
+   "purpose": "허용되지 않는 석탄 광업(05)과 허용업종인 금속 광업(06)·비금속광물 광업(07)을 혼동",
+   "question": "한국에 체류 중인데 탄광, 그러니까 석탄 캐는 광업 쪽 일자리가 있어요. 이 표 기준으로 허용 업종에 들어가나요?",
+   "evidence": [
+    {
+     "id": "stay_manual_2026_10_19_pdf#p568",
+     "source_id": "stay_manual_2026_10_19_pdf",
+     "page": 568,
+     "domain": "stay"
+    }
+   ],
+   "right": {
+    "text": "허용업종에 포함되지 않음"
+   },
+   "right_answers": [
+    "‘석탄, 원유 및 천연가스 광업’(05)은 허용업종에 포함되지 않습니다.",
+    "석탄 광업(05)은 허용되지 않는 업종입니다. 광업 가운데 허용되는 것은 금속 광업(06), 비금속광물 광업(07), 광업 지원 서비스업(08)입니다.",
+    "국내에서 탄광 취업을 생각하신다면, 석탄 광업은 허용업종이 아닙니다."
+   ],
+   "wrong_answers": [
+    {
+     "text": "광업(05~08)은 대분류 B 전체가 허용업종이라 석탄 광업에서도 일할 수 있습니다.",
+     "value": {
+      "text": "B. / 광업 / (05~08)"
+     },
+     "mixed_with": "대분류 B 표기 범위",
+     "kind": "row"
+    },
+    {
+     "text": "석탄 채굴은 ⑩ 금속 광업(06)에 해당하므로 허용업종입니다.",
+     "value": {
+      "text": "금속 광업(06)"
+     },
+     "mixed_with": "금속 광업(06) 행",
+     "kind": "row"
+    },
+    {
+     "text": "석탄 광업은 ⑪ 비금속광물 공업; 연료용 제외(07)에 들어가 허용됩니다.",
+     "value": {
+      "text": "비금속광물 공업; 연료용 제외(07)"
+     },
+     "mixed_with": "비금속광물 광업(07) 행",
+     "kind": "row"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "stay_manual_2026_10_19_pdf#p568"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "포함되지 않",
+      "허용되지 않",
+      "허용업종이 아닙"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "광업(05~08)은 대분류 B 전체가 허용업종이라 석탄 광업에서도 일할 수 있습니다.",
+     "석탄 채굴은 ⑩ 금속 광업(06)에 해당하므로 허용업종입니다.",
+     "석탄 광업은 ⑪ 비금속광물 공업; 연료용 제외(07)에 들어가 허용됩니다."
+    ]
+   }
+  },
+  {
+   "id": "T-06-c3-to-d2-notified-country",
+   "group": "T",
+   "purpose": "C31/C34 인증대 행의 고시국가 칸(×)과 일반국가 칸(○)·C38 행(○)을 혼동",
+   "question": "장관 고시 국가 국적인데 일반 단기방문(C-3)으로 들어와 지금 한국에 있어요. 인증대학 입학허가를 받았는데 국내에서 D-2로 바로 변경할 수 있나요?",
+   "evidence": [
+    {
+     "id": "stay_manual_2026_10_19_pdf#p41",
+     "source_id": "stay_manual_2026_10_19_pdf",
+     "page": 41,
+     "domain": "stay"
+    }
+   ],
+   "right": {
+    "text": "×(‘19.6.11 변경)"
+   },
+   "right_answers": [
+    "고시 21개 국가 국민의 C-3(C31/C34) 인증대 입학은 ×(‘19.6.11 변경)로, 국내 자격변경이 불가합니다.",
+    "변경할 수 없습니다. 고시국가·중점관리국가 국민은 C-3 일반에서 D-2로 국내 변경이 허용되지 않아요.",
+    "장관 고시 국가 출신으로 단기방문 중이시면 인증대 입학허가가 있어도 국내에서 D-2로 바꿀 수 없습니다."
+   ],
+   "wrong_answers": [
+    {
+     "text": "인증대 입학허가가 있으면 C-3에서 D-2로 국내 변경이 가능합니다(○).",
+     "value": {
+      "text": "○"
+     },
+     "mixed_with": "C31/C34 인증대 행의 일반국가 칸",
+     "kind": "other"
+    },
+    {
+     "text": "C-3 단기방문자는 국적과 관계없이 D-2 변경이 ○로 허용됩니다.",
+     "value": {
+      "text": "○"
+     },
+     "mixed_with": "C38 행(일반국가·고시국가 모두 ○)",
+     "kind": "row"
+    },
+    {
+     "text": "C-3는 인증대·비인증대 모두 ○ 표시라 D-2로 국내 변경이 가능해요.",
+     "value": {
+      "text": "○"
+     },
+     "mixed_with": "비인증대 행의 일반국가 칸",
+     "kind": "row"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "stay_manual_2026_10_19_pdf#p41"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "불가",
+      "할 수 없",
+      "바꿀 수 없",
+      "×"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "인증대 입학허가가 있으면 C-3에서 D-2로 국내 변경이 가능합니다(○).",
+     "C-3 단기방문자는 국적과 관계없이 D-2 변경이 ○로 허용됩니다.",
+     "C-3는 인증대·비인증대 모두 ○ 표시라 D-2로 국내 변경이 가능해요."
+    ]
+   }
+  },
+  {
+   "id": "T-07-e7s-extension-income-age38",
+   "group": "T",
+   "purpose": "6,000만~7,000만원 행의 ~39세 칸(20)과 이웃 열(~35세·40세 이상·20~29세)을 혼동",
+   "question": "E-7-S로 한국에서 일하는 만 38살이에요. 체류기간 연장 때 작년 소득금액증명원상 소득이 6,500만 원인데, 점수표 소득 점수는 몇 점이에요?",
+   "evidence": [
+    {
+     "id": "stay_manual_2026_10_19_pdf#p296",
+     "source_id": "stay_manual_2026_10_19_pdf",
+     "page": 296,
+     "domain": "stay"
+    }
+   ],
+   "right": {
+    "text": "20점"
+   },
+   "right_answers": [
+    "6,000만원 이상 ~ 7,000만원 미만 행의 ~39세 칸이라 소득 점수는 20점입니다.",
+    "소득 항목은 20 점입니다.",
+    "30대 후반이고 작년 소득이 6천5백만 원이면 소득 점수 20점을 받아요."
+   ],
+   "wrong_answers": [
+    {
+     "text": "6,000만~7,000만원 구간이면 소득 점수는 25점입니다.",
+     "value": {
+      "text": "25점"
+     },
+     "mixed_with": "같은 행의 ~35세 칸",
+     "kind": "other"
+    },
+    {
+     "text": "만 38세에 소득 6,500만 원이면 소득 항목은 15점입니다.",
+     "value": {
+      "text": "15점"
+     },
+     "mixed_with": "같은 행의 40세 이상 칸",
+     "kind": "other"
+    },
+    {
+     "text": "소득 6,500만 원이면 소득 점수 30점을 받습니다.",
+     "value": {
+      "text": "30점"
+     },
+     "mixed_with": "같은 행의 20~29세 칸",
+     "kind": "other"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "stay_manual_2026_10_19_pdf#p296"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "20점",
+      "20 점"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "6,000만~7,000만원 구간이면 소득 점수는 25점입니다.",
+     "만 38세에 소득 6,500만 원이면 소득 항목은 15점입니다.",
+     "소득 6,500만 원이면 소득 점수 30점을 받습니다."
+    ]
+   }
+  },
+  {
+   "id": "T-08-film-distribution-not-excluded",
+   "group": "T",
+   "purpose": "제외업종에 없는 영상·오디오 기록물 제작 및 배급업(59)과 제외업종인 정보서비스업(63) 등을 혼동",
+   "question": "본국에서 비자를 준비 중인데 한국의 영화 배급사에 취업할 예정이에요. 이 업종이 제외업종에 들어가나요?",
+   "evidence": [
+    {
+     "id": "visa_manual_2026_10_19_pdf#p427",
+     "source_id": "visa_manual_2026_10_19_pdf",
+     "page": 427,
+     "domain": "visa_issuance"
+    }
+   ],
+   "right": {
+    "text": "제외업종에 포함되어 있지 않음"
+   },
+   "right_answers": [
+    "‘영상·오디오 기록물 제작 및 배급업’(59)은 제외업종에 포함되어 있지 않습니다.",
+    "영화 배급(59)은 제외업종이 아닙니다.",
+    "한국 영화 배급사 취업을 앞두고 계시다면, 그 업종(59)은 제외업종에 포함되어 있지 않아요."
+   ],
+   "wrong_answers": [
+    {
+     "text": "영화 배급업은 ⑪ 정보서비스업(63)에 속해 제외업종입니다.",
+     "value": {
+      "text": "정보서비스업(63)"
+     },
+     "mixed_with": "정보서비스업(63) 행",
+     "kind": "row"
+    },
+    {
+     "text": "영상물 배급은 ⑩ 컴퓨터 프로그래밍, 시스템 통합 및 관리업(62)과 같은 정보통신 계열이라 제외업종에 해당합니다.",
+     "value": {
+      "text": "컴퓨터 프로그래밍, 시스템 통합 및 관리업(62)"
+     },
+     "mixed_with": "컴퓨터 프로그래밍(62) 행",
+     "kind": "row"
+    },
+    {
+     "text": "영화 배급사는 ⑨ 우편 및 통신업(61)에 묶여 제외업종입니다.",
+     "value": {
+      "text": "우편 및 통신업(61)"
+     },
+     "mixed_with": "우편 및 통신업(61) 행",
+     "kind": "row"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "visa_manual_2026_10_19_pdf#p427"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "포함되어 있지 않",
+      "제외업종이 아닙",
+      "제외되지 않"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "영화 배급업은 ⑪ 정보서비스업(63)에 속해 제외업종입니다.",
+     "영상물 배급은 ⑩ 컴퓨터 프로그래밍, 시스템 통합 및 관리업(62)과 같은 정보통신 계열이라 제외업종에 해당합니다.",
+     "영화 배급사는 ⑨ 우편 및 통신업(61)에 묶여 제외업종입니다."
+    ]
+   }
+  },
+  {
+   "id": "T-09-uzbek-diplomatic-waiver",
+   "group": "T",
+   "purpose": "우즈베키스탄 외교여권 60일과 다른 국가 행의 90일·30일·3개월을 혼동",
+   "question": "우즈베키스탄 외교관 여권을 갖고 있어요. 사증면제협정으로 한국에 비자 없이 며칠까지 머물 수 있나요?",
+   "evidence": [
+    {
+     "id": "visa_manual_2026_10_19_pdf#p16",
+     "source_id": "visa_manual_2026_10_19_pdf",
+     "page": 16,
+     "domain": "visa_issuance"
+    }
+   ],
+   "right": {
+    "amount": 60,
+    "unit": "day"
+   },
+   "right_answers": [
+    "협정상 체류기간은 60일입니다(’09.06.10. 발효).",
+    "외교여권 소지자는 60 일까지 체류할 수 있습니다.",
+    "우즈베키스탄 외교관이시면 무사증으로 60일 머물 수 있고, 주재공관원은 재임기간이 적용됩니다."
+   ],
+   "wrong_answers": [
+    {
+     "text": "우즈베키스탄 외교여권은 협정상 90일까지 체류할 수 있습니다.",
+     "value": {
+      "amount": 90,
+      "unit": "day"
+     },
+     "mixed_with": "라오스·몽골 등 다른 국가 행의 90일",
+     "kind": "row"
+    },
+    {
+     "text": "협정상 체류기간은 30일입니다.",
+     "value": {
+      "amount": 30,
+      "unit": "day"
+     },
+     "mixed_with": "인도네시아·중국 행의 30일",
+     "kind": "row"
+    },
+    {
+     "text": "우즈베키스탄 외교관은 비자 없이 3개월간 머물 수 있습니다.",
+     "value": {
+      "amount": 3,
+      "unit": "month"
+     },
+     "mixed_with": "말레이시아·이란 행의 3개월",
+     "kind": "row"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "visa_manual_2026_10_19_pdf#p16"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "60일",
+      "60 일"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "우즈베키스탄 외교여권은 협정상 90일까지 체류할 수 있습니다.",
+     "협정상 체류기간은 30일입니다.",
+     "우즈베키스탄 외교관은 비자 없이 3개월간 머물 수 있습니다."
+    ]
+   }
+  },
+  {
+   "id": "T-10-chungbuk-worklearn-columns",
+   "group": "T",
+   "purpose": "참여 내용 표의 열(기업명·사업자등록번호·근무 기간·주요 업무)과 인적사항 항목을 혼동",
+   "question": "충북에서 대학 다니면서 광역형 비자 일·학습병행에 참여하고 있어요. 참여 확인서의 '참여 내용' 표에는 뭘 적어야 해요?",
+   "evidence": [
+    {
+     "id": "stay_manual_2026_10_19_pdf#p768",
+     "source_id": "stay_manual_2026_10_19_pdf",
+     "page": 768,
+     "domain": "stay"
+    }
+   ],
+   "right": {
+    "text": "기업명(상호명), 사업자등록번호, 근무 기간(개월), 주요 업무"
+   },
+   "right_answers": [
+    "참여 내용 표에는 연번, 기업명(상호명), 사업자등록번호, 근무 기간(개월), 주요 업무를 적습니다.",
+    "일한 회사의 기업명과 사업자등록번호, 근무한 개월 수, 주요 업무를 칸마다 채우면 됩니다.",
+    "충북에서 일·학습병행 중인 유학생이라면 참여 내용 표에 근무한 기업명, 사업자등록번호, 근무 기간, 주요 업무를 써요."
+   ],
+   "wrong_answers": [
+    {
+     "text": "참여 내용 표에는 성명, 국적, 대학, 학번을 적으면 됩니다.",
+     "value": {
+      "text": "성명, 국적, 대학, 학번"
+     },
+     "mixed_with": "확인서 상단 인적사항 항목",
+     "kind": "row"
+    },
+    {
+     "text": "참여 내용에는 전공, 연락처, 이메일과 근무 기간을 적습니다.",
+     "value": {
+      "text": "전공, 연락처, 이메일"
+     },
+     "mixed_with": "확인서 상단 인적사항 항목",
+     "kind": "row"
+    },
+    {
+     "text": "참여 내용에는 시간제 취업 허가서 내용과 제출자 서명을 적으면 됩니다.",
+     "value": {
+      "text": "시간제 취업 허가서"
+     },
+     "mixed_with": "첨부 서류·서명란",
+     "kind": "other"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "stay_manual_2026_10_19_pdf#p768"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "기업명"
+     ],
+     [
+      "사업자등록번호"
+     ],
+     [
+      "주요 업무"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "참여 내용 표에는 성명, 국적, 대학, 학번을 적으면 됩니다.",
+     "참여 내용에는 전공, 연락처, 이메일과 근무 기간을 적습니다.",
+     "참여 내용에는 시간제 취업 허가서 내용과 제출자 서명을 적으면 됩니다."
+    ]
+   }
+  },
+  {
+   "id": "T-11-pc-bang-restricted-job",
+   "group": "T",
+   "purpose": "PC방 종사원이 속한 그 외 오락시설 서비스원(44239)과 노래방 서비스원(44232) 등을 혼동",
+   "question": "한국에서 PC방 아르바이트를 하려고 해요. 취업 제한 세부 직업 표에서 PC방 종사원은 어느 직업으로 분류돼요?",
+   "evidence": [
+    {
+     "id": "stay_manual_2026_10_19_pdf#p586",
+     "source_id": "stay_manual_2026_10_19_pdf",
+     "page": 586,
+     "domain": "stay"
+    }
+   ],
+   "right": {
+    "text": "그 외 오락시설 서비스원(44239)"
+   },
+   "right_answers": [
+    "(5) 그 외 오락시설 서비스원(44239)으로 분류됩니다.",
+    "PC방 종사원·관리인은 직업코드 44239, '그 외 오락시설 서비스원'의 직업 예시에 들어 있어요.",
+    "한국에서 PC방 일을 하시려면 참고하세요. 그 일은 그 외 오락시설 서비스원(44239)에 해당하는 취업 제한 직업입니다."
+   ],
+   "wrong_answers": [
+    {
+     "text": "PC방 종사원은 (4) 노래방 서비스원(44232)으로 분류됩니다.",
+     "value": {
+      "text": "노래방 서비스원(44232)"
+     },
+     "mixed_with": "노래방 서비스원 행",
+     "kind": "row"
+    },
+    {
+     "text": "PC방 일은 직업코드 44232에 해당하는 취업 제한 직업입니다.",
+     "value": {
+      "text": "44232"
+     },
+     "mixed_with": "노래방 서비스원 행의 코드",
+     "kind": "row"
+    },
+    {
+     "text": "PC방 종사원은 (2) 목욕 관리사(43143)와 같은 개인 서비스 직업으로 분류돼요.",
+     "value": {
+      "text": "목욕 관리사(43143)"
+     },
+     "mixed_with": "목욕 관리사 행",
+     "kind": "row"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "stay_manual_2026_10_19_pdf#p586"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "44239",
+      "그 외 오락시설"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "PC방 종사원은 (4) 노래방 서비스원(44232)으로 분류됩니다.",
+     "PC방 일은 직업코드 44232에 해당하는 취업 제한 직업입니다.",
+     "PC방 종사원은 (2) 목욕 관리사(43143)와 같은 개인 서비스 직업으로 분류돼요."
+    ]
+   }
+  },
+  {
+   "id": "T-12-building-cleaning-allowed",
+   "group": "T",
+   "purpose": "허용되는 건물 및 산업설비 청소업(7421)과 제외업종인 742·74·751을 혼동",
+   "question": "한국에 살면서 빌딩 청소 회사에 취업하려고 해요. 이 표에서 건물 청소업은 제외업종이에요, 아니면 일할 수 있는 업종이에요?",
+   "evidence": [
+    {
+     "id": "stay_manual_2026_10_19_pdf#p574",
+     "source_id": "stay_manual_2026_10_19_pdf",
+     "page": 574,
+     "domain": "stay"
+    }
+   ],
+   "right": {
+    "text": "‘건물 및 산업설비 청소업’(7421)은 허용한다"
+   },
+   "right_answers": [
+    "‘건물 및 산업설비 청소업’(7421)은 허용한다고 되어 있습니다.",
+    "빌딩 청소업(7421)은 예외적으로 허용됩니다.",
+    "한국에서 빌딩 청소 회사 취업을 생각하신다면, 건물 및 산업설비 청소업은 허용 업종이에요."
+   ],
+   "wrong_answers": [
+    {
+     "text": "건물·산업설비 청소 및 방제 서비스업(742)이 제외업종이라 빌딩 청소 회사 취업은 안 됩니다.",
+     "value": {
+      "text": "건물･산업설비 청소 및 방제 서비스업(742)"
+     },
+     "mixed_with": "742 소분류 행",
+     "kind": "row"
+    },
+    {
+     "text": "사업시설 관리 및 조경 서비스업(74) 전체가 제외업종이어서 청소업에서도 일할 수 없습니다.",
+     "value": {
+      "text": "사업시설 관리 및 조경 서비스업(74)"
+     },
+     "mixed_with": "74 중분류 행",
+     "kind": "row"
+    },
+    {
+     "text": "청소 인력은 고용 알선 및 인력 공급업(751)으로 분류돼 제외업종입니다.",
+     "value": {
+      "text": "고용 알선 및 인력 공급업(751)"
+     },
+     "mixed_with": "751 행",
+     "kind": "row"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "stay_manual_2026_10_19_pdf#p574"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "허용"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "건물·산업설비 청소 및 방제 서비스업(742)이 제외업종이라 빌딩 청소 회사 취업은 안 됩니다.",
+     "사업시설 관리 및 조경 서비스업(74) 전체가 제외업종이어서 청소업에서도 일할 수 없습니다.",
+     "청소 인력은 고용 알선 및 인력 공급업(751)으로 분류돼 제외업종입니다."
+    ]
+   }
+  },
+  {
+   "id": "T-13-food-delivery-job-code",
+   "group": "T",
+   "purpose": "음식배달원(92230)과 택배원(92221)·이삿짐 운반원(92102) 등 이웃 행 코드를 혼동",
+   "question": "한국에 체류 중인데 배달 앱으로 음식 배달을 하려고 해요. 이 표에서 음식배달원 직업 코드는 몇 번이에요?",
+   "evidence": [
+    {
+     "id": "stay_manual_2026_10_19_pdf#p636",
+     "source_id": "stay_manual_2026_10_19_pdf",
+     "page": 636,
+     "domain": "stay"
+    }
+   ],
+   "right": {
+    "text": "92230"
+   },
+   "right_answers": [
+    "음식배달원의 코드는 92230입니다.",
+    "직업 코드 92230(음식배달원)입니다.",
+    "배달 앱으로 음식 배달을 하시는 경우 표의 음식배달원 행, 코드 92230을 보시면 됩니다."
+   ],
+   "wrong_answers": [
+    {
+     "text": "음식배달원 코드는 92221입니다.",
+     "value": {
+      "text": "92221"
+     },
+     "mixed_with": "택배원 행",
+     "kind": "row"
+    },
+    {
+     "text": "음식 배달은 직업 코드 92102에 해당합니다.",
+     "value": {
+      "text": "92102"
+     },
+     "mixed_with": "이삿짐 운반원 행",
+     "kind": "row"
+    },
+    {
+     "text": "배달 앱 음식 배달은 53220(노점 및 이동판매원)으로 봅니다.",
+     "value": {
+      "text": "53220"
+     },
+     "mixed_with": "노점 및 이동판매원 행",
+     "kind": "row"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "stay_manual_2026_10_19_pdf#p636"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "92230"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "음식배달원 코드는 92221입니다.",
+     "음식 배달은 직업 코드 92102에 해당합니다.",
+     "배달 앱 음식 배달은 53220(노점 및 이동판매원)으로 봅니다."
+    ]
+   }
+  },
+  {
+   "id": "T-14-e7t-top-talent-code",
+   "group": "T",
+   "purpose": "최우수인재 첨단산업분야 종사자(E-7-T)와 네거티브 방식 첨단산업분야 종사자(E-7-S)를 혼동",
+   "question": "한국에서 E-7으로 반도체 연구를 하고 있어요. 최우수인재로 첨단산업 분야에서 일하는 사람의 E-7 세부 약호는 뭐예요?",
+   "evidence": [
+    {
+     "id": "stay_manual_2026_10_19_pdf#p215",
+     "source_id": "stay_manual_2026_10_19_pdf",
+     "page": 215,
+     "domain": "stay"
+    }
+   ],
+   "right": {
+    "text": "E-7-T"
+   },
+   "right_answers": [
+    "최우수인재 특정활동은 E-7-T입니다.",
+    "세부 약호는 E-7-T(최우수인재 첨단산업분야 종사자)예요.",
+    "첨단산업 분야에서 일하는 최우수인재이시면 E-7-T에 해당합니다."
+   ],
+   "wrong_answers": [
+    {
+     "text": "첨단산업 분야 종사자는 E-7-S입니다.",
+     "value": {
+      "text": "E-7-S"
+     },
+     "mixed_with": "네거티브 방식 전문인력 행",
+     "kind": "status_code"
+    },
+    {
+     "text": "최우수인재는 관리자·전문가인 전문인력 E-7-1로 분류됩니다.",
+     "value": {
+      "text": "E-7-1"
+     },
+     "mixed_with": "전문인력 행",
+     "kind": "status_code"
+    },
+    {
+     "text": "국내에서 성장한 우수 인력은 E-7-Y 약호를 씁니다.",
+     "value": {
+      "text": "E-7-Y"
+     },
+     "mixed_with": "국내성장인력 행",
+     "kind": "status_code"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "stay_manual_2026_10_19_pdf#p215"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "E-7-T"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "첨단산업 분야 종사자는 E-7-S입니다.",
+     "최우수인재는 관리자·전문가인 전문인력 E-7-1로 분류됩니다.",
+     "국내에서 성장한 우수 인력은 E-7-Y 약호를 씁니다."
+    ]
+   }
+  },
+  {
+   "id": "T-15-distant-water-fishing-not-allowed",
+   "group": "T",
+   "purpose": "허용되지 않는 원양 어업(03111)과 허용업종인 양식 어업(0321)을 혼동",
+   "question": "본국에서 비자를 준비하고 있는데, 한국 원양어선 회사에서 취업 제의를 받았어요. 원양 어업이 허용업종에 들어가나요?",
+   "evidence": [
+    {
+     "id": "visa_manual_2026_10_19_pdf#p423",
+     "source_id": "visa_manual_2026_10_19_pdf",
+     "page": 423,
+     "domain": "visa_issuance"
+    }
+   ],
+   "right": {
+    "text": "허용업종에 포함되지 않음"
+   },
+   "right_answers": [
+    "‘원양 어업’(03111)은 허용업종에 포함되지 않습니다.",
+    "원양 어업은 허용되지 않는 업종이에요. 허용되는 건 양식 어업(0321)입니다.",
+    "원양어선 회사 취업 제의를 받으셨다면, 원양 어업은 허용업종이 아닙니다."
+   ],
+   "wrong_answers": [
+    {
+     "text": "원양 어업도 ⑨ 양식 어업(0321)과 같은 어업이라 허용업종입니다.",
+     "value": {
+      "text": "양식 어업(0321)"
+     },
+     "mixed_with": "양식 어업 행",
+     "kind": "row"
+    },
+    {
+     "text": "원양 어업은 해수면 양식 어업(03211)에 해당하므로 허용됩니다.",
+     "value": {
+      "text": "해수면 양식 어업(03211)"
+     },
+     "mixed_with": "양식 어업의 하위 업종",
+     "kind": "row"
+    },
+    {
+     "text": "원양 어업은 032. 양식어업 및 어업 관련 서비스업에 포함돼 허용업종입니다.",
+     "value": {
+      "text": "032. 양식어업 및 어업 관련 서비스업"
+     },
+     "mixed_with": "032 업종 범위",
+     "kind": "row"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "visa_manual_2026_10_19_pdf#p423"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "포함되지 않",
+      "허용되지 않",
+      "허용업종이 아닙"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "원양 어업도 ⑨ 양식 어업(0321)과 같은 어업이라 허용업종입니다.",
+     "원양 어업은 해수면 양식 어업(03211)에 해당하므로 허용됩니다.",
+     "원양 어업은 032. 양식어업 및 어업 관련 서비스업에 포함돼 허용업종입니다."
+    ]
+   }
+  },
+  {
+   "id": "T-16-f5-spouse-of-citizen-code",
+   "group": "T",
+   "purpose": "국민의 배우자(F-5-2)와 영주자의 배우자(F-5-4)·국민의 미성년 자녀(F-5-3)를 혼동",
+   "question": "한국인 남편과 결혼해서 한국에 살고 있어요. 영주권으로 바꾸면 세부 약호는 어떻게 되나요?",
+   "evidence": [
+    {
+     "id": "stay_manual_2026_10_19_pdf#p435",
+     "source_id": "stay_manual_2026_10_19_pdf",
+     "page": 435,
+     "domain": "stay"
+    }
+   ],
+   "right": {
+    "text": "F-5-2"
+   },
+   "right_answers": [
+    "국민의 배우자는 F-5-2입니다.",
+    "세부 약호는 F-5-2(국민의 배우자, 시행령 별표1의3 2호)예요.",
+    "한국인 남편을 두신 분이라면 영주자격 세부 약호는 F-5-2입니다."
+   ],
+   "wrong_answers": [
+    {
+     "text": "배우자 영주자격은 F-5-4입니다.",
+     "value": {
+      "text": "F-5-4"
+     },
+     "mixed_with": "영주자격 소지자의 배우자 행",
+     "kind": "status_code"
+    },
+    {
+     "text": "국민의 가족은 F-5-3으로 영주자격을 받습니다.",
+     "value": {
+      "text": "F-5-3"
+     },
+     "mixed_with": "국민의 미성년 자녀 행",
+     "kind": "status_code"
+    },
+    {
+     "text": "한국에 살면서 영주로 바꾸면 F-5-1(일반 영주자)입니다.",
+     "value": {
+      "text": "F-5-1"
+     },
+     "mixed_with": "5년 이상 체류한 일반 영주자 행",
+     "kind": "status_code"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "stay_manual_2026_10_19_pdf#p435"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "F-5-2"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "배우자 영주자격은 F-5-4입니다.",
+     "국민의 가족은 F-5-3으로 영주자격을 받습니다.",
+     "한국에 살면서 영주로 바꾸면 F-5-1(일반 영주자)입니다."
+    ]
+   }
+  },
+  {
+   "id": "T-17-f4-extension-no-korean",
+   "group": "T",
+   "purpose": "한국어능력 미제출 1년과 제출 시 3년·사회통합프로그램 수강 시 2년·사증발급 2년을 혼동",
+   "question": "재외동포(F-4)로 한국에 살고 있어요. 한국어능력 증빙은 안 냈고 사회통합프로그램도 등록 안 했는데, 체류기간 연장하면 몇 년 받나요?",
+   "evidence": [
+    {
+     "id": "stay_manual_2026_10_19_pdf#p564",
+     "source_id": "stay_manual_2026_10_19_pdf",
+     "page": 564,
+     "domain": "stay"
+    }
+   ],
+   "right": {
+    "amount": 1,
+    "unit": "year"
+   },
+   "right_answers": [
+    "한국어능력 미제출이면 체류기간 연장 시 체류기간 1년을 부여합니다.",
+    "12개월이 부여됩니다.",
+    "한국어 증빙도 사회통합프로그램 등록도 없는 재외동포라면 연장 때 1년을 받습니다."
+   ],
+   "wrong_answers": [
+    {
+     "text": "체류기간 연장 시 최대 3년을 받을 수 있습니다.",
+     "value": {
+      "amount": 3,
+      "unit": "year"
+     },
+     "mixed_with": "한국어능력 제출(면제자 포함) 칸",
+     "kind": "row"
+    },
+    {
+     "text": "한국어능력을 안 냈어도 연장하면 2년이 부여됩니다.",
+     "value": {
+      "amount": 2,
+      "unit": "year"
+     },
+     "mixed_with": "사회통합프로그램 등록·수강자",
+     "kind": "row"
+    },
+    {
+     "text": "F-4는 체류기간 2년짜리로 연장됩니다.",
+     "value": {
+      "amount": 2,
+      "unit": "year"
+     },
+     "mixed_with": "사증발급 시 한국어능력 제출자의 복수사증",
+     "kind": "other"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "stay_manual_2026_10_19_pdf#p564"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "1년",
+      "12개월",
+      "1 년"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "체류기간 연장 시 최대 3년을 받을 수 있습니다.",
+     "한국어능력을 안 냈어도 연장하면 2년이 부여됩니다.",
+     "F-4는 체류기간 2년짜리로 연장됩니다."
+    ]
+   }
+  },
+  {
+   "id": "T-18-gyeongju-koryoin-center-phone",
+   "group": "T",
+   "purpose": "경상북도고려인통합지원센터 연락처와 같은 경주 소재 다른 센터 연락처를 혼동",
+   "question": "러시아에 사는 고려인 동포인데 한국 비자를 준비하고 있어요. 경주에 있는 경상북도 고려인통합지원센터 연락처 좀 알려주세요.",
+   "evidence": [
+    {
+     "id": "visa_manual_2026_10_19_pdf#p448",
+     "source_id": "visa_manual_2026_10_19_pdf",
+     "page": 448,
+     "domain": "visa_issuance"
+    }
+   ],
+   "right": {
+    "text": "054-742-4336"
+   },
+   "right_answers": [
+    "경상북도고려인통합지원센터 연락처는 054-742-4336입니다.",
+    "전화번호는 054-742-4336이고 주소는 경북 경주시 한빛길 4, 2층이에요.",
+    "고려인 동포로서 경주 센터를 찾으신다면 054-742-4336으로 연락하시면 됩니다."
+   ],
+   "wrong_answers": [
+    {
+     "text": "경상북도고려인통합지원센터 연락처는 054-771-8585입니다.",
+     "value": {
+      "text": "054-771-8585"
+     },
+     "mixed_with": "경주시외국인도움센터 행",
+     "kind": "row"
+    },
+    {
+     "text": "경주 고려인 센터 전화번호는 054-743-2888이에요.",
+     "value": {
+      "text": "054-743-2888"
+     },
+     "mixed_with": "경주 YMCA 행",
+     "kind": "row"
+    },
+    {
+     "text": "054-772-0691로 연락하시면 경상북도 고려인통합지원센터에 닿습니다.",
+     "value": {
+      "text": "054-772-0691"
+     },
+     "mixed_with": "하이웃이주민센터 행",
+     "kind": "row"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "visa_manual_2026_10_19_pdf#p448"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "054-742-4336"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "경상북도고려인통합지원센터 연락처는 054-771-8585입니다.",
+     "경주 고려인 센터 전화번호는 054-743-2888이에요.",
+     "054-772-0691로 연락하시면 경상북도 고려인통합지원센터에 닿습니다."
+    ]
+   }
+  },
+  {
+   "id": "T-19-aircraft-mechanic-code",
+   "group": "T",
+   "purpose": "항공기 정비원(7521)과 항공기(부품) 제조원(S8417)·선박 전기원(76212)을 혼동",
+   "question": "한국에서 항공기 정비 일로 E-7 자격 변경을 알아보고 있어요. 항공기 정비원 직종 코드가 뭐예요?",
+   "evidence": [
+    {
+     "id": "stay_manual_2026_10_19_pdf#p235",
+     "source_id": "stay_manual_2026_10_19_pdf",
+     "page": 235,
+     "domain": "stay"
+    }
+   ],
+   "right": {
+    "text": "7521"
+   },
+   "right_answers": [
+    "항공기 정비원의 직종 코드는 7521입니다.",
+    "일반기능인력(E-7-3) 8) 항공기 정비원(7521)이에요.",
+    "항공기 정비 일로 E-7을 준비하신다면 직종 코드는 7521입니다."
+   ],
+   "wrong_answers": [
+    {
+     "text": "항공기 정비원 직종 코드는 S8417입니다.",
+     "value": {
+      "text": "S8417"
+     },
+     "mixed_with": "항공기(부품) 제조원 행",
+     "kind": "row"
+    },
+    {
+     "text": "항공기 정비 쪽 코드는 76212예요.",
+     "value": {
+      "text": "76212"
+     },
+     "mixed_with": "선박 전기원 행",
+     "kind": "row"
+    },
+    {
+     "text": "항공기 정비원은 숙련기능인력 S740 코드로 신청합니다.",
+     "value": {
+      "text": "S740"
+     },
+     "mixed_with": "E-7-4 뿌리산업체 숙련기능공 행",
+     "kind": "status_code"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "stay_manual_2026_10_19_pdf#p235"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "7521"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "항공기 정비원 직종 코드는 S8417입니다.",
+     "항공기 정비 쪽 코드는 76212예요.",
+     "항공기 정비원은 숙련기능인력 S740 코드로 신청합니다."
+    ]
+   }
+  },
+  {
+   "id": "T-20-parttime-topik-year3",
+   "group": "T",
+   "purpose": "학사 3~4년 행(4급)과 전문학사·학사 1~2년 행(3급)을 혼동",
+   "question": "학부 3학년 유학생이에요. 시간제 취업 허용시간 확대를 받으려면 TOPIK 몇 급이 있어야 해요?",
+   "evidence": [
+    {
+     "id": "stay_manual_2026_10_19_pdf#p735",
+     "source_id": "stay_manual_2026_10_19_pdf",
+     "page": 735,
+     "domain": "stay"
+    }
+   ],
+   "right": {
+    "text": "4급 이상"
+   },
+   "right_answers": [
+    "학사 3~4년은 한국어능력시험 4급 이상입니다.",
+    "TOPIK 4급 이상이 필요하고, 사회통합프로그램 4단계 이상 이수나 사전평가 81점 이상도 인정돼요.",
+    "3학년 학부생이시면 TOPIK 4급 이상이 있어야 합니다."
+   ],
+   "wrong_answers": [
+    {
+     "text": "TOPIK 3급 이상이면 됩니다.",
+     "value": {
+      "text": "3급 이상"
+     },
+     "mixed_with": "전문학사·학사 1~2년 행",
+     "kind": "row"
+    },
+    {
+     "text": "한국어능력시험 3급 이상이 기준이고, 사회통합프로그램은 3단계 이상 이수 또는 사전평가 61점 이상으로 대신할 수 있어요.",
+     "value": {
+      "text": "3단계 이상 이수 또는 사전평가 61점 이상"
+     },
+     "mixed_with": "전문학사·학사 1~2년 행",
+     "kind": "row"
+    },
+    {
+     "text": "학년과 관계없이 TOPIK 3급, 세종학당은 중급1 과정 이상이면 충족합니다.",
+     "value": {
+      "text": "중급1 과정 이상"
+     },
+     "mixed_with": "전문학사·학사 1~2년 행",
+     "kind": "row"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "stay_manual_2026_10_19_pdf#p735"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "4급"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "TOPIK 3급 이상이면 됩니다.",
+     "한국어능력시험 3급 이상이 기준이고, 사회통합프로그램은 3단계 이상 이수 또는 사전평가 61점 이상으로 대신할 수 있어요.",
+     "학년과 관계없이 TOPIK 3급, 세종학당은 중급1 과정 이상이면 충족합니다."
+    ]
+   }
+  },
+  {
+   "id": "T-21-f5-foreign-other-crime",
+   "group": "T",
+   "purpose": "기타 범죄 영주(F-5) 10년과 재외동포(F-4) 5년·마약 등 7년을 혼동",
+   "question": "한국에서 영주(F-5)로 자격 변경하려고 해요. 예전에 본국에서 기타 범죄로 금고 이상에 해당하는 형을 선고받았는데, 얼마 동안 허가가 제한되나요?",
+   "evidence": [
+    {
+     "id": "stay_manual_2026_10_19_pdf#p561",
+     "source_id": "stay_manual_2026_10_19_pdf",
+     "page": 561,
+     "domain": "stay"
+    }
+   ],
+   "right": {
+    "amount": 10,
+    "unit": "year"
+   },
+   "right_answers": [
+    "영주(F-5)는 선고일로부터 10년 간 품행단정 미충족으로 허가제한됩니다.",
+    "선고일부터 10 년 동안 제한돼요.",
+    "외국에서 기타 범죄로 형을 받은 분이 영주로 바꾸려면, 선고일로부터 10년이 지나야 합니다."
+   ],
+   "wrong_answers": [
+    {
+     "text": "선고일로부터 5년 간 허가가 제한됩니다.",
+     "value": {
+      "amount": 5,
+      "unit": "year"
+     },
+     "mixed_with": "같은 기타 범죄 표의 재외동포(F-4) 칸",
+     "kind": "status_code"
+    },
+    {
+     "text": "선고일로부터 7년 간 영주 자격변경이 불허됩니다.",
+     "value": {
+      "amount": 7,
+      "unit": "year"
+     },
+     "mixed_with": "마약·보이스피싱·음주운전 표의 재외동포(F-4) 칸",
+     "kind": "row"
+    },
+    {
+     "text": "영주 변경은 선고일부터 5년이 지나면 다시 신청할 수 있습니다.",
+     "value": {
+      "amount": 5,
+      "unit": "year"
+     },
+     "mixed_with": "기타 범죄 재외동포(F-4) 칸",
+     "kind": "status_code"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "stay_manual_2026_10_19_pdf#p561"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "10년",
+      "10 년"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "선고일로부터 5년 간 허가가 제한됩니다.",
+     "선고일로부터 7년 간 영주 자격변경이 불허됩니다.",
+     "영주 변경은 선고일부터 5년이 지나면 다시 신청할 수 있습니다."
+    ]
+   }
+  },
+  {
+   "id": "T-22-e74-fishery-ministry",
+   "group": "T",
+   "purpose": "어업·내항상선 추천 부처(해수부)와 농축산업(농식품부)·건설업(국토부)·제조업(고용부)을 혼동",
+   "question": "어선에서 일한 경력으로 E-7-4 숙련기능인력을 준비하고 있어요. 어업 분야 중앙부처 추천은 어느 부처가 해요?",
+   "evidence": [
+    {
+     "id": "visa_manual_2026_10_19_pdf#p270",
+     "source_id": "visa_manual_2026_10_19_pdf",
+     "page": 270,
+     "domain": "visa_issuance"
+    }
+   ],
+   "right": {
+    "text": "해수부"
+   },
+   "right_answers": [
+    "어업·내항상선 영역은 해수부 선원정책과가 추천합니다.",
+    "해양수산부(선원정책과) 소관이에요.",
+    "어선 경력으로 E-7-4를 준비하신다면 중앙부처 추천은 해수부가 맡습니다."
+   ],
+   "wrong_answers": [
+    {
+     "text": "어업 분야는 농식품부 농업경영정책과가 추천합니다.",
+     "value": {
+      "text": "농식품부"
+     },
+     "mixed_with": "농축산업 영역",
+     "kind": "row"
+    },
+    {
+     "text": "어업·내항상선은 국토부 건설산업과 소관입니다.",
+     "value": {
+      "text": "국토부"
+     },
+     "mixed_with": "건설업 영역",
+     "kind": "row"
+    },
+    {
+     "text": "어업 분야 추천은 고용부 외국인력담당관실에서 합니다.",
+     "value": {
+      "text": "고용부"
+     },
+     "mixed_with": "제조업 영역",
+     "kind": "row"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "visa_manual_2026_10_19_pdf#p270"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "해수부",
+      "해양수산부"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "어업 분야는 농식품부 농업경영정책과가 추천합니다.",
+     "어업·내항상선은 국토부 건설산업과 소관입니다.",
+     "어업 분야 추천은 고용부 외국인력담당관실에서 합니다."
+    ]
+   }
+  },
+  {
+   "id": "T-23-kpoint-e74-age36",
+   "group": "T",
+   "purpose": "34~40세 칸(30점)과 27~33세(60점)·19~26세(40점)·41세~(10점)를 혼동",
+   "question": "E-9으로 한국에서 일하고 있는 만 36살이에요. E-7-4 전환 점수표에서 나이 점수는 몇 점이에요?",
+   "evidence": [
+    {
+     "id": "stay_manual_2026_10_19_pdf#p310",
+     "source_id": "stay_manual_2026_10_19_pdf",
+     "page": 310,
+     "domain": "stay"
+    }
+   ],
+   "right": {
+    "text": "30점"
+   },
+   "right_answers": [
+    "34세 ~ 40세 구간이라 나이 배점은 30점입니다.",
+    "나이 항목은 30 점이에요.",
+    "30대 중반을 넘긴 36세이시면 나이 점수로 30점을 받습니다."
+   ],
+   "wrong_answers": [
+    {
+     "text": "만 36세면 나이 점수는 60점으로 최고점입니다.",
+     "value": {
+      "text": "60점"
+     },
+     "mixed_with": "27세~33세 칸",
+     "kind": "row"
+    },
+    {
+     "text": "나이 항목 배점은 40점입니다.",
+     "value": {
+      "text": "40점"
+     },
+     "mixed_with": "19세~26세 칸",
+     "kind": "row"
+    },
+    {
+     "text": "36세는 나이 점수 10점을 받습니다.",
+     "value": {
+      "text": "10점"
+     },
+     "mixed_with": "41세~ 칸",
+     "kind": "row"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "stay_manual_2026_10_19_pdf#p310"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "30점",
+      "30 점"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "만 36세면 나이 점수는 60점으로 최고점입니다.",
+     "나이 항목 배점은 40점입니다.",
+     "36세는 나이 점수 10점을 받습니다."
+    ]
+   }
+  },
+  {
+   "id": "T-24-busan-major-materials",
+   "group": "T",
+   "purpose": "신소재공학이 속한 재료 중분류와 화학·고분자·에너지, 전기·전자·컴퓨터 등 이웃 행을 혼동",
+   "question": "부산에 있는 대학에서 신소재공학을 전공하고 있어요. 부산 광역형 비자 대상 전공 표에서 제 전공은 어느 중분류에 들어가요?",
+   "evidence": [
+    {
+     "id": "stay_manual_2026_10_19_pdf#p729",
+     "source_id": "stay_manual_2026_10_19_pdf",
+     "page": 729,
+     "domain": "stay"
+    }
+   ],
+   "right": {
+    "text": "재료"
+   },
+   "right_answers": [
+    "신소재공학은 공학 대분류의 '재료' 중분류에 속합니다.",
+    "중분류는 재료(금속공학, 반도체공학, 신소재공학, 세라믹공학, 재료공학)입니다.",
+    "부산에서 신소재공학을 공부하신다면 표의 공학 > 재료 행에 해당해요."
+   ],
+   "wrong_answers": [
+    {
+     "text": "신소재공학은 화학·고분자·에너지 중분류에 들어갑니다.",
+     "value": {
+      "text": "화학·고분자·에너지"
+     },
+     "mixed_with": "화학공학·에너지공학·고분자공학 행",
+     "kind": "row"
+    },
+    {
+     "text": "신소재공학은 전기·전자·컴퓨터 중분류입니다.",
+     "value": {
+      "text": "전기·전자·컴퓨터"
+     },
+     "mixed_with": "전기공학·전자공학 행",
+     "kind": "row"
+    },
+    {
+     "text": "신소재공학은 자연과학 대분류의 화학·생명과학·환경에 속해요.",
+     "value": {
+      "text": "화학·생명과학·환경"
+     },
+     "mixed_with": "자연과학 행",
+     "kind": "row"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "stay_manual_2026_10_19_pdf#p729"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "재료"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "신소재공학은 화학·고분자·에너지 중분류에 들어갑니다.",
+     "신소재공학은 전기·전자·컴퓨터 중분류입니다.",
+     "신소재공학은 자연과학 대분류의 화학·생명과학·환경에 속해요."
+    ]
+   }
+  }
+ ]
+}
