@@ -102,6 +102,14 @@ const wait = (ms) => new Promise((r) => setTimeout(r, ms));
     const first = facts.candidates[0];
     const fcase = doc.getElementById("fCase").textContent;
     check("a candidate shows its quote and page text", fcase.includes(first.source.quote) && doc.querySelector("#fCase mark") !== null, "");
+    const ai = (facts.ai_first_pass || {})[first.candidate_id];
+    if (ai) {
+      check("the AI first-pass opinion is shown and marked as not a human decision", doc.getElementById("fCase").textContent.includes("AI 1차 의견 (사람 판정 아님)"), "");
+      if (doc.getElementById("fxFillAi")) {
+        doc.getElementById("fxFillAi").click(); await wait(20);
+        check("filling from the AI opinion does not save anything", !writes.some((w) => w.collection === "facts_review") && doc.getElementById("fSaveState").textContent.includes("확인한 뒤"), "");
+      }
+    }
     doc.getElementById("fx_role").value = "";
     doc.querySelector('#fCase [data-d="approve"]').click();
     await wait(50);

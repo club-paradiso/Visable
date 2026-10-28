@@ -45,6 +45,8 @@ import trust_gate  # noqa: E402
 
 CANDIDATES = HERE / "ledgers" / "manual_2026_10_19_fact_candidates.jsonl"
 FACTS = HERE / "ledgers" / "manual_2026_10_19_facts.jsonl"
+#: AI first-pass opinions on the candidates (shown to the reviewer; never an approval).
+AI_FIRST_PASS = HERE / "reviews" / "facts_ai_first_pass_2026-10-28.json"
 
 #: The roles a reviewer may choose (design §3). Candidates start from the post-check's
 #: role reader; the reviewer refines it.
@@ -258,7 +260,10 @@ def bundle() -> Dict[str, Any]:
     pages = pilot_pages()
     rows = load_candidates()
     used = {r["source"]["page_id"] for r in rows}
-    return {"version": "artemis-facts-pilot-1", "edition": "2026.10", "roles": ROLES, "candidates": rows,
+    ai = {}
+    if AI_FIRST_PASS.exists():
+        ai = {r["candidate_id"]: r for r in json.loads(AI_FIRST_PASS.read_text(encoding="utf-8"))["opinions"]}
+    return {"version": "artemis-facts-pilot-1", "edition": "2026.10", "roles": ROLES, "candidates": rows, "ai_first_pass": ai,
             "pages": {pid: {"title": pages[pid]["title"], "text": pages[pid]["text"],
                             "domain": pages[pid]["source"]["domain"]} for pid in sorted(used)}}
 

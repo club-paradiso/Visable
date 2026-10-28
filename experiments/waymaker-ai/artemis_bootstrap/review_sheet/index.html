@@ -199,6 +199,7 @@ body:not(.facts-mode) .facts-only { display: none !important; }
       <label>상태<select id="ffState"><option value="">전체</option><option value="todo">아직 안 봄</option><option value="approved">승인</option><option value="rejected">거절</option><option value="held">보류</option></select></label>
       <label>절차<select id="ffProc"><option value="">전체</option><option value="visa">사증</option><option value="stay">체류</option></select></label>
       <label>값 종류<select id="ffKind"><option value="">전체</option><option value="money">금액</option><option value="period">기간</option></select></label>
+      <label>AI 1차 의견<select id="ffAi"><option value="">전체</option><option value="approve">AI: 승인 권고</option><option value="reject">AI: 거절 권고</option><option value="hold">AI: 보류 권고</option></select></label>
       <label>찾기<input id="ffText" type="search" placeholder="쪽 번호, 자격 약호, 인용문"></label>
     </div>
   </section>
@@ -564,11 +565,12 @@ body:not(.facts-mode) .facts-only { display: none !important; }
   const domainKo = (pid) => pid.startsWith("visa") ? "사증" : "체류";
 
   function filtered() {
-    const st = $("ffState").value, pr = $("ffProc").value, kd = $("ffKind").value, q = $("ffText").value.trim().toLowerCase();
+    const st = $("ffState").value, pr = $("ffProc").value, kd = $("ffKind").value, ai = $("ffAi").value, q = $("ffText").value.trim().toLowerCase();
     return facts.candidates.filter((c) => {
       if (st && state(c) !== st) return false;
       if (pr && c.subject.procedure !== pr) return false;
       if (kd && c.value.kind !== kd) return false;
+      if (ai && ((facts.ai_first_pass || {})[c.candidate_id] || {}).ai_decision !== ai) return false;
       if (q && !`${c.source.page_id} ${c.subject.status_code || ""} ${c.subject.sub_code || ""} ${c.source.quote}`.toLowerCase().includes(q)) return false;
       return true;
     });
@@ -617,6 +619,7 @@ body:not(.facts-mode) .facts-only { display: none !important; }
         ${current.role_from_check ? `<span class="chip grey">규칙이 읽은 역할: ${esc(current.role_from_check)}</span>` : ""}</div>
         <h2>${esc(valueText(current.value))}</h2></div>
       <blockquote class="quote">${esc(current.source.quote)}</blockquote>
+      ${aiBlock()}
       <form class="review" id="factForm">
         <div class="fact-grid">
           ${field("fx_code", "체류자격", f.subject.status_code)}
@@ -643,6 +646,29 @@ body:not(.facts-mode) .facts-only { display: none !important; }
       </form>
       <details open><summary>쪽 원문 (${esc(page.title)})</summary><pre class="pagetext">${text}</pre></details>`;
     $("fCase").querySelectorAll("[data-d]").forEach((b) => b.addEventListener("click", () => save(b.dataset.d)));
+    const fill = $("fxFillAi"); if (fill) fill.addEventListener("click", fillFromAi);
+  }
+
+  const AI_KO = { approve: "승인 권고", reject: "거절 권고", hold: "보류 권고" };
+  function aiBlock() {
+    const a = (facts.ai_first_pass || {})[current.candidate_id];
+    if (!a) return "";
+    const q = (a.subject && a.subject.qualifiers) || {};
+    const conds = Object.entries(q).filter(([, v]) => v !== null && v !== "").map(([k, v]) => `${k}=${v}`).join(", ");
+    return `<section class="ai"><h2>AI 1차 의견 (사람 판정 아님)</h2>
+      <div class="chips"><span class="chip">${esc(AI_KO[a.ai_decision] || a.ai_decision)}</span><span class="chip grey">확신 ${esc(a.confidence || "-")}</span></div>
+      ${a.subject ? `<p class="mono">${esc(a.subject.sub_code || a.subject.status_code || "자격 미정")} · ${esc(a.subject.procedure || "")} · ${esc((facts.roles || {})[a.role] || a.role || "역할 미정")} · ${esc(valueText(a.value))}${conds ? " · " + esc(conds) : ""}</p>` : ""}
+      <p>${esc(a.reason)}</p>
+      ${a.subject ? `<div class="actions"><button class="btn ghost" type="button" id="fxFillAi">AI 의견으로 채우기 (저장은 직접)</button></div>` : ""}
+    </section>`;
+  }
+  function fillFromAi() {
+    const a = facts.ai_first_pass[current.candidate_id]; const q = a.subject.qualifiers || {};
+    const set = (id, v) => { if ($(id)) $(id).value = v ?? ""; };
+    set("fx_code", a.subject.status_code); set("fx_sub", a.subject.sub_code); set("fx_proc", a.subject.procedure);
+    set("fx_role", a.role); set("fx_amount", a.value && a.value.amount); set("fx_unit", a.value && a.value.unit); set("fx_cmp", a.value && a.value.comparator);
+    set("fx_app", q.applicant); set("fx_house", q.household_size); set("fx_per", q.per); set("fx_nat", q.nationality); set("fx_row", q.row_label); set("fx_col", q.column_label);
+    $("fSaveState").classList.remove("err"); $("fSaveState").textContent = "AI 의견으로 채웠습니다. 확인한 뒤 승인·거절·보류를 눌러 주세요.";
   }
 
   function formFact() {
@@ -695,7 +721,7 @@ body:not(.facts-mode) .facts-only { display: none !important; }
   function loadFacts() {
     fetch("facts.json").then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); }).then((d) => {
       facts = d;
-      ["ffState", "ffProc", "ffKind"].forEach((id) => $(id).addEventListener("change", renderList));
+      ["ffState", "ffProc", "ffKind", "ffAi"].forEach((id) => $(id).addEventListener("change", renderList));
       $("ffText").addEventListener("input", renderList);
       renderCounts(); current = d.candidates[0] || null; renderList(); renderCase(); connect();
     }).catch(() => { $("fCase").innerHTML = `<div class="empty">사실 후보를 불러오지 못했습니다. 페이지를 새로 고쳐 주세요.</div>`; });

@@ -100,3 +100,24 @@ def test_export_refuses_facts_that_do_not_check_out(tmp_path, ledger_path, tampe
     result = af.export(_review(tmp_path / "r", [row]))
     assert result["written"] == 0 and problem in result["rejected"][0]["problems"]
     assert not ledger_path.exists()
+
+
+def test_ai_first_pass_is_an_opinion_on_every_candidate_and_passes_the_export_checks():
+    data = json.loads(af.AI_FIRST_PASS.read_text(encoding="utf-8"))
+    assert "not a human review" in data["reviewer"] and "not an approval" in data["reviewer"]
+    ops = data["opinions"]
+    assert [o["candidate_id"] for o in ops] == [c["candidate_id"] for c in CANDIDATES]
+    pages, ledger = af.pilot_pages(), af.manual_ledger.load_ledger()
+    by_id = {c["candidate_id"]: c for c in CANDIDATES}
+    for o in ops:
+        assert o["ai_decision"] in ("approve", "reject", "hold")
+        if o["ai_decision"] != "reject":
+            fact = {"subject": o["subject"], "role": o["role"], "value": o["value"], "source": by_id[o["candidate_id"]]["source"]}
+            assert af._verify(fact, pages, ledger) == [], o["candidate_id"]
+
+
+def test_export_ignores_ai_opinions(tmp_path, ledger_path):
+    """Only human decisions in facts_review reach the ledger; the AI file is never read by export."""
+    assert "AI_FIRST_PASS" not in af.export.__code__.co_names
+    result = af.export(_review(tmp_path / "r", []))
+    assert result == {"written": 0, "rejected": []} and not ledger_path.exists()
