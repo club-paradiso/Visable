@@ -284,6 +284,116 @@ def _supported(claim: Claim, trusted_claims: Sequence[Claim], trusted_text: str)
     return False
 
 
+# --- Role check (2026-10-28) -------------------------------------------------
+# A value can be in the evidence and still belong to another fact: "신청 후 4일 이내
+# 발급, 발급일부터 9일 동안 유효" makes "4일 동안 유효" pass the value check. The role
+# check reads, for each period or amount, the role word of its clause (the nearest
+# one after the value, since Korean puts the verb last, else the nearest before;
+# table cells take their column header) and compares the answer's role with the
+# roles the same value has in the approved text. It never withholds: a mismatch
+# only marks the answer for a person (smoke_grader counts it as needs_review).
+ROLE_WORDS: Dict[str, str] = {
+    "validity": r"유효|효력|쓸\s*수\s*있|사용할\s*수\s*있|사용\s*기한|valid",
+    "issue": r"발급|교부|발행|내어\s*주|나온다|나와|issue",
+    "apply": r"신청|접수|apply|application",
+    "submit": r"제출|보완|내야|내면|낸다|내십|submit",
+    "stay": r"체류\s*기간|체류할\s*수|체류\s*허가|머무|머물|stay",
+    "extend": r"연장|extend",
+    "process": r"처리|심사\s*기간|걸린|걸려|걸립|소요|process",
+    "report": r"신고|report",
+    "wait": r"경과|지나야|지난\s*뒤|지난\s*후|이후에|after",
+    "fee": r"수수료|심사료|요금|비용|인지|fee",
+    "income": r"소득|연봉|급여|임금|income|salary",
+    "deposit": r"예치|잔고|잔액|보증|deposit",
+    "fine": r"과태료|벌금|범칙금|fine",
+}
+_ROLE_RE = {role: re.compile(words, re.IGNORECASE) for role, words in ROLE_WORDS.items()}
+#: Roles that answers and manuals use for the same fact ("발급까지 4일 걸린다" is the
+#: issuing deadline; "신청" and "제출" of the same papers; a stay permit "유효" for 6개월).
+ROLE_FAMILY: Dict[str, str] = {"issue": "issue", "process": "issue",
+                               "apply": "file", "submit": "file", "report": "file",
+                               "validity": "valid", "stay": "valid", "extend": "valid",
+                               "wait": "wait", "fee": "fee", "income": "income", "deposit": "deposit", "fine": "fine"}
+#: A role word followed by one of these characters is part of a noun, not the fact's role.
+_NOUN_SUFFIX = set("증서자일")
+#: What may stand between a role word and the value it names: "유효기간은 ", "수수료: ", "체류기간 최대 ".
+_NAMES_VALUE_RE = re.compile(r"(?:\s*(?:기간|기한|기일|금액|액))?\s*(?:은|는|이|가|도|만)?\s*[:：]?\s*(?:최대|최소|약|총|모두)?\s*")
+_CLAUSE_SPLIT_RE = re.compile(r"[.\n;,·]|(?<=며)\s|(?<=하고)\s|(?<=하되)\s|(?<=이고)\s")
+
+
+def _roles_in(text: str, at: int, kind: str, lenient: bool = False) -> List[str]:
+    """Role(s) of the value at ``at`` in ``text`` (one clause). A role word right before
+    the value names it ("체류기간 1년", "수수료는 6만원"); otherwise the nearest role word
+    after it (Korean puts the verb last), else the nearest before. ``lenient`` (used for
+    answers) also accepts the nearest role word before the value, so an answer is only
+    marked when none of its readings fits the evidence. Money roles only for amounts,
+    period roles only for periods."""
+    allowed = {"fee", "income", "deposit", "fine"} if kind == "money" else set(ROLE_WORDS) - {"fee", "income", "deposit", "fine"}
+    after, before, named = [], [], []
+    for role in allowed:
+        for m in _ROLE_RE[role].finditer(text):
+            if text[m.end():m.end() + 1] in _NOUN_SUFFIX:   # 접수증, 신청서, 신청자, 발급일부터
+                continue
+            if m.start() >= at:
+                after.append((m.start() - at, role))
+            else:
+                before.append((at - m.end(), role))
+                if _NAMES_VALUE_RE.fullmatch(text[m.end():at]):
+                    named.append((at - m.end(), role))
+    if named:
+        return [min(named)[1]]
+    nearest_before = min(before)[1] if before else None
+    roles = [min(after)[1]] if after else ([nearest_before] if nearest_before else [])
+    if lenient and nearest_before and nearest_before not in roles:
+        roles.append(nearest_before)
+    return roles
+
+
+def _clauses(text: str) -> List[str]:
+    """Clauses, with each table row joined to its header so a cell reads its column name."""
+    out: List[str] = []
+    header: Optional[List[str]] = None
+    for line in text.splitlines():
+        cells = [c.strip() for c in line.strip().strip("|").split("|")] if line.strip().startswith("|") else None
+        if cells is None:
+            header = None
+            out.extend(c for c in _CLAUSE_SPLIT_RE.split(line) if c.strip())
+        elif header is None:
+            header = cells
+        elif not all(set(c) <= set("-: ") for c in cells):
+            for i, cell in enumerate(cells):
+                head = header[i] if i < len(header) else ""
+                out.append(f"{cells[0]} {head} {cell}")
+    return out
+
+
+def _role_pairs(text: str, lenient: bool = False) -> List[Tuple[Tuple, List[str], str]]:
+    """(value key, roles, clause) for every amount and period in the text."""
+    pairs = []
+    for clause in _clauses(text):
+        dates, masked = _date_claims(clause)
+        for claim in _money_claims(masked) + _period_claims(masked):
+            at = clause.find(claim.text)
+            pairs.append((claim.key, _roles_in(clause, max(at, 0), claim.kind, lenient), clause))
+    return pairs
+
+
+def role_mismatches(answer: str, trusted_text: str) -> List[str]:
+    """Answer values whose role differs from every role the same value has in the
+    approved text. Values with no role word on either side are left alone."""
+    evidence = _role_pairs(trusted_text)
+    found = []
+    for key, roles, clause in _role_pairs(answer, lenient=True):
+        if not roles:
+            continue
+        evidence_roles = [r for k, rs, _ in evidence if k == key for r in rs]
+        unroled = any(k == key and not rs for k, rs, _ in evidence)
+        families = {ROLE_FAMILY[r] for r in evidence_roles}
+        if evidence_roles and not unroled and not families & {ROLE_FAMILY[r] for r in roles}:
+            found.append(f"{clause.strip()} — 답의 역할 '{'/'.join(roles)}', 근거의 역할 '{'/'.join(sorted(set(evidence_roles)))}'")
+    return found
+
+
 def post_check(parsed: Optional[Mapping[str, Any]], trusted: Sequence[Mapping[str, Any]]) -> Dict[str, Any]:
     """(나) Verdict on one parsed model output against the trusted evidence.
 
@@ -311,4 +421,9 @@ def post_check(parsed: Optional[Mapping[str, Any]], trusted: Sequence[Mapping[st
     if unsupported or untrusted_citations:
         return {"verdict": "withheld", "claims": found, "unsupported": unsupported,
                 "untrusted_citations": untrusted_citations, "final": {**abstain, "answer": WITHHELD_ANSWER}}
-    return {"verdict": "pass", "claims": found, "unsupported": [], "untrusted_citations": [], "final": dict(parsed)}
+    final = dict(parsed)
+    roles = role_mismatches(answer, trusted_text)
+    if roles:
+        final["review_flags"] = [f"role_mismatch: {r}" for r in roles]
+    return {"verdict": "pass", "claims": found, "unsupported": [], "untrusted_citations": [],
+            "role_mismatches": roles, "final": final}

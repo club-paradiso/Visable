@@ -335,3 +335,70 @@ def test_heldout_v6_sino_days_and_native_years():
                 passed.append((case["id"][:4], wrong))
     assert sorted(passed) == [("Y-22", "열하루"), ("Y-23", "4일 동안 유효"), ("Y-23", "4일간 유효"),
                               ("Y-23", "나흘 동안 유효"), ("Y-23", "사 일 동안 유효")], passed
+
+
+# Role check (2026-10-28): a value present in the evidence for another fact marks the
+# answer for review; it never withholds.
+ROLE_EVIDENCE = "[가상 자료] 접수증은 신청 후 사 일 이내에 발급하며, 접수증은 발급일부터 구 일 동안 유효하다."
+ROLE_TABLE = "수수료표\n| 구분 | 처리기간 | 유효기간 | 수수료(원) |\n|---|---|---|---|\n| 가상등록증 | 7일 | 1년 | 35,000 |"
+ROLE_CASES = [
+    (ROLE_EVIDENCE, "접수증은 9일 동안 유효합니다.", False),
+    (ROLE_EVIDENCE, "접수증은 4일 동안 유효합니다.", True),
+    (ROLE_EVIDENCE, "유효기간은 4일입니다.", True),
+    (ROLE_EVIDENCE, "발급까지 4일 걸립니다.", False),
+    (ROLE_EVIDENCE, "발급까지 9일 걸립니다.", True),
+    (ROLE_EVIDENCE, "9일간 쓸 수 있습니다.", False),
+    (ROLE_EVIDENCE, "4일입니다.", False),                      # no role word: left alone
+    (ROLE_TABLE, "가상등록증 수수료는 35,000원입니다.", False),
+    (ROLE_TABLE, "처리기간은 7일입니다.", False),
+    (ROLE_TABLE, "유효기간은 7일입니다.", True),
+    ("공관장 재량으로 체류기간 1년 이하의 단수사증을 발급할 수 있다.", "체류기간 1년 이하의 단수사증 발급이 가능합니다.", False),
+]
+
+
+@pytest.mark.parametrize("evidence_text, answer_text, marked", ROLE_CASES)
+def test_role_check_marks_values_attached_to_another_fact(evidence_text, answer_text, marked):
+    trusted = [{"id": "E", "title": "t", "text": evidence_text, "source": {"approval_state": "approved"}}]
+    result = tg.post_check({"status": "answered", "answer": answer_text, "citations": ["E"]}, trusted)
+    assert result["verdict"] == "pass"                      # never withheld by the role check
+    assert bool(result["role_mismatches"]) is marked, result["role_mismatches"]
+    graded = grader.grade({"expect": {"status": ["answered"]}, "evidence": [{"id": "E"}]},
+                          json.dumps(result["final"], ensure_ascii=False))
+    assert grader.classify(graded) == ("needs_review" if marked else "correct")
+
+
+def test_role_check_does_not_mark_any_recorded_correct_answer():
+    """Every gated run on record (v2/v3 held-out, the six v2 real-manual sets, v4–v6):
+    re-applying the post-check with the role check sends no correct answer to review."""
+    import glob
+    ml = load_module("manual_ledger")
+    moved = []
+    for rp in sorted(glob.glob(str(BOOTSTRAP_DIR / "runs" / "2026-10-2*" / "run_record.json"))):
+        rec = json.loads(Path(rp).read_text(encoding="utf-8"))
+        cf = rec.get("cases_file") or ""
+        if not rec.get("source_gate") or rec.get("status") != "completed" or "heldout_v7" in cf:
+            continue
+        if cf.endswith("_cases.json") and cf.startswith("manual_"):
+            continue  # the frozen v1 manual sets are re-measured as *.v2.json
+        if "v4-gated-integrity" in rp and not rp.endswith("-r2/run_record.json"):
+            continue  # first v4 run was on the file before the code rename
+        path = BOOTSTRAP_DIR / ("label_v2/" + cf if cf.endswith(".v2.json") else cf)
+        if not path.exists():
+            path = BOOTSTRAP_DIR / "label_v2" / "rerun" / cf
+        raw = json.loads(path.read_text(encoding="utf-8"))["cases"]
+        cases = {c["id"]: c for c in (ml.resolve_cases(raw) if cf.startswith("manual_") else raw)}
+        for r in rec["results"]:
+            case = cases.get(r["case"])
+            if case is None or r.get("clarified") or not r.get("post_check"):
+                continue
+            if not all("source" in e for e in case["evidence"]):
+                continue
+            trusted = [e for e in case["evidence"] if tg.is_trusted(e, rec.get("integrity"))
+                       and e["id"] not in (r.get("route_withheld") or [])]
+            res = tg.post_check(r.get("parsed"), trusted)
+            plain = {k: v for k, v in res["final"].items() if k != "review_flags"}
+            before = grader.classify(grader.grade(case, json.dumps(plain, ensure_ascii=False)))
+            after = grader.classify(grader.grade(case, json.dumps(res["final"], ensure_ascii=False)))
+            if before == "correct" and after != "correct":
+                moved.append((rp, r["case"]))
+    assert moved == []

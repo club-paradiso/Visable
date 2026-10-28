@@ -186,6 +186,8 @@ def grade(case: Mapping[str, Any], text: str) -> Dict[str, Any]:
             failures.append(f"answer_contradicts:{rule['label']}")
     flags = [f"flag:{rule['label']}" for rule in expect.get("answer_flag_if_match", [])
              if re.search(rule["pattern"], folded)]
+    # The post-check's role check marks an answer for a person without withholding it.
+    flags += [f"post_check:{f}" for f in parsed.get("review_flags") or [] if isinstance(f, str)]
     # A flag means the patterns cannot settle the answer: it passed every check but
     # a person has to read it. It is never counted as an automatic correct.
     return {"passed": not failures, "parsed": parsed, "failures": failures, "flags": flags,
