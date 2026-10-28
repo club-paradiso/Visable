@@ -1,0 +1,1744 @@
+{
+  "kind": "artemis_bootstrap_smoke",
+  "started_utc": "2026-10-28T06:32:38+00:00",
+  "machine": {
+    "model": "MacBookAir10,1",
+    "chip": "Apple M1",
+    "memory_bytes": 8589934592,
+    "macos": "15.6.1",
+    "python": "3.11.15"
+  },
+  "versions": {
+    "mlx": "0.32.4",
+    "mlx-metal": "0.32.4",
+    "mlx-lm": "0.32.2",
+    "transformers": "5.20.2",
+    "huggingface-hub": "2.3.0",
+    "tokenizers": "0.23.3"
+  },
+  "device": {
+    "device_name": "Apple M1",
+    "max_recommended_working_set_size": 5726633984,
+    "memory_size": 8589934592,
+    "architecture": "applegpu_g13g",
+    "max_buffer_length": 4294967296,
+    "resource_limit": 499000
+  },
+  "swap_before": "total = 5120.00M  used = 3799.50M  free = 1320.50M  (encrypted)",
+  "free_disk_gb_before": 7.64,
+  "cases_file": "heldout_v11_tables_cases.json",
+  "cases_sha256": "280cf1e204dfae958eb13930b9b044a1678277692f53a70b24af1c041a53bffe",
+  "detector_on_labelled_evidence": null,
+  "decoding": {
+    "temperature": 0.0,
+    "max_tokens": 400,
+    "enable_thinking": false
+  },
+  "evidence_guard": "off",
+  "source_gate": true,
+  "integrity": true,
+  "route": false,
+  "clarify": false,
+  "always_ask": false,
+  "cross_check": false,
+  "label_switch": false,
+  "facts": null,
+  "layout": true,
+  "post_check": "applied offline to every output when the cases carry source labels",
+  "prompts_persisted": false,
+  "status": "completed",
+  "stage": "done",
+  "model": {
+    "repo": "mlx-community/gemma-4-e4b-it-4bit",
+    "revision": "475b9088d29754a3379866cf5aeb6b41acd313c2",
+    "size_class_from_weights": "E4B",
+    "quantization": {
+      "group_size": 64,
+      "bits": 4,
+      "mode": "affine"
+    },
+    "loader": "mlx_lm.load (text tower only; vision/audio weights dropped by mlx_lm sanitize)",
+    "base_model": "google/gemma-4-E4B-it",
+    "source_revision": "fee6332c1abaafb77f6f9624236c63aa2f1d0187",
+    "license_in_card": "gemma"
+  },
+  "load_seconds": 5.54,
+  "memory_after_load_gb": 4.201,
+  "results": [
+    {
+      "case": "T-01-e7s-income-age27",
+      "prompt_sha256": "4746bbadf9505e2df0598e2f9439e00758cc78902c9e427c04673e8bda110744",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "insufficient_evidence",
+        "citations": [],
+        "answer": "공식 근거로 확인되지 않은 금액·기간·날짜·서류가 들어 있어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 953,
+      "prompt_tps": 204.32,
+      "generation_tokens": 103,
+      "generation_tps": 17.29,
+      "finish_reason": "stop",
+      "wall_seconds": 14.13,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"만 27세이므로 20~29세 그룹에 해당하며, 고용계약서상 연봉이 8,500만 원 이상이므로 40점을 받습니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p251\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "만 27세이므로 20~29세 그룹에 해당하며, 고용계약서상 연봉이 8,500만 원 이상이므로 40점을 받습니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p251"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "withheld",
+        "claims": [
+          {
+            "kind": "money",
+            "text": "8,500만 원"
+          },
+          {
+            "kind": "document",
+            "text": "고용계약서"
+          }
+        ],
+        "unsupported": [
+          "8,500만 원"
+        ],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "citations": [],
+          "answer": "공식 근거로 확인되지 않은 금액·기간·날짜·서류가 들어 있어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+        },
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p251",
+          "answer_missing_one_of:40점|40 점"
+        ],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "safe_abstain"
+    },
+    {
+      "case": "T-02-health-drug-test-items",
+      "prompt_sha256": "7312b8ff396807f253a03def90dbdb3c11b3cf9ede2d899ccd209e4f25d3705e",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "건강진단서의 마약검사 항목에는 필로폰, 코카인, 아편, 대마, 기타가 있습니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p577"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 719,
+      "prompt_tps": 201.08,
+      "generation_tokens": 87,
+      "generation_tps": 17.44,
+      "finish_reason": "stop",
+      "wall_seconds": 8.64,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"건강진단서의 마약검사 항목에는 필로폰, 코카인, 아편, 대마, 기타가 있습니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p577\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "건강진단서의 마약검사 항목에는 필로폰, 코카인, 아편, 대마, 기타가 있습니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p577"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "document",
+            "text": "건강진단서"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": [],
+        "start_point_mismatches": [],
+        "citations_added": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "건강진단서의 마약검사 항목에는 필로폰, 코카인, 아편, 대마, 기타가 있습니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p577"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "T-03-kiip-pretest-july-round",
+      "prompt_sha256": "734974de2537800b01443f8cdd2bc557d3266893f134c4f4895ec1ed6efd5b82",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "insufficient_evidence",
+        "citations": [],
+        "answer": "공식 근거로 확인되지 않은 금액·기간·날짜·서류가 들어 있어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 965,
+      "prompt_tps": 213.58,
+      "generation_tokens": 104,
+      "generation_tps": 17.06,
+      "finish_reason": "stop",
+      "wall_seconds": 10.7,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"7차 사전평가 접수 기간은 7월 16일(화)부터 7월 20일(토)까지이며, 평가일은 8월 3일(토)입니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p272\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "7차 사전평가 접수 기간은 7월 16일(화)부터 7월 20일(토)까지이며, 평가일은 8월 3일(토)입니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p272"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "withheld",
+        "claims": [
+          {
+            "kind": "date",
+            "text": "7월 16일"
+          },
+          {
+            "kind": "date",
+            "text": "7월 20일"
+          },
+          {
+            "kind": "date",
+            "text": "8월 3일"
+          }
+        ],
+        "unsupported": [
+          "7월 16일",
+          "7월 20일",
+          "8월 3일"
+        ],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "citations": [],
+          "answer": "공식 근거로 확인되지 않은 금액·기간·날짜·서류가 들어 있어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+        },
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p272",
+          "answer_missing_one_of:8. 3.|8월 3일|8.3."
+        ],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "safe_abstain"
+    },
+    {
+      "case": "T-04-gyeongnam-korean-reading-max",
+      "prompt_sha256": "35caba3e30cca3459dbe4f2dfd01ecdfcf1cea5d6d54b82f03cf498223e0a721",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "읽기 영역의 총점은 40점 만점입니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p782"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 612,
+      "prompt_tps": 204.06,
+      "generation_tokens": 72,
+      "generation_tps": 17.63,
+      "finish_reason": "stop",
+      "wall_seconds": 7.15,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"읽기 영역의 총점은 40점 만점입니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p782\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "읽기 영역의 총점은 40점 만점입니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p782"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": [],
+        "start_point_mismatches": [],
+        "citations_added": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "읽기 영역의 총점은 40점 만점입니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p782"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "T-05-coal-mining-not-allowed",
+      "prompt_sha256": "515ce3fe0c12476553360a0a9fd6a9498569522913a24bf764ac9ccd4b82a230",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "conflict",
+        "answer": "제공된 근거에 따르면, 대분류 B의 하위 중분류 업종 중 ‘석탄, 원유 및 천연가스 광업’(05)은 허용업종에 포함되지 않습니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p568"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1139,
+      "prompt_tps": 207.21,
+      "generation_tokens": 106,
+      "generation_tps": 16.79,
+      "finish_reason": "stop",
+      "wall_seconds": 11.9,
+      "output": "```json\n{\n  \"status\": \"conflict\",\n  \"answer\": \"제공된 근거에 따르면, 대분류 B의 하위 중분류 업종 중 ‘석탄, 원유 및 천연가스 광업’(05)은 허용업종에 포함되지 않습니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p568\"\n  ]\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "conflict",
+        "answer": "제공된 근거에 따르면, 대분류 B의 하위 중분류 업종 중 ‘석탄, 원유 및 천연가스 광업’(05)은 허용업종에 포함되지 않습니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p568"
+        ]
+      },
+      "failures": [
+        "status:conflict≠answered|partial"
+      ],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": [],
+        "start_point_mismatches": [],
+        "citations_added": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "conflict",
+          "answer": "제공된 근거에 따르면, 대분류 B의 하위 중분류 업종 중 ‘석탄, 원유 및 천연가스 광업’(05)은 허용업종에 포함되지 않습니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p568"
+          ]
+        },
+        "failures": [
+          "status:conflict≠answered|partial"
+        ],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "other",
+      "outcome_checked": "other"
+    },
+    {
+      "case": "T-06-c3-to-d2-notified-country",
+      "prompt_sha256": "a501c43fdebdbf029410137ccf6ef112ab73e32c9995db8a7815737ae0df2aa0",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "partial",
+        "answer": "근거에 따르면, 일반국가 출신이고 현 체류자격이 C-3이며 인증대에서 왔을 경우, 체류자격 변경 시 '○'으로 표시되어 있습니다. 다만, D-2로의 변경에 대한 구체적인 정보는 해당 표에 명시되어 있지 않습니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p41"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1052,
+      "prompt_tps": 204.28,
+      "generation_tokens": 122,
+      "generation_tps": 16.51,
+      "finish_reason": "stop",
+      "wall_seconds": 12.63,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"근거에 따르면, 일반국가 출신이고 현 체류자격이 C-3이며 인증대에서 왔을 경우, 체류자격 변경 시 '○'으로 표시되어 있습니다. 다만, D-2로의 변경에 대한 구체적인 정보는 해당 표에 명시되어 있지 않습니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p41\"\n  ]\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "partial",
+        "answer": "근거에 따르면, 일반국가 출신이고 현 체류자격이 C-3이며 인증대에서 왔을 경우, 체류자격 변경 시 '○'으로 표시되어 있습니다. 다만, D-2로의 변경에 대한 구체적인 정보는 해당 표에 명시되어 있지 않습니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p41"
+        ]
+      },
+      "failures": [
+        "answer_missing_one_of:불가|할 수 없|바꿀 수 없|×"
+      ],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": [],
+        "start_point_mismatches": [],
+        "citations_added": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "partial",
+          "answer": "근거에 따르면, 일반국가 출신이고 현 체류자격이 C-3이며 인증대에서 왔을 경우, 체류자격 변경 시 '○'으로 표시되어 있습니다. 다만, D-2로의 변경에 대한 구체적인 정보는 해당 표에 명시되어 있지 않습니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p41"
+          ]
+        },
+        "failures": [
+          "answer_missing_one_of:불가|할 수 없|바꿀 수 없|×"
+        ],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "other",
+      "outcome_checked": "other"
+    },
+    {
+      "case": "T-07-e7s-extension-income-age38",
+      "prompt_sha256": "a176946e2c7ccd3aa50f713dd4ff930fe77805357b887e0c624b39635d81de35",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "insufficient_evidence",
+        "citations": [],
+        "answer": "공식 근거로 확인되지 않은 금액·기간·날짜·서류가 들어 있어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1046,
+      "prompt_tps": 203.2,
+      "generation_tokens": 188,
+      "generation_tps": 15.89,
+      "finish_reason": "stop",
+      "wall_seconds": 17.16,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"만 38세이고 전년도 소득금액증명원상의 소득이 6,500만 원 이상이라면, 소득 항목에서 25점을 받을 수 있습니다. (이는 35세 이상에게 적용되는 '6,000만 원 이상 / ~ / 7,000만 원 미만' 구간의 30점 또는 '5,000만 원 이상 / ~ / 6,000만 원 미만' 구간의 25점에 해당하며, 38세는 '~39세' 구간에 해당합니다.)\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p296\"\n  ]\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "answered",
+        "answer": "만 38세이고 전년도 소득금액증명원상의 소득이 6,500만 원 이상이라면, 소득 항목에서 25점을 받을 수 있습니다. (이는 35세 이상에게 적용되는 '6,000만 원 이상 / ~ / 7,000만 원 미만' 구간의 30점 또는 '5,000만 원 이상 / ~ / 6,000만 원 미만' 구간의 25점에 해당하며, 38세는 '~39세' 구간에 해당합니다.)",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p296"
+        ]
+      },
+      "failures": [
+        "answer_missing_one_of:20점|20 점"
+      ],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "withheld",
+        "claims": [
+          {
+            "kind": "money",
+            "text": "6,500만 원"
+          },
+          {
+            "kind": "money",
+            "text": "6,000만 원"
+          },
+          {
+            "kind": "money",
+            "text": "7,000만 원"
+          },
+          {
+            "kind": "money",
+            "text": "5,000만 원"
+          },
+          {
+            "kind": "money",
+            "text": "6,000만 원"
+          }
+        ],
+        "unsupported": [
+          "6,500만 원"
+        ],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "citations": [],
+          "answer": "공식 근거로 확인되지 않은 금액·기간·날짜·서류가 들어 있어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+        },
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:stay_manual_2026_10_19_pdf#p296",
+          "answer_missing_one_of:20점|20 점"
+        ],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "other",
+      "outcome_checked": "safe_abstain"
+    },
+    {
+      "case": "T-08-film-distribution-not-excluded",
+      "prompt_sha256": "b3e4123e1f167c502e4425c7995f5476c6c9302006f20407f6056712e2f5d51a",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "partial",
+        "answer": "제공된 근거에는 '영상·오디오 기록물 제작 및 배급업'(59)과 '방송 및 영상･오디오물 제공 서비스업'(60)이 제외업종에 포함되어 있지 않다는 내용이 있습니다. 하지만 질문하신 '한국의 영화 배급사'의 정확한 업종 분류 코드가 근거에 명시되어 있지 않아 해당 업종이 제외업종에 포함되는지 여부를 명확히 판단하기에는 정보가 부족합니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p427"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1046,
+      "prompt_tps": 193.98,
+      "generation_tokens": 160,
+      "generation_tps": 16.7,
+      "finish_reason": "stop",
+      "wall_seconds": 15.07,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"제공된 근거에는 '영상·오디오 기록물 제작 및 배급업'(59)과 '방송 및 영상･오디오물 제공 서비스업'(60)이 제외업종에 포함되어 있지 않다는 내용이 있습니다. 하지만 질문하신 '한국의 영화 배급사'의 정확한 업종 분류 코드가 근거에 명시되어 있지 않아 해당 업종이 제외업종에 포함되는지 여부를 명확히 판단하기에는 정보가 부족합니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p427\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "partial",
+        "answer": "제공된 근거에는 '영상·오디오 기록물 제작 및 배급업'(59)과 '방송 및 영상･오디오물 제공 서비스업'(60)이 제외업종에 포함되어 있지 않다는 내용이 있습니다. 하지만 질문하신 '한국의 영화 배급사'의 정확한 업종 분류 코드가 근거에 명시되어 있지 않아 해당 업종이 제외업종에 포함되는지 여부를 명확히 판단하기에는 정보가 부족합니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p427"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": [],
+        "start_point_mismatches": [],
+        "citations_added": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "partial",
+          "answer": "제공된 근거에는 '영상·오디오 기록물 제작 및 배급업'(59)과 '방송 및 영상･오디오물 제공 서비스업'(60)이 제외업종에 포함되어 있지 않다는 내용이 있습니다. 하지만 질문하신 '한국의 영화 배급사'의 정확한 업종 분류 코드가 근거에 명시되어 있지 않아 해당 업종이 제외업종에 포함되는지 여부를 명확히 판단하기에는 정보가 부족합니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p427"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "T-09-uzbek-diplomatic-waiver",
+      "prompt_sha256": "d01b8ab1fa360276f1a15ea1c847023a4ff9df73c6fe98c1359428ad3e896303",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "우즈베키스탄의 외교 여권 소지자는 사증면제협정에 따라 60일 동안 체류할 수 있습니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p16"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1276,
+      "prompt_tps": 206.18,
+      "generation_tokens": 88,
+      "generation_tps": 16.61,
+      "finish_reason": "stop",
+      "wall_seconds": 11.59,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"우즈베키스탄의 외교 여권 소지자는 사증면제협정에 따라 60일 동안 체류할 수 있습니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p16\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "우즈베키스탄의 외교 여권 소지자는 사증면제협정에 따라 60일 동안 체류할 수 있습니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p16"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "60일"
+          },
+          {
+            "kind": "document",
+            "text": "여권"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": [],
+        "start_point_mismatches": [],
+        "citations_added": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "우즈베키스탄의 외교 여권 소지자는 사증면제협정에 따라 60일 동안 체류할 수 있습니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p16"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "T-10-chungbuk-worklearn-columns",
+      "prompt_sha256": "173fdf8c7e0b2caf7f3bb9d8f2191b430312183d0581f211e62801ab6c7da80a",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "참여 확인서의 '참여 내용' 표에는 연 번, 기업명(상호명), 사업자등록번호, 근무 기간(개월), 주요 업무를 적어야 합니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p768"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 657,
+      "prompt_tps": 201.05,
+      "generation_tokens": 96,
+      "generation_tps": 17.04,
+      "finish_reason": "stop",
+      "wall_seconds": 8.99,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"참여 확인서의 '참여 내용' 표에는 연 번, 기업명(상호명), 사업자등록번호, 근무 기간(개월), 주요 업무를 적어야 합니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p768\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "참여 확인서의 '참여 내용' 표에는 연 번, 기업명(상호명), 사업자등록번호, 근무 기간(개월), 주요 업무를 적어야 합니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p768"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "document",
+            "text": "확인서"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": [],
+        "start_point_mismatches": [],
+        "citations_added": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "참여 확인서의 '참여 내용' 표에는 연 번, 기업명(상호명), 사업자등록번호, 근무 기간(개월), 주요 업무를 적어야 합니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p768"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "T-11-pc-bang-restricted-job",
+      "prompt_sha256": "00854155315ebdc7bb1750cdc27be395a9c0fdddb6ce0a5e0a931c663a0ac3e2",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "PC방 종사원은 '그 외 오락시설 서비스원(44239)'으로 분류되며, 상세 설명으로는 상기 세세분류 어느 항목에도 포함되지 않은 기타 오락시설 서비스원에 해당합니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p586"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 877,
+      "prompt_tps": 194.88,
+      "generation_tokens": 105,
+      "generation_tps": 16.75,
+      "finish_reason": "stop",
+      "wall_seconds": 10.87,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"PC방 종사원은 '그 외 오락시설 서비스원(44239)'으로 분류되며, 상세 설명으로는 상기 세세분류 어느 항목에도 포함되지 않은 기타 오락시설 서비스원에 해당합니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p586\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "PC방 종사원은 '그 외 오락시설 서비스원(44239)'으로 분류되며, 상세 설명으로는 상기 세세분류 어느 항목에도 포함되지 않은 기타 오락시설 서비스원에 해당합니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p586"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": [],
+        "start_point_mismatches": [],
+        "citations_added": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "PC방 종사원은 '그 외 오락시설 서비스원(44239)'으로 분류되며, 상세 설명으로는 상기 세세분류 어느 항목에도 포함되지 않은 기타 오락시설 서비스원에 해당합니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p586"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "T-12-building-cleaning-allowed",
+      "prompt_sha256": "1974bfc7cddf12e4e796fd0d12b914ea34904531396497e664c9c1f3036b09dd",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "건물·산업설비 청소 및 방제 서비스업(742)은 사업시설 관리 및 조경 서비스업(74)에 포함되며, 이 중 '건물 및 산업설비 청소업(7421)'은 허용됩니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p574"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1193,
+      "prompt_tps": 178.77,
+      "generation_tokens": 115,
+      "generation_tps": 17.01,
+      "finish_reason": "stop",
+      "wall_seconds": 13.55,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"건물·산업설비 청소 및 방제 서비스업(742)은 사업시설 관리 및 조경 서비스업(74)에 포함되며, 이 중 '건물 및 산업설비 청소업(7421)'은 허용됩니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p574\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "건물·산업설비 청소 및 방제 서비스업(742)은 사업시설 관리 및 조경 서비스업(74)에 포함되며, 이 중 '건물 및 산업설비 청소업(7421)'은 허용됩니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p574"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": [],
+        "start_point_mismatches": [],
+        "citations_added": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "건물·산업설비 청소 및 방제 서비스업(742)은 사업시설 관리 및 조경 서비스업(74)에 포함되며, 이 중 '건물 및 산업설비 청소업(7421)'은 허용됩니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p574"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "T-13-food-delivery-job-code",
+      "prompt_sha256": "b9df55422c0e270180d7651f70322a3b7fd6f034e8e794632ed3362d055ef0bb",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "음식배달원의 직업 코드는 92230입니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p636"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 712,
+      "prompt_tps": 179.71,
+      "generation_tokens": 74,
+      "generation_tps": 17.16,
+      "finish_reason": "stop",
+      "wall_seconds": 8.35,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"음식배달원의 직업 코드는 92230입니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p636\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "음식배달원의 직업 코드는 92230입니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p636"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": [],
+        "start_point_mismatches": [],
+        "citations_added": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "음식배달원의 직업 코드는 92230입니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p636"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "T-14-e7t-top-talent-code",
+      "prompt_sha256": "82b4e08633ff2492842caf7f3384b49fb783effb78065e1cc8ca027f237dbeb0",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "최우수인재 첨단산업분야 종사자는 E-7-T의 세부 약호로 분류됩니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p215"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1088,
+      "prompt_tps": 186.99,
+      "generation_tokens": 83,
+      "generation_tps": 17.0,
+      "finish_reason": "stop",
+      "wall_seconds": 10.78,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"최우수인재 첨단산업분야 종사자는 E-7-T의 세부 약호로 분류됩니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p215\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "최우수인재 첨단산업분야 종사자는 E-7-T의 세부 약호로 분류됩니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p215"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": [],
+        "start_point_mismatches": [],
+        "citations_added": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "최우수인재 첨단산업분야 종사자는 E-7-T의 세부 약호로 분류됩니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p215"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "T-15-distant-water-fishing-not-allowed",
+      "prompt_sha256": "57a837b514471863cb1b32d874772369cf20b495a3886f5929ac163c66bf248d",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "근거에 따르면, 어업(03)의 하위 업종 중 ‘원양 어업’(03111)은 허용업종에 포함되지 않습니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p423"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1143,
+      "prompt_tps": 180.07,
+      "generation_tokens": 97,
+      "generation_tps": 16.79,
+      "finish_reason": "stop",
+      "wall_seconds": 12.2,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"근거에 따르면, 어업(03)의 하위 업종 중 ‘원양 어업’(03111)은 허용업종에 포함되지 않습니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p423\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "근거에 따르면, 어업(03)의 하위 업종 중 ‘원양 어업’(03111)은 허용업종에 포함되지 않습니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p423"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": [],
+        "start_point_mismatches": [],
+        "citations_added": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "근거에 따르면, 어업(03)의 하위 업종 중 ‘원양 어업’(03111)은 허용업종에 포함되지 않습니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p423"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "T-16-f5-spouse-of-citizen-code",
+      "prompt_sha256": "681e283ed154979fdbd5ca2e4c788c0071dfba88163b955baf6c8e00679a9c8b",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "partial",
+        "answer": "근거에는 질문하신 상황에 해당하는 구체적인 세부 약호가 명시되어 있지 않습니다. 다만, 영주자격의 종류 및 세부 약호에는 '국민의 배우자'에 해당하는 F-5-2가 있습니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p435"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1113,
+      "prompt_tps": 180.2,
+      "generation_tokens": 110,
+      "generation_tps": 17.17,
+      "finish_reason": "stop",
+      "wall_seconds": 12.66,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"근거에는 질문하신 상황에 해당하는 구체적인 세부 약호가 명시되어 있지 않습니다. 다만, 영주자격의 종류 및 세부 약호에는 '국민의 배우자'에 해당하는 F-5-2가 있습니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p435\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "partial",
+        "answer": "근거에는 질문하신 상황에 해당하는 구체적인 세부 약호가 명시되어 있지 않습니다. 다만, 영주자격의 종류 및 세부 약호에는 '국민의 배우자'에 해당하는 F-5-2가 있습니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p435"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": [],
+        "start_point_mismatches": [],
+        "citations_added": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "partial",
+          "answer": "근거에는 질문하신 상황에 해당하는 구체적인 세부 약호가 명시되어 있지 않습니다. 다만, 영주자격의 종류 및 세부 약호에는 '국민의 배우자'에 해당하는 F-5-2가 있습니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p435"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "T-17-f4-extension-no-korean",
+      "prompt_sha256": "295b55fbfe4495125ccf6cd1cb63ae1fcaab8f8a347decf59eaa6d3e0d5ec94b",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "각종 체류허가 신청 시 재외동포(F-4)의 경우 한국어능력 미제출 상태로 체류자격 변경 또는 체류기간 연장 신청을 하면 최대 체류기간 1년이 부여됩니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p564"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 636,
+      "prompt_tps": 206.36,
+      "generation_tokens": 110,
+      "generation_tps": 16.63,
+      "finish_reason": "stop",
+      "wall_seconds": 9.76,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"각종 체류허가 신청 시 재외동포(F-4)의 경우 한국어능력 미제출 상태로 체류자격 변경 또는 체류기간 연장 신청을 하면 최대 체류기간 1년이 부여됩니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p564\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "각종 체류허가 신청 시 재외동포(F-4)의 경우 한국어능력 미제출 상태로 체류자격 변경 또는 체류기간 연장 신청을 하면 최대 체류기간 1년이 부여됩니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p564"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "1년"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": [],
+        "start_point_mismatches": [],
+        "citations_added": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "각종 체류허가 신청 시 재외동포(F-4)의 경우 한국어능력 미제출 상태로 체류자격 변경 또는 체류기간 연장 신청을 하면 최대 체류기간 1년이 부여됩니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p564"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "T-18-gyeongju-koryoin-center-phone",
+      "prompt_sha256": "dbed246e987fa12ae9d0cd1b0e87ac450ddf8134450e0d5124b6c80b04290e49",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "경상북도고려인통합지원센터의 주소는 경북 경주시 한빛길 4, 2층이며 연락처는 054-742-4336입니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p448"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1438,
+      "prompt_tps": 179.22,
+      "generation_tokens": 102,
+      "generation_tps": 16.92,
+      "finish_reason": "stop",
+      "wall_seconds": 14.17,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"경상북도고려인통합지원센터의 주소는 경북 경주시 한빛길 4, 2층이며 연락처는 054-742-4336입니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p448\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "경상북도고려인통합지원센터의 주소는 경북 경주시 한빛길 4, 2층이며 연락처는 054-742-4336입니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p448"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": [],
+        "start_point_mismatches": [],
+        "citations_added": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "경상북도고려인통합지원센터의 주소는 경북 경주시 한빛길 4, 2층이며 연락처는 054-742-4336입니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p448"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "T-19-aircraft-mechanic-code",
+      "prompt_sha256": "0150659b8f1569c0167b98e5a40352a66769daac3788fd8601c9ad91c65a92d5",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "항공기 정비원 직종 코드는 7521입니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p235"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 875,
+      "prompt_tps": 207.54,
+      "generation_tokens": 73,
+      "generation_tps": 16.79,
+      "finish_reason": "stop",
+      "wall_seconds": 8.78,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"항공기 정비원 직종 코드는 7521입니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p235\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "항공기 정비원 직종 코드는 7521입니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p235"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": [],
+        "start_point_mismatches": [],
+        "citations_added": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "항공기 정비원 직종 코드는 7521입니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p235"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "T-20-parttime-topik-year3",
+      "prompt_sha256": "7647193d0c0a5a5e233fe77ab35f05b734e5222c6ed749a8d2fe39c10685ba98",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "partial",
+        "answer": "학사 3~4년 과정의 경우, 시간제 취업 허용시간 확대를 위한 한국어 능력 기준은 신청일 기준 직전학기 평균 성적이 C학점(2.0) 이상이어야 하며, 한국어능력시험의 경우 4급 이상 또는 사전평가 81점 이상을 충족해야 합니다. 또한, (사증발급인정서)에 따르면 TOPIK 급수와 관련하여 구체적인 언급은 있으나, 질문하신 'TOPIK 몇 급'에 대한 직접적인 연결은 근거에 명확히 나타나 있지 않습니다. 다만, '학사 3~4년' 과정에 해당하는 한국어능력시험 기준은 4급 이상입니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p735"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1421,
+      "prompt_tps": 193.98,
+      "generation_tokens": 214,
+      "generation_tps": 15.8,
+      "finish_reason": "stop",
+      "wall_seconds": 20.97,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"학사 3~4년 과정의 경우, 시간제 취업 허용시간 확대를 위한 한국어 능력 기준은 신청일 기준 직전학기 평균 성적이 C학점(2.0) 이상이어야 하며, 한국어능력시험의 경우 4급 이상 또는 사전평가 81점 이상을 충족해야 합니다. 또한, (사증발급인정서)에 따르면 TOPIK 급수와 관련하여 구체적인 언급은 있으나, 질문하신 'TOPIK 몇 급'에 대한 직접적인 연결은 근거에 명확히 나타나 있지 않습니다. 다만, '학사 3~4년' 과정에 해당하는 한국어능력시험 기준은 4급 이상입니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p735\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "partial",
+        "answer": "학사 3~4년 과정의 경우, 시간제 취업 허용시간 확대를 위한 한국어 능력 기준은 신청일 기준 직전학기 평균 성적이 C학점(2.0) 이상이어야 하며, 한국어능력시험의 경우 4급 이상 또는 사전평가 81점 이상을 충족해야 합니다. 또한, (사증발급인정서)에 따르면 TOPIK 급수와 관련하여 구체적인 언급은 있으나, 질문하신 'TOPIK 몇 급'에 대한 직접적인 연결은 근거에 명확히 나타나 있지 않습니다. 다만, '학사 3~4년' 과정에 해당하는 한국어능력시험 기준은 4급 이상입니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p735"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "4년"
+          },
+          {
+            "kind": "period",
+            "text": "4년"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": [],
+        "start_point_mismatches": [],
+        "citations_added": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "partial",
+          "answer": "학사 3~4년 과정의 경우, 시간제 취업 허용시간 확대를 위한 한국어 능력 기준은 신청일 기준 직전학기 평균 성적이 C학점(2.0) 이상이어야 하며, 한국어능력시험의 경우 4급 이상 또는 사전평가 81점 이상을 충족해야 합니다. 또한, (사증발급인정서)에 따르면 TOPIK 급수와 관련하여 구체적인 언급은 있으나, 질문하신 'TOPIK 몇 급'에 대한 직접적인 연결은 근거에 명확히 나타나 있지 않습니다. 다만, '학사 3~4년' 과정에 해당하는 한국어능력시험 기준은 4급 이상입니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p735"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "T-21-f5-foreign-other-crime",
+      "prompt_sha256": "88ec70b9ad65d03968f90bad2cff071c47ea8ed889f5a1f87c86cb06a63dfa9d",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "기타 범죄로 외국에서 금고 이상의 형에 준하는 형을 선고받은 경우, 영주(F-5)의 경우 선고일로부터 10년간 품행단정 미충족으로 허가제한이 있습니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p561"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1424,
+      "prompt_tps": 149.92,
+      "generation_tokens": 111,
+      "generation_tps": 16.57,
+      "finish_reason": "stop",
+      "wall_seconds": 16.28,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"기타 범죄로 외국에서 금고 이상의 형에 준하는 형을 선고받은 경우, 영주(F-5)의 경우 선고일로부터 10년간 품행단정 미충족으로 허가제한이 있습니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p561\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "기타 범죄로 외국에서 금고 이상의 형에 준하는 형을 선고받은 경우, 영주(F-5)의 경우 선고일로부터 10년간 품행단정 미충족으로 허가제한이 있습니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p561"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "10년"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": [],
+        "start_point_mismatches": [],
+        "citations_added": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "기타 범죄로 외국에서 금고 이상의 형에 준하는 형을 선고받은 경우, 영주(F-5)의 경우 선고일로부터 10년간 품행단정 미충족으로 허가제한이 있습니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p561"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "T-22-e74-fishery-ministry",
+      "prompt_sha256": "7fad85a0a0ab876a85f77908327b5486e5661e40b6a147d99674ac2cc569e56c",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "어업 분야의 중앙부처 추천은 해수부에서 합니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p270"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 905,
+      "prompt_tps": 140.24,
+      "generation_tokens": 72,
+      "generation_tps": 17.11,
+      "finish_reason": "stop",
+      "wall_seconds": 10.73,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"어업 분야의 중앙부처 추천은 해수부에서 합니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p270\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "어업 분야의 중앙부처 추천은 해수부에서 합니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p270"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": [],
+        "start_point_mismatches": [],
+        "citations_added": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "어업 분야의 중앙부처 추천은 해수부에서 합니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p270"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "T-23-kpoint-e74-age36",
+      "prompt_sha256": "cdf4c4d7f0f1c8b3336be6c8af22b2ce3f2f9e92fe04b6b96a0a64f4fc702b8c",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "partial",
+        "answer": "만 36세는 '34세 ~ 40세' 구간에 해당하며, 해당 구간의 나이 점수는 30점입니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p310"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1560,
+      "prompt_tps": 192.48,
+      "generation_tokens": 91,
+      "generation_tps": 17.44,
+      "finish_reason": "stop",
+      "wall_seconds": 13.4,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"만 36세는 '34세 ~ 40세' 구간에 해당하며, 해당 구간의 나이 점수는 30점입니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p310\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "partial",
+        "answer": "만 36세는 '34세 ~ 40세' 구간에 해당하며, 해당 구간의 나이 점수는 30점입니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p310"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": [],
+        "start_point_mismatches": [],
+        "citations_added": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "partial",
+          "answer": "만 36세는 '34세 ~ 40세' 구간에 해당하며, 해당 구간의 나이 점수는 30점입니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p310"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "T-24-busan-major-materials",
+      "prompt_sha256": "ccb0a2caed0c9d28588aa394cac43868d8a075804aedab03f28070375753cc82",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "신소재공학은 부산광역시 광역형 비자 발급 대학 전공 계열표에서 '재료' 대분류에 해당하며, 중분류는 '재료'이고 소분류는 '신소재공학'입니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p729"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 779,
+      "prompt_tps": 209.86,
+      "generation_tokens": 112,
+      "generation_tps": 16.95,
+      "finish_reason": "stop",
+      "wall_seconds": 10.38,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"신소재공학은 부산광역시 광역형 비자 발급 대학 전공 계열표에서 '재료' 대분류에 해당하며, 중분류는 '재료'이고 소분류는 '신소재공학'입니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p729\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "신소재공학은 부산광역시 광역형 비자 발급 대학 전공 계열표에서 '재료' 대분류에 해당하며, 중분류는 '재료'이고 소분류는 '신소재공학'입니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p729"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": [],
+        "start_point_mismatches": [],
+        "citations_added": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "신소재공학은 부산광역시 광역형 비자 발급 대학 전공 계열표에서 '재료' 대분류에 해당하며, 중분류는 '재료'이고 소분류는 '신소재공학'입니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p729"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    }
+  ],
+  "summary": {
+    "cases": 24,
+    "passed": 21,
+    "failed": 3,
+    "needs_review": 0,
+    "auto_correct": 21,
+    "outcomes_raw": {
+      "correct": 21,
+      "needs_review": 0,
+      "clarify": 0,
+      "safe_abstain": 0,
+      "harmful": 0,
+      "other": 3
+    },
+    "outcomes_checked": {
+      "correct": 19,
+      "needs_review": 0,
+      "clarify": 0,
+      "safe_abstain": 3,
+      "harmful": 0,
+      "other": 2
+    }
+  },
+  "peak_memory_gb": 4.908,
+  "max_rss_gb": 2.035,
+  "swap_after": "total = 5120.00M  used = 4102.25M  free = 1017.75M  (encrypted)",
+  "free_disk_gb_after": 6.88,
+  "finished_utc": "2026-10-28T06:37:36+00:00"
+}

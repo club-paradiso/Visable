@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -60,12 +61,19 @@ def test_a_page_missing_from_the_ledger_is_not_approved():
                                         if any("text" not in e for c in json.loads(p.read_text(encoding="utf-8"))["cases"]
                                                for e in c["evidence"])), ids=lambda p: p.name)
 def test_real_manual_case_files_resolve_and_quote_their_pages(path):
-    cases = ml.resolve_cases(json.loads(path.read_text(encoding="utf-8"))["cases"])
+    # Held-out v11 table cases were written from the layout text (tables kept), and a
+    # score column holds bare numbers, so "40점" is checked as the number 40.
+    layout = "v11_tables" in path.name
+    cases = ml.resolve_cases(json.loads(path.read_text(encoding="utf-8"))["cases"], layout=layout)
+
+    def on_page(needle, cited):
+        m = re.fullmatch(r"(\d+)\s*점", needle) if layout else None
+        return (m.group(1) in cited) if m else needle in cited
     for case in cases:
         ev = {e["id"]: e for e in case["evidence"]}
         assert all(tg.is_trusted(e, integrity=True) for e in ev.values()), case["id"]
         cited = " ".join(ev[i]["text"] for i in case["expect"].get("must_cite", []))
         for needle in case["expect"].get("answer_must_contain", []):
-            assert needle in cited, (case["id"], needle)
+            assert on_page(needle, cited), (case["id"], needle)
         for group in case["expect"].get("answer_must_contain_any_of_each", []):
-            assert any(n in cited for n in group), (case["id"], group)
+            assert any(on_page(n, cited) for n in group), (case["id"], group)

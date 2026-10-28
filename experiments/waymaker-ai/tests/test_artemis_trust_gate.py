@@ -652,3 +652,41 @@ def test_real_manual_sets_with_the_fixes_for_the_fifteen_wrong_answers():
     assert before["correct"] == 98 and before["harmful"] == 6
     assert after == {"correct": 113, "other": 6, "safe_abstain": 13, "needs_review": 2, "clarify": 6}, after
     assert lost == ["A-03-d6-who-can-invite"]
+
+
+def test_heldout_v11_verifies_the_fixes_for_the_fifteen():
+    """Held-out v11 (frozen 6370f68, written after the fixes by agents that saw only their
+    brief and the page texts). What generalised and what did not:
+    - start point check: 21 of 30 wrong start points caught (20 marked, 1 withheld);
+      the right answers keep the 2 of 60 marks they had before the fixes;
+    - flipped permission: 0 of 30 caught: the rule needs a counted number in the page
+      sentence and the same predicate word, and most real flips have neither
+      ("제한 없이 받을 수 있습니다");
+    - route cues: 12 of 30 routes right before and after; the cues ("…에 살고 있는데",
+      "come to Korea") miss "마닐라에서 지내는데", "I'm in Lagos";
+    - layout pages, E4B on 24 table questions: 18 correct on the PDF text, 19 with
+      --layout (two fixed, one lost)."""
+    pr = load_module("procedure_route")
+    ml = load_module("manual_ledger")
+    data = json.loads((BOOTSTRAP_DIR / "heldout_v11_checks.json").read_text(encoding="utf-8"))
+
+    def label(scopes):
+        d = {s[0] for s in scopes}
+        return "visa" if d == {"visa_issuance"} else "stay" if d == {"stay"} else "unclear"
+    assert sum(label(pr.route(r["question"])) == r["procedure"] for r in data["route"]) == 12
+    seen = Counter()
+    for c in data["checks"]:
+        sid, page = c["page_id"].split("#p")
+        trusted = ml.resolve_cases([{"id": c["id"], "question": c["question"],
+                                     "evidence": [{"id": c["page_id"], "source_id": sid, "page": int(page), "domain": "x"}]}])[0]["evidence"]
+        for kind, answers in (("right", c["right_answers"]), *((w["kind"], [w["text"]]) for w in c["wrong_answers"])):
+            for a in answers:
+                res = tg.post_check({"status": "answered", "answer": a, "citations": [c["page_id"]]}, trusted, question=c["question"])
+                caught = res["verdict"] == "withheld" or bool(res.get("start_point_mismatches") or res.get("role_mismatches") or res.get("subject_mismatches"))
+                seen[kind, caught] += 1
+    assert seen == {("right", False): 58, ("right", True): 2, ("flipped", False): 30,
+                    ("start_point", True): 21, ("start_point", False): 9}, seen
+    runs = {m: json.loads((BOOTSTRAP_DIR / "runs" / f"2026-10-28-e4b-it-4bit-m1-8gb-v11-tables-{m}" / "run_record.json").read_text(encoding="utf-8"))
+            for m in ("pdf", "layout")}
+    assert all(r["status"] == "completed" for r in runs.values()) and runs["layout"]["layout"] and not runs["pdf"]["layout"]
+    assert [runs[m]["summary"]["outcomes_checked"]["correct"] for m in ("pdf", "layout")] == [18, 19]
