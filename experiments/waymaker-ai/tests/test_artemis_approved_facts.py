@@ -132,10 +132,15 @@ tg = sys.modules["trust_gate"]
 def test_ai_confirmed_facts_are_marked_delegated_and_pass_the_export_checks():
     final = json.loads((BOOTSTRAP_DIR / "reviews" / "facts_ai_final_2026-10-28.json").read_text(encoding="utf-8"))
     recheck = json.loads(af.STATUTE_RECHECK.read_text(encoding="utf-8"))
-    for review in (final, recheck):
+    owner = json.loads(af.OWNER_ITEMS.read_text(encoding="utf-8"))
+    for review in (final, recheck, owner):
         assert "owner-delegated" in review["reviewer"] and "not a human approval" in review["reviewer"]
-    confirmed = {d["candidate_id"].replace("fc-", "f-") for r in (final, recheck) for d in r["decisions"] if d["final"] == "confirm"}
-    assert {f["fact_id"] for f in FACTS} == confirmed and len(FACTS) == 198
+    confirmed = {d["candidate_id"].replace("fc-", "f-") for r in (final, recheck, owner) for d in r["decisions"] if d["final"] == "confirm"}
+    # 195 final + 3 statute recheck + 18 of the 40 owner items (22 rejected), 2026-10-28.
+    assert {f["fact_id"] for f in FACTS} == confirmed and len(FACTS) == 216
+    left = {d["candidate_id"] for d in final["decisions"] if d["final"] == "owner"}
+    settled = {d["candidate_id"] for r in (recheck, owner) for d in r["decisions"]}
+    assert left == settled   # no item is left with the owner
     pages, ledger = af.pilot_pages(), af.manual_ledger.load_ledger()
     for f in FACTS:
         assert f["tier"] == "ai_delegated" and "웬만하면 너가 검토 해" in f["review"]["delegation"]
@@ -200,8 +205,9 @@ def test_subject_probes_from_the_facts():
     would (status code, household size): no right answer is marked, about half of the
     mixed-up ones are. Household mix-ups are all caught; a code alone often fits several
     rows, and row mix-ups cannot be told apart without the row named."""
-    # 53 until a row for the named status beat the general row (2026-10-28, after v10 W-07).
-    assert _probe_counts(af.subject_probes(FACTS)) == (113, 0, 88)
+    # 53 until a row for the named status beat the general row (2026-10-28, after v10 W-07);
+    # (113, 0, 88) before the 18 owner-item facts (mostly the F-6 household income rows).
+    assert _probe_counts(af.subject_probes(FACTS)) == (185, 0, 160)
 
 
 def test_pasting_the_ai_row_label_into_the_question_inflates_the_probe_score():

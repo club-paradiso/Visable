@@ -793,3 +793,14 @@ def test_heldout_v13_flip_judge_and_everyday_status_names():
     assert rec["status"] == "completed" and rec["summary"]["outcomes_raw"]["correct"] == 21
     marked = {r["case"] for r in rec["results"] if (r.get("post_check") or {}).get("subject_mismatches")}
     assert marked == {"S-01-f6-extension-fee", "S-18-f6-income-five-en"}
+    # Since the household the question gives beats the answer's re-count (after this run):
+    # S-17 ("세 식구(2인 가구)") is marked too, so all three wrong answers are.
+    facts = load_module("approved_facts").load_facts()
+    cases = {c["id"]: c for c in ml.resolve_cases(json.loads((BOOTSTRAP_DIR / "heldout_v13_subject_cases.json").read_text(encoding="utf-8"))["cases"])}
+    now = set()
+    for r in rec["results"]:
+        case = cases[r["case"]]
+        trusted = [e for e in case["evidence"] if tg.is_trusted(e, True)]
+        if tg.post_check(r["parsed"], trusted, facts=facts, question=case["question"])["subject_mismatches"]:
+            now.add(r["case"])
+    assert now == {"S-01-f6-extension-fee", "S-17-f6-income-three", "S-18-f6-income-five-en"}

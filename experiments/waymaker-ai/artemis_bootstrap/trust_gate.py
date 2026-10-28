@@ -555,7 +555,9 @@ def subject_mismatches(answer: str, question: str, facts: Sequence[Mapping[str, 
     text = f"{question} {answer}"
     codes = set(_STATUS_CODE_RE.findall(text)) | {_STATUS_NAMES[m] for m in _STATUS_NAME_RE.findall(text)} \
         | {code for regex, code in _STATUS_COLLOQUIAL if regex.search(text)}
-    households = _households(text)
+    # The person says how many they are; an answer that re-counts them ("세 식구(2인 가구)")
+    # does not get to change the subject (held-out v13 S-17).
+    households = _households(question) or _households(answer)
     rows = {f["subject"]["qualifiers"].get("row_label") for f in usable
             if f["subject"]["qualifiers"].get("row_label") and f["subject"]["qualifiers"]["row_label"] in text}
     rows |= _named_rows(question, usable)

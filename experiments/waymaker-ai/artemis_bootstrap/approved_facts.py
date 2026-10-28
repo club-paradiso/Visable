@@ -48,6 +48,9 @@ FACTS = HERE / "ledgers" / "manual_2026_10_19_facts.jsonl"
 #: AI first-pass opinions on the candidates (shown to the reviewer; never an approval).
 AI_FIRST_PASS = HERE / "reviews" / "facts_ai_first_pass_2026-10-28.json"
 STATUTE_RECHECK = HERE / "reviews" / "facts_ai_statute_recheck_2026-10-28.json"
+OWNER_ITEMS = HERE / "reviews" / "facts_ai_owner_items_2026-10-28.json"
+#: Decisions made after the final pass, in order; a later one wins for its candidate.
+LATER_DECISIONS = (STATUTE_RECHECK, OWNER_ITEMS)
 
 #: The roles a reviewer may choose (design §3). Candidates start from the post-check's
 #: role reader; the reviewer refines it.
@@ -398,8 +401,9 @@ def bundle() -> Dict[str, Any]:
         ai = {r["candidate_id"]: r for r in json.loads(AI_FIRST_PASS.read_text(encoding="utf-8"))["opinions"]}
     final_path = HERE / "reviews" / "facts_ai_final_2026-10-28.json"
     final = {d["candidate_id"]: d for d in json.loads(final_path.read_text(encoding="utf-8"))["decisions"]} if final_path.exists() else {}
-    if STATUTE_RECHECK.exists():   # three "differs" settled later; the later decision wins
-        final.update({d["candidate_id"]: d for d in json.loads(STATUTE_RECHECK.read_text(encoding="utf-8"))["decisions"]})
+    for later in LATER_DECISIONS:   # settled after the final pass; the later decision wins
+        if later.exists():
+            final.update({d["candidate_id"]: d for d in json.loads(later.read_text(encoding="utf-8"))["decisions"]})
     return {"version": "artemis-facts-pilot-1", "edition": "2026.10", "roles": ROLES, "candidates": rows, "ai_first_pass": ai,
             "ai_final": final,
             "pages": {pid: {"title": pages[pid]["title"], "text": pages[pid]["text"],
