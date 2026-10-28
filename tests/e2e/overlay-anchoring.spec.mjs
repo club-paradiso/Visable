@@ -78,7 +78,7 @@ test('KO opens the language panel anchored to the button and inside the viewport
   if (process.env.PARADISO_VISUAL) await expect(page).toHaveScreenshot('language-panel-home.png', { maxDiffPixelRatio: 0.02, animations: 'disabled' });
 });
 
-test('the panel stays attached after a search, a page scroll and while scrolling with it open', async ({ page }, info) => {
+test('the panel stays attached after a search, a page scroll and while scrolling with it open', async ({ page, browserName, isMobile }, info) => {
   await boot(page);
   await page.fill('#civicQuery', 'F-6 체류기간 연장');
   await page.press('#civicQuery', 'Enter');
@@ -88,8 +88,9 @@ test('the panel stays attached after a search, a page scroll and while scrolling
   const { opener, panel } = await openLang(page);
   await expectAnchored(page, opener, panel, 'searched+scrolled');
   // scrolling the page under the open modal must not detach the panel
-  await page.mouse.move(5, 5);
-  await page.mouse.wheel(0, 300);
+  // (mobile WebKit has no mouse wheel in Playwright, so the page is scrolled directly there)
+  if (browserName === 'webkit' && isMobile) await page.evaluate(() => window.scrollBy(0, 300));
+  else { await page.mouse.move(5, 5); await page.mouse.wheel(0, 300); }
   await page.waitForTimeout(250);
   if (await opener.isVisible()) await expectAnchored(page, opener, panel, 'scrolled while open');
   await info.attach('language-panel-searched', { body: await page.screenshot(), contentType: 'image/png' });

@@ -399,18 +399,20 @@ test.describe('phone search sheet and result reading', () => {
     await expect(page.locator('.cs-suggest')).toBeHidden();
   });
 
-  test('a search from the sheet leaves it; the result header slides away while reading and returns on scroll up', async ({ page }) => {
+  test('a search from the sheet leaves it; the result header slides away while reading and returns on scroll up', async ({ page, browserName, isMobile }) => {
+    // mobile WebKit has no mouse wheel in Playwright; the header follows scroll events, so scroll the page there
+    const wheel = (dy) => (browserName === 'webkit' && isMobile ? page.evaluate((d) => window.scrollBy(0, d), dy) : page.mouse.wheel(0, dy));
     await bootHome(page);
     await page.locator('#civicQuery').click();
     await page.keyboard.type('외국인등록증 재발급');
     await page.keyboard.press('Enter');
     await expect(page.locator('#statusGuidance[data-sg-kind]')).toBeVisible({ timeout: 20_000 });
     await expect(page.locator('body')).not.toHaveClass(/cs-sheet/);
-    await page.mouse.wheel(0, 700);
+    await wheel(700);
     await expect(page.locator('body')).toHaveClass(/cs-hdr-away/);
-    await page.mouse.wheel(0, -120);
+    await wheel(-120);
     await expect(page.locator('body')).not.toHaveClass(/cs-hdr-away/);
-    await page.mouse.wheel(0, 500);
+    await wheel(500);
     await expect(page.locator('body')).toHaveClass(/cs-hdr-away/);
     await page.locator('#q').focus();
     await expect(page.locator('body')).not.toHaveClass(/cs-hdr-away/);

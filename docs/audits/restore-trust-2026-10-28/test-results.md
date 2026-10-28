@@ -65,3 +65,4 @@ Not run:
 | `waymaker-quick-answer.spec.mjs`, 8 workers × 3 repeats | 144/144 (was failing under load: product bug fixed) |
 | `node scripts/browser_status_matrix.mjs` (258 codes, batches of 10, 390px) | `원문 확인` badges 1,444 → 428; legend missing 0; 200 source-only answers opened, 160 with a cited page, 160 previews shown, verbatim mismatches 0; overflow 0; page errors 0; XSS probe not triggered (`test-matrix-rt2.csv`) |
 | WebKit | Not runnable locally (download blocked by the sandbox network policy); now a CI job (`webkit-e2e`) |
+| WebKit CI, first run (e7887b7) | 320 passed, 2 failed, 36 skipped. Both failures were `page.mouse.wheel`, which Playwright does not support on mobile WebKit. Those two tests now scroll the page directly on mobile WebKit; the header and overlay react to `scroll` events, so the check is the same. Both paths pass on Chromium |
