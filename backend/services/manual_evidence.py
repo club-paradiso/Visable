@@ -796,9 +796,9 @@ def note_lines(sources: Sequence[Dict[str, Any]], *, is_ko: bool, max_items: int
         return []
     lines: List[str] = []
     if is_ko:
-        lines.append("공식 매뉴얼 발췌 (승인된 현행 판 원문에서 자동으로 찾은 쪽이며, 이 질문에 맞춰 사람이 검토한 목록은 아닙니다):")
+        lines.append("공식 매뉴얼 발췌 (현행 판 원문에서 질문과 관련된 쪽을 자동으로 찾았어요 · 참고용, 신청 전 공식 원문 확인):")
     else:
-        lines.append("Official manual excerpts (found automatically in the approved current editions; not reviewed for this question by a person):")
+        lines.append("Official manual excerpts (pages found automatically in the current editions · reference only, confirm with the official source before applying):")
     for src in items:
         text = str(src.get("excerpt") or "")
         snippet = " ".join(ln.strip() for ln in text.splitlines() if ln.strip() and ln.strip() != "…")

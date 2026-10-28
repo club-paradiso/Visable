@@ -1,12 +1,12 @@
-// Restore Trust (2026-10-28): the F-4 재외동포 → 사증발급 path, before/after contract.
+// Restore Trust (2026-10-28): the F-4 재외동포 result path, before/after contract.
 //
 //   * the procedure chooser marks 원문 확인 only where picking it really ends on the
-//     official text (3 of F-4's former 10 badges led to structured common rules),
-//     and explains what the mark means;
-//   * 사증발급 cites the page that holds the F-4 visa section (393), not the
-//     handbook cover (383);
-//   * the source-only answer shows that page verbatim, labelled as unreviewed
-//     extracted text, readable in every skin — no organised guidance is invented;
+//     official text, and explains what the mark means (10 of 12 at the start, 4 now);
+//   * 사증발급 renders the documents transcribed from the F-4 visa section and cites
+//     pp. 393–394, never the handbook cover (383);
+//   * a procedure the manual gives no list for (체류자격 부여, p.532) shows that page
+//     verbatim, from the F-4 lines, readable in every skin — nothing is invented;
+//   * no internal review label reaches the page; one plain reference line stays;
 //   * the related-source list for a visa procedure contains visa-manual pages only.
 import { test, expect } from '@playwright/test';
 
@@ -40,42 +40,50 @@ test('F-4 chooser: 원문 확인 only on procedures that end on the official tex
   await boot(page);
   const sg = await chooser(page);
   await expect(sg.locator('.sg-option')).toHaveCount(12);
-  // structured common rules are no longer flagged
-  for (const pid of ['residence_report', 'registration_info_report', 'card_reissue', 'extension', 'registration']) {
+  for (const pid of ['extension', 'registration', 'status_change', 'activities_outside_status', 'residence_report', 'registration_info_report', 'card_reissue', 'visa_issuance']) {
     await expect(sg.locator(`.sg-option[data-sg-value="${pid}"] .sg-state-source_only`), pid).toHaveCount(0);
   }
-  for (const pid of ['visa_issuance', 'visa_issuance_confirmation', 'electronic_visa', 'status_grant', 'status_change', 'activities_outside_status', 'reentry']) {
+  for (const pid of ['visa_issuance_confirmation', 'electronic_visa', 'status_grant', 'reentry']) {
     await expect(sg.locator(`.sg-option[data-sg-value="${pid}"] .sg-state-source_only`), pid).toHaveCount(1);
   }
   await expect(sg.locator('.sg-chip-legend')).toContainText('공식 원문');
 });
 
-test('F-4 → 사증발급 cites page 393 and shows that page verbatim, labelled as unreviewed', async ({ page }, info) => {
+test('F-4 → 사증발급 lists the transcribed documents and cites pages 393–394, never the cover', async ({ page }, info) => {
   await boot(page);
   const sg = await chooser(page);
   await sg.locator('.sg-option[data-sg-value="visa_issuance"]').click();
+  const ans = page.locator('#statusGuidance[data-sg-kind="resolved"]');
+  await expect(ans).toBeVisible({ timeout: 20_000 });
+  await expect(ans).not.toContainText('정리된 안내가 아직 없어요');
+  await expect(ans.locator('.sg-docs')).toContainText('한국어능력 입증서류');
+  await expect(ans.locator('.sg-docs')).toContainText('외국국적동포임을 증명하는 서류');
+  await expect(ans.locator('.sg-docs')).toContainText('393쪽');
+  await expect(ans.locator('.sg-docs')).toContainText('394쪽');
+  await expect(ans).not.toContainText('383쪽');
+  await expect(ans).toContainText('40세가 되는 해');   // the military-service restriction stays with the rule
+  await expect(ans).toContainText('참고용 안내예요 · 신청 전 공식 원문을 확인하세요');
+  await expect(ans).not.toContainText(/검토 전|대조 검토|needs_review|approved/);
+  await info.attach('f4-visa-issuance', { body: await page.screenshot({ fullPage: true }), contentType: 'image/png' });
+});
+
+test('F-4 → 체류자격 부여 (no list in the manual) shows page 532 verbatim from the F-4 lines', async ({ page }) => {
+  await boot(page);
+  const sg = await chooser(page);
+  await sg.locator('.sg-option[data-sg-value="status_grant"]').click();
   const ans = page.locator('#statusGuidance[data-sg-kind="source-only"]');
   await expect(ans).toBeVisible({ timeout: 20_000 });
-  await expect(ans.locator('.sg-btn-source')).toContainText('393');
-  await expect(ans.locator('.sg-btn-source')).toHaveAttribute('data-sg-page', '393');
-  // the honest state stays: no organised guidance, review notice present
   await expect(ans.locator('.sg-source-only .sg-lead')).toContainText('정리된 안내가 아직 없어요');
-  await expect(ans).toContainText('2026년 10월판 원문은 아직 사람이 대조 검토하지 않았어요');
+  await expect(ans.locator('.sg-btn-source')).toHaveAttribute('data-sg-page', '532');
   const prev = ans.locator('.sg-source-preview');
   await expect(prev).toBeVisible({ timeout: 15_000 });
-  await expect(prev.locator('.sg-preview-title')).toContainText('393');
-  await expect(prev.locator('.sg-preview-note')).toContainText('사람이 정리·검토한 안내가 아니며');
-  await expect(prev.locator('.sg-source-excerpt')).toContainText('재외동포(F-4) 자격 기본 대상');
-  // verbatim: every excerpt line occurs on the cited corpus page
-  const lines = await prev.locator('.sg-source-excerpt p').allInnerTexts();
-  const pageText = await page.evaluate(() => fetch('data/manual-corpus/visa_manual_2026_10_19_pdf.json').then((r) => r.json()).then((rows) => rows.find((r) => r.page === 393).text.replace(/\s+/g, ' ')));
-  for (const l of lines.filter((x) => x !== '…')) expect(pageText, `not on p.393: ${l}`).toContain(l.replace(/\s+/g, ' ').trim());
-  // one way into the full page: the answer's source button (the preview adds no second call to action)
-  await expect(ans.locator('[data-sg-action="open-page"][data-sg-page="393"]')).toHaveCount(2);
-  await ans.locator('.sg-btn-source').click();
-  await expect(page.locator('#civicPageDialog[open]')).toContainText('393');
-  await page.keyboard.press('Escape');
-  await info.attach('f4-visa-issuance', { body: await page.screenshot({ fullPage: true }), contentType: 'image/png' });
+  await expect(prev.locator('.sg-preview-title')).toContainText('532');
+  await expect(prev.locator('.sg-preview-note')).toContainText('공식 원문 그대로');
+  const lines = (await prev.locator('.sg-source-excerpt p').allInnerTexts()).filter((x) => x !== '…');
+  expect(lines[0], 'the excerpt starts at the F-4 lines, not the H-2 text above them').toContain('F-4');
+  const pageText = await page.evaluate(() => fetch('data/manual-corpus/stay_manual_2026_10_19_pdf.json').then((r) => r.json()).then((rows) => rows.find((r) => r.page === 532).text.replace(/[\uE000-\uF8FF\u{F0000}-\u{FFFFD}]/gu, '').replace(/\s+/g, ' ')));
+  for (const l of lines) expect(pageText, `not on p.532: ${l}`).toContain(l.replace(/\s+/g, ' ').trim());
+  await expect(ans.locator('[data-sg-action="open-page"][data-sg-page="532"]')).toHaveCount(2);
 });
 
 test('the verbatim excerpt stays readable in every skin', async ({ page }) => {
@@ -86,7 +94,7 @@ test('the verbatim excerpt stays readable in every skin', async ({ page }) => {
     await boot(page);
     await expect.poll(() => page.evaluate(() => document.documentElement.getAttribute('data-vt'))).toBe(skin);
     const sg = await chooser(page);
-    await sg.locator('.sg-option[data-sg-value="visa_issuance"]').click();
+    await sg.locator('.sg-option[data-sg-value="status_grant"]').click();
     const ex = page.locator('#statusGuidance .sg-source-excerpt p').first();
     await expect(ex).toBeVisible({ timeout: 15_000 });
     expect(await contrast(ex), `${skin}: excerpt contrast`).toBeGreaterThanOrEqual(4.5);
@@ -98,7 +106,9 @@ test('related sources for 사증발급 come from the visa manual only', async ({
   await boot(page);
   const sg = await chooser(page);
   await sg.locator('.sg-option[data-sg-value="visa_issuance"]').click();
-  await expect(page.locator('#statusGuidance[data-sg-kind="source-only"]')).toBeVisible({ timeout: 20_000 });
+  await expect(page.locator('#statusGuidance[data-sg-kind="resolved"]')).toBeVisible({ timeout: 20_000 });
+  // structured answers keep the evidence (and the related sources inside it) collapsed until opened
+  await page.locator('#sgEvidence > summary').click();
   const summary = page.locator('#civicRawSources summary');
   await expect(summary).toContainText(/\d/, { timeout: 15_000 });
   const n = Number((await summary.innerText()).replace(/[^\d]/g, ''));

@@ -332,9 +332,17 @@ def parent_of(code):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--check', action='store_true')
+    # Draft validation: read another rules file and write every output under one scratch folder,
+    # so a rule batch can be built and checked without touching the committed data.
+    ap.add_argument('--rules', default=None, help='authored rules JSON (default: data/guidance-rules-202609.json)')
+    ap.add_argument('--out-dir', default=None, help='write outputs here instead of data/ and reports/')
     args = ap.parse_args()
+    global MANIFEST_OUT, BUNDLE_OUT, REPORT_JSON, REPORT_MD
+    if args.out_dir:
+        os.makedirs(args.out_dir, exist_ok=True)
+        MANIFEST_OUT, BUNDLE_OUT, REPORT_JSON, REPORT_MD = (os.path.join(args.out_dir, n) for n in ('status-coverage-202609.json', 'status-guidance-202609.json', 'report-coverage.json', 'report-coverage.md'))
 
-    rules = load_json('data/guidance-rules-202609.json')
+    rules = load_json(os.path.relpath(args.rules, ROOT) if args.rules else 'data/guidance-rules-202609.json')
     legacy = load_json('visa_data.json')
     names = load_json('data/i18n/visa-names.json')['names']
     manuals = {k: Manual(v) for k, v in SOURCES.items()}

@@ -12,7 +12,8 @@ for (const lang of ['ko','en']) {
   const out = SG.renderModel(step,state,bundle);
   assert(out.html.includes('sg-law-review-scope'), 'body review scope must be visible');
   assert(out.html.includes('2026-10-26') && out.html.includes('2026-09-22'));
-  assert(out.html.includes(lang === 'ko' ? '재검토 필요' : 'needs revalidation'));
+  // plain wording (no internal review label), but the previous-version basis must stay visible
+  assert(out.html.includes(lang === 'ko' ? '이전 판본(2026-09-22) 기준이라 현행 조문은' : 'previous version (2026-09-22), so check the current article'));
   const qa = globalThis.VisableQuickAnswer.build({model:out.model,step,state,bundle,lang});
   assert(qa.model.uncertainties.some(u=>u.id==='law_body_review'));
 }

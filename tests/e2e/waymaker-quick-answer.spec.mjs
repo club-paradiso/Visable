@@ -34,6 +34,17 @@ async function search(page, query) {
   await page.press(sel, 'Enter');
   const sg = page.locator('#statusGuidance[data-sg-kind]');
   await expect(sg).toBeVisible({ timeout: 20_000 });
+  // A later search must not be read off the previous result: wait for this query's own render.
+  await expect(page.locator('#sgHeading')).toContainText(query, { timeout: 20_000 });
+  return sg;
+}
+// Search and wait for the optional AI call to come back, so assertions about its outcome
+// run after it instead of after a guessed delay.
+async function searchAwaitingAi(page, query) {
+  const ai = page.waitForResponse((r) => r.url().includes('/api/waymaker/quick-answer'), { timeout: 20_000 });
+  const sg = await search(page, query);
+  await ai;
+  await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))));
   return sg;
 }
 
@@ -115,10 +126,12 @@ test.describe('optional AI wording is validated, never trusted', () => {
 
   test('a hallucinated rewrite is rejected: the deterministic sentence stays', async ({ page }) => {
     await boot(page, '/index.html', json(200, { ok: true, status: 'OK', summary: HALLUCINATED }));
+    const ai = page.waitForResponse((r) => r.url().includes('/api/waymaker/quick-answer'), { timeout: 20_000 });
     const sg = await search(page, '외국인등록증 재발급하려면 뭐 필요해?');
     const summary = sg.locator('#sgQuickSummary');
     const before = await summary.textContent();
-    await page.waitForTimeout(1_200);
+    await ai;
+    await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))));
     await expect(summary).toHaveAttribute('data-sg-ai', 'deterministic');
     await expect(summary).toHaveText(before);
     await expect(summary).not.toContainText('아포스티유');
@@ -130,20 +143,18 @@ test.describe('optional AI wording is validated, never trusted', () => {
 
   test('NOT_CONFIGURED and 404 stay silent; a provider failure shows the honest note', async ({ page }) => {
     await boot(page, '/index.html', json(503, { ok: false, status: 'NOT_CONFIGURED' }));
-    const sg = await search(page, '외국인등록증 재발급하려면 뭐 필요해?');
-    await page.waitForTimeout(800);
+    const sg = await searchAwaitingAi(page, '외국인등록증 재발급하려면 뭐 필요해?');
     await expect(sg.locator('#sgQuickNote')).toBeHidden();
     await expect(sg.locator('#sgQuickSummary')).toHaveAttribute('data-sg-ai', 'deterministic');
 
     await page.unroute('**/api/waymaker/quick-answer');
     await page.route('**/api/waymaker/quick-answer', json(404, { error: 'not found' }));
-    await search(page, '체류지 변경 신고하려면 어떻게 해?');
-    await page.waitForTimeout(800);
+    await searchAwaitingAi(page, '체류지 변경 신고하려면 어떻게 해?');
     await expect(sg.locator('#sgQuickNote')).toBeHidden();
 
     await page.unroute('**/api/waymaker/quick-answer');
     await page.route('**/api/waymaker/quick-answer', json(502, { ok: false, status: 'PROVIDER_FAILED' }));
-    await search(page, '외국인등록증 재발급하려면?');
+    await searchAwaitingAi(page, '외국인등록증 재발급하려면?');
     await expect(sg.locator('#sgQuickNote')).toBeVisible({ timeout: 10_000 });
     await expect(sg.locator('#sgQuickSummary')).toHaveAttribute('data-sg-ai', 'deterministic');
   });

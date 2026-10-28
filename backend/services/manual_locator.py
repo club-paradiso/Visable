@@ -135,9 +135,9 @@ def note_lines(status_code: Optional[str], subcode: Optional[str], task_type: Op
     title = src["title_ko"] if is_ko else (src["title_en"] or src["title_ko"])
     lines: List[str] = []
     if is_ko:
-        lines.append(f"공식 매뉴얼 위치 ({title} {src['edition']}, 사람이 한 줄씩 대조 검토하기 전 원문 기준):")
+        lines.append(f"공식 매뉴얼 위치 ({title} {src['edition']} · 참고용, 신청 전 공식 원문 확인):")
         for e in shown:
-            section = f" 「{e['section']}」" if e["section"] else " (구조화 전 원문)"
+            section = f" 「{e['section']}」" if e["section"] else " (공식 원문)"
             lines.append(f"* {e['target']}: p.{e['page']}{section}")
         if len(entries) > len(shown):
             lines.append(f"* 외 {len(entries) - len(shown)}건")
@@ -145,9 +145,9 @@ def note_lines(status_code: Optional[str], subcode: Optional[str], task_type: Op
             lines.append(f"{status_code}은(는) 세부자격과 상황에 따라 항목이 다르므로, 본인 세부자격에 해당하는 항목만 확인하세요.")
         lines.append("같은 원문은 Visable 홈 검색의 체류자격 안내에서도 확인할 수 있습니다.")
         return lines
-    lines.append(f"Where the official manual covers this ({title} {src['edition']}, not yet reviewed line by line by a person):")
+    lines.append(f"Where the official manual covers this ({title} {src['edition']} · reference only, confirm with the official source before applying):")
     for e in shown:
-        section = f" — section 「{e['section']}」" if e["section"] else " (source text, not yet structured)"
+        section = f" — section 「{e['section']}」" if e["section"] else " (official source text)"
         lines.append(f"* {e['target']}: p.{e['page']}{section}")
     if len(entries) > len(shown):
         lines.append(f"* and {len(entries) - len(shown)} more")

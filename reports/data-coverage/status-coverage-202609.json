@@ -17,59 +17,59 @@
   "total_scenario_records": 5,
   "total_special_program_records": 6,
   "coverage_states_all": {
-   "PARTIAL": 46,
-   "SUPPORTED": 71,
-   "SOURCE_ONLY": 116,
+   "SUPPORTED": 152,
+   "PARTIAL": 32,
+   "SOURCE_ONLY": 49,
    "UNVERIFIED": 35,
    "LEGACY_ONLY": 1
   },
   "coverage_states_status": {
-   "PARTIAL": 7,
-   "SUPPORTED": 30
+   "SUPPORTED": 35,
+   "PARTIAL": 2
   },
   "coverage_states_substatus": {
-   "SOURCE_ONLY": 116,
+   "SOURCE_ONLY": 49,
    "UNVERIFIED": 35,
-   "PARTIAL": 33,
-   "SUPPORTED": 36,
+   "SUPPORTED": 112,
+   "PARTIAL": 24,
    "LEGACY_ONLY": 1
   },
-  "guidance_entries": 141,
-  "document_items": 838,
+  "guidance_entries": 533,
+  "document_items": 3777,
   "document_completeness": {
-   "FULLY_STRUCTURED": 109,
-   "PARTIALLY_STRUCTURED": 11,
-   "SOURCE_ONLY": 21
+   "FULLY_STRUCTURED": 428,
+   "PARTIALLY_STRUCTURED": 41,
+   "SOURCE_ONLY": 64
   },
   "procedure_states": {
-   "SOURCE_ONLY": 1605,
-   "SUPPORTED": 406,
-   "CONDITIONAL": 31,
-   "UNVERIFIED": 1677,
-   "NOT_APPLICABLE": 355,
-   "EXCEPTION_ONLY": 14,
-   "GENERALLY_NOT_PERMITTED": 40
+   "SUPPORTED": 1268,
+   "SOURCE_ONLY": 595,
+   "CONDITIONAL": 186,
+   "UNVERIFIED": 1605,
+   "NOT_APPLICABLE": 405,
+   "EXCEPTION_ONLY": 17,
+   "GENERALLY_NOT_PERMITTED": 52
   },
-  "conflicts": 76,
+  "conflicts": 78,
   "errors": []
  },
  "records": [
   {
    "code": "A-1",
    "kind": "status",
-   "coverage_state": "PARTIAL",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "A-2",
    "kind": "status",
-   "coverage_state": "PARTIAL",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "A-3",
    "kind": "status",
-   "coverage_state": "PARTIAL",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
@@ -117,7 +117,7 @@
   {
    "code": "D-3",
    "kind": "status",
-   "coverage_state": "PARTIAL",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
@@ -273,7 +273,7 @@
   {
    "code": "H-2",
    "kind": "status",
-   "coverage_state": "PARTIAL",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "legacy_holders_only"
   },
   {
@@ -309,37 +309,37 @@
   {
    "code": "C-3-1",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "C-3-2",
    "kind": "substatus",
-   "coverage_state": "PARTIAL",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "C-3-3",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "C-3-4",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "C-3-5",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "C-3-6",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
@@ -351,19 +351,19 @@
   {
    "code": "C-3-8",
    "kind": "substatus",
-   "coverage_state": "PARTIAL",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "C-3-9",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "C-3-10",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
@@ -381,31 +381,31 @@
   {
    "code": "C-4-1",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "C-4-2",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "C-4-3",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "C-4-4",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "C-4-5",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
@@ -519,7 +519,7 @@
   {
    "code": "D-4-2",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
@@ -531,19 +531,19 @@
   {
    "code": "D-4-5",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "D-4-6",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "D-4-7",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
@@ -591,19 +591,19 @@
   {
    "code": "D-8-3",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "D-8-4",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "D-8-4S",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
@@ -633,13 +633,13 @@
   {
    "code": "D-9-4",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "D-9-5",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
@@ -651,7 +651,7 @@
   {
    "code": "E-10-2",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "PARTIAL",
    "lifecycle": "active"
   },
   {
@@ -663,19 +663,19 @@
   {
    "code": "E-2-1",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "E-2-2",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "E-2-91",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
@@ -687,7 +687,7 @@
   {
    "code": "E-6-2",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
@@ -717,7 +717,7 @@
   {
    "code": "E-7-4",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "PARTIAL",
    "lifecycle": "active"
   },
   {
@@ -891,13 +891,13 @@
   {
    "code": "F-1-3",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "F-1-4",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
@@ -945,7 +945,7 @@
   {
    "code": "F-1-15",
    "kind": "substatus",
-   "coverage_state": "PARTIAL",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
@@ -957,25 +957,25 @@
   {
    "code": "F-1-21",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "F-1-22",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "F-1-23",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "F-1-24",
    "kind": "substatus",
-   "coverage_state": "PARTIAL",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
@@ -1029,7 +1029,7 @@
   {
    "code": "F-2-5",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
@@ -1041,13 +1041,13 @@
   {
    "code": "F-2-7",
    "kind": "substatus",
-   "coverage_state": "PARTIAL",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "F-2-8",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
@@ -1071,25 +1071,25 @@
   {
    "code": "F-2-12",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "F-2-13",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "F-2-16",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "F-2-71",
    "kind": "substatus",
-   "coverage_state": "PARTIAL",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
@@ -1101,7 +1101,7 @@
   {
    "code": "F-2-81",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
@@ -1149,13 +1149,13 @@
   {
    "code": "F-3-18",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "F-3-19",
    "kind": "substatus",
-   "coverage_state": "PARTIAL",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
@@ -1167,7 +1167,7 @@
   {
    "code": "F-3-20",
    "kind": "substatus",
-   "coverage_state": "PARTIAL",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
@@ -1269,43 +1269,43 @@
   {
    "code": "F-4-41",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "F-4-42",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "F-5-1",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "F-5-2",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "F-5-3",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "F-5-4",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "F-5-5",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
@@ -1323,43 +1323,43 @@
   {
    "code": "F-5-8",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "F-5-9",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "F-5-T",
    "kind": "substatus",
-   "coverage_state": "PARTIAL",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "F-5-10",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "F-5-11",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "F-5-12",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "F-5-13",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
@@ -1371,73 +1371,73 @@
   {
    "code": "F-5-15",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "F-5-16",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "F-5-17",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "F-5-18",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "F-5-19",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "F-5-20",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "F-5-21",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "F-5-22",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "F-5-23",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "F-5-24",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "F-5-25",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "F-5-26",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
@@ -1449,13 +1449,13 @@
   {
    "code": "F-5-28",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
    "code": "F-5-29",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
@@ -1467,7 +1467,7 @@
   {
    "code": "F-5-S1",
    "kind": "substatus",
-   "coverage_state": "PARTIAL",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
@@ -1479,7 +1479,7 @@
   {
    "code": "F-5-T1",
    "kind": "substatus",
-   "coverage_state": "PARTIAL",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {
@@ -1539,7 +1539,7 @@
   {
    "code": "G-1-7",
    "kind": "substatus",
-   "coverage_state": "SOURCE_ONLY",
+   "coverage_state": "SUPPORTED",
    "lifecycle": "active"
   },
   {

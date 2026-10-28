@@ -22,7 +22,7 @@ import paradiso_backend as pb  # noqa: E402
 from services import manual_locator as ml  # noqa: E402
 
 DATA = json.loads(ml.STATUS_GUIDANCE_PATH.read_text(encoding="utf-8"))
-REVIEW_LABEL_KO = "사람이 한 줄씩 대조 검토하기 전 원문 기준"
+REVIEW_LABEL_KO = "참고용, 신청 전 공식 원문 확인"
 
 
 def _guidance(target_prefix: str, procedure: str):
@@ -46,10 +46,11 @@ class LocateTests(unittest.TestCase):
         self.assertFalse(found["needs_subcode"])
 
     def test_unstructured_procedure_uses_the_code_index_page(self):
-        self.assertEqual(_guidance("D-3", "extension"), [])
-        found = ml.locate("D-3", None, "extension")
-        page = DATA["codes"]["D-3"]["procedures"]["extension"]["p"]
-        self.assertEqual(found["entries"], [{"target": "D-3", "section": "", "page": page}])
+        # D-3 연장 gained a transcribed rule; the F-2-5 extension is still source-only.
+        self.assertEqual(_guidance("F-2-5", "extension"), [])
+        found = ml.locate("F-2", "F-2-5", "extension")
+        page = DATA["codes"]["F-2-5"]["procedures"]["extension"]["p"]
+        self.assertEqual(found["entries"], [{"target": "F-2-5", "section": "", "page": page}])
 
     def test_single_entry_status(self):
         found = ml.locate("H-1", None, "extension")
@@ -88,7 +89,7 @@ class LocateTests(unittest.TestCase):
         summary = _guidance("H-1", "extension")[0]["summary_ko"]
         self.assertNotIn(summary, "\n".join(ko))
         en = ml.note_lines("F-6", None, "extension", is_ko=False)
-        self.assertIn("not yet reviewed line by line", en[0])
+        self.assertIn("reference only, confirm with the official source", en[0])
         self.assertTrue(any("sub-status" in line for line in en))
         self.assertEqual(ml.note_lines("F-6", None, "marriage_divorce_status_change", is_ko=True), [])
 
@@ -133,10 +134,11 @@ class PreparationNoteTests(unittest.TestCase):
         # The note's closing caveat stays last.
         self.assertTrue(answer.rstrip().endswith("확인하세요."))
 
-    def test_unstructured_extension_note_points_at_the_unstructured_page(self):
-        answer = self._ask("D-3 연장 서류")["answer"]
-        page = DATA["codes"]["D-3"]["procedures"]["extension"]["p"]
-        self.assertIn(f"* D-3: p.{page} (구조화 전 원문)", answer)
+    def test_unstructured_note_points_at_the_unstructured_page(self):
+        # D-3 연장 gained a transcribed rule; the F-2-5 extension is still source-only.
+        answer = self._ask("F-2-5 연장 서류")["answer"]
+        page = DATA["codes"]["F-2-5"]["procedures"]["extension"]["p"]
+        self.assertIn(f"* F-2-5: p.{page} (공식 원문)", answer)
 
     def test_f4_extension_note_points_at_the_f4_section_not_h2(self):
         answer = self._ask("F-4 연장 서류")["answer"]

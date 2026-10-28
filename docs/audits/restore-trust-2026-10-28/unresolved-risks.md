@@ -16,3 +16,11 @@ official source, **E** = environment or production access, **D** = a design deci
 | U-9 | No automated broken-link crawl of external official URLs (hikorea.go.kr and others) | E | Sandbox egress restrictions. The local PDF and page links were exercised by the tests |
 | U-10 | Sheet breakpoints differ: language ≤680px, theme ≤600px | D | See `RT-UI-overlay-anchoring.md` |
 | U-11 | No legal requirement in the product was re-validated against statutes in this pass | H | This work touched rendering, routing and page references only. It is not a legal revalidation |
+
+## Update after RT2 (same day)
+
+- **U-1:** 1,449 → 433 source-only cells, after transcription from the manuals with every anchor verified by the build and two faithfulness reviews. See `RT2-rule-transcription.md`. The remaining 433 cells are ones the manual does not address. A human still needs to review the content.
+- **U-3:** H-2 사증발급 is now GENERALLY_NOT_PERMITTED, anchored to the p.386 sentence on suspending new H-2 issuance. Please confirm.
+- **U-4:** checked. `approved` (corpus catalog) is the owner's 2026-10-23 approval of the source files as the current edition. `needs_review` means the authored content has not been compared line by line by a person. These are different dimensions, not a conflict. Neither label is shown to users any more. The reader catalog's "2026.9" edition is corrected to 2026.10.
+- **U-7:** fixed. The flaky test exposed a product bug: the AI result was written to elements detached by a re-render. The fix holds at 144/144 with 8 workers × 3 repeats.
+- **U-9 / WebKit:** downloading WebKit is blocked in this sandbox (`cdn.playwright.dev`, `playwright.download.prss.microsoft.com`). The full suite now runs on WebKit in CI (`webkit-e2e` job).

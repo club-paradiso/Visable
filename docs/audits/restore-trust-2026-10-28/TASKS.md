@@ -20,3 +20,14 @@ commands in `test-results.md` before trusting this table.
 | TG-I | Final report and draft PR | DONE | `FINAL_REPORT.md` |
 
 Open items (not VERIFIED): RT-13, RT-14 and RT-15. See `unresolved-risks.md`.
+
+## RT2 (owner follow-up, 2026-10-28)
+
+| Task | Status | Evidence |
+|---|---|---|
+| Fill source-only cells from the manuals, with no AI label | VERIFIED | `RT2-rule-transcription.md`; 1,449 → 433; build anchor gate; 2 reviews |
+| Hide internal review labels; one plain reference line | VERIFIED | check_result_hierarchy, restore-trust.spec, backend tests |
+| Parent code never answered by one subcode's rule | VERIFIED | grid audit `--check` (0) |
+| Stabilise waymaker-quick-answer (product bug) | VERIFIED | 144/144 at 8 workers × 3 repeats |
+| WebKit full suite | IN CI | `webkit-e2e` job (local download blocked) |
+| Remaining mobile projects 430/360/320 | see test-results | full 6-project run |

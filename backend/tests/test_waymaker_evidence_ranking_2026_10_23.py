@@ -57,7 +57,8 @@ class EverydayWorkplaceWordingTests(unittest.TestCase):
         self.assertEqual(task, "workplace_change")
         self.assertEqual(ev["status"], me.STATUS_USED)
         pages = [e["page"] for e in ev["excerpts"]]
-        self.assertTrue(set(pages) & {221, 222}, pages)
+        # the E-7 근무처의 변경·추가 section opens at the foot of p.222 and runs to p.224 (documents)
+        self.assertTrue(set(pages) & {222, 223, 224}, pages)
         self.assertTrue(all(e["scope"] == me.SCOPE_STAY for e in ev["excerpts"]))
 
 

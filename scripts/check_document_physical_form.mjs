@@ -90,8 +90,14 @@ check('business registration: copy (E-9 extension) vs varies-by-item composite (
   assert(find('E-7', 'extension', 'business_reg_or_corp').submission_form === 'VARIES_BY_ITEM', 'E-7 composite');
   const bare = items.find(({ d }) => d.ref === 'business_reg'); assert(bare && bare.d.submission_form === 'SOURCE_DOES_NOT_SPECIFY', 'bare 사업자등록증');
 });
-check('residence proof / lease: no rule states a physical form, so none is shown (the law lists the document, not its form)', () => {
-  for (const { g, d } of items) if (/residence|lease/.test(d.ref)) assert(d.submission_form === 'SOURCE_DOES_NOT_SPECIFY', `${g.target}|${g.procedure} ${d.ref}`);
+check('residence proof / lease: no form is shown unless the item\'s own manual phrase states it (the law lists the document, not its form)', () => {
+  // The authored anchor is the verbatim source phrase of the item ("⑦ 사무실 임대차 계약서 원본"); only then may a form show.
+  const anchorOf = (g, i) => { const a = rules.guidance.find((r) => r.target === g.target && r.procedure === g.procedure && (r.scenario || null) === (g.scenario || null)); return a && a.documents[i] ? a.documents[i].anchor || '' : ''; };
+  for (const g of bundle.guidance) g.documents.forEach((d, i) => {
+    if (d.ref === 'fee' || !/residence|lease/.test(d.ref)) return;
+    const stated = d.form_basis === 'SOURCE_PHRASE' && /원본|사본/.test(anchorOf(g, i));
+    assert(d.submission_form === 'SOURCE_DOES_NOT_SPECIFY' || stated, `${g.target}|${g.procedure} ${d.ref}`);
+  });
 });
 
 /* --------------------------------------------------------- rendering ---- */

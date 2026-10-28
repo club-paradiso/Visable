@@ -1845,10 +1845,10 @@
                 });
                 const exHead = tt(lang, { ko: '공식 매뉴얼 발췌', en: 'Official manual excerpts', zh: '官方手册摘录', zhHant: '官方手冊摘錄' });
                 const exNote = tt(lang, {
-                    ko: '승인된 매뉴얼 원문에서 자동으로 찾은 쪽입니다. 이 질문에 맞춰 사람이 검토한 목록은 아니므로, 최종 서류와 판단은 1345·하이코리아·관할 관서에서 확인하세요.',
-                    en: 'Pages found automatically in the approved manual text. They were not reviewed for this question by a person, so confirm final documents and decisions with 1345, HiKorea or the competent office.',
-                    zh: '这些页面是从已批准的手册原文中自动检索到的，并未针对本问题经过人工审核；最终材料与判断请向 1345、HiKorea 或主管机关确认。',
-                    zhHant: '這些頁面是從已核准的手冊原文中自動檢索到的，並未針對本問題經過人工審核；最終材料與判斷請向 1345、HiKorea 或主管機關確認。'
+                    ko: '현행 매뉴얼 원문에서 질문과 관련된 쪽을 자동으로 찾았어요. 참고용이므로 최종 서류와 판단은 1345·하이코리아·관할 관서에서 확인하세요.',
+                    en: 'Pages found automatically in the current manual text. They are for reference, so confirm final documents and decisions with 1345, HiKorea or the competent office.',
+                    zh: '这些页面是从现行手册原文中自动检索到的，仅供参考；最终材料与判断请向 1345、HiKorea 或主管机关确认。',
+                    zhHant: '這些頁面是從現行手冊原文中自動檢索到的，僅供參考；最終材料與判斷請向 1345、HiKorea 或主管機關確認。'
                 });
                 const list = byManual.map((g) => `${escapeHtml(g.key)} · ${g.pages.map(escapeHtml).join(', ')}`).join(' / ');
                 rows.push(`<div class="source-row state-source-supported" data-row-kind="manual-excerpts"><strong>${escapeHtml(exHead)}</strong>: ${list}<div class="source-subnote">${escapeHtml(exNote)}</div></div>`);

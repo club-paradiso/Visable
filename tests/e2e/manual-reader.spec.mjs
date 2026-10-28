@@ -10,7 +10,7 @@ test('status + procedure deep link opens the matching manual section', async ({ 
   await expect(section).toBeVisible();
   await expect(section.locator('h2')).toHaveText('체류기간 늘리기');
   await expect(page.locator('.tab[aria-selected="true"] b')).toHaveText('연장·변경·등록 등');
-  await expect(page.locator('.disc .state')).toHaveText('원문 발췌 · 검토 전');
+  await expect(page.locator('.disc .state')).toHaveText('공식 원문 발췌');
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
   expect(overflow).toBeLessThanOrEqual(1);
   expect(errors).toEqual([]);

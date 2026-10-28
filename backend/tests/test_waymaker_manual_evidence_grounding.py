@@ -358,7 +358,8 @@ class DeterministicNoteTests(unittest.TestCase):
         self.assertTrue(body["deterministic_fallback_answer_used"])
         self.assertIn("공식 매뉴얼 발췌", answer)
         self.assertRegex(answer, r"「외국인체류 안내매뉴얼 2026\.10」 p\.(50[0-5])")
-        self.assertIn("사람이 검토한 목록은 아닙니다", answer)
+        self.assertIn("참고용, 신청 전 공식 원문 확인", answer)
+        self.assertNotIn("승인된", answer)
         # Uncertainty notices stay.
         self.assertIn("이 메모는 최종 판단이 아니며", answer)
         self.assertNotIn(VISA_TITLE, answer)
@@ -424,7 +425,7 @@ class FrontendRenderingContractTests(unittest.TestCase):
     def test_source_panel_renders_the_excerpt_row(self):
         self.assertIn("manual_evidence_sources: asArray(m.manual_evidence_sources)", self.html)
         self.assertIn('data-row-kind="manual-excerpts"', self.html)
-        self.assertIn("이 질문에 맞춰 사람이 검토한 목록은 아니므로", self.html)
+        self.assertIn("참고용이므로 최종 서류와 판단은", self.html)
 
     def test_excerpts_count_as_official_grounding_for_the_unavailable_warning(self):
         self.assertIn("|| manualSources.length > 0 || excerptSources.length > 0", self.html)

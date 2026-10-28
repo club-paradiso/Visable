@@ -1082,7 +1082,7 @@ guidance('D-1', 'extension', section='문화예술(D-1) 체류기간 연장허�
          summary_ko='문화예술(D-1) 연장의 필수서류는 신청서·여권 원본·외국인등록증·수수료, 연수기관의 연수일정표, 문화예술단체 입증서류(사업자등록증 등), 체류지 입증서류이고, 추가서류로 연수증명서를 냅니다.', summary_en='D-1 extensions require the form, original passport, residence card, fee, the institution\'s training schedule, proof of the arts organisation (business registration) and proof of residence; a training certificate is an additional document.',
          docs=[item('app_form_34', anchor='①신청서(별지 제34호서식), 여권 원본, 외국인등록증, 수수료'), item('passport_original', anchor='①신청서(별지 제34호서식), 여권 원본, 외국인등록증, 수수료'), item('arc', anchor='①신청서(별지 제34호서식), 여권 원본, 외국인등록증, 수수료'), item('fee', anchor='①신청서(별지 제34호서식), 여권 원본, 외국인등록증, 수수료'), item('training_schedule', anchor='연수기관이 작성한 연수일정표', role='educational_institution'), item('culture_org_proof', anchor='문화예술단체 입증서류', role='educational_institution'), residence(), item('training_cert', 'ADDITIONAL_IF_APPLICABLE', anchor='①연수증명서', role='educational_institution', applies_when_ko='추가서류', applies_when_en='Additional document')])
 guidance('D-4-1', 'extension', section='일반연수(D-4) — 1. 어학연수생(D-4-1, D-4-7)에 대한 체류기간 연장허가', anchor='어학연수생(D-4-1, D-4-7)에 대한 체류기간 연장허가',
-         summary_ko='어학연수생(D-4-1, D-4-7)은 재학 입증서류, 학업 수행 입증서류(성적·출석), 국내 본인 계좌 재정입증, 모집요강 또는 연수계획서, 체류지 입증서류로 연장합니다. 가사휴학은 연장이 제한되고, 학교 변경은 원칙적으로 출국 후 재입국이지만 폐쇄 등 귀책 없는 사유나 TOPIK 3급 이상이면 예외입니다.', summary_en='Language trainees (D-4-1/7) extend with proof of enrollment, academic progress (grades/attendance), financial proof from their own Korean account, the program guide or plan and proof of residence. Personal leave restricts extension; changing school normally requires re-entry unless the school closed or you hold TOPIK 3+.',
+         summary_ko='어학연수생(D-4-1, D-4-7)은 재학 입증서류, 학업 수행 입증서류(성적·출석), 국내 본인 계좌 재정입증, 모집요강 또는 연수계획서, 체류지 입증서류로 연장합니다. 가사휴학은 연장이 제한되고, 학교 변경은 원칙적으로 출국 후 재입국이지만 폐쇄 등 귀책 없는 사유가 있거나, 토픽 3급(KIIP) 이상 성적표를 가지고 학교변경에 정당한 사유가 인정되어 일반대 이상으로 옮기는 경우는 예외입니다.', summary_en='Language trainees (D-4-1/7) extend with proof of enrollment, academic progress (grades/attendance), financial proof from their own Korean account, the program guide or plan and proof of residence. Personal leave restricts extension; changing school normally requires re-entry, except when the school closed through no fault of yours, or when you hold TOPIK level 3 (KIIP) or higher, have a justified reason and move to a general university or higher.',
          docs=[item('app_form_34', anchor='① 신청서 (별지 34호 서식), 여권, 외국인등록증, 수수료'), item('passport', anchor='① 신청서 (별지 34호 서식), 여권, 외국인등록증, 수수료'), item('arc', anchor='① 신청서 (별지 34호 서식), 여권, 외국인등록증, 수수료'), item('fee', anchor='① 신청서 (별지 34호 서식), 여권, 외국인등록증, 수수료'), item('enrollment_proof_generic', anchor='재학을 입증하는 서류', role='educational_institution'), item('academic_progress_proof', anchor='학업을 정상적으로 수행하고 있음을 입증하는 서류', role='educational_institution'), item('finance_proof_domestic', anchor='재정입증 서류(국내 본인계좌 예치금만 인정)'), item('language_program_docs', anchor='모집요강 (연수일정 명시) 또는 연수계획서 (어학연수생에 한함)', role='educational_institution'), residence()])
 GUIDANCE[-1]['aliases'] = ['D-4-7']
 guidance('D-4-2K', 'extension', section='일반연수(D-4) — 2. 기업 맞춤형 인턴십(K-Trainee, D-4-2K)의 체류기간연장 제출서류', anchor='기업 맞춤형 인턴십(K-Trainee, D-4-2K)의 체류기간연장 제출서류',
@@ -2045,6 +2045,31 @@ SUBCODE_NAMES = {
 }
 
 
+# --------------------------------------------------------------------------
+# Rule batches (scripts/status_guidance/rules/*.py), run in this namespace in file order.
+# A batch uses the same helpers (guidance, item, DOCDEFS …); drop() removes an earlier rule
+# that the batch replaces, so a cell never carries two competing rules.
+# --------------------------------------------------------------------------
+def drop(code, procedure, scenario=None):
+    before = len(GUIDANCE)
+    GUIDANCE[:] = [g for g in GUIDANCE if not (g['target'] == code and g['procedure'] == procedure and g['scenario'] == scenario)]
+    assert len(GUIDANCE) < before, f'drop: no rule {code}|{procedure}|{scenario}'
+
+
+def docdefs(**defs):
+    for k, v in defs.items():
+        assert k not in DOCDEFS, f'document definition {k} already exists'
+        DOCDEFS[k] = v
+
+
+RULE_BATCH_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'rules')
+for _name in sorted(os.listdir(RULE_BATCH_DIR)) if os.path.isdir(RULE_BATCH_DIR) else []:
+    # RULE_BATCH_ONLY=<file.py> loads one batch alone (draft validation in parallel).
+    if _name.endswith('.py') and not _name.startswith('_') and os.environ.get('RULE_BATCH_ONLY', _name) == _name:
+        with open(os.path.join(RULE_BATCH_DIR, _name), encoding='utf-8') as _fh:
+            exec(compile(_fh.read(), os.path.join(RULE_BATCH_DIR, _name), 'exec'), globals())
+
+
 def main():
     data = {
         'schema_version': 1, 'generated_by': 'scripts/status_guidance/author_rules.py', 'source_editions': {'stay': STAY, 'visa': VISA},
@@ -2070,6 +2095,7 @@ def main():
         'officer_note': {'ko': OFFICER_NOTE_KO, 'en': OFFICER_NOTE_EN},
     }
     text = json.dumps(data, ensure_ascii=False, indent=1) + '\n'
+    out = sys.argv[sys.argv.index('--out') + 1] if '--out' in sys.argv[1:] else OUT
     if '--check' in sys.argv[1:]:
         try:
             current = open(OUT, encoding='utf-8').read()
@@ -2080,9 +2106,9 @@ def main():
             sys.exit(1)
         print(f'guidance rules are current: {len(GUIDANCE)} guidance entries, {sum(len(g["documents"]) for g in GUIDANCE)} document items')
         return
-    with open(OUT, 'w', encoding='utf-8') as fh:
+    with open(out, 'w', encoding='utf-8') as fh:
         fh.write(text)
-    print(f'wrote {OUT}: {len(GUIDANCE)} guidance entries, {sum(len(g["documents"]) for g in GUIDANCE)} document items')
+    print(f'wrote {out}: {len(GUIDANCE)} guidance entries, {sum(len(g["documents"]) for g in GUIDANCE)} document items')
 
 
 if __name__ == '__main__':

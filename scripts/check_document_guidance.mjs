@@ -37,6 +37,16 @@ const LEVELS = new Set(rules.enums.requirement_levels);
 const ROLES = new Set(rules.enums.roles);
 const CONDITIONAL_LEVELS = new Set(['CONDITIONAL_REQUIRED', 'ADDITIONAL_IF_APPLICABLE', 'ALTERNATIVE_DOCUMENT']);
 const corpusPages = { stay_manual_2026_10_19: 812, visa_manual_2026_10_19: 519 };
+// Page text, whitespace-insensitive, to confirm an item's own phrase is on the page it cites.
+const flat = (t) => String(t || '').normalize('NFKC').replace(/[\uE000-\uF8FF\u{F0000}-\u{FFFFD}]/gu, '').replace(/\s+/g, '');
+const pageText = {};
+for (const [id, file] of [['stay_manual_2026_10_19', 'data/manual-corpus/stay_manual_2026_10_19_pdf.json'], ['visa_manual_2026_10_19', 'data/manual-corpus/visa_manual_2026_10_19_pdf.json']]) {
+  pageText[id] = new Map(JSON.parse(readFileSync(join(ROOT, file), 'utf8')).map((r) => [r.page, flat(r.text)]));
+}
+const onPage = (manual, page, anchor) => {
+  const a = flat(anchor); const t = pageText[manual]; if (!a || !t) return false;
+  return (t.get(page) || '').includes(a) || ((t.get(page) || '') + (t.get(page + 1) || '')).includes(a);
+};
 let itemCount = 0;
 
 for (const g of bundle.guidance) {
@@ -69,7 +79,15 @@ for (const g of bundle.guidance) {
       } else {
         assert(d.source && Number.isInteger(d.source.pdf_page) && d.source.pdf_page >= 1 && d.source.pdf_page <= corpusPages[g.source.manual], 'no valid 2026.10 page');
         // COMMON rules cite the 공통사항 fee table and the 별지 제34호 form page, which are far apart by design.
-        if (!common) assert(Math.abs(d.source.pdf_page - g.source.pdf_page) <= 3, `item page ${d.source.pdf_page} far from section page ${g.source.pdf_page}`);
+        // An item sits near its section: within 3 pages, or within the window the rule's author declared
+        // for sections whose shared document block is apart from the subtype text (e.g. F-5, F-2) — and
+        // then the item's own phrase must be on the page it cites, so a far page is never a guess.
+        const span = Math.abs(d.source.pdf_page - g.source.pdf_page);
+        const declared = authored && authored.source && authored.source.doc_page_window;
+        if (!common && span > 3) {
+          assert(declared && span <= declared, `item page ${d.source.pdf_page} far from section page ${g.source.pdf_page}`);
+          assert(a && a.anchor && onPage(g.source.manual, d.source.pdf_page, a.anchor), `item page ${d.source.pdf_page} does not carry the item's own phrase`);
+        }
         assert(d.review_state === 'SEPT_2026_ORIGINAL_UNREVIEWED', 'review state must stay explicit');
       }
       // Physical form is explicit or explicitly unknown — never absent, never inferred from the document's usual nature.

@@ -258,7 +258,7 @@ class AiOverviewFigmaStateTests(unittest.TestCase):
             "manualEvidence": {"approvedCount": 2, "reviewPendingCount": 3},
         }, "ko")
         self.assertIn("매뉴얼 직접 근거 2건", label)
-        self.assertIn("검토 전 매뉴얼 3건", label)
+        self.assertIn("참고용 매뉴얼 3건", label)
         self.assertIn("공식 확인 필요", label)
 
     def test_evidence_label_omits_zero_buckets(self):
