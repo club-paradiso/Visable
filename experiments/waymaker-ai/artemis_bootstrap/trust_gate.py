@@ -294,7 +294,7 @@ def _supported(claim: Claim, trusted_claims: Sequence[Claim], trusted_text: str)
 # only marks the answer for a person (smoke_grader counts it as needs_review).
 ROLE_WORDS: Dict[str, str] = {
     "validity": r"유효|효력|쓸\s*수\s*있|사용할\s*수\s*있|사용\s*기한|valid",
-    "issue": r"발급|교부|발행|내어\s*주|나온다|나와|issue",
+    "issue": r"발급|교부|발행|내어\s*주|나오|나옵|나온|나와|issue",
     "apply": r"신청|접수|apply|application",
     "submit": r"제출|보완|내야|내면|낸다|내십|submit",
     "stay": r"체류\s*기간|체류할\s*수|체류\s*허가|머무|머물|stay",
@@ -302,6 +302,7 @@ ROLE_WORDS: Dict[str, str] = {
     "process": r"처리|심사\s*기간|걸린|걸려|걸립|소요|process",
     "report": r"신고|report",
     "wait": r"경과|지나야|지난\s*뒤|지난\s*후|이후에|after",
+    "entry": r"재입국|입국|출국|도착|enter|entry|depart",
     "fee": r"수수료|심사료|요금|비용|인지|fee",
     "income": r"소득|연봉|급여|임금|income|salary",
     "deposit": r"예치|잔고|잔액|보증|deposit",
@@ -313,9 +314,10 @@ _ROLE_RE = {role: re.compile(words, re.IGNORECASE) for role, words in ROLE_WORDS
 ROLE_FAMILY: Dict[str, str] = {"issue": "issue", "process": "issue",
                                "apply": "file", "submit": "file", "report": "file",
                                "validity": "valid", "stay": "valid", "extend": "valid",
-                               "wait": "wait", "fee": "fee", "income": "income", "deposit": "deposit", "fine": "fine"}
+                               "wait": "wait", "entry": "entry", "fee": "fee", "income": "income", "deposit": "deposit", "fine": "fine"}
 #: A role word followed by one of these characters is part of a noun, not the fact's role.
 _NOUN_SUFFIX = set("증서자일")
+_START_POINT_RE = re.compile(r"\s*(?:한|된|하고|되고)?\s*(?:후|뒤|날|때|부터|로부터|이후|직후)")
 #: What may stand between a role word and the value it names: "유효기간은 ", "수수료: ", "체류기간 최대 ".
 _NAMES_VALUE_RE = re.compile(r"(?:\s*(?:기간|기한|기일|금액|액))?\s*(?:은|는|이|가|도|만)?\s*[:：]?\s*(?:최대|최소|약|총|모두)?\s*")
 #: Clause breaks. A comma or point between digits is part of a number ("40,000원", "1.5").
@@ -333,7 +335,13 @@ def _roles_in(text: str, at: int, kind: str, lenient: bool = False) -> List[str]
     after, before, named = [], [], []
     for role in allowed:
         for m in _ROLE_RE[role].finditer(text):
-            if text[m.end():m.end() + 1] in _NOUN_SUFFIX:   # 접수증, 신청서, 신청자, 발급일부터
+            # 접수증, 신청서, 신청자, 발급일부터, 입국일로부터 name a paper, person or date,
+            # not the fact a period belongs to. An amount, though, is named by its paper:
+            # "18,000,000원 이상의 잔고증명서" is a deposit.
+            if kind != "money" and text[m.end():m.end() + 1] in _NOUN_SUFFIX:
+                continue
+            # "입국 후 90일", "신청한 날부터", "발급한 뒤": a starting point, not the role.
+            if kind != "money" and _START_POINT_RE.match(text, m.end()):
                 continue
             if m.start() >= at:
                 after.append((m.start() - at, role))
@@ -369,13 +377,23 @@ def _clauses(text: str) -> List[str]:
 
 
 def _role_pairs(text: str, lenient: bool = False) -> List[Tuple[Tuple, List[str], str]]:
-    """(value key, roles, clause) for every amount and period in the text."""
+    """(value key, roles, clause) for every amount and period in the text. A bare number
+    in a clause that carries a money role word (a table cell under "수수료(원)", or
+    "소득기준은 55,000") is read as won."""
     pairs = []
     for clause in _clauses(text):
         dates, masked = _date_claims(clause)
-        for claim in _money_claims(masked) + _period_claims(masked):
+        money = _money_claims(masked)
+        for claim in money + _period_claims(masked):
             at = clause.find(claim.text)
             pairs.append((claim.key, _roles_in(clause, max(at, 0), claim.kind, lenient), clause))
+        spans = [(clause.find(c.text), clause.find(c.text) + len(c.text)) for c in money]
+        for m in _BARE_AMOUNT_RE.finditer(masked):
+            if any(a <= m.start() < b for a, b in spans):
+                continue
+            roles = _roles_in(clause, m.start(), "money", lenient)
+            if roles:
+                pairs.append((("money", "krw", _number(m.group("n"))), roles, clause))
     return pairs
 
 
