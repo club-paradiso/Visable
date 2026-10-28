@@ -691,3 +691,34 @@ def test_heldout_v11_verifies_the_fixes_for_the_fifteen():
             for m in ("pdf", "layout")}
     assert all(r["status"] == "completed" for r in runs.values()) and runs["layout"]["layout"] and not runs["pdf"]["layout"]
     assert [runs[m]["summary"]["outcomes_checked"]["correct"] for m in ("pdf", "layout")] == [18, 19]
+
+
+def test_heldout_v12_measures_the_rebuilt_route_and_flip_check():
+    """Held-out v12 (frozen 9cf27fa, written after the rebuild 8463e2d on 20 pages no
+    earlier case used). Route: 20 of 30 right (13 with the backend detector alone);
+    routes to the wrong manual stay at 2 (one fixed, R-03; one new, R-23: a Korean in
+    Incheon bringing a parent from Lima, read as a stay matter). Flipped permissions:
+    9 of 60 caught (7 marked, 2 withheld; 2 withheld before the checks); the right
+    answers keep the same 1 mark and 1 withhold as before."""
+    pr = load_module("procedure_route")
+    ml = load_module("manual_ledger")
+    data = json.loads((BOOTSTRAP_DIR / "heldout_v12_checks.json").read_text(encoding="utf-8"))
+
+    def label(scopes):
+        d = {s[0] for s in scopes}
+        return "visa" if d == {"visa_issuance"} else "stay" if d == {"stay"} else "unclear"
+    got = [(label(pr.route(r["question"])), r["procedure"]) for r in data["route"]]
+    assert sum(a == g for a, g in got) == 20
+    assert sum(a != "unclear" and a != g for a, g in got) == 2
+    seen = Counter()
+    for c in data["checks"]:
+        sid, page = c["page_id"].split("#p")
+        trusted = ml.resolve_cases([{"id": c["id"], "question": c["question"],
+                                     "evidence": [{"id": c["page_id"], "source_id": sid, "page": int(page), "domain": "x"}]}])[0]["evidence"]
+        for kind, answers in (("right", c["right_answers"]), ("flipped", [w["text"] for w in c["wrong_answers"]])):
+            for a in answers:
+                res = tg.post_check({"status": "answered", "answer": a, "citations": [c["page_id"]]}, trusted, question=c["question"])
+                caught = res["verdict"] == "withheld" or bool(res.get("start_point_mismatches") or res.get("role_mismatches")
+                                                              or res.get("subject_mismatches") or res.get("permission_flips"))
+                seen[kind, caught] += 1
+    assert seen == {("right", False): 58, ("right", True): 2, ("flipped", True): 9, ("flipped", False): 51}, seen
