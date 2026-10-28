@@ -239,7 +239,7 @@ for _code in ('G-1-7', 'G-1-11', 'G-1-99'):
              docs=[item('app_form_34', anchor=G1_AOS1_ANCHOR), item('passport', anchor=G1_AOS1_ANCHOR), item('arc', anchor=G1_AOS1_ANCHOR), item('fee', anchor=G1_AOS1_ANCHOR),
                    item('employment_contract', anchor=G1_AOS1_ANCHOR, role='employer'),
                    item('business_reg_copy', anchor=G1_AOS1_ANCHOR),
-                   item('g1h_qualification_proof', 'ADDITIONAL_IF_APPLICABLE', anchor=G1_AOS1_ANCHOR)],
+                   item('g1h_qualification_proof', anchor=G1_AOS1_ANCHOR)],
              notes_ko=[OFFICER_NOTE_KO], notes_en=[OFFICER_NOTE_EN])
 
 G1_AOS2_BASE = '신청서(별지 제34호 서식), 여권, 외국인등록증 고용계약서 사업자등록증 사본 등 사업장 관련 서류'
@@ -346,7 +346,7 @@ guidance('H-1', 'visa_issuance', manual=VISA, section='관광취업(H-1) 공관�
                item('g1h_mission_other', 'MAY_BE_REQUESTED_BY_OFFICER', anchor='기타 재외공관장이 필요하다고 인정하는 서류')],
          notes_ko=[OFFICER_NOTE_KO], notes_en=[OFFICER_NOTE_EN])
 
-guidance('H-1', 'visa_issuance_confirmation', manual=VISA, state='GENERALLY_NOT_PERMITTED', completeness='SOURCE_ONLY', section='관광취업(H-1) 사증발급인정서 발급대상', anchor='사증발급인정서 발급대상 아님',
+guidance('H-1', 'visa_issuance_confirmation', manual=VISA, state='NOT_APPLICABLE', completeness='SOURCE_ONLY', section='관광취업(H-1) 사증발급인정서 발급대상', anchor='사증발급인정서 발급대상 아님',
          summary_ko='관광취업(H-1)은 사증발급인정서 발급대상이 아닙니다.', summary_en='H-1 is not eligible for a confirmation of visa issuance.')
 
 guidance('H-1', 'workplace_change', state='CONDITIONAL', completeness='PARTIALLY_STRUCTURED', section='관광취업(H-1) 근무처의 변경․추가', anchor='별도의 근무처 추가 또는 변경없이 취업 활동 가능',

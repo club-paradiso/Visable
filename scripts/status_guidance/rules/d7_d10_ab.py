@@ -227,7 +227,7 @@ guidance('A-3', 'visa_issuance', manual=VISA, section='협정(A-3) 공관장 재
          docs=visa_form() + [item('d7ab_a2_dispatch_or_letter', anchor='파견, 재직을 증명하는 서류 또는 해당국 외교부장관이나 소속부처 장관의 공한')],
          **NOTES)
 
-guidance('A-3', 'visa_issuance_confirmation', manual=VISA, state='GENERALLY_NOT_PERMITTED', completeness='SOURCE_ONLY',
+guidance('A-3', 'visa_issuance_confirmation', manual=VISA, state='NOT_APPLICABLE', completeness='SOURCE_ONLY',
          section='협정(A-3) 사증발급인정서 발급대상', anchor='사증발급인정서 발급 제외 대상임',
          summary_ko='협정(A-3)은 사증발급인정서 발급 제외 대상입니다.', summary_en='A-3 is excluded from the confirmation of visa issuance.')
 
@@ -240,7 +240,7 @@ guidance('B-1', 'visa_issuance', manual=VISA, state='NOT_APPLICABLE', completene
          summary_en='For B-1 the manual lists no visa a mission may issue at its discretion ("not applicable"). B-1 is for nationals of countries with a visa-waiver agreement doing what that agreement allows.',
          conditions_ko=['사증면제협정 체결국가 국민도 체류기간이 협정기간(통상 3월)을 초과하거나 단기취업 등 영리 또는 유급행위에 종사하려면 반드시 해당 사증을 받아 입국해야 합니다.'],
          conditions_en=['Even nationals of visa-waiver countries must enter on the proper visa to stay longer than the agreement period (usually 3 months) or to do paid work such as short-term employment.'])
-guidance('B-1', 'visa_issuance_confirmation', manual=VISA, state='GENERALLY_NOT_PERMITTED', completeness='SOURCE_ONLY',
+guidance('B-1', 'visa_issuance_confirmation', manual=VISA, state='NOT_APPLICABLE', completeness='SOURCE_ONLY',
          section='사증면제(B-1) 사증발급인정서 발급대상', anchor='사증면제(B-1), 관광통과(B-2) 자격은 사증발급인정서 발급 제외대상임',
          summary_ko='사증면제(B-1)와 관광통과(B-2) 자격은 사증발급인정서 발급 제외대상입니다.', summary_en='B-1 and B-2 are excluded from the confirmation of visa issuance.')
 guidance('B-2', 'visa_issuance', manual=VISA, state='NOT_APPLICABLE', completeness='SOURCE_ONLY',
@@ -249,7 +249,7 @@ guidance('B-2', 'visa_issuance', manual=VISA, state='NOT_APPLICABLE', completene
          summary_en='For B-2 the manual lists no visa a mission may issue at its discretion ("not applicable"). B-2 is for people entering without a visa for tourism or transit.',
          conditions_ko=['사증면제협정 또는 관광통과 목적으로 입국한 사람은 원칙적으로 체류기간 연장이나 체류자격 변경허가를 받을 수 없으므로, 체류기간이 협정기간 또는 법무부장관이 따로 정하는 기간을 초과하면 반드시 사증을 받아 입국해야 합니다.'],
          conditions_en=['People entering under a visa-waiver agreement or for tourism/transit are in principle not granted extensions or status changes, so a stay beyond the agreement period or the period the Minister sets requires entering on a visa.'])
-guidance('B-2', 'visa_issuance_confirmation', manual=VISA, state='GENERALLY_NOT_PERMITTED', completeness='SOURCE_ONLY',
+guidance('B-2', 'visa_issuance_confirmation', manual=VISA, state='NOT_APPLICABLE', completeness='SOURCE_ONLY',
          section='관광통과(B-2) 사증발급인정서 발급대상', anchor='사증면제(B-1), 관광통과(B-2) 자격은 사증발급인정서 발급 제외대상임',
          summary_ko='사증면제(B-1)와 관광통과(B-2) 자격은 사증발급인정서 발급 제외대상입니다.', summary_en='B-1 and B-2 are excluded from the confirmation of visa issuance.')
 
@@ -430,8 +430,8 @@ def no_grant(code, label, anchor='해당사항 없음'):
 # D-7 주재
 # ==========================================================================
 guidance('D-7', 'visa_issuance', manual=VISA, section='주재(D-7) 공관장 재량으로 발급할 수 있는 사증 — 1. 외국기업 국내지사 주재', anchor='중국인 국내주재지사 등의 주재원',
-         summary_ko='외국기업 국내지사 주재(D-7) 사증은 신청서·여권·사진·수수료와 외국 소재 회사 재직증명서, 파견명령서, 국내지점 설치 입증서류(설치허가서 사본), 지사·연락사무소 정상 운영 입증서류, 필수전문인력 입증서류를 냅니다.',
-         summary_en='A D-7 visa for a foreign company\'s Korean branch needs the form, passport, photo and fee plus the certificate of employment abroad, the dispatch order, proof of the Korean branch (permit copy), proof the branch/liaison office operates normally and proof you are essential professional staff.',
+         summary_ko='공관장 재량으로 발급하는 주재(D-7) 사증은 중국인 국내주재지사 등의 주재원(공기업 또는 사기업에 1년 이상 고용된 직원)과 그 동반가족(F-3)에게 유효기간 2년 이내 복수사증으로 발급하며, 그 밖의 경우는 사증발급인정서로 신청합니다. 외국기업 국내지사 주재 사증은 신청서·여권·사진·수수료와 외국 소재 회사 재직증명서, 파견명령서, 국내지점 설치 입증서류(설치허가서 사본), 지사·연락사무소 정상 운영 입증서류, 필수전문인력 입증서류를 냅니다.',
+         summary_en='The D-7 visa a mission may issue at its discretion is for Chinese staff of a Korean branch (employed 1+ year by a public or private company) and their F-3 family, as a multiple-entry visa valid up to 2 years; other cases apply through a confirmation of visa issuance. A D-7 visa for a foreign company\'s Korean branch needs the form, passport, photo and fee plus the certificate of employment abroad, the dispatch order, proof of the Korean branch (permit copy), proof the branch/liaison office operates normally and proof you are essential professional staff.',
          docs=visa_form() + [
              item('d7ab_foreign_company_employment', anchor='② 외국 소재 회사 등 재직증명서'), item('d7ab_dispatch_order', anchor='③ 파견명령서'),
              item('d7ab_branch_permit', anchor='지사 또는 연락사무소 설치허가서 사본'),
@@ -545,8 +545,8 @@ guidance('D-8', 'activities_outside_status', scenario='d7-same-group', section='
                item('d7ab_origin_employer_consent', anchor='⑥원근무처장의 동의서 ⑦영업실적증명'), item('d7ab_sales_record_corp', anchor='⑦영업실적증명 서류 -법인 납세사실증명원 등')],
          **NOTES)
 
-D8_CHANGE_EXCEPT_KO = '허가의 예외(자격변경 불가, 출국 후 사증을 받아 입국): 기술연수(D-3), 비전문취업(E-9), 선원취업(E-10), 방문취업(H-2), 기타(G-1), 관광취업(H-1) 자격으로 입국한 아일랜드·프랑스·영국인, 그리고 투자자가 아닌 사람을 임원으로 등재한 뒤 신청하는 경우(특정활동(E-7) 대상). 기업투자(D-8)로 변경이 허용되지 않는 자격도 투자의 진정성이 인정되는 등 특별한 사유가 있으면 정밀심사 후 변경이 허용될 수 있습니다.'
-D8_CHANGE_EXCEPT_EN = 'Exceptions (no change; leave and enter on a visa): Irish, French and British nationals who entered on D-3, E-9, E-10, H-2, G-1 or H-1, and cases where a non-investor is registered as an officer (that is E-7). Statuses that normally cannot change to D-8 may be allowed after close review for special reasons such as a genuine investment.'
+D8_CHANGE_EXCEPT_KO = '허가의 예외(자격변경 불가, 출국 후 사증을 받아 입국): 기술연수(D-3), 비전문취업(E-9), 선원취업(E-10), 방문취업(H-2), 기타(G-1) 자격 소지자, 관광취업(H-1)으로 입국한 아일랜드·프랑스·영국 국민(협정에 자격변경을 허용하지 않는 국가), 그리고 투자자가 아닌 사람을 임원으로 등재한 뒤 신청하는 경우(특정활동(E-7) 대상). 기업투자(D-8)로 변경이 허용되지 않는 자격도 투자의 진정성이 인정되는 등 특별한 사유가 있으면 정밀심사 후 변경이 허용될 수 있습니다.'
+D8_CHANGE_EXCEPT_EN = 'Exceptions (no change; leave and enter on a visa): holders of D-3, E-9, E-10, H-2 or G-1, nationals of Ireland, France and the UK who entered on H-1 (their agreements do not allow a change), and cases where a non-investor is registered as an officer (that is E-7). Statuses that normally cannot change to D-8 may be allowed after close review for special reasons such as a genuine investment.'
 D8_FORM = '① 신청서(별지34호 서식), 여권 및 외국인등록증, 표준규격사진1장'
 D8_FORM_ARC = '① 신청서(별지34호 서식), 여권, 외국인등록증(해당자), 표준규격사진1장'
 
@@ -558,7 +558,7 @@ def d8_form(arc_optional=False):
 
 
 def small_investor(prefix=''):
-    w = dict(applies_when_ko='투자금액 3억원 미만 투자자', applies_when_en='Investors of less than KRW 300 million')
+    w = dict(applies_when_ko='투자금액 3억원 미만 개인투자자', applies_when_en='Individual investors of less than KRW 300 million')
     return [item('d7ab_capital_use', 'CONDITIONAL_REQUIRED', anchor='자본금 사용내역 입증서류', **w),
             item('d7ab_home_business_experience', 'MAY_BE_REQUESTED_BY_OFFICER', anchor='해당 업종 또는 분야의 사업 경험 관련 국적국 서류 (필요시 징구)', **w)]
 
@@ -666,12 +666,13 @@ guidance('D-8-1', 'visa_issuance', manual=VISA, section=f'{D8_VISA} — 1. 외�
              item('d7ab_investment_funds', anchor=INVEST_ANCHOR),
              item('d7ab_premises_d8', 'CONDITIONAL_REQUIRED', anchor='사업장 존재 입증 서류 (사무실 임대차 계약서', applies_when_ko='투자금액 3억원 미만 개인투자자', applies_when_en='Individual investors of less than KRW 300 million'),
          ] + small_investor(),
-         conditions_ko=['신청인이 해외에 주재하며 사업체를 운영(영주권 등 장기거주자 포함)하면 주재하는 국가 소재 재외공관에서도 신청할 수 있습니다.'],
-         conditions_en=['If you live and run a business abroad (incl. long-term residents), you may apply at the mission in that country.'],
+         conditions_ko=['특정국가 국민은 이 공관장 재량 사증(D-8-1)의 대상에서 제외됩니다.', '신청인이 해외에 주재하며 사업체를 운영(영주권 등 장기거주자 포함)하면 주재하는 국가 소재 재외공관에서도 신청할 수 있습니다.'],
+         conditions_en=['Nationals of the designated countries are excluded from this discretionary D-8-1 visa.', 'If you live and run a business abroad (incl. long-term residents), you may apply at the mission in that country.'],
          **NOTES)
 guidance('D-8-2', 'visa_issuance', manual=VISA, section=f'{D8_VISA} — 2. 벤처기업을 설립한 자 등 (D-8-2)', anchor='벤처기업 육성에 관한 특별조치법에 따라 벤처기업을 설립한 자 등에 대한 기업투자(D-8-2) 사증발급',
          summary_ko='벤처 투자(D-8-2) 사증은 신청서·여권 사본·사진·수수료와 사업자등록증·법인등기, 벤처기업(예비벤처기업)확인서, 지식재산권 등 우수 기술력 입증서류를 냅니다.',
          summary_en='A D-8-2 visa needs the form, passport copy, photo and fee plus the business registration and corporate register, the (pre-)venture confirmation and proof of technology/IP.',
+         conditions_ko=['중국 및 특정국가 국민은 이 공관장 재량 사증(D-8-2)의 대상에서 제외됩니다.'], conditions_en=['Nationals of China and the designated countries are excluded from this discretionary D-8-2 visa.'],
          docs=visa_form(copy=True) + [
              item('business_reg_corp_reg', anchor='② 사업자등록증 사본, 법인등기사항전부증명서', role='business_entity'),
              item('venture_docs', anchor='③ 벤처기업확인서 또는 예비벤처기업확인서', role='business_entity'),
@@ -880,7 +881,7 @@ guidance('D-9', 'visa_issuance_confirmation', scenario='trade-points', manual=VI
                item('d7ab_premises_lease', anchor='사업장 존재 입증서류(임대차계약서 등)'), item('d7ab_d9_points_cvi', anchor='◦ 점수제 해당 점수 입증서류')],
          **NOTES)
 for scen, title, anc, contract in (('equipment', '2. 산업설비(기계) 도입회사 파견·초청 기술 제공자', '③ 설비도입계약서 또는 산업설비도입 입증서류 ④ 파견명령서', ('d7ab_equipment_contract', '③ 설비도입계약서 또는 산업설비도입 입증서류')),
-                                   ('ship', '3. 선박건조 및 산업설비 제작·감독 파견자', '③ 수주계약서 사본 ④ 파견명령서', ('d7ab_order_contract', '③ 수주계약서 사본'))):
+                                   ('ship', '3. 선박건조 및 산업설비 제작·감독 파견자', '③ 수주계약서 사본', ('d7ab_order_contract', '③ 수주계약서 사본'))):
     guidance('D-9', 'visa_issuance_confirmation', scenario=scen, manual=VISA, section=f'{D9_CVI} — {title}', anchor=anc,
              summary_ko=('산업설비(기계) 도입회사에 파견·초청되는 기술 제공자' if scen == 'equipment' else '선박건조·산업설비 제작·감독 파견자') + '의 사증발급인정서는 신청서·여권 사본·사진, 초청사유서, ' + ('설비도입계약서 또는 산업설비도입 입증서류' if scen == 'equipment' else '수주계약서 사본') + ', 파견명령서, 초청회사의 사업자등록증 사본 또는 법인등기, 연간 납세사실증명서를 냅니다.',
              summary_en='The confirmation for ' + ('equipment installation/maintenance staff' if scen == 'equipment' else 'shipbuilding/plant supervisors') + ' needs the form, passport copy and photo, the invitation statement, ' + ('the equipment contract or import proof' if scen == 'equipment' else 'the order contract copy') + ', the dispatch order, the inviting company\'s business registration or register and the annual tax certificate.',

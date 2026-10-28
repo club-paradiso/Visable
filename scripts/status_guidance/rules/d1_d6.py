@@ -162,7 +162,7 @@ def multi_reentry(code, name_ko, name_en, anchor='출국 후 체류기간 범위
              summary_en=f'Registered {name_en} holders re-entering within one year of departure (or within the remaining stay if shorter) are exempt from a re-entry permit. To re-enter after more than one year but within two, apply for a multiple re-entry permit with the form, original passport, residence card and fee.',
              conditions_ko=[restricted_ko, '사우디아라비아, 이란, 리비아 국민은 복수재입국이 제한됩니다(이들 국가 국민 중 결혼이민(F-6), 유학(D-2), 일반연수(D-4)는 가능).'],
              conditions_en=[restricted_en, 'Multiple re-entry is restricted for nationals of Saudi Arabia, Iran and Libya (except F-6, D-2 and D-4 holders).'],
-             docs=[item(d, anchor=doc_anchor, applies_when_ko=when_ko, applies_when_en=when_en) for d in ('app_form_34', 'passport_original', 'arc', 'fee')], **NOTES)
+             docs=[item(d, 'CONDITIONAL_REQUIRED', anchor=doc_anchor, applies_when_ko=when_ko, applies_when_en=when_en) for d in ('app_form_34', 'passport_original', 'arc', 'fee')], **NOTES)
 
 
 # ==========================================================================
@@ -208,14 +208,14 @@ guidance('D-1', 'status_change', section='문화예술(D-1) 체류자격 변경�
 guidance('D-1', 'activities_outside_status', section='문화예술(D-1) 체류자격외 활동', anchor='주한외국공관원 가족(A-1, A-2 자격)의 문화예술(D-1) 자격외 활동',
          summary_ko='한국 고유문화·예술에 대한 전문가 지도, 대학부설 어학원의 한국어 연수, 비영리 자원봉사, (D-1 소지자의) 정규교육기관 교육은 체류기간 범위에서 별도 허가 없이 가능합니다. 주한외국공관원 가족(A-1, A-2)이 수익을 목적으로 하지 않는 학술·예술 활동을 하려면 허가가 필요합니다.',
          summary_en='Expert training in traditional Korean culture or arts, Korean study at a university language institute, non-profit volunteering and (for D-1 holders) regular schooling need no separate permit within the stay. Family members of foreign mission staff (A-1, A-2) need a permit for non-profit academic or artistic activities.',
-         docs=[item('app_form_34', anchor='①신청서(별지34호 서식), 여권 원본, 외교관신분증, 수수료'),
-               item('passport_original', anchor='①신청서(별지34호 서식), 여권 원본, 외교관신분증, 수수료'),
-               item('d16_diplomat_id', anchor='①신청서(별지34호 서식), 여권 원본, 외교관신분증, 수수료'),
-               item('fee', anchor='①신청서(별지34호 서식), 여권 원본, 외교관신분증, 수수료'),
-               item('d16_mofa_recommendation', anchor='②외교통상부 추천서'),
-               item('d16_embassy_letter_or_consent', anchor='③대사관의 협조공문 또는 동의서'),
-               item('d16_org_docs_copy', anchor='④사업자 등록증 또는 고유번호증 등 관련단체 서류 사본'),
-               item('d16_relevant_proof', anchor='⑤ 해당 입증서류')],
+         docs=[item('app_form_34', 'CONDITIONAL_REQUIRED', applies_when_ko='주한외국공관원 가족(A-1, A-2)이 수익을 목적으로 하지 않는 학술·예술 활동을 하는 경우', applies_when_en='Family members of foreign mission staff (A-1, A-2) doing non-profit academic or artistic activity', anchor='①신청서(별지34호 서식), 여권 원본, 외교관신분증, 수수료'),
+               item('passport_original', 'CONDITIONAL_REQUIRED', applies_when_ko='주한외국공관원 가족(A-1, A-2)이 수익을 목적으로 하지 않는 학술·예술 활동을 하는 경우', applies_when_en='Family members of foreign mission staff (A-1, A-2) doing non-profit academic or artistic activity', anchor='①신청서(별지34호 서식), 여권 원본, 외교관신분증, 수수료'),
+               item('d16_diplomat_id', 'CONDITIONAL_REQUIRED', applies_when_ko='주한외국공관원 가족(A-1, A-2)이 수익을 목적으로 하지 않는 학술·예술 활동을 하는 경우', applies_when_en='Family members of foreign mission staff (A-1, A-2) doing non-profit academic or artistic activity', anchor='①신청서(별지34호 서식), 여권 원본, 외교관신분증, 수수료'),
+               item('fee', 'CONDITIONAL_REQUIRED', applies_when_ko='주한외국공관원 가족(A-1, A-2)이 수익을 목적으로 하지 않는 학술·예술 활동을 하는 경우', applies_when_en='Family members of foreign mission staff (A-1, A-2) doing non-profit academic or artistic activity', anchor='①신청서(별지34호 서식), 여권 원본, 외교관신분증, 수수료'),
+               item('d16_mofa_recommendation', 'CONDITIONAL_REQUIRED', applies_when_ko='주한외국공관원 가족(A-1, A-2)이 수익을 목적으로 하지 않는 학술·예술 활동을 하는 경우', applies_when_en='Family members of foreign mission staff (A-1, A-2) doing non-profit academic or artistic activity', anchor='②외교통상부 추천서'),
+               item('d16_embassy_letter_or_consent', 'CONDITIONAL_REQUIRED', applies_when_ko='주한외국공관원 가족(A-1, A-2)이 수익을 목적으로 하지 않는 학술·예술 활동을 하는 경우', applies_when_en='Family members of foreign mission staff (A-1, A-2) doing non-profit academic or artistic activity', anchor='③대사관의 협조공문 또는 동의서'),
+               item('d16_org_docs_copy', 'CONDITIONAL_REQUIRED', applies_when_ko='주한외국공관원 가족(A-1, A-2)이 수익을 목적으로 하지 않는 학술·예술 활동을 하는 경우', applies_when_en='Family members of foreign mission staff (A-1, A-2) doing non-profit academic or artistic activity', anchor='④사업자 등록증 또는 고유번호증 등 관련단체 서류 사본'),
+               item('d16_relevant_proof', 'CONDITIONAL_REQUIRED', applies_when_ko='주한외국공관원 가족(A-1, A-2)이 수익을 목적으로 하지 않는 학술·예술 활동을 하는 경우', applies_when_en='Family members of foreign mission staff (A-1, A-2) doing non-profit academic or artistic activity', anchor='⑤ 해당 입증서류')],
          conditions_ko=['자원봉사는 공공기관, 고아원, 양로원, 무료급식소, 자선바자회, 국제전시회, 국제행사 등에서 가능하며 식비 및 교통비 지급이 가능합니다.'],
          conditions_en=['Volunteering is allowed at public bodies, orphanages, care homes, free-meal centres, charity bazaars, international exhibitions and events; meals and transport may be paid.'],
          **NOTES)
@@ -255,9 +255,9 @@ guidance('D-2', 'visa_issuance', manual=VISA, section=D2_VISA_SECTION, anchor=D2
          summary_ko='유학(D-2) 사증은 공통서류(신청서·여권사본·사진, 교육기관 사업자등록증 사본, 표준입학허가서, 최종학력·재정능력 입증서류 등)에 연구과정(D-2-5)·교환학생(D-2-6)은 과정별 추가서류를 냅니다. 공관장 재량 사증은 사증발급인정서 발급 대상 이외의 유학생이 거주국 또는 최종학교 소재지 관할 공관에 신청합니다.',
          summary_en='A D-2 visa needs the common documents (form, passport copy, photo, the school\'s business registration copy, standard admission certificate, proof of education and finances, etc.), plus course-specific documents for research (D-2-5) and exchange (D-2-6) students. Students outside the CVI groups apply at the mission for their country of residence or last school.',
          conditions_ko=['사증 또는 사증발급인정서 중 어느 쪽으로 발급되는지는 대학 등급(우수인증대·인증대·일반대·비자심사강화대 등)과 국적에 따른 대상별 사증 발급 유형표에 따릅니다. 쿠바, 시리아, 마케도니아, 코소보 국민은 사증발급인정서만 발급됩니다.',
-                        '발급내용: 전문학사~박사(D-2-1~4) 체류기간 2년 이내 단수, 연구과정(D-2-5)·교환학생(D-2-6)·방문학생(D-2-8) 1년 이내 단수.'],
+                        '발급내용: 전문학사~박사(D-2-1~4) 체류기간 2년 이내 단수, 연구과정(D-2-5)·교환학생(D-2-6)·방문학생(D-2-8) 1년 이내 단수, 국방부 초청 수탁교육생(D-2-2~D-2-4) 2년 이내 단수, 인도 국민(D-2-1, D-2-5) 체류기간 2년·유효기간 5년 복수(교육기간이 5년 미만이면 교육기간 동안 유효한 복수).'],
          conditions_en=['Whether a visa or a confirmation of visa issuance is used follows the issuance table by university tier (excellent-certified, certified, general, visa-review-strengthened) and nationality. Nationals of Cuba, Syria, Macedonia and Kosovo receive a CVI only.',
-                        'Issued: associate–doctorate (D-2-1~4) single entry up to 2 years; research (D-2-5), exchange (D-2-6) and visiting (D-2-8) students single entry up to 1 year.'],
+                        'Issued: associate–doctorate (D-2-1~4) single entry up to 2 years; research (D-2-5), exchange (D-2-6) and visiting (D-2-8) students single entry up to 1 year; Ministry of National Defense trainees (D-2-2~4) single entry up to 2 years; Indian nationals (D-2-1, D-2-5) 2-year stay on a 5-year multiple visa (or valid for the course if shorter than 5 years).'],
          docs=d2_visa_docs(),
          notes_ko=['재외공관의 장은 필요한 경우 첨부서류를 일부 가감할 수 있습니다.', OFFICER_NOTE_KO], notes_en=['The head of the mission may add or waive some documents when needed.', OFFICER_NOTE_EN])
 guidance('D-2', 'visa_issuance_confirmation', manual=VISA, section=D2_VISA_SECTION, anchor=D2_COMMON_ANCHOR, doc_page_window=4,
@@ -290,8 +290,8 @@ guidance('D-2', 'activities_outside_status', completeness='PARTIALLY_STRUCTURED'
          summary_en='Master\'s or doctoral students (or graduates of the coursework) who sign an employment contract as a student researcher at a government-funded research institute outside their university need permission for activities outside status: the employment contract, a copy of the institute\'s business registration and the fee. Working as a researcher at an ordinary company or organisation is prohibited; that requires a change of status.',
          conditions_ko=['소속 대학이 아닌 외부 연구소로의 파견, 지원 근무는 엄격히 금지됩니다.', '과학기술연합대학원대학교(UST), KAIST 소속 학생이 소속 대학의 연구프로젝트에 참여하여 수당을 받는 경우는 별도 허가가 필요 없습니다.', '소속대학 외부 기관에서 학업과 무관한 연구·인턴에 참여하는 경우 체류자격외활동허가(E-3)가 필요합니다.', '유학생(D-2) 배우자(F-3)의 체류자격외 활동은 동반(F-3) 지침에 따릅니다.'],
          conditions_en=['Dispatch or support work at an outside research institute is strictly prohibited.', 'UST and KAIST students paid for their own university\'s research projects need no separate permission.', 'Research or internships at outside bodies unrelated to studies need permission for activities outside status (E-3).', 'Activities of a D-2 student\'s spouse (F-3) follow the F-3 guidelines.'],
-         docs=[item('employment_contract', anchor='(제출서류) 고용계약서, 연구원의 사업자등록증 사본, 수수료', applies_when_ko='정부출연연구기관 학생연구원', applies_when_en='Student researcher at a government-funded institute'),
-               item('d16_research_institute_biz_reg', anchor='(제출서류) 고용계약서, 연구원의 사업자등록증 사본, 수수료', applies_when_ko='정부출연연구기관 학생연구원', applies_when_en='Student researcher at a government-funded institute'),
+         docs=[item('employment_contract', 'CONDITIONAL_REQUIRED', anchor='(제출서류) 고용계약서, 연구원의 사업자등록증 사본, 수수료', applies_when_ko='정부출연연구기관 학생연구원', applies_when_en='Student researcher at a government-funded institute'),
+               item('d16_research_institute_biz_reg', 'CONDITIONAL_REQUIRED', anchor='(제출서류) 고용계약서, 연구원의 사업자등록증 사본, 수수료', applies_when_ko='정부출연연구기관 학생연구원', applies_when_en='Student researcher at a government-funded institute'),
                item('fee', anchor='(제출서류) 고용계약서, 연구원의 사업자등록증 사본, 수수료')],
          **NOTES)
 
@@ -412,7 +412,7 @@ guidance('D-4-2K', 'visa_issuance_confirmation', manual=VISA, section='일반연
          **NOTES)
 
 D43_CVI_COMMON = '① 사증발급인정신청서 (별지 제21호 서식), 여권사본, 표준규격사진 1매'
-guidance('D-4-3', 'visa_issuance_confirmation', manual=VISA, section='일반연수(D-4) — 3. 고등학교 이하 교육기관 유학생에 대한 일반연수(D-4-3) 자격 사증발급인정서 발급', anchor='고등학교 이하 교육기관 유학생에 대한 일반연수(D-4-3) 자격 사증발급인정서 발급', doc_page_window=3,
+guidance('D-4-3', 'visa_issuance_confirmation', manual=VISA, section='일반연수(D-4) — 3. 고등학교 이하 교육기관 유학생에 대한 일반연수(D-4-3) 자격 사증발급인정서 발급', anchor='교육기관 유학생에 대한 일반연수(D-4-3) 자격', doc_page_window=3,
          summary_ko='고등학교 이하 교육기관 유학생(D-4-3) 사증발급인정서는 21개 불법체류 다발국가 국민 중 자비부담 유학생과 정부기관·지방자치단체 초청 의무(무상)교육기관 유학생이 대상이며, 입학예정 학교 소재지 관할 출입국·외국인관서에 신청합니다. 공통서류에 자비부담 또는 정부·지자체 초청 유형별 추가서류를 냅니다.',
          summary_en='The D-4-3 confirmation of visa issuance (K-12 students) applies to self-funded students from the 21 designated countries and to students invited by government bodies or local governments to free compulsory schools; file at the office for the school. Submit the common documents plus those for your type.',
          conditions_ko=['자비부담 유학생은 학비 전액을 자비로 납부하고 국내 체류 비용 부담능력이 있으며 지정된 후견인이 있어야 합니다. 고등학교 전·입학자로 해당학교 기숙사 입소자는 후견인이 면제됩니다(학교장 명의 입소확인서 필요).', '체류기간 1년 이내 단수로 발급됩니다.'],
@@ -546,8 +546,8 @@ guidance('D-4-6', 'status_change', section='일반연수(D-4) 체류자격 변�
 # ---- D-4 stay: 체류기간 연장 (D-4-7 shares the D-4-1 section; D-4-5, D-4-6 have their own)
 D41_EXT_ANCHOR = '① 신청서 (별지 34호 서식), 여권, 외국인등록증, 수수료'
 guidance('D-4-7', 'extension', section='일반연수(D-4) — 1. 어학연수생(D-4-1, D-4-7)에 대한 체류기간 연장허가', anchor='어학연수생(D-4-1, D-4-7)에 대한 체류기간 연장허가',
-         summary_ko='어학연수생(D-4-1, D-4-7)은 재학 입증서류, 학업 수행 입증서류(성적·출석), 국내 본인 계좌 재정입증, 모집요강 또는 연수계획서, 체류지 입증서류로 연장합니다. 가사휴학은 연장이 제한되고, 학교 변경은 원칙적으로 출국 후 재입국이지만 어학원 폐쇄 등 귀책 없는 사유나 TOPIK 3급 이상이면 예외입니다.',
-         summary_en='Language trainees (D-4-1/7) extend with proof of enrollment, academic progress (grades/attendance), financial proof from their own Korean account, the programme guide or plan and proof of residence. Leave for personal reasons restricts extension; changing school normally requires re-entry unless the institute closed or you hold TOPIK 3+.',
+         summary_ko='어학연수생(D-4-1, D-4-7)은 재학 입증서류, 학업 수행 입증서류(성적·출석), 국내 본인 계좌 재정입증, 모집요강 또는 연수계획서, 체류지 입증서류로 연장합니다. 가사휴학은 연장이 제한되고, 학교 변경은 원칙적으로 출국 후 재입국이지만 어학원 폐쇄 등 귀책 없는 사유가 있거나, 토픽 3급(KIIP) 이상 성적표를 가지고 학교변경에 정당한 사유가 인정되어 일반대 이상으로 옮기는 경우는 예외입니다.',
+         summary_en='Language trainees (D-4-1/7) extend with proof of enrollment, academic progress (grades/attendance), financial proof from their own Korean account, the programme guide or plan and proof of residence. Leave for personal reasons restricts extension; changing school normally requires re-entry, except when the institute closed through no fault of yours, or when you hold TOPIK level 3 (KIIP) or higher, have a justified reason and move to a general university or higher.',
          docs=[item('app_form_34', anchor=D41_EXT_ANCHOR), item('passport', anchor=D41_EXT_ANCHOR), item('arc', anchor=D41_EXT_ANCHOR), item('fee', anchor=D41_EXT_ANCHOR),
                item('enrollment_proof_generic', anchor='재학을 입증하는 서류', role='educational_institution'),
                item('academic_progress_proof', anchor='학업을 정상적으로 수행하고 있음을 입증하는 서류', role='educational_institution'),

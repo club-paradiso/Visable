@@ -1322,8 +1322,8 @@
         var claims = ev.claims.filter(function (c, i, a) { return c && a.indexOf(c) === i; }).slice(0, 4).join(' · ');
         var lawTitle = (lang === 'en' ? ls.title_en : ls.title_ko) + ' ' + ls.article;
         var reviewScope = ls.body_review_state === 'PREVIOUS_VERSION_SUMMARY_ONLY'
-          ? (lang === 'en' ? 'Version identity checked ' + ls.identity_checked_on + '; check the current article text on the national law information center.'
-            : '버전 신원 확인 ' + ls.identity_checked_on + ' · 현행 조문은 국가법령정보센터에서 확인하세요.')
+          ? (lang === 'en' ? 'Version identity checked ' + ls.identity_checked_on + '; the summary is based on a previous version (' + ls.body_checked_on + '), so check the current article on the national law information center.'
+            : '버전 신원 확인 ' + ls.identity_checked_on + ' · 요약은 이전 판본(' + ls.body_checked_on + ') 기준이라 현행 조문은 국가법령정보센터에서 확인하세요.')
           : (ls.body_review_state === 'ARTICLE_AT_REFERENCE_DATE_READ'
             ? (lang === 'en' ? 'Only this article was checked for reference date ' + ls.body_reference_date + '; this is not a review of the whole law or its forms.'
               : '기준일 ' + ls.body_reference_date + '에 해당 조문만 대조했습니다. 법령·서식 전체 검증은 아닙니다.') : '');
@@ -1443,7 +1443,7 @@
     if (srcBtn) html += '<div class="sg-answer-actions">' + srcBtn + '</div>';
     // No organised guidance: show what the cited page itself says (verbatim, filled after render).
     var prev = !key ? primarySource(model) : null;
-    if (prev && prev.corpusId && prev.page) html += '<div class="sg-source-preview" data-sg-preview-source="' + esc(prev.corpusId) + '" data-sg-preview-page="' + esc(prev.page) + '" hidden></div>';
+    if (prev && prev.corpusId && prev.page) html += '<div class="sg-source-preview" data-sg-preview-source="' + esc(prev.corpusId) + '" data-sg-preview-page="' + esc(prev.page) + '" data-sg-preview-code="' + esc(model.status || '') + '" hidden></div>';
     html += '</section>' + renderOverview(model, step) + renderTransition(model) + (key ? '' : renderFees(model, bundle)) + renderPrograms(model) + renderNext(model, step) + renderWaymaker(model, step) + renderEvidence(model, bundle, { open: true }) + renderRelated(model, bundle);
     return html;
   }
@@ -1671,25 +1671,29 @@
    * is on that page is shown (no summarising); page footers and the 목차 marker are dropped and
    * the excerpt is cut at a line boundary. If the corpus cannot load, the block stays hidden and
    * the "공식 원문 N쪽 보기" button above remains the way in. */
-  function previewLines(text) {
+  function previewLines(text, code) {
     // PDF bullet glyphs come through as private-use characters: drop the glyph, keep the line.
     var lines = String(text || '').split('\n').map(function (l) { return l.replace(/[\uE000-\uF8FF\u{F0000}-\u{FFFFD}]/gu, '').trim(); }).filter(function (l) { return l && !/^[-–]\s*\d+\s*[-–]$/.test(l) && l.indexOf('목차') < 0; });
+    // A page can open with the end of another status's section: start at the first line that names
+    // the status (still verbatim, just from the relevant place), else at the top of the page.
+    var start = 0, parent = code ? String(code).split('-').slice(0, 2).join('-') : '';
+    if (parent) for (var k = 0; k < lines.length; k++) if (lines[k].indexOf(code) >= 0 || lines[k].indexOf(parent) >= 0) { start = k; break; }
     var out = [], size = 0;
-    for (var i = 0; i < lines.length && out.length < 14 && size < 640; i++) { out.push(lines[i]); size += lines[i].length; }
-    return { lines: out, more: out.length < lines.length };
+    for (var i = start; i < lines.length && out.length < 14 && size < 640; i++) { out.push(lines[i]); size += lines[i].length; }
+    return { lines: out, more: start + out.length < lines.length, from: start };
   }
   function fillSourcePreview(h, lang) {
     var box = h && h.querySelector('.sg-source-preview');
     var cs = root.VisableCivicSearch;
     if (!box || !cs || typeof cs.pageRow !== 'function') return;
-    var sid = box.getAttribute('data-sg-preview-source'), pg = box.getAttribute('data-sg-preview-page');
+    var sid = box.getAttribute('data-sg-preview-source'), pg = box.getAttribute('data-sg-preview-page'), code = box.getAttribute('data-sg-preview-code') || '';
     cs.pageRow(sid, pg).then(function (row) {
       if (!row || !box.isConnected) return;
-      var ex = previewLines(row.text);
+      var ex = previewLines(row.text, code);
       if (!ex.lines.length) return;
       box.innerHTML = '<h3 class="sg-preview-title">' + esc(tr(lang, 'previewTitle', { page: row.page })) + '</h3>' +
         '<p class="sg-muted sg-preview-note">' + esc(tr(lang, 'previewNote')) + '</p>' +
-        '<blockquote class="sg-source-excerpt" lang="ko" cite="' + esc(row.file + '#page=' + row.page) + '">' + ex.lines.map(function (l) { return '<p>' + esc(l) + '</p>'; }).join('') + (ex.more ? '<p aria-hidden="true">…</p>' : '') + '</blockquote>';
+        '<blockquote class="sg-source-excerpt" lang="ko" cite="' + esc(row.file + '#page=' + row.page) + '">' + (ex.from ? '<p aria-hidden="true">…</p>' : '') + ex.lines.map(function (l) { return '<p>' + esc(l) + '</p>'; }).join('') + (ex.more ? '<p aria-hidden="true">…</p>' : '') + '</blockquote>';
       // The whole page opens from the answer's own source button above (one call to action per page).
       box.hidden = false;
     }).catch(function () { /* the source button above stays the way in */ });

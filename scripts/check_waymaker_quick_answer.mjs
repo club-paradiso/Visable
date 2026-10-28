@@ -50,7 +50,7 @@ const CASES = [
   { q: 'E-7-4 연장 준비물 알려줘', intent: 'NATURAL_LANGUAGE_QUESTION', first: { kind: 'resolved', mode: 'answer', fee: 60000, docsMin: 6 } },
   { q: '가족비자 연장하고 싶어', intent: 'NATURAL_LANGUAGE_QUESTION', first: { kind: 'question', mode: 'clarify', dim: '__alias' } },
   { q: 'F-4 연장하려면?', intent: 'NATURAL_LANGUAGE_QUESTION', first: { kind: 'resolved', mode: 'answer', fee: 60000, docsMin: 2 } },
-  { q: 'D-3 연장하려면?', intent: 'NATURAL_LANGUAGE_QUESTION', first: { kind: 'source-only', mode: 'fallback' } },
+  { q: 'F-4 체류자격 부여하려면?', intent: 'NATURAL_LANGUAGE_QUESTION', first: { kind: 'source-only', mode: 'fallback' } },
 ];
 function expect(r, exp, label) {
   assert(r.step.kind === exp.kind, `${label}: kind ${r.step.kind} ≠ ${exp.kind}`);

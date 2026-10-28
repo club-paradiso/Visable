@@ -402,7 +402,8 @@ guidance('E-7', 'visa_issuance_confirmation', manual=VISA, completeness='PARTIAL
          notes_ko=['출입국·외국인청(사무소·출장소)장은 초청의 진정성, 초청자 및 피초청자의 자격 확인 등을 심사하기 위해 첨부서류의 일부를 가감할 수 있습니다.', OFFICER_NOTE_KO],
          notes_en=['The immigration office may add or omit documents to check the genuineness of the invitation and the parties\' eligibility.', OFFICER_NOTE_EN])
 
-for _code in ('E-7-91', 'E-7-91FTA'):
+# E-7-91FTA is not a confirmed code in the 2026.10 registry (UNVERIFIED): no rules attach to it.
+for _code in ('E-7-91',):
   guidance(_code, 'visa_issuance_confirmation', manual=VISA, completeness='PARTIALLY_STRUCTURED',
          section='특정활동(E-7) — 3. 국가 간 근로협정 등 적용대상자 가. 한․인도 사증절차간소화협정 관련 사증발급 대상자 (독립전문가)', anchor='한․인도 사증절차간소화협정 관련 사증발급 대상자',
          summary_ko='한·인도 협정에 따른 독립전문가는 인도 법인에 소속되지 않은 자영업자로서 우리나라 법인 또는 개인과 서비스 공급계약을 체결해 입국하는 사람이며, 한-인도 CEPA 전문가 양허직종(162개) 관련 학사 이상 학위와 해당 분야 1년 이상 경력이 필요합니다(생물학자·생화학자는 박사학위 또는 동등 자격).',
@@ -540,7 +541,7 @@ guidance('E-7', 'activities_outside_status', completeness='PARTIALLY_STRUCTURED'
          notes_ko=[OFFICER_NOTE_KO], notes_en=[OFFICER_NOTE_EN])
 
 guidance('E-7', 'workplace_change', completeness='PARTIALLY_STRUCTURED', doc_page_window=3,
-         section='특정활동(E-7) 근무처의 변경․추가 — 1. 근무처변경 추가 신고, 2. 근무처 변경 추가 허가', anchor='판매사무원 등 14개 직종을 제외한 특정활동(E-7) 자격 소지자로서 외국인등록을 하고',
+         section='특정활동(E-7) 근무처의 변경․추가 — 1. 근무처변경 추가 신고, 2. 근무처 변경 추가 허가', anchor='TESOL 자격증 소지자로 한정 근무처의 변경․추가 1. 근무처변경 추가 신고',
          summary_ko='특정활동(E-7)은 매뉴얼이 정한 사전 허가대상 직종을 제외하면 사후 신고로 근무처를 변경·추가할 수 있으며, 신고사유 발생일로부터 15일 이내에 관할 출입국·외국인청(사무소·출장소)장에게 신고합니다(대리인 신고 가능, 방문신고 원칙). 고용업체별 허용인원 제한 등으로 사전관리가 필요한 직종(판매사무원, 주방장 및 조리사, 숙련기능 점수제 종사자 등)은 미리 근무처 변경·추가 허가를 받아야 합니다.',
          summary_en='Except for the occupations the manual lists for prior permission, E-7 holders change or add a workplace by reporting within 15 days of the change to the local immigration office (a proxy may file; in-person filing is the rule). Occupations needing prior control because of per-employer quotas (sales clerks, chefs and cooks, skilled points-system workers, etc.) must get a workplace change/addition permit in advance.',
          docs=[item('e67_form_34_34_2', 'CONDITIONAL_REQUIRED', anchor='①통합신청서[별지 제34호~제34호의2 서식], 여권 및 외국인등록증, 수수료 없음',
@@ -583,7 +584,7 @@ E791_SECTION = '특정활동(E-7) — 2. 협정상 사증․체류허가 특례�
 for _proc, _ko, _en in (('status_change', '체류자격변경허가', 'change of status'),
                         ('workplace_change', '근무처변경·추가허가', 'workplace change/addition'),
                         ('activities_outside_status', '체류자격외활동허가', 'activities-outside-status permission')):
-  for _code in ('E-7-91', 'E-7-91FTA'):
+  for _code in ('E-7-91',):
     guidance(_code, _proc, section=E791_SECTION, anchor=E791_ANCHOR, state='GENERALLY_NOT_PERMITTED', completeness='SOURCE_ONLY',
                summary_ko=f'한·인도 CEPA 독립전문가(IP)는 체류특례에 따라 {_ko}가 제한됩니다. 사고·질병 등 인도적 사유로 체류허가의 필요성이 인정되는 경우에만 일반 체류지침에 따라 처리됩니다.',
                summary_en=f'Under the stay rules for Korea–India CEPA independent professionals, {_en} is restricted. Only where humanitarian grounds such as an accident or illness justify it is the case handled under the general stay rules.')

@@ -44,23 +44,22 @@ const at = (html, needle) => { const i = html.indexOf(needle); assert(i >= 0, `m
 const ordered = (html, ...needles) => { let last = -1; for (const n of needles) { const i = at(html, n); assert(i > last, `${n} must come after ${needles[needles.indexOf(n) - 1]}`); last = i; } };
 const count = (html, re) => (html.match(re) || []).length;
 
-// Source-only example: D-3 연장 (F-4 연장 has structured guidance since #712; the browser twin
-// tests/e2e/result-hierarchy.spec.mjs moved to D-3 in #714).
-check('D-3 extension (source-only): identity → source action → overview → fee → actions → evidence', () => {
-  const r = run('D-3 체류기간 연장');
+// Source-only example: F-4 체류자격 부여 (p.532). Earlier examples (F-4 연장, then D-3 연장) gained
+// structured rules transcribed from the manual; the browser twin tests/e2e/result-hierarchy.spec.mjs follows.
+check('F-4 status grant (source-only): identity → source action → overview → fee → scheme → actions → evidence', () => {
+  const r = run('F-4 체류자격 부여');
   assert(r.step.kind === 'source-only', r.step.kind);
-  ordered(r.html, 'class="sg-answer sg-source-only"', 'sg-btn-source', 'class="sg-overview"', 'class="sg-fee"', 'class="sg-next"', 'class="sg-evidence"');
-  assert(!r.html.includes('class="sg-program"'), 'D-3 belongs to no special scheme');
-  assert(/sg-btn-source" data-sg-action="open-page" data-sg-source="stay_manual_2026_10_19_pdf" data-sg-page="56"/.test(r.html), 'primary action opens the D-3 extension page (56)');
+  ordered(r.html, 'class="sg-answer sg-source-only"', 'sg-btn-source', 'class="sg-overview"', 'class="sg-fee"', 'class="sg-program"', 'class="sg-next"', 'class="sg-evidence"');
+  assert(/sg-btn-source" data-sg-action="open-page" data-sg-source="stay_manual_2026_10_19_pdf" data-sg-page="532"/.test(r.html), 'primary action opens the F-4 status grant page (532)');
 });
 
 check('source-only overview is derived from the model: fee confirmed, documents in the source', () => {
-  const r = run('D-3 체류기간 연장');
+  const r = run('F-4 체류자격 부여');
   const ov = r.html.slice(at(r.html, 'class="sg-overview"'), at(r.html, 'class="sg-fee"'));
-  ordered(ov, '확인된 내용', '수수료 ₩60,000 · 시행규칙 기준', '원문에서 확인할 내용', '56쪽');
+  ordered(ov, '확인된 내용', '수수료 ₩80,000 · 시행규칙 기준', '원문에서 확인할 내용', '532쪽');
   assert(ov.includes('참고용 안내예요 · 신청 전 공식 원문을 확인하세요'), 'one plain reference line in the overview');
   assert(!/검토 전|대조 검토|사람이 한 줄씩|needs_review|approved/.test(r.text), 'no internal review label on the result page');
-  assert(ov.includes('기준일 2026-10-23 · 공식 근거 6건'), 'basis line includes the current regulation version date');
+  assert(ov.includes('기준일 2026-10-23 · 공식 근거 5건'), 'basis line includes the current regulation version date');
   assert(r.html.includes('해당 조문만 대조했습니다. 법령·서식 전체 검증은 아닙니다.'), 'the latest source check must not claim whole-law review');
 });
 
@@ -75,7 +74,8 @@ check('the 동포 scheme is a collapsed, conditional disclosure after the fee �
 
 check('fee exemptions are offered only to the statuses their rule names', () => {
   for (const q of ['F-4 체류기간 연장', 'F-5 체류기간 연장']) assert(!run(q).html.includes('면제·감경 조건'), `${q}: no inapplicable exemption list`);
-  const e7 = run('E-7 근무처 변경').html;
+  // a bare 'E-7' now asks for the E-7 type first (subtype-specific rules); the exemption rule is checked on E-7-1
+  const e7 = run('E-7-1 근무처 변경').html;
   const e7fee = e7.slice(at(e7, 'class="sg-fee"'), at(e7, 'class="sg-next"'));
   assert(e7fee.includes('면제·감경 조건 · 1') && e7fee.includes('신고 대상') && !e7fee.includes('외교(A-1)'), 'E-7 keeps only the report-not-permit exemption');
   const d2all = run('D-2 체류기간 연장').html;
@@ -89,22 +89,22 @@ check('fee exemptions are offered only to the statuses their rule names', () => 
 });
 
 check('evidence: the procedure page first, fee law behind a disclosure, counts unchanged', () => {
-  const r = run('D-3 체류기간 연장');
+  const r = run('F-4 체류자격 부여');
   const ev = r.html.slice(at(r.html, 'class="sg-evidence"'));
-  ordered(ev, '<details class="sg-evidence-details" id="sgEvidence" open>', '이 절차의 공식 안내', 'sg-ev sg-ev-manual sg-ev-primary', '56쪽', '<details class="sg-ev-more"><summary>수수료·법령 근거 5건</summary>');
-  assert(count(ev, /<li class="sg-ev /g) === 6, `six evidence items (${count(ev, /<li class="sg-ev /g)})`);
+  ordered(ev, '<details class="sg-evidence-details" id="sgEvidence" open>', '이 절차의 공식 안내', 'sg-ev sg-ev-manual sg-ev-primary', '532쪽', '<details class="sg-ev-more"><summary>수수료·법령 근거 4건</summary>');
+  assert(count(ev, /<li class="sg-ev /g) === 5, `five evidence items (${count(ev, /<li class="sg-ev /g)})`);
   assert(!ev.includes('참고용 안내예요') && !r.text.includes('9월판'), 'the evidence block does not repeat the reference line; no stale edition');
   const d2 = run('D-2 체류기간 연장').html;
   assert(!/id="sgEvidence" open/.test(d2), 'structured answers keep the evidence collapsed');
 });
 
 check('next actions are labelled rows and every call to action appears once on the page', () => {
-  const f4 = run('D-3 체류기간 연장').html;
+  const f4 = run('F-4 체류자격 부여').html;
   const next = f4.slice(at(f4, 'class="sg-next"'), at(f4, 'class="sg-wm"'));
   assert(next.startsWith('class="sg-next"') && next.includes('<ul class="sg-actions">'), 'action list');
   // source-only: the manual page is the answer head's primary button, not repeated as a row;
   // Waymaker follows as its own block, so there is no follow-up row either.
-  assert(count(f4, /data-sg-action="open-page" data-sg-source="stay_manual_2026_10_19_pdf" data-sg-page="56"/g) === 2, 'page 56: answer-head button + evidence item only');
+  assert(count(f4, /data-sg-action="open-page" data-sg-source="stay_manual_2026_10_19_pdf" data-sg-page="532"/g) === 2, 'page 532: answer-head button + evidence item only');
   assert(!next.includes('data-sg-action="open-page"') && !next.includes('class="sg-next-ai"'), 'no duplicate source / follow-up rows');
   assert(count(f4, /data-sg-action="followup"/g) === 1, 'one Waymaker call to action');
   assert(count(next, /class="sg-action-body"/g) === 4, `four rows with a body (${count(next, /class="sg-action-body"/g)})`);
@@ -128,10 +128,10 @@ check('structured answers: overview sits between the answer and the documents; a
 });
 
 check('English copy and the edition label follow the bundle', () => {
-  const r = run('D-3 extension', 'en');
+  const r = run('F-4 status grant', 'en');
   assert(r.step.kind === 'source-only', r.step.kind);
-  for (const s of ['At a glance', 'Confirmed', 'Check in the source', 'Open the source, p.56', 'Reference guidance · confirm with the official source before applying']) assert(r.text.includes(s), s);
-  assert(count(r.html, /Open the source, p\.56/g) === 1, 'the source action is printed once');
+  for (const s of ['At a glance', 'Confirmed', 'Check in the source', 'Open the source, p.532', 'Reference guidance · confirm with the official source before applying']) assert(r.text.includes(s), s);
+  assert(count(r.html, /Open the source, p\.532/g) === 1, 'the source action is printed once');
   const f4 = run('F-4 extension', 'en');
   for (const s of ['Special schemes that may apply', 'some holders only']) assert(f4.text.includes(s), `F-4: ${s}`);
   assert(!/September/.test(r.text), 'no hard-coded September');

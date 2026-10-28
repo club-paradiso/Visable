@@ -426,7 +426,7 @@ guidance('F-2-8', 'status_change', covers=['F-2-81'], doc_page_window=5,
          docs=f236_stay_base('① 신청서(별지 34호 서식), 여권, 외국인등록증(해당자), 표준규격사진 1매, 수수료') + [
              item('f236_arc_if_any', 'CONDITIONAL_REQUIRED', anchor='① 신청서(별지 34호 서식), 여권, 외국인등록증(해당자), 표준규격사진 1매, 수수료', applies_when_ko='해당자', applies_when_en='If held'),
              item('f236_property_contract_register', 'CONDITIONAL_REQUIRED', anchor='② 부동산 매매계약서, 부동산 등기부등본(F-2 대상자에 한함)', applies_when_ko='F-2 대상자에 한함', applies_when_en='F-2 applicants only'),
-             item('f236_condo_membership', 'CONDITIONAL_REQUIRED', anchor='분양회사가 (사)한국휴양콘도미니엄경영협회에서 확인받아 발급한 회원증서', applies_when_ko='회원인 경우에 한함', applies_when_en='Members only'),
+             item('f236_condo_membership', 'CONDITIONAL_REQUIRED', anchor='분양회사가 (사)한국휴양콘도미니엄경영협회에서 확인받아 발급한', applies_when_ko='회원인 경우에 한함', applies_when_en='Members only'),
              item('f236_unsold_vacancy', 'CONDITIONAL_REQUIRED', anchor='④ 미분양주택 공실 확인서(미분양주택 투자자에 한함)', applies_when_ko='미분양주택 투자자에 한함', applies_when_en='Unsold-house investors only'),
              item('f236_move_in_list', 'CONDITIONAL_REQUIRED', anchor='⑤ 해당주택 전입세대 열람내역(미분양주택 투자자에 한함', applies_when_ko='미분양주택 투자자에 한함', applies_when_en='Unsold-house investors only'),
              item('f236_fx_inflow_proof', anchor='④ 외환반입 관련 입증서류',
@@ -606,8 +606,8 @@ def f236_reentry(code, chapter_ko):
     guidance(code, 'reentry', section=f'{chapter_ko} 재입국허가', anchor='출국 후 체류기간 범위 내에서 1년을 초과하여 2년 내에 재입국을 하려는 경우',
              summary_ko='외국인등록을 마친 사람이 출국한 날부터 1년 이내(남은 체류기간이 1년보다 짧으면 체류기간 범위 내)에 재입국하면 재입국허가가 면제됩니다. 체류기간 범위 내에서 1년을 넘겨 2년 안에 재입국하려면 복수재입국허가를 신청합니다.',
              summary_en='Registered foreigners who return within one year of leaving (or within their remaining stay if shorter) are exempt from a re-entry permit. To return after more than one year but within two years (within the stay period), apply for a multiple re-entry permit.',
-             docs=[item('app_form_34', anchor=REENTRY_DOCS, **REENTRY_MULTI), item('passport_original', anchor=REENTRY_DOCS, **REENTRY_MULTI),
-                   item('arc', anchor=REENTRY_DOCS, **REENTRY_MULTI), item('fee', anchor=REENTRY_DOCS, **REENTRY_MULTI)],
+             docs=[item('app_form_34', 'CONDITIONAL_REQUIRED', anchor=REENTRY_DOCS, **REENTRY_MULTI), item('passport_original', 'CONDITIONAL_REQUIRED', anchor=REENTRY_DOCS, **REENTRY_MULTI),
+                   item('arc', 'CONDITIONAL_REQUIRED', anchor=REENTRY_DOCS, **REENTRY_MULTI), item('fee', 'CONDITIONAL_REQUIRED', anchor=REENTRY_DOCS, **REENTRY_MULTI)],
              conditions_ko=['입국규제 및 사증발급규제자는 체류지 관할 청(사무소·출장소)에 방문하여 재입국허가를 받아야 합니다.',
                             '사우디아라비아, 이란, 리비아 국민은 복수재입국이 제한됩니다(이들 국가 국민 중 결혼이민(F-6), 유학(D-2), 일반연수(D-4)는 가능).'],
              conditions_en=['People under an entry or visa restriction must obtain a re-entry permit in person at the office for their address.',
@@ -829,7 +829,7 @@ guidance('F-3', 'workplace_report', state='CONDITIONAL', section='동반(F-3) �
          summary_ko="우수인재 배우자 특례('26.3.30.~'27.3.29. 시범운영)로 포괄적 체류자격외 활동허가를 받은 동반(F-3) 자격자는 근로를 시작하거나 끝낼 때 15일 이내에 온라인으로 신고합니다. 취업개시 신고에는 사업자등록증 또는 법인등기부등본을 첨부하고, 취업종료 신고는 별도 서류가 필요 없습니다.",
          summary_en='F-3 holders with blanket outside-status permission under the talent-spouse special rule (pilot 2026-03-30 to 2027-03-29) report the start and end of work online within 15 days. Attach the business registration or corporate register to a start report; an end report needs no documents.',
          timing_ko='근로개시 및 종료 시 15일 이내', timing_en='Within 15 days of starting or ending work',
-         docs=[item('f236_bizreg_or_corpreg', anchor='사업자등록증 또는 법인등기부등본 첨부', applies_when_ko='취업개시 신고', applies_when_en='Start-of-work report')],
+         docs=[item('f236_bizreg_or_corpreg', 'CONDITIONAL_REQUIRED', anchor='사업자등록증 또는 법인등기부등본 첨부', applies_when_ko='취업개시 신고', applies_when_en='Start-of-work report')],
          conditions_ko=['미신고가 적발되면 자격외 허가가 취소됩니다.', '여러 근무처에서 일하면 모두 각각 신고하며, 계약기간 연장 등 계약사항이 바뀔 때도 신고합니다. 고용계약서상 만료일까지 근무했다면 종료 신고는 필요 없습니다.'],
          conditions_en=['Failing to report leads to cancellation of the permission.', 'Report each workplace separately and any contract change such as an extension; no end report is needed if you worked until the contract end date.'])
 
@@ -908,7 +908,7 @@ guidance('F-6-2', 'visa_issuance', manual=VISA, section='사증발급 안내매�
          notes_ko=['재외공관장은 특히 필요하다고 인정되는 경우 제출서류를 일부 가감하거나 추가 서류를 받을 수 있습니다.'],
          notes_en=['The consul may add or waive documents where specially needed.'])
 
-guidance('F-6', 'visa_issuance_confirmation', manual=VISA, state='GENERALLY_NOT_PERMITTED', completeness='SOURCE_ONLY',
+guidance('F-6', 'visa_issuance_confirmation', manual=VISA, state='NOT_APPLICABLE', completeness='SOURCE_ONLY',
          section='사증발급 안내매뉴얼 결혼이민(F-6) — 사증발급인정서 발급대상', anchor='☞ 사증발급인정서 발급 대상 아님',
          summary_ko='결혼이민(F-6)은 사증발급인정서 발급 대상이 아닙니다. 국민의 배우자(F-6-1)와 자녀양육(F-6-2) 사증은 재외공관에서 체류기간 90일 이하의 사증으로 신청합니다.',
          summary_en='F-6 is not eligible for a confirmation of visa issuance. F-6-1 and F-6-2 visas are applied for at a Korean mission as visas for stays of up to 90 days.')

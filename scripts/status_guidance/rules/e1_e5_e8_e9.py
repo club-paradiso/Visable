@@ -370,7 +370,7 @@ guidance('E-2-1', 'visa_issuance_confirmation', manual=VISA, doc_page_window=3,
              item('e159_self_health_check', anchor='⑤ 자기건강확인서'),
              item('e159_contract_min_wage', anchor='⑥ 고용계약서(최소 임금요건 : 당해연도 최저임금 이상)'),
              item('e159_academy_establishment', anchor='학원 또는 단체 설립관련 서류'),
-             item('e159_e2_reference_docs', 'ADDITIONAL_IF_APPLICABLE', anchor='강사활용계획서, 수강생 및 직원현황 등'),
+             item('e159_e2_reference_docs', 'MAY_BE_REQUESTED_BY_OFFICER', anchor='강사활용계획서, 수강생 및 직원현황 등'),
              proxy()],
          **NOTE)
 
@@ -592,7 +592,7 @@ c45_lecture('E-3', f'{E3_AOS} — 2. 외국인투자기업 CEO 등 우수전문�
             '①신청서(별지 34호 서식), 여권 및 외국인등록증, 수수료 ②총(학)장의 추천서', contract_def='employment_contract', contract_anchor='③고유번호증(사업자등록증)사본 ④고용계약서 ⑤원근무처장의 동의서')
 
 guidance('E-3', 'activities_outside_status', scenario='e1-e3-mutual', section=f'{E3_AOS} — 3. 외국고급과학 기술인력의 교수(E-1), 연구(E-3)간 상호 체류자격외 활동',
-         anchor='교수(E-1) 또는 연구(E-3) 자격을 소지한 외국고급과학 기술인력에 대한 교수(E-1), 연구(E-3)간 상호 체류자격외 활동',
+         anchor='연구(E-3)간 상호 체류자격외 활동',
          summary_ko='교수(E-1) 또는 연구(E-3) 자격의 외국고급과학 기술인력이 전문대학 이상 교육기관이나 이공계 연구기관에서 상대 자격 활동을 하려면 체류자격외 활동허가를 받습니다. 고용계약서 또는 임용예정확인서, 원 고용주의 동의서, 고용기관 설립 관련 서류, 학위증·경력증명서(해당자) 등을 냅니다.',
          summary_en='E-1 or E-3 advanced science personnel who will also work in the other status at a junior college or higher or a STEM research institute need permission for activities outside status, submitting the contract or appointment confirmation, the original employer\'s consent, the institution\'s establishment documents, degree/career certificates (if applicable), etc.',
          conditions_ko=E3_COND_KO + ['연구(E-3) 자격자가 동일한 대학 또는 연구기관에서 강의하는 경우에는 체류자격외 활동허가(교수(E-1)) 없이 허용되며, 원 체류자격의 근무시간 또는 보수를 상회하면 체류자격 변경이 안내됩니다. 다른 대학·연구기관에서는 원 근무처장의 동의를 얻어 허가를 받아야 합니다.'],

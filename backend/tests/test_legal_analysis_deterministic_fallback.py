@@ -91,7 +91,8 @@ def test_e7_to_f299_side_job_fallback_does_not_leak_h1_study_template() -> None:
     assert "F-2-99" in answer
     assert "E-7" in answer
     assert ("부업" in answer) or ("근무처" in answer) or ("신고" in answer)
-    assert "H-1" not in answer
+    # a verbatim manual excerpt may name H-1 (e.g. F-2-99 lists statuses that cannot change); the answer's own text must not
+    assert "H-1" not in "\n".join(line for line in answer.splitlines() if not line.lstrip().startswith("* 「"))
     assert "계절학기" not in answer
     assert "학점 인정" not in answer
     assert "D-2/D-4" not in answer
@@ -121,7 +122,8 @@ def test_g15_study_audit_fallback_is_g15_specific() -> None:
     answer = body["answer"]
     assert "G-1-5" in answer
     assert any(term in answer for term in ("등록", "청강", "계절학기"))
-    assert "H-1" not in answer
+    # a verbatim manual excerpt may name H-1 (e.g. F-2-99 lists statuses that cannot change); the answer's own text must not
+    assert "H-1" not in "\n".join(line for line in answer.splitlines() if not line.lstrip().startswith("* 「"))
     assert "study_on_non_study_status" in body["legal_issue_types"]
 
 
@@ -250,7 +252,10 @@ def test_e7_fallback_source_panel_metadata_has_no_unrelated_h1_study_chips() -> 
     assert body["source_state"] == "legal_analysis_preparation_note"
     assert body["source_panel_state"] == "structured_fallback_available"
     assert body["source_panel_label_key"] == "structured_fallback"
-    assert "H-1" not in body["answer"]
+    # A verbatim manual excerpt may name H-1 (e.g. F-2-99 lists it among statuses that cannot change);
+    # the answer's own text must not suggest it.
+    own_text = "\n".join(line for line in body["answer"].splitlines() if not line.lstrip().startswith("* 「"))
+    assert "H-1" not in own_text
 
 
 def test_copy_safe_answer_does_not_include_raw_diagnostics() -> None:

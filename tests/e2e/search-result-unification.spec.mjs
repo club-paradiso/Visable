@@ -110,7 +110,9 @@ test.describe('D-2 연장 evidence relevance', () => {
     await expect(ev.locator(':scope > summary')).toContainText('공식 근거');
     await ev.locator(':scope > summary').click();
     await expect(ev.locator('.sg-evidence-list li').first()).toBeVisible();
-    await expect(ev.locator('.sg-ev-review')).toHaveCount(1);
+    // the review notice is one plain line in the overview, not repeated inside the evidence
+    await expect(ev.locator('.sg-ev-review')).toHaveCount(0);
+    await expect(sg.locator('.sg-overview')).toContainText('참고용 안내예요 · 신청 전 공식 원문을 확인하세요');
     const raw = page.locator('#civicRawSources');
     await expect(ev.locator('#civicRawSources')).toHaveCount(1);
     await raw.locator(':scope > summary').click();

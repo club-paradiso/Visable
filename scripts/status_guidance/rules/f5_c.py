@@ -170,6 +170,17 @@ docdefs(
     f5_c_f5s1_points_proof=('신청인이 기재한 평가 항목별 점수를 입증하는 서류【붙임 7】', 'Proof for the points you claimed per item (Attachment 7)', 'applicant', None),
 )
 
+
+def one_of(group, first, *rest):
+    """The manual accepts any one of these documents: one required item that lists the others as
+    substitutes (the repository's alternatives pattern), not several separately required items."""
+    d = dict(first)
+    d['requirement_level'] = 'REQUIRED_BASELINE'
+    d['alternatives_group'] = group
+    d['substitution_allowed'] = True
+    d['alternatives'] = [{'ko': DOCDEFS[r['ref']][0], 'en': DOCDEFS[r['ref']][1]} for r in rest]
+    return d
+
 VISA_NOTE_KO = '재외공관의 장은 입국목적, 초청의 진정성, 초청자 및 피초청자의 자격 확인 등을 심사하기 위해 필요한 경우 첨부서류를 일부 가감할 수 있습니다.'
 VISA_NOTE_EN = 'The head of the Korean mission may add or remove some documents where needed to check the purpose of entry, the genuineness of the invitation and the eligibility of the inviter and invitee.'
 CVI_NOTE_KO = '출입국·외국인청(사무소·출장소)장은 초청의 진정성, 초청자 및 피초청자의 자격 확인 등을 심사하기 위해 첨부서류의 일부를 가감할 수 있습니다.'
@@ -281,7 +292,7 @@ guidance('C-3-8', 'visa_issuance', manual=VISA, section='알기쉬운 외국국�
                         '국가, 출생지, 호구부 관할에 관계없이 사증발급을 신청할 수 있습니다.'],
          conditions_en=['People sentenced in Korea for specified violent crimes, drugs, voice phishing or repeat drunk driving (3+), or to imprisonment for other crimes, may be refused after a substantive review, regardless of any entry ban.',
                         'You can apply regardless of country, place of birth or household-register jurisdiction.'],
-         notes_ko=['단기방문(C-3) 장의 중국동포 복수사증(C-3-8) 지침은 사증발급신청서·여권 사본·동포 입증 공적서류와 함께 14세 이상 신청자의 해외범죄경력증명을 요구합니다(60세 이상, 13세 이하, 국가유공자(독립유공자)와 그 유족, 특별공로 동포는 면제).', OFFICER_NOTE_KO],
+         notes_ko=['단기방문(C-3) 장의 중국동포 복수사증(C-3-8) 지침은 60세 이하 외국국적동포를 대상으로 하며, 사증발급신청서·여권 사본·동포 입증 공적서류와 함께 14세 이상 신청자의 해외범죄경력증명을 요구합니다(60세 이상, 13세 이하, 국가유공자(독립유공자)와 그 유족, 특별공로 동포는 면제).', OFFICER_NOTE_KO],
          notes_en=['The C-3 chapter\'s guideline on multiple-entry C-3-8 visas for Chinese-Korean compatriots asks applicants aged 14+ for an overseas criminal record together with the application, passport copy and public proof of Korean ethnicity (exempt: 60+, 13 or under, independence or national-merit patriots and their bereaved families, compatriots of special merit).', OFFICER_NOTE_EN])
 
 # C-3 사증발급인정서 — visa manual 7. 단기방문(C-3) 사증발급인정서 발급대상
@@ -432,7 +443,7 @@ guidance('C-4-1', 'workplace_change', covers=['C-4-2', 'C-4-3', 'C-4-4'],
                item('accommodation_confirmation', anchor='② 거주/숙소 제공 확인서'),
                item('standard_contract_copy', anchor='③ 표준근로계약서 사본'),
                item('f5_c_c4s_insurance', anchor='④ 산업재해보험가입 증명원 또는 농·어업인 안전보험 증서', role='employer'),
-               item('f5_c_c4s_health_ins', 'ADDITIONAL_IF_APPLICABLE', anchor='⑤ 건강보험 가입증명원 또는 신청 입증서류(해당자만 제출)'),
+               item('f5_c_c4s_health_ins', 'ADDITIONAL_IF_APPLICABLE', anchor='⑤ 건강보험 가입증명원 또는 신청 입증서류(해당자만 제출)', applies_when_ko='해당자만 제출', applies_when_en='Only if it applies to you'),
                item('f5_c_c4s_employer_confirmation', anchor='⑥ 계절근로자 배치 대상 고용주 확인서(지자체에서 새 고용주에게 발급)', role='local_government')],
          conditions_ko=['근무처 변경 사유: ① 고용주가 각종 조건 위반을 시정하지 않은 경우 ② 계절근로자의 귀책사유 없이 근로를 계속할 수 없는 경우 ③ 사회통념상 최초 계약한 고용주의 작업장에서 근무할 수 없는 경우 등',
                         '전 고용주는 출입국관서 및 지자체에 고용변동신고서를 제출합니다.'],
@@ -447,7 +458,7 @@ guidance('C-4-5', 'workplace_change', section='단기취업(C-4) — 근무처�
          docs=[item('app_form_34', anchor=C45_WC), item('passport_original', anchor=C45_WC), item('fee', anchor=C45_WC),
                item('employment_contract', anchor=C45_WC), item('f5_c_c4_company_docs', anchor=C45_WC),
                item('f5_c_c4_recommendation_if_any', 'ADDITIONAL_IF_APPLICABLE', anchor=C45_WC, applies_when_ko='E-1부터 E-7에 해당되는 활동 중 고용추천서가 필수인 업종', applies_when_en='Activities in E-1 to E-7 fields where a recommendation is mandatory'),
-               item('f5_c_c4_field_proof', 'ADDITIONAL_IF_APPLICABLE', anchor=C45_WC)],
+               item('f5_c_c4_field_proof', 'MAY_BE_REQUESTED_BY_OFFICER', anchor=C45_WC)],
          conditions_ko=['소속사의 지시에 따라 E-6-1에 해당하는 공연을 위해 공연장소를 변경하는 경우 별도의 허가나 신고 없이 활동할 수 있습니다(E-6-2에 해당하는 활동은 고용주의 변동신고 필요).',
                         '사증 발급 시 허용된 범위가 아닌 다른 활동을 위한 변경은 활동 상호간의 관련성이 높고 필요한 자격요건을 갖춘 경우 청장이 허용할 수 있습니다.'],
          conditions_en=['Changing the venue for E-6-1-type performances on your agency\'s instructions needs no separate permission or report (E-6-2-type activities need the employer\'s change report).',
@@ -490,7 +501,7 @@ guidance('F-5-11', 'visa_issuance', manual=VISA, doc_page_window=12,
          conditions_en=['Mandatory items 30+ points: total 50+ (any stay); 20–29: total 100+ (any stay); 10–19: total 100+ and at least 1 year in Korea after registration.'],
          notes_ko=[OFFICER_NOTE_KO], notes_en=[OFFICER_NOTE_EN])
 
-guidance('F-5', 'visa_issuance_confirmation', manual=VISA, state='GENERALLY_NOT_PERMITTED', completeness='SOURCE_ONLY',
+guidance('F-5', 'visa_issuance_confirmation', manual=VISA, state='NOT_APPLICABLE', completeness='SOURCE_ONLY',
          section='영주(F-5) — 사증발급인정서 발급대상', anchor='☞ 사증발급인정서 발급대상 아님',
          summary_ko='영주(F-5)는 사증발급인정서 발급대상이 아닙니다.',
          summary_en='F-5 is not eligible for a visa issuance confirmation.')
@@ -683,8 +694,8 @@ f5_change('F-5-20', '13. 영주권자의 국내 출생자녀〔F-5-20〕',
            item('f5_c_f520_no_korean_nationality', anchor='○ 대한민국 국적 미보유 확인서*', role='principal_holder'),
            item('f5_c_f520_dna', 'CONDITIONAL_REQUIRED', anchor='부모의 법률상 가족관계 유지 기간이 신청자의 출생일 이전으로부터 1년 미만으로 친생자 여부의 확인이 필요한 경우 해당',
                 applies_when_ko='부모의 법률상 가족관계 유지 기간이 출생일 이전 1년 미만이라 친생자 확인이 필요한 경우', applies_when_en='Parents\' legal family relationship began less than 1 year before the birth and parentage must be confirmed')],
-          conditions_ko=['출생한 날로부터 1년을 초과하면 이 영주자격(F-5-20)을 신청할 수 없으며, 90일을 초과하여 신청하면 범칙금 납부대상입니다.', '해외에서 출생한 사람과 양자관계에 의한 가족은 대상이 아닙니다.'],
-          conditions_en=['After 1 year from birth you cannot apply for F-5-20; applying after 90 days incurs a fine.', 'Children born abroad and adoptive relationships are not covered.'])
+          conditions_ko=['영주자격이 없는 부 또는 모는 계절근로(E-8), 비전문취업(E-9), 선원취업(E-10), 관광취업(H-1), 기타(G-1)를 제외한 장기 체류자격으로 국내에 합법 체류 중이어야 합니다.', '부모가 법률상 혼인 관계여야 하며, 신청자가 태어난 뒤 부모가 혼인신고를 한 경우는 대상이 아닙니다.', '출생한 날로부터 1년을 초과하면 이 영주자격(F-5-20)을 신청할 수 없으며, 90일을 초과하여 신청하면 범칙금 납부대상입니다.', '해외에서 출생한 사람과 양자관계에 의한 가족은 대상이 아닙니다.'],
+          conditions_en=['A parent without permanent residence must be lawfully staying on a long-term status other than E-8, E-9, E-10, H-1 or G-1.', 'The parents must be legally married; if they registered the marriage after the child was born, the child is not covered.', 'After 1 year from birth you cannot apply for F-5-20; applying after 90 days incurs a fine.', 'Children born abroad and adoptive relationships are not covered.'])
 
 F521_INV = '○ 투자금을 유지하고 있음을 입증하는 서류(영주신청일 이전 5일 이내 발급)'
 f5_change('F-5-21', '14. 공익사업 일반투자자〔F-5-21〕',
@@ -732,7 +743,7 @@ F528_DOC = '◦ 가족관계 등 입증 서류(국내 출생인 경우 국내 �
 f5_change('F-5-28', '18. 특별기여자〔F-5-28〕',
           '거주(F-2) 카목(특별기여자) 자격으로 신청일 현재 2년 이상 국내에 계속 체류한 사람(F-5-28)이 신청하며, 생계유지능력·품행단정·기본소양 요건을 갖춰야 합니다. 공통 서류에 가족관계 등 입증 서류를 함께 냅니다.',
           'People who have stayed continuously for 2+ years on F-2 (special contributors) (F-5-28) apply and must meet the livelihood, good-conduct and basic-knowledge requirements. Submit the common documents with proof of family relationship etc.',
-          [item('f5_c_f528_family', 'ADDITIONAL_IF_APPLICABLE', anchor=F528_DOC)],
+          [],
           conditions_ko=['생계유지능력: 전년도 1인당 GNI 이상 소득 또는 전년도 가구당 평균 순자산 이상 자산'],
           conditions_en=['Livelihood: income of at least GNI per capita or assets of at least average household net assets'])
 f5_change('F-5-29', '18. 특별기여자의 배우자 및 미성년 자녀〔F-5-29〕',
@@ -752,10 +763,8 @@ F52_COMMON = '공통 서류 ･ 여권, 외국인등록증, 통합신청서, 표
 def f52_tail():
     return [
         item('f5_c_f52_crime_6m', anchor='품행단정 요건 서류 ･ 해외범죄경력증명(신청일로부터 6개월 이내 발급)'),
-        item('f5_c_f52_income', 'ALTERNATIVE_DOCUMENT', anchor='(일인당 국민총소득 이상의 소득금액) 본인 또는 생계를 같이하는 가족의 소득금액증명', alternatives_group='f52_livelihood'),
-        item('f5_c_f52_assets', 'ALTERNATIVE_DOCUMENT', anchor='(중위수준 이상의 가계 자산) 본인과 생계를 같이하는 가족 모두의 자산 증빙서류', alternatives_group='f52_livelihood'),
-        item('f5_c_f52_kiip', 'ALTERNATIVE_DOCUMENT', anchor='(사회통합프로그램 이수) “사회통합프로그램 이수증”(한국이민영주적격과정 또는 한국이민귀화적격과정)', alternatives_group='f52_basic'),
-        item('f5_c_f52_kiprat', 'ALTERNATIVE_DOCUMENT', anchor='(종합평가 60점 이상) “한국이민영주적격시험 합격증”(KIPRAT) 또는 “한국이민귀화적격시험 합격증”(KINAT)', alternatives_group='f52_basic'),
+        one_of('f52_livelihood', item('f5_c_f52_income', 'ALTERNATIVE_DOCUMENT', anchor='(일인당 국민총소득 이상의 소득금액) 본인 또는 생계를 같이하는 가족의 소득금액증명'), item('f5_c_f52_assets', 'ALTERNATIVE_DOCUMENT', anchor='(중위수준 이상의 가계 자산) 본인과 생계를 같이하는 가족 모두의 자산 증빙서류')),
+        one_of('f52_basic', item('f5_c_f52_kiip', 'ALTERNATIVE_DOCUMENT', anchor='(사회통합프로그램 이수) “사회통합프로그램 이수증”(한국이민영주적격과정 또는 한국이민귀화적격과정)'), item('f5_c_f52_kiprat', 'ALTERNATIVE_DOCUMENT', anchor='(종합평가 60점 이상) “한국이민영주적격시험 합격증”(KIPRAT) 또는 “한국이민귀화적격시험 합격증”(KINAT)')),
         item('f5_c_f52_other', 'MAY_BE_REQUESTED_BY_OFFICER', anchor='그 밖에 심사에 필요하다고 청장 등이 인정한 서류(요건 완화･면제 대상자의 해당 사유 소명 자료 등) 등'),
     ]
 
@@ -791,9 +800,7 @@ guidance('F-5-3', 'status_change', section=F52_SEC.replace('2. 결혼이민자(F
                item('f5_c_f53_parent_certs', anchor='대한민국 국민인 부(父) 또는 모(母)의 기본증명서, 혼인관계증명서, 가족관계증명서, 주민등록표 등본', role='korean_spouse'),
                item('f5_c_f53_child_birth', anchor='미성년 자녀(신청인)의 출생증명서 등 가족관계증명 서류'),
                item('f5_c_f52_crime_6m', 'CONDITIONAL_REQUIRED', anchor='품행단정 요건 서류(형사미성년자는 제외) ･ 해외범죄경력증명(신청일로부터 6개월 이내 발급)', applies_when_ko='형사미성년자가 아닌 경우', applies_when_en='Unless under the age of criminal responsibility'),
-               item('f5_c_f52_kiip', 'ALTERNATIVE_DOCUMENT', anchor='(사회통합프로그램 이수) “사회통합프로그램 이수증”(한국이민영주적격과정 또는 한국이민귀화적격과정) ･ (종합평가 60점 이상) “한국이민영주적격시험 합격증”(KIPRAT) 또는 “한국이민귀화적격시험 합격증”(KINAT) ･ (정규교육 과정 이수자)', alternatives_group='f53_basic'),
-               item('f5_c_f52_kiprat', 'ALTERNATIVE_DOCUMENT', anchor='“한국이민귀화적격시험 합격증”(KINAT) ･ (정규교육 과정 이수자) 졸업증명서, 검정고시 합격증, 재학증명서 등', alternatives_group='f53_basic'),
-               item('f5_c_f53_school', 'ALTERNATIVE_DOCUMENT', anchor='(정규교육 과정 이수자) 졸업증명서, 검정고시 합격증, 재학증명서 등', alternatives_group='f53_basic'),
+               one_of('f53_basic', item('f5_c_f52_kiip', 'ALTERNATIVE_DOCUMENT', anchor='(사회통합프로그램 이수) “사회통합프로그램 이수증”(한국이민영주적격과정 또는 한국이민귀화적격과정) ･ (종합평가 60점 이상) “한국이민영주적격시험 합격증”(KIPRAT) 또는 “한국이민귀화적격시험 합격증”(KINAT) ･ (정규교육 과정 이수자)'), item('f5_c_f52_kiprat', 'ALTERNATIVE_DOCUMENT', anchor='“한국이민귀화적격시험 합격증”(KINAT) ･ (정규교육 과정 이수자) 졸업증명서, 검정고시 합격증, 재학증명서 등'), item('f5_c_f53_school', 'ALTERNATIVE_DOCUMENT', anchor='(정규교육 과정 이수자) 졸업증명서, 검정고시 합격증, 재학증명서 등')),
                item('f5_c_f52_other', 'MAY_BE_REQUESTED_BY_OFFICER', anchor='(정규교육 과정 이수자) 졸업증명서, 검정고시 합격증, 재학증명서 등 그 밖에 심사에 필요하다고 청장 등이 인정한 서류 등')],
          conditions_ko=['기본소양 요건: 취학 의무 연령 미만은 면제, 취학 의무 연령 이상~15세 미만은 「초·중등교육법」 학교(외국인학교 제외) 재학 시 면제 가능, 15세 이상은 해당 학교 졸업·졸업학력 검정고시 합격·2년 이상 재학 중 하나에 해당하면 면제 가능'],
          conditions_en=['Basic knowledge: waived below compulsory school age; from compulsory school age to under 15, may be waived if enrolled in a school under the Elementary and Secondary Education Act (not a foreign school); 15+, may be waived if graduated, passed the equivalency exam, or enrolled 2+ years in such a school'],
