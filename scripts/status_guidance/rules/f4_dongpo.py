@@ -40,6 +40,7 @@ guidance('F-4', 'visa_issuance', manual=VISA, section=F4_VISA_SECTION, anchor='�
              item('lineal_relation_proof', 'CONDITIONAL_REQUIRED', anchor='직계존비속의 관계임을 증명하는 서류(출생증명서 등)',
                   applies_when_ko='F-4-42 대상자', applies_when_en='F-4-42 applicants'),
          ],
+         conditions_ko=["'18.5.1. 이후 처음으로 대한민국 국적을 이탈했거나 상실한 남성은 병역을 마치거나 면제처분을 받지 않았다면 40세가 되는 해의 12월 31일까지 재외동포(F-4) 체류자격을 받을 수 없습니다."], conditions_en=["Men who first renounced or lost Korean nationality on or after 1 May 2018 cannot receive F-4 until 31 December of the year they turn 40 unless they completed or were exempted from military service."],
          notes_ko=['한국어능력 입증서류와 해외 범죄경력증명서는 매뉴얼의 별첨 제출기준에 따라 대상과 면제 여부가 정해집니다.', OFFICER_NOTE_KO],
          notes_en=['Who must submit Korean-ability proof and an overseas criminal record, and who is exempt, follows the annexed criteria in the manual.', OFFICER_NOTE_EN])
 
@@ -61,7 +62,9 @@ guidance('F-4', 'status_change', manual=STAY, section='알기쉬운 외국국적
              item('korean_proof_dongpo', anchor='한국어 능력 입증서류(별첨 2)'),
          ],
          conditions_ko=['조기적응프로그램은 자격변경 신청 전에 의무적으로 이수해야 합니다. 국내 초·중·고교 재학·졸업자, 만 6세 이하 또는 만 65세 이상, 장기체류 자격으로 3년 이상 체류한 사람, 이전 이수자, 사회통합프로그램 1단계 이상 이수(중)자, 중증장애인은 면제됩니다.',
-                        'CIS 지역 동포가 과거 동포 사증(C-3-8, H-2, F-4)을 받은 적이 있으면 동포 입증자료를 내고 국내에서 변경할 수 있습니다.'],
+                        'CIS 지역 동포가 과거 동포 사증(C-3-8, H-2, F-4)을 받은 적이 있으면 동포 입증자료를 내고 국내에서 변경할 수 있습니다.',
+                        "'18.5.1. 이후 처음으로 대한민국 국적을 이탈했거나 상실한 남성은 병역을 마치거나 면제처분을 받지 않았다면 40세가 되는 해의 12월 31일까지 재외동포(F-4) 체류자격을 받을 수 없습니다."],
          conditions_en=['The early-adaptation program must be completed before applying. Exempt: students or graduates of Korean primary/secondary schools, age 6 or under or 65 or over, 3+ years of long-term stay, earlier completers, those in or past level 1 of the social integration program, and people with severe disabilities.',
-                        'Compatriots from CIS countries who previously held a compatriot visa (C-3-8, H-2, F-4) can change in Korea by submitting proof of Korean ethnicity.'],
+                        'Compatriots from CIS countries who previously held a compatriot visa (C-3-8, H-2, F-4) can change in Korea by submitting proof of Korean ethnicity.',
+                        'Men who first renounced or lost Korean nationality on or after 1 May 2018 cannot receive F-4 until 31 December of the year they turn 40 unless they completed or were exempted from military service.'],
          notes_ko=[OFFICER_NOTE_KO], notes_en=[OFFICER_NOTE_EN])

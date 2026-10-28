@@ -6,6 +6,8 @@
 # Subcode chapters that live outside these sections (지역특화형비자 ch. 37, 톱티어 ch. 39) are not transcribed here.
 
 docdefs(
+    f236_wage_income_proof=('임금소득을 증명할 수 있는 서류', 'Proof of wage income', 'applicant', None),
+    f236_dwelling_proof_f26=('부동산임대차계약서, 부동산등기부등본 등 주거지 입증서류', 'Proof of dwelling (lease contract, property register, etc.)', 'applicant', None),
     # visa forms
     f236_visa_form17=('사증발급신청서 (별지 제17호 서식)', 'Visa application form (Form 17)', 'applicant', None),
     f236_cvi_form21=('사증발급인정신청서 (별지 제21호 서식)', 'Application for a confirmation of visa issuance (Form 21)', 'inviter', None),
@@ -245,7 +247,7 @@ guidance('F-2-7', 'visa_issuance_confirmation', manual=VISA, section=F2_CVI_SEC 
          summary_ko='점수제 우수인재 중 상장법인 종사자와 유망산업분야 종사자는 사업장 주소지 관할 출입국·외국인청(사무소·출장소) 방문 또는 대한민국비자포털에서 거주(F-2-7, 단수, 90일) 사증발급인정서를 신청할 수 있습니다. 고용·소득·학위 서류, 점수표와 항목별 점수 입증서류, 체류지 입증서류를 냅니다.',
          summary_en='Points-system talent working for listed companies or in promising industries can apply for a confirmation of visa issuance for F-2-7 (single-entry, 90 days) at the immigration office for the workplace or on the Korea Visa Portal. Submit employment, income and degree documents, the points table with evidence for each item, and proof of residence.',
          docs=f236_cvi_base() + [
-             item('tb_cert', anchor=F2_CVI_TB),
+             item('tb_cert', 'CONDITIONAL_REQUIRED', anchor=F2_CVI_TB, applies_when_ko='「외국인 결핵환자 사증발급 및 체류관리 지침」 적용 대상인 경우 (결핵고위험국가 국민 등)', applies_when_en='If the TB visa and stay guideline applies to you (e.g. nationals of high-TB-risk countries)'),
              item('f236_applicant_employment_docs', anchor='③ 신청자의 고용계약서, 재직증명서, 사업자등록증, 법인등기부등본, 소득금액증명'),
              item('f236_points_table_self', anchor='④ 신청인이 해당하는 점수를 기재한 점수표'),
              item('f236_points_proof', anchor='⑤ 신청인이 기재한 평가 항목별 점수를 입증하는 서류'),
@@ -265,7 +267,7 @@ guidance('F-2-71', 'visa_issuance_confirmation', manual=VISA, section=F2_CVI_SEC
          summary_ko='점수제 우수인재(F-2-7) 주체류자의 법률상 배우자와 미성년 자녀는 초청자의 주소지 관할 출입국·외국인청(사무소·출장소) 방문 또는 대한민국비자포털에서 거주(F-2-71, 단수, 90일) 사증발급인정서를 신청합니다. 주체류자의 소득기준(GNI 이상)을 충족하지 못하면(다른 요건 충족 시) 동반(F-3-18, 단수, 90일)으로 신청합니다.',
          summary_en='The legal spouse and minor children of an F-2-7 principal apply for an F-2-71 confirmation (single-entry, 90 days) at the immigration office for the inviter\'s address or on the Korea Visa Portal. If the principal does not meet the income standard (GNI or more) but meets the other requirements, they apply for F-3-18 (single-entry, 90 days).',
          docs=f236_cvi_base() + [
-             item('tb_cert', anchor=F2_CVI_TB),
+             item('tb_cert', 'CONDITIONAL_REQUIRED', anchor=F2_CVI_TB, applies_when_ko='「외국인 결핵환자 사증발급 및 체류관리 지침」 적용 대상인 경우 (결핵고위험국가 국민 등)', applies_when_en='If the TB visa and stay guideline applies to you (e.g. nationals of high-TB-risk countries)'),
              item('f236_principal_employment_docs', anchor='③ 주체류자의 고용계약서, 재직증명서, 사업자등록증, 법인등기부등본, 소득금액증명'),
              item('f236_family_relation_principal', anchor='④ 가족관계 소명 서류(주체류자와의 법률상 가족관계 입증서류여야 함)'),
              item('f236_points_table', anchor='⑤ 점수제 평가를 위한 점수를 기재한 점수표'),
@@ -394,8 +396,8 @@ F27_BASE = '신청서, 여권, 외국인등록증, 사진, 수수료, 체류지 
 guidance('F-2-7', 'status_change', completeness='PARTIALLY_STRUCTURED', covers=['F-2-7S', 'F-2-71'], doc_page_window=9,
          section='거주(F-2) 체류자격 변경허가 — 5. 점수제 우수인재 및 동반가족의 거주자격 변경허가',
          anchor='5. 점수제 우수인재 및 동반가족의 거주자격 변경허가',
-         summary_ko='상장법인·유망산업분야·전문직 종사자, 유학인재, 잠재적 우수인재(F-2-7S)와 그 배우자·미성년 자녀는 결격사유가 없고 점수표 합산 80점 이상이며 취업제한 분야 종사 사실이 없으면 거주 자격으로 바꿀 수 있습니다. 기본서류(신청서·여권·외국인등록증·사진·수수료·체류지 입증서류·해외범죄경력증명서·고용계약서)와 점수표, 항목별 점수 입증서류를 냅니다.',
-         summary_en='Staff of listed companies or promising industries, professionals, Korean-educated graduates, potential talent (F-2-7S) and their spouses and minor children can change to residence status if they have no disqualifying grounds, score 80+ points and have not worked in a restricted field. Submit the basic documents (form, passport, residence card, photo, fee, proof of residence, overseas criminal record, employment contract) with the points table and evidence for each item.',
+         summary_ko='상장법인·유망산업분야·전문직 종사자, 유학인재, 잠재적 우수인재(F-2-7S)와 그 배우자·미성년 자녀는 결격사유가 없고 점수표 합산 80점 이상이며 취업제한 분야 종사 사실이 없으면 거주 자격으로 바꿀 수 있습니다. 이공계 특성화 대학·연구기관에서 석·박사를 받고 대학 총장의 추천서를 받은 사람은 점수요건을 채우지 못해도 F-2-7S(최대 5년)로 변경할 수 있습니다. 기본서류(신청서·여권·외국인등록증·사진·수수료·체류지 입증서류·해외범죄경력증명서·고용계약서)와 점수표, 항목별 점수 입증서류를 냅니다.',
+         summary_en='Staff of listed companies or promising industries, professionals, Korean-educated graduates, potential talent (F-2-7S) and their spouses and minor children can change to residence status if they have no disqualifying grounds, score 80+ points and have not worked in a restricted field. Master\'s or doctoral graduates of a specialised science-and-engineering university or research institute with their president\'s recommendation can change to F-2-7S (up to 5 years) without meeting the points requirement. Submit the basic documents (form, passport, residence card, photo, fee, proof of residence, overseas criminal record, employment contract) with the points table and evidence for each item.',
          docs=[item('app_form', anchor=F27_BASE), item('passport', anchor=F27_BASE), item('arc', anchor=F27_BASE), item('photo', anchor=F27_BASE), item('fee', anchor=F27_BASE),
                item('residence_proof', anchor=F27_BASE), item('overseas_criminal_record', anchor=F27_BASE),
                item('employment_contract', anchor='해외범죄경력증명서(연장신청시 6개월이상 해외체류시에만 제출), 고용계약서'),
@@ -436,11 +438,11 @@ guidance('F-2-8', 'status_change', covers=['F-2-81'], doc_page_window=5,
              item('f236_overseas_crime_6m', anchor='⑧ 국적국 또는 거주국의 해외범죄경력증명서'),
          ],
          conditions_ko=['투자 목적물 소재지 관할 출입국외국인관서에 사전심사를 신청하고, 사전심사 후 6개월 이내에 국내 외국환은행을 통해 투자금을 반입해야 합니다(6개월 이후 반입하려면 사전심사 재신청).',
-                        '본인의 해외 자본을 본인 명의로 송금·수령해 투자해야 하며, 투자시설을 임대·담보·압류하거나 수익활동에 활용하지 않아야 합니다. 불법체류 중 형성된 국내 소득과 자산은 어떠한 경우에도 투자금으로 인정하지 않습니다.',
+                        '본인의 해외 자본을 본인 명의로 송금·수령해 투자해야 하며(국내에서 합법적으로 형성한 소득이나 국내 자산을 매각해 투자한 경우는 예외적으로 투자금으로 인정), 투자시설을 임대·담보·압류하거나 수익활동에 활용하지 않아야 합니다. 불법체류 중 형성된 국내 소득과 자산은 어떠한 경우에도 투자금으로 인정하지 않습니다.',
                         '신청기관은 투자시설 소재지(2곳 이상이면 투자금액이 많은 지역) 관할 관서이며, 등록외국인은 체류지 관할 관서에 신청합니다.',
                         LAW_ABIDING_KO],
          conditions_en=['Apply for a pre-review at the office for the location of the investment, then bring the funds in through a Korean foreign-exchange bank within 6 months (after 6 months, apply for the pre-review again).',
-                        'You must remit and receive your own foreign capital in your own name; the facility must not be leased, mortgaged, seized or used for profit. Income or assets formed while staying illegally never count.',
+                        'You must remit and receive your own foreign capital in your own name (income lawfully earned in Korea, or proceeds from selling assets in Korea, is accepted as an exception); the facility must not be leased, mortgaged, seized or used for profit. Income or assets formed while staying illegally never count.',
                         'Apply at the office for the facility\'s location (the one with the larger investment if there are several); registered foreigners apply at the office for their address.',
                         LAW_ABIDING_EN],
          notes_ko=[OFFICER_NOTE_KO], notes_en=[OFFICER_NOTE_EN])
@@ -561,11 +563,17 @@ guidance('F-2-6', 'extension', section='거주(F-2) 체류기간 연장허가 �
                item('f236_deposit_2000', anchor='최근 1년 이상 2천만 원 이상의 예금잔고가 유지되었음을 증명할 수 있는 서류'),
                item('f236_past_employment', anchor='재직(경력)증명서 등 과거 취업활동 사실을 증명할 수 있는 서류',
                     notes_ko=['출입국관리정보시스템으로 확인할 수 있으면 면제할 수 있습니다.'], notes_en=['May be waived if it can be checked in the immigration system.']),
-               item('f236_future_employment', anchor='취업예정사실증명서, 표준근로계약서 등')],
+               item('f236_future_employment', anchor='취업예정사실증명서, 표준근로계약서 등'),
+               item('f236_wage_income_proof', 'CONDITIONAL_REQUIRED', anchor='임금소득을 증명할 수 있는 서류(※ 최근 2년간 연평균 임금소득이 근로자 연간',
+                    applies_when_ko='임금총액 이상 요건으로 숙련기능 거주 체류자격을 받은 경우', applies_when_en='You received F-2-6 through the annual-wage requirement'),
+               item('f236_dwelling_proof_f26', anchor='부동산임대차계약서, 부동산등기부등본 등 주거지 입증서류'),
+               item('other_officer_docs', 'MAY_BE_REQUESTED_BY_OFFICER', anchor='기타 심사에 필요하다고 인정하는 서류')],
          conditions_ko=['중한범죄는 신청일 이전 10년 이내 1건도 없어야 하며(기소유예, 선고유예, 100만원 이하 벌금 포함), 세금은 완납해야 합니다.',
-                        '신청인 또는 같은 체류지에서 생계를 같이하는 가족(배우자, 자녀, 배우자 부모까지)이 2천만원 이상의 자산을 보유해야 합니다.'],
+                        '신청인 또는 같은 체류지에서 생계를 같이하는 가족(배우자, 자녀, 배우자 부모까지)이 2천만원 이상의 자산을 보유해야 합니다.',
+                        '임금총액 요건으로 F-2-6 자격을 받은 사람은 최근 2년간 연평균 임금소득이 근로자 연간 임금총액 이상이어야 합니다(기술·기능 자격 요건으로 받은 사람은 적용하지 않음).'],
          conditions_en=['No serious offence within 10 years before applying (suspended indictment, suspended sentence and fines up to KRW 1 million count), and all taxes paid.',
-                        'You or family members sharing your household (spouse, children, spouse\'s parents) must hold assets of KRW 20 million or more.'],
+                        'You or family members sharing your household (spouse, children, spouse\'s parents) must hold assets of KRW 20 million or more.',
+                        'If you received F-2-6 through the wage requirement, your average annual wage over the last 2 years must be at least the annual total wage of Korean workers (not applied to those who qualified through technical certificates).'],
          notes_ko=[OFFICER_NOTE_KO], notes_en=[OFFICER_NOTE_EN])
 
 # ==========================================================================
@@ -663,7 +671,7 @@ guidance('F-3-18', 'visa_issuance', manual=VISA, section=F3_VISA_SEC + ' 2. 점�
                item('f236_principal_arc_if_registered', 'CONDITIONAL_REQUIRED', anchor='① 사증발급신청서 (별지 제17호 서식), 여권, 외국인등록증(주체류자가 외국인등록을 마친 사람만 해당), 표준규격사진 1매',
                     applies_when_ko='주체류자가 외국인등록을 마친 경우', applies_when_en='If the principal holder has registered'),
                item('photo', anchor='① 사증발급신청서 (별지 제17호 서식), 여권, 외국인등록증(주체류자가 외국인등록을 마친 사람만 해당), 표준규격사진 1매'),
-               item('tb_cert', anchor=F2_CVI_TB),
+               item('tb_cert', 'CONDITIONAL_REQUIRED', anchor=F2_CVI_TB, applies_when_ko='「외국인 결핵환자 사증발급 및 체류관리 지침」 적용 대상인 경우 (결핵고위험국가 국민 등)', applies_when_en='If the TB visa and stay guideline applies to you (e.g. nationals of high-TB-risk countries)'),
                item('f236_principal_employment_docs_copy', anchor='③ 주체류자의 고용계약서 사본, 재직증명서, 사업자등록증, 법인등기부등본, 소득금액증명'),
                item('f236_family_relation_principal', anchor='④ 가족관계 소명 서류(주체류자와의 법률상 가족관계 입증서류여야 함)'),
                item('f236_points_table', anchor='⑤ 점수제 평가를 위한 점수를 기재한 점수표'),

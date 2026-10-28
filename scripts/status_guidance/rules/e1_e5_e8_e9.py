@@ -442,7 +442,7 @@ guidance('E-2', 'activities_outside_status', section=f'{E2_AOS} — 3. 회화지
              item('e159_degree_confirmed_stay', 'CONDITIONAL_REQUIRED', anchor='④ 공적확인*을 받은 학력증명서', applies_when_ko='영어보조교사를 제외한 회화지도강사 (과거 공적확인 학력서류 제출자는 면제, 국내 대학 학위는 공적확인 없는 학위증 사본)', applies_when_en='Other instructors (exempt if confirmed proof was submitted before; Korean degrees as an unconfirmed copy)'),
              item('e159_crime_record_6m', 'CONDITIONAL_REQUIRED', anchor='신청일로부터 6개월 이내에 발급 받은 공적확인*을 받은 범죄경력증명서', applies_when_ko='영어보조교사를 제외한 회화지도강사', applies_when_en='Other conversation instructors'),
              item('e159_recruit_medical', 'CONDITIONAL_REQUIRED', anchor='법무부장관이 지정하는 의료기관이 발급한 공무원채용신체검사규정 별지서식기준에 해당하는 신체검사', applies_when_ko='영어보조교사를 제외한 회화지도강사', applies_when_en='Other conversation instructors',
-                  notes_ko='법무부장관이 지정한 의료기관이 발급한 것으로 HIV 및 마약검사(필로폰, 코카인, 아편, 대마 필수) 결과를 포함해야 합니다.', notes_en='Issued by a Ministry-designated medical institution, including drug test results (methamphetamine, cocaine, opium and cannabis are mandatory).'),
+                  notes_ko='법무부장관이 지정한 의료기관이 발급한 것으로 마약검사(필로폰, 코카인, 아편, 대마 필수) 결과를 포함해야 합니다.', notes_en='Issued by a Ministry-designated medical institution, including drug test results (methamphetamine, cocaine, opium and cannabis are mandatory).'),
              item('academy_reg_copy', 'ADDITIONAL_IF_APPLICABLE', anchor='⑦ 학원설립운영등록증 사본(해당자)', applies_when_ko='학원 취업자', applies_when_en='Academy employees', role='employer'),
              item('e159_lifelong_edu_reg_copy', 'ADDITIONAL_IF_APPLICABLE', anchor='⑧평생교육시설등록증 사본(해당자)', applies_when_ko='평생교육시설 취업자', applies_when_en='Lifelong-education facility employees')],
          **NOTE)

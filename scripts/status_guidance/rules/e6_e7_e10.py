@@ -482,10 +482,10 @@ guidance('E-7', 'status_change', completeness='PARTIALLY_STRUCTURED', doc_page_w
                     applies_when_ko=E7_IT_KO, applies_when_en=E7_IT_EN),
                item('e67_minister_recommendation', 'CONDITIONAL_REQUIRED', anchor='⑤ 소관부처장관의 고용추천서',
                     applies_when_ko=E7_IT_KO, applies_when_en=E7_IT_EN)],
-         conditions_ko=['원칙적으로 국민고용자의 20% 범위 내에서 E-7 외국인 고용이 허용되며, 5명 미만의 국민을 고용 중인 내수 위주 업체 등은 체류자격변경이 원칙적으로 불허됩니다(주무부처 추천 시 예외 기준 있음).',
+         conditions_ko=['원칙적으로 국민고용자의 20% 범위 내에서 E-7 외국인 고용이 허용되며, 5명 미만의 국민을 고용 중인 내수 위주 업체나 E-7 고용이 국민고용자의 20%를 넘는 업체는 체류자격변경이 원칙적으로 불허됩니다. 주무부처(KOTRA, 한국무역협회) 등의 추천이 있으면 첨단산업분야는 국민근로자의 50%, 특수 언어지역 대상 우량 수출업체는 70% 범위까지 추가 고용이 허용될 수 있습니다.',
                         '급여총액(연봉)이 당해연도 최저임금 기준 미만이면 제한되며, 고용계약서에 월 급여총액(연봉) 대비 근로시간을 명시해야 합니다.',
                         '외국인학교 교사로의 최초 자격변경 시 체류기간은 고용계약기간을 감안하여 1년 범위 내에서 부여됩니다.'],
-         conditions_en=['E-7 hiring is in principle allowed up to 20% of the Korean workforce; domestic-market firms with fewer than 5 Korean employees etc. are in principle refused (exceptions with a ministry recommendation).',
+         conditions_en=['E-7 hiring is in principle allowed up to 20% of the Korean workforce; domestic-market firms with fewer than 5 Korean employees, or whose E-7 staff exceed 20% of Korean employees, are in principle refused. With a recommendation from the competent body (KOTRA, KITA), the cap can rise to 50% for advanced industries and 70% for leading exporters to special-language regions.',
                         'Pay below the current minimum wage is not accepted, and the contract must state working hours against the total monthly pay (annual salary).',
                         'A first change to foreign-school teacher is granted for up to 1 year, considering the contract period.'],
          notes_ko=[OFFICER_NOTE_KO], notes_en=[OFFICER_NOTE_EN])

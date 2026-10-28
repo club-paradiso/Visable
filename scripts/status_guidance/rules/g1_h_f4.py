@@ -190,7 +190,7 @@ guidance('G-1-10', 'status_change', section=G1_CHG + ' — 7. 외국인환자 (G
                item('photo', anchor='① 신청서(별지 제34호 서식), 여권, 표준규격사진 1매, 수수료'), item('fee', anchor='① 신청서(별지 제34호 서식), 여권, 표준규격사진 1매, 수수료'),
                item('g1h_long_treatment_opinion', anchor='의료기관에서 발행한 소견서 등 장기 치료의 필요성을 입증할 수 있는 서류'),
                item('treatment_cost_proof', anchor='치료 및 체류 비용 조달 능력을 입증할 수 있는 서류', does_not_apply_when_ko='유치 기관 또는 신원보증인이 신원을 보증하는 경우 제출 생략', does_not_apply_when_en='Omitted if the attracting institution or a guarantor vouches for you'),
-               item('family_caregiver_proof', anchor='④ 가족관계 및 간병인 입증서류'),
+               item('family_caregiver_proof', 'CONDITIONAL_REQUIRED', anchor='④ 가족관계 및 간병인 입증서류', applies_when_ko='동반가족 또는 간병인이 신청하는 경우', applies_when_en='When an accompanying family member or caregiver applies'),
                residence(anchor='체류지입증서류(임대차계약서, 숙소제공 확인서, 숙박료 납입 영수증 등)', alts=[{'ko': '임대차계약서', 'en': 'Lease contract'}, {'ko': '숙소제공 확인서', 'en': 'Accommodation provision confirmation'}, {'ko': '숙박료 납입 영수증 등', 'en': 'Lodging payment receipt, etc.'}])],
          notes_ko=[OFFICER_NOTE_KO], notes_en=[OFFICER_NOTE_EN])
 
