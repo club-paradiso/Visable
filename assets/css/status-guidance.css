@@ -456,3 +456,11 @@ html[dir="rtl"] .sg:not([dir="ltr"]) .sg-action::after { content: '‹'; }
    action list and covers it while reading. It stays available from the legacy
    status card (기존 체류자격 카드 보기); the band shows only once that card is open. */
 .civic-refresh.searched[data-sg-state="ready"]:not([data-legacy-card="open"]) #f4gStickyCta { display: none !important; }
+/* Source-only answers: verbatim excerpt of the cited manual page (status-guidance.js fillSourcePreview).
+   Colours derive from the answer card's own text colour so the block reads on light and dark faces. */
+.sg-source-preview { margin-top: 18px; padding-top: 14px; border-top: 1px solid color-mix(in srgb, currentColor 22%, transparent); max-width: 680px; color: inherit; }
+.sg-source-preview .sg-preview-title { margin: 0 0 4px; font-size: 15px; font-weight: 700; color: inherit; }
+.sg-source-preview .sg-preview-note { margin: 0 0 10px; font-size: 13px; color: inherit; opacity: .78; }
+.sg-source-excerpt { margin: 0 0 8px; padding: 10px 14px; border-inline-start: 3px solid color-mix(in srgb, currentColor 40%, transparent); background: color-mix(in srgb, currentColor 7%, transparent); color: inherit; border-radius: 0 8px 8px 0; font-size: 14px; line-height: 1.6; word-break: keep-all; overflow-wrap: anywhere; }
+.sg-source-excerpt p { margin: 0; color: inherit; }
+.sg-chip-legend { margin: 10px 0 0; font-size: 13px; }

@@ -112,7 +112,14 @@
       return index.rows.filter(function (row) {
         if (options.domain && row.source.domain !== options.domain) return false;
         if (row.page.page <= 2) return false;
-        var statusOk = !st || matchesCode(row.codes, st) || matchesCode(row.codes, st.split('-').slice(0, 2).join('-')) || inRange(intent.chapters, row);
+        // A resolved procedure belongs to one manual: 사증발급 evidence comes from the visa manual,
+        // 체류 procedures from the stay manual (a cited anchor page is always kept).
+        if (intent.procedure && intent.domain && row.source.domain !== intent.domain && !anchored(row)) return false;
+        var ownCode = matchesCode(row.codes, st) || matchesCode(row.codes, st.split('-').slice(0, 2).join('-'));
+        // Chapter pages count for the status unless they name only other statuses: one chapter can
+        // be shared (the 동포 handbook covers C-3-8 / H-2 / F-4 / F-5 / F-1·F-3).
+        var chapterOk = inRange(intent.chapters, row) && !(row.codes.length && !ownCode);
+        var statusOk = !st || ownCode || chapterOk;
         var procOk = !terms.length || terms.some(function (t) { return row.text.includes(t); }) || anchored(row);
         return (statusOk && procOk) || anchored(row);
       }).map(function (row) {
