@@ -122,6 +122,39 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
+  webkit-e2e:
+    # Full Playwright suite on WebKit (Safari engine): iPhone width, plus desktop Safari for layout specs.
+    if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install Playwright
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
+        run: npm install --no-save --package-lock=false @playwright/test@1.61.0
+
+      - name: Install WebKit runtime
+        run: ./node_modules/.bin/playwright install --with-deps webkit
+
+      - name: Run the suite on WebKit
+        run: ./node_modules/.bin/playwright test -c playwright.webkit.config.mjs --workers=2 --reporter=line
+
+      - name: Upload WebKit failures
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: webkit-e2e-results
+          path: test-results/
+          retention-days: 7
+
   landing-restoration-e2e:
     runs-on: ubuntu-latest
     steps:

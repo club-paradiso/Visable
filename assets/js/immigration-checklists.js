@@ -631,7 +631,7 @@ function card(original) {
   var tail = element('div', 'card-tail');
   var prov = element('div', 'card-provenance');
   var provLine = (lang === 'en') ? ('Source Edition Line ' + item.source_line) : ('원문 편집본 ' + item.source_line + '행');
-  var provReview = (lang === 'en') ? 'Needs Verification' : '검토 필요';
+  var provReview = (lang === 'en') ? 'Reference · check the source' : '참고용 · 원문 확인';
   append(prov, [
     element('span', '', provLine),
     element('span', '', '·'),
@@ -991,7 +991,8 @@ function renderGuidedStep4() {
   $('summary-provenance').textContent = (state.lang === 'en')
     ? ('2026.09 Official Manual Line ' + item.source_line + ' (' + (item.source_section || 'General') + ')')
     : ('2026.09 매뉴얼 편집본 ' + item.source_line + '행 (' + (item.source_section || '') + ')');
-  $('summary-review-tag').textContent = item.review_state === 'COMPILED_NEEDS_REVIEW' ? (state.lang === 'en' ? 'Needs Verification' : '검토 필요') : item.review_state;
+  // Never print the internal review enum: every compiled checklist is reference guidance.
+  $('summary-review-tag').textContent = state.lang === 'en' ? 'Reference · check the source' : '참고용 · 원문 확인';
 
   $('checklist-office-select').value = state.office;
 

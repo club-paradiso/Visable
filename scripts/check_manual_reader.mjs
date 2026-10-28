@@ -110,7 +110,7 @@ const page = read('manual.html');
 ok(/assets\/js\/manual-reader-route\.js/.test(page) && /assets\/js\/manual-reader\.js/.test(page), 'manual.html loads route + reader scripts');
 ok(/visa_manual_261019\.pdf/.test(page) && /stay_manual_261019\.pdf/.test(page), 'manual.html keeps official PDF fallbacks (noscript)');
 const reader = read('assets/js/manual-reader.js');
-ok(/원문 발췌 · 검토 전/.test(reader), 'reader shows the needs-review state');
+ok(/공식 원문 발췌/.test(reader) && !/검토 전/.test(reader), 'reader labels the text as an official-source excerpt, with no internal review label');
 ok(/법적 요건이 아니며|법적 요건이 아닙니다/.test(reader), 'reader footer separates Visable editorial text from requirements');
 const index = read('index.html');
 ok(/<script defer src="assets\/js\/manual-reader-route\.js"><\/script>/.test(index), 'index.html loads the reader route before civic search');

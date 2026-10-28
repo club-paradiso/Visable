@@ -106,7 +106,7 @@ function renderHome(){
       <div class="eyebrow">OFFICIAL MANUALS / 2026.10</div>
       <h1>매뉴얼 원문을,<br>내 자격과 업무만 골라 읽어요</h1>
       <p>법무부 「사증발급 안내매뉴얼」(2026. 10. 19.)과 「외국인체류 안내매뉴얼」(2026. 10. 19.) 원문을 고치지 않고 체류자격·업무별로 나눠 보여 드려요. 쉬운 말 제목과 서류 체크리스트는 Visable이 덧붙인 것이에요.</p>
-      <p class="srcline"><span class="state">원문 발췌 · 검토 전</span><a href="docs/source-manuals/2026-10-19/visa_manual_261019.pdf" target="_blank" rel="noopener">사증발급 PDF</a><a href="docs/source-manuals/2026-10-19/stay_manual_261019.pdf" target="_blank" rel="noopener">외국인체류 PDF</a><a href="${esc(CAT.sources.v.official_url)}" target="_blank" rel="noopener">HiKorea 공지</a></p>
+      <p class="srcline"><span class="state">공식 원문 발췌</span><a href="docs/source-manuals/2026-10-19/visa_manual_261019.pdf" target="_blank" rel="noopener">사증발급 PDF</a><a href="docs/source-manuals/2026-10-19/stay_manual_261019.pdf" target="_blank" rel="noopener">외국인체류 PDF</a><a href="${esc(CAT.sources.v.official_url)}" target="_blank" rel="noopener">HiKorea 공지</a></p>
     </div>
     <ol class="howto" aria-label="이용 방법">
       <li>하려는 일을 고르세요. (선택)</li>
@@ -247,7 +247,7 @@ function drawChapter(key, tab, ch, secIdx, opts){
     <div class="layout">
       <nav class="toc" aria-label="목차"><details class="tocd" ${matchMedia('(max-width:900px)').matches ? '' : 'open'}><summary>이 탭의 목차</summary>${toc}</details></nav>
       <div class="doc">
-        <p class="disc"><span class="state">원문 발췌 · 검토 전</span> 아래는 「${SRC_NAME[tab]}」(${esc(CAT.sources[tab].date.replace(/-/g, '. ').replace(/^(\d+)\. 0?(\d+)\. 0?(\d+)$/, '$1. $2. $3.'))}) 원문이에요. 굵은 제목은 Visable이 붙인 쉬운 말이고, 회색 꼬리표가 원문 항목명이에요. 표·그림과 적용 조건은 <a href="${esc(CAT.sources[tab].pdf)}" target="_blank" rel="noopener">공식 PDF</a>에서 확인하세요.</p>
+        <p class="disc"><span class="state">공식 원문 발췌</span> 아래는 「${SRC_NAME[tab]}」(${esc(CAT.sources[tab].date.replace(/-/g, '. ').replace(/^(\d+)\. 0?(\d+)\. 0?(\d+)$/, '$1. $2. $3.'))}) 원문이에요. 굵은 제목은 Visable이 붙인 쉬운 말이고, 회색 꼬리표가 원문 항목명이에요. 표·그림과 적용 조건은 <a href="${esc(CAT.sources[tab].pdf)}" target="_blank" rel="noopener">공식 PDF</a>에서 확인하세요.</p>
         <div id="secs"></div>
       </div>
     </div>${footer()}`;

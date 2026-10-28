@@ -667,7 +667,7 @@ def dumps(v):
 def outputs():
     sources, chapters, reports, search = build()
     files = {}
-    catalog = {'schema_version': 1, 'edition': '2026.9', 'generated_by': 'scripts/build_manual_reader.py',
+    catalog = {'schema_version': 1, 'edition': '2026.10', 'generated_by': 'scripts/build_manual_reader.py',
                'note': '원문 문장은 바꾸지 않음. 쪽 넘김 때문에 반복된 항목명·목차 링크·장 제목 줄·표지 이미지만 제외.',
                'sources': sources, 'chapters': []}
     for key, by in chapters.items():

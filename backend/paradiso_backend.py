@@ -8461,11 +8461,10 @@ def _unified_source_cards(result: Dict[str, Any]) -> List[Dict[str, Any]]:
     if manual.get("reviewPendingCount"):
         cards.append({
             "id": "manual_review_pending",
-            "title": "매뉴얼 본문 (검토 전)",
+            "title": "매뉴얼 본문 (참고용)",
             "url": "",
             "sourceType": "manual_review_pending",
-            "note": "검색된 매뉴얼 본문은 아직 사람이 원문과 대조·승인하지 않은 상태입니다. "
-                    "참고용으로만 보시고, 확정 내용은 공식 출처에서 확인하세요.",
+            "note": "검색된 매뉴얼 본문은 참고용입니다. 확정 내용은 공식 출처에서 확인하세요.",
         })
     return cards
 
@@ -8797,14 +8796,14 @@ def _unified_evidence_label(deterministic: Dict[str, Any], lang: str) -> str:
         if approved:
             parts.append(f"매뉴얼 직접 근거 {approved}건")
         if pending:
-            parts.append(f"검토 전 매뉴얼 {pending}건")
+            parts.append(f"참고용 매뉴얼 {pending}건")
         parts.append("공식 확인 필요")
         return " · ".join(parts)
     parts = [f"{structured} structured records"]
     if approved:
-        parts.append(f"{approved} approved manual")
+        parts.append(f"{approved} official manual")
     if pending:
-        parts.append(f"{pending} unreviewed manual")
+        parts.append(f"{pending} reference manual")
     parts.append("official confirmation required")
     return " · ".join(parts)
 

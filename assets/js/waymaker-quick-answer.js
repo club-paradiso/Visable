@@ -375,11 +375,22 @@
     var noteEl = host.querySelector('#sgQuickNote');
     if (!summaryEl) return;
     var key = (state.lang || 'ko') + '|' + qa.query + '|' + qa.title + '|' + qa.summary;
+    summaryEl.setAttribute('data-sg-ai-key', key);
     if (aiCache[key]) { applyCached(aiCache[key]); return; }
     if (!shouldEnhance(qa, state)) return;
+    // The guidance can re-render while the request is in flight (e.g. when local-practice data
+    // arrives): apply the outcome to the quick answer now on the page for this same answer,
+    // not to the elements captured at request time.
     function applyCached(entry) {
-      if (entry.ok) { summaryEl.textContent = entry.text; summaryEl.setAttribute('data-sg-ai', 'enhanced'); }
-      else if (entry.failed && noteEl) { noteEl.textContent = t(state.lang || 'ko', 'aiFailed'); noteEl.hidden = false; }
+      var doc = root.document;
+      var sum = summaryEl, note = noteEl;
+      if (summaryEl.isConnected === false) {
+        sum = doc && doc.querySelector('#sgQuickSummary');
+        if (!sum || sum.getAttribute('data-sg-ai-key') !== key) return;   // the page moved on to another answer
+        note = doc.querySelector('#sgQuickNote');
+      }
+      if (entry.ok) { sum.textContent = entry.text; sum.setAttribute('data-sg-ai', 'enhanced'); }
+      else if (entry.failed && note) { note.textContent = t(state.lang || 'ko', 'aiFailed'); note.hidden = false; }
     }
     var controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
     var timer = setTimeout(function () { if (controller) controller.abort(); }, AI_TIMEOUT_MS);

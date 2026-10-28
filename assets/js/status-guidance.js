@@ -71,7 +71,7 @@
       localKind: '정보 성격', localChecked: '최근 확인일', localUnchecked: '아직 확인되지 않음', localReports: '제보 {n}건', localBaseline: '전국 기준', localDetail: '자세히', localReport: '실제 방문 내용이 달랐나요?', localNotPolicy: '전국 기준을 바꾸는 정보가 아니에요. 서류는 전국 기준대로 준비하세요.',
       layers: { NATIONAL_OFFICIAL_BASELINE: '전국 공식 기준', OFFICIAL_LOCAL_GUIDANCE: '관서 공식 안내', VERIFIED_LOCAL_PRACTICE: '검토된 실무 정보', REVIEWED_USER_REPORT: '검토된 이용자 제보', UNVERIFIED_USER_REPORT: '확인되지 않은 이용자 제보', CONFLICTING_REPORTS: '제보 간 불일치', STALE_REPORT: '오래된 제보', UNKNOWN: '정보 없음' },
       nextTitle: '다음 할 일', nextDocs: '준비 서류 {n}개 보기', nextReserve: '방문예약 안내', nextForms: '통합신청서 작성', nextCall: '1345 외국인종합안내센터', nextAi: '이어서 질문하기', nextLegacy: '기존 체류자격 카드 보기', nextFull: '전체 안내', nextEvidence: '근거 보기',
-      evidenceTitle: '공식 근거', evidenceShow: '근거 보기', evidenceReview: '{edition}판 원문은 아직 사람이 한 줄씩 대조 검토하지 않았어요.', evidenceCount: '{n}건', evidenceBasis: '최신 기준일 {date}', evidenceRegulation: '법령', evidenceManual: '공식 안내', open: '본문 펼치기', original: '원문 보기', reviewState: '검토 전 원문', moreManual: '관련 원문 더 보기', lawChecked: '{date} 확인',
+      evidenceTitle: '공식 근거', evidenceShow: '근거 보기', evidenceReview: '참고용 안내예요 · 신청 전 공식 원문을 확인하세요.', evidenceCount: '{n}건', evidenceBasis: '최신 기준일 {date}', evidenceRegulation: '법령', evidenceManual: '공식 안내', open: '본문 펼치기', original: '원문 보기', reviewState: '공식 원문', moreManual: '관련 원문 더 보기', lawChecked: '{date} 확인',
       stayManual: '외국인체류 안내매뉴얼', visaManual: '사증발급 안내매뉴얼',
       relatedTitle: '관련 절차', programTitle: '특별 제도', transitionTitle: '체류자격 변경 경로', currentStatus: '현재 체류자격', from: '현재', to: '목표',
       legacyStop: '이 체류자격은 {date}부터 신규 발급이 중단되었어요. 기존 소지자에게만 적용돼요.', abolished: '이 세부약호는 폐지되었어요({date}). {superseded}로 정정된 기준을 확인하세요.',
@@ -83,13 +83,13 @@
       overviewTitle: '한눈에 보기', ovConfirmed: '확인된 내용', ovConditional: '조건에 따라 달라요', ovSource: '원문에서 확인할 내용',
       ovFee: '수수료 {amount} · {review}', ovFeeNone: '수수료 없음', ovDocs: '필수 서류 {n}개', ovDocsCond: '조건에 따라 내는 서류 {n}개', ovDocsPartial: '기본 서류만 확인됐어요 · 세부유형을 확인하면 정확한 목록이 나와요', ovDocsPartialFlat: '원문에 적힌 기본 서류예요 · 관서에서 서류를 더 요청할 수 있어요',
       ovNoDocs: '서류와 요건은 아직 정리된 안내가 없어요 · {manual} {page}쪽 원문에서 확인하세요', ovProgram: '{name} — 일부 대상자에게만 해당', ovExempt: '수수료 면제·감경 조건 {n}개', ovState: '{label} · 조건과 예외는 원문에서 확인', ovOfficer: '심사 과정에서 서류를 더 요청하거나 일부를 생략할 수 있어요',
-      ovBasis: '기준일 {date} · 공식 근거 {n}건', ovReview: '{edition}판 원문은 아직 사람이 대조 검토하지 않았어요',
+      ovBasis: '기준일 {date} · 공식 근거 {n}건', ovReview: '참고용 안내예요 · 신청 전 공식 원문을 확인하세요',
       programsTitle: '해당될 수 있는 특별 제도', programScope: '일부 대상자만',
       evPrimary: '이 절차의 공식 안내', evMore: '수수료·법령 근거 {n}건',
       nextSource: '공식 원문 {page}쪽 보기', nextReserveSub: '하이코리아 방문예약 방법과 준비사항', nextFormsSub: '공식 서식을 단계별로 채우고 PDF로 저장', nextCallSub: '외국인종합안내센터 전화 상담', nextLegacySub: '{status} 체류자격 전체 안내 카드', nextAiSub: '지금 상황을 Waymaker에 이어서 설명하기',
       interpLabel: '검색 해석', wmTitle: '내 상황이 조금 다르다면', wmBody: 'Waymaker에 지금 상황을 설명하면 필요한 절차와 근거를 단계별로 정리해 드려요.', wmCta: 'Waymaker로 이어서 보기',
-      disclaimerDetail: ['이 안내는 법무부 출입국·외국인정책본부의 공식 안내자료(사증발급 안내매뉴얼 2026-10-19판, 외국인체류 안내매뉴얼 2026-10-19판)와 출입국관리법·시행령·시행규칙(2026-09-22 확인)을 구조화한 참고 정보이며 법적 효력이 없습니다.', '출입국·외국인청(사무소·출장소)장은 심사를 위해 필요하면 제출서류를 가감할 수 있고, 허가 여부는 심사로 결정됩니다.', '{edition}판 안내자료의 원문은 아직 사람이 한 줄씩 대조 검토하지 않았어요. 각 근거의 검토 상태를 함께 표시합니다.', '최종 확인은 관할 출입국·외국인관서, 하이코리아(hikorea.go.kr), 1345 외국인종합안내센터에서 하세요. Visable은 공식 정부 서비스가 아닙니다.'],
-      previewTitle: '공식 원문 {page}쪽 발췌', previewNote: 'PDF에서 자동으로 옮긴 원문 그대로예요. 사람이 정리·검토한 안내가 아니며, 표와 줄바꿈이 어긋날 수 있어요.',
+      disclaimerDetail: ['이 안내는 법무부 출입국·외국인정책본부의 공식 안내자료(사증발급 안내매뉴얼 2026-10-19판, 외국인체류 안내매뉴얼 2026-10-19판)와 출입국관리법·시행령·시행규칙(2026-09-22 확인)을 구조화한 참고 정보이며 법적 효력이 없습니다.', '출입국·외국인청(사무소·출장소)장은 심사를 위해 필요하면 제출서류를 가감할 수 있고, 허가 여부는 심사로 결정됩니다.', '각 안내에는 근거가 된 공식 원문의 판과 쪽을 함께 표시합니다. 신청 전 공식 원문을 확인하세요.', '최종 확인은 관할 출입국·외국인관서, 하이코리아(hikorea.go.kr), 1345 외국인종합안내센터에서 하세요. Visable은 공식 정부 서비스가 아닙니다.'],
+      previewTitle: '공식 원문 {page}쪽 발췌', previewNote: 'PDF에서 옮긴 공식 원문 그대로예요. 표와 줄바꿈이 어긋날 수 있어요.',
       chipLegend: '원문 확인 표시는 아직 정리된 안내가 없어 공식 원문 해당 쪽으로 안내한다는 뜻이에요.',
       sourceOnlyEvidence: '원문 확인', stateLabel: { SUPPORTED: '안내 가능', CONDITIONAL: '조건부', NOT_APPLICABLE: '해당 없음', GENERALLY_NOT_PERMITTED: '원칙적 불가', EXCEPTION_ONLY: '예외적 허용', LEGACY_ONLY: '기존 소지자', SOURCE_ONLY: '원문 확인', UNVERIFIED: '미확인' },
       exclusions: '변경이 제한되는 경우', exceptions: '예외', transitionDocs: '제출서류',
@@ -140,7 +140,7 @@
       localKind: 'Type of information', localChecked: 'Last checked', localUnchecked: 'Not yet checked', localReports: '{n} report(s)', localBaseline: 'National baseline', localDetail: 'Details', localReport: 'Was your visit different?', localNotPolicy: 'This does not change the national baseline. Prepare documents per the baseline.',
       layers: { NATIONAL_OFFICIAL_BASELINE: 'National official baseline', OFFICIAL_LOCAL_GUIDANCE: 'Official local guidance', VERIFIED_LOCAL_PRACTICE: 'Verified local practice', REVIEWED_USER_REPORT: 'Reviewed user report', UNVERIFIED_USER_REPORT: 'Unverified user report', CONFLICTING_REPORTS: 'Conflicting reports', STALE_REPORT: 'Stale report', UNKNOWN: 'Unknown' },
       nextTitle: 'Next steps', nextDocs: 'See the {n} documents', nextReserve: 'Visit reservation guide', nextForms: 'Fill in the application form', nextCall: 'Call 1345 (Immigration Contact Center)', nextAi: 'Ask a follow-up', nextLegacy: 'Open the existing status card', nextFull: 'Full guidance', nextEvidence: 'See evidence',
-      evidenceTitle: 'Official evidence', evidenceShow: 'Show evidence', evidenceReview: 'The {edition} guides have not yet been reviewed line by line by a person.', evidenceCount: '{n} sources', evidenceBasis: 'Latest basis {date}', evidenceRegulation: 'Regulation', evidenceManual: 'Official guidance', open: 'Read page text', original: 'Open original', reviewState: 'original text, not yet reviewed', moreManual: 'More source passages', lawChecked: 'checked {date}',
+      evidenceTitle: 'Official evidence', evidenceShow: 'Show evidence', evidenceReview: 'Reference guidance · confirm with the official source before applying.', evidenceCount: '{n} sources', evidenceBasis: 'Latest basis {date}', evidenceRegulation: 'Regulation', evidenceManual: 'Official guidance', open: 'Read page text', original: 'Open original', reviewState: 'official source', moreManual: 'More source passages', lawChecked: 'checked {date}',
       stayManual: 'Residence manual', visaManual: 'Visa issuance manual',
       relatedTitle: 'Related procedures', programTitle: 'Special program', transitionTitle: 'Change-of-status path', currentStatus: 'Current status', from: 'From', to: 'To',
       legacyStop: 'New issuance of this status stopped on {date}. It applies to existing holders only.', abolished: 'This subcode was abolished ({date}). See the rule now filed under {superseded}.',
@@ -152,13 +152,13 @@
       overviewTitle: 'At a glance', ovConfirmed: 'Confirmed', ovConditional: 'Depends on your case', ovSource: 'Check in the source',
       ovFee: 'Fee {amount} · {review}', ovFeeNone: 'No fee', ovDocs: '{n} required documents', ovDocsCond: '{n} conditional / if-applicable documents', ovDocsPartial: 'Basic documents only · confirm the subtype for the exact list', ovDocsPartialFlat: 'The basic documents the source lists · the office may ask for more',
       ovNoDocs: 'The document and eligibility list is not structured yet · {manual} p.{page}', ovProgram: '{name} — applies to some holders only', ovExempt: '{n} fee exemption / reduction conditions', ovState: '{label} · conditions and exceptions are in the source', ovOfficer: 'The examining officer may add or waive documents',
-      ovBasis: 'Basis {date} · {n} official sources', ovReview: 'The {edition} source text has not yet been reviewed by a person',
+      ovBasis: 'Basis {date} · {n} official sources', ovReview: 'Reference guidance · confirm with the official source before applying',
       programsTitle: 'Special schemes that may apply', programScope: 'some holders only',
       evPrimary: 'Official guidance for this procedure', evMore: '{n} fee and regulation sources',
       nextSource: 'Open the source, p.{page}', nextReserveSub: 'How to book a HiKorea visit and what to bring', nextFormsSub: 'Fill in the official form step by step and save a PDF', nextCallSub: 'Immigration Contact Center by phone', nextLegacySub: 'Full {status} status card', nextAiSub: 'Describe your situation to Waymaker',
       interpLabel: 'Search interpreted as', wmTitle: 'If your situation is different', wmBody: 'Describe it to Waymaker and it lays out the procedure and the sources step by step.', wmCta: 'Continue in Waymaker',
-      disclaimerDetail: ['Compiled from the Ministry of Justice official guides (visa issuance guide 2026-10-19, residence guide 2026-10-19) and the Immigration Act, its Decree and its Rule (read 2026-09-22). It has no legal effect.', 'The head of the immigration office may add or waive documents for examination, and outcomes are decided by examination.', 'The {edition} guides have not yet been reviewed line by line by a person; each source shows its review state.', 'Confirm with your immigration office, HiKorea (hikorea.go.kr) or the 1345 Immigration Contact Center. Visable is not a government service.'],
-      previewTitle: 'Official source, page {page} (excerpt)', previewNote: 'Copied automatically from the PDF, word for word. It is not reviewed or summarised guidance, and tables or line breaks may be out of order.',
+      disclaimerDetail: ['Compiled from the Ministry of Justice official guides (visa issuance guide 2026-10-19, residence guide 2026-10-19) and the Immigration Act, its Decree and its Rule (read 2026-09-22). It has no legal effect.', 'The head of the immigration office may add or waive documents for examination, and outcomes are decided by examination.', 'Each answer names the edition and page of the official source it is based on. Confirm with the official source before applying.', 'Confirm with your immigration office, HiKorea (hikorea.go.kr) or the 1345 Immigration Contact Center. Visable is not a government service.'],
+      previewTitle: 'Official source, page {page} (excerpt)', previewNote: 'The official source text, copied word for word from the PDF. Tables and line breaks may be out of order.',
       chipLegend: '"Source only" means there is no organised guidance yet, so you are taken to the right page of the official source.',
       sourceOnlyEvidence: 'Source only', stateLabel: { SUPPORTED: 'Guidance available', CONDITIONAL: 'Conditional', NOT_APPLICABLE: 'Not applicable', GENERALLY_NOT_PERMITTED: 'Generally not permitted', EXCEPTION_ONLY: 'Exception only', LEGACY_ONLY: 'Existing holders', SOURCE_ONLY: 'Source only', UNVERIFIED: 'Unverified' },
       exclusions: 'When the change is restricted', exceptions: 'Exceptions', transitionDocs: 'Documents',
@@ -534,6 +534,12 @@
       return { kind: 'resolved', status: status, procedure: procedure, entries: [main], target: main.target, scenario: null, inherited: inherited || (chosenCode && chosenCode !== main.target), displayCode: chosenCode || (inherited ? status : main.target.split('~')[0]), exact: exact, answered: answeredDims, transition: transition, variants: uniq.filter(function (g) { return g !== main; }), confidence: exact || chosenCode ? 'HIGH' : 'MEDIUM' };
     }
     if (uniq.length > 1) return { kind: 'unresolved', reason: 'subtype', status: status, procedure: procedure, candidates: uniq, answered: answeredDims, transition: transition };
+    // A parent code is never answered with one subcode's rule (CLAUDE.md): unless the user named or
+    // picked that subcode, it is offered as a type to choose, not shown as the parent's requirement.
+    var only = uniq[0].target.split('~')[0];
+    if (!exact && !chosenCode && only !== status && parentOf(only) === status && (uniq[0].covers || []).indexOf(status) < 0) {
+      return { kind: 'unresolved', reason: 'subtype', status: status, procedure: procedure, candidates: uniq, answered: answeredDims, transition: transition };
+    }
     var entry = uniq[0];
     var covered = exact && entry.target.split('~')[0] !== status && (entry.covers || []).indexOf(status) >= 0;
     var displayCode = chosenCode && chosenCode !== entry.target.split('~')[0] ? chosenCode : (inherited || covered ? status : entry.target.split('~')[0]);
@@ -1316,8 +1322,8 @@
         var claims = ev.claims.filter(function (c, i, a) { return c && a.indexOf(c) === i; }).slice(0, 4).join(' · ');
         var lawTitle = (lang === 'en' ? ls.title_en : ls.title_ko) + ' ' + ls.article;
         var reviewScope = ls.body_review_state === 'PREVIOUS_VERSION_SUMMARY_ONLY'
-          ? (lang === 'en' ? 'Version identity checked ' + ls.identity_checked_on + '; the current article text needs revalidation. The summary was reviewed on ' + ls.body_checked_on + ' against a previous version.'
-            : '버전 신원 확인 ' + ls.identity_checked_on + ' · 현행 조문 내용은 재검토 필요. 요약 검토일 ' + ls.body_checked_on + '은 이전 판본 기준입니다.')
+          ? (lang === 'en' ? 'Version identity checked ' + ls.identity_checked_on + '; check the current article text on the national law information center.'
+            : '버전 신원 확인 ' + ls.identity_checked_on + ' · 현행 조문은 국가법령정보센터에서 확인하세요.')
           : (ls.body_review_state === 'ARTICLE_AT_REFERENCE_DATE_READ'
             ? (lang === 'en' ? 'Only this article was checked for reference date ' + ls.body_reference_date + '; this is not a review of the whole law or its forms.'
               : '기준일 ' + ls.body_reference_date + '에 해당 조문만 대조했습니다. 법령·서식 전체 검증은 아닙니다.') : '');
@@ -1337,7 +1343,7 @@
     if (feeItems.length) lists += mainItems.length ? '<details class="sg-ev-more"><summary>' + esc(tr(lang, 'evMore', { n: feeItems.length })) + '</summary><ol class="sg-evidence-list">' + feeItems.join('') + '</ol></details>' : '<ol class="sg-evidence-list">' + feeItems.join('') + '</ol>';
     return '<section class="sg-evidence" aria-labelledby="sgEvidenceTitle"><details class="sg-evidence-details" id="sgEvidence"' + (open ? ' open' : '') + '><summary><h3 id="sgEvidenceTitle">' + esc(tr(lang, 'evidenceTitle')) + ' <span class="sg-ev-count">' + esc(tr(lang, 'evidenceCount', { n: model.evidence.length })) + '</span></h3><span class="sg-ev-show">' + esc(tr(lang, 'evidenceShow')) + '</span></summary>' +
       (model.basisDate ? '<p class="sg-muted sg-ev-basis">' + esc(tr(lang, 'evidenceBasis', { date: model.basisDate })) + '</p>' : '') +
-      (hasManual ? '<p class="sg-muted sg-ev-review">' + esc(tr(lang, 'evidenceReview', { edition: editionLabel(bundle, lang) })) + '</p>' : '') +
+      
       lists + '<div class="sg-raw-slot" id="sgRawSlot"></div></details></section>';
   }
 

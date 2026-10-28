@@ -60,11 +60,12 @@ test('F-4 → 사증발급 cites page 393 and shows that page verbatim, labelled
   await expect(ans.locator('.sg-btn-source')).toHaveAttribute('data-sg-page', '393');
   // the honest state stays: no organised guidance, review notice present
   await expect(ans.locator('.sg-source-only .sg-lead')).toContainText('정리된 안내가 아직 없어요');
-  await expect(ans).toContainText('2026년 10월판 원문은 아직 사람이 대조 검토하지 않았어요');
+  await expect(ans).toContainText('참고용 안내예요 · 신청 전 공식 원문을 확인하세요');
+  await expect(ans).not.toContainText(/검토 전|대조 검토|needs_review|approved/);
   const prev = ans.locator('.sg-source-preview');
   await expect(prev).toBeVisible({ timeout: 15_000 });
   await expect(prev.locator('.sg-preview-title')).toContainText('393');
-  await expect(prev.locator('.sg-preview-note')).toContainText('사람이 정리·검토한 안내가 아니며');
+  await expect(prev.locator('.sg-preview-note')).toContainText('공식 원문 그대로');
   await expect(prev.locator('.sg-source-excerpt')).toContainText('재외동포(F-4) 자격 기본 대상');
   // verbatim: every excerpt line occurs on the cited corpus page
   const lines = await prev.locator('.sg-source-excerpt p').allInnerTexts();

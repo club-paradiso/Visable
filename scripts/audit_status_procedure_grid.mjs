@@ -25,7 +25,8 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
-const bundle = JSON.parse(readFileSync(join(ROOT, 'data/status-guidance-202609.json'), 'utf8'));
+const bundleArg = process.argv.indexOf('--bundle');
+const bundle = JSON.parse(readFileSync(bundleArg > 0 ? process.argv[bundleArg + 1] : join(ROOT, 'data/status-guidance-202609.json'), 'utf8'));
 new Function(readFileSync(join(ROOT, 'assets/js/status-guidance.js'), 'utf8'))();
 const SG = globalThis.VisableStatusGuidance;
 
@@ -101,4 +102,15 @@ if (csvDir) {
   writeFileSync(join(csvDir, 'inventory.csv'), [cols.join(','), ...rows.map((r) => cols.map((c) => q(r[c])).join(','))].join('\n') + '\n');
   console.log(`wrote ${join(csvDir, 'inventory.csv')}`);
 }
-if (strict && rows.some((r) => r.verdict !== 'consistent' || /error/.test(r.outcomes))) process.exit(1);
+// A parent code must never be answered with one subcode's rule (CLAUDE.md "do not flatten subcodes").
+const leaks = [];
+for (const [code, info] of Object.entries(bundle.codes)) {
+  if (info.kind !== 'status' || !info.procedures) continue;
+  for (const proc of Object.keys(info.procedures)) {
+    const step = SG.nextStep({ interp: SG.interpret(code, bundle), answers: {}, procedure: proc, status: code, history: [], lang: 'ko' }, bundle);
+    if (step.kind === 'resolved' && step.entries[0].target.split('~')[0] !== code && !(step.entries[0].covers || []).includes(code)) leaks.push(`${code}::${proc} -> ${step.entries[0].target}`);
+  }
+}
+console.log(`parent cells answered by a subcode-only rule: ${leaks.length}`);
+leaks.slice(0, 20).forEach((l) => console.log('  ' + l));
+if (strict && (leaks.length || rows.some((r) => r.verdict !== 'consistent' || /error/.test(r.outcomes)))) process.exit(1);
