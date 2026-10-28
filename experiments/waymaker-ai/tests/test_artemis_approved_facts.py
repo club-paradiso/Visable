@@ -131,16 +131,21 @@ tg = sys.modules["trust_gate"]
 
 def test_ai_confirmed_facts_are_marked_delegated_and_pass_the_export_checks():
     final = json.loads((BOOTSTRAP_DIR / "reviews" / "facts_ai_final_2026-10-28.json").read_text(encoding="utf-8"))
-    assert "owner-delegated" in final["reviewer"] and "not a human approval" in final["reviewer"]
-    confirmed = {d["candidate_id"].replace("fc-", "f-") for d in final["decisions"] if d["final"] == "confirm"}
-    assert {f["fact_id"] for f in FACTS} == confirmed and len(FACTS) == 195
+    recheck = json.loads(af.STATUTE_RECHECK.read_text(encoding="utf-8"))
+    for review in (final, recheck):
+        assert "owner-delegated" in review["reviewer"] and "not a human approval" in review["reviewer"]
+    confirmed = {d["candidate_id"].replace("fc-", "f-") for r in (final, recheck) for d in r["decisions"] if d["final"] == "confirm"}
+    assert {f["fact_id"] for f in FACTS} == confirmed and len(FACTS) == 198
     pages, ledger = af.pilot_pages(), af.manual_ledger.load_ledger()
     for f in FACTS:
         assert f["tier"] == "ai_delegated" and "웬만하면 너가 검토 해" in f["review"]["delegation"]
         assert af._verify(f, pages, ledger) == [], f["fact_id"]
-    # A statute that differs keeps the item with the owner; it never becomes a fact.
+    # The final pass never confirms a "differs". The three it sent to the owner became facts
+    # only through the re-check, which names the owner's rule and the decision it replaces.
     differs = {d["candidate_id"] for d in final["decisions"] if (d.get("legal_check") or {}).get("result") == "differs"}
     assert differs and all(d["final"] == "owner" for d in final["decisions"] if d["candidate_id"] in differs)
+    assert {d["candidate_id"] for d in recheck["decisions"]} == differs
+    assert all("B-16" in d["owner_rule"] and d["supersedes_decision"]["legal_result"] == "differs" for d in recheck["decisions"])
 
 
 def test_subject_check_marks_a_value_taken_from_another_household():
@@ -160,10 +165,24 @@ def test_subject_check_marks_a_value_taken_from_another_household():
     assert not right["subject_mismatches"] and not vague["subject_mismatches"]
 
 
-def test_subject_probes_from_the_facts():
-    """Built from the facts themselves (not an unseen set): every right answer passes
-    untouched; most mixed-up answers are marked for review."""
-    probes = af.subject_probes(FACTS)
+def test_subject_check_reads_a_yearly_household_income_row_without_the_word_yearly():
+    """F-6 income rows carry per "연간". A question saying only "2인 가구 소득기준" used to
+    drop every row, so a 3인 가구 value passed unmarked (found in the premise audit)."""
+    def fact(fid, house, amount, per):
+        return {"fact_id": fid, "role": "income_threshold", "source": {"page_id": "P"},
+                "subject": {"status_code": "F-6", "sub_code": None, "procedure": "visa",
+                            "qualifiers": {"household_size": house, "row_label": "소득기준", "per": per}},
+                "value": {"kind": "money", "amount": amount, "unit": "krw"}}
+    facts = [fact("f2", 2, 32154216, "연간"), fact("f3", 3, 38968428, "연간"), fact("fh", None, 5755188, "가구원 1인당")]
+    page = [{"id": "P", "title": "t", "text": "소득기준 32,154,216 38,968,428 / 가구원 1인당 5,755,188", "source": {"approval_state": "approved"}}]
+    ask = "F-6 2인 가구 소득기준이 얼마인가요?"
+    def marked(answer):
+        return tg.post_check({"status": "answered", "answer": answer, "citations": ["P"]}, page, facts=facts, question=ask)["subject_mismatches"]
+    assert marked("F-6 2인 가구 소득기준은 38,968,428원입니다.")
+    assert not marked("F-6 2인 가구 소득기준은 32,154,216원입니다.")
+
+
+def _probe_counts(probes):
     pages = af.pilot_pages()
     right_marked = wrong_marked = 0
     for p in probes:
@@ -173,7 +192,22 @@ def test_subject_probes_from_the_facts():
             marked = res["verdict"] == "withheld" or bool(res["subject_mismatches"] or res["role_mismatches"])
             right_marked += kind == "right" and marked
             wrong_marked += kind == "wrong" and marked
-    assert len(probes) == 326 and right_marked == 0 and wrong_marked >= 250, (len(probes), right_marked, wrong_marked)
+    return len(probes), right_marked, wrong_marked
+
+
+def test_subject_probes_from_the_facts():
+    """Built from the facts themselves (not an unseen set). Questions name what a person
+    would (status code, household size): no right answer is marked, about half of the
+    mixed-up ones are. Household mix-ups are all caught; a code alone often fits several
+    rows, and row mix-ups cannot be told apart without the row named."""
+    assert _probe_counts(af.subject_probes(FACTS)) == (113, 0, 53)
+
+
+def test_pasting_the_ai_row_label_into_the_question_inflates_the_probe_score():
+    """The first measurement (261/326) put the AI's row label in the question word for word;
+    the check matches labels by exact substring, which no real question does."""
+    n, right, wrong = _probe_counts(af.subject_probes(FACTS, row_labels=True))
+    assert right == 0 and wrong / n > 0.95 > 53 / 113
 
 
 def test_facts_do_not_mark_any_recorded_correct_real_manual_answer():

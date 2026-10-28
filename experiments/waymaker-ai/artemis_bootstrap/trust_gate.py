@@ -464,8 +464,11 @@ def subject_mismatches(answer: str, question: str, facts: Sequence[Mapping[str, 
             return False
         if rows and q.get("row_label") and q["row_label"] not in rows:
             return False
-        if q.get("per") and re.sub(r"\s+", "", q["per"]) not in re.sub(r"\s+", "", text):
-            return False   # "가구원 1인당 5,755,188원" is not a household's threshold
+        # "가구원 1인당 5,755,188원" is not a household's threshold, so a per-head fact must
+        # be named. "연간" or "1통" only says how the amount is counted; requiring it dropped
+        # every F-6 income row when the question said "2인 가구 소득기준" (2026-10-28).
+        if q.get("per") and "당" in q["per"] and re.sub(r"\s+", "", q["per"]) not in re.sub(r"\s+", "", text):
+            return False
         return True
 
     def value(f: Mapping[str, Any]) -> Tuple:

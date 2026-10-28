@@ -47,6 +47,7 @@ CANDIDATES = HERE / "ledgers" / "manual_2026_10_19_fact_candidates.jsonl"
 FACTS = HERE / "ledgers" / "manual_2026_10_19_facts.jsonl"
 #: AI first-pass opinions on the candidates (shown to the reviewer; never an approval).
 AI_FIRST_PASS = HERE / "reviews" / "facts_ai_first_pass_2026-10-28.json"
+STATUTE_RECHECK = HERE / "reviews" / "facts_ai_statute_recheck_2026-10-28.json"
 
 #: The roles a reviewer may choose (design §3). Candidates start from the post-check's
 #: role reader; the reviewer refines it.
@@ -331,20 +332,31 @@ def _probe_value(v: Mapping[str, Any]) -> str:
     return f"{amount}{_PROBE_UNIT.get(v['unit'], '')}"
 
 
-def _probe_subject(f: Mapping[str, Any]) -> str:
+def _probe_subject(f: Mapping[str, Any], row_labels: bool = False) -> str:
     s, q = f["subject"], f["subject"].get("qualifiers") or {}
     parts = [s.get("sub_code") or s.get("status_code") or ""]
     if q.get("household_size"):
         parts.append(f"{q['household_size']}인 가구")
-    if q.get("row_label"):
+    if row_labels and q.get("row_label") and q["row_label"] not in _PROBE_WORD.get(f["role"], ""):
         parts.append(q["row_label"])
     return " ".join(p for p in parts if p)
 
 
-def subject_probes(facts: List[Mapping[str, Any]]) -> List[Dict[str, Any]]:
+def _subject_particle(word: str) -> str:
+    """"수수료는" → "수수료가", "소득기준은" → "소득기준이"."""
+    stem = word[:-1]
+    return stem + ("이" if (ord(stem[-1]) - 0xAC00) % 28 else "가")
+
+
+def subject_probes(facts: List[Mapping[str, Any]], row_labels: bool = False) -> List[Dict[str, Any]]:
     """Pairs of facts on one page with the same role family and different subjects: the
     question names A's subject; the right answer gives A's value, the mixed-up one B's.
-    Built from the facts themselves, so this measures the mechanism, not an unseen set."""
+    Built from the facts themselves, so this measures the mechanism, not an unseen set.
+
+    By default the question names only what a person would: the status code and the
+    household size. With row_labels=True it also pastes the AI's row label word for word,
+    which the subject check matches by exact substring; that inflated the first
+    measurement (261/326, 2026-10-28) and is kept only to show the difference."""
     def norm(f):
         return trust_gate._norm_value(f["value"]["kind"], f["value"]["unit"], float(f["value"]["amount"]))
 
@@ -352,9 +364,10 @@ def subject_probes(facts: List[Mapping[str, Any]]) -> List[Dict[str, Any]]:
         s, q = f["subject"], f["subject"].get("qualifiers") or {}
         return (s.get("sub_code") or s.get("status_code"), q.get("household_size"), q.get("row_label"))
 
+    named = (lambda k: k) if row_labels else (lambda k: k[:2])
     probes = []
     for a in facts:
-        if a["role"] not in _PROBE_WORD or not _probe_subject(a):
+        if a["role"] not in _PROBE_WORD or not _probe_subject(a, row_labels):
             continue
         for b in facts:
             if b is a or b["source"]["page_id"] != a["source"]["page_id"]:
@@ -363,12 +376,12 @@ def subject_probes(facts: List[Mapping[str, Any]]) -> List[Dict[str, Any]]:
                 continue
             if norm(b)[:2] != norm(a)[:2] or norm(b) == norm(a):
                 continue
-            ka, kb = subject_key(a), subject_key(b)
+            ka, kb = named(subject_key(a)), named(subject_key(b))
             if not any(x and x != y for x, y in zip(ka, kb)):
                 continue
-            subject, word = _probe_subject(a), _PROBE_WORD[a["role"]]
+            subject, word = _probe_subject(a, row_labels), _PROBE_WORD[a["role"]]
             probes.append({"page_id": a["source"]["page_id"], "fact": a["fact_id"], "other": b["fact_id"],
-                           "question": f"{subject} {word.rstrip('은는')} 얼마인가요?",
+                           "question": f"{subject} {_subject_particle(word)} 얼마인가요?",
                            "right": f"{subject} {word} {_probe_value(a['value'])}입니다.",
                            "wrong": f"{subject} {word} {_probe_value(b['value'])}입니다."})
     return probes
@@ -385,6 +398,8 @@ def bundle() -> Dict[str, Any]:
         ai = {r["candidate_id"]: r for r in json.loads(AI_FIRST_PASS.read_text(encoding="utf-8"))["opinions"]}
     final_path = HERE / "reviews" / "facts_ai_final_2026-10-28.json"
     final = {d["candidate_id"]: d for d in json.loads(final_path.read_text(encoding="utf-8"))["decisions"]} if final_path.exists() else {}
+    if STATUTE_RECHECK.exists():   # three "differs" settled later; the later decision wins
+        final.update({d["candidate_id"]: d for d in json.loads(STATUTE_RECHECK.read_text(encoding="utf-8"))["decisions"]})
     return {"version": "artemis-facts-pilot-1", "edition": "2026.10", "roles": ROLES, "candidates": rows, "ai_first_pass": ai,
             "ai_final": final,
             "pages": {pid: {"title": pages[pid]["title"], "text": pages[pid]["text"],

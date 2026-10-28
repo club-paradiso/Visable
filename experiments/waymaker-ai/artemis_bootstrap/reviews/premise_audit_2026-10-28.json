@@ -1,0 +1,1096 @@
+{
+ "kind": "artemis_premise_audit",
+ "date": "2026-10-28",
+ "request": "owner: \"잠깐, 뭔가 이상한데? 너가 확인해서 애초에 질문 자체가 이상하거나 전제가 이상한거는 아닌지 확인해줘봐\"",
+ "reviewer": "AI (four Claude subagents with one brief, each read only its 35-case packet; lead session verified every medium/high item against page text and run records) — not a human review, not a legal verification",
+ "counts": {
+  "ok": 121,
+  "premise_problem": 7,
+  "ambiguous": 7,
+  "label_mismatch": 5
+ },
+ "lead_counts": {
+  "accepted_as_note": 11,
+  "confirmed": 1,
+  "confirmed_low": 2,
+  "policy_not_defect": 5
+ },
+ "outcome": "라벨·질문 변경 없음. 실제 결함은 질문 쪽이 아니라 사실표 측정 쪽에서 나왔다(subject_probes가 AI 행 이름을 질문에 그대로 넣어 261/326으로 부풀려짐; per \"연간\" 때문에 가구 수 혼동을 하나도 못 잡음).",
+ "audits": [
+  {
+   "key": "manual_oracle/M-01-stay-extension-fee",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p5 표에 '체류기간 연장허가 6만원'이 있고 결혼이민(F-6) 3만원은 별도 행이므로, '일반적인 경우'라는 단서로 질문이 정확히 6만원을 가리킨다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_oracle/M-02-f6-reentry-exemption",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p506 '결혼이민(F-6)…자격으로 등록을 필한 사람으로서 출국한 날로부터 1년 이내', '면제기간 : 1년'과 질문의 전제(F-6 등록 완료자의 일시 출국)가 일치한다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_oracle/M-03-d2-masters-extension-cap",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p43 '유학활동 종료자 등 체류기간 연장 특례 상한'에 '(석사) 입학 후 최대 5년(단, 3년제 석사의 경우 최대 6년)'이 있어 '학업이 길어지는' 석사생 질문과 맞는다. 3년제 석사 예외는 라벨이 허용한다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_oracle/M-04-d4-parttime-wait",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p37 '어학연수(D-4-1, D-4-7)자격…은 변경일(사증소지자는 입국일)로부터 6개월이 경과된 사람'이 대상이라 질문의 세부약호와 시점 질문이 쪽과 맞는다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_oracle/M-05-d10-3-intern-change-deadline",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p162 첨단기술인턴 인턴 기관 변경 신고의 '(신고기간) 소속기업(기관) 변경일로부터 15일 이내'가 질문(인턴 회사 이동 시 신고기한)에 그대로 답한다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_oracle/M-06-d4-visa-stay-period",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "사증 매뉴얼 p68 발급 내용 표 '어학연수생 D-4-1, D-4-7 체류기간 6개월 이내, 단수'가 사증 체류기간 질문과 범위가 맞는다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_oracle/M-07-e8-ccvi-processing",
+   "verdict": "premise_problem",
+   "severity": "low",
+   "explain": "질문은 '농가에서…사증발급인정서를 신청하면'이라고 농가를 신청자로 전제하지만, p283은 '신청자 - (시·군·구) 기초자치단체장'이고 p279도 '지자체가 사증 신청 절차를 대행'한다고 적는다. 소요기간 '신청일로부터 약 10일'이라는 답은 그대로라서 측정 대상은 유지된다.",
+   "suggested_fix": "질문을 '농가에서 계절근로자를 부르려고 하는데, 지자체가 사증발급인정서를 신청하면 발급까지 보통 얼마나 걸리나요?'로 고치거나, 라벨에 신청자가 기초자치단체장임을 바로잡는 항목을 둔다.",
+   "lead": {
+    "verdict": "accepted_as_note",
+    "severity": "low",
+    "note": "낮은 등급 지적으로 받아들이되 라벨·질문은 바꾸지 않는다. 판정에는 영향이 없다."
+   }
+  },
+  {
+   "key": "manual_oracle/M-08-e10-criminal-record-validity",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p296 범죄경력증명서 요건 '사증발급 신청일로부터 3개월 이내에 발급된 증명서 일 것'이 질문에 직접 답하고, 사증 절차 범위도 맞는다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_oracle/M-09-visa-domestic-doc-validity",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "사증 매뉴얼 p3 '주민등록등본 등 국내에서 발급․제출하는 서류의 유효기간은…발급일로부터 3개월 이내'가 질문에 답한다. 같은 쪽 6항(행정정보 공동이용 시 제출 생략)은 덧붙일 수 있는 단서일 뿐 전제를 깨지 않는다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_oracle/M-10-d10t-stay-cap",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p160 '4) 최우수인재(D-10-T) : 최대 3년(1회 1년)'이 상한과 1회 부여기간 두 물음에 모두 답한다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_oracle/M-11-d2-reentry-fee-missing",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "공급된 p44는 D-2 등록자가 '1년 이후 2년 이내에 재입국하고자 하는 경우…복수재입국 허가하고, 재입국허가 수수료 징구'라고만 적고 금액이 없다. 의도된 보류 사례로 전제(1년 초과 출국 → 복수재입국)도 쪽과 맞는다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_oracle/M-12-f6-arc-fee-missing",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p506 F-6-1 외국인등록 제출서류에 '수수료'만 있고 금액이 없으며 p485에도 없다. 'F-6-1 사증으로 입국 후 90일 이내…외국인등록' 전제도 쪽과 맞는다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_oracle/M-13-d2-visa-fee-missing",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p67·p68은 유학 사증 발급 유형·절차·체류기간만 다루고 사증 수수료 금액이 없어 보류가 맞다. 재외공관 신청이라는 전제도 p67 '사증 발급(재외공관)'과 맞는다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_oracle/M-14-arc-processing-time-missing",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "체류 매뉴얼 p5(수수료 표)와 p6(여권 유효기간 내 체류기간 부여)에 외국인등록증 처리 기간이 없어 보류가 맞다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_oracle/M-15-d2-extension-from-visa-pages",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "국내 체류기간 연장(체류 절차) 질문에 사증 매뉴얼 p67·p68만 주어졌고 이 쪽들은 연장 서류를 다루지 않으므로, 의도된 범위 분리 보류 사례로 성립한다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_oracle/M-16-e8-extension-from-visa-pages",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "국내 연장 질문에 사증 매뉴얼 p283·p280만 주어졌고 연장 제출서류가 없다. p283 '총 체류기간 8개월을 초과할 수 없음'은 상한일 뿐 연장 서류를 답하지 않으므로 보류가 맞다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_oracle/M-17-f6-change-from-visa-pages",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "국내 체류자격 변경 질문에 사증 매뉴얼 p327(공관 F-6-1 90일 이하 사증)과 p338(F-6-2 첨부서류·공관 Q&A)만 주어져 국내 변경 가부를 답할 근거가 없다. 의도된 범위 분리 사례로 성립한다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_oracle/M-18-d10-3-ccvi-from-stay-pages",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "사증발급인정서 서류 질문에 체류 매뉴얼 p160·p162만 주어졌다. p162는 '사증발급인정서 발급 신청 서류(※ 단, 재학증명서 및 성적증명서 제외)'라고 참조만 하고 목록이 없어 보류가 맞다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_oracle/M-19-d2-7-visa-period",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p68 발급 내용 표는 D-2-1~D-2-4, D-2-5, D-2-6, D-2-8, D-4만 적고 D-2-7 행이 없다. D-2-7은 p67 유형표에 실재하는 세부약호이므로 전제는 맞고 보류가 정답이다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_oracle/M-20-f6-3-registration-period",
+   "verdict": "premise_problem",
+   "severity": "medium",
+   "explain": "p327은 F-6-3을 '국민인 배우자와 혼인한 상태로 국내에 체류하던 중 그 배우자의 사망․실종…'인 사람으로 정의해 국내 체류 중 생기는 자격인데, 질문은 '혼인단절(F-6-3) 사증으로 입국해 외국인등록'을 전제한다. p506도 사증 입국 후 등록 항목은 F-6-1·F-6-2만 둔다. 보류 기대는 유지되지만, 모델이 전제 오류를 지적하는지와 F-6-2 값 차용을 피하는지가 섞여 측정 의도가 흐려진다.",
+   "suggested_fix": "'혼인단절(F-6-3)로 국내에서 체류자격을 변경하면 체류허가 기간은 얼마나 받나요?'처럼 국내 절차로 고치거나, 사증 입국 전제가 성립하지 않음을 지적하는 답도 정답으로 인정하도록 라벨에 적는다.",
+   "lead": {
+    "verdict": "confirmed",
+    "severity": "medium",
+    "note": "p327이 F-6-3을 국내 체류 중 생기는 자격으로 정의해 \"F-6-3 사증으로 입국\" 전제는 성립하지 않는다. 라벨은 보류·부분 답을 받고 F-6-2 값 차용을 막으므로 측정은 유지되고, 기록된 답(insufficient_evidence)도 맞다. 질문은 동결 원본이라 고치지 않고 다음 독립 문항에서 같은 전제를 쓰지 않는다."
+   }
+  },
+  {
+   "key": "manual_routing/N-01-c1-visa-attachments",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p25 공관장 재량 C-1 사증 첨부서류 '② 소속회사의 파견증명서, 재직증명서 또는 외신보도증'이 '소속 언론사 관련 서류' 질문에 맞는다. 특정국가 국민은 사증발급인정서 대상이라는 단서가 있으나 공관 신청 전제와 충돌하지 않는다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_routing/N-02-d5-alien-registration-docs",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "체류 매뉴얼 p105 D-5 외국인등록 신청서류 '② 지국․지사의 설치허가증 또는…사업자등록증'이 '회사 쪽 서류' 질문에 답하고, D-5 사증 입국 후 등록이라는 전제도 맞는다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_routing/N-03-d9-equipment-visa-docs",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p118 공관장 재량 D-9 사증 대상 '산업설비(기계) 도입회사에 파견 또는 초청되어 그 장비의 설치․운영․보수…'와 질문의 기술자가 일치하고, 첨부서류 '② 설비도입계약서 또는 산업설비도입 입증서류'가 있다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_routing/N-04-d3-extension-docs",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "체류 매뉴얼 p56 D-3 체류기간 연장허가 신청서류 '② 연수기간 연장신청 사유서(별도서식)'가 질문에 답한다. D-3는 '체류자격 변경 불가 원칙'이지만 연장은 허용되므로 전제가 맞다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_routing/N-05-h1-uk-visa-validity",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p347 발급내용 표 '캐나다, 영국 H-1(복수) 2년(24개월) 2년(24개월)'이 유효기간·체류기간 두 물음에 모두 답한다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_routing/N-06-h1-canada-weekly-hours",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "체류 매뉴얼 p524 국가별 취업기간 표 '캐나다 H-1 체류기간 40시간'이 주당 최대 취업시간 질문에 답한다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_routing/N-07-e8-farm-allocation-cap",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p279 '연간 최대 14명까지 배정 가능(면적 기준 9명 + 추가 5명 가능)'이 '한 농가에 1년에 최대 몇 명' 질문에 맞는다. 면적별 인원(p281)은 상한 질문이므로 결정 요소가 아니다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_routing/N-08-g1-wage-arrears-eligibility",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p508 법무부장관이 인정하는 사람의 범위에 '임금체불로 노동관서에서 중재 중인 사람'이 있고 '1회에 부여할 수 있는 체류기간 상한 1년'이 있어 두 물음 모두 쪽으로 답할 수 있다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_routing/N-09-c1-extension-limit",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "체류 매뉴얼 p26 'C-1…90일 미만 사증으로 입국한 자…에 대하여 입국일로부터 90일까지 연장'이 질문(취재가 길어져 연장 시 최대 기한)에 정확히 답한다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_routing/N-10-d5-consular-visa-bureau-docs",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p90 공관장 재량 D-5 사증은 '국내에 지사나 지국이 이미 개설된 보도기관에 파견'되는 경우이고 첨부서류 '③ 국내 지국․지사 설치허가증이나…운영자금 도입실적 증빙서류'가 질문에 답한다. 공관 발급은 체류기간 1년 이하라는 한정이 있으나 질문 전제를 깨지 않는다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_routing/N-11-e8-registration-drug-test",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "체류 매뉴얼 p326 E-8 외국인등록 제출서류에 '⑤ 마약검사 확인서', '③ 산재보험 가입증명원…또는 농·어업인 안전보험'이 있어 두 물음 모두 답할 수 있다. '④ 여행자보험 가입증명서'도 있어 라벨이 이를 요구하지 않는 점은 라벨 쪽 보완 사항이다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_routing/N-12-d6-welfare-consular-visa-docs",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p92 공관장 재량 D-6 사증 대상 '국내 종교․사회복지단체로부터 초청되어 사회복지활동에만 종사하고자 하는 자'와 질문이 일치하고 첨부서류 '② 파견명령서 ③…사회복지단체 설립허가서 사본'이 있다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_routing/N-13-d9-university-lecture-docs",
+   "verdict": "ambiguous",
+   "severity": "low",
+   "explain": "p131은 D-9 등 '국내기업…에서 상근이사 이상의 직으로 근무하는 자'의 '대학에서 90일 이내 강의활동'을 C-4-5 자격외 활동으로 다루는데, 질문은 강의 기간을 밝히지 않는다. 90일을 넘는 강의라면 이 쪽의 서류가 그대로 적용되는지 쪽만으로는 알 수 없다.",
+   "suggested_fix": "질문에 '대학에서 한 학기 안(90일 이내)으로 단기 강의를 하려면'처럼 기간을 넣는다.",
+   "lead": {
+    "verdict": "accepted_as_note",
+    "severity": "low",
+    "note": "낮은 등급 지적으로 받아들이되 라벨·질문은 바꾸지 않는다. 판정에는 영향이 없다."
+   }
+  },
+  {
+   "key": "manual_routing/N-14-f6-consular-visa-90days",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p338 Q&A '국민의 배우자인 외국인이 대한민국에서 1년간 체류할 예정이라며 결혼사증을 신청하는 경우'가 질문과 같은 상황이며 '체류기간 90일이하의 결혼사증…입국한 후…체류기간연장허가'로 답한다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_routing/N-15-d1-extension-visa-pages-only",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "국내 체류기간 연장 질문에 사증 매뉴얼 p60(D-1 공관 사증 첨부서류)·p25(C-1)만 주어져 연장 서류 근거가 없다. 의도된 범위 분리 보류 사례로 성립한다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_routing/N-16-e10-cci-stay-pages-only",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "선사가 E-10 사증발급인정서 서류를 묻는 질문은 자연스럽다. 제공된 p338(자격 개요)·p340(연장·재고용 특례 '외국인선원 고용추천서', '선원근로계약서')은 체류 절차여서 답이 없고, 의도한 기권 설계와 맞는다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_routing/N-17-d9-reentry-visa-pages-only",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "등록을 마친 D-9 체류자가 18개월 출국하는 경우를 묻는 재입국허가 질문으로 전제에 문제가 없다. 제공된 p118·p119는 사증 발급 페이지('사증발급신청서(별지 제17호 서식)')뿐이라 재입국허가 답이 없으므로 기권 기대가 맞다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_routing/N-18-e9-cci-applicant-stay-pages-only",
+   "verdict": "label_mismatch",
+   "severity": "low",
+   "explain": "질문 전제는 맞다. 같은 묶음의 사증 p288은 '사업장의 장이 사업장 주소지를 관할하는 출입국ㆍ외국인청…에게 … 사증발급인정서 발급신청'이라고 적는다. 그런데 플래그 패턴('출입국…청…신청', '주소지…관할…신청')이 이 정답 표현까지 잡아내면서 '근무처 변경 신청처를 혼동'이라고 이름 붙인다. 그래서 플래그가 떠도 혼동이 아니라 근거 없는 정답일 수 있다.",
+   "suggested_fix": "플래그 라벨을 '공급되지 않은 신청 관서를 단정'으로 바꾸거나, 패턴을 '고용센터' 같은 근무처 변경 고유 표현으로 좁힌다.",
+   "lead": {
+    "verdict": "accepted_as_note",
+    "severity": "low",
+    "note": "낮은 등급 지적으로 받아들이되 라벨·질문은 바꾸지 않는다. 판정에는 영향이 없다."
+   }
+  },
+  {
+   "key": "manual_routing/N-19-e8-workplace-change-visa-pages-only",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "E-8 근로자가 고용주 귀책으로 근무처를 바꾸려는 질문은 체류 절차여서 자연스럽다. 제공된 p279·p280은 선정 방식·초청 절차('사증발급인정신청')만 다뤄 근무처 변경 서류가 없으므로 기권 기대가 맞다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_routing/N-20-h1-austria-embassy-stay-pages-only",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "오스트리아는 p525 학업기간 표에 '오스트리아 … 6개월'로 나와 H-1 협정국이 맞고, 신청 공관을 묻는 사증 질문도 자연스럽다. 제공된 체류 페이지 p524·p525에는 신청 공관 정보가 없어 기권 기대가 맞다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_routing/N-21-b1-stay-longer-implicit",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "무사증 입국자의 연장·변경 질문이며, p24가 '사증면제협정 또는 관광통과 목적으로 입국한 자에 대하여는 원칙적으로 체류기간 연장이나 체류자격 변경허가를 하지 아니'한다고 직접 답한다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_routing/N-22-d3-trainee-invite-implicit",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p70이 '우리기업의 해외현지법인의 생산직 직원'을 연수 허용 대상으로 들고 '반드시 … 사증발급인정서를 제출 받아' 사증을 발급한다고 적어, 질문의 전제와 라벨이 모두 맞는다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_routing/N-23-c4-seasonal-second-farm-implicit",
+   "verdict": "premise_problem",
+   "severity": "low",
+   "explain": "같은 묶음의 사증 p279에 '’25년부터 단기취업 계절근로(C-4-1~4) 비자 발급 중단'이 있고, C-4의 체류기간 상한은 90일이다(p29). 그래서 2026-10 기준으로 'C-4로 계절근로 와서 일하고 있는' 사람은 현실에서 거의 있을 수 없다. 다만 p29의 '근무처의 추가는 불가', '지자체 담당자 동반 필요'는 그대로 있어 라벨 판정 자체에는 영향이 없다.",
+   "suggested_fix": "현 시점 페르소나로 쓸 거라면 C-4 발급 중단 사실을 언급해도 감점하지 않는다고 명시하거나, 질문 시점을 '작년 C-4로 왔을 때' 같은 가정형으로 바꾼다.",
+   "lead": {
+    "verdict": "accepted_as_note",
+    "severity": "low",
+    "note": "낮은 등급 지적으로 받아들이되 라벨·질문은 바꾸지 않는다. 판정에는 영향이 없다."
+   }
+  },
+  {
+   "key": "manual_routing/N-24-d7-chinese-staff-multiple-visa-implicit",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p94가 '중국인 국내주재지사 등의 주재원(공기업 또는 사기업에 1년 이상 고용된 직원) … 유효기간 2년 이내의 복수사증 발급'이라고 적어, 질문의 페르소나(1년 이상 근무, 한국 지사 파견)와 라벨이 정확히 맞는다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_clarify/Q-01-e9-visa-criminal-record",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p287 범죄경력증명서 요건이 '사증발급 신청일로부터 3개월 이내에 발급된 증명서 일 것'이라 질문과 라벨이 일치한다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_clarify/Q-02-e2-epik-visa-where-apply",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p146이 EPIK 사증에 대해 '해외 소재 대한민국 공관이면 어디라도 신청 가능 (단, 중국어보조교사는 주중 대한민국공관에만 신청)'이라고 적어 질문의 전제가 맞다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_clarify/Q-03-d2-visa-photo-admission",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p63 공통서류에 '사진 1매(6개월 이내 촬영 반명함)'과 '표준입학허가서 (대학 총․학장 발행)'가 나와 두 하위 질문 모두 페이지가 답한다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_clarify/Q-04-d9-sole-proprietor-visa-mission",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p119 '4. 외국인 개인사업자 … 나. 신청기관: 원칙적으로 신청자의 본국에 소재한 대한민국 공관'(해외 주재자 예외 포함)이 질문에 직접 답한다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_clarify/Q-05-e9-workplace-change-deadline",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p329가 '근로계약 종료 후 1월 이내에 사업장 변경을 신청 … 신청한 날로부터 3개월 이내에 근무처 변경허가'를 받아야 한다고 적어 질문의 두 기한과 라벨이 맞는다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_clarify/Q-06-d2-parttime-permit-places",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p39 '유학생(D-2): … 동시에 취업할 수 있는 장소 2곳으로 한정'이 질문에 그대로 답한다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_clarify/Q-07-d9-multiple-reentry-permit",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p137 '복수재입국허가 … 출국 후 체류기간 범위 내에서 1년을 초과하여 2년 내에 재입국을 하려는 경우'가 질문과 라벨에 맞는다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_clarify/Q-08-student-residence-change-report",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p95 '외국인유학생 체류지변경신고 가. 전입한 날로부터 15일 이내'는 일반연수(D-4) 장에 있어 어학연수생에게도 해당하고, '며칠'이라는 단위도 맞다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_clarify/Q-09-bring-wife-income",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "'just the two of us'가 2인 가구를 정하고, 보충 답변이 해외 사증 절차임을 확정한다. p330 '2026년 기준 소득요건 : 초청인의 과거 1년간 연간소득 … 2인 가구 25,195,752'와 라벨이 일치한다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_clarify/Q-10-f6-working-allowed",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p484 체류자격외 활동 칸이 '체류자격 구분에 따른 취업활동의 제한을 받지 않음'이라고 적고, 보충 답변이 F-6 국내 체류를 확정하므로 질문이 성립한다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_clarify/Q-11-e9-change-jobs-count",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p328 '입국한 날부터 3년 이내 … 원칙적으로 3회, 재고용절차에 따라 체류기간이 연장된 기간 중에는 2회를 초과할 수 없음'이 답이다. 질문은 어느 기간인지 밝히지 않았지만 라벨이 3회를 요구하면서 재고용 기간 2회도 함께 점검하므로 문제가 없다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_clarify/Q-12-e9-rehire-return-group",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p287 '2. 재입국 취업특례자에 대한 사증 발급 … 송출기관에 의한 단체 신청만 가능하고 외국인에 대한 개별 발급은 불가'가 질문에 직접 답한다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_clarify/Q-13-korean-language-course-education",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "대학 부설 어학원 한국어 연수는 D-4-1에 해당하고, p73 '고등학교 졸업 이상의 학력 소지자로 상기 교육기관에서 어학연수를 하고자 하는 사람'이 답이다. 보충 답변이 사증 절차임을 확정한다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_clarify/Q-14-d4-parttime-duration",
+   "verdict": "ambiguous",
+   "severity": "low",
+   "explain": "p39 '어학연수생(D-4): 체류기간 내에서 최장 6개월'이 답이다. 그런데 영어 'For how long can I work part-time?'은 주당 허용 시간을 묻는 말로도 읽힐 수 있고, 보충 답변('part-time work permit')도 이 모호함을 풀지 못한다.",
+   "suggested_fix": "'What is the maximum period a D-4 part-time work permit can be granted for?'처럼 허가 기간을 묻는다는 점을 드러낸다.",
+   "lead": {
+    "verdict": "accepted_as_note",
+    "severity": "low",
+    "note": "낮은 등급 지적으로 받아들이되 라벨·질문은 바꾸지 않는다. 판정에는 영향이 없다."
+   }
+  },
+  {
+   "key": "manual_clarify/Q-15-d10-points-exemption-after-leaving",
+   "verdict": "label_mismatch",
+   "severity": "low",
+   "explain": "질문은 점수제 면제 '경우'를 묻고, p125에는 '출국 후 졸업일로부터 1년 이내' 외에도 '국내 대학 졸업 한국어능력 우수자 … 학위 취득 후 3년이 경과되지 아니한 자'라는 면제 사유가 있다. 그런데 플래그 '졸업 후 [2-9]년 이내'는 이 정당한 3년 특례를 말하는 답변까지 잡는다.",
+   "suggested_fix": "플래그 패턴에서 TOPIK·사회통합프로그램 문맥의 '3년'은 빼거나, 한국어 우수자 특례를 허용 답변으로 명시한다.",
+   "lead": {
+    "verdict": "confirmed_low",
+    "severity": "low",
+    "note": "p125에 \"학위 취득 후 3년이 경과되지 아니한\" 한국어능력 우수자 면제가 있어 플래그 \"졸업 후 2~9년 이내\"가 이 정답을 검토 필요로 돌릴 수 있다. 기록된 답은 라우터 되묻기라 영향이 없다. 이 사례를 되묻기 다음 턴까지 돌릴 때 플래그를 좁힌다."
+   }
+  },
+  {
+   "key": "manual_clarify/Q-16-c3-stay-longer-flight-cancelled",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p28이 연장사유 예시로 '출국할 선박 등이 없거나 … 부득이한 사유'를 들고, 제출서류로 '신청서(34호 서식), 여권 원본, 수수료'와 '체류기간 연장의 필요성을 소명하는 서류'를 적어 질문과 라벨이 맞는다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_clarify/Q-17-d8-minimum-investment",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "'한국 법인에 투자'는 D-8-1에 해당하고, p104 '투자금액이 1억원 이상'이 답이다. 보충 답변이 해외 사증 절차임을 확정한다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_clarify/Q-18-e2-trip-home-reentry",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "보충 답변으로 등록외국인의 단기 출국이 확정되고, p175 '등록을 필한 외국인이 출국한 날로부터 1년 이내에 재입국하려는 경우 재입국허가 면제'가 답이다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_clarify/Q-19-live-with-korean-husband-docs",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "배우자가 해외에 있는지(사증 p328) 국내에서 자격을 바꾸려는지(체류자격 변경 p486)가 정해지지 않아 의도된 모호 질문으로 성립한다. 다만 p486이 'F-6-1 사증발급 시 제출서류 준용'이라 서류 목록이 거의 같다는 점은 참고할 만하다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_clarify/Q-20-d2-study-docs",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "사증 신청 서류(p63)인지 국내 체류 중 절차(p47 '공통서류(신청서, 여권, 외국인등록증)')인지 정해지지 않아 의도된 모호 질문으로 성립한다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_clarify/Q-21-e9-factory-work-docs",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "근로자 본인이 묻는 질문이라 사증(p288은 사업주의 사증발급인정서 서류)인지 국내 근무처 변경인지 정해지지 않으며, 어느 쪽이든 근로자 본인 서류는 페이지에 없으므로 clarify/insufficient 기대가 맞다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_clarify/Q-22-d10-how-long",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "사증 p124와 체류 p144가 모두 1회 부여 상한을 '1년'(일부 대상 '1회 최대 6개월')으로 적어, 절차가 정해지지 않아도 답이 같다. 라벨이 clarify와 answered를 모두 허용하는 것도 적절하다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_clarify/Q-23-h2-father-how-long",
+   "verdict": "premise_problem",
+   "severity": "high",
+   "explain": "사증 p389에 '’26. 2. 12.자로 방문취업(H-2) 사증의 신규 발급이 중단됩니다'라고 되어 있어, 2026-10 기준으로 해외에 있는 아버지가 H-2로 오는 '사증' 갈래는 존재하지 않는다. 그런데 라벨은 이 핵심 페이지를 must_not_cite로 막고 있다. 국내 체류자 갈래도 p537('외국인등록 시 체류기간은 최대 3년 … 입증서류를 제출하지 않는 경우 체류기간 1년')이 답하므로 clarify/insufficient 기대의 전제가 무너진다.",
+   "suggested_fix": "질문을 '아버지가 2026년 2월 이전에 H-2로 입국해 한국에 있다'로 고쳐 3년/1년을 답으로 요구하거나, 모호형으로 유지하려면 p389를 must_not_cite에서 빼고 H-2 신규 발급 중단 언급을 필수로 둔다.",
+   "lead": {
+    "verdict": "confirmed_low",
+    "severity": "low",
+    "note": "라우터 되묻기에서 끝나는 사례라 지금 결과는 유효하다. 다만 사증 p389에 2026-02-12 H-2 신규 발급 중단이 있으므로, 이 사례를 해외 갈래까지 이어 돌리면 중단 사실을 답으로 요구해야 한다."
+   }
+  },
+  {
+   "key": "manual_clarify/Q-24-d9-sole-proprietor-docs",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "사증 신청인지 외국인등록인지 정해지지 않은 의도된 모호 질문이다. p137에는 '외국인 개인사업자 제출서류'(외국인등록)가 있지만, p119 개인사업자 항목에는 대상자·신청기관만 있고 첨부서류가 없어 p119 인용 금지도 타당하다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_buttons/B-01-e3-visa-researcher-qualification",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p152 '석사 학위 소지자로서 3년 이상 경력자'가 답이다. 국내 석사·해외 우수대학 석사·우수 논문 저자는 '경력요건 면제 대상자'라서 질문이 출신 대학을 밝히지 않은 점이 걸리지만, 라벨이 이를 플래그로 다루므로 조건부 답변으로 통과할 수 있다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_buttons/B-02-india-business-multiple-visa",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p43 '5년 복수사증 발급 … 각 당사자가 지정한 회사, 상공회의소 … 가 발급한 요청서(a letter of request)를 제출한 상용방문자'가 질문에 답한다. 요청서를 내는 상공회의소가 '지정' 단체여야 한다는 점만 함축되어 있다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_buttons/B-03-d10-jobseeker-visa-length",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "사증 매뉴얼 p128 \"재외공관장이 재량으로 체류기간 6개월의 단수 구직(D-10)사증 발급\"이 질문(공관 신청·공관장 재량)과 그대로 맞는다. 범위·전제 모두 사증 쪽으로 일관된다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_buttons/B-04-e2-visa-degree-requirement",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p144 \"해당 외국어를 모국어로 하는 국가에서 ... 학사이상의 학위를 소지한 자\"가 원어민 강사의 학력요건에 직접 답한다. 공관 신청이라는 사증 범위와도 일치한다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_buttons/B-05-e3-workplace-change-report",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "체류 매뉴얼 p191 \"신고사유 발생일로부터 15일 이내에 ... 신고\"가 E-3 등록자의 근무처 변경 신고 기한에 답한다. 국내 체류 절차로 범위가 맞다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_buttons/B-06-d10-multiple-reentry-permit",
+   "verdict": "premise_problem",
+   "severity": "low",
+   "explain": "p161은 \"출국 후 체류기간 범위 내에서 1년을 초과하여 2년 내에 재입국\"이라고 하는데, 같은 묶음의 p128은 구직(D-10) 사증 체류기간을 6개월로 적고 있어 D-10 소지자가 복수재입국허가를 실제로 쓸 상황은 드물다. 요구 사실(1년 초과·2년 내) 자체는 쪽에 있으므로 시험은 성립하지만 '체류기간 범위 내' 조건이 빠지면 오해를 부를 수 있다.",
+   "suggested_fix": "질문은 유지하되 라벨에 '체류기간 범위 내' 조건 언급을 가점 또는 플래그로 추가하거나, 체류기간이 긴 자격(예: E-7)으로 페르소나를 바꾼다.",
+   "lead": {
+    "verdict": "accepted_as_note",
+    "severity": "low",
+    "note": "낮은 등급 지적으로 받아들이되 라벨·질문은 바꾸지 않는다. 판정에는 영향이 없다."
+   }
+  },
+  {
+   "key": "manual_buttons/B-07-e9-extension-cap",
+   "verdict": "ambiguous",
+   "severity": "low",
+   "explain": "p330은 \"최초 입국일로부터 3년, 재고용에 의한 취업기간 연장 허가기간 중에는 최초 입국일로부터 4년 10개월\"로 상한이 두 개다. 질문은 '최대 언제까지'라고만 묻고 재고용 여부를 밝히지 않아 '4년 10개월'만 답한 정답성 있는 답이 '3년' 필수 패턴에서 떨어질 수 있다.",
+   "suggested_fix": "질문에 '재고용 없이 일반 연장'을 명시하거나, 라벨 must_match를 '3년 또는 4년 10개월'로 넓히고 둘 다 언급 시 가점.",
+   "lead": {
+    "verdict": "accepted_as_note",
+    "severity": "low",
+    "note": "낮은 등급 지적으로 받아들이되 라벨·질문은 바꾸지 않는다. 판정에는 영향이 없다."
+   }
+  },
+  {
+   "key": "manual_buttons/B-08-c3-extension-limit",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "체류 매뉴얼 p27 \"입국일로부터 체류기간 90일 범위 내 연장 가능\"이 C-3 입국자의 연장 가능 여부와 범위에 답한다. 입국 후 국내 절차라는 범위도 맞다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_buttons/B-09-d4-language-course-length",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "사증 매뉴얼 p74 \"체류기간 6개월 이하 단수 일반연수(D-4) 사증\"이 해외 거주자의 D-4 사증 체류기간에 답한다. 국내 1회 상한 2년(p83)과의 혼동은 라벨이 플래그로 처리하고 있다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_buttons/B-10-f6-sponsor-income",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p335 표 \"2인 가구 23,595,948\"이 질문의 '둘이서만 살 거예요'(가구원 수)와 맞물려 답이 하나로 정해진다. 쪽이 '2025년 기준'이라 밝힌 점은 라벨이 플래그로 다룬다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_buttons/B-11-h1-insurance-amount",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p350 \"보장액 4,000만원 이상 의료보험 등에 가입\"이 본국에서 준비 중인 H-1 신청자의 질문에 답한다. 상호주의 단서도 같은 쪽에 있어 부분 답변도 허용 범위다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_buttons/B-12-f1d-digital-nomad-validity",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p305 \"F-1-D(워케이션), 복수비자 발급(유효기간 1년)\"이 '어떤 비자, 얼마 동안'에 답한다. 해외에서 오려는 사람이라는 사증 범위와 일치한다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_buttons/B-13-c45-lecture-days",
+   "verdict": "label_mismatch",
+   "severity": "low",
+   "explain": "p57~58의 7일 제한은 \"단기취업(C-4-5) 비자가 아닌 단기 체류자격(C-3, B-1, B-2) 소지자도 활동 가능\"한 C-4-5 비자 면제 조건(활동기간 7일 초과 불가)이다. 질문과 7일 필수 사실은 맞지만 purpose의 'C-4-5 강연 활동기간 제한'은 규정의 성격을 잘못 적었고, 유상 계약 강연이면 C-4-5 사증 대상이 되어 답이 달라질 수 있다.",
+   "suggested_fix": "purpose를 'C-4-5 비자 면제 조건(비영리기관 초청 강연) 활동기간 제한'으로 고치고, 질문에 '무료·공익 목적 초청'임을 한 마디 넣는다.",
+   "lead": {
+    "verdict": "accepted_as_note",
+    "severity": "low",
+    "note": "낮은 등급 지적으로 받아들이되 라벨·질문은 바꾸지 않는다. 판정에는 영향이 없다."
+   }
+  },
+  {
+   "key": "manual_buttons/B-14-d2-outside-research-pay",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p40 \"(소속대학 외 연구활동) ... 학업과 무관한 연구·인턴 참여: 체류자격외활동허가(E-3) 필요\"가 질문 조건(외부기관·전공 무관)과 정확히 대응한다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_buttons/B-15-d2-delivery-rider",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p38 제한분야 \"(특수형태근로종사자의 활동) 택배기사, 배달대행업체 라이더\"가 유학생 배달 라이더 질문에 직접 답한다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_buttons/B-16-h1-job-change",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p526 \"별도의 근무처 추가 또는 변경없이 취업 활동 가능\"이 카페에서 다른 가게로 옮기는 H-1 소지자의 질문에 답한다. 전문직종 예외도 같은 칸에 있다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_buttons/B-17-f3-spouse-farm-work",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p428 허용대상 \"방문취업(H-2) 자격의 성년 배우자\", 허용분야 \"단순노무 분야(H-2의 취업범위 중 농업·임업·축산업)\", 서류 \"TOPIK 2급 또는 사회통합프로그램 2급 이상\"이 페르소나와 질문을 모두 뒷받침한다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_buttons/B-18-e3-guest-lecture",
+   "verdict": "ambiguous",
+   "severity": "low",
+   "explain": "p188의 대학 강의 자격외 활동은 \"대학에서 90일 이내 강의활동\"이 대상이고 \"90일을 초과하여 정기적으로 ... 본부 승인상신\"인데, 질문은 '한 학기 동안'이라 90일을 넘을 가능성이 크다. 라벨은 '체류자격외 활동' 언급만 요구해 결과는 성립하지만, 측정하는 규정(90일 이내 C-4-5 자격외 활동 vs E-1·E-3 상호 자격외 활동 vs 본부 승인)이 질문만으로 정해지지 않는다.",
+   "suggested_fix": "질문을 '두 달 정도 특강'으로 바꾸거나, 라벨에 90일 초과 시 본부 승인상신 언급을 가점으로 추가한다.",
+   "lead": {
+    "verdict": "accepted_as_note",
+    "severity": "low",
+    "note": "낮은 등급 지적으로 받아들이되 라벨·질문은 바꾸지 않는다. 판정에는 영향이 없다."
+   }
+  },
+  {
+   "key": "manual_buttons/B-19-d2-cyber-university",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "사증 p62와 체류 p35 모두 \"사이버대학(원격대학)\"을 유학 체류자격 대상 교육기관에서 제외한다고 적어, 답변 시 결론이 분명하다. 절차 미지정 질문이라 clarify 허용도 타당하다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_buttons/B-20-f3-family-of-researcher",
+   "verdict": "label_mismatch",
+   "severity": "medium",
+   "explain": "질문 앞부분(F-3 자격 가능 여부)은 사증 p316 \"문화예술(D-1)부터 특정활동(E-7)까지 ... 체류자격에 해당하는 사람의 배우자 및 미성년 자녀\"로 바로 답이 나오는데, 라벨 status는 clarify·insufficient_evidence만 허용한다. 자격은 답하고 서류는 근거 부족이라 밝히는 정당한 partial 답변이 실패 처리된다.",
+   "suggested_fix": "status에 partial을 추가하거나, 질문에서 자격 가능 여부를 빼고 서류만 묻도록 고친다.",
+   "lead": {
+    "verdict": "policy_not_defect",
+    "severity": "none",
+    "note": "라우터 정책 시험이다. r3 실행 기록에서 이 사례의 clarify는 모델이 아니라 앱이 절차를 고르게 한 결과다. 두 절차의 답이 같아도 되묻는 정책이 맞는지는 제품 질문이고 라벨 결함은 아니다. 라벨은 바꾸지 않는다."
+   }
+  },
+  {
+   "key": "manual_buttons/B-21-e9-eligible-countries",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p285 \"1회 부여 3년\", \"최장 4년 10개월\", 선정국가 목록이 질문 두 부분에 모두 답한다. 쪽 안의 16개국/17개국 불일치는 라벨이 플래그로 이미 처리했다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_buttons/B-22-d4-work-while-studying",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "체류 p83 \"어학연수(D-4-1)자격 취득일부터 6개월 경과된 경우 체류자격외 활동 가능\"이 질문에 답한다. 절차 미지정 질문이라 clarify 허용도 타당하다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_buttons/B-23-e9-going-home-briefly",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p332 \"출국한 날부터 1년 이내에 재입국하려는 경우 재입국허가 면제\"가 '무엇을 내거나 준비해야 하나'에 답한다(대개 별도 납부 불필요). 수수료 문구는 규제자 예외임을 라벨이 플래그로 다룬다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_buttons/B-24-f1d-stay-length",
+   "verdict": "label_mismatch",
+   "severity": "medium",
+   "explain": "체류 p355에 \"체류허가 기간 : 체류기간 1년 부여\"가 명시돼 있어 '얼마나 머물 수 있나'는 쪽으로 답이 나오는데, 라벨은 clarify·insufficient_evidence만 허용하고 사증 p305 인용까지 금지한다. 같은 묶음의 B-12는 p305의 '유효기간 1년'을 정답으로 쓰므로 두 사례의 기준도 엇갈린다.",
+   "suggested_fix": "status에 answered·partial을 추가하고 '1년' 언급을 if_answered 필수로 두거나, 질문을 사증 유효기간과 체류기간의 차이를 묻도록 바꾸고 must_not_cite p305를 뺀다.",
+   "lead": {
+    "verdict": "policy_not_defect",
+    "severity": "none",
+    "note": "라우터 정책 시험이다. r3 실행 기록에서 이 사례의 clarify는 모델이 아니라 앱이 절차를 고르게 한 결과다. 두 절차의 답이 같아도 되묻는 정책이 맞는지는 제품 질문이고 라벨 결함은 아니다. 라벨은 바꾸지 않는다. B-12와의 기준 차이도 B-12는 버튼을 누른 경우라 생긴다."
+   }
+  },
+  {
+   "key": "manual_always_ask/A-01-medical-tourism-long-treatment",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p49 \"치료 및 여행기간이 91일 이상 장기인 경우 : 체류자격 G-1-10, 체류기간 1년 이내의 복수사증\"이 등록 유치기관 초청·4개월 치료라는 질문 조건과 맞는다. 카자흐스탄은 쪽에 적힌 발급 제한국(베트남)이 아니다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_always_ask/A-02-d1-kf-invitee-consular-visa",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p60 \"한국국제교류재단 ... 초청을 받아 문화예술 활동을 하고자 하는 자에 대한 체류기간 1년 이하의 단수사증\"이 공관장 재량(현지 대사관에서 바로) 사증 질문에 정확히 답한다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_always_ask/A-03-d6-who-can-invite",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p93 \"초청자는 종단이나 교단의 대표자이며, 단위 교회 목사 등은 초청자가 될 수 없음\"이 질문에 직접 답한다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_always_ask/A-04-d5-korean-media-contract",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p91 \"외국인이 대한민국의 보도기관과 계약을 맺고 행하는 활동은 취재(D-5)의 체류자격에는 해당되지 않는다\"가 질문 상황과 일치한다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_always_ask/A-05-intl-org-meeting-visa-validity",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p12 \"주재 목적이 아닌 일시적인 회의참석, 공무수행 등의 목적으로 ... 유효기간 3개월의 단수사증\"이 페르소나(주재하지 않는 공무원)와 맞는다. 상호주의 복수사증 단서가 있으나 '보통 무엇을 주나'라는 질문에는 단수 3개월이 기본 답이다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_always_ask/A-06-evisa-confirmation-reprint",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p141 \"출력횟수는 1회로 제한\", \"휴넷을 통하여 출력제한 해제 요청\"이 재출력 불가 상황에 직접 답한다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_always_ask/A-07-d7-overseas-branch-tenure",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p103 \"원칙적으로 과장이나 선임연구원급 이상 직원을 대상\"이 해외지사 직원의 본사 파견 직급 질문에 답한다. 해외지사 1년 이상 근무 요건도 같은 쪽에 있다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_always_ask/A-08-e5-ship-officer-recommendation",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p162 \"해양수산부장관의 추천을 받은 자\", \"1회 부여 체류기간의 상한 5년\"이 두 질문에 답한다. 외국 면허 소지자는 쪽상 '승무자격증' 경로일 수 있으나 요구 사실(추천기관·5년)은 달라지지 않는다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_always_ask/A-09-d2-school-transfer-korean-level",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "체류 p46 \"한국어능력시험(TOPIK) 3급 이상 또는 사회통합프로그램 3단계 이상 ... 사전평가 61점 이상\"이 학교 변경 한국어 요건에 답한다. 인증대학 예외는 부가 정보다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_always_ask/A-10-e10-job-loss-extension",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p340 \"고용해지일로부터 3개월의 범위 내에서 체류기간 연장허가\"가 질문에 답한다. 잔여 기간 4개월 조건은 부가 정보다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_always_ask/A-11-refugee-applicant-work-permit",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p511 \"난민인정의 신청을 한 후 6개월이 경과한 자\", 취업제한 업종 \"건설업\"이 두 질문에 모두 답한다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_always_ask/A-12-ceo-university-lecture",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p117 대상 \"투자자 등(D-7, D-8, D-9)의 자격 소지자 중 ... 상근이사 이상\", \"90일 이내 강의활동\"이 두 달 강의 상황과 맞고 제출서류에 총(학)장 추천서·원근무처장 동의서가 있다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_always_ask/A-13-child-school-enrollment-report",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "체류 p8 \"만 6세 이상 만 18세 이하\", \"최초 입학 ... 시 15일 이내\", \"재학증명서 등 재학 중임을 증명할 수 있는 서류 제출\"이 9세 자녀 질문에 답한다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_always_ask/A-14-occupation-income-report",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p7은 신고대상에 '교수(E-1)~선원취업(E-10)'을, 신고시기에 '체류기간 연장허가 신청 시'를 명시하고 신고방법으로 「외국인 직업 신고서」와 「통합신청서(신고서)」'연 소득금액'란을 든다. 질문 전제와 라벨이 페이지와 일치한다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_always_ask/A-15-d9-points-first-grant-period",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p139 '⇒ 최초 허가 시 체류기간은 1년만 부여함'이 무역 점수제 기준 바로 위에 있어 질문(국내에서 처음 허가)과 라벨(1년)이 맞는다. 페이지 상단이 잘려 어떤 허가 절인지는 보이지 않지만 답을 바꾸지는 않는다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_always_ask/A-16-e6-2-agency-change",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p209 E-6-2 사전 허가대상 1호가 '소속된 공연기획사 등이 변경되거나 추가되어 고용주 변동이 있는 경우'이고 '최대 1년의 범위 내에서 고용계약기간 동안 체류기간을 부여', 제출서류에 '원 근무처 장의 동의서'가 있다. 전제가 정확하다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_always_ask/A-17-in-korea-medical-pressed-visa",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p514는 '건강검진, 질병치료 등을 위해 단기사증(B-1, B-2, C-3)으로 입국한 후' 장기치료가 필요하면 'G-1-10으로 변경 대상'이라고 해 국내 체류 질문의 전제를 뒷받침한다. 해외 버튼 오선택(미확인) 상황이라 비확정 상태를 기대하는 라벨도 설계 의도와 맞는다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_always_ask/A-18-visa-free-to-e3-pressed-visa",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p192 '부득이한 사유로 무사증입국하거나 비취업사증을 소지한 외국고급인력에 대한 … 연구(E-3)로 체류자격 변경'과 '석사 학위 소지자로서 3년 이상 경력자 (단, 국내 석사학위 소지자 경력 요건 면제)'가 전제를 뒷받침한다. 석사 취득국이 빠져 있지만 라벨이 국내 석사 구분 없는 단정을 막도록 짜여 있어 의도된 모호성이다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_always_ask/A-19-f3-spouse-abroad-pressed-stay",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p317 F-3 공관장 재량 사증 첨부서류 ③ '생계유지능력 입증서류 (E-1, E-3, E-4, E-5, F-4, H-2의 경우 제출 면제)'가 질문에 직접 답한다. 해외 거주자가 국내 버튼을 누른 오선택 설계와도 맞다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_always_ask/A-20-d9-trade-points-abroad-pressed-stay",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p120 사증발급인정서 발급대상 '무역비자 점수제의 총160점 중 60점 이상 득점자로서, 필수항목 점수가 10점 이상'이 질문에 답하고, 라벨이 금지한 65·95·160점은 p139의 항목별 최대점이라 함정 설계가 정확하다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_always_ask/A-21-permanent-resident-long-absence",
+   "verdict": "ambiguous",
+   "severity": "medium",
+   "explain": "p452 '영주자격 상실 ○ 재입국면제 기간(출국한 날부터 2년 이내) 또는 재입국허가 기간까지 대한민국에 미입국한 경우'가 질문에 그대로 답하고, 이 답은 질문자가 지금 국내에 있든 해외에 있든 같다. 라벨은 clarify/insufficient_evidence만 허용해, 페이지대로 정확히 답하면 실패로 처리된다. 버튼 정책만 측정할 뿐 내용상 되물을 이유는 없다.",
+   "suggested_fix": "라벨에 answered/partial을 허용하고 '2년' 및 '재입국허가 기간'을 answer_must_match로 두거나, 정말 되묻게 하려면 질문에서 '얼마나 오래'(예: 3년)와 재입국허가 여부를 빼지 말고 그 판단 요소를 명시적으로 비워 두는 문구로 바꾼다.",
+   "lead": {
+    "verdict": "policy_not_defect",
+    "severity": "none",
+    "note": "라우터 정책 시험이다. r3 실행 기록에서 이 사례의 clarify는 모델이 아니라 앱이 절차를 고르게 한 결과다. 두 절차의 답이 같아도 되묻는 정책이 맞는지는 제품 질문이고 라벨 결함은 아니다. 라벨은 바꾸지 않는다."
+   }
+  },
+  {
+   "key": "manual_always_ask/A-22-e2-medical-check",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p186은 외국인등록 시 '채용신체검사서'를 요구하되 '시․도교육감이 채용한 원어민 영어보조교사 및 정부초청 해외 영어봉사장학생은 제출을 면제'하고, p147 사증 페이지에는 신체검사 언급이 없다. 절차(사증/등록)와 채용 유형에 따라 답이 갈리므로 되묻기 라벨이 타당하다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_always_ask/A-23-pro-footballer-status",
+   "verdict": "ambiguous",
+   "severity": "medium",
+   "explain": "p165가 '축구․야구․농구 등 프로 운동선수 … E-6-3'과 '체류기간 90일 이하인 경우는 단기취업(C-4-5)'을 명시하고 p207도 '프로 및 아마추어 스포츠 선수'를 E-6 해당자로 든다. 어떤 체류자격인지는 국내/해외 위치와 무관하게 페이지로 답이 나오는데 라벨은 되묻기/근거부족만 허용한다.",
+   "suggested_fix": "라벨에 answered/partial을 허용하고 'E-6-3'(및 90일 이하 C-4-5 단서)을 필수 일치로 두거나, 되묻기를 유지하려면 질문을 '서류/절차'처럼 위치에 따라 답이 갈리는 내용으로 바꾼다.",
+   "lead": {
+    "verdict": "policy_not_defect",
+    "severity": "none",
+    "note": "라우터 정책 시험이다. r3 실행 기록에서 이 사례의 clarify는 모델이 아니라 앱이 절차를 고르게 한 결과다. 두 절차의 답이 같아도 되묻는 정책이 맞는지는 제품 질문이고 라벨 결함은 아니다. 라벨은 바꾸지 않는다."
+   }
+  },
+  {
+   "key": "manual_always_ask/A-24-venture-investor-documents",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p105(D-8-2 사증)와 p121(D-8-2 체류자격 변경허가 '①신청서(별지34호 서식)…③ 벤처기업 관련 서류')의 서류 목록이 절차에 따라 다르므로 위치를 묻는 되묻기 라벨이 타당하다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_misclick/K-01-c3-business-subcode",
+   "verdict": "premise_problem",
+   "severity": "low",
+   "explain": "p27은 C-3-4 대상을 '상용활동자 및 사증없이 입국하는 APEC카드 소지자'로 적어, APEC 카드 소지자는 원래 사증 없이 입국한다. 'APEC 카드도 있는데 … C-3 비자는 세부 약호가 뭔가요'는 사증이 필요하다는 어색한 전제를 깔지만 정답(C-3-4)은 바뀌지 않는다.",
+   "suggested_fix": "'APEC 카드도 있는데' 대목을 빼거나 'APEC 카드로 사증 없이 들어가면 어떤 세부 약호가 붙나요?'로 바꾼다.",
+   "lead": {
+    "verdict": "accepted_as_note",
+    "severity": "low",
+    "note": "낮은 등급 지적으로 받아들이되 라벨·질문은 바꾸지 않는다. 판정에는 영향이 없다."
+   }
+  },
+  {
+   "key": "manual_misclick/K-02-e1-electronic-visa",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p138 '전자사증 … 교수, 연구원 등에 대해 재외공관 방문 없이 온라인으로 사증을 발급 받을 수 있는 제도', 발급대상 '전문인력(E-1, …)'이 질문에 직접 답한다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_misclick/K-03-e6-minor-performer",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p166 E-6 사증발급인정서 첨부서류 '⑥ 피초청인이 미성년자인 경우, 법정대리인의 동의서'가 질문과 라벨에 그대로 맞는다. 초청자가 국내에 있어도 사증발급인정서는 사증 절차라 해외 버튼과 모순되지 않는다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_misclick/K-04-f1-13-parent-quota",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p298 F-1-13 해당자 '초등학교, 중학교, 고등학교' 유학생 동반 부모, '외국인유학생 1명당 1명 허용'이 질문(중학교 입학, 부부)에 그대로 답한다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_misclick/K-05-f2-2-child-of-national",
+   "verdict": "premise_problem",
+   "severity": "low",
+   "explain": "p313은 '국민과 혼인관계에서 출생한 자녀에 대한 … 5년간 유효한 체류기간 1년 이하의 거주(F-2-2) 복수사증'을 외국인에게 발급하는 규정이다. 그런데 '아버지가 한국 국민이고 혼인 중 출생'이면 보통 출생 시 한국 국적자라 사증이 필요 없으므로, 질문에 외국 국적자라는(국적 상실·이탈) 전제가 빠져 있다. 성별도 빠져 있어 '병역 … 국적을 이탈 또는 상실하여 외국인이 된 남성' 제외 규정에 해당하는지 판단할 수 없다. 라벨 자체는 정답과 맞는다.",
+   "suggested_fix": "'한국 국적을 상실해 지금은 외국 국적만 있는 여성입니다'처럼 외국인 신분과 성별(제외대상 아님)을 질문에 명시한다.",
+   "lead": {
+    "verdict": "accepted_as_note",
+    "severity": "low",
+    "note": "낮은 등급 지적으로 받아들이되 라벨·질문은 바꾸지 않는다. 판정에는 영향이 없다."
+   }
+  },
+  {
+   "key": "manual_misclick/K-06-c3-3-medical-docs",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p339 '외국인 환자 유치기관의 초청을 받지 않고 … 의료관광(C-3-3) 단수사증', 첨부서류 '병원진단서, 의사소견서 등'·'예약 입증자료'가 질문(유치기관 없이 직접 예약)에 정확히 맞는다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_misclick/K-07-e5-registration-change",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p206 외국인등록사항 변경신고 '신고사항 : … 여권 변경 사항', '신고기한 : 변경일로부터 15일 이내'가 질문과 라벨에 맞는다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_misclick/K-08-multiple-reentry",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p427 '복수재입국허가 … 출국 후 체류기간 범위 내에서 1년을 초과하여 2년 내에 재입국을 하려는 경우'가 18개월 출국·체류기간 내 귀국 전제에 맞는다. 국적(사우디·이란·리비아 제한)이 빠졌지만 일반 답을 바꾸지는 않는다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_misclick/K-09-e6-tryout-change",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p211 '무사증(B-1․B-2자격) … 입국자 ➠ 예술흥행(E-6)', '입단 테스트 등을 받기 위해 입국한 운동선수 … 재량으로 체류자격 변경 허가(체류기간 기산일 기준은 자격변경일이 아닌 입국일임)'이 질문 전제와 라벨에 정확히 맞는다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_misclick/K-10-f1-ethnic-korean-activity",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p343 '방문동거(F-1) 자격을 소지한 중국동포 중 … 교수(E-1) 내지 특정활동(E-7)으로의 자격외 활동 허가', 서류 '② 주무부처 장의 고용추천서 또는 고용필요성 입증서류'가 질문과 라벨에 맞는다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_misclick/K-11-a1-reentry-exemption",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p17 '출국한 날로부터 1년 이내 재입국하려는 경우 면제'와 A-1~A-3 재입국 규정이 질문(1년 내 귀국)에 답한다. 면제 문장의 주어가 페이지 위에서 잘렸지만 A-1 절 안이라 전제가 성립한다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_misclick/K-12-e10-2-extra-activity",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p338 '어선원(E-10-2) 「체류자격 외 활동」허가 … (해당활동) 어획물에 대한 건조, 포장 등 어획물과의 연계 작업활동', '원 고용주와 … 고용주가 동일할 것'이 질문(같은 사장님, 건조·포장)에 정확히 맞는다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_misclick/K-13-d7-branch-ccvi-misclick",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p96 '1. 외국기업 국내지사 등에서 주재활동' 첨부서류 '⑥ 국내지점 등 설치 입증서류 - 지사나 연락사무소 설치허가서 사본 또는 신고수리서 사본'이 질문(본국 본사→한국 지사 발령)에 맞고, 2번 항목(해외진출 기업 국내 본사 주재)과 구분하는 라벨도 정확하다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_misclick/K-14-d8-4-where-to-apply-misclick",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p108 D-8-4 사증 '나. 신청기관 원칙적으로 신청자의 본국에 소재한 대한민국 공관'이 질문(본국 체류 중)에 그대로 답한다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_misclick/K-15-e5-doctor-ccvi-misclick",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p164 E-5 사증발급인정서 첨부서류 '② 초청사유서 ③ 학위증 및 자격증 사본 …'이 라벨과 맞는다. p202상 의사 E-5는 '보건복지부장관의 고용추천'과 공공·의료법인 등 의료기관 요건이 있으나 서류 질문의 답을 바꾸지는 않는다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_misclick/K-16-e1-ccvi-docs-misclick-keep",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p142 E-1 사증발급인정서 첨부서류 '① 사증발급인정신청서 (별지 제21호 서식) … ② 경력증명서 및 학위증 - 조교수 이상의 자격기준에 해당하는 전임교수 등의 경우 제출 생략'이 질문(조교수 임용, 해외 거주)과 라벨에 맞는다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_misclick/K-17-d10-to-e1-change-misclick",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p174 '구직(D-10) ➠ 교수(E-1)자격으로의 변경' 제출서류 '③ 학위증 또는 경력증명서 - 조교수 이상 … 전임교수 등의 경우 제출 생략'이 질문(D-10, 전임교수 채용)에 맞고, '임용예정확인서'는 p142 사증 쪽 서류라 금지 라벨도 정확하다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_misclick/K-18-e9-reemployment-extension-misclick",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p331 '3년 만기 체류자 중 고용주가 재고용한 경우 1년 10개월 이내', '취업기간만료자 취업활동기간 연장확인서(고용노동부 발급)'가 질문의 두 물음에 정확히 답한다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_misclick/K-19-d8-4-change-grant-misclick-keep",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p119 점수제 적용 면제자 중 창업지원사업 수혜자 '최근 2년 이내 … 3천만원 이상의 직접 사업비를 지원받았을 것'이 질문(금액 기준)에 답한다. 고기술 기반·중기부 추천 등 다른 요건은 답변에서 덧붙일 사항이지 전제를 깨지 않는다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_misclick/K-20-g1-99-newborn-misclick",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p513 '난민 신청자(G-1-5)의 국내 출생 미성년 자녀 (G-1-99) … 해당 난민신청자(G-1-5)의 체류기간 만료일까지 부여', 제출서류 '출생증명서 등 부모와의 관계를 입증할 수 있는 서류'가 질문에 맞는다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_misclick/K-21-e7-docs-unclear",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p170·p214 모두 E-7 개요와 직종 구분만 있고 서류 목록이 없으며, 사증/체류 절차와 직종에 따라 서류가 달라 되묻기·근거부족 라벨이 타당하다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_misclick/K-22-d10-period-unclear",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p130(사증)·p151(체류) 모두 D-10 세부 유형별 서류만 있고 체류기간은 보이지 않으며, 서류가 위치와 유형에 따라 다르므로(p151은 '체류지 입증서류' 추가) 되묻기·근거부족 라벨이 타당하다.",
+   "suggested_fix": ""
+  },
+  {
+   "key": "manual_misclick/K-23-f6-income-docs-unclear",
+   "verdict": "ambiguous",
+   "severity": "medium",
+   "explain": "p334(사증)와 p492(체류)의 '한국인 배우자의 소득요건 관련 서류' 목록은 2-7~2-12와 #1~#4 주석까지 문구가 사실상 같고, p334는 공통 필수 '2-1 소득금액증명 원본', '2-2 신용정보조회서'까지 보여 준다. 사증/연장 중 무엇이든 페이지로 같은 답이 나오는데 라벨은 되묻기/근거부족만 허용한다.",
+   "suggested_fix": "라벨에 answered/partial을 허용하고 '소득금액증명'·'신용정보조회서'를 필수 일치로 두거나, 되묻기 시험으로 남기려면 두 절차의 서류가 실제로 다른 페이지로 증거를 바꾼다.",
+   "lead": {
+    "verdict": "policy_not_defect",
+    "severity": "none",
+    "note": "라우터 정책 시험이다. r3 실행 기록에서 이 사례의 clarify는 모델이 아니라 앱이 절차를 고르게 한 결과다. 두 절차의 답이 같아도 되묻는 정책이 맞는지는 제품 질문이고 라벨 결함은 아니다. 라벨은 바꾸지 않는다."
+   }
+  },
+  {
+   "key": "manual_misclick/K-24-d8-docs-unclear",
+   "verdict": "ok",
+   "severity": "none",
+   "explain": "p116(사증)은 D-8 기본 원칙만, p116(체류)은 D-8-1~D-8-4 세부 약호별로 '사증발급 및 체류자격 변경 신청 시 제출서류 기준 준용'이라고만 해 세부 약호와 위치 없이는 서류를 특정할 수 없다. 되묻기 라벨이 타당하다.",
+   "suggested_fix": ""
+  }
+ ]
+}

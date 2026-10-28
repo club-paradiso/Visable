@@ -1,0 +1,123 @@
+{
+ "kind": "artemis_facts_ai_statute_recheck",
+ "date": "2026-10-28",
+ "delegation": "owner: '나 바쁘니까 귀찮게하지마....웬만하면 너가 검토 해' (2026-10-28)",
+ "reviewer": "AI (lead session, law MCP re-read of the provisions) — owner-delegated, not a human approval, not a legal verification",
+ "scope": "the three items the final pass sent to the owner as 'differs'; a premise audit found that each compared a manual operating standard or a total cap with a statute clause that does not set that value",
+ "decisions": [
+  {
+   "candidate_id": "fc-d2030248a893d127",
+   "final": "confirm",
+   "subject": {
+    "status_code": "H-2",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "체류기간 연장허가 - 감염병·천재지변 등 직권 연장",
+     "column_label": null
+    }
+   },
+   "role": "stay_cap_total",
+   "value": {
+    "kind": "period",
+    "amount": 6,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "legal_check": {
+    "result": "not_in_statute",
+    "law": "외국인근로자의 고용 등에 관한 법률",
+    "provision": "제18조의2 제2항",
+    "mst": "276857",
+    "excerpt": "감염병 확산, 천재지변 등의 사유로 외국인근로자의 입국과 출국이 어렵다고 인정되는 경우에는 정책위원회의 심의ㆍ의결을 거쳐 1년의 범위에서 취업활동 기간을 연장할 수 있다"
+   },
+   "statute_note": "법은 취업활동 기간을 1년 범위에서 늘리는 규정이고, 매뉴얼의 6년은 직권 연장 때의 체류기간 한도다. 4년 10개월에 1년을 더해도 5년 10개월이라 6년 안에 들어가므로 서로 어긋나지 않는다. 1차 판정의 differs는 1년(연장 폭)과 6년(총 한도)을 같은 값으로 비교한 착오였다.",
+   "owner_rule": "B-16 (2026-10-28): \"매뉴얼을 기준으로 판단해서 결정짓자\"",
+   "supersedes_decision": {
+    "final": "owner",
+    "legal_result": "differs"
+   },
+   "reason": "방문취업(H-2) 연장은 입국일부터 4년 10개월 내이고, 감염병·천재지변으로 직권 연장할 때는 6년 이내까지라고 이 쪽에 적혀 있다. 괄호 문장이 입국일 기산 한도 바로 뒤에 있어 총 체류 한도로 읽는다."
+  },
+  {
+   "candidate_id": "fc-f809a70cdbb18ccc",
+   "final": "confirm",
+   "subject": {
+    "status_code": "E-2",
+    "sub_code": "E-2-2",
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "공관장 재량 단수사증(원어민 영어·중국어 보조교사 EPIK·CPIK·TaLK)",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 2,
+    "unit": "year",
+    "comparator": "이하"
+   },
+   "legal_check": {
+    "result": "not_in_statute",
+    "law": "출입국관리법 시행규칙",
+    "provision": "제9조 제1항 제9호·제2항",
+    "mst": "289833",
+    "excerpt": "② 법무부장관은 제1항 각 호에 따른 사증의 종류, 체류자격, 체류기간 또는 사증발급 대상 및 절차 등에 관한 세부기준을 정할 수 있다."
+   },
+   "statute_note": "공관장 재량 사증의 기간은 법무부장관이 제9조 제2항에 따라 정하는 세부기준(매뉴얼) 사항이다. 1차 브리프도 공관 재량 기간은 not_in_statute로 두라고 했는데 differs로 잘못 분류했다. 제1항 제9호의 1년 문언과 다르다는 점은 기록으로 남기고, 소유자 결정(B-16: 매뉴얼 기준)에 따라 매뉴얼 값을 쓴다.",
+   "owner_rule": "B-16 (2026-10-28): \"매뉴얼을 기준으로 판단해서 결정짓자\"",
+   "supersedes_decision": {
+    "final": "owner",
+    "legal_result": "differs"
+   },
+   "reason": "교육감 등과 고용계약을 맺은 원어민 보조교사(E-2-2)에게 공관장 재량으로 체류기간 2년 이하 단수사증을 발급한다고 이 쪽에 적혀 있다."
+  },
+  {
+   "candidate_id": "fc-1c3a5db20d590774",
+   "final": "confirm",
+   "subject": {
+    "status_code": "C-4",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "공관장 재량 복수사증",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 90,
+    "unit": "day",
+    "comparator": "이하"
+   },
+   "legal_check": {
+    "result": "not_in_statute",
+    "law": "출입국관리법 시행규칙",
+    "provision": "제9조 제1항 제1호 가목·제2항",
+    "mst": "289833",
+    "excerpt": "② 법무부장관은 제1항 각 호에 따른 사증의 종류, 체류자격, 체류기간 또는 사증발급 대상 및 절차 등에 관한 세부기준을 정할 수 있다."
+   },
+   "statute_note": "제1항 제1호 가목은 C-4 위임을 단수사증으로 적지만, 사증의 종류는 제2항 세부기준 사항이고 공관 재량 사증은 매뉴얼 운영 기준이다. 문언 차이는 기록으로 남기고 소유자 결정(B-16: 매뉴얼 기준)에 따라 매뉴얼 값을 쓴다. 값 90일은 C-4 단수사증과 같아 다른 답을 검토로 돌릴 일이 없다.",
+   "owner_rule": "B-16 (2026-10-28): \"매뉴얼을 기준으로 판단해서 결정짓자\"",
+   "supersedes_decision": {
+    "final": "owner",
+    "legal_result": "differs"
+   },
+   "reason": "단기취업(C-4) 중 이 쪽 아래에 열거된 대상자에게 공관장 재량으로 체류기간 90일 이하 복수사증을 발급한다고 적혀 있다."
+  }
+ ]
+}

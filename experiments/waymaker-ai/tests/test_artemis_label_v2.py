@@ -412,3 +412,14 @@ def test_v2_rerun_reproduces_the_post_hoc_regrade():
             model_written = not (r.get("clarified") and (r.get("parsed") or {}).get("status") == "clarify")
             if model_written and regrade[key]["comparable"]:
                 assert r["output"] == old[r["case"]]["output"], key
+
+
+def test_premise_audit_covers_every_case_and_changes_no_label():
+    """The 2026-10-28 premise audit is a record: one verdict per case, every flagged
+    case carries the lead session's check, and no label or question was edited for it."""
+    audit = json.loads((BOOTSTRAP_DIR / "reviews" / "premise_audit_2026-10-28.json").read_text(encoding="utf-8"))
+    assert "not a human review" in audit["reviewer"]
+    keys = [f"{s}/{c['id']}" for s in lv.RUNS for c in frozen(s)]
+    assert sorted(a["key"] for a in audit["audits"]) == sorted(keys)
+    assert all("lead" in a for a in audit["audits"] if a["verdict"] != "ok")
+    assert "premise" not in json.dumps(lv.DECISIONS, ensure_ascii=False)
