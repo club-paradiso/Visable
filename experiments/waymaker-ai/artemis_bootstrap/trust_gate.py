@@ -443,6 +443,92 @@ FACT_ROLE_FAMILY: Dict[str, str] = {
 _STATUS_CODE_RE = re.compile(r"(?<![A-Za-z0-9-])([A-Z]-\d{1,2}(?:-[0-9A-Z]{1,2})?)(?![0-9])")
 _HOUSEHOLD_RE = re.compile(r"(\d+)\s*인\s*가구")
 
+# --- Reading the subject from a person's own words (2026-10-28, after held-out v9) ---
+# People write "결혼이민", "네 식구", "대사관에서 받는 사증", not "F-6", "4인 가구" or the
+# AI's row label. Held-out v9 marked 5 of 72 mixed-up answers before this.
+#: Status names from 출입국관리법 시행령 별표 1·1의2. Left out because they are also
+#: everyday words or name two statuses: 공무(공무원), 연구(연구과정 is D-2-5), 거주,
+#: 동반, 기타, 계절근로 (C-4 and E-8).
+_STATUS_NAMES: Dict[str, str] = {
+    "외교": "A-1", "협정": "A-3", "사증면제": "B-1", "관광통과": "B-2", "일시취재": "C-1", "단기방문": "C-3",
+    "단기취업": "C-4", "문화예술": "D-1", "유학": "D-2", "기술연수": "D-3", "일반연수": "D-4", "어학연수": "D-4",
+    "취재": "D-5", "종교": "D-6", "주재": "D-7", "기업투자": "D-8", "무역경영": "D-9", "구직": "D-10",
+    "교수": "E-1", "회화지도": "E-2", "기술지도": "E-4", "전문직업": "E-5", "예술흥행": "E-6", "특정활동": "E-7",
+    "비전문취업": "E-9", "선원취업": "E-10", "방문동거": "F-1", "재외동포": "F-4", "영주": "F-5",
+    "결혼이민": "F-6", "관광취업": "H-1", "방문취업": "H-2",
+}
+_STATUS_NAME_RE = re.compile("|".join(sorted(map(re.escape, _STATUS_NAMES), key=len, reverse=True)))
+_COUNT_WORDS = {"한": 1, "두": 2, "세": 3, "네": 4, "다섯": 5, "여섯": 6, "일곱": 7, "여덟": 8, "아홉": 9, "열": 10,
+                "two": 2, "three": 3, "four": 4, "five": 5, "six": 6, "seven": 7, "eight": 8}
+_COUNT = r"(\d+|다섯|여섯|일곱|여덟|아홉|한|두|세|네|열)"
+#: "네 식구", "4인 가족", "가족이 다섯 명", "family of four". A bare "N명" counts only
+#: with a family word in the same sentence ("저희 집은 … 여섯 명이에요").
+_FAMILY_COUNT_RES = (
+    re.compile(rf"(?<![가-힣]){_COUNT}\s*(?:식구|인\s*가족|명\s*가족|인\s*가구)"),
+    re.compile(rf"(?:가족|식구|가구원)[^.?!\n]{{0,8}}?(?<![가-힣]){_COUNT}\s*명"),
+    re.compile(rf"(?:집|가족|식구)[^.?!\n]{{0,40}}?(?<![가-힣]){_COUNT}\s*명(?:이에요|입니다|이고|인데|이요)"),
+    re.compile(r"family of (\d+|two|three|four|five|six|seven|eight)|(\d+)[- ]person household", re.IGNORECASE),
+)
+#: Words a person uses for a row's wording, mapped to the manual's word.
+_ROW_SYNONYMS = (
+    (re.compile(r"대사관|영사관|consulate|embassy", re.IGNORECASE), "공관"),
+    (re.compile(r"\bexchange\b", re.IGNORECASE), "교환학생"),
+    (re.compile(r"\bIndia(?:n)?\b"), "인도"),
+    (re.compile(r"\bPh\.?D\b|doctoral", re.IGNORECASE), "박사"),
+    (re.compile(r"어학당|language (?:school|course|program)", re.IGNORECASE), "어학연수"),
+)
+#: Label words that say what the value is, not whose it is.
+_ROW_STOP_RE = re.compile(r"^(?:\d+회|부여|체류기간|유효기간|체류허가|기간|상한|사증|허가|신청|수수료|기준|경우|"
+                          r"이상|이하|이내|대상|대상자|소득기준|복수사증|단수사증|사증발급)$")
+
+
+def _households(text: str) -> set:
+    found = {int(h) for h in _HOUSEHOLD_RE.findall(text)}
+    for regex in _FAMILY_COUNT_RES:
+        for m in regex.finditer(text):
+            word = next(g for g in m.groups() if g)
+            found.add(int(word) if word.isdigit() else _COUNT_WORDS[word.lower()])
+    return found
+
+
+def _row_tokens(label: str) -> set:
+    tokens = set()
+    for run in re.findall(r"[가-힣]{2,}", label or ""):
+        run = re.sub(r"(?:의|시|등|및)$", "", run)
+        if len(run) >= 2 and not _ROW_STOP_RE.match(run):
+            tokens.add(run)
+    return tokens
+
+
+def _named_rows(question: str, facts: Sequence[Mapping[str, Any]]) -> set:
+    """Row labels whose distinctive words the question uses most. A word is distinctive
+    when it is missing from at least one other row of that role family on the page
+    ("재입국허가" is not, beside "복수재입국허가"); only the best-matching rows count."""
+    said = re.sub(r"\s+", "", question)
+    extra = [word for regex, word in _ROW_SYNONYMS if regex.search(question)]
+    named = set()
+    by_family: Dict[str, List[Mapping[str, Any]]] = {}
+    for f in facts:
+        if f["subject"]["qualifiers"].get("row_label"):
+            by_family.setdefault(FACT_ROLE_FAMILY[f["role"]], []).append(f)
+    for group in by_family.values():
+        labels = {f["subject"]["qualifiers"]["row_label"] for f in group}
+        squeezed = {label: re.sub(r"\s+", "", label) for label in labels}
+        scores = {}
+        for label in labels:
+            score = 0
+            for t in _row_tokens(label):
+                if all(t in other for other in squeezed.values()):
+                    continue
+                stem = t[:-1] if len(t) >= 4 else t
+                if t in said or stem in said or any(w in t for w in extra):
+                    score += 1
+            scores[label] = score
+        best = max(scores.values(), default=0)
+        if best:
+            named |= {label for label, score in scores.items() if score == best}
+    return named
+
 
 def _norm_value(kind: str, unit: str, amount: float) -> Tuple:
     if kind == "period" and unit == "year":
@@ -455,10 +541,16 @@ def subject_mismatches(answer: str, question: str, facts: Sequence[Mapping[str, 
         return []
     usable = [f for f in facts if f.get("role") in FACT_ROLE_FAMILY]
     text = f"{question} {answer}"
-    codes = set(_STATUS_CODE_RE.findall(text))
-    households = {int(h) for h in _HOUSEHOLD_RE.findall(text)}
+    codes = set(_STATUS_CODE_RE.findall(text)) | {_STATUS_NAMES[m] for m in _STATUS_NAME_RE.findall(text)}
+    households = _households(text)
     rows = {f["subject"]["qualifiers"].get("row_label") for f in usable
             if f["subject"]["qualifiers"].get("row_label") and f["subject"]["qualifiers"]["row_label"] in text}
+    rows |= _named_rows(question, usable)
+    # An answer clause with no role word ("네 식구면 32,154,216원 이상입니다") takes the
+    # role the question asks about.
+    money_roles = {"fee", "income", "deposit", "fine"}
+    asked = {kind: {ROLE_FAMILY[r] for r in ROLE_WORDS if (r in money_roles) == (kind == "money") and _ROLE_RE[r].search(question)}
+             for kind in ("money", "period")}
 
     def fits(f: Mapping[str, Any]) -> bool:
         s, q = f["subject"], f["subject"].get("qualifiers") or {}
@@ -485,9 +577,9 @@ def subject_mismatches(answer: str, question: str, facts: Sequence[Mapping[str, 
     found = []
     pairs = _role_pairs(answer, lenient=True)
     for key, roles, clause in pairs:
-        if not roles:
+        families = {ROLE_FAMILY[r] for r in roles} or asked.get(key[0], set())
+        if not families:
             continue
-        families = {ROLE_FAMILY[r] for r in roles}
         mine = _norm_value(*key)
         same = [f for f in usable if FACT_ROLE_FAMILY[f["role"]] in families and fits(f) and value(f)[:2] == mine[:2]]
         if not same or any(value(f) == mine for f in same):

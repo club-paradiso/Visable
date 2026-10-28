@@ -489,11 +489,13 @@ def test_heldout_v9_subject_check_on_real_questions():
     only the page texts (frozen in 3527132 before it was read). Each has 3 right answers
     and 3 wrong ones taken from another row of the same page.
 
-    The subject check barely works on natural questions: people say "네 식구",
-    "결혼이민", "박사과정", "인도 국적", while it reads only status codes, "N인 가구" and
-    the AI's row labels verbatim. With the facts, 5 of 72 wrong answers are marked for
-    review; without them, 2. None of the household, status-code or other mix-ups is
-    caught. Measured after three post hoc fixes (a comma in "3,896만 8,428원", "24개월"
+    Measured first (945653e): with the facts 5 of 72 wrong answers marked, none of the
+    household, status-code or other mix-ups. The check read only status codes, "N인 가구"
+    and the AI's row labels verbatim. It now also reads status names ("결혼이민"),
+    household words ("네 식구"), distinctive row words with a few synonyms ("대사관" →
+    공관), and takes the question's role when the answer clause has none. v9 was the
+    development set for that, so these numbers are seen; held-out v10 measures it.
+    Three post hoc value-check fixes came first (a comma in "3,896만 8,428원", "24개월"
     for "2년", a general row label hiding its narrower F-6 row); before them 13 of 72
     right answers were withheld, now 1 ("증명서류" for the page's "입증서류")."""
     ml = load_module("manual_ledger")
@@ -512,8 +514,8 @@ def test_heldout_v9_subject_check_on_real_questions():
     right = Counter(outcome(c, a, True) for c in cases for a in c["right_answers"])
     wrong = Counter(outcome(c, w["text"], True) for c in cases for w in c["wrong_answers"])
     wrong_without = Counter(outcome(c, w["text"], False) for c in cases for w in c["wrong_answers"])
-    assert right == {"pass": 67, "review": 4, "withheld": 1}, right
-    assert wrong == {"pass": 67, "review": 5}, wrong
+    assert right == {"pass": 68, "review": 3, "withheld": 1}, right
+    assert wrong == {"pass": 38, "review": 34}, wrong
     assert wrong_without == {"pass": 70, "review": 2}, wrong_without
     caught_kinds = {w["kind"] for c in cases for w in c["wrong_answers"] if outcome(c, w["text"], True) != "pass"}
-    assert caught_kinds == {"row"}
+    assert caught_kinds == {"row", "household", "status_code", "other"}
