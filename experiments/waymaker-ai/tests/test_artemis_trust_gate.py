@@ -443,3 +443,24 @@ def test_heldout_v7_role_check():
             withheld += res["verdict"] == "withheld"
             marked += bool(res.get("role_mismatches"))
     assert (total, withheld) == (107, 0) and marked >= 60, (total, withheld, marked)
+
+
+def test_heldout_v8_role_check_gaps():
+    """Held-out v8 (entry deadlines, papers naming amounts, colloquial verbs, bare
+    table amounts; written by an agent that never saw this code). E4B: 23/24 correct
+    after the post-check, the same before 9daf7a5; the one miss (U-22) is the value
+    check withholding a bare "22,000,000" under a "소득기준" header without (원).
+    No correct answer is sent to review. Of 72 planted role-shifted sentences, 13
+    are withheld and 26 marked for review (18 before 9daf7a5)."""
+    rec = json.loads((BOOTSTRAP_DIR / "runs" / "2026-10-28-e4b-it-4bit-m1-8gb-v8-gated-integrity" / "run_record.json").read_text(encoding="utf-8"))
+    assert rec["status"] == "completed" and rec["summary"]["outcomes_checked"]["correct"] == 23
+    assert rec["cases_sha256"] == hashlib.sha256((BOOTSTRAP_DIR / "heldout_v8_cases.json").read_bytes()).hexdigest()
+    cases = {c["id"]: c for c in json.loads((BOOTSTRAP_DIR / "heldout_v8_cases.json").read_text(encoding="utf-8"))["cases"]}
+    assert not any(r["outcome_checked"] == "needs_review" for r in rec["results"])
+    counts = {"withheld": 0, "review": 0, "silent": 0}
+    for case in cases.values():
+        trusted = [e for e in case["evidence"] if tg.is_trusted(e, True)]
+        for sentence in case["expect"]["answer_must_not_contain"]:
+            res = tg.post_check({"status": "answered", "answer": sentence, "citations": case["expect"]["must_cite"]}, trusted)
+            counts["withheld" if res["verdict"] == "withheld" else "review" if res.get("role_mismatches") else "silent"] += 1
+    assert counts == {"withheld": 13, "review": 26, "silent": 33}, counts
