@@ -37,25 +37,87 @@ _CODE_RE = re.compile(r"(?<![A-Za-z0-9])[A-H]\s?-?\s?\d{1,2}", re.IGNORECASE)
 # 체류기간 alone, "I'd like to come to Korea as a digital nomad (F-1-D) … what kind of
 # visa" on a status code plus "work", and "I came to Korea visa-free … so I can stay"
 # went nowhere. These cues live here, in the experiment, not in the backend detector.
-_ABROAD_RE = re.compile(
-    r"(?<!한국)(?<!국내)(?<!서울)에\s*살고\s*있|해외에\s*(?:있|살)|본국에\s*(?:있|살)"
-    r"|한국(?:에|으로)\s*(?:가|오|들어가|들어오)(?:려|고\s*싶|면|게\s*되)"
-    r"|\b(?:come|coming|move|moving)\s+to\s+Korea\b|\boverseas\b|\babroad\b",
-    re.IGNORECASE)
-_IN_KOREA_RE = re.compile(
-    # "한국에 있는 교회" is about the church, not the person: only "있어요/있는데/있고…".
-    r"(?:한국|국내)에\s*(?:있(?:어|습|는데|고|으)|살고|와\s*있|체류\s*(?:중|하고))|들어와\s*있|입국해서"
-    r"|\bI\s+came\s+to\s+Korea\b|\b(?:I'm|I am|we're|we are)\s+(?:in|living in|staying in)\s+Korea\b"
-    r"|\balready in Korea\b|\bin Korea now\b",
-    re.IGNORECASE)
+#: Places in Korea. Any other place a person says they live or stay in is abroad.
+_KOREAN_PLACES = ("한국", "국내", "서울", "부산", "인천", "대구", "대전", "광주", "울산", "세종", "제주", "수원",
+                  "경기", "강원", "충북", "충남", "전북", "전남", "경북", "경남", "창원", "천안", "청주", "전주",
+                  "포항", "김해", "안산", "평택", "화성", "용인", "고양", "성남", "여기", "이곳")
+_KOREAN_PLACES_EN = ("Korea", "Seoul", "Busan", "Incheon", "Daegu", "Daejeon", "Gwangju", "Ulsan", "Sejong",
+                     "Jeju", "Suwon", "Changwon", "here")
+#: Places abroad people name ("마닐라에서 지내는데"). A place on neither list (농장, 연구소,
+#: 카페) says nothing about the country.
+_FOREIGN_PLACES = ("베트남", "하노이", "호치민", "필리핀", "마닐라", "세부", "중국", "베이징", "상하이", "칭다오", "하얼빈",
+                   "옌볜", "연변", "일본", "도쿄", "오사카", "몽골", "울란바토르", "우즈베키스탄", "타슈켄트", "카자흐스탄",
+                   "키르기스스탄", "러시아", "모스크바", "인도네시아", "자카르타", "태국", "방콕", "캄보디아", "프놈펜",
+                   "라오스", "미얀마", "네팔", "카트만두", "스리랑카", "방글라데시", "파키스탄", "인도", "뉴델리", "대만",
+                   "타이베이", "홍콩", "싱가포르", "말레이시아", "동티모르", "미국", "뉴욕", "캐나다", "토론토", "밴쿠버",
+                   "영국", "런던", "독일", "베를린", "프랑스", "파리", "이탈리아", "스페인", "호주", "시드니", "뉴질랜드",
+                   "브라질", "페루", "리마", "멕시코", "칠레", "나이지리아", "라고스", "케냐", "이집트", "튀르키예", "터키",
+                   "본국", "고향", "친정", "해외", "외국")
+_FOREIGN_PLACES_EN = ("Vietnam", "Hanoi", "Philippines", "Manila", "China", "Beijing", "Shanghai", "Japan", "Tokyo",
+                      "Osaka", "Mongolia", "Uzbekistan", "Tashkent", "Kazakhstan", "Russia", "Moscow", "Indonesia",
+                      "Jakarta", "Thailand", "Bangkok", "Cambodia", "Nepal", "India", "Delhi", "Taiwan", "Taipei",
+                      "Singapore", "Malaysia", "America", "York", "Canada", "Toronto", "Vancouver", "England",
+                      "London", "Germany", "Berlin", "France", "Paris", "Australia", "Sydney", "Zealand", "Brazil",
+                      "Peru", "Lima", "Mexico", "Chile", "Nigeria", "Lagos", "Kenya", "Egypt", "Turkey", "home", "abroad")
+#: "X에서 지내는데", "X에 살아요", "X에 2주째 있는데": where someone is now. Not "X에 있는
+#: 회사" (an organisation), "X에서 공부하려면" (an intention), "X에 나가 있으면" (a trip), or
+#: "…받을 수 있나요".
+_ORG = r"(?:회사|교회|기관|학교|대학|영사관|대사관|공장|단체)"
+_STAYS_AT_RE = re.compile(
+    r"([가-힣]{2,})(?:에서|에)\s+(?:(?!나가|수\s)\S+\s+){0,2}?"
+    rf"(?:살(?!려)|지내(?!려)|있(?!는\s*{_ORG}|으려)|머물(?!려)|거주|공부하(?!려)|일하(?!려)|다니(?!려))")
+_STAYS_AT_EN_RE = re.compile(
+    r"\b(?:I(?:'m| am)|we(?:'re| are)|(?:he|she)(?:'s| is))\s+(?:still\s+|already\s+|back\s+home\s+)?"
+    r"(?:in|at|living in|based in|staying in)\s+([A-Z][a-z]+)"
+    r"|\bI\s+live\s+in\s+([A-Z][a-z]+)|\bout of\s+([A-Z][a-z]+)|\bcame (?:in)?to\s+([A-Z][a-z]+)"
+    r"|\b(?:registered|living) (?:here )?in\s+([A-Z][a-z]+)|\bcontract in\s+([A-Z][a-z]+)")
+_ABROAD_WORD_RE = re.compile(r"(?:고향|본국|친정|해외|외국)\s*\S*\s*(?:에|에서)\s*(?:있|살|지내)|아직\s+\S+에\s+있"
+                             r"|한국(?:에|으로)\s*(?:가|오|들어가|들어오)(?:려|고\s*싶|면|게\s*되)"
+                             r"|\b(?:come|coming|move|moving|fly|flying)\s+(?:to\s+Korea|over)\b|\boverseas\b|\babroad\b|\bfrom here\b",
+                             re.IGNORECASE)
+_IN_KOREA_WORD_RE = re.compile(r"들어와(?:서|\s*있)|들어왔|입국해서|입국했|와\s*있|외국인등록\s*(?:하고|했|돼)|등록돼\s*있"
+                               r"|\balready in Korea\b|\bwithout leaving\b|\bstill in Korea\b", re.IGNORECASE)
+#: Bringing someone from abroad: a visa matter even when the asker is in Korea.
+_INVITE_RE = re.compile(r"초청|불러\s*오|불러서|불러오|모셔\s*오|데려오|데리고\s*오|뽑겠|채용하려|고용하려|사증발급인정서"
+                        r"|영사관|대사관|\binvite\b|\bsponsor\b|\bhire me\b|\boffer from\b|\bbook flights\b|\bconsulate\b|\bembassy\b",
+                        re.IGNORECASE)
+#: Something only done in Korea: a stay matter even when the asker is abroad.
+_IN_KOREA_TASK_RE = re.compile(r"외국인등록증|연장|변경|재입국|아르바이트|시간제|옮겨|바꿀|바꾸|자격외|신고"
+                               r"|\bextend\b|\bswitch\b|\breport\b|\bcard expires\b|\bpart-time\b|\bchange\b", re.IGNORECASE)
 #: Stay routes taken from words that a visa question uses too.
 _WEAK_STAY = {"활동범위", "체류 절차(질문에 명시)"}
 _STAY_PERIOD_WORD_RE = re.compile(r"체류\s*기간", re.IGNORECASE)
 
 
 def _location(question: str) -> str:
-    abroad, korea = bool(_ABROAD_RE.search(question or "")), bool(_IN_KOREA_RE.search(question or ""))
-    return "abroad" if abroad and not korea else "korea" if korea and not abroad else ""
+    """"abroad" (a visa matter), "korea" (a stay matter) or "" (cannot tell).
+    Measured on held-out v11 (seen): the first cues (the fifteen's wording only) routed
+    12 of 30 right, the same as without them."""
+    q = question or ""
+    korea = abroad = False
+    for m in _STAYS_AT_RE.finditer(q):
+        # The place word, or the word before it: "캐나다 집에서", "필리핀 마닐라에서".
+        before = q[max(0, m.start() - 8):m.start()]
+        if any(p in m.group(1) for p in _KOREAN_PLACES):
+            korea = True
+        elif any(p in m.group(1) or p in before for p in _FOREIGN_PLACES):
+            abroad = True
+    for m in _STAYS_AT_EN_RE.finditer(q):
+        place = next(g for g in m.groups() if g)
+        if place in _KOREAN_PLACES_EN:
+            korea = True
+        elif place in _FOREIGN_PLACES_EN:
+            abroad = True
+    abroad = abroad or bool(_ABROAD_WORD_RE.search(q))
+    korea = korea or bool(_IN_KOREA_WORD_RE.search(q))
+    invite, task = bool(_INVITE_RE.search(q)), bool(_IN_KOREA_TASK_RE.search(q))
+    if invite and not (korea and task and not abroad):
+        return "abroad" if (abroad or korea) else ""
+    if korea and (task or not abroad):
+        return "korea"
+    if abroad and not korea:
+        return "abroad"
+    return ""
 
 
 def route(question: str) -> List[Tuple[str, str]]:

@@ -640,6 +640,70 @@ def polarity_flips(answer: str, trusted_text: str) -> List[str]:
     return found
 
 
+# Held-out v11 (2026-10-28): polarity_flips caught 0 of 30 flipped answers. Real flips
+# rarely repeat the counted number; they lift the limit ("제한 없이", "관계없이", "넘어서도",
+# "…더라도 인정됩니다") or claim "가능" where the page says "불가/불허/불인정". This check
+# compares an answer sentence with the page sentence closest in content. Review only.
+_LIMIT_RE = re.compile(r"수\s*없|불가|불허|불인정|인정하지|아니함|않음|제한|한도|이내|범위\s*내|까지만|만\s*인정|초과할\s*수\s*없")
+_LIFT_RE = re.compile(r"제한\s*(?:없이|이\s*없|되지\s*않)|관계\s*없이|상관\s*없이|넘어서도|넘겨서도|넘어\s*(?:한\s*번에\s*)?더"
+                      r"|묶이지\s*않|한도\s*없이|그대로\s*인정|계속\s*(?:인정|연장)|(?:더라도|어도|여도|아도)\s*[^.]{0,40}?"
+                      r"(?:수\s*있|가능|인정|허용|됩니다)")
+_ALLOW_RE = re.compile(r"수\s*있|가능|허용|써도\s*됩|해도\s*됩")
+_HARD_NO_RE = re.compile(r"수\s*없|불가|불허|불인정|인정하지|아니함|않음")
+_DENY_RE = re.compile(r"없|불가|않|안\s*되|안\s*됩|못|제한됩|불허")
+_KEEPS_LIMIT_RE = re.compile(r"이내|까지|범위|한도|만\s|만입|최대|이하로|넘을\s*수\s*없")
+_STEM_TAIL_RE = re.compile(r"(?:은|는|이|가|을|를|에|의|로|으로|도|만|까지|부터|에서|이나|이면|하여|해서|하고|합니다|됩니다|입니다)$")
+
+
+#: Word starts that carry no content ("있습니다", "됩니다", "하지", "중이어도").
+_STEM_STOP = {"있습", "있어", "없습", "됩니", "합니", "입니", "하지", "않아", "않습", "중이", "이어", "하여", "해서",
+              "경우", "또는", "그리", "이상", "이하", "다만", "또한", "있는", "하는", "되는", "수있"}
+
+
+def _stems(text: str) -> set:
+    out = set()
+    for w in re.findall(r"[가-힣]{2,}", text):
+        stem = _STEM_TAIL_RE.sub("", w)[:2]
+        if len(stem) == 2 and stem not in _STEM_STOP:
+            out.add(stem)
+    return out
+
+
+def permission_flips(answer: str, trusted_text: str) -> List[str]:
+    lines = [ln for ln in trusted_text.splitlines() if ln.strip()]
+    segments = [" ".join(lines[i:i + 2]) for i in range(len(lines))] + _sentences(trusted_text)
+    found = []
+    for s in _sentences(answer):
+        # "41점 이상이어도 … 불인정입니다" keeps the limit: a lift counts only without a "no".
+        lifts = bool(_LIFT_RE.search(s)) and not re.search(r"불인정|불허|불가|않습|않아요|안\s*됩|없습니다", s) \
+            and not _KEEPS_LIMIT_RE.search(s)
+        allows = bool(_ALLOW_RE.search(s)) and not _DENY_RE.search(s) and not _KEEPS_LIMIT_RE.search(s)
+        if not (lifts or allows):
+            continue
+        mine = _stems(s)
+        if len(mine) < 3:
+            continue
+        scored = []
+        for seg in segments:
+            shared = len(mine & _stems(seg))
+            if shared >= 3:
+                scored.append((shared / len(mine), seg))
+        top = max((sc for sc, _ in scored), default=0.0)
+        if top < 0.5:
+            continue
+        for sc, seg in scored:
+            if sc < max(0.5, top - 0.15):
+                continue
+            # The page grants it somewhere in that passage ("…제한. 단, 결혼이민(F-6)…는 가능"):
+            # an exception the answer states is not a flip (20 right answers of recorded runs).
+            if re.search(r"가능|허용|할\s*수\s*있|인정(?!하지)", seg):
+                continue
+            if (lifts and _LIMIT_RE.search(seg)) or (allows and _HARD_NO_RE.search(seg)):
+                found.append(f"{s.strip()} — 근거: {seg.strip()[:80]}")
+                break
+    return found
+
+
 def _starts_before(text: str) -> Dict[Tuple[str, str], set]:
     out: Dict[Tuple[str, str], set] = {}
     for m in _FROM_RE.finditer(text):
@@ -722,10 +786,12 @@ def post_check(parsed: Optional[Mapping[str, Any]], trusted: Sequence[Mapping[st
     roles = role_mismatches(answer, trusted_text, fact_families)
     subjects = subject_mismatches(answer, question, page_facts)
     starts = start_point_mismatches(answer, trusted_text)
+    lifted = permission_flips(answer, trusted_text)
     flags = [f"role_mismatch: {r}" for r in roles] + [f"subject_mismatch: {m}" for m in subjects] + \
-        [f"start_point_mismatch: {s}" for s in starts]
+        [f"start_point_mismatch: {s}" for s in starts] + [f"permission_flip: {p}" for p in lifted]
     if flags:
         final["review_flags"] = flags
     return {"verdict": "pass", "claims": found, "unsupported": [], "untrusted_citations": [],
             "role_mismatches": roles, "subject_mismatches": subjects, "start_point_mismatches": starts,
+            "permission_flips": lifted,
             "citations_added": added, "final": final}
