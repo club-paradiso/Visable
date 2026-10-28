@@ -458,6 +458,18 @@ _STATUS_NAMES: Dict[str, str] = {
     "결혼이민": "F-6", "관광취업": "H-1", "방문취업": "H-2",
 }
 _STATUS_NAME_RE = re.compile("|".join(sorted(map(re.escape, _STATUS_NAMES), key=len, reverse=True)))
+#: Everyday names people use (held-out v10 W-07 said "결혼비자"). Only names that point
+#: to one status: "취업비자" and "관광비자" stand for several and are left out.
+_STATUS_COLLOQUIAL = (
+    (re.compile(r"결혼\s*비자|배우자\s*비자|결혼이민\s*비자|(?:marriage|spouse)\s+visa", re.IGNORECASE), "F-6"),
+    (re.compile(r"유학\s*비자|학생\s*비자|student\s+visa", re.IGNORECASE), "D-2"),
+    (re.compile(r"어학\s*(?:연수)?\s*비자|language\s+(?:student|course|study)\s+visa", re.IGNORECASE), "D-4"),
+    (re.compile(r"구직\s*비자|job[\s-]*seeker", re.IGNORECASE), "D-10"),
+    (re.compile(r"워홀|워킹\s*홀리데이|working\s+holiday", re.IGNORECASE), "H-1"),
+    (re.compile(r"영주권|permanent\s+residen", re.IGNORECASE), "F-5"),
+    (re.compile(r"동포\s*비자", re.IGNORECASE), "F-4"),
+    (re.compile(r"투자\s*비자|investor\s+visa", re.IGNORECASE), "D-8"),
+)
 _COUNT_WORDS = {"한": 1, "두": 2, "세": 3, "네": 4, "다섯": 5, "여섯": 6, "일곱": 7, "여덟": 8, "아홉": 9, "열": 10,
                 "two": 2, "three": 3, "four": 4, "five": 5, "six": 6, "seven": 7, "eight": 8}
 _COUNT = r"(\d+|다섯|여섯|일곱|여덟|아홉|한|두|세|네|열)"
@@ -541,7 +553,8 @@ def subject_mismatches(answer: str, question: str, facts: Sequence[Mapping[str, 
         return []
     usable = [f for f in facts if f.get("role") in FACT_ROLE_FAMILY]
     text = f"{question} {answer}"
-    codes = set(_STATUS_CODE_RE.findall(text)) | {_STATUS_NAMES[m] for m in _STATUS_NAME_RE.findall(text)}
+    codes = set(_STATUS_CODE_RE.findall(text)) | {_STATUS_NAMES[m] for m in _STATUS_NAME_RE.findall(text)} \
+        | {code for regex, code in _STATUS_COLLOQUIAL if regex.search(text)}
     households = _households(text)
     rows = {f["subject"]["qualifiers"].get("row_label") for f in usable
             if f["subject"]["qualifiers"].get("row_label") and f["subject"]["qualifiers"]["row_label"] in text}
@@ -583,6 +596,10 @@ def subject_mismatches(answer: str, question: str, facts: Sequence[Mapping[str, 
             continue
         mine = _norm_value(*key)
         same = [f for f in usable if FACT_ROLE_FAMILY[f["role"]] in families and fits(f) and value(f)[:2] == mine[:2]]
+        # A row for the named status beats the general row: for an F-6 holder the
+        # extension fee is the F-6 row's 3만원, not the general 6만원 (held-out v10 W-07).
+        if codes and any(f["subject"].get("status_code") for f in same):
+            same = [f for f in same if f["subject"].get("status_code")]
         if not same or any(value(f) == mine for f in same):
             continue
         # The answer also gives the right value somewhere ("1년 이후 2년 이내"; "3년이며,

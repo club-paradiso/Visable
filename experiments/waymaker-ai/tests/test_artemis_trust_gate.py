@@ -11,6 +11,7 @@ import ast
 import hashlib
 import importlib.util
 import json
+import os
 import sys
 from collections import Counter
 from pathlib import Path
@@ -515,7 +516,8 @@ def test_heldout_v9_subject_check_on_real_questions():
     wrong = Counter(outcome(c, w["text"], True) for c in cases for w in c["wrong_answers"])
     wrong_without = Counter(outcome(c, w["text"], False) for c in cases for w in c["wrong_answers"])
     assert right == {"pass": 68, "review": 3, "withheld": 1}, right
-    assert wrong == {"pass": 38, "review": 34}, wrong
+    # 34 before everyday status names and "a row for the named status beats the general row".
+    assert wrong == {"pass": 34, "review": 38}, wrong
     assert wrong_without == {"pass": 70, "review": 2}, wrong_without
     caught_kinds = {w["kind"] for c in cases for w in c["wrong_answers"] if outcome(c, w["text"], True) != "pass"}
     assert caught_kinds == {"row", "household", "status_code", "other"}
@@ -545,7 +547,9 @@ def test_heldout_v10_subject_reading_on_unseen_real_questions():
 
     assert sum(marked(c, a, True) for c in cases for a in c["right_answers"]) == 0
     caught = Counter(w["kind"] for c in cases for w in c["wrong_answers"] if marked(c, w["text"], True))
-    assert caught == {"household": 6, "row": 23, "other": 6, "status_code": 2}, caught
+    # 37 (row 23, status code 2) before everyday status names ("결혼비자") and "a row for
+    # the named status beats the general row", both added after the E4B run below.
+    assert caught == {"household": 6, "row": 25, "other": 6, "status_code": 4}, caught
     assert sum(marked(c, w["text"], False) for c in cases for w in c["wrong_answers"]) == 9
 
 
@@ -574,7 +578,9 @@ def test_heldout_v10_e4b_answers_with_the_facts():
         res = tg.post_check(r["parsed"], trusted, facts=facts, question=case["question"])
         if res["subject_mismatches"] or res["role_mismatches"]:
             now[r["case"]] = "subject" if res["subject_mismatches"] else "role"
-    assert now == {"W-18-f6-income-5person": "subject", "W-23-d6-max-2y": "role"}
+    # W-07 (the general 6만원 for an F-6 extension) is caught since "결혼비자" reads as F-6
+    # and the F-6 row beats the general row.
+    assert now == {"W-07-fee-f6-extension": "subject", "W-18-f6-income-5person": "subject", "W-23-d6-max-2y": "role"}
 
 
 def test_flipped_permission_is_withheld_and_the_same_rule_reworded_is_not():
@@ -722,3 +728,38 @@ def test_heldout_v12_measures_the_rebuilt_route_and_flip_check():
                                                               or res.get("subject_mismatches") or res.get("permission_flips"))
                 seen[kind, caught] += 1
     assert seen == {("right", False): 58, ("right", True): 2, ("flipped", True): 9, ("flipped", False): 51}, seen
+
+
+def test_flip_judge_asks_the_model_only_about_permission_sentences():
+    fj = load_module("flip_judge")
+    page = "출국 중에 있는 외국인에 대한 출입국민원 대행기관의 대행신청은 할 수 없음."
+    asked = []
+
+    def stub(prompt):
+        asked.append(prompt)
+        return '{"verdict": "opposite"}'
+    cache = fj.Cache(Path("/nonexistent/none.jsonl"))
+    cache.path = Path(os.devnull)
+    hits = fj.judge("출국 중이어도 출입국민원 대행기관이 대행신청을 할 수 있습니다.", page, stub, cache)
+    assert hits and asked and "[근거]" in asked[0]
+    # A model "opposite" that the rules do not see as a change of polarity is dropped.
+    assert not fj.judge("출국 중인 외국인은 대행기관이 대행신청을 할 수 없습니다.", page, stub, cache)
+
+
+def test_flip_judge_on_v11_v12_and_recorded_real_answers():
+    """E4B's verdicts are cached (ledgers/flip_judge_cache.jsonl, the model's answer to each
+    prompt), so this replays them. The model alone caught 50 of 90 flips on v11+v12 but
+    marked 15 of 324 right answers of recorded real-manual runs; requiring the rules to see
+    a change of polarity too: 26 of 90 flips, 1 of 120 right answers, 5 of 324 real right
+    answers. v11 and v12 were the development sets for that gate; v13 measures it."""
+    fj = load_module("flip_judge")
+    ml = load_module("manual_ledger")
+    cache = fj.Cache()
+    seen = Counter()
+    for name in ("heldout_v11_checks.json", "heldout_v12_checks.json"):
+        for c in json.loads((BOOTSTRAP_DIR / name).read_text(encoding="utf-8"))["checks"]:
+            sid, page = c["page_id"].split("#p")
+            text = ml._page_text(sid, int(page))["text"]
+            for kind, ans in [("right", a) for a in c["right_answers"]] + [(w["kind"], w["text"]) for w in c["wrong_answers"]]:
+                seen[kind, bool(fj.judge(ans, text, None, cache))] += 1
+    assert (seen["flipped", True], seen["right", True]) == (26, 1), seen

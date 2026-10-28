@@ -200,7 +200,8 @@ def test_subject_probes_from_the_facts():
     would (status code, household size): no right answer is marked, about half of the
     mixed-up ones are. Household mix-ups are all caught; a code alone often fits several
     rows, and row mix-ups cannot be told apart without the row named."""
-    assert _probe_counts(af.subject_probes(FACTS)) == (113, 0, 53)
+    # 53 until a row for the named status beat the general row (2026-10-28, after v10 W-07).
+    assert _probe_counts(af.subject_probes(FACTS)) == (113, 0, 88)
 
 
 def test_pasting_the_ai_row_label_into_the_question_inflates_the_probe_score():
