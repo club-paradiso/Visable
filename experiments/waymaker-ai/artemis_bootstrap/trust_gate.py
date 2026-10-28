@@ -113,15 +113,16 @@ _PERIOD_RE = re.compile(
 #: "1월 이내", "6월 이상", "3월간", "1월이 경과": the manuals' older way of writing N months.
 #: Only with a duration word after it, so "3월에 접수" (March) is never read as a period.
 _MONTH_SPAN_RE = re.compile(r"(?P<n>\d+)\s*월(?=\s*(?:이내|이상|이하|미만|초과|간|동안|이\s*경과|이\s*지나|을\s*초과|를\s*초과|을\s*넘|를\s*넘))")
-#: Periods written with Korean number words: "두 달", "석 달", "두 주", "열흘", "보름",
-#: and Sino-Korean numerals before 개월/년 ("육 개월", "일 년") or a 십 numeral before 일
-#: ("십오 일"). The numeral must start a word, so "한국", "두 번", "세 가지" are not read.
+#: Periods written with Korean number words: "두 달", "석 달", "두 주", "두 해", "열흘",
+#: "보름", and Sino-Korean numerals before 개월/년 ("육 개월", "일 년") or before 일
+#: ("십오 일", "오 일"). The numeral must start a word, so "한국", "두 번", "세 가지",
+#: "해외" are not read.
 _NATIVE_COUNT = {"한": 1, "두": 2, "세": 3, "석": 3, "서": 3, "네": 4, "넉": 4, "너": 4, "다섯": 5, "여섯": 6,
                  "일곱": 7, "여덟": 8, "아홉": 9, "열": 10, "열한": 11, "열두": 12}
-_PARTICLE = r"(?=$|[^가-힣]|간|일|이|가|을|를|은|는|에|의|도|만|씩|째|후|뒤|전|내|동안)"
+_PARTICLE = r"(?=$|[^가-힣]|간|일|이|가|을|를|은|는|에|의|도|만|씩|째|후|뒤|전|내|동안|입|마다|부터|까지|넘|미만|정도|쯤|반)"
 _NATIVE_PERIOD_RE = re.compile(
     r"(?<![가-힣])(?P<w>열한|열두|다섯|여섯|일곱|여덟|아홉|한|두|세|석|서|네|넉|너|열)\s*"
-    r"(?:(?P<m>달)(?!러|력|리|성|라)|(?P<wk>주)" + _PARTICLE + r")"
+    r"(?:(?P<m>달)(?!러|력|리|성|라)|(?P<wk>주)" + _PARTICLE + r"|(?P<y>해)" + _PARTICLE + r")"
 )
 _DAY_WORDS = {"하루": 1, "이틀": 2, "사흘": 3, "나흘": 4, "닷새": 5, "엿새": 6, "이레": 7, "여드레": 8,
               "아흐레": 9, "열흘": 10, "보름": 15}
@@ -129,7 +130,10 @@ _DAY_WORD_RE = re.compile(r"(?<![가-힣])(?P<w>" + "|".join(sorted(_DAY_WORDS, 
 _SINO_DIGIT = {"일": 1, "이": 2, "삼": 3, "사": 4, "오": 5, "육": 6, "칠": 7, "팔": 8, "구": 9}
 _SINO_PERIOD_RE = re.compile(
     r"(?<![가-힣])(?:(?P<n>(?:[이삼사오육칠팔구]?십)?[일이삼사오육칠팔구]|[이삼사오육칠팔구]?십)\s*(?P<u>개월|년)"
-    r"|(?P<n2>[이삼사오육칠팔구]?십[일이삼사오육칠팔구]?)\s*일)"
+    r"|(?P<n2>[이삼사오육칠팔구]?십[일이삼사오육칠팔구]?)\s*일"
+    # A single digit before 일 needs a space ("오 일", never "오일" oil or "삼일절"),
+    # and 이/일 are left out: "이 일" (this matter) and "일 일" are ordinary words.
+    r"|(?P<n3>[삼사오육칠팔구])\s+일" + _PARTICLE + r")"
 )
 _UNIT = {
     "개월": "month", "달": "month", "months": "month", "month": "month", "个月": "month", "tháng": "month",
@@ -211,12 +215,13 @@ def _period_claims(text: str) -> List[Claim]:
         claims.append(Claim("period", m.group(0), ("period", "month", int(m.group("n")))))
     for m in _NATIVE_PERIOD_RE.finditer(text):
         n = _NATIVE_COUNT[m.group("w")]
-        claims.append(Claim("period", m.group(0), ("period", "month", n) if m.group("m") else ("period", "day", n * 7)))
+        key = ("period", "month", n) if m.group("m") else ("period", "year", n) if m.group("y") else ("period", "day", n * 7)
+        claims.append(Claim("period", m.group(0), key))
     for m in _DAY_WORD_RE.finditer(text):
         claims.append(Claim("period", m.group(0), ("period", "day", _DAY_WORDS[m.group("w")])))
     for m in _SINO_PERIOD_RE.finditer(text):
         unit = {"개월": "month", "년": "year"}.get(m.group("u"), "day")
-        claims.append(Claim("period", m.group(0), ("period", unit, _sino(m.group("n") or m.group("n2")))))
+        claims.append(Claim("period", m.group(0), ("period", unit, _sino(m.group("n") or m.group("n2") or m.group("n3")))))
     return claims
 
 

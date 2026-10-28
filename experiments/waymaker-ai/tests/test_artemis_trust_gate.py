@@ -252,6 +252,19 @@ FORMAT_CASES = [
     # Number words that are not periods stay unread.
     ("시험을 두 번 보고 세 가지 서류를 내면 됩니다. 기간은 3개월입니다.", "시험 두 번, 서류 세 가지, 3개월 이내", "pass"),
     ("두 주민이 신청합니다.", "주민 신청", "pass"),
+    # Single-digit Sino numerals before 일 (with a space) and native counts before 해.
+    ("5일 이내입니다.", "오 일 이내에 제출한다.", "pass"),
+    ("오 일 이내입니다.", "5일 이내에 제출한다.", "pass"),
+    ("칠 일이면 됩니다.", "5일 이내", "withheld"),
+    ("두 해 동안 유효합니다.", "2년간 유효", "pass"),
+    ("세 해입니다.", "2년간 유효", "withheld"),
+    ("2년입니다.", "두 해가 지나면", "pass"),
+    # Look-alike words stay unread.
+    ("해외 지사에서 일하며 기간은 3개월입니다.", "해외 지사, 3개월", "pass"),
+    ("오일 교환소에서 3개월 근무합니다.", "오일 교환소, 3개월", "pass"),
+    ("삼일절에 접수, 기간은 6개월입니다.", "삼일절, 6개월", "pass"),
+    ("이 일은 3개월 걸립니다.", "이 일, 3개월", "pass"),
+    ("두 해안 도시에서 3년 체류합니다.", "해안 도시, 3년", "pass"),
 ]
 
 
@@ -287,8 +300,8 @@ def test_heldout_v4_rerun_is_all_correct_after_the_post_check():
 def test_heldout_v5_number_word_periods():
     """Held-out v5 (number-word periods, written by an agent that never saw this code).
     E4B gave 23/24 correct after the post-check (X-10 wrote "열넷 일", a label miss).
-    Of the wrong periods its author planted, all are withheld except four forms the
-    extractor does not read: single-digit Sino numerals before 일 and "두 해"."""
+    Every wrong period its author planted is withheld (single-digit Sino numerals
+    before 일 and "두 해" were the last forms read, after v5)."""
     rec = json.loads((BOOTSTRAP_DIR / "runs" / "2026-10-28-e4b-it-4bit-m1-8gb-v5-gated-integrity" / "run_record.json").read_text(encoding="utf-8"))
     assert rec["status"] == "completed" and rec["summary"]["outcomes_checked"]["correct"] == 23
     assert rec["cases_sha256"] == hashlib.sha256((BOOTSTRAP_DIR / "heldout_v5_cases.json").read_bytes()).hexdigest()
@@ -300,4 +313,4 @@ def test_heldout_v5_number_word_periods():
             parsed = {"status": "answered", "answer": f"{wrong}입니다.", "citations": case["expect"]["must_cite"]}
             if tg.post_check(parsed, trusted)["verdict"] == "pass":
                 passed.append(wrong)
-    assert sorted(passed) == ["두 해", "삼 일", "오 일", "육 일"], passed
+    assert passed == [], passed  # "오 일", "삼 일", "육 일", "두 해" passed until 2026-10-28
