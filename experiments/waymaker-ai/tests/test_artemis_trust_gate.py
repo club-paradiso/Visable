@@ -519,3 +519,59 @@ def test_heldout_v9_subject_check_on_real_questions():
     assert wrong_without == {"pass": 70, "review": 2}, wrong_without
     caught_kinds = {w["kind"] for c in cases for w in c["wrong_answers"] if outcome(c, w["text"], True) != "pass"}
     assert caught_kinds == {"row", "household", "status_code", "other"}
+
+
+def test_heldout_v10_subject_reading_on_unseen_real_questions():
+    """Held-out v10: 24 new questions over all 22 real pages whose rows carry different
+    values, written by an agent that saw only the page texts, after the subject reading
+    was committed (d6c4690) and frozen in 01f4f33 before it was read.
+
+    With the facts, 37 of 72 wrong answers are marked for review (12 with the code of
+    945653e, 9 without the facts): every household mix-up, 23 of 44 row mix-ups, 6 of 14
+    others, 2 of 8 status-code mix-ups. No right answer is marked or withheld. One was
+    (W-01) until the answer-wide right-value rule, added after the E4B run below; that
+    rule does not touch single-value answers, so the wrong-answer counts did not move."""
+    ml = load_module("manual_ledger")
+    af = load_module("approved_facts")
+    facts = af.load_facts()
+    cases = ml.resolve_cases(json.loads((BOOTSTRAP_DIR / "heldout_v10_cases.json").read_text(encoding="utf-8"))["cases"])
+    assert len(cases) == 24 and len({c["evidence"][0]["id"] for c in cases}) == 22
+
+    def marked(case, answer, with_facts):
+        trusted = [e for e in case["evidence"] if tg.is_trusted(e, True)]
+        res = tg.post_check({"status": "answered", "answer": answer, "citations": [trusted[0]["id"]]}, trusted,
+                            facts=facts if with_facts else None, question=case["question"])
+        return res["verdict"] == "withheld" or bool(res["subject_mismatches"] or res["role_mismatches"])
+
+    assert sum(marked(c, a, True) for c in cases for a in c["right_answers"]) == 0
+    caught = Counter(w["kind"] for c in cases for w in c["wrong_answers"] if marked(c, w["text"], True))
+    assert caught == {"household": 6, "row": 23, "other": 6, "status_code": 2}, caught
+    assert sum(marked(c, w["text"], False) for c in cases for w in c["wrong_answers"]) == 9
+
+
+def test_heldout_v10_e4b_answers_with_the_facts():
+    """E4B on v10 with the facts (temperature 0, approved pages only). 22 of 24 answers
+    pass the labels. The run marked 4 of those 22 for review: W-23 by the role check
+    (also without the facts) and W-03, W-05, W-13 by the subject check, which E4B
+    triggers by copying the neighbouring row next to the right one ("3년이며, 재고용 시
+    4년 10개월"). The answer-wide right-value rule, added after this run, clears those
+    three. W-18 (the 4-person income given for 5 people) is a real error the subject
+    check marks both before and after; W-07 (the general 6만원 for an F-6 extension,
+    3만원) it misses: the question says "결혼비자", and the status-name table reads only
+    the official name "결혼이민"."""
+    ml = load_module("manual_ledger")
+    af = load_module("approved_facts")
+    facts = af.load_facts()
+    rec = json.loads((BOOTSTRAP_DIR / "runs" / "2026-10-28-e4b-it-4bit-m1-8gb-v10-gated-integrity-facts" / "run_record.json").read_text(encoding="utf-8"))
+    assert rec["status"] == "completed"
+    assert rec["cases_sha256"] == hashlib.sha256((BOOTSTRAP_DIR / "heldout_v10_cases.json").read_bytes()).hexdigest()
+    assert rec["summary"]["outcomes_raw"]["correct"] == 22 and rec["summary"]["outcomes_checked"]["needs_review"] == 4
+    cases = {c["id"]: c for c in ml.resolve_cases(json.loads((BOOTSTRAP_DIR / "heldout_v10_cases.json").read_text(encoding="utf-8"))["cases"])}
+    now = {}
+    for r in rec["results"]:
+        case = cases[r["case"]]
+        trusted = [e for e in case["evidence"] if tg.is_trusted(e, True)]
+        res = tg.post_check(r["parsed"], trusted, facts=facts, question=case["question"])
+        if res["subject_mismatches"] or res["role_mismatches"]:
+            now[r["case"]] = "subject" if res["subject_mismatches"] else "role"
+    assert now == {"W-18-f6-income-5person": "subject", "W-23-d6-max-2y": "role"}

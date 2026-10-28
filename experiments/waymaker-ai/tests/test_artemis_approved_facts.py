@@ -205,9 +205,11 @@ def test_subject_probes_from_the_facts():
 
 def test_pasting_the_ai_row_label_into_the_question_inflates_the_probe_score():
     """The first measurement (261/326) put the AI's row label in the question word for word;
-    the check matches labels by exact substring, which no real question does."""
+    the check matches labels by exact substring, which no real question does. (Some
+    labels carry a number, "③ 1년 복수사증"; since the answer-wide right-value rule such a
+    pasted label counts as the right value, so this score fell from 98% to 94%.)"""
     n, right, wrong = _probe_counts(af.subject_probes(FACTS, row_labels=True))
-    assert right == 0 and wrong / n > 0.95 > 53 / 113
+    assert right == 0 and wrong / n > 0.9 > 53 / 113
 
 
 def test_facts_do_not_mark_any_recorded_correct_real_manual_answer():

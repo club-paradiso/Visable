@@ -576,6 +576,7 @@ def subject_mismatches(answer: str, question: str, facts: Sequence[Mapping[str, 
 
     found = []
     pairs = _role_pairs(answer, lenient=True)
+    said_values = {_norm_value(*k) for k, _, _ in pairs}
     for key, roles, clause in pairs:
         families = {ROLE_FAMILY[r] for r in roles} or asked.get(key[0], set())
         if not families:
@@ -584,9 +585,10 @@ def subject_mismatches(answer: str, question: str, facts: Sequence[Mapping[str, 
         same = [f for f in usable if FACT_ROLE_FAMILY[f["role"]] in families and fits(f) and value(f)[:2] == mine[:2]]
         if not same or any(value(f) == mine for f in same):
             continue
-        # "1년 이후 2년 이내": a boundary next to the right value in the same clause.
-        in_clause = {_norm_value(*k) for k, _, c in pairs if c == clause}
-        if any(value(f) in in_clause for f in same):
+        # The answer also gives the right value somewhere ("1년 이후 2년 이내"; "3년이며,
+        # 재고용 시 4년 10개월"): the other row is context, not a mix-up. E4B copies
+        # neighbouring rows this way; on held-out v10 three such right answers were marked.
+        if any(value(f) in said_values for f in same):
             continue
         elsewhere = [f for f in usable if value(f) == mine and f not in same]
         if elsewhere:
