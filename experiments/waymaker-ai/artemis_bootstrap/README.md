@@ -419,6 +419,11 @@ ChatGPT's proposals for M-04, Q-11 and K-05 banned one exact recorded sentence, 
 - E4B, gate + integrity (`runs/…-v5-gated-integrity`): 23/24 correct after the post-check, and the same 23 under the post-check before 075a28c — the model copied the evidence's spelling, so there was nothing to wrongly withhold. X-10 wrote "열넷 일" for 14일 (a label miss, not a post-check matter).
 - Planted wrong periods fed through the post-check: 93 of 97 withheld (43 before 075a28c). Still passing: single-digit Sino numerals before 일 ("오 일", "삼 일", "육 일"; left out because "이 일" / "일 일" are ordinary words) and "두 해" (native count + 해 is not read). Held-out v4's number-word durations are now all withheld.
 
+**Post-check "오 일" and "두 해" (held-out v6, 2026-10-28).** A single Sino numeral 삼…구 before 일 is read as days when written with a space ("오 일", "칠 일간"; never "오일", "삼일절", "이 일"), native counts before 해 as years ("두 해 동안", "세 해입니다"; never "해외", "해결", "두 해안"), and the word-final look-ahead accepts 입니다, 마다, 부터, 까지, 정도 … Commit 3ede247, made before v6 was read (v5 is a seen set for it).
+- `heldout_v6_cases.json`: 24 fictional cases by an agent that never saw the repository or the post-check — F 10 same period in digits vs these forms, W 6 wrong periods in these forms from unapproved sources, T 4 look-alike ordinary words, D 4 mixed date/period text.
+- E4B, gate + integrity (`runs/…-v6-gated-integrity`): 24/24 correct before and after (the model copied the evidence's spelling).
+- Planted wrong values: 67 of 72 withheld (56 before 3ede247). Still passing: "열하루" (day words past 열흘 are not read) and Y-23's four-day misattribution — the approved text holds a real "사 일 이내" period, and the post-check checks that a value exists in the evidence, not which fact it belongs to. Before 3ede247 that case was withheld only because "사 일" was unread; with digits ("4일 이내") it would have passed before too.
+
 **Not linked or not stored yet.** `reviews_v2` is empty (it is created on the first save). Decisions live in the repository and the sheet's bundle, not in the sheet's database. `run_smoke.py` can run a v2 file (`--cases label_v2/<set>_cases.v2.json`); only K-14 has been run on v2 so far. No production code, database or deployment was touched.
 
 ## Existing repository boundaries

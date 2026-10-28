@@ -314,3 +314,24 @@ def test_heldout_v5_number_word_periods():
             if tg.post_check(parsed, trusted)["verdict"] == "pass":
                 passed.append(wrong)
     assert passed == [], passed  # "오 일", "삼 일", "육 일", "두 해" passed until 2026-10-28
+
+
+def test_heldout_v6_sino_days_and_native_years():
+    """Held-out v6 ("오 일", "두 해" forms, written by an agent that never saw this code).
+    E4B gave 24/24 correct both before and after 3ede247. Of the wrong values its
+    author planted, the ones that still pass are: "열하루" (day words past 열흘 are
+    not read) and Y-23's four-day misattribution, because the approved text holds a
+    real "사 일 이내" period and the post-check checks values, not their roles."""
+    rec = json.loads((BOOTSTRAP_DIR / "runs" / "2026-10-28-e4b-it-4bit-m1-8gb-v6-gated-integrity" / "run_record.json").read_text(encoding="utf-8"))
+    assert rec["status"] == "completed" and rec["summary"]["outcomes_checked"]["correct"] == 24
+    assert rec["cases_sha256"] == hashlib.sha256((BOOTSTRAP_DIR / "heldout_v6_cases.json").read_bytes()).hexdigest()
+    cases = json.loads((BOOTSTRAP_DIR / "heldout_v6_cases.json").read_text(encoding="utf-8"))["cases"]
+    passed = []
+    for case in cases:
+        trusted = [e for e in case["evidence"] if tg.is_trusted(e, True)]
+        for wrong in case["expect"].get("answer_must_not_contain", []):
+            parsed = {"status": "answered", "answer": f"{wrong}입니다.", "citations": case["expect"]["must_cite"]}
+            if tg.post_check(parsed, trusted)["verdict"] == "pass":
+                passed.append((case["id"][:4], wrong))
+    assert sorted(passed) == [("Y-22", "열하루"), ("Y-23", "4일 동안 유효"), ("Y-23", "4일간 유효"),
+                              ("Y-23", "나흘 동안 유효"), ("Y-23", "사 일 동안 유효")], passed
