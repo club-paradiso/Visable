@@ -1,7 +1,7 @@
 #!/bin/zsh
 # Re-measure the six real-manual sets on label v2 with the 2026-10-28 fixes: --layout
 # (HWP text with tables kept), --facts, the route cues in procedure_route.py, and the
-# cross-check on the mis-click set. Waits for the charger (or >= 50% battery) before each set.
+# cross-check on the always-ask and mis-click sets. Waits for the charger (or >= 50% battery) before each set.
 # One set at a time, each into a new run folder; waits for free disk before each set.
 set -u
 cd "$(dirname "$0")/../.." || exit 2
@@ -41,6 +41,6 @@ run manual_oracle oracle --source-gate --integrity
 run manual_routing routing-routed --source-gate --integrity --route
 run manual_clarify clarify-route-clarify --source-gate --integrity --route --clarify
 run manual_buttons buttons-buttons --source-gate --integrity --route --clarify
-run manual_always_ask always-ask --source-gate --integrity --always-ask
+run manual_always_ask always-ask --source-gate --integrity --always-ask --cross-check
 run manual_misclick misclick-label --source-gate --integrity --always-ask --label-switch --cross-check
 echo "$(date +%T) ALL DONE"
