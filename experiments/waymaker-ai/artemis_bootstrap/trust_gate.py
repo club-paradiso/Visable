@@ -597,6 +597,84 @@ def subject_mismatches(answer: str, question: str, facts: Sequence[Mapping[str, 
     return found
 
 
+# --- Three checks from the fifteen wrong answers of the real-manual sets (2026-10-28) ---
+# Q-11 turned "2회를 초과할 수 없음" into "2회를 초과하여 변경할 수 있습니다"; M-04 moved
+# "변경일(사증소지자는 입국일)로부터 6개월" to "활동을 하려는 시점으로부터"; N-02 took its
+# papers from p105 and cited p103 and p26.
+_COUNTED_RE = re.compile(r"(\d+)\s*(회|번|년|개월|일|시간|주|명|만\s*원|원)")
+_ABLE_RE = re.compile(r"([가-힣]{2,}?)(?:하여|해서|하는|하게|할|하|해|될|되|받을|을|를|이|가)?\s*(?:할\s*)?수\s*(있|없)")
+_SENTENCE_RE = re.compile(r"(?<=[다음함됨임])[.。]\s*|\n+|(?<=니다)\s+")
+#: Words that name when a period starts: "입국일로부터", "변경일(사증소지자는 입국일)로부터".
+_START_WORDS = ("입국", "출국", "변경", "신청", "접수", "허가", "발급", "등록", "졸업", "취득", "결정", "납부",
+                "확정", "만료", "계약", "활동", "시점", "도착", "채용", "고용", "선고", "집행", "출생", "혼인")
+_FROM_RE = re.compile(r"(?:으로|로)?\s*부터\s*(\d+)\s*(개월|년|일)")
+
+
+def _sentences(text: str) -> List[str]:
+    return [s for s in _SENTENCE_RE.split(text or "") if s.strip()]
+
+
+def polarity_flips(answer: str, trusted_text: str) -> List[str]:
+    """Answer sentences that say "…할 수 있다" where the evidence says "…할 수 없다" (or the
+    reverse) about the same thing: the same predicate word ("초과") and every counted
+    number of the evidence sentence ("3회", "2회") in the answer sentence. Not flagged
+    when the evidence also states that predicate the answer's way somewhere."""
+    said: Dict[str, set] = {}
+    rules = []
+    for s in _sentences(trusted_text):
+        counted = {(n, re.sub(r"\s+", "", u)) for n, u in _COUNTED_RE.findall(s)}
+        for m in _ABLE_RE.finditer(s):
+            said.setdefault(m.group(1), set()).add(m.group(2))
+            if counted:
+                rules.append((m.group(1), m.group(2), counted))
+    found = []
+    for s in _sentences(answer):
+        counted = {(n, re.sub(r"\s+", "", u)) for n, u in _COUNTED_RE.findall(s)}
+        for stem, polarity, numbers in rules:
+            m = re.search(re.escape(stem) + r"[^.\n]{0,20}?수\s*(있|없)", s)
+            if not m or m.group(1) == polarity or m.group(1) in said.get(stem, set()):
+                continue
+            if numbers <= counted:
+                found.append(f"{s.strip()} — 근거는 '{stem} … 수 {polarity}'")
+                break
+    return found
+
+
+def _starts_before(text: str) -> Dict[Tuple[str, str], set]:
+    out: Dict[Tuple[str, str], set] = {}
+    for m in _FROM_RE.finditer(text):
+        window = text[max(0, m.start() - 30):m.start()]
+        window = window[window.rfind("\n") + 1:] if "\n" in window[-20:] else window
+        words = {w for w in _START_WORDS if w in window}
+        if words:
+            out.setdefault((m.group(1), m.group(2)), set()).update(words)
+    return out
+
+
+def start_point_mismatches(answer: str, trusted_text: str) -> List[str]:
+    """A period the answer counts from a start ("…시점으로부터 6개월") that the evidence
+    never uses for that period, while the evidence names another start for it."""
+    evidence = _starts_before(trusted_text)
+    found = []
+    for value, words in _starts_before(answer).items():
+        if value in evidence and not words & evidence[value]:
+            found.append(f"{value[0]}{value[1]}의 기산점 {'/'.join(sorted(words))} — 근거의 기산점 {'/'.join(sorted(evidence[value]))}")
+    return found
+
+
+def missing_citations(answer: str, trusted: Sequence[Mapping[str, Any]], cited: Sequence[str]) -> List[str]:
+    """Trusted pages that alone support a claim of the answer (a paper, an amount, a
+    period) while no cited page does: they belong in the citations."""
+    pages = [(e["id"], unicodedata.normalize("NFC", f"{e['title']}\n{e['text']}")) for e in trusted]
+    page_claims = {pid: extract_claims(text) for pid, text in pages}
+    add: List[str] = []
+    for claim in extract_claims(answer):
+        backers = [pid for pid, text in pages if _supported(claim, page_claims[pid], text)]
+        if backers and not set(backers) & set(cited) and backers[0] not in add:
+            add.append(backers[0])
+    return add
+
+
 def post_check(parsed: Optional[Mapping[str, Any]], trusted: Sequence[Mapping[str, Any]],
                facts: Optional[Sequence[Mapping[str, Any]]] = None, question: str = "") -> Dict[str, Any]:
     """(나) Verdict on one parsed model output against the trusted evidence.
@@ -632,10 +710,22 @@ def post_check(parsed: Optional[Mapping[str, Any]], trusted: Sequence[Mapping[st
         if f.get("role") in FACT_ROLE_FAMILY:
             v = f["value"]
             fact_families.setdefault(_norm_value(v["kind"], v["unit"], float(v["amount"])), set()).add(FACT_ROLE_FAMILY[f["role"]])
+    flips = polarity_flips(answer, trusted_text)
+    if flips:
+        # "할 수 없다" turned into "할 수 있다" about the same counted rule is a harmful
+        # answer, not a style question: withheld like an unsupported value.
+        return {"verdict": "withheld", "claims": found, "unsupported": [], "untrusted_citations": [],
+                "polarity_flips": flips, "final": {**abstain, "answer": WITHHELD_ANSWER}}
+    added = missing_citations(answer, trusted, [str(c) for c in citations])
+    if added:
+        final["citations"] = list(citations) + added
     roles = role_mismatches(answer, trusted_text, fact_families)
     subjects = subject_mismatches(answer, question, page_facts)
-    flags = [f"role_mismatch: {r}" for r in roles] + [f"subject_mismatch: {m}" for m in subjects]
+    starts = start_point_mismatches(answer, trusted_text)
+    flags = [f"role_mismatch: {r}" for r in roles] + [f"subject_mismatch: {m}" for m in subjects] + \
+        [f"start_point_mismatch: {s}" for s in starts]
     if flags:
         final["review_flags"] = flags
     return {"verdict": "pass", "claims": found, "unsupported": [], "untrusted_citations": [],
-            "role_mismatches": roles, "subject_mismatches": subjects, "final": final}
+            "role_mismatches": roles, "subject_mismatches": subjects, "start_point_mismatches": starts,
+            "citations_added": added, "final": final}

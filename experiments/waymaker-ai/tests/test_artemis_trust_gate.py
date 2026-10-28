@@ -575,3 +575,56 @@ def test_heldout_v10_e4b_answers_with_the_facts():
         if res["subject_mismatches"] or res["role_mismatches"]:
             now[r["case"]] = "subject" if res["subject_mismatches"] else "role"
     assert now == {"W-18-f6-income-5person": "subject", "W-23-d6-max-2y": "role"}
+
+
+def test_flipped_permission_is_withheld_and_the_same_rule_reworded_is_not():
+    """Q-11 (real-manual set, r3): the page says "2회를 초과할 수 없음"; the answer said
+    "2회를 초과하여 … 변경할 수 있습니다". Saying the same limit another way passes."""
+    page = [{"id": "P", "title": "t", "source": {"approval_state": "approved"},
+             "text": "사업장 변경은 원칙적으로 3회, 재고용 기간 중에는 2회를 초과할 수 없음"}]
+    def verdict(answer):
+        return tg.post_check({"status": "answered", "answer": answer, "citations": ["P"]}, page)["verdict"]
+    assert verdict("원칙적으로 3회, 재고용 기간 중에는 2회를 초과하여 변경할 수 있습니다.") == "withheld"
+    assert verdict("원칙적으로 3회, 재고용 기간 중에는 2회까지 변경할 수 있습니다.") == "pass"
+    assert verdict("원칙적으로 3회, 재고용 기간 중에는 2회를 초과할 수 없습니다.") == "pass"
+
+
+def test_start_point_not_on_the_page_is_marked_for_review():
+    """M-04: "변경일(사증소지자는 입국일)로부터 6개월" answered as "활동을 하려는 시점으로부터"."""
+    page = [{"id": "P", "title": "t", "source": {"approval_state": "approved"},
+             "text": "어학연수(D-4-1)자격은 변경일(사증소지자는 입국일)로부터 6개월이 경과된 사람"}]
+    wrong = tg.post_check({"status": "answered", "answer": "활동을 하려는 시점으로부터 6개월이 지나야 합니다.", "citations": ["P"]}, page)
+    right = tg.post_check({"status": "answered", "answer": "입국일로부터 6개월이 지나야 합니다.", "citations": ["P"]}, page)
+    assert wrong["start_point_mismatches"] and not right["start_point_mismatches"]
+
+
+def test_a_page_the_answer_draws_on_is_added_to_its_citations():
+    """N-02: the papers came from p105, the answer cited p103 only."""
+    pages = [{"id": "A", "title": "a", "text": "체류기간 연장 서류: 재직증명서", "source": {"approval_state": "approved"}},
+             {"id": "B", "title": "b", "text": "외국인등록 서류: 지국의 사업자등록증", "source": {"approval_state": "approved"}}]
+    res = tg.post_check({"status": "answered", "answer": "외국인등록에는 사업자등록증이 필요합니다.", "citations": ["A"]}, pages)
+    assert res["verdict"] == "pass" and res["final"]["citations"] == ["A", "B"] and res["citations_added"] == ["B"]
+
+
+def test_layout_pages_keep_the_tables_and_check_against_the_approved_page():
+    """layout_pages.py: HWP text with tables kept, accepted only against the approved PDF
+    page; --layout evidence carries its own hash and still passes the integrity check."""
+    ml = load_module("manual_ledger")
+    lp = load_module("layout_pages")
+    layout = lp.load()
+    ledger = ml.load_ledger()
+    for pid, row in layout.items():
+        assert row["pdf_sha256"] == ledger[pid]["approved_sha256"]
+        assert row["layout_sha256"] == tg.approval_hash(row["text"])
+        assert row["missing_lines"] <= lp.MAX_MISSING_LINES * row["pdf_lines"] and row["foreign"] <= lp.MAX_FOREIGN
+    # The six pages behind six wrong answers of the real-manual sets.
+    assert "| ❍ 캐나다 | H-1 체류기간 | 40시간 |" in layout["stay_manual_2026_10_19_pdf#p524"]["text"]
+    assert "15일 이내" in layout["stay_manual_2026_10_19_pdf#p8"]["text"]
+    assert "| C-3-4 | 일반상용 | 시장조사, 업무연락, 상담, 계약, 소규모 무역활동 등 상용활동자 및 사증없이 입국하는 APEC카드 소지자 |" \
+        in layout["visa_manual_2026_10_19_pdf#p27"]["text"]
+    for pid in ("visa_manual_2026_10_19_pdf#p313", "visa_manual_2026_10_19_pdf#p164", "stay_manual_2026_10_19_pdf#p38"):
+        assert pid in layout
+    case = {"id": "x", "question": "q", "evidence": [{"id": "stay_manual_2026_10_19_pdf#p524", "source_id": "stay_manual_2026_10_19_pdf", "page": 524, "domain": "stay"}]}
+    plain, laid = ml.resolve_cases([case])[0]["evidence"][0], ml.resolve_cases([case], layout=True)[0]["evidence"][0]
+    assert plain["source"]["text_form"] == "pdf_text" and laid["source"]["text_form"] == "hwp_layout"
+    assert tg.is_trusted(plain, True) and tg.is_trusted(laid, True)

@@ -32,12 +32,50 @@ SCOPE_VISA = _me.SCOPE_VISA      # "visa_issuance"
 _CODE_RE = re.compile(r"(?<![A-Za-z0-9])[A-H]\s?-?\s?\d{1,2}", re.IGNORECASE)
 
 
+# Where the person is (2026-10-28, from the fifteen wrong answers of the real-manual
+# sets): "베트남에 살고 있는데 … D-4로 가면 체류기간은" went to the stay manual on the word
+# 체류기간 alone, "I'd like to come to Korea as a digital nomad (F-1-D) … what kind of
+# visa" on a status code plus "work", and "I came to Korea visa-free … so I can stay"
+# went nowhere. These cues live here, in the experiment, not in the backend detector.
+_ABROAD_RE = re.compile(
+    r"(?<!한국)(?<!국내)(?<!서울)에\s*살고\s*있|해외에\s*(?:있|살)|본국에\s*(?:있|살)"
+    r"|한국(?:에|으로)\s*(?:가|오|들어가|들어오)(?:려|고\s*싶|면|게\s*되)"
+    r"|\b(?:come|coming|move|moving)\s+to\s+Korea\b|\boverseas\b|\babroad\b",
+    re.IGNORECASE)
+_IN_KOREA_RE = re.compile(
+    # "한국에 있는 교회" is about the church, not the person: only "있어요/있는데/있고…".
+    r"(?:한국|국내)에\s*(?:있(?:어|습|는데|고|으)|살고|와\s*있|체류\s*(?:중|하고))|들어와\s*있|입국해서"
+    r"|\bI\s+came\s+to\s+Korea\b|\b(?:I'm|I am|we're|we are)\s+(?:in|living in|staying in)\s+Korea\b"
+    r"|\balready in Korea\b|\bin Korea now\b",
+    re.IGNORECASE)
+#: Stay routes taken from words that a visa question uses too.
+_WEAK_STAY = {"활동범위", "체류 절차(질문에 명시)"}
+_STAY_PERIOD_WORD_RE = re.compile(r"체류\s*기간", re.IGNORECASE)
+
+
+def _location(question: str) -> str:
+    abroad, korea = bool(_ABROAD_RE.search(question or "")), bool(_IN_KOREA_RE.search(question or ""))
+    return "abroad" if abroad and not korea else "korea" if korea and not abroad else ""
+
+
 def route(question: str) -> List[Tuple[str, str]]:
     """``[(domain, procedure_label), ...]``; empty when the question names no procedure."""
     has_code = bool(_CODE_RE.search(question or ""))
     scopes = list(_me.procedure_scopes(question, None, has_code))
     if _me._stay_procedure_named(question) and not any(s[0] == SCOPE_STAY for s in scopes):
         scopes.append((SCOPE_STAY, "체류 절차(질문에 명시)"))
+    where = _location(question)
+    # A stay route resting only on "체류기간" or on a code plus a work word, for someone
+    # who says they live abroad or are coming to Korea, is a visa question.
+    named = {m.group(0) for m in _me._STAY_NAMED_RE.finditer(question or "")}
+    weak = scopes and all(d == SCOPE_STAY and label in _WEAK_STAY for d, label in scopes) \
+        and all(_STAY_PERIOD_WORD_RE.fullmatch(n) for n in named)
+    if where == "abroad" and weak:
+        return [(SCOPE_VISA, "해외 거주(질문에 명시)")]
+    if not scopes and where == "abroad":
+        return [(SCOPE_VISA, "해외 거주(질문에 명시)")]
+    if not scopes and where == "korea":
+        return [(SCOPE_STAY, "국내 체류(질문에 명시)")]
     return scopes
 
 

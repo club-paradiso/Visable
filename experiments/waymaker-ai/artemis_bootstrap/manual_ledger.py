@@ -113,33 +113,44 @@ def _page_text(source_id: str, page: int) -> Optional[Dict[str, Any]]:
     return _PAGE_CACHE[source_id].get(page)
 
 
-def resolve_evidence(item: Mapping[str, Any], ledger: Mapping[str, Mapping[str, Any]]) -> Dict[str, Any]:
+def resolve_evidence(item: Mapping[str, Any], ledger: Mapping[str, Mapping[str, Any]],
+                     layout: Optional[Mapping[str, Mapping[str, Any]]] = None) -> Dict[str, Any]:
     """A case's page reference turned into an evidence item the gate and the post-check understand.
     A page missing from the ledger is ``needs_review`` with no hash: the gate withholds it."""
     page = _page_text(item["source_id"], int(item["page"]))
     if page is None:
         raise ValueError(f"{item['id']}: no such page in the corpus")
     entry = ledger.get(item["id"])
+    # --layout: the page's HWP text with its tables kept (layout_pages.py), used only
+    # when it was accepted against this same approved PDF page; it carries its own hash.
+    lay = (layout or {}).get(item["id"])
+    if lay and entry and lay["pdf_sha256"] != entry["approved_sha256"]:
+        lay = None
     return {
         "id": item["id"],
         "title": f"{item['source_id']} p.{item['page']} {page.get('heading') or ''}".strip(),
-        "text": page.get("text", ""),
+        "text": lay["text"] if lay else page.get("text", ""),
         "source": {
             "kind": "official_manual",
             "approval_state": "approved" if entry else "needs_review",
-            "approved_sha256": entry["approved_sha256"] if entry else None,
+            "approved_sha256": (lay["layout_sha256"] if lay else entry["approved_sha256"]) if entry else None,
+            "text_form": "hwp_layout" if lay else "pdf_text",
             "source_id": item["source_id"], "page": int(item["page"]), "domain": page.get("domain"),
         },
     }
 
 
-def resolve_cases(cases: List[Dict[str, Any]], path: Path = LEDGER) -> List[Dict[str, Any]]:
+def resolve_cases(cases: List[Dict[str, Any]], path: Path = LEDGER, layout: bool = False) -> List[Dict[str, Any]]:
     """Cases whose evidence are page references (no ``text``) get their text and approval
     record from the corpus and the ledger; other cases are returned unchanged."""
     if not any("text" not in e for c in cases for e in c["evidence"]):
         return cases
     ledger = load_ledger(path)
-    return [{**c, "evidence": [e if "text" in e else resolve_evidence(e, ledger) for e in c["evidence"]]} for c in cases]
+    pages = None
+    if layout:
+        import layout_pages
+        pages = layout_pages.load()
+    return [{**c, "evidence": [e if "text" in e else resolve_evidence(e, ledger, pages) for e in c["evidence"]]} for c in cases]
 
 
 def verify(path: Path = LEDGER) -> List[str]:

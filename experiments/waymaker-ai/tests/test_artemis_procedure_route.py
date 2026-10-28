@@ -132,3 +132,20 @@ def test_runner_guards_need_always_ask(tmp_path):
         with pytest.raises(SystemExit):
             runner.main(["--model", "x/y", "--revision", "0" * 40, "--out", str(tmp_path / "r"), flag])
     assert not (tmp_path / "r").exists()
+
+
+@pytest.mark.parametrize("question, domains", [
+    # B-09 / B-12 (real-manual sets): a stay route on "체류기간" or on a code plus "work",
+    # for someone abroad.
+    ("베트남에 살고 있는데 한국 대학 어학당에서 한국어를 배우고 싶어요. D-4로 가면 체류기간은 얼마나 받을 수 있어요?", {"visa_issuance"}),
+    ("I work remotely for a company abroad and I'd like to come to Korea as a digital nomad (F-1-D). What kind of visa would I get?", {"visa_issuance"}),
+    # A-17: nothing named, but the person says they are in Korea.
+    ("I came to Korea visa-free for a health check-up and the hospital now says I need long-term treatment.", {"stay"}),
+    # Not the person's location: the church is in Korea; "stay in Korea on H-2" says nothing.
+    ("본국 교단에서 선교사를 한국에 보내려고 하는데, 한국에 있는 개별 교회 담임목사님 이름으로 초청해도 되나요?", set()),
+    ("My father is an ethnic Korean from Uzbekistan. How long can he stay in Korea on H-2?", set()),
+    # A strong stay word keeps its route whatever the location cue.
+    ("한국에 살고 있는데 체류기간 연장허가 수수료가 얼마예요?", {"stay"}),
+])
+def test_route_reads_where_the_person_is(question, domains):
+    assert {d for d, _ in pr.route(question)} == domains

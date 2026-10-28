@@ -265,4 +265,7 @@ def test_facts_change_no_outcome_on_the_six_real_manual_sets():
                                    for f in (FACTS, None))
             assert with_facts == without, (rp, r["case"], without, with_facts)
             seen[with_facts] += 1
-    assert seen == {"correct": 78, "harmful": 6, "other": 9, "safe_abstain": 7, "needs_review": 4}, seen
+    # Since the three checks of 2026-10-28 (after the analysis of these fifteen): Q-11's
+    # flipped "수 없음" is withheld (harmful -> safe_abstain) and N-02 gets its p105 citation
+    # (other -> correct).
+    assert seen == {"correct": 79, "harmful": 5, "other": 8, "safe_abstain": 8, "needs_review": 4}, seen

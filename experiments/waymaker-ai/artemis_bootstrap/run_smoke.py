@@ -165,7 +165,7 @@ def run(args: argparse.Namespace) -> int:
     if free_disk_gb() < args.min_free_disk_gb:
         raise SystemExit(f"refusing to start: {free_disk_gb()} GB free, need {args.min_free_disk_gb} GB for swap headroom")
     cases_path = Path(args.cases).resolve()
-    cases = manual_ledger.resolve_cases(smoke_grader.load_cases(cases_path))
+    cases = manual_ledger.resolve_cases(smoke_grader.load_cases(cases_path), layout=getattr(args, "layout", False))
     facts = load_facts() if getattr(args, "facts", False) else None
     if args.source_gate and not all(trust_gate.has_source_labels(c) for c in cases):
         raise SystemExit(f"--source-gate needs source labels on every evidence item; {cases_path.name} has none")
@@ -207,6 +207,7 @@ def run(args: argparse.Namespace) -> int:
         "cross_check": args.cross_check,
         "label_switch": args.label_switch,
         "facts": str(FACTS_LEDGER.relative_to(Path(__file__).resolve().parent)) if args.facts else None,
+        "layout": bool(getattr(args, "layout", False)),
         "post_check": "applied offline to every output when the cases carry source labels",
         "prompts_persisted": False,
         "status": "started",
@@ -427,6 +428,8 @@ def main(argv: Optional[List[str]] = None) -> int:
                    help="show the two buttons for every question; the pressed button (user_choice) is the only route")
     p.add_argument("--cross-check", action="store_true",
                    help="with --always-ask: ask once when the detector confidently disagrees with the pressed button")
+    p.add_argument("--layout", action="store_true",
+                   help="real-manual pages as HWP text with tables kept, where accepted against the approved PDF page (layout_pages.py)")
     p.add_argument("--facts", action="store_true",
                    help="post-check also compares answers with the approved facts ledger (review only, never withholds)")
     p.add_argument("--label-switch", action="store_true",
