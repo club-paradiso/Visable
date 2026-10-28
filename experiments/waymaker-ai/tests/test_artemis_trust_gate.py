@@ -763,3 +763,33 @@ def test_flip_judge_on_v11_v12_and_recorded_real_answers():
             for kind, ans in [("right", a) for a in c["right_answers"]] + [(w["kind"], w["text"]) for w in c["wrong_answers"]]:
                 seen[kind, bool(fj.judge(ans, text, None, cache))] += 1
     assert (seen["flipped", True], seen["right", True]) == (26, 1), seen
+
+
+def test_heldout_v13_flip_judge_and_everyday_status_names():
+    """Held-out v13 (frozen 124c157, written after 402c322).
+    Flipped permissions on 19 new pages: the rules mark 11 of 60, the E4B judge (cached
+    verdicts) 13, either 16; none of the 60 right answers is marked by either.
+    Subject questions naming the status in everyday words: planted wrong answers 37 of 72
+    marked (34 with the code of 30c3045). E4B with the facts: 21 of 24 right; of its three
+    wrong answers the subject check marks S-01 (general 6만원 for an F-6 extension) and S-18
+    (the 4-person income for 5 people), not S-17 (it counted "세 식구" as a 2-person
+    household, so the question and the answer name both sizes). One right answer (S-11) is
+    marked by the role check, which marks it without the facts too."""
+    fj = load_module("flip_judge")
+    ml = load_module("manual_ledger")
+    cache = fj.Cache()
+    seen = Counter()
+    for c in json.loads((BOOTSTRAP_DIR / "heldout_v13_checks.json").read_text(encoding="utf-8"))["checks"]:
+        sid, page = c["page_id"].split("#p")
+        trusted = ml.resolve_cases([{"id": c["id"], "question": c["question"],
+                                     "evidence": [{"id": c["page_id"], "source_id": sid, "page": int(page), "domain": "x"}]}])[0]["evidence"]
+        for kind, ans in [("right", a) for a in c["right_answers"]] + [("flipped", w["text"]) for w in c["wrong_answers"]]:
+            res = tg.post_check({"status": "answered", "answer": ans, "citations": [c["page_id"]]}, trusted, question=c["question"])
+            rules = res["verdict"] == "withheld" or bool(res.get("start_point_mismatches") or res.get("role_mismatches")
+                                                         or res.get("subject_mismatches") or res.get("permission_flips"))
+            seen[kind, rules or bool(fj.judge(ans, trusted[0]["text"], None, cache))] += 1
+    assert seen == {("right", False): 60, ("flipped", True): 16, ("flipped", False): 44}, seen
+    rec = json.loads((BOOTSTRAP_DIR / "runs" / "2026-10-28-e4b-it-4bit-m1-8gb-v13-subject-facts" / "run_record.json").read_text(encoding="utf-8"))
+    assert rec["status"] == "completed" and rec["summary"]["outcomes_raw"]["correct"] == 21
+    marked = {r["case"] for r in rec["results"] if (r.get("post_check") or {}).get("subject_mismatches")}
+    assert marked == {"S-01-f6-extension-fee", "S-18-f6-income-five-en"}
