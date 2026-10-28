@@ -172,7 +172,13 @@
     return '<button type="button" class="cs-theme-toggle ' + (cls || '') + '" data-vt-open aria-haspopup="dialog" aria-expanded="false" aria-controls="vtCivicPop" aria-label="' + label + '" title="' + label + '">' +
       '<span class="vt-coin" data-c="' + esc(currentSkin()) + '" aria-hidden="true"></span><span class="cs-theme-label">' + label + '</span></button>';
   }
-  var langDialog = null, langOpener = null;
+  var langDialog = null, langOpener = null, langTrack = null;
+  function langPopover() { return window.matchMedia ? window.matchMedia('(min-width: 681px)').matches : window.innerWidth > 680; }
+  function langOpenerFallback() {
+    var kind = langOpener && langOpener.classList.contains('cs-lang-searched') ? '.cs-lang-searched' : '.cs-lang-home';
+    var visible = function (sel) { return Array.prototype.filter.call(document.querySelectorAll(sel), function (b) { return b.getClientRects().length; })[0]; };
+    return visible('[data-cs-lang-open]' + kind) || visible('[data-cs-lang-open]') || null;
+  }
   function renderLangDialog(filter) {
     var cur = currentLangCode(); var f = String(filter || '').trim().toLowerCase();
     var list = langOptions().filter(function (o) { return !f || o.name.toLowerCase().indexOf(f) >= 0 || o.local.toLowerCase().indexOf(f) >= 0 || o.code.toLowerCase().indexOf(f) >= 0; });
@@ -185,10 +191,26 @@
   function openLangDialog(opener) {
     if (!langDialog) {
       langDialog = document.createElement('dialog'); langDialog.id = 'csLangDialog'; langDialog.className = 'cs-lang-dialog'; langDialog.setAttribute('aria-labelledby', 'csLangTitle'); document.body.append(langDialog);
-      langDialog.addEventListener('close', function () { document.querySelectorAll('[data-cs-lang-open]').forEach(function (b) { b.setAttribute('aria-expanded', 'false'); }); if (langOpener && langOpener.isConnected) langOpener.focus(); });
+      langDialog.addEventListener('close', function () {
+        if (langTrack) { langTrack(); langTrack = null; }
+        document.querySelectorAll('[data-cs-lang-open]').forEach(function (b) { b.setAttribute('aria-expanded', 'false'); });
+        // Picking a language re-renders the header buttons before this event fires: return focus to the button that replaced the opener.
+        var back = langOpener && langOpener.isConnected ? langOpener : langOpenerFallback();
+        if (back) back.focus();
+      });
       langDialog.addEventListener('click', function (e) { if (e.target === langDialog) langDialog.close(); });
       // Escape closes the sheet even when a page-level key handler would otherwise swallow the dialog's cancel.
-      langDialog.addEventListener('keydown', function (e) { if (e.key === 'Escape' || e.key === 'Esc') { e.preventDefault(); e.stopPropagation(); langDialog.close(); } });
+      langDialog.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' || e.key === 'Esc') { e.preventDefault(); e.stopPropagation(); langDialog.close(); return; }
+        // Listbox keys: ↑/↓ move between languages (↓ from the filter enters the list), Home/End jump to the ends.
+        var opts = Array.prototype.slice.call(langDialog.querySelectorAll('.cs-lang-option:not([disabled])'));
+        if (!opts.length || ['ArrowDown', 'ArrowUp', 'Home', 'End'].indexOf(e.key) < 0) return;
+        var i = opts.indexOf(document.activeElement);
+        if (i < 0 && (e.key === 'Home' || e.key === 'End')) return; // keep caret keys in the filter field
+        var next = e.key === 'Home' ? 0 : e.key === 'End' ? opts.length - 1 : i < 0 ? (e.key === 'ArrowDown' ? 0 : -1) : Math.min(opts.length - 1, Math.max(0, i + (e.key === 'ArrowDown' ? 1 : -1)));
+        if (next < 0) return;
+        e.preventDefault(); opts[next].focus();
+      });
     }
     langOpener = opener;
     langDialog.innerHTML = '<div class="cs-lang-head"><h2 id="csLangTitle">' + esc(t('languageTitle')) + '</h2><button type="button" class="cs-lang-close" data-cs-lang-close aria-label="' + esc(t('close')) + '">' + icon('x') + '</button></div>' +
@@ -197,11 +219,12 @@
     renderLangDialog('');
     langDialog.querySelector('[data-cs-lang-filter]').addEventListener('input', function (e) { renderLangDialog(e.target.value); });
     langDialog.querySelector('[data-cs-lang-close]').addEventListener('click', function () { langDialog.close(); });
-    // Desktop: anchor under the opener like a popover; mobile (≤680px): the stylesheet turns it into a bottom sheet.
-    langDialog.style.top = ''; langDialog.style.left = ''; langDialog.style.right = '';
-    if (window.innerWidth > 680 && opener) { var r = opener.getBoundingClientRect(); langDialog.style.top = Math.round(r.bottom + 8) + 'px'; langDialog.style.right = Math.max(12, Math.round(window.innerWidth - r.right)) + 'px'; }
     opener && opener.setAttribute('aria-expanded', 'true');
     if (typeof langDialog.showModal === 'function') langDialog.showModal(); else langDialog.setAttribute('open', '');
+    // Desktop: a popover under the opener, placed by the shared anchoring (assets/js/anchored-overlay.js) once the
+    // dialog is displayed and measurable; it follows the opener on scroll/resize. ≤680px: the stylesheet makes it a bottom sheet.
+    if (langTrack) langTrack();
+    langTrack = window.VisableOverlay ? window.VisableOverlay.track(langDialog, opener, { when: langPopover }) : null;
     var sel = langDialog.querySelector('.cs-lang-option[aria-selected="true"]') || langDialog.querySelector('.cs-lang-option'); if (sel) sel.focus();
   }
   function refreshLangButtons() { document.querySelectorAll('.cs-lang').forEach(function (b) { var tmp = document.createElement('div'); tmp.innerHTML = langButton(b.classList.contains('cs-lang-searched') ? 'cs-lang-searched' : 'cs-lang-home'); b.replaceWith(tmp.firstChild); }); }

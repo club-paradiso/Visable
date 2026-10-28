@@ -324,18 +324,13 @@
         b.setAttribute('aria-expanded', open && b === opener ? 'true' : 'false');
       });
     }
-    function place() {
-      if (!opener || narrow()) { pop.style.left = pop.style.right = pop.style.top = pop.style.bottom = ''; return; }
-      var r = opener.getBoundingClientRect();
-      pop.style.left = 'auto';
-      pop.style.right = Math.max(12, window.innerWidth - r.right) + 'px';
-      pop.style.bottom = 'auto';
-      var top = r.bottom + 8;
-      if (top + pop.offsetHeight + 12 > window.innerHeight) top = Math.max(12, window.innerHeight - pop.offsetHeight - 12);
-      pop.style.top = Math.max(12, top) + 'px';
-    }
+    // Popover placement is the shared anchoring (assets/js/anchored-overlay.js): under the opener, end-aligned,
+    // kept inside the viewport and re-placed on scroll/resize. ≤600px the stylesheet makes it a bottom sheet.
+    var stopTrack = null;
+    function popover() { return !narrow(); }
     function close(focus) {
       if (pop.hidden) return;
+      if (stopTrack) { stopTrack(); stopTrack = null; }
       pop.hidden = true;
       scrim.hidden = true;
       setExpanded(false);
@@ -348,7 +343,8 @@
       pop.setAttribute('aria-modal', narrow() ? 'true' : 'false');
       syncPickers();
       relabel();
-      place();
+      if (stopTrack) stopTrack();
+      stopTrack = window.VisableOverlay ? window.VisableOverlay.track(pop, opener, { when: popover }) : null;
       setExpanded(true);
       var selected = pop.querySelector('.vt-opt[aria-checked="true"]') || pop.querySelector('.vt-opt');
       if (selected) selected.focus({ preventScroll: true });
@@ -378,8 +374,7 @@
         else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
       }
     });
-    window.addEventListener('resize', function () { if (!pop.hidden) { scrim.hidden = !narrow(); place(); } });
-    window.addEventListener('orientationchange', function () { if (!pop.hidden) place(); });
+    window.addEventListener('resize', function () { if (!pop.hidden) { scrim.hidden = !narrow(); pop.setAttribute('aria-modal', narrow() ? 'true' : 'false'); } });
   }
 
   function mount() {
@@ -417,8 +412,9 @@
         narrow.className = 'vt-fab vt-fab-narrow';
         fabs.push(narrow);
       }
-      var opener = fab;
+      var opener = fab, stopTrack = null;
       function close(focusFab) {
+        if (stopTrack) { stopTrack(); stopTrack = null; }
         pop.hidden = true;
         fabs.forEach(function (f) { f.setAttribute('aria-expanded', 'false'); });
         if (focusFab) opener.focus();
@@ -426,19 +422,15 @@
       fabs.forEach(function (btn) {
         btn.addEventListener('click', function () {
           var open = pop.hidden;
+          if (!open) { close(false); return; }
           opener = btn;
-          if (btn.classList.contains('vt-inline')) {
-            var r = btn.getBoundingClientRect();
-            pop.style.top = Math.round(r.bottom + 8) + 'px';
-            pop.style.right = Math.max(14, Math.round(window.innerWidth - r.right)) + 'px';
-            pop.style.left = 'auto';
-            pop.style.bottom = 'auto';
-          } else {
-            pop.style.top = pop.style.right = pop.style.left = pop.style.bottom = '';
-          }
-          pop.hidden = !open;
-          btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-          if (open) { var on = pop.querySelector('[aria-checked="true"]') || pop.querySelector('.vt-opt'); if (on) on.focus(); }
+          pop.hidden = false;
+          // An in-header button anchors the panel under itself (shared anchoring); the floating pill keeps the stylesheet's corner.
+          if (stopTrack) stopTrack();
+          if (btn.classList.contains('vt-inline') && window.VisableOverlay) stopTrack = window.VisableOverlay.track(pop, btn, { margin: 14 });
+          else if (window.VisableOverlay) window.VisableOverlay.clear(pop);
+          btn.setAttribute('aria-expanded', 'true');
+          var on = pop.querySelector('[aria-checked="true"]') || pop.querySelector('.vt-opt'); if (on) on.focus();
         });
       });
       document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !pop.hidden) close(true); });
