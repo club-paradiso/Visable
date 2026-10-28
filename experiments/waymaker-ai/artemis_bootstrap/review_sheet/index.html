@@ -199,7 +199,7 @@ body:not(.facts-mode) .facts-only { display: none !important; }
       <label>상태<select id="ffState"><option value="">전체</option><option value="todo">아직 안 봄</option><option value="approved">승인</option><option value="rejected">거절</option><option value="held">보류</option></select></label>
       <label>절차<select id="ffProc"><option value="">전체</option><option value="visa">사증</option><option value="stay">체류</option></select></label>
       <label>값 종류<select id="ffKind"><option value="">전체</option><option value="money">금액</option><option value="period">기간</option></select></label>
-      <label>AI 1차 의견<select id="ffAi"><option value="">전체</option><option value="approve">AI: 승인 권고</option><option value="reject">AI: 거절 권고</option><option value="hold">AI: 보류 권고</option></select></label>
+      <label>AI 1차 의견<select id="ffAi"><option value="">전체</option><option value="approve">AI: 승인 권고</option><option value="reject">AI: 거절 권고</option><option value="hold">AI: 보류 권고</option><option value="final_confirm">AI 확인 사실(소유자 위임)</option><option value="final_owner">소유자 판단 필요</option></select></label>
       <label>찾기<input id="ffText" type="search" placeholder="쪽 번호, 자격 약호, 인용문"></label>
     </div>
   </section>
@@ -570,7 +570,8 @@ body:not(.facts-mode) .facts-only { display: none !important; }
       if (st && state(c) !== st) return false;
       if (pr && c.subject.procedure !== pr) return false;
       if (kd && c.value.kind !== kd) return false;
-      if (ai && ((facts.ai_first_pass || {})[c.candidate_id] || {}).ai_decision !== ai) return false;
+      if (ai && ai.startsWith("final_") && ((facts.ai_final || {})[c.candidate_id] || {}).final !== ai.slice(6)) return false;
+      if (ai && !ai.startsWith("final_") && ((facts.ai_first_pass || {})[c.candidate_id] || {}).ai_decision !== ai) return false;
       if (q && !`${c.source.page_id} ${c.subject.status_code || ""} ${c.subject.sub_code || ""} ${c.source.quote}`.toLowerCase().includes(q)) return false;
       return true;
     });
@@ -652,7 +653,14 @@ body:not(.facts-mode) .facts-only { display: none !important; }
   const AI_KO = { approve: "승인 권고", reject: "거절 권고", hold: "보류 권고" };
   function aiBlock() {
     const a = (facts.ai_first_pass || {})[current.candidate_id];
-    if (!a) return "";
+    const fin = (facts.ai_final || {})[current.candidate_id];
+    const FINAL_KO = { confirm: "AI 확인 사실(소유자 위임) — 사후 확인이 씀(검토 필요로만)", reject: "AI 최종: 사실 아님", owner: "소유자 판단 필요" };
+    const LEGAL = { consistent: "법령과 같음", differs: "법령과 다름", not_in_statute: "법령에 없는 매뉴얼 운영기준", not_checked: "법령 대조 안 함" };
+    const finHtml = fin ? `<section class="ai"><h2>AI 최종 결정 (소유자 위임, 사람 승인 아님)</h2>
+      <div class="chips"><span class="chip">${esc(FINAL_KO[fin.final] || fin.final)}</span>${fin.legal_check ? `<span class="chip grey">${esc(LEGAL[fin.legal_check.result] || fin.legal_check.result)}</span>` : ""}</div>
+      <p>${esc(fin.reason || "")}</p>${fin.owner_question ? `<p><b>정해 주셔야 할 것:</b> ${esc(fin.owner_question)}</p>` : ""}
+      ${fin.legal_check && fin.legal_check.excerpt ? `<blockquote class="purpose">${esc(fin.legal_check.law || "")} ${esc(fin.legal_check.provision || "")}: ${esc(fin.legal_check.excerpt)}</blockquote>` : ""}</section>` : "";
+    if (!a) return finHtml;
     const q = (a.subject && a.subject.qualifiers) || {};
     const conds = Object.entries(q).filter(([, v]) => v !== null && v !== "").map(([k, v]) => `${k}=${v}`).join(", ");
     return `<section class="ai"><h2>AI 1차 의견 (사람 판정 아님)</h2>
@@ -660,7 +668,7 @@ body:not(.facts-mode) .facts-only { display: none !important; }
       ${a.subject ? `<p class="mono">${esc(a.subject.sub_code || a.subject.status_code || "자격 미정")} · ${esc(a.subject.procedure || "")} · ${esc((facts.roles || {})[a.role] || a.role || "역할 미정")} · ${esc(valueText(a.value))}${conds ? " · " + esc(conds) : ""}</p>` : ""}
       <p>${esc(a.reason)}</p>
       ${a.subject ? `<div class="actions"><button class="btn ghost" type="button" id="fxFillAi">AI 의견으로 채우기 (저장은 직접)</button></div>` : ""}
-    </section>`;
+    </section>${finHtml}`;
   }
   function fillFromAi() {
     const a = facts.ai_first_pass[current.candidate_id]; const q = a.subject.qualifiers || {};

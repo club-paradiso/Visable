@@ -233,6 +233,12 @@ FORMAT_CASES = [
     ("1월 1일부터 시행합니다.", "2026년 1월 1일부터 시행", "pass"),
     ("2,080원입니다.", "최대 2,080시간 근무, 수수료 5만원", "withheld"),
     ("2026원입니다.", "2026년 1월 1일부터", "withheld"),
+    # A status code's digit is not a period; "N년 M개월" is one period; a flattened table row
+    # keeps its money word for every number on the line (2026-10-28, found with the facts probes).
+    ("D-2 일반대학 재학생은 2년입니다.", "D-2 일반대학 재학생 체류기간 2년", "pass"),
+    ("최대 4년 10개월까지 일할 수 있습니다.", "최초 입국일부터 4년 10개월을 초과할 수 없음", "pass"),
+    ("최대 4년 11개월까지 일할 수 있습니다.", "최초 입국일부터 4년 10개월을 초과할 수 없음", "withheld"),
+    ("5인 가구는 45,340,314원입니다.", "구 분 2인 가구 3인 가구 4인 가구 5인 가구\n소득기준 25,195,752 32,154,216 38,968,428 45,340,314", "pass"),
     # A bare number counts as won only in a money context (held-out v4 V-24, seen).
     ("12,500원입니다.", "최소 면적 12,500제곱미터, 등록 수수료는 32,000원", "withheld"),
     ("35,000원입니다.", "수수료표\n| 구분 | 수수료(원) |\n| 최초 발급 | 35,000 |", "pass"),

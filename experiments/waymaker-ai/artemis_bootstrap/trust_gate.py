@@ -107,7 +107,8 @@ _FREE_RE = re.compile(r"무료|free of charge|免费|miễn phí", re.IGNORECASE
 _DATE_FULL_RE = re.compile(r"(?P<y>\d{4})\s*(?:년|[.\-/])\s*(?P<m>\d{1,2})\s*(?:월|[.\-/])\s*(?P<d>\d{1,2})\s*일?")
 _DATE_MD_RE = re.compile(r"(?P<m>\d{1,2})\s*월\s*(?P<d>\d{1,2})\s*일")
 _PERIOD_RE = re.compile(
-    r"(?P<n>\d+)\s*(?P<u>개월|달|주일|주|일|년|days?\b|weeks?\b|months?\b|years?\b|个月|天|周|年|ngày|tuần|tháng|năm)",
+    # Not the digit of a status code: "D-2 일반대학" is not two days.
+    r"(?<![A-Za-z]-)(?<![\d-])(?P<n>\d+)\s*(?P<u>개월|달|주일|주|일|년|days?\b|weeks?\b|months?\b|years?\b|个月|天|周|年|ngày|tuần|tháng|năm)",
     re.IGNORECASE,
 )
 #: "1월 이내", "6월 이상", "3월간", "1월이 경과": the manuals' older way of writing N months.
@@ -203,8 +204,15 @@ def _date_claims(text: str) -> Tuple[List[Claim], str]:
     return claims, masked
 
 
+_COMPOUND_PERIOD_RE = re.compile(r"(?<![A-Za-z]-)(?<![\d-])(\d+)\s*년\s*(\d+)\s*개월")
+
+
 def _period_claims(text: str) -> List[Claim]:
     claims: List[Claim] = []
+    # "4년 10개월" is one period of 58 months, not four years and ten months apart.
+    for m in _COMPOUND_PERIOD_RE.finditer(text):
+        claims.append(Claim("period", m.group(0), ("period", "month", int(m.group(1)) * 12 + int(m.group(2)))))
+    text = _COMPOUND_PERIOD_RE.sub(lambda m: " " * len(m.group(0)), text)
     for m in _PERIOD_RE.finditer(text):
         unit = _UNIT[m.group("u").lower()]
         n = int(m.group("n"))
@@ -240,8 +248,10 @@ def _bare_amounts(text: str) -> set:
     declared = bool(_WON_UNIT_DECLARED_RE.search(text))
     amounts = set()
     for line in text.splitlines():
-        for m in _BARE_AMOUNT_RE.finditer(line):
-            before = line[max(0, m.start() - 30):m.start()]
+        numbers = list(_BARE_AMOUNT_RE.finditer(line))
+        row_of_numbers = len(numbers) >= 3   # "소득기준 25,195,752 32,154,216 …": a flattened table row
+        for m in numbers:
+            before = line[:m.start()] if row_of_numbers else line[max(0, m.start() - 30):m.start()]
             if _MONEY_WORD_RE.search(before) or (declared and line.lstrip().startswith("|")):
                 amounts.add(_number(m.group("n")))
     return amounts
@@ -397,7 +407,7 @@ def _role_pairs(text: str, lenient: bool = False) -> List[Tuple[Tuple, List[str]
     return pairs
 
 
-def role_mismatches(answer: str, trusted_text: str) -> List[str]:
+def role_mismatches(answer: str, trusted_text: str, fact_families: Optional[Mapping[Tuple, set]] = None) -> List[str]:
     """Answer values whose role differs from every role the same value has in the
     approved text. Values with no role word on either side are left alone."""
     evidence = _role_pairs(trusted_text)
@@ -407,13 +417,84 @@ def role_mismatches(answer: str, trusted_text: str) -> List[str]:
             continue
         evidence_roles = [r for k, rs, _ in evidence if k == key for r in rs]
         unroled = any(k == key and not rs for k, rs, _ in evidence)
-        families = {ROLE_FAMILY[r] for r in evidence_roles}
+        families = {ROLE_FAMILY[r] for r in evidence_roles} | set((fact_families or {}).get(_norm_value(*key), ()))
         if evidence_roles and not unroled and not families & {ROLE_FAMILY[r] for r in roles}:
             found.append(f"{clause.strip()} — 답의 역할 '{'/'.join(roles)}', 근거의 역할 '{'/'.join(sorted(set(evidence_roles)))}'")
     return found
 
 
-def post_check(parsed: Optional[Mapping[str, Any]], trusted: Sequence[Mapping[str, Any]]) -> Dict[str, Any]:
+# --- Subject check against approved facts (2026-10-28) ---------------------------
+# Facts (APPROVED-FACTS-DESIGN.ko.md) say whose value a number is: (subject, role,
+# value) for one page. The caller passes the facts of the trusted pages. An answer is
+# marked for review when, for the subject and role it names, the facts hold another
+# value AND the answer's value is a fact of a different subject, row or role on those
+# pages — the row/household/status mix-up the role check cannot see. Never withholds.
+FACT_ROLE_FAMILY: Dict[str, str] = {
+    "issue_deadline": "issue", "processing_time": "issue", "filing_deadline": "file", "report_deadline": "file",
+    "entry_deadline": "entry", "exit_deadline": "entry", "waiting_period": "wait", "validity": "valid",
+    "stay_per_grant": "valid", "stay_cap_total": "valid", "extension_period": "valid", "fee": "fee",
+    "income_threshold": "income", "deposit": "deposit", "fine": "fine",
+}
+_STATUS_CODE_RE = re.compile(r"(?<![A-Za-z0-9-])([A-Z]-\d{1,2}(?:-[0-9A-Z]{1,2})?)(?![0-9])")
+_HOUSEHOLD_RE = re.compile(r"(\d+)\s*인\s*가구")
+
+
+def _norm_value(kind: str, unit: str, amount: float) -> Tuple:
+    if kind == "period" and unit == "year":
+        return ("period", "month", amount * 12)
+    return (kind, unit, amount)
+
+
+def subject_mismatches(answer: str, question: str, facts: Sequence[Mapping[str, Any]]) -> List[str]:
+    if not facts:
+        return []
+    usable = [f for f in facts if f.get("role") in FACT_ROLE_FAMILY]
+    text = f"{question} {answer}"
+    codes = set(_STATUS_CODE_RE.findall(text))
+    households = {int(h) for h in _HOUSEHOLD_RE.findall(text)}
+    rows = {f["subject"]["qualifiers"].get("row_label") for f in usable
+            if f["subject"]["qualifiers"].get("row_label") and f["subject"]["qualifiers"]["row_label"] in text}
+
+    def fits(f: Mapping[str, Any]) -> bool:
+        s, q = f["subject"], f["subject"].get("qualifiers") or {}
+        if codes and s.get("status_code") and not any(
+                c in (s["status_code"], s.get("sub_code")) or c.startswith(s["status_code"] + "-") for c in codes):
+            return False
+        if households and q.get("household_size") is not None and q["household_size"] not in households:
+            return False
+        if rows and q.get("row_label") and q["row_label"] not in rows:
+            return False
+        if q.get("per") and re.sub(r"\s+", "", q["per"]) not in re.sub(r"\s+", "", text):
+            return False   # "가구원 1인당 5,755,188원" is not a household's threshold
+        return True
+
+    def value(f: Mapping[str, Any]) -> Tuple:
+        v = f["value"]
+        return _norm_value(v["kind"], v["unit"], float(v["amount"]))
+
+    found = []
+    pairs = _role_pairs(answer, lenient=True)
+    for key, roles, clause in pairs:
+        if not roles:
+            continue
+        families = {ROLE_FAMILY[r] for r in roles}
+        mine = _norm_value(*key)
+        same = [f for f in usable if FACT_ROLE_FAMILY[f["role"]] in families and fits(f) and value(f)[:2] == mine[:2]]
+        if not same or any(value(f) == mine for f in same):
+            continue
+        # "1년 이후 2년 이내": a boundary next to the right value in the same clause.
+        in_clause = {_norm_value(*k) for k, _, c in pairs if c == clause}
+        if any(value(f) in in_clause for f in same):
+            continue
+        elsewhere = [f for f in usable if value(f) == mine and f not in same]
+        if elsewhere:
+            want = "/".join(sorted({str(int(value(f)[2])) for f in same}))
+            found.append(f"{clause.strip()} — 같은 대상·역할의 사실 값은 {want}, 답의 값은 다른 대상·행의 사실({elsewhere[0]['fact_id']})")
+    return found
+
+
+def post_check(parsed: Optional[Mapping[str, Any]], trusted: Sequence[Mapping[str, Any]],
+               facts: Optional[Sequence[Mapping[str, Any]]] = None, question: str = "") -> Dict[str, Any]:
     """(나) Verdict on one parsed model output against the trusted evidence.
 
     Returns ``verdict`` (``pass`` | ``withheld`` | ``no_trusted_evidence`` |
@@ -441,8 +522,16 @@ def post_check(parsed: Optional[Mapping[str, Any]], trusted: Sequence[Mapping[st
         return {"verdict": "withheld", "claims": found, "unsupported": unsupported,
                 "untrusted_citations": untrusted_citations, "final": {**abstain, "answer": WITHHELD_ANSWER}}
     final = dict(parsed)
-    roles = role_mismatches(answer, trusted_text)
-    if roles:
-        final["review_flags"] = [f"role_mismatch: {r}" for r in roles]
+    page_facts = [f for f in (facts or []) if f["source"]["page_id"] in trusted_ids]
+    fact_families: Dict[Tuple, set] = {}
+    for f in page_facts:
+        if f.get("role") in FACT_ROLE_FAMILY:
+            v = f["value"]
+            fact_families.setdefault(_norm_value(v["kind"], v["unit"], float(v["amount"])), set()).add(FACT_ROLE_FAMILY[f["role"]])
+    roles = role_mismatches(answer, trusted_text, fact_families)
+    subjects = subject_mismatches(answer, question, page_facts)
+    flags = [f"role_mismatch: {r}" for r in roles] + [f"subject_mismatch: {m}" for m in subjects]
+    if flags:
+        final["review_flags"] = flags
     return {"verdict": "pass", "claims": found, "unsupported": [], "untrusted_citations": [],
-            "role_mismatches": roles, "final": final}
+            "role_mismatches": roles, "subject_mismatches": subjects, "final": final}

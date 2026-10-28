@@ -46,6 +46,15 @@ from typing import Any, Callable, Dict, List, Optional
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import smoke_grader  # noqa: E402  (also puts experiments/waymaker-ai on sys.path for waymaker_ai)
 import trust_gate  # noqa: E402
+
+FACTS_LEDGER = Path(__file__).resolve().parent / "ledgers" / "manual_2026_10_19_facts.jsonl"
+
+
+def load_facts(path: Path = FACTS_LEDGER) -> List[Dict[str, Any]]:
+    """Approved facts (tier human or ai_delegated) for the post-check's subject check."""
+    if not path.exists():
+        return []
+    return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()[1:] if line.strip()]
 import manual_ledger  # noqa: E402
 import procedure_route  # noqa: E402
 
@@ -157,6 +166,7 @@ def run(args: argparse.Namespace) -> int:
         raise SystemExit(f"refusing to start: {free_disk_gb()} GB free, need {args.min_free_disk_gb} GB for swap headroom")
     cases_path = Path(args.cases).resolve()
     cases = manual_ledger.resolve_cases(smoke_grader.load_cases(cases_path))
+    facts = load_facts() if getattr(args, "facts", False) else None
     if args.source_gate and not all(trust_gate.has_source_labels(c) for c in cases):
         raise SystemExit(f"--source-gate needs source labels on every evidence item; {cases_path.name} has none")
     if (args.cross_check or args.label_switch) and not args.always_ask:
@@ -196,6 +206,7 @@ def run(args: argparse.Namespace) -> int:
         "always_ask": args.always_ask,
         "cross_check": args.cross_check,
         "label_switch": args.label_switch,
+        "facts": str(FACTS_LEDGER.relative_to(Path(__file__).resolve().parent)) if args.facts else None,
         "post_check": "applied offline to every output when the cases carry source labels",
         "prompts_persisted": False,
         "status": "started",
@@ -329,7 +340,7 @@ def run(args: argparse.Namespace) -> int:
                     trusted = [e for e in trusted if e["id"] not in route_withheld]
                 verdict = (
                     {"verdict": "clarify", "claims": [], "unsupported": [], "final": json.loads(text)}
-                    if clarified else trust_gate.post_check(graded["parsed"], trusted)
+                    if clarified else trust_gate.post_check(graded["parsed"], trusted, facts=facts, question=case["question"])
                 )
                 if args.label_switch and choice and not clarified:
                     verdict["final"] = procedure_route.label_answer(verdict["final"], choice)
@@ -416,6 +427,8 @@ def main(argv: Optional[List[str]] = None) -> int:
                    help="show the two buttons for every question; the pressed button (user_choice) is the only route")
     p.add_argument("--cross-check", action="store_true",
                    help="with --always-ask: ask once when the detector confidently disagrees with the pressed button")
+    p.add_argument("--facts", action="store_true",
+                   help="post-check also compares answers with the approved facts ledger (review only, never withholds)")
     p.add_argument("--label-switch", action="store_true",
                    help="with --always-ask: label each answer with its manual; a case's on_label=switch taps the switch")
     p.add_argument("--max-tokens", type=int, default=400)

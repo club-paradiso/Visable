@@ -110,6 +110,8 @@ const wait = (ms) => new Promise((r) => setTimeout(r, ms));
         check("filling from the AI opinion does not save anything", !writes.some((w) => w.collection === "facts_review") && doc.getElementById("fSaveState").textContent.includes("확인한 뒤"), "");
       }
     }
+    const fin = (facts.ai_final || {})[first.candidate_id];
+    if (fin) check("the AI final decision is shown as owner-delegated, not a human approval", doc.getElementById("fCase").textContent.includes("AI 최종 결정 (소유자 위임, 사람 승인 아님)"), "");
     doc.getElementById("fx_role").value = "";
     doc.querySelector('#fCase [data-d="approve"]').click();
     await wait(50);
