@@ -425,6 +425,7 @@ else
   echo "INFO: Node.js not found; skipping Waymaker navigator JS validation."
 fi
 python3 -m unittest backend.tests.test_procedure_packet_builder
+python3 -m unittest backend.tests.test_manual_location_and_answer_review
 python3 -m unittest backend.tests.test_waymaker_navigator_contract
 
 echo "[9g/14] Validating 국적민원·귀화면접 준비 data (source registry + guides + interview/video safety)..."

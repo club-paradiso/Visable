@@ -41,6 +41,7 @@ from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple
 from . import manual_locator as _locator
 from . import manual_registry as _registry
 from . import manual_search as _search
+from . import procedure_location as _procedure_location
 
 MANUAL_EVIDENCE_VERSION = "2026-10-manual-evidence-v1"
 
@@ -147,6 +148,32 @@ def procedure_scopes(question: str, task_type: Optional[str], has_code: bool) ->
     # issuance wording ("사증발급인정서 연장") is still a visa question.
     if visa and stay and stay[0] == SCOPE_STAY and not _stay_procedure_named(text):
         scopes = [s for s in scopes if s[0] == SCOPE_VISA]
+    return _apply_location(text, scopes)
+
+
+def _location_cues_enabled() -> bool:
+    return os.environ.get("VISABLE_MANUAL_LOCATION_CUES", "1").strip().lower() not in ("0", "false", "off", "no")
+
+
+def _apply_location(text: str, scopes: List[Tuple[str, str]]) -> List[Tuple[str, str]]:
+    """Where the foreigner is (services/procedure_location.py) settles what the
+    procedure words leave open. A question with no procedure gets the manual for
+    where they are; a stay scope resting only on "체류기간" or on a status code plus a
+    work word ("D-4로 가면 체류기간은", "F-1-D … work") is a visa question for
+    someone abroad. A stay procedure named outright (연장허가, 외국인등록, 근무처 …)
+    is never overridden. ``VISABLE_MANUAL_LOCATION_CUES=0`` turns this off."""
+    if not _location_cues_enabled():
+        return scopes
+    where = _procedure_location.location(text)
+    if not where:
+        return scopes
+    if not scopes:
+        return [(SCOPE_VISA, "사증발급")] if where == "abroad" else [(SCOPE_STAY, "체류 관리")]
+    named = {m.group(0) for m in _STAY_NAMED_RE.finditer(text)}
+    weak_stay = all(scope == SCOPE_STAY for scope, _ in scopes) and all(
+        re.fullmatch(r"체류\s*기간", n) for n in named) and not _procedure_location.IN_KOREA_TASK_RE.search(text)
+    if where == "abroad" and weak_stay:
+        return [(SCOPE_VISA, "사증발급")]
     return scopes
 
 

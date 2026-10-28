@@ -60,6 +60,7 @@ from services import manual_search as _manual_search
 from services import manual_registry as _manual_registry
 from services import manual_locator as _manual_locator
 from services import manual_evidence as _manual_evidence
+from services import manual_answer_checks as _manual_answer_checks
 from services import statute_citation_guard as _statute_guard
 from services import employment_nl as _employment_nl
 from services import immigration_tools as _immigration_tools
@@ -767,6 +768,11 @@ class AskResponse(BaseModel):
     manual_evidence_status: str = "not_attempted"
     manual_evidence_scopes: List[str] = Field(default_factory=list)
     manual_evidence_sources: List[Dict[str, Any]] = Field(default_factory=list)
+    # Review flags for a generated answer against the manual excerpts it was given
+    # (services/manual_answer_checks.py): a period counted from a start the excerpt
+    # does not use, or a limit the answer lifts. Flags only; the answer is never
+    # changed. Diagnostics-only: removed by _public_ask_payload.
+    manual_answer_review: Dict[str, Any] = Field(default_factory=dict)
     # Set only when a structured answer was delivered without the optional
     # model summary. Diagnostics/telemetry only (hidden from the public view).
     summary_generation_status: Optional[str] = None
@@ -4268,6 +4274,18 @@ def _risk_level_for_task(task_type: Optional[str]) -> str:
 _knowledge_runtime.register_detectors(_detect_visa_codes, _detect_task_type, _risk_level_for_task)
 
 
+def _manual_answer_review_meta(answer_text: str, manual_evidence: Any) -> Dict[str, Any]:
+    """Review flags for the answer against the manual excerpts behind it
+    (services/manual_answer_checks.py). Never raises and never touches the answer."""
+    excerpts = (manual_evidence or {}).get("excerpts") if isinstance(manual_evidence, dict) else None
+    if not excerpts:
+        return {}
+    try:
+        return _manual_answer_checks.review(answer_text or "", excerpts)
+    except Exception:  # pragma: no cover - a review flag must never break an answer
+        return {"checked": False, "flags": [], "error": "review_failed"}
+
+
 def _retrieve_ask_manual_evidence(
     prompt: str,
     *,
@@ -5911,7 +5929,7 @@ def _ask_diagnostics_requested(req: "AskRequest", request: Optional[Request]) ->
 # and internal source records; the browser uses only its flat projections
 # (law_sources, legal_analysis, direct_manual_sources, ...), so the pack itself
 # is diagnostics-only.
-ASK_INTERNAL_PAYLOAD_FIELDS: Tuple[str, ...] = ("law_evidence_pack", "knowledge_plan")
+ASK_INTERNAL_PAYLOAD_FIELDS: Tuple[str, ...] = ("law_evidence_pack", "knowledge_plan", "manual_answer_review")
 
 
 def _strip_internal_source_fields(value: Any) -> Any:
@@ -7052,6 +7070,7 @@ async def _ask_internal(req: AskRequest) -> AskResponse:
                     )
             response_meta["answer_first_sentence"] = (answer_text or "").strip().split(".", 1)[0].strip()
             response_meta["first_sentence_quality_warning"] = first_sentence_quality_warning(answer_text)
+            response_meta["manual_answer_review"] = _manual_answer_review_meta(answer_text, manual_evidence)
             return AskResponse(
                 answer=answer_text,
                 provider="openrouter",
