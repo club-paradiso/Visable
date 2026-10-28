@@ -12,6 +12,7 @@ import hashlib
 import importlib.util
 import json
 import sys
+from collections import Counter
 from pathlib import Path
 
 import pytest
@@ -470,3 +471,49 @@ def test_heldout_v8_role_check_gaps():
             res = tg.post_check({"status": "answered", "answer": sentence, "citations": case["expect"]["must_cite"]}, trusted)
             counts["withheld" if res["verdict"] == "withheld" else "review" if res.get("role_mismatches") else "silent"] += 1
     assert counts == {"withheld": 13, "review": 26, "silent": 33}, counts
+
+
+@pytest.mark.parametrize("answer, page", [
+    ("3,896만 8,428원 이상이어야 합니다.", "4인 가구 38,968,428원"),
+    ("허가기간은 24개월입니다.", "허가기간 : 2년"),
+    ("체류기간 12개월 이하 단수사증입니다.", "체류기간 1년 이하의 단수사증"),
+])
+def test_same_value_in_another_notation_is_not_withheld(answer, page):
+    """Found on held-out v9 (real manual pages), fixed after that measurement."""
+    trusted = [{"id": "P", "title": "t", "text": page, "source": {"approval_state": "approved"}}]
+    assert tg.post_check({"status": "answered", "answer": answer, "citations": ["P"]}, trusted)["verdict"] == "pass"
+
+
+def test_heldout_v9_subject_check_on_real_questions():
+    """Held-out v9: 24 questions over 16 real manual pages, written by an agent that saw
+    only the page texts (frozen in 3527132 before it was read). Each has 3 right answers
+    and 3 wrong ones taken from another row of the same page.
+
+    The subject check barely works on natural questions: people say "네 식구",
+    "결혼이민", "박사과정", "인도 국적", while it reads only status codes, "N인 가구" and
+    the AI's row labels verbatim. With the facts, 5 of 72 wrong answers are marked for
+    review; without them, 2. None of the household, status-code or other mix-ups is
+    caught. Measured after three post hoc fixes (a comma in "3,896만 8,428원", "24개월"
+    for "2년", a general row label hiding its narrower F-6 row); before them 13 of 72
+    right answers were withheld, now 1 ("증명서류" for the page's "입증서류")."""
+    ml = load_module("manual_ledger")
+    af = load_module("approved_facts")
+    facts = af.load_facts()
+    data = json.loads((BOOTSTRAP_DIR / "heldout_v9_cases.json").read_text(encoding="utf-8"))
+    cases = ml.resolve_cases(data["cases"])
+    assert len(cases) == 24
+
+    def outcome(case, answer, with_facts):
+        trusted = [e for e in case["evidence"] if tg.is_trusted(e, True)]
+        res = tg.post_check({"status": "answered", "answer": answer, "citations": [trusted[0]["id"]]}, trusted,
+                            facts=facts if with_facts else None, question=case["question"])
+        return "withheld" if res["verdict"] == "withheld" else "review" if (res["subject_mismatches"] or res["role_mismatches"]) else "pass"
+
+    right = Counter(outcome(c, a, True) for c in cases for a in c["right_answers"])
+    wrong = Counter(outcome(c, w["text"], True) for c in cases for w in c["wrong_answers"])
+    wrong_without = Counter(outcome(c, w["text"], False) for c in cases for w in c["wrong_answers"])
+    assert right == {"pass": 67, "review": 4, "withheld": 1}, right
+    assert wrong == {"pass": 67, "review": 5}, wrong
+    assert wrong_without == {"pass": 70, "review": 2}, wrong_without
+    caught_kinds = {w["kind"] for c in cases for w in c["wrong_answers"] if outcome(c, w["text"], True) != "pass"}
+    assert caught_kinds == {"row"}

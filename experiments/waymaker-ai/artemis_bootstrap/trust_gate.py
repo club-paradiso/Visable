@@ -92,8 +92,9 @@ _MONEY_RE = re.compile(
     rf"(?P<n>{_NUM})\s*(?P<mul>만|천)?\s*(?P<cur>원|달러|USD|KRW|VND|đồng|dong|元|韩元|won\b)"
     rf"|(?P<cur2>USD|KRW|VND|\$|₩|￦)\s*(?P<n2>{_NUM})"
 )
-#: Korean amounts written in units: "3만5천원", "1억 2천만원", "5만 원".
-_KRW_COMPOUND_RE = re.compile(r"(?P<amt>(?:\d[\d,.]*\s*(?:억|만|천)\s*)+\d*)\s*(?:원|won\b)")
+#: Korean amounts written in units: "3만5천원", "1억 2천만원", "5만 원", "3,896만 8,428원"
+#: (a comma in the tail was cut at "8" and the rest read as 8,428원; held-out v9).
+_KRW_COMPOUND_RE = re.compile(r"(?P<amt>(?:\d[\d,.]*\s*(?:억|만|천)\s*)+(?:\d[\d,]*)?)\s*(?:원|won\b)")
 #: Numbers standing alone in the evidence (table cells such as "소득기준 23,595,948"):
 #: at least four digits, not part of a date and not followed by a non-money unit.
 #: They count as won amounts only in a money context (see _bare_amounts).
@@ -287,6 +288,10 @@ def _supported(claim: Claim, trusted_claims: Sequence[Claim], trusted_text: str)
                    for t in trusted_claims)
     if any(t.key == claim.key for t in trusted_claims):
         return True
+    # "24개월" for the page's "2년" is the same period (held-out v9 withheld five such answers).
+    if claim.kind == "period" and any(t.kind == "period" and _norm_value(*t.key) == _norm_value(*claim.key)
+                                      for t in trusted_claims):
+        return True
     # A won amount the evidence prints as a bare number ("소득기준 23,595,948" in a
     # table whose header carries the unit). Found on manual_buttons B-10, 2026-10-28.
     if claim.kind == "money" and claim.key[1] == "krw" and claim.key[2] >= 1000:
@@ -462,7 +467,9 @@ def subject_mismatches(answer: str, question: str, facts: Sequence[Mapping[str, 
             return False
         if households and q.get("household_size") is not None and q["household_size"] not in households:
             return False
-        if rows and q.get("row_label") and q["row_label"] not in rows:
+        # A named general row also names its narrower rows: "체류기간 연장허가" covers
+        # "체류기간 연장허가(결혼이민 F-6)", whose 3만원 is right for an F-6 holder (v9 V-01).
+        if rows and q.get("row_label") and not any(r in q["row_label"] for r in rows):
             return False
         # "가구원 1인당 5,755,188원" is not a household's threshold, so a per-head fact must
         # be named. "연간" or "1통" only says how the amount is counted; requiring it dropped
