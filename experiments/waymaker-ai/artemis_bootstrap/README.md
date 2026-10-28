@@ -434,6 +434,8 @@ ChatGPT's proposals for M-04, Q-11 and K-05 banned one exact recorded sentence, 
 - E4B, gate + integrity: 23/24 correct, the same before and after 9daf7a5; none sent to review. The miss (U-22) is the value check: a table column headed "소득기준" without (원), with the unit stated in a later sentence, so the bare "22,000,000" was not accepted.
 - 72 planted role-shifted sentences: 13 withheld, 26 marked for review (18 before), 33 silent. Most of the 33 are outside a role check — the value belongs to another status, household or table row with the same role (U-19, U-20, U-23, U-10) — or are lexicon gaps (매출, 수령/찾아가) and heuristics (U-09 "보증보험료" read as deposit; U-02 the nearer "출국" chosen over the clause's verb "머무를"). Role mismatches stay review-only: the catch rate does not justify withholding.
 
+**Approved facts — design only (2026-10-28).** [APPROVED-FACTS-DESIGN.ko.md](APPROVED-FACTS-DESIGN.ko.md) proposes a per-fact ledger (subject, role, value, exact page quote, page hash), written by rule-based candidate extraction and approved by a person, so the post-check can catch a value taken from another status, household, table row or column — the main misses of v7/v8. Not implemented; four owner decisions are listed in §9.
+
 **Not linked or not stored yet.** `reviews_v2` is empty (it is created on the first save). Decisions live in the repository and the sheet's bundle, not in the sheet's database. `run_smoke.py` can run a v2 file (`--cases label_v2/<set>_cases.v2.json`); only K-14 has been run on v2 so far. No production code, database or deployment was touched.
 
 ## Existing repository boundaries
