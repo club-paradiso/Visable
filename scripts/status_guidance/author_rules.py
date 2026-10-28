@@ -2045,6 +2045,31 @@ SUBCODE_NAMES = {
 }
 
 
+# --------------------------------------------------------------------------
+# Rule batches (scripts/status_guidance/rules/*.py), run in this namespace in file order.
+# A batch uses the same helpers (guidance, item, DOCDEFS …); drop() removes an earlier rule
+# that the batch replaces, so a cell never carries two competing rules.
+# --------------------------------------------------------------------------
+def drop(code, procedure, scenario=None):
+    before = len(GUIDANCE)
+    GUIDANCE[:] = [g for g in GUIDANCE if not (g['target'] == code and g['procedure'] == procedure and g['scenario'] == scenario)]
+    assert len(GUIDANCE) < before, f'drop: no rule {code}|{procedure}|{scenario}'
+
+
+def docdefs(**defs):
+    for k, v in defs.items():
+        assert k not in DOCDEFS, f'document definition {k} already exists'
+        DOCDEFS[k] = v
+
+
+RULE_BATCH_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'rules')
+for _name in sorted(os.listdir(RULE_BATCH_DIR)) if os.path.isdir(RULE_BATCH_DIR) else []:
+    # RULE_BATCH_ONLY=<file.py> loads one batch alone (draft validation in parallel).
+    if _name.endswith('.py') and not _name.startswith('_') and os.environ.get('RULE_BATCH_ONLY', _name) == _name:
+        with open(os.path.join(RULE_BATCH_DIR, _name), encoding='utf-8') as _fh:
+            exec(compile(_fh.read(), os.path.join(RULE_BATCH_DIR, _name), 'exec'), globals())
+
+
 def main():
     data = {
         'schema_version': 1, 'generated_by': 'scripts/status_guidance/author_rules.py', 'source_editions': {'stay': STAY, 'visa': VISA},
@@ -2070,6 +2095,7 @@ def main():
         'officer_note': {'ko': OFFICER_NOTE_KO, 'en': OFFICER_NOTE_EN},
     }
     text = json.dumps(data, ensure_ascii=False, indent=1) + '\n'
+    out = sys.argv[sys.argv.index('--out') + 1] if '--out' in sys.argv[1:] else OUT
     if '--check' in sys.argv[1:]:
         try:
             current = open(OUT, encoding='utf-8').read()
@@ -2080,9 +2106,9 @@ def main():
             sys.exit(1)
         print(f'guidance rules are current: {len(GUIDANCE)} guidance entries, {sum(len(g["documents"]) for g in GUIDANCE)} document items')
         return
-    with open(OUT, 'w', encoding='utf-8') as fh:
+    with open(out, 'w', encoding='utf-8') as fh:
         fh.write(text)
-    print(f'wrote {OUT}: {len(GUIDANCE)} guidance entries, {sum(len(g["documents"]) for g in GUIDANCE)} document items')
+    print(f'wrote {out}: {len(GUIDANCE)} guidance entries, {sum(len(g["documents"]) for g in GUIDANCE)} document items')
 
 
 if __name__ == '__main__':
