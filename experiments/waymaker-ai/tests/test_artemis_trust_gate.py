@@ -353,6 +353,9 @@ ROLE_CASES = [
     (ROLE_TABLE, "처리기간은 7일입니다.", False),
     (ROLE_TABLE, "유효기간은 7일입니다.", True),
     ("공관장 재량으로 체류기간 1년 이하의 단수사증을 발급할 수 있다.", "체류기간 1년 이하의 단수사증 발급이 가능합니다.", False),
+    # Commas inside numbers do not split clauses (held-out v7 W-03, seen).
+    ("초청 수수료는 40,000원이며, 초청인의 연간 소득기준은 21,000,000원이다.", "소득기준은 40,000원입니다.", True),
+    ("초청 수수료는 40,000원이며, 초청인의 연간 소득기준은 21,000,000원이다.", "수수료는 40,000원입니다.", False),
 ]
 
 
@@ -402,3 +405,29 @@ def test_role_check_does_not_mark_any_recorded_correct_answer():
             if before == "correct" and after != "correct":
                 moved.append((rp, r["case"]))
     assert moved == []
+
+
+def test_heldout_v7_role_check():
+    """Held-out v7 (role confusion, written by an agent that never saw this code).
+    E4B: 24/24 correct, none sent to review, before and after the role check. The
+    planted role-shifted phrasings are never withheld (their values exist in the
+    evidence); the role check marks most of them for review. The comma fix was
+    found on v7, so these counts are on a seen set."""
+    rec = json.loads((BOOTSTRAP_DIR / "runs" / "2026-10-28-e4b-it-4bit-m1-8gb-v7-gated-integrity" / "run_record.json").read_text(encoding="utf-8"))
+    assert rec["status"] == "completed" and rec["summary"]["outcomes_checked"]["correct"] == 24
+    assert rec["cases_sha256"] == hashlib.sha256((BOOTSTRAP_DIR / "heldout_v7_cases.json").read_bytes()).hexdigest()
+    cases = {c["id"]: c for c in json.loads((BOOTSTRAP_DIR / "heldout_v7_cases.json").read_text(encoding="utf-8"))["cases"]}
+    for r in rec["results"]:
+        case = cases[r["case"]]
+        trusted = [e for e in case["evidence"] if tg.is_trusted(e, True)]
+        final = tg.post_check(r["parsed"], trusted)["final"]
+        assert grader.classify(grader.grade(case, json.dumps(final, ensure_ascii=False))) == "correct", r["case"]
+    marked = withheld = total = 0
+    for case in cases.values():
+        trusted = [e for e in case["evidence"] if tg.is_trusted(e, True)]
+        for wrong in case["expect"].get("answer_must_not_contain", []):
+            total += 1
+            res = tg.post_check({"status": "answered", "answer": f"{wrong}입니다.", "citations": case["expect"]["must_cite"]}, trusted)
+            withheld += res["verdict"] == "withheld"
+            marked += bool(res.get("role_mismatches"))
+    assert (total, withheld) == (107, 0) and marked >= 60, (total, withheld, marked)

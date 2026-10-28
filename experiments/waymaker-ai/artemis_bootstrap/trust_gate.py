@@ -318,7 +318,8 @@ ROLE_FAMILY: Dict[str, str] = {"issue": "issue", "process": "issue",
 _NOUN_SUFFIX = set("증서자일")
 #: What may stand between a role word and the value it names: "유효기간은 ", "수수료: ", "체류기간 최대 ".
 _NAMES_VALUE_RE = re.compile(r"(?:\s*(?:기간|기한|기일|금액|액))?\s*(?:은|는|이|가|도|만)?\s*[:：]?\s*(?:최대|최소|약|총|모두)?\s*")
-_CLAUSE_SPLIT_RE = re.compile(r"[.\n;,·]|(?<=며)\s|(?<=하고)\s|(?<=하되)\s|(?<=이고)\s")
+#: Clause breaks. A comma or point between digits is part of a number ("40,000원", "1.5").
+_CLAUSE_SPLIT_RE = re.compile(r"(?<!\d)[.,]|[.,](?!\d)|[\n;·]|(?<=며)\s|(?<=하고)\s|(?<=하되)\s|(?<=이고)\s")
 
 
 def _roles_in(text: str, at: int, kind: str, lenient: bool = False) -> List[str]:
