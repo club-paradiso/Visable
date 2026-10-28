@@ -862,8 +862,16 @@
       if (source && row) showHit({ source: source, page: row.page }, origin);
     }).catch(function () { /* the PDF link beside the button remains available */ });
   }
+  // The same page as data, for an inline preview: { title, date, file, page, heading, text } or null.
+  function pageRow(sourceId, pageNo) {
+    return load().then(function () {
+      var source = (catalog.sources || []).filter(function (s) { return s.id === sourceId; })[0];
+      var row = corpus.rows.filter(function (r) { return r.source && r.source.id === sourceId && r.page.page === Number(pageNo); })[0];
+      return source && row ? { title: source.title, date: source.date, file: source.file, page: row.page.page, heading: row.page.heading, text: row.page.text } : null;
+    });
+  }
   window.VisableCivicSearch = {
-    load: load, openPage: openPage, homeHtml: homeHtml, copy: copy, langButton: langButton, selectExamples: selectExamples, examplePool: EXAMPLE_POOL,
+    load: load, openPage: openPage, pageRow: pageRow, homeHtml: homeHtml, copy: copy, langButton: langButton, selectExamples: selectExamples, examplePool: EXAMPLE_POOL,
     journey: { open: openJourney, close: closeJourney, toggle: toggleJourney, state: function () { return journey.state; } },
     directory: { toggle: toggleDirectory, isOpen: function () { var d = directoryEl(); return !!(d && d.open); } },
     // Read-only view of the suggestion panel for tests and QA (no query text is kept anywhere else).

@@ -44,17 +44,20 @@ const at = (html, needle) => { const i = html.indexOf(needle); assert(i >= 0, `m
 const ordered = (html, ...needles) => { let last = -1; for (const n of needles) { const i = at(html, n); assert(i > last, `${n} must come after ${needles[needles.indexOf(n) - 1]}`); last = i; } };
 const count = (html, re) => (html.match(re) || []).length;
 
-check('F-4 extension (source-only): identity → source action → overview → fee → scheme → actions → evidence', () => {
-  const r = run('F-4 체류기간 연장');
+// Source-only example: D-3 연장 (F-4 연장 has structured guidance since #712; the browser twin
+// tests/e2e/result-hierarchy.spec.mjs moved to D-3 in #714).
+check('D-3 extension (source-only): identity → source action → overview → fee → actions → evidence', () => {
+  const r = run('D-3 체류기간 연장');
   assert(r.step.kind === 'source-only', r.step.kind);
-  ordered(r.html, 'class="sg-answer sg-source-only"', 'sg-btn-source', 'class="sg-overview"', 'class="sg-fee"', 'class="sg-program"', 'class="sg-next"', 'class="sg-evidence"');
-  assert(/sg-btn-source" data-sg-action="open-page" data-sg-source="stay_manual_2026_10_19_pdf" data-sg-page="537"/.test(r.html), 'primary action opens the F-4 extension page (537)');
+  ordered(r.html, 'class="sg-answer sg-source-only"', 'sg-btn-source', 'class="sg-overview"', 'class="sg-fee"', 'class="sg-next"', 'class="sg-evidence"');
+  assert(!r.html.includes('class="sg-program"'), 'D-3 belongs to no special scheme');
+  assert(/sg-btn-source" data-sg-action="open-page" data-sg-source="stay_manual_2026_10_19_pdf" data-sg-page="56"/.test(r.html), 'primary action opens the D-3 extension page (56)');
 });
 
-check('F-4 overview is derived from the model: fee confirmed, scheme conditional, documents in the source', () => {
-  const r = run('F-4 체류기간 연장');
+check('source-only overview is derived from the model: fee confirmed, documents in the source', () => {
+  const r = run('D-3 체류기간 연장');
   const ov = r.html.slice(at(r.html, 'class="sg-overview"'), at(r.html, 'class="sg-fee"'));
-  ordered(ov, '확인된 내용', '수수료 ₩60,000 · 시행규칙 기준', '조건에 따라 달라요', '외국국적동포 통합 체류제도 (F-4 통합) — 일부 대상자에게만 해당', '원문에서 확인할 내용', '537쪽');
+  ordered(ov, '확인된 내용', '수수료 ₩60,000 · 시행규칙 기준', '원문에서 확인할 내용', '56쪽');
   assert(ov.includes('2026년 10월판 원문은 아직 사람이 대조 검토하지 않았어요'), 'review notice names the current edition');
   assert(ov.includes('기준일 2026-10-23 · 공식 근거 6건'), 'basis line includes the current regulation version date');
   assert(r.html.includes('해당 조문만 대조했습니다. 법령·서식 전체 검증은 아닙니다.'), 'the latest source check must not claim whole-law review');
@@ -85,9 +88,9 @@ check('fee exemptions are offered only to the statuses their rule names', () => 
 });
 
 check('evidence: the procedure page first, fee law behind a disclosure, counts unchanged', () => {
-  const r = run('F-4 체류기간 연장');
+  const r = run('D-3 체류기간 연장');
   const ev = r.html.slice(at(r.html, 'class="sg-evidence"'));
-  ordered(ev, '<details class="sg-evidence-details" id="sgEvidence" open>', '이 절차의 공식 안내', 'sg-ev sg-ev-manual sg-ev-primary', '537쪽', '<details class="sg-ev-more"><summary>수수료·법령 근거 5건</summary>');
+  ordered(ev, '<details class="sg-evidence-details" id="sgEvidence" open>', '이 절차의 공식 안내', 'sg-ev sg-ev-manual sg-ev-primary', '56쪽', '<details class="sg-ev-more"><summary>수수료·법령 근거 5건</summary>');
   assert(count(ev, /<li class="sg-ev /g) === 6, `six evidence items (${count(ev, /<li class="sg-ev /g)})`);
   assert(ev.includes('2026년 10월판 원문은 아직 사람이 한 줄씩') && !r.text.includes('9월판'), 'review notice names the current edition');
   const d2 = run('D-2 체류기간 연장').html;
@@ -95,12 +98,12 @@ check('evidence: the procedure page first, fee law behind a disclosure, counts u
 });
 
 check('next actions are labelled rows and every call to action appears once on the page', () => {
-  const f4 = run('F-4 체류기간 연장').html;
+  const f4 = run('D-3 체류기간 연장').html;
   const next = f4.slice(at(f4, 'class="sg-next"'), at(f4, 'class="sg-wm"'));
   assert(next.startsWith('class="sg-next"') && next.includes('<ul class="sg-actions">'), 'action list');
   // source-only: the manual page is the answer head's primary button, not repeated as a row;
   // Waymaker follows as its own block, so there is no follow-up row either.
-  assert(count(f4, /data-sg-action="open-page" data-sg-source="stay_manual_2026_10_19_pdf" data-sg-page="537"/g) === 2, 'page 537: answer-head button + evidence item only');
+  assert(count(f4, /data-sg-action="open-page" data-sg-source="stay_manual_2026_10_19_pdf" data-sg-page="56"/g) === 2, 'page 56: answer-head button + evidence item only');
   assert(!next.includes('data-sg-action="open-page"') && !next.includes('class="sg-next-ai"'), 'no duplicate source / follow-up rows');
   assert(count(f4, /data-sg-action="followup"/g) === 1, 'one Waymaker call to action');
   assert(count(next, /class="sg-action-body"/g) === 4, `four rows with a body (${count(next, /class="sg-action-body"/g)})`);
@@ -124,10 +127,12 @@ check('structured answers: overview sits between the answer and the documents; a
 });
 
 check('English copy and the edition label follow the bundle', () => {
-  const r = run('F-4 extension', 'en');
+  const r = run('D-3 extension', 'en');
   assert(r.step.kind === 'source-only', r.step.kind);
-  for (const s of ['At a glance', 'Confirmed', 'Depends on your case', 'Check in the source', 'Special schemes that may apply', 'some holders only', 'Open the source, p.537', 'The October 2026 source text has not yet been reviewed']) assert(r.text.includes(s), s);
-  assert(count(r.html, /Open the source, p\.537/g) === 1, 'the source action is printed once');
+  for (const s of ['At a glance', 'Confirmed', 'Check in the source', 'Open the source, p.56', 'The October 2026 source text has not yet been reviewed']) assert(r.text.includes(s), s);
+  assert(count(r.html, /Open the source, p\.56/g) === 1, 'the source action is printed once');
+  const f4 = run('F-4 extension', 'en');
+  for (const s of ['Special schemes that may apply', 'some holders only']) assert(f4.text.includes(s), `F-4: ${s}`);
   assert(!/September/.test(r.text), 'no hard-coded September');
   const unknown = run('Z-9 연장');
   assert(unknown.text.includes('Z-9') && unknown.text.includes('2026년 10월판') && !unknown.text.includes('9월 기준'), 'unknown-code warning names the current edition');

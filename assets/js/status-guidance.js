@@ -89,6 +89,8 @@
       nextSource: '공식 원문 {page}쪽 보기', nextReserveSub: '하이코리아 방문예약 방법과 준비사항', nextFormsSub: '공식 서식을 단계별로 채우고 PDF로 저장', nextCallSub: '외국인종합안내센터 전화 상담', nextLegacySub: '{status} 체류자격 전체 안내 카드', nextAiSub: '지금 상황을 Waymaker에 이어서 설명하기',
       interpLabel: '검색 해석', wmTitle: '내 상황이 조금 다르다면', wmBody: 'Waymaker에 지금 상황을 설명하면 필요한 절차와 근거를 단계별로 정리해 드려요.', wmCta: 'Waymaker로 이어서 보기',
       disclaimerDetail: ['이 안내는 법무부 출입국·외국인정책본부의 공식 안내자료(사증발급 안내매뉴얼 2026-10-19판, 외국인체류 안내매뉴얼 2026-10-19판)와 출입국관리법·시행령·시행규칙(2026-09-22 확인)을 구조화한 참고 정보이며 법적 효력이 없습니다.', '출입국·외국인청(사무소·출장소)장은 심사를 위해 필요하면 제출서류를 가감할 수 있고, 허가 여부는 심사로 결정됩니다.', '{edition}판 안내자료의 원문은 아직 사람이 한 줄씩 대조 검토하지 않았어요. 각 근거의 검토 상태를 함께 표시합니다.', '최종 확인은 관할 출입국·외국인관서, 하이코리아(hikorea.go.kr), 1345 외국인종합안내센터에서 하세요. Visable은 공식 정부 서비스가 아닙니다.'],
+      previewTitle: '공식 원문 {page}쪽 발췌', previewNote: 'PDF에서 자동으로 옮긴 원문 그대로예요. 사람이 정리·검토한 안내가 아니며, 표와 줄바꿈이 어긋날 수 있어요.',
+      chipLegend: '원문 확인 표시는 아직 정리된 안내가 없어 공식 원문 해당 쪽으로 안내한다는 뜻이에요.',
       sourceOnlyEvidence: '원문 확인', stateLabel: { SUPPORTED: '안내 가능', CONDITIONAL: '조건부', NOT_APPLICABLE: '해당 없음', GENERALLY_NOT_PERMITTED: '원칙적 불가', EXCEPTION_ONLY: '예외적 허용', LEGACY_ONLY: '기존 소지자', SOURCE_ONLY: '원문 확인', UNVERIFIED: '미확인' },
       exclusions: '변경이 제한되는 경우', exceptions: '예외', transitionDocs: '제출서류',
       programNote: '일부 대상자에게만 적용되는 별도 제도예요. 아래 확인 항목에 해당하면 함께 확인하세요.', dims: '확인 항목', variantsTitle: '특례·예외 상황', relatedPrograms: '일부 대상자에게 적용되는 별도 제도:', understoodProgram: '{program}(으)로 이해했어요',
@@ -156,6 +158,8 @@
       nextSource: 'Open the source, p.{page}', nextReserveSub: 'How to book a HiKorea visit and what to bring', nextFormsSub: 'Fill in the official form step by step and save a PDF', nextCallSub: 'Immigration Contact Center by phone', nextLegacySub: 'Full {status} status card', nextAiSub: 'Describe your situation to Waymaker',
       interpLabel: 'Search interpreted as', wmTitle: 'If your situation is different', wmBody: 'Describe it to Waymaker and it lays out the procedure and the sources step by step.', wmCta: 'Continue in Waymaker',
       disclaimerDetail: ['Compiled from the Ministry of Justice official guides (visa issuance guide 2026-10-19, residence guide 2026-10-19) and the Immigration Act, its Decree and its Rule (read 2026-09-22). It has no legal effect.', 'The head of the immigration office may add or waive documents for examination, and outcomes are decided by examination.', 'The {edition} guides have not yet been reviewed line by line by a person; each source shows its review state.', 'Confirm with your immigration office, HiKorea (hikorea.go.kr) or the 1345 Immigration Contact Center. Visable is not a government service.'],
+      previewTitle: 'Official source, page {page} (excerpt)', previewNote: 'Copied automatically from the PDF, word for word. It is not reviewed or summarised guidance, and tables or line breaks may be out of order.',
+      chipLegend: '"Source only" means there is no organised guidance yet, so you are taken to the right page of the official source.',
       sourceOnlyEvidence: 'Source only', stateLabel: { SUPPORTED: 'Guidance available', CONDITIONAL: 'Conditional', NOT_APPLICABLE: 'Not applicable', GENERALLY_NOT_PERMITTED: 'Generally not permitted', EXCEPTION_ONLY: 'Exception only', LEGACY_ONLY: 'Existing holders', SOURCE_ONLY: 'Source only', UNVERIFIED: 'Unverified' },
       exclusions: 'When the change is restricted', exceptions: 'Exceptions', transitionDocs: 'Documents',
       programNote: 'A separate scheme that applies only to some holders. Check it if the items below describe you.', dims: 'What is checked', variantsTitle: 'Special cases', relatedPrograms: 'Separate schemes that apply to some holders:', understoodProgram: 'We read this as {program}',
@@ -383,6 +387,20 @@
     }
     return { kind: 'question', dimension: '__status', question_ko: prompt.question_ko, question_en: prompt.question_en, hint_ko: prompt.hint_ko, hint_en: prompt.hint_en, options: prompt.options, allowUnsure: true, why: 'status', showCodeForm: true };
   }
+  /* The procedure chooser's badge says what picking that procedure leads to, not only the raw cell
+   * state. A SOURCE_ONLY cell answered by a structured rule (e.g. the common 체류지 변경·재발급 rule)
+   * shows no 원문 확인 badge; a SUPPORTED cell the resolver cannot answer shows it. When the pick
+   * leads to a further question, the cell state stands. */
+  function chipState(state, bundle, status, pid, raw) {
+    if (!raw) return raw;
+    var probe;
+    try { probe = nextStep({ interp: state.interp, answers: {}, procedure: pid, status: status, history: [], lang: state.lang }, bundle); } catch (e) { return raw; }
+    if (!probe) return raw;
+    if (probe.kind === 'source-only') return probe.state || raw;
+    var entry = (probe.kind === 'resolved' || probe.kind === 'procedure') && probe.entries ? probe.entries[0] : null;
+    if (raw === 'SOURCE_ONLY' && entry && entry.completeness && entry.completeness !== 'SOURCE_ONLY') return entry.state && entry.state !== 'SOURCE_ONLY' ? entry.state : 'SUPPORTED';
+    return raw;
+  }
   function procedureStep(bundle, state, procedure, status, reg, entry) {
     var interp = state.interp;
     var reason = state.answers.reissue_reason || (interp.conditions && interp.conditions.reissue_reason) || null;
@@ -432,7 +450,7 @@
       var opts = PROCEDURE_ORDER.filter(function (pid) { var st = codeInfo.procedures && codeInfo.procedures[pid]; return st && st.s !== 'UNVERIFIED' && st.s !== 'NOT_APPLICABLE'; });
       if (!opts.length) opts = ['extension', 'status_change', 'registration'];
       return { kind: 'question', dimension: '__procedure', question_ko: tr('ko', 'askProcedure', { status: status }), question_en: tr('en', 'askProcedure', { status: status }), hint_ko: tr('ko', 'askProcedureHint'), hint_en: tr('en', 'askProcedureHint'),
-        options: opts.map(function (pid) { var p = procedureMeta(bundle, pid); var st = codeInfo.procedures ? codeInfo.procedures[pid] : null; return { id: pid, ko: p.ko, en: p.en, targets: [pid], state: st ? st.s : null }; }), allowUnsure: false, why: 'procedure' };
+        options: opts.map(function (pid) { var p = procedureMeta(bundle, pid); var st = codeInfo.procedures ? codeInfo.procedures[pid] : null; return { id: pid, ko: p.ko, en: p.en, targets: [pid], state: chipState(state, bundle, status, pid, st ? st.s : null) }; }), allowUnsure: false, why: 'procedure' };
     }
     // 2. status change into a target with a transition rule → current status matters
     var transition = procedure === 'status_change' ? transitionFor(bundle, status, procedure) : null;
@@ -503,7 +521,10 @@
     }
     if (!remaining.length) {
       var st = codeState(bundle, chosenCode || status, procedure) || codeState(bundle, status, procedure) || codeState(bundle, parent, procedure);
-      return { kind: 'source-only', status: chosenCode || status, procedure: procedure, state: st ? st.s : 'UNVERIFIED', page: st ? st.p : null, manual: st ? st.m : null, candidates: candidates, answered: answeredDims, transition: transition };
+      // A cell marked SUPPORTED that no rule answers on this path is, for this path, source-only:
+      // never pair "안내 가능" with "정리된 안내가 아직 없어요".
+      var shown = st ? (st.s === 'SUPPORTED' ? 'SOURCE_ONLY' : st.s) : 'UNVERIFIED';
+      return { kind: 'source-only', status: chosenCode || status, procedure: procedure, state: shown, page: st ? st.p : null, manual: st ? st.m : null, candidates: candidates, answered: answeredDims, transition: transition };
     }
     var uniq = []; var seen = {};
     remaining.forEach(function (g) { var k = targetKey(g); if (!seen[k]) { seen[k] = true; uniq.push(g); } });
@@ -909,7 +930,7 @@
       '<h3 id="sgQuestionTitle" class="sg-question-title" tabindex="-1">' + esc(L(lang, step, 'question')) + '</h3>' + (step.hint_ko ? '<p class="sg-muted">' + esc(L(lang, step, 'hint')) + '</p>' : '') +
       '<div class="sg-options' + (step.why === 'procedure' ? ' sg-options-grid' : '') + '" role="group" aria-labelledby="sgQuestionTitle">' +
       step.options.map(function (o) { return '<button type="button" class="sg-option" data-sg-action="answer" data-sg-dim="' + esc(step.dimension) + '" data-sg-value="' + esc(o.id) + '" aria-pressed="false">' + esc(LL(lang, o)) + (o.state && o.state !== 'SUPPORTED' ? ' ' + stateBadge(lang, o.state) : '') + (o.hint_ko ? '<small>' + esc(L(lang, o, 'hint')) + '</small>' : '') + '</button>'; }).join('') +
-      '</div><div class="sg-question-foot">' + (step.allowUnsure ? '<button type="button" class="sg-option sg-option-unsure" data-sg-action="answer" data-sg-dim="' + esc(step.dimension) + '" data-sg-value="unsure">' + esc(tr(lang, 'unsure')) + '</button>' : '') +
+      '</div>' + (step.why === 'procedure' && step.options.some(function (o) { return o.state === 'SOURCE_ONLY'; }) ? '<p class="sg-muted sg-chip-legend">' + esc(tr(lang, 'chipLegend')) + '</p>' : '') + '<div class="sg-question-foot">' + (step.allowUnsure ? '<button type="button" class="sg-option sg-option-unsure" data-sg-action="answer" data-sg-dim="' + esc(step.dimension) + '" data-sg-value="unsure">' + esc(tr(lang, 'unsure')) + '</button>' : '') +
       (state.history && state.history.length ? '<button type="button" class="sg-link" data-sg-action="back">' + esc(tr(lang, 'back')) + '</button>' : '') + '</div>' +
       (step.showCodeForm ? '<form class="sg-code-form" data-sg-form="code"><label class="sg-sr" for="sgCodeInput">' + esc(tr(lang, 'searchCode')) + '</label><input id="sgCodeInput" type="text" inputmode="text" autocomplete="off" placeholder="F-6-1" maxlength="12"><button type="submit" class="sg-btn">' + esc(tr(lang, 'searchCode')) + '</button></form>' : '') +
       (step.unsure_ko && state.answers[step.dimension] === 'unsure' ? '<p class="sg-muted">' + esc(L(lang, step, 'unsure')) + '</p>' : '') + '</section>';
@@ -1414,6 +1435,9 @@
     // The source page is the answer here: it is the one immediate action in the first screen.
     var srcBtn = sourceButton(model, 'sg-btn sg-btn-primary sg-btn-source');
     if (srcBtn) html += '<div class="sg-answer-actions">' + srcBtn + '</div>';
+    // No organised guidance: show what the cited page itself says (verbatim, filled after render).
+    var prev = !key ? primarySource(model) : null;
+    if (prev && prev.corpusId && prev.page) html += '<div class="sg-source-preview" data-sg-preview-source="' + esc(prev.corpusId) + '" data-sg-preview-page="' + esc(prev.page) + '" hidden></div>';
     html += '</section>' + renderOverview(model, step) + renderTransition(model) + (key ? '' : renderFees(model, bundle)) + renderPrograms(model) + renderNext(model, step) + renderWaymaker(model, step) + renderEvidence(model, bundle, { open: true }) + renderRelated(model, bundle);
     return html;
   }
@@ -1633,8 +1657,36 @@
       if (step.kind === 'source-only' || step.kind === 'unresolved') track('structured_fallback_used', { kind: step.kind });
     }
     lastKind = step.kind;
+    fillSourcePreview(h, state.lang);
     if (root.VisableQuickAnswer && typeof root.VisableQuickAnswer.afterRender === 'function' && out.model.quick) root.VisableQuickAnswer.afterRender(h, out.model, state, bundle);
     document.dispatchEvent(new CustomEvent('visable:guidance-rendered', { detail: { query: state.query, kind: step.kind, target: step.target || null, procedure: step.procedure || null, quick: out.model.quick ? out.model.quick.mode : null, evidenceIntent: evidenceIntent(out.model, bundle) } }));
+  }
+  /* Source-only answers: the cited manual page, verbatim, under its own heading. Only text that
+   * is on that page is shown (no summarising); page footers and the 목차 marker are dropped and
+   * the excerpt is cut at a line boundary. If the corpus cannot load, the block stays hidden and
+   * the "공식 원문 N쪽 보기" button above remains the way in. */
+  function previewLines(text) {
+    // PDF bullet glyphs come through as private-use characters: drop the glyph, keep the line.
+    var lines = String(text || '').split('\n').map(function (l) { return l.replace(/[\uE000-\uF8FF\u{F0000}-\u{FFFFD}]/gu, '').trim(); }).filter(function (l) { return l && !/^[-–]\s*\d+\s*[-–]$/.test(l) && l.indexOf('목차') < 0; });
+    var out = [], size = 0;
+    for (var i = 0; i < lines.length && out.length < 14 && size < 640; i++) { out.push(lines[i]); size += lines[i].length; }
+    return { lines: out, more: out.length < lines.length };
+  }
+  function fillSourcePreview(h, lang) {
+    var box = h && h.querySelector('.sg-source-preview');
+    var cs = root.VisableCivicSearch;
+    if (!box || !cs || typeof cs.pageRow !== 'function') return;
+    var sid = box.getAttribute('data-sg-preview-source'), pg = box.getAttribute('data-sg-preview-page');
+    cs.pageRow(sid, pg).then(function (row) {
+      if (!row || !box.isConnected) return;
+      var ex = previewLines(row.text);
+      if (!ex.lines.length) return;
+      box.innerHTML = '<h3 class="sg-preview-title">' + esc(tr(lang, 'previewTitle', { page: row.page })) + '</h3>' +
+        '<p class="sg-muted sg-preview-note">' + esc(tr(lang, 'previewNote')) + '</p>' +
+        '<blockquote class="sg-source-excerpt" lang="ko" cite="' + esc(row.file + '#page=' + row.page) + '">' + ex.lines.map(function (l) { return '<p>' + esc(l) + '</p>'; }).join('') + (ex.more ? '<p aria-hidden="true">…</p>' : '') + '</blockquote>';
+      // The whole page opens from the answer's own source button above (one call to action per page).
+      box.hidden = false;
+    }).catch(function () { /* the source button above stays the way in */ });
   }
   /* Evidence query, separate from the answer query: the raw-source search ranks
    * pages by the interpreted status + procedure, the status chapter and the pages

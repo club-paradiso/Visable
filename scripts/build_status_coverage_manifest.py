@@ -107,6 +107,9 @@ DONGPO_CONFIRMED_PAGES = {
     ('H-2', 'workplace_report'): 535,   # □ 방문취업 동포는 취업개시 신고를 하여야 합니다
     ('H-2', 'workplace_change'): 532,   # 근무처 변경도 신고만으로 가능
     ('F-4', 'status_grant'): 532,       # □ 재외동포(F-4) 체류자격 부여
+    # 2026-10-19 visa manual, same handbook (read 2026-10-28; the chapter start 383 is its cover page).
+    ('F-4', 'visa_issuance'): 393,      # 나. 재외동포(F-4) 자격 사증발급 등 절차
+    ('H-2', 'visa_issuance'): 386,      # □ 동포 체류자격 통합에 따라 방문취업(H-2) 사증의 신규 발급 중단
 }
 COMMON_PROCEDURES = ('reentry', 'card_reissue', 'residence_report', 'registration_info_report')
 VISA_PROCEDURES = ['visa_issuance', 'visa_issuance_confirmation', 'electronic_visa']
@@ -753,7 +756,9 @@ def main():
                 if visa_ch and visa_ch['pdf_start'] and (code_in_manual(code, 'visa') or code == parent):
                     rec['state'] = 'SOURCE_ONLY'
                     rec['document_guidance'] = 'SOURCE_ONLY'
-                    rec['source'] = {'manual': 'visa_manual_2026_10_19', 'pdf_page': visa_ch['pdf_start'], 'section': visa_ch['title_ko']}
+                    # The compatriot handbook's chapter start is its cover page: use a page read and confirmed for the status.
+                    page = DONGPO_CONFIRMED_PAGES.get((parent, pid)) if visa_ch.get('key') == 'DONGPO' else None
+                    rec['source'] = {'manual': 'visa_manual_2026_10_19', 'pdf_page': page or visa_ch['pdf_start'], 'section': visa_ch['title_ko']}
                 else:
                     rec['state'] = 'NOT_APPLICABLE' if parent in ('F-5',) or not visa_ch else 'UNVERIFIED'
             else:
