@@ -4,14 +4,15 @@ const fs = require("fs");
 const path = require("path");
 const { JSDOM } = require("jsdom");
 
-const [pagePath, casesPath, legacyDir] = process.argv.slice(2);
+const [pagePath, casesPath, legacyDir, factsPath] = process.argv.slice(2);
 const html = fs.readFileSync(pagePath, "utf8");
 const cases = JSON.parse(fs.readFileSync(casesPath, "utf8"));
+const facts = factsPath ? JSON.parse(fs.readFileSync(factsPath, "utf8")) : null;
 const legacy = {};
 for (const f of fs.readdirSync(legacyDir)) legacy[f.replace(/\.json$/, "")] = JSON.parse(fs.readFileSync(path.join(legacyDir, f), "utf8"));
 
 const writes = [];
-const stores = { reviews: legacy, reviews_v2: {}, ai_reviews: {} };
+const stores = { reviews: legacy, reviews_v2: {}, ai_reviews: {}, facts_review: {} };
 function collection(name) {
   const q = {
     limit: () => q,
@@ -34,7 +35,7 @@ const dom = new JSDOM(`<!doctype html><html><head></head><body>${html}</body></h
   runScripts: "dangerously",
   pretendToBeVisual: true,
   beforeParse(window) {
-    window.fetch = async (url) => ({ ok: true, json: async () => JSON.parse(JSON.stringify(cases)) });
+    window.fetch = async (url) => ({ ok: true, json: async () => JSON.parse(JSON.stringify(String(url).includes("facts") ? facts : cases)) });
     window.matchMedia = () => ({ matches: false, addEventListener() {}, removeEventListener() {} });
     window.HTMLElement.prototype.scrollIntoView = () => {};
     window.claude = { use: async (name) => name === "db" ? { collection } : name === "user" ? { id: async () => "u_test", can: async () => true } : null };
@@ -90,6 +91,29 @@ const wait = (ms) => new Promise((r) => setTimeout(r, ms));
   check("legacy M-10 verdict object untouched in the fake store", stores.reviews["manual_oracle_M-10-d10t-stay-cap"].verdict === legacy["manual_oracle_M-10-d10t-stay-cap"].verdict);
   const counts2 = doc.getElementById("counts").textContent;
   check("counts update to 1 new verdict while legacy stays 140", /v2 기준 새 판정 1 \/ 140/.test(counts2) && /기존 저장 판정 140 \/ 140/.test(counts2), counts2);
+
+  if (facts) {
+    doc.getElementById("tabFacts").click();
+    await wait(300);
+    const fc = doc.getElementById("fCounts").textContent;
+    check("facts tab loads every candidate and says it is not a legal verification", fc.includes(`후보 ${facts.candidates.length}`) && fc.includes("법률 검증 아님") && doc.body.classList.contains("facts-mode"), fc);
+    const items = doc.querySelectorAll("#fList .item");
+    check("facts list shows all candidates", items.length === facts.candidates.length, String(items.length));
+    const first = facts.candidates[0];
+    const fcase = doc.getElementById("fCase").textContent;
+    check("a candidate shows its quote and page text", fcase.includes(first.source.quote) && doc.querySelector("#fCase mark") !== null, "");
+    doc.getElementById("fx_role").value = "";
+    doc.querySelector('#fCase [data-d="approve"]').click();
+    await wait(50);
+    check("approving without a role is refused", doc.getElementById("fSaveState").textContent.includes("역할을 골라") && !writes.some((w) => w.collection === "facts_review"), "");
+    doc.getElementById("fx_role").value = "fee";
+    doc.getElementById("fx_house").value = "2";
+    doc.querySelector('#fCase [data-d="approve"]').click();
+    await wait(100);
+    const fw = writes.filter((w) => w.collection === "facts_review");
+    check("an edited approval is saved to facts_review only, with source unchanged", fw.length === 1 && fw[0].body.decision === "approved_edited" && fw[0].body.role === "fee" && fw[0].body.subject.qualifiers.household_size === 2 && JSON.stringify(fw[0].body.source) === JSON.stringify(first.source) && !writes.some((w) => w.collection === "reviews"), JSON.stringify(fw.map((w) => w.body.decision)));
+    check("label desk carries label-only so facts mode hides it", doc.getElementById("case").closest(".desk").classList.contains("label-only"), "");
+  }
 
   for (const r of results) console.log(`${r.ok ? "PASS" : "FAIL"}  ${r.label}${r.ok ? "" : "  -- " + r.detail}`);
   const failed = results.filter((r) => !r.ok).length;

@@ -141,21 +141,38 @@ textarea { background: var(--bg); border: 1px solid var(--line); border-radius: 
 .ai p { margin: 0; overflow-wrap: anywhere; }
 .ai-flag { color: var(--warn); font-weight: 600; }
 @media (prefers-reduced-motion: no-preference) { .item, .opt span { transition: background 120ms ease, border-color 120ms ease; } }
+.tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+.tab { border: 1px solid var(--line); background: var(--panel); border-radius: 99px; padding: 5px 14px; cursor: pointer; font-size: 0.9rem; }
+.tab[aria-selected="true"] { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+body.facts-mode .label-only { display: none !important; }
+body:not(.facts-mode) .facts-only { display: none !important; }
+.fact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px 14px; }
+.fact-grid label { display: grid; gap: 3px; font-size: 0.82rem; color: var(--muted); }
+.fact-grid input, .fact-grid select { background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 6px 8px; color: var(--ink); min-width: 0; }
+.dot.f-approved { background: var(--ok); border-color: var(--ok); }
+.dot.f-rejected { background: var(--bad); border-color: var(--bad); }
+.dot.f-held { background: var(--warn); border-color: var(--warn); }
+.quote { background: var(--bg); border-left: 3px solid var(--accent); padding: 8px 12px; margin: 0; overflow-wrap: anywhere; }
+@media (prefers-reduced-motion: no-preference) { .tab { transition: background 120ms ease, border-color 120ms ease; } }
 </style>
 
 <div class="wrap">
   <header class="top">
     <div class="title-row">
       <h1>Artemis 라벨 검토표</h1>
+      <div class="tabs" role="tablist" aria-label="검토 종류">
+        <button class="tab" role="tab" id="tabLabels" aria-selected="true" type="button">라벨 검토</button>
+        <button class="tab" role="tab" id="tabFacts" aria-selected="false" type="button">사실 검토 (시범)</button>
+      </div>
       <span class="mono" id="dataVersion"></span>
     </div>
-    <p class="lede">실제 2026.10 매뉴얼 쪽을 근거로 기계가 쓴 문항 140개입니다. 문항마다 원본 라벨과 라벨 v2를 원문과 대조해 판정해 주세요. 저장된 판정 수는 법률 검증 완료를 뜻하지 않습니다. 모델 답은 참고용입니다.</p>
-    <div class="progress">
+    <p class="lede label-only">실제 2026.10 매뉴얼 쪽을 근거로 기계가 쓴 문항 140개입니다. 문항마다 원본 라벨과 라벨 v2를 원문과 대조해 판정해 주세요. 저장된 판정 수는 법률 검증 완료를 뜻하지 않습니다. 모델 답은 참고용입니다.</p>
+    <div class="progress label-only">
       <div class="bar" aria-hidden="true"><span class="ok" id="barOk"></span><span class="fix" id="barFix"></span><span class="drop" id="barDrop"></span></div>
       <div class="counts" id="counts">불러오는 중…</div>
     </div>
     <div class="banner" id="banner" hidden></div>
-    <div class="filters">
+    <div class="filters label-only">
       <label>문항 세트<select id="fSet"><option value="">전체</option></select></label>
       <label>그룹<select id="fGroup"><option value="">전체</option></select></label>
       <label>검토 상태<select id="fState">
@@ -168,12 +185,29 @@ textarea { background: var(--bg); border: 1px solid var(--line); border-radius: 
     </div>
   </header>
 
-  <div class="desk">
+  <div class="desk label-only">
     <nav class="list" aria-label="문항 목록">
       <div class="list-head" id="listHead">문항</div>
       <div id="list"></div>
     </nav>
     <main class="case" id="case"><div class="empty">문항을 불러오는 중입니다.</div></main>
+  </div>
+  <section class="facts-only" aria-label="사실 검토">
+    <p class="lede">승인 사실표 시범입니다. 규칙이 실제 매뉴얼 쪽(라벨 검토 140문항이 쓰는 쪽)에서 뽑은 금액·기간 후보를 보여 줍니다. 쪽 원문과 대조해 이 값이 누구(자격·조건)의 어떤 사실(역할)인지 확인하고 승인·거절·보류를 정해 주세요. 승인한 사실은 원문 인용과 쪽 해시를 다시 확인한 뒤에만 사실표에 들어갑니다. 법률 검증이 아니라 "매뉴얼에 이렇게 적혀 있다"는 확인입니다.</p>
+    <div class="progress"><div class="counts" id="fCounts">불러오는 중…</div></div>
+    <div class="filters">
+      <label>상태<select id="ffState"><option value="">전체</option><option value="todo">아직 안 봄</option><option value="approved">승인</option><option value="rejected">거절</option><option value="held">보류</option></select></label>
+      <label>절차<select id="ffProc"><option value="">전체</option><option value="visa">사증</option><option value="stay">체류</option></select></label>
+      <label>값 종류<select id="ffKind"><option value="">전체</option><option value="money">금액</option><option value="period">기간</option></select></label>
+      <label>찾기<input id="ffText" type="search" placeholder="쪽 번호, 자격 약호, 인용문"></label>
+    </div>
+  </section>
+  <div class="desk facts-only">
+    <nav class="list" aria-label="사실 후보 목록">
+      <div class="list-head" id="fListHead">후보</div>
+      <div id="fList"></div>
+    </nav>
+    <main class="case" id="fCase"><div class="empty">사실 후보를 불러오는 중입니다.</div></main>
   </div>
 </div>
 
@@ -501,5 +535,173 @@ textarea { background: var(--bg); border: 1px solid var(--line); border-radius: 
     openCase(d.cases.some((c) => c.key === last) ? last : d.cases[0].key, false);
     connect();
   }).catch(() => { $("case").innerHTML = `<div class="empty">문항 데이터를 불러오지 못했습니다. 페이지를 새로 고쳐 주세요.</div>`; });
+})();
+</script>
+<script>
+(() => {
+  // Pilot fact review (APPROVED-FACTS-DESIGN.ko.md §4). Decisions go to the facts_review
+  // collection; approved_facts.py export re-checks quote, page hash and value before the ledger.
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const UNIT_KO = { krw: "원", usd: "달러", day: "일", month: "개월", year: "년", free: "무료" };
+  const DECISION_KO = { approved: "승인", approved_edited: "고쳐서 승인", rejected: "거절", held: "보류(판단 못함)" };
+  const COMPARATORS = ["", "이상", "이하", "이내", "미만", "초과", "까지", "동안", "간"];
+  let facts = null, decisions = {}, db = null, myId = null, canWrite = true, current = null;
+
+  function setMode(f) {
+    document.body.classList.toggle("facts-mode", f);
+    $("tabLabels").setAttribute("aria-selected", String(!f));
+    $("tabFacts").setAttribute("aria-selected", String(f));
+    try { localStorage.setItem("artemis-tab", f ? "facts" : "labels"); } catch (_) {}
+    if (f && !facts) loadFacts();
+  }
+  $("tabLabels").addEventListener("click", () => setMode(false));
+  $("tabFacts").addEventListener("click", () => setMode(true));
+
+  const state = (c) => { const d = decisions[c.candidate_id]; return !d ? "todo" : d.decision.startsWith("approved") ? "approved" : d.decision; };
+  const valueText = (v) => v ? `${v.kind === "money" ? Number(v.amount).toLocaleString("ko-KR") : v.amount}${UNIT_KO[v.unit] || v.unit}${v.comparator ? " " + v.comparator : ""}` : "-";
+  const pageNo = (pid) => pid.replace(/.*#p/, "p");
+  const domainKo = (pid) => pid.startsWith("visa") ? "사증" : "체류";
+
+  function filtered() {
+    const st = $("ffState").value, pr = $("ffProc").value, kd = $("ffKind").value, q = $("ffText").value.trim().toLowerCase();
+    return facts.candidates.filter((c) => {
+      if (st && state(c) !== st) return false;
+      if (pr && c.subject.procedure !== pr) return false;
+      if (kd && c.value.kind !== kd) return false;
+      if (q && !`${c.source.page_id} ${c.subject.status_code || ""} ${c.subject.sub_code || ""} ${c.source.quote}`.toLowerCase().includes(q)) return false;
+      return true;
+    });
+  }
+
+  function renderCounts() {
+    const n = facts.candidates.length, by = { approved: 0, rejected: 0, held: 0 };
+    facts.candidates.forEach((c) => { const s = state(c); if (by[s] !== undefined) by[s]++; });
+    $("fCounts").innerHTML = `<span>후보 <b>${n}</b></span><span>승인 <b>${by.approved}</b></span><span>거절 <b>${by.rejected}</b></span><span>보류 <b>${by.held}</b></span><span>남음 <b>${n - by.approved - by.rejected - by.held}</b></span><span>법률 검증 아님</span>`;
+  }
+
+  function renderList() {
+    const rows = filtered();
+    $("fListHead").textContent = `후보 ${rows.length}개`;
+    $("fList").innerHTML = rows.map((c) => `<button class="item" type="button" data-id="${esc(c.candidate_id)}" ${current && current.candidate_id === c.candidate_id ? 'aria-current="true"' : ""}>
+      <span class="dot f-${state(c)}" aria-hidden="true"></span>
+      <span><span class="meta"><span class="mono">${esc(domainKo(c.source.page_id))} ${esc(pageNo(c.source.page_id))}</span><span>${esc(c.subject.sub_code || c.subject.status_code || "자격 미정")}</span><span>${esc(valueText(c.value))}</span></span>
+      <span class="q">${esc(c.source.quote)}</span></span></button>`).join("") || `<div class="empty">조건에 맞는 후보가 없습니다.</div>`;
+    $("fList").querySelectorAll(".item").forEach((b) => b.addEventListener("click", () => open(b.dataset.id)));
+  }
+
+  function field(id, label, value, type = "text") {
+    return `<label>${esc(label)}<input id="${id}" type="${type}" value="${esc(value ?? "")}"></label>`;
+  }
+  function select(id, label, options, value) {
+    return `<label>${esc(label)}<select id="${id}">${options.map(([v, t]) => `<option value="${esc(v)}" ${String(value ?? "") === v ? "selected" : ""}>${esc(t)}</option>`).join("")}</select></label>`;
+  }
+
+  function open(id) {
+    current = facts.candidates.find((c) => c.candidate_id === id);
+    renderList(); renderCase();
+  }
+
+  function renderCase() {
+    if (!current) { $("fCase").innerHTML = `<div class="empty">왼쪽에서 후보를 고르세요.</div>`; return; }
+    const saved = decisions[current.candidate_id];
+    const f = saved ? { subject: saved.subject, role: saved.role, value: saved.value } : current;
+    const q = f.subject.qualifiers || {};
+    const page = facts.pages[current.source.page_id] || { text: "", title: "" };
+    const at = page.text.indexOf(current.source.quote);
+    const text = at < 0 ? esc(page.text) : esc(page.text.slice(0, at)) + "<mark>" + esc(current.source.quote) + "</mark>" + esc(page.text.slice(at + current.source.quote.length));
+    const roles = [["", "(고르세요)"], ...Object.entries(facts.roles)];
+    $("fCase").innerHTML = `
+      <div class="case-head"><div class="chips"><span class="chip">${esc(domainKo(current.source.page_id))} ${esc(pageNo(current.source.page_id))}</span>
+        <span class="chip grey">${saved ? esc(DECISION_KO[saved.decision] || saved.decision) : "아직 안 봄"}</span>
+        ${current.role_from_check ? `<span class="chip grey">규칙이 읽은 역할: ${esc(current.role_from_check)}</span>` : ""}</div>
+        <h2>${esc(valueText(current.value))}</h2></div>
+      <blockquote class="quote">${esc(current.source.quote)}</blockquote>
+      <form class="review" id="factForm">
+        <div class="fact-grid">
+          ${field("fx_code", "체류자격", f.subject.status_code)}
+          ${field("fx_sub", "세부약호", f.subject.sub_code)}
+          ${select("fx_proc", "절차", [["visa", "사증(해외에서 비자)"], ["stay", "체류(한국에서)"]], f.subject.procedure)}
+          ${select("fx_role", "역할", roles, f.role)}
+          ${field("fx_amount", "값", f.value.amount, "number")}
+          ${select("fx_unit", "단위", Object.entries(UNIT_KO), f.value.unit)}
+          ${select("fx_cmp", "비교", COMPARATORS.map((c) => [c, c || "(없음)"]), f.value.comparator)}
+          ${select("fx_app", "대상", [["", "(정하지 않음)"], ["본인", "본인"], ["동반가족", "동반가족"], ["초청인", "초청인"], ["사업주", "사업주"]], q.applicant)}
+          ${field("fx_house", "가구원 수", q.household_size, "number")}
+          ${field("fx_per", "기준(1명당·연간 등)", q.per)}
+          ${field("fx_nat", "국적 조건", q.nationality)}
+          ${field("fx_row", "표의 행 이름", q.row_label)}
+          ${field("fx_col", "표의 열 이름", q.column_label)}
+        </div>
+        <div class="field"><label for="fx_note">메모(정할 수 없는 이유, 조건 설명)</label><textarea id="fx_note">${esc(saved ? saved.note : "")}</textarea></div>
+        <div class="actions">
+          <button class="btn" type="button" data-d="approve" ${db && canWrite ? "" : "disabled"}>승인</button>
+          <button class="btn ghost" type="button" data-d="rejected" ${db && canWrite ? "" : "disabled"}>거절(사실 아님)</button>
+          <button class="btn ghost" type="button" data-d="held" ${db && canWrite ? "" : "disabled"}>보류(판단 못함)</button>
+          <span class="save-state" id="fSaveState" aria-live="polite"></span>
+        </div>
+      </form>
+      <details open><summary>쪽 원문 (${esc(page.title)})</summary><pre class="pagetext">${text}</pre></details>`;
+    $("fCase").querySelectorAll("[data-d]").forEach((b) => b.addEventListener("click", () => save(b.dataset.d)));
+  }
+
+  function formFact() {
+    const num = (id) => { const v = $(id).value.trim(); return v === "" ? null : Number(v); };
+    const str = (id) => $(id).value.trim() || null;
+    return {
+      subject: { status_code: str("fx_code"), sub_code: str("fx_sub"), procedure: $("fx_proc").value,
+                 qualifiers: { applicant: str("fx_app"), household_size: num("fx_house"), per: str("fx_per"), nationality: str("fx_nat"), row_label: str("fx_row"), column_label: str("fx_col") } },
+      role: str("fx_role"),
+      value: { kind: current.value.kind, amount: num("fx_amount"), unit: $("fx_unit").value, comparator: str("fx_cmp") },
+    };
+  }
+
+  async function save(kind) {
+    const f = formFact();
+    if (kind === "approve" && !f.role) { $("fSaveState").textContent = "승인하려면 역할을 골라 주세요."; $("fSaveState").classList.add("err"); return; }
+    const same = JSON.stringify({ s: f.subject, r: f.role, v: f.value }) === JSON.stringify({ s: current.subject, r: current.role, v: current.value });
+    const decision = kind === "approve" ? (same ? "approved" : "approved_edited") : kind;
+    const body = { candidate_id: current.candidate_id, decision, ...f, source: current.source, note: $("fx_note").value.trim(),
+                   reviewer: myId, updated_at: new Date().toISOString(), data_version: facts.version };
+    $("fSaveState").classList.remove("err"); $("fSaveState").textContent = "저장 중…";
+    try {
+      await db.collection("facts_review").doc(current.candidate_id).set(body);
+      $("fSaveState").textContent = `저장했습니다: ${DECISION_KO[decision]}`;
+    } catch (e) {
+      $("fSaveState").classList.add("err"); $("fSaveState").textContent = "저장하지 못했습니다. 다시 시도해 주세요.";
+      if (e && e.code === "invalid_argument") canWrite = false;
+    }
+  }
+
+  async function connect() {
+    const claude = window.claude;
+    if (!claude || !claude.use) return;
+    db = await claude.use("db");
+    const user = await claude.use("user");
+    if (!db) { renderCase(); return; }
+    if (user) {
+      try { myId = await user.id(); } catch (_) {}
+      try { if (await user.can("data.write") === false) canWrite = false; } catch (_) {}
+    }
+    db.collection("facts_review").limit(1000).onSnapshot((snap) => {
+      decisions = {};
+      snap.docs.forEach((d) => { if (d.exists) decisions[d.id] = d.data(); });
+      renderCounts(); renderList();
+      if (current && !document.activeElement?.closest?.("#factForm")) renderCase();
+    }, () => {});
+    renderCase();
+  }
+
+  function loadFacts() {
+    fetch("facts.json").then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); }).then((d) => {
+      facts = d;
+      ["ffState", "ffProc", "ffKind"].forEach((id) => $(id).addEventListener("change", renderList));
+      $("ffText").addEventListener("input", renderList);
+      renderCounts(); current = d.candidates[0] || null; renderList(); renderCase(); connect();
+    }).catch(() => { $("fCase").innerHTML = `<div class="empty">사실 후보를 불러오지 못했습니다. 페이지를 새로 고쳐 주세요.</div>`; });
+  }
+
+  let saved = null; try { saved = localStorage.getItem("artemis-tab"); } catch (_) {}
+  setMode(saved === "facts");
 })();
 </script>
