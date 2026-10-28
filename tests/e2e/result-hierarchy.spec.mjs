@@ -79,7 +79,8 @@ test.describe('F-4 status grant result (source-only)', () => {
 
     // order on the page
     const order = [sg.locator('.sg-answer'), overview, sg.locator('.sg-fee'), sg.locator('.sg-program'), sg.locator('.sg-next'), sg.locator('.sg-evidence')];
-    await expectReadingOrder(sg, order);
+    // the result re-renders once more when the legacy list loads; measure once the layout has settled
+    await expect(async () => { await expectReadingOrder(sg, order); }).toPass({ timeout: 10_000 });
 
     // the 동포 scheme is a collapsed, conditional disclosure
     await expect(sg.locator('.sg-program-details')).toHaveCount(1);
