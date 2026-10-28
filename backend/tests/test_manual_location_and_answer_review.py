@@ -116,5 +116,44 @@ class WiringTests(unittest.TestCase):
         self.assertIn("manual_answer_review", self.pb.AskResponse.model_fields)
 
 
+class TelemetryAndStreamTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        import paradiso_backend as pb
+        cls.pb = pb
+
+    def test_counts_carry_no_text(self):
+        review = {"checked": True, "flags": [{"kind": "start_point", "detail": "답 문장"},
+                                             {"kind": "permission_flip", "detail": "x"},
+                                             {"kind": "start_point", "detail": "y"}]}
+        self.assertEqual(self.pb._manual_review_counts(review), {"checked": True, "start_point": 2, "permission_flip": 1})
+        self.assertEqual(self.pb._manual_review_counts(None), {"checked": False})
+
+    def test_routing_log_has_scopes_and_flag_counts(self):
+        req = self.pb.AskRequest(message="질문")
+        payload = {"manual_evidence_scopes": ["stay"],
+                   "manual_answer_review": {"checked": True, "flags": [{"kind": "start_point", "detail": "비밀 아님"}]}}
+        with self.assertLogs("paradiso.backend", level="INFO") as logs:
+            self.pb._log_ask_routing_telemetry(payload, req=req, status_code=200, latency_ms=1)
+        line = next(m for m in logs.output if "ask_routing" in m)
+        self.assertIn('"manual_evidence_scopes": ["stay"]', line)
+        self.assertIn('"start_point": 1', line)
+        self.assertNotIn("비밀 아님", line)
+
+    def test_stream_done_frame_is_public_without_the_review(self):
+        import asyncio
+        import json as _json
+        frame = self.pb._sse("done", {"final_model": "m", "manual_answer_review": {"checked": True, "flags": []}})
+
+        async def collect():
+            async def gen():
+                yield frame
+            return [chunk async for chunk in self.pb._public_sse_stream(gen())]
+        out = asyncio.run(collect())[0]
+        self.assertTrue(out.startswith("event: done"))
+        data = _json.loads(out.split("data: ", 1)[1])
+        self.assertNotIn("manual_answer_review", data)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -3522,6 +3522,7 @@ async def _sse_answer_stream(
     *,
     prompt: str,
     lang: Optional[str],
+    manual_evidence: Optional[Dict[str, Any]] = None,
 ):
     """Orchestrate the streamed answer over the candidate chain.
 
@@ -3618,7 +3619,13 @@ async def _sse_answer_stream(
                         yield frame
                     yield _sse("done", {"final_model": model, "attempted_models": list(attempted), "post_review_blocked": True})
                     return
-                yield _sse("done", {"final_model": model, "attempted_models": list(attempted)})
+                # Manual answer review (services/manual_answer_checks.py), as on the
+                # buffered path: flags only, diagnostics-only (_public_sse_stream drops
+                # the field), and logged as counts.
+                review = _manual_answer_review_meta("".join(answer_parts), manual_evidence)
+                _log_manual_answer_review(review, streamed=True)
+                yield _sse("done", {"final_model": model, "attempted_models": list(attempted),
+                                    "manual_answer_review": review})
                 return
         except StopAsyncIteration:
             # Stream ended with zero tokens: treat as a soft failure, try next.
@@ -4284,6 +4291,24 @@ def _manual_answer_review_meta(answer_text: str, manual_evidence: Any) -> Dict[s
         return _manual_answer_checks.review(answer_text or "", excerpts)
     except Exception:  # pragma: no cover - a review flag must never break an answer
         return {"checked": False, "flags": [], "error": "review_failed"}
+
+
+def _manual_review_counts(review: Any) -> Dict[str, Any]:
+    """Flag counts by kind for telemetry: no answer text, no excerpt text."""
+    review = review if isinstance(review, dict) else {}
+    counts: Dict[str, Any] = {"checked": bool(review.get("checked"))}
+    for flag in review.get("flags") or []:
+        kind = str((flag or {}).get("kind") or "other")
+        counts[kind] = counts.get(kind, 0) + 1
+    return counts
+
+
+def _log_manual_answer_review(review: Any, *, streamed: bool) -> None:
+    try:
+        logger.info("ask_manual_review %s", json.dumps({"streamed": streamed, **_manual_review_counts(review)},
+                                                        sort_keys=True))
+    except Exception:  # pragma: no cover - telemetry must never break /api/ask
+        pass
 
 
 def _retrieve_ask_manual_evidence(
@@ -5991,6 +6016,8 @@ def _log_ask_routing_telemetry(
         "summary_generation_status": p.get("summary_generation_status") or "",
         "visa_code_detected": p.get("visa_code_detected") or "",
         "task_type_detected": p.get("task_type_detected") or "",
+        "manual_evidence_scopes": list(p.get("manual_evidence_scopes") or []),
+        "manual_answer_review": _manual_review_counts(p.get("manual_answer_review")),
         "latency_ms": latency_ms,
         "provider_latency_ms": p.get("provider_latency_ms") or 0,
     }
@@ -6918,6 +6945,7 @@ async def _ask_internal(req: AskRequest) -> AskResponse:
                 stream_meta,
                 prompt=prompt,
                 lang=req.lang,
+                manual_evidence=manual_evidence,
             ),
             media_type="text/event-stream",
             headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
