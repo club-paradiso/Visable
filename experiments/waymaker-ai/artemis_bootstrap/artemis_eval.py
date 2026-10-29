@@ -136,7 +136,7 @@ class ArtemisItemScore:
     all_failures: List[str] = field(default_factory=list)
     flags: List[str] = field(default_factory=list)
     parsed_response: Optional[Dict[str, Any]] = None
-    is_official_gold: bool = True
+    is_official_gold: bool = False
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -291,7 +291,9 @@ def is_approved_evidence(
                 and re.fullmatch(r"[0-9a-f]{64}", expected_hash) is not None
                 and approval_hash(evidence.get("text", "")) == expected_hash
             )
-        elif app_state == "approved":
+        else:
+            # A missing digest must never make an under-review source trusted
+            # merely because candidate-mode scoring is enabled.
             return False
     return True
 
@@ -383,10 +385,10 @@ def validate_eval_item(item: Mapping[str, Any], check_hashes: bool = True) -> Li
                                 item_id, f"evidence[{idx}].source.approved_sha256",
                                 f"Hash mismatch for '{ev_id}': recorded {content_hash} != calculated {calc_hash}"
                             ))
-                    elif app_state == "approved":
+                    else:
                         issues.append(ValidationIssue(
-                            item_id, f"evidence[{idx}].source.approved_sha256",
-                            "Approved evidence must provide approved_sha256"
+                            item_id, f"evidence[{idx}].source.content_sha256",
+                            "Approved and under-review evidence must provide a content digest"
                         ))
 
     # Expected validation
@@ -829,12 +831,28 @@ def score_artemis_response(
         flags.extend([str(f) for f in parsed["review_flags"]])
 
     # Determine whether this item is verified official gold or pending candidate
-    has_unapproved_evidence = any(
-        not is_approved_evidence(e, check_hash=True, allow_candidate_sources=False)
-        for e in item.get("evidence", [])
+    # Official accuracy metrics require an explicit gold designation and
+    # independently signed official evidence. Synthetic fixtures and candidate
+    # items must not turn into official gold just because a review flag is absent.
+    sources_for_gold = [
+        e for e in item.get("evidence", [])
         if e.get("source", {}).get("approval_state") not in ("community", "unapproved", "synthetic")
+    ]
+    is_official_gold = (
+        meta.get("candidate_status") == "official_gold"
+        and not needs_review
+        and meta.get("is_synthetic") is False
+        and bool(sources_for_gold)
+        and all(
+            e.get("source", {}).get("approval_state") == "approved"
+            and e.get("source", {}).get("provenance") in ("official_manual", "official_notice")
+            and e.get("source", {}).get("review_status") == "verified_by_human"
+            and bool(e.get("source", {}).get("reviewed_by"))
+            and bool(e.get("source", {}).get("reviewed_at"))
+            and is_approved_evidence(e, check_hash=True, allow_candidate_sources=False)
+            for e in sources_for_gold
+        )
     )
-    is_official_gold = not needs_review and not has_unapproved_evidence
 
     if needs_review or not is_official_gold:
         flags.append("pending_human_review")
