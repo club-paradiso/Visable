@@ -276,10 +276,8 @@ def validate_eval_item(item: Mapping[str, Any], check_hashes: bool = True) -> Li
             if cid not in evidence_ids:
                 issues.append(ValidationIssue(item_id, "expected.citation_accuracy.must_cite",
                                               f"must_cite references non-existent evidence id '{cid}'"))
-        for cid in cite_exp.get("must_not_cite") or []:
-            if cid not in evidence_ids:
-                issues.append(ValidationIssue(item_id, "expected.citation_accuracy.must_not_cite",
-                                              f"must_not_cite references non-existent evidence id '{cid}'"))
+        # Forbidden citation IDs may deliberately be nonexistent (fabricated IDs
+        # are one of the evaluation attacks). Do not require them in evidence.
         if set(must_cite) & set(cite_exp.get("must_not_cite") or []):
             issues.append(ValidationIssue(item_id, "expected.citation_accuracy",
                                           "Evidence IDs cannot be both required and forbidden citations"))
