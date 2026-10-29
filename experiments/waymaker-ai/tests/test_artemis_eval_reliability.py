@@ -27,6 +27,7 @@ if str(EXPERIMENT_ROOT) not in sys.path:
     sys.path.insert(0, str(EXPERIMENT_ROOT))
 if str(BOOTSTRAP_DIR) not in sys.path:
     sys.path.insert(0, str(BOOTSTRAP_DIR))
+BENCHMARKS_DIR = BOOTSTRAP_DIR / "benchmarks"
 
 from artemis_eval import (
     CASES_10_PATH,
@@ -200,3 +201,156 @@ def test_audit_human_review_unapproved_flag(base_item):
     }
     res = score_artemis_response(item, response)
     assert "pending_human_review" in res.flags
+    assert "candidate_evaluation_only" in res.flags
+    assert res.is_official_gold is False
+
+
+# =========================================================================
+# MISSION 004-B.1 REMEDIATION REGRESSION TESTS
+# =========================================================================
+
+def test_remediation_denial_statement_not_flagged_as_false_positive(base_item):
+    """'1인 가구의 소득기준은 60,000,000원이 아닙니다.' must NOT trigger a false positive violation."""
+    text = "1인 가구의 소득기준은 23,595,948원이며, 4인 가구의 소득기준은 60,000,000원입니다."
+    base_item["question"] = "1인 가구의 소득기준이 60,000,000원인가요?"
+    base_item["evidence"][0]["text"] = text
+    base_item["evidence"][0]["source"]["approved_sha256"] = approval_hash(text)
+    base_item["expected"]["source_fidelity"]["required_facts"] = []
+    base_item["expected"]["source_fidelity"]["forbidden_subject_bindings"] = [
+        {"subject": "1인 가구", "forbidden_value": "60,000,000원"}
+    ]
+
+    # Exact sentence specified in Mission 004-B.1 prompt
+    exact_denial_response = {
+        "status": "answered",
+        "answer": "1인 가구의 소득기준은 60,000,000원이 아닙니다.",
+        "citations": [base_item["evidence"][0]["id"]],
+    }
+    score = score_source_fidelity(base_item, exact_denial_response)
+    assert score.passed is True
+    assert not any("subject_binding_mismatch" in f for f in score.failures)
+
+
+def test_remediation_extended_negation_phrasings_pass(base_item):
+    """Extended negation expressions (아니며, 적용되지 않습니다, 해당하지 않습니다) pass."""
+    text = "1인 가구의 소득기준은 23,595,948원이며, 4인 가구의 소득기준은 60,000,000원입니다."
+    base_item["question"] = "1인 가구 소득기준 설명"
+    base_item["evidence"][0]["text"] = text
+    base_item["evidence"][0]["source"]["approved_sha256"] = approval_hash(text)
+    base_item["expected"]["source_fidelity"]["required_facts"] = []
+    base_item["expected"]["source_fidelity"]["forbidden_subject_bindings"] = [
+        {"subject": "1인 가구", "forbidden_value": "60,000,000원"}
+    ]
+
+    variants = [
+        "1인 가구의 소득기준은 60,000,000원이 아니며, 실제 기준은 23,595,948원입니다.",
+        "1인 가구의 경우 60,000,000원 기준이 적용되지 않습니다.",
+        "1인 가구 소득 요건은 60,000,000원에 해당하지 않고 23,595,948원입니다.",
+        "1인 가구 기준은 60,000,000원이 아니라 23,595,948원입니다.",
+    ]
+    for ans in variants:
+        score = score_source_fidelity(base_item, {
+            "status": "answered",
+            "answer": ans,
+            "citations": [base_item["evidence"][0]["id"]],
+        })
+        assert score.passed is True, f"Failed on valid negation phrasing: {ans} - failures: {score.failures}"
+
+
+def test_remediation_multi_subject_comparison_statement_passes(base_item):
+    """Sentence that contrasts 1인 가구 and 4인 가구 in the same response passes without false positive."""
+    text = "1인 가구의 소득기준은 23,595,948원이며, 4인 가구의 소득기준은 60,000,000원입니다."
+    base_item["question"] = "가구원수별 소득기준을 비교해 주세요."
+    base_item["evidence"][0]["text"] = text
+    base_item["evidence"][0]["source"]["approved_sha256"] = approval_hash(text)
+    base_item["expected"]["source_fidelity"]["required_facts"] = []
+    base_item["expected"]["source_fidelity"]["forbidden_subject_bindings"] = [
+        {"subject": "1인 가구", "forbidden_value": "60,000,000원"}
+    ]
+
+    comparison_response = {
+        "status": "answered",
+        "answer": "1인 가구의 소득기준은 23,595,948원이고, 4인 가구의 소득기준은 60,000,000원입니다.",
+        "citations": [base_item["evidence"][0]["id"]],
+    }
+    score = score_source_fidelity(base_item, comparison_response)
+    assert score.passed is True
+    assert not any("subject_binding_mismatch" in f for f in score.failures)
+
+
+def test_remediation_actual_transposition_still_detected(base_item):
+    """Actual erroneous affirmative binding must still be strictly caught and penalized."""
+    text = "1인 가구의 소득기준은 23,595,948원이며, 4인 가구의 소득기준은 60,000,000원입니다."
+    base_item["question"] = "1인 가구의 소득기준은 얼마인가요?"
+    base_item["evidence"][0]["text"] = text
+    base_item["evidence"][0]["source"]["approved_sha256"] = approval_hash(text)
+    base_item["expected"]["source_fidelity"]["required_facts"] = []
+    base_item["expected"]["source_fidelity"]["forbidden_subject_bindings"] = [
+        {"subject": "1인 가구", "forbidden_value": "60,000,000원"}
+    ]
+
+    erroneous_affirmation = {
+        "status": "answered",
+        "answer": "1인 가구의 소득기준은 60,000,000원으로 확인됩니다.",
+        "citations": [base_item["evidence"][0]["id"]],
+    }
+    score = score_source_fidelity(base_item, erroneous_affirmation)
+    assert score.passed is False
+    assert any("subject_binding_mismatch:1인 가구->60,000,000원" in f for f in score.failures)
+
+
+def test_remediation_validator_rejects_auto_approved_official_evidence(base_item):
+    """Official statute/manual marked 'approved' without verified_by_human MUST be rejected."""
+    bad_item = copy.deepcopy(base_item)
+    bad_item["metadata"]["is_synthetic"] = False
+    bad_item["evidence"][0]["source"]["provenance"] = "official_manual"
+    bad_item["evidence"][0]["source"]["approval_state"] = "approved"
+    bad_item["evidence"][0]["source"]["review_status"] = "unreviewed"
+    bad_item["evidence"][0]["source"]["reviewed_by"] = None
+
+    issues = validate_eval_item(bad_item)
+    assert any("without human verification" in i.message for i in issues)
+
+
+def test_remediation_validator_accepts_under_review_evidence_with_provenance_and_hash(base_item):
+    """Official document marked 'under_review' with content_sha256 and provenance metadata is accepted."""
+    item = copy.deepcopy(base_item)
+    text = "출입국관리법 제17조에 따라 체류자격의 범위에서 체류할 수 있습니다."
+    item["evidence"][0]["text"] = text
+    item["evidence"][0]["source"].update({
+        "approval_state": "under_review",
+        "provenance": "official_manual",
+        "source_url": "https://www.law.go.kr/법령/출입국관리법",
+        "document_id": "출입국관리법",
+        "provision": "제17조",
+        "effective_date": "2026-01-01",
+        "review_status": "unreviewed",
+        "content_sha256": approval_hash(text)
+    })
+    issues = validate_eval_item(item)
+    ev_issues = [i for i in issues if "evidence" in i.field_name or "source" in i.field_name]
+    assert len(ev_issues) == 0
+
+
+def test_remediation_candidate_suite_reports_zero_official_gold_metric():
+    """Evaluating candidate suite isolates candidates and reports 0 official gold items."""
+    from artemis_eval import evaluate_suite
+
+    cand_path = BENCHMARKS_DIR / "artemis_eval_candidates_60.json"
+    with open(cand_path, encoding="utf-8") as f:
+        items = json.load(f)["items"]
+
+    # All 60 items have needs_human_review = True
+    assert all(it["metadata"].get("needs_human_review") is True for it in items)
+    assert all(it["metadata"].get("candidate_status") in ("dev_candidate", "heldout_candidate") for it in items)
+
+    # Mock responses for first 5 items
+    responses = [
+        {"item_id": it["id"], "response": {"status": "insufficient_evidence", "answer": "보류", "citations": []}}
+        for it in items[:5]
+    ]
+    summary = evaluate_suite(items[:5], responses)
+    assert summary.official_gold_cases == 0
+    assert summary.official_gold_pass_rate is None
+    assert summary.candidate_cases == 5
+

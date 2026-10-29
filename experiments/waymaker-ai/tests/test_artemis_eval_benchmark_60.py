@@ -88,10 +88,13 @@ def test_manifest_integrity_and_sha256_match():
     with open(manifest_path, encoding="utf-8") as f:
         manifest = json.load(f)
 
-    assert manifest["manifest_version"] == "artemis-manifest/1.0"
+    assert manifest["manifest_version"] in ("artemis-manifest/1.0", "artemis-manifest/1.1")
     assert manifest["partition_counts"]["dev"] == 20
     assert manifest["partition_counts"]["heldout"] == 40
+    assert manifest["partition_counts"]["dev_candidate"] == 20
+    assert manifest["partition_counts"]["heldout_candidate"] == 40
     assert manifest["partition_counts"]["total_candidates"] == 60
+    assert manifest["partition_counts"]["human_verified_gold"] == 0
 
     # Verify each file's on-disk digest
     for fname, info in manifest["file_digests"].items():

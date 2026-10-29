@@ -1,387 +1,534 @@
 {
-  "manifest_version": "artemis-manifest/1.0",
-  "mission": "ARTEMIS MISSION 004-B",
+  "manifest_version": "artemis-manifest/1.1",
+  "mission": "ARTEMIS MISSION 004-B.1 (Independent Review Remediation)",
   "created_at": "2026-10-29",
-  "author": "Artemis Mission 004-B Benchmark System",
+  "author": "Artemis Mission 004-B.1 Benchmark Remediation Subsystem",
+  "remediation_summary": {
+    "evidence_approval_remediation": "Removed automatic 'approved' status; all 54 unverified materials classified as 'under_review'; attached source_url, document_id, provision, effective_date.",
+    "integrity_vs_legal_approval": "SHA-256 hashes are used strictly for cryptographic text integrity, NOT legal approval evidence.",
+    "human_review_coverage": "60/60 candidate items (100%) classified as pending human review; 0 items marked as human-approved.",
+    "heldout_candidate_status": "Designated 40 heldout items explicitly as 'heldout_candidate' pending clean-room freeze.",
+    "scoring_isolation": "Candidate items flagged with pending_human_review cannot be used to report official model accuracy."
+  },
+  "version_history": [
+    {
+      "version": "1.0.0",
+      "commit": "c7443b5",
+      "date": "2026-10-29",
+      "description": "Initial candidate construction (PR #723 initial commit)"
+    },
+    {
+      "version": "1.1.0",
+      "commit": "HEAD",
+      "date": "2026-10-29",
+      "description": "Mission 004-B.1 Independent Review Remediation: unverified approval removal, provenance metadata enrichment, full 60-item human review queue, heldout candidate clarification."
+    }
+  ],
   "partition_counts": {
     "dev": 20,
     "heldout": 40,
-    "total_candidates": 60
+    "dev_candidate": 20,
+    "heldout_candidate": 40,
+    "total_candidates": 60,
+    "human_verified_gold": 0
   },
   "file_digests": {
     "artemis_eval_dev_20.json": {
-      "sha256": "2541dd957d89888732e16825d8f4d192958a5ec31504c37e50b872bbcfa32a11",
-      "item_count": 20
+      "sha256": "c204497731b637d31da221a468ca2a4c2537d275a974234f41aefe7da4313c5f",
+      "item_count": 20,
+      "candidate_status": "dev_candidate"
     },
     "artemis_eval_heldout_40.json": {
-      "sha256": "7c54d795befc58bc1ce2d0d416d75468f776f26d38e8434d33ab9ff593e54dd4",
-      "item_count": 40
+      "sha256": "0b1d0284d59146758cc041e9681e011e72a59c4f93ebc1865eccc42f53674988",
+      "item_count": 40,
+      "candidate_status": "heldout_candidate"
     },
     "artemis_eval_candidates_60.json": {
-      "sha256": "9be0bea9d538ba9f248dde8125dde9353e84eff9ccfef7eb1657da529dfd4c1c",
-      "item_count": 60
+      "sha256": "2a95e997abc14d29baee8617923809da595842c709d8f080692cba54b589caf5",
+      "item_count": 60,
+      "candidate_status": "all_candidates"
     }
   },
   "item_digests": {
     "ARTEMIS-004-DEV-001": {
       "split": "dev",
+      "candidate_status": "dev_candidate",
       "dimension": "procedural_integrity",
-      "needs_human_review": false,
-      "sha256": "516830d171080056c28547ff4b55cd428cab2327b4fe2fb5ac9943c2ff243ac2"
+      "needs_human_review": true,
+      "review_status": "unreviewed",
+      "sha256": "a6339f1c516c040fcd007a1af038cae8416fa912370485ed22b19b6022bff412"
     },
     "ARTEMIS-004-DEV-002": {
       "split": "dev",
+      "candidate_status": "dev_candidate",
       "dimension": "procedural_integrity",
-      "needs_human_review": false,
-      "sha256": "c45af8fefd37d8afc391b805c1dcbd60c4d196c675fe305c5900abfafe0c2af4"
+      "needs_human_review": true,
+      "review_status": "unreviewed",
+      "sha256": "d56560725def7b22c9077fff17a5317a3b4ad6f0db0f3b49785105bc559e959b"
     },
     "ARTEMIS-004-DEV-003": {
       "split": "dev",
+      "candidate_status": "dev_candidate",
       "dimension": "source_fidelity",
-      "needs_human_review": false,
-      "sha256": "64f34205415b72893e62b50cd4fcf1df5959a277f0d09ead4dc5bb6c5fb4ba69"
+      "needs_human_review": true,
+      "review_status": "unreviewed",
+      "sha256": "186b36b157f4e9637d680145de208492a6835cbff1d20c1ada918779b043f034"
     },
     "ARTEMIS-004-DEV-004": {
       "split": "dev",
+      "candidate_status": "dev_candidate",
       "dimension": "source_fidelity",
-      "needs_human_review": false,
-      "sha256": "670ce9996db57ba3667d9cd07197ee2c0fe162023659cf336a7b887e67c022e9"
+      "needs_human_review": true,
+      "review_status": "unreviewed",
+      "sha256": "03114a5f7d0ce342f3afcefbf6c53fa964e084cf3776759a0d649db03454fb49"
     },
     "ARTEMIS-004-DEV-005": {
       "split": "dev",
+      "candidate_status": "dev_candidate",
       "dimension": "source_fidelity",
-      "needs_human_review": false,
-      "sha256": "7b707fbb53a487db60edb5971fff348f43e00688b71f2ec82a4b1692b673036d"
+      "needs_human_review": true,
+      "review_status": "unreviewed",
+      "sha256": "7c81d786acac5fa76aabb1d1b25d233f942bf7b26656c83e2d24104f5993024d"
     },
     "ARTEMIS-004-DEV-006": {
       "split": "dev",
+      "candidate_status": "dev_candidate",
       "dimension": "source_fidelity",
-      "needs_human_review": false,
-      "sha256": "db21664a84786d40865547bbfbd1dfde2751e3a015ddf5e7d5ac43db3f966997"
+      "needs_human_review": true,
+      "review_status": "unreviewed",
+      "sha256": "3d6b1a621457c8e8ee9e00fc54652efe049fe8a2aef47c13b9c72f371ca9ec82"
     },
     "ARTEMIS-004-DEV-007": {
       "split": "dev",
+      "candidate_status": "dev_candidate",
       "dimension": "source_fidelity",
-      "needs_human_review": false,
-      "sha256": "b10dbda37d554894fa89b2df10291c985d3aef696884f2196bf07cab3b8c9985"
+      "needs_human_review": true,
+      "review_status": "unreviewed",
+      "sha256": "d36a5dcd38c834b68ca19f075f1e6a025bd67c8b1f307a4747c374bb36666e47"
     },
     "ARTEMIS-004-DEV-008": {
       "split": "dev",
+      "candidate_status": "dev_candidate",
       "dimension": "source_fidelity",
-      "needs_human_review": false,
-      "sha256": "fb0bc5638b74e927d7afd971fa949ea6f6806316049a2ff32e307971962746e6"
+      "needs_human_review": true,
+      "review_status": "unreviewed",
+      "sha256": "ab4ba5ddf1eaecefb2a0d9dfa5704119815f0ed9754d74a14a308820593fb08e"
     },
     "ARTEMIS-004-DEV-009": {
       "split": "dev",
+      "candidate_status": "dev_candidate",
       "dimension": "source_fidelity",
-      "needs_human_review": false,
-      "sha256": "fb5c6bb62a870d7b1ac546b1742ea995cb8cd823fbfef278b8ca2570059c315d"
+      "needs_human_review": true,
+      "review_status": "unreviewed",
+      "sha256": "500344f5062c81c0bd849633ebe70d5e358939932329bce4a0ecfc08d321d9ca"
     },
     "ARTEMIS-004-DEV-010": {
       "split": "dev",
+      "candidate_status": "dev_candidate",
       "dimension": "source_fidelity",
-      "needs_human_review": false,
-      "sha256": "af04285606e9f320c764391417a72b8166551b156ecb911628ae5609316f3392"
+      "needs_human_review": true,
+      "review_status": "unreviewed",
+      "sha256": "0c0f963dd44da50e60b87005b542e66cee6a1d6062968db58772a0f21bcdcccb"
     },
     "ARTEMIS-004-DEV-011": {
       "split": "dev",
+      "candidate_status": "dev_candidate",
       "dimension": "source_fidelity",
-      "needs_human_review": false,
-      "sha256": "612f396f401ad54355340068f0b9f827e6cb29c1707be1860e5334020a35a0ba"
+      "needs_human_review": true,
+      "review_status": "unreviewed",
+      "sha256": "48fddea2c32cfcc2c2c21e246e459a057a8cf9756527a77812299edce6e16caa"
     },
     "ARTEMIS-004-DEV-012": {
       "split": "dev",
+      "candidate_status": "dev_candidate",
       "dimension": "source_fidelity",
-      "needs_human_review": false,
-      "sha256": "067cfa649a0d7197f57625aaadd0290941dd99ccbf484c465a060260efc27762"
+      "needs_human_review": true,
+      "review_status": "unreviewed",
+      "sha256": "12b3a08cdd06ba52cf0370807686c1d25422fc5308f051e3df31f2552a115c51"
     },
     "ARTEMIS-004-DEV-013": {
       "split": "dev",
+      "candidate_status": "dev_candidate",
       "dimension": "abstention_appropriateness",
       "needs_human_review": true,
-      "sha256": "8d3fb3edc735c815eb24b2a20b161702ca0820f0929a920b106e8df3d93d0d67"
+      "review_status": "unreviewed",
+      "sha256": "08e801a81946a661ebcb7aab4de9088cff8969b89857d35ed524f8685e5b1071"
     },
     "ARTEMIS-004-DEV-014": {
       "split": "dev",
+      "candidate_status": "dev_candidate",
       "dimension": "abstention_appropriateness",
       "needs_human_review": true,
-      "sha256": "c1dcb92d0b6a5fd4c29ea1c428b39310b89d90804004554dd74a2e3477110ec1"
+      "review_status": "unreviewed",
+      "sha256": "e62d52ccdfbf06de7e5a043669b7cbdfe5b068b0a539250cb0e64afeb556ba75"
     },
     "ARTEMIS-004-DEV-015": {
       "split": "dev",
+      "candidate_status": "dev_candidate",
       "dimension": "abstention_appropriateness",
-      "needs_human_review": false,
-      "sha256": "8e0ab23516e9e8b1121e43580e5a249db7c414795ceb9a6e6b07a60844d89672"
+      "needs_human_review": true,
+      "review_status": "unreviewed",
+      "sha256": "211470ea292f738d8c7d0f16e30f8444cebed1a1fec749294549b02e27b4bc5a"
     },
     "ARTEMIS-004-DEV-016": {
       "split": "dev",
+      "candidate_status": "dev_candidate",
       "dimension": "abstention_appropriateness",
-      "needs_human_review": false,
-      "sha256": "327fc15f86d603390cf5f19321538a8234936d6fe673add32a6798b8308420f3"
+      "needs_human_review": true,
+      "review_status": "unreviewed",
+      "sha256": "b11865656915738a8487b30732bdb051f958d38dbd44c8129aa98f2c714bbdde"
     },
     "ARTEMIS-004-DEV-017": {
       "split": "dev",
+      "candidate_status": "dev_candidate",
       "dimension": "source_fidelity",
-      "needs_human_review": false,
-      "sha256": "c3c4c96ccf2232ba887ae592a9889612e4f548c3c4200257c1903d1ea202a836"
+      "needs_human_review": true,
+      "review_status": "unreviewed",
+      "sha256": "ae07b16a1ee9e62028120f91d6425eb8279ca9d50833eade41254888044dd4e4"
     },
     "ARTEMIS-004-DEV-018": {
       "split": "dev",
+      "candidate_status": "dev_candidate",
       "dimension": "source_fidelity",
-      "needs_human_review": false,
-      "sha256": "c984bbf7e86d27038b9262a3c640a660909e46bf2dbf536d544e0ed48957e912"
+      "needs_human_review": true,
+      "review_status": "unreviewed",
+      "sha256": "7abe5f75ad712f94b0cb7a050bd535941b6b70af6d9461810eccfdf5bd05d0e2"
     },
     "ARTEMIS-004-DEV-019": {
       "split": "dev",
+      "candidate_status": "dev_candidate",
       "dimension": "citation_accuracy",
-      "needs_human_review": false,
-      "sha256": "c7bd58027de51e96f8075bae4fe80c061b5688d1bbf9f96596effe89bd103013"
+      "needs_human_review": true,
+      "review_status": "unreviewed",
+      "sha256": "cf14e9e3a68c9f6c3b947b14772bbbd816292b17688015d6855e65b0fc13c413"
     },
     "ARTEMIS-004-DEV-020": {
       "split": "dev",
+      "candidate_status": "dev_candidate",
       "dimension": "citation_accuracy",
-      "needs_human_review": false,
-      "sha256": "916036f248b83aff1fc709bbb90eaa161fd876541e36d8e6ca5fee39417a692a"
+      "needs_human_review": true,
+      "review_status": "unreviewed",
+      "sha256": "aa1ecc2a86d66ed9da2e8bed5ef4a8d434bb932fe0a9afb4c38be8f691c0176e"
     },
     "ARTEMIS-004-HLD-001": {
       "split": "heldout",
+      "candidate_status": "heldout_candidate",
       "dimension": "procedural_integrity",
-      "needs_human_review": false,
-      "sha256": "9384d6a0b6a73a7c7367e14250ae191ea66fd367d3ded8789a2ca60cce4a843b"
+      "needs_human_review": true,
+      "review_status": "unreviewed",
+      "sha256": "f8d0c606f8fd7ca3180986c675c871a29ae167f8cbf3785486dfc2fda1f84c75"
     },
     "ARTEMIS-004-HLD-002": {
       "split": "heldout",
+      "candidate_status": "heldout_candidate",
       "dimension": "procedural_integrity",
-      "needs_human_review": false,
-      "sha256": "0d463ee1bf5de2bd20b2ee276513c402dcfd26dfc74aa409c8762b3ce93354ae"
+      "needs_human_review": true,
+      "review_status": "unreviewed",
+      "sha256": "5ccad729554c7b841f0d0cf54cc68ed916b0c8d14a9fc3eab1ed99c3ad79447a"
     },
     "ARTEMIS-004-HLD-003": {
       "split": "heldout",
+      "candidate_status": "heldout_candidate",
       "dimension": "source_fidelity",
-      "needs_human_review": false,
-      "sha256": "1bd438dc041ceec45d11bc9b7153dd8bc10c01c8c639808d2cb407f73e98cb34"
+      "needs_human_review": true,
+      "review_status": "unreviewed",
+      "sha256": "a9630465a1a8e22b12a3b355473f20ee39287ab06f79a77e12a330d51540bf1c"
     },
     "ARTEMIS-004-HLD-004": {
       "split": "heldout",
+      "candidate_status": "heldout_candidate",
       "dimension": "source_fidelity",
       "needs_human_review": true,
-      "sha256": "f9ee24876f80c618147a257ed7d985ec93c87fadae6893be379652329fe2cfab"
+      "review_status": "unreviewed",
+      "sha256": "71bebdf9efd1941ccca427ea3f7afd63d7098901764974c71e55bd18b97d0635"
     },
     "ARTEMIS-004-HLD-005": {
       "split": "heldout",
+      "candidate_status": "heldout_candidate",
       "dimension": "source_fidelity",
-      "needs_human_review": false,
-      "sha256": "5638b4f04bd07d4bd7a0ba9a2ded7d2c69e2f306f2a7ca852b64d7afc9aa7786"
+      "needs_human_review": true,
+      "review_status": "unreviewed",
+      "sha256": "011c06e8c245defc307c355177f9466cb2aa2f2ec589955e75e0d66735a310e1"
     },
     "ARTEMIS-004-HLD-006": {
       "split": "heldout",
+      "candidate_status": "heldout_candidate",
       "dimension": "source_fidelity",
-      "needs_human_review": false,
-      "sha256": "96be5579155e0704dc53bb294a8a8cc1bb5f328d37df4445f69ecf51bf7e2dab"
+      "needs_human_review": true,
+      "review_status": "unreviewed",
+      "sha256": "b937d6a618b863c25e50b60a154c1ccd49720d8458d31f01467e33bc5553f470"
     },
     "ARTEMIS-004-HLD-007": {
       "split": "heldout",
+      "candidate_status": "heldout_candidate",
       "dimension": "source_fidelity",
       "needs_human_review": true,
-      "sha256": "76c19111218502860a97e23d826391df911e269a56d5fad9c5ac97f849c77107"
+      "review_status": "unreviewed",
+      "sha256": "88bfe3375bb8efcd6d41a71bac095b426aa27c921b063efccb0106321d25f52b"
     },
     "ARTEMIS-004-HLD-008": {
       "split": "heldout",
+      "candidate_status": "heldout_candidate",
       "dimension": "source_fidelity",
       "needs_human_review": true,
-      "sha256": "1ef2c963739fc371a8911082b25b9fcb6db503260c3a1e5750c73f8d54f3f078"
+      "review_status": "unreviewed",
+      "sha256": "04f441021bbad784df2eec7af68c665ce4b575e8194aee6476a0f4c70804fc2e"
     },
     "ARTEMIS-004-HLD-009": {
       "split": "heldout",
+      "candidate_status": "heldout_candidate",
       "dimension": "source_fidelity",
-      "needs_human_review": false,
-      "sha256": "65ba9ecb4152e2257b0bc91dd2abac0dc4be01ae9ce772d44666a14c9bac5e38"
+      "needs_human_review": true,
+      "review_status": "unreviewed",
+      "sha256": "861832819a412a1d52551a5435a2260a5b3352bd032817481b17396b947c250f"
     },
     "ARTEMIS-004-HLD-010": {
       "split": "heldout",
+      "candidate_status": "heldout_candidate",
       "dimension": "source_fidelity",
-      "needs_human_review": false,
-      "sha256": "8f9b5d4ed8ffb7c36791c6613730dcd9d4753db61e19c8b2a7a1a50352892216"
+      "needs_human_review": true,
+      "review_status": "unreviewed",
+      "sha256": "8012e9f64bac6a0569489b38e5ed7eb0b57c8e11f62de292862d0a8097230c22"
     },
     "ARTEMIS-004-HLD-011": {
       "split": "heldout",
+      "candidate_status": "heldout_candidate",
       "dimension": "source_fidelity",
-      "needs_human_review": false,
-      "sha256": "73a500f5fe339679add8d7fdf87dee41bba0b599286bfab5e4fdab143bf247fb"
+      "needs_human_review": true,
+      "review_status": "unreviewed",
+      "sha256": "1ff2de571c02667e2d3ec4f5f256b97a8cd697dc8d2074cabc7c9e3a9d6711b3"
     },
     "ARTEMIS-004-HLD-012": {
       "split": "heldout",
+      "candidate_status": "heldout_candidate",
       "dimension": "source_fidelity",
-      "needs_human_review": false,
-      "sha256": "fdc5128a3c72afeb2d16d8d9a7b8ca7308c30d6a003becbf711da98bfa949f73"
+      "needs_human_review": true,
+      "review_status": "unreviewed",
+      "sha256": "e6f5073402a22c447f9611ae053632110ae97d387daefb944849aad47918349a"
     },
     "ARTEMIS-004-HLD-013": {
       "split": "heldout",
+      "candidate_status": "heldout_candidate",
       "dimension": "abstention_appropriateness",
       "needs_human_review": true,
-      "sha256": "044c56d86ee617054bb4cab82130020a0f278f652db3b8e6f3e5994245d41b63"
+      "review_status": "unreviewed",
+      "sha256": "a17c44fa0ea745ada29c19401d45c816805ee24ba6a1a402beb4ddebf7f88514"
     },
     "ARTEMIS-004-HLD-014": {
       "split": "heldout",
+      "candidate_status": "heldout_candidate",
       "dimension": "abstention_appropriateness",
       "needs_human_review": true,
-      "sha256": "dfbef0f8c71e13ed9b0921caa87cd599c7e678ef7eb9f873c090e38fc538e825"
+      "review_status": "unreviewed",
+      "sha256": "6d34502471eef54eadb99e8e34556da4c503a260d165f6550843783117e73fb5"
     },
     "ARTEMIS-004-HLD-015": {
       "split": "heldout",
+      "candidate_status": "heldout_candidate",
       "dimension": "abstention_appropriateness",
-      "needs_human_review": false,
-      "sha256": "b6b94f11045bd341552d49ffbcc256c604cdd955496bff7bfc558d25c456708f"
+      "needs_human_review": true,
+      "review_status": "unreviewed",
+      "sha256": "bcbe355da3514d38921b313acf58c2b1d768df03ff66e5b4025de7044a558c3b"
     },
     "ARTEMIS-004-HLD-016": {
       "split": "heldout",
+      "candidate_status": "heldout_candidate",
       "dimension": "abstention_appropriateness",
-      "needs_human_review": false,
-      "sha256": "93c4ce9852171b69f24cbe28e77ee2f67ae9a2d77d1b85ce4794b4cd89d48d07"
+      "needs_human_review": true,
+      "review_status": "unreviewed",
+      "sha256": "00a319a0f6c457855e753a144e0bf9b5bbf22fcec11197cf00dc7b01986cd1eb"
     },
     "ARTEMIS-004-HLD-017": {
       "split": "heldout",
+      "candidate_status": "heldout_candidate",
       "dimension": "source_fidelity",
-      "needs_human_review": false,
-      "sha256": "33940fd303162a566ee1a8158f29d1d55b0aee5f903ccaa23ff83282f9fa5103"
+      "needs_human_review": true,
+      "review_status": "unreviewed",
+      "sha256": "48af08e8790fb22878800f9fdeaaffbe3c3af2a61ef87fbe316883e89a5b4830"
     },
     "ARTEMIS-004-HLD-018": {
       "split": "heldout",
+      "candidate_status": "heldout_candidate",
       "dimension": "source_fidelity",
-      "needs_human_review": false,
-      "sha256": "42f91b01b781989d32ab0d5d70a09b4a8239183045795d99b33bb91742b3c603"
+      "needs_human_review": true,
+      "review_status": "unreviewed",
+      "sha256": "886279df573c9b29359f4de739a6fe8159e68c0426add7f09438b05bbf933907"
     },
     "ARTEMIS-004-HLD-019": {
       "split": "heldout",
+      "candidate_status": "heldout_candidate",
       "dimension": "citation_accuracy",
-      "needs_human_review": false,
-      "sha256": "72c9b0caddcfc2910a21287f35605fa2bc2b57df13500fc75be5d6a2380f70e9"
+      "needs_human_review": true,
+      "review_status": "unreviewed",
+      "sha256": "9dfcc113b75ef7648a31b910640baeb220de507831eedc544221add030a878c2"
     },
     "ARTEMIS-004-HLD-020": {
       "split": "heldout",
+      "candidate_status": "heldout_candidate",
       "dimension": "citation_accuracy",
-      "needs_human_review": false,
-      "sha256": "f1725d83084bbca4876c6fae2e9a5479afbbf264a18787ec3bcc513904e06708"
+      "needs_human_review": true,
+      "review_status": "unreviewed",
+      "sha256": "19699b877dd6945deb6b670d2864b16aaaba3d35d1abb9ef10dfc100a90c0db1"
     },
     "ARTEMIS-004-HLD-021": {
       "split": "heldout",
+      "candidate_status": "heldout_candidate",
       "dimension": "source_fidelity",
-      "needs_human_review": false,
-      "sha256": "383270962892614236bae53082111a813c25505e0832dac68b60b4c7837434fd"
+      "needs_human_review": true,
+      "review_status": "unreviewed",
+      "sha256": "2a44d636336b33a0740c90871f12c8e2997146261f105a4f699e3e40468ef3ca"
     },
     "ARTEMIS-004-HLD-022": {
       "split": "heldout",
+      "candidate_status": "heldout_candidate",
       "dimension": "procedural_integrity",
-      "needs_human_review": false,
-      "sha256": "14920f9830098f201164b2bd87fbea30b5b2b16bd5d57d332fe78ced4aa5e296"
+      "needs_human_review": true,
+      "review_status": "unreviewed",
+      "sha256": "386c751fe59691469daf14d7673081ae5bdf3b41c5b6538241915bcb2fa27e80"
     },
     "ARTEMIS-004-HLD-023": {
       "split": "heldout",
+      "candidate_status": "heldout_candidate",
       "dimension": "source_fidelity",
       "needs_human_review": true,
-      "sha256": "6f3ea350dbd158e142b14ce7660dc0fdaad6df4659c571c6a0a87f5dfa20481f"
+      "review_status": "unreviewed",
+      "sha256": "5b5c9d48caf006cdb2f27ccf8eebab11131d57bc0cdeab1d3f12c6ef2e939ca9"
     },
     "ARTEMIS-004-HLD-024": {
       "split": "heldout",
+      "candidate_status": "heldout_candidate",
       "dimension": "source_fidelity",
-      "needs_human_review": false,
-      "sha256": "ab4327501d7213cceb5b05ec0e66e04cc014c74403655e9e1bb1e385a6447376"
+      "needs_human_review": true,
+      "review_status": "unreviewed",
+      "sha256": "d60c9f7384bcc09457a3abb8dbc57f8a07dcb8f36334f7e79976dec877daaf2d"
     },
     "ARTEMIS-004-HLD-025": {
       "split": "heldout",
+      "candidate_status": "heldout_candidate",
       "dimension": "source_fidelity",
-      "needs_human_review": false,
-      "sha256": "6a5cdcc0c857c8636db22c2166273b59c8ecf5eb581b35cc0b1cddfa05c25613"
+      "needs_human_review": true,
+      "review_status": "unreviewed",
+      "sha256": "aeda6c6523ba572592ebe7a6d216304a461e5c6503e234bc7c8042272c45e962"
     },
     "ARTEMIS-004-HLD-026": {
       "split": "heldout",
+      "candidate_status": "heldout_candidate",
       "dimension": "source_fidelity",
-      "needs_human_review": false,
-      "sha256": "07cd26978a8544dab442ac670d086e4d0a5399e72ab6372d1efd25153677d4f8"
+      "needs_human_review": true,
+      "review_status": "unreviewed",
+      "sha256": "04dc03cbaa4ba37077509bbd469364f8f5ebd2a55a5b51a84206752f5ef87d47"
     },
     "ARTEMIS-004-HLD-027": {
       "split": "heldout",
+      "candidate_status": "heldout_candidate",
       "dimension": "source_fidelity",
       "needs_human_review": true,
-      "sha256": "2f331c54268347cf7c752882546538cb29f825d3279d1b75aefee3fba22ba83c"
+      "review_status": "unreviewed",
+      "sha256": "6fde325a77f7ef6ba73e57ffbdd932969caceba47aeea2a379d96b27ee83ea9f"
     },
     "ARTEMIS-004-HLD-028": {
       "split": "heldout",
+      "candidate_status": "heldout_candidate",
       "dimension": "source_fidelity",
       "needs_human_review": true,
-      "sha256": "354f8fe7391796ec1036da4e74d6ea684f9d13e017edd144589b85b290db6cd6"
+      "review_status": "unreviewed",
+      "sha256": "f3f8a0d692e20dae07d994b4e9c6ca6a7fef391ed7e176fe7ee04e1125157150"
     },
     "ARTEMIS-004-HLD-029": {
       "split": "heldout",
+      "candidate_status": "heldout_candidate",
       "dimension": "source_fidelity",
-      "needs_human_review": false,
-      "sha256": "8a2e134862fd90ca7ebdf5ae984133bb95e5f683ec978d22bb78899ed7852d10"
+      "needs_human_review": true,
+      "review_status": "unreviewed",
+      "sha256": "53ae52b2e01ca5da43d91e206991c08a7c7df30e43fdde3aadc1044a26a00112"
     },
     "ARTEMIS-004-HLD-030": {
       "split": "heldout",
+      "candidate_status": "heldout_candidate",
       "dimension": "source_fidelity",
-      "needs_human_review": false,
-      "sha256": "0f3835fa087216b503e5dbfed2a66dc49199be33c25008c75b6a8a8550f394ea"
+      "needs_human_review": true,
+      "review_status": "unreviewed",
+      "sha256": "a40c5c23fa5220e91d9a3b781f2590f84e8bb2133631d4c44ef98f05bf452414"
     },
     "ARTEMIS-004-HLD-031": {
       "split": "heldout",
+      "candidate_status": "heldout_candidate",
       "dimension": "source_fidelity",
       "needs_human_review": true,
-      "sha256": "6655af75341ea4ec99112f1ebbcd44797ad2f82933ab18a2eee01f17c5884720"
+      "review_status": "unreviewed",
+      "sha256": "cfaf7731bddb290d333479d157d21dca362ace4f6cf02648fbcfa6192fe04975"
     },
     "ARTEMIS-004-HLD-032": {
       "split": "heldout",
+      "candidate_status": "heldout_candidate",
       "dimension": "source_fidelity",
       "needs_human_review": true,
-      "sha256": "9d8ff7b9736b321396b4d91ba053c34b2a7c624329a58b07faa48b035b1a6f0a"
+      "review_status": "unreviewed",
+      "sha256": "a534fd8b944142ff9c5a76b10a9fa959cf40d35b79fad94b79976dcc3da84c43"
     },
     "ARTEMIS-004-HLD-033": {
       "split": "heldout",
+      "candidate_status": "heldout_candidate",
       "dimension": "abstention_appropriateness",
       "needs_human_review": true,
-      "sha256": "f0e36f7f501b0480ec08b6a0dca87bdd0afedddee4200954059d7fb082735e55"
+      "review_status": "unreviewed",
+      "sha256": "814e1b60502be93845b7bf599bfaab289d1131b400e795f660797cff94fa4d58"
     },
     "ARTEMIS-004-HLD-034": {
       "split": "heldout",
+      "candidate_status": "heldout_candidate",
       "dimension": "abstention_appropriateness",
       "needs_human_review": true,
-      "sha256": "cb3ab4ceeeebc51ef8f67655cd13d48ae680d467f71af82f5fce863f4b524031"
+      "review_status": "unreviewed",
+      "sha256": "33483678c9f48331b06c3bf8ec9c1abcb5901bd996f844df6f2a859c5ef658d0"
     },
     "ARTEMIS-004-HLD-035": {
       "split": "heldout",
+      "candidate_status": "heldout_candidate",
       "dimension": "abstention_appropriateness",
-      "needs_human_review": false,
-      "sha256": "449a31b6447ca15b806a0a5508f7b2611be8dcbb455604aef03868ed27be0f33"
+      "needs_human_review": true,
+      "review_status": "unreviewed",
+      "sha256": "2b6595189bb2c524e581d147ae1342de05902fcefbec2d97434ecffce5980b7b"
     },
     "ARTEMIS-004-HLD-036": {
       "split": "heldout",
+      "candidate_status": "heldout_candidate",
       "dimension": "abstention_appropriateness",
       "needs_human_review": true,
-      "sha256": "123ee03242bf28273ff3e7f1ef7e14ff71fea33d4fc2b26dd8a17eaeb955da0a"
+      "review_status": "unreviewed",
+      "sha256": "4929f2a841aa453024324f6a06d0f13fcdf6e6047312bf533ee987ee25b1d072"
     },
     "ARTEMIS-004-HLD-037": {
       "split": "heldout",
+      "candidate_status": "heldout_candidate",
       "dimension": "source_fidelity",
       "needs_human_review": true,
-      "sha256": "0356a76ddae9cf843002979ee0cfb08b6e3f9ce3f6a97c5cc2288c5f3d58fdae"
+      "review_status": "unreviewed",
+      "sha256": "69e0c3d34a669e7dbf2cd6c3ca3a38be995599dfd844561bf910182d56c15e43"
     },
     "ARTEMIS-004-HLD-038": {
       "split": "heldout",
+      "candidate_status": "heldout_candidate",
       "dimension": "source_fidelity",
-      "needs_human_review": false,
-      "sha256": "23b2eb6d6cefa0b6a86e961db38734ac8cdc8e5a6210d08b2e69fa27634b4486"
+      "needs_human_review": true,
+      "review_status": "unreviewed",
+      "sha256": "de491eeefa3c998d1e05e5d3b5fd8ce63c2bb4a4623956066fc705483be40e8b"
     },
     "ARTEMIS-004-HLD-039": {
       "split": "heldout",
+      "candidate_status": "heldout_candidate",
       "dimension": "citation_accuracy",
-      "needs_human_review": false,
-      "sha256": "f0d3efb5c1d411bcf31c1c38fd0e4cf91c839e839dd1a9ba64c75b616a0d32b6"
+      "needs_human_review": true,
+      "review_status": "unreviewed",
+      "sha256": "36991872447b9f7d97e1429e9c5a56feb4a0cdef614e6806d483a46a6fab10a3"
     },
     "ARTEMIS-004-HLD-040": {
       "split": "heldout",
+      "candidate_status": "heldout_candidate",
       "dimension": "citation_accuracy",
-      "needs_human_review": false,
-      "sha256": "111ae40690359cc1222958943b6ec9eb017714276516b2b3bef1b3743d8a04ac"
+      "needs_human_review": true,
+      "review_status": "unreviewed",
+      "sha256": "c78af2c3eddf8ed0fbd588d74e1fd3d0723514c52d198962f870dec16c69a352"
     }
   }
 }

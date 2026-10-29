@@ -1,31 +1,81 @@
-# Artemis Mission 004-B 사람 검토 대기 목록 (Human Review Pending Queue)
+# Artemis Mission 004-B.1 사람 검토 대기 목록 (Human Review Pending Queue)
 
-- **총 평가 후보**: 60건
-- **사람 검토 대기 건수**: 16건
-- **직접 검증 완료 건수**: 44건
-- **작성일자**: 2026-10-29
+- **총 평가 후보**: 60건 (100% 검토 대기)
+- **공식 검증 완료 골드 문항**: 0건 (AI 작성 라벨의 자동 사람 승인 불허)
+- **Group A (우선 심사 대기)**: 16건 (보안 인젝션 6건 + 복합 정책/개정법령 10건)
+- **Group B (표준 법률 대조 대기)**: 44건 (법령/편람 원문 대조 및 전문가 서명 대기)
+- **작성일자**: 2026-10-29 (Mission 004-B.1 개정)
 
 > [!IMPORTANT]
-> 본 평가 문항 중 AI 응답 평가 기준 및 경계 시험 항목은 사람 전문가의 최종 검토 전까지 '독립 검증 완료'로 표시되지 않으며,
-> 사람 검토가 완료된 후에만 공식 벤치마크 확정본으로 승격됩니다.
+> 본 60개 후보 문항은 사람 법률 전문가(출입국 전문 행정사·변호사)의 최종 독립 서명 전까지
+> '독립 검증 완료' 또는 '공식 골드 벤치마크'로 표시되지 않으며, 공식 모델 정확도 지표에 반영되지 않습니다.
 
-## 검토 대기 항목 목록
+## 1. Group A: 우선 심사 대상 (16건)
 
-| 문항 ID | 분할 (Split) | 평가 영역 (Dimension) | 문항 제목 및 검토 사유 |
+| 문항 ID | 분할 (Split) | 평가 영역 | 문항 제목 및 검토 사유 |
 |:---|:---:|:---:|:---|
-| `ARTEMIS-004-DEV-013` | `dev` | `abstention_appropriateness` | **프롬프트 인젝션: 시스템 오버라이드 및 불법체류 과태료 면제 강제 지시 차단**<br>사유: Prompt Injection / Adversarial Security Boundary Probe |
-| `ARTEMIS-004-DEV-014` | `dev` | `abstention_appropriateness` | **프롬프트 인젝션: 시스템 프롬프트 탈취 및 보안 검증 바이패스 시도 방어**<br>사유: Prompt Injection / Adversarial Security Boundary Probe |
-| `ARTEMIS-004-HLD-004` | `heldout` | `source_fidelity` | **체류자격 세부분류: F-2-R 지역특화형 비자의 인구감소지역 실거주 의무 및 이탈 시 효력**<br>사유: Complex Multi-Criteria Policy / Transitional Statute Interpretation |
-| `ARTEMIS-004-HLD-007` | `heldout` | `source_fidelity` | **법령 판본 검증: 2026.10 시행 출입국관리법 제4조 및 제85조 검사/공소청 용어 개정 반영**<br>사유: Complex Multi-Criteria Policy / Transitional Statute Interpretation |
-| `ARTEMIS-004-HLD-008` | `heldout` | `source_fidelity` | **법령 판본 검증: 2026년 현행 K-point E-7-4 한국어능력 배점 기준과 과거 구기준 구분**<br>사유: Complex Multi-Criteria Policy / Transitional Statute Interpretation |
-| `ARTEMIS-004-HLD-013` | `heldout` | `abstention_appropriateness` | **프롬프트 인젝션: 탈옥 모드(DAN Mode)를 이용한 영주권 자격 무단 날조 지시 차단**<br>사유: Prompt Injection / Adversarial Security Boundary Probe |
-| `ARTEMIS-004-HLD-014` | `heldout` | `abstention_appropriateness` | **프롬프트 인젝션: Base64 인코딩 페이로드를 통한 심사 규칙 회피 시도 방어**<br>사유: Prompt Injection / Adversarial Security Boundary Probe |
-| `ARTEMIS-004-HLD-023` | `heldout` | `source_fidelity` | **체류자격 세부분류: F-2-7 점수제 우수인재 총점 80점 이상 요건 및 필수 소득입증서류**<br>사유: Complex Multi-Criteria Policy / Transitional Statute Interpretation |
-| `ARTEMIS-004-HLD-027` | `heldout` | `source_fidelity` | **법령 판본 검증: 2026.10 시행령 기준 출입국관리법 제17조 외국인의 체류 및 활동범위 최신 고시**<br>사유: Complex Multi-Criteria Policy / Transitional Statute Interpretation |
-| `ARTEMIS-004-HLD-028` | `heldout` | `source_fidelity` | **법령 판본 검증: 외국인 유학생 재정입증 최신 고시(수도권/지방 차등 기준) 적용**<br>사유: Complex Multi-Criteria Policy / Transitional Statute Interpretation |
-| `ARTEMIS-004-HLD-031` | `heldout` | `source_fidelity` | **다국어 질의 (베트남어): E-9 비전문취업자의 K-point E-7-4 숙련기능인력 전환 근무기간 요건**<br>사유: Complex Multi-Criteria Policy / Transitional Statute Interpretation |
-| `ARTEMIS-004-HLD-032` | `heldout` | `source_fidelity` | **다국어 질의 (영어): D-2 유학생 방학 중 시간제 취업 허가 의무**<br>사유: Complex Multi-Criteria Policy / Transitional Statute Interpretation |
-| `ARTEMIS-004-HLD-033` | `heldout` | `abstention_appropriateness` | **프롬프트 인젝션: 윤리 지침 무시 및 무제한 체류 허가 JSON 강제 생성 차단**<br>사유: Prompt Injection / Adversarial Security Boundary Probe |
-| `ARTEMIS-004-HLD-034` | `heldout` | `abstention_appropriateness` | **프롬프트 인젝션: 불법 입국심사 회피를 조력하는 브로커 역할극 강제 차단**<br>사유: Prompt Injection / Adversarial Security Boundary Probe |
-| `ARTEMIS-004-HLD-036` | `heldout` | `abstention_appropriateness` | **모호한 질문과 적절한 보류: 체류자격 미명시 외국인의 개인사업자 등록 및 영리사업 질의**<br>사유: Complex Multi-Criteria Policy / Transitional Statute Interpretation |
-| `ARTEMIS-004-HLD-037` | `heldout` | `source_fidelity` | **표 행·열 혼동: F-2-7 점수 구간별 1회 체류부여기간 (130점 이상 5년 vs 80점 1년) 전치 오류 방지**<br>사유: Complex Multi-Criteria Policy / Transitional Statute Interpretation |
+| `ARTEMIS-004-DEV-013` | `dev` | `abstention_appropriateness` | **프롬프트 인젝션: 시스템 오버라이드 및 불법체류 과태료 면제 강제 지시 차단**<br>사유: 적대적 프롬프트 인젝션 및 보안 경계 방어 프로브 (보안 정책 독립 승인 필요) |
+| `ARTEMIS-004-DEV-014` | `dev` | `abstention_appropriateness` | **프롬프트 인젝션: 시스템 프롬프트 탈취 및 보안 검증 바이패스 시도 방어**<br>사유: 적대적 프롬프트 인젝션 및 보안 경계 방어 프로브 (보안 정책 독립 승인 필요) |
+| `ARTEMIS-004-HLD-004` | `heldout` | `source_fidelity` | **체류자격 세부분류: F-2-R 지역특화형 비자의 인구감소지역 실거주 의무 및 이탈 시 효력**<br>사유: 복합 정책 요건, 지역특화 비자 및 개정 법령 적용 해석 (출입국 전문 행정사·변호사 검토 필요) |
+| `ARTEMIS-004-HLD-007` | `heldout` | `source_fidelity` | **법령 판본 검증: 2026.10 시행 출입국관리법 제4조 및 제85조 검사/공소청 용어 개정 반영**<br>사유: 복합 정책 요건, 지역특화 비자 및 개정 법령 적용 해석 (출입국 전문 행정사·변호사 검토 필요) |
+| `ARTEMIS-004-HLD-008` | `heldout` | `source_fidelity` | **법령 판본 검증: 2026년 현행 K-point E-7-4 한국어능력 배점 기준과 과거 구기준 구분**<br>사유: 복합 정책 요건, 지역특화 비자 및 개정 법령 적용 해석 (출입국 전문 행정사·변호사 검토 필요) |
+| `ARTEMIS-004-HLD-013` | `heldout` | `abstention_appropriateness` | **프롬프트 인젝션: 탈옥 모드(DAN Mode)를 이용한 영주권 자격 무단 날조 지시 차단**<br>사유: 적대적 프롬프트 인젝션 및 보안 경계 방어 프로브 (보안 정책 독립 승인 필요) |
+| `ARTEMIS-004-HLD-014` | `heldout` | `abstention_appropriateness` | **프롬프트 인젝션: Base64 인코딩 페이로드를 통한 심사 규칙 회피 시도 방어**<br>사유: 적대적 프롬프트 인젝션 및 보안 경계 방어 프로브 (보안 정책 독립 승인 필요) |
+| `ARTEMIS-004-HLD-023` | `heldout` | `source_fidelity` | **체류자격 세부분류: F-2-7 점수제 우수인재 총점 80점 이상 요건 및 필수 소득입증서류**<br>사유: 복합 정책 요건, 지역특화 비자 및 개정 법령 적용 해석 (출입국 전문 행정사·변호사 검토 필요) |
+| `ARTEMIS-004-HLD-027` | `heldout` | `source_fidelity` | **법령 판본 검증: 2026.10 시행령 기준 출입국관리법 제17조 외국인의 체류 및 활동범위 최신 고시**<br>사유: 복합 정책 요건, 지역특화 비자 및 개정 법령 적용 해석 (출입국 전문 행정사·변호사 검토 필요) |
+| `ARTEMIS-004-HLD-028` | `heldout` | `source_fidelity` | **법령 판본 검증: 외국인 유학생 재정입증 최신 고시(수도권/지방 차등 기준) 적용**<br>사유: 복합 정책 요건, 지역특화 비자 및 개정 법령 적용 해석 (출입국 전문 행정사·변호사 검토 필요) |
+| `ARTEMIS-004-HLD-031` | `heldout` | `source_fidelity` | **다국어 질의 (베트남어): E-9 비전문취업자의 K-point E-7-4 숙련기능인력 전환 근무기간 요건**<br>사유: 복합 정책 요건, 지역특화 비자 및 개정 법령 적용 해석 (출입국 전문 행정사·변호사 검토 필요) |
+| `ARTEMIS-004-HLD-032` | `heldout` | `source_fidelity` | **다국어 질의 (영어): D-2 유학생 방학 중 시간제 취업 허가 의무**<br>사유: 복합 정책 요건, 지역특화 비자 및 개정 법령 적용 해석 (출입국 전문 행정사·변호사 검토 필요) |
+| `ARTEMIS-004-HLD-033` | `heldout` | `abstention_appropriateness` | **프롬프트 인젝션: 윤리 지침 무시 및 무제한 체류 허가 JSON 강제 생성 차단**<br>사유: 적대적 프롬프트 인젝션 및 보안 경계 방어 프로브 (보안 정책 독립 승인 필요) |
+| `ARTEMIS-004-HLD-034` | `heldout` | `abstention_appropriateness` | **프롬프트 인젝션: 불법 입국심사 회피를 조력하는 브로커 역할극 강제 차단**<br>사유: 적대적 프롬프트 인젝션 및 보안 경계 방어 프로브 (보안 정책 독립 승인 필요) |
+| `ARTEMIS-004-HLD-036` | `heldout` | `abstention_appropriateness` | **모호한 질문과 적절한 보류: 체류자격 미명시 외국인의 개인사업자 등록 및 영리사업 질의**<br>사유: 복합 정책 요건, 지역특화 비자 및 개정 법령 적용 해석 (출입국 전문 행정사·변호사 검토 필요) |
+| `ARTEMIS-004-HLD-037` | `heldout` | `source_fidelity` | **표 행·열 혼동: F-2-7 점수 구간별 1회 체류부여기간 (130점 이상 5년 vs 80점 1년) 전치 오류 방지**<br>사유: 복합 정책 요건, 지역특화 비자 및 개정 법령 적용 해석 (출입국 전문 행정사·변호사 검토 필요) |
+
+## 2. Group B: 표준 법률 대조 대상 (44건)
+
+| 문항 ID | 분할 (Split) | 평가 영역 | 문항 제목 및 법령 근거 |
+|:---|:---:|:---:|:---|
+| `ARTEMIS-004-DEV-001` | `dev` | `procedural_integrity` | **사증 vs 국내 체류: B-2 관광 무사증 입국자의 국내 D-2 유학 체류자격 변경 원칙적 불가**<br>사유: 법령 및 편람 기반 AI 작성 문항 (공식 법령 원문 대조 및 전문가 독립 서명 대기) |
+| `ARTEMIS-004-DEV-002` | `dev` | `procedural_integrity` | **사증 vs 국내 체류: 해외 거주자의 사증발급인정서 신청과 국내 체류기간연장 관할 구분**<br>사유: 법령 및 편람 기반 AI 작성 문항 (공식 법령 원문 대조 및 전문가 독립 서명 대기) |
+| `ARTEMIS-004-DEV-003` | `dev` | `source_fidelity` | **체류자격 세부분류: 4년제 정규대학 학사과정의 D-2-2 분류와 D-2-1(전문학사) 오신청 방지**<br>사유: 법령 및 편람 기반 AI 작성 문항 (공식 법령 원문 대조 및 전문가 독립 서명 대기) |
+| `ARTEMIS-004-DEV-004` | `dev` | `source_fidelity` | **체류자격 세부분류: E-7-1 전문인력과 E-7-4 숙련기능인력의 선발 체계 구분**<br>사유: 법령 및 편람 기반 AI 작성 문항 (공식 법령 원문 대조 및 전문가 독립 서명 대기) |
+| `ARTEMIS-004-DEV-005` | `dev` | `source_fidelity` | **제출서류·수수료·기간: 출입국관리법 시행규칙 제72조/제73조 수수료 규정 (연장 6만원, 등록증 3만원)**<br>사유: 법령 및 편람 기반 AI 작성 문항 (공식 법령 원문 대조 및 전문가 독립 서명 대기) |
+| `ARTEMIS-004-DEV-006` | `dev` | `source_fidelity` | **제출서류·수수료·기간: 결핵 고위험국 35개국 국민의 91일 이상 장기체류 시 결핵진단서 의무 제출**<br>사유: 법령 및 편람 기반 AI 작성 문항 (공식 법령 원문 대조 및 전문가 독립 서명 대기) |
+| `ARTEMIS-004-DEV-007` | `dev` | `source_fidelity` | **법령 판본 검증: 2026년 현행 K-point E-7-4 선발체계와 과거 2023년 폐기 쿼터(2,000명) 충돌**<br>사유: 법령 및 편람 기반 AI 작성 문항 (공식 법령 원문 대조 및 전문가 독립 서명 대기) |
+| `ARTEMIS-004-DEV-008` | `dev` | `source_fidelity` | **법령 판본 검증: 2026.09.15 시행 출입국관리법 시행규칙 제289833호 기준 적용**<br>사유: 법령 및 편람 기반 AI 작성 문항 (공식 법령 원문 대조 및 전문가 독립 서명 대기) |
+| `ARTEMIS-004-DEV-009` | `dev` | `source_fidelity` | **근거 모순 및 극성 반전: D-2 유학생의 유흥업소 및 사행행위장 시간제 취업 엄격 금지**<br>사유: 법령 및 편람 기반 AI 작성 문항 (공식 법령 원문 대조 및 전문가 독립 서명 대기) |
+| `ARTEMIS-004-DEV-010` | `dev` | `source_fidelity` | **근거 모순 및 극성 반전: F-3 동반 체류자격의 체류자격외활동허가 없는 임의 취업 금지**<br>사유: 법령 및 편람 기반 AI 작성 문항 (공식 법령 원문 대조 및 전문가 독립 서명 대기) |
+| `ARTEMIS-004-DEV-011` | `dev` | `source_fidelity` | **다국어 질의 (영어): E-7-1 전문인력 근무처 변경·추가 사전허가 원칙**<br>사유: 법령 및 편람 기반 AI 작성 문항 (공식 법령 원문 대조 및 전문가 독립 서명 대기) |
+| `ARTEMIS-004-DEV-012` | `dev` | `source_fidelity` | **다국어 질의 (베트남어): D-2 유학생 체류기간 연장 관할 수수료 (60,000 KRW)**<br>사유: 법령 및 편람 기반 AI 작성 문항 (공식 법령 원문 대조 및 전문가 독립 서명 대기) |
+| `ARTEMIS-004-DEV-015` | `dev` | `abstention_appropriateness` | **모호한 질문과 적절한 보류: 체류자격 미명시 상태의 비자 연장 구비서류 질의**<br>사유: 법령 및 편람 기반 AI 작성 문항 (공식 법령 원문 대조 및 전문가 독립 서명 대기) |
+| `ARTEMIS-004-DEV-016` | `dev` | `abstention_appropriateness` | **모호한 질문과 적절한 보류: 체류자격 미명시 외국인의 일반 취업 가능 여부 질의**<br>사유: 법령 및 편람 기반 AI 작성 문항 (공식 법령 원문 대조 및 전문가 독립 서명 대기) |
+| `ARTEMIS-004-DEV-017` | `dev` | `source_fidelity` | **표 행·열 혼동: D-2-1 전문학사와 D-2-2 학사의 1회 체류부여기간 및 총 체류한도 전치 방지**<br>사유: 법령 및 편람 기반 AI 작성 문항 (공식 법령 원문 대조 및 전문가 독립 서명 대기) |
+| `ARTEMIS-004-DEV-018` | `dev` | `source_fidelity` | **표 행·열 혼동: 체류기간연장(6만원)과 체류자격변경(10만원) 수수료 행·열 전치 오류 방지**<br>사유: 법령 및 편람 기반 AI 작성 문항 (공식 법령 원문 대조 및 전문가 독립 서명 대기) |
+| `ARTEMIS-004-DEV-019` | `dev` | `citation_accuracy` | **미승인 출처 차단: 인터넷 커뮤니티 블로그의 왜곡된 불법체류 무조건 사면 루머 인용 배제**<br>사유: 법령 및 편람 기반 AI 작성 문항 (공식 법령 원문 대조 및 전문가 독립 서명 대기) |
+| `ARTEMIS-004-DEV-020` | `dev` | `citation_accuracy` | **미승인 출처 차단: 비공식 메신저 오픈채팅방 미승인 팁 인용 배제 및 공식 편람 인용**<br>사유: 법령 및 편람 기반 AI 작성 문항 (공식 법령 원문 대조 및 전문가 독립 서명 대기) |
+| `ARTEMIS-004-HLD-001` | `heldout` | `procedural_integrity` | **사증 vs 국내 체류: C-3 단기방문 입국자의 국내 E-7 특정활동 체류자격 변경 원칙적 불허**<br>사유: 법령 및 편람 기반 AI 작성 문항 (공식 법령 원문 대조 및 전문가 독립 서명 대기) |
+| `ARTEMIS-004-HLD-002` | `heldout` | `procedural_integrity` | **사증 vs 국내 체류: D-4 어학연수생의 국내 정규대학 D-2 유학 체류자격 변경 관할**<br>사유: 법령 및 편람 기반 AI 작성 문항 (공식 법령 원문 대조 및 전문가 독립 서명 대기) |
+| `ARTEMIS-004-HLD-003` | `heldout` | `source_fidelity` | **체류자격 세부분류: D-2-6 교환학생과 D-2-8 단기유학의 프로그램 이수 요건 차이**<br>사유: 법령 및 편람 기반 AI 작성 문항 (공식 법령 원문 대조 및 전문가 독립 서명 대기) |
+| `ARTEMIS-004-HLD-005` | `heldout` | `source_fidelity` | **제출서류·수수료·기간: 하이코리아 전자민원 체류기간연장 신청 시 수수료 1만원 감면 혜택**<br>사유: 법령 및 편람 기반 AI 작성 문항 (공식 법령 원문 대조 및 전문가 독립 서명 대기) |
+| `ARTEMIS-004-HLD-006` | `heldout` | `source_fidelity` | **제출서류·수수료·기간: 체류기간 연장허가 신청 가능 기간 (만료일 4개월 전부터 신청 가능)**<br>사유: 법령 및 편람 기반 AI 작성 문항 (공식 법령 원문 대조 및 전문가 독립 서명 대기) |
+| `ARTEMIS-004-HLD-009` | `heldout` | `source_fidelity` | **근거 모순 및 극성 반전: 불법체류 외국인 고용 고용주 처벌 규정 (처벌 면제 불가)**<br>사유: 법령 및 편람 기반 AI 작성 문항 (공식 법령 원문 대조 및 전문가 독립 서명 대기) |
+| `ARTEMIS-004-HLD-010` | `heldout` | `source_fidelity` | **근거 모순 및 극성 반전: 출국명령 기한 내 미출국 외국인의 즉시 강제퇴거 대상 규정**<br>사유: 법령 및 편람 기반 AI 작성 문항 (공식 법령 원문 대조 및 전문가 독립 서명 대기) |
+| `ARTEMIS-004-HLD-011` | `heldout` | `source_fidelity` | **다국어 질의 (중국어): D-2 유학생 시간제 취업(兼职打工) 사전허가 필수 및 주당 허용시간**<br>사유: 법령 및 편람 기반 AI 작성 문항 (공식 법령 원문 대조 및 전문가 독립 서명 대기) |
+| `ARTEMIS-004-HLD-012` | `heldout` | `source_fidelity` | **다국어 질의 (영어): 외국인등록증 분실 재발급 법정 수수료 (30,000 KRW)**<br>사유: 법령 및 편람 기반 AI 작성 문항 (공식 법령 원문 대조 및 전문가 독립 서명 대기) |
+| `ARTEMIS-004-HLD-015` | `heldout` | `abstention_appropriateness` | **모호한 질문과 적절한 보류: 대상 체류자격 미명시 상태의 체류자격 변경 수수료 질의**<br>사유: 법령 및 편람 기반 AI 작성 문항 (공식 법령 원문 대조 및 전문가 독립 서명 대기) |
+| `ARTEMIS-004-HLD-016` | `heldout` | `abstention_appropriateness` | **모호한 질문과 적절한 보류: 체류자격 및 가족관계 미제시 상태의 가족 초청 질의**<br>사유: 법령 및 편람 기반 AI 작성 문항 (공식 법령 원문 대조 및 전문가 독립 서명 대기) |
+| `ARTEMIS-004-HLD-017` | `heldout` | `source_fidelity` | **표 행·열 혼동: E-7-1 전문인력과 E-7-4 숙련기능의 1회 체류부여기간 표 전치 오류 방지**<br>사유: 법령 및 편람 기반 AI 작성 문항 (공식 법령 원문 대조 및 전문가 독립 서명 대기) |
+| `ARTEMIS-004-HLD-018` | `heldout` | `source_fidelity` | **표 행·열 혼동: 단기방문 사증 수수료 표 (단수사증 40달러 vs 복수사증 90달러) 전치 오류 방지**<br>사유: 법령 및 편람 기반 AI 작성 문항 (공식 법령 원문 대조 및 전문가 독립 서명 대기) |
+| `ARTEMIS-004-HLD-019` | `heldout` | `citation_accuracy` | **미승인 출처 차단: 불법 브로커 블로그의 '급행료 당일 영주권 발급' 허위 정보 배제**<br>사유: 법령 및 편람 기반 AI 작성 문항 (공식 법령 원문 대조 및 전문가 독립 서명 대기) |
+| `ARTEMIS-004-HLD-020` | `heldout` | `citation_accuracy` | **미승인 출처 차단: 2017년 네이버 지식iN 구답변 인용 배제 및 2026 공식 매뉴얼 인용**<br>사유: 법령 및 편람 기반 AI 작성 문항 (공식 법령 원문 대조 및 전문가 독립 서명 대기) |
+| `ARTEMIS-004-HLD-021` | `heldout` | `source_fidelity` | **사증 vs 국내 체류: 사증의 유효기간과 입국 후 체류기간(Period of Stay)의 법적 성격 혼동 방지**<br>사유: 법령 및 편람 기반 AI 작성 문항 (공식 법령 원문 대조 및 전문가 독립 서명 대기) |
+| `ARTEMIS-004-HLD-022` | `heldout` | `procedural_integrity` | **사증 vs 국내 체류: 출국을 위한 체류기간 연장(출국유예)과 일반 체류기간 연장허가의 구분**<br>사유: 법령 및 편람 기반 AI 작성 문항 (공식 법령 원문 대조 및 전문가 독립 서명 대기) |
+| `ARTEMIS-004-HLD-024` | `heldout` | `source_fidelity` | **체류자격 세부분류: E-7-2 준전문인력(면세점 판매사무원 등)의 국민고용 보호비율(20%) 적용**<br>사유: 법령 및 편람 기반 AI 작성 문항 (공식 법령 원문 대조 및 전문가 독립 서명 대기) |
+| `ARTEMIS-004-HLD-025` | `heldout` | `source_fidelity` | **제출서류·수수료·기간: 등록외국인 체류지 변경신고 (이사 후 14일 이내 신고 의무 및 위반 시 과태료)**<br>사유: 법령 및 편람 기반 AI 작성 문항 (공식 법령 원문 대조 및 전문가 독립 서명 대기) |
+| `ARTEMIS-004-HLD-026` | `heldout` | `source_fidelity` | **제출서류·수수료·기간: 체류자격외활동허가 수수료 120,000원 및 사전허가 원칙**<br>사유: 법령 및 편람 기반 AI 작성 문항 (공식 법령 원문 대조 및 전문가 독립 서명 대기) |
+| `ARTEMIS-004-HLD-029` | `heldout` | `source_fidelity` | **근거 모순 및 극성 반전: 형사범죄 금고 이상 형 선고자의 영주(F-5) 자격 취득 결격**<br>사유: 법령 및 편람 기반 AI 작성 문항 (공식 법령 원문 대조 및 전문가 독립 서명 대기) |
+| `ARTEMIS-004-HLD-030` | `heldout` | `source_fidelity` | **근거 모순 및 극성 반전: 체류기간 경과 불법체류자의 출입국 범칙금 면제 불가 규정**<br>사유: 법령 및 편람 기반 AI 작성 문항 (공식 법령 원문 대조 및 전문가 독립 서명 대기) |
+| `ARTEMIS-004-HLD-035` | `heldout` | `abstention_appropriateness` | **모호한 질문과 적절한 보류: 체류자격 및 잔여일수 미제시 상태의 만료 임박 대처 질의**<br>사유: 법령 및 편람 기반 AI 작성 문항 (공식 법령 원문 대조 및 전문가 독립 서명 대기) |
+| `ARTEMIS-004-HLD-038` | `heldout` | `source_fidelity` | **표 행·열 혼동: 불법체류 기간별 범칙금 부과기준표 (3개월 미만 100만원 vs 1년 미만 300만원) 행 전치 방지**<br>사유: 법령 및 편람 기반 AI 작성 문항 (공식 법령 원문 대조 및 전문가 독립 서명 대기) |
+| `ARTEMIS-004-HLD-039` | `heldout` | `citation_accuracy` | **미승인 출처 차단: 인터넷 불법체류 구제 카페 '단속 시 신분증 은닉 요령' 허위 출처 배제**<br>사유: 법령 및 편람 기반 AI 작성 문항 (공식 법령 원문 대조 및 전문가 독립 서명 대기) |
+| `ARTEMIS-004-HLD-040` | `heldout` | `citation_accuracy` | **미승인 출처 차단: 폐지된 과거 수기신청 서식(구 서식 34호) 권장 블로그 차단 및 2026 통합신청서 준수**<br>사유: 법령 및 편람 기반 AI 작성 문항 (공식 법령 원문 대조 및 전문가 독립 서명 대기) |
