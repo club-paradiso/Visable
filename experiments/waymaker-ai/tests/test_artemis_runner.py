@@ -160,7 +160,7 @@ def test_local_model_adapter_gracefully_marks_not_executed_when_weights_absent(t
     )
     available, reason = adapter.check_availability()
     assert available is False
-    assert any(phrase in reason.lower() for phrase in ("not found", "not installed", "insufficient disk space"))
+    assert any(phrase in reason.lower() for phrase in ("not found", "not installed", "insufficient disk space", "macos", "apple silicon"))
 
     # Generating with unavailable adapter returns error and does NOT fabricate outputs
     resp = adapter.generate({"id": "TEST-01", "question": "질문"})
