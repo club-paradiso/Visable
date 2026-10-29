@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/club-paradiso/Visable/experiments/waymaker-ai/schemas/artemis_review_record.schema.json",
+  "title": "Artemis Human Legal Review Record Schema",
+  "description": "Schema for tracking human legal expert reviews, decisions, and governance state transitions for Artemis benchmark candidate items under Mission 004-C.",
+  "type": "object",
+  "required": [
+    "record_id",
+    "item_id",
+    "review_status",
+    "is_human_reviewer",
+    "updated_at",
+    "transition_history"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "record_id": {
+      "type": "string",
+      "pattern": "^rev_[A-Za-z0-9_-]+$"
+    },
+    "item_id": {
+      "type": "string"
+    },
+    "split": {
+      "enum": ["dev", "heldout", "synthetic"]
+    },
+    "group": {
+      "type": "string"
+    },
+    "question": {
+      "type": "string"
+    },
+    "proposed_answer": {
+      "type": "string"
+    },
+    "evidence_references": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["evidence_id", "title"],
+        "properties": {
+          "evidence_id": { "type": "string" },
+          "title": { "type": "string" },
+          "source_url": { "type": ["string", "null"] },
+          "document_id": { "type": ["string", "null"] },
+          "provision": { "type": ["string", "null"] },
+          "effective_date": { "type": ["string", "null"] },
+          "content_sha256": { "type": ["string", "null"], "pattern": "^[0-9a-f]{64}$" },
+          "text_excerpt": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "legal_exceptions": {
+      "type": ["string", "null"]
+    },
+    "applicable_conditions": {
+      "type": ["string", "null"]
+    },
+    "review_status": {
+      "enum": ["unreviewed", "in_review", "verified_by_human", "rejected", "needs_revision", "superseded"]
+    },
+    "reviewer_id": {
+      "type": ["string", "null"]
+    },
+    "is_human_reviewer": {
+      "type": "boolean"
+    },
+    "reviewed_at": {
+      "type": ["string", "null"]
+    },
+    "decision": {
+      "enum": ["approve", "reject", "request_revision", "supersede", null]
+    },
+    "decision_reason": {
+      "type": ["string", "null"]
+    },
+    "evidence_snapshot_sha256": {
+      "type": ["string", "null"],
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "transition_history": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["timestamp", "from_status", "to_status", "actor_id", "is_human"],
+        "properties": {
+          "timestamp": { "type": "string", "format": "date-time" },
+          "from_status": { "type": "string" },
+          "to_status": { "type": "string" },
+          "actor_id": { "type": "string" },
+          "is_human": { "type": "boolean" },
+          "reason": { "type": ["string", "null"] },
+          "notes": { "type": ["string", "null"] }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

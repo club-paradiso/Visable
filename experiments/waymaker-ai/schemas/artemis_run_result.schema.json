@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/club-paradiso/Visable/experiments/waymaker-ai/schemas/artemis_run_result.schema.json",
+  "title": "Artemis Evaluation Run Result Schema",
+  "description": "Schema for reproducible Artemis model evaluation run summaries, per-item scores, diagnostic error breakdowns, and cryptographic manifests under Mission 004-C.",
+  "type": "object",
+  "required": [
+    "run_id",
+    "timestamp",
+    "mode",
+    "runner_version",
+    "execution_status",
+    "model_metadata",
+    "benchmark_metadata",
+    "summary",
+    "item_results"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "run_id": {
+      "type": "string",
+      "pattern": "^artemis_run_\\w+$"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "mode": {
+      "enum": ["infra_validation", "candidate_eval", "gold_eval"]
+    },
+    "runner_version": {
+      "type": "string"
+    },
+    "execution_status": {
+      "enum": ["completed", "partially_completed", "not_executed", "failed"]
+    },
+    "not_executed_reason": {
+      "type": ["string", "null"]
+    },
+    "git_commit": {
+      "type": ["string", "null"]
+    },
+    "system_info": {
+      "type": "object",
+      "properties": {
+        "platform": { "type": "string" },
+        "python_version": { "type": "string" },
+        "cpu_count": { "type": ["integer", "null"] }
+      },
+      "additionalProperties": true
+    },
+    "model_metadata": {
+      "type": "object",
+      "required": ["adapter_type", "model_name"],
+      "properties": {
+        "adapter_type": {
+          "enum": ["mock", "recorded", "local_mlx", "subprocess"]
+        },
+        "model_name": { "type": "string" },
+        "model_revision": { "type": ["string", "null"] },
+        "quantization": { "type": ["string", "null"] },
+        "size_class": { "type": ["string", "null"] },
+        "generation_config": { "type": ["object", "null"] }
+      },
+      "additionalProperties": true
+    },
+    "benchmark_metadata": {
+      "type": "object",
+      "required": ["benchmark_file", "manifest_version", "item_count"],
+      "properties": {
+        "benchmark_file": { "type": "string" },
+        "benchmark_sha256": { "type": ["string", "null"] },
+        "manifest_version": { "type": ["string", "null"] },
+        "split": { "type": ["string", "null"] },
+        "item_count": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": true
+    },
+    "summary": {
+      "type": "object",
+      "required": [
+        "total_cases",
+        "passed_cases",
+        "failed_cases",
+        "pass_rate",
+        "official_gold_cases",
+        "candidate_cases"
+      ],
+      "properties": {
+        "total_cases": { "type": "integer", "minimum": 0 },
+        "passed_cases": { "type": "integer", "minimum": 0 },
+        "failed_cases": { "type": "integer", "minimum": 0 },
+        "pass_rate": { "type": "number", "minimum": 0, "maximum": 1 },
+        "official_gold_cases": { "type": "integer", "minimum": 0 },
+        "official_gold_passed": { "type": "integer", "minimum": 0 },
+        "official_gold_pass_rate": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+        "candidate_cases": { "type": "integer", "minimum": 0 },
+        "candidate_passed": { "type": "integer", "minimum": 0 },
+        "candidate_pass_rate": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+        "dimension_pass_rates": { "type": "object" },
+        "diagnostic_disagreements": { "type": "object" }
+      },
+      "additionalProperties": true
+    },
+    "item_results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["item_id", "overall_passed", "primary_outcome", "is_official_gold"],
+        "properties": {
+          "item_id": { "type": "string" },
+          "request_id": { "type": "string" },
+          "latency_ms": { "type": ["number", "null"] },
+          "overall_passed": { "type": "boolean" },
+          "primary_outcome": { "type": "string" },
+          "is_official_gold": { "type": "boolean" },
+          "dimension_scores": { "type": "object" },
+          "all_failures": { "type": "array", "items": { "type": "string" } },
+          "flags": { "type": "array", "items": { "type": "string" } },
+          "model_output": { "type": ["object", "null"] },
+          "error": { "type": ["string", "null"] }
+        },
+        "additionalProperties": true
+      }
+    },
+    "manifest_hashes": {
+      "type": "object",
+      "properties": {
+        "runner_sha256": { "type": "string" },
+        "benchmark_sha256": { "type": "string" },
+        "summary_sha256": { "type": "string" }
+      },
+      "additionalProperties": true
+    }
+  }
+}
