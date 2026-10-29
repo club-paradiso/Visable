@@ -354,3 +354,66 @@ def test_remediation_candidate_suite_reports_zero_official_gold_metric():
     assert summary.official_gold_pass_rate is None
     assert summary.candidate_cases == 5
 
+
+
+# =========================================================================
+# INDEPENDENT PR #723 REVIEW: OFFICIAL GOLD METRIC INTEGRITY
+# =========================================================================
+
+def test_gold_gate_never_counts_synthetic_fixtures(base_item):
+    """Synthetic fixtures are useful for unit tests but not official legal accuracy."""
+    from artemis_eval import evaluate_suite
+    response = {
+        "status": "answered",
+        "answer": "Z-9 체류자격 외국인등록 수수료는 30,000원이며 14일이 소요됩니다.",
+        "citations": ["SYN-DOC-001"],
+    }
+    assert score_artemis_response(base_item, response).is_official_gold is False
+    summary = evaluate_suite([base_item], {base_item["id"]: response})
+    assert summary.official_gold_cases == 0
+    assert summary.official_gold_pass_rate is None
+    assert summary.candidate_cases == 1
+
+
+def test_gold_gate_rejects_unverified_explicit_gold_label(base_item):
+    """A label alone cannot promote a candidate to independently verified gold."""
+    item = copy.deepcopy(base_item)
+    item["metadata"]["is_synthetic"] = False
+    item["metadata"]["candidate_status"] = "official_gold"
+    item["metadata"]["needs_human_review"] = False
+    item["evidence"][0]["source"]["provenance"] = "official_manual"
+    item["evidence"][0]["source"]["review_status"] = "verified_by_human"
+    item["evidence"][0]["source"]["reviewed_by"] = "reviewer"
+    # No reviewed_at: still not verified for the official metric.
+    response = {"status": "answered", "answer": "30,000원, 14일입니다.",
+                "citations": [item["evidence"][0]["id"]]}
+    assert score_artemis_response(item, response).is_official_gold is False
+
+
+def test_gold_gate_requires_explicit_signed_source_and_status(base_item):
+    """Positive gate: an explicit official label with signed matching source."""
+    item = copy.deepcopy(base_item)
+    item["metadata"].update({
+        "is_synthetic": False,
+        "candidate_status": "official_gold",
+        "needs_human_review": False,
+    })
+    item["evidence"][0]["source"].update({
+        "provenance": "official_manual",
+        "review_status": "verified_by_human",
+        "reviewed_by": "independent reviewer",
+        "reviewed_at": "2026-10-29",
+    })
+    response = {"status": "answered", "answer": "30,000원, 14일입니다.",
+                "citations": [item["evidence"][0]["id"]]}
+    assert score_artemis_response(item, response).is_official_gold is True
+
+
+def test_under_review_without_content_digest_is_invalid(base_item):
+    item = copy.deepcopy(base_item)
+    item["evidence"][0]["source"]["approval_state"] = "under_review"
+    item["evidence"][0]["source"].pop("approved_sha256", None)
+    item["evidence"][0]["source"].pop("content_sha256", None)
+    issues = validate_eval_item(item)
+    assert any(i.severity == "error" and "content_sha256" in i.field_name for i in issues)
+    assert score_artemis_response(item, {"status": "answered", "answer": "무해한 답변", "citations": []}).primary_outcome == "not_scorable"
