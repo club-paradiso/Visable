@@ -132,7 +132,13 @@ def route(question: str) -> List[Tuple[str, str]]:
     named = {m.group(0) for m in _me._STAY_NAMED_RE.finditer(question or "")}
     weak = scopes and all(d == SCOPE_STAY and label in _WEAK_STAY for d, label in scopes) \
         and all(_STAY_PERIOD_WORD_RE.fullmatch(n) for n in named)
-    if where == "abroad" and weak:
+    # A future D-4 entry described by someone living abroad is a visa matter:
+    # '체류기간' alone names the length of a prospective grant, not an extension.
+    # Do not discard an explicitly named in-country extension/change procedure.
+    period_only = bool(_STAY_PERIOD_WORD_RE.search(question or "")) and bool(named) and all(
+        _STAY_PERIOD_WORD_RE.fullmatch(n) for n in named
+    ) and not _IN_KOREA_TASK_RE.search(question or "")
+    if where == "abroad" and (weak or period_only):
         return [(SCOPE_VISA, "해외 거주(질문에 명시)")]
     if not scopes and where == "abroad":
         return [(SCOPE_VISA, "해외 거주(질문에 명시)")]
