@@ -1,0 +1,387 @@
+{
+  "manifest_version": "artemis-manifest/1.0",
+  "mission": "ARTEMIS MISSION 004-B",
+  "created_at": "2026-10-29",
+  "author": "Artemis Mission 004-B Benchmark System",
+  "partition_counts": {
+    "dev": 20,
+    "heldout": 40,
+    "total_candidates": 60
+  },
+  "file_digests": {
+    "artemis_eval_dev_20.json": {
+      "sha256": "2541dd957d89888732e16825d8f4d192958a5ec31504c37e50b872bbcfa32a11",
+      "item_count": 20
+    },
+    "artemis_eval_heldout_40.json": {
+      "sha256": "7c54d795befc58bc1ce2d0d416d75468f776f26d38e8434d33ab9ff593e54dd4",
+      "item_count": 40
+    },
+    "artemis_eval_candidates_60.json": {
+      "sha256": "9be0bea9d538ba9f248dde8125dde9353e84eff9ccfef7eb1657da529dfd4c1c",
+      "item_count": 60
+    }
+  },
+  "item_digests": {
+    "ARTEMIS-004-DEV-001": {
+      "split": "dev",
+      "dimension": "procedural_integrity",
+      "needs_human_review": false,
+      "sha256": "516830d171080056c28547ff4b55cd428cab2327b4fe2fb5ac9943c2ff243ac2"
+    },
+    "ARTEMIS-004-DEV-002": {
+      "split": "dev",
+      "dimension": "procedural_integrity",
+      "needs_human_review": false,
+      "sha256": "c45af8fefd37d8afc391b805c1dcbd60c4d196c675fe305c5900abfafe0c2af4"
+    },
+    "ARTEMIS-004-DEV-003": {
+      "split": "dev",
+      "dimension": "source_fidelity",
+      "needs_human_review": false,
+      "sha256": "64f34205415b72893e62b50cd4fcf1df5959a277f0d09ead4dc5bb6c5fb4ba69"
+    },
+    "ARTEMIS-004-DEV-004": {
+      "split": "dev",
+      "dimension": "source_fidelity",
+      "needs_human_review": false,
+      "sha256": "670ce9996db57ba3667d9cd07197ee2c0fe162023659cf336a7b887e67c022e9"
+    },
+    "ARTEMIS-004-DEV-005": {
+      "split": "dev",
+      "dimension": "source_fidelity",
+      "needs_human_review": false,
+      "sha256": "7b707fbb53a487db60edb5971fff348f43e00688b71f2ec82a4b1692b673036d"
+    },
+    "ARTEMIS-004-DEV-006": {
+      "split": "dev",
+      "dimension": "source_fidelity",
+      "needs_human_review": false,
+      "sha256": "db21664a84786d40865547bbfbd1dfde2751e3a015ddf5e7d5ac43db3f966997"
+    },
+    "ARTEMIS-004-DEV-007": {
+      "split": "dev",
+      "dimension": "source_fidelity",
+      "needs_human_review": false,
+      "sha256": "b10dbda37d554894fa89b2df10291c985d3aef696884f2196bf07cab3b8c9985"
+    },
+    "ARTEMIS-004-DEV-008": {
+      "split": "dev",
+      "dimension": "source_fidelity",
+      "needs_human_review": false,
+      "sha256": "fb0bc5638b74e927d7afd971fa949ea6f6806316049a2ff32e307971962746e6"
+    },
+    "ARTEMIS-004-DEV-009": {
+      "split": "dev",
+      "dimension": "source_fidelity",
+      "needs_human_review": false,
+      "sha256": "fb5c6bb62a870d7b1ac546b1742ea995cb8cd823fbfef278b8ca2570059c315d"
+    },
+    "ARTEMIS-004-DEV-010": {
+      "split": "dev",
+      "dimension": "source_fidelity",
+      "needs_human_review": false,
+      "sha256": "af04285606e9f320c764391417a72b8166551b156ecb911628ae5609316f3392"
+    },
+    "ARTEMIS-004-DEV-011": {
+      "split": "dev",
+      "dimension": "source_fidelity",
+      "needs_human_review": false,
+      "sha256": "612f396f401ad54355340068f0b9f827e6cb29c1707be1860e5334020a35a0ba"
+    },
+    "ARTEMIS-004-DEV-012": {
+      "split": "dev",
+      "dimension": "source_fidelity",
+      "needs_human_review": false,
+      "sha256": "067cfa649a0d7197f57625aaadd0290941dd99ccbf484c465a060260efc27762"
+    },
+    "ARTEMIS-004-DEV-013": {
+      "split": "dev",
+      "dimension": "abstention_appropriateness",
+      "needs_human_review": true,
+      "sha256": "8d3fb3edc735c815eb24b2a20b161702ca0820f0929a920b106e8df3d93d0d67"
+    },
+    "ARTEMIS-004-DEV-014": {
+      "split": "dev",
+      "dimension": "abstention_appropriateness",
+      "needs_human_review": true,
+      "sha256": "c1dcb92d0b6a5fd4c29ea1c428b39310b89d90804004554dd74a2e3477110ec1"
+    },
+    "ARTEMIS-004-DEV-015": {
+      "split": "dev",
+      "dimension": "abstention_appropriateness",
+      "needs_human_review": false,
+      "sha256": "8e0ab23516e9e8b1121e43580e5a249db7c414795ceb9a6e6b07a60844d89672"
+    },
+    "ARTEMIS-004-DEV-016": {
+      "split": "dev",
+      "dimension": "abstention_appropriateness",
+      "needs_human_review": false,
+      "sha256": "327fc15f86d603390cf5f19321538a8234936d6fe673add32a6798b8308420f3"
+    },
+    "ARTEMIS-004-DEV-017": {
+      "split": "dev",
+      "dimension": "source_fidelity",
+      "needs_human_review": false,
+      "sha256": "c3c4c96ccf2232ba887ae592a9889612e4f548c3c4200257c1903d1ea202a836"
+    },
+    "ARTEMIS-004-DEV-018": {
+      "split": "dev",
+      "dimension": "source_fidelity",
+      "needs_human_review": false,
+      "sha256": "c984bbf7e86d27038b9262a3c640a660909e46bf2dbf536d544e0ed48957e912"
+    },
+    "ARTEMIS-004-DEV-019": {
+      "split": "dev",
+      "dimension": "citation_accuracy",
+      "needs_human_review": false,
+      "sha256": "c7bd58027de51e96f8075bae4fe80c061b5688d1bbf9f96596effe89bd103013"
+    },
+    "ARTEMIS-004-DEV-020": {
+      "split": "dev",
+      "dimension": "citation_accuracy",
+      "needs_human_review": false,
+      "sha256": "916036f248b83aff1fc709bbb90eaa161fd876541e36d8e6ca5fee39417a692a"
+    },
+    "ARTEMIS-004-HLD-001": {
+      "split": "heldout",
+      "dimension": "procedural_integrity",
+      "needs_human_review": false,
+      "sha256": "9384d6a0b6a73a7c7367e14250ae191ea66fd367d3ded8789a2ca60cce4a843b"
+    },
+    "ARTEMIS-004-HLD-002": {
+      "split": "heldout",
+      "dimension": "procedural_integrity",
+      "needs_human_review": false,
+      "sha256": "0d463ee1bf5de2bd20b2ee276513c402dcfd26dfc74aa409c8762b3ce93354ae"
+    },
+    "ARTEMIS-004-HLD-003": {
+      "split": "heldout",
+      "dimension": "source_fidelity",
+      "needs_human_review": false,
+      "sha256": "1bd438dc041ceec45d11bc9b7153dd8bc10c01c8c639808d2cb407f73e98cb34"
+    },
+    "ARTEMIS-004-HLD-004": {
+      "split": "heldout",
+      "dimension": "source_fidelity",
+      "needs_human_review": true,
+      "sha256": "f9ee24876f80c618147a257ed7d985ec93c87fadae6893be379652329fe2cfab"
+    },
+    "ARTEMIS-004-HLD-005": {
+      "split": "heldout",
+      "dimension": "source_fidelity",
+      "needs_human_review": false,
+      "sha256": "5638b4f04bd07d4bd7a0ba9a2ded7d2c69e2f306f2a7ca852b64d7afc9aa7786"
+    },
+    "ARTEMIS-004-HLD-006": {
+      "split": "heldout",
+      "dimension": "source_fidelity",
+      "needs_human_review": false,
+      "sha256": "96be5579155e0704dc53bb294a8a8cc1bb5f328d37df4445f69ecf51bf7e2dab"
+    },
+    "ARTEMIS-004-HLD-007": {
+      "split": "heldout",
+      "dimension": "source_fidelity",
+      "needs_human_review": true,
+      "sha256": "76c19111218502860a97e23d826391df911e269a56d5fad9c5ac97f849c77107"
+    },
+    "ARTEMIS-004-HLD-008": {
+      "split": "heldout",
+      "dimension": "source_fidelity",
+      "needs_human_review": true,
+      "sha256": "1ef2c963739fc371a8911082b25b9fcb6db503260c3a1e5750c73f8d54f3f078"
+    },
+    "ARTEMIS-004-HLD-009": {
+      "split": "heldout",
+      "dimension": "source_fidelity",
+      "needs_human_review": false,
+      "sha256": "65ba9ecb4152e2257b0bc91dd2abac0dc4be01ae9ce772d44666a14c9bac5e38"
+    },
+    "ARTEMIS-004-HLD-010": {
+      "split": "heldout",
+      "dimension": "source_fidelity",
+      "needs_human_review": false,
+      "sha256": "8f9b5d4ed8ffb7c36791c6613730dcd9d4753db61e19c8b2a7a1a50352892216"
+    },
+    "ARTEMIS-004-HLD-011": {
+      "split": "heldout",
+      "dimension": "source_fidelity",
+      "needs_human_review": false,
+      "sha256": "73a500f5fe339679add8d7fdf87dee41bba0b599286bfab5e4fdab143bf247fb"
+    },
+    "ARTEMIS-004-HLD-012": {
+      "split": "heldout",
+      "dimension": "source_fidelity",
+      "needs_human_review": false,
+      "sha256": "fdc5128a3c72afeb2d16d8d9a7b8ca7308c30d6a003becbf711da98bfa949f73"
+    },
+    "ARTEMIS-004-HLD-013": {
+      "split": "heldout",
+      "dimension": "abstention_appropriateness",
+      "needs_human_review": true,
+      "sha256": "044c56d86ee617054bb4cab82130020a0f278f652db3b8e6f3e5994245d41b63"
+    },
+    "ARTEMIS-004-HLD-014": {
+      "split": "heldout",
+      "dimension": "abstention_appropriateness",
+      "needs_human_review": true,
+      "sha256": "dfbef0f8c71e13ed9b0921caa87cd599c7e678ef7eb9f873c090e38fc538e825"
+    },
+    "ARTEMIS-004-HLD-015": {
+      "split": "heldout",
+      "dimension": "abstention_appropriateness",
+      "needs_human_review": false,
+      "sha256": "b6b94f11045bd341552d49ffbcc256c604cdd955496bff7bfc558d25c456708f"
+    },
+    "ARTEMIS-004-HLD-016": {
+      "split": "heldout",
+      "dimension": "abstention_appropriateness",
+      "needs_human_review": false,
+      "sha256": "93c4ce9852171b69f24cbe28e77ee2f67ae9a2d77d1b85ce4794b4cd89d48d07"
+    },
+    "ARTEMIS-004-HLD-017": {
+      "split": "heldout",
+      "dimension": "source_fidelity",
+      "needs_human_review": false,
+      "sha256": "33940fd303162a566ee1a8158f29d1d55b0aee5f903ccaa23ff83282f9fa5103"
+    },
+    "ARTEMIS-004-HLD-018": {
+      "split": "heldout",
+      "dimension": "source_fidelity",
+      "needs_human_review": false,
+      "sha256": "42f91b01b781989d32ab0d5d70a09b4a8239183045795d99b33bb91742b3c603"
+    },
+    "ARTEMIS-004-HLD-019": {
+      "split": "heldout",
+      "dimension": "citation_accuracy",
+      "needs_human_review": false,
+      "sha256": "72c9b0caddcfc2910a21287f35605fa2bc2b57df13500fc75be5d6a2380f70e9"
+    },
+    "ARTEMIS-004-HLD-020": {
+      "split": "heldout",
+      "dimension": "citation_accuracy",
+      "needs_human_review": false,
+      "sha256": "f1725d83084bbca4876c6fae2e9a5479afbbf264a18787ec3bcc513904e06708"
+    },
+    "ARTEMIS-004-HLD-021": {
+      "split": "heldout",
+      "dimension": "source_fidelity",
+      "needs_human_review": false,
+      "sha256": "383270962892614236bae53082111a813c25505e0832dac68b60b4c7837434fd"
+    },
+    "ARTEMIS-004-HLD-022": {
+      "split": "heldout",
+      "dimension": "procedural_integrity",
+      "needs_human_review": false,
+      "sha256": "14920f9830098f201164b2bd87fbea30b5b2b16bd5d57d332fe78ced4aa5e296"
+    },
+    "ARTEMIS-004-HLD-023": {
+      "split": "heldout",
+      "dimension": "source_fidelity",
+      "needs_human_review": true,
+      "sha256": "6f3ea350dbd158e142b14ce7660dc0fdaad6df4659c571c6a0a87f5dfa20481f"
+    },
+    "ARTEMIS-004-HLD-024": {
+      "split": "heldout",
+      "dimension": "source_fidelity",
+      "needs_human_review": false,
+      "sha256": "ab4327501d7213cceb5b05ec0e66e04cc014c74403655e9e1bb1e385a6447376"
+    },
+    "ARTEMIS-004-HLD-025": {
+      "split": "heldout",
+      "dimension": "source_fidelity",
+      "needs_human_review": false,
+      "sha256": "6a5cdcc0c857c8636db22c2166273b59c8ecf5eb581b35cc0b1cddfa05c25613"
+    },
+    "ARTEMIS-004-HLD-026": {
+      "split": "heldout",
+      "dimension": "source_fidelity",
+      "needs_human_review": false,
+      "sha256": "07cd26978a8544dab442ac670d086e4d0a5399e72ab6372d1efd25153677d4f8"
+    },
+    "ARTEMIS-004-HLD-027": {
+      "split": "heldout",
+      "dimension": "source_fidelity",
+      "needs_human_review": true,
+      "sha256": "2f331c54268347cf7c752882546538cb29f825d3279d1b75aefee3fba22ba83c"
+    },
+    "ARTEMIS-004-HLD-028": {
+      "split": "heldout",
+      "dimension": "source_fidelity",
+      "needs_human_review": true,
+      "sha256": "354f8fe7391796ec1036da4e74d6ea684f9d13e017edd144589b85b290db6cd6"
+    },
+    "ARTEMIS-004-HLD-029": {
+      "split": "heldout",
+      "dimension": "source_fidelity",
+      "needs_human_review": false,
+      "sha256": "8a2e134862fd90ca7ebdf5ae984133bb95e5f683ec978d22bb78899ed7852d10"
+    },
+    "ARTEMIS-004-HLD-030": {
+      "split": "heldout",
+      "dimension": "source_fidelity",
+      "needs_human_review": false,
+      "sha256": "0f3835fa087216b503e5dbfed2a66dc49199be33c25008c75b6a8a8550f394ea"
+    },
+    "ARTEMIS-004-HLD-031": {
+      "split": "heldout",
+      "dimension": "source_fidelity",
+      "needs_human_review": true,
+      "sha256": "6655af75341ea4ec99112f1ebbcd44797ad2f82933ab18a2eee01f17c5884720"
+    },
+    "ARTEMIS-004-HLD-032": {
+      "split": "heldout",
+      "dimension": "source_fidelity",
+      "needs_human_review": true,
+      "sha256": "9d8ff7b9736b321396b4d91ba053c34b2a7c624329a58b07faa48b035b1a6f0a"
+    },
+    "ARTEMIS-004-HLD-033": {
+      "split": "heldout",
+      "dimension": "abstention_appropriateness",
+      "needs_human_review": true,
+      "sha256": "f0e36f7f501b0480ec08b6a0dca87bdd0afedddee4200954059d7fb082735e55"
+    },
+    "ARTEMIS-004-HLD-034": {
+      "split": "heldout",
+      "dimension": "abstention_appropriateness",
+      "needs_human_review": true,
+      "sha256": "cb3ab4ceeeebc51ef8f67655cd13d48ae680d467f71af82f5fce863f4b524031"
+    },
+    "ARTEMIS-004-HLD-035": {
+      "split": "heldout",
+      "dimension": "abstention_appropriateness",
+      "needs_human_review": false,
+      "sha256": "449a31b6447ca15b806a0a5508f7b2611be8dcbb455604aef03868ed27be0f33"
+    },
+    "ARTEMIS-004-HLD-036": {
+      "split": "heldout",
+      "dimension": "abstention_appropriateness",
+      "needs_human_review": true,
+      "sha256": "123ee03242bf28273ff3e7f1ef7e14ff71fea33d4fc2b26dd8a17eaeb955da0a"
+    },
+    "ARTEMIS-004-HLD-037": {
+      "split": "heldout",
+      "dimension": "source_fidelity",
+      "needs_human_review": true,
+      "sha256": "0356a76ddae9cf843002979ee0cfb08b6e3f9ce3f6a97c5cc2288c5f3d58fdae"
+    },
+    "ARTEMIS-004-HLD-038": {
+      "split": "heldout",
+      "dimension": "source_fidelity",
+      "needs_human_review": false,
+      "sha256": "23b2eb6d6cefa0b6a86e961db38734ac8cdc8e5a6210d08b2e69fa27634b4486"
+    },
+    "ARTEMIS-004-HLD-039": {
+      "split": "heldout",
+      "dimension": "citation_accuracy",
+      "needs_human_review": false,
+      "sha256": "f0d3efb5c1d411bcf31c1c38fd0e4cf91c839e839dd1a9ba64c75b616a0d32b6"
+    },
+    "ARTEMIS-004-HLD-040": {
+      "split": "heldout",
+      "dimension": "citation_accuracy",
+      "needs_human_review": false,
+      "sha256": "111ae40690359cc1222958943b6ec9eb017714276516b2b3bef1b3743d8a04ac"
+    }
+  }
+}

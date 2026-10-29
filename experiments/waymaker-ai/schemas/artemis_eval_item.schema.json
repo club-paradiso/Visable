@@ -120,6 +120,30 @@
             "type": "string"
           },
           "default": []
+        },
+        "polarity_flips_forbidden": {
+          "type": "boolean",
+          "default": true
+        },
+        "permission_flips_forbidden": {
+          "type": "boolean",
+          "default": true
+        },
+        "role_mismatches_forbidden": {
+          "type": "boolean",
+          "default": true
+        },
+        "forbidden_subject_bindings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["subject", "forbidden_value"],
+            "properties": {
+              "subject": { "type": "string" },
+              "forbidden_value": { "type": "string" }
+            }
+          },
+          "default": []
         }
       }
     },
@@ -248,6 +272,13 @@
         },
         "is_synthetic": {
           "type": "boolean"
+        },
+        "needs_human_review": {
+          "type": "boolean",
+          "default": false
+        },
+        "split": {
+          "enum": ["dev", "heldout", "synthetic_benchmark", "test"]
         }
       }
     },
