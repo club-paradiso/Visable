@@ -243,8 +243,24 @@ def export(review_dir: Path) -> Dict[str, Any]:
     for path in sorted((review_dir / "facts_review").glob("*.json")):
         doc = json.loads(path.read_text(encoding="utf-8"))
         data = doc.get("data", doc)
-        if data.get("decision") not in ("approved", "approved_edited"):
+        decision = data.get("decision")
+        fid = data["candidate_id"].replace("fc-", "f-")
+        # An explicit human rejection revokes previously exported facts, including
+        # owner-delegated AI facts. Keep an auditable tombstone so a later AI
+        # confirmation cannot quietly restore the rejected claim.
+        if decision == "rejected":
+            prior = existing.get(fid)
+            if prior and prior.get("status") == "approved":
+                written.append({**prior, "status": "revoked",
+                                "prior_review": prior.get("review"),
+                                "review": {"by": data.get("reviewer"), "at": data.get("updated_at"),
+                                           "edition": "2026.10", "decision": "rejected",
+                                           "notes": data.get("note") or ""}})
             continue
+        if decision not in ("approved", "approved_edited"):
+            continue
+        # A new approval following rejection requires a fresh human review and
+        # still passes _verify below. Rejected decisions themselves never approve.
         fact = {
             "fact_id": data["candidate_id"].replace("fc-", "f-"),
             "status": "approved",
@@ -291,7 +307,8 @@ def confirm_ai(final_path: Path, delegation: str) -> Dict[str, Any]:
         if d["final"] != "confirm":
             continue
         fid = d["candidate_id"].replace("fc-", "f-")
-        if existing.get(fid, {}).get("tier") == "human":
+        if (existing.get(fid, {}).get("tier") == "human"
+                or existing.get(fid, {}).get("status") == "revoked"):
             continue
         fact = {"fact_id": fid, "status": "approved", "tier": "ai_delegated",
                 "subject": d["subject"], "role": d["role"], "value": d["value"], "source": by_id[d["candidate_id"]]["source"],
@@ -316,7 +333,8 @@ def confirm_ai(final_path: Path, delegation: str) -> Dict[str, Any]:
 def load_facts(path: Path = FACTS) -> List[Dict[str, Any]]:
     if not path.exists():
         return []
-    return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()[1:] if line.strip()]
+    return [row for line in path.read_text(encoding="utf-8").splitlines()[1:]
+            if line.strip() for row in [json.loads(line)] if row.get("status") == "approved"]
 
 
 _PROBE_WORD = {"fee": "수수료는", "income_threshold": "소득기준은", "deposit": "예치금은", "validity": "유효기간은",
