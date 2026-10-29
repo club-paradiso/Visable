@@ -56,7 +56,7 @@
   "aiLink": "Ask AI for more detail",
   "scrollAria": "Scroll down",
   "reference": "Visable provides reference information based on public laws and official manuals. It is not legal advice, and it is not a filing or representation service. Please confirm any final decision with an immigration office, HiKorea, or a qualified professional.",
-  "brandHeroTitle": "Complex residence categories,<br>at a glance.",
+  "brandHeroTitle": "Find the residence status that fits your purpose<br>and the procedure you need.",
   "brandHeroSubtitle": "Browse Korea's residence categories by purpose, with source-aware guidance.",
   "brandHeroStatsAria": "Visa category statistics",
   "brandHeroButtons": [
@@ -86,7 +86,7 @@
     "<strong>Occupation and industry code access</strong><span lang=\"en\">Employment reporting codes</span>",
     "<strong>Results with source-checking guidance</strong><span lang=\"en\">Check the basis together</span>"
   ],
-  "pathwayTitle": "Start with life pathways before visa codes.",
+  "pathwayTitle": "The order of checks changes with your purpose and timing.",
   "pathwayCopy": "The same residence status can require a different order of checks depending on purpose and timing. These pathways lead into the existing search results safely.",
   "pathwayAria": "Residence pathways by purpose",
   "pathwayTitles": [
@@ -132,7 +132,7 @@
     "Re-entry",
     "Departure"
   ],
-  "howTitle": "From search to official-source checks in four steps.",
+  "howTitle": "Search, compare, check documents, verify official sources — four steps.",
   "howStepTitles": [
     "Search",
     "Compare",
@@ -183,7 +183,7 @@
     "Use the official multilingual contact center for immigration/stay questions and competent-authority routing."
   ],
   "manualNote": "The manual links above point to the latest versions HiKorea has published (visa issuance 2026-06-17 and foreigner stay 2026-06-23). The structured guidance uses readable June 2026 official PDF extracts. Extra documents and submission methods can differ by diplomatic mission, so check the notice from your competent Korean mission before applying. Visable is an independent reference service and is not affiliated with the Ministry of Justice, HiKorea, the Korea Visa Portal, or any overseas mission.",
-  "toolsTitle": "Useful tools stay close to the workflow.",
+  "toolsTitle": "Office finder, code search and form drafting tools in one place.",
   "toolsCopy": "Implemented tools connect to the existing modals and search. Features still in preparation are marked as planned.",
   "toolCards": [
     "<h3>Find your immigration office</h3><p>Check the competent immigration office based on your residence address.</p>",
@@ -282,7 +282,7 @@
     "Start exploring",
     "1345 Hotline"
   ],
-  "footerCtaTitle": "Residence management used to feel hard.<br>Now you can check it with ease.",
+  "footerCtaTitle": "The status and procedure you need —<br>check them right away with search.",
   "footerCtaBody": "Visable organizes scattered residence information by purpose. Always confirm with HiKorea, 1345, or the competent immigration office.",
   "footerCtaButtons": [
     "Start search",
@@ -1194,7 +1194,7 @@
   ],
   "resultTotalSuffix": "{count} total",
   "heroMarquee": "Life in Korea, made simpler   ·   39 residence statuses   ·   Based on official manuals   ·   No login   ·   Reference only · Confirm with HiKorea·1345   ·   ",
-  "brandHeroKicker": "Coverage · Status-of-stay categories",
+  "brandHeroKicker": "Status-of-stay categories",
   "reminderKicker": "Deadline reminders",
   "reminderSectionTitle": "We help you stay ahead of important dates.",
   "reminderSectionCopy": "Save a date and we'll show the days remaining each time you visit, and you can export it to your phone's calendar for reminders.",
