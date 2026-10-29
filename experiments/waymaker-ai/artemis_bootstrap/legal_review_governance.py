@@ -549,7 +549,6 @@ class LegalReviewLedger:
         self,
         item: Dict[str, Any],
         external_attestation: Optional[Dict[str, Any]] = None,
-        _allow_test_promotion: bool = False,
     ) -> Dict[str, Any]:
         """Promotes an item to official_gold IF AND ONLY IF independently authenticated.
 
@@ -592,31 +591,14 @@ class LegalReviewLedger:
                 f"does not match ledger snapshot '{rec.evidence_snapshot_sha256}'"
             )
 
-        if not _allow_test_promotion:
-            raise AuthoritativeGoldPromotionDisabledError(
-                "External cryptographic PKI authority verification service is not connected in this local environment; "
-                "authoritative official_gold certification is disabled fail-closed."
-            )
-
-        promoted = copy.deepcopy(item)
-        promoted["metadata"]["candidate_status"] = "official_gold"
-        promoted["metadata"]["needs_human_review"] = False
-        promoted["metadata"]["is_synthetic"] = False
-        promoted["metadata"]["legal_review_notes"] = (
-            f"Verified by {rec.reviewer_id} on {rec.reviewed_at} "
-            f"(Attestation: {external_attestation['attestation_token'][:16]}...)"
+        # The local prototype has no cryptographically trusted verifier. A
+        # caller-supplied attestation bundle, even if structurally well-formed,
+        # cannot authorize promotion. There is deliberately no test bypass in
+        # production source; tests assert this fail-closed behavior.
+        raise AuthoritativeGoldPromotionDisabledError(
+            "External cryptographic PKI authority verification service is not connected in this local environment; "
+            "authoritative official_gold certification is disabled fail-closed."
         )
-
-        for ev in promoted.get("evidence", []):
-            src = ev.get("source", {})
-            if src.get("provenance") in ("official_manual", "official_notice"):
-                src["approval_state"] = "approved"
-                src["review_status"] = "verified_by_human"
-                src["reviewed_by"] = rec.reviewer_id
-                src["reviewed_at"] = rec.reviewed_at
-                src["approved_sha256"] = artemis_eval.approval_hash(ev.get("text", ""))
-
-        return promoted
 
     def generate_markdown_report(self) -> str:
         """Produces an audit summary report of the legal review ledger."""
