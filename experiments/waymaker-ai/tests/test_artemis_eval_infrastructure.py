@@ -432,3 +432,106 @@ def test_full_suite_evaluation_with_gold_predictions(cases_10):
     assert "**전체 통과**: 10건 (100.0%)" in md_report
     assert "출처 충실도 (Source Fidelity)" in md_report
     assert "부적절한 보류 방지 (Abstention Appropriateness)" in md_report
+
+
+# ---------------------------------------------------------------------------
+# Independent review regression gates (PR #722)
+# ---------------------------------------------------------------------------
+def test_tampered_approved_evidence_fails_closed(cases_10):
+    item = copy.deepcopy(cases_10[0])
+    item["evidence"][0]["text"] += " [tampered]"
+    response = {
+        "status": "answered",
+        "answer": "Z-9 체류자격 수수료는 30,000원이며 14일이 소요됩니다.",
+        "citations": ["SYN-DOC-001"],
+    }
+    result = score_artemis_response(item, response)
+    assert result.overall_passed is False
+    assert result.primary_outcome == "not_scorable"
+    assert "invalid_evaluation_data" in result.flags
+    assert score_source_fidelity(item, response).passed is False
+    assert score_citation_accuracy(item, response).passed is False
+
+
+def test_missing_approved_hash_is_validation_error(cases_10):
+    item = copy.deepcopy(cases_10[0])
+    del item["evidence"][0]["source"]["approved_sha256"]
+    issues = validate_eval_item(item)
+    assert any(i.severity == "error" and i.field_name.endswith("approved_sha256")
+               for i in issues)
+    assert not validate_dataset({"items": [item]}).valid
+
+
+def test_unlisted_approved_citation_not_treated_as_relevant(cases_10):
+    item = copy.deepcopy(cases_10[3])
+    item["evidence"].append({
+        "id": "SYN-EXTRA-DOC",
+        "title": "Unrelated synthetic document",
+        "text": "완전히 관련 없는 행정서비스 안내입니다.",
+        "source": {
+            "approval_state": "approved",
+            "domain": "general",
+            "provenance": "synthetic_fixture",
+            "approved_sha256": approval_hash("완전히 관련 없는 행정서비스 안내입니다."),
+        }
+    })
+    response = {
+        "status": "answered",
+        "answer": "가상체류관리센터 3층에서 가상고용확인서를 제출합니다.",
+        "citations": ["SYN-DOC-004A", "SYN-DOC-004B", "SYN-EXTRA-DOC"],
+    }
+    score = score_citation_accuracy(item, response)
+    assert score.passed is False
+    assert "unlisted_citations:SYN-EXTRA-DOC" in score.failures
+    assert score.details["precision"] < 1.0
+
+
+def test_allow_unlisted_citations_explicit_override(cases_10):
+    item = copy.deepcopy(cases_10[3])
+    item["expected"]["citation_accuracy"]["allow_unlisted_citations"] = True
+    item["evidence"].append({
+        "id": "SYN-EXTRA-DOC",
+        "title": "Additional relevant synthetic document",
+        "text": "가상고용확인서 안내문입니다.",
+        "source": {
+            "approval_state": "approved",
+            "domain": "stay",
+            "provenance": "synthetic_fixture",
+            "approved_sha256": approval_hash("가상고용확인서 안내문입니다."),
+        }
+    })
+    response = {"status": "answered", "answer": "가상고용확인서를 제출합니다.",
+                "citations": ["SYN-DOC-004A", "SYN-DOC-004B", "SYN-EXTRA-DOC"]}
+    score = score_citation_accuracy(item, response)
+    assert score.passed is True
+    assert score.details["precision"] < 1.0  # Strict required-ID overlap metric
+
+
+def test_validator_rejects_nonobject_and_nonarray_items_without_exception(cases_10):
+    assert not validate_dataset({"items": [cases_10[0], None, "bad"]}).valid
+    assert not validate_dataset({"items": {"id": "wrong-type"}}).valid
+    assert not validate_dataset({"items": []}).valid
+
+
+def test_validation_rejects_absent_required_dimension_and_provenance(cases_10):
+    item = copy.deepcopy(cases_10[0])
+    del item["expected"]["citation_accuracy"]
+    del item["evidence"][0]["source"]["provenance"]
+    issues = validate_eval_item(item)
+    assert any(i.field_name == "expected.citation_accuracy" for i in issues)
+    assert any(i.field_name.endswith(".provenance") for i in issues)
+
+
+def test_partial_answer_cannot_bypass_required_withholding(cases_10):
+    item = copy.deepcopy(cases_10[8])
+    item["expected"]["allowed_statuses"].append("partial")
+    response = {"status": "partial", "answer": "급행 수수료는 100,000원입니다.",
+                "citations": ["SYN-DOC-009"]}
+    score = score_abstention_appropriateness(item, response)
+    assert score.passed is False
+    assert any("unwarranted_answer" in f for f in score.failures)
+
+
+def test_forbidden_fabricated_citation_id_allowed_in_fixture(cases_10):
+    # An attack fixture is allowed to forbid an ID that is not in evidence.
+    assert validate_eval_item(cases_10[4]) == []
