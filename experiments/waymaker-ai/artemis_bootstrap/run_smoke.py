@@ -54,7 +54,8 @@ def load_facts(path: Path = FACTS_LEDGER) -> List[Dict[str, Any]]:
     """Approved facts (tier human or ai_delegated) for the post-check's subject check."""
     if not path.exists():
         return []
-    return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()[1:] if line.strip()]
+    return [row for line in path.read_text(encoding="utf-8").splitlines()[1:]
+            if line.strip() for row in [json.loads(line)] if row.get("status") == "approved"]
 import manual_ledger  # noqa: E402
 import procedure_route  # noqa: E402
 
