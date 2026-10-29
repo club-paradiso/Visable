@@ -787,7 +787,22 @@ def post_check(parsed: Optional[Mapping[str, Any]], trusted: Sequence[Mapping[st
         return {"verdict": "withheld", "claims": found, "unsupported": unsupported,
                 "untrusted_citations": untrusted_citations, "final": {**abstain, "answer": WITHHELD_ANSWER}}
     final = dict(parsed)
-    page_facts = [f for f in (facts or []) if f["source"]["page_id"] in trusted_ids]
+    # A page id is not an approval identity. Even after a corpus rebuild the
+    # same id can refer to different text; stale facts must never affect either
+    # subject or role mismatch checks. A layout transcription has its own text
+    # hash, so it additionally carries the original PDF approval hash.
+    current_approvals = {}
+    for evidence in trusted:
+        src = evidence.get("source") or {}
+        text_hash = src.get("approved_sha256")
+        pdf_hash = src.get("pdf_approved_sha256") or text_hash
+        if text_hash and pdf_hash and approval_hash(evidence.get("text", "")) == text_hash:
+            current_approvals[evidence["id"]] = pdf_hash
+    page_facts = [f for f in (facts or [])
+                  if f.get("status", "approved") == "approved"
+                  and (f.get("source") or {}).get("page_approval_hash")
+                  == current_approvals.get((f.get("source") or {}).get("page_id"))
+                  and (f.get("source") or {}).get("page_id") in current_approvals]
     fact_families: Dict[Tuple, set] = {}
     for f in page_facts:
         if f.get("role") in FACT_ROLE_FAMILY:
