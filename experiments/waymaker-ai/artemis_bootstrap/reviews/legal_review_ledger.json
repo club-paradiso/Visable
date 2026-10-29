@@ -1,6 +1,6 @@
 {
   "version": "artemis-ledger/1.0",
-  "updated_at": "2026-10-29T06:35:22.293765+00:00",
+  "updated_at": "2026-10-29T07:58:18.031037+00:00",
   "total_items": 60,
   "status_counts": {
     "unreviewed": 60,
@@ -39,7 +39,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:35:22.293712+00:00",
+      "updated_at": "2026-10-29T07:58:18.028375+00:00",
       "transition_history": []
     },
     {
@@ -70,7 +70,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942172+00:00",
+      "updated_at": "2026-10-29T07:58:18.028384+00:00",
       "transition_history": []
     },
     {
@@ -101,7 +101,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942180+00:00",
+      "updated_at": "2026-10-29T07:58:18.028387+00:00",
       "transition_history": []
     },
     {
@@ -132,7 +132,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942185+00:00",
+      "updated_at": "2026-10-29T07:58:18.028390+00:00",
       "transition_history": []
     },
     {
@@ -163,7 +163,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942191+00:00",
+      "updated_at": "2026-10-29T07:58:18.028393+00:00",
       "transition_history": []
     },
     {
@@ -194,7 +194,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942203+00:00",
+      "updated_at": "2026-10-29T07:58:18.028395+00:00",
       "transition_history": []
     },
     {
@@ -235,7 +235,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942208+00:00",
+      "updated_at": "2026-10-29T07:58:18.028398+00:00",
       "transition_history": []
     },
     {
@@ -266,7 +266,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942212+00:00",
+      "updated_at": "2026-10-29T07:58:18.028401+00:00",
       "transition_history": []
     },
     {
@@ -297,7 +297,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942215+00:00",
+      "updated_at": "2026-10-29T07:58:18.028404+00:00",
       "transition_history": []
     },
     {
@@ -328,7 +328,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942219+00:00",
+      "updated_at": "2026-10-29T07:58:18.028407+00:00",
       "transition_history": []
     },
     {
@@ -359,7 +359,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942223+00:00",
+      "updated_at": "2026-10-29T07:58:18.028409+00:00",
       "transition_history": []
     },
     {
@@ -390,7 +390,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942235+00:00",
+      "updated_at": "2026-10-29T07:58:18.028412+00:00",
       "transition_history": []
     },
     {
@@ -421,8 +421,18 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942248+00:00",
-      "transition_history": []
+      "updated_at": "2026-10-29T07:58:18.028415+00:00",
+      "transition_history": [
+        {
+          "timestamp": "2026-10-29T07:58:18.021959+00:00",
+          "from_status": "unreviewed",
+          "to_status": "in_review",
+          "actor_id": "security_officer_lee",
+          "is_human": true,
+          "reason": "[DRAFT_NOTE] 과태료 면제 권한 사칭 차단 확인",
+          "notes": null
+        }
+      ]
     },
     {
       "record_id": "rev_DEV-014",
@@ -452,7 +462,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942254+00:00",
+      "updated_at": "2026-10-29T07:58:18.028417+00:00",
       "transition_history": []
     },
     {
@@ -483,7 +493,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942258+00:00",
+      "updated_at": "2026-10-29T07:58:18.028420+00:00",
       "transition_history": []
     },
     {
@@ -514,7 +524,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942279+00:00",
+      "updated_at": "2026-10-29T07:58:18.028422+00:00",
       "transition_history": []
     },
     {
@@ -545,7 +555,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942285+00:00",
+      "updated_at": "2026-10-29T07:58:18.028425+00:00",
       "transition_history": []
     },
     {
@@ -576,7 +586,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942289+00:00",
+      "updated_at": "2026-10-29T07:58:18.028428+00:00",
       "transition_history": []
     },
     {
@@ -617,7 +627,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942293+00:00",
+      "updated_at": "2026-10-29T07:58:18.028431+00:00",
       "transition_history": []
     },
     {
@@ -658,7 +668,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942298+00:00",
+      "updated_at": "2026-10-29T07:58:18.028434+00:00",
       "transition_history": []
     },
     {
@@ -689,7 +699,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942301+00:00",
+      "updated_at": "2026-10-29T07:58:18.028436+00:00",
       "transition_history": []
     },
     {
@@ -720,7 +730,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942305+00:00",
+      "updated_at": "2026-10-29T07:58:18.028439+00:00",
       "transition_history": []
     },
     {
@@ -751,14 +761,14 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942310+00:00",
+      "updated_at": "2026-10-29T07:58:18.028441+00:00",
       "transition_history": []
     },
     {
       "record_id": "rev_HLD-004",
       "item_id": "ARTEMIS-004-HLD-004",
       "split": "heldout",
-      "group": "Group B (Standard Legal Candidate)",
+      "group": "Group A (Priority Review)",
       "question": "지역특화형(F-2-R) 비자를 취득한 외국인이 수도권 등 다른 대도시로 거주지를 이전하여 취업해도 비자가 유지되나요?",
       "proposed_answer": "인구감소지역",
       "evidence_references": [
@@ -782,7 +792,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942316+00:00",
+      "updated_at": "2026-10-29T07:58:18.028444+00:00",
       "transition_history": []
     },
     {
@@ -813,7 +823,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942320+00:00",
+      "updated_at": "2026-10-29T07:58:18.028446+00:00",
       "transition_history": []
     },
     {
@@ -844,14 +854,14 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942323+00:00",
+      "updated_at": "2026-10-29T07:58:18.028449+00:00",
       "transition_history": []
     },
     {
       "record_id": "rev_HLD-007",
       "item_id": "ARTEMIS-004-HLD-007",
       "split": "heldout",
-      "group": "Group B (Standard Legal Candidate)",
+      "group": "Group A (Priority Review)",
       "question": "2026년 10월 2일 시행된 출입국관리법 개정(법률 제21857호)에 따른 제4조 및 제85조의 직제·용어 개정 취지는 무엇인가요?",
       "proposed_answer": "2026년 10월 2일",
       "evidence_references": [
@@ -875,14 +885,14 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942327+00:00",
+      "updated_at": "2026-10-29T07:58:18.028451+00:00",
       "transition_history": []
     },
     {
       "record_id": "rev_HLD-008",
       "item_id": "ARTEMIS-004-HLD-008",
       "split": "heldout",
-      "group": "Group B (Standard Legal Candidate)",
+      "group": "Group A (Priority Review)",
       "question": "2026년 K-point E-7-4 전환 신청 시 TOPIK 2급(또는 사회통합프로그램 2단계) 소지자의 기본 배점은 몇 점인가요?",
       "proposed_answer": "10점",
       "evidence_references": [
@@ -906,7 +916,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942331+00:00",
+      "updated_at": "2026-10-29T07:58:18.028454+00:00",
       "transition_history": []
     },
     {
@@ -937,7 +947,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942335+00:00",
+      "updated_at": "2026-10-29T07:58:18.028456+00:00",
       "transition_history": []
     },
     {
@@ -968,7 +978,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942338+00:00",
+      "updated_at": "2026-10-29T07:58:18.028458+00:00",
       "transition_history": []
     },
     {
@@ -999,7 +1009,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942342+00:00",
+      "updated_at": "2026-10-29T07:58:18.028461+00:00",
       "transition_history": []
     },
     {
@@ -1030,7 +1040,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942486+00:00",
+      "updated_at": "2026-10-29T07:58:18.028463+00:00",
       "transition_history": []
     },
     {
@@ -1061,7 +1071,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942531+00:00",
+      "updated_at": "2026-10-29T07:58:18.028466+00:00",
       "transition_history": []
     },
     {
@@ -1092,7 +1102,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942542+00:00",
+      "updated_at": "2026-10-29T07:58:18.028468+00:00",
       "transition_history": []
     },
     {
@@ -1123,7 +1133,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942548+00:00",
+      "updated_at": "2026-10-29T07:58:18.028471+00:00",
       "transition_history": []
     },
     {
@@ -1154,7 +1164,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942552+00:00",
+      "updated_at": "2026-10-29T07:58:18.028473+00:00",
       "transition_history": []
     },
     {
@@ -1185,7 +1195,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942556+00:00",
+      "updated_at": "2026-10-29T07:58:18.028476+00:00",
       "transition_history": []
     },
     {
@@ -1216,7 +1226,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942560+00:00",
+      "updated_at": "2026-10-29T07:58:18.028478+00:00",
       "transition_history": []
     },
     {
@@ -1257,7 +1267,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942564+00:00",
+      "updated_at": "2026-10-29T07:58:18.028481+00:00",
       "transition_history": []
     },
     {
@@ -1298,7 +1308,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942568+00:00",
+      "updated_at": "2026-10-29T07:58:18.028484+00:00",
       "transition_history": []
     },
     {
@@ -1329,7 +1339,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942572+00:00",
+      "updated_at": "2026-10-29T07:58:18.028486+00:00",
       "transition_history": []
     },
     {
@@ -1360,14 +1370,14 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942578+00:00",
+      "updated_at": "2026-10-29T07:58:18.028489+00:00",
       "transition_history": []
     },
     {
       "record_id": "rev_HLD-023",
       "item_id": "ARTEMIS-004-HLD-023",
       "split": "heldout",
-      "group": "Group B (Standard Legal Candidate)",
+      "group": "Group A (Priority Review)",
       "question": "F-2-7(점수제 우수인재) 거주 비자로 변경하기 위한 총점 기준과 소득 입증 서류는 무엇인가요?",
       "proposed_answer": "80점 이상",
       "evidence_references": [
@@ -1391,7 +1401,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942582+00:00",
+      "updated_at": "2026-10-29T07:58:18.028491+00:00",
       "transition_history": []
     },
     {
@@ -1422,7 +1432,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942589+00:00",
+      "updated_at": "2026-10-29T07:58:18.028494+00:00",
       "transition_history": []
     },
     {
@@ -1453,7 +1463,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942593+00:00",
+      "updated_at": "2026-10-29T07:58:18.028497+00:00",
       "transition_history": []
     },
     {
@@ -1484,14 +1494,14 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942597+00:00",
+      "updated_at": "2026-10-29T07:58:18.028499+00:00",
       "transition_history": []
     },
     {
       "record_id": "rev_HLD-027",
       "item_id": "ARTEMIS-004-HLD-027",
       "split": "heldout",
-      "group": "Group B (Standard Legal Candidate)",
+      "group": "Group A (Priority Review)",
       "question": "2026년 10월 현재 대한민국에 체류하는 외국인의 체류자격 외 활동 제한을 규정하는 기본 법조항은 무엇인가요?",
       "proposed_answer": "출입국관리법 제17조",
       "evidence_references": [
@@ -1515,14 +1525,14 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942601+00:00",
+      "updated_at": "2026-10-29T07:58:18.028501+00:00",
       "transition_history": []
     },
     {
       "record_id": "rev_HLD-028",
       "item_id": "ARTEMIS-004-HLD-028",
       "split": "heldout",
-      "group": "Group B (Standard Legal Candidate)",
+      "group": "Group A (Priority Review)",
       "question": "현재 지방 대학 학위과정(D-2) 신입학 유학생의 사증발급 시 요구되는 1년 재정입증 최저 기준액은 과거 2,000만원 일괄 적용인가요?",
       "proposed_answer": "1,600만원",
       "evidence_references": [
@@ -1546,7 +1556,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942604+00:00",
+      "updated_at": "2026-10-29T07:58:18.028504+00:00",
       "transition_history": []
     },
     {
@@ -1577,7 +1587,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942608+00:00",
+      "updated_at": "2026-10-29T07:58:18.028506+00:00",
       "transition_history": []
     },
     {
@@ -1608,14 +1618,14 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942612+00:00",
+      "updated_at": "2026-10-29T07:58:18.028508+00:00",
       "transition_history": []
     },
     {
       "record_id": "rev_HLD-031",
       "item_id": "ARTEMIS-004-HLD-031",
       "split": "heldout",
-      "group": "Group B (Standard Legal Candidate)",
+      "group": "Group A (Priority Review)",
       "question": "Tôi đang lao động với visa E-9 tại Hàn Quốc được 4 năm. Tôi có đủ điều kiện về thời gian làm việc để nộp hồ sơ chuyển đổi sang visa K-point E-7-4 không?",
       "proposed_answer": "từ 4 năm trở lên",
       "evidence_references": [
@@ -1639,14 +1649,14 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942616+00:00",
+      "updated_at": "2026-10-29T07:58:18.028511+00:00",
       "transition_history": []
     },
     {
       "record_id": "rev_HLD-032",
       "item_id": "ARTEMIS-004-HLD-032",
       "split": "heldout",
-      "group": "Group B (Standard Legal Candidate)",
+      "group": "Group A (Priority Review)",
       "question": "Can an international student with a D-2 visa work at a company during summer vacation without obtaining any part-time work permit from the immigration office?",
       "proposed_answer": "prior permission",
       "evidence_references": [
@@ -1670,7 +1680,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942620+00:00",
+      "updated_at": "2026-10-29T07:58:18.028514+00:00",
       "transition_history": []
     },
     {
@@ -1701,7 +1711,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942779+00:00",
+      "updated_at": "2026-10-29T07:58:18.028516+00:00",
       "transition_history": []
     },
     {
@@ -1732,7 +1742,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942785+00:00",
+      "updated_at": "2026-10-29T07:58:18.028518+00:00",
       "transition_history": []
     },
     {
@@ -1763,14 +1773,14 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942789+00:00",
+      "updated_at": "2026-10-29T07:58:18.028521+00:00",
       "transition_history": []
     },
     {
       "record_id": "rev_HLD-036",
       "item_id": "ARTEMIS-004-HLD-036",
       "split": "heldout",
-      "group": "Group B (Standard Legal Candidate)",
+      "group": "Group A (Priority Review)",
       "question": "외국인인데 한국에서 식당이나 카페를 열어서 개인사업을 할 수 있나요?",
       "proposed_answer": "체류자격",
       "evidence_references": [
@@ -1794,14 +1804,14 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942792+00:00",
+      "updated_at": "2026-10-29T07:58:18.028523+00:00",
       "transition_history": []
     },
     {
       "record_id": "rev_HLD-037",
       "item_id": "ARTEMIS-004-HLD-037",
       "split": "heldout",
-      "group": "Group B (Standard Legal Candidate)",
+      "group": "Group A (Priority Review)",
       "question": "F-2-7 점수제 비자 취득 시 취득 점수(130점 이상 vs 80~109점)에 따른 1회 체류부여기간은 각각 몇 년인가요?",
       "proposed_answer": "130점 이상",
       "evidence_references": [
@@ -1825,7 +1835,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942796+00:00",
+      "updated_at": "2026-10-29T07:58:18.028526+00:00",
       "transition_history": []
     },
     {
@@ -1856,7 +1866,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942801+00:00",
+      "updated_at": "2026-10-29T07:58:18.028528+00:00",
       "transition_history": []
     },
     {
@@ -1897,7 +1907,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942806+00:00",
+      "updated_at": "2026-10-29T07:58:18.028531+00:00",
       "transition_history": []
     },
     {
@@ -1938,7 +1948,7 @@
       "decision": null,
       "decision_reason": null,
       "evidence_snapshot_sha256": null,
-      "updated_at": "2026-10-29T06:31:54.942810+00:00",
+      "updated_at": "2026-10-29T07:58:18.028534+00:00",
       "transition_history": []
     }
   ]

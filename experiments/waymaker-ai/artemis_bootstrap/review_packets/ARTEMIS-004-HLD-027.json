@@ -1,0 +1,76 @@
+{
+  "packet_id": "pkt_HLD-027",
+  "item_id": "ARTEMIS-004-HLD-027",
+  "batch_id": 3,
+  "batch_name": "Batch 3: Act Art 17, D-2 Finances & Multilingual Queries (VN/EN)",
+  "title": "법령 판본 검증: 2026.10 시행령 기준 출입국관리법 제17조 외국인의 체류 및 활동범위 최신 고시",
+  "dimension": "source_fidelity",
+  "split": "heldout",
+  "applicable_category": "출입국관리법 (Immigration Act Article 17)",
+  "question": "2026년 10월 현재 대한민국에 체류하는 외국인의 체류자격 외 활동 제한을 규정하는 기본 법조항은 무엇인가요?",
+  "user_context": {
+    "location": "in_korea",
+    "current_status": null,
+    "target_status": null,
+    "clarification_button": null
+  },
+  "proposed_answer": "출입국관리법 제17조, 체류자격과 체류기간의 범위",
+  "legal_basis": {
+    "claimed_basis": "대한민국 출입국관리법 제17조",
+    "document_id": "대한민국 법률 제21857호 출입국관리법",
+    "provision": "제17조(외국인의 체류 및 활동범위) 제1항",
+    "section_or_page": "제17조 제1항 (체류자격과 체류기간의 범위 내 체류 의무)",
+    "source_url": "https://www.law.go.kr/법령/출입국관리법/제17조",
+    "document_version": "법률 제21857호 (2026. 10. 2. 시행)",
+    "effective_date": "2026-10-02",
+    "verification_date": "2026-10-29"
+  },
+  "evidence_items": [
+    {
+      "id": "EV-HLD-027-A",
+      "title": "출입국관리법 제17조 (외국인의 체류 및 활동범위) 및 시행령 (2026. 10. 기준 현행)",
+      "text": "출입국관리법 제17조제1항은 '외국인은 그 체류자격과 체류기간의 범위에서 대한민국에 체류할 수 있다'고 규정하며, 제2항은 '외국인은 이 법이나 다른 법률이 정하는 경우를 제외하고는 정치활동을 하여서는 아니 된다'고 규정하고 있습니다. 2026년 10월 현재 법적 효력을 갖는 기본 조항입니다.",
+      "sha256": "12b06d7f777d8eb604fd692a14fa854fbc1a54b1ceef23c1a1f8d06d05e19075",
+      "status": "preliminary_verified",
+      "source_url": "https://www.law.go.kr/법령/출입국관리법",
+      "document_id": "출입국관리법",
+      "provision": "제17조",
+      "effective_date": "2026-10-02"
+    }
+  ],
+  "legal_analysis": {
+    "possible_exceptions": "대통령령으로 정하는 체류자격(F-2, F-5, F-6 등)의 경우 취업활동 범위의 제한을 받지 아니함.",
+    "potential_conflicts": "체류자격외활동허가를 받지 아니하고 취업한 경우 제17조 위반으로 강제퇴거 대상(제46조) 해당.",
+    "outdated_guidance": "2026.10 개정 출입국관리법에서도 제17조의 기본 체류 원칙은 불변."
+  },
+  "reviewer_checklist": [
+    {
+      "check_id": "chk_source_authenticity",
+      "label": "공식 1차 출처(관보/법제처/하이코리아) 원문과 발췌문 일치 여부",
+      "checked": false,
+      "notes": "URL 직접 접속하여 조문 번호 및 공포 번호 확인"
+    },
+    {
+      "check_id": "chk_effective_date",
+      "label": "2026년 기준 현행 유효 규정 및 시행일자 부합 여부",
+      "checked": false,
+      "notes": "폐지되거나 개정 전 구 지침이 아닌지 확인"
+    },
+    {
+      "check_id": "chk_exceptions_completeness",
+      "label": "법적 단서 규정, 예외 요건, 지자체 재량 범위 누락 여부",
+      "checked": false,
+      "notes": "원칙과 예외가 올바르게 균형을 이루는지 확인"
+    },
+    {
+      "check_id": "chk_wording_fidelity",
+      "label": "법적 수치(금액, 기간, 배점) 및 조동사(허가, 제한, 금지) 정확도",
+      "checked": false,
+      "notes": "부정/긍정 반전이나 표 행·열 전치 왜곡이 없는지 확인"
+    }
+  ],
+  "reviewer_notes": "",
+  "current_status": "unreviewed",
+  "missing_evidence_and_unresolved_issues": "시행령 제23조 외국인의 취업활동범위 최신 개정 조문 연계 확인.",
+  "generated_at": "2026-10-29T07:46:27.317415+00:00"
+}

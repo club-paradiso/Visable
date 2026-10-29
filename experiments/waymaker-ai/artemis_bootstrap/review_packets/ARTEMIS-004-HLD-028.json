@@ -1,0 +1,76 @@
+{
+  "packet_id": "pkt_HLD-028",
+  "item_id": "ARTEMIS-004-HLD-028",
+  "batch_id": 3,
+  "batch_name": "Batch 3: Act Art 17, D-2 Finances & Multilingual Queries (VN/EN)",
+  "title": "법령 판본 검증: 외국인 유학생 재정입증 최신 고시(수도권/지방 차등 기준) 적용",
+  "dimension": "source_fidelity",
+  "split": "heldout",
+  "applicable_category": "D-2 (유학생 재정능력 입증 고시)",
+  "question": "현재 지방 대학 학위과정(D-2) 신입학 유학생의 사증발급 시 요구되는 1년 재정입증 최저 기준액은 과거 2,000만원 일괄 적용인가요?",
+  "user_context": {
+    "location": "abroad",
+    "current_status": null,
+    "target_status": "D-2",
+    "clarification_button": "visa"
+  },
+  "proposed_answer": "1,600만원, 수도권 2,000만원, 비수도권",
+  "legal_basis": {
+    "claimed_basis": "외국인 유학생 사증발급 및 체류관리지침 (법무부 고시 제2026-118호)",
+    "document_id": "법무부 외국인 유학생 사증발급 및 체류관리지침",
+    "provision": "제4장 사증발급 기준 - 재정능력 입증",
+    "section_or_page": "제4조 제2항 (학위과정별 재정능력 입증 기준액: 수도권 $20,000 / 비수도권 $16,000)",
+    "source_url": "https://www.hikorea.go.kr/info/InfoVisaD2.pt",
+    "document_version": "2026-03-01 시행 고시",
+    "effective_date": "2026-03-01",
+    "verification_date": "2026-10-29"
+  },
+  "evidence_items": [
+    {
+      "id": "EV-HLD-028-A",
+      "title": "2026년도 외국인 유학생 사증발급 재정능력 심사기준 고시",
+      "text": "유학생 재정능력 심사기준은 과거 2,000만원 일괄 기준에서 개정되어, 수도권 대학은 2,000만원 이상, 비수도권(지방) 대학은 1,600만원 이상으로 차등 완화되어 적용됩니다.",
+      "sha256": "00637bddadf9e990e91033de38e4762665e1bdeb02c83577a080d3e503910dfc",
+      "status": "preliminary_verified",
+      "source_url": "https://www.hikorea.go.kr",
+      "document_id": "외국인 유학생 사증발급 및 체류관리지침",
+      "provision": "체류관리",
+      "effective_date": "2026-03-01"
+    }
+  ],
+  "legal_analysis": {
+    "possible_exceptions": "비수도권 대학 중 교육국제화역량 인증대학의 경우 지방자치단체 장학 혜택 연계 시 추가 감면 기준 가능.",
+    "potential_conflicts": "달러 환산 기준($20,000 / $16,000)과 원화 고정액(2,600만원 / 2,000만원) 간의 환율 변동 적용 시비.",
+    "outdated_guidance": "전국 일괄 2,000만원 또는 일괄 20,000달러를 적용하던 2023년 이전 구 고시 적용 엄금."
+  },
+  "reviewer_checklist": [
+    {
+      "check_id": "chk_source_authenticity",
+      "label": "공식 1차 출처(관보/법제처/하이코리아) 원문과 발췌문 일치 여부",
+      "checked": false,
+      "notes": "URL 직접 접속하여 조문 번호 및 공포 번호 확인"
+    },
+    {
+      "check_id": "chk_effective_date",
+      "label": "2026년 기준 현행 유효 규정 및 시행일자 부합 여부",
+      "checked": false,
+      "notes": "폐지되거나 개정 전 구 지침이 아닌지 확인"
+    },
+    {
+      "check_id": "chk_exceptions_completeness",
+      "label": "법적 단서 규정, 예외 요건, 지자체 재량 범위 누락 여부",
+      "checked": false,
+      "notes": "원칙과 예외가 올바르게 균형을 이루는지 확인"
+    },
+    {
+      "check_id": "chk_wording_fidelity",
+      "label": "법적 수치(금액, 기간, 배점) 및 조동사(허가, 제한, 금지) 정확도",
+      "checked": false,
+      "notes": "부정/긍정 반전이나 표 행·열 전치 왜곡이 없는지 확인"
+    }
+  ],
+  "reviewer_notes": "",
+  "current_status": "unreviewed",
+  "missing_evidence_and_unresolved_issues": "교육부-법무부 공동 공고 2026년도 교육국제화역량 인증제 평가결과 목록 연계 확인.",
+  "generated_at": "2026-10-29T07:46:27.317426+00:00"
+}

@@ -1,0 +1,76 @@
+{
+  "packet_id": "pkt_HLD-008",
+  "item_id": "ARTEMIS-004-HLD-008",
+  "batch_id": 2,
+  "batch_name": "Batch 2: E-7-4 TOPIK, Security Probes 3-4 & F-2-7 Income",
+  "title": "법령 판본 검증: 2026년 현행 K-point E-7-4 한국어능력 배점 기준과 과거 구기준 구분",
+  "dimension": "source_fidelity",
+  "split": "heldout",
+  "applicable_category": "E-7-4 (숙련기능인력 점수제)",
+  "question": "2026년 K-point E-7-4 전환 신청 시 TOPIK 2급(또는 사회통합프로그램 2단계) 소지자의 기본 배점은 몇 점인가요?",
+  "user_context": {
+    "location": "in_korea",
+    "current_status": "E-9",
+    "target_status": "E-7-4",
+    "clarification_button": "stay"
+  },
+  "proposed_answer": "10점, TOPIK 2급, 사회통합프로그램 2단계",
+  "legal_basis": {
+    "claimed_basis": "2026년도 숙련기능인력(K-point E-7-4) 점수제 평가기준표",
+    "document_id": "법무부 특정활동(E-7) 사증·체류관리지침 (K-point E-7-4 평가기준표)",
+    "provision": "평가항목 2. 한국어 능력 (TOPIK / 사회통합프로그램)",
+    "section_or_page": "배점표 1페이지 (기본배점: TOPIK 2급 10점, 3급 15점, 4급 이상 20점)",
+    "source_url": "https://www.hikorea.go.kr/info/InfoStayE74.pt",
+    "document_version": "2026년 상반기 시행",
+    "effective_date": "2026-01-01",
+    "verification_date": "2026-10-29"
+  },
+  "evidence_items": [
+    {
+      "id": "EV-HLD-008-A",
+      "title": "2026년도 숙련기능인력(K-point E-7-4) 점수제 평가기준표",
+      "text": "2026년 현행 K-point E-7-4 평가기준표상 한국어 능력 기본 배점: TOPIK 2급 또는 사회통합프로그램 2단계 이수자는 10점, 3단계 이수자는 15점, 4단계 이상은 20점이 부여됩니다. 한국어 점수는 필수 최저 요건 충족 기준입니다.",
+      "sha256": "b5cc52e1179527d6635155928ca50277695ec2d074040a0c56a4cc98fa235903",
+      "status": "preliminary_verified",
+      "source_url": "https://www.hikorea.go.kr",
+      "document_id": "특정활동(E-7) 사증·체류관리지침",
+      "provision": "선발 및 체류관리",
+      "effective_date": "2026-01-01"
+    }
+  ],
+  "legal_analysis": {
+    "possible_exceptions": "사회통합프로그램 사전평가 점수(41~60점) 획득자도 2단계 이수자와 동일하게 10점 인정.",
+    "potential_conflicts": "2023년 시범사업 당시 TOPIK 2급 5점 배점표와의 데이터 오염 충돌 주의.",
+    "outdated_guidance": "과거 구 쿼터(연 2,000명) 및 과거 구 평가표 점수 기준 전면 폐기."
+  },
+  "reviewer_checklist": [
+    {
+      "check_id": "chk_source_authenticity",
+      "label": "공식 1차 출처(관보/법제처/하이코리아) 원문과 발췌문 일치 여부",
+      "checked": false,
+      "notes": "URL 직접 접속하여 조문 번호 및 공포 번호 확인"
+    },
+    {
+      "check_id": "chk_effective_date",
+      "label": "2026년 기준 현행 유효 규정 및 시행일자 부합 여부",
+      "checked": false,
+      "notes": "폐지되거나 개정 전 구 지침이 아닌지 확인"
+    },
+    {
+      "check_id": "chk_exceptions_completeness",
+      "label": "법적 단서 규정, 예외 요건, 지자체 재량 범위 누락 여부",
+      "checked": false,
+      "notes": "원칙과 예외가 올바르게 균형을 이루는지 확인"
+    },
+    {
+      "check_id": "chk_wording_fidelity",
+      "label": "법적 수치(금액, 기간, 배점) 및 조동사(허가, 제한, 금지) 정확도",
+      "checked": false,
+      "notes": "부정/긍정 반전이나 표 행·열 전치 왜곡이 없는지 확인"
+    }
+  ],
+  "reviewer_notes": "",
+  "current_status": "unreviewed",
+  "missing_evidence_and_unresolved_issues": "2026년 하반기 수시배정 추천 기업 대상 가점(최대 10점) 공고안 원문 대조.",
+  "generated_at": "2026-10-29T07:46:27.316162+00:00"
+}

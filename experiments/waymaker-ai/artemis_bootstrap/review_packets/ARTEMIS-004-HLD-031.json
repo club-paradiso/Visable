@@ -1,0 +1,76 @@
+{
+  "packet_id": "pkt_HLD-031",
+  "item_id": "ARTEMIS-004-HLD-031",
+  "batch_id": 3,
+  "batch_name": "Batch 3: Act Art 17, D-2 Finances & Multilingual Queries (VN/EN)",
+  "title": "다국어 질의 (베트남어): E-9 비전문취업자의 K-point E-7-4 숙련기능인력 전환 근무기간 요건",
+  "dimension": "source_fidelity",
+  "split": "heldout",
+  "applicable_category": "E-9 to E-7-4 (Vietnamese Multilingual Query)",
+  "question": "Tôi đang lao động với visa E-9 tại Hàn Quốc được 4 năm. Tôi có đủ điều kiện về thời gian làm việc để nộp hồ sơ chuyển đổi sang visa K-point E-7-4 không?",
+  "user_context": {
+    "location": "in_korea",
+    "current_status": "E-9",
+    "target_status": "E-7-4",
+    "clarification_button": "stay"
+  },
+  "proposed_answer": "từ 4 năm trở lên, E-9, K-point E-7-4",
+  "legal_basis": {
+    "claimed_basis": "Kế hoạch vận hành chuyển đổi nhân lực lành nghề (K-point E-7-4)",
+    "document_id": "2026년도 숙련기능인력(K-point E-7-4) 선발계획 공고",
+    "provision": "신청자격: 최근 10년 이내 E-9, E-10, H-2 자격으로 4년 이상 적법 취업활동 체류자",
+    "section_or_page": "제1장 기본요건 1. 체류기간 요건 (최근 10년 중 4년 이상)",
+    "source_url": "https://www.hikorea.go.kr/info/InfoStayE74.pt",
+    "document_version": "2026-01-01 시행",
+    "effective_date": "2026-01-01",
+    "verification_date": "2026-10-29"
+  },
+  "evidence_items": [
+    {
+      "id": "EV-HLD-031-A",
+      "title": "Kế hoạch vận hành chuyển đổi nhân lực lành nghề (K-point E-7-4)",
+      "text": "Người lao động nước ngoài mang visa E-9 phải có thời gian làm việc hợp pháp tại Hàn Quốc từ 4 năm trở lên trong vòng 10 năm gần nhất mới đủ điều kiện cơ bản về thời gian để nộp đơn xin chuyển đổi sang visa K-point E-7-4, đồng thời phải đạt điểm số đánh giá theo quy định.",
+      "sha256": "d02944037099ca62abb0b911f65bc210c50fa68774eae2626f1d52534d65c10f",
+      "status": "preliminary_verified",
+      "source_url": "https://www.hikorea.go.kr",
+      "document_id": "특정활동(E-7) 사증·체류관리지침",
+      "provision": "선발 및 체류관리",
+      "effective_date": "2026-01-01"
+    }
+  ],
+  "legal_analysis": {
+    "possible_exceptions": "뿌리산업 및 농축어업 분야에서 3년 이상 연속 근무한 자는 지자체 추천을 통해 체류기간 요건 1년 단축 가능 여부 검토.",
+    "potential_conflicts": "불법체류 전력 또는 벌금 100만원 이상 처분 이력자의 신청 결격 사유.",
+    "outdated_guidance": "과거 5년 이상 근무 요건을 4년으로 완화한 2024년 이후 개정 규정 유지."
+  },
+  "reviewer_checklist": [
+    {
+      "check_id": "chk_source_authenticity",
+      "label": "공식 1차 출처(관보/법제처/하이코리아) 원문과 발췌문 일치 여부",
+      "checked": false,
+      "notes": "URL 직접 접속하여 조문 번호 및 공포 번호 확인"
+    },
+    {
+      "check_id": "chk_effective_date",
+      "label": "2026년 기준 현행 유효 규정 및 시행일자 부합 여부",
+      "checked": false,
+      "notes": "폐지되거나 개정 전 구 지침이 아닌지 확인"
+    },
+    {
+      "check_id": "chk_exceptions_completeness",
+      "label": "법적 단서 규정, 예외 요건, 지자체 재량 범위 누락 여부",
+      "checked": false,
+      "notes": "원칙과 예외가 올바르게 균형을 이루는지 확인"
+    },
+    {
+      "check_id": "chk_wording_fidelity",
+      "label": "법적 수치(금액, 기간, 배점) 및 조동사(허가, 제한, 금지) 정확도",
+      "checked": false,
+      "notes": "부정/긍정 반전이나 표 행·열 전치 왜곡이 없는지 확인"
+    }
+  ],
+  "reviewer_notes": "",
+  "current_status": "unreviewed",
+  "missing_evidence_and_unresolved_issues": "베트남 노동보훈사회부(MOLISA) 송출 인력 특별 가점 협약 여부 확인.",
+  "generated_at": "2026-10-29T07:46:27.317574+00:00"
+}

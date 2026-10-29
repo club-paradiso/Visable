@@ -1,0 +1,13 @@
+{
+  "run_id": "artemis_run_20261029_075146_7ec0a8",
+  "created_at": "2026-10-29T07:51:46.300659+00:00",
+  "mode": "candidate_eval",
+  "runner_version": "artemis-runner/1.0",
+  "git_commit": "0ade4ad3fc9295e05de0e30f38cb060142c6fa39",
+  "file_digests": {
+    "run_summary.json": "f12690b13f6d961b2ba2db97674d225b653031fff32c19510d7d7af871e7e936",
+    "error_summary.csv": "2611cff99cae68cebb57bca8f629b180ab99d319bb1f7f97c1ca2538726960b4",
+    "report.md": "015772d86865bccebc6f51613add7081e553137264893fa33ac045c5bb197d15",
+    "runner_code": "398fb4b30764e596536133af2b313e5c1c0661cd8894ddb513ca6900430c58b1"
+  }
+}

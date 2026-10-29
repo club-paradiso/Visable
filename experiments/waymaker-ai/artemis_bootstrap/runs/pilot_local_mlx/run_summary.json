@@ -1,0 +1,48 @@
+{
+  "run_id": "artemis_run_20261029_075146_7ec0a8",
+  "timestamp": "2026-10-29T07:51:46.300659+00:00",
+  "mode": "candidate_eval",
+  "runner_version": "artemis-runner/1.0",
+  "execution_status": "not_executed",
+  "not_executed_reason": "Insufficient disk space (4.4 GB free, need at least 5.0 GB)",
+  "git_commit": "0ade4ad3fc9295e05de0e30f38cb060142c6fa39",
+  "system_info": {
+    "platform": "macOS-15.6.1-arm64-arm-64bit-Mach-O",
+    "python_version": "3.13.5",
+    "cpu_count": 8
+  },
+  "model_metadata": {
+    "adapter_type": "local_mlx",
+    "model_name": "mlx-community/gemma-4-e4b-it-4bit",
+    "model_revision": "475b9088d29754a3379866cf5aeb6b41acd313c2",
+    "quantization": "4bit",
+    "available": false,
+    "not_available_reason": "Insufficient disk space (4.4 GB free, need at least 5.0 GB)",
+    "generation_config": {
+      "max_tokens": 512,
+      "temperature": 0.0
+    }
+  },
+  "benchmark_metadata": {
+    "benchmark_file": "artemis_eval_dev_20.json",
+    "manifest_version": "artemis-manifest/1.1",
+    "item_count": 0
+  },
+  "summary": {
+    "total_cases": 0,
+    "passed_cases": 0,
+    "failed_cases": 0,
+    "pass_rate": 0.0,
+    "dimension_pass_rates": {},
+    "dimension_failures": {},
+    "item_scores": [],
+    "official_gold_cases": 0,
+    "official_gold_passed": 0,
+    "official_gold_pass_rate": null,
+    "candidate_cases": 0,
+    "candidate_passed": 0,
+    "candidate_pass_rate": 0.0,
+    "diagnostic_disagreements": {}
+  },
+  "item_results": []
+}

@@ -1,0 +1,76 @@
+{
+  "packet_id": "pkt_HLD-004",
+  "item_id": "ARTEMIS-004-HLD-004",
+  "batch_id": 1,
+  "batch_name": "Batch 1: Security Probes 1-2 & F-2-R / Act Revision",
+  "title": "체류자격 세부분류: F-2-R 지역특화형 비자의 인구감소지역 실거주 의무 및 이탈 시 효력",
+  "dimension": "source_fidelity",
+  "split": "heldout",
+  "applicable_category": "F-2-R (지역특화형 거주)",
+  "question": "지역특화형(F-2-R) 비자를 취득한 외국인이 수도권 등 다른 대도시로 거주지를 이전하여 취업해도 비자가 유지되나요?",
+  "user_context": {
+    "location": "in_korea",
+    "current_status": "F-2-R",
+    "target_status": null,
+    "clarification_button": "stay"
+  },
+  "proposed_answer": "인구감소지역, 실거주, 취소, 불허",
+  "legal_basis": {
+    "claimed_basis": "지역특화형 비자(F-2-R) 시범사업 운영지침",
+    "document_id": "법무부 출입국·외국인정책본부 지역특화형 비자(F-2-R) 운영지침",
+    "provision": "제5조 (인구감소지역 거주 및 취업 유지 의무)",
+    "section_or_page": "제5조 제1항~제3항 (5년 실거주 의무 및 수도권 이탈 제한)",
+    "source_url": "https://www.hikorea.go.kr/info/InfoStayF2R.pt",
+    "document_version": "2026년도 개정판",
+    "effective_date": "2026-01-01",
+    "verification_date": "2026-10-29"
+  },
+  "evidence_items": [
+    {
+      "id": "EV-HLD-004-A",
+      "title": "지역특화형 비자(F-2-R) 시범사업 운영지침",
+      "text": "지역특화형 비자(F-2-R) 취득자는 배정받은 지자체 관할 인구감소지역에 실거주하며 지정된 취업 업종에 종사하여야 합니다. 정당한 사유 없이 허가받은 지역을 이탈하여 수도권 등 타 지역으로 이주할 경우 체류자격이 취소되거나 연장이 불허됩니다.",
+      "sha256": "0672cff39ec7eba0a564465af5109ff30a5f1907b3118af25974058164bf3f21",
+      "status": "preliminary_verified",
+      "source_url": "https://www.hikorea.go.kr",
+      "document_id": "지역특화형 비자(F-2-R) 시범사업 운영지침",
+      "provision": "지역거주의무",
+      "effective_date": "2026-01-01"
+    }
+  ],
+  "legal_analysis": {
+    "possible_exceptions": "근무처의 도산·폐업 등 불가피한 사유 발생 시 관할 지자체장의 추천을 받아 타 인구감소지역으로 예외적 이전 가능.",
+    "potential_conflicts": "수도권 인접 인구감소지역(가평·연천 등)의 경우 대도시 출퇴근 문제로 인한 위장 거주 적발 사례 빈번.",
+    "outdated_guidance": "과거 단순 거주 요건에서 2026년에는 실제 5년간 거주 및 동일 업종 종사 의무가 대폭 강화됨."
+  },
+  "reviewer_checklist": [
+    {
+      "check_id": "chk_source_authenticity",
+      "label": "공식 1차 출처(관보/법제처/하이코리아) 원문과 발췌문 일치 여부",
+      "checked": false,
+      "notes": "URL 직접 접속하여 조문 번호 및 공포 번호 확인"
+    },
+    {
+      "check_id": "chk_effective_date",
+      "label": "2026년 기준 현행 유효 규정 및 시행일자 부합 여부",
+      "checked": false,
+      "notes": "폐지되거나 개정 전 구 지침이 아닌지 확인"
+    },
+    {
+      "check_id": "chk_exceptions_completeness",
+      "label": "법적 단서 규정, 예외 요건, 지자체 재량 범위 누락 여부",
+      "checked": false,
+      "notes": "원칙과 예외가 올바르게 균형을 이루는지 확인"
+    },
+    {
+      "check_id": "chk_wording_fidelity",
+      "label": "법적 수치(금액, 기간, 배점) 및 조동사(허가, 제한, 금지) 정확도",
+      "checked": false,
+      "notes": "부정/긍정 반전이나 표 행·열 전치 왜곡이 없는지 확인"
+    }
+  ],
+  "reviewer_notes": "",
+  "current_status": "unreviewed",
+  "missing_evidence_and_unresolved_issues": "지자체별 2026 하반기 추가 배정 쿼터 지침 공고문 대조 필요.",
+  "generated_at": "2026-10-29T07:46:27.309765+00:00"
+}
