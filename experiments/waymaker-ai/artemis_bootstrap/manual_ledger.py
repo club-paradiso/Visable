@@ -136,6 +136,9 @@ def resolve_evidence(item: Mapping[str, Any], ledger: Mapping[str, Mapping[str, 
             "approved_sha256": (lay["layout_sha256"] if lay else entry["approved_sha256"]) if entry else None,
             "text_form": "hwp_layout" if lay else "pdf_text",
             "source_id": item["source_id"], "page": int(item["page"]), "domain": page.get("domain"),
+            # Facts refer to the PDF page approval, not to the separately
+            # validated HWP-layout transcription of that same approved page.
+            "pdf_approved_sha256": entry["approved_sha256"] if entry else None,
         },
     }
 
