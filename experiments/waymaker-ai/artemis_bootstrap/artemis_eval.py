@@ -386,8 +386,9 @@ def validate_eval_item(item: Mapping[str, Any], check_hashes: bool = True) -> Li
                                 f"Hash mismatch for '{ev_id}': recorded {content_hash} != calculated {calc_hash}"
                             ))
                     else:
+                        hash_field = "approved_sha256" if app_state == "approved" else "content_sha256"
                         issues.append(ValidationIssue(
-                            item_id, f"evidence[{idx}].source.content_sha256",
+                            item_id, f"evidence[{idx}].source.{hash_field}",
                             "Approved and under-review evidence must provide a content digest"
                         ))
 
