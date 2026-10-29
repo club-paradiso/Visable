@@ -46,11 +46,37 @@
           "type": ["string", "null"],
           "pattern": "^[0-9a-f]{64}$"
         },
+        "content_sha256": {
+          "type": ["string", "null"],
+          "pattern": "^[0-9a-f]{64}$"
+        },
         "domain": {
           "enum": ["visa_issuance", "stay", "general"]
         },
         "provenance": {
           "enum": ["synthetic_fixture", "official_manual", "official_notice", "community_post", "injection_probe"]
+        },
+        "source_url": {
+          "type": ["string", "null"]
+        },
+        "document_id": {
+          "type": ["string", "null"]
+        },
+        "provision": {
+          "type": ["string", "null"]
+        },
+        "effective_date": {
+          "type": ["string", "null"]
+        },
+        "review_status": {
+          "type": ["string", "null"],
+          "enum": ["unreviewed", "in_review", "verified_by_human", "rejected", null]
+        },
+        "reviewed_by": {
+          "type": ["string", "null"]
+        },
+        "reviewed_at": {
+          "type": ["string", "null"]
         }
       }
     },
@@ -118,6 +144,30 @@
           "type": "array",
           "items": {
             "type": "string"
+          },
+          "default": []
+        },
+        "polarity_flips_forbidden": {
+          "type": "boolean",
+          "default": true
+        },
+        "permission_flips_forbidden": {
+          "type": "boolean",
+          "default": true
+        },
+        "role_mismatches_forbidden": {
+          "type": "boolean",
+          "default": true
+        },
+        "forbidden_subject_bindings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["subject", "forbidden_value"],
+            "properties": {
+              "subject": { "type": "string" },
+              "forbidden_value": { "type": "string" }
+            }
           },
           "default": []
         }
@@ -248,6 +298,20 @@
         },
         "is_synthetic": {
           "type": "boolean"
+        },
+        "needs_human_review": {
+          "type": "boolean",
+          "default": false
+        },
+        "split": {
+          "enum": ["dev", "heldout", "dev_candidate", "heldout_candidate", "synthetic_benchmark", "test"]
+        },
+        "candidate_status": {
+          "type": ["string", "null"],
+          "enum": ["dev_candidate", "heldout_candidate", "frozen_heldout", "official_gold", null]
+        },
+        "legal_review_notes": {
+          "type": ["string", "null"]
         }
       }
     },

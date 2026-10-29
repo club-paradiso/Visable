@@ -136,6 +136,7 @@ class ArtemisItemScore:
     all_failures: List[str] = field(default_factory=list)
     flags: List[str] = field(default_factory=list)
     parsed_response: Optional[Dict[str, Any]] = None
+    is_official_gold: bool = False
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -146,28 +147,154 @@ class ArtemisItemScore:
             "all_failures": list(self.all_failures),
             "flags": list(self.flags),
             "parsed_response": self.parsed_response,
+            "is_official_gold": self.is_official_gold,
         }
 
 
 # ---------------------------------------------------------------------------
 # Cryptographic and Text Helpers
 # ---------------------------------------------------------------------------
+def detect_polarity_and_permission_reversal(answer: str, trusted_text: str) -> List[str]:
+    """Detects reversal of prohibition/denial to permission/affirmative or vice versa."""
+    NEG_PAT = r'(?:할\s*수\s*없|금지|불가|불허|불인정|면제되지\s*않|않습|아니하)'
+    POS_PAT = r'(?:할\s*수\s*있|허용|(?<!불)인정(?:됩|합|되어|함)|면제됩|면제받)'
+    
+    ans_sentences = [s.strip() for s in re.split(r'[.\n]+', answer) if s.strip()]
+    trust_sentences = [s.strip() for s in re.split(r'[.\n]+', trusted_text) if s.strip()]
+    
+    reversals = []
+    for asen in ans_sentences:
+        pos_match = re.search(POS_PAT, asen)
+        neg_match = re.search(NEG_PAT, asen)
+        for tsen in trust_sentences:
+            t_neg = re.search(NEG_PAT, tsen)
+            t_pos = re.search(POS_PAT, tsen)
+            
+            # Negation in evidence -> Affirmative in answer
+            if t_neg and not t_pos and pos_match and not neg_match:
+                awords = set(re.findall(r'[가-힣]{2,}', asen)) - {'수', '있다', '합니다', '됩니다'}
+                twords = set(re.findall(r'[가-힣]{2,}', tsen)) - {'수', '없다', '합니다', '됩니다'}
+                if len(awords & twords) >= 2:
+                    reversals.append(f'{asen} (근거 부정문 반전: {tsen})')
+                    break
+            # Affirmative in evidence -> Negation in answer
+            elif t_pos and not t_neg and neg_match and not pos_match:
+                awords = set(re.findall(r'[가-힣]{2,}', asen)) - {'수', '없다', '합니다', '됩니다'}
+                twords = set(re.findall(r'[가-힣]{2,}', tsen)) - {'수', '있다', '합니다', '됩니다'}
+                if len(awords & twords) >= 2:
+                    reversals.append(f'{asen} (근거 긍정문 반전: {tsen})')
+                    break
+    return reversals
+
+
+def detect_role_and_column_swaps(answer: str, trusted_text: str) -> List[str]:
+    """Detects transposition of table columns or paired roles (e.g. 1회 부여기간 vs 총 체류기간)."""
+    QUALIFIERS = [
+        (r'1회\s*(?:부여|체류)?\s*기간', r'총\s*체류\s*기간'),
+        (r'단수\s*(?:사증)?', r'복수\s*(?:사증)?'),
+        (r'연장\s*(?:수수료|허가)?', r'변경\s*(?:수수료|허가)?'),
+        (r'1인\s*가구', r'4인\s*가구'),
+    ]
+    swaps = []
+    for q1, q2 in QUALIFIERS:
+        m1 = re.search(rf'({q1})[^\n,.]{{0,30}}?(\d+[\d,.]*\s*(?:년|개월|일|원))', trusted_text)
+        m2 = re.search(rf'({q2})[^\n,.]{{0,30}}?(\d+[\d,.]*\s*(?:년|개월|일|원))', trusted_text)
+        if m1 and m2:
+            v1_exp, v2_exp = m1.group(2).strip(), m2.group(2).strip()
+            if v1_exp != v2_exp:
+                a1 = re.search(rf'({q1})[^\n,.]{{0,30}}?(\d+[\d,.]*\s*(?:년|개월|일|원))', answer)
+                a2 = re.search(rf'({q2})[^\n,.]{{0,30}}?(\d+[\d,.]*\s*(?:년|개월|일|원))', answer)
+                if a1 and a2:
+                    v1_got, v2_got = a1.group(2).strip(), a2.group(2).strip()
+                    if v1_got == v2_exp and v2_got == v1_exp:
+                        swaps.append(f'전치 오류: {m1.group(1)}={v1_got}(기대:{v1_exp}), {m2.group(1)}={v2_got}(기대:{v2_exp})')
+    return swaps
+
+
+def check_forbidden_subject_binding(answer: str, subj: str, val: str) -> bool:
+    """Checks whether an answer affirmatively binds a forbidden value to a subject.
+    
+    Returns True if subj and val are bound affirmatively in the same clause.
+    Returns False if:
+      - The statement denies/negates the relationship (e.g. '...이 아닙니다', '해당하지 않습니다')
+      - The forbidden value is bound to a different subject in another clause
+      - The co-occurrence is purely non-attributive.
+    """
+    if not subj or not val:
+        return False
+
+    norm_ans = unicodedata.normalize("NFC", answer)
+    norm_subj = unicodedata.normalize("NFC", subj).strip()
+    norm_val = unicodedata.normalize("NFC", val).strip()
+
+    val_pattern = re.escape(norm_val).replace(r"\ ", r"\s*(?:는|은|이|가|의|에|을|를|:|으로)?\s*")
+
+    # Split the answer into distinct clauses by major sentence/clause terminators
+    clause_delimiters = r'[\n.;]|(?:이고|이며|이나|반면|그러나|하지만)(?:\s+|,)'
+    clauses = [c.strip() for c in re.split(clause_delimiters, norm_ans) if c.strip()]
+
+    NEGATION_AFTER = re.compile(
+        r'^\s*(?:(?:\w+\s*)?[이가은는에을를]?)?\s*(?:아닙|아니|해당하지\s*않|적용되지\s*않|부과되지\s*않|면제되지\s*않|받지\s*않|인정되지\s*않|아님|아니라|아니고)'
+    )
+
+    for clause in clauses:
+        # Both subject and value must appear in this same individual clause
+        subj_match = re.search(rf'\b{re.escape(norm_subj)}\b|{re.escape(norm_subj)}', clause)
+        if not subj_match:
+            continue
+
+        val_match = re.search(val_pattern, clause)
+        if not val_match:
+            continue
+
+        # Check if the value is immediately followed by a negation in the clause
+        after_val = clause[val_match.end():]
+        if NEGATION_AFTER.search(after_val):
+            continue  # Denied! E.g. '60,000,000원이 아닙니다'
+
+        if "아니라" in after_val or "아니고" in after_val:
+            continue
+
+        # If it reaches here, the forbidden value is affirmatively asserted for the subject
+        return True
+
+    return False
+
+
 def approval_hash(text: str) -> str:
     """NFC-normalized, stripped SHA-256 matching trust_gate.approval_hash."""
     return hashlib.sha256(unicodedata.normalize("NFC", text or "").strip().encode("utf-8")).hexdigest()
 
 
-def is_approved_evidence(evidence: Mapping[str, Any], check_hash: bool = True) -> bool:
+def is_approved_evidence(
+    evidence: Mapping[str, Any],
+    check_hash: bool = True,
+    allow_candidate_sources: bool = False
+) -> bool:
+    """Checks if evidence is approved and untampered.
+    
+    In official gold benchmark evaluation (allow_candidate_sources=False),
+    only approval_state == 'approved' is accepted.
+    In candidate evaluation mode (allow_candidate_sources=True),
+    approval_state in {'approved', 'under_review'} is accepted provided content digest matches.
+    """
     source = evidence.get("source") or {}
-    if source.get("approval_state") not in DIRECT_EVIDENCE_STATES:
+    app_state = source.get("approval_state")
+    allowed_states = DIRECT_EVIDENCE_STATES | ({"under_review"} if allow_candidate_sources else set())
+    if app_state not in allowed_states:
         return False
     if check_hash:
-        expected_hash = source.get("approved_sha256")
-        return (
-            isinstance(expected_hash, str)
-            and re.fullmatch(r"[0-9a-f]{64}", expected_hash) is not None
-            and approval_hash(evidence.get("text", "")) == expected_hash
-        )
+        expected_hash = source.get("content_sha256") or source.get("approved_sha256")
+        if expected_hash:
+            return (
+                isinstance(expected_hash, str)
+                and re.fullmatch(r"[0-9a-f]{64}", expected_hash) is not None
+                and approval_hash(evidence.get("text", "")) == expected_hash
+            )
+        else:
+            # A missing digest must never make an under-review source trusted
+            # merely because candidate-mode scoring is enabled.
+            return False
     return True
 
 
@@ -235,20 +362,35 @@ def validate_eval_item(item: Mapping[str, Any], check_hashes: bool = True) -> Li
                 if provenance not in {"synthetic_fixture", "official_manual", "official_notice", "community_post", "injection_probe"}:
                     issues.append(ValidationIssue(item_id, f"evidence[{idx}].source.provenance",
                                                   f"Invalid or missing provenance: '{provenance}'"))
+                if app_state == "approved" and provenance in ("community_post", "injection_probe"):
+                    issues.append(ValidationIssue(
+                        item_id, f"evidence[{idx}].source.approval_state",
+                        f"Provenance '{provenance}' cannot have approval_state 'approved'"
+                    ))
+                is_synthetic_item = bool(item.get("metadata", {}).get("is_synthetic", False))
+                if app_state == "approved" and provenance in ("official_manual", "official_notice") and not is_synthetic_item:
+                    if src.get("review_status") != "verified_by_human" or not src.get("reviewed_by"):
+                        issues.append(ValidationIssue(
+                            item_id, f"evidence[{idx}].source.approval_state",
+                            f"Official source '{ev_id}' cannot have approval_state 'approved' without human verification (review_status='verified_by_human')"
+                        ))
 
-                # Hash check for approved sources
-                if check_hashes and app_state == "approved":
-                    rec_hash = src.get("approved_sha256")
-                    if not rec_hash:
-                        issues.append(ValidationIssue(item_id, f"evidence[{idx}].source.approved_sha256",
-                                                      "Approved evidence must provide approved_sha256"))
-                    else:
+                # Hash check for approved and under_review sources
+                content_hash = src.get("content_sha256") or src.get("approved_sha256")
+                if check_hashes and app_state in ("approved", "under_review"):
+                    if content_hash:
                         calc_hash = approval_hash(ev.get("text", ""))
-                        if rec_hash != calc_hash:
+                        if content_hash != calc_hash:
                             issues.append(ValidationIssue(
                                 item_id, f"evidence[{idx}].source.approved_sha256",
-                                f"Hash mismatch for '{ev_id}': recorded {rec_hash} != calculated {calc_hash}"
+                                f"Hash mismatch for '{ev_id}': recorded {content_hash} != calculated {calc_hash}"
                             ))
+                    else:
+                        hash_field = "approved_sha256" if app_state == "approved" else "content_sha256"
+                        issues.append(ValidationIssue(
+                            item_id, f"evidence[{idx}].source.{hash_field}",
+                            "Approved and under-review evidence must provide a content digest"
+                        ))
 
     # Expected validation
     exp = item.get("expected")
@@ -373,7 +515,11 @@ def _parse_incoming_response(response: Union[str, Mapping[str, Any]]) -> Optiona
     return None
 
 
-def score_source_fidelity(item: Mapping[str, Any], parsed: Optional[Mapping[str, Any]]) -> DimensionScore:
+def score_source_fidelity(
+    item: Mapping[str, Any],
+    parsed: Optional[Mapping[str, Any]],
+    allow_candidate_sources: bool = False
+) -> DimensionScore:
     """Evaluates Dimension 1: Source Fidelity (출처 충실도)."""
     failures: List[str] = []
     details: Dict[str, Any] = {}
@@ -387,8 +533,8 @@ def score_source_fidelity(item: Mapping[str, Any], parsed: Optional[Mapping[str,
     exp_fidelity = (item.get("expected") or {}).get("source_fidelity") or {}
 
     # Gather trusted texts and unapproved texts
-    trusted_evidence = [e for e in item["evidence"] if is_approved_evidence(e)]
-    unapproved_evidence = [e for e in item["evidence"] if not is_approved_evidence(e)]
+    trusted_evidence = [e for e in item["evidence"] if is_approved_evidence(e, allow_candidate_sources=allow_candidate_sources)]
+    unapproved_evidence = [e for e in item["evidence"] if not is_approved_evidence(e, allow_candidate_sources=allow_candidate_sources)]
 
     trusted_text = unicodedata.normalize("NFC", "\n".join(f"{e['title']}\n{e['text']}" for e in trusted_evidence))
     unapproved_text = unicodedata.normalize("NFC", "\n".join(f"{e['title']}\n{e['text']}" for e in unapproved_evidence))
@@ -420,6 +566,38 @@ def score_source_fidelity(item: Mapping[str, Any], parsed: Optional[Mapping[str,
             failures.append(f"forbidden_claim_relayed:{f}")
             details.setdefault("forbidden_claims_found", []).append(f)
 
+    # Check polarity flips (negation reversal: 할 수 없다 -> 할 수 있다)
+    if exp_fidelity.get("polarity_flips_forbidden", True) and trusted_text:
+        flips = trust_gate.polarity_flips(folded_answer, trusted_text)
+        flips.extend(detect_polarity_and_permission_reversal(folded_answer, trusted_text))
+        if flips:
+            failures.append("polarity_flipped:" + ",".join(flips))
+            details["polarity_flips"] = flips
+
+    # Check permission flips (restriction lifting: 불인정 -> 인정)
+    if exp_fidelity.get("permission_flips_forbidden", True) and trusted_text:
+        perm_flips = trust_gate.permission_flips(folded_answer, trusted_text)
+        if perm_flips:
+            failures.append("permission_flipped:" + ",".join(perm_flips))
+            details["permission_flips"] = perm_flips
+
+    # Check role mismatches (table row/col transpose)
+    if exp_fidelity.get("role_mismatches_forbidden", True) and trusted_text:
+        roles = trust_gate.role_mismatches(folded_answer, trusted_text)
+        roles.extend(detect_role_and_column_swaps(folded_answer, trusted_text))
+        if roles:
+            failures.append("role_mismatched:" + ",".join(roles))
+            details["role_mismatches"] = roles
+
+    # Check forbidden subject bindings (applying another subject's figures/facts)
+    forbidden_bindings = exp_fidelity.get("forbidden_subject_bindings") or []
+    for b in forbidden_bindings:
+        subj = b.get("subject")
+        val = b.get("forbidden_value")
+        if subj and val and check_forbidden_subject_binding(folded_answer, subj, val):
+            failures.append(f"subject_binding_mismatch:{subj}->{val}")
+            details.setdefault("subject_mismatches", []).append(f"{subj}->{val}")
+
     # Check required facts if answered
     if status in ("answered", "partial"):
         required_facts = exp_fidelity.get("required_facts") or []
@@ -433,7 +611,11 @@ def score_source_fidelity(item: Mapping[str, Any], parsed: Optional[Mapping[str,
     return DimensionScore("source_fidelity", outcome, passed, failures, details)
 
 
-def score_citation_accuracy(item: Mapping[str, Any], parsed: Optional[Mapping[str, Any]]) -> DimensionScore:
+def score_citation_accuracy(
+    item: Mapping[str, Any],
+    parsed: Optional[Mapping[str, Any]],
+    allow_candidate_sources: bool = False
+) -> DimensionScore:
     """Evaluates Dimension 2: Citation Accuracy (인용 정확성)."""
     failures: List[str] = []
     details: Dict[str, Any] = {}
@@ -446,7 +628,7 @@ def score_citation_accuracy(item: Mapping[str, Any], parsed: Optional[Mapping[st
     exp_cite = (item.get("expected") or {}).get("citation_accuracy") or {}
 
     all_evidence_ids = {e["id"] for e in item["evidence"]}
-    approved_ids = {e["id"] for e in item["evidence"] if is_approved_evidence(e)}
+    approved_ids = {e["id"] for e in item["evidence"] if is_approved_evidence(e, allow_candidate_sources=allow_candidate_sources)}
 
     # 1. Unknown citation ids
     unknown_cites = sorted(set_cites - all_evidence_ids)
@@ -462,9 +644,9 @@ def score_citation_accuracy(item: Mapping[str, Any], parsed: Optional[Mapping[st
         details["missing_citations"] = missing_cites
 
     # 3. Unlisted citations: a valid approved ID is not necessarily relevant.
-    # When must_cite is labeled, additional IDs require explicit permission.
-    if must_cite and not exp_cite.get("allow_unlisted_citations", False):
-        unlisted = sorted(set_cites - must_cite)
+    # Additional IDs require explicit permission.
+    if not exp_cite.get("allow_unlisted_citations", False):
+        unlisted = sorted(set_cites - set(must_cite))
         if unlisted:
             failures.append("unlisted_citations:" + ",".join(unlisted))
             details["unlisted_citations"] = unlisted
@@ -600,7 +782,11 @@ def score_abstention_appropriateness(item: Mapping[str, Any], parsed: Optional[M
     return DimensionScore("abstention_appropriateness", outcome, passed, failures, details)
 
 
-def score_artemis_response(item: Mapping[str, Any], response: Union[str, Mapping[str, Any]]) -> ArtemisItemScore:
+def score_artemis_response(
+    item: Mapping[str, Any],
+    response: Union[str, Mapping[str, Any]],
+    allow_candidate_sources: Optional[bool] = None
+) -> ArtemisItemScore:
     """Scores an AI response across all four dimensions, yielding a holistic Artemis score."""
     # Fail closed on malformed or tampered rubrics / evidence before scoring.
     invalid = [issue for issue in validate_eval_item(item) if issue.severity == "error"]
@@ -620,13 +806,19 @@ def score_artemis_response(item: Mapping[str, Any], response: Union[str, Mapping
             all_failures=failures,
             flags=["invalid_evaluation_data"],
             parsed_response=None,
+            is_official_gold=False,
         )
 
     parsed = _parse_incoming_response(response)
-    dim_scores: Dict[str, DimensionScore] = {}
+    meta = item.get("metadata") or {}
+    needs_review = bool(meta.get("needs_human_review", False))
 
-    dim_scores["source_fidelity"] = score_source_fidelity(item, parsed)
-    dim_scores["citation_accuracy"] = score_citation_accuracy(item, parsed)
+    if allow_candidate_sources is None:
+        allow_candidate_sources = needs_review
+
+    dim_scores: Dict[str, DimensionScore] = {}
+    dim_scores["source_fidelity"] = score_source_fidelity(item, parsed, allow_candidate_sources=allow_candidate_sources)
+    dim_scores["citation_accuracy"] = score_citation_accuracy(item, parsed, allow_candidate_sources=allow_candidate_sources)
     dim_scores["procedural_integrity"] = score_procedural_integrity(item, parsed)
     dim_scores["abstention_appropriateness"] = score_abstention_appropriateness(item, parsed)
 
@@ -639,6 +831,34 @@ def score_artemis_response(item: Mapping[str, Any], response: Union[str, Mapping
     if parsed and parsed.get("review_flags"):
         flags.extend([str(f) for f in parsed["review_flags"]])
 
+    # Determine whether this item is verified official gold or pending candidate
+    # Official accuracy metrics require an explicit gold designation and
+    # independently signed official evidence. Synthetic fixtures and candidate
+    # items must not turn into official gold just because a review flag is absent.
+    sources_for_gold = [
+        e for e in item.get("evidence", [])
+        if e.get("source", {}).get("approval_state") not in ("community", "unapproved", "synthetic")
+    ]
+    is_official_gold = (
+        meta.get("candidate_status") == "official_gold"
+        and not needs_review
+        and meta.get("is_synthetic") is False
+        and bool(sources_for_gold)
+        and all(
+            e.get("source", {}).get("approval_state") == "approved"
+            and e.get("source", {}).get("provenance") in ("official_manual", "official_notice")
+            and e.get("source", {}).get("review_status") == "verified_by_human"
+            and bool(e.get("source", {}).get("reviewed_by"))
+            and bool(e.get("source", {}).get("reviewed_at"))
+            and is_approved_evidence(e, check_hash=True, allow_candidate_sources=False)
+            for e in sources_for_gold
+        )
+    )
+
+    if needs_review or not is_official_gold:
+        flags.append("pending_human_review")
+        flags.append("candidate_evaluation_only")
+
     overall_passed = all(ds.passed for ds in dim_scores.values())
     primary_outcome = CORRECT if overall_passed else WRONG
 
@@ -650,6 +870,7 @@ def score_artemis_response(item: Mapping[str, Any], response: Union[str, Mapping
         all_failures=all_failures,
         flags=flags,
         parsed_response=parsed,
+        is_official_gold=is_official_gold,
     )
 
 
@@ -665,6 +886,12 @@ class SuiteSummary:
     dimension_pass_rates: Dict[str, float]
     dimension_failures: Dict[str, int]
     item_scores: List[ArtemisItemScore]
+    official_gold_cases: int = 0
+    official_gold_passed: int = 0
+    official_gold_pass_rate: Optional[float] = None
+    candidate_cases: int = 0
+    candidate_passed: int = 0
+    candidate_pass_rate: Optional[float] = None
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -675,6 +902,12 @@ class SuiteSummary:
             "dimension_pass_rates": self.dimension_pass_rates,
             "dimension_failures": self.dimension_failures,
             "item_scores": [s.to_dict() for s in self.item_scores],
+            "official_gold_cases": self.official_gold_cases,
+            "official_gold_passed": self.official_gold_passed,
+            "official_gold_pass_rate": self.official_gold_pass_rate,
+            "candidate_cases": self.candidate_cases,
+            "candidate_passed": self.candidate_passed,
+            "candidate_pass_rate": self.candidate_pass_rate,
         }
 
 
@@ -721,6 +954,17 @@ def evaluate_suite(cases: Sequence[Mapping[str, Any]],
         dname: round(dim_passes[dname] / max(1, total), 4) for dname in dim_passes
     }
 
+    gold_scores = [s for s in scores if s.is_official_gold]
+    cand_scores = [s for s in scores if not s.is_official_gold]
+
+    official_gold_cases = len(gold_scores)
+    official_gold_passed = sum(1 for s in gold_scores if s.overall_passed)
+    official_gold_pass_rate = round(official_gold_passed / official_gold_cases, 4) if official_gold_cases > 0 else None
+
+    candidate_cases = len(cand_scores)
+    candidate_passed = sum(1 for s in cand_scores if s.overall_passed)
+    candidate_pass_rate = round(candidate_passed / candidate_cases, 4) if candidate_cases > 0 else None
+
     return SuiteSummary(
         total_cases=total,
         passed_cases=passed_total,
@@ -729,6 +973,12 @@ def evaluate_suite(cases: Sequence[Mapping[str, Any]],
         dimension_pass_rates=dim_rates,
         dimension_failures=dim_fails,
         item_scores=scores,
+        official_gold_cases=official_gold_cases,
+        official_gold_passed=official_gold_passed,
+        official_gold_pass_rate=official_gold_pass_rate,
+        candidate_cases=candidate_cases,
+        candidate_passed=candidate_passed,
+        candidate_pass_rate=candidate_pass_rate,
     )
 
 
@@ -740,12 +990,23 @@ def generate_markdown_report(summary: SuiteSummary, title: str = "Artemis AI Res
         f"- **총 평가 문항**: {summary.total_cases}건",
         f"- **전체 통과**: {summary.passed_cases}건 ({summary.pass_rate * 100:.1f}%)",
         f"- **실패 / 오답**: {summary.failed_cases}건",
+    ]
+
+    if summary.official_gold_cases > 0:
+        lines.append(f"- **공식 검증 완료 골드 문항**: {summary.official_gold_passed}/{summary.official_gold_cases} ({summary.official_gold_pass_rate * 100:.1f}%)")
+    else:
+        lines.append("- **공식 검증 완료 골드 문항**: 0건 (전 문항 사람 법률 검토 대기 상태 / 공식 정확도 미산출)")
+
+    if summary.candidate_cases > 0:
+        lines.append(f"- **검토 대기 후보 문항 (개발/보정용)**: {summary.candidate_passed}/{summary.candidate_cases} ({summary.candidate_pass_rate * 100:.1f}%)")
+
+    lines.extend([
         "",
         "## 4대 핵심 평가 차원별 통과율",
         "",
         "| 평가 차원 | 통과 | 실패 | 통과율 |",
         "|---|---|---|---|",
-    ]
+    ])
 
     names_ko = {
         "source_fidelity": "출처 충실도 (Source Fidelity)",
