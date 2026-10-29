@@ -233,8 +233,9 @@ class ArtemisReviewRecord:
 class LegalReviewLedger:
     """Audit ledger maintaining all candidate items and their human review governance state."""
 
-    def __init__(self, records: Optional[Dict[str, ArtemisReviewRecord]] = None):
+    def __init__(self, records: Optional[Dict[str, ArtemisReviewRecord]] = None, ledger_path: Path = LEDGER_PATH):
         self.records: Dict[str, ArtemisReviewRecord] = records or {}
+        self.ledger_path: Path = ledger_path
 
     @classmethod
     def load_or_initialize(cls, ledger_path: Path = LEDGER_PATH,
@@ -246,12 +247,12 @@ class LegalReviewLedger:
             for row in data.get("records", []):
                 rec = ArtemisReviewRecord.from_dict(row)
                 records[rec.item_id] = rec
-            return cls(records)
+            return cls(records, ledger_path=ledger_path)
 
         # Initialize from candidate benchmark file
         cand_p = candidates_path or (BENCHMARKS_DIR / "artemis_eval_candidates_60.json")
         if not cand_p.exists():
-            return cls({})
+            return cls({}, ledger_path=ledger_path)
 
         data = json.loads(cand_p.read_text(encoding="utf-8"))
         records = {}
@@ -292,13 +293,14 @@ class LegalReviewLedger:
                 review_status=ReviewStatus.UNREVIEWED,
                 is_human_reviewer=False
             )
-        ledger = cls(records)
+        ledger = cls(records, ledger_path=ledger_path)
         ledger.save(ledger_path)
         return ledger
 
-    def save(self, ledger_path: Path = LEDGER_PATH) -> None:
+    def save(self, ledger_path: Optional[Path] = None) -> None:
         """Persists ledger to JSON file."""
-        ledger_path.parent.mkdir(parents=True, exist_ok=True)
+        target_path = ledger_path or self.ledger_path
+        target_path.parent.mkdir(parents=True, exist_ok=True)
         data = {
             "version": "artemis-ledger/1.0",
             "updated_at": dt.datetime.now(dt.timezone.utc).isoformat(),
@@ -306,7 +308,7 @@ class LegalReviewLedger:
             "status_counts": self.get_status_counts(),
             "records": [rec.to_dict() for rec in self.records.values()]
         }
-        ledger_path.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
+        target_path.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
 
     def get_status_counts(self) -> Dict[str, int]:
         counts: Dict[str, int] = {st.value: 0 for st in ReviewStatus}

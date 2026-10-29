@@ -30,14 +30,23 @@ Artemis Mission 004-A부터 004-C까지 구축된 평가 프레임워크와 60�
   - 법적 예외 규정, 해석 충돌 가능성, 구법 지침 유의사항, 검토자 체크리스트 항목 포함.
 - **인간 승인 위조 방지**: 16개 패킷 모두 상태를 `unreviewed`로 유지하고 체크리스트는 미선택(`unchecked`) 상태로 배포하여, 실제 전문가 검토 전 자동 승인되는 일이 없도록 차단했습니다.
 
-### Workstream B: 로컬 검토 워크벤치 (Local Review Workbench)
+### Workstream B: 로컬 검토 워크벤치 및 보안 신뢰 경계 강화
 - **도구 구현**: `review_workbench.py`
   - **CLI 명령군**: `list`, `view <item_id>`, `draft <item_id>`, `export`, `import`, `audit`
   - **반응형 Web GUI**: 데스크톱 환경에서 질문, 제안 답변, 법령 근거, 발췌문을 좌우 병렬(Side-by-Side)로 비교 검토할 수 있는 단일 페이지 애플리케이션(`review_workbench.py serve`) 탑재.
-- **비인가 승인 방지 및 Fail-Closed 거버넌스 유지**:
-  - 로컬 환경의 `is_human=True` 플래그, 단순 검토자 성명, SHA-256 다이제스트, 로컬 JSON 장부 기록은 법적 신원 검증으로 간주하지 않습니다.
-  - `official_gold` 승격 API 호출 시 `AuthoritativeGoldPromotionDisabledError`를 발생시키는 Fail-Closed 보안 장치를 엄격히 유지했습니다.
-  - 로컬 워크벤치에서는 비인가 초안 메모 및 결함 이슈(`draft`, `needs_source`, `conflict`) 기록만 가능하며, 변경 내역은 감사 이력(`audit_history`)에 누적 보존됩니다.
+- **저장형 XSS 차단 및 동적 렌더링 무결성**:
+  - 검토자 작성 메모, 법령 발췌문, 질의문 등이 브라우저 innerHTML에 직접 보간되던 취약점을 제거하고 전체 동적 문자열에 대해 HTML 엔티티 이스케이프(`escapeHtml`) 처리를 적용했습니다.
+  - 하이퍼링크 URL에 대해 `http://` 및 `https://` 스킴만을 엄격히 허용하고 `javascript:` 등 악성 스킴을 원천 차단하는 정제 함수(`sanitizeUrl`)를 탑재했습니다.
+- **비신뢰 패키지 임포트 통제 및 위조 방지**:
+  - HTTP POST 임포트 엔드포인트에서 임의 서버 파일 경로를 읽어 들이던 취약점을 제거하고 인메모리 JSON 페이로드 또는 사전 지정된 허용 디렉터리(`reviews/imports`) 내 파일만 임포트되도록 경로 순회(Path Traversal) 공격을 차단했습니다.
+  - 외부 임포트 패키지가 승인(`approved`), 공인 골드(`official_gold`, `verified_gold`) 상태를 임의 주장할 경우 `ReviewIntegrityError`를 발생시켜 거부하도록 엄격한 상태 검증기를 적용했습니다.
+  - 외부 패키지 임포트 시 self-asserted `is_human=True`를 무조건 불허(`is_human=False` 강제)하고 검토자 식별자에 `[IMPORTED]` 접두사를 부여하며 서버 생성 감사 기록(`workbench_import_system`)을 자동 생성하여 기존 감사 이력을 불변 보존하도록 구현했습니다.
+- **로컬 HTTP 쓰기 보호 및 CSRF 방어**:
+  - `Access-Control-Allow-Origin: *` 헤더를 완전 제거하여 외부 사이트로부터의 크로스 오리진 요청을 차단했습니다.
+  - 서버 구동 시 생성되는 32자리 난수 토큰(`X-Workbench-Token`)을 검증하는 CSRF 방어 계층을 추가했습니다.
+  - 요청 `Host` 및 `Origin`/`Referer`가 루프백(`127.0.0.1`, `localhost`)인지 엄격히 확인하고 최대 요청 페이로드 크기를 128KB로 제한하여 메모리 고갈 공격을 방어했습니다.
+- **Fail-Closed 거버넌스 유지**:
+  - `official_gold` 승격 API 호출 시 `AuthoritativeGoldPromotionDisabledError`를 발생시키는 Fail-Closed 보안 장치를 지속 유지했습니다.
 
 ### Workstream C: 홀드아웃 평가 격리 및 블라인드 프로토콜 (Evaluation Isolation)
 - **도구 및 규격**: `evaluation_isolation.py`, `BLIND-EVALUATION-PROTOCOL.md`
@@ -47,18 +56,19 @@ Artemis Mission 004-A부터 004-C까지 구축된 평가 프레임워크와 60�
   - `benchmarks/artemis_eval_heldout_blind_40.json` (SHA-256 무결성 검증 완료)
 - **격리 상태 투명성 공시 (`isolation_not_verified`)**:
   - 기존 40개 홀드아웃 후보 항목은 이전 미션(004-B) 과정에서 공개 저장소에 모범 답안이 커밋된 이력이 존재합니다.
-  - 따라서 이를 독립적이고 완전히 오염되지 않은 클린룸 블라인드 셋으로 허위 주장하지 않고, 환경 감사 결과 `isolation_status: isolation_not_verified`를 명시하도록 구현했습니다.
+  - 따라서 이를 독립적이고 완전히 오염되지 않은 클린룸 블라인드 셋으로 허위 주장하지 않고 환경 감사 결과 `isolation_status: isolation_not_verified`를 명시하도록 구현했습니다.
 
-### Workstream D: 재현 가능한 모델 평가 파일럿 (Evaluation Pilot)
+### Workstream D: 재현 가능한 모델 평가 파일럿 및 성격 명시
 - **평가 실행 엔진**: `artemis_runner.py` 확장 및 3단계 우선순위 어댑터 실행
-- **실행 결과 요약**:
+- **실행 결과 요약 및 데이터 성격 규정**:
   1. `pilot_mock_wrong_facts`: 모의 고의 오답 어댑터를 통한 진단 검증 (정답 일치율 0.0%, 진단 실패 탐지 100%).
-  2. `pilot_recorded_dev20`: 사전 기록된 응답 어댑터를 통한 재현성 검증 (개발 후보군 일치율 90.0%, 18/20 통과).
+  2. `pilot_recorded_dev20`: 사전 기록된 20개 응답([recorded_responses_dev_20.json])을 통한 파이프라인 재현성 검증 (후보군 일치율 90.0%, 18/20 통과).
+     - **유의사항 명시**: 해당 20개 응답 데이터셋은 실제 모델 추론 결과가 아니라 일정한 지연시간(120.5ms)으로 작성된 **인위적 재현 픽스처(Replay Test Fixtures)**입니다. 따라서 90.0% 통과율은 파이프라인 채점 로직의 정상 동작을 점검하기 위한 진단 수치이며 실제 AI 모델의 법률 추론 정확도나 응답 속도를 대변하지 않습니다.
   3. `pilot_local_mlx`: 애플 실리콘(M1 8GB) 하드웨어 제약 및 모델 가중치 미설치 상황에서 임의 다운로드 없이 안전하게 `not_executed`로 정상 격리 및 예외 기록.
 - **공식 법률 정확도 지표 공시**:
   - 독립 검증된 공인 골드 데이터셋이 0건이므로, 공식 법률 정확도(Official Gold Pass Rate)는 엄격히 **`N/A` (None)** 로 산출 및 보고되었습니다.
 
-### Workstream E: 8대 가드레일 섀도 러너 (Guardrail Shadow Runner)
+### Workstream E: 8대 가드레일 섀도 러너 및 캘리브레이션 성격 명시
 - **도구 구현**: `guardrail_shadow.py`
 - **8대 진단 모듈 비차단 검사**:
   1. 법정 금지·제한의 무단 허용 반전 (Polarity Reversal)
@@ -71,12 +81,13 @@ Artemis Mission 004-A부터 004-C까지 구축된 평가 프레임워크와 60�
   8. 적대적 프롬프트 인젝션 및 탈옥 지시 복종 (Prompt Injection Vulnerabilities)
 - **한국어 복합 단서 조항 오탐 방지 (False Positive Protection)**:
   - 단순 금지/허용 키워드 매칭 시 발생하는 "'원칙적으로 제한되나 예외적으로 허가받아 가능' 형태의 정상 서술 오탐" 문제를 해결하기 위해, 문맥상 선행하는 제약 구문과 결합 조건을 판별하는 휴리스틱을 구축했습니다.
-- **정량 보정(Calibration) 성과**:
-  - 총 7건의 캘리브레이션 테스트 세트(TP 4건, TN 3건) 실행 결과:
+- **캘리브레이션 픽스처 성격 규정**:
+  - 총 7건의 단위 규칙 검증용 캘리브레이션 픽스처 세트(TP 4건, TN 3건) 실행 결과:
     - **정밀도 (Precision)**: 100.0%
     - **재현율 (Recall)**: 100.0%
     - **오탐 (False Positives)**: 0건
-    - **평균 오버헤드 지연시간**: **0.01 ms** (최대 0.04 ms로 실시간 파이프라인 허용 한도인 50ms 대비 1/5,000 수준 달성)
+    - **평균 측정 지연시간**: **0.04 ms** (단위 규칙 실행 시간)
+  - **성격 명시**: 상기 100% 정밀도/재현율 및 ~0.04ms 수치는 8개 규칙의 구현 정상성을 확인하기 위해 수작업 작성된 **7건의 합성 단위 픽스처(Synthetic Unit Fixtures)**에 대한 보정 측정값입니다. 이는 실제 운영 환경의 모델 서빙 텔레메트리나 프로덕션 상용 적합성 증거로 간주될 수 없습니다.
 
 ---
 
@@ -87,9 +98,9 @@ Artemis Mission 004-A부터 004-C까지 구축된 평가 프레임워크와 60�
 | 테스트 스위트 파일 | 대상 작업 영역 | 검증 항목 수 | 결과 |
 |:---|:---|:---:|:---:|
 | `test_review_packets.py` | Workstream A: 패킷 규격, 무결성 해시, 미승인 상태 | 3 | 통과 |
-| `test_review_workbench.py` | Workstream B: CLI/GUI 기능, 비인가 골드 승격 차단, 감사 이력 | 5 | 통과 |
+| `test_review_workbench.py` | Workstream B: CLI/GUI 기능, 보안 이스케이프, 위조 차단, 토큰 검증 | 9 | 통과 |
 | `test_evaluation_isolation.py` | Workstream C: 블라인드 프로젝션, 프롬프트 누출 감지, 격리 상태 | 6 | 통과 |
-| `test_guardrail_shadow.py` | Workstream E: 8대 가드레일 진단 모듈, 한국어 단서조항 오탐 방지, 성능 측정 | 9 | 통과 |
+| `test_guardrail_shadow.py` | Workstream E: 8대 가드레일 진단 모듈, 한국어 단서조항 오탐 방지, 픽스처 보정 | 9 | 통과 |
 | `test_artemis_evaluation.py` | 기존 평가 코어 모듈 호환성 검증 | 6 | 통과 |
 | `test_artemis_legal_governance.py` | 기존 법률 거버넌스 및 Fail-Closed 승격 차단 검증 | 4 | 통과 |
 

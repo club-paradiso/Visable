@@ -15,7 +15,7 @@ Mission 004-D successfully delivered the foundations for trustworthy legal evalu
 - A local review workbench with non-authoritative draft controls and audit history
 - An evaluation isolation protocol with explicit `isolation_not_verified` disclosure
 - Reproducible multi-adapter evaluation runs
-- An 8-module shadow guardrail runner with sub-millisecond overhead (0.01ms) and 0 false positives on complex Korean conditional clauses
+- An 8-module shadow guardrail runner with unit-fixture validation across 7 hand-authored calibration cases (0.04ms overhead) and nuance-protection heuristics for complex Korean conditional clauses
 
 Mission 005 transitions these experimental prototypes into authoritative legal compliance and production guardrail middleware.
 

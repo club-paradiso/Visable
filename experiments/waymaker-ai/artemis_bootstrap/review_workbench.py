@@ -1,6 +1,6 @@
 """Artemis Evidence Review Workbench & Non-Authoritative Draft Governance (Mission 004-D).
 
-Provides both a scriptable CLI and a lightweight local HTTP server for authorized
+Provides both a scriptable CLI and a hardened local HTTP server for authorized
 human reviewers to:
 1. Browse all 60 benchmark candidate items (16 Group A priority + 44 Group B standard).
 2. Inspect Question, Proposed Answer, and Supporting Evidence side by side.
@@ -10,6 +10,8 @@ human reviewers to:
 6. Track audit trails without silently overwriting prior decisions.
 7. Maintain strict fail-closed boundaries: authoritative 'official_gold' promotion remains
    disabled until independent cryptographic human attestation is provided.
+8. Defense-in-depth security: HTML escaping (stored XSS protection), safe link sanitization,
+   loopback host and origin verification, request write token checks, and bounded payload limits.
 """
 from __future__ import annotations
 
@@ -21,6 +23,7 @@ import http.server
 import json
 import os
 import re
+import secrets
 import socketserver
 import sys
 import urllib.parse
@@ -33,20 +36,64 @@ EXPERIMENT_ROOT = BOOTSTRAP_DIR.parent
 BENCHMARKS_DIR = BOOTSTRAP_DIR / "benchmarks"
 REVIEWS_DIR = BOOTSTRAP_DIR / "reviews"
 PACKETS_DIR = BOOTSTRAP_DIR / "review_packets"
+ALLOWED_IMPORT_DIR = REVIEWS_DIR / "imports"
 LEDGER_PATH = REVIEWS_DIR / "legal_review_ledger.json"
 
+# Security constraints
+MAX_PAYLOAD_SIZE = 128 * 1024  # 128 KB
+WORKBENCH_WRITE_TOKEN = secrets.token_hex(16)
+
+if str(BOOTSTRAP_DIR.parent) not in sys.path:
+    sys.path.insert(0, str(BOOTSTRAP_DIR.parent))
 if str(BOOTSTRAP_DIR) not in sys.path:
     sys.path.insert(0, str(BOOTSTRAP_DIR))
 
-from legal_review_governance import (  # noqa: E402
-    AuthoritativeGoldPromotionDisabledError,
-    LegalReviewLedger,
-    ReviewDecision,
-    ReviewIntegrityError,
-    ReviewStatus,
-    compute_evidence_snapshot_hash,
-    is_ai_identifier,
-)
+try:
+    from artemis_bootstrap.legal_review_governance import (  # noqa: E402
+        AuthoritativeGoldPromotionDisabledError,
+        LegalReviewLedger,
+        ReviewDecision,
+        ReviewIntegrityError,
+        ReviewStatus,
+        StateTransition,
+        compute_evidence_snapshot_hash,
+        is_ai_identifier,
+    )
+except ImportError:
+    from legal_review_governance import (  # noqa: E402
+        AuthoritativeGoldPromotionDisabledError,
+        LegalReviewLedger,
+        ReviewDecision,
+        ReviewIntegrityError,
+        ReviewStatus,
+        StateTransition,
+        compute_evidence_snapshot_hash,
+        is_ai_identifier,
+    )
+
+
+def escape_html(text: Any) -> str:
+    """Helper function to escape HTML special characters in string values."""
+    if text is None:
+        return ""
+    s = str(text)
+    return (
+        s.replace("&", "&amp;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+        .replace('"', "&quot;")
+        .replace("'", "&#39;")
+    )
+
+
+def sanitize_url(url: Any) -> str:
+    """Strictly permits only http:// and https:// URL schemes for hyperlinks."""
+    if not url:
+        return "#"
+    s = str(url).strip()
+    if re.match(r"^https?://", s, re.IGNORECASE):
+        return escape_html(s)
+    return "#"
 
 
 @dataclass
@@ -67,6 +114,7 @@ class ReviewWorkbench:
     def __init__(self, ledger: Optional[LegalReviewLedger] = None, packets_dir: Path = PACKETS_DIR):
         self.ledger = ledger or LegalReviewLedger.load_or_initialize()
         self.packets_dir = packets_dir
+        ALLOWED_IMPORT_DIR.mkdir(parents=True, exist_ok=True)
 
     def get_all_items_summary(self, status_filter: Optional[str] = None,
                               group_filter: Optional[str] = None) -> List[Dict[str, Any]]:
@@ -167,31 +215,15 @@ class ReviewWorkbench:
         if statutory_conflicts:
             combined_reason += f" | Conflicts: {statutory_conflicts.strip()}"
 
-        rec.transition_history.append(
-            type(rec.transition_history[0] if rec.transition_history else object)(  # type: ignore
-                timestamp=now_iso,
-                from_status=prev_status,
-                to_status=target_status,
-                actor_id=author.strip(),
-                is_human=True,
-                reason=combined_reason,
-                notes=statutory_conflicts,
-            ) if rec.transition_history else None  # type: ignore
-        )
-        # If transition_history was empty or object was None, construct manually
-        if not rec.transition_history or rec.transition_history[-1] is None:
-            from legal_review_governance import StateTransition
-            if rec.transition_history and rec.transition_history[-1] is None:
-                rec.transition_history.pop()
-            rec.transition_history.append(StateTransition(
-                timestamp=now_iso,
-                from_status=prev_status,
-                to_status=target_status,
-                actor_id=author.strip(),
-                is_human=True,
-                reason=combined_reason,
-                notes=statutory_conflicts,
-            ))
+        rec.transition_history.append(StateTransition(
+            timestamp=now_iso,
+            from_status=prev_status,
+            to_status=target_status,
+            actor_id=author.strip(),
+            is_human=True,
+            reason=combined_reason,
+            notes=statutory_conflicts,
+        ))
 
         self.ledger.save()
         return self.get_item_detail(item_id)
@@ -216,40 +248,119 @@ class ReviewWorkbench:
             "total_items": len(items_full),
         }
 
-    def import_review_package(self, input_path: Path) -> Dict[str, Any]:
-        """Imports and merges reviewer draft annotations without overwriting prior audit history."""
-        if not input_path.exists():
-            raise FileNotFoundError(f"Import package not found at {input_path}")
-
-        data = json.loads(input_path.read_text(encoding="utf-8"))
-        if "items" not in data:
+    def import_review_package_data(self, data: Dict[str, Any], source_label: str = "imported_package") -> Dict[str, Any]:
+        """Validates package schema and permissible draft transitions, enforcing strict governance."""
+        if not isinstance(data, dict):
+            raise ReviewIntegrityError("Invalid package: payload must be a JSON object")
+        if "items" not in data or not isinstance(data["items"], list):
             raise ReviewIntegrityError("Invalid package: 'items' array missing")
+
+        # Prohibited authoritative/official statuses that untrusted imports are forbidden from asserting
+        PROHIBITED_STATUSES = {
+            "official_gold", "verified_gold", "approved", "verified", "superseded"
+        }
+        PERMISSIBLE_DRAFT_STATUSES = {
+            ReviewStatus.UNREVIEWED.value,
+            ReviewStatus.IN_REVIEW.value,
+            ReviewStatus.NEEDS_REVISION.value,
+        }
 
         imported_count = 0
         new_transitions = 0
 
-        for row in data.get("items", []):
-            cid = row.get("item_id")
-            if cid not in self.ledger.records:
+        for row in data["items"]:
+            if not isinstance(row, dict):
                 continue
+            cid = row.get("item_id")
+            if not cid or cid not in self.ledger.records:
+                continue
+
+            # Check top-level asserted status and decision
+            row_status = str(row.get("review_status", "")).lower()
+            if row_status in PROHIBITED_STATUSES:
+                raise ReviewIntegrityError(
+                    f"Prohibited approval/gold status '{row.get('review_status')}' for item '{cid}'. "
+                    f"External packages cannot claim authoritative promotion."
+                )
+
+            row_decision = str(row.get("decision", "")).lower()
+            if row_decision in ("approve", "approved", "gold", "official_gold"):
+                raise ReviewIntegrityError(
+                    f"Prohibited approval decision '{row.get('decision')}' for item '{cid}' in imported package."
+                )
 
             rec = self.ledger.records[cid]
             existing_ts = {t.timestamp for t in rec.transition_history}
 
-            # Import any new transitions from external package
+            item_new_transitions = []
             for t in row.get("transition_history", []):
-                if t.get("timestamp") not in existing_ts:
-                    from legal_review_governance import StateTransition
-                    rec.transition_history.append(StateTransition(
-                        timestamp=t["timestamp"],
-                        from_status=t["from_status"],
-                        to_status=t["to_status"],
-                        actor_id=t["actor_id"],
-                        is_human=bool(t.get("is_human", True)),
-                        reason=t.get("reason"),
-                        notes=t.get("notes"),
+                if not isinstance(t, dict):
+                    continue
+
+                ts = t.get("timestamp")
+                if not ts:
+                    continue
+
+                # Validate ISO timestamp
+                try:
+                    dt.datetime.fromisoformat(ts.replace("Z", "+00:00"))
+                except (ValueError, TypeError):
+                    raise ReviewIntegrityError(f"Malformed transition timestamp '{ts}' for item '{cid}'")
+
+                from_st = str(t.get("from_status", ""))
+                to_st = str(t.get("to_status", ""))
+
+                if to_st in PROHIBITED_STATUSES or from_st in PROHIBITED_STATUSES:
+                    raise ReviewIntegrityError(
+                        f"Prohibited status transition ({from_st} -> {to_st}) for item '{cid}'. "
+                        f"Only draft-level transitions ({PERMISSIBLE_DRAFT_STATUSES}) are permissible."
+                    )
+
+                if to_st not in PERMISSIBLE_DRAFT_STATUSES or from_st not in PERMISSIBLE_DRAFT_STATUSES:
+                    raise ReviewIntegrityError(
+                        f"Non-draft status transition ({from_st} -> {to_st}) in package. Import rejected."
+                    )
+
+                if ts not in existing_ts:
+                    # External imports must never assert authoritative is_human=True
+                    # Actor is prefixed to clearly document external import provenance
+                    raw_actor = str(t.get("actor_id", "external_reviewer")).strip()
+                    provenance_actor = f"[IMPORTED] {raw_actor}" if not raw_actor.startswith("[IMPORTED]") else raw_actor
+
+                    reason_text = str(t.get("reason", "") or "")[:1000]
+                    notes_text = str(t.get("notes", "") or "")[:1000] if t.get("notes") else None
+
+                    item_new_transitions.append(StateTransition(
+                        timestamp=ts,
+                        from_status=from_st,
+                        to_status=to_st,
+                        actor_id=provenance_actor,
+                        is_human=False,  # Enforce False: cannot claim authenticated human approval
+                        reason=reason_text,
+                        notes=notes_text,
                     ))
+                    existing_ts.add(ts)
+
+            if item_new_transitions:
+                # Append the valid draft transitions (preserving prior history)
+                for nt in item_new_transitions:
+                    rec.transition_history.append(nt)
                     new_transitions += 1
+
+                # Derive server-side audit transition documenting this import action
+                now_iso = dt.datetime.now(dt.timezone.utc).isoformat()
+                current_st = rec.review_status.value if isinstance(rec.review_status, ReviewStatus) else rec.review_status
+                rec.transition_history.append(StateTransition(
+                    timestamp=now_iso,
+                    from_status=current_st,
+                    to_status=current_st,
+                    actor_id="workbench_import_system",
+                    is_human=False,
+                    reason=f"Imported {len(item_new_transitions)} draft transition(s) from {source_label}",
+                    notes=None,
+                ))
+                new_transitions += 1
+
             imported_count += 1
 
         self.ledger.save()
@@ -257,13 +368,26 @@ class ReviewWorkbench:
             "status": "success",
             "imported_items": imported_count,
             "new_transitions": new_transitions,
+            "source_label": source_label,
         }
+
+    def import_review_package(self, input_path: Path) -> Dict[str, Any]:
+        """Imports reviewer draft annotations from a file path (explicit local CLI action)."""
+        if not input_path.exists():
+            raise FileNotFoundError(f"Import package not found at {input_path}")
+
+        try:
+            data = json.loads(input_path.read_text(encoding="utf-8"))
+        except Exception as e:
+            raise ReviewIntegrityError(f"Failed to parse JSON package: {e}")
+
+        return self.import_review_package_data(data, source_label=input_path.name)
 
 
 # ---------------------------------------------------------------------------
 # HTML Template for Workbench GUI (Accessible, Keyboard Navigable, Side-by-side)
 # ---------------------------------------------------------------------------
-WORKBENCH_HTML = """<!DOCTYPE html>
+WORKBENCH_HTML = r"""<!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="utf-8">
@@ -472,7 +596,27 @@ header h1 { font-size: 1.15rem; font-weight: 700; color: #1e293b; }
   </div>
 </div>
 <script>
+const WORKBENCH_TOKEN = "__WORKBENCH_WRITE_TOKEN__";
 let currentItemId = null;
+
+function escapeHtml(str) {
+  if (str === null || str === undefined) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function sanitizeUrl(url) {
+  if (!url) return '#';
+  const trimmed = String(url).trim();
+  if (/^https?:\/\//i.test(trimmed)) {
+    return escapeHtml(trimmed);
+  }
+  return '#';
+}
 
 async function loadItems() {
   const g = document.getElementById('groupFilter').value;
@@ -488,12 +632,12 @@ async function loadItems() {
     row.onclick = () => selectItem(item.item_id);
     row.innerHTML = `
       <div style="display:flex; justify-content:space-between; align-items:center;">
-        <span class="id-badge">${item.item_id}</span>
-        <span class="status-pill" style="background:#e2e8f0;">${item.review_status}</span>
+        <span class="id-badge">${escapeHtml(item.item_id)}</span>
+        <span class="status-pill" style="background:#e2e8f0;">${escapeHtml(item.review_status)}</span>
       </div>
-      <div class="q-snippet">${item.question}</div>
+      <div class="q-snippet">${escapeHtml(item.question)}</div>
       <div style="font-size:0.7rem; color:#94a3b8; margin-top:4px;">
-        ${item.group.includes('Group A') ? '🔴 우선심사' : '⚪ 표준대조'} | 이력 ${item.transition_count}건
+        ${item.group && item.group.includes('Group A') ? '🔴 우선심사' : '⚪ 표준대조'} | 이력 ${escapeHtml(item.transition_count)}건
       </div>
     `;
     listEl.appendChild(row);
@@ -507,27 +651,25 @@ async function selectItem(itemId) {
   const item = await res.json();
   const area = document.getElementById('detailArea');
 
-  const evHtml = item.evidence_references.map((ev, idx) => `
+  const evHtml = (item.evidence_references || []).map((ev, idx) => `
     <div class="evidence-block">
-      <div style="font-weight:600; font-size:0.85rem; color:#1e293b;">증거 #${idx+1}: ${ev.title || ev.evidence_id}</div>
+      <div style="font-weight:600; font-size:0.85rem; color:#1e293b;">증거 #${idx+1}: ${escapeHtml(ev.title || ev.evidence_id || '-')}</div>
       <div class="meta-grid">
-        <div class="meta-item"><strong>문서 식별자</strong>${ev.document_id || '-'}</div>
-        <div class="meta-item"><strong>조항/조문</strong>${ev.provision || '-'}</div>
-        <div class="meta-item"><strong>시행일자</strong>${ev.effective_date || '-'}</div>
-        <div class="meta-item"><strong>공식 출처</strong><a href="${ev.source_url}" target="_blank" rel="noopener">법령/지침 링크 ↗</a></div>
+        <div class="meta-item"><strong>문서 식별자</strong>${escapeHtml(ev.document_id || '-')}</div>
+        <div class="meta-item"><strong>조항/조문</strong>${escapeHtml(ev.provision || '-')}</div>
+        <div class="meta-item"><strong>시행일자</strong>${escapeHtml(ev.effective_date || '-')}</div>
+        <div class="meta-item"><strong>공식 출처</strong><a href="${sanitizeUrl(ev.source_url)}" target="_blank" rel="noopener noreferrer">법령/지침 링크 ↗</a></div>
       </div>
-      <div style="margin-top:8px; font-size:0.85rem; font-family:var(--font-mono); background:#fff; padding:8px; border:1px solid #e2e8f0; border-radius:4px;">
-        ${ev.text_excerpt || '(원문 발췌문 없음)'}
-      </div>
-      <div style="font-size:0.7rem; color:#94a3b8; margin-top:4px;">SHA-256: ${ev.content_sha256 || '-'}</div>
+      <div style="margin-top:8px; font-size:0.85rem; font-family:var(--font-mono); background:#fff; padding:8px; border:1px solid #e2e8f0; border-radius:4px; white-space:pre-wrap;">${escapeHtml(ev.text_excerpt || '(원문 발췌문 없음)')}</div>
+      <div style="font-size:0.7rem; color:#94a3b8; margin-top:4px;">SHA-256: ${escapeHtml(ev.content_sha256 || '-')}</div>
     </div>
   `).join('');
 
-  const auditHtml = item.transition_history.map(t => `
+  const auditHtml = (item.transition_history || []).map(t => `
     <div class="audit-item">
-      <div style="font-weight:600;">[${t.to_status}] ${t.actor_id} (${t.timestamp.slice(0,19)})</div>
-      <div style="color:#475569;">${t.reason || '-'}</div>
-      ${t.notes ? `<div style="color:#d97706; font-size:0.75rem;">충돌사항: ${t.notes}</div>` : ''}
+      <div style="font-weight:600;">[${escapeHtml(t.to_status)}] ${escapeHtml(t.actor_id)} (${escapeHtml(t.timestamp ? t.timestamp.slice(0,19) : '-')})</div>
+      <div style="color:#475569;">${escapeHtml(t.reason || '-')}</div>
+      ${t.notes ? `<div style="color:#d97706; font-size:0.75rem;">충돌사항: ${escapeHtml(t.notes)}</div>` : ''}
     </div>
   `).join('');
 
@@ -535,11 +677,11 @@ async function selectItem(itemId) {
     <div class="card">
       <div style="display:flex; justify-content:space-between; align-items:flex-start;">
         <div>
-          <span class="id-badge" style="font-size:0.9rem;">${item.item_id}</span>
-          <h2 style="border:none; margin-top:4px; font-size:1.1rem;">${item.packet ? item.packet.title : item.item_id}</h2>
+          <span class="id-badge" style="font-size:0.9rem;">${escapeHtml(item.item_id)}</span>
+          <h2 style="border:none; margin-top:4px; font-size:1.1rem;">${escapeHtml(item.packet ? item.packet.title : item.item_id)}</h2>
         </div>
         <span class="status-pill" style="background:#dbeafe; color:#1d4ed8; padding:4px 10px; font-size:0.8rem;">
-          ${item.review_status}
+          ${escapeHtml(item.review_status)}
         </span>
       </div>
     </div>
@@ -547,15 +689,11 @@ async function selectItem(itemId) {
     <div class="side-by-side">
       <div class="card" style="margin-bottom:0;">
         <h2>1. 질의 내용 (Question)</h2>
-        <div style="font-size:0.9rem; line-height:1.6; color:#1e293b; background:#f8fafc; padding:12px; border-radius:6px;">
-          ${item.question}
-        </div>
+        <div style="font-size:0.9rem; line-height:1.6; color:#1e293b; background:#f8fafc; padding:12px; border-radius:6px; white-space:pre-wrap;">${escapeHtml(item.question)}</div>
       </div>
       <div class="card" style="margin-bottom:0;">
         <h2>2. 제안 답변 및 예상 요건 (Proposed Answer)</h2>
-        <div style="font-size:0.9rem; line-height:1.6; color:#0f766e; background:#f0fdfa; padding:12px; border-radius:6px;">
-          ${item.proposed_answer}
-        </div>
+        <div style="font-size:0.9rem; line-height:1.6; color:#0f766e; background:#f0fdfa; padding:12px; border-radius:6px; white-space:pre-wrap;">${escapeHtml(item.proposed_answer)}</div>
       </div>
     </div>
 
@@ -568,7 +706,7 @@ async function selectItem(itemId) {
       <h2>4. 검토자 임시 검토 및 의견 기록 (Draft Workspace)</h2>
       <div class="form-group">
         <label>검토자 성명 또는 행정사 식별자</label>
-        <input type="text" id="draftAuthor" placeholder="예: attorney_hong, administrative_agent_kim" value="${item.reviewer_id || ''}">
+        <input type="text" id="draftAuthor" placeholder="예: attorney_hong, administrative_agent_kim" value="${escapeHtml(item.reviewer_id || '')}">
       </div>
       <div class="form-group">
         <label>법률 검토 실질 메모 및 해석 의견 (Review Notes)</label>
@@ -607,7 +745,10 @@ async function saveDraft(actionType) {
 
   const res = await fetch(`/api/item/${currentItemId}/draft`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Workbench-Token': WORKBENCH_TOKEN
+    },
     body: JSON.stringify({ author, notes, conflicts, action_type: actionType })
   });
 
@@ -621,7 +762,12 @@ async function saveDraft(actionType) {
 }
 
 async function exportPackage() {
-  const res = await fetch('/api/export', { method: 'POST' });
+  const res = await fetch('/api/export', {
+    method: 'POST',
+    headers: {
+      'X-Workbench-Token': WORKBENCH_TOKEN
+    }
+  });
   const data = await res.json();
   alert(`검토 패키지 내보내기 완료: 총 ${data.total_items}건이 저장되었습니다.`);
 }
@@ -634,20 +780,65 @@ window.onload = loadItems;
 
 
 class WorkbenchHTTPHandler(http.server.SimpleHTTPRequestHandler):
-    """Custom HTTP handler for Workbench API and GUI."""
+    """Custom HTTP handler for Workbench API and GUI with strict loopback and origin controls."""
 
     workbench: ReviewWorkbench
 
+    def _validate_host_and_origin(self) -> bool:
+        """Enforces that requests arrive strictly via loopback host and legitimate origins."""
+        host_header = self.headers.get("Host", "").split(":")[0].strip().lower()
+        if host_header not in ("127.0.0.1", "localhost"):
+            self._send_json(403, {"error": "Access forbidden: loopback host required"})
+            return False
+
+        origin = self.headers.get("Origin")
+        if origin:
+            try:
+                parsed = urllib.parse.urlparse(origin)
+                if parsed.hostname not in ("127.0.0.1", "localhost"):
+                    self._send_json(403, {"error": "Access forbidden: untrusted Origin header"})
+                    return False
+            except Exception:
+                self._send_json(403, {"error": "Access forbidden: malformed Origin header"})
+                return False
+
+        referer = self.headers.get("Referer")
+        if referer:
+            try:
+                parsed = urllib.parse.urlparse(referer)
+                if parsed.hostname not in ("127.0.0.1", "localhost"):
+                    self._send_json(403, {"error": "Access forbidden: untrusted Referer header"})
+                    return False
+            except Exception:
+                self._send_json(403, {"error": "Access forbidden: malformed Referer header"})
+                return False
+
+        return True
+
+    def _validate_write_token(self) -> bool:
+        """Validates write protection token to prevent CSRF from unauthorized origins."""
+        token = self.headers.get("X-Workbench-Token")
+        if not token or token != WORKBENCH_WRITE_TOKEN:
+            self._send_json(403, {"error": "Access forbidden: invalid or missing X-Workbench-Token"})
+            return False
+        return True
+
     def do_GET(self) -> None:
+        if not self._validate_host_and_origin():
+            return
+
         parsed = urllib.parse.urlparse(self.path)
         path = parsed.path
         params = urllib.parse.parse_qs(parsed.query)
 
         if path == "/" or path == "/index.html":
+            html_content = WORKBENCH_HTML.replace("__WORKBENCH_WRITE_TOKEN__", WORKBENCH_WRITE_TOKEN)
             self.send_response(200)
             self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.send_header("X-Content-Type-Options", "nosniff")
+            self.send_header("X-Frame-Options", "DENY")
             self.end_headers()
-            self.wfile.write(WORKBENCH_HTML.encode("utf-8"))
+            self.wfile.write(html_content.encode("utf-8"))
 
         elif path == "/api/items":
             g_filter = params.get("group", [None])[0]
@@ -675,16 +866,34 @@ class WorkbenchHTTPHandler(http.server.SimpleHTTPRequestHandler):
             self._send_json(404, {"error": f"Path not found: {path}"})
 
     def do_POST(self) -> None:
-        parsed = urllib.parse.urlparse(self.path)
-        path = parsed.path
-        content_len = int(self.headers.get("Content-Length", 0))
-        body = self.rfile.read(content_len).decode("utf-8") if content_len > 0 else "{}"
+        if not self._validate_host_and_origin():
+            return
 
+        # Enforce write token protection on state-changing POST requests
+        if not self._validate_write_token():
+            return
+
+        # Enforce bounded payload size
+        content_len_str = self.headers.get("Content-Length", "0")
+        try:
+            content_len = int(content_len_str)
+        except ValueError:
+            self._send_json(400, {"error": "Invalid Content-Length header"})
+            return
+
+        if content_len > MAX_PAYLOAD_SIZE:
+            self._send_json(413, {"error": f"Payload Too Large: maximum allowed size is {MAX_PAYLOAD_SIZE // 1024} KB"})
+            return
+
+        body = self.rfile.read(content_len).decode("utf-8") if content_len > 0 else "{}"
         try:
             payload = json.loads(body) if body else {}
         except json.JSONDecodeError:
             self._send_json(400, {"error": "Invalid JSON body"})
             return
+
+        parsed = urllib.parse.urlparse(self.path)
+        path = parsed.path
 
         if re.match(r"^/api/item/[A-Za-z0-9_-]+/draft$", path):
             item_id = path.split("/")[3]
@@ -706,12 +915,37 @@ class WorkbenchHTTPHandler(http.server.SimpleHTTPRequestHandler):
             self._send_json(200, res)
 
         elif path == "/api/import":
-            in_path = Path(payload.get("input_path", str(REVIEWS_DIR / "workbench_export_latest.json")))
-            try:
-                res = self.workbench.import_review_package(in_path)
-                self._send_json(200, res)
-            except Exception as e:
-                self._send_json(400, {"error": str(e)})
+            # Security: arbitrary input_path from client filesystem is completely removed!
+            # Mode A: Package JSON provided directly in request body
+            if "package" in payload and isinstance(payload["package"], dict):
+                try:
+                    res = self.workbench.import_review_package_data(payload["package"], source_label="http_json_payload")
+                    self._send_json(200, res)
+                except Exception as e:
+                    self._send_json(400, {"error": str(e)})
+                return
+
+            # Mode B: Allowlisted filename inside reviews/imports
+            filename = payload.get("filename")
+            if filename:
+                if not isinstance(filename, str) or "/" in filename or "\\" in filename or ".." in filename:
+                    self._send_json(400, {"error": "Path traversal prohibited: filename must be a simple file name"})
+                    return
+                import_file = (ALLOWED_IMPORT_DIR / filename).resolve()
+                if not str(import_file).startswith(str(ALLOWED_IMPORT_DIR.resolve())):
+                    self._send_json(400, {"error": "Access forbidden: file must be within reviews/imports"})
+                    return
+                if not import_file.exists():
+                    self._send_json(404, {"error": f"Import file '{filename}' not found in reviews/imports"})
+                    return
+                try:
+                    res = self.workbench.import_review_package(import_file)
+                    self._send_json(200, res)
+                except Exception as e:
+                    self._send_json(400, {"error": str(e)})
+                return
+
+            self._send_json(400, {"error": "Provide either 'package' object in request body or 'filename' in reviews/imports"})
 
         else:
             self._send_json(404, {"error": f"POST endpoint not found: {path}"})
@@ -719,7 +953,8 @@ class WorkbenchHTTPHandler(http.server.SimpleHTTPRequestHandler):
     def _send_json(self, status: int, data: Any) -> None:
         self.send_response(status)
         self.send_header("Content-Type", "application/json; charset=utf-8")
-        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("X-Content-Type-Options", "nosniff")
+        # NOTE: Do NOT set Access-Control-Allow-Origin: * here.
         self.end_headers()
         self.wfile.write(json.dumps(data, indent=2, ensure_ascii=False).encode("utf-8"))
 
@@ -736,6 +971,7 @@ def run_workbench_server(port: int = 8420) -> None:
         print(f"\n========================================================")
         print(f" Artemis Review Workbench is running at:")
         print(f" http://127.0.0.1:{port}")
+        print(f" Write token: {WORKBENCH_WRITE_TOKEN}")
         print(f" (Press Ctrl+C to terminate)")
         print(f"========================================================\n")
         try:

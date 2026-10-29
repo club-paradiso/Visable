@@ -421,6 +421,9 @@ def run_guardrail_shadow_calibration(
 
     report = {
         "timestamp": dt.datetime.now(dt.timezone.utc).isoformat(),
+        "evaluation_scope": "synthetic_fixture_calibration_only",
+        "calibration_nature": "Hand-authored synthetic unit fixtures (4 positive violations, 3 negative nuances)",
+        "production_readiness_evidence": False,
         "total_calibration_cases": len(CALIBRATION_CASES),
         "true_positives": tp_count,
         "false_positives": fp_count,
@@ -437,6 +440,10 @@ def run_guardrail_shadow_calibration(
             "Specialized Korean exception heuristics prevent '원칙적으로 제한되나 예외적으로 가능' "
             "clauses from being falsely flagged as polarity reversals."
         ),
+        "disclaimer": (
+            "These metrics reflect unit rule validation over 7 hand-authored synthetic fixtures and "
+            "must not be interpreted as real-world model accuracy or production readiness evidence."
+        ),
         "case_results": [r.to_dict() for r in results],
     }
 
@@ -448,11 +455,15 @@ def run_guardrail_shadow_calibration(
     md_report = [
         "# Artemis 가드레일 섀도 모드 검증 보고서 (Guardrail Shadow Report)",
         f"- **실행 일시**: {report['timestamp']}",
-        f"- **총 보정 케이스**: {len(CALIBRATION_CASES)}건 (TP: 4, TN: 3)",
+        "- **평가 성격**: 수작업 합성 캘리브레이션 픽스처 단위 검증 (Synthetic Unit Fixture Calibration)",
+        f"- **총 보정 케이스**: {len(CALIBRATION_CASES)}건 (TP: 4, TN: 3, 수작업 합성 픽스처)",
         f"- **정밀도 (Precision)**: {precision * 100:.1f}%",
         f"- **재현율 (Recall)**: {recall * 100:.1f}%",
         f"- **오탐 건수 (False Positives)**: {fp_count}건",
         f"- **평균 측정 지연 시간**: {avg_latency:.2f} ms (최대: {max_latency:.2f} ms)",
+        "",
+        "> [!IMPORTANT]",
+        "> **성격 규정 및 해석 유의사항**: 본 보고서의 정밀도 100% 및 지연시간 ~0.01ms 수치는 8개 가드레일 규칙의 정상 동작을 확인하기 위해 수작업으로 제작된 **7건의 합성 캘리브레이션 픽스처(TP 4건, TN 3건)**에 국한된 단위 검증 결과입니다. 이는 실제 운영 환경의 모델 서빙 텔레메트리나 프로덕션 상용 적합성 증거로 해석될 수 없습니다.",
         "",
         "## 1. 지연 시간 및 비차단 섀도 계층 성능 측정",
         "본 가드레일 계층은 실시간 서빙에 영향을 주지 않는 오프라인 섀도 모드로 설계되었으며,",
