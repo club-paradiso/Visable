@@ -1,11 +1,13 @@
 # Artemis 법률 검토 거버넌스 원장 보고서 (Legal Review Ledger Report)
-- **작성 일자**: 2026-10-29 06:36:38 UTC
+- **작성 일자**: 2026-10-29 07:17:18 UTC
 - **총 후보 문항**: 60건
+- **원장 성격**: 로컬 프로토타입 추적 원장 (비권위적, Non-Authoritative Prototype)
+- **거버넌스 제약**: 검토자 서명은 로컬 기록용이며, 외부 암호학적 서명(PKI) 부재 시 공식 골드 승격 비활성화 (Fail-Closed)
 
 ## 1. 검토 상태 집계
 - **검토 미진행 (`unreviewed`)**: 60건
 - **검토 진행 중 (`in_review`)**: 0건
-- **사람 전문가 승인 (`verified_by_human`)**: 0건 (공식 골드 승격 대상)
+- **사람 전문가 승인 (`verified_by_human`)**: 0건 (외부 암호학적 서명 대기)
 - **반려 (`rejected`)**: 0건
 - **수정 요청 (`needs_revision`)**: 0건
 - **개정 대체 (`superseded`)**: 0건

@@ -1,7 +1,7 @@
 # ARTEMIS MISSION 004-C 실행 보고서
 ## 모델 평가 런타임, 사람 법률 검토 거버넌스 및 재현 가능 벤치마킹 체계
 
-- **보고서 버전**: 1.0.0 (Mission 004-C 완료)
+- **보고서 버전**: 1.1.0 (Mission 004-C 독립 코드 리뷰 시정 반영)
 - **작성 일자**: 2026-10-29
 - **수행 환경**: `club-paradiso/Visable` (`feat/artemis-mission004-c`)
 - **기반 커밋**: `a37ebc1` (PR #723 `main` 병합 커밋)
@@ -11,7 +11,7 @@
 
 ## 1. 미션 개요 및 핵심 목표
 
-Mission 004-A(평가 인프라 기본 수립), Mission 004-B(60문항 후보군 구축) 및 Mission 004-B.1(독립 코드 리뷰 시정)을 통해 정립된 채점 및 검증 규칙을 바탕으로, Mission 004-C에서는 **실제 모델 평가를 수행하고 사람 법률 검토 절차를 체계적으로 통제하는 실행 및 거버넌스 계층**을 구축하였습니다.
+Mission 004-A(평가 인프라 기본 수립), Mission 004-B(60문항 후보군 구축) 및 Mission 004-B.1(독립 코드 리뷰 시정)을 통해 정립된 채점 및 검증 규칙을 바탕으로, Mission 004-C에서는 **실제 모델 평가를 수행하고 사람 법률 검토 절차를 체계적으로 추적하는 실행 및 거버넌스 계층**을 구축하였습니다.
 
 독립된 임시 프로토타입을 만들지 않고 기존 Artemis 및 Waymaker AI 계약을 확장하여 다음 핵심 기능을 완성하였습니다.
 
@@ -20,10 +20,12 @@ Mission 004-A(평가 인프라 기본 수립), Mission 004-B(60문항 후보군 
    - Mode A (인프라 검증): 가상 합성 픽스처(10문항) 기반 소프트웨어 기능 및 회귀 검증.
    - Mode B (후보군 평가): 개발(20문항) 및 홀드아웃(40문항) 후보군에 대한 탐색적 진단 평가. 미검증 법률 문항 격리.
    - Mode C (공식 골드 평가): 독립적인 사람 법률 전문가 서명이 완료된 문항에 대해서만 공식 지표 산출. 미검증 시 `N/A` 표기.
-3. **사람 법률 검토 거버넌스 및 감사 원장 (`legal_review_governance.py`)**:
+3. **사람 법률 검토 거버넌스 원장 프로토타입 (`legal_review_governance.py`)**:
    - `unreviewed` → `in_review` → `verified_by_human` / `rejected` / `needs_revision` / `superseded` 엄격 상태 전이 머신.
-   - AI 에이전트의 사람 검토자 사칭 및 자가 승인 원천 차단 (`AIApprovalForbiddenError`).
-   - 법률 검토 원장(`reviews/legal_review_ledger.json`) 구축 및 골드 승격 게이트웨이 연동.
+   - 로컬 비권위적(non-authoritative) 추적 원장으로서의 성격 명시.
+   - 호출자 전달 불리언 플래그(`is_human=True`)나 임의 이름 문자열을 인증된 사람 승인으로 신뢰하지 않음.
+   - 외부 공인 전자서명(PKI/OAuth) 연동 전까지 공식 골드 승격 차단 (`AuthoritativeGoldPromotionDisabledError`, Fail-Closed).
+   - 공식 증거 스냅샷 의무화 (질의응답 대체 금지) 및 사후 증거 변조 감지 (`ReviewIntegrityError`).
 4. **정밀 오류 진단 분류 체계 (Diagnostic Taxonomy)**: 14개 범주의 오류 분류 및 불일치 진단 집계.
 5. **재현 가능 실행 아티팩트 자동 생성**: `run_summary.json`, `report.md`, `error_summary.csv`, `run_manifest.json`.
 
@@ -65,30 +67,39 @@ Mission 004-A(평가 인프라 기본 수립), Mission 004-B(60문항 후보군 
 
 ---
 
-## 3. 사람 법률 검토 거버넌스 원장 체계
+## 3. 사람 법률 검토 거버넌스 및 무결성 보안 체계
 
 ### 3.1 상태 전이 머신 (Review State Machine)
 
 ```
  [ unreviewed ] (초기 상태: 60문항 전수)
        |
-       v (claim_for_review: 사람 검토자만 배정 가능, AI 사칭 차단)
+       v (claim_for_review: 검토자 배정, 로컬 기록)
   [ in_review ]
-       |---> [ verified_by_human ] (approve: 서명, 사유, 법령 조문, 해시 스냅샷 필수)
+       |---> [ verified_by_human ] (approve: 실질 사유 및 공식 증거 원문 스냅샷 필수)
        |            |
        |            +---> [ superseded ] (지침 개정 등으로 대체 시)
        |---> [ rejected ] (reject: 사유 필수)
        +---> [ needs_revision ] (request_revision: 수정 요청 사유 필수)
 ```
 
-### 3.2 핵심 거버넌스 원칙 및 보안 가드
+### 3.2 핵심 거버넌스 원칙 및 독립 리뷰 시정 조치
 
-1. **AI 자가 승인 금지**:
-   - `reviewer_id`에 "ai", "bot", "gemini", "claude", "gpt", "agent" 등 자동화 식별자가 포함되거나 `is_human=False`인 경우 `AIApprovalForbiddenError`를 즉시 발생시킵니다.
-2. **단순 URL 검증 불인정**:
-   - 공공기관 홈페이지 URL만으로는 검증 증거가 될 수 없습니다. 법령 조항 번호, 시행일자, 발췌 텍스트의 정규화 SHA-256 스냅샷(`evidence_snapshot_sha256`)이 일치해야 합니다.
-3. **골드 승격 게이트 (`promote_to_gold`)**:
-   - 원장에서 `verified_by_human` 상태를 획득한 문항만 `official_gold`로 승격될 수 있습니다. 미승인 상태에서 승격을 시도하면 `ReviewIntegrityError`로 차단됩니다.
+1. **로컬 비권위적 프로토타입 성격 명시**:
+   - `legal_review_governance.py`는 로컬 리뷰 진행 상황을 기록하는 감사 원장 프로토타입입니다.
+   - 호출자가 전달하는 `is_human=True` 불리언 값과 `reviewer_id` 문자열은 자체 주장(self-asserted)에 불과하며, 암호학적 신원 인증이나 법률 전문가 인가 서명으로 취급하지 않습니다.
+   - 단순 문자열 부분 매칭(`is_ai_identifier`)은 기본적인 봇 명칭 필터일 뿐, 자동화 에이전트의 사람 사칭을 원천 차단하는 절대적 방어책이 아님을 문서와 예외 처리에 명시하였습니다.
+2. **공식 증거 스냅샷 의무화 및 대체 금지**:
+   - 승인 판정(`record_decision(APPROVE)`) 시 반드시 공식 출처 원문 텍스트(`evidence_snapshot_text`)를 제공해야 합니다.
+   - 질문이나 답변 텍스트로 증거 스냅샷을 유추하거나 대체하는 기존 취약 로직을 전면 제거하였습니다.
+   - 제공된 스냅샷 텍스트는 원장에 등록된 공공기관 지침/법령 발췌문과 일치해야 하며, 불일치 시 `ReviewIntegrityError`로 즉시 거부됩니다.
+3. **증거 위변조 감지 및 출처 해시 검증 (`validate_item_evidence_integrity`)**:
+   - 검토 완료 후 문항의 증거 텍스트가 사후 수정되거나 변조된 경우, 스냅샷 해시와 현재 문항 증거 해시의 불일치를 감지하여 즉시 차단합니다.
+   - 출처 메타데이터의 `content_sha256`이 증거 본문 해시와 상충하는 경우에도 검증을 실패시킵니다.
+4. **공식 골드 승격의 Fail-Closed 원천 비활성화 (`AuthoritativeGoldPromotionDisabledError`)**:
+   - 본 로컬 프로토타입 환경에는 독립된 공인인증(PKI) 또는 외부 IAM/OAuth 기반 법률 대리인 전자서명 검증 서비스가 연결되어 있지 않습니다.
+   - 따라서 로컬 원장의 승인 기록만으로는 공식 골드(`official_gold`)로 승격될 수 없으며, `promote_to_gold` 호출 시 `AuthoritativeGoldPromotionDisabledError`를 발생시켜 안전하게 차단(Fail-Closed)합니다.
+   - 소프트웨어 테스트만으로 60개 후보 문항 중 어느 것도 공식 검증 골드로 임의 승격할 수 없습니다.
 
 ---
 
@@ -117,7 +128,7 @@ Mission 004-A(평가 인프라 기본 수립), Mission 004-B(60문항 후보군 
 
 ## 5. 자동 검증 및 테스트 결과
 
-### 5.1 Artemis 전용 테스트 실행 결과 (90/90 Passed)
+### 5.1 Artemis 전용 테스트 실행 결과 (98/98 Passed)
 
 ```bash
 pytest experiments/waymaker-ai/tests/test_artemis_eval_infrastructure.py \
@@ -133,55 +144,41 @@ pytest experiments/waymaker-ai/tests/test_artemis_eval_infrastructure.py \
 platform darwin -- Python 3.13.5, pytest-9.1.1, pluggy-1.6.0
 rootdir: /Users/seonjaekim/dev/Visable-artemis-gemini
 plugins: anyio-4.12.1
-collected 90 items
+collected 98 items
 
 experiments/waymaker-ai/tests/test_artemis_eval_infrastructure.py ...... [  6%]
-............................                                             [ 37%]
-experiments/waymaker-ai/tests/test_artemis_eval_reliability.py ......... [ 47%]
-...........                                                              [ 60%]
-experiments/waymaker-ai/tests/test_artemis_eval_benchmark_60.py ......   [ 66%]
-experiments/waymaker-ai/tests/test_artemis_runner.py .............       [ 81%]
-experiments/waymaker-ai/tests/test_artemis_legal_governance.py ......... [ 91%]
-.                                                                        [ 92%]
+............................                                             [ 34%]
+experiments/waymaker-ai/tests/test_artemis_eval_reliability.py ......... [ 43%]
+...........                                                              [ 55%]
+experiments/waymaker-ai/tests/test_artemis_eval_benchmark_60.py ......   [ 61%]
+experiments/waymaker-ai/tests/test_artemis_runner.py .............       [ 74%]
+experiments/waymaker-ai/tests/test_artemis_legal_governance.py ......... [ 83%]
+.........                                                                [ 92%]
 experiments/waymaker-ai/tests/test_artemis_error_analysis.py .......     [100%]
 
-============================== 90 passed in 0.62s ==============================
+============================== 98 passed in 0.41s ==============================
 ```
 
-### 5.2 Waymaker AI 전체 회귀 테스트 결과 (1,452/1,452 Passed)
-
-```bash
-pytest experiments/waymaker-ai/tests/
-```
-
-```text
-============================= test session starts ==============================
-platform darwin -- Python 3.13.5, pytest-9.1.1, pluggy-1.6.0
-collected 1452 items
-
-experiments/waymaker-ai/tests/test_artemis_approved_facts.py ........... [  0%]
-...
-============================ 1452 passed in 21.81s =============================
-```
-
-### 5.3 한국어 품질 검사 (`kolint`)
+### 5.2 한국어 품질 검사 (`kolint`)
 
 ```bash
 node ~/dev/korean-language-quality/bin/kolint.mjs --genre documentation \
+     experiments/waymaker-ai/artemis_bootstrap/MISSION-004-C-REPORT.ko.md \
      experiments/waymaker-ai/artemis_bootstrap/reviews/legal_review_ledger_report.md
 ```
 
 ```text
 kolint: 0 unit(s) with findings, 0 blocking (S1, non-advisory).
+kolint: 0 unit(s) with findings, 0 blocking (S1, non-advisory).
 ```
 
 ---
 
-## 6. 실제 모델 추론 실행 여부 및 제약 사항
+## 6. 결론 및 제약 사항
 
 1. **실제 가중치 추론 미실행 (`not_executed`) 명시**:
    - Gemma 4 MLX 가중치는 4GB 이상의 저장 공간과 수 분의 로딩 시간이 소요됩니다. MacBook Air M1 (8GB RAM) 환경 제약 및 엄격 지침(대규모 모델 다운로드 및 유료 API 사용 금지)에 따라 로컬 가중치 추론은 실행하지 않았습니다.
    - `LocalModelAdapter`는 가중치 부재 시 상태를 `not_executed`로 정상 기록하며 허위 점수를 일절 생성하지 않았습니다.
-2. **독립 법률 검토 대기 유지**:
+2. **독립 법률 검토 대기 유지 및 0건 골드 보증**:
    - 60개 벤치마크 후보 문항은 현재 전수 `unreviewed` 상태로 원장에 등재되어 있습니다.
-   - 사람 법률 전문가(출입국 전문 행정사 및 변호사)의 실제 서명이 완료될 때까지 공식 골드 정확도는 `N/A`로 유지됩니다.
+   - 외부 공인 법률 전문가(출입국 전문 행정사 및 변호사)의 실제 독립 전자서명이 완료될 때까지 공식 골드 정확도는 `N/A`로 유지되며, 소프트웨어 테스트나 로컬 프로토타입 플래그를 통한 자동 승격은 전면 차단되었습니다.

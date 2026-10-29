@@ -1,14 +1,27 @@
-"""Artemis Legal Review Governance & Workflow Subsystem (Mission 004-C).
+"""Artemis Legal Review Governance & Workflow Subsystem (Mission 004-C Prototype).
 
-Manages independent legal expert review workflows, controlled state transitions,
-evidence provenance verification, and audit trail ledgers for Artemis benchmark candidates.
+Provides a local, non-authoritative prototype for tracking human legal expert
+review workflows, controlled state transitions, evidence provenance checks,
+and audit trail ledgers for Artemis benchmark candidates.
 
-CRITICAL GOVERNANCE RULES:
-1. No AI agent may approve an item on behalf of a human reviewer (AIApprovalForbiddenError).
-2. A source URL pointing to a government site is not by itself sufficient for verification.
-3. Every human approval requires non-empty reviewer identity, review date, decision reason,
-   and cryptographic snapshot of the exact evidence text.
-4. Promotional gating: an item only transitions to 'official_gold' when verified by human.
+CRITICAL GOVERNANCE RULES & ARCHITECTURAL LIMITATIONS:
+1. Local Prototype / Non-Authoritative: Caller-supplied reviewer identifiers and
+   is_human flags are self-asserted and unauthenticated in this local prototype.
+   They DO NOT constitute cryptographic identity verification or authenticated human
+   legal sign-off.
+2. AI Identifier Filtering: Heuristic name matching (is_ai_identifier) rejects obvious
+   automated bot identifiers, but cannot prevent an automated caller from supplying an
+   ordinary human name. Therefore, name checks must never be claimed as absolute
+   impersonation prevention.
+3. Authoritative Gold Promotion Disabled: Authoritative promotion to 'official_gold'
+   is strictly disabled fail-closed in this local prototype. Promotion requires an
+   external signed attestation ceremony with cryptographic verification (e.g., PKI digital
+   signature or verified OAuth legal counsel token).
+4. Mandatory Official Evidence Snapshot: Recording an approval strictly requires an
+   explicit, non-empty evidence snapshot text matching the item's official source references.
+   Falling back to question/answer text or inferred excerpts is strictly prohibited.
+5. Snapshot & Evidence Integrity: If the candidate item's evidence excerpt was modified
+   after review, or if the source content hash mismatches the snapshot, validation fails.
 """
 from __future__ import annotations
 
@@ -60,12 +73,24 @@ class InvalidTransitionError(ValueError):
 
 
 class AIApprovalForbiddenError(PermissionError):
-    """Raised when an AI agent attempts to approve an item on behalf of a human reviewer."""
+    """Raised when an AI or automated agent attempts to approve an item."""
     pass
 
 
 class ReviewIntegrityError(ValueError):
     """Raised when review metadata or evidence cryptographic snapshot fails verification."""
+    pass
+
+
+class AuthoritativeGoldPromotionDisabledError(ReviewIntegrityError):
+    """Raised when an attempt is made to promote an item to official_gold in this local prototype.
+
+    Authoritative promotion to official_gold is strictly disabled in local prototypes:
+    caller-asserted reviewer identities, local boolean flags (is_human=True), and local
+    ledger records lack independent cryptographic authentication (e.g., PKI digital signatures,
+    OAuth-verified legal counsel tokens, or certified administrative agent attestation tokens).
+    All candidate items must remain unverified candidates until external attestation is supplied.
+    """
     pass
 
 
@@ -86,7 +111,11 @@ GROUP_A_PRIORITY_IDS = frozenset({
 
 
 def is_ai_identifier(name: Optional[str]) -> bool:
-    """Checks whether an actor identifier indicates an automated or AI entity."""
+    """Checks whether an actor identifier contains common automated/AI substrings.
+
+    NOTE: This is a basic sanitization heuristic, not an authenticated identity check.
+    An automated caller can easily pass an ordinary human name.
+    """
     if not name:
         return False
     folded = re.sub(r'[^a-zA-Z0-9가-힣]', '', name.lower())
@@ -366,13 +395,43 @@ class LegalReviewLedger:
         prev_status = rec.review_status.value
 
         if decision == ReviewDecision.APPROVE:
-            # Verification requires cryptographic snapshot of evidence
-            if evidence_snapshot_text:
-                snap_hash = compute_evidence_snapshot_hash(evidence_snapshot_text)
-            elif rec.evidence_references and rec.evidence_references[0].get("text_excerpt"):
-                snap_hash = compute_evidence_snapshot_hash(rec.evidence_references[0]["text_excerpt"])
-            else:
-                snap_hash = compute_evidence_snapshot_hash(rec.question + rec.proposed_answer)
+            # Verification strictly requires an explicit, non-empty evidence snapshot from official source
+            if not evidence_snapshot_text or not evidence_snapshot_text.strip():
+                raise ReviewIntegrityError(
+                    "Official evidence snapshot text is strictly required for approval. "
+                    "Approvals cannot be recorded without an explicit, non-empty official evidence snapshot "
+                    "(falling back to question/answer or cached text is prohibited)."
+                )
+
+            if not rec.evidence_references:
+                raise ReviewIntegrityError(
+                    f"Item '{item_id}' has no official evidence references in ledger; cannot approve without official source reference."
+                )
+
+            snap_hash = compute_evidence_snapshot_hash(evidence_snapshot_text)
+            snap_norm = unicodedata.normalize("NFC", evidence_snapshot_text).strip()
+
+            # Cross-check snapshot against record's official evidence references
+            matched = False
+            for ref in rec.evidence_references:
+                ref_hash = ref.get("content_sha256")
+                excerpt = ref.get("text_excerpt", "")
+                excerpt_norm = unicodedata.normalize("NFC", excerpt).strip()
+                if ref_hash and snap_hash == ref_hash:
+                    matched = True
+                    break
+                if excerpt and snap_hash == compute_evidence_snapshot_hash(excerpt):
+                    matched = True
+                    break
+                if excerpt_norm and (snap_norm in excerpt_norm or excerpt_norm in snap_norm):
+                    matched = True
+                    break
+
+            if not matched:
+                raise ReviewIntegrityError(
+                    f"Provided evidence snapshot text does not match any official evidence references for item '{item_id}'. "
+                    f"Snapshot hash: {snap_hash}"
+                )
 
             target_status = ReviewStatus.VERIFIED_BY_HUMAN
             rec.review_status = target_status
@@ -426,10 +485,15 @@ class LegalReviewLedger:
         ))
         return rec
 
-    def promote_to_gold(self, item: Dict[str, Any]) -> Dict[str, Any]:
-        """Promotes an item to official_gold IF and ONLY IF verified_by_human in ledger.
-        
-        Raises ReviewIntegrityError if item is not verified_by_human.
+    def validate_item_evidence_integrity(self, item: Dict[str, Any]) -> None:
+        """Validates that a candidate item matches its ledger review record and evidence snapshot.
+
+        Raises ReviewIntegrityError if:
+        - The item is not recorded in the ledger or not verified_by_human.
+        - The official evidence list is missing or empty.
+        - Evidence source provenance or required legal metadata is missing.
+        - The item's evidence excerpt has been modified after review (hash mismatch).
+        - The source content_sha256 contradicts the snapshot hash.
         """
         cid = item.get("id")
         if cid not in self.records:
@@ -438,15 +502,110 @@ class LegalReviewLedger:
 
         if rec.review_status != ReviewStatus.VERIFIED_BY_HUMAN:
             raise ReviewIntegrityError(
-                f"Cannot promote item '{cid}' to official_gold: review_status is '{rec.review_status.value}'"
-                " (must be 'verified_by_human')"
+                f"Item '{cid}' review_status is '{rec.review_status.value}' (must be 'verified_by_human')"
+            )
+
+        ev_list = item.get("evidence", [])
+        if not ev_list:
+            raise ReviewIntegrityError(f"Cannot promote item '{cid}': official evidence list is missing or empty")
+
+        if not rec.evidence_snapshot_sha256:
+            raise ReviewIntegrityError(f"Item '{cid}' in ledger is missing evidence_snapshot_sha256")
+
+        # Check evidence sources and cryptographic snapshot match
+        item_ev_hashes = []
+        for ev in ev_list:
+            src = ev.get("source", {})
+            if src.get("provenance") not in ("official_manual", "official_notice"):
+                raise ReviewIntegrityError(
+                    f"Evidence '{ev.get('id')}' provenance '{src.get('provenance')}' is not official"
+                )
+            for req_field in ("document_id", "provision", "effective_date", "source_url"):
+                if not src.get(req_field):
+                    raise ReviewIntegrityError(
+                        f"Evidence '{ev.get('id')}' source is missing required legal metadata '{req_field}'"
+                    )
+
+            ev_text = ev.get("text", "")
+            if not ev_text.strip():
+                raise ReviewIntegrityError(f"Evidence '{ev.get('id')}' text excerpt is empty")
+
+            ev_hash = compute_evidence_snapshot_hash(ev_text)
+            item_ev_hashes.append(ev_hash)
+
+            src_hash = src.get("content_sha256")
+            if src_hash and src_hash != ev_hash:
+                raise ReviewIntegrityError(
+                    f"Source content_sha256 '{src_hash}' does not match evidence text hash '{ev_hash}'"
+                )
+
+        if rec.evidence_snapshot_sha256 not in item_ev_hashes:
+            raise ReviewIntegrityError(
+                f"Evidence integrity mismatch for item '{cid}': ledger snapshot hash '{rec.evidence_snapshot_sha256}' "
+                f"does not match item evidence hashes {item_ev_hashes}. Evidence was modified after review."
+            )
+
+    def promote_to_gold(
+        self,
+        item: Dict[str, Any],
+        external_attestation: Optional[Dict[str, Any]] = None,
+        _allow_test_promotion: bool = False,
+    ) -> Dict[str, Any]:
+        """Promotes an item to official_gold IF AND ONLY IF independently authenticated.
+
+        FAIL-CLOSED GOVERNANCE:
+        - In this local prototype, authoritative promotion to 'official_gold' is disabled
+          by default because caller-supplied reviewer identities and local ledger flags
+          lack cryptographic authentication.
+        - An external cryptographic attestation bundle is required.
+        - If external_attestation is None or unverified, raises AuthoritativeGoldPromotionDisabledError.
+        - If evidence text was modified or snapshot hash mismatches, raises ReviewIntegrityError.
+        """
+        cid = item.get("id")
+        self.validate_item_evidence_integrity(item)
+        rec = self.records[cid]
+
+        if external_attestation is None:
+            raise AuthoritativeGoldPromotionDisabledError(
+                f"Authoritative promotion to official_gold is strictly disabled for item '{cid}' in this local prototype. "
+                "Caller-supplied reviewer identifiers and local ledger state lack independent cryptographic authentication. "
+                "Promotion to official_gold requires external authenticated human attestation (e.g. PKI / OAuth legal token)."
+            )
+
+        # Validate external attestation structure
+        for req_field in ("signer_identity", "attestation_token", "signature_sha256", "signed_at", "evidence_snapshot_sha256"):
+            if not external_attestation.get(req_field):
+                raise ReviewIntegrityError(f"External attestation missing required field '{req_field}'")
+
+        signer = external_attestation["signer_identity"]
+        if is_ai_identifier(signer):
+            raise AIApprovalForbiddenError(f"External attestation signer '{signer}' is an AI identifier")
+
+        if signer != rec.reviewer_id:
+            raise ReviewIntegrityError(
+                f"External attestation signer '{signer}' does not match ledger reviewer '{rec.reviewer_id}'"
+            )
+
+        if external_attestation["evidence_snapshot_sha256"] != rec.evidence_snapshot_sha256:
+            raise ReviewIntegrityError(
+                f"External attestation evidence hash '{external_attestation['evidence_snapshot_sha256']}' "
+                f"does not match ledger snapshot '{rec.evidence_snapshot_sha256}'"
+            )
+
+        if not _allow_test_promotion:
+            raise AuthoritativeGoldPromotionDisabledError(
+                "External cryptographic PKI authority verification service is not connected in this local environment; "
+                "authoritative official_gold certification is disabled fail-closed."
             )
 
         promoted = copy.deepcopy(item)
         promoted["metadata"]["candidate_status"] = "official_gold"
         promoted["metadata"]["needs_human_review"] = False
         promoted["metadata"]["is_synthetic"] = False
-        promoted["metadata"]["legal_review_notes"] = f"Verified by {rec.reviewer_id} on {rec.reviewed_at}"
+        promoted["metadata"]["legal_review_notes"] = (
+            f"Verified by {rec.reviewer_id} on {rec.reviewed_at} "
+            f"(Attestation: {external_attestation['attestation_token'][:16]}...)"
+        )
 
         for ev in promoted.get("evidence", []):
             src = ev.get("source", {})
@@ -466,11 +625,13 @@ class LegalReviewLedger:
             "# Artemis 법률 검토 거버넌스 원장 보고서 (Legal Review Ledger Report)",
             f"- **작성 일자**: {dt.datetime.now(dt.timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')}",
             f"- **총 후보 문항**: {len(self.records)}건",
+            "- **원장 성격**: 로컬 프로토타입 추적 원장 (비권위적, Non-Authoritative Prototype)",
+            "- **거버넌스 제약**: 검토자 서명은 로컬 기록용이며, 외부 암호학적 서명(PKI) 부재 시 공식 골드 승격 비활성화 (Fail-Closed)",
             "",
             "## 1. 검토 상태 집계",
             f"- **검토 미진행 (`unreviewed`)**: {counts[ReviewStatus.UNREVIEWED.value]}건",
             f"- **검토 진행 중 (`in_review`)**: {counts[ReviewStatus.IN_REVIEW.value]}건",
-            f"- **사람 전문가 승인 (`verified_by_human`)**: {counts[ReviewStatus.VERIFIED_BY_HUMAN.value]}건 (공식 골드 승격 대상)",
+            f"- **사람 전문가 승인 (`verified_by_human`)**: {counts[ReviewStatus.VERIFIED_BY_HUMAN.value]}건 (외부 암호학적 서명 대기)",
             f"- **반려 (`rejected`)**: {counts[ReviewStatus.REJECTED.value]}건",
             f"- **수정 요청 (`needs_revision`)**: {counts[ReviewStatus.NEEDS_REVISION.value]}건",
             f"- **개정 대체 (`superseded`)**: {counts[ReviewStatus.SUPERSEDED.value]}건",
@@ -509,6 +670,7 @@ def main() -> None:
     decide_p.add_argument("--decision", required=True, choices=[d.value for d in ReviewDecision], help="Review decision")
     decide_p.add_argument("--reviewer", required=True, help="Human reviewer identifier")
     decide_p.add_argument("--reason", required=True, help="Substantive reason for decision")
+    decide_p.add_argument("--evidence-snapshot", dest="evidence_snapshot_text", help="Explicit text excerpt from official gazette or manual for approval snapshot")
     decide_p.add_argument("--notes", help="Optional notes")
 
     # report
@@ -537,6 +699,7 @@ def main() -> None:
             reviewer_id=args.reviewer,
             reason=args.reason,
             is_human=True,
+            evidence_snapshot_text=args.evidence_snapshot_text,
             notes=args.notes
         )
         ledger.save()
