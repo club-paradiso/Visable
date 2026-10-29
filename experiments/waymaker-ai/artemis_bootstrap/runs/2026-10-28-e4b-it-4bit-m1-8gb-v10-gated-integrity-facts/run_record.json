@@ -1,0 +1,1882 @@
+{
+  "kind": "artemis_bootstrap_smoke",
+  "started_utc": "2026-10-28T02:12:55+00:00",
+  "machine": {
+    "model": "MacBookAir10,1",
+    "chip": "Apple M1",
+    "memory_bytes": 8589934592,
+    "macos": "15.6.1",
+    "python": "3.11.15"
+  },
+  "versions": {
+    "mlx": "0.32.4",
+    "mlx-metal": "0.32.4",
+    "mlx-lm": "0.32.2",
+    "transformers": "5.20.2",
+    "huggingface-hub": "2.3.0",
+    "tokenizers": "0.23.3"
+  },
+  "device": {
+    "device_name": "Apple M1",
+    "max_recommended_working_set_size": 5726633984,
+    "memory_size": 8589934592,
+    "architecture": "applegpu_g13g",
+    "max_buffer_length": 4294967296,
+    "resource_limit": 499000
+  },
+  "swap_before": "total = 3072.00M  used = 2060.00M  free = 1012.00M  (encrypted)",
+  "free_disk_gb_before": 7.35,
+  "cases_file": "heldout_v10_cases.json",
+  "cases_sha256": "7bdd9f2970625d71cd9a97be3792100a7b86843a7d327212d1582f9ae7a7bfcb",
+  "detector_on_labelled_evidence": null,
+  "decoding": {
+    "temperature": 0.0,
+    "max_tokens": 400,
+    "enable_thinking": false
+  },
+  "evidence_guard": "off",
+  "source_gate": true,
+  "integrity": true,
+  "route": false,
+  "clarify": false,
+  "always_ask": false,
+  "cross_check": false,
+  "label_switch": false,
+  "facts": "ledgers/manual_2026_10_19_facts.jsonl",
+  "post_check": "applied offline to every output when the cases carry source labels",
+  "prompts_persisted": false,
+  "status": "completed",
+  "stage": "done",
+  "model": {
+    "repo": "mlx-community/gemma-4-e4b-it-4bit",
+    "revision": "475b9088d29754a3379866cf5aeb6b41acd313c2",
+    "size_class_from_weights": "E4B",
+    "quantization": {
+      "group_size": 64,
+      "bits": 4,
+      "mode": "affine"
+    },
+    "loader": "mlx_lm.load (text tower only; vision/audio weights dropped by mlx_lm sanitize)",
+    "base_model": "google/gemma-4-E4B-it",
+    "source_revision": "fee6332c1abaafb77f6f9624236c63aa2f1d0187",
+    "license_in_card": "gemma"
+  },
+  "load_seconds": 21.96,
+  "memory_after_load_gb": 4.201,
+  "results": [
+    {
+      "case": "W-01-reentry-multiple",
+      "prompt_sha256": "e7175fde9e90bff73bcf9c2a551c96769dbeaeb4a3f119267094de670d42e254",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "출국 후 체류기간 범위 내에서 1년을 초과하여 2년 내에 재입국을 시도할 경우 복수재입국허가 신청이 가능합니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p137"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1111,
+      "prompt_tps": 122.89,
+      "generation_tokens": 97,
+      "generation_tps": 14.93,
+      "finish_reason": "stop",
+      "wall_seconds": 54.09,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"출국 후 체류기간 범위 내에서 1년을 초과하여 2년 내에 재입국을 시도할 경우 복수재입국허가 신청이 가능합니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p137\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "출국 후 체류기간 범위 내에서 1년을 초과하여 2년 내에 재입국을 시도할 경우 복수재입국허가 신청이 가능합니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p137"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "1년"
+          },
+          {
+            "kind": "period",
+            "text": "2년"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "출국 후 체류기간 범위 내에서 1년을 초과하여 2년 내에 재입국을 시도할 경우 복수재입국허가 신청이 가능합니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p137"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "W-02-e2-reentry-exempt",
+      "prompt_sha256": "c00e60d07de44e6fdaa60b8539333117db2b5e4fac267c0e02519e7a395bfb8b",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "partial",
+        "answer": "등록을 필한 외국인이 출국한 날로부터 1년 이내에 재입국하려는 경우 재입국허가 면제가 가능합니다. 또한, 체류기간이 1년보다 적게 남아있는 경우 체류기간 범위 내에서 재입국허가 면제가 가능합니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p175"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 918,
+      "prompt_tps": 21.02,
+      "generation_tokens": 121,
+      "generation_tps": 15.71,
+      "finish_reason": "stop",
+      "wall_seconds": 86.04,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"등록을 필한 외국인이 출국한 날로부터 1년 이내에 재입국하려는 경우 재입국허가 면제가 가능합니다. 또한, 체류기간이 1년보다 적게 남아있는 경우 체류기간 범위 내에서 재입국허가 면제가 가능합니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p175\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "partial",
+        "answer": "등록을 필한 외국인이 출국한 날로부터 1년 이내에 재입국하려는 경우 재입국허가 면제가 가능합니다. 또한, 체류기간이 1년보다 적게 남아있는 경우 체류기간 범위 내에서 재입국허가 면제가 가능합니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p175"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "1년"
+          },
+          {
+            "kind": "period",
+            "text": "1년"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "partial",
+          "answer": "등록을 필한 외국인이 출국한 날로부터 1년 이내에 재입국하려는 경우 재입국허가 면제가 가능합니다. 또한, 체류기간이 1년보다 적게 남아있는 경우 체류기간 범위 내에서 재입국허가 면제가 가능합니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p175"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "W-03-e9-rehire-cap",
+      "prompt_sha256": "6134dda98d57cba1175aa7f89eae49c8da15bc713dc039d6af75fe623da6c848",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "체류기간 연장 허가 상한은 최초 입국일로부터 3년이며, 재고용에 의한 취업기간 연장 허가 기간 중에는 최초 입국일로부터 4년 10개월을 초과할 수 없습니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p330"
+        ],
+        "review_flags": [
+          "subject_mismatch: 체류기간 연장 허가 상한은 최초 입국일로부터 3년이며 — 같은 대상·역할의 사실 값은 58, 답의 값은 다른 대상·행의 사실(f-b3801606fb865eee)"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 989,
+      "prompt_tps": 209.31,
+      "generation_tokens": 111,
+      "generation_tps": 16.47,
+      "finish_reason": "stop",
+      "wall_seconds": 41.72,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"체류기간 연장 허가 상한은 최초 입국일로부터 3년이며, 재고용에 의한 취업기간 연장 허가 기간 중에는 최초 입국일로부터 4년 10개월을 초과할 수 없습니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p330\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "체류기간 연장 허가 상한은 최초 입국일로부터 3년이며, 재고용에 의한 취업기간 연장 허가 기간 중에는 최초 입국일로부터 4년 10개월을 초과할 수 없습니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p330"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "4년 10개월"
+          },
+          {
+            "kind": "period",
+            "text": "3년"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": [
+          "체류기간 연장 허가 상한은 최초 입국일로부터 3년이며 — 같은 대상·역할의 사실 값은 58, 답의 값은 다른 대상·행의 사실(f-b3801606fb865eee)"
+        ]
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "체류기간 연장 허가 상한은 최초 입국일로부터 3년이며, 재고용에 의한 취업기간 연장 허가 기간 중에는 최초 입국일로부터 4년 10개월을 초과할 수 없습니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p330"
+          ],
+          "review_flags": [
+            "subject_mismatch: 체류기간 연장 허가 상한은 최초 입국일로부터 3년이며 — 같은 대상·역할의 사실 값은 58, 답의 값은 다른 대상·행의 사실(f-b3801606fb865eee)"
+          ]
+        },
+        "failures": [],
+        "flags": [
+          "post_check:subject_mismatch: 체류기간 연장 허가 상한은 최초 입국일로부터 3년이며 — 같은 대상·역할의 사실 값은 58, 답의 값은 다른 대상·행의 사실(f-b3801606fb865eee)"
+        ],
+        "needs_review": true
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "needs_review"
+    },
+    {
+      "case": "W-04-e9-rehire-extra",
+      "prompt_sha256": "9ae06bf3746e62b9b31a39d51fce511acd74fc19bb225b2114a3219f002dda85",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "3년 만기 체류자 중 고용주가 재고용한 경우 1년 10개월 이내 체류기간 연장이 가능합니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p331"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1049,
+      "prompt_tps": 220.23,
+      "generation_tokens": 90,
+      "generation_tps": 16.95,
+      "finish_reason": "stop",
+      "wall_seconds": 10.24,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"3년 만기 체류자 중 고용주가 재고용한 경우 1년 10개월 이내 체류기간 연장이 가능합니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p331\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "3년 만기 체류자 중 고용주가 재고용한 경우 1년 10개월 이내 체류기간 연장이 가능합니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p331"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "1년 10개월"
+          },
+          {
+            "kind": "period",
+            "text": "3년"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "3년 만기 체류자 중 고용주가 재고용한 경우 1년 10개월 이내 체류기간 연장이 가능합니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p331"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "W-05-seafarer-jobseek",
+      "prompt_sha256": "9ef59082ec6d32e378410ef30c1ef18481e3980a5f4f9a2658c10e48a94e0936",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "partial",
+        "answer": "내항선원(E-10-1), 어선원(E-10-2) 및 순항여객선원(E-10-3) 자격으로 최초 입국 후 3년간 취업기간이 만료되었으나 고용주가 재고용을 희망하는 경우, 체류기간을 연장할 수 있습니다. 1회에 부여하는 체류기간은 3년을 초과할 수 없으며, 총 체류기간은 최초 입국일로부터 4년 10개월을 초과할 수 없습니다. 또한, 체류허가기간 중에 고용해지 등으로 구직 중인 경우, 고용해지일로부터 3개월의 범위 내에서 체류기간 연장허가를 받을 수 있습니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p340"
+        ],
+        "review_flags": [
+          "subject_mismatch: 어선원(E-10-2) 및 순항여객선원(E-10-3) 자격으로 최초 입국 후 3년간 취업기간이 만료되었으나 고용주가 재고용을 희망하는 경우 — 같은 대상·역할의 사실 값은 3, 답의 값은 다른 대상·행의 사실(f-92d48d2b18a5a43c)",
+          "subject_mismatch: 1회에 부여하는 체류기간은 3년을 초과할 수 없으며 — 같은 대상·역할의 사실 값은 3, 답의 값은 다른 대상·행의 사실(f-92d48d2b18a5a43c)",
+          "subject_mismatch: 총 체류기간은 최초 입국일로부터 4년 10개월을 초과할 수 없습니다 — 같은 대상·역할의 사실 값은 3, 답의 값은 다른 대상·행의 사실(f-55dc8c411a90db0a)"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1018,
+      "prompt_tps": 215.56,
+      "generation_tokens": 217,
+      "generation_tps": 15.68,
+      "finish_reason": "stop",
+      "wall_seconds": 18.65,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"내항선원(E-10-1), 어선원(E-10-2) 및 순항여객선원(E-10-3) 자격으로 최초 입국 후 3년간 취업기간이 만료되었으나 고용주가 재고용을 희망하는 경우, 체류기간을 연장할 수 있습니다. 1회에 부여하는 체류기간은 3년을 초과할 수 없으며, 총 체류기간은 최초 입국일로부터 4년 10개월을 초과할 수 없습니다. 또한, 체류허가기간 중에 고용해지 등으로 구직 중인 경우, 고용해지일로부터 3개월의 범위 내에서 체류기간 연장허가를 받을 수 있습니다.\",\n  \"citations\": [\"stay_manual_2026_10_19_pdf#p340\"]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "partial",
+        "answer": "내항선원(E-10-1), 어선원(E-10-2) 및 순항여객선원(E-10-3) 자격으로 최초 입국 후 3년간 취업기간이 만료되었으나 고용주가 재고용을 희망하는 경우, 체류기간을 연장할 수 있습니다. 1회에 부여하는 체류기간은 3년을 초과할 수 없으며, 총 체류기간은 최초 입국일로부터 4년 10개월을 초과할 수 없습니다. 또한, 체류허가기간 중에 고용해지 등으로 구직 중인 경우, 고용해지일로부터 3개월의 범위 내에서 체류기간 연장허가를 받을 수 있습니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p340"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "4년 10개월"
+          },
+          {
+            "kind": "period",
+            "text": "3년"
+          },
+          {
+            "kind": "period",
+            "text": "3년"
+          },
+          {
+            "kind": "period",
+            "text": "3개월"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": [
+          "어선원(E-10-2) 및 순항여객선원(E-10-3) 자격으로 최초 입국 후 3년간 취업기간이 만료되었으나 고용주가 재고용을 희망하는 경우 — 같은 대상·역할의 사실 값은 3, 답의 값은 다른 대상·행의 사실(f-92d48d2b18a5a43c)",
+          "1회에 부여하는 체류기간은 3년을 초과할 수 없으며 — 같은 대상·역할의 사실 값은 3, 답의 값은 다른 대상·행의 사실(f-92d48d2b18a5a43c)",
+          "총 체류기간은 최초 입국일로부터 4년 10개월을 초과할 수 없습니다 — 같은 대상·역할의 사실 값은 3, 답의 값은 다른 대상·행의 사실(f-55dc8c411a90db0a)"
+        ]
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "partial",
+          "answer": "내항선원(E-10-1), 어선원(E-10-2) 및 순항여객선원(E-10-3) 자격으로 최초 입국 후 3년간 취업기간이 만료되었으나 고용주가 재고용을 희망하는 경우, 체류기간을 연장할 수 있습니다. 1회에 부여하는 체류기간은 3년을 초과할 수 없으며, 총 체류기간은 최초 입국일로부터 4년 10개월을 초과할 수 없습니다. 또한, 체류허가기간 중에 고용해지 등으로 구직 중인 경우, 고용해지일로부터 3개월의 범위 내에서 체류기간 연장허가를 받을 수 있습니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p340"
+          ],
+          "review_flags": [
+            "subject_mismatch: 어선원(E-10-2) 및 순항여객선원(E-10-3) 자격으로 최초 입국 후 3년간 취업기간이 만료되었으나 고용주가 재고용을 희망하는 경우 — 같은 대상·역할의 사실 값은 3, 답의 값은 다른 대상·행의 사실(f-92d48d2b18a5a43c)",
+            "subject_mismatch: 1회에 부여하는 체류기간은 3년을 초과할 수 없으며 — 같은 대상·역할의 사실 값은 3, 답의 값은 다른 대상·행의 사실(f-92d48d2b18a5a43c)",
+            "subject_mismatch: 총 체류기간은 최초 입국일로부터 4년 10개월을 초과할 수 없습니다 — 같은 대상·역할의 사실 값은 3, 답의 값은 다른 대상·행의 사실(f-55dc8c411a90db0a)"
+          ]
+        },
+        "failures": [],
+        "flags": [
+          "post_check:subject_mismatch: 어선원(E-10-2) 및 순항여객선원(E-10-3) 자격으로 최초 입국 후 3년간 취업기간이 만료되었으나 고용주가 재고용을 희망하는 경우 — 같은 대상·역할의 사실 값은 3, 답의 값은 다른 대상·행의 사실(f-92d48d2b18a5a43c)",
+          "post_check:subject_mismatch: 1회에 부여하는 체류기간은 3년을 초과할 수 없으며 — 같은 대상·역할의 사실 값은 3, 답의 값은 다른 대상·행의 사실(f-92d48d2b18a5a43c)",
+          "post_check:subject_mismatch: 총 체류기간은 최초 입국일로부터 4년 10개월을 초과할 수 없습니다 — 같은 대상·역할의 사실 값은 3, 답의 값은 다른 대상·행의 사실(f-55dc8c411a90db0a)"
+        ],
+        "needs_review": true
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "needs_review"
+    },
+    {
+      "case": "W-06-d2-lowgpa",
+      "prompt_sha256": "021bf5cd13e772513bef70ce7b8e3974b6b824c6d7fce8baccb8c6c93015a5bf",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "비자심사강화대학 학위과정 재학생으로서 최초 1회에 한하여 사유서 제출 후 6개월 이내 연장 허가가 가능합니다. 다음 연장 시에도 평균 학점이 D학점 이하인 경우 체류기간 연장이 제한됩니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p44"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1019,
+      "prompt_tps": 189.9,
+      "generation_tokens": 116,
+      "generation_tps": 15.47,
+      "finish_reason": "stop",
+      "wall_seconds": 13.01,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"비자심사강화대학 학위과정 재학생으로서 최초 1회에 한하여 사유서 제출 후 6개월 이내 연장 허가가 가능합니다. 다음 연장 시에도 평균 학점이 D학점 이하인 경우 체류기간 연장이 제한됩니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p44\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "비자심사강화대학 학위과정 재학생으로서 최초 1회에 한하여 사유서 제출 후 6개월 이내 연장 허가가 가능합니다. 다음 연장 시에도 평균 학점이 D학점 이하인 경우 체류기간 연장이 제한됩니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p44"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "6개월"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "비자심사강화대학 학위과정 재학생으로서 최초 1회에 한하여 사유서 제출 후 6개월 이내 연장 허가가 가능합니다. 다음 연장 시에도 평균 학점이 D학점 이하인 경우 체류기간 연장이 제한됩니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p44"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "W-07-fee-f6-extension",
+      "prompt_sha256": "b89e5fefb4f0a15f8f4bdc63ffed9c5ac03138103f884f7b452595e361773058",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "partial",
+        "answer": "체류기간 연장허가에 대한 수수료는 근거에 따르면 6만원입니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p5"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 617,
+      "prompt_tps": 210.74,
+      "generation_tokens": 77,
+      "generation_tps": 17.12,
+      "finish_reason": "stop",
+      "wall_seconds": 7.51,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"체류기간 연장허가에 대한 수수료는 근거에 따르면 6만원입니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p5\"\n  ]\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "partial",
+        "answer": "체류기간 연장허가에 대한 수수료는 근거에 따르면 6만원입니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p5"
+        ]
+      },
+      "failures": [
+        "answer_missing_one_of:3만원|3만 원|30,000원|30000원|30,000 원"
+      ],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "money",
+            "text": "6만원"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "partial",
+          "answer": "체류기간 연장허가에 대한 수수료는 근거에 따르면 6만원입니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p5"
+          ]
+        },
+        "failures": [
+          "answer_missing_one_of:3만원|3만 원|30,000원|30000원|30,000 원"
+        ],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "other",
+      "outcome_checked": "other"
+    },
+    {
+      "case": "W-08-fee-f5-change",
+      "prompt_sha256": "d14ac7242a8ea6be222360864f70b0493e4a72307d6ebe99c9c871c14d6efcbb",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "영주(F-5)자격 변경허가에 대한 심사수수료는 20만원입니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p5"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 628,
+      "prompt_tps": 213.99,
+      "generation_tokens": 81,
+      "generation_tps": 16.96,
+      "finish_reason": "stop",
+      "wall_seconds": 7.79,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"영주(F-5)자격 변경허가에 대한 심사수수료는 20만원입니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p5\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "영주(F-5)자격 변경허가에 대한 심사수수료는 20만원입니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p5"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "money",
+            "text": "20만원"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "영주(F-5)자격 변경허가에 대한 심사수수료는 20만원입니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p5"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "W-09-f6-2-stay-period",
+      "prompt_sha256": "72b2df9d068eda24e31f9cf73333c466956e61552fe1cf46add1c4cfe43bb7b7",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "결혼이민(F-6-2)사증으로 입국한 경우 체류허가 기간은 입국일로부터 1년입니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p506"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 856,
+      "prompt_tps": 213.66,
+      "generation_tokens": 90,
+      "generation_tps": 17.06,
+      "finish_reason": "stop",
+      "wall_seconds": 9.38,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"결혼이민(F-6-2)사증으로 입국한 경우 체류허가 기간은 입국일로부터 1년입니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p506\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "결혼이민(F-6-2)사증으로 입국한 경우 체류허가 기간은 입국일로부터 1년입니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p506"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "1년"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "결혼이민(F-6-2)사증으로 입국한 경우 체류허가 기간은 입국일로부터 1년입니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p506"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "W-10-h2-first-reg-nokorean",
+      "prompt_sha256": "492c1107ec195baaf80367f3d50c33a812be96917602f6815ff4a33fe5f2cf0e",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "방문취업 사증으로 최초 입국하여 외국인등록 신청 시 체류기간은 최대 3년을 부여받을 수 있습니다. 한국어능력 입증서류를 제출하지 않은 경우 체류기간은 1년 부여됩니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p537"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 790,
+      "prompt_tps": 211.67,
+      "generation_tokens": 110,
+      "generation_tps": 16.15,
+      "finish_reason": "stop",
+      "wall_seconds": 10.66,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"방문취업 사증으로 최초 입국하여 외국인등록 신청 시 체류기간은 최대 3년을 부여받을 수 있습니다. 한국어능력 입증서류를 제출하지 않은 경우 체류기간은 1년 부여됩니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p537\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "방문취업 사증으로 최초 입국하여 외국인등록 신청 시 체류기간은 최대 3년을 부여받을 수 있습니다. 한국어능력 입증서류를 제출하지 않은 경우 체류기간은 1년 부여됩니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p537"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "3년"
+          },
+          {
+            "kind": "period",
+            "text": "1년"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "방문취업 사증으로 최초 입국하여 외국인등록 신청 시 체류기간은 최대 3년을 부여받을 수 있습니다. 한국어능력 입증서류를 제출하지 않은 경우 체류기간은 1년 부여됩니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p537"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "W-11-d9-equipment-engineer",
+      "prompt_sha256": "7bdf270f152f69e42199e899adee059725069e9e651039ae5c45bddc5f2f2f8b",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "산업설비(기계) 도입회사에 파견 또는 초청되어 그 장비의 설치·운영·보수(정비)에 필요한 기술을 제공하는 자의 경우, 사증 종류에 따라 체류기간이 다릅니다. 단수사증의 경우 체류기간은 1년 이하입니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p118"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 833,
+      "prompt_tps": 214.47,
+      "generation_tokens": 127,
+      "generation_tps": 16.46,
+      "finish_reason": "stop",
+      "wall_seconds": 11.68,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"산업설비(기계) 도입회사에 파견 또는 초청되어 그 장비의 설치·운영·보수(정비)에 필요한 기술을 제공하는 자의 경우, 사증 종류에 따라 체류기간이 다릅니다. 단수사증의 경우 체류기간은 1년 이하입니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p118\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "산업설비(기계) 도입회사에 파견 또는 초청되어 그 장비의 설치·운영·보수(정비)에 필요한 기술을 제공하는 자의 경우, 사증 종류에 따라 체류기간이 다릅니다. 단수사증의 경우 체류기간은 1년 이하입니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p118"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "1년"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "산업설비(기계) 도입회사에 파견 또는 초청되어 그 장비의 설치·운영·보수(정비)에 필요한 기술을 제공하는 자의 경우, 사증 종류에 따라 체류기간이 다릅니다. 단수사증의 경우 체류기간은 1년 이하입니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p118"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "W-12-intlorg-nonaccompany",
+      "prompt_sha256": "8c087d4fbbfa18bcd502b1c60a222484d6d60200995ad868941d6e384d59d9f6",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "partial",
+        "answer": "국제기구 직원 가족의 체류자격 외 활동에 대한 정보가 있으나, 질문하신 분의 구체적인 상황(국제기구 직원과의 관계, 본인의 체류 목적 등)에 따라 적용되는 사증 종류와 유효기간이 다를 수 있습니다. 만약 동반가족이 타국적자이거나 일반여권 소지자인 경우에도 해당 국제기구 등의 정식 공한을 제출하면 사증 발급이 가능하며, 국제기구 직원의 동거인으로서 그 세대에 속하지 않는 분이라면 체류기간 1년 이하의 방문동거(F-1-3) 단수사증이 발급될 수 있습니다. 또한, 비동반가족의 경우 유효기간 1년, 체류기간 90일 이하의 단기방문(C-3) 복수사증이 발급될 수 있습니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p12"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1125,
+      "prompt_tps": 202.7,
+      "generation_tokens": 249,
+      "generation_tps": 14.91,
+      "finish_reason": "stop",
+      "wall_seconds": 22.39,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"국제기구 직원 가족의 체류자격 외 활동에 대한 정보가 있으나, 질문하신 분의 구체적인 상황(국제기구 직원과의 관계, 본인의 체류 목적 등)에 따라 적용되는 사증 종류와 유효기간이 다를 수 있습니다. 만약 동반가족이 타국적자이거나 일반여권 소지자인 경우에도 해당 국제기구 등의 정식 공한을 제출하면 사증 발급이 가능하며, 국제기구 직원의 동거인으로서 그 세대에 속하지 않는 분이라면 체류기간 1년 이하의 방문동거(F-1-3) 단수사증이 발급될 수 있습니다. 또한, 비동반가족의 경우 유효기간 1년, 체류기간 90일 이하의 단기방문(C-3) 복수사증이 발급될 수 있습니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p12\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "partial",
+        "answer": "국제기구 직원 가족의 체류자격 외 활동에 대한 정보가 있으나, 질문하신 분의 구체적인 상황(국제기구 직원과의 관계, 본인의 체류 목적 등)에 따라 적용되는 사증 종류와 유효기간이 다를 수 있습니다. 만약 동반가족이 타국적자이거나 일반여권 소지자인 경우에도 해당 국제기구 등의 정식 공한을 제출하면 사증 발급이 가능하며, 국제기구 직원의 동거인으로서 그 세대에 속하지 않는 분이라면 체류기간 1년 이하의 방문동거(F-1-3) 단수사증이 발급될 수 있습니다. 또한, 비동반가족의 경우 유효기간 1년, 체류기간 90일 이하의 단기방문(C-3) 복수사증이 발급될 수 있습니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p12"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "1년"
+          },
+          {
+            "kind": "period",
+            "text": "1년"
+          },
+          {
+            "kind": "period",
+            "text": "90일"
+          },
+          {
+            "kind": "document",
+            "text": "일반여권"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "partial",
+          "answer": "국제기구 직원 가족의 체류자격 외 활동에 대한 정보가 있으나, 질문하신 분의 구체적인 상황(국제기구 직원과의 관계, 본인의 체류 목적 등)에 따라 적용되는 사증 종류와 유효기간이 다를 수 있습니다. 만약 동반가족이 타국적자이거나 일반여권 소지자인 경우에도 해당 국제기구 등의 정식 공한을 제출하면 사증 발급이 가능하며, 국제기구 직원의 동거인으로서 그 세대에 속하지 않는 분이라면 체류기간 1년 이하의 방문동거(F-1-3) 단수사증이 발급될 수 있습니다. 또한, 비동반가족의 경우 유효기간 1년, 체류기간 90일 이하의 단기방문(C-3) 복수사증이 발급될 수 있습니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p12"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "W-13-d10-agreement-validity",
+      "prompt_sha256": "4bc0d61ae0e16f0b8d5c0ab8ca8f40a74116dc63acfca36cbab7f355514a6e42",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "재외공관장이 재량으로 체류기간 6개월의 단수 구직(D-10)사증을 발급하는 경우, 구직사증에 대한 복수사증발급협정이 체결된 국가 국민에 대해서는 유효기간 2년의 복수사증을 발급할 수 있습니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p128"
+        ],
+        "review_flags": [
+          "subject_mismatch: 재외공관장이 재량으로 체류기간 6개월의 단수 구직(D-10)사증을 발급하는 경우 — 같은 대상·역할의 사실 값은 24, 답의 값은 다른 대상·행의 사실(f-f435fadd2cd5b615)"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1045,
+      "prompt_tps": 97.75,
+      "generation_tokens": 130,
+      "generation_tps": 7.43,
+      "finish_reason": "stop",
+      "wall_seconds": 28.58,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"재외공관장이 재량으로 체류기간 6개월의 단수 구직(D-10)사증을 발급하는 경우, 구직사증에 대한 복수사증발급협정이 체결된 국가 국민에 대해서는 유효기간 2년의 복수사증을 발급할 수 있습니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p128\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "재외공관장이 재량으로 체류기간 6개월의 단수 구직(D-10)사증을 발급하는 경우, 구직사증에 대한 복수사증발급협정이 체결된 국가 국민에 대해서는 유효기간 2년의 복수사증을 발급할 수 있습니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p128"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "6개월"
+          },
+          {
+            "kind": "period",
+            "text": "2년"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": [
+          "재외공관장이 재량으로 체류기간 6개월의 단수 구직(D-10)사증을 발급하는 경우 — 같은 대상·역할의 사실 값은 24, 답의 값은 다른 대상·행의 사실(f-f435fadd2cd5b615)"
+        ]
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "재외공관장이 재량으로 체류기간 6개월의 단수 구직(D-10)사증을 발급하는 경우, 구직사증에 대한 복수사증발급협정이 체결된 국가 국민에 대해서는 유효기간 2년의 복수사증을 발급할 수 있습니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p128"
+          ],
+          "review_flags": [
+            "subject_mismatch: 재외공관장이 재량으로 체류기간 6개월의 단수 구직(D-10)사증을 발급하는 경우 — 같은 대상·역할의 사실 값은 24, 답의 값은 다른 대상·행의 사실(f-f435fadd2cd5b615)"
+          ]
+        },
+        "failures": [],
+        "flags": [
+          "post_check:subject_mismatch: 재외공관장이 재량으로 체류기간 6개월의 단수 구직(D-10)사증을 발급하는 경우 — 같은 대상·역할의 사실 값은 24, 답의 값은 다른 대상·행의 사실(f-f435fadd2cd5b615)"
+        ],
+        "needs_review": true
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "needs_review"
+    },
+    {
+      "case": "W-14-research-consular-single",
+      "prompt_sha256": "49657c0edad649f74ce8ff58f96fc1df1ffac5e793b9a1677eb2b3f1dd4b0605",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "정부의 연구출연금을 받는 연구기관에서 자연과학분야 및 고도의 산업기술 개발을 연구하는 과학기술자의 경우, 중·국을 제외하고 체류기간 1년 이하의 단수사증을 받을 수 있습니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p153"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 979,
+      "prompt_tps": 118.23,
+      "generation_tokens": 109,
+      "generation_tps": 10.07,
+      "finish_reason": "stop",
+      "wall_seconds": 19.75,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"정부의 연구출연금을 받는 연구기관에서 자연과학분야 및 고도의 산업기술 개발을 연구하는 과학기술자의 경우, 중·국을 제외하고 체류기간 1년 이하의 단수사증을 받을 수 있습니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p153\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "정부의 연구출연금을 받는 연구기관에서 자연과학분야 및 고도의 산업기술 개발을 연구하는 과학기술자의 경우, 중·국을 제외하고 체류기간 1년 이하의 단수사증을 받을 수 있습니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p153"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "1년"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "정부의 연구출연금을 받는 연구기관에서 자연과학분야 및 고도의 산업기술 개발을 연구하는 과학기술자의 경우, 중·국을 제외하고 체류기간 1년 이하의 단수사증을 받을 수 있습니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p153"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "W-15-f2-2-child-validity",
+      "prompt_sha256": "ded877ae3b2c1f0de0e29a2b9fea4e13c2fc5c6752093b23e0ba0fa68f77d91a",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "partial",
+        "answer": "국민과 혼인관계(사실상의 혼인관계 포함)에서 출생한 자녀에 대한 공관장 재량으로 5년간 유효한 체류기간 1년 이하의 거주(F-2-2) 복수사증을 발급할 수 있습니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p313"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1169,
+      "prompt_tps": 131.08,
+      "generation_tokens": 119,
+      "generation_tps": 11.07,
+      "finish_reason": "stop",
+      "wall_seconds": 21.04,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"국민과 혼인관계(사실상의 혼인관계 포함)에서 출생한 자녀에 대한 공관장 재량으로 5년간 유효한 체류기간 1년 이하의 거주(F-2-2) 복수사증을 발급할 수 있습니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p313\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "partial",
+        "answer": "국민과 혼인관계(사실상의 혼인관계 포함)에서 출생한 자녀에 대한 공관장 재량으로 5년간 유효한 체류기간 1년 이하의 거주(F-2-2) 복수사증을 발급할 수 있습니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p313"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "5년"
+          },
+          {
+            "kind": "period",
+            "text": "1년"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "partial",
+          "answer": "국민과 혼인관계(사실상의 혼인관계 포함)에서 출생한 자녀에 대한 공관장 재량으로 5년간 유효한 체류기간 1년 이하의 거주(F-2-2) 복수사증을 발급할 수 있습니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p313"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "W-16-f6-1-consular-90d",
+      "prompt_sha256": "63a2c05dd01305d02d70600de1dda7e813719f87f34da2eb36eb5696dbf20807",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "partial",
+        "answer": "국민의 배우자(F-6-1)에 대한 체류기간 90일 이하의 단수사증을 공관장 재량으로 발급할 수 있습니다. 다만, 미국인에 대해서는 복수사증 발급이 가능합니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p327"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 882,
+      "prompt_tps": 207.2,
+      "generation_tokens": 114,
+      "generation_tps": 15.98,
+      "finish_reason": "stop",
+      "wall_seconds": 30.27,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"국민의 배우자(F-6-1)에 대한 체류기간 90일 이하의 단수사증을 공관장 재량으로 발급할 수 있습니다. 다만, 미국인에 대해서는 복수사증 발급이 가능합니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p327\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "partial",
+        "answer": "국민의 배우자(F-6-1)에 대한 체류기간 90일 이하의 단수사증을 공관장 재량으로 발급할 수 있습니다. 다만, 미국인에 대해서는 복수사증 발급이 가능합니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p327"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "90일"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "partial",
+          "answer": "국민의 배우자(F-6-1)에 대한 체류기간 90일 이하의 단수사증을 공관장 재량으로 발급할 수 있습니다. 다만, 미국인에 대해서는 복수사증 발급이 가능합니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p327"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "W-17-f6-income-3person",
+      "prompt_sha256": "1d0415560db616e6e384debec45e2b4fefde689f283be6f39feece840a2d8fa4",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "귀하가 한국인이고 외국인 아내와 함께 한 자녀가 있다면 3인 가구에 해당하며, 2026년 기준 소득 요건은 32,154,216원 이상이어야 합니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p330"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1526,
+      "prompt_tps": 191.82,
+      "generation_tokens": 112,
+      "generation_tps": 15.04,
+      "finish_reason": "stop",
+      "wall_seconds": 15.57,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"귀하가 한국인이고 외국인 아내와 함께 한 자녀가 있다면 3인 가구에 해당하며, 2026년 기준 소득 요건은 32,154,216원 이상이어야 합니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p330\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "귀하가 한국인이고 외국인 아내와 함께 한 자녀가 있다면 3인 가구에 해당하며, 2026년 기준 소득 요건은 32,154,216원 이상이어야 합니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p330"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "money",
+            "text": "32,154,216원"
+          },
+          {
+            "kind": "period",
+            "text": "2026년"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "귀하가 한국인이고 외국인 아내와 함께 한 자녀가 있다면 3인 가구에 해당하며, 2026년 기준 소득 요건은 32,154,216원 이상이어야 합니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p330"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "W-18-f6-income-5person",
+      "prompt_sha256": "c3b5a274b3c82cf6bb4a961c43e74fa6c51058bc97b6ca84a9fba81170c76f40",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "partial",
+        "answer": "초청인의 과거 1년간의 연간 소득(세전)은 5인 가구 기준인 38,968,428원 이상이어야 합니다. 다만, 사업소득의 경우 다음 연도 5월에 소득신고가 이루어지는 특징이 있으므로, 소득금액증명상의 가장 최근 연도의 소득이 정해진 소득요건을 충족하고 한국인 배우자가 동일한 사업을 지속하고 있다면 신청일 기준 1년 전 소득이 아니더라도 예외를 인정할 수 있습니다. 경우에 따라 실태조사가 실시될 수 있습니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p330"
+        ],
+        "review_flags": [
+          "subject_mismatch: 초청인의 과거 1년간의 연간 소득(세전)은 5인 가구 기준인 38,968,428원 이상이어야 합니다 — 같은 대상·역할의 사실 값은 45340314, 답의 값은 다른 대상·행의 사실(f-bd9698eb773eecd0)"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1525,
+      "prompt_tps": 160.87,
+      "generation_tokens": 193,
+      "generation_tps": 14.29,
+      "finish_reason": "stop",
+      "wall_seconds": 23.14,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"초청인의 과거 1년간의 연간 소득(세전)은 5인 가구 기준인 38,968,428원 이상이어야 합니다. 다만, 사업소득의 경우 다음 연도 5월에 소득신고가 이루어지는 특징이 있으므로, 소득금액증명상의 가장 최근 연도의 소득이 정해진 소득요건을 충족하고 한국인 배우자가 동일한 사업을 지속하고 있다면 신청일 기준 1년 전 소득이 아니더라도 예외를 인정할 수 있습니다. 경우에 따라 실태조사가 실시될 수 있습니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p330\"\n  ]\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "partial",
+        "answer": "초청인의 과거 1년간의 연간 소득(세전)은 5인 가구 기준인 38,968,428원 이상이어야 합니다. 다만, 사업소득의 경우 다음 연도 5월에 소득신고가 이루어지는 특징이 있으므로, 소득금액증명상의 가장 최근 연도의 소득이 정해진 소득요건을 충족하고 한국인 배우자가 동일한 사업을 지속하고 있다면 신청일 기준 1년 전 소득이 아니더라도 예외를 인정할 수 있습니다. 경우에 따라 실태조사가 실시될 수 있습니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p330"
+        ]
+      },
+      "failures": [
+        "answer_missing_one_of:45,340,314|45340314|4,534만 314"
+      ],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "money",
+            "text": "38,968,428원"
+          },
+          {
+            "kind": "period",
+            "text": "1년"
+          },
+          {
+            "kind": "period",
+            "text": "1년"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": [
+          "초청인의 과거 1년간의 연간 소득(세전)은 5인 가구 기준인 38,968,428원 이상이어야 합니다 — 같은 대상·역할의 사실 값은 45340314, 답의 값은 다른 대상·행의 사실(f-bd9698eb773eecd0)"
+        ]
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "partial",
+          "answer": "초청인의 과거 1년간의 연간 소득(세전)은 5인 가구 기준인 38,968,428원 이상이어야 합니다. 다만, 사업소득의 경우 다음 연도 5월에 소득신고가 이루어지는 특징이 있으므로, 소득금액증명상의 가장 최근 연도의 소득이 정해진 소득요건을 충족하고 한국인 배우자가 동일한 사업을 지속하고 있다면 신청일 기준 1년 전 소득이 아니더라도 예외를 인정할 수 있습니다. 경우에 따라 실태조사가 실시될 수 있습니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p330"
+          ],
+          "review_flags": [
+            "subject_mismatch: 초청인의 과거 1년간의 연간 소득(세전)은 5인 가구 기준인 38,968,428원 이상이어야 합니다 — 같은 대상·역할의 사실 값은 45340314, 답의 값은 다른 대상·행의 사실(f-bd9698eb773eecd0)"
+          ]
+        },
+        "failures": [
+          "answer_missing_one_of:45,340,314|45340314|4,534만 314"
+        ],
+        "flags": [
+          "post_check:subject_mismatch: 초청인의 과거 1년간의 연간 소득(세전)은 5인 가구 기준인 38,968,428원 이상이어야 합니다 — 같은 대상·역할의 사실 값은 45340314, 답의 값은 다른 대상·행의 사실(f-bd9698eb773eecd0)"
+        ],
+        "needs_review": false
+      },
+      "outcome_raw": "other",
+      "outcome_checked": "other"
+    },
+    {
+      "case": "W-19-india-energy-3y",
+      "prompt_sha256": "7bc91ee1814ee1df0d6330ce0e0ebb7dcea9d97ef45735cd93efe46fb7743999",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "귀하가 자원·에너지를 개발·판매하는 회사 설립 준비 또는 협의 또는 계약 체결을 목적으로 입국하려는 상용방문자의 경우, 3년 복수사증 발급 대상이며, 사증은 1년, 3년 또는 5년 유효한 복수사증으로 발급될 수 있습니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p43"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 932,
+      "prompt_tps": 189.44,
+      "generation_tokens": 133,
+      "generation_tps": 14.52,
+      "finish_reason": "stop",
+      "wall_seconds": 14.43,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"귀하가 자원·에너지를 개발·판매하는 회사 설립 준비 또는 협의 또는 계약 체결을 목적으로 입국하려는 상용방문자의 경우, 3년 복수사증 발급 대상이며, 사증은 1년, 3년 또는 5년 유효한 복수사증으로 발급될 수 있습니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p43\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "귀하가 자원·에너지를 개발·판매하는 회사 설립 준비 또는 협의 또는 계약 체결을 목적으로 입국하려는 상용방문자의 경우, 3년 복수사증 발급 대상이며, 사증은 1년, 3년 또는 5년 유효한 복수사증으로 발급될 수 있습니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p43"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "3년"
+          },
+          {
+            "kind": "period",
+            "text": "1년"
+          },
+          {
+            "kind": "period",
+            "text": "3년"
+          },
+          {
+            "kind": "period",
+            "text": "5년"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "귀하가 자원·에너지를 개발·판매하는 회사 설립 준비 또는 협의 또는 계약 체결을 목적으로 입국하려는 상용방문자의 경우, 3년 복수사증 발급 대상이며, 사증은 1년, 3년 또는 5년 유효한 복수사증으로 발급될 수 있습니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p43"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "W-20-d2-exchange-1y",
+      "prompt_sha256": "35f9394988e1afc1d2e62430cd5ca407c3ada9f56f289c452579a2e8e1784cdb",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "partial",
+        "answer": "교환학생의 경우 D-2-6 비자로 체류 기간 1년 이내, 단수 체류가 가능합니다. 하지만 질문하신 '두 학기'가 정확히 어느 기간을 의미하는지에 따라 달라질 수 있습니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p68"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 956,
+      "prompt_tps": 179.22,
+      "generation_tokens": 108,
+      "generation_tps": 14.84,
+      "finish_reason": "stop",
+      "wall_seconds": 12.84,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"교환학생의 경우 D-2-6 비자로 체류 기간 1년 이내, 단수 체류가 가능합니다. 하지만 질문하신 '두 학기'가 정확히 어느 기간을 의미하는지에 따라 달라질 수 있습니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p68\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "partial",
+        "answer": "교환학생의 경우 D-2-6 비자로 체류 기간 1년 이내, 단수 체류가 가능합니다. 하지만 질문하신 '두 학기'가 정확히 어느 기간을 의미하는지에 따라 달라질 수 있습니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p68"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "1년"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "partial",
+          "answer": "교환학생의 경우 D-2-6 비자로 체류 기간 1년 이내, 단수 체류가 가능합니다. 하지만 질문하신 '두 학기'가 정확히 어느 기간을 의미하는지에 따라 달라질 수 있습니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p68"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "W-21-d4-language-6m",
+      "prompt_sha256": "99dad3c78d55a8a88babc379202ce4257af5da86119c2aeaa7849da2a495f762",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "partial",
+        "answer": "공관장 재량으로 90일 이하 체류 어학연수생은 단기일반(C-3-1) 사증 발급 대상이며, 일반연수(D-4) 사증의 체류기간은 6개월 이하입니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p74"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1083,
+      "prompt_tps": 186.96,
+      "generation_tokens": 114,
+      "generation_tps": 14.37,
+      "finish_reason": "stop",
+      "wall_seconds": 14.05,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"공관장 재량으로 90일 이하 체류 어학연수생은 단기일반(C-3-1) 사증 발급 대상이며, 일반연수(D-4) 사증의 체류기간은 6개월 이하입니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p74\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "partial",
+        "answer": "공관장 재량으로 90일 이하 체류 어학연수생은 단기일반(C-3-1) 사증 발급 대상이며, 일반연수(D-4) 사증의 체류기간은 6개월 이하입니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p74"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "90일"
+          },
+          {
+            "kind": "period",
+            "text": "6개월"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "partial",
+          "answer": "공관장 재량으로 90일 이하 체류 어학연수생은 단기일반(C-3-1) 사증 발급 대상이며, 일반연수(D-4) 사증의 체류기간은 6개월 이하입니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p74"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "W-22-d5-bureau-1y",
+      "prompt_sha256": "b5a0567219fcdd2c75d45eb8f8f5e8c2bc85ec4abb3e2a95a7215240313d0d0c",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "국내에 지사나 지국이 이미 개설된 외국의 신문, 방송, 잡지, 기타 보도기관으로부터 파견되어 활동하는 경우, 공관장 재량으로 체류기간 1년 이하의 단수사증 발급이 가능합니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p90"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 817,
+      "prompt_tps": 118.05,
+      "generation_tokens": 115,
+      "generation_tps": 15.79,
+      "finish_reason": "stop",
+      "wall_seconds": 14.71,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"국내에 지사나 지국이 이미 개설된 외국의 신문, 방송, 잡지, 기타 보도기관으로부터 파견되어 활동하는 경우, 공관장 재량으로 체류기간 1년 이하의 단수사증 발급이 가능합니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p90\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "국내에 지사나 지국이 이미 개설된 외국의 신문, 방송, 잡지, 기타 보도기관으로부터 파견되어 활동하는 경우, 공관장 재량으로 체류기간 1년 이하의 단수사증 발급이 가능합니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p90"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "1년"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "국내에 지사나 지국이 이미 개설된 외국의 신문, 방송, 잡지, 기타 보도기관으로부터 파견되어 활동하는 경우, 공관장 재량으로 체류기간 1년 이하의 단수사증 발급이 가능합니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p90"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "W-23-d6-max-2y",
+      "prompt_sha256": "1c970b892b98d7b4904739f9d14bd208d070b536175a6166157c4d9e3ab3b7c8",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "partial",
+        "answer": "종교 활동의 경우, 국내 종교단체로부터 초청되어 사회복지활동에만 종사하고자 하는 자에 대하여는 공관장 재량으로 1년 이하의 단수사증 발급이 가능합니다. 또한, 국내 종교단체 또는 사회복지단체로부터 초청되어 사회복지활동에만 종사하는 경우 체류기간의 상한은 2년입니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p92"
+        ],
+        "review_flags": [
+          "role_mismatch: 국내 종교단체로부터 초청되어 사회복지활동에만 종사하고자 하는 자에 대하여는 공관장 재량으로 1년 이하의 단수사증 발급이 가능합니다 — 답의 역할 'issue', 근거의 역할 'stay'"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 875,
+      "prompt_tps": 160.23,
+      "generation_tokens": 142,
+      "generation_tps": 14.59,
+      "finish_reason": "stop",
+      "wall_seconds": 15.48,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"종교 활동의 경우, 국내 종교단체로부터 초청되어 사회복지활동에만 종사하고자 하는 자에 대하여는 공관장 재량으로 1년 이하의 단수사증 발급이 가능합니다. 또한, 국내 종교단체 또는 사회복지단체로부터 초청되어 사회복지활동에만 종사하는 경우 체류기간의 상한은 2년입니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p92\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "partial",
+        "answer": "종교 활동의 경우, 국내 종교단체로부터 초청되어 사회복지활동에만 종사하고자 하는 자에 대하여는 공관장 재량으로 1년 이하의 단수사증 발급이 가능합니다. 또한, 국내 종교단체 또는 사회복지단체로부터 초청되어 사회복지활동에만 종사하는 경우 체류기간의 상한은 2년입니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p92"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "1년"
+          },
+          {
+            "kind": "period",
+            "text": "2년"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [
+          "국내 종교단체로부터 초청되어 사회복지활동에만 종사하고자 하는 자에 대하여는 공관장 재량으로 1년 이하의 단수사증 발급이 가능합니다 — 답의 역할 'issue', 근거의 역할 'stay'"
+        ],
+        "subject_mismatches": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "partial",
+          "answer": "종교 활동의 경우, 국내 종교단체로부터 초청되어 사회복지활동에만 종사하고자 하는 자에 대하여는 공관장 재량으로 1년 이하의 단수사증 발급이 가능합니다. 또한, 국내 종교단체 또는 사회복지단체로부터 초청되어 사회복지활동에만 종사하는 경우 체류기간의 상한은 2년입니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p92"
+          ],
+          "review_flags": [
+            "role_mismatch: 국내 종교단체로부터 초청되어 사회복지활동에만 종사하고자 하는 자에 대하여는 공관장 재량으로 1년 이하의 단수사증 발급이 가능합니다 — 답의 역할 'issue', 근거의 역할 'stay'"
+          ]
+        },
+        "failures": [],
+        "flags": [
+          "post_check:role_mismatch: 국내 종교단체로부터 초청되어 사회복지활동에만 종사하고자 하는 자에 대하여는 공관장 재량으로 1년 이하의 단수사증 발급이 가능합니다 — 답의 역할 'issue', 근거의 역할 'stay'"
+        ],
+        "needs_review": true
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "needs_review"
+    },
+    {
+      "case": "W-24-d7-china-validity",
+      "prompt_sha256": "881b0c9432d58931c8db24a64d31d9c323c1eb944eaab9bdacdbae89f93bd5cb",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "공관장 재량으로 중국인 국내주재지사 등의 주재원(공기업 또는 사기업에 1년 이상 발급할 수 있는 고용된 직원) 및 그 동반가족(F-3)에 대하여 유효기간 2년 이내의 사증 복수사증을 발급할 수 있습니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p94"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 844,
+      "prompt_tps": 143.27,
+      "generation_tokens": 129,
+      "generation_tps": 17.2,
+      "finish_reason": "stop",
+      "wall_seconds": 13.67,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"공관장 재량으로 중국인 국내주재지사 등의 주재원(공기업 또는 사기업에 1년 이상 발급할 수 있는 고용된 직원) 및 그 동반가족(F-3)에 대하여 유효기간 2년 이내의 사증 복수사증을 발급할 수 있습니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p94\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "공관장 재량으로 중국인 국내주재지사 등의 주재원(공기업 또는 사기업에 1년 이상 발급할 수 있는 고용된 직원) 및 그 동반가족(F-3)에 대하여 유효기간 2년 이내의 사증 복수사증을 발급할 수 있습니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p94"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "1년"
+          },
+          {
+            "kind": "period",
+            "text": "2년"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": [],
+        "subject_mismatches": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "공관장 재량으로 중국인 국내주재지사 등의 주재원(공기업 또는 사기업에 1년 이상 발급할 수 있는 고용된 직원) 및 그 동반가족(F-3)에 대하여 유효기간 2년 이내의 사증 복수사증을 발급할 수 있습니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p94"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    }
+  ],
+  "summary": {
+    "cases": 24,
+    "passed": 22,
+    "failed": 2,
+    "needs_review": 0,
+    "auto_correct": 22,
+    "outcomes_raw": {
+      "correct": 22,
+      "needs_review": 0,
+      "clarify": 0,
+      "safe_abstain": 0,
+      "harmful": 0,
+      "other": 2
+    },
+    "outcomes_checked": {
+      "correct": 18,
+      "needs_review": 4,
+      "clarify": 0,
+      "safe_abstain": 0,
+      "harmful": 0,
+      "other": 2
+    }
+  },
+  "peak_memory_gb": 4.921,
+  "max_rss_gb": 0.614,
+  "swap_after": "total = 6144.00M  used = 4847.19M  free = 1296.81M  (encrypted)",
+  "free_disk_gb_after": 4.18,
+  "finished_utc": "2026-10-28T02:21:59+00:00"
+}

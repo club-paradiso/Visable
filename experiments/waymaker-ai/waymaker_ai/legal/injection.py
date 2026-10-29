@@ -12,7 +12,10 @@ data. A flag never changes a verification result: no rule in
 
 This is a heuristic and is documented as one. It is a short list of literal
 markers, matched after NFC normalization and case folding, plus one rule that
-needs an AI addressee and an imperative in the same sentence. It will miss
+needs an AI addressee and an imperative in the same sentence, and one that
+lets an intensifier stand between an instruction noun and "무시" ("이전 지시를
+모두 무시하고": the literal "지시를 무시" missed it in the Artemis bootstrap
+smoke case D-injection, 2026-10-26). It will miss
 paraphrased or obfuscated instructions, and it can flag a source that merely
 *discusses* prompt injection. Statute drafting forms are deliberately not
 markers: "하여야 한다", "할 것" (list items of 별표), "<개정 2020. 1. 1.>" and
@@ -20,6 +23,7 @@ markers: "하여야 한다", "할 것" (list items of 별표), "<개정 2020. 1.
 """
 from __future__ import annotations
 
+import re
 import unicodedata
 from dataclasses import dataclass
 from typing import List, Tuple
@@ -53,6 +57,17 @@ OVERRIDE_PHRASES_KO: Tuple[str, ...] = (
     "명령을 무시",
     "시스템 프롬프트",
     "프롬프트를 무시",
+)
+
+#: The same override with intensifiers in between: "지시를 모두 무시", "지침은 전부
+#: 무시". Only these words may stand between the noun's particle and "무시", so
+#: prose such as "지시와 무관한 … 무시" or "지시를 이행하지 않고 … 무시" does not
+#: match. "명령" is left to the literal list above: "출국명령을 … 무시" is case prose.
+INTENSIFIERS_KO: Tuple[str, ...] = ("모두", "전부", "다", "완전히", "일체", "일절", "싹")
+OVERRIDE_WITH_INTENSIFIER_KO = re.compile(
+    r"(?:지시|지침|프롬프트)(?:사항)?(?:을|를|은|는|도)\s+(?:(?:"
+    + "|".join(INTENSIFIERS_KO)
+    + r")\s+){1,2}무시"
 )
 
 #: An AI addressed directly: Korean forms carry the topic or vocative particle
@@ -120,6 +135,13 @@ def _find_all(text: str, kind: str, markers: Tuple[str, ...]) -> List[InjectionF
     return found
 
 
+def _overrides_with_intensifier(text: str) -> List[InjectionFinding]:
+    return [
+        InjectionFinding("override_phrase", m.group(0), m.start())
+        for m in OVERRIDE_WITH_INTENSIFIER_KO.finditer(text)
+    ]
+
+
 def _role_lines(text: str) -> List[InjectionFinding]:
     found: List[InjectionFinding] = []
     offset = 0
@@ -177,6 +199,7 @@ def scan(text: str) -> List[InjectionFinding]:
     folded = fold(text)
     findings = (
         _find_all(folded, "override_phrase", OVERRIDE_PHRASES_EN + OVERRIDE_PHRASES_KO)
+        + _overrides_with_intensifier(folded)
         + _find_all(folded, "template_marker", TEMPLATE_MARKERS)
         + _find_all(folded, "prompt_delimiter", DELIMITER_MARKERS)
         + _find_all(folded, "html", HTML_MARKERS)
@@ -205,6 +228,7 @@ __all__ = [
     "HTML_MARKERS",
     "IMPERATIVES_EN",
     "IMPERATIVES_KO",
+    "INTENSIFIERS_KO",
     "InjectionFinding",
     "OVERRIDE_PHRASES_EN",
     "OVERRIDE_PHRASES_KO",

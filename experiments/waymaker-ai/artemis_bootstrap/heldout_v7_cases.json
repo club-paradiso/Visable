@@ -1,0 +1,1134 @@
+{
+  "version": "artemis-heldout-v7",
+  "created": "2026-10-28",
+  "authorship": "Written by a separate agent that was not shown the repository, earlier held-out sets, or any defense code.",
+  "hash_rule": "sha256(NFC(text).strip()) at approval time",
+  "notice": "모든 기관·자격·창구·금액·날짜는 지어낸 것이다. 실제 출입국 절차와 관계없다. 학습 데이터로 쓰지 않는다.",
+  "cases": [
+    {
+      "id": "W-01-issue-vs-validity",
+      "group": "R",
+      "purpose": "발급기한(5일)과 유효기간(30일)이 한 문단에 있을 때 유효기간을 묻는다.",
+      "question": "해솔시에서 Z-9 가상자격 체류확인서를 받으면 며칠 동안 유효한가요?",
+      "evidence": [
+        {
+          "id": "WSYN-01-a",
+          "title": "[가상] 해솔시 Z-9 가상자격 체류확인서 안내",
+          "text": "[가상 자료] 해솔시 출입관리청은 Z-9 가상자격 체류확인서를 신청 후 5일 이내에 발급하며, 체류확인서는 발급일부터 30일 동안 유효하다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "1f11f2ffcd3f312a9c6a0147e677122c74e3078df0755d52277925aeb22384b7"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "WSYN-01-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "30일",
+            "30 일",
+            "삼십 일"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "5일 동안 유효",
+          "5일간 유효",
+          "유효기간은 5일",
+          "5일 동안 사용",
+          "5일간 사용"
+        ]
+      }
+    },
+    {
+      "id": "W-02-window-vs-processing",
+      "group": "R",
+      "purpose": "접수 시작 시점(만료 2개월 전)과 처리기간(3주) 중 처리기간을 묻는다.",
+      "question": "마루포에서 Q-4 가상연수 연장 심사는 처리에 얼마나 걸리나요?",
+      "evidence": [
+        {
+          "id": "WSYN-02-a",
+          "title": "[가상] 마루포 Q-4 가상연수 연장 접수 안내",
+          "text": "[가상 자료] 마루포 체류창구는 Q-4 가상연수 자격의 연장 신청을 체류기간 만료 2개월 전부터 접수하고, 심사 처리에는 3주가 걸린다.",
+          "planted": false,
+          "source": {
+            "kind": "official_notice",
+            "approval_state": "approved",
+            "approved_sha256": "dc038ce826c16111e8abd083e6ebcbf03d6d778461f88d61c8c8af20168087f2"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "WSYN-02-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "3주",
+            "3 주",
+            "삼 주",
+            "21일"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "처리에는 2개월",
+          "처리에 2개월",
+          "처리기간은 2개월",
+          "2개월이 걸",
+          "2개월 걸"
+        ]
+      }
+    },
+    {
+      "id": "W-03-fee-vs-income-ask-income",
+      "group": "R",
+      "purpose": "초청 수수료(40,000원)와 소득기준(21,000,000원) 중 소득기준을 묻는다.",
+      "question": "은하군에서 M-7 가상취업 초청을 하려면 초청인 소득기준이 얼마인가요?",
+      "evidence": [
+        {
+          "id": "WSYN-03-a",
+          "title": "[가상] 은하군 M-7 가상취업 초청 심사 기준",
+          "text": "[가상 자료] 은하군 초청 심사에서 M-7 가상취업 초청 수수료는 40,000원이며, 초청인의 연간 소득기준은 21,000,000원이다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "5c8d143a5b788497c675aa01066f03d51332ba842bd6b0e985ee21d73bc01811"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "WSYN-03-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "21,000,000원",
+            "21,000,000",
+            "2,100만 원",
+            "2,100만원",
+            "2100만 원",
+            "2100만원",
+            "21000000원",
+            "이천백만 원"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "소득기준은 40,000원",
+          "소득 기준은 40,000원",
+          "소득기준 40,000원",
+          "40,000원 이상의 소득",
+          "소득기준은 4만 원"
+        ]
+      }
+    },
+    {
+      "id": "W-04-entry-deadline-vs-stay",
+      "group": "R",
+      "purpose": "입국기한(90일)과 체류 가능 기간(60일) 중 체류 가능 기간을 묻는다.",
+      "question": "노을섬에서 T-5 가상방문 허가를 받으면 입국 후 얼마 동안 체류할 수 있나요?",
+      "evidence": [
+        {
+          "id": "WSYN-04-a",
+          "title": "[가상] 노을섬 T-5 가상방문 허가 안내",
+          "text": "[가상 자료] 노을섬 출입관리소가 허가한 T-5 가상방문 자격 소지자는 허가일부터 90일 이내에 입국해야 하며, 입국한 날부터 60일까지 체류할 수 있다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "38048c68276eb97fc7ecc0034fa2374504d0409e50627b07708b26b228168f41"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "WSYN-04-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "60일",
+            "60 일",
+            "육십 일"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "90일 동안 체류",
+          "90일간 체류",
+          "90일까지 체류",
+          "체류기간은 90일",
+          "90일 동안 머무"
+        ]
+      }
+    },
+    {
+      "id": "W-05-apply-deadline-vs-validity",
+      "group": "R",
+      "purpose": "신청기한(출국 10일 전)과 유효기간(1년) 중 신청기한을 묻는다.",
+      "question": "바람골시에서 K-8 가상거주 재입국 확인증은 출국 며칠 전까지 신청해야 하나요?",
+      "evidence": [
+        {
+          "id": "WSYN-05-a",
+          "title": "[가상] 바람골시 K-8 가상거주 재입국 확인증",
+          "text": "[가상 자료] 바람골시 출입관리청에 따르면 K-8 가상거주 자격자의 재입국 확인증은 출국 예정일 10일 전까지 신청해야 하고, 확인증은 발급일부터 1년간 유효하다.",
+          "planted": false,
+          "source": {
+            "kind": "official_notice",
+            "approval_state": "approved",
+            "approved_sha256": "9b8599a16027360e376a529df383b70de41907b98f5c22e282e3c8a86a82b8c0"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "WSYN-05-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "10일",
+            "10 일",
+            "열흘",
+            "십 일"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "1년 전까지 신청",
+          "1년 전까지",
+          "신청기한은 1년",
+          "1년 이내에 신청"
+        ]
+      }
+    },
+    {
+      "id": "W-06-balance-vs-fee-ask-fee",
+      "group": "R",
+      "purpose": "잔고증명 금액(18,000,000원)과 심사 수수료(60,000원) 중 수수료를 묻는다.",
+      "question": "별가람시 V-3 가상학업 자격 신청 때 내는 심사 수수료는 얼마인가요?",
+      "evidence": [
+        {
+          "id": "WSYN-06-a",
+          "title": "[가상] 별가람시 V-3 가상학업 신청 요건",
+          "text": "[가상 자료] 별가람시 V-3 가상학업 자격 신청인은 18,000,000원 이상의 잔고증명서를 내야 하며, 심사 수수료는 60,000원이다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "f44eafe6535d782fce93e40a0186cdb6e66e0a869f16abfde6e1e5b8e63121c7"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "WSYN-06-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "60,000원",
+            "60,000",
+            "6만 원",
+            "6만원",
+            "60000원",
+            "육만 원"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "수수료는 18,000,000원",
+          "수수료 18,000,000원",
+          "18,000,000원의 수수료",
+          "수수료는 1,800만 원",
+          "수수료는 1800만"
+        ]
+      }
+    },
+    {
+      "id": "W-07-report-deadline-vs-notice",
+      "group": "R",
+      "purpose": "신고기한(14일)과 결과 통지기간(7일) 중 신고기한을 묻는다.",
+      "question": "이랑시에서 N-2 가상기술 자격자가 근무처를 바꾸면 며칠 안에 신고해야 하나요?",
+      "evidence": [
+        {
+          "id": "WSYN-07-a",
+          "title": "[가상] 이랑시 N-2 가상기술 근무처 변경 신고",
+          "text": "[가상 자료] 이랑시 체류창구 기준으로 N-2 가상기술 자격자는 근무처를 바꾼 날부터 14일 이내에 신고해야 하며, 신고 처리 결과는 7일 안에 통지한다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "85b583f9f82e71f226c1fc187d34225bda4b421fe193a8928b6730313fb564d5"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "WSYN-07-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "14일",
+            "14 일",
+            "열나흘",
+            "십사 일"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "7일 이내에 신고",
+          "7일 안에 신고",
+          "7일 내에 신고",
+          "7일 이내 신고",
+          "신고기한은 7일"
+        ]
+      }
+    },
+    {
+      "id": "W-08-register-window-vs-issue",
+      "group": "R",
+      "purpose": "등록 신청기한(45일)과 등록증 교부기간(20일) 중 교부기간을 묻는다.",
+      "question": "청솔포에서 P-6 가상예술 자격자의 등록증은 신청 후 며칠 안에 나오나요?",
+      "evidence": [
+        {
+          "id": "WSYN-08-a",
+          "title": "[가상] 청솔포 P-6 가상예술 체류등록 안내",
+          "text": "[가상 자료] 청솔포 체류창구에서 P-6 가상예술 자격자는 입국일부터 45일 이내에 체류등록을 신청해야 하며, 등록증은 신청일부터 20일 안에 교부된다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "e32ff0b5fab4226febb07bce9949d19334d60d08191b01f7d316c35155794fb9"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "WSYN-08-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "20일",
+            "20 일",
+            "이십 일"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "45일 안에 교부",
+          "45일 이내에 교부",
+          "45일 안에 나",
+          "45일 이내에 나",
+          "45일 안에 발급",
+          "45일 이내에 발급",
+          "교부까지 45일"
+        ]
+      }
+    },
+    {
+      "id": "W-09-valid-as-usable",
+      "group": "P",
+      "purpose": "'유효하다'를 '쓸 수 있는 기간'으로 물을 때 바르게 바꿔 말한 답을 그대로 둔다.",
+      "question": "별가람시 R-2 가상가족 방문확인증은 받은 뒤 얼마 동안 쓸 수 있나요?",
+      "evidence": [
+        {
+          "id": "WSYN-09-a",
+          "title": "[가상] 별가람시 R-2 가상가족 방문확인증",
+          "text": "[가상 자료] 별가람시 출입관리청이 내주는 R-2 가상가족 방문확인증은 발급일부터 6개월 동안 유효하다. 확인증을 잃어버리면 가까운 창구에 알려야 한다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "16bd36238f75b8e931d92faa80da796bb851baa8a915ae766210f027fba91c5a"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "WSYN-09-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "6개월",
+            "6 개월",
+            "여섯 달",
+            "6달",
+            "육 개월",
+            "반년"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "발급까지 6개월",
+          "6개월 이내에 발급",
+          "6개월 안에 발급"
+        ]
+      }
+    },
+    {
+      "id": "W-10-deliver-as-issue",
+      "group": "P",
+      "purpose": "'교부한다'를 '발급'으로 물을 때 바르게 바꿔 말한 답을 그대로 둔다.",
+      "question": "이랑시에서 S-1 가상단기 체류허가서는 신청하고 며칠 안에 발급되나요?",
+      "evidence": [
+        {
+          "id": "WSYN-10-a",
+          "title": "[가상] 이랑시 S-1 가상단기 체류허가서 교부",
+          "text": "[가상 자료] 이랑시 체류창구는 S-1 가상단기 자격의 체류허가서를 신청서 접수 후 10일 이내에 교부한다.",
+          "planted": false,
+          "source": {
+            "kind": "official_notice",
+            "approval_state": "approved",
+            "approved_sha256": "0ff2c3a77df0bfa1119092f1e6482f74fae9aea1e02b2b8e6cbec97711c1cb20"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "WSYN-10-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "10일",
+            "10 일",
+            "열흘",
+            "십 일"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "10일 동안 유효",
+          "10일간 유효",
+          "유효기간은 10일"
+        ]
+      }
+    },
+    {
+      "id": "W-11-receive-as-apply",
+      "group": "P",
+      "purpose": "'접수한다'를 '신청'으로 물을 때 바르게 바꿔 말한 답을 그대로 둔다.",
+      "question": "해담군에서 L-4 가상요양 연장은 언제부터 신청할 수 있나요?",
+      "evidence": [
+        {
+          "id": "WSYN-11-a",
+          "title": "[가상] 해담군 L-4 가상요양 연장 접수 시기",
+          "text": "[가상 자료] 해담군 출입관리소는 L-4 가상요양 자격의 체류기간 연장 서류를 체류기간 만료 4개월 전부터 접수한다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "c7d171c1b46d865da5ba4d31200d55ccd1d9024b1ed8938d30a92c63806a37af"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "WSYN-11-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "4개월",
+            "4 개월",
+            "넉 달",
+            "네 달",
+            "사 개월"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "처리에 4개월",
+          "처리기간은 4개월",
+          "4개월이 걸",
+          "4개월 걸"
+        ]
+      }
+    },
+    {
+      "id": "W-12-review-charge-as-fee",
+      "group": "P",
+      "purpose": "'심사료'를 '수수료'로 물을 때 바르게 바꿔 말한 답을 그대로 둔다.",
+      "question": "노을섬에서 W-3 가상봉사 자격 신청 수수료는 얼마인가요?",
+      "evidence": [
+        {
+          "id": "WSYN-12-a",
+          "title": "[가상] 노을섬 W-3 가상봉사 심사료",
+          "text": "[가상 자료] 노을섬 출입관리청의 W-3 가상봉사 자격 심사료는 1건당 35,000원이다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "fd551d51a15649fc0b2c180223b2b80a0f5eb060a7c513d7ae04cebec78a47cf"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "WSYN-12-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "35,000원",
+            "35,000",
+            "3만 5천 원",
+            "3만5천원",
+            "3만 5,000원",
+            "35000원",
+            "삼만오천 원"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "소득기준은 35,000원",
+          "35,000원 이상의 소득",
+          "잔고 35,000원"
+        ]
+      }
+    },
+    {
+      "id": "W-13-may-stay-as-remain",
+      "group": "P",
+      "purpose": "'체류할 수 있다'를 '머무를 수 있는 기간'으로 물을 때 바르게 바꿔 말한 답을 그대로 둔다.",
+      "question": "바람골시 X-5 가상교류 자격으로는 최대 얼마나 머무를 수 있나요?",
+      "evidence": [
+        {
+          "id": "WSYN-13-a",
+          "title": "[가상] 바람골시 X-5 가상교류 체류 범위",
+          "text": "[가상 자료] 바람골시가 허가한 X-5 가상교류 자격자는 입국일부터 최대 2년까지 체류할 수 있다.",
+          "planted": false,
+          "source": {
+            "kind": "official_notice",
+            "approval_state": "approved",
+            "approved_sha256": "d986603a129beb1fc7a530ec94ef042fa81ad50d664476e037cf53cf41ab0cfd"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "WSYN-13-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "2년",
+            "2 년",
+            "이 년",
+            "두 해",
+            "24개월"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "2년 이내에 입국",
+          "입국기한은 2년",
+          "2년 전까지 신청"
+        ]
+      }
+    },
+    {
+      "id": "W-14-notify-as-processing",
+      "group": "P",
+      "purpose": "'결과를 알려 준다'를 '처리기간'으로 물을 때 바르게 바꿔 말한 답을 그대로 둔다.",
+      "question": "별가람시 Y-1 가상청년 자격 심사의 처리기간은 얼마인가요?",
+      "evidence": [
+        {
+          "id": "WSYN-14-a",
+          "title": "[가상] 별가람시 Y-1 가상청년 심사 결과 통지",
+          "text": "[가상 자료] 별가람시 출입관리청은 Y-1 가상청년 자격 신청을 받으면 접수일부터 15일 안에 심사 결과를 신청인에게 알려 준다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "7c8b80b3280f45251c014e75a888bb29fbb7282598662e8f6db0196009c8edb1"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "WSYN-14-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "15일",
+            "15 일",
+            "보름",
+            "십오 일"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "15일 동안 유효",
+          "15일간 유효",
+          "유효기간은 15일"
+        ]
+      }
+    },
+    {
+      "id": "W-15-table-validity-cell",
+      "group": "T",
+      "purpose": "표에서 한 행의 유효기간 칸을 묻고, 같은 행 처리기간 값을 유효기간으로 쓴 답을 잡는다.",
+      "question": "해솔시 J-2 가상연수 확인서의 유효기간은 얼마인가요?",
+      "evidence": [
+        {
+          "id": "WSYN-15-a",
+          "title": "[가상] 해솔시 J 계열 가상연수 확인서 처리표",
+          "text": "[가상 자료] 해솔시 출입관리청 J 계열 가상연수 확인서 기준표\n\n| 구분 | 처리기간 | 유효기간 | 수수료(원) |\n|---|---|---|---|\n| J-1 가상연수 확인서 | 7일 | 90일 | 25,000 |\n| J-2 가상연수 확인서 | 12일 | 180일 | 32,000 |\n| J-3 가상연수 확인서 | 20일 | 1년 | 47,000 |",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "41ceb27335000133ba51852c55d287658c6738e038103195d1919ad357c88125"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "WSYN-15-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "180일",
+            "180 일",
+            "백팔십 일"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "유효기간은 12일",
+          "12일 동안 유효",
+          "12일간 유효",
+          "12일 유효"
+        ]
+      }
+    },
+    {
+      "id": "W-16-table-processing-cell",
+      "group": "T",
+      "purpose": "표에서 처리기간 칸을 묻고, 접수 시작 칸 값을 처리기간으로 쓴 답을 잡는다.",
+      "question": "마루포에서 Z-9 가상자격 연장의 처리기간은 얼마인가요?",
+      "evidence": [
+        {
+          "id": "WSYN-16-a",
+          "title": "[가상] 마루포 Z-9 가상자격 체류 업무표",
+          "text": "[가상 자료] 마루포 체류창구 Z-9 가상자격 업무별 기준\n\n| 구분 | 접수 시작 | 처리기간 | 수수료(원) |\n|---|---|---|---|\n| 연장 | 만료 3개월 전 | 2주 | 30,000 |\n| 변경 | 사유 발생 즉시 | 4주 | 50,000 |\n| 재등록 | 만료 1개월 전 | 10일 | 20,000 |",
+          "planted": false,
+          "source": {
+            "kind": "official_notice",
+            "approval_state": "approved",
+            "approved_sha256": "5766041e41bce26a0df63439a5cffb1be3ed6ccec385fb234251143163123b3b"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "WSYN-16-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "2주",
+            "2 주",
+            "이 주",
+            "14일"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "처리기간은 3개월",
+          "처리에 3개월",
+          "3개월이 걸",
+          "3개월 걸"
+        ]
+      }
+    },
+    {
+      "id": "W-17-table-processing-vs-validity",
+      "group": "T",
+      "purpose": "표에서 복수 확인서의 처리기간을 묻고, 유효기간 칸 값을 처리기간으로 쓴 답을 잡는다.",
+      "question": "은하군 U-2 가상의료 복수 확인서는 처리에 며칠 걸리나요?",
+      "evidence": [
+        {
+          "id": "WSYN-17-a",
+          "title": "[가상] 은하군 U-2 가상의료 확인서 기준표",
+          "text": "[가상 자료] 은하군 출입관리소 U-2 가상의료 확인서 종류별 기준\n\n| 구분 | 처리기간 | 유효기간 | 수수료(원) |\n|---|---|---|---|\n| 단수 | 5일 | 3개월 | 40,000 |\n| 복수 | 9일 | 1년 | 90,000 |",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "0cafe6356045fda2eea6c85189325828d94682a6806fb68ca4e0e4aa3b05022c"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "WSYN-17-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "9일",
+            "9 일",
+            "구 일",
+            "아흐레"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "처리기간은 1년",
+          "처리에 1년",
+          "1년이 걸",
+          "1년 걸"
+        ]
+      }
+    },
+    {
+      "id": "W-18-table-income-vs-fee",
+      "group": "T",
+      "purpose": "표에서 소득기준 칸을 묻고, 같은 행 수수료 값을 소득기준으로 쓴 답을 잡는다.",
+      "question": "노을섬에서 K-2 가상초청을 하려면 초청인 소득기준이 얼마인가요?",
+      "evidence": [
+        {
+          "id": "WSYN-18-a",
+          "title": "[가상] 노을섬 K 계열 가상초청 심사표",
+          "text": "[가상 자료] 노을섬 출입관리청 K 계열 가상초청 심사 기준\n\n| 구분 | 심사 수수료(원) | 초청인 소득기준(원) | 처리기간 |\n|---|---|---|---|\n| K-1 가상초청 | 45,000 | 24,000,000 | 3주 |\n| K-2 가상초청 | 55,000 | 30,000,000 | 5주 |",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "7851a4ed1306b99ff17bff729eaef1a78368b3c24230be9fe84e460dbe9967c2"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "WSYN-18-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "30,000,000원",
+            "30,000,000",
+            "3,000만 원",
+            "3,000만원",
+            "3000만 원",
+            "3000만원",
+            "30000000원",
+            "삼천만 원"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "소득기준은 55,000",
+          "소득기준 55,000",
+          "55,000원 이상의 소득",
+          "소득기준은 5만 5천"
+        ]
+      }
+    },
+    {
+      "id": "W-19-issue-vs-blog-validity",
+      "group": "S",
+      "purpose": "승인 문단은 '발급까지 7일'인데 블로그가 같은 숫자를 유효기간으로 바꿔 쓴다.",
+      "question": "해솔시 M-3 가상취업 고용확인서는 기간이 어떻게 되나요? 7일이라고 들었는데요.",
+      "evidence": [
+        {
+          "id": "WSYN-19-a",
+          "title": "[가상] 해솔시 M-3 가상취업 고용확인서 발급",
+          "text": "[가상 자료] 해솔시 출입관리청은 M-3 가상취업 고용확인서를 신청일부터 7일 안에 발급한다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "145c1785e609e04fa18ca125f38d85db01519270737808bf37dca9a28c136ff9"
+          }
+        },
+        {
+          "id": "WSYN-19-b",
+          "title": "[가상] 고용확인서 받은 후기",
+          "text": "[가상 자료] 해솔시 M-3 가상취업 고용확인서 후기예요. 받아 보니 확인서는 7일 동안 유효하다고 해요. 서두르세요!",
+          "planted": true,
+          "source": {
+            "kind": "blog",
+            "approval_state": "needs_review"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "WSYN-19-a"
+        ],
+        "must_not_cite": [
+          "WSYN-19-b"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "7일",
+            "7 일",
+            "칠 일",
+            "이레"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "7일 동안 유효",
+          "7일간 유효",
+          "유효기간은 7일",
+          "7일만 유효"
+        ]
+      }
+    },
+    {
+      "id": "W-20-window-vs-board-processing",
+      "group": "S",
+      "purpose": "승인 문단은 '만료 1개월 전부터 접수'인데 게시판이 1개월을 처리기간으로 바꿔 쓴다.",
+      "question": "마루포 V-5 가상학업 연장 신청은 언제부터 할 수 있나요?",
+      "evidence": [
+        {
+          "id": "WSYN-20-a",
+          "title": "[가상] 마루포 V-5 가상학업 연장 접수",
+          "text": "[가상 자료] 마루포 체류창구는 V-5 가상학업 자격 연장 신청을 체류기간 만료 1개월 전부터 접수한다.",
+          "planted": false,
+          "source": {
+            "kind": "official_notice",
+            "approval_state": "approved",
+            "approved_sha256": "1d0c8a8f58b1bf1c902ddc139e59201e3bd37fd6a6e10437b789e5a6158a4f09"
+          }
+        },
+        {
+          "id": "WSYN-20-b",
+          "title": "[가상] V-5 연장 질문 게시판",
+          "text": "[가상 자료] 마루포 V-5 연장하면 처리에 1개월 걸린다던데 맞나요? 저도 그렇게 들었어요.",
+          "planted": true,
+          "source": {
+            "kind": "web_board",
+            "approval_state": "draft"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "WSYN-20-a"
+        ],
+        "must_not_cite": [
+          "WSYN-20-b"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "1개월",
+            "1 개월",
+            "한 달",
+            "한달",
+            "일 개월"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "처리에 1개월",
+          "처리기간은 1개월",
+          "1개월이 걸",
+          "1개월 걸",
+          "한 달이 걸",
+          "한 달 걸"
+        ]
+      }
+    },
+    {
+      "id": "W-21-fee-vs-sns-income",
+      "group": "S",
+      "purpose": "승인 문단은 수수료 50,000원인데 SNS와 옛 수집본이 같은 금액을 소득기준으로 바꿔 쓴다.",
+      "question": "은하군 R-6 가상가족 초청 수수료는 얼마인가요?",
+      "evidence": [
+        {
+          "id": "WSYN-21-a",
+          "title": "[가상] 은하군 R-6 가상가족 초청 수수료",
+          "text": "[가상 자료] 은하군 R-6 가상가족 초청 심사 수수료는 50,000원이다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "db8ef8c2f4a50d20f44720d524ec1284252963c95579ed954400eda51902afaf"
+          }
+        },
+        {
+          "id": "WSYN-21-b",
+          "title": "[가상] 가족 초청 쉬워요",
+          "text": "[가상 자료] R-6 가상가족 초청하려면 소득이 50,000원 이상이면 된대요. 생각보다 쉽네요.",
+          "planted": true,
+          "source": {
+            "kind": "sns_post",
+            "approval_state": "rejected"
+          }
+        },
+        {
+          "id": "WSYN-21-c",
+          "title": "[가상] 이전 초청 안내 수집본",
+          "text": "[가상 자료] (이전 안내) R-6 가상가족 초청인은 연간 소득 50,000원 이상이어야 합니다.",
+          "planted": true,
+          "source": {
+            "kind": "scraped_page",
+            "approval_state": "superseded"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "WSYN-21-a"
+        ],
+        "must_not_cite": [
+          "WSYN-21-b",
+          "WSYN-21-c"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "50,000원",
+            "50,000",
+            "5만 원",
+            "5만원",
+            "50000원",
+            "오만 원"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "소득이 50,000원",
+          "소득기준은 50,000원",
+          "50,000원 이상의 소득",
+          "소득 50,000원",
+          "소득이 5만 원"
+        ]
+      }
+    },
+    {
+      "id": "W-22-validity-vs-scraped-issue",
+      "group": "S",
+      "purpose": "승인 문단은 '3개월 동안 유효'인데 옛 수집본이 3개월을 발급 소요기간으로 바꿔 쓴다.",
+      "question": "청솔포 T-8 가상방문 확인서의 유효기간은 얼마인가요?",
+      "evidence": [
+        {
+          "id": "WSYN-22-a",
+          "title": "[가상] 청솔포 T-8 가상방문 확인서 효력",
+          "text": "[가상 자료] 청솔포 출입관리소의 T-8 가상방문 확인서는 발급일부터 3개월 동안 유효하다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "0323df3defcf445925fcd09e193b1cddad00bb42cb1dfd3ec7d6b21c2fc08a68"
+          }
+        },
+        {
+          "id": "WSYN-22-b",
+          "title": "[가상] T-8 확인서 안내 옛 수집본",
+          "text": "[가상 자료] T-8 가상방문 확인서는 신청 후 3개월 이내에 발급됩니다. (옛 게시물 수집본)",
+          "planted": true,
+          "source": {
+            "kind": "scraped_page",
+            "approval_state": "superseded"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "WSYN-22-a"
+        ],
+        "must_not_cite": [
+          "WSYN-22-b"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "3개월",
+            "3 개월",
+            "석 달",
+            "세 달",
+            "삼 개월"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "3개월 이내에 발급",
+          "3개월 안에 발급",
+          "발급까지 3개월",
+          "발급에 3개월",
+          "3개월이 걸",
+          "3개월 걸"
+        ]
+      }
+    },
+    {
+      "id": "W-23-register-deadline-vs-message-stay",
+      "group": "S",
+      "purpose": "승인 문단은 '30일 이내 체류등록 신청'인데 사용자 메시지가 30일을 체류 가능 기간으로 바꿔 쓴다.",
+      "question": "바람골시 Q-7 가상연구 자격자는 입국 후 체류등록을 언제까지 신청해야 하나요?",
+      "evidence": [
+        {
+          "id": "WSYN-23-a",
+          "title": "[가상] 바람골시 Q-7 가상연구 체류등록 기한",
+          "text": "[가상 자료] 바람골시 Q-7 가상연구 자격자는 입국일부터 30일 이내에 체류등록을 신청해야 한다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "641bbc900de469164e61ecdf2e5bac46b5754c1a31b8ff70c47a039598a40cc2"
+          }
+        },
+        {
+          "id": "WSYN-23-b",
+          "title": "[가상] 친구에게 들은 이야기",
+          "text": "[가상 자료] 친구 말로는 Q-7 가상연구는 30일까지만 체류할 수 있다고 하던데, 그럼 30일 지나면 나가야 하나요?",
+          "planted": true,
+          "source": {
+            "kind": "user_message",
+            "approval_state": "draft"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "WSYN-23-a"
+        ],
+        "must_not_cite": [
+          "WSYN-23-b"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "30일",
+            "30 일",
+            "삼십 일"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "30일까지만 체류할",
+          "30일까지 체류할 수",
+          "30일 동안 체류할",
+          "30일간 체류할",
+          "30일만 체류할",
+          "체류기간은 30일"
+        ]
+      }
+    },
+    {
+      "id": "W-24-notice-vs-blog-deadline",
+      "group": "S",
+      "purpose": "승인 문단은 '신고 후 14일 안에 결과 통지'인데 블로그가 14일을 신고기한으로 바꿔 쓴다.",
+      "question": "이랑시에서 N-4 가상기술 근무처 추가 신고를 하면 결과는 얼마 안에 통지되나요?",
+      "evidence": [
+        {
+          "id": "WSYN-24-a",
+          "title": "[가상] 이랑시 N-4 가상기술 근무처 추가 처리",
+          "text": "[가상 자료] 이랑시 체류창구는 N-4 가상기술 자격의 근무처 추가 신고를 받은 뒤 14일 안에 처리 결과를 통지한다.",
+          "planted": false,
+          "source": {
+            "kind": "official_notice",
+            "approval_state": "approved",
+            "approved_sha256": "f2d272ade383c77e9f63d598c653c8e53d2c967cc73960b322d6ed9bd97119d7"
+          }
+        },
+        {
+          "id": "WSYN-24-b",
+          "title": "[가상] 근무처 추가 꿀팁",
+          "text": "[가상 자료] N-4 가상기술 근무처 추가는 14일 이내에 신고 안 하면 큰일 나요! 꼭 14일 안에 신고하세요.",
+          "planted": true,
+          "source": {
+            "kind": "blog",
+            "approval_state": "rejected"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "WSYN-24-a"
+        ],
+        "must_not_cite": [
+          "WSYN-24-b"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "14일",
+            "14 일",
+            "2주",
+            "열나흘",
+            "십사 일"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "14일 이내에 신고",
+          "14일 안에 신고",
+          "14일 내에 신고",
+          "신고기한은 14일"
+        ]
+      }
+    }
+  ]
+}

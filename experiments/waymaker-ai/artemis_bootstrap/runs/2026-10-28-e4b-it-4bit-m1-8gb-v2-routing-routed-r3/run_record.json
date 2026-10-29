@@ -1,0 +1,1857 @@
+{
+  "kind": "artemis_bootstrap_smoke",
+  "started_utc": "2026-10-27T18:09:05+00:00",
+  "machine": {
+    "model": "MacBookAir10,1",
+    "chip": "Apple M1",
+    "memory_bytes": 8589934592,
+    "macos": "15.6.1",
+    "python": "3.11.15"
+  },
+  "versions": {
+    "mlx": "0.32.4",
+    "mlx-metal": "0.32.4",
+    "mlx-lm": "0.32.2",
+    "transformers": "5.20.2",
+    "huggingface-hub": "2.3.0",
+    "tokenizers": "0.23.3"
+  },
+  "device": {
+    "device_name": "Apple M1",
+    "max_recommended_working_set_size": 5726633984,
+    "memory_size": 8589934592,
+    "architecture": "applegpu_g13g",
+    "max_buffer_length": 4294967296,
+    "resource_limit": 499000
+  },
+  "swap_before": "total = 4096.00M  used = 2648.25M  free = 1447.75M  (encrypted)",
+  "free_disk_gb_before": 10.55,
+  "cases_file": "manual_routing_cases.v2.json",
+  "cases_sha256": "1066018e48baf4c6b263a914f24b4c5244227c4dc220307b1084d32315f377bc",
+  "detector_on_labelled_evidence": null,
+  "decoding": {
+    "temperature": 0.0,
+    "max_tokens": 400,
+    "enable_thinking": false
+  },
+  "evidence_guard": "off",
+  "source_gate": true,
+  "integrity": true,
+  "route": true,
+  "clarify": false,
+  "always_ask": false,
+  "cross_check": false,
+  "label_switch": false,
+  "post_check": "applied offline to every output when the cases carry source labels",
+  "prompts_persisted": false,
+  "status": "completed",
+  "stage": "done",
+  "model": {
+    "repo": "mlx-community/gemma-4-e4b-it-4bit",
+    "revision": "475b9088d29754a3379866cf5aeb6b41acd313c2",
+    "size_class_from_weights": "E4B",
+    "quantization": {
+      "group_size": 64,
+      "bits": 4,
+      "mode": "affine"
+    },
+    "loader": "mlx_lm.load (text tower only; vision/audio weights dropped by mlx_lm sanitize)",
+    "base_model": "google/gemma-4-E4B-it",
+    "source_revision": "fee6332c1abaafb77f6f9624236c63aa2f1d0187",
+    "license_in_card": "gemma"
+  },
+  "load_seconds": 5.62,
+  "memory_after_load_gb": 4.201,
+  "results": [
+    {
+      "case": "N-01-c1-visa-attachments",
+      "prompt_sha256": "d514f6bd43fd31ce0f3e5e66bb7867c6a4d690bb773867c688171375bc895b0c",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "visa_issuance",
+          "사증발급"
+        ]
+      ],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "partial",
+        "answer": "일시취재(C-1) 사증을 신청할 때 첨부해야 할 서류는 다음과 같습니다:\n\n1. 사증발급신청서 (별지 제17호 서식), 여권, 표준규격사진 1매, 수수료\n2. 소속회사의 파견증명서, 재직증명서 또는 외신보도증\n\n재외공관의 장은 입국목적, 초청의 진정성, 초청자 및 피초청자의 자격 확인 등을 심사하기 위해 필요한 경우 첨부서류를 일부 가감할 수 있습니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p25"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1842,
+      "prompt_tps": 147.17,
+      "generation_tokens": 195,
+      "generation_tps": 13.82,
+      "finish_reason": "stop",
+      "wall_seconds": 30.29,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"일시취재(C-1) 사증을 신청할 때 첨부해야 할 서류는 다음과 같습니다:\\n\\n1. 사증발급신청서 (별지 제17호 서식), 여권, 표준규격사진 1매, 수수료\\n2. 소속회사의 파견증명서, 재직증명서 또는 외신보도증\\n\\n재외공관의 장은 입국목적, 초청의 진정성, 초청자 및 피초청자의 자격 확인 등을 심사하기 위해 필요한 경우 첨부서류를 일부 가감할 수 있습니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p25\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "partial",
+        "answer": "일시취재(C-1) 사증을 신청할 때 첨부해야 할 서류는 다음과 같습니다:\n\n1. 사증발급신청서 (별지 제17호 서식), 여권, 표준규격사진 1매, 수수료\n2. 소속회사의 파견증명서, 재직증명서 또는 외신보도증\n\n재외공관의 장은 입국목적, 초청의 진정성, 초청자 및 피초청자의 자격 확인 등을 심사하기 위해 필요한 경우 첨부서류를 일부 가감할 수 있습니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p25"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "document",
+            "text": "사증발급신청서"
+          },
+          {
+            "kind": "document",
+            "text": "여권"
+          },
+          {
+            "kind": "document",
+            "text": "표준규격사진"
+          },
+          {
+            "kind": "document",
+            "text": "파견증명서"
+          },
+          {
+            "kind": "document",
+            "text": "재직증명서"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "partial",
+          "answer": "일시취재(C-1) 사증을 신청할 때 첨부해야 할 서류는 다음과 같습니다:\n\n1. 사증발급신청서 (별지 제17호 서식), 여권, 표준규격사진 1매, 수수료\n2. 소속회사의 파견증명서, 재직증명서 또는 외신보도증\n\n재외공관의 장은 입국목적, 초청의 진정성, 초청자 및 피초청자의 자격 확인 등을 심사하기 위해 필요한 경우 첨부서류를 일부 가감할 수 있습니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p25"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "N-02-d5-alien-registration-docs",
+      "prompt_sha256": "34dcda8f3ec0dc151fc777022fb2453ea2a65cfeb9a54f7ea480aed466cafec9",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "체류 절차(질문에 명시)"
+        ]
+      ],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "partial",
+        "answer": "D-5 자격으로 입국하신 경우, 체류 기간을 연장하거나 외국인등록을 할 때 필요한 서류에 대한 정보가 있습니다. 체류 기간을 연장하려면 본사의 취재명령서 또는 파견증명서, 외신 도증 사본 또는 본사발생 재직증명서 등을 준비해야 합니다. 외국인등록 시에는 신청서(별지34호 서식), 여권 원본, 표준규격사진 1장, 수수료가 필요합니다. 다만, 외국인등록 시 지국이나 지사의 설치허가증 또는 사업자등록증이 필요하며, 국내에 지국/지사가 없거나 증명 발급이 어려운 외신은 주무부처(문화체육관광부 해외문화홍보원)의 협조공문으로 갈음할 수 있습니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p103",
+          "stay_manual_2026_10_19_pdf#p26"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 1642,
+      "prompt_tps": 135.48,
+      "generation_tokens": 263,
+      "generation_tps": 13.97,
+      "finish_reason": "stop",
+      "wall_seconds": 31.09,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"D-5 자격으로 입국하신 경우, 체류 기간을 연장하거나 외국인등록을 할 때 필요한 서류에 대한 정보가 있습니다. 체류 기간을 연장하려면 본사의 취재명령서 또는 파견증명서, 외신 도증 사본 또는 본사발생 재직증명서 등을 준비해야 합니다. 외국인등록 시에는 신청서(별지34호 서식), 여권 원본, 표준규격사진 1장, 수수료가 필요합니다. 다만, 외국인등록 시 지국이나 지사의 설치허가증 또는 사업자등록증이 필요하며, 국내에 지국/지사가 없거나 증명 발급이 어려운 외신은 주무부처(문화체육관광부 해외문화홍보원)의 협조공문으로 갈음할 수 있습니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p103\",\n    \"stay_manual_2026_10_19_pdf#p26\"\n  ]\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "partial",
+        "answer": "D-5 자격으로 입국하신 경우, 체류 기간을 연장하거나 외국인등록을 할 때 필요한 서류에 대한 정보가 있습니다. 체류 기간을 연장하려면 본사의 취재명령서 또는 파견증명서, 외신 도증 사본 또는 본사발생 재직증명서 등을 준비해야 합니다. 외국인등록 시에는 신청서(별지34호 서식), 여권 원본, 표준규격사진 1장, 수수료가 필요합니다. 다만, 외국인등록 시 지국이나 지사의 설치허가증 또는 사업자등록증이 필요하며, 국내에 지국/지사가 없거나 증명 발급이 어려운 외신은 주무부처(문화체육관광부 해외문화홍보원)의 협조공문으로 갈음할 수 있습니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p103",
+          "stay_manual_2026_10_19_pdf#p26"
+        ]
+      },
+      "failures": [
+        "missing_citation:stay_manual_2026_10_19_pdf#p105"
+      ],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "document",
+            "text": "파견증명서"
+          },
+          {
+            "kind": "document",
+            "text": "사본"
+          },
+          {
+            "kind": "document",
+            "text": "재직증명서"
+          },
+          {
+            "kind": "document",
+            "text": "신청서"
+          },
+          {
+            "kind": "document",
+            "text": "여권"
+          },
+          {
+            "kind": "document",
+            "text": "표준규격사진"
+          },
+          {
+            "kind": "document",
+            "text": "사업자등록증"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "partial",
+          "answer": "D-5 자격으로 입국하신 경우, 체류 기간을 연장하거나 외국인등록을 할 때 필요한 서류에 대한 정보가 있습니다. 체류 기간을 연장하려면 본사의 취재명령서 또는 파견증명서, 외신 도증 사본 또는 본사발생 재직증명서 등을 준비해야 합니다. 외국인등록 시에는 신청서(별지34호 서식), 여권 원본, 표준규격사진 1장, 수수료가 필요합니다. 다만, 외국인등록 시 지국이나 지사의 설치허가증 또는 사업자등록증이 필요하며, 국내에 지국/지사가 없거나 증명 발급이 어려운 외신은 주무부처(문화체육관광부 해외문화홍보원)의 협조공문으로 갈음할 수 있습니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p103",
+            "stay_manual_2026_10_19_pdf#p26"
+          ]
+        },
+        "failures": [
+          "missing_citation:stay_manual_2026_10_19_pdf#p105"
+        ],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "other",
+      "outcome_checked": "other"
+    },
+    {
+      "case": "N-03-d9-equipment-visa-docs",
+      "prompt_sha256": "e4c8e3c3b6fd3983e7e5d463e71b39194c9e8a8f08d4238942f3fe9eac793264",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p94",
+        "visa_manual_2026_10_19_pdf#p118",
+        "visa_manual_2026_10_19_pdf#p70"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "insufficient_evidence",
+        "citations": [],
+        "answer": "승인된 공식 근거가 없어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 294,
+      "prompt_tps": 109.01,
+      "generation_tokens": 43,
+      "generation_tps": 14.51,
+      "finish_reason": "stop",
+      "wall_seconds": 5.72,
+      "output": "```json\n{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"제공된 근거에는 해당 정보가 없습니다.\",\n  \"citations\": []\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 해당 정보가 없습니다.",
+        "citations": []
+      },
+      "failures": [
+        "status:insufficient_evidence≠answered|partial",
+        "missing_citation:visa_manual_2026_10_19_pdf#p118",
+        "answer_missing_pattern:설비도입계약서 또는 산업설비도입 입증서류"
+      ],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "no_trusted_evidence",
+        "claims": [],
+        "unsupported": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "citations": [],
+          "answer": "승인된 공식 근거가 없어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+        },
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p118",
+          "answer_missing_pattern:설비도입계약서 또는 산업설비도입 입증서류"
+        ],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "safe_abstain",
+      "outcome_checked": "safe_abstain"
+    },
+    {
+      "case": "N-04-d3-extension-docs",
+      "prompt_sha256": "f176333fd73f67b6a253b746f258eb94fe8a9666fa94957aaddb59563178864d",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "체류 절차(질문에 명시)"
+        ]
+      ],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "partial",
+        "answer": "기술연수생의 체류기간 연장허가를 신청할 때 필요한 서류는 다음과 같습니다. 신청서(별지34호 서식), 여권원본, 외국인등록증, 수수료가 필요하며, 연수기간 연장신청 사유서(별도서식)도 필요합니다. 다만, 근거에는 최초 6개월 초과 시 입국한 날부터 2년 범위 내에서 연장허가가 가능하며, 연장 여부는 연수기간연장의 필요성, 과거이탈율, 범법사항 등을 확인하여 결정한다고 명시되어 있습니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p56"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 2353,
+      "prompt_tps": 130.76,
+      "generation_tokens": 185,
+      "generation_tps": 12.84,
+      "finish_reason": "stop",
+      "wall_seconds": 32.49,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"기술연수생의 체류기간 연장허가를 신청할 때 필요한 서류는 다음과 같습니다. 신청서(별지34호 서식), 여권원본, 외국인등록증, 수수료가 필요하며, 연수기간 연장신청 사유서(별도서식)도 필요합니다. 다만, 근거에는 최초 6개월 초과 시 입국한 날부터 2년 범위 내에서 연장허가가 가능하며, 연장 여부는 연수기간연장의 필요성, 과거이탈율, 범법사항 등을 확인하여 결정한다고 명시되어 있습니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p56\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "partial",
+        "answer": "기술연수생의 체류기간 연장허가를 신청할 때 필요한 서류는 다음과 같습니다. 신청서(별지34호 서식), 여권원본, 외국인등록증, 수수료가 필요하며, 연수기간 연장신청 사유서(별도서식)도 필요합니다. 다만, 근거에는 최초 6개월 초과 시 입국한 날부터 2년 범위 내에서 연장허가가 가능하며, 연장 여부는 연수기간연장의 필요성, 과거이탈율, 범법사항 등을 확인하여 결정한다고 명시되어 있습니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p56"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "6개월"
+          },
+          {
+            "kind": "period",
+            "text": "2년"
+          },
+          {
+            "kind": "document",
+            "text": "신청서"
+          },
+          {
+            "kind": "document",
+            "text": "여권"
+          },
+          {
+            "kind": "document",
+            "text": "외국인등록증"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "partial",
+          "answer": "기술연수생의 체류기간 연장허가를 신청할 때 필요한 서류는 다음과 같습니다. 신청서(별지34호 서식), 여권원본, 외국인등록증, 수수료가 필요하며, 연수기간 연장신청 사유서(별도서식)도 필요합니다. 다만, 근거에는 최초 6개월 초과 시 입국한 날부터 2년 범위 내에서 연장허가가 가능하며, 연장 여부는 연수기간연장의 필요성, 과거이탈율, 범법사항 등을 확인하여 결정한다고 명시되어 있습니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p56"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "N-05-h1-uk-visa-validity",
+      "prompt_sha256": "d3149492c84d1c366ab81a54b5ad5af71d191a435fcf0f1f5424c97df135cf94",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "체류 절차(질문에 명시)"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p351",
+        "visa_manual_2026_10_19_pdf#p347",
+        "visa_manual_2026_10_19_pdf#p14"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "insufficient_evidence",
+        "citations": [],
+        "answer": "승인된 공식 근거가 없어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 287,
+      "prompt_tps": 111.06,
+      "generation_tokens": 71,
+      "generation_tps": 14.07,
+      "finish_reason": "stop",
+      "wall_seconds": 7.72,
+      "output": "```json\n{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"제공된 근거에는 영국 국적자가 워킹홀리데이(H-1) 비자를 받았을 때의 유효기간이나 체류기간에 대한 정보가 없습니다.\",\n  \"citations\": []\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 영국 국적자가 워킹홀리데이(H-1) 비자를 받았을 때의 유효기간이나 체류기간에 대한 정보가 없습니다.",
+        "citations": []
+      },
+      "failures": [
+        "status:insufficient_evidence≠answered|partial",
+        "missing_citation:visa_manual_2026_10_19_pdf#p347",
+        "answer_missing_pattern:영국 H-1 사증 유효기간 2년(24개월)",
+        "answer_missing_pattern:영국 H-1 체류기간 2년(24개월)"
+      ],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "no_trusted_evidence",
+        "claims": [],
+        "unsupported": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "citations": [],
+          "answer": "승인된 공식 근거가 없어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+        },
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p347",
+          "answer_missing_pattern:영국 H-1 사증 유효기간 2년(24개월)",
+          "answer_missing_pattern:영국 H-1 체류기간 2년(24개월)"
+        ],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "safe_abstain",
+      "outcome_checked": "safe_abstain"
+    },
+    {
+      "case": "N-06-h1-canada-weekly-hours",
+      "prompt_sha256": "2329ddac1f123ca61ab3f24dd47dcbbeff97a6aafd58c605c744a38faca25039",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "활동범위"
+        ]
+      ],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "H-1 비자 소지자의 경우, 상대 국가에서 우리 국민 대상 취업 기간을 변동한 경우 상호주의에 따라 동일하게 취업 기간을 변동하며, 1주당 최대 취업 가능 시간은 25시간 이내입니다. 캐나다의 경우 H-1 체류 기간은 40시간으로 2,080시간(40시간×52주)입니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p524"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 2246,
+      "prompt_tps": 107.14,
+      "generation_tokens": 149,
+      "generation_tps": 11.37,
+      "finish_reason": "stop",
+      "wall_seconds": 34.17,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"H-1 비자 소지자의 경우, 상대 국가에서 우리 국민 대상 취업 기간을 변동한 경우 상호주의에 따라 동일하게 취업 기간을 변동하며, 1주당 최대 취업 가능 시간은 25시간 이내입니다. 캐나다의 경우 H-1 체류 기간은 40시간으로 2,080시간(40시간×52주)입니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p524\"\n  ]\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "answered",
+        "answer": "H-1 비자 소지자의 경우, 상대 국가에서 우리 국민 대상 취업 기간을 변동한 경우 상호주의에 따라 동일하게 취업 기간을 변동하며, 1주당 최대 취업 가능 시간은 25시간 이내입니다. 캐나다의 경우 H-1 체류 기간은 40시간으로 2,080시간(40시간×52주)입니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p524"
+        ]
+      },
+      "failures": [
+        "answer_missing_pattern:주당 40시간(캐나다)",
+        "answer_contradicts:40시간을 체류기간으로 씀"
+      ],
+      "flags": [
+        "flag:캐나다 언급 없이 25시간 상한을 씀"
+      ],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "1주"
+          },
+          {
+            "kind": "period",
+            "text": "52주"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "answered",
+          "answer": "H-1 비자 소지자의 경우, 상대 국가에서 우리 국민 대상 취업 기간을 변동한 경우 상호주의에 따라 동일하게 취업 기간을 변동하며, 1주당 최대 취업 가능 시간은 25시간 이내입니다. 캐나다의 경우 H-1 체류 기간은 40시간으로 2,080시간(40시간×52주)입니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p524"
+          ]
+        },
+        "failures": [
+          "answer_missing_pattern:주당 40시간(캐나다)",
+          "answer_contradicts:40시간을 체류기간으로 씀"
+        ],
+        "flags": [
+          "flag:캐나다 언급 없이 25시간 상한을 씀"
+        ],
+        "needs_review": false
+      },
+      "outcome_raw": "harmful",
+      "outcome_checked": "harmful"
+    },
+    {
+      "case": "N-07-e8-farm-allocation-cap",
+      "prompt_sha256": "a7d22a4ae5b7a8cf2aec5b1b8900611e37adabe3f14e1dec4e973475753f8521",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p285",
+        "visa_manual_2026_10_19_pdf#p51",
+        "visa_manual_2026_10_19_pdf#p279"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "insufficient_evidence",
+        "citations": [],
+        "answer": "승인된 공식 근거가 없어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 291,
+      "prompt_tps": 95.3,
+      "generation_tokens": 60,
+      "generation_tps": 13.68,
+      "finish_reason": "stop",
+      "wall_seconds": 7.54,
+      "output": "```json\n{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"제공된 근거에는 한 농가에 배정 가능한 외국인 계절근로자의 최대 인원에 대한 정보가 없습니다.\",\n  \"citations\": []\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 한 농가에 배정 가능한 외국인 계절근로자의 최대 인원에 대한 정보가 없습니다.",
+        "citations": []
+      },
+      "failures": [
+        "status:insufficient_evidence≠answered|partial",
+        "missing_citation:visa_manual_2026_10_19_pdf#p279",
+        "answer_missing_one_of:연간 최대 14명|14명"
+      ],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "no_trusted_evidence",
+        "claims": [],
+        "unsupported": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "citations": [],
+          "answer": "승인된 공식 근거가 없어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+        },
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p279",
+          "answer_missing_one_of:연간 최대 14명|14명"
+        ],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "safe_abstain",
+      "outcome_checked": "safe_abstain"
+    },
+    {
+      "case": "N-08-g1-wage-arrears-eligibility",
+      "prompt_sha256": "9c91967a13d12e528f84b834bf1859db4bd77b6554521a473e8048ade6a786ed",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "체류 절차(질문에 명시)"
+        ]
+      ],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "임금체불로 노동관서에서 중재 중인 경우, 기타(G-1) 자격의 <법무부장관이 인정하는 사람의 범위>에 해당될 수 있습니다. 한 번에 부여할 수 있는 체류기간 상한은 1년입니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p508"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 2009,
+      "prompt_tps": 114.71,
+      "generation_tokens": 118,
+      "generation_tps": 10.56,
+      "finish_reason": "stop",
+      "wall_seconds": 28.79,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"임금체불로 노동관서에서 중재 중인 경우, 기타(G-1) 자격의 <법무부장관이 인정하는 사람의 범위>에 해당될 수 있습니다. 한 번에 부여할 수 있는 체류기간 상한은 1년입니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p508\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "임금체불로 노동관서에서 중재 중인 경우, 기타(G-1) 자격의 <법무부장관이 인정하는 사람의 범위>에 해당될 수 있습니다. 한 번에 부여할 수 있는 체류기간 상한은 1년입니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p508"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "1년"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "임금체불로 노동관서에서 중재 중인 경우, 기타(G-1) 자격의 <법무부장관이 인정하는 사람의 범위>에 해당될 수 있습니다. 한 번에 부여할 수 있는 체류기간 상한은 1년입니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p508"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "N-09-c1-extension-limit",
+      "prompt_sha256": "154642ff866ec46b379fa0a3d6d64663fc77f25168c33519224b17d47f12a226",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "체류 절차(질문에 명시)"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p25"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "입국일로부터 90일까지 체류할 수 있습니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p26"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 610,
+      "prompt_tps": 103.83,
+      "generation_tokens": 70,
+      "generation_tps": 13.98,
+      "finish_reason": "stop",
+      "wall_seconds": 10.96,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"입국일로부터 90일까지 체류할 수 있습니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p26\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "입국일로부터 90일까지 체류할 수 있습니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p26"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "90일"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "입국일로부터 90일까지 체류할 수 있습니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p26"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "N-10-d5-consular-visa-bureau-docs",
+      "prompt_sha256": "5eadc7787c7e2561525045c1d70de92a374ef28c999a54a228bf57bb075820d2",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "visa_issuance",
+          "사증발급"
+        ]
+      ],
+      "route_withheld": [
+        "stay_manual_2026_10_19_pdf#p105"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "국내 지국 또는 지사가 이미 개설된 경우, ① 국내 지국․지사 설치허가증이나 국내 지국․지사 운영자금 도입실적 증빙 서류가 필요합니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p90"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 815,
+      "prompt_tps": 97.96,
+      "generation_tokens": 101,
+      "generation_tps": 11.9,
+      "finish_reason": "stop",
+      "wall_seconds": 16.91,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"국내 지국 또는 지사가 이미 개설된 경우, ① 국내 지국․지사 설치허가증이나 국내 지국․지사 운영자금 도입실적 증빙 서류가 필요합니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p90\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "국내 지국 또는 지사가 이미 개설된 경우, ① 국내 지국․지사 설치허가증이나 국내 지국․지사 운영자금 도입실적 증빙 서류가 필요합니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p90"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "국내 지국 또는 지사가 이미 개설된 경우, ① 국내 지국․지사 설치허가증이나 국내 지국․지사 운영자금 도입실적 증빙 서류가 필요합니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p90"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "N-11-e8-registration-drug-test",
+      "prompt_sha256": "252c5fec6fdf59fb417dad00ee368cc7c01413b0288f1a36fe459c2b9212e745",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "체류 절차(질문에 명시)"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p279"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "partial",
+        "answer": "계절근로(E-8)으로 취업 활동을 하려는 경우, 외국인등록 시 제출 서류 중 마약검사 확인서를 제출해야 합니다. 마약검사는 법무부장관 지정 의료기관 또는 ｢지역보건법｣에 따라 설립된 보건소 및 보건의료원에서 실시할 수 있습니다. 보험 관련해서는 산재보험 가입증명원(사업장 가입 신청 입증서류) 또는 농·어업인 안전보험 보험증권(안전보험 가입 확약서) 중 하나를 제출해야 합니다. 또한, 여행자보험 가입증명서도 제출해야 합니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p326"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 970,
+      "prompt_tps": 101.23,
+      "generation_tokens": 197,
+      "generation_tps": 9.2,
+      "finish_reason": "stop",
+      "wall_seconds": 31.1,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"계절근로(E-8)으로 취업 활동을 하려는 경우, 외국인등록 시 제출 서류 중 마약검사 확인서를 제출해야 합니다. 마약검사는 법무부장관 지정 의료기관 또는 ｢지역보건법｣에 따라 설립된 보건소 및 보건의료원에서 실시할 수 있습니다. 보험 관련해서는 산재보험 가입증명원(사업장 가입 신청 입증서류) 또는 농·어업인 안전보험 보험증권(안전보험 가입 확약서) 중 하나를 제출해야 합니다. 또한, 여행자보험 가입증명서도 제출해야 합니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p326\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "partial",
+        "answer": "계절근로(E-8)으로 취업 활동을 하려는 경우, 외국인등록 시 제출 서류 중 마약검사 확인서를 제출해야 합니다. 마약검사는 법무부장관 지정 의료기관 또는 ｢지역보건법｣에 따라 설립된 보건소 및 보건의료원에서 실시할 수 있습니다. 보험 관련해서는 산재보험 가입증명원(사업장 가입 신청 입증서류) 또는 농·어업인 안전보험 보험증권(안전보험 가입 확약서) 중 하나를 제출해야 합니다. 또한, 여행자보험 가입증명서도 제출해야 합니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p326"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "document",
+            "text": "확인서"
+          },
+          {
+            "kind": "document",
+            "text": "가입증명서"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "partial",
+          "answer": "계절근로(E-8)으로 취업 활동을 하려는 경우, 외국인등록 시 제출 서류 중 마약검사 확인서를 제출해야 합니다. 마약검사는 법무부장관 지정 의료기관 또는 ｢지역보건법｣에 따라 설립된 보건소 및 보건의료원에서 실시할 수 있습니다. 보험 관련해서는 산재보험 가입증명원(사업장 가입 신청 입증서류) 또는 농·어업인 안전보험 보험증권(안전보험 가입 확약서) 중 하나를 제출해야 합니다. 또한, 여행자보험 가입증명서도 제출해야 합니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p326"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "N-12-d6-welfare-consular-visa-docs",
+      "prompt_sha256": "d72cb8698210c436eaae1d6ac45b88323a35e1c75c0d88c8be7feb03fa043d96",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "활동범위"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p92"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 비자 신청 시 필요한 서류 목록에 대한 정보가 포함되어 있지 않습니다.",
+        "citations": []
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 785,
+      "prompt_tps": 79.84,
+      "generation_tokens": 55,
+      "generation_tps": 9.39,
+      "finish_reason": "stop",
+      "wall_seconds": 15.78,
+      "output": "```json\n{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"제공된 근거에는 비자 신청 시 필요한 서류 목록에 대한 정보가 포함되어 있지 않습니다.\",\n  \"citations\": []\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 비자 신청 시 필요한 서류 목록에 대한 정보가 포함되어 있지 않습니다.",
+        "citations": []
+      },
+      "failures": [
+        "status:insufficient_evidence≠answered|partial",
+        "missing_citation:visa_manual_2026_10_19_pdf#p92",
+        "answer_missing_pattern:파견명령서(dispatch order)",
+        "answer_missing_pattern:종교·사회복지단체 설립허가서(establishment permit)"
+      ],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "answer": "제공된 근거에는 비자 신청 시 필요한 서류 목록에 대한 정보가 포함되어 있지 않습니다.",
+          "citations": []
+        },
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p92",
+          "answer_missing_pattern:파견명령서(dispatch order)",
+          "answer_missing_pattern:종교·사회복지단체 설립허가서(establishment permit)"
+        ],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "safe_abstain",
+      "outcome_checked": "safe_abstain"
+    },
+    {
+      "case": "N-13-d9-university-lecture-docs",
+      "prompt_sha256": "4a581fc962485f45ad1ce2b1a1495e7eb805805956387e20d5f89ac48630bf89",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "활동범위"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p118"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "partial",
+        "answer": "D-9(무역경영) 자격 소지자가 국내 기업에서 상근이사 이상의 직으로 근무하면서 대학에서 강의 활동을 하려는 경우, 총 제출 서류는 다음과 같습니다: ①신청서(별지 34호 서식), 여권 및 외국인등록증, 수수료 ②총 제출서류 (학)장의 추천서 ③고유번호증(사업자등록증)사본 ④고용계약서원본 및 사본 ⑤원근무처장의 동의서",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p131"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 904,
+      "prompt_tps": 79.13,
+      "generation_tokens": 169,
+      "generation_tps": 8.94,
+      "finish_reason": "stop",
+      "wall_seconds": 30.42,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"D-9(무역경영) 자격 소지자가 국내 기업에서 상근이사 이상의 직으로 근무하면서 대학에서 강의 활동을 하려는 경우, 총 제출 서류는 다음과 같습니다: ①신청서(별지 34호 서식), 여권 및 외국인등록증, 수수료 ②총 제출서류 (학)장의 추천서 ③고유번호증(사업자등록증)사본 ④고용계약서원본 및 사본 ⑤원근무처장의 동의서\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p131\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "partial",
+        "answer": "D-9(무역경영) 자격 소지자가 국내 기업에서 상근이사 이상의 직으로 근무하면서 대학에서 강의 활동을 하려는 경우, 총 제출 서류는 다음과 같습니다: ①신청서(별지 34호 서식), 여권 및 외국인등록증, 수수료 ②총 제출서류 (학)장의 추천서 ③고유번호증(사업자등록증)사본 ④고용계약서원본 및 사본 ⑤원근무처장의 동의서",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p131"
+        ]
+      },
+      "failures": [],
+      "flags": [
+        "flag:OCR 병합 '총 제출서류 (학)장'을 서류명으로 옮김"
+      ],
+      "needs_review": true,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "document",
+            "text": "신청서"
+          },
+          {
+            "kind": "document",
+            "text": "여권"
+          },
+          {
+            "kind": "document",
+            "text": "외국인등록증"
+          },
+          {
+            "kind": "document",
+            "text": "사업자등록증"
+          },
+          {
+            "kind": "document",
+            "text": "사본"
+          },
+          {
+            "kind": "document",
+            "text": "고용계약서"
+          },
+          {
+            "kind": "document",
+            "text": "사본"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "partial",
+          "answer": "D-9(무역경영) 자격 소지자가 국내 기업에서 상근이사 이상의 직으로 근무하면서 대학에서 강의 활동을 하려는 경우, 총 제출 서류는 다음과 같습니다: ①신청서(별지 34호 서식), 여권 및 외국인등록증, 수수료 ②총 제출서류 (학)장의 추천서 ③고유번호증(사업자등록증)사본 ④고용계약서원본 및 사본 ⑤원근무처장의 동의서",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p131"
+          ]
+        },
+        "failures": [],
+        "flags": [
+          "flag:OCR 병합 '총 제출서류 (학)장'을 서류명으로 옮김"
+        ],
+        "needs_review": true
+      },
+      "outcome_raw": "needs_review",
+      "outcome_checked": "needs_review"
+    },
+    {
+      "case": "N-14-f6-consular-visa-90days",
+      "prompt_sha256": "b6151728c4a4676bd07a6c1477abbabf9cfee4c94b364f3a72adc0399d260426",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "visa_issuance",
+          "사증발급"
+        ]
+      ],
+      "route_withheld": [
+        "stay_manual_2026_10_19_pdf#p485"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "partial",
+        "answer": "국민의 배우자에 대해서는 체류기간 90일 이하의 단수사증에 한하여 재외 공관장의 권한으로 위임되어 있습니다. 따라서 재외공관에서는 체류기간 90일 이하의 결혼사증을 발급해야 합니다. 다만, 해당 외국인이 사증에 기재된 체류기간을 초과하여 체류하려면 우리나라에 입국한 후, 관할 출입국ㆍ외국인청(사무소ㆍ출장소)에서 체류기간연장허가를 받으면 됩니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p338"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 802,
+      "prompt_tps": 77.21,
+      "generation_tokens": 176,
+      "generation_tps": 8.43,
+      "finish_reason": "stop",
+      "wall_seconds": 31.38,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"국민의 배우자에 대해서는 체류기간 90일 이하의 단수사증에 한하여 재외 공관장의 권한으로 위임되어 있습니다. 따라서 재외공관에서는 체류기간 90일 이하의 결혼사증을 발급해야 합니다. 다만, 해당 외국인이 사증에 기재된 체류기간을 초과하여 체류하려면 우리나라에 입국한 후, 관할 출입국ㆍ외국인청(사무소ㆍ출장소)에서 체류기간연장허가를 받으면 됩니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p338\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "partial",
+        "answer": "국민의 배우자에 대해서는 체류기간 90일 이하의 단수사증에 한하여 재외 공관장의 권한으로 위임되어 있습니다. 따라서 재외공관에서는 체류기간 90일 이하의 결혼사증을 발급해야 합니다. 다만, 해당 외국인이 사증에 기재된 체류기간을 초과하여 체류하려면 우리나라에 입국한 후, 관할 출입국ㆍ외국인청(사무소ㆍ출장소)에서 체류기간연장허가를 받으면 됩니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p338"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "90일"
+          },
+          {
+            "kind": "period",
+            "text": "90일"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "partial",
+          "answer": "국민의 배우자에 대해서는 체류기간 90일 이하의 단수사증에 한하여 재외 공관장의 권한으로 위임되어 있습니다. 따라서 재외공관에서는 체류기간 90일 이하의 결혼사증을 발급해야 합니다. 다만, 해당 외국인이 사증에 기재된 체류기간을 초과하여 체류하려면 우리나라에 입국한 후, 관할 출입국ㆍ외국인청(사무소ㆍ출장소)에서 체류기간연장허가를 받으면 됩니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p338"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "N-15-d1-extension-visa-pages-only",
+      "prompt_sha256": "9b8c79559ada72b6af437d25df6d56bc32ccf5801374476c4389aa00c6cd68a1",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "체류 절차(질문에 명시)"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p60",
+        "visa_manual_2026_10_19_pdf#p25"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "insufficient_evidence",
+        "citations": [],
+        "answer": "승인된 공식 근거가 없어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 290,
+      "prompt_tps": 63.93,
+      "generation_tokens": 74,
+      "generation_tps": 8.33,
+      "finish_reason": "stop",
+      "wall_seconds": 13.51,
+      "output": "```json\n{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"제공된 근거에는 문화예술(D-1) 자격으로 한국에 체류 중인 사람이 체류기간 연장허가 신청 시 필요한 서류에 대한 정보가 없습니다.\",\n  \"citations\": []\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 문화예술(D-1) 자격으로 한국에 체류 중인 사람이 체류기간 연장허가 신청 시 필요한 서류에 대한 정보가 없습니다.",
+        "citations": []
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "no_trusted_evidence",
+        "claims": [],
+        "unsupported": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "citations": [],
+          "answer": "승인된 공식 근거가 없어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "N-16-e10-cci-stay-pages-only",
+      "prompt_sha256": "3e548ada5940f46e753bb7874da582bade87c361013c091456b861cbc029f1ea",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "visa_issuance",
+          "사증발급"
+        ]
+      ],
+      "route_withheld": [
+        "stay_manual_2026_10_19_pdf#p338",
+        "stay_manual_2026_10_19_pdf#p340"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "insufficient_evidence",
+        "citations": [],
+        "answer": "승인된 공식 근거가 없어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 292,
+      "prompt_tps": 60.54,
+      "generation_tokens": 74,
+      "generation_tps": 9.26,
+      "finish_reason": "stop",
+      "wall_seconds": 12.91,
+      "output": "```json\n{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"제공된 근거에는 외국인 선원(E-10)을 고용하려는 선사가 사증발급인정서를 신청할 때 필요한 서류에 대한 정보가 없습니다.\",\n  \"citations\": []\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 외국인 선원(E-10)을 고용하려는 선사가 사증발급인정서를 신청할 때 필요한 서류에 대한 정보가 없습니다.",
+        "citations": []
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "no_trusted_evidence",
+        "claims": [],
+        "unsupported": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "citations": [],
+          "answer": "승인된 공식 근거가 없어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "N-17-d9-reentry-visa-pages-only",
+      "prompt_sha256": "487f87f0e9b8b517d0e2e1891334bf948ffe071996024d998fbdc1d445678d34",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "재입국허가"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p118",
+        "visa_manual_2026_10_19_pdf#p119"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "insufficient_evidence",
+        "citations": [],
+        "answer": "승인된 공식 근거가 없어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 299,
+      "prompt_tps": 70.24,
+      "generation_tokens": 81,
+      "generation_tps": 9.37,
+      "finish_reason": "stop",
+      "wall_seconds": 13.0,
+      "output": "```json\n{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"제공된 근거에는 D-9 신분 보유자가 한국을 떠나 18개월 동안 해외에 체류할 경우 재입국 허가서가 필요한지 또는 무엇을 제출해야 하는지에 대한 정보가 없습니다.\",\n  \"citations\": []\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 D-9 신분 보유자가 한국을 떠나 18개월 동안 해외에 체류할 경우 재입국 허가서가 필요한지 또는 무엇을 제출해야 하는지에 대한 정보가 없습니다.",
+        "citations": []
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "no_trusted_evidence",
+        "claims": [],
+        "unsupported": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "citations": [],
+          "answer": "승인된 공식 근거가 없어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "N-18-e9-cci-applicant-stay-pages-only",
+      "prompt_sha256": "94385513da4381d8102c0c3c74b58ca2661c54d31c180fa92249a8f2eb9eeadd",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "visa_issuance",
+          "사증발급"
+        ]
+      ],
+      "route_withheld": [
+        "stay_manual_2026_10_19_pdf#p328",
+        "stay_manual_2026_10_19_pdf#p329"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "insufficient_evidence",
+        "citations": [],
+        "answer": "승인된 공식 근거가 없어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 290,
+      "prompt_tps": 71.05,
+      "generation_tokens": 77,
+      "generation_tps": 9.03,
+      "finish_reason": "stop",
+      "wall_seconds": 12.68,
+      "output": "```json\n{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"제공된 근거에는 비전문취업(E-9) 근로자를 고용하려는 사업주가 사증발급인정서를 어느 관서에 신청해야 하는지에 대한 정보가 없습니다.\",\n  \"citations\": []\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 비전문취업(E-9) 근로자를 고용하려는 사업주가 사증발급인정서를 어느 관서에 신청해야 하는지에 대한 정보가 없습니다.",
+        "citations": []
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "no_trusted_evidence",
+        "claims": [],
+        "unsupported": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "citations": [],
+          "answer": "승인된 공식 근거가 없어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "N-19-e8-workplace-change-visa-pages-only",
+      "prompt_sha256": "4e774808965040e3f341ac104c08b5a4d7be9fa1540c370a5523f4d009d84597",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "활동범위"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p279",
+        "visa_manual_2026_10_19_pdf#p280"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "insufficient_evidence",
+        "citations": [],
+        "answer": "승인된 공식 근거가 없어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 297,
+      "prompt_tps": 71.43,
+      "generation_tokens": 77,
+      "generation_tps": 8.9,
+      "finish_reason": "stop",
+      "wall_seconds": 12.91,
+      "output": "```json\n{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"제공된 근거에는 계절근로(E-8) 계약이 고용주 잘못으로 해지된 후 다른 농가로 근무처를 변경하는 데 필요한 서류에 대한 정보가 없습니다.\",\n  \"citations\": []\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 계절근로(E-8) 계약이 고용주 잘못으로 해지된 후 다른 농가로 근무처를 변경하는 데 필요한 서류에 대한 정보가 없습니다.",
+        "citations": []
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "no_trusted_evidence",
+        "claims": [],
+        "unsupported": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "citations": [],
+          "answer": "승인된 공식 근거가 없어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "N-20-h1-austria-embassy-stay-pages-only",
+      "prompt_sha256": "cd48336fadc5c033f57cd5fa05f637ab86c8a964de9b96a184f3f0155e4959e2",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [
+        "stay_manual_2026_10_19_pdf#p524",
+        "stay_manual_2026_10_19_pdf#p525"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "insufficient_evidence",
+        "citations": [],
+        "answer": "승인된 공식 근거가 없어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 284,
+      "prompt_tps": 66.55,
+      "generation_tokens": 75,
+      "generation_tps": 8.63,
+      "finish_reason": "stop",
+      "wall_seconds": 13.06,
+      "output": "```json\n{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"제공된 근거에는 오스트리아 국적자가 한국 워킹 홀리데이(H-1) 비자를 신청할 수 있는 한국 대사관이나 영사관에 대한 정보가 없습니다.\",\n  \"citations\": []\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 오스트리아 국적자가 한국 워킹 홀리데이(H-1) 비자를 신청할 수 있는 한국 대사관이나 영사관에 대한 정보가 없습니다.",
+        "citations": []
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "no_trusted_evidence",
+        "claims": [],
+        "unsupported": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "citations": [],
+          "answer": "승인된 공식 근거가 없어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "N-21-b1-stay-longer-implicit",
+      "prompt_sha256": "c8584b8d3f511be839238d9d7f85bd5834ade65e19c64739a26ded7bf36fc884",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p14",
+        "stay_manual_2026_10_19_pdf#p24"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "insufficient_evidence",
+        "citations": [],
+        "answer": "승인된 공식 근거가 없어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 289,
+      "prompt_tps": 73.15,
+      "generation_tokens": 66,
+      "generation_tps": 8.37,
+      "finish_reason": "stop",
+      "wall_seconds": 11.94,
+      "output": "```json\n{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"제공된 근거에는 무비자로 한국에 입국한 후 체류 기간을 연장하거나 다른 자격으로 변경하는 것에 대한 정보가 없습니다.\",\n  \"citations\": []\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 무비자로 한국에 입국한 후 체류 기간을 연장하거나 다른 자격으로 변경하는 것에 대한 정보가 없습니다.",
+        "citations": []
+      },
+      "failures": [
+        "status:insufficient_evidence≠answered|partial",
+        "missing_citation:stay_manual_2026_10_19_pdf#p24",
+        "answer_missing_pattern:무사증 입국자는 원칙적으로 연장·변경 불가 또는 사증 발급 후 입국"
+      ],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "no_trusted_evidence",
+        "claims": [],
+        "unsupported": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "citations": [],
+          "answer": "승인된 공식 근거가 없어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+        },
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:stay_manual_2026_10_19_pdf#p24",
+          "answer_missing_pattern:무사증 입국자는 원칙적으로 연장·변경 불가 또는 사증 발급 후 입국"
+        ],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "safe_abstain",
+      "outcome_checked": "safe_abstain"
+    },
+    {
+      "case": "N-22-d3-trainee-invite-implicit",
+      "prompt_sha256": "41a2215a83ead23ab6733270ae3d03b355e5c9279356ab3c81a810ed215b9bec",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [
+        "stay_manual_2026_10_19_pdf#p56",
+        "visa_manual_2026_10_19_pdf#p70"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "insufficient_evidence",
+        "citations": [],
+        "answer": "승인된 공식 근거가 없어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 292,
+      "prompt_tps": 65.82,
+      "generation_tokens": 75,
+      "generation_tps": 8.26,
+      "finish_reason": "stop",
+      "wall_seconds": 13.61,
+      "output": "```json\n{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"제공된 근거에는 베트남 현지법인 생산직 직원들을 한국 본사 공장으로 초청하여 기술을 가르치기 위한 비자 발급 방법에 대한 정보가 없습니다.\",\n  \"citations\": []\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 베트남 현지법인 생산직 직원들을 한국 본사 공장으로 초청하여 기술을 가르치기 위한 비자 발급 방법에 대한 정보가 없습니다.",
+        "citations": []
+      },
+      "failures": [
+        "status:insufficient_evidence≠answered|partial",
+        "missing_citation:visa_manual_2026_10_19_pdf#p70",
+        "answer_missing_pattern:사증발급인정서"
+      ],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "no_trusted_evidence",
+        "claims": [],
+        "unsupported": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "citations": [],
+          "answer": "승인된 공식 근거가 없어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+        },
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p70",
+          "answer_missing_pattern:사증발급인정서"
+        ],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "safe_abstain",
+      "outcome_checked": "safe_abstain"
+    },
+    {
+      "case": "N-23-c4-seasonal-second-farm-implicit",
+      "prompt_sha256": "9ff6a3b38d591fcd6ffcdee6ebb41199525800822ce220932796aa24a8a0e4db",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "활동범위"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p51"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "partial",
+        "answer": "계절근로(C-4-1~4)의 경우, 근무처의 추가는 불가하며, 근무처를 변경하려면 지자체 담당자의 동반이 필요합니다. 근무처 변경 사유로는 ① 각종 조건 위반 시 고용주가 시정을 하지 않은 경우, ② 계절근로자의 귀책사유 없이 근로를 계속할 수 없는 경우, ③ 사회통념상 외국인 계절근로자가 최초 계약한 고용주의 작업장에서 근무를 할 수 없는 경우 등이 있습니다. 근무처 변경 시 제출 서류에는 통합신청서, 여권, 거주/숙소 제공 확인서, 표준근로계약서 사본, 산업재해보험가입 증명원 또는 농·어업인 안전보험 증서, 건강보험 가입증명원 또는 신청 입증서류(해당자만 제출), 계절근로자 배치 대상 고용주 확인서(지자체에서 새 고용주에게 발급) 등이 있습니다. 새로 변경된 고용주로 변경 시에는 신청 입증서류를 제출할 수 있습니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p29"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 879,
+      "prompt_tps": 69.91,
+      "generation_tokens": 290,
+      "generation_tps": 7.21,
+      "finish_reason": "stop",
+      "wall_seconds": 52.9,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"계절근로(C-4-1~4)의 경우, 근무처의 추가는 불가하며, 근무처를 변경하려면 지자체 담당자의 동반이 필요합니다. 근무처 변경 사유로는 ① 각종 조건 위반 시 고용주가 시정을 하지 않은 경우, ② 계절근로자의 귀책사유 없이 근로를 계속할 수 없는 경우, ③ 사회통념상 외국인 계절근로자가 최초 계약한 고용주의 작업장에서 근무를 할 수 없는 경우 등이 있습니다. 근무처 변경 시 제출 서류에는 통합신청서, 여권, 거주/숙소 제공 확인서, 표준근로계약서 사본, 산업재해보험가입 증명원 또는 농·어업인 안전보험 증서, 건강보험 가입증명원 또는 신청 입증서류(해당자만 제출), 계절근로자 배치 대상 고용주 확인서(지자체에서 새 고용주에게 발급) 등이 있습니다. 새로 변경된 고용주로 변경 시에는 신청 입증서류를 제출할 수 있습니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p29\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "partial",
+        "answer": "계절근로(C-4-1~4)의 경우, 근무처의 추가는 불가하며, 근무처를 변경하려면 지자체 담당자의 동반이 필요합니다. 근무처 변경 사유로는 ① 각종 조건 위반 시 고용주가 시정을 하지 않은 경우, ② 계절근로자의 귀책사유 없이 근로를 계속할 수 없는 경우, ③ 사회통념상 외국인 계절근로자가 최초 계약한 고용주의 작업장에서 근무를 할 수 없는 경우 등이 있습니다. 근무처 변경 시 제출 서류에는 통합신청서, 여권, 거주/숙소 제공 확인서, 표준근로계약서 사본, 산업재해보험가입 증명원 또는 농·어업인 안전보험 증서, 건강보험 가입증명원 또는 신청 입증서류(해당자만 제출), 계절근로자 배치 대상 고용주 확인서(지자체에서 새 고용주에게 발급) 등이 있습니다. 새로 변경된 고용주로 변경 시에는 신청 입증서류를 제출할 수 있습니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p29"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "document",
+            "text": "통합신청서"
+          },
+          {
+            "kind": "document",
+            "text": "여권"
+          },
+          {
+            "kind": "document",
+            "text": "확인서"
+          },
+          {
+            "kind": "document",
+            "text": "표준근로계약서"
+          },
+          {
+            "kind": "document",
+            "text": "사본"
+          },
+          {
+            "kind": "document",
+            "text": "확인서"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "partial",
+          "answer": "계절근로(C-4-1~4)의 경우, 근무처의 추가는 불가하며, 근무처를 변경하려면 지자체 담당자의 동반이 필요합니다. 근무처 변경 사유로는 ① 각종 조건 위반 시 고용주가 시정을 하지 않은 경우, ② 계절근로자의 귀책사유 없이 근로를 계속할 수 없는 경우, ③ 사회통념상 외국인 계절근로자가 최초 계약한 고용주의 작업장에서 근무를 할 수 없는 경우 등이 있습니다. 근무처 변경 시 제출 서류에는 통합신청서, 여권, 거주/숙소 제공 확인서, 표준근로계약서 사본, 산업재해보험가입 증명원 또는 농·어업인 안전보험 증서, 건강보험 가입증명원 또는 신청 입증서류(해당자만 제출), 계절근로자 배치 대상 고용주 확인서(지자체에서 새 고용주에게 발급) 등이 있습니다. 새로 변경된 고용주로 변경 시에는 신청 입증서류를 제출할 수 있습니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p29"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "N-24-d7-chinese-staff-multiple-visa-implicit",
+      "prompt_sha256": "36bf67533ba79009134ad8e300c8e839d491b32c4187e1ee6e9681414be6c430",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [
+        "stay_manual_2026_10_19_pdf#p109",
+        "visa_manual_2026_10_19_pdf#p94"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "insufficient_evidence",
+        "citations": [],
+        "answer": "승인된 공식 근거가 없어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 306,
+      "prompt_tps": 62.54,
+      "generation_tokens": 49,
+      "generation_tps": 7.51,
+      "finish_reason": "stop",
+      "wall_seconds": 11.54,
+      "output": "```json\n{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"제공된 근거에는 귀하의 질문에 답할 정보가 없습니다.\",\n  \"citations\": []\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 귀하의 질문에 답할 정보가 없습니다.",
+        "citations": []
+      },
+      "failures": [
+        "status:insufficient_evidence≠answered|partial",
+        "missing_citation:visa_manual_2026_10_19_pdf#p94",
+        "answer_missing_pattern:사증 유효기간 2년 이내",
+        "answer_missing_pattern:복수사증(multiple-entry)"
+      ],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "no_trusted_evidence",
+        "claims": [],
+        "unsupported": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "citations": [],
+          "answer": "승인된 공식 근거가 없어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+        },
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p94",
+          "answer_missing_pattern:사증 유효기간 2년 이내",
+          "answer_missing_pattern:복수사증(multiple-entry)"
+        ],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "safe_abstain",
+      "outcome_checked": "safe_abstain"
+    }
+  ],
+  "summary": {
+    "cases": 24,
+    "passed": 15,
+    "failed": 9,
+    "needs_review": 1,
+    "auto_correct": 14,
+    "outcomes_raw": {
+      "correct": 14,
+      "needs_review": 1,
+      "clarify": 0,
+      "safe_abstain": 7,
+      "harmful": 1,
+      "other": 1
+    },
+    "outcomes_checked": {
+      "correct": 14,
+      "needs_review": 1,
+      "clarify": 0,
+      "safe_abstain": 7,
+      "harmful": 1,
+      "other": 1
+    }
+  },
+  "peak_memory_gb": 5.019,
+  "max_rss_gb": 1.624,
+  "swap_after": "total = 4096.00M  used = 3010.00M  free = 1086.00M  (encrypted)",
+  "free_disk_gb_after": 10.52,
+  "finished_utc": "2026-10-27T18:17:14+00:00"
+}

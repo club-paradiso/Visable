@@ -1,0 +1,61 @@
+{
+  "version": "artemis-manual-misclick-v1-label-v2-k14-rerun",
+  "label_version": "v2",
+  "derived_from": {
+    "file": "label_v2/manual_misclick_cases.v2.json",
+    "sha256": "d6a13e5b78c4335ee9b3f4268de736fa27b2a9c8bc9ad47f60e1dac7e8ad8342",
+    "case_ids": [
+      "K-14-d8-4-where-to-apply-misclick"
+    ]
+  },
+  "notice": "K-14 한 문항만 v2 라벨·근거 쪽으로 다시 재기 위한 부분집합. 내용은 v2 파일의 K-14와 같다. 검증 보류.",
+  "cases": [
+    {
+      "id": "K-14-d8-4-where-to-apply-misclick",
+      "group": "W",
+      "purpose": "기술창업(D-8-4) 사증 신청 공관 — 체류 버튼 오선택",
+      "question": "I'm still in my home country and want to apply for a D-8-4 startup visa. Which Korean mission should I apply at?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p107",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 107,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p108",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 108,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p119",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 119,
+          "domain": "stay"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "visa_manual_2026_10_19_pdf#p108"
+        ],
+        "must_not_cite": [
+          "stay_manual_2026_10_19_pdf#p119"
+        ],
+        "answer_must_contain": [
+          "본국에 소재한 대한민국 공관"
+        ],
+        "answer_must_not_contain": [
+          "300점 중 60점"
+        ]
+      },
+      "user_choice": "stay_in_korea",
+      "confirm_choice": "visa_abroad",
+      "on_label": "switch"
+    }
+  ]
+}

@@ -1,0 +1,1121 @@
+{
+  "version": "artemis-manual-misclick-v1-label-v2",
+  "derived_from": {
+    "file": "manual_misclick_cases.json",
+    "sha256": "b04bb7f932884d8f16dc41463aecf3055b26be7fc7222af4c1135c157d357166"
+  },
+  "label_version": "v2",
+  "notice": "동결 원본의 라벨 버전 2. 같은 140개 ID와 순서를 유지하며, decisions.v2.json의 결정만 반영했다. 검증 보류: 라벨을 제공된 매뉴얼 쪽에 맞춘 것이며 법률 검증이나 사람 검토 완료가 아니다.",
+  "cases": [
+    {
+      "id": "K-01-c3-business-subcode",
+      "group": "P",
+      "purpose": "해외에서 상용 목적 단기방문 세부약호 확인",
+      "question": "다음 달 한국 거래처와 계약 상담을 하러 가려고 해요. APEC 카드도 있는데, 출장용 단기방문(C-3) 비자는 세부 약호가 뭔가요?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p27",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 27,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p30",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 30,
+          "domain": "stay"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "visa_manual_2026_10_19_pdf#p27"
+        ],
+        "must_not_cite": [
+          "stay_manual_2026_10_19_pdf#p30"
+        ],
+        "answer_must_match": [
+          {
+            "label": "C-3-4 세부약호",
+            "pattern": "C\\s*[-‐‑–]\\s*3\\s*[-‐‑–]\\s*4"
+          }
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "상용 방문 APEC카드 소지자를 C-3-3 의료관광으로도 안내",
+            "pattern": "(?:C\\s*-\\s*3\\s*-\\s*3[^.\\n]{0,15}(?:또는|이나|혹은|\\bor\\b)[^.\\n]{0,15}C\\s*-\\s*3\\s*-\\s*4|C\\s*-\\s*3\\s*-\\s*4[^.\\n]{0,15}(?:또는|이나|혹은|\\bor\\b)[^.\\n]{0,15}C\\s*-\\s*3\\s*-\\s*3)(?![^.\\n]{0,15}(?:아니|틀|잘못|오류))"
+          }
+        ]
+      },
+      "user_choice": "visa_abroad",
+      "confirm_choice": "visa_abroad",
+      "on_label": "keep"
+    },
+    {
+      "id": "K-02-e1-electronic-visa",
+      "group": "P",
+      "purpose": "교수(E-1) 전자사증 온라인 발급 여부",
+      "question": "I've been offered a professorship at a Korean university and I'm still overseas. Can I get the E-1 visa online without going to the embassy?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p138",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 138,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p168",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 168,
+          "domain": "stay"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "visa_manual_2026_10_19_pdf#p138"
+        ],
+        "must_not_cite": [
+          "stay_manual_2026_10_19_pdf#p168"
+        ],
+        "answer_must_match": [
+          {
+            "label": "전자사증 언급",
+            "pattern": "전자\\s*사증|(?i:e-?visa|electronic\\s+visa)"
+          },
+          {
+            "label": "공관 방문 없이 온라인 발급",
+            "pattern": "온라인|방문\\s*(?:하지\\s*않고|없이)|(?i:online|without\\s+(?:visiting|going\\s+to))"
+          }
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "E-1이 전자사증 대상이 아니라고 씀",
+            "pattern": "E\\s*-\\s*1[^.\\n]{0,30}(?:대상이\\s*아니|(?i:not\\s+eligible|is\\s*n[o']t\\s+eligible))"
+          }
+        ]
+      },
+      "user_choice": "visa_abroad",
+      "confirm_choice": "visa_abroad",
+      "on_label": "keep"
+    },
+    {
+      "id": "K-03-e6-minor-performer",
+      "group": "P",
+      "purpose": "예술흥행(E-6) 사증발급인정서 첨부서류",
+      "question": "해외 공연팀을 한국 공연장에 초청하려고 사증발급인정서를 준비 중이에요. 단원 중에 미성년자가 있으면 따로 내야 하는 서류가 있나요?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p166",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 166,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p210",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 210,
+          "domain": "stay"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "visa_manual_2026_10_19_pdf#p166"
+        ],
+        "must_not_cite": [
+          "stay_manual_2026_10_19_pdf#p210"
+        ],
+        "answer_must_match": [
+          {
+            "label": "미성년 피초청인의 법정대리인 동의서",
+            "pattern": "법정\\s*대리인\\s*(?:의\\s*)?동의서"
+          }
+        ]
+      },
+      "user_choice": "visa_abroad",
+      "confirm_choice": "visa_abroad",
+      "on_label": "keep"
+    },
+    {
+      "id": "K-04-f1-13-parent-quota",
+      "group": "P",
+      "purpose": "유학생 동반 부모(F-1-13) 사증 허용 인원",
+      "question": "아이가 한국 중학교 입학허가를 받았어요. 저희 부부는 아직 본국에 있는데, 동반 부모 비자는 아이 한 명당 몇 명까지 나오나요?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p298",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 298,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p343",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 343,
+          "domain": "stay"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "visa_manual_2026_10_19_pdf#p298"
+        ],
+        "must_not_cite": [
+          "stay_manual_2026_10_19_pdf#p343"
+        ],
+        "answer_must_match": [
+          {
+            "label": "유학생 1명당 1명",
+            "pattern": "(?:1|한)\\s*(?:명|인)\\s*당[^.\\n]{0,12}?(?:1|한)\\s*명"
+          }
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "1명당 2명 허용으로 씀",
+            "pattern": "(?:1|한)\\s*(?:명|인)\\s*당\\s*(?:2|두)\\s*명(?![^.\\n]{0,15}(?:아니|틀|잘못|오류|불가|않))"
+          }
+        ],
+        "answer_flag_if_match": [
+          {
+            "label": "부부 모두 발급 가능하다고 씀",
+            "pattern": "(?:부부|부모)\\s*(?:모두|둘\\s*다|두\\s*분\\s*(?:모두|다))[^.\\n]{0,20}(?:가능|발급|받을\\s*수)(?![^.\\n]{0,10}(?:없|않|불가))"
+          }
+        ]
+      },
+      "user_choice": "visa_abroad",
+      "confirm_choice": "visa_abroad",
+      "on_label": "keep"
+    },
+    {
+      "id": "K-05-f2-2-child-of-national",
+      "group": "P",
+      "purpose": "국민의 혼인관계 출생 자녀 거주(F-2-2) 사증",
+      "question": "My father is a Korean citizen and I was born during my parents' marriage. I live abroad. What F-2 visa can the consulate issue me, and how long is it valid?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p313",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 313,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p367",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 367,
+          "domain": "stay"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "visa_manual_2026_10_19_pdf#p313"
+        ],
+        "must_not_cite": [
+          "stay_manual_2026_10_19_pdf#p367"
+        ],
+        "answer_must_contain": [
+          "F-2-2",
+          "5년간 유효한"
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "5년 사증을 제외대상자에게 적용된다고 씀",
+            "pattern": "제외\\s*대상자?\\s*(?:에게|만|에\\s*한하여)[^.\\n]{0,6}(?:적용|해당|발급|받을)(?![^.\\n]{0,10}(?:지\\s*않|안\\s*되|않습니다|제한))"
+          }
+        ]
+      },
+      "user_choice": "visa_abroad",
+      "confirm_choice": "visa_abroad",
+      "on_label": "keep"
+    },
+    {
+      "id": "K-06-c3-3-medical-docs",
+      "group": "P",
+      "purpose": "의료관광(C-3-3) 단수사증 첨부서류",
+      "question": "My mother wants to come to Korea for treatment at a hospital she booked herself, without any medical-tourism agency. What documents does she need for her visa at the embassy?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p339",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 339,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p521",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 521,
+          "domain": "stay"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "visa_manual_2026_10_19_pdf#p339"
+        ],
+        "must_not_cite": [
+          "stay_manual_2026_10_19_pdf#p521"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "의사소견서",
+            "병원진단서",
+            "진단서"
+          ],
+          [
+            "예약 입증자료",
+            "예약 증빙",
+            "예약 확인"
+          ]
+        ]
+      },
+      "user_choice": "visa_abroad",
+      "confirm_choice": "visa_abroad",
+      "on_label": "keep"
+    },
+    {
+      "id": "K-07-e5-registration-change",
+      "group": "P",
+      "purpose": "외국인등록사항 변경신고 기한",
+      "question": "전문직업(E-5)으로 한국에서 일하고 있는데 여권을 새로 발급받았어요. 출입국에 언제까지 신고해야 하나요?",
+      "evidence": [
+        {
+          "id": "stay_manual_2026_10_19_pdf#p206",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 206,
+          "domain": "stay"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p164",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 164,
+          "domain": "visa_issuance"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "stay_manual_2026_10_19_pdf#p206"
+        ],
+        "must_not_cite": [
+          "visa_manual_2026_10_19_pdf#p164"
+        ],
+        "answer_must_match": [
+          {
+            "label": "15일 이내",
+            "pattern": "15\\s*일\\s*(?:이내|내|안에|안으로)"
+          },
+          {
+            "label": "기산점: 변경일",
+            "pattern": "(?:변경|바뀐|바꾼)\\s*(?:일|된\\s*날|한\\s*날|된\\s*날짜|날)\\s*(?:로\\s*)?부터|(?:재)?발급\\s*(?:받은|된)\\s*날\\s*(?:로\\s*)?부터"
+          }
+        ],
+        "answer_flag_if_match": [
+          {
+            "label": "입국일부터 15일로 씀",
+            "pattern": "입국\\s*(?:일|한\\s*날)\\s*(?:로\\s*)?부터\\s*15\\s*일"
+          }
+        ]
+      },
+      "user_choice": "stay_in_korea",
+      "confirm_choice": "stay_in_korea",
+      "on_label": "keep"
+    },
+    {
+      "id": "K-08-multiple-reentry",
+      "group": "P",
+      "purpose": "복수재입국허가 대상과 서류",
+      "question": "I'm a registered foreigner in Korea and will be away for about 18 months, returning before my stay expires. Which re-entry permit do I need?",
+      "evidence": [
+        {
+          "id": "stay_manual_2026_10_19_pdf#p427",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 427,
+          "domain": "stay"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p15",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 15,
+          "domain": "visa_issuance"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "stay_manual_2026_10_19_pdf#p427"
+        ],
+        "must_not_cite": [
+          "visa_manual_2026_10_19_pdf#p15"
+        ],
+        "answer_must_match": [
+          {
+            "label": "복수재입국허가",
+            "pattern": "복수\\s*재입국\\s*허가|(?i:multiple[\\s-]*re-?entry)"
+          },
+          {
+            "label": "2년 내 재입국",
+            "pattern": "2\\s*년\\s*(?:이내|내|안)|(?i:(?:two|2)\\s+years)"
+          }
+        ],
+        "answer_flag_if_match": [
+          {
+            "label": "영주(F-5) 언급 없이 재입국허가가 필요 없다고 씀",
+            "pattern": "(?:^|[.\\n])(?![^.\\n]*(?:영주|F-5|(?i:permanent)))[^.\\n]*(?:재입국\\s*허가[^.\\n]{0,10}(?:필요\\s*없|불필요|면제)|(?i:no\\s+re-?entry\\s+permit|not\\s+need\\s+a\\s+re-?entry))"
+          }
+        ]
+      },
+      "user_choice": "stay_in_korea",
+      "confirm_choice": "stay_in_korea",
+      "on_label": "keep"
+    },
+    {
+      "id": "K-09-e6-tryout-change",
+      "group": "P",
+      "purpose": "무사증 입국 운동선수의 예술흥행(E-6) 자격변경과 체류기간 기산일",
+      "question": "무사증으로 들어와서 프로팀 입단 테스트를 봤는데 합격했어요. 한국에서 바로 예술흥행(E-6)으로 바꿀 수 있나요? 체류기간은 언제부터 계산돼요?",
+      "evidence": [
+        {
+          "id": "stay_manual_2026_10_19_pdf#p211",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 211,
+          "domain": "stay"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p166",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 166,
+          "domain": "visa_issuance"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "stay_manual_2026_10_19_pdf#p211"
+        ],
+        "must_not_cite": [
+          "visa_manual_2026_10_19_pdf#p166"
+        ],
+        "answer_must_match": [
+          {
+            "label": "기산일은 입국일",
+            "pattern": "입국\\s*(?:일|한\\s*날|날짜)"
+          }
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "재량",
+            "불가피",
+            "국익",
+            "입증자료",
+            "입증 자료"
+          ]
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "자격변경일부터 기산한다고 씀",
+            "pattern": "(?:자격\\s*)?변경\\s*(?:허가\\s*)?(?:일|된\\s*날|한\\s*날)\\s*(?:을\\s*기준으로|기준|로\\s*부터|부터)(?![^.\\n]{0,15}(?:아니|틀|잘못|오류))"
+          },
+          {
+            "label": "입국일이 기산일이 아니라고 씀",
+            "pattern": "입국\\s*일\\s*이\\s*아닌"
+          }
+        ]
+      },
+      "user_choice": "stay_in_korea",
+      "confirm_choice": "stay_in_korea",
+      "on_label": "keep"
+    },
+    {
+      "id": "K-10-f1-ethnic-korean-activity",
+      "group": "P",
+      "purpose": "방문동거(F-1) 중국동포의 E-1~E-7 자격외 활동 서류",
+      "question": "방문동거(F-1)로 체류 중인 중국동포인데 회사에 전문직으로 취업하려고 해요. 체류자격외 활동허가 받으려면 뭘 내야 해요?",
+      "evidence": [
+        {
+          "id": "stay_manual_2026_10_19_pdf#p343",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 343,
+          "domain": "stay"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p298",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 298,
+          "domain": "visa_issuance"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "stay_manual_2026_10_19_pdf#p343"
+        ],
+        "must_not_cite": [
+          "visa_manual_2026_10_19_pdf#p298"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "고용추천서",
+            "고용필요성 입증서류",
+            "고용 필요성 입증"
+          ]
+        ]
+      },
+      "user_choice": "stay_in_korea",
+      "confirm_choice": "stay_in_korea",
+      "on_label": "keep"
+    },
+    {
+      "id": "K-11-a1-reentry-exemption",
+      "group": "P",
+      "purpose": "외교(A-1) 재입국허가 면제",
+      "question": "I'm a diplomat (A-1) posted in Seoul. If I fly home and come back within a year, do I need a re-entry permit?",
+      "evidence": [
+        {
+          "id": "stay_manual_2026_10_19_pdf#p17",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 17,
+          "domain": "stay"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p7",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 7,
+          "domain": "visa_issuance"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "stay_manual_2026_10_19_pdf#p17"
+        ],
+        "must_not_cite": [
+          "visa_manual_2026_10_19_pdf#p7"
+        ],
+        "answer_must_match": [
+          {
+            "label": "출국일부터 1년 이내",
+            "pattern": "1\\s*년\\s*(?:이내|내|안)|(?i:within\\s+(?:one|1|a)\\s+year)"
+          },
+          {
+            "label": "재입국허가 면제",
+            "pattern": "면제|필요\\s*(?:가\\s*)?없|불필요|(?i:exempt|not\\s+(?:need|required)|no\\s+need|do\\s*n[o']t\\s+need|does\\s*n[o']t\\s+need)"
+          }
+        ],
+        "answer_flag_if_match": [
+          {
+            "label": "1년 이내에도 재입국허가가 필요하다고 씀",
+            "pattern": "(?:반드시|꼭)[^.\\n]{0,20}재입국\\s*허가[^.\\n]{0,10}(?:받아야|필요)|(?i:must\\s+(?:obtain|get|apply\\s+for)\\s+a\\s+re-?entry\\s+permit)"
+          }
+        ]
+      },
+      "user_choice": "stay_in_korea",
+      "confirm_choice": "stay_in_korea",
+      "on_label": "keep"
+    },
+    {
+      "id": "K-12-e10-2-extra-activity",
+      "group": "P",
+      "purpose": "어선원(E-10-2) 체류자격외 활동 범위",
+      "question": "어선원(E-10-2)으로 일하고 있는데, 같은 사장님 밑에서 잡은 생선 말리고 포장하는 일도 해도 되나요?",
+      "evidence": [
+        {
+          "id": "stay_manual_2026_10_19_pdf#p338",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 338,
+          "domain": "stay"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p295",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 295,
+          "domain": "visa_issuance"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "stay_manual_2026_10_19_pdf#p338"
+        ],
+        "must_not_cite": [
+          "visa_manual_2026_10_19_pdf#p295"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "건조",
+            "포장",
+            "연계 작업",
+            "연계작업"
+          ],
+          [
+            "체류자격 외 활동",
+            "체류자격외 활동",
+            "체류자격외활동",
+            "허가"
+          ]
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "허가 없이 가능하다고 씀",
+            "pattern": "허가\\s*(?:없이|(?:가|는)?\\s*필요\\s*(?:없|하지\\s*않))(?![^.\\n]{0,15}(?:아니|틀|잘못|오류|안\\s*되|안\\s*됩|불가|않))"
+          }
+        ]
+      },
+      "user_choice": "stay_in_korea",
+      "confirm_choice": "stay_in_korea",
+      "on_label": "keep"
+    },
+    {
+      "id": "K-13-d7-branch-ccvi-misclick",
+      "group": "W",
+      "purpose": "주재(D-7) 사증발급인정서 서류 — 체류 버튼 오선택",
+      "question": "아직 본국 본사에 근무 중인데 한국 지사로 주재 발령이 났어요. 회사에서 사증발급인정서를 신청해 준다는데 어떤 서류가 필요한가요?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p96",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 96,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p113",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 113,
+          "domain": "stay"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "visa_manual_2026_10_19_pdf#p96"
+        ],
+        "must_not_cite": [
+          "stay_manual_2026_10_19_pdf#p113"
+        ],
+        "answer_must_not_contain": [
+          "개인 납세사실증명"
+        ],
+        "answer_must_match": [
+          {
+            "label": "국내지점 등 설치 입증서류(설치허가서 또는 신고수리서)",
+            "pattern": "설치\\s*입증\\s*서류|설치\\s*허가서|(?:지사|연락사무소|국내\\s*지점)[^.\\n]{0,25}신고\\s*수리서"
+          }
+        ],
+        "answer_flag_if_match": [
+          {
+            "label": "해외진출 기업 본사 주재(2번 항목) 서류를 섞음",
+            "pattern": "해외\\s*직접\\s*투자\\s*신고\\s*수리서|해외\\s*지점\\s*설치\\s*신고\\s*수리서|본사의\\s*등기사항전부증명서"
+          }
+        ]
+      },
+      "user_choice": "stay_in_korea",
+      "confirm_choice": "visa_abroad",
+      "on_label": "switch"
+    },
+    {
+      "id": "K-14-d8-4-where-to-apply-misclick",
+      "group": "W",
+      "purpose": "기술창업(D-8-4) 사증 신청 공관 — 체류 버튼 오선택",
+      "question": "I'm still in my home country and want to apply for a D-8-4 startup visa. Which Korean mission should I apply at?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p107",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 107,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p108",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 108,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p119",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 119,
+          "domain": "stay"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "visa_manual_2026_10_19_pdf#p108"
+        ],
+        "must_not_cite": [
+          "stay_manual_2026_10_19_pdf#p119"
+        ],
+        "answer_must_contain": [
+          "본국에 소재한 대한민국 공관"
+        ],
+        "answer_must_not_contain": [
+          "300점 중 60점"
+        ]
+      },
+      "user_choice": "stay_in_korea",
+      "confirm_choice": "visa_abroad",
+      "on_label": "switch"
+    },
+    {
+      "id": "K-15-e5-doctor-ccvi-misclick",
+      "group": "W",
+      "purpose": "전문직업(E-5) 사증발급인정서 서류 — 체류 버튼 오선택",
+      "question": "Our hospital is hiring a foreign doctor who is still overseas. What do we submit for the E-5 visa issuance confirmation?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p164",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 164,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p202",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 202,
+          "domain": "stay"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "visa_manual_2026_10_19_pdf#p164"
+        ],
+        "must_not_cite": [
+          "stay_manual_2026_10_19_pdf#p202"
+        ],
+        "answer_must_match": [
+          {
+            "label": "초청사유서",
+            "pattern": "초청\\s*사유서|(?i:reasons?\\s+for\\s+(?:the\\s+)?invitation|invitation\\s+(?:reason|statement)|statement\\s+of\\s+(?:the\\s+)?reasons?\\s+for)"
+          },
+          {
+            "label": "학위증·자격증(면허증) 사본",
+            "pattern": "학위증|자격증|면허증|(?i:degree|diploma|licen[cs]e)"
+          }
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "결과물인 사증발급인정서를 제출서류로 나열",
+            "pattern": "[①-⑩]\\s*사증발급인정서\\s*[,，]|[,，]\\s*사증발급인정서\\s*[,，]"
+          }
+        ]
+      },
+      "user_choice": "stay_in_korea",
+      "confirm_choice": "visa_abroad",
+      "on_label": "switch"
+    },
+    {
+      "id": "K-16-e1-ccvi-docs-misclick-keep",
+      "group": "W",
+      "purpose": "교수(E-1) 사증발급인정서 서류 — 체류 버튼 오선택, 라벨 못 봄",
+      "question": "해외에 살고 있는데 한국 대학에 조교수로 임용이 결정됐어요. 학교가 사증발급인정서를 신청할 때 어떤 서류가 들어가나요?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p142",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 142,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p174",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 174,
+          "domain": "stay"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "visa_manual_2026_10_19_pdf#p142"
+        ],
+        "must_not_cite": [
+          "stay_manual_2026_10_19_pdf#p174"
+        ],
+        "answer_must_not_contain": [
+          "고용업체 등 설립관련 서류"
+        ],
+        "answer_must_match": [
+          {
+            "label": "사증발급인정신청서(별지 21호)",
+            "pattern": "사증\\s*발급\\s*인정\\s*신청서|별지\\s*(?:제\\s*)?21\\s*호"
+          }
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "경력증명서",
+            "학위증",
+            "생략"
+          ]
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "체류자격 변경 신청서(별지 34호) 혼입",
+            "pattern": "별지\\s*(?:제\\s*)?34\\s*호(?![^.\\n]{0,15}(?:아니|틀|잘못|오류))"
+          }
+        ]
+      },
+      "user_choice": "stay_in_korea",
+      "confirm_choice": "visa_abroad",
+      "on_label": "keep"
+    },
+    {
+      "id": "K-17-d10-to-e1-change-misclick",
+      "group": "W",
+      "purpose": "구직(D-10)→교수(E-1) 자격변경 서류 — 해외 버튼 오선택",
+      "question": "지금 한국에서 구직(D-10) 비자로 지내는데 대학 전임교수로 채용됐어요. 교수 비자로 바꾸려면 서류가 뭐가 필요해요?",
+      "evidence": [
+        {
+          "id": "stay_manual_2026_10_19_pdf#p174",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 174,
+          "domain": "stay"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p142",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 142,
+          "domain": "visa_issuance"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "stay_manual_2026_10_19_pdf#p174"
+        ],
+        "must_not_cite": [
+          "visa_manual_2026_10_19_pdf#p142"
+        ],
+        "answer_must_not_contain": [
+          "임용예정확인서"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "학위증",
+            "경력증명서",
+            "생략"
+          ]
+        ],
+        "answer_must_not_match": [
+          {
+            "label": "사증발급인정서 서류(별지 21호) 혼입",
+            "pattern": "(?:사증\\s*발급\\s*인정\\s*신청서|별지\\s*(?:제\\s*)?21\\s*호)(?![^.\\n]{0,15}(?:아니|틀|잘못|오류))"
+          }
+        ],
+        "answer_flag_if_match": [
+          {
+            "label": "전임교수는 모든 서류가 생략된다고 씀",
+            "pattern": "(?:모든|전부|모두)[^.\\n]{0,10}생략"
+          }
+        ]
+      },
+      "user_choice": "visa_abroad",
+      "confirm_choice": "stay_in_korea",
+      "on_label": "switch"
+    },
+    {
+      "id": "K-18-e9-reemployment-extension-misclick",
+      "group": "W",
+      "purpose": "E-9 재고용 체류기간 연장 — 해외 버튼 오선택",
+      "question": "I'm working in Korea on E-9 and my 3 years are almost up, but my employer re-hired me. How much longer can I stay and what document do I need from the labor ministry?",
+      "evidence": [
+        {
+          "id": "stay_manual_2026_10_19_pdf#p331",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 331,
+          "domain": "stay"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p290",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 290,
+          "domain": "visa_issuance"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "stay_manual_2026_10_19_pdf#p331"
+        ],
+        "must_not_cite": [
+          "visa_manual_2026_10_19_pdf#p290"
+        ],
+        "answer_must_not_contain": [
+          "출국 1개월 경과 후"
+        ],
+        "answer_must_match": [
+          {
+            "label": "추가 최대 1년 10개월",
+            "pattern": "1\\s*년\\s*10\\s*개월|(?i:(?:1|one)\\s+years?\\s+(?:and\\s+)?(?:10|ten)\\s+months|22\\s+months)"
+          },
+          {
+            "label": "취업활동기간 연장확인서",
+            "pattern": "연장\\s*확인서|(?i:confirmation[^.\\n]{0,50}extension|extension[^.\\n]{0,50}confirmation)"
+          }
+        ]
+      },
+      "user_choice": "visa_abroad",
+      "confirm_choice": "stay_in_korea",
+      "on_label": "switch"
+    },
+    {
+      "id": "K-19-d8-4-change-grant-misclick-keep",
+      "group": "W",
+      "purpose": "기술창업(D-8-4) 자격변경 점수제 면제 지원금 기준 — 해외 버튼 오선택, 라벨 못 봄",
+      "question": "한국에서 유학 마치고 지금 체류 중인데, 정부 창업지원사업에 선정돼서 사업비를 받았어요. 기술창업 비자로 바꿀 때 점수제 면제가 되려면 사업비가 얼마 이상이어야 하나요?",
+      "evidence": [
+        {
+          "id": "stay_manual_2026_10_19_pdf#p119",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 119,
+          "domain": "stay"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p108",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 108,
+          "domain": "visa_issuance"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "stay_manual_2026_10_19_pdf#p119"
+        ],
+        "must_not_cite": [
+          "visa_manual_2026_10_19_pdf#p108"
+        ],
+        "answer_must_match": [
+          {
+            "label": "직접 사업비 3천만원 이상",
+            "pattern": "3\\s*천\\s*만\\s*원|3,?000\\s*만\\s*원|30,?000,?000\\s*원|(?i:30\\s*million\\s*won|KRW\\s*30\\s*million)"
+          }
+        ]
+      },
+      "user_choice": "visa_abroad",
+      "confirm_choice": "stay_in_korea",
+      "on_label": "keep"
+    },
+    {
+      "id": "K-20-g1-99-newborn-misclick",
+      "group": "W",
+      "purpose": "난민신청자(G-1-5) 국내 출생 자녀 체류허가 — 해외 버튼 오선택",
+      "question": "We are refugee applicants (G-1-5) living in Korea and our baby was just born here. Until when can the baby stay, and what documents do we file?",
+      "evidence": [
+        {
+          "id": "stay_manual_2026_10_19_pdf#p513",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 513,
+          "domain": "stay"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p339",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 339,
+          "domain": "visa_issuance"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "stay_manual_2026_10_19_pdf#p513"
+        ],
+        "must_not_cite": [
+          "visa_manual_2026_10_19_pdf#p339"
+        ],
+        "answer_must_match": [
+          {
+            "label": "부모(G-1-5) 체류기간 만료일까지",
+            "pattern": "체류\\s*기간\\s*(?:의\\s*)?만료\\s*일\\s*까지|(?i:until[^.\\n]{0,80}(?:expir|end\\s+of))"
+          }
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "출생증명서",
+            "부모와의 관계",
+            "관계를 입증",
+            "관계 입증",
+            "birth certificate",
+            "relationship"
+          ]
+        ],
+        "answer_flag_if_match": [
+          {
+            "label": "인도적 체류허가자 자녀(G-1-12) 기준을 섞음",
+            "pattern": "G\\s*-\\s*1\\s*-\\s*12|인도적\\s*체류\\s*허가자의\\s*체류\\s*기간\\s*범위"
+          }
+        ]
+      },
+      "user_choice": "visa_abroad",
+      "confirm_choice": "stay_in_korea",
+      "on_label": "switch"
+    },
+    {
+      "id": "K-21-e7-docs-unclear",
+      "group": "N",
+      "purpose": "E-7 서류 문의 — 버튼 미선택, 위치 불명",
+      "question": "E-7 비자 서류 뭐 준비해야 돼요?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p170",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 170,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p214",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 214,
+          "domain": "stay"
+        }
+      ],
+      "expect": {
+        "status": [
+          "clarify",
+          "insufficient_evidence"
+        ]
+      },
+      "on_label": "keep"
+    },
+    {
+      "id": "K-22-d10-period-unclear",
+      "group": "N",
+      "purpose": "구직(D-10) 체류기간 문의 — 버튼 미선택, 위치 불명",
+      "question": "How long can I stay on a D-10 job-seeker visa, and what documents are needed?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p130",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 130,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p151",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 151,
+          "domain": "stay"
+        }
+      ],
+      "expect": {
+        "status": [
+          "clarify",
+          "insufficient_evidence"
+        ]
+      },
+      "on_label": "keep"
+    },
+    {
+      "id": "K-23-f6-income-docs-unclear",
+      "group": "N",
+      "purpose": "결혼이민 소득요건 서류 — 버튼 미선택, 사증/연장 불명",
+      "question": "결혼비자 소득요건 서류는 어떤 걸 내요?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p334",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 334,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p492",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 492,
+          "domain": "stay"
+        }
+      ],
+      "expect": {
+        "status": [
+          "clarify",
+          "insufficient_evidence"
+        ]
+      },
+      "on_label": "keep"
+    },
+    {
+      "id": "K-24-d8-docs-unclear",
+      "group": "N",
+      "purpose": "기업투자(D-8) 서류 — 버튼 미선택, 위치 불명",
+      "question": "What documents do I need for a D-8 investor visa?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p116",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 116,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p116",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 116,
+          "domain": "stay"
+        }
+      ],
+      "expect": {
+        "status": [
+          "clarify",
+          "insufficient_evidence"
+        ]
+      },
+      "on_label": "keep"
+    }
+  ]
+}

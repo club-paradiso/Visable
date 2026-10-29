@@ -1,0 +1,7529 @@
+{
+ "kind": "artemis_facts_ai_first_pass",
+ "date": "2026-10-28",
+ "reviewer": "AI (four Claude subagents, one brief) — not a human review, not an approval, not a legal verification",
+ "use": "shown in the review sheet's 사실 tab as 'AI 1차 의견'; approved_facts.py export reads only human decisions from facts_review",
+ "checks": "for approve/hold, approved_facts._verify passed: quote on the page, page hash matches the ledger, value in the quote, role in the list",
+ "counts": {
+  "approve": 169,
+  "reject": 78,
+  "hold": 93
+ },
+ "brief": "# Artemis approved-facts pilot — AI first-pass review\n\nYou give a first opinion on fact candidates that rules extracted from the 2026-10-19 Korean visa/stay manuals. A person makes the actual decision later; your output is shown to them as \"AI 1차 의견\", never as an approval. This is not a legal verification: a fact only says \"this manual page says this\".\n\n## Input (read-only)\n`packets/chunkN.json` in this directory:\n- `roles`: the allowed role ids and their Korean names.\n- `pages`: page id → {title, text, domain}. `domain` is `visa_issuance` (사증 매뉴얼) or `stay` (체류 매뉴얼).\n- `candidates`: each has `candidate_id`, `subject` (status_code, sub_code, procedure, qualifiers), `role` (may be null), `role_from_check`, `value` (kind money|period, amount, unit krw|usd|free|day|month|year, comparator), `source` (page_id, quote = an exact substring of the page text).\nThe rules guessed subject and role from nearby words and the nearest status code ABOVE the value in the page text; those guesses are often wrong. OCR has flattened tables, so a row like \"소득기준 23,595,948 30,152,118 …\" lost its column headers — read the surrounding page text to work out what each number belongs to.\n\nDo not read or change anything else. Write only your output file.\n\n## For every candidate decide\n- `ai_decision`:\n  - `approve` — the quote states a real rule-level fact (a fee, an income threshold, a deposit, a deadline, a validity, a stay period or cap, an extension period, a waiting period, a count limit) and you can tell from the page **whom it applies to and what it is**.\n  - `reject` — not a fact: an example (\"※ 예시\"), a reference point inside another sentence that is not itself a rule, a date/year, a page number, a statute article number, OCR garbage, a duplicate of another candidate in the same packet, or a number that belongs to a sentence about something else.\n  - `hold` — a real fact, but the page does not settle its subject, condition, or role (e.g. a flattened table whose column order you cannot recover with confidence). Say what a person must check.\n- For `approve` and `hold`, give your best `subject`, `role` and `value`:\n  - `subject.status_code` (e.g. \"D-2\"), `subject.sub_code` (e.g. \"D-2-8\") or null, `subject.procedure`: \"visa\" for a visa_issuance page, \"stay\" for a stay page (never mix).\n  - `subject.qualifiers`: `applicant` (본인 / 동반가족 / 초청인 / 사업주 or null), `household_size` (number or null), `per` (e.g. \"1명당\", \"연간\" or null), `nationality` (or null), `row_label`, `column_label` (for table values, or null).\n  - `role`: one id from `roles`. Use \"other\" only with a note.\n  - `value`: keep `kind`, correct `amount`/`unit` if the rules misread them (the amount must appear in the quote), and set `comparator` to one of 이상, 이하, 이내, 미만, 초과, 까지, 동안, 간 or null.\n- `reason`: Korean, 1–2 sentences: what the value is, whom it applies to, and why you decided so. For `hold`, what a person must check.\n- `confidence`: high | medium | low.\n\nRules:\n- Ground everything in the page text of the packet. Do not use outside knowledge to fill a subject or value the page does not state.\n- Never change `source`. If the value is not in the quote, reject.\n- When the status code above the value is wrong (the value is in a general section, or under another status), correct it or set it to null and hold.\n\n## Output\nWrite `out/chunkN.json`: a JSON array, one object per candidate in packet order:\n```json\n{\"candidate_id\": \"fc-…\", \"ai_decision\": \"approve|reject|hold\", \"subject\": {…} or null, \"role\": \"fee\" or null, \"value\": {…} or null, \"reason\": \"…\", \"confidence\": \"high|medium|low\"}\n```\nBefore writing, self-check with `python3 -I`: one object per candidate, same order, decisions in the allowed set, roles in `roles`, for approve/hold the amount appears in the quote (compare digits after removing commas; Korean units like 만/천 count). Report in four lines: counts of approve / reject / hold, the self-check result, and two example candidate ids with your reason.\n",
+ "opinions": [
+  {
+   "candidate_id": "fc-6ab62eae49cfb808",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "복수재입국허가 대상 구간의 하한(1년 초과)으로, 재입국허가 면제 기간과의 경계를 말하는 기준점일 뿐 별도 규칙이 아님. 상한 2년은 다른 후보로 다룸.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-3d3f174ce693277a",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "복수재입국허가",
+     "column_label": null
+    }
+   },
+   "role": "entry_deadline",
+   "value": {
+    "kind": "period",
+    "amount": 2,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "복수재입국허가로 출국 후 2년 내 재입국하는 기간 상한. 페이지 상단이 잘려 어느 체류자격 장인지 적혀 있지 않으므로(외신 언급으로 보아 취재(D-5) 장으로 추정) 사람이 앞 페이지에서 체류자격을 확인해야 함.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-ea664c1a19ad46e6",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "외국인등록사항 변경신고(소속기관 변경·추가)",
+     "column_label": null
+    }
+   },
+   "role": "report_deadline",
+   "value": {
+    "kind": "period",
+    "amount": 15,
+    "unit": "day",
+    "comparator": "이내"
+   },
+   "reason": "소속기관 변경·추가 시 외국인등록사항 변경신고 기한(변경일로부터 15일 이내). 페이지에 체류자격이 명시되지 않아(취재(D-5) 장으로 추정) 사람이 체류자격을 확인해야 함.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-f6b4323db16a18a3",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "대상체류자격 D-1, D-6, F-1, F-3, G-1",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "period",
+    "amount": 6,
+    "unit": "month",
+    "comparator": "미만"
+   },
+   "reason": "[기타: 대상자 조건] D-1·D-6·F-1·F-3·G-1 소지자 중 입국일로부터 6개월 미만인 사람에 관한 조건이다. 제목이 잘려 어떤 절차(체류자격외활동 등)의 조건인지, 어느 체류자격 항목인지 확인해야 한다.",
+   "confidence": "low"
+  },
+  {
+   "candidate_id": "fc-09bd1f17bcb9ca8a",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "재입국허가 면제",
+     "column_label": null
+    }
+   },
+   "role": "entry_deadline",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "등록 외국인이 출국한 날부터 1년 이내 재입국하면 재입국허가가 면제된다. 규칙이 붙인 G-1은 대상체류자격 나열에서 온 것이고, 외국인등록 서류('종교단체 또는 사회복지단체 설립')로 보아 D-6 항목으로 보이나 쪽에 명시되지 않아 확인이 필요하다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-91f93d3d420cc1db",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "'체류기간이 1년보다 적게 남아있는 경우'의 1년은 조건의 기준점이고, 면제 범위는 남은 체류기간이다. 별도 규칙 값이 아니다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-43eb26af16cbc85f",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "복수재입국허가 문장의 '1년을 초과하여'는 재입국허가 면제(1년 이내)와의 경계일 뿐이다. 규칙 값은 2년(fc-ce81ddc88d109d1c)이다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-ce81ddc88d109d1c",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "복수재입국허가",
+     "column_label": null
+    }
+   },
+   "role": "entry_deadline",
+   "value": {
+    "kind": "period",
+    "amount": 2,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "복수재입국허가는 출국 후 체류기간 범위 내에서 1년 초과 2년 내에 재입국하려는 경우다. 어느 체류자격 항목(D-6으로 보임)인지 쪽에 명시되지 않아 확인이 필요하다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-89e775c6ed5d8c19",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "외국인등록사항 변경신고",
+     "column_label": null
+    }
+   },
+   "role": "report_deadline",
+   "value": {
+    "kind": "period",
+    "amount": 15,
+    "unit": "day",
+    "comparator": "이내"
+   },
+   "reason": "외국인등록사항 변경신고 기한은 변경일로부터 15일 이내다. 규칙이 붙인 G-1은 근거가 없고, 해당 체류자격 항목(D-6으로 보임)을 확인해야 한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-d21e5a0dd7edcf43",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-7",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "상장법인·공공기관 해외 현지법인·지점 근무자 파견",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "money",
+    "amount": 500000,
+    "unit": "usd",
+    "comparator": "미만"
+   },
+   "reason": "주재(D-7) 해당자 중 상장법인 해외 현지법인·지점 근무자의 경우 본사 투자금액 또는 영업기금이 미화 50만 달러 미만이면 제외된다는 요건. 규칙이 붙인 D-8은 제외 문구에 나온 자격이라 D-7로 고침; 역할은 투자금액 요건이라 other.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-18e0486e93346068",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "재입국허가 면제",
+     "column_label": null
+    }
+   },
+   "role": "entry_deadline",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "등록외국인이 출국일부터 1년 이내 재입국하면 재입국허가가 면제된다는 내용이다. p.114가 어느 체류자격 장(D-7~D-9 추정)인지 페이지에 나오지 않으므로 사람이 체류자격을 확인해야 한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-f5b29c7870cdebe8",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "'체류기간이 1년보다 적게 남은 경우'라는 조건 속 기준점일 뿐 1회 체류기간 규칙이 아니다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-f062e9777aa43c5d",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "복수재입국허가 대상 구간(1년 초과~2년 내)의 하한 경계로, 재입국허가 면제 기준(1년)을 다시 가리키는 참조점이다. 상한 2년은 별도 후보로 다룬다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-6fe786ce42c9fee3",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "복수재입국허가",
+     "column_label": null
+    }
+   },
+   "role": "entry_deadline",
+   "value": {
+    "kind": "period",
+    "amount": 2,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "출국 후 2년 내 재입국하려는 경우 복수재입국허가 대상이라는 내용이다. p.114의 체류자격 장이 페이지에 명시되지 않아 체류자격 확인이 필요하다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-ae305b655da7869c",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "외국인등록사항 변경신고",
+     "column_label": null
+    }
+   },
+   "role": "report_deadline",
+   "value": {
+    "kind": "period",
+    "amount": 15,
+    "unit": "day",
+    "comparator": "이내"
+   },
+   "reason": "소속기관 변경·추가 시 변경일로부터 15일 이내 외국인등록사항 변경신고 기한이다. p.114가 어느 체류자격 장인지 페이지에 없어 체류자격 확인이 필요하다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-600e252da02aae9b",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "D-8",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "투자금액 3억원 미만 개인투자자 추가서류",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "money",
+    "amount": 300000000,
+    "unit": "krw",
+    "comparator": "미만"
+   },
+   "reason": "투자금액 3억원 미만 개인투자자에게 추가서류를 요구하는 기준(역할: 추가서류 대상 투자금액 기준, other). 뒤에 D-8-2·D-8-3 항목이 이어져 D-8 장으로 보이나 이 항목의 세부약호(D-8-1 여부)는 페이지에 없으므로 사람이 확인해야 함.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-48e6b37fef285652",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "재입국허가 면제",
+     "column_label": null
+    }
+   },
+   "role": "entry_deadline",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "출국한 날부터 1년 이내 재입국하면 재입국허가가 면제된다는 일반 규정이다(p.332 같은 문장은 '등록을 필한 외국인'으로 대상을 밝힘). 특정 체류자격이 아닌 등록외국인 공통 규정이라 status_code는 비운다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-bfc05729962513b1",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "'체류기간이 1년보다 적게 남은 경우'의 1년은 면제 적용 조건 안의 기준점이며, 실제 한도는 '체류기간 범위 내'다. 1회 체류기간 사실이 아니다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-666c9ac0efe52bf5",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "'1년을 초과하여'는 재입국허가 면제(1년 이내)와 복수재입국허가를 가르는 하한 기준점으로, 독립된 규칙 값이 아니다. 해당 내용은 fc-48e6b37fef285652·fc-f4a2a39cb381c641로 충분하다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-f4a2a39cb381c641",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "복수재입국허가",
+     "column_label": null
+    }
+   },
+   "role": "entry_deadline",
+   "value": {
+    "kind": "period",
+    "amount": 2,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "복수재입국허가는 출국 후 체류기간 범위 내에서 1년 초과 2년 내에 재입국하려는 경우에 받는다는 규정으로, 2년이 재입국 기한이다. 사우디·이란·리비아 국민은 원칙적으로 제한(F-6·D-2·D-4 예외)된다는 단서가 같은 쪽에 있다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-b9ef2233bc37647d",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "외국인등록사항 변경신고",
+     "column_label": null
+    }
+   },
+   "role": "report_deadline",
+   "value": {
+    "kind": "period",
+    "amount": 15,
+    "unit": "day",
+    "comparator": "이내"
+   },
+   "reason": "외국인등록사항(성명·성별·생년월일·국적·여권 등) 변경 시 변경일부터 15일 이내 신고해야 한다는 기한이다. 이 쪽에서는 특정 체류자격에 한정하지 않으므로 status_code는 비운다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-36b0d33d81efee7a",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "최초 허가",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": null
+   },
+   "reason": "최초 허가 시 체류기간을 1년만 부여한다는 규칙. 무역실적 점수표로 보아 무역경영(D-9) 계열 장으로 추정되나 페이지에 체류자격·세부약호가 없으므로 사람이 확인해야 함.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-d21144cf1568154d",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "국내 대학 출신 한국어 성적 우수자 특례",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "period",
+    "amount": 3,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "국내 대학 출신 한국어 성적 우수자 특례는 졸업일(학위수여일)로부터 3년이 지나지 않은 경우에만 적용된다는 기간 요건(역할: 특례 적용 기간, other). 구직활동계획서 등으로 보아 구직(D-10) 장이나 페이지에 체류자격 코드가 없으므로 사람이 확인해야 함.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-f0b2fb6ac8b7e93e",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "국내 성장 기반 외국인 청소년 해외범죄경력증명서 면제자",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "period",
+    "amount": 6,
+    "unit": "month",
+    "comparator": "이상"
+   },
+   "reason": "해외범죄경력증명서 면제 조건(14세 이후 해외에서 6개월 이상 연속 체류하지 않은 사람)의 기준 기간. 입국 기한이 아니며, 규칙이 붙인 F-2-R은 향후 변경 대상 자격일 뿐이므로 체류자격(구직(D-10) 추정)과 역할을 사람이 정해야 함.",
+   "confidence": "low"
+  },
+  {
+   "candidate_id": "fc-9b9011e52d74fc87",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-10",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": null,
+     "column_label": null
+    }
+   },
+   "role": "stay_cap_total",
+   "value": {
+    "kind": "period",
+    "amount": 3,
+    "unit": "year",
+    "comparator": "이하"
+   },
+   "reason": "구직(D-10) 체류기간 상한은 국내 체류기간을 합산해 최대 3년이고 전문성에 따라 차등한다. 합산 상한이므로 총 상한이며, D-10-1 한정이 아니라 D-10 전체 규정이다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-65b399b5c311dce3",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "'(학위 취득 3년 경과)'는 표의 대상자 구분 라벨 안의 기준점이며 그 자체가 규칙이 아님. 3년 기준 자체는 p151 후보(fc-d21144cf1568154d)에서 다룸.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-fa0dfc95d85b6885",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-10",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "재입국허가 면제",
+     "column_label": null
+    }
+   },
+   "role": "entry_deadline",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "외국인등록을 마친 사람이 출국한 날로부터 1년 이내 재입국하면 재입국허가 면제. 구직(D-10) 장(D-10-1~D-10-T 다음)의 재입국허가 항목이므로 D-10-T가 아니라 D-10 전체로 고침.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-4ec1a2b9b9769624",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "'체류기간이 1년보다 적게 남은 경우'는 면제 기간 1년과 비교하는 조건 기준점이지 별도 기간 규칙이 아님.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-6441264f1d024f8c",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "복수재입국허가 구간의 하한 경계(1년 초과)로 독립된 규칙이 아니다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-d91fed87864f8a51",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-10",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "복수재입국허가",
+     "column_label": null
+    }
+   },
+   "role": "entry_deadline",
+   "value": {
+    "kind": "period",
+    "amount": 2,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "구직(D-10) 장에서 출국 후 2년 내 재입국하려는 경우 복수재입국허가 대상이라는 내용이다. 같은 페이지의 D-10-1·D-10-3 언급으로 장이 확인된다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-68af1aeed0312ef8",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "'1회 부여 체류기간이 1년인 경우' 외국인등록 시 연장·조정한다는 조건 속 기준점으로, 체류기간 규칙 자체가 아니다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-c7d271d7c532502a",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-10",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "외국인등록사항 변경신고",
+     "column_label": null
+    }
+   },
+   "role": "report_deadline",
+   "value": {
+    "kind": "period",
+    "amount": 15,
+    "unit": "day",
+    "comparator": "이내"
+   },
+   "reason": "구직(D-10) 등록외국인의 외국인등록사항 변경신고 기한(변경일로부터 15일 이내)이다. 규칙이 붙인 D-10-3은 외국인등록 서류 단서에서 온 것이라 세부코드는 비웠다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-ccce4d8d94489552",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-10",
+    "sub_code": "D-10-1",
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "연수개시 신고 및 연수기관 변경",
+     "column_label": null
+    }
+   },
+   "role": "report_deadline",
+   "value": {
+    "kind": "period",
+    "amount": 15,
+    "unit": "day",
+    "comparator": "이내"
+   },
+   "reason": "일반구직(D-10-1) 소지자의 인턴 연수개시·연수기관 변경 신고 기한(사유 발생일로부터 15일 이내)이다. 대상자가 페이지에 명시되어 있다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-90f3b17c7db7ed98",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-10",
+    "sub_code": "D-10-3",
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "인턴 기관 변경 신고",
+     "column_label": null
+    }
+   },
+   "role": "report_deadline",
+   "value": {
+    "kind": "period",
+    "amount": 15,
+    "unit": "day",
+    "comparator": "이내"
+   },
+   "reason": "첨단기술인턴(D-10-3)이 소속기업(기관)을 바꿔 인턴 활동을 계속하려면 변경일로부터 15일 이내 신고한다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-8e1501a9f5175df0",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "재입국허가 면제",
+     "column_label": null
+    }
+   },
+   "role": "entry_deadline",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "출국일부터 1년 이내 재입국 시 면제라는 문장인데 주어가 앞 페이지에서 잘려 무엇이 면제되는지·누구에게 적용되는지(A-1~A-3 추정) 이 페이지만으로 확정되지 않는다. 앞 페이지를 확인해야 한다.",
+   "confidence": "low"
+  },
+  {
+   "candidate_id": "fc-8a63f4a1491b5bdb",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "재입국허가 면제",
+     "column_label": null
+    }
+   },
+   "role": "entry_deadline",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "등록 외국인이 출국한 날부터 1년 이내 재입국하면 재입국허가가 면제된다. 쪽 끝의 '회화지도(E-2)'와 교원활용계획서 서류로 보아 E-2 항목으로 보이나, 제목 위치가 불분명해 확인이 필요하다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-533644f53a66411f",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "'체류기간이 1년보다 적게 남아있는 경우'의 1년은 조건의 기준점이고, 면제 범위는 남은 체류기간이다. 별도 규칙 값이 아니다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-8c692c98025a8b9b",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "복수재입국허가 문장의 '1년을 초과하여'는 재입국허가 면제와의 경계일 뿐이다. 규칙 값은 2년(fc-4cbf1127b81d28e3)이다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-4cbf1127b81d28e3",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "복수재입국허가",
+     "column_label": null
+    }
+   },
+   "role": "entry_deadline",
+   "value": {
+    "kind": "period",
+    "amount": 2,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "복수재입국허가는 출국 후 1년 초과 2년 내에 재입국하려는 경우다. E-2 항목으로 보이나 쪽에서 체류자격이 확정되지 않아 확인이 필요하다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-7c4ab2e503b923b7",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "외국인등록사항 변경신고",
+     "column_label": null
+    }
+   },
+   "role": "report_deadline",
+   "value": {
+    "kind": "period",
+    "amount": 15,
+    "unit": "day",
+    "comparator": "이내"
+   },
+   "reason": "외국인등록사항 변경신고 기한은 변경일로부터 15일 이내다. E-2 항목으로 보이나 쪽에서 체류자격이 확정되지 않아 확인이 필요하다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-4aebf662fbd649d7",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "p.186의 같은 문장으로 fc-666c9ac0efe52bf5와 같은 기준점(1년 초과)이며 중복이다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-87890b7ec5089d2e",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "p.186의 같은 문장으로 fc-f4a2a39cb381c641(복수재입국 2년)과 중복이다. 이 쪽에서도 체류자격이 따로 드러나지 않아 별도 사실로 볼 근거가 없다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-fb5e1f1455822725",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "p.186의 외국인등록사항 변경신고 15일 이내 기한으로 fc-b9ef2233bc37647d와 중복이다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-8ec2f7797c6eb1fe",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "E-3",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "근무처 변경·추가 신고",
+     "column_label": null
+    }
+   },
+   "role": "report_deadline",
+   "value": {
+    "kind": "period",
+    "amount": 15,
+    "unit": "day",
+    "comparator": "이내"
+   },
+   "reason": "연구(E-3) 자격자의 근무처 변경·추가 사후신고 기한(신고사유 발생일로부터 15일 이내). 입국 기한이 아니라 신고 기한이므로 역할을 고침.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-af68aa6700e4f772",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "E-3",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "근무처 변경·추가 신고 후 잔여체류기간이 짧은 경우",
+     "column_label": null
+    }
+   },
+   "role": "extension_period",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "month",
+    "comparator": null
+   },
+   "reason": "잔여체류기간이 [변경된 고용계약기간+1개월]보다 적으면 그 기간까지 연장한다는 규칙의 '+1개월'. p191 E-3 근무처변경 절차의 연속으로 보이나 p192 본문에는 자격이 없고, 값이 '계약기간+1개월' 형태라 표현 방식을 사람이 정해야 함.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-17e2aab8eafbaccf",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "fc-af68aa6700e4f772와 같은 문장('연장신청을 받아 [변경된 고용계약기간+1개월]까지 연장')이 줄바꿈으로 나뉜 중복.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-77c31607bd952857",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "E-3",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "근무처 변경·추가 신고 후 잔여체류기간이 긴 경우",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "month",
+    "comparator": null
+   },
+   "reason": "잔여체류기간이 [변경된 고용계약기간+1개월]보다 많으면 그 기간으로 체류기간을 단축 조정한다는 규칙의 '+1개월'. 체류자격(E-3 추정)과 '계약기간+1개월' 값 표현을 사람이 확인해야 함.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-f09f7dd3dbac0f9e",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "fc-77c31607bd952857과 같은 문장('[변경된 고용계약기간+1개월]로 체류기간 단축조정')이 줄바꿈으로 나뉜 중복.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-86083059b72cb15d",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "p.206의 외국인등록사항 변경신고 15일 이내 기한으로 fc-b9ef2233bc37647d와 중복이다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-b68b622a78b5b242",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "E-6",
+    "sub_code": "E-6-2",
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": "사업주",
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "공연장소 변경 고용변동 신고",
+     "column_label": null
+    }
+   },
+   "role": "report_deadline",
+   "value": {
+    "kind": "period",
+    "amount": 15,
+    "unit": "day",
+    "comparator": "이내"
+   },
+   "reason": "E-6-2 연예인의 공연장소 변경 시 고용주가 변경일로부터 15일 이내 고용변동 신고를 해야 한다는 기한이다. 규칙의 entry_deadline은 잘못이라 신고 기한으로 고쳤다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-ba42789bb0f9969a",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "E-6",
+    "sub_code": "E-6-2",
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "공연장소 변경 제한",
+     "column_label": null
+    }
+   },
+   "role": "waiting_period",
+   "value": {
+    "kind": "period",
+    "amount": 6,
+    "unit": "month",
+    "comparator": "이내"
+   },
+   "reason": "E-6-2 연예인은 입국 후 6개월 이내 공연장소를 변경할 수 없다는 대기 기간이다(휴·폐업 등 예외 있음). 연장 기간이 아니므로 역할을 고쳤다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-3d3a76102ec0462a",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "C-1",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": null,
+     "column_label": null
+    }
+   },
+   "role": "stay_cap_total",
+   "value": {
+    "kind": "period",
+    "amount": 90,
+    "unit": "day",
+    "comparator": "이하"
+   },
+   "reason": "일시취재(C-1) 체류자격의 최장체류기간 90일이다. 표의 '최장체류기간' 항목이므로 총 체류기간 상한으로 본다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-25fee259203cbb6d",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "'90일 미만 사증으로 입국한 자'는 연장허가 대상을 가르는 조건일 뿐 별도 규칙 값이 아니다. 실제 규칙(90일까지 연장)은 fc-91c9712d6713ca3b에 있다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-91c9712d6713ca3b",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "C-1",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "90일 미만 사증 입국자 또는 90일 미만 체류기간 부여자",
+     "column_label": null
+    }
+   },
+   "role": "extension_period",
+   "value": {
+    "kind": "period",
+    "amount": 90,
+    "unit": "day",
+    "comparator": "까지"
+   },
+   "reason": "C-1 체류기간 연장허가: 90일 미만으로 입국·부여받은 사람은 입국일로부터 90일까지 연장한다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-640014afb2f3f5bd",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "C-3",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "체류기간 연장허가",
+     "column_label": null
+    }
+   },
+   "role": "stay_cap_total",
+   "value": {
+    "kind": "period",
+    "amount": 90,
+    "unit": "day",
+    "comparator": "이내"
+   },
+   "reason": "단기방문(C-3) 체류기간 연장은 입국일로부터 90일 범위 내에서만 가능하다는 총 체류 상한이다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-bb7a029292908363",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "C-4",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "체류기간",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 90,
+    "unit": "day",
+    "comparator": null
+   },
+   "reason": "단기취업(C-4) 장의 체류기간 항목으로 보이나 문장이 페이지 끝에서 잘렸고 사증발급 시 부여 체류기간을 말하고 있어 체류 절차 사실로 볼지 확인이 필요하다. 규칙의 E-6-2 지정은 잘못이다.",
+   "confidence": "low"
+  },
+  {
+   "candidate_id": "fc-56af3ddcc9125ab6",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "'무료급식소'는 자원봉사 장소 이름일 뿐 수수료 면제 사실이 아니다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-13b8dd1eba72758c",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "E-8",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "1회에 부여할 수 있는 체류기간 상한",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 8,
+    "unit": "month",
+    "comparator": null
+   },
+   "reason": "계절근로(E-8)의 1회 부여 체류기간 상한 8개월이다. 괄호 안에 총 체류기간도 8개월을 넘을 수 없다고 적혀 있어 총 체류기간 상한(stay_cap_total)도 같은 값이다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-24a068fda65edd97",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "E-9",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": "사업주",
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "고용허가제 대상 사업장(자본금)",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "money",
+    "amount": 8000000000,
+    "unit": "krw",
+    "comparator": "이하"
+   },
+   "reason": "[기타: 사업장 자본금 요건] 고용허가제 소개문의 '상시근로자 300인 미만 또는 자본금 80억원 이하 중소기업'이다. 300은 가구원 수가 아니라 근로자 수다. 사증 매뉴얼 표에서는 제조업(E-9-1) 기준으로 나오므로 전 업종 기준인지 확인해야 한다.",
+   "confidence": "low"
+  },
+  {
+   "candidate_id": "fc-d551991becb24b6f",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": "본인",
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "근무처 변경 절차(사업장 변경 신청)",
+     "column_label": null
+    }
+   },
+   "role": "filing_deadline",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "month",
+    "comparator": "이내"
+   },
+   "reason": "근로계약 종료 후 1개월 이내에 고용노동부 고용센터에 사업장 변경을 신청해야 한다는 기한이다. 이 쪽에는 외국인고용법 적용 외국인근로자라고만 되어 있고 체류자격 코드(E-9 등)가 없으니, 쪽 앞뒤로 어느 자격 단락인지 확인해야 한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-b3801606fb865eee",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "E-9",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "체류기간 연장허가 상한",
+     "column_label": null
+    }
+   },
+   "role": "stay_cap_total",
+   "value": {
+    "kind": "period",
+    "amount": 3,
+    "unit": "year",
+    "comparator": null
+   },
+   "reason": "외국인근로자 체류기간 연장허가 상한이 최초 입국일로부터 3년이라는 내용이다. 고용허가서·재고용 문맥으로 E-9 장으로 보이나 페이지에 코드가 직접 나오지 않아(E-9-3은 다음 항목) 체류자격 확인이 필요하다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-837ca5fe0fe2c931",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "E-9",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "재고용 취업기간 연장 허가기간 중 상한",
+     "column_label": null
+    }
+   },
+   "role": "stay_cap_total",
+   "value": {
+    "kind": "period",
+    "amount": 4,
+    "unit": "year",
+    "comparator": null
+   },
+   "reason": "재고용 취업기간 연장 중에는 최초 입국일로부터 4년 10개월을 넘을 수 없다는 상한인데, 값이 '4년 10개월' 복합이라 4년만으로는 부정확하다. 사람이 값 표현(58개월 등)과 체류자격(E-9 추정)을 정해야 한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-03f26f40785ad0af",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "'4년 10개월' 중 10개월 조각으로, 같은 값은 fc-837ca5fe0fe2c931에서 함께 다룬다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-9ef7896c32d2acc7",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "E-9",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": null,
+     "column_label": null
+    }
+   },
+   "role": "stay_cap_total",
+   "value": {
+    "kind": "period",
+    "amount": 3,
+    "unit": "year",
+    "comparator": null
+   },
+   "reason": "비전문취업(E-9)의 체류기간 상한은 입국일로부터 기산해 3년이다(G-1에서 E-9 회복 대상 판단 기준으로 제시).",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-c690319bbe64feee",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "E-9",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "3년 만기 후 고용주 재고용",
+     "column_label": null
+    }
+   },
+   "role": "extension_period",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "3년 만기 E-9 체류자를 고용주가 재고용하면 1년 10개월 이내 체류기간을 준다. 실제 값은 '1년 10개월'인데 한 숫자로 담기지 않아 1년만 남았으므로, 사람이 값을 22개월(1년 10개월)로 합쳐 기록해야 한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-7ff69558563fb2ae",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "'1년 10개월'에서 10개월만 떼어 낸 조각이다. 같은 사실은 fc-c690319bbe64feee에서 보류 처리했다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-2f96520f4090ea3e",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "'입국 후 3년 만료'의 3년은 재고용 연장의 기준 시점이고 이 문장의 규칙 값이 아니다. E-9 3년 상한은 fc-9ef7896c32d2acc7에 있다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-789f4ce60fad3535",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "'최대 1년 10개월 추가 연장'은 fc-c690319bbe64feee와 같은 사실(재고용 시 1년 10개월)의 중복 조각이다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-8f7b045fbd5cd7ac",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "'1년 10개월'에서 10개월만 떼어 낸 조각이며 fc-c690319bbe64feee와 중복이다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-c204bb584b7539fe",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "'구직등록 유효기간(구직신청일로부터 3개월)'은 허가 대상자를 정하는 조건 문장 안의 참조값(고용센터 구직등록의 유효기간)이며 체류기간 사실이 아니다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-24233a0a9c92e808",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "등록외국인이 출국일부터 1년 이내 재입국 시 재입국허가 면제라는 내용으로 fc-48e6b37fef285652와 같은 사실의 중복이다(이 문장이 대상이 등록외국인임을 확인해 준다).",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-212fb7e970d3c9fa",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "p.332의 같은 문장으로 fc-bfc05729962513b1과 같은 조건 기준점(남은 체류기간 1년)이며 중복이다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-348cb18d0c726518",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "단수재입국허가 수수료 3만원으로, p.5 수수료표의 fc-3edddb1276a6141b와 같은 사실의 중복이다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-27a37ef41e45b1f9",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "복수재입국허가 수수료 5만원으로, p.5 수수료표의 fc-27d5adf2626faf7f과 같은 사실의 중복이다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-fdedb3f1f1f430e1",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": "본인",
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "외국인등록 - 마약검사확인서",
+     "column_label": null
+    }
+   },
+   "role": "issue_deadline",
+   "value": {
+    "kind": "period",
+    "amount": 3,
+    "unit": "month",
+    "comparator": "이내"
+   },
+   "reason": "외국인등록 때 내는 마약검사확인서는 등록 시점 기준 3개월 이내 발급분이어야 한다는 기한이다. 이 쪽에는 외국인근로자·고용허가서 맥락만 있고 체류자격 코드가 없으므로 어느 자격 단락(E-9 등)인지 확인해야 한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-3db9659465eee7eb",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "E-10",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "고용해지 등으로 구직 중인 자",
+     "column_label": null
+    }
+   },
+   "role": "extension_period",
+   "value": {
+    "kind": "period",
+    "amount": 3,
+    "unit": "month",
+    "comparator": "이내"
+   },
+   "reason": "선원취업(E-10) 장 체류기간 연장 항목에서, 고용해지로 구직 중인 자에게 고용해지일로부터 3개월 범위 내 체류기간 연장허가. 같은 절의 2번 항목이 E-10-1~3을 명시하므로 E-10으로 봄(세부약호 미지정).",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-92d48d2b18a5a43c",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "E-10",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "선원취업기간 만료자 재고용 특례(E-10-1·E-10-2·E-10-3)",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 3,
+    "unit": "year",
+    "comparator": "이하"
+   },
+   "reason": "선원취업 재고용 특례 대상(E-10-1·2·3)에게 1회에 부여하는 체류기간은 3년을 초과할 수 없음. 세 세부약호에 공통이므로 sub_code는 비우고 행 라벨에 적음.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-9986a334b1c4d63d",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "E-10",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "선원취업기간 만료자 재고용 특례 연장 신청",
+     "column_label": null
+    }
+   },
+   "role": "filing_deadline",
+   "value": {
+    "kind": "period",
+    "amount": 2,
+    "unit": "month",
+    "comparator": null
+   },
+   "reason": "재고용 특례 체류기간 연장허가는 특별한 사정이 없으면 체류기간 만료일 2개월 전부터 만료일까지 신청. 1회 체류기간이 아니라 신청 기간이므로 역할을 고침(비교어는 '전부터'라 허용 목록에 없어 비움).",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-55dc8c411a90db0a",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "E-10",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "선원취업기간 만료자 재고용 특례",
+     "column_label": null
+    }
+   },
+   "role": "stay_cap_total",
+   "value": {
+    "kind": "period",
+    "amount": 4,
+    "unit": "year",
+    "comparator": "이하"
+   },
+   "reason": "총 체류기간 상한 '최초 입국일로부터 4년 10개월'의 '4년' 부분. 실제 값은 4년 10개월 하나이므로 fc-292be1b249628e90(10개월)과 합쳐 한 사실로 등록하는 방법을 사람이 정해야 함.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-292be1b249628e90",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "E-10",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "선원취업기간 만료자 재고용 특례",
+     "column_label": null
+    }
+   },
+   "role": "stay_cap_total",
+   "value": {
+    "kind": "period",
+    "amount": 10,
+    "unit": "month",
+    "comparator": "이하"
+   },
+   "reason": "총 체류기간 상한 '최초 입국일로부터 4년 10개월'의 '10개월' 부분. fc-55dc8c411a90db0a(4년)와 합쳐 4년 10개월 한 사실로 등록해야 함.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-4001b18d88b99caf",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "E-10",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "재입국허가 면제",
+     "column_label": null
+    }
+   },
+   "role": "entry_deadline",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "선원취업(E-10) 장 재입국허가 항목: 등록 외국인이 출국한 날부터 1년 이내 재입국하면 재입국허가 면제. 특정 세부약호(E-10-3)가 아니라 E-10 전체로 고침.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-ab292eba20b66ca7",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "'체류기간이 1년보다 적게 남은 경우'는 면제 기간 1년과 비교하는 조건 기준점이지 별도 기간 규칙이 아님.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-e5c691a88bbf924a",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-2",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": null,
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 2,
+    "unit": "year",
+    "comparator": null
+   },
+   "reason": "유학(D-2) 항목의 '1회에 부여할 수 있는 체류기간 상한' 2년이다. 규칙이 붙인 D-4-7은 바로 위 세부약호 표에서 온 것이라 D-2로 고쳤다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-4b00ca4a7b095b72",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "F-1",
+    "sub_code": "F-1-D",
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "의료보험",
+     "column_label": null
+    }
+   },
+   "role": "insurance",
+   "value": {
+    "kind": "money",
+    "amount": 100000000.0,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "디지털노마드(F-1-D) 신청자는 병원 치료·본국 후송 보장액 1억원 이상의 개인 의료보험에 가입해야 한다는 요건이다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-33781497940ca78f",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "F-1",
+    "sub_code": "F-1-D",
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "체류허가 기간",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": null
+   },
+   "reason": "디지털노마드(F-1-D) 체류허가 시 체류기간 1년을 부여한다는 내용이다. 같은 페이지의 첨부서류 각주에 F-1-D가 명시되어 있다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-4388913d532c2d53",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "F-2",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "해당자 라.1) 외국투자가",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "money",
+    "amount": 500000.0,
+    "unit": "usd",
+    "comparator": "이상"
+   },
+   "reason": "거주(F-2) 해당자 중 미화 50만 달러 이상 투자하고 기업투자(D-8)로 3년 이상 계속 체류한 사람의 투자금액 기준이다. 기타 역할(투자금액 기준)이며, 규칙이 붙인 D-8은 선행 자격일 뿐이라 F-2로 고쳤다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-93ed57b56ee81c1e",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "F-2",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "해당자 라.2) 외국법인 파견 임직원",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "money",
+    "amount": 500000.0,
+    "unit": "usd",
+    "comparator": "이상"
+   },
+   "reason": "거주(F-2) 해당자 중 미화 50만 달러 이상 투자한 외국법인이 파견한 임직원(3년 이상 계속 체류)의 투자금액 기준이다. 기타 역할(투자금액 기준)이다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-0de576e3a8d10ca4",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "F-2",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "해당자 라.3) 외국투자가(국민 2명 이상 고용)",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "money",
+    "amount": 300000.0,
+    "unit": "usd",
+    "comparator": "이상"
+   },
+   "reason": "거주(F-2) 해당자 중 미화 30만 달러 이상 투자하고 국민 2명 이상을 고용한 외국인의 투자금액 기준이다. 기타 역할(투자금액 기준)이다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-a4b77a59f2cb53ed",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "D-2",
+    "sub_code": "D-2-8",
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "시간제취업 허가 대상",
+     "column_label": null
+    }
+   },
+   "role": "waiting_period",
+   "value": {
+    "kind": "period",
+    "amount": 6,
+    "unit": "month",
+    "comparator": null
+   },
+   "reason": "시간제취업 허가 대상 중 어학연수(D-4-1, D-4-7)와 방문학생(D-2-8)은 변경일(사증소지자는 입국일)로부터 6개월이 지나야 한다는 대기 기간이다. 한 사실이 D-4-1·D-4-7·D-2-8에 걸쳐 있어 주체를 어떻게 나눌지 사람이 정해야 한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-0405eb72898ba29b",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-4",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "시간제취업 허가 기간",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "period",
+    "amount": 6,
+    "unit": "month",
+    "comparator": "이하"
+   },
+   "reason": "[기타: 시간제취업 허가기간] 어학연수생(D-4)의 시간제취업 허가는 체류기간 내에서 최장 6개월(장소 1곳)이다. 체류기간이 아니라 허가 기간이라 other로 둔다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-6da6fcce2536beb3",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-2",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "시간제취업 허가 기간",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": "이하"
+   },
+   "reason": "[기타: 시간제취업 허가기간] 유학생(D-2)의 시간제취업 허가는 체류기간 내에서 최장 1년(장소 2곳)이다. 체류기간이 아니라 허가 기간이라 other로 둔다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-4c86a93c3fb5732a",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-2",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "유학 자격(D-2-1~D-2-4, D-2-7) 변경·연장",
+     "column_label": null
+    }
+   },
+   "role": "extension_period",
+   "value": {
+    "kind": "period",
+    "amount": 2,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "유학 자격(D-2-1~D-2-4, D-2-7)의 체류자격 변경·연장 시 2년 이내에서 3월말 또는 9월말까지 허가. 여러 세부약호에 공통이라 sub_code는 비우고 행 라벨에 적음.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-32eae9e1208b7032",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-2",
+    "sub_code": "D-2-5",
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "연구유학",
+     "column_label": null
+    }
+   },
+   "role": "stay_cap_total",
+   "value": {
+    "kind": "period",
+    "amount": 2,
+    "unit": "year",
+    "comparator": "이하"
+   },
+   "reason": "연구유학생(D-2-5)은 2년을 초과하여 체류할 수 없다는 총 체류기간 상한(1회 상한 1년은 별도). 1회 체류기간이 아니라 총 상한이므로 역할을 고침.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-4a384ff6238760c7",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "D-2",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "교환학생(D-2-6)·방문학생(D-2-8) 외국인등록 및 변경·연장",
+     "column_label": null
+    }
+   },
+   "role": "extension_period",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "month",
+    "comparator": "이내"
+   },
+   "reason": "교환학생(D-2-6)·방문학생(D-2-8)의 외국인등록 및 변경·연장 시 과정 종료일로부터 1개월 범위 내의 기간. 문장이 페이지 끝에서 잘려 무엇을 1개월 범위 내로 정하는지 다음 페이지에서 확인해야 함.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-bde950514a302cfb",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "복수재입국허가 문장의 '1년을 초과하여'는 재입국허가 면제와의 경계일 뿐이다. 규칙 값은 2년(fc-de771c107ef3b432)이다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-de771c107ef3b432",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "복수재입국허가",
+     "column_label": null
+    }
+   },
+   "role": "entry_deadline",
+   "value": {
+    "kind": "period",
+    "amount": 2,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "복수재입국허가는 출국 후 1년 초과 2년 내에 재입국하려는 경우다. 이 쪽에는 체류자격 표시가 전혀 없어 어느 항목인지 확인해야 한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-1ede9e499088b913",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "F-3",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "전문인력 등 배우자 체류자격외 활동허가 - 허가기간",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "[role 메모: 체류자격외 활동 허가기간] 동반(F-3) 단락의 전문인력 등 배우자 체류자격외 활동허가는 본인 체류기간 내 최대 1년까지 허가한다. 규칙이 붙인 H-2는 허용대상 목록 속 자격일 뿐이라 F-3으로 고쳤다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-7fc79188d277979a",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "고용계약이 있는 경우에도 체류기간 내 최대 1년 범위라는 괄호 단서로, 같은 허가기간 1년(fc-1ede9e499088b913)의 중복이다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-219ec7f793782eab",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-2",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "우수인증대학 및 인증대학 재학생(평점 2.0 이상)",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 2,
+    "unit": "year",
+    "comparator": "이하"
+   },
+   "reason": "유학 체류기간 연장 시 우수인증대학·인증대학 재학생(평균 C학점 이상)에게 체류기간 상한(1회 2년)을 부여한다는 우대 내용이다. 야간 학위과정 특례 대상자는 제외된다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-a38f743708059277",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "D-2",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "일반대학 유학생(추정)",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 2,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "체류기간을 1회 최대 2년 범위 내에서 부여한다는 내용인데 페이지 첫 줄이라 대상이 앞 페이지(일반대학 심사기준으로 추정)에 있다. p.43 말미와 이어 읽어 대상을 확인해야 한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-3bf5904ce2df7c1b",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-2",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "비자심사강화대학 재학생(평점 1.0 이하)",
+     "column_label": null
+    }
+   },
+   "role": "extension_period",
+   "value": {
+    "kind": "period",
+    "amount": 6,
+    "unit": "month",
+    "comparator": "이내"
+   },
+   "reason": "비자심사강화대학 학위과정 재학생 중 평균 D학점 이하인 사람은 최초 1회에 한해 사유서를 받고 6개월 이내로 연장 허가한다는 내용이다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-f87dc17c7c84830b",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-2",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "재입국허가 면제",
+     "column_label": null
+    }
+   },
+   "role": "entry_deadline",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "외국인등록을 한 유학생이 출국일부터 1년 이내 재입국하면 재입국허가가 면제된다는 내용이다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-f87c28f84fcb4a7d",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "'체류기간이 1년보다 적게 남은 경우'라는 조건 속 기준점으로, 체류기간 규칙이 아니다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-9ef48cf972a1facc",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "'1년 이후 2년 이내' 구간의 하한 경계로, 재입국허가 면제 기준(1년)을 다시 가리킨다. 상한 2년은 별도 후보로 다룬다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-9b139a14d7c72a13",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-2",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "복수재입국허가",
+     "column_label": null
+    }
+   },
+   "role": "entry_deadline",
+   "value": {
+    "kind": "period",
+    "amount": 2,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "등록한 유학생(D-2)이 1년 이후 2년 이내 재입국하려면 신청에 의해 복수재입국허가를 받고 수수료를 낸다는 내용이다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-4682c46b4eb5770a",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "'체류기간 만료일이 2년 미만인 경우'라는 조건 속 기준점이다. 실제 사실(복수재입국 허가기간 2년 부여)은 앞 줄에 있고 이 인용문에는 없다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-da5a179d40f7e665",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "F-5",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "영주자격 상실",
+     "column_label": null
+    }
+   },
+   "role": "entry_deadline",
+   "value": {
+    "kind": "period",
+    "amount": 2,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "영주자격자가 재입국면제 기간(출국한 날부터 2년 이내) 또는 재입국허가 기간까지 입국하지 않으면 영주자격 상실. 영주자격 상실·취소(F-5-25 언급) 항목이므로 F-5로 지정.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-5885d7c66857b246",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": "F-6-1",
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "체류자격 변경허가",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "국민의 배우자(F-6-1)로 체류자격 변경허가 시 체류허가기간은 1년 이내다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-7cd5305d1458ad63",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": "F-6-1",
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": "본인",
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "신청인 여권 원본",
+     "column_label": null
+    }
+   },
+   "role": "validity",
+   "value": {
+    "kind": "period",
+    "amount": 6,
+    "unit": "month",
+    "comparator": "이상"
+   },
+   "reason": "국민의 배우자(F-6-1) 체류자격 변경허가 시 신청인(외국인 배우자) 여권 원본은 잔여 유효기간 6개월 이상이어야 한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-421f58d237621cd5",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "'(예) 30달러 … 2000페소 등'은 비자 신청 수수료의 예시이지 규칙 값이 아니다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-fbb7101e785521f3",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "같은 예시 문장의 '30달러'를 30개월로 잘못 읽은 것이다. 기간 값이 없다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-f8745abd4c4f7705",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": "F-6-1",
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": "본인",
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "국제결혼안내프로그램 면제 대상자 ②",
+     "column_label": null
+    }
+   },
+   "role": "waiting_period",
+   "value": {
+    "kind": "period",
+    "amount": 91,
+    "unit": "day",
+    "comparator": "이상"
+   },
+   "reason": "외국인 배우자가 장기체류자격으로 91일 이상 합법 체류하며 초청인과 교제했으면 국제결혼안내프로그램 이수증 제출이 면제된다. 입국 기한이 아니라 면제 조건의 체류 기간이므로, 어느 역할로 기록할지 사람이 정해야 한다.",
+   "confidence": "low"
+  },
+  {
+   "candidate_id": "fc-fc398116a12b1d58",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": "초청인",
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "2-10 예금, 보험, 증권, 채권(재산 활용 시)",
+     "column_label": null
+    }
+   },
+   "role": "deposit",
+   "value": {
+    "kind": "money",
+    "amount": 1000000.0,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "소득요건을 재산으로 충족할 때 예금·보험·증권·채권은 100만원 이상으로 6개월 이상 유지된 것만 인정한다는 기준이다. 체류 매뉴얼 쪽이지만 내용은 초청인·재외공관 기준의 결혼이민 사증 체크리스트라서, 체류 절차에도 적용되는지와 F-6 단락인지 확인해야 한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-bbd7236504140af7",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "'신청일 기준 1년 전 소득 자료'는 소득 산정 기간을 설명하는 주의사항 속 참조값이며 제출 기한이 아니다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-6a1df432828da88e",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": "초청인",
+     "household_size": 2,
+     "per": "연간",
+     "nationality": null,
+     "row_label": "소득기준",
+     "column_label": "2인 가구"
+    }
+   },
+   "role": "income_threshold",
+   "value": {
+    "kind": "money",
+    "amount": 23595948.0,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "'(참고) 2025년 기준 소득요건' 표의 2인 가구 값으로, 초청인의 과거 1년간 연간소득(세전)이 이 금액 이상이어야 한다(머리행 순서로 열 대응은 분명함). 다만 체류 매뉴얼에 실린 초청 단계 사증 체크리스트 사본이라, 체류 절차 사실로 둘지와 '(참고)·2025년 기준' 표기를 확인해야 한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-bb553a55d8e10d9f",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": "초청인",
+     "household_size": 3,
+     "per": "연간",
+     "nationality": null,
+     "row_label": "소득기준",
+     "column_label": "3인 가구"
+    }
+   },
+   "role": "income_threshold",
+   "value": {
+    "kind": "money",
+    "amount": 30152118.0,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "'(참고) 2025년 기준 소득요건' 표의 3인 가구 값으로, 초청인의 과거 1년간 연간소득(세전)이 이 금액 이상이어야 한다(머리행 순서로 열 대응은 분명함). 다만 체류 매뉴얼에 실린 초청 단계 사증 체크리스트 사본이라, 체류 절차 사실로 둘지와 '(참고)·2025년 기준' 표기를 확인해야 한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-cf1bf2148d59ca87",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": "초청인",
+     "household_size": 4,
+     "per": "연간",
+     "nationality": null,
+     "row_label": "소득기준",
+     "column_label": "4인 가구"
+    }
+   },
+   "role": "income_threshold",
+   "value": {
+    "kind": "money",
+    "amount": 36586638.0,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "'(참고) 2025년 기준 소득요건' 표의 4인 가구 값으로, 초청인의 과거 1년간 연간소득(세전)이 이 금액 이상이어야 한다(머리행 순서로 열 대응은 분명함). 다만 체류 매뉴얼에 실린 초청 단계 사증 체크리스트 사본이라, 체류 절차 사실로 둘지와 '(참고)·2025년 기준' 표기를 확인해야 한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-bbfa27621a5721dd",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": "초청인",
+     "household_size": 5,
+     "per": "연간",
+     "nationality": null,
+     "row_label": "소득기준",
+     "column_label": "5인 가구"
+    }
+   },
+   "role": "income_threshold",
+   "value": {
+    "kind": "money",
+    "amount": 42649152.0,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "'(참고) 2025년 기준 소득요건' 표의 5인 가구 값으로, 초청인의 과거 1년간 연간소득(세전)이 이 금액 이상이어야 한다(머리행 순서로 열 대응은 분명함). 다만 체류 매뉴얼에 실린 초청 단계 사증 체크리스트 사본이라, 체류 절차 사실로 둘지와 '(참고)·2025년 기준' 표기를 확인해야 한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-9b042d61f5b9e9c7",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": "초청인",
+     "household_size": 6,
+     "per": "연간",
+     "nationality": null,
+     "row_label": "소득기준",
+     "column_label": "6인 가구"
+    }
+   },
+   "role": "income_threshold",
+   "value": {
+    "kind": "money",
+    "amount": 48388830.0,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "'(참고) 2025년 기준 소득요건' 표의 6인 가구 값으로, 초청인의 과거 1년간 연간소득(세전)이 이 금액 이상이어야 한다(머리행 순서로 열 대응은 분명함). 다만 체류 매뉴얼에 실린 초청 단계 사증 체크리스트 사본이라, 체류 절차 사실로 둘지와 '(참고)·2025년 기준' 표기를 확인해야 한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-516649d04004789d",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": "초청인",
+     "household_size": 7,
+     "per": "연간",
+     "nationality": null,
+     "row_label": "소득기준",
+     "column_label": "7인 가구"
+    }
+   },
+   "role": "income_threshold",
+   "value": {
+    "kind": "money",
+    "amount": 53930568.0,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "'(참고) 2025년 기준 소득요건' 표의 7인 가구 값으로, 초청인의 과거 1년간 연간소득(세전)이 이 금액 이상이어야 한다(머리행 순서로 열 대응은 분명함). 다만 체류 매뉴얼에 실린 초청 단계 사증 체크리스트 사본이라, 체류 절차 사실로 둘지와 '(참고)·2025년 기준' 표기를 확인해야 한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-ada5fc9f3899e655",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": "초청인",
+     "household_size": 8,
+     "per": "1인당",
+     "nationality": null,
+     "row_label": "소득기준",
+     "column_label": "8인 가구 이상"
+    }
+   },
+   "role": "income_threshold",
+   "value": {
+    "kind": "money",
+    "amount": 5541738.0,
+    "unit": "krw",
+    "comparator": null
+   },
+   "reason": "8인 이상 가구는 가구원 1인 추가마다 소득기준이 5,541,738원씩 늘어난다는 규정이다. 체류 매뉴얼에 실린 초청 단계 사증 체크리스트 사본이라, 체류 절차 사실로 둘지 확인해야 한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-a2b1bb9a9fb56d39",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "체류자격 외 활동허가",
+     "column_label": null
+    }
+   },
+   "role": "fee",
+   "value": {
+    "kind": "money",
+    "amount": 120000.0,
+    "unit": "krw",
+    "comparator": null
+   },
+   "reason": "p.5 각종 체류허가 심사수수료표의 '체류자격 외 활동허가' 수수료이며 특정 체류자격이 아닌 공통 수수료다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-df62c50b24847024",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "근무처의 변경·추가",
+     "column_label": null
+    }
+   },
+   "role": "fee",
+   "value": {
+    "kind": "money",
+    "amount": 120000.0,
+    "unit": "krw",
+    "comparator": null
+   },
+   "reason": "p.5 각종 체류허가 심사수수료표의 '근무처의 변경·추가' 수수료이며 특정 체류자격이 아닌 공통 수수료다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-4d027f5387067328",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "체류자격 부여",
+     "column_label": null
+    }
+   },
+   "role": "fee",
+   "value": {
+    "kind": "money",
+    "amount": 80000.0,
+    "unit": "krw",
+    "comparator": null
+   },
+   "reason": "p.5 각종 체류허가 심사수수료표의 '체류자격 부여' 수수료이며 특정 체류자격이 아닌 공통 수수료다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-4492f8a6e5de3ab0",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "결혼이민(F-6)",
+     "column_label": "수수료"
+    }
+   },
+   "role": "fee",
+   "value": {
+    "kind": "money",
+    "amount": 40000.0,
+    "unit": "krw",
+    "comparator": null
+   },
+   "reason": "수수료표의 결혼이민(F-6) 4만원 행이다. OCR로 병합 셀이 풀려서 '체류자격 부여' 아래 행인지 '체류자격 변경허가' 아래 행인지 정할 수 없으니, 원본 표에서 어느 업무의 F-6 특례인지 확인해야 한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-ff11fe5fbe30734e",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "체류자격 변경허가",
+     "column_label": null
+    }
+   },
+   "role": "fee",
+   "value": {
+    "kind": "money",
+    "amount": 100000.0,
+    "unit": "krw",
+    "comparator": null
+   },
+   "reason": "p.5 각종 체류허가 심사수수료표의 '체류자격 변경허가' 수수료이며 특정 체류자격이 아닌 공통 수수료다. 규칙이 붙인 상위 자격 코드는 표의 다른 행에서 끌어온 것이라 지웠다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-459f74ea56302942",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "F-5",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "영주(F-5)자격 변경허가",
+     "column_label": null
+    }
+   },
+   "role": "fee",
+   "value": {
+    "kind": "money",
+    "amount": 200000.0,
+    "unit": "krw",
+    "comparator": null
+   },
+   "reason": "p.5 심사수수료표의 영주(F-5) 자격 변경허가 수수료 20만원이다. 행 이름에 자격이 직접 적혀 있다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-f35ca7ef1d9cfbab",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "체류기간 연장허가",
+     "column_label": null
+    }
+   },
+   "role": "fee",
+   "value": {
+    "kind": "money",
+    "amount": 60000.0,
+    "unit": "krw",
+    "comparator": null
+   },
+   "reason": "p.5 각종 체류허가 심사수수료표의 '체류기간 연장허가' 수수료이며 특정 체류자격이 아닌 공통 수수료다. 규칙이 붙인 상위 자격 코드는 표의 다른 행에서 끌어온 것이라 지웠다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-93f158c8ce3137eb",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "결혼이민(F-6)",
+     "column_label": "수수료"
+    }
+   },
+   "role": "fee",
+   "value": {
+    "kind": "money",
+    "amount": 30000.0,
+    "unit": "krw",
+    "comparator": null
+   },
+   "reason": "수수료표의 결혼이민(F-6) 3만원 행이다. '체류기간 연장허가' 바로 아래에 있어 연장허가의 F-6 특례로 보이지만, 병합 셀이 풀린 표라 원본에서 어느 업무 행인지 확인해야 한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-3edddb1276a6141b",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "단수재입국허가",
+     "column_label": null
+    }
+   },
+   "role": "fee",
+   "value": {
+    "kind": "money",
+    "amount": 30000.0,
+    "unit": "krw",
+    "comparator": null
+   },
+   "reason": "p.5 각종 체류허가 심사수수료표의 '단수재입국허가' 수수료이며 특정 체류자격이 아닌 공통 수수료다. 규칙이 붙인 F-6은 표의 다른 행에서 온 것이라 지웠다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-27d5adf2626faf7f",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "복수재입국허가",
+     "column_label": null
+    }
+   },
+   "role": "fee",
+   "value": {
+    "kind": "money",
+    "amount": 50000.0,
+    "unit": "krw",
+    "comparator": null
+   },
+   "reason": "p.5 각종 체류허가 심사수수료표의 '복수재입국허가' 수수료이며 특정 체류자격이 아닌 공통 수수료다. 규칙이 붙인 F-6은 표의 다른 행에서 온 것이라 지웠다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-6e30e237c8b0aba3",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "외국인등록증 발급 및 재발급",
+     "column_label": null
+    }
+   },
+   "role": "fee",
+   "value": {
+    "kind": "money",
+    "amount": 35000.0,
+    "unit": "krw",
+    "comparator": null
+   },
+   "reason": "p.5 각종 체류허가 심사수수료표의 '외국인등록증 발급 및 재발급' 수수료이며 특정 체류자격이 아닌 공통 수수료다. 규칙이 붙인 F-6은 표의 다른 행에서 온 것이라 지웠다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-60f56c5361eb6451",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "거소등록증 발급 및 재발급",
+     "column_label": null
+    }
+   },
+   "role": "fee",
+   "value": {
+    "kind": "money",
+    "amount": 35000.0,
+    "unit": "krw",
+    "comparator": null
+   },
+   "reason": "p.5 각종 체류허가 심사수수료표의 '거소등록증 발급 및 재발급' 수수료이며 특정 체류자격이 아닌 공통 수수료다. 규칙이 붙인 F-6은 표의 다른 행에서 온 것이라 지웠다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-58e0dfc938ebf835",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "출입국에 관한 사실증명",
+     "column_label": null
+    }
+   },
+   "role": "fee",
+   "value": {
+    "kind": "money",
+    "amount": 2000.0,
+    "unit": "krw",
+    "comparator": null
+   },
+   "reason": "p.5 각종 체류허가 심사수수료표의 '출입국에 관한 사실증명' 수수료이며 특정 체류자격이 아닌 공통 수수료다. 규칙이 붙인 F-6은 표의 다른 행에서 온 것이라 지웠다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-1c3031971d467fc5",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "외국인등록 사실증명",
+     "column_label": null
+    }
+   },
+   "role": "fee",
+   "value": {
+    "kind": "money",
+    "amount": 2000.0,
+    "unit": "krw",
+    "comparator": null
+   },
+   "reason": "p.5 각종 체류허가 심사수수료표의 '외국인등록 사실증명' 수수료이며 특정 체류자격이 아닌 공통 수수료다. 규칙이 붙인 F-6은 표의 다른 행에서 온 것이라 지웠다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-e5cd7baaa8bd827d",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "국내거소신고 사실증명",
+     "column_label": null
+    }
+   },
+   "role": "fee",
+   "value": {
+    "kind": "money",
+    "amount": 2000.0,
+    "unit": "krw",
+    "comparator": null
+   },
+   "reason": "p.5 각종 체류허가 심사수수료표의 '국내거소신고 사실증명' 수수료이며 특정 체류자격이 아닌 공통 수수료다. 규칙이 붙인 F-6은 표의 다른 행에서 온 것이라 지웠다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-0ef92a6c2ca3795b",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "재입국허가 면제(기존 F-2-1, F-2-10 포함)",
+     "column_label": null
+    }
+   },
+   "role": "entry_deadline",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "결혼이민(F-6, 기존 F-2-1·F-2-10 포함) 등록자는 출국한 날로부터 1년 이내 재입국 시 재입국허가 면제(면제기간 1년). 규칙이 붙인 F-2-10은 괄호 속 구 약호이므로 F-6으로 고침.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-8ee1fb4ee7bc84f2",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "'체류기간 만료일이 1년보다 적게 남은 경우'는 면제 기간과 비교하는 조건 기준점이지 별도 규칙이 아님.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-5d138eb7b9d41334",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "복수재입국허가 대상 구간의 하한(1년 초과)으로 재입국허가 면제 기간과의 경계 기준점일 뿐 별도 규칙이 아님. 상한 2년은 fc-7e8ab6ec5c33400d에서 다룸.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-7e8ab6ec5c33400d",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "복수 재입국허가(기존 F-2-1, F-2-10 포함)",
+     "column_label": null
+    }
+   },
+   "role": "entry_deadline",
+   "value": {
+    "kind": "period",
+    "amount": 2,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "결혼이민(F-6) 등록자가 출국 후 1년 초과 2년 이내 재입국하려면 복수 재입국허가(허가기간 2년). 구 약호 F-2-10이 아니라 F-6으로 고침.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-c7a3ee73ca0bf102",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "'체류기간 만료일이 2년보다 적게 남은 경우'는 허가기간 2년과 비교하는 조건 기준점이지 별도 규칙이 아님.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-523cad3d33105d6d",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": "F-6-2",
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "외국인등록",
+     "column_label": null
+    }
+   },
+   "role": "filing_deadline",
+   "value": {
+    "kind": "period",
+    "amount": 90,
+    "unit": "day",
+    "comparator": "이내"
+   },
+   "reason": "자녀 양육자(F-6-2) 사증으로 입국한 사람은 입국일로부터 90일 이내 외국인등록해야 하며 초과 시 사범처리. 처리 기간이 아니라 등록 신청 기한이므로 역할을 고침.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-8f6b222e0f551b53",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": "F-6-2",
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "외국인등록 시 체류허가 기간",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": null
+   },
+   "reason": "자녀 양육자(F-6-2) 사증 입국자의 외국인등록 시 체류허가 기간은 입국일로부터 1년.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-0349b946c9398296",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "난민신청자 체류자격외 취업활동 허가 대상",
+     "column_label": null
+    }
+   },
+   "role": "waiting_period",
+   "value": {
+    "kind": "period",
+    "amount": 6,
+    "unit": "month",
+    "comparator": null
+   },
+   "reason": "난민인정 신청 후 6개월이 지난 난민신청자가 체류자격외 취업활동 허가 대상이라는 대기 기간이다. 이 페이지에 난민신청자의 체류자격 코드가 없어 사람이 확인해야 한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-79540b477e9d9b9f",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "인도적체류자 체류자격외 취업활동 허가 기간",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "인도적체류자·그 가족(G-1-12)·난민인정자 가족(F-1-16)의 체류자격외 취업활동 허가 기간이 체류기간 범위 내 최대 1년이라는 내용이다(기타: 활동허가 기간). 여러 자격에 걸치고 규칙의 E-2 지정은 잘못이라 주체를 사람이 정해야 한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-9040b7b04129a9c8",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "G-1",
+    "sub_code": "G-1-1",
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "체류자격 변경허가 체류허가기간",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "산업재해 청구·치료 중인 사람과 그 가족(G-1-1)의 체류허가기간은 1년 범위 내(입원치료·산재보상 완료 시까지)다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-2b63b4c8feb30928",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "G-1",
+    "sub_code": "G-1-2",
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "체류자격 변경허가 체류허가기간",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "질병·사고로 치료 중인 사람과 그 가족(G-1-2)의 체류허가기간이 1년 범위 내라는 내용으로, 같은 문구의 두 번째 출현이라 G-1-1이 아닌 G-1-2로 고쳤다. 인용문이 페이지에 두 번 나오므로 위치를 확인하면 좋다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-ccbc70ddf881a230",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "G-1",
+    "sub_code": "G-1-10",
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": null,
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "외국인환자(G-1-10) 체류자격 변경 허가 시 체류기간은 1년 이내 범위로 준다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-bd2e3d1d4b72e32a",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "G-1",
+    "sub_code": "G-1-11",
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": null,
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": null
+   },
+   "reason": "성폭력피해자 등 인도적 고려 대상(G-1-11)에게 체류기간 1년을 부여한다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-65b8bf4f8013d2ed",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "G-1",
+    "sub_code": "G-1-10",
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "외국인환자 체류기간 연장",
+     "column_label": null
+    }
+   },
+   "role": "extension_period",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "외국인환자(G-1-10)와 동반가족·간병인의 체류기간 연장은 1년 이내에서 허가한다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-f3fd987ba63db5e0",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "인용문에 364일이 없다. 'H-1 체류기간'은 국가별 취업기간 표의 칸 값이고, 실제 수치(1주 40시간, 2,080시간)는 시간 단위라 이 후보 값과 맞지 않는다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-940541b3f34b4ef5",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "인용문에 364일이 없다. 'H-1 체류기간'은 표의 칸 값이고, 실제 수치(1주 25시간, 1,300시간)는 시간 단위라 이 후보 값과 맞지 않는다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-d2030248a893d127",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "H-2",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "감염병 확산·천재지변 등 직권 연장 시",
+     "column_label": null
+    }
+   },
+   "role": "stay_cap_total",
+   "value": {
+    "kind": "period",
+    "amount": 6,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "방문취업(H-2) 연장은 입국일부터 4년 10개월 내 허가이고, 감염병·천재지변으로 직권 연장할 때는 6년 이내까지 가능하다. 6년이 입국일부터의 총 한도인지 연장 기간인지 문장만으로 확정되지 않는다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-04d71c0fa33e89d9",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "'최대 3년'은 바로 아래 조건문(한국어능력 입증서류 제출 시 3년, fc-95bd05f8e85e41bf)과 같은 사실의 중복이다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-95bd05f8e85e41bf",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "H-2",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "최초 입국 후 외국인등록 시, 한국어능력 입증서류 제출",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 3,
+    "unit": "year",
+    "comparator": null
+   },
+   "reason": "방문취업(H-2) 사증으로 최초 입국해 외국인등록할 때 한국어능력 입증서류를 내면 체류기간 3년을 부여한다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-4d5ae7e8a5d2a539",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "H-2",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "최초 입국 후 외국인등록 시, 한국어능력 입증서류 미제출",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": null
+   },
+   "reason": "방문취업(H-2) 최초 외국인등록 시 한국어능력 입증서류를 내지 않으면 체류기간 1년을 부여한다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-c57a14e63969ca5b",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "H-2",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "법 위반 처리기준(초범)",
+     "column_label": null
+    }
+   },
+   "role": "fine",
+   "value": {
+    "kind": "money",
+    "amount": 5000000,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "방문취업(H-2) 초범이 범칙금 500만 원 이상이면 체류 불허 후 출국조치한다. 과태료가 아니라 범칙금 기준액이다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-c782bfa2f10197aa",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "H-2",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "법 위반 처리기준(재범, 최근 3년 합산)",
+     "column_label": null
+    }
+   },
+   "role": "fine",
+   "value": {
+    "kind": "money",
+    "amount": 7000000,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "방문취업(H-2) 재범은 최근 3년 이내 범칙금 합산액이 700만원 이상이면 체류 불허 후 출국조치한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-0e3c6c62403f5fc2",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "D-3",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": null,
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 2,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "기술연수(D-3) '체류기간 상한 2년 이내'다. 표 머리가 '1회에 부여할 수 있는'인지 지워져 있고, 같은 쪽 지침은 입국일부터 2년을 총 한도로 적고 있다. 1회 부여 상한인지 총 상한인지 원문 표를 확인해야 한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-81495ee60105ddbc",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-3",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": null,
+     "column_label": null
+    }
+   },
+   "role": "extension_period",
+   "value": {
+    "kind": "period",
+    "amount": 2,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "D-3 체류기간 연장허가: 최초 6개월, 이후 입국한 날부터 2년 범위 내에서 연장한다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-ae9d461715516842",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "같은 쪽 지침(제5조) 인용으로, fc-81495ee60105ddbc(입국일부터 2년 범위 내 연장)와 같은 사실의 중복이다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-15512271c8774721",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "D-3",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "해외투자기업 기술연수생 연수허용 대상",
+     "column_label": null
+    }
+   },
+   "role": "waiting_period",
+   "value": {
+    "kind": "period",
+    "amount": 3,
+    "unit": "month",
+    "comparator": "이상"
+   },
+   "reason": "기술연수(D-3) 훈령상 연수허용 대상: 설립·가동 후 3개월이 지난 해외합작투자법인·해외현지법인의 생산직 직원. 대기 기간은 신청인이 아니라 해외법인에 걸리고, 체류 매뉴얼에 실린 사증발급인정서 훈령이라 절차 구분(stay/visa)을 사람이 확인해야 함.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-b40addb53090b01e",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "'잔여 여권 유효기간이 1년 미만이라 하더라도'는 조건 기준점이며 '22.6.30.까지 적용된 경과 규정의 일부임.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-eaf567527b173c37",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "여권 유효기간 범위 내 체류기간 부여('22.6.30.까지)",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "잔여 여권 유효기간 1년 미만이어도 1년 이내 체류허가 기간을 부여하던 규정으로, '22.6.30.까지만 적용된 것으로 적혀 있음. 장기체류자격 공통 규정(A-1~A-3·F-5·F-1·F-2 난민·G-1 등 제외)이라 특정 자격이 없고 현행 여부도 사람이 판단해야 함. 규칙이 붙인 G-1은 제외 대상이라 틀림.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-c344f7ecacd12404",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "'여권 유효기간 6개월 이하인 경우라도'는 조건 기준점이지 별도 규칙이 아님. 실제 규칙(6개월 이내 체류허가)은 fc-7241848ea89f9b0d에서 다룸.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-5894d20999aabd62",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "'여권 유효기간을 6개월로 간주'는 같은 문장의 간주 단계로, 실제 부여 규칙(6개월 이내 체류허가)은 fc-7241848ea89f9b0d와 같은 사실임.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-7241848ea89f9b0d",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": "1회에 한함",
+     "nationality": null,
+     "row_label": "여권 재발급 불가 시 체류기간 부여('22.7.1.이후)",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 6,
+    "unit": "month",
+    "comparator": "이내"
+   },
+   "reason": "'22.7.1. 이후 여권 재발급이 사실상 불가능하면 1회에 한해 여권 유효기간을 6개월로 간주해 6개월 이내 체류허가 기간 부여. 장기체류자격 공통 규정(A-1~A-3·F-5·난민·G-1 등 제외)이라 특정 체류자격이 없으므로 공통 사실로 등록할지 사람이 정해야 함(G-1은 제외 대상이라 틀림).",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-00a79eb5c90b8cbb",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-4",
+    "sub_code": "D-4-1",
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "체류자격외 활동",
+     "column_label": null
+    }
+   },
+   "role": "waiting_period",
+   "value": {
+    "kind": "period",
+    "amount": 6,
+    "unit": "month",
+    "comparator": "이상"
+   },
+   "reason": "어학연수(D-4-1) 자격자는 자격 취득일부터 6개월이 지나야 체류자격외 활동이 가능함.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-befa1a28e1442f32",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": null,
+     "column_label": null
+    }
+   },
+   "role": "report_deadline",
+   "value": {
+    "kind": "period",
+    "amount": 15,
+    "unit": "day",
+    "comparator": "이내"
+   },
+   "reason": "외국인등록사항 변경신고(학교변경 등) 기한 15일 이내다. 쪽 첫머리라 어느 체류자격 항목(D-2 또는 D-4로 보임)의 규정인지 이 쪽에서 확인되지 않는다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-dc97e4441d3da228",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "우수사설교육기관 연수생 현장실습 실습생 요건",
+     "column_label": null
+    }
+   },
+   "role": "waiting_period",
+   "value": {
+    "kind": "period",
+    "amount": 6,
+    "unit": "month",
+    "comparator": null
+   },
+   "reason": "우수사설교육기관 연수생 현장실습은 체류기간 6개월이 경과한 연수생만 가능하다. 쪽에 체류자격 약호가 없어 D-4 항목인지 확인해야 하고, 1회 체류기간이 아니라 경과 요건이다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-1f0c76fbde1973ab",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-8",
+    "sub_code": "D-8-1",
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": "본인",
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "기본요건: 투자금액",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "money",
+    "amount": 100000000,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "[기타: 투자금액 요건] 기업투자(D-8-1) 공관장 재량 사증의 기본요건은 투자금액 1억원 이상(의결권 주식 10% 이상 소유 등)이다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-479ca5d3548ab944",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "D-8",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": "본인",
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "투자자금 반입·대리송금 예외",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "money",
+    "amount": 300000000.0,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "[role 메모: 투자금 기준] 투자금 3억원 이상 투자자는 부모·배우자 부모 명의 반입·대리송금도 추가 인정될 수 있다는 기준이다. 이 쪽 1번 항목의 세부약호가 보이지 않고(아래 2번이 D-8-2), 앞 쪽 문장이 잘려 있어 대상 세부자격을 확인해야 한다.",
+   "confidence": "low"
+  },
+  {
+   "candidate_id": "fc-111e021781f717d5",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "D-8",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": "본인",
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "⑥ 투자금액 3억원 미만 개인투자자 추가서류",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "money",
+    "amount": 300000000.0,
+    "unit": "krw",
+    "comparator": "미만"
+   },
+   "reason": "[role 메모: 투자금 기준] 투자금액 3억원 미만 개인투자자는 자본금 사용내역·사업장 존재 입증 등 추가서류를 낸다는 기준이다. 1번 항목(공관장 재량 사증)의 세부약호가 이 쪽에 없어 확인이 필요하다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-d495b7f815f41706",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "D-8",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "투자금액 3억원 미만 신청자 추가서류",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "money",
+    "amount": 300000000,
+    "unit": "krw",
+    "comparator": "미만"
+   },
+   "reason": "[기타: 추가서류 기준 투자금액] 투자금액 3억원 미만 신청자는 자본금 사용내역 등 추가서류를 낸다. 공동사업자 언급과 뒤의 '4. … D-8-4'로 보아 D-8-3 항목으로 보이나 쪽에 명시되지 않아 세부약호를 확인해야 한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-a50475cddfccdcd9",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-8",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "사증발급 기본 원칙",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "money",
+    "amount": 300000000,
+    "unit": "krw",
+    "comparator": "미만"
+   },
+   "reason": "[기타: 정밀심사 기준 투자금액] 기업투자(D-8) 사증발급 기본 원칙상 3억원 미만 소액 개인투자가는 정밀 심사한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-e8d52ea1d984477b",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-9",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "1회 부여 체류기간의 상한",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 2,
+    "unit": "year",
+    "comparator": null
+   },
+   "reason": "무역경영(D-9)의 1회 부여 체류기간 상한 2년이다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-e17b1f712c228ca0",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-9",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "공관장 재량 사증(산업설비 설치·운영·보수 기술 제공자)",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": "이하"
+   },
+   "reason": "무역경영(D-9) 중 산업설비 도입회사에 파견·초청되어 설치·운영·보수 기술을 제공하는 사람에게 공관장 재량으로 체류기간 1년 이하 단수사증을 발급한다는 내용이다(바로 다음 줄이 '이하의 단수사증').",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-5a6d8249a6c228b1",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "선박건조 및 산업설비 제작·감독 파견자 공관장 재량 단수사증",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": "이하"
+   },
+   "reason": "선박건조·산업설비 제작·감독을 위해 파견되는 자에게 공관장 재량으로 체류기간 1년 이하 단수사증 발급. 같은 페이지 3·4번이 무역경영(D-9)을 언급하나 이 2번 항목의 체류자격·세부약호는 적혀 있지 않아 사람이 확인해야 함.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-31d6ea4557c54f3e",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-9",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": "칠레",
+     "row_label": "한·칠레 FTA 공관장 재량 단수사증",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": null
+   },
+   "reason": "칠레인에게 한·칠레 FTA에 따라 체류기간 1년의 단수사증 발급(무역경영(D-9) 장 공관장 재량 사증 3번 항목).",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-6a159f651879123b",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-9",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "외국인 개인사업자",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": "이하"
+   },
+   "reason": "외국인 개인사업자에 대한 무역경영(D-9) 자격 체류기간 1년 이하 단수사증 발급('12.10.29.부터 시행).",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-be38c44a2d658fed",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-9",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": "본인",
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "외국인 개인사업자(외국환거래법상 외자 도입)",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "money",
+    "amount": 300000000,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "무역경영(D-9) 외국인 개인사업자 단수사증 대상 요건 중 외국환거래법·규정에 따라 3억원 이상 외자를 도입하고 사업자등록한 자. 투자금액 요건이라 역할은 other.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-2ea8d83692482c24",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-9",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": "본인",
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "외국인 개인사업자(외국인투자촉진법상 투자기업등록)",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "money",
+    "amount": 300000000,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "무역경영(D-9) 외국인 개인사업자 단수사증 대상 요건 중 외국인투자촉진법에 따라 투자기업등록증을 받은 자본금 3억원 이상 개인사업자(외자 도입 요건과 다른 경로). 자본금 요건이라 역할은 other.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-bd37160ce051afaa",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": "동반가족",
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "국제기구 직원 동반가족 복수사증",
+     "column_label": null
+    }
+   },
+   "role": "validity",
+   "value": {
+    "kind": "period",
+    "amount": 3,
+    "unit": "year",
+    "comparator": null
+   },
+   "reason": "'체류자격의 유효기간 3년의 복수사증 발급'이라는 사증 유효기간이다. 문장 앞부분이 이전 쪽에서 잘려 누구(국제기구 직원 동반가족 등)의 어느 자격 사증인지 이 쪽만으로는 정할 수 없어 앞 쪽 확인이 필요하다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-6f5addcb52205c76",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "F-1",
+    "sub_code": "F-1-3",
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "국제기구 직원의 동거인(세대 비구성원)",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": "이하"
+   },
+   "reason": "국제기구 직원의 동거인으로서 그 세대에 속하지 않는 사람에게 체류기간 1년 이하의 방문동거(F-1-3) 단수사증을 발급한다. 발급 기한이 아니라 체류기간이라 role을 고쳤다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-aebb80dce7fe8319",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "C-3",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "국제기구 직원의 비동반가족",
+     "column_label": null
+    }
+   },
+   "role": "validity",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": null
+   },
+   "reason": "국제기구 직원의 비동반가족에게 유효기간 1년, 체류기간 90일 이하의 단기방문(C-3) 복수사증을 발급한다. 규칙이 붙인 F-1-3·동반가족은 윗문장 것이라 고쳤다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-ebf156ebcb97388b",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "C-3",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "국제기구 직원의 비동반가족",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 90,
+    "unit": "day",
+    "comparator": "이하"
+   },
+   "reason": "국제기구 직원의 비동반가족에게 주는 단기방문(C-3) 복수사증의 체류기간 90일 이하다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-98edca14c2d1bfc1",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "일시적 회의참석·공무수행 목적 단수사증",
+     "column_label": null
+    }
+   },
+   "role": "validity",
+   "value": {
+    "kind": "period",
+    "amount": 3,
+    "unit": "month",
+    "comparator": null
+   },
+   "reason": "주재 목적이 아닌 일시적 회의참석·공무수행 목적 신청자에게 유효기간 3개월 단수사증을 발급한다는 내용이다. 이 쪽에 그 사증의 체류자격이 나오지 않아(외교·공무 단락으로 보임) 규칙의 C-3는 근거가 없으니 자격을 확인해야 한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-333dbd2082e3b69d",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "공관장 재량 단수사증",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": "이하"
+   },
+   "reason": "투자금액·업종을 고려해 1년 이하 단수사증을 공관장 재량으로 발급한다는 내용이다. 1년이 체류기간인지 사증 유효기간인지, 그리고 이 페이지의 체류자격(무역비자 → D-9 추정)이 명시되지 않아 확인이 필요하다.",
+   "confidence": "low"
+  },
+  {
+   "candidate_id": "fc-d2e0e2e351359d41",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "무역비자 점수제 사증발급인정서 허가 요건",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "period",
+    "amount": 3,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "무역비자 점수제 사증발급인정서 요건으로 신청일 기준 3년 이내 출입국관리법 위반 사실이 없어야 한다는 기간 기준이다(기타: 위반 이력 조회 기간). 규칙의 C-3-4는 단서 문장에서 온 잘못이며 체류자격(D-9 추정)이 페이지에 없다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-7e827632f8a0b1f8",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-10",
+    "sub_code": "D-10-3",
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "해외 우수대학 졸업생 요건",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "period",
+    "amount": 3,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "[기타: 학위취득 후 경과기간 요건] 첨단기술인턴(D-10-3) 해당자는 해외 우수대학 재학생이거나 학위취득일로부터 3년이 지나지 않은 졸업생(만 30세 미만, 석사 이상 35세)이어야 한다. 규칙이 붙인 D-8은 오류다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-449a07eac9e14fe2",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-10",
+    "sub_code": "D-10-1",
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "점수제 면제 특례: 국내 대학 졸업 후 최초 구직",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": null
+   },
+   "reason": "국내 대학 졸업 후 최초 구직(D-10-1)은 점수제 없이 체류기간 1년을 부여한다(연장 시 점수제 적용).",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-2be7790aaf7d43cc",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-10",
+    "sub_code": "D-10-1",
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "점수제 면제 특례: 국내 대학 졸업 한국어능력 우수자",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "period",
+    "amount": 3,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "[기타: 학위취득 후 경과기간 요건] 국내 대학 졸업 한국어능력 우수자 특례는 학위 취득 후 3년이 지나지 않은 사람에게만 적용한다(D-10-1 점수제 면제).",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-7b58c4308bccfb58",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "같은 쪽 fc-2be7790aaf7d43cc(학위 취득 후 3년 미경과)와 같은 사실을 다시 적은 주석이라 중복이다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-291bcaa6978bbb94",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "D-10",
+    "sub_code": "D-10-T",
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "결격사유 ⑤ 벌금형",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "money",
+    "amount": 3000000.0,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "[role 메모: 결격 벌금형 기준액] 출입국관리법 등 위반으로 300만원 이상 벌금형을 받은 경우가 결격사유 기준이다(과태료가 아님). 이 쪽은 '4) 최우수인재(D-10-T)' 머리 다음에 결격사유 목록이 오지만, 그 목록이 D-10-T에만 해당하는지 D-10 전체 공통인지 이전 쪽 문맥으로 확인해야 한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-124217f8b3389ee0",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "D-10",
+    "sub_code": "D-10-T",
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "결격사유 ⑤ 벌금 납부 후 경과기간",
+     "column_label": null
+    }
+   },
+   "role": "waiting_period",
+   "value": {
+    "kind": "period",
+    "amount": 3,
+    "unit": "year",
+    "comparator": null
+   },
+   "reason": "300만원 이상 벌금 납부일부터 3년이 지나지 않으면 결격이다. 이 쪽은 '4) 최우수인재(D-10-T)' 머리 다음에 결격사유 목록이 오지만, 그 목록이 D-10-T에만 해당하는지 D-10 전체 공통인지 이전 쪽 문맥으로 확인해야 한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-53db376ea667cc1e",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "D-10",
+    "sub_code": "D-10-T",
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "결격사유 ⑥ 최근 5년간 3회 이상 위반",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "period",
+    "amount": 5,
+    "unit": "year",
+    "comparator": "간"
+   },
+   "reason": "[role 메모: 위반 횟수 산정기간] 신청일부터 최근 5년간 출입국관리법을 3회 이상 위반(과태료 처분 제외)하면 결격이다. 이 쪽은 '4) 최우수인재(D-10-T)' 머리 다음에 결격사유 목록이 오지만, 그 목록이 D-10-T에만 해당하는지 D-10 전체 공통인지 이전 쪽 문맥으로 확인해야 한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-a8c7661e78e0909c",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "D-10",
+    "sub_code": "D-10-T",
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "결격사유 ⑦ 강제퇴거 후 경과기간",
+     "column_label": null
+    }
+   },
+   "role": "waiting_period",
+   "value": {
+    "kind": "period",
+    "amount": 7,
+    "unit": "year",
+    "comparator": null
+   },
+   "reason": "강제퇴거명령을 받고 출국한 날부터 7년이 지나지 않으면 결격이다(입국 기한이 아니라 경과 대기). 이 쪽은 '4) 최우수인재(D-10-T)' 머리 다음에 결격사유 목록이 오지만, 그 목록이 D-10-T에만 해당하는지 D-10 전체 공통인지 이전 쪽 문맥으로 확인해야 한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-16b4fe9cdc8a71d2",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "D-10",
+    "sub_code": "D-10-T",
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "결격사유 ⑦ 출국명령 후 경과기간",
+     "column_label": null
+    }
+   },
+   "role": "waiting_period",
+   "value": {
+    "kind": "period",
+    "amount": 5,
+    "unit": "year",
+    "comparator": null
+   },
+   "reason": "출국명령을 받고 출국한 날부터 5년이 지나지 않으면 결격이다. 이 쪽은 '4) 최우수인재(D-10-T)' 머리 다음에 결격사유 목록이 오지만, 그 목록이 D-10-T에만 해당하는지 D-10 전체 공통인지 이전 쪽 문맥으로 확인해야 한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-dce0b8c477090c65",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "D-10",
+    "sub_code": "D-10-T",
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "결격사유 ⑧ 1회 범칙금",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "money",
+    "amount": 5000000.0,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "[role 메모: 결격 범칙금 기준액] 최근 3년간 1회 500만원 이상 범칙금 처분을 받으면 결격이다. 이 쪽은 '4) 최우수인재(D-10-T)' 머리 다음에 결격사유 목록이 오지만, 그 목록이 D-10-T에만 해당하는지 D-10 전체 공통인지 이전 쪽 문맥으로 확인해야 한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-5f30f51daa5aa3e6",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "D-10",
+    "sub_code": "D-10-T",
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "결격사유 ⑧ 범칙금 산정기간",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "period",
+    "amount": 3,
+    "unit": "year",
+    "comparator": "간"
+   },
+   "reason": "[role 메모: 범칙금 산정기간] 범칙금 결격 판단은 최근 3년간 처분을 기준으로 한다. 이 쪽은 '4) 최우수인재(D-10-T)' 머리 다음에 결격사유 목록이 오지만, 그 목록이 D-10-T에만 해당하는지 D-10 전체 공통인지 이전 쪽 문맥으로 확인해야 한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-9ed8b46784da224f",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "D-10",
+    "sub_code": "D-10-T",
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "결격사유 ⑧ 합산 범칙금",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "money",
+    "amount": 7000000.0,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "[role 메모: 결격 범칙금 합산 기준액] 최근 3년간 범칙금 합산액이 700만원 이상이면 결격이다. 이 쪽은 '4) 최우수인재(D-10-T)' 머리 다음에 결격사유 목록이 오지만, 그 목록이 D-10-T에만 해당하는지 D-10 전체 공통인지 이전 쪽 문맥으로 확인해야 한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-c4e8cb24fe7bd35c",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "D-10",
+    "sub_code": "D-10-T",
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "결격사유 ⑨ 인도적 체류허가 후 경과기간",
+     "column_label": null
+    }
+   },
+   "role": "waiting_period",
+   "value": {
+    "kind": "period",
+    "amount": 5,
+    "unit": "year",
+    "comparator": null
+   },
+   "reason": "강제퇴거 대상이나 인도적 사유로 체류허가를 받은 사람은 그 결정일부터 5년이 지나지 않으면 결격이다. 이 쪽은 '4) 최우수인재(D-10-T)' 머리 다음에 결격사유 목록이 오지만, 그 목록이 D-10-T에만 해당하는지 D-10 전체 공통인지 이전 쪽 문맥으로 확인해야 한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-f435fadd2cd5b615",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-10",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "공관장 재량 사증(단수 구직사증)",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 6,
+    "unit": "month",
+    "comparator": null
+   },
+   "reason": "재외공관장이 재량으로 체류기간 6개월의 단수 구직(D-10)사증을 발급한다는 내용이다. 문장이 D-10이라고 직접 밝히지만 D-10-T 머리 아래 쪽이라, 세부자격 한정 여부는 사람이 한 번 더 보는 게 좋다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-f99cae220dc031e6",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-10",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": "구직사증 복수사증발급협정 체결국 국민",
+     "row_label": "공관장 재량 사증(복수 구직사증)",
+     "column_label": null
+    }
+   },
+   "role": "validity",
+   "value": {
+    "kind": "period",
+    "amount": 2,
+    "unit": "year",
+    "comparator": null
+   },
+   "reason": "구직사증 복수사증발급협정 체결국 국민에게는 유효기간 2년, 체류기간 6월의 복수 구직(D-10)사증을 발급한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-305faa17b8083619",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-10",
+    "sub_code": "D-10-1",
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "ⅰ) 국내 대학 졸업자",
+     "column_label": null
+    }
+   },
+   "role": "issue_deadline",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "국내 대학 졸업 후 최초 구직자격 신청자의 사증발급은 졸업일로부터 1년 이내만 인정된다는 기한이다. '2) 기술창업준비(D-10-2)' 앞의 1)항이라 D-10-1로 보았다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-e8774f45a3bfd75d",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-10",
+    "sub_code": "D-10-1",
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "ⅱ) 국내 대학 졸업 한국어능력 우수자",
+     "column_label": null
+    }
+   },
+   "role": "filing_deadline",
+   "value": {
+    "kind": "period",
+    "amount": 3,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "국내 대학 졸업 한국어능력 우수자 특례는 졸업일(학위수여일)로부터 3년이 지나지 않은 경우에만 적용된다는 기한이다. 경과 대기가 아니라 신청 가능 기간이므로 역할을 고쳤다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-784b4ce020f34d4e",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "E-1",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "1회 부여 체류기간 상한",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 5,
+    "unit": "year",
+    "comparator": "이하"
+   },
+   "reason": "교수(E-1) 사증의 1회 부여 체류기간 상한은 5년이다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-8d8d116f1335f9f1",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "한국과학기술원 교수활동 공관장 재량 사증",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": "이하"
+   },
+   "reason": "한국과학기술원에 고용되어 교수활동을 하려는 사람에게 체류기간 1년 이하 단수사증을 준다. 쪽에 체류자격 약호가 없어 어느 항목(교수 E-1로 보임)인지 확인해야 한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-2d58b5927593a3f0",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "E-2",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": null,
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 2,
+    "unit": "year",
+    "comparator": "이하"
+   },
+   "reason": "회화지도(E-2) 장의 '1회 부여 체류기간의 상한' 2년. 페이지 상단에 자격명이 없지만 본문이 E-2-1·E-2-2·E-2-91 회화지도 사증을 다루므로 E-2로 지정.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-f809a70cdbb18ccc",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "E-2",
+    "sub_code": "E-2-2",
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "원어민 영어·중국어 보조교사(EPIK·CPIK·TaLK)",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 2,
+    "unit": "year",
+    "comparator": "이하"
+   },
+   "reason": "교육감 등과 고용계약을 맺고 초·중·고교에서 외국어보조교사로 근무하려는 자(EPIK·CPIK·TaLK)에게 공관장 재량으로 체류기간 2년 이하 단수사증 발급. 본문상 세부약호는 E-2-2(FTA 영어보조교사는 E-2-91)이고 규칙이 붙인 E-2-1은 자체 채용 보조교사용이라 고침.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-e973be0597567cbd",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "E-2",
+    "sub_code": "E-2-2",
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "원어민 보조교사 사증 체류기간(계약기간+1개월)",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 2,
+    "unit": "year",
+    "comparator": "이하"
+   },
+   "reason": "보조교사 사증의 체류기간은 '최대 2년 범위 내 계약기간 + 1개월'. 2년은 계약기간 상한이고 체류기간은 여기에 1개월을 더하므로, fc-f809a70cdbb18ccc(체류기간 2년 이하)와 어떻게 구분·합칠지 사람이 정해야 함.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-b44797c8114c84e6",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "E-2",
+    "sub_code": "E-2-2",
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "원어민 보조교사 사증 체류기간(계약기간+1개월)",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "month",
+    "comparator": null
+   },
+   "reason": "체류기간 '계약기간 + 1개월'의 가산 1개월. 단독 기간이 아니라 계약기간에 더하는 값이므로 fc-e973be0597567cbd와 함께 표현 방식을 사람이 정해야 함.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-0238be49f9ec17ee",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "박사 취득 예정자 조건부 사증",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 6,
+    "unit": "month",
+    "comparator": "이내"
+   },
+   "reason": "박사 취득 예정자가 학위 취득 확정을 입증하면 체류기간 6개월 이내로 조건부 사증발급이 가능하다는 내용이다. 이 페이지에 해당 체류자격 코드(E-3 추정)가 없어 확인이 필요하다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-930957727d826f4b",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "공관장 재량 단수사증(정부출연 연구기관 과학기술자)",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": "이하"
+   },
+   "reason": "정부출연 연구기관 과학기술자에게 체류기간 1년 이하 단수사증을 공관장 재량으로 발급한다는 내용이다. 규칙의 C-3-2 지정은 잘못이고 체류자격(E-3 추정)이 페이지에 없다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-336d974b22ee3b75",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "E-5",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": null,
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 5,
+    "unit": "year",
+    "comparator": null
+   },
+   "reason": "전문직업(E-5)의 1회 부여 체류기간 상한은 5년이다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-d94f7fb086b62c37",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "'체류기간 90일 이하면 단기취업(C-4-5)에 해당'은 E-6과 C-4-5를 가르는 분류 안내이지 체류기간 규칙이 아니다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-a61dc662fc330d8b",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "E-6",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "1회 부여 체류기간 상한",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 2,
+    "unit": "year",
+    "comparator": "이하"
+   },
+   "reason": "예술흥행(E-6) 사증의 1회 부여 체류기간 상한은 2년이다. 바로 아래 '예술흥행(E-6) 자격은' 문장으로 장이 확인된다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-6d9f749a562af15a",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "E-6",
+    "sub_code": "E-6-2",
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": "불법체류다발 고시국가·테러지원국가·제주무사증입국불허국가",
+     "row_label": "제3국 공관 신청 예외",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "period",
+    "amount": 2,
+    "unit": "year",
+    "comparator": "이상"
+   },
+   "reason": "E-6-2 신청인이 해당 국가 국민이라도 제3국에 2년 이상 계속 체류한 장기체류자면 제3국 소재 자국공관에 신청할 수 있다는 체류 요건이다(기타: 제3국 계속 체류 요건).",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-bd1872840e03458f",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "E-6 체류기간 2년 이하라는 같은 사실로, fc-a61dc662fc330d8b(1회 부여 체류기간 상한 2년)와 중복이다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-9a8a804013bcb016",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "E-6",
+    "sub_code": "E-6-2",
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "경력증명서 인정 범위",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "period",
+    "amount": 10,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "[기타: 경력 인정 기간] 호텔·유흥(E-6-2) 사증발급인정서 경력요건은 신청일 기준 과거 10년 이내 국내경력을 인정한다. 발급 기한이 아니다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-2c382ceaa1587204",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "E-6",
+    "sub_code": "E-6-2",
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "경력요건 완화 대상",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "period",
+    "amount": 2,
+    "unit": "year",
+    "comparator": null
+   },
+   "reason": "[기타: 경력요건] 국내에서 2년 정상 근무 후 출국한 E-6-2 외국인은 경력요건을 3년에서 2년으로 완화한다. 2년이 근무 조건인지 완화된 경력요건인지 어느 쪽으로 기록할지 사람이 정해야 한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-aa34f705d1fcc95a",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "E-6",
+    "sub_code": "E-6-2",
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "경력 불인정 사유",
+     "column_label": null
+    }
+   },
+   "role": "fine",
+   "value": {
+    "kind": "money",
+    "amount": 1000000,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "E-6-2 경력 산정에서 100만원 이상 범칙금 통고처분을 받은 사람은 해당 등록기간 경력을 모두 인정하지 않는다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-1c2b43d4d5418d10",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "C-1",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": null,
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 90,
+    "unit": "day",
+    "comparator": "이하"
+   },
+   "reason": "일시취재(C-1)의 1회 부여 체류기간 상한 90일. 규칙이 붙인 D-5는 변경허가 안내에 나온 자격이라 C-1로 고침.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-3c0992826f7e6bd9",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "C-1",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "공관장 재량 단수사증",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 90,
+    "unit": "day",
+    "comparator": "이하"
+   },
+   "reason": "일시취재(C-1) 자격 해당자에게 공관장 재량으로 체류기간 90일 이하 단수사증 발급.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-2707c54f24b6a4d9",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "OCR이 표 칸('공관장 재량으로')과 섞어 같은 문장을 한 번 더 찍은 줄로, fc-3c0992826f7e6bd9와 중복.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-a5df110aa9bd430b",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "C-3",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "1회 부여 체류기간 상한",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 90,
+    "unit": "day",
+    "comparator": "이하"
+   },
+   "reason": "단기방문(C-3) 사증의 1회 부여 체류기간 상한은 90일이다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-8f537b5ad9d34c06",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "'25년은 연도이며 기간 값이 아님(C-4-1~4 사증 발급 중단 시점).",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-97ac2d4184ca92ac",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "E-8",
+    "sub_code": "E-8-1",
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "MOU 방식 선정 농업 계절근로자",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "period",
+    "amount": 8,
+    "unit": "month",
+    "comparator": "이내"
+   },
+   "reason": "E-8-1 계절근로자는 입국 후 농업분야에 8개월 이내 종사. 신청 기한이 아니라 취업(종사) 기간 상한이라 역할을 other로 고침.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-75b3fd91708c4fb7",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "E-8",
+    "sub_code": "E-8-3",
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "MOU 방식 선정 어업 계절근로자",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "period",
+    "amount": 8,
+    "unit": "month",
+    "comparator": "이내"
+   },
+   "reason": "E-8-3 계절근로자는 입국 후 어업분야에 8개월 이내 종사. 신청 기한이 아니라 취업(종사) 기간 상한이라 역할을 other로 고침.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-c4a5ef2824ab8763",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "E-8",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "1회 부여 체류기간 상한",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 8,
+    "unit": "month",
+    "comparator": "이하"
+   },
+   "reason": "계절근로(E-8) 사증의 1회 부여 체류기간 상한은 8개월이며 총 체류기간도 8개월을 넘을 수 없다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-8f020d9d0e249f21",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "E-8",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "사증발급인정서 발급 소요 기간",
+     "column_label": null
+    }
+   },
+   "role": "processing_time",
+   "value": {
+    "kind": "period",
+    "amount": 10,
+    "unit": "day",
+    "comparator": null
+   },
+   "reason": "계절근로(E-8) 사증발급인정서 발급에 신청일로부터 약 10일이 걸린다는 안내다. '약'이 붙은 참고 기간이다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-1da27500d28c6d3c",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "평탄화된 표의 '허용 최대 체류기간 8개월' 칸으로 E-8 전 세부자격 공통이며, fc-c4a5ef2824ab8763과 같은 사실의 중복이다. 규칙의 G-1·입국 기한 지정도 잘못이다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-d7d04cf89c21e57d",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "고용허가제 소개문의 '자본금 80억원 이하'는 같은 쪽 허용업종 표(fc-1d2a5329b2759e2c, 제조업 E-9-1)와 같은 값의 중복이다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-b38ad9144a40669d",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "E-9",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": null,
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 3,
+    "unit": "year",
+    "comparator": null
+   },
+   "reason": "비전문취업(E-9)의 1회 부여 체류기간 상한은 3년이다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-1d2a5329b2759e2c",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "E-9",
+    "sub_code": "E-9-1",
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": "사업주",
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "제조업 허용업종 기준(자본금)",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "money",
+    "amount": 8000000000,
+    "unit": "krw",
+    "comparator": "이하"
+   },
+   "reason": "[기타: 사업장 자본금 요건] 제조업(E-9-1) 허용업종은 상시근로자 300인 미만 또는 자본금 80억원 이하 사업장이다. 300은 가구원 수가 아니라 근로자 수다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-8f932fbf69fa3f7b",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "'24년도는 연도(고용허가서 발급 시점)이며 기간 값이 아님.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-e8710433bef43816",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": "본인",
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "범죄경력증명서 요건",
+     "column_label": null
+    }
+   },
+   "role": "issue_deadline",
+   "value": {
+    "kind": "period",
+    "amount": 3,
+    "unit": "month",
+    "comparator": "이내"
+   },
+   "reason": "범죄경력증명서는 사증발급 신청일부터 3개월 이내 발급분이어야 한다는 요건이다. 송출기관·외국인근로자 맥락이고 다음 행이 비전문취업(E-9)이지만 이 단락 자체의 체류자격 코드가 쪽에 없어 확인해야 한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-29550ff7a02ee9bc",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "E-9",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "농축산업 추가서류: 농업경영체등록(변경등록)확인서",
+     "column_label": null
+    }
+   },
+   "role": "validity",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": null
+   },
+   "reason": "비전문취업(E-9) 사증발급인정서 농축산업 추가서류인 농업경영체등록(변경등록)확인서의 유효기간 1년(서류 유효기간이지 사증 유효기간이 아님).",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-8da30fe321e58526",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "성실근로자 재입국 고용 요건",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": "이상"
+   },
+   "reason": "재입국 후 근로 시작일부터 효력이 생기는 1년 이상의 근로계약을 체결해야 한다는 요건이다(기타: 근로계약 기간 요건). 성실근로자 재입국 대상의 체류자격 코드(E-9 추정)가 이 페이지에 없어 확인이 필요하다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-527c555782da7753",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "30인·50인 기준을 셀 때 쓰는 산정 기간(신청일 이전 3개월간 평균 피보험자수)으로, 외국인에게 적용되는 기한이 아니다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-80f441c537fd3c32",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "성실근로자 재입국",
+     "column_label": null
+    }
+   },
+   "role": "waiting_period",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "month",
+    "comparator": null
+   },
+   "reason": "성실근로자는 출국 1개월 경과 후 재입국하여 종전 사업장에서 근무할 수 있다는 대기 기간이다. 체류자격 코드(E-9 추정)가 이 페이지에 없어 확인이 필요하다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-ca5abf81f1ce1489",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "'다른 재입국 외국인근로자(재입국 제한기간 6개월)'는 비교 대상에 대한 괄호 속 언급으로, 이 문장의 규칙이 아니다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-e9913eebb12b1d20",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "같은 인용문의 1개월은 fc-80f441c537fd3c32(출국 1개월 경과 후 재입국)와 중복이다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-1090bf49d2a88bea",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "E-10",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "범죄경력증명서",
+     "column_label": null
+    }
+   },
+   "role": "validity",
+   "value": {
+    "kind": "period",
+    "amount": 3,
+    "unit": "month",
+    "comparator": "이내"
+   },
+   "reason": "선원취업(E-10) 사증 신청 시 범죄경력증명서는 사증발급 신청일로부터 3개월 이내에 발급된 것이어야 한다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-3b75d91e5fb626f4",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "F-1",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "1회 부여 체류기간의 상한",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 2,
+    "unit": "year",
+    "comparator": null
+   },
+   "reason": "방문동거(F-1)의 1회 부여 체류기간 상한 2년이다. 규칙이 붙인 A-3는 활동범위 문장 속 자격이라 고쳤다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-ce503d7a90d1c55d",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "F-1",
+    "sub_code": "F-1-13",
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": "연간",
+     "nationality": null,
+     "row_label": "대상 교육기관(외국인학교·대안학교) 요건",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "money",
+    "amount": 5000000.0,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "[role 메모: 대상 학교의 학비 기준] 동반 부모(F-1-13) 대상 교육기관 중 외국인학교·대안학교는 학비가 연간 500만원 이상이고 교육감 인가 학력 인정 기관이어야 한다. 신청인이 아니라 학교에 대한 기준이라 사실로 둘지와 role을 확인해야 한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-41f2770748e9f0db",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "국내 발급 제출서류 유효기간",
+     "column_label": null
+    }
+   },
+   "role": "validity",
+   "value": {
+    "kind": "period",
+    "amount": 3,
+    "unit": "month",
+    "comparator": "이내"
+   },
+   "reason": "별도 유효기간이 없으면 주민등록등본 등 국내 발급 서류의 유효기간은 발급일로부터 3개월 이내. 사증 매뉴얼 전체 유의사항이라 특정 체류자격이 없으므로 공통 사실로 등록할지 사람이 정해야 함.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-7418603f1c9a63ea",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "F-1",
+    "sub_code": "F-1-D",
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": "본인",
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": null,
+     "column_label": null
+    }
+   },
+   "role": "insurance",
+   "value": {
+    "kind": "money",
+    "amount": 100000000,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "디지털노마드(워케이션, F-1-D) 사증 심사기준: 병원 치료·본국 후송 보장액 1억원 이상 개인 의료보험 가입.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-edd9f3754e13bea1",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "F-1",
+    "sub_code": "F-1-D",
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": null,
+     "column_label": null
+    }
+   },
+   "role": "validity",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": null
+   },
+   "reason": "F-1-D(워케이션) 복수사증 발급 시 사증 유효기간 1년.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-0158db601d96b9a7",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "F-2",
+    "sub_code": "F-2-2",
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "국민과 혼인관계에서 출생한 자녀",
+     "column_label": null
+    }
+   },
+   "role": "validity",
+   "value": {
+    "kind": "period",
+    "amount": 5,
+    "unit": "year",
+    "comparator": "간"
+   },
+   "reason": "국민과 혼인관계에서 출생한 자녀에게 공관장 재량으로 주는 거주(F-2-2) 복수사증은 5년간 유효하다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-b941c4f157cd5b37",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "F-2",
+    "sub_code": "F-2-2",
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "국민과 혼인관계에서 출생한 자녀",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": "이하"
+   },
+   "reason": "같은 F-2-2 복수사증의 체류기간은 1년 이하다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-a978308e379aae6b",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "F-3",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": "동반가족",
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "공관장 재량 단수사증(등록외국인 동거·D-5·D-8 동반)",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": "이하"
+   },
+   "reason": "등록외국인과 동거할 목적으로 입국하거나 취재(D-5)·기업투자(D-8) 자격자와 동반 입국하려는 사람에게 체류기간 1년 이하 동반(F-3) 단수사증을 공관장 재량으로 발급한다. 규칙의 D-8은 동반 대상 자격이라 F-3으로 고쳤다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-b92989063e693439",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "F-3",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "배우자 및 미성년 자녀(동반) 단수사증",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": "이하"
+   },
+   "reason": "배우자 및 배우자 없는 미성년 자녀에게 체류기간 1년 이하 단수사증 발급. 본문이 동반(F-3) 사증을 다루나 문장 앞부분(어느 주 체류자격자의 가족인지)이 앞 페이지에서 잘려 사람이 확인해야 함.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-4876aa1aad295790",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "OCR이 같은 문구를 두 번 이어 붙인 줄('…단수사증에 대한 체류기간 1년 이하의 단수사증')로 fc-b92989063e693439와 중복.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-37fe3091e1037a8b",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "F-5",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": "본인",
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "해당자 3호: 외국인투자가",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "money",
+    "amount": 500000,
+    "unit": "usd",
+    "comparator": null
+   },
+   "reason": "[기타: 투자금액 요건] 「외국인투자 촉진법」에 따라 미화 50만 달러를 투자하고 국민 5명 이상을 고용한 외국인투자가는 영주(F-5) 해당자다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-02394a92cc17528e",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "F-5",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": "본인",
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "해당자 8호: 학위·기술자격 소지 고용자",
+     "column_label": null
+    }
+   },
+   "role": "waiting_period",
+   "value": {
+    "kind": "period",
+    "amount": 3,
+    "unit": "year",
+    "comparator": "이상"
+   },
+   "reason": "법무부장관이 정한 학위·기술자격을 갖추고 국내기업에 고용된 사람은 국내 체류기간 3년 이상이어야 영주(F-5) 해당자가 된다. 1회 체류기간이 아니라 체류 경과 요건이다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-96ce764ec8cb475b",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "1회 부여 체류기간의 상한",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 3,
+    "unit": "year",
+    "comparator": null
+   },
+   "reason": "결혼이민(F-6)의 1회 부여 체류기간 상한 3년이다. 세부약호 표 바로 뒤에 있지만 F-6 전체 기준이라 F-6-3 한정을 지웠다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-51ea295d51d98a5c",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": "F-6-1",
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "공관장 재량 단수사증",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 90,
+    "unit": "day",
+    "comparator": "이하"
+   },
+   "reason": "국민의 배우자(F-6-1)에게 공관장 재량으로 체류기간 90일 이하 단수사증을 발급한다(미국인은 복수사증).",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-ea4f553fad616fea",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": "F-6-1",
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "입국 후 외국인등록·체류기간 연장",
+     "column_label": null
+    }
+   },
+   "role": "filing_deadline",
+   "value": {
+    "kind": "period",
+    "amount": 90,
+    "unit": "day",
+    "comparator": "이내"
+   },
+   "reason": "F-6-1 단수사증으로 입국한 뒤 90일 이내에 외국인등록과 체류기간 연장을 해야 한다는 안내다. 사증 매뉴얼에 있지만 내용은 체류 절차라 procedure를 섞지 않으려면 체류 매뉴얼 근거로 다시 잡을지 확인해야 한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-a8606744ef53980d",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": "본인",
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "신청인(외국인 배우자) 여권 원본",
+     "column_label": null
+    }
+   },
+   "role": "validity",
+   "value": {
+    "kind": "period",
+    "amount": 6,
+    "unit": "month",
+    "comparator": "이상"
+   },
+   "reason": "국제결혼 사증 기본서류 체크리스트: 신청인(외국인 배우자) 여권의 잔여 유효기간 6개월 이상. 국민의 배우자 사증으로 보이나 페이지에 체류자격 코드가 없어 사람이 확인해야 함.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-cff38389f5a2cd69",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "'(예) 30달러'로 표시된 예시 금액이며 실제 수수료 규칙이 아님.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-dde24c25696baff5",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "예시 금액 '30달러'의 숫자를 개월로 잘못 읽은 값이며 기간 사실이 아님.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-4697ebfdd7b5685d",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "국제결혼 안내프로그램 면제 대상자 ②",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "period",
+    "amount": 91,
+    "unit": "day",
+    "comparator": "이상"
+   },
+   "reason": "국제결혼 안내프로그램 면제 조건: 외국인 배우자가 장기체류자격으로 91일 이상 합법 체류하며 초청인과 교제한 사실을 입증할 수 있는 경우. 입국 기한이 아니라 면제 요건이며, 체류자격 코드가 페이지에 없어 자격과 역할을 사람이 정해야 함.",
+   "confidence": "low"
+  },
+  {
+   "candidate_id": "fc-038e7560c3f94c6f",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "원칙적으로 신청일 기준 1년 전 소득 자료를 낸다는 서류 기준 기간으로, 신청·제출 기한이 아니다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-9e34377add10d779",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": "초청인",
+     "household_size": 2,
+     "per": "연간",
+     "nationality": null,
+     "row_label": "소득기준",
+     "column_label": "2인 가구"
+    }
+   },
+   "role": "income_threshold",
+   "value": {
+    "kind": "money",
+    "amount": 25195752.0,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "2026년 결혼이민(F-6) 초청인의 과거 1년간 연간소득(세전) 기준 중 2인 가구 값이다. 표 머리글이 '2인 가구~7인 가구' 순서로 남아 있어 열을 복원할 수 있다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-055488e6a36b2406",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": "초청인",
+     "household_size": 3,
+     "per": "연간",
+     "nationality": null,
+     "row_label": "소득기준",
+     "column_label": "3인 가구"
+    }
+   },
+   "role": "income_threshold",
+   "value": {
+    "kind": "money",
+    "amount": 32154216.0,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "2026년 결혼이민(F-6) 초청인의 과거 1년간 연간소득(세전) 기준 중 3인 가구 값이다. 표 머리글이 '2인 가구~7인 가구' 순서로 남아 있어 열을 복원할 수 있다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-bd9698eb773eecd0",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": "초청인",
+     "household_size": 4,
+     "per": "연간",
+     "nationality": null,
+     "row_label": "소득기준",
+     "column_label": "4인 가구"
+    }
+   },
+   "role": "income_threshold",
+   "value": {
+    "kind": "money",
+    "amount": 38968428.0,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "2026년 결혼이민(F-6) 초청인의 과거 1년간 연간소득(세전) 기준 중 4인 가구 값이다. 표 머리글이 '2인 가구~7인 가구' 순서로 남아 있어 열을 복원할 수 있다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-4ffacb83a8bcebe6",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": "초청인",
+     "household_size": 5,
+     "per": "연간",
+     "nationality": null,
+     "row_label": "소득기준",
+     "column_label": "5인 가구"
+    }
+   },
+   "role": "income_threshold",
+   "value": {
+    "kind": "money",
+    "amount": 45340314.0,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "2026년 결혼이민(F-6) 초청인의 과거 1년간 연간소득(세전) 기준 중 5인 가구 값이다. 표 머리글이 '2인 가구~7인 가구' 순서로 남아 있어 열을 복원할 수 있다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-645373cf4dfdbd34",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": "초청인",
+     "household_size": 6,
+     "per": "연간",
+     "nationality": null,
+     "row_label": "소득기준",
+     "column_label": "6인 가구"
+    }
+   },
+   "role": "income_threshold",
+   "value": {
+    "kind": "money",
+    "amount": 51335712.0,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "2026년 결혼이민(F-6) 초청인의 과거 1년간 연간소득(세전) 기준 중 6인 가구 값이다. 표 머리글이 '2인 가구~7인 가구' 순서로 남아 있어 열을 복원할 수 있다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-426229add00a67b7",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": "초청인",
+     "household_size": 7,
+     "per": "연간",
+     "nationality": null,
+     "row_label": "소득기준",
+     "column_label": "7인 가구"
+    }
+   },
+   "role": "income_threshold",
+   "value": {
+    "kind": "money",
+    "amount": 57090900.0,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "2026년 결혼이민(F-6) 초청인의 과거 1년간 연간소득(세전) 기준 중 7인 가구 값이다. 표 머리글이 '2인 가구~7인 가구' 순서로 남아 있어 열을 복원할 수 있다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-591ab766a7b16b04",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": "초청인",
+     "household_size": null,
+     "per": "1명당",
+     "nationality": null,
+     "row_label": "8인 가구 이상 소득기준",
+     "column_label": null
+    }
+   },
+   "role": "income_threshold",
+   "value": {
+    "kind": "money",
+    "amount": 5755188.0,
+    "unit": "krw",
+    "comparator": null
+   },
+   "reason": "8인 가구 이상은 가구원 1인 추가마다 소득기준이 5,755,188원씩 늘어난다는 내용으로, 결혼이민(F-6) 초청인 소득요건에 적용된다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-fd6b1f7b7e4f044d",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": "본인",
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "3-6 의사소통 요건 입증",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": "이상"
+   },
+   "reason": "외국인 배우자가 한국에서 1년 이상 계속 체류했으면 의사소통 요건 입증서류(3-6)로 인정된다는 기준이다(기타: 의사소통 요건 인정 체류 기간).",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-8af4423c5d4a134f",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "3-9 의사소통 요건 입증",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": "이상"
+   },
+   "reason": "한국인 배우자와 외국인 배우자가 해당 언어가 공용어인 국가에서 1년 이상 계속 체류했으면 의사소통 요건 입증(3-9)으로 인정된다는 기준이다(기타: 의사소통 요건 인정 체류 기간).",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-159b8c57a4a320a9",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": "초청인",
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "소득요건: 재산(예금·보험·증권·채권) 활용 시",
+     "column_label": null
+    }
+   },
+   "role": "deposit",
+   "value": {
+    "kind": "money",
+    "amount": 1000000,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "한국인 배우자(초청인)가 소득요건에 재산을 쓸 때 예금·보험·증권·채권은 100만원 이상으로 6개월 이상 지속된 것만 인정한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-5d88a77c3e6e402c",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": "초청인",
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "소득요건: 재산(예금·보험·증권·채권) 활용 시",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "period",
+    "amount": 6,
+    "unit": "month",
+    "comparator": "이상"
+   },
+   "reason": "[기타: 재산 유지기간] 소득요건에 재산을 쓸 때 100만원 이상 재산이 6개월 이상 지속되어야 인정한다. 신청 기한이 아니라 유지기간이다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-5887ae483afc82ee",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": "초청인",
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "소득요건: 소득 산정 기준기간",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": null
+   },
+   "reason": "[기타: 소득 산정 기간] 원칙적으로 신청일 기준 1년 전 소득 자료를 내야 한다(사업소득은 예외 인정). 제출 기한이 아니라 산정 기간이며, 사업소득 주의사항 속 설명이라 독립 사실로 둘지 사람이 정해야 한다.",
+   "confidence": "low"
+  },
+  {
+   "candidate_id": "fc-e9b2519613ca2edc",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": "초청인",
+     "household_size": 2,
+     "per": "연간",
+     "nationality": null,
+     "row_label": "소득기준",
+     "column_label": "2인 가구"
+    }
+   },
+   "role": "income_threshold",
+   "value": {
+    "kind": "money",
+    "amount": 23595948.0,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "결혼이민 초청 소득요건 표의 2인 가구 값으로, 초청인의 과거 1년간 연간소득(세전)이 이 금액 이상이어야 한다. 머리행 순서로 열 대응이 분명하며, 표에 '(참고) 2025년 기준'이라 적혀 있음을 함께 보여야 한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-9eeeddcb928b3bc9",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": "초청인",
+     "household_size": 3,
+     "per": "연간",
+     "nationality": null,
+     "row_label": "소득기준",
+     "column_label": "3인 가구"
+    }
+   },
+   "role": "income_threshold",
+   "value": {
+    "kind": "money",
+    "amount": 30152118.0,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "결혼이민 초청 소득요건 표의 3인 가구 값으로, 초청인의 과거 1년간 연간소득(세전)이 이 금액 이상이어야 한다. 머리행 순서로 열 대응이 분명하며, 표에 '(참고) 2025년 기준'이라 적혀 있음을 함께 보여야 한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-4ad908670a032dd8",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": "초청인",
+     "household_size": 4,
+     "per": "연간",
+     "nationality": null,
+     "row_label": "소득기준",
+     "column_label": "4인 가구"
+    }
+   },
+   "role": "income_threshold",
+   "value": {
+    "kind": "money",
+    "amount": 36586638.0,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "결혼이민 초청 소득요건 표의 4인 가구 값으로, 초청인의 과거 1년간 연간소득(세전)이 이 금액 이상이어야 한다. 머리행 순서로 열 대응이 분명하며, 표에 '(참고) 2025년 기준'이라 적혀 있음을 함께 보여야 한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-3528b0c6db1277eb",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": "초청인",
+     "household_size": 5,
+     "per": "연간",
+     "nationality": null,
+     "row_label": "소득기준",
+     "column_label": "5인 가구"
+    }
+   },
+   "role": "income_threshold",
+   "value": {
+    "kind": "money",
+    "amount": 42649152.0,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "결혼이민 초청 소득요건 표의 5인 가구 값으로, 초청인의 과거 1년간 연간소득(세전)이 이 금액 이상이어야 한다. 머리행 순서로 열 대응이 분명하며, 표에 '(참고) 2025년 기준'이라 적혀 있음을 함께 보여야 한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-67dda14dc0bb8327",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": "초청인",
+     "household_size": 6,
+     "per": "연간",
+     "nationality": null,
+     "row_label": "소득기준",
+     "column_label": "6인 가구"
+    }
+   },
+   "role": "income_threshold",
+   "value": {
+    "kind": "money",
+    "amount": 48388830.0,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "결혼이민 초청 소득요건 표의 6인 가구 값으로, 초청인의 과거 1년간 연간소득(세전)이 이 금액 이상이어야 한다. 머리행 순서로 열 대응이 분명하며, 표에 '(참고) 2025년 기준'이라 적혀 있음을 함께 보여야 한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-06bc66287fb793bb",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": "초청인",
+     "household_size": 7,
+     "per": "연간",
+     "nationality": null,
+     "row_label": "소득기준",
+     "column_label": "7인 가구"
+    }
+   },
+   "role": "income_threshold",
+   "value": {
+    "kind": "money",
+    "amount": 53930568.0,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "결혼이민 초청 소득요건 표의 7인 가구 값으로, 초청인의 과거 1년간 연간소득(세전)이 이 금액 이상이어야 한다. 머리행 순서로 열 대응이 분명하며, 표에 '(참고) 2025년 기준'이라 적혀 있음을 함께 보여야 한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-72786a69ab4a2289",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": "초청인",
+     "household_size": 8,
+     "per": "1인당",
+     "nationality": null,
+     "row_label": "소득기준",
+     "column_label": "8인 가구 이상"
+    }
+   },
+   "role": "income_threshold",
+   "value": {
+    "kind": "money",
+    "amount": 5541738.0,
+    "unit": "krw",
+    "comparator": null
+   },
+   "reason": "8인 이상 가구의 소득기준은 가구원 1인 추가마다 5,541,738원씩 늘어난다(2025년 기준 참고표).",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-1dee177ca2f6f951",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": "본인",
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "3-6 외국인 배우자의 한국 계속 체류",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": "이상"
+   },
+   "reason": "[role 메모: 의사소통 요건 인정 체류기간] 외국인 배우자가 한국에서 1년 이상 계속 체류했으면 의사소통 요건 입증서류로 인정된다. 입국 기한이 아니며, 이런 인정 기준을 사실로 둘지와 role을 정해야 한다.",
+   "confidence": "low"
+  },
+  {
+   "candidate_id": "fc-848a4b21ac809a7a",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "3-9 그 외 언어 - 부부의 해당 언어 공용어 국가 계속 체류",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": "이상"
+   },
+   "reason": "[role 메모: 의사소통 요건 인정 체류기간] 한국인·외국인 배우자가 해당 언어 공용어 국가에서 1년 이상 계속 체류했으면 의사소통 요건 입증으로 인정된다. 표가 풀려 3-7·3-9 행 구분을 원본에서 확인해야 하며 role도 정해야 한다.",
+   "confidence": "low"
+  },
+  {
+   "candidate_id": "fc-37b6749fe3562214",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "입국 후 고지사항",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "period",
+    "amount": 90,
+    "unit": "day",
+    "comparator": "이내"
+   },
+   "reason": "[기타: 입국 후 외국인등록 고지] 사증 발급 시 '입국 후 90일 이내 외국인등록 및 체류기간 연장'을 고지한다. 쪽 첫머리라 어느 사증(자녀양육 관련으로 보임) 항목인지 확인해야 하고, 체류 절차 기한을 사증 쪽 사실로 둘지도 정해야 한다.",
+   "confidence": "low"
+  },
+  {
+   "candidate_id": "fc-ba247a0174578d74",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "국민의 배우자 결혼사증(공관장 권한)",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 90,
+    "unit": "day",
+    "comparator": "이하"
+   },
+   "reason": "국민의 배우자에 대해 재외공관장 권한으로 발급하는 결혼사증은 체류기간 90일 이하 단수사증에 한한다. 세부약호는 이 쪽에 없어 비웠다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-5882e2d9b5dbfdf8",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "같은 Q&A의 다음 문장으로 fc-ba247a0174578d74(체류기간 90일 이하 결혼사증)와 같은 사실의 중복이다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-38d7ba2068087ad8",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "G-1",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": null,
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": "이하"
+   },
+   "reason": "기타(G-1)의 1회 부여 체류기간 상한 1년. 규칙이 붙인 H-2는 해당자 설명에 나온 자격이라 G-1로 고침.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-3eef1f2df382c4c5",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "H-1",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": "본인",
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "의료보험 등 가입",
+     "column_label": null
+    }
+   },
+   "role": "insurance",
+   "value": {
+    "kind": "money",
+    "amount": 40000000,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "관광취업프로그램 사증 요건: 체류기간 중 보장액 4,000만원 이상 의료보험 가입(다만 권장 사항이며 상호주의에 따라 제출 여부·보장액 결정 가능). 관광취업은 같은 묶음의 p339에서 H-1로 표기됨.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-d0180a5d21fc1385",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "같은 4,000만원 보험 기준을 권장·상호주의 단서로 다시 말한 문장으로 fc-3eef1f2df382c4c5와 중복.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-635f9ff56f6cdf9f",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "'일정기간(3개월) 체류할 수 있는 경비'의 3개월은 경비 산정의 기준점이고, 실제 요건 값은 300만원(fc-f74cbf46c9795ca9)이다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-f74cbf46c9795ca9",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "H-1",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": "본인",
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "재정 능력: 체류 경비",
+     "column_label": null
+    }
+   },
+   "role": "deposit",
+   "value": {
+    "kind": "money",
+    "amount": 3000000,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "관광취업(H-1) 사증은 협정국과 상관없이 한화 300만원 이상 경비를 가진 사람에게 발급한다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-36335bbcbf22a85f",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "인용문은 캐나다의 주당 취업시간(40시간)·총 취업시간이며 364일이라는 체류기간 값이 없다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-20a01ed55b30dec7",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "인용문은 그 외 국가의 주당 취업시간(25시간)·총 취업시간이며 364일이라는 체류기간 값이 없다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-f67c5fabae8fab19",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "C-3",
+    "sub_code": "C-3-8",
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "동포방문 복수사증",
+     "column_label": null
+    }
+   },
+   "role": "validity",
+   "value": {
+    "kind": "period",
+    "amount": 5,
+    "unit": "year",
+    "comparator": null
+   },
+   "reason": "동포방문(C-3-8, 체류기간 90일) 복수사증의 유효기간 5년.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-729b71e3a70c4c56",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "H-2",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "방문취업 사증 입국 동포 외국인등록",
+     "column_label": null
+    }
+   },
+   "role": "filing_deadline",
+   "value": {
+    "kind": "period",
+    "amount": 90,
+    "unit": "day",
+    "comparator": "이내"
+   },
+   "reason": "방문취업(H-2) 사증으로 입국한 동포는 입국일로부터 90일 이내 외국인등록. 체류 절차(외국인등록) 내용이 사증 매뉴얼에 실려 절차 구분(visa/stay)을 사람이 정해야 하고, H-2 신규 발급이 '26.2.12. 중단된 점도 확인 필요.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-81c2742d76ad7333",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "C-3",
+    "sub_code": "C-3-4",
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": "인도",
+     "row_label": "상용방문자 복수사증",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 90,
+    "unit": "day",
+    "comparator": null
+   },
+   "reason": "인도 국민 상용방문자에게 발급하는 단기방문(C-3-4) 사증의 체류기간은 90일이다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-8960bdabc6e6ad22",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "C-3",
+    "sub_code": "C-3-4",
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": "인도",
+     "row_label": "③ 1년 복수사증(자원·에너지 외 회사 지사 설립·수출입 상용방문자)",
+     "column_label": null
+    }
+   },
+   "role": "validity",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": null
+   },
+   "reason": "인도 상용방문자 사증 유효기간 1년은 ③ 자원·에너지 관련이 아닌 회사의 지사 설립 준비·수출입 활동 상용방문자에게 해당한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-744fe1a5f9290390",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "C-3",
+    "sub_code": "C-3-4",
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": "인도",
+     "row_label": "② 3년 복수사증(자원·에너지 회사 상용방문자)",
+     "column_label": null
+    }
+   },
+   "role": "validity",
+   "value": {
+    "kind": "period",
+    "amount": 3,
+    "unit": "year",
+    "comparator": null
+   },
+   "reason": "인도 상용방문자 사증 유효기간 3년은 ② 자원·에너지 회사 설립 준비·계약 상용방문자에게 해당한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-60385b5977386040",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "C-3",
+    "sub_code": "C-3-4",
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": "인도",
+     "row_label": "① 5년 복수사증(지정 단체 요청서 제출 상용방문자)",
+     "column_label": null
+    }
+   },
+   "role": "validity",
+   "value": {
+    "kind": "period",
+    "amount": 5,
+    "unit": "year",
+    "comparator": null
+   },
+   "reason": "인도 상용방문자 사증 유효기간 5년은 ① 지정 회사·경제단체 요청서를 낸 상용방문자에게 해당한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-04e01157f6d66fca",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "'5년 복수사증 발급'은 fc-60385b5977386040(사증 유효기간 5년)과 같은 사실의 중복이며 발급 기한이 아니다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-be9465030a1af2f4",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "'3년 복수사증 발급'은 fc-744fe1a5f9290390(사증 유효기간 3년)과 같은 사실의 중복이며 발급 기한이 아니다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-2d82b513534f9763",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "G-1",
+    "sub_code": "G-1-10",
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "의료관광(C-3-3) 초청, 치료·여행기간 91일 이상",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "의료관광 유치기관 초청 환자의 치료·여행기간이 91일 이상이면 사증발급인정서를 G-1-10, 체류기간 1년 이내 복수사증으로 발급한다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-974944535f62930f",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "결핵진단서 제출 대상(사증 신청 시)",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "period",
+    "amount": 90,
+    "unit": "day",
+    "comparator": "초과"
+   },
+   "reason": "국내 90일 초과 체류 목적으로 사증을 신청하면 결핵진단서를 내야 한다는 기준이다(기타: 제출 대상 기준). 각주가 실제 기준을 장기체류자격으로 다시 정의하므로 90일 기준으로 기록할지 사람이 판단해야 한다.",
+   "confidence": "low"
+  },
+  {
+   "candidate_id": "fc-e46e974172d9e02e",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "각주 속 '체류기간이 90일 이하라도'는 예외를 설명하는 참조점으로 독립된 체류기간 규칙이 아니다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-7beda4cf7d270326",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": "본인",
+     "household_size": null,
+     "per": null,
+     "nationality": "결핵고위험국가",
+     "row_label": "결핵진단서 제출 대상(외국인등록 시)",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "period",
+    "amount": 6,
+    "unit": "month",
+    "comparator": null
+   },
+   "reason": "결핵고위험국가 국민이 복수사증 발급일로부터 6개월이 지나 입국하면 외국인등록 시 결핵진단서를 내야 한다는 기준이다(기타). 사증 매뉴얼이지만 외국인등록(체류) 단계 사실이고 규칙의 C-4-1 지정은 잘못이라 확인이 필요하다.",
+   "confidence": "low"
+  },
+  {
+   "candidate_id": "fc-f59bc99a9c0c2e42",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "C-4",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": null,
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 90,
+    "unit": "day",
+    "comparator": "이하"
+   },
+   "reason": "단기취업(C-4)의 1회 부여 체류기간 상한 90일. 장 전체 기준이므로 C-4-5로 한정하지 않음.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-1c3a5db20d590774",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "C-4",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "공관장 재량 복수사증",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 90,
+    "unit": "day",
+    "comparator": "이하"
+   },
+   "reason": "단기취업(C-4) 공관장 재량으로 '아래 대상자'에게 체류기간 90일 이하 복수사증 발급. 대상자 목록이 다음 페이지로 넘어가 이 페이지에 없으므로 사람이 확인해야 함.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-1b5349b6d6c43b31",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "'※ 예시) 피초청인의 체류기간이 30일인 경우'는 예시다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-b0f335eac0e6d7f2",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "'※ 예시) 체류기간이 30일인 경우에도'는 예시다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-26f52f0683e06657",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "C-4",
+    "sub_code": "C-4-5",
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "공관장 재량 사증",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 90,
+    "unit": "day",
+    "comparator": "이하"
+   },
+   "reason": "그 밖의 단기취업(C-4-5) 해당자에게 공관장 재량으로 체류기간 90일 이하의 단수사증을 발급한다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-8028106ed10ac4a0",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "C-4",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": "초청인",
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "계절근로(C-4-1~4) 사증발급인정서",
+     "column_label": null
+    }
+   },
+   "role": "processing_time",
+   "value": {
+    "kind": "period",
+    "amount": 10,
+    "unit": "day",
+    "comparator": null
+   },
+   "reason": "계절근로 단기취업(C-4-1~4) 사증발급인정서는 발급에 신청일로부터 약 10일이 걸린다(신청자는 기초자치단체장). 세부약호가 범위라 sub_code는 비웠다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-b0a2610fd9ee27f8",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "문화예술(D-1) 단락에서 체류기간 90일 이하면 단기방문(C-3-1)에 해당한다는 자격 구분 안내이며, C-3-1의 체류기간 규정이 아니다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-ccf61318bb673189",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-1",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "공관장 재량 단수사증(한국국제교류재단·한국문화예술위원회 초청)",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": "이하"
+   },
+   "reason": "한국국제교류재단·한국문화예술위원회 초청 문화예술 활동자에게 공관장 재량으로 체류기간 1년 이하 단수사증을 발급한다. 이 쪽은 문화예술(D-1) 단락이라 규칙의 C-3-1을 고쳤다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-efba88a3d62487c9",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-2",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": null,
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 2,
+    "unit": "year",
+    "comparator": "이하"
+   },
+   "reason": "유학(D-2) 장의 1회 부여 체류기간 상한 2년. 세부약호 표의 마지막 줄(D-4-7)을 잘못 붙인 것이라 D-2로 고침.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-39357ddfd1ce439e",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-2",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "전문학사~박사과정 D-2-1~D-2-4",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 2,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "유학 사증 발급 내용: 전문학사~박사과정(D-2-1~D-2-4)은 체류기간 2년 이내 단수사증. 여러 세부약호 공통이라 sub_code는 비움.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-aa41465359ca388b",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-2",
+    "sub_code": "D-2-5",
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "연구과정",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "연구과정(D-2-5) 사증은 체류기간 1년 이내 단수.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-7d1d046b533befab",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-2",
+    "sub_code": "D-2-6",
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "교환학생",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "교환학생(D-2-6) 사증은 체류기간 1년 이내 단수.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-ccdc1370e31a5762",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-2",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "국방부 초청 수탁교육생 D-2-2~D-2-4",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 2,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "국방부 초청 수탁교육생(D-2-2~D-2-4) 사증은 체류기간 2년 이내 단수. 여러 세부약호 공통이라 sub_code는 비움.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-5548a4c26df0b32b",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-2",
+    "sub_code": "D-2-8",
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "방문학생",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "방문학생(D-2-8) 사증은 체류기간 1년 이내 단수.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-9ff02181d43deaa8",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-2",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": "인도",
+     "row_label": "인도국민 D-2-1, D-2-5",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 2,
+    "unit": "year",
+    "comparator": null
+   },
+   "reason": "인도국민(D-2-1, D-2-5) 유학 사증은 체류기간 2년, 유효기간 5년 복수. 평탄화된 표에서 이 칸이 인도국민 줄 바로 앞에 있고 같은 칸의 ※ 단서(5년 미만 시 교육기간 동안 유효)가 인도국민 줄에 붙어 있어 그 행으로 판단.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-2ae1d38b1d7f2887",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-2",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": "인도",
+     "row_label": "인도국민 D-2-1, D-2-5",
+     "column_label": null
+    }
+   },
+   "role": "validity",
+   "value": {
+    "kind": "period",
+    "amount": 5,
+    "unit": "year",
+    "comparator": null
+   },
+   "reason": "인도국민(D-2-1, D-2-5) 유학 복수사증 유효기간 5년(교육기간이 5년 미만이면 교육기간 동안 유효). 규칙이 붙인 D-2-8이 아니라 인도국민 행.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-889e9de225fd4530",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-4",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "어학연수생 D-4-1, D-4-7",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 6,
+    "unit": "month",
+    "comparator": "이내"
+   },
+   "reason": "어학연수생(D-4-1, D-4-7) 사증은 체류기간 6개월 이내 단수. 두 세부약호 공통이라 sub_code는 비움.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-354039307fa7ac75",
+   "ai_decision": "hold",
+   "subject": {
+    "status_code": "A-1",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "특정국가 국민 공무 수행자 공관장 재량 단수사증",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 30,
+    "unit": "day",
+    "comparator": "이하"
+   },
+   "reason": "외교(A-1) 장 공관장 재량 사증: 외국정부·국제기구 공무를 수행하는 특정국가 국민에게 체류기간 30일 이하 단수사증. '특정국가'의 범위가 페이지에 없고 문장이 다음 페이지로 이어져 사람이 확인해야 함.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-07a2e5ec0fc132ab",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-3",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "1회 부여 체류기간의 상한",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 2,
+    "unit": "year",
+    "comparator": null
+   },
+   "reason": "기술연수(D-3)의 1회 부여 체류기간 상한 2년이다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-ded013d2272ee239",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-3",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "연수허용 대상 - 해외합작투자법인·해외현지법인 가동기간",
+     "column_label": null
+    }
+   },
+   "role": "waiting_period",
+   "value": {
+    "kind": "period",
+    "amount": 3,
+    "unit": "month",
+    "comparator": null
+   },
+   "reason": "기술연수(D-3) 연수허용 대상은 해당국 법령으로 설립되어 가동된 지 3개월이 지난 해외합작투자법인·해외현지법인의 생산직 직원이어야 한다는 기준이다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-1d32b19998790ff2",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-4",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": null,
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 2,
+    "unit": "year",
+    "comparator": null
+   },
+   "reason": "일반연수(D-4)의 1회 부여 체류기간 상한은 2년이다. 규칙이 붙인 D-2는 본문의 '유학(D-2) 자격에 해당하는' 언급에서 온 오류라 D-4로 고쳤다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-206b939b0323e27b",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "C-3",
+    "sub_code": "C-3-1",
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "90일 이하 어학연수생",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "period",
+    "amount": 90,
+    "unit": "day",
+    "comparator": "이하"
+   },
+   "reason": "90일 이하 체류하는 어학연수생은 일반연수(D-4)가 아니라 단기일반(C-3-1) 사증 발급 대상이라는 구분 기준이다(기타: 자격 구분 기준 기간).",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-0bd2ede3b09e23c2",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-4",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "공관장 재량 어학연수 사증(D-4-1, D-4-7)",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 6,
+    "unit": "month",
+    "comparator": "이하"
+   },
+   "reason": "공관장 재량으로 발급하는 어학연수(D-4-1, D-4-7) 사증은 체류기간 6개월 이하 단수 D-4 사증이다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-b3cd4e7fbf137e53",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-4",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "재정 입증서류(잔고증명서)",
+     "column_label": null
+    }
+   },
+   "role": "validity",
+   "value": {
+    "kind": "period",
+    "amount": 30,
+    "unit": "day",
+    "comparator": "이내"
+   },
+   "reason": "어학연수 사증 재정 입증서류 중 잔고증명서는 30일 이내 발급한 것만 유효하다는 기준이다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-6a96ac7e144fc710",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "'체류기간이 90일 이하면 일시취재(C-1)에 해당'은 D-5와 C-1을 가르는 분류 안내이지 C-1의 체류기간 규칙이 아니다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-63955a66da184a76",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-5",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": null,
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 2,
+    "unit": "year",
+    "comparator": null
+   },
+   "reason": "취재(D-5)의 1회 부여 체류기간 상한은 2년이다. 규칙이 붙인 C-1은 바로 위 분류 안내에서 온 오류라 D-5로 고쳤다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-077f650d0e1afba3",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-5",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "공관장 재량 사증: 지사·지국 개설 보도기관 파견자와 동반가족(F-3)",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": "이하"
+   },
+   "reason": "국내에 지사·지국이 개설된 보도기관에 파견되는 사람과 그 동반가족(F-3)에게 공관장 재량으로 체류기간 1년 이하 단수사증을 준다. 동반가족(F-3)용 기록을 따로 둘지는 사람이 정한다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-6d27bd395bfee69e",
+   "ai_decision": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "종교(D-6) 단락에서 체류기간 90일 이하면 단기방문(C-3)에 해당한다는 자격 구분 안내이며, C-3의 체류기간 규정이 아니다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-f69d6c1c29ceb080",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-6",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "1회 부여 체류기간의 상한",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 2,
+    "unit": "year",
+    "comparator": null
+   },
+   "reason": "종교(D-6)의 1회 부여 체류기간 상한 2년이다. 규칙이 붙인 C-3는 윗문장 것이라 고쳤다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-53ae245879f6e4a4",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-6",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "공관장 재량 단수사증(사회복지활동 종사자)",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 1,
+    "unit": "year",
+    "comparator": "이하"
+   },
+   "reason": "국내 종교·사회복지단체 초청으로 사회복지활동에만 종사하려는 사람에게 공관장 재량으로 체류기간 1년 이하 단수사증을 발급한다(종교(D-6) 단락).",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-6cbc2fb07c376ace",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-7",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "2. 해외진출 기업 근무 외국인력 국내 본사 주재",
+     "column_label": null
+    }
+   },
+   "role": "other",
+   "value": {
+    "kind": "money",
+    "amount": 500000.0,
+    "unit": "usd",
+    "comparator": "미만"
+   },
+   "reason": "상장법인 해외 현지법인·지점 중 본사 투자금액 또는 영업기금이 미화 50만 달러 미만이면 주재(D-7) 해외진출기업 주재 대상에서 제외된다는 기준이다(기타: 투자금액 기준). 규칙의 D-8은 단서 문장에서 온 잘못이다.",
+   "confidence": "medium"
+  },
+  {
+   "candidate_id": "fc-361884eca7031ae8",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-7",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "1회 부여 체류기간 상한",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 3,
+    "unit": "year",
+    "comparator": "이하"
+   },
+   "reason": "주재(D-7) 사증의 1회 부여 체류기간 상한은 3년이다. 규칙의 D-8 지정은 활동범위 단서에서 온 잘못이다.",
+   "confidence": "high"
+  },
+  {
+   "candidate_id": "fc-3a21e42c64b2a8b7",
+   "ai_decision": "approve",
+   "subject": {
+    "status_code": "D-7",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": "중국",
+     "row_label": "공관장 재량 복수사증(중국인 주재원 및 동반가족 F-3)",
+     "column_label": null
+    }
+   },
+   "role": "validity",
+   "value": {
+    "kind": "period",
+    "amount": 2,
+    "unit": "year",
+    "comparator": "이내"
+   },
+   "reason": "중국인 국내주재지사 주재원(1년 이상 고용)과 그 동반가족(F-3)에게 공관장 재량으로 유효기간 2년 이내 복수사증을 발급한다는 내용이다. 주재(D-7) 장의 사실이라 D-7로 두었다.",
+   "confidence": "medium"
+  }
+ ]
+}

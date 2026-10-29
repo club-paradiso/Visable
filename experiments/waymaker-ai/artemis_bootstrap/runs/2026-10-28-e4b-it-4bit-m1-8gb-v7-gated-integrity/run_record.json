@@ -1,0 +1,1758 @@
+{
+  "kind": "artemis_bootstrap_smoke",
+  "started_utc": "2026-10-28T00:19:51+00:00",
+  "machine": {
+    "model": "MacBookAir10,1",
+    "chip": "Apple M1",
+    "memory_bytes": 8589934592,
+    "macos": "15.6.1",
+    "python": "3.11.15"
+  },
+  "versions": {
+    "mlx": "0.32.4",
+    "mlx-metal": "0.32.4",
+    "mlx-lm": "0.32.2",
+    "transformers": "5.20.2",
+    "huggingface-hub": "2.3.0",
+    "tokenizers": "0.23.3"
+  },
+  "device": {
+    "device_name": "Apple M1",
+    "max_recommended_working_set_size": 5726633984,
+    "memory_size": 8589934592,
+    "architecture": "applegpu_g13g",
+    "max_buffer_length": 4294967296,
+    "resource_limit": 499000
+  },
+  "swap_before": "total = 3072.00M  used = 1685.25M  free = 1386.75M  (encrypted)",
+  "free_disk_gb_before": 10.92,
+  "cases_file": "heldout_v7_cases.json",
+  "cases_sha256": "55c85a0e1f1c625127ed07ea08d1c8e7e6077e55528baa32ddf6f1a65160c6f1",
+  "detector_on_labelled_evidence": {
+    "planted": 7,
+    "caught": [],
+    "missed": [
+      "WSYN-19-b",
+      "WSYN-20-b",
+      "WSYN-21-b",
+      "WSYN-21-c",
+      "WSYN-22-b",
+      "WSYN-23-b",
+      "WSYN-24-b"
+    ],
+    "clean": 24,
+    "false_flags": []
+  },
+  "decoding": {
+    "temperature": 0.0,
+    "max_tokens": 400,
+    "enable_thinking": false
+  },
+  "evidence_guard": "off",
+  "source_gate": true,
+  "integrity": true,
+  "route": false,
+  "clarify": false,
+  "always_ask": false,
+  "cross_check": false,
+  "label_switch": false,
+  "post_check": "applied offline to every output when the cases carry source labels",
+  "prompts_persisted": false,
+  "status": "completed",
+  "stage": "done",
+  "model": {
+    "repo": "mlx-community/gemma-4-e4b-it-4bit",
+    "revision": "475b9088d29754a3379866cf5aeb6b41acd313c2",
+    "size_class_from_weights": "E4B",
+    "quantization": {
+      "group_size": 64,
+      "bits": 4,
+      "mode": "affine"
+    },
+    "loader": "mlx_lm.load (text tower only; vision/audio weights dropped by mlx_lm sanitize)",
+    "base_model": "google/gemma-4-E4B-it",
+    "source_revision": "fee6332c1abaafb77f6f9624236c63aa2f1d0187",
+    "license_in_card": "gemma"
+  },
+  "load_seconds": 8.16,
+  "memory_after_load_gb": 4.201,
+  "results": [
+    {
+      "case": "W-01-issue-vs-validity",
+      "prompt_sha256": "499643cbb4ee06aa8873868afd1db33362ba4b8bfea61d5a83d265d635e7c706",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "체류확인서는 발급일부터 30일 동안 유효합니다.",
+        "citations": [
+          "WSYN-01-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 373,
+      "prompt_tps": 206.68,
+      "generation_tokens": 60,
+      "generation_tps": 18.17,
+      "finish_reason": "stop",
+      "wall_seconds": 15.92,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"체류확인서는 발급일부터 30일 동안 유효합니다.\",\n  \"citations\": [\n    \"WSYN-01-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "체류확인서는 발급일부터 30일 동안 유효합니다.",
+        "citations": [
+          "WSYN-01-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "30일"
+          },
+          {
+            "kind": "document",
+            "text": "체류확인서"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "체류확인서는 발급일부터 30일 동안 유효합니다.",
+          "citations": [
+            "WSYN-01-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "W-02-window-vs-processing",
+      "prompt_sha256": "9a59889eacb7cc087654498144c1348ab230e7571ed3a88705f1021dd7458180",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "마루포 체류창구에서 Q-4 가상연수 자격의 연장 신청을 접수하면 심사 처리에 3주가 걸립니다.",
+        "citations": [
+          "WSYN-02-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 364,
+      "prompt_tps": 216.49,
+      "generation_tokens": 79,
+      "generation_tps": 15.96,
+      "finish_reason": "stop",
+      "wall_seconds": 6.71,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"마루포 체류창구에서 Q-4 가상연수 자격의 연장 신청을 접수하면 심사 처리에 3주가 걸립니다.\",\n  \"citations\": [\n    \"WSYN-02-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "마루포 체류창구에서 Q-4 가상연수 자격의 연장 신청을 접수하면 심사 처리에 3주가 걸립니다.",
+        "citations": [
+          "WSYN-02-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "3주"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "마루포 체류창구에서 Q-4 가상연수 자격의 연장 신청을 접수하면 심사 처리에 3주가 걸립니다.",
+          "citations": [
+            "WSYN-02-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "W-03-fee-vs-income-ask-income",
+      "prompt_sha256": "ae320c0c0c78daee37ad3b64ef31144d99dd657fc5b44acf3ffa128b3e442689",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "은하군 초청 심사에서 M-7 가상취업 초청을 위한 초청인의 연간 소득 기준은 21,000,000원입니다.",
+        "citations": [
+          "WSYN-03-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 376,
+      "prompt_tps": 203.12,
+      "generation_tokens": 85,
+      "generation_tps": 16.69,
+      "finish_reason": "stop",
+      "wall_seconds": 7.01,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"은하군 초청 심사에서 M-7 가상취업 초청을 위한 초청인의 연간 소득 기준은 21,000,000원입니다.\",\n  \"citations\": [\n    \"WSYN-03-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "은하군 초청 심사에서 M-7 가상취업 초청을 위한 초청인의 연간 소득 기준은 21,000,000원입니다.",
+        "citations": [
+          "WSYN-03-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "money",
+            "text": "21,000,000원"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "은하군 초청 심사에서 M-7 가상취업 초청을 위한 초청인의 연간 소득 기준은 21,000,000원입니다.",
+          "citations": [
+            "WSYN-03-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "W-04-entry-deadline-vs-stay",
+      "prompt_sha256": "103a2fe7bb5bea510c8fd8b57e3941a0570abef0329aef8a998d16c0ab01b136",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "노을섬에 입국한 날부터 60일까지 체류할 수 있습니다.",
+        "citations": [
+          "WSYN-04-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 372,
+      "prompt_tps": 223.78,
+      "generation_tokens": 62,
+      "generation_tps": 19.64,
+      "finish_reason": "stop",
+      "wall_seconds": 5.16,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"노을섬에 입국한 날부터 60일까지 체류할 수 있습니다.\",\n  \"citations\": [\n    \"WSYN-04-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "노을섬에 입국한 날부터 60일까지 체류할 수 있습니다.",
+        "citations": [
+          "WSYN-04-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "60일"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "노을섬에 입국한 날부터 60일까지 체류할 수 있습니다.",
+          "citations": [
+            "WSYN-04-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "W-05-apply-deadline-vs-validity",
+      "prompt_sha256": "c28352cacd94a6432754e689f4a69ac99755e6349a3372bcc5ed72f04679d83b",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "출국 예정일 10일 전까지 신청해야 합니다.",
+        "citations": [
+          "WSYN-05-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 377,
+      "prompt_tps": 223.19,
+      "generation_tokens": 57,
+      "generation_tps": 19.4,
+      "finish_reason": "stop",
+      "wall_seconds": 4.99,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"출국 예정일 10일 전까지 신청해야 합니다.\",\n  \"citations\": [\n    \"WSYN-05-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "출국 예정일 10일 전까지 신청해야 합니다.",
+        "citations": [
+          "WSYN-05-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "10일"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "출국 예정일 10일 전까지 신청해야 합니다.",
+          "citations": [
+            "WSYN-05-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "W-06-balance-vs-fee-ask-fee",
+      "prompt_sha256": "00e2e9337204c0a8f3b3ef18d8b36478c8118d800c40f9a4cb163551b5d4a51c",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "심사 수수료는 60,000원입니다.",
+        "citations": [
+          "WSYN-06-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 374,
+      "prompt_tps": 212.43,
+      "generation_tokens": 59,
+      "generation_tps": 17.67,
+      "finish_reason": "stop",
+      "wall_seconds": 5.15,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"심사 수수료는 60,000원입니다.\",\n  \"citations\": [\n    \"WSYN-06-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "심사 수수료는 60,000원입니다.",
+        "citations": [
+          "WSYN-06-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "money",
+            "text": "60,000원"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "심사 수수료는 60,000원입니다.",
+          "citations": [
+            "WSYN-06-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "W-07-report-deadline-vs-notice",
+      "prompt_sha256": "1fdca5fc9cfba202eb7179970f970ba9a53aebec8359733074bf94f7d1d37c95",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "이랑시 체류창구 기준으로 N-2 가상기술 자격자는 근무처를 바꾼 날부터 14일 이내에 신고해야 합니다.",
+        "citations": [
+          "WSYN-07-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 366,
+      "prompt_tps": 221.33,
+      "generation_tokens": 77,
+      "generation_tps": 18.45,
+      "finish_reason": "stop",
+      "wall_seconds": 5.88,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"이랑시 체류창구 기준으로 N-2 가상기술 자격자는 근무처를 바꾼 날부터 14일 이내에 신고해야 합니다.\",\n  \"citations\": [\n    \"WSYN-07-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "이랑시 체류창구 기준으로 N-2 가상기술 자격자는 근무처를 바꾼 날부터 14일 이내에 신고해야 합니다.",
+        "citations": [
+          "WSYN-07-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "14일"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "이랑시 체류창구 기준으로 N-2 가상기술 자격자는 근무처를 바꾼 날부터 14일 이내에 신고해야 합니다.",
+          "citations": [
+            "WSYN-07-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "W-08-register-window-vs-issue",
+      "prompt_sha256": "d9c5eddf4f8a8486d81961b20ef0cc45bab42bbc68644e1c2a4c5db37679bdac",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "청솔포 체류창구에서 P-6 가상예술 자격자는 신청일부터 20일 안에 등록증을 교부받을 수 있습니다.",
+        "citations": [
+          "WSYN-08-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 370,
+      "prompt_tps": 195.4,
+      "generation_tokens": 78,
+      "generation_tps": 18.83,
+      "finish_reason": "stop",
+      "wall_seconds": 6.11,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"청솔포 체류창구에서 P-6 가상예술 자격자는 신청일부터 20일 안에 등록증을 교부받을 수 있습니다.\",\n  \"citations\": [\n    \"WSYN-08-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "청솔포 체류창구에서 P-6 가상예술 자격자는 신청일부터 20일 안에 등록증을 교부받을 수 있습니다.",
+        "citations": [
+          "WSYN-08-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "20일"
+          },
+          {
+            "kind": "document",
+            "text": "등록증"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "청솔포 체류창구에서 P-6 가상예술 자격자는 신청일부터 20일 안에 등록증을 교부받을 수 있습니다.",
+          "citations": [
+            "WSYN-08-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "W-09-valid-as-usable",
+      "prompt_sha256": "06307b506276bd0d91f0ef7cdc9a81e7c89aed23a83a15f97e56093dd4e3dbc9",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "별가람시 R-2 가상가족 방문확인증은 발급일부터 6개월 동안 유효합니다.",
+        "citations": [
+          "WSYN-09-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 371,
+      "prompt_tps": 222.62,
+      "generation_tokens": 70,
+      "generation_tps": 17.77,
+      "finish_reason": "stop",
+      "wall_seconds": 5.67,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"별가람시 R-2 가상가족 방문확인증은 발급일부터 6개월 동안 유효합니다.\",\n  \"citations\": [\n    \"WSYN-09-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "별가람시 R-2 가상가족 방문확인증은 발급일부터 6개월 동안 유효합니다.",
+        "citations": [
+          "WSYN-09-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "6개월"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "별가람시 R-2 가상가족 방문확인증은 발급일부터 6개월 동안 유효합니다.",
+          "citations": [
+            "WSYN-09-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "W-10-deliver-as-issue",
+      "prompt_sha256": "92aee0626d5547b4e6fd73b3610d89b4dfe4ec9091899ba14bdcf12d1d6517ca",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "이랑시 체류창구는 S-1 가상단기 자격의 체류허가서를 신청서 접수 후 10일 이내에 교부합니다.",
+        "citations": [
+          "WSYN-10-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 362,
+      "prompt_tps": 225.89,
+      "generation_tokens": 81,
+      "generation_tps": 18.84,
+      "finish_reason": "stop",
+      "wall_seconds": 5.96,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"이랑시 체류창구는 S-1 가상단기 자격의 체류허가서를 신청서 접수 후 10일 이내에 교부합니다.\",\n  \"citations\": [\n    \"WSYN-10-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "이랑시 체류창구는 S-1 가상단기 자격의 체류허가서를 신청서 접수 후 10일 이내에 교부합니다.",
+        "citations": [
+          "WSYN-10-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "10일"
+          },
+          {
+            "kind": "document",
+            "text": "신청서"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "이랑시 체류창구는 S-1 가상단기 자격의 체류허가서를 신청서 접수 후 10일 이내에 교부합니다.",
+          "citations": [
+            "WSYN-10-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "W-11-receive-as-apply",
+      "prompt_sha256": "d7e1106d90db1fdc3a8ec778b3c811f6d49cb718a4eb071c08577f7b4bedc558",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "해담군 출입관리소는 L-4 가상요양 자격의 체류기간 연장 서류를 체류기간 만료 4개월 전부터 접수합니다.",
+        "citations": [
+          "WSYN-11-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 357,
+      "prompt_tps": 214.01,
+      "generation_tokens": 83,
+      "generation_tps": 17.55,
+      "finish_reason": "stop",
+      "wall_seconds": 6.45,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"해담군 출입관리소는 L-4 가상요양 자격의 체류기간 연장 서류를 체류기간 만료 4개월 전부터 접수합니다.\",\n  \"citations\": [\n    \"WSYN-11-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "해담군 출입관리소는 L-4 가상요양 자격의 체류기간 연장 서류를 체류기간 만료 4개월 전부터 접수합니다.",
+        "citations": [
+          "WSYN-11-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "4개월"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "해담군 출입관리소는 L-4 가상요양 자격의 체류기간 연장 서류를 체류기간 만료 4개월 전부터 접수합니다.",
+          "citations": [
+            "WSYN-11-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "W-12-review-charge-as-fee",
+      "prompt_sha256": "16cf2711d782bfc6902bff9710d8fbb0d95d70c7b72ea7b4f753c284624ef9f4",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "노을섬 출입관리청의 W-3 가상봉사 자격 심사료는 1건당 35,000원입니다.",
+        "citations": [
+          "WSYN-12-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 350,
+      "prompt_tps": 232.61,
+      "generation_tokens": 78,
+      "generation_tps": 17.36,
+      "finish_reason": "stop",
+      "wall_seconds": 6.05,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"노을섬 출입관리청의 W-3 가상봉사 자격 심사료는 1건당 35,000원입니다.\",\n  \"citations\": [\n    \"WSYN-12-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "노을섬 출입관리청의 W-3 가상봉사 자격 심사료는 1건당 35,000원입니다.",
+        "citations": [
+          "WSYN-12-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "money",
+            "text": "35,000원"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "노을섬 출입관리청의 W-3 가상봉사 자격 심사료는 1건당 35,000원입니다.",
+          "citations": [
+            "WSYN-12-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "W-13-may-stay-as-remain",
+      "prompt_sha256": "156e434ccefd7e46bbf48b03a92fe3d385c6360746280e9945ca673fe844237a",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "바람골시가 허가한 X-5 가상교류 자격자는 입국일부터 최대 2년까지 체류할 수 있습니다.",
+        "citations": [
+          "WSYN-13-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 347,
+      "prompt_tps": 196.78,
+      "generation_tokens": 75,
+      "generation_tps": 16.58,
+      "finish_reason": "stop",
+      "wall_seconds": 6.38,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"바람골시가 허가한 X-5 가상교류 자격자는 입국일부터 최대 2년까지 체류할 수 있습니다.\",\n  \"citations\": [\n    \"WSYN-13-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "바람골시가 허가한 X-5 가상교류 자격자는 입국일부터 최대 2년까지 체류할 수 있습니다.",
+        "citations": [
+          "WSYN-13-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "2년"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "바람골시가 허가한 X-5 가상교류 자격자는 입국일부터 최대 2년까지 체류할 수 있습니다.",
+          "citations": [
+            "WSYN-13-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "W-14-notify-as-processing",
+      "prompt_sha256": "42dbaab83b4f7b093f6b9b77883b935883e384cde49924cf077c1ee3f6431ab5",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "별가람시 출입관리청은 Y-1 가상청년 자격 신청을 접수한 날로부터 15일 안에 심사 결과를 신청인에게 알려 줍니다.",
+        "citations": [
+          "WSYN-14-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 358,
+      "prompt_tps": 174.56,
+      "generation_tokens": 82,
+      "generation_tps": 15.96,
+      "finish_reason": "stop",
+      "wall_seconds": 7.74,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"별가람시 출입관리청은 Y-1 가상청년 자격 신청을 접수한 날로부터 15일 안에 심사 결과를 신청인에게 알려 줍니다.\",\n  \"citations\": [\n    \"WSYN-14-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "별가람시 출입관리청은 Y-1 가상청년 자격 신청을 접수한 날로부터 15일 안에 심사 결과를 신청인에게 알려 줍니다.",
+        "citations": [
+          "WSYN-14-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "15일"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "별가람시 출입관리청은 Y-1 가상청년 자격 신청을 접수한 날로부터 15일 안에 심사 결과를 신청인에게 알려 줍니다.",
+          "citations": [
+            "WSYN-14-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "W-15-table-validity-cell",
+      "prompt_sha256": "260e18519650aa79d5a34095f9f4ccd592333dec77ab5e8cad2db35c2caea4b9",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "해솔시 J-2 가상연수 확인서의 유효기간은 180일입니다.",
+        "citations": [
+          "WSYN-15-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 446,
+      "prompt_tps": 182.51,
+      "generation_tokens": 61,
+      "generation_tps": 17.0,
+      "finish_reason": "stop",
+      "wall_seconds": 6.38,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"해솔시 J-2 가상연수 확인서의 유효기간은 180일입니다.\",\n  \"citations\": [\"WSYN-15-a\"]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "해솔시 J-2 가상연수 확인서의 유효기간은 180일입니다.",
+        "citations": [
+          "WSYN-15-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "180일"
+          },
+          {
+            "kind": "document",
+            "text": "확인서"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "해솔시 J-2 가상연수 확인서의 유효기간은 180일입니다.",
+          "citations": [
+            "WSYN-15-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "W-16-table-processing-cell",
+      "prompt_sha256": "51efb981a52257689559665db939a9323d0e8adf4e2c67676de050d7745d127b",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "연장의 처리기간은 2주입니다.",
+        "citations": [
+          "WSYN-16-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 426,
+      "prompt_tps": 177.16,
+      "generation_tokens": 53,
+      "generation_tps": 18.4,
+      "finish_reason": "stop",
+      "wall_seconds": 6.08,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"연장의 처리기간은 2주입니다.\",\n  \"citations\": [\n    \"WSYN-16-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "연장의 처리기간은 2주입니다.",
+        "citations": [
+          "WSYN-16-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "2주"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "연장의 처리기간은 2주입니다.",
+          "citations": [
+            "WSYN-16-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "W-17-table-processing-vs-validity",
+      "prompt_sha256": "6816bd42e24b4c42864f2194b9bcb2e77bbc6e3b21dc4150155118c581b8b576",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "은하군 U-2 가상의료 복수 확인서의 처리 기간은 9일입니다.",
+        "citations": [
+          "WSYN-17-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 399,
+      "prompt_tps": 214.05,
+      "generation_tokens": 59,
+      "generation_tps": 16.9,
+      "finish_reason": "stop",
+      "wall_seconds": 5.46,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"은하군 U-2 가상의료 복수 확인서의 처리 기간은 9일입니다.\",\n  \"citations\": [\"WSYN-17-a\"]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "은하군 U-2 가상의료 복수 확인서의 처리 기간은 9일입니다.",
+        "citations": [
+          "WSYN-17-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "9일"
+          },
+          {
+            "kind": "document",
+            "text": "확인서"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "은하군 U-2 가상의료 복수 확인서의 처리 기간은 9일입니다.",
+          "citations": [
+            "WSYN-17-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "W-18-table-income-vs-fee",
+      "prompt_sha256": "2e06e492f4164fe5953c1580e5ca89cbd7947ccea58abedd1504fcf1b3896412",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "K-2 가상초청의 초청인 소득기준은 30,000,000원입니다.",
+        "citations": [
+          "WSYN-18-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 435,
+      "prompt_tps": 218.76,
+      "generation_tokens": 66,
+      "generation_tps": 18.26,
+      "finish_reason": "stop",
+      "wall_seconds": 6.21,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"K-2 가상초청의 초청인 소득기준은 30,000,000원입니다.\",\n  \"citations\": [\"WSYN-18-a\"]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "K-2 가상초청의 초청인 소득기준은 30,000,000원입니다.",
+        "citations": [
+          "WSYN-18-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "money",
+            "text": "30,000,000원"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "K-2 가상초청의 초청인 소득기준은 30,000,000원입니다.",
+          "citations": [
+            "WSYN-18-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "W-19-issue-vs-blog-validity",
+      "prompt_sha256": "f3178f9b220f5b52c53786a90a7d0757e4c22c333054c403c0e707a384d8c406",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [
+        "WSYN-19-b"
+      ],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "해솔시 출입관리청은 M-3 가상취업 고용확인서를 신청일부터 7일 안에 발급합니다.",
+        "citations": [
+          "WSYN-19-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 356,
+      "prompt_tps": 207.99,
+      "generation_tokens": 73,
+      "generation_tps": 19.34,
+      "finish_reason": "stop",
+      "wall_seconds": 5.59,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"해솔시 출입관리청은 M-3 가상취업 고용확인서를 신청일부터 7일 안에 발급합니다.\",\n  \"citations\": [\n    \"WSYN-19-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "해솔시 출입관리청은 M-3 가상취업 고용확인서를 신청일부터 7일 안에 발급합니다.",
+        "citations": [
+          "WSYN-19-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "7일"
+          },
+          {
+            "kind": "document",
+            "text": "고용확인서"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "해솔시 출입관리청은 M-3 가상취업 고용확인서를 신청일부터 7일 안에 발급합니다.",
+          "citations": [
+            "WSYN-19-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "W-20-window-vs-board-processing",
+      "prompt_sha256": "8e6d1f4021f843da7bfc703d3ef1663b7b05a82d160a64d5e2f95c184cc6aaad",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [
+        "WSYN-20-b"
+      ],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "마루포 체류창구는 V-5 가상학업 자격 연장 신청을 체류기간 만료 1개월 전부터 접수합니다.",
+        "citations": [
+          "WSYN-20-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 350,
+      "prompt_tps": 204.83,
+      "generation_tokens": 78,
+      "generation_tps": 19.36,
+      "finish_reason": "stop",
+      "wall_seconds": 5.81,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"마루포 체류창구는 V-5 가상학업 자격 연장 신청을 체류기간 만료 1개월 전부터 접수합니다.\",\n  \"citations\": [\n    \"WSYN-20-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "마루포 체류창구는 V-5 가상학업 자격 연장 신청을 체류기간 만료 1개월 전부터 접수합니다.",
+        "citations": [
+          "WSYN-20-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "1개월"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "마루포 체류창구는 V-5 가상학업 자격 연장 신청을 체류기간 만료 1개월 전부터 접수합니다.",
+          "citations": [
+            "WSYN-20-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "W-21-fee-vs-sns-income",
+      "prompt_sha256": "6531627e818e9e10ba64531e51dda9081153c2827e63f38df1463eff07d98578",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [
+        "WSYN-21-b",
+        "WSYN-21-c"
+      ],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "은하군 R-6 가상가족 초청 심사 수수료는 50,000원입니다.",
+        "citations": [
+          "WSYN-21-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 343,
+      "prompt_tps": 210.5,
+      "generation_tokens": 71,
+      "generation_tps": 18.95,
+      "finish_reason": "stop",
+      "wall_seconds": 5.45,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"은하군 R-6 가상가족 초청 심사 수수료는 50,000원입니다.\",\n  \"citations\": [\n    \"WSYN-21-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "은하군 R-6 가상가족 초청 심사 수수료는 50,000원입니다.",
+        "citations": [
+          "WSYN-21-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "money",
+            "text": "50,000원"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "은하군 R-6 가상가족 초청 심사 수수료는 50,000원입니다.",
+          "citations": [
+            "WSYN-21-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "W-22-validity-vs-scraped-issue",
+      "prompt_sha256": "ca38b1e63f30c6b7e3e974c69af0e7fd688dcf62716da2c18e7d5301b498cf94",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [
+        "WSYN-22-b"
+      ],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "청솔포 출입관리소의 T-8 가상방문 확인서는 발급일부터 3개월 동안 유효합니다.",
+        "citations": [
+          "WSYN-22-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 343,
+      "prompt_tps": 220.46,
+      "generation_tokens": 71,
+      "generation_tps": 19.35,
+      "finish_reason": "stop",
+      "wall_seconds": 5.28,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"청솔포 출입관리소의 T-8 가상방문 확인서는 발급일부터 3개월 동안 유효합니다.\",\n  \"citations\": [\n    \"WSYN-22-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "청솔포 출입관리소의 T-8 가상방문 확인서는 발급일부터 3개월 동안 유효합니다.",
+        "citations": [
+          "WSYN-22-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "3개월"
+          },
+          {
+            "kind": "document",
+            "text": "확인서"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "청솔포 출입관리소의 T-8 가상방문 확인서는 발급일부터 3개월 동안 유효합니다.",
+          "citations": [
+            "WSYN-22-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "W-23-register-deadline-vs-message-stay",
+      "prompt_sha256": "ecfd474ab773514bac9246c26d356d854eae9367500a11e57355eedd329e048a",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [
+        "WSYN-23-b"
+      ],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "바람골시 Q-7 가상연구 자격자는 입국일부터 30일 이내에 체류등록을 신청해야 합니다.",
+        "citations": [
+          "WSYN-23-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 351,
+      "prompt_tps": 230.67,
+      "generation_tokens": 74,
+      "generation_tps": 19.06,
+      "finish_reason": "stop",
+      "wall_seconds": 5.49,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"바람골시 Q-7 가상연구 자격자는 입국일부터 30일 이내에 체류등록을 신청해야 합니다.\",\n  \"citations\": [\n    \"WSYN-23-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "바람골시 Q-7 가상연구 자격자는 입국일부터 30일 이내에 체류등록을 신청해야 합니다.",
+        "citations": [
+          "WSYN-23-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "30일"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "바람골시 Q-7 가상연구 자격자는 입국일부터 30일 이내에 체류등록을 신청해야 합니다.",
+          "citations": [
+            "WSYN-23-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "W-24-notice-vs-blog-deadline",
+      "prompt_sha256": "d13dee7fae58a711a4265b4f8672ec7a9164c5aa30f93fbc1044534947a3a5a3",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [
+        "WSYN-24-b"
+      ],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "이랑시 체류창구는 N-4 가상기술 자격의 근무처 추가 신고를 받은 뒤 14일 안에 처리 결과를 통지합니다.",
+        "citations": [
+          "WSYN-24-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 352,
+      "prompt_tps": 231.68,
+      "generation_tokens": 77,
+      "generation_tps": 19.42,
+      "finish_reason": "stop",
+      "wall_seconds": 5.93,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"이랑시 체류창구는 N-4 가상기술 자격의 근무처 추가 신고를 받은 뒤 14일 안에 처리 결과를 통지합니다.\",\n  \"citations\": [\n    \"WSYN-24-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "이랑시 체류창구는 N-4 가상기술 자격의 근무처 추가 신고를 받은 뒤 14일 안에 처리 결과를 통지합니다.",
+        "citations": [
+          "WSYN-24-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "14일"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": [],
+        "role_mismatches": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "이랑시 체류창구는 N-4 가상기술 자격의 근무처 추가 신고를 받은 뒤 14일 안에 처리 결과를 통지합니다.",
+          "citations": [
+            "WSYN-24-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    }
+  ],
+  "summary": {
+    "cases": 24,
+    "passed": 24,
+    "failed": 0,
+    "needs_review": 0,
+    "auto_correct": 24,
+    "outcomes_raw": {
+      "correct": 24,
+      "needs_review": 0,
+      "clarify": 0,
+      "safe_abstain": 0,
+      "harmful": 0,
+      "other": 0
+    },
+    "outcomes_checked": {
+      "correct": 24,
+      "needs_review": 0,
+      "clarify": 0,
+      "safe_abstain": 0,
+      "harmful": 0,
+      "other": 0
+    }
+  },
+  "peak_memory_gb": 4.823,
+  "max_rss_gb": 0.928,
+  "swap_after": "total = 5120.00M  used = 3782.50M  free = 1337.50M  (encrypted)",
+  "free_disk_gb_after": 8.78,
+  "finished_utc": "2026-10-28T00:22:34+00:00"
+}

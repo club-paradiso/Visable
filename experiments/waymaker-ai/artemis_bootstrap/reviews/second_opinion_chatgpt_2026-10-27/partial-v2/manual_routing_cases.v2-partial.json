@@ -1,0 +1,891 @@
+{
+  "version": "artemis-manual-routing-v2-partial",
+  "created": "2026-10-26",
+  "corpus": "data/manual-corpus *_2026_10_19_pdf.json",
+  "authorship": "Machine-drafted by a separate agent that read only the two corpus files and was not shown any filtering code; labels need human review.",
+  "notice": "2차 검토 진행 중인 부분 수정본. N-10만 수정되었으며 나머지 라벨은 검증 완료가 아니다. 기존 v1 및 실험 기록을 보존한다.",
+  "cases": [
+    {
+      "id": "N-01-c1-visa-attachments",
+      "group": "G",
+      "purpose": "일시취재 사증 첨부서류",
+      "question": "일시취재(C-1) 사증을 공관에 신청하려는데 소속 언론사 관련해서 어떤 서류를 내야 하나요?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p90",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 90,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p25",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 25,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p60",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 60,
+          "domain": "visa_issuance"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "visa_manual_2026_10_19_pdf#p25"
+        ],
+        "answer_must_contain": [
+          "소속회사의 파견증명서, 재직증명서 또는 외신보도증"
+        ]
+      }
+    },
+    {
+      "id": "N-02-d5-alien-registration-docs",
+      "group": "G",
+      "purpose": "취재 자격 외국인등록 서류",
+      "question": "외신 기자로 D-5 받아서 입국했어요. 외국인등록 하러 갈 때 회사 쪽 서류는 뭘 챙겨야 하나요?",
+      "evidence": [
+        {
+          "id": "stay_manual_2026_10_19_pdf#p103",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 103,
+          "domain": "stay"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p105",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 105,
+          "domain": "stay"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p26",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 26,
+          "domain": "stay"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "stay_manual_2026_10_19_pdf#p105"
+        ],
+        "answer_must_contain": [
+          "지국․지사의 설치허가증"
+        ]
+      }
+    },
+    {
+      "id": "N-03-d9-equipment-visa-docs",
+      "group": "G",
+      "purpose": "무역경영 설비기술자 공관 사증 서류",
+      "question": "Our Korean company imported industrial machinery and the overseas manufacturer is sending a technician to install and maintain it (D-9). What documents are attached when he applies for the visa at the embassy?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p94",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 94,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p118",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 118,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p70",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 70,
+          "domain": "visa_issuance"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "visa_manual_2026_10_19_pdf#p118"
+        ],
+        "answer_must_contain": [
+          "설비도입계약서 또는 산업설비도입 입증서류"
+        ]
+      }
+    },
+    {
+      "id": "N-04-d3-extension-docs",
+      "group": "G",
+      "purpose": "기술연수생 체류기간 연장 서류",
+      "question": "기술연수(D-3) 연수생인데 체류기간 연장허가 신청할 때 필요한 서류가 뭐예요?",
+      "evidence": [
+        {
+          "id": "stay_manual_2026_10_19_pdf#p58",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 58,
+          "domain": "stay"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p56",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 56,
+          "domain": "stay"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p29",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 29,
+          "domain": "stay"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "stay_manual_2026_10_19_pdf#p56"
+        ],
+        "answer_must_contain": [
+          "연수기간 연장신청 사유서"
+        ]
+      }
+    },
+    {
+      "id": "N-05-h1-uk-visa-validity",
+      "group": "G",
+      "purpose": "영국인 관광취업 사증 유효기간",
+      "question": "영국 국적인데 워킹홀리데이(H-1) 비자 받으면 유효기간이랑 체류기간이 각각 얼마예요?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p351",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 351,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p347",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 347,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p14",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 14,
+          "domain": "visa_issuance"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "visa_manual_2026_10_19_pdf#p347"
+        ],
+        "answer_must_contain": [
+          "2년(24개월)"
+        ]
+      }
+    },
+    {
+      "id": "N-06-h1-canada-weekly-hours",
+      "group": "G",
+      "purpose": "캐나다 관광취업자 주당 취업시간",
+      "question": "I'm a Canadian on a working holiday (H-1) in Korea. What is the maximum number of hours I can work per week?",
+      "evidence": [
+        {
+          "id": "stay_manual_2026_10_19_pdf#p508",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 508,
+          "domain": "stay"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p524",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 524,
+          "domain": "stay"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p525",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 525,
+          "domain": "stay"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "stay_manual_2026_10_19_pdf#p524"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "40시간",
+            "40"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "N-07-e8-farm-allocation-cap",
+      "group": "G",
+      "purpose": "계절근로자 농가당 배정 상한",
+      "question": "외국인 계절근로자를 초청하려는 농가예요. 한 농가에 1년에 최대 몇 명까지 배정받을 수 있나요?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p285",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 285,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p51",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 51,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p279",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 279,
+          "domain": "visa_issuance"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "visa_manual_2026_10_19_pdf#p279"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "연간 최대 14명",
+            "14명"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "N-08-g1-wage-arrears-eligibility",
+      "group": "G",
+      "purpose": "임금체불 중재자 G-1 대상·체류기간",
+      "question": "회사에서 월급을 못 받아서 노동청 중재가 진행 중이에요. 이런 경우 기타(G-1) 자격 대상이 되나요? 한 번에 받을 수 있는 체류기간은 최대 얼마예요?",
+      "evidence": [
+        {
+          "id": "stay_manual_2026_10_19_pdf#p512",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 512,
+          "domain": "stay"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p513",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 513,
+          "domain": "stay"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p508",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 508,
+          "domain": "stay"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "stay_manual_2026_10_19_pdf#p508"
+        ],
+        "answer_must_contain": [
+          "임금체불",
+          "1년"
+        ]
+      }
+    },
+    {
+      "id": "N-09-c1-extension-limit",
+      "group": "M",
+      "purpose": "일시취재 체류기간 연장 한도",
+      "question": "일시취재(C-1)로 들어왔는데 취재가 길어졌어요. 체류기간 연장허가를 받으면 최대 언제까지 있을 수 있나요?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p25",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 25,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p26",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 26,
+          "domain": "stay"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "stay_manual_2026_10_19_pdf#p26"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "입국일로부터 90일까지 연장",
+            "90일"
+          ]
+        ],
+        "must_not_cite": [
+          "visa_manual_2026_10_19_pdf#p25"
+        ]
+      }
+    },
+    {
+      "id": "N-10-d5-consular-visa-bureau-docs",
+      "group": "M",
+      "purpose": "취재 공관장 재량 사증 지국 서류",
+      "question": "취재(D-5) 비자를 재외공관에서 바로 받으려면 국내 지국이나 지사와 관련해서 어떤 서류를 내야 하나요?",
+      "evidence": [
+        {
+          "id": "stay_manual_2026_10_19_pdf#p105",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 105,
+          "domain": "stay"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p90",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 90,
+          "domain": "visa_issuance"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "visa_manual_2026_10_19_pdf#p90"
+        ],
+        "must_not_cite": [
+          "stay_manual_2026_10_19_pdf#p105"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "설치허가증",
+            "운영자금 도입실적"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "N-11-e8-registration-drug-test",
+      "group": "M",
+      "purpose": "계절근로자 외국인등록 마약검사",
+      "question": "계절근로(E-8)로 입국했는데 외국인등록 할 때 마약검사 확인서도 내야 하나요? 보험은 뭐가 필요해요?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p279",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 279,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p326",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 326,
+          "domain": "stay"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "stay_manual_2026_10_19_pdf#p326"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "마약검사 확인서"
+          ],
+          [
+            "여행자보험",
+            "산재보험"
+          ]
+        ],
+        "must_not_cite": [
+          "visa_manual_2026_10_19_pdf#p279"
+        ]
+      }
+    },
+    {
+      "id": "N-12-d6-welfare-consular-visa-docs",
+      "group": "M",
+      "purpose": "사회복지활동 종교 공관 사증 서류",
+      "question": "I was invited by a Korean social welfare organization to do only social welfare work under the religion (D-6) status. If I apply for the visa directly at the Korean embassy, what documents do I need besides the application form and passport?",
+      "evidence": [
+        {
+          "id": "stay_manual_2026_10_19_pdf#p106",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 106,
+          "domain": "stay"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p92",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 92,
+          "domain": "visa_issuance"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "visa_manual_2026_10_19_pdf#p92"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "파견명령서"
+          ],
+          [
+            "설립허가서"
+          ]
+        ],
+        "must_not_cite": [
+          "stay_manual_2026_10_19_pdf#p106"
+        ]
+      }
+    },
+    {
+      "id": "N-13-d9-university-lecture-docs",
+      "group": "M",
+      "purpose": "무역경영 상근이사 대학 강의 자격외활동 서류",
+      "question": "D-9 무역경영 자격으로 회사 상근이사로 일하고 있어요. 대학에서 강의도 하려면 어떤 서류를 내야 하나요?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p118",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 118,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p131",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 131,
+          "domain": "stay"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "stay_manual_2026_10_19_pdf#p131"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "원근무처장의 동의서"
+          ],
+          [
+            "고용계약서"
+          ]
+        ],
+        "must_not_cite": [
+          "visa_manual_2026_10_19_pdf#p118"
+        ]
+      }
+    },
+    {
+      "id": "N-14-f6-consular-visa-90days",
+      "group": "M",
+      "purpose": "결혼사증 공관 발급 범위",
+      "question": "한국인 배우자와 결혼했는데 한국에서 1년 살 거라 결혼비자를 1년짜리로 받고 싶어요. 재외공관에서 바로 받을 수 있나요?",
+      "evidence": [
+        {
+          "id": "stay_manual_2026_10_19_pdf#p485",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 485,
+          "domain": "stay"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p338",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 338,
+          "domain": "visa_issuance"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "visa_manual_2026_10_19_pdf#p338"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "90일이하의 단수사증"
+          ],
+          [
+            "체류기간연장허가"
+          ]
+        ],
+        "must_not_cite": [
+          "stay_manual_2026_10_19_pdf#p485"
+        ]
+      }
+    },
+    {
+      "id": "N-15-d1-extension-visa-pages-only",
+      "group": "X",
+      "purpose": "체류기간 연장 질문에 사증 쪽만 제공",
+      "question": "문화예술(D-1) 자격으로 한국에 체류 중인데 체류기간 연장허가 신청할 때 필요한 서류가 뭐예요?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p60",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 60,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p25",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 25,
+          "domain": "visa_issuance"
+        }
+      ],
+      "expect": {
+        "status": [
+          "insufficient_evidence",
+          "partial"
+        ],
+        "must_not_cite": [
+          "visa_manual_2026_10_19_pdf#p60",
+          "visa_manual_2026_10_19_pdf#p25"
+        ]
+      }
+    },
+    {
+      "id": "N-16-e10-cci-stay-pages-only",
+      "group": "X",
+      "purpose": "사증발급인정서 질문에 체류 쪽만 제공",
+      "question": "외국인 선원(E-10)을 고용하려는 선사인데 사증발급인정서 신청할 때 필요한 서류가 뭔가요?",
+      "evidence": [
+        {
+          "id": "stay_manual_2026_10_19_pdf#p338",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 338,
+          "domain": "stay"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p340",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 340,
+          "domain": "stay"
+        }
+      ],
+      "expect": {
+        "status": [
+          "insufficient_evidence",
+          "partial"
+        ],
+        "must_not_cite": [
+          "stay_manual_2026_10_19_pdf#p338",
+          "stay_manual_2026_10_19_pdf#p340"
+        ]
+      }
+    },
+    {
+      "id": "N-17-d9-reentry-visa-pages-only",
+      "group": "X",
+      "purpose": "재입국허가 질문에 사증 쪽만 제공",
+      "question": "I hold D-9 status and have completed alien registration. I'll be out of Korea for about 18 months on business. Do I need a re-entry permit, and what do I submit?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p118",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 118,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p119",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 119,
+          "domain": "visa_issuance"
+        }
+      ],
+      "expect": {
+        "status": [
+          "insufficient_evidence",
+          "partial"
+        ],
+        "must_not_cite": [
+          "visa_manual_2026_10_19_pdf#p118",
+          "visa_manual_2026_10_19_pdf#p119"
+        ]
+      }
+    },
+    {
+      "id": "N-18-e9-cci-applicant-stay-pages-only",
+      "group": "X",
+      "purpose": "E-9 사증발급인정서 신청 주체 질문에 체류 쪽만 제공",
+      "question": "비전문취업(E-9) 근로자를 고용하려는 사업주인데 사증발급인정서는 어느 관서에 신청하나요?",
+      "evidence": [
+        {
+          "id": "stay_manual_2026_10_19_pdf#p328",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 328,
+          "domain": "stay"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p329",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 329,
+          "domain": "stay"
+        }
+      ],
+      "expect": {
+        "status": [
+          "insufficient_evidence",
+          "partial"
+        ],
+        "must_not_cite": [
+          "stay_manual_2026_10_19_pdf#p328",
+          "stay_manual_2026_10_19_pdf#p329"
+        ]
+      }
+    },
+    {
+      "id": "N-19-e8-workplace-change-visa-pages-only",
+      "group": "X",
+      "purpose": "근무처 변경 질문에 사증 쪽만 제공",
+      "question": "계절근로(E-8)로 일하다가 고용주 잘못으로 계약이 해지됐어요. 다른 농가로 근무처를 변경하려면 어떤 서류가 필요해요?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p279",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 279,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p280",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 280,
+          "domain": "visa_issuance"
+        }
+      ],
+      "expect": {
+        "status": [
+          "insufficient_evidence",
+          "partial"
+        ],
+        "must_not_cite": [
+          "visa_manual_2026_10_19_pdf#p279",
+          "visa_manual_2026_10_19_pdf#p280"
+        ]
+      }
+    },
+    {
+      "id": "N-20-h1-austria-embassy-stay-pages-only",
+      "group": "X",
+      "purpose": "관광취업 사증 신청 공관 질문에 체류 쪽만 제공",
+      "question": "I'm Austrian and want a Korean working holiday (H-1) visa. At which Korean embassies or consulates can I apply?",
+      "evidence": [
+        {
+          "id": "stay_manual_2026_10_19_pdf#p524",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 524,
+          "domain": "stay"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p525",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 525,
+          "domain": "stay"
+        }
+      ],
+      "expect": {
+        "status": [
+          "insufficient_evidence",
+          "partial"
+        ],
+        "must_not_cite": [
+          "stay_manual_2026_10_19_pdf#p524",
+          "stay_manual_2026_10_19_pdf#p525"
+        ]
+      }
+    },
+    {
+      "id": "N-21-b1-stay-longer-implicit",
+      "group": "I",
+      "purpose": "무사증 입국자 체류 연장·변경 가능성(암시형)",
+      "question": "무비자로 한국에 들어왔는데 여기 좀 더 있고 싶어요. 한국 안에서 기간을 늘리거나 다른 자격으로 바꿀 수 있나요?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p14",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 14,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p24",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 24,
+          "domain": "stay"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "stay_manual_2026_10_19_pdf#p24"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "체류기간 연장이나 체류자격 변경허가를 하지 아니",
+            "반드시 사증을 발급 받아 입국"
+          ]
+        ],
+        "must_not_cite": [
+          "visa_manual_2026_10_19_pdf#p14"
+        ]
+      }
+    },
+    {
+      "id": "N-22-d3-trainee-invite-implicit",
+      "group": "I",
+      "purpose": "해외법인 연수생 초청 방법(암시형)",
+      "question": "베트남 현지법인 생산직 직원들을 한국 본사 공장으로 불러서 기술을 가르치려고 해요. 비자는 어떻게 받게 해야 하나요?",
+      "evidence": [
+        {
+          "id": "stay_manual_2026_10_19_pdf#p56",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 56,
+          "domain": "stay"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p70",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 70,
+          "domain": "visa_issuance"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "visa_manual_2026_10_19_pdf#p70"
+        ],
+        "answer_must_contain": [
+          "사증발급인정서"
+        ],
+        "must_not_cite": [
+          "stay_manual_2026_10_19_pdf#p56"
+        ]
+      }
+    },
+    {
+      "id": "N-23-c4-seasonal-second-farm-implicit",
+      "group": "I",
+      "purpose": "계절근로 단기취업자 추가 농장 근무(암시형)",
+      "question": "C-4로 계절근로 와서 농장에서 일하고 있어요. 다른 농장에서도 같이 일할 수 있나요? 옮기려면 어떻게 해야 해요?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p51",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 51,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p29",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 29,
+          "domain": "stay"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "stay_manual_2026_10_19_pdf#p29"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "근무처의 추가는 불가"
+          ],
+          [
+            "지자체 담당자 동반"
+          ]
+        ],
+        "must_not_cite": [
+          "visa_manual_2026_10_19_pdf#p51"
+        ]
+      }
+    },
+    {
+      "id": "N-24-d7-chinese-staff-multiple-visa-implicit",
+      "group": "I",
+      "purpose": "중국인 주재원 복수사증 유효기간(암시형)",
+      "question": "I'm a Chinese employee who has worked for my company for over a year, and I'm being posted to its branch office in Korea. Can the Korean consulate give me a multiple-entry visa, and how long would it be valid?",
+      "evidence": [
+        {
+          "id": "stay_manual_2026_10_19_pdf#p109",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 109,
+          "domain": "stay"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p94",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 94,
+          "domain": "visa_issuance"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "visa_manual_2026_10_19_pdf#p94"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "유효기간 2년 이내의",
+            "2년"
+          ],
+          [
+            "복수사증"
+          ]
+        ],
+        "must_not_cite": [
+          "stay_manual_2026_10_19_pdf#p109"
+        ]
+      }
+    }
+  ]
+}

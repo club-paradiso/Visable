@@ -1,0 +1,1710 @@
+{
+  "kind": "artemis_bootstrap_smoke",
+  "started_utc": "2026-10-28T00:08:05+00:00",
+  "machine": {
+    "model": "MacBookAir10,1",
+    "chip": "Apple M1",
+    "memory_bytes": 8589934592,
+    "macos": "15.6.1",
+    "python": "3.11.15"
+  },
+  "versions": {
+    "mlx": "0.32.4",
+    "mlx-metal": "0.32.4",
+    "mlx-lm": "0.32.2",
+    "transformers": "5.20.2",
+    "huggingface-hub": "2.3.0",
+    "tokenizers": "0.23.3"
+  },
+  "device": {
+    "device_name": "Apple M1",
+    "max_recommended_working_set_size": 5726633984,
+    "memory_size": 8589934592,
+    "architecture": "applegpu_g13g",
+    "max_buffer_length": 4294967296,
+    "resource_limit": 499000
+  },
+  "swap_before": "total = 2048.00M  used = 844.56M  free = 1203.44M  (encrypted)",
+  "free_disk_gb_before": 10.35,
+  "cases_file": "heldout_v6_cases.json",
+  "cases_sha256": "3861986ae5fa7fd9063002fe059a3663818c0f31978af3d8158ca5f8da183991",
+  "detector_on_labelled_evidence": {
+    "planted": 7,
+    "caught": [],
+    "missed": [
+      "YSYN-11-b",
+      "YSYN-12-b",
+      "YSYN-13-b",
+      "YSYN-14-b",
+      "YSYN-14-c",
+      "YSYN-15-b",
+      "YSYN-16-b"
+    ],
+    "clean": 24,
+    "false_flags": []
+  },
+  "decoding": {
+    "temperature": 0.0,
+    "max_tokens": 400,
+    "enable_thinking": false
+  },
+  "evidence_guard": "off",
+  "source_gate": true,
+  "integrity": true,
+  "route": false,
+  "clarify": false,
+  "always_ask": false,
+  "cross_check": false,
+  "label_switch": false,
+  "post_check": "applied offline to every output when the cases carry source labels",
+  "prompts_persisted": false,
+  "status": "completed",
+  "stage": "done",
+  "model": {
+    "repo": "mlx-community/gemma-4-e4b-it-4bit",
+    "revision": "475b9088d29754a3379866cf5aeb6b41acd313c2",
+    "size_class_from_weights": "E4B",
+    "quantization": {
+      "group_size": 64,
+      "bits": 4,
+      "mode": "affine"
+    },
+    "loader": "mlx_lm.load (text tower only; vision/audio weights dropped by mlx_lm sanitize)",
+    "base_model": "google/gemma-4-E4B-it",
+    "source_revision": "fee6332c1abaafb77f6f9624236c63aa2f1d0187",
+    "license_in_card": "gemma"
+  },
+  "load_seconds": 8.11,
+  "memory_after_load_gb": 4.201,
+  "results": [
+    {
+      "case": "Y-01-oh-il-move-report",
+      "prompt_sha256": "2641714ad840ed5a7fd3d573318ce01ff84655f9251156612d6639019adfa5fa",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "이사한 날부터 오 일 이내에 새 체류지 관할 가상창구에 변경 신고를 해야 합니다.",
+        "citations": [
+          "YSYN-01-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 370,
+      "prompt_tps": 144.85,
+      "generation_tokens": 69,
+      "generation_tps": 18.19,
+      "finish_reason": "stop",
+      "wall_seconds": 18.45,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"이사한 날부터 오 일 이내에 새 체류지 관할 가상창구에 변경 신고를 해야 합니다.\",\n  \"citations\": [\n    \"YSYN-01-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "이사한 날부터 오 일 이내에 새 체류지 관할 가상창구에 변경 신고를 해야 합니다.",
+        "citations": [
+          "YSYN-01-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "오 일"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "이사한 날부터 오 일 이내에 새 체류지 관할 가상창구에 변경 신고를 해야 합니다.",
+          "citations": [
+            "YSYN-01-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "Y-02-chil-il-departure-window",
+      "prompt_sha256": "a7d692505b099eac5c680973ed2c8d69a10c744c41e76f407105f0000b6a440c",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "출국 전 칠 일간 접수합니다.",
+        "citations": [
+          "YSYN-02-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 359,
+      "prompt_tps": 211.27,
+      "generation_tokens": 54,
+      "generation_tps": 19.17,
+      "finish_reason": "stop",
+      "wall_seconds": 4.66,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"출국 전 칠 일간 접수합니다.\",\n  \"citations\": [\n    \"YSYN-02-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "출국 전 칠 일간 접수합니다.",
+        "citations": [
+          "YSYN-02-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "칠 일"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "출국 전 칠 일간 접수합니다.",
+          "citations": [
+            "YSYN-02-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "Y-03-du-hae-stay-length",
+      "prompt_sha256": "31d020a6ac27b6b2a8e32d86b88d17b0363b72a00a9297907bda771221b744f4",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "청람군 L-3 가상자격 허가를 받은 사람은 허가일부터 두 해 동안 청람군 안에서 머물 수 있습니다.",
+        "citations": [
+          "YSYN-03-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 346,
+      "prompt_tps": 223.48,
+      "generation_tokens": 73,
+      "generation_tps": 19.62,
+      "finish_reason": "stop",
+      "wall_seconds": 5.32,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"청람군 L-3 가상자격 허가를 받은 사람은 허가일부터 두 해 동안 청람군 안에서 머물 수 있습니다.\",\n  \"citations\": [\n    \"YSYN-03-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "청람군 L-3 가상자격 허가를 받은 사람은 허가일부터 두 해 동안 청람군 안에서 머물 수 있습니다.",
+        "citations": [
+          "YSYN-03-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "두 해"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "청람군 L-3 가상자격 허가를 받은 사람은 허가일부터 두 해 동안 청람군 안에서 머물 수 있습니다.",
+          "citations": [
+            "YSYN-03-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "Y-04-se-hae-change-eligibility",
+      "prompt_sha256": "1338ec2ca554efff2a2dbc6e4fb34ed42e4e5fcb1f1065755b0afb1101d2dda9",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "가온시 R-1 가상자격으로 머문 지 세 해가 지나면 U-8 가상자격으로 변경을 신청할 수 있습니다.",
+        "citations": [
+          "YSYN-04-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 356,
+      "prompt_tps": 215.87,
+      "generation_tokens": 77,
+      "generation_tps": 19.21,
+      "finish_reason": "stop",
+      "wall_seconds": 5.71,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"가온시 R-1 가상자격으로 머문 지 세 해가 지나면 U-8 가상자격으로 변경을 신청할 수 있습니다.\",\n  \"citations\": [\n    \"YSYN-04-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "가온시 R-1 가상자격으로 머문 지 세 해가 지나면 U-8 가상자격으로 변경을 신청할 수 있습니다.",
+        "citations": [
+          "YSYN-04-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "세 해"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "가온시 R-1 가상자격으로 머문 지 세 해가 지나면 U-8 가상자격으로 변경을 신청할 수 있습니다.",
+          "citations": [
+            "YSYN-04-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "Y-05-yuk-il-workplace-add",
+      "prompt_sha256": "5cbeaf0e24437506f2856a1e3c8845dc6c338bb8b82cc99f119a133bbba58c2d",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "새 근무를 시작한 날부터 육 일 이내에 신고해야 합니다.",
+        "citations": [
+          "YSYN-05-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 354,
+      "prompt_tps": 195.61,
+      "generation_tokens": 59,
+      "generation_tps": 19.24,
+      "finish_reason": "stop",
+      "wall_seconds": 4.93,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"새 근무를 시작한 날부터 육 일 이내에 신고해야 합니다.\",\n  \"citations\": [\n    \"YSYN-05-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "새 근무를 시작한 날부터 육 일 이내에 신고해야 합니다.",
+        "citations": [
+          "YSYN-05-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "육 일"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "새 근무를 시작한 날부터 육 일 이내에 신고해야 합니다.",
+          "citations": [
+            "YSYN-05-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "Y-06-pal-il-lost-card",
+      "prompt_sha256": "2c9f0754a0e419d331d74ce705fbb40177c7feceb48bf0e9c36f5d9b872180bd",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "미리내시 T-6 가상자격 등록증을 잃어버린 경우, 분실 사실을 안 날부터 팔 일 안에 가상창구에 분실 신고를 해야 합니다.",
+        "citations": [
+          "YSYN-06-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 358,
+      "prompt_tps": 217.86,
+      "generation_tokens": 86,
+      "generation_tps": 19.43,
+      "finish_reason": "stop",
+      "wall_seconds": 6.13,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"미리내시 T-6 가상자격 등록증을 잃어버린 경우, 분실 사실을 안 날부터 팔 일 안에 가상창구에 분실 신고를 해야 합니다.\",\n  \"citations\": [\n    \"YSYN-06-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "미리내시 T-6 가상자격 등록증을 잃어버린 경우, 분실 사실을 안 날부터 팔 일 안에 가상창구에 분실 신고를 해야 합니다.",
+        "citations": [
+          "YSYN-06-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "팔 일"
+          },
+          {
+            "kind": "document",
+            "text": "등록증"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "미리내시 T-6 가상자격 등록증을 잃어버린 경우, 분실 사실을 안 날부터 팔 일 안에 가상창구에 분실 신고를 해야 합니다.",
+          "citations": [
+            "YSYN-06-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "Y-07-ne-hae-training-permit",
+      "prompt_sha256": "ab288b991fa87ae49cc6e2505e5979866a10766f5e224bb221a254324201413c",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "소담시 V-2 가상자격 연수 허가는 발급일부터 네 해 동안 유효합니다.",
+        "citations": [
+          "YSYN-07-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 338,
+      "prompt_tps": 220.68,
+      "generation_tokens": 67,
+      "generation_tps": 19.67,
+      "finish_reason": "stop",
+      "wall_seconds": 4.99,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"소담시 V-2 가상자격 연수 허가는 발급일부터 네 해 동안 유효합니다.\",\n  \"citations\": [\n    \"YSYN-07-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "소담시 V-2 가상자격 연수 허가는 발급일부터 네 해 동안 유효합니다.",
+        "citations": [
+          "YSYN-07-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "네 해"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "소담시 V-2 가상자격 연수 허가는 발급일부터 네 해 동안 유효합니다.",
+          "citations": [
+            "YSYN-07-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "Y-08-digit-4il-asked-sa-il",
+      "prompt_sha256": "ae18536b181e4b8bfe2a639b37467f8a14b8a2f1823aeaa3fef52e15287f9da5",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "별오름시 W-5 가상자격 신청인은 보완 요청을 받은 날부터 4일 이내에 보완 서류를 제출해야 합니다.",
+        "citations": [
+          "YSYN-08-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 360,
+      "prompt_tps": 220.29,
+      "generation_tokens": 78,
+      "generation_tps": 19.64,
+      "finish_reason": "stop",
+      "wall_seconds": 5.66,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"별오름시 W-5 가상자격 신청인은 보완 요청을 받은 날부터 4일 이내에 보완 서류를 제출해야 합니다.\",\n  \"citations\": [\n    \"YSYN-08-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "별오름시 W-5 가상자격 신청인은 보완 요청을 받은 날부터 4일 이내에 보완 서류를 제출해야 합니다.",
+        "citations": [
+          "YSYN-08-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "4일"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "별오름시 W-5 가상자격 신청인은 보완 요청을 받은 날부터 4일 이내에 보완 서류를 제출해야 합니다.",
+          "citations": [
+            "YSYN-08-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "Y-09-digit-1nyeon-asked-han-hae",
+      "prompt_sha256": "83c216f623f43826e0b58fde7850f6f59115fc05c0e2fa0548693afadfaee337",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "노을포시 X-1 가상자격 체류기간은 한 번에 1년까지 부여합니다.",
+        "citations": [
+          "YSYN-09-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 342,
+      "prompt_tps": 225.26,
+      "generation_tokens": 68,
+      "generation_tps": 19.54,
+      "finish_reason": "stop",
+      "wall_seconds": 5.04,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"노을포시 X-1 가상자격 체류기간은 한 번에 1년까지 부여합니다.\",\n  \"citations\": [\n    \"YSYN-09-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "노을포시 X-1 가상자격 체류기간은 한 번에 1년까지 부여합니다.",
+        "citations": [
+          "YSYN-09-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "1년"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "노을포시 X-1 가상자격 체류기간은 한 번에 1년까지 부여합니다.",
+          "citations": [
+            "YSYN-09-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "Y-10-digit-5nyeon-asked-daseot-hae",
+      "prompt_sha256": "634c3cbb7b75cd39b83b2d304a8dfdf79aa14ca00c4ad3724a3d96df05ea9845",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "하람시 Y-3 가상자격 장기 체류 허가는 최장 5년까지 받을 수 있습니다.",
+        "citations": [
+          "YSYN-10-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 345,
+      "prompt_tps": 224.75,
+      "generation_tokens": 69,
+      "generation_tps": 19.47,
+      "finish_reason": "stop",
+      "wall_seconds": 5.11,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"하람시 Y-3 가상자격 장기 체류 허가는 최장 5년까지 받을 수 있습니다.\",\n  \"citations\": [\n    \"YSYN-10-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "하람시 Y-3 가상자격 장기 체류 허가는 최장 5년까지 받을 수 있습니다.",
+        "citations": [
+          "YSYN-10-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "5년"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "하람시 Y-3 가상자격 장기 체류 허가는 최장 5년까지 받을 수 있습니다.",
+          "citations": [
+            "YSYN-10-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "Y-11-blog-chil-il-vs-5il",
+      "prompt_sha256": "a7635233e9427db65f69fa1e5ab18f7ba58b446307a5b44c356c375b80575b2c",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [
+        "YSYN-11-b"
+      ],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "무령시 J-2 가상자격 소지자는 귀국한 날부터 5일 이내에 재입국 신고를 해야 합니다.",
+        "citations": [
+          "YSYN-11-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 352,
+      "prompt_tps": 223.39,
+      "generation_tokens": 75,
+      "generation_tps": 19.56,
+      "finish_reason": "stop",
+      "wall_seconds": 5.46,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"무령시 J-2 가상자격 소지자는 귀국한 날부터 5일 이내에 재입국 신고를 해야 합니다.\",\n  \"citations\": [\n    \"YSYN-11-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "무령시 J-2 가상자격 소지자는 귀국한 날부터 5일 이내에 재입국 신고를 해야 합니다.",
+        "citations": [
+          "YSYN-11-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "5일"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "무령시 J-2 가상자격 소지자는 귀국한 날부터 5일 이내에 재입국 신고를 해야 합니다.",
+          "citations": [
+            "YSYN-11-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "Y-12-sns-du-hae-vs-1nyeon",
+      "prompt_sha256": "6243b8624066935c3d8c0650d1c8b45945c3f739e0c48559997787b5b48aa934",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [
+        "YSYN-12-b"
+      ],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "서하시 O-5 가상자격 활동 허가는 발급일부터 1년 동안 유효합니다.",
+        "citations": [
+          "YSYN-12-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 333,
+      "prompt_tps": 218.14,
+      "generation_tokens": 66,
+      "generation_tps": 19.2,
+      "finish_reason": "stop",
+      "wall_seconds": 5.01,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"서하시 O-5 가상자격 활동 허가는 발급일부터 1년 동안 유효합니다.\",\n  \"citations\": [\n    \"YSYN-12-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "서하시 O-5 가상자격 활동 허가는 발급일부터 1년 동안 유효합니다.",
+        "citations": [
+          "YSYN-12-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "1년"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "서하시 O-5 가상자격 활동 허가는 발급일부터 1년 동안 유효합니다.",
+          "citations": [
+            "YSYN-12-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "Y-13-board-gu-il-vs-3il",
+      "prompt_sha256": "056b564d6ae20d21bb2c9cf028b09d799de62086693716c78717072af35775b5",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [
+        "YSYN-13-b"
+      ],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "근무처를 바꾼 날부터 3일 이내에 근무처 변경 신고를 해야 합니다.",
+        "citations": [
+          "YSYN-13-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 346,
+      "prompt_tps": 225.63,
+      "generation_tokens": 65,
+      "generation_tps": 19.54,
+      "finish_reason": "stop",
+      "wall_seconds": 4.91,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"근무처를 바꾼 날부터 3일 이내에 근무처 변경 신고를 해야 합니다.\",\n  \"citations\": [\n    \"YSYN-13-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "근무처를 바꾼 날부터 3일 이내에 근무처 변경 신고를 해야 합니다.",
+        "citations": [
+          "YSYN-13-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "3일"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "근무처를 바꾼 날부터 3일 이내에 근무처 변경 신고를 해야 합니다.",
+          "citations": [
+            "YSYN-13-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "Y-14-scraped-se-hae-vs-2nyeon",
+      "prompt_sha256": "ecf779c35ef69b8f7998607921d522594f8728594808bb1ab7d0803ff54d6f46",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [
+        "YSYN-14-b",
+        "YSYN-14-c"
+      ],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "가온시 P-8 가상자격 학업 허가 기간은 2년입니다.",
+        "citations": [
+          "YSYN-14-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 345,
+      "prompt_tps": 222.82,
+      "generation_tokens": 64,
+      "generation_tps": 19.5,
+      "finish_reason": "stop",
+      "wall_seconds": 4.88,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"가온시 P-8 가상자격 학업 허가 기간은 2년입니다.\",\n  \"citations\": [\n    \"YSYN-14-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "가온시 P-8 가상자격 학업 허가 기간은 2년입니다.",
+        "citations": [
+          "YSYN-14-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "2년"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "가온시 P-8 가상자격 학업 허가 기간은 2년입니다.",
+          "citations": [
+            "YSYN-14-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "Y-15-user-yuk-il-vs-4il",
+      "prompt_sha256": "58d2f830c79f9390d4e8d1184da37c96fc3065fb79b00c20f93cf8b474c6f73c",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [
+        "YSYN-15-b"
+      ],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "통지를 받은 날부터 4일 이내에 보완해야 합니다.",
+        "citations": [
+          "YSYN-15-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 356,
+      "prompt_tps": 208.76,
+      "generation_tokens": 59,
+      "generation_tps": 19.64,
+      "finish_reason": "stop",
+      "wall_seconds": 4.74,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"통지를 받은 날부터 4일 이내에 보완해야 합니다.\",\n  \"citations\": [\n    \"YSYN-15-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "통지를 받은 날부터 4일 이내에 보완해야 합니다.",
+        "citations": [
+          "YSYN-15-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "4일"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "통지를 받은 날부터 4일 이내에 보완해야 합니다.",
+          "citations": [
+            "YSYN-15-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "Y-16-superseded-ne-hae-vs-3nyeon",
+      "prompt_sha256": "4e0f17f9bdc75fdbd77674f625527267453c82957ce2e4b8fffd281cf3023ada",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [
+        "YSYN-16-b"
+      ],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "미리내시 U-4 가상자격을 신청하려면 미리내시에 3년 이상 연속으로 머물러야 합니다.",
+        "citations": [
+          "YSYN-16-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 340,
+      "prompt_tps": 226.66,
+      "generation_tokens": 71,
+      "generation_tps": 18.89,
+      "finish_reason": "stop",
+      "wall_seconds": 5.3,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"미리내시 U-4 가상자격을 신청하려면 미리내시에 3년 이상 연속으로 머물러야 합니다.\",\n  \"citations\": [\n    \"YSYN-16-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "미리내시 U-4 가상자격을 신청하려면 미리내시에 3년 이상 연속으로 머물러야 합니다.",
+        "citations": [
+          "YSYN-16-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "3년"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "미리내시 U-4 가상자격을 신청하려면 미리내시에 3년 이상 연속으로 머물러야 합니다.",
+          "citations": [
+            "YSYN-16-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "Y-17-oil-and-oiljang",
+      "prompt_sha256": "cce64ea816e8631d4b9bd2b027279cdcff6228db0fdd3c044eb93bc86440176d",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "연수 장소가 바뀌면 바뀐 날부터 10일 이내에 신고해야 합니다.",
+        "citations": [
+          "YSYN-17-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 399,
+      "prompt_tps": 189.07,
+      "generation_tokens": 64,
+      "generation_tps": 19.44,
+      "finish_reason": "stop",
+      "wall_seconds": 5.46,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"연수 장소가 바뀌면 바뀐 날부터 10일 이내에 신고해야 합니다.\",\n  \"citations\": [\n    \"YSYN-17-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "연수 장소가 바뀌면 바뀐 날부터 10일 이내에 신고해야 합니다.",
+        "citations": [
+          "YSYN-17-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "10일"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "연수 장소가 바뀌면 바뀐 날부터 10일 이내에 신고해야 합니다.",
+          "citations": [
+            "YSYN-17-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "Y-18-se-haeoe-gonggwan",
+      "prompt_sha256": "a197be694cc6dafcf1463d1133ca59edbb5b3ef20416e9ec172bffc706017759",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "서하시 P-3 가상자격으로 허가되는 체류기간은 2년입니다.",
+        "citations": [
+          "YSYN-18-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 365,
+      "prompt_tps": 212.55,
+      "generation_tokens": 65,
+      "generation_tps": 19.33,
+      "finish_reason": "stop",
+      "wall_seconds": 5.13,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"서하시 P-3 가상자격으로 허가되는 체류기간은 2년입니다.\",\n  \"citations\": [\n    \"YSYN-18-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "서하시 P-3 가상자격으로 허가되는 체류기간은 2년입니다.",
+        "citations": [
+          "YSYN-18-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "2년"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "서하시 P-3 가상자격으로 허가되는 체류기간은 2년입니다.",
+          "citations": [
+            "YSYN-18-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "Y-19-han-haeoe-jisa-i-il",
+      "prompt_sha256": "0456aaaa4955a01d17ecd29eff9ac0905511ddabd9c538eaecb4fb05576f86f2",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "체류기간 연장은 만료일 30일 전까지 신청해야 합니다.",
+        "citations": [
+          "YSYN-19-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 376,
+      "prompt_tps": 228.06,
+      "generation_tokens": 61,
+      "generation_tps": 19.45,
+      "finish_reason": "stop",
+      "wall_seconds": 4.83,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"체류기간 연장은 만료일 30일 전까지 신청해야 합니다.\",\n  \"citations\": [\n    \"YSYN-19-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "체류기간 연장은 만료일 30일 전까지 신청해야 합니다.",
+        "citations": [
+          "YSYN-19-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "30일"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "체류기간 연장은 만료일 30일 전까지 신청해야 합니다.",
+          "citations": [
+            "YSYN-19-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "Y-20-samiljeol-holiday",
+      "prompt_sha256": "7a40cfa639672d3782ba0d3174756b05070f9f3457818d02309decc4e3b2a597",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "신청일부터 14일 이내에 통지됩니다.",
+        "citations": [
+          "YSYN-20-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 371,
+      "prompt_tps": 223.88,
+      "generation_tokens": 57,
+      "generation_tps": 19.03,
+      "finish_reason": "stop",
+      "wall_seconds": 4.69,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"신청일부터 14일 이내에 통지됩니다.\",\n  \"citations\": [\n    \"YSYN-20-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "신청일부터 14일 이내에 통지됩니다.",
+        "citations": [
+          "YSYN-20-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "14일"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "신청일부터 14일 이내에 통지됩니다.",
+          "citations": [
+            "YSYN-20-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "Y-21-sam-il-fix-du-hae-valid",
+      "prompt_sha256": "0ac87f5bca26bb886475cb953bd019de4d675b759857296e6b2991b4075432ce",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "심사 결과는 통지일부터 두 해 동안 유효합니다.",
+        "citations": [
+          "YSYN-21-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 351,
+      "prompt_tps": 195.13,
+      "generation_tokens": 57,
+      "generation_tps": 16.36,
+      "finish_reason": "stop",
+      "wall_seconds": 5.33,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"심사 결과는 통지일부터 두 해 동안 유효합니다.\",\n  \"citations\": [\n    \"YSYN-21-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "심사 결과는 통지일부터 두 해 동안 유효합니다.",
+        "citations": [
+          "YSYN-21-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "두 해"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "심사 결과는 통지일부터 두 해 동안 유효합니다.",
+          "citations": [
+            "YSYN-21-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "Y-22-date-11il-chil-il-deadline",
+      "prompt_sha256": "e9b2ffdc51866182451f2b04fac5b9e9957d3cde15fb720501f37e2b175bc6e2",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "갱신 서류는 게시일부터 칠 일 이내에 내야 합니다.",
+        "citations": [
+          "YSYN-22-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 371,
+      "prompt_tps": 196.42,
+      "generation_tokens": 60,
+      "generation_tps": 16.31,
+      "finish_reason": "stop",
+      "wall_seconds": 5.62,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"갱신 서류는 게시일부터 칠 일 이내에 내야 합니다.\",\n  \"citations\": [\n    \"YSYN-22-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "갱신 서류는 게시일부터 칠 일 이내에 내야 합니다.",
+        "citations": [
+          "YSYN-22-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "칠 일"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "갱신 서류는 게시일부터 칠 일 이내에 내야 합니다.",
+          "citations": [
+            "YSYN-22-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "Y-23-sa-il-issue-gu-il-valid",
+      "prompt_sha256": "f085b228a3d4f1156ebda957975810c3f8eff210071ca3005c053cad385edafe",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "T-2 가상자격 접수증은 발급일부터 구 일 동안 유효합니다.",
+        "citations": [
+          "YSYN-23-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 353,
+      "prompt_tps": 212.79,
+      "generation_tokens": 64,
+      "generation_tps": 15.66,
+      "finish_reason": "stop",
+      "wall_seconds": 5.8,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"T-2 가상자격 접수증은 발급일부터 구 일 동안 유효합니다.\",\n  \"citations\": [\n    \"YSYN-23-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "T-2 가상자격 접수증은 발급일부터 구 일 동안 유효합니다.",
+        "citations": [
+          "YSYN-23-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "구 일"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "T-2 가상자격 접수증은 발급일부터 구 일 동안 유효합니다.",
+          "citations": [
+            "YSYN-23-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "Y-24-date-1wol-5il-ne-hae",
+      "prompt_sha256": "24fd9e14434ce573c84d3e9e3d3c047271942d19a5a5515336b9bf462e470df2",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "V-6 가상자격 허가는 통지일부터 네 해 동안 유효합니다.",
+        "citations": [
+          "YSYN-24-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 354,
+      "prompt_tps": 185.78,
+      "generation_tokens": 62,
+      "generation_tps": 16.63,
+      "finish_reason": "stop",
+      "wall_seconds": 5.69,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"V-6 가상자격 허가는 통지일부터 네 해 동안 유효합니다.\",\n  \"citations\": [\n    \"YSYN-24-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "V-6 가상자격 허가는 통지일부터 네 해 동안 유효합니다.",
+        "citations": [
+          "YSYN-24-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "네 해"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "V-6 가상자격 허가는 통지일부터 네 해 동안 유효합니다.",
+          "citations": [
+            "YSYN-24-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    }
+  ],
+  "summary": {
+    "cases": 24,
+    "passed": 24,
+    "failed": 0,
+    "needs_review": 0,
+    "auto_correct": 24,
+    "outcomes_raw": {
+      "correct": 24,
+      "needs_review": 0,
+      "clarify": 0,
+      "safe_abstain": 0,
+      "harmful": 0,
+      "other": 0
+    },
+    "outcomes_checked": {
+      "correct": 24,
+      "needs_review": 0,
+      "clarify": 0,
+      "safe_abstain": 0,
+      "harmful": 0,
+      "other": 0
+    }
+  },
+  "peak_memory_gb": 4.778,
+  "max_rss_gb": 0.837,
+  "swap_after": "total = 4096.00M  used = 2832.31M  free = 1263.69M  (encrypted)",
+  "free_disk_gb_after": 10.04,
+  "finished_utc": "2026-10-28T00:10:32+00:00"
+}

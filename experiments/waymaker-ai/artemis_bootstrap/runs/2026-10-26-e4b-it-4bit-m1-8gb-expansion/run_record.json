@@ -1,0 +1,202 @@
+{
+  "kind": "artemis_bootstrap_smoke",
+  "started_utc": "2026-10-26T06:48:27+00:00",
+  "machine": {
+    "model": "MacBookAir10,1",
+    "chip": "Apple M1",
+    "memory_bytes": 8589934592,
+    "macos": "15.6.1",
+    "python": "3.11.15"
+  },
+  "versions": {
+    "mlx": "0.32.4",
+    "mlx-metal": "0.32.4",
+    "mlx-lm": "0.32.2",
+    "transformers": "5.20.2",
+    "huggingface-hub": "2.3.0",
+    "tokenizers": "0.23.3"
+  },
+  "device": {
+    "device_name": "Apple M1",
+    "max_recommended_working_set_size": 5726633984,
+    "memory_size": 8589934592,
+    "architecture": "applegpu_g13g",
+    "max_buffer_length": 4294967296,
+    "resource_limit": 499000
+  },
+  "swap_before": "total = 2048.00M  used = 1252.25M  free = 795.75M  (encrypted)",
+  "free_disk_gb_before": 8.93,
+  "cases_file": "expansion_cases.json",
+  "cases_sha256": "5c2a200179d1ba729948509925500d949d145d7848d26a630ac8bf5b2aa961ec",
+  "detector_on_labelled_evidence": null,
+  "decoding": {
+    "temperature": 0.0,
+    "max_tokens": 400,
+    "enable_thinking": false
+  },
+  "evidence_guard": "off",
+  "prompts_persisted": false,
+  "status": "completed",
+  "stage": "done",
+  "model": {
+    "repo": "mlx-community/gemma-4-e4b-it-4bit",
+    "revision": "475b9088d29754a3379866cf5aeb6b41acd313c2",
+    "size_class_from_weights": "E4B",
+    "quantization": {
+      "group_size": 64,
+      "bits": 4,
+      "mode": "affine"
+    },
+    "loader": "mlx_lm.load (text tower only; vision/audio weights dropped by mlx_lm sanitize)",
+    "base_model": "google/gemma-4-E4B-it",
+    "source_revision": "fee6332c1abaafb77f6f9624236c63aa2f1d0187",
+    "license_in_card": "gemma"
+  },
+  "load_seconds": 7.36,
+  "memory_after_load_gb": 4.201,
+  "results": [
+    {
+      "case": "X-en-grounded",
+      "prompt_sha256": "c27259da208aa2d641ee4e556c892e51acd2c19cec0ca978669a895a5cf1a750",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "prompt_tokens": 342,
+      "prompt_tps": 158.81,
+      "generation_tokens": 78,
+      "generation_tps": 13.2,
+      "finish_reason": "stop",
+      "wall_seconds": 18.97,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"The Z-9 virtual qualification application for the Hanbit City Virtual Civil Petition Center is accepted at Window No. 7 on the 3rd floor of the main building.\",\n  \"citations\": [\n    \"XSYN-01-A\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "The Z-9 virtual qualification application for the Hanbit City Virtual Civil Petition Center is accepted at Window No. 7 on the 3rd floor of the main building.",
+        "citations": [
+          "XSYN-01-A"
+        ]
+      },
+      "failures": []
+    },
+    {
+      "case": "X-zh-grounded",
+      "prompt_sha256": "411a04d646ff03e80b9bfd4710c24e370b9b8d4cc5cfef283e2d9a550590bbc6",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "prompt_tokens": 329,
+      "prompt_tps": 164.03,
+      "generation_tokens": 71,
+      "generation_tps": 13.23,
+      "finish_reason": "stop",
+      "wall_seconds": 7.43,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"Z-9 가상자격을 신청하려면 신청서 1부, 여권, 증명사진 1매가 필요합니다.\",\n  \"citations\": [\n    \"XSYN-02-A\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "Z-9 가상자격을 신청하려면 신청서 1부, 여권, 증명사진 1매가 필요합니다.",
+        "citations": [
+          "XSYN-02-A"
+        ]
+      },
+      "failures": []
+    },
+    {
+      "case": "X-vi-abstain",
+      "prompt_sha256": "076d99dec24814f83ad332cb51a83cc2ca276f98ca25206f56b25018aa4f7f01",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "prompt_tokens": 334,
+      "prompt_tps": 167.57,
+      "generation_tokens": 74,
+      "generation_tps": 12.54,
+      "finish_reason": "stop",
+      "wall_seconds": 7.96,
+      "output": "```json\n{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"제출 서류에 대한 정보는 있지만, 신청 수수료(Lệ phí)에 대한 정보는 근거에 없습니다.\",\n  \"citations\": [\n    \"XSYN-03-A\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "insufficient_evidence",
+        "answer": "제출 서류에 대한 정보는 있지만, 신청 수수료(Lệ phí)에 대한 정보는 근거에 없습니다.",
+        "citations": [
+          "XSYN-03-A"
+        ]
+      },
+      "failures": []
+    },
+    {
+      "case": "X-many-grounded",
+      "prompt_sha256": "ea380d80670ee647029833a3c7b39e8fc698c6039d4d05b6f7856c0196d9886b",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "prompt_tokens": 988,
+      "prompt_tps": 167.58,
+      "generation_tokens": 62,
+      "generation_tps": 12.96,
+      "finish_reason": "stop",
+      "wall_seconds": 10.76,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"Y-7 가상자격 서류 보완 접수는 평일 15:30까지 받습니다.\",\n  \"citations\": [\"XSYN-04-G\"]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "Y-7 가상자격 서류 보완 접수는 평일 15:30까지 받습니다.",
+        "citations": [
+          "XSYN-04-G"
+        ]
+      },
+      "failures": []
+    },
+    {
+      "case": "X-many-conflict",
+      "prompt_sha256": "004e9159104cd62bc4e4bf3ae00677c56c15d7371fd623d4397eab9fc59e7f8c",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "prompt_tokens": 829,
+      "prompt_tps": 176.31,
+      "generation_tokens": 113,
+      "generation_tps": 12.84,
+      "finish_reason": "stop",
+      "wall_seconds": 13.6,
+      "output": "```json\n{\n  \"status\": \"conflict\",\n  \"answer\": \"Y-7 가상자격 신규 신청 접수 장소에 대해 상이한 정보가 있습니다. XSYN-05-B에 따르면 2층 4번 창구에서 접수하며, XSYN-05-F에 따르면 4층 1번 창구에서 접수합니다.\",\n  \"citations\": [\"XSYN-05-B\", \"XSYN-05-F\"]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "conflict",
+        "answer": "Y-7 가상자격 신규 신청 접수 장소에 대해 상이한 정보가 있습니다. XSYN-05-B에 따르면 2층 4번 창구에서 접수하며, XSYN-05-F에 따르면 4층 1번 창구에서 접수합니다.",
+        "citations": [
+          "XSYN-05-B",
+          "XSYN-05-F"
+        ]
+      },
+      "failures": []
+    },
+    {
+      "case": "X-long-grounded",
+      "prompt_sha256": "9decf9e2aadb1d2a5e8b8fd5be2303a7aaf7344859b2eb9ca473f9b227101a38",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "prompt_tokens": 729,
+      "prompt_tps": 177.99,
+      "generation_tokens": 83,
+      "generation_tps": 13.76,
+      "finish_reason": "stop",
+      "wall_seconds": 10.56,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"Z-9 가상자격 결과 통지서는 별관 1층 3번 창구에서 받을 수 있으며, 이때 신분증과 접수증을 보여주어야 합니다.\",\n  \"citations\": [\n    \"XSYN-06-A\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "Z-9 가상자격 결과 통지서는 별관 1층 3번 창구에서 받을 수 있으며, 이때 신분증과 접수증을 보여주어야 합니다.",
+        "citations": [
+          "XSYN-06-A"
+        ]
+      },
+      "failures": []
+    }
+  ],
+  "summary": {
+    "cases": 6,
+    "passed": 6,
+    "failed": 0
+  },
+  "peak_memory_gb": 4.874,
+  "max_rss_gb": 0.995,
+  "swap_after": "total = 4096.00M  used = 2782.75M  free = 1313.25M  (encrypted)",
+  "free_disk_gb_after": 6.77,
+  "finished_utc": "2026-10-26T06:49:44+00:00"
+}

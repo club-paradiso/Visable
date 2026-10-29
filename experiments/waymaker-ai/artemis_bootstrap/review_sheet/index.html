@@ -1,0 +1,741 @@
+<title>Artemis 라벨 검토표</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a reviewer's desk — case list on the left, one case open on the right; stacks on phones. */
+:root {
+  --bg: #f6f7f4;
+  --panel: #ffffff;
+  --ink: #1d2520;
+  --muted: #5d6a62;
+  --line: #d9dfd9;
+  --accent: #1f5f8b;
+  --accent-soft: #e3eef6;
+  --ok: #2f7a4a;
+  --ok-soft: #e2f1e7;
+  --warn: #9a6a12;
+  --warn-soft: #f6ecd6;
+  --bad: #a3342b;
+  --bad-soft: #f6e1de;
+  --mark: #fff0a8;
+  --mark-bad: #f8d3cd;
+  --font-body: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --r: 8px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #141917; --panel: #1c2320; --ink: #e5ebe6; --muted: #9aa8a0; --line: #2f3a35;
+    --accent: #7db7e0; --accent-soft: #1e3242; --ok: #7ccb98; --ok-soft: #1d3326;
+    --warn: #e3b866; --warn-soft: #3a2f17; --bad: #f0958a; --bad-soft: #3d221f;
+    --mark: #5a4d12; --mark-bad: #5a2620; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #141917; --panel: #1c2320; --ink: #e5ebe6; --muted: #9aa8a0; --line: #2f3a35;
+  --accent: #7db7e0; --accent-soft: #1e3242; --ok: #7ccb98; --ok-soft: #1d3326;
+  --warn: #e3b866; --warn-soft: #3a2f17; --bad: #f0958a; --bad-soft: #3d221f;
+  --mark: #5a4d12; --mark-bad: #5a2620; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 20px 40px;
+}
+h1, h2, h3 { text-wrap: balance; margin: 0; }
+button, select, input, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.mono { font-family: var(--font-mono); font-size: 0.86em; }
+.wrap { max-width: 1280px; margin: 0 auto; display: grid; gap: 16px; }
+
+header.top { display: grid; gap: 12px; }
+.title-row { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 16px; justify-content: space-between; }
+.title-row h1 { font-size: 1.45rem; font-weight: 700; }
+.lede { color: var(--muted); max-width: 70ch; margin: 0; }
+.progress { display: grid; gap: 6px; }
+.bar { height: 8px; border-radius: 99px; background: var(--line); overflow: hidden; display: flex; }
+.bar span { display: block; height: 100%; }
+.bar .ok { background: var(--ok); } .bar .fix { background: var(--warn); } .bar .drop { background: var(--bad); }
+.counts { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 0.9rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.counts b { color: var(--ink); font-weight: 600; }
+.banner { border: 1px solid var(--line); background: var(--warn-soft); color: var(--ink); border-radius: var(--r); padding: 10px 14px; font-size: 0.92rem; }
+.banner[hidden] { display: none; }
+
+.filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.filters label { font-size: 0.82rem; color: var(--muted); display: grid; gap: 2px; }
+.filters select, .filters input { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 6px 8px; min-width: 0; }
+.filters input { width: 14rem; max-width: 100%; }
+
+.desk { display: grid; grid-template-columns: minmax(260px, 340px) minmax(0, 1fr); gap: 16px; align-items: start; }
+@media (max-width: 860px) { .desk { grid-template-columns: minmax(0, 1fr); } }
+
+.list { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); max-height: 78vh; overflow-y: auto; }
+@media (max-width: 860px) { .list { max-height: 40vh; } }
+.list-head { position: sticky; top: 0; background: var(--panel); padding: 8px 12px; border-bottom: 1px solid var(--line); font-size: 0.82rem; color: var(--muted); }
+.item { display: grid; grid-template-columns: 10px minmax(0, 1fr); gap: 10px; width: 100%; text-align: left; background: none; border: 0; border-bottom: 1px solid var(--line); padding: 10px 12px; cursor: pointer; }
+.item:hover { background: var(--accent-soft); }
+.item[aria-current="true"] { background: var(--accent-soft); box-shadow: inset 3px 0 0 var(--accent); }
+.dot { width: 10px; height: 10px; border-radius: 50%; margin-top: 6px; border: 2px solid var(--line); }
+.dot.ok { background: var(--ok); border-color: var(--ok); }
+.dot.fix_expect, .dot.fix_status { background: var(--warn); border-color: var(--warn); }
+.dot.drop { background: var(--bad); border-color: var(--bad); }
+.item .meta { font-size: 0.78rem; color: var(--muted); display: flex; gap: 8px; flex-wrap: wrap; }
+.item .q { font-size: 0.9rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+.case { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: 18px; display: grid; gap: 18px; min-width: 0; }
+.case-head { display: grid; gap: 6px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font-size: 0.78rem; padding: 2px 8px; border-radius: 99px; background: var(--accent-soft); color: var(--accent); }
+.chip.grey { background: var(--bg); color: var(--muted); border: 1px solid var(--line); }
+.question { font-size: 1.15rem; font-weight: 600; line-height: 1.5; }
+.purpose { color: var(--muted); font-size: 0.9rem; }
+section h2 { font-size: 0.82rem; font-weight: 600; letter-spacing: 0.04em; color: var(--muted); margin-bottom: 8px; }
+dl.kv { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 6px 14px; margin: 0; }
+dl.kv dt { color: var(--muted); font-size: 0.88rem; }
+dl.kv dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+@media (max-width: 520px) { dl.kv { grid-template-columns: minmax(0, 1fr); } dl.kv dd { margin-bottom: 6px; } }
+.str { display: inline-block; background: var(--mark); border-radius: 4px; padding: 0 5px; margin: 0 4px 4px 0; }
+.str.bad { background: var(--mark-bad); }
+
+details.page { border: 1px solid var(--line); border-radius: 6px; }
+details.page + details.page { margin-top: 8px; }
+details.page summary { cursor: pointer; padding: 8px 12px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+details.page summary .role { font-size: 0.75rem; font-weight: 600; padding: 1px 8px; border-radius: 99px; }
+.role.gold { background: var(--ok-soft); color: var(--ok); }
+.role.forbid { background: var(--bad-soft); color: var(--bad); }
+.role.other { background: var(--bg); color: var(--muted); border: 1px solid var(--line); }
+.pagetext { margin: 0; padding: 12px; border-top: 1px solid var(--line); white-space: pre-wrap; font-size: 0.88rem; line-height: 1.65; max-height: 420px; overflow: auto; }
+.pagetext mark { background: var(--mark); color: inherit; border-radius: 3px; }
+.pagetext mark.bad { background: var(--mark-bad); }
+
+.answer { border-left: 3px solid var(--line); padding: 4px 0 4px 12px; display: grid; gap: 6px; }
+.answer p { margin: 0; overflow-wrap: anywhere; }
+.verdict-auto { font-size: 0.82rem; padding: 1px 8px; border-radius: 99px; }
+.v-correct { background: var(--ok-soft); color: var(--ok); }
+.v-harmful { background: var(--bad-soft); color: var(--bad); }
+.v-other, .v-safe_abstain, .v-clarify { background: var(--warn-soft); color: var(--warn); }
+ul.fails { margin: 0; padding-left: 18px; font-size: 0.86rem; color: var(--muted); }
+
+form.review { border-top: 1px solid var(--line); padding-top: 16px; display: grid; gap: 12px; }
+fieldset { border: 0; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+legend { font-weight: 600; margin-bottom: 8px; }
+.opt { position: relative; }
+.opt input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+.opt span { display: inline-block; padding: 7px 12px; border: 1px solid var(--line); border-radius: 6px; background: var(--panel); font-size: 0.92rem; }
+.opt input:checked + span { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+.opt input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
+.field { display: grid; gap: 4px; }
+.field label { font-size: 0.88rem; color: var(--muted); }
+textarea { background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; min-height: 64px; resize: vertical; width: 100%; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.btn { border: 1px solid var(--accent); background: var(--accent); color: var(--panel); border-radius: 6px; padding: 8px 16px; cursor: pointer; font-weight: 600; }
+.btn.ghost { background: none; color: var(--accent); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.save-state { font-size: 0.86rem; color: var(--muted); }
+.save-state.err { color: var(--bad); }
+.empty { padding: 24px; color: var(--muted); }
+.ai { border: 1px dashed var(--line); border-radius: 6px; padding: 12px 14px; display: grid; gap: 8px; }
+.ai p { margin: 0; overflow-wrap: anywhere; }
+.ai-flag { color: var(--warn); font-weight: 600; }
+@media (prefers-reduced-motion: no-preference) { .item, .opt span { transition: background 120ms ease, border-color 120ms ease; } }
+.tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+.tab { border: 1px solid var(--line); background: var(--panel); border-radius: 99px; padding: 5px 14px; cursor: pointer; font-size: 0.9rem; }
+.tab[aria-selected="true"] { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+body.facts-mode .label-only { display: none !important; }
+body:not(.facts-mode) .facts-only { display: none !important; }
+.fact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px 14px; }
+.fact-grid label { display: grid; gap: 3px; font-size: 0.82rem; color: var(--muted); }
+.fact-grid input, .fact-grid select { background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 6px 8px; color: var(--ink); min-width: 0; }
+.dot.f-approved { background: var(--ok); border-color: var(--ok); }
+.dot.f-rejected { background: var(--bad); border-color: var(--bad); }
+.dot.f-held { background: var(--warn); border-color: var(--warn); }
+.quote { background: var(--bg); border-left: 3px solid var(--accent); padding: 8px 12px; margin: 0; overflow-wrap: anywhere; }
+@media (prefers-reduced-motion: no-preference) { .tab { transition: background 120ms ease, border-color 120ms ease; } }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="title-row">
+      <h1>Artemis 라벨 검토표</h1>
+      <div class="tabs" role="tablist" aria-label="검토 종류">
+        <button class="tab" role="tab" id="tabLabels" aria-selected="true" type="button">라벨 검토</button>
+        <button class="tab" role="tab" id="tabFacts" aria-selected="false" type="button">사실 검토 (시범)</button>
+      </div>
+      <span class="mono" id="dataVersion"></span>
+    </div>
+    <p class="lede label-only">실제 2026.10 매뉴얼 쪽을 근거로 기계가 쓴 문항 140개입니다. 문항마다 원본 라벨과 라벨 v2를 원문과 대조해 판정해 주세요. 저장된 판정 수는 법률 검증 완료를 뜻하지 않습니다. 모델 답은 참고용입니다.</p>
+    <div class="progress label-only">
+      <div class="bar" aria-hidden="true"><span class="ok" id="barOk"></span><span class="fix" id="barFix"></span><span class="drop" id="barDrop"></span></div>
+      <div class="counts" id="counts">불러오는 중…</div>
+    </div>
+    <div class="banner" id="banner" hidden></div>
+    <div class="filters label-only">
+      <label>문항 세트<select id="fSet"><option value="">전체</option></select></label>
+      <label>그룹<select id="fGroup"><option value="">전체</option></select></label>
+      <label>검토 상태<select id="fState">
+        <option value="">전체</option><option value="todo">아직 안 봄</option><option value="done">검토함</option>
+        <option value="needs">고칠 것 있음</option><option value="model_fail">모델이 틀린 문항</option>
+        <option value="ai_flag">AI 1차 의견: 문제 있음</option>
+        <option value="v2_changed">라벨 v2에서 바뀐 문항</option><option value="v2_open">v2 열린 쟁점 있음</option><option value="v2_review">v2 검토 필요 표시 있음</option><option value="needs_human">사람 판단 필요</option><option value="legal_differs">법령과 다름</option>
+      </select></label>
+      <label>찾기<input id="fText" type="search" placeholder="문항 번호나 질문 내용"></label>
+    </div>
+  </header>
+
+  <div class="desk label-only">
+    <nav class="list" aria-label="문항 목록">
+      <div class="list-head" id="listHead">문항</div>
+      <div id="list"></div>
+    </nav>
+    <main class="case" id="case"><div class="empty">문항을 불러오는 중입니다.</div></main>
+  </div>
+  <section class="facts-only" aria-label="사실 검토">
+    <p class="lede">승인 사실표 시범입니다. 규칙이 실제 매뉴얼 쪽(라벨 검토 140문항이 쓰는 쪽)에서 뽑은 금액·기간 후보를 보여 줍니다. 쪽 원문과 대조해 이 값이 누구(자격·조건)의 어떤 사실(역할)인지 확인하고 승인·거절·보류를 정해 주세요. 승인한 사실은 원문 인용과 쪽 해시를 다시 확인한 뒤에만 사실표에 들어갑니다. 법률 검증이 아니라 "매뉴얼에 이렇게 적혀 있다"는 확인입니다.</p>
+    <div class="progress"><div class="counts" id="fCounts">불러오는 중…</div></div>
+    <div class="filters">
+      <label>상태<select id="ffState"><option value="">전체</option><option value="todo">아직 안 봄</option><option value="approved">승인</option><option value="rejected">거절</option><option value="held">보류</option></select></label>
+      <label>절차<select id="ffProc"><option value="">전체</option><option value="visa">사증</option><option value="stay">체류</option></select></label>
+      <label>값 종류<select id="ffKind"><option value="">전체</option><option value="money">금액</option><option value="period">기간</option></select></label>
+      <label>AI 1차 의견<select id="ffAi"><option value="">전체</option><option value="approve">AI: 승인 권고</option><option value="reject">AI: 거절 권고</option><option value="hold">AI: 보류 권고</option><option value="final_confirm">AI 확인 사실(소유자 위임)</option><option value="final_owner">소유자 판단 필요</option></select></label>
+      <label>찾기<input id="ffText" type="search" placeholder="쪽 번호, 자격 약호, 인용문"></label>
+    </div>
+  </section>
+  <div class="desk facts-only">
+    <nav class="list" aria-label="사실 후보 목록">
+      <div class="list-head" id="fListHead">후보</div>
+      <div id="fList"></div>
+    </nav>
+    <main class="case" id="fCase"><div class="empty">사실 후보를 불러오는 중입니다.</div></main>
+  </div>
+</div>
+
+<script>
+(() => {
+  const VERDICTS = [
+    ["ok", "라벨 맞음"],
+    ["fix_expect", "기대 문구 고침"],
+    ["fix_status", "기대 상태 고침"],
+    ["drop", "문항 빼기"],
+  ];
+  const STATUS_KO = { answered: "답함", partial: "일부 답함", insufficient_evidence: "보류(근거 없음)", conflict: "출처 충돌", clarify: "되묻기" };
+  const OUTCOME_KO = { correct: "자동 채점: 맞음", harmful: "자동 채점: 해로움", other: "자동 채점: 틀림", safe_abstain: "자동 채점: 보류", clarify: "자동 채점: 되물음" };
+  const GROUP_KO = { G: "근거 답변", A: "보류", X: "교차 도메인", S: "세부 코드", M: "다른 매뉴얼 섞임", I: "절차 암시", E: "절차 명시", R: "되묻기 후 답", N: "아무것도 안 누름", C: "버튼 누름", P: "바르게 누름", W: "잘못 누름" };
+  const CHOICE_KO = { visa_abroad: "해외에서 비자 받기", stay_in_korea: "한국에서 체류 절차" };
+
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const docId = (key) => key.replace(/[^A-Za-z0-9_-]/g, "_");
+
+  // reviews: new verdicts against label v2 (collection reviews_v2). legacy: the verdicts saved
+  // before v2 (collection reviews), shown read-only so they are never overwritten from this page.
+  let data = null, reviews = {}, legacy = {}, aiReviews = {}, db = null, canWrite = true, myId = null, current = null;
+  const V2_OUTCOME_KO = { correct: "자동 정답", needs_review: "검토 필요(자동 정답 아님)", harmful: "실패: 원문과 모순", clarify: "되물음", safe_abstain: "보류", other: "실패" };
+  const DECISION_KO = { adopted: "v2 채택", adopted_modified: "v2 수정 채택", ai_review_changed: "AI 3차 검토로 바뀜", ai_review_kept: "AI 3차 검토: 원본 유지", owner_decided: "소유자 결정(매뉴얼 기준)", needs_human: "사람 판단 필요(원본 유지)", not_adopted: "v2 채택 안 함", pending: "v2 보류(원본 유지)" };
+  const LEGAL_KO = { consistent: "법령과 같음", differs: "법령과 다름", not_in_statute: "법령에 없는 매뉴얼 운영기준", not_checked: "법령 대조 안 함" };
+  const PROV_KO = { existing_human: "기존 사람 판정(인계 기록 기준)", chatgpt_round2: "ChatGPT 2차 의견(인계 기록 기준)" };
+  const CONF_KO = { high: "확신 높음", medium: "확신 보통", low: "확신 낮음" };
+
+  function store(k, v) { try { localStorage.setItem(k, v); } catch (_) {} }
+  function load(k) { try { return localStorage.getItem(k); } catch (_) { return null; } }
+
+  function failText(f) {
+    const [k, ...rest] = f.split(":"); const v = rest.join(":");
+    const m = {
+      status: `상태가 기대와 다름 (${v})`, missing_citation: `인용해야 할 쪽 빠짐: ${v}`, forbidden_citation: `인용하면 안 되는 쪽 인용: ${v}`,
+      answer_missing: `기대 문구 없음: “${v}”`, answer_missing_one_of: `기대 문구 중 하나도 없음: ${v}`, answer_relays: `들어가면 안 되는 문구 있음: “${v}”`,
+      invented_amount: `근거에 없는 금액: ${v}`, cited_unknown_id: `없는 쪽 인용: ${v}`, no_json_object: "형식 오류(JSON 아님)",
+    };
+    return m[k] || f;
+  }
+
+  function highlight(text, good, bad) {
+    const ranges = [];
+    const add = (needles, cls) => (needles || []).forEach((n) => {
+      if (!n) return; let i = text.indexOf(n);
+      while (i !== -1) { ranges.push([i, i + n.length, cls]); i = text.indexOf(n, i + n.length); }
+    });
+    add(good, ""); add(bad, "bad");
+    ranges.sort((a, b) => a[0] - b[0]);
+    let out = "", pos = 0;
+    for (const [s, e, cls] of ranges) {
+      if (s < pos) continue;
+      out += esc(text.slice(pos, s)) + `<mark${cls ? ' class="bad"' : ""}>` + esc(text.slice(s, e)) + "</mark>";
+      pos = e;
+    }
+    return out + esc(text.slice(pos));
+  }
+
+  function needles(c) {
+    const ex = c.expect || {};
+    const good = [...(ex.answer_must_contain || []), ...((ex.answer_must_contain_any_of_each || []).flat())];
+    return { good, bad: ex.answer_must_not_contain || [] };
+  }
+
+  function filtered() {
+    const s = $("fSet").value, g = $("fGroup").value, st = $("fState").value, t = $("fText").value.trim().toLowerCase();
+    return data.cases.filter((c) => {
+      const r = reviews[docId(c.key)];
+      if (s && c.set !== s) return false;
+      if (g && c.group !== g) return false;
+      if (st === "todo" && r) return false;
+      if (st === "done" && !r) return false;
+      if (st === "needs" && !(r && r.verdict !== "ok")) return false;
+      if (st === "model_fail" && !(c.model && c.model.outcome !== "correct")) return false;
+      if (st === "ai_flag") { const a = aiReviews[docId(c.key)]; if (!(a && a.verdict !== "ok")) return false; }
+      if (st === "v2_changed" && !(c.label_v2 && c.label_v2.changed)) return false;
+      if (st === "v2_open" && !(c.label_v2 && c.label_v2.open_issues && c.label_v2.open_issues.length)) return false;
+      if (st === "needs_human" && !(c.label_v2 && c.label_v2.decision === "needs_human")) return false;
+      if (st === "legal_differs" && !(c.label_v2 && c.label_v2.ai_review_round3 && c.label_v2.ai_review_round3.legal_check && c.label_v2.ai_review_round3.legal_check.result === "differs")) return false;
+      if (st === "v2_review" && !(c.label_v2 && c.label_v2.regrade_post_hoc && (c.label_v2.regrade_post_hoc.v2.flags || []).length)) return false;
+      if (t && !(c.id.toLowerCase().includes(t) || c.question.toLowerCase().includes(t))) return false;
+      return true;
+    });
+  }
+
+  function renderCounts() {
+    const n = data.cases.length;
+    const vals = Object.values(reviews);
+    const ok = vals.filter((r) => r.verdict === "ok").length;
+    const fix = vals.filter((r) => r.verdict === "fix_expect" || r.verdict === "fix_status").length;
+    const drop = vals.filter((r) => r.verdict === "drop").length;
+    $("barOk").style.width = (ok / n * 100) + "%";
+    $("barFix").style.width = (fix / n * 100) + "%";
+    $("barDrop").style.width = (drop / n * 100) + "%";
+    const changed = data.cases.filter((c) => c.label_v2 && c.label_v2.changed).length;
+    $("counts").innerHTML = `<span>v2 기준 새 판정 <b>${ok + fix + drop}</b> / ${n}</span><span>라벨 맞음 <b>${ok}</b></span><span>고칠 것 <b>${fix}</b></span><span>빼기 <b>${drop}</b></span>`
+      + `<span>기존 저장 판정 <b>${Object.keys(legacy).length}</b> / ${n} (읽기 전용)</span><span>v2에서 바뀐 라벨 <b>${changed}</b></span>`
+      + `<span>사람 판단 필요 <b>${data.cases.filter((c) => c.label_v2 && c.label_v2.decision === "needs_human").length}</b></span><span>법령과 다름 <b>${data.cases.filter((c) => c.label_v2 && c.label_v2.ai_review_round3 && c.label_v2.ai_review_round3.legal_check && c.label_v2.ai_review_round3.legal_check.result === "differs").length}</b></span>`
+      + `<span>기록 답 v2 검토 필요 표시 <b>${data.cases.filter((c) => c.label_v2 && c.label_v2.regrade_post_hoc && (c.label_v2.regrade_post_hoc.v2.flags || []).length).length}</b> (자동 정답에서 제외)</span><span>법률 검증 완료: 확인된 것 없음</span>`;
+  }
+
+  function renderList() {
+    const rows = filtered();
+    $("listHead").textContent = `문항 ${rows.length}개`;
+    $("list").innerHTML = rows.map((c) => {
+      const r = reviews[docId(c.key)];
+      const a = aiReviews[docId(c.key)];
+      return `<button class="item" type="button" data-key="${esc(c.key)}" aria-current="${current && current.key === c.key}">
+        <span class="dot ${r ? esc(r.verdict) : ""}" title="${r ? esc(VERDICTS.find((v) => v[0] === r.verdict)?.[1] || "") : "아직 안 봄"}"></span>
+        <span><span class="meta"><span class="mono">${esc(c.id)}</span><span>${esc(GROUP_KO[c.group] || c.group || "")}</span>${a && a.verdict !== "ok" ? `<span class="ai-flag">AI: ${esc(VERDICTS.find((v) => v[0] === a.verdict)?.[1] || a.verdict)}</span>` : ""}</span>
+        <span class="q">${esc(c.question)}</span></span></button>`;
+    }).join("") || `<div class="empty">조건에 맞는 문항이 없습니다.</div>`;
+    $("list").querySelectorAll(".item").forEach((b) => b.addEventListener("click", () => openCase(b.dataset.key, true)));
+  }
+
+  function renderCase() {
+    const c = current;
+    if (!c) { $("case").innerHTML = `<div class="empty">왼쪽에서 문항을 고르세요.</div>`; return; }
+    const set = data.sets.find((s) => s.file === c.set);
+    const ex = c.expect || {};
+    const { good, bad } = needles(c);
+    const beh = c.behaviour || {};
+    const behRows = [];
+    if (beh.user_choice) behRows.push(["처음 누른 버튼", CHOICE_KO[beh.user_choice] || beh.user_choice]);
+    if (beh.clarification_choice) behRows.push(["되물으면 누를 버튼", CHOICE_KO[beh.clarification_choice] || beh.clarification_choice]);
+    if (beh.clarification_reply) behRows.push(["되물으면 할 답", beh.clarification_reply]);
+    if (beh.confirm_choice) behRows.push(["확인 질문에 고를 버튼", CHOICE_KO[beh.confirm_choice] || beh.confirm_choice]);
+    if (beh.on_label) behRows.push(["매뉴얼 표시를 보면", beh.on_label === "switch" ? "버튼을 바꿈" : "그대로 둠"]);
+    if (beh.procedure_named_in_question !== undefined) behRows.push(["질문에 절차 이름", beh.procedure_named_in_question ? "있음" : "없음"]);
+
+    const role = (id) => (ex.must_cite || []).includes(id) ? ["gold", "정답 쪽"] : (ex.must_not_cite || []).includes(id) ? ["forbid", "인용 금지"] : ["other", "참고 쪽"];
+    const pagesHtml = c.evidence.map((id) => {
+      const p = data.pages[id] || { title: id, text: "(본문 없음)" };
+      const [cls, label] = role(id);
+      return `<details class="page" ${cls === "gold" ? "open" : ""}><summary><span class="role ${cls}">${label}</span><span class="mono">${esc(id)}</span><span>${p.domain === "stay" ? "체류 매뉴얼" : "사증 매뉴얼"}</span></summary>
+        <pre class="pagetext">${highlight(p.text, good, bad)}</pre></details>`;
+    }).join("");
+
+    const m = c.model;
+    const modelHtml = m ? `<div class="answer">
+        <div class="chips"><span class="verdict-auto v-${esc(m.outcome)}">${esc(OUTCOME_KO[m.outcome] || m.outcome || "")}</span><span class="chip grey">상태: ${esc(STATUS_KO[m.status] || m.status || "-")}</span></div>
+        <p>${esc(m.answer || "(답 없음)")}</p>
+        <div class="mono">인용: ${esc((m.citations || []).join(", ") || "없음")}</div>
+        ${m.failures && m.failures.length ? `<ul class="fails">${m.failures.map((f) => `<li>${esc(failText(f))}</li>`).join("")}</ul>` : ""}
+      </div>` : `<p class="purpose">이 문항의 모델 답 기록이 없습니다.</p>`;
+
+    const r = reviews[docId(c.key)];
+    const a = aiReviews[docId(c.key)];
+    const lg = legacy[docId(c.key)];
+    const lv = c.label_v2;
+    const legacyHtml = lg ? `<section class="ai"><h2>기존 저장 판정 (읽기 전용, 이 화면에서 바꾸지 않음)</h2>
+        <div class="chips"><span class="verdict-auto ${lg.verdict === "ok" ? "v-correct" : lg.verdict === "drop" ? "v-harmful" : "v-other"}">${esc(VERDICTS.find((v) => v[0] === lg.verdict)?.[1] || lg.verdict)}</span>
+        <span class="chip grey">${esc(PROV_KO[lv && lv.sources ? lv.sources.saved_verdict_provenance : ""] || "출처 기록 없음")}</span></div>
+        ${lg.correction ? `<p><b>고칠 내용:</b> ${esc(lg.correction)}</p>` : ""}
+        ${lg.note ? `<p class="purpose">${esc(lg.note)}</p>` : ""}
+        <p class="purpose">저장된 판정은 법률 검증 완료를 뜻하지 않습니다. 사람과 ChatGPT의 구분은 저장소가 아니라 인계 기록에 근거합니다.</p>
+      </section>` : "";
+    const rule = (r) => `<span class="str">${esc(r.label)}</span>`;
+    const v2e = lv && lv.v2_expect;
+    const g = lv && lv.regrade_post_hoc;
+    const v2Html = lv ? `<section class="ai"><h2>라벨 버전</h2>
+        <div class="chips"><span class="chip">${esc(DECISION_KO[lv.decision] || lv.decision)}</span><span class="chip grey">${esc(lv.verification)}</span></div>
+        ${lv.changed && v2e ? `<dl class="kv">
+          ${(v2e.answer_must_contain || []).length ? `<dt>v2 들어가야 할 문구</dt><dd>${v2e.answer_must_contain.map((x) => `<span class="str">${esc(x)}</span>`).join("")}</dd>` : ""}
+          ${(v2e.answer_must_contain_any_of_each || []).length ? `<dt>v2 각 묶음에서 하나 이상</dt><dd>${v2e.answer_must_contain_any_of_each.map((grp) => grp.map((x) => `<span class="str">${esc(x)}</span>`).join(" 또는 ")).join("<br>")}</dd>` : ""}
+          ${(v2e.answer_must_match || []).length ? `<dt>v2 있어야 할 사실 구조</dt><dd>${v2e.answer_must_match.map(rule).join("")}</dd>` : ""}
+          ${(v2e.answer_must_not_match || []).length ? `<dt>v2 실패 처리하는 모순</dt><dd>${v2e.answer_must_not_match.map((r) => `<span class="str bad">${esc(r.label)}</span>`).join("")}</dd>` : ""}
+          ${(v2e.answer_flag_if_match || []).length ? `<dt>v2 검토 필요로 돌리는 표현(실패도 자동 정답도 아님)</dt><dd>${v2e.answer_flag_if_match.map(rule).join("")}</dd>` : ""}
+          ${v2e.if_answered ? `<dt>바로 답한 경우에만 보는 것</dt><dd>${[...(v2e.if_answered.answer_must_match || []).map(rule), ...(v2e.if_answered.answer_must_not_match || []).map((r) => `<span class="str bad">${esc(r.label)}</span>`), ...(v2e.if_answered.answer_flag_if_match || []).map((r) => `<span class="str">검토 필요: ${esc(r.label)}</span>`)].join("")}</dd>` : ""}
+          ${lv.v2_evidence_ids ? `<dt>v2 근거 쪽</dt><dd class="mono">${esc(lv.v2_evidence_ids.join(", "))}</dd>` : ""}
+          <dt>v2 인용해야 할 쪽</dt><dd class="mono">${esc((v2e.must_cite || []).join(", ") || "-")}</dd>
+        </dl>` : ""}
+        ${lv.page_evidence ? `<p><b>원문 근거:</b> ${esc(lv.page_evidence)}</p>` : ""}
+        <p>${esc(lv.rationale)}</p>
+        ${lv.not_adopted ? `<p><b>반영하지 않은 것:</b> ${esc(lv.not_adopted)}</p>` : ""}
+        ${(lv.open_issues || []).length ? `<div><b>열린 쟁점</b><ul class="fails">${lv.open_issues.map((x) => `<li>${esc(x)}</li>`).join("")}</ul></div>` : ""}
+        ${lv.ai_review_round3 && lv.ai_review_round3.owner_decision ? `<p><b>소유자 결정(${esc(lv.ai_review_round3.owner_decision.date)}):</b> ${esc(lv.ai_review_round3.owner_decision.decision)} — ${esc(lv.ai_review_round3.owner_decision.applied)}</p>` : ""}
+        ${lv.ai_review_round3 && lv.ai_review_round3.legal_check ? `<div class="${lv.ai_review_round3.legal_check.result === "differs" ? "banner" : ""}"><b>법령 교차 확인(AI, 법률 검증 아님):</b> ${esc(LEGAL_KO[lv.ai_review_round3.legal_check.result] || lv.ai_review_round3.legal_check.result)}
+          ${lv.ai_review_round3.legal_check.law ? `<br><span class="mono">${esc(lv.ai_review_round3.legal_check.law)} ${esc(lv.ai_review_round3.legal_check.provision || "")} · MST ${esc(lv.ai_review_round3.legal_check.mst || "-")} · 조회 ${esc(lv.ai_review_round3.legal_check.queried_as_of || "-")}</span>` : ""}
+          ${lv.ai_review_round3.legal_check.excerpt ? `<blockquote class="purpose">${esc(lv.ai_review_round3.legal_check.excerpt)}</blockquote>` : ""}
+          ${lv.ai_review_round3.legal_check.note ? `<p class="purpose">${esc(lv.ai_review_round3.legal_check.note)}</p>` : ""}</div>` : ""}
+        ${g ? `<p class="purpose">기록된 답 다시 채점(라벨을 고친 뒤 계산, 모델 성능 아님): 원본 ${g.original.passed ? "통과" : "실패"} → v2 ${lv.recorded_answer_comparable ? esc(V2_OUTCOME_KO[g.v2.outcome] || (g.v2.passed ? "통과" : "실패")) : "비교 불가(근거 쪽이 바뀜)"}</p>
+        ${(g.v2.flags || []).length ? `<div class="banner" role="note"><b>검토 필요:</b> 이 답에 자동으로 판정할 수 없는 표현이 있습니다. ${g.v2.passed ? "검사는 모두 통과했지만 자동 정답으로 세지 않습니다." : "검사에서도 실패했습니다."} 사람이 원문과 대조해 확인해야 합니다.<ul class="fails">${g.v2.flags.map((f) => `<li>${esc(f.replace(/^flag:/, ""))}</li>`).join("")}</ul></div>` : ""}
+        ${(g.v2.failures || []).length && lv.recorded_answer_comparable ? `<div><b>v2 실패 사유</b><ul class="fails">${g.v2.failures.map((f) => `<li>${esc(f)}</li>`).join("")}</ul></div>` : ""}` : ""}
+        ${lv.sources && lv.sources.chatgpt_partial_v2 ? `<p class="purpose">ChatGPT 부분 수정본 제안이 있었음(${esc(lv.sources.chatgpt_partial_v2.file)}). 그대로 채택하지 않고 원문과 대조해 결정함.</p>` : ""}
+      </section>` : "";
+    const aiHtml = a ? `<section class="ai"><h2>AI 1차 의견 (참고)</h2>
+        <div class="chips"><span class="verdict-auto ${a.verdict === "ok" ? "v-correct" : a.verdict === "drop" ? "v-harmful" : "v-other"}">${esc(VERDICTS.find((v) => v[0] === a.verdict)?.[1] || a.verdict)}</span>${a.confidence ? `<span class="chip grey">${esc(CONF_KO[a.confidence] || a.confidence)}</span>` : ""}</div>
+        ${a.correction ? `<p><b>고칠 내용 제안:</b> ${esc(a.correction)}</p>` : ""}
+        ${a.note ? `<p class="purpose">${esc(a.note)}</p>` : ""}
+        <p class="purpose">AI가 근거 쪽 원문만 보고 낸 의견입니다. 최종 판정은 아래에서 사람이 내립니다.</p>
+        <button class="btn ghost" type="button" id="useAi">이 의견을 판정 칸에 옮기기</button>
+      </section>` : "";
+    $("case").innerHTML = `
+      <div class="case-head">
+        <div class="chips"><span class="chip">${esc(set ? set.label : c.set)}</span><span class="chip grey">${esc(GROUP_KO[c.group] || c.group || "")}</span><span class="chip grey mono">${esc(c.id)}</span></div>
+        <div class="question">${esc(c.question)}</div>
+        ${c.purpose ? `<div class="purpose">문항 목적: ${esc(c.purpose)}</div>` : ""}
+      </div>
+      ${behRows.length ? `<section><h2>사용자 행동(문항에 적힌 가정)</h2><dl class="kv">${behRows.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join("")}</dl></section>` : ""}
+      <section><h2>판정할 라벨</h2><dl class="kv">
+        <dt>기대 상태</dt><dd>${(ex.status || []).map((s) => esc(STATUS_KO[s] || s)).join(" 또는 ")}</dd>
+        ${(ex.must_cite || []).length ? `<dt>인용해야 할 쪽</dt><dd class="mono">${esc(ex.must_cite.join(", "))}</dd>` : ""}
+        ${(ex.must_not_cite || []).length ? `<dt>인용하면 안 되는 쪽</dt><dd class="mono">${esc(ex.must_not_cite.join(", "))}</dd>` : ""}
+        ${(ex.answer_must_contain || []).length ? `<dt>답에 들어가야 할 문구</dt><dd>${ex.answer_must_contain.map((s) => `<span class="str">${esc(s)}</span>`).join("")}</dd>` : ""}
+        ${(ex.answer_must_contain_any_of_each || []).length ? `<dt>각 묶음에서 하나 이상</dt><dd>${ex.answer_must_contain_any_of_each.map((g) => g.map((s) => `<span class="str">${esc(s)}</span>`).join(" 또는 ")).join("<br>")}</dd>` : ""}
+        ${(ex.answer_must_not_contain || []).length ? `<dt>들어가면 안 되는 문구</dt><dd>${ex.answer_must_not_contain.map((s) => `<span class="str bad">${esc(s)}</span>`).join("")}</dd>` : ""}
+        ${ex.answer_must_not_contain_money ? `<dt>금액</dt><dd>답에 금액이 나오면 안 됨</dd>` : ""}
+      </dl></section>
+      <section><h2>근거 쪽 원문 (노란색: 들어가야 할 문구, 붉은색: 들어가면 안 되는 문구)</h2>${pagesHtml}</section>
+      <section><h2>E4B 답 (참고)</h2>${modelHtml}</section>
+      ${v2Html}
+      ${legacyHtml}
+      ${aiHtml}
+      <form class="review" id="reviewForm">
+        <fieldset><legend>v2 기준으로 이 라벨은 (새 저장소 reviews_v2에 저장)</legend>
+          ${VERDICTS.map(([v, l]) => `<label class="opt"><input type="radio" name="verdict" id="v_${v}" value="${v}" ${r && r.verdict === v ? "checked" : ""}><span>${l}</span></label>`).join("")}
+        </fieldset>
+        <div class="field"><label for="fix">고칠 내용 (기대 문구·상태를 고치거나 문항을 빼는 경우)</label>
+          <textarea id="fix" placeholder="예: 기대 문구를 “15일 이내”로 바꿈 / 기대 상태에 ‘일부 답함’도 허용">${esc(r ? r.correction || "" : "")}</textarea></div>
+        <div class="field"><label for="note">메모 (선택)</label>
+          <textarea id="note" placeholder="원문 확인 근거, 애매한 점 등">${esc(r ? r.note || "" : "")}</textarea></div>
+        <div class="actions">
+          <button class="btn" type="submit" id="saveBtn" ${db && canWrite ? "" : "disabled"}>저장</button>
+          <button class="btn ghost" type="button" id="nextBtn">다음 안 본 문항</button>
+          <span class="save-state" id="saveState">${r ? "저장됨 · " + esc(new Date(r.updated_at).toLocaleString("ko-KR")) : "아직 저장 안 함"}</span>
+        </div>
+      </form>`;
+    $("reviewForm").addEventListener("submit", save);
+    $("nextBtn").addEventListener("click", nextTodo);
+    if (a && $("useAi")) $("useAi").addEventListener("click", () => {
+      const radio = $("v_" + a.verdict); if (radio) radio.checked = true;
+      if (a.correction) $("fix").value = a.correction;
+      $("note").value = (a.note ? "AI 1차 의견: " + a.note : "");
+      $("saveState").textContent = "AI 의견을 옮겼습니다. 원문을 확인한 뒤 저장해 주세요.";
+      $("saveState").className = "save-state";
+    });
+  }
+
+  function openCase(key, scroll) {
+    current = data.cases.find((c) => c.key === key) || null;
+    store("artemis-review-last", key);
+    renderList(); renderCase();
+    if (scroll && window.matchMedia("(max-width: 860px)").matches) $("case").scrollIntoView({ block: "start" });
+  }
+
+  function nextTodo() {
+    const rows = data.cases;
+    const start = current ? rows.findIndex((c) => c.key === current.key) : -1;
+    for (let i = 1; i <= rows.length; i++) {
+      const c = rows[(start + i) % rows.length];
+      if (!reviews[docId(c.key)]) { openCase(c.key, true); return; }
+    }
+    $("saveState").textContent = "모든 문항을 검토했습니다.";
+  }
+
+  async function save(ev) {
+    ev.preventDefault();
+    const state = $("saveState");
+    const verdict = (document.querySelector('input[name="verdict"]:checked') || {}).value;
+    const correction = $("fix").value.trim(), note = $("note").value.trim();
+    if (!verdict) { state.textContent = "판정을 하나 고르세요."; state.className = "save-state err"; return; }
+    if (verdict !== "ok" && !correction) { state.textContent = "고칠 내용을 적어 주세요."; state.className = "save-state err"; $("fix").focus(); return; }
+    const body = { key: current.key, set: current.set, case_id: current.id, verdict, correction, note,
+                   reviewer: myId, updated_at: new Date().toISOString(), data_version: data.version, label_version: "v2" };
+    $("saveBtn").disabled = true; state.textContent = "저장 중…"; state.className = "save-state";
+    try {
+      await db.collection("reviews_v2").doc(docId(current.key)).set(body);
+      reviews[docId(current.key)] = body;
+      state.textContent = "저장했습니다.";
+      renderCounts(); renderList();
+    } catch (e) {
+      state.className = "save-state err";
+      if (e && e.code === "invalid_argument") { canWrite = false; showBanner("이 계정은 검토 결과를 저장할 권한이 없습니다. 보기만 할 수 있습니다."); }
+      else state.textContent = "저장하지 못했습니다. 잠시 뒤 다시 눌러 주세요.";
+    } finally { if ($("saveBtn")) $("saveBtn").disabled = !(db && canWrite); }
+  }
+
+  function showBanner(t) { $("banner").textContent = t; $("banner").hidden = false; }
+
+  function populateFilters() {
+    data.sets.forEach((s) => { const o = document.createElement("option"); o.value = s.file; o.textContent = `${s.label} (${s.count})`; $("fSet").appendChild(o); });
+    [...new Set(data.cases.map((c) => c.group))].forEach((g) => { const o = document.createElement("option"); o.value = g; o.textContent = `${GROUP_KO[g] || g} (${g})`; $("fGroup").appendChild(o); });
+    ["fSet", "fGroup", "fState"].forEach((id) => $(id).addEventListener("change", renderList));
+    $("fText").addEventListener("input", renderList);
+  }
+
+  async function connect() {
+    const claude = window.claude;
+    if (!claude || !claude.use) { showBanner("저장소에 연결할 수 없는 화면입니다. 내용은 볼 수 있지만 검토 결과는 저장되지 않습니다."); return; }
+    db = await claude.use("db");
+    const user = await claude.use("user");
+    if (!db) { showBanner("저장소에 연결하지 못했습니다. 로그인한 상태인지 확인해 주세요. 내용은 볼 수 있지만 검토 결과는 저장되지 않습니다."); renderCase(); return; }
+    if (user) {
+      try { myId = await user.id(); } catch (_) {}
+      try { const w = await user.can("data.write"); if (w === false) { canWrite = false; showBanner("이 계정은 보기 권한만 있어 검토 결과를 저장할 수 없습니다."); } } catch (_) {}
+    }
+    db.collection("reviews").limit(1000).onSnapshot((snap) => {
+      legacy = {};
+      snap.docs.forEach((d) => { if (d.exists) legacy[d.id] = d.data(); });
+      renderCounts();
+      if (current && !document.activeElement?.closest?.("#reviewForm")) renderCase();
+    }, () => showBanner("기존 판정을 불러오지 못했습니다. 페이지를 새로 고쳐 주세요."));
+    db.collection("reviews_v2").limit(1000).onSnapshot((snap) => {
+      reviews = {};
+      snap.docs.forEach((d) => { if (d.exists) reviews[d.id] = d.data(); });
+      renderCounts(); renderList();
+      if (current && !document.activeElement?.closest?.("#reviewForm")) renderCase();
+    }, () => showBanner("검토 결과를 불러오지 못했습니다. 페이지를 새로 고쳐 주세요."));
+    db.collection("ai_reviews").limit(1000).onSnapshot((snap) => {
+      aiReviews = {};
+      snap.docs.forEach((d) => { if (d.exists) aiReviews[d.id] = d.data(); });
+      renderList();
+      if (current && !document.activeElement?.closest?.("#reviewForm")) renderCase();
+    }, () => {});
+    renderCase();
+  }
+
+  fetch("cases.json").then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); }).then((d) => {
+    data = d;
+    $("dataVersion").textContent = `${d.version} · 세트 ${d.sets.length}개`;
+    populateFilters(); renderCounts();
+    const last = load("artemis-review-last");
+    openCase(d.cases.some((c) => c.key === last) ? last : d.cases[0].key, false);
+    connect();
+  }).catch(() => { $("case").innerHTML = `<div class="empty">문항 데이터를 불러오지 못했습니다. 페이지를 새로 고쳐 주세요.</div>`; });
+})();
+</script>
+<script>
+(() => {
+  // Pilot fact review (APPROVED-FACTS-DESIGN.ko.md §4). Decisions go to the facts_review
+  // collection; approved_facts.py export re-checks quote, page hash and value before the ledger.
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const UNIT_KO = { krw: "원", usd: "달러", day: "일", month: "개월", year: "년", free: "무료" };
+  const DECISION_KO = { approved: "승인", approved_edited: "고쳐서 승인", rejected: "거절", held: "보류(판단 못함)" };
+  const COMPARATORS = ["", "이상", "이하", "이내", "미만", "초과", "까지", "동안", "간"];
+  let facts = null, decisions = {}, db = null, myId = null, canWrite = true, current = null;
+
+  function setMode(f) {
+    document.body.classList.toggle("facts-mode", f);
+    $("tabLabels").setAttribute("aria-selected", String(!f));
+    $("tabFacts").setAttribute("aria-selected", String(f));
+    try { localStorage.setItem("artemis-tab", f ? "facts" : "labels"); } catch (_) {}
+    if (f && !facts) loadFacts();
+  }
+  $("tabLabels").addEventListener("click", () => setMode(false));
+  $("tabFacts").addEventListener("click", () => setMode(true));
+
+  const state = (c) => { const d = decisions[c.candidate_id]; return !d ? "todo" : d.decision.startsWith("approved") ? "approved" : d.decision; };
+  const valueText = (v) => v ? `${v.kind === "money" ? Number(v.amount).toLocaleString("ko-KR") : v.amount}${UNIT_KO[v.unit] || v.unit}${v.comparator ? " " + v.comparator : ""}` : "-";
+  const pageNo = (pid) => pid.replace(/.*#p/, "p");
+  const domainKo = (pid) => pid.startsWith("visa") ? "사증" : "체류";
+
+  function filtered() {
+    const st = $("ffState").value, pr = $("ffProc").value, kd = $("ffKind").value, ai = $("ffAi").value, q = $("ffText").value.trim().toLowerCase();
+    return facts.candidates.filter((c) => {
+      if (st && state(c) !== st) return false;
+      if (pr && c.subject.procedure !== pr) return false;
+      if (kd && c.value.kind !== kd) return false;
+      if (ai && ai.startsWith("final_") && ((facts.ai_final || {})[c.candidate_id] || {}).final !== ai.slice(6)) return false;
+      if (ai && !ai.startsWith("final_") && ((facts.ai_first_pass || {})[c.candidate_id] || {}).ai_decision !== ai) return false;
+      if (q && !`${c.source.page_id} ${c.subject.status_code || ""} ${c.subject.sub_code || ""} ${c.source.quote}`.toLowerCase().includes(q)) return false;
+      return true;
+    });
+  }
+
+  function renderCounts() {
+    const n = facts.candidates.length, by = { approved: 0, rejected: 0, held: 0 };
+    facts.candidates.forEach((c) => { const s = state(c); if (by[s] !== undefined) by[s]++; });
+    $("fCounts").innerHTML = `<span>후보 <b>${n}</b></span><span>승인 <b>${by.approved}</b></span><span>거절 <b>${by.rejected}</b></span><span>보류 <b>${by.held}</b></span><span>남음 <b>${n - by.approved - by.rejected - by.held}</b></span><span>법률 검증 아님</span>`;
+  }
+
+  function renderList() {
+    const rows = filtered();
+    $("fListHead").textContent = `후보 ${rows.length}개`;
+    $("fList").innerHTML = rows.map((c) => `<button class="item" type="button" data-id="${esc(c.candidate_id)}" ${current && current.candidate_id === c.candidate_id ? 'aria-current="true"' : ""}>
+      <span class="dot f-${state(c)}" aria-hidden="true"></span>
+      <span><span class="meta"><span class="mono">${esc(domainKo(c.source.page_id))} ${esc(pageNo(c.source.page_id))}</span><span>${esc(c.subject.sub_code || c.subject.status_code || "자격 미정")}</span><span>${esc(valueText(c.value))}</span></span>
+      <span class="q">${esc(c.source.quote)}</span></span></button>`).join("") || `<div class="empty">조건에 맞는 후보가 없습니다.</div>`;
+    $("fList").querySelectorAll(".item").forEach((b) => b.addEventListener("click", () => open(b.dataset.id)));
+  }
+
+  function field(id, label, value, type = "text") {
+    return `<label>${esc(label)}<input id="${id}" type="${type}" value="${esc(value ?? "")}"></label>`;
+  }
+  function select(id, label, options, value) {
+    return `<label>${esc(label)}<select id="${id}">${options.map(([v, t]) => `<option value="${esc(v)}" ${String(value ?? "") === v ? "selected" : ""}>${esc(t)}</option>`).join("")}</select></label>`;
+  }
+
+  function open(id) {
+    current = facts.candidates.find((c) => c.candidate_id === id);
+    renderList(); renderCase();
+  }
+
+  function renderCase() {
+    if (!current) { $("fCase").innerHTML = `<div class="empty">왼쪽에서 후보를 고르세요.</div>`; return; }
+    const saved = decisions[current.candidate_id];
+    const f = saved ? { subject: saved.subject, role: saved.role, value: saved.value } : current;
+    const q = f.subject.qualifiers || {};
+    const page = facts.pages[current.source.page_id] || { text: "", title: "" };
+    const at = page.text.indexOf(current.source.quote);
+    const text = at < 0 ? esc(page.text) : esc(page.text.slice(0, at)) + "<mark>" + esc(current.source.quote) + "</mark>" + esc(page.text.slice(at + current.source.quote.length));
+    const roles = [["", "(고르세요)"], ...Object.entries(facts.roles)];
+    $("fCase").innerHTML = `
+      <div class="case-head"><div class="chips"><span class="chip">${esc(domainKo(current.source.page_id))} ${esc(pageNo(current.source.page_id))}</span>
+        <span class="chip grey">${saved ? esc(DECISION_KO[saved.decision] || saved.decision) : "아직 안 봄"}</span>
+        ${current.role_from_check ? `<span class="chip grey">규칙이 읽은 역할: ${esc(current.role_from_check)}</span>` : ""}</div>
+        <h2>${esc(valueText(current.value))}</h2></div>
+      <blockquote class="quote">${esc(current.source.quote)}</blockquote>
+      ${aiBlock()}
+      <form class="review" id="factForm">
+        <div class="fact-grid">
+          ${field("fx_code", "체류자격", f.subject.status_code)}
+          ${field("fx_sub", "세부약호", f.subject.sub_code)}
+          ${select("fx_proc", "절차", [["visa", "사증(해외에서 비자)"], ["stay", "체류(한국에서)"]], f.subject.procedure)}
+          ${select("fx_role", "역할", roles, f.role)}
+          ${field("fx_amount", "값", f.value.amount, "number")}
+          ${select("fx_unit", "단위", Object.entries(UNIT_KO), f.value.unit)}
+          ${select("fx_cmp", "비교", COMPARATORS.map((c) => [c, c || "(없음)"]), f.value.comparator)}
+          ${select("fx_app", "대상", [["", "(정하지 않음)"], ["본인", "본인"], ["동반가족", "동반가족"], ["초청인", "초청인"], ["사업주", "사업주"]], q.applicant)}
+          ${field("fx_house", "가구원 수", q.household_size, "number")}
+          ${field("fx_per", "기준(1명당·연간 등)", q.per)}
+          ${field("fx_nat", "국적 조건", q.nationality)}
+          ${field("fx_row", "표의 행 이름", q.row_label)}
+          ${field("fx_col", "표의 열 이름", q.column_label)}
+        </div>
+        <div class="field"><label for="fx_note">메모(정할 수 없는 이유, 조건 설명)</label><textarea id="fx_note">${esc(saved ? saved.note : "")}</textarea></div>
+        <div class="actions">
+          <button class="btn" type="button" data-d="approve" ${db && canWrite ? "" : "disabled"}>승인</button>
+          <button class="btn ghost" type="button" data-d="rejected" ${db && canWrite ? "" : "disabled"}>거절(사실 아님)</button>
+          <button class="btn ghost" type="button" data-d="held" ${db && canWrite ? "" : "disabled"}>보류(판단 못함)</button>
+          <span class="save-state" id="fSaveState" aria-live="polite"></span>
+        </div>
+      </form>
+      <details open><summary>쪽 원문 (${esc(page.title)})</summary><pre class="pagetext">${text}</pre></details>`;
+    $("fCase").querySelectorAll("[data-d]").forEach((b) => b.addEventListener("click", () => save(b.dataset.d)));
+    const fill = $("fxFillAi"); if (fill) fill.addEventListener("click", fillFromAi);
+  }
+
+  const AI_KO = { approve: "승인 권고", reject: "거절 권고", hold: "보류 권고" };
+  function aiBlock() {
+    const a = (facts.ai_first_pass || {})[current.candidate_id];
+    const fin = (facts.ai_final || {})[current.candidate_id];
+    const FINAL_KO = { confirm: "AI 확인 사실(소유자 위임) — 사후 확인이 씀(검토 필요로만)", reject: "AI 최종: 사실 아님", owner: "소유자 판단 필요" };
+    const LEGAL = { consistent: "법령과 같음", differs: "법령과 다름", not_in_statute: "법령에 없는 매뉴얼 운영기준", not_checked: "법령 대조 안 함" };
+    const finHtml = fin ? `<section class="ai"><h2>AI 최종 결정 (소유자 위임, 사람 승인 아님)</h2>
+      <div class="chips"><span class="chip">${esc(FINAL_KO[fin.final] || fin.final)}</span>${fin.legal_check ? `<span class="chip grey">${esc(LEGAL[fin.legal_check.result] || fin.legal_check.result)}</span>` : ""}</div>
+      <p>${esc(fin.reason || "")}</p>${fin.owner_question ? `<p><b>정해 주셔야 할 것:</b> ${esc(fin.owner_question)}</p>` : ""}
+      ${fin.legal_check && fin.legal_check.excerpt ? `<blockquote class="purpose">${esc(fin.legal_check.law || "")} ${esc(fin.legal_check.provision || "")}: ${esc(fin.legal_check.excerpt)}</blockquote>` : ""}</section>` : "";
+    if (!a) return finHtml;
+    const q = (a.subject && a.subject.qualifiers) || {};
+    const conds = Object.entries(q).filter(([, v]) => v !== null && v !== "").map(([k, v]) => `${k}=${v}`).join(", ");
+    return `<section class="ai"><h2>AI 1차 의견 (사람 판정 아님)</h2>
+      <div class="chips"><span class="chip">${esc(AI_KO[a.ai_decision] || a.ai_decision)}</span><span class="chip grey">확신 ${esc(a.confidence || "-")}</span></div>
+      ${a.subject ? `<p class="mono">${esc(a.subject.sub_code || a.subject.status_code || "자격 미정")} · ${esc(a.subject.procedure || "")} · ${esc((facts.roles || {})[a.role] || a.role || "역할 미정")} · ${esc(valueText(a.value))}${conds ? " · " + esc(conds) : ""}</p>` : ""}
+      <p>${esc(a.reason)}</p>
+      ${a.subject ? `<div class="actions"><button class="btn ghost" type="button" id="fxFillAi">AI 의견으로 채우기 (저장은 직접)</button></div>` : ""}
+    </section>${finHtml}`;
+  }
+  function fillFromAi() {
+    const a = facts.ai_first_pass[current.candidate_id]; const q = a.subject.qualifiers || {};
+    const set = (id, v) => { if ($(id)) $(id).value = v ?? ""; };
+    set("fx_code", a.subject.status_code); set("fx_sub", a.subject.sub_code); set("fx_proc", a.subject.procedure);
+    set("fx_role", a.role); set("fx_amount", a.value && a.value.amount); set("fx_unit", a.value && a.value.unit); set("fx_cmp", a.value && a.value.comparator);
+    set("fx_app", q.applicant); set("fx_house", q.household_size); set("fx_per", q.per); set("fx_nat", q.nationality); set("fx_row", q.row_label); set("fx_col", q.column_label);
+    $("fSaveState").classList.remove("err"); $("fSaveState").textContent = "AI 의견으로 채웠습니다. 확인한 뒤 승인·거절·보류를 눌러 주세요.";
+  }
+
+  function formFact() {
+    const num = (id) => { const v = $(id).value.trim(); return v === "" ? null : Number(v); };
+    const str = (id) => $(id).value.trim() || null;
+    return {
+      subject: { status_code: str("fx_code"), sub_code: str("fx_sub"), procedure: $("fx_proc").value,
+                 qualifiers: { applicant: str("fx_app"), household_size: num("fx_house"), per: str("fx_per"), nationality: str("fx_nat"), row_label: str("fx_row"), column_label: str("fx_col") } },
+      role: str("fx_role"),
+      value: { kind: current.value.kind, amount: num("fx_amount"), unit: $("fx_unit").value, comparator: str("fx_cmp") },
+    };
+  }
+
+  async function save(kind) {
+    const f = formFact();
+    if (kind === "approve" && !f.role) { $("fSaveState").textContent = "승인하려면 역할을 골라 주세요."; $("fSaveState").classList.add("err"); return; }
+    const same = JSON.stringify({ s: f.subject, r: f.role, v: f.value }) === JSON.stringify({ s: current.subject, r: current.role, v: current.value });
+    const decision = kind === "approve" ? (same ? "approved" : "approved_edited") : kind;
+    const body = { candidate_id: current.candidate_id, decision, ...f, source: current.source, note: $("fx_note").value.trim(),
+                   reviewer: myId, updated_at: new Date().toISOString(), data_version: facts.version };
+    $("fSaveState").classList.remove("err"); $("fSaveState").textContent = "저장 중…";
+    try {
+      await db.collection("facts_review").doc(current.candidate_id).set(body);
+      $("fSaveState").textContent = `저장했습니다: ${DECISION_KO[decision]}`;
+    } catch (e) {
+      $("fSaveState").classList.add("err"); $("fSaveState").textContent = "저장하지 못했습니다. 다시 시도해 주세요.";
+      if (e && e.code === "invalid_argument") canWrite = false;
+    }
+  }
+
+  async function connect() {
+    const claude = window.claude;
+    if (!claude || !claude.use) return;
+    db = await claude.use("db");
+    const user = await claude.use("user");
+    if (!db) { renderCase(); return; }
+    if (user) {
+      try { myId = await user.id(); } catch (_) {}
+      try { if (await user.can("data.write") === false) canWrite = false; } catch (_) {}
+    }
+    db.collection("facts_review").limit(1000).onSnapshot((snap) => {
+      decisions = {};
+      snap.docs.forEach((d) => { if (d.exists) decisions[d.id] = d.data(); });
+      renderCounts(); renderList();
+      if (current && !document.activeElement?.closest?.("#factForm")) renderCase();
+    }, () => {});
+    renderCase();
+  }
+
+  function loadFacts() {
+    fetch("facts.json").then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); }).then((d) => {
+      facts = d;
+      ["ffState", "ffProc", "ffKind", "ffAi"].forEach((id) => $(id).addEventListener("change", renderList));
+      $("ffText").addEventListener("input", renderList);
+      renderCounts(); current = d.candidates[0] || null; renderList(); renderCase(); connect();
+    }).catch(() => { $("fCase").innerHTML = `<div class="empty">사실 후보를 불러오지 못했습니다. 페이지를 새로 고쳐 주세요.</div>`; });
+  }
+
+  let saved = null; try { saved = localStorage.getItem("artemis-tab"); } catch (_) {}
+  setMode(saved === "facts");
+})();
+</script>

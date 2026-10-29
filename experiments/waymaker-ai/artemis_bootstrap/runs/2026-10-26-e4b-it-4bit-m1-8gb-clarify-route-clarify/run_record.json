@@ -1,0 +1,1462 @@
+{
+  "kind": "artemis_bootstrap_smoke",
+  "started_utc": "2026-10-26T12:49:50+00:00",
+  "machine": {
+    "model": "MacBookAir10,1",
+    "chip": "Apple M1",
+    "memory_bytes": 8589934592,
+    "macos": "15.6.1",
+    "python": "3.11.15"
+  },
+  "versions": {
+    "mlx": "0.32.4",
+    "mlx-metal": "0.32.4",
+    "mlx-lm": "0.32.2",
+    "transformers": "5.20.2",
+    "huggingface-hub": "2.3.0",
+    "tokenizers": "0.23.3"
+  },
+  "device": {
+    "device_name": "Apple M1",
+    "max_recommended_working_set_size": 5726633984,
+    "memory_size": 8589934592,
+    "architecture": "applegpu_g13g",
+    "max_buffer_length": 4294967296,
+    "resource_limit": 499000
+  },
+  "swap_before": "total = 4096.00M  used = 2587.56M  free = 1508.44M  (encrypted)",
+  "free_disk_gb_before": 9.87,
+  "cases_file": "manual_clarify_cases.json",
+  "cases_sha256": "410798edef4ecab2dd37a5ad5e85065c81e721815577c2e0d41514969ccbdc1b",
+  "detector_on_labelled_evidence": null,
+  "decoding": {
+    "temperature": 0.0,
+    "max_tokens": 400,
+    "enable_thinking": false
+  },
+  "evidence_guard": "off",
+  "source_gate": true,
+  "integrity": true,
+  "route": true,
+  "clarify": true,
+  "post_check": "applied offline to every output when the cases carry source labels",
+  "prompts_persisted": false,
+  "status": "completed",
+  "stage": "done",
+  "model": {
+    "repo": "mlx-community/gemma-4-e4b-it-4bit",
+    "revision": "475b9088d29754a3379866cf5aeb6b41acd313c2",
+    "size_class_from_weights": "E4B",
+    "quantization": {
+      "group_size": 64,
+      "bits": 4,
+      "mode": "affine"
+    },
+    "loader": "mlx_lm.load (text tower only; vision/audio weights dropped by mlx_lm sanitize)",
+    "base_model": "google/gemma-4-E4B-it",
+    "source_revision": "fee6332c1abaafb77f6f9624236c63aa2f1d0187",
+    "license_in_card": "gemma"
+  },
+  "load_seconds": 7.43,
+  "memory_after_load_gb": 4.201,
+  "results": [
+    {
+      "case": "Q-01-e9-visa-criminal-record",
+      "prompt_sha256": "f7755d461f587a0a527b825eaf6743f98d6f7ecc6525e72a91f00778c2a6d3ef",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "활동범위"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p287"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 953,
+      "prompt_tps": 79.25,
+      "generation_tokens": 71,
+      "generation_tps": 7.05,
+      "finish_reason": "stop",
+      "wall_seconds": 25.37,
+      "output": "```json\n{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"제공된 근거에는 비전문취업(E-9) 사증 신청 시 제출해야 하는 범죄경력증명서의 발급 시기에 대한 정보가 없습니다.\",\n  \"citations\": []\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 비전문취업(E-9) 사증 신청 시 제출해야 하는 범죄경력증명서의 발급 시기에 대한 정보가 없습니다.",
+        "citations": []
+      },
+      "failures": [
+        "status:insufficient_evidence≠answered|partial",
+        "missing_citation:visa_manual_2026_10_19_pdf#p287",
+        "answer_missing:사증발급 신청일로부터 3개월 이내에 발급된 증명서"
+      ],
+      "post_check": {
+        "verdict": "withheld",
+        "claims": [
+          {
+            "kind": "document",
+            "text": "범죄경력증명서"
+          }
+        ],
+        "unsupported": [
+          "범죄경력증명서"
+        ],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "citations": [],
+          "answer": "공식 근거로 확인되지 않은 금액·기간·날짜·서류가 들어 있어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+        },
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p287",
+          "answer_missing:사증발급 신청일로부터 3개월 이내에 발급된 증명서"
+        ]
+      },
+      "outcome_raw": "safe_abstain",
+      "outcome_checked": "safe_abstain"
+    },
+    {
+      "case": "Q-02-e2-epik-visa-where-apply",
+      "prompt_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p146",
+        "stay_manual_2026_10_19_pdf#p175"
+      ],
+      "turns": 1,
+      "clarified": true,
+      "integrity_failed": [],
+      "prompt_tokens": null,
+      "prompt_tps": null,
+      "generation_tokens": null,
+      "generation_tps": null,
+      "finish_reason": null,
+      "wall_seconds": 0.0,
+      "output": "{\"status\": \"clarify\", \"answer\": \"어떤 절차를 물으시는지 먼저 확인할게요. 아직 해외에 계시고 사증(비자)이나 사증발급인정서를 새로 받으시려는 건가요, 아니면 지금 한국에 계시면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경 같은 절차를 하시려는 건가요?\", \"citations\": []}",
+      "passed": false,
+      "parsed": {
+        "status": "clarify",
+        "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 아직 해외에 계시고 사증(비자)이나 사증발급인정서를 새로 받으시려는 건가요, 아니면 지금 한국에 계시면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경 같은 절차를 하시려는 건가요?",
+        "citations": []
+      },
+      "failures": [
+        "status:clarify≠answered|partial",
+        "missing_citation:visa_manual_2026_10_19_pdf#p146",
+        "answer_missing:해외 소재 대한민국 공관이면 어디라도 신청 가능"
+      ],
+      "post_check": {
+        "verdict": "clarify",
+        "claims": [],
+        "unsupported": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "clarify",
+          "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 아직 해외에 계시고 사증(비자)이나 사증발급인정서를 새로 받으시려는 건가요, 아니면 지금 한국에 계시면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경 같은 절차를 하시려는 건가요?",
+          "citations": []
+        },
+        "failures": [
+          "status:clarify≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p146",
+          "answer_missing:해외 소재 대한민국 공관이면 어디라도 신청 가능"
+        ]
+      },
+      "outcome_raw": "clarify",
+      "outcome_checked": "clarify"
+    },
+    {
+      "case": "Q-03-d2-visa-photo-admission",
+      "prompt_sha256": "f570502e4acac4f27f7ea58c8da1eaf9dfb01ba00485c7d3c8f03f61a85be269",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "visa_issuance",
+          "사증발급"
+        ]
+      ],
+      "route_withheld": [
+        "stay_manual_2026_10_19_pdf#p47"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 1274,
+      "prompt_tps": 65.81,
+      "generation_tokens": 263,
+      "generation_tps": 6.29,
+      "finish_reason": "stop",
+      "wall_seconds": 61.27,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"유학(D-2) 사증 신청 시 제출해야 하는 공통 서류 중 하나로 사진 1매(6개월 이내 촬영한 반명함)이 있습니다. 입학 관련 서류로는 대학 총·학장이 발행한 표준입학허가서가 필요하며, 최종학력 입증 서류는 원본 심사를 원칙으로 합니다. 다만, 학위 등 인증보고서 등은 대학 담당자의 원본 대조필인이 있을 경우 사본도 인정 가능하며, 개인이 직접 신청하여 발급한 학력 입증 서류는 유효기간 내에서만 인정됩니다. 또한, 과정에 따라 필요한 서류가 다릅니다. 예를 들어, 어학연수(D-4-1) 과정의 경우 고교 졸업 이상 학력 증명서가 필요하며, 학사 신입학(D-2-1~D-2-4)의 경우 석사 또는 박사 졸업증명서가 필요합니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p63\"\n  ]\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "answered",
+        "answer": "유학(D-2) 사증 신청 시 제출해야 하는 공통 서류 중 하나로 사진 1매(6개월 이내 촬영한 반명함)이 있습니다. 입학 관련 서류로는 대학 총·학장이 발행한 표준입학허가서가 필요하며, 최종학력 입증 서류는 원본 심사를 원칙으로 합니다. 다만, 학위 등 인증보고서 등은 대학 담당자의 원본 대조필인이 있을 경우 사본도 인정 가능하며, 개인이 직접 신청하여 발급한 학력 입증 서류는 유효기간 내에서만 인정됩니다. 또한, 과정에 따라 필요한 서류가 다릅니다. 예를 들어, 어학연수(D-4-1) 과정의 경우 고교 졸업 이상 학력 증명서가 필요하며, 학사 신입학(D-2-1~D-2-4)의 경우 석사 또는 박사 졸업증명서가 필요합니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p63"
+        ]
+      },
+      "failures": [
+        "answer_missing:사진 1매(6개월 이내 촬영 반명함)",
+        "answer_missing:표준입학허가서 (대학 총․학장 발행)"
+      ],
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "6개월"
+          },
+          {
+            "kind": "document",
+            "text": "사진"
+          },
+          {
+            "kind": "document",
+            "text": "사본"
+          },
+          {
+            "kind": "document",
+            "text": "증명서"
+          },
+          {
+            "kind": "document",
+            "text": "졸업증명서"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "answered",
+          "answer": "유학(D-2) 사증 신청 시 제출해야 하는 공통 서류 중 하나로 사진 1매(6개월 이내 촬영한 반명함)이 있습니다. 입학 관련 서류로는 대학 총·학장이 발행한 표준입학허가서가 필요하며, 최종학력 입증 서류는 원본 심사를 원칙으로 합니다. 다만, 학위 등 인증보고서 등은 대학 담당자의 원본 대조필인이 있을 경우 사본도 인정 가능하며, 개인이 직접 신청하여 발급한 학력 입증 서류는 유효기간 내에서만 인정됩니다. 또한, 과정에 따라 필요한 서류가 다릅니다. 예를 들어, 어학연수(D-4-1) 과정의 경우 고교 졸업 이상 학력 증명서가 필요하며, 학사 신입학(D-2-1~D-2-4)의 경우 석사 또는 박사 졸업증명서가 필요합니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p63"
+          ]
+        },
+        "failures": [
+          "answer_missing:사진 1매(6개월 이내 촬영 반명함)",
+          "answer_missing:표준입학허가서 (대학 총․학장 발행)"
+        ]
+      },
+      "outcome_raw": "other",
+      "outcome_checked": "other"
+    },
+    {
+      "case": "Q-04-d9-sole-proprietor-visa-mission",
+      "prompt_sha256": "892033f9eddf1e7ddeb1a5734a86855350f97931544a1becf4d0673ba0b8dc43",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "visa_issuance",
+          "사증발급"
+        ]
+      ],
+      "route_withheld": [
+        "stay_manual_2026_10_19_pdf#p137"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 892,
+      "prompt_tps": 62.41,
+      "generation_tokens": 120,
+      "generation_tps": 6.56,
+      "finish_reason": "stop",
+      "wall_seconds": 32.85,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"원칙적으로 신청자의 본국에 소재한 대한민국 공관에서 신청해야 합니다. 다만, 신청인이 해외에 주재하며 사업체 등을 운영(영주권 소지 등 장기거주자 포함)하고 있는 경우에는 주재하고 있는 국가 소재 대한민국 공관에서 신청할 수 있습니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p119\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "원칙적으로 신청자의 본국에 소재한 대한민국 공관에서 신청해야 합니다. 다만, 신청인이 해외에 주재하며 사업체 등을 운영(영주권 소지 등 장기거주자 포함)하고 있는 경우에는 주재하고 있는 국가 소재 대한민국 공관에서 신청할 수 있습니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p119"
+        ]
+      },
+      "failures": [],
+      "post_check": {
+        "verdict": "pass",
+        "claims": [],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "원칙적으로 신청자의 본국에 소재한 대한민국 공관에서 신청해야 합니다. 다만, 신청인이 해외에 주재하며 사업체 등을 운영(영주권 소지 등 장기거주자 포함)하고 있는 경우에는 주재하고 있는 국가 소재 대한민국 공관에서 신청할 수 있습니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p119"
+          ]
+        },
+        "failures": []
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "Q-05-e9-workplace-change-deadline",
+      "prompt_sha256": "45f8e531cab9b2616b7102f8a32d19c14b777ca17e4436796d99cb18f6f9448b",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "활동범위"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p288"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 1026,
+      "prompt_tps": 62.63,
+      "generation_tokens": 131,
+      "generation_tps": 6.61,
+      "finish_reason": "stop",
+      "wall_seconds": 36.59,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"근로계약 종료 후 1개월 이내에 사업장 변경을 신청(고용노동부 고용센터)해야 하며, 사업장 변경을 신청한 날로부터 3개월 이내에 근무처 변경 허가(관할 출입국·외국인청(사무소ㆍ출장소))를 받아야 합니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p329\"\n  ]\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "answered",
+        "answer": "근로계약 종료 후 1개월 이내에 사업장 변경을 신청(고용노동부 고용센터)해야 하며, 사업장 변경을 신청한 날로부터 3개월 이내에 근무처 변경 허가(관할 출입국·외국인청(사무소ㆍ출장소))를 받아야 합니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p329"
+        ]
+      },
+      "failures": [
+        "answer_missing:1월 이내에 사업장 변경을 신청"
+      ],
+      "post_check": {
+        "verdict": "withheld",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "1개월"
+          },
+          {
+            "kind": "period",
+            "text": "3개월"
+          }
+        ],
+        "unsupported": [
+          "1개월"
+        ],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "citations": [],
+          "answer": "공식 근거로 확인되지 않은 금액·기간·날짜·서류가 들어 있어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+        },
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:stay_manual_2026_10_19_pdf#p329",
+          "answer_missing:1월 이내에 사업장 변경을 신청",
+          "answer_missing:3개월 이내에 근무처 변경"
+        ]
+      },
+      "outcome_raw": "other",
+      "outcome_checked": "safe_abstain"
+    },
+    {
+      "case": "Q-06-d2-parttime-permit-places",
+      "prompt_sha256": "f9c0e95b539621ee0f87e3e6fffddf880379c3db6a4123cbd09dcf34d61973a2",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "활동범위"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p63"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 954,
+      "prompt_tps": 63.72,
+      "generation_tokens": 101,
+      "generation_tps": 6.67,
+      "finish_reason": "stop",
+      "wall_seconds": 30.28,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"유학생(D-2)의 경우 체류기간 내에서 최장 1년 동안 시간제 취업 허가를 받으면 동시에 취업할 수 있는 장소는 2곳으로 한정됩니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p39\"\n  ]\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "answered",
+        "answer": "유학생(D-2)의 경우 체류기간 내에서 최장 1년 동안 시간제 취업 허가를 받으면 동시에 취업할 수 있는 장소는 2곳으로 한정됩니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p39"
+        ]
+      },
+      "failures": [
+        "answer_missing:장소 2곳"
+      ],
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "1년"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "answered",
+          "answer": "유학생(D-2)의 경우 체류기간 내에서 최장 1년 동안 시간제 취업 허가를 받으면 동시에 취업할 수 있는 장소는 2곳으로 한정됩니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p39"
+          ]
+        },
+        "failures": [
+          "answer_missing:장소 2곳"
+        ]
+      },
+      "outcome_raw": "other",
+      "outcome_checked": "other"
+    },
+    {
+      "case": "Q-07-d9-multiple-reentry-permit",
+      "prompt_sha256": "ccd62db28ec4a2f70117c983b304af8d5984f5ac6f27f76a18202ce6499da562",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "재입국허가"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p119"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 1102,
+      "prompt_tps": 63.6,
+      "generation_tokens": 164,
+      "generation_tps": 6.58,
+      "finish_reason": "stop",
+      "wall_seconds": 42.4,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"D-9 자격 소지자가 복수재입국허가를 신청해야 하는 경우에 대한 구체적인 정보는 근거에 명시되어 있지 않습니다. 다만, 출국 후 체류기간 범위 내에서 1년을 초과하여 2년 내에 재입국을 하려는 경우 복수재입국허가를 신청할 수 있습니다. 또한, 체류기간이 1년보다 적게 남아있는 경우 체류기간 범위 내에서 재입국허가 면제가 가능합니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p137\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "partial",
+        "answer": "D-9 자격 소지자가 복수재입국허가를 신청해야 하는 경우에 대한 구체적인 정보는 근거에 명시되어 있지 않습니다. 다만, 출국 후 체류기간 범위 내에서 1년을 초과하여 2년 내에 재입국을 하려는 경우 복수재입국허가를 신청할 수 있습니다. 또한, 체류기간이 1년보다 적게 남아있는 경우 체류기간 범위 내에서 재입국허가 면제가 가능합니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p137"
+        ]
+      },
+      "failures": [],
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "1년"
+          },
+          {
+            "kind": "period",
+            "text": "2년"
+          },
+          {
+            "kind": "period",
+            "text": "1년"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "partial",
+          "answer": "D-9 자격 소지자가 복수재입국허가를 신청해야 하는 경우에 대한 구체적인 정보는 근거에 명시되어 있지 않습니다. 다만, 출국 후 체류기간 범위 내에서 1년을 초과하여 2년 내에 재입국을 하려는 경우 복수재입국허가를 신청할 수 있습니다. 또한, 체류기간이 1년보다 적게 남아있는 경우 체류기간 범위 내에서 재입국허가 면제가 가능합니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p137"
+          ]
+        },
+        "failures": []
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "Q-08-student-residence-change-report",
+      "prompt_sha256": "4b330cc68cb1174a567516872f0d83d6959872cbe9fceca6c2b9760209b8c621",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "체류 절차(질문에 명시)"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p73"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 1063,
+      "prompt_tps": 63.45,
+      "generation_tokens": 116,
+      "generation_tps": 7.03,
+      "finish_reason": "stop",
+      "wall_seconds": 33.49,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"체류지 변경신고는 전입한 날로부터 15일 이내에 신체류지 시·군·구청장 또는 신체류지 관할 출입국·외국인청(사무소·출장소)장에게 신고해야 합니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p95\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "체류지 변경신고는 전입한 날로부터 15일 이내에 신체류지 시·군·구청장 또는 신체류지 관할 출입국·외국인청(사무소·출장소)장에게 신고해야 합니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p95"
+        ]
+      },
+      "failures": [],
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "15일"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "체류지 변경신고는 전입한 날로부터 15일 이내에 신체류지 시·군·구청장 또는 신체류지 관할 출입국·외국인청(사무소·출장소)장에게 신고해야 합니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p95"
+          ]
+        },
+        "failures": []
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "Q-09-bring-wife-income",
+      "prompt_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p330",
+        "stay_manual_2026_10_19_pdf#p484"
+      ],
+      "turns": 2,
+      "clarified": true,
+      "integrity_failed": [],
+      "prompt_tokens": null,
+      "prompt_tps": null,
+      "generation_tokens": null,
+      "generation_tps": null,
+      "finish_reason": null,
+      "wall_seconds": 0.0,
+      "output": "{\"status\": \"clarify\", \"answer\": \"어떤 절차를 물으시는지 먼저 확인할게요. 아직 해외에 계시고 사증(비자)이나 사증발급인정서를 새로 받으시려는 건가요, 아니면 지금 한국에 계시면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경 같은 절차를 하시려는 건가요?\", \"citations\": []}",
+      "passed": false,
+      "parsed": {
+        "status": "clarify",
+        "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 아직 해외에 계시고 사증(비자)이나 사증발급인정서를 새로 받으시려는 건가요, 아니면 지금 한국에 계시면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경 같은 절차를 하시려는 건가요?",
+        "citations": []
+      },
+      "failures": [
+        "status:clarify≠answered|partial",
+        "missing_citation:visa_manual_2026_10_19_pdf#p330",
+        "answer_missing:25,195,752"
+      ],
+      "post_check": {
+        "verdict": "clarify",
+        "claims": [],
+        "unsupported": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "clarify",
+          "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 아직 해외에 계시고 사증(비자)이나 사증발급인정서를 새로 받으시려는 건가요, 아니면 지금 한국에 계시면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경 같은 절차를 하시려는 건가요?",
+          "citations": []
+        },
+        "failures": [
+          "status:clarify≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p330",
+          "answer_missing:25,195,752"
+        ]
+      },
+      "outcome_raw": "clarify",
+      "outcome_checked": "clarify"
+    },
+    {
+      "case": "Q-10-f6-working-allowed",
+      "prompt_sha256": "1bd2264783be44a2425984046e3ae7933c8c9886b049e4eb28990a62cc139842",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "활동범위"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p330"
+      ],
+      "turns": 2,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 902,
+      "prompt_tps": 67.44,
+      "generation_tokens": 73,
+      "generation_tps": 7.13,
+      "finish_reason": "stop",
+      "wall_seconds": 23.86,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"체류자격에 따른 취업활동의 제한을 받지 않습니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p484\"\n  ]\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "answered",
+        "answer": "체류자격에 따른 취업활동의 제한을 받지 않습니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p484"
+        ]
+      },
+      "failures": [
+        "answer_missing:취업활동의 제한을 받지 않음"
+      ],
+      "post_check": {
+        "verdict": "pass",
+        "claims": [],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "answered",
+          "answer": "체류자격에 따른 취업활동의 제한을 받지 않습니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p484"
+          ]
+        },
+        "failures": [
+          "answer_missing:취업활동의 제한을 받지 않음"
+        ]
+      },
+      "outcome_raw": "other",
+      "outcome_checked": "other"
+    },
+    {
+      "case": "Q-11-e9-change-jobs-count",
+      "prompt_sha256": "9698bfc9e4668359627e51ea72f152f016ac6e37e381b4201f3d976557a7d1f9",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "활동범위"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p286"
+      ],
+      "turns": 2,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 959,
+      "prompt_tps": 70.41,
+      "generation_tokens": 149,
+      "generation_tps": 7.09,
+      "finish_reason": "stop",
+      "wall_seconds": 34.78,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"비전문취업자는 입국한 날부터 3년 이내의 취업가능기간 중에는 원칙적으로 3회, 재고용절차에 따라 체류기간이 연장된 기간 중에는 2회를 초과하여 사업장을 변경할 수 있습니다. 다만, 사업장의 휴·폐업 또는 외국인근로자의 책임이 아닌 사유로 사업장을 변경하는 경우에는 변경 횟수에 포함하지 않습니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p328\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "비전문취업자는 입국한 날부터 3년 이내의 취업가능기간 중에는 원칙적으로 3회, 재고용절차에 따라 체류기간이 연장된 기간 중에는 2회를 초과하여 사업장을 변경할 수 있습니다. 다만, 사업장의 휴·폐업 또는 외국인근로자의 책임이 아닌 사유로 사업장을 변경하는 경우에는 변경 횟수에 포함하지 않습니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p328"
+        ]
+      },
+      "failures": [],
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "3년"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "비전문취업자는 입국한 날부터 3년 이내의 취업가능기간 중에는 원칙적으로 3회, 재고용절차에 따라 체류기간이 연장된 기간 중에는 2회를 초과하여 사업장을 변경할 수 있습니다. 다만, 사업장의 휴·폐업 또는 외국인근로자의 책임이 아닌 사유로 사업장을 변경하는 경우에는 변경 횟수에 포함하지 않습니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p328"
+          ]
+        },
+        "failures": []
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "Q-12-e9-rehire-return-group",
+      "prompt_sha256": "cfda0841798e3c860b83cb5dbc6952135d05c23fbda01c77ba2179c7137f657f",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "재입국허가"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p287"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 946,
+      "prompt_tps": 65.4,
+      "generation_tokens": 73,
+      "generation_tps": 7.17,
+      "finish_reason": "stop",
+      "wall_seconds": 24.77,
+      "output": "```json\n{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"제공된 근거에는 E-9 비전문취업자가 귀국 후 재입국 특례를 통해 다시 취업하는 것에 대한 개인적인 신청 가능 여부에 대한 정보가 없습니다.\",\n  \"citations\": []\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 E-9 비전문취업자가 귀국 후 재입국 특례를 통해 다시 취업하는 것에 대한 개인적인 신청 가능 여부에 대한 정보가 없습니다.",
+        "citations": []
+      },
+      "failures": [
+        "status:insufficient_evidence≠answered|partial",
+        "missing_citation:visa_manual_2026_10_19_pdf#p287",
+        "answer_missing:송출기관에 의한 단체 신청만 가능"
+      ],
+      "post_check": {
+        "verdict": "pass",
+        "claims": [],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "answer": "제공된 근거에는 E-9 비전문취업자가 귀국 후 재입국 특례를 통해 다시 취업하는 것에 대한 개인적인 신청 가능 여부에 대한 정보가 없습니다.",
+          "citations": []
+        },
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p287",
+          "answer_missing:송출기관에 의한 단체 신청만 가능"
+        ]
+      },
+      "outcome_raw": "safe_abstain",
+      "outcome_checked": "safe_abstain"
+    },
+    {
+      "case": "Q-13-korean-language-course-education",
+      "prompt_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p73",
+        "stay_manual_2026_10_19_pdf#p83"
+      ],
+      "turns": 2,
+      "clarified": true,
+      "integrity_failed": [],
+      "prompt_tokens": null,
+      "prompt_tps": null,
+      "generation_tokens": null,
+      "generation_tps": null,
+      "finish_reason": null,
+      "wall_seconds": 0.0,
+      "output": "{\"status\": \"clarify\", \"answer\": \"어떤 절차를 물으시는지 먼저 확인할게요. 아직 해외에 계시고 사증(비자)이나 사증발급인정서를 새로 받으시려는 건가요, 아니면 지금 한국에 계시면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경 같은 절차를 하시려는 건가요?\", \"citations\": []}",
+      "passed": false,
+      "parsed": {
+        "status": "clarify",
+        "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 아직 해외에 계시고 사증(비자)이나 사증발급인정서를 새로 받으시려는 건가요, 아니면 지금 한국에 계시면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경 같은 절차를 하시려는 건가요?",
+        "citations": []
+      },
+      "failures": [
+        "status:clarify≠answered|partial",
+        "missing_citation:visa_manual_2026_10_19_pdf#p73",
+        "answer_missing:고등학교 졸업 이상의 학력 소지자"
+      ],
+      "post_check": {
+        "verdict": "clarify",
+        "claims": [],
+        "unsupported": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "clarify",
+          "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 아직 해외에 계시고 사증(비자)이나 사증발급인정서를 새로 받으시려는 건가요, 아니면 지금 한국에 계시면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경 같은 절차를 하시려는 건가요?",
+          "citations": []
+        },
+        "failures": [
+          "status:clarify≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p73",
+          "answer_missing:고등학교 졸업 이상의 학력 소지자"
+        ]
+      },
+      "outcome_raw": "clarify",
+      "outcome_checked": "clarify"
+    },
+    {
+      "case": "Q-14-d4-parttime-duration",
+      "prompt_sha256": "0785d398c47072e6faa6679ba41b7fb2b980677247d94f366bc53f57a45c992e",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "활동범위"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p73"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 947,
+      "prompt_tps": 68.71,
+      "generation_tokens": 98,
+      "generation_tps": 7.11,
+      "finish_reason": "stop",
+      "wall_seconds": 27.77,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"어학연수생(D-4)의 경우 체류기간 내에서 최장 6개월까지 시간제 취업이 가능하며, 장소는 1곳으로 한정됩니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p39\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "어학연수생(D-4)의 경우 체류기간 내에서 최장 6개월까지 시간제 취업이 가능하며, 장소는 1곳으로 한정됩니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p39"
+        ]
+      },
+      "failures": [],
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "6개월"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "어학연수생(D-4)의 경우 체류기간 내에서 최장 6개월까지 시간제 취업이 가능하며, 장소는 1곳으로 한정됩니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p39"
+          ]
+        },
+        "failures": []
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "Q-15-d10-points-exemption-after-leaving",
+      "prompt_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p125",
+        "stay_manual_2026_10_19_pdf#p144"
+      ],
+      "turns": 2,
+      "clarified": true,
+      "integrity_failed": [],
+      "prompt_tokens": null,
+      "prompt_tps": null,
+      "generation_tokens": null,
+      "generation_tps": null,
+      "finish_reason": null,
+      "wall_seconds": 0.0,
+      "output": "{\"status\": \"clarify\", \"answer\": \"어떤 절차를 물으시는지 먼저 확인할게요. 아직 해외에 계시고 사증(비자)이나 사증발급인정서를 새로 받으시려는 건가요, 아니면 지금 한국에 계시면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경 같은 절차를 하시려는 건가요?\", \"citations\": []}",
+      "passed": false,
+      "parsed": {
+        "status": "clarify",
+        "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 아직 해외에 계시고 사증(비자)이나 사증발급인정서를 새로 받으시려는 건가요, 아니면 지금 한국에 계시면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경 같은 절차를 하시려는 건가요?",
+        "citations": []
+      },
+      "failures": [
+        "status:clarify≠answered|partial",
+        "missing_citation:visa_manual_2026_10_19_pdf#p125",
+        "answer_missing:출국 후 졸업일로부터 1년 이내"
+      ],
+      "post_check": {
+        "verdict": "clarify",
+        "claims": [],
+        "unsupported": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "clarify",
+          "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 아직 해외에 계시고 사증(비자)이나 사증발급인정서를 새로 받으시려는 건가요, 아니면 지금 한국에 계시면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경 같은 절차를 하시려는 건가요?",
+          "citations": []
+        },
+        "failures": [
+          "status:clarify≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p125",
+          "answer_missing:출국 후 졸업일로부터 1년 이내"
+        ]
+      },
+      "outcome_raw": "clarify",
+      "outcome_checked": "clarify"
+    },
+    {
+      "case": "Q-16-c3-stay-longer-flight-cancelled",
+      "prompt_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [
+        "stay_manual_2026_10_19_pdf#p28",
+        "visa_manual_2026_10_19_pdf#p27"
+      ],
+      "turns": 2,
+      "clarified": true,
+      "integrity_failed": [],
+      "prompt_tokens": null,
+      "prompt_tps": null,
+      "generation_tokens": null,
+      "generation_tps": null,
+      "finish_reason": null,
+      "wall_seconds": 0.0,
+      "output": "{\"status\": \"clarify\", \"answer\": \"어떤 절차를 물으시는지 먼저 확인할게요. 아직 해외에 계시고 사증(비자)이나 사증발급인정서를 새로 받으시려는 건가요, 아니면 지금 한국에 계시면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경 같은 절차를 하시려는 건가요?\", \"citations\": []}",
+      "passed": false,
+      "parsed": {
+        "status": "clarify",
+        "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 아직 해외에 계시고 사증(비자)이나 사증발급인정서를 새로 받으시려는 건가요, 아니면 지금 한국에 계시면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경 같은 절차를 하시려는 건가요?",
+        "citations": []
+      },
+      "failures": [
+        "status:clarify≠answered|partial",
+        "missing_citation:stay_manual_2026_10_19_pdf#p28",
+        "answer_missing:체류기간 연장의 필요성을 소명하는 서류"
+      ],
+      "post_check": {
+        "verdict": "clarify",
+        "claims": [],
+        "unsupported": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "clarify",
+          "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 아직 해외에 계시고 사증(비자)이나 사증발급인정서를 새로 받으시려는 건가요, 아니면 지금 한국에 계시면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경 같은 절차를 하시려는 건가요?",
+          "citations": []
+        },
+        "failures": [
+          "status:clarify≠answered|partial",
+          "missing_citation:stay_manual_2026_10_19_pdf#p28",
+          "answer_missing:체류기간 연장의 필요성을 소명하는 서류"
+        ]
+      },
+      "outcome_raw": "clarify",
+      "outcome_checked": "clarify"
+    },
+    {
+      "case": "Q-17-d8-minimum-investment",
+      "prompt_sha256": "636f54cb7e4d07b6b24be20de13dfbcee0344707a848abdf6f6eb161d41c374f",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "활동범위"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p104"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 1115,
+      "prompt_tps": 68.02,
+      "generation_tokens": 64,
+      "generation_tps": 7.11,
+      "finish_reason": "stop",
+      "wall_seconds": 25.59,
+      "output": "```json\n{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"제공된 근거에는 한국 법인에 투자하여 기업투자(D-8)로 일하기 위한 최소 투자 금액에 대한 정보가 없습니다.\",\n  \"citations\": []\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 한국 법인에 투자하여 기업투자(D-8)로 일하기 위한 최소 투자 금액에 대한 정보가 없습니다.",
+        "citations": []
+      },
+      "failures": [
+        "status:insufficient_evidence≠answered|partial",
+        "missing_citation:visa_manual_2026_10_19_pdf#p104",
+        "answer_missing:투자금액이 1억원 이상"
+      ],
+      "post_check": {
+        "verdict": "pass",
+        "claims": [],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "answer": "제공된 근거에는 한국 법인에 투자하여 기업투자(D-8)로 일하기 위한 최소 투자 금액에 대한 정보가 없습니다.",
+          "citations": []
+        },
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p104",
+          "answer_missing:투자금액이 1억원 이상"
+        ]
+      },
+      "outcome_raw": "safe_abstain",
+      "outcome_checked": "safe_abstain"
+    },
+    {
+      "case": "Q-18-e2-trip-home-reentry",
+      "prompt_sha256": "a8c6b9931289421922932159537f3c024d4d50cf3757b4fe56349b0f796a1657",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "활동범위"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p146"
+      ],
+      "turns": 2,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 928,
+      "prompt_tps": 65.77,
+      "generation_tokens": 281,
+      "generation_tps": 6.48,
+      "finish_reason": "stop",
+      "wall_seconds": 57.6,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"현재 한국에 외국인등록을 하고 일하고 계시다면, 출국 후 다시 입국하시려는 경우에 따라 재입국허가 면제 또는 복수재입국허가 관련 규정을 확인해야 합니다. 등록을 필한 외국인이 출국한 날로부터 1년 이내에 재입국하려는 경우 재입국허가 면제가 가능하며, 체류기간이 1년보다 적게 남아있는 경우에도 체류기간 범위 내에서 재입국허가 면제가 가능합니다. 다만, 입국규제 및 사증발급규제자는 체류지 관할 청(사무소·출장소)에 문의하여 재입국허가를 받아야 합니다. 또한, 출국 후 체류기간 범위 내에서 1년을 초과하여 2년 내에 재입국을 하려는 경우 복수재입국허가 신청이 가능하며, 이때 필요한 서류는 신청서(별지 34호서식), 여권 원본, 외국인등록증, 수수료입니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p175\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "partial",
+        "answer": "현재 한국에 외국인등록을 하고 일하고 계시다면, 출국 후 다시 입국하시려는 경우에 따라 재입국허가 면제 또는 복수재입국허가 관련 규정을 확인해야 합니다. 등록을 필한 외국인이 출국한 날로부터 1년 이내에 재입국하려는 경우 재입국허가 면제가 가능하며, 체류기간이 1년보다 적게 남아있는 경우에도 체류기간 범위 내에서 재입국허가 면제가 가능합니다. 다만, 입국규제 및 사증발급규제자는 체류지 관할 청(사무소·출장소)에 문의하여 재입국허가를 받아야 합니다. 또한, 출국 후 체류기간 범위 내에서 1년을 초과하여 2년 내에 재입국을 하려는 경우 복수재입국허가 신청이 가능하며, 이때 필요한 서류는 신청서(별지 34호서식), 여권 원본, 외국인등록증, 수수료입니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p175"
+        ]
+      },
+      "failures": [],
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "1년"
+          },
+          {
+            "kind": "period",
+            "text": "1년"
+          },
+          {
+            "kind": "period",
+            "text": "1년"
+          },
+          {
+            "kind": "period",
+            "text": "2년"
+          },
+          {
+            "kind": "document",
+            "text": "신청서"
+          },
+          {
+            "kind": "document",
+            "text": "여권"
+          },
+          {
+            "kind": "document",
+            "text": "외국인등록증"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "partial",
+          "answer": "현재 한국에 외국인등록을 하고 일하고 계시다면, 출국 후 다시 입국하시려는 경우에 따라 재입국허가 면제 또는 복수재입국허가 관련 규정을 확인해야 합니다. 등록을 필한 외국인이 출국한 날로부터 1년 이내에 재입국하려는 경우 재입국허가 면제가 가능하며, 체류기간이 1년보다 적게 남아있는 경우에도 체류기간 범위 내에서 재입국허가 면제가 가능합니다. 다만, 입국규제 및 사증발급규제자는 체류지 관할 청(사무소·출장소)에 문의하여 재입국허가를 받아야 합니다. 또한, 출국 후 체류기간 범위 내에서 1년을 초과하여 2년 내에 재입국을 하려는 경우 복수재입국허가 신청이 가능하며, 이때 필요한 서류는 신청서(별지 34호서식), 여권 원본, 외국인등록증, 수수료입니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p175"
+          ]
+        },
+        "failures": []
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "Q-19-live-with-korean-husband-docs",
+      "prompt_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p328",
+        "stay_manual_2026_10_19_pdf#p486"
+      ],
+      "turns": 1,
+      "clarified": true,
+      "integrity_failed": [],
+      "prompt_tokens": null,
+      "prompt_tps": null,
+      "generation_tokens": null,
+      "generation_tps": null,
+      "finish_reason": null,
+      "wall_seconds": 0.0,
+      "output": "{\"status\": \"clarify\", \"answer\": \"어떤 절차를 물으시는지 먼저 확인할게요. 아직 해외에 계시고 사증(비자)이나 사증발급인정서를 새로 받으시려는 건가요, 아니면 지금 한국에 계시면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경 같은 절차를 하시려는 건가요?\", \"citations\": []}",
+      "passed": true,
+      "parsed": {
+        "status": "clarify",
+        "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 아직 해외에 계시고 사증(비자)이나 사증발급인정서를 새로 받으시려는 건가요, 아니면 지금 한국에 계시면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경 같은 절차를 하시려는 건가요?",
+        "citations": []
+      },
+      "failures": [],
+      "post_check": {
+        "verdict": "clarify",
+        "claims": [],
+        "unsupported": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "clarify",
+          "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 아직 해외에 계시고 사증(비자)이나 사증발급인정서를 새로 받으시려는 건가요, 아니면 지금 한국에 계시면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경 같은 절차를 하시려는 건가요?",
+          "citations": []
+        },
+        "failures": []
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "Q-20-d2-study-docs",
+      "prompt_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p63",
+        "stay_manual_2026_10_19_pdf#p47"
+      ],
+      "turns": 1,
+      "clarified": true,
+      "integrity_failed": [],
+      "prompt_tokens": null,
+      "prompt_tps": null,
+      "generation_tokens": null,
+      "generation_tps": null,
+      "finish_reason": null,
+      "wall_seconds": 0.0,
+      "output": "{\"status\": \"clarify\", \"answer\": \"어떤 절차를 물으시는지 먼저 확인할게요. 아직 해외에 계시고 사증(비자)이나 사증발급인정서를 새로 받으시려는 건가요, 아니면 지금 한국에 계시면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경 같은 절차를 하시려는 건가요?\", \"citations\": []}",
+      "passed": true,
+      "parsed": {
+        "status": "clarify",
+        "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 아직 해외에 계시고 사증(비자)이나 사증발급인정서를 새로 받으시려는 건가요, 아니면 지금 한국에 계시면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경 같은 절차를 하시려는 건가요?",
+        "citations": []
+      },
+      "failures": [],
+      "post_check": {
+        "verdict": "clarify",
+        "claims": [],
+        "unsupported": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "clarify",
+          "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 아직 해외에 계시고 사증(비자)이나 사증발급인정서를 새로 받으시려는 건가요, 아니면 지금 한국에 계시면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경 같은 절차를 하시려는 건가요?",
+          "citations": []
+        },
+        "failures": []
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "Q-21-e9-factory-work-docs",
+      "prompt_sha256": "44e60bda69062aab8c5697a2f26d788ed428075e8b91a5311b73bec4128da2da",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "활동범위"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p288"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 935,
+      "prompt_tps": 65.58,
+      "generation_tokens": 101,
+      "generation_tps": 7.1,
+      "finish_reason": "stop",
+      "wall_seconds": 28.74,
+      "output": "```json\n{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"제공된 근거에는 E-9 비전문취업 비자 소지자가 한국에서 근무하기 위해 필요한 구체적인 요건에 대한 정보가 포함되어 있지 않습니다. 근거는 고용허가제 전반에 대한 내용과 비전문취업자의 근로처 변경 제한 등에 대해서만 언급하고 있습니다.\",\n  \"citations\": []\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 E-9 비전문취업 비자 소지자가 한국에서 근무하기 위해 필요한 구체적인 요건에 대한 정보가 포함되어 있지 않습니다. 근거는 고용허가제 전반에 대한 내용과 비전문취업자의 근로처 변경 제한 등에 대해서만 언급하고 있습니다.",
+        "citations": []
+      },
+      "failures": [],
+      "post_check": {
+        "verdict": "pass",
+        "claims": [],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "answer": "제공된 근거에는 E-9 비전문취업 비자 소지자가 한국에서 근무하기 위해 필요한 구체적인 요건에 대한 정보가 포함되어 있지 않습니다. 근거는 고용허가제 전반에 대한 내용과 비전문취업자의 근로처 변경 제한 등에 대해서만 언급하고 있습니다.",
+          "citations": []
+        },
+        "failures": []
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "Q-22-d10-how-long",
+      "prompt_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [
+        "stay_manual_2026_10_19_pdf#p144",
+        "visa_manual_2026_10_19_pdf#p124"
+      ],
+      "turns": 1,
+      "clarified": true,
+      "integrity_failed": [],
+      "prompt_tokens": null,
+      "prompt_tps": null,
+      "generation_tokens": null,
+      "generation_tps": null,
+      "finish_reason": null,
+      "wall_seconds": 0.0,
+      "output": "{\"status\": \"clarify\", \"answer\": \"어떤 절차를 물으시는지 먼저 확인할게요. 아직 해외에 계시고 사증(비자)이나 사증발급인정서를 새로 받으시려는 건가요, 아니면 지금 한국에 계시면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경 같은 절차를 하시려는 건가요?\", \"citations\": []}",
+      "passed": true,
+      "parsed": {
+        "status": "clarify",
+        "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 아직 해외에 계시고 사증(비자)이나 사증발급인정서를 새로 받으시려는 건가요, 아니면 지금 한국에 계시면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경 같은 절차를 하시려는 건가요?",
+        "citations": []
+      },
+      "failures": [],
+      "post_check": {
+        "verdict": "clarify",
+        "claims": [],
+        "unsupported": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "clarify",
+          "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 아직 해외에 계시고 사증(비자)이나 사증발급인정서를 새로 받으시려는 건가요, 아니면 지금 한국에 계시면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경 같은 절차를 하시려는 건가요?",
+          "citations": []
+        },
+        "failures": []
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "Q-23-h2-father-how-long",
+      "prompt_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [
+        "stay_manual_2026_10_19_pdf#p537",
+        "visa_manual_2026_10_19_pdf#p389"
+      ],
+      "turns": 1,
+      "clarified": true,
+      "integrity_failed": [],
+      "prompt_tokens": null,
+      "prompt_tps": null,
+      "generation_tokens": null,
+      "generation_tps": null,
+      "finish_reason": null,
+      "wall_seconds": 0.0,
+      "output": "{\"status\": \"clarify\", \"answer\": \"어떤 절차를 물으시는지 먼저 확인할게요. 아직 해외에 계시고 사증(비자)이나 사증발급인정서를 새로 받으시려는 건가요, 아니면 지금 한국에 계시면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경 같은 절차를 하시려는 건가요?\", \"citations\": []}",
+      "passed": true,
+      "parsed": {
+        "status": "clarify",
+        "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 아직 해외에 계시고 사증(비자)이나 사증발급인정서를 새로 받으시려는 건가요, 아니면 지금 한국에 계시면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경 같은 절차를 하시려는 건가요?",
+        "citations": []
+      },
+      "failures": [],
+      "post_check": {
+        "verdict": "clarify",
+        "claims": [],
+        "unsupported": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "clarify",
+          "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 아직 해외에 계시고 사증(비자)이나 사증발급인정서를 새로 받으시려는 건가요, 아니면 지금 한국에 계시면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경 같은 절차를 하시려는 건가요?",
+          "citations": []
+        },
+        "failures": []
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "Q-24-d9-sole-proprietor-docs",
+      "prompt_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [
+        "stay_manual_2026_10_19_pdf#p137",
+        "visa_manual_2026_10_19_pdf#p119"
+      ],
+      "turns": 1,
+      "clarified": true,
+      "integrity_failed": [],
+      "prompt_tokens": null,
+      "prompt_tps": null,
+      "generation_tokens": null,
+      "generation_tps": null,
+      "finish_reason": null,
+      "wall_seconds": 0.0,
+      "output": "{\"status\": \"clarify\", \"answer\": \"어떤 절차를 물으시는지 먼저 확인할게요. 아직 해외에 계시고 사증(비자)이나 사증발급인정서를 새로 받으시려는 건가요, 아니면 지금 한국에 계시면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경 같은 절차를 하시려는 건가요?\", \"citations\": []}",
+      "passed": true,
+      "parsed": {
+        "status": "clarify",
+        "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 아직 해외에 계시고 사증(비자)이나 사증발급인정서를 새로 받으시려는 건가요, 아니면 지금 한국에 계시면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경 같은 절차를 하시려는 건가요?",
+        "citations": []
+      },
+      "failures": [],
+      "post_check": {
+        "verdict": "clarify",
+        "claims": [],
+        "unsupported": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "clarify",
+          "answer": "어떤 절차를 물으시는지 먼저 확인할게요. 아직 해외에 계시고 사증(비자)이나 사증발급인정서를 새로 받으시려는 건가요, 아니면 지금 한국에 계시면서 체류기간 연장·체류자격 변경·외국인등록·재입국허가·근무처 변경 같은 절차를 하시려는 건가요?",
+          "citations": []
+        },
+        "failures": []
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    }
+  ],
+  "summary": {
+    "cases": 24,
+    "passed": 12,
+    "failed": 12,
+    "outcomes_raw": {
+      "correct": 12,
+      "clarify": 5,
+      "safe_abstain": 3,
+      "harmful": 0,
+      "other": 4
+    },
+    "outcomes_checked": {
+      "correct": 12,
+      "clarify": 5,
+      "safe_abstain": 4,
+      "harmful": 0,
+      "other": 3
+    }
+  },
+  "peak_memory_gb": 4.924,
+  "max_rss_gb": 1.824,
+  "swap_after": "total = 4096.00M  used = 2800.69M  free = 1295.31M  (encrypted)",
+  "free_disk_gb_after": 9.96,
+  "finished_utc": "2026-10-26T12:58:04+00:00"
+}

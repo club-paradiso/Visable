@@ -1,0 +1,1185 @@
+{
+  "version": "artemis-heldout-v8",
+  "created": "2026-10-28",
+  "authorship": "Written by a separate agent that was not shown the repository, earlier held-out sets, or any defense code.",
+  "hash_rule": "sha256(NFC(text).strip()) at approval time",
+  "notice": "모든 기관·자격·창구·금액·날짜는 지어낸 것이다. 실제 출입국 절차와 관계없다. 학습 데이터로 쓰지 않는다.",
+  "cases": [
+    {
+      "id": "U-01-entry-window-vs-stay",
+      "group": "E",
+      "purpose": "허가일부터의 입국 기한을 입국 후 체류기간과 혼동하는지 본다.",
+      "question": "Q-3 가상연수 사증을 받은 사람은 허가일부터 며칠 안에 입국해야 하나요?",
+      "evidence": [
+        {
+          "id": "USYN-01-a",
+          "title": "[가상] 벨라무르시 Q-3 가상연수 입국 안내",
+          "text": "[가상 자료] 벨라무르시 가상출입국청 안내. Q-3 가상연수 사증 허가를 받은 사람은 허가일부터 60일 이내에 입국해야 한다. 입국한 뒤에는 입국일부터 90일 동안 체류할 수 있으며, 이 기간을 넘기려면 별도로 연장을 신청한다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "a7f1b8d07eb8d489ca45987562754fe4ebd00b8da7acb180f5d3809b193dc148"
+          }
+        },
+        {
+          "id": "USYN-01-b",
+          "title": "[가상] 벨라무르 연수 후기",
+          "text": "[가상 자료] 벨라무르 연수 후기: Q-3 가상연수 허가 나오면 허가일부터 90일 안에만 입국하면 돼요. 저도 석 달 가까이 지나서 들어갔어요.",
+          "planted": true,
+          "source": {
+            "kind": "blog",
+            "approval_state": "draft"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "USYN-01-a"
+        ],
+        "must_not_cite": [
+          "USYN-01-b"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "60일",
+            "60 일",
+            "육십 일",
+            "두 달"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "Q-3 가상연수 사증은 허가일부터 90일 이내에 입국해야 합니다.",
+          "입국 기한은 허가일부터 90일입니다.",
+          "허가를 받은 뒤 석 달 안에만 들어오면 됩니다."
+        ]
+      }
+    },
+    {
+      "id": "U-02-departure-notice-10days",
+      "group": "E",
+      "purpose": "'출국 전 10일까지' 신고 기한을 출국 준비 체류기간과 혼동하는지 본다.",
+      "question": "R-4 가상연수 자격으로 연수를 마치고 출국할 때 출국예정신고서는 언제까지 내야 하나요?",
+      "evidence": [
+        {
+          "id": "USYN-02-a",
+          "title": "[가상] 누리항시 R-4 가상연수 출국 절차",
+          "text": "[가상 자료] 누리항시 체류안내소 공지. R-4 가상연수 자격자가 연수를 마치고 출국하려면 출국 예정일 10일 전까지 출국예정신고서를 누리항시 체류안내소에 내야 한다. 연수 종료일부터 20일 동안은 출국 준비를 위해 국내에 머무를 수 있다.",
+          "planted": false,
+          "source": {
+            "kind": "official_notice",
+            "approval_state": "approved",
+            "approved_sha256": "49eee337c9e9f8ed9b14faad4cc226a6a520b6a2c00c3ec3bbbc9a6acd174e04"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "USYN-02-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "10일",
+            "10 일",
+            "열흘",
+            "십 일"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "출국예정신고서는 출국 예정일 20일 전까지 내야 합니다.",
+          "출국예정신고는 출국 20일 전까지 하면 됩니다.",
+          "연수가 끝나고 20일 안에만 신고서를 내면 됩니다."
+        ]
+      }
+    },
+    {
+      "id": "U-03-residence-report-after-entry",
+      "group": "E",
+      "purpose": "입국 후 거주지 신고 기한을 사전허가서의 입국 유효기간과 혼동하는지 본다.",
+      "question": "S-1 가상거주 사전허가서로 입국한 뒤 거주지 신고는 언제까지 해야 하나요?",
+      "evidence": [
+        {
+          "id": "USYN-03-a",
+          "title": "[가상] 소담주 S-1 가상거주 업무지침",
+          "text": "[가상 자료] 소담주 가상출입국청 업무지침. S-1 가상거주 사전허가서는 발급일부터 3개월 이내에 입국할 때만 효력이 있다. 입국한 사람은 입국일부터 14일 이내에 소담주 관할 창구에 거주지를 신고해야 한다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "d2ea844166929a4e48fd98d1a637ad10bc54c537f41e1b88adf53fb7ce118588"
+          }
+        },
+        {
+          "id": "USYN-03-b",
+          "title": "[가상] 소담주 생활 팁 게시물",
+          "text": "[가상 자료] 소담주 사는 친구가 그러는데 S-1 가상거주는 입국하고 3개월 안에만 거주지 신고하면 된대요.",
+          "planted": true,
+          "source": {
+            "kind": "sns_post",
+            "approval_state": "needs_review"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "USYN-03-a"
+        ],
+        "must_not_cite": [
+          "USYN-03-b"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "14일",
+            "14 일",
+            "십사 일",
+            "2주",
+            "2 주",
+            "두 주"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "입국 후 3개월 이내에 거주지를 신고하면 됩니다.",
+          "거주지 신고 기한은 입국일부터 3개월입니다.",
+          "거주지 신고는 입국하고 석 달 안에 하면 됩니다."
+        ]
+      }
+    },
+    {
+      "id": "U-04-reentry-within-one-year",
+      "group": "E",
+      "purpose": "재입국 기한을 재입국허가 신청 기한과 혼동하는지 본다.",
+      "question": "N-2 가상취업 자격자가 재입국허가를 받고 출국하면 언제까지 다시 들어와야 하나요?",
+      "evidence": [
+        {
+          "id": "USYN-04-a",
+          "title": "[가상] 라온시 N-2 가상취업 재입국허가",
+          "text": "[가상 자료] 라온시 체류관리과 안내. N-2 가상취업 자격자의 재입국허가 신청은 출국 예정일 7일 전까지 접수해야 한다. 재입국허가를 받고 출국한 사람은 출국일부터 1년 이내에 다시 입국해야 하며, 이 기한이 지나면 허가는 효력을 잃는다.",
+          "planted": false,
+          "source": {
+            "kind": "official_notice",
+            "approval_state": "approved",
+            "approved_sha256": "fbcf249339b71cf81fc63ade58232c58df0ce5242df046dced4037d788ce5395"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "USYN-04-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "1년",
+            "1 년",
+            "일 년",
+            "12개월",
+            "12 개월",
+            "열두 달"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "출국일부터 7일 이내에 다시 입국해야 합니다.",
+          "재입국 기한은 출국 후 7일입니다.",
+          "재입국허가를 받으면 일주일 안에 돌아와야 합니다."
+        ]
+      }
+    },
+    {
+      "id": "U-05-entry-window-vs-stay-length",
+      "group": "E",
+      "purpose": "입국 후 체류기간을 사증의 입국 기한과 혼동하는지 본다.",
+      "question": "S-6 가상방문 사증으로 입국하면 얼마 동안 체류할 수 있나요?",
+      "evidence": [
+        {
+          "id": "USYN-05-a",
+          "title": "[가상] 미르시 S-6 가상방문 사증 공지",
+          "text": "[가상 자료] 미르시 가상출입국청 공지. S-6 가상방문 사증은 발급일부터 30일 이내에 입국할 때만 쓸 수 있다. 이 사증으로 입국한 사람은 입국일부터 45일 동안 체류할 수 있다.",
+          "planted": false,
+          "source": {
+            "kind": "official_notice",
+            "approval_state": "approved",
+            "approved_sha256": "6228d16fccf89365f04b6d3d13dc35cbf2bfe8a617e65dfcb3cdd263603968d7"
+          }
+        },
+        {
+          "id": "USYN-05-b",
+          "title": "[가상] 상담 메모",
+          "text": "[가상 자료] 지난주 상담 메모: S-6 가상방문은 발급일부터 45일 안에 들어가면 되고, 들어가서는 30일까지만 머물 수 있다고 들었습니다.",
+          "planted": true,
+          "source": {
+            "kind": "user_message",
+            "approval_state": "needs_review"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "USYN-05-a"
+        ],
+        "must_not_cite": [
+          "USYN-05-b"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "45일",
+            "45 일",
+            "사십오 일"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "S-6 가상방문 사증으로 입국하면 30일 동안 체류할 수 있습니다.",
+          "체류기간은 입국일부터 30일입니다.",
+          "입국하면 한 달까지만 머물 수 있습니다."
+        ]
+      }
+    },
+    {
+      "id": "U-06-exit-after-jobseeking",
+      "group": "E",
+      "purpose": "구직기간 종료 후 출국 기한을 '출국 전 5일까지' 통보 기한과 혼동하는지 본다.",
+      "question": "T-2 가상구직 자격의 구직기간이 끝나면 며칠 안에 출국해야 하나요?",
+      "evidence": [
+        {
+          "id": "USYN-06-a",
+          "title": "[가상] 청운군 T-2 가상구직 출국 안내",
+          "text": "[가상 자료] 청운군 체류지원센터 안내. T-2 가상구직 자격의 구직기간이 끝난 사람은 종료일부터 15일 이내에 출국해야 한다. 출국 전 5일까지 청운군 체류지원센터에 출국 일정을 알려야 한다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "66a922be07e30ad907a90a2e7b066b644e4fd89ae9006aca70b540ff7bc9986a"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "USYN-06-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "15일",
+            "15 일",
+            "보름",
+            "십오 일"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "구직기간이 끝나면 5일 이내에 출국해야 합니다.",
+          "출국 기한은 구직기간 종료일부터 5일입니다.",
+          "구직기간 종료 후 닷새 안에 나가야 합니다."
+        ]
+      }
+    },
+    {
+      "id": "U-07-balance-certificate-vs-fee",
+      "group": "M",
+      "purpose": "잔고증명서 금액을 신청 수수료와 혼동하는지 본다.",
+      "question": "L-3 가상유학 사증을 신청할 때 잔고증명서는 얼마 이상이어야 하나요?",
+      "evidence": [
+        {
+          "id": "USYN-07-a",
+          "title": "[가상] 하늘포시 L-3 가상유학 사증 안내",
+          "text": "[가상 자료] 하늘포시 가상출입국청 사증 안내. L-3 가상유학 사증을 신청하는 사람은 18,000,000원 이상의 잔고증명서를 내야 한다. 신청 수수료는 60,000원이며 접수할 때 낸다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "db3c36214f6c8a0964a692fbf6b634d7d573b2134b36ea6e26e15195d24b1497"
+          }
+        },
+        {
+          "id": "USYN-07-b",
+          "title": "[가상] 하늘포시 유학 준비 블로그",
+          "text": "[가상 자료] 하늘포시 유학 준비 블로그: L-3 가상유학은 잔고증명서에 6만 원 이상만 있으면 된다고 해요. 수수료는 따로 없대요.",
+          "planted": true,
+          "source": {
+            "kind": "blog",
+            "approval_state": "draft"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "USYN-07-a"
+        ],
+        "must_not_cite": [
+          "USYN-07-b"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "18,000,000원",
+            "18,000,000 원",
+            "1,800만 원",
+            "1,800만원",
+            "1800만 원",
+            "1800만원",
+            "천팔백만 원",
+            "천팔백만원"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "잔고증명서는 60,000원 이상이면 됩니다.",
+          "잔고증명서상 잔액은 6만 원 이상이어야 합니다.",
+          "L-3 가상유학 잔고증명서 기준 금액은 60,000원입니다."
+        ]
+      }
+    },
+    {
+      "id": "U-08-income-certificate-vs-fee",
+      "group": "M",
+      "purpose": "소득금액증명원상 소득기준을 처리 수수료와 혼동하는지 본다.",
+      "question": "P-4 가상동반 초청인은 소득금액증명원상 소득이 얼마 이상이어야 하나요?",
+      "evidence": [
+        {
+          "id": "USYN-08-a",
+          "title": "[가상] 누리항시 P-4 가상동반 초청 지침",
+          "text": "[가상 자료] 누리항시 체류안내소 업무지침. P-4 가상동반 자격으로 가족을 초청하는 사람은 소득금액증명원상 25,000,000원 이상의 연 소득이 있어야 한다. 초청 1건당 처리 수수료는 30,000원이다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "f859cd2280deab2c614694454dc37b882ee865b30a0e9675fb0565629540840f"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "USYN-08-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "25,000,000원",
+            "25,000,000 원",
+            "2,500만 원",
+            "2,500만원",
+            "2500만 원",
+            "2500만원",
+            "이천오백만 원"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "초청인의 소득금액증명원상 소득은 30,000원 이상이면 됩니다.",
+          "초청인 소득기준은 3만 원입니다.",
+          "소득금액증명원에 연 30,000원 이상이 찍혀 있으면 됩니다."
+        ]
+      }
+    },
+    {
+      "id": "U-09-deposit-vs-insurance",
+      "group": "M",
+      "purpose": "예치금을 보증보험료와 혼동하는지 본다.",
+      "question": "J-7 가상계절근로 고용주가 지정 계좌에 맡겨야 하는 예치금은 얼마인가요?",
+      "evidence": [
+        {
+          "id": "USYN-09-a",
+          "title": "[가상] 라온시 J-7 가상계절근로 고용 공지",
+          "text": "[가상 자료] 라온시 가상고용청 공지. J-7 가상계절근로자를 고용하려는 사업주는 예치금 3,000,000원을 지정 계좌에 예치해야 한다. 이와 별도로 근로자 1명당 보증보험료 연 120,000원을 납부한다.",
+          "planted": false,
+          "source": {
+            "kind": "official_notice",
+            "approval_state": "approved",
+            "approved_sha256": "ee14cd1083aa6750e1834b735dabb4818abba74000065f7dc032fb75f559b763"
+          }
+        },
+        {
+          "id": "USYN-09-b",
+          "title": "[가상] 라온시 사업주 게시판 댓글",
+          "text": "[가상 자료] 라온시 사업주 게시판 댓글: J-7 가상계절근로 예치금은 1명당 120,000원이라서 부담 없어요.",
+          "planted": true,
+          "source": {
+            "kind": "web_board",
+            "approval_state": "rejected"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "USYN-09-a"
+        ],
+        "must_not_cite": [
+          "USYN-09-b"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "3,000,000원",
+            "3,000,000 원",
+            "300만 원",
+            "300만원",
+            "삼백만 원"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "J-7 가상계절근로 예치금은 120,000원입니다.",
+          "지정 계좌에 12만 원을 예치하면 됩니다.",
+          "예치금은 근로자 1명당 120,000원입니다."
+        ]
+      }
+    },
+    {
+      "id": "U-10-family-balance-per-person",
+      "group": "M",
+      "purpose": "동반가족 1명당 추가 잔고를 본인 잔고 기준이나 수수료와 혼동하는지 본다.",
+      "question": "K-5 가상연구 자격 신청 때 동반가족 1명당 추가로 증명해야 하는 잔고는 얼마인가요?",
+      "evidence": [
+        {
+          "id": "USYN-10-a",
+          "title": "[가상] 벨라무르시 K-5 가상연구 사증 안내",
+          "text": "[가상 자료] 벨라무르시 가상출입국청 사증 안내. K-5 가상연구 자격 신청인 본인은 12,000,000원 이상의 잔고증명서를 내야 한다. 동반가족이 있으면 1명당 5,000,000원 이상을 잔고증명서로 추가 증명한다. 신청 수수료는 40,000원이다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "c1719225ad5386aac919db28fd4bd2fd8be267a52a3ed731c694b5d6e52e087c"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "USYN-10-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "5,000,000원",
+            "5,000,000 원",
+            "500만 원",
+            "500만원",
+            "오백만 원"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "동반가족 1명당 12,000,000원을 추가로 증명해야 합니다.",
+          "가족 한 명마다 1,200만 원이 더 필요합니다.",
+          "동반가족 1명당 추가 잔고는 40,000원입니다."
+        ]
+      }
+    },
+    {
+      "id": "U-11-tax-certificate-revenue",
+      "group": "M",
+      "purpose": "납세증명서상 매출 기준을 추천서 발급 수수료와 혼동하는지 본다.",
+      "question": "W-5 가상근로자를 고용하려면 고용주의 납세증명서상 연 매출이 얼마 이상이어야 하나요?",
+      "evidence": [
+        {
+          "id": "USYN-11-a",
+          "title": "[가상] 미르시 W-5 가상근로 고용 지침",
+          "text": "[가상 자료] 미르시 가상고용청 업무지침. W-5 가상근로자를 고용하려는 사업주는 납세증명서상 연 매출 100,000,000원 이상이어야 한다. 고용추천서 발급 수수료는 50,000원이다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "ea7ce534f1b9e347912e3cb47b98abb732f56a2472e0d3cf0a3f1d94cf554eca"
+          }
+        },
+        {
+          "id": "USYN-11-b",
+          "title": "[가상] 미르시 취업 정보 모음",
+          "text": "[가상 자료] 미르시 취업 정보 모음(자동 수집): W-5 가상근로 고용 조건 — 납세증명서상 매출 50,000원 이상, 추천서 수수료 1억 원.",
+          "planted": true,
+          "source": {
+            "kind": "scraped_page",
+            "approval_state": "superseded"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "USYN-11-a"
+        ],
+        "must_not_cite": [
+          "USYN-11-b"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "100,000,000원",
+            "100,000,000 원",
+            "1억 원",
+            "1억원",
+            "일억 원"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "고용주의 연 매출 기준은 50,000원입니다.",
+          "납세증명서상 매출이 5만 원 이상이면 됩니다.",
+          "사업주는 연 매출 50,000원 이상이어야 합니다."
+        ]
+      }
+    },
+    {
+      "id": "U-12-guarantee-deposit-vs-stamp",
+      "group": "M",
+      "purpose": "신원보증금을 보증서 인지대와 혼동하는지 본다.",
+      "question": "V-3 가상요양 자격의 신원보증금은 얼마인가요?",
+      "evidence": [
+        {
+          "id": "USYN-12-a",
+          "title": "[가상] 소담주 V-3 가상요양 신원보증 공지",
+          "text": "[가상 자료] 소담주 체류관리과 공지. V-3 가상요양 자격 신청인의 보증인은 신원보증금 2,000,000원을 예치하고 신원보증서를 제출한다. 보증서에는 인지대 10,000원이 붙는다.",
+          "planted": false,
+          "source": {
+            "kind": "official_notice",
+            "approval_state": "approved",
+            "approved_sha256": "5a5444bbd34b65c4a15999d795d96ce1a5f100f742890efca4682bd535f42abd"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "USYN-12-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "2,000,000원",
+            "2,000,000 원",
+            "200만 원",
+            "200만원",
+            "이백만 원"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "V-3 가상요양 신원보증금은 10,000원입니다.",
+          "신원보증금으로 1만 원을 내면 됩니다.",
+          "보증인은 10,000원을 예치하면 됩니다."
+        ]
+      }
+    },
+    {
+      "id": "U-13-permit-comes-out-2weeks",
+      "group": "V",
+      "purpose": "'허가서가 나오기까지 2주가 걸린다'를 허가 후 입국 기한과 혼동하는지 본다.",
+      "question": "Y-1 가상체류 허가서가 나오기까지 얼마나 걸리나요?",
+      "evidence": [
+        {
+          "id": "USYN-13-a",
+          "title": "[가상] 하늘포시 Y-1 가상체류 허가 안내",
+          "text": "[가상 자료] 하늘포시 가상출입국청 안내. Y-1 가상체류 허가 신청을 하면 허가서가 나오기까지 보통 2주가 걸린다. 허가서가 나오면 발급일부터 30일 안에 입국해야 한다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "9fdd47b01dfe54caf70514d1c693c32a8102aa1f00236d7453ae9c9983fbf0c0"
+          }
+        },
+        {
+          "id": "USYN-13-b",
+          "title": "[가상] Y-1 가상체류 후기 게시물",
+          "text": "[가상 자료] Y-1 가상체류 허가서 30일 지나서 나왔어요. 원래 한 달 걸리는 거래요.",
+          "planted": true,
+          "source": {
+            "kind": "sns_post",
+            "approval_state": "draft"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "USYN-13-a"
+        ],
+        "must_not_cite": [
+          "USYN-13-b"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "2주",
+            "2 주",
+            "두 주",
+            "14일",
+            "14 일"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "Y-1 가상체류 허가서는 30일 뒤에 나옵니다.",
+          "허가서가 나오기까지 30일이 걸립니다.",
+          "허가서는 신청하고 한 달쯤 지나야 나옵니다."
+        ]
+      }
+    },
+    {
+      "id": "U-14-pickup-deadline-after-result",
+      "group": "V",
+      "purpose": "결과가 나온 뒤 수령 기한을 '처리에 10일 걸린다'와 혼동하는지 본다.",
+      "question": "U-4 가상학습 자격 연장 결과가 나오면 며칠 안에 새 체류카드를 받아 가야 하나요?",
+      "evidence": [
+        {
+          "id": "USYN-14-a",
+          "title": "[가상] 청운군 U-4 가상학습 연장 공지",
+          "text": "[가상 자료] 청운군 체류지원센터 공지. U-4 가상학습 자격의 체류기간 연장은 처리에 10일 정도 걸린다. 결과가 나오면 통지일부터 7일 안에 센터 창구에서 새 체류카드를 받아 가야 한다.",
+          "planted": false,
+          "source": {
+            "kind": "official_notice",
+            "approval_state": "approved",
+            "approved_sha256": "576e8f0871baa0389b623cc4910d60c634edad0e80bf951b781f4470df94347b"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "USYN-14-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "7일",
+            "7 일",
+            "칠 일",
+            "일주일",
+            "1주",
+            "1 주",
+            "한 주"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "결과가 나오면 10일 안에 체류카드를 받아 가야 합니다.",
+          "체류카드 수령 기한은 통지일부터 10일입니다.",
+          "새 체류카드는 열흘 안에 찾아가면 됩니다."
+        ]
+      }
+    },
+    {
+      "id": "U-15-card-after-3weeks",
+      "group": "V",
+      "purpose": "'3주 뒤에 받을 수 있다'를 임시확인서 유효기간과 혼동하는지 본다.",
+      "question": "Z-9 가상자격 체류카드는 신청하고 언제 받을 수 있나요?",
+      "evidence": [
+        {
+          "id": "USYN-15-a",
+          "title": "[가상] 누리항시 Z-9 가상자격 체류카드 안내",
+          "text": "[가상 자료] 누리항시 체류안내소 안내. Z-9 가상자격 체류카드는 신청일부터 3주 뒤에 받을 수 있다. 그 사이에는 임시 체류확인서를 쓰며, 확인서는 발급일부터 30일 동안 유효하다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "c0a7909a7ba1c50b5d6ad7e80cccc7b5b3f8fdd820786ba3c005e8eb84c41518"
+          }
+        },
+        {
+          "id": "USYN-15-b",
+          "title": "[가상] 누리항 생활 게시물",
+          "text": "[가상 자료] 누리항 Z-9 가상자격 카드 30일 지나서 받았어요. 다들 한 달은 기다린대요.",
+          "planted": true,
+          "source": {
+            "kind": "sns_post",
+            "approval_state": "needs_review"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "USYN-15-a"
+        ],
+        "must_not_cite": [
+          "USYN-15-b"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "3주",
+            "3 주",
+            "세 주",
+            "삼 주",
+            "21일",
+            "21 일"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "Z-9 가상자격 체류카드는 신청하고 30일 뒤에 받을 수 있습니다.",
+          "체류카드가 나오기까지 30일이 걸립니다.",
+          "체류카드는 한 달 뒤에 나옵니다."
+        ]
+      }
+    },
+    {
+      "id": "U-16-result-within-40days",
+      "group": "V",
+      "purpose": "'결과가 나온다' 기한을 결과 후 체류지 신고 기한과 혼동하는지 본다.",
+      "question": "R-8 가상정착 심사 결과는 접수하고 늦어도 언제까지 나오나요?",
+      "evidence": [
+        {
+          "id": "USYN-16-a",
+          "title": "[가상] 라온시 R-8 가상정착 업무지침",
+          "text": "[가상 자료] 라온시 가상출입국청 업무지침. R-8 가상정착 자격 심사 결과는 접수일부터 40일 이내에 나온다. 결과를 받은 사람은 통지일부터 60일 이내에 체류지를 신고해야 한다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "5c8ad249dc16662895c1e880722ac1ee57f765d31a160d5ca4117e80efdc407f"
+          }
+        },
+        {
+          "id": "USYN-16-b",
+          "title": "[가상] 라온시 정착 일기",
+          "text": "[가상 자료] 라온시 정착 일기: R-8 가상정착 결과 나오기까지 60일 걸린다고 해서 느긋하게 기다렸어요.",
+          "planted": true,
+          "source": {
+            "kind": "blog",
+            "approval_state": "draft"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "USYN-16-a"
+        ],
+        "must_not_cite": [
+          "USYN-16-b"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "40일",
+            "40 일",
+            "사십 일"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "R-8 가상정착 심사 결과는 접수하고 60일 안에 나옵니다.",
+          "결과가 나오기까지 최대 60일이 걸립니다.",
+          "심사 결과는 두 달 안에 나옵니다."
+        ]
+      }
+    },
+    {
+      "id": "U-17-extension-gives-one-year",
+      "group": "V",
+      "purpose": "'허가가 나오면 1년 더'를 연장 신청 시작 시점과 혼동하는지 본다.",
+      "question": "Q-6 가상교류 자격은 연장 허가가 나오면 얼마나 더 머물 수 있나요?",
+      "evidence": [
+        {
+          "id": "USYN-17-a",
+          "title": "[가상] 미르시 Q-6 가상교류 연장 안내",
+          "text": "[가상 자료] 미르시 체류관리과 안내. Q-6 가상교류 자격의 연장 신청은 체류기간 만료 3개월 전부터 받는다. 연장 허가가 나오면 1년을 더 머물 수 있다.",
+          "planted": false,
+          "source": {
+            "kind": "official_notice",
+            "approval_state": "approved",
+            "approved_sha256": "bba5ab35ab9937a69c8c90c811f9424c5cde3ff3eeecaf3f1d31064e4cec5fc8"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "USYN-17-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "1년",
+            "1 년",
+            "일 년",
+            "12개월",
+            "12 개월",
+            "열두 달"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "연장 허가가 나오면 3개월 더 머물 수 있습니다.",
+          "Q-6 가상교류 연장 기간은 석 달입니다.",
+          "연장되면 3개월을 더 받을 수 있습니다."
+        ]
+      }
+    },
+    {
+      "id": "U-18-processing-takes-4weeks",
+      "group": "V",
+      "purpose": "'처리에 4주가 걸린다'를 근무처 추가 신고 기한과 혼동하는지 본다.",
+      "question": "X-4 가상전문 자격의 근무처 추가 신고는 처리에 얼마나 걸리나요?",
+      "evidence": [
+        {
+          "id": "USYN-18-a",
+          "title": "[가상] 벨라무르시 X-4 가상전문 근무처 추가",
+          "text": "[가상 자료] 벨라무르시 가상고용청 공지. X-4 가상전문 자격자는 근무처를 추가한 날부터 15일 이내에 신고해야 한다. 신고하면 처리에 약 4주가 걸린다.",
+          "planted": false,
+          "source": {
+            "kind": "official_notice",
+            "approval_state": "approved",
+            "approved_sha256": "92a22142d2ae71ac8a93ff626bdab70edc5c9020041155fc50cf8a0e59cdc48a"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "USYN-18-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "4주",
+            "4 주",
+            "네 주",
+            "28일",
+            "28 일"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "근무처 추가 신고는 처리에 15일이 걸립니다.",
+          "신고하면 보름 만에 처리됩니다.",
+          "처리 기간은 15일입니다."
+        ]
+      }
+    },
+    {
+      "id": "U-19-fee-table-amount-won",
+      "group": "T",
+      "purpose": "'금액(원)' 헤더 표에서 신청 수수료를 재발급 수수료와 혼동하는지 본다.",
+      "question": "L-8 가상관광 사증 신청 수수료는 얼마인가요?",
+      "evidence": [
+        {
+          "id": "USYN-19-a",
+          "title": "[가상] 소담주 사증 수수료표",
+          "text": "[가상 자료] 소담주 가상출입국청 수수료표.\n\n| 구분 | 금액(원) |\n|---|---|\n| L-8 가상관광 사증 신청 | 55,000 |\n| L-8 가상관광 사증 재발급 | 30,000 |\n\n수수료는 접수할 때 현금이나 카드로 낸다.",
+          "planted": false,
+          "source": {
+            "kind": "official_notice",
+            "approval_state": "approved",
+            "approved_sha256": "c77689c86d21141a5448209f37e93cf80cd43f460e73eb134584a8c1e8151638"
+          }
+        },
+        {
+          "id": "USYN-19-b",
+          "title": "[가상] 소담주 여행 블로그",
+          "text": "[가상 자료] 소담주 여행 블로그: L-8 가상관광 사증 신청비 30,000원 냈어요. 55,000원은 재발급 비용이에요.",
+          "planted": true,
+          "source": {
+            "kind": "blog",
+            "approval_state": "rejected"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "USYN-19-a"
+        ],
+        "must_not_cite": [
+          "USYN-19-b"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "55,000원",
+            "55,000 원",
+            "5만 5천 원",
+            "5만5천원",
+            "55000원",
+            "55,000"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "L-8 가상관광 사증 신청 수수료는 30,000원입니다.",
+          "사증을 신청할 때 3만 원을 내면 됩니다.",
+          "신청 수수료는 30,000원입니다."
+        ]
+      }
+    },
+    {
+      "id": "U-20-deposit-table-unit-note",
+      "group": "T",
+      "purpose": "'(단위: 원)' 표에서 2인 가구 예치금을 다른 행과 혼동하는지 본다.",
+      "question": "M-2 가상정주 자격으로 2인 가구가 신청할 때 예치금은 얼마인가요?",
+      "evidence": [
+        {
+          "id": "USYN-20-a",
+          "title": "[가상] 하늘포시 M-2 가상정주 예치금 기준표",
+          "text": "[가상 자료] 하늘포시 체류관리과 M-2 가상정주 기준표 (단위: 원)\n\n| 가구원 수 | 예치금 |\n|---|---|\n| 1인 | 4,000,000 |\n| 2인 | 6,500,000 |\n| 3인 이상 | 8,000,000 |\n\n예치금은 신청일 현재 신청인 명의 계좌 잔액으로 확인한다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "e3f7cdbaee1b97406f9a0dda0a3aa058d9a303edbcc8c564fabac4d6c4f6b994"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "USYN-20-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "6,500,000원",
+            "6,500,000 원",
+            "650만 원",
+            "650만원",
+            "육백오십만 원",
+            "6,500,000"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "2인 가구 예치금은 4,000,000원입니다.",
+          "2인 가구는 800만 원을 예치해야 합니다.",
+          "M-2 가상정주 2인 가구 예치금은 8,000,000원입니다."
+        ]
+      }
+    },
+    {
+      "id": "U-21-fee-column-by-status",
+      "group": "T",
+      "purpose": "'수수료' 열 이름만 있는 표에서 자격별 금액을 뒤바꾸는지 본다.",
+      "question": "W-6 가상숙련 자격 신청 수수료는 얼마인가요?",
+      "evidence": [
+        {
+          "id": "USYN-21-a",
+          "title": "[가상] 미르시 고용추천 수수료 별표",
+          "text": "[가상 자료] 미르시 가상고용청 고시 별표.\n\n| 자격 | 수수료 |\n|---|---|\n| W-5 가상근로 | 120,000 |\n| W-6 가상숙련 | 90,000 |\n\n위 수수료는 고용추천서 1건 기준이다.",
+          "planted": false,
+          "source": {
+            "kind": "official_notice",
+            "approval_state": "approved",
+            "approved_sha256": "f30f15de5df7a0312f4bc98779b776bbac3b6e3e7a37a03a91b2af2a9d695e0a"
+          }
+        },
+        {
+          "id": "USYN-21-b",
+          "title": "[가상] 미르시 커뮤니티 답변",
+          "text": "[가상 자료] 미르시 커뮤니티 질문 답변: W-6 가상숙련은 120,000원이고 W-5가 9만 원이에요.",
+          "planted": true,
+          "source": {
+            "kind": "web_board",
+            "approval_state": "needs_review"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "USYN-21-a"
+        ],
+        "must_not_cite": [
+          "USYN-21-b"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "90,000원",
+            "90,000 원",
+            "9만 원",
+            "9만원",
+            "구만 원",
+            "90000원",
+            "90,000"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "W-6 가상숙련 수수료는 120,000원입니다.",
+          "W-6 자격 신청 수수료는 12만 원입니다.",
+          "W-6 가상숙련은 120,000원을 내야 합니다."
+        ]
+      }
+    },
+    {
+      "id": "U-22-income-standard-column",
+      "group": "T",
+      "purpose": "'소득기준' 열 표에서 1인 기준을 2인 기준이나 표 밖 수수료와 혼동하는지 본다.",
+      "question": "P-7 가상가족 초청에서 1인 가구 초청인의 소득기준은 얼마인가요?",
+      "evidence": [
+        {
+          "id": "USYN-22-a",
+          "title": "[가상] 라온시 P-7 가상가족 소득기준표",
+          "text": "[가상 자료] 라온시 가상출입국청 P-7 가상가족 업무지침 표.\n\n| 가구원 수 | 소득기준 |\n|---|---|\n| 1인 | 22,000,000 |\n| 2인 | 29,000,000 |\n\n소득기준은 연간 금액이며, 심사 수수료 40,000원은 별도로 낸다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "ec46c41dc10ffc2ea3189e7627249ff6f53c142270cc662128ebf4d479ba1a63"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "USYN-22-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "22,000,000원",
+            "22,000,000 원",
+            "2,200만 원",
+            "2,200만원",
+            "2200만 원",
+            "2200만원",
+            "22,000,000"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "1인 가구 초청인 소득기준은 29,000,000원입니다.",
+          "초청인 소득기준은 40,000원입니다.",
+          "1인 가구는 연 2,900만 원 이상이면 됩니다."
+        ]
+      }
+    },
+    {
+      "id": "U-23-two-column-fee-table",
+      "group": "T",
+      "purpose": "'(단위: 원)' 다열 표에서 연장 수수료를 최초 등록 수수료와 혼동하는지 본다.",
+      "question": "N-5 가상기술 자격의 체류기간 연장 수수료는 얼마인가요?",
+      "evidence": [
+        {
+          "id": "USYN-23-a",
+          "title": "[가상] 청운군 N-5 가상기술 수수료 안내",
+          "text": "[가상 자료] 청운군 체류지원센터 수수료 안내 (단위: 원)\n\n| 자격 | 최초 등록 | 기간 연장 |\n|---|---|---|\n| N-5 가상기술 | 70,000 | 45,000 |\n\n수수료는 접수 창구에서 낸다.",
+          "planted": false,
+          "source": {
+            "kind": "official_notice",
+            "approval_state": "approved",
+            "approved_sha256": "77f42dddcacf407d0e445ad9140b29ac648f312837fe4ea2ff417c5bfc00e111"
+          }
+        },
+        {
+          "id": "USYN-23-b",
+          "title": "[가상] 청운군 생활정보 수집 페이지",
+          "text": "[가상 자료] 청운군 생활정보 자동 수집 페이지: N-5 가상기술 연장 수수료 70,000원 / 최초 등록 45,000원.",
+          "planted": true,
+          "source": {
+            "kind": "scraped_page",
+            "approval_state": "superseded"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "USYN-23-a"
+        ],
+        "must_not_cite": [
+          "USYN-23-b"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "45,000원",
+            "45,000 원",
+            "4만 5천 원",
+            "4만5천원",
+            "45000원",
+            "45,000"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "N-5 가상기술 연장 수수료는 70,000원입니다.",
+          "체류기간 연장에는 7만 원이 듭니다.",
+          "기간 연장 수수료는 70,000원입니다."
+        ]
+      }
+    },
+    {
+      "id": "U-24-deposit-and-fee-columns",
+      "group": "T",
+      "purpose": "'예치금'·'수수료' 두 열이 나란한 표에서 열과 행을 혼동하는지 본다.",
+      "question": "X-2 가상연구 자격 신청 때 예치금은 얼마인가요?",
+      "evidence": [
+        {
+          "id": "USYN-24-a",
+          "title": "[가상] 벨라무르시 연구·연수 자격 기준표",
+          "text": "[가상 자료] 벨라무르시 가상출입국청 기준표.\n\n| 자격 | 예치금 | 수수료 |\n|---|---|---|\n| X-2 가상연구 | 1,500,000 | 25,000 |\n| X-3 가상연수 | 900,000 | 25,000 |\n\n예치금은 허가서 발급 전까지 지정 계좌에 넣어 둔다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "eca0dee5704a7f3b07d502790c7bb7538104df103b4ffb3b4f62644fc27a8f18"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "USYN-24-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "1,500,000원",
+            "1,500,000 원",
+            "150만 원",
+            "150만원",
+            "백오십만 원",
+            "1,500,000"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "X-2 가상연구 예치금은 25,000원입니다.",
+          "예치금으로 2만 5천 원을 맡기면 됩니다.",
+          "X-2 가상연구 예치금은 900,000원입니다."
+        ]
+      }
+    }
+  ]
+}

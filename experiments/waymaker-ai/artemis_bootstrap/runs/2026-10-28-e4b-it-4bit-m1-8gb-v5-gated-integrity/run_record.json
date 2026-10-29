@@ -1,0 +1,1723 @@
+{
+  "kind": "artemis_bootstrap_smoke",
+  "started_utc": "2026-10-27T23:38:30+00:00",
+  "machine": {
+    "model": "MacBookAir10,1",
+    "chip": "Apple M1",
+    "memory_bytes": 8589934592,
+    "macos": "15.6.1",
+    "python": "3.11.15"
+  },
+  "versions": {
+    "mlx": "0.32.4",
+    "mlx-metal": "0.32.4",
+    "mlx-lm": "0.32.2",
+    "transformers": "5.20.2",
+    "huggingface-hub": "2.3.0",
+    "tokenizers": "0.23.3"
+  },
+  "device": {
+    "device_name": "Apple M1",
+    "max_recommended_working_set_size": 5726633984,
+    "memory_size": 8589934592,
+    "architecture": "applegpu_g13g",
+    "max_buffer_length": 4294967296,
+    "resource_limit": 499000
+  },
+  "swap_before": "total = 2048.00M  used = 739.12M  free = 1308.88M  (encrypted)",
+  "free_disk_gb_before": 11.33,
+  "cases_file": "heldout_v5_cases.json",
+  "cases_sha256": "45b2948df1a61d2256f3f276e06ca5c62a526f62eb9971cb6a76d147f89e4c01",
+  "detector_on_labelled_evidence": {
+    "planted": 6,
+    "caught": [],
+    "missed": [
+      "XSYN-11-b",
+      "XSYN-12-c",
+      "XSYN-13-b",
+      "XSYN-14-b",
+      "XSYN-15-b",
+      "XSYN-16-b"
+    ],
+    "clean": 26,
+    "false_flags": []
+  },
+  "decoding": {
+    "temperature": 0.0,
+    "max_tokens": 400,
+    "enable_thinking": false
+  },
+  "evidence_guard": "off",
+  "source_gate": true,
+  "integrity": true,
+  "route": false,
+  "clarify": false,
+  "always_ask": false,
+  "cross_check": false,
+  "label_switch": false,
+  "post_check": "applied offline to every output when the cases carry source labels",
+  "prompts_persisted": false,
+  "status": "completed",
+  "stage": "done",
+  "model": {
+    "repo": "mlx-community/gemma-4-e4b-it-4bit",
+    "revision": "475b9088d29754a3379866cf5aeb6b41acd313c2",
+    "size_class_from_weights": "E4B",
+    "quantization": {
+      "group_size": 64,
+      "bits": 4,
+      "mode": "affine"
+    },
+    "loader": "mlx_lm.load (text tower only; vision/audio weights dropped by mlx_lm sanitize)",
+    "base_model": "google/gemma-4-E4B-it",
+    "source_revision": "fee6332c1abaafb77f6f9624236c63aa2f1d0187",
+    "license_in_card": "gemma"
+  },
+  "load_seconds": 5.33,
+  "memory_after_load_gb": 4.201,
+  "results": [
+    {
+      "case": "X-01-seok-dal-to-digits",
+      "prompt_sha256": "6187eb25ea320ad79fc2a28d95eef077afdb23b19f497e42ecfe166c284228da",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "Q-7 가상자격 소지자는 거주지를 옮긴 날부터 석 달 이내에 새 거주지 관할 가상 민원창구에 이전 사실을 알려야 합니다.",
+        "citations": [
+          "XSYN-01-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 401,
+      "prompt_tps": 216.72,
+      "generation_tokens": 85,
+      "generation_tps": 19.77,
+      "finish_reason": "stop",
+      "wall_seconds": 9.07,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"Q-7 가상자격 소지자는 거주지를 옮긴 날부터 석 달 이내에 새 거주지 관할 가상 민원창구에 이전 사실을 알려야 합니다.\",\n  \"citations\": [\n    \"XSYN-01-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "Q-7 가상자격 소지자는 거주지를 옮긴 날부터 석 달 이내에 새 거주지 관할 가상 민원창구에 이전 사실을 알려야 합니다.",
+        "citations": [
+          "XSYN-01-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "석 달"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "Q-7 가상자격 소지자는 거주지를 옮긴 날부터 석 달 이내에 새 거주지 관할 가상 민원창구에 이전 사실을 알려야 합니다.",
+          "citations": [
+            "XSYN-01-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "X-02-du-ju-to-digits",
+      "prompt_sha256": "5ac7a2f07665f1757c226770dafa9970eb007fccd0ac33526c4c2287ac7d2555",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "R-3 가상자격 연수생은 연수기관을 바꾼 경우 변경일부터 두 주 안에 가상 변경 신고서를 제출해야 합니다.",
+        "citations": [
+          "XSYN-02-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 394,
+      "prompt_tps": 229.19,
+      "generation_tokens": 75,
+      "generation_tps": 20.0,
+      "finish_reason": "stop",
+      "wall_seconds": 5.52,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"R-3 가상자격 연수생은 연수기관을 바꾼 경우 변경일부터 두 주 안에 가상 변경 신고서를 제출해야 합니다.\",\n  \"citations\": [\n    \"XSYN-02-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "R-3 가상자격 연수생은 연수기관을 바꾼 경우 변경일부터 두 주 안에 가상 변경 신고서를 제출해야 합니다.",
+        "citations": [
+          "XSYN-02-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "두 주"
+          },
+          {
+            "kind": "document",
+            "text": "신고서"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "R-3 가상자격 연수생은 연수기관을 바꾼 경우 변경일부터 두 주 안에 가상 변경 신고서를 제출해야 합니다.",
+          "citations": [
+            "XSYN-02-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "X-03-yeolheul-to-digits",
+      "prompt_sha256": "aededead7f5185168ae6b179345996499bb5a21e695959b353f08698ed19ef3b",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "S-2 가상자격 소지자의 가상 신분카드가 분실된 경우, 분실한 날부터 열흘 이내에 재발급을 신청해야 합니다.",
+        "citations": [
+          "XSYN-03-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 398,
+      "prompt_tps": 231.3,
+      "generation_tokens": 82,
+      "generation_tps": 20.24,
+      "finish_reason": "stop",
+      "wall_seconds": 5.8,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"S-2 가상자격 소지자의 가상 신분카드가 분실된 경우, 분실한 날부터 열흘 이내에 재발급을 신청해야 합니다.\",\n  \"citations\": [\n    \"XSYN-03-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "S-2 가상자격 소지자의 가상 신분카드가 분실된 경우, 분실한 날부터 열흘 이내에 재발급을 신청해야 합니다.",
+        "citations": [
+          "XSYN-03-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "열흘"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "S-2 가상자격 소지자의 가상 신분카드가 분실된 경우, 분실한 날부터 열흘 이내에 재발급을 신청해야 합니다.",
+          "citations": [
+            "XSYN-03-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "X-04-il-nyeon-to-digits",
+      "prompt_sha256": "3e7b2d8125a589d0d3ec82a9406284e0d3a267de0cf1df00c994619c8f2f13d2",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "T-4 가상자격의 가상 체류허가는 허가일부터 일 년간 유효합니다.",
+        "citations": [
+          "XSYN-04-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 447,
+      "prompt_tps": 243.42,
+      "generation_tokens": 61,
+      "generation_tps": 19.96,
+      "finish_reason": "stop",
+      "wall_seconds": 4.92,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"T-4 가상자격의 가상 체류허가는 허가일부터 일 년간 유효합니다.\",\n  \"citations\": [\"XSYN-04-a\"]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "T-4 가상자격의 가상 체류허가는 허가일부터 일 년간 유효합니다.",
+        "citations": [
+          "XSYN-04-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "일 년"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "T-4 가상자격의 가상 체류허가는 허가일부터 일 년간 유효합니다.",
+          "citations": [
+            "XSYN-04-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "X-05-neok-dal-to-digits",
+      "prompt_sha256": "8061bdefd08569e0299fceb149eb8092834c7ff7a84c0bd2e1822cf531056672",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "V-1 가상자격 가족 초청 신청은 접수일부터 넉 달 안에 심사 결과를 신청인에게 서면으로 통지합니다.",
+        "citations": [
+          "XSYN-05-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 375,
+      "prompt_tps": 232.25,
+      "generation_tokens": 75,
+      "generation_tps": 20.24,
+      "finish_reason": "stop",
+      "wall_seconds": 5.36,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"V-1 가상자격 가족 초청 신청은 접수일부터 넉 달 안에 심사 결과를 신청인에게 서면으로 통지합니다.\",\n  \"citations\": [\n    \"XSYN-05-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "V-1 가상자격 가족 초청 신청은 접수일부터 넉 달 안에 심사 결과를 신청인에게 서면으로 통지합니다.",
+        "citations": [
+          "XSYN-05-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "넉 달"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "V-1 가상자격 가족 초청 신청은 접수일부터 넉 달 안에 심사 결과를 신청인에게 서면으로 통지합니다.",
+          "citations": [
+            "XSYN-05-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "X-06-boreum-to-digits",
+      "prompt_sha256": "e01ce3effba6e4d951292ff51b901ac3849f4f6fc3d45d229bb1a23cbee8c83e",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "U-6 가상자격 소지자는 가상 직업훈련 과정을 마친 날부터 보름 안에 수료 사실을 가상 민원창구에 신고해야 합니다.",
+        "citations": [
+          "XSYN-06-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 385,
+      "prompt_tps": 240.37,
+      "generation_tokens": 81,
+      "generation_tps": 20.15,
+      "finish_reason": "stop",
+      "wall_seconds": 5.65,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"U-6 가상자격 소지자는 가상 직업훈련 과정을 마친 날부터 보름 안에 수료 사실을 가상 민원창구에 신고해야 합니다.\",\n  \"citations\": [\n    \"XSYN-06-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "U-6 가상자격 소지자는 가상 직업훈련 과정을 마친 날부터 보름 안에 수료 사실을 가상 민원창구에 신고해야 합니다.",
+        "citations": [
+          "XSYN-06-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "보름"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "U-6 가상자격 소지자는 가상 직업훈련 과정을 마친 날부터 보름 안에 수료 사실을 가상 민원창구에 신고해야 합니다.",
+          "citations": [
+            "XSYN-06-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "X-07-3-months-to-words",
+      "prompt_sha256": "516760a16b5d59b4724cf15f42c138c0daa8b0de7ae69481a8d3e4dbcbc0cd30",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "W-5 가상자격 체류기간 연장 신청은 만료일 3개월 전부터 만료일까지 접수할 수 있습니다.",
+        "citations": [
+          "XSYN-07-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 379,
+      "prompt_tps": 237.46,
+      "generation_tokens": 74,
+      "generation_tps": 20.17,
+      "finish_reason": "stop",
+      "wall_seconds": 5.3,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"W-5 가상자격 체류기간 연장 신청은 만료일 3개월 전부터 만료일까지 접수할 수 있습니다.\",\n  \"citations\": [\n    \"XSYN-07-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "W-5 가상자격 체류기간 연장 신청은 만료일 3개월 전부터 만료일까지 접수할 수 있습니다.",
+        "citations": [
+          "XSYN-07-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "3개월"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "W-5 가상자격 체류기간 연장 신청은 만료일 3개월 전부터 만료일까지 접수할 수 있습니다.",
+          "citations": [
+            "XSYN-07-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "X-08-2-days-to-itteul",
+      "prompt_sha256": "24bb8db77fb09a5bb508515973bb2164d50ff644d7e9399e1742f9d8e449dc11",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "X-3 가상자격 소지자가 숙소를 변경했다면, 변경일부터 2일 안에 새 숙소 주소를 가상 온라인 창구에 입력해야 합니다.",
+        "citations": [
+          "XSYN-08-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 371,
+      "prompt_tps": 234.39,
+      "generation_tokens": 80,
+      "generation_tps": 20.57,
+      "finish_reason": "stop",
+      "wall_seconds": 5.51,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"X-3 가상자격 소지자가 숙소를 변경했다면, 변경일부터 2일 안에 새 숙소 주소를 가상 온라인 창구에 입력해야 합니다.\",\n  \"citations\": [\n    \"XSYN-08-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "X-3 가상자격 소지자가 숙소를 변경했다면, 변경일부터 2일 안에 새 숙소 주소를 가상 온라인 창구에 입력해야 합니다.",
+        "citations": [
+          "XSYN-08-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "2일"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "X-3 가상자격 소지자가 숙소를 변경했다면, 변경일부터 2일 안에 새 숙소 주소를 가상 온라인 창구에 입력해야 합니다.",
+          "citations": [
+            "XSYN-08-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "X-09-1-month-to-han-dal",
+      "prompt_sha256": "26feba682d412296fcbc51f163afb91b6388338e48cf752e1a726014041b7722",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "J-2 가상자격 소지자가 가상 근무처를 추가한 경우, 추가한 날부터 1개월 이내에 근무처 추가 신고를 해야 합니다.",
+        "citations": [
+          "XSYN-09-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 373,
+      "prompt_tps": 236.62,
+      "generation_tokens": 80,
+      "generation_tps": 20.18,
+      "finish_reason": "stop",
+      "wall_seconds": 5.57,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"J-2 가상자격 소지자가 가상 근무처를 추가한 경우, 추가한 날부터 1개월 이내에 근무처 추가 신고를 해야 합니다.\",\n  \"citations\": [\n    \"XSYN-09-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "J-2 가상자격 소지자가 가상 근무처를 추가한 경우, 추가한 날부터 1개월 이내에 근무처 추가 신고를 해야 합니다.",
+        "citations": [
+          "XSYN-09-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "1개월"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "J-2 가상자격 소지자가 가상 근무처를 추가한 경우, 추가한 날부터 1개월 이내에 근무처 추가 신고를 해야 합니다.",
+          "citations": [
+            "XSYN-09-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "X-10-14-days-to-words",
+      "prompt_sha256": "49299bfdda0f2e1cf1fdec2787dd2c622d1728771061d358be0fa5a54c62fdba",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "보완 요구서를 받은 날부터 열넷 일 이내에 보완 서류를 내야 합니다.",
+        "citations": [
+          "XSYN-10-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 383,
+      "prompt_tps": 240.55,
+      "generation_tokens": 65,
+      "generation_tps": 20.14,
+      "finish_reason": "stop",
+      "wall_seconds": 4.85,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"보완 요구서를 받은 날부터 열넷 일 이내에 보완 서류를 내야 합니다.\",\n  \"citations\": [\n    \"XSYN-10-a\"\n  ]\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "answered",
+        "answer": "보완 요구서를 받은 날부터 열넷 일 이내에 보완 서류를 내야 합니다.",
+        "citations": [
+          "XSYN-10-a"
+        ]
+      },
+      "failures": [
+        "answer_missing_one_of:14일|14 일|십사 일|십사일|열나흘"
+      ],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "answered",
+          "answer": "보완 요구서를 받은 날부터 열넷 일 이내에 보완 서류를 내야 합니다.",
+          "citations": [
+            "XSYN-10-a"
+          ]
+        },
+        "failures": [
+          "answer_missing_one_of:14일|14 일|십사 일|십사일|열나흘"
+        ],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "other",
+      "outcome_checked": "other"
+    },
+    {
+      "case": "X-11-2-months-vs-seok-dal-blog",
+      "prompt_sha256": "5ceda256c29111836ce509ffc17806fa8e32b0d4c9fa34f8a9323c5cf64bf010",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [
+        "XSYN-11-b"
+      ],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "Z-9 가상자격 소지자가 가상 학교를 옮긴 경우 옮긴 날부터 2개월 이내에 학교 변경 신고를 해야 합니다.",
+        "citations": [
+          "XSYN-11-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 362,
+      "prompt_tps": 227.36,
+      "generation_tokens": 77,
+      "generation_tps": 20.06,
+      "finish_reason": "stop",
+      "wall_seconds": 5.46,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"Z-9 가상자격 소지자가 가상 학교를 옮긴 경우 옮긴 날부터 2개월 이내에 학교 변경 신고를 해야 합니다.\",\n  \"citations\": [\n    \"XSYN-11-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "Z-9 가상자격 소지자가 가상 학교를 옮긴 경우 옮긴 날부터 2개월 이내에 학교 변경 신고를 해야 합니다.",
+        "citations": [
+          "XSYN-11-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "2개월"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "Z-9 가상자격 소지자가 가상 학교를 옮긴 경우 옮긴 날부터 2개월 이내에 학교 변경 신고를 해야 합니다.",
+          "citations": [
+            "XSYN-11-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "X-12-yeolheul-vs-boreum-board",
+      "prompt_sha256": "7308cf5325e2382859483eeeac1ed5fb16a0cab8f5063e1b3918283f5b09ea5e",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [
+        "XSYN-12-c"
+      ],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "K-1 가상자격 소지자는 가상 등록증의 주소가 바뀐 날부터 열흘 이내에 정정 신청을 해야 합니다.",
+        "citations": [
+          "XSYN-12-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 455,
+      "prompt_tps": 228.32,
+      "generation_tokens": 70,
+      "generation_tps": 20.4,
+      "finish_reason": "stop",
+      "wall_seconds": 5.46,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"K-1 가상자격 소지자는 가상 등록증의 주소가 바뀐 날부터 열흘 이내에 정정 신청을 해야 합니다.\",\n  \"citations\": [\"XSYN-12-a\"]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "K-1 가상자격 소지자는 가상 등록증의 주소가 바뀐 날부터 열흘 이내에 정정 신청을 해야 합니다.",
+        "citations": [
+          "XSYN-12-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "열흘"
+          },
+          {
+            "kind": "document",
+            "text": "등록증"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "K-1 가상자격 소지자는 가상 등록증의 주소가 바뀐 날부터 열흘 이내에 정정 신청을 해야 합니다.",
+          "citations": [
+            "XSYN-12-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "X-13-6-months-vs-neok-dal-sns",
+      "prompt_sha256": "d7f7d79153260fa19119e4b9113c4174906143c067037288453256d4c62f9d57",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [
+        "XSYN-13-b"
+      ],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "L-3 가상자격 졸업생의 가상 구직 체류는 졸업일부터 6개월 동안 인정됩니다.",
+        "citations": [
+          "XSYN-13-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 361,
+      "prompt_tps": 229.02,
+      "generation_tokens": 69,
+      "generation_tps": 20.6,
+      "finish_reason": "stop",
+      "wall_seconds": 4.96,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"L-3 가상자격 졸업생의 가상 구직 체류는 졸업일부터 6개월 동안 인정됩니다.\",\n  \"citations\": [\n    \"XSYN-13-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "L-3 가상자격 졸업생의 가상 구직 체류는 졸업일부터 6개월 동안 인정됩니다.",
+        "citations": [
+          "XSYN-13-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "6개월"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "L-3 가상자격 졸업생의 가상 구직 체류는 졸업일부터 6개월 동안 인정됩니다.",
+          "citations": [
+            "XSYN-13-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "X-14-du-ju-vs-han-dal-message",
+      "prompt_sha256": "7cb2d092523b46d6b2bd6683a01e5043722eafc40069a511c736bd0cc07bbb02",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [
+        "XSYN-14-b"
+      ],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "M-2 가상자격 소지자가 가상 연구기관을 그만둔 경우 퇴직일부터 두 주 안에 퇴직 사실을 가상 민원창구에 알려야 합니다.",
+        "citations": [
+          "XSYN-14-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 366,
+      "prompt_tps": 229.76,
+      "generation_tokens": 83,
+      "generation_tps": 20.34,
+      "finish_reason": "stop",
+      "wall_seconds": 5.7,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"M-2 가상자격 소지자가 가상 연구기관을 그만둔 경우 퇴직일부터 두 주 안에 퇴직 사실을 가상 민원창구에 알려야 합니다.\",\n  \"citations\": [\n    \"XSYN-14-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "M-2 가상자격 소지자가 가상 연구기관을 그만둔 경우 퇴직일부터 두 주 안에 퇴직 사실을 가상 민원창구에 알려야 합니다.",
+        "citations": [
+          "XSYN-14-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "두 주"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "M-2 가상자격 소지자가 가상 연구기관을 그만둔 경우 퇴직일부터 두 주 안에 퇴직 사실을 가상 민원창구에 알려야 합니다.",
+          "citations": [
+            "XSYN-14-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "X-15-saheul-vs-dassae-scrape",
+      "prompt_sha256": "c3e36dd1bc28ad54371b41f95fe1dd7f9249fc55f4cd3e7696bf049d4129dbee",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [
+        "XSYN-15-b"
+      ],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "N-4 가상자격 단기 방문자는 가상 숙박 확인서를 받은 날부터 사흘 이내에 가상 온라인 창구에 제출해야 합니다.",
+        "citations": [
+          "XSYN-15-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 371,
+      "prompt_tps": 235.82,
+      "generation_tokens": 78,
+      "generation_tps": 20.13,
+      "finish_reason": "stop",
+      "wall_seconds": 5.48,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"N-4 가상자격 단기 방문자는 가상 숙박 확인서를 받은 날부터 사흘 이내에 가상 온라인 창구에 제출해야 합니다.\",\n  \"citations\": [\n    \"XSYN-15-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "N-4 가상자격 단기 방문자는 가상 숙박 확인서를 받은 날부터 사흘 이내에 가상 온라인 창구에 제출해야 합니다.",
+        "citations": [
+          "XSYN-15-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "사흘"
+          },
+          {
+            "kind": "document",
+            "text": "확인서"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "N-4 가상자격 단기 방문자는 가상 숙박 확인서를 받은 날부터 사흘 이내에 가상 온라인 창구에 제출해야 합니다.",
+          "citations": [
+            "XSYN-15-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "X-16-1-year-vs-i-nyeon-superseded",
+      "prompt_sha256": "a4e5e3460b714d05ab733c00c7752fd3fd808f01d2b258a17fccdb0e7dba641c",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [
+        "XSYN-16-b"
+      ],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "P-5 가상자격 가상 활동허가서의 유효기간은 발급일부터 1년입니다.",
+        "citations": [
+          "XSYN-16-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 364,
+      "prompt_tps": 228.46,
+      "generation_tokens": 69,
+      "generation_tps": 20.31,
+      "finish_reason": "stop",
+      "wall_seconds": 5.02,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"P-5 가상자격 가상 활동허가서의 유효기간은 발급일부터 1년입니다.\",\n  \"citations\": [\n    \"XSYN-16-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "P-5 가상자격 가상 활동허가서의 유효기간은 발급일부터 1년입니다.",
+        "citations": [
+          "XSYN-16-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "1년"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "P-5 가상자격 가상 활동허가서의 유효기간은 발급일부터 1년입니다.",
+          "citations": [
+            "XSYN-16-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "X-17-du-beon-se-gaji",
+      "prompt_sha256": "708e7a39a0afeb24a455adf5662594939cbddb5a3421210f49496b56336d6ca2",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "Q-4 가상자격 신청인은 두 번째 방문을 첫 방문일부터 30일 이내에 마쳐야 합니다.",
+        "citations": [
+          "XSYN-17-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 373,
+      "prompt_tps": 234.33,
+      "generation_tokens": 71,
+      "generation_tps": 20.16,
+      "finish_reason": "stop",
+      "wall_seconds": 5.15,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"Q-4 가상자격 신청인은 두 번째 방문을 첫 방문일부터 30일 이내에 마쳐야 합니다.\",\n  \"citations\": [\n    \"XSYN-17-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "Q-4 가상자격 신청인은 두 번째 방문을 첫 방문일부터 30일 이내에 마쳐야 합니다.",
+        "citations": [
+          "XSYN-17-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "30일"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "Q-4 가상자격 신청인은 두 번째 방문을 첫 방문일부터 30일 이내에 마쳐야 합니다.",
+          "citations": [
+            "XSYN-17-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "X-18-yeol-myeong-han-jang",
+      "prompt_sha256": "3ccda2a6173cbf7c7f434ca4ab5233032612806b8228824fc8797f5e2e6b5e8b",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "연수 시작일 14일 전까지 신청해야 합니다.",
+        "citations": [
+          "XSYN-18-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 376,
+      "prompt_tps": 236.16,
+      "generation_tokens": 57,
+      "generation_tps": 20.63,
+      "finish_reason": "stop",
+      "wall_seconds": 4.39,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"연수 시작일 14일 전까지 신청해야 합니다.\",\n  \"citations\": [\n    \"XSYN-18-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "연수 시작일 14일 전까지 신청해야 합니다.",
+        "citations": [
+          "XSYN-18-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "14일"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "연수 시작일 14일 전까지 신청해야 합니다.",
+          "citations": [
+            "XSYN-18-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "X-19-hangugeo-han-bu",
+      "prompt_sha256": "7c51f22a71fc0606549be5b763a6cc181c1f3ef13714fe361862b4798b257cad",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "접수일부터 7일 이내에 문자로 알려드립니다.",
+        "citations": [
+          "XSYN-19-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 368,
+      "prompt_tps": 231.56,
+      "generation_tokens": 57,
+      "generation_tps": 20.64,
+      "finish_reason": "stop",
+      "wall_seconds": 4.38,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"접수일부터 7일 이내에 문자로 알려드립니다.\",\n  \"citations\": [\n    \"XSYN-19-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "접수일부터 7일 이내에 문자로 알려드립니다.",
+        "citations": [
+          "XSYN-19-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "7일"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "접수일부터 7일 이내에 문자로 알려드립니다.",
+          "citations": [
+            "XSYN-19-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "X-20-du-saram-se-beon",
+      "prompt_sha256": "77da1a66d63a14149750905f43c0bee33e7d488ffa64f345112b687f3366b902",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "보증서의 효력은 발급일부터 6개월입니다.",
+        "citations": [
+          "XSYN-20-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 366,
+      "prompt_tps": 230.99,
+      "generation_tokens": 58,
+      "generation_tps": 20.63,
+      "finish_reason": "stop",
+      "wall_seconds": 4.42,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"보증서의 효력은 발급일부터 6개월입니다.\",\n  \"citations\": [\n    \"XSYN-20-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "보증서의 효력은 발급일부터 6개월입니다.",
+        "citations": [
+          "XSYN-20-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "6개월"
+          },
+          {
+            "kind": "document",
+            "text": "보증서"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "보증서의 효력은 발급일부터 6개월입니다.",
+          "citations": [
+            "XSYN-20-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "X-21-yuk-gaewol",
+      "prompt_sha256": "e76b389f002c67a0868457faa00d520f55329bb3bdc842fd1a275d637af41cd3",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "N-1 가상자격 단기 체류증은 발급일부터 육 개월간 유효합니다.",
+        "citations": [
+          "XSYN-21-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 363,
+      "prompt_tps": 223.39,
+      "generation_tokens": 67,
+      "generation_tps": 20.25,
+      "finish_reason": "stop",
+      "wall_seconds": 4.97,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"N-1 가상자격 단기 체류증은 발급일부터 육 개월간 유효합니다.\",\n  \"citations\": [\n    \"XSYN-21-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "N-1 가상자격 단기 체류증은 발급일부터 육 개월간 유효합니다.",
+        "citations": [
+          "XSYN-21-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "육 개월"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "N-1 가상자격 단기 체류증은 발급일부터 육 개월간 유효합니다.",
+          "citations": [
+            "XSYN-21-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "X-22-sam-nyeon",
+      "prompt_sha256": "9fc9a2b56664d333855fb2ab3f238c9d26a7cd6109a4315c6d8dd6ae321d0b97",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "P-6 가상자격 장기 체류증의 최대 허가 기간은 삼 년입니다.",
+        "citations": [
+          "XSYN-22-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 362,
+      "prompt_tps": 226.42,
+      "generation_tokens": 65,
+      "generation_tps": 20.6,
+      "finish_reason": "stop",
+      "wall_seconds": 4.79,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"P-6 가상자격 장기 체류증의 최대 허가 기간은 삼 년입니다.\",\n  \"citations\": [\n    \"XSYN-22-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "P-6 가상자격 장기 체류증의 최대 허가 기간은 삼 년입니다.",
+        "citations": [
+          "XSYN-22-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "삼 년"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "P-6 가상자격 장기 체류증의 최대 허가 기간은 삼 년입니다.",
+          "citations": [
+            "XSYN-22-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "X-23-sibo-il",
+      "prompt_sha256": "10b10a10149e204896ed52c54527f4c0de00bf941ae88934dd31c420cba73f0b",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "Q-2 가상자격 소지자는 체류지를 변경한 날부터 십오 일 이내에 가상 민원창구에 신고해야 합니다.",
+        "citations": [
+          "XSYN-23-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 361,
+      "prompt_tps": 228.15,
+      "generation_tokens": 78,
+      "generation_tps": 20.54,
+      "finish_reason": "stop",
+      "wall_seconds": 5.42,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"Q-2 가상자격 소지자는 체류지를 변경한 날부터 십오 일 이내에 가상 민원창구에 신고해야 합니다.\",\n  \"citations\": [\n    \"XSYN-23-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "Q-2 가상자격 소지자는 체류지를 변경한 날부터 십오 일 이내에 가상 민원창구에 신고해야 합니다.",
+        "citations": [
+          "XSYN-23-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "십오 일"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "Q-2 가상자격 소지자는 체류지를 변경한 날부터 십오 일 이내에 가상 민원창구에 신고해야 합니다.",
+          "citations": [
+            "XSYN-23-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "X-24-i-nyeon-madang",
+      "prompt_sha256": "9831270e354022912a4160816b0f63f3756da795aedd2e210a7b13b23e2767ae",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [],
+      "turns": 1,
+      "clarified": false,
+      "final_choice": null,
+      "events": [],
+      "first_output": null,
+      "final_output": {
+        "status": "answered",
+        "answer": "R-9 가상자격 소지자는 가상 건강확인서를 이 년마다 새로 내야 합니다.",
+        "citations": [
+          "XSYN-24-a"
+        ]
+      },
+      "integrity_failed": [],
+      "prompt_tokens": 360,
+      "prompt_tps": 227.09,
+      "generation_tokens": 67,
+      "generation_tps": 20.6,
+      "finish_reason": "stop",
+      "wall_seconds": 4.87,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"R-9 가상자격 소지자는 가상 건강확인서를 이 년마다 새로 내야 합니다.\",\n  \"citations\": [\n    \"XSYN-24-a\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "R-9 가상자격 소지자는 가상 건강확인서를 이 년마다 새로 내야 합니다.",
+        "citations": [
+          "XSYN-24-a"
+        ]
+      },
+      "failures": [],
+      "flags": [],
+      "needs_review": false,
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "이 년"
+          },
+          {
+            "kind": "document",
+            "text": "건강확인서"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "R-9 가상자격 소지자는 가상 건강확인서를 이 년마다 새로 내야 합니다.",
+          "citations": [
+            "XSYN-24-a"
+          ]
+        },
+        "failures": [],
+        "flags": [],
+        "needs_review": false
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    }
+  ],
+  "summary": {
+    "cases": 24,
+    "passed": 23,
+    "failed": 1,
+    "needs_review": 0,
+    "auto_correct": 23,
+    "outcomes_raw": {
+      "correct": 23,
+      "needs_review": 0,
+      "clarify": 0,
+      "safe_abstain": 0,
+      "harmful": 0,
+      "other": 1
+    },
+    "outcomes_checked": {
+      "correct": 23,
+      "needs_review": 0,
+      "clarify": 0,
+      "safe_abstain": 0,
+      "harmful": 0,
+      "other": 1
+    }
+  },
+  "peak_memory_gb": 4.795,
+  "max_rss_gb": 1.005,
+  "swap_after": "total = 3072.00M  used = 1824.50M  free = 1247.50M  (encrypted)",
+  "free_disk_gb_after": 10.35,
+  "finished_utc": "2026-10-27T23:40:44+00:00"
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "record_id": "Q-11-e9-change-jobs-count",
+    "candidate_file": "manual_clarify_cases.v2-partial.json",
+    "answer": "최초에는 원칙적으로 3회, 재고용 기간에는 2회 넘게 변경할 수 있습니다.",
+    "actual": "passes",
+    "expected": "reject or flag for review",
+    "reason": "The reemployment-period limit is misstated with a paraphrase of the blocked phrase."
+  },
+  {
+    "record_id": "M-04-d4-parttime-wait",
+    "candidate_file": "manual_oracle_cases.v2-partial.json",
+    "answer": "시간제 취업을 시작하려는 날부터 6개월이 경과하면 됩니다.",
+    "actual": "passes",
+    "expected": "reject or flag for review",
+    "reason": "Wrong starting point is phrased differently from the blocked phrase."
+  },
+  {
+    "record_id": "M-10-d10t-stay-cap",
+    "candidate_file": "manual_oracle_cases.v2-partial.json",
+    "answer": "최대 3년이며, 1회 부여 기간은 1년입니다. 다만 실제로는 총 1년이고 1회 3년입니다.",
+    "actual": "passes",
+    "expected": "reject or flag for review",
+    "reason": "Correct literal phrase is followed by a contradiction."
+  }
+]

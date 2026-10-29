@@ -1,0 +1,1080 @@
+{
+ "kind": "artemis_facts_ai_owner_items",
+ "date": "2026-10-28",
+ "delegation": "owner: '나 바쁘니까 귀찮게하지마....웬만하면 너가 검토 해' (2026-10-28)",
+ "reviewer": "AI (one Claude subagent, page text only) — owner-delegated, not a human approval, not a legal verification",
+ "scope": "the 40 candidates the final pass left for the owner (after the statute recheck)",
+ "brief": "# Artemis approved facts — settle the 40 items left for the owner\n\nAn earlier AI pass left these fact candidates for the owner because the page did not settle them. The owner has now delegated them: \"전부 다 해결해줘\" (2026-10-28), with the standing rule \"매뉴얼을 기준으로 판단해서 결정짓자\" (the 2026-10-19 manual governs; a statute that differs is recorded, not followed). Your decisions become \"AI-confirmed (owner-delegated)\" facts, kept apart from human-approved ones and used only to send answers to review, never to withhold. A wrong fact can flag a right answer, so confirm only what the page text supports.\n\nRead only `packet.json` in this directory and write only `decisions.json` there.\n\nFor every item (`earlier` holds the previous AI's guess and the owner question):\n- `confirm` when the page lets you state who it applies to, the role and the value. Rules for the recurring cases:\n  - \"(참고) 2025년 기준\" or similar on a table in this 2026 manual: the manual prints these as its reference values, so confirm them as the manual's values and put the note in `subject.qualifiers.column_label` or `reason` (e.g. \"매뉴얼 표기 2025년 기준\").\n  - A flattened table (cells run together on one line): confirm only if you can tell for certain which row and column each number belongs to from the text around it; otherwise reject.\n  - No status code on the page: confirm only if the page's own title or a heading on the page names the chapter's status; otherwise reject.\n- `reject` when it is not a rule-level fact or you cannot pin its subject, role or value from the page.\n\nOutput `decisions.json`: an array in packet order of\n`{\"candidate_id\", \"final\": \"confirm\"|\"reject\", \"subject\": {\"status_code\", \"sub_code\", \"procedure\": \"visa\"|\"stay\", \"qualifiers\": {\"applicant\", \"household_size\", \"per\", \"nationality\", \"row_label\", \"column_label\"}} or null, \"role\": one of roles or null, \"value\": {\"kind\", \"amount\", \"unit\", \"comparator\"} or null, \"reason\": \"Korean, 1–2 sentences\"}`.\n`procedure` is \"visa\" for a visa_issuance page and \"stay\" for a stay page. The amount must appear in the item's `quote` (digits without commas; 억/만/천; \"N년 M개월\" as months). Self-check with `python3 -I` and report: counts of confirm/reject, the self-check result, two example reasons.\n",
+ "counts": {
+  "confirm": 18,
+  "reject": 22
+ },
+ "decisions": [
+  {
+   "candidate_id": "fc-09bd1f17bcb9ca8a",
+   "final": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "이 쪽에는 장(章) 제목이 없고 '대상체류자격' 줄은 D-1·D-6·F-1·F-3·G-1을 함께 나열해 어느 체류자격 장인지 쪽만으로 확정할 수 없다. 값은 일반 재입국·변경신고 규정과 같으나 이 쪽을 근거로 특정 자격에 붙이지 않는다.",
+   "legal_check": {
+    "result": "not_in_statute",
+    "law": "",
+    "provision": "",
+    "mst": "",
+    "excerpt": ""
+   },
+   "owner_rule": "\"전부 다 해결해줘\" with B-16 \"매뉴얼을 기준으로 판단해서 결정짓자\" (2026-10-28)",
+   "supersedes_decision": {
+    "final": "owner"
+   }
+  },
+  {
+   "candidate_id": "fc-ce81ddc88d109d1c",
+   "final": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "이 쪽에는 장(章) 제목이 없고 '대상체류자격' 줄은 D-1·D-6·F-1·F-3·G-1을 함께 나열해 어느 체류자격 장인지 쪽만으로 확정할 수 없다. 값은 일반 재입국·변경신고 규정과 같으나 이 쪽을 근거로 특정 자격에 붙이지 않는다.",
+   "legal_check": {
+    "result": "not_in_statute",
+    "law": "",
+    "provision": "",
+    "mst": "",
+    "excerpt": ""
+   },
+   "owner_rule": "\"전부 다 해결해줘\" with B-16 \"매뉴얼을 기준으로 판단해서 결정짓자\" (2026-10-28)",
+   "supersedes_decision": {
+    "final": "owner"
+   }
+  },
+  {
+   "candidate_id": "fc-89e775c6ed5d8c19",
+   "final": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "이 쪽에는 장(章) 제목이 없고 '대상체류자격' 줄은 D-1·D-6·F-1·F-3·G-1을 함께 나열해 어느 체류자격 장인지 쪽만으로 확정할 수 없다. 값은 일반 재입국·변경신고 규정과 같으나 이 쪽을 근거로 특정 자격에 붙이지 않는다.",
+   "legal_check": {
+    "result": "not_in_statute",
+    "law": "",
+    "provision": "",
+    "mst": "",
+    "excerpt": ""
+   },
+   "owner_rule": "\"전부 다 해결해줘\" with B-16 \"매뉴얼을 기준으로 판단해서 결정짓자\" (2026-10-28)",
+   "supersedes_decision": {
+    "final": "owner"
+   }
+  },
+  {
+   "candidate_id": "fc-18e0486e93346068",
+   "final": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "쪽 제목·머리글에 장의 체류자격이 없고, D-7~D-9는 같은 계열회사 이동 안내(※)에서만 나와 어느 장인지 정할 수 없다. 값은 일반 규정과 같지만 이 쪽으로는 주체를 확정하지 않는다.",
+   "legal_check": {
+    "result": "not_in_statute",
+    "law": "",
+    "provision": "",
+    "mst": "",
+    "excerpt": ""
+   },
+   "owner_rule": "\"전부 다 해결해줘\" with B-16 \"매뉴얼을 기준으로 판단해서 결정짓자\" (2026-10-28)",
+   "supersedes_decision": {
+    "final": "owner"
+   }
+  },
+  {
+   "candidate_id": "fc-6fe786ce42c9fee3",
+   "final": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "쪽 제목·머리글에 장의 체류자격이 없고, D-7~D-9는 같은 계열회사 이동 안내(※)에서만 나와 어느 장인지 정할 수 없다. 값은 일반 규정과 같지만 이 쪽으로는 주체를 확정하지 않는다.",
+   "legal_check": {
+    "result": "not_in_statute",
+    "law": "",
+    "provision": "",
+    "mst": "",
+    "excerpt": ""
+   },
+   "owner_rule": "\"전부 다 해결해줘\" with B-16 \"매뉴얼을 기준으로 판단해서 결정짓자\" (2026-10-28)",
+   "supersedes_decision": {
+    "final": "owner"
+   }
+  },
+  {
+   "candidate_id": "fc-ae305b655da7869c",
+   "final": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "쪽 제목·머리글에 장의 체류자격이 없고, D-7~D-9는 같은 계열회사 이동 안내(※)에서만 나와 어느 장인지 정할 수 없다. 값은 일반 규정과 같지만 이 쪽으로는 주체를 확정하지 않는다.",
+   "legal_check": {
+    "result": "not_in_statute",
+    "law": "",
+    "provision": "",
+    "mst": "",
+    "excerpt": ""
+   },
+   "owner_rule": "\"전부 다 해결해줘\" with B-16 \"매뉴얼을 기준으로 판단해서 결정짓자\" (2026-10-28)",
+   "supersedes_decision": {
+    "final": "owner"
+   }
+  },
+  {
+   "candidate_id": "fc-36b0d33d81efee7a",
+   "final": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "쪽에 체류자격 약호도 절차명이 붙은 머리글도 없어 '최초 허가 1년'이 어느 자격·세부약호·절차(변경/연장)에 속하는지 쪽만으로 정할 수 없다. 무역 점수표로 D-9를 추정할 수 있을 뿐이다.",
+   "legal_check": {
+    "result": "not_in_statute",
+    "law": "",
+    "provision": "",
+    "mst": "",
+    "excerpt": ""
+   },
+   "owner_rule": "\"전부 다 해결해줘\" with B-16 \"매뉴얼을 기준으로 판단해서 결정짓자\" (2026-10-28)",
+   "supersedes_decision": {
+    "final": "owner"
+   }
+  },
+  {
+   "candidate_id": "fc-24a068fda65edd97",
+   "final": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "E-9 장 첫머리 '고용허가제란?' 소개문의 설명이며 '300인 미만 또는 자본금 80억원 이하'의 선택 조건이라 자본금만 떼어 규칙 수준 사실로 둘 수 없다. 사증 매뉴얼 성실근로자 항목처럼 업종별 기준이 따로 있어 전 업종 공통 값으로도 확정할 수 없다.",
+   "legal_check": {
+    "result": "not_in_statute",
+    "law": "",
+    "provision": "",
+    "mst": "",
+    "excerpt": ""
+   },
+   "owner_rule": "\"전부 다 해결해줘\" with B-16 \"매뉴얼을 기준으로 판단해서 결정짓자\" (2026-10-28)",
+   "supersedes_decision": {
+    "final": "owner"
+   }
+  },
+  {
+   "candidate_id": "fc-fdedb3f1f1f430e1",
+   "final": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "쪽 제목·머리글에 체류자격이 없어(구직등록·고용허가서 내용으로 E-9 추정뿐) 마약검사확인서 3개월 요건을 특정 자격에 붙일 수 없다.",
+   "legal_check": {
+    "result": "not_in_statute",
+    "law": "",
+    "provision": "",
+    "mst": "",
+    "excerpt": ""
+   },
+   "owner_rule": "\"전부 다 해결해줘\" with B-16 \"매뉴얼을 기준으로 판단해서 결정짓자\" (2026-10-28)",
+   "supersedes_decision": {
+    "final": "owner"
+   }
+  },
+  {
+   "candidate_id": "fc-4a384ff6238760c7",
+   "final": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "문장이 '해당 과정 종료일로부터 1개월 범위 내에서'에서 쪽 끝에 잘려 1개월이 체류기간 부여인지 다른 기간인지 이 쪽만으로 정할 수 없다.",
+   "legal_check": {
+    "result": "not_in_statute",
+    "law": "",
+    "provision": "",
+    "mst": "",
+    "excerpt": ""
+   },
+   "owner_rule": "\"전부 다 해결해줘\" with B-16 \"매뉴얼을 기준으로 판단해서 결정짓자\" (2026-10-28)",
+   "supersedes_decision": {
+    "final": "owner"
+   }
+  },
+  {
+   "candidate_id": "fc-de771c107ef3b432",
+   "final": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "p.427에는 체류자격 표시나 장 제목이 전혀 없어 복수재입국허가 기간을 어느 자격 장의 사실로 둘지 정할 수 없다.",
+   "legal_check": {
+    "result": "not_in_statute",
+    "law": "",
+    "provision": "",
+    "mst": "",
+    "excerpt": ""
+   },
+   "owner_rule": "\"전부 다 해결해줘\" with B-16 \"매뉴얼을 기준으로 판단해서 결정짓자\" (2026-10-28)",
+   "supersedes_decision": {
+    "final": "owner"
+   }
+  },
+  {
+   "candidate_id": "fc-fc398116a12b1d58",
+   "final": "confirm",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": "초청인",
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "2-10 예금·보험·증권·채권(재산 활용 시)",
+     "column_label": null
+    }
+   },
+   "role": "deposit",
+   "value": {
+    "kind": "money",
+    "amount": 1000000,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "체류 매뉴얼 결혼이민(F-6) 초청 체크리스트 2-10행에 예금·보험·증권·채권은 100만원 이상으로 6개월 이상 지속된 것만 인정한다고 적혀 있다. 쪽에 결혼이민(F-6)과 외국인 배우자 초청인 소득요건이 명시돼 주체가 정해진다.",
+   "legal_check": {
+    "result": "not_in_statute",
+    "law": "",
+    "provision": "",
+    "mst": "",
+    "excerpt": ""
+   },
+   "owner_rule": "\"전부 다 해결해줘\" with B-16 \"매뉴얼을 기준으로 판단해서 결정짓자\" (2026-10-28)",
+   "supersedes_decision": {
+    "final": "owner"
+   }
+  },
+  {
+   "candidate_id": "fc-6a1df432828da88e",
+   "final": "confirm",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": "초청인",
+     "household_size": 2,
+     "per": "연간",
+     "nationality": null,
+     "row_label": "소득기준",
+     "column_label": "2인 가구(매뉴얼 표기 (참고) 2025년 기준)"
+    }
+   },
+   "role": "income_threshold",
+   "value": {
+    "kind": "money",
+    "amount": 23595948,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "표 머리 '구 분 2인~7인 가구'와 '소득기준' 행이 같은 순서로 6개씩 대응해 2인 가구 값이 확정된다. 매뉴얼이 '(참고) 2025년 기준'으로 실은 결혼이민(F-6) 초청인 연간소득(세전) 기준을 매뉴얼 값으로 확정한다.",
+   "legal_check": {
+    "result": "not_in_statute",
+    "law": "",
+    "provision": "",
+    "mst": "",
+    "excerpt": ""
+   },
+   "owner_rule": "\"전부 다 해결해줘\" with B-16 \"매뉴얼을 기준으로 판단해서 결정짓자\" (2026-10-28)",
+   "supersedes_decision": {
+    "final": "owner"
+   }
+  },
+  {
+   "candidate_id": "fc-bb553a55d8e10d9f",
+   "final": "confirm",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": "초청인",
+     "household_size": 3,
+     "per": "연간",
+     "nationality": null,
+     "row_label": "소득기준",
+     "column_label": "3인 가구(매뉴얼 표기 (참고) 2025년 기준)"
+    }
+   },
+   "role": "income_threshold",
+   "value": {
+    "kind": "money",
+    "amount": 30152118,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "표 머리 '구 분 2인~7인 가구'와 '소득기준' 행이 같은 순서로 6개씩 대응해 3인 가구 값이 확정된다. 매뉴얼이 '(참고) 2025년 기준'으로 실은 결혼이민(F-6) 초청인 연간소득(세전) 기준을 매뉴얼 값으로 확정한다.",
+   "legal_check": {
+    "result": "not_in_statute",
+    "law": "",
+    "provision": "",
+    "mst": "",
+    "excerpt": ""
+   },
+   "owner_rule": "\"전부 다 해결해줘\" with B-16 \"매뉴얼을 기준으로 판단해서 결정짓자\" (2026-10-28)",
+   "supersedes_decision": {
+    "final": "owner"
+   }
+  },
+  {
+   "candidate_id": "fc-cf1bf2148d59ca87",
+   "final": "confirm",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": "초청인",
+     "household_size": 4,
+     "per": "연간",
+     "nationality": null,
+     "row_label": "소득기준",
+     "column_label": "4인 가구(매뉴얼 표기 (참고) 2025년 기준)"
+    }
+   },
+   "role": "income_threshold",
+   "value": {
+    "kind": "money",
+    "amount": 36586638,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "표 머리 '구 분 2인~7인 가구'와 '소득기준' 행이 같은 순서로 6개씩 대응해 4인 가구 값이 확정된다. 매뉴얼이 '(참고) 2025년 기준'으로 실은 결혼이민(F-6) 초청인 연간소득(세전) 기준을 매뉴얼 값으로 확정한다.",
+   "legal_check": {
+    "result": "not_in_statute",
+    "law": "",
+    "provision": "",
+    "mst": "",
+    "excerpt": ""
+   },
+   "owner_rule": "\"전부 다 해결해줘\" with B-16 \"매뉴얼을 기준으로 판단해서 결정짓자\" (2026-10-28)",
+   "supersedes_decision": {
+    "final": "owner"
+   }
+  },
+  {
+   "candidate_id": "fc-bbfa27621a5721dd",
+   "final": "confirm",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": "초청인",
+     "household_size": 5,
+     "per": "연간",
+     "nationality": null,
+     "row_label": "소득기준",
+     "column_label": "5인 가구(매뉴얼 표기 (참고) 2025년 기준)"
+    }
+   },
+   "role": "income_threshold",
+   "value": {
+    "kind": "money",
+    "amount": 42649152,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "표 머리 '구 분 2인~7인 가구'와 '소득기준' 행이 같은 순서로 6개씩 대응해 5인 가구 값이 확정된다. 매뉴얼이 '(참고) 2025년 기준'으로 실은 결혼이민(F-6) 초청인 연간소득(세전) 기준을 매뉴얼 값으로 확정한다.",
+   "legal_check": {
+    "result": "not_in_statute",
+    "law": "",
+    "provision": "",
+    "mst": "",
+    "excerpt": ""
+   },
+   "owner_rule": "\"전부 다 해결해줘\" with B-16 \"매뉴얼을 기준으로 판단해서 결정짓자\" (2026-10-28)",
+   "supersedes_decision": {
+    "final": "owner"
+   }
+  },
+  {
+   "candidate_id": "fc-9b042d61f5b9e9c7",
+   "final": "confirm",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": "초청인",
+     "household_size": 6,
+     "per": "연간",
+     "nationality": null,
+     "row_label": "소득기준",
+     "column_label": "6인 가구(매뉴얼 표기 (참고) 2025년 기준)"
+    }
+   },
+   "role": "income_threshold",
+   "value": {
+    "kind": "money",
+    "amount": 48388830,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "표 머리 '구 분 2인~7인 가구'와 '소득기준' 행이 같은 순서로 6개씩 대응해 6인 가구 값이 확정된다. 매뉴얼이 '(참고) 2025년 기준'으로 실은 결혼이민(F-6) 초청인 연간소득(세전) 기준을 매뉴얼 값으로 확정한다.",
+   "legal_check": {
+    "result": "not_in_statute",
+    "law": "",
+    "provision": "",
+    "mst": "",
+    "excerpt": ""
+   },
+   "owner_rule": "\"전부 다 해결해줘\" with B-16 \"매뉴얼을 기준으로 판단해서 결정짓자\" (2026-10-28)",
+   "supersedes_decision": {
+    "final": "owner"
+   }
+  },
+  {
+   "candidate_id": "fc-516649d04004789d",
+   "final": "confirm",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": "초청인",
+     "household_size": 7,
+     "per": "연간",
+     "nationality": null,
+     "row_label": "소득기준",
+     "column_label": "7인 가구(매뉴얼 표기 (참고) 2025년 기준)"
+    }
+   },
+   "role": "income_threshold",
+   "value": {
+    "kind": "money",
+    "amount": 53930568,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "표 머리 '구 분 2인~7인 가구'와 '소득기준' 행이 같은 순서로 6개씩 대응해 7인 가구 값이 확정된다. 매뉴얼이 '(참고) 2025년 기준'으로 실은 결혼이민(F-6) 초청인 연간소득(세전) 기준을 매뉴얼 값으로 확정한다.",
+   "legal_check": {
+    "result": "not_in_statute",
+    "law": "",
+    "provision": "",
+    "mst": "",
+    "excerpt": ""
+   },
+   "owner_rule": "\"전부 다 해결해줘\" with B-16 \"매뉴얼을 기준으로 판단해서 결정짓자\" (2026-10-28)",
+   "supersedes_decision": {
+    "final": "owner"
+   }
+  },
+  {
+   "candidate_id": "fc-ada5fc9f3899e655",
+   "final": "confirm",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": "초청인",
+     "household_size": null,
+     "per": "가구원 추가 1인당",
+     "nationality": null,
+     "row_label": "소득기준",
+     "column_label": "8인 가구 이상(매뉴얼 표기 (참고) 2025년 기준)"
+    }
+   },
+   "role": "income_threshold",
+   "value": {
+    "kind": "money",
+    "amount": 5541738,
+    "unit": "krw",
+    "comparator": null
+   },
+   "reason": "8인 이상 가구는 가구원 추가 1인당 5,541,738원씩 소득기준이 늘어난다고 매뉴얼이 '(참고) 2025년 기준'으로 싣고 있어 매뉴얼 값으로 확정한다.",
+   "legal_check": {
+    "result": "not_in_statute",
+    "law": "",
+    "provision": "",
+    "mst": "",
+    "excerpt": ""
+   },
+   "owner_rule": "\"전부 다 해결해줘\" with B-16 \"매뉴얼을 기준으로 판단해서 결정짓자\" (2026-10-28)",
+   "supersedes_decision": {
+    "final": "owner"
+   }
+  },
+  {
+   "candidate_id": "fc-0349b946c9398296",
+   "final": "confirm",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": "난민인정 신청자",
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "난민신청자 체류자격외 취업활동 허가 대상",
+     "column_label": null
+    }
+   },
+   "role": "waiting_period",
+   "value": {
+    "kind": "period",
+    "amount": 6,
+    "unit": "month",
+    "comparator": "이상"
+   },
+   "reason": "쪽 머리글 '난민신청자에 대한 체류자격외 취업활동 허가'의 허가 대상이 난민인정 신청 후 6개월이 경과한 자로 명시돼 있다. 쪽에 체류자격 약호가 없어 G-1을 붙이지 않고 신청인 조건(난민인정 신청자)으로만 둔다.",
+   "legal_check": {
+    "result": "not_in_statute",
+    "law": "",
+    "provision": "",
+    "mst": "",
+    "excerpt": ""
+   },
+   "owner_rule": "\"전부 다 해결해줘\" with B-16 \"매뉴얼을 기준으로 판단해서 결정짓자\" (2026-10-28)",
+   "supersedes_decision": {
+    "final": "owner"
+   }
+  },
+  {
+   "candidate_id": "fc-15512271c8774721",
+   "final": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "3개월은 신청인이 아니라 해외법인의 설립·가동 기간에 걸린 요건이고, 체류 매뉴얼에 실린 사증발급인정서 훈령(안)이라 사증·체류 절차를 섞지 않고는 절차를 정할 수 없다.",
+   "legal_check": {
+    "result": "not_in_statute",
+    "law": "",
+    "provision": "",
+    "mst": "",
+    "excerpt": ""
+   },
+   "owner_rule": "\"전부 다 해결해줘\" with B-16 \"매뉴얼을 기준으로 판단해서 결정짓자\" (2026-10-28)",
+   "supersedes_decision": {
+    "final": "owner"
+   }
+  },
+  {
+   "candidate_id": "fc-7241848ea89f9b0d",
+   "final": "confirm",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "stay",
+    "qualifiers": {
+     "applicant": "장기체류자격 외국인(A-1·A-2·A-3·F-5·난민인정자 F-2·그 가족 F-1·G-1·무국적자 제외)",
+     "household_size": null,
+     "per": "1회에 한함",
+     "nationality": null,
+     "row_label": "여권 재발급 불가 시 체류기간 부여('22.7.1.이후)",
+     "column_label": null
+    }
+   },
+   "role": "stay_per_grant",
+   "value": {
+    "kind": "period",
+    "amount": 6,
+    "unit": "month",
+    "comparator": "이내"
+   },
+   "reason": "'여권 유효기간 범위 내 체류기간 부여 안내'의 적용대상이 제외 자격을 뺀 모든 장기체류자격으로 명시돼 있고, 여권 재발급이 사실상 불가능하면 1회에 한해 6개월 이내 체류허가 기간을 준다. 공통 규정이라 체류자격 코드 없이 확정한다.",
+   "legal_check": {
+    "result": "not_in_statute",
+    "law": "",
+    "provision": "",
+    "mst": "",
+    "excerpt": ""
+   },
+   "owner_rule": "\"전부 다 해결해줘\" with B-16 \"매뉴얼을 기준으로 판단해서 결정짓자\" (2026-10-28)",
+   "supersedes_decision": {
+    "final": "owner"
+   }
+  },
+  {
+   "candidate_id": "fc-dc97e4441d3da228",
+   "final": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "쪽 제목·머리글에 일반연수(D-4) 등 체류자격이 없고 앞부분은 외국인유학생 신고 내용이라 현장실습 요건이 어느 장인지 쪽만으로 정할 수 없다.",
+   "legal_check": {
+    "result": "not_in_statute",
+    "law": "",
+    "provision": "",
+    "mst": "",
+    "excerpt": ""
+   },
+   "owner_rule": "\"전부 다 해결해줘\" with B-16 \"매뉴얼을 기준으로 판단해서 결정짓자\" (2026-10-28)",
+   "supersedes_decision": {
+    "final": "owner"
+   }
+  },
+  {
+   "candidate_id": "fc-479ca5d3548ab944",
+   "final": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "이 쪽에는 2번 항목(D-8-2)만 세부약호가 있고 3억원 문구가 속한 1번 항목의 체류자격·세부약호가 없어, 상위 D-8 전체 규칙으로 둘 수 없다.",
+   "legal_check": {
+    "result": "not_in_statute",
+    "law": "",
+    "provision": "",
+    "mst": "",
+    "excerpt": ""
+   },
+   "owner_rule": "\"전부 다 해결해줘\" with B-16 \"매뉴얼을 기준으로 판단해서 결정짓자\" (2026-10-28)",
+   "supersedes_decision": {
+    "final": "owner"
+   }
+  },
+  {
+   "candidate_id": "fc-111e021781f717d5",
+   "final": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "이 쪽에는 2번 항목(D-8-2)만 세부약호가 있고 3억원 문구가 속한 1번 항목의 체류자격·세부약호가 없어, 상위 D-8 전체 규칙으로 둘 수 없다.",
+   "legal_check": {
+    "result": "not_in_statute",
+    "law": "",
+    "provision": "",
+    "mst": "",
+    "excerpt": ""
+   },
+   "owner_rule": "\"전부 다 해결해줘\" with B-16 \"매뉴얼을 기준으로 판단해서 결정짓자\" (2026-10-28)",
+   "supersedes_decision": {
+    "final": "owner"
+   }
+  },
+  {
+   "candidate_id": "fc-bd37160ce051afaa",
+   "final": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "문장 앞부분이 이전 쪽에서 잘려 '유효기간 3년 복수사증'의 대상과 체류자격을 이 쪽에서 정할 수 없다.",
+   "legal_check": {
+    "result": "not_in_statute",
+    "law": "",
+    "provision": "",
+    "mst": "",
+    "excerpt": ""
+   },
+   "owner_rule": "\"전부 다 해결해줘\" with B-16 \"매뉴얼을 기준으로 판단해서 결정짓자\" (2026-10-28)",
+   "supersedes_decision": {
+    "final": "owner"
+   }
+  },
+  {
+   "candidate_id": "fc-98edca14c2d1bfc1",
+   "final": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "일시적 회의참석·공무수행 목적 3개월 단수사증의 체류자격이 이 쪽에 적혀 있지 않아 주체를 정할 수 없다.",
+   "legal_check": {
+    "result": "not_in_statute",
+    "law": "",
+    "provision": "",
+    "mst": "",
+    "excerpt": ""
+   },
+   "owner_rule": "\"전부 다 해결해줘\" with B-16 \"매뉴얼을 기준으로 판단해서 결정짓자\" (2026-10-28)",
+   "supersedes_decision": {
+    "final": "owner"
+   }
+  },
+  {
+   "candidate_id": "fc-333dbd2082e3b69d",
+   "final": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "쪽에 체류자격 약호가 없고(무역비자 문맥으로 D-9 추정뿐) '1년 이하'가 체류기간인지 사증 유효기간인지도 쪽만으로 정해지지 않는다.",
+   "legal_check": {
+    "result": "not_in_statute",
+    "law": "",
+    "provision": "",
+    "mst": "",
+    "excerpt": ""
+   },
+   "owner_rule": "\"전부 다 해결해줘\" with B-16 \"매뉴얼을 기준으로 판단해서 결정짓자\" (2026-10-28)",
+   "supersedes_decision": {
+    "final": "owner"
+   }
+  },
+  {
+   "candidate_id": "fc-d2e0e2e351359d41",
+   "final": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "'무역비자 점수제' 머리글은 있으나 체류자격 약호·세부약호가 쪽에 없어(C-3-4는 단서 문장) 주체를 확정할 수 없다.",
+   "legal_check": {
+    "result": "not_in_statute",
+    "law": "",
+    "provision": "",
+    "mst": "",
+    "excerpt": ""
+   },
+   "owner_rule": "\"전부 다 해결해줘\" with B-16 \"매뉴얼을 기준으로 판단해서 결정짓자\" (2026-10-28)",
+   "supersedes_decision": {
+    "final": "owner"
+   }
+  },
+  {
+   "candidate_id": "fc-8d8d116f1335f9f1",
+   "final": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "한국과학기술원 교수활동자 공관장 재량 사증 항목에 체류자격 약호가 없어 교수(E-1) 장인지 쪽만으로 확정할 수 없다.",
+   "legal_check": {
+    "result": "not_in_statute",
+    "law": "",
+    "provision": "",
+    "mst": "",
+    "excerpt": ""
+   },
+   "owner_rule": "\"전부 다 해결해줘\" with B-16 \"매뉴얼을 기준으로 판단해서 결정짓자\" (2026-10-28)",
+   "supersedes_decision": {
+    "final": "owner"
+   }
+  },
+  {
+   "candidate_id": "fc-8da30fe321e58526",
+   "final": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "성실근로자 재입국 항목에 체류자격 약호나 장 제목이 쪽에 없어 E-9로 확정할 수 없다(값 자체는 쪽 문장과 일치).",
+   "legal_check": {
+    "result": "not_in_statute",
+    "law": "",
+    "provision": "",
+    "mst": "",
+    "excerpt": ""
+   },
+   "owner_rule": "\"전부 다 해결해줘\" with B-16 \"매뉴얼을 기준으로 판단해서 결정짓자\" (2026-10-28)",
+   "supersedes_decision": {
+    "final": "owner"
+   }
+  },
+  {
+   "candidate_id": "fc-80f441c537fd3c32",
+   "final": "reject",
+   "subject": null,
+   "role": null,
+   "value": null,
+   "reason": "성실근로자 재입국 항목에 체류자격 약호나 장 제목이 쪽에 없어 E-9로 확정할 수 없다(값 자체는 쪽 문장과 일치).",
+   "legal_check": {
+    "result": "not_in_statute",
+    "law": "",
+    "provision": "",
+    "mst": "",
+    "excerpt": ""
+   },
+   "owner_rule": "\"전부 다 해결해줘\" with B-16 \"매뉴얼을 기준으로 판단해서 결정짓자\" (2026-10-28)",
+   "supersedes_decision": {
+    "final": "owner"
+   }
+  },
+  {
+   "candidate_id": "fc-41f2770748e9f0db",
+   "final": "confirm",
+   "subject": {
+    "status_code": null,
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": null,
+     "household_size": null,
+     "per": null,
+     "nationality": null,
+     "row_label": "국내 발급 제출서류 유효기간(별도 유효기간 미설정 시)",
+     "column_label": null
+    }
+   },
+   "role": "validity",
+   "value": {
+    "kind": "period",
+    "amount": 3,
+    "unit": "month",
+    "comparator": "이내"
+   },
+   "reason": "사증 매뉴얼 '유의사항' 1항에 주민등록등본 등 국내 발급 서류는 별도 유효기간이 없으면 발급일부터 3개월 이내라고 적혀 있다. 매뉴얼 전체 공통 규정이라 체류자격 코드 없이 확정한다.",
+   "legal_check": {
+    "result": "not_in_statute",
+    "law": "",
+    "provision": "",
+    "mst": "",
+    "excerpt": ""
+   },
+   "owner_rule": "\"전부 다 해결해줘\" with B-16 \"매뉴얼을 기준으로 판단해서 결정짓자\" (2026-10-28)",
+   "supersedes_decision": {
+    "final": "owner"
+   }
+  },
+  {
+   "candidate_id": "fc-e9b2519613ca2edc",
+   "final": "confirm",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": "초청인",
+     "household_size": 2,
+     "per": "연간",
+     "nationality": null,
+     "row_label": "소득기준",
+     "column_label": "2인 가구(매뉴얼 표기 (참고) 2025년 기준)"
+    }
+   },
+   "role": "income_threshold",
+   "value": {
+    "kind": "money",
+    "amount": 23595948,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "표 머리 '구 분 2인~7인 가구'와 '소득기준' 행이 같은 순서로 6개씩 대응해 2인 가구 값이 확정된다. 쪽 머리 문구대로 초청인 과거 1년 연간소득(세전) 이상 기준이며 매뉴얼이 '(참고) 2025년 기준'으로 실은 값으로 확정한다.",
+   "legal_check": {
+    "result": "not_in_statute",
+    "law": "",
+    "provision": "",
+    "mst": "",
+    "excerpt": ""
+   },
+   "owner_rule": "\"전부 다 해결해줘\" with B-16 \"매뉴얼을 기준으로 판단해서 결정짓자\" (2026-10-28)",
+   "supersedes_decision": {
+    "final": "owner"
+   }
+  },
+  {
+   "candidate_id": "fc-9eeeddcb928b3bc9",
+   "final": "confirm",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": "초청인",
+     "household_size": 3,
+     "per": "연간",
+     "nationality": null,
+     "row_label": "소득기준",
+     "column_label": "3인 가구(매뉴얼 표기 (참고) 2025년 기준)"
+    }
+   },
+   "role": "income_threshold",
+   "value": {
+    "kind": "money",
+    "amount": 30152118,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "표 머리 '구 분 2인~7인 가구'와 '소득기준' 행이 같은 순서로 6개씩 대응해 3인 가구 값이 확정된다. 쪽 머리 문구대로 초청인 과거 1년 연간소득(세전) 이상 기준이며 매뉴얼이 '(참고) 2025년 기준'으로 실은 값으로 확정한다.",
+   "legal_check": {
+    "result": "not_in_statute",
+    "law": "",
+    "provision": "",
+    "mst": "",
+    "excerpt": ""
+   },
+   "owner_rule": "\"전부 다 해결해줘\" with B-16 \"매뉴얼을 기준으로 판단해서 결정짓자\" (2026-10-28)",
+   "supersedes_decision": {
+    "final": "owner"
+   }
+  },
+  {
+   "candidate_id": "fc-4ad908670a032dd8",
+   "final": "confirm",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": "초청인",
+     "household_size": 4,
+     "per": "연간",
+     "nationality": null,
+     "row_label": "소득기준",
+     "column_label": "4인 가구(매뉴얼 표기 (참고) 2025년 기준)"
+    }
+   },
+   "role": "income_threshold",
+   "value": {
+    "kind": "money",
+    "amount": 36586638,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "표 머리 '구 분 2인~7인 가구'와 '소득기준' 행이 같은 순서로 6개씩 대응해 4인 가구 값이 확정된다. 쪽 머리 문구대로 초청인 과거 1년 연간소득(세전) 이상 기준이며 매뉴얼이 '(참고) 2025년 기준'으로 실은 값으로 확정한다.",
+   "legal_check": {
+    "result": "not_in_statute",
+    "law": "",
+    "provision": "",
+    "mst": "",
+    "excerpt": ""
+   },
+   "owner_rule": "\"전부 다 해결해줘\" with B-16 \"매뉴얼을 기준으로 판단해서 결정짓자\" (2026-10-28)",
+   "supersedes_decision": {
+    "final": "owner"
+   }
+  },
+  {
+   "candidate_id": "fc-3528b0c6db1277eb",
+   "final": "confirm",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": "초청인",
+     "household_size": 5,
+     "per": "연간",
+     "nationality": null,
+     "row_label": "소득기준",
+     "column_label": "5인 가구(매뉴얼 표기 (참고) 2025년 기준)"
+    }
+   },
+   "role": "income_threshold",
+   "value": {
+    "kind": "money",
+    "amount": 42649152,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "표 머리 '구 분 2인~7인 가구'와 '소득기준' 행이 같은 순서로 6개씩 대응해 5인 가구 값이 확정된다. 쪽 머리 문구대로 초청인 과거 1년 연간소득(세전) 이상 기준이며 매뉴얼이 '(참고) 2025년 기준'으로 실은 값으로 확정한다.",
+   "legal_check": {
+    "result": "not_in_statute",
+    "law": "",
+    "provision": "",
+    "mst": "",
+    "excerpt": ""
+   },
+   "owner_rule": "\"전부 다 해결해줘\" with B-16 \"매뉴얼을 기준으로 판단해서 결정짓자\" (2026-10-28)",
+   "supersedes_decision": {
+    "final": "owner"
+   }
+  },
+  {
+   "candidate_id": "fc-67dda14dc0bb8327",
+   "final": "confirm",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": "초청인",
+     "household_size": 6,
+     "per": "연간",
+     "nationality": null,
+     "row_label": "소득기준",
+     "column_label": "6인 가구(매뉴얼 표기 (참고) 2025년 기준)"
+    }
+   },
+   "role": "income_threshold",
+   "value": {
+    "kind": "money",
+    "amount": 48388830,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "표 머리 '구 분 2인~7인 가구'와 '소득기준' 행이 같은 순서로 6개씩 대응해 6인 가구 값이 확정된다. 쪽 머리 문구대로 초청인 과거 1년 연간소득(세전) 이상 기준이며 매뉴얼이 '(참고) 2025년 기준'으로 실은 값으로 확정한다.",
+   "legal_check": {
+    "result": "not_in_statute",
+    "law": "",
+    "provision": "",
+    "mst": "",
+    "excerpt": ""
+   },
+   "owner_rule": "\"전부 다 해결해줘\" with B-16 \"매뉴얼을 기준으로 판단해서 결정짓자\" (2026-10-28)",
+   "supersedes_decision": {
+    "final": "owner"
+   }
+  },
+  {
+   "candidate_id": "fc-06bc66287fb793bb",
+   "final": "confirm",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": "초청인",
+     "household_size": 7,
+     "per": "연간",
+     "nationality": null,
+     "row_label": "소득기준",
+     "column_label": "7인 가구(매뉴얼 표기 (참고) 2025년 기준)"
+    }
+   },
+   "role": "income_threshold",
+   "value": {
+    "kind": "money",
+    "amount": 53930568,
+    "unit": "krw",
+    "comparator": "이상"
+   },
+   "reason": "표 머리 '구 분 2인~7인 가구'와 '소득기준' 행이 같은 순서로 6개씩 대응해 7인 가구 값이 확정된다. 쪽 머리 문구대로 초청인 과거 1년 연간소득(세전) 이상 기준이며 매뉴얼이 '(참고) 2025년 기준'으로 실은 값으로 확정한다.",
+   "legal_check": {
+    "result": "not_in_statute",
+    "law": "",
+    "provision": "",
+    "mst": "",
+    "excerpt": ""
+   },
+   "owner_rule": "\"전부 다 해결해줘\" with B-16 \"매뉴얼을 기준으로 판단해서 결정짓자\" (2026-10-28)",
+   "supersedes_decision": {
+    "final": "owner"
+   }
+  },
+  {
+   "candidate_id": "fc-72786a69ab4a2289",
+   "final": "confirm",
+   "subject": {
+    "status_code": "F-6",
+    "sub_code": null,
+    "procedure": "visa",
+    "qualifiers": {
+     "applicant": "초청인",
+     "household_size": null,
+     "per": "가구원 추가 1인당",
+     "nationality": null,
+     "row_label": "소득기준",
+     "column_label": "8인 가구 이상(매뉴얼 표기 (참고) 2025년 기준)"
+    }
+   },
+   "role": "income_threshold",
+   "value": {
+    "kind": "money",
+    "amount": 5541738,
+    "unit": "krw",
+    "comparator": null
+   },
+   "reason": "8인 이상 가구는 가구원 추가 1인당 5,541,738원씩 소득기준이 늘어난다고 매뉴얼이 '(참고) 2025년 기준'으로 싣고 있어 매뉴얼 값으로 확정한다.",
+   "legal_check": {
+    "result": "not_in_statute",
+    "law": "",
+    "provision": "",
+    "mst": "",
+    "excerpt": ""
+   },
+   "owner_rule": "\"전부 다 해결해줘\" with B-16 \"매뉴얼을 기준으로 판단해서 결정짓자\" (2026-10-28)",
+   "supersedes_decision": {
+    "final": "owner"
+   }
+  }
+ ]
+}

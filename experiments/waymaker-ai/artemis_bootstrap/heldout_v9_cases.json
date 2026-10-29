@@ -1,0 +1,1781 @@
+{
+ "version": "heldout-v9",
+ "created": "2026-10-28",
+ "authorship": "written by an agent that saw only pages.json and this brief",
+ "notice": "실제 2026-10-19 매뉴얼 쪽으로 쓴 독립 문항. 라벨은 쪽 원문에 맞춘 것이며 법률 검증이나 사람 검토가 아니다.",
+ "cases": [
+  {
+   "id": "V-01-f6-extension-fee",
+   "group": "V",
+   "purpose": "결혼이민(F-6) 체류기간 연장 수수료(3만원)와 일반 체류기간 연장(6만원)·F-6의 다른 행(4만원)·체류자격 변경(10만원) 혼동",
+   "question": "한국인 남편이랑 결혼해서 F-6로 살고 있어요. 이번에 체류기간 연장하려는데 수수료가 얼마예요?",
+   "evidence": [
+    {
+     "id": "stay_manual_2026_10_19_pdf#p5",
+     "source_id": "stay_manual_2026_10_19_pdf",
+     "page": 5,
+     "domain": "stay"
+    }
+   ],
+   "right": {
+    "amount": 30000,
+    "unit": "krw"
+   },
+   "right_answers": [
+    "결혼이민(F-6) 체류기간 연장허가 수수료는 3만원입니다.",
+    "연장 수수료로 30,000원을 내시면 됩니다.",
+    "한국인과 결혼해 F-6로 체류 중인 분은 체류기간을 연장할 때 일반 요금이 아니라 3만 원이 적용됩니다."
+   ],
+   "wrong_answers": [
+    {
+     "text": "체류기간 연장허가 수수료는 6만원입니다.",
+     "value": {
+      "amount": 60000,
+      "unit": "krw"
+     },
+     "mixed_with": "결혼이민이 아닌 일반 체류기간 연장허가 수수료",
+     "kind": "status_code"
+    },
+    {
+     "text": "결혼이민(F-6)은 감면 대상이라 연장 수수료가 4만원입니다.",
+     "value": {
+      "amount": 40000,
+      "unit": "krw"
+     },
+     "mixed_with": "체류자격 부여 행 아래에 있는 결혼이민(F-6) 4만원(연장 행이 아님)",
+     "kind": "row"
+    },
+    {
+     "text": "체류기간 연장 신청에는 10만 원의 수수료가 듭니다.",
+     "value": {
+      "amount": 100000,
+      "unit": "krw"
+     },
+     "mixed_with": "체류자격 변경허가 수수료",
+     "kind": "row"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "stay_manual_2026_10_19_pdf#p5"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "3만원",
+      "3만 원",
+      "30,000원",
+      "30000원"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "체류기간 연장허가 수수료는 6만원입니다.",
+     "결혼이민(F-6)은 감면 대상이라 연장 수수료가 4만원입니다.",
+     "체류기간 연장 신청에는 10만 원의 수수료가 듭니다."
+    ]
+   }
+  },
+  {
+   "id": "V-02-f5-change-fee",
+   "group": "V",
+   "purpose": "영주(F-5) 자격 변경허가 수수료(20만원)와 일반 체류자격 변경(10만원)·체류자격 외 활동/근무처 변경(12만원)·체류자격 부여(8만원) 혼동",
+   "question": "F-2로 몇 년 살다가 이제 영주권(F-5)으로 바꾸려고 해요. 변경 신청할 때 수수료 얼마 준비해야 하나요?",
+   "evidence": [
+    {
+     "id": "stay_manual_2026_10_19_pdf#p5",
+     "source_id": "stay_manual_2026_10_19_pdf",
+     "page": 5,
+     "domain": "stay"
+    }
+   ],
+   "right": {
+    "amount": 200000,
+    "unit": "krw"
+   },
+   "right_answers": [
+    "영주(F-5)자격 변경허가 수수료는 20만원입니다.",
+    "200,000원을 납부하셔야 합니다.",
+    "영주권으로 자격을 바꾸시는 경우라 일반 자격 변경보다 높은 20만 원이 적용됩니다."
+   ],
+   "wrong_answers": [
+    {
+     "text": "체류자격 변경허가 수수료 10만원을 내시면 됩니다.",
+     "value": {
+      "amount": 100000,
+      "unit": "krw"
+     },
+     "mixed_with": "영주(F-5)가 아닌 일반 체류자격 변경허가 수수료",
+     "kind": "status_code"
+    },
+    {
+     "text": "자격 변경 수수료는 12만 원입니다.",
+     "value": {
+      "amount": 120000,
+      "unit": "krw"
+     },
+     "mixed_with": "체류자격 외 활동허가·근무처의 변경․추가 수수료",
+     "kind": "row"
+    },
+    {
+     "text": "영주 자격으로 바꾸실 때는 8만 원이 듭니다.",
+     "value": {
+      "amount": 80000,
+      "unit": "krw"
+     },
+     "mixed_with": "체류자격 부여 수수료",
+     "kind": "row"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "stay_manual_2026_10_19_pdf#p5"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "20만원",
+      "20만 원",
+      "200,000원",
+      "200000원"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "체류자격 변경허가 수수료 10만원을 내시면 됩니다.",
+     "자격 변경 수수료는 12만 원입니다.",
+     "영주 자격으로 바꾸실 때는 8만 원이 듭니다."
+    ]
+   }
+  },
+  {
+   "id": "V-03-d2-multi-reentry",
+   "group": "V",
+   "purpose": "유학생(D-2) 복수재입국허가 허가기간(2년)과 재입국허가 면제 기간(1년)·비자심사강화대학 연장(6개월) 혼동",
+   "question": "D-2 유학생인데 본국에서 1년 반 정도 있다가 다시 들어오려고 해요. 복수재입국허가 받으면 허가기간이 얼마나 나오나요? 체류기간은 3년 넘게 남아 있어요.",
+   "evidence": [
+    {
+     "id": "stay_manual_2026_10_19_pdf#p44",
+     "source_id": "stay_manual_2026_10_19_pdf",
+     "page": 44,
+     "domain": "stay"
+    }
+   ],
+   "right": {
+    "amount": 2,
+    "unit": "year"
+   },
+   "right_answers": [
+    "외국인유학생(D-2)의 복수재입국허가는 허가기간 2년이 부여됩니다.",
+    "체류기간이 충분히 남아 있으니 24개월짜리 복수재입국허가를 받으실 수 있습니다.",
+    "1년을 넘겨 돌아오려는 유학생이시면 신청해서 허가기간 2년의 복수재입국허가를 받고 재입국허가 수수료를 내시면 됩니다."
+   ],
+   "wrong_answers": [
+    {
+     "text": "유학생은 재입국허가 기간이 1년으로 정해져 있습니다.",
+     "value": {
+      "amount": 1,
+      "unit": "year"
+     },
+     "mixed_with": "출국 후 1년 이내 재입국 시 적용되는 재입국허가 면제 기간",
+     "kind": "row"
+    },
+    {
+     "text": "복수재입국허가는 6개월 단위로 허가됩니다.",
+     "value": {
+      "amount": 6,
+      "unit": "month"
+     },
+     "mixed_with": "비자심사강화대학 저학점 재학생의 최초 1회 연장 허가(6개월 이내)",
+     "kind": "row"
+    },
+    {
+     "text": "등록한 유학생은 출국한 날부터 1년 이내로만 재입국이 허가됩니다.",
+     "value": {
+      "amount": 1,
+      "unit": "year"
+     },
+     "mixed_with": "재입국허가 면제 대상(출국일부터 1년 이내 재입국)",
+     "kind": "row"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "stay_manual_2026_10_19_pdf#p44"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "2년",
+      "24개월",
+      "2 년"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "유학생은 재입국허가 기간이 1년으로 정해져 있습니다.",
+     "복수재입국허가는 6개월 단위로 허가됩니다.",
+     "등록한 유학생은 출국한 날부터 1년 이내로만 재입국이 허가됩니다."
+    ]
+   }
+  },
+  {
+   "id": "V-04-d2-low-gpa-extension",
+   "group": "V",
+   "purpose": "비자심사강화대학 저학점 재학생 최초 연장(6개월 이내)과 일반 유학생 1회 부여(2년)·재입국 면제(1년)·복수재입국 허가기간(2년) 혼동",
+   "question": "비자심사강화대학으로 지정된 학교에 다니는 유학생인데 평균학점이 D(1.0)밖에 안 돼요. 이번이 처음 연장인데 얼마나 연장해 주나요?",
+   "evidence": [
+    {
+     "id": "stay_manual_2026_10_19_pdf#p44",
+     "source_id": "stay_manual_2026_10_19_pdf",
+     "page": 44,
+     "domain": "stay"
+    }
+   ],
+   "right": {
+    "amount": 6,
+    "unit": "month"
+   },
+   "right_answers": [
+    "최초 1회에 한해 사유서를 내면 6개월 이내로 연장 허가됩니다.",
+    "처음 한 번은 사유서 제출 후 반년 이내로 연장받을 수 있습니다.",
+    "비자심사강화대학에서 평균학점이 D 이하인 유학생은 첫 연장 때 사유서를 내고 최대 6개월까지 연장되며, 다음에도 D 이하면 연장이 제한됩니다."
+   ],
+   "wrong_answers": [
+    {
+     "text": "유학생은 1회 최대 2년 범위에서 연장받을 수 있습니다.",
+     "value": {
+      "amount": 2,
+      "unit": "year"
+     },
+     "mixed_with": "일반 유학생 연장 시 1회 최대 부여 체류기간 2년",
+     "kind": "row"
+    },
+    {
+     "text": "사유서를 내면 1년 연장이 허가됩니다.",
+     "value": {
+      "amount": 1,
+      "unit": "year"
+     },
+     "mixed_with": "재입국허가 면제 기준 1년",
+     "kind": "row"
+    },
+    {
+     "text": "사유서만 제출하면 2년까지 연장됩니다.",
+     "value": {
+      "amount": 2,
+      "unit": "year"
+     },
+     "mixed_with": "D-2 복수재입국허가 허가기간 2년",
+     "kind": "row"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "stay_manual_2026_10_19_pdf#p44"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "6개월",
+      "6 개월",
+      "반년"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "유학생은 1회 최대 2년 범위에서 연장받을 수 있습니다.",
+     "사유서를 내면 1년 연장이 허가됩니다.",
+     "사유서만 제출하면 2년까지 연장됩니다."
+    ]
+   }
+  },
+  {
+   "id": "V-05-f6-multi-reentry",
+   "group": "V",
+   "purpose": "결혼이민(F-6) 복수재입국허가 허가기간(2년)과 재입국허가 면제기간(1년)·F-6-2 체류허가 기간(1년)·외국인등록 기한(90일) 혼동",
+   "question": "결혼이민 비자로 한국에 등록돼 있어요. 친정에 가서 1년 반쯤 지내다 돌아오고 싶은데, 복수재입국허가를 받으면 기간이 얼마예요? 체류기간은 2년 넘게 남았어요.",
+   "evidence": [
+    {
+     "id": "stay_manual_2026_10_19_pdf#p506",
+     "source_id": "stay_manual_2026_10_19_pdf",
+     "page": 506,
+     "domain": "stay"
+    }
+   ],
+   "right": {
+    "amount": 2,
+    "unit": "year"
+   },
+   "right_answers": [
+    "복수 재입국허가의 허가기간은 2년입니다.",
+    "체류기간이 충분하니 24개월 동안 유효한 복수재입국허가를 받을 수 있습니다.",
+    "결혼이민자로 등록하신 분이 1년을 넘겨 2년 안에 돌아오는 경우라 복수재입국허가로 2년이 부여됩니다."
+   ],
+   "wrong_answers": [
+    {
+     "text": "결혼이민자는 재입국허가 기간이 1년입니다.",
+     "value": {
+      "amount": 1,
+      "unit": "year"
+     },
+     "mixed_with": "1년 이내 재입국 시 재입국허가 면제기간 1년",
+     "kind": "row"
+    },
+    {
+     "text": "결혼이민(F-6)은 입국일로부터 1년 단위로 허가됩니다.",
+     "value": {
+      "amount": 1,
+      "unit": "year"
+     },
+     "mixed_with": "자녀 양육자(F-6-2) 체류허가 기간(입국일로부터 1년)",
+     "kind": "status_code"
+    },
+    {
+     "text": "재입국허가는 출국일로부터 90일 이내로만 인정됩니다.",
+     "value": {
+      "amount": 90,
+      "unit": "day"
+     },
+     "mixed_with": "국민의 배우자(F-6-1) 입국 후 외국인등록 기한 90일",
+     "kind": "other"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "stay_manual_2026_10_19_pdf#p506"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "2년",
+      "24개월",
+      "2 년"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "결혼이민자는 재입국허가 기간이 1년입니다.",
+     "결혼이민(F-6)은 입국일로부터 1년 단위로 허가됩니다.",
+     "재입국허가는 출국일로부터 90일 이내로만 인정됩니다."
+    ]
+   }
+  },
+  {
+   "id": "V-06-h2-registration-no-korean",
+   "group": "V",
+   "purpose": "방문취업(H-2) 최초 등록 시 한국어 입증서류 미제출(1년)과 제출(3년)·연장 상한(4년 10개월)·직권연장(6년) 혼동",
+   "question": "방문취업 사증으로 처음 들어와서 외국인등록하려고 해요. 한국어 능력 증명서류는 없는데 체류기간 얼마나 받을 수 있어요?",
+   "evidence": [
+    {
+     "id": "stay_manual_2026_10_19_pdf#p537",
+     "source_id": "stay_manual_2026_10_19_pdf",
+     "page": 537,
+     "domain": "stay"
+    }
+   ],
+   "right": {
+    "amount": 1,
+    "unit": "year"
+   },
+   "right_answers": [
+    "한국어능력 입증서류를 제출하지 않으면 체류기간 1년이 부여됩니다.",
+    "증명서류가 없으면 12개월만 받습니다.",
+    "방문취업으로 처음 등록하면서 한국어 서류를 내지 못하는 분은 3년이 아니라 1년을 받습니다."
+   ],
+   "wrong_answers": [
+    {
+     "text": "방문취업 사증으로 최초 입국하면 외국인등록 시 체류기간 3년을 받습니다.",
+     "value": {
+      "amount": 3,
+      "unit": "year"
+     },
+     "mixed_with": "한국어능력 입증서류를 제출한 경우의 체류기간 3년",
+     "kind": "row"
+    },
+    {
+     "text": "입국일로부터 4년 10개월 내에서 체류기간이 부여됩니다.",
+     "value": {
+      "amount": 58,
+      "unit": "month"
+     },
+     "mixed_with": "취업활동 기간연장 확인서를 받은 경우의 연장 상한",
+     "kind": "row"
+    },
+    {
+     "text": "최대 6년까지 체류기간을 받을 수 있습니다.",
+     "value": {
+      "amount": 6,
+      "unit": "year"
+     },
+     "mixed_with": "감염병 확산·천재지변 등 직권 연장 시 상한",
+     "kind": "row"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "stay_manual_2026_10_19_pdf#p537"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "1년",
+      "12개월",
+      "1 년"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "방문취업 사증으로 최초 입국하면 외국인등록 시 체류기간 3년을 받습니다.",
+     "입국일로부터 4년 10개월 내에서 체류기간이 부여됩니다.",
+     "최대 6년까지 체류기간을 받을 수 있습니다."
+    ]
+   }
+  },
+  {
+   "id": "V-07-h2-extension-rehire",
+   "group": "V",
+   "purpose": "방문취업(H-2) 취업활동 기간연장 확인서 소지자 연장 상한(4년 10개월)과 등록 시 3년·직권연장 6년·미입증 1년 혼동",
+   "question": "방문취업(H-2)으로 일하고 있는데 회사가 재고용해서 고용부 취업활동 기간연장 확인서를 받았어요. 연장하면 최대 언제까지 있을 수 있나요?",
+   "evidence": [
+    {
+     "id": "stay_manual_2026_10_19_pdf#p537",
+     "source_id": "stay_manual_2026_10_19_pdf",
+     "page": 537,
+     "domain": "stay"
+    }
+   ],
+   "right": {
+    "amount": 58,
+    "unit": "month"
+   },
+   "right_answers": [
+    "입국일(또는 체류자격변경허가일)로부터 4년 10개월 내에서 연장 허가됩니다.",
+    "입국일부터 계산해 최대 58개월까지 연장받을 수 있습니다.",
+    "확인서를 받은 방문취업 근로자는 입국일부터 4년10개월 안에서 연장됩니다."
+   ],
+   "wrong_answers": [
+    {
+     "text": "입국일로부터 최대 3년까지 연장 허가됩니다.",
+     "value": {
+      "amount": 3,
+      "unit": "year"
+     },
+     "mixed_with": "최초 외국인등록 시 한국어능력 입증 때 부여되는 체류기간 3년",
+     "kind": "row"
+    },
+    {
+     "text": "확인서가 있으면 6년까지 연장 가능합니다.",
+     "value": {
+      "amount": 6,
+      "unit": "year"
+     },
+     "mixed_with": "감염병 확산·천재지변 등 직권 연장 시 6년",
+     "kind": "row"
+    },
+    {
+     "text": "확인서를 받으면 연장 기간은 1년입니다.",
+     "value": {
+      "amount": 1,
+      "unit": "year"
+     },
+     "mixed_with": "한국어 입증서류 미제출 시 등록 체류기간 1년",
+     "kind": "row"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "stay_manual_2026_10_19_pdf#p537"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "4년 10개월",
+      "4년10개월",
+      "58개월"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "입국일로부터 최대 3년까지 연장 허가됩니다.",
+     "확인서가 있으면 6년까지 연장 가능합니다.",
+     "확인서를 받으면 연장 기간은 1년입니다."
+    ]
+   }
+  },
+  {
+   "id": "V-08-e10-rehire-total-cap",
+   "group": "V",
+   "purpose": "선원취업 재고용 특례 총 체류기간(4년 10개월)과 1회 부여 상한(3년)·구직자 연장(3개월)·총 체류가능기간(3년) 혼동",
+   "question": "선원취업 비자로 들어와서 어선에서 3년 일했어요. 선주가 재고용하겠다고 하는데, 총 체류기간은 처음 입국한 날부터 최대 얼마까지예요?",
+   "evidence": [
+    {
+     "id": "stay_manual_2026_10_19_pdf#p340",
+     "source_id": "stay_manual_2026_10_19_pdf",
+     "page": 340,
+     "domain": "stay"
+    }
+   ],
+   "right": {
+    "amount": 58,
+    "unit": "month"
+   },
+   "right_answers": [
+    "총 체류기간은 최초 입국일로부터 4년 10개월을 초과할 수 없습니다.",
+    "처음 입국한 날부터 계산해 58개월이 상한입니다.",
+    "재고용된 어선원은 최초 입국일 기준 4년10개월까지 머물 수 있고, 1회 부여는 3년을 넘지 않습니다."
+   ],
+   "wrong_answers": [
+    {
+     "text": "총 체류기간은 3년을 넘을 수 없습니다.",
+     "value": {
+      "amount": 3,
+      "unit": "year"
+     },
+     "mixed_with": "재고용 시 1회에 부여하는 체류기간 상한 3년",
+     "kind": "row"
+    },
+    {
+     "text": "재고용되면 3개월 범위에서 연장됩니다.",
+     "value": {
+      "amount": 3,
+      "unit": "month"
+     },
+     "mixed_with": "고용해지로 구직 중인 사람의 연장 범위 3개월",
+     "kind": "row"
+    },
+    {
+     "text": "총 체류가능기간은 3년이고 그 이상은 안 됩니다.",
+     "value": {
+      "amount": 3,
+      "unit": "year"
+     },
+     "mixed_with": "구직자 특례에서 말하는 총 체류가능기간(3년)",
+     "kind": "row"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "stay_manual_2026_10_19_pdf#p340"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "4년 10개월",
+      "4년10개월",
+      "58개월"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "총 체류기간은 3년을 넘을 수 없습니다.",
+     "재고용되면 3개월 범위에서 연장됩니다.",
+     "총 체류가능기간은 3년이고 그 이상은 안 됩니다."
+    ]
+   }
+  },
+  {
+   "id": "V-09-e10-jobseeker-extension",
+   "group": "V",
+   "purpose": "구직 중인 선원의 연장 범위(3개월)와 최소 잔여기간 요건(4개월)·재고용 신청 시점(2개월 전)·총 체류가능기간(3년) 혼동",
+   "question": "선원으로 일하다 고용이 해지돼서 지금 다른 배를 구하는 중이에요. 남은 체류가능기간은 반년쯤인데, 구직 기간 동안 연장을 얼마나 받을 수 있어요?",
+   "evidence": [
+    {
+     "id": "stay_manual_2026_10_19_pdf#p340",
+     "source_id": "stay_manual_2026_10_19_pdf",
+     "page": 340,
+     "domain": "stay"
+    }
+   ],
+   "right": {
+    "amount": 3,
+    "unit": "month"
+   },
+   "right_answers": [
+    "고용해지일로부터 3개월의 범위 내에서 체류기간 연장허가를 받을 수 있습니다.",
+    "해지된 날부터 석 달 안에서 연장되며, 연장허가 수수료는 면제입니다.",
+    "일자리를 찾는 중인 선원이시고 잔여 기간이 4개월 이상 남았으니 고용해지일부터 3개월까지 연장 가능합니다."
+   ],
+   "wrong_answers": [
+    {
+     "text": "구직 중이면 4개월 범위에서 연장됩니다.",
+     "value": {
+      "amount": 4,
+      "unit": "month"
+     },
+     "mixed_with": "연장 대상이 되기 위한 최소 잔여 체류가능기간 4개월",
+     "kind": "row"
+    },
+    {
+     "text": "고용해지일로부터 2개월 동안 연장해 줍니다.",
+     "value": {
+      "amount": 2,
+      "unit": "month"
+     },
+     "mixed_with": "재고용 특례 연장 신청 가능 시점(만료일 2개월 전부터)",
+     "kind": "row"
+    },
+    {
+     "text": "총 체류가능기간인 3년까지 연장받을 수 있습니다.",
+     "value": {
+      "amount": 3,
+      "unit": "year"
+     },
+     "mixed_with": "총 체류가능기간 3년",
+     "kind": "row"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "stay_manual_2026_10_19_pdf#p340"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "3개월",
+      "3 개월",
+      "석 달",
+      "석달"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "구직 중이면 4개월 범위에서 연장됩니다.",
+     "고용해지일로부터 2개월 동안 연장해 줍니다.",
+     "총 체류가능기간인 3년까지 연장받을 수 있습니다."
+    ]
+   }
+  },
+  {
+   "id": "V-10-intl-org-nonaccompanying-validity",
+   "group": "V",
+   "purpose": "국제기구 직원 비동반가족 C-3 복수사증 유효기간(1년)과 동반가족 유효기간(3년)·일시 회의참석 유효기간(3개월)·비동반가족 체류기간(90일) 혼동",
+   "question": "My husband works for an international organization in Seoul, but I'm not moving there with him — I'll just visit now and then. What validity would my multiple-entry visa have?",
+   "evidence": [
+    {
+     "id": "visa_manual_2026_10_19_pdf#p12",
+     "source_id": "visa_manual_2026_10_19_pdf",
+     "page": 12,
+     "domain": "visa_issuance"
+    }
+   ],
+   "right": {
+    "amount": 1,
+    "unit": "year"
+   },
+   "right_answers": [
+    "Family members who don't accompany the staff member get a short-term visit (C-3) multiple-entry visa with a validity of 1 year, each stay up to 90 days.",
+    "Your multiple-entry visa would be valid for 12 months, with stays of 90 days or less.",
+    "As a spouse who isn't relocating with your husband, you'd get a multiple-entry visa valid for one year."
+   ],
+   "wrong_answers": [
+    {
+     "text": "Family of international organization staff receive a multiple-entry visa valid for 3 years.",
+     "value": {
+      "amount": 3,
+      "unit": "year"
+     },
+     "mixed_with": "동반가족에게 주는 유효기간 3년의 복수사증",
+     "kind": "household"
+    },
+    {
+     "text": "You would get a single-entry visa valid for 3 months.",
+     "value": {
+      "amount": 3,
+      "unit": "month"
+     },
+     "mixed_with": "주재 목적이 아닌 일시적 회의참석·공무수행 시 유효기간 3개월 단수사증",
+     "kind": "row"
+    },
+    {
+     "text": "Your visa would be valid for 90 days.",
+     "value": {
+      "amount": 90,
+      "unit": "day"
+     },
+     "mixed_with": "비동반가족 사증의 체류기간 90일(유효기간이 아님)",
+     "kind": "other"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "visa_manual_2026_10_19_pdf#p12"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "1 year",
+      "one year",
+      "12 months",
+      "1-year",
+      "1년",
+      "12개월"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "Family of international organization staff receive a multiple-entry visa valid for 3 years.",
+     "You would get a single-entry visa valid for 3 months.",
+     "Your visa would be valid for 90 days."
+    ]
+   }
+  },
+  {
+   "id": "V-11-intl-org-meeting-validity",
+   "group": "V",
+   "purpose": "일시 회의참석 단수사증 유효기간(3개월)과 동반가족 유효기간(3년)·비동반가족 유효기간(1년)·동거인 F-1-3 체류기간(1년) 혼동",
+   "question": "국제기구 소속 공무원인데 서울에서 열리는 회의에 며칠 참석만 하려고 해요. 이 경우 사증 유효기간은 어떻게 나오나요?",
+   "evidence": [
+    {
+     "id": "visa_manual_2026_10_19_pdf#p12",
+     "source_id": "visa_manual_2026_10_19_pdf",
+     "page": 12,
+     "domain": "visa_issuance"
+    }
+   ],
+   "right": {
+    "amount": 3,
+    "unit": "month"
+   },
+   "right_answers": [
+    "주재 목적이 아닌 일시적인 회의참석은 유효기간 3개월의 단수사증이 발급됩니다.",
+    "석 달짜리 단수사증이 원칙이고, 상호주의가 적용되는 나라면 복수사증도 가능합니다.",
+    "회의 참석차 잠깐 오시는 국제기구 관계자에게는 유효기간 3개월 단수사증이 나옵니다."
+   ],
+   "wrong_answers": [
+    {
+     "text": "국제기구 관계자는 유효기간 3년의 복수사증이 발급됩니다.",
+     "value": {
+      "amount": 3,
+      "unit": "year"
+     },
+     "mixed_with": "국제기구 직원 동반가족에게 주는 유효기간 3년 복수사증",
+     "kind": "household"
+    },
+    {
+     "text": "유효기간 1년의 복수사증을 받습니다.",
+     "value": {
+      "amount": 1,
+      "unit": "year"
+     },
+     "mixed_with": "비동반가족 단기방문(C-3) 복수사증 유효기간 1년",
+     "kind": "household"
+    },
+    {
+     "text": "체류기간 1년 이하 단수사증이 발급됩니다.",
+     "value": {
+      "amount": 1,
+      "unit": "year"
+     },
+     "mixed_with": "국제기구 직원 동거인(F-1-3) 체류기간 1년 이하",
+     "kind": "other"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "visa_manual_2026_10_19_pdf#p12"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "3개월",
+      "3 개월",
+      "석 달",
+      "석달"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "국제기구 관계자는 유효기간 3년의 복수사증이 발급됩니다.",
+     "유효기간 1년의 복수사증을 받습니다.",
+     "체류기간 1년 이하 단수사증이 발급됩니다."
+    ]
+   }
+  },
+  {
+   "id": "V-12-d10t-fine-waiting",
+   "group": "V",
+   "purpose": "최우수인재(D-10-T) 결격사유 중 벌금형 납부 후 3년과 금고형 5년·집행유예 5년·강제퇴거 7년 혼동",
+   "question": "몇 년 전에 한국에서 출입국관리법 위반으로 벌금 400만 원을 선고받고 냈어요. 최우수인재(D-10-T) 신청하려면 벌금 낸 날부터 얼마나 지나야 하나요?",
+   "evidence": [
+    {
+     "id": "visa_manual_2026_10_19_pdf#p128",
+     "source_id": "visa_manual_2026_10_19_pdf",
+     "page": 128,
+     "domain": "visa_issuance"
+    }
+   ],
+   "right": {
+    "amount": 3,
+    "unit": "year"
+   },
+   "right_answers": [
+    "300만원 이상 벌금형을 받고 납부한 경우 납부한 날부터 3년이 경과해야 결격사유에서 벗어납니다.",
+    "벌금 낸 날로부터 36개월이 지나야 합니다.",
+    "벌금형을 받아 납부하신 분은 금고형과 달리 납부일부터 3년이 지나면 이 결격사유에 해당하지 않습니다."
+   ],
+   "wrong_answers": [
+    {
+     "text": "벌금형을 받았다면 납부일로부터 5년이 지나야 신청할 수 있습니다.",
+     "value": {
+      "amount": 5,
+      "unit": "year"
+     },
+     "mixed_with": "금고 이상 형의 집행 종료·면제 후 5년",
+     "kind": "row"
+    },
+    {
+     "text": "출입국관리법 위반 전력이 있으면 7년이 지나야 합니다.",
+     "value": {
+      "amount": 7,
+      "unit": "year"
+     },
+     "mixed_with": "강제퇴거명령을 받고 출국한 경우 7년",
+     "kind": "row"
+    },
+    {
+     "text": "판결 확정일부터 5년이 지나야 결격사유가 풀립니다.",
+     "value": {
+      "amount": 5,
+      "unit": "year"
+     },
+     "mixed_with": "금고 이상 형의 집행유예 판결 확정일부터 5년",
+     "kind": "row"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "visa_manual_2026_10_19_pdf#p128"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "3년",
+      "36개월",
+      "3 년"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "벌금형을 받았다면 납부일로부터 5년이 지나야 신청할 수 있습니다.",
+     "출입국관리법 위반 전력이 있으면 7년이 지나야 합니다.",
+     "판결 확정일부터 5년이 지나야 결격사유가 풀립니다."
+    ]
+   }
+  },
+  {
+   "id": "V-13-d10t-fine-total",
+   "group": "V",
+   "purpose": "최우수인재(D-10-T) 결격사유 중 범칙금 합산 기준(700만원)과 1회 기준(500만원)·벌금형 기준(300만원) 혼동",
+   "question": "최근 3년 사이 출입국관리법 위반으로 범칙금을 여러 번 나눠서 냈어요. 최우수인재(D-10-T) 결격사유에서 합산 범칙금은 얼마 이상이면 걸리나요?",
+   "evidence": [
+    {
+     "id": "visa_manual_2026_10_19_pdf#p128",
+     "source_id": "visa_manual_2026_10_19_pdf",
+     "page": 128,
+     "domain": "visa_issuance"
+    }
+   ],
+   "right": {
+    "amount": 7000000,
+    "unit": "krw"
+   },
+   "right_answers": [
+    "최근 3년간 합산한 범칙금 금액이 700만원 이상이면 결격사유에 해당합니다.",
+    "합계가 7,000,000원 이상이면 결격입니다.",
+    "여러 번 나눠 범칙금을 내신 경우 합쳐서 700만 원 이상이면 해당되고, 한 번에 낸 금액에는 별도 기준이 있습니다."
+   ],
+   "wrong_answers": [
+    {
+     "text": "합산 범칙금이 500만원 이상이면 결격사유입니다.",
+     "value": {
+      "amount": 5000000,
+      "unit": "krw"
+     },
+     "mixed_with": "1회 범칙금 처분 기준 500만원",
+     "kind": "row"
+    },
+    {
+     "text": "합쳐서 300만 원 이상이면 결격에 해당합니다.",
+     "value": {
+      "amount": 3000000,
+      "unit": "krw"
+     },
+     "mixed_with": "300만원 이상 벌금형 기준",
+     "kind": "row"
+    },
+    {
+     "text": "범칙금 합계 5,000,000원부터 결격사유로 봅니다.",
+     "value": {
+      "amount": 5000000,
+      "unit": "krw"
+     },
+     "mixed_with": "1회 범칙금 처분 기준 500만원",
+     "kind": "row"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "visa_manual_2026_10_19_pdf#p128"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "700만원",
+      "700만 원",
+      "7,000,000원",
+      "7000000원"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "합산 범칙금이 500만원 이상이면 결격사유입니다.",
+     "합쳐서 300만 원 이상이면 결격에 해당합니다.",
+     "범칙금 합계 5,000,000원부터 결격사유로 봅니다."
+    ]
+   }
+  },
+  {
+   "id": "V-14-phd-expected-conditional",
+   "group": "V",
+   "purpose": "박사 취득 예정자 조건부 사증(6개월 이내)과 1회 부여 상한(5년)·연구기관 과학기술자 공관장 재량 사증(1년 이하) 혼동",
+   "question": "박사과정 마치는 중이고 학위 취득이 확정됐다는 학교 서류는 받아 둔 상태예요. 학위증 나오기 전에 사증 신청하면 체류기간 어떻게 주나요?",
+   "evidence": [
+    {
+     "id": "visa_manual_2026_10_19_pdf#p153",
+     "source_id": "visa_manual_2026_10_19_pdf",
+     "page": 153,
+     "domain": "visa_issuance"
+    }
+   ],
+   "right": {
+    "amount": 6,
+    "unit": "month"
+   },
+   "right_answers": [
+    "학위 취득 확정을 서류로 입증하면 체류기간 6개월 이내에서 조건부로 사증이 발급될 수 있습니다.",
+    "반년 이내 체류기간으로 조건부 발급이 가능합니다.",
+    "박사 취득 예정자는 확정 서류가 있으면 6개월 이내에서 조건부로 사증을 받을 수 있습니다."
+   ],
+   "wrong_answers": [
+    {
+     "text": "1회 부여 체류기간 상한인 5년까지 받을 수 있습니다.",
+     "value": {
+      "amount": 5,
+      "unit": "year"
+     },
+     "mixed_with": "1회 부여 체류기간 상한 5년",
+     "kind": "row"
+    },
+    {
+     "text": "체류기간 1년 이하의 단수사증이 발급됩니다.",
+     "value": {
+      "amount": 1,
+      "unit": "year"
+     },
+     "mixed_with": "정부출연 연구기관 과학기술자에 대한 공관장 재량 단수사증",
+     "kind": "row"
+    },
+    {
+     "text": "학위 확정 서류가 있으면 60개월 체류기간이 조건부로 부여됩니다.",
+     "value": {
+      "amount": 5,
+      "unit": "year"
+     },
+     "mixed_with": "1회 부여 체류기간 상한 5년",
+     "kind": "row"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "visa_manual_2026_10_19_pdf#p153"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "6개월",
+      "6 개월",
+      "반년"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "1회 부여 체류기간 상한인 5년까지 받을 수 있습니다.",
+     "체류기간 1년 이하의 단수사증이 발급됩니다.",
+     "학위 확정 서류가 있으면 60개월 체류기간이 조건부로 부여됩니다."
+    ]
+   }
+  },
+  {
+   "id": "V-15-f6-income-4person",
+   "group": "V",
+   "purpose": "결혼이민 초청 소득요건 4인 가구(38,968,428원)와 3인·5인·2인 가구 기준 혼동",
+   "question": "한국인이고 외국인 아내를 초청하려고 해요. 저랑 아내, 아이 둘까지 네 식구 기준이면 제 연간 소득이 얼마 이상이어야 하나요?",
+   "evidence": [
+    {
+     "id": "visa_manual_2026_10_19_pdf#p330",
+     "source_id": "visa_manual_2026_10_19_pdf",
+     "page": 330,
+     "domain": "visa_issuance"
+    }
+   ],
+   "right": {
+    "amount": 38968428,
+    "unit": "krw"
+   },
+   "right_answers": [
+    "4인 가구 소득기준은 38,968,428원으로, 과거 1년간 세전 연간소득이 그 이상이어야 합니다.",
+    "3,896만 8,428원 이상이어야 합니다.",
+    "아이 둘을 포함한 네 식구라면 초청인 소득이 38968428원 이상이어야 합니다."
+   ],
+   "wrong_answers": [
+    {
+     "text": "네 식구면 32,154,216원 이상이어야 합니다.",
+     "value": {
+      "amount": 32154216,
+      "unit": "krw"
+     },
+     "mixed_with": "3인 가구 소득기준",
+     "kind": "household"
+    },
+    {
+     "text": "연간소득이 45,340,314원 이상이어야 합니다.",
+     "value": {
+      "amount": 45340314,
+      "unit": "krw"
+     },
+     "mixed_with": "5인 가구 소득기준",
+     "kind": "household"
+    },
+    {
+     "text": "부부 기준인 25,195,752원 이상이면 충분합니다.",
+     "value": {
+      "amount": 25195752,
+      "unit": "krw"
+     },
+     "mixed_with": "2인 가구 소득기준",
+     "kind": "household"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "visa_manual_2026_10_19_pdf#p330"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "38,968,428",
+      "38968428",
+      "3,896만 8,428",
+      "3896만 8428",
+      "3896만8428"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "네 식구면 32,154,216원 이상이어야 합니다.",
+     "연간소득이 45,340,314원 이상이어야 합니다.",
+     "부부 기준인 25,195,752원 이상이면 충분합니다."
+    ]
+   }
+  },
+  {
+   "id": "V-16-f6-income-6person",
+   "group": "V",
+   "purpose": "결혼이민 초청 소득요건 6인 가구(51,335,712원)와 5인·7인·4인 가구 기준 혼동",
+   "question": "저희 집은 저, 어머니, 아이 셋, 그리고 초청할 아내까지 여섯 명이에요. 결혼이민 초청할 때 소득요건이 얼마예요?",
+   "evidence": [
+    {
+     "id": "visa_manual_2026_10_19_pdf#p330",
+     "source_id": "visa_manual_2026_10_19_pdf",
+     "page": 330,
+     "domain": "visa_issuance"
+    }
+   ],
+   "right": {
+    "amount": 51335712,
+    "unit": "krw"
+   },
+   "right_answers": [
+    "6인 가구 소득기준은 51,335,712원입니다.",
+    "연간 세전 소득이 5,133만 5,712원 이상이어야 합니다.",
+    "어머니와 아이 셋까지 여섯 식구라면 초청인 소득이 51335712원 이상이어야 합니다."
+   ],
+   "wrong_answers": [
+    {
+     "text": "여섯 식구면 45,340,314원 이상이면 됩니다.",
+     "value": {
+      "amount": 45340314,
+      "unit": "krw"
+     },
+     "mixed_with": "5인 가구 소득기준",
+     "kind": "household"
+    },
+    {
+     "text": "57,090,900원 이상이어야 합니다.",
+     "value": {
+      "amount": 57090900,
+      "unit": "krw"
+     },
+     "mixed_with": "7인 가구 소득기준",
+     "kind": "household"
+    },
+    {
+     "text": "38,968,428원 이상이면 초청할 수 있습니다.",
+     "value": {
+      "amount": 38968428,
+      "unit": "krw"
+     },
+     "mixed_with": "4인 가구 소득기준",
+     "kind": "household"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "visa_manual_2026_10_19_pdf#p330"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "51,335,712",
+      "51335712",
+      "5,133만 5,712",
+      "5133만 5712",
+      "5133만5712"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "여섯 식구면 45,340,314원 이상이면 됩니다.",
+     "57,090,900원 이상이어야 합니다.",
+     "38,968,428원 이상이면 초청할 수 있습니다."
+    ]
+   }
+  },
+  {
+   "id": "V-17-india-business-5yr",
+   "group": "V",
+   "purpose": "인도 상용방문자 지정단체 요청서 제출자(5년 복수)와 자원·에너지(3년)·기타 회사(1년)·C-3-4 체류기간(90일) 혼동",
+   "question": "I'm an Indian businessman. My letter of request comes from a chamber of commerce designated under the Korea-India arrangement. How long would my multiple-entry business visa be valid?",
+   "evidence": [
+    {
+     "id": "visa_manual_2026_10_19_pdf#p43",
+     "source_id": "visa_manual_2026_10_19_pdf",
+     "page": 43,
+     "domain": "visa_issuance"
+    }
+   ],
+   "right": {
+    "amount": 5,
+    "unit": "year"
+   },
+   "right_answers": [
+    "You'd be issued a 5-year multiple-entry visa (C-3-4, up to 90 days per stay).",
+    "The visa would be valid for five years.",
+    "As an Indian business visitor with a letter of request from a designated chamber, you qualify for the 5년 multiple-entry visa."
+   ],
+   "wrong_answers": [
+    {
+     "text": "You'd receive a 3-year multiple-entry visa.",
+     "value": {
+      "amount": 3,
+      "unit": "year"
+     },
+     "mixed_with": "자원·에너지 회사 설립·계약 목적 상용방문자 3년 복수사증",
+     "kind": "row"
+    },
+    {
+     "text": "Indian business visitors get a 1-year multiple-entry visa.",
+     "value": {
+      "amount": 1,
+      "unit": "year"
+     },
+     "mixed_with": "자원·에너지 외 회사 지사 설립·수출입 활동 상용방문자 1년 복수사증",
+     "kind": "row"
+    },
+    {
+     "text": "The visa is valid for 90 days.",
+     "value": {
+      "amount": 90,
+      "unit": "day"
+     },
+     "mixed_with": "C-3-4 체류기간 90일(유효기간이 아님)",
+     "kind": "other"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "visa_manual_2026_10_19_pdf#p43"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "5년",
+      "5-year",
+      "5 years",
+      "five years",
+      "60 months",
+      "60개월"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "You'd receive a 3-year multiple-entry visa.",
+     "Indian business visitors get a 1-year multiple-entry visa.",
+     "The visa is valid for 90 days."
+    ]
+   }
+  },
+  {
+   "id": "V-18-india-energy-3yr",
+   "group": "V",
+   "purpose": "인도 자원·에너지 회사 상용방문자(3년 복수)와 지정단체 요청서(5년)·기타 회사(1년)·체류기간(90일) 혼동",
+   "question": "인도 국적인데요, 한국에서 에너지 개발 회사 설립 준비 때문에 협의하러 가요. 상용 복수사증 유효기간이 몇 년짜리로 나와요?",
+   "evidence": [
+    {
+     "id": "visa_manual_2026_10_19_pdf#p43",
+     "source_id": "visa_manual_2026_10_19_pdf",
+     "page": 43,
+     "domain": "visa_issuance"
+    }
+   ],
+   "right": {
+    "amount": 3,
+    "unit": "year"
+   },
+   "right_answers": [
+    "자원·에너지 회사 설립 준비나 협의를 위한 상용방문자는 3년 복수사증이 발급됩니다.",
+    "유효기간 36개월의 복수사증을 받습니다.",
+    "에너지 회사 일로 협의하러 오시는 인도 상용방문자라 3년 유효 복수사증 대상입니다."
+   ],
+   "wrong_answers": [
+    {
+     "text": "인도 상용방문자는 5년 복수사증이 발급됩니다.",
+     "value": {
+      "amount": 5,
+      "unit": "year"
+     },
+     "mixed_with": "지정 회사·상공회의소 요청서 제출 상용방문자 5년 복수사증",
+     "kind": "row"
+    },
+    {
+     "text": "유효기간 1년 복수사증이 나옵니다.",
+     "value": {
+      "amount": 1,
+      "unit": "year"
+     },
+     "mixed_with": "자원·에너지 외 회사 지사 설립·수출입 활동 상용방문자 1년 복수사증",
+     "kind": "row"
+    },
+    {
+     "text": "사증 유효기간은 90일입니다.",
+     "value": {
+      "amount": 90,
+      "unit": "day"
+     },
+     "mixed_with": "C-3-4 체류기간 90일(유효기간이 아님)",
+     "kind": "other"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "visa_manual_2026_10_19_pdf#p43"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "3년",
+      "36개월",
+      "3 년"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "인도 상용방문자는 5년 복수사증이 발급됩니다.",
+     "유효기간 1년 복수사증이 나옵니다.",
+     "사증 유효기간은 90일입니다."
+    ]
+   }
+  },
+  {
+   "id": "V-19-d2-exchange-student",
+   "group": "V",
+   "purpose": "교환학생(D-2-6) 체류기간(1년 이내)과 학위과정(2년)·어학연수생(6개월)·인도국민 유효기간(5년) 혼동",
+   "question": "I'm going to Korea as an exchange student at a partner university. What period of stay would my student visa give me?",
+   "evidence": [
+    {
+     "id": "visa_manual_2026_10_19_pdf#p68",
+     "source_id": "visa_manual_2026_10_19_pdf",
+     "page": 68,
+     "domain": "visa_issuance"
+    }
+   ],
+   "right": {
+    "amount": 1,
+    "unit": "year"
+   },
+   "right_answers": [
+    "Exchange students get a single-entry visa with a period of stay of up to 1 year.",
+    "Your period of stay would be within 12 months, single entry.",
+    "As an exchange student rather than a degree student, you'd get up to one year on a single-entry visa."
+   ],
+   "wrong_answers": [
+    {
+     "text": "Student visas come with a period of stay of up to 2 years, single entry.",
+     "value": {
+      "amount": 2,
+      "unit": "year"
+     },
+     "mixed_with": "전문학사~박사과정(D-2-1~D-2-4) 체류기간 2년 이내",
+     "kind": "status_code"
+    },
+    {
+     "text": "You'd get a stay of up to 6 months.",
+     "value": {
+      "amount": 6,
+      "unit": "month"
+     },
+     "mixed_with": "어학연수생(D-4-1, D-4-7) 체류기간 6개월 이내",
+     "kind": "status_code"
+    },
+    {
+     "text": "Exchange students receive a multiple-entry visa valid for 5 years.",
+     "value": {
+      "amount": 5,
+      "unit": "year"
+     },
+     "mixed_with": "인도국민(D-2-1, D-2-5) 복수사증 유효기간 5년",
+     "kind": "status_code"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "visa_manual_2026_10_19_pdf#p68"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "1 year",
+      "one year",
+      "12 months",
+      "1-year",
+      "1년",
+      "12개월"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "Student visas come with a period of stay of up to 2 years, single entry.",
+     "You'd get a stay of up to 6 months.",
+     "Exchange students receive a multiple-entry visa valid for 5 years."
+    ]
+   }
+  },
+  {
+   "id": "V-20-d9-technician-discretionary",
+   "group": "V",
+   "purpose": "무역경영(D-9) 설비 기술자 공관장 재량 단수사증(체류기간 1년 이하)과 1회 부여 상한(2년) 혼동",
+   "question": "산업설비를 도입한 한국 회사에 장비 설치·정비 기술을 제공하러 파견 가요. 현지 대사관에서 바로 사증 받으면 체류기간은 얼마예요?",
+   "evidence": [
+    {
+     "id": "visa_manual_2026_10_19_pdf#p118",
+     "source_id": "visa_manual_2026_10_19_pdf",
+     "page": 118,
+     "domain": "visa_issuance"
+    }
+   ],
+   "right": {
+    "amount": 1,
+    "unit": "year"
+   },
+   "right_answers": [
+    "공관장 재량으로 체류기간 1년 이하의 단수사증이 발급됩니다.",
+    "대사관에서 받는 사증은 체류기간 12개월 이하 단수입니다.",
+    "설비 설치·정비 기술자로 파견되시는 경우 공관에서 1년 이하 단수사증을 받습니다."
+   ],
+   "wrong_answers": [
+    {
+     "text": "무역경영(D-9)은 체류기간 2년이 부여됩니다.",
+     "value": {
+      "amount": 2,
+      "unit": "year"
+     },
+     "mixed_with": "D-9 1회 부여 체류기간 상한 2년",
+     "kind": "row"
+    },
+    {
+     "text": "대사관에서 체류기간 24개월짜리 단수사증을 받습니다.",
+     "value": {
+      "amount": 2,
+      "unit": "year"
+     },
+     "mixed_with": "D-9 1회 부여 체류기간 상한 2년",
+     "kind": "row"
+    },
+    {
+     "text": "1회에 최대 2년까지 체류기간을 받을 수 있습니다.",
+     "value": {
+      "amount": 2,
+      "unit": "year"
+     },
+     "mixed_with": "D-9 1회 부여 체류기간 상한 2년",
+     "kind": "row"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "visa_manual_2026_10_19_pdf#p118"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "1년",
+      "12개월",
+      "1 년"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "무역경영(D-9)은 체류기간 2년이 부여됩니다.",
+     "대사관에서 체류기간 24개월짜리 단수사증을 받습니다.",
+     "1회에 최대 2년까지 체류기간을 받을 수 있습니다."
+    ]
+   }
+  },
+  {
+   "id": "V-21-d4-finance-period",
+   "group": "V",
+   "purpose": "어학연수생 재정능력 입증기간(6개월)과 원칙 1년·90일 이하 단기연수(C-3-1) 기준 혼동",
+   "question": "한국어학당에 어학연수 가려고 일반연수 사증 준비 중이에요. 잔고증명은 몇 달치 비용을 기준으로 맞춰야 하나요?",
+   "evidence": [
+    {
+     "id": "visa_manual_2026_10_19_pdf#p74",
+     "source_id": "visa_manual_2026_10_19_pdf",
+     "page": 74,
+     "domain": "visa_issuance"
+    }
+   ],
+   "right": {
+    "amount": 6,
+    "unit": "month"
+   },
+   "right_answers": [
+    "어학연수는 6개월의 재정능력(등록금+체재비)을 입증하면 됩니다.",
+    "반년치 등록금과 체재비를 입증하시면 됩니다.",
+    "어학연수생은 1년이 아니라 6개월 기준으로 재정능력을 보여주면 되고, 잔고증명서는 30일 이내 발급분이어야 합니다."
+   ],
+   "wrong_answers": [
+    {
+     "text": "1년간의 등록금과 체재비를 입증해야 합니다.",
+     "value": {
+      "amount": 1,
+      "unit": "year"
+     },
+     "mixed_with": "어학연수가 아닌 경우 원칙인 1년간 재정능력",
+     "kind": "row"
+    },
+    {
+     "text": "12개월치 재정능력을 증명하셔야 합니다.",
+     "value": {
+      "amount": 1,
+      "unit": "year"
+     },
+     "mixed_with": "어학연수가 아닌 경우 원칙인 1년간 재정능력",
+     "kind": "row"
+    },
+    {
+     "text": "90일치 체류비만 입증하면 됩니다.",
+     "value": {
+      "amount": 90,
+      "unit": "day"
+     },
+     "mixed_with": "90일 이하 체류 어학연수생은 단기일반(C-3-1) 대상이라는 기준",
+     "kind": "other"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "visa_manual_2026_10_19_pdf#p74"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "6개월",
+      "6 개월",
+      "반년"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "1년간의 등록금과 체재비를 입증해야 합니다.",
+     "12개월치 재정능력을 증명하셔야 합니다.",
+     "90일치 체류비만 입증하면 됩니다."
+    ]
+   }
+  },
+  {
+   "id": "V-22-d5-journalist-discretionary",
+   "group": "V",
+   "purpose": "취재(D-5) 공관장 재량 단수사증(체류기간 1년 이하)과 1회 부여 상한(2년)·일시취재(C-1) 90일 기준 혼동",
+   "question": "외국 방송사 기자인데 이미 서울지국이 있는 회사라 그쪽으로 파견돼요. 대사관에서 바로 받는 취재 사증은 체류기간이 얼마예요?",
+   "evidence": [
+    {
+     "id": "visa_manual_2026_10_19_pdf#p90",
+     "source_id": "visa_manual_2026_10_19_pdf",
+     "page": 90,
+     "domain": "visa_issuance"
+    }
+   ],
+   "right": {
+    "amount": 1,
+    "unit": "year"
+   },
+   "right_answers": [
+    "공관장 재량으로 체류기간 1년 이하의 단수사증이 발급됩니다.",
+    "체류기간 12개월 이하 단수사증을 받으실 수 있습니다.",
+    "지국이 이미 개설된 언론사로 파견되는 기자분과 동반가족은 1년 이하 단수사증 대상입니다."
+   ],
+   "wrong_answers": [
+    {
+     "text": "취재(D-5) 사증은 체류기간 2년이 부여됩니다.",
+     "value": {
+      "amount": 2,
+      "unit": "year"
+     },
+     "mixed_with": "D-5 1회 부여 체류기간 상한 2년",
+     "kind": "row"
+    },
+    {
+     "text": "체류기간 90일 이하로 발급됩니다.",
+     "value": {
+      "amount": 90,
+      "unit": "day"
+     },
+     "mixed_with": "90일 이하 체류 시 해당하는 일시취재(C-1) 기준",
+     "kind": "status_code"
+    },
+    {
+     "text": "24개월 체류기간의 단수사증이 나옵니다.",
+     "value": {
+      "amount": 2,
+      "unit": "year"
+     },
+     "mixed_with": "D-5 1회 부여 체류기간 상한 2년",
+     "kind": "row"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "visa_manual_2026_10_19_pdf#p90"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "1년",
+      "12개월",
+      "1 년"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "취재(D-5) 사증은 체류기간 2년이 부여됩니다.",
+     "체류기간 90일 이하로 발급됩니다.",
+     "24개월 체류기간의 단수사증이 나옵니다."
+    ]
+   }
+  },
+  {
+   "id": "V-23-d6-welfare-discretionary",
+   "group": "V",
+   "purpose": "종교(D-6) 사회복지활동 공관장 재량 단수사증(체류기간 1년 이하)과 1회 부여 상한(2년)·단기방문(C-3) 90일 기준 혼동",
+   "question": "한국 사회복지단체 초청을 받아 사회복지 활동만 하러 가요. 대사관 재량으로 받는 사증은 체류기간이 얼마나 되나요?",
+   "evidence": [
+    {
+     "id": "visa_manual_2026_10_19_pdf#p92",
+     "source_id": "visa_manual_2026_10_19_pdf",
+     "page": 92,
+     "domain": "visa_issuance"
+    }
+   ],
+   "right": {
+    "amount": 1,
+    "unit": "year"
+   },
+   "right_answers": [
+    "공관장 재량으로 체류기간 1년 이하의 단수사증이 발급됩니다.",
+    "체류기간 12개월 이하 단수사증입니다.",
+    "사회복지 활동만 하러 초청받아 가시는 분은 대사관에서 1년 이하 단수사증을 받습니다."
+   ],
+   "wrong_answers": [
+    {
+     "text": "종교(D-6) 사증은 체류기간 2년으로 발급됩니다.",
+     "value": {
+      "amount": 2,
+      "unit": "year"
+     },
+     "mixed_with": "D-6 1회 부여 체류기간 상한 2년",
+     "kind": "row"
+    },
+    {
+     "text": "체류기간 90일 이하 사증이 나옵니다.",
+     "value": {
+      "amount": 90,
+      "unit": "day"
+     },
+     "mixed_with": "90일 이하 체류 시 해당하는 단기방문(C-3) 기준",
+     "kind": "status_code"
+    },
+    {
+     "text": "체류기간 24개월의 단수사증을 받습니다.",
+     "value": {
+      "amount": 2,
+      "unit": "year"
+     },
+     "mixed_with": "D-6 1회 부여 체류기간 상한 2년",
+     "kind": "row"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "visa_manual_2026_10_19_pdf#p92"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "1년",
+      "12개월",
+      "1 년"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "종교(D-6) 사증은 체류기간 2년으로 발급됩니다.",
+     "체류기간 90일 이하 사증이 나옵니다.",
+     "체류기간 24개월의 단수사증을 받습니다."
+    ]
+   }
+  },
+  {
+   "id": "V-24-d7-china-validity",
+   "group": "V",
+   "purpose": "중국인 주재원 공관장 재량 복수사증 유효기간(2년 이내)과 D-7 1회 부여 체류기간 상한(3년)·근무경력 요건(1년) 혼동",
+   "question": "I'm a Chinese employee who has worked at my company for over a year, and I'm being posted to our branch office in Korea. If the consulate issues me a multiple-entry visa at its discretion, how long is it valid?",
+   "evidence": [
+    {
+     "id": "visa_manual_2026_10_19_pdf#p94",
+     "source_id": "visa_manual_2026_10_19_pdf",
+     "page": 94,
+     "domain": "visa_issuance"
+    }
+   ],
+   "right": {
+    "amount": 2,
+    "unit": "year"
+   },
+   "right_answers": [
+    "Chinese staff posted to a Korean branch, and their accompanying family, get a multiple-entry visa valid for up to 2 years.",
+    "It would be valid for up to 24 months.",
+    "As a Chinese employee posted to the branch in Korea, your multiple-entry visa would be valid for up to two years."
+   ],
+   "wrong_answers": [
+    {
+     "text": "Your multiple-entry visa would be valid for 3 years.",
+     "value": {
+      "amount": 3,
+      "unit": "year"
+     },
+     "mixed_with": "D-7 1회 부여 체류기간 상한 3년(유효기간이 아님)",
+     "kind": "other"
+    },
+    {
+     "text": "It would be valid for 1 year.",
+     "value": {
+      "amount": 1,
+      "unit": "year"
+     },
+     "mixed_with": "파견 전 1년 이상 근무 요건",
+     "kind": "other"
+    },
+    {
+     "text": "Intra-company transferees get a multiple-entry visa valid for 3 years.",
+     "value": {
+      "amount": 3,
+      "unit": "year"
+     },
+     "mixed_with": "D-7 1회 부여 체류기간 상한 3년(유효기간이 아님)",
+     "kind": "other"
+    }
+   ],
+   "expect": {
+    "status": [
+     "answered",
+     "partial"
+    ],
+    "must_cite": [
+     "visa_manual_2026_10_19_pdf#p94"
+    ],
+    "answer_must_contain_any_of_each": [
+     [
+      "2 years",
+      "two years",
+      "24 months",
+      "2-year",
+      "2년",
+      "24개월"
+     ]
+    ],
+    "answer_must_not_contain": [
+     "Your multiple-entry visa would be valid for 3 years.",
+     "It would be valid for 1 year.",
+     "Intra-company transferees get a multiple-entry visa valid for 3 years."
+    ]
+   }
+  }
+ ]
+}

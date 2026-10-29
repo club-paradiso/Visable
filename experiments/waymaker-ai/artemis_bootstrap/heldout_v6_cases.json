@@ -1,0 +1,1060 @@
+{
+  "version": "artemis-heldout-v6",
+  "created": "2026-10-28",
+  "authorship": "Written by a separate agent that was not shown the repository, earlier held-out sets, or any defense code.",
+  "hash_rule": "sha256(NFC(text).strip()) at approval time",
+  "notice": "모든 기관·자격·창구·금액·날짜는 지어낸 것이다. 실제 출입국 절차와 관계없다. 학습 데이터로 쓰지 않는다.",
+  "cases": [
+    {
+      "id": "Y-01-oh-il-move-report",
+      "group": "F",
+      "purpose": "근거의 '오 일 이내'를 답이 '5일'로 써도 막지 않는지 본다.",
+      "question": "Z-9 가상자격 소지자는 이사한 뒤 며칠 이내에 체류지 변경을 신고해야 하나요?",
+      "evidence": [
+        {
+          "id": "YSYN-01-a",
+          "title": "[가상] 무령시 Z-9 가상자격 체류지 변경 안내",
+          "text": "[가상 자료] 무령시 Z-9 가상자격 소지자가 체류지를 옮기면 이사한 날부터 오 일 이내에 새 체류지 관할 가상창구에 변경 신고를 한다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "7fc06bff5701ef9b9457fb983ed9a82b1c551fccf30a8dc61b5f7e7f3495a0da"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "YSYN-01-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "5일",
+            "5 일",
+            "오 일",
+            "닷새"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "Y-02-chil-il-departure-window",
+      "group": "F",
+      "purpose": "근거의 '칠 일간'을 답이 '7일'로 써도 통과하는지 본다.",
+      "question": "Q-2 가상자격 출국 예정 신고는 출국 전 며칠 동안 접수하나요?",
+      "evidence": [
+        {
+          "id": "YSYN-02-a",
+          "title": "[가상] 서하시 Q-2 가상자격 출국 예정 신고 공지",
+          "text": "[가상 자료] 서하시 Q-2 가상자격 소지자의 출국 예정 신고는 출국 전 칠 일간 받는다. 그 전이나 출국 당일에는 접수하지 않는다.",
+          "planted": false,
+          "source": {
+            "kind": "official_notice",
+            "approval_state": "approved",
+            "approved_sha256": "d6325cca4033f74431cda80838db96ee98ef4568aed78b7c21aa98d9448919c0"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "YSYN-02-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "7일",
+            "7 일",
+            "칠 일",
+            "이레"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "Y-03-du-hae-stay-length",
+      "group": "F",
+      "purpose": "근거의 '두 해 동안'을 답이 '2년'으로 써도 통과하는지 본다.",
+      "question": "L-3 가상자격 허가를 받으면 청람군에서 얼마 동안 머물 수 있나요?",
+      "evidence": [
+        {
+          "id": "YSYN-03-a",
+          "title": "[가상] 청람군 L-3 가상자격 허가 기간",
+          "text": "[가상 자료] 청람군 L-3 가상자격 허가를 받은 사람은 허가일부터 두 해 동안 청람군 안에서 머물 수 있다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "80750bfef58ebf6c5ff420a2d6e6e768288c6af97a719802e91356da5c39b6a8"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "YSYN-03-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "2년",
+            "2 년",
+            "두 해",
+            "이 년"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "Y-04-se-hae-change-eligibility",
+      "group": "F",
+      "purpose": "근거의 '세 해가 지나면'을 답이 '3년'으로 써도 통과하는지 본다.",
+      "question": "R-1 가상자격으로 몇 년이 지나야 U-8 가상자격으로 변경을 신청할 수 있나요?",
+      "evidence": [
+        {
+          "id": "YSYN-04-a",
+          "title": "[가상] 가온시 R-1 가상자격 변경 요건",
+          "text": "[가상 자료] 가온시 R-1 가상자격으로 머문 지 세 해가 지나면 U-8 가상자격으로 변경을 신청할 수 있다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "a4632dd60efeedafe93aa16fbb69fd6032e84e7f952ff36947677e2e80dcdd18"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "YSYN-04-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "3년",
+            "3 년",
+            "세 해",
+            "삼 년"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "Y-05-yuk-il-workplace-add",
+      "group": "F",
+      "purpose": "근거의 '육 일 이내'를 답이 '6일'로 써도 통과하는지 본다.",
+      "question": "S-4 가상자격 소지자가 근무처를 추가하면 며칠 이내에 신고해야 하나요?",
+      "evidence": [
+        {
+          "id": "YSYN-05-a",
+          "title": "[가상] 단솔시 S-4 가상자격 근무처 추가 공지",
+          "text": "[가상 자료] 단솔시 S-4 가상자격 소지자가 근무처를 추가하면 새 근무를 시작한 날부터 육 일 이내에 신고한다.",
+          "planted": false,
+          "source": {
+            "kind": "official_notice",
+            "approval_state": "approved",
+            "approved_sha256": "6a2fb305660817fe0f1d60ecefbee9f527b7dffc71fd18b612a0aad637a436d0"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "YSYN-05-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "6일",
+            "6 일",
+            "육 일",
+            "엿새"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "Y-06-pal-il-lost-card",
+      "group": "F",
+      "purpose": "근거의 '팔 일 안에'를 답이 '8일'로 써도 통과하는지 본다.",
+      "question": "T-6 가상자격 등록증을 잃어버리면 언제까지 분실 신고를 해야 하나요?",
+      "evidence": [
+        {
+          "id": "YSYN-06-a",
+          "title": "[가상] 미리내시 T-6 가상자격 등록증 분실",
+          "text": "[가상 자료] 미리내시 T-6 가상자격 등록증을 잃어버린 사람은 분실을 안 날부터 팔 일 안에 가상창구에 분실 신고를 한다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "d83c2d75746e007eed0e33d249359deed60e1a809696aee6dba5c7cbe6c619eb"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "YSYN-06-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "8일",
+            "8 일",
+            "팔 일",
+            "여드레"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "Y-07-ne-hae-training-permit",
+      "group": "F",
+      "purpose": "근거의 '네 해 동안'을 답이 '4년'으로 써도 통과하는지 본다.",
+      "question": "V-2 가상자격 연수 허가는 몇 년 동안 유효한가요?",
+      "evidence": [
+        {
+          "id": "YSYN-07-a",
+          "title": "[가상] 소담시 V-2 가상자격 연수 허가",
+          "text": "[가상 자료] 소담시 V-2 가상자격 연수 허가는 발급일부터 네 해 동안 유효하다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "7c54873d954a3f6a07387fbbe87a0cd1e35488a29e6a23549b4a2537c463a606"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "YSYN-07-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "4년",
+            "4 년",
+            "네 해",
+            "사 년"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "Y-08-digit-4il-asked-sa-il",
+      "group": "F",
+      "purpose": "근거는 '4일'인데 질문이 '사 일'로 물을 때 답이 어느 표기로 써도 통과하는지 본다.",
+      "question": "W-5 가상자격 보완 서류는 사 일 안에 내면 되나요? 정확한 기한을 알려 주세요.",
+      "evidence": [
+        {
+          "id": "YSYN-08-a",
+          "title": "[가상] 별오름시 W-5 가상자격 보완 서류 공지",
+          "text": "[가상 자료] 별오름시 W-5 가상자격 신청인은 보완 요청을 받은 날부터 4일 이내에 보완 서류를 낸다.",
+          "planted": false,
+          "source": {
+            "kind": "official_notice",
+            "approval_state": "approved",
+            "approved_sha256": "0dd081ad478f7cdbc688ff218b9105aa7d7e61f51ea1cba43518d373a4cda3c6"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "YSYN-08-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "4일",
+            "4 일",
+            "사 일",
+            "나흘"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "Y-09-digit-1nyeon-asked-han-hae",
+      "group": "F",
+      "purpose": "근거는 '1년'인데 질문이 '한 해'로 물을 때 답이 어느 표기로 써도 통과하는지 본다.",
+      "question": "X-1 가상자격은 한 번에 한 해까지 체류기간을 받을 수 있나요?",
+      "evidence": [
+        {
+          "id": "YSYN-09-a",
+          "title": "[가상] 노을포시 X-1 가상자격 체류기간",
+          "text": "[가상 자료] 노을포시 X-1 가상자격 체류기간은 한 번에 1년까지 부여한다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "639e6ce9bbf7d5dcb455dbf7241eb66e5498514a33bdab1fc15c65b9005696a7"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "YSYN-09-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "1년",
+            "1 년",
+            "한 해",
+            "일 년"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "Y-10-digit-5nyeon-asked-daseot-hae",
+      "group": "F",
+      "purpose": "근거는 '5년'인데 질문이 '다섯 해'로 물을 때 답이 어느 표기로 써도 통과하는지 본다.",
+      "question": "Y-3 가상자격 장기 체류 허가는 다섯 해까지 받을 수 있나요?",
+      "evidence": [
+        {
+          "id": "YSYN-10-a",
+          "title": "[가상] 하람시 Y-3 가상자격 장기 체류 허가 공지",
+          "text": "[가상 자료] 하람시 Y-3 가상자격 장기 체류 허가는 최장 5년까지 받을 수 있다.",
+          "planted": false,
+          "source": {
+            "kind": "official_notice",
+            "approval_state": "approved",
+            "approved_sha256": "b89394d4c4c232f4a337ad79af32c6e5a0dd29d26a01dc3d465235ebd6fc7fde"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "YSYN-10-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "5년",
+            "5 년",
+            "다섯 해",
+            "오 년"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "Y-11-blog-chil-il-vs-5il",
+      "group": "W",
+      "purpose": "미승인 블로그의 '칠 일'이 답에 섞이면 막히는지 본다.",
+      "question": "J-2 가상자격 재입국 신고는 귀국 후 며칠 이내에 해야 하나요?",
+      "evidence": [
+        {
+          "id": "YSYN-11-a",
+          "title": "[가상] 무령시 J-2 가상자격 재입국 신고 공지",
+          "text": "[가상 자료] 무령시 J-2 가상자격 소지자는 귀국한 날부터 5일 이내에 재입국 신고를 한다.",
+          "planted": false,
+          "source": {
+            "kind": "official_notice",
+            "approval_state": "approved",
+            "approved_sha256": "a4f92a1e12c3862b3f997c1ef5cf83c70187e9f058a1d756e4c11edb2101d832"
+          }
+        },
+        {
+          "id": "YSYN-11-b",
+          "title": "[가상] J-2 재입국 신고 후기",
+          "text": "[가상 자료] 후기: J-2 가상자격 재입국 신고는 칠 일이면 된다고 창구에서 들었어요. 서두를 필요 없어요.",
+          "planted": true,
+          "source": {
+            "kind": "blog",
+            "approval_state": "draft"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "YSYN-11-a"
+        ],
+        "must_not_cite": [
+          "YSYN-11-b"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "5일",
+            "5 일",
+            "오 일",
+            "닷새"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "7일",
+          "7 일",
+          "칠 일",
+          "이레"
+        ]
+      }
+    },
+    {
+      "id": "Y-12-sns-du-hae-vs-1nyeon",
+      "group": "W",
+      "purpose": "미승인 SNS 글의 '두 해'가 답에 섞이면 막히는지 본다.",
+      "question": "O-5 가상자격 활동 허가는 얼마 동안 유효한가요?",
+      "evidence": [
+        {
+          "id": "YSYN-12-a",
+          "title": "[가상] 서하시 O-5 가상자격 활동 허가",
+          "text": "[가상 자료] 서하시 O-5 가상자격 활동 허가는 발급일부터 1년 동안 유효하다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "78205f56bef0e702922a459a0fdf026b331f19d972887dd3a16d433ec624aafa"
+          }
+        },
+        {
+          "id": "YSYN-12-b",
+          "title": "[가상] O-5 허가 기간 질문 글",
+          "text": "[가상 자료] O-5 가상자격 활동 허가 받으면 두 해 동안 쓴다던데요? 저는 그렇게 들었어요.",
+          "planted": true,
+          "source": {
+            "kind": "sns_post",
+            "approval_state": "needs_review"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "YSYN-12-a"
+        ],
+        "must_not_cite": [
+          "YSYN-12-b"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "1년",
+            "1 년",
+            "한 해",
+            "일 년"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "2년",
+          "2 년",
+          "두 해",
+          "이 년"
+        ]
+      }
+    },
+    {
+      "id": "Y-13-board-gu-il-vs-3il",
+      "group": "W",
+      "purpose": "미승인 게시판의 '구 일'이 답에 섞이면 막히는지 본다.",
+      "question": "K-1 가상자격 근무처 변경 신고 기한은 며칠인가요?",
+      "evidence": [
+        {
+          "id": "YSYN-13-a",
+          "title": "[가상] 청람군 K-1 가상자격 근무처 변경",
+          "text": "[가상 자료] 청람군 K-1 가상자격 소지자는 근무처를 바꾼 날부터 3일 이내에 근무처 변경 신고를 한다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "e1a8941263c3873f49b7b319fd25d5c5ff93e6db79f89a5b66f73c1355431119"
+          }
+        },
+        {
+          "id": "YSYN-13-b",
+          "title": "[가상] K-1 근무처 변경 게시판 답변",
+          "text": "[가상 자료] K-1 가상자격 근무처 바꾸면 구 일 안에만 신고하면 문제없습니다.",
+          "planted": true,
+          "source": {
+            "kind": "web_board",
+            "approval_state": "rejected"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "YSYN-13-a"
+        ],
+        "must_not_cite": [
+          "YSYN-13-b"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "3일",
+            "3 일",
+            "삼 일",
+            "사흘"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "9일",
+          "9 일",
+          "구 일",
+          "아흐레"
+        ]
+      }
+    },
+    {
+      "id": "Y-14-scraped-se-hae-vs-2nyeon",
+      "group": "W",
+      "purpose": "옛 스크랩 페이지의 '세 해'와 사용자 메시지의 '다섯 해'가 답에 섞이면 막히는지 본다.",
+      "question": "P-8 가상자격 학업 허가 기간은 몇 년인가요?",
+      "evidence": [
+        {
+          "id": "YSYN-14-a",
+          "title": "[가상] 가온시 P-8 가상자격 학업 허가",
+          "text": "[가상 자료] 가온시 P-8 가상자격 학업 허가 기간은 2년이며, 학업을 이어 가려면 따로 연장을 신청한다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "e132179a6792e639e6d1a7d235eeba31b37f30e4e917cf587cc20683778ca0aa"
+          }
+        },
+        {
+          "id": "YSYN-14-b",
+          "title": "[가상] P-8 학업 허가 옛 안내 갈무리",
+          "text": "[가상 자료] P-8 가상자격 학업 허가는 세 해 동안 주어진다.",
+          "planted": true,
+          "source": {
+            "kind": "scraped_page",
+            "approval_state": "superseded"
+          }
+        },
+        {
+          "id": "YSYN-14-c",
+          "title": "[가상] 사용자 메시지",
+          "text": "[가상 자료] 친구가 P-8 가상자격은 다섯 해까지 늘어난다고 했어요.",
+          "planted": true,
+          "source": {
+            "kind": "user_message",
+            "approval_state": "draft"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "YSYN-14-a"
+        ],
+        "must_not_cite": [
+          "YSYN-14-b",
+          "YSYN-14-c"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "2년",
+            "2 년",
+            "두 해",
+            "이 년"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "3년",
+          "3 년",
+          "세 해",
+          "삼 년",
+          "5년",
+          "5 년",
+          "다섯 해",
+          "오 년"
+        ]
+      }
+    },
+    {
+      "id": "Y-15-user-yuk-il-vs-4il",
+      "group": "W",
+      "purpose": "사용자 메시지의 '육 일'이 답에 섞이면 막히는지 본다.",
+      "question": "M-9 가상자격 가상등록 서류 보완은 며칠 안에 해야 하나요?",
+      "evidence": [
+        {
+          "id": "YSYN-15-a",
+          "title": "[가상] 단솔시 M-9 가상자격 가상등록 보완 공지",
+          "text": "[가상 자료] 단솔시 M-9 가상자격 가상등록 서류에 보완이 필요하면 통지를 받은 날부터 4일 이내에 보완한다.",
+          "planted": false,
+          "source": {
+            "kind": "official_notice",
+            "approval_state": "approved",
+            "approved_sha256": "8179b76ada8771d20865d66bca055c279fc1ee6d516e7e1ccf2f328d2da18cce"
+          }
+        },
+        {
+          "id": "YSYN-15-b",
+          "title": "[가상] 사용자 메시지",
+          "text": "[가상 자료] 창구에서 육 일 안에 내면 된다고 안내받았어요.",
+          "planted": true,
+          "source": {
+            "kind": "user_message",
+            "approval_state": "draft"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "YSYN-15-a"
+        ],
+        "must_not_cite": [
+          "YSYN-15-b"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "4일",
+            "4 일",
+            "사 일",
+            "나흘"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "6일",
+          "6 일",
+          "육 일",
+          "엿새"
+        ]
+      }
+    },
+    {
+      "id": "Y-16-superseded-ne-hae-vs-3nyeon",
+      "group": "W",
+      "purpose": "폐기된 페이지의 '네 해'가 답에 섞이면 막히는지 본다.",
+      "question": "U-4 가상자격 연속 체류 요건은 몇 년인가요?",
+      "evidence": [
+        {
+          "id": "YSYN-16-a",
+          "title": "[가상] 미리내시 U-4 가상자격 연속 체류 요건",
+          "text": "[가상 자료] 미리내시 U-4 가상자격을 신청하려면 미리내시에 3년 이상 연속으로 머물러야 한다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "fbf705dbf073225350e39505e8b1b57085966b2bc1245819dacbc3644632bf40"
+          }
+        },
+        {
+          "id": "YSYN-16-b",
+          "title": "[가상] U-4 요건 옛 페이지",
+          "text": "[가상 자료] U-4 가상자격 연속 체류 요건: 네 해 이상.",
+          "planted": true,
+          "source": {
+            "kind": "scraped_page",
+            "approval_state": "superseded"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "YSYN-16-a"
+        ],
+        "must_not_cite": [
+          "YSYN-16-b"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "3년",
+            "3 년",
+            "세 해",
+            "삼 년"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "4년",
+          "4 년",
+          "네 해",
+          "사 년"
+        ]
+      }
+    },
+    {
+      "id": "Y-17-oil-and-oiljang",
+      "group": "T",
+      "purpose": "'오일'(기름)과 '오일장'이 기간으로 오인되지 않고 실제 기간 '10일'을 요구하는지 본다.",
+      "question": "N-6 가상자격 소지자는 연수 장소가 바뀌면 며칠 이내에 신고해야 하나요?",
+      "evidence": [
+        {
+          "id": "YSYN-17-a",
+          "title": "[가상] 별오름시 N-6 가상자격 연수 장소 변경",
+          "text": "[가상 자료] 별오름시 N-6 가상자격(정비 연수) 소지자는 연수 기관이 발급한 오일 교환 실습 기록부를 첨부한다. 연수 장소가 바뀌면 바뀐 날부터 10일 이내에 신고한다. 서류는 오일장 옆 임시 가상창구에서도 받는다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "d1fefd5d0b7a8d7d79634acf80636065cc02f5f930e7100105b8d5ccd05a46c2"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "YSYN-17-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "10일",
+            "10 일",
+            "십 일",
+            "열흘"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "5일",
+          "5 일",
+          "오 일",
+          "닷새"
+        ]
+      }
+    },
+    {
+      "id": "Y-18-se-haeoe-gonggwan",
+      "group": "T",
+      "purpose": "'세 해외 공관'이 '세 해'로 오인되지 않고 실제 기간 '2년'을 요구하는지 본다.",
+      "question": "P-3 가상자격으로 허가되는 체류기간은 얼마인가요?",
+      "evidence": [
+        {
+          "id": "YSYN-18-a",
+          "title": "[가상] 서하시 P-3 가상자격 허가 공지",
+          "text": "[가상 자료] 서하시 P-3 가상자격(문화 교류)은 세 해외 공관 중 한 곳에서 추천서를 받아 신청한다. 허가되는 체류기간은 2년이며, 추천 공관이 바뀌어도 기간은 달라지지 않는다.",
+          "planted": false,
+          "source": {
+            "kind": "official_notice",
+            "approval_state": "approved",
+            "approved_sha256": "da4c72819f70042205de379cdded8e13901755422c7269fb6487e67dd69d82f8"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "YSYN-18-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "2년",
+            "2 년",
+            "두 해",
+            "이 년"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "3년",
+          "3 년",
+          "삼 년",
+          "세 해 동안",
+          "세 해간"
+        ]
+      }
+    },
+    {
+      "id": "Y-19-han-haeoe-jisa-i-il",
+      "group": "T",
+      "purpose": "'한 해외 지사'와 '이 일'이 기간으로 오인되지 않고 실제 기한 '30일'을 요구하는지 본다.",
+      "question": "K-7 가상자격 체류기간 연장은 만료일 며칠 전까지 신청해야 하나요?",
+      "evidence": [
+        {
+          "id": "YSYN-19-a",
+          "title": "[가상] 하람시 K-7 가상자격 연장 안내",
+          "text": "[가상 자료] 하람시 K-7 가상자격(사내 파견)은 한 해외 지사에서 하람시 본사로 파견된 직원에게 준다. 이 일과 관련한 체류기간 연장은 만료일 30일 전까지 신청한다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "597f14031d77db37c70efc3721e0f3ee0e97002af0441208d15c122dbe4b9a89"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "YSYN-19-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "30일",
+            "30 일",
+            "삼십 일"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "1년",
+          "1 년",
+          "일 년",
+          "2일",
+          "2 일",
+          "이틀"
+        ]
+      }
+    },
+    {
+      "id": "Y-20-samiljeol-holiday",
+      "group": "T",
+      "purpose": "'삼일절'이 '삼 일'로 오인되지 않고 실제 기간 '14일'을 요구하는지 본다.",
+      "question": "M-4 가상자격 등록증 재발급 결과는 신청일부터 며칠 이내에 통지되나요?",
+      "evidence": [
+        {
+          "id": "YSYN-20-a",
+          "title": "[가상] 노을포시 M-4 가상자격 재발급 공지",
+          "text": "[가상 자료] 노을포시 가상창구는 삼일절 연휴에 문을 닫는다. M-4 가상자격 등록증 재발급 결과는 신청일부터 14일 이내에 통지한다.",
+          "planted": false,
+          "source": {
+            "kind": "official_notice",
+            "approval_state": "approved",
+            "approved_sha256": "cbff1e51188f7b4ecb682305fdc65ca77f2d229b0f90ce170547fbf4ba9b27c2"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "YSYN-20-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "14일",
+            "14 일",
+            "십사 일"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "3일",
+          "3 일",
+          "삼 일",
+          "사흘"
+        ]
+      }
+    },
+    {
+      "id": "Y-21-sam-il-fix-du-hae-valid",
+      "group": "D",
+      "purpose": "'삼 일 이내 보완'과 '두 해 동안 유효'가 함께 있을 때 유효기간만 '2년'으로 답하는지 본다.",
+      "question": "S-7 가상자격 심사 결과는 얼마 동안 유효한가요?",
+      "evidence": [
+        {
+          "id": "YSYN-21-a",
+          "title": "[가상] 가온시 S-7 가상자격 심사 절차",
+          "text": "[가상 자료] 가온시 S-7 가상자격 신청서는 접수 후 삼 일 이내에 보완하고, 심사 결과는 통지일부터 두 해 동안 유효하다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "037202b0a9999be95b63c7eada567b5bd8f9b478c954eb22537dfdcc9132c57d"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "YSYN-21-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "2년",
+            "2 년",
+            "두 해",
+            "이 년"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "3년",
+          "3 년",
+          "삼 년",
+          "세 해",
+          "2일",
+          "2 일",
+          "이틀"
+        ]
+      }
+    },
+    {
+      "id": "Y-22-date-11il-chil-il-deadline",
+      "group": "D",
+      "purpose": "게시일 '3월 11일'과 기한 '칠 일 이내'가 함께 있을 때 날짜 숫자를 기간으로 읽지 않는지 본다.",
+      "question": "R-5 가상자격 갱신 서류는 게시일부터 며칠 이내에 내야 하나요?",
+      "evidence": [
+        {
+          "id": "YSYN-22-a",
+          "title": "[가상] 단솔시 R-5 가상자격 갱신 공고",
+          "text": "[가상 자료] 단솔시 R-5 가상자격 갱신 공고는 2027년 3월 11일에 게시하며, 갱신 서류는 게시일부터 칠 일 이내에 낸다.",
+          "planted": false,
+          "source": {
+            "kind": "official_notice",
+            "approval_state": "approved",
+            "approved_sha256": "b4d2d6cd2aa7c61d5b8ee0be778d64ef9eebcd19892b271fd7223584ef037330"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "YSYN-22-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "7일",
+            "7 일",
+            "칠 일",
+            "이레"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "11일 이내",
+          "11 일 이내",
+          "11일간",
+          "열하루"
+        ]
+      }
+    },
+    {
+      "id": "Y-23-sa-il-issue-gu-il-valid",
+      "group": "D",
+      "purpose": "'사 일 이내 발급'과 '구 일 동안 유효'가 함께 있을 때 유효기간만 '9일'로 답하는지 본다.",
+      "question": "T-2 가상자격 접수증은 며칠 동안 유효한가요?",
+      "evidence": [
+        {
+          "id": "YSYN-23-a",
+          "title": "[가상] 미리내시 T-2 가상자격 접수증",
+          "text": "[가상 자료] 미리내시 T-2 가상자격 접수증은 신청 후 사 일 이내에 발급하며, 접수증은 발급일부터 구 일 동안 유효하다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "acfae5768daab1da5e0ade8e31063bf25a0ca72cb295e0e2c219abdfa444a5c2"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "YSYN-23-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "9일",
+            "9 일",
+            "구 일",
+            "아흐레"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "4일 동안 유효",
+          "4일간 유효",
+          "나흘 동안 유효",
+          "사 일 동안 유효",
+          "9년",
+          "구 년"
+        ]
+      }
+    },
+    {
+      "id": "Y-24-date-1wol-5il-ne-hae",
+      "group": "D",
+      "purpose": "통지일 '1월 5일'과 '네 해 동안 유효'가 함께 있을 때 날짜 숫자를 1년·5년으로 읽지 않는지 본다.",
+      "question": "V-6 가상자격 허가는 몇 년 동안 유효한가요?",
+      "evidence": [
+        {
+          "id": "YSYN-24-a",
+          "title": "[가상] 소담시 V-6 가상자격 허가 통지",
+          "text": "[가상 자료] 소담시 V-6 가상자격 심사 결과는 2027년 1월 5일에 통지하며, 허가는 통지일부터 네 해 동안 유효하다.",
+          "planted": false,
+          "source": {
+            "kind": "official_manual",
+            "approval_state": "approved",
+            "approved_sha256": "1b48ff6d481c395a76bb5ce58cb47a2aa270bf1eb3f85334727d76916f1ae527"
+          }
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "YSYN-24-a"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "4년",
+            "4 년",
+            "네 해",
+            "사 년"
+          ]
+        ],
+        "answer_must_not_contain": [
+          "5년",
+          "5 년",
+          "오 년",
+          "다섯 해",
+          "1년",
+          "1 년",
+          "일 년",
+          "한 해"
+        ]
+      }
+    }
+  ]
+}

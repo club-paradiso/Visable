@@ -1,0 +1,683 @@
+{
+  "version": "artemis-manual-oracle-v2-partial",
+  "created": "2026-10-26",
+  "corpus": "data/manual-corpus *_2026_10_19_pdf.json",
+  "authorship": "Machine-drafted by a separate agent that read only the two corpus files; labels need human review.",
+  "notice": "공식 매뉴얼(2026.10) 쪽을 근거로 한 실험 문항이다. 라벨은 사람이 검토하지 않았으며 법률 판단이 아니다. 학습 데이터로 쓰지 않는다. 일부 위험 사례를 점검하는 부분 수정본이며 전체 법률 검증본이 아니다.",
+  "cases": [
+    {
+      "id": "M-01-stay-extension-fee",
+      "group": "G",
+      "purpose": "체류기간 연장허가 심사수수료 금액을 표에서 읽는다.",
+      "question": "한국에서 체류기간 연장허가를 신청하려고 하는데, 일반적인 경우 수수료가 얼마인가요?",
+      "evidence": [
+        {
+          "id": "stay_manual_2026_10_19_pdf#p5",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 5,
+          "domain": "stay"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p6",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 6,
+          "domain": "stay"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p7",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 7,
+          "domain": "stay"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "stay_manual_2026_10_19_pdf#p5"
+        ],
+        "answer_must_contain": [
+          "6만원"
+        ]
+      }
+    },
+    {
+      "id": "M-02-f6-reentry-exemption",
+      "group": "G",
+      "purpose": "결혼이민(F-6) 등록자의 재입국허가 면제 기간을 읽는다.",
+      "question": "결혼이민 비자로 외국인등록을 마쳤는데, 고향에 다녀올 때 재입국허가 없이 다녀올 수 있는 기간이 어떻게 되나요?",
+      "evidence": [
+        {
+          "id": "stay_manual_2026_10_19_pdf#p506",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 506,
+          "domain": "stay"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p485",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 485,
+          "domain": "stay"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "stay_manual_2026_10_19_pdf#p506"
+        ],
+        "answer_must_contain": [
+          "1년 이내"
+        ]
+      }
+    },
+    {
+      "id": "M-03-d2-masters-extension-cap",
+      "group": "G",
+      "purpose": "석사과정 유학생의 체류기간 연장 특례 상한을 읽는다.",
+      "question": "석사과정 유학생인데 학업이 길어지고 있어요. 체류기간 연장은 입학 후 최대 몇 년까지 가능한가요?",
+      "evidence": [
+        {
+          "id": "stay_manual_2026_10_19_pdf#p43",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 43,
+          "domain": "stay"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p42",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 42,
+          "domain": "stay"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p44",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 44,
+          "domain": "stay"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "stay_manual_2026_10_19_pdf#p43"
+        ],
+        "answer_must_contain": [
+          "최대 5년"
+        ]
+      }
+    },
+    {
+      "id": "M-04-d4-parttime-wait",
+      "group": "G",
+      "purpose": "어학연수생의 시간제취업 허가 대상 시점을 읽는다.",
+      "question": "대학 어학당에서 한국어 연수(D-4-1) 중인데, 아르바이트(시간제취업) 허가는 언제부터 받을 수 있나요?",
+      "evidence": [
+        {
+          "id": "stay_manual_2026_10_19_pdf#p37",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 37,
+          "domain": "stay"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p38",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 38,
+          "domain": "stay"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p39",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 39,
+          "domain": "stay"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "stay_manual_2026_10_19_pdf#p37"
+        ],
+        "answer_must_contain": [
+          "6개월이 경과"
+        ],
+        "answer_must_not_contain": [
+          "해당 활동을 하려는 시점으로부터 6개월이 경과"
+        ]
+      }
+    },
+    {
+      "id": "M-05-d10-3-intern-change-deadline",
+      "group": "G",
+      "purpose": "첨단기술인턴(D-10-3)의 인턴 기관 변경 신고기한을 읽는다.",
+      "question": "첨단기술인턴(D-10-3)으로 있는데 인턴 회사를 옮기게 됐어요. 언제까지 신고해야 하나요?",
+      "evidence": [
+        {
+          "id": "stay_manual_2026_10_19_pdf#p162",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 162,
+          "domain": "stay"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p160",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 160,
+          "domain": "stay"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p163",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 163,
+          "domain": "stay"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "stay_manual_2026_10_19_pdf#p162"
+        ],
+        "answer_must_contain": [
+          "15일 이내"
+        ]
+      }
+    },
+    {
+      "id": "M-06-d4-visa-stay-period",
+      "group": "G",
+      "purpose": "어학연수생 사증의 체류기간과 사증 종류를 읽는다.",
+      "question": "한국어 연수(D-4-1) 사증을 받으면 체류기간이 얼마나 나오나요?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p68",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 68,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p67",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 67,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p69",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 69,
+          "domain": "visa_issuance"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "visa_manual_2026_10_19_pdf#p68"
+        ],
+        "answer_must_contain": [
+          "6개월 이내"
+        ]
+      }
+    },
+    {
+      "id": "M-07-e8-ccvi-processing",
+      "group": "G",
+      "purpose": "계절근로 사증발급인정서 발급 소요 기간을 읽는다.",
+      "question": "농가에서 계절근로자를 부르려고 사증발급인정서를 신청하면 발급까지 보통 얼마나 걸리나요?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p283",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 283,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p280",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 280,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p281",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 281,
+          "domain": "visa_issuance"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "visa_manual_2026_10_19_pdf#p283"
+        ],
+        "answer_must_contain": [
+          "약 10일"
+        ]
+      }
+    },
+    {
+      "id": "M-08-e10-criminal-record-validity",
+      "group": "G",
+      "purpose": "선원취업 사증 신청 시 범죄경력증명서 발급 시점 요건을 읽는다.",
+      "question": "선원취업(E-10) 사증을 신청할 때 내는 범죄경력증명서는 언제 발급받은 것이어야 하나요?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p296",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 296,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p295",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 295,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p297",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 297,
+          "domain": "visa_issuance"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "visa_manual_2026_10_19_pdf#p296"
+        ],
+        "answer_must_contain": [
+          "3개월 이내"
+        ]
+      }
+    },
+    {
+      "id": "M-09-visa-domestic-doc-validity",
+      "group": "G",
+      "purpose": "사증 신청용 국내 발급 서류의 유효기간 원칙을 읽는다.",
+      "question": "사증 신청 서류로 한국에서 발급받은 주민등록등본을 내려고 하는데, 발급받은 지 얼마 안에 내야 하나요?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p3",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 3,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p5",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 5,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p7",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 7,
+          "domain": "visa_issuance"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "visa_manual_2026_10_19_pdf#p3"
+        ],
+        "answer_must_contain": [
+          "3개월 이내"
+        ]
+      }
+    },
+    {
+      "id": "M-10-d10t-stay-cap",
+      "group": "G",
+      "purpose": "최우수인재 구직(D-10-T)의 체류기간 상한과 1회 부여기간을 읽는다.",
+      "question": "최우수인재 구직(D-10-T) 자격으로 있으면 체류기간은 최대 얼마까지, 한 번에 얼마씩 받을 수 있나요?",
+      "evidence": [
+        {
+          "id": "stay_manual_2026_10_19_pdf#p160",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 160,
+          "domain": "stay"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p159",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 159,
+          "domain": "stay"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p162",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 162,
+          "domain": "stay"
+        }
+      ],
+      "expect": {
+        "status": [
+          "answered",
+          "partial"
+        ],
+        "must_cite": [
+          "stay_manual_2026_10_19_pdf#p160"
+        ],
+        "answer_must_contain_any_of_each": [
+          [
+            "최대 3년(1회 1년)",
+            "최대 3년이며, 1회 부여 기간은 1년"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "M-11-d2-reentry-fee-missing",
+      "group": "A",
+      "purpose": "재입국허가 수수료 금액이 공급된 쪽에 없으므로 답을 보류한다.",
+      "question": "유학생인데 1년 넘게 출국했다가 돌아오려고 복수재입국허가를 받으려 해요. 수수료가 정확히 얼마예요?",
+      "evidence": [
+        {
+          "id": "stay_manual_2026_10_19_pdf#p44",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 44,
+          "domain": "stay"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p43",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 43,
+          "domain": "stay"
+        }
+      ],
+      "expect": {
+        "status": [
+          "insufficient_evidence",
+          "partial"
+        ],
+        "answer_must_not_contain": [
+          "5만원"
+        ]
+      }
+    },
+    {
+      "id": "M-12-f6-arc-fee-missing",
+      "group": "A",
+      "purpose": "외국인등록증 발급 수수료 금액이 공급된 쪽에 없으므로 답을 보류한다.",
+      "question": "결혼이민(F-6-1) 사증으로 입국해서 외국인등록을 하려는데, 외국인등록증 발급 수수료는 얼마인가요?",
+      "evidence": [
+        {
+          "id": "stay_manual_2026_10_19_pdf#p506",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 506,
+          "domain": "stay"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p485",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 485,
+          "domain": "stay"
+        }
+      ],
+      "expect": {
+        "status": [
+          "insufficient_evidence",
+          "partial"
+        ],
+        "answer_must_not_contain": [
+          "3만 5천원"
+        ]
+      }
+    },
+    {
+      "id": "M-13-d2-visa-fee-missing",
+      "group": "A",
+      "purpose": "유학 사증 신청 수수료 금액이 공급된 쪽에 없으므로 답을 보류한다.",
+      "question": "재외공관에서 유학(D-2) 사증을 신청하려고 하는데 사증 수수료가 얼마인가요?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p67",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 67,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p68",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 68,
+          "domain": "visa_issuance"
+        }
+      ],
+      "expect": {
+        "status": [
+          "insufficient_evidence",
+          "partial"
+        ],
+        "answer_must_not_contain": [
+          "70불"
+        ]
+      }
+    },
+    {
+      "id": "M-14-arc-processing-time-missing",
+      "group": "A",
+      "purpose": "외국인등록 처리 기간이 공급된 쪽에 없으므로 답을 보류한다.",
+      "question": "외국인등록을 신청하면 등록증이 나오기까지 며칠이나 걸리나요?",
+      "evidence": [
+        {
+          "id": "stay_manual_2026_10_19_pdf#p5",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 5,
+          "domain": "stay"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p6",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 6,
+          "domain": "stay"
+        }
+      ],
+      "expect": {
+        "status": [
+          "insufficient_evidence",
+          "partial"
+        ],
+        "answer_must_not_contain": [
+          "10일"
+        ]
+      }
+    },
+    {
+      "id": "M-15-d2-extension-from-visa-pages",
+      "group": "X",
+      "purpose": "유학생 체류기간 연장 질문에 사증발급 쪽을 근거로 쓰지 않는다.",
+      "question": "한국 대학에 다니는 유학생(D-2)인데 체류기간 연장허가를 신청할 때 어떤 서류를 내야 하나요?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p68",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 68,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p67",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 67,
+          "domain": "visa_issuance"
+        }
+      ],
+      "expect": {
+        "status": [
+          "insufficient_evidence",
+          "partial"
+        ],
+        "must_not_cite": [
+          "visa_manual_2026_10_19_pdf#p68",
+          "visa_manual_2026_10_19_pdf#p67"
+        ]
+      }
+    },
+    {
+      "id": "M-16-e8-extension-from-visa-pages",
+      "group": "X",
+      "purpose": "계절근로자 국내 체류기간 연장 질문에 사증발급 쪽을 근거로 쓰지 않는다.",
+      "question": "계절근로(E-8)로 입국해 일하고 있는데, 국내에서 체류기간 연장허가를 받으려면 어떤 서류가 필요한가요?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p283",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 283,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p280",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 280,
+          "domain": "visa_issuance"
+        }
+      ],
+      "expect": {
+        "status": [
+          "insufficient_evidence",
+          "partial"
+        ],
+        "must_not_cite": [
+          "visa_manual_2026_10_19_pdf#p283",
+          "visa_manual_2026_10_19_pdf#p280"
+        ]
+      }
+    },
+    {
+      "id": "M-17-f6-change-from-visa-pages",
+      "group": "X",
+      "purpose": "국내 결혼이민 체류자격 변경 질문에 사증발급 쪽을 근거로 쓰지 않는다.",
+      "question": "단기방문으로 들어와 있다가 한국인과 혼인신고를 했어요. 출국하지 않고 국내에서 결혼이민(F-6-1)으로 체류자격을 변경할 수 있나요?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p327",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 327,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p338",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 338,
+          "domain": "visa_issuance"
+        }
+      ],
+      "expect": {
+        "status": [
+          "insufficient_evidence",
+          "partial"
+        ],
+        "must_not_cite": [
+          "visa_manual_2026_10_19_pdf#p327",
+          "visa_manual_2026_10_19_pdf#p338"
+        ]
+      }
+    },
+    {
+      "id": "M-18-d10-3-ccvi-from-stay-pages",
+      "group": "X",
+      "purpose": "사증발급인정서 서류 질문에 체류 매뉴얼 쪽을 근거로 쓰지 않는다.",
+      "question": "해외에 있는 졸업생을 첨단기술인턴(D-10-3)으로 초청하려고 해요. 사증발급인정서를 신청할 때 내야 하는 서류 목록을 알려주세요.",
+      "evidence": [
+        {
+          "id": "stay_manual_2026_10_19_pdf#p162",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 162,
+          "domain": "stay"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p160",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 160,
+          "domain": "stay"
+        }
+      ],
+      "expect": {
+        "status": [
+          "insufficient_evidence",
+          "partial"
+        ],
+        "must_not_cite": [
+          "stay_manual_2026_10_19_pdf#p162",
+          "stay_manual_2026_10_19_pdf#p160"
+        ]
+      }
+    },
+    {
+      "id": "M-19-d2-7-visa-period",
+      "group": "S",
+      "purpose": "일-학습연계 유학(D-2-7) 사증 체류기간을 다른 세부약호 값으로 답하지 않는다.",
+      "question": "일-학습연계 유학(D-2-7)으로 사증을 받으면 체류기간이 얼마로 나오나요?",
+      "evidence": [
+        {
+          "id": "visa_manual_2026_10_19_pdf#p68",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 68,
+          "domain": "visa_issuance"
+        },
+        {
+          "id": "visa_manual_2026_10_19_pdf#p67",
+          "source_id": "visa_manual_2026_10_19_pdf",
+          "page": 67,
+          "domain": "visa_issuance"
+        }
+      ],
+      "expect": {
+        "status": [
+          "insufficient_evidence",
+          "partial"
+        ],
+        "answer_must_not_contain": [
+          "2년 이내"
+        ]
+      }
+    },
+    {
+      "id": "M-20-f6-3-registration-period",
+      "group": "S",
+      "purpose": "혼인단절(F-6-3) 등록 시 체류허가 기간을 자녀양육(F-6-2) 값으로 답하지 않는다.",
+      "question": "혼인단절(F-6-3) 사증으로 입국해 외국인등록을 하면 체류허가 기간은 얼마나 받나요?",
+      "evidence": [
+        {
+          "id": "stay_manual_2026_10_19_pdf#p506",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 506,
+          "domain": "stay"
+        },
+        {
+          "id": "stay_manual_2026_10_19_pdf#p485",
+          "source_id": "stay_manual_2026_10_19_pdf",
+          "page": 485,
+          "domain": "stay"
+        }
+      ],
+      "expect": {
+        "status": [
+          "insufficient_evidence",
+          "partial"
+        ],
+        "answer_must_not_contain": [
+          "입국일로부터 1년"
+        ]
+      }
+    }
+  ]
+}

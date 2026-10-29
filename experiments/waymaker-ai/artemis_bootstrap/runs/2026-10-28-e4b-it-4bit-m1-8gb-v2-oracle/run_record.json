@@ -1,0 +1,69 @@
+{
+  "kind": "artemis_bootstrap_smoke",
+  "started_utc": "2026-10-27T16:35:22+00:00",
+  "machine": {
+    "model": "MacBookAir10,1",
+    "chip": "Apple M1",
+    "memory_bytes": 8589934592,
+    "macos": "15.6.1",
+    "python": "3.11.15"
+  },
+  "versions": {
+    "mlx": "0.32.4",
+    "mlx-metal": "0.32.4",
+    "mlx-lm": "0.32.2",
+    "transformers": "5.20.2",
+    "huggingface-hub": "2.3.0",
+    "tokenizers": "0.23.3"
+  },
+  "device": {
+    "device_name": "Apple M1",
+    "max_recommended_working_set_size": 5726633984,
+    "memory_size": 8589934592,
+    "architecture": "applegpu_g13g",
+    "max_buffer_length": 4294967296,
+    "resource_limit": 499000
+  },
+  "swap_before": "total = 6144.00M  used = 5348.25M  free = 795.75M  (encrypted)",
+  "free_disk_gb_before": 5.19,
+  "cases_file": "manual_oracle_cases.v2.json",
+  "cases_sha256": "a86ae80195a881291ba2c03e38a90140ee67d9f9608ef0be7c4149db526d7a4d",
+  "detector_on_labelled_evidence": null,
+  "decoding": {
+    "temperature": 0.0,
+    "max_tokens": 400,
+    "enable_thinking": false
+  },
+  "evidence_guard": "off",
+  "source_gate": true,
+  "integrity": true,
+  "route": false,
+  "clarify": false,
+  "always_ask": false,
+  "cross_check": false,
+  "label_switch": false,
+  "post_check": "applied offline to every output when the cases carry source labels",
+  "prompts_persisted": false,
+  "status": "aborted_low_disk",
+  "stage": "case:M-01-stay-extension-fee",
+  "model": {
+    "repo": "mlx-community/gemma-4-e4b-it-4bit",
+    "revision": "475b9088d29754a3379866cf5aeb6b41acd313c2",
+    "size_class_from_weights": "E4B",
+    "quantization": {
+      "group_size": 64,
+      "bits": 4,
+      "mode": "affine"
+    },
+    "loader": "mlx_lm.load (text tower only; vision/audio weights dropped by mlx_lm sanitize)",
+    "base_model": "google/gemma-4-E4B-it",
+    "source_revision": "fee6332c1abaafb77f6f9624236c63aa2f1d0187",
+    "license_in_card": "gemma"
+  },
+  "load_seconds": 23.16,
+  "memory_after_load_gb": 4.201,
+  "error": "free disk 1.32 GB fell below 1.5 GB during stage load",
+  "free_disk_gb_at_abort": 1.32,
+  "swap_at_abort": "total = 9216.00M  used = 9216.00M  free = 0.00M  (encrypted)",
+  "finished_utc": "2026-10-27T16:35:46+00:00"
+}

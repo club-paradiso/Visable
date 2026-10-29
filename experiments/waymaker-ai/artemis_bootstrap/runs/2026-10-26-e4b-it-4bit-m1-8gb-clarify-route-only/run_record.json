@@ -1,0 +1,1421 @@
+{
+  "kind": "artemis_bootstrap_smoke",
+  "started_utc": "2026-10-26T12:33:08+00:00",
+  "machine": {
+    "model": "MacBookAir10,1",
+    "chip": "Apple M1",
+    "memory_bytes": 8589934592,
+    "macos": "15.6.1",
+    "python": "3.11.15"
+  },
+  "versions": {
+    "mlx": "0.32.4",
+    "mlx-metal": "0.32.4",
+    "mlx-lm": "0.32.2",
+    "transformers": "5.20.2",
+    "huggingface-hub": "2.3.0",
+    "tokenizers": "0.23.3"
+  },
+  "device": {
+    "device_name": "Apple M1",
+    "max_recommended_working_set_size": 5726633984,
+    "memory_size": 8589934592,
+    "architecture": "applegpu_g13g",
+    "max_buffer_length": 4294967296,
+    "resource_limit": 499000
+  },
+  "swap_before": "total = 2048.00M  used = 1133.31M  free = 914.69M  (encrypted)",
+  "free_disk_gb_before": 11.82,
+  "cases_file": "manual_clarify_cases.json",
+  "cases_sha256": "410798edef4ecab2dd37a5ad5e85065c81e721815577c2e0d41514969ccbdc1b",
+  "detector_on_labelled_evidence": null,
+  "decoding": {
+    "temperature": 0.0,
+    "max_tokens": 400,
+    "enable_thinking": false
+  },
+  "evidence_guard": "off",
+  "source_gate": true,
+  "integrity": true,
+  "route": true,
+  "clarify": false,
+  "post_check": "applied offline to every output when the cases carry source labels",
+  "prompts_persisted": false,
+  "status": "completed",
+  "stage": "done",
+  "model": {
+    "repo": "mlx-community/gemma-4-e4b-it-4bit",
+    "revision": "475b9088d29754a3379866cf5aeb6b41acd313c2",
+    "size_class_from_weights": "E4B",
+    "quantization": {
+      "group_size": 64,
+      "bits": 4,
+      "mode": "affine"
+    },
+    "loader": "mlx_lm.load (text tower only; vision/audio weights dropped by mlx_lm sanitize)",
+    "base_model": "google/gemma-4-E4B-it",
+    "source_revision": "fee6332c1abaafb77f6f9624236c63aa2f1d0187",
+    "license_in_card": "gemma"
+  },
+  "load_seconds": 15.87,
+  "memory_after_load_gb": 4.201,
+  "results": [
+    {
+      "case": "Q-01-e9-visa-criminal-record",
+      "prompt_sha256": "f7755d461f587a0a527b825eaf6743f98d6f7ecc6525e72a91f00778c2a6d3ef",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "활동범위"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p287"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 953,
+      "prompt_tps": 33.9,
+      "generation_tokens": 71,
+      "generation_tps": 2.37,
+      "finish_reason": "stop",
+      "wall_seconds": 63.87,
+      "output": "```json\n{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"제공된 근거에는 비전문취업(E-9) 사증 신청 시 제출해야 하는 범죄경력증명서의 발급 시기에 대한 정보가 없습니다.\",\n  \"citations\": []\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 비전문취업(E-9) 사증 신청 시 제출해야 하는 범죄경력증명서의 발급 시기에 대한 정보가 없습니다.",
+        "citations": []
+      },
+      "failures": [
+        "status:insufficient_evidence≠answered|partial",
+        "missing_citation:visa_manual_2026_10_19_pdf#p287",
+        "answer_missing:사증발급 신청일로부터 3개월 이내에 발급된 증명서"
+      ],
+      "post_check": {
+        "verdict": "withheld",
+        "claims": [
+          {
+            "kind": "document",
+            "text": "범죄경력증명서"
+          }
+        ],
+        "unsupported": [
+          "범죄경력증명서"
+        ],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "citations": [],
+          "answer": "공식 근거로 확인되지 않은 금액·기간·날짜·서류가 들어 있어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+        },
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p287",
+          "answer_missing:사증발급 신청일로부터 3개월 이내에 발급된 증명서"
+        ]
+      },
+      "outcome_raw": "safe_abstain",
+      "outcome_checked": "safe_abstain"
+    },
+    {
+      "case": "Q-02-e2-epik-visa-where-apply",
+      "prompt_sha256": "7917ab5a75a2ccdd93d11c82fc8512daa3bd1ed31e72f7605e445b8ecea1909a",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p146",
+        "stay_manual_2026_10_19_pdf#p175"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 299,
+      "prompt_tps": 24.8,
+      "generation_tokens": 77,
+      "generation_tps": 2.41,
+      "finish_reason": "stop",
+      "wall_seconds": 44.52,
+      "output": "```json\n{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"제공된 근거에는 E-2 비자를 신청하는 것과 관련하여 본국에서 신청해야 하는지 또는 해외의 모든 주재 한국 대사관에서 신청할 수 있는지에 대한 정보가 없습니다.\",\n  \"citations\": []\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 E-2 비자를 신청하는 것과 관련하여 본국에서 신청해야 하는지 또는 해외의 모든 주재 한국 대사관에서 신청할 수 있는지에 대한 정보가 없습니다.",
+        "citations": []
+      },
+      "failures": [
+        "status:insufficient_evidence≠answered|partial",
+        "missing_citation:visa_manual_2026_10_19_pdf#p146",
+        "answer_missing:해외 소재 대한민국 공관이면 어디라도 신청 가능"
+      ],
+      "post_check": {
+        "verdict": "no_trusted_evidence",
+        "claims": [],
+        "unsupported": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "citations": [],
+          "answer": "승인된 공식 근거가 없어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+        },
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p146",
+          "answer_missing:해외 소재 대한민국 공관이면 어디라도 신청 가능"
+        ]
+      },
+      "outcome_raw": "safe_abstain",
+      "outcome_checked": "safe_abstain"
+    },
+    {
+      "case": "Q-03-d2-visa-photo-admission",
+      "prompt_sha256": "f570502e4acac4f27f7ea58c8da1eaf9dfb01ba00485c7d3c8f03f61a85be269",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "visa_issuance",
+          "사증발급"
+        ]
+      ],
+      "route_withheld": [
+        "stay_manual_2026_10_19_pdf#p47"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 1274,
+      "prompt_tps": 27.75,
+      "generation_tokens": 263,
+      "generation_tps": 2.82,
+      "finish_reason": "stop",
+      "wall_seconds": 139.3,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"유학(D-2) 사증 신청 시 제출해야 하는 공통 서류 중 하나로 사진 1매(6개월 이내 촬영한 반명함)이 있습니다. 입학 관련 서류로는 대학 총·학장이 발행한 표준입학허가서가 필요하며, 최종학력 입증 서류는 원본 심사를 원칙으로 합니다. 다만, 학위 등 인증보고서 등은 대학 담당자의 원본 대조필인이 있을 경우 사본도 인정 가능하며, 개인이 직접 신청하여 발급한 학력 입증 서류는 유효기간 내에서만 인정됩니다. 또한, 과정에 따라 필요한 서류가 다릅니다. 예를 들어, 어학연수(D-4-1) 과정의 경우 고교 졸업 이상 학력 증명서가 필요하며, 학사 신입학(D-2-1~D-2-4)의 경우 석사 또는 박사 졸업증명서가 필요합니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p63\"\n  ]\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "answered",
+        "answer": "유학(D-2) 사증 신청 시 제출해야 하는 공통 서류 중 하나로 사진 1매(6개월 이내 촬영한 반명함)이 있습니다. 입학 관련 서류로는 대학 총·학장이 발행한 표준입학허가서가 필요하며, 최종학력 입증 서류는 원본 심사를 원칙으로 합니다. 다만, 학위 등 인증보고서 등은 대학 담당자의 원본 대조필인이 있을 경우 사본도 인정 가능하며, 개인이 직접 신청하여 발급한 학력 입증 서류는 유효기간 내에서만 인정됩니다. 또한, 과정에 따라 필요한 서류가 다릅니다. 예를 들어, 어학연수(D-4-1) 과정의 경우 고교 졸업 이상 학력 증명서가 필요하며, 학사 신입학(D-2-1~D-2-4)의 경우 석사 또는 박사 졸업증명서가 필요합니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p63"
+        ]
+      },
+      "failures": [
+        "answer_missing:사진 1매(6개월 이내 촬영 반명함)",
+        "answer_missing:표준입학허가서 (대학 총․학장 발행)"
+      ],
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "6개월"
+          },
+          {
+            "kind": "document",
+            "text": "사진"
+          },
+          {
+            "kind": "document",
+            "text": "사본"
+          },
+          {
+            "kind": "document",
+            "text": "증명서"
+          },
+          {
+            "kind": "document",
+            "text": "졸업증명서"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "answered",
+          "answer": "유학(D-2) 사증 신청 시 제출해야 하는 공통 서류 중 하나로 사진 1매(6개월 이내 촬영한 반명함)이 있습니다. 입학 관련 서류로는 대학 총·학장이 발행한 표준입학허가서가 필요하며, 최종학력 입증 서류는 원본 심사를 원칙으로 합니다. 다만, 학위 등 인증보고서 등은 대학 담당자의 원본 대조필인이 있을 경우 사본도 인정 가능하며, 개인이 직접 신청하여 발급한 학력 입증 서류는 유효기간 내에서만 인정됩니다. 또한, 과정에 따라 필요한 서류가 다릅니다. 예를 들어, 어학연수(D-4-1) 과정의 경우 고교 졸업 이상 학력 증명서가 필요하며, 학사 신입학(D-2-1~D-2-4)의 경우 석사 또는 박사 졸업증명서가 필요합니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p63"
+          ]
+        },
+        "failures": [
+          "answer_missing:사진 1매(6개월 이내 촬영 반명함)",
+          "answer_missing:표준입학허가서 (대학 총․학장 발행)"
+        ]
+      },
+      "outcome_raw": "other",
+      "outcome_checked": "other"
+    },
+    {
+      "case": "Q-04-d9-sole-proprietor-visa-mission",
+      "prompt_sha256": "892033f9eddf1e7ddeb1a5734a86855350f97931544a1becf4d0673ba0b8dc43",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "visa_issuance",
+          "사증발급"
+        ]
+      ],
+      "route_withheld": [
+        "stay_manual_2026_10_19_pdf#p137"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 892,
+      "prompt_tps": 30.02,
+      "generation_tokens": 120,
+      "generation_tps": 3.03,
+      "finish_reason": "stop",
+      "wall_seconds": 69.65,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"원칙적으로 신청자의 본국에 소재한 대한민국 공관에서 신청해야 합니다. 다만, 신청인이 해외에 주재하며 사업체 등을 운영(영주권 소지 등 장기거주자 포함)하고 있는 경우에는 주재하고 있는 국가 소재 대한민국 공관에서 신청할 수 있습니다.\",\n  \"citations\": [\n    \"visa_manual_2026_10_19_pdf#p119\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "원칙적으로 신청자의 본국에 소재한 대한민국 공관에서 신청해야 합니다. 다만, 신청인이 해외에 주재하며 사업체 등을 운영(영주권 소지 등 장기거주자 포함)하고 있는 경우에는 주재하고 있는 국가 소재 대한민국 공관에서 신청할 수 있습니다.",
+        "citations": [
+          "visa_manual_2026_10_19_pdf#p119"
+        ]
+      },
+      "failures": [],
+      "post_check": {
+        "verdict": "pass",
+        "claims": [],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "원칙적으로 신청자의 본국에 소재한 대한민국 공관에서 신청해야 합니다. 다만, 신청인이 해외에 주재하며 사업체 등을 운영(영주권 소지 등 장기거주자 포함)하고 있는 경우에는 주재하고 있는 국가 소재 대한민국 공관에서 신청할 수 있습니다.",
+          "citations": [
+            "visa_manual_2026_10_19_pdf#p119"
+          ]
+        },
+        "failures": []
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "Q-05-e9-workplace-change-deadline",
+      "prompt_sha256": "45f8e531cab9b2616b7102f8a32d19c14b777ca17e4436796d99cb18f6f9448b",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "활동범위"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p288"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 1026,
+      "prompt_tps": 28.07,
+      "generation_tokens": 131,
+      "generation_tps": 2.38,
+      "finish_reason": "stop",
+      "wall_seconds": 91.99,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"근로계약 종료 후 1개월 이내에 사업장 변경을 신청(고용노동부 고용센터)해야 하며, 사업장 변경을 신청한 날로부터 3개월 이내에 근무처 변경 허가(관할 출입국·외국인청(사무소ㆍ출장소))를 받아야 합니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p329\"\n  ]\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "answered",
+        "answer": "근로계약 종료 후 1개월 이내에 사업장 변경을 신청(고용노동부 고용센터)해야 하며, 사업장 변경을 신청한 날로부터 3개월 이내에 근무처 변경 허가(관할 출입국·외국인청(사무소ㆍ출장소))를 받아야 합니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p329"
+        ]
+      },
+      "failures": [
+        "answer_missing:1월 이내에 사업장 변경을 신청"
+      ],
+      "post_check": {
+        "verdict": "withheld",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "1개월"
+          },
+          {
+            "kind": "period",
+            "text": "3개월"
+          }
+        ],
+        "unsupported": [
+          "1개월"
+        ],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "citations": [],
+          "answer": "공식 근거로 확인되지 않은 금액·기간·날짜·서류가 들어 있어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+        },
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:stay_manual_2026_10_19_pdf#p329",
+          "answer_missing:1월 이내에 사업장 변경을 신청",
+          "answer_missing:3개월 이내에 근무처 변경"
+        ]
+      },
+      "outcome_raw": "other",
+      "outcome_checked": "safe_abstain"
+    },
+    {
+      "case": "Q-06-d2-parttime-permit-places",
+      "prompt_sha256": "f9c0e95b539621ee0f87e3e6fffddf880379c3db6a4123cbd09dcf34d61973a2",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "활동범위"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p63"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 954,
+      "prompt_tps": 27.52,
+      "generation_tokens": 101,
+      "generation_tps": 2.57,
+      "finish_reason": "stop",
+      "wall_seconds": 74.23,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"유학생(D-2)의 경우 체류기간 내에서 최장 1년 동안 시간제 취업 허가를 받으면 동시에 취업할 수 있는 장소는 2곳으로 한정됩니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p39\"\n  ]\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "answered",
+        "answer": "유학생(D-2)의 경우 체류기간 내에서 최장 1년 동안 시간제 취업 허가를 받으면 동시에 취업할 수 있는 장소는 2곳으로 한정됩니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p39"
+        ]
+      },
+      "failures": [
+        "answer_missing:장소 2곳"
+      ],
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "1년"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "answered",
+          "answer": "유학생(D-2)의 경우 체류기간 내에서 최장 1년 동안 시간제 취업 허가를 받으면 동시에 취업할 수 있는 장소는 2곳으로 한정됩니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p39"
+          ]
+        },
+        "failures": [
+          "answer_missing:장소 2곳"
+        ]
+      },
+      "outcome_raw": "other",
+      "outcome_checked": "other"
+    },
+    {
+      "case": "Q-07-d9-multiple-reentry-permit",
+      "prompt_sha256": "ccd62db28ec4a2f70117c983b304af8d5984f5ac6f27f76a18202ce6499da562",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "재입국허가"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p119"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 1102,
+      "prompt_tps": 28.42,
+      "generation_tokens": 164,
+      "generation_tps": 2.97,
+      "finish_reason": "stop",
+      "wall_seconds": 94.43,
+      "output": "```json\n{\n  \"status\": \"partial\",\n  \"answer\": \"D-9 자격 소지자가 복수재입국허가를 신청해야 하는 경우에 대한 구체적인 정보는 근거에 명시되어 있지 않습니다. 다만, 출국 후 체류기간 범위 내에서 1년을 초과하여 2년 내에 재입국을 하려는 경우 복수재입국허가를 신청할 수 있습니다. 또한, 체류기간이 1년보다 적게 남아있는 경우 체류기간 범위 내에서 재입국허가 면제가 가능합니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p137\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "partial",
+        "answer": "D-9 자격 소지자가 복수재입국허가를 신청해야 하는 경우에 대한 구체적인 정보는 근거에 명시되어 있지 않습니다. 다만, 출국 후 체류기간 범위 내에서 1년을 초과하여 2년 내에 재입국을 하려는 경우 복수재입국허가를 신청할 수 있습니다. 또한, 체류기간이 1년보다 적게 남아있는 경우 체류기간 범위 내에서 재입국허가 면제가 가능합니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p137"
+        ]
+      },
+      "failures": [],
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "1년"
+          },
+          {
+            "kind": "period",
+            "text": "2년"
+          },
+          {
+            "kind": "period",
+            "text": "1년"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "partial",
+          "answer": "D-9 자격 소지자가 복수재입국허가를 신청해야 하는 경우에 대한 구체적인 정보는 근거에 명시되어 있지 않습니다. 다만, 출국 후 체류기간 범위 내에서 1년을 초과하여 2년 내에 재입국을 하려는 경우 복수재입국허가를 신청할 수 있습니다. 또한, 체류기간이 1년보다 적게 남아있는 경우 체류기간 범위 내에서 재입국허가 면제가 가능합니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p137"
+          ]
+        },
+        "failures": []
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "Q-08-student-residence-change-report",
+      "prompt_sha256": "4b330cc68cb1174a567516872f0d83d6959872cbe9fceca6c2b9760209b8c621",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "체류 절차(질문에 명시)"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p73"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 1063,
+      "prompt_tps": 28.78,
+      "generation_tokens": 116,
+      "generation_tps": 2.8,
+      "finish_reason": "stop",
+      "wall_seconds": 78.69,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"체류지 변경신고는 전입한 날로부터 15일 이내에 신체류지 시·군·구청장 또는 신체류지 관할 출입국·외국인청(사무소·출장소)장에게 신고해야 합니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p95\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "체류지 변경신고는 전입한 날로부터 15일 이내에 신체류지 시·군·구청장 또는 신체류지 관할 출입국·외국인청(사무소·출장소)장에게 신고해야 합니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p95"
+        ]
+      },
+      "failures": [],
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "15일"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "체류지 변경신고는 전입한 날로부터 15일 이내에 신체류지 시·군·구청장 또는 신체류지 관할 출입국·외국인청(사무소·출장소)장에게 신고해야 합니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p95"
+          ]
+        },
+        "failures": []
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "Q-09-bring-wife-income",
+      "prompt_sha256": "596ab6275f9cb87884981a963eafca18077225b93781a959977b9241c29ad023",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p330",
+        "stay_manual_2026_10_19_pdf#p484"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 292,
+      "prompt_tps": 26.31,
+      "generation_tokens": 48,
+      "generation_tps": 2.9,
+      "finish_reason": "stop",
+      "wall_seconds": 27.97,
+      "output": "```json\n{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"제공된 근거에는 질문하신 내용에 답할 정보가 없습니다.\",\n  \"citations\": []\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 질문하신 내용에 답할 정보가 없습니다.",
+        "citations": []
+      },
+      "failures": [
+        "status:insufficient_evidence≠answered|partial",
+        "missing_citation:visa_manual_2026_10_19_pdf#p330",
+        "answer_missing:25,195,752"
+      ],
+      "post_check": {
+        "verdict": "no_trusted_evidence",
+        "claims": [],
+        "unsupported": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "citations": [],
+          "answer": "승인된 공식 근거가 없어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+        },
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p330",
+          "answer_missing:25,195,752"
+        ]
+      },
+      "outcome_raw": "safe_abstain",
+      "outcome_checked": "safe_abstain"
+    },
+    {
+      "case": "Q-10-f6-working-allowed",
+      "prompt_sha256": "1bbacf927f392ad35ab2537c7ba1a143ac2c254441ad2093a9595b65363e9e2f",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [
+        "stay_manual_2026_10_19_pdf#p484",
+        "visa_manual_2026_10_19_pdf#p330"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 276,
+      "prompt_tps": 26.84,
+      "generation_tokens": 64,
+      "generation_tps": 2.91,
+      "finish_reason": "stop",
+      "wall_seconds": 32.47,
+      "output": "```json\n{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"제공된 근거에는 아내가 결혼이민 자격으로 한국에서 일하기 위해 별도의 허가를 받아야 하는지에 대한 정보가 없습니다.\",\n  \"citations\": []\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 아내가 결혼이민 자격으로 한국에서 일하기 위해 별도의 허가를 받아야 하는지에 대한 정보가 없습니다.",
+        "citations": []
+      },
+      "failures": [
+        "status:insufficient_evidence≠answered|partial",
+        "missing_citation:stay_manual_2026_10_19_pdf#p484",
+        "answer_missing:취업활동의 제한을 받지 않음"
+      ],
+      "post_check": {
+        "verdict": "no_trusted_evidence",
+        "claims": [],
+        "unsupported": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "citations": [],
+          "answer": "승인된 공식 근거가 없어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+        },
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:stay_manual_2026_10_19_pdf#p484",
+          "answer_missing:취업활동의 제한을 받지 않음"
+        ]
+      },
+      "outcome_raw": "safe_abstain",
+      "outcome_checked": "safe_abstain"
+    },
+    {
+      "case": "Q-11-e9-change-jobs-count",
+      "prompt_sha256": "c5afaba5d85887924eff1aaa5961eb815b7d2e49ed3f7885e94b2d3cfe99aeba",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [
+        "stay_manual_2026_10_19_pdf#p328",
+        "visa_manual_2026_10_19_pdf#p286"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 270,
+      "prompt_tps": 50.01,
+      "generation_tokens": 61,
+      "generation_tps": 7.21,
+      "finish_reason": "stop",
+      "wall_seconds": 13.97,
+      "output": "```json\n{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"제공된 근거에는 E-9 비자 소지자가 회사 이동을 몇 번까지 할 수 있는지에 대한 정보가 없습니다.\",\n  \"citations\": []\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 E-9 비자 소지자가 회사 이동을 몇 번까지 할 수 있는지에 대한 정보가 없습니다.",
+        "citations": []
+      },
+      "failures": [
+        "status:insufficient_evidence≠answered|partial",
+        "missing_citation:stay_manual_2026_10_19_pdf#p328",
+        "answer_missing:원칙적으로 3회"
+      ],
+      "post_check": {
+        "verdict": "no_trusted_evidence",
+        "claims": [],
+        "unsupported": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "citations": [],
+          "answer": "승인된 공식 근거가 없어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+        },
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:stay_manual_2026_10_19_pdf#p328",
+          "answer_missing:원칙적으로 3회"
+        ]
+      },
+      "outcome_raw": "safe_abstain",
+      "outcome_checked": "safe_abstain"
+    },
+    {
+      "case": "Q-12-e9-rehire-return-group",
+      "prompt_sha256": "cfda0841798e3c860b83cb5dbc6952135d05c23fbda01c77ba2179c7137f657f",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "재입국허가"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p287"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 946,
+      "prompt_tps": 65.91,
+      "generation_tokens": 73,
+      "generation_tps": 7.11,
+      "finish_reason": "stop",
+      "wall_seconds": 24.8,
+      "output": "```json\n{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"제공된 근거에는 E-9 비전문취업자가 귀국 후 재입국 특례를 통해 다시 취업하는 것에 대한 개인적인 신청 가능 여부에 대한 정보가 없습니다.\",\n  \"citations\": []\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 E-9 비전문취업자가 귀국 후 재입국 특례를 통해 다시 취업하는 것에 대한 개인적인 신청 가능 여부에 대한 정보가 없습니다.",
+        "citations": []
+      },
+      "failures": [
+        "status:insufficient_evidence≠answered|partial",
+        "missing_citation:visa_manual_2026_10_19_pdf#p287",
+        "answer_missing:송출기관에 의한 단체 신청만 가능"
+      ],
+      "post_check": {
+        "verdict": "pass",
+        "claims": [],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "answer": "제공된 근거에는 E-9 비전문취업자가 귀국 후 재입국 특례를 통해 다시 취업하는 것에 대한 개인적인 신청 가능 여부에 대한 정보가 없습니다.",
+          "citations": []
+        },
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p287",
+          "answer_missing:송출기관에 의한 단체 신청만 가능"
+        ]
+      },
+      "outcome_raw": "safe_abstain",
+      "outcome_checked": "safe_abstain"
+    },
+    {
+      "case": "Q-13-korean-language-course-education",
+      "prompt_sha256": "8bae7114503b591fa2ce28c712878bbf0eef1256a3a2b36b40e4953fe86c33e8",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p73",
+        "stay_manual_2026_10_19_pdf#p83"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 277,
+      "prompt_tps": 55.59,
+      "generation_tokens": 61,
+      "generation_tps": 7.18,
+      "finish_reason": "stop",
+      "wall_seconds": 13.64,
+      "output": "```json\n{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"제공된 근거에는 서울의 대학교 언어 연구소에서 한국어를 공부하는 데 필요한 교육 수준에 대한 정보가 없습니다.\",\n  \"citations\": []\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 서울의 대학교 언어 연구소에서 한국어를 공부하는 데 필요한 교육 수준에 대한 정보가 없습니다.",
+        "citations": []
+      },
+      "failures": [
+        "status:insufficient_evidence≠answered|partial",
+        "missing_citation:visa_manual_2026_10_19_pdf#p73",
+        "answer_missing:고등학교 졸업 이상의 학력 소지자"
+      ],
+      "post_check": {
+        "verdict": "no_trusted_evidence",
+        "claims": [],
+        "unsupported": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "citations": [],
+          "answer": "승인된 공식 근거가 없어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+        },
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p73",
+          "answer_missing:고등학교 졸업 이상의 학력 소지자"
+        ]
+      },
+      "outcome_raw": "safe_abstain",
+      "outcome_checked": "safe_abstain"
+    },
+    {
+      "case": "Q-14-d4-parttime-duration",
+      "prompt_sha256": "0785d398c47072e6faa6679ba41b7fb2b980677247d94f366bc53f57a45c992e",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "활동범위"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p73"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 947,
+      "prompt_tps": 61.31,
+      "generation_tokens": 98,
+      "generation_tps": 6.56,
+      "finish_reason": "stop",
+      "wall_seconds": 30.59,
+      "output": "```json\n{\n  \"status\": \"answered\",\n  \"answer\": \"어학연수생(D-4)의 경우 체류기간 내에서 최장 6개월까지 시간제 취업이 가능하며, 장소는 1곳으로 한정됩니다.\",\n  \"citations\": [\n    \"stay_manual_2026_10_19_pdf#p39\"\n  ]\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "answered",
+        "answer": "어학연수생(D-4)의 경우 체류기간 내에서 최장 6개월까지 시간제 취업이 가능하며, 장소는 1곳으로 한정됩니다.",
+        "citations": [
+          "stay_manual_2026_10_19_pdf#p39"
+        ]
+      },
+      "failures": [],
+      "post_check": {
+        "verdict": "pass",
+        "claims": [
+          {
+            "kind": "period",
+            "text": "6개월"
+          }
+        ],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "answered",
+          "answer": "어학연수생(D-4)의 경우 체류기간 내에서 최장 6개월까지 시간제 취업이 가능하며, 장소는 1곳으로 한정됩니다.",
+          "citations": [
+            "stay_manual_2026_10_19_pdf#p39"
+          ]
+        },
+        "failures": []
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "Q-15-d10-points-exemption-after-leaving",
+      "prompt_sha256": "647834632bf85bd94cdbb6a5d679328690d0736d5707d375a82950a22082581b",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p125",
+        "stay_manual_2026_10_19_pdf#p144"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 283,
+      "prompt_tps": 49.19,
+      "generation_tokens": 67,
+      "generation_tps": 6.7,
+      "finish_reason": "stop",
+      "wall_seconds": 15.92,
+      "output": "```json\n{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"제공된 근거에는 한국 대학 졸업 후 구직(D-10) 시 점수제를 면제받을 수 있는 경우에 대한 정보가 없습니다.\",\n  \"citations\": []\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 한국 대학 졸업 후 구직(D-10) 시 점수제를 면제받을 수 있는 경우에 대한 정보가 없습니다.",
+        "citations": []
+      },
+      "failures": [
+        "status:insufficient_evidence≠answered|partial",
+        "missing_citation:visa_manual_2026_10_19_pdf#p125",
+        "answer_missing:출국 후 졸업일로부터 1년 이내"
+      ],
+      "post_check": {
+        "verdict": "no_trusted_evidence",
+        "claims": [],
+        "unsupported": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "citations": [],
+          "answer": "승인된 공식 근거가 없어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+        },
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p125",
+          "answer_missing:출국 후 졸업일로부터 1년 이내"
+        ]
+      },
+      "outcome_raw": "safe_abstain",
+      "outcome_checked": "safe_abstain"
+    },
+    {
+      "case": "Q-16-c3-stay-longer-flight-cancelled",
+      "prompt_sha256": "fad60b0a3d3a8c724d2bc31449c1889b0a3bfac3717273dd45a03303ada622ab",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [
+        "stay_manual_2026_10_19_pdf#p28",
+        "visa_manual_2026_10_19_pdf#p27"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 286,
+      "prompt_tps": 52.06,
+      "generation_tokens": 56,
+      "generation_tps": 6.36,
+      "finish_reason": "stop",
+      "wall_seconds": 14.49,
+      "output": "```json\n{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"제공된 근거에는 귀하가 더 머무르기 위해 무엇이 필요한지에 대한 정보가 없습니다.\",\n  \"citations\": []\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 귀하가 더 머무르기 위해 무엇이 필요한지에 대한 정보가 없습니다.",
+        "citations": []
+      },
+      "failures": [
+        "status:insufficient_evidence≠answered|partial",
+        "missing_citation:stay_manual_2026_10_19_pdf#p28",
+        "answer_missing:체류기간 연장의 필요성을 소명하는 서류"
+      ],
+      "post_check": {
+        "verdict": "no_trusted_evidence",
+        "claims": [],
+        "unsupported": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "citations": [],
+          "answer": "승인된 공식 근거가 없어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+        },
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:stay_manual_2026_10_19_pdf#p28",
+          "answer_missing:체류기간 연장의 필요성을 소명하는 서류"
+        ]
+      },
+      "outcome_raw": "safe_abstain",
+      "outcome_checked": "safe_abstain"
+    },
+    {
+      "case": "Q-17-d8-minimum-investment",
+      "prompt_sha256": "636f54cb7e4d07b6b24be20de13dfbcee0344707a848abdf6f6eb161d41c374f",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "활동범위"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p104"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 1115,
+      "prompt_tps": 59.73,
+      "generation_tokens": 64,
+      "generation_tps": 6.43,
+      "finish_reason": "stop",
+      "wall_seconds": 28.88,
+      "output": "```json\n{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"제공된 근거에는 한국 법인에 투자하여 기업투자(D-8)로 일하기 위한 최소 투자 금액에 대한 정보가 없습니다.\",\n  \"citations\": []\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 한국 법인에 투자하여 기업투자(D-8)로 일하기 위한 최소 투자 금액에 대한 정보가 없습니다.",
+        "citations": []
+      },
+      "failures": [
+        "status:insufficient_evidence≠answered|partial",
+        "missing_citation:visa_manual_2026_10_19_pdf#p104",
+        "answer_missing:투자금액이 1억원 이상"
+      ],
+      "post_check": {
+        "verdict": "pass",
+        "claims": [],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "answer": "제공된 근거에는 한국 법인에 투자하여 기업투자(D-8)로 일하기 위한 최소 투자 금액에 대한 정보가 없습니다.",
+          "citations": []
+        },
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:visa_manual_2026_10_19_pdf#p104",
+          "answer_missing:투자금액이 1억원 이상"
+        ]
+      },
+      "outcome_raw": "safe_abstain",
+      "outcome_checked": "safe_abstain"
+    },
+    {
+      "case": "Q-18-e2-trip-home-reentry",
+      "prompt_sha256": "0a8e7747e70eb98960986846c728b83334fb2ed9236cb17186f8c6a5ebb00df0",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [
+        "stay_manual_2026_10_19_pdf#p175",
+        "visa_manual_2026_10_19_pdf#p146"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 285,
+      "prompt_tps": 46.27,
+      "generation_tokens": 67,
+      "generation_tps": 6.38,
+      "finish_reason": "stop",
+      "wall_seconds": 16.87,
+      "output": "```json\n{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"제공된 근거에는 회화지도(E-2) 강사가 여름에 본국에 다녀올 때 따로 받아야 하는 것에 대한 정보가 없습니다.\",\n  \"citations\": []\n}\n```",
+      "passed": false,
+      "parsed": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 회화지도(E-2) 강사가 여름에 본국에 다녀올 때 따로 받아야 하는 것에 대한 정보가 없습니다.",
+        "citations": []
+      },
+      "failures": [
+        "status:insufficient_evidence≠answered|partial",
+        "missing_citation:stay_manual_2026_10_19_pdf#p175",
+        "answer_missing:출국한 날로부터 1년 이내"
+      ],
+      "post_check": {
+        "verdict": "no_trusted_evidence",
+        "claims": [],
+        "unsupported": []
+      },
+      "checked": {
+        "passed": false,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "citations": [],
+          "answer": "승인된 공식 근거가 없어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+        },
+        "failures": [
+          "status:insufficient_evidence≠answered|partial",
+          "missing_citation:stay_manual_2026_10_19_pdf#p175",
+          "answer_missing:출국한 날로부터 1년 이내"
+        ]
+      },
+      "outcome_raw": "safe_abstain",
+      "outcome_checked": "safe_abstain"
+    },
+    {
+      "case": "Q-19-live-with-korean-husband-docs",
+      "prompt_sha256": "1b2c1b01b53c5fe5cd044e9f9701367999132cc347c86ad715e24b81f1a3abc3",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p328",
+        "stay_manual_2026_10_19_pdf#p486"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 275,
+      "prompt_tps": 53.56,
+      "generation_tokens": 56,
+      "generation_tps": 6.6,
+      "finish_reason": "stop",
+      "wall_seconds": 13.82,
+      "output": "```json\n{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"제공된 근거에는 귀하가 한국에 거주하기 위해 필요한 서류에 대한 정보가 없습니다.\",\n  \"citations\": []\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 귀하가 한국에 거주하기 위해 필요한 서류에 대한 정보가 없습니다.",
+        "citations": []
+      },
+      "failures": [],
+      "post_check": {
+        "verdict": "no_trusted_evidence",
+        "claims": [],
+        "unsupported": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "citations": [],
+          "answer": "승인된 공식 근거가 없어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+        },
+        "failures": []
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "Q-20-d2-study-docs",
+      "prompt_sha256": "3f76754160e9833d5e2220ce36ede247a1fa60e3dc3b82d7d5760ef7d4ce6eae",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p63",
+        "stay_manual_2026_10_19_pdf#p47"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 271,
+      "prompt_tps": 49.11,
+      "generation_tokens": 57,
+      "generation_tps": 6.94,
+      "finish_reason": "stop",
+      "wall_seconds": 13.87,
+      "output": "```json\n{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"제공된 근거에는 D-2 비자로 한국에서 공부하기 위해 필요한 서류에 대한 정보가 없습니다.\",\n  \"citations\": []\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 D-2 비자로 한국에서 공부하기 위해 필요한 서류에 대한 정보가 없습니다.",
+        "citations": []
+      },
+      "failures": [],
+      "post_check": {
+        "verdict": "no_trusted_evidence",
+        "claims": [],
+        "unsupported": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "citations": [],
+          "answer": "승인된 공식 근거가 없어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+        },
+        "failures": []
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "Q-21-e9-factory-work-docs",
+      "prompt_sha256": "44e60bda69062aab8c5697a2f26d788ed428075e8b91a5311b73bec4128da2da",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [
+        [
+          "stay",
+          "활동범위"
+        ]
+      ],
+      "route_withheld": [
+        "visa_manual_2026_10_19_pdf#p288"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 935,
+      "prompt_tps": 61.67,
+      "generation_tokens": 101,
+      "generation_tps": 6.73,
+      "finish_reason": "stop",
+      "wall_seconds": 30.34,
+      "output": "```json\n{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"제공된 근거에는 E-9 비전문취업 비자 소지자가 한국에서 근무하기 위해 필요한 구체적인 요건에 대한 정보가 포함되어 있지 않습니다. 근거는 고용허가제 전반에 대한 내용과 비전문취업자의 근로처 변경 제한 등에 대해서만 언급하고 있습니다.\",\n  \"citations\": []\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 E-9 비전문취업 비자 소지자가 한국에서 근무하기 위해 필요한 구체적인 요건에 대한 정보가 포함되어 있지 않습니다. 근거는 고용허가제 전반에 대한 내용과 비전문취업자의 근로처 변경 제한 등에 대해서만 언급하고 있습니다.",
+        "citations": []
+      },
+      "failures": [],
+      "post_check": {
+        "verdict": "pass",
+        "claims": [],
+        "unsupported": [],
+        "untrusted_citations": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "answer": "제공된 근거에는 E-9 비전문취업 비자 소지자가 한국에서 근무하기 위해 필요한 구체적인 요건에 대한 정보가 포함되어 있지 않습니다. 근거는 고용허가제 전반에 대한 내용과 비전문취업자의 근로처 변경 제한 등에 대해서만 언급하고 있습니다.",
+          "citations": []
+        },
+        "failures": []
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "Q-22-d10-how-long",
+      "prompt_sha256": "d2d0976869061753449f35c087eb3f2ddeb7a748060c4f82b26fd665485f5aee",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [
+        "stay_manual_2026_10_19_pdf#p144",
+        "visa_manual_2026_10_19_pdf#p124"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 272,
+      "prompt_tps": 54.52,
+      "generation_tokens": 53,
+      "generation_tps": 7.44,
+      "finish_reason": "stop",
+      "wall_seconds": 12.22,
+      "output": "```json\n{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"제공된 근거에는 구직(D-10)에 대한 기간 정보가 없습니다.\",\n  \"citations\": []\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 구직(D-10)에 대한 기간 정보가 없습니다.",
+        "citations": []
+      },
+      "failures": [],
+      "post_check": {
+        "verdict": "no_trusted_evidence",
+        "claims": [],
+        "unsupported": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "citations": [],
+          "answer": "승인된 공식 근거가 없어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+        },
+        "failures": []
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "Q-23-h2-father-how-long",
+      "prompt_sha256": "c3b7350826bdf9d77598cdf7eeae62c5ae58bbe5134e0dc7c940f09fdc462b9b",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [
+        "stay_manual_2026_10_19_pdf#p537",
+        "visa_manual_2026_10_19_pdf#p389"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 277,
+      "prompt_tps": 56.69,
+      "generation_tokens": 62,
+      "generation_tps": 7.39,
+      "finish_reason": "stop",
+      "wall_seconds": 13.38,
+      "output": "```json\n{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"제공된 근거에는 귀하의 아버지께서 한국에 H-2 비자로 체류할 수 있는 기간에 대한 정보가 없습니다.\",\n  \"citations\": []\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 귀하의 아버지께서 한국에 H-2 비자로 체류할 수 있는 기간에 대한 정보가 없습니다.",
+        "citations": []
+      },
+      "failures": [],
+      "post_check": {
+        "verdict": "no_trusted_evidence",
+        "claims": [],
+        "unsupported": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "citations": [],
+          "answer": "승인된 공식 근거가 없어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+        },
+        "failures": []
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    },
+    {
+      "case": "Q-24-d9-sole-proprietor-docs",
+      "prompt_sha256": "df02e77ab87bdf80547bb5c9fe42241bed82470ee0d67c227cefc911522caf36",
+      "evidence_flags": {},
+      "evidence_withheld": [],
+      "source_gate_withheld": [],
+      "route_scopes": [],
+      "route_withheld": [
+        "stay_manual_2026_10_19_pdf#p137",
+        "visa_manual_2026_10_19_pdf#p119"
+      ],
+      "turns": 1,
+      "clarified": false,
+      "integrity_failed": [],
+      "prompt_tokens": 277,
+      "prompt_tps": 57.24,
+      "generation_tokens": 61,
+      "generation_tps": 7.4,
+      "finish_reason": "stop",
+      "wall_seconds": 13.19,
+      "output": "```json\n{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"제공된 근거에는 무역경영(D-9) 개인사업자가 제출해야 할 서류에 대한 정보가 없습니다.\",\n  \"citations\": []\n}\n```",
+      "passed": true,
+      "parsed": {
+        "status": "insufficient_evidence",
+        "answer": "제공된 근거에는 무역경영(D-9) 개인사업자가 제출해야 할 서류에 대한 정보가 없습니다.",
+        "citations": []
+      },
+      "failures": [],
+      "post_check": {
+        "verdict": "no_trusted_evidence",
+        "claims": [],
+        "unsupported": []
+      },
+      "checked": {
+        "passed": true,
+        "parsed": {
+          "status": "insufficient_evidence",
+          "citations": [],
+          "answer": "승인된 공식 근거가 없어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요."
+        },
+        "failures": []
+      },
+      "outcome_raw": "correct",
+      "outcome_checked": "correct"
+    }
+  ],
+  "summary": {
+    "cases": 24,
+    "passed": 10,
+    "failed": 14,
+    "outcomes_raw": {
+      "correct": 10,
+      "clarify": 0,
+      "safe_abstain": 11,
+      "harmful": 0,
+      "other": 3
+    },
+    "outcomes_checked": {
+      "correct": 10,
+      "clarify": 0,
+      "safe_abstain": 12,
+      "harmful": 0,
+      "other": 2
+    }
+  },
+  "peak_memory_gb": 4.924,
+  "max_rss_gb": 0.809,
+  "swap_after": "total = 4096.00M  used = 2738.19M  free = 1357.81M  (encrypted)",
+  "free_disk_gb_after": 9.87,
+  "finished_utc": "2026-10-26T12:49:39+00:00"
+}
