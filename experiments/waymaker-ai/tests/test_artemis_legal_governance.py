@@ -429,26 +429,12 @@ def test_authoritative_gold_promotion_gating_and_test_simulation(fresh_ledger):
     }
 
     with pytest.raises(AuthoritativeGoldPromotionDisabledError, match="External cryptographic PKI authority verification service is not connected"):
-        fresh_ledger.promote_to_gold(item, external_attestation=test_attestation, _allow_test_promotion=False)
+        fresh_ledger.promote_to_gold(item, external_attestation=test_attestation)
 
-    # 5. In test harness with _allow_test_promotion=True, promotion succeeds and formats gold item
-    promoted = fresh_ledger.promote_to_gold(item, external_attestation=test_attestation, _allow_test_promotion=True)
-    assert promoted["metadata"]["candidate_status"] == "official_gold"
-    assert promoted["metadata"]["needs_human_review"] is False
-    assert promoted["evidence"][0]["source"]["approval_state"] == "approved"
-    assert promoted["evidence"][0]["source"]["review_status"] == "verified_by_human"
-    assert promoted["evidence"][0]["source"]["reviewed_by"] == "independent_attorney"
-    assert bool(promoted["evidence"][0]["source"]["reviewed_at"])
-
-    # 6. Promoted item now passes is_official_gold check in artemis_eval!
-    resp = {
-        "status": "answered",
-        "answer": "B-2 관광 자격 소지자는 국내에서 D-2 체류자격으로의 변경이 원칙적으로 제한됩니다. 재외공관에서 사증을 발급받아야 합니다.",
-        "citations": [promoted["evidence"][0]["id"]],
-    }
-    score = artemis_eval.score_artemis_response(promoted, resp, allow_candidate_sources=False)
-    assert score.is_official_gold is True
-    assert score.overall_passed is True
+    # 5. There is no caller-controlled test override: no code path can
+    # turn an unauthenticated local approval into an official gold item.
+    assert item["metadata"]["candidate_status"] != "official_gold"
+    assert item["evidence"][0]["source"]["approval_state"] == "under_review"
 
 
 def test_external_attestation_mismatch_rejected(fresh_ledger):
@@ -479,7 +465,7 @@ def test_external_attestation_mismatch_rejected(fresh_ledger):
         "evidence_snapshot_sha256": ev_hash,
     }
     with pytest.raises(ReviewIntegrityError, match="does not match ledger reviewer"):
-        fresh_ledger.promote_to_gold(item, external_attestation=mismatched_signer, _allow_test_promotion=True)
+        fresh_ledger.promote_to_gold(item, external_attestation=mismatched_signer)
 
     # AI identifier in attestation signer
     ai_signer = {
@@ -490,7 +476,7 @@ def test_external_attestation_mismatch_rejected(fresh_ledger):
         "evidence_snapshot_sha256": ev_hash,
     }
     with pytest.raises(AIApprovalForbiddenError):
-        fresh_ledger.promote_to_gold(item, external_attestation=ai_signer, _allow_test_promotion=True)
+        fresh_ledger.promote_to_gold(item, external_attestation=ai_signer)
 
     # Mismatched evidence snapshot hash
     mismatched_hash = {
@@ -501,7 +487,7 @@ def test_external_attestation_mismatch_rejected(fresh_ledger):
         "evidence_snapshot_sha256": "0" * 64,
     }
     with pytest.raises(ReviewIntegrityError, match="does not match ledger snapshot"):
-        fresh_ledger.promote_to_gold(item, external_attestation=mismatched_hash, _allow_test_promotion=True)
+        fresh_ledger.promote_to_gold(item, external_attestation=mismatched_hash)
 
 
 # ---------------------------------------------------------------------------
@@ -545,3 +531,11 @@ def test_ledger_persistence_and_markdown(tmp_path, fresh_ledger):
     assert "# Artemis 법률 검토 거버넌스 원장 보고서" in md
     assert "ARTEMIS-004-DEV-001" in md
     assert "attorney_kim" in md
+
+
+def test_no_callable_gold_promotion_test_bypass(fresh_ledger):
+    """External callers cannot enable test-only gold promotion using a flag."""
+    import inspect
+    signature = inspect.signature(fresh_ledger.promote_to_gold)
+    assert "_allow_test_promotion" not in signature.parameters
+    assert "test_mode" not in signature.parameters
