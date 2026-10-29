@@ -366,12 +366,23 @@ def train(config: experiment_config.ExperimentConfig, args: argparse.Namespace) 
 
     sft_path = config.resolve(config.sft_file)
     records = load_sft_records(sft_path)
-    tokenizer = transformers.AutoTokenizer.from_pretrained(base.repo_id, revision=base.revision)
+    processor = transformers.AutoProcessor.from_pretrained(
+        base.repo_id, revision=base.revision, trust_remote_code=False)
+    upstream_config = transformers.AutoConfig.from_pretrained(
+        base.repo_id, revision=base.revision, trust_remote_code=False).to_dict()
+    selected = experiment_config.foundation.profile("gemma4_e2b" if args.model == "secondary" else "gemma4_e4b")
+    if (upstream_config.get("model_type") != selected["model_type"]
+            or upstream_config.get("architectures") != selected["architectures"]
+            or any(upstream_config.get("text_config", {}).get(k) != v for k, v in selected["text_config"].items())
+            or type(processor).__name__ != selected["processor_class"]):
+        print("REFUSED: incompatible Gemma 4 architecture/processor", file=sys.stderr)
+        return EXIT_REFUSED
+    tokenizer = processor.tokenizer
 
     max_length = int(opt["max_seq_length"]["value"])
     too_long = []
     for position, record in enumerate(records):
-        encoded = tokenizer.apply_chat_template(record["prompt"] + record["completion"], tokenize=True)
+        encoded = tokenizer.apply_chat_template(record["prompt"] + record["completion"], tokenize=True, enable_thinking=False)
         # A list of ids, or a BatchEncoding when the installed version returns a dict.
         token_ids = encoded["input_ids"] if hasattr(encoded, "keys") else encoded
         if len(token_ids) > max_length:
@@ -390,6 +401,7 @@ def train(config: experiment_config.ExperimentConfig, args: argparse.Namespace) 
     model = loader.from_pretrained(
         base.repo_id,
         revision=base.revision,
+        trust_remote_code=False,
         quantization_config=bnb_config,
         dtype=compute_dtype,
         device_map={"": 0},
@@ -460,6 +472,7 @@ def train(config: experiment_config.ExperimentConfig, args: argparse.Namespace) 
         "sft_file": config.sft_file,
         "sft_sha256": file_sha256(sft_path),
         "records": len(records),
+        "model_profile": "gemma4_e2b" if args.model == "secondary" else "gemma4_e4b",
         "base_model": {
             "role": args.model, "repo_id": base.repo_id, "revision": base.revision,
             "license": base.license, "loader": base.loader,

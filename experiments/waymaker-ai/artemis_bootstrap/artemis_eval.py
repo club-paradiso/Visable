@@ -266,6 +266,16 @@ def approval_hash(text: str) -> str:
     return hashlib.sha256(unicodedata.normalize("NFC", text or "").strip().encode("utf-8")).hexdigest()
 
 
+def has_authenticated_gold_review(item: Mapping[str, Any]) -> bool:
+    """No independent attestation verifier is connected in this prototype.
+
+    Keep scoring aligned with legal_review_governance.promote_to_gold: caller
+    names, dates, flags and synthetic signatures are not authenticated review.
+    Connecting a trusted verifier requires a separately reviewed implementation.
+    """
+    return False
+
+
 def is_approved_evidence(
     evidence: Mapping[str, Any],
     check_hash: bool = True,
@@ -841,6 +851,7 @@ def score_artemis_response(
     ]
     is_official_gold = (
         meta.get("candidate_status") == "official_gold"
+        and has_authenticated_gold_review(item)
         and not needs_review
         and meta.get("is_synthetic") is False
         and bool(sources_for_gold)

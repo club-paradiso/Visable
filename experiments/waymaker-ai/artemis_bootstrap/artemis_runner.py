@@ -46,6 +46,9 @@ SCHEMAS_DIR = EXPERIMENT_ROOT / "schemas"
 if str(BOOTSTRAP_DIR) not in sys.path:
     sys.path.insert(0, str(BOOTSTRAP_DIR))
 
+sys.path.insert(0, str(EXPERIMENT_ROOT))
+from waymaker_ai import foundation
+import gemma4_runtime
 import artemis_eval  # noqa: E402
 from artemis_eval import ArtemisItemScore, SuiteSummary
 
@@ -99,6 +102,7 @@ class ModelResponse:
     latency_ms: Optional[float] = None
     raw_output: Optional[str] = None
     error: Optional[str] = None
+    telemetry: Optional[Dict[str, Any]] = None
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -107,6 +111,7 @@ class ModelResponse:
             "citations": list(self.citations),
             "latency_ms": self.latency_ms,
             "raw_output": self.raw_output,
+            "telemetry": self.telemetry,
             "error": self.error,
         }
 
@@ -147,6 +152,7 @@ class MockModelAdapter(BaseModelAdapter):
     def get_metadata(self) -> Dict[str, Any]:
         return {
             "adapter_type": "mock",
+            "inference_kind": "mock",
             "model_name": self.model_name,
             "model_revision": "mock-rev-1.0",
             "quantization": "none",
@@ -316,6 +322,7 @@ class RecordedResponseAdapter(BaseModelAdapter):
     def get_metadata(self) -> Dict[str, Any]:
         return {
             "adapter_type": "recorded",
+            "inference_kind": "recorded_fixture",
             "model_name": self.model_name,
             "recorded_file": self.path.name,
             "recorded_sha256": hashlib.sha256(self.path.read_bytes()).hexdigest(),
@@ -348,246 +355,115 @@ class RecordedResponseAdapter(BaseModelAdapter):
 
 
 class LocalModelAdapter(BaseModelAdapter):
-    """Optional local MLX model adapter reusing Artemis bootstrap inference infrastructure.
-    
-    CRITICAL RESOURCE RULE: If weights are absent or MLX is unavailable,
-    it gracefully marks the run as not_executed. It NEVER fabricates predictions.
-    """
+    """Pinned Gemma 4 inference in an explicitly selected, bounded MLX-VLM process."""
 
-    def __init__(
-        self,
-        model_name: str = "mlx-community/gemma-3-270m-it-4bit",
-        revision: Optional[str] = None,
-        cache_dir: Optional[Path] = None,
-        max_tokens: int = 256,
-        temperature: float = 0.0,
-    ):
-        self.model_name = model_name
-        self.revision = revision
-        self._explicit_cache_dir = cache_dir is not None
-        self.cache_dir = cache_dir or (Path.home() / ".cache" / "waymaker-artemis" / "hf")
-        self.max_tokens = max_tokens
-        self.temperature = temperature
-        self._model = None
-        self._tokenizer = None
+    def __init__(self, model_name: Optional[str] = None, revision: Optional[str] = None,
+                 cache_dir: Optional[Path] = None, max_tokens: int = 256,
+                 temperature: float = 0.0, profile: str = "gemma4_e4b",
+                 runtime: str = "mlx_vlm", python_executable: Optional[str] = None):
+        self.profile = profile
+        self.selected = foundation.select_profile(profile, model_name, revision, runtime)
+        self.model_name = self.selected["inference_checkpoint"]
+        self.revision = self.selected["inference_revision"]
+        self.runtime = runtime
+        self.cache_dir = cache_dir
+        self.python_executable = python_executable or os.environ.get("ARTEMIS_MLX_PYTHON") or sys.executable
+        limits = foundation.configuration()["runtime"]
+        if not 1 <= max_tokens <= limits["max_generation_tokens"] or not 0 <= temperature <= 2:
+            raise ValueError("Invalid bounded generation settings")
+        self.max_tokens, self.temperature = max_tokens, temperature
+        self._probe_result = None
+        self._verified = {}
+        self._last_result = None
 
     def _find_snapshot_path(self) -> Optional[Path]:
-        """Locates the local offline snapshot directory for the model."""
-        clean_model_name = self.model_name.replace("/", "--")
-        if self._explicit_cache_dir:
-            candidates = [
-                self.cache_dir / f"models--{clean_model_name}",
-                self.cache_dir / "hub" / f"models--{clean_model_name}",
-            ]
-        else:
-            candidates = [
-                self.cache_dir / f"models--{clean_model_name}",
-                self.cache_dir / "hub" / f"models--{clean_model_name}",
-                Path.home() / ".cache" / "waymaker-artemis" / "hf" / "hub" / f"models--{clean_model_name}",
-                Path.home() / ".cache" / "waymaker-artemis" / "hf" / f"models--{clean_model_name}",
-                Path.home() / ".cache" / "huggingface" / "hub" / f"models--{clean_model_name}",
-            ]
-        for base in candidates:
-            if not base.exists():
-                continue
-            snapshots_dir = base / "snapshots"
-            if not snapshots_dir.exists():
-                continue
-            if self.revision:
-                rev_dir = snapshots_dir / self.revision
-                if rev_dir.exists():
-                    return rev_dir
-            # Return first snapshot directory if specific revision not required
-            for child in sorted(snapshots_dir.iterdir()):
-                if child.is_dir() and (child / "config.json").exists():
-                    return child
-        return None
+        return foundation.find_snapshot(self.selected, self.cache_dir)
 
-    def _find_mlx_python(self) -> Optional[str]:
-        """Checks if current python or known sibling python has mlx and mlx_lm."""
-        try:
-            import mlx.core as mx  # noqa: F401
-            import mlx_lm  # noqa: F401
-            return sys.executable
-        except ImportError:
-            pass
+    def _probe(self) -> Dict[str, Any]:
+        if self._probe_result is None:
+            try:
+                result = subprocess.run(
+                    [self.python_executable, str(BOOTSTRAP_DIR / "gemma4_runtime.py"), "--probe"],
+                    capture_output=True, text=True, timeout=30, env=self._offline_env(),
+                )
+                self._probe_result = json.loads(result.stdout) if result.returncode == 0 else {
+                    "problems": [f"Runtime probe failed: {result.returncode}: {result.stderr[-2000:]}"]}
+            except (OSError, ValueError, subprocess.SubprocessError) as exc:
+                self._probe_result = {"problems": [f"Runtime probe failed: {exc}"]}
+        return self._probe_result
 
-        candidates = [
-            os.environ.get("ARTEMIS_MLX_PYTHON"),
-            "/Users/seonjaekim/dev/Visable-artemis/experiments/waymaker-ai/artemis_bootstrap/.venv/bin/python",
-            str(BOOTSTRAP_DIR / ".venv" / "bin" / "python"),
-        ]
-        for cand in candidates:
-            if cand and Path(cand).exists():
-                try:
-                    res = subprocess.run(
-                        [cand, "-c", "import mlx_lm; print('OK')"],
-                        capture_output=True,
-                        text=True,
-                        timeout=5,
-                    )
-                    if res.returncode == 0 and "OK" in res.stdout:
-                        return cand
-                except Exception:
-                    continue
-        return None
+    @staticmethod
+    def _offline_env() -> Dict[str, str]:
+        return {**os.environ, "HF_HUB_OFFLINE": "1", "TRANSFORMERS_OFFLINE": "1",
+                "HF_HUB_DISABLE_TELEMETRY": "1"}
 
     def check_availability(self) -> Tuple[bool, Optional[str]]:
-        # Check platform
-        if platform.system() != "Darwin":
-            return False, "MLX local model adapter requires macOS with Apple Silicon"
-        # Check disk space (minimum 1.0 GB safety threshold since weights already downloaded)
-        free_gb = shutil.disk_usage(Path.home()).free / 1e9
-        if free_gb < 1.0:
-            return False, f"Insufficient disk space ({free_gb:.1f} GB free, need at least 1.0 GB)"
-
+        problems = []
+        self._verified = {}
         snapshot = self._find_snapshot_path()
-        if not snapshot:
-            model_cache_path = self.cache_dir / f"models--{self.model_name.replace('/', '--')}"
-            return False, f"Offline weights not found in local cache: {model_cache_path} (no weights downloaded)"
-
-        mlx_py = self._find_mlx_python()
-        if not mlx_py:
-            return False, "MLX packages not installed: No module named 'mlx' or 'mlx_lm'"
-
-        return True, None
+        if snapshot is None:
+            problems.append(f"Offline checkpoint not found: {self.model_name}@{self.revision}; no download or fallback")
+        else:
+            try:
+                self._verified = foundation.validate_snapshot(snapshot, self.selected)
+            except (OSError, ValueError, KeyError, TypeError) as exc:
+                problems.append(f"Incompatible checkpoint: {exc}")
+        if platform.system() != "Darwin" or platform.machine() != "arm64":
+            problems.append("MLX-VLM requires macOS Apple Silicon")
+        else:
+            problems.extend(gemma4_runtime.resource_blockers(gemma4_runtime.resources()))
+        problems.extend(self._probe().get("problems", []))
+        return not problems, "; ".join(problems) or None
 
     def get_metadata(self) -> Dict[str, Any]:
         available, reason = self.check_availability()
         snapshot = self._find_snapshot_path()
         return {
-            "adapter_type": "local_mlx",
-            "model_name": self.model_name,
-            "model_revision": self.revision or (snapshot.name if snapshot else None),
-            "snapshot_path": str(snapshot) if snapshot else None,
-            "quantization": "4bit",
-            "available": available,
-            "not_available_reason": reason,
-            "hardware": "Apple Silicon (M1 8GB)",
-            "generation_config": {
-                "max_tokens": self.max_tokens,
-                "temperature": self.temperature,
-            },
+            "adapter_type": "local_mlx", "inference_kind": "real_inference",
+            "project_name": "Waymaker Artemis", "profile": self.profile,
+            "model_name": self.model_name, "model_revision": self.revision,
+            "family": self.selected["family"], "size_class": self.selected["architecture"],
+            "upstream": self.selected["upstream"],
+            "upstream_revision": self.selected["upstream_revision"],
+            "conversion_source_revision": self.selected["conversion_source_revision"],
+            "runtime": self.runtime, "runtime_python": self.python_executable,
+            "runtime_probe": self._probe(), "snapshot_path": str(snapshot) if snapshot else None,
+            "quantization": "4bit", "available": available, "not_available_reason": reason,
+            "allow_implicit_fallback": False,
+            "foundation_config_sha256": hashlib.sha256(foundation.CONFIG_PATH.read_bytes()).hexdigest(),
+            "generation_config": {"max_tokens": self.max_tokens, "temperature": self.temperature,
+                                  "enable_thinking": False},
+            **self._verified,
         }
 
     def generate(self, item: Mapping[str, Any], context: Optional[Mapping[str, Any]] = None) -> ModelResponse:
         available, reason = self.check_availability()
         if not available:
-            return ModelResponse(
-                status="error",
-                answer="",
-                citations=[],
-                error=f"Local model not executed: {reason}",
-            )
-
-        snapshot = self._find_snapshot_path()
-        mlx_py = self._find_mlx_python()
-        question = item.get("question", "")
-
-        t0 = time.perf_counter()
-
-        # In-process execution path
-        if mlx_py == sys.executable:
-            try:
-                import resource
-                from mlx_lm import load, generate
-
-                if self._model is None:
-                    os.environ["HF_HUB_OFFLINE"] = "1"
-                    self._model, self._tokenizer = load(str(snapshot))
-
-                if hasattr(self._tokenizer, "apply_chat_template") and getattr(self._tokenizer, "chat_template", None):
-                    prompt = self._tokenizer.apply_chat_template(
-                        [{"role": "user", "content": f"질문: {question}\n답변:"}],
-                        add_generation_prompt=True,
-                        tokenize=False,
-                    )
-                else:
-                    prompt = f"질문: {question}\n답변:"
-
-                raw = generate(
-                    self._model,
-                    self._tokenizer,
-                    prompt=prompt,
-                    max_tokens=self.max_tokens,
-                    verbose=False,
-                )
-                latency = (time.perf_counter() - t0) * 1000.0
-                peak_rss = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / (1024 * 1024)
-
-                return ModelResponse(
-                    status="answered",
-                    answer=raw.strip(),
-                    citations=[],
-                    latency_ms=latency,
-                    raw_output=raw,
-                )
-            except Exception as e:
-                latency = (time.perf_counter() - t0) * 1000.0
-                return ModelResponse(
-                    status="error",
-                    answer="",
-                    citations=[],
-                    latency_ms=latency,
-                    error=f"Local MLX execution failed: {e}",
-                )
-
-        # Subprocess execution path
-        helper_code = f"""
-import sys, json, time, resource
-from mlx_lm import load, generate
-
-snapshot = {repr(str(snapshot))}
-question = {repr(question)}
-max_tokens = {self.max_tokens}
-
-t0 = time.perf_counter()
-model, tok = load(snapshot)
-if hasattr(tok, "apply_chat_template") and getattr(tok, "chat_template", None):
-    prompt = tok.apply_chat_template([{{'role': 'user', 'content': f'질문: {{question}}\\n답변:'}}], add_generation_prompt=True, tokenize=False)
-else:
-    prompt = f"질문: {{question}}\\n답변:"
-
-raw = generate(model, tok, prompt=prompt, max_tokens=max_tokens, verbose=False)
-lat = (time.perf_counter() - t0) * 1000.0
-rss = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / (1024 * 1024)
-
-print(json.dumps({{'status': 'answered', 'answer': raw.strip(), 'latency_ms': lat, 'raw_output': raw, 'peak_rss_mb': rss}}))
-"""
+            return ModelResponse(status="error", answer="", error=f"Local model not executed: {reason}")
+        request = {"profile": self.profile, "snapshot": str(self._find_snapshot_path()),
+                   "max_tokens": self.max_tokens, "temperature": self.temperature,
+                   "item": {"question": item.get("question", ""), "evidence": item.get("evidence", [])}}
+        start = time.perf_counter()
         try:
-            res = subprocess.run(
-                [mlx_py, "-c", helper_code],
-                capture_output=True,
-                text=True,
-                timeout=120,
+            result = subprocess.run(
+                [self.python_executable, str(BOOTSTRAP_DIR / "gemma4_runtime.py")],
+                input=json.dumps(request, ensure_ascii=False), capture_output=True, text=True,
+                timeout=foundation.configuration()["runtime"]["timeout_seconds"], env=self._offline_env(),
             )
-            latency = (time.perf_counter() - t0) * 1000.0
-            if res.returncode == 0 and res.stdout.strip():
-                data = json.loads(res.stdout.strip())
-                return ModelResponse(
-                    status="answered",
-                    answer=data.get("answer", ""),
-                    citations=[],
-                    latency_ms=data.get("latency_ms", latency),
-                    raw_output=data.get("raw_output", ""),
-                )
-            else:
-                return ModelResponse(
-                    status="error",
-                    answer="",
-                    citations=[],
-                    latency_ms=latency,
-                    error=f"Local MLX subprocess exited with code {res.returncode}: {res.stderr.strip()}",
-                )
-        except Exception as e:
-            latency = (time.perf_counter() - t0) * 1000.0
-            return ModelResponse(
-                status="error",
-                answer="",
-                citations=[],
-                latency_ms=latency,
-                error=f"Local MLX subprocess invocation failed: {e}",
-            )
+            if result.returncode:
+                raise RuntimeError(f"Worker exited {result.returncode} (75 = resource guard): {result.stderr[-2000:]}")
+            data = json.loads(result.stdout)
+            data["stderr"] = result.stderr[-4000:]
+            self._last_result = data
+            response = data.get("response", {})
+            return ModelResponse(status=response.get("status", "error"), answer=response.get("answer", ""),
+                                 citations=response.get("citations", []), raw_output=data.get("raw_output"),
+                                 error=data.get("error"), latency_ms=(time.perf_counter() - start) * 1000,
+                                 telemetry=data)
+        except (OSError, ValueError, RuntimeError, subprocess.SubprocessError) as exc:
+            return ModelResponse(status="error", answer="", error=f"Gemma 4 execution failed: {exc}",
+                                 latency_ms=(time.perf_counter() - start) * 1000,
+                                 telemetry={"resources_after": gemma4_runtime.resources()})
 
 
 # ---------------------------------------------------------------------------
@@ -660,7 +536,7 @@ class RunSummaryReport:
 class ArtemisEvaluationRunner:
     """Orchestrates model evaluation across modes, adapters, and reporting."""
 
-    RUNNER_VERSION = "artemis-runner/1.0"
+    RUNNER_VERSION = "artemis-runner/1.1"
 
     def __init__(
         self,
@@ -714,7 +590,9 @@ class ArtemisEvaluationRunner:
             for it in items:
                 # Must satisfy is_official_gold requirements
                 meta = it.get("metadata", {})
-                if meta.get("candidate_status") == "official_gold" and not meta.get("needs_human_review") and not meta.get("is_synthetic"):
+                if (artemis_eval.has_authenticated_gold_review(it)
+                        and meta.get("candidate_status") == "official_gold"
+                        and not meta.get("needs_human_review") and not meta.get("is_synthetic")):
                     sources = it.get("evidence", [])
                     if sources and all(
                         e.get("source", {}).get("approval_state") == "approved"
@@ -730,6 +608,8 @@ class ArtemisEvaluationRunner:
 
     def run(self) -> RunSummaryReport:
         """Executes the full evaluation pipeline and produces artifacts."""
+        if (self.out_dir / "run_manifest.json").exists():
+            raise FileExistsError(f"Refusing to overwrite run: {self.out_dir}")
         now_iso = dt.datetime.now(dt.timezone.utc).isoformat()
         model_meta = self.adapter.get_metadata()
 
@@ -858,7 +738,7 @@ class ArtemisEvaluationRunner:
                     primary_outcome=score.primary_outcome,
                     is_official_gold=score.is_official_gold,
                     latency_ms=lat,
-                    model_output=resp_dict,
+                    model_output={**resp_dict, "raw_output": resp.raw_output, "telemetry": resp.telemetry},
                     score=score,
                     error=resp.error,
                 ))
@@ -898,7 +778,9 @@ class ArtemisEvaluationRunner:
             timestamp=now_iso,
             mode=self.mode,
             runner_version=self.RUNNER_VERSION,
-            execution_status=ExecutionStatus.COMPLETED,
+            execution_status=(ExecutionStatus.FAILED if item_results and all(r.error for r in item_results)
+                              else ExecutionStatus.PARTIALLY_COMPLETED if any(r.error for r in item_results)
+                              else ExecutionStatus.COMPLETED),
             model_metadata=model_meta,
             benchmark_metadata={
                 "benchmark_file": self.benchmark_path.name,
@@ -978,6 +860,8 @@ class ArtemisEvaluationRunner:
 
     def _write_artifacts(self, summary: RunSummaryReport) -> None:
         """Persists run_summary.json, report.md, error_summary.csv, and run_manifest.json."""
+        if (self.out_dir / "run_manifest.json").exists():
+            raise FileExistsError(f"Refusing to overwrite run: {self.out_dir}")
         self.out_dir.mkdir(parents=True, exist_ok=True)
 
         # 1. run_summary.json
@@ -988,7 +872,7 @@ class ArtemisEvaluationRunner:
         # 2. error_summary.csv
         csv_path = self.out_dir / "error_summary.csv"
         with open(csv_path, "w", newline="", encoding="utf-8") as f:
-            writer = csv.writer(f)
+            writer = csv.writer(f, lineterminator="\n")
             writer.writerow([
                 "run_id", "item_id", "overall_passed", "primary_outcome",
                 "is_official_gold", "failure_count", "failures", "flags", "error"
@@ -1020,11 +904,17 @@ class ArtemisEvaluationRunner:
             "mode": summary.mode.value if isinstance(summary.mode, EvaluationMode) else summary.mode,
             "runner_version": summary.runner_version,
             "git_commit": summary.git_commit,
+            "model_metadata": summary.model_metadata,
+            "metric_group": (foundation.metric_group(summary.model_metadata)
+                             if summary.model_metadata.get("inference_kind") != "real_inference"
+                             or summary.model_metadata.get("checkpoint_metadata_verified") else None),
             "file_digests": {
                 "run_summary.json": hashlib.sha256(summary_bytes).hexdigest(),
                 "error_summary.csv": hashlib.sha256(csv_path.read_bytes()).hexdigest(),
                 "report.md": hashlib.sha256(report_path.read_bytes()).hexdigest(),
                 "runner_code": hashlib.sha256(runner_file.read_bytes()).hexdigest(),
+                "runtime_code": hashlib.sha256((BOOTSTRAP_DIR / "gemma4_runtime.py").read_bytes()).hexdigest(),
+                "foundation_code": hashlib.sha256(Path(foundation.__file__).read_bytes()).hexdigest(),
             }
         }
         manifest_path.write_text(json.dumps(manifest_data, indent=2, ensure_ascii=False), encoding="utf-8")
@@ -1044,7 +934,7 @@ class ArtemisEvaluationRunner:
         )
 
         lines = [
-            f"# ARTEMIS 모델 평가 실행 보고서 (`{summary.run_id}`)",
+            f"# Waymaker Artemis 모델 평가 실행 보고서 (`{summary.run_id}`)",
             "",
             "## 1. 실행 메타데이터",
             f"- **실행 ID**: `{summary.run_id}`",
@@ -1052,6 +942,8 @@ class ArtemisEvaluationRunner:
             f"- **평가 모드**: `{mode_str}`",
             f"- **실행 상태**: `{summary.execution_status.value}`" + (f" (사유: {summary.not_executed_reason})" if summary.not_executed_reason else ""),
             f"- **모델명**: `{summary.model_metadata.get('model_name')}`",
+            f"- **모델 revision**: `{summary.model_metadata.get('model_revision')}`",
+            f"- **실행 구분 / 런타임**: `{summary.model_metadata.get('inference_kind')}` / `{summary.model_metadata.get('runtime')}`",
             f"- **어댑터 유형**: `{summary.model_metadata.get('adapter_type')}`",
             f"- **벤치마크 파일**: `{summary.benchmark_metadata.get('benchmark_file')}` ({summary.benchmark_metadata.get('item_count', 0)}문항)",
             f"- **Git Commit**: `{summary.git_commit or 'unknown'}`",
@@ -1072,7 +964,10 @@ class ArtemisEvaluationRunner:
             "| 지표 항목 | 측정값 | 설명 |",
             "|:---|:---:|:---|",
             f"| **총 평가 문항** | {summary.suite_summary.total_cases}건 | 실행 대상 문항 수 |",
-            f"| **전체 합격 수 / 합격률** | {summary.suite_summary.passed_cases}건 ({summary.suite_summary.pass_rate * 100:.1f}%) | 루브릭 기준 전체 합격 비율 |",
+            "| **전체 합격 수 / 합격률** | " + (
+                f"{summary.suite_summary.passed_cases}건 ({summary.suite_summary.pass_rate * 100:.1f}%)"
+                if summary.suite_summary.total_cases else "N/A (평가 문항 없음)"
+            ) + " | 루브릭 기준 전체 합격 비율 |",
             f"| **후보군 진단 일치율 (Candidate)** | {cand_rate_display} | 미검증 법률 후보군 탐색적 평가 일치율 |",
             f"| **공식 골드 정확도 (Official Gold)** | **{gold_rate_display}** | 사람 법률 전문가 서명 완료 골드 정확도 |",
             "",
@@ -1205,7 +1100,10 @@ def main() -> None:
     parser.add_argument("--benchmark", type=Path, help="Path to benchmark JSON file")
     parser.add_argument("--out-dir", type=Path, help="Directory to save run artifacts")
     parser.add_argument("--run-id", help="Explicit run ID")
-    parser.add_argument("--local-model-name", default="mlx-community/gemma-3-270m-it-4bit", help="Model name for local MLX adapter")
+    parser.add_argument("--local-model-name", default=None, help="Audited checkpoint for the explicitly selected profile")
+    parser.add_argument("--local-profile", choices=["gemma4_e4b", "gemma4_e2b"], default="gemma4_e4b")
+    parser.add_argument("--local-runtime", choices=["mlx_vlm"], default="mlx_vlm")
+    parser.add_argument("--local-python", help="Explicit Python executable with MLX-VLM installed")
     parser.add_argument("--local-model-revision", default=None, help="Specific model snapshot revision for local MLX adapter")
     parser.add_argument("--local-max-tokens", type=int, default=256, help="Max tokens for local MLX generation")
     parser.add_argument("--local-cache-dir", type=Path, default=None, help="Custom cache directory for offline weights")
@@ -1223,6 +1121,7 @@ def main() -> None:
     elif args.adapter == "local_mlx":
         adapter = LocalModelAdapter(
             model_name=args.local_model_name,
+            profile=args.local_profile, runtime=args.local_runtime, python_executable=args.local_python,
             revision=args.local_model_revision,
             max_tokens=args.local_max_tokens,
             cache_dir=args.local_cache_dir,
@@ -1239,15 +1138,23 @@ def main() -> None:
     )
     summary = runner.run()
 
-    print(f"\n=== ARTEMIS EVALUATION RUN COMPLETED ===")
+    print(f"\n=== WAYMAKER ARTEMIS EVALUATION RESULT ===")
     print(f"Run ID: {summary.run_id}")
     print(f"Mode: {summary.mode.value}")
     print(f"Execution Status: {summary.execution_status.value}")
     print(f"Total Cases: {summary.suite_summary.total_cases}")
-    print(f"Pass Rate: {summary.suite_summary.pass_rate * 100:.1f}%")
+    pass_rate = (f"{summary.suite_summary.pass_rate * 100:.1f}%"
+                 if summary.suite_summary.total_cases else "N/A")
+    print(f"Pass Rate: {pass_rate}")
     print(f"Official Gold Pass Rate: {summary.suite_summary.official_gold_pass_rate}")
-    print(f"Candidate Pass Rate: {summary.suite_summary.candidate_pass_rate * 100:.1f}%")
+    candidate_rate = (f"{summary.suite_summary.candidate_pass_rate * 100:.1f}%"
+                      if summary.suite_summary.candidate_cases else "N/A")
+    print(f"Candidate Pass Rate: {candidate_rate}")
     print(f"Artifacts saved in: {runner.out_dir}")
+    if summary.execution_status == ExecutionStatus.NOT_EXECUTED:
+        raise SystemExit(3)
+    if summary.execution_status in (ExecutionStatus.FAILED, ExecutionStatus.PARTIALLY_COMPLETED):
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":

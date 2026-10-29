@@ -34,6 +34,8 @@ if str(BOOTSTRAP_DIR) not in sys.path:
     sys.path.insert(0, str(BOOTSTRAP_DIR))
 
 import artemis_eval  # noqa: E402
+sys.path.insert(0, str(EXPERIMENT_ROOT))
+from waymaker_ai import foundation
 
 
 @dataclass
@@ -728,22 +730,26 @@ def run_full_shadow_evaluation(
 
     # 3. Real Model Group (if available)
     real_cases = []
-    run_file = real_run_summary_path or (BOOTSTRAP_DIR / "runs" / "real_local_mlx_dev20" / "run_summary.json")
-    if run_file.exists():
-        try:
-            with open(run_file, "r", encoding="utf-8") as f:
-                run_data = json.load(f)
-            for it in run_data.get("item_results", []):
-                real_cases.append({
-                    "id": it.get("item_id"),
-                    "query": it.get("model_output", {}).get("answer", "")[:100],  # query or excerpt
-                    "response": it.get("model_output", {}),
-                    "expected_flag": None,  # Exploratory diagnosis without ground truth labels
-                })
-        except Exception:
-            pass
+    model_metadata = None
+    run_file = Path(real_run_summary_path) if real_run_summary_path is not None else None
+    if run_file is not None:
+        run_data = json.loads(run_file.read_text(encoding="utf-8"))
+        model_metadata = run_data.get("model_metadata", {})
+        foundation.metric_group(model_metadata)
+        if model_metadata.get("inference_kind") != "real_inference" or run_data.get("execution_status") != "completed":
+            raise ValueError("Shadow real-model input must be a completed, provenance-verified inference run")
+        for it in run_data.get("item_results", []):
+            real_cases.append({
+                "id": it.get("item_id"),
+                "query": "",  # Original question is not present in the run artifact.
+                "response": it.get("model_output") or {},
+                "expected_flag": None,
+            })
 
-    real_eval = evaluate_case_group(interceptor, real_cases, "real_model_outputs_dev20") if real_cases else None
+    real_eval = evaluate_case_group(interceptor, real_cases, "real_model_outputs") if real_cases else None
+    if real_eval:
+        real_eval["model_metadata"] = model_metadata
+        real_eval["metric_group"] = foundation.metric_group(model_metadata)
 
     report = {
         "report_version": "artemis-shadow-guardrails/2.0",
@@ -765,9 +771,9 @@ def run_full_shadow_evaluation(
 
     # Generate Markdown Report
     lines = [
-        "# Artemis 8대 섀도 가드레일 다면 평가 보고서 (Mission 005-A)",
+        "# Waymaker Artemis 8대 섀도 가드레일 다면 평가 보고서 (Mission 005-A)",
         f"- **실행 일시**: {report['timestamp']}",
-        "- **평가 대상 그룹**: 1) 합성 캘리브레이션 픽스처(7건), 2) 적대적 대비 회귀 케이스(14건), 3) 실제 모델 추론 출력물(20건)",
+        "- **평가 대상 그룹**: 1) 합성 캘리브레이션 픽스처(7건), 2) 적대적 대비 회귀 케이스(14건), 3) 명시적으로 지정한 모델 추론 출력물",
         "",
         "> [!IMPORTANT]",
         "> **성격 구분 고지**: 세 그룹의 지표는 평가 목적이 상이하므로 단일 정확도로 합산되지 않으며 독립적으로 보고됩니다. 실제 운영 서빙 차단(Blocking)은 비활성화 상태입니다.",
@@ -780,7 +786,7 @@ def run_full_shadow_evaluation(
     ]
     if real_eval:
         flagged_count = sum(1 for r in real_eval["case_results"] if r.get("flagged"))
-        lines.append(f"| **3) 실제 로컬 모델 추론 (20건)** | {real_eval['total_cases']}건 | N/A (경보 건수: {flagged_count}/{real_eval['total_cases']}) | N/A | N/A | {real_eval['average_latency_ms']:.2f} ms |")
+        lines.append(f"| **3) 실제 로컬 모델 추론** | {real_eval['total_cases']}건 | N/A (경보 건수: {flagged_count}/{real_eval['total_cases']}) | N/A | N/A | {real_eval['average_latency_ms']:.2f} ms |")
 
     lines.extend([
         "",
@@ -810,7 +816,8 @@ def main() -> None:
     subparsers = parser.add_subparsers(dest="subcommand", required=True)
 
     subparsers.add_parser("calibrate", help="Run offline shadow guardrail calibration suite")
-    subparsers.add_parser("evaluate_all", help="Run multi-group shadow evaluation (calib, adv, real)")
+    all_p = subparsers.add_parser("evaluate_all", help="Run multi-group shadow evaluation (calib, adv, real)")
+    all_p.add_argument("--real-run", type=Path, help="Explicit completed Gemma 4 run summary")
 
     inspect_p = subparsers.add_parser("inspect", help="Inspect a specific response text in shadow mode")
     inspect_p.add_argument("--query", required=True, help="User query text")
@@ -829,7 +836,7 @@ def main() -> None:
         print(f"Reports written to: {REPORTS_DIR / 'shadow_guardrail_report.md'}")
 
     elif args.subcommand == "evaluate_all":
-        rep = run_full_shadow_evaluation()
+        rep = run_full_shadow_evaluation(real_run_summary_path=args.real_run)
         print("\n=== FULL MULTI-GROUP SHADOW EVALUATION COMPLETED ===")
         for gname, gdata in rep["groups"].items():
             if gdata:

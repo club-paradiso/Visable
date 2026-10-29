@@ -1,4 +1,4 @@
-# ARTEMIS BLIND EVALUATION PROTOCOL (독립 맹검 평가 프로토콜)
+# Waymaker Artemis BLIND EVALUATION PROTOCOL (독립 맹검 평가 프로토콜)
 ## Clean-room Evaluation, Anti-Leakage Controls & Future Blind Set Standard
 
 - **문서 버전**: 1.0.0

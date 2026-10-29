@@ -1,4 +1,4 @@
-# 아르테미스(Artemis) 법률 검토자 온보딩 및 독립 검토 지침
+# 아르테미스(Waymaker Artemis) 법률 검토자 온보딩 및 독립 검토 지침
 ## Artemis Legal Reviewer Onboarding & Evidence Verification Handbook
 
 - **문서 버전**: 1.0 (Mission 005-A)

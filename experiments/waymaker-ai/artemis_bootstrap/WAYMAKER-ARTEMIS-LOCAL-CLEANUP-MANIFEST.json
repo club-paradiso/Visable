@@ -1,0 +1,1317 @@
+{
+  "schema_version": "waymaker-artemis-recovery-cleanup/1.0",
+  "project": "Waymaker Artemis",
+  "baseline_commit": "d3e9490e22bdf455ca0bda958106811195a49d6d",
+  "inventory_date": "2026-10-29",
+  "completion_review_date": "2026-10-30",
+  "initial_user_changes": [],
+  "irreversible_deletions": [],
+  "external_cache_deletions": [],
+  "initial_repository_reference_inventory": [
+    {
+      "path": "audits/ai-grounding/grounding_code_search.txt",
+      "line_numbers_at_baseline": [
+        529
+      ],
+      "classifications": [
+        "unrelated_code"
+      ],
+      "resolution": "Retained; separate monorepo application or experiment, not an Artemis runtime selector"
+    },
+    {
+      "path": "backend/.env.example",
+      "line_numbers_at_baseline": [
+        118
+      ],
+      "classifications": [
+        "unrelated_code"
+      ],
+      "resolution": "Retained; separate monorepo application or experiment, not an Artemis runtime selector"
+    },
+    {
+      "path": "backend/README.md",
+      "line_numbers_at_baseline": [
+        153,
+        379
+      ],
+      "classifications": [
+        "unrelated_code"
+      ],
+      "resolution": "Retained; separate monorepo application or experiment, not an Artemis runtime selector"
+    },
+    {
+      "path": "backend/paradiso_backend.py",
+      "line_numbers_at_baseline": [
+        211,
+        314
+      ],
+      "classifications": [
+        "unrelated_code"
+      ],
+      "resolution": "Retained; separate monorepo application or experiment, not an Artemis runtime selector"
+    },
+    {
+      "path": "backend/services/knowledge/guard.py",
+      "line_numbers_at_baseline": [
+        39
+      ],
+      "classifications": [
+        "unrelated_code"
+      ],
+      "resolution": "Retained; separate monorepo application or experiment, not an Artemis runtime selector"
+    },
+    {
+      "path": "backend/services/model_policy.py",
+      "line_numbers_at_baseline": [
+        103,
+        134,
+        247
+      ],
+      "classifications": [
+        "unrelated_code"
+      ],
+      "resolution": "Retained; separate monorepo application or experiment, not an Artemis runtime selector"
+    },
+    {
+      "path": "backend/tests/test_ai_answer_pipeline_contract.py",
+      "line_numbers_at_baseline": [
+        150
+      ],
+      "classifications": [
+        "unrelated_code"
+      ],
+      "resolution": "Retained; separate monorepo application or experiment, not an Artemis runtime selector"
+    },
+    {
+      "path": "backend/tests/test_ai_answer_regression_source_subcode_2026_06.py",
+      "line_numbers_at_baseline": [
+        40
+      ],
+      "classifications": [
+        "unrelated_code"
+      ],
+      "resolution": "Retained; separate monorepo application or experiment, not an Artemis runtime selector"
+    },
+    {
+      "path": "backend/tests/test_e7_workplace_change_law_grounding.py",
+      "line_numbers_at_baseline": [
+        336
+      ],
+      "classifications": [
+        "unrelated_code"
+      ],
+      "resolution": "Retained; separate monorepo application or experiment, not an Artemis runtime selector"
+    },
+    {
+      "path": "backend/tests/test_evidence_backed_answer_gates.py",
+      "line_numbers_at_baseline": [
+        39
+      ],
+      "classifications": [
+        "unrelated_code"
+      ],
+      "resolution": "Retained; separate monorepo application or experiment, not an Artemis runtime selector"
+    },
+    {
+      "path": "backend/tests/test_i18n_law_fallback_live_smoke.py",
+      "line_numbers_at_baseline": [
+        458
+      ],
+      "classifications": [
+        "unrelated_code"
+      ],
+      "resolution": "Retained; separate monorepo application or experiment, not an Artemis runtime selector"
+    },
+    {
+      "path": "backend/tests/test_legal_analysis_deterministic_fallback.py",
+      "line_numbers_at_baseline": [
+        20
+      ],
+      "classifications": [
+        "unrelated_code"
+      ],
+      "resolution": "Retained; separate monorepo application or experiment, not an Artemis runtime selector"
+    },
+    {
+      "path": "backend/tests/test_model_policy.py",
+      "line_numbers_at_baseline": [
+        47,
+        96,
+        97
+      ],
+      "classifications": [
+        "unrelated_code"
+      ],
+      "resolution": "Retained; separate monorepo application or experiment, not an Artemis runtime selector"
+    },
+    {
+      "path": "backend/tests/test_openrouter_model_candidates.py",
+      "line_numbers_at_baseline": [
+        812
+      ],
+      "classifications": [
+        "unrelated_code"
+      ],
+      "resolution": "Retained; separate monorepo application or experiment, not an Artemis runtime selector"
+    },
+    {
+      "path": "docs/ai/AI_PROVIDER_AND_MODEL_POLICY.md",
+      "line_numbers_at_baseline": [
+        74
+      ],
+      "classifications": [
+        "unrelated_code"
+      ],
+      "resolution": "Retained; separate monorepo application or experiment, not an Artemis runtime selector"
+    },
+    {
+      "path": "docs/ai/MODEL_ROLE_POLICY_2026_06.md",
+      "line_numbers_at_baseline": [
+        19
+      ],
+      "classifications": [
+        "unrelated_code"
+      ],
+      "resolution": "Retained; separate monorepo application or experiment, not an Artemis runtime selector"
+    },
+    {
+      "path": "docs/ai/waymaker-genesis/01-existing-system-audit.md",
+      "line_numbers_at_baseline": [
+        688
+      ],
+      "classifications": [
+        "historical_record"
+      ],
+      "resolution": "Retained as historical research; active README replaced and foundation specification supersedes earlier plans"
+    },
+    {
+      "path": "docs/ai/waymaker-genesis/08-foundation-model-research.md",
+      "line_numbers_at_baseline": [
+        48,
+        50,
+        189,
+        196,
+        250,
+        254,
+        264,
+        268,
+        270,
+        277,
+        283,
+        284,
+        291,
+        292,
+        293,
+        295,
+        298,
+        371,
+        377,
+        380,
+        438,
+        439,
+        440,
+        441,
+        442,
+        459,
+        464,
+        487,
+        488,
+        511,
+        513,
+        514,
+        516,
+        518,
+        579,
+        611,
+        616,
+        619,
+        632,
+        641,
+        646,
+        663,
+        670,
+        693,
+        697,
+        726,
+        727,
+        734,
+        766,
+        912
+      ],
+      "classifications": [
+        "historical_record"
+      ],
+      "resolution": "Retained as historical research; active README replaced and foundation specification supersedes earlier plans"
+    },
+    {
+      "path": "docs/ai/waymaker-genesis/09-training-and-distillation.md",
+      "line_numbers_at_baseline": [
+        79,
+        323
+      ],
+      "classifications": [
+        "historical_record"
+      ],
+      "resolution": "Retained as historical research; active README replaced and foundation specification supersedes earlier plans"
+    },
+    {
+      "path": "docs/ai/waymaker-genesis/10-athena-and-hestia-strategy.md",
+      "line_numbers_at_baseline": [
+        103,
+        340,
+        341
+      ],
+      "classifications": [
+        "historical_record"
+      ],
+      "resolution": "Retained as historical research; active README replaced and foundation specification supersedes earlier plans"
+    },
+    {
+      "path": "docs/ai/waymaker-genesis/13-artemis-experiment.md",
+      "line_numbers_at_baseline": [
+        106,
+        269,
+        479,
+        482
+      ],
+      "classifications": [
+        "historical_record"
+      ],
+      "resolution": "Retained as historical research; active README replaced and foundation specification supersedes earlier plans"
+    },
+    {
+      "path": "docs/ai/waymaker-genesis/14-hardware-and-cost-model.md",
+      "line_numbers_at_baseline": [
+        438,
+        726,
+        735,
+        736,
+        742,
+        787
+      ],
+      "classifications": [
+        "historical_record"
+      ],
+      "resolution": "Retained as historical research; active README replaced and foundation specification supersedes earlier plans"
+    },
+    {
+      "path": "docs/ai/waymaker-genesis/17-mission-002-plan.md",
+      "line_numbers_at_baseline": [
+        17
+      ],
+      "classifications": [
+        "historical_record"
+      ],
+      "resolution": "Retained as historical research; active README replaced and foundation specification supersedes earlier plans"
+    },
+    {
+      "path": "docs/ai/waymaker-genesis/MISSION-001-REPORT.ko.md",
+      "line_numbers_at_baseline": [
+        104
+      ],
+      "classifications": [
+        "historical_record"
+      ],
+      "resolution": "Retained as historical research; active README replaced and foundation specification supersedes earlier plans"
+    },
+    {
+      "path": "docs/ai/waymaker-genesis/research-notes/ai-lifecycle.md",
+      "line_numbers_at_baseline": [
+        148,
+        153
+      ],
+      "classifications": [
+        "historical_record"
+      ],
+      "resolution": "Retained as historical research; active README replaced and foundation specification supersedes earlier plans"
+    },
+    {
+      "path": "docs/ai/waymaker-genesis/research-notes/cost.md",
+      "line_numbers_at_baseline": [
+        21,
+        199,
+        245,
+        253,
+        257
+      ],
+      "classifications": [
+        "historical_record"
+      ],
+      "resolution": "Retained as historical research; active README replaced and foundation specification supersedes earlier plans"
+    },
+    {
+      "path": "docs/ai/waymaker-genesis/research-notes/knowledge-platform.md",
+      "line_numbers_at_baseline": [
+        281,
+        307,
+        310,
+        411
+      ],
+      "classifications": [
+        "historical_record"
+      ],
+      "resolution": "Retained as historical research; active README replaced and foundation specification supersedes earlier plans"
+    },
+    {
+      "path": "docs/ai/waymaker-genesis/research-notes/live_health.json",
+      "line_numbers_at_baseline": [
+        1
+      ],
+      "classifications": [
+        "historical_record"
+      ],
+      "resolution": "Retained as historical research; active README replaced and foundation specification supersedes earlier plans"
+    },
+    {
+      "path": "docs/ai/waymaker-genesis/research-notes/models.md",
+      "line_numbers_at_baseline": [
+        19,
+        21,
+        30,
+        32,
+        45,
+        46,
+        47,
+        60,
+        61,
+        66,
+        75,
+        102,
+        103,
+        104,
+        105,
+        106,
+        123,
+        128,
+        149,
+        150,
+        163,
+        164,
+        167,
+        169,
+        170,
+        172,
+        174,
+        189,
+        192,
+        193,
+        212,
+        213,
+        230,
+        231,
+        241,
+        264,
+        266,
+        272,
+        302,
+        316,
+        317,
+        333,
+        338,
+        341,
+        347,
+        350,
+        353,
+        355,
+        359,
+        372,
+        374,
+        383,
+        400,
+        410,
+        431,
+        437,
+        440,
+        443
+      ],
+      "classifications": [
+        "historical_record"
+      ],
+      "resolution": "Retained as historical research; active README replaced and foundation specification supersedes earlier plans"
+    },
+    {
+      "path": "docs/ai/waymaker-genesis/research-notes/training-distill.md",
+      "line_numbers_at_baseline": [
+        33,
+        61,
+        92,
+        110,
+        165,
+        228,
+        279,
+        522,
+        564,
+        586,
+        603
+      ],
+      "classifications": [
+        "historical_record"
+      ],
+      "resolution": "Retained as historical research; active README replaced and foundation specification supersedes earlier plans"
+    },
+    {
+      "path": "docs/data/EXPANDED_ROUTE_WIZARD_I18N_SWEEP_2026_05.md",
+      "line_numbers_at_baseline": [
+        164
+      ],
+      "classifications": [
+        "unrelated_code"
+      ],
+      "resolution": "Retained; separate monorepo application or experiment, not an Artemis runtime selector"
+    },
+    {
+      "path": "docs/data/GROUNDING_READINESS_LANGUAGE_FALLBACK_2026_05.md",
+      "line_numbers_at_baseline": [
+        126,
+        145,
+        146
+      ],
+      "classifications": [
+        "unrelated_code"
+      ],
+      "resolution": "Retained; separate monorepo application or experiment, not an Artemis runtime selector"
+    },
+    {
+      "path": "docs/data/I18N_LAW_FALLBACK_LIVE_SMOKE_2026_05.md",
+      "line_numbers_at_baseline": [
+        23,
+        160,
+        235,
+        245,
+        267,
+        268,
+        278
+      ],
+      "classifications": [
+        "unrelated_code"
+      ],
+      "resolution": "Retained; separate monorepo application or experiment, not an Artemis runtime selector"
+    },
+    {
+      "path": "docs/data/I18N_SWEEP_ROUTE_WIZARD_F6_G1_2026_05.md",
+      "line_numbers_at_baseline": [
+        173
+      ],
+      "classifications": [
+        "unrelated_code"
+      ],
+      "resolution": "Retained; separate monorepo application or experiment, not an Artemis runtime selector"
+    },
+    {
+      "path": "docs/data/MODEL_PRIORITY_COOLDOWN_OLLAMA_SCAFFOLD_2026_05.md",
+      "line_numbers_at_baseline": [
+        75
+      ],
+      "classifications": [
+        "unrelated_code"
+      ],
+      "resolution": "Retained; separate monorepo application or experiment, not an Artemis runtime selector"
+    },
+    {
+      "path": "docs/data/OPENROUTER_MODEL_CANDIDATE_FALLBACK_2026_05.md",
+      "line_numbers_at_baseline": [
+        179
+      ],
+      "classifications": [
+        "unrelated_code"
+      ],
+      "resolution": "Retained; separate monorepo application or experiment, not an Artemis runtime selector"
+    },
+    {
+      "path": "docs/data/PARADISO_JSON_SOURCE_GROUNDED_CLEANUP_REPORT_20260608.md",
+      "line_numbers_at_baseline": [
+        14
+      ],
+      "classifications": [
+        "unrelated_code"
+      ],
+      "resolution": "Retained; separate monorepo application or experiment, not an Artemis runtime selector"
+    },
+    {
+      "path": "docs/data/ROUTE_AWARE_DEADLINE_I18N_GROUNDING_2026_05.md",
+      "line_numbers_at_baseline": [
+        179,
+        187
+      ],
+      "classifications": [
+        "unrelated_code"
+      ],
+      "resolution": "Retained; separate monorepo application or experiment, not an Artemis runtime selector"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/MISSION-003-REPORT.ko.md",
+      "line_numbers_at_baseline": [
+        48
+      ],
+      "classifications": [
+        "historical_record"
+      ],
+      "resolution": "Retained as historical research; active README replaced and foundation specification supersedes earlier plans"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/MISSION-005-A-REPORT.ko.md",
+      "line_numbers_at_baseline": [
+        18,
+        35,
+        42,
+        47,
+        132
+      ],
+      "classifications": [
+        "historical_record"
+      ],
+      "resolution": "Corrected active conclusions and plans; original text recoverable at baseline commit"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/MISSION-005-B-NEXT-STEPS.md",
+      "line_numbers_at_baseline": [
+        14,
+        61,
+        63
+      ],
+      "classifications": [
+        "historical_record"
+      ],
+      "resolution": "Corrected active conclusions and plans; original text recoverable at baseline commit"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/README.md",
+      "line_numbers_at_baseline": [
+        101
+      ],
+      "classifications": [
+        "historical_record"
+      ],
+      "resolution": "Retained as historical research; active README replaced and foundation specification supersedes earlier plans"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/artemis_runner.py",
+      "line_numbers_at_baseline": [
+        359,
+        1208
+      ],
+      "classifications": [
+        "active_runtime_dependency",
+        "implicit_fallback"
+      ],
+      "resolution": "Replaced noncanonical defaults and arbitrary cached revision selection with audited profile validation"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/runs/2026-10-26-pipeline-check-gemma3-270m/run_record.json",
+      "line_numbers_at_baseline": [
+        40,
+        48
+      ],
+      "classifications": [
+        "obsolete_generated_artifact"
+      ],
+      "resolution": "Archived byte-for-byte under history/noncanonical; excluded from active metric discovery"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/runs/real_local_mlx_dev20/report.md",
+      "line_numbers_at_baseline": [
+        8
+      ],
+      "classifications": [
+        "obsolete_generated_artifact"
+      ],
+      "resolution": "Archived byte-for-byte under history/noncanonical; excluded from active metric discovery"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/runs/real_local_mlx_dev20/run_summary.json",
+      "line_numbers_at_baseline": [
+        16,
+        18
+      ],
+      "classifications": [
+        "obsolete_generated_artifact"
+      ],
+      "resolution": "Archived byte-for-byte under history/noncanonical; excluded from active metric discovery"
+    },
+    {
+      "path": "experiments/waymaker-ai/configs/teacher_policy.json",
+      "line_numbers_at_baseline": [
+        70,
+        321,
+        322,
+        659,
+        660,
+        663,
+        664,
+        666,
+        671,
+        675,
+        681,
+        682,
+        685,
+        687,
+        692,
+        696,
+        890
+      ],
+      "classifications": [
+        "unrelated_code"
+      ],
+      "resolution": "Retained external teacher licensing catalogue or negative fixtures; not foundation inference"
+    },
+    {
+      "path": "experiments/waymaker-ai/tests/test_teacher_policy.py",
+      "line_numbers_at_baseline": [
+        171,
+        187,
+        236
+      ],
+      "classifications": [
+        "unrelated_code"
+      ],
+      "resolution": "Retained external teacher licensing catalogue or negative fixtures; not foundation inference"
+    },
+    {
+      "path": "experiments/waymaker-gemma4-finetune/README.md",
+      "line_numbers_at_baseline": [
+        38,
+        39,
+        40,
+        47,
+        60,
+        62,
+        70,
+        72,
+        137,
+        154,
+        173,
+        174,
+        175
+      ],
+      "classifications": [
+        "unrelated_code"
+      ],
+      "resolution": "Retained; separate monorepo application or experiment, not an Artemis runtime selector"
+    },
+    {
+      "path": "experiments/waymaker-gemma4-finetune/notebooks/waymaker_gemma4_lora_colab.ipynb",
+      "line_numbers_at_baseline": [
+        6,
+        12,
+        22,
+        30,
+        38,
+        44,
+        52,
+        68,
+        76,
+        100,
+        114
+      ],
+      "classifications": [
+        "unrelated_code"
+      ],
+      "resolution": "Retained; separate monorepo application or experiment, not an Artemis runtime selector"
+    },
+    {
+      "path": "experiments/waymaker-gemma4-finetune/prompts/fable5_colab_build_prompt.md",
+      "line_numbers_at_baseline": [
+        116,
+        117,
+        118
+      ],
+      "classifications": [
+        "unrelated_code"
+      ],
+      "resolution": "Retained; separate monorepo application or experiment, not an Artemis runtime selector"
+    },
+    {
+      "path": "scripts/check_ai_architecture.py",
+      "line_numbers_at_baseline": [
+        105
+      ],
+      "classifications": [
+        "unrelated_code"
+      ],
+      "resolution": "Retained; separate monorepo application or experiment, not an Artemis runtime selector"
+    }
+  ],
+  "external_model_caches": [
+    {
+      "snapshot": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/models--mlx-community--gemma-3-270m-it-4bit/snapshots/ff1143e3a10547c9f2129e94ca37059b096b23f4",
+      "total_referenced_bytes": 190209914,
+      "files": [
+        {
+          "path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/models--mlx-community--gemma-3-270m-it-4bit/snapshots/ff1143e3a10547c9f2129e94ca37059b096b23f4/.gitattributes",
+          "resolved_path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/models--mlx-community--gemma-3-270m-it-4bit/blobs/52373fe24473b1aa44333d318f578ae6bf04b49b",
+          "bytes": 1570
+        },
+        {
+          "path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/models--mlx-community--gemma-3-270m-it-4bit/snapshots/ff1143e3a10547c9f2129e94ca37059b096b23f4/README.md",
+          "resolved_path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/models--mlx-community--gemma-3-270m-it-4bit/blobs/4b07ddbe321ccca06d08818284e8ebf4d9f4f2a3",
+          "bytes": 1200
+        },
+        {
+          "path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/models--mlx-community--gemma-3-270m-it-4bit/snapshots/ff1143e3a10547c9f2129e94ca37059b096b23f4/added_tokens.json",
+          "resolved_path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/models--mlx-community--gemma-3-270m-it-4bit/blobs/e17bde03d42feda32d1abfca6d3b598b9a020df7",
+          "bytes": 35
+        },
+        {
+          "path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/models--mlx-community--gemma-3-270m-it-4bit/snapshots/ff1143e3a10547c9f2129e94ca37059b096b23f4/chat_template.jinja",
+          "resolved_path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/models--mlx-community--gemma-3-270m-it-4bit/blobs/1117055ab8e8c90e1b200be00cddb78943616d9e",
+          "bytes": 1532
+        },
+        {
+          "path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/models--mlx-community--gemma-3-270m-it-4bit/snapshots/ff1143e3a10547c9f2129e94ca37059b096b23f4/config.json",
+          "resolved_path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/models--mlx-community--gemma-3-270m-it-4bit/blobs/f98b97e19299de697028e00e1685e86c7a470c34",
+          "bytes": 1653
+        },
+        {
+          "path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/models--mlx-community--gemma-3-270m-it-4bit/snapshots/ff1143e3a10547c9f2129e94ca37059b096b23f4/generation_config.json",
+          "resolved_path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/models--mlx-community--gemma-3-270m-it-4bit/blobs/8abad5a888ba9ecb3fe04183b02436c633b6aa76",
+          "bytes": 173
+        },
+        {
+          "path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/models--mlx-community--gemma-3-270m-it-4bit/snapshots/ff1143e3a10547c9f2129e94ca37059b096b23f4/model.safetensors",
+          "resolved_path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/blobs/87/8788269b6deb4afa6b56d6d978359b5617758be9d45d2a659d13e935220dbb61",
+          "bytes": 150939130
+        },
+        {
+          "path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/models--mlx-community--gemma-3-270m-it-4bit/snapshots/ff1143e3a10547c9f2129e94ca37059b096b23f4/model.safetensors.index.json",
+          "resolved_path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/models--mlx-community--gemma-3-270m-it-4bit/blobs/5a4d220368df7d85bdf2beef0b6474e2a577458d",
+          "bytes": 34944
+        },
+        {
+          "path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/models--mlx-community--gemma-3-270m-it-4bit/snapshots/ff1143e3a10547c9f2129e94ca37059b096b23f4/special_tokens_map.json",
+          "resolved_path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/models--mlx-community--gemma-3-270m-it-4bit/blobs/1a6193244714d3d78be48666cb02cdbfac62ad86",
+          "bytes": 662
+        },
+        {
+          "path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/models--mlx-community--gemma-3-270m-it-4bit/snapshots/ff1143e3a10547c9f2129e94ca37059b096b23f4/tokenizer.json",
+          "resolved_path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/blobs/fa/fa66c8c017ade193f7cc37a2b421a1fc461563e803f179a496f7bdda2ec42c21",
+          "bytes": 33384568
+        },
+        {
+          "path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/models--mlx-community--gemma-3-270m-it-4bit/snapshots/ff1143e3a10547c9f2129e94ca37059b096b23f4/tokenizer.model",
+          "resolved_path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/blobs/a8/a81fa217b67ef4a1992b48a47651c27a2a19df419eafd1aad9c0bbd5ff49bde3",
+          "bytes": 4689074
+        },
+        {
+          "path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/models--mlx-community--gemma-3-270m-it-4bit/snapshots/ff1143e3a10547c9f2129e94ca37059b096b23f4/tokenizer_config.json",
+          "resolved_path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/models--mlx-community--gemma-3-270m-it-4bit/blobs/0cb8ef68ea71f15e04616375bc6923167612cbce",
+          "bytes": 1155373
+        }
+      ],
+      "action": "retained; external cache deletion requires approval"
+    },
+    {
+      "snapshot": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/models--mlx-community--gemma-4-e4b-it-4bit/snapshots/475b9088d29754a3379866cf5aeb6b41acd313c2",
+      "total_referenced_bytes": 5179241512,
+      "files": [
+        {
+          "path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/models--mlx-community--gemma-4-e4b-it-4bit/snapshots/475b9088d29754a3379866cf5aeb6b41acd313c2/.gitattributes",
+          "resolved_path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/models--mlx-community--gemma-4-e4b-it-4bit/blobs/52373fe24473b1aa44333d318f578ae6bf04b49b",
+          "bytes": 1570
+        },
+        {
+          "path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/models--mlx-community--gemma-4-e4b-it-4bit/snapshots/475b9088d29754a3379866cf5aeb6b41acd313c2/README.md",
+          "resolved_path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/models--mlx-community--gemma-4-e4b-it-4bit/blobs/04f02899dc45b0d9deffa167305da20699790e0e",
+          "bytes": 593
+        },
+        {
+          "path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/models--mlx-community--gemma-4-e4b-it-4bit/snapshots/475b9088d29754a3379866cf5aeb6b41acd313c2/chat_template.jinja",
+          "resolved_path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/models--mlx-community--gemma-4-e4b-it-4bit/blobs/c19999a347da729cf62806a8ddb7eb8e315223b5",
+          "bytes": 17336
+        },
+        {
+          "path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/models--mlx-community--gemma-4-e4b-it-4bit/snapshots/475b9088d29754a3379866cf5aeb6b41acd313c2/config.json",
+          "resolved_path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/models--mlx-community--gemma-4-e4b-it-4bit/blobs/4ee08502c4f98810dd43800ec849bd69f94adc98",
+          "bytes": 6628
+        },
+        {
+          "path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/models--mlx-community--gemma-4-e4b-it-4bit/snapshots/475b9088d29754a3379866cf5aeb6b41acd313c2/generation_config.json",
+          "resolved_path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/models--mlx-community--gemma-4-e4b-it-4bit/blobs/e605bb4523b1462ea9d9a3810b9e3ecf7ab7b1f6",
+          "bytes": 208
+        },
+        {
+          "path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/models--mlx-community--gemma-4-e4b-it-4bit/snapshots/475b9088d29754a3379866cf5aeb6b41acd313c2/model.safetensors",
+          "resolved_path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/blobs/10/1009f7aa89dcd1b65b23d7675c3eda3946ec255b5bd9476b0ee3c81aa9d6b8a3",
+          "bytes": 5146800534
+        },
+        {
+          "path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/models--mlx-community--gemma-4-e4b-it-4bit/snapshots/475b9088d29754a3379866cf5aeb6b41acd313c2/model.safetensors.index.json",
+          "resolved_path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/models--mlx-community--gemma-4-e4b-it-4bit/blobs/c03ce5f7086b735345038501f731634de064493b",
+          "bytes": 240961
+        },
+        {
+          "path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/models--mlx-community--gemma-4-e4b-it-4bit/snapshots/475b9088d29754a3379866cf5aeb6b41acd313c2/processor_config.json",
+          "resolved_path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/models--mlx-community--gemma-4-e4b-it-4bit/blobs/a086fb7e04b477c291a120b0a004abb78b11c6d2",
+          "bytes": 1316
+        },
+        {
+          "path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/models--mlx-community--gemma-4-e4b-it-4bit/snapshots/475b9088d29754a3379866cf5aeb6b41acd313c2/tokenizer.json",
+          "resolved_path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/blobs/c6/c62336ad134cad6f154d84eb0e5a5fa9ca17cd665ef3ba5ac4fd02b1486760b4",
+          "bytes": 32169626
+        },
+        {
+          "path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/models--mlx-community--gemma-4-e4b-it-4bit/snapshots/475b9088d29754a3379866cf5aeb6b41acd313c2/tokenizer_config.json",
+          "resolved_path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/models--mlx-community--gemma-4-e4b-it-4bit/blobs/cf6235aee46a24bf71f251c0a4e7a0379948f7d2",
+          "bytes": 2740
+        }
+      ],
+      "action": "retained; external cache deletion requires approval"
+    }
+  ],
+  "artifact_changes": [
+    {
+      "path": ".github/workflows/waymaker-ai-experiments.yml",
+      "original_purpose": "Offline CI workflow",
+      "reason": "Prevent active noncanonical model selection",
+      "action": "modify",
+      "original_sha256": "4b931eb69a9faaf32fd8c32d2c26c4030aef3f8ac3c0940e1129fd315a590fff",
+      "recovery_method": "git show d3e9490e22bdf455ca0bda958106811195a49d6d:.github/workflows/waymaker-ai-experiments.yml (review before restoring)"
+    },
+    {
+      "path": "docs/ai/waymaker-genesis/13-artemis-experiment.md",
+      "original_purpose": "Project documentation",
+      "reason": "Document canonical identity, evidence and remaining execution blockers",
+      "action": "modify",
+      "original_sha256": "b64f4057a5d30ce2716fd19b1c15f29ca496e1b1e822dc85d31482f3e174f776",
+      "recovery_method": "git show d3e9490e22bdf455ca0bda958106811195a49d6d:docs/ai/waymaker-genesis/13-artemis-experiment.md (review before restoring)"
+    },
+    {
+      "path": "experiments/waymaker-ai/README.md",
+      "original_purpose": "Project documentation",
+      "reason": "Document canonical identity, evidence and remaining execution blockers",
+      "action": "modify",
+      "original_sha256": "593e6ac34b92c0ccd6f4e88f11b5e4c3a09be9260072373f1c1f2c7d819eeb04",
+      "recovery_method": "git show d3e9490e22bdf455ca0bda958106811195a49d6d:experiments/waymaker-ai/README.md (review before restoring)"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/BLIND-EVALUATION-PROTOCOL.md",
+      "original_purpose": "Project documentation",
+      "reason": "Document canonical identity, evidence and remaining execution blockers",
+      "action": "modify",
+      "original_sha256": "7f9bafafc0ad71147f75c421fc1f26710ca68ae196c3a2d774254992deb94d22",
+      "recovery_method": "git show d3e9490e22bdf455ca0bda958106811195a49d6d:experiments/waymaker-ai/artemis_bootstrap/BLIND-EVALUATION-PROTOCOL.md (review before restoring)"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/MISSION-005-A-REPORT.ko.md",
+      "original_purpose": "Project documentation",
+      "reason": "Document canonical identity, evidence and remaining execution blockers",
+      "action": "modify",
+      "original_sha256": "b25065eb14c54adfc29411a120ce49a302e206eee958be1488c7ac39d9674d46",
+      "recovery_method": "git show d3e9490e22bdf455ca0bda958106811195a49d6d:experiments/waymaker-ai/artemis_bootstrap/MISSION-005-A-REPORT.ko.md (review before restoring)"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/MISSION-005-B-NEXT-STEPS.md",
+      "original_purpose": "Project documentation",
+      "reason": "Document canonical identity, evidence and remaining execution blockers",
+      "action": "modify",
+      "original_sha256": "5f6612aafb87f21f87d9ec7cc59ffa8fce90e49a53fbc4337016e2acfadcebd7",
+      "recovery_method": "git show d3e9490e22bdf455ca0bda958106811195a49d6d:experiments/waymaker-ai/artemis_bootstrap/MISSION-005-B-NEXT-STEPS.md (review before restoring)"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/README.md",
+      "original_purpose": "Project documentation",
+      "reason": "Document canonical identity, evidence and remaining execution blockers",
+      "action": "modify",
+      "original_sha256": "74dc2e440b157f42b4ad76a609e15275e058eb571b029656b7ca6161e4888c72",
+      "recovery_method": "git show d3e9490e22bdf455ca0bda958106811195a49d6d:experiments/waymaker-ai/artemis_bootstrap/README.md (review before restoring)"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/REVIEWER-ONBOARDING.md",
+      "original_purpose": "Project documentation",
+      "reason": "Document canonical identity, evidence and remaining execution blockers",
+      "action": "modify",
+      "original_sha256": "fa48eec8c8eaf5cc8bcaf9d4ce921274ea4dffb1a1a1db775c0b829993c25669",
+      "recovery_method": "git show d3e9490e22bdf455ca0bda958106811195a49d6d:experiments/waymaker-ai/artemis_bootstrap/REVIEWER-ONBOARDING.md (review before restoring)"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/WAYMAKER-ARTEMIS-FINETUNING-PLAN.md",
+      "original_purpose": "New recovery artifact",
+      "reason": "Document canonical identity, evidence and remaining execution blockers",
+      "action": "add",
+      "original_sha256": null,
+      "recovery_method": "Task-created file; remove only after review; no original user file replaced"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/WAYMAKER-ARTEMIS-GEMMA4-FOUNDATION-SPEC.md",
+      "original_purpose": "New recovery artifact",
+      "reason": "Document canonical identity, evidence and remaining execution blockers",
+      "action": "add",
+      "original_sha256": null,
+      "recovery_method": "Task-created file; remove only after review; no original user file replaced"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/WAYMAKER-ARTEMIS-GEMMA4-INFERENCE-REPORT.ko.md",
+      "original_purpose": "New recovery artifact",
+      "reason": "Document canonical identity, evidence and remaining execution blockers",
+      "action": "add",
+      "original_sha256": null,
+      "recovery_method": "Task-created file; remove only after review; no original user file replaced"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/WAYMAKER-ARTEMIS-LEGACY-MIGRATION.md",
+      "original_purpose": "New recovery artifact",
+      "reason": "Document canonical identity, evidence and remaining execution blockers",
+      "action": "add",
+      "original_sha256": null,
+      "recovery_method": "Task-created file; remove only after review; no original user file replaced"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/WAYMAKER-ARTEMIS-LOCAL-CLEANUP-MANIFEST.json",
+      "original_purpose": "New recovery artifact",
+      "reason": "Document canonical identity, evidence and remaining execution blockers",
+      "action": "add",
+      "original_sha256": null,
+      "recovery_method": "Task-created file; remove only after review; no original user file replaced"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/WAYMAKER-ARTEMIS-RECOVERY-AUDIT.ko.md",
+      "original_purpose": "New recovery artifact",
+      "reason": "Document canonical identity, evidence and remaining execution blockers",
+      "action": "add",
+      "original_sha256": null,
+      "recovery_method": "Task-created file; remove only after review; no original user file replaced"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/artemis_eval.py",
+      "original_purpose": "Runtime, evaluation or regression source",
+      "reason": "Enforce pinned identity, provenance, isolation and fail-closed execution or governance",
+      "action": "modify",
+      "original_sha256": "17b96a746a3955710532904266e440070f6b99489ba99ad43dcd1d332c73bb20",
+      "recovery_method": "git show d3e9490e22bdf455ca0bda958106811195a49d6d:experiments/waymaker-ai/artemis_bootstrap/artemis_eval.py (review before restoring)"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/artemis_runner.py",
+      "original_purpose": "Runtime, evaluation or regression source",
+      "reason": "Enforce pinned identity, provenance, isolation and fail-closed execution or governance",
+      "action": "modify",
+      "original_sha256": "3217e7e6ecc43ea60ab74e0bdf0714532880eebcafacadd287f786e49b09c803",
+      "recovery_method": "git show d3e9490e22bdf455ca0bda958106811195a49d6d:experiments/waymaker-ai/artemis_bootstrap/artemis_runner.py (review before restoring)"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/check_model_identity.py",
+      "original_purpose": "New recovery artifact",
+      "reason": "Enforce pinned identity, provenance, isolation and fail-closed execution or governance",
+      "action": "add",
+      "original_sha256": null,
+      "recovery_method": "Task-created file; remove only after review; no original user file replaced"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/evaluation_isolation.py",
+      "original_purpose": "Runtime, evaluation or regression source",
+      "reason": "Enforce pinned identity, provenance, isolation and fail-closed execution or governance",
+      "action": "modify",
+      "original_sha256": "97f3c24253ffaf19cb9f4c602f44a0b42cb02e419b0437f20d5211b400e907b6",
+      "recovery_method": "git show d3e9490e22bdf455ca0bda958106811195a49d6d:experiments/waymaker-ai/artemis_bootstrap/evaluation_isolation.py (review before restoring)"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/gemma4_runtime.py",
+      "original_purpose": "New recovery artifact",
+      "reason": "Enforce pinned identity, provenance, isolation and fail-closed execution or governance",
+      "action": "add",
+      "original_sha256": null,
+      "recovery_method": "Task-created file; remove only after review; no original user file replaced"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/guardrail_shadow.py",
+      "original_purpose": "Runtime, evaluation or regression source",
+      "reason": "Enforce pinned identity, provenance, isolation and fail-closed execution or governance",
+      "action": "modify",
+      "original_sha256": "dd1777fbe21116670fc4785c9f5e505dd8d55636e37fa32bb82d24a81fb52b65",
+      "recovery_method": "git show d3e9490e22bdf455ca0bda958106811195a49d6d:experiments/waymaker-ai/artemis_bootstrap/guardrail_shadow.py (review before restoring)"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/history/FIRST-INFERENCE-20261026.md",
+      "original_purpose": "New recovery artifact",
+      "reason": "Keep audit traceability outside active evaluation discovery",
+      "action": "add",
+      "original_sha256": null,
+      "recovery_method": "Task-created file; remove only after review; no original user file replaced"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/history/noncanonical/2026-10-26-pipeline-check-gemma3-270m/run_record.json",
+      "original_purpose": "New recovery artifact",
+      "reason": "Keep audit traceability outside active evaluation discovery",
+      "action": "add",
+      "original_sha256": null,
+      "recovery_method": "Task-created file; remove only after review; no original user file replaced"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/history/noncanonical/real_local_mlx_dev20/error_summary.csv",
+      "original_purpose": "New recovery artifact",
+      "reason": "Keep audit traceability outside active evaluation discovery",
+      "action": "add",
+      "original_sha256": null,
+      "recovery_method": "Task-created file; remove only after review; no original user file replaced"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/history/noncanonical/real_local_mlx_dev20/report.md",
+      "original_purpose": "New recovery artifact",
+      "reason": "Keep audit traceability outside active evaluation discovery",
+      "action": "add",
+      "original_sha256": null,
+      "recovery_method": "Task-created file; remove only after review; no original user file replaced"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/history/noncanonical/real_local_mlx_dev20/run_manifest.json",
+      "original_purpose": "New recovery artifact",
+      "reason": "Keep audit traceability outside active evaluation discovery",
+      "action": "add",
+      "original_sha256": null,
+      "recovery_method": "Task-created file; remove only after review; no original user file replaced"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/history/noncanonical/real_local_mlx_dev20/run_summary.json",
+      "original_purpose": "New recovery artifact",
+      "reason": "Keep audit traceability outside active evaluation discovery",
+      "action": "add",
+      "original_sha256": null,
+      "recovery_method": "Task-created file; remove only after review; no original user file replaced"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/history/noncanonical/shadow_guardrail_full_report.json",
+      "original_purpose": "New recovery artifact",
+      "reason": "Keep audit traceability outside active evaluation discovery",
+      "action": "add",
+      "original_sha256": null,
+      "recovery_method": "Task-created file; remove only after review; no original user file replaced"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/history/noncanonical/shadow_guardrail_full_report.md",
+      "original_purpose": "New recovery artifact",
+      "reason": "Keep audit traceability outside active evaluation discovery",
+      "action": "add",
+      "original_sha256": null,
+      "recovery_method": "Task-created file; remove only after review; no original user file replaced"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/label_v2/rerun/run_v2_layout_sets.sh",
+      "original_purpose": "Local launch script",
+      "reason": "Select canonical profile and explicit MLX-VLM runtime",
+      "action": "modify",
+      "original_sha256": "617c0427029c4bed7f6ad9d49246be3a0ce78059dec288b791707ee34ea9ccc8",
+      "recovery_method": "git show d3e9490e22bdf455ca0bda958106811195a49d6d:experiments/waymaker-ai/artemis_bootstrap/label_v2/rerun/run_v2_layout_sets.sh (review before restoring)"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/label_v2/rerun/run_v2_sets.sh",
+      "original_purpose": "Local launch script",
+      "reason": "Select canonical profile and explicit MLX-VLM runtime",
+      "action": "modify",
+      "original_sha256": "e43d36a1401867397817f4ad6581c0d75412c7d5db47b940dfdb0fcf4960cd22",
+      "recovery_method": "git show d3e9490e22bdf455ca0bda958106811195a49d6d:experiments/waymaker-ai/artemis_bootstrap/label_v2/rerun/run_v2_sets.sh (review before restoring)"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/probe_gemma4.py",
+      "original_purpose": "New recovery artifact",
+      "reason": "Enforce pinned identity, provenance, isolation and fail-closed execution or governance",
+      "action": "add",
+      "original_sha256": null,
+      "recovery_method": "Task-created file; remove only after review; no original user file replaced"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/run_smoke.py",
+      "original_purpose": "Runtime, evaluation or regression source",
+      "reason": "Enforce pinned identity, provenance, isolation and fail-closed execution or governance",
+      "action": "modify",
+      "original_sha256": "dcdb7aaff29278ecc9f33f2267573a884438a52025804603cd3b972a40714cdc",
+      "recovery_method": "git show d3e9490e22bdf455ca0bda958106811195a49d6d:experiments/waymaker-ai/artemis_bootstrap/run_smoke.py (review before restoring)"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/runs/gemma4-e4b-recovery-preflight-20261029/error_summary.csv",
+      "original_purpose": "New recovery artifact",
+      "reason": "Record actual not_executed result or regenerate source-separated synthetic evaluation",
+      "action": "add",
+      "original_sha256": null,
+      "recovery_method": "Task-created file; remove only after review; no original user file replaced"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/runs/gemma4-e4b-recovery-preflight-20261029/report.md",
+      "original_purpose": "New recovery artifact",
+      "reason": "Record actual not_executed result or regenerate source-separated synthetic evaluation",
+      "action": "add",
+      "original_sha256": null,
+      "recovery_method": "Task-created file; remove only after review; no original user file replaced"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/runs/gemma4-e4b-recovery-preflight-20261029/run_manifest.json",
+      "original_purpose": "New recovery artifact",
+      "reason": "Record actual not_executed result or regenerate source-separated synthetic evaluation",
+      "action": "add",
+      "original_sha256": null,
+      "recovery_method": "Task-created file; remove only after review; no original user file replaced"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/runs/gemma4-e4b-recovery-preflight-20261029/run_summary.json",
+      "original_purpose": "New recovery artifact",
+      "reason": "Record actual not_executed result or regenerate source-separated synthetic evaluation",
+      "action": "add",
+      "original_sha256": null,
+      "recovery_method": "Task-created file; remove only after review; no original user file replaced"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/runs/genesis-recovery-20261029/inference_probe.json",
+      "original_purpose": "New recovery artifact",
+      "reason": "Record actual not_executed result or regenerate source-separated synthetic evaluation",
+      "action": "add",
+      "original_sha256": null,
+      "recovery_method": "Task-created file; remove only after review; no original user file replaced"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/runs/genesis-recovery-20261029/processor_probe.json",
+      "original_purpose": "New recovery artifact",
+      "reason": "Record actual not_executed result or regenerate source-separated synthetic evaluation",
+      "action": "add",
+      "original_sha256": null,
+      "recovery_method": "Task-created file; remove only after review; no original user file replaced"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/runs/genesis-recovery-20261029/processor_stderr.txt",
+      "original_purpose": "New recovery artifact",
+      "reason": "Record actual not_executed result or regenerate source-separated synthetic evaluation",
+      "action": "add",
+      "original_sha256": null,
+      "recovery_method": "Task-created file; remove only after review; no original user file replaced"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/runs/shadow_guardrail_full_report.json",
+      "original_purpose": "Generated execution or evaluation evidence",
+      "reason": "Archive noncanonical or mixed historical experiment; preserve exact bytes",
+      "action": "modify",
+      "original_sha256": "405e38e3db01d582d32d1400b564534dbca52c98c04e920f12cc9997aad1c58d",
+      "recovery_method": "git show d3e9490e22bdf455ca0bda958106811195a49d6d:experiments/waymaker-ai/artemis_bootstrap/runs/shadow_guardrail_full_report.json (review before restoring)",
+      "archive": {
+        "destination": "experiments/waymaker-ai/artemis_bootstrap/history/noncanonical/shadow_guardrail_full_report.json",
+        "sha256": "405e38e3db01d582d32d1400b564534dbca52c98c04e920f12cc9997aad1c58d"
+      }
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/runs/shadow_guardrail_full_report.md",
+      "original_purpose": "Generated execution or evaluation evidence",
+      "reason": "Archive noncanonical or mixed historical experiment; preserve exact bytes",
+      "action": "modify",
+      "original_sha256": "9397bc3b2d7e5a76b5c7fe4d2922f3acf1804aef2c01a75d3a9c9d55055812e5",
+      "recovery_method": "git show d3e9490e22bdf455ca0bda958106811195a49d6d:experiments/waymaker-ai/artemis_bootstrap/runs/shadow_guardrail_full_report.md (review before restoring)",
+      "archive": {
+        "destination": "experiments/waymaker-ai/artemis_bootstrap/history/noncanonical/shadow_guardrail_full_report.md",
+        "sha256": "9397bc3b2d7e5a76b5c7fe4d2922f3acf1804aef2c01a75d3a9c9d55055812e5"
+      }
+    },
+    {
+      "path": "experiments/waymaker-ai/configs/artemis/exp_a_untuned.json",
+      "original_purpose": "Model or training configuration",
+      "reason": "Share authoritative Gemma 4 profile and compatible model loader",
+      "action": "modify",
+      "original_sha256": "31392ba3cb3cfafdba59db009360d4a5cab99d00140e8421e7f8ae1db0510b19",
+      "recovery_method": "git show d3e9490e22bdf455ca0bda958106811195a49d6d:experiments/waymaker-ai/configs/artemis/exp_a_untuned.json (review before restoring)"
+    },
+    {
+      "path": "experiments/waymaker-ai/configs/artemis/exp_b_sft_qlora.json",
+      "original_purpose": "Model or training configuration",
+      "reason": "Share authoritative Gemma 4 profile and compatible model loader",
+      "action": "modify",
+      "original_sha256": "230a85d6949631b512c70dcc35b811ffecd15f0cd62dc0654ac77792b6d9e844",
+      "recovery_method": "git show d3e9490e22bdf455ca0bda958106811195a49d6d:experiments/waymaker-ai/configs/artemis/exp_b_sft_qlora.json (review before restoring)"
+    },
+    {
+      "path": "experiments/waymaker-ai/configs/artemis/exp_c_verified_distill_sft.json",
+      "original_purpose": "Model or training configuration",
+      "reason": "Share authoritative Gemma 4 profile and compatible model loader",
+      "action": "modify",
+      "original_sha256": "8d25950cd445fda518058e0033fe86725a44c568a1f07ea3c6e775e4952adf60",
+      "recovery_method": "git show d3e9490e22bdf455ca0bda958106811195a49d6d:experiments/waymaker-ai/configs/artemis/exp_c_verified_distill_sft.json (review before restoring)"
+    },
+    {
+      "path": "experiments/waymaker-ai/configs/artemis_foundation.json",
+      "original_purpose": "New recovery artifact",
+      "reason": "Share authoritative Gemma 4 profile and compatible model loader",
+      "action": "add",
+      "original_sha256": null,
+      "recovery_method": "Task-created file; remove only after review; no original user file replaced"
+    },
+    {
+      "path": "experiments/waymaker-ai/tests/test_artemis_eval_reliability.py",
+      "original_purpose": "Runtime, evaluation or regression source",
+      "reason": "Enforce pinned identity, provenance, isolation and fail-closed execution or governance",
+      "action": "modify",
+      "original_sha256": "103dde5418cfaeebdec23faf7aff3fad651db1767384688aa8bc0cdf3d621b92",
+      "recovery_method": "git show d3e9490e22bdf455ca0bda958106811195a49d6d:experiments/waymaker-ai/tests/test_artemis_eval_reliability.py (review before restoring)"
+    },
+    {
+      "path": "experiments/waymaker-ai/tests/test_artemis_foundation.py",
+      "original_purpose": "New recovery artifact",
+      "reason": "Enforce pinned identity, provenance, isolation and fail-closed execution or governance",
+      "action": "add",
+      "original_sha256": null,
+      "recovery_method": "Task-created file; remove only after review; no original user file replaced"
+    },
+    {
+      "path": "experiments/waymaker-ai/tests/test_evaluation_isolation.py",
+      "original_purpose": "Runtime, evaluation or regression source",
+      "reason": "Enforce pinned identity, provenance, isolation and fail-closed execution or governance",
+      "action": "modify",
+      "original_sha256": "456b2039b4852446a388798c67265cc4521f5bf3b3bf21590667fb200b155b8f",
+      "recovery_method": "git show d3e9490e22bdf455ca0bda958106811195a49d6d:experiments/waymaker-ai/tests/test_evaluation_isolation.py (review before restoring)"
+    },
+    {
+      "path": "experiments/waymaker-ai/training/README.md",
+      "original_purpose": "Project documentation",
+      "reason": "Document canonical identity, evidence and remaining execution blockers",
+      "action": "modify",
+      "original_sha256": "f3481b8370eb4d0369c186c066a0a0a305bce9fb04f770c37527ccbde461dd73",
+      "recovery_method": "git show d3e9490e22bdf455ca0bda958106811195a49d6d:experiments/waymaker-ai/training/README.md (review before restoring)"
+    },
+    {
+      "path": "experiments/waymaker-ai/training/train_qlora.py",
+      "original_purpose": "Runtime, evaluation or regression source",
+      "reason": "Enforce pinned identity, provenance, isolation and fail-closed execution or governance",
+      "action": "modify",
+      "original_sha256": "134891b1632ed58e22d91ce0be6805606549dd34724e8ce26048fe56ac6addec",
+      "recovery_method": "git show d3e9490e22bdf455ca0bda958106811195a49d6d:experiments/waymaker-ai/training/train_qlora.py (review before restoring)"
+    },
+    {
+      "path": "experiments/waymaker-ai/waymaker_ai/distillation/experiment_config.py",
+      "original_purpose": "Runtime, evaluation or regression source",
+      "reason": "Enforce pinned identity, provenance, isolation and fail-closed execution or governance",
+      "action": "modify",
+      "original_sha256": "15352e11200be1e6ad4ac63c2b88ca63ae7851ed60884ba6c0054769e45bbdb3",
+      "recovery_method": "git show d3e9490e22bdf455ca0bda958106811195a49d6d:experiments/waymaker-ai/waymaker_ai/distillation/experiment_config.py (review before restoring)"
+    },
+    {
+      "path": "experiments/waymaker-ai/waymaker_ai/foundation.py",
+      "original_purpose": "New recovery artifact",
+      "reason": "Enforce pinned identity, provenance, isolation and fail-closed execution or governance",
+      "action": "add",
+      "original_sha256": null,
+      "recovery_method": "Task-created file; remove only after review; no original user file replaced"
+    }
+  ],
+  "local_only_actions": [
+    {
+      "path": "/Users/seonjaekim/dev/Visable-artemis-gemini/node_modules",
+      "original_purpose": "Absent at start",
+      "reason": "npm dependency installation timed out; reuse installed verification dependencies read-only",
+      "action": "Created symlink to /Users/seonjaekim/dev/Paradiso/node_modules, ran repository checks, removed only the task-created symlink",
+      "recovery_method": "No original file removed; target dependencies unchanged"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/benchmarks",
+      "original_purpose": "Frozen benchmark and isolation manifests",
+      "reason": "Test generator wrote to default manifest despite temporary output directory",
+      "action": "Fixed generator and restored test side effect from baseline; final tracked benchmark bytes unchanged",
+      "recovery_method": "Baseline d3e9490e22bdf455ca0bda958106811195a49d6d; no benchmark content migration"
+    },
+    {
+      "path": "/Users/seonjaekim/dev/Visable-artemis-gemini/experiments/waymaker-ai/artemis_bootstrap/runs/gemma4-e4b-recovery-preflight-20261029",
+      "original_purpose": "New recovery preflight created during this task",
+      "reason": "Regenerate after runner provenance fixes",
+      "action": "Removed only four task-created outputs and regenerated with corrected runner; no prior user run overwritten",
+      "recovery_method": "Final not_executed artifacts tracked; regeneration requires a new output directory"
+    }
+  ],
+  "local_configuration_audit": {
+    "relevant_process_environment_overrides": [],
+    "hidden_ignored_launch_config_findings": [
+      "backend/.env.example: unrelated backend policy retained"
+    ],
+    "related_worktree_modified": false,
+    "legacy_launchers_remaining_in_active_artemis": false
+  }
+}

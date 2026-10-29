@@ -259,12 +259,13 @@ def generate_blind_benchmarks(
             "artemis_eval_heldout_blind_40.json": compute_file_sha256(hld_out),
         }
     }
-    ISOLATION_MANIFEST_PATH.write_text(json.dumps(manifest, indent=2, ensure_ascii=False), encoding="utf-8")
+    manifest_path = output_dir / ISOLATION_MANIFEST_PATH.name
+    manifest_path.write_text(json.dumps(manifest, indent=2, ensure_ascii=False), encoding="utf-8")
 
     return {
         "dev_blind_file": str(dev_out),
         "heldout_blind_file": str(hld_out),
-        "manifest_file": str(ISOLATION_MANIFEST_PATH),
+        "manifest_file": str(manifest_path),
     }
 
 

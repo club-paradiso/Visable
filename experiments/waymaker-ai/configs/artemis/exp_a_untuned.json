@@ -2,7 +2,7 @@
   "schema_version": "waymaker-artemis-experiment/0.1",
   "id": "artemis-exp-a-untuned",
   "arm": "A",
-  "title": "Artemis A: untuned Gemma 4 E4B-it, prompted, constrained JSON output",
+  "title": "Waymaker Artemis A: untuned Gemma 4 E4B-it, prompted, constrained JSON output",
   "status": "NOT RUN",
   "status_detail": "Prepared on 2026-10-19 in Mission 001. Nothing was served or evaluated: there is no GPU on the preparation machine and no paid compute is authorised. Arm A needs no training and no train split.",
   "created": "2026-10-19",
@@ -34,7 +34,7 @@
     "revision": "ee0ef6023621cff504d758262d4e04895a5af4a2",
     "license": "apache-2.0",
     "gated": false,
-    "loader": "AutoModelForCausalLM",
+    "loader": "AutoModelForImageTextToText",
     "params": "8.00B total, 4.5B effective; dense with per-layer embeddings; text, image and audio towers; 131,072 context",
     "source": "research-notes/models.md §3a (HF API, 2026-10-19, SHA re-checked by the verifier) and §5 Artemis rank 1",
     "license_note": "HF cardData says apache-2.0 and gated: false. No Gemma 4 repo ships a LICENSE file; archive Google's licence page beside the SHA (models.md §3a verifier note). Whether the Gemma Prohibited Use Policy binds Apache-2.0 Gemma 4 is unresolved (models.md §4, §8).",
@@ -46,10 +46,10 @@
     "revision": "3e22461f65e89153144f8adb70e3b8c2cc9845a7",
     "license": "apache-2.0",
     "gated": false,
-    "loader": "AutoModelForCausalLM",
+    "loader": "AutoModelForImageTextToText",
     "params": "5.12B total, 2.3B effective; 131,072 context",
     "source": "research-notes/models.md §3a and §5 Artemis rank 1 (cheaper sibling)",
-    "note": "Run the same arm on E2B only if E4B passes the safety gates; the smaller model is preferred when it scores within the CI of E4B (models.md §5 design note)."
+    "note": "E2B is an explicitly selected development profile only. Keep its adapters and metrics separate; it never replaces the canonical E4B foundation."
   },
   "dataset": {
     "tasks": [
@@ -95,7 +95,7 @@
     "assumption": "One 16-24 GB NVIDIA GPU (compute class C1, training-distill.md §2.0) for serving only.",
     "fits": [
       "L4 24 GB: E4B in bf16 (about 16 GB of weights, INFERRED from 8.00B parameters) with vLLM.",
-      "T4 16 GB: no native bf16, so serve in fp16; E4B in 16-bit does not leave room for the KV cache, so use E2B in fp16 or a 4-bit E4B (official QAT GGUF with llama.cpp). Estimates from models.md §3b and §6, all INFERRED."
+      "T4 16 GB: E4B in 16-bit leaves insufficient KV-cache headroom. Validate an E4B quantized serving path or use larger hardware; do not substitute E2B. Runtime compatibility is unverified."
     ]
   },
   "compute": {

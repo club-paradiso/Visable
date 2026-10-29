@@ -104,6 +104,9 @@ jobs:
       - name: Run the experiment package tests (offline)
         run: python3 -m pytest -q -p no:cacheprovider tests
 
+      - name: Guard Waymaker Artemis foundation identity (offline)
+        run: python3 artemis_bootstrap/check_model_identity.py
+
       - name: Verify shared procedure vocabulary
         run: node ../../scripts/build_procedure_classifier_lexicon.cjs --check
 
