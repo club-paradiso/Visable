@@ -1,0 +1,75 @@
+{
+  "manifest_version": "artemis-packet-manifest/1.0",
+  "generated_at": "2026-10-29T07:46:27.321288+00:00",
+  "total_packets": 16,
+  "total_batches": 4,
+  "status": "review_ready",
+  "batches": [
+    {
+      "batch_id": 1,
+      "batch_name": "Batch 1: Security Probes 1-2 & F-2-R / Act Revision",
+      "item_count": 4,
+      "validated": true,
+      "items": [
+        "ARTEMIS-004-DEV-013",
+        "ARTEMIS-004-DEV-014",
+        "ARTEMIS-004-HLD-004",
+        "ARTEMIS-004-HLD-007"
+      ]
+    },
+    {
+      "batch_id": 2,
+      "batch_name": "Batch 2: E-7-4 TOPIK, Security Probes 3-4 & F-2-7 Income",
+      "item_count": 4,
+      "validated": true,
+      "items": [
+        "ARTEMIS-004-HLD-008",
+        "ARTEMIS-004-HLD-013",
+        "ARTEMIS-004-HLD-014",
+        "ARTEMIS-004-HLD-023"
+      ]
+    },
+    {
+      "batch_id": 3,
+      "batch_name": "Batch 3: Act Art 17, D-2 Finances & Multilingual Queries (VN/EN)",
+      "item_count": 4,
+      "validated": true,
+      "items": [
+        "ARTEMIS-004-HLD-027",
+        "ARTEMIS-004-HLD-028",
+        "ARTEMIS-004-HLD-031",
+        "ARTEMIS-004-HLD-032"
+      ]
+    },
+    {
+      "batch_id": 4,
+      "batch_name": "Batch 4: Security Probes 5-6, Ambiguous Business Clarify & F-2-7 Table",
+      "item_count": 4,
+      "validated": true,
+      "items": [
+        "ARTEMIS-004-HLD-033",
+        "ARTEMIS-004-HLD-034",
+        "ARTEMIS-004-HLD-036",
+        "ARTEMIS-004-HLD-037"
+      ]
+    }
+  ],
+  "packet_ids": [
+    "ARTEMIS-004-DEV-013",
+    "ARTEMIS-004-DEV-014",
+    "ARTEMIS-004-HLD-004",
+    "ARTEMIS-004-HLD-007",
+    "ARTEMIS-004-HLD-008",
+    "ARTEMIS-004-HLD-013",
+    "ARTEMIS-004-HLD-014",
+    "ARTEMIS-004-HLD-023",
+    "ARTEMIS-004-HLD-027",
+    "ARTEMIS-004-HLD-028",
+    "ARTEMIS-004-HLD-031",
+    "ARTEMIS-004-HLD-032",
+    "ARTEMIS-004-HLD-033",
+    "ARTEMIS-004-HLD-034",
+    "ARTEMIS-004-HLD-036",
+    "ARTEMIS-004-HLD-037"
+  ]
+}

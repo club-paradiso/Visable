@@ -1,0 +1,76 @@
+{
+  "packet_id": "pkt_HLD-032",
+  "item_id": "ARTEMIS-004-HLD-032",
+  "batch_id": 3,
+  "batch_name": "Batch 3: Act Art 17, D-2 Finances & Multilingual Queries (VN/EN)",
+  "title": "다국어 질의 (영어): D-2 유학생 방학 중 시간제 취업 허가 의무",
+  "dimension": "source_fidelity",
+  "split": "heldout",
+  "applicable_category": "D-2 (English Multilingual Query - Vacation Employment)",
+  "question": "Can an international student with a D-2 visa work at a company during summer vacation without obtaining any part-time work permit from the immigration office?",
+  "user_context": {
+    "location": "in_korea",
+    "current_status": "D-2",
+    "target_status": null,
+    "clarification_button": "stay"
+  },
+  "proposed_answer": "prior permission, strictly prohibited, part-time work",
+  "legal_basis": {
+    "claimed_basis": "Guidelines on Stay Management for Foreign Students (Vacation Employment)",
+    "document_id": "법무부 외국인 체류관리 업무편람 (D-2 유학생 시간제취업 관리)",
+    "provision": "방학 중 시간제취업 허가(체류자격외활동허가) 의무",
+    "section_or_page": "제3절 유학생 시간제취업 (방학 기간 허용시간 및 사전허가 원칙)",
+    "source_url": "https://www.hikorea.go.kr/info/InfoStayD2.pt",
+    "document_version": "2026-10-01 시행",
+    "effective_date": "2026-10-01",
+    "verification_date": "2026-10-29"
+  },
+  "evidence_items": [
+    {
+      "id": "EV-HLD-032-A",
+      "title": "Guidelines on Stay Management for Foreign Students (Vacation Employment)",
+      "text": "Even during university vacation periods (summer and winter breaks), international students holding a D-2 visa must obtain prior permission for part-time work (Activities Outside Status of Stay) from the competent immigration office before starting employment. Working without prior permission is strictly prohibited.",
+      "sha256": "6e834f3640901eacf265114216d2ab3940894c092e8dd025cf405df6e467f15f",
+      "status": "preliminary_verified",
+      "source_url": "https://www.hikorea.go.kr",
+      "document_id": "외국인 체류관리 업무편람",
+      "provision": "방학 중 시간제취업 허가(체류자격외활동허가) 의무",
+      "effective_date": "2026-10-01"
+    }
+  ],
+  "legal_analysis": {
+    "possible_exceptions": "대학 내 학과 조교, 도서관 사서보조 등 대학이 직접 지급하는 장학금성 근로활동은 허가 면제.",
+    "potential_conflicts": "방학 중에는 시간제한이 없으므로 허가도 불필요하다고 오인하는 유학생 다수 발생.",
+    "outdated_guidance": "주당 25시간 일괄 제한하던 과거 지침과 방학 중 시간 완화 규정 간 혼선 방지."
+  },
+  "reviewer_checklist": [
+    {
+      "check_id": "chk_source_authenticity",
+      "label": "공식 1차 출처(관보/법제처/하이코리아) 원문과 발췌문 일치 여부",
+      "checked": false,
+      "notes": "URL 직접 접속하여 조문 번호 및 공포 번호 확인"
+    },
+    {
+      "check_id": "chk_effective_date",
+      "label": "2026년 기준 현행 유효 규정 및 시행일자 부합 여부",
+      "checked": false,
+      "notes": "폐지되거나 개정 전 구 지침이 아닌지 확인"
+    },
+    {
+      "check_id": "chk_exceptions_completeness",
+      "label": "법적 단서 규정, 예외 요건, 지자체 재량 범위 누락 여부",
+      "checked": false,
+      "notes": "원칙과 예외가 올바르게 균형을 이루는지 확인"
+    },
+    {
+      "check_id": "chk_wording_fidelity",
+      "label": "법적 수치(금액, 기간, 배점) 및 조동사(허가, 제한, 금지) 정확도",
+      "checked": false,
+      "notes": "부정/긍정 반전이나 표 행·열 전치 왜곡이 없는지 확인"
+    }
+  ],
+  "reviewer_notes": "",
+  "current_status": "unreviewed",
+  "missing_evidence_and_unresolved_issues": "시간제취업 확인서(대학 유학생 담당자 서명 필수) 서식 최신판 대조.",
+  "generated_at": "2026-10-29T07:46:27.317583+00:00"
+}

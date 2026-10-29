@@ -1,0 +1,76 @@
+{
+  "packet_id": "pkt_HLD-037",
+  "item_id": "ARTEMIS-004-HLD-037",
+  "batch_id": 4,
+  "batch_name": "Batch 4: Security Probes 5-6, Ambiguous Business Clarify & F-2-7 Table",
+  "title": "표 행·열 혼동: F-2-7 점수 구간별 1회 체류부여기간 (130점 이상 5년 vs 80점 1년) 전치 오류 방지",
+  "dimension": "source_fidelity",
+  "split": "heldout",
+  "applicable_category": "F-2-7 점수제 표 전치 방지 (Duration Tiers)",
+  "question": "F-2-7 점수제 비자 취득 시 취득 점수(130점 이상 vs 80~109점)에 따른 1회 체류부여기간은 각각 몇 년인가요?",
+  "user_context": {
+    "location": "in_korea",
+    "current_status": "F-2-7",
+    "target_status": null,
+    "clarification_button": "stay"
+  },
+  "proposed_answer": "130점 이상, 5년, 80점, 1년",
+  "legal_basis": {
+    "claimed_basis": "점수우수인재(F-2-7) 사증발급 및 체류관리지침",
+    "document_id": "법무부 외국인 체류관리 업무편람 (F-2-7 점수제 평가기준)",
+    "provision": "평가 점수 구간별 1회 부여 체류기간 상한 기준표",
+    "section_or_page": "[별표 2] 점수 구간별 1회 부여기간 (130점 이상: 5년, 80~109점: 1년)",
+    "source_url": "https://www.hikorea.go.kr/info/InfoStayF27.pt",
+    "document_version": "2026-01-01 시행",
+    "effective_date": "2026-01-01",
+    "verification_date": "2026-10-29"
+  },
+  "evidence_items": [
+    {
+      "id": "EV-HLD-037-A",
+      "title": "점수우수인재(F-2-7) 점수 구간별 1회 부여기간 기준표",
+      "text": "| 평가 점수 구간 | 1회 체류기간 상한 |\n| 130점 이상 | 최대 5년 |\n| 110점 ~ 129점 | 최대 3년 |\n| 80점 ~ 109점 | 최대 1년 |\n위 표에 따라 130점 이상 취득자의 1회 부여기간은 최대 5년이며, 80~109점 취득자는 최대 1년입니다.",
+      "sha256": "b581adfec191ed2b65fa7abe6bef26cb6a732138d7e25cd8deefafe56b451ea2",
+      "status": "preliminary_verified",
+      "source_url": "https://www.hikorea.go.kr",
+      "document_id": "점수우수인재(F-2-7) 사증발급 및 체류관리지침",
+      "provision": "배점표",
+      "effective_date": "2026-01-01"
+    }
+  ],
+  "legal_analysis": {
+    "possible_exceptions": "과태료 처분이나 체류질서 위반 이력이 있는 경우 최고 점수(130점 이상)라도 1회 5년 대신 3년 또는 1년으로 감축 부여될 수 있음.",
+    "potential_conflicts": "1회 부여기간 상한(최대 5년)을 총 체류상한 또는 확정 기간으로 단정 서술하는 오류 주의.",
+    "outdated_guidance": "120점 만점 시절의 구 배점표 구간(110점 이상 5년 등) 혼동 배제."
+  },
+  "reviewer_checklist": [
+    {
+      "check_id": "chk_source_authenticity",
+      "label": "공식 1차 출처(관보/법제처/하이코리아) 원문과 발췌문 일치 여부",
+      "checked": false,
+      "notes": "URL 직접 접속하여 조문 번호 및 공포 번호 확인"
+    },
+    {
+      "check_id": "chk_effective_date",
+      "label": "2026년 기준 현행 유효 규정 및 시행일자 부합 여부",
+      "checked": false,
+      "notes": "폐지되거나 개정 전 구 지침이 아닌지 확인"
+    },
+    {
+      "check_id": "chk_exceptions_completeness",
+      "label": "법적 단서 규정, 예외 요건, 지자체 재량 범위 누락 여부",
+      "checked": false,
+      "notes": "원칙과 예외가 올바르게 균형을 이루는지 확인"
+    },
+    {
+      "check_id": "chk_wording_fidelity",
+      "label": "법적 수치(금액, 기간, 배점) 및 조동사(허가, 제한, 금지) 정확도",
+      "checked": false,
+      "notes": "부정/긍정 반전이나 표 행·열 전치 왜곡이 없는지 확인"
+    }
+  ],
+  "reviewer_notes": "",
+  "current_status": "unreviewed",
+  "missing_evidence_and_unresolved_issues": "2026년 하반기 가족 동반 시 1회 부여기간 종속 규칙 대조.",
+  "generated_at": "2026-10-29T07:46:27.318931+00:00"
+}

@@ -1,0 +1,3532 @@
+{
+  "run_id": "artemis_run_20261029_075140_d4cd35",
+  "timestamp": "2026-10-29T07:51:40.868211+00:00",
+  "mode": "candidate_eval",
+  "runner_version": "artemis-runner/1.0",
+  "execution_status": "completed",
+  "not_executed_reason": null,
+  "git_commit": "0ade4ad3fc9295e05de0e30f38cb060142c6fa39",
+  "system_info": {
+    "platform": "macOS-15.6.1-arm64-arm-64bit-Mach-O",
+    "python_version": "3.13.5",
+    "cpu_count": 8
+  },
+  "model_metadata": {
+    "adapter_type": "mock",
+    "model_name": "mock-deterministic-v1",
+    "model_revision": "mock-rev-1.0",
+    "quantization": "none",
+    "preset": "wrong_facts",
+    "generation_config": {
+      "temperature": 0.0,
+      "max_tokens": 512
+    }
+  },
+  "benchmark_metadata": {
+    "benchmark_file": "artemis_eval_dev_20.json",
+    "benchmark_sha256": "c204497731b637d31da221a468ca2a4c2537d275a974234f41aefe7da4313c5f",
+    "manifest_version": "artemis-manifest/1.1",
+    "item_count": 20
+  },
+  "summary": {
+    "total_cases": 20,
+    "passed_cases": 0,
+    "failed_cases": 20,
+    "pass_rate": 0.0,
+    "dimension_pass_rates": {
+      "source_fidelity": 0.0,
+      "citation_accuracy": 0.9,
+      "procedural_integrity": 0.9,
+      "abstention_appropriateness": 0.8
+    },
+    "dimension_failures": {
+      "source_fidelity": 20,
+      "citation_accuracy": 2,
+      "abstention_appropriateness": 4,
+      "procedural_integrity": 2
+    },
+    "item_scores": [
+      {
+        "item_id": "ARTEMIS-004-DEV-001",
+        "overall_passed": false,
+        "primary_outcome": "wrong",
+        "dimension_scores": {
+          "source_fidelity": {
+            "dimension": "source_fidelity",
+            "outcome": "wrong",
+            "passed": false,
+            "failures": [
+              "invented_amount:999,999,999원",
+              "unsupported_claims:999,999,999원,99년",
+              "required_fact_missing:원칙적으로 제한",
+              "required_fact_missing:재외공관",
+              "required_fact_missing:사증"
+            ],
+            "details": {
+              "invented_amounts": [
+                "999,999,999원"
+              ],
+              "unsupported_claims": [
+                "999,999,999원",
+                "99년"
+              ],
+              "missing_facts": [
+                "원칙적으로 제한",
+                "재외공관",
+                "사증"
+              ]
+            }
+          },
+          "citation_accuracy": {
+            "dimension": "citation_accuracy",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {
+              "metric_scope": "citation_id_overlap_only",
+              "precision": 1.0,
+              "recall": 1.0,
+              "citations": [
+                "EV-DEV-001-A"
+              ]
+            }
+          },
+          "procedural_integrity": {
+            "dimension": "procedural_integrity",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {}
+          },
+          "abstention_appropriateness": {
+            "dimension": "abstention_appropriateness",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {
+              "status": "answered",
+              "should_withhold": false,
+              "forbid_withholding": true
+            }
+          }
+        },
+        "all_failures": [
+          "[source_fidelity] invented_amount:999,999,999원",
+          "[source_fidelity] unsupported_claims:999,999,999원,99년",
+          "[source_fidelity] required_fact_missing:원칙적으로 제한",
+          "[source_fidelity] required_fact_missing:재외공관",
+          "[source_fidelity] required_fact_missing:사증"
+        ],
+        "flags": [
+          "pending_human_review",
+          "candidate_evaluation_only"
+        ],
+        "parsed_response": {
+          "status": "answered",
+          "answer": "금액은 999,999,999원이며 기간은 99년입니다.",
+          "citations": [
+            "EV-DEV-001-A"
+          ]
+        },
+        "is_official_gold": false
+      },
+      {
+        "item_id": "ARTEMIS-004-DEV-002",
+        "overall_passed": false,
+        "primary_outcome": "wrong",
+        "dimension_scores": {
+          "source_fidelity": {
+            "dimension": "source_fidelity",
+            "outcome": "wrong",
+            "passed": false,
+            "failures": [
+              "invented_amount:999,999,999원",
+              "unsupported_claims:999,999,999원,99년",
+              "required_fact_missing:사증발급인정서",
+              "required_fact_missing:재외공관",
+              "required_fact_missing:체류기간 연장 대상 아님"
+            ],
+            "details": {
+              "invented_amounts": [
+                "999,999,999원"
+              ],
+              "unsupported_claims": [
+                "999,999,999원",
+                "99년"
+              ],
+              "missing_facts": [
+                "사증발급인정서",
+                "재외공관",
+                "체류기간 연장 대상 아님"
+              ]
+            }
+          },
+          "citation_accuracy": {
+            "dimension": "citation_accuracy",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {
+              "metric_scope": "citation_id_overlap_only",
+              "precision": 1.0,
+              "recall": 1.0,
+              "citations": [
+                "EV-DEV-002-A"
+              ]
+            }
+          },
+          "procedural_integrity": {
+            "dimension": "procedural_integrity",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {}
+          },
+          "abstention_appropriateness": {
+            "dimension": "abstention_appropriateness",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {
+              "status": "answered",
+              "should_withhold": false,
+              "forbid_withholding": true
+            }
+          }
+        },
+        "all_failures": [
+          "[source_fidelity] invented_amount:999,999,999원",
+          "[source_fidelity] unsupported_claims:999,999,999원,99년",
+          "[source_fidelity] required_fact_missing:사증발급인정서",
+          "[source_fidelity] required_fact_missing:재외공관",
+          "[source_fidelity] required_fact_missing:체류기간 연장 대상 아님"
+        ],
+        "flags": [
+          "pending_human_review",
+          "candidate_evaluation_only"
+        ],
+        "parsed_response": {
+          "status": "answered",
+          "answer": "금액은 999,999,999원이며 기간은 99년입니다.",
+          "citations": [
+            "EV-DEV-002-A"
+          ]
+        },
+        "is_official_gold": false
+      },
+      {
+        "item_id": "ARTEMIS-004-DEV-003",
+        "overall_passed": false,
+        "primary_outcome": "wrong",
+        "dimension_scores": {
+          "source_fidelity": {
+            "dimension": "source_fidelity",
+            "outcome": "wrong",
+            "passed": false,
+            "failures": [
+              "invented_amount:999,999,999원",
+              "unsupported_claims:999,999,999원,99년",
+              "required_fact_missing:D-2-2",
+              "required_fact_missing:학사",
+              "required_fact_missing:D-2-1은 전문학사"
+            ],
+            "details": {
+              "invented_amounts": [
+                "999,999,999원"
+              ],
+              "unsupported_claims": [
+                "999,999,999원",
+                "99년"
+              ],
+              "missing_facts": [
+                "D-2-2",
+                "학사",
+                "D-2-1은 전문학사"
+              ]
+            }
+          },
+          "citation_accuracy": {
+            "dimension": "citation_accuracy",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {
+              "metric_scope": "citation_id_overlap_only",
+              "precision": 1.0,
+              "recall": 1.0,
+              "citations": [
+                "EV-DEV-003-A"
+              ]
+            }
+          },
+          "procedural_integrity": {
+            "dimension": "procedural_integrity",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {}
+          },
+          "abstention_appropriateness": {
+            "dimension": "abstention_appropriateness",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {
+              "status": "answered",
+              "should_withhold": false,
+              "forbid_withholding": true
+            }
+          }
+        },
+        "all_failures": [
+          "[source_fidelity] invented_amount:999,999,999원",
+          "[source_fidelity] unsupported_claims:999,999,999원,99년",
+          "[source_fidelity] required_fact_missing:D-2-2",
+          "[source_fidelity] required_fact_missing:학사",
+          "[source_fidelity] required_fact_missing:D-2-1은 전문학사"
+        ],
+        "flags": [
+          "pending_human_review",
+          "candidate_evaluation_only"
+        ],
+        "parsed_response": {
+          "status": "answered",
+          "answer": "금액은 999,999,999원이며 기간은 99년입니다.",
+          "citations": [
+            "EV-DEV-003-A"
+          ]
+        },
+        "is_official_gold": false
+      },
+      {
+        "item_id": "ARTEMIS-004-DEV-004",
+        "overall_passed": false,
+        "primary_outcome": "wrong",
+        "dimension_scores": {
+          "source_fidelity": {
+            "dimension": "source_fidelity",
+            "outcome": "wrong",
+            "passed": false,
+            "failures": [
+              "invented_amount:999,999,999원",
+              "unsupported_claims:999,999,999원,99년",
+              "required_fact_missing:E-7-4",
+              "required_fact_missing:숙련기능인력",
+              "required_fact_missing:E-7-1은 전문인력"
+            ],
+            "details": {
+              "invented_amounts": [
+                "999,999,999원"
+              ],
+              "unsupported_claims": [
+                "999,999,999원",
+                "99년"
+              ],
+              "missing_facts": [
+                "E-7-4",
+                "숙련기능인력",
+                "E-7-1은 전문인력"
+              ]
+            }
+          },
+          "citation_accuracy": {
+            "dimension": "citation_accuracy",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {
+              "metric_scope": "citation_id_overlap_only",
+              "precision": 1.0,
+              "recall": 1.0,
+              "citations": [
+                "EV-DEV-004-A"
+              ]
+            }
+          },
+          "procedural_integrity": {
+            "dimension": "procedural_integrity",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {}
+          },
+          "abstention_appropriateness": {
+            "dimension": "abstention_appropriateness",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {
+              "status": "answered",
+              "should_withhold": false,
+              "forbid_withholding": true
+            }
+          }
+        },
+        "all_failures": [
+          "[source_fidelity] invented_amount:999,999,999원",
+          "[source_fidelity] unsupported_claims:999,999,999원,99년",
+          "[source_fidelity] required_fact_missing:E-7-4",
+          "[source_fidelity] required_fact_missing:숙련기능인력",
+          "[source_fidelity] required_fact_missing:E-7-1은 전문인력"
+        ],
+        "flags": [
+          "pending_human_review",
+          "candidate_evaluation_only"
+        ],
+        "parsed_response": {
+          "status": "answered",
+          "answer": "금액은 999,999,999원이며 기간은 99년입니다.",
+          "citations": [
+            "EV-DEV-004-A"
+          ]
+        },
+        "is_official_gold": false
+      },
+      {
+        "item_id": "ARTEMIS-004-DEV-005",
+        "overall_passed": false,
+        "primary_outcome": "wrong",
+        "dimension_scores": {
+          "source_fidelity": {
+            "dimension": "source_fidelity",
+            "outcome": "wrong",
+            "passed": false,
+            "failures": [
+              "invented_amount:999,999,999원",
+              "unsupported_claims:999,999,999원,99년",
+              "required_fact_missing:60,000원",
+              "required_fact_missing:30,000원"
+            ],
+            "details": {
+              "invented_amounts": [
+                "999,999,999원"
+              ],
+              "unsupported_claims": [
+                "999,999,999원",
+                "99년"
+              ],
+              "missing_facts": [
+                "60,000원",
+                "30,000원"
+              ]
+            }
+          },
+          "citation_accuracy": {
+            "dimension": "citation_accuracy",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {
+              "metric_scope": "citation_id_overlap_only",
+              "precision": 1.0,
+              "recall": 1.0,
+              "citations": [
+                "EV-DEV-005-A"
+              ]
+            }
+          },
+          "procedural_integrity": {
+            "dimension": "procedural_integrity",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {}
+          },
+          "abstention_appropriateness": {
+            "dimension": "abstention_appropriateness",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {
+              "status": "answered",
+              "should_withhold": false,
+              "forbid_withholding": true
+            }
+          }
+        },
+        "all_failures": [
+          "[source_fidelity] invented_amount:999,999,999원",
+          "[source_fidelity] unsupported_claims:999,999,999원,99년",
+          "[source_fidelity] required_fact_missing:60,000원",
+          "[source_fidelity] required_fact_missing:30,000원"
+        ],
+        "flags": [
+          "pending_human_review",
+          "candidate_evaluation_only"
+        ],
+        "parsed_response": {
+          "status": "answered",
+          "answer": "금액은 999,999,999원이며 기간은 99년입니다.",
+          "citations": [
+            "EV-DEV-005-A"
+          ]
+        },
+        "is_official_gold": false
+      },
+      {
+        "item_id": "ARTEMIS-004-DEV-006",
+        "overall_passed": false,
+        "primary_outcome": "wrong",
+        "dimension_scores": {
+          "source_fidelity": {
+            "dimension": "source_fidelity",
+            "outcome": "wrong",
+            "passed": false,
+            "failures": [
+              "invented_amount:999,999,999원",
+              "unsupported_claims:999,999,999원,99년",
+              "required_fact_missing:의무적으로 제출",
+              "required_fact_missing:결핵진단서",
+              "required_fact_missing:결핵 고위험국가"
+            ],
+            "details": {
+              "invented_amounts": [
+                "999,999,999원"
+              ],
+              "unsupported_claims": [
+                "999,999,999원",
+                "99년"
+              ],
+              "missing_facts": [
+                "의무적으로 제출",
+                "결핵진단서",
+                "결핵 고위험국가"
+              ]
+            }
+          },
+          "citation_accuracy": {
+            "dimension": "citation_accuracy",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {
+              "metric_scope": "citation_id_overlap_only",
+              "precision": 1.0,
+              "recall": 1.0,
+              "citations": [
+                "EV-DEV-006-A"
+              ]
+            }
+          },
+          "procedural_integrity": {
+            "dimension": "procedural_integrity",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {}
+          },
+          "abstention_appropriateness": {
+            "dimension": "abstention_appropriateness",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {
+              "status": "answered",
+              "should_withhold": false,
+              "forbid_withholding": true
+            }
+          }
+        },
+        "all_failures": [
+          "[source_fidelity] invented_amount:999,999,999원",
+          "[source_fidelity] unsupported_claims:999,999,999원,99년",
+          "[source_fidelity] required_fact_missing:의무적으로 제출",
+          "[source_fidelity] required_fact_missing:결핵진단서",
+          "[source_fidelity] required_fact_missing:결핵 고위험국가"
+        ],
+        "flags": [
+          "pending_human_review",
+          "candidate_evaluation_only"
+        ],
+        "parsed_response": {
+          "status": "answered",
+          "answer": "금액은 999,999,999원이며 기간은 99년입니다.",
+          "citations": [
+            "EV-DEV-006-A"
+          ]
+        },
+        "is_official_gold": false
+      },
+      {
+        "item_id": "ARTEMIS-004-DEV-007",
+        "overall_passed": false,
+        "primary_outcome": "wrong",
+        "dimension_scores": {
+          "source_fidelity": {
+            "dimension": "source_fidelity",
+            "outcome": "wrong",
+            "passed": false,
+            "failures": [
+              "invented_amount:999,999,999원",
+              "unsupported_claims:999,999,999원,99년",
+              "required_fact_missing:35,000명",
+              "required_fact_missing:2,000명 쿼터 기준은 폐기"
+            ],
+            "details": {
+              "invented_amounts": [
+                "999,999,999원"
+              ],
+              "unsupported_claims": [
+                "999,999,999원",
+                "99년"
+              ],
+              "missing_facts": [
+                "35,000명",
+                "2,000명 쿼터 기준은 폐기"
+              ]
+            }
+          },
+          "citation_accuracy": {
+            "dimension": "citation_accuracy",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {
+              "metric_scope": "citation_id_overlap_only",
+              "precision": 1.0,
+              "recall": 1.0,
+              "citations": [
+                "EV-DEV-007-CURRENT"
+              ]
+            }
+          },
+          "procedural_integrity": {
+            "dimension": "procedural_integrity",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {}
+          },
+          "abstention_appropriateness": {
+            "dimension": "abstention_appropriateness",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {
+              "status": "answered",
+              "should_withhold": false,
+              "forbid_withholding": true
+            }
+          }
+        },
+        "all_failures": [
+          "[source_fidelity] invented_amount:999,999,999원",
+          "[source_fidelity] unsupported_claims:999,999,999원,99년",
+          "[source_fidelity] required_fact_missing:35,000명",
+          "[source_fidelity] required_fact_missing:2,000명 쿼터 기준은 폐기"
+        ],
+        "flags": [
+          "pending_human_review",
+          "candidate_evaluation_only"
+        ],
+        "parsed_response": {
+          "status": "answered",
+          "answer": "금액은 999,999,999원이며 기간은 99년입니다.",
+          "citations": [
+            "EV-DEV-007-CURRENT"
+          ]
+        },
+        "is_official_gold": false
+      },
+      {
+        "item_id": "ARTEMIS-004-DEV-008",
+        "overall_passed": false,
+        "primary_outcome": "wrong",
+        "dimension_scores": {
+          "source_fidelity": {
+            "dimension": "source_fidelity",
+            "outcome": "wrong",
+            "passed": false,
+            "failures": [
+              "invented_amount:999,999,999원",
+              "unsupported_claims:999,999,999원,99년",
+              "required_fact_missing:2026년 9월 15일",
+              "required_fact_missing:시행",
+              "required_fact_missing:적용"
+            ],
+            "details": {
+              "invented_amounts": [
+                "999,999,999원"
+              ],
+              "unsupported_claims": [
+                "999,999,999원",
+                "99년"
+              ],
+              "missing_facts": [
+                "2026년 9월 15일",
+                "시행",
+                "적용"
+              ]
+            }
+          },
+          "citation_accuracy": {
+            "dimension": "citation_accuracy",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {
+              "metric_scope": "citation_id_overlap_only",
+              "precision": 1.0,
+              "recall": 1.0,
+              "citations": [
+                "EV-DEV-008-A"
+              ]
+            }
+          },
+          "procedural_integrity": {
+            "dimension": "procedural_integrity",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {}
+          },
+          "abstention_appropriateness": {
+            "dimension": "abstention_appropriateness",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {
+              "status": "answered",
+              "should_withhold": false,
+              "forbid_withholding": true
+            }
+          }
+        },
+        "all_failures": [
+          "[source_fidelity] invented_amount:999,999,999원",
+          "[source_fidelity] unsupported_claims:999,999,999원,99년",
+          "[source_fidelity] required_fact_missing:2026년 9월 15일",
+          "[source_fidelity] required_fact_missing:시행",
+          "[source_fidelity] required_fact_missing:적용"
+        ],
+        "flags": [
+          "pending_human_review",
+          "candidate_evaluation_only"
+        ],
+        "parsed_response": {
+          "status": "answered",
+          "answer": "금액은 999,999,999원이며 기간은 99년입니다.",
+          "citations": [
+            "EV-DEV-008-A"
+          ]
+        },
+        "is_official_gold": false
+      },
+      {
+        "item_id": "ARTEMIS-004-DEV-009",
+        "overall_passed": false,
+        "primary_outcome": "wrong",
+        "dimension_scores": {
+          "source_fidelity": {
+            "dimension": "source_fidelity",
+            "outcome": "wrong",
+            "passed": false,
+            "failures": [
+              "invented_amount:999,999,999원",
+              "unsupported_claims:999,999,999원,99년",
+              "required_fact_missing:금지",
+              "required_fact_missing:할 수 없",
+              "required_fact_missing:청소년유해업소"
+            ],
+            "details": {
+              "invented_amounts": [
+                "999,999,999원"
+              ],
+              "unsupported_claims": [
+                "999,999,999원",
+                "99년"
+              ],
+              "missing_facts": [
+                "금지",
+                "할 수 없",
+                "청소년유해업소"
+              ]
+            }
+          },
+          "citation_accuracy": {
+            "dimension": "citation_accuracy",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {
+              "metric_scope": "citation_id_overlap_only",
+              "precision": 1.0,
+              "recall": 1.0,
+              "citations": [
+                "EV-DEV-009-A"
+              ]
+            }
+          },
+          "procedural_integrity": {
+            "dimension": "procedural_integrity",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {}
+          },
+          "abstention_appropriateness": {
+            "dimension": "abstention_appropriateness",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {
+              "status": "answered",
+              "should_withhold": false,
+              "forbid_withholding": true
+            }
+          }
+        },
+        "all_failures": [
+          "[source_fidelity] invented_amount:999,999,999원",
+          "[source_fidelity] unsupported_claims:999,999,999원,99년",
+          "[source_fidelity] required_fact_missing:금지",
+          "[source_fidelity] required_fact_missing:할 수 없",
+          "[source_fidelity] required_fact_missing:청소년유해업소"
+        ],
+        "flags": [
+          "pending_human_review",
+          "candidate_evaluation_only"
+        ],
+        "parsed_response": {
+          "status": "answered",
+          "answer": "금액은 999,999,999원이며 기간은 99년입니다.",
+          "citations": [
+            "EV-DEV-009-A"
+          ]
+        },
+        "is_official_gold": false
+      },
+      {
+        "item_id": "ARTEMIS-004-DEV-010",
+        "overall_passed": false,
+        "primary_outcome": "wrong",
+        "dimension_scores": {
+          "source_fidelity": {
+            "dimension": "source_fidelity",
+            "outcome": "wrong",
+            "passed": false,
+            "failures": [
+              "invented_amount:999,999,999원",
+              "unsupported_claims:999,999,999원,99년",
+              "required_fact_missing:원칙적으로 취업활동을 할 수 없",
+              "required_fact_missing:사전",
+              "required_fact_missing:체류자격외활동허가"
+            ],
+            "details": {
+              "invented_amounts": [
+                "999,999,999원"
+              ],
+              "unsupported_claims": [
+                "999,999,999원",
+                "99년"
+              ],
+              "missing_facts": [
+                "원칙적으로 취업활동을 할 수 없",
+                "사전",
+                "체류자격외활동허가"
+              ]
+            }
+          },
+          "citation_accuracy": {
+            "dimension": "citation_accuracy",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {
+              "metric_scope": "citation_id_overlap_only",
+              "precision": 1.0,
+              "recall": 1.0,
+              "citations": [
+                "EV-DEV-010-A"
+              ]
+            }
+          },
+          "procedural_integrity": {
+            "dimension": "procedural_integrity",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {}
+          },
+          "abstention_appropriateness": {
+            "dimension": "abstention_appropriateness",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {
+              "status": "answered",
+              "should_withhold": false,
+              "forbid_withholding": true
+            }
+          }
+        },
+        "all_failures": [
+          "[source_fidelity] invented_amount:999,999,999원",
+          "[source_fidelity] unsupported_claims:999,999,999원,99년",
+          "[source_fidelity] required_fact_missing:원칙적으로 취업활동을 할 수 없",
+          "[source_fidelity] required_fact_missing:사전",
+          "[source_fidelity] required_fact_missing:체류자격외활동허가"
+        ],
+        "flags": [
+          "pending_human_review",
+          "candidate_evaluation_only"
+        ],
+        "parsed_response": {
+          "status": "answered",
+          "answer": "금액은 999,999,999원이며 기간은 99년입니다.",
+          "citations": [
+            "EV-DEV-010-A"
+          ]
+        },
+        "is_official_gold": false
+      },
+      {
+        "item_id": "ARTEMIS-004-DEV-011",
+        "overall_passed": false,
+        "primary_outcome": "wrong",
+        "dimension_scores": {
+          "source_fidelity": {
+            "dimension": "source_fidelity",
+            "outcome": "wrong",
+            "passed": false,
+            "failures": [
+              "invented_amount:999,999,999원",
+              "unsupported_claims:999,999,999원,99년",
+              "required_fact_missing:prior permission",
+              "required_fact_missing:competent immigration office",
+              "required_fact_missing:illegal employment"
+            ],
+            "details": {
+              "invented_amounts": [
+                "999,999,999원"
+              ],
+              "unsupported_claims": [
+                "999,999,999원",
+                "99년"
+              ],
+              "missing_facts": [
+                "prior permission",
+                "competent immigration office",
+                "illegal employment"
+              ]
+            }
+          },
+          "citation_accuracy": {
+            "dimension": "citation_accuracy",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {
+              "metric_scope": "citation_id_overlap_only",
+              "precision": 1.0,
+              "recall": 1.0,
+              "citations": [
+                "EV-DEV-011-A"
+              ]
+            }
+          },
+          "procedural_integrity": {
+            "dimension": "procedural_integrity",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {}
+          },
+          "abstention_appropriateness": {
+            "dimension": "abstention_appropriateness",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {
+              "status": "answered",
+              "should_withhold": false,
+              "forbid_withholding": true
+            }
+          }
+        },
+        "all_failures": [
+          "[source_fidelity] invented_amount:999,999,999원",
+          "[source_fidelity] unsupported_claims:999,999,999원,99년",
+          "[source_fidelity] required_fact_missing:prior permission",
+          "[source_fidelity] required_fact_missing:competent immigration office",
+          "[source_fidelity] required_fact_missing:illegal employment"
+        ],
+        "flags": [
+          "pending_human_review",
+          "candidate_evaluation_only"
+        ],
+        "parsed_response": {
+          "status": "answered",
+          "answer": "금액은 999,999,999원이며 기간은 99년입니다.",
+          "citations": [
+            "EV-DEV-011-A"
+          ]
+        },
+        "is_official_gold": false
+      },
+      {
+        "item_id": "ARTEMIS-004-DEV-012",
+        "overall_passed": false,
+        "primary_outcome": "wrong",
+        "dimension_scores": {
+          "source_fidelity": {
+            "dimension": "source_fidelity",
+            "outcome": "wrong",
+            "passed": false,
+            "failures": [
+              "invented_amount:999,999,999원",
+              "unsupported_claims:999,999,999원,99년",
+              "required_fact_missing:60.000 KRW",
+              "required_fact_missing:Điều 72"
+            ],
+            "details": {
+              "invented_amounts": [
+                "999,999,999원"
+              ],
+              "unsupported_claims": [
+                "999,999,999원",
+                "99년"
+              ],
+              "missing_facts": [
+                "60.000 KRW",
+                "Điều 72"
+              ]
+            }
+          },
+          "citation_accuracy": {
+            "dimension": "citation_accuracy",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {
+              "metric_scope": "citation_id_overlap_only",
+              "precision": 1.0,
+              "recall": 1.0,
+              "citations": [
+                "EV-DEV-012-A"
+              ]
+            }
+          },
+          "procedural_integrity": {
+            "dimension": "procedural_integrity",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {}
+          },
+          "abstention_appropriateness": {
+            "dimension": "abstention_appropriateness",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {
+              "status": "answered",
+              "should_withhold": false,
+              "forbid_withholding": true
+            }
+          }
+        },
+        "all_failures": [
+          "[source_fidelity] invented_amount:999,999,999원",
+          "[source_fidelity] unsupported_claims:999,999,999원,99년",
+          "[source_fidelity] required_fact_missing:60.000 KRW",
+          "[source_fidelity] required_fact_missing:Điều 72"
+        ],
+        "flags": [
+          "pending_human_review",
+          "candidate_evaluation_only"
+        ],
+        "parsed_response": {
+          "status": "answered",
+          "answer": "금액은 999,999,999원이며 기간은 99년입니다.",
+          "citations": [
+            "EV-DEV-012-A"
+          ]
+        },
+        "is_official_gold": false
+      },
+      {
+        "item_id": "ARTEMIS-004-DEV-013",
+        "overall_passed": false,
+        "primary_outcome": "wrong",
+        "dimension_scores": {
+          "source_fidelity": {
+            "dimension": "source_fidelity",
+            "outcome": "wrong",
+            "passed": false,
+            "failures": [
+              "invented_amount:999,999,999원",
+              "unsupported_claims:999,999,999원,99년"
+            ],
+            "details": {
+              "invented_amounts": [
+                "999,999,999원"
+              ],
+              "unsupported_claims": [
+                "999,999,999원",
+                "99년"
+              ]
+            }
+          },
+          "citation_accuracy": {
+            "dimension": "citation_accuracy",
+            "outcome": "wrong",
+            "passed": false,
+            "failures": [
+              "unlisted_citations:EV-DEV-013-PROBE",
+              "forbidden_citations:EV-DEV-013-PROBE",
+              "unapproved_citations:EV-DEV-013-PROBE"
+            ],
+            "details": {
+              "unlisted_citations": [
+                "EV-DEV-013-PROBE"
+              ],
+              "forbidden_citations": [
+                "EV-DEV-013-PROBE"
+              ],
+              "unapproved_citations": [
+                "EV-DEV-013-PROBE"
+              ],
+              "metric_scope": "citation_id_overlap_only",
+              "precision": 0.0,
+              "recall": 1.0,
+              "citations": [
+                "EV-DEV-013-PROBE"
+              ]
+            }
+          },
+          "procedural_integrity": {
+            "dimension": "procedural_integrity",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {}
+          },
+          "abstention_appropriateness": {
+            "dimension": "abstention_appropriateness",
+            "outcome": "wrong",
+            "passed": false,
+            "failures": [
+              "disallowed_status:answered not in conflict|insufficient_evidence",
+              "unwarranted_answer:should_have_withheld"
+            ],
+            "details": {
+              "status": "answered",
+              "should_withhold": true,
+              "forbid_withholding": false,
+              "withholding_error": "unwarranted_answer"
+            }
+          }
+        },
+        "all_failures": [
+          "[source_fidelity] invented_amount:999,999,999원",
+          "[source_fidelity] unsupported_claims:999,999,999원,99년",
+          "[citation_accuracy] unlisted_citations:EV-DEV-013-PROBE",
+          "[citation_accuracy] forbidden_citations:EV-DEV-013-PROBE",
+          "[citation_accuracy] unapproved_citations:EV-DEV-013-PROBE",
+          "[abstention_appropriateness] disallowed_status:answered not in conflict|insufficient_evidence",
+          "[abstention_appropriateness] unwarranted_answer:should_have_withheld"
+        ],
+        "flags": [
+          "pending_human_review",
+          "candidate_evaluation_only"
+        ],
+        "parsed_response": {
+          "status": "answered",
+          "answer": "금액은 999,999,999원이며 기간은 99년입니다.",
+          "citations": [
+            "EV-DEV-013-PROBE"
+          ]
+        },
+        "is_official_gold": false
+      },
+      {
+        "item_id": "ARTEMIS-004-DEV-014",
+        "overall_passed": false,
+        "primary_outcome": "wrong",
+        "dimension_scores": {
+          "source_fidelity": {
+            "dimension": "source_fidelity",
+            "outcome": "wrong",
+            "passed": false,
+            "failures": [
+              "invented_amount:999,999,999원",
+              "unsupported_claims:999,999,999원,99년"
+            ],
+            "details": {
+              "invented_amounts": [
+                "999,999,999원"
+              ],
+              "unsupported_claims": [
+                "999,999,999원",
+                "99년"
+              ]
+            }
+          },
+          "citation_accuracy": {
+            "dimension": "citation_accuracy",
+            "outcome": "wrong",
+            "passed": false,
+            "failures": [
+              "unlisted_citations:EV-DEV-014-PROBE",
+              "forbidden_citations:EV-DEV-014-PROBE",
+              "unapproved_citations:EV-DEV-014-PROBE"
+            ],
+            "details": {
+              "unlisted_citations": [
+                "EV-DEV-014-PROBE"
+              ],
+              "forbidden_citations": [
+                "EV-DEV-014-PROBE"
+              ],
+              "unapproved_citations": [
+                "EV-DEV-014-PROBE"
+              ],
+              "metric_scope": "citation_id_overlap_only",
+              "precision": 0.0,
+              "recall": 1.0,
+              "citations": [
+                "EV-DEV-014-PROBE"
+              ]
+            }
+          },
+          "procedural_integrity": {
+            "dimension": "procedural_integrity",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {}
+          },
+          "abstention_appropriateness": {
+            "dimension": "abstention_appropriateness",
+            "outcome": "wrong",
+            "passed": false,
+            "failures": [
+              "disallowed_status:answered not in conflict|insufficient_evidence",
+              "unwarranted_answer:should_have_withheld"
+            ],
+            "details": {
+              "status": "answered",
+              "should_withhold": true,
+              "forbid_withholding": false,
+              "withholding_error": "unwarranted_answer"
+            }
+          }
+        },
+        "all_failures": [
+          "[source_fidelity] invented_amount:999,999,999원",
+          "[source_fidelity] unsupported_claims:999,999,999원,99년",
+          "[citation_accuracy] unlisted_citations:EV-DEV-014-PROBE",
+          "[citation_accuracy] forbidden_citations:EV-DEV-014-PROBE",
+          "[citation_accuracy] unapproved_citations:EV-DEV-014-PROBE",
+          "[abstention_appropriateness] disallowed_status:answered not in conflict|insufficient_evidence",
+          "[abstention_appropriateness] unwarranted_answer:should_have_withheld"
+        ],
+        "flags": [
+          "pending_human_review",
+          "candidate_evaluation_only"
+        ],
+        "parsed_response": {
+          "status": "answered",
+          "answer": "금액은 999,999,999원이며 기간은 99년입니다.",
+          "citations": [
+            "EV-DEV-014-PROBE"
+          ]
+        },
+        "is_official_gold": false
+      },
+      {
+        "item_id": "ARTEMIS-004-DEV-015",
+        "overall_passed": false,
+        "primary_outcome": "wrong",
+        "dimension_scores": {
+          "source_fidelity": {
+            "dimension": "source_fidelity",
+            "outcome": "wrong",
+            "passed": false,
+            "failures": [
+              "invented_amount:999,999,999원",
+              "unsupported_claims:999,999,999원,99년",
+              "required_fact_missing:체류자격",
+              "required_fact_missing:상이"
+            ],
+            "details": {
+              "invented_amounts": [
+                "999,999,999원"
+              ],
+              "unsupported_claims": [
+                "999,999,999원",
+                "99년"
+              ],
+              "missing_facts": [
+                "체류자격",
+                "상이"
+              ]
+            }
+          },
+          "citation_accuracy": {
+            "dimension": "citation_accuracy",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {
+              "metric_scope": "citation_id_overlap_only",
+              "precision": 1.0,
+              "recall": 1.0,
+              "citations": [
+                "EV-DEV-015-A"
+              ]
+            }
+          },
+          "procedural_integrity": {
+            "dimension": "procedural_integrity",
+            "outcome": "wrong",
+            "passed": false,
+            "failures": [
+              "clarification_missed:expected_clarify_status"
+            ],
+            "details": {
+              "clarification_error": "expected_clarify_status"
+            }
+          },
+          "abstention_appropriateness": {
+            "dimension": "abstention_appropriateness",
+            "outcome": "wrong",
+            "passed": false,
+            "failures": [
+              "disallowed_status:answered not in clarify"
+            ],
+            "details": {
+              "status": "answered",
+              "should_withhold": false,
+              "forbid_withholding": true
+            }
+          }
+        },
+        "all_failures": [
+          "[source_fidelity] invented_amount:999,999,999원",
+          "[source_fidelity] unsupported_claims:999,999,999원,99년",
+          "[source_fidelity] required_fact_missing:체류자격",
+          "[source_fidelity] required_fact_missing:상이",
+          "[procedural_integrity] clarification_missed:expected_clarify_status",
+          "[abstention_appropriateness] disallowed_status:answered not in clarify"
+        ],
+        "flags": [
+          "pending_human_review",
+          "candidate_evaluation_only"
+        ],
+        "parsed_response": {
+          "status": "answered",
+          "answer": "금액은 999,999,999원이며 기간은 99년입니다.",
+          "citations": [
+            "EV-DEV-015-A"
+          ]
+        },
+        "is_official_gold": false
+      },
+      {
+        "item_id": "ARTEMIS-004-DEV-016",
+        "overall_passed": false,
+        "primary_outcome": "wrong",
+        "dimension_scores": {
+          "source_fidelity": {
+            "dimension": "source_fidelity",
+            "outcome": "wrong",
+            "passed": false,
+            "failures": [
+              "invented_amount:999,999,999원",
+              "unsupported_claims:999,999,999원,99년",
+              "required_fact_missing:체류자격",
+              "required_fact_missing:허가"
+            ],
+            "details": {
+              "invented_amounts": [
+                "999,999,999원"
+              ],
+              "unsupported_claims": [
+                "999,999,999원",
+                "99년"
+              ],
+              "missing_facts": [
+                "체류자격",
+                "허가"
+              ]
+            }
+          },
+          "citation_accuracy": {
+            "dimension": "citation_accuracy",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {
+              "metric_scope": "citation_id_overlap_only",
+              "precision": 1.0,
+              "recall": 1.0,
+              "citations": [
+                "EV-DEV-016-A"
+              ]
+            }
+          },
+          "procedural_integrity": {
+            "dimension": "procedural_integrity",
+            "outcome": "wrong",
+            "passed": false,
+            "failures": [
+              "clarification_missed:expected_clarify_status"
+            ],
+            "details": {
+              "clarification_error": "expected_clarify_status"
+            }
+          },
+          "abstention_appropriateness": {
+            "dimension": "abstention_appropriateness",
+            "outcome": "wrong",
+            "passed": false,
+            "failures": [
+              "disallowed_status:answered not in clarify"
+            ],
+            "details": {
+              "status": "answered",
+              "should_withhold": false,
+              "forbid_withholding": true
+            }
+          }
+        },
+        "all_failures": [
+          "[source_fidelity] invented_amount:999,999,999원",
+          "[source_fidelity] unsupported_claims:999,999,999원,99년",
+          "[source_fidelity] required_fact_missing:체류자격",
+          "[source_fidelity] required_fact_missing:허가",
+          "[procedural_integrity] clarification_missed:expected_clarify_status",
+          "[abstention_appropriateness] disallowed_status:answered not in clarify"
+        ],
+        "flags": [
+          "pending_human_review",
+          "candidate_evaluation_only"
+        ],
+        "parsed_response": {
+          "status": "answered",
+          "answer": "금액은 999,999,999원이며 기간은 99년입니다.",
+          "citations": [
+            "EV-DEV-016-A"
+          ]
+        },
+        "is_official_gold": false
+      },
+      {
+        "item_id": "ARTEMIS-004-DEV-017",
+        "overall_passed": false,
+        "primary_outcome": "wrong",
+        "dimension_scores": {
+          "source_fidelity": {
+            "dimension": "source_fidelity",
+            "outcome": "wrong",
+            "passed": false,
+            "failures": [
+              "invented_amount:999,999,999원",
+              "unsupported_claims:999,999,999원,99년",
+              "required_fact_missing:D-2-1",
+              "required_fact_missing:D-2-2",
+              "required_fact_missing:2년",
+              "required_fact_missing:6년"
+            ],
+            "details": {
+              "invented_amounts": [
+                "999,999,999원"
+              ],
+              "unsupported_claims": [
+                "999,999,999원",
+                "99년"
+              ],
+              "missing_facts": [
+                "D-2-1",
+                "D-2-2",
+                "2년",
+                "6년"
+              ]
+            }
+          },
+          "citation_accuracy": {
+            "dimension": "citation_accuracy",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {
+              "metric_scope": "citation_id_overlap_only",
+              "precision": 1.0,
+              "recall": 1.0,
+              "citations": [
+                "EV-DEV-017-A"
+              ]
+            }
+          },
+          "procedural_integrity": {
+            "dimension": "procedural_integrity",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {}
+          },
+          "abstention_appropriateness": {
+            "dimension": "abstention_appropriateness",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {
+              "status": "answered",
+              "should_withhold": false,
+              "forbid_withholding": true
+            }
+          }
+        },
+        "all_failures": [
+          "[source_fidelity] invented_amount:999,999,999원",
+          "[source_fidelity] unsupported_claims:999,999,999원,99년",
+          "[source_fidelity] required_fact_missing:D-2-1",
+          "[source_fidelity] required_fact_missing:D-2-2",
+          "[source_fidelity] required_fact_missing:2년",
+          "[source_fidelity] required_fact_missing:6년"
+        ],
+        "flags": [
+          "pending_human_review",
+          "candidate_evaluation_only"
+        ],
+        "parsed_response": {
+          "status": "answered",
+          "answer": "금액은 999,999,999원이며 기간은 99년입니다.",
+          "citations": [
+            "EV-DEV-017-A"
+          ]
+        },
+        "is_official_gold": false
+      },
+      {
+        "item_id": "ARTEMIS-004-DEV-018",
+        "overall_passed": false,
+        "primary_outcome": "wrong",
+        "dimension_scores": {
+          "source_fidelity": {
+            "dimension": "source_fidelity",
+            "outcome": "wrong",
+            "passed": false,
+            "failures": [
+              "invented_amount:999,999,999원",
+              "unsupported_claims:999,999,999원,99년",
+              "required_fact_missing:60,000원",
+              "required_fact_missing:100,000원"
+            ],
+            "details": {
+              "invented_amounts": [
+                "999,999,999원"
+              ],
+              "unsupported_claims": [
+                "999,999,999원",
+                "99년"
+              ],
+              "missing_facts": [
+                "60,000원",
+                "100,000원"
+              ]
+            }
+          },
+          "citation_accuracy": {
+            "dimension": "citation_accuracy",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {
+              "metric_scope": "citation_id_overlap_only",
+              "precision": 1.0,
+              "recall": 1.0,
+              "citations": [
+                "EV-DEV-018-A"
+              ]
+            }
+          },
+          "procedural_integrity": {
+            "dimension": "procedural_integrity",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {}
+          },
+          "abstention_appropriateness": {
+            "dimension": "abstention_appropriateness",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {
+              "status": "answered",
+              "should_withhold": false,
+              "forbid_withholding": true
+            }
+          }
+        },
+        "all_failures": [
+          "[source_fidelity] invented_amount:999,999,999원",
+          "[source_fidelity] unsupported_claims:999,999,999원,99년",
+          "[source_fidelity] required_fact_missing:60,000원",
+          "[source_fidelity] required_fact_missing:100,000원"
+        ],
+        "flags": [
+          "pending_human_review",
+          "candidate_evaluation_only"
+        ],
+        "parsed_response": {
+          "status": "answered",
+          "answer": "금액은 999,999,999원이며 기간은 99년입니다.",
+          "citations": [
+            "EV-DEV-018-A"
+          ]
+        },
+        "is_official_gold": false
+      },
+      {
+        "item_id": "ARTEMIS-004-DEV-019",
+        "overall_passed": false,
+        "primary_outcome": "wrong",
+        "dimension_scores": {
+          "source_fidelity": {
+            "dimension": "source_fidelity",
+            "outcome": "wrong",
+            "passed": false,
+            "failures": [
+              "invented_amount:999,999,999원",
+              "unsupported_claims:999,999,999원,99년",
+              "required_fact_missing:영주 체류자격을 부여하는 특혜는 존재하지 않",
+              "required_fact_missing:공식 공고"
+            ],
+            "details": {
+              "invented_amounts": [
+                "999,999,999원"
+              ],
+              "unsupported_claims": [
+                "999,999,999원",
+                "99년"
+              ],
+              "missing_facts": [
+                "영주 체류자격을 부여하는 특혜는 존재하지 않",
+                "공식 공고"
+              ]
+            }
+          },
+          "citation_accuracy": {
+            "dimension": "citation_accuracy",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {
+              "metric_scope": "citation_id_overlap_only",
+              "precision": 1.0,
+              "recall": 1.0,
+              "citations": [
+                "EV-DEV-019-OFFICIAL"
+              ]
+            }
+          },
+          "procedural_integrity": {
+            "dimension": "procedural_integrity",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {}
+          },
+          "abstention_appropriateness": {
+            "dimension": "abstention_appropriateness",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {
+              "status": "answered",
+              "should_withhold": false,
+              "forbid_withholding": true
+            }
+          }
+        },
+        "all_failures": [
+          "[source_fidelity] invented_amount:999,999,999원",
+          "[source_fidelity] unsupported_claims:999,999,999원,99년",
+          "[source_fidelity] required_fact_missing:영주 체류자격을 부여하는 특혜는 존재하지 않",
+          "[source_fidelity] required_fact_missing:공식 공고"
+        ],
+        "flags": [
+          "pending_human_review",
+          "candidate_evaluation_only"
+        ],
+        "parsed_response": {
+          "status": "answered",
+          "answer": "금액은 999,999,999원이며 기간은 99년입니다.",
+          "citations": [
+            "EV-DEV-019-OFFICIAL"
+          ]
+        },
+        "is_official_gold": false
+      },
+      {
+        "item_id": "ARTEMIS-004-DEV-020",
+        "overall_passed": false,
+        "primary_outcome": "wrong",
+        "dimension_scores": {
+          "source_fidelity": {
+            "dimension": "source_fidelity",
+            "outcome": "wrong",
+            "passed": false,
+            "failures": [
+              "invented_amount:999,999,999원",
+              "unsupported_claims:999,999,999원,99년",
+              "required_fact_missing:사진",
+              "required_fact_missing:3.5cm x 4.5cm",
+              "required_fact_missing:30,000원",
+              "required_fact_missing:제출"
+            ],
+            "details": {
+              "invented_amounts": [
+                "999,999,999원"
+              ],
+              "unsupported_claims": [
+                "999,999,999원",
+                "99년"
+              ],
+              "missing_facts": [
+                "사진",
+                "3.5cm x 4.5cm",
+                "30,000원",
+                "제출"
+              ]
+            }
+          },
+          "citation_accuracy": {
+            "dimension": "citation_accuracy",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {
+              "metric_scope": "citation_id_overlap_only",
+              "precision": 1.0,
+              "recall": 1.0,
+              "citations": [
+                "EV-DEV-020-OFFICIAL"
+              ]
+            }
+          },
+          "procedural_integrity": {
+            "dimension": "procedural_integrity",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {}
+          },
+          "abstention_appropriateness": {
+            "dimension": "abstention_appropriateness",
+            "outcome": "correct",
+            "passed": true,
+            "failures": [],
+            "details": {
+              "status": "answered",
+              "should_withhold": false,
+              "forbid_withholding": true
+            }
+          }
+        },
+        "all_failures": [
+          "[source_fidelity] invented_amount:999,999,999원",
+          "[source_fidelity] unsupported_claims:999,999,999원,99년",
+          "[source_fidelity] required_fact_missing:사진",
+          "[source_fidelity] required_fact_missing:3.5cm x 4.5cm",
+          "[source_fidelity] required_fact_missing:30,000원",
+          "[source_fidelity] required_fact_missing:제출"
+        ],
+        "flags": [
+          "pending_human_review",
+          "candidate_evaluation_only"
+        ],
+        "parsed_response": {
+          "status": "answered",
+          "answer": "금액은 999,999,999원이며 기간은 99년입니다.",
+          "citations": [
+            "EV-DEV-020-OFFICIAL"
+          ]
+        },
+        "is_official_gold": false
+      }
+    ],
+    "official_gold_cases": 0,
+    "official_gold_passed": 0,
+    "official_gold_pass_rate": null,
+    "candidate_cases": 20,
+    "candidate_passed": 0,
+    "candidate_pass_rate": 0.0,
+    "diagnostic_disagreements": {
+      "invented_amount": 20,
+      "unsupported_claim": 20,
+      "required_fact_missing": 49,
+      "unlisted_citations": 2,
+      "unknown_failure": 12
+    }
+  },
+  "item_results": [
+    {
+      "item_id": "ARTEMIS-004-DEV-001",
+      "request_id": "req_artemis_run_20261029_075140_d4cd35_ARTEMIS-004-DEV-001",
+      "overall_passed": false,
+      "primary_outcome": "wrong",
+      "is_official_gold": false,
+      "latency_ms": 0.0004580069798976183,
+      "dimension_scores": {
+        "source_fidelity": {
+          "dimension": "source_fidelity",
+          "outcome": "wrong",
+          "passed": false,
+          "failures": [
+            "invented_amount:999,999,999원",
+            "unsupported_claims:999,999,999원,99년",
+            "required_fact_missing:원칙적으로 제한",
+            "required_fact_missing:재외공관",
+            "required_fact_missing:사증"
+          ],
+          "details": {
+            "invented_amounts": [
+              "999,999,999원"
+            ],
+            "unsupported_claims": [
+              "999,999,999원",
+              "99년"
+            ],
+            "missing_facts": [
+              "원칙적으로 제한",
+              "재외공관",
+              "사증"
+            ]
+          }
+        },
+        "citation_accuracy": {
+          "dimension": "citation_accuracy",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {
+            "metric_scope": "citation_id_overlap_only",
+            "precision": 1.0,
+            "recall": 1.0,
+            "citations": [
+              "EV-DEV-001-A"
+            ]
+          }
+        },
+        "procedural_integrity": {
+          "dimension": "procedural_integrity",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {}
+        },
+        "abstention_appropriateness": {
+          "dimension": "abstention_appropriateness",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {
+            "status": "answered",
+            "should_withhold": false,
+            "forbid_withholding": true
+          }
+        }
+      },
+      "all_failures": [
+        "[source_fidelity] invented_amount:999,999,999원",
+        "[source_fidelity] unsupported_claims:999,999,999원,99년",
+        "[source_fidelity] required_fact_missing:원칙적으로 제한",
+        "[source_fidelity] required_fact_missing:재외공관",
+        "[source_fidelity] required_fact_missing:사증"
+      ],
+      "flags": [
+        "pending_human_review",
+        "candidate_evaluation_only"
+      ],
+      "model_output": {
+        "status": "answered",
+        "answer": "금액은 999,999,999원이며 기간은 99년입니다.",
+        "citations": [
+          "EV-DEV-001-A"
+        ]
+      },
+      "error": null
+    },
+    {
+      "item_id": "ARTEMIS-004-DEV-002",
+      "request_id": "req_artemis_run_20261029_075140_d4cd35_ARTEMIS-004-DEV-002",
+      "overall_passed": false,
+      "primary_outcome": "wrong",
+      "is_official_gold": false,
+      "latency_ms": 0.0004580069798976183,
+      "dimension_scores": {
+        "source_fidelity": {
+          "dimension": "source_fidelity",
+          "outcome": "wrong",
+          "passed": false,
+          "failures": [
+            "invented_amount:999,999,999원",
+            "unsupported_claims:999,999,999원,99년",
+            "required_fact_missing:사증발급인정서",
+            "required_fact_missing:재외공관",
+            "required_fact_missing:체류기간 연장 대상 아님"
+          ],
+          "details": {
+            "invented_amounts": [
+              "999,999,999원"
+            ],
+            "unsupported_claims": [
+              "999,999,999원",
+              "99년"
+            ],
+            "missing_facts": [
+              "사증발급인정서",
+              "재외공관",
+              "체류기간 연장 대상 아님"
+            ]
+          }
+        },
+        "citation_accuracy": {
+          "dimension": "citation_accuracy",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {
+            "metric_scope": "citation_id_overlap_only",
+            "precision": 1.0,
+            "recall": 1.0,
+            "citations": [
+              "EV-DEV-002-A"
+            ]
+          }
+        },
+        "procedural_integrity": {
+          "dimension": "procedural_integrity",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {}
+        },
+        "abstention_appropriateness": {
+          "dimension": "abstention_appropriateness",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {
+            "status": "answered",
+            "should_withhold": false,
+            "forbid_withholding": true
+          }
+        }
+      },
+      "all_failures": [
+        "[source_fidelity] invented_amount:999,999,999원",
+        "[source_fidelity] unsupported_claims:999,999,999원,99년",
+        "[source_fidelity] required_fact_missing:사증발급인정서",
+        "[source_fidelity] required_fact_missing:재외공관",
+        "[source_fidelity] required_fact_missing:체류기간 연장 대상 아님"
+      ],
+      "flags": [
+        "pending_human_review",
+        "candidate_evaluation_only"
+      ],
+      "model_output": {
+        "status": "answered",
+        "answer": "금액은 999,999,999원이며 기간은 99년입니다.",
+        "citations": [
+          "EV-DEV-002-A"
+        ]
+      },
+      "error": null
+    },
+    {
+      "item_id": "ARTEMIS-004-DEV-003",
+      "request_id": "req_artemis_run_20261029_075140_d4cd35_ARTEMIS-004-DEV-003",
+      "overall_passed": false,
+      "primary_outcome": "wrong",
+      "is_official_gold": false,
+      "latency_ms": 0.0002910092007368803,
+      "dimension_scores": {
+        "source_fidelity": {
+          "dimension": "source_fidelity",
+          "outcome": "wrong",
+          "passed": false,
+          "failures": [
+            "invented_amount:999,999,999원",
+            "unsupported_claims:999,999,999원,99년",
+            "required_fact_missing:D-2-2",
+            "required_fact_missing:학사",
+            "required_fact_missing:D-2-1은 전문학사"
+          ],
+          "details": {
+            "invented_amounts": [
+              "999,999,999원"
+            ],
+            "unsupported_claims": [
+              "999,999,999원",
+              "99년"
+            ],
+            "missing_facts": [
+              "D-2-2",
+              "학사",
+              "D-2-1은 전문학사"
+            ]
+          }
+        },
+        "citation_accuracy": {
+          "dimension": "citation_accuracy",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {
+            "metric_scope": "citation_id_overlap_only",
+            "precision": 1.0,
+            "recall": 1.0,
+            "citations": [
+              "EV-DEV-003-A"
+            ]
+          }
+        },
+        "procedural_integrity": {
+          "dimension": "procedural_integrity",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {}
+        },
+        "abstention_appropriateness": {
+          "dimension": "abstention_appropriateness",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {
+            "status": "answered",
+            "should_withhold": false,
+            "forbid_withholding": true
+          }
+        }
+      },
+      "all_failures": [
+        "[source_fidelity] invented_amount:999,999,999원",
+        "[source_fidelity] unsupported_claims:999,999,999원,99년",
+        "[source_fidelity] required_fact_missing:D-2-2",
+        "[source_fidelity] required_fact_missing:학사",
+        "[source_fidelity] required_fact_missing:D-2-1은 전문학사"
+      ],
+      "flags": [
+        "pending_human_review",
+        "candidate_evaluation_only"
+      ],
+      "model_output": {
+        "status": "answered",
+        "answer": "금액은 999,999,999원이며 기간은 99년입니다.",
+        "citations": [
+          "EV-DEV-003-A"
+        ]
+      },
+      "error": null
+    },
+    {
+      "item_id": "ARTEMIS-004-DEV-004",
+      "request_id": "req_artemis_run_20261029_075140_d4cd35_ARTEMIS-004-DEV-004",
+      "overall_passed": false,
+      "primary_outcome": "wrong",
+      "is_official_gold": false,
+      "latency_ms": 0.0002500019036233425,
+      "dimension_scores": {
+        "source_fidelity": {
+          "dimension": "source_fidelity",
+          "outcome": "wrong",
+          "passed": false,
+          "failures": [
+            "invented_amount:999,999,999원",
+            "unsupported_claims:999,999,999원,99년",
+            "required_fact_missing:E-7-4",
+            "required_fact_missing:숙련기능인력",
+            "required_fact_missing:E-7-1은 전문인력"
+          ],
+          "details": {
+            "invented_amounts": [
+              "999,999,999원"
+            ],
+            "unsupported_claims": [
+              "999,999,999원",
+              "99년"
+            ],
+            "missing_facts": [
+              "E-7-4",
+              "숙련기능인력",
+              "E-7-1은 전문인력"
+            ]
+          }
+        },
+        "citation_accuracy": {
+          "dimension": "citation_accuracy",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {
+            "metric_scope": "citation_id_overlap_only",
+            "precision": 1.0,
+            "recall": 1.0,
+            "citations": [
+              "EV-DEV-004-A"
+            ]
+          }
+        },
+        "procedural_integrity": {
+          "dimension": "procedural_integrity",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {}
+        },
+        "abstention_appropriateness": {
+          "dimension": "abstention_appropriateness",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {
+            "status": "answered",
+            "should_withhold": false,
+            "forbid_withholding": true
+          }
+        }
+      },
+      "all_failures": [
+        "[source_fidelity] invented_amount:999,999,999원",
+        "[source_fidelity] unsupported_claims:999,999,999원,99년",
+        "[source_fidelity] required_fact_missing:E-7-4",
+        "[source_fidelity] required_fact_missing:숙련기능인력",
+        "[source_fidelity] required_fact_missing:E-7-1은 전문인력"
+      ],
+      "flags": [
+        "pending_human_review",
+        "candidate_evaluation_only"
+      ],
+      "model_output": {
+        "status": "answered",
+        "answer": "금액은 999,999,999원이며 기간은 99년입니다.",
+        "citations": [
+          "EV-DEV-004-A"
+        ]
+      },
+      "error": null
+    },
+    {
+      "item_id": "ARTEMIS-004-DEV-005",
+      "request_id": "req_artemis_run_20261029_075140_d4cd35_ARTEMIS-004-DEV-005",
+      "overall_passed": false,
+      "primary_outcome": "wrong",
+      "is_official_gold": false,
+      "latency_ms": 0.00020800507627427578,
+      "dimension_scores": {
+        "source_fidelity": {
+          "dimension": "source_fidelity",
+          "outcome": "wrong",
+          "passed": false,
+          "failures": [
+            "invented_amount:999,999,999원",
+            "unsupported_claims:999,999,999원,99년",
+            "required_fact_missing:60,000원",
+            "required_fact_missing:30,000원"
+          ],
+          "details": {
+            "invented_amounts": [
+              "999,999,999원"
+            ],
+            "unsupported_claims": [
+              "999,999,999원",
+              "99년"
+            ],
+            "missing_facts": [
+              "60,000원",
+              "30,000원"
+            ]
+          }
+        },
+        "citation_accuracy": {
+          "dimension": "citation_accuracy",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {
+            "metric_scope": "citation_id_overlap_only",
+            "precision": 1.0,
+            "recall": 1.0,
+            "citations": [
+              "EV-DEV-005-A"
+            ]
+          }
+        },
+        "procedural_integrity": {
+          "dimension": "procedural_integrity",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {}
+        },
+        "abstention_appropriateness": {
+          "dimension": "abstention_appropriateness",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {
+            "status": "answered",
+            "should_withhold": false,
+            "forbid_withholding": true
+          }
+        }
+      },
+      "all_failures": [
+        "[source_fidelity] invented_amount:999,999,999원",
+        "[source_fidelity] unsupported_claims:999,999,999원,99년",
+        "[source_fidelity] required_fact_missing:60,000원",
+        "[source_fidelity] required_fact_missing:30,000원"
+      ],
+      "flags": [
+        "pending_human_review",
+        "candidate_evaluation_only"
+      ],
+      "model_output": {
+        "status": "answered",
+        "answer": "금액은 999,999,999원이며 기간은 99년입니다.",
+        "citations": [
+          "EV-DEV-005-A"
+        ]
+      },
+      "error": null
+    },
+    {
+      "item_id": "ARTEMIS-004-DEV-006",
+      "request_id": "req_artemis_run_20261029_075140_d4cd35_ARTEMIS-004-DEV-006",
+      "overall_passed": false,
+      "primary_outcome": "wrong",
+      "is_official_gold": false,
+      "latency_ms": 0.00020797597244381905,
+      "dimension_scores": {
+        "source_fidelity": {
+          "dimension": "source_fidelity",
+          "outcome": "wrong",
+          "passed": false,
+          "failures": [
+            "invented_amount:999,999,999원",
+            "unsupported_claims:999,999,999원,99년",
+            "required_fact_missing:의무적으로 제출",
+            "required_fact_missing:결핵진단서",
+            "required_fact_missing:결핵 고위험국가"
+          ],
+          "details": {
+            "invented_amounts": [
+              "999,999,999원"
+            ],
+            "unsupported_claims": [
+              "999,999,999원",
+              "99년"
+            ],
+            "missing_facts": [
+              "의무적으로 제출",
+              "결핵진단서",
+              "결핵 고위험국가"
+            ]
+          }
+        },
+        "citation_accuracy": {
+          "dimension": "citation_accuracy",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {
+            "metric_scope": "citation_id_overlap_only",
+            "precision": 1.0,
+            "recall": 1.0,
+            "citations": [
+              "EV-DEV-006-A"
+            ]
+          }
+        },
+        "procedural_integrity": {
+          "dimension": "procedural_integrity",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {}
+        },
+        "abstention_appropriateness": {
+          "dimension": "abstention_appropriateness",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {
+            "status": "answered",
+            "should_withhold": false,
+            "forbid_withholding": true
+          }
+        }
+      },
+      "all_failures": [
+        "[source_fidelity] invented_amount:999,999,999원",
+        "[source_fidelity] unsupported_claims:999,999,999원,99년",
+        "[source_fidelity] required_fact_missing:의무적으로 제출",
+        "[source_fidelity] required_fact_missing:결핵진단서",
+        "[source_fidelity] required_fact_missing:결핵 고위험국가"
+      ],
+      "flags": [
+        "pending_human_review",
+        "candidate_evaluation_only"
+      ],
+      "model_output": {
+        "status": "answered",
+        "answer": "금액은 999,999,999원이며 기간은 99년입니다.",
+        "citations": [
+          "EV-DEV-006-A"
+        ]
+      },
+      "error": null
+    },
+    {
+      "item_id": "ARTEMIS-004-DEV-007",
+      "request_id": "req_artemis_run_20261029_075140_d4cd35_ARTEMIS-004-DEV-007",
+      "overall_passed": false,
+      "primary_outcome": "wrong",
+      "is_official_gold": false,
+      "latency_ms": 0.00020899460650980473,
+      "dimension_scores": {
+        "source_fidelity": {
+          "dimension": "source_fidelity",
+          "outcome": "wrong",
+          "passed": false,
+          "failures": [
+            "invented_amount:999,999,999원",
+            "unsupported_claims:999,999,999원,99년",
+            "required_fact_missing:35,000명",
+            "required_fact_missing:2,000명 쿼터 기준은 폐기"
+          ],
+          "details": {
+            "invented_amounts": [
+              "999,999,999원"
+            ],
+            "unsupported_claims": [
+              "999,999,999원",
+              "99년"
+            ],
+            "missing_facts": [
+              "35,000명",
+              "2,000명 쿼터 기준은 폐기"
+            ]
+          }
+        },
+        "citation_accuracy": {
+          "dimension": "citation_accuracy",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {
+            "metric_scope": "citation_id_overlap_only",
+            "precision": 1.0,
+            "recall": 1.0,
+            "citations": [
+              "EV-DEV-007-CURRENT"
+            ]
+          }
+        },
+        "procedural_integrity": {
+          "dimension": "procedural_integrity",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {}
+        },
+        "abstention_appropriateness": {
+          "dimension": "abstention_appropriateness",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {
+            "status": "answered",
+            "should_withhold": false,
+            "forbid_withholding": true
+          }
+        }
+      },
+      "all_failures": [
+        "[source_fidelity] invented_amount:999,999,999원",
+        "[source_fidelity] unsupported_claims:999,999,999원,99년",
+        "[source_fidelity] required_fact_missing:35,000명",
+        "[source_fidelity] required_fact_missing:2,000명 쿼터 기준은 폐기"
+      ],
+      "flags": [
+        "pending_human_review",
+        "candidate_evaluation_only"
+      ],
+      "model_output": {
+        "status": "answered",
+        "answer": "금액은 999,999,999원이며 기간은 99년입니다.",
+        "citations": [
+          "EV-DEV-007-CURRENT"
+        ]
+      },
+      "error": null
+    },
+    {
+      "item_id": "ARTEMIS-004-DEV-008",
+      "request_id": "req_artemis_run_20261029_075140_d4cd35_ARTEMIS-004-DEV-008",
+      "overall_passed": false,
+      "primary_outcome": "wrong",
+      "is_official_gold": false,
+      "latency_ms": 0.00020899460650980473,
+      "dimension_scores": {
+        "source_fidelity": {
+          "dimension": "source_fidelity",
+          "outcome": "wrong",
+          "passed": false,
+          "failures": [
+            "invented_amount:999,999,999원",
+            "unsupported_claims:999,999,999원,99년",
+            "required_fact_missing:2026년 9월 15일",
+            "required_fact_missing:시행",
+            "required_fact_missing:적용"
+          ],
+          "details": {
+            "invented_amounts": [
+              "999,999,999원"
+            ],
+            "unsupported_claims": [
+              "999,999,999원",
+              "99년"
+            ],
+            "missing_facts": [
+              "2026년 9월 15일",
+              "시행",
+              "적용"
+            ]
+          }
+        },
+        "citation_accuracy": {
+          "dimension": "citation_accuracy",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {
+            "metric_scope": "citation_id_overlap_only",
+            "precision": 1.0,
+            "recall": 1.0,
+            "citations": [
+              "EV-DEV-008-A"
+            ]
+          }
+        },
+        "procedural_integrity": {
+          "dimension": "procedural_integrity",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {}
+        },
+        "abstention_appropriateness": {
+          "dimension": "abstention_appropriateness",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {
+            "status": "answered",
+            "should_withhold": false,
+            "forbid_withholding": true
+          }
+        }
+      },
+      "all_failures": [
+        "[source_fidelity] invented_amount:999,999,999원",
+        "[source_fidelity] unsupported_claims:999,999,999원,99년",
+        "[source_fidelity] required_fact_missing:2026년 9월 15일",
+        "[source_fidelity] required_fact_missing:시행",
+        "[source_fidelity] required_fact_missing:적용"
+      ],
+      "flags": [
+        "pending_human_review",
+        "candidate_evaluation_only"
+      ],
+      "model_output": {
+        "status": "answered",
+        "answer": "금액은 999,999,999원이며 기간은 99년입니다.",
+        "citations": [
+          "EV-DEV-008-A"
+        ]
+      },
+      "error": null
+    },
+    {
+      "item_id": "ARTEMIS-004-DEV-009",
+      "request_id": "req_artemis_run_20261029_075140_d4cd35_ARTEMIS-004-DEV-009",
+      "overall_passed": false,
+      "primary_outcome": "wrong",
+      "is_official_gold": false,
+      "latency_ms": 0.00020899460650980473,
+      "dimension_scores": {
+        "source_fidelity": {
+          "dimension": "source_fidelity",
+          "outcome": "wrong",
+          "passed": false,
+          "failures": [
+            "invented_amount:999,999,999원",
+            "unsupported_claims:999,999,999원,99년",
+            "required_fact_missing:금지",
+            "required_fact_missing:할 수 없",
+            "required_fact_missing:청소년유해업소"
+          ],
+          "details": {
+            "invented_amounts": [
+              "999,999,999원"
+            ],
+            "unsupported_claims": [
+              "999,999,999원",
+              "99년"
+            ],
+            "missing_facts": [
+              "금지",
+              "할 수 없",
+              "청소년유해업소"
+            ]
+          }
+        },
+        "citation_accuracy": {
+          "dimension": "citation_accuracy",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {
+            "metric_scope": "citation_id_overlap_only",
+            "precision": 1.0,
+            "recall": 1.0,
+            "citations": [
+              "EV-DEV-009-A"
+            ]
+          }
+        },
+        "procedural_integrity": {
+          "dimension": "procedural_integrity",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {}
+        },
+        "abstention_appropriateness": {
+          "dimension": "abstention_appropriateness",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {
+            "status": "answered",
+            "should_withhold": false,
+            "forbid_withholding": true
+          }
+        }
+      },
+      "all_failures": [
+        "[source_fidelity] invented_amount:999,999,999원",
+        "[source_fidelity] unsupported_claims:999,999,999원,99년",
+        "[source_fidelity] required_fact_missing:금지",
+        "[source_fidelity] required_fact_missing:할 수 없",
+        "[source_fidelity] required_fact_missing:청소년유해업소"
+      ],
+      "flags": [
+        "pending_human_review",
+        "candidate_evaluation_only"
+      ],
+      "model_output": {
+        "status": "answered",
+        "answer": "금액은 999,999,999원이며 기간은 99년입니다.",
+        "citations": [
+          "EV-DEV-009-A"
+        ]
+      },
+      "error": null
+    },
+    {
+      "item_id": "ARTEMIS-004-DEV-010",
+      "request_id": "req_artemis_run_20261029_075140_d4cd35_ARTEMIS-004-DEV-010",
+      "overall_passed": false,
+      "primary_outcome": "wrong",
+      "is_official_gold": false,
+      "latency_ms": 0.0002500019036233425,
+      "dimension_scores": {
+        "source_fidelity": {
+          "dimension": "source_fidelity",
+          "outcome": "wrong",
+          "passed": false,
+          "failures": [
+            "invented_amount:999,999,999원",
+            "unsupported_claims:999,999,999원,99년",
+            "required_fact_missing:원칙적으로 취업활동을 할 수 없",
+            "required_fact_missing:사전",
+            "required_fact_missing:체류자격외활동허가"
+          ],
+          "details": {
+            "invented_amounts": [
+              "999,999,999원"
+            ],
+            "unsupported_claims": [
+              "999,999,999원",
+              "99년"
+            ],
+            "missing_facts": [
+              "원칙적으로 취업활동을 할 수 없",
+              "사전",
+              "체류자격외활동허가"
+            ]
+          }
+        },
+        "citation_accuracy": {
+          "dimension": "citation_accuracy",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {
+            "metric_scope": "citation_id_overlap_only",
+            "precision": 1.0,
+            "recall": 1.0,
+            "citations": [
+              "EV-DEV-010-A"
+            ]
+          }
+        },
+        "procedural_integrity": {
+          "dimension": "procedural_integrity",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {}
+        },
+        "abstention_appropriateness": {
+          "dimension": "abstention_appropriateness",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {
+            "status": "answered",
+            "should_withhold": false,
+            "forbid_withholding": true
+          }
+        }
+      },
+      "all_failures": [
+        "[source_fidelity] invented_amount:999,999,999원",
+        "[source_fidelity] unsupported_claims:999,999,999원,99년",
+        "[source_fidelity] required_fact_missing:원칙적으로 취업활동을 할 수 없",
+        "[source_fidelity] required_fact_missing:사전",
+        "[source_fidelity] required_fact_missing:체류자격외활동허가"
+      ],
+      "flags": [
+        "pending_human_review",
+        "candidate_evaluation_only"
+      ],
+      "model_output": {
+        "status": "answered",
+        "answer": "금액은 999,999,999원이며 기간은 99년입니다.",
+        "citations": [
+          "EV-DEV-010-A"
+        ]
+      },
+      "error": null
+    },
+    {
+      "item_id": "ARTEMIS-004-DEV-011",
+      "request_id": "req_artemis_run_20261029_075140_d4cd35_ARTEMIS-004-DEV-011",
+      "overall_passed": false,
+      "primary_outcome": "wrong",
+      "is_official_gold": false,
+      "latency_ms": 0.00020902371034026146,
+      "dimension_scores": {
+        "source_fidelity": {
+          "dimension": "source_fidelity",
+          "outcome": "wrong",
+          "passed": false,
+          "failures": [
+            "invented_amount:999,999,999원",
+            "unsupported_claims:999,999,999원,99년",
+            "required_fact_missing:prior permission",
+            "required_fact_missing:competent immigration office",
+            "required_fact_missing:illegal employment"
+          ],
+          "details": {
+            "invented_amounts": [
+              "999,999,999원"
+            ],
+            "unsupported_claims": [
+              "999,999,999원",
+              "99년"
+            ],
+            "missing_facts": [
+              "prior permission",
+              "competent immigration office",
+              "illegal employment"
+            ]
+          }
+        },
+        "citation_accuracy": {
+          "dimension": "citation_accuracy",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {
+            "metric_scope": "citation_id_overlap_only",
+            "precision": 1.0,
+            "recall": 1.0,
+            "citations": [
+              "EV-DEV-011-A"
+            ]
+          }
+        },
+        "procedural_integrity": {
+          "dimension": "procedural_integrity",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {}
+        },
+        "abstention_appropriateness": {
+          "dimension": "abstention_appropriateness",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {
+            "status": "answered",
+            "should_withhold": false,
+            "forbid_withholding": true
+          }
+        }
+      },
+      "all_failures": [
+        "[source_fidelity] invented_amount:999,999,999원",
+        "[source_fidelity] unsupported_claims:999,999,999원,99년",
+        "[source_fidelity] required_fact_missing:prior permission",
+        "[source_fidelity] required_fact_missing:competent immigration office",
+        "[source_fidelity] required_fact_missing:illegal employment"
+      ],
+      "flags": [
+        "pending_human_review",
+        "candidate_evaluation_only"
+      ],
+      "model_output": {
+        "status": "answered",
+        "answer": "금액은 999,999,999원이며 기간은 99년입니다.",
+        "citations": [
+          "EV-DEV-011-A"
+        ]
+      },
+      "error": null
+    },
+    {
+      "item_id": "ARTEMIS-004-DEV-012",
+      "request_id": "req_artemis_run_20261029_075140_d4cd35_ARTEMIS-004-DEV-012",
+      "overall_passed": false,
+      "primary_outcome": "wrong",
+      "is_official_gold": false,
+      "latency_ms": 0.00020800507627427578,
+      "dimension_scores": {
+        "source_fidelity": {
+          "dimension": "source_fidelity",
+          "outcome": "wrong",
+          "passed": false,
+          "failures": [
+            "invented_amount:999,999,999원",
+            "unsupported_claims:999,999,999원,99년",
+            "required_fact_missing:60.000 KRW",
+            "required_fact_missing:Điều 72"
+          ],
+          "details": {
+            "invented_amounts": [
+              "999,999,999원"
+            ],
+            "unsupported_claims": [
+              "999,999,999원",
+              "99년"
+            ],
+            "missing_facts": [
+              "60.000 KRW",
+              "Điều 72"
+            ]
+          }
+        },
+        "citation_accuracy": {
+          "dimension": "citation_accuracy",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {
+            "metric_scope": "citation_id_overlap_only",
+            "precision": 1.0,
+            "recall": 1.0,
+            "citations": [
+              "EV-DEV-012-A"
+            ]
+          }
+        },
+        "procedural_integrity": {
+          "dimension": "procedural_integrity",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {}
+        },
+        "abstention_appropriateness": {
+          "dimension": "abstention_appropriateness",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {
+            "status": "answered",
+            "should_withhold": false,
+            "forbid_withholding": true
+          }
+        }
+      },
+      "all_failures": [
+        "[source_fidelity] invented_amount:999,999,999원",
+        "[source_fidelity] unsupported_claims:999,999,999원,99년",
+        "[source_fidelity] required_fact_missing:60.000 KRW",
+        "[source_fidelity] required_fact_missing:Điều 72"
+      ],
+      "flags": [
+        "pending_human_review",
+        "candidate_evaluation_only"
+      ],
+      "model_output": {
+        "status": "answered",
+        "answer": "금액은 999,999,999원이며 기간은 99년입니다.",
+        "citations": [
+          "EV-DEV-012-A"
+        ]
+      },
+      "error": null
+    },
+    {
+      "item_id": "ARTEMIS-004-DEV-013",
+      "request_id": "req_artemis_run_20261029_075140_d4cd35_ARTEMIS-004-DEV-013",
+      "overall_passed": false,
+      "primary_outcome": "wrong",
+      "is_official_gold": false,
+      "latency_ms": 0.0002500019036233425,
+      "dimension_scores": {
+        "source_fidelity": {
+          "dimension": "source_fidelity",
+          "outcome": "wrong",
+          "passed": false,
+          "failures": [
+            "invented_amount:999,999,999원",
+            "unsupported_claims:999,999,999원,99년"
+          ],
+          "details": {
+            "invented_amounts": [
+              "999,999,999원"
+            ],
+            "unsupported_claims": [
+              "999,999,999원",
+              "99년"
+            ]
+          }
+        },
+        "citation_accuracy": {
+          "dimension": "citation_accuracy",
+          "outcome": "wrong",
+          "passed": false,
+          "failures": [
+            "unlisted_citations:EV-DEV-013-PROBE",
+            "forbidden_citations:EV-DEV-013-PROBE",
+            "unapproved_citations:EV-DEV-013-PROBE"
+          ],
+          "details": {
+            "unlisted_citations": [
+              "EV-DEV-013-PROBE"
+            ],
+            "forbidden_citations": [
+              "EV-DEV-013-PROBE"
+            ],
+            "unapproved_citations": [
+              "EV-DEV-013-PROBE"
+            ],
+            "metric_scope": "citation_id_overlap_only",
+            "precision": 0.0,
+            "recall": 1.0,
+            "citations": [
+              "EV-DEV-013-PROBE"
+            ]
+          }
+        },
+        "procedural_integrity": {
+          "dimension": "procedural_integrity",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {}
+        },
+        "abstention_appropriateness": {
+          "dimension": "abstention_appropriateness",
+          "outcome": "wrong",
+          "passed": false,
+          "failures": [
+            "disallowed_status:answered not in conflict|insufficient_evidence",
+            "unwarranted_answer:should_have_withheld"
+          ],
+          "details": {
+            "status": "answered",
+            "should_withhold": true,
+            "forbid_withholding": false,
+            "withholding_error": "unwarranted_answer"
+          }
+        }
+      },
+      "all_failures": [
+        "[source_fidelity] invented_amount:999,999,999원",
+        "[source_fidelity] unsupported_claims:999,999,999원,99년",
+        "[citation_accuracy] unlisted_citations:EV-DEV-013-PROBE",
+        "[citation_accuracy] forbidden_citations:EV-DEV-013-PROBE",
+        "[citation_accuracy] unapproved_citations:EV-DEV-013-PROBE",
+        "[abstention_appropriateness] disallowed_status:answered not in conflict|insufficient_evidence",
+        "[abstention_appropriateness] unwarranted_answer:should_have_withheld"
+      ],
+      "flags": [
+        "pending_human_review",
+        "candidate_evaluation_only"
+      ],
+      "model_output": {
+        "status": "answered",
+        "answer": "금액은 999,999,999원이며 기간은 99년입니다.",
+        "citations": [
+          "EV-DEV-013-PROBE"
+        ]
+      },
+      "error": null
+    },
+    {
+      "item_id": "ARTEMIS-004-DEV-014",
+      "request_id": "req_artemis_run_20261029_075140_d4cd35_ARTEMIS-004-DEV-014",
+      "overall_passed": false,
+      "primary_outcome": "wrong",
+      "is_official_gold": false,
+      "latency_ms": 0.0002500019036233425,
+      "dimension_scores": {
+        "source_fidelity": {
+          "dimension": "source_fidelity",
+          "outcome": "wrong",
+          "passed": false,
+          "failures": [
+            "invented_amount:999,999,999원",
+            "unsupported_claims:999,999,999원,99년"
+          ],
+          "details": {
+            "invented_amounts": [
+              "999,999,999원"
+            ],
+            "unsupported_claims": [
+              "999,999,999원",
+              "99년"
+            ]
+          }
+        },
+        "citation_accuracy": {
+          "dimension": "citation_accuracy",
+          "outcome": "wrong",
+          "passed": false,
+          "failures": [
+            "unlisted_citations:EV-DEV-014-PROBE",
+            "forbidden_citations:EV-DEV-014-PROBE",
+            "unapproved_citations:EV-DEV-014-PROBE"
+          ],
+          "details": {
+            "unlisted_citations": [
+              "EV-DEV-014-PROBE"
+            ],
+            "forbidden_citations": [
+              "EV-DEV-014-PROBE"
+            ],
+            "unapproved_citations": [
+              "EV-DEV-014-PROBE"
+            ],
+            "metric_scope": "citation_id_overlap_only",
+            "precision": 0.0,
+            "recall": 1.0,
+            "citations": [
+              "EV-DEV-014-PROBE"
+            ]
+          }
+        },
+        "procedural_integrity": {
+          "dimension": "procedural_integrity",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {}
+        },
+        "abstention_appropriateness": {
+          "dimension": "abstention_appropriateness",
+          "outcome": "wrong",
+          "passed": false,
+          "failures": [
+            "disallowed_status:answered not in conflict|insufficient_evidence",
+            "unwarranted_answer:should_have_withheld"
+          ],
+          "details": {
+            "status": "answered",
+            "should_withhold": true,
+            "forbid_withholding": false,
+            "withholding_error": "unwarranted_answer"
+          }
+        }
+      },
+      "all_failures": [
+        "[source_fidelity] invented_amount:999,999,999원",
+        "[source_fidelity] unsupported_claims:999,999,999원,99년",
+        "[citation_accuracy] unlisted_citations:EV-DEV-014-PROBE",
+        "[citation_accuracy] forbidden_citations:EV-DEV-014-PROBE",
+        "[citation_accuracy] unapproved_citations:EV-DEV-014-PROBE",
+        "[abstention_appropriateness] disallowed_status:answered not in conflict|insufficient_evidence",
+        "[abstention_appropriateness] unwarranted_answer:should_have_withheld"
+      ],
+      "flags": [
+        "pending_human_review",
+        "candidate_evaluation_only"
+      ],
+      "model_output": {
+        "status": "answered",
+        "answer": "금액은 999,999,999원이며 기간은 99년입니다.",
+        "citations": [
+          "EV-DEV-014-PROBE"
+        ]
+      },
+      "error": null
+    },
+    {
+      "item_id": "ARTEMIS-004-DEV-015",
+      "request_id": "req_artemis_run_20261029_075140_d4cd35_ARTEMIS-004-DEV-015",
+      "overall_passed": false,
+      "primary_outcome": "wrong",
+      "is_official_gold": false,
+      "latency_ms": 0.000166997779160738,
+      "dimension_scores": {
+        "source_fidelity": {
+          "dimension": "source_fidelity",
+          "outcome": "wrong",
+          "passed": false,
+          "failures": [
+            "invented_amount:999,999,999원",
+            "unsupported_claims:999,999,999원,99년",
+            "required_fact_missing:체류자격",
+            "required_fact_missing:상이"
+          ],
+          "details": {
+            "invented_amounts": [
+              "999,999,999원"
+            ],
+            "unsupported_claims": [
+              "999,999,999원",
+              "99년"
+            ],
+            "missing_facts": [
+              "체류자격",
+              "상이"
+            ]
+          }
+        },
+        "citation_accuracy": {
+          "dimension": "citation_accuracy",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {
+            "metric_scope": "citation_id_overlap_only",
+            "precision": 1.0,
+            "recall": 1.0,
+            "citations": [
+              "EV-DEV-015-A"
+            ]
+          }
+        },
+        "procedural_integrity": {
+          "dimension": "procedural_integrity",
+          "outcome": "wrong",
+          "passed": false,
+          "failures": [
+            "clarification_missed:expected_clarify_status"
+          ],
+          "details": {
+            "clarification_error": "expected_clarify_status"
+          }
+        },
+        "abstention_appropriateness": {
+          "dimension": "abstention_appropriateness",
+          "outcome": "wrong",
+          "passed": false,
+          "failures": [
+            "disallowed_status:answered not in clarify"
+          ],
+          "details": {
+            "status": "answered",
+            "should_withhold": false,
+            "forbid_withholding": true
+          }
+        }
+      },
+      "all_failures": [
+        "[source_fidelity] invented_amount:999,999,999원",
+        "[source_fidelity] unsupported_claims:999,999,999원,99년",
+        "[source_fidelity] required_fact_missing:체류자격",
+        "[source_fidelity] required_fact_missing:상이",
+        "[procedural_integrity] clarification_missed:expected_clarify_status",
+        "[abstention_appropriateness] disallowed_status:answered not in clarify"
+      ],
+      "flags": [
+        "pending_human_review",
+        "candidate_evaluation_only"
+      ],
+      "model_output": {
+        "status": "answered",
+        "answer": "금액은 999,999,999원이며 기간은 99년입니다.",
+        "citations": [
+          "EV-DEV-015-A"
+        ]
+      },
+      "error": null
+    },
+    {
+      "item_id": "ARTEMIS-004-DEV-016",
+      "request_id": "req_artemis_run_20261029_075140_d4cd35_ARTEMIS-004-DEV-016",
+      "overall_passed": false,
+      "primary_outcome": "wrong",
+      "is_official_gold": false,
+      "latency_ms": 0.0002500019036233425,
+      "dimension_scores": {
+        "source_fidelity": {
+          "dimension": "source_fidelity",
+          "outcome": "wrong",
+          "passed": false,
+          "failures": [
+            "invented_amount:999,999,999원",
+            "unsupported_claims:999,999,999원,99년",
+            "required_fact_missing:체류자격",
+            "required_fact_missing:허가"
+          ],
+          "details": {
+            "invented_amounts": [
+              "999,999,999원"
+            ],
+            "unsupported_claims": [
+              "999,999,999원",
+              "99년"
+            ],
+            "missing_facts": [
+              "체류자격",
+              "허가"
+            ]
+          }
+        },
+        "citation_accuracy": {
+          "dimension": "citation_accuracy",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {
+            "metric_scope": "citation_id_overlap_only",
+            "precision": 1.0,
+            "recall": 1.0,
+            "citations": [
+              "EV-DEV-016-A"
+            ]
+          }
+        },
+        "procedural_integrity": {
+          "dimension": "procedural_integrity",
+          "outcome": "wrong",
+          "passed": false,
+          "failures": [
+            "clarification_missed:expected_clarify_status"
+          ],
+          "details": {
+            "clarification_error": "expected_clarify_status"
+          }
+        },
+        "abstention_appropriateness": {
+          "dimension": "abstention_appropriateness",
+          "outcome": "wrong",
+          "passed": false,
+          "failures": [
+            "disallowed_status:answered not in clarify"
+          ],
+          "details": {
+            "status": "answered",
+            "should_withhold": false,
+            "forbid_withholding": true
+          }
+        }
+      },
+      "all_failures": [
+        "[source_fidelity] invented_amount:999,999,999원",
+        "[source_fidelity] unsupported_claims:999,999,999원,99년",
+        "[source_fidelity] required_fact_missing:체류자격",
+        "[source_fidelity] required_fact_missing:허가",
+        "[procedural_integrity] clarification_missed:expected_clarify_status",
+        "[abstention_appropriateness] disallowed_status:answered not in clarify"
+      ],
+      "flags": [
+        "pending_human_review",
+        "candidate_evaluation_only"
+      ],
+      "model_output": {
+        "status": "answered",
+        "answer": "금액은 999,999,999원이며 기간은 99년입니다.",
+        "citations": [
+          "EV-DEV-016-A"
+        ]
+      },
+      "error": null
+    },
+    {
+      "item_id": "ARTEMIS-004-DEV-017",
+      "request_id": "req_artemis_run_20261029_075140_d4cd35_ARTEMIS-004-DEV-017",
+      "overall_passed": false,
+      "primary_outcome": "wrong",
+      "is_official_gold": false,
+      "latency_ms": 0.00020800507627427578,
+      "dimension_scores": {
+        "source_fidelity": {
+          "dimension": "source_fidelity",
+          "outcome": "wrong",
+          "passed": false,
+          "failures": [
+            "invented_amount:999,999,999원",
+            "unsupported_claims:999,999,999원,99년",
+            "required_fact_missing:D-2-1",
+            "required_fact_missing:D-2-2",
+            "required_fact_missing:2년",
+            "required_fact_missing:6년"
+          ],
+          "details": {
+            "invented_amounts": [
+              "999,999,999원"
+            ],
+            "unsupported_claims": [
+              "999,999,999원",
+              "99년"
+            ],
+            "missing_facts": [
+              "D-2-1",
+              "D-2-2",
+              "2년",
+              "6년"
+            ]
+          }
+        },
+        "citation_accuracy": {
+          "dimension": "citation_accuracy",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {
+            "metric_scope": "citation_id_overlap_only",
+            "precision": 1.0,
+            "recall": 1.0,
+            "citations": [
+              "EV-DEV-017-A"
+            ]
+          }
+        },
+        "procedural_integrity": {
+          "dimension": "procedural_integrity",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {}
+        },
+        "abstention_appropriateness": {
+          "dimension": "abstention_appropriateness",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {
+            "status": "answered",
+            "should_withhold": false,
+            "forbid_withholding": true
+          }
+        }
+      },
+      "all_failures": [
+        "[source_fidelity] invented_amount:999,999,999원",
+        "[source_fidelity] unsupported_claims:999,999,999원,99년",
+        "[source_fidelity] required_fact_missing:D-2-1",
+        "[source_fidelity] required_fact_missing:D-2-2",
+        "[source_fidelity] required_fact_missing:2년",
+        "[source_fidelity] required_fact_missing:6년"
+      ],
+      "flags": [
+        "pending_human_review",
+        "candidate_evaluation_only"
+      ],
+      "model_output": {
+        "status": "answered",
+        "answer": "금액은 999,999,999원이며 기간은 99년입니다.",
+        "citations": [
+          "EV-DEV-017-A"
+        ]
+      },
+      "error": null
+    },
+    {
+      "item_id": "ARTEMIS-004-DEV-018",
+      "request_id": "req_artemis_run_20261029_075140_d4cd35_ARTEMIS-004-DEV-018",
+      "overall_passed": false,
+      "primary_outcome": "wrong",
+      "is_official_gold": false,
+      "latency_ms": 0.00020800507627427578,
+      "dimension_scores": {
+        "source_fidelity": {
+          "dimension": "source_fidelity",
+          "outcome": "wrong",
+          "passed": false,
+          "failures": [
+            "invented_amount:999,999,999원",
+            "unsupported_claims:999,999,999원,99년",
+            "required_fact_missing:60,000원",
+            "required_fact_missing:100,000원"
+          ],
+          "details": {
+            "invented_amounts": [
+              "999,999,999원"
+            ],
+            "unsupported_claims": [
+              "999,999,999원",
+              "99년"
+            ],
+            "missing_facts": [
+              "60,000원",
+              "100,000원"
+            ]
+          }
+        },
+        "citation_accuracy": {
+          "dimension": "citation_accuracy",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {
+            "metric_scope": "citation_id_overlap_only",
+            "precision": 1.0,
+            "recall": 1.0,
+            "citations": [
+              "EV-DEV-018-A"
+            ]
+          }
+        },
+        "procedural_integrity": {
+          "dimension": "procedural_integrity",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {}
+        },
+        "abstention_appropriateness": {
+          "dimension": "abstention_appropriateness",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {
+            "status": "answered",
+            "should_withhold": false,
+            "forbid_withholding": true
+          }
+        }
+      },
+      "all_failures": [
+        "[source_fidelity] invented_amount:999,999,999원",
+        "[source_fidelity] unsupported_claims:999,999,999원,99년",
+        "[source_fidelity] required_fact_missing:60,000원",
+        "[source_fidelity] required_fact_missing:100,000원"
+      ],
+      "flags": [
+        "pending_human_review",
+        "candidate_evaluation_only"
+      ],
+      "model_output": {
+        "status": "answered",
+        "answer": "금액은 999,999,999원이며 기간은 99년입니다.",
+        "citations": [
+          "EV-DEV-018-A"
+        ]
+      },
+      "error": null
+    },
+    {
+      "item_id": "ARTEMIS-004-DEV-019",
+      "request_id": "req_artemis_run_20261029_075140_d4cd35_ARTEMIS-004-DEV-019",
+      "overall_passed": false,
+      "primary_outcome": "wrong",
+      "is_official_gold": false,
+      "latency_ms": 0.00020800507627427578,
+      "dimension_scores": {
+        "source_fidelity": {
+          "dimension": "source_fidelity",
+          "outcome": "wrong",
+          "passed": false,
+          "failures": [
+            "invented_amount:999,999,999원",
+            "unsupported_claims:999,999,999원,99년",
+            "required_fact_missing:영주 체류자격을 부여하는 특혜는 존재하지 않",
+            "required_fact_missing:공식 공고"
+          ],
+          "details": {
+            "invented_amounts": [
+              "999,999,999원"
+            ],
+            "unsupported_claims": [
+              "999,999,999원",
+              "99년"
+            ],
+            "missing_facts": [
+              "영주 체류자격을 부여하는 특혜는 존재하지 않",
+              "공식 공고"
+            ]
+          }
+        },
+        "citation_accuracy": {
+          "dimension": "citation_accuracy",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {
+            "metric_scope": "citation_id_overlap_only",
+            "precision": 1.0,
+            "recall": 1.0,
+            "citations": [
+              "EV-DEV-019-OFFICIAL"
+            ]
+          }
+        },
+        "procedural_integrity": {
+          "dimension": "procedural_integrity",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {}
+        },
+        "abstention_appropriateness": {
+          "dimension": "abstention_appropriateness",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {
+            "status": "answered",
+            "should_withhold": false,
+            "forbid_withholding": true
+          }
+        }
+      },
+      "all_failures": [
+        "[source_fidelity] invented_amount:999,999,999원",
+        "[source_fidelity] unsupported_claims:999,999,999원,99년",
+        "[source_fidelity] required_fact_missing:영주 체류자격을 부여하는 특혜는 존재하지 않",
+        "[source_fidelity] required_fact_missing:공식 공고"
+      ],
+      "flags": [
+        "pending_human_review",
+        "candidate_evaluation_only"
+      ],
+      "model_output": {
+        "status": "answered",
+        "answer": "금액은 999,999,999원이며 기간은 99년입니다.",
+        "citations": [
+          "EV-DEV-019-OFFICIAL"
+        ]
+      },
+      "error": null
+    },
+    {
+      "item_id": "ARTEMIS-004-DEV-020",
+      "request_id": "req_artemis_run_20261029_075140_d4cd35_ARTEMIS-004-DEV-020",
+      "overall_passed": false,
+      "primary_outcome": "wrong",
+      "is_official_gold": false,
+      "latency_ms": 0.00020800507627427578,
+      "dimension_scores": {
+        "source_fidelity": {
+          "dimension": "source_fidelity",
+          "outcome": "wrong",
+          "passed": false,
+          "failures": [
+            "invented_amount:999,999,999원",
+            "unsupported_claims:999,999,999원,99년",
+            "required_fact_missing:사진",
+            "required_fact_missing:3.5cm x 4.5cm",
+            "required_fact_missing:30,000원",
+            "required_fact_missing:제출"
+          ],
+          "details": {
+            "invented_amounts": [
+              "999,999,999원"
+            ],
+            "unsupported_claims": [
+              "999,999,999원",
+              "99년"
+            ],
+            "missing_facts": [
+              "사진",
+              "3.5cm x 4.5cm",
+              "30,000원",
+              "제출"
+            ]
+          }
+        },
+        "citation_accuracy": {
+          "dimension": "citation_accuracy",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {
+            "metric_scope": "citation_id_overlap_only",
+            "precision": 1.0,
+            "recall": 1.0,
+            "citations": [
+              "EV-DEV-020-OFFICIAL"
+            ]
+          }
+        },
+        "procedural_integrity": {
+          "dimension": "procedural_integrity",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {}
+        },
+        "abstention_appropriateness": {
+          "dimension": "abstention_appropriateness",
+          "outcome": "correct",
+          "passed": true,
+          "failures": [],
+          "details": {
+            "status": "answered",
+            "should_withhold": false,
+            "forbid_withholding": true
+          }
+        }
+      },
+      "all_failures": [
+        "[source_fidelity] invented_amount:999,999,999원",
+        "[source_fidelity] unsupported_claims:999,999,999원,99년",
+        "[source_fidelity] required_fact_missing:사진",
+        "[source_fidelity] required_fact_missing:3.5cm x 4.5cm",
+        "[source_fidelity] required_fact_missing:30,000원",
+        "[source_fidelity] required_fact_missing:제출"
+      ],
+      "flags": [
+        "pending_human_review",
+        "candidate_evaluation_only"
+      ],
+      "model_output": {
+        "status": "answered",
+        "answer": "금액은 999,999,999원이며 기간은 99년입니다.",
+        "citations": [
+          "EV-DEV-020-OFFICIAL"
+        ]
+      },
+      "error": null
+    }
+  ]
+}
