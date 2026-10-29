@@ -102,6 +102,62 @@ def test_export_refuses_facts_that_do_not_check_out(tmp_path, ledger_path, tampe
     assert not ledger_path.exists()
 
 
+def test_rejecting_an_exported_ai_fact_revokes_it_everywhere(tmp_path, ledger_path):
+    candidate = next(c for c in CANDIDATES if c["role"])
+    fid = candidate["candidate_id"].replace("fc-", "f-")
+    prior = {"fact_id": fid, "status": "approved", "tier": "ai_delegated",
+             "source": candidate["source"], "subject": candidate["subject"],
+             "role": candidate["role"], "value": candidate["value"],
+             "review": {"by": "AI (owner-delegated)", "decision": "ai_delegated"}}
+    af._write_jsonl(ledger_path, [prior], {"kind": "artemis_approved_facts"})
+    review = _review(tmp_path / "r", [_approved(candidate, decision="rejected", note="Owner rejected the fact")])
+    assert af.export(review) == {"written": 1, "rejected": []}
+    entries = [json.loads(line) for line in ledger_path.read_text(encoding="utf-8").splitlines()[1:]]
+    assert entries[0]["status"] == "revoked" and entries[0]["review"]["decision"] == "rejected"
+    assert entries[0]["prior_review"]["decision"] == "ai_delegated"
+    assert af.load_facts(ledger_path) == []
+    assert load_module("run_smoke").load_facts(ledger_path) == []
+    assert af.export(review) == {"written": 0, "rejected": []}  # idempotent
+
+    final = tmp_path / "confirm.json"
+    final.write_text(json.dumps({"date": "2026-10-29", "decisions": [{
+        "candidate_id": candidate["candidate_id"], "final": "confirm",
+        "subject": candidate["subject"], "role": candidate["role"],
+        "value": candidate["value"]}]}), encoding="utf-8")
+    assert af.confirm_ai(final, "test")["written"] == 0
+    assert af.load_facts(ledger_path) == []
+
+
+def test_post_check_drops_facts_from_an_old_approval_hash():
+    text = "(단위: 원)\\n| 1인 | 4,000,000 |\\n| 2인 | 6,500,000 |"
+    old_hash = tg.approval_hash(text)
+    page = [{"id": "P", "title": "t", "text": text,
+             "source": {"approval_state": "approved", "approved_sha256": old_hash}}]
+    def fact(fid, house, amount):
+        return {"fact_id": fid, "status": "approved", "role": "deposit",
+                "source": {"page_id": "P", "page_approval_hash": old_hash},
+                "subject": {"status_code": "M-2", "sub_code": None, "procedure": "stay",
+                            "qualifiers": {"household_size": house, "row_label": None}},
+                "value": {"kind": "money", "unit": "krw", "amount": amount}}
+    facts = [fact("f1", 1, 4000000), fact("f2", 2, 6500000)]
+    ask = "M-2 2인 가구 예치금은?"
+    ans = {"status": "answered", "answer": "2인 가구 예치금은 4,000,000원입니다.", "citations": ["P"]}
+    assert tg.post_check(ans, page, facts=facts, question=ask)["subject_mismatches"]
+
+    # Re-approved replacement keeps the page id but reverses the two amounts.
+    page[0]["text"] = "(단위: 원)\\n| 1인 | 6,500,000 |\\n| 2인 | 4,000,000 |"
+    page[0]["source"]["approved_sha256"] = tg.approval_hash(page[0]["text"])
+    checked = tg.post_check(ans, page, facts=facts, question=ask)
+    assert checked["verdict"] == "pass" and checked["subject_mismatches"] == []
+
+    # An HWP layout hash is distinct, but the original PDF approval identity
+    # must still match before a fact is used.
+    page[0]["source"]["pdf_approved_sha256"] = old_hash
+    assert tg.post_check(ans, page, facts=facts, question=ask)["subject_mismatches"]
+    page[0]["source"]["pdf_approved_sha256"] = "f" * 64
+    assert not tg.post_check(ans, page, facts=facts, question=ask)["subject_mismatches"]
+
+
 def test_ai_first_pass_is_an_opinion_on_every_candidate_and_passes_the_export_checks():
     data = json.loads(af.AI_FIRST_PASS.read_text(encoding="utf-8"))
     assert "not a human review" in data["reviewer"] and "not an approval" in data["reviewer"]
@@ -162,6 +218,10 @@ def test_subject_check_marks_a_value_taken_from_another_household():
     facts = [fact("f1", 1, 4000000), fact("f2", 2, 6500000)]
     page = [{"id": "P", "title": "t", "text": "(단위: 원)\n| 가구원 수 | 예치금 |\n|---|---|\n| 1인 | 4,000,000 |\n| 2인 | 6,500,000 |",
              "source": {"approval_state": "approved"}}]
+    h = tg.approval_hash(page[0]["text"])
+    page[0]["source"]["approved_sha256"] = h
+    for f in facts:
+        f["source"]["page_approval_hash"] = h
     ask = "M-2 2인 가구 예치금은?"
     wrong = tg.post_check({"status": "answered", "answer": "2인 가구 예치금은 4,000,000원입니다.", "citations": ["P"]}, page, facts=facts, question=ask)
     right = tg.post_check({"status": "answered", "answer": "2인 가구 예치금은 6,500,000원입니다.", "citations": ["P"]}, page, facts=facts, question=ask)
@@ -180,6 +240,10 @@ def test_subject_check_reads_a_yearly_household_income_row_without_the_word_year
                 "value": {"kind": "money", "amount": amount, "unit": "krw"}}
     facts = [fact("f2", 2, 32154216, "연간"), fact("f3", 3, 38968428, "연간"), fact("fh", None, 5755188, "가구원 1인당")]
     page = [{"id": "P", "title": "t", "text": "소득기준 32,154,216 38,968,428 / 가구원 1인당 5,755,188", "source": {"approval_state": "approved"}}]
+    h = tg.approval_hash(page[0]["text"])
+    page[0]["source"]["approved_sha256"] = h
+    for f in facts:
+        f["source"]["page_approval_hash"] = h
     ask = "F-6 2인 가구 소득기준이 얼마인가요?"
     def marked(answer):
         return tg.post_check({"status": "answered", "answer": answer, "citations": ["P"]}, page, facts=facts, question=ask)["subject_mismatches"]
