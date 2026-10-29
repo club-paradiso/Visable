@@ -129,7 +129,7 @@ def test_rejecting_an_exported_ai_fact_revokes_it_everywhere(tmp_path, ledger_pa
 
 
 def test_post_check_drops_facts_from_an_old_approval_hash():
-    text = "(단위: 원)\\n| 1인 | 4,000,000 |\\n| 2인 | 6,500,000 |"
+    text = "(단위: 원)\n| 1인 | 4,000,000 |\n| 2인 | 6,500,000 |"
     old_hash = tg.approval_hash(text)
     page = [{"id": "P", "title": "t", "text": text,
              "source": {"approval_state": "approved", "approved_sha256": old_hash}}]
@@ -145,7 +145,7 @@ def test_post_check_drops_facts_from_an_old_approval_hash():
     assert tg.post_check(ans, page, facts=facts, question=ask)["subject_mismatches"]
 
     # Re-approved replacement keeps the page id but reverses the two amounts.
-    page[0]["text"] = "(단위: 원)\\n| 1인 | 6,500,000 |\\n| 2인 | 4,000,000 |"
+    page[0]["text"] = "(단위: 원)\n| 1인 | 6,500,000 |\n| 2인 | 4,000,000 |\n2인 가구 예치금은 4,000,000원"
     page[0]["source"]["approved_sha256"] = tg.approval_hash(page[0]["text"])
     checked = tg.post_check(ans, page, facts=facts, question=ask)
     assert checked["verdict"] == "pass" and checked["subject_mismatches"] == []
