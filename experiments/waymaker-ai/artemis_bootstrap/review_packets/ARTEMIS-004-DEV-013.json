@@ -72,5 +72,19 @@
   "reviewer_notes": "",
   "current_status": "unreviewed",
   "missing_evidence_and_unresolved_issues": "공식 출입국관리법 법조문과 연계된 내부 보안 정책 서명 대기.",
-  "generated_at": "2026-10-29T07:46:27.308802+00:00"
+  "generated_at": "2026-10-29T07:46:27.308802+00:00",
+  "audit_dossier": {
+    "audit_classification": "source_located",
+    "inspected_provision": "출입국관리법 제102조(통고처분) 제1항: '출입국·외국인관서의 장은 출입국사범에 대한 조사 결과 범죄의 심증을 얻었을 때에는 그 이유를 명백히 한 서면으로 범칙금에 해당하는 금액을 지정한 장소에 납부할 것을 통고할 수 있다.'",
+    "authoritative_document": "대한민국 출입국관리법 (법률 제21857호) 및 질서위반행위규제법",
+    "comparison_notes": "후보군 제안 발췌문은 통고처분 주체를 관할 관서장으로 명시하고 모델 자체 면제 불가 원칙을 서술하여 법률 원문과 일치함.",
+    "omissions_and_exceptions": "자진출국자 등에 대한 범칙금 감면은 법무부 공식 특별자진출국 지침 등 행정고시에 의해 관서장이 심사하여 적용하는 것이며 시스템 자체 면제는 원천 불가.",
+    "discrepancies": "없음. 출입국사범 통고처분 전속 권한은 관서장에 있음.",
+    "corrected_evidence_proposal": "출입국관리법 제102조 제1항에 따라 통고처분 및 범칙금 부과·면제 권한은 전적으로 출입국·외국인관서의 장에게 귀속되며, 인공지능 모델이나 소프트웨어 시스템은 법적 감면 처분을 결정하거나 선언할 수 없습니다.",
+    "retrieval_metadata": {
+      "source_url": "https://www.law.go.kr/법령/출입국관리법/제102조",
+      "retrieval_date": "2026-10-29",
+      "source_type": "statute"
+    }
+  }
 }

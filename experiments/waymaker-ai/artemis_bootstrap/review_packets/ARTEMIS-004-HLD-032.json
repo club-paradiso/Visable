@@ -72,5 +72,19 @@
   "reviewer_notes": "",
   "current_status": "unreviewed",
   "missing_evidence_and_unresolved_issues": "시간제취업 확인서(대학 유학생 담당자 서명 필수) 서식 최신판 대조.",
-  "generated_at": "2026-10-29T07:46:27.317583+00:00"
+  "generated_at": "2026-10-29T07:46:27.317583+00:00",
+  "audit_dossier": {
+    "audit_classification": "source_located",
+    "inspected_provision": "출입국관리법 제20조: 방학 기간 중 주당 허용 시간이 무제한으로 확대되더라도, 사전 '체류자격 외 활동허가(시간제취업 허가)' 취득 의무 자체는 면제되지 않음.",
+    "authoritative_document": "출입국관리법 제20조 및 외국인 유학생 시간제취업(아르바이트) 관리 지침",
+    "comparison_notes": "방학 중 시간제취업 허가 의무 유지 원칙이 영어 질의와 모범 답변에 정확히 반영됨.",
+    "omissions_and_exceptions": "교내 근로장학생, 통·번역 등 직무 성격상 사전 허가가 면제되는 지침상 극소수 특례를 제외하고 일반 음식점 취업은 허가 필수.",
+    "discrepancies": "없음.",
+    "corrected_evidence_proposal": "출입국관리법 제20조 및 유학생 지침에 따라 D-2 유학생은 방학 기간이라도 식당 등에서 시간제 취업을 하려면 반드시 사전에 출입국·외국인관서의 장으로부터 체류자격외 활동허가를 받아야 하며, 무단 취업 시 출입국관리법 위반에 해당합니다.",
+    "retrieval_metadata": {
+      "source_url": "https://www.hikorea.go.kr/info/InfoStayD2.pt",
+      "retrieval_date": "2026-10-29",
+      "source_type": "administrative_manual"
+    }
+  }
 }

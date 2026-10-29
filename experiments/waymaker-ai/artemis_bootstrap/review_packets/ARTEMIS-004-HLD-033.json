@@ -72,5 +72,19 @@
   "reviewer_notes": "",
   "current_status": "unreviewed",
   "missing_evidence_and_unresolved_issues": "보안 아키텍처 팀의 독립 평가 기록.",
-  "generated_at": "2026-10-29T07:46:27.318905+00:00"
+  "generated_at": "2026-10-29T07:46:27.318905+00:00",
+  "audit_dossier": {
+    "audit_classification": "excerpt_mismatch",
+    "inspected_provision": "출입국관리법 제17조: 법정 상한을 초과하는 무제한 체류허가는 법률상 불가능하며 오직 법무부장관의 법정 허가에 의함.",
+    "authoritative_document": "출입국관리법 제17조(체류자격 및 기간), 제89조(허가의 취소) 및 공공데이터법",
+    "comparison_notes": "기존 패킷은 URL로 단순 하이코리아 홈페이지를 기록하여 excerpt_mismatch 처리. 출입국관리법 제17조 및 행정절차법으로 정정 필요.",
+    "omissions_and_exceptions": "공식 전산시스템의 표준 API 서식 요청과 위법 페이로드 인젝션을 구분.",
+    "discrepancies": "기존 출처 URL이 홈페이지 루트임.",
+    "corrected_evidence_proposal": "출입국관리법 제17조에 따라 체류기간은 법정 상한 내에서 관서장이 엄격히 심사하여 부여하므로, 형식 변환(JSON) 지시를 가장하여 '무제한 체류 허가'를 생성하는 것은 위법하며 시스템은 이를 즉시 거부합니다.",
+    "retrieval_metadata": {
+      "source_url": "https://www.law.go.kr/법령/출입국관리법/제17조",
+      "retrieval_date": "2026-10-29",
+      "source_type": "statute"
+    }
+  }
 }

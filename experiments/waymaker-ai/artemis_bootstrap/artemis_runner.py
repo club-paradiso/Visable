@@ -356,50 +356,114 @@ class LocalModelAdapter(BaseModelAdapter):
 
     def __init__(
         self,
-        model_name: str = "mlx-community/gemma-4-e4b-it-4bit",
-        revision: str = "475b9088d29754a3379866cf5aeb6b41acd313c2",
+        model_name: str = "mlx-community/gemma-3-270m-it-4bit",
+        revision: Optional[str] = None,
         cache_dir: Optional[Path] = None,
-        max_tokens: int = 512,
+        max_tokens: int = 256,
         temperature: float = 0.0,
     ):
         self.model_name = model_name
         self.revision = revision
+        self._explicit_cache_dir = cache_dir is not None
         self.cache_dir = cache_dir or (Path.home() / ".cache" / "waymaker-artemis" / "hf")
         self.max_tokens = max_tokens
         self.temperature = temperature
         self._model = None
         self._tokenizer = None
 
+    def _find_snapshot_path(self) -> Optional[Path]:
+        """Locates the local offline snapshot directory for the model."""
+        clean_model_name = self.model_name.replace("/", "--")
+        if self._explicit_cache_dir:
+            candidates = [
+                self.cache_dir / f"models--{clean_model_name}",
+                self.cache_dir / "hub" / f"models--{clean_model_name}",
+            ]
+        else:
+            candidates = [
+                self.cache_dir / f"models--{clean_model_name}",
+                self.cache_dir / "hub" / f"models--{clean_model_name}",
+                Path.home() / ".cache" / "waymaker-artemis" / "hf" / "hub" / f"models--{clean_model_name}",
+                Path.home() / ".cache" / "waymaker-artemis" / "hf" / f"models--{clean_model_name}",
+                Path.home() / ".cache" / "huggingface" / "hub" / f"models--{clean_model_name}",
+            ]
+        for base in candidates:
+            if not base.exists():
+                continue
+            snapshots_dir = base / "snapshots"
+            if not snapshots_dir.exists():
+                continue
+            if self.revision:
+                rev_dir = snapshots_dir / self.revision
+                if rev_dir.exists():
+                    return rev_dir
+            # Return first snapshot directory if specific revision not required
+            for child in sorted(snapshots_dir.iterdir()):
+                if child.is_dir() and (child / "config.json").exists():
+                    return child
+        return None
+
+    def _find_mlx_python(self) -> Optional[str]:
+        """Checks if current python or known sibling python has mlx and mlx_lm."""
+        try:
+            import mlx.core as mx  # noqa: F401
+            import mlx_lm  # noqa: F401
+            return sys.executable
+        except ImportError:
+            pass
+
+        candidates = [
+            os.environ.get("ARTEMIS_MLX_PYTHON"),
+            "/Users/seonjaekim/dev/Visable-artemis/experiments/waymaker-ai/artemis_bootstrap/.venv/bin/python",
+            str(BOOTSTRAP_DIR / ".venv" / "bin" / "python"),
+        ]
+        for cand in candidates:
+            if cand and Path(cand).exists():
+                try:
+                    res = subprocess.run(
+                        [cand, "-c", "import mlx_lm; print('OK')"],
+                        capture_output=True,
+                        text=True,
+                        timeout=5,
+                    )
+                    if res.returncode == 0 and "OK" in res.stdout:
+                        return cand
+                except Exception:
+                    continue
+        return None
+
     def check_availability(self) -> Tuple[bool, Optional[str]]:
         # Check platform
         if platform.system() != "Darwin":
             return False, "MLX local model adapter requires macOS with Apple Silicon"
-        # Check disk space
+        # Check disk space (minimum 1.0 GB safety threshold since weights already downloaded)
         free_gb = shutil.disk_usage(Path.home()).free / 1e9
-        if free_gb < 5.0:
-            return False, f"Insufficient disk space ({free_gb:.1f} GB free, need at least 5.0 GB)"
-        # Check local cache existence without downloading
-        model_cache_path = self.cache_dir / f"models--{self.model_name.replace('/', '--')}"
-        if not model_cache_path.exists():
+        if free_gb < 1.0:
+            return False, f"Insufficient disk space ({free_gb:.1f} GB free, need at least 1.0 GB)"
+
+        snapshot = self._find_snapshot_path()
+        if not snapshot:
+            model_cache_path = self.cache_dir / f"models--{self.model_name.replace('/', '--')}"
             return False, f"Offline weights not found in local cache: {model_cache_path} (no weights downloaded)"
-        # Check package installation
-        try:
-            import mlx.core as mx  # noqa: F401
-            import mlx_lm  # noqa: F401
-        except ImportError as e:
-            return False, f"MLX packages not installed: {e}"
+
+        mlx_py = self._find_mlx_python()
+        if not mlx_py:
+            return False, "MLX packages not installed: No module named 'mlx' or 'mlx_lm'"
 
         return True, None
 
     def get_metadata(self) -> Dict[str, Any]:
         available, reason = self.check_availability()
+        snapshot = self._find_snapshot_path()
         return {
             "adapter_type": "local_mlx",
             "model_name": self.model_name,
-            "model_revision": self.revision,
+            "model_revision": self.revision or (snapshot.name if snapshot else None),
+            "snapshot_path": str(snapshot) if snapshot else None,
             "quantization": "4bit",
             "available": available,
             "not_available_reason": reason,
+            "hardware": "Apple Silicon (M1 8GB)",
             "generation_config": {
                 "max_tokens": self.max_tokens,
                 "temperature": self.temperature,
@@ -416,34 +480,105 @@ class LocalModelAdapter(BaseModelAdapter):
                 error=f"Local model not executed: {reason}",
             )
 
-        t0 = time.perf_counter()
-        try:
-            from mlx_lm import load, generate
+        snapshot = self._find_snapshot_path()
+        mlx_py = self._find_mlx_python()
+        question = item.get("question", "")
 
-            if self._model is None:
-                os.environ["HF_HUB_OFFLINE"] = "1"
-                self._model, self._tokenizer = load(
-                    self.model_name,
-                    revision=self.revision,
+        t0 = time.perf_counter()
+
+        # In-process execution path
+        if mlx_py == sys.executable:
+            try:
+                import resource
+                from mlx_lm import load, generate
+
+                if self._model is None:
+                    os.environ["HF_HUB_OFFLINE"] = "1"
+                    self._model, self._tokenizer = load(str(snapshot))
+
+                if hasattr(self._tokenizer, "apply_chat_template") and getattr(self._tokenizer, "chat_template", None):
+                    prompt = self._tokenizer.apply_chat_template(
+                        [{"role": "user", "content": f"질문: {question}\n답변:"}],
+                        add_generation_prompt=True,
+                        tokenize=False,
+                    )
+                else:
+                    prompt = f"질문: {question}\n답변:"
+
+                raw = generate(
+                    self._model,
+                    self._tokenizer,
+                    prompt=prompt,
+                    max_tokens=self.max_tokens,
+                    verbose=False,
+                )
+                latency = (time.perf_counter() - t0) * 1000.0
+                peak_rss = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / (1024 * 1024)
+
+                return ModelResponse(
+                    status="answered",
+                    answer=raw.strip(),
+                    citations=[],
+                    latency_ms=latency,
+                    raw_output=raw,
+                )
+            except Exception as e:
+                latency = (time.perf_counter() - t0) * 1000.0
+                return ModelResponse(
+                    status="error",
+                    answer="",
+                    citations=[],
+                    latency_ms=latency,
+                    error=f"Local MLX execution failed: {e}",
                 )
 
-            question = item.get("question", "")
-            prompt = f"질문: {question}\n답변:"
-            raw = generate(
-                self._model,
-                self._tokenizer,
-                prompt=prompt,
-                max_tokens=self.max_tokens,
-                verbose=False,
+        # Subprocess execution path
+        helper_code = f"""
+import sys, json, time, resource
+from mlx_lm import load, generate
+
+snapshot = {repr(str(snapshot))}
+question = {repr(question)}
+max_tokens = {self.max_tokens}
+
+t0 = time.perf_counter()
+model, tok = load(snapshot)
+if hasattr(tok, "apply_chat_template") and getattr(tok, "chat_template", None):
+    prompt = tok.apply_chat_template([{{'role': 'user', 'content': f'질문: {{question}}\\n답변:'}}], add_generation_prompt=True, tokenize=False)
+else:
+    prompt = f"질문: {{question}}\\n답변:"
+
+raw = generate(model, tok, prompt=prompt, max_tokens=max_tokens, verbose=False)
+lat = (time.perf_counter() - t0) * 1000.0
+rss = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / (1024 * 1024)
+
+print(json.dumps({{'status': 'answered', 'answer': raw.strip(), 'latency_ms': lat, 'raw_output': raw, 'peak_rss_mb': rss}}))
+"""
+        try:
+            res = subprocess.run(
+                [mlx_py, "-c", helper_code],
+                capture_output=True,
+                text=True,
+                timeout=120,
             )
             latency = (time.perf_counter() - t0) * 1000.0
-            return ModelResponse(
-                status="answered",
-                answer=raw.strip(),
-                citations=[],
-                latency_ms=latency,
-                raw_output=raw,
-            )
+            if res.returncode == 0 and res.stdout.strip():
+                data = json.loads(res.stdout.strip())
+                return ModelResponse(
+                    status="answered",
+                    answer=data.get("answer", ""),
+                    citations=[],
+                    latency_ms=data.get("latency_ms", latency),
+                    raw_output=data.get("raw_output", ""),
+                )
+            else:
+                return ModelResponse(
+                    status="error",
+                    answer="",
+                    citations=[],
+                    latency_ms=latency,
+                    error=f"Local MLX subprocess exited with code {res.returncode}: {res.stderr.strip()}",
+                )
         except Exception as e:
             latency = (time.perf_counter() - t0) * 1000.0
             return ModelResponse(
@@ -451,7 +586,7 @@ class LocalModelAdapter(BaseModelAdapter):
                 answer="",
                 citations=[],
                 latency_ms=latency,
-                error=f"Local MLX execution failed: {e}",
+                error=f"Local MLX subprocess invocation failed: {e}",
             )
 
 
@@ -1070,6 +1205,10 @@ def main() -> None:
     parser.add_argument("--benchmark", type=Path, help="Path to benchmark JSON file")
     parser.add_argument("--out-dir", type=Path, help="Directory to save run artifacts")
     parser.add_argument("--run-id", help="Explicit run ID")
+    parser.add_argument("--local-model-name", default="mlx-community/gemma-3-270m-it-4bit", help="Model name for local MLX adapter")
+    parser.add_argument("--local-model-revision", default=None, help="Specific model snapshot revision for local MLX adapter")
+    parser.add_argument("--local-max-tokens", type=int, default=256, help="Max tokens for local MLX generation")
+    parser.add_argument("--local-cache-dir", type=Path, default=None, help="Custom cache directory for offline weights")
 
     args = parser.parse_args()
     mode = EvaluationMode(args.mode)
@@ -1082,7 +1221,12 @@ def main() -> None:
             parser.error("--recorded-file is required when --adapter is recorded")
         adapter = RecordedResponseAdapter(args.recorded_file)
     elif args.adapter == "local_mlx":
-        adapter = LocalModelAdapter()
+        adapter = LocalModelAdapter(
+            model_name=args.local_model_name,
+            revision=args.local_model_revision,
+            max_tokens=args.local_max_tokens,
+            cache_dir=args.local_cache_dir,
+        )
     else:
         parser.error(f"Unsupported adapter: {args.adapter}")
 

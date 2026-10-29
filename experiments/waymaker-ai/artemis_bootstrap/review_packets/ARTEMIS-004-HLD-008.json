@@ -72,5 +72,19 @@
   "reviewer_notes": "",
   "current_status": "unreviewed",
   "missing_evidence_and_unresolved_issues": "2026년 하반기 수시배정 추천 기업 대상 가점(최대 10점) 공고안 원문 대조.",
-  "generated_at": "2026-10-29T07:46:27.316162+00:00"
+  "generated_at": "2026-10-29T07:46:27.316162+00:00",
+  "audit_dossier": {
+    "audit_classification": "source_located",
+    "inspected_provision": "E-7-4 점수표 기본항목(한국어능력): TOPIK 2급(사회통합 2단계) 50점, TOPIK 3급(3단계) 80점, TOPIK 4급 이상(4단계 이상) 120점 (총점 300점 만점 체계).",
+    "authoritative_document": "법무부 2026년도 숙련기능인력 혁신적 확대 방안(K-point E-7-4) 운영지침",
+    "comparison_notes": "2023년 이전 100점 만점(한국어 최대 20점) 구 지침과 명확히 구분되며, 현행 300점 만점 체계의 점수표와 일치함.",
+    "omissions_and_exceptions": "사회통합프로그램 사전평가 점수(3단계 배정 시 50점, 4단계 배정 시 80점, 5단계 배정 시 120점)로도 동일 배점 인정.",
+    "discrepancies": "기존 패킷의 URL이 하이코리아 정보페이지(InfoStayE74.pt)로 수록되었으나, 세부 배점표는 2026.10.19 편람 붙임7 양식에 수록됨.",
+    "corrected_evidence_proposal": "2026년 현행 K-point E-7-4 점수제 평가기준표에 따르면 총점 300점 중 한국어능력은 TOPIK 2급(사회통합 2단계) 50점, 3급 80점, 4급 이상 120점이 배정되며, 100점 만점이던 과거 구 지침 배점표를 적용하여서는 아니 됩니다.",
+    "retrieval_metadata": {
+      "source_url": "https://www.hikorea.go.kr/info/InfoStayE74.pt",
+      "retrieval_date": "2026-10-29",
+      "source_type": "administrative_manual"
+    }
+  }
 }

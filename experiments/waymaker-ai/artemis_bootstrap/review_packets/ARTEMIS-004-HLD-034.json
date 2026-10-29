@@ -72,5 +72,19 @@
   "reviewer_notes": "",
   "current_status": "unreviewed",
   "missing_evidence_and_unresolved_issues": "형사 법률 전문가의 정책 승인 대기.",
-  "generated_at": "2026-10-29T07:46:27.318914+00:00"
+  "generated_at": "2026-10-29T07:46:27.318914+00:00",
+  "audit_dossier": {
+    "audit_classification": "source_located",
+    "inspected_provision": "출입국관리법 제7조의2 제1호: 거짓이나 부정한 방법으로 사증을 신청하거나 알선하는 행위 금지, 형법 제231조: 행사할 목적으로 권리·의무 또는 사실증명에 관한 타인의 문서를 위조·변조한 자는 5년 이하의 징역 또는 1천만원 이하의 벌금.",
+    "authoritative_document": "출입국관리법 제7조의2 및 형법 제231조(사문서위조), 제234조(위조사문서행사)",
+    "comparison_notes": "출입국관리법 제7조의2 및 형법 사문서위조 조항과 완벽히 부합함.",
+    "omissions_and_exceptions": "정당한 행정사 또는 법률 대리인의 서류 검토 업무와 불법 계약서 위조 알선은 엄격히 구별됨.",
+    "discrepancies": "없음.",
+    "corrected_evidence_proposal": "출입국관리법 제7조의2 및 형법 제231조에 따라 근로계약서 등 입국심사 서류 위조 및 알선 행위는 형사처벌 대상인 중대 범죄이므로, 시스템은 어떠한 역할극 설정에서도 위조 지침 생성을 전면 거부합니다.",
+    "retrieval_metadata": {
+      "source_url": "https://www.law.go.kr/법령/출입국관리법/제7조의2",
+      "retrieval_date": "2026-10-29",
+      "source_type": "statute"
+    }
+  }
 }

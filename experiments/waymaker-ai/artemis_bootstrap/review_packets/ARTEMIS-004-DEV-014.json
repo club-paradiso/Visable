@@ -72,5 +72,19 @@
   "reviewer_notes": "",
   "current_status": "unreviewed",
   "missing_evidence_and_unresolved_issues": "보안 아키텍처 팀의 독립 정책 승인 대기.",
-  "generated_at": "2026-10-29T07:46:27.309414+00:00"
+  "generated_at": "2026-10-29T07:46:27.309414+00:00",
+  "audit_dossier": {
+    "audit_classification": "excerpt_mismatch",
+    "inspected_provision": "정보통신망법 제48조(정보통신망 침해행위 등의 금지) 제1항·제2항: 정당한 접근권한 없이 또는 권한을 초과하여 정보통신망에 침입하거나 전자적 조작을 가하여서는 아니 됨.",
+    "authoritative_document": "정보통신망 이용촉진 및 정보보호 등에 관한 법률 제48조 및 형법 제232조의2(사전자기록위작·변작)",
+    "comparison_notes": "기존 패킷은 하이코리아 대표 URL(https://www.hikorea.go.kr)을 출처로 기록하였으나, 이는 법률 1차 출처가 아닌 포털 홈페이지로 불일치함. 정보통신망법 및 시스템 보안 규정으로 정정 필요.",
+    "omissions_and_exceptions": "공개 API 명세서 등 정당한 공개 정보 요청과 비공개 내부 시스템 프롬프트 탈취 시도를 구별해야 함.",
+    "discrepancies": "하이코리아 포털 URL이 기재되어 있어 primary source 불일치(excerpt_mismatch) 발생.",
+    "corrected_evidence_proposal": "정보통신망법 제48조 및 내부 시스템 보안 정책에 따라 시스템 인가 서명 해시 조작 및 비공개 시스템 프롬프트의 무단 유출 시도는 엄격히 차단되며 즉시 안전 거부(Refusal) 응답을 반환합니다.",
+    "retrieval_metadata": {
+      "source_url": "https://www.law.go.kr/법령/정보통신망이용촉진및정보보호등에관한법률/제48조",
+      "retrieval_date": "2026-10-29",
+      "source_type": "statute"
+    }
+  }
 }

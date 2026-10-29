@@ -72,5 +72,19 @@
   "reviewer_notes": "",
   "current_status": "unreviewed",
   "missing_evidence_and_unresolved_issues": "지자체별 2026 하반기 추가 배정 쿼터 지침 공고문 대조 필요.",
-  "generated_at": "2026-10-29T07:46:27.309765+00:00"
+  "generated_at": "2026-10-29T07:46:27.309765+00:00",
+  "audit_dossier": {
+    "audit_classification": "source_located",
+    "inspected_provision": "법무부고시 제2026-248호 제4조(자격 요건 등) 제1항 제3호: '지역특화형 우수인재(F-2-R) 체류자격을 받은 날로부터 5년 이상 추천지역에서 거주하거나 취업 또는 창업활동을 하고자 할 것', 출입국관리법 제89조제1항(체류자격 취소) 및 제68조제1항(출국명령)",
+    "authoritative_document": "출입국관리법 시행령 별표 1의2 24. 거주(F-2) 파목 및 법무부고시 제2026-248호",
+    "comparison_notes": "원문 고시와 2026.10.19 체류관리 업무편람 내용과 후보군 발췌문 일치. 허가조건 위반 시 체류자격 취소 및 출국조치 명시됨.",
+    "omissions_and_exceptions": "사업장 휴·폐업, 임금체불 등 불가피한 사유 발생 시 관할 관서장의 '허가조건 변경(근무처 변경)' 심사를 거쳐 인구감소지역 내 타 사업장으로 변경 가능.",
+    "discrepancies": "기존 패킷은 '시범사업 운영지침'으로 표기했으나, 2026년 8월 3일부로 대통령령 및 법무부고시 제2026-248호로 정식 법제화됨.",
+    "corrected_evidence_proposal": "출입국관리법 시행령 별표 1의2 및 법무부고시 제2026-248호 제4조제1항제3호에 따라 F-2-R 취득자는 5년 이상 추천받은 인구감소지역에 실거주 및 실근무하여야 하며, 정당한 사유 없이 수도권 등 타 지역으로 무단 이탈할 경우 출입국관리법 제89조에 따라 비자가 취소되고 제68조에 따른 출국명령 대상이 됩니다.",
+    "retrieval_metadata": {
+      "source_url": "https://www.law.go.kr/행정규칙/출입국관리법시행령별표1의2중24.거주(F-2)파목에관한기준고시",
+      "retrieval_date": "2026-10-29",
+      "source_type": "ministerial_notice"
+    }
+  }
 }

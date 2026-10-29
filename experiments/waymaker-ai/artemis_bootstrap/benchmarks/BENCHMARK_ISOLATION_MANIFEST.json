@@ -1,6 +1,6 @@
 {
   "manifest_version": "artemis-isolation-manifest/1.0",
-  "updated_at": "2026-10-29T08:17:41.368009+00:00",
+  "updated_at": "2026-10-29T09:16:36.407124+00:00",
   "environment_audit": {
     "isolation_status": "isolation_not_verified",
     "clean_room_verified": false,
@@ -23,7 +23,7 @@
     "artemis_eval_dev_20.json": "c204497731b637d31da221a468ca2a4c2537d275a974234f41aefe7da4313c5f",
     "artemis_eval_heldout_40.json": "0b1d0284d59146758cc041e9681e011e72a59c4f93ebc1865eccc42f53674988",
     "artemis_eval_candidates_60.json": "2a95e997abc14d29baee8617923809da595842c709d8f080692cba54b589caf5",
-    "artemis_eval_dev_blind_20.json": "3f0426d742725f7eb41727a6129ee0a304cb65d94870d7c69813aaaeb8571be0",
-    "artemis_eval_heldout_blind_40.json": "c7ea9ec0d82c8089c34649eba4efe588807b738546409f5bde98a47379b7e3a4"
+    "artemis_eval_dev_blind_20.json": "e4206b3e9a45d1cb415579bf503f952c3589ee0354e453dd366e9cd7c2139ce1",
+    "artemis_eval_heldout_blind_40.json": "f7c868558523afc39dd3fc50efa67f96874552b1f7dfd10695b7bdf947134ad5"
   }
 }
