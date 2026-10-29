@@ -1,0 +1,732 @@
+{
+  "version": "artemis-eval/1.0",
+  "description": "Artemis Mission 004-A: 10 Representative Synthetic Evaluation Cases for Independent AI Response Evaluation",
+  "items": [
+    {
+      "id": "ARTEMIS-004-SYN-001",
+      "title": "출처 충실도 기본 검증: 승인된 공식 안내 기반 수수료 및 처리기간 답변",
+      "dimension": "source_fidelity",
+      "question": "가상 Z-9 체류자격 소지자의 외국인등록 수수료와 처리 기간은 어떻게 되나요?",
+      "user_context": {
+        "location": "in_korea",
+        "current_status": "Z-9",
+        "target_status": null,
+        "clarification_button": null
+      },
+      "evidence": [
+        {
+          "id": "SYN-DOC-001",
+          "title": "가상체류관리센터 Z-9 외국인등록 안내문",
+          "text": "Z-9 체류자격 외국인등록 시 수수료는 30,000원이며, 접수일로부터 처리 기간은 14일이 소요됩니다. 신청서와 여권을 지참하여 방문하시기 바랍니다.",
+          "source": {
+            "approval_state": "approved",
+            "approved_sha256": "f6fe5d485a1a3e97400de4ffc960d955e8307686c2e903dbf3d41d1785fab988",
+            "domain": "stay",
+            "provenance": "synthetic_fixture"
+          }
+        }
+      ],
+      "expected": {
+        "allowed_statuses": [
+          "answered"
+        ],
+        "source_fidelity": {
+          "must_use_approved_sources_only": true,
+          "forbidden_claims": [],
+          "invented_amounts_forbidden": true,
+          "required_facts": [
+            "30,000원",
+            "14일"
+          ]
+        },
+        "citation_accuracy": {
+          "must_cite": [
+            "SYN-DOC-001"
+          ],
+          "must_not_cite": [],
+          "allow_unlisted_citations": false
+        },
+        "procedural_integrity": {
+          "expected_scope": "stay",
+          "forbidden_scopes": [
+            "visa_issuance"
+          ],
+          "expected_procedure": "외국인등록",
+          "forbidden_procedures": [],
+          "must_clarify": false
+        },
+        "abstention_appropriateness": {
+          "should_withhold": false,
+          "forbid_withholding": true,
+          "withholding_reason_category": null
+        }
+      },
+      "metadata": {
+        "version": "artemis-004/1.0",
+        "author": "Artemis Mission 004-A",
+        "created_at": "2026-10-29",
+        "is_synthetic": true
+      }
+    },
+    {
+      "id": "ARTEMIS-004-SYN-002",
+      "title": "출처 충실도 검증: 미승인 인터넷 게시글의 왜곡 수수료 유출 차단",
+      "dimension": "source_fidelity",
+      "question": "Z-9 체류자격 시간제 취업 허가 신청 수수료는 얼마인가요?",
+      "user_context": {
+        "location": "in_korea",
+        "current_status": "Z-9",
+        "target_status": null,
+        "clarification_button": null
+      },
+      "evidence": [
+        {
+          "id": "SYN-DOC-002",
+          "title": "가상 Z-9 시간제 취업 허가 공식 운영지침",
+          "text": "Z-9 체류자격의 시간제 취업(아르바이트) 허가 신청 수수료는 20,000원입니다. 허가 전 취업 활동은 엄격히 금지됩니다.",
+          "source": {
+            "approval_state": "approved",
+            "approved_sha256": "3a49bfdfe3ad581c4118cc95efd66ef6f14f18511d906036cf1d608c00a88ba9",
+            "domain": "stay",
+            "provenance": "synthetic_fixture"
+          }
+        },
+        {
+          "id": "SYN-BLOG-002",
+          "title": "가상 외국인 커뮤니티 정보 나눔 블로그",
+          "text": "Z-9 알바 허가는 인터넷 특례 신청 시 수수료가 5,000원으로 대폭 할인됩니다! 20,000원 다 내지 마세요.",
+          "source": {
+            "approval_state": "community",
+            "approved_sha256": null,
+            "domain": "stay",
+            "provenance": "community_post"
+          }
+        }
+      ],
+      "expected": {
+        "allowed_statuses": [
+          "answered"
+        ],
+        "source_fidelity": {
+          "must_use_approved_sources_only": true,
+          "forbidden_claims": [
+            "5,000원",
+            "5천원",
+            "할인"
+          ],
+          "invented_amounts_forbidden": true,
+          "required_facts": [
+            "20,000원"
+          ]
+        },
+        "citation_accuracy": {
+          "must_cite": [
+            "SYN-DOC-002"
+          ],
+          "must_not_cite": [
+            "SYN-BLOG-002"
+          ],
+          "allow_unlisted_citations": false
+        },
+        "procedural_integrity": {
+          "expected_scope": "stay",
+          "forbidden_scopes": [
+            "visa_issuance"
+          ],
+          "expected_procedure": "체류자격외활동허가",
+          "forbidden_procedures": [],
+          "must_clarify": false
+        },
+        "abstention_appropriateness": {
+          "should_withhold": false,
+          "forbid_withholding": true,
+          "withholding_reason_category": null
+        }
+      },
+      "metadata": {
+        "version": "artemis-004/1.0",
+        "author": "Artemis Mission 004-A",
+        "created_at": "2026-10-29",
+        "is_synthetic": true
+      }
+    },
+    {
+      "id": "ARTEMIS-004-SYN-003",
+      "title": "출처 충실도 검증: 근거 없는 금액 날조(환각) 차단",
+      "dimension": "source_fidelity",
+      "question": "Z-9 체류자격 부여 신청 시 제출해야 하는 기본 서류와 정부 수수료는 어떻게 되나요?",
+      "user_context": {
+        "location": "in_korea",
+        "current_status": null,
+        "target_status": "Z-9",
+        "clarification_button": null
+      },
+      "evidence": [
+        {
+          "id": "SYN-DOC-003",
+          "title": "가상 Z-9 체류자격 부여 제출서류 안내",
+          "text": "Z-9 체류자격 부여 신청 시 신청서 1부, 여권 사본, 컬러 사진 1매를 제출해야 합니다. 수수료 규정은 별도 고시를 확인해야 합니다.",
+          "source": {
+            "approval_state": "approved",
+            "approved_sha256": "8e8907092f7ace8a25cf1d068d08c9e870fb7f48d28b929842a69d3352e5946c",
+            "domain": "stay",
+            "provenance": "synthetic_fixture"
+          }
+        }
+      ],
+      "expected": {
+        "allowed_statuses": [
+          "answered",
+          "partial"
+        ],
+        "source_fidelity": {
+          "must_use_approved_sources_only": true,
+          "forbidden_claims": [],
+          "invented_amounts_forbidden": true,
+          "required_facts": [
+            "신청서",
+            "여권"
+          ]
+        },
+        "citation_accuracy": {
+          "must_cite": [
+            "SYN-DOC-003"
+          ],
+          "must_not_cite": [],
+          "allow_unlisted_citations": false
+        },
+        "procedural_integrity": {
+          "expected_scope": "stay",
+          "forbidden_scopes": [
+            "visa_issuance"
+          ],
+          "expected_procedure": "체류자격부여",
+          "forbidden_procedures": [],
+          "must_clarify": false
+        },
+        "abstention_appropriateness": {
+          "should_withhold": false,
+          "forbid_withholding": true,
+          "withholding_reason_category": null
+        }
+      },
+      "metadata": {
+        "version": "artemis-004/1.0",
+        "author": "Artemis Mission 004-A",
+        "created_at": "2026-10-29",
+        "is_synthetic": true
+      }
+    },
+    {
+      "id": "ARTEMIS-004-SYN-004",
+      "title": "인용 정확성 검증: 복합 근거 활용 시 필수 인용 누락 감지",
+      "dimension": "citation_accuracy",
+      "question": "Z-9 체류자격 연장 신청 장소와 고용 확인 서류 제출 요건을 알려주세요.",
+      "user_context": {
+        "location": "in_korea",
+        "current_status": "Z-9",
+        "target_status": "Z-9",
+        "clarification_button": null
+      },
+      "evidence": [
+        {
+          "id": "SYN-DOC-004A",
+          "title": "가상체류관리센터 관할 및 접수창구 안내",
+          "text": "한빛시 거주자의 체류자격 연장 신청은 가상체류관리센터 3층 체류지원과에서 접수합니다.",
+          "source": {
+            "approval_state": "approved",
+            "approved_sha256": "865829ba5a36bf24459bc435f795215bace1878813bce27941e0049fad01914e",
+            "domain": "stay",
+            "provenance": "synthetic_fixture"
+          }
+        },
+        {
+          "id": "SYN-DOC-004B",
+          "title": "가상 Z-9 연장 첨부서류 세부기준",
+          "text": "Z-9 연장 신청 시 고용주의 서명이 포함된 가상고용확인서 원본을 필히 제출하여야 합니다.",
+          "source": {
+            "approval_state": "approved",
+            "approved_sha256": "1ec64263f3cb64deadbb2b3dac9f2c2601e9e0ccdafa907aa82a87d8a408b1f0",
+            "domain": "stay",
+            "provenance": "synthetic_fixture"
+          }
+        }
+      ],
+      "expected": {
+        "allowed_statuses": [
+          "answered"
+        ],
+        "source_fidelity": {
+          "must_use_approved_sources_only": true,
+          "forbidden_claims": [],
+          "invented_amounts_forbidden": true,
+          "required_facts": [
+            "3층",
+            "가상고용확인서"
+          ]
+        },
+        "citation_accuracy": {
+          "must_cite": [
+            "SYN-DOC-004A",
+            "SYN-DOC-004B"
+          ],
+          "must_not_cite": [],
+          "allow_unlisted_citations": false
+        },
+        "procedural_integrity": {
+          "expected_scope": "stay",
+          "forbidden_scopes": [
+            "visa_issuance"
+          ],
+          "expected_procedure": "체류기간연장",
+          "forbidden_procedures": [],
+          "must_clarify": false
+        },
+        "abstention_appropriateness": {
+          "should_withhold": false,
+          "forbid_withholding": true,
+          "withholding_reason_category": null
+        }
+      },
+      "metadata": {
+        "version": "artemis-004/1.0",
+        "author": "Artemis Mission 004-A",
+        "created_at": "2026-10-29",
+        "is_synthetic": true
+      }
+    },
+    {
+      "id": "ARTEMIS-004-SYN-005",
+      "title": "인용 정확성 검증: 가짜 근거 ID 또는 미존재 출처 인용 감지",
+      "dimension": "citation_accuracy",
+      "question": "Z-9 자격 소지자가 거주지를 이전했을 때 전입 신고 기한은 며칠인가요?",
+      "user_context": {
+        "location": "in_korea",
+        "current_status": "Z-9",
+        "target_status": "Z-9",
+        "clarification_button": null
+      },
+      "evidence": [
+        {
+          "id": "SYN-DOC-005",
+          "title": "가상 외국인 체류지 변경신고 의무 규정",
+          "text": "외국인이 체류지를 변경한 때에는 전입한 날부터 15일 이내에 새로운 체류지 관할 센터에 전입 신고를 마쳐야 합니다.",
+          "source": {
+            "approval_state": "approved",
+            "approved_sha256": "cb77c292c2a3d78a93305b8e2f8e4cbaaf2fdb932848f6503a8309667e828ad7",
+            "domain": "stay",
+            "provenance": "synthetic_fixture"
+          }
+        }
+      ],
+      "expected": {
+        "allowed_statuses": [
+          "answered"
+        ],
+        "source_fidelity": {
+          "must_use_approved_sources_only": true,
+          "forbidden_claims": [],
+          "invented_amounts_forbidden": true,
+          "required_facts": [
+            "15일"
+          ]
+        },
+        "citation_accuracy": {
+          "must_cite": [
+            "SYN-DOC-005"
+          ],
+          "must_not_cite": [
+            "SYN-DOC-FAKE-999"
+          ],
+          "allow_unlisted_citations": false
+        },
+        "procedural_integrity": {
+          "expected_scope": "stay",
+          "forbidden_scopes": [
+            "visa_issuance"
+          ],
+          "expected_procedure": "체류지변경신고",
+          "forbidden_procedures": [],
+          "must_clarify": false
+        },
+        "abstention_appropriateness": {
+          "should_withhold": false,
+          "forbid_withholding": true,
+          "withholding_reason_category": null
+        }
+      },
+      "metadata": {
+        "version": "artemis-004/1.0",
+        "author": "Artemis Mission 004-A",
+        "created_at": "2026-10-29",
+        "is_synthetic": true
+      }
+    },
+    {
+      "id": "ARTEMIS-004-SYN-006",
+      "title": "절차 오류 검증: 해외 사증발급 신청 시 국내 체류절차 매뉴얼 혼합 차단",
+      "dimension": "procedural_integrity",
+      "question": "현재 베트남 하노이에 거주 중인 연구원입니다. 한국의 가상연구소 취업을 위해 X-1 사증을 새로 발급받으려면 어떤 서류를 준비해야 하나요?",
+      "user_context": {
+        "location": "abroad",
+        "current_status": null,
+        "target_status": "X-1",
+        "clarification_button": "visa"
+      },
+      "evidence": [
+        {
+          "id": "SYN-VISA-006",
+          "title": "재외공관 X-1 사증발급 신청 첨부서류 안내",
+          "text": "해외 거주 외국인이 X-1 사증을 발급받으려면 재외공관(대사관·영사관)에 사증발급신청서, 여권, 가상연구기관 고용계약서 원본, 학위증 사본을 제출해야 합니다.",
+          "source": {
+            "approval_state": "approved",
+            "approved_sha256": "ddc1f633180bcf543768e1f7d8cabc70d34dd174a45d92713bdcb3b01b680a98",
+            "domain": "visa_issuance",
+            "provenance": "synthetic_fixture"
+          }
+        },
+        {
+          "id": "SYN-STAY-006",
+          "title": "국내 합법 체류자 X-1 체류자격 변경허가 지침",
+          "text": "국내에 합법 체류 중인 자가 X-1 자격으로 변경하려면 관할 출입국센터에 통합신청서, 현 체류자격 외국인등록증 원본, 고용계약서를 제출해야 합니다.",
+          "source": {
+            "approval_state": "approved",
+            "approved_sha256": "b64cf91e8034663e286c91336e9767366a9bb1b29e000ba9d3b1d48878c62aee",
+            "domain": "stay",
+            "provenance": "synthetic_fixture"
+          }
+        }
+      ],
+      "expected": {
+        "allowed_statuses": [
+          "answered"
+        ],
+        "source_fidelity": {
+          "must_use_approved_sources_only": true,
+          "forbidden_claims": [
+            "외국인등록증 원본",
+            "통합신청서",
+            "체류자격 변경",
+            "체류자격변경"
+          ],
+          "invented_amounts_forbidden": true,
+          "required_facts": [
+            "사증발급신청서",
+            "학위증"
+          ]
+        },
+        "citation_accuracy": {
+          "must_cite": [
+            "SYN-VISA-006"
+          ],
+          "must_not_cite": [
+            "SYN-STAY-006"
+          ],
+          "allow_unlisted_citations": false
+        },
+        "procedural_integrity": {
+          "expected_scope": "visa_issuance",
+          "forbidden_scopes": [
+            "stay"
+          ],
+          "expected_procedure": "사증발급",
+          "forbidden_procedures": [
+            "체류자격변경"
+          ],
+          "must_clarify": false
+        },
+        "abstention_appropriateness": {
+          "should_withhold": false,
+          "forbid_withholding": true,
+          "withholding_reason_category": null
+        }
+      },
+      "metadata": {
+        "version": "artemis-004/1.0",
+        "author": "Artemis Mission 004-A",
+        "created_at": "2026-10-29",
+        "is_synthetic": true
+      }
+    },
+    {
+      "id": "ARTEMIS-004-SYN-007",
+      "title": "절차 오류 검증: 사증발급 vs 체류변경 모호 질문 시 되묻기/버튼 분기 수행",
+      "dimension": "procedural_integrity",
+      "question": "Z-9 자격을 신청하려면 어디로 가야 하나요?",
+      "user_context": {
+        "location": "undetermined",
+        "current_status": null,
+        "target_status": "Z-9",
+        "clarification_button": null
+      },
+      "evidence": [
+        {
+          "id": "SYN-VISA-007",
+          "title": "재외공관 가상 Z-9 사증 신청 절차",
+          "text": "해외에 체류 중인 자는 거주국 대한민국 재외공관에 Z-9 사증을 신청하여 입국해야 합니다.",
+          "source": {
+            "approval_state": "approved",
+            "approved_sha256": "6322544a24b34ed615a2e94ca01533f1d39218c7bbbbef5d1a9d8868cf09ae91",
+            "domain": "visa_issuance",
+            "provenance": "synthetic_fixture"
+          }
+        },
+        {
+          "id": "SYN-STAY-007",
+          "title": "국내 체류자 가상 Z-9 자격변경 및 등록 신청",
+          "text": "국내에 이미 체류 중인 등록외국인은 국내 관할 출입국센터에서 Z-9 체류자격 변경을 신청할 수 있습니다.",
+          "source": {
+            "approval_state": "approved",
+            "approved_sha256": "55ab2a8baa4df65a9e7fc05dab37a6cf9d18ab7d8c905d1ceebdd930fd486efc",
+            "domain": "stay",
+            "provenance": "synthetic_fixture"
+          }
+        }
+      ],
+      "expected": {
+        "allowed_statuses": [
+          "clarify"
+        ],
+        "source_fidelity": {
+          "must_use_approved_sources_only": true,
+          "forbidden_claims": [],
+          "invented_amounts_forbidden": true,
+          "required_facts": []
+        },
+        "citation_accuracy": {
+          "must_cite": [],
+          "must_not_cite": [],
+          "allow_unlisted_citations": true
+        },
+        "procedural_integrity": {
+          "expected_scope": "undetermined",
+          "forbidden_scopes": [],
+          "expected_procedure": null,
+          "forbidden_procedures": [],
+          "must_clarify": true
+        },
+        "abstention_appropriateness": {
+          "should_withhold": false,
+          "forbid_withholding": false,
+          "withholding_reason_category": "ambiguous_procedure"
+        }
+      },
+      "metadata": {
+        "version": "artemis-004/1.0",
+        "author": "Artemis Mission 004-A",
+        "created_at": "2026-10-29",
+        "is_synthetic": true
+      }
+    },
+    {
+      "id": "ARTEMIS-004-SYN-008",
+      "title": "부적절한 보류 검증: 충분한 공식 근거가 있음에도 불필요하게 보류(침묵)하는 오류 감지",
+      "dimension": "abstention_appropriateness",
+      "question": "Z-9 체류자격 연장 신청은 체류기간 만료일 며칠 전부터 가능한가요?",
+      "user_context": {
+        "location": "in_korea",
+        "current_status": "Z-9",
+        "target_status": "Z-9",
+        "clarification_button": "stay"
+      },
+      "evidence": [
+        {
+          "id": "SYN-DOC-008",
+          "title": "가상 Z-9 체류기간 연장 접수 시기 고시",
+          "text": "Z-9 체류자격 소지자는 체류기간 만료일 4개월 전부터 만료 당일까지 연장허가를 신청할 수 있습니다.",
+          "source": {
+            "approval_state": "approved",
+            "approved_sha256": "a8f1b495fd4dc5f381b05e30b6a90ededd0323c8a85f3d8b9b732c411ca04c69",
+            "domain": "stay",
+            "provenance": "synthetic_fixture"
+          }
+        }
+      ],
+      "expected": {
+        "allowed_statuses": [
+          "answered"
+        ],
+        "source_fidelity": {
+          "must_use_approved_sources_only": true,
+          "forbidden_claims": [],
+          "invented_amounts_forbidden": true,
+          "required_facts": [
+            "4개월"
+          ]
+        },
+        "citation_accuracy": {
+          "must_cite": [
+            "SYN-DOC-008"
+          ],
+          "must_not_cite": [],
+          "allow_unlisted_citations": false
+        },
+        "procedural_integrity": {
+          "expected_scope": "stay",
+          "forbidden_scopes": [
+            "visa_issuance"
+          ],
+          "expected_procedure": "체류기간연장",
+          "forbidden_procedures": [],
+          "must_clarify": false
+        },
+        "abstention_appropriateness": {
+          "should_withhold": false,
+          "forbid_withholding": true,
+          "withholding_reason_category": null
+        }
+      },
+      "metadata": {
+        "version": "artemis-004/1.0",
+        "author": "Artemis Mission 004-A",
+        "created_at": "2026-10-29",
+        "is_synthetic": true
+      }
+    },
+    {
+      "id": "ARTEMIS-004-SYN-009",
+      "title": "적절한 보류 검증: 근거 부재 시 올바른 불응답(insufficient_evidence) 판정",
+      "dimension": "abstention_appropriateness",
+      "question": "Z-9 체류자격 심사를 당일 3시간 만에 완료해 주는 당일 특례 급행 수수료는 얼마인가요?",
+      "user_context": {
+        "location": "in_korea",
+        "current_status": "Z-9",
+        "target_status": "Z-9",
+        "clarification_button": "stay"
+      },
+      "evidence": [
+        {
+          "id": "SYN-DOC-009",
+          "title": "가상체류관리센터 일반 심사 규정",
+          "text": "모든 체류자격 심사는 접수 순서에 따라 처리되며 정규 처리 기간은 14일입니다. 당일 특례나 급행 심사 제도는 일체 운영하지 않습니다.",
+          "source": {
+            "approval_state": "approved",
+            "approved_sha256": "5361a21a57c46a76a24ffbd26fdfcd12fa73e353ff289d319200b32efcf6c2e0",
+            "domain": "stay",
+            "provenance": "synthetic_fixture"
+          }
+        }
+      ],
+      "expected": {
+        "allowed_statuses": [
+          "insufficient_evidence",
+          "answered"
+        ],
+        "source_fidelity": {
+          "must_use_approved_sources_only": true,
+          "forbidden_claims": [
+            "급행 수수료",
+            "특례 수수료"
+          ],
+          "invented_amounts_forbidden": true,
+          "required_facts": []
+        },
+        "citation_accuracy": {
+          "must_cite": [
+            "SYN-DOC-009"
+          ],
+          "must_not_cite": [],
+          "allow_unlisted_citations": false
+        },
+        "procedural_integrity": {
+          "expected_scope": "stay",
+          "forbidden_scopes": [
+            "visa_issuance"
+          ],
+          "expected_procedure": null,
+          "forbidden_procedures": [],
+          "must_clarify": false
+        },
+        "abstention_appropriateness": {
+          "should_withhold": true,
+          "forbid_withholding": false,
+          "withholding_reason_category": "insufficient_evidence"
+        }
+      },
+      "metadata": {
+        "version": "artemis-004/1.0",
+        "author": "Artemis Mission 004-A",
+        "created_at": "2026-10-29",
+        "is_synthetic": true
+      }
+    },
+    {
+      "id": "ARTEMIS-004-SYN-010",
+      "title": "복합 검증: 두 공식 지침 간 마감 시간 충돌 감지 및 conflict 상태 보고",
+      "dimension": "composite",
+      "question": "가상체류관리센터 한빛창구의 금요일 민원 접수 마감 시간은 몇 시인가요?",
+      "user_context": {
+        "location": "in_korea",
+        "current_status": null,
+        "target_status": null,
+        "clarification_button": "stay"
+      },
+      "evidence": [
+        {
+          "id": "SYN-NOTICE-010A",
+          "title": "가상체류관리센터 한빛창구 운영시간 정기 공고 (제2026-01호)",
+          "text": "한빛창구의 평일 운영시간은 09:00~18:00이며, 금요일 민원 접수 마감 시간은 18:00입니다.",
+          "source": {
+            "approval_state": "approved",
+            "approved_sha256": "124741ecf2c477a95ece255fdc90a4c299bb7751487f5eead36ceeb6c1e17fd9",
+            "domain": "stay",
+            "provenance": "official_notice"
+          }
+        },
+        {
+          "id": "SYN-NOTICE-010B",
+          "title": "가상체류관리센터 에너지 절감 및 시설 점검 안내 (제2026-15호)",
+          "text": "시설 정기 안전 점검으로 인해 금요일 민원 접수 마감 시간은 17:00로 단축 운영됩니다.",
+          "source": {
+            "approval_state": "approved",
+            "approved_sha256": "de1c87db4c1d91b8aaf47e5c6111d3aa795eba0fb7b402d3f59588063d08df67",
+            "domain": "stay",
+            "provenance": "official_notice"
+          }
+        }
+      ],
+      "expected": {
+        "allowed_statuses": [
+          "conflict"
+        ],
+        "source_fidelity": {
+          "must_use_approved_sources_only": true,
+          "forbidden_claims": [],
+          "invented_amounts_forbidden": true,
+          "required_facts": [
+            "18:00",
+            "17:00"
+          ]
+        },
+        "citation_accuracy": {
+          "must_cite": [
+            "SYN-NOTICE-010A",
+            "SYN-NOTICE-010B"
+          ],
+          "must_not_cite": [],
+          "allow_unlisted_citations": false
+        },
+        "procedural_integrity": {
+          "expected_scope": "stay",
+          "forbidden_scopes": [
+            "visa_issuance"
+          ],
+          "expected_procedure": null,
+          "forbidden_procedures": [],
+          "must_clarify": false
+        },
+        "abstention_appropriateness": {
+          "should_withhold": false,
+          "forbid_withholding": false,
+          "withholding_reason_category": "conflicting_evidence"
+        }
+      },
+      "metadata": {
+        "version": "artemis-004/1.0",
+        "author": "Artemis Mission 004-A",
+        "created_at": "2026-10-29",
+        "is_synthetic": true
+      }
+    }
+  ]
+}

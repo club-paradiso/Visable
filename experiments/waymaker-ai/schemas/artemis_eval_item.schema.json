@@ -1,0 +1,307 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/club-paradiso/Visable/experiments/waymaker-ai/schemas/artemis_eval_item.schema.json",
+  "title": "Artemis AI Response Evaluation Item Schema",
+  "description": "Evaluation schema for independent Artemis AI response evaluation under Mission 004-A, measuring source fidelity, citation accuracy, procedural integrity, and abstention appropriateness.",
+  "type": "object",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/eval_item"
+    },
+    {
+      "$ref": "#/$defs/eval_dataset"
+    }
+  ],
+  "$defs": {
+    "eval_dataset": {
+      "type": "object",
+      "required": ["version", "description", "items"],
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "type": "string",
+          "pattern": "^artemis-eval/\\d+\\.\\d+$"
+        },
+        "description": {
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/eval_item"
+          },
+          "minItems": 1
+        }
+      }
+    },
+    "evidence_source": {
+      "type": "object",
+      "required": ["approval_state", "domain", "provenance"],
+      "additionalProperties": false,
+      "properties": {
+        "approval_state": {
+          "enum": ["approved", "under_review", "unapproved", "community", "synthetic"]
+        },
+        "approved_sha256": {
+          "type": ["string", "null"],
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "domain": {
+          "enum": ["visa_issuance", "stay", "general"]
+        },
+        "provenance": {
+          "enum": ["synthetic_fixture", "official_manual", "official_notice", "community_post", "injection_probe"]
+        }
+      }
+    },
+    "evidence_item": {
+      "type": "object",
+      "required": ["id", "title", "text", "source"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{2,64}$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source": {
+          "$ref": "#/$defs/evidence_source"
+        }
+      }
+    },
+    "user_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "location": {
+          "enum": ["abroad", "in_korea", "undetermined"]
+        },
+        "current_status": {
+          "type": ["string", "null"]
+        },
+        "target_status": {
+          "type": ["string", "null"]
+        },
+        "clarification_button": {
+          "type": ["string", "null"],
+          "enum": ["visa", "stay", null]
+        }
+      }
+    },
+    "source_fidelity_expect": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "must_use_approved_sources_only": {
+          "type": "boolean",
+          "default": true
+        },
+        "forbidden_claims": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "invented_amounts_forbidden": {
+          "type": "boolean",
+          "default": true
+        },
+        "required_facts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        }
+      }
+    },
+    "citation_accuracy_expect": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "must_cite": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "must_not_cite": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "allow_unlisted_citations": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "procedural_integrity_expect": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "expected_scope": {
+          "enum": ["visa_issuance", "stay", "undetermined", "both"]
+        },
+        "forbidden_scopes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "expected_procedure": {
+          "type": ["string", "null"]
+        },
+        "forbidden_procedures": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "must_clarify": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "abstention_appropriateness_expect": {
+      "type": "object",
+      "required": ["should_withhold", "forbid_withholding"],
+      "additionalProperties": false,
+      "properties": {
+        "should_withhold": {
+          "type": "boolean"
+        },
+        "forbid_withholding": {
+          "type": "boolean"
+        },
+        "withholding_reason_category": {
+          "type": ["string", "null"],
+          "enum": [
+            "insufficient_evidence",
+            "unapproved_sources_only",
+            "conflicting_evidence",
+            "ambiguous_procedure",
+            null
+          ]
+        }
+      }
+    },
+    "expected_block": {
+      "type": "object",
+      "required": [
+        "allowed_statuses",
+        "source_fidelity",
+        "citation_accuracy",
+        "procedural_integrity",
+        "abstention_appropriateness"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "allowed_statuses": {
+          "type": "array",
+          "items": {
+            "enum": ["answered", "partial", "insufficient_evidence", "conflict", "clarify"]
+          },
+          "minItems": 1
+        },
+        "source_fidelity": {
+          "$ref": "#/$defs/source_fidelity_expect"
+        },
+        "citation_accuracy": {
+          "$ref": "#/$defs/citation_accuracy_expect"
+        },
+        "procedural_integrity": {
+          "$ref": "#/$defs/procedural_integrity_expect"
+        },
+        "abstention_appropriateness": {
+          "$ref": "#/$defs/abstention_appropriateness_expect"
+        }
+      }
+    },
+    "eval_metadata": {
+      "type": "object",
+      "required": ["version", "author", "created_at", "is_synthetic"],
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "type": "string"
+        },
+        "author": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string"
+        },
+        "is_synthetic": {
+          "type": "boolean"
+        }
+      }
+    },
+    "eval_item": {
+      "type": "object",
+      "required": [
+        "id",
+        "title",
+        "dimension",
+        "question",
+        "evidence",
+        "expected",
+        "metadata"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{3,64}$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "dimension": {
+          "enum": [
+            "source_fidelity",
+            "citation_accuracy",
+            "procedural_integrity",
+            "abstention_appropriateness",
+            "composite"
+          ]
+        },
+        "question": {
+          "type": "string",
+          "minLength": 1
+        },
+        "user_context": {
+          "$ref": "#/$defs/user_context"
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/evidence_item"
+          },
+          "minItems": 1
+        },
+        "expected": {
+          "$ref": "#/$defs/expected_block"
+        },
+        "metadata": {
+          "$ref": "#/$defs/eval_metadata"
+        }
+      }
+    }
+  }
+}
