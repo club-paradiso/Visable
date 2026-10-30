@@ -1,0 +1,43 @@
+{
+  "status": "not_executed",
+  "model_load_seconds": null,
+  "prefill_seconds": null,
+  "generation_seconds": null,
+  "generated_tokens": null,
+  "generation_tokens_per_second": null,
+  "peak_model_mlx_memory_bytes": null,
+  "peak_model_process_rss_bytes": null,
+  "missing_metrics_reason": "Resource preflight rejected the run before model loading; no model/generation measurements exist",
+  "processor_only_inspection": {
+    "total_seconds_including_integrity_and_initialization": 5.753141167000194,
+    "peak_process_rss_bytes_including_imports": 808812544,
+    "prepared_prompt_tokens": 127,
+    "scope": "Processor/tokenizer/template only; not model loading, prefill or generation"
+  },
+  "resources_before": {
+    "free_disk_gb": 7.97966336,
+    "swap_used_gb": 2.72642342912,
+    "swap_raw": "total = 4096.00M  used = 2600.12M  free = 1495.88M  (encrypted)",
+    "memory_bytes": 8589934592
+  },
+  "resources_after": {
+    "free_disk_gb": 7.97966336,
+    "swap_used_gb": 2.72642342912,
+    "swap_raw": "total = 4096.00M  used = 2600.12M  free = 1495.88M  (encrypted)",
+    "memory_bytes": 8589934592
+  },
+  "thresholds": {
+    "name": "mlx_vlm",
+    "package_version": "0.7.11",
+    "offline_only": true,
+    "min_free_disk_gb": 6.0,
+    "max_swap_used_gb": 2.0,
+    "memory_limit_gb": 6.0,
+    "timeout_seconds": 120,
+    "max_prompt_tokens": 2048,
+    "max_generation_tokens": 256
+  },
+  "warnings": [
+    "At least one mel filter has all zero values. The value for `num_mel_filters` (128) may be set too high. Or, the value for `num_frequency_bins` (257) may be set too low."
+  ]
+}

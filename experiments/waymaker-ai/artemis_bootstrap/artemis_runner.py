@@ -439,7 +439,9 @@ class LocalModelAdapter(BaseModelAdapter):
     def generate(self, item: Mapping[str, Any], context: Optional[Mapping[str, Any]] = None) -> ModelResponse:
         available, reason = self.check_availability()
         if not available:
-            return ModelResponse(status="error", answer="", error=f"Local model not executed: {reason}")
+            return ModelResponse(status="error", answer="", error=f"Local model not executed: {reason}",
+                                 telemetry={"execution_status": "not_executed", "highest_completed_stage": "preflight",
+                                            "failure_category": "prerequisite_or_resource_rejection"})
         request = {"profile": self.profile, "snapshot": str(self._find_snapshot_path()),
                    "max_tokens": self.max_tokens, "temperature": self.temperature,
                    "item": inference_input.project_inference_item(item)}
@@ -463,7 +465,9 @@ class LocalModelAdapter(BaseModelAdapter):
         except (OSError, ValueError, RuntimeError, subprocess.SubprocessError) as exc:
             return ModelResponse(status="error", answer="", error=f"Gemma 4 execution failed: {exc}",
                                  latency_ms=(time.perf_counter() - start) * 1000,
-                                 telemetry={"resources_after": gemma4_runtime.resources()})
+                                 telemetry={"execution_status": "failed", "highest_completed_stage": "runtime_preflight_passed",
+                                            "failure_category": "runtime_crash_or_timeout",
+                                            "resources_after": gemma4_runtime.resources()})
 
 
 # ---------------------------------------------------------------------------

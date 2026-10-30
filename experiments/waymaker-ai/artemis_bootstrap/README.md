@@ -5,6 +5,14 @@ is [artemis_foundation.json](../configs/artemis_foundation.json); inference and
 training validate against it. E2B is an explicitly selected development profile.
 No implicit model or revision fallback is allowed.
 
+Current Mission 005-B status, 2026-10-30: the dedicated local `.venv` now has
+MLX-VLM 0.7.11 and Pillow, and real processor/tokenizer/template initialization
+passed. The 32-token probe remains **not_executed** because used swap exceeded
+the unchanged 2GB limit. No model weights were loaded into MLX and no tokens
+were generated. See [the execution report](MISSION-005-B-REAL-INFERENCE-REPORT.ko.md)
+and [hash-locked runtime dependencies](requirements-mlx-vlm-0.7.11.lock).
+The recovery observations below describe earlier environment states.
+
 Recovery status, 2026-10-29: checkpoint metadata verified; new MLX-VLM weight
 loading and generation **not executed** on this M1 8GB machine. The runtime is
 missing and disk/swap limits block loading. This is not a Gemma 4 accuracy result.
@@ -40,7 +48,9 @@ Candidate scoring still requires the evaluator's answer key; passing a blind
 projection alone is a compatibility check, not a valid candidate accuracy run.
 
 MLX-VLM 0.7.11 is the source-inspected runtime target; its dependency environment
-must be installed separately. No automatic sibling-worktree discovery is used.
+must be installed separately on each machine. The local Mission 005-B environment
+is isolated from verification/backend packages; use the recorded lock and explicit
+Python path to reproduce it. No automatic sibling-worktree discovery is used.
 The current bounds are 32 tokens in the probe (256 maximum), 2,048 prompt tokens,
 120 seconds per worker, at least 6GB free disk, at most 2GB used swap, and 6GB MLX
 allocation. These are conservative engineering limits, not measured requirements.

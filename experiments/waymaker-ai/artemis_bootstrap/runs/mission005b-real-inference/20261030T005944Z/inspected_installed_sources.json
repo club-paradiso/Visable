@@ -1,0 +1,21 @@
+{
+  "runtime": "mlx-vlm==0.7.11",
+  "files": [
+    {
+      "path": "/Users/seonjaekim/dev/Visable-artemis-gemini/experiments/waymaker-ai/artemis_bootstrap/.venv/lib/python3.11/site-packages/mlx_vlm/utils.py",
+      "sha256": "d25c6c440221c146eba34fa554d9c275d0ba6b86fa3a9ba2a77447c145adf254"
+    },
+    {
+      "path": "/Users/seonjaekim/dev/Visable-artemis-gemini/experiments/waymaker-ai/artemis_bootstrap/.venv/lib/python3.11/site-packages/mlx_vlm/generate/dispatch.py",
+      "sha256": "bc5d1b9f9b3ca1197d35b321ca8bd0f03a3f250b360898ae53f870cd21d4f79c"
+    },
+    {
+      "path": "/Users/seonjaekim/dev/Visable-artemis-gemini/experiments/waymaker-ai/artemis_bootstrap/.venv/lib/python3.11/site-packages/mlx_vlm/generate/common.py",
+      "sha256": "a171a8a22bb744a59e963228f5da95ce1eb8f45786604f0ec1eddacd0cfcefcb"
+    },
+    {
+      "path": "/Users/seonjaekim/dev/Visable-artemis-gemini/experiments/waymaker-ai/artemis_bootstrap/.venv/lib/python3.11/site-packages/mlx_vlm/models/gemma4/processing_gemma4.py",
+      "sha256": "940cb231e4b922714285276ac97ab7ea2ddf8adc216151f40887c5df75fb7e14"
+    }
+  ]
+}

@@ -1,0 +1,149 @@
+{
+  "schema_version": "waymaker-artemis-real-inference-execution/1.0",
+  "project": "Waymaker Artemis",
+  "manifest_created_utc": "2026-10-30T01:10:51.267363+00:00",
+  "probe_timestamp": "2026-10-30T01:06:49.669262+00:00",
+  "status": "not_executed",
+  "highest_successfully_completed_stage": "processor_and_template_initialized",
+  "baseline_git_commit": "02e29e241334c6f6ff742483c984efc2142ad2ad",
+  "source_hash_snapshot_stage": "after all runtime repairs and post-import resource guard; no model generation performed",
+  "source_sha256": {
+    "experiments/waymaker-ai/configs/artemis_foundation.json": "5531fbe06a2f70ab50b7efc5d3953301306d7dba61f29c69654e20fb45906a61",
+    "experiments/waymaker-ai/artemis_bootstrap/requirements-mlx-vlm-0.7.11.lock": "f4a68d9c5e2575debdbcf155e19bf45b8277fd1f3c9edf23eca083ff1b87e2d3",
+    "experiments/waymaker-ai/artemis_bootstrap/gemma4_runtime.py": "302ac911c2496ab9249540c3aebc2931cdfb9fc1d1c5f59042ec7ab36f3d5921",
+    "experiments/waymaker-ai/artemis_bootstrap/probe_gemma4.py": "01e570747901218ded57a5a960ff795c098222fd6f7b3be430fb0c1827fb0c88",
+    "experiments/waymaker-ai/artemis_bootstrap/artemis_runner.py": "5c70c2edc1848cc33e34b96eac8814de60fdab98af9061b5e551c01fe80d41d9",
+    "experiments/waymaker-ai/waymaker_ai/foundation.py": "e1a829ec3b2d92a0abc41944d37a14e6d9494c400bae22cf8ecb337e4739151e",
+    "experiments/waymaker-ai/waymaker_ai/inference_input.py": "b031b0e83bafed4238137fc29dac31fbd0701d92490314738c46759ff97ec1c9"
+  },
+  "machine": {
+    "system": "Darwin",
+    "macos": "15.6.1",
+    "build": "24G90",
+    "architecture": "arm64",
+    "chip": "Apple M1",
+    "memory_bytes": 8589934592
+  },
+  "python": {
+    "executable": "/Users/seonjaekim/dev/Visable-artemis-gemini/experiments/waymaker-ai/artemis_bootstrap/.venv/bin/python",
+    "version": "3.11.15 (main, Mar  3 2026, 00:52:57) [Clang 17.0.0 (clang-1700.6.4.2)]",
+    "prefix": "/Users/seonjaekim/dev/Visable-artemis-gemini/experiments/waymaker-ai/artemis_bootstrap/.venv",
+    "base_prefix": "/opt/homebrew/opt/python@3.11/Frameworks/Python.framework/Versions/3.11",
+    "machine": "arm64"
+  },
+  "system_site_packages": false,
+  "runtime_packages": {
+    "mlx": "0.32.4",
+    "mlx-metal": "0.32.4",
+    "mlx-vlm": "0.7.11",
+    "transformers": "5.20.2",
+    "tokenizers": "0.23.3",
+    "huggingface-hub": "2.3.0"
+  },
+  "installed_packages_file": "installed_packages.txt",
+  "pip_check": "pip_check.json",
+  "model_metadata": {
+    "adapter_type": "local_mlx",
+    "inference_kind": "real_inference",
+    "project_name": "Waymaker Artemis",
+    "profile": "gemma4_e4b",
+    "model_name": "mlx-community/gemma-4-e4b-it-4bit",
+    "model_revision": "475b9088d29754a3379866cf5aeb6b41acd313c2",
+    "family": "gemma-4",
+    "size_class": "E4B",
+    "upstream": "google/gemma-4-E4B-it",
+    "upstream_revision": "ee0ef6023621cff504d758262d4e04895a5af4a2",
+    "conversion_source_revision": "fee6332c1abaafb77f6f9624236c63aa2f1d0187",
+    "runtime": "mlx_vlm",
+    "runtime_python": "/Users/seonjaekim/dev/Visable-artemis-gemini/experiments/waymaker-ai/artemis_bootstrap/.venv/bin/python",
+    "runtime_probe": {
+      "packages": {
+        "mlx": "0.32.4",
+        "mlx-metal": "0.32.4",
+        "mlx-vlm": "0.7.11",
+        "transformers": "5.20.2",
+        "tokenizers": "0.23.3",
+        "huggingface-hub": "2.3.0"
+      },
+      "python": "3.11.15 (main, Mar  3 2026, 00:52:57) [Clang 17.0.0 (clang-1700.6.4.2)]",
+      "problems": [],
+      "warnings": [],
+      "runtime_stdout": ""
+    },
+    "snapshot_path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/models--mlx-community--gemma-4-e4b-it-4bit/snapshots/475b9088d29754a3379866cf5aeb6b41acd313c2",
+    "quantization": "4bit",
+    "available": false,
+    "not_available_reason": "Swap pressure: 2.73 GB used; limit 2.0 GB",
+    "allow_implicit_fallback": false,
+    "foundation_config_sha256": "5531fbe06a2f70ab50b7efc5d3953301306d7dba61f29c69654e20fb45906a61",
+    "generation_config": {
+      "max_tokens": 32,
+      "temperature": 0.0,
+      "enable_thinking": false
+    },
+    "checkpoint_metadata_verified": true,
+    "metadata_sha256": {
+      "config.json": "780ccb3a514a5f1ced161d383f948fc22eca9b84b752ca19494f625bd9bad7a6",
+      "processor_config.json": "de3e580aebdc98272d4c4547daffe6525fcbae18a83a0e0bcf0d7444d4ee6f37",
+      "tokenizer_config.json": "080d9e1aff284e2f6043889cd05367966f7c7b80e025fbc0b06745e218158656",
+      "chat_template.jinja": "2f1b4d75d067bae3fe44e676721c7f077d243bc007156cb9c2f8b5836613d082",
+      "README.md": "8e9717df49219943b8992eeccecd8050535318d34fffbbaeaac924ed01f27155"
+    },
+    "checkpoint_integrity_verified": true,
+    "artifact_integrity": {
+      "tokenizer.json": {
+        "algorithm": "sha256",
+        "digest": "cc8d3a0ce36466ccc1278bf987df5f71db1719b9ca6b4118264f45cb627bfe0f",
+        "size_bytes": 32169626
+      },
+      "model.safetensors.index.json": {
+        "algorithm": "sha256",
+        "digest": "f8accac59ee7efe87e0c298c854610b262c3cadd477407503147c71209ff0093",
+        "size_bytes": 240961
+      },
+      "model.safetensors": {
+        "algorithm": "sha256",
+        "digest": "932b8271fc3fe65adcc78b96c10c6268bbfb13e8f67d1358727c0d6ee97e1eff",
+        "size_bytes": 5146800534
+      }
+    },
+    "integrity_reference_source": "https://huggingface.co/api/models/mlx-community/gemma-4-e4b-it-4bit/revision/475b9088d29754a3379866cf5aeb6b41acd313c2?blobs=true",
+    "weight_files_bytes": {
+      "model.safetensors": 5146800534
+    },
+    "weight_integrity": "sha256_verified"
+  },
+  "resource_safety_policy": {
+    "name": "mlx_vlm",
+    "package_version": "0.7.11",
+    "offline_only": true,
+    "min_free_disk_gb": 6.0,
+    "max_swap_used_gb": 2.0,
+    "memory_limit_gb": 6.0,
+    "timeout_seconds": 120,
+    "max_prompt_tokens": 2048,
+    "max_generation_tokens": 256
+  },
+  "inference_command": [
+    "/Users/seonjaekim/dev/Visable-artemis-gemini/experiments/waymaker-ai/artemis_bootstrap/.venv/bin/python",
+    "/Users/seonjaekim/dev/Visable-artemis-gemini/experiments/waymaker-ai/artemis_bootstrap/probe_gemma4.py",
+    "--python",
+    "/Users/seonjaekim/dev/Visable-artemis-gemini/experiments/waymaker-ai/artemis_bootstrap/.venv/bin/python",
+    "--max-tokens",
+    "32",
+    "--out",
+    "/Users/seonjaekim/dev/Visable-artemis-gemini/experiments/waymaker-ai/artemis_bootstrap/runs/mission005b-real-inference/20261030T005944Z/raw_inference_32.json"
+  ],
+  "input_question": "체류기간을 연장하려면 어떤 사항을 확인해야 하나요?",
+  "prepared_prompt_reference": "runtime_compatibility.json (processor-only; not consumed by a loaded model)",
+  "model_load_attempted": false,
+  "generation_attempted": false,
+  "followup_smoke_tests": "not_executed; prerequisite genuine inference did not succeed",
+  "official_gold_accuracy": null,
+  "fine_tuning": "not_executed",
+  "deployment": "not_authorized",
+  "independent_legal_evaluation": "not_verified",
+  "failure_category": "memory_resource_rejection",
+  "blocker": "Swap pressure: 2.73 GB used; limit 2.0 GB",
+  "source_snapshot_updated_utc": "2026-10-30T01:20:47.177051+00:00"
+}

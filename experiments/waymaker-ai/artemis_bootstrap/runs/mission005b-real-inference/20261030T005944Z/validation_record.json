@@ -1,0 +1,39 @@
+{
+  "recorded_at": "2026-10-30T01:16:49.351294+00:00",
+  "full_python_suite": {
+    "command": "/Users/seonjaekim/dev/Paradiso/.venv-check/bin/python -m pytest -q -p no:cacheprovider tests",
+    "passed": 1561,
+    "seconds": 26.55,
+    "includes_real_model_inference": false
+  },
+  "targeted_runtime_foundation_hardening_tests": {
+    "passed": 57,
+    "seconds": 0.63,
+    "kind": "synthetic_api_regression"
+  },
+  "repository_validation": {
+    "command": "PATH=/Users/seonjaekim/dev/Paradiso/.venv-check/bin:$PATH bash scripts/check_repo.sh",
+    "exit_code": 0,
+    "knowledge_eval_passed": 69,
+    "knowledge_eval_total": 69
+  },
+  "baseline_actions": {
+    "commit": "02e29e241334c6f6ff742483c984efc2142ad2ad",
+    "Waymaker AI Experiments": "success",
+    "Repo Validation": "success"
+  },
+  "official_gold_accuracy": null,
+  "inference_status": "not_executed",
+  "new_commit_actions": "See final PR head Checks; local checks do not establish remote completion",
+  "earlier_validation": {
+    "full_python_suite": {
+      "passed": 1560,
+      "seconds": 35.73
+    },
+    "targeted": {
+      "passed": 56,
+      "seconds": 0.75
+    }
+  },
+  "post_import_resource_recheck_regression": "passed; loader never invoked after synthetic swap pressure increase"
+}

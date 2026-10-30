@@ -4,6 +4,11 @@ This plan supersedes the earlier roadmap at `d3e9490`. The canonical foundation
 is Google Gemma 4 E4B Instruct, governed by
 [the foundation policy](../configs/artemis_foundation.json).
 
+Mission 005-B execution update, 2026-10-30: the dedicated runtime and actual
+processor/template initialization now pass. Genuine model execution remains
+blocked by the existing swap limit; see the [real inference report](MISSION-005-B-REAL-INFERENCE-REPORT.ko.md).
+The steps below remain gated on actual generation, not environment preparation.
+
 1. Prepare an isolated MLX-VLM 0.7.11 environment with processor dependencies.
    Free disk/swap headroom on the M1 or use suitable hardware. Do not alter a
    related worktree's environment. Run the single 32-token Korean probe and

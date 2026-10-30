@@ -1,0 +1,9 @@
+{
+  "baseline_commit": "02e29e241334c6f6ff742483c984efc2142ad2ad",
+  "dedicated_python": "/Users/seonjaekim/dev/Visable-artemis-gemini/experiments/waymaker-ai/artemis_bootstrap/.venv/bin/python",
+  "initial_swap": "total = 4096.00M  used = 2624.75M  free = 1471.25M  (encrypted)",
+  "initial_memory_pressure": "The system has 8589934592 (524288 pages with a page size of 16384).\nSystem-wide memory free percentage: 40%",
+  "runtime_lock_sha256": "f4a68d9c5e2575debdbcf155e19bf45b8277fd1f3c9edf23eca083ff1b87e2d3",
+  "initial_inference_status": "not_executed",
+  "official_gold_accuracy": null
+}
