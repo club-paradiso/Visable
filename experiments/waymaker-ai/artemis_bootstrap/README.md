@@ -13,6 +13,15 @@ were generated. See [the execution report](MISSION-005-B-REAL-INFERENCE-REPORT.k
 and [hash-locked runtime dependencies](requirements-mlx-vlm-0.7.11.lock).
 The recovery observations below describe earlier environment states.
 
+Mission 005-C, 2026-10-30: a separate CUDA path loads the official
+`google/gemma-4-E4B-it` checkpoint at the pinned upstream revision with explicit
+NF4 4-bit quantization ([gemma4_cuda_runtime.py](gemma4_cuda_runtime.py),
+[cuda policy](../configs/artemis_cuda_runtime.json)). It never pools metrics with
+MLX. A free Colab T4 run was audited from the exported notebook only; it is **not
+independently verified**, and no new CUDA generation has run from this code yet.
+See the [audit](COLAB-T4-RUN-AUDIT.ko.md), the [Mission 005-C report](MISSION-005-C-REPORT.ko.md)
+and the [reproduction notebook](notebooks/artemis_gemma4_e4b_cuda_colab.ipynb).
+
 Recovery status, 2026-10-29: checkpoint metadata verified; new MLX-VLM weight
 loading and generation **not executed** on this M1 8GB machine. The runtime is
 missing and disk/swap limits block loading. This is not a Gemma 4 accuracy result.

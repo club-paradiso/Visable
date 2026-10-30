@@ -4,6 +4,7 @@ Reusable, offline-capable model evaluation runner supporting:
 1. Deterministic Mock Adapter (for testing and calibration)
 2. Recorded-Response Adapter (evaluates offline saved predictions)
 3. Local Model Adapter (MLX/offline weights; gracefully marks not_executed if weights absent)
+   and a separate CUDA adapter (official E4B, NF4 4-bit; never pooled with MLX)
 4. Subprocess Adapter (for external process evaluation)
 5. Three Evaluation Modes:
    - Mode A: Infrastructure Validation (synthetic fixtures)
@@ -47,8 +48,9 @@ if str(BOOTSTRAP_DIR) not in sys.path:
     sys.path.insert(0, str(BOOTSTRAP_DIR))
 
 sys.path.insert(0, str(EXPERIMENT_ROOT))
-from waymaker_ai import foundation, inference_input
+from waymaker_ai import cuda_policy, foundation, inference_input
 import gemma4_runtime
+import gemma4_cuda_runtime
 import artemis_eval  # noqa: E402
 from artemis_eval import ArtemisItemScore, SuiteSummary
 
@@ -468,6 +470,59 @@ class LocalModelAdapter(BaseModelAdapter):
                                  telemetry={"execution_status": "failed", "highest_completed_stage": "runtime_preflight_passed",
                                             "failure_category": "runtime_crash_or_timeout",
                                             "resources_after": gemma4_runtime.resources()})
+
+
+class CudaTransformersAdapter(BaseModelAdapter):
+    """Official Gemma 4 E4B on one CUDA GPU, NF4 4-bit via bitsandbytes, loaded once in-process.
+
+    A separate runtime from local_mlx: different checkpoint, chat template and
+    kernels, so foundation.metric_group gives it its own aggregation key.
+    """
+
+    def __init__(self, max_tokens: int = 256, cache_dir: Optional[Path] = None,
+                 verify_weights: bool = True, prepared: Optional[Any] = None):
+        limits = cuda_policy.configuration()["limits"]
+        if not 1 <= max_tokens <= limits["max_generation_tokens"]:
+            raise ValueError("Invalid bounded generation settings")
+        self.max_tokens = max_tokens
+        self.prepared = prepared or gemma4_cuda_runtime.PreparedRun(cache_dir, verify_weights)
+
+    def _ready(self) -> None:
+        if self.prepared.session is None and self.prepared.blocker is None:
+            self.prepared.prepare()
+
+    def check_availability(self) -> Tuple[bool, Optional[str]]:
+        self._ready()
+        if self.prepared.session is not None:
+            return True, None
+        blocker = self.prepared.blocker or {}
+        return False, blocker.get("not_executed_reason") or blocker.get("error")
+
+    def get_metadata(self) -> Dict[str, Any]:
+        available, reason = self.check_availability()
+        header = self.prepared.header
+        return {
+            "adapter_type": "cuda_transformers", "project_name": "Waymaker Artemis",
+            **self.prepared.metadata(), "available": available, "not_available_reason": reason,
+            "allow_implicit_fallback": False, "environment": header.get("environment", {}),
+            "provenance": header.get("provenance", {}), "load": header.get("load", {}),
+            "cuda_policy_sha256": hashlib.sha256(cuda_policy.CONFIG_PATH.read_bytes()).hexdigest(),
+            "generation_config": {"max_new_tokens": self.max_tokens, "do_sample": False, "enable_thinking": False},
+        }
+
+    def generate(self, item: Mapping[str, Any], context: Optional[Mapping[str, Any]] = None) -> ModelResponse:
+        available, reason = self.check_availability()
+        if not available:
+            return ModelResponse(status="error", answer="", error=f"CUDA model not executed: {reason}",
+                                 telemetry={"execution_status": "not_executed", "highest_completed_stage": "preflight",
+                                            "failure_category": "prerequisite_or_resource_rejection"})
+        start = time.perf_counter()
+        data = self.prepared.session.generate(str(item.get("id", "")), dict(item), self.max_tokens)
+        response = data.get("response", {})
+        return ModelResponse(status=response.get("status", "error"), answer=response.get("answer", ""),
+                             citations=response.get("citations", []), raw_output=data.get("raw_output"),
+                             error=data.get("error"), latency_ms=(time.perf_counter() - start) * 1000,
+                             telemetry=data)
 
 
 # ---------------------------------------------------------------------------
@@ -911,7 +966,10 @@ class ArtemisEvaluationRunner:
             "model_metadata": summary.model_metadata,
             "metric_group": (foundation.metric_group(summary.model_metadata)
                              if summary.model_metadata.get("inference_kind") != "real_inference"
-                             or summary.model_metadata.get("checkpoint_integrity_verified") else None),
+                             or (summary.model_metadata.get("checkpoint_integrity_verified")
+                                 and (summary.model_metadata.get("runtime") != cuda_policy.RUNTIME
+                                      or summary.model_metadata.get("quantization_verified")))
+                             else None),
             "file_digests": {
                 "run_summary.json": hashlib.sha256(summary_bytes).hexdigest(),
                 "error_summary.csv": hashlib.sha256(csv_path.read_bytes()).hexdigest(),
@@ -1096,7 +1154,7 @@ def main() -> None:
     )
     parser.add_argument(
         "--adapter",
-        choices=["mock", "recorded", "local_mlx"],
+        choices=["mock", "recorded", "local_mlx", "cuda_transformers"],
         default="mock",
         help="Model adapter type",
     )
@@ -1112,6 +1170,7 @@ def main() -> None:
     parser.add_argument("--local-model-revision", default=None, help="Specific model snapshot revision for local MLX adapter")
     parser.add_argument("--local-max-tokens", type=int, default=256, help="Max tokens for local MLX generation")
     parser.add_argument("--local-cache-dir", type=Path, default=None, help="Custom cache directory for offline weights")
+    parser.add_argument("--cuda-max-new-tokens", type=int, default=256, help="Max new tokens for the CUDA adapter")
 
     args = parser.parse_args()
     mode = EvaluationMode(args.mode)
@@ -1131,6 +1190,8 @@ def main() -> None:
             max_tokens=args.local_max_tokens,
             cache_dir=args.local_cache_dir,
         )
+    elif args.adapter == "cuda_transformers":
+        adapter = CudaTransformersAdapter(max_tokens=args.cuda_max_new_tokens, cache_dir=args.local_cache_dir)
     else:
         parser.error(f"Unsupported adapter: {args.adapter}")
 
