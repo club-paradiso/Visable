@@ -98,3 +98,18 @@ def test_a_complete_disagreement_needs_authority_and_audit():
     it["review"]["legal_authority"] = [{"citation": "x", "url": "y", "accessed": "2026-11-01"}]
     it["audit_trail"] = [{"at": "t", "actor": "A", "action": "decide", "from_state": "not_reviewed", "to_state": "disagree"}]
     assert legal_review_packet.validate(packet) == []
+
+
+def test_notebook_is_pinned_to_the_freeze_and_runs_dev20_only_through_the_gate():
+    import re
+    import subprocess
+    notebook = (BOOT / "notebooks" / "artemis_mission005f_colab.ipynb").read_text(encoding="utf-8")
+    commit = re.search(r"CODE_COMMIT = '([0-9a-f]{40})'", notebook).group(1)
+    assert "gate.run(prepared, ACC_DIR)" in notebook and "--gate-decision" in notebook
+    assert "if record['decision'] == 'pass'" in notebook and "heldout" not in notebook.lower().replace("held-out 40건은 실행하지 않습니다", "")
+    assert "backend/services" in notebook
+    shown = subprocess.run(["git", "show", f"{commit}:experiments/waymaker-ai/artemis_bootstrap/validation/synthetic_acceptance_manifest.json"],
+                           cwd=BOOT, capture_output=True)
+    if shown.returncode:
+        pytest.skip("needs git history for the pinned commit")
+    assert hashlib.sha256(shown.stdout).hexdigest() == MANIFEST_SHA256
