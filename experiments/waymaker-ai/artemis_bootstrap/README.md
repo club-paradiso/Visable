@@ -21,6 +21,11 @@ MLX. A free Colab T4 run was audited from the exported notebook only; it is **no
 independently verified**, and no new CUDA generation has run from this code yet.
 See the [audit](COLAB-T4-RUN-AUDIT.ko.md), the [Mission 005-C report](MISSION-005-C-REPORT.ko.md)
 and the [reproduction notebook](notebooks/artemis_gemma4_e4b_cuda_colab.ipynb).
+Mission 005-C.1 (Draft PR #730, stacked on PR #726) requires full model provenance
+before a CUDA run record counts, pins the notebook to an exact code commit and
+package versions, and keeps the new runtime at `not_executed` until a real GPU run.
+Record checks are self-checks of our own JSON, not external attestation. See the
+[Mission 005-C.1 report](MISSION-005-C1-REPORT.ko.md).
 
 Recovery status, 2026-10-29: checkpoint metadata verified; new MLX-VLM weight
 loading and generation **not executed** on this M1 8GB machine. The runtime is

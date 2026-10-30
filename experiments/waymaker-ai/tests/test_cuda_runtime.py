@@ -414,7 +414,15 @@ def test_reproducible_notebook_is_clean_and_pinned():
     assert notebook["nbformat"] == 4
     code = [c for c in notebook["cells"] if c["cell_type"] == "code"]
     assert code and all(not c.get("outputs") and c.get("execution_count") is None for c in code)
-    assert REVISION in text and "probe_gemma4_cuda.py" in text
+    assert REVISION in text and "probe_gemma4_cuda" in text
+    # Mission 005-C.1: pinned to an immutable code commit and exact package versions, never a moving branch.
+    meta = notebook["metadata"]["waymaker_artemis"]
+    assert meta["execution_status"] == "not_reexecuted"
+    assert re.fullmatch(r"[0-9a-f]{40}", meta["code_commit"]) and f"CODE_COMMIT = '{meta['code_commit']}'" in text
+    assert "--branch" not in text and "feat/" not in text
+    for name, version in cuda_policy.configuration()["packages"]["reproduction_pins"].items():
+        assert version in text, name
+    assert "FREE_TIER_CONFIRMED = False" in text
     assert not re.search(r"hf_[A-Za-z0-9]{20,}", text)
     for forbidden in ("HF_TOKEN=", "/Users/", "@gmail", "userdata.get"):
         assert forbidden not in text

@@ -5,6 +5,10 @@ Colab 원본 노트북은 열지 않았습니다. 이 감사를 위해 노트북
 따라서 결과는 **독립 검증 완료가 아닙니다**. 내려받은 파일에 저장된 출력과 기존 보고 내용이
 서로 맞는지만 확인했습니다.
 
+이 실행은 노트북에 직접 쓴 코드로 돌린 것입니다. 저장소의 `gemma4_cuda_runtime.py`나
+`probe_gemma4_cuda.py`로 돌린 실행이 아닙니다. 새 CUDA 런타임의 실행 결과로 쓰지 않습니다.
+상태 표기: **Original Colab CUDA inference — previously observed, not independently rerun.**
+
 - 원본 사본: [runs/colab-t4-20261030/source_notebook.ipynb](runs/colab-t4-20261030/source_notebook.ipynb)
   (SHA-256 `84bea7a5dfaf3ec070f20c7d66e4d96a0ba82be393224374e211d1168ff003a1`, 76,413바이트)
 - 기계 판독용 감사 기록: [runs/colab-t4-20261030/colab_execution_audit.json](runs/colab-t4-20261030/colab_execution_audit.json)
@@ -57,6 +61,6 @@ Colab 원본 노트북은 열지 않았습니다. 이 감사를 위해 노트북
 
 ## 저장소에서 반영한 내용
 
-3·4·5·7번은 CUDA 모듈이 해결합니다. 가중치 SHA-256을 로딩 전에 확인하고(Hub LFS 값 고정),
+3·4·5·7번은 CUDA 모듈 코드에 반영했습니다. 실제 GPU에서 이 코드가 도는지는 아직 확인하지 않았습니다. 가중치 SHA-256을 로딩 전에 확인하고(Hub LFS 값 고정),
 올라간 모듈에서 양자화 방식을 읽고, 매개변수 장치로 배치를 확인하고, 종료 이유와 첫 토큰 시간을
 따로 기록합니다. 1·2·6·8번은 이 실행의 한계로 남습니다. 새 Colab 실행으로만 줄일 수 있습니다.
