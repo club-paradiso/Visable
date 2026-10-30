@@ -4,6 +4,9 @@ These test bookkeeping: projection, checkpoint/resume, denominators and integrit
 checks. They say nothing about how the model performs.
 """
 import json
+import re
+import shutil
+import subprocess
 import sys
 from pathlib import Path
 from types import SimpleNamespace
@@ -203,3 +206,20 @@ def test_pilot_and_rest_in_one_loaded_session_log_one_session(tmp_path):
         artemis_runner.CudaTransformersAdapter = original
     assert len((tmp_path / "sessions.jsonl").read_text().splitlines()) == 1
     assert len(harness.recorded_ids(tmp_path / "generations.jsonl")) == 20
+
+
+def test_notebook_sparse_checkout_contains_everything_the_harness_imports(tmp_path):
+    """Colab fetches only these paths; the first T4 attempt failed on a missing backend/services."""
+    notebook = (BOOT / "notebooks" / "artemis_mission005d_dev20_colab.ipynb").read_text(encoding="utf-8")
+    paths = re.search(r"sparse-checkout set ([^\\\n\"]+)", notebook).group(1).split()
+    assert "backend/services" in paths
+    repo = Path(subprocess.run(["git", "rev-parse", "--show-toplevel"], capture_output=True, text=True,
+                               cwd=BOOT).stdout.strip() or "/nonexistent")
+    if not (repo / ".git").exists() or shutil.which("tar") is None:
+        pytest.skip("needs a git checkout")
+    archive = subprocess.run(["git", "archive", "HEAD", *paths], cwd=repo, capture_output=True, check=True).stdout
+    subprocess.run(["tar", "-x", "-C", str(tmp_path)], input=archive, check=True)
+    script = "import sys; sys.path[:0] = ['.', '..']; import run_dev20_cuda, artemis_runner, score_dev20, gemma4_cuda_runtime"
+    result = subprocess.run([sys.executable, "-I", "-c", script], capture_output=True, text=True,
+                            cwd=tmp_path / "experiments" / "waymaker-ai" / "artemis_bootstrap")
+    assert result.returncode == 0, result.stderr[-800:]
