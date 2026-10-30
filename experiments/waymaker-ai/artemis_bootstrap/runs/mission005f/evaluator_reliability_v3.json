@@ -1,0 +1,55 @@
+{
+  "schema_version": "waymaker-artemis-evaluator-reliability/3.0",
+  "mission": "005-F",
+  "scope": "Evaluator changes made before any Mission 005-F inference. Deterministic only; no LLM judge.",
+  "changes": [
+    {
+      "id": "F1",
+      "file": "artemis_bootstrap/artemis_eval.py",
+      "what": "A required fact that is only a bare prohibition ('할 수 없', '금지', '불가', '허용되지 않') is met by another bare prohibition form, if the answer's prohibition is not negated and the answer does not also grant the act.",
+      "origin": "Mission 005-E report, DEV-009 ('금지됩니다' vs '할 수 없')",
+      "counterexamples": [
+        "금지되지 않습니다 -> not met",
+        "허가를 받으면 할 수 있습니다 -> not met",
+        "금지된다는 말이 있지만 허가를 받으면 할 수 있습니다 -> not met",
+        "불가피하게 -> not met",
+        "qualified facts ('야간 근무 금지', '청소년유해업소') still need exact text"
+      ],
+      "tests": "tests/test_mission005f_contract_and_evaluator.py::test_bare_prohibition_fact, ::test_qualified_facts_still_need_exact_text",
+      "dev20_effect": "Evaluator-only: DEV-009 loses one required_fact_missing in both the 005-D and 005-E outputs; no pass/fail outcome changes (005-D 0/20, 005-E 13/20)."
+    },
+    {
+      "id": "F2",
+      "file": "artemis_bootstrap/language_compliance.py",
+      "what": "Separate language-compliance metric (ko/en/vi): explicit request > question language > Korean. Korean inside brackets/quotes, codes and IDs not counted. Mixed replies are unresolved.",
+      "tests": "tests/test_mission005f_contract_and_evaluator.py::test_language_compliance (11 cases)",
+      "dev20_effect": "Reported apart from the four-dimension score. 005-D v1: 19 pass / 1 fail (DEV-012, Vietnamese under a Korean-only contract). 005-E v2: 19 pass / 1 fail (DEV-011)."
+    },
+    {
+      "id": "F3",
+      "file": "artemis_bootstrap/claim_support_validation.py",
+      "what": "Claim-support consistency against cited admissible evidence: amounts, durations, dates, status codes, permission/prohibition, required/not required. Results contradiction / needs_review / no_contradiction_found; never 'supported'.",
+      "tests": "tests/test_mission005f_contract_and_evaluator.py (values, uncited evidence, polarity, obligation, cannot-vs-can)",
+      "dev20_effect": "On the 40 recorded DEV-20 answers (005-D and 005-E): 0 contradictions."
+    },
+    {
+      "id": "F4",
+      "file": "artemis_bootstrap/synthetic_safety_gate.py",
+      "what": "Per-case scoring of the 005-F synthetic suites and the code-enforced gate; critical failures counted on their own from case specifications.",
+      "tests": "tests/test_mission005f_gate.py, tests/test_mission005f_freeze.py"
+    }
+  ],
+  "pre_freeze_validation": {
+    "development_probes": "24 development cases, 52 hand-written probes (right and wrong); all score as specified. Two probe expectations were too lenient (the scorer correctly also flagged value_from_inadmissible) and were corrected.",
+    "acceptance_reference_answers": "96 responses written by the suite's independent author (48 correct, 48 wrong). First run: correct 45/48 pass, wrong 48/48 fail. The 3 false positives were evaluator defects and were fixed before the freeze: (1) a status code named only to say a text does not apply was counted as a critical inadmissible value -> codes are review-only; (2) '하지 않아도 된다' was not read as 'not required'; (3) a conditional permission ('…경우에만 할 수 있다', 'only after') was read as a pure permission. After the fix: correct 48/48 pass, wrong 48/48 fail."
+  },
+  "known_limits": [
+    "English/Vietnamese written dates ('1 March 2026') are not read, so not checked.",
+    "Role/action binding outside Korean relies on case-specified forbidden_patterns; trust_gate.role_mismatches covers Korean only and is review-only.",
+    "Mixed permission/prohibition answers are never called contradictions.",
+    "Required-fact omission versus optional contrastive explanation (DEV-003/004/006) is left to the legal reviewer; no label changed.",
+    "The reference answers come from the same author as the acceptance cases: they test the evaluator, not the cases."
+  ],
+  "official_gold_accuracy": null,
+  "independent_legal_review": "not_verified"
+}

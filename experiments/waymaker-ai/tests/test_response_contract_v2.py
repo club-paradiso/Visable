@@ -33,10 +33,11 @@ def test_v1_prompt_is_unchanged_so_old_records_still_rederive():
 
 
 def test_versions_are_explicit_and_distinct():
-    assert rc.CONTRACT_VERSIONS == ("v1", "v2") and rc.DEFAULT_CONTRACT_VERSION == "v1"
+    # Mission 005-F added v3 after these two; the order and the default stay.
+    assert rc.CONTRACT_VERSIONS[:2] == ("v1", "v2") and rc.DEFAULT_CONTRACT_VERSION == "v1"
     assert rc.prompt_sha256("v1") != rc.prompt_sha256("v2")
     with pytest.raises(ValueError):
-        rc.parse_response('{"status": "answered", "answer": "x", "citations": ["A"]}', {"A"}, "v3")
+        rc.parse_response('{"status": "answered", "answer": "x", "citations": ["A"]}', {"A"}, "v9")
 
 
 @pytest.mark.parametrize("phrase", ["answered:", "partial:", "insufficient_evidence:", "conflict:", "clarify:",
