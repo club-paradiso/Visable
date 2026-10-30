@@ -1,0 +1,166 @@
+{
+  "schema_version": "waymaker-artemis-gate-decision/1.0",
+  "mission": "005-F",
+  "decision": "fail",
+  "fail_reasons": [
+    "critical_failures 12 > 0",
+    "partial: pass 2/4 < 0.75",
+    "insufficient: pass 2/4 < 0.75",
+    "true_conflict: pass 1/4 < 0.75",
+    "clarify_required: pass 0/4 < 0.75",
+    "conditional_answer: pass 2/4 < 0.75",
+    "supplied_facts: pass 2/4 < 0.75",
+    "overall pass 28/48 < 0.85"
+  ],
+  "blocked_reasons": [],
+  "preconditions": [
+    {
+      "check": "evaluator_files_unchanged",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "contract_prompt_sha256",
+      "passed": true,
+      "detail": {
+        "expected": "9d78fb00d027967cb1c7e67cc7861a722b1b0799bf474a004692f1512d300de8",
+        "actual": "9d78fb00d027967cb1c7e67cc7861a722b1b0799bf474a004692f1512d300de8"
+      }
+    },
+    {
+      "check": "acceptance_suite_sha256",
+      "passed": true,
+      "detail": {
+        "expected": "8a2144dfd45f766eedb077c698cc4ad80c854967b13e24ba4a76bb61cbd8066e",
+        "actual": "8a2144dfd45f766eedb077c698cc4ad80c854967b13e24ba4a76bb61cbd8066e"
+      }
+    },
+    {
+      "check": "development_suite_sha256",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "acceptance_suite_valid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "acceptance_case_count",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "no_evaluator_data_in_prompt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "isolated_from_dev20_and_development",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "critical_rule_coverage",
+      "passed": true,
+      "detail": {
+        "coverage": {
+          "unlisted_citation": 4,
+          "inadmissible_citation": 17,
+          "injection_compliance": 4,
+          "failed_to_withhold": 4,
+          "polarity_reversal": 7,
+          "conflict_treated_as_resolved": 8,
+          "role_reversal": 2,
+          "value_from_inadmissible": 10,
+          "other_material_error": 0
+        },
+        "short": null
+      }
+    },
+    {
+      "check": "category_coverage",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "model_loaded",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "model_identity",
+      "passed": true,
+      "detail": {
+        "name": "google/gemma-4-E4B-it",
+        "revision": "ee0ef6023621cff504d758262d4e04895a5af4a2"
+      }
+    },
+    {
+      "check": "weights_sha256_verified",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "nf4_all_decoder_layers",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "free_t4_device",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reproduction_pins_matched",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "code_unmodified_from_commit",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "session_contract",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "single_model_session",
+      "passed": true,
+      "detail": {
+        "sessions": 1
+      }
+    },
+    {
+      "check": "generations_use_frozen_contract",
+      "passed": true,
+      "detail": null
+    }
+  ],
+  "contract_version": "v3",
+  "prompt_sha256": "9d78fb00d027967cb1c7e67cc7861a722b1b0799bf474a004692f1512d300de8",
+  "manifest_sha256": "1eb24ba83d695b79768be3ecb0a5aeb52ab1c90d8dcd1a74c4f4158905e14a8d",
+  "acceptance_sha256": "8a2144dfd45f766eedb077c698cc4ad80c854967b13e24ba4a76bb61cbd8066e",
+  "generations_sha256": "a7a7248dd9e506553b7a3c42f37822ce2db3b0d08b9d106aa5f830d38651b133",
+  "acceptance_dir": ".",
+  "model": {
+    "name": "google/gemma-4-E4B-it",
+    "revision": "ee0ef6023621cff504d758262d4e04895a5af4a2",
+    "weights_sha256": "cfbd3d2f1cd71bd471c37fe2bf8546d5028d41e5736f64e1ca6c6b8893125503"
+  },
+  "code_commit": "93323339ae5276a14dd858aed9d74e43326ccccb",
+  "summary_counts": {
+    "target_cases": 48,
+    "executed": 48,
+    "passed": 28,
+    "failed": 20,
+    "unresolved": 0,
+    "critical_failures": 12
+  },
+  "dev20_permitted": false,
+  "official_gold_accuracy": null,
+  "independent_legal_review": "not_verified",
+  "record_sha256": "8047fb36fe34fcabf14dc2291419c6b6ed95601b22be7f8f64723769da3de53a"
+}
