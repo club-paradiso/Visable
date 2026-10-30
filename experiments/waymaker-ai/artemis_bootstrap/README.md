@@ -26,6 +26,12 @@ before a CUDA run record counts, pins the notebook to an exact code commit and
 package versions, and keeps the new runtime at `not_executed` until a real GPU run.
 Record checks are self-checks of our own JSON, not external attestation. See the
 [Mission 005-C.1 report](MISSION-005-C1-REPORT.ko.md).
+Mission 005-C.2: code commit `59858c5` ran on a free Colab T4. It loaded the
+official E4B (NF4 verified on all 42 decoder layers) and completed the three
+synthetic cases; the record passed its structural self-check. This is an
+execution result on synthetic evidence, not legal accuracy. See the
+[Mission 005-C.2 report](runs/mission005c2-cuda/MISSION-005-C2-REPORT.ko.md) and the
+[Mission 005-D plan](MISSION-005-D-PLAN.ko.md).
 
 Recovery status, 2026-10-29: checkpoint metadata verified; new MLX-VLM weight
 loading and generation **not executed** on this M1 8GB machine. The runtime is

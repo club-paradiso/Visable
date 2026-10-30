@@ -2,6 +2,10 @@
 
 작성일 2026-10-30. 대상은 PR #730(Draft), 브랜치 `feat/artemis-cuda-colab-inference`입니다.
 
+> **갱신 (Mission 005-C.2)**: 아래 표의 "New integrated CUDA runtime: not_executed"는 005-C.1 시점 상태입니다.
+> 그 뒤 커밋 `59858c5`가 무료 Colab T4에서 실제로 실행되어 합성 3건이 `completed`, 기록 자체 검사가 통과했습니다.
+> 42개 층 NF4 검사도 실제 모듈 이름에서 통과했습니다. [Mission 005-C.2 보고서](runs/mission005c2-cuda/MISSION-005-C2-REPORT.ko.md)를 보세요.
+
 ## 최종 상태
 
 | 항목 | 상태 |

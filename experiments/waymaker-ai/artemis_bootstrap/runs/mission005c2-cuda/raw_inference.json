@@ -1,0 +1,73 @@
+{
+  "source_record": "raw_record.json",
+  "source_record_sha256": "d79ec336d4c7ae90bceed6cea9a90b42690896173de8e38eefe7a195edafdf99",
+  "cases": [
+    {
+      "case_id": "no_evidence",
+      "execution_status": "completed",
+      "evidence_ids": [],
+      "prompt_tokens": 126,
+      "generated_token_count": 19,
+      "finish_reason": "eos",
+      "raw_output": "{\"status\": \"insufficient_evidence\", \"answer\": \"\", \"citations\": []}",
+      "response": {
+        "status": "insufficient_evidence",
+        "answer": "",
+        "citations": []
+      },
+      "output_validation": {
+        "passed": true
+      },
+      "failure_category": null,
+      "error": null
+    },
+    {
+      "case_id": "synthetic_citation",
+      "execution_status": "completed",
+      "evidence_ids": [
+        "SYN-1"
+      ],
+      "prompt_tokens": 161,
+      "generated_token_count": 38,
+      "finish_reason": "eos",
+      "raw_output": "{\"status\": \"partial\", \"answer\": \"가상의 규칙에 따르면 신청은 만료일 30일 전까지 해야 합니다.\", \"citations\": [\"SYN-1\"]}",
+      "response": {
+        "status": "partial",
+        "answer": "가상의 규칙에 따르면 신청은 만료일 30일 전까지 해야 합니다.",
+        "citations": [
+          "SYN-1"
+        ]
+      },
+      "output_validation": {
+        "passed": true
+      },
+      "failure_category": null,
+      "error": null
+    },
+    {
+      "case_id": "synthetic_conflict",
+      "execution_status": "completed",
+      "evidence_ids": [
+        "SYN-1",
+        "SYN-2"
+      ],
+      "prompt_tokens": 200,
+      "generated_token_count": 69,
+      "finish_reason": "eos",
+      "raw_output": "{\n\"status\": \"conflict\",\n\"answer\": \"제공된 가상 규칙에 따르면 신청 기한이 만료일 30일 전인지, 만료일 10일 전인지에 대한 정보가 충돌합니다.\",\n\"citations\": [\"SYN-1\", \"SYN-2\"]\n}",
+      "response": {
+        "status": "conflict",
+        "answer": "제공된 가상 규칙에 따르면 신청 기한이 만료일 30일 전인지, 만료일 10일 전인지에 대한 정보가 충돌합니다.",
+        "citations": [
+          "SYN-1",
+          "SYN-2"
+        ]
+      },
+      "output_validation": {
+        "passed": true
+      },
+      "failure_category": null,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "source_record": "raw_record.json",
+  "source_record_sha256": "d79ec336d4c7ae90bceed6cea9a90b42690896173de8e38eefe7a195edafdf99",
+  "model": {
+    "checkpoint": "google/gemma-4-E4B-it",
+    "revision": "ee0ef6023621cff504d758262d4e04895a5af4a2",
+    "quantization": "bnb_nf4_double_quant_fp16",
+    "quantization_policy": {
+      "method": "bitsandbytes",
+      "load_in_4bit": true,
+      "bnb_4bit_quant_type": "nf4",
+      "bnb_4bit_use_double_quant": true,
+      "bnb_4bit_compute_dtype": "float16",
+      "non_quantized_dtype": "float16"
+    }
+  },
+  "provenance": {
+    "snapshot_revision": "ee0ef6023621cff504d758262d4e04895a5af4a2",
+    "checkpoint_metadata_verified": true,
+    "metadata_sha256": {
+      "config.json": "33b10c02df3c2e8536cf323d29d53262aaa2f4d11dbe19bc729373fbe90295d4",
+      "processor_config.json": "32bdf45d2ad4cc29a0822ddd157a182de76644f0419a6228d151495256e9813c",
+      "tokenizer_config.json": "9f4fec4b1dc6ecddf8f4a92e9caea5971c0e67d81309f3f9066a2bee8c362633",
+      "chat_template.jinja": "0a2c8073c878ab1da004bee933a998606537bbb62016310352c7285c3f01c5b5",
+      "generation_config.json": "d4226bbe3117d2d253ba4609720ba82c6c4ce4627a9a6ae05387c78983ac03de"
+    },
+    "checkpoint_integrity_verified": true,
+    "artifact_integrity": {
+      "tokenizer.json": {
+        "algorithm": "sha256",
+        "digest": "cc8d3a0ce36466ccc1278bf987df5f71db1719b9ca6b4118264f45cb627bfe0f",
+        "size_bytes": 32169626
+      },
+      "model.safetensors": {
+        "algorithm": "sha256",
+        "digest": "cfbd3d2f1cd71bd471c37fe2bf8546d5028d41e5736f64e1ca6c6b8893125503",
+        "size_bytes": 15992595884
+      }
+    },
+    "integrity_reference_source": "https://huggingface.co/api/models/google/gemma-4-E4B-it/revision/ee0ef6023621cff504d758262d4e04895a5af4a2?blobs=true",
+    "weight_integrity": "sha256_verified"
+  },
+  "loaded_quantization": {
+    "passed": true,
+    "linear4bit_modules": 592,
+    "unquantized_linear_modules": 1,
+    "quantized_decoder_layers": 42,
+    "expected_decoder_layers": 42,
+    "quant_types": [
+      "nf4"
+    ],
+    "double_quant": [
+      true
+    ],
+    "compute_dtypes": [
+      "float16"
+    ],
+    "loaded_quantization_config": {
+      "quant_method": "bitsandbytes",
+      "_load_in_8bit": false,
+      "_load_in_4bit": true,
+      "llm_int8_threshold": 6.0,
+      "llm_int8_skip_modules": null,
+      "llm_int8_enable_fp32_cpu_offload": false,
+      "llm_int8_has_fp16_weight": false,
+      "bnb_4bit_quant_type": "nf4",
+      "bnb_4bit_use_double_quant": true,
+      "bnb_4bit_compute_dtype": "float16",
+      "bnb_4bit_quant_storage": "uint8",
+      "load_in_4bit": true,
+      "load_in_8bit": false
+    },
+    "parameter_devices": [
+      "cuda:0"
+    ],
+    "is_loaded_in_4bit": true
+  }
+}
