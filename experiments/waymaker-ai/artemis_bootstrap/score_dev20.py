@@ -230,7 +230,7 @@ def write_artifacts(out_dir: Path, result: dict) -> None:
                                                  "diagnostic_candidate_pass", "dimension_pass", "token_limit_truncation")}
          | {"evaluation_integrity_passed": result["integrity"]["passed"]})
     with (out_dir / "error_summary.csv").open("w", newline="", encoding="utf-8") as stream:
-        writer = csv.DictWriter(stream, fieldnames=["case_id", "dimension", "failure_code", "detail"])
+        writer = csv.DictWriter(stream, fieldnames=["case_id", "dimension", "failure_code", "detail"], lineterminator="\n")
         writer.writeheader()
         writer.writerows(result["error_rows"])
 

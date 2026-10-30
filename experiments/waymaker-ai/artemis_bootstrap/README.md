@@ -32,6 +32,12 @@ synthetic cases; the record passed its structural self-check. This is an
 execution result on synthetic evidence, not legal accuracy. See the
 [Mission 005-C.2 report](runs/mission005c2-cuda/MISSION-005-C2-REPORT.ko.md) and the
 [Mission 005-D plan](MISSION-005-D-PLAN.ko.md).
+Mission 005-D: the 20 development candidates ran once on a free Colab T4
+(one model load, commit `6dfe161`). Valid JSON 20/20; Development Candidate
+Diagnostic Performance 0/20, driven by status selection (17 `partial`) and by
+prompt-contract and evaluator defects more than by model reasoning. See the
+[Mission 005-D report](runs/mission005d-dev20/MISSION-005-D-REPORT.ko.md) and
+[005-E recommendations](runs/mission005d-dev20/MISSION-005-E-RECOMMENDATIONS.ko.md).
 
 Recovery status, 2026-10-29: checkpoint metadata verified; new MLX-VLM weight
 loading and generation **not executed** on this M1 8GB machine. The runtime is
