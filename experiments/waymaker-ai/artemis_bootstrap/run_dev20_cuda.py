@@ -23,10 +23,12 @@ sys.path.insert(0, str(BOOT.parent))
 sys.path.insert(0, str(BOOT))
 from waymaker_ai import cuda_policy
 from waymaker_ai.inference_input import project_inference_item
+from waymaker_ai.response_contract import CONTRACT_VERSIONS, prompt_sha256
 from gemma4_runtime import build_messages
 
 BENCHMARK = BOOT / "benchmarks" / "artemis_eval_dev_20.json"
 ISOLATION_MANIFEST = BOOT / "benchmarks" / "BENCHMARK_ISOLATION_MANIFEST.json"
+SYNTHETIC = BOOT / "validation" / "mission005e_synthetic_validation.json"
 PILOT = ("ARTEMIS-004-DEV-001", "ARTEMIS-004-DEV-002", "ARTEMIS-004-DEV-003")
 MAX_NEW_TOKENS = 256
 
@@ -35,13 +37,22 @@ def sha256_text(text: str) -> str:
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
-def prompt_messages(item: dict) -> list:
+def prompt_messages(item: dict, version: str = "v1") -> list:
     """The exact chat messages the session renders, rebuilt from the item alone."""
-    return build_messages(project_inference_item(item))
+    return build_messages(project_inference_item(item), version)
 
 
-def input_sha256(item: dict) -> str:
-    return sha256_text(json.dumps(prompt_messages(item), ensure_ascii=False, sort_keys=True))
+def input_sha256(item: dict, version: str = "v1") -> str:
+    return sha256_text(json.dumps(prompt_messages(item, version), ensure_ascii=False, sort_keys=True))
+
+
+def load_synthetic_items(path: Path = SYNTHETIC) -> tuple[list, str]:
+    """Mission 005-E synthetic validation cases: fictional, kept apart from DEV-20."""
+    raw = path.read_bytes()
+    items = json.loads(raw)["cases"]
+    if len({i["id"] for i in items}) != len(items):
+        raise ValueError("Duplicate synthetic case IDs")
+    return items, hashlib.sha256(raw).hexdigest()
 
 
 def load_dev_items(path: Path = BENCHMARK) -> tuple[list, str]:
@@ -75,6 +86,8 @@ def start_session(out_dir: Path, prepared, benchmark_sha256: str, label: str) ->
     """Log one model session. A second entry in sessions.jsonl means a reload."""
     import gemma4_cuda_runtime
     session_id = f"{label}-{uuid.uuid4().hex[:8]}"
+    if not getattr(prepared, "dev20_load_id", None):
+        prepared.dev20_load_id = uuid.uuid4().hex  # same value in every session that reuses this load
     header = prepared.header
     append_line(out_dir / "sessions.jsonl", {
         "session_id": session_id, "started_at": dt.datetime.now(dt.timezone.utc).isoformat(),
@@ -83,6 +96,9 @@ def start_session(out_dir: Path, prepared, benchmark_sha256: str, label: str) ->
         "metadata": prepared.metadata(), "environment": header.get("environment"),
         "provenance": header.get("provenance"), "load": header.get("load"),
         "reproduction_pins_matched": header.get("reproduction_pins_matched"),
+        "model_load_id": prepared.dev20_load_id,
+        "contract_version": getattr(prepared, "dev20_contract_version", "v1"),
+        "prompt_sha256": prompt_sha256(getattr(prepared, "dev20_contract_version", "v1")),
         "code": gemma4_cuda_runtime.code_provenance()})
     return session_id
 
@@ -97,6 +113,7 @@ def generate_cases(adapter, items: list, case_ids, out_dir: Path, session_id: st
     path = out_dir / "generations.jsonl"
     done = recorded_ids(path)
     wanted = [i for i in items if i["id"] in set(case_ids)]
+    version = getattr(adapter, "contract_version", "v1")
     counts = {"generated_now": 0, "skipped_already_recorded": 0}
     for item in wanted:
         if item["id"] in done:
@@ -106,11 +123,11 @@ def generate_cases(adapter, items: list, case_ids, out_dir: Path, session_id: st
         response = adapter.generate(item)
         data = dict(response.telemetry or {})
         raw = data.get("raw_output")
-        if data.get("input_messages") is not None and data["input_messages"] != prompt_messages(item):
+        if data.get("input_messages") is not None and data["input_messages"] != prompt_messages(item, version):
             raise RuntimeError(f"Rendered input differs from the projection for {item['id']}")
         record = {
-            "case_id": item["id"], "session_id": session_id, "generated_at": started,
-            "input_sha256": input_sha256(item),
+            "case_id": item["id"], "session_id": session_id, "contract_version": version, "generated_at": started,
+            "input_sha256": input_sha256(item, version),
             "execution_status": data.get("execution_status", "failed"),
             "raw_output": raw, "raw_output_sha256": sha256_text(raw) if isinstance(raw, str) else None,
             "response": data.get("response"),
@@ -129,21 +146,28 @@ def main(argv=None, prepared=None):
     parser.add_argument("--cases", choices=["pilot", "rest", "all"], default="all",
                         help="pilot = DEV-001..003, rest = DEV-004..020")
     parser.add_argument("--session-label", default="colab-t4")
+    parser.add_argument("--contract", choices=CONTRACT_VERSIONS, default="v1")
+    parser.add_argument("--suite", choices=["dev20", "synthetic"], default="dev20",
+                        help="synthetic = Mission 005-E fictional validation cases, never mixed with DEV-20")
     args = parser.parse_args(argv)
     import artemis_runner
     import gemma4_cuda_runtime
-    items, digest = load_dev_items()
+    items, digest = load_dev_items() if args.suite == "dev20" else load_synthetic_items()
     ids = [i["id"] for i in items]
-    selected = {"pilot": list(PILOT), "rest": [i for i in ids if i not in PILOT], "all": ids}[args.cases]
+    selected = ids if args.suite == "synthetic" else \
+        {"pilot": list(PILOT), "rest": [i for i in ids if i not in PILOT], "all": ids}[args.cases]
     prepared = prepared or gemma4_cuda_runtime.PreparedRun()
-    adapter = artemis_runner.CudaTransformersAdapter(max_tokens=MAX_NEW_TOKENS, prepared=prepared)
+    adapter = artemis_runner.CudaTransformersAdapter(max_tokens=MAX_NEW_TOKENS, prepared=prepared,
+                                                     contract_version=args.contract)
     available, reason = adapter.check_availability()
     args.out_dir.mkdir(parents=True, exist_ok=True)
-    # Pilot and rest share one loaded model, so they share one logged session.
-    session_id = getattr(prepared, "dev20_session_id", None)
+    # Runs that share one loaded model share one logged session per output directory.
+    logged = getattr(prepared, "dev20_sessions", {})
+    session_id = logged.get(str(args.out_dir))
     if session_id is None:
+        prepared.dev20_contract_version = args.contract
         session_id = start_session(args.out_dir, prepared, digest, args.session_label)
-        prepared.dev20_session_id = session_id
+        prepared.dev20_sessions = {**logged, str(args.out_dir): session_id}
     if not available:
         print(json.dumps({"status": adapter.unavailable_status(), "reason": reason}))
         return 3 if adapter.unavailable_status() == "not_executed" else 1

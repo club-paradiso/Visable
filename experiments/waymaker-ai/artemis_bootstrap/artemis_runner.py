@@ -484,11 +484,12 @@ class CudaTransformersAdapter(BaseModelAdapter):
     """
 
     def __init__(self, max_tokens: int = 256, cache_dir: Optional[Path] = None,
-                 verify_weights: bool = True, prepared: Optional[Any] = None):
+                 verify_weights: bool = True, prepared: Optional[Any] = None, contract_version: str = "v1"):
         limits = cuda_policy.configuration()["limits"]
         if not 1 <= max_tokens <= limits["max_generation_tokens"]:
             raise ValueError("Invalid bounded generation settings")
         self.max_tokens = max_tokens
+        self.contract_version = contract_version
         self.prepared = prepared or gemma4_cuda_runtime.PreparedRun(cache_dir, verify_weights)
 
     def _ready(self) -> None:
@@ -516,6 +517,7 @@ class CudaTransformersAdapter(BaseModelAdapter):
             "provenance": header.get("provenance", {}), "load": header.get("load", {}),
             "cuda_policy_sha256": hashlib.sha256(cuda_policy.CONFIG_PATH.read_bytes()).hexdigest(),
             "generation_config": {"max_new_tokens": self.max_tokens, "do_sample": False, "enable_thinking": False},
+            "contract_version": self.contract_version,
         }
 
     def generate(self, item: Mapping[str, Any], context: Optional[Mapping[str, Any]] = None) -> ModelResponse:
@@ -525,7 +527,8 @@ class CudaTransformersAdapter(BaseModelAdapter):
                                  telemetry={"execution_status": "not_executed", "highest_completed_stage": "preflight",
                                             "failure_category": "prerequisite_or_resource_rejection"})
         start = time.perf_counter()
-        data = self.prepared.session.generate(str(item.get("id", "")), dict(item), self.max_tokens)
+        data = self.prepared.session.generate(str(item.get("id", "")), dict(item), self.max_tokens,
+                                              self.contract_version)
         response = data.get("response", {})
         return ModelResponse(status=response.get("status", "error"), answer=response.get("answer", ""),
                              citations=response.get("citations", []), raw_output=data.get("raw_output"),

@@ -264,7 +264,7 @@ def test_missing_prerequisites_stay_not_executed(tmp_path):
 
 
 class InvalidOutputSession:
-    def generate(self, case_id, item, max_new_tokens):
+    def generate(self, case_id, item, max_new_tokens, contract_version="v1"):
         return {"case_id": case_id, "execution_status": "generated_but_invalid", "raw_output": '{"status": "answered"',
                 "generated_token_count": 5, "error": "JSONDecodeError", "output_validation": {"passed": False}}
 

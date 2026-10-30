@@ -21,7 +21,9 @@ BOOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(BOOT.parent))
 sys.path.insert(0, str(BOOT))
 import artemis_eval
-from run_dev20_cuda import input_sha256, load_dev_items, prompt_messages, sha256_text
+from run_dev20_cuda import input_sha256, load_dev_items, load_synthetic_items, prompt_messages, sha256_text
+from waymaker_ai.response_contract import parse_response
+import trust_gate
 from waymaker_ai import cuda_policy
 from waymaker_ai.inference_input import project_inference_item
 
@@ -54,9 +56,41 @@ def rubric_strings(item: dict) -> list:
     return [v for v in values if isinstance(v, str) and v]
 
 
-def leakage_findings(item: dict) -> list:
+_VI_RE = __import__("re").compile(r"[ăâđêôơưĂÂĐÊÔƠƯạảãáàặẳẵắằậẩẫấầẹẻẽéèệểễếềịỉĩíìọỏõóòộổỗốồợởỡớờụủũúùựửữứừỳỷỹýỵ]")
+_HANGUL_RE = __import__("re").compile(r"[가-힣]")
+
+
+def text_language(text: str) -> str:
+    """Coarse script-based guess: ko, vi, en or unknown. Deterministic, not a classifier."""
+    if _HANGUL_RE.search(text):
+        return "ko"
+    if _VI_RE.search(text):
+        return "vi"
+    if __import__("re").search(r"[A-Za-z]{3,}", text):
+        return "en"
+    return "unknown"
+
+
+def language_review(item: dict, version: str) -> dict | None:
+    """E4: flag a rubric whose required facts assume a response language the contract does not ask for.
+
+    Annotation only; it never changes a pass or fail. v1 asks for Korean; v2 asks for the
+    question's language.
+    """
+    facts = (item.get("expected") or {}).get("source_fidelity", {}).get("required_facts") or []
+    rubric = {text_language(f) for f in facts} - {"unknown"}
+    expected = "ko" if version == "v1" else text_language(item["question"])
+    if expected == "unknown":
+        expected = "ko"
+    if rubric and rubric != {expected}:
+        return {"review_required": True, "reason": "rubric_language_mismatch", "contract_version": version,
+                "contract_response_language": expected, "rubric_fact_languages": sorted(rubric)}
+    return None
+
+
+def leakage_findings(item: dict, version: str = "v1") -> list:
     """Rubric text or evaluator-only keys/labels that reach the prompt but are not in the item's question/evidence."""
-    prompt = json.dumps(prompt_messages(item), ensure_ascii=False)
+    prompt = json.dumps(prompt_messages(item, version), ensure_ascii=False)
     visible = item["question"] + "".join(e.get("title", "") + e.get("text", "") for e in item["evidence"])
     found = [f"rubric_text:{s}" for s in rubric_strings(item) if s in prompt and s not in visible]
     keys, values = set(), set()
@@ -112,16 +146,17 @@ def score(out_dir: Path) -> dict:
     cases, error_rows = [], []
     for item in items:
         cid = item["id"]
-        leaks = leakage_findings(item)
+        gen = gens.get(cid)
+        version = (gen or {}).get("contract_version", "v1")
+        leaks = leakage_findings(item, version)
         if leaks:
             integrity["prompt_leakage"][cid] = leaks
-        gen = gens.get(cid)
         exp = item["expected"]
         if gen is None:
             status_exec, response = "not_executed", NOT_EXECUTED_RESPONSE
         else:
             status_exec = gen["execution_status"]
-            if gen["input_sha256"] != input_sha256(item):
+            if gen["input_sha256"] != input_sha256(item, version):
                 integrity["input_hash_mismatches"].append(cid)
             raw = gen.get("raw_output")
             if isinstance(raw, str) and gen.get("raw_output_sha256") != sha256_text(raw):
@@ -164,6 +199,8 @@ def score(out_dir: Path) -> dict:
             "input_sha256": (gen or {}).get("input_sha256"),
             "session_id": (gen or {}).get("session_id"),
             "root_cause": annotations.get(cid),
+            "contract_version": version,
+            "review_annotation": language_review(item, version),
         })
 
     n = len(items)
@@ -204,6 +241,47 @@ def score(out_dir: Path) -> dict:
                            and all(c["passed"] for c in integrity["session_provenance_checks"]))
     return {"cases": cases, "error_rows": error_rows, "metrics": metrics, "integrity": integrity,
             "generations": generations, "sessions": sessions}
+
+
+def score_synthetic(out_dir: Path) -> dict:
+    """Mission 005-E synthetic validation: contract validity, expected status, required and
+    forbidden citations, response language, and the permission check where the case asks for it.
+    Fictional cases; success is not legal accuracy and is never pooled with DEV-20."""
+    items, spec_sha = load_synthetic_items()
+    gens = {g["case_id"]: g for g in read_jsonl(out_dir / "generations.jsonl")}
+    rows = []
+    for item in items:
+        gen = gens.get(item["id"])
+        row = {"case_id": item["id"], "rule": item["rule"], "expected_statuses": item["expected_statuses"],
+               "model_status": (gen or {}).get("execution_status", "not_executed")}
+        version = (gen or {}).get("contract_version", "v2")
+        parsed = None
+        if gen and isinstance(gen.get("raw_output"), str):
+            try:
+                parsed = parse_response(gen["raw_output"], {e["id"] for e in item["evidence"]}, version)
+            except (ValueError, TypeError):
+                parsed = None
+        cites = set((parsed or {}).get("citations") or [])
+        answer = (parsed or {}).get("answer", "")
+        checks = {
+            "contract_valid": parsed is not None,
+            "status": parsed is not None and parsed["status"] in item["expected_statuses"],
+            "must_cite": parsed is not None and set(item["must_cite"]) <= cites,
+            "must_not_cite": parsed is not None and not (set(item["must_not_cite"]) & cites),
+            "language": parsed is not None and (not answer.strip() or text_language(answer) == item["expected_language"]),
+        }
+        if item.get("evidence_check") == "permission_flips":
+            text = "\n".join(e["text"] for e in item["evidence"])
+            checks["no_permission_flip"] = parsed is not None and not trust_gate.permission_flips(answer, text)
+        row.update(status=(parsed or {}).get("status"), citations=sorted(cites), answer=answer, checks=checks,
+                   passed=all(checks.values()), input_sha256_ok=bool(gen) and gen.get("input_sha256") == input_sha256(item, version))
+        rows.append(row)
+    executed = sum(1 for r in rows if r["model_status"] != "not_executed")
+    return {"label": "Mission 005-E synthetic specification validation (not legal accuracy)",
+            "spec_sha256": spec_sha, "cases": rows,
+            "summary": {"target": len(rows), "executed": executed,
+                        "passed": sum(1 for r in rows if r["passed"]),
+                        "per_check": {k: sum(1 for r in rows if r["checks"].get(k)) for k in rows[0]["checks"]} if rows else {}}}
 
 
 def write_artifacts(out_dir: Path, result: dict) -> None:

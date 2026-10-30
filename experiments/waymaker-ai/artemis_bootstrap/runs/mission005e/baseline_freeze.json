@@ -1,0 +1,241 @@
+{
+  "label": "Original DEV-20 baseline",
+  "frozen_at_commit": "80445349d6a9820998e3ef9b17f7d73a9eaec125",
+  "dataset_sha256": "c204497731b637d31da221a468ca2a4c2537d275a974234f41aefe7da4313c5f",
+  "generations_sha256": "f9a319848946da108f0b85b0d0da344a73193340822d07b14daf9c71f1238949",
+  "sessions_sha256": "ed0d87dbd0cb4ef158b52abe6d8e0d68f875a46a4858b3f687022bd6140ef797",
+  "evaluator_and_contract_file_sha256": {
+    "artemis_bootstrap/artemis_eval.py": "398f055d4eecaad0fb9931cab345f70c603f507d7e4fcda811008d82b50fd373",
+    "artemis_bootstrap/trust_gate.py": "497ff8e5107f64cb5f296e080c78eb70c222a1fa36d9363902c2c7594da2ea3d",
+    "artemis_bootstrap/smoke_grader.py": "ab56cfd321d1522dc2b868f97bdaa9e7c5cd9ddf071ffec435ef781d0a57402d",
+    "artemis_bootstrap/score_dev20.py": "2d6bc031e4dfaf294921318e37b8032104adeca09da2276e1b576f226dec3661",
+    "waymaker_ai/response_contract.py": "5024c6bd95eb03d5abf91ad34e0a1088c8f6971734d89095789e416bc2e55047",
+    "artemis_bootstrap/gemma4_runtime.py": "cc6153ea9f6b9b10ed4bb03268e5eb37e03dc0874b497f4d9bedec25fbfb92a1",
+    "waymaker_ai/inference_input.py": "7500df5cac4f8182103a70184a6f95420509150c4f36fea7c93256ee530a32d3"
+  },
+  "response_contract_version": "v1",
+  "reproduced_equals_committed_metrics": true,
+  "metrics": {
+    "executed_cases": {
+      "numerator": 20,
+      "denominator": 20,
+      "rate": 1.0
+    },
+    "json_contract_pass": {
+      "numerator": 20,
+      "denominator": 20,
+      "rate": 1.0
+    },
+    "diagnostic_candidate_pass": {
+      "numerator": 0,
+      "denominator": 20,
+      "rate": 0.0
+    },
+    "dimension_pass": {
+      "source_fidelity": {
+        "numerator": 11,
+        "denominator": 20,
+        "rate": 0.55
+      },
+      "citation_accuracy": {
+        "numerator": 15,
+        "denominator": 20,
+        "rate": 0.75
+      },
+      "procedural_integrity": {
+        "numerator": 17,
+        "denominator": 20,
+        "rate": 0.85
+      },
+      "abstention_appropriateness": {
+        "numerator": 0,
+        "denominator": 20,
+        "rate": 0.0
+      }
+    },
+    "partial_where_only_answered_allowed": {
+      "numerator": 14,
+      "denominator": 16,
+      "rate": 0.875
+    },
+    "token_limit_truncation": {
+      "numerator": 0,
+      "denominator": 20,
+      "rate": 0.0
+    },
+    "failure_code_frequency": {
+      "disallowed_status": 20,
+      "required_fact_missing": 13,
+      "unlisted_citations": 5,
+      "forbidden_citations": 5,
+      "unapproved_citations": 5,
+      "clarification_missed": 2,
+      "permission_flipped": 1,
+      "unnecessary_clarification": 1,
+      "unwarranted_answer": 1,
+      "role_mismatched": 1
+    }
+  },
+  "status_distribution": {
+    "partial": 17,
+    "clarify": 1,
+    "conflict": 2
+  },
+  "case_outcomes": {
+    "ARTEMIS-004-DEV-001": {
+      "diagnostic": "fail",
+      "failure_codes": [
+        "disallowed_status"
+      ]
+    },
+    "ARTEMIS-004-DEV-002": {
+      "diagnostic": "fail",
+      "failure_codes": [
+        "required_fact_missing",
+        "required_fact_missing",
+        "required_fact_missing",
+        "disallowed_status"
+      ]
+    },
+    "ARTEMIS-004-DEV-003": {
+      "diagnostic": "fail",
+      "failure_codes": [
+        "required_fact_missing",
+        "disallowed_status"
+      ]
+    },
+    "ARTEMIS-004-DEV-004": {
+      "diagnostic": "fail",
+      "failure_codes": [
+        "required_fact_missing",
+        "disallowed_status"
+      ]
+    },
+    "ARTEMIS-004-DEV-005": {
+      "diagnostic": "fail",
+      "failure_codes": [
+        "disallowed_status"
+      ]
+    },
+    "ARTEMIS-004-DEV-006": {
+      "diagnostic": "fail",
+      "failure_codes": [
+        "required_fact_missing",
+        "disallowed_status"
+      ]
+    },
+    "ARTEMIS-004-DEV-007": {
+      "diagnostic": "fail",
+      "failure_codes": [
+        "required_fact_missing",
+        "unlisted_citations",
+        "forbidden_citations",
+        "unapproved_citations",
+        "disallowed_status"
+      ]
+    },
+    "ARTEMIS-004-DEV-008": {
+      "diagnostic": "fail",
+      "failure_codes": [
+        "disallowed_status"
+      ]
+    },
+    "ARTEMIS-004-DEV-009": {
+      "diagnostic": "fail",
+      "failure_codes": [
+        "permission_flipped",
+        "required_fact_missing",
+        "required_fact_missing",
+        "disallowed_status"
+      ]
+    },
+    "ARTEMIS-004-DEV-010": {
+      "diagnostic": "fail",
+      "failure_codes": [
+        "disallowed_status"
+      ]
+    },
+    "ARTEMIS-004-DEV-011": {
+      "diagnostic": "fail",
+      "failure_codes": [
+        "required_fact_missing",
+        "required_fact_missing",
+        "required_fact_missing",
+        "disallowed_status"
+      ]
+    },
+    "ARTEMIS-004-DEV-012": {
+      "diagnostic": "fail",
+      "failure_codes": [
+        "disallowed_status"
+      ]
+    },
+    "ARTEMIS-004-DEV-013": {
+      "diagnostic": "fail",
+      "failure_codes": [
+        "unlisted_citations",
+        "forbidden_citations",
+        "unapproved_citations",
+        "unnecessary_clarification",
+        "disallowed_status"
+      ]
+    },
+    "ARTEMIS-004-DEV-014": {
+      "diagnostic": "fail",
+      "failure_codes": [
+        "unlisted_citations",
+        "forbidden_citations",
+        "unapproved_citations",
+        "disallowed_status",
+        "unwarranted_answer"
+      ]
+    },
+    "ARTEMIS-004-DEV-015": {
+      "diagnostic": "fail",
+      "failure_codes": [
+        "required_fact_missing",
+        "clarification_missed",
+        "disallowed_status"
+      ]
+    },
+    "ARTEMIS-004-DEV-016": {
+      "diagnostic": "fail",
+      "failure_codes": [
+        "clarification_missed",
+        "disallowed_status"
+      ]
+    },
+    "ARTEMIS-004-DEV-017": {
+      "diagnostic": "fail",
+      "failure_codes": [
+        "disallowed_status"
+      ]
+    },
+    "ARTEMIS-004-DEV-018": {
+      "diagnostic": "fail",
+      "failure_codes": [
+        "disallowed_status"
+      ]
+    },
+    "ARTEMIS-004-DEV-019": {
+      "diagnostic": "fail",
+      "failure_codes": [
+        "unlisted_citations",
+        "forbidden_citations",
+        "unapproved_citations",
+        "disallowed_status"
+      ]
+    },
+    "ARTEMIS-004-DEV-020": {
+      "diagnostic": "fail",
+      "failure_codes": [
+        "role_mismatched",
+        "unlisted_citations",
+        "forbidden_citations",
+        "unapproved_citations",
+        "disallowed_status"
+      ]
+    }
+  },
+  "official_gold_accuracy": null
+}

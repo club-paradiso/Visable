@@ -28,7 +28,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from waymaker_ai import cuda_policy
 from waymaker_ai.inference_input import project_inference_item
-from waymaker_ai.response_contract import parse_response
+from waymaker_ai.response_contract import CONTRACT_VERSIONS, DEFAULT_CONTRACT_VERSION, parse_response
 from gemma4_runtime import build_messages
 
 PACKAGES = ("torch", "transformers", "bitsandbytes", "accelerate", "huggingface-hub", "tokenizers")
@@ -257,18 +257,21 @@ class CudaSession:
         gc.collect()
         torch.cuda.empty_cache()
 
-    def generate(self, case_id: str, item: dict, max_new_tokens: int) -> dict:
+    def generate(self, case_id: str, item: dict, max_new_tokens: int,
+                 contract_version: str = DEFAULT_CONTRACT_VERSION) -> dict:
         import torch
         limits = cuda_policy.configuration()["limits"]
-        result = {"case_id": case_id, "execution_status": "failed", "raw_output": None,
+        result = {"case_id": case_id, "contract_version": contract_version, "execution_status": "failed", "raw_output": None,
                   "generated_token_count": None, "output_validation": {"passed": False}}
         stage = "input_validation"
         try:
             if not isinstance(max_new_tokens, int) or not 1 <= max_new_tokens <= limits["max_generation_tokens"]:
                 raise ValueError("Generation token limit exceeded")
+            if contract_version not in CONTRACT_VERSIONS:
+                raise ValueError(f"Unknown contract version: {contract_version}")
             projected = validate_input(item)
             result["evidence_ids"] = [e["id"] for e in projected["evidence"]]
-            messages = build_messages(projected)
+            messages = build_messages(projected, contract_version)
             stage = "prompt_preparation"
             inputs = self.processor.apply_chat_template(
                 messages, tokenize=True, add_generation_prompt=True, enable_thinking=False,
@@ -306,7 +309,7 @@ class CudaSession:
                 return result
             stage = "output_validation"
             try:
-                parsed = parse_response(raw, {e["id"] for e in projected["evidence"]})
+                parsed = parse_response(raw, {e["id"] for e in projected["evidence"]}, contract_version)
             except (ValueError, TypeError) as exc:
                 result.update(execution_status="generated_but_invalid",
                               failure_category="successful_generation_invalid_json",
