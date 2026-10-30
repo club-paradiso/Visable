@@ -8,6 +8,10 @@ Every finished case is appended to generations.jsonl and fsynced, so a dropped
 Colab session keeps what it finished. A rerun skips recorded case IDs (no
 overwrite, no double count, no automatic retry) and logs a new session in
 sessions.jsonl, which shows whether the model was loaded again.
+
+Mission 005-F: a DEV-20 run is refused unless --gate-decision names a sealed,
+re-scorable `pass` from synthetic_safety_gate for the same contract, checkpoint
+and code commit. There is no override.
 """
 import argparse
 import datetime as dt
@@ -29,6 +33,7 @@ from gemma4_runtime import build_messages
 BENCHMARK = BOOT / "benchmarks" / "artemis_eval_dev_20.json"
 ISOLATION_MANIFEST = BOOT / "benchmarks" / "BENCHMARK_ISOLATION_MANIFEST.json"
 SYNTHETIC = BOOT / "validation" / "mission005e_synthetic_validation.json"
+DEVELOPMENT_005F = BOOT / "validation" / "mission005f_synthetic_development.json"
 PILOT = ("ARTEMIS-004-DEV-001", "ARTEMIS-004-DEV-002", "ARTEMIS-004-DEV-003")
 MAX_NEW_TOKENS = 256
 
@@ -147,16 +152,32 @@ def main(argv=None, prepared=None):
                         help="pilot = DEV-001..003, rest = DEV-004..020")
     parser.add_argument("--session-label", default="colab-t4")
     parser.add_argument("--contract", choices=CONTRACT_VERSIONS, default="v1")
-    parser.add_argument("--suite", choices=["dev20", "synthetic"], default="dev20",
-                        help="synthetic = Mission 005-E fictional validation cases, never mixed with DEV-20")
+    parser.add_argument("--suite", choices=["dev20", "synthetic", "development"], default="dev20",
+                        help="synthetic = Mission 005-E fictional cases; development = Mission 005-F development "
+                             "partition (diagnostic, never the gate); neither is mixed with DEV-20")
+    parser.add_argument("--gate-decision", type=Path, default=None,
+                        help="DEV-20 only: gate_decision.json from synthetic_safety_gate; required")
     args = parser.parse_args(argv)
     import artemis_runner
     import gemma4_cuda_runtime
-    items, digest = load_dev_items() if args.suite == "dev20" else load_synthetic_items()
+    if args.suite == "dev20":
+        items, digest = load_dev_items()
+    elif args.suite == "synthetic":
+        items, digest = load_synthetic_items()
+    else:
+        items, digest = load_synthetic_items(DEVELOPMENT_005F)
     ids = [i["id"] for i in items]
-    selected = ids if args.suite == "synthetic" else \
+    selected = ids if args.suite != "dev20" else \
         {"pilot": list(PILOT), "rest": [i for i in ids if i not in PILOT], "all": ids}[args.cases]
     prepared = prepared or gemma4_cuda_runtime.PreparedRun()
+    if args.suite == "dev20":
+        import synthetic_safety_gate
+        try:
+            synthetic_safety_gate.require_passing_gate(args.gate_decision or Path("/nonexistent/gate_decision.json"),
+                                                       args.contract, prepared)
+        except synthetic_safety_gate.GateBlocked as blocked:
+            print(json.dumps({"status": "blocked_by_gate", "reason": str(blocked)}))
+            return 7
     adapter = artemis_runner.CudaTransformersAdapter(max_tokens=MAX_NEW_TOKENS, prepared=prepared,
                                                      contract_version=args.contract)
     available, reason = adapter.check_availability()

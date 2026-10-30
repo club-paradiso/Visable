@@ -1,0 +1,186 @@
+{
+  "schema_version": "waymaker-artemis-005f-baseline/1.0",
+  "frozen_from_commit": "83216eac14b11ca8cb4e37990ab8cc2423eb35b1",
+  "note": "Frozen before any Mission 005-F change. Metrics recomputed with the Mission 005-E evaluator. Development candidate diagnostics only; Official Gold Accuracy N/A.",
+  "prompt_sha256": {
+    "v1": "41037931d0036099b1617d88d2f6c71c440e85079e7cabf000c89e9acd84c364",
+    "v2": "d9c2081b4dd320471f27c8179a0317ed18b331c87bdf54414324b2b980aeb089"
+  },
+  "metrics": {
+    "mission005d_v1_dev20_evaluator_005e": {
+      "executed_cases": {
+        "numerator": 20,
+        "denominator": 20,
+        "rate": 1.0
+      },
+      "json_contract_pass": {
+        "numerator": 20,
+        "denominator": 20,
+        "rate": 1.0
+      },
+      "diagnostic_candidate_pass": {
+        "numerator": 0,
+        "denominator": 20,
+        "rate": 0.0
+      },
+      "dimension_pass": {
+        "source_fidelity": {
+          "numerator": 13,
+          "denominator": 20,
+          "rate": 0.65
+        },
+        "citation_accuracy": {
+          "numerator": 15,
+          "denominator": 20,
+          "rate": 0.75
+        },
+        "procedural_integrity": {
+          "numerator": 17,
+          "denominator": 20,
+          "rate": 0.85
+        },
+        "abstention_appropriateness": {
+          "numerator": 0,
+          "denominator": 20,
+          "rate": 0.0
+        }
+      },
+      "token_limit_truncation": {
+        "numerator": 0,
+        "denominator": 20,
+        "rate": 0.0
+      }
+    },
+    "mission005e_v2_dev20_evaluator_005e": {
+      "executed_cases": {
+        "numerator": 20,
+        "denominator": 20,
+        "rate": 1.0
+      },
+      "json_contract_pass": {
+        "numerator": 20,
+        "denominator": 20,
+        "rate": 1.0
+      },
+      "diagnostic_candidate_pass": {
+        "numerator": 13,
+        "denominator": 20,
+        "rate": 0.65
+      },
+      "dimension_pass": {
+        "source_fidelity": {
+          "numerator": 15,
+          "denominator": 20,
+          "rate": 0.75
+        },
+        "citation_accuracy": {
+          "numerator": 19,
+          "denominator": 20,
+          "rate": 0.95
+        },
+        "procedural_integrity": {
+          "numerator": 19,
+          "denominator": 20,
+          "rate": 0.95
+        },
+        "abstention_appropriateness": {
+          "numerator": 18,
+          "denominator": 20,
+          "rate": 0.9
+        }
+      },
+      "token_limit_truncation": {
+        "numerator": 0,
+        "denominator": 20,
+        "rate": 0.0
+      }
+    },
+    "mission005e_synthetic": {
+      "target": 15,
+      "executed": 15,
+      "passed": 11,
+      "per_check": {
+        "contract_valid": {
+          "passed": 15,
+          "applicable": 15
+        },
+        "status": {
+          "passed": 13,
+          "applicable": 15
+        },
+        "must_cite": {
+          "passed": 15,
+          "applicable": 15
+        },
+        "must_not_cite": {
+          "passed": 15,
+          "applicable": 15
+        },
+        "language": {
+          "passed": 13,
+          "applicable": 15
+        },
+        "no_permission_flip": {
+          "passed": 1,
+          "applicable": 1
+        }
+      }
+    }
+  },
+  "integrity_passed": {
+    "mission005d": true,
+    "mission005e": true
+  },
+  "artifact_sha256": {
+    "runs/mission005c2-cuda/MISSION-005-C2-REPORT.ko.md": "29cac11814f4ba6b9beb9132faae832cc132a572862e427df35acac0beef06d7",
+    "runs/mission005c2-cuda/checkpoint_provenance.json": "ce3a71ccd893f8231978c90ce5adf54b3a45ba6d4ae0d834ccb457b581848429",
+    "runs/mission005c2-cuda/execution_manifest.json": "4cc0043b65a37ac4032c53a246228a1bab8a7d825689859babe6ab0eea0df300",
+    "runs/mission005c2-cuda/gpu_performance.json": "74077ff555b1b09111317c4d55c4be493ff7a53c3ab5391cb50af8d3e32ac870",
+    "runs/mission005c2-cuda/raw_inference.json": "0b180bda146e881287bedad08e3549628bcd37d23845d28c52621acb6b2bd5b1",
+    "runs/mission005c2-cuda/raw_record.json": "d79ec336d4c7ae90bceed6cea9a90b42690896173de8e38eefe7a195edafdf99",
+    "runs/mission005c2-cuda/transfer_note.json": "20ef460e60c515ba0b9f52626e39ee2a54f34a1550eff2eb2180b944170ed362",
+    "runs/mission005c2-cuda/validation_summary.json": "1f1af88039da21a7c117fd48c0d2cb421eca2b6607aff555f142712e0952d5c1",
+    "runs/mission005d-dev20/MISSION-005-D-REPORT.ko.md": "6d80c509b19618035f65fca6a461d6ddc81ca3b3cf27c357f978c2fb947b185b",
+    "runs/mission005d-dev20/MISSION-005-E-RECOMMENDATIONS.ko.md": "d14233987b9182ea85a33dcd4fdd19634fd1bb187e04339daa878955df2b76dc",
+    "runs/mission005d-dev20/case_diagnostics.json": "ebd5385d380058f889e347135ffe749733abce947ce97d204f25fb78008b0ff3",
+    "runs/mission005d-dev20/checkpoint_provenance.json": "f70ce31c5cce4dc61cbbe32e74ef6a98b174ea4f64f7b845939dbd142f7a65a0",
+    "runs/mission005d-dev20/error_summary.csv": "1980f6ac47aefdb18948accc53007adf3d7b44b47a57d8098e301b3c1a66e34f",
+    "runs/mission005d-dev20/evaluation_integrity.json": "14c757d55ae60638eb165e411a1686d7253a68d0594a5c1d6cc688bf0ccfb613",
+    "runs/mission005d-dev20/execution_manifest.json": "6ad0ff9e490d4a8b247de7b03444eaa7ab59486c73f09433afeedac67ba7b707",
+    "runs/mission005d-dev20/generations.jsonl": "f9a319848946da108f0b85b0d0da344a73193340822d07b14daf9c71f1238949",
+    "runs/mission005d-dev20/performance_metrics.json": "6b280e95a404643b69f8670d82da06dea6d61eb9de5367a33cdca1fc2434cf49",
+    "runs/mission005d-dev20/raw_inference.json": "cfc1259aeb90fa379d1f0e0f8a83102a2cbc69628027e7786a268be187184bfd",
+    "runs/mission005d-dev20/root_cause_annotations.json": "241150b9916c7aef0cd63bf1b8e0d8d49ad85d6dbfd6f4699ededac4c7991f66",
+    "runs/mission005d-dev20/run_summary.json": "c5300a239c69b3614380c0b6e161c9810a7b682ca1689ddbd8730eee72f5b612",
+    "runs/mission005d-dev20/sessions.jsonl": "ed0d87dbd0cb4ef158b52abe6d8e0d68f875a46a4858b3f687022bd6140ef797",
+    "runs/mission005e/MISSION-005-E-REPORT.ko.md": "af7beb9b0ca4277b883479833cf77cbfda1e1e05e800389ccef2dc340b495175",
+    "runs/mission005e/MISSION-005-F-RECOMMENDATIONS.ko.md": "2fb10ff9c77f8e30c125b7554a845f049105bb11fbe06159c60bd429881b0eb2",
+    "runs/mission005e/baseline_freeze.json": "831c82698a593ae4cc032acd038b80d3af0ea8cd6d5f28315a3eb76479c8f0a9",
+    "runs/mission005e/case_level_comparison.csv": "c3aebce3c813aed3d7fe7b6507e004a89c3829497a0017fcccc5aa9f9c88ac7f",
+    "runs/mission005e/dev20_contract_v2/case_diagnostics.json": "b801914ef929c0d979a2dd21bf8fd1b3a25e3b80599619e2ca1fc5c92e305ac8",
+    "runs/mission005e/dev20_contract_v2/checkpoint_provenance.json": "9246e496b6fd623e5aee516f3904f1ca8d210f22b7b2b9edc994690f9dc14c9a",
+    "runs/mission005e/dev20_contract_v2/error_summary.csv": "66f346c1af39e8d3152a482913814f18c0947668c05cb2294d819b4cafb8eb08",
+    "runs/mission005e/dev20_contract_v2/evaluation_integrity.json": "e681b6c11a6b8b8fc4ffd71f0fefb53dd8da3b30b8bbbd01a36207f4a943572f",
+    "runs/mission005e/dev20_contract_v2/execution_manifest.json": "c46daf514fec726c1ab028a65a3daac7759d0838a9b64bd72c9c5a9ab69a3c50",
+    "runs/mission005e/dev20_contract_v2/generations.jsonl": "158ad2db00d8d63114fbcee14f6a842bca22b84017e1f2aaf198eaa8295b7389",
+    "runs/mission005e/dev20_contract_v2/performance_metrics.json": "ff82ed074b6849b3a4353710bf5d12b73d7eca1b5d37a1fe953ebcf73bbd6f74",
+    "runs/mission005e/dev20_contract_v2/raw_inference.json": "6bb7c73649ee65a49d4f725df1149c84310b05b89df3ab2c99755c6227ad7cf3",
+    "runs/mission005e/dev20_contract_v2/run_summary.json": "5e406128b60b16d171978bdd1829eeeaadf6e30d0f193e618359263568179b10",
+    "runs/mission005e/dev20_contract_v2/sessions.jsonl": "b1fff321f364357d257a42cad4e361104178e7661035ec694c8ca83db9f9dad2",
+    "runs/mission005e/evaluator_only_rescoring/case_diagnostics.json": "dd8a6c9951021e9fe7728069bdbd674805b512fa01dd035b7db42f4f1cdadaf2",
+    "runs/mission005e/evaluator_only_rescoring/checkpoint_provenance.json": "f70ce31c5cce4dc61cbbe32e74ef6a98b174ea4f64f7b845939dbd142f7a65a0",
+    "runs/mission005e/evaluator_only_rescoring/error_summary.csv": "7b11525cf89c8085d032c7bca30cde5c2014952d9ffaec96af57553e52665538",
+    "runs/mission005e/evaluator_only_rescoring/evaluation_integrity.json": "14c757d55ae60638eb165e411a1686d7253a68d0594a5c1d6cc688bf0ccfb613",
+    "runs/mission005e/evaluator_only_rescoring/execution_manifest.json": "6ad0ff9e490d4a8b247de7b03444eaa7ab59486c73f09433afeedac67ba7b707",
+    "runs/mission005e/evaluator_only_rescoring/performance_metrics.json": "21aa776c3d41271680b3058605967d22cd21063ba186daa9ad15cad6a8bf666e",
+    "runs/mission005e/evaluator_only_rescoring/raw_inference.json": "cfc1259aeb90fa379d1f0e0f8a83102a2cbc69628027e7786a268be187184bfd",
+    "runs/mission005e/evaluator_only_rescoring/run_summary.json": "3418be07ca5ebafe8b9bcc7e541f967fe628f95373ce51178c70e426b85eb8fa",
+    "runs/mission005e/evaluator_reliability_audit.json": "cceb13fcdd8861184fe9530e1a40314e12945111205e385711908cdc8f39f91b",
+    "runs/mission005e/score_comparison.json": "97379d63079d5af103468dca46bceae1d3133770723e3e8e90ee51e6b007ce6f",
+    "runs/mission005e/synthetic_validation/generations.jsonl": "a432d6504249e2de1a8e88cdc7e81f379487f6e26922cb8b48d05c8fd356e689",
+    "runs/mission005e/synthetic_validation/sessions.jsonl": "bf57951f875596a9241650ddc108a8d8b9caf9881a16df315b7837909c1d0e33",
+    "runs/mission005e/synthetic_validation/synthetic_validation_results.json": "d26c736306be9933873985de173682cf0b46074a26778e4c19b1684105b09c0e"
+  },
+  "official_gold_accuracy": null,
+  "independent_legal_review": "not_verified"
+}

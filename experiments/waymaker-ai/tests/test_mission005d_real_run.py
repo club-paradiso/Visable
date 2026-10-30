@@ -59,12 +59,20 @@ def test_original_baseline_is_preserved_and_frozen():
 
 
 def test_rescoring_the_real_run_reproduces_the_evaluator_only_artifacts():
-    """Same raw outputs, repaired evaluator (Mission 005-E part B)."""
+    """Same raw outputs, repaired evaluator (Mission 005-E part B).
+
+    The committed artifact is the 005-E evaluator's result and stays as it is. The
+    005-F evaluator differs in exactly one place: DEV-009's "할 수 없" is met by
+    "금지됩니다" (bare prohibition equivalence), so one required_fact_missing goes.
+    No pass/fail outcome changes."""
     result = score_dev20.score(RUN)
     assert result["integrity"]["passed"] is True
     committed = json.loads((BOOT / "runs" / "mission005e" / "evaluator_only_rescoring" / "performance_metrics.json").read_text())
     result["metrics"]["label"] = committed["label"]
-    assert result["metrics"] == committed
+    now, then = result["metrics"].pop("failure_code_frequency"), dict(committed)
+    then_codes = then.pop("failure_code_frequency")
+    assert result["metrics"] == then
+    assert {**now, "required_fact_missing": now["required_fact_missing"] + 1} == then_codes
     assert result["metrics"]["executed_cases"]["numerator"] == 20
 
 
