@@ -1,0 +1,52 @@
+{
+  "schema_version": "waymaker-artemis-cuda-run/1.0",
+  "project": "Waymaker Artemis",
+  "runtime": "transformers_cuda",
+  "inference_kind": "real_inference",
+  "evidence_kind": "synthetic",
+  "model": {
+    "checkpoint": "google/gemma-4-E4B-it",
+    "revision": "ee0ef6023621cff504d758262d4e04895a5af4a2",
+    "quantization": "bnb_nf4_double_quant_fp16",
+    "quantization_policy": {
+      "method": "bitsandbytes",
+      "load_in_4bit": true,
+      "bnb_4bit_quant_type": "nf4",
+      "bnb_4bit_use_double_quant": true,
+      "bnb_4bit_compute_dtype": "float16",
+      "non_quantized_dtype": "float16"
+    }
+  },
+  "official_gold_accuracy": null,
+  "legal_accuracy_claimed": false,
+  "max_new_tokens": 96,
+  "execution_status": "not_executed",
+  "not_executed_reason": "Offline checkpoint not found: google/gemma-4-E4B-it@ee0ef6023621cff504d758262d4e04895a5af4a2; no download or fallback; torch not installed; transformers not installed; bitsandbytes not installed",
+  "environment": {
+    "packages": {
+      "torch": null,
+      "transformers": null,
+      "bitsandbytes": null,
+      "accelerate": null,
+      "huggingface-hub": null,
+      "tokenizers": null
+    },
+    "python": "3.11.15",
+    "platform": "macOS-15.6.1-arm64-arm-64bit",
+    "cuda_device": null,
+    "nvidia_smi": null,
+    "problems": [
+      "torch not installed",
+      "transformers not installed",
+      "bitsandbytes not installed"
+    ]
+  },
+  "provenance": {
+    "snapshot_revision": null
+  },
+  "load": {},
+  "cases": [],
+  "kind": "cuda_inference_smoke",
+  "started_at": "2026-10-30T02:33:55.558909+00:00",
+  "finished_at": "2026-10-30T02:33:55.653676+00:00"
+}

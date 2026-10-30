@@ -176,7 +176,10 @@ def metric_group(metadata: Mapping) -> str:
         raise ValueError("Missing or unsupported inference provenance")
     fields = (kind, metadata.get("profile"), metadata.get("model_name"),
               metadata.get("model_revision"), metadata.get("runtime"))
-    if kind == "real_inference":
+    if kind == "real_inference" and metadata.get("runtime") == "transformers_cuda":
+        from waymaker_ai import cuda_policy  # separate checkpoint, never pooled with MLX
+        cuda_policy.validate_real_inference_metadata(metadata)
+    elif kind == "real_inference":
         selected = profile(metadata.get("profile", ""))
         if (metadata.get("model_name") != selected["inference_checkpoint"]
                 or metadata.get("model_revision") != selected["inference_revision"]

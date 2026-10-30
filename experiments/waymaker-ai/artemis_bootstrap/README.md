@@ -13,6 +13,26 @@ were generated. See [the execution report](MISSION-005-B-REAL-INFERENCE-REPORT.k
 and [hash-locked runtime dependencies](requirements-mlx-vlm-0.7.11.lock).
 The recovery observations below describe earlier environment states.
 
+Mission 005-C, 2026-10-30: a separate CUDA path loads the official
+`google/gemma-4-E4B-it` checkpoint at the pinned upstream revision with explicit
+NF4 4-bit quantization ([gemma4_cuda_runtime.py](gemma4_cuda_runtime.py),
+[cuda policy](../configs/artemis_cuda_runtime.json)). It never pools metrics with
+MLX. A free Colab T4 run was audited from the exported notebook only; it is **not
+independently verified**, and no new CUDA generation has run from this code yet.
+See the [audit](COLAB-T4-RUN-AUDIT.ko.md), the [Mission 005-C report](MISSION-005-C-REPORT.ko.md)
+and the [reproduction notebook](notebooks/artemis_gemma4_e4b_cuda_colab.ipynb).
+Mission 005-C.1 (Draft PR #730, stacked on PR #726) requires full model provenance
+before a CUDA run record counts, pins the notebook to an exact code commit and
+package versions, and keeps the new runtime at `not_executed` until a real GPU run.
+Record checks are self-checks of our own JSON, not external attestation. See the
+[Mission 005-C.1 report](MISSION-005-C1-REPORT.ko.md).
+Mission 005-C.2: code commit `59858c5` ran on a free Colab T4. It loaded the
+official E4B (NF4 verified on all 42 decoder layers) and completed the three
+synthetic cases; the record passed its structural self-check. This is an
+execution result on synthetic evidence, not legal accuracy. See the
+[Mission 005-C.2 report](runs/mission005c2-cuda/MISSION-005-C2-REPORT.ko.md) and the
+[Mission 005-D plan](MISSION-005-D-PLAN.ko.md).
+
 Recovery status, 2026-10-29: checkpoint metadata verified; new MLX-VLM weight
 loading and generation **not executed** on this M1 8GB machine. The runtime is
 missing and disk/swap limits block loading. This is not a Gemma 4 accuracy result.

@@ -1,0 +1,317 @@
+{
+  "schema_version": "waymaker-artemis-colab-audit/1.0",
+  "audited_on": "2026-10-30",
+  "audited_by": "Mission 005-C (Claude Code), from the user-exported .ipynb; the live Colab notebook was not opened",
+  "independently_verified": false,
+  "independence_note": "Outputs were read from the exported file only. No one re-ran the notebook for this audit; the file itself cannot prove it was not edited after execution.",
+  "source_notebook": {
+    "file": "source_notebook.ipynb",
+    "sha256": "84bea7a5dfaf3ec070f20c7d66e4d96a0ba82be393224374e211d1168ff003a1",
+    "bytes": 76413,
+    "colab_url_reported": "https://colab.research.google.com/drive/1kTaTnJxRtsMaDwZBtuCHglAzOYMYMiMk",
+    "metadata": {
+      "accelerator": "GPU",
+      "gpuType": "T4"
+    },
+    "secrets_or_personal_paths_found": false
+  },
+  "official_gold_accuracy": null,
+  "legal_accuracy_claimed": false,
+  "observed": {
+    "python": "3.13.16",
+    "platform": "Linux-6.6.159+-x86_64-with-glibc2.39",
+    "torch": "2.11.0+cu130",
+    "torch_cuda": "13.0",
+    "transformers": "5.20.2",
+    "bitsandbytes": "0.50.2 (installed in cell 2; absent at cell 1)",
+    "gpu": "Tesla T4",
+    "gpu_memory_total_mib": 15360,
+    "gpu_memory_free_mib_at_start": 14910,
+    "nvidia_driver": "580.82.07",
+    "model": "google/gemma-4-E4B-it",
+    "resolved_revision": "ee0ef6023621cff504d758262d4e04895a5af4a2",
+    "gated": false,
+    "download_seconds": 128.23,
+    "download_authenticated": false,
+    "quantization_requested": {
+      "load_in_4bit": true,
+      "bnb_4bit_quant_type": "nf4",
+      "bnb_4bit_compute_dtype": "float16",
+      "bnb_4bit_use_double_quant": true,
+      "dtype": "float16"
+    },
+    "processor_class": "Gemma4Processor",
+    "tokenizer_class": "GemmaTokenizer",
+    "load_seconds": 70.4,
+    "peak_allocated_gib_after_load": 8.665,
+    "cases": [
+      {
+        "case": "no_evidence",
+        "input_tokens": 126,
+        "generated_tokens": 19,
+        "seconds": 4.14,
+        "tokens_per_second_including_prefill": 4.589,
+        "raw_output": "{\"status\": \"insufficient_evidence\", \"answer\": \"\", \"citations\": []}",
+        "json_parsed": true,
+        "contract_valid": true,
+        "peak_allocated_gib": 8.743,
+        "peak_reserved_gib": 8.801
+      },
+      {
+        "case": "synthetic_citation",
+        "generated_tokens": 38,
+        "seconds": 5.83,
+        "tokens_per_second_including_prefill": 6.52,
+        "raw_output": "{\"status\": \"partial\", \"answer\": \"가상 규칙에 따르면 신청은 만료일 30일 전까지 해야 합니다.\", \"citations\": [\"SYN-1\"]}",
+        "json_parsed": true,
+        "contract_valid": true
+      },
+      {
+        "case": "synthetic_conflict",
+        "generated_tokens": 69,
+        "seconds": 8.2,
+        "tokens_per_second_including_prefill": 8.42,
+        "raw_output": "{\n\"status\": \"conflict\",\n\"answer\": \"제공된 가상 규칙에 따르면 신청 기한이 만료일 30일 전인지, 만료일 10일 전인지에 대한 정보가 충돌합니다.\",\n\"citations\": [\"SYN-1\", \"SYN-2\"]\n}",
+        "json_parsed": true,
+        "contract_valid": true
+      }
+    ],
+    "peak_allocated_gib_cumulative": 8.755,
+    "peak_reserved_gib_cumulative": 8.805
+  },
+  "claims_check": [
+    {
+      "claim": "GPU VRAM 15,360 MiB",
+      "result": "matches cell 1 output"
+    },
+    {
+      "claim": "Model load 70.4 s",
+      "result": "matches cell 4 output"
+    },
+    {
+      "claim": "First output 19 tokens, 4.14 s",
+      "result": "matches cell 5; the 4.14 s includes prefill of 126 prompt tokens, so 4.589 tok/s is not a decode rate"
+    },
+    {
+      "claim": "First JSON {status: insufficient_evidence, answer: '', citations: []}",
+      "result": "matches; parsed and contract-valid in cell 5"
+    },
+    {
+      "claim": "Synthetic evidence: Korean answer citing SYN-1",
+      "result": "matches; note the status was 'partial', not 'answered', for a fully answerable synthetic question"
+    },
+    {
+      "claim": "Synthetic conflict: conflict with both IDs",
+      "result": "matches cell 6"
+    },
+    {
+      "claim": "Peak PyTorch allocation 8.755 GiB",
+      "result": "matches cell 6; it is cumulative since the reset before loading, not per case"
+    },
+    {
+      "claim": "No extra payment",
+      "result": "stated only in the markdown summary; not verifiable from cell outputs"
+    }
+  ],
+  "findings": [
+    {
+      "id": "F1",
+      "severity": "provenance",
+      "finding": "Cell 4 source was edited after it ran. The saved source reads getattr(model, 'hf_device_map', ...) but the saved traceback shows model.hf_device_map. The edited cell was never re-run, so its current source has no matching output."
+    },
+    {
+      "id": "F2",
+      "severity": "provenance",
+      "finding": "Every code cell has execution_count null, so the file cannot prove execution order or that all outputs came from one kernel session. The outputs are mutually consistent (one ipykernel id in the traceback) but this is not proof."
+    },
+    {
+      "id": "F3",
+      "severity": "provenance",
+      "finding": "Weights were not SHA-256 verified. The notebook checked the snapshot directory name and Hub-reported file sizes only. The Hub LFS SHA-256 for model.safetensors at this revision is now pinned in configs/artemis_cuda_runtime.json; the CUDA module verifies it before load."
+    },
+    {
+      "id": "F4",
+      "severity": "provenance",
+      "finding": "Quantization was requested, not inspected. No cell checked that modules were Linear4bit with nf4 weights; 8.7 GiB peak is consistent with 4-bit text weights plus unquantized towers/embeddings but does not prove it. The CUDA module inspects loaded modules."
+    },
+    {
+      "id": "F5",
+      "severity": "compatibility",
+      "finding": "AttributeError on hf_device_map: with device_map={'': 0} Transformers 5.20.2 did not set hf_device_map on Gemma4ForConditionalGeneration. The module reads parameter devices instead."
+    },
+    {
+      "id": "F6",
+      "severity": "compatibility",
+      "finding": "The checkpoint is bfloat16; T4 (compute capability 7.5) has no bf16, so non-quantized layers ran in float16. Gemma models can overflow in fp16. The three short cases produced coherent text, but longer prompts are untested."
+    },
+    {
+      "id": "F7",
+      "severity": "measurement",
+      "finding": "Decoding used skip_special_tokens=True and never recorded whether generation stopped on EOS or on max_new_tokens. The module records finish_reason from token ids."
+    },
+    {
+      "id": "F8",
+      "severity": "measurement",
+      "finding": "The notebook's prompt sent raw evidence objects; the repository path projects evidence through inference_input (adds empty title and source fields). Prompts in a reproduction differ slightly from the audited run."
+    },
+    {
+      "id": "F9",
+      "severity": "scope",
+      "finding": "Upstream chat_template.jinja (sha256 0a2c8073...) differs from the MLX community conversion's template (2f1b4d75...). CUDA and MLX outputs come from different prompts as rendered, weights and kernels; they must not be pooled."
+    },
+    {
+      "id": "F10",
+      "severity": "scope",
+      "finding": "Three cases, synthetic evidence, greedy decoding. This shows the runtime can generate contract-valid JSON; it says nothing about legal accuracy."
+    }
+  ],
+  "token_generation_vs_json_validity": {
+    "token_generation_succeeded": "3 of 3 cases (19, 38, 69 tokens)",
+    "json_contract_valid": "3 of 3 cases by the notebook's own validator, which matches gemma4_runtime.parse_response",
+    "stop_reason_recorded": false
+  },
+  "cells": [
+    {
+      "index": 0,
+      "cell_type": "code",
+      "execution_count": null,
+      "source_sha256": "a6cde9c9fdbd8327804cd23dadbfc087ae5d5ef31556a4532b964ef2209fc30e",
+      "outputs": [
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "Python: 3.13.16 (main, Oct  1 2026, 15:40:24) [GCC 13.3.0]\nPlatform: Linux-6.6.159+-x86_64-with-glibc2.39\nPyTorch: 2.11.0+cu130 CUDA: 13.0 available: True\nTransformers: 5.20.2\nDisk free GB: 75.25\n"
+        },
+        {
+          "type": "execute_result",
+          "text": "CompletedProcess(args=['nvidia-smi'], returncode=0)"
+        }
+      ]
+    },
+    {
+      "index": 1,
+      "cell_type": "code",
+      "execution_count": null,
+      "source_sha256": "bc6958b93609ea284f28899c4a8579042afddd8ec467f0a334a93a39a3dff3f1",
+      "outputs": [
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "Tesla T4, 15360 MiB, 14910 MiB, 580.82.07\n\nbitsandbytes installed: False\n"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "/usr/local/lib/python3.13/dist-packages/huggingface_hub/utils/_auth.py:121: UserWarning: \nAccess to the secret `HF_TOKEN` has not been granted on this notebook.\nYou will not be requested again.\nPlease restart the session if you want to be prompted again.\n  warnings.warn(\n"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "resolved revision: ee0ef6023621cff504d758262d4e04895a5af4a2 gated: False\nfiles: [('.gitattributes', 1570), ('README.md', 27956), ('chat_template.jinja', 18569), ('config.json', 5145), ('generation_config.json', 208), ('model.safetensors', 15992595884), ('processor_config.json', 1689), ('tokenizer.json', 32169626), ('tokenizer_config.json', 3082)]\n"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "cell_type": "code",
+      "execution_count": null,
+      "source_sha256": "6cf95488ede9a99dc4644f88e47530b78e4a2537436e9b0d639442d62ecdeb90",
+      "outputs": []
+    },
+    {
+      "index": 3,
+      "cell_type": "code",
+      "execution_count": null,
+      "source_sha256": "85522970064e0cf6274e275f7c79e759f5ca55cd050e858ea23f9ffc5c72b07c",
+      "outputs": [
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "bitsandbytes: 0.50.2\n"
+        },
+        {
+          "type": "display_data",
+          "note": "widget/progress display omitted"
+        },
+        {
+          "type": "display_data",
+          "note": "widget/progress display omitted"
+        },
+        {
+          "type": "display_data",
+          "note": "widget/progress display omitted"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.\nWARNING:huggingface_hub.utils._http:Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.\n"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "Snapshot: /root/.cache/huggingface/hub/models--google--gemma-4-E4B-it/snapshots/ee0ef6023621cff504d758262d4e04895a5af4a2\nDownload seconds: 128.23\nActual files: [('model.safetensors', 15992595884), ('config.json', 5145), ('chat_template.jinja', 18569), ('README.md', 27956), ('processor_config.json', 1689), ('tokenizer.json', 32169626), ('.gitattributes', 1570), ('generation_config.json', 208), ('tokenizer_config.json', 3082)]\n"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "cell_type": "code",
+      "execution_count": null,
+      "source_sha256": "bba276aeae3efec10a8880740e5522856744a9586b1f9af3b98e4a197531b9d0",
+      "outputs": [
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "Processor: Gemma4Processor Tokenizer: GemmaTokenizer\n"
+        },
+        {
+          "type": "display_data",
+          "note": "widget/progress display omitted"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "Model loaded on: cuda:0 seconds: 70.4\nPeak allocated GiB: 8.665\n"
+        },
+        {
+          "type": "error",
+          "ename": "AttributeError",
+          "evalue": "'Gemma4ForConditionalGeneration' object has no attribute 'hf_device_map'"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "cell_type": "code",
+      "execution_count": null,
+      "source_sha256": "be95194d98d312ae4b0e02896f564dfaa223348a57190999d647b8f255f1db92",
+      "outputs": [
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "Input tokens: 126\nGenerated tokens: 19 seconds: 4.14 tokens/sec (including prefill): 4.589\nRAW OUTPUT: '{\"status\": \"insufficient_evidence\", \"answer\": \"\", \"citations\": []}'\nGPU peak allocated GiB: 8.743 reserved GiB: 8.801\nJSON parsed: True contract valid: True parsed: {'status': 'insufficient_evidence', 'answer': '', 'citations': []}\n"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "cell_type": "code",
+      "execution_count": null,
+      "source_sha256": "c0219bd1e65b1007698bb08be7434bc72cce0ce351299ed06bd1b94e8898b206",
+      "outputs": [
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "CASE: synthetic_citation tokens: 38 seconds: 5.83 tokens/sec including prefill: 6.52\nRAW: '{\"status\": \"partial\", \"answer\": \"가상 규칙에 따르면 신청은 만료일 30일 전까지 해야 합니다.\", \"citations\": [\"SYN-1\"]}'\nJSON parsed: True; contract valid: True status: partial citations: ['SYN-1']\nCASE: synthetic_conflict tokens: 69 seconds: 8.2 tokens/sec including prefill: 8.42\nRAW: '{\\n\"status\": \"conflict\",\\n\"answer\": \"제공된 가상 규칙에 따르면 신청 기한이 만료일 30일 전인지, 만료일 10일 전인지에 대한 정보가 충돌합니다.\",\\n\"citations\": [\"SYN-1\", \"SYN-2\"]\\n}'\nJSON parsed: True; contract valid: True status: conflict citations: ['SYN-1', 'SYN-2']\nPeak GPU allocated GiB: 8.755 reserved GiB: 8.805\n"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "cell_type": "markdown",
+      "execution_count": null,
+      "source_sha256": "b9e5bde185043950b600eb460564a80c215fd8a5e5ba0e48e487bcef3c0137cd",
+      "outputs": []
+    }
+  ]
+}

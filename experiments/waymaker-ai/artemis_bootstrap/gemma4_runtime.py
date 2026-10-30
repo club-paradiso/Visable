@@ -25,6 +25,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from waymaker_ai import foundation
 from waymaker_ai.inference_input import project_inference_item
+from waymaker_ai.response_contract import parse_response  # shared with the CUDA worker
 
 PACKAGES = ("mlx", "mlx-metal", "mlx-vlm", "transformers", "tokenizers", "huggingface-hub")
 
@@ -137,17 +138,6 @@ def inspect_runtime_compatibility() -> dict:
             "elapsed_seconds": time.perf_counter() - started,
             "resources_before": before, "resources_after": resources(),
             "peak_rss_bytes": resource.getrusage(resource.RUSAGE_SELF).ru_maxrss}
-
-
-def parse_response(raw: str, evidence_ids: set[str]) -> dict:
-    data = json.loads(raw)
-    if (not isinstance(data, dict) or set(data) != {"status", "answer", "citations"}
-            or data["status"] not in {"answered", "partial", "insufficient_evidence", "conflict", "clarify"}
-            or not isinstance(data["answer"], str)
-            or not isinstance(data["citations"], list)
-            or not all(isinstance(c, str) and c in evidence_ids for c in data["citations"])):
-        raise ValueError("Invalid structured response or unlisted citation")
-    return data
 
 
 def execute(request: dict) -> dict:

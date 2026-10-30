@@ -1,0 +1,21 @@
+{
+  "source_record": "raw_record.json",
+  "source_record_sha256": "d79ec336d4c7ae90bceed6cea9a90b42690896173de8e38eefe7a195edafdf99",
+  "record_validation_in_record": {
+    "passed": true,
+    "scope": "structural self-check, not external attestation"
+  },
+  "record_validation_recomputed": {
+    "passed": true,
+    "error": null
+  },
+  "scope": "Structural self-check of our own JSON; not external attestation",
+  "execution_status": "completed",
+  "cases": {
+    "no_evidence": "completed",
+    "synthetic_citation": "completed",
+    "synthetic_conflict": "completed"
+  },
+  "official_gold_accuracy": null,
+  "independent_legal_review": "not_verified"
+}

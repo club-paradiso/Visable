@@ -21,6 +21,7 @@ EXCEPTIONS = {
     "configs/teacher_policy.json": "External teacher licensing/policy catalogue, not an inference selector",
     "tests/test_teacher_policy.py": "Teacher policy fixtures",
     "tests/test_artemis_foundation.py": "Explicit rejection tests",
+    "tests/test_cuda_provenance_hardening.py": "Explicit rejection tests (CUDA run-record forgeries)",
     "artemis_bootstrap/check_model_identity.py": "Guard pattern itself",
     "artemis_bootstrap/WAYMAKER-ARTEMIS-LOCAL-CLEANUP-MANIFEST.json": "Recovery inventory and historical paths",
     "artemis_bootstrap/PR-726-REVIEW-COVERAGE.json": "Post-audit review inventory of the exact 78 baseline PR paths",

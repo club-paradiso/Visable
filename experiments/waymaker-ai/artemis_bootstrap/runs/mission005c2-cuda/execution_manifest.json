@@ -1,0 +1,40 @@
+{
+  "source_record": "raw_record.json",
+  "source_record_sha256": "d79ec336d4c7ae90bceed6cea9a90b42690896173de8e38eefe7a195edafdf99",
+  "schema_version": "waymaker-artemis-cuda-run/1.0",
+  "kind": "cuda_inference_smoke",
+  "started_at": "2026-10-30T03:36:43.480762+00:00",
+  "finished_at": "2026-10-30T03:37:00.969311+00:00",
+  "runtime": "transformers_cuda",
+  "inference_kind": "real_inference",
+  "evidence_kind": "synthetic",
+  "execution_status": "completed",
+  "code": {
+    "git_commit": "59858c507ca48e8429b31baebbd96ca9a5ef5cda",
+    "code_files_modified_from_commit": false,
+    "files_sha256": {
+      "artemis_bootstrap/gemma4_cuda_runtime.py": "62c9e55d5889ded2dc29c56e9774a9044867941bda40e2e604496619513541c4",
+      "artemis_bootstrap/probe_gemma4_cuda.py": "daef06dea0a217b3a8c334dec05cd3b59e4e5a775e6b8cb9a33e87dd9899bd69",
+      "waymaker_ai/cuda_policy.py": "b830995264919d450356a978bd1188125ad90781a7202faae64027ca5bfe6720",
+      "waymaker_ai/response_contract.py": "5024c6bd95eb03d5abf91ad34e0a1088c8f6971734d89095789e416bc2e55047",
+      "waymaker_ai/inference_input.py": "b031b0e83bafed4238137fc29dac31fbd0701d92490314738c46759ff97ec1c9",
+      "configs/artemis_cuda_runtime.json": "5eee1c2f2249ca59b113d37d6674ce12c9afa855c8e4d0fae711301867021039"
+    }
+  },
+  "model": {
+    "checkpoint": "google/gemma-4-E4B-it",
+    "revision": "ee0ef6023621cff504d758262d4e04895a5af4a2",
+    "quantization": "bnb_nf4_double_quant_fp16",
+    "quantization_policy": {
+      "method": "bitsandbytes",
+      "load_in_4bit": true,
+      "bnb_4bit_quant_type": "nf4",
+      "bnb_4bit_use_double_quant": true,
+      "bnb_4bit_compute_dtype": "float16",
+      "non_quantized_dtype": "float16"
+    }
+  },
+  "reproduction_pins_matched": true,
+  "official_gold_accuracy": null,
+  "legal_accuracy_claimed": false
+}

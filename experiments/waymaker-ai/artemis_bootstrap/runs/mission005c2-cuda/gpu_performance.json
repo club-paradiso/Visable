@@ -1,0 +1,70 @@
+{
+  "source_record": "raw_record.json",
+  "source_record_sha256": "d79ec336d4c7ae90bceed6cea9a90b42690896173de8e38eefe7a195edafdf99",
+  "environment": {
+    "packages": {
+      "torch": "2.11.0+cu130",
+      "transformers": "5.20.2",
+      "bitsandbytes": "0.50.2",
+      "accelerate": "1.15.0",
+      "huggingface-hub": "1.33.0",
+      "tokenizers": "0.23.3"
+    },
+    "python": "3.13.16",
+    "platform": "Linux-6.6.159+-x86_64-with-glibc2.39",
+    "cuda_device": "Tesla T4",
+    "nvidia_smi": {
+      "name": "Tesla T4",
+      "memory_total_mib": 15360,
+      "memory_used_mib": 3,
+      "memory_free_mib": 14910,
+      "driver_version": "580.82.07"
+    },
+    "version_drift": [],
+    "problems": []
+  },
+  "load": {
+    "load_seconds": 70.19338169299999,
+    "load_peak_allocated_bytes": 9304240640,
+    "load_peak_reserved_bytes": 9432989696,
+    "model_class": "Gemma4ForConditionalGeneration",
+    "processor_class": "Gemma4Processor",
+    "tokenizer_class": "GemmaTokenizer",
+    "nvidia_smi_after_load": {
+      "name": "Tesla T4",
+      "memory_total_mib": 15360,
+      "memory_used_mib": 9117,
+      "memory_free_mib": 5796,
+      "driver_version": "580.82.07"
+    }
+  },
+  "cases": [
+    {
+      "case_id": "no_evidence",
+      "wall_seconds": 4.210255432999929,
+      "first_token_seconds_including_prefill": 1.9313948490000712,
+      "tokens_per_second_including_prefill": 4.512790328842815,
+      "decode_tokens_per_second": 7.898684161014529,
+      "peak_allocated_bytes": 9387969024,
+      "peak_reserved_bytes": 9449766912
+    },
+    {
+      "case_id": "synthetic_citation",
+      "wall_seconds": 4.635924378000027,
+      "first_token_seconds_including_prefill": 0.17997297600004458,
+      "tokens_per_second_including_prefill": 8.196855017810599,
+      "decode_tokens_per_second": 8.303501690658731,
+      "peak_allocated_bytes": 9395856896,
+      "peak_reserved_bytes": 9449766912
+    },
+    {
+      "case_id": "synthetic_conflict",
+      "wall_seconds": 8.394406089999848,
+      "first_token_seconds_including_prefill": 0.18825930100001642,
+      "tokens_per_second_including_prefill": 8.21975959468995,
+      "decode_tokens_per_second": 8.28647131820169,
+      "peak_allocated_bytes": 9403111936,
+      "peak_reserved_bytes": 9456058368
+    }
+  ]
+}

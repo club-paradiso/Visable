@@ -1,0 +1,88 @@
+{
+  "schema_version": "waymaker-artemis-cuda-runtime/1.0",
+  "project": "Waymaker Artemis",
+  "runtime": "transformers_cuda",
+  "allow_implicit_fallback": false,
+  "foundation_profile": "gemma4_e4b",
+  "model": {
+    "checkpoint": "google/gemma-4-E4B-it",
+    "revision": "ee0ef6023621cff504d758262d4e04895a5af4a2",
+    "model_type": "gemma4",
+    "architectures": [
+      "Gemma4ForConditionalGeneration"
+    ],
+    "text_config": {
+      "model_type": "gemma4_text",
+      "num_hidden_layers": 42,
+      "hidden_size": 2560,
+      "vocab_size": 262144
+    },
+    "processor_class": "Gemma4Processor",
+    "checkpoint_dtype": "bfloat16",
+    "license": "apache-2.0",
+    "reference_source": "https://huggingface.co/api/models/google/gemma-4-E4B-it/revision/ee0ef6023621cff504d758262d4e04895a5af4a2?blobs=true",
+    "reference_checked_on": "2026-10-30",
+    "metadata_sha256": {
+      "config.json": "33b10c02df3c2e8536cf323d29d53262aaa2f4d11dbe19bc729373fbe90295d4",
+      "processor_config.json": "32bdf45d2ad4cc29a0822ddd157a182de76644f0419a6228d151495256e9813c",
+      "tokenizer_config.json": "9f4fec4b1dc6ecddf8f4a92e9caea5971c0e67d81309f3f9066a2bee8c362633",
+      "chat_template.jinja": "0a2c8073c878ab1da004bee933a998606537bbb62016310352c7285c3f01c5b5",
+      "generation_config.json": "d4226bbe3117d2d253ba4609720ba82c6c4ce4627a9a6ae05387c78983ac03de"
+    },
+    "artifacts": {
+      "model.safetensors": {
+        "algorithm": "sha256",
+        "digest": "cfbd3d2f1cd71bd471c37fe2bf8546d5028d41e5736f64e1ca6c6b8893125503",
+        "size_bytes": 15992595884
+      },
+      "tokenizer.json": {
+        "algorithm": "sha256",
+        "digest": "cc8d3a0ce36466ccc1278bf987df5f71db1719b9ca6b4118264f45cb627bfe0f",
+        "size_bytes": 32169626
+      }
+    }
+  },
+  "quantization": {
+    "method": "bitsandbytes",
+    "load_in_4bit": true,
+    "bnb_4bit_quant_type": "nf4",
+    "bnb_4bit_use_double_quant": true,
+    "bnb_4bit_compute_dtype": "float16",
+    "non_quantized_dtype": "float16"
+  },
+  "packages": {
+    "minimum": {
+      "torch": "2.4",
+      "transformers": "5.0",
+      "bitsandbytes": "0.45"
+    },
+    "observed_in_colab_20261030": {
+      "python": "3.13.16",
+      "torch": "2.11.0+cu130",
+      "cuda": "13.0",
+      "transformers": "5.20.2",
+      "bitsandbytes": "0.50.2",
+      "nvidia_driver": "580.82.07"
+    },
+    "reproduction_pins": {
+      "torch": "2.11.0+cu130",
+      "transformers": "5.20.2",
+      "bitsandbytes": "0.50.2"
+    },
+    "recorded_not_pinned": {
+      "packages": [
+        "accelerate",
+        "huggingface-hub",
+        "tokenizers"
+      ],
+      "reason": "The 2026-10-30 Colab run did not record these versions. pip resolves them from transformers 5.20.2 requirements; each run records what it got and must pass pip check."
+    },
+    "torch_installation": "Colab preinstalled build; the notebook does not reinstall torch (large CUDA wheel). A different preinstalled build is version drift."
+  },
+  "limits": {
+    "min_total_vram_gib": 14.0,
+    "min_free_disk_gb_for_download": 20.0,
+    "max_prompt_tokens": 2048,
+    "max_generation_tokens": 256
+  }
+}
