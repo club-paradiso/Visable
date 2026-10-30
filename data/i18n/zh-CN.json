@@ -796,7 +796,7 @@
   "jurMissingInfo": "管辖机关信息缺失。",
   "jurResultMsg": "根据您登记的居住地，您的管辖出入境·外国人机关为 <b>[{office}]</b>。<br>请务必前往指定的管辖机关；在其他机关办理可能被当场退回。",
   "visaDataLoadError": "无法加载签证数据。请稍后重试。",
-  "brandHeroTitle": "复杂的居留资格，<br>一目了然。",
+  "brandHeroTitle": "确认适合您目的的居留资格<br>与所需程序。",
   "brandHeroSubtitle": "按目的查看整理好的居留资格，核对出处，并准备下一步。",
   "brandHeroStatsAria": "签证类别统计",
   "brandHeroButtons": [
@@ -826,7 +826,7 @@
     "<strong>查询就业相关职业·行业代码</strong><span lang=\"en\">Employment occupation &amp; industry codes</span>",
     "<strong>官方出处确认流程指引</strong><span lang=\"en\">Results with source-checking guidance</span>"
   ],
-  "pathwayTitle": "先看生活的路径，再看签证代码。",
+  "pathwayTitle": "根据目的与时机，为您指引不同的确认顺序。",
   "pathwayCopy": "即使是相同的居留资格，所需的确认顺序也会因目的和时间而不同。下面的路径是通向现有搜索结果的安全起点。",
   "pathwayAria": "按目的划分的居留路径",
   "pathwayTitles": [
@@ -872,7 +872,7 @@
     "再入境",
     "出境"
   ],
-  "howTitle": "从搜索到核对官方出处，只需四步。",
+  "howTitle": "搜索·比较·确认材料·核对官方出处，共四步。",
   "howStepTitles": [
     "搜索",
     "比较",
@@ -923,7 +923,7 @@
     "需要咨询出入境、停留事项或确认主管机关时，请使用官方多语种咨询渠道。"
   ],
   "manualNote": "上方手册链接指向 HiKorea 公布的最新版本（签证签发 2026-06-17、外国人停留 2026-06-23）。屏幕上的结构化指引使用可读的 2026 年 6 月官方 PDF 摘录。各驻外使领馆要求的补充材料和受理方式可能不同，实际申请前请确认主管驻外使领馆的公告。Visable 是独立参考服务，与法务部、HiKorea、韩国签证门户及任何驻外使领馆均无隶属或合作关系。",
-  "toolsTitle": "把需要的工具放在流程触手可及之处。",
+  "toolsTitle": "将管辖机关查找·代码检索·表格填写工具汇集在一处。",
   "toolsCopy": "已实现的工具会连接到现有的弹窗和搜索，尚在准备中的功能则标记为计划中。",
   "toolCards": [
     "<h3>查找管辖出入境</h3><p>根据居留地确认管辖的出入境·外国人办事处。</p>",
@@ -1019,7 +1019,7 @@
     "Start exploring",
     "1345 Hotline"
   ],
-  "footerCtaTitle": "曾经只觉繁难的居留管理，<br>现在轻松确认。",
+  "footerCtaTitle": "您要找的居留资格与程序，<br>立即用搜索确认。",
   "footerCtaBody": "Visable 将复杂的居留行政与零散的资料按目的加以整理。最终判断请向 HiKorea、1345 或管辖出入境机关确认。",
   "resultEmptyBody": "没有与“{query}”相符的信息。<br>请尝试减少关键词或切换为 OR 模式。",
   "docDefinitionNeeded": "需要文档定义",
@@ -1194,7 +1194,7 @@
   ],
   "resultTotalSuffix": "共{count}项",
   "heroMarquee": "VISABLE · 零散信息，汇于一处 · RESIDENCE GUIDE · 明智的韩国生活 · ",
-  "brandHeroKicker": "Coverage · 居留资格分类",
+  "brandHeroKicker": "居留资格分类",
   "reminderKicker": "期限提醒",
   "reminderSectionTitle": "重要日期，提前提醒您。",
   "reminderSectionCopy": "保存日期后，每次访问本网站都会显示剩余天数，您也可以保存到手机日历中接收提醒。",
