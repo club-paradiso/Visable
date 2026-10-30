@@ -112,7 +112,9 @@ def test_tampered_weights_and_prequantized_config_are_rejected(snapshot):
 # --- separate aggregation ---------------------------------------------------
 
 def cuda_metadata(**overrides):
-    value = {"inference_kind": "real_inference", "runtime": "transformers_cuda", "profile": "gemma4_e4b",
+    value = {"adapter_type": "cuda_transformers", "inference_kind": "real_inference",
+             "runtime": "transformers_cuda", "profile": "gemma4_e4b",
+             "weights_sha256": cuda_policy.configuration()["model"]["artifacts"]["model.safetensors"]["digest"],
              "model_name": "google/gemma-4-E4B-it", "model_revision": REVISION,
              "quantization": "bnb_nf4_double_quant_fp16", "quantization_verified": True,
              "cuda_device": "Tesla T4", "checkpoint_metadata_verified": True,
@@ -194,7 +196,7 @@ class Inputs(dict):
 @pytest.fixture
 def fake_torch(monkeypatch):
     torch = ModuleType("torch")
-    torch.cuda = SimpleNamespace(reset_peak_memory_stats=lambda: None, synchronize=lambda: None,
+    torch.cuda = SimpleNamespace(reset_peak_memory_stats=lambda: None, synchronize=lambda: None, empty_cache=lambda: None,
                                  max_memory_allocated=lambda: 9_000_000_000, max_memory_reserved=lambda: 9_400_000_000)
     torch.inference_mode = contextlib.nullcontext
     torch.nn = SimpleNamespace(Linear=type("Linear", (), {}))
@@ -300,11 +302,16 @@ def fake_model(quant_type="nf4", nested=True, compute="torch.float16", device="c
     bnb = ModuleType("bitsandbytes")
     Linear4bit = type("Linear4bit", (), {})
     bnb.nn = SimpleNamespace(Linear4bit=Linear4bit)
-    layer = Linear4bit()
-    layer.weight = SimpleNamespace(quant_state=SimpleNamespace(quant_type=quant_type, nested=nested))
-    layer.compute_dtype = compute
-    config = {"load_in_4bit": True, "bnb_4bit_quant_type": quant_type}
-    model = SimpleNamespace(modules=lambda: [layer], parameters=lambda: [SimpleNamespace(device=device)],
+    named = []
+    for i in range(42):  # one 4-bit MLP projection per E4B decoder layer
+        layer = Linear4bit()
+        layer.weight = SimpleNamespace(quant_state=SimpleNamespace(quant_type=quant_type, nested=nested))
+        layer.compute_dtype = compute
+        named.append((f"model.language_model.layers.{i}.mlp.down_proj", layer))
+    config = {"load_in_4bit": True, "bnb_4bit_quant_type": quant_type, "bnb_4bit_use_double_quant": nested,
+              "bnb_4bit_compute_dtype": compute.replace("torch.", "")}
+    model = SimpleNamespace(named_modules=lambda: named, parameters=lambda: [SimpleNamespace(device=device)],
+                            buffers=lambda: [SimpleNamespace(device=device)],
                             config=SimpleNamespace(quantization_config=config), is_loaded_in_4bit=True)
     return bnb, model
 
@@ -324,12 +331,9 @@ def test_quantization_is_read_from_loaded_modules(fake_torch, monkeypatch, kwarg
 # --- run records, probe CLI and runner adapter ------------------------------
 
 def executed_record(**case):
-    base = {"case_id": "c", "execution_status": "completed", "generated_token_count": 3,
-            "raw_output": "{}", "output_validation": {"passed": True}}
-    base.update(case)
-    record = cuda.new_record(32, "synthetic")
-    record.update(execution_status="completed", environment={"cuda_device": "Tesla T4", "packages": {"torch": "x"}},
-                  cases=[base])
+    from tests.test_cuda_provenance_hardening import valid_record
+    record = valid_record()
+    record["cases"][0].update(case)
     return record
 
 
@@ -358,9 +362,13 @@ class SyntheticPrepared:
             record["not_executed_reason"] = "synthetic blocker"
             return record
         record = executed_record(case_id="no_evidence")
-        if self.status != "completed":
+        if self.status == "generated_but_invalid":
             record["cases"][0].update(execution_status=self.status, output_validation={"passed": False},
-                                      generated_token_count=None if self.status == "failed" else 3)
+                                      raw_output='{"status": "partial"')
+            del record["cases"][0]["response"]
+        elif self.status == "failed":
+            record["cases"][0].update(execution_status=self.status, output_validation={"passed": False},
+                                      generated_token_count=None, raw_output=None)
         record["execution_status"] = self.status
         return record
 

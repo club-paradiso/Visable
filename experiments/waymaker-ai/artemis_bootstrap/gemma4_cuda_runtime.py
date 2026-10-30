@@ -10,6 +10,8 @@ never share a metric group (cuda_policy).
 from __future__ import annotations
 
 import contextlib
+import gc
+import hashlib
 import importlib.metadata
 import io
 import json
@@ -26,10 +28,13 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from waymaker_ai import cuda_policy
 from waymaker_ai.inference_input import project_inference_item
-from gemma4_runtime import build_messages, parse_response
+from waymaker_ai.response_contract import parse_response
+from gemma4_runtime import build_messages
 
 PACKAGES = ("torch", "transformers", "bitsandbytes", "accelerate", "huggingface-hub", "tokenizers")
-QUANTIZATION_LABEL = "bnb_nf4_double_quant_fp16"
+QUANTIZATION_LABEL = cuda_policy.QUANTIZATION_LABEL
+CODE_FILES = cuda_policy.CODE_FILES
+EXPERIMENT_ROOT = Path(__file__).resolve().parents[1]
 
 
 def versions() -> dict:
@@ -44,6 +49,27 @@ def versions() -> dict:
 
 def version_tuple(value: str) -> tuple:
     return tuple(int(p) for p in re.findall(r"\d+", value.split("+")[0])[:3])
+
+
+def version_drift(installed: dict) -> list[str]:
+    """Differences from the versions of the audited Colab run."""
+    pins = cuda_policy.configuration()["packages"]["reproduction_pins"]
+    return [f"{name} {installed.get(name)} != pinned {pinned}"
+            for name, pinned in pins.items() if installed.get(name) != pinned]
+
+
+def code_provenance() -> dict:
+    """Digests of the exact source files that produced a record, plus the git commit if known."""
+    files = {name: hashlib.sha256((EXPERIMENT_ROOT / name).read_bytes()).hexdigest() for name in CODE_FILES}
+    commit = dirty = None
+    try:
+        commit = subprocess.run(["git", "-C", str(EXPERIMENT_ROOT), "rev-parse", "HEAD"],
+                                capture_output=True, text=True, timeout=10).stdout.strip() or None
+        dirty = bool(subprocess.run(["git", "-C", str(EXPERIMENT_ROOT), "status", "--porcelain", "--", *CODE_FILES],
+                                    capture_output=True, text=True, timeout=10).stdout.strip())
+    except (OSError, subprocess.SubprocessError):
+        pass
+    return {"git_commit": commit, "code_files_modified_from_commit": dirty, "files_sha256": files}
 
 
 def nvidia_smi() -> dict | None:
@@ -87,11 +113,16 @@ def probe() -> dict:
         except Exception as exc:
             problems.append(f"PyTorch CUDA probe failed: {type(exc).__name__}: {exc}")
     return {"packages": installed, "python": sys.version.split()[0], "platform": platform.platform(),
-            "cuda_device": device, "nvidia_smi": nvidia_smi(), "problems": problems}
+            "cuda_device": device, "nvidia_smi": nvidia_smi(), "version_drift": version_drift(installed),
+            "problems": problems}
 
 
-def preflight(cache_dir: Path | None = None, verify_weights: bool = True) -> dict:
-    """Everything that can be checked without loading weights onto a GPU."""
+def preflight(cache_dir: Path | None = None, verify_weights: bool = True, allow_version_drift: bool = False) -> dict:
+    """Everything that can be checked without loading weights onto a GPU.
+
+    Package versions that differ from the audited run block execution unless
+    explicitly allowed; an allowed run records the drift and is not a reproduction.
+    """
     blockers, verified = [], {}
     snapshot = cuda_policy.find_snapshot(cache_dir)
     model = cuda_policy.configuration()["model"]
@@ -104,6 +135,9 @@ def preflight(cache_dir: Path | None = None, verify_weights: bool = True) -> dic
             blockers.append(f"Incompatible checkpoint: {exc}")
     runtime = probe()
     blockers.extend(runtime["problems"])
+    if runtime["version_drift"] and not allow_version_drift:
+        blockers.append("Package versions differ from the audited run: " + "; ".join(runtime["version_drift"])
+                        + " (pass --allow-version-drift to run as a non-reproduction)")
     return {"blockers": blockers, "snapshot": str(snapshot) if snapshot else None,
             "verified": verified, "probe": runtime}
 
@@ -120,22 +154,31 @@ def quantization_report(model) -> dict:
     """Inspect the loaded modules rather than trusting the requested config."""
     import bitsandbytes as bnb
     import torch
-    linear4 = [m for m in model.modules() if isinstance(m, bnb.nn.Linear4bit)]
-    plain = sum(1 for m in model.modules() if type(m) is torch.nn.Linear)
+    layers = cuda_policy.configuration()["model"]["text_config"]["num_hidden_layers"]
+    named = list(model.named_modules())
+    linear4 = [(n, m) for n, m in named if isinstance(m, bnb.nn.Linear4bit)]
+    plain = sum(1 for _, m in named if type(m) is torch.nn.Linear)
     quant_types, nested, compute = set(), set(), set()
-    for module in linear4:
+    for _, module in linear4:
         state = getattr(module.weight, "quant_state", None)
         quant_types.add(getattr(state, "quant_type", None) or getattr(module.weight, "quant_type", None))
         nested.add(bool(getattr(state, "nested", False)))
         compute.add(str(getattr(module, "compute_dtype", None)).replace("torch.", ""))
+    # Every text decoder layer must have a 4-bit MLP; this catches a silently skipped tower.
+    decoder = {int(m.group(1)) for n, _ in linear4
+               if (m := re.search(r"language_model\.(?:model\.)?layers\.(\d+)\.mlp\.", n))}
     config = getattr(model.config, "quantization_config", None)
     config = config.to_dict() if hasattr(config, "to_dict") else dict(config or {})
-    # hf_device_map is absent for a single-device map; read parameter devices instead.
-    devices = sorted({str(p.device) for p in model.parameters()})
+    # hf_device_map is absent for a single-device map; read parameter and buffer devices instead.
+    devices = sorted({str(p.device) for p in model.parameters()} | {str(b.device) for b in model.buffers()})
     passed = (bool(linear4) and quant_types == {"nf4"} and nested == {True} and compute == {"float16"}
+              and decoder == set(range(layers))
               and config.get("bnb_4bit_quant_type") == "nf4" and config.get("load_in_4bit") is True
+              and config.get("bnb_4bit_use_double_quant") is True
+              and str(config.get("bnb_4bit_compute_dtype")).replace("torch.", "") == "float16"
               and devices == ["cuda:0"])
     return {"passed": passed, "linear4bit_modules": len(linear4), "unquantized_linear_modules": plain,
+            "quantized_decoder_layers": len(decoder), "expected_decoder_layers": layers,
             "quant_types": sorted(map(str, quant_types)), "double_quant": sorted(nested),
             "compute_dtypes": sorted(compute), "loaded_quantization_config": config,
             "parameter_devices": devices, "is_loaded_in_4bit": getattr(model, "is_loaded_in_4bit", None)}
@@ -186,11 +229,17 @@ class CudaSession:
                                     bnb_4bit_compute_dtype=torch.float16)
         torch.cuda.reset_peak_memory_stats()
         start = time.perf_counter()
-        model = AutoModelForMultimodalLM.from_pretrained(
-            self.snapshot, local_files_only=True, trust_remote_code=False, quantization_config=config,
-            device_map={"": 0}, dtype=torch.float16)
-        model.eval()
-        torch.cuda.synchronize()
+        model = None
+        try:
+            model = AutoModelForMultimodalLM.from_pretrained(
+                self.snapshot, local_files_only=True, trust_remote_code=False, quantization_config=config,
+                device_map={"": 0}, dtype=torch.float16)
+            model.eval()
+            torch.cuda.synchronize()
+        except BaseException:
+            del model
+            self.release()
+            raise
         self.load_telemetry = {
             "load_seconds": time.perf_counter() - start,
             "load_peak_allocated_bytes": torch.cuda.max_memory_allocated(),
@@ -200,6 +249,13 @@ class CudaSession:
             "quantization": quantization_report(model), "nvidia_smi_after_load": nvidia_smi()}
         self.model, self.processor = model, processor
         return self.load_telemetry
+
+    def release(self) -> None:
+        """Drop model references and return cached GPU memory before any retry."""
+        import torch
+        self.model = self.processor = None
+        gc.collect()
+        torch.cuda.empty_cache()
 
     def generate(self, case_id: str, item: dict, max_new_tokens: int) -> dict:
         import torch
@@ -211,6 +267,7 @@ class CudaSession:
             if not isinstance(max_new_tokens, int) or not 1 <= max_new_tokens <= limits["max_generation_tokens"]:
                 raise ValueError("Generation token limit exceeded")
             projected = validate_input(item)
+            result["evidence_ids"] = [e["id"] for e in projected["evidence"]]
             messages = build_messages(projected)
             stage = "prompt_preparation"
             inputs = self.processor.apply_chat_template(
@@ -261,6 +318,8 @@ class CudaSession:
             return result
         except Exception as exc:
             oom = type(exc).__name__ == "OutOfMemoryError"
+            if oom:
+                torch.cuda.empty_cache()
             category = ("memory_resource_rejection" if oom else "input_rejected" if stage == "input_validation"
                         else "prompt_rejected" if stage == "prompt_preparation" and isinstance(exc, ValueError)
                         else "processor_incompatibility" if stage == "prompt_preparation"
@@ -269,13 +328,7 @@ class CudaSession:
             return result
 
 
-def overall_status(cases: list[dict]) -> str:
-    statuses = {c["execution_status"] for c in cases}
-    if statuses == {"completed"}:
-        return "completed"
-    if statuses <= {"completed", "generated_but_invalid"}:
-        return "generated_but_invalid"
-    return "failed"
+overall_status = cuda_policy.overall_status
 
 
 def new_record(max_new_tokens: int, evidence_kind: str) -> dict:
@@ -287,21 +340,22 @@ def new_record(max_new_tokens: int, evidence_kind: str) -> dict:
                   "quantization": QUANTIZATION_LABEL, "quantization_policy": policy["quantization"]},
         "official_gold_accuracy": None, "legal_accuracy_claimed": False,
         "max_new_tokens": max_new_tokens, "execution_status": "not_executed", "not_executed_reason": None,
-        "environment": {}, "provenance": {}, "load": {}, "cases": []}
+        "environment": {}, "provenance": {}, "load": {}, "code": code_provenance(), "cases": []}
 
 
 class PreparedRun:
     """Preflight + load once; later batches reuse the loaded session."""
 
-    def __init__(self, cache_dir: Path | None = None, verify_weights: bool = True):
-        self.cache_dir, self.verify_weights = cache_dir, verify_weights
+    def __init__(self, cache_dir: Path | None = None, verify_weights: bool = True, allow_version_drift: bool = False):
+        self.cache_dir, self.verify_weights, self.allow_version_drift = cache_dir, verify_weights, allow_version_drift
         self.session: CudaSession | None = None
         self.header: dict = {}
         self.blocker: dict | None = None
 
     def prepare(self) -> bool:
-        check = preflight(self.cache_dir, self.verify_weights)
+        check = preflight(self.cache_dir, self.verify_weights, self.allow_version_drift)
         self.header = {
+            "reproduction_pins_matched": not check["probe"]["version_drift"],
             "environment": {**check["probe"], "cuda_device": (check["probe"]["cuda_device"] or {}).get("name")},
             "provenance": {"snapshot_revision": Path(check["snapshot"]).name if check["snapshot"] else None,
                            **check["verified"]}}
@@ -317,6 +371,7 @@ class PreparedRun:
                             "error": f"{type(exc).__name__}: {exc}"}
             return False
         if not self.header["load"]["quantization"]["passed"]:
+            session.release()
             self.blocker = {"execution_status": "failed", "failure_category": "quantization_not_verified",
                             "error": "Loaded model is not NF4 4-bit on cuda:0 as required"}
             return False
@@ -331,11 +386,12 @@ class PreparedRun:
                 "model_name": cuda_policy.configuration()["model"]["checkpoint"],
                 "model_revision": provenance.get("snapshot_revision"),
                 "quantization": QUANTIZATION_LABEL,
-                "quantization_verified": bool(self.session) and self.header["load"]["quantization"]["passed"],
+                "quantization_verified": bool(self.session) and self.header.get("load", {}).get("quantization", {}).get("passed") is True,
                 "cuda_device": self.header.get("environment", {}).get("cuda_device"),
                 "checkpoint_metadata_verified": provenance.get("checkpoint_metadata_verified", False),
                 "checkpoint_integrity_verified": provenance.get("checkpoint_integrity_verified", False),
-                "weight_integrity": provenance.get("weight_integrity")}
+                "weight_integrity": provenance.get("weight_integrity"),
+                "weights_sha256": (provenance.get("artifact_integrity", {}).get("model.safetensors") or {}).get("digest")}
 
     def run(self, cases: list[tuple[str, dict]], max_new_tokens: int, evidence_kind: str) -> dict:
         """Return a cuda_policy run record. Model errors become statuses, not exceptions."""

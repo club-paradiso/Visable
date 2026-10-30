@@ -8,7 +8,9 @@
     "checkpoint": "google/gemma-4-E4B-it",
     "revision": "ee0ef6023621cff504d758262d4e04895a5af4a2",
     "model_type": "gemma4",
-    "architectures": ["Gemma4ForConditionalGeneration"],
+    "architectures": [
+      "Gemma4ForConditionalGeneration"
+    ],
     "text_config": {
       "model_type": "gemma4_text",
       "num_hidden_layers": 42,
@@ -61,7 +63,21 @@
       "transformers": "5.20.2",
       "bitsandbytes": "0.50.2",
       "nvidia_driver": "580.82.07"
-    }
+    },
+    "reproduction_pins": {
+      "torch": "2.11.0+cu130",
+      "transformers": "5.20.2",
+      "bitsandbytes": "0.50.2"
+    },
+    "recorded_not_pinned": {
+      "packages": [
+        "accelerate",
+        "huggingface-hub",
+        "tokenizers"
+      ],
+      "reason": "The 2026-10-30 Colab run did not record these versions. pip resolves them from transformers 5.20.2 requirements; each run records what it got and must pass pip check."
+    },
+    "torch_installation": "Colab preinstalled build; the notebook does not reinstall torch (large CUDA wheel). A different preinstalled build is version drift."
   },
   "limits": {
     "min_total_vram_gib": 14.0,

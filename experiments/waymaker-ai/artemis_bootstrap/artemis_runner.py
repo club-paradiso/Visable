@@ -135,6 +135,10 @@ class BaseModelAdapter(abc.ABC):
         """Checks whether this adapter can execute in the current environment."""
         return True, None
 
+    def unavailable_status(self) -> str:
+        """Why an unavailable adapter is unavailable: prerequisites missing, or a started attempt failed."""
+        return "not_executed"
+
 
 class MockModelAdapter(BaseModelAdapter):
     """Deterministic mock adapter for automated testing and calibration."""
@@ -498,6 +502,10 @@ class CudaTransformersAdapter(BaseModelAdapter):
         blocker = self.prepared.blocker or {}
         return False, blocker.get("not_executed_reason") or blocker.get("error")
 
+    def unavailable_status(self) -> str:
+        # A model load or NF4 check that started and failed is a failure, not a skipped run.
+        return (self.prepared.blocker or {}).get("execution_status", "not_executed")
+
     def get_metadata(self) -> Dict[str, Any]:
         available, reason = self.check_availability()
         header = self.prepared.header
@@ -675,13 +683,14 @@ class ArtemisEvaluationRunner:
         # Check adapter availability
         available, not_avail_reason = self.adapter.check_availability()
         if not available:
+            failed = self.adapter.unavailable_status() == "failed"
             summary = RunSummaryReport(
                 run_id=self.run_id,
                 timestamp=now_iso,
                 mode=self.mode,
                 runner_version=self.RUNNER_VERSION,
-                execution_status=ExecutionStatus.NOT_EXECUTED,
-                not_executed_reason=not_avail_reason,
+                execution_status=ExecutionStatus.FAILED if failed else ExecutionStatus.NOT_EXECUTED,
+                not_executed_reason=None if failed else not_avail_reason,
                 model_metadata=model_meta,
                 benchmark_metadata={
                     "benchmark_file": self.benchmark_path.name,

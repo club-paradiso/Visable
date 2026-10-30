@@ -15,11 +15,17 @@ from pathlib import Path
 from typing import Any, Mapping
 
 from waymaker_ai import foundation
+from waymaker_ai.response_contract import parse_response
 
 CONFIG_PATH = Path(__file__).resolve().parents[1] / "configs" / "artemis_cuda_runtime.json"
 RUNTIME = "transformers_cuda"
 RUN_RECORD_SCHEMA = "waymaker-artemis-cuda-run/1.0"
 EXECUTION_STATUSES = ("completed", "generated_but_invalid", "failed", "not_executed")
+QUANTIZATION_LABEL = "bnb_nf4_double_quant_fp16"
+# Source files whose digests a run record carries (paths relative to experiments/waymaker-ai).
+CODE_FILES = ("artemis_bootstrap/gemma4_cuda_runtime.py", "artemis_bootstrap/probe_gemma4_cuda.py",
+              "waymaker_ai/cuda_policy.py", "waymaker_ai/response_contract.py",
+              "waymaker_ai/inference_input.py", "configs/artemis_cuda_runtime.json")
 REQUIRED_QUANTIZATION = {
     "method": "bitsandbytes", "load_in_4bit": True, "bnb_4bit_quant_type": "nf4",
     "bnb_4bit_use_double_quant": True, "bnb_4bit_compute_dtype": "float16",
@@ -107,46 +113,132 @@ def validate_snapshot(snapshot: Path, verify_weights: bool = True) -> dict:
 def validate_real_inference_metadata(metadata: Mapping[str, Any]) -> None:
     """Called by foundation.metric_group for runtime == transformers_cuda."""
     data = configuration()
-    if (metadata.get("profile") != data["foundation_profile"]
+    if (metadata.get("adapter_type") != "cuda_transformers"
+            or metadata.get("profile") != data["foundation_profile"]
             or metadata.get("model_name") != data["model"]["checkpoint"]
             or metadata.get("model_revision") != data["model"]["revision"]
-            or metadata.get("quantization") != "bnb_nf4_double_quant_fp16"
-            or not metadata.get("checkpoint_metadata_verified")
+            or metadata.get("quantization") != QUANTIZATION_LABEL
+            or metadata.get("weights_sha256") != data["model"]["artifacts"]["model.safetensors"]["digest"]
+            or metadata.get("checkpoint_metadata_verified") is not True
             or metadata.get("checkpoint_integrity_verified") is not True
             or metadata.get("weight_integrity") != "sha256_verified"
             or metadata.get("quantization_verified") is not True
-            or not isinstance(metadata.get("cuda_device"), str) or not metadata["cuda_device"].strip()):
+            or not _text(metadata.get("cuda_device"))):
         raise ValueError("Unverified or cross-model CUDA inference provenance")
 
 
-def validate_run_record(record: Mapping[str, Any]) -> None:
-    """Structural check of a run record; says nothing about legal accuracy."""
-    if record.get("schema_version") != RUN_RECORD_SCHEMA or record.get("runtime") != RUNTIME:
-        raise ValueError("Not a Waymaker Artemis CUDA run record")
-    if record.get("execution_status") not in EXECUTION_STATUSES:
-        raise ValueError("Unknown execution status")
-    if record.get("official_gold_accuracy") is not None:
-        raise ValueError("A CUDA smoke record cannot carry official gold accuracy")
-    if record.get("evidence_kind") not in {"none", "synthetic", "candidate_unreviewed"}:
-        raise ValueError("Evidence kind must be declared")
-    cases = record.get("cases")
-    if not isinstance(cases, list):
-        raise ValueError("Cases must be a list")
-    if record["execution_status"] == "not_executed":
-        if not record.get("not_executed_reason") or any(c.get("generated_token_count") for c in cases):
-            raise ValueError("A not_executed record needs a reason and cannot contain generated tokens")
+def _text(value: Any) -> bool:
+    return isinstance(value, str) and bool(value.strip())
+
+
+def overall_status(cases: list[Mapping[str, Any]]) -> str:
+    statuses = {c.get("execution_status") for c in cases}
+    if statuses == {"completed"}:
+        return "completed"
+    if statuses <= {"completed", "generated_but_invalid"}:
+        return "generated_but_invalid"
+    return "failed"
+
+
+def _require(condition: bool, message: str) -> None:
+    if not condition:
+        raise ValueError(message)
+
+
+def _validate_model_provenance(record: Mapping[str, Any], data: Mapping[str, Any]) -> None:
+    """Everything a generated output needs before it counts as this model's output."""
+    model, pinned = record.get("model") or {}, data["model"]
+    _require(record.get("inference_kind") == "real_inference", "Only real inference can be a CUDA run record")
+    _require(model.get("checkpoint") == pinned["checkpoint"] and model.get("revision") == pinned["revision"],
+             "Run record names a different model or revision")
+    _require(model.get("quantization") == QUANTIZATION_LABEL and model.get("quantization_policy") == data["quantization"],
+             "Run record quantization differs from the NF4 policy")
+    provenance = record.get("provenance") or {}
+    _require(provenance.get("snapshot_revision") == pinned["revision"], "Snapshot revision mismatch")
+    _require(provenance.get("checkpoint_metadata_verified") is True
+             and provenance.get("metadata_sha256") == pinned["metadata_sha256"], "Checkpoint metadata not verified")
+    _require(provenance.get("checkpoint_integrity_verified") is True
+             and provenance.get("weight_integrity") == "sha256_verified", "Weights not SHA-256 verified")
+    _require(provenance.get("integrity_reference_source") == pinned["reference_source"],
+             "Integrity reference is not the pinned Hub reference")
+    artifacts = provenance.get("artifact_integrity") or {}
+    for name, reference in pinned["artifacts"].items():
+        found = artifacts.get(name) or {}
+        _require(found.get("algorithm") == "sha256" and found.get("digest") == reference["digest"]
+                 and found.get("size_bytes") == reference["size_bytes"], f"Artifact not verified: {name}")
+    quantization = (record.get("load") or {}).get("quantization") or {}
+    _require(quantization.get("passed") is True and quantization.get("quant_types") == ["nf4"]
+             and quantization.get("double_quant") == [True] and quantization.get("compute_dtypes") == ["float16"]
+             and quantization.get("parameter_devices") == ["cuda:0"]
+             and quantization.get("quantized_decoder_layers") == pinned["text_config"]["num_hidden_layers"],
+             "Loaded-module NF4 verification missing or failed")
+    load_seconds = (record.get("load") or {}).get("load_seconds")
+    _require(isinstance(load_seconds, (int, float)) and not isinstance(load_seconds, bool) and load_seconds > 0,
+             "Model load was not recorded")
+    files = (record.get("code") or {}).get("files_sha256") or {}
+    _require(set(files) == set(CODE_FILES) and all(_text(v) for v in files.values()),
+             "Code provenance (source file digests) missing")
+
+
+def _validate_case(case: Mapping[str, Any]) -> None:
+    name, status = case.get("case_id"), case.get("execution_status")
+    _require(status in EXECUTION_STATUSES, f"Unknown case status: {name}")
+    passed = (case.get("output_validation") or {}).get("passed")
+    if status not in {"completed", "generated_but_invalid"}:
+        _require(passed is not True, f"Only completed output can pass validation: {name}")
         return
-    environment = record.get("environment", {})
-    if not environment.get("cuda_device") or not environment.get("packages"):
-        raise ValueError("An executed record must name its CUDA device and package versions")
+    tokens = case.get("generated_token_count")
+    _require(type(tokens) is int and tokens > 0, f"Generated case without tokens: {name}")
+    _require(isinstance(case.get("raw_output"), str), f"Generated case without raw output: {name}")
+    ids = case.get("evidence_ids")
+    _require(isinstance(ids, list) and all(isinstance(i, str) for i in ids), f"Evidence IDs not recorded: {name}")
+    try:
+        parsed = parse_response(case["raw_output"], set(ids))
+    except (ValueError, TypeError):
+        parsed = None
+    # Re-judge the raw text: a stored flag alone cannot make output valid.
+    if status == "completed":
+        _require(parsed is not None and passed is True and case.get("response") == parsed,
+                 f"Completed must mean the raw output passes the contract: {name}")
+    else:
+        _require(parsed is None and passed is not True,
+                 f"generated_but_invalid output actually passes the contract: {name}")
+
+
+def validate_run_record(record: Mapping[str, Any]) -> None:
+    """Structural and consistency check of a run record written by our own code.
+
+    Not an external attestation: it cannot detect a consistent forgery of every
+    field. It rejects mislabeled models, partial provenance and overclaims.
+    """
+    data = configuration()
+    _require(record.get("schema_version") == RUN_RECORD_SCHEMA and record.get("runtime") == RUNTIME
+             and record.get("project") == "Waymaker Artemis", "Not a Waymaker Artemis CUDA run record")
+    _require(record.get("inference_kind") == "real_inference", "A CUDA run record must be real inference")
+    status = record.get("execution_status")
+    _require(status in EXECUTION_STATUSES, "Unknown execution status")
+    _require(record.get("official_gold_accuracy") is None and record.get("legal_accuracy_claimed") is False,
+             "A CUDA smoke record cannot claim gold or legal accuracy")
+    _require(record.get("evidence_kind") in {"none", "synthetic", "candidate_unreviewed"},
+             "Evidence kind must be declared")
+    cases = record.get("cases")
+    _require(isinstance(cases, list), "Cases must be a list")
+    if status == "not_executed":
+        _require(_text(record.get("not_executed_reason")) and not cases,
+                 "A not_executed record needs a reason and cannot contain cases")
+        return
+    environment = record.get("environment") or {}
+    _require(_text(environment.get("cuda_device")) and isinstance(environment.get("packages"), dict)
+             and bool(environment["packages"]), "An executed record must name its CUDA device and package versions")
+    drift = environment.get("version_drift") or []
+    _require(record.get("reproduction_pins_matched", not drift) == (not drift),
+             "Version drift contradicts reproduction_pins_matched")
+    if not cases:
+        _require(status == "failed" and _text(record.get("failure_category")) and _text(record.get("error")),
+                 "A record without cases must be a failure with a category and error")
+        return
+    _require(status == overall_status(cases), "Record status does not match the overall case statuses")
     for case in cases:
-        status = case.get("execution_status")
-        if status not in EXECUTION_STATUSES:
-            raise ValueError(f"Unknown case status: {case.get('case_id')}")
-        if status in {"completed", "generated_but_invalid"}:
-            if not isinstance(case.get("generated_token_count"), int) or case["generated_token_count"] <= 0:
-                raise ValueError(f"Generated case without tokens: {case.get('case_id')}")
-            if not isinstance(case.get("raw_output"), str):
-                raise ValueError(f"Generated case without raw output: {case.get('case_id')}")
-        if (status == "completed") != bool(case.get("output_validation", {}).get("passed")):
-            raise ValueError(f"Completed must mean schema-valid output: {case.get('case_id')}")
+        _validate_case(case)
+    if any(c.get("execution_status") in {"completed", "generated_but_invalid"} for c in cases):
+        _validate_model_provenance(record, data)
