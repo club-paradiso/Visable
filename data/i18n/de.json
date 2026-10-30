@@ -56,7 +56,7 @@
   "aiLink": "Die KI nach mehr Details fragen",
   "scrollAria": "Nach unten scrollen",
   "reference": "Dieser Dienst ist ein Werkzeug zur Bereitstellung von Referenzinformationen auf Grundlage öffentlicher Gesetze und Handbücher; er ist keine Rechtsberatung und keine Vertretung bei Behördengängen. Bestätigen Sie die endgültige Entscheidung beim Einwanderungs- und Ausländeramt, bei HiKorea oder bei einer qualifizierten Fachkraft.",
-  "brandHeroTitle": "Verschaffen Sie sich einen Überblick<br>über komplexe Aufenthaltstitel.",
+  "brandHeroTitle": "Finden Sie den Aufenthaltstitel für Ihren Zweck<br>und das Verfahren, das Sie brauchen.",
   "brandHeroSubtitle": "Sehen Sie sich nach Zweck geordnete Aufenthaltstitel an, prüfen Sie die Quellen und bereiten Sie die nächsten Schritte vor.",
   "brandHeroStatsAria": "Statistik der Visumkategorien",
   "brandHeroButtons": [
@@ -86,7 +86,7 @@
     "<strong>Zugang zu beschäftigungsbezogenen Berufs- und Branchencodes</strong><span lang=\"en\">Employment occupation &amp; industry codes</span>",
     "<strong>Hinweise zur Prüfung offizieller Quellen</strong><span lang=\"en\">Results with source-checking guidance</span>"
   ],
-  "pathwayTitle": "Noch vor dem Visumcode betrachten wir Ihren Lebensweg.",
+  "pathwayTitle": "Die Reihenfolge der Prüfungen hängt von Zweck und Zeitpunkt ab.",
   "pathwayCopy": "Selbst beim gleichen Aufenthaltstitel ändert sich die nötige Prüfreihenfolge je nach Zweck und Zeitpunkt. Die folgenden Wege sind ein sicherer Ausgangspunkt, der zu den bestehenden Suchergebnissen führt.",
   "pathwayAria": "Aufenthaltswege nach Zweck",
   "pathwayTitles": [
@@ -132,7 +132,7 @@
     "Wiedereinreise",
     "Ausreise"
   ],
-  "howTitle": "Von der Suche bis zur Prüfung offizieller Quellen – in vier Schritten.",
+  "howTitle": "Suche, Vergleich, Prüfung der Unterlagen, Prüfung offizieller Quellen – in vier Schritten.",
   "howStepTitles": [
     "Suchen",
     "Vergleichen",
@@ -183,7 +183,7 @@
     "Wenn Sie Hilfe bei Einwanderungs- und Aufenthaltsanliegen oder die Vermittlung an die zuständige Stelle benötigen, prüfen Sie die offizielle mehrsprachige Beratungsstelle."
   ],
   "manualNote": "Die obigen Handbuch-Links führen zur jeweils neuesten von HiKorea veröffentlichten Fassung (Visumerteilung 2026-06-17, Ausländeraufenthalt 2026-06-23 Hinweishandbuch). Die strukturierten Hinweise auf dem Bildschirm wurden quellenmäßig anhand der lesbaren offiziellen PDF-Auszüge von 2026.6 aktualisiert. Zusätzliche Unterlagen und Einreichungsweisen können sich je Auslandsvertretung unterscheiden; prüfen Sie daher vor der tatsächlichen Antragstellung die Bekanntmachung der zuständigen Auslandsvertretung. Visable ist ein Referenzdienst ohne Partnerschaft oder Zugehörigkeit zum Justizministerium, zu HiKorea, zum Visumportal oder zu Auslandsvertretungen.",
-  "toolsTitle": "Die nötigen Werkzeuge sind nah am Ablauf platziert.",
+  "toolsTitle": "Suche nach dem zuständigen Amt, Code-Suche und Formulare ausfüllen — alles an einem Ort.",
   "toolsCopy": "Bereits umgesetzte Werkzeuge sind mit den bestehenden Dialogen und der Suche verknüpft; noch in Vorbereitung befindliche Funktionen sind als geplant gekennzeichnet.",
   "toolCards": [
     "<h3>Zuständiges Einwanderungsamt finden</h3><p>Ermitteln Sie das zuständige Einwanderungs- und Ausländeramt anhand Ihres Wohnorts.</p>",
@@ -282,7 +282,7 @@
     "Start exploring",
     "1345 Hotline"
   ],
-  "footerCtaTitle": "Die einst schwierige Aufenthaltsverwaltung<br>prüfen Sie jetzt ganz einfach.",
+  "footerCtaTitle": "Den Aufenthaltstitel und das Verfahren, die Sie brauchen,<br>prüfen Sie gleich über die Suche.",
   "footerCtaBody": "Komplexe Aufenthaltsverwaltung und verstreute Unterlagen ordnet Visable nach Zweck. Bestätigen Sie die endgültige Entscheidung bei HiKorea, 1345 oder dem zuständigen Einwanderungsamt.",
   "footerCtaButtons": [
     "Suche starten",
@@ -1194,7 +1194,7 @@
   ],
   "resultTotalSuffix": "{count} insgesamt",
   "heroMarquee": "VISABLE · Verstreute Informationen an einem Ort · RESIDENCE GUIDE · Klug leben in Korea · ",
-  "brandHeroKicker": "Coverage · Klassifikation der Aufenthaltstitel",
+  "brandHeroKicker": "Klassifikation der Aufenthaltstitel",
   "reminderKicker": "Fristerinnerungen",
   "reminderSectionTitle": "Wir erinnern Sie rechtzeitig an wichtige Termine.",
   "reminderSectionCopy": "Wenn Sie ein Datum speichern, zeigen wir Ihnen bei jedem Besuch dieser Seite die verbleibenden Tage an, und Sie können es im Kalender Ihres Mobiltelefons speichern, um Erinnerungen zu erhalten.",

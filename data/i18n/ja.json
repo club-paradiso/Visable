@@ -56,7 +56,7 @@
   "aiLink": "AIにさらに詳しく聞く",
   "scrollAria": "下にスクロール",
   "reference": "本サービスは公開された法令・マニュアルに基づく参考用の情報提供ツールであり、法的な相談や手続きの代行ではありません。最終的な判断は、出入国・外国人庁、HiKorea、または資格のある専門家にご確認ください。",
-  "brandHeroTitle": "複雑な滞在資格を<br>一目で確認しましょう。",
+  "brandHeroTitle": "目的に合った滞在資格と<br>必要な手続きを確認しましょう。",
   "brandHeroSubtitle": "目的別に整理された滞在資格を確認し、出典をたしかめながら次のステップを準備できます。",
   "brandHeroStatsAria": "ビザカテゴリーの統計",
   "brandHeroButtons": [
@@ -86,7 +86,7 @@
     "<strong>就業関連の職種・業種コードへのアクセス</strong><span lang=\"en\">Employment occupation &amp; industry codes</span>",
     "<strong>公式の出典確認フローを案内</strong><span lang=\"en\">Results with source-checking guidance</span>"
   ],
-  "pathwayTitle": "ビザコードより先に、暮らしの経路を見ます。",
+  "pathwayTitle": "目的とタイミングによって変わる確認の順序をご案内します。",
   "pathwayCopy": "同じ滞在資格でも、目的や時期によって必要な確認の順序は変わります。以下の経路は、これまでの検索結果へつながる安全な出発点です。",
   "pathwayAria": "目的別の滞在経路",
   "pathwayTitles": [
@@ -132,7 +132,7 @@
     "再入国",
     "出国"
   ],
-  "howTitle": "検索から公式の出典確認まで、4つのステップに整理します。",
+  "howTitle": "検索・比較・書類の確認・公式の出典確認、4つのステップでご案内します。",
   "howStepTitles": [
     "検索",
     "比較",
@@ -183,7 +183,7 @@
     "出入国・滞在の手続きや管轄機関への取り次ぎが必要なときは、公式の多言語相談窓口を確認してください。"
   ],
   "manualNote": "上記のマニュアルリンクは、HiKoreaが公開した最新版(査証発給 2026-06-17、外国人滞在 2026-06-23 の案内マニュアル)につながります。画面の構造化された案内は、読み取り可能な2026年6月の公式PDF抽出版で出典を更新しています。在外公館ごとの追加書類や受付方法は公館によって異なる場合があるため、実際の申請前に管轄の在外公館の告知を確認してください。Visableは、法務部・HiKorea・ビザポータル・在外公館と提携または所属関係のない参考サービスです。",
-  "toolsTitle": "必要な道具は、流れのすぐそばに置きます。",
+  "toolsTitle": "管轄の出入国官署検索・コード検索・書類作成ツールを一か所に集めました。",
   "toolsCopy": "すでに実装された道具は既存のモーダルや検索に接続し、まだ準備中の機能は計画中として表示します。",
   "toolCards": [
     "<h3>管轄の出入国を探す</h3><p>滞在地を基準に、管轄の出入国・外国人官署を確認します。</p>",
@@ -282,7 +282,7 @@
     "Start exploring",
     "1345 Hotline"
   ],
-  "footerCtaTitle": "難しく感じていた滞在管理を、<br>これからは手軽に確認しましょう。",
+  "footerCtaTitle": "探している滞在資格と手続きを、<br>検索ですぐに確認しましょう。",
   "footerCtaBody": "複雑な滞在行政と散らばった資料を、Visableが目的別に整理します。最終的な判断は、HiKorea、1345、管轄の出入国機関でご確認ください。",
   "footerCtaButtons": [
     "検索を始める",
@@ -1194,7 +1194,7 @@
   ],
   "resultTotalSuffix": "{count}件 全体",
   "heroMarquee": "VISABLE · 散らばった情報を一か所で · RESIDENCE GUIDE · 賢い韓国生活 · ",
-  "brandHeroKicker": "Coverage · 滞在資格の分類",
+  "brandHeroKicker": "滞在資格の分類",
   "reminderKicker": "期限の通知",
   "reminderSectionTitle": "大切な日付を、前もってお知らせします。",
   "reminderSectionCopy": "日付を保存すると、このサイトを訪れるたびに残りの日数を表示し、スマートフォンのカレンダーに保存して通知を受け取ることができます。",
