@@ -15,6 +15,10 @@ SOURCE_TEXT_FIELDS = (
 # injection_probe or synthetic_fixture describe the test, not the source, and
 # would tell the model it is being evaluated, so only real source kinds pass.
 SOURCE_PROVENANCE_VALUES = frozenset({"official_manual", "official_notice", "community_post"})
+# Mission 005-G: values the trusted-evidence pipeline computes itself and hands to a
+# v4 prompt. They come from the system, never from the item's own fields or labels.
+SYSTEM_FIELDS = ("reply_language", "uncovered_items")
+REPLY_LANGUAGES = frozenset({"ko", "en", "vi"})
 
 
 def project_evidence(evidence: Mapping) -> dict:
@@ -45,4 +49,15 @@ def project_inference_item(item: Mapping) -> dict:
     evidence = item.get("evidence", [])
     if not isinstance(evidence, (list, tuple)):
         raise ValueError("Evidence must be a sequence")
-    return {"question": question, "evidence": [project_evidence(e) for e in evidence]}
+    projected = {"question": question, "evidence": [project_evidence(e) for e in evidence]}
+    system = item.get("system")
+    if system is not None:
+        if not isinstance(system, Mapping) or set(system) - set(SYSTEM_FIELDS):
+            raise ValueError("System fields must be a map of allowlisted pipeline values")
+        if system.get("reply_language") not in REPLY_LANGUAGES:
+            raise ValueError("System reply_language must be ko, en or vi")
+        items = system.get("uncovered_items", [])
+        if not isinstance(items, list) or not all(isinstance(i, str) for i in items):
+            raise ValueError("System uncovered_items must be a list of item names")
+        projected["system"] = {"reply_language": system["reply_language"], "uncovered_items": list(items)}
+    return projected
