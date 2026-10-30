@@ -1,0 +1,386 @@
+{
+  "schema_version": "waymaker-artemis-005e-comparison/1.0",
+  "labels": {
+    "A": "Original DEV-20 baseline",
+    "B": "Evaluator-only rescoring",
+    "C": "Contract-v2 model re-evaluation",
+    "C_legacy": "Contract-v2 outputs, original evaluator"
+  },
+  "official_gold_accuracy": null,
+  "independent_legal_review": "not_verified",
+  "A": {
+    "label": "Original DEV-20 baseline",
+    "source": "baseline_freeze.json",
+    "metrics": {
+      "executed_cases": {
+        "numerator": 20,
+        "denominator": 20,
+        "rate": 1.0
+      },
+      "json_contract_pass": {
+        "numerator": 20,
+        "denominator": 20,
+        "rate": 1.0
+      },
+      "diagnostic_candidate_pass": {
+        "numerator": 0,
+        "denominator": 20,
+        "rate": 0.0
+      },
+      "dimension_pass": {
+        "source_fidelity": {
+          "numerator": 11,
+          "denominator": 20,
+          "rate": 0.55
+        },
+        "citation_accuracy": {
+          "numerator": 15,
+          "denominator": 20,
+          "rate": 0.75
+        },
+        "procedural_integrity": {
+          "numerator": 17,
+          "denominator": 20,
+          "rate": 0.85
+        },
+        "abstention_appropriateness": {
+          "numerator": 0,
+          "denominator": 20,
+          "rate": 0.0
+        }
+      },
+      "partial_where_only_answered_allowed": {
+        "numerator": 14,
+        "denominator": 16,
+        "rate": 0.875
+      },
+      "token_limit_truncation": {
+        "numerator": 0,
+        "denominator": 20,
+        "rate": 0.0
+      },
+      "failure_code_frequency": {
+        "disallowed_status": 20,
+        "required_fact_missing": 13,
+        "unlisted_citations": 5,
+        "forbidden_citations": 5,
+        "unapproved_citations": 5,
+        "clarification_missed": 2,
+        "permission_flipped": 1,
+        "unnecessary_clarification": 1,
+        "unwarranted_answer": 1,
+        "role_mismatched": 1
+      }
+    },
+    "status_distribution": {
+      "partial": 17,
+      "clarify": 1,
+      "conflict": 2
+    }
+  },
+  "B": {
+    "label": "Evaluator-only rescoring",
+    "diagnostic_candidate_pass": {
+      "numerator": 0,
+      "denominator": 20,
+      "rate": 0.0
+    },
+    "dimension_pass": {
+      "source_fidelity": {
+        "numerator": 13,
+        "denominator": 20,
+        "rate": 0.65
+      },
+      "citation_accuracy": {
+        "numerator": 15,
+        "denominator": 20,
+        "rate": 0.75
+      },
+      "procedural_integrity": {
+        "numerator": 17,
+        "denominator": 20,
+        "rate": 0.85
+      },
+      "abstention_appropriateness": {
+        "numerator": 0,
+        "denominator": 20,
+        "rate": 0.0
+      }
+    },
+    "json_contract_pass": {
+      "numerator": 20,
+      "denominator": 20,
+      "rate": 1.0
+    },
+    "status_distribution": {
+      "partial": 17,
+      "clarify": 1,
+      "conflict": 2
+    },
+    "partial_where_only_answered_allowed": {
+      "numerator": 14,
+      "denominator": 16,
+      "rate": 0.875
+    },
+    "cases_with_citation_failure_codes": 5,
+    "citation_failure_code_counts": {
+      "unlisted_citations": 5,
+      "forbidden_citations": 5,
+      "unapproved_citations": 5
+    },
+    "failure_code_frequency": {
+      "disallowed_status": 20,
+      "required_fact_missing": 12,
+      "unlisted_citations": 5,
+      "forbidden_citations": 5,
+      "unapproved_citations": 5,
+      "clarification_missed": 2,
+      "unnecessary_clarification": 1,
+      "unwarranted_answer": 1
+    },
+    "token_limit_truncation": {
+      "numerator": 0,
+      "denominator": 20,
+      "rate": 0.0
+    },
+    "review_annotations": {
+      "ARTEMIS-004-DEV-011": "rubric_language_mismatch",
+      "ARTEMIS-004-DEV-012": "rubric_language_mismatch"
+    },
+    "integrity_passed": true
+  },
+  "C": {
+    "label": "Contract-v2 model re-evaluation",
+    "diagnostic_candidate_pass": {
+      "numerator": 13,
+      "denominator": 20,
+      "rate": 0.65
+    },
+    "dimension_pass": {
+      "source_fidelity": {
+        "numerator": 15,
+        "denominator": 20,
+        "rate": 0.75
+      },
+      "citation_accuracy": {
+        "numerator": 19,
+        "denominator": 20,
+        "rate": 0.95
+      },
+      "procedural_integrity": {
+        "numerator": 19,
+        "denominator": 20,
+        "rate": 0.95
+      },
+      "abstention_appropriateness": {
+        "numerator": 18,
+        "denominator": 20,
+        "rate": 0.9
+      }
+    },
+    "json_contract_pass": {
+      "numerator": 20,
+      "denominator": 20,
+      "rate": 1.0
+    },
+    "status_distribution": {
+      "answered": 14,
+      "clarify": 3,
+      "insufficient_evidence": 2,
+      "conflict": 1
+    },
+    "partial_where_only_answered_allowed": {
+      "numerator": 0,
+      "denominator": 16,
+      "rate": 0.0
+    },
+    "cases_with_citation_failure_codes": 1,
+    "citation_failure_code_counts": {
+      "unlisted_citations": 1,
+      "forbidden_citations": 1,
+      "unapproved_citations": 1
+    },
+    "failure_code_frequency": {
+      "required_fact_missing": 8,
+      "disallowed_status": 2,
+      "unnecessary_clarification": 1,
+      "unlisted_citations": 1,
+      "forbidden_citations": 1,
+      "unapproved_citations": 1
+    },
+    "token_limit_truncation": {
+      "numerator": 0,
+      "denominator": 20,
+      "rate": 0.0
+    },
+    "review_annotations": {
+      "ARTEMIS-004-DEV-012": "rubric_language_mismatch"
+    },
+    "integrity_passed": true
+  },
+  "C_legacy": {
+    "label": "Contract-v2 outputs, original evaluator",
+    "diagnostic_candidate_pass": {
+      "numerator": 12,
+      "denominator": 20,
+      "rate": 0.6
+    },
+    "dimension_pass": {
+      "source_fidelity": {
+        "numerator": 14,
+        "denominator": 20,
+        "rate": 0.7
+      },
+      "citation_accuracy": {
+        "numerator": 19,
+        "denominator": 20,
+        "rate": 0.95
+      },
+      "procedural_integrity": {
+        "numerator": 19,
+        "denominator": 20,
+        "rate": 0.95
+      },
+      "abstention_appropriateness": {
+        "numerator": 18,
+        "denominator": 20,
+        "rate": 0.9
+      }
+    },
+    "json_contract_pass": {
+      "numerator": 20,
+      "denominator": 20,
+      "rate": 1.0
+    },
+    "status_distribution": {
+      "answered": 14,
+      "clarify": 3,
+      "insufficient_evidence": 2,
+      "conflict": 1
+    },
+    "partial_where_only_answered_allowed": {
+      "numerator": 0,
+      "denominator": 16,
+      "rate": 0.0
+    },
+    "cases_with_citation_failure_codes": 1,
+    "citation_failure_code_counts": {
+      "unlisted_citations": 1,
+      "forbidden_citations": 1,
+      "unapproved_citations": 1
+    },
+    "failure_code_frequency": {
+      "required_fact_missing": 9,
+      "disallowed_status": 2,
+      "unnecessary_clarification": 1,
+      "permission_flipped": 1,
+      "unlisted_citations": 1,
+      "forbidden_citations": 1,
+      "unapproved_citations": 1
+    },
+    "token_limit_truncation": {
+      "numerator": 0,
+      "denominator": 20,
+      "rate": 0.0
+    },
+    "review_annotations": {
+      "ARTEMIS-004-DEV-012": "rubric_language_mismatch"
+    }
+  },
+  "paired_A_to_B": {
+    "unchanged": 17,
+    "improved_fewer_failures": 3
+  },
+  "paired_B_to_C": {
+    "improved": 13,
+    "indeterminate_changed_failures": 1,
+    "improved_fewer_failures": 5,
+    "unchanged": 1
+  },
+  "paired_A_to_C": {
+    "improved": 13,
+    "indeterminate_changed_failures": 1,
+    "improved_fewer_failures": 6
+  },
+  "statistics": {
+    "n": 20,
+    "wilson_95": {
+      "A": {
+        "passed": 0,
+        "interval": [
+          0.0,
+          0.1611
+        ]
+      },
+      "B": {
+        "passed": 0,
+        "interval": [
+          0.0,
+          0.1611
+        ]
+      },
+      "C": {
+        "passed": 13,
+        "interval": [
+          0.4329,
+          0.8188
+        ]
+      },
+      "C_legacy": {
+        "passed": 12,
+        "interval": [
+          0.3866,
+          0.7812
+        ]
+      }
+    },
+    "mcnemar_A_to_B": {
+      "fail_to_pass": 0,
+      "pass_to_fail": 0,
+      "discordant": 0,
+      "exact_p_two_sided": 1.0
+    },
+    "mcnemar_B_to_C": {
+      "fail_to_pass": 13,
+      "pass_to_fail": 0,
+      "discordant": 13,
+      "exact_p_two_sided": 0.000244
+    },
+    "mcnemar_C_legacy_to_C": {
+      "fail_to_pass": 1,
+      "pass_to_fail": 0,
+      "discordant": 1,
+      "exact_p_two_sided": 1.0
+    },
+    "c_pass_attribution": {
+      "passes_with_original_evaluator": [
+        "ARTEMIS-004-DEV-001",
+        "ARTEMIS-004-DEV-005",
+        "ARTEMIS-004-DEV-008",
+        "ARTEMIS-004-DEV-010",
+        "ARTEMIS-004-DEV-012",
+        "ARTEMIS-004-DEV-013",
+        "ARTEMIS-004-DEV-014",
+        "ARTEMIS-004-DEV-015",
+        "ARTEMIS-004-DEV-016",
+        "ARTEMIS-004-DEV-017",
+        "ARTEMIS-004-DEV-018",
+        "ARTEMIS-004-DEV-019"
+      ],
+      "passes_only_with_repaired_evaluator": [
+        "ARTEMIS-004-DEV-007"
+      ]
+    },
+    "caveats": [
+      "20 development cases; intervals are wide and the cases are not a random sample.",
+      "Contract v2 was written after reading the Mission 005-D DEV-20 failures, so C on DEV-20 is an optimistic, in-sample estimate; the synthetic set is the out-of-sample check.",
+      "Exact tests assume independent cases; DEV-20 items share templates and evidence styles."
+    ]
+  },
+  "notes": [
+    "B differs from A only by evaluator repairs E1-E3; the model outputs are identical.",
+    "C differs from B by the contract (prompt v2) on the same checkpoint and dataset.",
+    "C_legacy scores C's outputs with the original evaluator to separate the two effects.",
+    "A diagnostic score change is not evidence of legal accuracy."
+  ]
+}

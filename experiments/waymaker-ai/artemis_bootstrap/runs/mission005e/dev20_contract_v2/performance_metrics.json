@@ -1,0 +1,106 @@
+{
+  "label": "Contract-v2 model re-evaluation (Mission 005-E, DEV-20)",
+  "official_gold_accuracy": null,
+  "executed_cases": {
+    "numerator": 20,
+    "denominator": 20,
+    "rate": 1.0
+  },
+  "inference_completion": {
+    "numerator": 20,
+    "denominator": 20,
+    "rate": 1.0
+  },
+  "json_contract_pass": {
+    "numerator": 20,
+    "denominator": 20,
+    "rate": 1.0
+  },
+  "json_contract_pass_among_generated": {
+    "numerator": 20,
+    "denominator": 20,
+    "rate": 1.0
+  },
+  "diagnostic_candidate_pass": {
+    "numerator": 13,
+    "denominator": 20,
+    "rate": 0.65
+  },
+  "dimension_pass": {
+    "source_fidelity": {
+      "numerator": 15,
+      "denominator": 20,
+      "rate": 0.75
+    },
+    "citation_accuracy": {
+      "numerator": 19,
+      "denominator": 20,
+      "rate": 0.95
+    },
+    "procedural_integrity": {
+      "numerator": 19,
+      "denominator": 20,
+      "rate": 0.95
+    },
+    "abstention_appropriateness": {
+      "numerator": 18,
+      "denominator": 20,
+      "rate": 0.9
+    }
+  },
+  "correct_abstention": {
+    "numerator": 2,
+    "denominator": 2,
+    "rate": 1.0
+  },
+  "unnecessary_abstention": {
+    "numerator": 0,
+    "denominator": 18,
+    "rate": 0.0
+  },
+  "partial_where_only_answered_allowed": {
+    "numerator": 0,
+    "denominator": 16,
+    "rate": 0.0
+  },
+  "citation_failure": {
+    "numerator": 1,
+    "denominator": 20,
+    "rate": 0.05
+  },
+  "source_fidelity_failure": {
+    "numerator": 5,
+    "denominator": 20,
+    "rate": 0.25
+  },
+  "procedure_confusion": {
+    "numerator": 1,
+    "denominator": 20,
+    "rate": 0.05
+  },
+  "token_limit_truncation": {
+    "numerator": 0,
+    "denominator": 20,
+    "rate": 0.0
+  },
+  "latency_seconds": {
+    "mean": 11.267,
+    "median": 11.575,
+    "max": 15.632
+  },
+  "total_generated_tokens": 1518,
+  "peak_gpu_allocated_bytes": 9513600512,
+  "peak_gpu_reserved_bytes": 9598664704,
+  "failure_code_frequency": {
+    "required_fact_missing": 8,
+    "disallowed_status": 2,
+    "unnecessary_clarification": 1,
+    "unlisted_citations": 1,
+    "forbidden_citations": 1,
+    "unapproved_citations": 1
+  },
+  "notes": {
+    "scored_denominator": "cases with a recorded generation attempt; not_executed cases are excluded from dimension rates but count as fails in diagnostic_candidate_pass",
+    "citation_metric_scope": "citation ID overlap with labeled must_cite; not semantic support"
+  }
+}

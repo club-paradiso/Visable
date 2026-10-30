@@ -332,6 +332,8 @@ ROLE_FAMILY: Dict[str, str] = {"issue": "issue", "process": "issue",
                                "wait": "wait", "entry": "entry", "fee": "fee", "income": "income", "deposit": "deposit", "fine": "fine"}
 #: A role word followed by one of these characters is part of a noun, not the fact's role.
 _NOUN_SUFFIX = set("증서자일")
+#: Mission 005-E (E2): "재발급 수수료", "신청 수수료" name a fee; for a period that word is not its role.
+_FEE_NOUN_RE = re.compile(r"\s*(?:수수료|심사료|요금|비용)")
 _START_POINT_RE = re.compile(r"\s*(?:한|된|하고|되고)?\s*(?:후|뒤|날|때|부터|로부터|이후|직후)")
 #: What may stand between a role word and the value it names: "유효기간은 ", "수수료: ", "체류기간 최대 ".
 _NAMES_VALUE_RE = re.compile(r"(?:\s*(?:기간|기한|기일|금액|액))?\s*(?:은|는|이|가|도|만)?\s*[:：]?\s*(?:최대|최소|약|총|모두)?\s*")
@@ -357,6 +359,8 @@ def _roles_in(text: str, at: int, kind: str, lenient: bool = False) -> List[str]
                 continue
             # "입국 후 90일", "신청한 날부터", "발급한 뒤": a starting point, not the role.
             if kind != "money" and _START_POINT_RE.match(text, m.end()):
+                continue
+            if kind != "money" and _FEE_NOUN_RE.match(text, m.end()):
                 continue
             if m.start() >= at:
                 after.append((m.start() - at, role))
@@ -671,6 +675,14 @@ _ALLOW_RE = re.compile(r"수\s*있|가능|허용|써도\s*됩|해도\s*됩")
 _HARD_NO_RE = re.compile(r"수\s*없|불가|불허|불인정|인정하지|아니함|않음")
 _DENY_RE = re.compile(r"없|불가|않|안\s*되|안\s*됩|못|제한됩|불허")
 _KEEPS_LIMIT_RE = re.compile(r"이내|까지|범위|한도|만\s|만입|최대|이하로|넘을\s*수\s*없")
+#: Mission 005-E (E1): an asserted prohibition keeps the limit ("…더라도 … 엄격히 금지됩니다").
+#: Only the asserting endings count, so "금지 대상이 아니므로 할 수 있습니다" is still a lift.
+_PROHIBITED_RE = re.compile(r"금지(?:됩니다|된다|돼요|되어\s*있|되며|됨|합니다|한다|입니다)")
+#: The same asserted prohibition on the evidence side: before 005-E a page saying
+#: "…금지됩니다" never counted as a limit, so a reversal of it was never caught.
+_PAGE_PROHIBITS = _PROHIBITED_RE.pattern
+#: "허가 취소 및 출국조치 대상이 될 수 있습니다" states a possible sanction, not a permission.
+_SANCTION_RE = re.compile(r"(?:취소|조치|처벌|제재|과태료|벌금|범칙금|강제퇴거|출국명령)[^.]{0,20}?될\s*수\s*있")
 _STEM_TAIL_RE = re.compile(r"(?:은|는|이|가|을|를|에|의|로|으로|도|만|까지|부터|에서|이나|이면|하여|해서|하고|합니다|됩니다|입니다)$")
 
 
@@ -695,8 +707,9 @@ def permission_flips(answer: str, trusted_text: str) -> List[str]:
     for s in _sentences(answer):
         # "41점 이상이어도 … 불인정입니다" keeps the limit: a lift counts only without a "no".
         lifts = bool(_LIFT_RE.search(s)) and not re.search(r"불인정|불허|불가|않습|않아요|안\s*됩|없습니다", s) \
-            and not _KEEPS_LIMIT_RE.search(s)
-        allows = bool(_ALLOW_RE.search(s)) and not _DENY_RE.search(s) and not _KEEPS_LIMIT_RE.search(s)
+            and not _KEEPS_LIMIT_RE.search(s) and not _PROHIBITED_RE.search(s)
+        allows = bool(_ALLOW_RE.search(s)) and not _DENY_RE.search(s) and not _KEEPS_LIMIT_RE.search(s) \
+            and not _SANCTION_RE.search(s)
         if not (lifts or allows):
             continue
         mine = _stems(s)
@@ -717,7 +730,8 @@ def permission_flips(answer: str, trusted_text: str) -> List[str]:
             # an exception the answer states is not a flip (20 right answers of recorded runs).
             if re.search(r"가능|허용|할\s*수\s*있|인정(?!하지)", seg):
                 continue
-            if (lifts and _LIMIT_RE.search(seg)) or (allows and _HARD_NO_RE.search(seg)):
+            page_no = _HARD_NO_RE.search(seg) or re.search(_PAGE_PROHIBITS, seg)
+            if (lifts and (_LIMIT_RE.search(seg) or page_no)) or (allows and page_no):
                 found.append(f"{s.strip()} — 근거: {seg.strip()[:80]}")
                 break
     return found
