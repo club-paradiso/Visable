@@ -1,0 +1,13 @@
+{
+  "run_id": "run_real_local_mlx_dev20",
+  "created_at": "2026-10-29T08:56:46.469486+00:00",
+  "mode": "candidate_eval",
+  "runner_version": "artemis-runner/1.0",
+  "git_commit": "a17233450e4b12948d35876a86cd05e588de3fce",
+  "file_digests": {
+    "run_summary.json": "f1a54732b2d7b5270c4aaf34293c2ed5b994123d1fa6c5be54bcc9e028500b09",
+    "error_summary.csv": "e9569c474d5f1d315a296e758222a9f3bd8f49d3700136883cacedefa2292fee",
+    "report.md": "d6a4b0e01f9dfc3015d46e582e5f7c4a51a03f5ddb7ef727905fbd46b63793a1",
+    "runner_code": "3217e7e6ecc43ea60ab74e0bdf0714532880eebcafacadd287f786e49b09c803"
+  }
+}

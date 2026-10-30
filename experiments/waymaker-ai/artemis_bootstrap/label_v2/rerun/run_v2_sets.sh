@@ -4,8 +4,6 @@
 set -u
 cd "$(dirname "$0")/../.." || exit 2
 export HF_HOME=$HOME/.cache/waymaker-artemis/hf HF_HUB_OFFLINE=1
-MODEL=mlx-community/gemma-4-e4b-it-4bit
-REV=475b9088d29754a3379866cf5aeb6b41acd313c2
 LOG=${TMPDIR:-/tmp}/artemis-v2runs
 mkdir -p $LOG
 free_gb() { python3 -I -c "print(round(__import__('shutil').disk_usage('$HOME').free/1e9,2))"; }
@@ -22,7 +20,7 @@ run() {
     echo "$(date +%T) $set: waiting for 5 GB free (now $(free_gb) GB)"; sleep 60
   done
   echo "$(date +%T) START $set -> $out (free $(free_gb) GB, $(sysctl -n vm.swapusage))"
-  .venv/bin/python run_smoke.py --model $MODEL --revision $REV --out $out \
+  .venv/bin/python run_smoke.py --profile gemma4_e4b --runtime mlx_vlm --out $out \
     --cases label_v2/${set}_cases.v2.json --min-free-disk-gb 5 "$@" > $LOG/$set.log 2>&1
   local rc=$?
   echo "$(date +%T) END $set rc=$rc (free $(free_gb) GB)"

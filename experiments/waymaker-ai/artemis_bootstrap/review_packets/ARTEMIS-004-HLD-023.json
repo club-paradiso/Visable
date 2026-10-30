@@ -72,5 +72,19 @@
   "reviewer_notes": "",
   "current_status": "unreviewed",
   "missing_evidence_and_unresolved_issues": "종합소득세 확정일 이전 소득증빙 잠정 접수 지침 공식 공문 원문 대조.",
-  "generated_at": "2026-10-29T07:46:27.316204+00:00"
+  "generated_at": "2026-10-29T07:46:27.316204+00:00",
+  "audit_dossier": {
+    "audit_classification": "source_located",
+    "inspected_provision": "제3편 제24장 거주(F-2): '점수표 상 배점의 합산 점수가 80점 이상인 외국인 중 합산 점수 또는 연간소득 점수 중 신청인에게 유리한 점수를 적용하여 체류기간 차등 부여', 필수 소득입증서류: 세무서장 발급 소득금액증명원.",
+    "authoritative_document": "법무부 외국인 체류관리 업무편람 (2026. 10. 19. 개정판)",
+    "comparison_notes": "편람 원문의 80점 요건 및 소득금액증명원 제출 원칙과 후보군 내용이 정확히 일치함.",
+    "omissions_and_exceptions": "전년도 소득금액증명이 5~6월 이전 미발급되는 시기에는 근로소득원천징수영수증과 회사 직인 날인 서류로 한시적 대체 가능.",
+    "discrepancies": "없음.",
+    "corrected_evidence_proposal": "법무부 외국인 체류관리 업무편람에 따라 F-2-7 점수제 비자 취득을 위해서는 점수표 합산 점수 80점 이상을 충족하여야 하며, 소득 요건 증빙을 위해 세무서장이 발급한 전년도 소득금액증명원을 필수로 제출하여야 합니다.",
+    "retrieval_metadata": {
+      "source_url": "https://www.hikorea.go.kr/info/InfoStayF27.pt",
+      "retrieval_date": "2026-10-29",
+      "source_type": "administrative_manual"
+    }
+  }
 }

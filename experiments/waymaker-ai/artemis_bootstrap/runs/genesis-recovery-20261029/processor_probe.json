@@ -1,0 +1,8 @@
+{
+  "kind": "processor_only_no_weights",
+  "transformers": "5.20.2",
+  "checkpoint_revision": "475b9088d29754a3379866cf5aeb6b41acd313c2",
+  "status": "failed",
+  "error": "ImportError: \nGemma4Processor requires the PIL library but it was not found in your environment. You can install it with pip:\n`pip install pillow`. Please note that you may need to restart your runtime after installation.\n",
+  "elapsed_seconds": 1.534249832999194
+}

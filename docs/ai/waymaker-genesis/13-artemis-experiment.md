@@ -1,4 +1,6 @@
-# 13 — Artemis: the first fine-tuning experiment (prepared, NOT RUN)
+# 13 — Waymaker Artemis: the first fine-tuning experiment (prepared, NOT RUN)
+
+Current execution policy and recovery supersession: [Waymaker Artemis foundation specification](../../../experiments/waymaker-ai/artemis_bootstrap/WAYMAKER-ARTEMIS-GEMMA4-FOUNDATION-SPEC.md). Historical research below does not authorize a different foundation.
 
 Status: **NOT RUN.** The configs, scripts, gates and tests are ready. No model
 was trained, served or evaluated in Mission 001. There was no GPU on the

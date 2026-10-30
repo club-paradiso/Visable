@@ -390,8 +390,8 @@ def test_gold_gate_rejects_unverified_explicit_gold_label(base_item):
     assert score_artemis_response(item, response).is_official_gold is False
 
 
-def test_gold_gate_requires_explicit_signed_source_and_status(base_item):
-    """Positive gate: an explicit official label with signed matching source."""
+def test_gold_gate_rejects_self_asserted_review_even_with_matching_hash(base_item):
+    """Names/dates and an integrity hash cannot replace an attestation verifier."""
     item = copy.deepcopy(base_item)
     item["metadata"].update({
         "is_synthetic": False,
@@ -406,7 +406,7 @@ def test_gold_gate_requires_explicit_signed_source_and_status(base_item):
     })
     response = {"status": "answered", "answer": "30,000원, 14일입니다.",
                 "citations": [item["evidence"][0]["id"]]}
-    assert score_artemis_response(item, response).is_official_gold is True
+    assert score_artemis_response(item, response).is_official_gold is False
 
 
 def test_under_review_without_content_digest_is_invalid(base_item):

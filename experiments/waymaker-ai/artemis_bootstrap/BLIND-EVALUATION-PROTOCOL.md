@@ -1,4 +1,4 @@
-# ARTEMIS BLIND EVALUATION PROTOCOL (독립 맹검 평가 프로토콜)
+# Waymaker Artemis BLIND EVALUATION PROTOCOL (독립 맹검 평가 프로토콜)
 ## Clean-room Evaluation, Anti-Leakage Controls & Future Blind Set Standard
 
 - **문서 버전**: 1.0.0
@@ -26,7 +26,32 @@
 - **엄격 제거 항목**: `expected` 전체 (`allowed_statuses`, `required_facts`, `forbidden_claims`, `abstention_criteria`), 채점 루브릭, 기존 검토자 판정 의견.
 
 ### 2.2 누출 및 오염 감지 (Leakage & Contamination Detector)
-`detect_prompt_leakage`를 통해 모델 프롬프트나 입력 텍스트에 정답 레이블(필수 사실 키워드, 금지 진술 등)이 부주의하게 주입되었는지 자동으로 스캔하여, 오염 의심 건에 대해 `DataLeakageContaminationWarning`을 발생시킵니다.
+`detect_prompt_leakage`는 정답 레이블과 겹치는 문자열을 찾아 진단 목록으로 반환합니다.
+이 검사는 경고를 자동 발생시키거나 입력을 차단하지 않습니다. 실제 추론 경계는
+`waymaker_ai.inference_input`의 허용 목록 투영으로 보호합니다. 증거 본문과 인용
+정보는 유지하고, 중첩 검토 의견·정답·루브릭·승인 표시와 임의 필드는 전달하지 않습니다.
+
+### 2.3 독립 격리 상태와 검증 근거
+
+독립 문항의 frozen manifest도 `isolation_not_verified`, `clean_room_verified: false`입니다.
+`blind_projection_only`는 데이터 투영 방식만 뜻합니다. 해시, 역할 문자열, 작성자
+자기 선언이나 서명 digest는 접근 통제·신원·독립성을 인증하지 않습니다.
+
+검증 상태로 전환하려면 외부 시스템이 강제하는 신원·접근 권한, 독립적인 정답 키
+관리, 격리 채점기, 접근 거부 실험, 불변 접근 로그와 독립 감사 증거가 필요합니다.
+증거는 실행 ID와 동결된 파티션 해시에 연결하고 유효기간·철회 절차를 명시해야 합니다.
+이 근거를 검증하는 신뢰할 수 있는 외부 검증기는 현재 연결되어 있지 않습니다.
+따라서 로컬 API로 `isolation_verified`로 승격할 수 없습니다. 향후 검증된 실행도
+권한 변경·증거 만료·누출이 발견되면 `isolation_not_verified`로 되돌려야 합니다.
+같은 조건과 상태 전이는 `evaluation_isolation.isolation_verification_policy()`가 관리합니다.
+
+### 2.4 오염 검사의 범위
+
+빈 코퍼스, 분석할 수 없는 참조 자료 또는 질문·정답은 `unknown`, 점수 `null`로
+보고합니다. 분석 가능한 경우에도 clean은 제공한 코퍼스에서 큰 어휘 중복을
+찾지 못했다는 뜻입니다. 독립성이나 학습 데이터 비노출을 인증하지 않습니다.
+`check_item_report()`에는 코퍼스 식별자·해시, 공급·분석 문서 수, 비교 범위,
+정규화 방식, 임계값과 누락 가능한 의미·의역 중복의 한계를 기록합니다.
 
 ---
 

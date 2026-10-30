@@ -1,0 +1,12 @@
+{
+  "timestamp": "2026-10-30T01:15:00.467358+00:00",
+  "resources": {
+    "free_disk_gb": 8.093556736,
+    "swap_used_gb": 3.51226822656,
+    "swap_raw": "total = 4096.00M  used = 3349.56M  free = 746.44M  (encrypted)",
+    "memory_bytes": 8589934592
+  },
+  "blockers": [
+    "Swap pressure: 3.51 GB used; limit 2.0 GB"
+  ]
+}

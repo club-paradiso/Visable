@@ -2,7 +2,7 @@
   "schema_version": "waymaker-artemis-experiment/0.1",
   "id": "artemis-exp-b-sft-qlora",
   "arm": "B",
-  "title": "Artemis B: QLoRA SFT of Gemma 4 E4B-it on reviewed classification labels",
+  "title": "Waymaker Artemis B: QLoRA SFT of Gemma 4 E4B-it on reviewed classification labels",
   "status": "NOT RUN",
   "status_detail": "Prepared on 2026-10-19 in Mission 001. Not trained: benchmark v0 has no train split, there is no GPU on the preparation machine, and paid training is not authorised. train_qlora.py refuses this config today (train file missing).",
   "created": "2026-10-19",
@@ -34,11 +34,11 @@
     "revision": "ee0ef6023621cff504d758262d4e04895a5af4a2",
     "license": "apache-2.0",
     "gated": false,
-    "loader": "AutoModelForCausalLM",
+    "loader": "AutoModelForImageTextToText",
     "params": "8.00B total, 4.5B effective; 131,072 context",
     "source": "research-notes/models.md §3a and §5 Artemis rank 1",
     "license_note": "Apache-2.0 per HF cardData; keep the licence text and NOTICE with any distributed adapter. Gemma Prohibited Use Policy applicability unresolved (models.md §4, §8).",
-    "loader_note": "Gemma4ForConditionalGeneration checkpoint; AutoModelForCausalLM text-only loading is UNVERIFIED (models.md §8). Confirm in the smoke step or set loader to the class that loads it."
+    "loader_note": "Gemma4ForConditionalGeneration checkpoint; AutoModelForImageTextToText + AutoProcessor is the documented Gemma 4 path. CUDA training remains unexecuted; validate adapters on the pinned checkpoint before training."
   },
   "secondary_model": {
     "role": "secondary",
@@ -46,10 +46,10 @@
     "revision": "3e22461f65e89153144f8adb70e3b8c2cc9845a7",
     "license": "apache-2.0",
     "gated": false,
-    "loader": "AutoModelForCausalLM",
+    "loader": "AutoModelForImageTextToText",
     "params": "5.12B total, 2.3B effective",
     "source": "research-notes/models.md §3a",
-    "note": "Fits a free T4 for QLoRA (about 6-8 GB, models.md §3b, INFERRED). Train it with the same hyper-parameters only after E4B passes G1."
+    "note": "E2B is an explicitly selected development profile only. Keep its adapters and metrics separate; it never replaces the canonical E4B foundation."
   },
   "dataset": {
     "tasks": [
@@ -195,15 +195,14 @@
       }
     },
     "outputs": "One LoRA adapter per seed under training/runs/<config id>/<primary|secondary>-seed<k>/adapter (git-ignored) plus run_record.json (config sha256, SFT file sha256, base revision, package versions, GPU, dtype, wall-clock, train loss).",
-    "smoke_run": "Before the real run: train_qlora.py --model secondary --seed 1 --max-steps 5 (the same config on the pinned E2B), to confirm the loader, chat template, target modules, adapter save and the package versions to pin. A smoke run's adapter is never evaluated (run_record.json says evaluate: false)."
+    "smoke_run": "Before training: train_qlora.py --model primary --seed 1 --max-steps 5 on the pinned E4B. Confirm loader, template, targets, adapter save/reload and package versions. E2B is a separate explicitly selected development run and does not validate E4B. Smoke adapters are not evaluated."
   },
   "hardware": {
     "assumption": "One 16-24 GB NVIDIA GPU (compute class C1, training-distill.md §2.0). L4 24 GB is the comfortable fit; T4 16 GB is borderline for E4B and runs in fp16.",
-    "vram_estimate": "E4B QLoRA about 9-12 GB, E2B about 6-8 GB at sequence 2048 with gradient checkpointing (models.md §3b and §6, INFERRED; README of the old scaffold warns E4B may OOM on a T4).",
+    "vram_estimate": "Unexecuted engineering estimate: begin E4B QLoRA on 24 GB CUDA with sequence 2048 and checkpointing. Smaller-memory vendor recipes need separate validation; see WAYMAKER-ARTEMIS-FINETUNING-PLAN.md.",
     "fits": [
-      "L4 24 GB (Colab Pro, local, or rented): E4B and E2B, bf16 compute.",
-      "T4 16 GB (free Colab, Kaggle): E2B safely; E4B may OOM; fp16 compute, never bf16.",
-      "A100 40/80 GB: everything, bf16."
+      "L4 24 GB: proposed E4B QLoRA starting point, bf16 compute; not measured.",
+      "T4 16 GB: E4B may OOM; fp16 compute only. Stop or choose larger hardware. E2B requires explicit development selection and separate results."
     ]
   },
   "compute": {

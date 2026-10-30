@@ -2,7 +2,7 @@
   "schema_version": "waymaker-artemis-experiment/0.1",
   "id": "artemis-exp-c-verified-distill-sft",
   "arm": "C",
-  "title": "Artemis C: arm B data plus gated, human-reviewed teacher labels, QLoRA SFT",
+  "title": "Waymaker Artemis C: arm B data plus gated, human-reviewed teacher labels, QLoRA SFT",
   "status": "NOT RUN",
   "status_detail": "Prepared on 2026-10-19 in Mission 001. Blocked three ways: benchmark v0 has no train split, the teacher policy has no counsel sign-off (legal_signoff pending), and no teacher was served. No teacher output exists.",
   "created": "2026-10-19",
@@ -34,7 +34,7 @@
     "revision": "ee0ef6023621cff504d758262d4e04895a5af4a2",
     "license": "apache-2.0",
     "gated": false,
-    "loader": "AutoModelForCausalLM",
+    "loader": "AutoModelForImageTextToText",
     "params": "8.00B total, 4.5B effective; 131,072 context",
     "source": "research-notes/models.md §3a and §5 Artemis rank 1",
     "license_note": "Apache-2.0 per HF cardData; keep licence text and NOTICE with any distributed adapter. A student trained on Gemma 4 or gpt-oss outputs carries no extra naming duty under Apache-2.0 (models.md §4), but every teacher condition in configs/teacher_policy.json must be acknowledged on each record.",
@@ -46,10 +46,10 @@
     "revision": "3e22461f65e89153144f8adb70e3b8c2cc9845a7",
     "license": "apache-2.0",
     "gated": false,
-    "loader": "AutoModelForCausalLM",
+    "loader": "AutoModelForImageTextToText",
     "params": "5.12B total, 2.3B effective",
     "source": "research-notes/models.md §3a",
-    "note": "Only after E4B passes G1 in arm C."
+    "note": "E2B is an explicitly selected development profile only. Keep its adapters and metrics separate; it never replaces the canonical E4B foundation."
   },
   "teachers": [
     {

@@ -72,5 +72,19 @@
   "reviewer_notes": "",
   "current_status": "unreviewed",
   "missing_evidence_and_unresolved_issues": "국세청 외국인 사업자등록 행정지도 지침 대조.",
-  "generated_at": "2026-10-29T07:46:27.318923+00:00"
+  "generated_at": "2026-10-29T07:46:27.318923+00:00",
+  "audit_dossier": {
+    "audit_classification": "source_located",
+    "inspected_provision": "제2편 체류자격별 활동범위: D-8(기업투자), D-9(무역경영), F-2(거주), F-5(영주), F-6(결혼이민) 등은 영리사업 경영 허용. D-2(유학), E-9(비전문취업) 등은 원칙적 사업자등록 및 영리경영 불가.",
+    "authoritative_document": "법무부 외국인 체류관리 업무편람 (2026. 10. 19. 판본)",
+    "comparison_notes": "편람 원문과 정확히 일치함. 질문자의 현재 체류자격 미확인 시 일괄 가/부를 단정할 수 없으므로 확인 및 되묻기(Clarification) 필수.",
+    "omissions_and_exceptions": "F 계열 거주자는 업종 제한 없이 개인사업자 등록 가능하나, 인허가 필요 업종의 경우 국내법상 자격 요건 충족 필요.",
+    "discrepancies": "없음.",
+    "corrected_evidence_proposal": "출입국관리법 제17조 및 체류관리 업무편람에 따라 외국인이 식당·카페 등 사업을 하려면 D-8, D-9 또는 F-2, F-5, F-6 등의 적격 비자를 소지해야 하며, 유학(D-2)이나 근로(E-9) 등의 비자로는 원칙적으로 불가하므로 현재 체류자격을 먼저 확인해야 합니다.",
+    "retrieval_metadata": {
+      "source_url": "https://www.hikorea.go.kr/info/InfoStayGeneral.pt",
+      "retrieval_date": "2026-10-29",
+      "source_type": "administrative_manual"
+    }
+  }
 }

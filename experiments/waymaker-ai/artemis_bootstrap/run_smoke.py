@@ -58,9 +58,11 @@ def load_facts(path: Path = FACTS_LEDGER) -> List[Dict[str, Any]]:
             if line.strip() for row in [json.loads(line)] if row.get("status") == "approved"]
 import manual_ledger  # noqa: E402
 import procedure_route  # noqa: E402
+from waymaker_ai import foundation
+from artemis_runner import LocalModelAdapter
 
 LAYERS_TO_SIZE_CLASS = {42: "E4B", 35: "E2B"}
-PACKAGES = ("mlx", "mlx-metal", "mlx-lm", "transformers", "huggingface-hub", "tokenizers")
+PACKAGES = ("mlx", "mlx-metal", "mlx-vlm", "transformers", "huggingface-hub", "tokenizers")
 
 
 def size_class(config: Dict[str, Any]) -> str:
@@ -163,8 +165,6 @@ def base_model_of(snapshot: Path) -> Dict[str, Optional[str]]:
 
 def run(args: argparse.Namespace) -> int:
     out = Path(args.out)
-    if free_disk_gb() < args.min_free_disk_gb:
-        raise SystemExit(f"refusing to start: {free_disk_gb()} GB free, need {args.min_free_disk_gb} GB for swap headroom")
     cases_path = Path(args.cases).resolve()
     cases = manual_ledger.resolve_cases(smoke_grader.load_cases(cases_path), layout=getattr(args, "layout", False))
     facts = load_facts() if getattr(args, "facts", False) else None
@@ -178,14 +178,31 @@ def run(args: argparse.Namespace) -> int:
         raise SystemExit("--clarify needs --route")
     if args.integrity and not any("approved_sha256" in (e.get("source") or {}) for c in cases for e in c["evidence"]):
         raise SystemExit(f"--integrity needs approval hashes (source.approved_sha256); {cases_path.name} has none")
+    adapter = LocalModelAdapter(model_name=args.model, revision=args.revision,
+                                profile=args.profile, runtime=args.runtime,
+                                max_tokens=args.max_tokens, python_executable=sys.executable)
+    available, reason = adapter.check_availability()
+    if free_disk_gb() < args.min_free_disk_gb:
+        available = False
+        reason = "; ".join(filter(None, [reason, f"Insufficient disk space for requested {args.min_free_disk_gb} GB headroom"]))
+    if not available:
+        prepare_out_dir(out)
+        (out / "run_record.json").write_text(json.dumps({
+            "kind": "artemis_bootstrap_smoke", "status": "not_executed", "reason": reason,
+            "model_metadata": adapter.get_metadata(), "results": [],
+            "official_gold_accuracy": None,
+        }, ensure_ascii=False, indent=2) + "\n")
+        return 3
     prepare_out_dir(out)
     os.environ["HF_HUB_OFFLINE"] = "1"
     os.environ.setdefault("HF_HUB_DISABLE_TELEMETRY", "1")
 
-    from huggingface_hub import snapshot_download
     import mlx.core as mx
-    from mlx_lm import load, stream_generate
-    from mlx_lm.sample_utils import make_sampler
+    from mlx_vlm import load, stream_generate
+    from mlx_vlm.prompt_utils import apply_chat_template
+    limits = foundation.configuration()["runtime"]
+    mx.set_memory_limit(int(limits["memory_limit_gb"] * 1e9))
+    mx.set_cache_limit(256 * 1024 ** 2)
 
     record: Dict[str, Any] = {
         "kind": "artemis_bootstrap_smoke",
@@ -229,26 +246,30 @@ def run(args: argparse.Namespace) -> int:
     guard = start_disk_guard(record, save, args.abort_below_free_disk_gb)
 
     try:
-        snapshot = Path(snapshot_download(args.model, revision=args.revision))
+        snapshot = adapter._find_snapshot_path()
+        foundation.validate_snapshot(snapshot, adapter.selected)
         config = json.loads((snapshot / "config.json").read_text(encoding="utf-8"))
         record["model"] = {
             "repo": args.model,
             "revision": args.revision,
             "size_class_from_weights": size_class(config),
             "quantization": config.get("quantization"),
-            "loader": "mlx_lm.load (text tower only; vision/audio weights dropped by mlx_lm sanitize)",
+            "loader": "mlx_vlm.load (Gemma4Processor; text-only input)",
             **base_model_of(snapshot),
         }
+        record["model_metadata"] = adapter.get_metadata()
         record["stage"] = "load"
         save()
         t0 = time.perf_counter()
-        model, tokenizer = load(str(snapshot))
+        signal.signal(signal.SIGALRM, lambda *_: (_ for _ in ()).throw(TimeoutError("Gemma 4 operation timed out")))
+        signal.alarm(limits["timeout_seconds"])
+        model, processor = load(str(snapshot), strict=True, trust_remote_code=False)
         mx.eval(model.parameters())
+        signal.alarm(0)
         record["load_seconds"] = round(time.perf_counter() - t0, 2)
         record["memory_after_load_gb"] = round(mx.get_active_memory() / 1e9, 3)
         save()
 
-        sampler = make_sampler(temp=0.0)
         results: List[Dict[str, Any]] = []
         for case in cases:
             record["stage"] = f"case:{case['id']}"
@@ -308,11 +329,15 @@ def run(args: argparse.Namespace) -> int:
             t0 = time.perf_counter()
             def generate(pc):
                 msgs = smoke_grader.build_messages(pc, guard=args.evidence_guard)
-                pr_ = tokenizer.apply_chat_template(msgs, add_generation_prompt=True, tokenize=False, enable_thinking=False)
+                pr_ = apply_chat_template(processor, config, msgs, num_images=0, num_audios=0, enable_thinking=False)
+                if len(processor.tokenizer.encode(pr_)) > limits["max_prompt_tokens"]:
+                    raise ValueError("Prompt token limit exceeded; no truncation performed")
                 out, lst = "", None
-                for resp in stream_generate(model, tokenizer, pr_, max_tokens=args.max_tokens, sampler=sampler):
+                signal.alarm(limits["timeout_seconds"])
+                for resp in stream_generate(model, processor, pr_, max_tokens=args.max_tokens, temperature=0.0, enable_thinking=False):
                     out += resp.text
                     lst = resp
+                signal.alarm(0)
                 return out, lst, pr_
 
             first_output = None
@@ -399,6 +424,7 @@ def run(args: argparse.Namespace) -> int:
         record["error"] = f"{type(exc).__name__}: {exc}"
         raise
     finally:
+        signal.alarm(0)
         guard.set()
         record["peak_memory_gb"] = round(mx.get_peak_memory() / 1e9, 3)
         record["max_rss_gb"] = round(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1e9, 3)
@@ -412,8 +438,10 @@ def run(args: argparse.Namespace) -> int:
 
 def main(argv: Optional[List[str]] = None) -> int:
     p = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    p.add_argument("--model", required=True, help="MLX conversion repo id, e.g. mlx-community/gemma-4-e4b-it-4bit")
-    p.add_argument("--revision", required=True, help="40-character commit of that repo")
+    p.add_argument("--profile", choices=["gemma4_e4b", "gemma4_e2b"], default="gemma4_e4b")
+    p.add_argument("--runtime", choices=["mlx_vlm"], default="mlx_vlm")
+    p.add_argument("--model", default=None, help="MLX conversion repo id, e.g. mlx-community/gemma-4-e4b-it-4bit")
+    p.add_argument("--revision", default=None, help="40-character commit of that repo")
     p.add_argument("--out", required=True, help="new run directory; an existing one is refused")
     p.add_argument("--cases", default=str(smoke_grader.CASES_PATH),
                    help="case file (default smoke_cases.json); see heldout_injection_cases.json, expansion_cases.json")
@@ -435,15 +463,19 @@ def main(argv: Optional[List[str]] = None) -> int:
                    help="post-check also compares answers with the approved facts ledger (review only, never withholds)")
     p.add_argument("--label-switch", action="store_true",
                    help="with --always-ask: label each answer with its manual; a case's on_label=switch taps the switch")
-    p.add_argument("--max-tokens", type=int, default=400)
+    p.add_argument("--max-tokens", type=int, default=256)
     p.add_argument("--evidence-guard", choices=smoke_grader.GUARD_MODES, default="off",
                    help="screen evidence with WLIE's injection detector: off, mark it untrusted, or drop it")
     p.add_argument("--min-free-disk-gb", type=float, default=2.0, help="refuse to start below this much free disk")
     p.add_argument("--abort-below-free-disk-gb", type=float, default=1.5,
                    help="stop the run, with a saved record, if free disk falls below this while it runs")
     args = p.parse_args(argv)
-    if len(args.revision) != 40:
-        p.error("--revision must be a pinned 40-character commit")
+    try:
+        selected = foundation.select_profile(args.profile, args.model, args.revision, args.runtime)
+    except ValueError as exc:
+        p.error(str(exc))
+    args.model = selected["inference_checkpoint"]
+    args.revision = selected["inference_revision"]
     return run(args)
 
 

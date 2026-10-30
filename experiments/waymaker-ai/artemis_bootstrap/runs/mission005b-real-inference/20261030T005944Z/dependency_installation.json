@@ -1,0 +1,21 @@
+{
+  "command": [
+    "/Users/seonjaekim/dev/Visable-artemis-gemini/experiments/waymaker-ai/artemis_bootstrap/.venv/bin/python",
+    "-m",
+    "pip",
+    "install",
+    "--no-deps",
+    "--no-cache-dir",
+    "--require-hashes",
+    "--only-binary=:all:",
+    "--index-url",
+    "https://pypi.org/simple",
+    "-r",
+    "/Users/seonjaekim/dev/Visable-artemis-gemini/experiments/waymaker-ai/artemis_bootstrap/requirements-mlx-vlm-0.7.11.lock"
+  ],
+  "exit_code": 0,
+  "aborted_for_disk_guard": false,
+  "elapsed_seconds": 43.19663929099988,
+  "free_disk_before_bytes": 9233068032,
+  "free_disk_after_bytes": 8148430848
+}

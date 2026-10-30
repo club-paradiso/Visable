@@ -70,13 +70,16 @@ class Cache:
                 self.rows[r["key"]] = r["verdict"]
 
     def get(self, prompt: str, generate: Optional[Callable[[str], str]]) -> str:
-        key = hashlib.sha256(prompt.encode("utf-8")).hexdigest()
+        metadata = getattr(generate, "model_metadata", None)
+        payload = json.dumps({"prompt": prompt, "model_metadata": metadata}, sort_keys=True) if metadata else prompt
+        key = hashlib.sha256(payload.encode("utf-8")).hexdigest()
         if key not in self.rows:
             if generate is None:
                 raise KeyError("prompt not judged yet and no model given")
             self.rows[key] = _verdict(generate(prompt))
             with self.path.open("a", encoding="utf-8") as f:
-                f.write(json.dumps({"key": key, "verdict": self.rows[key]}) + "\n")
+                f.write(json.dumps({"key": key, "verdict": self.rows[key],
+                                    **({"model_metadata": metadata} if metadata else {})}) + "\n")
         return self.rows[key]
 
 
@@ -108,18 +111,57 @@ def judge(answer: str, trusted_text: str, generate: Optional[Callable[[str], str
 
 
 def load_e4b() -> Callable[[str], str]:
-    """E4B as run_smoke loads it: greedy, thinking off, a short answer."""
+    """Pinned offline E4B research judge, subject to the common preflight.
+
+    The caller supplies passage/answer text, never benchmark metadata. This
+    research helper is not a scored inference run or authenticated legal review.
+    """
     import os
-    os.environ.setdefault("HF_HUB_OFFLINE", "1")
-    from huggingface_hub import snapshot_download
-    from mlx_lm import load, generate as mlx_generate
-    from mlx_lm.sample_utils import make_sampler
-    snapshot = snapshot_download("mlx-community/gemma-4-e4b-it-4bit", revision="475b9088d29754a3379866cf5aeb6b41acd313c2")
-    model, tokenizer = load(snapshot)
-    sampler = make_sampler(temp=0.0)
+    import signal
+    import sys
+    from artemis_runner import LocalModelAdapter
+    from waymaker_ai import foundation
+    from waymaker_ai.inference_input import project_inference_item
+    import gemma4_runtime
+
+    adapter = LocalModelAdapter(max_tokens=24, python_executable=sys.executable)
+    available, reason = adapter.check_availability()
+    if not available:
+        raise RuntimeError(f"Gemma 4 judge not_executed: {reason}")
+    os.environ.update(adapter._offline_env())
+    import mlx.core as mx
+    from mlx_vlm import load, generate as mlx_generate
+    from mlx_vlm.prompt_utils import apply_chat_template
+    limits = foundation.configuration()["runtime"]
+    mx.set_memory_limit(int(limits["memory_limit_gb"] * 1e9))
+    mx.set_cache_limit(256 * 1024 ** 2)
+
+    def bounded(operation):
+        blockers = gemma4_runtime.resource_blockers(gemma4_runtime.resources())
+        if blockers:
+            raise RuntimeError("Gemma 4 judge not_executed: " + "; ".join(blockers))
+        previous = signal.getsignal(signal.SIGALRM)
+        def timeout(*_):
+            raise TimeoutError("Gemma 4 judge operation timed out")
+        signal.signal(signal.SIGALRM, timeout)
+        signal.alarm(limits["timeout_seconds"])
+        try:
+            return operation()
+        finally:
+            signal.alarm(0)
+            signal.signal(signal.SIGALRM, previous)
+
+    snapshot = adapter._find_snapshot_path()
+    model, processor = bounded(lambda: load(str(snapshot), lazy=False, strict=True, trust_remote_code=False))
+    config = json.loads((snapshot / "config.json").read_text())
 
     def generate(prompt: str) -> str:
-        text = tokenizer.apply_chat_template([{"role": "user", "content": prompt}], add_generation_prompt=True,
-                                             tokenize=False, enable_thinking=False)
-        return mlx_generate(model, tokenizer, text, max_tokens=24, sampler=sampler)
+        projected = project_inference_item({"question": prompt})
+        text = apply_chat_template(processor, config, [{"role": "user", "content": projected["question"]}],
+                                   num_images=0, num_audios=0, enable_thinking=False)
+        if len(processor.tokenizer.encode(text)) > limits["max_prompt_tokens"]:
+            raise ValueError("Judge prompt token limit exceeded")
+        return bounded(lambda: mlx_generate(model, processor, text, max_tokens=24,
+                        temperature=0.0, enable_thinking=False, verbose=False)).text
+    generate.model_metadata = adapter.get_metadata()
     return generate

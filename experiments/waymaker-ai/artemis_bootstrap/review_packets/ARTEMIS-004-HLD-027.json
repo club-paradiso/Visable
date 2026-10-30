@@ -72,5 +72,19 @@
   "reviewer_notes": "",
   "current_status": "unreviewed",
   "missing_evidence_and_unresolved_issues": "시행령 제23조 외국인의 취업활동범위 최신 개정 조문 연계 확인.",
-  "generated_at": "2026-10-29T07:46:27.317415+00:00"
+  "generated_at": "2026-10-29T07:46:27.317415+00:00",
+  "audit_dossier": {
+    "audit_classification": "source_located",
+    "inspected_provision": "출입국관리법 제17조제1항: 외국인은 그 체류자격과 체류기간의 범위에서 체류할 수 있음, 제20조: 체류자격에 해당하는 활동과 함께 다른 활동을 하려면 미리 법무부장관의 체류자격 외 활동허가를 받아야 함.",
+    "authoritative_document": "대한민국 출입국관리법 제17조 및 제20조, 동법 시행령 제23조",
+    "comparison_notes": "법률 조문 원문과 완벽히 부합함. 원칙적 활동범위 제한 및 자격외활동허가 사전의무 명시.",
+    "omissions_and_exceptions": "외교, 공용 등 일부 특수 자격 소지자나 단기 상용 등 사전 허가가 면제되는 특정 예외 조항 존재.",
+    "discrepancies": "없음.",
+    "corrected_evidence_proposal": "출입국관리법 제17조제1항 및 제20조에 따라 외국인은 지정된 체류자격과 기간의 범위 내에서만 활동할 수 있으며, 자격 외 영리 또는 취업 활동을 하려면 반드시 사전에 법무부장관의 체류자격 외 활동허가를 받아야 합니다.",
+    "retrieval_metadata": {
+      "source_url": "https://www.law.go.kr/법령/출입국관리법/제17조",
+      "retrieval_date": "2026-10-29",
+      "source_type": "statute"
+    }
+  }
 }

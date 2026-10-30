@@ -72,5 +72,19 @@
   "reviewer_notes": "",
   "current_status": "unreviewed",
   "missing_evidence_and_unresolved_issues": "2026년 하반기 가족 동반 시 1회 부여기간 종속 규칙 대조.",
-  "generated_at": "2026-10-29T07:46:27.318931+00:00"
+  "generated_at": "2026-10-29T07:46:27.318931+00:00",
+  "audit_dossier": {
+    "audit_classification": "source_located",
+    "inspected_provision": "[별표 2] 점수 구간별 1회 부여기간 상한: 130점 이상: 최대 5년, 110점~129점: 최대 3년, 80점~109점: 최대 1년.",
+    "authoritative_document": "법무부 외국인 체류관리 업무편람 (F-2-7 점수제 평가기준 별표 2)",
+    "comparison_notes": "편람 원문의 표 행·열 구조 및 점수 구간별 허여 기간 상한과 후보군 루브릭이 정확히 일치함.",
+    "omissions_and_exceptions": "연간소득 점수 우수자의 경우 총점과 무관하게 소득 구간 특례를 적용하여 더 긴 체류기간 부여 가능.",
+    "discrepancies": "없음.",
+    "corrected_evidence_proposal": "법무부 F-2-7 점수제 기준표 [별표 2]에 따르면 1회 체류부여기간 상한은 130점 이상 취득 시 최대 5년, 80점~109점 취득 시 최대 1년이며, 행·열 전치 없이 각 점수 구간에 해당하는 기간이 정확히 적용되어야 합니다.",
+    "retrieval_metadata": {
+      "source_url": "https://www.hikorea.go.kr/info/InfoStayF27.pt",
+      "retrieval_date": "2026-10-29",
+      "source_type": "administrative_manual"
+    }
+  }
 }

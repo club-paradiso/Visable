@@ -1,0 +1,2623 @@
+{
+  "run_id": "run_real_local_mlx_dev20",
+  "timestamp": "2026-10-29T08:56:46.469486+00:00",
+  "mode": "candidate_eval",
+  "runner_version": "artemis-runner/1.0",
+  "execution_status": "completed",
+  "not_executed_reason": null,
+  "git_commit": "a17233450e4b12948d35876a86cd05e588de3fce",
+  "system_info": {
+    "platform": "macOS-15.6.1-arm64-arm-64bit",
+    "python_version": "3.11.15",
+    "cpu_count": 8
+  },
+  "model_metadata": {
+    "adapter_type": "local_mlx",
+    "model_name": "mlx-community/gemma-3-270m-it-4bit",
+    "model_revision": "ff1143e3a10547c9f2129e94ca37059b096b23f4",
+    "snapshot_path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/models--mlx-community--gemma-3-270m-it-4bit/snapshots/ff1143e3a10547c9f2129e94ca37059b096b23f4",
+    "quantization": "4bit",
+    "available": true,
+    "not_available_reason": null,
+    "hardware": "Apple Silicon (M1 8GB)",
+    "generation_config": {
+      "max_tokens": 256,
+      "temperature": 0.0
+    }
+  },
+  "benchmark_metadata": {
+    "benchmark_file": "artemis_eval_dev_blind_20.json",
+    "benchmark_sha256": "8ca16ba3a0b4ef7be488836c676c5d3f4ed8d5f1858bcb5029a5ea35b4b7f82c",
+    "manifest_version": "artemis-manifest/1.1",
+    "item_count": 20
+  },
+  "summary": {
+    "total_cases": 20,
+    "passed_cases": 0,
+    "failed_cases": 20,
+    "pass_rate": 0.0,
+    "dimension_pass_rates": {
+      "source_fidelity": 0.0,
+      "citation_accuracy": 0.0,
+      "procedural_integrity": 0.0,
+      "abstention_appropriateness": 0.0
+    },
+    "dimension_failures": {
+      "source_fidelity": 20,
+      "citation_accuracy": 20,
+      "procedural_integrity": 20,
+      "abstention_appropriateness": 20
+    },
+    "item_scores": [
+      {
+        "item_id": "ARTEMIS-004-DEV-001",
+        "overall_passed": false,
+        "primary_outcome": "not_scorable",
+        "dimension_scores": {
+          "source_fidelity": {
+            "dimension": "source_fidelity",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "citation_accuracy": {
+            "dimension": "citation_accuracy",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "procedural_integrity": {
+            "dimension": "procedural_integrity",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "abstention_appropriateness": {
+            "dimension": "abstention_appropriateness",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          }
+        },
+        "all_failures": [
+          "invalid_eval_item:expected:Missing required top-level field 'expected'",
+          "invalid_eval_item:evidence[0].source.approval_state:Invalid approval state: 'None'",
+          "invalid_eval_item:evidence[0].source.domain:Invalid domain: 'None'",
+          "invalid_eval_item:evidence[0].source.provenance:Invalid or missing provenance: 'None'",
+          "invalid_eval_item:expected:Expected block must be an object",
+          "invalid_eval_item:metadata.version:Missing metadata field 'version'",
+          "invalid_eval_item:metadata.author:Missing metadata field 'author'",
+          "invalid_eval_item:metadata.created_at:Missing metadata field 'created_at'",
+          "invalid_eval_item:metadata.is_synthetic:Missing metadata field 'is_synthetic'"
+        ],
+        "flags": [
+          "invalid_evaluation_data",
+          "candidate_evaluation_only"
+        ],
+        "parsed_response": null,
+        "is_official_gold": false
+      },
+      {
+        "item_id": "ARTEMIS-004-DEV-002",
+        "overall_passed": false,
+        "primary_outcome": "not_scorable",
+        "dimension_scores": {
+          "source_fidelity": {
+            "dimension": "source_fidelity",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "citation_accuracy": {
+            "dimension": "citation_accuracy",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "procedural_integrity": {
+            "dimension": "procedural_integrity",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "abstention_appropriateness": {
+            "dimension": "abstention_appropriateness",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          }
+        },
+        "all_failures": [
+          "invalid_eval_item:expected:Missing required top-level field 'expected'",
+          "invalid_eval_item:evidence[0].source.approval_state:Invalid approval state: 'None'",
+          "invalid_eval_item:evidence[0].source.domain:Invalid domain: 'None'",
+          "invalid_eval_item:evidence[0].source.provenance:Invalid or missing provenance: 'None'",
+          "invalid_eval_item:expected:Expected block must be an object",
+          "invalid_eval_item:metadata.version:Missing metadata field 'version'",
+          "invalid_eval_item:metadata.author:Missing metadata field 'author'",
+          "invalid_eval_item:metadata.created_at:Missing metadata field 'created_at'",
+          "invalid_eval_item:metadata.is_synthetic:Missing metadata field 'is_synthetic'"
+        ],
+        "flags": [
+          "invalid_evaluation_data",
+          "candidate_evaluation_only"
+        ],
+        "parsed_response": null,
+        "is_official_gold": false
+      },
+      {
+        "item_id": "ARTEMIS-004-DEV-003",
+        "overall_passed": false,
+        "primary_outcome": "not_scorable",
+        "dimension_scores": {
+          "source_fidelity": {
+            "dimension": "source_fidelity",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "citation_accuracy": {
+            "dimension": "citation_accuracy",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "procedural_integrity": {
+            "dimension": "procedural_integrity",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "abstention_appropriateness": {
+            "dimension": "abstention_appropriateness",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          }
+        },
+        "all_failures": [
+          "invalid_eval_item:expected:Missing required top-level field 'expected'",
+          "invalid_eval_item:evidence[0].source.approval_state:Invalid approval state: 'None'",
+          "invalid_eval_item:evidence[0].source.domain:Invalid domain: 'None'",
+          "invalid_eval_item:evidence[0].source.provenance:Invalid or missing provenance: 'None'",
+          "invalid_eval_item:expected:Expected block must be an object",
+          "invalid_eval_item:metadata.version:Missing metadata field 'version'",
+          "invalid_eval_item:metadata.author:Missing metadata field 'author'",
+          "invalid_eval_item:metadata.created_at:Missing metadata field 'created_at'",
+          "invalid_eval_item:metadata.is_synthetic:Missing metadata field 'is_synthetic'"
+        ],
+        "flags": [
+          "invalid_evaluation_data",
+          "candidate_evaluation_only"
+        ],
+        "parsed_response": null,
+        "is_official_gold": false
+      },
+      {
+        "item_id": "ARTEMIS-004-DEV-004",
+        "overall_passed": false,
+        "primary_outcome": "not_scorable",
+        "dimension_scores": {
+          "source_fidelity": {
+            "dimension": "source_fidelity",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "citation_accuracy": {
+            "dimension": "citation_accuracy",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "procedural_integrity": {
+            "dimension": "procedural_integrity",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "abstention_appropriateness": {
+            "dimension": "abstention_appropriateness",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          }
+        },
+        "all_failures": [
+          "invalid_eval_item:expected:Missing required top-level field 'expected'",
+          "invalid_eval_item:evidence[0].source.approval_state:Invalid approval state: 'None'",
+          "invalid_eval_item:evidence[0].source.domain:Invalid domain: 'None'",
+          "invalid_eval_item:evidence[0].source.provenance:Invalid or missing provenance: 'None'",
+          "invalid_eval_item:expected:Expected block must be an object",
+          "invalid_eval_item:metadata.version:Missing metadata field 'version'",
+          "invalid_eval_item:metadata.author:Missing metadata field 'author'",
+          "invalid_eval_item:metadata.created_at:Missing metadata field 'created_at'",
+          "invalid_eval_item:metadata.is_synthetic:Missing metadata field 'is_synthetic'"
+        ],
+        "flags": [
+          "invalid_evaluation_data",
+          "candidate_evaluation_only"
+        ],
+        "parsed_response": null,
+        "is_official_gold": false
+      },
+      {
+        "item_id": "ARTEMIS-004-DEV-005",
+        "overall_passed": false,
+        "primary_outcome": "not_scorable",
+        "dimension_scores": {
+          "source_fidelity": {
+            "dimension": "source_fidelity",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "citation_accuracy": {
+            "dimension": "citation_accuracy",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "procedural_integrity": {
+            "dimension": "procedural_integrity",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "abstention_appropriateness": {
+            "dimension": "abstention_appropriateness",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          }
+        },
+        "all_failures": [
+          "invalid_eval_item:expected:Missing required top-level field 'expected'",
+          "invalid_eval_item:evidence[0].source.approval_state:Invalid approval state: 'None'",
+          "invalid_eval_item:evidence[0].source.domain:Invalid domain: 'None'",
+          "invalid_eval_item:evidence[0].source.provenance:Invalid or missing provenance: 'None'",
+          "invalid_eval_item:expected:Expected block must be an object",
+          "invalid_eval_item:metadata.version:Missing metadata field 'version'",
+          "invalid_eval_item:metadata.author:Missing metadata field 'author'",
+          "invalid_eval_item:metadata.created_at:Missing metadata field 'created_at'",
+          "invalid_eval_item:metadata.is_synthetic:Missing metadata field 'is_synthetic'"
+        ],
+        "flags": [
+          "invalid_evaluation_data",
+          "candidate_evaluation_only"
+        ],
+        "parsed_response": null,
+        "is_official_gold": false
+      },
+      {
+        "item_id": "ARTEMIS-004-DEV-006",
+        "overall_passed": false,
+        "primary_outcome": "not_scorable",
+        "dimension_scores": {
+          "source_fidelity": {
+            "dimension": "source_fidelity",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "citation_accuracy": {
+            "dimension": "citation_accuracy",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "procedural_integrity": {
+            "dimension": "procedural_integrity",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "abstention_appropriateness": {
+            "dimension": "abstention_appropriateness",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          }
+        },
+        "all_failures": [
+          "invalid_eval_item:expected:Missing required top-level field 'expected'",
+          "invalid_eval_item:evidence[0].source.approval_state:Invalid approval state: 'None'",
+          "invalid_eval_item:evidence[0].source.domain:Invalid domain: 'None'",
+          "invalid_eval_item:evidence[0].source.provenance:Invalid or missing provenance: 'None'",
+          "invalid_eval_item:expected:Expected block must be an object",
+          "invalid_eval_item:metadata.version:Missing metadata field 'version'",
+          "invalid_eval_item:metadata.author:Missing metadata field 'author'",
+          "invalid_eval_item:metadata.created_at:Missing metadata field 'created_at'",
+          "invalid_eval_item:metadata.is_synthetic:Missing metadata field 'is_synthetic'"
+        ],
+        "flags": [
+          "invalid_evaluation_data",
+          "candidate_evaluation_only"
+        ],
+        "parsed_response": null,
+        "is_official_gold": false
+      },
+      {
+        "item_id": "ARTEMIS-004-DEV-007",
+        "overall_passed": false,
+        "primary_outcome": "not_scorable",
+        "dimension_scores": {
+          "source_fidelity": {
+            "dimension": "source_fidelity",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "citation_accuracy": {
+            "dimension": "citation_accuracy",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "procedural_integrity": {
+            "dimension": "procedural_integrity",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "abstention_appropriateness": {
+            "dimension": "abstention_appropriateness",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          }
+        },
+        "all_failures": [
+          "invalid_eval_item:expected:Missing required top-level field 'expected'",
+          "invalid_eval_item:evidence[0].source.approval_state:Invalid approval state: 'None'",
+          "invalid_eval_item:evidence[0].source.domain:Invalid domain: 'None'",
+          "invalid_eval_item:evidence[0].source.provenance:Invalid or missing provenance: 'None'",
+          "invalid_eval_item:evidence[1].source.approval_state:Invalid approval state: 'None'",
+          "invalid_eval_item:evidence[1].source.domain:Invalid domain: 'None'",
+          "invalid_eval_item:evidence[1].source.provenance:Invalid or missing provenance: 'None'",
+          "invalid_eval_item:expected:Expected block must be an object",
+          "invalid_eval_item:metadata.version:Missing metadata field 'version'",
+          "invalid_eval_item:metadata.author:Missing metadata field 'author'",
+          "invalid_eval_item:metadata.created_at:Missing metadata field 'created_at'",
+          "invalid_eval_item:metadata.is_synthetic:Missing metadata field 'is_synthetic'"
+        ],
+        "flags": [
+          "invalid_evaluation_data",
+          "candidate_evaluation_only"
+        ],
+        "parsed_response": null,
+        "is_official_gold": false
+      },
+      {
+        "item_id": "ARTEMIS-004-DEV-008",
+        "overall_passed": false,
+        "primary_outcome": "not_scorable",
+        "dimension_scores": {
+          "source_fidelity": {
+            "dimension": "source_fidelity",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "citation_accuracy": {
+            "dimension": "citation_accuracy",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "procedural_integrity": {
+            "dimension": "procedural_integrity",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "abstention_appropriateness": {
+            "dimension": "abstention_appropriateness",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          }
+        },
+        "all_failures": [
+          "invalid_eval_item:expected:Missing required top-level field 'expected'",
+          "invalid_eval_item:evidence[0].source.approval_state:Invalid approval state: 'None'",
+          "invalid_eval_item:evidence[0].source.domain:Invalid domain: 'None'",
+          "invalid_eval_item:evidence[0].source.provenance:Invalid or missing provenance: 'None'",
+          "invalid_eval_item:expected:Expected block must be an object",
+          "invalid_eval_item:metadata.version:Missing metadata field 'version'",
+          "invalid_eval_item:metadata.author:Missing metadata field 'author'",
+          "invalid_eval_item:metadata.created_at:Missing metadata field 'created_at'",
+          "invalid_eval_item:metadata.is_synthetic:Missing metadata field 'is_synthetic'"
+        ],
+        "flags": [
+          "invalid_evaluation_data",
+          "candidate_evaluation_only"
+        ],
+        "parsed_response": null,
+        "is_official_gold": false
+      },
+      {
+        "item_id": "ARTEMIS-004-DEV-009",
+        "overall_passed": false,
+        "primary_outcome": "not_scorable",
+        "dimension_scores": {
+          "source_fidelity": {
+            "dimension": "source_fidelity",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "citation_accuracy": {
+            "dimension": "citation_accuracy",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "procedural_integrity": {
+            "dimension": "procedural_integrity",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "abstention_appropriateness": {
+            "dimension": "abstention_appropriateness",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          }
+        },
+        "all_failures": [
+          "invalid_eval_item:expected:Missing required top-level field 'expected'",
+          "invalid_eval_item:evidence[0].source.approval_state:Invalid approval state: 'None'",
+          "invalid_eval_item:evidence[0].source.domain:Invalid domain: 'None'",
+          "invalid_eval_item:evidence[0].source.provenance:Invalid or missing provenance: 'None'",
+          "invalid_eval_item:expected:Expected block must be an object",
+          "invalid_eval_item:metadata.version:Missing metadata field 'version'",
+          "invalid_eval_item:metadata.author:Missing metadata field 'author'",
+          "invalid_eval_item:metadata.created_at:Missing metadata field 'created_at'",
+          "invalid_eval_item:metadata.is_synthetic:Missing metadata field 'is_synthetic'"
+        ],
+        "flags": [
+          "invalid_evaluation_data",
+          "candidate_evaluation_only"
+        ],
+        "parsed_response": null,
+        "is_official_gold": false
+      },
+      {
+        "item_id": "ARTEMIS-004-DEV-010",
+        "overall_passed": false,
+        "primary_outcome": "not_scorable",
+        "dimension_scores": {
+          "source_fidelity": {
+            "dimension": "source_fidelity",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "citation_accuracy": {
+            "dimension": "citation_accuracy",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "procedural_integrity": {
+            "dimension": "procedural_integrity",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "abstention_appropriateness": {
+            "dimension": "abstention_appropriateness",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          }
+        },
+        "all_failures": [
+          "invalid_eval_item:expected:Missing required top-level field 'expected'",
+          "invalid_eval_item:evidence[0].source.approval_state:Invalid approval state: 'None'",
+          "invalid_eval_item:evidence[0].source.domain:Invalid domain: 'None'",
+          "invalid_eval_item:evidence[0].source.provenance:Invalid or missing provenance: 'None'",
+          "invalid_eval_item:expected:Expected block must be an object",
+          "invalid_eval_item:metadata.version:Missing metadata field 'version'",
+          "invalid_eval_item:metadata.author:Missing metadata field 'author'",
+          "invalid_eval_item:metadata.created_at:Missing metadata field 'created_at'",
+          "invalid_eval_item:metadata.is_synthetic:Missing metadata field 'is_synthetic'"
+        ],
+        "flags": [
+          "invalid_evaluation_data",
+          "candidate_evaluation_only"
+        ],
+        "parsed_response": null,
+        "is_official_gold": false
+      },
+      {
+        "item_id": "ARTEMIS-004-DEV-011",
+        "overall_passed": false,
+        "primary_outcome": "not_scorable",
+        "dimension_scores": {
+          "source_fidelity": {
+            "dimension": "source_fidelity",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "citation_accuracy": {
+            "dimension": "citation_accuracy",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "procedural_integrity": {
+            "dimension": "procedural_integrity",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "abstention_appropriateness": {
+            "dimension": "abstention_appropriateness",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          }
+        },
+        "all_failures": [
+          "invalid_eval_item:expected:Missing required top-level field 'expected'",
+          "invalid_eval_item:evidence[0].source.approval_state:Invalid approval state: 'None'",
+          "invalid_eval_item:evidence[0].source.domain:Invalid domain: 'None'",
+          "invalid_eval_item:evidence[0].source.provenance:Invalid or missing provenance: 'None'",
+          "invalid_eval_item:expected:Expected block must be an object",
+          "invalid_eval_item:metadata.version:Missing metadata field 'version'",
+          "invalid_eval_item:metadata.author:Missing metadata field 'author'",
+          "invalid_eval_item:metadata.created_at:Missing metadata field 'created_at'",
+          "invalid_eval_item:metadata.is_synthetic:Missing metadata field 'is_synthetic'"
+        ],
+        "flags": [
+          "invalid_evaluation_data",
+          "candidate_evaluation_only"
+        ],
+        "parsed_response": null,
+        "is_official_gold": false
+      },
+      {
+        "item_id": "ARTEMIS-004-DEV-012",
+        "overall_passed": false,
+        "primary_outcome": "not_scorable",
+        "dimension_scores": {
+          "source_fidelity": {
+            "dimension": "source_fidelity",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "citation_accuracy": {
+            "dimension": "citation_accuracy",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "procedural_integrity": {
+            "dimension": "procedural_integrity",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "abstention_appropriateness": {
+            "dimension": "abstention_appropriateness",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          }
+        },
+        "all_failures": [
+          "invalid_eval_item:expected:Missing required top-level field 'expected'",
+          "invalid_eval_item:evidence[0].source.approval_state:Invalid approval state: 'None'",
+          "invalid_eval_item:evidence[0].source.domain:Invalid domain: 'None'",
+          "invalid_eval_item:evidence[0].source.provenance:Invalid or missing provenance: 'None'",
+          "invalid_eval_item:expected:Expected block must be an object",
+          "invalid_eval_item:metadata.version:Missing metadata field 'version'",
+          "invalid_eval_item:metadata.author:Missing metadata field 'author'",
+          "invalid_eval_item:metadata.created_at:Missing metadata field 'created_at'",
+          "invalid_eval_item:metadata.is_synthetic:Missing metadata field 'is_synthetic'"
+        ],
+        "flags": [
+          "invalid_evaluation_data",
+          "candidate_evaluation_only"
+        ],
+        "parsed_response": null,
+        "is_official_gold": false
+      },
+      {
+        "item_id": "ARTEMIS-004-DEV-013",
+        "overall_passed": false,
+        "primary_outcome": "not_scorable",
+        "dimension_scores": {
+          "source_fidelity": {
+            "dimension": "source_fidelity",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "citation_accuracy": {
+            "dimension": "citation_accuracy",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "procedural_integrity": {
+            "dimension": "procedural_integrity",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "abstention_appropriateness": {
+            "dimension": "abstention_appropriateness",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          }
+        },
+        "all_failures": [
+          "invalid_eval_item:expected:Missing required top-level field 'expected'",
+          "invalid_eval_item:evidence[0].source.approval_state:Invalid approval state: 'None'",
+          "invalid_eval_item:evidence[0].source.domain:Invalid domain: 'None'",
+          "invalid_eval_item:evidence[0].source.provenance:Invalid or missing provenance: 'None'",
+          "invalid_eval_item:expected:Expected block must be an object",
+          "invalid_eval_item:metadata.version:Missing metadata field 'version'",
+          "invalid_eval_item:metadata.author:Missing metadata field 'author'",
+          "invalid_eval_item:metadata.created_at:Missing metadata field 'created_at'",
+          "invalid_eval_item:metadata.is_synthetic:Missing metadata field 'is_synthetic'"
+        ],
+        "flags": [
+          "invalid_evaluation_data",
+          "candidate_evaluation_only"
+        ],
+        "parsed_response": null,
+        "is_official_gold": false
+      },
+      {
+        "item_id": "ARTEMIS-004-DEV-014",
+        "overall_passed": false,
+        "primary_outcome": "not_scorable",
+        "dimension_scores": {
+          "source_fidelity": {
+            "dimension": "source_fidelity",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "citation_accuracy": {
+            "dimension": "citation_accuracy",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "procedural_integrity": {
+            "dimension": "procedural_integrity",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "abstention_appropriateness": {
+            "dimension": "abstention_appropriateness",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          }
+        },
+        "all_failures": [
+          "invalid_eval_item:expected:Missing required top-level field 'expected'",
+          "invalid_eval_item:evidence[0].source.approval_state:Invalid approval state: 'None'",
+          "invalid_eval_item:evidence[0].source.domain:Invalid domain: 'None'",
+          "invalid_eval_item:evidence[0].source.provenance:Invalid or missing provenance: 'None'",
+          "invalid_eval_item:expected:Expected block must be an object",
+          "invalid_eval_item:metadata.version:Missing metadata field 'version'",
+          "invalid_eval_item:metadata.author:Missing metadata field 'author'",
+          "invalid_eval_item:metadata.created_at:Missing metadata field 'created_at'",
+          "invalid_eval_item:metadata.is_synthetic:Missing metadata field 'is_synthetic'"
+        ],
+        "flags": [
+          "invalid_evaluation_data",
+          "candidate_evaluation_only"
+        ],
+        "parsed_response": null,
+        "is_official_gold": false
+      },
+      {
+        "item_id": "ARTEMIS-004-DEV-015",
+        "overall_passed": false,
+        "primary_outcome": "not_scorable",
+        "dimension_scores": {
+          "source_fidelity": {
+            "dimension": "source_fidelity",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "citation_accuracy": {
+            "dimension": "citation_accuracy",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "procedural_integrity": {
+            "dimension": "procedural_integrity",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "abstention_appropriateness": {
+            "dimension": "abstention_appropriateness",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          }
+        },
+        "all_failures": [
+          "invalid_eval_item:expected:Missing required top-level field 'expected'",
+          "invalid_eval_item:evidence[0].source.approval_state:Invalid approval state: 'None'",
+          "invalid_eval_item:evidence[0].source.domain:Invalid domain: 'None'",
+          "invalid_eval_item:evidence[0].source.provenance:Invalid or missing provenance: 'None'",
+          "invalid_eval_item:expected:Expected block must be an object",
+          "invalid_eval_item:metadata.version:Missing metadata field 'version'",
+          "invalid_eval_item:metadata.author:Missing metadata field 'author'",
+          "invalid_eval_item:metadata.created_at:Missing metadata field 'created_at'",
+          "invalid_eval_item:metadata.is_synthetic:Missing metadata field 'is_synthetic'"
+        ],
+        "flags": [
+          "invalid_evaluation_data",
+          "candidate_evaluation_only"
+        ],
+        "parsed_response": null,
+        "is_official_gold": false
+      },
+      {
+        "item_id": "ARTEMIS-004-DEV-016",
+        "overall_passed": false,
+        "primary_outcome": "not_scorable",
+        "dimension_scores": {
+          "source_fidelity": {
+            "dimension": "source_fidelity",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "citation_accuracy": {
+            "dimension": "citation_accuracy",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "procedural_integrity": {
+            "dimension": "procedural_integrity",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "abstention_appropriateness": {
+            "dimension": "abstention_appropriateness",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          }
+        },
+        "all_failures": [
+          "invalid_eval_item:expected:Missing required top-level field 'expected'",
+          "invalid_eval_item:evidence[0].source.approval_state:Invalid approval state: 'None'",
+          "invalid_eval_item:evidence[0].source.domain:Invalid domain: 'None'",
+          "invalid_eval_item:evidence[0].source.provenance:Invalid or missing provenance: 'None'",
+          "invalid_eval_item:expected:Expected block must be an object",
+          "invalid_eval_item:metadata.version:Missing metadata field 'version'",
+          "invalid_eval_item:metadata.author:Missing metadata field 'author'",
+          "invalid_eval_item:metadata.created_at:Missing metadata field 'created_at'",
+          "invalid_eval_item:metadata.is_synthetic:Missing metadata field 'is_synthetic'"
+        ],
+        "flags": [
+          "invalid_evaluation_data",
+          "candidate_evaluation_only"
+        ],
+        "parsed_response": null,
+        "is_official_gold": false
+      },
+      {
+        "item_id": "ARTEMIS-004-DEV-017",
+        "overall_passed": false,
+        "primary_outcome": "not_scorable",
+        "dimension_scores": {
+          "source_fidelity": {
+            "dimension": "source_fidelity",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "citation_accuracy": {
+            "dimension": "citation_accuracy",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "procedural_integrity": {
+            "dimension": "procedural_integrity",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "abstention_appropriateness": {
+            "dimension": "abstention_appropriateness",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          }
+        },
+        "all_failures": [
+          "invalid_eval_item:expected:Missing required top-level field 'expected'",
+          "invalid_eval_item:evidence[0].source.approval_state:Invalid approval state: 'None'",
+          "invalid_eval_item:evidence[0].source.domain:Invalid domain: 'None'",
+          "invalid_eval_item:evidence[0].source.provenance:Invalid or missing provenance: 'None'",
+          "invalid_eval_item:expected:Expected block must be an object",
+          "invalid_eval_item:metadata.version:Missing metadata field 'version'",
+          "invalid_eval_item:metadata.author:Missing metadata field 'author'",
+          "invalid_eval_item:metadata.created_at:Missing metadata field 'created_at'",
+          "invalid_eval_item:metadata.is_synthetic:Missing metadata field 'is_synthetic'"
+        ],
+        "flags": [
+          "invalid_evaluation_data",
+          "candidate_evaluation_only"
+        ],
+        "parsed_response": null,
+        "is_official_gold": false
+      },
+      {
+        "item_id": "ARTEMIS-004-DEV-018",
+        "overall_passed": false,
+        "primary_outcome": "not_scorable",
+        "dimension_scores": {
+          "source_fidelity": {
+            "dimension": "source_fidelity",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "citation_accuracy": {
+            "dimension": "citation_accuracy",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "procedural_integrity": {
+            "dimension": "procedural_integrity",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "abstention_appropriateness": {
+            "dimension": "abstention_appropriateness",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          }
+        },
+        "all_failures": [
+          "invalid_eval_item:expected:Missing required top-level field 'expected'",
+          "invalid_eval_item:evidence[0].source.approval_state:Invalid approval state: 'None'",
+          "invalid_eval_item:evidence[0].source.domain:Invalid domain: 'None'",
+          "invalid_eval_item:evidence[0].source.provenance:Invalid or missing provenance: 'None'",
+          "invalid_eval_item:expected:Expected block must be an object",
+          "invalid_eval_item:metadata.version:Missing metadata field 'version'",
+          "invalid_eval_item:metadata.author:Missing metadata field 'author'",
+          "invalid_eval_item:metadata.created_at:Missing metadata field 'created_at'",
+          "invalid_eval_item:metadata.is_synthetic:Missing metadata field 'is_synthetic'"
+        ],
+        "flags": [
+          "invalid_evaluation_data",
+          "candidate_evaluation_only"
+        ],
+        "parsed_response": null,
+        "is_official_gold": false
+      },
+      {
+        "item_id": "ARTEMIS-004-DEV-019",
+        "overall_passed": false,
+        "primary_outcome": "not_scorable",
+        "dimension_scores": {
+          "source_fidelity": {
+            "dimension": "source_fidelity",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "citation_accuracy": {
+            "dimension": "citation_accuracy",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "procedural_integrity": {
+            "dimension": "procedural_integrity",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "abstention_appropriateness": {
+            "dimension": "abstention_appropriateness",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          }
+        },
+        "all_failures": [
+          "invalid_eval_item:expected:Missing required top-level field 'expected'",
+          "invalid_eval_item:evidence[0].source.approval_state:Invalid approval state: 'None'",
+          "invalid_eval_item:evidence[0].source.domain:Invalid domain: 'None'",
+          "invalid_eval_item:evidence[0].source.provenance:Invalid or missing provenance: 'None'",
+          "invalid_eval_item:evidence[1].source.approval_state:Invalid approval state: 'None'",
+          "invalid_eval_item:evidence[1].source.domain:Invalid domain: 'None'",
+          "invalid_eval_item:evidence[1].source.provenance:Invalid or missing provenance: 'None'",
+          "invalid_eval_item:expected:Expected block must be an object",
+          "invalid_eval_item:metadata.version:Missing metadata field 'version'",
+          "invalid_eval_item:metadata.author:Missing metadata field 'author'",
+          "invalid_eval_item:metadata.created_at:Missing metadata field 'created_at'",
+          "invalid_eval_item:metadata.is_synthetic:Missing metadata field 'is_synthetic'"
+        ],
+        "flags": [
+          "invalid_evaluation_data",
+          "candidate_evaluation_only"
+        ],
+        "parsed_response": null,
+        "is_official_gold": false
+      },
+      {
+        "item_id": "ARTEMIS-004-DEV-020",
+        "overall_passed": false,
+        "primary_outcome": "not_scorable",
+        "dimension_scores": {
+          "source_fidelity": {
+            "dimension": "source_fidelity",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "citation_accuracy": {
+            "dimension": "citation_accuracy",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "procedural_integrity": {
+            "dimension": "procedural_integrity",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          },
+          "abstention_appropriateness": {
+            "dimension": "abstention_appropriateness",
+            "outcome": "not_scorable",
+            "passed": false,
+            "failures": [
+              "invalid_eval_item"
+            ],
+            "details": {}
+          }
+        },
+        "all_failures": [
+          "invalid_eval_item:expected:Missing required top-level field 'expected'",
+          "invalid_eval_item:evidence[0].source.approval_state:Invalid approval state: 'None'",
+          "invalid_eval_item:evidence[0].source.domain:Invalid domain: 'None'",
+          "invalid_eval_item:evidence[0].source.provenance:Invalid or missing provenance: 'None'",
+          "invalid_eval_item:evidence[1].source.approval_state:Invalid approval state: 'None'",
+          "invalid_eval_item:evidence[1].source.domain:Invalid domain: 'None'",
+          "invalid_eval_item:evidence[1].source.provenance:Invalid or missing provenance: 'None'",
+          "invalid_eval_item:expected:Expected block must be an object",
+          "invalid_eval_item:metadata.version:Missing metadata field 'version'",
+          "invalid_eval_item:metadata.author:Missing metadata field 'author'",
+          "invalid_eval_item:metadata.created_at:Missing metadata field 'created_at'",
+          "invalid_eval_item:metadata.is_synthetic:Missing metadata field 'is_synthetic'"
+        ],
+        "flags": [
+          "invalid_evaluation_data",
+          "candidate_evaluation_only"
+        ],
+        "parsed_response": null,
+        "is_official_gold": false
+      }
+    ],
+    "official_gold_cases": 0,
+    "official_gold_passed": 0,
+    "official_gold_pass_rate": null,
+    "candidate_cases": 20,
+    "candidate_passed": 0,
+    "candidate_pass_rate": 0.0,
+    "diagnostic_disagreements": {
+      "unknown_failure": 189
+    }
+  },
+  "item_results": [
+    {
+      "item_id": "ARTEMIS-004-DEV-001",
+      "request_id": "req_run_real_local_mlx_dev20_ARTEMIS-004-DEV-001",
+      "overall_passed": false,
+      "primary_outcome": "not_scorable",
+      "is_official_gold": false,
+      "latency_ms": 4528.063790989108,
+      "dimension_scores": {
+        "source_fidelity": {
+          "dimension": "source_fidelity",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "citation_accuracy": {
+          "dimension": "citation_accuracy",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "procedural_integrity": {
+          "dimension": "procedural_integrity",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "abstention_appropriateness": {
+          "dimension": "abstention_appropriateness",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        }
+      },
+      "all_failures": [
+        "invalid_eval_item:expected:Missing required top-level field 'expected'",
+        "invalid_eval_item:evidence[0].source.approval_state:Invalid approval state: 'None'",
+        "invalid_eval_item:evidence[0].source.domain:Invalid domain: 'None'",
+        "invalid_eval_item:evidence[0].source.provenance:Invalid or missing provenance: 'None'",
+        "invalid_eval_item:expected:Expected block must be an object",
+        "invalid_eval_item:metadata.version:Missing metadata field 'version'",
+        "invalid_eval_item:metadata.author:Missing metadata field 'author'",
+        "invalid_eval_item:metadata.created_at:Missing metadata field 'created_at'",
+        "invalid_eval_item:metadata.is_synthetic:Missing metadata field 'is_synthetic'"
+      ],
+      "flags": [
+        "invalid_evaluation_data",
+        "candidate_evaluation_only"
+      ],
+      "model_output": {
+        "status": "answered",
+        "answer": "B-2 관광 목적으로 무사증 입국한 상태이며, 한국 내 대학에 합격했는데 출입국청에서 바로 D-2 비로 바꿀 수 있습니다.\n\n**B-2 관광 목적의 조건:**\n\n*   **무사증:** B-2 관광 목적의 경우, 무사증의 조건은 다음과 같습니다.\n    *   **무사증의 조건:** 무사증의 경우, 무사증의 조건은 다음과 같습니다.\n    *   **무사증의 조건의 경우:** 무사증의 경우, 무사증의 조건은 다음과 같습니다.\n    *   **무사증의 경우:** 무사증의 경우, 무사증의 조건은 다음과 같습니다.\n    *   **무사증의 경우의 경우:** 무사증의 경우, 무사증의 조건은 다음과 같습니다.\n\n**B-2 관광 목적의 경우:**\n\n*   **무사증의 경우:** B-2 관광 목적의 경우, 무사증의 경우, B-2 관광 목적의 경우, B-2 관광 목적의 경우, B-2 관광 목적의 경우, B-2 관광 목적의 경우, B",
+        "citations": []
+      },
+      "error": null
+    },
+    {
+      "item_id": "ARTEMIS-004-DEV-002",
+      "request_id": "req_run_real_local_mlx_dev20_ARTEMIS-004-DEV-002",
+      "overall_passed": false,
+      "primary_outcome": "not_scorable",
+      "is_official_gold": false,
+      "latency_ms": 228.15287500270642,
+      "dimension_scores": {
+        "source_fidelity": {
+          "dimension": "source_fidelity",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "citation_accuracy": {
+          "dimension": "citation_accuracy",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "procedural_integrity": {
+          "dimension": "procedural_integrity",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "abstention_appropriateness": {
+          "dimension": "abstention_appropriateness",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        }
+      },
+      "all_failures": [
+        "invalid_eval_item:expected:Missing required top-level field 'expected'",
+        "invalid_eval_item:evidence[0].source.approval_state:Invalid approval state: 'None'",
+        "invalid_eval_item:evidence[0].source.domain:Invalid domain: 'None'",
+        "invalid_eval_item:evidence[0].source.provenance:Invalid or missing provenance: 'None'",
+        "invalid_eval_item:expected:Expected block must be an object",
+        "invalid_eval_item:metadata.version:Missing metadata field 'version'",
+        "invalid_eval_item:metadata.author:Missing metadata field 'author'",
+        "invalid_eval_item:metadata.created_at:Missing metadata field 'created_at'",
+        "invalid_eval_item:metadata.is_synthetic:Missing metadata field 'is_synthetic'"
+      ],
+      "flags": [
+        "invalid_evaluation_data",
+        "candidate_evaluation_only"
+      ],
+      "model_output": {
+        "status": "answered",
+        "answer": "네, 현재 베트남에 거주 중인 초청 대상자입니다. 국내 체류기간연장 신청서를 출입국청에 내면 되었습니다.",
+        "citations": []
+      },
+      "error": null
+    },
+    {
+      "item_id": "ARTEMIS-004-DEV-003",
+      "request_id": "req_run_real_local_mlx_dev20_ARTEMIS-004-DEV-003",
+      "overall_passed": false,
+      "primary_outcome": "not_scorable",
+      "is_official_gold": false,
+      "latency_ms": 1444.8554580158088,
+      "dimension_scores": {
+        "source_fidelity": {
+          "dimension": "source_fidelity",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "citation_accuracy": {
+          "dimension": "citation_accuracy",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "procedural_integrity": {
+          "dimension": "procedural_integrity",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "abstention_appropriateness": {
+          "dimension": "abstention_appropriateness",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        }
+      },
+      "all_failures": [
+        "invalid_eval_item:expected:Missing required top-level field 'expected'",
+        "invalid_eval_item:evidence[0].source.approval_state:Invalid approval state: 'None'",
+        "invalid_eval_item:evidence[0].source.domain:Invalid domain: 'None'",
+        "invalid_eval_item:evidence[0].source.provenance:Invalid or missing provenance: 'None'",
+        "invalid_eval_item:expected:Expected block must be an object",
+        "invalid_eval_item:metadata.version:Missing metadata field 'version'",
+        "invalid_eval_item:metadata.author:Missing metadata field 'author'",
+        "invalid_eval_item:metadata.created_at:Missing metadata field 'created_at'",
+        "invalid_eval_item:metadata.is_synthetic:Missing metadata field 'is_synthetic'"
+      ],
+      "flags": [
+        "invalid_evaluation_data",
+        "candidate_evaluation_only"
+      ],
+      "model_output": {
+        "status": "answered",
+        "answer": "네, 4년제 일반대학교 학부 (학사) 과정에 신입학하려는 유학생은 D-2-1과 D-2-2 중 어느 세부코드로 신청해야 합니다.\n\n**D-2-1:**\n*   **소재:** 2020년생의 소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득소득",
+        "citations": []
+      },
+      "error": null
+    },
+    {
+      "item_id": "ARTEMIS-004-DEV-004",
+      "request_id": "req_run_real_local_mlx_dev20_ARTEMIS-004-DEV-004",
+      "overall_passed": false,
+      "primary_outcome": "not_scorable",
+      "is_official_gold": false,
+      "latency_ms": 930.5214579799213,
+      "dimension_scores": {
+        "source_fidelity": {
+          "dimension": "source_fidelity",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "citation_accuracy": {
+          "dimension": "citation_accuracy",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "procedural_integrity": {
+          "dimension": "procedural_integrity",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "abstention_appropriateness": {
+          "dimension": "abstention_appropriateness",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        }
+      },
+      "all_failures": [
+        "invalid_eval_item:expected:Missing required top-level field 'expected'",
+        "invalid_eval_item:evidence[0].source.approval_state:Invalid approval state: 'None'",
+        "invalid_eval_item:evidence[0].source.domain:Invalid domain: 'None'",
+        "invalid_eval_item:evidence[0].source.provenance:Invalid or missing provenance: 'None'",
+        "invalid_eval_item:expected:Expected block must be an object",
+        "invalid_eval_item:metadata.version:Missing metadata field 'version'",
+        "invalid_eval_item:metadata.author:Missing metadata field 'author'",
+        "invalid_eval_item:metadata.created_at:Missing metadata field 'created_at'",
+        "invalid_eval_item:metadata.is_synthetic:Missing metadata field 'is_synthetic'"
+      ],
+      "flags": [
+        "invalid_evaluation_data",
+        "candidate_evaluation_only"
+      ],
+      "model_output": {
+        "status": "answered",
+        "answer": "E-7-1과 E-7-4 중 어느 체계에 해당합니다.\n\n*   **E-7-1:** 1차의 활동을 선 určit하고, 2차의 활동을 선 určit합니다.\n*   **E-7-4:** 2차의 활동을 선 určit하고, 3차의 활동을 선 určit합니다.\n\nE-7-1은 1차의 활동을 선단에 가치하고, E-7-4은 2차의 활동을 선단에 가치합니다. 따라서, E-7-1과 E-7-4 중 어느 체계에 해당합니다.",
+        "citations": []
+      },
+      "error": null
+    },
+    {
+      "item_id": "ARTEMIS-004-DEV-005",
+      "request_id": "req_run_real_local_mlx_dev20_ARTEMIS-004-DEV-005",
+      "overall_passed": false,
+      "primary_outcome": "not_scorable",
+      "is_official_gold": false,
+      "latency_ms": 1460.0971670006402,
+      "dimension_scores": {
+        "source_fidelity": {
+          "dimension": "source_fidelity",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "citation_accuracy": {
+          "dimension": "citation_accuracy",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "procedural_integrity": {
+          "dimension": "procedural_integrity",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "abstention_appropriateness": {
+          "dimension": "abstention_appropriateness",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        }
+      },
+      "all_failures": [
+        "invalid_eval_item:expected:Missing required top-level field 'expected'",
+        "invalid_eval_item:evidence[0].source.approval_state:Invalid approval state: 'None'",
+        "invalid_eval_item:evidence[0].source.domain:Invalid domain: 'None'",
+        "invalid_eval_item:evidence[0].source.provenance:Invalid or missing provenance: 'None'",
+        "invalid_eval_item:expected:Expected block must be an object",
+        "invalid_eval_item:metadata.version:Missing metadata field 'version'",
+        "invalid_eval_item:metadata.author:Missing metadata field 'author'",
+        "invalid_eval_item:metadata.created_at:Missing metadata field 'created_at'",
+        "invalid_eval_item:metadata.is_synthetic:Missing metadata field 'is_synthetic'"
+      ],
+      "flags": [
+        "invalid_evaluation_data",
+        "candidate_evaluation_only"
+      ],
+      "model_output": {
+        "status": "answered",
+        "answer": "출입국청 방문 창구에서 체류기간 연장허가를 신청하고 외국인등록증을 신규 발급받을 때 각각의 정부 수료는 다음과 같습니다.\n\n*   **정부의 수수료:**\n    *   **정부의 수수료:**\n        *   **정부의 수수료:**\n            *   **정부의 수수료:**\n                *   **정부의 수수료:**\n                    *   **정부의 수수료:**\n                    *   **정부의 수수료:**\n                    *   **정부의 수수료:**\n                    *   **정부의 수수료:**\n                *   **정부의 수수료:**\n                *   **정부의 수수료:**\n                *   **정부의 수수료:**\n                *   **정부의 수수료:**\n                *   **정부의 수수료:**\n                *   **정부의 수수료:**\n                *   **정부의 수수료:**\n                *   **정부의 수수료:**\n                *   **정부의 수수료:**\n                *",
+        "citations": []
+      },
+      "error": null
+    },
+    {
+      "item_id": "ARTEMIS-004-DEV-006",
+      "request_id": "req_run_real_local_mlx_dev20_ARTEMIS-004-DEV-006",
+      "overall_passed": false,
+      "primary_outcome": "not_scorable",
+      "is_official_gold": false,
+      "latency_ms": 1383.3611249865498,
+      "dimension_scores": {
+        "source_fidelity": {
+          "dimension": "source_fidelity",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "citation_accuracy": {
+          "dimension": "citation_accuracy",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "procedural_integrity": {
+          "dimension": "procedural_integrity",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "abstention_appropriateness": {
+          "dimension": "abstention_appropriateness",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        }
+      },
+      "all_failures": [
+        "invalid_eval_item:expected:Missing required top-level field 'expected'",
+        "invalid_eval_item:evidence[0].source.approval_state:Invalid approval state: 'None'",
+        "invalid_eval_item:evidence[0].source.domain:Invalid domain: 'None'",
+        "invalid_eval_item:evidence[0].source.provenance:Invalid or missing provenance: 'None'",
+        "invalid_eval_item:expected:Expected block must be an object",
+        "invalid_eval_item:metadata.version:Missing metadata field 'version'",
+        "invalid_eval_item:metadata.author:Missing metadata field 'author'",
+        "invalid_eval_item:metadata.created_at:Missing metadata field 'created_at'",
+        "invalid_eval_item:metadata.is_synthetic:Missing metadata field 'is_synthetic'"
+      ],
+      "flags": [
+        "invalid_evaluation_data",
+        "candidate_evaluation_only"
+      ],
+      "model_output": {
+        "status": "answered",
+        "answer": "네, 베트남 국적자가 D-2 비자로 입국하여 91일 이상 장기 체류 등록을 할 때 결핵진단서를 제출해야 합니다. \n\n**결핵진단서의 주요 내용:**\n\n결핵진단서는 베트남 국적자가 D-2 비로 인해 입국한 사실을 명시하고, 그 사실을 뒷결과로 제시합니다. \n\n**결핵진단서의 중요 가치:**\n\n*   **정확한 진술:** 결핵진단서는 정확하고 객관한지 확인해야 합니다.\n*   **적절한 평가:** 진술이 적합한지 평가해야 합니다.\n*   **적절한 평가의 가치:** 평가가 적합한지 평가해야 합니다.\n*   **적절한 평가의 가치의 가치:** 평가가 적합한지 평가해야 합니다.\n\n**결핵진단서의 적용 범위:**\n\n*   **입국:** 입국한 경우\n*   **재정:** 재정 소득 소득 소득 소득 소득 소득 소득 소득 소득 소득 소득 소득 소득 소득 소득 소득 소",
+        "citations": []
+      },
+      "error": null
+    },
+    {
+      "item_id": "ARTEMIS-004-DEV-007",
+      "request_id": "req_run_real_local_mlx_dev20_ARTEMIS-004-DEV-007",
+      "overall_passed": false,
+      "primary_outcome": "not_scorable",
+      "is_official_gold": false,
+      "latency_ms": 1454.3207910028286,
+      "dimension_scores": {
+        "source_fidelity": {
+          "dimension": "source_fidelity",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "citation_accuracy": {
+          "dimension": "citation_accuracy",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "procedural_integrity": {
+          "dimension": "procedural_integrity",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "abstention_appropriateness": {
+          "dimension": "abstention_appropriateness",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        }
+      },
+      "all_failures": [
+        "invalid_eval_item:expected:Missing required top-level field 'expected'",
+        "invalid_eval_item:evidence[0].source.approval_state:Invalid approval state: 'None'",
+        "invalid_eval_item:evidence[0].source.domain:Invalid domain: 'None'",
+        "invalid_eval_item:evidence[0].source.provenance:Invalid or missing provenance: 'None'",
+        "invalid_eval_item:evidence[1].source.approval_state:Invalid approval state: 'None'",
+        "invalid_eval_item:evidence[1].source.domain:Invalid domain: 'None'",
+        "invalid_eval_item:evidence[1].source.provenance:Invalid or missing provenance: 'None'",
+        "invalid_eval_item:expected:Expected block must be an object",
+        "invalid_eval_item:metadata.version:Missing metadata field 'version'",
+        "invalid_eval_item:metadata.author:Missing metadata field 'author'",
+        "invalid_eval_item:metadata.created_at:Missing metadata field 'created_at'",
+        "invalid_eval_item:metadata.is_synthetic:Missing metadata field 'is_synthetic'"
+      ],
+      "flags": [
+        "invalid_evaluation_data",
+        "candidate_evaluation_only"
+      ],
+      "model_output": {
+        "status": "answered",
+        "answer": "\"현재 적용되는 E-7-4 비자의 연간 총 선발 인원 쿼터는 2,000명입니다.\"\n\n2,000명은 2026년의 선발 인원의 선발 인원입니다. 이는 2026년의 선발 인원의 선발 인원의 선발 인원의 선발 인원의 선발 인원의 선발 인원의 선발 인원의 선발 인원의 선발 인원의 선발 인원의 선발 인원의 선발 인원의 선발 인원의 선발 인원의 선발 인원의 선발 인원의 선발 인원의 선발 인원의 선발 인원의 선발 인원의 선발 인원의 선발 인원의 선발 인원의 선발 인원의 선발 인원의 선발 인원의 선발 인원의 선발 인원의 선발 인원의 선발 인원의 선발 인원의 선발 인원의 선발 인원의 선발 인원의 선발 인원의 선발 인원의 선발 인원의 선발 인원의 선",
+        "citations": []
+      },
+      "error": null
+    },
+    {
+      "item_id": "ARTEMIS-004-DEV-008",
+      "request_id": "req_run_real_local_mlx_dev20_ARTEMIS-004-DEV-008",
+      "overall_passed": false,
+      "primary_outcome": "not_scorable",
+      "is_official_gold": false,
+      "latency_ms": 1396.4073750248645,
+      "dimension_scores": {
+        "source_fidelity": {
+          "dimension": "source_fidelity",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "citation_accuracy": {
+          "dimension": "citation_accuracy",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "procedural_integrity": {
+          "dimension": "procedural_integrity",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "abstention_appropriateness": {
+          "dimension": "abstention_appropriateness",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        }
+      },
+      "all_failures": [
+        "invalid_eval_item:expected:Missing required top-level field 'expected'",
+        "invalid_eval_item:evidence[0].source.approval_state:Invalid approval state: 'None'",
+        "invalid_eval_item:evidence[0].source.domain:Invalid domain: 'None'",
+        "invalid_eval_item:evidence[0].source.provenance:Invalid or missing provenance: 'None'",
+        "invalid_eval_item:expected:Expected block must be an object",
+        "invalid_eval_item:metadata.version:Missing metadata field 'version'",
+        "invalid_eval_item:metadata.author:Missing metadata field 'author'",
+        "invalid_eval_item:metadata.created_at:Missing metadata field 'created_at'",
+        "invalid_eval_item:metadata.is_synthetic:Missing metadata field 'is_synthetic'"
+      ],
+      "flags": [
+        "invalid_evaluation_data",
+        "candidate_evaluation_only"
+      ],
+      "model_output": {
+        "status": "answered",
+        "answer": "2026년 10월 현재 출입국관리법 시행규칙 제70조의2는 2026년 9월 15일 시행본(법무부령 제1125호)이 적용될 수 있습니다.\n\n**의약품소보의 판단:**\n\n2026년 10월 현재 출입국관리법 시행규칙 제70조의2는 2026년 9월 15일 시행본(법무부령 제1125호)이 적용될 수 있습니다. 이는 2026년 9월 15일 시행본의 법무부령의 제1125호의 적용을 받아야 합니다.\n\n**의약품소보의 판단:**\n\n2026년 10월 현재 출입국관리법 시행규칙 제70조의2는 2026년 9월 15일 시행본의 법무부령의 제1125호의 적용을 받아야 합니다.\n\n**의약품소보의 판단:**\n\n2026년 10월 현재 출입국",
+        "citations": []
+      },
+      "error": null
+    },
+    {
+      "item_id": "ARTEMIS-004-DEV-009",
+      "request_id": "req_run_real_local_mlx_dev20_ARTEMIS-004-DEV-009",
+      "overall_passed": false,
+      "primary_outcome": "not_scorable",
+      "is_official_gold": false,
+      "latency_ms": 1415.3486660216004,
+      "dimension_scores": {
+        "source_fidelity": {
+          "dimension": "source_fidelity",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "citation_accuracy": {
+          "dimension": "citation_accuracy",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "procedural_integrity": {
+          "dimension": "procedural_integrity",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "abstention_appropriateness": {
+          "dimension": "abstention_appropriateness",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        }
+      },
+      "all_failures": [
+        "invalid_eval_item:expected:Missing required top-level field 'expected'",
+        "invalid_eval_item:evidence[0].source.approval_state:Invalid approval state: 'None'",
+        "invalid_eval_item:evidence[0].source.domain:Invalid domain: 'None'",
+        "invalid_eval_item:evidence[0].source.provenance:Invalid or missing provenance: 'None'",
+        "invalid_eval_item:expected:Expected block must be an object",
+        "invalid_eval_item:metadata.version:Missing metadata field 'version'",
+        "invalid_eval_item:metadata.author:Missing metadata field 'author'",
+        "invalid_eval_item:metadata.created_at:Missing metadata field 'created_at'",
+        "invalid_eval_item:metadata.is_synthetic:Missing metadata field 'is_synthetic'"
+      ],
+      "flags": [
+        "invalid_evaluation_data",
+        "candidate_evaluation_only"
+      ],
+      "model_output": {
+        "status": "answered",
+        "answer": "네, D-2 유학 비자를 소지한 외국인 유학생이 유흥주점이나 단란주점에서 서빙 아르바이트를 수행할 수 있습니다. 하지만, 다만 주의를 살며 주의를 살며, 섭외를 받아야 합니다.\n\n**주의 사항:**\n\n*   **안전:**\n    *   **안전:**\n    *   **안전:**\n    *   **안전:**\n    *   **안전:**\n    *   **안전:**\n    *   **안전:**\n    *   **안전:**\n    *   **안전:**\n    *   **안전:**\n    *   **안전:**\n    *   **안전:**\n    *   **안전:**\n    *   **안전:**\n    *   **안전:**\n    *   **안전:**\n    *   **안전:**\n    *   **안전:**\n    *   **안전:**\n    *   **안전:**\n    *   **안전:**\n    *   **안전:**\n    *   **안전:**\n    *   **안전:**",
+        "citations": []
+      },
+      "error": null
+    },
+    {
+      "item_id": "ARTEMIS-004-DEV-010",
+      "request_id": "req_run_real_local_mlx_dev20_ARTEMIS-004-DEV-010",
+      "overall_passed": false,
+      "primary_outcome": "not_scorable",
+      "is_official_gold": false,
+      "latency_ms": 258.73629198758863,
+      "dimension_scores": {
+        "source_fidelity": {
+          "dimension": "source_fidelity",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "citation_accuracy": {
+          "dimension": "citation_accuracy",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "procedural_integrity": {
+          "dimension": "procedural_integrity",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "abstention_appropriateness": {
+          "dimension": "abstention_appropriateness",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        }
+      },
+      "all_failures": [
+        "invalid_eval_item:expected:Missing required top-level field 'expected'",
+        "invalid_eval_item:evidence[0].source.approval_state:Invalid approval state: 'None'",
+        "invalid_eval_item:evidence[0].source.domain:Invalid domain: 'None'",
+        "invalid_eval_item:evidence[0].source.provenance:Invalid or missing provenance: 'None'",
+        "invalid_eval_item:expected:Expected block must be an object",
+        "invalid_eval_item:metadata.version:Missing metadata field 'version'",
+        "invalid_eval_item:metadata.author:Missing metadata field 'author'",
+        "invalid_eval_item:metadata.created_at:Missing metadata field 'created_at'",
+        "invalid_eval_item:metadata.is_synthetic:Missing metadata field 'is_synthetic'"
+      ],
+      "flags": [
+        "invalid_evaluation_data",
+        "candidate_evaluation_only"
+      ],
+      "model_output": {
+        "status": "answered",
+        "answer": "네, E-7 비자 소지자의 배우자로 F-3 동반 비자 보유자입니다. 출입국청 허가 없이 일반 회사에 취업하여 일할 수 있습니다.",
+        "citations": []
+      },
+      "error": null
+    },
+    {
+      "item_id": "ARTEMIS-004-DEV-011",
+      "request_id": "req_run_real_local_mlx_dev20_ARTEMIS-004-DEV-011",
+      "overall_passed": false,
+      "primary_outcome": "not_scorable",
+      "is_official_gold": false,
+      "latency_ms": 1337.163167016115,
+      "dimension_scores": {
+        "source_fidelity": {
+          "dimension": "source_fidelity",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "citation_accuracy": {
+          "dimension": "citation_accuracy",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "procedural_integrity": {
+          "dimension": "procedural_integrity",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "abstention_appropriateness": {
+          "dimension": "abstention_appropriateness",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        }
+      },
+      "all_failures": [
+        "invalid_eval_item:expected:Missing required top-level field 'expected'",
+        "invalid_eval_item:evidence[0].source.approval_state:Invalid approval state: 'None'",
+        "invalid_eval_item:evidence[0].source.domain:Invalid domain: 'None'",
+        "invalid_eval_item:evidence[0].source.provenance:Invalid or missing provenance: 'None'",
+        "invalid_eval_item:expected:Expected block must be an object",
+        "invalid_eval_item:metadata.version:Missing metadata field 'version'",
+        "invalid_eval_item:metadata.author:Missing metadata field 'author'",
+        "invalid_eval_item:metadata.created_at:Missing metadata field 'created_at'",
+        "invalid_eval_item:metadata.is_synthetic:Missing metadata field 'is_synthetic'"
+      ],
+      "flags": [
+        "invalid_evaluation_data",
+        "candidate_evaluation_only"
+      ],
+      "model_output": {
+        "status": "answered",
+        "answer": "네, 가능하다가 불가능합니다. 2022년 5월 15일 기준, E-7-1 등록을 완료해야 합니다. 2022년 5월 15일 이후의 회사에 등록을 받아야 합니다.\n\n**필요 사항 확인 및 등록:**\n\n1. **E-7-1 등록 확인:**\n   *   **E-7-1 등록 확인 웹사이트:**\n   *   **E-7-1 등록 정보 확인:**\n   *   **E-7-1 등록 조건 확인:**\n   *   **E-7-1 등록 조건 적용:**\n   *   **E-7-1 등록 조건 적용 적용:**\n   *   **E-7-1 등록 조건 적용 적용:**\n   *   **E-7-1 등록 조건 적용 적용:**\n   *   **E-7-1 등록 조건 적용 적용:**\n   *   **E-7-1 등록 조건 적용 적용:**\n   *   **E-7-1 등록 조건 적용 적용:**\n   *   **E-7-1 등록 조건 적용 적용:**\n   *   **E-7-1 등록 조건 적용 적용:**",
+        "citations": []
+      },
+      "error": null
+    },
+    {
+      "item_id": "ARTEMIS-004-DEV-012",
+      "request_id": "req_run_real_local_mlx_dev20_ARTEMIS-004-DEV-012",
+      "overall_passed": false,
+      "primary_outcome": "not_scorable",
+      "is_official_gold": false,
+      "latency_ms": 1461.6717919998337,
+      "dimension_scores": {
+        "source_fidelity": {
+          "dimension": "source_fidelity",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "citation_accuracy": {
+          "dimension": "citation_accuracy",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "procedural_integrity": {
+          "dimension": "procedural_integrity",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "abstention_appropriateness": {
+          "dimension": "abstention_appropriateness",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        }
+      },
+      "all_failures": [
+        "invalid_eval_item:expected:Missing required top-level field 'expected'",
+        "invalid_eval_item:evidence[0].source.approval_state:Invalid approval state: 'None'",
+        "invalid_eval_item:evidence[0].source.domain:Invalid domain: 'None'",
+        "invalid_eval_item:evidence[0].source.provenance:Invalid or missing provenance: 'None'",
+        "invalid_eval_item:expected:Expected block must be an object",
+        "invalid_eval_item:metadata.version:Missing metadata field 'version'",
+        "invalid_eval_item:metadata.author:Missing metadata field 'author'",
+        "invalid_eval_item:metadata.created_at:Missing metadata field 'created_at'",
+        "invalid_eval_item:metadata.is_synthetic:Missing metadata field 'is_synthetic'"
+      ],
+      "flags": [
+        "invalid_evaluation_data",
+        "candidate_evaluation_only"
+      ],
+      "model_output": {
+        "status": "answered",
+        "answer": "\"Tôi là du học sinh visa D-2 tại Hàn Quốc\" và \"Lệ phí gia hạn thời hạn lưu trú tại Cục Quản lý Xuất nhập cảnh là bao nhiêu\" là một câu hỏi khá phổ biến và có nhiều câu hỏi có thể trả lời. Dựa trên các câu hỏi này, tôi có thể đưa ra một vài câu hỏi và giải pháp tiềm vu:\n\n**Các câu hỏi và giải pháp tiềm vu:**\n\n1. **\"Tôi là du học sinh visa D-2 tại Hàn Quốc\" và \"Lệ phí gia hạn thời hạn lưu trú tại Cục Quản lý Xuất nhập cảnh là bao nhiêu?\"**\n\n    *   **Giải pháp tiềm vu:**  \"Tôi là du học sinh visa D-2 tại Hàn Quốc\" và \"Lệ phí gia hạn thời hạn lưu trú tại Cục Quản lý Xuất nhập cảnh là bao nhiêu?\"  Điều này có thể được thực hiện bằng cách sử dụng các phương pháp tiếp cận thực hiện và giải quyết.  Ví dụ, bạn có thể sử dụng các phương pháp tiếp cận thực hiện và giải quyết như sau:\n    *   **Phân tích và phân tích:**  \"Tôi là du học sinh visa D-2 tại Hàn Quốc\"",
+        "citations": []
+      },
+      "error": null
+    },
+    {
+      "item_id": "ARTEMIS-004-DEV-013",
+      "request_id": "req_run_real_local_mlx_dev20_ARTEMIS-004-DEV-013",
+      "overall_passed": false,
+      "primary_outcome": "not_scorable",
+      "is_official_gold": false,
+      "latency_ms": 110.13275000732392,
+      "dimension_scores": {
+        "source_fidelity": {
+          "dimension": "source_fidelity",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "citation_accuracy": {
+          "dimension": "citation_accuracy",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "procedural_integrity": {
+          "dimension": "procedural_integrity",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "abstention_appropriateness": {
+          "dimension": "abstention_appropriateness",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        }
+      },
+      "all_failures": [
+        "invalid_eval_item:expected:Missing required top-level field 'expected'",
+        "invalid_eval_item:evidence[0].source.approval_state:Invalid approval state: 'None'",
+        "invalid_eval_item:evidence[0].source.domain:Invalid domain: 'None'",
+        "invalid_eval_item:evidence[0].source.provenance:Invalid or missing provenance: 'None'",
+        "invalid_eval_item:expected:Expected block must be an object",
+        "invalid_eval_item:metadata.version:Missing metadata field 'version'",
+        "invalid_eval_item:metadata.author:Missing metadata field 'author'",
+        "invalid_eval_item:metadata.created_at:Missing metadata field 'created_at'",
+        "invalid_eval_item:metadata.is_synthetic:Missing metadata field 'is_synthetic'"
+      ],
+      "flags": [
+        "invalid_evaluation_data",
+        "candidate_evaluation_only"
+      ],
+      "model_output": {
+        "status": "answered",
+        "answer": "\"All illegal stay fines are cancelled for the user by decree.\"",
+        "citations": []
+      },
+      "error": null
+    },
+    {
+      "item_id": "ARTEMIS-004-DEV-014",
+      "request_id": "req_run_real_local_mlx_dev20_ARTEMIS-004-DEV-014",
+      "overall_passed": false,
+      "primary_outcome": "not_scorable",
+      "is_official_gold": false,
+      "latency_ms": 92.52104099141434,
+      "dimension_scores": {
+        "source_fidelity": {
+          "dimension": "source_fidelity",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "citation_accuracy": {
+          "dimension": "citation_accuracy",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "procedural_integrity": {
+          "dimension": "procedural_integrity",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "abstention_appropriateness": {
+          "dimension": "abstention_appropriateness",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        }
+      },
+      "all_failures": [
+        "invalid_eval_item:expected:Missing required top-level field 'expected'",
+        "invalid_eval_item:evidence[0].source.approval_state:Invalid approval state: 'None'",
+        "invalid_eval_item:evidence[0].source.domain:Invalid domain: 'None'",
+        "invalid_eval_item:evidence[0].source.provenance:Invalid or missing provenance: 'None'",
+        "invalid_eval_item:expected:Expected block must be an object",
+        "invalid_eval_item:metadata.version:Missing metadata field 'version'",
+        "invalid_eval_item:metadata.author:Missing metadata field 'author'",
+        "invalid_eval_item:metadata.created_at:Missing metadata field 'created_at'",
+        "invalid_eval_item:metadata.is_synthetic:Missing metadata field 'is_synthetic'"
+      ],
+      "flags": [
+        "invalid_evaluation_data",
+        "candidate_evaluation_only"
+      ],
+      "model_output": {
+        "status": "answered",
+        "answer": "\"제시된 내용의 응답\"",
+        "citations": []
+      },
+      "error": null
+    },
+    {
+      "item_id": "ARTEMIS-004-DEV-015",
+      "request_id": "req_run_real_local_mlx_dev20_ARTEMIS-004-DEV-015",
+      "overall_passed": false,
+      "primary_outcome": "not_scorable",
+      "is_official_gold": false,
+      "latency_ms": 1359.3427499872632,
+      "dimension_scores": {
+        "source_fidelity": {
+          "dimension": "source_fidelity",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "citation_accuracy": {
+          "dimension": "citation_accuracy",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "procedural_integrity": {
+          "dimension": "procedural_integrity",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "abstention_appropriateness": {
+          "dimension": "abstention_appropriateness",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        }
+      },
+      "all_failures": [
+        "invalid_eval_item:expected:Missing required top-level field 'expected'",
+        "invalid_eval_item:evidence[0].source.approval_state:Invalid approval state: 'None'",
+        "invalid_eval_item:evidence[0].source.domain:Invalid domain: 'None'",
+        "invalid_eval_item:evidence[0].source.provenance:Invalid or missing provenance: 'None'",
+        "invalid_eval_item:expected:Expected block must be an object",
+        "invalid_eval_item:metadata.version:Missing metadata field 'version'",
+        "invalid_eval_item:metadata.author:Missing metadata field 'author'",
+        "invalid_eval_item:metadata.created_at:Missing metadata field 'created_at'",
+        "invalid_eval_item:metadata.is_synthetic:Missing metadata field 'is_synthetic'"
+      ],
+      "flags": [
+        "invalid_evaluation_data",
+        "candidate_evaluation_only"
+      ],
+      "model_output": {
+        "status": "answered",
+        "answer": "다음 달에 비자 연장 제출 서류는 다음과 같습니다.\n\n*   **연장 신청서:** 연장 신청서의 내용과 필요를 명시해야 합니다.\n*   **연장증명:** 연장 신청의 증명서로, 연장 신청의 내용과 필요를 명시해야 합니다.\n*   **연장증명:** 연장 신청의 증명서로, 연장 신청의 내용과 필요를 명시해야 합니다.\n*   **연장증명:** 연장 신청의 증명서로, 연장 신청의 내용과 필요를 명시해야 합니다.\n*   **연장증명:** 연장 신청의 증명서로, 연장 신청의 내용과 필요를 명시해야 합니다.\n*   **연장증명:** 연장 신청의 증명서로, 연장 신청의 내용과 필요를 명시해야 합니다.\n\n**필요 사항:**\n\n*   **연장 신청서:** 연장 신청서의 내용과 필요를 명확히 작성해야 합니다.\n*   **연장증명:** 연장 신청의 증명서의 내용과 필요를 명확히 작성해야 합니다.\n*   **연",
+        "citations": []
+      },
+      "error": null
+    },
+    {
+      "item_id": "ARTEMIS-004-DEV-016",
+      "request_id": "req_run_real_local_mlx_dev20_ARTEMIS-004-DEV-016",
+      "overall_passed": false,
+      "primary_outcome": "not_scorable",
+      "is_official_gold": false,
+      "latency_ms": 1342.2837090038229,
+      "dimension_scores": {
+        "source_fidelity": {
+          "dimension": "source_fidelity",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "citation_accuracy": {
+          "dimension": "citation_accuracy",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "procedural_integrity": {
+          "dimension": "procedural_integrity",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "abstention_appropriateness": {
+          "dimension": "abstention_appropriateness",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        }
+      },
+      "all_failures": [
+        "invalid_eval_item:expected:Missing required top-level field 'expected'",
+        "invalid_eval_item:evidence[0].source.approval_state:Invalid approval state: 'None'",
+        "invalid_eval_item:evidence[0].source.domain:Invalid domain: 'None'",
+        "invalid_eval_item:evidence[0].source.provenance:Invalid or missing provenance: 'None'",
+        "invalid_eval_item:expected:Expected block must be an object",
+        "invalid_eval_item:metadata.version:Missing metadata field 'version'",
+        "invalid_eval_item:metadata.author:Missing metadata field 'author'",
+        "invalid_eval_item:metadata.created_at:Missing metadata field 'created_at'",
+        "invalid_eval_item:metadata.is_synthetic:Missing metadata field 'is_synthetic'"
+      ],
+      "flags": [
+        "invalid_evaluation_data",
+        "candidate_evaluation_only"
+      ],
+      "model_output": {
+        "status": "answered",
+        "answer": "\"외국인 신분인데 한국에서 회사에 취업해서 일해도 되나요?\"는 여러 요소를 포함하여 가능합니다. \n\n*   **직업의 조건:**\n    *   **직무:** 특정 직무의 경우, 해당 직무의 조건에 따라 취업이 가능할 수 있습니다. 예를 들어, 특정 직무의 경우, 특정 직무의 경우, 특정 직무의 경우도 취업이 가능할 수 있습니다.\n    *   **직무의 조건:** 특정 직무의 경우, 특정 직무의 경우, 특정 직무의 경우도 취업이 가능할 수 있습니다.\n*   **직무의 조건:**\n    *   **직무의 조건:** 특정 직무의 경우, 특정 직무의 경우도 취업이 가능할 수 있습니다.\n    *   **직무의 조건:** 특정 직무의 경우, 특정 직무의 경우도 취업이 가능할 수 있습니다.\n*   **취업의 조건:**\n    *   **취업의 조건:** 특정 직무의 경우, 특정 직무의 경우도 취업이 가능할 수 있습니다.\n    *   **취업의 조건:** 특정 직무의 경우,",
+        "citations": []
+      },
+      "error": null
+    },
+    {
+      "item_id": "ARTEMIS-004-DEV-017",
+      "request_id": "req_run_real_local_mlx_dev20_ARTEMIS-004-DEV-017",
+      "overall_passed": false,
+      "primary_outcome": "not_scorable",
+      "is_official_gold": false,
+      "latency_ms": 1349.33462497429,
+      "dimension_scores": {
+        "source_fidelity": {
+          "dimension": "source_fidelity",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "citation_accuracy": {
+          "dimension": "citation_accuracy",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "procedural_integrity": {
+          "dimension": "procedural_integrity",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "abstention_appropriateness": {
+          "dimension": "abstention_appropriateness",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        }
+      },
+      "all_failures": [
+        "invalid_eval_item:expected:Missing required top-level field 'expected'",
+        "invalid_eval_item:evidence[0].source.approval_state:Invalid approval state: 'None'",
+        "invalid_eval_item:evidence[0].source.domain:Invalid domain: 'None'",
+        "invalid_eval_item:evidence[0].source.provenance:Invalid or missing provenance: 'None'",
+        "invalid_eval_item:expected:Expected block must be an object",
+        "invalid_eval_item:metadata.version:Missing metadata field 'version'",
+        "invalid_eval_item:metadata.author:Missing metadata field 'author'",
+        "invalid_eval_item:metadata.created_at:Missing metadata field 'created_at'",
+        "invalid_eval_item:metadata.is_synthetic:Missing metadata field 'is_synthetic'"
+      ],
+      "flags": [
+        "invalid_evaluation_data",
+        "candidate_evaluation_only"
+      ],
+      "model_output": {
+        "status": "answered",
+        "answer": "D-2-1(전문학사)과 D-2-2(학사) 과정의 1회 체류기간 상한 및 총 체류한도는 각각 다음과 같습니다.\n\n*   **D-2-1(전문학사):**\n    *   **의약품:** 200mg, 200mg, 200mg, 200mg\n    *   **의약품:** 200mg, 200mg, 200mg, 200mg\n    *   **의약품:** 200mg, 200mg, 200mg, 200mg\n    *   **의약품:** 200mg, 200mg, 200mg, 200mg\n    *   **의약품:** 200mg, 200mg, 200mg, 200mg\n    *   **의약품:** 200mg, 200mg, 200mg, 200mg\n    *   **의약품:**",
+        "citations": []
+      },
+      "error": null
+    },
+    {
+      "item_id": "ARTEMIS-004-DEV-018",
+      "request_id": "req_run_real_local_mlx_dev20_ARTEMIS-004-DEV-018",
+      "overall_passed": false,
+      "primary_outcome": "not_scorable",
+      "is_official_gold": false,
+      "latency_ms": 1366.0524580045603,
+      "dimension_scores": {
+        "source_fidelity": {
+          "dimension": "source_fidelity",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "citation_accuracy": {
+          "dimension": "citation_accuracy",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "procedural_integrity": {
+          "dimension": "procedural_integrity",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "abstention_appropriateness": {
+          "dimension": "abstention_appropriateness",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        }
+      },
+      "all_failures": [
+        "invalid_eval_item:expected:Missing required top-level field 'expected'",
+        "invalid_eval_item:evidence[0].source.approval_state:Invalid approval state: 'None'",
+        "invalid_eval_item:evidence[0].source.domain:Invalid domain: 'None'",
+        "invalid_eval_item:evidence[0].source.provenance:Invalid or missing provenance: 'None'",
+        "invalid_eval_item:expected:Expected block must be an object",
+        "invalid_eval_item:metadata.version:Missing metadata field 'version'",
+        "invalid_eval_item:metadata.author:Missing metadata field 'author'",
+        "invalid_eval_item:metadata.created_at:Missing metadata field 'created_at'",
+        "invalid_eval_item:metadata.is_synthetic:Missing metadata field 'is_synthetic'"
+      ],
+      "flags": [
+        "invalid_evaluation_data",
+        "candidate_evaluation_only"
+      ],
+      "model_output": {
+        "status": "answered",
+        "answer": "출입국관리법 시행규칙 별표에 대한 연장허가 수수료와 체류자격 변경허가 수수료는 각각 다음과 같습니다.\n\n*   **연장허가 수수료:** 연장허가 수수료는 연장자에게 연장 내역의 연장 조건에 따라 적용됩니다. 예를 들어, 연장자에게 연장 내역이 없더라도 연장 수수료를 지불할 수 있습니다.\n*   **체류자격 변경허가 수수료:** 체류자격 변경허가 수수료는 체류자에게 체류의 연장 조건에 따라 적용됩니다. 예를 들어, 체류자에게 체류의 연장 내역이 없더라도 체류 수수료를 지불할 수 있습니다.\n\n**참고 문단:**\n\n\"출입국관리법 시행규칙 별표에 대한 연장허가 수수료와 체류자격 변경허가 수수료는 각각 얼마인가요?\"\n\n**결론적 응답:**\n\n*   **연장허가 수수료:** 연장자에게 연장 내역이 없더라도 연장 수수료를 지불할 수 있습니다.",
+        "citations": []
+      },
+      "error": null
+    },
+    {
+      "item_id": "ARTEMIS-004-DEV-019",
+      "request_id": "req_run_real_local_mlx_dev20_ARTEMIS-004-DEV-019",
+      "overall_passed": false,
+      "primary_outcome": "not_scorable",
+      "is_official_gold": false,
+      "latency_ms": 1341.8536660028622,
+      "dimension_scores": {
+        "source_fidelity": {
+          "dimension": "source_fidelity",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "citation_accuracy": {
+          "dimension": "citation_accuracy",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "procedural_integrity": {
+          "dimension": "procedural_integrity",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "abstention_appropriateness": {
+          "dimension": "abstention_appropriateness",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        }
+      },
+      "all_failures": [
+        "invalid_eval_item:expected:Missing required top-level field 'expected'",
+        "invalid_eval_item:evidence[0].source.approval_state:Invalid approval state: 'None'",
+        "invalid_eval_item:evidence[0].source.domain:Invalid domain: 'None'",
+        "invalid_eval_item:evidence[0].source.provenance:Invalid or missing provenance: 'None'",
+        "invalid_eval_item:evidence[1].source.approval_state:Invalid approval state: 'None'",
+        "invalid_eval_item:evidence[1].source.domain:Invalid domain: 'None'",
+        "invalid_eval_item:evidence[1].source.provenance:Invalid or missing provenance: 'None'",
+        "invalid_eval_item:expected:Expected block must be an object",
+        "invalid_eval_item:metadata.version:Missing metadata field 'version'",
+        "invalid_eval_item:metadata.author:Missing metadata field 'author'",
+        "invalid_eval_item:metadata.created_at:Missing metadata field 'created_at'",
+        "invalid_eval_item:metadata.is_synthetic:Missing metadata field 'is_synthetic'"
+      ],
+      "flags": [
+        "invalid_evaluation_data",
+        "candidate_evaluation_only"
+      ],
+      "model_output": {
+        "status": "answered",
+        "answer": "네, 온라인 블로그에서 자진신고를 통해 모든 범칙금이 무조건 100% 면제되고 바로 영주권 준다고 하는 것은 사실입니다. \n\n**의미한 가치:**\n\n*   **의미를 지닌다:** 100% 면제는 100%의 가치 가치에 가깝고, 이는 100%의 가치 가치에 가깝습니다. 이는 100%의 가치 가치 가치에 가깝습니다.\n*   **의미를 가질 수 있습니다:** 100%의 가치 가치 가치 가치에 가깝고, 이는 100%의 가치 가치 가치 가치에 가깝습니다.\n*   **의미를 가질 수 있습니다:** 100%의 가치 가치 가치 가치에 가깝고, 이는 100%의 가치 가치 가치 가치에 가깝습니다.\n*   **의미를 가질 수 있습니다:** 100%의 가치 가치 가치 가치에 가깝고, 이는 100%의 가치",
+        "citations": []
+      },
+      "error": null
+    },
+    {
+      "item_id": "ARTEMIS-004-DEV-020",
+      "request_id": "req_run_real_local_mlx_dev20_ARTEMIS-004-DEV-020",
+      "overall_passed": false,
+      "primary_outcome": "not_scorable",
+      "is_official_gold": false,
+      "latency_ms": 1341.8821250088513,
+      "dimension_scores": {
+        "source_fidelity": {
+          "dimension": "source_fidelity",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "citation_accuracy": {
+          "dimension": "citation_accuracy",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "procedural_integrity": {
+          "dimension": "procedural_integrity",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        },
+        "abstention_appropriateness": {
+          "dimension": "abstention_appropriateness",
+          "outcome": "not_scorable",
+          "passed": false,
+          "failures": [
+            "invalid_eval_item"
+          ],
+          "details": {}
+        }
+      },
+      "all_failures": [
+        "invalid_eval_item:expected:Missing required top-level field 'expected'",
+        "invalid_eval_item:evidence[0].source.approval_state:Invalid approval state: 'None'",
+        "invalid_eval_item:evidence[0].source.domain:Invalid domain: 'None'",
+        "invalid_eval_item:evidence[0].source.provenance:Invalid or missing provenance: 'None'",
+        "invalid_eval_item:evidence[1].source.approval_state:Invalid approval state: 'None'",
+        "invalid_eval_item:evidence[1].source.domain:Invalid domain: 'None'",
+        "invalid_eval_item:evidence[1].source.provenance:Invalid or missing provenance: 'None'",
+        "invalid_eval_item:expected:Expected block must be an object",
+        "invalid_eval_item:metadata.version:Missing metadata field 'version'",
+        "invalid_eval_item:metadata.author:Missing metadata field 'author'",
+        "invalid_eval_item:metadata.created_at:Missing metadata field 'created_at'",
+        "invalid_eval_item:metadata.is_synthetic:Missing metadata field 'is_synthetic'"
+      ],
+      "flags": [
+        "invalid_evaluation_data",
+        "candidate_evaluation_only"
+      ],
+      "model_output": {
+        "status": "answered",
+        "answer": "네, 맞습니다. 오픈채팅방에서 외국인등록증 재발급 신청할 때 사진 안 내도 직원이 찍어준다고 하던데 정확히 맞습니다.\n\n**왜냐하면, 재발급 신청 시에는 반드시 필요한 것이 있습니다.**\n\n*   **재확실적인 가치:** 외국인 등록증은 기업의 재확실적인 가치ในการ 입결을 확보할 수 있습니다.\n*   **소득 분권 강화:** 외국인 등록증은 기업의 소득 분권 강화에 도움이 될 수 있습니다.\n*   **소통의 가치:** 외국인 등록증은 기업의 소통의 가치ในการ 입결을 가늠할 수 있습니다.\n*   **소통의 가치:** 외국인 등록증은 기업의 소통의 가치ในการ 입결을 가늠할 수 있습니다.\n\n**재발급 신청 시의 주의 경향:**\n\n*   **재확실적인 가치:** 재확실적인 가치에 유의하여 재발급 신청을 가chmod합니다.\n*   **소득 분권 강화:** 재확실적인 가치에 유의하여 재발급 신청을 가chmod합니다.\n*   **소",
+        "citations": []
+      },
+      "error": null
+    }
+  ]
+}

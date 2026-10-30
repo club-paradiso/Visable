@@ -23,6 +23,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Mapping, Optional, Sequence, Tuple
 
 from waymaker_ai.distillation import leakage, sft_dataset
+from waymaker_ai import foundation
 from waymaker_ai.distillation.teacher_policy import is_pinned_revision
 
 CONFIG_SCHEMA_VERSION = "waymaker-artemis-experiment/0.1"
@@ -211,6 +212,13 @@ def _parse_model(raw: Any, where: str) -> Tuple[Optional[BaseModel], List[str]]:
     if repo_id.count("/") != 1 or ":" in repo_id:
         problems.append(f"{where}.repo_id must be an exact Hugging Face repo id 'org/name'")
     revision = raw.get("revision")
+    selected = foundation.profile("gemma4_e2b" if where == "secondary_model" else "gemma4_e4b")
+    if repo_id != selected["upstream"]:
+        problems.append(f"{where}.repo_id must match the canonical Gemma 4 profile")
+    if revision not in (selected["upstream_revision"], REVISION_REQUIRED):
+        problems.append(f"{where}.revision differs from the audited foundation revision")
+    if raw.get("loader") != "AutoModelForImageTextToText":
+        problems.append(f"{where}.loader must support Gemma4ForConditionalGeneration")
     if revision != REVISION_REQUIRED and not is_pinned_revision(revision):
         problems.append(f"{where}.revision must be a 40-character commit SHA or {REVISION_REQUIRED!r}")
     if not isinstance(raw.get("gated"), bool):

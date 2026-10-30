@@ -72,5 +72,19 @@
   "reviewer_notes": "",
   "current_status": "unreviewed",
   "missing_evidence_and_unresolved_issues": "베트남 노동보훈사회부(MOLISA) 송출 인력 특별 가점 협약 여부 확인.",
-  "generated_at": "2026-10-29T07:46:27.317574+00:00"
+  "generated_at": "2026-10-29T07:46:27.317574+00:00",
+  "audit_dossier": {
+    "audit_classification": "source_located",
+    "inspected_provision": "기본 요건: '최근 10년 이내 4년 이상 E-9, E-10, H-2 자격으로 국내에서 합법적으로 취업활동을 유지하고 있는 자'.",
+    "authoritative_document": "법무부 2026년도 숙련기능인력(K-point E-7-4) 점수제 비자 운영계획",
+    "comparison_notes": "베트남어 번역 및 4년 근무 요건이 편람 및 고시 원문과 정확히 일치함.",
+    "omissions_and_exceptions": "뿌리기업 또는 인구감소지역 기업에서 3년 이상 근무한 경우 일부 특례 추천 요건 적용 가능.",
+    "discrepancies": "없음.",
+    "corrected_evidence_proposal": "K-point E-7-4 지침 기본요건에 따라 E-9 근로자는 최근 10년 이내 4년 이상 국내에서 합법적으로 취업활동을 유지하고 있어야 자격변경 신청 대상이 됩니다 (Người lao động E-9 phải có ít nhất 4 năm làm việc hợp pháp tại Hàn Quốc trong vòng 10 năm qua).",
+    "retrieval_metadata": {
+      "source_url": "https://www.hikorea.go.kr/info/InfoStayE74.pt",
+      "retrieval_date": "2026-10-29",
+      "source_type": "administrative_manual"
+    }
+  }
 }

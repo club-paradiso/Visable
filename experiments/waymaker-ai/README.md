@@ -1,4 +1,4 @@
-# waymaker-ai: offline experiments for Waymaker's legal intelligence
+# Waymaker Artemis and Waymaker AI offline experiments
 
 This package is the Mission 001 "Waymaker Genesis" experiment code for Visable's
 assistant, Waymaker. It holds a reference implementation of layered legal
@@ -20,6 +20,8 @@ any page a user sees.
   require of a verifier. It does not state what Korean law is. No label has
   been reviewed by a person yet. Statute text in the bundles is attributed
   `출처: 법제처 국가법령정보센터 (law.go.kr)`.
+
+Current Artemis foundation, runtime and recovery evidence: [Waymaker Artemis](artemis_bootstrap/README.md).
 
 ## Status
 

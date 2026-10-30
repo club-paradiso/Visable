@@ -1,0 +1,70 @@
+{
+  "run_id": "gemma4-e4b-recovery-preflight-20261029",
+  "created_at": "2026-10-29T16:14:45.767939+00:00",
+  "mode": "candidate_eval",
+  "runner_version": "artemis-runner/1.1",
+  "git_commit": "d3e9490e22bdf455ca0bda958106811195a49d6d",
+  "model_metadata": {
+    "adapter_type": "local_mlx",
+    "inference_kind": "real_inference",
+    "project_name": "Waymaker Artemis",
+    "profile": "gemma4_e4b",
+    "model_name": "mlx-community/gemma-4-e4b-it-4bit",
+    "model_revision": "475b9088d29754a3379866cf5aeb6b41acd313c2",
+    "family": "gemma-4",
+    "size_class": "E4B",
+    "upstream": "google/gemma-4-E4B-it",
+    "upstream_revision": "ee0ef6023621cff504d758262d4e04895a5af4a2",
+    "conversion_source_revision": "fee6332c1abaafb77f6f9624236c63aa2f1d0187",
+    "runtime": "mlx_vlm",
+    "runtime_python": "/Users/seonjaekim/dev/Visable-artemis/experiments/waymaker-ai/artemis_bootstrap/.venv/bin/python",
+    "runtime_probe": {
+      "packages": {
+        "mlx": "0.32.4",
+        "mlx-metal": "0.32.4",
+        "mlx-vlm": null,
+        "transformers": "5.20.2",
+        "tokenizers": "0.23.3",
+        "huggingface-hub": "2.3.0"
+      },
+      "python": "3.11.15 (main, Mar  3 2026, 00:52:57) [Clang 17.0.0 (clang-1700.6.4.2)]",
+      "problems": [
+        "mlx-vlm 0.7.11 not installed (found None)"
+      ],
+      "warnings": [],
+      "runtime_stdout": ""
+    },
+    "snapshot_path": "/Users/seonjaekim/.cache/waymaker-artemis/hf/hub/models--mlx-community--gemma-4-e4b-it-4bit/snapshots/475b9088d29754a3379866cf5aeb6b41acd313c2",
+    "quantization": "4bit",
+    "available": false,
+    "not_available_reason": "Insufficient disk space: 3.16 GB; need 6.0 GB; Swap pressure: 8.39 GB used; limit 2.0 GB; mlx-vlm 0.7.11 not installed (found None)",
+    "allow_implicit_fallback": false,
+    "foundation_config_sha256": "1a05e961e3b5646d23aff5058c2d1ff15b30443c6a9b48d9908a6b544f835b08",
+    "generation_config": {
+      "max_tokens": 32,
+      "temperature": 0.0,
+      "enable_thinking": false
+    },
+    "checkpoint_metadata_verified": true,
+    "metadata_sha256": {
+      "config.json": "780ccb3a514a5f1ced161d383f948fc22eca9b84b752ca19494f625bd9bad7a6",
+      "processor_config.json": "de3e580aebdc98272d4c4547daffe6525fcbae18a83a0e0bcf0d7444d4ee6f37",
+      "tokenizer_config.json": "080d9e1aff284e2f6043889cd05367966f7c7b80e025fbc0b06745e218158656",
+      "chat_template.jinja": "2f1b4d75d067bae3fe44e676721c7f077d243bc007156cb9c2f8b5836613d082",
+      "README.md": "8e9717df49219943b8992eeccecd8050535318d34fffbbaeaac924ed01f27155"
+    },
+    "weight_files_bytes": {
+      "model.safetensors": 5146800534
+    },
+    "weight_integrity": "presence_and_size_only"
+  },
+  "metric_group": "257b9b1078418c6428a362888707ebf66b1b21e133a3bfb19e20e64bcf65346d",
+  "file_digests": {
+    "run_summary.json": "fdd9cf09faeaca5f5b4ad94d3c347a85fa61551ee2479ea7cee2bc5ce3d54a93",
+    "error_summary.csv": "70fd4565525c124254c06f15b2856dc55710f684129268c5b6b8f37380b7c3b4",
+    "report.md": "a9a201f0584363baad117f78c708733ad6bd51a1ee7c8ad3c6452951f9ddd47d",
+    "runner_code": "a959d2d939ee388bf23cec825831c6f9e667301d4f42f444acee61f44b634623",
+    "runtime_code": "b7bf43626e1fb0504cb039e68d005a37740fae9cbb6b932d08ce11a4fb0d14d3",
+    "foundation_code": "8ca91bfc9492d9802a35b5f7bffe48778b75f5a5cf073759ecd8531651d628cd"
+  }
+}

@@ -1,0 +1,602 @@
+{
+  "audited_baseline": "f038dadf5b08ffccd430b139ff725e07bd0d4da0",
+  "base_branch": "origin/main",
+  "baseline_changed_file_count": 78,
+  "reviewed_files": [
+    {
+      "path": ".github/workflows/waymaker-ai-experiments.yml",
+      "audited_baseline_sha256": "d5adb8c66da56b14fa682ffaced65b6d2d83dbac5deecc45188e4bed3172ad61",
+      "review_mode": "diff_and_document_review",
+      "review_note": "Reviewed changed documentation against execution evidence; historical claims distinguished from operational proof."
+    },
+    {
+      "path": "docs/ai/waymaker-genesis/13-artemis-experiment.md",
+      "audited_baseline_sha256": "92009335e60a27ef76a544685092ee2aaafd9db0e11093b2f28b9eea843f3dad",
+      "review_mode": "diff_and_document_review",
+      "review_note": "Reviewed changed documentation against execution evidence; historical claims distinguished from operational proof."
+    },
+    {
+      "path": "experiments/waymaker-ai/README.md",
+      "audited_baseline_sha256": "dc6400baddb34d32f43b67212d33cc24b22daa0a6897d13b5589242a9d6c222e",
+      "review_mode": "diff_and_document_review",
+      "review_note": "Reviewed changed documentation against execution evidence; historical claims distinguished from operational proof."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/BLIND-EVALUATION-PROTOCOL.md",
+      "audited_baseline_sha256": "ecfce093d2b3133825390a624a2bb61e8f928eab2601e0f19fe5da4878186b58",
+      "review_mode": "diff_and_document_review",
+      "review_note": "Reviewed changed documentation against execution evidence; historical claims distinguished from operational proof."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/MISSION-005-A-REPORT.ko.md",
+      "audited_baseline_sha256": "2e6a31fd88af545d9ac61e9de5f6640d192b806bddbc58e394e84e25fbc15a7c",
+      "review_mode": "diff_and_document_review",
+      "review_note": "Reviewed changed documentation against execution evidence; historical claims distinguished from operational proof."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/MISSION-005-B-NEXT-STEPS.md",
+      "audited_baseline_sha256": "1d8ce7595fc4cfd071133c1f0d9ddaa5f48611932fa5cc6119a88fda5c11ed7e",
+      "review_mode": "diff_and_document_review",
+      "review_note": "Reviewed changed documentation against execution evidence; historical claims distinguished from operational proof."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/README.md",
+      "audited_baseline_sha256": "a5ed61c61e6f1b7a0f9e24f44293d4acd7b5350e4a620c9e12508e998d9aacec",
+      "review_mode": "diff_and_document_review",
+      "review_note": "Reviewed changed documentation against execution evidence; historical claims distinguished from operational proof."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/REVIEWER-ONBOARDING.md",
+      "audited_baseline_sha256": "f8e35d0ea4250dd93f94c286ecf20b4129341aaf6a60f46f4c246b8b47601a9b",
+      "review_mode": "diff_and_document_review",
+      "review_note": "Reviewed changed documentation against execution evidence; historical claims distinguished from operational proof."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/WAYMAKER-ARTEMIS-FINETUNING-PLAN.md",
+      "audited_baseline_sha256": "dcb0051a79dd045ff03749423c3945bd6b6cd465f840d65726378848109379a6",
+      "review_mode": "diff_and_document_review",
+      "review_note": "Reviewed changed documentation against execution evidence; historical claims distinguished from operational proof."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/WAYMAKER-ARTEMIS-GEMMA4-FOUNDATION-SPEC.md",
+      "audited_baseline_sha256": "f8fbcf35c79b2aca5223467d26e408b0ef40fa1919e7b1cffd8378d71e2e4bbb",
+      "review_mode": "diff_and_document_review",
+      "review_note": "Reviewed changed documentation against execution evidence; historical claims distinguished from operational proof."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/WAYMAKER-ARTEMIS-GEMMA4-INFERENCE-REPORT.ko.md",
+      "audited_baseline_sha256": "b7680f6d240b10d8b843fdfb42ca307a0d3d65044be28256bf28cc5e1210f3b9",
+      "review_mode": "diff_and_document_review",
+      "review_note": "Reviewed changed documentation against execution evidence; historical claims distinguished from operational proof."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/WAYMAKER-ARTEMIS-LEGACY-MIGRATION.md",
+      "audited_baseline_sha256": "9bda5795a9c38ce984cf7a71c88f79c7fb27eaeb2ce93f4d9c48bba5f20034db",
+      "review_mode": "diff_and_document_review",
+      "review_note": "Reviewed changed documentation against execution evidence; historical claims distinguished from operational proof."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/WAYMAKER-ARTEMIS-LOCAL-CLEANUP-MANIFEST.json",
+      "audited_baseline_sha256": "9c90ebad424455acb729f034cc5a42aacef3548a41457c271c3f9362d685a9c0",
+      "review_mode": "diff_and_document_review",
+      "review_note": "Reviewed changed documentation against execution evidence; historical claims distinguished from operational proof."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/WAYMAKER-ARTEMIS-RECOVERY-AUDIT.ko.md",
+      "audited_baseline_sha256": "f50f14787697ae4276d51a0cfa2500ba117d9ebbbf2a50b0097c210750012b05",
+      "review_mode": "diff_and_document_review",
+      "review_note": "Reviewed changed documentation against execution evidence; historical claims distinguished from operational proof."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/artemis_eval.py",
+      "audited_baseline_sha256": "398f055d4eecaad0fb9931cab345f70c603f507d7e4fcda811008d82b50fd373",
+      "review_mode": "deep_security_and_evaluation_review",
+      "review_note": "Reviewed source validation, citation/approval hashes, scoring and authenticated-gold refusal; no official gold can be fabricated through local labels."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/artemis_runner.py",
+      "audited_baseline_sha256": "a959d2d939ee388bf23cec825831c6f9e667301d4f42f444acee61f44b634623",
+      "review_mode": "deep_security_and_evaluation_review",
+      "review_note": "Reviewed input boundaries, identity/integrity checks, offline/resource gates, provenance, error states and governance; real ML execution remains unverified."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/audit_group_a_packets.py",
+      "audited_baseline_sha256": "97c1e9f826b77e84d590baa415a7388f090d091d09369c523a1c0c50c97a2679",
+      "review_mode": "source_diff_and_call_site_review",
+      "review_note": "Reviewed source changes and call sites; full offline regression suite covers preserved behavior."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/benchmarks/BENCHMARK_ISOLATION_MANIFEST.json",
+      "audited_baseline_sha256": "6fe7de6454573f3e11520e2349cafc473d11b24ddf7a948a75c84063127cac44",
+      "review_mode": "frozen_manifest_hash_and_status_review",
+      "review_note": "20/40 disjoint partitions; isolation_not_verified; hash consistency is not access-control evidence. File preserved unchanged by hardening."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/check_model_identity.py",
+      "audited_baseline_sha256": "e0cc39a4d2fd4a24cfec6dc076979c3995e8106fa60fda5bcf18dfc9d87c07e1",
+      "review_mode": "deep_security_and_evaluation_review",
+      "review_note": "Reviewed input boundaries, identity/integrity checks, offline/resource gates, provenance, error states and governance; real ML execution remains unverified."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/evaluation_isolation.py",
+      "audited_baseline_sha256": "23b9a76af14ff75b45a95ebc67a94db1082251479defe83354866104b15243b0",
+      "review_mode": "deep_security_and_evaluation_review",
+      "review_note": "Reviewed input boundaries, identity/integrity checks, offline/resource gates, provenance, error states and governance; real ML execution remains unverified."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/gemma4_runtime.py",
+      "audited_baseline_sha256": "b7bf43626e1fb0504cb039e68d005a37740fae9cbb6b932d08ce11a4fb0d14d3",
+      "review_mode": "deep_security_and_evaluation_review",
+      "review_note": "Reviewed input boundaries, identity/integrity checks, offline/resource gates, provenance, error states and governance; real ML execution remains unverified."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/guardrail_shadow.py",
+      "audited_baseline_sha256": "7c89673a1446487702eb4754757d9b774a80cb448da9f558d026766ce04a563f",
+      "review_mode": "deep_security_and_evaluation_review",
+      "review_note": "Reviewed input boundaries, identity/integrity checks, offline/resource gates, provenance, error states and governance; real ML execution remains unverified."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/history/FIRST-INFERENCE-20261026.md",
+      "audited_baseline_sha256": "c99922baa669680d51672c0b3833e03897bb75d1887211e8940a4d12ce9e831c",
+      "review_mode": "diff_and_document_review",
+      "review_note": "Reviewed changed documentation against execution evidence; historical claims distinguished from operational proof."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/history/noncanonical/2026-10-26-pipeline-check-gemma3-270m/run_record.json",
+      "audited_baseline_sha256": "3feaf81b688a3d7585a536bc2812a3856c43c330fa360822c6b697758298fa26",
+      "review_mode": "archive_byte_identity_and_model_provenance_review",
+      "review_note": "Byte-identical to original Mission 005-A noncanonical/mixed artifact; isolated from active inference discovery."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/history/noncanonical/real_local_mlx_dev20/error_summary.csv",
+      "audited_baseline_sha256": "e9569c474d5f1d315a296e758222a9f3bd8f49d3700136883cacedefa2292fee",
+      "review_mode": "csv_structure_and_historical_digest_review",
+      "review_note": "Reviewed header/record counts and provenance; generated contents preserved where historical."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/history/noncanonical/real_local_mlx_dev20/report.md",
+      "audited_baseline_sha256": "d6a4b0e01f9dfc3015d46e582e5f7c4a51a03f5ddb7ef727905fbd46b63793a1",
+      "review_mode": "archive_byte_identity_and_model_provenance_review",
+      "review_note": "Byte-identical to original Mission 005-A noncanonical/mixed artifact; isolated from active inference discovery."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/history/noncanonical/real_local_mlx_dev20/run_manifest.json",
+      "audited_baseline_sha256": "a366978b1e8d4583e2eaf87b7b58754ccb03d9f32577fb9739c3f1281d96154c",
+      "review_mode": "archive_byte_identity_and_model_provenance_review",
+      "review_note": "Byte-identical to original Mission 005-A noncanonical/mixed artifact; isolated from active inference discovery."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/history/noncanonical/real_local_mlx_dev20/run_summary.json",
+      "audited_baseline_sha256": "f1a54732b2d7b5270c4aaf34293c2ed5b994123d1fa6c5be54bcc9e028500b09",
+      "review_mode": "archive_byte_identity_and_model_provenance_review",
+      "review_note": "Byte-identical to original Mission 005-A noncanonical/mixed artifact; isolated from active inference discovery."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/history/noncanonical/shadow_guardrail_full_report.json",
+      "audited_baseline_sha256": "405e38e3db01d582d32d1400b564534dbca52c98c04e920f12cc9997aad1c58d",
+      "review_mode": "archive_byte_identity_and_model_provenance_review",
+      "review_note": "Byte-identical to original Mission 005-A noncanonical/mixed artifact; isolated from active inference discovery."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/history/noncanonical/shadow_guardrail_full_report.md",
+      "audited_baseline_sha256": "9397bc3b2d7e5a76b5c7fe4d2922f3acf1804aef2c01a75d3a9c9d55055812e5",
+      "review_mode": "archive_byte_identity_and_model_provenance_review",
+      "review_note": "Byte-identical to original Mission 005-A noncanonical/mixed artifact; isolated from active inference discovery."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/independent_benchmark_intake.py",
+      "audited_baseline_sha256": "a4e7ec2bb64af72e592621ebe431b8fcc76fd9e5ad1ddacc9ba608a0e09c5836",
+      "review_mode": "deep_security_and_evaluation_review",
+      "review_note": "Reviewed input boundaries, identity/integrity checks, offline/resource gates, provenance, error states and governance; real ML execution remains unverified."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/label_v2/rerun/run_v2_layout_sets.sh",
+      "audited_baseline_sha256": "a014fc8bd414b2eb794bb2d085be8bec6cfebc4048951dc9606de8ba4ded873f",
+      "review_mode": "launch_script_diff_and_execution_policy_review",
+      "review_note": "Explicit E4B/MLX-VLM launch retained; no model fallback; existing run-directory protection retained."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/label_v2/rerun/run_v2_sets.sh",
+      "audited_baseline_sha256": "cb944bf256754feb3ed39c3217ab234f708ac781ebf9e0146f788238dd3b2f35",
+      "review_mode": "launch_script_diff_and_execution_policy_review",
+      "review_note": "Explicit E4B/MLX-VLM launch retained; no model fallback; existing run-directory protection retained."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/legal_source_versioning.py",
+      "audited_baseline_sha256": "ecb0e1945a4ad4d9d497186447d987c33d7b45fd1cddd893bf1a60144c1b2365",
+      "review_mode": "source_diff_and_call_site_review",
+      "review_note": "Reviewed source changes and call sites; full offline regression suite covers preserved behavior."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/probe_gemma4.py",
+      "audited_baseline_sha256": "8cb67fefc53db21f636adb1bee825ec2afb40d97cf695783cd889077ae1fc7f5",
+      "review_mode": "source_diff_and_call_site_review",
+      "review_note": "Reviewed source changes and call sites; full offline regression suite covers preserved behavior."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/review_packets/ARTEMIS-004-DEV-013.json",
+      "audited_baseline_sha256": "a8f9ae8a1e5efa338ee3dcaafaaba3c75aec4c36a8e969e97796dbcf200bbb3c",
+      "review_mode": "packet_field_diff_and_dossier_consistency",
+      "review_note": "Only audit_dossier added; prior fields and unreviewed status preserved. Proposal text is not authenticated legal approval."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/review_packets/ARTEMIS-004-DEV-014.json",
+      "audited_baseline_sha256": "eefd425083e0a70acdd8c22c84ec5520976f9966aaa62c356a6844f718bfcce0",
+      "review_mode": "packet_field_diff_and_dossier_consistency",
+      "review_note": "Only audit_dossier added; prior fields and unreviewed status preserved. Proposal text is not authenticated legal approval."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/review_packets/ARTEMIS-004-HLD-004.json",
+      "audited_baseline_sha256": "f753ef5d679ff7e7578099662797cc976e3fb5bfe81957442906851d2a7b50bb",
+      "review_mode": "packet_field_diff_and_dossier_consistency",
+      "review_note": "Only audit_dossier added; prior fields and unreviewed status preserved. Proposal text is not authenticated legal approval."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/review_packets/ARTEMIS-004-HLD-007.json",
+      "audited_baseline_sha256": "3dc5588d7859c385a7f8432412253a4fba139971121fe9d9cbf525ba9d24732a",
+      "review_mode": "packet_field_diff_and_dossier_consistency",
+      "review_note": "Only audit_dossier added; prior fields and unreviewed status preserved. Proposal text is not authenticated legal approval."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/review_packets/ARTEMIS-004-HLD-008.json",
+      "audited_baseline_sha256": "0091500a2ce6c7839e94953957a5b3eebe88b785f911875b8b2aacdd5ca96a49",
+      "review_mode": "packet_field_diff_and_dossier_consistency",
+      "review_note": "Only audit_dossier added; prior fields and unreviewed status preserved. Proposal text is not authenticated legal approval."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/review_packets/ARTEMIS-004-HLD-013.json",
+      "audited_baseline_sha256": "afba7bf2f543e9d1ee23ed8067136eca4b99d8dce755b1e01178699b4c58ce06",
+      "review_mode": "packet_field_diff_and_dossier_consistency",
+      "review_note": "Only audit_dossier added; prior fields and unreviewed status preserved. Proposal text is not authenticated legal approval."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/review_packets/ARTEMIS-004-HLD-014.json",
+      "audited_baseline_sha256": "ba450d6d0a90371956b17f5e4be3180b723440b0d091d4eea695b9999718d407",
+      "review_mode": "packet_field_diff_and_dossier_consistency",
+      "review_note": "Only audit_dossier added; prior fields and unreviewed status preserved. Proposal text is not authenticated legal approval."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/review_packets/ARTEMIS-004-HLD-023.json",
+      "audited_baseline_sha256": "135f3a2ec2ed8c379923715cc50df72c50c07c656e1eb504fd007e48115c8bde",
+      "review_mode": "packet_field_diff_and_dossier_consistency",
+      "review_note": "Only audit_dossier added; prior fields and unreviewed status preserved. Proposal text is not authenticated legal approval."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/review_packets/ARTEMIS-004-HLD-027.json",
+      "audited_baseline_sha256": "3febccfc15453b0272348ef6878c94fbd893dd077b8df27818f51832aba73e52",
+      "review_mode": "packet_field_diff_and_dossier_consistency",
+      "review_note": "Only audit_dossier added; prior fields and unreviewed status preserved. Proposal text is not authenticated legal approval."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/review_packets/ARTEMIS-004-HLD-028.json",
+      "audited_baseline_sha256": "9fb8a199b0280e21d1268942c0fb159c836d7f4018f483015d65d91e809479ee",
+      "review_mode": "packet_field_diff_and_dossier_consistency",
+      "review_note": "Only audit_dossier added; prior fields and unreviewed status preserved. Proposal text is not authenticated legal approval."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/review_packets/ARTEMIS-004-HLD-031.json",
+      "audited_baseline_sha256": "a0b1a4aeead4bef7b5a1d3b2560b632c73e19abfc1ceba7fdf225a8efc6b972a",
+      "review_mode": "packet_field_diff_and_dossier_consistency",
+      "review_note": "Only audit_dossier added; prior fields and unreviewed status preserved. Proposal text is not authenticated legal approval."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/review_packets/ARTEMIS-004-HLD-032.json",
+      "audited_baseline_sha256": "552b67f005c72b880c6285929dde9cb2af6398fc78247d177162119f223cf6fc",
+      "review_mode": "packet_field_diff_and_dossier_consistency",
+      "review_note": "Only audit_dossier added; prior fields and unreviewed status preserved. Proposal text is not authenticated legal approval."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/review_packets/ARTEMIS-004-HLD-033.json",
+      "audited_baseline_sha256": "397a1b1cbc3ea0706ce5368a2a49eb12f1ece904959be872d34270077932ee95",
+      "review_mode": "packet_field_diff_and_dossier_consistency",
+      "review_note": "Only audit_dossier added; prior fields and unreviewed status preserved. Proposal text is not authenticated legal approval."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/review_packets/ARTEMIS-004-HLD-034.json",
+      "audited_baseline_sha256": "e2514c2a23da6b15ea6ffa75a51e276bc859b669539a8a546432f304fd16824e",
+      "review_mode": "packet_field_diff_and_dossier_consistency",
+      "review_note": "Only audit_dossier added; prior fields and unreviewed status preserved. Proposal text is not authenticated legal approval."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/review_packets/ARTEMIS-004-HLD-036.json",
+      "audited_baseline_sha256": "f356b70cc74ac741acb632db00dd36bd39e29f7b0668b7310a29fa1296175883",
+      "review_mode": "packet_field_diff_and_dossier_consistency",
+      "review_note": "Only audit_dossier added; prior fields and unreviewed status preserved. Proposal text is not authenticated legal approval."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/review_packets/ARTEMIS-004-HLD-037.json",
+      "audited_baseline_sha256": "26942baa5ca5ea204f52ff3da091fbc041630f86bcd275e218d821ab79919f30",
+      "review_mode": "packet_field_diff_and_dossier_consistency",
+      "review_note": "Only audit_dossier added; prior fields and unreviewed status preserved. Proposal text is not authenticated legal approval."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/reviews/evidence_audit_dossiers.json",
+      "audited_baseline_sha256": "bb67d24fd20e2143249fa0dca70a02c0c92c2262e8fc8f35b8edef3ff218de22",
+      "review_mode": "all_record_structure_and_provenance_review",
+      "review_note": "All records parsed; dossiers agree with generator; catalogue excerpt hashes match; statuses remain AI-audited/pending human review. No legal revalidation."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/reviews/legal_source_catalog.json",
+      "audited_baseline_sha256": "7e031525c29c8a95bf4e19dc2671092dad0c6ff9522981e36c2da12f0dcd0349",
+      "review_mode": "all_record_structure_and_provenance_review",
+      "review_note": "All records parsed; dossiers agree with generator; catalogue excerpt hashes match; statuses remain AI-audited/pending human review. No legal revalidation."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/reviews/version_difference_report.json",
+      "audited_baseline_sha256": "f6997fd761f8824eabbdb77cbf0eabbec7872f958cf71a45d63aae0dee4003c8",
+      "review_mode": "all_record_structure_and_provenance_review",
+      "review_note": "All records parsed; dossiers agree with generator; catalogue excerpt hashes match; statuses remain AI-audited/pending human review. No legal revalidation."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/run_smoke.py",
+      "audited_baseline_sha256": "dcb02a8a8095303621f23eec9e964cba88c47bb0e9433a84caf93c833b2dfbc1",
+      "review_mode": "source_diff_and_call_site_review",
+      "review_note": "Reviewed source changes and call sites; full offline regression suite covers preserved behavior."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/runs/gemma4-e4b-recovery-preflight-20261029/error_summary.csv",
+      "audited_baseline_sha256": "70fd4565525c124254c06f15b2856dc55710f684129268c5b6b8f37380b7c3b4",
+      "review_mode": "csv_structure_and_historical_digest_review",
+      "review_note": "Reviewed header/record counts and provenance; generated contents preserved where historical."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/runs/gemma4-e4b-recovery-preflight-20261029/report.md",
+      "audited_baseline_sha256": "a9a201f0584363baad117f78c708733ad6bd51a1ee7c8ad3c6452951f9ddd47d",
+      "review_mode": "diff_and_document_review",
+      "review_note": "Reviewed changed documentation against execution evidence; historical claims distinguished from operational proof."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/runs/gemma4-e4b-recovery-preflight-20261029/run_manifest.json",
+      "audited_baseline_sha256": "6ce0d590f8026af519147086538409676d06210a2258aac1576d79ac55244558",
+      "review_mode": "all_record_structure_model_and_metric_provenance_review",
+      "review_note": "Parsed every JSON record and inspected model/revision, execution status and metric group scope; no historical results rewritten."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/runs/gemma4-e4b-recovery-preflight-20261029/run_summary.json",
+      "audited_baseline_sha256": "fdd9cf09faeaca5f5b4ad94d3c347a85fa61551ee2479ea7cee2bc5ce3d54a93",
+      "review_mode": "all_record_structure_model_and_metric_provenance_review",
+      "review_note": "Parsed every JSON record and inspected model/revision, execution status and metric group scope; no historical results rewritten."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/runs/genesis-recovery-20261029/inference_probe.json",
+      "audited_baseline_sha256": "f92e01827e1f3aec77f5dcc6a5e28e4d5d074979f0be8cadc427e195c9be03b0",
+      "review_mode": "all_record_structure_model_and_metric_provenance_review",
+      "review_note": "Parsed every JSON record and inspected model/revision, execution status and metric group scope; no historical results rewritten."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/runs/genesis-recovery-20261029/processor_probe.json",
+      "audited_baseline_sha256": "424416d04078e43ace588f8bddb3c75db2cdd866c8863fa6af7dfe4b9268e989",
+      "review_mode": "all_record_structure_model_and_metric_provenance_review",
+      "review_note": "Parsed every JSON record and inspected model/revision, execution status and metric group scope; no historical results rewritten."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/runs/genesis-recovery-20261029/processor_stderr.txt",
+      "audited_baseline_sha256": "5e6d26a8f4536e10f3de2efaf196f2dc0f7c51a34c0dfa6bdae90035b043af34",
+      "review_mode": "diff_and_document_review",
+      "review_note": "Reviewed changed documentation against execution evidence; historical claims distinguished from operational proof."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/runs/shadow_guardrail_full_report.json",
+      "audited_baseline_sha256": "734fe4ebee25a382e7403c5aef9d59d41a0d5aa88ff434974b894700571fe920",
+      "review_mode": "all_record_structure_model_and_metric_provenance_review",
+      "review_note": "Parsed every JSON record and inspected model/revision, execution status and metric group scope; no historical results rewritten."
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/runs/shadow_guardrail_full_report.md",
+      "audited_baseline_sha256": "359e9fa92b630fef0cfaea567da6376f40392768ec661204a00c5cdba40e11da",
+      "review_mode": "diff_and_document_review",
+      "review_note": "Reviewed changed documentation against execution evidence; historical claims distinguished from operational proof."
+    },
+    {
+      "path": "experiments/waymaker-ai/configs/artemis/exp_a_untuned.json",
+      "audited_baseline_sha256": "f3fca3ea6e86f24d519a1324a6a40585104a91a86022e64467438fda473b9b18",
+      "review_mode": "configuration_diff_and_policy_gate_review",
+      "review_note": "Pinned E4B foundation retained; explicit E2B development only; loader/license/resource estimates and training authorization gates checked."
+    },
+    {
+      "path": "experiments/waymaker-ai/configs/artemis/exp_b_sft_qlora.json",
+      "audited_baseline_sha256": "2d9374f6b98d68b7c999d0fee3448364f0f4f9b90e5aa03b9d64cb0aabb26226",
+      "review_mode": "configuration_diff_and_policy_gate_review",
+      "review_note": "Pinned E4B foundation retained; explicit E2B development only; loader/license/resource estimates and training authorization gates checked."
+    },
+    {
+      "path": "experiments/waymaker-ai/configs/artemis/exp_c_verified_distill_sft.json",
+      "audited_baseline_sha256": "78c9175886e53d6297c21c2e7381872d96bdc7774080a6818507f568234e1002",
+      "review_mode": "configuration_diff_and_policy_gate_review",
+      "review_note": "Pinned E4B foundation retained; explicit E2B development only; loader/license/resource estimates and training authorization gates checked."
+    },
+    {
+      "path": "experiments/waymaker-ai/configs/artemis_foundation.json",
+      "audited_baseline_sha256": "1a05e961e3b5646d23aff5058c2d1ff15b30443c6a9b48d9908a6b544f835b08",
+      "review_mode": "configuration_diff_and_policy_gate_review",
+      "review_note": "Pinned E4B foundation retained; explicit E2B development only; loader/license/resource estimates and training authorization gates checked."
+    },
+    {
+      "path": "experiments/waymaker-ai/tests/test_artemis_eval_reliability.py",
+      "audited_baseline_sha256": "69dce0c0e529c3d9659b272291a64cd5cd1a0ec9b7fa9427919ca012b5a98330",
+      "review_mode": "source_diff_and_call_site_review",
+      "review_note": "Reviewed source changes and call sites; full offline regression suite covers preserved behavior."
+    },
+    {
+      "path": "experiments/waymaker-ai/tests/test_artemis_foundation.py",
+      "audited_baseline_sha256": "7796d865df9be59380a5f26e920acac0d8b412ad9fdc11250f67058f7b3513b6",
+      "review_mode": "deep_security_and_evaluation_review",
+      "review_note": "Reviewed input boundaries, identity/integrity checks, offline/resource gates, provenance, error states and governance; real ML execution remains unverified."
+    },
+    {
+      "path": "experiments/waymaker-ai/tests/test_evaluation_isolation.py",
+      "audited_baseline_sha256": "4b429a87e8acf179f25efa2f024b896dceb8319aae6e9e3c74d83109ace88fcc",
+      "review_mode": "deep_security_and_evaluation_review",
+      "review_note": "Reviewed input boundaries, identity/integrity checks, offline/resource gates, provenance, error states and governance; real ML execution remains unverified."
+    },
+    {
+      "path": "experiments/waymaker-ai/tests/test_evaluation_quality_adversarial.py",
+      "audited_baseline_sha256": "6f7306045d9e013f24ec7795a29876bf8cb0fc43b34d5a114cf4c095b7d2e8a2",
+      "review_mode": "source_diff_and_call_site_review",
+      "review_note": "Reviewed source changes and call sites; full offline regression suite covers preserved behavior."
+    },
+    {
+      "path": "experiments/waymaker-ai/tests/test_independent_benchmark_intake.py",
+      "audited_baseline_sha256": "09f40594c037b60d3d80371886321c7b0a635342201319abad492bd00c82382c",
+      "review_mode": "deep_security_and_evaluation_review",
+      "review_note": "Reviewed input boundaries, identity/integrity checks, offline/resource gates, provenance, error states and governance; real ML execution remains unverified."
+    },
+    {
+      "path": "experiments/waymaker-ai/tests/test_legal_source_versioning.py",
+      "audited_baseline_sha256": "2c0eb412e3ed4820fad78c23092d3cbf64be73184f55853acaf849bf8c501f7b",
+      "review_mode": "source_diff_and_call_site_review",
+      "review_note": "Reviewed source changes and call sites; full offline regression suite covers preserved behavior."
+    },
+    {
+      "path": "experiments/waymaker-ai/training/README.md",
+      "audited_baseline_sha256": "b10c5b64afd7c1d57c3b2b83fdcd1de96b4b8a7254142648ec648e6c1fabc98a",
+      "review_mode": "diff_and_document_review",
+      "review_note": "Reviewed changed documentation against execution evidence; historical claims distinguished from operational proof."
+    },
+    {
+      "path": "experiments/waymaker-ai/training/train_qlora.py",
+      "audited_baseline_sha256": "4b87b6e5c9ab03098061740ab62ff2ef3be52ce160abd416086cbfd51169c4a3",
+      "review_mode": "deep_security_and_evaluation_review",
+      "review_note": "Reviewed input boundaries, identity/integrity checks, offline/resource gates, provenance, error states and governance; real ML execution remains unverified."
+    },
+    {
+      "path": "experiments/waymaker-ai/waymaker_ai/distillation/experiment_config.py",
+      "audited_baseline_sha256": "e3338ed1991a824d1ab1ad9d3dbcc78fa5ace965006e698de381f8975da6d21d",
+      "review_mode": "deep_security_and_evaluation_review",
+      "review_note": "Reviewed input boundaries, identity/integrity checks, offline/resource gates, provenance, error states and governance; real ML execution remains unverified."
+    },
+    {
+      "path": "experiments/waymaker-ai/waymaker_ai/foundation.py",
+      "audited_baseline_sha256": "8ca91bfc9492d9802a35b5f7bffe48778b75f5a5cf073759ecd8531651d628cd",
+      "review_mode": "deep_security_and_evaluation_review",
+      "review_note": "Reviewed input boundaries, identity/integrity checks, offline/resource gates, provenance, error states and governance; real ML execution remains unverified."
+    }
+  ],
+  "scope_limits": [
+    "Code/diff and artifact provenance review, not independent legal correctness review",
+    "Historical generated output inspected structurally and by provenance/digests; no model rerun",
+    "Actual E4B MLX-VLM inference and training unexecuted"
+  ],
+  "hardening_reviewed_files": [
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/BLIND-EVALUATION-PROTOCOL.md",
+      "review_scope": "Reviewed generated evidence, execution/provenance scope and linked documentation; earlier artifacts preserved",
+      "recovery_method": "Recover baseline content with git show f038dadf5b08ffccd430b139ff725e07bd0d4da0:experiments/waymaker-ai/artemis_bootstrap/BLIND-EVALUATION-PROTOCOL.md"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/PR-726-POST-AUDIT-HARDENING.ko.md",
+      "review_scope": "Reviewed generated evidence, execution/provenance scope and linked documentation; earlier artifacts preserved",
+      "recovery_method": "New hardening artifact; remove only after review, no prior user file replaced"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/PR-726-REVIEW-COVERAGE.json",
+      "review_scope": "Reviewed generated evidence, execution/provenance scope and linked documentation; earlier artifacts preserved",
+      "recovery_method": "New hardening artifact; remove only after review, no prior user file replaced"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/README.md",
+      "review_scope": "Reviewed generated evidence, execution/provenance scope and linked documentation; earlier artifacts preserved",
+      "recovery_method": "Recover baseline content with git show f038dadf5b08ffccd430b139ff725e07bd0d4da0:experiments/waymaker-ai/artemis_bootstrap/README.md"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/WAYMAKER-ARTEMIS-GEMMA4-FOUNDATION-SPEC.md",
+      "review_scope": "Reviewed generated evidence, execution/provenance scope and linked documentation; earlier artifacts preserved",
+      "recovery_method": "Recover baseline content with git show f038dadf5b08ffccd430b139ff725e07bd0d4da0:experiments/waymaker-ai/artemis_bootstrap/WAYMAKER-ARTEMIS-GEMMA4-FOUNDATION-SPEC.md"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/WAYMAKER-ARTEMIS-GEMMA4-INFERENCE-REPORT.ko.md",
+      "review_scope": "Reviewed generated evidence, execution/provenance scope and linked documentation; earlier artifacts preserved",
+      "recovery_method": "Recover baseline content with git show f038dadf5b08ffccd430b139ff725e07bd0d4da0:experiments/waymaker-ai/artemis_bootstrap/WAYMAKER-ARTEMIS-GEMMA4-INFERENCE-REPORT.ko.md"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/artemis_runner.py",
+      "review_scope": "Reviewed new or modified source and negative/positive regressions; no ML inference executed",
+      "recovery_method": "Recover baseline content with git show f038dadf5b08ffccd430b139ff725e07bd0d4da0:experiments/waymaker-ai/artemis_bootstrap/artemis_runner.py"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/check_model_identity.py",
+      "review_scope": "Reviewed new or modified source and negative/positive regressions; no ML inference executed",
+      "recovery_method": "Recover baseline content with git show f038dadf5b08ffccd430b139ff725e07bd0d4da0:experiments/waymaker-ai/artemis_bootstrap/check_model_identity.py"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/evaluation_isolation.py",
+      "review_scope": "Reviewed new or modified source and negative/positive regressions; no ML inference executed",
+      "recovery_method": "Recover baseline content with git show f038dadf5b08ffccd430b139ff725e07bd0d4da0:experiments/waymaker-ai/artemis_bootstrap/evaluation_isolation.py"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/flip_judge.py",
+      "review_scope": "Reviewed new or modified source and negative/positive regressions; no ML inference executed",
+      "recovery_method": "Recover baseline content with git show f038dadf5b08ffccd430b139ff725e07bd0d4da0:experiments/waymaker-ai/artemis_bootstrap/flip_judge.py"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/gemma4_runtime.py",
+      "review_scope": "Reviewed new or modified source and negative/positive regressions; no ML inference executed",
+      "recovery_method": "Recover baseline content with git show f038dadf5b08ffccd430b139ff725e07bd0d4da0:experiments/waymaker-ai/artemis_bootstrap/gemma4_runtime.py"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/independent_benchmark_intake.py",
+      "review_scope": "Reviewed new or modified source and negative/positive regressions; no ML inference executed",
+      "recovery_method": "Recover baseline content with git show f038dadf5b08ffccd430b139ff725e07bd0d4da0:experiments/waymaker-ai/artemis_bootstrap/independent_benchmark_intake.py"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/runs/post-audit-20261030/checkpoint_integrity.json",
+      "review_scope": "Reviewed generated evidence, execution/provenance scope and linked documentation; earlier artifacts preserved",
+      "recovery_method": "New hardening artifact; remove only after review, no prior user file replaced"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/runs/post-audit-20261030/checkpoint_sha256_verification.json",
+      "review_scope": "Reviewed generated evidence, execution/provenance scope and linked documentation; earlier artifacts preserved",
+      "recovery_method": "New hardening artifact; remove only after review, no prior user file replaced"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/runs/post-audit-20261030/inference_preflight.json",
+      "review_scope": "Reviewed generated evidence, execution/provenance scope and linked documentation; earlier artifacts preserved",
+      "recovery_method": "New hardening artifact; remove only after review, no prior user file replaced"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/runs/post-audit-20261030/trusted_file_references.json",
+      "review_scope": "Reviewed generated evidence, execution/provenance scope and linked documentation; earlier artifacts preserved",
+      "recovery_method": "New hardening artifact; remove only after review, no prior user file replaced"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/smoke_grader.py",
+      "review_scope": "Reviewed new or modified source and negative/positive regressions; no ML inference executed",
+      "recovery_method": "Recover baseline content with git show f038dadf5b08ffccd430b139ff725e07bd0d4da0:experiments/waymaker-ai/artemis_bootstrap/smoke_grader.py"
+    },
+    {
+      "path": "experiments/waymaker-ai/artemis_bootstrap/verify_checkpoint.py",
+      "review_scope": "Reviewed new or modified source and negative/positive regressions; no ML inference executed",
+      "recovery_method": "New hardening artifact; remove only after review, no prior user file replaced"
+    },
+    {
+      "path": "experiments/waymaker-ai/configs/artemis_foundation.json",
+      "review_scope": "Reviewed fixed checkpoint references, sizes and hashes against pinned upstream evidence",
+      "recovery_method": "Recover baseline content with git show f038dadf5b08ffccd430b139ff725e07bd0d4da0:experiments/waymaker-ai/configs/artemis_foundation.json"
+    },
+    {
+      "path": "experiments/waymaker-ai/tests/test_artemis_foundation.py",
+      "review_scope": "Reviewed new or modified source and negative/positive regressions; no ML inference executed",
+      "recovery_method": "Recover baseline content with git show f038dadf5b08ffccd430b139ff725e07bd0d4da0:experiments/waymaker-ai/tests/test_artemis_foundation.py"
+    },
+    {
+      "path": "experiments/waymaker-ai/tests/test_independent_benchmark_intake.py",
+      "review_scope": "Reviewed new or modified source and negative/positive regressions; no ML inference executed",
+      "recovery_method": "Recover baseline content with git show f038dadf5b08ffccd430b139ff725e07bd0d4da0:experiments/waymaker-ai/tests/test_independent_benchmark_intake.py"
+    },
+    {
+      "path": "experiments/waymaker-ai/tests/test_post_audit_hardening.py",
+      "review_scope": "Reviewed new or modified source and negative/positive regressions; no ML inference executed",
+      "recovery_method": "New hardening artifact; remove only after review, no prior user file replaced"
+    },
+    {
+      "path": "experiments/waymaker-ai/waymaker_ai/foundation.py",
+      "review_scope": "Reviewed new or modified source and negative/positive regressions; no ML inference executed",
+      "recovery_method": "Recover baseline content with git show f038dadf5b08ffccd430b139ff725e07bd0d4da0:experiments/waymaker-ai/waymaker_ai/foundation.py"
+    },
+    {
+      "path": "experiments/waymaker-ai/waymaker_ai/inference_input.py",
+      "review_scope": "Reviewed new or modified source and negative/positive regressions; no ML inference executed",
+      "recovery_method": "New hardening artifact; remove only after review, no prior user file replaced"
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-# Artemis training runbook
+# Waymaker Artemis training runbook
 
 **Status: NOT RUN.** Nothing in this directory has been executed with a GPU.
 The scripts were written on a machine with no GPU, no training packages and no
@@ -8,7 +8,11 @@ bitsandbytes calls were not.
 
 Design, hypotheses and the go/no-go rules are in
 [`docs/ai/waymaker-genesis/13-artemis-experiment.md`](../../../docs/ai/waymaker-genesis/13-artemis-experiment.md).
-This file is the step-by-step procedure.
+This file is the step-by-step procedure. The current model policy and recovery limitations are in
+[`artemis_foundation.json`](../configs/artemis_foundation.json) and the
+[Gemma 4 adaptation plan](../artemis_bootstrap/WAYMAKER-ARTEMIS-FINETUNING-PLAN.md).
+The older cost/time assumptions below are historical estimates; use the dated
+prices and validation gates in that plan before scheduling any job.
 
 | File | What it does | Needs |
 |---|---|---|
@@ -56,10 +60,13 @@ code can check, and you check the rest.
 
 | Machine | GPU | Model | dtype | Notes |
 |---|---|---|---|---|
-| Local workstation | any CUDA GPU with 16-24 GB (L4, RTX 4090, A5000) | E4B; E2B for the smoke run | `auto` → bf16 on Ampere and later | Preferred: nothing leaves the machine |
+| Local workstation | any CUDA GPU with 16-24 GB (L4, RTX 4090, A5000) | E4B, including its smoke run | `auto` → bf16 on Ampere and later | Preferred: nothing leaves the machine |
 | Colab Pro ($9.99/month, cost.md §5) | L4 or A100 | E4B | bf16 | Only if a free option is not enough. Needs the owner's OK, because it is a paid plan |
-| Colab Free | T4 16 GB, not guaranteed | **E2B only**. E4B may run out of memory (old scaffold README; models.md §6) | `auto` → **fp16**: a T4 has no native bf16 | Sessions can end without warning; keep `--max-steps` runs short |
-| Kaggle | T4 (or P100), about 30 GPU-hours a week (cost.md §5, UNVERIFIED) | E2B | fp16 | bitsandbytes 4-bit on a P100 was not checked; use the T4 |
+| Colab Free | T4 16 GB, not guaranteed | E4B may run out of memory; stop or choose larger hardware | `auto` → **fp16**: a T4 has no native bf16 | Sessions can end without warning; keep `--max-steps` runs short |
+| Kaggle | T4 (or P100), about 30 GPU-hours a week (cost.md §5, UNVERIFIED) | E4B fit unverified | fp16 | bitsandbytes 4-bit on a P100 was not checked; use the T4 |
+
+E2B requires explicit development selection and separate metrics; it never
+replaces E4B for smoke validation or serving.
 
 The configs leave `compute_dtype` as `auto`. Never hard-code bf16. That was
 defect 3 of the old scaffold (knowledge-platform.md §4).
@@ -113,17 +120,17 @@ reinstall it. Its version is recorded, not pinned.
 `transformers` must be a v5.x release for Gemma 4 (models.md §3b). If pip
 resolves an older one, install `"transformers>=5,<6"` explicitly.
 
-## 4. Smoke run (E2B, five steps)
+## 4. Smoke run (E4B, five steps; E2B only by explicit selection)
 
 ```bash
 python training/train_qlora.py --config configs/artemis/exp_b_sft_qlora.json \
-  --model secondary --seed 1 --max-steps 5
+  --model primary --seed 1 --max-steps 5
 ```
 
 The smoke run is allowed with `TODO(pin)` packages. It checks the things the
 notes left UNVERIFIED (models.md §8):
 
-- `AutoModelForCausalLM` loads the `Gemma4ForConditionalGeneration` checkpoint
+- `AutoModelForImageTextToText` loads the `Gemma4ForConditionalGeneration` checkpoint
   text-only. If it does not, change `loader` in the config, which counts as a
   config change;
 - all seven LoRA target names exist in the language model. Vision and audio
@@ -134,7 +141,7 @@ notes left UNVERIFIED (models.md §8):
 - the adapter saves.
 
 Then pin. Copy the versions from
-`training/runs/artemis-exp-b-sft-qlora/smoke-secondary-seed1/run_record.json` →
+`training/runs/artemis-exp-b-sft-qlora/smoke-primary-seed1/run_record.json` →
 `packages` into `requirements-train.txt`. Replace each `# TODO(pin): name ...`
 line with `name==version`. Commit that change before the real run, because a
 real run refuses while any TODO pin remains or any installed version differs.
@@ -197,7 +204,7 @@ vllm serve google/gemma-4-E4B-it \
 llama.cpp's `convert_hf_to_gguf.py` and `convert_lora_to_gguf.py`, then:
 
 ```bash
-llama-server -m gemma-4-E2B-it.gguf --lora artemis-adapter.gguf --jinja --host 127.0.0.1 --port 8000
+llama-server -m gemma-4-E4B-it.gguf --lora artemis-adapter.gguf --jinja --host 127.0.0.1 --port 8000
 ```
 
 Neither path was run. LoRA conversion for Gemma 4 is UNVERIFIED.

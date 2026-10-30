@@ -105,6 +105,8 @@ def test_environment_isolation_audit_reports_honest_status():
 
 
 def test_blind_benchmark_files_contain_zero_labels(tmp_path):
+    committed_manifest = BENCHMARKS_DIR / "BENCHMARK_ISOLATION_MANIFEST.json"
+    original_bytes = committed_manifest.read_bytes()
     res = generate_blind_benchmarks(output_dir=tmp_path)
     dev_blind = json.loads(Path(res["dev_blind_file"]).read_text(encoding="utf-8"))
     hld_blind = json.loads(Path(res["heldout_blind_file"]).read_text(encoding="utf-8"))
@@ -119,3 +121,5 @@ def test_blind_benchmark_files_contain_zero_labels(tmp_path):
     # Manifest exists
     manifest_file = Path(res["manifest_file"])
     assert manifest_file.exists()
+    assert manifest_file.parent == tmp_path
+    assert committed_manifest.read_bytes() == original_bytes

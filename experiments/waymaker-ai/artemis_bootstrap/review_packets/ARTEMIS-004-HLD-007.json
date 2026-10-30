@@ -72,5 +72,19 @@
   "reviewer_notes": "",
   "current_status": "unreviewed",
   "missing_evidence_and_unresolved_issues": "공소청 설치법 관련 국회 공포 공보 원문 추가 보관 필요.",
-  "generated_at": "2026-10-29T07:46:27.309780+00:00"
+  "generated_at": "2026-10-29T07:46:27.309780+00:00",
+  "audit_dossier": {
+    "audit_classification": "source_located",
+    "inspected_provision": "부칙 제15조(다른 법률의 개정) 및 제4조(출국금지), 제85조(체포영장 청구 등): 수사기관 직제 개편에 따른 검사/공소청 관서명 용어 정비.",
+    "authoritative_document": "대한민국 출입국관리법 (법률 제21857호, 2026. 9. 29. 공포, 2026. 10. 2. 시행)",
+    "comparison_notes": "개정 법률의 공포일, 시행일, 조문 개정 사항이 국가법령정보센터 최신 공포본과 완전 부합함.",
+    "omissions_and_exceptions": "부칙 경과조치 규정에 따라 개정 전 행정처분 및 영장청구 절차는 종전 규정의 효력을 유지함.",
+    "discrepancies": "없음. 2026.10.02 기준 현행 유효 법률임.",
+    "corrected_evidence_proposal": "2026년 10월 2일 시행된 개정 출입국관리법(법률 제21857호) 제4조제2항 및 제85조제2항에 따라 수사기관 직제 개편 용어가 반영되었으며, 2026년 10월 현재 이 개정 법률이 현행 법률로서 적용됩니다.",
+    "retrieval_metadata": {
+      "source_url": "https://www.law.go.kr/법령/출입국관리법",
+      "retrieval_date": "2026-10-29",
+      "source_type": "statute"
+    }
+  }
 }
