@@ -171,3 +171,16 @@ def test_language_review_flags_rubric_assumptions_without_changing_scores():
     assert score_dev20.language_review(items["ARTEMIS-004-DEV-011"], "v1")["reason"] == "rubric_language_mismatch"
     assert score_dev20.language_review(items["ARTEMIS-004-DEV-011"], "v2") is None
     assert score_dev20.language_review(items["ARTEMIS-004-DEV-001"], "v1") is None
+
+
+def test_mission005e_notebook_is_pinned_and_runs_v2_once_per_suite():
+    import re as _re
+    text = (BOOT / "notebooks" / "artemis_mission005e_colab.ipynb").read_text(encoding="utf-8")
+    nb = json.loads(text)
+    meta = nb["metadata"]["waymaker_artemis"]
+    assert meta["execution_status"] == "not_reexecuted" and meta["contract_version"] == "v2"
+    assert _re.fullmatch(r"[0-9a-f]{40}", meta["code_commit"]) and f"CODE_COMMIT = '{meta['code_commit']}'" in text
+    assert "sparse-checkout set experiments/waymaker-ai backend/services" in text
+    assert text.count("'--contract', 'v2'") == 2 and "'--suite', 'synthetic'" in text
+    assert all(not c.get("outputs") for c in nb["cells"] if c["cell_type"] == "code")
+    assert "FREE_TIER_CONFIRMED = False" in text and "--branch" not in text
