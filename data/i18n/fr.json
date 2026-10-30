@@ -56,7 +56,7 @@
   "aiLink": "Demander plus de détails à l'IA",
   "scrollAria": "Faire défiler vers le bas",
   "reference": "Ce service fournit des informations à titre de référence, fondées sur des lois et des manuels publics ; il ne s'agit ni d'un conseil juridique, ni d'un service de représentation ou de démarche administrative. Confirmez toute décision finale auprès d'un bureau d'immigration et des étrangers, de HiKorea ou d'un professionnel qualifié.",
-  "brandHeroTitle": "Des statuts de séjour complexes,<br>vérifiés d'un seul coup d'œil.",
+  "brandHeroTitle": "Trouvez le statut de séjour adapté<br>à votre objectif et la procédure qu'il vous faut.",
   "brandHeroSubtitle": "Parcourez les statuts de séjour organisés par objectif et préparez la suite en vérifiant les sources.",
   "brandHeroStatsAria": "Statistiques des catégories de visa",
   "brandHeroButtons": [
@@ -86,7 +86,7 @@
     "<strong>Accès aux codes de profession et de secteur liés à l'emploi</strong><span lang=\"en\">Employment occupation &amp; industry codes</span>",
     "<strong>Orientation vers la vérification des sources officielles</strong><span lang=\"en\">Results with source-checking guidance</span>"
   ],
-  "pathwayTitle": "Avant le code de visa, regardez le parcours de vie.",
+  "pathwayTitle": "L'ordre des vérifications change selon votre objectif et le moment.",
   "pathwayCopy": "Un même statut de séjour peut exiger un ordre de vérifications différent selon l'objectif et le moment. Les parcours ci-dessous constituent un point de départ sûr menant aux résultats de recherche existants.",
   "pathwayAria": "Parcours de séjour par objectif",
   "pathwayTitles": [
@@ -132,7 +132,7 @@
     "Réentrée",
     "Départ"
   ],
-  "howTitle": "De la recherche à la vérification des sources officielles, en quatre étapes.",
+  "howTitle": "Recherche, comparaison, vérification des documents, vérification des sources officielles — en quatre étapes.",
   "howStepTitles": [
     "Rechercher",
     "Comparer",
@@ -183,7 +183,7 @@
     "Pour les démarches d'immigration et de séjour et l'orientation vers l'organisme compétent, consultez le canal d'assistance multilingue officiel."
   ],
   "manualNote": "Les liens des manuels ci-dessus renvoient vers les versions les plus récentes publiées par HiKorea (délivrance de visa 2026-06-17, séjour des étrangers 2026-06-23). L'orientation structurée à l'écran a été mise à jour à partir des extraits PDF officiels lisibles de juin 2026. Les documents supplémentaires et les modalités de dépôt peuvent varier selon la mission diplomatique ; vérifiez donc les avis de la mission coréenne compétente avant toute demande réelle. Visable est un service de référence indépendant, sans partenariat ni lien d'appartenance avec le ministère de la Justice, HiKorea, le portail des visas ou les missions diplomatiques.",
-  "toolsTitle": "Les outils utiles restent à portée du parcours.",
+  "toolsTitle": "Recherche du bureau compétent, recherche par code et rédaction de formulaires, au même endroit.",
   "toolsCopy": "Les outils déjà disponibles sont reliés aux fenêtres et à la recherche existantes ; les fonctions encore en préparation sont indiquées comme planifiées.",
   "toolCards": [
     "<h3>Trouver le bureau d'immigration compétent</h3><p>Vérifiez le bureau d'immigration et des étrangers compétent selon votre lieu de résidence.</p>",
@@ -282,7 +282,7 @@
     "Start exploring",
     "1345 Hotline"
   ],
-  "footerCtaTitle": "La gestion du séjour, autrefois si difficile,<br>se vérifie désormais facilement.",
+  "footerCtaTitle": "Le statut et la procédure qu'il vous faut —<br>vérifiez-les tout de suite par la recherche.",
   "footerCtaBody": "Visable organise par objectif les démarches de séjour complexes et les documents éparpillés. Confirmez la décision finale auprès de HiKorea, du 1345 ou du bureau d'immigration compétent.",
   "footerCtaButtons": [
     "Commencer la recherche",
@@ -1194,7 +1194,7 @@
   ],
   "resultTotalSuffix": "{count} au total",
   "heroMarquee": "VISABLE · Des informations éparses réunies en un seul endroit · RESIDENCE GUIDE · Une vie coréenne plus sereine · ",
-  "brandHeroKicker": "Coverage · Classification des statuts de séjour",
+  "brandHeroKicker": "Classification des statuts de séjour",
   "reminderKicker": "Rappels d'échéances",
   "reminderSectionTitle": "Nous vous prévenons à l'avance des dates importantes.",
   "reminderSectionCopy": "Si vous enregistrez une date, nous vous indiquons le nombre de jours restants à chaque visite de ce site, et vous pouvez l'enregistrer dans le calendrier de votre téléphone pour recevoir des rappels.",

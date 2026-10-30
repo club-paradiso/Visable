@@ -56,7 +56,7 @@
   "aiLink": "Preguntar a la IA con más detalle",
   "scrollAria": "Desplazarse hacia abajo",
   "reference": "Este servicio es una herramienta de información de referencia basada en leyes y manuales públicos, y no constituye asesoramiento legal ni gestión de trámites. La decisión final debe confirmarla con la oficina de inmigración y extranjería, HiKorea o un profesional cualificado.",
-  "brandHeroTitle": "Consulte de un vistazo<br>los complejos estatus de residencia.",
+  "brandHeroTitle": "Encuentre el estatus de residencia adecuado<br>a su propósito y el procedimiento que necesita.",
   "brandHeroSubtitle": "Examine los estatus de residencia organizados por propósito, verifique las fuentes y prepare el siguiente paso.",
   "brandHeroStatsAria": "Estadísticas de categorías de visado",
   "brandHeroButtons": [
@@ -86,7 +86,7 @@
     "<strong>Acceso a códigos de ocupación y sector para el empleo</strong><span lang=\"en\">Employment occupation &amp; industry codes</span>",
     "<strong>Guía para verificar las fuentes oficiales</strong><span lang=\"en\">Results with source-checking guidance</span>"
   ],
-  "pathwayTitle": "Antes que el código de visado, vea la ruta de su vida.",
+  "pathwayTitle": "El orden de las verificaciones cambia según su propósito y el momento.",
   "pathwayCopy": "Un mismo estatus de residencia puede requerir un orden de verificación distinto según el propósito y el momento. Las rutas siguientes son un punto de partida seguro que conduce a los resultados de búsqueda existentes.",
   "pathwayAria": "Rutas de residencia por propósito",
   "pathwayTitles": [
@@ -132,7 +132,7 @@
     "Reentrada",
     "Salida"
   ],
-  "howTitle": "De la búsqueda a la verificación de la fuente oficial, en cuatro pasos.",
+  "howTitle": "Búsqueda, comparación, revisión de documentos, verificación de fuentes oficiales — en cuatro pasos.",
   "howStepTitles": [
     "Buscar",
     "Comparar",
@@ -183,7 +183,7 @@
     "Cuando necesite atención sobre trámites de inmigración y estancia o conexión con el organismo competente, consulte el canal oficial de atención multilingüe."
   ],
   "manualNote": "Los enlaces a los manuales anteriores conducen a las versiones más recientes publicadas por HiKorea (emisión de visado 2026-06-17, estancia de extranjeros 2026-06-23). La orientación estructurada en pantalla actualizó sus fuentes con extractos legibles de los PDF oficiales de junio de 2026. Los documentos adicionales y la forma de presentación pueden variar según la misión diplomática, así que verifique el aviso de la misión competente antes de presentar la solicitud. Visable es un servicio de referencia sin relación de asociación ni pertenencia con el Ministerio de Justicia, HiKorea, el Portal de Visados ni las misiones diplomáticas.",
-  "toolsTitle": "Las herramientas necesarias, cerca del flujo de trabajo.",
+  "toolsTitle": "Buscador de oficina competente, búsqueda por código y redacción de formularios en un solo lugar.",
   "toolsCopy": "Las herramientas ya implementadas se conectan a los modales y a la búsqueda existentes; las funciones aún en preparación se marcan como planificadas.",
   "toolCards": [
     "<h3>Buscar la oficina de inmigración competente</h3><p>Comprueba la oficina de inmigración y extranjería competente según su lugar de residencia.</p>",
@@ -282,7 +282,7 @@
     "Empezar a explorar",
     "1345 Hotline"
   ],
-  "footerCtaTitle": "La gestión de la estancia, antes tan difícil,<br>ahora puede consultarse con facilidad.",
+  "footerCtaTitle": "El estatus y el procedimiento que necesita,<br>consúltelos de inmediato con la búsqueda.",
   "footerCtaBody": "Visable organiza por propósito la compleja administración de la estancia y los datos dispersos. La decisión final debe confirmarse con HiKorea, el 1345 o la oficina de inmigración competente.",
   "footerCtaButtons": [
     "Empezar la búsqueda",
@@ -1194,7 +1194,7 @@
   ],
   "resultTotalSuffix": "{count} en total",
   "heroMarquee": "VISABLE · La información dispersa, en un solo lugar · RESIDENCE GUIDE · Una vida inteligente en Corea · ",
-  "brandHeroKicker": "Coverage · Clasificación de estatus de residencia",
+  "brandHeroKicker": "Clasificación de estatus de residencia",
   "reminderKicker": "Avisos de plazos",
   "reminderSectionTitle": "Le avisamos de antemano de las fechas importantes.",
   "reminderSectionCopy": "Si guarda una fecha, cada vez que visite este sitio le mostraremos los días restantes, y podrá guardarla en el calendario del móvil para recibir avisos.",
