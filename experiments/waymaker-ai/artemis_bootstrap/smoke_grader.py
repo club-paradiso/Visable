@@ -30,6 +30,7 @@ EXPERIMENT_ROOT = Path(__file__).resolve().parents[1]
 if str(EXPERIMENT_ROOT) not in sys.path:
     sys.path.insert(0, str(EXPERIMENT_ROOT))
 from waymaker_ai.legal.injection import scan_flags  # noqa: E402
+from waymaker_ai.inference_input import project_inference_item
 
 CASES_PATH = Path(__file__).resolve().parent / "smoke_cases.json"
 STATUSES = ("answered", "partial", "insufficient_evidence", "conflict", "clarify")
@@ -97,6 +98,7 @@ def build_messages(case: Mapping[str, Any], guard: str = "off") -> List[Dict[str
     model; ``purpose`` and ``expect`` never do."""
     if guard not in GUARD_MODES:
         raise ValueError(f"guard must be one of {GUARD_MODES}, not {guard!r}")
+    case = project_inference_item(case)
     flagged = screen_evidence(case) if guard != "off" else {}
     blocks = []
     for e in case["evidence"]:

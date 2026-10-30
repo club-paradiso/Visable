@@ -5,7 +5,7 @@ Provides the technical foundation for future 100-item independently authored bli
 2. Separation of questions (blind projection) and answer keys (isolated ground truth).
 3. Contamination and revision tracking (ContaminationAuditor).
 4. Role-based evaluator access-control specifications (EvaluatorAccessControl).
-5. Cryptographically attested frozen dataset manifests.
+5. Content-hashed frozen manifests; no infrastructure or independence certification.
 
 CRITICAL GOVERNANCE RULES:
 1. NEVER automatically generate benchmark items and label them 'independently authored'.
@@ -26,6 +26,8 @@ from enum import Enum
 from pathlib import Path
 from typing import Any, Dict, List, Mapping, Optional, Sequence, Set, Tuple
 
+from .evaluation_isolation import isolation_verification_policy
+
 
 class EvaluatorRole(str, Enum):
     MODEL_RUNNER = "model_runner"           # Read-only access to blind question projection
@@ -35,10 +37,11 @@ class EvaluatorRole(str, Enum):
 
 
 class ContaminationRisk(str, Enum):
-    CLEAN = "clean"                         # No significant overlap with public corpus
-    LOW = "low"                             # Common statutory boilerplate overlap (<20%)
-    SUSPECTED = "suspected"                 # High overlap with known public training items (>50%)
-    CONTAMINATED = "contaminated"           # Exact duplicate of public test item
+    UNKNOWN = "unknown"                     # No usable comparison or input
+    CLEAN = "clean"                         # No significant lexical overlap in supplied corpus only
+    LOW = "low"                             # Lexical overlap >=20% and <50%
+    SUSPECTED = "suspected"                 # Lexical overlap >=50% and <80%
+    CONTAMINATED = "contaminated"           # Lexical overlap >=80%; not proof of exact duplication
 
 
 @dataclass(frozen=True)
@@ -109,7 +112,7 @@ def compute_sha256(data: Any) -> str:
 
 
 class BlindBenchmarkPartitionManager:
-    """Manages separation of blind questions and isolated answer keys."""
+    """Projects separate data views; does not enforce filesystem/process isolation."""
 
     @staticmethod
     def project_blind(items: Sequence[BenchmarkSubmissionItem]) -> List[Dict[str, Any]]:
@@ -149,57 +152,80 @@ class BlindBenchmarkPartitionManager:
         key_hash = compute_sha256(keys)
 
         return {
-            "manifest_version": "artemis-frozen-manifest/1.0",
+            "manifest_version": "artemis-frozen-manifest/1.1",
             "benchmark_id": benchmark_id,
             "created_at": dt.datetime.now(dt.timezone.utc).isoformat(),
             "total_items": len(items),
             "blind_partition_sha256": blind_hash,
             "key_partition_sha256": key_hash,
-            "isolation_protocol": "air_gapped_blind_projection",
+            "isolation_protocol": "blind_projection_only",
+            **isolation_verification_policy(),
+            "author_attestations_authenticated": False,
             "governance_notice": (
-                "Blind partition contains only question and context. "
-                "Key partition must only be decrypted inside ephemeral grading sandbox."
+                "Hashes bind content only. No air gap, authenticated author identity or key custody is verified. "
+                "Role strings and self-attested signatures do not establish independent isolation. "
+                "External enforcement and trusted verification are required before promoting this status."
             ),
         }
 
 
 class ContaminationAuditor:
-    """Audits benchmark candidates against known public corpora to detect potential leakage."""
+    """Screens candidates against the supplied corpus, with explicit coverage limits."""
 
-    def __init__(self, reference_corpus: Sequence[str]):
-        self._reference_corpus = [unicodedata.normalize("NFC", t).lower() for t in reference_corpus if t]
+    def __init__(self, reference_corpus: Sequence[str], corpus_id: Optional[str] = None):
+        supplied = list(reference_corpus)
+        self._reference_corpus = [unicodedata.normalize("NFC", t).lower() for t in supplied if isinstance(t, str)]
+        self._reference_tokens = [self._tokens(t) for t in self._reference_corpus]
+        self._usable_tokens = [tokens for tokens in self._reference_tokens if tokens]
+        self._supplied_count = len(supplied)
+        self._corpus_sha256 = compute_sha256(supplied)
+        self._corpus_id = corpus_id or f"content-sha256:{self._corpus_sha256}"
 
-    def check_item_contamination(self, question: str, answer_key: str) -> Tuple[ContaminationRisk, float, str]:
-        """Calculates token overlap between submission and reference corpus."""
-        combined = f"{question} {answer_key}".lower()
-        tokens = set(re.findall(r"\b\w{2,}\b", combined))
-        if not tokens:
-            return ContaminationRisk.CLEAN, 0.0, "No lexical tokens to analyze"
+    @staticmethod
+    def _tokens(text: str) -> Set[str]:
+        return set(re.findall(r"\b\w{2,}\b", unicodedata.normalize("NFC", text).lower()))
 
-        max_overlap = 0.0
-        matched_sample = ""
-        for ref in self._reference_corpus:
-            ref_tokens = set(re.findall(r"\b\w{2,}\b", ref))
-            if not ref_tokens:
-                continue
-            common = tokens.intersection(ref_tokens)
-            overlap = len(common) / len(tokens)
-            if overlap > max_overlap:
-                max_overlap = overlap
-                matched_sample = ref[:80]
+    def check_item_report(self, question: str, answer_key: str) -> Dict[str, Any]:
+        """Scoped lexical screening, never proof of independence or model training exposure."""
+        report = {
+            "report_version": "artemis-contamination-screen/1.1",
+            "risk": ContaminationRisk.UNKNOWN.value, "score": None,
+            "corpus_id": self._corpus_id, "corpus_sha256": self._corpus_sha256,
+            "reference_documents_supplied": self._supplied_count,
+            "reference_documents_analyzed": len(self._usable_tokens),
+            "scope": "question_and_answer_key_against_supplied_corpus",
+            "method": "max_unique_token_overlap; NFC/lowercase; unicode word tokens length >= 2",
+            "thresholds": {"contaminated": 0.8, "suspected": 0.5, "low": 0.2},
+            "independence_verified": False,
+            "limitations": [
+                "Only supplied corpus entries are searched; absent/private training corpora are not covered",
+                "Lexical overlap misses paraphrase/semantic leakage and can flag shared statutory wording",
+                "Token overlap is a heuristic, not proof of exact duplication, independence or legal correctness",
+            ],
+        }
+        if not self._usable_tokens:
+            report["description"] = "UNKNOWN: no analyzable reference corpus"
+            return report
+        if (not isinstance(question, str) or not isinstance(answer_key, str)
+                or not self._tokens(question) or not self._tokens(answer_key)):
+            report["description"] = "UNKNOWN: question or answer key has no analyzable text"
+            return report
+        tokens = self._tokens(f"{question} {answer_key}")
+        overlap = max(len(tokens & ref) / len(tokens) for ref in self._usable_tokens)
+        risk = (ContaminationRisk.CONTAMINATED if overlap >= 0.8 else ContaminationRisk.SUSPECTED
+                if overlap >= 0.5 else ContaminationRisk.LOW if overlap >= 0.2 else ContaminationRisk.CLEAN)
+        report.update(risk=risk.value, score=overlap,
+                      description=f"{risk.value}: lexical overlap in supplied corpus only; not an isolation certification")
+        return report
 
-        if max_overlap >= 0.8:
-            return ContaminationRisk.CONTAMINATED, max_overlap, f"Near exact duplicate of: {matched_sample}"
-        elif max_overlap >= 0.5:
-            return ContaminationRisk.SUSPECTED, max_overlap, f"Substantial overlap with: {matched_sample}"
-        elif max_overlap >= 0.2:
-            return ContaminationRisk.LOW, max_overlap, "Normal statutory boilerplate overlap"
-        else:
-            return ContaminationRisk.CLEAN, max_overlap, "No significant overlap detected"
+    def check_item_contamination(self, question: str, answer_key: str) -> Tuple[ContaminationRisk, Optional[float], str]:
+        """Compatibility view. Persist check_item_report for corpus provenance and limitations."""
+        report = self.check_item_report(question, answer_key)
+        return ContaminationRisk(report["risk"]), report["score"], report["description"]
 
 
 class EvaluatorAccessController:
-    """Enforces access control policies for blind benchmark artifacts."""
+    """Declarative role policy only: no identity, OS ACL or sandbox is enforced here."""
 
     @staticmethod
     def authorize_read(role: EvaluatorRole, partition: str) -> bool:

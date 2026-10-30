@@ -47,7 +47,7 @@ if str(BOOTSTRAP_DIR) not in sys.path:
     sys.path.insert(0, str(BOOTSTRAP_DIR))
 
 sys.path.insert(0, str(EXPERIMENT_ROOT))
-from waymaker_ai import foundation
+from waymaker_ai import foundation, inference_input
 import gemma4_runtime
 import artemis_eval  # noqa: E402
 from artemis_eval import ArtemisItemScore, SuiteSummary
@@ -442,7 +442,7 @@ class LocalModelAdapter(BaseModelAdapter):
             return ModelResponse(status="error", answer="", error=f"Local model not executed: {reason}")
         request = {"profile": self.profile, "snapshot": str(self._find_snapshot_path()),
                    "max_tokens": self.max_tokens, "temperature": self.temperature,
-                   "item": {"question": item.get("question", ""), "evidence": item.get("evidence", [])}}
+                   "item": inference_input.project_inference_item(item)}
         start = time.perf_counter()
         try:
             result = subprocess.run(
@@ -907,7 +907,7 @@ class ArtemisEvaluationRunner:
             "model_metadata": summary.model_metadata,
             "metric_group": (foundation.metric_group(summary.model_metadata)
                              if summary.model_metadata.get("inference_kind") != "real_inference"
-                             or summary.model_metadata.get("checkpoint_metadata_verified") else None),
+                             or summary.model_metadata.get("checkpoint_integrity_verified") else None),
             "file_digests": {
                 "run_summary.json": hashlib.sha256(summary_bytes).hexdigest(),
                 "error_summary.csv": hashlib.sha256(csv_path.read_bytes()).hexdigest(),
@@ -915,6 +915,7 @@ class ArtemisEvaluationRunner:
                 "runner_code": hashlib.sha256(runner_file.read_bytes()).hexdigest(),
                 "runtime_code": hashlib.sha256((BOOTSTRAP_DIR / "gemma4_runtime.py").read_bytes()).hexdigest(),
                 "foundation_code": hashlib.sha256(Path(foundation.__file__).read_bytes()).hexdigest(),
+                "inference_input_code": hashlib.sha256(Path(inference_input.__file__).read_bytes()).hexdigest(),
             }
         }
         manifest_path.write_text(json.dumps(manifest_data, indent=2, ensure_ascii=False), encoding="utf-8")

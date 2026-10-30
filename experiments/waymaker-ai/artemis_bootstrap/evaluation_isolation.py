@@ -29,6 +29,9 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Set, Tuple
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from waymaker_ai.inference_input import project_evidence
+
 BOOTSTRAP_DIR = Path(__file__).resolve().parent
 EXPERIMENT_ROOT = BOOTSTRAP_DIR.parent
 BENCHMARKS_DIR = BOOTSTRAP_DIR / "benchmarks"
@@ -81,21 +84,7 @@ def project_blind_item(item: Dict[str, Any], include_evidence_for_rag: bool = Tr
     }
 
     if include_evidence_for_rag and "evidence" in item:
-        # Provide evidence text and citation ID, but strip approval state or review status
-        blind_evidence = []
-        for ev in item.get("evidence", []):
-            blind_evidence.append({
-                "id": ev.get("id"),
-                "title": ev.get("title"),
-                "text": ev.get("text"),
-                "source": {
-                    "document_id": ev.get("source", {}).get("document_id"),
-                    "provision": ev.get("source", {}).get("provision"),
-                    "effective_date": ev.get("source", {}).get("effective_date"),
-                    "source_url": ev.get("source", {}).get("source_url"),
-                }
-            })
-        blind["evidence"] = blind_evidence
+        blind["evidence"] = [project_evidence(ev) for ev in item.get("evidence", [])]
 
     return blind
 
@@ -188,12 +177,38 @@ def verify_benchmark_partitions(
     }
 
 
+def isolation_verification_policy() -> Dict[str, Any]:
+    """No trusted infrastructure verifier is connected; declarations cannot promote.
+
+    Future verification must be bound to a frozen manifest and a particular run,
+    independently authenticated, revocable and outside the runner's control.
+    A caller-supplied flag, role, signature digest or hash cannot satisfy it.
+    """
+    return {
+        "isolation_status": "isolation_not_verified",
+        "clean_room_verified": False,
+        "isolation_evidence": [],
+        "trusted_isolation_verifier_connected": False,
+        "required_verification_evidence": [
+            "Externally enforced identities/ACLs denying runner and developer access to answer keys",
+            "Independent key custody, isolated grader and denied-access tests including inherited mounts/network",
+            "Authenticated infrastructure audit and immutable access logs bound to partition hashes and run ID",
+            "Independent verification authority, validity period and revocation/incident procedure",
+        ],
+        "isolation_transitions": {
+            "isolation_not_verified -> isolation_verified":
+                "Only after a separately reviewed trusted verifier validates all run-bound external evidence; unsupported here",
+            "isolation_verified -> isolation_not_verified":
+                "Any access-control drift, expired/revoked evidence or leakage incident invalidates verification",
+        },
+    }
+
+
 def get_environment_isolation_audit() -> Dict[str, Any]:
     """Assesses whether the execution environment provides true blind isolation."""
     # Check if we are running in an unisolated local dev workspace
     return {
-        "isolation_status": "isolation_not_verified",
-        "clean_room_verified": False,
+        **isolation_verification_policy(),
         "environment_type": "local_development_workspace",
         "heldout_blind_integrity": "compromised_by_repo_visibility",
         "warning": (

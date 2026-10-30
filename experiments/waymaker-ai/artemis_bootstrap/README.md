@@ -10,6 +10,11 @@ loading and generation **not executed** on this M1 8GB machine. The runtime is
 missing and disk/swap limits block loading. This is not a Gemma 4 accuracy result.
 Official Gold Accuracy = **N/A**. No training, deployment or PR merge occurred.
 
+Post-audit hardening, 2026-10-30: full cached E4B SHA-256 verification completed;
+new inference remains `not_executed` because MLX-VLM is missing. See the
+[PR #726 hardening report](PR-726-POST-AUDIT-HARDENING.ko.md) for the four audit
+fixes, regression evidence and the 78-file review scope.
+
 ## Run and verify
 
 From `experiments/waymaker-ai`, with a Python environment containing pytest and

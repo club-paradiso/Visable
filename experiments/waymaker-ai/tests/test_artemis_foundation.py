@@ -35,6 +35,10 @@ def synthetic_snapshot(tmp_path, name="gemma4_e4b"):
     (path / "model.safetensors").write_bytes(b"synthetic-not-weights")
     (path / "tokenizer.json").write_text("{}")
     (path / "model.safetensors.index.json").write_text(json.dumps({"weight_map": {"synthetic": "model.safetensors"}}))
+    selected["artifact_integrity"] = {"reference_source": "synthetic-fixture", "files": {
+        name: {"algorithm": "sha256", "digest": hashlib.sha256((path / name).read_bytes()).hexdigest(),
+               "size_bytes": (path / name).stat().st_size}
+        for name in ("tokenizer.json", "model.safetensors.index.json", "model.safetensors")}}
     return path, selected
 
 
@@ -110,7 +114,8 @@ def real_meta(profile):
     selected = foundation.profile(profile)
     return {"inference_kind": "real_inference", "profile": profile, "runtime": "mlx_vlm",
             "model_name": selected["inference_checkpoint"], "model_revision": selected["inference_revision"],
-            "checkpoint_metadata_verified": True}
+            "checkpoint_metadata_verified": True, "checkpoint_integrity_verified": True,
+            "weight_integrity": "sha256_verified"}
 
 
 def test_e2b_requires_explicit_profile_and_has_separate_metrics():

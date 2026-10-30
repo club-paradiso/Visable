@@ -57,7 +57,30 @@
       },
       "upstream_license": "apache-2.0",
       "conversion_card_license": "gemma",
-      "license_discrepancy": "Unresolved: do not assume the conversion card licenses equal the upstream license."
+      "license_discrepancy": "Unresolved: do not assume the conversion card licenses equal the upstream license.",
+      "artifact_integrity": {
+        "reference_source": "https://huggingface.co/api/models/mlx-community/gemma-4-e4b-it-4bit/revision/475b9088d29754a3379866cf5aeb6b41acd313c2?blobs=true",
+        "reference_checked_on": "2026-10-30",
+        "files": {
+          "model.safetensors": {
+            "algorithm": "sha256",
+            "digest": "932b8271fc3fe65adcc78b96c10c6268bbfb13e8f67d1358727c0d6ee97e1eff",
+            "size_bytes": 5146800534
+          },
+          "model.safetensors.index.json": {
+            "algorithm": "sha256",
+            "digest": "f8accac59ee7efe87e0c298c854610b262c3cadd477407503147c71209ff0093",
+            "size_bytes": 240961,
+            "upstream_git_blob_id": "c03ce5f7086b735345038501f731634de064493b",
+            "sha256_reference_url": "https://huggingface.co/mlx-community/gemma-4-e4b-it-4bit/resolve/475b9088d29754a3379866cf5aeb6b41acd313c2/model.safetensors.index.json"
+          },
+          "tokenizer.json": {
+            "algorithm": "sha256",
+            "digest": "cc8d3a0ce36466ccc1278bf987df5f71db1719b9ca6b4118264f45cb627bfe0f",
+            "size_bytes": 32169626
+          }
+        }
+      }
     },
     "gemma4_e2b": {
       "family": "gemma-4",
@@ -94,7 +117,30 @@
       },
       "upstream_license": "apache-2.0",
       "conversion_card_license": "gemma",
-      "license_discrepancy": "Unresolved: do not assume the conversion card licenses equal the upstream license."
+      "license_discrepancy": "Unresolved: do not assume the conversion card licenses equal the upstream license.",
+      "artifact_integrity": {
+        "reference_source": "https://huggingface.co/api/models/mlx-community/gemma-4-e2b-it-4bit/revision/238767527555cb75a05732a84dff5d6ba0dd6809?blobs=true",
+        "reference_checked_on": "2026-10-30",
+        "files": {
+          "model.safetensors": {
+            "algorithm": "sha256",
+            "digest": "038e39a37a7667373d2c3991375446b10c96ae1d717a68674870343db376b76e",
+            "size_bytes": 3550670554
+          },
+          "model.safetensors.index.json": {
+            "algorithm": "sha256",
+            "digest": "edb157dbf495e23f37377af4a628a9ad13c4ee7937f93ccb36ec9e9a19940f16",
+            "size_bytes": 218323,
+            "upstream_git_blob_id": "b145d4f0cf82ffc8c1f9bef70da4b4083646382d",
+            "sha256_reference_url": "https://huggingface.co/mlx-community/gemma-4-e2b-it-4bit/resolve/238767527555cb75a05732a84dff5d6ba0dd6809/model.safetensors.index.json"
+          },
+          "tokenizer.json": {
+            "algorithm": "sha256",
+            "digest": "cc8d3a0ce36466ccc1278bf987df5f71db1719b9ca6b4118264f45cb627bfe0f",
+            "size_bytes": 32169626
+          }
+        }
+      }
     }
   }
 }

@@ -23,6 +23,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from waymaker_ai import foundation
+from waymaker_ai.inference_input import project_inference_item
 
 PACKAGES = ("mlx", "mlx-metal", "mlx-vlm", "transformers", "tokenizers", "huggingface-hub")
 
@@ -85,9 +86,7 @@ def probe() -> dict:
 
 
 def build_messages(item: dict) -> list[dict]:
-    # Project only question and evidence; never include expected answers/rubrics.
-    evidence = [{"id": e.get("id"), "text": e.get("text", ""), "source": e.get("source", {})}
-                for e in item.get("evidence", [])]
+    projected = project_inference_item(item)
     return [
         {"role": "system", "content": (
             "You are Waymaker Artemis. Answer Korean immigration questions in Korean using only "
@@ -96,8 +95,7 @@ def build_messages(item: dict) -> list[dict]:
             'Return only JSON with keys status, answer, citations. status must be answered, partial, '
             'insufficient_evidence, conflict or clarify. citations must be an array of evidence IDs. '
             "No markdown and no reasoning trace.")},
-        {"role": "user", "content": json.dumps({"question": item.get("question", ""),
-                                                   "evidence": evidence}, ensure_ascii=False)},
+        {"role": "user", "content": json.dumps(projected, ensure_ascii=False)},
     ]
 
 

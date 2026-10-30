@@ -23,6 +23,7 @@ EXCEPTIONS = {
     "tests/test_artemis_foundation.py": "Explicit rejection tests",
     "artemis_bootstrap/check_model_identity.py": "Guard pattern itself",
     "artemis_bootstrap/WAYMAKER-ARTEMIS-LOCAL-CLEANUP-MANIFEST.json": "Recovery inventory and historical paths",
+    "artemis_bootstrap/PR-726-REVIEW-COVERAGE.json": "Post-audit review inventory of the exact 78 baseline PR paths",
 }
 
 
@@ -58,6 +59,13 @@ def audit(root: Path = ROOT) -> dict:
             violations.append(f"{name}: missing canonical profile selection")
         if "from mlx_lm import" in text:
             violations.append(f"{name}: legacy runtime selection")
+    judge = (root / "artemis_bootstrap" / "flip_judge.py")
+    if judge.exists():
+        text = judge.read_text()
+        if "LocalModelAdapter" not in text or "project_inference_item" not in text:
+            violations.append("flip_judge.py: missing shared model/input preflight")
+        if "snapshot_download" in text or "from mlx_lm import" in text:
+            violations.append("flip_judge.py: unguarded legacy loader")
     return {"status": "FAIL" if violations else "PASS", "checked_files": checked,
             "violations": violations, "permitted_mentions": permitted}
 

@@ -102,7 +102,9 @@ def test_frozen_manifest_generation(sample_submission):
     assert manifest["total_items"] == 1
     assert "blind_partition_sha256" in manifest
     assert "key_partition_sha256" in manifest
-    assert manifest["isolation_protocol"] == "air_gapped_blind_projection"
+    assert manifest["isolation_protocol"] == "blind_projection_only"
+    assert manifest["isolation_status"] == "isolation_not_verified"
+    assert manifest["clean_room_verified"] is False
 
 
 def test_contamination_auditor_detects_duplicates():
