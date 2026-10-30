@@ -1,0 +1,15 @@
+case_id,dimension,failure_code,detail
+ARTEMIS-004-DEV-002,procedural_integrity,unnecessary_clarification,unnecessary_clarification:expected_direct_action
+ARTEMIS-004-DEV-002,abstention_appropriateness,disallowed_status,disallowed_status:clarify not in answered
+ARTEMIS-004-DEV-003,source_fidelity,required_fact_missing,required_fact_missing:D-2-1은 전문학사
+ARTEMIS-004-DEV-004,source_fidelity,required_fact_missing,required_fact_missing:E-7-1은 전문인력
+ARTEMIS-004-DEV-006,source_fidelity,required_fact_missing,required_fact_missing:결핵 고위험국가
+ARTEMIS-004-DEV-009,source_fidelity,required_fact_missing,required_fact_missing:할 수 없
+ARTEMIS-004-DEV-009,source_fidelity,required_fact_missing,required_fact_missing:청소년유해업소
+ARTEMIS-004-DEV-011,source_fidelity,required_fact_missing,required_fact_missing:prior permission
+ARTEMIS-004-DEV-011,source_fidelity,required_fact_missing,required_fact_missing:competent immigration office
+ARTEMIS-004-DEV-011,source_fidelity,required_fact_missing,required_fact_missing:illegal employment
+ARTEMIS-004-DEV-020,citation_accuracy,unlisted_citations,unlisted_citations:EV-DEV-020-CHAT
+ARTEMIS-004-DEV-020,citation_accuracy,forbidden_citations,forbidden_citations:EV-DEV-020-CHAT
+ARTEMIS-004-DEV-020,citation_accuracy,unapproved_citations,unapproved_citations:EV-DEV-020-CHAT
+ARTEMIS-004-DEV-020,abstention_appropriateness,disallowed_status,disallowed_status:conflict not in answered

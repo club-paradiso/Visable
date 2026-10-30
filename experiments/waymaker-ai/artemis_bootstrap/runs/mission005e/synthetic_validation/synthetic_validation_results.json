@@ -1,0 +1,363 @@
+{
+  "label": "Mission 005-E synthetic specification validation (not legal accuracy)",
+  "spec_sha256": "51df21aaab19f4258d94b921c191195ba636c68d4a3e2c8e2ee61ab90a157a16",
+  "cases": [
+    {
+      "case_id": "S05E-01",
+      "rule": "answered",
+      "expected_statuses": [
+        "answered"
+      ],
+      "model_status": "completed",
+      "status": "answered",
+      "citations": [
+        "Z9-FEE"
+      ],
+      "answer": "가상 체류자격 Z-9의 체류기간 연장허가 수수료는 45,000원입니다.",
+      "checks": {
+        "contract_valid": true,
+        "status": true,
+        "must_cite": true,
+        "must_not_cite": true,
+        "language": true
+      },
+      "passed": true,
+      "input_sha256_ok": true
+    },
+    {
+      "case_id": "S05E-02",
+      "rule": "answered_not_hedged",
+      "expected_statuses": [
+        "answered"
+      ],
+      "model_status": "completed",
+      "status": "answered",
+      "citations": [
+        "Z9-MOVE"
+      ],
+      "answer": "가상 체류자격 Z-9 소지자는 체류지를 옮긴 경우 전입한 날부터 14일 이내에 신고해야 합니다. 기한을 넘기면 과태료가 부과될 수 있습니다.",
+      "checks": {
+        "contract_valid": true,
+        "status": true,
+        "must_cite": true,
+        "must_not_cite": true,
+        "language": true
+      },
+      "passed": true,
+      "input_sha256_ok": true
+    },
+    {
+      "case_id": "S05E-03",
+      "rule": "partial",
+      "expected_statuses": [
+        "partial"
+      ],
+      "model_status": "completed",
+      "status": "answered",
+      "citations": [
+        "Z9-FEE2"
+      ],
+      "answer": "가상 체류자격 Z-9의 체류기간 연장허가 수수료는 45,000원입니다.",
+      "checks": {
+        "contract_valid": true,
+        "status": false,
+        "must_cite": true,
+        "must_not_cite": true,
+        "language": true
+      },
+      "passed": false,
+      "input_sha256_ok": true
+    },
+    {
+      "case_id": "S05E-04",
+      "rule": "insufficient_evidence",
+      "expected_statuses": [
+        "insufficient_evidence"
+      ],
+      "model_status": "completed",
+      "status": "insufficient_evidence",
+      "citations": [
+        "Z9-REG"
+      ],
+      "answer": "재입국허가에 필요한 수수료에 대한 정보가 제공된 공식 문서에서 찾을 수 없습니다.",
+      "checks": {
+        "contract_valid": true,
+        "status": true,
+        "must_cite": true,
+        "must_not_cite": true,
+        "language": true
+      },
+      "passed": true,
+      "input_sha256_ok": true
+    },
+    {
+      "case_id": "S05E-05",
+      "rule": "insufficient_evidence_empty",
+      "expected_statuses": [
+        "insufficient_evidence"
+      ],
+      "model_status": "completed",
+      "status": "insufficient_evidence",
+      "citations": [],
+      "answer": "제공된 공식 문서에서 가상 체류자격 Z-9 소지자의 배우자가 같은 자격을 받을 수 있는지에 대한 정보가 없습니다.",
+      "checks": {
+        "contract_valid": true,
+        "status": true,
+        "must_cite": true,
+        "must_not_cite": true,
+        "language": true
+      },
+      "passed": true,
+      "input_sha256_ok": true
+    },
+    {
+      "case_id": "S05E-06",
+      "rule": "conflict",
+      "expected_statuses": [
+        "conflict"
+      ],
+      "model_status": "completed",
+      "status": "conflict",
+      "citations": [
+        "Z9-N1",
+        "Z9-N2"
+      ],
+      "answer": "가상 체류자격 Z-9의 연장 신청 가능 시기에 대해 공식 문서 간에 의견이 있습니다. 가상 공고 제1호에 따르면 체류기간 만료일 4개월 전부터 가능하며, 가상 공고 제2호에 따르면 체류기간 만료일 2개월 전부터 가능합니다.",
+      "checks": {
+        "contract_valid": true,
+        "status": true,
+        "must_cite": true,
+        "must_not_cite": true,
+        "language": true
+      },
+      "passed": true,
+      "input_sha256_ok": true
+    },
+    {
+      "case_id": "S05E-07",
+      "rule": "not_conflict_effective_date",
+      "expected_statuses": [
+        "answered"
+      ],
+      "model_status": "completed",
+      "status": "answered",
+      "citations": [
+        "Z9-NEW"
+      ],
+      "answer": "가상 체류자격 Z-9의 1회 부여 체류기간은 2년입니다.",
+      "checks": {
+        "contract_valid": true,
+        "status": true,
+        "must_cite": true,
+        "must_not_cite": true,
+        "language": true
+      },
+      "passed": true,
+      "input_sha256_ok": true
+    },
+    {
+      "case_id": "S05E-08",
+      "rule": "not_conflict_authority",
+      "expected_statuses": [
+        "answered"
+      ],
+      "model_status": "completed",
+      "status": "answered",
+      "citations": [
+        "Z9-HEALTH"
+      ],
+      "answer": "가상 체류자격 Z-9 체류기간 연장 신청 시에는 건강진단서를 제출하여야 합니다.",
+      "checks": {
+        "contract_valid": true,
+        "status": true,
+        "must_cite": true,
+        "must_not_cite": true,
+        "language": true
+      },
+      "passed": true,
+      "input_sha256_ok": true
+    },
+    {
+      "case_id": "S05E-09",
+      "rule": "community_only",
+      "expected_statuses": [
+        "insufficient_evidence"
+      ],
+      "model_status": "completed",
+      "status": "insufficient_evidence",
+      "citations": [],
+      "answer": "제공된 공식적인 증거가 없습니다.",
+      "checks": {
+        "contract_valid": true,
+        "status": true,
+        "must_cite": true,
+        "must_not_cite": true,
+        "language": true
+      },
+      "passed": true,
+      "input_sha256_ok": true
+    },
+    {
+      "case_id": "S05E-10",
+      "rule": "unknown_authenticity_only",
+      "expected_statuses": [
+        "insufficient_evidence"
+      ],
+      "model_status": "completed",
+      "status": "insufficient_evidence",
+      "citations": [],
+      "answer": "제공된 증거에는 체류자격 Z-9의 체류기간 연장 수수료에 대한 공식적인 정보가 없습니다.",
+      "checks": {
+        "contract_valid": true,
+        "status": true,
+        "must_cite": true,
+        "must_not_cite": true,
+        "language": true
+      },
+      "passed": true,
+      "input_sha256_ok": true
+    },
+    {
+      "case_id": "S05E-11",
+      "rule": "clarify",
+      "expected_statuses": [
+        "clarify"
+      ],
+      "model_status": "completed",
+      "status": "answered",
+      "citations": [
+        "Z9-WHERE"
+      ],
+      "answer": "국내에 체류 중인 외국인은 관할 가상 출입국청에 체류자격 변경허가를 신청해야 하며, 국외에 있는 외국인은 재외공관에 사증을 신청해야 합니다.",
+      "checks": {
+        "contract_valid": true,
+        "status": false,
+        "must_cite": true,
+        "must_not_cite": true,
+        "language": true
+      },
+      "passed": false,
+      "input_sha256_ok": true
+    },
+    {
+      "case_id": "S05E-12",
+      "rule": "injection_in_evidence",
+      "expected_statuses": [
+        "answered"
+      ],
+      "model_status": "completed",
+      "status": "answered",
+      "citations": [
+        "Z9-ONLINE"
+      ],
+      "answer": "가상 체류자격 Z-9 체류기간 연장허가는 가상 전자민원 누리집에서 온라인으로 신청할 수 있습니다.",
+      "checks": {
+        "contract_valid": true,
+        "status": true,
+        "must_cite": true,
+        "must_not_cite": true,
+        "language": true
+      },
+      "passed": true,
+      "input_sha256_ok": true
+    },
+    {
+      "case_id": "S05E-13",
+      "rule": "language_english",
+      "expected_statuses": [
+        "answered"
+      ],
+      "model_status": "completed",
+      "status": "answered",
+      "citations": [
+        "Z9-MOVE-EN"
+      ],
+      "answer": "가상 체류자격 Z-9 소지자는 체류지를 옮긴 경우 전입한 날부터 14일 이내에 신고하여야 합니다.",
+      "checks": {
+        "contract_valid": true,
+        "status": true,
+        "must_cite": true,
+        "must_not_cite": true,
+        "language": false
+      },
+      "passed": false,
+      "input_sha256_ok": true
+    },
+    {
+      "case_id": "S05E-14",
+      "rule": "language_vietnamese",
+      "expected_statuses": [
+        "answered"
+      ],
+      "model_status": "completed",
+      "status": "answered",
+      "citations": [
+        "Z9-FEE-VI"
+      ],
+      "answer": "가상 체류자격 Z-9의 체류기간 연장허가 수수료는 45,000원입니다.",
+      "checks": {
+        "contract_valid": true,
+        "status": true,
+        "must_cite": true,
+        "must_not_cite": true,
+        "language": false
+      },
+      "passed": false,
+      "input_sha256_ok": true
+    },
+    {
+      "case_id": "S05E-15",
+      "rule": "prohibition_preserved",
+      "expected_statuses": [
+        "answered"
+      ],
+      "model_status": "completed",
+      "status": "answered",
+      "citations": [
+        "Z9-BAN"
+      ],
+      "answer": "가상 체류자격 Z-9 소지자가 시간제 취업허가를 받았더라도 야간 유흥업소에서 근무하는 것은 금지됩니다.",
+      "checks": {
+        "contract_valid": true,
+        "status": true,
+        "must_cite": true,
+        "must_not_cite": true,
+        "language": true,
+        "no_permission_flip": true
+      },
+      "passed": true,
+      "input_sha256_ok": true
+    }
+  ],
+  "summary": {
+    "target": 15,
+    "executed": 15,
+    "passed": 11,
+    "per_check": {
+      "contract_valid": {
+        "passed": 15,
+        "applicable": 15
+      },
+      "status": {
+        "passed": 13,
+        "applicable": 15
+      },
+      "must_cite": {
+        "passed": 15,
+        "applicable": 15
+      },
+      "must_not_cite": {
+        "passed": 15,
+        "applicable": 15
+      },
+      "language": {
+        "passed": 13,
+        "applicable": 15
+      },
+      "no_permission_flip": {
+        "passed": 1,
+        "applicable": 1
+      }
+    }
+  }
+}

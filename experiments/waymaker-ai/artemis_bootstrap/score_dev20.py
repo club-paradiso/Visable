@@ -281,10 +281,12 @@ def score_synthetic(out_dir: Path) -> dict:
             "spec_sha256": spec_sha, "cases": rows,
             "summary": {"target": len(rows), "executed": executed,
                         "passed": sum(1 for r in rows if r["passed"]),
-                        "per_check": {k: sum(1 for r in rows if r["checks"].get(k)) for k in rows[0]["checks"]} if rows else {}}}
+                        "per_check": {k: {"passed": sum(1 for r in rows if r["checks"].get(k)),
+                                          "applicable": sum(1 for r in rows if k in r["checks"])}
+                                      for k in dict.fromkeys(k for r in rows for k in r["checks"])}}}
 
 
-def write_artifacts(out_dir: Path, result: dict) -> None:
+def write_artifacts(out_dir: Path, result: dict, mission: str = "005-D") -> None:
     def dump(name, value):
         (out_dir / name).write_text(json.dumps(value, ensure_ascii=False, indent=2, default=str) + "\n", encoding="utf-8")
     s0 = result["sessions"][0] if result["sessions"] else {}
@@ -295,7 +297,7 @@ def write_artifacts(out_dir: Path, result: dict) -> None:
     dump("evaluation_integrity.json", result["integrity"])
     dump("checkpoint_provenance.json", {"sessions": [{k: s.get(k) for k in ("session_id", "provenance", "load", "environment", "reproduction_pins_matched")} for s in result["sessions"]]})
     dump("execution_manifest.json", {
-        "mission": "005-D", "label": "Development Candidate Diagnostic Performance",
+        "mission": mission, "label": "Development Candidate Diagnostic Performance",
         "benchmark": "artemis_bootstrap/benchmarks/artemis_eval_dev_20.json",
         "dataset_sha256": result["integrity"]["dataset_sha256"], "target_cases": len(result["cases"]),
         "model": (s0.get("metadata") or {}).get("model_name"), "revision": (s0.get("metadata") or {}).get("model_revision"),
@@ -316,9 +318,20 @@ def write_artifacts(out_dir: Path, result: dict) -> None:
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--out-dir", type=Path, required=True)
+    parser.add_argument("--mission", default="005-D")
+    parser.add_argument("--label", default=None)
+    parser.add_argument("--synthetic", action="store_true")
     args = parser.parse_args(argv)
+    if args.synthetic:
+        result = score_synthetic(args.out_dir)
+        (args.out_dir / "synthetic_validation_results.json").write_text(
+            json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        print(json.dumps(result["summary"], ensure_ascii=False))
+        return 0
     result = score(args.out_dir)
-    write_artifacts(args.out_dir, result)
+    if args.label:
+        result["metrics"]["label"] = args.label
+    write_artifacts(args.out_dir, result, args.mission)
     print(json.dumps({k: result["metrics"][k] for k in ("executed_cases", "json_contract_pass", "diagnostic_candidate_pass")}
                      | {"integrity_passed": result["integrity"]["passed"]}, ensure_ascii=False))
     return 0 if result["integrity"]["passed"] else 4
