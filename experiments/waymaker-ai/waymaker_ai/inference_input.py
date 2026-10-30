@@ -11,6 +11,10 @@ SOURCE_TEXT_FIELDS = (
     "publication_date", "retrieval_date", "source_url", "official_url",
     "domain", "provenance", "page_locator",
 )
+# provenance says what kind of source a text is. Benchmark labels such as
+# injection_probe or synthetic_fixture describe the test, not the source, and
+# would tell the model it is being evaluated, so only real source kinds pass.
+SOURCE_PROVENANCE_VALUES = frozenset({"official_manual", "official_notice", "community_post"})
 
 
 def project_evidence(evidence: Mapping) -> dict:
@@ -26,7 +30,8 @@ def project_evidence(evidence: Mapping) -> dict:
     if not isinstance(source, Mapping):
         raise ValueError("Evidence source must be an object")
     projected["source"] = {key: source[key] for key in SOURCE_TEXT_FIELDS
-                           if isinstance(source.get(key), str)}
+                           if isinstance(source.get(key), str)
+                           and (key != "provenance" or source[key] in SOURCE_PROVENANCE_VALUES)}
     page = source.get("page")
     if isinstance(page, str) or type(page) is int:
         projected["source"]["page"] = page
