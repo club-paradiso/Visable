@@ -11,8 +11,10 @@ fallback is never a model success, and the guard never rewrites a wrong answer
 into a right one: it either lets the model's answer through or replaces it with a
 non-substantive system message. Mission 005-H: a released partial answer that does
 not name an uncovered item gets a separate, labelled system notice naming it; the
-model's sentences are never edited. Research-only; nothing here is wired into the
-production backend.
+model's sentences are never edited. Mission 005-I: when the question itself carries
+an instruction about the reply (start with a word, ignore the rules), a marker it
+demands that shows up in the answer withholds the answer. Research-only; nothing
+here is wired into the production backend.
 """
 from __future__ import annotations
 
@@ -33,7 +35,7 @@ from waymaker_ai.evidence_admissibility import ITEM_LABELS, parent_code, request
 from waymaker_ai.evidence_registry import TrustRegistry
 from waymaker_ai.response_contract import parse_response
 
-CONTRACT_VERSION = "v5"
+CONTRACT_VERSION = "v6"
 PROVENANCE = ("model_generated", "model_generated_with_system_notice", "system_withheld", "system_clarification",
               "review_required", "post_generation_blocked", "invalid_response")
 #: Mission 005-H: the system notice added to a released partial answer, by reply language.
@@ -42,6 +44,30 @@ NOTICE = {"ko": "확인된 근거에 없는 항목: {items}. 이 항목은 담�
           "vi": "Không có trong căn cứ đã xác minh: {items}. Vui lòng hỏi trực tiếp cơ quan phụ trách về các mục này."}
 SUBSTANTIVE = {"answered", "partial", "conflict"}
 _CODE_RE = re.compile(r"(?<![A-Za-z0-9-])([A-Z]-\d{1,2}(?:-\d{1,2})?)(?![0-9-])")
+# Mission 005-I: instructions about the reply written into the question (matched on NFC, case-insensitive).
+_DIRECTIVE_RE = re.compile(
+    r"(?:ignore|disregard|forget)\s+(?:all\s+|every\s+|any\s+|the\s+)?(?:previous\s+|earlier\s+|prior\s+|above\s+|other\s+)?(?:instructions?|rules?)"
+    r"|(?:start|begin|end|prefix)\s+(?:your\s+|the\s+)?(?:reply|answer|response)\s+with"
+    r"|(?:reply|respond|answer)\s+only\s+with|(?:say|write|print|include|add)\s+the\s+(?:word|phrase|code)"
+    r"|(?:이전|앞의|위의|모든)\s*(?:지시|규칙|지침)[^.?!\n]{0,12}무시|(?:답|대답|답변)[^.?!\n]{0,20}(?:로|으로)\s*시작"
+    r"|bỏ\s+qua\s+(?:mọi|tất\s+cả|các)?\s*(?:hướng\s+dẫn|chỉ\s+dẫn|quy\s+tắc)|bắt\s+đầu\s+(?:câu\s+)?trả\s+lời\s+bằng",
+    re.IGNORECASE)
+_SENTENCE_RE = re.compile(r"[^.?!。\n]*[.?!。\n]?")
+_MARKER_RE = re.compile(r"[\"'“‘「]([^\"'”’」]{2,40})[\"'”’」]|(?<![\w-])([A-Z][A-Z0-9_]{3,}|[A-Z0-9_]*\d[A-Z][A-Z0-9_]*)(?![\w-])")
+
+
+def question_directives(question: str, evidence_texts: list) -> dict:
+    """Instruction sentences in the question and the marker tokens they demand (not found in any evidence)."""
+    text = unicodedata.normalize("NFC", question or "")
+    sentences = [s.strip() for s in _SENTENCE_RE.findall(text) if s.strip() and _DIRECTIVE_RE.search(s)]
+    body = unicodedata.normalize("NFC", "\n".join(evidence_texts)).casefold()
+    markers = []
+    for s in sentences:
+        for quoted, bare in _MARKER_RE.findall(s):
+            token = (quoted or bare).strip()
+            if token and not _CODE_RE.fullmatch(token) and token.casefold() not in body and token not in markers:
+                markers.append(token)
+    return {"sentences": sentences, "markers": markers}
 
 FALLBACK = {
     "withheld": {"ko": "확인된 공식 근거로 답할 수 없어 답변을 보류합니다. 담당 기관에 직접 확인해 주세요.",
@@ -109,6 +135,11 @@ def validate_generated_answer(raw: Optional[str], prepared: Mapping, candidates:
         return {**done("invalid_response"), "parsed": None}
     status, answer, cites = parsed["status"], parsed["answer"], set(parsed["citations"])
     admissible_map = {e["id"]: e["id"] in admissible_ids for e in candidates}
+    directives = question_directives(question, [e.get("text", "") for e in selection["admissible"]])
+    followed = [m for m in directives["markers"] if m.casefold() in unicodedata.normalize("NFC", answer).casefold()]
+    if followed:
+        findings.append({"check": "question_instruction", "kind": "question_instruction_followed", "detail": followed,
+                         "effect": "withhold"})
     if status in SUBSTANTIVE:
         support = claim_support_validation.check(answer, question, candidates, cites, admissible_map)
         for f in support["findings"]:

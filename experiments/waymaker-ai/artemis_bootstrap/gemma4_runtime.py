@@ -90,8 +90,8 @@ def probe() -> dict:
 def build_messages(item: dict, version: str = DEFAULT_CONTRACT_VERSION) -> list[dict]:
     projected = project_inference_item(item)
     system = projected.pop("system", None)
-    if version in ("v4", "v5"):
-        # v4/v5 only: the pipeline's reply language and uncovered items, ahead of the evidence.
+    if version in ("v4", "v5", "v6"):
+        # v4-v6 only: the pipeline's reply language and uncovered items, ahead of the evidence.
         if system is None:
             raise ValueError(f"Contract {version} needs the pipeline's system fields")
         projected = {"question": projected["question"], "reply_language": system["reply_language"],

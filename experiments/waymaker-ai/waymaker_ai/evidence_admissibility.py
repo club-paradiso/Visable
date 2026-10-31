@@ -52,14 +52,20 @@ _DATE_MONTH = re.compile(r"(\d{4})\s*년\s*(\d{1,2})\s*월|tháng\s*(\d{1,2})\s*
 #: Items a question can ask for, and the words that show evidence covers them.
 ITEMS = {
     # Mission 005-H: "phí" only as a word, so "phía" (side, as in vùng phía Nam) is not a fee.
-    "fee": (r"수수료|비용|요금|fee|cost|lệ\s*phí|\bphí\b", r"수수료|원|won|krw|fee|lệ\s*phí"),
+    # Mission 005-I: "원" only after a number (not 지원, 원본, 직원); fee-free wording also covers the fee.
+    "fee": (r"수수료|비용|요금|fee|cost|lệ\s*phí|\bphí\b",
+            r"수수료|\d[\d,.]*\s*원|\bwon\b(?!')|krw|fee|lệ\s*phí|무료|면제|free\s+of\s+charge|miễn\s+phí"),
     "processing_time": (r"처리\s*기간|처리기간|걸리|processing\s+(?:time|period)|how\s+long|thời\s+gian\s+xử\s+lý|bao\s+lâu",
                         r"처리\s*기간|처리기간|처리한다|처리됨|processing|xử\s+lý|일\s*이내\s*처리|일\s*안에\s*처리"),
     "documents": (r"서류|documents?|papers|giấy\s+tờ|hồ\s+sơ", r"서류|신청서|여권|증명서|확인서|document|giấy|hồ\s+sơ|등록증|사진"),
     "deadline": (r"기한|며칠\s*(?:안|이내)|언제까지|deadline|within\s+how|how\s+many\s+days|thời\s+hạn|trong\s+bao\s+nhiêu\s+ngày",
                  r"이내|기한|까지|within|deadline|trong\s+vòng|thời\s+hạn"),
-    "place": (r"어디에|어디서|신청처|where|ở\s+đâu|nơi\s+nộp", r"청|사무소|공관|기관|office|embassy|mission|cơ\s+quan|văn\s+phòng|누리집|창구"),
-    "method": (r"온라인|방문|방법|how\s+(?:do|can)\s+\w+\s+apply|online|in\s+person|bằng\s+cách|cách\s+nào|phương\s+thức|trực\s+tuyến|trực\s+tiếp",
+    # Mission 005-I: 장소 / place / địa điểm also ask for the place.
+    "place": (r"어디에|어디서|신청처|장소|where|\bplace\b|ở\s+đâu|nơi\s+nộp|địa\s+điểm",
+              # Mission 005-I: an agency counts only as a place to go ("…청에", "기관에서"); bare 청 matched 신청.
+              r"(?<!신)청(?:에|에서)|기관(?:에|에서)|사무소|출장소|공관|센터|창구|누리집|장소|신청처|office|embassy|consulate|"
+              r"counter|cent(?:er|re)|\bmission\b|cơ\s+quan|văn\s+phòng|trung\s+tâm"),
+    "method": (r"온라인|방문|방법|how\s+(?:do|can)\s+\w+\s+apply|online|in\s+person|bằng\s+cách|(?<!tư\s)cách\s+nào|phương\s+thức|trực\s+tuyến|trực\s+tiếp",
                r"온라인|방문|누리집|창구|online|visit|in\s+person|trực"),
     "eligibility": (r"자격\s*요건|요건|조건|대상|eligib|requirement|điều\s+kiện|đối\s+tượng", r"요건|조건|대상|이상|이하|eligib|requirement|điều\s+kiện"),
 }

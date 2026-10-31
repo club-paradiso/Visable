@@ -166,9 +166,10 @@ def test_notice_never_rescues_an_answer_the_guard_blocks():
 
 # --- contract v5 -----------------------------------------------------------------------
 def test_v5_is_new_and_earlier_prompts_are_unchanged():
-    assert CONTRACT_VERSIONS == ("v1", "v2", "v3", "v4", "v5")
-    assert prompt_sha256("v4").startswith("8edc38f67b96")
-    assert len({prompt_sha256(v) for v in CONTRACT_VERSIONS}) == 5
+    # Mission 005-I added v6 after these; the first five, their order and v5's prompt stay.
+    assert CONTRACT_VERSIONS[:5] == ("v1", "v2", "v3", "v4", "v5")
+    assert prompt_sha256("v4").startswith("8edc38f67b96") and prompt_sha256("v5").startswith("2cb443fadf88")
+    assert len({prompt_sha256(v) for v in CONTRACT_VERSIONS}) == len(CONTRACT_VERSIONS)
     for phrase in ("using those item names", "answer every situation", "cite the evidence item for each one"):
         assert phrase in SYSTEM_PROMPTS["v5"]
 

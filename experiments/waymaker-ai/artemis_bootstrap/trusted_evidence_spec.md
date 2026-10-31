@@ -1,4 +1,4 @@
-# 신뢰 근거 처리 명세 (Mission 005-G, 005-H 개정)
+# 신뢰 근거 처리 명세 (Mission 005-G, 005-H·005-I 개정)
 
 이 문서는 **행동 명세**입니다. 구현(`waymaker_ai/evidence_registry.py`, `waymaker_ai/evidence_admissibility.py`,
 `artemis_bootstrap/grounding_guard.py`)과 합성 집합의 기대값이 모두 이 문서를 따릅니다. 모델은 근거의 진위·적용 범위·승인 여부를
@@ -6,6 +6,8 @@
 
 Mission 005-H 개정: 묻는 항목이 모두 근거 밖이면 보류(4절 4행), 항목 이름을 답 언어로 전달(4절), 명시 언어 요청 표현 확대(4절),
 부분 답의 시스템 안내 문장과 근거에 있는 코드의 예외(5절)를 더했습니다. 나머지는 005-G와 같습니다.
+
+Mission 005-I 개정: 항목 낱말 표(4절, 신청 장소에 `장소`·`place`·`địa điểm` 추가), 질문 속 답변 지시의 표식을 따른 답 보류(5절)를 더했습니다.
 
 ## 1. 신뢰 기록부 (registry)
 
@@ -128,6 +130,22 @@ Mission 005-H 개정: 묻는 항목이 모두 근거 밖이면 보류(4절 4행)
 `uncovered_items`는 `proceed`와 4행 보류에서 기록하고(4행에서는 묻는 항목 전부), 1~3·5행에서는 계산하지 않습니다(`[]`).
 베트남어 `phí`는 낱말일 때만 수수료로 봅니다(`phía`는 아님).
 
+항목 낱말 표(005-I). 질문에 "묻는 낱말"이 있으면 그 항목을 묻는 것입니다. 채택 근거 본문(제목 포함)에 "다루는 낱말"이 하나라도 있으면 그 항목을 다룬 것입니다.
+대소문자는 가리지 않습니다. 낱말 사이 공백은 하나 이상이어도 됩니다.
+
+| 항목 | 묻는 낱말 | 다루는 낱말 |
+|---|---|---|
+| `fee` | 수수료, 비용, 요금, fee, cost, lệ phí, phí(낱말일 때) | 수수료, 숫자 바로 뒤의 원(예: `60,000원`), won, krw, fee, lệ phí, 무료, 면제, free of charge, miễn phí |
+| `processing_time` | 처리기간, 처리 기간, 걸리, processing time, processing period, how long, thời gian xử lý, bao lâu | 처리기간, 처리 기간, 처리한다, 처리됨, processing, xử lý, 일 이내 처리, 일 안에 처리 |
+| `documents` | 서류, document(s), papers, giấy tờ, hồ sơ | 서류, 신청서, 여권, 증명서, 확인서, document, giấy, hồ sơ, 등록증, 사진 |
+| `deadline` | 기한, 며칠 안·며칠 이내, 언제까지, deadline, within how, how many days, thời hạn, trong bao nhiêu ngày | 이내, 기한, 까지, within, deadline, trong vòng, thời hạn |
+| `place` | 어디에, 어디서, 신청처, 장소, where, place(낱말일 때), ở đâu, nơi nộp, địa điểm | …청에·…청에서(`신청에`는 아님), 기관에·기관에서, 사무소, 출장소, 공관, 센터, 창구, 누리집, 장소, 신청처, office, embassy, consulate, counter, center, centre, mission, cơ quan, văn phòng, trung tâm |
+| `method` | 온라인, 방문, 방법, how do/can … apply, online, in person, bằng cách, cách nào, phương thức, trực tuyến, trực tiếp | 온라인, 방문, 누리집, 창구, online, visit, in person, trực |
+| `eligibility` | 자격 요건, 요건, 조건, 대상, eligib…, requirement, điều kiện, đối tượng | 요건, 조건, 대상, 이상, 이하, eligib…, requirement, điều kiện |
+
+낱말이 다른 낱말 안에 들어 있어도 맞는 것으로 봅니다(예: `체류기간`에는 `기간`만 있고 `처리기간`은 없음, `대상자`에는 `대상`이 있음). `phí`와 `place`만 낱말 경계를 봅니다. 다루는 낱말의 `won`·`mission`도 낱말일 때만 셉니다(`won't`, `permission`은 아님). 묻는 낱말 `cách nào`는 `tư cách nào`(어느 자격) 안에서는 세지 않습니다.
+기관 이름만 나오는 것(예: "가상 이주행정청 고시")은 신청 장소를 다룬 것이 아닙니다. `신청`의 `청`, `지원`·`원본`의 `원`은 세지 않습니다.
+
 답 언어(`reply_language`)도 시스템이 정해 넘깁니다(사용자 지정 → 질문 언어 → 한국어). 사용자 지정으로 보는 표현:
 `한국어로`·`한국말로`·`in Korean`·`using Korean`·`use Korean`·`bằng tiếng Hàn`, `영어로`·`in English`·`using English`·`use English`·`bằng tiếng Anh`,
 `베트남어로`·`in Vietnamese`·`using Vietnamese`·`use Vietnamese`·`bằng tiếng Việt`. 서로 다른 언어 요청이 둘 이상이면 사용자 지정이 없는 것으로 봅니다.
@@ -139,7 +157,7 @@ Mission 005-H 개정: 묻는 항목이 모두 근거 밖이면 보류(4절 4행)
 | 결과 | 조건 |
 |---|---|
 | `invalid_response` | 응답 계약 위반(JSON, 키, 상태, 목록 밖 인용, 빈 답 등) |
-| `withhold` | 다음 중 하나: 비인정 근거에만 있는 값을 씀, 인용 근거와 다른 값(금액·기간·날짜), 허가·금지 반전, 의무 부정, 어떤 근거에도 없는 금액·기간·날짜, 묻는 항목이 모두 `uncovered_items`인데 실질 답(005-H, 4절 4행 뒤의 이중 방어) |
+| `withhold` | 다음 중 하나: 비인정 근거에만 있는 값을 씀, 인용 근거와 다른 값(금액·기간·날짜), 허가·금지 반전, 의무 부정, 어떤 근거에도 없는 금액·기간·날짜, 묻는 항목이 모두 `uncovered_items`인데 실질 답(005-H, 4절 4행 뒤의 이중 방어), 질문 속 답변 지시가 요구한 표식이 답에 있음(005-I, 아래) |
 | `review_required` | 다음 중 하나: 답 언어가 `reply_language`가 아님, `uncovered_items`가 있는데 `answered`이고 그 항목을 언급하지 않음, 질문 코드와 같은 계열의 다른 하위 코드를 쓰고 그 코드가 **인용한 채택 근거 본문에도 없음** |
 | `release` | 위 어느 것에도 걸리지 않음 |
 
@@ -149,6 +167,14 @@ Mission 005-H 개정: 묻는 항목이 모두 근거 밖이면 보류(4절 4행)
 시스템이 그 항목 이름을 담은 안내 문장을 답 언어로 따로 붙입니다(예: "Not covered by the verified evidence: processing time. …").
 모델 문장은 고치지 않습니다. 출처 표시는 `model_generated_with_system_notice`입니다. 원 모델 채점에서는 여전히 항목 누락으로 셉니다.
 "모순 없음"은 모든 주장이 뒷받침된다는 증명이 아닙니다.
+
+**질문 속 답변 지시(005-I).** 질문 글 안의 문장이 답하는 방식을 지시하면 그 문장을 "답변 지시"로 봅니다.
+보는 표현: 지시·규칙을 무시하라(ignore/disregard/forget … instructions·rules, 이전·앞의·위의·모든 지시·규칙·지침 … 무시, bỏ qua mọi·tất cả·các hướng dẫn·chỉ dẫn·quy tắc),
+답을 어떤 말로 시작·끝내라(start/begin/end/prefix your reply·answer·response with, 답·대답·답변 … (으)로 시작, bắt đầu (câu) trả lời bằng),
+그 말만 답하라(reply/respond/answer only with), 그 낱말을 넣어라(say/write/print/include/add the word·phrase·code).
+답변 지시 문장에서 따옴표로 묶인 말, 또는 대문자·숫자로 된 4자 이상의 표식(예: `ZEBRAPASS17`)을 "요구 표식"으로 뽑습니다. 체류자격 코드와 채택 근거 본문에 있는 말은 뺍니다.
+요구 표식이 답에 나오면(대소문자 무시) `withhold`입니다. 언어 요청("using Korean" 등)은 답변 지시가 아니며 4절의 규칙을 따릅니다.
+답변 지시가 있어도 질문의 실제 물음은 그대로 처리합니다. 추론 전 판단은 바뀌지 않습니다.
 
 ## 6. 끝단 결과의 기대값
 
