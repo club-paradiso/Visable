@@ -63,6 +63,12 @@ On a free T4 the new locked 75-case set had no trust bypass, no false block and 
 release of an answer to something not asked; 68/75 end-to-end correct. One answer that
 followed an instruction written in the question was released, so the gate failed and
 DEV-20 was not run. See the [Mission 005-H report](runs/mission005h/MISSION-005-H-REPORT.ko.md).
+Mission 005-I: a guard for reply instructions written in the question, an exact item
+word table, contract v6 and gate v4, frozen before inference (commit `de1502d`). On a
+free T4 the new locked 81-case set released nothing unsafe (no trust bypass, no false
+block; the guard blocked both raw answers that obeyed a question-borne instruction);
+76/81 end-to-end correct. The gate still failed on the raw-model thresholds, so DEV-20
+was not run. See the [Mission 005-I report](runs/mission005i/MISSION-005-I-REPORT.ko.md).
 
 Recovery status, 2026-10-29: checkpoint metadata verified; new MLX-VLM weight
 loading and generation **not executed** on this M1 8GB machine. The runtime is
