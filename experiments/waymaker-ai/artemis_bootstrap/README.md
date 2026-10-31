@@ -57,6 +57,12 @@ free T4 the locked 63-case acceptance set had no trust bypass and 55/63 correct
 end-to-end releases, but 2 answers that should have been withheld were released, so the
 gate failed and DEV-20 was not run. See the
 [Mission 005-G report](runs/mission005g/MISSION-005-G-REPORT.ko.md).
+Mission 005-H: withhold when no asked item is covered, a labelled system notice on
+partial answers, contract v5 and gate v3, frozen before inference (commit `460d40c`).
+On a free T4 the new locked 75-case set had no trust bypass, no false block and no
+release of an answer to something not asked; 68/75 end-to-end correct. One answer that
+followed an instruction written in the question was released, so the gate failed and
+DEV-20 was not run. See the [Mission 005-H report](runs/mission005h/MISSION-005-H-REPORT.ko.md).
 
 Recovery status, 2026-10-29: checkpoint metadata verified; new MLX-VLM weight
 loading and generation **not executed** on this M1 8GB machine. The runtime is
