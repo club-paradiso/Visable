@@ -1,0 +1,31 @@
+{
+  "schema_version": "waymaker-artemis-expected-result-review/1.0",
+  "mission": "005-J",
+  "acceptance_sha256_reviewed": "0fb98b530659c97af83016ad1f0fc8a4fdb9299858a168abf1da0e62edf68d95",
+  "acceptance_sha256_frozen": "6fbfffc9273d1f214ce5437e0a19acb5d3b078bce418c2ad3b7a32da00d595f1",
+  "roles": {
+    "behavioural_specification": "implementer (Claude main session) revised trusted_evidence_spec.md for 005-J (question for the model, per-sub-code parts)",
+    "acceptance_construction": "separate agent; read only the spec and the 005-G development suite for format",
+    "expected_result_review": "second separate agent; read only the spec and the suite; re-derived every decision, reason, pre_inference, uncovered_items, sub-code parts, language, marker extraction and cleaning, and tested mentions and patterns against its own answers in three languages",
+    "implementation": "Claude main session"
+  },
+  "independence_limit": "All roles are instances of the same model family in one session. This is information separation (no agent saw the implementation code or any model output), not independent expert review.",
+  "spec_clarified_between_construction_and_review": [
+    "The author noted three gaps; they were stated in the spec (and the code, where needed) before the review: a question naming a family and one sub-code uses the sub-code; the leave-out rule for sub-code parts applies only when listed items are asked; English document words (passport, certificate, application form) cover documents. The author's suite already followed the first two readings, and no case depends on the third. The reviewer used the clarified spec and agreed on every spec-derived value."
+  ],
+  "review_result": "All spec-derived values, including the sub-code parts and question cleaning, matched the reviewer in all 81 cases.",
+  "defects_fixed_before_freeze": [
+    "A05J-63 (high): two employer words also occur in the question, so a reversed-role answer passed; removed, and a role_reversal pattern added for 'the worker must report'",
+    "A05J-62: 'permit' matched inside 'permitted'; replaced by work/part-time permit wordings",
+    "A05J-12: 'việclàm' matched 'giấy phép việc làm' (wrong document), removed; the health-certificate pattern no longer fires when the answer says it is not needed",
+    "A05J-53: the agency pattern no longer fires on '대행업체를 통할 필요는 없습니다'",
+    "Wider correct paraphrases: 37, 40, 44, 45, 49, 52, 60, 61, 68, 74, 80, 81"
+  ],
+  "kept": [
+    "Attribution swaps (A05J-37/38/39/73, and values between sub-codes in 79/81) can pass independent mention groups; in 79/81 the per-part guard would catch a swap. Noted, not patched with fragile patterns",
+    "A05J-79/80/81 require the sub-code names: contract v7 asks each part to name its sub-code, and the system adds no labels",
+    "A05J-70/71 do not force the sibling code to be mentioned; A05J-72 is withheld at row 4",
+    "A05J-07 'fourteen (14) days' paraphrase, low"
+  ],
+  "no_model_output_existed": true
+}

@@ -4,6 +4,7 @@ Evidence bodies remain verbatim, untrusted source material. Review decisions,
 answer keys and arbitrary nested metadata are never model input. This is not
 an authenticity or legal-approval check; those remain evaluator-side gates.
 """
+import re
 from collections.abc import Mapping
 
 SOURCE_TEXT_FIELDS = (
@@ -17,8 +18,9 @@ SOURCE_TEXT_FIELDS = (
 SOURCE_PROVENANCE_VALUES = frozenset({"official_manual", "official_notice", "community_post"})
 # Mission 005-G: values the trusted-evidence pipeline computes itself and hands to a
 # v4/v5 prompt. They come from the system, never from the item's own fields or labels.
-# v5 (Mission 005-H) and v6 (005-I) send uncovered_items as item names in the reply language.
-SYSTEM_FIELDS = ("reply_language", "uncovered_items")
+# v5 (Mission 005-H) and later send uncovered_items as item names in the reply language; v7 (005-J)
+# adds scope_status_code when the system asks one sub-code at a time.
+SYSTEM_FIELDS = ("reply_language", "uncovered_items", "scope_status_code")
 REPLY_LANGUAGES = frozenset({"ko", "en", "vi"})
 
 
@@ -61,4 +63,8 @@ def project_inference_item(item: Mapping) -> dict:
         if not isinstance(items, list) or not all(isinstance(i, str) for i in items):
             raise ValueError("System uncovered_items must be a list of item names")
         projected["system"] = {"reply_language": system["reply_language"], "uncovered_items": list(items)}
+        if "scope_status_code" in system:
+            if not isinstance(system["scope_status_code"], str) or not re.fullmatch(r"[A-Z]-\d{1,2}-\d{1,2}", system["scope_status_code"]):
+                raise ValueError("System scope_status_code must be one status sub-code")
+            projected["system"]["scope_status_code"] = system["scope_status_code"]
     return projected

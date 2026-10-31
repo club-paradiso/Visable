@@ -1,4 +1,4 @@
-# 신뢰 근거 처리 명세 (Mission 005-G, 005-H·005-I 개정)
+# 신뢰 근거 처리 명세 (Mission 005-G, 005-H·005-I·005-J 개정)
 
 이 문서는 **행동 명세**입니다. 구현(`waymaker_ai/evidence_registry.py`, `waymaker_ai/evidence_admissibility.py`,
 `artemis_bootstrap/grounding_guard.py`)과 합성 집합의 기대값이 모두 이 문서를 따릅니다. 모델은 근거의 진위·적용 범위·승인 여부를
@@ -8,6 +8,9 @@ Mission 005-H 개정: 묻는 항목이 모두 근거 밖이면 보류(4절 4행)
 부분 답의 시스템 안내 문장과 근거에 있는 코드의 예외(5절)를 더했습니다. 나머지는 005-G와 같습니다.
 
 Mission 005-I 개정: 항목 낱말 표(4절, 신청 장소에 `장소`·`place`·`địa điểm` 추가), 질문 속 답변 지시의 표식을 따른 답 보류(5절)를 더했습니다.
+
+Mission 005-J 개정: 모델에게 주는 질문에서 답변 지시 문장을 빼고(4절), 하위 코드별로 갈리는 일반 질문은 하위 코드마다 따로 묻습니다(4절·5절).
+추론 전 판단과 끝단 기대값의 규칙은 바뀌지 않습니다.
 
 ## 1. 신뢰 기록부 (registry)
 
@@ -65,7 +68,7 @@ Mission 005-I 개정: 항목 낱말 표(4절, 신청 장소에 `장소`·`place`
 
 `intake`는 화면에서 사용자가 고른 값입니다. 비어 있는 칸은 질문 글에서 결정적으로 보충합니다.
 
-- 체류자격 코드: 질문의 `Y-9-1` 같은 코드.
+- 체류자격 코드: 질문의 `Y-9-1` 같은 코드. 하위 코드가 하나 있으면 상위 코드가 함께 나와도 그 하위 코드, 서로 다른 하위 코드가 둘 이상이면 그 상위 코드, 하위 코드가 없으면 처음 나온 코드.
 - 위치: 국내("국내", "한국에 있", "in Korea", "tại Hàn Quốc", "trong nước"), 국외("국외", "해외", "abroad", "outside Korea", "ở nước ngoài").
 - 관할: 기록부에 있는 지역 이름이 질문에 그대로 나오면 그 지역.
 - 절차: 절차 낱말(연장/extension/gia hạn, 변경/change/thay đổi, 발급·사증/issuance·visa/cấp thị thực, 외국인등록/registration/đăng ký người nước ngoài,
@@ -137,7 +140,7 @@ Mission 005-I 개정: 항목 낱말 표(4절, 신청 장소에 `장소`·`place`
 |---|---|---|
 | `fee` | 수수료, 비용, 요금, fee, cost, lệ phí, phí(낱말일 때) | 수수료, 숫자 바로 뒤의 원(예: `60,000원`), won, krw, fee, lệ phí, 무료, 면제, free of charge, miễn phí |
 | `processing_time` | 처리기간, 처리 기간, 걸리, processing time, processing period, how long, thời gian xử lý, bao lâu | 처리기간, 처리 기간, 처리한다, 처리됨, processing, xử lý, 일 이내 처리, 일 안에 처리 |
-| `documents` | 서류, document(s), papers, giấy tờ, hồ sơ | 서류, 신청서, 여권, 증명서, 확인서, document, giấy, hồ sơ, 등록증, 사진 |
+| `documents` | 서류, document(s), papers, giấy tờ, hồ sơ | 서류, 신청서, 여권, 증명서, 확인서, document, giấy, hồ sơ, 등록증, 사진, passport, certificate, application form |
 | `deadline` | 기한, 며칠 안·며칠 이내, 언제까지, deadline, within how, how many days, thời hạn, trong bao nhiêu ngày | 이내, 기한, 까지, within, deadline, trong vòng, thời hạn |
 | `place` | 어디에, 어디서, 신청처, 장소, where, place(낱말일 때), ở đâu, nơi nộp, địa điểm | …청에·…청에서(`신청에`는 아님), 기관에·기관에서, 사무소, 출장소, 공관, 센터, 창구, 누리집, 장소, 신청처, office, embassy, consulate, counter, center, centre, mission, cơ quan, văn phòng, trung tâm |
 | `method` | 온라인, 방문, 방법, how do/can … apply, online, in person, bằng cách, cách nào, phương thức, trực tuyến, trực tiếp | 온라인, 방문, 누리집, 창구, online, visit, in person, trực |
@@ -151,6 +154,19 @@ Mission 005-I 개정: 항목 낱말 표(4절, 신청 장소에 `장소`·`place`
 `베트남어로`·`in Vietnamese`·`using Vietnamese`·`use Vietnamese`·`bằng tiếng Việt`. 서로 다른 언어 요청이 둘 이상이면 사용자 지정이 없는 것으로 봅니다.
 
 시스템이 만든 보류·확인 응답은 모델 성공으로 세지 않습니다.
+
+**모델에게 주는 질문(005-J).** 5절의 "답변 지시" 문장은 모델에게 주는 질문에서 뺍니다.
+"<지시>: <물음>" 꼴의 한 문장은 콜론 뒤의 물음만 남깁니다. 다 빼면 아무것도 남지 않는 경우에는 질문을 그대로 줍니다.
+사용자의 원래 질문은 기록에 남깁니다. 맥락·항목·답 언어 판단과 5절의 검사는 원래 질문으로 합니다.
+
+**하위 코드별 부분(005-J).** 결과가 `proceed`인 일반 질문(개인 판단이 아님)에서 질문 코드가 상위 코드이거나 없을 때 아래를 모두 만족하면 모델을 하위 코드마다 따로 부릅니다.
+- 채택 근거마다 `status_scope`가 하위 코드 정확히 하나뿐임(상위 코드만 적힌 근거가 있으면 나누지 않음)
+- `all_subcategories_of`가 있는 채택 근거가 없음
+- 서로 다른 하위 코드가 둘 이상임
+
+하위 코드마다 그 하위 코드의 채택 근거만 줍니다. 그 하위 코드(`scope_status_code`)와 그 근거 기준의 `uncovered_items`를 함께 줍니다.
+질문이 항목 낱말 표의 항목을 묻는 경우에만, 그 근거가 묻는 항목을 하나도 다루지 않는 하위 코드를 뺍니다(묻는 항목이 없으면 빼지 않음). 남은 하위 코드가 둘보다 적으면 나누지 않고 한 번만 부릅니다.
+사례 전체의 `uncovered_items`와 추론 전 판단은 나누기 전과 같습니다.
 
 ## 5. 생성 뒤 검사 (answer guard)
 
@@ -175,6 +191,12 @@ Mission 005-I 개정: 항목 낱말 표(4절, 신청 장소에 `장소`·`place`
 답변 지시 문장에서 따옴표로 묶인 말, 또는 대문자·숫자로 된 4자 이상의 표식(예: `ZEBRAPASS17`)을 "요구 표식"으로 뽑습니다. 체류자격 코드와 채택 근거 본문에 있는 말은 뺍니다.
 요구 표식이 답에 나오면(대소문자 무시) `withhold`입니다. 언어 요청("using Korean" 등)은 답변 지시가 아니며 4절의 규칙을 따릅니다.
 답변 지시가 있어도 질문의 실제 물음은 그대로 처리합니다. 추론 전 판단은 바뀌지 않습니다.
+
+**하위 코드별 부분(005-J).** 모델을 여러 번 부른 경우(4절) 부분마다 따로 검사합니다. 그 부분의 근거만 채택 근거로 보고,
+그 부분의 `uncovered_items`를 씁니다. 체류자격 코드 검사는 그 부분의 하위 코드를 질문 코드로 봅니다. 그래서 한 부분의 답이 다른 하위 코드의 근거를 인용하면 `invalid_response`입니다.
+다른 하위 코드나 그 값을 쓰면 `review_required` 또는 `withhold`입니다. 전체 결과는 가장 나쁜 부분의 결과입니다(`invalid_response` → `withhold` → `review_required` → `release`).
+모두 `release`이면 부분의 답을 하위 코드 순서로 줄을 바꿔 잇습니다. 인용은 합칩니다.
+상태는 모두 `answered`면 `answered`, 하나라도 `conflict`면 `conflict`, 그 밖은 `partial`입니다. 시스템 안내 문장은 부분별로 붙인 것을 잇습니다.
 
 ## 6. 끝단 결과의 기대값
 

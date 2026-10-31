@@ -8,7 +8,8 @@ evidence the system withholds instead of letting the model guess, and a personal
 question whose answer turns on a missing fact gets a system clarification.
 Mission 005-H: when the question asks for specific items and the admissible
 evidence covers none of them, the system also withholds; the model is not asked to
-answer around the gap.
+answer around the gap. Mission 005-J: a general question whose admissible evidence
+is split by sub-code is answered one sub-code at a time (subcode_parts).
 
 Nothing here reads a document's self-description, a benchmark answer key or an
 expected status. The question context is what the user entered (intake) plus what
@@ -57,7 +58,9 @@ ITEMS = {
             r"수수료|\d[\d,.]*\s*원|\bwon\b(?!')|krw|fee|lệ\s*phí|무료|면제|free\s+of\s+charge|miễn\s+phí"),
     "processing_time": (r"처리\s*기간|처리기간|걸리|processing\s+(?:time|period)|how\s+long|thời\s+gian\s+xử\s+lý|bao\s+lâu",
                         r"처리\s*기간|처리기간|처리한다|처리됨|processing|xử\s+lý|일\s*이내\s*처리|일\s*안에\s*처리"),
-    "documents": (r"서류|documents?|papers|giấy\s+tờ|hồ\s+sơ", r"서류|신청서|여권|증명서|확인서|document|giấy|hồ\s+sơ|등록증|사진"),
+    # Mission 005-J: English document words also cover documents.
+    "documents": (r"서류|documents?|papers|giấy\s+tờ|hồ\s+sơ",
+                  r"서류|신청서|여권|증명서|확인서|document|giấy|hồ\s+sơ|등록증|사진|\bpassport|\bcertificate|\bapplication\s+form"),
     "deadline": (r"기한|며칠\s*(?:안|이내)|언제까지|deadline|within\s+how|how\s+many\s+days|thời\s+hạn|trong\s+bao\s+nhiêu\s+ngày",
                  r"이내|기한|까지|within|deadline|trong\s+vòng|thời\s+hạn"),
     # Mission 005-I: 장소 / place / địa điểm also ask for the place.
@@ -256,6 +259,37 @@ def _branches(ctx: Mapping, admissible: list, registry: TrustRegistry) -> Option
     return None
 
 
+def subcode_parts(question: str, ctx: Mapping, admissible: list, registry: TrustRegistry) -> list:
+    """Mission 005-J: one part per sub-code when the evidence for a parent-code or code-less question splits by sub-code.
+
+    Applies only when every admissible record is limited to exactly one sub-code, at least two sub-codes
+    occur, and no record is verified for all sub-codes. A sub-code whose evidence covers none of the
+    asked items is left out. Fewer than two remaining parts means no split.
+    """
+    code = ctx.get("status_code")
+    if code and code != parent_code(code):
+        return []
+    records = {e["id"]: registry.get(e["id"]) for e in admissible}
+    if any(r.get("all_subcategories_of") for r in records.values()):
+        return []
+    scope = {}
+    for eid, r in records.items():
+        subs = [s for s in r["status_scope"] if s != parent_code(s)]
+        if len(subs) != 1 or len(r["status_scope"]) != 1:
+            return []
+        scope.setdefault(subs[0], []).append(eid)
+    if len(scope) < 2:
+        return []
+    asked = requested_items(question)
+    parts = []
+    for sub in sorted(scope):
+        evidence = [e for e in admissible if e["id"] in scope[sub]]
+        if asked and set(uncovered_items(question, evidence)) == set(asked):
+            continue
+        parts.append({"status_code": sub, "evidence_ids": scope[sub]})
+    return parts if len(parts) >= 2 else []
+
+
 def select_admissible_evidence(question: str, intake: Optional[Mapping], candidates: list,
                                registry: Optional[TrustRegistry], evaluation_date: str) -> dict:
     """Decisions for every candidate, the evidence the model may see, and the pre-inference outcome."""
@@ -285,10 +319,11 @@ def select_admissible_evidence(question: str, intake: Optional[Mapping], candida
         else:
             outcome, reason = "proceed", "admissible_evidence"
             uncovered = uncovered_items(question, admissible)
+    parts = subcode_parts(question, ctx, admissible, registry) if outcome == "proceed" and ctx["question_type"] == "general" else []
     return {"outcome": outcome, "reason": reason, "context": ctx, "decisions": decisions, "admissible": admissible,
-            "uncovered_items": uncovered, "clarify_on": clarify_on,
+            "uncovered_items": uncovered, "clarify_on": clarify_on, "subcode_parts": parts,
             "input_sha256": hashlib.sha256(json.dumps(candidates, ensure_ascii=False, sort_keys=True).encode()).hexdigest()}
 
 
 __all__ = ["RegistryUnavailable", "question_context", "decide_one", "select_admissible_evidence", "requested_items",
-           "uncovered_items", "parent_code", "ITEM_LABELS"]
+           "uncovered_items", "parent_code", "ITEM_LABELS", "subcode_parts"]

@@ -13,8 +13,12 @@ non-substantive system message. Mission 005-H: a released partial answer that do
 not name an uncovered item gets a separate, labelled system notice naming it; the
 model's sentences are never edited. Mission 005-I: when the question itself carries
 an instruction about the reply (start with a word, ignore the rules), a marker it
-demands that shows up in the answer withholds the answer. Research-only; nothing
-here is wired into the production backend.
+demands that shows up in the answer withholds the answer. Mission 005-J: those
+instruction sentences are also removed from the question the model receives (the
+user's question is kept in the record and still checked), and a general question
+whose evidence splits by sub-code is asked once per sub-code with only that
+sub-code's evidence; the parts are joined deterministically and each part is
+guarded on its own. Research-only; nothing here is wired into the production backend.
 """
 from __future__ import annotations
 
@@ -31,13 +35,16 @@ sys.path.insert(0, str(BOOT.parent))
 sys.path.insert(0, str(BOOT))
 import claim_support_validation
 import language_compliance
-from waymaker_ai.evidence_admissibility import ITEM_LABELS, parent_code, requested_items, select_admissible_evidence
+from waymaker_ai.evidence_admissibility import (ITEM_LABELS, parent_code, requested_items, select_admissible_evidence,
+                                                uncovered_items)
 from waymaker_ai.evidence_registry import TrustRegistry
 from waymaker_ai.response_contract import parse_response
 
-CONTRACT_VERSION = "v6"
+CONTRACT_VERSION = "v7"
 PROVENANCE = ("model_generated", "model_generated_with_system_notice", "system_withheld", "system_clarification",
               "review_required", "post_generation_blocked", "invalid_response")
+#: Mission 005-J: worst guard decision first, for joining per-sub-code parts.
+DECISION_ORDER = ("invalid_response", "withhold", "review_required", "release")
 #: Mission 005-H: the system notice added to a released partial answer, by reply language.
 NOTICE = {"ko": "확인된 근거에 없는 항목: {items}. 이 항목은 담당 기관에 직접 확인해 주세요.",
           "en": "Not covered by the verified evidence: {items}. Please check these with the responsible office.",
@@ -88,6 +95,27 @@ FALLBACK = {
 }
 
 
+def question_for_model(question: str, evidence_texts: list) -> dict:
+    """Mission 005-J: the question without its reply-instruction sentences (spec section 4).
+
+    A sentence of the form "<instruction>: <question>" keeps the part after the colon. If nothing
+    would be left, the question is passed unchanged (the answer guard still checks markers).
+    """
+    found = question_directives(question, evidence_texts)
+    text = unicodedata.normalize("NFC", question or "")
+    removed = []
+    for s in found["sentences"]:
+        m = _DIRECTIVE_RE.search(s)
+        colon = s.find(":", m.end()) if m else -1
+        keep = s[colon + 1:].strip() if colon >= 0 else ""
+        text = text.replace(s, keep, 1)
+        removed.append(s if not keep else s[:colon + 1].strip())
+    text = re.sub(r"\s{2,}", " ", text).strip()
+    if not re.search(r"\w", text):
+        return {"question": question, "removed": [], "markers": found["markers"]}
+    return {"question": text, "removed": removed, "markers": found["markers"]}
+
+
 def reply_language(question: str) -> dict:
     """Deterministic: explicit request, then question language, then Korean (language_compliance)."""
     return language_compliance.required_language(question)
@@ -100,16 +128,26 @@ def system_response(kind: str, lang: str) -> dict:
 
 def prepare(question: str, intake: Optional[Mapping], candidates: list, registry: Optional[TrustRegistry],
             evaluation_date: str) -> dict:
-    """Pre-inference: admissibility, outcome, and the exact item the model would receive."""
+    """Pre-inference: admissibility, outcome, and the exact items the model would receive (one per part)."""
     selection = select_admissible_evidence(question, intake, candidates, registry, evaluation_date)
     lang = reply_language(question)
-    model_item = None
+    cleaned = question_for_model(question, [e.get("text", "") for e in selection["admissible"]])
+    items, parts = [], []
     if selection["outcome"] == "proceed":
-        # v5 names the uncovered items in the reply language instead of internal keys.
-        labels = [ITEM_LABELS[i][lang["language"]] for i in selection["uncovered_items"]]
-        model_item = {"question": question, "evidence": selection["admissible"],
-                      "system": {"reply_language": lang["language"], "uncovered_items": labels}}
-    return {"selection": selection, "reply_language": lang, "model_item": model_item}
+        code = lang["language"]
+        groups = [(p["status_code"], [e for e in selection["admissible"] if e["id"] in p["evidence_ids"]])
+                  for p in selection.get("subcode_parts") or []] or [(None, selection["admissible"])]
+        for sub, evidence in groups:
+            # v5+ names the uncovered items in the reply language instead of internal keys.
+            keys = uncovered_items(question, evidence) if sub else selection["uncovered_items"]
+            system = {"reply_language": code, "uncovered_items": [ITEM_LABELS[i][code] for i in keys]}
+            if sub:
+                system["scope_status_code"] = sub
+            items.append({"question": cleaned["question"], "evidence": evidence, "system": system})
+            parts.append({"status_code": sub, "evidence": evidence, "uncovered_items": keys})
+    return {"selection": selection, "reply_language": lang, "question": question,
+            "question_directives_removed": cleaned["removed"], "model_items": items, "parts": parts,
+            "model_item": items[0] if len(items) == 1 else None}
 
 
 def _mentions_item(answer: str, item: str) -> bool:
@@ -118,12 +156,20 @@ def _mentions_item(answer: str, item: str) -> bool:
 
 
 def validate_generated_answer(raw: Optional[str], prepared: Mapping, candidates: list,
-                              registry: TrustRegistry) -> dict:
-    """The guard decision for one model output (trusted_evidence_spec.md section 5)."""
+                              registry: TrustRegistry, part: Optional[int] = None) -> dict:
+    """The guard decision for one model output (trusted_evidence_spec.md section 5).
+
+    With `part`, the output answers one sub-code: only that part's evidence is admissible, its own
+    uncovered items apply, and the sub-code stands in for the question's code in the scope check.
+    """
     selection = prepared["selection"]
+    if part is not None:
+        p = prepared["parts"][part]
+        selection = {**selection, "admissible": p["evidence"], "uncovered_items": p["uncovered_items"],
+                     "context": {**(selection["context"] or {}), "status_code": p["status_code"]}}
     admissible_ids = {e["id"] for e in selection["admissible"]}
     lang = prepared["reply_language"]["language"]
-    question = prepared["model_item"]["question"]
+    question = prepared.get("question") or prepared["model_item"]["question"]
     findings = []
 
     def done(decision):
@@ -181,14 +227,47 @@ def validate_generated_answer(raw: Optional[str], prepared: Mapping, candidates:
     return {**done(decision), "parsed": parsed, "language": language["result"], "system_notice": notice}
 
 
+def _join_parts(guards: list, raws: list) -> tuple[dict, Optional[str]]:
+    """Mission 005-J: one guard result and one composed raw output from per-sub-code parts (deterministic).
+
+    The worst decision wins. When every part is released, the answers are joined in sub-code order,
+    citations are united, and the status is answered (all answered), conflict (any conflict) or partial.
+    The composed raw output joins the parsed raw parts the same way, so the raw channel scores what the
+    model wrote; if a part did not parse, that part's raw text is the composed output.
+    """
+    decision = min((g["decision"] for g in guards), key=DECISION_ORDER.index)
+    findings = [{**f, "part": i} for i, g in enumerate(guards) for f in g["findings"]]
+    parsed = [g.get("parsed") for g in guards]
+
+    def joined(items):
+        statuses = [x["status"] for x in items]
+        status = "answered" if all(s == "answered" for s in statuses) else "conflict" if "conflict" in statuses else "partial"
+        substantive = [x for x in items if x["status"] in SUBSTANTIVE] or items
+        cites = list(dict.fromkeys(c for x in items for c in x["citations"]))
+        return {"status": status if any(x["status"] in SUBSTANTIVE for x in items) else items[0]["status"],
+                "answer": "\n".join(x["answer"] for x in substantive), "citations": cites}
+    composed_raw = next((r for r, x in zip(raws, parsed) if x is None), None)
+    if composed_raw is None:
+        composed_raw = json.dumps(joined(parsed), ensure_ascii=False)
+    out = {"decision": decision, "findings": findings, "parts": [g["decision"] for g in guards],
+           "parsed": joined(parsed) if all(x is not None for x in parsed) else None,
+           "language": "fail" if any(g.get("language") == "fail" for g in guards) else "pass"}
+    notices = [g["system_notice"] for g in guards if g.get("system_notice")]
+    out["system_notice"] = " ".join(notices) if decision == "release" and notices else None
+    return out, composed_raw
+
+
 def run_case(question: str, intake: Optional[Mapping], candidates: list, registry: Optional[TrustRegistry],
              evaluation_date: str, generate: Callable[[dict], Optional[str]]) -> dict:
-    """One question end to end. `generate(model_item)` returns the raw model text; it is called only on proceed."""
+    """One question end to end. `generate(model_item)` returns the raw model text; it is called only on proceed,
+    once per sub-code part when the evidence splits by sub-code (Mission 005-J)."""
     prepared = prepare(question, intake, candidates, registry, evaluation_date)
     sel, lang = prepared["selection"], prepared["reply_language"]["language"]
     record = {"pre_inference": sel["outcome"], "pre_inference_reason": sel["reason"], "context": sel["context"],
               "trust_decisions": sel["decisions"], "admissible_ids": [e["id"] for e in sel["admissible"]],
               "uncovered_items": sel["uncovered_items"], "reply_language": prepared["reply_language"],
+              "question_directives_removed": prepared["question_directives_removed"],
+              "subcode_parts": sel.get("subcode_parts") or [],
               "model_called": False, "raw_output": None, "guard": None}
     if sel["outcome"] == "system_withheld":
         released, provenance = system_response("withheld", lang), "system_withheld"
@@ -197,11 +276,15 @@ def run_case(question: str, intake: Optional[Mapping], candidates: list, registr
     elif sel["outcome"] == "system_clarification":
         released, provenance = system_response(sel["clarify_on"], lang), "system_clarification"
     else:
-        raw = generate(prepared["model_item"])
-        guard = validate_generated_answer(raw, prepared, candidates, registry)
-        record.update(model_called=True, raw_output=raw, guard=guard,
-                      model_input_sha256=hashlib.sha256(json.dumps(prepared["model_item"], ensure_ascii=False,
-                                                                   sort_keys=True).encode()).hexdigest())
+        items = prepared["model_items"]
+        split = len(items) > 1
+        raws = [generate(item) for item in items]
+        guards = [validate_generated_answer(r, prepared, candidates, registry, part=i if split else None)
+                  for i, r in enumerate(raws)]
+        guard, raw = _join_parts(guards, raws) if split else (guards[0], raws[0])
+        shas = [hashlib.sha256(json.dumps(item, ensure_ascii=False, sort_keys=True).encode()).hexdigest() for item in items]
+        record.update(model_called=True, raw_output=raw, guard=guard, model_input_sha256=shas[0],
+                      model_input_sha256s=shas, raw_outputs=raws if split else None)
         if guard["decision"] == "release" and guard.get("system_notice"):
             released = {**guard["parsed"], "system_notice": guard["system_notice"]}
             provenance = "model_generated_with_system_notice"
