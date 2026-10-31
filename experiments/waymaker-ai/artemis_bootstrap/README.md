@@ -51,6 +51,12 @@ free T4 the locked 48-case acceptance set passed 28/48 with 12 critical failures
 (unverified or forged sources treated as official), so the gate failed and DEV-20 was
 not run. See the [Mission 005-F report](runs/mission005f/MISSION-005-F-REPORT.ko.md) and
 [005-G recommendations](runs/mission005f/MISSION-005-G-RECOMMENDATIONS.ko.md).
+Mission 005-G: a trusted-evidence pipeline (registry, admissibility, contract v4,
+post-generation guard) and gate v2 frozen before inference (commit `e12cf43`). On a
+free T4 the locked 63-case acceptance set had no trust bypass and 55/63 correct
+end-to-end releases, but 2 answers that should have been withheld were released, so the
+gate failed and DEV-20 was not run. See the
+[Mission 005-G report](runs/mission005g/MISSION-005-G-REPORT.ko.md).
 
 Recovery status, 2026-10-29: checkpoint metadata verified; new MLX-VLM weight
 loading and generation **not executed** on this M1 8GB machine. The runtime is
