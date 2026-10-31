@@ -69,6 +69,14 @@ free T4 the new locked 81-case set released nothing unsafe (no trust bypass, no 
 block; the guard blocked both raw answers that obeyed a question-borne instruction);
 76/81 end-to-end correct. The gate still failed on the raw-model thresholds, so DEV-20
 was not run. See the [Mission 005-I report](runs/mission005i/MISSION-005-I-REPORT.ko.md).
+Mission 005-J: thresholds kept; reply instructions removed from the question the model
+sees, one model call per sub-code when evidence splits by sub-code, contract v7 and gate
+v5, frozen before inference (commit `9dc34d2`). On a free T4 the new locked 81-case set
+had no raw-model critical, nothing unsafe released and 78/81 end-to-end correct. The
+gate failed on one missed situation (A05J-37), one correct answer scored wrong by an
+over-tightened mention group (A05J-63) and language checks left unresolved by Korean
+names quoted inline, so DEV-20 was not run. See the
+[Mission 005-J report](runs/mission005j/MISSION-005-J-REPORT.ko.md).
 
 Recovery status, 2026-10-29: checkpoint metadata verified; new MLX-VLM weight
 loading and generation **not executed** on this M1 8GB machine. The runtime is
