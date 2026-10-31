@@ -16,7 +16,8 @@ SOURCE_TEXT_FIELDS = (
 # would tell the model it is being evaluated, so only real source kinds pass.
 SOURCE_PROVENANCE_VALUES = frozenset({"official_manual", "official_notice", "community_post"})
 # Mission 005-G: values the trusted-evidence pipeline computes itself and hands to a
-# v4 prompt. They come from the system, never from the item's own fields or labels.
+# v4/v5 prompt. They come from the system, never from the item's own fields or labels.
+# v5 (Mission 005-H) sends uncovered_items as item names in the reply language.
 SYSTEM_FIELDS = ("reply_language", "uncovered_items")
 REPLY_LANGUAGES = frozenset({"ko", "en", "vi"})
 

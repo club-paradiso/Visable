@@ -26,10 +26,11 @@ _PROTECTED_SPAN = re.compile(r"\([^()]*\)|\[[^\[\]]*\]|「[^」]*」|『[^』]*�
 _CODE = re.compile(r"(?<![A-Za-z0-9-])[A-Z]{1,3}-\d+(?:-[0-9A-Z]{1,3})*(?![0-9])|[A-Z0-9]+(?:-[A-Z0-9]+)+")
 
 # Explicit requests for a reply language, matched on NFC lower-cased text.
+# Mission 005-H added "using/use <language>" and "한국말로" ("Please answer using Korean").
 _REQUESTS = {
-    "en": re.compile(r"영어로|in english|bằng tiếng anh|tiếng anh"),
-    "vi": re.compile(r"베트남어로|in vietnamese|bằng tiếng việt|tiếng việt"),
-    "ko": re.compile(r"한국어로|in korean|bằng tiếng hàn|tiếng hàn"),
+    "en": re.compile(r"영어로|in english|(?:using|use) english|bằng tiếng anh|tiếng anh"),
+    "vi": re.compile(r"베트남어로|in vietnamese|(?:using|use) vietnamese|bằng tiếng việt|tiếng việt"),
+    "ko": re.compile(r"한국어로|한국말로|in korean|(?:using|use) korean|bằng tiếng hàn|tiếng hàn"),
 }
 
 # Thresholds on the share of counted words. Between them the result is unresolved.
@@ -62,7 +63,7 @@ def requested_language(question: str) -> str | None:
     text = _nfc(question).lower()
     found = {lang for lang, pattern in _REQUESTS.items() if pattern.search(text)}
     # "tiếng Việt" inside a Vietnamese question is not a request on its own.
-    if found == {"vi"} and not re.search(r"베트남어로|in vietnamese|bằng tiếng việt|trả lời bằng|answer in", text):
+    if found == {"vi"} and not re.search(r"베트남어로|in vietnamese|(?:using|use) vietnamese|bằng tiếng việt|trả lời bằng|answer in", text):
         found = set()
     return found.pop() if len(found) == 1 else None
 

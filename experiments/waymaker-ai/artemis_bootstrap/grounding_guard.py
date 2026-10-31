@@ -2,14 +2,16 @@
 
     candidates -> evidence_admissibility.select_admissible_evidence (registry, scope, date)
                -> pre-inference outcome: proceed | system_withheld | system_clarification | review_required
-               -> (proceed only) model call with admissible evidence, reply_language, uncovered_items (contract v4)
+               -> (proceed only) model call with admissible evidence, reply_language, uncovered_items (contract v5)
                -> validate_generated_answer: release | withhold | review_required | invalid_response
                -> released response, labelled with who produced it
 
 Raw model output is kept unchanged next to what the system releases. A system
 fallback is never a model success, and the guard never rewrites a wrong answer
 into a right one: it either lets the model's answer through or replaces it with a
-non-substantive system message. Research-only; nothing here is wired into the
+non-substantive system message. Mission 005-H: a released partial answer that does
+not name an uncovered item gets a separate, labelled system notice naming it; the
+model's sentences are never edited. Research-only; nothing here is wired into the
 production backend.
 """
 from __future__ import annotations
@@ -27,13 +29,17 @@ sys.path.insert(0, str(BOOT.parent))
 sys.path.insert(0, str(BOOT))
 import claim_support_validation
 import language_compliance
-from waymaker_ai.evidence_admissibility import parent_code, select_admissible_evidence
+from waymaker_ai.evidence_admissibility import ITEM_LABELS, parent_code, requested_items, select_admissible_evidence
 from waymaker_ai.evidence_registry import TrustRegistry
 from waymaker_ai.response_contract import parse_response
 
-CONTRACT_VERSION = "v4"
-PROVENANCE = ("model_generated", "system_withheld", "system_clarification", "review_required",
-              "post_generation_blocked", "invalid_response")
+CONTRACT_VERSION = "v5"
+PROVENANCE = ("model_generated", "model_generated_with_system_notice", "system_withheld", "system_clarification",
+              "review_required", "post_generation_blocked", "invalid_response")
+#: Mission 005-H: the system notice added to a released partial answer, by reply language.
+NOTICE = {"ko": "확인된 근거에 없는 항목: {items}. 이 항목은 담당 기관에 직접 확인해 주세요.",
+          "en": "Not covered by the verified evidence: {items}. Please check these with the responsible office.",
+          "vi": "Không có trong căn cứ đã xác minh: {items}. Vui lòng hỏi trực tiếp cơ quan phụ trách về các mục này."}
 SUBSTANTIVE = {"answered", "partial", "conflict"}
 _CODE_RE = re.compile(r"(?<![A-Za-z0-9-])([A-Z]-\d{1,2}(?:-\d{1,2})?)(?![0-9-])")
 
@@ -73,8 +79,10 @@ def prepare(question: str, intake: Optional[Mapping], candidates: list, registry
     lang = reply_language(question)
     model_item = None
     if selection["outcome"] == "proceed":
+        # v5 names the uncovered items in the reply language instead of internal keys.
+        labels = [ITEM_LABELS[i][lang["language"]] for i in selection["uncovered_items"]]
         model_item = {"question": question, "evidence": selection["admissible"],
-                      "system": {"reply_language": lang["language"], "uncovered_items": selection["uncovered_items"]}}
+                      "system": {"reply_language": lang["language"], "uncovered_items": labels}}
     return {"selection": selection, "reply_language": lang, "model_item": model_item}
 
 
@@ -112,7 +120,9 @@ def validate_generated_answer(raw: Optional[str], prepared: Mapping, candidates:
                 findings.append({"check": "scope", "kind": kind, "detail": f["detail"], "effect": "review_required"})
         ctx_code = (selection["context"] or {}).get("status_code")
         if ctx_code:
-            for code in set(_CODE_RE.findall(answer)):
+            # Mission 005-H: a code the cited admissible evidence itself names is in scope; sorted for a stable record.
+            cited_text = "\n".join(e.get("text", "") for e in selection["admissible"] if e["id"] in cites)
+            for code in sorted(set(_CODE_RE.findall(answer)) - set(_CODE_RE.findall(cited_text))):
                 if parent_code(code) == parent_code(ctx_code) and code != ctx_code and code != parent_code(code) \
                         and ctx_code != parent_code(ctx_code):
                     findings.append({"check": "scope", "kind": "other_subcategory_in_answer", "detail": code,
@@ -121,12 +131,23 @@ def validate_generated_answer(raw: Optional[str], prepared: Mapping, candidates:
         if missing and status == "answered":
             findings.append({"check": "partial", "kind": "uncovered_item_not_named", "detail": missing,
                              "effect": "review_required"})
+        elif missing and status == "partial":
+            findings.append({"check": "partial", "kind": "uncovered_item_not_named", "detail": missing,
+                             "effect": "system_notice"})
+        asked = requested_items(question)
+        if asked and set(asked) <= set(selection["uncovered_items"]):
+            # Unreachable when pre-inference withholds such questions; kept as a second line.
+            findings.append({"check": "partial", "kind": "no_requested_item_covered", "detail": asked, "effect": "withhold"})
     language = language_compliance.check(question, answer, lang)
     if language["result"] == "fail":
         findings.append({"check": "language", "kind": language["reason"], "detail": lang, "effect": "review_required"})
     effects = {f.get("effect") for f in findings}
     decision = "withhold" if "withhold" in effects else "review_required" if "review_required" in effects else "release"
-    return {**done(decision), "parsed": parsed, "language": language["result"]}
+    notice = None
+    if decision == "release" and "system_notice" in effects:
+        missing = next(f["detail"] for f in findings if f.get("effect") == "system_notice")
+        notice = NOTICE[lang].format(items=", ".join(ITEM_LABELS[i][lang] for i in missing))
+    return {**done(decision), "parsed": parsed, "language": language["result"], "system_notice": notice}
 
 
 def run_case(question: str, intake: Optional[Mapping], candidates: list, registry: Optional[TrustRegistry],
@@ -150,7 +171,10 @@ def run_case(question: str, intake: Optional[Mapping], candidates: list, registr
         record.update(model_called=True, raw_output=raw, guard=guard,
                       model_input_sha256=hashlib.sha256(json.dumps(prepared["model_item"], ensure_ascii=False,
                                                                    sort_keys=True).encode()).hexdigest())
-        if guard["decision"] == "release":
+        if guard["decision"] == "release" and guard.get("system_notice"):
+            released = {**guard["parsed"], "system_notice": guard["system_notice"]}
+            provenance = "model_generated_with_system_notice"
+        elif guard["decision"] == "release":
             released, provenance = guard["parsed"], "model_generated"
         elif guard["decision"] == "invalid_response":
             released, provenance = system_response("blocked", lang), "invalid_response"

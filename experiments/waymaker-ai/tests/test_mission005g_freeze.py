@@ -30,9 +30,29 @@ def test_manifest_and_suite_are_the_frozen_ones():
     assert m["thresholds"]["min_raw_overall_pass_rate"] == 0.85   # the Mission 005-F raw bar, unchanged
 
 
+#: Files Mission 005-H changed after the 005-G freeze. The 005-G manifest records them as they
+#: were at that freeze; the 005-G decision is re-derived with that commit's code (test_mission005g_real_run).
+CHANGED_AFTER_005G = {"artemis_bootstrap/grounding_guard.py", "artemis_bootstrap/language_compliance.py",
+                      "artemis_bootstrap/gemma4_runtime.py", "waymaker_ai/response_contract.py",
+                      "waymaker_ai/inference_input.py", "waymaker_ai/evidence_admissibility.py",
+                      "artemis_bootstrap/trusted_evidence_spec.md"}
+FREEZE_COMMIT_005G = "e12cf4365840ddc6ee32d28bfd1eca90bfa50796"
+
+
 def test_offline_preconditions_pass():
     checks = gate2.offline_preconditions(gate2.load_manifest())
-    assert all(c["passed"] for c in checks), [c for c in checks if not c["passed"]]
+    assert all(c["passed"] for c in checks if c["check"] != "evaluator_files_unchanged"), checks
+    files = next(c for c in checks if c["check"] == "evaluator_files_unchanged")
+    assert set(files["detail"] or {}) <= CHANGED_AFTER_005G, files
+
+
+def test_005g_manifest_matches_the_files_at_its_freeze_commit():
+    for rel, digest in gate2.load_manifest()["evaluator_files_sha256"].items():
+        shown = subprocess.run(["git", "show", f"{FREEZE_COMMIT_005G}:experiments/waymaker-ai/{rel}"],
+                               cwd=BOOT, capture_output=True)
+        if shown.returncode:
+            pytest.skip("needs git history for the 005-G freeze commit")
+        assert hashlib.sha256(shown.stdout).hexdigest() == digest, rel
 
 
 def test_acceptance_suite_shape():

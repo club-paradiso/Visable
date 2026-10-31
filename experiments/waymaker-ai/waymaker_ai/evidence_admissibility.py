@@ -6,6 +6,9 @@ context, in the fixed order of trusted_evidence_spec.md section 3, and records w
 Then it decides whether the model is called at all (section 4): with no admissible
 evidence the system withholds instead of letting the model guess, and a personal
 question whose answer turns on a missing fact gets a system clarification.
+Mission 005-H: when the question asks for specific items and the admissible
+evidence covers none of them, the system also withholds; the model is not asked to
+answer around the gap.
 
 Nothing here reads a document's self-description, a benchmark answer key or an
 expected status. The question context is what the user entered (intake) plus what
@@ -48,7 +51,8 @@ _DATE_FULL = re.compile(r"(\d{4})\s*(?:년|[.\-/])\s*(\d{1,2})\s*(?:월|[.\-/])\
 _DATE_MONTH = re.compile(r"(\d{4})\s*년\s*(\d{1,2})\s*월|tháng\s*(\d{1,2})\s*(?:/|năm)\s*(\d{4})")
 #: Items a question can ask for, and the words that show evidence covers them.
 ITEMS = {
-    "fee": (r"수수료|비용|요금|fee|cost|lệ\s*phí|phí", r"수수료|원|won|krw|fee|lệ\s*phí"),
+    # Mission 005-H: "phí" only as a word, so "phía" (side, as in vùng phía Nam) is not a fee.
+    "fee": (r"수수료|비용|요금|fee|cost|lệ\s*phí|\bphí\b", r"수수료|원|won|krw|fee|lệ\s*phí"),
     "processing_time": (r"처리\s*기간|처리기간|걸리|processing\s+(?:time|period)|how\s+long|thời\s+gian\s+xử\s+lý|bao\s+lâu",
                         r"처리\s*기간|처리기간|처리한다|처리됨|processing|xử\s+lý|일\s*이내\s*처리|일\s*안에\s*처리"),
     "documents": (r"서류|documents?|papers|giấy\s+tờ|hồ\s+sơ", r"서류|신청서|여권|증명서|확인서|document|giấy|hồ\s+sơ|등록증|사진"),
@@ -61,6 +65,17 @@ ITEMS = {
 }
 ITEM_ASK = {k: re.compile(a, re.I) for k, (a, _) in ITEMS.items()}
 ITEM_COVER = {k: re.compile(c, re.I) for k, (_, c) in ITEMS.items()}
+#: Mission 005-H: item names in each reply language, for the model input (contract v5)
+#: and the system notice on a partial answer.
+ITEM_LABELS = {
+    "fee": {"ko": "수수료", "en": "fee", "vi": "lệ phí"},
+    "processing_time": {"ko": "처리기간", "en": "processing time", "vi": "thời gian xử lý"},
+    "documents": {"ko": "제출 서류", "en": "required documents", "vi": "giấy tờ cần nộp"},
+    "deadline": {"ko": "신청·신고 기한", "en": "deadline", "vi": "thời hạn"},
+    "place": {"ko": "신청 장소", "en": "place of application", "vi": "nơi nộp"},
+    "method": {"ko": "신청 방법", "en": "application method", "vi": "cách nộp"},
+    "eligibility": {"ko": "자격 요건", "en": "eligibility requirements", "vi": "điều kiện"},
+}
 
 
 def _nfc(text: str) -> str:
@@ -250,8 +265,13 @@ def select_admissible_evidence(question: str, intake: Optional[Mapping], candida
     admissible = [e for e in candidates if e.get("id") in keep]
     review = [d for d in decisions if d["decision"] == "review_required"]
     clarify_on, uncovered = None, []
+    asked = requested_items(question)
     if not admissible:
         outcome, reason = ("review_required", "only_review_required_evidence") if review else ("system_withheld", "no_admissible_evidence")
+    elif asked and set(uncovered_items(question, admissible)) == set(asked):
+        # Mission 005-H: nothing the question asks for is in the admissible evidence. The list is kept for audit.
+        outcome, reason = "system_withheld", "no_evidence_for_requested_items"
+        uncovered = uncovered_items(question, admissible)
     else:
         clarify_on = _branches(ctx, admissible, registry) if ctx["question_type"] == "personal" else None
         if clarify_on:
@@ -265,4 +285,4 @@ def select_admissible_evidence(question: str, intake: Optional[Mapping], candida
 
 
 __all__ = ["RegistryUnavailable", "question_context", "decide_one", "select_admissible_evidence", "requested_items",
-           "uncovered_items", "parent_code"]
+           "uncovered_items", "parent_code", "ITEM_LABELS"]

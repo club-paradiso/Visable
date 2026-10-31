@@ -221,7 +221,10 @@ def test_uncovered_items_are_computed_from_admissible_evidence_only():
 # --- contract v4 and the model input -------------------------------------------------
 def test_v1_to_v3_prompts_unchanged_and_v4_distinct():
     assert [prompt_sha256(v)[:12] for v in ("v1", "v2", "v3")] == ["41037931d003", "d9c2081b4dd3", "9d78fb00d027"]
-    assert CONTRACT_VERSIONS == ("v1", "v2", "v3", "v4") and len({prompt_sha256(v) for v in CONTRACT_VERSIONS}) == 4
+    # Mission 005-H added v5 after these; the first four, their order and v4's prompt stay.
+    assert CONTRACT_VERSIONS[:4] == ("v1", "v2", "v3", "v4")
+    assert len({prompt_sha256(v) for v in CONTRACT_VERSIONS}) == len(CONTRACT_VERSIONS)
+    assert prompt_sha256("v4").startswith("8edc38f67b96")
 
 
 def test_v4_messages_carry_only_admissible_evidence_and_system_fields():
@@ -324,9 +327,20 @@ def test_development_suite_is_valid_and_marks_regressions():
     assert {c["regression_of"] for c in doc["cases"] if "regression_of" in c} == {"A05F-10", "A05F-12", "A05F-34", "A05F-42"}
 
 
+#: Mission 005-H spec section 4 row 4: every asked item uncovered now withholds before the model.
+#: These cases expected proceed (the model answered insufficient_evidence) and still expect withhold end to end.
+WITHHELD_BY_005H = {"D05G-15"}
+
+
 @pytest.mark.parametrize("case", dev_cases(), ids=lambda c: c["id"])
 def test_development_case(case):
     reg = gate2.registry_for(case, "dev")
+    if case["id"] in WITHHELD_BY_005H:
+        rec_ = guard.run_case(case["question"], case["intake"], case["evidence"], reg, case.get("as_of") or DATE,
+                              lambda item: pytest.fail("model must not be called"))
+        assert (rec_["pre_inference"], rec_["pre_inference_reason"]) == ("system_withheld", "no_evidence_for_requested_items")
+        assert case["expected"]["end_to_end"] == "withhold" and rec_["released_provenance"] == "system_withheld"
+        return
     for probe in case["probes"] or [None]:
         raw = json.dumps(probe["raw"], ensure_ascii=False) if probe else None
         rec_ = guard.run_case(case["question"], case["intake"], case["evidence"], reg, case.get("as_of") or DATE, lambda item: raw)

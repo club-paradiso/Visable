@@ -1,8 +1,11 @@
-# 신뢰 근거 처리 명세 (Mission 005-G)
+# 신뢰 근거 처리 명세 (Mission 005-G, 005-H 개정)
 
 이 문서는 **행동 명세**입니다. 구현(`waymaker_ai/evidence_registry.py`, `waymaker_ai/evidence_admissibility.py`,
 `artemis_bootstrap/grounding_guard.py`)과 합성 집합의 기대값이 모두 이 문서를 따릅니다. 모델은 근거의 진위·적용 범위·승인 여부를
 최종 판단하지 않습니다. 시스템이 결정적 규칙으로 먼저 거르고, 생성 뒤에 다시 검사합니다.
+
+Mission 005-H 개정: 묻는 항목이 모두 근거 밖이면 보류(4절 4행), 항목 이름을 답 언어로 전달(4절), 명시 언어 요청 표현 확대(4절),
+부분 답의 시스템 안내 문장과 근거에 있는 코드의 예외(5절)를 더했습니다. 나머지는 005-G와 같습니다.
 
 ## 1. 신뢰 기록부 (registry)
 
@@ -109,8 +112,9 @@
 | 1 | 기록부를 읽을 수 없음 | `system_withheld` (사유 `registry_unavailable`) |
 | 2 | 채택 근거가 없고 `review_required` 근거가 있음 | `review_required` |
 | 3 | 채택 근거가 없음 | `system_withheld` |
-| 4 | 개인 판단 질문이고, 채택 근거가 빠진 사실에 따라 갈림 | `system_clarification` |
-| 5 | 그 밖 | `proceed` (모델 호출) |
+| 4 | 질문이 묻는 항목이 하나 이상 있고 그 항목이 **모두** `uncovered_items`임 (005-H) | `system_withheld` (사유 `no_evidence_for_requested_items`) |
+| 5 | 개인 판단 질문이고, 채택 근거가 빠진 사실에 따라 갈림 | `system_clarification` |
+| 6 | 그 밖 | `proceed` (모델 호출) |
 
 "빠진 사실에 따라 갈림"은 둘 중 하나입니다. 위치가 없는데 채택 근거 중 `domestic`만 대상인 근거와 `abroad`만 대상인 근거가 함께 있음.
 또는 코드가 상위 코드뿐이거나 없는데 채택 근거가 서로 다른 하위 코드에 각각 한정되고 모든 하위 코드에 적용되는 근거는 없음.
@@ -118,7 +122,15 @@
 
 `proceed`일 때 모델은 **채택 근거만** 받습니다. 거부·검토 필요 근거와 그 사유는 감사 기록에만 남깁니다.
 시스템은 질문이 묻는 항목(수수료, 처리기간, 서류, 기한, 신청 장소, 신청 방법, 자격 요건) 가운데 채택 근거 어디에도 그 항목 낱말이 없는 것을
-`uncovered_items`로 모델에게 함께 넘깁니다. 답 언어(`reply_language`)도 시스템이 정해 넘깁니다(사용자 지정 → 질문 언어 → 한국어).
+`uncovered_items`로 정합니다. 모델에게는 그 항목 이름을 답 언어로 옮겨 넘깁니다(예: `처리기간`, `processing time`, `thời gian xử lý`).
+묻는 항목이 없는 질문(예: "변경할 수 있나요?")에는 4행이 적용되지 않습니다.
+항목을 다루는지는 질문 언어와 상관없이 근거 본문의 낱말로 봅니다(영어·베트남어 질문의 "fee"·"phí"도 한국어 근거의 `수수료`로 다뤄진 것으로 봄).
+`uncovered_items`는 `proceed`와 4행 보류에서 기록하고(4행에서는 묻는 항목 전부), 1~3·5행에서는 계산하지 않습니다(`[]`).
+베트남어 `phí`는 낱말일 때만 수수료로 봅니다(`phía`는 아님).
+
+답 언어(`reply_language`)도 시스템이 정해 넘깁니다(사용자 지정 → 질문 언어 → 한국어). 사용자 지정으로 보는 표현:
+`한국어로`·`한국말로`·`in Korean`·`using Korean`·`use Korean`·`bằng tiếng Hàn`, `영어로`·`in English`·`using English`·`use English`·`bằng tiếng Anh`,
+`베트남어로`·`in Vietnamese`·`using Vietnamese`·`use Vietnamese`·`bằng tiếng Việt`. 서로 다른 언어 요청이 둘 이상이면 사용자 지정이 없는 것으로 봅니다.
 
 시스템이 만든 보류·확인 응답은 모델 성공으로 세지 않습니다.
 
@@ -127,18 +139,23 @@
 | 결과 | 조건 |
 |---|---|
 | `invalid_response` | 응답 계약 위반(JSON, 키, 상태, 목록 밖 인용, 빈 답 등) |
-| `withhold` | 다음 중 하나: 비인정 근거에만 있는 값을 씀, 인용 근거와 다른 값(금액·기간·날짜), 허가·금지 반전, 의무 부정, 어떤 근거에도 없는 금액·기간·날짜 |
-| `review_required` | 다음 중 하나: 답 언어가 `reply_language`가 아님, `uncovered_items`가 있는데 `answered`이고 그 항목을 언급하지 않음, 질문·인용 근거에 없는 체류자격 코드를 씀 |
+| `withhold` | 다음 중 하나: 비인정 근거에만 있는 값을 씀, 인용 근거와 다른 값(금액·기간·날짜), 허가·금지 반전, 의무 부정, 어떤 근거에도 없는 금액·기간·날짜, 묻는 항목이 모두 `uncovered_items`인데 실질 답(005-H, 4절 4행 뒤의 이중 방어) |
+| `review_required` | 다음 중 하나: 답 언어가 `reply_language`가 아님, `uncovered_items`가 있는데 `answered`이고 그 항목을 언급하지 않음, 질문 코드와 같은 계열의 다른 하위 코드를 쓰고 그 코드가 **인용한 채택 근거 본문에도 없음** |
 | `release` | 위 어느 것에도 걸리지 않음 |
 
 `release`만 사용자에게 모델 답이 나갑니다. 나머지는 시스템 대체 응답이 나가고 원래 출력은 감사용으로 보존합니다.
+
+**부분 답의 시스템 안내(005-H).** `release`이고 상태가 `partial`인데 답이 `uncovered_items`의 어떤 항목도 언급하지 않으면,
+시스템이 그 항목 이름을 담은 안내 문장을 답 언어로 따로 붙입니다(예: "Not covered by the verified evidence: processing time. …").
+모델 문장은 고치지 않습니다. 출처 표시는 `model_generated_with_system_notice`입니다. 원 모델 채점에서는 여전히 항목 누락으로 셉니다.
 "모순 없음"은 모든 주장이 뒷받침된다는 증명이 아닙니다.
 
 ## 6. 끝단 결과의 기대값
 
 각 사례는 시스템 전체가 낼 결과를 하나로 기대합니다.
 
-- `release_substantive`: 근거 있는 실질 답(`answered`·`partial`·`conflict`)이 나가야 함.
+- `release_substantive`: 근거 있는 실질 답(`answered`·`partial`·`conflict`)이 나가야 함. 시스템 안내가 붙은 부분 답도 실질 답입니다.
+  끝단 채점은 사용자가 받는 글(모델 답 + 시스템 안내)로 필수 언급을 봅니다. 시스템 안내가 채울 수 있는 것은 빠진 항목 언급뿐입니다.
 - `clarify`: 시스템 확인 응답 또는 모델의 `clarify`가 나가야 함.
 - `withhold`: 실질 법률 주장이 나가면 안 됨(시스템 보류, 검토 필요, 생성 뒤 차단, 모델의 `insufficient_evidence` 중 하나).
 
