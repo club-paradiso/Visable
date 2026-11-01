@@ -379,6 +379,7 @@ if command -v node >/dev/null 2>&1; then
   node scripts/check_document_guidance.mjs
   node scripts/check_status_resolver.mjs
   node scripts/check_search_router.mjs
+  node scripts/check_question_understanding.mjs
   node scripts/check_search_suggest.mjs
   node scripts/check_document_physical_form.mjs
   echo "[13c/14] Validating the Form Helper (inventory, exclusions, template drift, engine, exports)..."

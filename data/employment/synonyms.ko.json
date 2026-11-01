@@ -12,6 +12,17 @@
   },
   "concepts": [
     {
+      "id": "systems_admin", "type": "role",
+      "surface": ["전산", "시스템 관리", "시스템 운영", "전산 시스템", "서버 관리"],
+      "label_ko": "정보 시스템 운영",
+      "occupation_terms": ["정보 시스템 운영자"], "industry_terms": []
+    },
+    {
+      "id": "web_builder", "type": "role",
+      "surface": ["웹사이트", "웹 사이트", "홈페이지 제작", "홈페이지 개발"],
+      "label_ko": "웹 개발", "occupation_terms": ["웹 개발자"], "industry_terms": []
+    },
+    {
       "id": "barista",
       "type": "role",
       "surface": [

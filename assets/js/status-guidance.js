@@ -197,18 +197,21 @@
 
   /* --------------------------------------------------------------- codes --- */
   function normalizeCode(raw, codes) {
-    var s = String(raw || '').toUpperCase().replace(/[‐‑‒–—−－]/g, '-').replace(/\s+/g, '');
+    var s = String(raw || '').toUpperCase().replace(/[‐‑‒–—−－]/g, '-').replace(/(\d)\s+(\d)/g, '$1-$2').replace(/\s+/g, '');
     var m = s.match(/^([A-H])-?(\d{1,2})(?:-?([0-9A-Z]{1,6}))?$/);
     if (!m) return null;
     var parent = m[1] + '-' + m[2];
     if (!m[3]) {
       if (codes[parent]) return parent;
-      if (m[2].length === 2) { var split = m[1] + '-' + m[2][0] + '-' + m[2][1]; if (codes[split]) return split; if (codes[m[1] + '-' + m[2][0]]) return { unknownSub: split, parent: m[1] + '-' + m[2][0] }; }
+      // Only compact input (E74) may abbreviate a subcode. An explicit F-10
+      // must never silently become F-1-0, or a completely different family.
+      if (m[2].length === 2 && s.indexOf('-') < 0) { var split = m[1] + '-' + m[2][0] + '-' + m[2][1]; if (codes[split]) return split; }
       return null;
     }
     var sub = parent + '-' + m[3];
     if (codes[sub]) return sub;
     var digits = m[2] + m[3];
+    if (s.indexOf('-') >= 0) return codes[parent] ? { unknownSub: sub, parent: parent } : null;
     for (var i = 1; i < digits.length; i++) {
       var cand = m[1] + '-' + digits.slice(0, i) + '-' + digits.slice(i);
       if (codes[cand]) return cand;
@@ -226,9 +229,15 @@
     var fam = status && bundle && bundle.families ? bundle.families[parentOf(status)] : null;
     return !!(fam && (fam.dimensions || []).some(function (d) { return !d.procedures || d.procedures.indexOf(procedure) >= 0; }));
   }
+  // Mask only explicitly rejected mentions, preserving offsets and the original
+  // query for display. Negating a requirement ("허가 없이") is not a rejection
+  // of a procedure; it must keep its ordinary meaning.
+  function positiveQuery(query) {
+    return String(query || '').replace(/(?:[A-Ha-h]\s*-\s*\d{1,2}(?:\s*-\s*[0-9A-Za-z]{1,6})?|(?:외국인\s*)?등록증\s*재발급|체류기간\s*연장|재발급|연장|체류자격\s*변경)\s*(?:은|는|이|가)?\s*(?:말고|아니라|아닌|아니에요|아닙니다|아님)|\bnot\s+[A-H]\s*-\s*\d{1,2}(?:\s*-\s*[0-9A-Z]{1,6})?\b/gi, function (s) { return ' '.repeat(s.length); });
+  }
   function interpret(query, bundle, opts) {
     opts = opts || {};
-    var q = String(query || '').trim();
+    var q = positiveQuery(String(query || '').trim());
     var lower = q.toLowerCase();
     var codes = bundle.codes;
     var out = { query: q, codes: [], unknownCodes: [], aliasCandidates: [], aliasQuestion: null, procedure: null, procedureCandidates: [], preAnswers: {}, confidence: 'LOW', program: null, keywords: [], route: null, office: null, conditions: {}, isQuestion: false, facet: null };
@@ -239,7 +248,7 @@
     var codeRe = /([A-Ha-h])\s?-?\s?(\d{1,2})(?:\s?-\s?([0-9A-Za-z]{1,6})|\s(\d{1,3}[A-Za-z]{0,3})(?!\s?(?:년|개월|달|일|주|세|살|시간|학기|번|회|명|원|years?|yrs?|months?|weeks?|days?|hours?|times?|semesters?)(?![A-Za-z]))|([0-9A-Za-z]{1,6}))?(?![A-Za-z0-9])/g;
     var m;
     while ((m = codeRe.exec(q))) {
-      var token = m[0].replace(/\s/g, '');
+      var token = m[0];
       var n = normalizeCode(token, codes);
       if (!n) continue;
       if (typeof n === 'object') { out.unknownCodes.push(n.unknownSub); if (out.codes.every(function (c) { return c.code !== n.parent; })) out.codes.push({ code: n.parent, exact: false, fromUnknown: n.unknownSub }); continue; }
@@ -270,18 +279,19 @@
         if (typeof c.at !== 'number') return;
         var after = q.slice(c.end, c.end + 8), before = q.slice(Math.max(0, c.at - 8), c.at);
         if (targetIdx < 0 && (/^\s*(?:으로|로|へ|への|に)(?![가-힣]*\s*(?:부터|에서))/.test(after) || /(?:->|→|\bto\b|\bsang\b|\bke\b|\binto\b)\s*$/i.test(before))) targetIdx = i;
-        else if (fromIdx < 0 && (/^\s*(?:에서|부터|から)/.test(after) || /\b(?:from|từ|dari)\s*$/i.test(before))) fromIdx = i;
+        else if (fromIdx < 0 && (/^\s*(?:에서|부터|から)/.test(after) || /(?:\b(?:from|từ|dari)|현재(?:는)?|지금(?:은)?)\s*$/i.test(before))) fromIdx = i;
       });
       // "D-2에서 D-10 변경": only the current status is marked (에서/from); with exactly
       // two codes the other one is the target.
       if (targetIdx < 0 && fromIdx >= 0 && out.codes.length === 2) targetIdx = fromIdx === 0 ? 1 : 0;
+      var fromCode = fromIdx >= 0 ? out.codes[fromIdx].code : null;
       if (targetIdx > 0 && fromIdx !== targetIdx) {
         var target = out.codes.splice(targetIdx, 1)[0];
         out.codes.unshift(target);
       }
       if (targetIdx >= 0) {
         out.codes[0].role = 'target';
-        out.transitionFrom = fromIdx >= 0 ? (fromIdx < targetIdx ? out.codes[fromIdx + 1] : out.codes[fromIdx]).code : null;
+        out.transitionFrom = fromCode;
       }
     }
     if (!out.codes.length) {
@@ -338,7 +348,7 @@
     else if (primary) out.confidence = 'MEDIUM';
     else if (out.procedure) { var reg = registryFor(bundle, out.procedure); out.confidence = reg && (reg.context_requirement === 'STATUS_INDEPENDENT' || reg.context_requirement === 'STATUS_OPTIONAL') ? 'HIGH' : 'MEDIUM'; }
     else if (out.aliasCandidates.length || out.program) out.confidence = 'MEDIUM';
-    if (primary && !out.procedure) {
+    if (primary && !out.procedure && !out.procedureCandidates.length) {
       var entry = codes[primary.code] || {};
       out.procedureCandidates = PROCEDURE_ORDER.filter(function (pid) { var st = entry.procedures && entry.procedures[pid]; return st && st.s !== 'UNVERIFIED'; });
     }
@@ -447,7 +457,8 @@
     var codeInfo = bundle.codes[status] || {};
     // 1. procedure unknown → ask (options = procedures with a known state)
     if (!procedure) {
-      var opts = PROCEDURE_ORDER.filter(function (pid) { var st = codeInfo.procedures && codeInfo.procedures[pid]; return st && st.s !== 'UNVERIFIED' && st.s !== 'NOT_APPLICABLE'; });
+      var procedurePool = interp.route && interp.route.procedureAmbiguous ? interp.procedureCandidates : PROCEDURE_ORDER;
+      var opts = procedurePool.filter(function (pid) { var st = codeInfo.procedures && codeInfo.procedures[pid]; return st && st.s !== 'UNVERIFIED' && st.s !== 'NOT_APPLICABLE'; });
       if (!opts.length) opts = ['extension', 'status_change', 'registration'];
       return { kind: 'question', dimension: '__procedure', question_ko: tr('ko', 'askProcedure', { status: status }), question_en: tr('en', 'askProcedure', { status: status }), hint_ko: tr('ko', 'askProcedureHint'), hint_en: tr('en', 'askProcedureHint'),
         options: opts.map(function (pid) { var p = procedureMeta(bundle, pid); var st = codeInfo.procedures ? codeInfo.procedures[pid] : null; return { id: pid, ko: p.ko, en: p.en, targets: [pid], state: chipState(state, bundle, status, pid, st ? st.s : null) }; }), allowUnsure: false, why: 'procedure' };
@@ -1560,7 +1571,7 @@
     return next;
   }
 
-  var api = { STR: STR, normalizeCode: normalizeCode, interpret: interpret, nextStep: nextStep, compose: compose, renderModel: renderModel, groupDocuments: groupDocuments, applicableOverlays: applicableOverlays, candidateEntries: candidateEntries, feesFor: feesFor, electronicServiceEligibility: electronicServiceEligibility, onlineReductionApplies: onlineReductionApplies, exemptionApplies: exemptionApplies, evidenceFor: evidenceFor, localPracticeFor: localPracticeFor, registryFor: registryFor, commonEntry: commonEntry, formLabel: formLabel, preparation: preparation, preparationLabel: preparationLabel, feeSummary: feeSummary, uniqueNotes: uniqueNotes, sameNote: sameNote, tierOverlays: tierOverlays, manualTitle: manualTitle, PROCEDURE_ORDER: PROCEDURE_ORDER, esc: esc, parentOf: parentOf, tr: tr, won: won };
+  var api = { STR: STR, positiveQuery: positiveQuery, normalizeCode: normalizeCode, interpret: interpret, nextStep: nextStep, compose: compose, renderModel: renderModel, groupDocuments: groupDocuments, applicableOverlays: applicableOverlays, candidateEntries: candidateEntries, feesFor: feesFor, electronicServiceEligibility: electronicServiceEligibility, onlineReductionApplies: onlineReductionApplies, exemptionApplies: exemptionApplies, evidenceFor: evidenceFor, localPracticeFor: localPracticeFor, registryFor: registryFor, commonEntry: commonEntry, formLabel: formLabel, preparation: preparation, preparationLabel: preparationLabel, feeSummary: feeSummary, uniqueNotes: uniqueNotes, sameNote: sameNote, tierOverlays: tierOverlays, manualTitle: manualTitle, PROCEDURE_ORDER: PROCEDURE_ORDER, esc: esc, parentOf: parentOf, tr: tr, won: won };
   api.applySchedules = applySchedules; api.nextScheduleAt = nextScheduleAt;
   root.VisableStatusGuidance = api;
 

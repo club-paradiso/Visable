@@ -16589,6 +16589,7 @@ let _jcIncome = '';
 // Last natural-language analysis + rendered card counts — the source for the
 // guided checklist, so selection/income changes can rebuild it without re-running.
 let _jcAnalysis = null;
+let _jcAnalysisRequest = 0;
 let _jcResultCounts = { occupation: null, industry: null };
 let _jcClarificationAnswered = false;
 // Guided-flow state: idle | analyzing | needs_clarification | showing_candidates.
@@ -16817,6 +16818,7 @@ function jcMatchReason(row, query, terms) {
 function jcSelectedCode(type) { return _jcSelected[type] ? _jcSelected[type].code : null; }
 // Friendly confidence label relative to the best candidate in the pane.
 function jcConfLabel(row, top) {
+    if (row._confidence) return { key: `conf.${row._confidence === 'medium' ? 'mid' : row._confidence}`, cls: `is-${row._confidence === 'medium' ? 'mid' : row._confidence}` };
     const s = row._score || 0;
     const r = top > 0 ? s / top : 0;
     if (r >= 0.8) return { key: 'conf.high', cls: 'is-high' };
@@ -17568,7 +17570,7 @@ function jcRowsFromAnalysis(candidates, fallbackRows, limit = 60) {
         const row = _jobcodeData.data.find(r => jcType(r) === c.classification && jcCode(r) === String(c.code));
         if (!row) return;
         seen.add(String(c.code));
-        rows.push(Object.assign({}, row, { _score: c.score }));
+        rows.push(Object.assign({}, row, { _score: c.score, _confidence: c.confidence }));
     });
     if (!rows.length) return fallbackRows;
     const floor = rows[rows.length - 1]._score || 0;
@@ -17582,6 +17584,8 @@ async function searchJobcodeWithAI() {
     const inputEl = document.getElementById('jcSearchInput');
     const input = inputEl ? inputEl.value.trim() : '';
     if (!input) { showToast(currentLanguage === 'zh-CN' ? '请在搜索框中填写您的工作或营业场所（例：中餐厅厨师长）。' : currentLanguage === 'en' ? 'Please describe your job or workplace in the search box (e.g. Chinese-restaurant head chef).' : "검색창에 본인의 일이나 사업장을 적어주세요 (예: 중식당 주방장)."); return; }
+    const requestId = ++_jcAnalysisRequest;
+    const isCurrentRequest = () => requestId === _jcAnalysisRequest && inputEl.value.trim() === input;
     const jobBox = document.getElementById('jcJobResults'), indBox = document.getElementById('jcIndResults'), spinner = document.getElementById('jcAiSpinner');
     const btn = spinner ? spinner.parentElement : null;
     if (btn) btn.disabled = true; if (spinner) spinner.style.display = 'inline-block';
@@ -17600,8 +17604,12 @@ async function searchJobcodeWithAI() {
         let analysis = null;
         try {
             const az = await ensureEmploymentAnalyzer();
-            if (az) analysis = az.analyze({ text: input, locale: currentLanguage === 'en' ? 'en' : 'ko' });
+            const { interpretEmploymentInput } = await import('./scripts/employment_interpret_client.mjs');
+            const facts = await interpretEmploymentInput({ text: input, lang: currentLanguage === 'en' ? 'en' : 'ko', apiBase: API_BASE });
+            if (!isCurrentRequest()) return;
+            if (az) analysis = az.analyze({ text: input, locale: currentLanguage, facts });
         } catch (_) { analysis = null; }
+        if (!isCurrentRequest()) return;
         // Fresh search → store analysis, clear stale selections/clarification so the
         // checklist never inherits a previous query's progress.
         _jcAnalysis = analysis;
@@ -17614,22 +17622,10 @@ async function searchJobcodeWithAI() {
         renderEmploymentSpecialStates(analysis);
         renderEmploymentFollowupChips(analysis);
         renderEmploymentTips(analysis);
-        let jobKw = getJobcodeSearchTerms(input, analysis ? analysis.occupationTerms : []);
-        let indKw = getJobcodeSearchTerms(input, analysis ? analysis.industryTerms : []);
+        const searchText = analysis ? analysis.searchText : input;
+        let jobKw = getJobcodeSearchTerms(searchText, analysis ? analysis.occupationTerms : []);
+        let indKw = getJobcodeSearchTerms(searchText, analysis ? analysis.industryTerms : []);
         let fallbackNote = null;
-        if (API_BASE) {
-            try {
-                const response = await fetch(`${API_BASE}/api/jobcodekeywords`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ query: input }) });
-                if (!response.ok) throw new Error("키워드 확장 서버 응답 지연");
-                const data = await response.json();
-                const occExtra = analysis ? analysis.occupationTerms : [];
-                const indExtra = analysis ? analysis.industryTerms : [];
-                jobKw = getJobcodeSearchTerms(input, [...occExtra, ...(data.job_keywords || data.keywords || []), ...(data.korean_keywords || []), ...(data.english_keywords || [])].filter(k => k !== '...' && !String(k).startsWith('kw')));
-                indKw = getJobcodeSearchTerms(input, [...indExtra, ...(data.industry_keywords || []), ...(data.related_domains || [])].filter(k => k !== '...' && !String(k).startsWith('kw')));
-            } catch (_) {
-                fallbackNote = currentLanguage === 'zh-CN' ? '关键词扩展暂不可用，仅显示本地直接匹配结果。' : currentLanguage === 'en' ? 'Keyword expansion is unavailable. Showing local matches only.' : '키워드 확장을 사용할 수 없어 자연어 직접 매칭으로 표시합니다.';
-            }
-        }
         // 분석기(회귀테스트로 순위까지 검증됨)가 낸 후보를 최상단에 그대로 두고,
         // 인라인 키워드 스코어러 결과는 그 아래를 채우는 보충으로만 쓴다 —
         // 두 스코어러의 가중치 차이로 1위가 뒤바뀌는 문제(예: 서빙인데 조리사가 1위)를 막는다.
@@ -17678,7 +17674,7 @@ async function searchJobcodeWithAI() {
     } catch (e) {
         const errorHtml = `<div class="jc2-empty" style="color:var(--color-error);">${currentLanguage === 'zh-CN' ? '自然语言搜索出错' : currentLanguage === 'en' ? 'Natural-language search error' : '자연어 검색 오류'}: ${escapeHtml(e.message)}</div>`;
         if (jobBox) jobBox.innerHTML = errorHtml; if (indBox) indBox.innerHTML = errorHtml;
-    } finally { if (btn) btn.disabled = false; if (spinner) spinner.style.display = 'none'; }
+    } finally { if (requestId === _jcAnalysisRequest) { if (btn) btn.disabled = false; if (spinner) spinner.style.display = 'none'; } }
 }
 function fallbackCopy(text) {
     const ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
