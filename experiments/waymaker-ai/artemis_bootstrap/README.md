@@ -77,6 +77,13 @@ gate failed on one missed situation (A05J-37), one correct answer scored wrong b
 over-tightened mention group (A05J-63) and language checks left unresolved by Korean
 names quoted inline, so DEV-20 was not run. See the
 [Mission 005-J report](runs/mission005j/MISSION-005-J-REPORT.ko.md).
+Mission 005-K: thresholds kept; one model call per situation (in Korea / abroad), the
+question's date passed to the model, Korean names copied from evidence ignored by the
+language check, contract v8 and gate v6, frozen before inference (commit `abbae5f`). On a
+free T4 the new locked 81-case set had 80/81 end-to-end correct, no raw-model critical and
+nothing unsafe released. The gate failed on a single raw category (one answer ignored the
+system reply language when the question named two languages), so DEV-20 was not run. See
+the [Mission 005-K report](runs/mission005k/MISSION-005-K-REPORT.ko.md).
 
 Recovery status, 2026-10-29: checkpoint metadata verified; new MLX-VLM weight
 loading and generation **not executed** on this M1 8GB machine. The runtime is
