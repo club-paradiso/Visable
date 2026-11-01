@@ -1,7 +1,8 @@
 /** Optional, bounded sentence interpretation. Local classification never waits
  * indefinitely and remains available when the provider is missing or busy. */
 export async function interpretEmploymentInput({ text, lang = 'ko', apiBase = '', fetchImpl = fetch, timeoutMs = 5000 }) {
-  if (!apiBase) return null;
+  // Empty string is the supported same-origin backend, not a missing backend.
+  if (typeof apiBase !== 'string') return null;
   const controller = new AbortController();
   let timer;
   try {

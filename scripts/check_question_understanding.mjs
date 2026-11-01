@@ -58,6 +58,11 @@ const facts = await interpretEmploymentInput({ text: '병원 전산 담당', api
 assert.ok(called.endsWith('/api/employment/interpret'));
 assert.equal(facts.role, '전산 담당');
 assert.equal(facts.code, undefined);
+const localFacts = await interpretEmploymentInput({ text: 'test', apiBase: '', fetchImpl: async (url) => {
+  assert.equal(url, '/api/employment/interpret');
+  return { ok: true, json: async () => ({ status: 'ok', extraction: { role: '귤 수확' } }) };
+} });
+assert.equal(localFacts.role, '귤 수확');
 assert.equal(await interpretEmploymentInput({ text: 'test', apiBase: 'https://backend.invalid', fetchImpl: async () => ({ ok: true, json: async () => ({ status: 'unavailable', reason: 'rate_limited' }) }) }), null);
 assert.equal(await interpretEmploymentInput({ text: 'test', apiBase: 'https://backend.invalid', timeoutMs: 10, fetchImpl: async () => new Promise(() => {}) }), null);
 console.log('Question understanding: status/procedure relationships, job polarity, employer ambiguity and bounded AI fallback passed.');
