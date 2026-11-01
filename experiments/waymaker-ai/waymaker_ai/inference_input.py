@@ -19,8 +19,9 @@ SOURCE_PROVENANCE_VALUES = frozenset({"official_manual", "official_notice", "com
 # Mission 005-G: values the trusted-evidence pipeline computes itself and hands to a
 # v4/v5 prompt. They come from the system, never from the item's own fields or labels.
 # v5 (Mission 005-H) and later send uncovered_items as item names in the reply language; v7 (005-J)
-# adds scope_status_code when the system asks one sub-code at a time.
-SYSTEM_FIELDS = ("reply_language", "uncovered_items", "scope_status_code")
+# adds scope_status_code when the system asks one sub-code at a time; v8 (005-K) adds scope_location
+# (one applicant situation at a time) and as_of (the date the question is about).
+SYSTEM_FIELDS = ("reply_language", "uncovered_items", "scope_status_code", "scope_location", "as_of")
 REPLY_LANGUAGES = frozenset({"ko", "en", "vi"})
 
 
@@ -67,4 +68,12 @@ def project_inference_item(item: Mapping) -> dict:
             if not isinstance(system["scope_status_code"], str) or not re.fullmatch(r"[A-Z]-\d{1,2}-\d{1,2}", system["scope_status_code"]):
                 raise ValueError("System scope_status_code must be one status sub-code")
             projected["system"]["scope_status_code"] = system["scope_status_code"]
+        if "scope_location" in system:
+            if system["scope_location"] not in ("domestic", "abroad"):
+                raise ValueError("System scope_location must be domestic or abroad")
+            projected["system"]["scope_location"] = system["scope_location"]
+        if "as_of" in system:
+            if not isinstance(system["as_of"], str) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", system["as_of"]):
+                raise ValueError("System as_of must be a YYYY-MM-DD date")
+            projected["system"]["as_of"] = system["as_of"]
     return projected

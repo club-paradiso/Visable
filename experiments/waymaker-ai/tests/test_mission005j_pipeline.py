@@ -136,8 +136,9 @@ def test_a_part_naming_another_sub_code_goes_to_review():
 
 # --- contract v7 ------------------------------------------------------------------------
 def test_v7_is_new_and_earlier_prompts_are_unchanged():
-    assert CONTRACT_VERSIONS == ("v1", "v2", "v3", "v4", "v5", "v6", "v7")
-    assert len({prompt_sha256(v) for v in CONTRACT_VERSIONS}) == 7
+    # Mission 005-K added v8 after these; the first seven, their order and v7's prompt stay.
+    assert CONTRACT_VERSIONS[:7] == ("v1", "v2", "v3", "v4", "v5", "v6", "v7") and prompt_sha256("v7").startswith("17e13763acf1")
+    assert len({prompt_sha256(v) for v in CONTRACT_VERSIONS}) == len(CONTRACT_VERSIONS)
     for phrase in ("scope_status_code", "answer only for that sub-code", "do not translate names", "exactly three keys"):
         assert phrase in SYSTEM_PROMPTS["v7"]
 

@@ -332,9 +332,21 @@ def test_development_suite_is_valid_and_marks_regressions():
 WITHHELD_BY_005H = {"D05G-15"}
 
 
+#: Mission 005-K: a general question whose evidence splits between Korea and abroad is asked per situation.
+SPLIT_BY_005K = {"D05G-11"}
+
+
 @pytest.mark.parametrize("case", dev_cases(), ids=lambda c: c["id"])
 def test_development_case(case):
     reg = gate2.registry_for(case, "dev")
+    if case["id"] in SPLIT_BY_005K:
+        prep = guard.prepare(case["question"], case["intake"], case["evidence"], reg, case.get("as_of") or DATE)
+        assert [p["location"] for p in prep["parts"]] == ["domestic", "abroad"]
+        answers = iter([json.dumps({"status": "answered", "answer": "국내에 있으면 가상 이주행정청에 신청합니다.", "citations": ["Y9-WHERE-DOM"]}, ensure_ascii=False),
+                        json.dumps({"status": "answered", "answer": "국외에 있으면 가상 재외공관에 신청합니다.", "citations": ["Y9-WHERE-ABR"]}, ensure_ascii=False)])
+        rec_ = guard.run_case(case["question"], case["intake"], case["evidence"], reg, case.get("as_of") or DATE, lambda item: next(answers))
+        assert rec_["guard"]["decision"] == "release" and rec_["released"]["citations"] == ["Y9-WHERE-DOM", "Y9-WHERE-ABR"]
+        return
     if case["id"] in WITHHELD_BY_005H:
         rec_ = guard.run_case(case["question"], case["intake"], case["evidence"], reg, case.get("as_of") or DATE,
                               lambda item: pytest.fail("model must not be called"))

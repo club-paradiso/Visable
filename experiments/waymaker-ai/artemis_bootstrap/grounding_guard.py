@@ -18,7 +18,10 @@ instruction sentences are also removed from the question the model receives (the
 user's question is kept in the record and still checked), and a general question
 whose evidence splits by sub-code is asked once per sub-code with only that
 sub-code's evidence; the parts are joined deterministically and each part is
-guarded on its own. Research-only; nothing here is wired into the production backend.
+guarded on its own. Mission 005-K: the same per-situation (people in Korea / abroad),
+the question's date goes to the model when the user gave one, and Korean names copied
+from the admissible evidence do not count against the reply language.
+Research-only; nothing here is wired into the production backend.
 """
 from __future__ import annotations
 
@@ -40,7 +43,7 @@ from waymaker_ai.evidence_admissibility import (ITEM_LABELS, parent_code, reques
 from waymaker_ai.evidence_registry import TrustRegistry
 from waymaker_ai.response_contract import parse_response
 
-CONTRACT_VERSION = "v7"
+CONTRACT_VERSION = "v8"
 PROVENANCE = ("model_generated", "model_generated_with_system_notice", "system_withheld", "system_clarification",
               "review_required", "post_generation_blocked", "invalid_response")
 #: Mission 005-J: worst guard decision first, for joining per-sub-code parts.
@@ -135,16 +138,22 @@ def prepare(question: str, intake: Optional[Mapping], candidates: list, registry
     items, parts = [], []
     if selection["outcome"] == "proceed":
         code = lang["language"]
-        groups = [(p["status_code"], [e for e in selection["admissible"] if e["id"] in p["evidence_ids"]])
-                  for p in selection.get("subcode_parts") or []] or [(None, selection["admissible"])]
-        for sub, evidence in groups:
+        split = (selection.get("subcode_parts") or []) + (selection.get("situation_parts") or [])
+        groups = [(p.get("status_code"), p.get("location"), [e for e in selection["admissible"] if e["id"] in p["evidence_ids"]])
+                  for p in split] or [(None, None, selection["admissible"])]
+        ctx = selection["context"] or {}
+        for sub, loc, evidence in groups:
             # v5+ names the uncovered items in the reply language instead of internal keys.
-            keys = uncovered_items(question, evidence) if sub else selection["uncovered_items"]
+            keys = uncovered_items(question, evidence) if (sub or loc) else selection["uncovered_items"]
             system = {"reply_language": code, "uncovered_items": [ITEM_LABELS[i][code] for i in keys]}
             if sub:
                 system["scope_status_code"] = sub
+            if loc:
+                system["scope_location"] = loc
+            if ctx.get("as_of_source") in ("question", "intake"):
+                system["as_of"] = ctx["as_of"]
             items.append({"question": cleaned["question"], "evidence": evidence, "system": system})
-            parts.append({"status_code": sub, "evidence": evidence, "uncovered_items": keys})
+            parts.append({"status_code": sub, "location": loc, "evidence": evidence, "uncovered_items": keys})
     return {"selection": selection, "reply_language": lang, "question": question,
             "question_directives_removed": cleaned["removed"], "model_items": items, "parts": parts,
             "model_item": items[0] if len(items) == 1 else None}
@@ -165,8 +174,12 @@ def validate_generated_answer(raw: Optional[str], prepared: Mapping, candidates:
     selection = prepared["selection"]
     if part is not None:
         p = prepared["parts"][part]
-        selection = {**selection, "admissible": p["evidence"], "uncovered_items": p["uncovered_items"],
-                     "context": {**(selection["context"] or {}), "status_code": p["status_code"]}}
+        context = dict(selection["context"] or {})
+        if p.get("status_code"):
+            context["status_code"] = p["status_code"]
+        if p.get("location"):
+            context["location"] = p["location"]
+        selection = {**selection, "admissible": p["evidence"], "uncovered_items": p["uncovered_items"], "context": context}
     admissible_ids = {e["id"] for e in selection["admissible"]}
     lang = prepared["reply_language"]["language"]
     question = prepared.get("question") or prepared["model_item"]["question"]
@@ -215,7 +228,9 @@ def validate_generated_answer(raw: Optional[str], prepared: Mapping, candidates:
         if asked and set(asked) <= set(selection["uncovered_items"]):
             # Unreachable when pre-inference withholds such questions; kept as a second line.
             findings.append({"check": "partial", "kind": "no_requested_item_covered", "detail": asked, "effect": "withhold"})
-    language = language_compliance.check(question, answer, lang)
+    # 005-K: Korean names copied from the admissible evidence (titles and text) are not counted.
+    names = [x for e in selection["admissible"] for x in (e.get("title", ""), e.get("text", ""))]
+    language = language_compliance.check(question, answer, lang, protected_texts=names)
     if language["result"] == "fail":
         findings.append({"check": "language", "kind": language["reason"], "detail": lang, "effect": "review_required"})
     effects = {f.get("effect") for f in findings}
@@ -267,7 +282,7 @@ def run_case(question: str, intake: Optional[Mapping], candidates: list, registr
               "trust_decisions": sel["decisions"], "admissible_ids": [e["id"] for e in sel["admissible"]],
               "uncovered_items": sel["uncovered_items"], "reply_language": prepared["reply_language"],
               "question_directives_removed": prepared["question_directives_removed"],
-              "subcode_parts": sel.get("subcode_parts") or [],
+              "subcode_parts": sel.get("subcode_parts") or [], "situation_parts": sel.get("situation_parts") or [],
               "model_called": False, "raw_output": None, "guard": None}
     if sel["outcome"] == "system_withheld":
         released, provenance = system_response("withheld", lang), "system_withheld"

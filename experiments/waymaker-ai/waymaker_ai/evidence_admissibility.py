@@ -9,7 +9,8 @@ question whose answer turns on a missing fact gets a system clarification.
 Mission 005-H: when the question asks for specific items and the admissible
 evidence covers none of them, the system also withholds; the model is not asked to
 answer around the gap. Mission 005-J: a general question whose admissible evidence
-is split by sub-code is answered one sub-code at a time (subcode_parts).
+is split by sub-code is answered one sub-code at a time (subcode_parts). Mission 005-K:
+the same for evidence split between people in Korea and people abroad (situation_parts).
 
 Nothing here reads a document's self-description, a benchmark answer key or an
 expected status. The question context is what the user entered (intake) plus what
@@ -28,7 +29,8 @@ from waymaker_ai.evidence_registry import RegistryUnavailable, TrustRegistry, co
 
 _CODE_RE = re.compile(r"(?<![A-Za-z0-9-])([A-Z]-\d{1,2}(?:-\d{1,2})?)(?![0-9-])")
 _LOCATION = {
-    "domestic": re.compile(r"국내|한국에\s*(?:있|체류|살)|한국\s*안|in\s+korea|inside\s+korea|tại\s+hàn\s+quốc|ở\s+hàn\s+quốc|trong\s+nước", re.I),
+    # Mission 005-K: "in Korea" only as a word, so "in Korean" (a language request) is not a location.
+    "domestic": re.compile(r"국내|한국에\s*(?:있|체류|살)|한국\s*안|in\s+korea\b|inside\s+korea\b|tại\s+hàn\s+quốc|ở\s+hàn\s+quốc|trong\s+nước", re.I),
     "abroad": re.compile(r"국외|해외|외국에\s*(?:있|체류|살)|abroad|outside\s+(?:of\s+)?korea|overseas|ở\s+nước\s+ngoài|ngoài\s+hàn\s+quốc", re.I),
 }
 _PROCEDURE = {
@@ -290,6 +292,29 @@ def subcode_parts(question: str, ctx: Mapping, admissible: list, registry: Trust
     return parts if len(parts) >= 2 else []
 
 
+def situation_parts(question: str, ctx: Mapping, admissible: list, registry: TrustRegistry) -> list:
+    """Mission 005-K: one part per applicant location when the evidence splits between domestic and abroad.
+
+    Applies only when the question gives no location, at least one admissible record is limited to
+    domestic applicants and one to applicants abroad. Records for any applicant go into both parts.
+    A situation whose evidence covers none of the asked items is left out; fewer than two parts means no split.
+    """
+    if ctx.get("location"):
+        return []
+    scopes = {e["id"]: set(registry.get(e["id"])["applicant_scope"]) for e in admissible}
+    if not any(s == {"domestic"} for s in scopes.values()) or not any(s == {"abroad"} for s in scopes.values()):
+        return []
+    asked = requested_items(question)
+    parts = []
+    for loc in ("domestic", "abroad"):
+        ids = [eid for eid, s in scopes.items() if loc in s or "any" in s]
+        evidence = [e for e in admissible if e["id"] in ids]
+        if asked and set(uncovered_items(question, evidence)) == set(asked):
+            continue
+        parts.append({"location": loc, "evidence_ids": ids})
+    return parts if len(parts) >= 2 else []
+
+
 def select_admissible_evidence(question: str, intake: Optional[Mapping], candidates: list,
                                registry: Optional[TrustRegistry], evaluation_date: str) -> dict:
     """Decisions for every candidate, the evidence the model may see, and the pre-inference outcome."""
@@ -319,11 +344,13 @@ def select_admissible_evidence(question: str, intake: Optional[Mapping], candida
         else:
             outcome, reason = "proceed", "admissible_evidence"
             uncovered = uncovered_items(question, admissible)
-    parts = subcode_parts(question, ctx, admissible, registry) if outcome == "proceed" and ctx["question_type"] == "general" else []
+    general = outcome == "proceed" and ctx["question_type"] == "general"
+    parts = subcode_parts(question, ctx, admissible, registry) if general else []
+    situations = situation_parts(question, ctx, admissible, registry) if general and not parts else []
     return {"outcome": outcome, "reason": reason, "context": ctx, "decisions": decisions, "admissible": admissible,
-            "uncovered_items": uncovered, "clarify_on": clarify_on, "subcode_parts": parts,
+            "uncovered_items": uncovered, "clarify_on": clarify_on, "subcode_parts": parts, "situation_parts": situations,
             "input_sha256": hashlib.sha256(json.dumps(candidates, ensure_ascii=False, sort_keys=True).encode()).hexdigest()}
 
 
 __all__ = ["RegistryUnavailable", "question_context", "decide_one", "select_admissible_evidence", "requested_items",
-           "uncovered_items", "parent_code", "ITEM_LABELS", "subcode_parts"]
+           "uncovered_items", "parent_code", "ITEM_LABELS", "subcode_parts", "situation_parts"]
