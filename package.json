@@ -9,6 +9,7 @@
     "test:popup-i18n": "node scripts/check_popup_i18n.mjs",
     "test:document-help": "node scripts/check_document_help.mjs",
     "build:employment-test-cases": "node scripts/build_employment_test_cases.mjs",
+    "test:question-understanding": "node scripts/check_question_understanding.mjs",
     "test:employment-analyzer": "node scripts/check_employment_code_analyzer.mjs && node scripts/check_employment_analyzer_modes.mjs",
     "test:employment-checklist": "node scripts/check_employment_checklist.mjs",
     "test:employment-guided-ux": "node scripts/check_employment_checklist.mjs",

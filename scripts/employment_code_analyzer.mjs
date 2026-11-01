@@ -157,6 +157,25 @@ function matchAmbiguous(normalizedText, tokenSet, entries) {
   return matched;
 }
 
+/** Remove explicitly denied roles before either retrieval track sees them.
+ * Work permission negatives are intentionally untouched. Preserve other facts
+ * in the sentence ("병원 전산 담당, 간호사는 아님" still describes hospital work).
+ */
+export function understandEmploymentInput(text, surfaces = []) {
+  let affirmed = String(text || '');
+  const excluded = [];
+  for (const surface of [...new Set(surfaces)].filter(Boolean).sort((a, b) => b.length - a.length)) {
+    const escaped = surface.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const patterns = [
+      new RegExp(`${escaped}\\s*(?:은|는|이|가|도)?\\s*(?:아니(?:에요|예요|고|라|다|고요)?|아닙니다|아님|하지\\s*않|안\\s*해)`, 'gi'),
+      new RegExp(`\\b(?:not|never)\\s+(?:a\\s+|an\\s+|the\\s+)?${escaped}(?![a-z])`, 'gi'),
+    ];
+    for (const re of patterns) affirmed = affirmed.replace(re, (match) => { excluded.push(surface); return ' '.repeat(match.length); });
+  }
+  const employerUnclear = /파견|용역|인력회사|인력\s*업체|아웃소싱|outsourc|staffing|dispatch|agency\s*(?:sends|employ)/i.test(text || '');
+  return { text: affirmed.trim(), excluded: [...new Set(excluded)], employerUnclear };
+}
+
 /**
  * Extract structured entities from the input.
  * Returns job_role / workplace_type / business_activity / employment_type /
@@ -178,7 +197,12 @@ export function extractEntities(input, lex) {
   ];
   const matches = matchConcepts(normalizedText, tokenSet, concepts);
 
-  const roleMatches = matches.filter((m) => m.concept.type === 'role');
+  const roleMatches = matches.filter((m) => m.concept.type === 'role').map((m) => {
+    if (/^accountant(?:_en)?$/.test(m.concept.id) && !/회계사|세무사|\bcpa\b|tax accountant/.test(normalizedText)) {
+      return { ...m, concept: { ...m.concept, label_ko: '회계·경리 사무', occupation_terms: ['회계 사무원', '경리 사무원'] } };
+    }
+    return m;
+  });
   const workplaceMatches = matches.filter((m) => m.concept.type === 'workplace');
   const empMatches = matches.filter((m) => m.concept.type === 'employment_type');
   const visaMatches = matches.filter((m) => m.concept.type === 'visa');
@@ -330,6 +354,7 @@ const SERVICE_CONCEPT_IDS = new Set([
   'nail_artist', 'makeup_artist', 'nail_artist_en', 'makeup_artist_en', 'hair_designer_en'
 ]);
 const PROFESSIONAL_CONCEPT_IDS = new Set([
+  'systems_admin', 'systems_admin_en', 'web_builder', 'web_builder_en',
   // Korean concept ids
   'developer', 'designer', 'marketer', 'translator', 'researcher', 'professor',
   'english_instructor', 'instructor', 'ta', 'manager', 'office_worker',
@@ -724,7 +749,7 @@ function buildAmbiguity(entities, occCandidates, indCandidates, lex, ambiguousMa
   if (!occCandidates.length && !indCandidates.length && entities.ambiguityFlags.includes('underspecified')) {
     questions.push({
       flag: 'underspecified',
-      question: '입력이 너무 짧습니다. 어떤 일을 하는지(직종)와 근무처가 무슨 사업을 하는지(업종)를 함께 적어주세요. 예: “카페에서 바리스타로 일해요”.',
+      question: '업무와 회사의 사업을 아직 구분하지 못했어요. 직접 하는 일과 회사가 하는 사업을 나눠 적어주세요. 예: “카페에서 음료를 만들어요”. 한국어·영어로 다시 적거나 분류표에서 직접 찾아볼 수 있어요.',
       chips: []
     });
   }
@@ -983,6 +1008,9 @@ export function createEmploymentAnalyzer(deps = {}) {
   const disambiguationRules = (deps.disambiguation && Array.isArray(deps.disambiguation.rules)) ? deps.disambiguation.rules : [];
   const incomeBrackets = deps.incomeBrackets || null;
   const index = buildIndex(dataset);
+  const conceptPool = Object.values(lexicon).flatMap((v) => v.concepts || []);
+  const surfaces = [...conceptPool.flatMap((c) => c.surface || []),
+    ...Object.values(fieldLex).flatMap((v) => (v.signals || []).flatMap((s) => s.surface || []))];
   const occMeta = dataset && dataset.occupation_source;
   const indMeta = dataset && dataset.industry_source;
 
@@ -990,16 +1018,27 @@ export function createEmploymentAnalyzer(deps = {}) {
 
   function analyze(input) {
     const safeInput = typeof input === 'string' ? { text: input } : (input || { text: '' });
-    const entities = extractEntities(safeInput, lexicon);
+    const understanding = understandEmploymentInput(safeInput.text, surfaces);
+    const extraction = safeInput.facts && typeof safeInput.facts === 'object' ? safeInput.facts : null;
+    // AI supplies descriptions only. Official codes always come from searchTrack.
+    let roleText = extraction ? [extraction.role, ...(extraction.tasks || [])].filter(Boolean).join(' ') : '';
+    const deniedConcepts = new Set(conceptPool.filter((c) => (c.surface || []).some((s) => understanding.excluded.includes(s))).map((c) => c.id.replace(/_(?:en|zh)$/, '')));
+    for (const concept of conceptPool.filter((c) => deniedConcepts.has(c.id.replace(/_(?:en|zh)$/, '')))) {
+      for (const term of [...(concept.surface || []), ...(concept.occupation_terms || [])]) {
+        roleText = roleText.replace(new RegExp(term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'), ' ');
+      }
+    }
+    const analyzedInput = { ...safeInput, text: understanding.text };
+    const entities = extractEntities(analyzedInput, lexicon);
 
     // Umbrella / ambiguous inputs (아이돌, 댄서, 타투이스트, 반영구화장, 알바, ...):
     // decompose into real sub-role terms, never a single invented code, and carry
     // their legal sensitivity + confidence cap into retrieval.
-    const tokenSet = new Set(tokenize(safeInput.text));
+    const tokenSet = new Set(tokenize(understanding.text));
     const ambiguousMatches = matchAmbiguous(entities.normalizedInput, tokenSet, ambiguousEntries);
 
     // Field-labor place/object/action/tool signals (장소 + 대상 + 작업).
-    const fieldSig = extractFieldSignals(safeInput.text, fieldLex);
+    const fieldSig = extractFieldSignals(understanding.text, fieldLex);
 
     let occTerms = entities.occupationTerms.slice();
     let indTerms = entities.industryTerms.slice();
@@ -1011,6 +1050,13 @@ export function createEmploymentAnalyzer(deps = {}) {
     // Field signals contribute VERIFIED retrieval keywords on both tracks.
     fieldSig.occupationTerms.forEach((t) => occTerms.push(t));
     fieldSig.industryTerms.forEach((t) => indTerms.push(t));
+    if (roleText) {
+      const roleEntities = extractEntities({ text: roleText }, lexicon);
+      occTerms = [...roleEntities.occupationTerms, ...extractFieldSignals(roleText, fieldLex).occupationTerms];
+    }
+    if (extraction && extraction.employerMainBusiness) {
+      indTerms = extractEntities({ text: extraction.employerMainBusiness }, lexicon).industryTerms;
+    }
     occTerms = uniq(occTerms);
     indTerms = uniq(indTerms);
 
@@ -1031,11 +1077,11 @@ export function createEmploymentAnalyzer(deps = {}) {
       ...ambiguousMatches.map((m) => m.entry.candidate_caveat_industry || m.entry.candidate_caveat)
     ]);
 
-    const occupationCandidates = searchTrack(index, 'occupation', safeInput.text, occTerms, {
+    const occupationCandidates = searchTrack(index, 'occupation', roleText || understanding.text, occTerms, {
       limit: 5, sourceMeta: occMeta, confidenceCap, caveats: occCaveats
     });
-    const industryCandidates = searchTrack(index, 'industry', safeInput.text, indTerms, {
-      limit: 5, sourceMeta: indMeta, confidenceCap, caveats: indCaveats
+    const industryCandidates = searchTrack(index, 'industry', extraction && extraction.employerMainBusiness || understanding.text, indTerms, {
+      limit: 5, sourceMeta: indMeta, confidenceCap: understanding.employerUnclear ? 'low' : confidenceCap, caveats: indCaveats
     });
 
     // Analyzer mode (field_labor / arts_entertainment / service / professional /
@@ -1056,7 +1102,10 @@ export function createEmploymentAnalyzer(deps = {}) {
     const conceptQuestions = buildAmbiguity(entities, occupationCandidates, industryCandidates, lexicon, ambiguousMatches);
     // Show the single most relevant field fork up front; keep concept follow-ups too,
     // but never flood the user — cap the whole list.
-    const ambiguityQuestions = [...fieldQuestions.slice(0, 1), ...conceptQuestions, ...fieldQuestions.slice(1)].slice(0, 3);
+    const employerQuestion = understanding.employerUnclear ? [{ flag: 'employer_business', topic: 'employer_business',
+      question: locale === 'en' ? 'What is the main business of the company that employs you, rather than the site where you work?' : '실제로 고용한 회사는 어떤 사업을 하나요? 일하는 장소와 고용한 회사가 다르면 회사의 주된 사업을 알려주세요.', chips: [] }] : [];
+    const aiQuestion = extraction && extraction.needsClarification && extraction.clarificationQuestion ? [{ flag: 'ai_clarification', question: extraction.clarificationQuestion, chips: [] }] : [];
+    const ambiguityQuestions = [...employerQuestion, ...aiQuestion, ...fieldQuestions.slice(0, 1), ...conceptQuestions, ...fieldQuestions.slice(1)].slice(0, 3);
 
     const followUpChips = buildFollowUpChips(entities, ambiguousMatches);
     const warnings = buildWarnings(safeInput, entities, occupationCandidates, industryCandidates, context);
@@ -1089,6 +1138,8 @@ export function createEmploymentAnalyzer(deps = {}) {
 
     const payload = {
       input: safeInput.text,
+      searchText: understanding.text,
+      excludedMentions: understanding.excluded,
       normalizedInput: entities.normalizedInput,
       detectedLanguage: entities.language,
       mode,

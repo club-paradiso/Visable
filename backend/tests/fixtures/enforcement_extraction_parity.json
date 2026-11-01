@@ -15,7 +15,11 @@
     {
       "name": "two-digit status code is recognised and normalised",
       "text": "E-10 선원인데 허가 없이 다른 공장에서 일했어요",
-      "expect": { "statusOfStay": "E-10", "violationCode": null, "violationCandidates": "AMBIGUOUS" }
+      "expect": {
+        "statusOfStay": "E-10",
+        "violationCode": null,
+        "violationCandidates": "AMBIGUOUS"
+      }
     },
     {
       "name": "subcode status, composite duration and workplace change",
@@ -73,37 +77,144 @@
     {
       "name": "designated-workplace wording alone maps to article 18(2)",
       "text": "E-7인데 지정된 근무처가 아닌 다른 사업장에서 허가 없이 20일 근무했습니다.",
-      "expect": { "violationCode": "UNAUTHORIZED_EMPLOYMENT_ART18_2", "durationDays": 20 }
+      "expect": {
+        "violationCode": "UNAUTHORIZED_EMPLOYMENT_ART18_2",
+        "durationDays": 20
+      }
     },
     {
       "name": "designated-workplace and workplace-change wording together stay unresolved between 18(2) and 21(1)",
       "text": "E-7인데 지정된 근무처가 아닌 다른 회사로 옮겨서 변경허가 없이 30일 일했습니다.",
-      "expect": { "violationCode": null, "violationCandidates": "WORKPLACE_OVERLAP", "durationDays": 30 }
+      "expect": {
+        "violationCode": null,
+        "violationCandidates": "WORKPLACE_OVERLAP",
+        "durationDays": 30
+      }
     },
     {
       "name": "bare other-workplace wording stays unresolved",
       "text": "F-2인데 다른 곳에서 허가 없이 10일 일했습니다.",
-      "expect": { "violationCode": null, "violationCandidates": "AMBIGUOUS" }
+      "expect": {
+        "violationCode": null,
+        "violationCandidates": "AMBIGUOUS"
+      }
     },
     {
       "name": "a clearly non-work status maps to article 18(1)",
       "text": "C-3 체류자격인데 음식점에서 허가 없이 12일 일했습니다.",
-      "expect": { "violationCode": "UNAUTHORIZED_STAY_OR_WORK_ART18_1", "durationDays": 12 }
+      "expect": {
+        "violationCode": "UNAUTHORIZED_STAY_OR_WORK_ART18_1",
+        "durationDays": 12
+      }
     },
     {
       "name": "other-company wording for a work status maps to article 18(2) on both paths",
       "text": "E-9인데 허가 없이 다른 회사에서 일했어요",
-      "expect": { "statusOfStay": "E-9", "violationCode": "UNAUTHORIZED_EMPLOYMENT_ART18_2" }
+      "expect": {
+        "statusOfStay": "E-9",
+        "violationCode": "UNAUTHORIZED_EMPLOYMENT_ART18_2"
+      }
     },
     {
       "name": "other-workplace wording for E-7 maps to article 18(2) on both paths",
       "text": "E-7인데 다른 사업장에서 허가 없이 20일 근무했습니다",
-      "expect": { "violationCode": "UNAUTHORIZED_EMPLOYMENT_ART18_2", "durationDays": 20 }
+      "expect": {
+        "violationCode": "UNAUTHORIZED_EMPLOYMENT_ART18_2",
+        "durationDays": 20
+      }
     },
     {
       "name": "a change signal without designated-workplace wording maps to article 21(1)",
       "text": "E-9인데 사업장 변경 허가 없이 다른 공장에서 일함",
-      "expect": { "violationCode": "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1" }
+      "expect": {
+        "violationCode": "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1"
+      }
+    },
+    {
+      "name": "denied overstay is not a violation",
+      "text": "D-2 체류기간은 아직 안 지났어요. 허가 없이 일한 적 없어요.",
+      "expect": {
+        "violationCode": null,
+        "violationCandidates": []
+      }
+    },
+    {
+      "name": "denied first status is excluded",
+      "text": "D-2가 아니라 E-7입니다. 지정된 근무처 아닌 곳에서 허가 없이 10일 근무했어요.",
+      "expect": {
+        "statusOfStay": "E-7",
+        "violationCode": "UNAUTHORIZED_EMPLOYMENT_ART18_2"
+      }
+    },
+    {
+      "name": "future unauthorized work is not completed",
+      "text": "D-2 허가 없이 일할 예정이에요.",
+      "expect": {
+        "violationCode": null,
+        "violationCandidates": []
+      }
+    },
+    {
+      "name": "planned voluntary report stays unknown",
+      "text": "D-2 허가 없이 10일 알바했어요. 자진신고할 예정입니다.",
+      "expect": {
+        "voluntaryDisclosure": null
+      }
+    },
+    {
+      "name": "denied investigation stays false",
+      "text": "D-2 허가 없이 10일 알바했어요. 조사는 받지 않았어요.",
+      "expect": {
+        "investigationStarted": false
+      }
+    },
+    {
+      "name": "denied voluntary report stays false",
+      "text": "D-2 허가 없이 10일 알바했어요. 자진신고는 안 했어요.",
+      "expect": {
+        "voluntaryDisclosure": false
+      }
+    },
+    {
+      "name": "first arrival is not first violation",
+      "text": "처음 한국에 왔고 D-2로 허가 없이 10일 알바했어요.",
+      "expect": {
+        "priorViolations": null
+      }
+    },
+    {
+      "name": "residence history is not violation duration",
+      "text": "한국에 3년 살았고 D-2로 허가 없이 10일 알바했어요.",
+      "expect": {
+        "durationDays": 10
+      }
+    },
+    {
+      "name": "separate periods must not be summed",
+      "text": "D-2 허가 없이 10일 일했고 다른 회사에서 20일 근무했어요.",
+      "expect": {
+        "durationDays": null
+      }
+    },
+    {
+      "name": "multiple statuses require offense status",
+      "text": "D-2에서 E-7로 바꿨는데 허가 없이 10일 일한 일로 조사받아요.",
+      "expect": {
+        "statusOfStay": null,
+        "violationCode": null
+      }
+    },
+    {
+      "name": "multiple violations stay separate",
+      "text": "D-2 허가 없이 10일 일했고 체류기간도 만료 후 3일 지났어요.",
+      "expect": {
+        "violationCode": null,
+        "violationCandidates": [
+          "OVERSTAY_ART25",
+          "STATUS_OUTSIDE_ACTIVITY_ART20"
+        ],
+        "durationDays": null
+      }
     }
   ]
 }

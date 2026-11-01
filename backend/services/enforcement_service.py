@@ -9,6 +9,7 @@ import re
 from datetime import date, timedelta
 from typing import Any, Callable, Optional
 
+from .enforcement_language import factual_text, event_value, relevant_duration_text
 from .enforcement_evidence import retrieve_enforcement_evidence
 from .enforcement_models import EnforcementAnalysis, StructuredCase
 from .enforcement_prediction import predict_enforcement_outcome
@@ -124,7 +125,10 @@ def _extract_date(value: str) -> Optional[date]:
 
 
 def _extract_status(clean: str) -> Optional[str]:
-    match = _STATUS_RE.search(clean)
+    matches = list(_STATUS_RE.finditer(clean))
+    if len({f"{m.group(1).upper()}-{int(m.group(2))}" + (f"-{int(m.group(3))}" if m.group(3) else "") for m in matches}) > 1:
+        return None
+    match = matches[0] if matches else None
     if not match:
         return None
     status = f"{match.group(1).upper()}-{int(match.group(2))}"
@@ -166,8 +170,15 @@ def _extract_dates(clean: str, assessment_date: Optional[date]) -> tuple[Optiona
     return start, end
 
 
+def _has_separate_durations(clean: str) -> bool:
+    scrubbed = relevant_duration_text(_FULL_DATE_RE.sub(" ", clean))
+    return len(re.findall(r"(?:\d+\s*(?:개월|일|주|달|년)\s*)+", scrubbed)) > 1
+
+
 def _extract_duration_days(clean: str) -> Optional[int]:
-    scrubbed = _FULL_DATE_RE.sub(" ", clean)
+    scrubbed = relevant_duration_text(_FULL_DATE_RE.sub(" ", clean))
+    if _has_separate_durations(clean):
+        return None
 
     total = 0
     matched = False
@@ -188,7 +199,8 @@ def _extract_duration_days(clean: str) -> Optional[int]:
     return None
 
 
-def _classify_violation(clean: str, status: Optional[str]) -> tuple[Optional[str], list[str], bool, bool]:
+def _classify_violation(clean: str, status: Optional[str], include_overstay: bool = True) -> tuple[Optional[str], list[str], bool, bool]:
+    clean = factual_text(clean)
     unauthorized = bool(
         re.search(
             r"허가(?:를)?\s*(?:안\s*받|받지\s*않|없이|없|미취득|미허가)"
@@ -234,7 +246,10 @@ def _classify_violation(clean: str, status: Optional[str]) -> tuple[Optional[str
         )
     )
 
-    if overstay:
+    if overstay and include_overstay and work and unauthorized:
+        _, work_candidates, _, _ = _classify_violation(clean, status, include_overstay=False)
+        return None, list(dict.fromkeys(["OVERSTAY_ART25", *work_candidates])), unauthorized, work
+    if overstay and include_overstay:
         return "OVERSTAY_ART25", ["OVERSTAY_ART25"], unauthorized, work
 
     if not (work and unauthorized):
@@ -290,8 +305,9 @@ def _heuristic_extract(text: str, *, assessment_date: Optional[date] = None) -> 
     if contains_sensitive_identifier(clean):
         warnings.append("분석에 불필요한 개인식별정보가 감지되어 구조화 결과에 포함하지 않았습니다.")
 
-    status = _extract_status(clean)
-    duration_days = _extract_duration_days(clean)
+    facts = factual_text(clean)
+    status = _extract_status(facts)
+    duration_days = _extract_duration_days(facts)
     start, end = _extract_dates(clean, assessment_date)
     if start and end and end >= start:
         duration_days = (end - start).days + 1
@@ -301,7 +317,7 @@ def _heuristic_extract(text: str, *, assessment_date: Optional[date] = None) -> 
 
     prior = None
     if re.search(
-        r"처음|초범|첫\s*(?:위반|적발)|전력\s*(?:없|0)|위반\s*이력\s*없|"
+        r"처음(?:이고|입니다|이에요|이예요)|이번이\s*처음|초범|첫\s*(?:위반|적발)|전력\s*(?:없|0)|위반\s*이력\s*없|"
         r"걸린\s*적(?:은|이)?\s*없|처벌\s*받은\s*적\s*없",
         clean,
         re.I,
@@ -312,26 +328,9 @@ def _heuristic_extract(text: str, *, assessment_date: Optional[date] = None) -> 
         if prior_match:
             prior = int(prior_match.group(1))
 
-    voluntary = (
-        True
-        if re.search(
-            r"자진\s*(?:신고|출석|출국|방문)|스스로\s*(?:신고|출석|방문)|"
-            r"(?:바로|즉시)\s*(?:출입국|관서).*(?:방문|찾아)",
-            clean,
-            re.I,
-        )
-        else None
-    )
-    investigation = (
-        True
-        if re.search(
-            r"(?:사범)?조사.*(?:시작|중)|적발|단속|걸렸|출입국.*(?:연락|통보)",
-            clean,
-            re.I,
-        )
-        else None
-    )
-    false_representation = True if re.search(r"허위|위조|거짓", clean, re.I) else None
+    voluntary = event_value(clean, r"자진\s*(?:신고|출석|출국|방문)|스스로\s*(?:신고|출석|방문)|(?:바로|즉시)\s*(?:출입국|관서).{0,20}(?:방문|찾아)")
+    investigation = event_value(clean, r"(?:사범)?조사|적발|단속|걸렸|출입국.{0,12}(?:연락|통보)")
+    false_representation = event_value(clean, r"허위|위조|거짓")
 
     explicit_authorized = bool(
         re.search(r"(?:취업|활동|시간제\s*취업)?\s*허가(?:를)?\s*(?:받았|받음|취득|있음)", clean, re.I)
@@ -346,6 +345,11 @@ def _heuristic_extract(text: str, *, assessment_date: Optional[date] = None) -> 
             workplace_change_authorized = True
         elif unauthorized:
             workplace_change_authorized = False
+
+    if len(violation_candidates) > 1 and "OVERSTAY_ART25" in violation_candidates:
+        warnings.append("초과체류와 취업 관련 사실이 함께 있어 위반별 기간과 적용 관계를 각각 확인해야 합니다.")
+    if len(list(_STATUS_RE.finditer(facts))) > 1 and status is None:
+        warnings.append("여러 체류자격이 언급되어 위반 당시의 체류자격을 확인해야 합니다.")
 
     case = StructuredCase(
         status_of_stay=status,
@@ -407,8 +411,11 @@ Normalization rules:
 - Convert explicit durations to days. 1 week=7 days, 1 month=30 days only when exact dates are absent.
   Composite durations are additive: "2개월 3일" => 63.
 - A boolean is true/false only when the narrative states it. Otherwise null.
-- "처음", "초범", "첫 위반", "위반 이력 없음" means priorViolations=0.
-- "자진 방문/자진 신고/스스로 출석" means voluntaryDisclosure=true.
+- Only a stated first violation / no prior violations means priorViolations=0; a first arrival does not.
+- Negated events are false. Plans, questions and hypothetical events are not completed facts.
+- "자진신고할 예정" does not mean voluntaryDisclosure=true; "조사를 받지 않았다" means investigationStarted=false.
+- Never sum residence history, age, or separate violation periods into durationDays.
+- Multiple statuses require the status at the time of the violation; ask if it is unclear.
 - Never copy names, passport numbers, registration numbers, phone numbers, email addresses, or exact employer names.
 
 Allowed violationCode values only:
@@ -469,8 +476,9 @@ def _merge_extracted_facts(extracted: StructuredCase, fallback: StructuredCase) 
         "false_representation",
         "ability_to_pay",
     )
+    anchored_fields = {"status_of_stay", "authorization_obtained", "workplace_change_authorized", "duration_days", "prior_violations", "voluntary_disclosure", "investigation_started", "false_representation"}
     for field_name in factual_fields:
-        if getattr(extracted, field_name) is None and getattr(fallback, field_name) is not None:
+        if (getattr(extracted, field_name) is None or field_name in anchored_fields) and getattr(fallback, field_name) is not None:
             setattr(extracted, field_name, getattr(fallback, field_name))
 
     extracted.assessment_date = fallback.assessment_date
@@ -516,7 +524,7 @@ async def extract_structured_case(
         and fallback.duration_days is not None
         and not fallback.extraction_warnings
     )
-    if provider is None or heuristic_complete:
+    if provider is None or heuristic_complete or (factual_text(text) != text and not fallback.violation_code and not fallback.violation_candidates):
         return fallback
 
     try:
@@ -524,7 +532,23 @@ async def extract_structured_case(
         if inspect.isawaitable(response):
             response = await response
         extracted = _parse_ai_case(response)
-        return _merge_extracted_facts(extracted, fallback)
+        merged = _merge_extracted_facts(extracted, fallback)
+        if _has_separate_durations(factual_text(text)):
+            # Distinct periods require user confirmation. A model must not
+            # silently join them or invent a date range spanning both.
+            merged.duration_days = None
+            merged.violation_start_date = None
+            merged.violation_end_date = None
+        if fallback.status_of_stay is None and len(list(_STATUS_RE.finditer(factual_text(text)))) > 1:
+            merged.status_of_stay = None
+        # A model cannot turn an explicitly denied or merely planned event into
+        # an accomplished fact. Preserve deterministic polarity when present.
+        for field, event in (("voluntary_disclosure", r"자진|스스로"), ("investigation_started", r"조사|적발|단속"), ("false_representation", r"허위|위조|거짓")):
+            value = event_value(text, event)
+            if re.search(event, text):
+                setattr(merged, field, value)
+        merged.unknown_facts = _unknown_facts_for(merged)
+        return merged
     except Exception:
         fallback.extraction_warnings.append(
             "AI 사실 추출을 검증하지 못해 보수적 로컬 추출 결과를 사용했습니다. 아래 항목을 확인해 주세요."

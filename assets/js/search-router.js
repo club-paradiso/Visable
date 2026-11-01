@@ -133,6 +133,12 @@
   /* ------------------------------------------------- procedure composition -- */
   // Returns { procedure, candidates, why } from object × action, or null to fall back to keywords.
   function composeProcedure(text, objects, actions) {
+    if (objects.passport && /대사관|영사관|embassy|consulate/i.test(text) && /갱신|재발급|renew|reissue/i.test(text) && !/신고|report|등록사항/i.test(text)) {
+      return { procedure: null, candidates: [], why: 'passport_issuance_authority', hint: 'passport_reissue' };
+    }
+    if (objects.card && FIRST_ARRIVAL.test(text) && /신청|발급|apply|get|issue/i.test(text) && !actions.reissue) {
+      return { procedure: 'registration', candidates: ['registration'], why: 'object:card+first application' };
+    }
     if (PASSPORT_ONLY_REISSUE.test(text) && !actions.change && !objects.card && !objects.registration_info) {
       return { procedure: null, candidates: [], why: 'passport_reissue_is_not_immigration', hint: 'passport_reissue' };
     }
@@ -178,7 +184,7 @@
     opts = opts || {};
     var SG = root.VisableStatusGuidance;
     var q = String(query || '').trim();
-    var text = lower(q);
+    var text = lower(SG && SG.positiveQuery ? SG.positiveQuery(q) : q);
     var interp = SG && typeof SG.interpret === 'function' ? SG.interpret(q, bundle, { noRouter: true }) : { codes: [], aliasCandidates: [], aliasQuestion: null, procedure: null, program: null, preAnswers: {}, keywords: [], confidence: 'LOW', unknownCodes: [] };
     var objects = extractObjects(text);
     // Actions are matched on the text with the object words removed, so "외국인등록증" never yields the
@@ -187,6 +193,12 @@
     var composed = composeProcedure(text, objects, actions);
     var procedure = composed && composed.procedure ? composed.procedure : ((composed && (composed.ambiguous || composed.hint)) ? null : interp.procedure);
     var candidates = composed && composed.candidates && composed.candidates.length ? composed.candidates : (procedure ? [procedure] : []);
+    // Two explicitly requested procedures need a choice, not whichever object's
+    // keyword happened to win. Completed background events do not trigger this.
+    if (/(?:연장|extend|extension)[^.!?]{0,20}(?:하고|및|그리고|\band\b)[^.!?]{0,30}(?:주소|체류지|address)[^.!?]{0,15}(?:변경|신고|change|report)/i.test(text)) {
+      procedure = null; candidates = ['extension', 'residence_report'];
+      composed = { ambiguous: true, why: 'multiple_requested_procedures' };
+    }
     // A keyword-only "registration" hit caused by an object word (arc / residence card) is not a procedure.
     if (!composed && interp.procedure === 'registration' && objects.card && !actions.register) { procedure = null; candidates = ['card_reissue', 'registration']; composed = { ambiguous: true, why: 'keyword registration from object word' }; }
     if (!procedure && !candidates.length && !composed) {
@@ -264,7 +276,7 @@
       /혼인|결혼|이혼|배우자|marri|divorc|spouse/i,
       /등록증|외국인등록|residen(t|ce)\s*(card|registration)|\barc\b/i
     ].filter(function (re) { return re.test(q); }).length;
-    var linked = /동시에|그런데|하지만|만약|경우|중인데|하면서|하고.*(싶|해야|가능)|뒤에|전에|후에|if\b|while\b|but\b|before\b|after\b|at the same time/i.test(q);
+    var linked = /동시에|그리고|그런데|하지만|만약|경우|중인데|하면서|하고.*(싶|해야|가능|하려)|뒤에|전에|후에|if\b|while\b|but\b|before\b|after\b|at the same time/i.test(q);
     var questions = (q.match(/[?？]/g) || []).length;
     var codes = q.toUpperCase().match(/[A-H]\s*-\s*\d{1,2}(?:\s*-\s*(?:\d+|T))?/g) || [];
     var compare = /비교|차이|다른\s*점|어느|어떤.*(유리|낫)|중.*(유리|낫)|compare|differen|\bvs\.?(?=\s|$)|versus|which.*(better|best)/i.test(q);

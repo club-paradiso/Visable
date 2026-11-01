@@ -21,6 +21,7 @@ PARITY_FIXTURE = json.loads(
 
 _CAMEL_TO_SNAKE = {
     "statusOfStay": "status_of_stay",
+    "investigationStarted": "investigation_started",
     "violationCode": "violation_code",
     "violationCandidates": "violation_candidates",
     "durationDays": "duration_days",
