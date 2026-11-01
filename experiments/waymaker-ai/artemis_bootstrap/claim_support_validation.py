@@ -18,6 +18,12 @@ Results are `contradiction` (a clear mismatch), `needs_review` (a claim it canno
 place, or a signal it cannot settle) or `no_contradiction_found`. It never says
 "supported": a paraphrase it cannot read is not certified, it is just not
 contradicted. No model is called.
+
+Mission 005-M: with `with_source=True`, an evidence item's text source fields (the
+document name and the other `source` fields the model is shown, see
+waymaker_ai.inference_input.SOURCE_TEXT_FIELDS) count as part of the item, so a value
+copied from a cited document's name ("운영지침(2026년판)") is not an unsupported claim.
+The default keeps the 005-F..005-L behaviour (title and text only).
 """
 from __future__ import annotations
 
@@ -28,6 +34,10 @@ from typing import Iterable, Mapping
 import trust_gate
 
 _CODE_RE = re.compile(r"(?<![A-Za-z0-9-])([A-Z]-\d{1,2}(?:-[0-9A-Z]{1,2})?)(?![0-9])")
+#: Mission 005-M: the source fields the model is shown (waymaker_ai.inference_input.SOURCE_TEXT_FIELDS).
+SOURCE_TEXT_FIELDS = ("document_id", "source_id", "version_id", "provision", "effective_date",
+                      "publication_date", "retrieval_date", "source_url", "official_url",
+                      "domain", "provenance", "page_locator")
 
 # Polarity words per language. Prohibition spans are removed before looking for a
 # permission, so "cannot" is never read as "can".
@@ -99,8 +109,15 @@ def _codes(text: str) -> set:
     return set(_CODE_RE.findall(_nfc(text)))
 
 
+def _item_text(e: Mapping, with_source: bool) -> str:
+    parts = [e.get("title", ""), e.get("text", "")]
+    if with_source and isinstance(e.get("source"), Mapping):
+        parts += [e["source"][k] for k in SOURCE_TEXT_FIELDS if isinstance(e["source"].get(k), str)]
+    return _nfc("\n".join(parts))
+
+
 def check(answer: str, question: str, evidence: Iterable[Mapping], cited: Iterable[str],
-          admissible: Mapping[str, bool]) -> dict:
+          admissible: Mapping[str, bool], with_source: bool = False) -> dict:
     """Compare answer claims with cited admissible evidence.
 
     `admissible` maps evidence id -> bool (from the evaluator-side trust record, never
@@ -109,7 +126,7 @@ def check(answer: str, question: str, evidence: Iterable[Mapping], cited: Iterab
     evidence = list(evidence)
     cited = set(cited)
     answer = _nfc(answer)
-    by_id = {e["id"]: _nfc(f"{e.get('title', '')}\n{e.get('text', '')}") for e in evidence}
+    by_id = {e["id"]: _item_text(e, with_source) for e in evidence}
     cited_ok = "\n".join(t for i, t in by_id.items() if i in cited and admissible.get(i))
     other_ok = "\n".join(t for i, t in by_id.items() if i not in cited and admissible.get(i))
     bad = "\n".join(t for i, t in by_id.items() if not admissible.get(i))

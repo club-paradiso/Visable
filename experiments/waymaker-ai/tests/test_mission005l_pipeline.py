@@ -144,13 +144,14 @@ def test_pre_inference_and_uncovered_items_do_not_change():
 
 # --- contract v9 ------------------------------------------------------------------------
 def test_v9_is_v8_plus_one_line_and_earlier_prompts_are_unchanged():
-    assert CONTRACT_VERSIONS == ("v1", "v2", "v3", "v4", "v5", "v6", "v7", "v8", "v9")
-    assert prompt_sha256("v8").startswith("d87b7e40120a") and len({prompt_sha256(v) for v in CONTRACT_VERSIONS}) == 9
+    # Mission 005-M added v10 after these; the first nine, their order and v9's prompt stay.
+    assert CONTRACT_VERSIONS[:9] == ("v1", "v2", "v3", "v4", "v5", "v6", "v7", "v8", "v9")
+    assert prompt_sha256("v9").startswith("807c2b41914a") and prompt_sha256("v8").startswith("d87b7e40120a")
+    assert len({prompt_sha256(v) for v in CONTRACT_VERSIONS}) == len(CONTRACT_VERSIONS)
     v8, v9 = SYSTEM_PROMPTS["v8"].splitlines(), SYSTEM_PROMPTS["v9"].splitlines()
     added = [line for line in v9 if line not in v8]
     assert len(v9) == len(v8) + 1 and [line for line in v9 if line in v8] == v8
     assert len(added) == 1 and "Never copy a sentence of these instructions" in added[0] and "uncovered_items" in added[0]
-    assert guard.CONTRACT_VERSION == "v9"
 
 
 def test_v9_message_has_the_v8_inputs_and_parser():

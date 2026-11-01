@@ -143,7 +143,9 @@ def test_v6_is_new_and_earlier_prompts_are_unchanged():
 def test_v6_message_has_the_v5_input_shape():
     prepared = guard.prepare("What is the hypothetical Y-9-1 fee and processing time?", None, [FEE],
                              synthetic_registry({"Y9-FEE": rec(FEE)}, "t"), DATE)
-    payload = json.loads(build_messages(prepared["model_item"], "v6")[1]["content"])
+    # Mission 005-M added uncovered_sentence, a v10 input; the v6 message is built without it.
+    item = {**prepared["model_item"], "system": {k: v for k, v in prepared["model_item"]["system"].items() if k != "uncovered_sentence"}}
+    payload = json.loads(build_messages(item, "v6")[1]["content"])
     assert list(payload) == ["question", "reply_language", "uncovered_items", "evidence"]
     assert payload["uncovered_items"] == ["processing time"]
 

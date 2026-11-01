@@ -37,7 +37,7 @@ def test_versions_are_explicit_and_distinct():
     assert rc.CONTRACT_VERSIONS[:2] == ("v1", "v2") and rc.DEFAULT_CONTRACT_VERSION == "v1"
     assert rc.prompt_sha256("v1") != rc.prompt_sha256("v2")
     with pytest.raises(ValueError):
-        rc.parse_response('{"status": "answered", "answer": "x", "citations": ["A"]}', {"A"}, "v10")
+        rc.parse_response('{"status": "answered", "answer": "x", "citations": ["A"]}', {"A"}, "v11")
 
 
 @pytest.mark.parametrize("phrase", ["answered:", "partial:", "insufficient_evidence:", "conflict:", "clarify:",

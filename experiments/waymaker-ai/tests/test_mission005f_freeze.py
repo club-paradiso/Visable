@@ -31,7 +31,9 @@ def test_acceptance_manifest_is_the_frozen_one():
 #: Files Missions 005-G and 005-H changed after the 005-F freeze (contracts v4/v5, their system
 #: fields, and 005-H's reply-language requests). The 005-F manifest records them as they were at that freeze.
 CHANGED_AFTER_005F = {"waymaker_ai/response_contract.py", "waymaker_ai/inference_input.py",
-                      "artemis_bootstrap/gemma4_runtime.py", "artemis_bootstrap/language_compliance.py"}
+                      "artemis_bootstrap/gemma4_runtime.py", "artemis_bootstrap/language_compliance.py",
+                      # Mission 005-M: opt-in source fields; the default the 005-F gate uses is unchanged.
+                      "artemis_bootstrap/claim_support_validation.py"}
 FREEZE_COMMIT_005F = "93323339ae5276a14dd858aed9d74e43326ccccb"
 
 

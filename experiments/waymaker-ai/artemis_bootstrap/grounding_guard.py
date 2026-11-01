@@ -22,7 +22,9 @@ guarded on its own. Mission 005-K: the same per-situation (people in Korea / abr
 the question's date goes to the model when the user gave one, and Korean names copied
 from the admissible evidence do not count against the reply language. Mission 005-L: a request
 for a reply language written into the question is also removed from the question the model
-receives; the system has already chosen reply_language from the user's question.
+receives; the system has already chosen reply_language from the user's question. Mission 005-M:
+a partial answer is given the sentence naming its uncovered items (contract v10), and a value copied
+from a cited document's source fields (its name) is not an unsupported claim.
 Research-only; nothing here is wired into the production backend.
 """
 from __future__ import annotations
@@ -45,7 +47,7 @@ from waymaker_ai.evidence_admissibility import (ITEM_LABELS, parent_code, reques
 from waymaker_ai.evidence_registry import TrustRegistry
 from waymaker_ai.response_contract import parse_response
 
-CONTRACT_VERSION = "v9"
+CONTRACT_VERSION = "v10"
 PROVENANCE = ("model_generated", "model_generated_with_system_notice", "system_withheld", "system_clarification",
               "review_required", "post_generation_blocked", "invalid_response")
 #: Mission 005-J: worst guard decision first, for joining per-sub-code parts.
@@ -54,6 +56,9 @@ DECISION_ORDER = ("invalid_response", "withhold", "review_required", "release")
 NOTICE = {"ko": "확인된 근거에 없는 항목: {items}. 이 항목은 담당 기관에 직접 확인해 주세요.",
           "en": "Not covered by the verified evidence: {items}. Please check these with the responsible office.",
           "vi": "Không có trong căn cứ đã xác minh: {items}. Vui lòng hỏi trực tiếp cơ quan phụ trách về các mục này."}
+#: Mission 005-M (contract v10): the sentence the model ends a partial answer with, naming the uncovered items.
+UNCOVERED_SENTENCE = {"ko": "확인된 근거에 없는 항목: {items}.", "en": "Not covered by the verified evidence: {items}.",
+                      "vi": "Không có trong căn cứ đã xác minh: {items}."}
 SUBSTANTIVE = {"answered", "partial", "conflict"}
 _CODE_RE = re.compile(r"(?<![A-Za-z0-9-])([A-Z]-\d{1,2}(?:-\d{1,2})?)(?![0-9-])")
 # Mission 005-I: instructions about the reply written into the question (matched on NFC, case-insensitive).
@@ -74,11 +79,14 @@ _MARKER_RE = re.compile(r"[\"'“‘「]([^\"'”’」]{2,40})[\"'”’」]|(?
 # ("영어로 답해", "in English please") or before a colon ("In English: ..."). "한국어로 된 서류" is not one.
 _LANG_ITEM = (r"(?:(?:in|using|use)\s+(?:english|korean|vietnamese)|(?:bằng\s+)?tiếng\s+(?:anh|hàn|việt)"
               r"|(?:영어|한국어|한국말|베트남어)(?:로만?)?|english|korean|vietnamese)")
-_LANG_CHAIN_RE = re.compile(_LANG_ITEM + r"(?:\s*(?:,|/|\bor\b|\band\b|hoặc|hay|và|또는|혹은|이나|나)\s*" + _LANG_ITEM + r")*",
-                            re.IGNORECASE)
+# Mission 005-M: a Korean particle glued to a non-Korean request ("bằng tiếng Việt로") goes with it.
+_LANG_TAIL = r"(?:(?<=[a-zA-Zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ])(?:으로|로)(?:만)?)?"
+_LANG_CHAIN_RE = re.compile(_LANG_ITEM + r"(?:\s*(?:,|/|\bor\b|\band\b|hoặc|hay|và|또는|혹은|이나|나)\s*" + _LANG_ITEM + r")*"
+                            + _LANG_TAIL, re.IGNORECASE)
 _CUE_BEFORE_RE = re.compile(r"(?:\b(?:answer|reply|respond|explain|tell\s+(?:me|us))\b|trả\s+lời|giải\s+thích|cho\s+biết"
                             r"|(?<![가-힣])답(?:은|을|변은|변을)?|대답(?:은|을)?)[^\n.?!:,;]{0,16}$", re.IGNORECASE)
-_CUE_AFTER_RE = re.compile(r"^(?:\s*(?:답(?![안장])|대답|알려\s*주|설명\s*(?:해|하)|말해|부탁|please|plz|nhé|nha|giùm|giúp)|\s*:)",
+# Mission 005-M: "In Korean or in Vietnamese, please: ..." — a comma may come before a please that ends the clause.
+_CUE_AFTER_RE = re.compile(r"^(?:\s*(?:답(?![안장])|대답|알려\s*주|설명\s*(?:해|하)|말해|부탁|please|plz|nhé|nha|giùm|giúp)|\s*,\s*(?:please|plz)\s*(?=[:.?!]|$)|\s*:)",
                            re.IGNORECASE)
 _FILLER_RE = re.compile(
     r"(?:please|kindly|answer|reply|respond|explain|tell|me|us|it|this|only|either|both|is|are|one|fine|ok|okay|thanks?"
@@ -133,6 +141,7 @@ def remove_language_requests(question: str) -> dict:
             removed.append(s.strip())
         else:
             rest = re.sub(r"\s+([,.?!。:;])", r"\1", re.sub(r"[ \t]{2,}", " ", rest))
+            rest = re.sub(r",\s*(?=[,.?!。:;])", "", rest)   # 005-M: "fee, , please?" -> "fee, please?"
             out.append(rest)
             removed.extend(s[a:b] for a, b in spans)
     return {"question": re.sub(r"\s{2,}", " ", "".join(out)).strip(), "removed": removed}
@@ -222,6 +231,8 @@ def prepare(question: str, intake: Optional[Mapping], candidates: list, registry
             # v5+ names the uncovered items in the reply language instead of internal keys.
             keys = uncovered_items(question, evidence) if (sub or loc) else selection["uncovered_items"]
             system = {"reply_language": code, "uncovered_items": [ITEM_LABELS[i][code] for i in keys]}
+            if keys:
+                system["uncovered_sentence"] = UNCOVERED_SENTENCE[code].format(items=", ".join(system["uncovered_items"]))
             if sub:
                 system["scope_status_code"] = sub
             if loc:
@@ -277,7 +288,7 @@ def validate_generated_answer(raw: Optional[str], prepared: Mapping, candidates:
         findings.append({"check": "question_instruction", "kind": "question_instruction_followed", "detail": followed,
                          "effect": "withhold"})
     if status in SUBSTANTIVE:
-        support = claim_support_validation.check(answer, question, candidates, cites, admissible_map)
+        support = claim_support_validation.check(answer, question, candidates, cites, admissible_map, with_source=True)
         for f in support["findings"]:
             kind = f["kind"]
             if kind in ("value_from_inadmissible", "polarity_reversal", "obligation_negated") or kind.endswith("_mismatch") \

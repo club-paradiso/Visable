@@ -38,7 +38,9 @@ def test_thresholds_are_the_005i_thresholds_unchanged():
 CHANGED_AFTER_005J = {"artemis_bootstrap/grounding_guard.py", "artemis_bootstrap/language_compliance.py",
                       "artemis_bootstrap/gemma4_runtime.py", "waymaker_ai/response_contract.py",
                       "waymaker_ai/inference_input.py", "waymaker_ai/evidence_admissibility.py",
-                      "artemis_bootstrap/trusted_evidence_spec.md"}
+                      "artemis_bootstrap/trusted_evidence_spec.md",
+                      # Mission 005-M: opt-in source fields; the default the old gates use is unchanged.
+                      "artemis_bootstrap/claim_support_validation.py"}
 FREEZE_COMMIT_005J = "9dc34d2f2be44fc898ad193c3821c3cc04154e42"
 
 

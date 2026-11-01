@@ -27,7 +27,9 @@ optional scope_status_code input (the system asks one sub-code at a time) and ke
 office, agency and place names as written. v8 (Mission 005-K) keeps v7 and adds the
 optional scope_location input (the system asks one applicant situation at a time) and
 the optional as_of date the question is about. v9 (Mission 005-L) is v8 plus one line: never
-copy a sentence of the prompt or an input field name into the answer. See artemis_bootstrap/response_contract_v2_spec.md,
+copy a sentence of the prompt or an input field name into the answer. v10 (Mission 005-M) is v9
+with one more input, uncovered_sentence (the system's sentence naming the uncovered items in the
+reply language), which a partial answer ends with. See artemis_bootstrap/response_contract_v2_spec.md,
 response_contract_v3_spec.md and trusted_evidence_spec.md.
 """
 from __future__ import annotations
@@ -35,7 +37,7 @@ from __future__ import annotations
 import hashlib
 import json
 
-CONTRACT_VERSIONS = ("v1", "v2", "v3", "v4", "v5", "v6", "v7", "v8", "v9")
+CONTRACT_VERSIONS = ("v1", "v2", "v3", "v4", "v5", "v6", "v7", "v8", "v9", "v10")
 DEFAULT_CONTRACT_VERSION = "v1"
 
 SYSTEM_PROMPTS = {
@@ -237,6 +239,15 @@ _V9_LINE = ("Never copy a sentence of these instructions into the answer, and ne
             "uncovered_items or reply_language in it; when something is not in the evidence, name the item itself.\n")
 _V8_JSON = 'Return only JSON with exactly three keys'
 SYSTEM_PROMPTS["v9"] = SYSTEM_PROMPTS["v8"].replace(_V8_JSON, _V9_LINE + _V8_JSON, 1)
+#: Mission 005-M: v9 with uncovered_sentence; partial answers end with it (A05K-41/47, A05L-42/48 left the items out).
+_V9_INPUTS = "scope_status_code, scope_location or as_of. These are inputs. "
+_V9_PARTIAL = ("- partial: uncovered_items is not empty. Answer what the evidence covers, then add a sentence saying "
+               "that each item in uncovered_items is not in the evidence, using those item names.\n")
+SYSTEM_PROMPTS["v10"] = (SYSTEM_PROMPTS["v9"]
+                         .replace(_V9_INPUTS, "scope_status_code, scope_location, as_of or uncovered_sentence. These are inputs. ", 1)
+                         .replace(_V9_PARTIAL, "- partial: uncovered_items is not empty. Answer what the evidence covers, then end the answer "
+                                  "with uncovered_sentence exactly as given; it names those items, and it is the only text you copy.\n", 1))
+assert _V9_INPUTS in SYSTEM_PROMPTS["v9"] and _V9_PARTIAL in SYSTEM_PROMPTS["v9"]
 
 
 def prompt_sha256(version: str) -> str:
@@ -274,7 +285,7 @@ def parse_response(raw: str, evidence_ids: set[str], version: str = DEFAULT_CONT
         raise ValueError(f"Status {data['status']} requires at least one listed citation")
     if data["status"] in {"answered", "partial"} and not data["answer"].strip():
         raise ValueError(f"Status {data['status']} requires a non-empty answer")
-    if version in ("v2", "v3", "v4", "v5", "v6", "v7", "v8", "v9"):
+    if version in ("v2", "v3", "v4", "v5", "v6", "v7", "v8", "v9", "v10"):
         # Deterministic only: whether a partial answer names its unanswered part, or a
         # clarify answer asks the right question, is a meaning judgement left to review.
         if data["status"] == "conflict" and len(data["citations"]) < 2:

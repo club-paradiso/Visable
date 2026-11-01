@@ -36,7 +36,9 @@ def test_thresholds_are_the_005j_thresholds_unchanged():
 #: Files Mission 005-L changed after the 005-K freeze. The 005-K manifest records them as they
 #: were at that freeze; the 005-K decision is re-derived with that run commit's code (test_mission005k_real_run).
 CHANGED_AFTER_005K = {"artemis_bootstrap/grounding_guard.py", "artemis_bootstrap/gemma4_runtime.py",
-                      "waymaker_ai/response_contract.py", "artemis_bootstrap/trusted_evidence_spec.md"}
+                      "waymaker_ai/response_contract.py", "artemis_bootstrap/trusted_evidence_spec.md",
+                      # Mission 005-M: uncovered_sentence input; opt-in source fields in claim support.
+                      "waymaker_ai/inference_input.py", "artemis_bootstrap/claim_support_validation.py"}
 FREEZE_COMMIT_005K = "abbae5f47847e7ba2a6459d2d6c020a299e2fa88"
 
 

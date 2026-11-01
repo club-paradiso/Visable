@@ -20,8 +20,9 @@ SOURCE_PROVENANCE_VALUES = frozenset({"official_manual", "official_notice", "com
 # v4/v5 prompt. They come from the system, never from the item's own fields or labels.
 # v5 (Mission 005-H) and later send uncovered_items as item names in the reply language; v7 (005-J)
 # adds scope_status_code when the system asks one sub-code at a time; v8 (005-K) adds scope_location
-# (one applicant situation at a time) and as_of (the date the question is about).
-SYSTEM_FIELDS = ("reply_language", "uncovered_items", "scope_status_code", "scope_location", "as_of")
+# (one applicant situation at a time) and as_of (the date the question is about); v10 (005-M) adds
+# uncovered_sentence (the system's sentence naming the uncovered items in the reply language).
+SYSTEM_FIELDS = ("reply_language", "uncovered_items", "scope_status_code", "scope_location", "as_of", "uncovered_sentence")
 REPLY_LANGUAGES = frozenset({"ko", "en", "vi"})
 
 
@@ -76,4 +77,9 @@ def project_inference_item(item: Mapping) -> dict:
             if not isinstance(system["as_of"], str) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", system["as_of"]):
                 raise ValueError("System as_of must be a YYYY-MM-DD date")
             projected["system"]["as_of"] = system["as_of"]
+        if "uncovered_sentence" in system:
+            text = system["uncovered_sentence"]
+            if not isinstance(text, str) or not text.strip() or len(text) > 300 or "\n" in text:
+                raise ValueError("System uncovered_sentence must be one short line")
+            projected["system"]["uncovered_sentence"] = text
     return projected

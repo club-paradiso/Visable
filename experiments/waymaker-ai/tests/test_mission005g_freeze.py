@@ -35,7 +35,9 @@ def test_manifest_and_suite_are_the_frozen_ones():
 CHANGED_AFTER_005G = {"artemis_bootstrap/grounding_guard.py", "artemis_bootstrap/language_compliance.py",
                       "artemis_bootstrap/gemma4_runtime.py", "waymaker_ai/response_contract.py",
                       "waymaker_ai/inference_input.py", "waymaker_ai/evidence_admissibility.py",
-                      "artemis_bootstrap/trusted_evidence_spec.md"}
+                      "artemis_bootstrap/trusted_evidence_spec.md",
+                      # Mission 005-M: opt-in source fields; the default the old gates use is unchanged.
+                      "artemis_bootstrap/claim_support_validation.py"}
 FREEZE_COMMIT_005G = "e12cf4365840ddc6ee32d28bfd1eca90bfa50796"
 
 

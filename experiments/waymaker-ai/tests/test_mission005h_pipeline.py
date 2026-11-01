@@ -176,7 +176,9 @@ def test_v5_is_new_and_earlier_prompts_are_unchanged():
 
 def test_v5_message_names_uncovered_items_in_the_reply_language():
     prepared = guard.prepare(Q_PARTIAL, None, [PLACE], place_registry(), DATE)
-    msgs = build_messages(prepared["model_item"], "v5")
+    # Mission 005-M added uncovered_sentence, a v10 input; the v5 message is built without it.
+    item = {**prepared["model_item"], "system": {k: v for k, v in prepared["model_item"]["system"].items() if k != "uncovered_sentence"}}
+    msgs = build_messages(item, "v5")
     payload = json.loads(msgs[1]["content"])
     assert list(payload) == ["question", "reply_language", "uncovered_items", "evidence"]
     assert payload["uncovered_items"] == ["processing time"] and msgs[0]["content"] == SYSTEM_PROMPTS["v5"]
