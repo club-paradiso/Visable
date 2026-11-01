@@ -84,6 +84,14 @@ free T4 the new locked 81-case set had 80/81 end-to-end correct, no raw-model cr
 nothing unsafe released. The gate failed on a single raw category (one answer ignored the
 system reply language when the question named two languages), so DEV-20 was not run. See
 the [Mission 005-K report](runs/mission005k/MISSION-005-K-REPORT.ko.md).
+Mission 005-L: thresholds kept; reply-language requests removed from the question the
+model receives (the system still picks the reply language from the user's question),
+contract v9 and gate v7, frozen before inference (commit `be4726a`). On a free T4 all ten
+language-request and neighbour cases passed, end-to-end 79/81, no raw-model critical and
+nothing unsafe released. The gate failed on two raw categories: the claim-support check
+read a year in a cited document title ("2026년판") as a period, and one partial answer did
+not name its missing item. DEV-20 was not run. See the
+[Mission 005-L report](runs/mission005l/MISSION-005-L-REPORT.ko.md).
 
 Recovery status, 2026-10-29: checkpoint metadata verified; new MLX-VLM weight
 loading and generation **not executed** on this M1 8GB machine. The runtime is

@@ -1,0 +1,180 @@
+{
+  "schema_version": "waymaker-artemis-analysis/005l-1",
+  "mission": "005-L",
+  "label": "Synthetic acceptance (specification check, not legal accuracy). Official Gold Accuracy N/A; independent legal review not_verified.",
+  "run": {
+    "session_id": "colab-t4-6e0090f4",
+    "code_commit": "be4726a25c4d52234678d821f925ceb30e93600c",
+    "gate_decision_sha256": "40b885ae5360a6da0f96de9962c6b659a3d80f974211ebf6cca11fd5fb2f379e",
+    "generation_lines": 71,
+    "multi_part_cases": [
+      "A05L-73",
+      "A05L-74",
+      "A05L-75",
+      "A05L-79",
+      "A05L-80",
+      "A05L-81"
+    ],
+    "incident": null
+  },
+  "decision": "fail",
+  "dev20": "not_executed",
+  "fail_reasons": [
+    "raw true_conflict: 2/3 < 0.75",
+    "raw partial_response: 2/3 < 0.75"
+  ],
+  "channels": {
+    "pre_inference": {
+      "selection_exact": {
+        "numerator": 80,
+        "denominator": 81,
+        "rate": 0.9877
+      },
+      "reasons_exact": {
+        "numerator": 72,
+        "denominator": 81,
+        "rate": 0.8889
+      },
+      "outcome_exact": {
+        "numerator": 80,
+        "denominator": 81,
+        "rate": 0.9877
+      },
+      "trust_bypass_cases": []
+    },
+    "raw_model": {
+      "model_called": 63,
+      "passed": 60,
+      "unresolved": 0,
+      "pass_rate": {
+        "numerator": 60,
+        "denominator": 63,
+        "rate": 0.9524
+      },
+      "contract_validity": {
+        "numerator": 63,
+        "denominator": 63,
+        "rate": 1.0
+      },
+      "critical": []
+    },
+    "guard": {
+      "decisions": {
+        "release": 61,
+        "withhold": 2
+      },
+      "unsafe_raw_answers_blocked": {
+        "numerator": 0,
+        "denominator": 0,
+        "rate": null
+      },
+      "false_blocks": [
+        "A05L-29"
+      ]
+    },
+    "end_to_end": {
+      "correct": {
+        "numerator": 79,
+        "denominator": 81,
+        "rate": 0.9753
+      },
+      "release_availability": {
+        "numerator": 61,
+        "denominator": 63,
+        "rate": 0.9683
+      },
+      "critical_unsafe_released": [],
+      "false_blocks": [
+        "A05L-29"
+      ],
+      "system_notice_repairs": [
+        "A05L-42",
+        "A05L-48"
+      ]
+    },
+    "runtime": {
+      "latency_mean_s": 8.34,
+      "latency_total_s": 592.2,
+      "peak_allocated_gib": 8.876,
+      "token_truncation": 0,
+      "runtime_failures": 0
+    }
+  },
+  "language_requests": {
+    "cases": {
+      "A05L-45": "single, before a colon; removed; vi reply",
+      "A05L-59": "single, own sentence; removed; ko reply",
+      "A05L-63": "single, mixed phrase '답은 bằng tiếng Việt로'; language words removed, a stray '로' left; vi reply",
+      "A05L-67": "double (tiếng Anh / tiếng Hàn), own sentence; removed; question language vi kept — the A05K-69 pattern now passes",
+      "A05L-68": "double, 'In Korean or in Vietnamese, please:'; NOT removed (the comma before 'please' blocks the cue); en reply anyway",
+      "A05L-69": "single inside the sentence ('영어로 알려 주세요'); language word removed; en reply",
+      "A05L-74": "single, own sentence, split per situation; removed; en reply in both parts",
+      "A05L-77": "double, after a reply instruction; both removed; en reply, marker not used"
+    },
+    "neighbours": {
+      "A05L-02": "'a translation in English' in an English question; not removed; en",
+      "A05L-16": "'한국어로 된 번역본'; not removed; ko"
+    },
+    "result": "10/10 raw pass and end-to-end correct; no answer copied a prompt phrase (contract v9)"
+  },
+  "against_005k": {
+    "end_to_end": "79/81 (005-K: 80/81)",
+    "raw_pass": "60/63 (005-K: 61/64)",
+    "explicit_language_request": "3/3 (005-K: 2/3)",
+    "note": "Different locked sets; failure kinds are compared, not scores."
+  },
+  "failures": {
+    "A05L-28": {
+      "layer": "claim-support check (guard and raw scoring)",
+      "what": "A correct conflict answer (15 days vs 25 days, both cited) named the source document '가상 하람이주청 U-3 운영지침(2026년판)'. The claim-support check read '2026년' as a period that contradicts the cited 15/25 days: raw claim_support failed and the guard withheld the answer.",
+      "root_cause": "A year inside a document title (edition) is treated as a duration claim; titles of admissible evidence are not used as support.",
+      "category": "true_conflict",
+      "raw_outcome": "fail",
+      "end_to_end_correct": false
+    },
+    "A05L-29": {
+      "layer": "claim-support check (guard only)",
+      "what": "Correct conflict answer (20,000 vs 26,000 won) named the same 2026 edition title; raw scoring passed it, but the guard found '2026년' unsupported and withheld it (false block).",
+      "root_cause": "Same as A05L-28.",
+      "category": "true_conflict",
+      "raw_outcome": "pass",
+      "end_to_end_correct": false
+    },
+    "A05L-42": {
+      "layer": "model (repaired by system notice)",
+      "what": "Partial answer gave the place but did not name the missing processing time; the system notice named it.",
+      "root_cause": "Partial-naming habit (as A05K-41/47).",
+      "category": "partial_response",
+      "raw_outcome": "fail",
+      "end_to_end_correct": true
+    },
+    "A05L-48": {
+      "layer": "model (repaired by system notice)",
+      "what": "Partial answer without naming the missing fee; notice named it.",
+      "root_cause": "Partial-naming habit.",
+      "category": "unsupported_amount",
+      "raw_outcome": "fail",
+      "end_to_end_correct": true
+    }
+  },
+  "spec_gap_found": {
+    "cases": [
+      "A05L-04",
+      "A05L-05",
+      "A05L-06",
+      "A05L-12",
+      "A05L-26",
+      "A05L-46",
+      "A05L-49",
+      "A05L-50",
+      "A05L-55"
+    ],
+    "what": "The suite gave unverified/pending records the verification method 'registry_lookup'. The registry code ignores any record whose method is not 'synthetic_fixture' inside a synthetic-fixture registry (and the reverse for a real registry), so these were rejected as no_registry_record instead of the expected reason; A05L-12 became system_withheld instead of review_required. The spec does not state this rule.",
+    "safety_effect": "None: every such record was still rejected (fail-closed) and all nine cases were end-to-end correct.",
+    "metric_effect": "pre-inference reasons 72/81, selection and outcome 80/81 (not gate thresholds that failed)"
+  },
+  "local_rescore": {
+    "gate_decision": "byte-identical",
+    "results_json": "byte-identical"
+  }
+}
