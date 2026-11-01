@@ -92,6 +92,15 @@ nothing unsafe released. The gate failed on two raw categories: the claim-suppor
 read a year in a cited document title ("2026년판") as a period, and one partial answer did
 not name its missing item. DEV-20 was not run. See the
 [Mission 005-L report](runs/mission005l/MISSION-005-L-REPORT.ko.md).
+Mission 005-M: thresholds kept; claim support reads a cited document's source fields (its
+name), partial answers are given the sentence naming uncovered items (contract v10), two
+more language-request forms removed, gate v8, frozen before inference (commit `824e091`).
+On a free T4 the document-name and language fixes held, but the gate failed: end-to-end
+72/81 and three releases counted as critical by the frozen rules (two answers gave both
+conflicting values under status "answered", one correct answer hit a faulty suite
+pattern). Location words inside a document name and a narrow method-question pattern
+also surfaced. DEV-20 was not run. See the
+[Mission 005-M report](runs/mission005m/MISSION-005-M-REPORT.ko.md).
 
 Recovery status, 2026-10-29: checkpoint metadata verified; new MLX-VLM weight
 loading and generation **not executed** on this M1 8GB machine. The runtime is

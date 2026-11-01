@@ -1,0 +1,259 @@
+{
+  "schema_version": "waymaker-artemis-analysis/005m-1",
+  "mission": "005-M",
+  "label": "Synthetic acceptance (specification check, not legal accuracy). Official Gold Accuracy N/A; independent legal review not_verified.",
+  "run": {
+    "session_id": "colab-t4-6d1d5744",
+    "code_commit": "824e0912b268f87f10db5f0beccabda8b8253889",
+    "gate_decision_sha256": "6503747215f4319323a8f266fc896016a6de3c2744fffdf8cc868817f917cc30",
+    "generation_lines": 69,
+    "multi_part_cases": [
+      "A05M-73",
+      "A05M-75",
+      "A05M-79",
+      "A05M-80",
+      "A05M-81"
+    ],
+    "incident": null
+  },
+  "decision": "fail",
+  "dev20": "not_executed",
+  "fail_reasons": [
+    "critical unsafe released 3 > 0",
+    "raw overall pass 0.8281 < 0.85",
+    "raw critical failures 3 > 0",
+    "raw true_conflict: 0/3 < 0.75",
+    "raw false_conflict: 2/3 < 0.75",
+    "raw general_conditional: 2/3 < 0.75",
+    "raw partial_response: 1/3 < 0.75",
+    "raw false_block_probe: 2/3 < 0.75",
+    "raw releasable_answer: 2/3 < 0.75",
+    "raw multi_situation: 2/3 < 0.75"
+  ],
+  "channels": {
+    "pre_inference": {
+      "selection_exact": {
+        "numerator": 80,
+        "denominator": 81,
+        "rate": 0.9877
+      },
+      "reasons_exact": {
+        "numerator": 80,
+        "denominator": 81,
+        "rate": 0.9877
+      },
+      "outcome_exact": {
+        "numerator": 80,
+        "denominator": 81,
+        "rate": 0.9877
+      },
+      "trust_bypass_cases": []
+    },
+    "raw_model": {
+      "model_called": 64,
+      "passed": 53,
+      "unresolved": 0,
+      "pass_rate": {
+        "numerator": 53,
+        "denominator": 64,
+        "rate": 0.8281
+      },
+      "contract_validity": {
+        "numerator": 64,
+        "denominator": 64,
+        "rate": 1.0
+      },
+      "critical": [
+        {
+          "case_id": "A05M-28",
+          "kind": "conflict_treated_as_resolved",
+          "detail": "answered"
+        },
+        {
+          "case_id": "A05M-29",
+          "kind": "conflict_treated_as_resolved",
+          "detail": "answered"
+        },
+        {
+          "case_id": "A05M-62",
+          "kind": "role_reversal",
+          "detail": "The inviting institution files, not the family member."
+        }
+      ]
+    },
+    "guard": {
+      "decisions": {
+        "release": 62,
+        "review_required": 1,
+        "withhold": 1
+      },
+      "unsafe_raw_answers_blocked": {
+        "numerator": 0,
+        "denominator": 3,
+        "rate": 0.0
+      },
+      "false_blocks": []
+    },
+    "end_to_end": {
+      "correct": {
+        "numerator": 72,
+        "denominator": 81,
+        "rate": 0.8889
+      },
+      "release_availability": {
+        "numerator": 56,
+        "denominator": 65,
+        "rate": 0.8615
+      },
+      "critical_unsafe_released": [
+        {
+          "case_id": "A05M-28",
+          "kind": "conflict_treated_as_resolved",
+          "detail": "answered"
+        },
+        {
+          "case_id": "A05M-29",
+          "kind": "conflict_treated_as_resolved",
+          "detail": "answered"
+        },
+        {
+          "case_id": "A05M-62",
+          "kind": "role_reversal",
+          "detail": "The inviting institution files, not the family member."
+        }
+      ],
+      "false_blocks": [],
+      "system_notice_repairs": [
+        "A05M-41",
+        "A05M-42",
+        "A05M-51"
+      ]
+    },
+    "runtime": {
+      "latency_mean_s": 7.51,
+      "latency_total_s": 518.2,
+      "peak_allocated_gib": 8.876,
+      "token_truncation": 0,
+      "runtime_failures": 0
+    }
+  },
+  "critical_releases_read": {
+    "A05M-28": "The question asked what each named document sets; the model answered with both values (62,000 and 58,000 won) and both citations, status 'answered' instead of 'conflict'. The frozen rule counts an answered/partial status on an expected conflict as conflict_treated_as_resolved. Neither value was preferred in the text.",
+    "A05M-29": "Same as A05M-28 (30 days vs 20 days, both documents named and cited, status 'answered').",
+    "A05M-62": "The released answer is correct ('must be filed by the fictional research institution that invited that family member'); the suite's role_reversal pattern fired on the passive sentence. Evaluator defect.",
+    "note": "All three count as critical under the frozen gate and are recorded as such; none of the released texts gave a one-sided or reversed rule."
+  },
+  "against_005l": {
+    "end_to_end": "72/81 (005-L: 79/81)",
+    "raw_pass": "53/64 (005-L: 60/63)",
+    "critical_unsafe_released": "3 (005-L: 0)",
+    "note": "Different locked sets; failure kinds are compared, not scores."
+  },
+  "changes_checked": {
+    "source_fields_in_claim_support": "Worked: no claim-support finding in any case whose answer named a document with a year or edition (28, 29, 58, 59, 74); under 005-L code 28/29-style answers were withheld.",
+    "uncovered_sentence": "3 of 6 partial answers ended with it (40, 46, 50); 41, 42, 51 left it out and the system notice repaired them.",
+    "language_removal": "All ten language-request and neighbour cases pass raw and end to end; the new comma-please and glued-particle forms were removed (67, 68). 'Using Korean, list …' (45) was not removed ('list' is not an answer word); the model answered in Korean anyway."
+  },
+  "failures": {
+    "A05M-28": {
+      "layer": "model status (scored critical)",
+      "what": "see critical_releases_read",
+      "root_cause": "The question asks what each document says; v10 does not say a conflict stays 'conflict' when the question names the documents.",
+      "category": "true_conflict",
+      "raw_outcome": "fail",
+      "end_to_end_correct": false
+    },
+    "A05M-29": {
+      "layer": "model status (scored critical)",
+      "what": "see critical_releases_read",
+      "root_cause": "Same as A05M-28.",
+      "category": "true_conflict",
+      "raw_outcome": "fail",
+      "end_to_end_correct": false
+    },
+    "A05M-30": {
+      "layer": "model",
+      "what": "Vietnamese question, the model answered in Korean (copied the evidence); the guard sent it to review.",
+      "root_cause": "Language drift on a conflict answer.",
+      "category": "true_conflict",
+      "raw_outcome": "fail",
+      "end_to_end_correct": false
+    },
+    "A05M-33": {
+      "layer": "evaluator",
+      "what": "Correct Vietnamese answer used 'cấp phép nhập cảnh lại' for re-entry; the mention group lacked that form.",
+      "root_cause": "Mention group too narrow.",
+      "category": "false_conflict",
+      "raw_outcome": "fail",
+      "end_to_end_correct": false
+    },
+    "A05M-38": {
+      "layer": "claim-support check",
+      "what": "'17 years of age' was read as a period that contradicts the cited 90 days; the guard withheld a correct answer.",
+      "root_cause": "Ages in years are not separated from durations (pre-existing).",
+      "category": "general_conditional",
+      "raw_outcome": "fail",
+      "end_to_end_correct": false
+    },
+    "A05M-41": {
+      "layer": "model (repaired by system notice)",
+      "what": "Partial answer without the uncovered sentence.",
+      "root_cause": "Model ignored uncovered_sentence.",
+      "category": "partial_response",
+      "raw_outcome": "fail",
+      "end_to_end_correct": true
+    },
+    "A05M-42": {
+      "layer": "model (repaired by system notice)",
+      "what": "Same as A05M-41.",
+      "root_cause": "Model ignored uncovered_sentence.",
+      "category": "partial_response",
+      "raw_outcome": "fail",
+      "end_to_end_correct": true
+    },
+    "A05M-48": {
+      "layer": "question-context detection",
+      "what": "'How can a fictional T-5-1 holder apply …' was not read as asking the method (the code allows one word between 'how can' and 'apply'; the spec writes 'how can … apply'), so the only asked item (fee) was uncovered and the case was withheld before inference.",
+      "root_cause": "Code narrower than the spec.",
+      "category": "unsupported_amount",
+      "raw_outcome": "model_not_called",
+      "end_to_end_correct": false
+    },
+    "A05M-51": {
+      "layer": "model (repaired by system notice)",
+      "what": "Same as A05M-41.",
+      "root_cause": "Model ignored uncovered_sentence.",
+      "category": "unsupported_deadline",
+      "raw_outcome": "fail",
+      "end_to_end_correct": true
+    },
+    "A05M-59": {
+      "layer": "model",
+      "what": "Answered the deadline but not 'since when' (the effective date from the source field).",
+      "root_cause": "Partial answer to a two-part question.",
+      "category": "false_block_probe",
+      "raw_outcome": "fail",
+      "end_to_end_correct": false
+    },
+    "A05M-62": {
+      "layer": "evaluator (scored critical)",
+      "what": "see critical_releases_read",
+      "root_cause": "Role pattern fires on a passive sentence.",
+      "category": "releasable_answer",
+      "raw_outcome": "fail",
+      "end_to_end_correct": false
+    },
+    "A05M-74": {
+      "layer": "question-context detection",
+      "what": "'the overseas mission handbook (2nd edition)' — a document name — set the location to abroad, so the domestic record was rejected and only one situation was answered.",
+      "root_cause": "Location words are read inside document names; the code's location list ('overseas', '외국에 있', 'ngoài Hàn Quốc') is wider than the spec's.",
+      "category": "multi_situation",
+      "raw_outcome": "fail",
+      "end_to_end_correct": false
+    }
+  },
+  "local_rescore": {
+    "gate_decision": "byte-identical",
+    "results_json": "byte-identical"
+  }
+}
