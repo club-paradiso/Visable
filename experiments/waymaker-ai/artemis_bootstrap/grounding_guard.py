@@ -20,7 +20,9 @@ whose evidence splits by sub-code is asked once per sub-code with only that
 sub-code's evidence; the parts are joined deterministically and each part is
 guarded on its own. Mission 005-K: the same per-situation (people in Korea / abroad),
 the question's date goes to the model when the user gave one, and Korean names copied
-from the admissible evidence do not count against the reply language.
+from the admissible evidence do not count against the reply language. Mission 005-L: a request
+for a reply language written into the question is also removed from the question the model
+receives; the system has already chosen reply_language from the user's question.
 Research-only; nothing here is wired into the production backend.
 """
 from __future__ import annotations
@@ -43,7 +45,7 @@ from waymaker_ai.evidence_admissibility import (ITEM_LABELS, parent_code, reques
 from waymaker_ai.evidence_registry import TrustRegistry
 from waymaker_ai.response_contract import parse_response
 
-CONTRACT_VERSION = "v8"
+CONTRACT_VERSION = "v9"
 PROVENANCE = ("model_generated", "model_generated_with_system_notice", "system_withheld", "system_clarification",
               "review_required", "post_generation_blocked", "invalid_response")
 #: Mission 005-J: worst guard decision first, for joining per-sub-code parts.
@@ -64,6 +66,76 @@ _DIRECTIVE_RE = re.compile(
     re.IGNORECASE)
 _SENTENCE_RE = re.compile(r"[^.?!。\n]*[.?!。\n]?")
 _MARKER_RE = re.compile(r"[\"'“‘「]([^\"'”’」]{2,40})[\"'”’」]|(?<![\w-])([A-Z][A-Z0-9_]{3,}|[A-Z0-9_]*\d[A-Z][A-Z0-9_]*)(?![\w-])")
+
+
+# Mission 005-L: reply-language requests (the forms of language_compliance._REQUESTS), with "or"
+# chains such as "bằng tiếng Anh hoặc using Korean". A chain is a request only next to a reply word:
+# after one ("answer in English", "trả lời bằng tiếng Anh", "답은 bằng tiếng Việt"), right before one
+# ("영어로 답해", "in English please") or before a colon ("In English: ..."). "한국어로 된 서류" is not one.
+_LANG_ITEM = (r"(?:(?:in|using|use)\s+(?:english|korean|vietnamese)|(?:bằng\s+)?tiếng\s+(?:anh|hàn|việt)"
+              r"|(?:영어|한국어|한국말|베트남어)(?:로만?)?|english|korean|vietnamese)")
+_LANG_CHAIN_RE = re.compile(_LANG_ITEM + r"(?:\s*(?:,|/|\bor\b|\band\b|hoặc|hay|và|또는|혹은|이나|나)\s*" + _LANG_ITEM + r")*",
+                            re.IGNORECASE)
+_CUE_BEFORE_RE = re.compile(r"(?:\b(?:answer|reply|respond|explain|tell\s+(?:me|us))\b|trả\s+lời|giải\s+thích|cho\s+biết"
+                            r"|(?<![가-힣])답(?:은|을|변은|변을)?|대답(?:은|을)?)[^\n.?!:,;]{0,16}$", re.IGNORECASE)
+_CUE_AFTER_RE = re.compile(r"^(?:\s*(?:답(?![안장])|대답|알려\s*주|설명\s*(?:해|하)|말해|부탁|please|plz|nhé|nha|giùm|giúp)|\s*:)",
+                           re.IGNORECASE)
+_FILLER_RE = re.compile(
+    r"(?:please|kindly|answer|reply|respond|explain|tell|me|us|it|this|only|either|both|is|are|one|fine|ok|okay|thanks?"
+    r"|you|would|be|great|can|could|the|in|language|works|too|also|or|and"
+    r"|답|변|은|을|대답|알려|설명|말해|주세요|줘요|주십시오|주실래요|주시겠어요|줘|주|세요|부탁|해요|합니다|드립니다|드려요|바랍니다"
+    r"|해|요|만|도|돼요|됩니다|되요|괜찮아요|좋아요|상관없어요|둘|중|하나|어느|쪽|이든|든지|든"
+    r"|vui|lòng|xin|hãy|trả|lời|giải|thích|cho|biết|tôi|giúp|đều|được|cũng|nhé|nha|ạ|cảm|ơn|thôi|chỉ|là|hoặc|hay"
+    r"|có|thể|bạn|ngôn|ngữ|nào|giùm)+", re.IGNORECASE)
+
+
+def _filler_only(text: str) -> bool:
+    return all(_FILLER_RE.fullmatch(w) for w in re.findall(r"\w+", text))
+
+
+def _language_request_spans(sentence: str) -> list:
+    """(start, end) of the reply-language request chains in one sentence."""
+    spans = []
+    for m in _LANG_CHAIN_RE.finditer(sentence):
+        chain = m.group(0)
+        if not any(p.search(chain.lower()) for p in language_compliance._REQUESTS.values()):
+            continue
+        if _CUE_BEFORE_RE.search(sentence[:m.start()]) or _CUE_AFTER_RE.search(sentence[m.end():]):
+            spans.append((m.start(), m.end()))
+    return spans
+
+
+def remove_language_requests(question: str) -> dict:
+    """Mission 005-L: the question without its reply-language requests (spec section 4).
+
+    A sentence that is only a request ("Please answer in English.", "Trả lời bằng tiếng Anh hoặc bằng
+    tiếng Hàn đều được.") is dropped; in "<request>: <question>" the part after the colon is kept; a request
+    inside a real question ("수수료를 영어로 알려 주세요") loses only the language words.
+    """
+    text = unicodedata.normalize("NFC", question or "")
+    out, removed = [], []
+    for s in _SENTENCE_RE.findall(text):
+        spans = _language_request_spans(s)
+        if not spans:
+            out.append(s)
+            continue
+        kept, last = [], 0
+        for a, b in spans:
+            kept.append(s[last:a])
+            last = b
+        kept.append(s[last:])
+        rest = "".join(kept)
+        colon = rest.find(":")
+        if colon >= 0 and _filler_only(rest[:colon]) and re.search(r"\w", rest[colon + 1:]):
+            out.append(" " + rest[colon + 1:].strip() + (" " if s.endswith(("\n", " ")) else ""))
+            removed.append(s[:s.find(":") + 1].strip() if ":" in s else s.strip())
+        elif _filler_only(rest):
+            removed.append(s.strip())
+        else:
+            rest = re.sub(r"\s+([,.?!。:;])", r"\1", re.sub(r"[ \t]{2,}", " ", rest))
+            out.append(rest)
+            removed.extend(s[a:b] for a, b in spans)
+    return {"question": re.sub(r"\s{2,}", " ", "".join(out)).strip(), "removed": removed}
 
 
 def question_directives(question: str, evidence_texts: list) -> dict:
@@ -99,7 +171,8 @@ FALLBACK = {
 
 
 def question_for_model(question: str, evidence_texts: list) -> dict:
-    """Mission 005-J: the question without its reply-instruction sentences (spec section 4).
+    """Mission 005-J: the question without its reply-instruction sentences (spec section 4); 005-L: and
+    without its reply-language requests (remove_language_requests).
 
     A sentence of the form "<instruction>: <question>" keeps the part after the colon. If nothing
     would be left, the question is passed unchanged (the answer guard still checks markers).
@@ -114,9 +187,12 @@ def question_for_model(question: str, evidence_texts: list) -> dict:
         text = text.replace(s, keep, 1)
         removed.append(s if not keep else s[:colon + 1].strip())
     text = re.sub(r"\s{2,}", " ", text).strip()
-    if not re.search(r"\w", text):
-        return {"question": question, "removed": [], "markers": found["markers"]}
-    return {"question": text, "removed": removed, "markers": found["markers"]}
+    # Mission 005-L: then the reply-language requests; reply_language still reads the user's question.
+    lang = remove_language_requests(text)
+    if not re.search(r"\w", lang["question"]):
+        return {"question": question, "removed": [], "language_removed": [], "markers": found["markers"]}
+    return {"question": lang["question"], "removed": removed, "language_removed": lang["removed"],
+            "markers": found["markers"]}
 
 
 def reply_language(question: str) -> dict:
@@ -155,7 +231,8 @@ def prepare(question: str, intake: Optional[Mapping], candidates: list, registry
             items.append({"question": cleaned["question"], "evidence": evidence, "system": system})
             parts.append({"status_code": sub, "location": loc, "evidence": evidence, "uncovered_items": keys})
     return {"selection": selection, "reply_language": lang, "question": question,
-            "question_directives_removed": cleaned["removed"], "model_items": items, "parts": parts,
+            "question_directives_removed": cleaned["removed"],
+            "question_language_requests_removed": cleaned["language_removed"], "model_items": items, "parts": parts,
             "model_item": items[0] if len(items) == 1 else None}
 
 
@@ -282,6 +359,7 @@ def run_case(question: str, intake: Optional[Mapping], candidates: list, registr
               "trust_decisions": sel["decisions"], "admissible_ids": [e["id"] for e in sel["admissible"]],
               "uncovered_items": sel["uncovered_items"], "reply_language": prepared["reply_language"],
               "question_directives_removed": prepared["question_directives_removed"],
+              "question_language_requests_removed": prepared["question_language_requests_removed"],
               "subcode_parts": sel.get("subcode_parts") or [], "situation_parts": sel.get("situation_parts") or [],
               "model_called": False, "raw_output": None, "guard": None}
     if sel["outcome"] == "system_withheld":

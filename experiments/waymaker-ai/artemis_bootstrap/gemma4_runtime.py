@@ -90,15 +90,15 @@ def probe() -> dict:
 def build_messages(item: dict, version: str = DEFAULT_CONTRACT_VERSION) -> list[dict]:
     projected = project_inference_item(item)
     system = projected.pop("system", None)
-    if version in ("v4", "v5", "v6", "v7", "v8"):
-        # v4-v8 only: the pipeline's reply language and uncovered items (v7+: the sub-code asked;
-        # v8: the situation asked and the question's date), ahead of the evidence.
+    if version in ("v4", "v5", "v6", "v7", "v8", "v9"):
+        # v4-v9 only: the pipeline's reply language and uncovered items (v7+: the sub-code asked;
+        # v8+: the situation asked and the question's date), ahead of the evidence.
         if system is None:
             raise ValueError(f"Contract {version} needs the pipeline's system fields")
-        if "scope_status_code" in system and version not in ("v7", "v8"):
+        if "scope_status_code" in system and version not in ("v7", "v8", "v9"):
             raise ValueError("scope_status_code is a v7+ input")
-        if ("scope_location" in system or "as_of" in system) and version != "v8":
-            raise ValueError("scope_location and as_of are v8 inputs")
+        if ("scope_location" in system or "as_of" in system) and version not in ("v8", "v9"):
+            raise ValueError("scope_location and as_of are v8+ inputs")
         projected = {"question": projected["question"], "reply_language": system["reply_language"],
                      "uncovered_items": system["uncovered_items"],
                      **{k: system[k] for k in ("scope_status_code", "scope_location", "as_of") if k in system},

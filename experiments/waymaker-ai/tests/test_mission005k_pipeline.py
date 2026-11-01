@@ -119,8 +119,9 @@ def test_without_evidence_the_language_check_is_unchanged():
 
 # --- contract v8 ------------------------------------------------------------------------
 def test_v8_is_new_and_earlier_prompts_are_unchanged():
-    assert CONTRACT_VERSIONS == ("v1", "v2", "v3", "v4", "v5", "v6", "v7", "v8")
-    assert len({prompt_sha256(v) for v in CONTRACT_VERSIONS}) == 8
+    # Mission 005-L added v9 after these; the first eight, their order and v8's prompt stay.
+    assert CONTRACT_VERSIONS[:8] == ("v1", "v2", "v3", "v4", "v5", "v6", "v7", "v8") and prompt_sha256("v8").startswith("d87b7e40120a")
+    assert len({prompt_sha256(v) for v in CONTRACT_VERSIONS}) == len(CONTRACT_VERSIONS)
     for phrase in ("scope_location", "answer only for that situation", "If as_of is given", "exactly three keys"):
         assert phrase in SYSTEM_PROMPTS["v8"]
 
