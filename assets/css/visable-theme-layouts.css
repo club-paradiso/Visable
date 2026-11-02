@@ -324,3 +324,13 @@ body.civic-refresh.searched #hero .logo-area:not(#vt-a) { border: 0 !important; 
   body.civic-refresh.searched #hero .cs-header-settings:not(#vt-a) { right: 20px; }
   html[dir="rtl"] body.civic-refresh.searched #hero .cs-header-settings:not(#vt-a) { right: auto; left: 20px; }
 }
+
+/* Centre the desktop home introduction within each theme's content area. */
+@media (min-width: 681px) {
+  :root[data-vt] #civicLanding .cs-hero { margin-inline: auto; text-align: center; }
+  :root[data-vt] #civicLanding .cs-hero > p { margin-inline: auto; }
+  :root[data-vt] body:not(.cs-sheet) #civicLanding #civicSearchForm { margin-inline: auto; }
+  :root[data-vt] #civicLanding .cs-examples { justify-content: center; }
+  :root[data-vt] #civicLanding .cs-examples-label { text-align: center; }
+  :root[data-vt] #civicLanding .cs-hero > .cs-basis { margin-inline: auto; text-align: center; }
+}
