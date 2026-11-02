@@ -24,6 +24,10 @@ document name and the other `source` fields the model is shown, see
 waymaker_ai.inference_input.SOURCE_TEXT_FIELDS) count as part of the item, so a value
 copied from a cited document's name ("운영지침(2026년판)") is not an unsupported claim.
 The default keeps the 005-F..005-L behaviour (title and text only).
+
+Mission 005-N: with `ages_apart=True`, an age ("17 years of age", "aged 17", "만 17세", "17 tuổi") is not
+read as a period, in the answer or the evidence. A05M-38 withheld a correct answer that wrote "17 years
+of age" because it was compared with the evidence's 90일.
 """
 from __future__ import annotations
 
@@ -109,6 +113,14 @@ def _codes(text: str) -> set:
     return set(_CODE_RE.findall(_nfc(text)))
 
 
+_AGE_RE = re.compile(r"\b\d{1,3}(?:\s+|\s*-\s*)years?(?:\s+|\s*-\s*)(?:of\s+age|old)\b|\bage[ds]?\s+\d{1,3}\b"
+                     r"|(?:만\s*)?\d{1,3}\s*세(?!대)|\b\d{1,3}\s+tuổi", re.IGNORECASE)
+
+
+def _without_ages(text: str) -> str:
+    return _AGE_RE.sub(" ", text)
+
+
 def _item_text(e: Mapping, with_source: bool) -> str:
     parts = [e.get("title", ""), e.get("text", "")]
     if with_source and isinstance(e.get("source"), Mapping):
@@ -117,7 +129,7 @@ def _item_text(e: Mapping, with_source: bool) -> str:
 
 
 def check(answer: str, question: str, evidence: Iterable[Mapping], cited: Iterable[str],
-          admissible: Mapping[str, bool], with_source: bool = False) -> dict:
+          admissible: Mapping[str, bool], with_source: bool = False, ages_apart: bool = False) -> dict:
     """Compare answer claims with cited admissible evidence.
 
     `admissible` maps evidence id -> bool (from the evaluator-side trust record, never
@@ -127,6 +139,9 @@ def check(answer: str, question: str, evidence: Iterable[Mapping], cited: Iterab
     cited = set(cited)
     answer = _nfc(answer)
     by_id = {e["id"]: _item_text(e, with_source) for e in evidence}
+    if ages_apart:
+        answer, question = _without_ages(answer), _without_ages(question)
+        by_id = {i: _without_ages(t) for i, t in by_id.items()}
     cited_ok = "\n".join(t for i, t in by_id.items() if i in cited and admissible.get(i))
     other_ok = "\n".join(t for i, t in by_id.items() if i not in cited and admissible.get(i))
     bad = "\n".join(t for i, t in by_id.items() if not admissible.get(i))

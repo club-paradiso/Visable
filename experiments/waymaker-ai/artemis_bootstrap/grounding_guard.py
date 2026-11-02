@@ -47,7 +47,7 @@ from waymaker_ai.evidence_admissibility import (ITEM_LABELS, parent_code, reques
 from waymaker_ai.evidence_registry import TrustRegistry
 from waymaker_ai.response_contract import parse_response
 
-CONTRACT_VERSION = "v10"
+CONTRACT_VERSION = "v11"
 PROVENANCE = ("model_generated", "model_generated_with_system_notice", "system_withheld", "system_clarification",
               "review_required", "post_generation_blocked", "invalid_response")
 #: Mission 005-J: worst guard decision first, for joining per-sub-code parts.
@@ -86,8 +86,10 @@ _LANG_CHAIN_RE = re.compile(_LANG_ITEM + r"(?:\s*(?:,|/|\bor\b|\band\b|hoặc|ha
 _CUE_BEFORE_RE = re.compile(r"(?:\b(?:answer|reply|respond|explain|tell\s+(?:me|us))\b|trả\s+lời|giải\s+thích|cho\s+biết"
                             r"|(?<![가-힣])답(?:은|을|변은|변을)?|대답(?:은|을)?)[^\n.?!:,;]{0,16}$", re.IGNORECASE)
 # Mission 005-M: "In Korean or in Vietnamese, please: ..." — a comma may come before a please that ends the clause.
+# Mission 005-N: "Using Korean, list …" — a request that opens the sentence, then a comma and an imperative.
 _CUE_AFTER_RE = re.compile(r"^(?:\s*(?:답(?![안장])|대답|알려\s*주|설명\s*(?:해|하)|말해|부탁|please|plz|nhé|nha|giùm|giúp)|\s*,\s*(?:please|plz)\s*(?=[:.?!]|$)|\s*:)",
                            re.IGNORECASE)
+_OPENING_RE = re.compile(r"^\s*,\s*(?:list|name|give|tell|explain|describe|write|show|summari[sz]e)\b", re.IGNORECASE)
 _FILLER_RE = re.compile(
     r"(?:please|kindly|answer|reply|respond|explain|tell|me|us|it|this|only|either|both|is|are|one|fine|ok|okay|thanks?"
     r"|you|would|be|great|can|could|the|in|language|works|too|also|or|and"
@@ -108,7 +110,8 @@ def _language_request_spans(sentence: str) -> list:
         chain = m.group(0)
         if not any(p.search(chain.lower()) for p in language_compliance._REQUESTS.values()):
             continue
-        if _CUE_BEFORE_RE.search(sentence[:m.start()]) or _CUE_AFTER_RE.search(sentence[m.end():]):
+        if _CUE_BEFORE_RE.search(sentence[:m.start()]) or _CUE_AFTER_RE.search(sentence[m.end():]) \
+                or (not sentence[:m.start()].strip() and _OPENING_RE.search(sentence[m.end():])):
             spans.append((m.start(), m.end()))
     return spans
 
@@ -142,6 +145,7 @@ def remove_language_requests(question: str) -> dict:
         else:
             rest = re.sub(r"\s+([,.?!。:;])", r"\1", re.sub(r"[ \t]{2,}", " ", rest))
             rest = re.sub(r",\s*(?=[,.?!。:;])", "", rest)   # 005-M: "fee, , please?" -> "fee, please?"
+            rest = re.sub(r"^\s*,\s*", "", rest)            # 005-N: "Using Korean, list …" -> "list …"
             out.append(rest)
             removed.extend(s[a:b] for a, b in spans)
     return {"question": re.sub(r"\s{2,}", " ", "".join(out)).strip(), "removed": removed}
@@ -229,7 +233,9 @@ def prepare(question: str, intake: Optional[Mapping], candidates: list, registry
         ctx = selection["context"] or {}
         for sub, loc, evidence in groups:
             # v5+ names the uncovered items in the reply language instead of internal keys.
-            keys = uncovered_items(question, evidence) if (sub or loc) else selection["uncovered_items"]
+            # 005-N: items are read from the question without the document names it quotes.
+            keys = uncovered_items(selection.get("context_question", question), evidence) if (sub or loc) \
+                else selection["uncovered_items"]
             system = {"reply_language": code, "uncovered_items": [ITEM_LABELS[i][code] for i in keys]}
             if keys:
                 system["uncovered_sentence"] = UNCOVERED_SENTENCE[code].format(items=", ".join(system["uncovered_items"]))
@@ -288,7 +294,8 @@ def validate_generated_answer(raw: Optional[str], prepared: Mapping, candidates:
         findings.append({"check": "question_instruction", "kind": "question_instruction_followed", "detail": followed,
                          "effect": "withhold"})
     if status in SUBSTANTIVE:
-        support = claim_support_validation.check(answer, question, candidates, cites, admissible_map, with_source=True)
+        support = claim_support_validation.check(answer, question, candidates, cites, admissible_map, with_source=True,
+                                                 ages_apart=True)
         for f in support["findings"]:
             kind = f["kind"]
             if kind in ("value_from_inadmissible", "polarity_reversal", "obligation_negated") or kind.endswith("_mismatch") \
@@ -312,7 +319,7 @@ def validate_generated_answer(raw: Optional[str], prepared: Mapping, candidates:
         elif missing and status == "partial":
             findings.append({"check": "partial", "kind": "uncovered_item_not_named", "detail": missing,
                              "effect": "system_notice"})
-        asked = requested_items(question)
+        asked = requested_items(selection.get("context_question", question))
         if asked and set(asked) <= set(selection["uncovered_items"]):
             # Unreachable when pre-inference withholds such questions; kept as a second line.
             findings.append({"check": "partial", "kind": "no_requested_item_covered", "detail": asked, "effect": "withhold"})

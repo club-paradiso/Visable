@@ -1,4 +1,4 @@
-# 신뢰 근거 처리 명세 (Mission 005-G, 005-H~005-M 개정)
+# 신뢰 근거 처리 명세 (Mission 005-G, 005-H~005-N 개정)
 
 이 문서는 **행동 명세**입니다. 구현(`waymaker_ai/evidence_registry.py`, `waymaker_ai/evidence_admissibility.py`,
 `artemis_bootstrap/grounding_guard.py`)과 합성 집합의 기대값이 모두 이 문서를 따릅니다. 모델은 근거의 진위·적용 범위·승인 여부를
@@ -20,6 +20,10 @@ Mission 005-L 개정: 모델에게 주는 질문에서 답 언어 요청도 뺍�
 
 Mission 005-M 개정: 기록부의 검증 방법 규칙을 적습니다(1절). 부분 답에 쓸 문장을 모델에게 넘깁니다(4절).
 근거 대조에서 근거의 출처 칸(문서 이름 등)도 근거로 봅니다(5절). 언어 요청 빼기의 두 꼴을 더합니다(4절). 추론 전 판단과 끝단 기대값의 규칙은 바뀌지 않습니다.
+
+Mission 005-N 개정: 질문에 적힌 문서 이름과 기관·문서 이름 속 위치 낱말은 사용자 맥락으로 읽지 않습니다(2절). 위치 낱말 목록을 코드와 같게 적습니다(2절).
+방법을 묻는 영어 표현을 넓힙니다(4절). 근거 대조에서 나이를 기간으로 보지 않습니다(5절). 문장 맨 앞의 언어 요청 꼴 하나를 더합니다(4절).
+응답 계약 v11은 질문이 문서별 값을 물어도 같은 사람에게 값이 다른 두 근거는 충돌(`conflict`)이라고 모델에게 알립니다. 추론 전 판단은 위 맥락·항목 규칙이 바뀐 만큼만 달라집니다. 끝단 기대값의 규칙은 바뀌지 않습니다.
 
 ## 1. 신뢰 기록부 (registry)
 
@@ -82,13 +86,22 @@ Mission 005-M 개정: 기록부의 검증 방법 규칙을 적습니다(1절). �
 `intake`는 화면에서 사용자가 고른 값입니다. 비어 있는 칸은 질문 글에서 결정적으로 보충합니다.
 
 - 체류자격 코드: 질문의 `Y-9-1` 같은 코드. 하위 코드가 하나 있으면 상위 코드가 함께 나와도 그 하위 코드, 서로 다른 하위 코드가 둘 이상이면 그 상위 코드, 하위 코드가 없으면 처음 나온 코드.
-- 위치: 국내("국내", "한국에 있", "in Korea", "tại Hàn Quốc", "trong nước"), 국외("국외", "해외", "abroad", "outside Korea", "ở nước ngoài"). 영어 "in Korea"는 낱말일 때만 봅니다("in Korean"은 언어 요청이지 위치가 아님, 005-K).
+- 위치: 국내("국내", "한국에 있·체류·살", "한국 안", "in Korea", "inside Korea", "tại Hàn Quốc", "ở Hàn Quốc", "trong nước"),
+  국외("국외", "해외", "외국에 있·체류·살", "abroad", "outside (of) Korea", "overseas", "ở nước ngoài", "ngoài Hàn Quốc"). 005-N에 코드의 목록을 그대로 적었습니다.
+  영어 "in Korea"는 낱말일 때만 봅니다("in Korean"은 언어 요청이지 위치가 아님, 005-K).
+  005-N: 위치 낱말 바로 뒤(영어는 낱말 하나를 건너뛸 수 있음)에 기관·문서 낱말(mission, embassy, consulate, office, handbook, guide, guideline, manual,
+  공관, 대사관, 영사관, 사무소, 편람, 지침, 안내서)이 오거나, 베트남어에서 바로 앞에 기관·문서 낱말(cơ quan, cơ quan đại diện, đại sứ quán, lãnh sự quán,
+  văn phòng, sổ tay, hướng dẫn)이 오면 그 낱말은 기관·문서의 이름이지 사용자의 위치가 아닙니다(`overseas mission handbook`, `해외 공관`).
 - 관할: 기록부에 있는 지역 이름이 질문에 그대로 나오면 그 지역.
 - 절차: 절차 낱말(연장/extension/gia hạn, 변경/change/thay đổi, 발급·사증/issuance·visa/cấp thị thực, 외국인등록/registration/đăng ký người nước ngoài,
   재입국/re-entry/tái nhập cảnh, 근무처/workplace/nơi làm việc, 체류지·주소/address/địa chỉ, 시간제·체류자격외/part-time/làm thêm, 초청·가족/invite·family/bảo lãnh·gia đình).
 - 질문 유형: 사용자가 자기 사안의 판단(할 수 있는지, 해야 하는지, 대상인지)을 묻는지. 1인칭 표현과 판단 요청 표현이 함께 있어야 개인 판단으로 봅니다.
   한쪽만으로는 개인 판단으로 보지 않습니다.
 - 기준일: `intake.as_of`, 없으면 질문의 날짜("2025년 3월", "2025-03-10"; 월만 있으면 그 달 1일), 없으면 평가 기준일(매니페스트 `evaluation_date`).
+
+**질문에 적힌 문서 이름(005-N).** 후보 근거의 문서 이름(`source.document_id`, 네 글자 이상)이 질문에 그대로(대소문자 무시) 나오면,
+위치·절차와 4절의 묻는 항목은 그 부분을 뺀 질문으로 봅니다. 문서 이름은 문서의 것이지 사용자가 준 사실이 아니기 때문입니다.
+체류자격 코드·관할·질문 유형·기준일은 지금처럼 질문 전체로 봅니다.
 
 ## 3. 근거 채택 (pre-inference)
 
@@ -161,7 +174,7 @@ Mission 005-M 개정: 기록부의 검증 방법 규칙을 적습니다(1절). �
 | `documents` | 서류, document(s), papers, giấy tờ, hồ sơ | 서류, 신청서, 여권, 증명서, 확인서, document, giấy, hồ sơ, 등록증, 사진, passport, certificate, application form |
 | `deadline` | 기한, 며칠 안·며칠 이내, 언제까지, deadline, within how, how many days, thời hạn, trong bao nhiêu ngày | 이내, 기한, 까지, within, deadline, trong vòng, thời hạn |
 | `place` | 어디에, 어디서, 신청처, 장소, where, place(낱말일 때), ở đâu, nơi nộp, địa điểm | …청에·…청에서(`신청에`는 아님), 기관에·기관에서, 사무소, 출장소, 공관, 센터, 창구, 누리집, 장소, 신청처, office, embassy, consulate, counter, center, centre, mission, cơ quan, văn phòng, trung tâm |
-| `method` | 온라인, 방문, 방법, how do/can … apply, online, in person, bằng cách, cách nào, phương thức, trực tuyến, trực tiếp | 온라인, 방문, 누리집, 창구, online, visit, in person, trực |
+| `method` | 온라인, 방문, 방법, how do/can … apply(사이에 낱말 1~6개, 005-N), online, in person, bằng cách, cách nào, phương thức, trực tuyến, trực tiếp | 온라인, 방문, 누리집, 창구, online, visit, in person, trực |
 | `eligibility` | 자격 요건, 요건, 조건, 대상, eligib…, requirement, điều kiện, đối tượng | 요건, 조건, 대상, 이상, 이하, eligib…, requirement, điều kiện |
 
 낱말이 다른 낱말 안에 들어 있어도 맞는 것으로 봅니다(예: `체류기간`에는 `기간`만 있고 `처리기간`은 없음, `대상자`에는 `대상`이 있음). `phí`와 `place`만 낱말 경계를 봅니다. 다루는 낱말의 `won`·`mission`도 낱말일 때만 셉니다(`won't`, `permission`은 아님). 묻는 낱말 `cách nào`는 `tư cách nào`(어느 자격) 안에서는 세지 않습니다.
@@ -176,7 +189,7 @@ Mission 005-M 개정: 기록부의 검증 방법 규칙을 적습니다(1절). �
 
 **모델에게 주는 질문(005-J).** 5절의 "답변 지시" 문장은 모델에게 주는 질문에서 뺍니다.
 "<지시>: <물음>" 꼴의 한 문장은 콜론 뒤의 물음만 남깁니다. 다 빼면 아무것도 남지 않는 경우에는 질문을 그대로 줍니다.
-사용자의 원래 질문은 기록에 남깁니다. 맥락·항목·답 언어 판단과 5절의 검사는 원래 질문으로 합니다.
+사용자의 원래 질문은 기록에 남깁니다. 맥락·항목·답 언어 판단과 5절의 검사는 원래 질문으로 합니다(005-N부터 위치·절차·항목은 2절대로 문서 이름을 뺀 질문).
 
 **모델에게 주는 질문의 답 언어 요청(005-L).** 위 사용자 지정 표현(`tiếng Anh`처럼 `bằng`이 없는 꼴 포함)과, 그 표현을 `or`·`hoặc`·`hay`·`또는`·`나` 따위로 이은 묶음
 (예: `bằng tiếng Anh hoặc bằng tiếng Hàn`)도 모델에게 주는 질문에서 뺍니다. 답 언어는 시스템이 이미 정해 `reply_language`로 넘기기 때문입니다.
@@ -187,6 +200,8 @@ Mission 005-M 개정: 기록부의 검증 방법 규칙을 적습니다(1절). �
 - 물음 안에 든 요청은 언어 낱말만 뺍니다(`수수료를 영어로 알려 주세요` → `수수료를 알려 주세요`).
 - 005-M: 요청 바로 뒤에 쉼표를 두고 오는 `please`도, 그 뒤가 콜론·문장부호·끝이면 답하라는 말로 봅니다(`In Korean or in Vietnamese, please: …`).
   영어·베트남어 요청에 바로 붙은 한국어 조사 `로`·`으로`(뒤에 `만`이 붙은 꼴 포함)는 요청과 함께 뺍니다(`답은 bằng tiếng Việt로 주세요.`는 문장째 빠짐).
+- 005-N: 문장 맨 앞의 요청 뒤에 쉼표와 시키는 말(list, name, give, tell, explain, describe, write, show, summarize)이 오면 요청으로 봅니다.
+  요청과 쉼표를 빼고 나머지를 남깁니다(`Using Korean, list the documents …` → `list the documents …`). `In Korean, what is …`처럼 물음이 오면 그대로 둡니다.
 
 답변 지시 문장을 먼저 빼고 나서 답 언어 요청을 뺍니다. 다 빼면 아무것도 남지 않는 경우에는 질문을 그대로 줍니다.
 답 언어(`reply_language`)는 지금처럼 원래 질문으로 정합니다. 서로 다른 언어 요청이 둘 이상인 질문은 질문 언어를 따릅니다.
@@ -226,6 +241,10 @@ Mission 005-M 개정: 기록부의 검증 방법 규칙을 적습니다(1절). �
 **근거의 출처 칸(005-M).** 값(금액·기간·날짜)을 근거와 대조할 때, 근거 하나를 제목·본문과 모델에게 보이는 출처 칸 글자
 (`document_id`, `provision`, `version_id`, `page_locator`, `effective_date` 등)을 합친 것으로 봅니다. 그래서 인용한 채택 근거의 문서 이름에 있는 값
 (예: `운영지침(2026년판)`의 `2026년`)을 답에 옮겨 써도 근거 없는 값이나 다른 값이 아닙니다. 비인정 근거의 출처 칸 값은 비인정 근거의 값입니다.
+
+**나이(005-N).** 값을 대조할 때 나이는 기간이 아닙니다. `N years of age`, `N years old`, `N-year-old`, `aged N`, `age N`, `(만) N세`, `N tuổi`는
+답과 근거 양쪽에서 대조 대상에서 뺍니다. 그래서 `만 17세`를 `17 years of age`로 옮겨 써도 근거의 `90일`과 다른 기간으로 보지 않습니다.
+나이 값 자체가 근거와 맞는지는 이 검사가 보지 않습니다.
 "모순 없음"은 모든 주장이 뒷받침된다는 증명이 아닙니다.
 
 **질문 속 답변 지시(005-I).** 질문 글 안의 문장이 답하는 방식을 지시하면 그 문장을 "답변 지시"로 봅니다.

@@ -38,7 +38,9 @@ def test_thresholds_are_the_005j_thresholds_unchanged():
 CHANGED_AFTER_005K = {"artemis_bootstrap/grounding_guard.py", "artemis_bootstrap/gemma4_runtime.py",
                       "waymaker_ai/response_contract.py", "artemis_bootstrap/trusted_evidence_spec.md",
                       # Mission 005-M: uncovered_sentence input; opt-in source fields in claim support.
-                      "waymaker_ai/inference_input.py", "artemis_bootstrap/claim_support_validation.py"}
+                      "waymaker_ai/inference_input.py", "artemis_bootstrap/claim_support_validation.py",
+                      # Mission 005-N: document names and office names left out of the question context.
+                      "waymaker_ai/evidence_admissibility.py"}
 FREEZE_COMMIT_005K = "abbae5f47847e7ba2a6459d2d6c020a299e2fa88"
 
 

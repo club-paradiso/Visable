@@ -90,17 +90,17 @@ def probe() -> dict:
 def build_messages(item: dict, version: str = DEFAULT_CONTRACT_VERSION) -> list[dict]:
     projected = project_inference_item(item)
     system = projected.pop("system", None)
-    if version in ("v4", "v5", "v6", "v7", "v8", "v9", "v10"):
-        # v4-v10 only: the pipeline's reply language and uncovered items (v7+: the sub-code asked;
-        # v8+: the situation asked and the question's date; v10: the sentence naming uncovered items), ahead of the evidence.
+    if version in ("v4", "v5", "v6", "v7", "v8", "v9", "v10", "v11"):
+        # v4-v11 only: the pipeline's reply language and uncovered items (v7+: the sub-code asked;
+        # v8+: the situation asked and the question's date; v10+: the sentence naming uncovered items), ahead of the evidence.
         if system is None:
             raise ValueError(f"Contract {version} needs the pipeline's system fields")
-        if "scope_status_code" in system and version not in ("v7", "v8", "v9", "v10"):
+        if "scope_status_code" in system and version not in ("v7", "v8", "v9", "v10", "v11"):
             raise ValueError("scope_status_code is a v7+ input")
-        if ("scope_location" in system or "as_of" in system) and version not in ("v8", "v9", "v10"):
+        if ("scope_location" in system or "as_of" in system) and version not in ("v8", "v9", "v10", "v11"):
             raise ValueError("scope_location and as_of are v8+ inputs")
-        if "uncovered_sentence" in system and version != "v10":
-            raise ValueError("uncovered_sentence is a v10 input")
+        if "uncovered_sentence" in system and version not in ("v10", "v11"):
+            raise ValueError("uncovered_sentence is a v10+ input")
         projected = {"question": projected["question"], "reply_language": system["reply_language"],
                      "uncovered_items": system["uncovered_items"],
                      **{k: system[k] for k in ("uncovered_sentence", "scope_status_code", "scope_location", "as_of") if k in system},

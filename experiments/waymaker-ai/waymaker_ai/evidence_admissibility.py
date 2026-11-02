@@ -11,6 +11,9 @@ evidence covers none of them, the system also withholds; the model is not asked 
 answer around the gap. Mission 005-J: a general question whose admissible evidence
 is split by sub-code is answered one sub-code at a time (subcode_parts). Mission 005-K:
 the same for evidence split between people in Korea and people abroad (situation_parts).
+Mission 005-N: a candidate's document name written in the question, and a location word that names
+an office or a document ("overseas mission handbook"), are not read as the user's location, procedure
+or asked items; "how can <several words> apply" asks for the method.
 
 Nothing here reads a document's self-description, a benchmark answer key or an
 expected status. The question context is what the user entered (intake) plus what
@@ -33,6 +36,11 @@ _LOCATION = {
     "domestic": re.compile(r"국내|한국에\s*(?:있|체류|살)|한국\s*안|in\s+korea\b|inside\s+korea\b|tại\s+hàn\s+quốc|ở\s+hàn\s+quốc|trong\s+nước", re.I),
     "abroad": re.compile(r"국외|해외|외국에\s*(?:있|체류|살)|abroad|outside\s+(?:of\s+)?korea|overseas|ở\s+nước\s+ngoài|ngoài\s+hàn\s+quốc", re.I),
 }
+# Mission 005-N: a location word followed by (or, in Vietnamese, preceded by) an office or document noun names
+# that office or document ("overseas mission handbook", "해외 공관", "cơ quan đại diện ở nước ngoài"), not the user's location.
+_NAMED_AFTER = re.compile(r"\s*(?:[\w-]+\s+)?(?:missions?|embass(?:y|ies)|consulates?|offices?|handbooks?|guide(?:line)?s?|manuals?)\b"
+                          r"|\s*(?:공관|대사관|영사관|사무소|편람|지침|안내서)", re.I)
+_NAMED_BEFORE = re.compile(r"(?:cơ\s+quan(?:\s+đại\s+diện)?|đại\s+sứ\s+quán|lãnh\s+sự\s+quán|văn\s+phòng|sổ\s+tay|hướng\s+dẫn)\s*$", re.I)
 _PROCEDURE = {
     "extension": r"연장|extend|extension|gia\s*hạn",
     "change": r"자격\s*변경|체류자격을?\s*(?:바꾸|변경)|change\s+(?:of\s+)?status|status\s+change|thay\s+đổi\s+tư\s+cách|chuyển\s+đổi",
@@ -70,7 +78,7 @@ ITEMS = {
               # Mission 005-I: an agency counts only as a place to go ("…청에", "기관에서"); bare 청 matched 신청.
               r"(?<!신)청(?:에|에서)|기관(?:에|에서)|사무소|출장소|공관|센터|창구|누리집|장소|신청처|office|embassy|consulate|"
               r"counter|cent(?:er|re)|\bmission\b|cơ\s+quan|văn\s+phòng|trung\s+tâm"),
-    "method": (r"온라인|방문|방법|how\s+(?:do|can)\s+\w+\s+apply|online|in\s+person|bằng\s+cách|(?<!tư\s)cách\s+nào|phương\s+thức|trực\s+tuyến|trực\s+tiếp",
+    "method": (r"온라인|방문|방법|how\s+(?:do|can)\s+(?:\S+\s+){1,6}?apply|online|in\s+person|bằng\s+cách|(?<!tư\s)cách\s+nào|phương\s+thức|trực\s+tuyến|trực\s+tiếp",
                r"온라인|방문|누리집|창구|online|visit|in\s+person|trực"),
     "eligibility": (r"자격\s*요건|요건|조건|대상|eligib|requirement|điều\s+kiện|đối\s+tượng", r"요건|조건|대상|이상|이하|eligib|requirement|điều\s+kiện"),
 }
@@ -105,11 +113,35 @@ def parent_code(code: str) -> str:
     return "-".join(parts[:2])
 
 
+def without_document_names(question: str, candidates: Iterable[Mapping]) -> str:
+    """Mission 005-N: the question with every candidate document name (source.document_id) it quotes blanked out.
+
+    A name such as "가상 국외체류자 안내(2026년판)" is the document's, not a fact the user gives. Status codes are
+    still read from the whole question.
+    """
+    text = _nfc(question)
+    names = {_nfc(e["source"]["document_id"]).strip() for e in candidates
+             if isinstance(e.get("source"), Mapping) and isinstance(e["source"].get("document_id"), str)}
+    for name in sorted((n for n in names if len(n) >= 4), key=len, reverse=True):
+        text = re.sub(re.escape(name), " ", text, flags=re.I)
+    return text
+
+
+def _located(rx: re.Pattern, text: str) -> bool:
+    """A location word that is not part of an office or document name (005-N)."""
+    return any(not _NAMED_AFTER.match(text, m.end()) and not _NAMED_BEFORE.search(text[:m.start()])
+               for m in rx.finditer(text))
+
+
 def question_context(question: str, intake: Optional[Mapping], registry: Optional[TrustRegistry],
-                     evaluation_date: str) -> dict:
-    """User-entered intake, with empty fields filled from the question text (spec section 2)."""
+                     evaluation_date: str, context_question: Optional[str] = None) -> dict:
+    """User-entered intake, with empty fields filled from the question text (spec section 2).
+
+    005-N: location and procedure are read from `context_question` (the question without quoted document names).
+    """
     intake = dict(intake or {})
     text = _nfc(question)
+    place_text = _nfc(context_question) if context_question is not None else text
     filled = {}
     codes = list(dict.fromkeys(_CODE_RE.findall(text)))
     subs = [c for c in codes if c != parent_code(c)]
@@ -120,13 +152,13 @@ def question_context(question: str, intake: Optional[Mapping], registry: Optiona
         filled["status_code"] = status
     location = intake.get("location")
     if not location:
-        hits = [k for k, rx in _LOCATION.items() if rx.search(text)]
+        hits = [k for k, rx in _LOCATION.items() if _located(rx, place_text)]
         location = hits[0] if len(hits) == 1 else None
         if location:
             filled["location"] = location
     procedure = intake.get("procedure")
     if not procedure:
-        hits = [k for k, rx in _PROCEDURE_RE.items() if rx.search(text)]
+        hits = [k for k, rx in _PROCEDURE_RE.items() if rx.search(place_text)]
         procedure = hits[0] if len(hits) == 1 else None
         if procedure:
             filled["procedure"] = procedure
@@ -318,13 +350,16 @@ def situation_parts(question: str, ctx: Mapping, admissible: list, registry: Tru
 def select_admissible_evidence(question: str, intake: Optional[Mapping], candidates: list,
                                registry: Optional[TrustRegistry], evaluation_date: str) -> dict:
     """Decisions for every candidate, the evidence the model may see, and the pre-inference outcome."""
+    original = question
     if registry is None:
         decisions = [{"evidence_id": e.get("id"), "decision": "rejected", "reason": "registry_unavailable", "rule": 0,
                       "registry_record_sha256": None, "content_sha256": content_sha256(e.get("text", ""))} for e in candidates]
         return {"outcome": "system_withheld", "reason": "registry_unavailable", "context": None, "decisions": decisions,
                 "admissible": [], "uncovered_items": [], "clarify_on": None,
                 "input_sha256": hashlib.sha256(json.dumps(candidates, ensure_ascii=False, sort_keys=True).encode()).hexdigest()}
-    ctx = question_context(question, intake, registry, evaluation_date)
+    # Mission 005-N: context and asked items come from the question without the document names it quotes.
+    question = without_document_names(question, candidates)
+    ctx = question_context(original, intake, registry, evaluation_date, context_question=question)
     decisions = [decide_one(e, ctx, registry) for e in candidates]
     keep = {d["evidence_id"] for d in decisions if d["decision"] == "admissible"}
     admissible = [e for e in candidates if e.get("id") in keep]
@@ -349,8 +384,9 @@ def select_admissible_evidence(question: str, intake: Optional[Mapping], candida
     situations = situation_parts(question, ctx, admissible, registry) if general and not parts else []
     return {"outcome": outcome, "reason": reason, "context": ctx, "decisions": decisions, "admissible": admissible,
             "uncovered_items": uncovered, "clarify_on": clarify_on, "subcode_parts": parts, "situation_parts": situations,
+            "context_question": question,
             "input_sha256": hashlib.sha256(json.dumps(candidates, ensure_ascii=False, sort_keys=True).encode()).hexdigest()}
 
 
 __all__ = ["RegistryUnavailable", "question_context", "decide_one", "select_admissible_evidence", "requested_items",
-           "uncovered_items", "parent_code", "ITEM_LABELS", "subcode_parts", "situation_parts"]
+           "uncovered_items", "parent_code", "ITEM_LABELS", "subcode_parts", "situation_parts", "without_document_names"]

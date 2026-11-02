@@ -29,7 +29,9 @@ optional scope_location input (the system asks one applicant situation at a time
 the optional as_of date the question is about. v9 (Mission 005-L) is v8 plus one line: never
 copy a sentence of the prompt or an input field name into the answer. v10 (Mission 005-M) is v9
 with one more input, uncovered_sentence (the system's sentence naming the uncovered items in the
-reply language), which a partial answer ends with. See artemis_bootstrap/response_contract_v2_spec.md,
+reply language), which a partial answer ends with. v11 (Mission 005-N) is v10 with one line
+changed: two evidence items with different values for the same people are a conflict even when the
+question asks what each document says. See artemis_bootstrap/response_contract_v2_spec.md,
 response_contract_v3_spec.md and trusted_evidence_spec.md.
 """
 from __future__ import annotations
@@ -37,7 +39,7 @@ from __future__ import annotations
 import hashlib
 import json
 
-CONTRACT_VERSIONS = ("v1", "v2", "v3", "v4", "v5", "v6", "v7", "v8", "v9", "v10")
+CONTRACT_VERSIONS = ("v1", "v2", "v3", "v4", "v5", "v6", "v7", "v8", "v9", "v10", "v11")
 DEFAULT_CONTRACT_VERSION = "v1"
 
 SYSTEM_PROMPTS = {
@@ -248,6 +250,11 @@ SYSTEM_PROMPTS["v10"] = (SYSTEM_PROMPTS["v9"]
                          .replace(_V9_PARTIAL, "- partial: uncovered_items is not empty. Answer what the evidence covers, then end the answer "
                                   "with uncovered_sentence exactly as given; it names those items, and it is the only text you copy.\n", 1))
 assert _V9_INPUTS in SYSTEM_PROMPTS["v9"] and _V9_PARTIAL in SYSTEM_PROMPTS["v9"]
+#: Mission 005-N: v10 with the conflict line extended (A05M-28/29 gave both values but status answered).
+_V10_CONFLICT = "- conflict: two evidence items give different rules for the same people in the same situation. State both and cite both.\n"
+SYSTEM_PROMPTS["v11"] = SYSTEM_PROMPTS["v10"].replace(
+    _V10_CONFLICT, _V10_CONFLICT[:-1] + " This is a conflict even when the question asks what each document says.\n", 1)
+assert _V10_CONFLICT in SYSTEM_PROMPTS["v10"]
 
 
 def prompt_sha256(version: str) -> str:
@@ -285,7 +292,7 @@ def parse_response(raw: str, evidence_ids: set[str], version: str = DEFAULT_CONT
         raise ValueError(f"Status {data['status']} requires at least one listed citation")
     if data["status"] in {"answered", "partial"} and not data["answer"].strip():
         raise ValueError(f"Status {data['status']} requires a non-empty answer")
-    if version in ("v2", "v3", "v4", "v5", "v6", "v7", "v8", "v9", "v10"):
+    if version in ("v2", "v3", "v4", "v5", "v6", "v7", "v8", "v9", "v10", "v11"):
         # Deterministic only: whether a partial answer names its unanswered part, or a
         # clarify answer asks the right question, is a meaning judgement left to review.
         if data["status"] == "conflict" and len(data["citations"]) < 2:
