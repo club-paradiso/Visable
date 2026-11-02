@@ -110,6 +110,10 @@ releases counted as critical by the frozen rules: two answers again gave both co
 values under status "answered" (the v11 sentence did not change this), and one correct
 answer hit a faulty suite pattern. The conflict-status rule is left to the owner. DEV-20 was
 not run. See the [Mission 005-N report](runs/mission005n/MISSION-005-N-REPORT.ko.md).
+Owner decision after 005-N: an expected conflict counts as resolved (critical) by content,
+not by the status label. An answer that gives every side's value and cites every record
+in conflict without preferring one is a status error. `conflict_resolution.py` holds the
+rule. Gate v10 will use it, and the frozen 005-M and 005-N decisions stand.
 
 Recovery status, 2026-10-29: checkpoint metadata verified; new MLX-VLM weight
 loading and generation **not executed** on this M1 8GB machine. The runtime is
