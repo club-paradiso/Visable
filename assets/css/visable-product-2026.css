@@ -928,7 +928,9 @@ body.product-nationality-hub .ni-btn-primary { background: var(--vp-green-2) !im
   body.product-visable .p-settings-overlay { padding: 0 !important; }
   body.product-visable .p-settings-panel { width: 100% !important; height: 100dvh !important; max-height: none !important; border: 0 !important; border-radius: 0 !important; padding: 18px !important; }
   body.product-visable .p-settings-grid { grid-template-columns: 1fr !important; }
-  body.product-visable #hikoreaGuideBody .prh-tabs { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  /* Phones: one scrolling row (was a 3-row grid that ate ~110px of the sheet). */
+  body.product-visable #hikoreaGuideBody .prh-tabs { display: flex !important; flex-wrap: nowrap !important; overflow-x: auto !important; gap: 6px !important; position: sticky !important; top: 0 !important; }
+  body.product-visable #hikoreaGuideBody .prh-tab { white-space: nowrap !important; flex: 0 0 auto !important; }
 
   body.product-form-helper .fh-header { padding-inline: 12px !important; }
   body.product-form-helper .fh-page { padding: 28px 14px 48px !important; }

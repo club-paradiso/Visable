@@ -1306,6 +1306,144 @@ body.searched .ft { opacity: 1; }
 .jc2 * { min-width: 0; }
 .jc2 .jc2-card, .jc2 .jc2-needcode, .jc2 .jc2-income-card, .jc2 .jc2-stepper-wrap { overflow-wrap: anywhere; }
 
+/* ── Employment helper · readability pass (2026-11) ──────────────────────────
+   Pictograms instead of emoji, search first, no nested scroll for guided
+   results, a compact step strip, and a summary bar that only sticks once
+   something is picked (it used to cover ~190px of candidates permanently). */
+.jc-icon-defs { position: absolute; width: 0; height: 0; overflow: hidden; pointer-events: none; }
+.jc-ic { display: inline-block; width: 1.1em; height: 1.1em; flex: none; vertical-align: -0.18em; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+.jc-ic--title { width: 1.15em; height: 1.15em; margin-right: 0.45rem; color: var(--ac); }
+.jc-ic--close { width: 1.25rem; height: 1.25rem; stroke-width: 2.2; vertical-align: middle; }
+.jc2 { gap: 1.1rem; }
+.jc2-ask { font-size: 1.25rem; }
+.jc2-ask-help { font-size: 0.9rem; }
+.jc2-anylang { display: flex; align-items: flex-start; gap: 0.45rem; margin: 0.55rem 0 0; padding: 0.5rem 0.7rem; border-radius: var(--radius-md); background: color-mix(in srgb, var(--color-info, #3b82f6) 7%, var(--bg1)); color: var(--t1); font-size: 0.86rem; font-weight: 600; line-height: 1.5; word-break: keep-all; }
+.jc2-anylang .jc-ic { color: var(--color-info, #2563eb); margin-top: 0.12em; }
+.jc2-search-input { padding: 0.95rem 1rem 0.95rem 2.8rem; font-size: 1.02rem; min-height: 52px; }
+.jc2-search-ic { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+.jc2-ai-btn { min-height: 48px; border: none; background: var(--ac); color: #fff; font-size: 0.95rem; font-weight: 800; }
+.jc2-ai-btn:hover { background: var(--ac2); color: #fff; }
+[data-theme="dark"] .jc2-ai-btn, [data-theme="dark"] .jc2-ai-btn:hover { color: #0f172a; }
+.jc2-ai-btn:disabled { opacity: 0.7; cursor: progress; }
+.jc2-count { position: static; transform: none; align-self: flex-start; background: none; padding: 0; max-width: none; font-size: 0.8rem; color: var(--t3); pointer-events: auto; white-space: normal; }
+.jc2-count[hidden] { display: none; }
+.jc2-examples-label { margin: 0.2rem 0 0; font-size: 0.82rem; }
+.jc2-chip { font-size: 0.86rem; min-height: 38px; padding: 0.4rem 0.85rem; }
+.jc2-explain-sum, .jc2-advanced-sum { display: flex; align-items: center; gap: 0.45rem; }
+.jc2-explain-sum .jc-ic { color: var(--color-info, #2563eb); }
+.jc2-explain-sum::after, .jc2-card-more > summary::after { content: ''; display: inline-block; width: 0.42em; height: 0.42em; margin-left: 0.35em; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg) translateY(-0.15em); color: var(--t3); flex: none; }
+.jc2-explain[open] .jc2-explain-sum::after, .jc2-card-more[open] > summary::after { content: ''; transform: rotate(-135deg) translate(-0.1em, -0.05em); }
+.jc2-advanced-sum { font-size: 0.82rem; }
+.jc2-trust { display: flex; flex-direction: column; gap: 0.6rem; }
+.jc2-badge .jc-ic { width: 1em; height: 1em; }
+.jc2-scope-warn { display: flex; gap: 0.55rem; align-items: flex-start; margin: 0; font-size: 0.86rem; color: var(--t1); }
+.jc2-scope-warn .jc-ic { color: var(--color-warning); margin-top: 0.15em; width: 1.2em; height: 1.2em; }
+/* step strip */
+.jc2-stepper-wrap { padding: 0.65rem 0.75rem; }
+.jc2-stepper-h { display: flex; align-items: center; gap: 0.45rem; font-size: 0.9rem; }
+.jc2-checklist { gap: 0.45rem; }
+@media (min-width: 820px) { .jc2-checklist { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.jc2-cl-item { padding: 0.55rem 0.65rem; gap: 0.5rem; }
+.jc2-cl-ic .jc-ic { width: 1.25rem; height: 1.25rem; }
+.jc2-cl-item.is-pending .jc2-cl-ic { color: var(--t3); }
+.jc2-cl-item.is-ready .jc2-cl-ic { color: var(--color-info, #2563eb); }
+.jc2-cl-item.is-warn .jc2-cl-ic { color: var(--color-warning, #b45309); }
+.jc2-cl-item.is-done .jc2-cl-ic { color: var(--color-success, #16a34a); }
+.jc2-cl-item.is-blocked .jc2-cl-ic { color: var(--t2); }
+.jc2-cl-label { font-size: 0.84rem; line-height: 1.35; }
+.jc2-cl-status { font-size: 0.74rem; white-space: normal; line-height: 1.35; }
+/* display:grid/flex on these beat the [hidden] attribute, so the gate said
+   "candidates come after this question" while they rendered right below it. */
+.jc2-results[hidden], .jc2-income-card[hidden], .jc2-stepper-wrap[hidden] { display: none; }
+/* only the step that needs the person's attention explains itself */
+.jc2-cl-plain { display: none; }
+.jc2-cl-item:not(.is-warn):not(.is-blocked) .jc2-cl-reason { display: none; }
+.jc2-cl-reason { font-size: 0.8rem; }
+/* headings that carry a pictogram */
+.jc2-interpret-h, .jc2-refine-h, .jc2-tips-h, .jc2-legal-h, .jc2-gate-h, .jc2-needcode-h, .jc2-weak-h, .jc2-final-h, .jc2-interpret-sum { display: flex; align-items: center; flex-wrap: wrap; gap: 0.4rem; }
+.jc2-gate-h { justify-content: center; }
+.jc2-interpret-h { font-size: 0.9rem; color: var(--t1); }
+.jc2-interpret-sum { font-size: 0.92rem; }
+.jc2-interpret-grid { font-size: 0.88rem; gap: 0.4rem 0.9rem; }
+.jc2-interpret-k { display: inline-flex; align-items: center; gap: 0.35rem; }
+.jc2-interpret-k .jc-ic { color: var(--t3); }
+.jc2-interpret-lang { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.74rem; font-weight: 700; color: var(--color-info, #2563eb); background: color-mix(in srgb, var(--color-info, #3b82f6) 12%, transparent); border-radius: 999px; padding: 0.1rem 0.55rem; }
+.jc2-interpret-pending { display: flex; gap: 0.45rem; align-items: flex-start; }
+.jc2-interpret-pending .jc-ic, .jc2-legal-h .jc-ic { margin-top: 0.12em; }
+.jc2-refine-h { font-size: 0.9rem; color: var(--t1); }
+.jc2-refine-qt { font-size: 0.92rem; font-weight: 600; }
+.jc2-answer { font-size: 0.92rem; }
+.jc2-special-ic { color: var(--ac); }
+.jc2-special-ic .jc-ic { width: 1.2rem; height: 1.2rem; }
+.jc2-special-item[data-jc-special="legally_sensitive"] .jc2-special-ic,
+.jc2-special-item[data-jc-special="arts_entertainment"] .jc2-special-ic { color: var(--color-warning); }
+.jc2-special-title { font-size: 0.9rem; }
+.jc2-special-body { font-size: 0.84rem; }
+.jc2-special-cta { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.8rem; min-height: 36px; }
+/* results: no nested scroll in guided mode */
+.jc2-list.is-guided { max-height: none; overflow: visible; }
+.jc2-pane-h { font-size: 1rem; }
+.jc2-pane-ic { display: inline-flex; color: var(--ac); }
+.jc2-pane[data-pane="industry"] .jc2-pane-ic { color: var(--cFm, #A84A6B); }
+.jc2-pane-ic .jc-ic { width: 1.25rem; height: 1.25rem; }
+.jc2-pane-plain { font-size: 0.8rem; }
+.jc2-pane-tag { font-size: 0.74rem; }
+.jc2-pane-badge { font-size: 0.7rem; }
+.jc2-group-head { font-size: 0.84rem; }
+.jc2-card { padding: 0.85rem 0.9rem; gap: 0.45rem; }
+.jc2-code { font-size: 0.82rem; }
+.jc2-tb { font-size: 0.7rem; }
+.jc2-lvl, .jc2-conf { font-size: 0.72rem; }
+.jc2-lvl--report, .jc2-src { display: inline-flex; align-items: center; gap: 0.2rem; }
+.jc2-card-name { font-size: 1rem; line-height: 1.4; }
+.jc2-card-name-ko { font-size: 0.82rem; color: var(--t3); margin-top: -0.2rem; word-break: keep-all; }
+.jc2-card-meta, .jc2-card-why, .jc2-card-path { font-size: 0.78rem; }
+.jc2-card-fit, .jc2-card-other { display: flex; gap: 0.35rem; align-items: flex-start; font-size: 0.82rem; line-height: 1.5; }
+.jc2-card-fit .jc-ic { color: var(--color-success, #16a34a); margin-top: 0.15em; }
+.jc2-card-other .jc-ic { color: var(--t3); margin-top: 0.15em; }
+.jc2-card-more > summary { display: inline-flex; align-items: center; font-size: 0.8rem; min-height: 32px; }
+.jc2-select { display: inline-flex; align-items: center; gap: 0.3rem; min-height: 38px; font-size: 0.84rem; padding: 0.4rem 1rem; }
+.jc2-more-btn { font-size: 0.86rem; }
+.jc2-needcode-btn { gap: 0.3rem; }
+.jc2-income-ic { display: inline-flex; color: var(--ac); }
+.jc2-income-ic .jc-ic { width: 1.3rem; height: 1.3rem; }
+.jc2-income-tx { font-size: 0.86rem; }
+.jc2-final-h .jc-ic, .jc2-final-ic { color: var(--ac); }
+.jc2-final-list li { font-size: 0.88rem; }
+.jc2-tips, .jc2-tips-list { font-size: 0.84rem; }
+.jc2-level-hint, .jc2-coverage { font-size: 0.8rem; }
+.jc2-disclaimer { font-size: 0.82rem; line-height: 1.6; }
+.jc2-disclaimer p { position: relative; padding-left: 1.5rem; }
+.jc2-disclaimer p::before { content: ''; position: absolute; left: 0; top: 0.22em; width: 1.05em; height: 1.05em; background: currentColor; -webkit-mask: var(--jc-m) center / contain no-repeat; mask: var(--jc-m) center / contain no-repeat; }
+.jc2-disclaimer p:nth-child(1) { --jc-m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3'/%3E%3Cpath d='M12 9v4'/%3E%3Cpath d='M12 17h.01'/%3E%3C/svg%3E"); }
+.jc2-disclaimer p:nth-child(2) { --jc-m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 10c0 5-5.5 10.2-7.4 11.8a1 1 0 0 1-1.2 0C9.5 20.2 4 15 4 10a8 8 0 0 1 16 0'/%3E%3Ccircle cx='12' cy='10' r='3'/%3E%3C/svg%3E"); }
+.jc2-disclaimer p:nth-child(3) { --jc-m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z'/%3E%3Cpath d='M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z'/%3E%3C/svg%3E"); }
+.jc2-disclaimer p:nth-child(4) { --jc-m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2'/%3E%3Ccircle cx='9' cy='7' r='4'/%3E%3Cpath d='M22 21v-2a4 4 0 0 0-3-3.87'/%3E%3Cpath d='M16 3.13a4 4 0 0 1 0 7.75'/%3E%3C/svg%3E"); }
+/* summary: static until something is picked, then a slim sticky bar */
+.jc2-summary { position: static; box-shadow: none; border-width: 1px; }
+.jc2-summary.is-active { position: sticky; bottom: -1px; z-index: 2; box-shadow: var(--shD); border-width: 1.5px; }
+.jc2-sum-k { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.82rem; }
+.jc2-sum-k .jc-ic { color: var(--t3); }
+.jc2-sum-v { font-size: 0.88rem; }
+.jc2-income { font-size: 0.86rem; min-height: 38px; }
+.jc2-copy { display: inline-flex; align-items: center; justify-content: center; gap: 0.45rem; min-height: 46px; font-size: 0.92rem; }
+@media (min-width: 720px) {
+  .jc2-summary { flex-direction: row; align-items: center; gap: 0.9rem; padding: 0.65rem 0.85rem; }
+  .jc2-sum-grid { flex: 1; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.4rem 0.9rem; }
+  .jc2-sum-row { flex-direction: column; align-items: flex-start; gap: 0.2rem; flex-wrap: nowrap; }
+  .jc2-sum-v { text-align: left; }
+  .jc2-income { width: 100%; }
+  .jc2-copy { width: auto; flex: none; padding: 0.65rem 1.1rem; }
+}
+/* On phones a sticky bar would eat a third of the screen; selecting scrolls to it instead. */
+@media (max-width: 719px) { .jc2-summary.is-active { position: static; } }
+@media (max-width: 560px) {
+  .jc2-chips { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; padding: 0.1rem 0 0.3rem; scroll-snap-type: x proximity; }
+  .jc2-chips::-webkit-scrollbar { display: none; }
+  .jc2-chip { flex: none; white-space: nowrap; scroll-snap-align: start; }
+  .jc2-ask { font-size: 1.12rem; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .jc2-card, .jc2-seg, .jc2-chip, .jc2-copy, .jc2-select, .jc2-ai-btn, .jc2-search-input, .jc2-refine-chip, .jc2-answer, .jc2-more-btn { transition: none; }
 }
@@ -14212,6 +14350,7 @@ body[data-theme="dark"] .us-ev-state.is-lifecycle-ambiguous { color: var(--us-am
 <link rel="stylesheet" href="assets/css/visable-product-2026.css?v=20261026-archive-search">
 
 <link rel="stylesheet" href="assets/css/civic-search.css?v=20261026-theme-ui1">
+<link rel="stylesheet" href="assets/css/pictograms.css?v=20261102-pg2">
 <link rel="stylesheet" href="assets/css/status-guidance.css">
 <style id="civic-critical">
 /* First-paint contract for the civic landing (see scripts/check_landing_shell.mjs).
@@ -14378,7 +14517,7 @@ html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important
 </div>
 
 <!-- civic landing shell: generated by scripts/build_landing_shell.mjs from assets/js/civic-search.js homeHtml(); do not edit by hand -->
-<div id="civicLanding" data-cs-shell="ko" data-cs-hydrated="static"><header class="cs-nav"><a class="cs-brand" href="./" aria-label="Visable"><img src="assets/brand/visable-wordmark.svg" alt="Visable"></a><nav aria-label="이용 안내"><button type="button" data-cs-focus>비자·체류 검색</button><a href="form-helper.html">서류 작성</a><a href="#civic-about">이용 안내</a><span class="cs-languages"><button type="button" class="cs-lang cs-lang-home" data-cs-lang-open aria-haspopup="dialog" aria-expanded="false" aria-controls="csLangDialog" aria-label="언어: 한국어"><span class="cs-lang-code" aria-hidden="true">KO</span><span class="cs-lang-name" lang="ko">한국어</span></button><button type="button" class="cs-theme-toggle cs-theme-home" data-vt-open aria-haspopup="dialog" aria-expanded="false" aria-controls="vtCivicPop" aria-label="화면 테마" title="화면 테마"><span class="vt-coin" data-c="default" aria-hidden="true"></span><span class="cs-theme-label">화면 테마</span></button></span></nav></header><main class="cs-home"><section class="cs-hero"><h1>답이 <em>보이는</em> 한국 생활.</h1><p id="civicSearchSub">비자 코드, 절차 이름, 지금 상황을 그대로 입력하세요.</p><form id="civicSearchForm" role="search" novalidate><label class="cs-sr" for="civicQuery">비자·체류 검색</label><div class="cs-searchbar"><img class="cs-icon" src="assets/icons/civic/search.svg" alt="" aria-hidden="true"><input id="civicQuery" type="search" maxlength="300" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="civicSuggest" aria-describedby="civicSearchSub" placeholder="예: F-6 연장, 이사했어요"><button type="button" class="cs-clear" data-cs-clear aria-label="검색어 지우기" hidden><img class="cs-icon" src="assets/icons/civic/x.svg" alt="" aria-hidden="true"></button><button type="submit" class="cs-submit"><span class="cs-submit-label">검색</span><img class="cs-icon" src="assets/icons/civic/search.svg" alt="" aria-hidden="true"></button></div><button type="button" class="cs-sheet-close" data-cs-sheet-close>닫기</button><div class="cs-suggest" hidden><p class="cs-suggest-note" hidden></p><ul id="civicSuggest" class="cs-suggest-list" role="listbox" aria-label="검색 제안"></ul><p class="cs-suggest-foot"></p></div><p class="cs-sr" role="status" aria-live="polite" data-cs-suggest-status></p></form><div class="cs-boot-failed" role="alert"><span>화면을 준비하지 못했어요. 새로고침하면 대부분 해결돼요.</span> <button type="button" class="cs-boot-reload" onclick="location.reload()">새로고침</button><span class="cs-boot-links">그래도 안 되면 공식 원문(PDF)과 다른 도구를 바로 열 수 있어요. <a href="docs/source-manuals/2026-10-19/visa_manual_261019.pdf" target="_blank" rel="noopener">사증 안내 PDF</a> · <a href="docs/source-manuals/2026-10-19/stay_manual_261019.pdf" target="_blank" rel="noopener">체류 안내 PDF</a> · <a href="form-helper.html">신청서 작성</a> · <a href="ai.html">Waymaker</a> · <a href="new-home.html">New Home</a></span></div><noscript><p class="cs-noscript">JavaScript가 꺼져 있으면 검색과 안내를 사용할 수 없어요. 공식 원문 PDF는 아래 링크에서 바로 열 수 있어요. <a href="docs/source-manuals/2026-10-19/visa_manual_261019.pdf" target="_blank" rel="noopener">사증 안내 PDF</a> · <a href="docs/source-manuals/2026-10-19/stay_manual_261019.pdf" target="_blank" rel="noopener">체류 안내 PDF</a></p></noscript><div class="cs-examples" role="group" aria-labelledby="csExamplesLabel"><span class="cs-examples-label" id="csExamplesLabel">이렇게 검색해 보세요</span><button type="button" data-cs-query="F-6 체류기간 연장"><img class="cs-icon" src="assets/icons/civic/search.svg" alt="" aria-hidden="true"><span>F-6 체류기간 연장</span></button><button type="button" data-cs-query="외국인등록"><img class="cs-icon" src="assets/icons/civic/search.svg" alt="" aria-hidden="true"><span>외국인등록</span></button><button type="button" data-cs-query="주소 변경 신고"><img class="cs-icon" src="assets/icons/civic/search.svg" alt="" aria-hidden="true"><span>주소 변경 신고</span></button><button type="button" data-cs-query="E-7 근무처 변경"><img class="cs-icon" src="assets/icons/civic/search.svg" alt="" aria-hidden="true"><span>E-7 근무처 변경</span></button><a class="cs-example-link" href="form-helper.html"><img class="cs-icon" src="assets/icons/civic/file-text.svg" alt="" aria-hidden="true"><span>통합신청서 작성</span></a></div><p class="cs-basis">기준일 사증 2026.10.19 · 체류 2026.10.19</p></section><section class="cs-tools cs-tools-core" aria-labelledby="csCoreTitle"><h2 id="csCoreTitle">바로 쓰는 도구</h2><div class="cs-tool-grid"><a class="cs-tool" href="immigration-checklists.html" data-cs-tool="checklists"><span class="cs-icon-circle"><img class="cs-icon" src="assets/icons/civic/id-card.svg" alt="" aria-hidden="true"></span><span class="cs-tool-body"><strong>내게 필요한 서류<img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></strong><small>상황별 질문에 답하고 필요한 체류 서류를 확인해요.</small></span></a><a class="cs-tool" href="form-helper.html" data-cs-tool="forms"><span class="cs-icon-circle"><img class="cs-icon" src="assets/icons/civic/file-text.svg" alt="" aria-hidden="true"></span><span class="cs-tool-body"><strong>신청서 작성<img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></strong><small>통합신청서 등 공식 서식을 단계별로 채우고 PDF로 내려받아요.</small></span></a><button type="button" class="cs-tool" data-action="reveal-home-section" data-target="reminderSection" aria-haspopup="dialog" aria-controls="reminderDialog" data-cs-tool="reminders"><span class="cs-icon-circle"><img class="cs-icon" src="assets/icons/civic/calendar-days.svg" alt="" aria-hidden="true"></span><span class="cs-tool-body"><strong>체류 기한 계산·알림<img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></strong><small>체류 관련 날짜를 계산하고 알림을 준비해요.</small></span></button><button type="button" class="cs-tool" data-action="open-hikorea-guide" data-cs-tool="reservation"><span class="cs-icon-circle"><img class="cs-icon" src="assets/icons/civic/calendar-days.svg" alt="" aria-hidden="true"></span><span class="cs-tool-body"><strong>방문예약 안내<img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></strong><small>하이코리아 방문예약 방법과 준비사항을 확인하세요.</small></span></button><button type="button" class="cs-tool" data-action="open-jurisdiction-modal" data-cs-tool="office"><span class="cs-icon-circle"><img class="cs-icon" src="assets/icons/civic/landmark.svg" alt="" aria-hidden="true"></span><span class="cs-tool-body"><strong>관할 출입국 찾기<img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></strong><small>내 주소지를 담당하는 출입국·외국인관서를 확인하세요.</small></span></button><button type="button" class="cs-tool" data-action="open-jobcode-modal" data-cs-tool="jobs"><span class="cs-icon-circle"><img class="cs-icon" src="assets/icons/civic/search.svg" alt="" aria-hidden="true"></span><span class="cs-tool-body"><strong>직업신고 코드 찾기<img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></strong><small>실제 하는 일을 입력하고 직업·산업분류 코드 후보를 확인해요.</small></span></button></div></section><a class="cs-waymaker-entry" href="ai.html" data-cs-tool="waymaker"><span class="cs-icon-circle"><img class="cs-icon" src="assets/icons/civic/compass.svg" alt="" aria-hidden="true"></span><span class="cs-tool-body"><strong>어떤 절차부터 해야 할지 모르겠나요? 상황을 설명해 주세요.</strong><small>Waymaker · 복잡한 상황을 설명하면 필요한 절차와 근거를 단계별로 정리하는 AI 안내예요.</small></span><img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></a><section class="cs-references" aria-labelledby="csReferenceTitle"><h2 id="csReferenceTitle">공식 자료 확인</h2><div class="cs-reference-links"><button type="button" data-cs-focus data-cs-manual data-cs-tool="manuals"><img class="cs-icon" src="assets/icons/civic/search.svg" alt="" aria-hidden="true"><span>공식 원문 찾기</span><img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></button><a href="manual.html" data-cs-tool="reader"><img class="cs-icon" src="assets/icons/civic/book-open.svg" alt="" aria-hidden="true"><span>매뉴얼 원문 읽기</span><img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></a></div></section><details id="csTools" class="cs-directory"><summary>전체 도구 보기<span>필요한 일을 고르면, 바로 시작할 수 있어요.</span><img class="cs-icon" src="assets/icons/civic/chevron-down.svg" alt="" aria-hidden="true"></summary><div class="cs-directory-content"><div class="cs-directory-controls"><label class="cs-tool-search"><img class="cs-icon" src="assets/icons/civic/search.svg" alt="" aria-hidden="true"><span class="cs-sr">도구 이름이나 필요한 일을 검색하세요</span><input type="search" data-cs-tool-filter placeholder="도구 이름이나 필요한 일을 검색하세요" autocomplete="off"></label><div class="cs-tool-tabs" role="group" aria-label="전체 도구 보기"><button type="button" data-cs-tool-group="all" aria-pressed="true">전체</button><button type="button" data-cs-tool-group="prepare" aria-pressed="false">신청·서류</button><button type="button" data-cs-tool-group="stay" aria-pressed="false">체류·생활</button><button type="button" data-cs-tool-group="help" aria-pressed="false">상담·기관</button></div></div><div class="cs-service-grid"><a href="form-helper.html" class="cs-service" data-service-group="prepare"><span class="cs-service-icon"><img class="cs-icon" src="assets/icons/civic/file-text.svg" alt="" aria-hidden="true"></span><span><strong>신청서 작성</strong><small>통합신청서 등 공식 서식을 단계별로 채우고 PDF로 내려받아요.</small></span><img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></a><a href="immigration-checklists.html" class="cs-service" data-service-group="prepare"><span class="cs-service-icon"><img class="cs-icon" src="assets/icons/civic/id-card.svg" alt="" aria-hidden="true"></span><span><strong>내게 필요한 서류</strong><small>상황별 질문에 답하고 필요한 체류 서류를 확인해요.</small></span><img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></a><button type="button" data-action="reveal-home-section" data-target="visaManualSection" aria-controls="civicBrowsePanel" aria-expanded="false" class="cs-service" data-service-group="prepare"><span class="cs-service-icon"><img class="cs-icon" src="assets/icons/civic/id-card.svg" alt="" aria-hidden="true"></span><span><strong>목적별로 둘러보기</strong><small>체류자격과 업무를 골라 필요한 안내를 찾아요.</small></span><img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></button><button type="button" data-action="open-short-stay" class="cs-service" data-service-group="prepare"><span class="cs-service-icon"><img class="cs-icon" src="assets/icons/civic/plane.svg" alt="" aria-hidden="true"></span><span><strong>단기입국 경로</strong><small>단기 방문의 목적에 맞는 입국 경로를 살펴봐요.</small></span><img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></button><button type="button" data-action="open-hikorea-guide" class="cs-service" data-service-group="prepare"><span class="cs-service-icon"><img class="cs-icon" src="assets/icons/civic/calendar-days.svg" alt="" aria-hidden="true"></span><span><strong>방문예약 안내</strong><small>하이코리아 방문예약 방법과 준비사항을 확인하세요.</small></span><img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></button><a href="manual.html" class="cs-service" data-service-group="prepare"><span class="cs-service-icon"><img class="cs-icon" src="assets/icons/civic/book-open.svg" alt="" aria-hidden="true"></span><span><strong>매뉴얼 원문 읽기</strong><small>사증발급·외국인체류 매뉴얼 원문을 체류자격·업무별로 나눠 읽어요.</small></span><img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></a><button type="button" data-action="open-jurisdiction-modal" class="cs-service" data-service-group="help"><span class="cs-service-icon"><img class="cs-icon" src="assets/icons/civic/landmark.svg" alt="" aria-hidden="true"></span><span><strong>관할 출입국 찾기</strong><small>내 주소지를 담당하는 출입국·외국인관서를 확인하세요.</small></span><img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></button><button type="button" data-action="open-agent-finder" class="cs-service" data-service-group="help"><span class="cs-service-icon"><img class="cs-icon" src="assets/icons/civic/user-round.svg" alt="" aria-hidden="true"></span><span><strong>등록 민원대행기관</strong><small>가까운 등록 민원대행기관을 찾아요.</small></span><img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></button><button type="button" data-action="open-med-finder" class="cs-service" data-service-group="help"><span class="cs-service-icon"><img class="cs-icon" src="assets/icons/civic/house.svg" alt="" aria-hidden="true"></span><span><strong>법무부지정 병원</strong><small>법무부 지정 의료기관과 위치를 확인해요.</small></span><img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></button><button type="button" data-action="open-jobcode-modal" class="cs-service" data-service-group="stay"><span class="cs-service-icon"><img class="cs-icon" src="assets/icons/civic/search.svg" alt="" aria-hidden="true"></span><span><strong>직업신고 코드 찾기</strong><small>실제 하는 일을 입력하고 직업·산업분류 코드 후보를 확인해요.</small></span><img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></button><button type="button" data-action="reveal-home-section" data-target="pathwaySection" class="cs-service" data-service-group="stay"><span class="cs-service-icon"><img class="cs-icon" src="assets/icons/civic/compass.svg" alt="" aria-hidden="true"></span><span><strong>생활 경로 8종</strong><small>한국 생활에서 필요한 절차를 상황별로 살펴봐요.</small></span><img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></button><button type="button" data-action="reveal-home-section" data-target="reminderSection" aria-haspopup="dialog" aria-controls="reminderDialog" class="cs-service" data-service-group="stay"><span class="cs-service-icon"><img class="cs-icon" src="assets/icons/civic/calendar-days.svg" alt="" aria-hidden="true"></span><span><strong>체류 기한 계산·알림</strong><small>체류 관련 날짜를 계산하고 알림을 준비해요.</small></span><img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></button><a href="new-home.html" class="cs-service" data-service-group="stay"><span class="cs-service-icon"><img class="cs-icon" src="assets/icons/civic/house.svg" alt="" aria-hidden="true"></span><span><strong>국적·귀화 안내</strong><small>국적·귀화와 한국 정착 준비를 한곳에서 안내해요.</small></span><img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></a><a href="enforcement.html" class="cs-service" data-service-group="help"><span class="cs-service-icon"><img class="cs-icon" src="assets/icons/civic/landmark.svg" alt="" aria-hidden="true"></span><span><strong>출입국 사범처리 예상</strong><small>사실을 확인한 뒤 법령 기준과 AI 예상을 구분해 살펴봐요.</small></span><img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></a><a href="ai.html" class="cs-service" data-service-group="help"><span class="cs-service-icon"><img class="cs-icon" src="assets/icons/civic/compass.svg" alt="" aria-hidden="true"></span><span><strong>Waymaker</strong><small>복잡한 상황을 설명하면 필요한 절차와 근거를 단계별로 정리하는 AI 안내예요.</small></span><img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></a></div><p class="cs-tool-empty" hidden>맞는 도구가 없어요. 다른 이름으로 검색하거나 전체를 선택해 보세요.</p><p class="cs-sr" data-cs-tool-status role="status" aria-live="polite"></p><div class="cs-tool-settings"><button type="button" data-action="toggle-easy-mode" aria-pressed="false">쉬운 안내</button></div></div></details><div class="cs-source-strip"><span class="cs-source-strip-label">체류자격별 매뉴얼</span><a href="docs/source-manuals/2026-10-19/visa_manual_261019.pdf" target="_blank" rel="noopener"><img class="cs-icon" src="assets/icons/civic/file-text.svg" alt="" aria-hidden="true"><span>사증 안내 · 2026.10.19</span><img class="cs-icon" src="assets/icons/civic/external-link.svg" alt="" aria-hidden="true"></a><a href="docs/source-manuals/2026-10-19/stay_manual_261019.pdf" target="_blank" rel="noopener"><img class="cs-icon" src="assets/icons/civic/file-text.svg" alt="" aria-hidden="true"><span>체류 안내 · 2026.10.19</span><img class="cs-icon" src="assets/icons/civic/external-link.svg" alt="" aria-hidden="true"></a></div><footer class="cs-footer"><img src="assets/brand/visable-wordmark.svg" alt="Visable"><p>Visable은 공식 정부 서비스가 아닙니다. 제공 정보는 참고용이며 법적 효력이 없습니다. 최종 판단은 HiKorea·1345·관할 출입국·외국인관서에서 확인하세요.</p></footer><section id="civicBrowsePanel" class="cs-browse" aria-labelledby="csBrowseTitle" hidden><div class="cs-browse-head"><h2 id="csBrowseTitle">목적별로 둘러보기</h2><div class="cs-browse-tabs" role="group" aria-labelledby="csBrowseTitle"><button type="button" data-cs-journey="pre" aria-pressed="false">입국 전 · 사증 발급</button><button type="button" data-cs-journey="post" aria-pressed="false">입국 후 · 체류 관리</button></div><button type="button" class="cs-journey-close" data-cs-journey="close" aria-label="닫기"><img class="cs-icon" src="assets/icons/civic/x.svg" alt="" aria-hidden="true"></button></div><div class="cs-journey-slot"></div></section><details id="civic-about" class="cs-about"><summary>이용 안내</summary><p>공식 안내 원문과 체류자격별 안내를 함께 검색할 수 있습니다. 각 결과의 기준일과 적용 범위를 확인하고, 신청 전 공식 기관에 문의하세요.</p><p>2026년 10월판 공식 안내 원문은 검색용으로 반영되어 있고, 일부 항목의 내용 검토는 별도로 진행 중이에요. 구조화된 안내에는 각 근거의 기준일이 함께 표시됩니다.</p><a href="https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&amp;BBS_GB_CD=BS10&amp;NTCCTT_SEQ=1062&amp;page=1" target="_blank" rel="noopener">HiKorea · 원문 보기</a></details></main></div>
+<div id="civicLanding" data-cs-shell="ko" data-cs-hydrated="static"><header class="cs-nav"><a class="cs-brand" href="./" aria-label="Visable"><img src="assets/brand/visable-wordmark.svg" alt="Visable"></a><nav aria-label="이용 안내"><button type="button" data-cs-focus>비자·체류 검색</button><a href="form-helper.html">서류 작성</a><a href="#civic-about">이용 안내</a><span class="cs-languages"><button type="button" class="cs-lang cs-lang-home" data-cs-lang-open aria-haspopup="dialog" aria-expanded="false" aria-controls="csLangDialog" aria-label="언어: 한국어"><span class="cs-lang-code" aria-hidden="true">KO</span><span class="cs-lang-name" lang="ko">한국어</span></button><button type="button" class="cs-theme-toggle cs-theme-home" data-vt-open aria-haspopup="dialog" aria-expanded="false" aria-controls="vtCivicPop" aria-label="화면 테마" title="화면 테마"><span class="vt-coin" data-c="default" aria-hidden="true"></span><span class="cs-theme-label">화면 테마</span></button></span></nav></header><main class="cs-home"><section class="cs-hero"><h1>답이 <em>보이는</em> 한국 생활.</h1><p id="civicSearchSub">비자 코드, 절차 이름, 지금 상황을 그대로 입력하세요.</p><form id="civicSearchForm" role="search" novalidate><label class="cs-sr" for="civicQuery">비자·체류 검색</label><div class="cs-searchbar"><img class="cs-icon" src="assets/icons/civic/search.svg" alt="" aria-hidden="true"><input id="civicQuery" type="search" maxlength="300" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="civicSuggest" aria-describedby="civicSearchSub" placeholder="예: F-6 연장, 이사했어요"><button type="button" class="cs-clear" data-cs-clear aria-label="검색어 지우기" hidden><img class="cs-icon" src="assets/icons/civic/x.svg" alt="" aria-hidden="true"></button><button type="submit" class="cs-submit"><span class="cs-submit-label">검색</span><img class="cs-icon" src="assets/icons/civic/search.svg" alt="" aria-hidden="true"></button></div><button type="button" class="cs-sheet-close" data-cs-sheet-close>닫기</button><div class="cs-suggest" hidden><p class="cs-suggest-note" hidden></p><ul id="civicSuggest" class="cs-suggest-list" role="listbox" aria-label="검색 제안"></ul><p class="cs-suggest-foot"></p></div><p class="cs-sr" role="status" aria-live="polite" data-cs-suggest-status></p></form><div class="cs-boot-failed" role="alert"><span>화면을 준비하지 못했어요. 새로고침하면 대부분 해결돼요.</span> <button type="button" class="cs-boot-reload" onclick="location.reload()">새로고침</button><span class="cs-boot-links">그래도 안 되면 공식 원문(PDF)과 다른 도구를 바로 열 수 있어요. <a href="docs/source-manuals/2026-10-19/visa_manual_261019.pdf" target="_blank" rel="noopener">사증 안내 PDF</a> · <a href="docs/source-manuals/2026-10-19/stay_manual_261019.pdf" target="_blank" rel="noopener">체류 안내 PDF</a> · <a href="form-helper.html">신청서 작성</a> · <a href="ai.html">Waymaker</a> · <a href="new-home.html">New Home</a></span></div><noscript><p class="cs-noscript">JavaScript가 꺼져 있으면 검색과 안내를 사용할 수 없어요. 공식 원문 PDF는 아래 링크에서 바로 열 수 있어요. <a href="docs/source-manuals/2026-10-19/visa_manual_261019.pdf" target="_blank" rel="noopener">사증 안내 PDF</a> · <a href="docs/source-manuals/2026-10-19/stay_manual_261019.pdf" target="_blank" rel="noopener">체류 안내 PDF</a></p></noscript><div class="cs-examples" role="group" aria-labelledby="csExamplesLabel"><span class="cs-examples-label" id="csExamplesLabel">이렇게 검색해 보세요</span><button type="button" data-cs-query="F-6 체류기간 연장"><img class="cs-icon" src="assets/icons/civic/search.svg" alt="" aria-hidden="true"><span>F-6 체류기간 연장</span></button><button type="button" data-cs-query="외국인등록"><img class="cs-icon" src="assets/icons/civic/search.svg" alt="" aria-hidden="true"><span>외국인등록</span></button><button type="button" data-cs-query="주소 변경 신고"><img class="cs-icon" src="assets/icons/civic/search.svg" alt="" aria-hidden="true"><span>주소 변경 신고</span></button><button type="button" data-cs-query="E-7 근무처 변경"><img class="cs-icon" src="assets/icons/civic/search.svg" alt="" aria-hidden="true"><span>E-7 근무처 변경</span></button><a class="cs-example-link" href="form-helper.html"><img class="cs-icon" src="assets/icons/civic/file-text.svg" alt="" aria-hidden="true"><span>통합신청서 작성</span></a></div><p class="cs-basis">기준일 사증 2026.10.19 · 체류 2026.10.19</p></section><section class="cs-tools cs-tools-core" aria-labelledby="csCoreTitle"><h2 id="csCoreTitle">바로 쓰는 도구</h2><div class="cs-tool-grid"><a class="cs-tool" href="immigration-checklists.html" data-cs-tool="checklists"><span class="cs-icon-circle"><img class="cs-icon" src="assets/icons/civic/id-card.svg" alt="" aria-hidden="true"></span><span class="cs-tool-body"><strong>내게 필요한 서류<img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></strong><small>상황별 질문에 답하고 필요한 체류 서류를 확인해요.</small></span></a><a class="cs-tool" href="form-helper.html" data-cs-tool="forms"><span class="cs-icon-circle"><img class="cs-icon" src="assets/icons/civic/file-text.svg" alt="" aria-hidden="true"></span><span class="cs-tool-body"><strong>신청서 작성<img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></strong><small>통합신청서 등 공식 서식을 단계별로 채우고 PDF로 내려받아요.</small></span></a><button type="button" class="cs-tool" data-action="reveal-home-section" data-target="reminderSection" aria-haspopup="dialog" aria-controls="reminderDialog" data-cs-tool="reminders"><span class="cs-icon-circle"><img class="cs-icon" src="assets/icons/civic/calendar-days.svg" alt="" aria-hidden="true"></span><span class="cs-tool-body"><strong>체류 기한 계산·알림<img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></strong><small>체류 관련 날짜를 계산하고 알림을 준비해요.</small></span></button><button type="button" class="cs-tool" data-action="open-hikorea-guide" data-cs-tool="reservation"><span class="cs-icon-circle"><img class="cs-icon" src="assets/icons/civic/calendar-days.svg" alt="" aria-hidden="true"></span><span class="cs-tool-body"><strong>방문예약 안내<img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></strong><small>하이코리아 방문예약 방법과 준비사항을 확인하세요.</small></span></button><button type="button" class="cs-tool" data-action="open-jurisdiction-modal" data-cs-tool="office"><span class="cs-icon-circle"><img class="cs-icon" src="assets/icons/civic/landmark.svg" alt="" aria-hidden="true"></span><span class="cs-tool-body"><strong>관할 출입국 찾기<img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></strong><small>내 주소지를 담당하는 출입국·외국인관서를 확인하세요.</small></span></button><button type="button" class="cs-tool" data-action="open-jobcode-modal" data-cs-tool="jobs"><span class="cs-icon-circle"><img class="cs-icon" src="assets/icons/civic/search.svg" alt="" aria-hidden="true"></span><span class="cs-tool-body"><strong>직업신고 코드 찾기<img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></strong><small>실제 하는 일을 입력하고 직업·산업분류 코드 후보를 확인해요.</small></span></button></div></section><a class="cs-waymaker-entry" href="ai.html" data-cs-tool="waymaker"><span class="cs-icon-circle"><img class="cs-icon" src="assets/icons/civic/compass.svg" alt="" aria-hidden="true"></span><span class="cs-tool-body"><strong>어떤 절차부터 해야 할지 모르겠나요? 상황을 설명해 주세요.</strong><small>Waymaker · 복잡한 상황을 설명하면 필요한 절차와 근거를 단계별로 정리하는 AI 안내예요.</small></span><img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></a><section class="cs-references" aria-labelledby="csReferenceTitle"><h2 id="csReferenceTitle">공식 자료 확인</h2><div class="cs-reference-links"><button type="button" data-cs-focus data-cs-manual data-cs-tool="manuals"><img class="cs-icon" src="assets/icons/civic/search.svg" alt="" aria-hidden="true"><span>공식 원문 찾기</span><img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></button><a href="manual.html" data-cs-tool="reader"><img class="cs-icon" src="assets/icons/civic/book-open.svg" alt="" aria-hidden="true"><span>매뉴얼 원문 읽기</span><img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></a></div></section><details id="csTools" class="cs-directory"><summary>전체 도구 보기<span>필요한 일을 고르면, 바로 시작할 수 있어요.</span><img class="cs-icon" src="assets/icons/civic/chevron-down.svg" alt="" aria-hidden="true"></summary><div class="cs-directory-content"><div class="cs-directory-controls"><label class="cs-tool-search"><img class="cs-icon" src="assets/icons/civic/search.svg" alt="" aria-hidden="true"><span class="cs-sr">도구 이름이나 필요한 일을 검색하세요</span><input type="search" data-cs-tool-filter placeholder="도구 이름이나 필요한 일을 검색하세요" autocomplete="off"></label><div class="cs-tool-tabs" role="group" aria-label="전체 도구 보기"><button type="button" data-cs-tool-group="all" aria-pressed="true">전체</button><button type="button" data-cs-tool-group="prepare" aria-pressed="false">신청·서류</button><button type="button" data-cs-tool-group="stay" aria-pressed="false">체류·생활</button><button type="button" data-cs-tool-group="help" aria-pressed="false">상담·기관</button></div></div><div class="cs-service-grid"><a href="form-helper.html" class="cs-service" data-service-group="prepare"><span class="cs-service-icon"><img class="cs-icon" src="assets/icons/civic/file-text.svg" alt="" aria-hidden="true"></span><span><strong>신청서 작성</strong><small>통합신청서 등 공식 서식을 단계별로 채우고 PDF로 내려받아요.</small></span><img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></a><a href="immigration-checklists.html" class="cs-service" data-service-group="prepare"><span class="cs-service-icon"><img class="cs-icon" src="assets/icons/civic/clipboard-list.svg" alt="" aria-hidden="true"></span><span><strong>내게 필요한 서류</strong><small>상황별 질문에 답하고 필요한 체류 서류를 확인해요.</small></span><img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></a><button type="button" data-action="reveal-home-section" data-target="visaManualSection" aria-controls="civicBrowsePanel" aria-expanded="false" class="cs-service" data-service-group="prepare"><span class="cs-service-icon"><img class="cs-icon" src="assets/icons/civic/layout-grid.svg" alt="" aria-hidden="true"></span><span><strong>목적별로 둘러보기</strong><small>체류자격과 업무를 골라 필요한 안내를 찾아요.</small></span><img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></button><button type="button" data-action="open-short-stay" class="cs-service" data-service-group="prepare"><span class="cs-service-icon"><img class="cs-icon" src="assets/icons/civic/plane.svg" alt="" aria-hidden="true"></span><span><strong>단기입국 경로</strong><small>단기 방문의 목적에 맞는 입국 경로를 살펴봐요.</small></span><img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></button><button type="button" data-action="open-hikorea-guide" class="cs-service" data-service-group="prepare"><span class="cs-service-icon"><img class="cs-icon" src="assets/icons/civic/calendar-check.svg" alt="" aria-hidden="true"></span><span><strong>방문예약 안내</strong><small>하이코리아 방문예약 방법과 준비사항을 확인하세요.</small></span><img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></button><a href="manual.html" class="cs-service" data-service-group="prepare"><span class="cs-service-icon"><img class="cs-icon" src="assets/icons/civic/book-open.svg" alt="" aria-hidden="true"></span><span><strong>매뉴얼 원문 읽기</strong><small>사증발급·외국인체류 매뉴얼 원문을 체류자격·업무별로 나눠 읽어요.</small></span><img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></a><button type="button" data-action="open-jurisdiction-modal" class="cs-service" data-service-group="help"><span class="cs-service-icon"><img class="cs-icon" src="assets/icons/civic/landmark.svg" alt="" aria-hidden="true"></span><span><strong>관할 출입국 찾기</strong><small>내 주소지를 담당하는 출입국·외국인관서를 확인하세요.</small></span><img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></button><button type="button" data-action="open-agent-finder" class="cs-service" data-service-group="help"><span class="cs-service-icon"><img class="cs-icon" src="assets/icons/civic/users.svg" alt="" aria-hidden="true"></span><span><strong>등록 민원대행기관</strong><small>가까운 등록 민원대행기관을 찾아요.</small></span><img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></button><button type="button" data-action="open-med-finder" class="cs-service" data-service-group="help"><span class="cs-service-icon"><img class="cs-icon" src="assets/icons/civic/hospital.svg" alt="" aria-hidden="true"></span><span><strong>법무부지정 병원</strong><small>법무부 지정 의료기관과 위치를 확인해요.</small></span><img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></button><button type="button" data-action="open-jobcode-modal" class="cs-service" data-service-group="stay"><span class="cs-service-icon"><img class="cs-icon" src="assets/icons/civic/briefcase.svg" alt="" aria-hidden="true"></span><span><strong>직업신고 코드 찾기</strong><small>실제 하는 일을 입력하고 직업·산업분류 코드 후보를 확인해요.</small></span><img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></button><button type="button" data-action="reveal-home-section" data-target="pathwaySection" class="cs-service" data-service-group="stay"><span class="cs-service-icon"><img class="cs-icon" src="assets/icons/civic/route.svg" alt="" aria-hidden="true"></span><span><strong>생활 경로 8종</strong><small>한국 생활에서 필요한 절차를 상황별로 살펴봐요.</small></span><img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></button><button type="button" data-action="reveal-home-section" data-target="reminderSection" aria-haspopup="dialog" aria-controls="reminderDialog" class="cs-service" data-service-group="stay"><span class="cs-service-icon"><img class="cs-icon" src="assets/icons/civic/calendar-days.svg" alt="" aria-hidden="true"></span><span><strong>체류 기한 계산·알림</strong><small>체류 관련 날짜를 계산하고 알림을 준비해요.</small></span><img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></button><a href="new-home.html" class="cs-service" data-service-group="stay"><span class="cs-service-icon"><img class="cs-icon" src="assets/icons/civic/flag.svg" alt="" aria-hidden="true"></span><span><strong>국적·귀화 안내</strong><small>국적·귀화와 한국 정착 준비를 한곳에서 안내해요.</small></span><img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></a><a href="enforcement.html" class="cs-service" data-service-group="help"><span class="cs-service-icon"><img class="cs-icon" src="assets/icons/civic/scale.svg" alt="" aria-hidden="true"></span><span><strong>출입국 사범처리 예상</strong><small>사실을 확인한 뒤 법령 기준과 AI 예상을 구분해 살펴봐요.</small></span><img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></a><a href="ai.html" class="cs-service" data-service-group="help"><span class="cs-service-icon"><img class="cs-icon" src="assets/icons/civic/compass.svg" alt="" aria-hidden="true"></span><span><strong>Waymaker</strong><small>복잡한 상황을 설명하면 필요한 절차와 근거를 단계별로 정리하는 AI 안내예요.</small></span><img class="cs-icon" src="assets/icons/civic/chevron-right.svg" alt="" aria-hidden="true"></a></div><p class="cs-tool-empty" hidden>맞는 도구가 없어요. 다른 이름으로 검색하거나 전체를 선택해 보세요.</p><p class="cs-sr" data-cs-tool-status role="status" aria-live="polite"></p><div class="cs-tool-settings"><button type="button" data-action="toggle-easy-mode" aria-pressed="false">쉬운 안내</button></div></div></details><div class="cs-source-strip"><span class="cs-source-strip-label">체류자격별 매뉴얼</span><a href="docs/source-manuals/2026-10-19/visa_manual_261019.pdf" target="_blank" rel="noopener"><img class="cs-icon" src="assets/icons/civic/file-text.svg" alt="" aria-hidden="true"><span>사증 안내 · 2026.10.19</span><img class="cs-icon" src="assets/icons/civic/external-link.svg" alt="" aria-hidden="true"></a><a href="docs/source-manuals/2026-10-19/stay_manual_261019.pdf" target="_blank" rel="noopener"><img class="cs-icon" src="assets/icons/civic/file-text.svg" alt="" aria-hidden="true"><span>체류 안내 · 2026.10.19</span><img class="cs-icon" src="assets/icons/civic/external-link.svg" alt="" aria-hidden="true"></a></div><footer class="cs-footer"><img src="assets/brand/visable-wordmark.svg" alt="Visable"><p>Visable은 공식 정부 서비스가 아닙니다. 제공 정보는 참고용이며 법적 효력이 없습니다. 최종 판단은 HiKorea·1345·관할 출입국·외국인관서에서 확인하세요.</p></footer><section id="civicBrowsePanel" class="cs-browse" aria-labelledby="csBrowseTitle" hidden><div class="cs-browse-head"><h2 id="csBrowseTitle">목적별로 둘러보기</h2><div class="cs-browse-tabs" role="group" aria-labelledby="csBrowseTitle"><button type="button" data-cs-journey="pre" aria-pressed="false">입국 전 · 사증 발급</button><button type="button" data-cs-journey="post" aria-pressed="false">입국 후 · 체류 관리</button></div><button type="button" class="cs-journey-close" data-cs-journey="close" aria-label="닫기"><img class="cs-icon" src="assets/icons/civic/x.svg" alt="" aria-hidden="true"></button></div><div class="cs-journey-slot"></div></section><details id="civic-about" class="cs-about"><summary>이용 안내</summary><p>공식 안내 원문과 체류자격별 안내를 함께 검색할 수 있습니다. 각 결과의 기준일과 적용 범위를 확인하고, 신청 전 공식 기관에 문의하세요.</p><p>2026년 10월판 공식 안내 원문은 검색용으로 반영되어 있고, 일부 항목의 내용 검토는 별도로 진행 중이에요. 구조화된 안내에는 각 근거의 기준일이 함께 표시됩니다.</p><a href="https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&amp;BBS_GB_CD=BS10&amp;NTCCTT_SEQ=1062&amp;page=1" target="_blank" rel="noopener">HiKorea · 원문 보기</a></details></main></div>
 <!-- /civic landing shell -->
 
 <header class="hero-container" id="hero">
@@ -15267,8 +15406,8 @@ html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important
 <div class="modal-overlay" id="shortStayModalOverlay" role="dialog" aria-modal="true" aria-labelledby="shortStayModalTitle" aria-hidden="true">
     <div class="modal-box" style="max-width: 720px;">
         <div class="modal-header">
-            <h2 id="shortStayModalTitle" class="modal-title" data-i18n="shortStayModalTitle">🛂 국적별 단기입국 경로 확인</h2>
-            <button type="button" class="modal-close" data-action="close-short-stay-modal" aria-label="닫기">✕</button>
+            <h2 id="shortStayModalTitle" class="modal-title" data-pg="plane" data-i18n="shortStayModalTitle">국적별 단기입국 경로 확인</h2>
+            <button type="button" class="modal-close" data-action="close-short-stay-modal" aria-label="닫기"><span class="pg pg-x pg-solo" aria-hidden="true"></span></button>
         </div>
         <div class="modal-body">
             <section id="shortStayChecker" class="short-stay-checker"></section>
@@ -15278,8 +15417,8 @@ html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important
 <div class="modal-overlay" id="aiModalOverlay" role="dialog" aria-modal="true" aria-labelledby="aiModalTitle">
     <div class="modal-box">
         <div class="modal-header">
-            <h2 id="aiModalTitle" class="modal-title">✨ <span id="aiModalTitleText">AI 맞춤 상황 분석</span></h2>
-            <button type="button" class="modal-close" data-action="close-ai-modal" aria-label="닫기">✕</button>
+            <h2 id="aiModalTitle" class="modal-title" data-pg="sparkles"><span id="aiModalTitleText">AI 맞춤 상황 분석</span></h2>
+            <button type="button" class="modal-close" data-action="close-ai-modal" aria-label="닫기"><span class="pg pg-x pg-solo" aria-hidden="true"></span></button>
         </div>
         <div class="modal-body">
             <p style="font-size:0.85rem; color:var(--t3); line-height:1.5;">현재 국적, 보유 중인 체류자격(비자), 직무, 거주지 등 본인의 상황을 상세히 적어주시면, Waymaker가 공개 자료와 입력하신 상황을 바탕으로 관련 체류자격과 확인해야 할 절차를 정리해 드립니다. 최종 판단과 신청 절차는 관할기관 안내를 확인해 주세요.</p>
@@ -15320,43 +15459,77 @@ html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important
 </div>
 
 <div class="modal-overlay" id="jobCodeModalOverlay" role="dialog" aria-modal="true" aria-labelledby="jobCodeModalTitle">
-    <div class="modal-box" style="max-width: 860px;">
+    <div class="modal-box jc2-modal" style="max-width: 860px;">
         <div class="modal-header">
-            <h2 id="jobCodeModalTitle" class="modal-title">🧭 취업정보 신고용 직종·업종 찾기</h2>
-            <button type="button" class="modal-close" data-action="close-jobcode-modal" aria-label="닫기">✕</button>
+            <h2 id="jobCodeModalTitle" class="modal-title"><svg class="jc-ic jc-ic--title" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#jc-i-compass"/></svg>취업정보 신고용 직종·업종 찾기</h2>
+            <button type="button" class="modal-close" data-action="close-jobcode-modal" aria-label="닫기"><svg class="jc-ic jc-ic--close" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#jc-i-x"/></svg></button>
         </div>
         <div class="modal-body jc2">
-            <!-- 1 · Friendly ask + trust badges -->
+            <!-- Monochrome pictograms (Lucide, ISC — assets/icons/civic/LICENSE).
+                 One sprite, referenced with <use>, so every icon inherits the
+                 theme's text colour instead of a platform-specific emoji. -->
+            <svg class="jc-icon-defs" width="0" height="0" aria-hidden="true" focusable="false">
+                <symbol id="jc-i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-2.12 6.36-6.36 2.12 2.12-6.36 6.36-2.12z"/></symbol>
+                <symbol id="jc-i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+                <symbol id="jc-i-briefcase" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></symbol>
+                <symbol id="jc-i-factory" viewBox="0 0 24 24"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M17 18h1"/><path d="M12 18h1"/><path d="M7 18h1"/></symbol>
+                <symbol id="jc-i-building" viewBox="0 0 24 24"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/></symbol>
+                <symbol id="jc-i-wallet" viewBox="0 0 24 24"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></symbol>
+                <symbol id="jc-i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+                <symbol id="jc-i-check-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></symbol>
+                <symbol id="jc-i-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
+                <symbol id="jc-i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol>
+                <symbol id="jc-i-bulb" viewBox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></symbol>
+                <symbol id="jc-i-sliders" viewBox="0 0 24 24"><path d="M21 4h-7"/><path d="M10 4H3"/><path d="M21 12h-9"/><path d="M8 12H3"/><path d="M21 20h-5"/><path d="M12 20H3"/><path d="M14 2v4"/><path d="M8 10v4"/><path d="M16 18v4"/></symbol>
+                <symbol id="jc-i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
+                <symbol id="jc-i-pin" viewBox="0 0 24 24"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></symbol>
+                <symbol id="jc-i-package" viewBox="0 0 24 24"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><path d="m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7"/></symbol>
+                <symbol id="jc-i-wrench" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></symbol>
+                <symbol id="jc-i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></symbol>
+                <symbol id="jc-i-file" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></symbol>
+                <symbol id="jc-i-mic" viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v3"/></symbol>
+                <symbol id="jc-i-scale" viewBox="0 0 24 24"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></symbol>
+                <symbol id="jc-i-id-card" viewBox="0 0 24 24"><path d="M16 10h2"/><path d="M16 14h2"/><path d="M6.17 15a3 3 0 0 1 5.66 0"/><circle cx="9" cy="11" r="2"/><rect x="2" y="5" width="20" height="14" rx="2"/></symbol>
+                <symbol id="jc-i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></symbol>
+                <symbol id="jc-i-lock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+                <symbol id="jc-i-plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol>
+                <symbol id="jc-i-clipboard" viewBox="0 0 24 24"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></symbol>
+                <symbol id="jc-i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></symbol>
+                <symbol id="jc-i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></symbol>
+                <symbol id="jc-i-languages" viewBox="0 0 24 24"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></symbol>
+                <symbol id="jc-i-cap" viewBox="0 0 24 24"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></symbol>
+                <symbol id="jc-i-flag" viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><path d="M4 22v-7"/></symbol>
+                <symbol id="jc-i-list-checks" viewBox="0 0 24 24"><path d="m3 17 2 2 4-4"/><path d="m3 7 2 2 4-4"/><path d="M13 6h8"/><path d="M13 12h8"/><path d="M13 18h8"/></symbol>
+                <symbol id="jc-i-message" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M13 8H7"/><path d="M17 12H7"/></symbol>
+                <symbol id="jc-i-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></symbol>
+                <symbol id="jc-i-circle-dot" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3" fill="currentColor"/></symbol>
+                <symbol id="jc-i-pencil" viewBox="0 0 24 24"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></symbol>
+                <symbol id="jc-i-swap" viewBox="0 0 24 24"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></symbol>
+                <symbol id="jc-i-external" viewBox="0 0 24 24"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol>
+                <symbol id="jc-i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+                <symbol id="jc-i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+            </svg>
+
+            <!-- 1 · Ask + search first: the one action everyone needs -->
             <div class="jc2-hero">
                 <h3 class="jc2-ask" id="jcAskHeading">어떤 일을 하나요?</h3>
                 <p class="jc2-ask-help" id="jcAskHelper">예시처럼 편하게 적어주세요. Visable이 직종과 업종 후보로 나눠서 찾아드릴게요.</p>
-                <div class="jc2-badges">
-                    <span class="jc2-badge jc2-badge--trust" id="jcBadgeTrust" data-i18n="jobCodeBadgeTrust">✓ 기준: KSCO8 · KSIC11</span>
-                    <span class="jc2-badge jc2-badge--caution" id="jcBadgeCaution" data-i18n="jobCodeBadgeCaution">⚠ 최종 신고 전 HiKorea에서 재확인</span>
-                </div>
+                <p class="jc2-anylang"><svg class="jc-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#jc-i-languages"/></svg><span id="jcAnyLanguage" data-i18n="jobCodeAnyLanguage">한국어가 아니어도 괜찮아요. 편한 언어로 적으면 알아듣고 찾아드려요.</span></p>
                 <p class="jc2-hero-sub" id="jcHeroSub" data-i18n="jobCodeHeroSub" hidden>HiKorea 신고 전에 내 일과 사업장 분야를 미리 정리해보세요.</p>
-                <!-- UX-08 `Annotation / Employment` (node 442:99): "신고 대상 ≠ 취업
-                     가능 — AMBER 경고 필수". Finding a code tells you how to
-                     *report* work, never that the work is permitted for your
-                     status. That needs 체류자격외활동허가 or an equivalent, which
-                     this tool does not assess. Shown always, not only for
-                     legally sensitive inputs. -->
-                <p class="jc2-scope-warn" id="jcScopeWarn" role="note" data-i18n="jobCodeScopeWarning">⚠ 코드를 찾았다고 해서 그 일을 할 수 있다는 뜻은 아니에요. 신고 대상인지와 취업이 허용되는지는 서로 다른 문제이며, 체류자격에 따라 별도 허가가 필요할 수 있어요. 반드시 관할 출입국·외국인관서나 1345에서 확인하세요.</p>
             </div>
 
-            <!-- 3 · Search panel -->
             <div class="jc2-searchpanel">
                 <div class="jc2-search-wrap">
-                    <svg class="jc2-search-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+                    <svg class="jc2-search-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#jc-i-search"/></svg>
                     <label for="jcSearchInput" class="sr-only">직종 또는 업종 검색</label>
-                    <input type="search" id="jcSearchInput" class="jc2-search-input" placeholder="예: 골프장 청소해요 / 한치잡이 배에서 일해요 / English teacher at a hagwon" autocomplete="off" aria-describedby="jcCountBadge">
-                    <span id="jcCountBadge" class="jc2-count" aria-live="polite" data-i18n="jobCodeViewAll">전체 보기</span>
+                    <input type="search" id="jcSearchInput" class="jc2-search-input" placeholder="예: 골프장 청소해요 / 한치잡이 배에서 일해요 / English teacher at a hagwon" autocomplete="off" enterkeyhint="search" aria-describedby="jcCountBadge">
                 </div>
-                <!-- Plain-language concept explainer (expandable, not a giant legal note) -->
-                <details class="jc2-explain" id="jcExplain">
-                    <summary class="jc2-explain-sum">💡 <span id="jcConceptExplain">직종은 ‘내가 하는 일’, 업종은 ‘회사나 사업장이 하는 일’이에요.</span></summary>
-                    <p class="jc2-explain-body" id="jcConceptExpand">예를 들어 골프장에서 청소를 한다면, 직종은 청소 업무에 가깝고 업종은 골프장 운영인지 청소·시설관리 업체인지에 따라 달라질 수 있어요.</p>
-                </details>
+                <button type="button" class="jc2-ai-btn" data-action="search-jobcode-ai">
+                    <svg class="jc-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#jc-i-search"/></svg>
+                    <span id="jcNaturalSearchLabel">자연어로 직종·업종 후보 찾기</span>
+                    <span class="spinner" id="jcAiSpinner" style="display:none; margin-left:8px;"></span>
+                </button>
+                <span id="jcCountBadge" class="jc2-count" aria-live="polite" data-i18n="jobCodeViewAll">전체 보기</span>
                 <!-- Friendly natural-language example chips (run the analyzer) -->
                 <p class="jc2-examples-label" id="jcExamplesLabel">이렇게 적어보세요</p>
                 <div class="jc2-chips" id="jcChips" aria-label="입력 예시" data-i18n-attr="aria-label:jobCodeChipsAria">
@@ -15370,13 +15543,14 @@ html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important
                     <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="편의점에서 계산해요" data-i18n="jobCodeChip7">편의점에서 계산해요</button>
                     <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="택배 상하차 해요" data-i18n="jobCodeChip8">택배 상하차 해요</button>
                 </div>
-                <button type="button" class="jc2-ai-btn" data-action="search-jobcode-ai">
-                    <span id="jcNaturalSearchLabel">자연어로 직종·업종 후보 찾기</span>
-                    <span class="spinner" id="jcAiSpinner" style="display:none; margin-left:8px;"></span>
-                </button>
+                <!-- Plain-language concept explainer (expandable, not a giant legal note) -->
+                <details class="jc2-explain" id="jcExplain">
+                    <summary class="jc2-explain-sum"><svg class="jc-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#jc-i-bulb"/></svg><span id="jcConceptExplain">직종은 ‘내가 하는 일’, 업종은 ‘회사나 사업장이 하는 일’이에요.</span></summary>
+                    <p class="jc2-explain-body" id="jcConceptExpand">예를 들어 골프장에서 청소를 한다면, 직종은 청소 업무에 가깝고 업종은 골프장 운영인지 청소·시설관리 업체인지에 따라 달라질 수 있어요.</p>
+                </details>
                 <!-- Advanced: direct code browsing (collapsed to reduce cognitive load) -->
                 <details class="jc2-advanced">
-                    <summary class="jc2-advanced-sum" data-i18n="jobCodeAdvancedSummary">🔧 직접 코드 찾기 · 검색 옵션</summary>
+                    <summary class="jc2-advanced-sum"><svg class="jc-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#jc-i-sliders"/></svg><span data-i18n="jobCodeAdvancedSummary">직접 코드 찾기 · 검색 옵션</span></summary>
                     <div class="jc2-filters-row">
                         <div class="jc2-filter" role="tablist" aria-label="검색 범위 선택" data-i18n-attr="aria-label:jobCodeScopeAria">
                             <button type="button" role="tab" class="jc2-seg is-on" id="jcFilterAll" aria-selected="true" data-action="set-jobcode-filter" data-jc-filter="all" data-i18n="jobCodeFilterAll">전체</button>
@@ -15385,11 +15559,25 @@ html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important
                         </div>
                         <div class="jc2-filter jc2-filter--level" role="tablist" aria-label="분류 단계 선택" data-i18n-attr="aria-label:jobCodeLevelAria">
                             <button type="button" role="tab" class="jc2-seg is-on" id="jcLevelAll" aria-selected="true" data-action="set-jobcode-level" data-jc-level="all" data-i18n="jobCodeLevelAll">전체 단계</button>
-                            <button type="button" role="tab" class="jc2-seg" id="jcLevelLeaf" aria-selected="false" data-action="set-jobcode-level" data-jc-level="leaf" title="실제 신고에 쓰는 가장 구체적인 분류(세세분류·세분류)만 표시" data-i18n="jobCodeLevelLeaf" data-i18n-attr="title:jobCodeLevelLeafTitle">🎯 세부코드만</button>
+                            <button type="button" role="tab" class="jc2-seg" id="jcLevelLeaf" aria-selected="false" data-action="set-jobcode-level" data-jc-level="leaf" title="실제 신고에 쓰는 가장 구체적인 분류(세세분류·세분류)만 표시" data-i18n="jobCodeLevelLeaf" data-i18n-attr="title:jobCodeLevelLeafTitle">세부코드만</button>
                         </div>
                     </div>
-                    <p class="jc2-level-hint" id="jcLevelHint" data-i18n-html="jobCodeLevelHint">💡 검색하면 가장 구체적인 <b>세세분류(신고용 세부코드)</b>가 먼저 표시됩니다. 큰 분류부터 보려면 단계 필터를 조정하세요.</p>
+                    <p class="jc2-level-hint" id="jcLevelHint" data-i18n-html="jobCodeLevelHint">검색하면 가장 구체적인 <b>세세분류(신고용 세부코드)</b>가 먼저 표시됩니다. 큰 분류부터 보려면 단계 필터를 조정하세요.</p>
                 </details>
+            </div>
+
+            <!-- 2 · Trust + scope. UX-08 `Annotation / Employment` (node 442:99):
+                 "신고 대상 ≠ 취업 가능 — AMBER 경고 필수". Finding a code tells you
+                 how to *report* work, never that the work is permitted for your
+                 status. That needs 체류자격외활동허가 or an equivalent, which this
+                 tool does not assess. Shown always, not only for legally
+                 sensitive inputs. -->
+            <div class="jc2-trust">
+                <div class="jc2-badges">
+                    <span class="jc2-badge jc2-badge--trust"><svg class="jc-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#jc-i-check-circle"/></svg><span id="jcBadgeTrust" data-i18n="jobCodeBadgeTrust">기준: KSCO8 · KSIC11</span></span>
+                    <span class="jc2-badge jc2-badge--caution"><svg class="jc-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#jc-i-alert"/></svg><span id="jcBadgeCaution" data-i18n="jobCodeBadgeCaution">최종 신고 전 HiKorea에서 재확인</span></span>
+                </div>
+                <p class="jc2-scope-warn" id="jcScopeWarn" role="note"><svg class="jc-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#jc-i-alert"/></svg><span data-i18n="jobCodeScopeWarning">코드를 찾았다고 해서 그 일을 할 수 있다는 뜻은 아니에요. 신고 대상인지와 취업이 허용되는지는 서로 다른 문제이며, 체류자격에 따라 별도 허가가 필요할 수 있어요. 반드시 관할 출입국·외국인관서나 1345에서 확인하세요.</span></p>
             </div>
 
             <!-- guidance / status notes -->
@@ -15410,11 +15598,11 @@ html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important
             <!-- 3.7 · 후속 선택 칩 (general/entertainment/tattoo follow-up chips) -->
             <div id="jcFollowup" class="jc2-refine jc2-followup" role="group" aria-label="후속 선택" hidden></div>
 
-            <!-- 3.8 · Guided stepper — updates with every search/selection, placed
-                 after the clarification (mobile order). Rendered by
-                 renderEmploymentChecklist() from buildEmploymentChecklistState(). -->
+            <!-- 3.8 · Guided stepper — a compact progress strip that updates with
+                 every search/selection. Rendered by renderEmploymentChecklist()
+                 from buildEmploymentChecklistState(). -->
             <div class="jc2-stepper-wrap">
-                <p class="jc2-stepper-h" id="jcStepperH">🧭 신고 준비 4단계</p>
+                <p class="jc2-stepper-h"><svg class="jc-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#jc-i-list-checks"/></svg><span id="jcStepperH">신고 준비 4단계</span></p>
                 <ol class="jc2-checklist" id="jcChecklist" aria-label="신고 준비 단계" aria-live="polite"></ol>
             </div>
 
@@ -15431,51 +15619,53 @@ html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important
             <!-- 4 · Results (Step 4: candidates, shown after interpretation/clarification) -->
             <div class="jc2-results" id="jcResults">
                 <section class="jc2-pane" data-pane="occupation">
-                    <h3 class="jc2-pane-h"><span class="jc2-pane-ic" aria-hidden="true">👔</span> <span class="jc2-pane-title" data-i18n-html="jobCodePaneOcc">직종 후보 <span class="jc2-pane-plain">내가 하는 일에 가까운 항목이에요</span></span> <span class="jc2-pane-badge jc2-pane-badge--occ" data-i18n="jobCodePaneOccBadge">이건 직종이에요</span><span class="jc2-pane-tag" data-i18n="jobCodePaneOccTag">KSCO8 · 표준직업분류</span></h3>
+                    <h3 class="jc2-pane-h"><span class="jc2-pane-ic" aria-hidden="true"><svg class="jc-ic" viewBox="0 0 24 24" focusable="false"><use href="#jc-i-briefcase"/></svg></span> <span class="jc2-pane-title" data-i18n-html="jobCodePaneOcc">직종 후보 <span class="jc2-pane-plain">내가 하는 일에 가까운 항목이에요</span></span> <span class="jc2-pane-badge jc2-pane-badge--occ" data-i18n="jobCodePaneOccBadge">이건 직종이에요</span><span class="jc2-pane-tag" data-i18n="jobCodePaneOccTag">KSCO8 · 표준직업분류</span></h3>
                     <div id="jcJobResults" class="jc2-list" role="list" aria-live="polite"><div class="jc2-empty" data-i18n="jobCodeStartHint">검색어를 입력하거나 추천 칩을 눌러 시작하세요.</div></div>
                 </section>
                 <section class="jc2-pane" data-pane="industry">
-                    <h3 class="jc2-pane-h"><span class="jc2-pane-ic" aria-hidden="true">🏭</span> <span class="jc2-pane-title" data-i18n-html="jobCodePaneInd">업종 후보 <span class="jc2-pane-plain">회사나 사업장이 하는 일에 가까운 항목이에요</span></span> <span class="jc2-pane-badge jc2-pane-badge--ind" data-i18n="jobCodePaneIndBadge">이건 업종이에요</span><span class="jc2-pane-tag" data-i18n="jobCodePaneIndTag">KSIC11 · 표준산업분류</span></h3>
+                    <h3 class="jc2-pane-h"><span class="jc2-pane-ic" aria-hidden="true"><svg class="jc-ic" viewBox="0 0 24 24" focusable="false"><use href="#jc-i-factory"/></svg></span> <span class="jc2-pane-title" data-i18n-html="jobCodePaneInd">업종 후보 <span class="jc2-pane-plain">회사나 사업장이 하는 일에 가까운 항목이에요</span></span> <span class="jc2-pane-badge jc2-pane-badge--ind" data-i18n="jobCodePaneIndBadge">이건 업종이에요</span><span class="jc2-pane-tag" data-i18n="jobCodePaneIndTag">KSIC11 · 표준산업분류</span></h3>
                     <div id="jcIndResults" class="jc2-list" role="list" aria-live="polite"><div class="jc2-empty" data-i18n="jobCodeStartHint">검색어를 입력하거나 추천 칩을 눌러 시작하세요.</div></div>
                 </section>
             </div>
 
             <!-- 4.5 · 연간소득 reminder — official reporting includes annual income -->
             <div class="jc2-income-card" id="jcIncomeReminder">
-                <span class="jc2-income-ic" aria-hidden="true">💰</span>
+                <span class="jc2-income-ic" aria-hidden="true"><svg class="jc-ic" viewBox="0 0 24 24" focusable="false"><use href="#jc-i-wallet"/></svg></span>
                 <span class="jc2-income-tx"><b id="jcIncomeReminderTitle">연간소득 구간도 필요해요</b>
                 <span id="jcIncomeReminderBody">하이코리아 신고 화면에서 실제 연간소득 구간을 선택해야 합니다.</span></span>
             </div>
 
             <!-- 4.8 · Step 5 · Final HiKorea checklist (plain reminder; never "completed") -->
             <div class="jc2-final" id="jcFinalCheck" hidden>
-                <p class="jc2-final-h" id="jcFinalCheckH">🏁 하이코리아에서 마지막으로 확인할 것</p>
+                <p class="jc2-final-h"><svg class="jc-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#jc-i-flag"/></svg><span id="jcFinalCheckH">하이코리아에서 마지막으로 확인할 것</span></p>
                 <ul class="jc2-final-list">
-                    <li><span class="jc2-final-ic" aria-hidden="true">👔</span><span id="jcFinalOcc">직종 — 내가 하는 일</span></li>
-                    <li><span class="jc2-final-ic" aria-hidden="true">🏭</span><span id="jcFinalInd">업종 — 회사나 사업장이 하는 일</span></li>
-                    <li><span class="jc2-final-ic" aria-hidden="true">💰</span><span id="jcFinalIncome">연간소득 구간 — 하이코리아에서 선택</span></li>
-                    <li><span class="jc2-final-ic" aria-hidden="true">✅</span><span id="jcFinalConfirm">최종 신고는 하이코리아에서 직접 — Visable은 신고를 대신 완료하지 않아요.</span></li>
+                    <li><span class="jc2-final-ic" aria-hidden="true"><svg class="jc-ic" viewBox="0 0 24 24" focusable="false"><use href="#jc-i-briefcase"/></svg></span><span id="jcFinalOcc">직종 — 내가 하는 일</span></li>
+                    <li><span class="jc2-final-ic" aria-hidden="true"><svg class="jc-ic" viewBox="0 0 24 24" focusable="false"><use href="#jc-i-factory"/></svg></span><span id="jcFinalInd">업종 — 회사나 사업장이 하는 일</span></li>
+                    <li><span class="jc2-final-ic" aria-hidden="true"><svg class="jc-ic" viewBox="0 0 24 24" focusable="false"><use href="#jc-i-wallet"/></svg></span><span id="jcFinalIncome">연간소득 구간 — 하이코리아에서 선택</span></li>
+                    <li><span class="jc2-final-ic" aria-hidden="true"><svg class="jc-ic" viewBox="0 0 24 24" focusable="false"><use href="#jc-i-check-circle"/></svg></span><span id="jcFinalConfirm">최종 신고는 하이코리아에서 직접 — Visable은 신고를 대신 완료하지 않아요.</span></li>
                 </ul>
             </div>
 
             <!-- 5.5 · 하이코리아 입력 팁 + 공식 기준 (analyzer warnings + tips) -->
             <div id="jcTips" class="jc2-tips" role="note" hidden></div>
 
-            <!-- 6 · Warnings -->
+            <!-- 6 · Warnings (pictograms come from CSS so the i18n HTML stays plain) -->
             <div class="jc2-disclaimer" data-i18n-html="jobCodeDisclaimer">
-                <p>⚠ 이 검색은 <b>취업정보 신고용 분류 참고</b>입니다. 체류자격 허가 가능성, E-7 직종 적합성, 자격외활동 허가 여부를 판단하지 않습니다.</p>
-                <p>📌 최종 신고 코드는 <b>HiKorea 신고 화면 또는 1345</b>에서 반드시 확인하세요.</p>
-                <p>📚 직종·업종 공식 목록은 <b>국가데이터처 통계분류포털</b>에서 확인할 수 있습니다 → <a href="https://kssc.mods.go.kr" target="_blank" rel="noopener">kssc.mods.go.kr</a></p>
-                <p>👥 여러 곳에서 일하면 <b>주된 직장</b>(근로시간이 가장 많은 곳) 1곳을 기준으로 신고합니다.</p>
+                <p>이 검색은 <b>취업정보 신고용 분류 참고</b>입니다. 체류자격 허가 가능성, E-7 직종 적합성, 자격외활동 허가 여부를 판단하지 않습니다.</p>
+                <p>최종 신고 코드는 <b>HiKorea 신고 화면 또는 1345</b>에서 반드시 확인하세요.</p>
+                <p>직종·업종 공식 목록은 <b>국가데이터처 통계분류포털</b>에서 확인할 수 있습니다 → <a href="https://kssc.mods.go.kr" target="_blank" rel="noopener">kssc.mods.go.kr</a></p>
+                <p>여러 곳에서 일하면 <b>주된 직장</b>(근로시간이 가장 많은 곳) 1곳을 기준으로 신고합니다.</p>
             </div>
 
-            <!-- 5 · Selected summary (sticky) -->
+            <!-- 5 · Selected summary. Static until something is picked, then a
+                 slim sticky bar — it no longer covers the results while the
+                 person is still reading candidates. -->
             <div class="jc2-summary" id="jcSummary" aria-label="선택 요약" data-i18n-attr="aria-label:jobCodeSummaryAria">
                 <div class="jc2-sum-grid">
-                    <div class="jc2-sum-row"><span class="jc2-sum-k" data-i18n="jobCodeSelectedOcc">선택한 직종</span><span class="jc2-sum-v" id="jcSelOcc" data-i18n="jobCodeNotSelected">아직 선택 안 함</span></div>
-                    <div class="jc2-sum-row"><span class="jc2-sum-k" data-i18n="jobCodeSelectedInd">선택한 업종</span><span class="jc2-sum-v" id="jcSelInd" data-i18n="jobCodeNotSelected">아직 선택 안 함</span></div>
+                    <div class="jc2-sum-row"><span class="jc2-sum-k"><svg class="jc-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#jc-i-briefcase"/></svg><span data-i18n="jobCodeSelectedOcc">선택한 직종</span></span><span class="jc2-sum-v" id="jcSelOcc" data-i18n="jobCodeNotSelected">아직 선택 안 함</span></div>
+                    <div class="jc2-sum-row"><span class="jc2-sum-k"><svg class="jc-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#jc-i-factory"/></svg><span data-i18n="jobCodeSelectedInd">선택한 업종</span></span><span class="jc2-sum-v" id="jcSelInd" data-i18n="jobCodeNotSelected">아직 선택 안 함</span></div>
                     <div class="jc2-sum-row">
-                        <label class="jc2-sum-k" for="jcIncome" data-i18n="jobCodeIncomeLabel">연간소득 구간</label>
+                        <label class="jc2-sum-k" for="jcIncome"><svg class="jc-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#jc-i-wallet"/></svg><span data-i18n="jobCodeIncomeLabel">연간소득 구간</span></label>
                         <!-- Explicit Korean value="" so localizing the visible label never
                              changes the option value the HiKorea memo/checklist read. -->
                         <select id="jcIncome" class="jc2-income">
@@ -15490,7 +15680,7 @@ html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important
                         </select>
                     </div>
                 </div>
-                <button type="button" class="jc2-copy" id="jcCopyBtn" data-action="copy-jobcode-memo" data-i18n="jobCodeCopyMemo">📋 HiKorea 입력용 메모 복사</button>
+                <button type="button" class="jc2-copy" id="jcCopyBtn" data-action="copy-jobcode-memo"><svg class="jc-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#jc-i-clipboard"/></svg><span id="jcCopyLabel" data-i18n="jobCodeCopyMemo">HiKorea 입력용 메모 복사</span></button>
             </div>
         </div>
     </div>
@@ -15499,12 +15689,12 @@ html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important
 <div class="modal-overlay" id="jurisdictionModalOverlay" role="dialog" aria-modal="true" aria-labelledby="jurisdictionModalTitle">
     <div class="modal-box" style="max-width: 560px;">
         <div class="modal-header">
-            <h2 id="jurisdictionModalTitle" class="modal-title">🏛 관할 출입국관서 조회</h2>
-            <button type="button" class="modal-close" data-action="close-jurisdiction-modal" aria-label="닫기">✕</button>
+            <h2 id="jurisdictionModalTitle" class="modal-title" data-pg="landmark" data-i18n="jurisdictionTitle">관할 출입국관서 조회</h2>
+            <button type="button" class="modal-close" data-action="close-jurisdiction-modal" aria-label="닫기"><span class="pg pg-x pg-solo" aria-hidden="true"></span></button>
         </div>
         <div class="modal-body">
             <div class="jur-search-box">
-                <div class="jur-label-accent" data-i18n="jurSearchHeading">🔍 나의 관할 출입국관서 정확히 찾기</div>
+                <div class="jur-label-accent" data-pg="search" data-i18n="jurSearchHeading">나의 관할 출입국관서 정확히 찾기</div>
                 <div class="jur-sub jur-sub-margin" data-i18n="jurSearchSub">현재 거주 중인 체류지(외국인등록증 상의 주소)를 선택하세요.</div>
                 <div class="jur-select-group">
                     <label for="jurSido" class="sr-only" data-i18n="jurSidoLabel">시·도 선택</label>
@@ -15518,8 +15708,8 @@ html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important
                 </div>
                 <div id="jurResultCard" class="jur-result-card" aria-live="polite">
                     <div class="jur-msg" id="jurMsg"></div>
-                    <div class="jur-office-name" id="jurOfficeName"></div>
-                    <div class="jur-office-addr" id="jurOfficeAddr"></div>
+                    <div class="jur-office-name" id="jurOfficeName" data-pg="building"></div>
+                    <div class="jur-office-addr" id="jurOfficeAddr" data-pg="map-pin"></div>
                     <div class="jur-map-btns">
                         <a href="#" id="jurNaver" target="_blank" rel="noopener" class="jur-map-btn btn-naver">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16.08 11.25L7.92 1.34H1.4v21.32h6.53v-9.91l8.16 9.91h6.51V1.34h-6.52v9.91z"/></svg> <span data-i18n="jurNaverMap">네이버 지도</span>
@@ -15531,19 +15721,19 @@ html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important
                 </div>
             </div>
             <div class="jur-section">
-                <div class="jur-label" data-i18n="jurCenterLabel">📞 외국인종합안내센터</div>
+                <div class="jur-label" data-pg="phone" data-i18n="jurCenterLabel">외국인종합안내센터</div>
                 <div class="jur-big">1345</div>
                 <div class="jur-sub" data-i18n="jurCenterHours">평일 09:00~18:00 · 20개 언어 지원 · 무료</div>
             </div>
             <div class="jur-section">
-                <div class="jur-label" data-i18n="jurHikoreaLabel">🌐 HiKorea 관할관서 조회 & 방문 예약</div>
+                <div class="jur-label" data-pg="globe" data-i18n="jurHikoreaLabel">HiKorea 관할관서 조회 & 방문 예약</div>
                 <a href="https://www.hikorea.go.kr/Main.pt" target="_blank" rel="noopener" class="jur-btn-primary" data-i18n="jurHikoreaBtn">
                     HiKorea 바로가기 →
                 </a>
                 <div class="jur-sub" data-i18n="jurHikoreaSub">체류지 주소로 관할관서 확인 · 방문 예약 가능</div>
             </div>
             <div class="jur-section">
-                <div class="jur-label" data-i18n="jurBookingLabel">📅 방문 전 예약 안내</div>
+                <div class="jur-label" data-pg="calendar" data-i18n="jurBookingLabel">방문 전 예약 안내</div>
                 <ul class="jur-list" data-i18n-html="jurBookingList">
                     <li>자격 변경·연장·외국인등록 같은 체류 민원은 보통 사전 예약이 필요해요.</li>
                     <li>일부 업무는 예약 없이 방문하면 처리되지 않을 수 있어요. 방문 전에 하이코리아에서 예약 가능 여부를 확인하세요.</li>
@@ -15551,7 +15741,7 @@ html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important
                 </ul>
             </div>
             <div class="jur-section jur-exception">
-                <div class="jur-label" data-i18n="jurWalkinLabel">✅ 비예약 방문 가능 업무</div>
+                <div class="jur-label" data-pg="circle-check" data-i18n="jurWalkinLabel">비예약 방문 가능 업무</div>
                 <ul class="jur-list" data-i18n-html="jurWalkinList">
                     <li>체류지(주소) 변경 신고 — 전입일부터 15일 이내, 시·군·구청·읍면동 주민센터 또는 관할 출입국·외국인관서 (첨부: 체류지변경신고서·여권·외국인등록증)</li>
                     <li>등록외국인 여권 변경 신고 — 여권 번호·발급일자·유효기간이 바뀌면 변경일부터 15일 이내 신고 (등록사항 변경신고, 수수료 없음)</li>
@@ -15569,8 +15759,8 @@ html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important
 <div class="modal-overlay" id="agentFinderModalOverlay" role="dialog" aria-modal="true" aria-labelledby="agentFinderTitle" aria-hidden="true">
     <div class="modal-box" style="max-width: 760px;">
         <div class="modal-header">
-            <h2 class="modal-title"><span aria-hidden="true">🧭</span> <span id="agentFinderTitle">가까운 행정 도움 찾기</span></h2>
-            <button type="button" class="modal-close" data-action="close-agent-finder" aria-label="닫기">✕</button>
+            <h2 class="modal-title"><span class="pg pg-compass" aria-hidden="true"></span><span id="agentFinderTitle">가까운 행정 도움 찾기</span></h2>
+            <button type="button" class="modal-close" data-action="close-agent-finder" aria-label="닫기"><span class="pg pg-x pg-solo" aria-hidden="true"></span></button>
         </div>
         <div class="modal-body">
             <section class="p-agent-finder" id="agentFinder" aria-labelledby="agentFinderTitle">
@@ -15630,8 +15820,8 @@ html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important
 <div class="modal-overlay" id="medFinderModalOverlay" role="dialog" aria-modal="true" aria-labelledby="medFinderTitle" aria-hidden="true">
     <div class="modal-box" style="max-width: 760px;">
         <div class="modal-header">
-            <h2 class="modal-title"><span aria-hidden="true">🏥</span> <span id="medFinderTitle">법무부지정 건강검진 의료기관 찾기</span></h2>
-            <button type="button" class="modal-close" data-action="close-med-finder" aria-label="닫기">✕</button>
+            <h2 class="modal-title"><span class="pg pg-hospital" aria-hidden="true"></span><span id="medFinderTitle">법무부지정 건강검진 의료기관 찾기</span></h2>
+            <button type="button" class="modal-close" data-action="close-med-finder" aria-label="닫기"><span class="pg pg-x pg-solo" aria-hidden="true"></span></button>
         </div>
         <div class="modal-body">
             <section class="p-med-finder" id="medFinder" aria-labelledby="medFinderTitle">
@@ -15655,7 +15845,7 @@ html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important
                 <div class="p-med-finder__controls" role="search" aria-controls="medFinderList">
                     <label class="sr-only" for="medFinderKeyword">검색어</label>
                     <input id="medFinderKeyword" type="search" placeholder="지역·기관명·주소로 검색" autocomplete="off" />
-                    <button type="button" id="medFinderClear" class="p-med-finder__clear" hidden aria-label="검색 초기화">✕</button>
+                    <button type="button" id="medFinderClear" class="p-med-finder__clear" hidden aria-label="검색 초기화"><span class="pg pg-x pg-solo" aria-hidden="true"></span></button>
                 </div>
                 <p class="p-med-finder__prompt" id="medFinderPrompt">지역 버튼을 누르거나 2자 이상 입력하면 검색됩니다. 예: 제주, 한라병원, 강남</p>
                 <p class="p-med-finder__loading" id="medFinderLoading" hidden>목록을 불러오는 중이에요.</p>
@@ -15675,7 +15865,7 @@ html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important
     <div class="modal-box" style="max-width: 640px;">
         <div class="modal-header">
             <h2 id="docModalTitle" class="modal-title">구비서류 확인</h2>
-            <button type="button" class="modal-close" data-action="close-doc-modal" aria-label="닫기">✕</button>
+            <button type="button" class="modal-close" data-action="close-doc-modal" aria-label="닫기"><span class="pg pg-x pg-solo" aria-hidden="true"></span></button>
         </div>
         <div class="modal-body">
             <div id="docModalDesc" class="text-desc" style="display:none;"></div>
@@ -15697,7 +15887,7 @@ html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important
                     <h2 id="subcodeModalTitle" class="modal-title" tabindex="-1"></h2>
                     <div class="subcode-modal-parent" id="subcodeModalParent"></div>
                 </div>
-                <button type="button" class="modal-close subcode-detail-close" data-action="close-subcode-modal" aria-label="닫기">✕</button>
+                <button type="button" class="modal-close subcode-detail-close" data-action="close-subcode-modal" aria-label="닫기"><span class="pg pg-x pg-solo" aria-hidden="true"></span></button>
             </div>
         </div>
         <div class="modal-body subcode-detail-scroll" id="subcodeModalBody" aria-live="polite"></div>
@@ -15708,7 +15898,7 @@ html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important
     <div class="modal-box" style="max-width: 560px;">
         <div class="modal-header">
             <h2 id="scenarioPickerTitle" class="modal-title" data-i18n="scenarioPickerTitle">내 상황에 맞는 시나리오 선택</h2>
-            <button type="button" class="modal-close" data-action="close-scenario-picker" aria-label="닫기">✕</button>
+            <button type="button" class="modal-close" data-action="close-scenario-picker" aria-label="닫기"><span class="pg pg-x pg-solo" aria-hidden="true"></span></button>
         </div>
         <div class="modal-body">
             <p id="scenarioPickerModalCopy" class="text-desc"></p>
@@ -15722,7 +15912,7 @@ html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important
     <div class="modal-box" style="max-width: 560px;">
         <div class="modal-header">
             <h2 id="routePickerTitle" class="modal-title" data-i18n="routePickerTitle">경로 선택</h2>
-            <button type="button" class="modal-close" data-action="close-route-picker" aria-label="닫기">✕</button>
+            <button type="button" class="modal-close" data-action="close-route-picker" aria-label="닫기"><span class="pg pg-x pg-solo" aria-hidden="true"></span></button>
         </div>
         <div class="modal-body">
             <p id="routePickerModalCopy" class="text-desc"></p>
@@ -15736,7 +15926,7 @@ html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important
     <div class="modal-box" style="max-width: 560px;">
         <div class="modal-header">
             <h2 id="issuanceGuideTitle" class="modal-title" data-i18n="issuanceGuideTitle">사증발급 시나리오 선택</h2>
-            <button type="button" class="modal-close" data-action="close-issuance-guide" aria-label="닫기">✕</button>
+            <button type="button" class="modal-close" data-action="close-issuance-guide" aria-label="닫기"><span class="pg pg-x pg-solo" aria-hidden="true"></span></button>
         </div>
         <div class="modal-body">
             <p id="issuanceGuideModalCopy" class="text-desc"></p>
@@ -15748,8 +15938,8 @@ html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important
 <div class="modal-overlay" id="faqModalOverlay" role="dialog" aria-modal="true" aria-labelledby="faqModalTitle">
     <div class="modal-box" style="max-width: 600px;">
         <div class="modal-header">
-            <h2 id="faqModalTitle" class="modal-title">💡 자주 묻는 질문 (FAQ)</h2>
-            <button type="button" class="modal-close" data-action="close-faq-modal" aria-label="닫기">✕</button>
+            <h2 id="faqModalTitle" class="modal-title" data-pg="lightbulb">자주 묻는 질문 (FAQ)</h2>
+            <button type="button" class="modal-close" data-action="close-faq-modal" aria-label="닫기"><span class="pg pg-x pg-solo" aria-hidden="true"></span></button>
         </div>
         <div class="modal-body" id="faqModalBody" aria-live="polite"></div>
     </div>
@@ -15763,7 +15953,7 @@ html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important
                 <p class="hikorea-header-sub" id="hikoreaGuideSub" data-i18n="hikoreaGuideSub">출입국에 가기 전에, 내 상황에 맞는 예약 목적과 준비물을 확인하세요.</p>
                 <span class="hikorea-header-chip" id="hikoreaGuideChip" data-i18n="hikoreaGuideChip">공식 서비스 아님</span>
             </div>
-            <button type="button" class="modal-close close-btn" data-action="close-hikorea-guide" aria-label="닫기">✕</button>
+            <button type="button" class="modal-close close-btn" data-action="close-hikorea-guide" aria-label="닫기"><span class="pg pg-x pg-solo" aria-hidden="true"></span></button>
         </div>
         <div class="modal-body" id="hikoreaGuideBody" aria-live="polite"></div>
     </div>
@@ -15778,7 +15968,7 @@ html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important
                 <span class="visa-drawer-eyebrow" id="visaDrawerEyebrow">검색 결과 상세</span>
                 <h2 class="visa-drawer-title" id="visaDrawerTitle" data-i18n="visaDrawerDefaultTitle">비자 상세</h2>
             </div>
-            <button type="button" class="visa-drawer-close" data-action="close-visa-drawer" aria-label="닫기">✕</button>
+            <button type="button" class="visa-drawer-close" data-action="close-visa-drawer" aria-label="닫기"><span class="pg pg-x pg-solo" aria-hidden="true"></span></button>
         </header>
         <div class="visa-drawer-body" id="visaDrawerBody" tabindex="0"></div>
         <footer class="visa-drawer-footer">
@@ -16596,7 +16786,7 @@ window.verifyFaqWithAi = function(visaCode, question) {
 function openFaqModal(visaCode) {
     const visa = VISA_DATA.find(v => v.code === visaCode);
     if (!visa || !visa.faq) return;
-    document.getElementById('faqModalTitle').innerHTML = currentLanguage === 'zh-CN' ? `💡 ${escapeHtml(visa.code)} 常见问题` : currentLanguage === 'en' ? `💡 ${escapeHtml(visa.code)} FAQ` : `💡 ${escapeHtml(visa.code)} 자주 묻는 질문`;
+    document.getElementById('faqModalTitle').innerHTML = currentLanguage === 'zh-CN' ? `${escapeHtml(visa.code)} 常见问题` : currentLanguage === 'en' ? `${escapeHtml(visa.code)} FAQ` : `${escapeHtml(visa.code)} 자주 묻는 질문`;
     const pairs = visa.faq.split(/Q:\s*/).filter(Boolean);
     const html = pairs.map(p => {
         const parts = p.split(/A:\s*/); const q = parts[0].trim(); const a = (parts[1] || '').trim();
@@ -16608,6 +16798,22 @@ function openFaqModal(visaCode) {
 }
 
 // --- Job Code Modal · HiKorea 취업정보 신고용 직종(KSCO8)·업종(KSIC11) 참고 검색 ---
+// Monochrome pictogram from the modal's SVG sprite (#jc-i-*). Replaces emoji,
+// which render differently on every platform and ignore the theme colour.
+function jcIcon(name, cls) {
+    return `<svg class="jc-ic${cls ? ' ' + cls : ''}" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#jc-i-${name}"/></svg>`;
+}
+// The inline copy in this helper exists in Korean, Chinese and English. Every
+// other UI language (vi, th, ru, ja, …) reads the English copy rather than
+// silently falling back to Korean.
+function jcEnLike() { return currentLanguage !== 'ko' && currentLanguage !== 'zh-CN'; }
+// Name of a language in the current UI language ("vi" → "베트남어"/"Vietnamese").
+function jcLanguageName(code) {
+    try {
+        const ui = currentLanguage === 'zh-CN' ? 'zh-Hans' : (currentLanguage || 'ko');
+        return new Intl.DisplayNames([ui], { type: 'language' }).of(code) || code;
+    } catch (_) { return code; }
+}
 const JOBCODE_TARGET_VISAS = ['E-1','E-2','E-3','E-4','E-5','E-6','E-7','E-8','E-9','E-10','H-1','H-2','D-8','D-9','D-10','F-2','F-4','F-5','F-6'];
 let _jobcodeData = null; let _jobcodeLoadPromise = null; let _jcSearchDebounce = null; let _jcAutoAnalyzeDebounce = null;
 let _jcFilter = 'all';
@@ -16718,7 +16924,7 @@ function jcName(r) { return r.name_ko || r.상세설명 || ''; }
 // (KSCO8/KSIC11 taxonomy is only partially translated upstream). Search/matching
 // and the HiKorea memo keep using jcName() so behaviour is unchanged.
 function jcDisplayName(r) {
-    if (currentLanguage === 'en' && r && typeof r.name_en === 'string' && r.name_en.trim()) return r.name_en.trim();
+    if (jcEnLike() && r && typeof r.name_en === 'string' && r.name_en.trim()) return r.name_en.trim();
     return jcName(r);
 }
 function jcCode(r) { return r.code || r.코드값 || ''; }
@@ -16855,7 +17061,7 @@ function jcConfLabel(row, top) {
 }
 // Plain-language "this may fit when / another may fit when" parts for a card.
 function jcCardHelp(type, isLeaf) {
-    const en = currentLanguage === 'en';
+    const en = jcEnLike();
     const zh = currentLanguage === 'zh-CN';
     return {
         fitLabel: jcChecklistCopy('card.fit'),
@@ -16870,7 +17076,7 @@ function jcCardHelp(type, isLeaf) {
 }
 // opts.conf = { key, cls } confidence band computed by renderJobcodeList.
 function renderJobcodeCard(row, query, terms, opts = {}) {
-    const en = currentLanguage === 'en';
+    const en = jcEnLike();
     const zh = currentLanguage === 'zh-CN';
     const type = jcType(row);
     const code = jcCode(row);
@@ -16886,27 +17092,37 @@ function renderJobcodeCard(row, query, terms, opts = {}) {
     const isLeaf = jcIsLeaf(row);
     const conf = opts.conf || jcConfLabel(row, row._score || 1);
     const confChip = `<span class="jc2-conf ${conf.cls}">${escapeHtml(jcChecklistCopy(conf.key))}</span>`;
-    const leafTag = isLeaf ? `<span class="jc2-lvl jc2-lvl--report" title="${zh ? '最具体的层级 — HiKorea 申报时实际使用的代码' : en ? 'Most specific level — the code actually used for HiKorea reporting' : '가장 구체적인 단계 — HiKorea 신고에 실제로 쓰는 코드입니다'}">${zh ? '🎯 申报用细分代码' : en ? '🎯 Reporting sub-code' : '🎯 신고용 세부코드'}</span>` : '';
-    const srcChip = `<span class="jc2-src">✓ ${escapeHtml(jcChecklistCopy('card.source'))}</span>`;
+    const leafTag = isLeaf ? `<span class="jc2-lvl jc2-lvl--report" title="${zh ? '最具体的层级 — HiKorea 申报时实际使用的代码' : en ? 'Most specific level — the code actually used for HiKorea reporting' : '가장 구체적인 단계 — HiKorea 신고에 실제로 쓰는 코드입니다'}">${jcIcon('target')}${zh ? '申报用细分代码' : en ? 'Reporting sub-code' : '신고용 세부코드'}</span>` : '';
+    const srcChip = `<span class="jc2-src">${jcIcon('check')}${escapeHtml(jcChecklistCopy('card.source'))}</span>`;
     const reason = jcMatchReason(row, query, terms);
     const why = reason ? `<div class="jc2-card-why">${reason}</div>` : '';
     const h = jcCardHelp(type, isLeaf);
-    const fit = `<div class="jc2-card-fit">✓ <b>${escapeHtml(h.fitLabel)}</b>: ${escapeHtml(h.fitText)}</div>`;
+    const fit = `<div class="jc2-card-fit">${jcIcon('check-circle')}<span><b>${escapeHtml(h.fitLabel)}</b>: ${escapeHtml(h.fitText)}</span></div>`;
     const path = row.path_ko ? `<div class="jc2-card-path">${escapeHtml(row.path_ko)}</div>` : '';
     // Progressive disclosure: the longer caveat + path hide behind "자세히 보기".
     const details = `<details class="jc2-card-more"><summary>${escapeHtml(jcChecklistCopy('card.detail'))}</summary>`
-        + `<div class="jc2-card-other">↔ <b>${escapeHtml(h.otherLabel)}</b>: ${escapeHtml(h.otherText)}</div>${path}</details>`;
+        + `<div class="jc2-card-other">${jcIcon('swap')}<span><b>${escapeHtml(h.otherLabel)}</b>: ${escapeHtml(h.otherText)}</span></div>${path}</details>`;
     const isSel = jcSelectedCode(type) === code;
+    // Non-Korean UI shows the translated name first; the Korean official name
+    // stays underneath because that is what the HiKorea screen lists.
+    const koName = jcName(row);
+    const koLine = name !== koName ? `<div class="jc2-card-name-ko" lang="ko">${escapeHtml(koName)}</div>` : '';
     return `<div class="jc2-card${isLeaf ? ' jc2-card--leaf' : ''}" role="listitem" data-type="${type}" data-code="${escapeHtml(code)}">
         <div class="jc2-card-top"><span class="jc2-code">${escapeHtml(code)}</span>${badge}${confChip}${leafTag}</div>
-        <div class="jc2-card-name">${hl(name, terms || [])}</div>
+        <div class="jc2-card-name">${hl(name, terms || [])}</div>${koLine}
         <div class="jc2-card-meta">${escapeHtml(lvLabel)} · ${srcChip}</div>
         ${why}${fit}${details}
-        <button type="button" class="jc2-select${isSel ? ' is-sel' : ''}" data-action="select-jobcode" data-type="${type}" data-code="${escapeHtml(code)}" aria-pressed="${isSel}">${isSel ? (zh ? '✓ 已选择' : en ? '✓ Selected' : '✓ 선택됨') : (zh ? '选择' : en ? 'Select' : '선택')}</button>
+        <button type="button" class="jc2-select${isSel ? ' is-sel' : ''}" data-action="select-jobcode" data-type="${type}" data-code="${escapeHtml(code)}" aria-pressed="${isSel}">${jcSelectLabel(isSel)}</button>
     </div>`;
 }
+function jcSelectLabel(selected) {
+    const zh = currentLanguage === 'zh-CN', en = jcEnLike();
+    return selected
+        ? jcIcon('check') + escapeHtml(zh ? '已选择' : en ? 'Selected' : '선택됨')
+        : escapeHtml(zh ? '选择' : en ? 'Select' : '선택');
+}
 function jobcodeEmptyHtml(type) {
-    const en = currentLanguage === 'en';
+    const en = jcEnLike();
     const zh = currentLanguage === 'zh-CN';
     return `<div class="jc2-empty"><b>${escapeHtml(tx('jobCodeEmptyTitle'))}</b>${escapeHtml(tx('jobCodeEmptyHint'))}
         <ul>
@@ -16920,6 +17136,9 @@ function jobcodeEmptyHtml(type) {
 function renderJobcodeList(rows, box, type, query, terms, opts = {}) {
     if (!box) return;
     if (typeof opts === 'boolean') opts = { collapse: opts };
+    // Guided results show two cards plus "더 보기", so they flow with the page;
+    // only the long browse list keeps its own scroll area.
+    box.classList.toggle('is-guided', !!opts.collapse);
     if (!rows.length) { box.innerHTML = jobcodeEmptyHtml(type); return; }
     const MAX = 60;
     const top = rows[0] ? (rows[0]._score || 0) : 0;
@@ -16958,7 +17177,7 @@ function renderJobcodeList(rows, box, type, query, terms, opts = {}) {
     }
     // Browse mode (direct keyword filter): flat list, capped.
     const html = rows.slice(0, MAX).map(card).join('');
-    box.innerHTML = html + (rows.length > MAX ? `<div class="jc2-empty" style="padding:0.7rem;">${currentLanguage === 'zh-CN' ? `※ 仅显示前 ${MAX} 项。请输入更具体的搜索词。` : currentLanguage === 'en' ? `※ Showing top ${MAX} only. Enter a more specific search term.` : `※ 상위 ${MAX}건만 표시. 검색어를 더 구체적으로 입력하세요.`}</div>` : '');
+    box.innerHTML = html + (rows.length > MAX ? `<div class="jc2-empty" style="padding:0.7rem;">${currentLanguage === 'zh-CN' ? `※ 仅显示前 ${MAX} 项。请输入更具体的搜索词。` : jcEnLike() ? `※ Showing top ${MAX} only. Enter a more specific search term.` : `※ 상위 ${MAX}건만 표시. 검색어를 더 구체적으로 입력하세요.`}</div>` : '');
 }
 function setJobcodeFilter(filter) {
     _jcFilter = ['all', 'occupation', 'industry'].includes(filter) ? filter : 'all';
@@ -17028,7 +17247,7 @@ async function openJobCodeModal() {
         await loadJobcodeData();
         const coverageEl = document.getElementById('jcCoverageNote');
         if (coverageEl && _jobcodeData) {
-            const en = currentLanguage === 'en';
+            const en = jcEnLike();
             const zh = currentLanguage === 'zh-CN';
             const occ = (_jobcodeData.categories || {})['직종'] || 0;
             const ind = (_jobcodeData.categories || {})['업종'] || 0;
@@ -17046,7 +17265,7 @@ async function openJobCodeModal() {
         }
         renderJobcodeResults('');
     } catch (err) {
-        const errorHtml = `<div class="jc2-empty" style="color:var(--color-error);">⚠ <b>${currentLanguage === 'zh-CN' ? '数据加载失败' : currentLanguage === 'en' ? 'Data load failed' : '데이터 로드 실패'}</b><br><small>${escapeHtml(err.message)}</small></div>`;
+        const errorHtml = `<div class="jc2-empty" style="color:var(--color-error);">${jcIcon('alert')} <b>${currentLanguage === 'zh-CN' ? '数据加载失败' : jcEnLike() ? 'Data load failed' : '데이터 로드 실패'}</b><br><small>${escapeHtml(err.message)}</small></div>`;
         if (jobBox) jobBox.innerHTML = errorHtml; if (indBox) indBox.innerHTML = errorHtml;
     }
 }
@@ -17083,12 +17302,13 @@ function renderJobcodeResults(query) {
     renderJobcodeGuidance(q, jobRows, indRows);
     if (typeof clearEmploymentAnalysisUI === 'function') clearEmploymentAnalysisUI();
     if (badge) {
-        const en = currentLanguage === 'en';
+        const en = jcEnLike();
         const zh = currentLanguage === 'zh-CN';
         const occL = zh ? '职业' : en ? 'Occupation' : '직종', indL = zh ? '行业' : en ? 'Industry' : '업종';
         if (_jcFilter === 'occupation') badge.textContent = `${occL} ${jobRows.length}`;
         else if (_jcFilter === 'industry') badge.textContent = `${indL} ${indRows.length}`;
         else badge.textContent = q ? `${occL} ${jobRows.length} · ${indL} ${indRows.length}` : (zh ? '查看全部' : en ? 'View all' : '전체 보기');
+        badge.hidden = !q;
     }
     const hintEl = document.getElementById('jcAiHint');
     if (hintEl) {
@@ -17097,10 +17317,10 @@ function renderJobcodeResults(query) {
         if (q && q.length >= 2 && (total < 5 || leafTotal === 0)) {
             hintEl.hidden = false;
             hintEl.innerHTML = currentLanguage === 'zh-CN'
-                ? `💡 找不到<b>申报用细分代码</b>？请点击下方的 <b>AI 搜索</b> 按钮查找更准确的代码。（按 Enter 键也可以）`
-                : currentLanguage === 'en'
-                ? `💡 Can't find the <b>reporting sub-code</b>? Press the <b>AI search</b> button below to find a more accurate code. (Enter works too.)`
-                : `💡 <b>신고용 세부코드</b>를 못 찾으셨나요? ↓ <b>AI 검색</b> 버튼을 눌러 더 정확한 코드를 찾아보세요. (Enter 키도 됩니다)`;
+                ? `${jcIcon('bulb')} 找不到<b>申报用细分代码</b>？把所做的工作写成一句话再按 <b>Enter</b>，就能找得更准确。（点这里也可以）`
+                : jcEnLike()
+                ? `${jcIcon('bulb')} Can't find the <b>reporting sub-code</b>? Describe your work in a sentence and press <b>Enter</b> for a more accurate match. (Or tap here.)`
+                : `${jcIcon('bulb')} <b>신고용 세부코드</b>를 못 찾으셨나요? 하는 일을 문장으로 적고 <b>Enter</b>를 누르면 더 정확하게 찾아드려요. (여기를 눌러도 돼요)`;
             hintEl.onclick = () => searchJobcodeWithAI();
         } else {
             hintEl.hidden = true;
@@ -17121,13 +17341,13 @@ function selectJobcode(type, code) {
         const on = btn.dataset.code === code;
         btn.classList.toggle('is-sel', on);
         btn.setAttribute('aria-pressed', String(on));
-        btn.textContent = on ? (currentLanguage === 'zh-CN' ? '✓ 已选择' : currentLanguage === 'en' ? '✓ Selected' : '✓ 선택됨') : (currentLanguage === 'zh-CN' ? '选择' : currentLanguage === 'en' ? 'Select' : '선택');
+        btn.innerHTML = jcSelectLabel(on);
     });
-    const typeLabel = currentLanguage === 'zh-CN' ? (JC_TYPE_LABEL_ZH[type] || type) : currentLanguage === 'en' ? (JC_TYPE_LABEL_EN[type] || type) : JC_TYPE_LABEL[type];
+    const typeLabel = currentLanguage === 'zh-CN' ? (JC_TYPE_LABEL_ZH[type] || type) : jcEnLike() ? (JC_TYPE_LABEL_EN[type] || type) : JC_TYPE_LABEL[type];
     const bothPicked = _jcSelected.occupation && _jcSelected.industry;
     showToast(bothPicked
-        ? (currentLanguage === 'zh-CN' ? '职业·行业都选好了！请在下方摘要中复制 HiKorea 备忘录。' : currentLanguage === 'en' ? 'Occupation & industry both picked! Copy the HiKorea memo from the summary below.' : '직종·업종 모두 선택 완료! 아래 요약에서 HiKorea 입력용 메모를 복사하세요.')
-        : (currentLanguage === 'zh-CN' ? `已选择${typeLabel}：${code} ${jcName(row)}` : currentLanguage === 'en' ? `${typeLabel} selected: ${code} ${jcName(row)}` : `${typeLabel} 선택: ${code} ${jcName(row)}`), 'success');
+        ? (currentLanguage === 'zh-CN' ? '职业·行业都选好了！请在下方摘要中复制 HiKorea 备忘录。' : jcEnLike() ? 'Occupation & industry both picked! Copy the HiKorea memo from the summary below.' : '직종·업종 모두 선택 완료! 아래 요약에서 HiKorea 입력용 메모를 복사하세요.')
+        : (currentLanguage === 'zh-CN' ? `已选择${typeLabel}：${code} ${jcName(row)}` : jcEnLike() ? `${typeLabel} selected: ${code} ${jcName(row)}` : `${typeLabel} 선택: ${code} ${jcName(row)}`), 'success');
     // 둘 다 골랐으면 다음 행동(요약 확인 → 메모 복사)으로 부드럽게 안내
     if (bothPicked) {
         const sum = document.getElementById('jcSummary');
@@ -17143,10 +17363,14 @@ function renderJobcodeSelectedSummary() {
     const setCell = (el, sel) => {
         if (!el) return;
         if (sel) { el.textContent = `${sel.code} · ${sel.name}`; el.classList.add('is-set'); }
-        else { el.textContent = currentLanguage === 'zh-CN' ? '尚未选择' : currentLanguage === 'en' ? 'Not selected yet' : '아직 선택 안 함'; el.classList.remove('is-set'); }
+        else { el.textContent = currentLanguage === 'zh-CN' ? '尚未选择' : jcEnLike() ? 'Not selected yet' : '아직 선택 안 함'; el.classList.remove('is-set'); }
     };
     setCell(occEl, _jcSelected.occupation);
     setCell(indEl, _jcSelected.industry);
+    // Slim sticky bar only once something is picked; before that it sits at the
+    // end of the content instead of covering the candidates.
+    const sum = document.getElementById('jcSummary');
+    if (sum) sum.classList.toggle('is-active', !!(_jcSelected.occupation || _jcSelected.industry));
 }
 function buildJobcodeMemo() {
     const occ = _jcSelected.occupation, ind = _jcSelected.industry;
@@ -17160,11 +17384,14 @@ function buildJobcodeMemo() {
 }
 function copyJobcodeMemo() {
     const btn = document.getElementById('jcCopyBtn');
+    const label = document.getElementById('jcCopyLabel') || btn;
     const text = buildJobcodeMemo();
     const done = () => {
-        if (!btn) return;
-        btn.classList.add('copied'); const original = btn.textContent; btn.textContent = currentLanguage === 'zh-CN' ? '✓ 已复制' : currentLanguage === 'en' ? '✓ Copied' : '✓ 복사됨';
-        setTimeout(() => { btn.classList.remove('copied'); btn.textContent = original; }, 1600);
+        if (!btn || !label) return;
+        const original = label.textContent;
+        btn.classList.add('copied');
+        label.textContent = currentLanguage === 'zh-CN' ? '已复制' : jcEnLike() ? 'Copied' : '복사됨';
+        setTimeout(() => { btn.classList.remove('copied'); label.textContent = original; }, 1600);
     };
     if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done).catch(() => { fallbackCopy(text); done(); });
     else { fallbackCopy(text); done(); }
@@ -17186,7 +17413,7 @@ async function ensureEmploymentAnalyzer() {
         // inputs + field-labor place/object/action lexicon + fork disambiguation
         // rules + income reminder + source/legal metadata, merged the same way the
         // Node loader (scripts/employment_data_loader.mjs) does.
-        const [koBase, enBase, zhBase, koEnt, enEnt, koTat, enTat, amb, src, fieldKo, fieldEn, disamb, income] = await Promise.all([
+        const [koBase, enBase, zhBase, koEnt, enEnt, koTat, enTat, amb, src, fieldKo, fieldEn, disamb, income, pivot] = await Promise.all([
             grab('./data/employment/synonyms.ko.json'),
             grab('./data/employment/synonyms.en.json'),
             grab('./data/employment/synonyms.zh.json'),
@@ -17199,7 +17426,9 @@ async function ensureEmploymentAnalyzer() {
             grab('./data/employment/colloquial_field_terms_ko.json'),
             grab('./data/employment/colloquial_field_terms_en.json'),
             grab('./data/employment/disambiguation_rules.json'),
-            grab('./data/employment/income_brackets.json')
+            grab('./data/employment/income_brackets.json'),
+            // Foreign-language work phrases → Korean retrieval words (no codes).
+            grab('./data/employment/multilingual_pivot.json')
         ]);
         const cc = (o) => (o && Array.isArray(o.concepts) ? o.concepts : []);
         _empLex = {
@@ -17216,7 +17445,8 @@ async function ensureEmploymentAnalyzer() {
             context: _jobcodeData && _jobcodeData.employment_reporting_context,
             fieldTerms: { ko: fieldKo || { signals: [] }, en: fieldEn || { signals: [] } },
             disambiguation: disamb || { rules: [] },
-            incomeBrackets: income || null
+            incomeBrackets: income || null,
+            pivot: pivot || null
         });
         return _empAnalyzer;
     })();
@@ -17250,49 +17480,63 @@ function renderEmploymentInterpretation(analysis) {
     if (!analysis) { el.hidden = true; el.innerHTML = ''; return; }
     const e = analysis.extracted || {};
     const ps = analysis.parsedSignals || {};
-    const en = (analysis.detectedLanguage === 'en');
+    const en = jcEnLike();
     const zh = currentLanguage === 'zh-CN';
     const SENS_LABEL = zh
         ? { tattoo: '纹身·刺青（法律敏感）', entertainment: '演艺·演出（需另行审查）' }
+        : en
+        ? { tattoo: 'Tattoo work (legally sensitive)', entertainment: 'Entertainment/performance (separate review)' }
         : { tattoo: '문신·타투(법적 민감)', entertainment: '연예·공연(별도 검토)' };
     const sens = (e.legalSensitivity || []).map(s => SENS_LABEL[s] || s).join(', ');
     const sigLine = (arr) => (Array.isArray(arr) ? arr.map(x => x && (x.label || x)).filter(Boolean).join(', ') : '');
     const isField = analysis.mode === 'field_labor_mode';
     // field-labor: lead with the place + object + action signals (the way the
     // input was actually decoded), with plain-language labels.
+    // Rows are [pictogram, label, value].
     const fieldRows = isField ? [
-        ['📍 ' + jcChecklistCopy('interpret.place'), sigLine(ps.places)],
-        ['📦 ' + jcChecklistCopy('interpret.object'), sigLine(ps.objects)],
-        ['🛠 ' + jcChecklistCopy('interpret.action'), sigLine(ps.actions)]
-    ].filter(([, v]) => v) : [];
+        ['pin', jcChecklistCopy('interpret.place'), sigLine(ps.places)],
+        ['package', jcChecklistCopy('interpret.object'), sigLine(ps.objects)],
+        ['wrench', jcChecklistCopy('interpret.action'), sigLine(ps.actions)]
+    ].filter(([, , v]) => v) : [];
+    // Words the multilingual pivot translated ("nhà hàng → 식당"), so the person
+    // can see exactly how their own-language sentence was read.
+    const translated = Array.isArray(analysis.translatedTerms) ? analysis.translatedTerms.filter((h) => h && h.surface && h.ko) : [];
+    const transRows = translated.length
+        ? [['languages', jcChecklistCopy('interpret.translated'), translated.map((h) => `${h.surface} → ${h.ko}`).join(' · ')]]
+        : [];
     const rows = [
-        ['🙋 ' + (zh ? '所做工作（职业）' : en ? 'Your work' : '하는 일(직종)'), e.jobRole],
-        ['🏢 ' + (zh ? '工作单位' : en ? 'Workplace' : '근무처'), e.workplaceType],
-        ['🏭 ' + (zh ? '经营活动（行业）' : en ? 'Business activity' : '사업 활동(업종)'), e.businessActivity],
-        ['📄 ' + (zh ? '雇佣形态' : en ? 'Employment type' : '고용형태'), e.employmentTypeLabel || e.employmentType],
-        ['🎭 ' + (zh ? '活动类型' : en ? 'Activity type' : '활동 유형'), e.performanceType],
-        ['⚖ ' + (zh ? '法律敏感度' : en ? 'Sensitive area' : '법적 민감도'), sens || null],
-        ['🪪 ' + (zh ? '居留资格' : en ? 'Status' : '체류자격'), e.visaStatus]
-    ].filter(([, v]) => v);
+        ['user', (zh ? '所做工作（职业）' : en ? 'Your work' : '하는 일(직종)'), e.jobRole],
+        ['building', (zh ? '工作单位' : en ? 'Workplace' : '근무처'), e.workplaceType],
+        ['factory', (zh ? '经营活动（行业）' : en ? 'Business activity' : '사업 활동(업종)'), e.businessActivity],
+        ['file', (zh ? '雇佣形态' : en ? 'Employment type' : '고용형태'), e.employmentTypeLabel || e.employmentType],
+        ['mic', (zh ? '活动类型' : en ? 'Activity type' : '활동 유형'), e.performanceType],
+        ['scale', (zh ? '法律敏感度' : en ? 'Sensitive area' : '법적 민감도'), sens || null],
+        ['id-card', (zh ? '居留资格' : en ? 'Status' : '체류자격'), e.visaStatus]
+    ].filter(([, , v]) => v);
     // "더 확인할 점" — built from the top clarification's answer options so the
     // uncertainty is shown gently and concretely (not a scary warning).
     const topQ = Array.isArray(analysis.ambiguityQuestions) ? analysis.ambiguityQuestions[0] : null;
     const checkOpts = topQ && Array.isArray(topQ.chips)
         ? topQ.chips.filter(c => !/모르|not sure/i.test(c)).slice(0, 3).map(c => c.replace(/\([^)]*\)/g, '').trim()) : [];
-    if (checkOpts.length) rows.push(['🧐 ' + jcChecklistCopy('interpret.check'), checkOpts.join(en ? ' / ' : ' · ')]);
-    const allRows = [...fieldRows, ...rows];
+    if (checkOpts.length) rows.push(['help', jcChecklistCopy('interpret.check'), checkOpts.join(en ? ' / ' : ' · ')]);
+    const allRows = [...transRows, ...fieldRows, ...rows];
     if (!allRows.length && !analysis.parsedInterpretation) { el.hidden = true; el.innerHTML = ''; return; }
     el.hidden = false;
-    const modeLabel = (currentLanguage === 'zh-CN' ? JC_MODE_LABEL_ZH[analysis.mode] : currentLanguage === 'en' ? JC_MODE_LABEL_EN[analysis.mode] : JC_MODE_LABEL[analysis.mode]) || '';
+    const modeLabel = (currentLanguage === 'zh-CN' ? JC_MODE_LABEL_ZH[analysis.mode] : jcEnLike() ? JC_MODE_LABEL_EN[analysis.mode] : JC_MODE_LABEL[analysis.mode]) || '';
     const interp = analysis.parsedInterpretation
-        ? `<div class="jc2-interpret-sum">🔎 ${escapeHtml(analysis.parsedInterpretation)}</div>` : '';
+        ? `<div class="jc2-interpret-sum">${jcIcon('search')}<span>${escapeHtml(analysis.parsedInterpretation)}</span></div>` : '';
     const needConfirm = analysis.sourceStatus === 'needs_confirmation'
-        ? `<div class="jc2-interpret-pending">⚠ ${escapeHtml(jcChecklistCopy('needcode.body'))}</div>`
+        ? `<div class="jc2-interpret-pending">${jcIcon('alert')}<span>${escapeHtml(jcChecklistCopy('needcode.body'))}</span></div>`
         : '';
-    el.innerHTML = `<div class="jc2-interpret-h">🙂 ${escapeHtml(jcChecklistCopy('interpret.title'))}${modeLabel ? ` <span class="jc2-interpret-mode">${escapeHtml(modeLabel)}</span>` : ''}</div>`
+    // "Written in Vietnamese" — only when the typed language differs from the UI.
+    const typed = analysis.inputLanguage;
+    const uiBase = String(currentLanguage || 'ko').split('-')[0];
+    const langChip = typed && translated.length && !['ko', 'mixed', 'unknown', uiBase].includes(typed)
+        ? ` <span class="jc2-interpret-lang">${jcIcon('globe')}${escapeHtml(jcChecklistCopy('interpret.inputLang').replace('{lang}', jcLanguageName(typed)))}</span>` : '';
+    el.innerHTML = `<div class="jc2-interpret-h">${jcIcon('message')}<span>${escapeHtml(jcChecklistCopy('interpret.title'))}</span>${modeLabel ? ` <span class="jc2-interpret-mode">${escapeHtml(modeLabel)}</span>` : ''}${langChip}</div>`
         + interp
         + `<div class="jc2-interpret-grid">`
-        + allRows.map(([k, v]) => `<span class="jc2-interpret-k">${escapeHtml(k)}</span><span class="jc2-interpret-v">${escapeHtml(String(v))}</span>`).join('')
+        + allRows.map(([ic, k, v]) => `<span class="jc2-interpret-k">${jcIcon(ic)}<span>${escapeHtml(k)}</span></span><span class="jc2-interpret-v">${escapeHtml(String(v))}</span>`).join('')
         + `</div>`
         + needConfirm;
 }
@@ -17302,7 +17546,7 @@ function renderEmploymentFollowupChips(analysis) {
     const chips = analysis && Array.isArray(analysis.followUpChips) ? analysis.followUpChips : [];
     if (!chips.length) { el.hidden = true; el.innerHTML = ''; return; }
     el.hidden = false;
-    el.innerHTML = `<div class="jc2-refine-h">${currentLanguage === 'zh-CN' ? '➕ 后续选择 — 点击以进一步细化' : currentLanguage === 'en' ? '➕ Follow-up — tap to narrow further' : '➕ 후속 선택 — 눌러서 더 구체화'}</div>`
+    el.innerHTML = `<div class="jc2-refine-h">${jcIcon('plus')}<span>${currentLanguage === 'zh-CN' ? '后续选择 — 点击以进一步细化' : jcEnLike() ? 'Follow-up — tap to narrow further' : '후속 선택 — 눌러서 더 구체화'}</span></div>`
         + `<div class="jc2-refine-chips">`
         + chips.slice(0, 14).map((c) => `<button type="button" class="jc2-refine-chip" data-jc-refine="${escapeHtml(c)}">${escapeHtml(c)}</button>`).join('')
         + `</div>`;
@@ -17348,7 +17592,7 @@ function jcApplyFlow() {
     if (gated) {
         const gate = document.getElementById('jcResultsGate');
         if (gate) {
-            gate.innerHTML = `<div class="jc2-gate-h">🔒 ${escapeHtml(jcChecklistCopy('flow.gateTitle'))}</div>`
+            gate.innerHTML = `<div class="jc2-gate-h">${jcIcon('lock')}<span>${escapeHtml(jcChecklistCopy('flow.gateTitle'))}</span></div>`
                 + `<p class="jc2-gate-b">${escapeHtml(jcChecklistCopy('flow.gateBody'))}</p>`
                 + `<button type="button" class="jc2-gate-btn" id="jcRevealBtn">${escapeHtml(jcChecklistCopy('flow.reveal'))}</button>`;
             const rb = gate.querySelector('#jcRevealBtn');
@@ -17365,11 +17609,12 @@ function jcApplyFlow() {
    The sensitive-occupation copy states that a permit or licence MAY apply and
    points at the competent office. It never says an activity is legal or
    illegal — 가치판단·합법성 단정 금지 (442:99). */
+// Pictogram names in the modal's SVG sprite (#jc-i-*).
 const JC_SPECIAL_ICON = {
-    no_official_code: '🔍', broad_indirect_match: '🧭', freelancer: '📄',
-    self_employed: '🏢', trainee: '🎓', arts_entertainment: '🎭',
-    legally_sensitive: '⚖️', mixed_language: '🌐', low_confidence: '❓',
-    source_unverifiable: '🔗'
+    no_official_code: 'search', broad_indirect_match: 'compass', freelancer: 'file',
+    self_employed: 'building', trainee: 'cap', arts_entertainment: 'mic',
+    legally_sensitive: 'scale', mixed_language: 'languages', low_confidence: 'help',
+    source_unverifiable: 'link'
 };
 const JC_SPECIAL_I18N = {
     no_official_code: 'NoOfficialCode', broad_indirect_match: 'BroadMatch',
@@ -17387,13 +17632,13 @@ function renderEmploymentSpecialStates(analysis) {
         const key = JC_SPECIAL_I18N[st.id];
         if (!key) return '';
         return `<li class="jc2-special-item" data-jc-special="${escapeHtml(st.id)}">`
-            + `<span class="jc2-special-ic" aria-hidden="true">${JC_SPECIAL_ICON[st.id] || 'ℹ️'}</span>`
+            + `<span class="jc2-special-ic" aria-hidden="true">${jcIcon(JC_SPECIAL_ICON[st.id] || 'info')}</span>`
             + `<span class="jc2-special-tx">`
             + `<span class="jc2-special-title">${escapeHtml(tx('empSt' + key + 'Title'))}</span>`
             + `<span class="jc2-special-body">${escapeHtml(tx('empSt' + key + 'Body'))}</span>`
             + `</span>`
             + `<button type="button" class="jc2-special-cta" data-jc-special-action="${escapeHtml(st.action)}">`
-            + `${escapeHtml(tx('empSt' + key + 'Cta'))} →</button>`
+            + `${escapeHtml(tx('empSt' + key + 'Cta'))}${jcIcon('arrow-right')}</button>`
             + `</li>`;
     }).filter(Boolean).join('');
     if (!items) { el.hidden = true; el.innerHTML = ''; return; }
@@ -17409,7 +17654,7 @@ function renderEmploymentSpecialStates(analysis) {
    determination — they move the user toward the input or the office that can
    settle the question. */
 function runEmploymentSpecialAction(action) {
-    const input = document.getElementById('jcInput');
+    const input = document.getElementById('jcSearchInput');
     const focusInput = (select) => {
         if (!input) return;
         input.focus();
@@ -17439,7 +17684,7 @@ function runEmploymentSpecialAction(action) {
             return;
         case 'show_e6':
             // E-6 is a real status in visa_data.json — route through normal search.
-            closeModal('jobCodeOverlay');
+            closeModal('jobCodeModalOverlay');
             { const q = document.getElementById('q');
               if (q) { q.value = 'E-6'; const f = document.getElementById('searchForm');
                 if (f) { try { f.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true })); } catch (e) {} } } }
@@ -17462,7 +17707,7 @@ function renderEmploymentRefine(analysis) {
     const qs = analysis && Array.isArray(analysis.ambiguityQuestions) ? analysis.ambiguityQuestions : [];
     if (!qs.length || _jcClarificationAnswered) { el.hidden = true; el.innerHTML = ''; return; }
     el.hidden = false;
-    const en = currentLanguage === 'en';
+    const en = jcEnLike();
     const zh = currentLanguage === 'zh-CN';
     // ONE question at a time: the single most relevant fork. Answering it re-runs
     // the analyzer, which surfaces the next question only if still needed.
@@ -17474,7 +17719,7 @@ function renderEmploymentRefine(analysis) {
     const answers = (q.chips || []).map((c) =>
         `<button type="button" class="jc2-answer" data-jc-refine="${escapeHtml(c)}">${escapeHtml(c.replace(/\([^)]*\)/g, '').trim())}</button>`).join('');
     const dunno = `<button type="button" class="jc2-answer jc2-answer--dunno" data-jc-dunno="1">${escapeHtml(jcChecklistCopy('clarify.dunno'))}</button>`;
-    el.innerHTML = `<div class="jc2-refine-h">🎯 ${escapeHtml(lead)}${remaining}</div>`
+    el.innerHTML = `<div class="jc2-refine-h">${jcIcon('target')}<span>${escapeHtml(lead)}</span>${remaining}</div>`
         + `<div class="jc2-refine-q"><p class="jc2-refine-qt">${escapeHtml(q.question)}</p>`
         + `<div class="jc2-answers">${answers}${dunno}</div></div>`;
     // An answer appends the clarifier to the query and re-runs the analyzer.
@@ -17502,20 +17747,21 @@ function renderEmploymentTips(analysis) {
     const isLegal = (w) => /문신|타투|연예|공연|별도 검토|별도 확인|허용되는 것은 아닙/.test(w);
     const legal = warns.filter(isLegal);
     const rest = warns.filter((w) => !isLegal(w));
-    const en = currentLanguage === 'en';
+    const en = jcEnLike();
     const zh = currentLanguage === 'zh-CN';
     let html = '';
     if (sens.length && legal.length) {
-        html += `<div class="jc2-legal-banner"><div class="jc2-legal-h">${zh ? '⚠ 注意 — 有代码并不代表该工作·施术被许可' : en ? '⚠ Caution — having a code does not mean the job/procedure is permitted' : '⚠ 주의사항 — 코드가 있다고 취업·시술이 허용되는 것은 아닙니다'}</div>`
+        html += `<div class="jc2-legal-banner"><div class="jc2-legal-h">${jcIcon('alert')}<span>${zh ? '注意 — 有代码并不代表该工作·施术被许可' : en ? 'Caution — having a code does not mean the job/procedure is permitted' : '주의사항 — 코드가 있다고 취업·시술이 허용되는 것은 아닙니다'}</span></div>`
             + `<ul class="jc2-tips-list">` + legal.map((w) => `<li>${escapeHtml(w)}</li>`).join('') + `</ul></div>`;
     }
-    html += `<div class="jc2-tips-h">${zh ? '📌 HiKorea 录入提示 · 官方标准' : en ? '📌 HiKorea input tips · official standards' : '📌 하이코리아 입력 팁 · 공식 기준'}</div>`
+    html += `<div class="jc2-tips-h">${jcIcon('pin')}<span>${zh ? 'HiKorea 录入提示 · 官方标准' : en ? 'HiKorea input tips · official standards' : '하이코리아 입력 팁 · 공식 기준'}</span></div>`
         + `<ul class="jc2-tips-list">` + (sens.length && legal.length ? rest : warns).map((w) => `<li>${escapeHtml(w)}</li>`).join('') + `</ul>`;
     el.hidden = false;
     el.innerHTML = html;
 }
 // --- Guided checklist (직종 → 업종 → 연간소득 → 하이코리아 최종 확인) -------------
-function jcLang() { return currentLanguage === 'en' ? 'en' : currentLanguage === 'zh-CN' ? 'zh-CN' : 'ko'; }
+// The checklist module carries copy for all 14 UI languages (falls back to ko).
+function jcLang() { return currentLanguage || 'ko'; }
 function jcChecklistCopy(key) {
     const C = window.EmploymentChecklist;
     return C && C.checklistCopy ? C.checklistCopy(key, jcLang()) : '';
@@ -17538,6 +17784,8 @@ function jcBuildChecklistState() {
     });
 }
 const JC_STATUS_CLASS = { pending: 'is-pending', ready: 'is-ready', needs_confirmation: 'is-warn', complete: 'is-done', blocked: 'is-blocked' };
+// Status pictograms; the text status label beside them stays the primary signal.
+const JC_STATUS_ICON = { pending: 'circle', ready: 'circle-dot', needs_confirmation: 'alert', complete: 'check-circle', blocked: 'pencil' };
 function renderEmploymentChecklist() {
     const el = document.getElementById('jcChecklist');
     if (!el) return;
@@ -17547,7 +17795,7 @@ function renderEmploymentChecklist() {
     el.innerHTML = st.steps.map((s) => {
         const cls = JC_STATUS_CLASS[s.status] || 'is-pending';
         return `<li class="jc2-cl-item ${cls}">`
-            + `<span class="jc2-cl-ic" aria-hidden="true">${escapeHtml((window.EmploymentChecklist.STATUS[s.status] || {}).icon || '⬜')}</span>`
+            + `<span class="jc2-cl-ic" aria-hidden="true">${jcIcon(JC_STATUS_ICON[s.status] || 'circle')}</span>`
             + `<span class="jc2-cl-tx">`
             + `<span class="jc2-cl-top"><b class="jc2-cl-label">${escapeHtml(s.label)}</b>`
             + `<span class="jc2-cl-status" data-status="${s.status}">${escapeHtml(s.statusLabel)}</span></span>`
@@ -17557,7 +17805,9 @@ function renderEmploymentChecklist() {
     }).join('');
 }
 // Guided examples for weak/dead-end inputs — never a bare "검색 결과 없음".
-const JC_WEAK_EXAMPLES = ['카페에서 음료 만들어요', '공장에서 부품 조립해요', '호텔 객실 청소해요', '학원에서 영어 가르쳐요'];
+// [search value, i18n key for the visible label] — the label follows the UI
+// language while the value stays the Korean sentence the analyzer knows best.
+const JC_WEAK_EXAMPLES = [['카페에서 음료 만들어요', 'jobCodeChip6'], ['공장에서 박스 포장해요', 'jobCodeChip3'], ['골프장 청소해요', 'jobCodeChip1'], ['학원에서 영어 가르쳐요', 'jobCodeChip4']];
 function renderEmploymentWeakHelp(analysis, occCount, indCount) {
     const el = document.getElementById('jcWeakHelp');
     if (!el) return;
@@ -17574,10 +17824,12 @@ function renderEmploymentWeakHelp(analysis, occCount, indCount) {
     if (!weak) { el.hidden = true; el.innerHTML = ''; return; }
     el.hidden = false;
     const detail = [jcChecklistCopy('weak.detail.task'), jcChecklistCopy('weak.detail.place'), jcChecklistCopy('weak.detail.business')];
-    el.innerHTML = `<div class="jc2-weak-h">💡 ${escapeHtml(jcChecklistCopy('weak.title'))}</div>`
+    el.innerHTML = `<div class="jc2-weak-h">${jcIcon('bulb')}<span>${escapeHtml(jcChecklistCopy('weak.title'))}</span></div>`
         + `<p class="jc2-weak-sub">${escapeHtml(jcChecklistCopy('weak.hint'))} · ${detail.map(escapeHtml).join(' · ')}</p>`
-        + `<div class="jc2-weak-chips">` + JC_WEAK_EXAMPLES.map((ex) =>
-            `<button type="button" class="jc2-weak-chip" data-jc-example="${escapeHtml(ex)}">${escapeHtml(ex)}</button>`).join('') + `</div>`;
+        + `<div class="jc2-weak-chips">` + JC_WEAK_EXAMPLES.map(([value, key]) => {
+            const label = tx(key);
+            return `<button type="button" class="jc2-weak-chip" data-jc-example="${escapeHtml(value)}">${escapeHtml(label && label !== key ? label : value)}</button>`;
+        }).join('') + `</div>`;
     el.querySelectorAll('.jc2-weak-chip').forEach((b) => {
         b.onclick = () => { const inp = document.getElementById('jcSearchInput'); if (!inp) return; clearTimeout(_jcSearchDebounce); clearTimeout(_jcAutoAnalyzeDebounce); inp.value = b.dataset.jcExample || ''; searchJobcodeWithAI(); };
     });
@@ -17611,7 +17863,7 @@ function jcRowsFromAnalysis(candidates, fallbackRows, limit = 60) {
 async function searchJobcodeWithAI() {
     const inputEl = document.getElementById('jcSearchInput');
     const input = inputEl ? inputEl.value.trim() : '';
-    if (!input) { showToast(currentLanguage === 'zh-CN' ? '请在搜索框中填写您的工作或营业场所（例：中餐厅厨师长）。' : currentLanguage === 'en' ? 'Please describe your job or workplace in the search box (e.g. Chinese-restaurant head chef).' : "검색창에 본인의 일이나 사업장을 적어주세요 (예: 중식당 주방장)."); return; }
+    if (!input) { showToast(currentLanguage === 'zh-CN' ? '请在搜索框中填写您的工作或营业场所（例：中餐厅厨师长）。' : jcEnLike() ? 'Please describe your job or workplace in the search box (e.g. Chinese-restaurant head chef).' : "검색창에 본인의 일이나 사업장을 적어주세요 (예: 중식당 주방장)."); return; }
     const requestId = ++_jcAnalysisRequest;
     const isCurrentRequest = () => requestId === _jcAnalysisRequest && inputEl.value.trim() === input;
     const jobBox = document.getElementById('jcJobResults'), indBox = document.getElementById('jcIndResults'), spinner = document.getElementById('jcAiSpinner');
@@ -17623,7 +17875,7 @@ async function searchJobcodeWithAI() {
     if (indBox) indBox.innerHTML = `<div class="jc2-loading">${escapeHtml(tx('jobCodeLoadingNatural'))}</div>`;
     try {
         if (!_jobcodeData) { try { await loadJobcodeData(); } catch (_) {
-            const msg = currentLanguage === 'zh-CN' ? '当前无法使用分析功能。请填写得更具体一些，或稍后再试。' : currentLanguage === 'en' ? 'The lookup tool is unavailable right now. Try a more specific description or try again later.' : '지금은 분석 기능을 사용할 수 없어요. 더 구체적으로 적거나 잠시 후 다시 시도해 주세요.';
+            const msg = currentLanguage === 'zh-CN' ? '当前无法使用分析功能。请填写得更具体一些，或稍后再试。' : jcEnLike() ? 'The lookup tool is unavailable right now. Try a more specific description or try again later.' : '지금은 분석 기능을 사용할 수 없어요. 더 구체적으로 적거나 잠시 후 다시 시도해 주세요.';
             const html = `<div class="jc2-empty">${escapeHtml(msg)}</div>`;
             if (jobBox) jobBox.innerHTML = html; if (indBox) indBox.innerHTML = html; return;
         } }
@@ -17633,9 +17885,11 @@ async function searchJobcodeWithAI() {
         try {
             const az = await ensureEmploymentAnalyzer();
             const { interpretEmploymentInput } = await import('./scripts/employment_interpret_client.mjs');
-            const facts = await interpretEmploymentInput({ text: input, lang: currentLanguage === 'en' ? 'en' : 'ko', apiBase: API_BASE });
+            const facts = await interpretEmploymentInput({ text: input, lang: jcEnLike() ? 'en' : 'ko', apiBase: API_BASE });
             if (!isCurrentRequest()) return;
-            if (az) analysis = az.analyze({ text: input, locale: currentLanguage, facts });
+            // Analyzer questions exist in Korean and English; any UI language
+            // other than Korean/Chinese gets the English wording.
+            if (az) analysis = az.analyze({ text: input, locale: jcEnLike() ? 'en' : currentLanguage, facts });
         } catch (_) { analysis = null; }
         if (!isCurrentRequest()) return;
         // Fresh search → store analysis, clear stale selections/clarification so the
@@ -17675,11 +17929,11 @@ async function searchJobcodeWithAI() {
             // Reassuring "공식 코드 확인 필요" card (not a scary dead-end), with two
             // gentle next actions: re-word the search, or check the official portal.
             const pendHtml = `<div class="jc2-needcode">`
-                + `<div class="jc2-needcode-h">🔎 ${escapeHtml(jcChecklistCopy('needcode.title'))}</div>`
+                + `<div class="jc2-needcode-h">${jcIcon('search')}<span>${escapeHtml(jcChecklistCopy('needcode.title'))}</span></div>`
                 + `<p class="jc2-needcode-b">${escapeHtml(jcChecklistCopy('needcode.body'))}</p>`
                 + `<div class="jc2-needcode-acts">`
                 + `<button type="button" class="jc2-needcode-btn" data-jc-research="1">${escapeHtml(jcChecklistCopy('needcode.research'))}</button>`
-                + `<a class="jc2-needcode-btn jc2-needcode-link" href="https://kssc.mods.go.kr" target="_blank" rel="noopener">${escapeHtml(jcChecklistCopy('needcode.portal'))} ↗</a>`
+                + `<a class="jc2-needcode-btn jc2-needcode-link" href="https://kssc.mods.go.kr" target="_blank" rel="noopener">${escapeHtml(jcChecklistCopy('needcode.portal'))}${jcIcon('external')}</a>`
                 + `</div></div>`;
             if (jobBox && !jobRows.length) jobBox.innerHTML = pendHtml;
             if (indBox && !indRows.length) indBox.innerHTML = pendHtml;
@@ -17694,13 +17948,14 @@ async function searchJobcodeWithAI() {
         // Progressive flow: gate candidates behind a pending fork question.
         jcApplyFlow();
         const badge = document.getElementById('jcCountBadge');
-        if (badge) badge.textContent = currentLanguage === 'zh-CN' ? `职业 ${jobRows.length} · 行业 ${indRows.length}` : currentLanguage === 'en' ? `Occupation ${jobRows.length} · Industry ${indRows.length}` : `직종 ${jobRows.length} · 업종 ${indRows.length}`;
+        if (badge) badge.hidden = false;
+        if (badge) badge.textContent = currentLanguage === 'zh-CN' ? `职业 ${jobRows.length} · 行业 ${indRows.length}` : jcEnLike() ? `Occupation ${jobRows.length} · Industry ${indRows.length}` : `직종 ${jobRows.length} · 업종 ${indRows.length}`;
         if (fallbackNote) {
             const noteHtml = `<div class="jc2-empty" style="color:var(--color-warning);padding:0.6rem;">${escapeHtml(fallbackNote)}</div>`;
             if (jobBox) jobBox.insertAdjacentHTML('afterbegin', noteHtml);
         }
     } catch (e) {
-        const errorHtml = `<div class="jc2-empty" style="color:var(--color-error);">${currentLanguage === 'zh-CN' ? '自然语言搜索出错' : currentLanguage === 'en' ? 'Natural-language search error' : '자연어 검색 오류'}: ${escapeHtml(e.message)}</div>`;
+        const errorHtml = `<div class="jc2-empty" style="color:var(--color-error);">${currentLanguage === 'zh-CN' ? '自然语言搜索出错' : jcEnLike() ? 'Natural-language search error' : '자연어 검색 오류'}: ${escapeHtml(e.message)}</div>`;
         if (jobBox) jobBox.innerHTML = errorHtml; if (indBox) indBox.innerHTML = errorHtml;
     } finally { if (requestId === _jcAnalysisRequest) { if (btn) btn.disabled = false; if (spinner) spinner.style.display = 'none'; } }
 }
@@ -18128,8 +18383,8 @@ function showJurisdiction() {
     const officeName = JUR_DB[sido][sigungu], officeInfo = OFFICE_INFO[officeName];
     if (!officeInfo) { showToast(tx('jurMissingInfo')); return; }
     document.getElementById('jurMsg').innerHTML = tx('jurResultMsg', { office: escapeHtml(officeName) });
-    document.getElementById('jurOfficeName').textContent = `🏢 ${officeName}`;
-    document.getElementById('jurOfficeAddr').textContent = `📍 ${officeInfo.addr}`;
+    document.getElementById('jurOfficeName').textContent = officeName;
+    document.getElementById('jurOfficeAddr').textContent = officeInfo.addr;
     document.getElementById('jurNaver').href = officeInfo.naver; document.getElementById('jurKakao').href = officeInfo.kakao;
     card.classList.add('active');
 }
@@ -20591,7 +20846,7 @@ function renderProcedureVariants(v, proc, keywords, alreadyShownDocs = null) {
                 <div class="scenario-picker-panel-inner">
                     <div class="scenario-picker-panel-head">
                         <span class="scenario-picker-panel-title">${escapeHtml(title)}</span>
-                        <button type="button" class="scenario-picker-panel-x" data-action="close-scenario-picker" aria-label="${escapeHtml(tx('closeModal'))}">✕</button>
+                        <button type="button" class="scenario-picker-panel-x" data-action="close-scenario-picker" aria-label="${escapeHtml(tx('closeModal'))}"><span class="pg pg-x pg-solo" aria-hidden="true"></span></button>
                     </div>
                     <div class="scenario-picker-panel-choices" role="list"></div>
                 </div>
@@ -23808,7 +24063,7 @@ function applyLanguage(code, options = {}) {
     setText('label[for="aiInput"]', tx('aiInputLabel'));
     setAttr('#aiInput', 'placeholder', tx('aiInputPlaceholder'));
     setIndexedText('.ai-quick-actions .ai-action-btn span', txArray('aiActionLabels'));
-    setHtml('#jobCodeModalTitle', tx('jobCodeTitle'));
+    setHtml('#jobCodeModalTitle', jcIcon('compass', 'jc-ic--title') + tx('jobCodeTitle'));
     setText('label[for="jcSearchInput"]', tx('jobCodeSearchLabel'));
     setAttr('#jcSearchInput', 'placeholder', tx('jobCodePlaceholder'));
     setText('#jcAskHeading', tx('jobCodeAskHeading'));
@@ -24960,8 +25215,8 @@ function showVisaRecommendations(purpose) {
       </div>
       <p class="visa-result-desc">${escapeHtml(makeManualPreview(v.newReq, 100) || (zh ? '请查看详细信息。' : en ? 'Check the detailed information.' : '상세 정보를 확인하세요.'))}</p>
       <div class="visa-result-actions">
-        <button class="visa-track-btn" onclick="openDocModal('${escapeHtml(v.code)}', 'new')">${zh ? '📝 新申请发放材料' : en ? '📝 New issuance documents' : '📝 신규 발급 서류'}</button>
-        <button class="visa-track-btn visa-track-btn-secondary" onclick="openAiModal('${escapeHtml(v.code)}')">${zh ? '✨ AI 分析' : en ? '✨ AI analysis' : '✨ AI 분석'}</button>
+        <button class="visa-track-btn" data-pg="file" onclick="openDocModal('${escapeHtml(v.code)}', 'new')">${zh ? '新申请发放材料' : en ? 'New issuance documents' : '신규 발급 서류'}</button>
+        <button class="visa-track-btn visa-track-btn-secondary" data-pg="sparkles" onclick="openAiModal('${escapeHtml(v.code)}')">${zh ? 'AI 分析' : en ? 'AI analysis' : 'AI 분석'}</button>
       </div>
     </div>`).join('');
 

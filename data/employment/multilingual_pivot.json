@@ -1,0 +1,2860 @@
+{
+  "schema_version": "1.0",
+  "kind": "employment_multilingual_pivot",
+  "purpose": "Lets people describe their work in their own language. A matched phrase is mapped onto a short Korean pivot term that the Korean lexicon already resolves, and the analyzer then runs its normal Korean pipeline. Before this file, any input outside Korean, English and Chinese returned no candidate at all.",
+  "important": [
+    "This file contains NO official classification codes and NO legal content.",
+    "It only translates everyday work vocabulary into Korean retrieval words.",
+    "Every candidate still comes from data/jobcode_master.json through the",
+    "analyzer's searchTrack; a pivot term with no official match yields nothing.",
+    "",
+    "Matching rules (scripts/employment_code_analyzer.mjs, matchMultilingualPivot):",
+    " - Latin-script phrases match on whole words, accent-insensitive, so",
+    "   'nha hang' (typed without Vietnamese diacritics) still matches 'nhà hàng'.",
+    " - A trailing '*' on a Latin phrase allows a word ending to follow, for",
+    "   languages that attach endings to the noun (Turkish fabrikada, Uzbek zavodda).",
+    " - Non-Latin phrases (Cyrillic, Thai, Japanese, Devanagari, Arabic, Khmer,",
+    "   Myanmar, Bengali) match as substrings, because those scripts either have",
+    "   no spaces or inflect the word ending.",
+    " - The longest phrase wins and its span is consumed, so 'đầu bếp' (cook) is",
+    "   never also read as 'bếp' (kitchen), and 'โรงพยาบาล' (hospital) is never",
+    "   read as 'พยาบาล' (nurse).",
+    " - Words that collide with common words in another language are left out on",
+    "   purpose (Vietnamese 'hàn' = weld but also 'Hàn Quốc' = Korea; Indonesian",
+    "   'las' = weld but also the Spanish article).",
+    "",
+    "The 'ko' entries cover Korean colloquial words the base lexicon does not",
+    "know (미싱, 가정부, 조선소). The 'en' entries fill English gaps found by",
+    "probing ('construction worker' previously returned nothing)."
+  ],
+  "languages": [
+    "ko",
+    "en",
+    "vi",
+    "th",
+    "id",
+    "tl",
+    "ru",
+    "uk",
+    "mn",
+    "uz",
+    "ne",
+    "hi",
+    "km",
+    "my",
+    "bn",
+    "ja",
+    "es",
+    "fr",
+    "de",
+    "tr",
+    "ar",
+    "pt"
+  ],
+  "entries": [
+    {
+      "id": "factory",
+      "ko": "공장",
+      "surface": {
+        "vi": [
+          "nhà máy",
+          "xưởng sản xuất",
+          "công xưởng"
+        ],
+        "th": [
+          "โรงงาน"
+        ],
+        "id": [
+          "pabrik"
+        ],
+        "tl": [
+          "pabrika"
+        ],
+        "ru": [
+          "завод",
+          "фабрик",
+          "цех"
+        ],
+        "mn": [
+          "үйлдвэр"
+        ],
+        "uz": [
+          "zavod*",
+          "fabrika*",
+          "korxona*"
+        ],
+        "ne": [
+          "कारखाना",
+          "फ्याक्ट्री"
+        ],
+        "hi": [
+          "फैक्ट्री",
+          "फ़ैक्टरी",
+          "कारखाने"
+        ],
+        "km": [
+          "រោងចក្រ"
+        ],
+        "my": [
+          "စက်ရုံ"
+        ],
+        "bn": [
+          "কারখানা"
+        ],
+        "ja": [
+          "工場"
+        ],
+        "es": [
+          "fábrica"
+        ],
+        "fr": [
+          "usine"
+        ],
+        "de": [
+          "fabrik"
+        ],
+        "tr": [
+          "fabrika*"
+        ],
+        "ar": [
+          "مصنع"
+        ],
+        "pt": [
+          "fábrica"
+        ]
+      }
+    },
+    {
+      "id": "restaurant",
+      "ko": "식당",
+      "surface": {
+        "vi": [
+          "nhà hàng",
+          "quán ăn",
+          "quán cơm"
+        ],
+        "th": [
+          "ร้านอาหาร"
+        ],
+        "id": [
+          "restoran",
+          "rumah makan",
+          "warung makan"
+        ],
+        "tl": [
+          "restawran",
+          "kainan"
+        ],
+        "ru": [
+          "ресторан",
+          "столов"
+        ],
+        "mn": [
+          "хоолны газар",
+          "ресторан"
+        ],
+        "uz": [
+          "restoran*"
+        ],
+        "ne": [
+          "रेस्टुरेन्ट"
+        ],
+        "hi": [
+          "रेस्टोरेंट",
+          "ढाबा"
+        ],
+        "km": [
+          "ភោជនីយដ្ឋាន"
+        ],
+        "my": [
+          "စားသောက်ဆိုင်"
+        ],
+        "bn": [
+          "রেস্টুরেন্ট",
+          "রেস্তোরাঁ"
+        ],
+        "ja": [
+          "レストラン",
+          "飲食店",
+          "食堂"
+        ],
+        "es": [
+          "restaurante"
+        ],
+        "de": [
+          "gaststätte"
+        ],
+        "tr": [
+          "restoran*",
+          "lokanta*"
+        ],
+        "ar": [
+          "مطعم"
+        ],
+        "pt": [
+          "restaurante"
+        ]
+      }
+    },
+    {
+      "id": "kitchen_helper",
+      "ko": "주방보조",
+      "surface": {
+        "vi": [
+          "phụ bếp",
+          "rửa bát",
+          "rửa chén"
+        ],
+        "th": [
+          "ผู้ช่วยครัว",
+          "ล้างจาน"
+        ],
+        "id": [
+          "asisten dapur",
+          "pembantu dapur",
+          "cuci piring"
+        ],
+        "tl": [
+          "tagahugas ng pinggan",
+          "hugas pinggan"
+        ],
+        "ru": [
+          "посудомой",
+          "помощник повара"
+        ],
+        "ja": [
+          "皿洗い",
+          "調理補助"
+        ],
+        "es": [
+          "ayudante de cocina",
+          "lavaplatos"
+        ],
+        "fr": [
+          "commis de cuisine",
+          "plongeur",
+          "plonge"
+        ],
+        "de": [
+          "küchenhilfe",
+          "spüler"
+        ],
+        "tr": [
+          "bulaşıkçı*"
+        ],
+        "ar": [
+          "غسيل الصحون",
+          "مساعد طباخ"
+        ]
+      }
+    },
+    {
+      "id": "kitchen",
+      "ko": "주방",
+      "surface": {
+        "vi": [
+          "nhà bếp",
+          "trong bếp"
+        ],
+        "th": [
+          "ห้องครัว",
+          "ในครัว"
+        ],
+        "id": [
+          "dapur"
+        ],
+        "tl": [
+          "kusina"
+        ],
+        "ru": [
+          "кухн"
+        ],
+        "mn": [
+          "гал тогоо"
+        ],
+        "uz": [
+          "oshxona*"
+        ],
+        "ne": [
+          "भान्सा"
+        ],
+        "hi": [
+          "रसोई"
+        ],
+        "ja": [
+          "厨房",
+          "キッチン"
+        ],
+        "es": [
+          "cocina"
+        ],
+        "fr": [
+          "en cuisine",
+          "la cuisine"
+        ],
+        "de": [
+          "küche"
+        ],
+        "tr": [
+          "mutfak*"
+        ],
+        "ar": [
+          "مطبخ"
+        ],
+        "pt": [
+          "cozinha"
+        ]
+      }
+    },
+    {
+      "id": "cook",
+      "ko": "요리사",
+      "surface": {
+        "vi": [
+          "đầu bếp",
+          "nấu ăn"
+        ],
+        "th": [
+          "พ่อครัว",
+          "แม่ครัว",
+          "เชฟ",
+          "ทำอาหาร"
+        ],
+        "id": [
+          "koki",
+          "juru masak",
+          "memasak"
+        ],
+        "tl": [
+          "kusinero",
+          "kusinera",
+          "tagaluto",
+          "nagluluto"
+        ],
+        "ru": [
+          "повар"
+        ],
+        "mn": [
+          "тогооч"
+        ],
+        "uz": [
+          "oshpaz*"
+        ],
+        "ne": [
+          "भान्से"
+        ],
+        "hi": [
+          "रसोइया"
+        ],
+        "ja": [
+          "料理人",
+          "コック",
+          "シェフ",
+          "料理を作"
+        ],
+        "es": [
+          "cocinero",
+          "cocinera"
+        ],
+        "fr": [
+          "cuisinier",
+          "cuisinière"
+        ],
+        "de": [
+          "koch",
+          "köchin"
+        ],
+        "tr": [
+          "aşçı*"
+        ],
+        "ar": [
+          "طباخ",
+          "طاهي"
+        ],
+        "pt": [
+          "cozinheiro",
+          "cozinheira"
+        ]
+      }
+    },
+    {
+      "id": "server",
+      "ko": "서빙",
+      "surface": {
+        "vi": [
+          "phục vụ bàn",
+          "bồi bàn",
+          "chạy bàn",
+          "phục vụ"
+        ],
+        "th": [
+          "พนักงานเสิร์ฟ",
+          "เสิร์ฟ"
+        ],
+        "id": [
+          "pelayan"
+        ],
+        "tl": [
+          "serbidor",
+          "weyter",
+          "weytres"
+        ],
+        "ru": [
+          "официант"
+        ],
+        "mn": [
+          "зөөгч"
+        ],
+        "uz": [
+          "ofitsiant*"
+        ],
+        "ne": [
+          "वेटर"
+        ],
+        "hi": [
+          "वेटर"
+        ],
+        "ja": [
+          "ウェイター",
+          "ウエイトレス",
+          "配膳"
+        ],
+        "es": [
+          "mesero",
+          "mesera",
+          "camarero",
+          "camarera"
+        ],
+        "fr": [
+          "serveur",
+          "serveuse"
+        ],
+        "de": [
+          "kellner",
+          "kellnerin",
+          "bedienung"
+        ],
+        "tr": [
+          "garson*"
+        ],
+        "ar": [
+          "نادل"
+        ],
+        "pt": [
+          "garçom",
+          "garçonete"
+        ]
+      }
+    },
+    {
+      "id": "cafe",
+      "ko": "카페",
+      "surface": {
+        "vi": [
+          "quán cà phê",
+          "quán cafe"
+        ],
+        "th": [
+          "ร้านกาแฟ"
+        ],
+        "id": [
+          "kedai kopi",
+          "kafe"
+        ],
+        "tl": [
+          "kapihan"
+        ],
+        "ru": [
+          "кафе",
+          "кофейн"
+        ],
+        "ja": [
+          "カフェ",
+          "喫茶店"
+        ],
+        "es": [
+          "cafetería"
+        ],
+        "tr": [
+          "kafe*"
+        ],
+        "ar": [
+          "مقهى"
+        ]
+      }
+    },
+    {
+      "id": "barista",
+      "ko": "바리스타",
+      "surface": {
+        "vi": [
+          "pha chế",
+          "pha cà phê"
+        ],
+        "th": [
+          "บาริสต้า",
+          "ชงกาแฟ"
+        ],
+        "ru": [
+          "бариста"
+        ],
+        "mn": [
+          "бариста"
+        ],
+        "ja": [
+          "バリスタ"
+        ]
+      }
+    },
+    {
+      "id": "hotel",
+      "ko": "호텔",
+      "surface": {
+        "vi": [
+          "khách sạn"
+        ],
+        "th": [
+          "โรงแรม"
+        ],
+        "ru": [
+          "гостиниц",
+          "отель",
+          "отеле",
+          "отеля"
+        ],
+        "mn": [
+          "зочид буудал"
+        ],
+        "uz": [
+          "mehmonxona*"
+        ],
+        "hi": [
+          "होटल"
+        ],
+        "ja": [
+          "ホテル",
+          "旅館"
+        ],
+        "tr": [
+          "otel*"
+        ],
+        "ar": [
+          "فندق"
+        ]
+      }
+    },
+    {
+      "id": "room_cleaning",
+      "ko": "객실 청소",
+      "surface": {
+        "vi": [
+          "dọn phòng",
+          "buồng phòng"
+        ],
+        "th": [
+          "ทำความสะอาดห้อง",
+          "แม่บ้านโรงแรม"
+        ],
+        "id": [
+          "membersihkan kamar",
+          "room attendant"
+        ],
+        "tl": [
+          "naglilinis ng kwarto",
+          "naglilinis ng kuwarto"
+        ],
+        "ru": [
+          "горничн"
+        ],
+        "ja": [
+          "客室清掃",
+          "ベッドメイク"
+        ],
+        "es": [
+          "camarista",
+          "limpieza de habitaciones"
+        ],
+        "fr": [
+          "femme de chambre",
+          "valet de chambre"
+        ],
+        "de": [
+          "zimmermädchen",
+          "zimmerreinigung"
+        ],
+        "tr": [
+          "kat görevlisi"
+        ]
+      }
+    },
+    {
+      "id": "cleaning",
+      "ko": "청소",
+      "surface": {
+        "vi": [
+          "dọn dẹp",
+          "dọn vệ sinh",
+          "lau dọn",
+          "tạp vụ"
+        ],
+        "th": [
+          "ทำความสะอาด",
+          "แม่บ้าน"
+        ],
+        "id": [
+          "bersih bersih",
+          "membersihkan",
+          "petugas kebersihan",
+          "cleaning service"
+        ],
+        "tl": [
+          "naglilinis",
+          "paglilinis",
+          "maglinis",
+          "tagalinis"
+        ],
+        "ru": [
+          "уборк",
+          "уборщ",
+          "клининг"
+        ],
+        "uk": [
+          "прибиран"
+        ],
+        "mn": [
+          "цэвэрлэгээ",
+          "цэвэрлэгч"
+        ],
+        "uz": [
+          "farrosh*",
+          "tozalash*"
+        ],
+        "ne": [
+          "सफाई"
+        ],
+        "hi": [
+          "सफाई"
+        ],
+        "km": [
+          "សម្អាត"
+        ],
+        "ja": [
+          "清掃",
+          "掃除"
+        ],
+        "es": [
+          "limpieza",
+          "limpiador",
+          "limpiadora"
+        ],
+        "fr": [
+          "ménage",
+          "nettoyage"
+        ],
+        "de": [
+          "reinigung",
+          "putzen",
+          "putzkraft"
+        ],
+        "tr": [
+          "temizlik*"
+        ],
+        "ar": [
+          "تنظيف",
+          "عامل نظافة"
+        ],
+        "pt": [
+          "limpeza"
+        ]
+      }
+    },
+    {
+      "id": "construction",
+      "ko": "건설현장",
+      "surface": {
+        "en": [
+          "construction",
+          "construction site",
+          "construction worker",
+          "building site"
+        ],
+        "vi": [
+          "công trường",
+          "xây dựng",
+          "thợ hồ",
+          "phụ hồ"
+        ],
+        "th": [
+          "ก่อสร้าง",
+          "ไซต์งาน"
+        ],
+        "id": [
+          "proyek bangunan",
+          "konstruksi",
+          "kuli bangunan",
+          "tukang bangunan"
+        ],
+        "tl": [
+          "konstruksyon"
+        ],
+        "ru": [
+          "стройк",
+          "строител"
+        ],
+        "uk": [
+          "будівництв",
+          "будівельн"
+        ],
+        "mn": [
+          "барилга"
+        ],
+        "uz": [
+          "qurilish*"
+        ],
+        "ne": [
+          "निर्माण"
+        ],
+        "hi": [
+          "निर्माण",
+          "कंस्ट्रक्शन"
+        ],
+        "km": [
+          "សំណង់"
+        ],
+        "ja": [
+          "建設現場",
+          "工事現場",
+          "建設",
+          "土木"
+        ],
+        "es": [
+          "construcción"
+        ],
+        "fr": [
+          "chantier",
+          "bâtiment"
+        ],
+        "de": [
+          "baustelle",
+          "bauarbeiter"
+        ],
+        "tr": [
+          "inşaat*"
+        ],
+        "ar": [
+          "موقع بناء",
+          "ورشة بناء",
+          "عامل بناء"
+        ],
+        "pt": [
+          "construção"
+        ]
+      }
+    },
+    {
+      "id": "shipyard",
+      "ko": "선박 건조",
+      "surface": {
+        "ko": [
+          "조선소"
+        ],
+        "en": [
+          "shipyard",
+          "shipbuilding"
+        ],
+        "vi": [
+          "xưởng đóng tàu",
+          "đóng tàu"
+        ],
+        "th": [
+          "อู่ต่อเรือ"
+        ],
+        "id": [
+          "galangan kapal"
+        ],
+        "ru": [
+          "верф",
+          "судостро"
+        ],
+        "ja": [
+          "造船"
+        ],
+        "es": [
+          "astillero"
+        ],
+        "fr": [
+          "chantier naval"
+        ],
+        "de": [
+          "werft"
+        ],
+        "tr": [
+          "tersane*"
+        ],
+        "ar": [
+          "بناء السفن"
+        ]
+      }
+    },
+    {
+      "id": "farm",
+      "ko": "농장",
+      "surface": {
+        "vi": [
+          "trang trại",
+          "nông trại",
+          "làm nông",
+          "nông nghiệp",
+          "làm ruộng"
+        ],
+        "th": [
+          "ฟาร์ม",
+          "ทำนา",
+          "ทำไร่",
+          "เกษตร"
+        ],
+        "id": [
+          "perkebunan",
+          "pertanian",
+          "ladang",
+          "sawah",
+          "kebun",
+          "petani"
+        ],
+        "tl": [
+          "bukid",
+          "sakahan",
+          "magsasaka"
+        ],
+        "ru": [
+          "ферм",
+          "сельск"
+        ],
+        "uk": [
+          "ферм"
+        ],
+        "mn": [
+          "хөдөө аж ахуй",
+          "ферм"
+        ],
+        "uz": [
+          "ferma*",
+          "dehqon*"
+        ],
+        "ne": [
+          "खेती",
+          "कृषि",
+          "फार्म"
+        ],
+        "hi": [
+          "खेती",
+          "कृषि",
+          "खेत"
+        ],
+        "km": [
+          "កសិដ្ឋាន",
+          "កសិកម្ម"
+        ],
+        "my": [
+          "စိုက်ပျိုးရေး"
+        ],
+        "bn": [
+          "খামার",
+          "কৃষি"
+        ],
+        "ja": [
+          "農場",
+          "農業",
+          "畑"
+        ],
+        "es": [
+          "granja",
+          "agricultura"
+        ],
+        "fr": [
+          "ferme",
+          "agricole"
+        ],
+        "de": [
+          "bauernhof",
+          "landwirtschaft"
+        ],
+        "tr": [
+          "çiftlik*",
+          "tarla*"
+        ],
+        "ar": [
+          "مزرعة",
+          "زراعة"
+        ],
+        "pt": [
+          "fazenda"
+        ]
+      }
+    },
+    {
+      "id": "fishing_boat",
+      "ko": "어선",
+      "surface": {
+        "vi": [
+          "tàu cá",
+          "thuyền đánh cá",
+          "đánh bắt cá",
+          "đánh cá",
+          "ngư dân"
+        ],
+        "th": [
+          "เรือประมง",
+          "ประมง"
+        ],
+        "id": [
+          "kapal penangkap ikan",
+          "kapal ikan",
+          "nelayan",
+          "menangkap ikan"
+        ],
+        "tl": [
+          "bangkang pangisda",
+          "mangingisda",
+          "pangingisda"
+        ],
+        "ru": [
+          "рыболов",
+          "рыбак"
+        ],
+        "uz": [
+          "baliqchi*"
+        ],
+        "ne": [
+          "माछा मार्ने"
+        ],
+        "hi": [
+          "मछुआरा",
+          "मछली पकड़"
+        ],
+        "km": [
+          "នេសាទ"
+        ],
+        "my": [
+          "ငါးဖမ်း"
+        ],
+        "bn": [
+          "মাছ ধরা"
+        ],
+        "ja": [
+          "漁船",
+          "漁師",
+          "漁業"
+        ],
+        "es": [
+          "barco pesquero",
+          "pescador",
+          "pesca"
+        ],
+        "fr": [
+          "bateau de pêche",
+          "pêcheur"
+        ],
+        "de": [
+          "fischerboot",
+          "fischer",
+          "fischerei"
+        ],
+        "tr": [
+          "balıkçı*"
+        ],
+        "ar": [
+          "قارب صيد",
+          "صيد السمك",
+          "صياد"
+        ]
+      }
+    },
+    {
+      "id": "aquaculture",
+      "ko": "양식장",
+      "surface": {
+        "vi": [
+          "nuôi trồng thủy sản",
+          "nuôi cá",
+          "trại cá"
+        ],
+        "th": [
+          "ฟาร์มปลา",
+          "เพาะเลี้ยง"
+        ],
+        "id": [
+          "budidaya ikan",
+          "tambak"
+        ],
+        "tl": [
+          "palaisdaan"
+        ],
+        "ja": [
+          "養殖"
+        ],
+        "es": [
+          "acuicultura",
+          "piscifactoría"
+        ],
+        "fr": [
+          "pisciculture"
+        ],
+        "de": [
+          "fischzucht"
+        ],
+        "tr": [
+          "balık çiftliği"
+        ],
+        "ar": [
+          "استزراع سمكي"
+        ]
+      }
+    },
+    {
+      "id": "livestock",
+      "ko": "축산",
+      "surface": {
+        "vi": [
+          "chăn nuôi",
+          "trại heo",
+          "trại lợn",
+          "trại gà"
+        ],
+        "th": [
+          "ปศุสัตว์",
+          "เลี้ยงหมู",
+          "เลี้ยงวัว",
+          "เลี้ยงไก่"
+        ],
+        "id": [
+          "peternakan",
+          "ternak"
+        ],
+        "tl": [
+          "babuyan",
+          "manukan"
+        ],
+        "ru": [
+          "животновод"
+        ],
+        "mn": [
+          "мал аж ахуй",
+          "малчин"
+        ],
+        "uz": [
+          "chorvachilik*"
+        ],
+        "ne": [
+          "पशुपालन"
+        ],
+        "hi": [
+          "पशुपालन"
+        ],
+        "ja": [
+          "畜産",
+          "養豚",
+          "酪農"
+        ],
+        "es": [
+          "ganadería"
+        ],
+        "fr": [
+          "élevage"
+        ],
+        "de": [
+          "viehzucht",
+          "tierhaltung"
+        ],
+        "tr": [
+          "hayvancılık*"
+        ],
+        "ar": [
+          "تربية المواشي"
+        ]
+      }
+    },
+    {
+      "id": "delivery",
+      "ko": "배달",
+      "surface": {
+        "vi": [
+          "giao hàng",
+          "shipper"
+        ],
+        "th": [
+          "ส่งอาหาร",
+          "ส่งของ",
+          "ไรเดอร์"
+        ],
+        "id": [
+          "kurir",
+          "antar barang",
+          "pengantar barang"
+        ],
+        "ru": [
+          "доставк",
+          "курьер"
+        ],
+        "uk": [
+          "доставк",
+          "кур'єр"
+        ],
+        "mn": [
+          "хүргэлт"
+        ],
+        "uz": [
+          "kuryer*"
+        ],
+        "ne": [
+          "डेलिभरी"
+        ],
+        "hi": [
+          "डिलीवरी"
+        ],
+        "ja": [
+          "配達",
+          "配送",
+          "デリバリー"
+        ],
+        "es": [
+          "repartidor",
+          "reparto"
+        ],
+        "fr": [
+          "livreur",
+          "livraison"
+        ],
+        "de": [
+          "lieferdienst",
+          "lieferant",
+          "zusteller",
+          "kurier"
+        ],
+        "tr": [
+          "kurye*",
+          "teslimat*"
+        ],
+        "ar": [
+          "توصيل"
+        ],
+        "pt": [
+          "entregador"
+        ]
+      }
+    },
+    {
+      "id": "loading",
+      "ko": "상하차",
+      "surface": {
+        "vi": [
+          "bốc xếp",
+          "bốc vác"
+        ],
+        "th": [
+          "ขนของ",
+          "ยกของ"
+        ],
+        "id": [
+          "bongkar muat"
+        ],
+        "tl": [
+          "kargador"
+        ],
+        "ru": [
+          "грузчик",
+          "погрузк",
+          "разгрузк"
+        ],
+        "mn": [
+          "ачигч"
+        ],
+        "uz": [
+          "hammol*"
+        ],
+        "ja": [
+          "積み下ろし",
+          "荷物の積み",
+          "仕分け",
+          "ピッキング"
+        ],
+        "es": [
+          "carga y descarga",
+          "cargador"
+        ],
+        "fr": [
+          "manutention",
+          "manutentionnaire"
+        ],
+        "tr": [
+          "hamal*"
+        ],
+        "ar": [
+          "تحميل وتفريغ",
+          "عتال"
+        ]
+      }
+    },
+    {
+      "id": "warehouse",
+      "ko": "물류창고",
+      "surface": {
+        "vi": [
+          "kho hàng"
+        ],
+        "th": [
+          "โกดัง",
+          "คลังสินค้า"
+        ],
+        "id": [
+          "gudang"
+        ],
+        "tl": [
+          "bodega"
+        ],
+        "ru": [
+          "склад"
+        ],
+        "mn": [
+          "агуулах"
+        ],
+        "uz": [
+          "ombor*"
+        ],
+        "ne": [
+          "गोदाम"
+        ],
+        "hi": [
+          "गोदाम"
+        ],
+        "ja": [
+          "倉庫"
+        ],
+        "es": [
+          "almacén"
+        ],
+        "fr": [
+          "entrepôt",
+          "magasinier"
+        ],
+        "de": [
+          "lagerhalle",
+          "lagerarbeiter",
+          "im lager"
+        ],
+        "tr": [
+          "depo",
+          "depoda",
+          "depoya",
+          "deposunda"
+        ],
+        "ar": [
+          "مستودع"
+        ]
+      }
+    },
+    {
+      "id": "driver",
+      "ko": "운전기사",
+      "surface": {
+        "vi": [
+          "tài xế",
+          "lái xe"
+        ],
+        "th": [
+          "คนขับรถ",
+          "ขับรถ"
+        ],
+        "id": [
+          "sopir",
+          "supir",
+          "pengemudi"
+        ],
+        "tl": [
+          "drayber",
+          "tsuper"
+        ],
+        "ru": [
+          "водител"
+        ],
+        "uk": [
+          "водій",
+          "водія"
+        ],
+        "mn": [
+          "жолооч"
+        ],
+        "uz": [
+          "haydovchi*"
+        ],
+        "ne": [
+          "ड्राइभर",
+          "चालक"
+        ],
+        "hi": [
+          "ड्राइवर"
+        ],
+        "ja": [
+          "運転手",
+          "ドライバー"
+        ],
+        "es": [
+          "chofer",
+          "chófer"
+        ],
+        "fr": [
+          "chauffeur livreur",
+          "conducteur"
+        ],
+        "de": [
+          "fahrer"
+        ],
+        "tr": [
+          "şoför*",
+          "sürücü*"
+        ],
+        "ar": [
+          "سائق"
+        ],
+        "pt": [
+          "motorista"
+        ]
+      }
+    },
+    {
+      "id": "packing",
+      "ko": "포장",
+      "surface": {
+        "vi": [
+          "đóng gói",
+          "đóng hàng"
+        ],
+        "th": [
+          "แพ็คของ",
+          "บรรจุ"
+        ],
+        "id": [
+          "pengemasan",
+          "mengemas"
+        ],
+        "tl": [
+          "nag-iimpake",
+          "pag-iimpake"
+        ],
+        "ru": [
+          "упаковк",
+          "упаковщ",
+          "фасовк"
+        ],
+        "mn": [
+          "савлагаа"
+        ],
+        "uz": [
+          "qadoqlash*"
+        ],
+        "ne": [
+          "प्याकिङ"
+        ],
+        "hi": [
+          "पैकिंग"
+        ],
+        "ja": [
+          "梱包",
+          "包装",
+          "パッキング"
+        ],
+        "es": [
+          "empaque",
+          "embalaje",
+          "empacar",
+          "empaquetar"
+        ],
+        "fr": [
+          "emballage",
+          "conditionnement"
+        ],
+        "de": [
+          "verpackung",
+          "verpacken"
+        ],
+        "tr": [
+          "paketleme*",
+          "ambalaj*"
+        ],
+        "ar": [
+          "تغليف",
+          "تعبئة"
+        ]
+      }
+    },
+    {
+      "id": "assembly",
+      "ko": "조립",
+      "surface": {
+        "vi": [
+          "lắp ráp"
+        ],
+        "th": [
+          "ประกอบชิ้นส่วน",
+          "สายการผลิต"
+        ],
+        "id": [
+          "perakitan",
+          "merakit"
+        ],
+        "ru": [
+          "сборк",
+          "сборщик"
+        ],
+        "ja": [
+          "組立",
+          "組み立て"
+        ],
+        "es": [
+          "ensamblaje",
+          "montaje"
+        ],
+        "fr": [
+          "assemblage"
+        ],
+        "de": [
+          "montieren"
+        ],
+        "tr": [
+          "montaj*"
+        ],
+        "ar": [
+          "تجميع"
+        ]
+      }
+    },
+    {
+      "id": "welding",
+      "ko": "용접",
+      "surface": {
+        "vi": [
+          "thợ hàn",
+          "hàn xì",
+          "hàn điện"
+        ],
+        "th": [
+          "ช่างเชื่อม",
+          "งานเชื่อม"
+        ],
+        "id": [
+          "tukang las",
+          "pengelasan",
+          "mengelas"
+        ],
+        "tl": [
+          "manghihinang",
+          "hinang"
+        ],
+        "ru": [
+          "сварк",
+          "сварщик"
+        ],
+        "uk": [
+          "зварюв",
+          "зварник"
+        ],
+        "mn": [
+          "гагнуур"
+        ],
+        "uz": [
+          "payvand*"
+        ],
+        "ne": [
+          "वेल्डिङ"
+        ],
+        "hi": [
+          "वेल्डिंग"
+        ],
+        "ja": [
+          "溶接"
+        ],
+        "es": [
+          "soldadura",
+          "soldador"
+        ],
+        "fr": [
+          "soudure",
+          "soudeur"
+        ],
+        "de": [
+          "schweißen",
+          "schweißer"
+        ],
+        "tr": [
+          "kaynakçı*"
+        ],
+        "ar": [
+          "لحام"
+        ]
+      }
+    },
+    {
+      "id": "sewing",
+      "ko": "재봉",
+      "surface": {
+        "ko": [
+          "미싱"
+        ],
+        "vi": [
+          "thợ may",
+          "xưởng may",
+          "may mặc"
+        ],
+        "th": [
+          "เย็บผ้า",
+          "ช่างเย็บ"
+        ],
+        "id": [
+          "menjahit",
+          "penjahit",
+          "garmen"
+        ],
+        "tl": [
+          "mananahi",
+          "pananahi"
+        ],
+        "ru": [
+          "швея",
+          "швейн",
+          "пошив"
+        ],
+        "mn": [
+          "оёдол"
+        ],
+        "uz": [
+          "tikuvchi*"
+        ],
+        "ja": [
+          "縫製",
+          "ミシン"
+        ],
+        "es": [
+          "costura",
+          "costurera"
+        ],
+        "fr": [
+          "couture",
+          "couturière"
+        ],
+        "de": [
+          "näherin",
+          "nähen",
+          "schneiderei"
+        ],
+        "tr": [
+          "dikiş*",
+          "terzi*"
+        ],
+        "ar": [
+          "خياطة"
+        ]
+      }
+    },
+    {
+      "id": "caregiver",
+      "ko": "요양보호사",
+      "surface": {
+        "vi": [
+          "chăm sóc người già",
+          "chăm sóc người cao tuổi",
+          "hộ lý"
+        ],
+        "th": [
+          "ดูแลผู้สูงอายุ",
+          "ผู้ดูแลผู้สูงอายุ"
+        ],
+        "id": [
+          "perawat lansia",
+          "pengasuh lansia"
+        ],
+        "tl": [
+          "tagapag-alaga"
+        ],
+        "ru": [
+          "сиделк",
+          "уход за пожилыми"
+        ],
+        "mn": [
+          "асрагч"
+        ],
+        "ja": [
+          "介護",
+          "ヘルパー"
+        ],
+        "es": [
+          "cuidador",
+          "cuidadora"
+        ],
+        "fr": [
+          "aide soignant",
+          "aide soignante",
+          "auxiliaire de vie"
+        ],
+        "de": [
+          "altenpflege",
+          "pflegekraft",
+          "pfleger"
+        ],
+        "tr": [
+          "bakıcı*"
+        ],
+        "ar": [
+          "رعاية المسنين"
+        ]
+      }
+    },
+    {
+      "id": "nursing_home",
+      "ko": "요양원",
+      "surface": {
+        "vi": [
+          "viện dưỡng lão"
+        ],
+        "th": [
+          "บ้านพักคนชรา"
+        ],
+        "id": [
+          "panti jompo"
+        ],
+        "ru": [
+          "дом престарелых"
+        ],
+        "ja": [
+          "老人ホーム",
+          "介護施設"
+        ],
+        "es": [
+          "residencia de ancianos"
+        ],
+        "fr": [
+          "maison de retraite",
+          "ehpad"
+        ],
+        "de": [
+          "altenheim",
+          "pflegeheim"
+        ],
+        "tr": [
+          "huzurevi*"
+        ],
+        "ar": [
+          "دار المسنين"
+        ]
+      }
+    },
+    {
+      "id": "nurse",
+      "ko": "간호사",
+      "surface": {
+        "vi": [
+          "y tá",
+          "điều dưỡng"
+        ],
+        "th": [
+          "พยาบาล"
+        ],
+        "id": [
+          "perawat"
+        ],
+        "tl": [
+          "nars"
+        ],
+        "ru": [
+          "медсестр",
+          "медбрат"
+        ],
+        "mn": [
+          "сувилагч"
+        ],
+        "uz": [
+          "hamshira*"
+        ],
+        "ne": [
+          "नर्स"
+        ],
+        "hi": [
+          "नर्स"
+        ],
+        "ja": [
+          "看護師"
+        ],
+        "es": [
+          "enfermera",
+          "enfermero"
+        ],
+        "fr": [
+          "infirmier",
+          "infirmière"
+        ],
+        "de": [
+          "krankenschwester",
+          "krankenpfleger"
+        ],
+        "tr": [
+          "hemşire*"
+        ],
+        "ar": [
+          "ممرضة",
+          "ممرض"
+        ]
+      }
+    },
+    {
+      "id": "hospital",
+      "ko": "병원",
+      "surface": {
+        "vi": [
+          "bệnh viện"
+        ],
+        "th": [
+          "โรงพยาบาล"
+        ],
+        "id": [
+          "rumah sakit"
+        ],
+        "tl": [
+          "ospital"
+        ],
+        "ru": [
+          "больниц",
+          "госпитал"
+        ],
+        "mn": [
+          "эмнэлэг"
+        ],
+        "uz": [
+          "kasalxona*",
+          "shifoxona*"
+        ],
+        "ne": [
+          "अस्पताल"
+        ],
+        "hi": [
+          "अस्पताल"
+        ],
+        "ja": [
+          "病院"
+        ],
+        "es": [
+          "clínica"
+        ],
+        "fr": [
+          "hôpital",
+          "clinique"
+        ],
+        "de": [
+          "krankenhaus",
+          "klinik"
+        ],
+        "tr": [
+          "hastane*"
+        ],
+        "ar": [
+          "مستشفى"
+        ]
+      }
+    },
+    {
+      "id": "doctor",
+      "ko": "의사",
+      "surface": {
+        "vi": [
+          "bác sĩ"
+        ],
+        "th": [
+          "แพทย์"
+        ],
+        "id": [
+          "dokter"
+        ],
+        "tl": [
+          "doktor"
+        ],
+        "ru": [
+          "врач"
+        ],
+        "mn": [
+          "эмч"
+        ],
+        "uz": [
+          "shifokor*"
+        ],
+        "ja": [
+          "医師"
+        ],
+        "es": [
+          "médico",
+          "médica"
+        ],
+        "fr": [
+          "médecin"
+        ],
+        "de": [
+          "arzt",
+          "ärztin"
+        ],
+        "tr": [
+          "doktor*"
+        ],
+        "ar": [
+          "طبيب"
+        ]
+      }
+    },
+    {
+      "id": "english_teacher",
+      "ko": "영어 강사",
+      "surface": {
+        "vi": [
+          "giáo viên tiếng anh",
+          "dạy tiếng anh"
+        ],
+        "th": [
+          "ครูสอนภาษาอังกฤษ",
+          "สอนภาษาอังกฤษ"
+        ],
+        "id": [
+          "guru bahasa inggris",
+          "mengajar bahasa inggris"
+        ],
+        "tl": [
+          "guro ng ingles",
+          "nagtuturo ng ingles"
+        ],
+        "ru": [
+          "учитель английского",
+          "преподаватель английского"
+        ],
+        "mn": [
+          "англи хэлний багш"
+        ],
+        "ja": [
+          "英語教師",
+          "英語の先生",
+          "英会話講師",
+          "英語を教え"
+        ],
+        "es": [
+          "profesor de inglés",
+          "profesora de inglés"
+        ],
+        "fr": [
+          "professeur d'anglais",
+          "prof d'anglais"
+        ],
+        "de": [
+          "englischlehrer",
+          "englischlehrerin"
+        ],
+        "tr": [
+          "ingilizce öğretmen*"
+        ],
+        "ar": [
+          "مدرس لغة إنجليزية",
+          "معلم لغة إنجليزية"
+        ]
+      }
+    },
+    {
+      "id": "teacher",
+      "ko": "교사",
+      "surface": {
+        "vi": [
+          "giáo viên",
+          "dạy học"
+        ],
+        "th": [
+          "ครู"
+        ],
+        "id": [
+          "guru",
+          "mengajar"
+        ],
+        "tl": [
+          "guro",
+          "nagtuturo"
+        ],
+        "ru": [
+          "учител",
+          "преподавател"
+        ],
+        "uk": [
+          "вчител",
+          "викладач"
+        ],
+        "mn": [
+          "багш"
+        ],
+        "uz": [
+          "o'qituvchi*"
+        ],
+        "ne": [
+          "शिक्षक"
+        ],
+        "hi": [
+          "शिक्षक",
+          "अध्यापक"
+        ],
+        "ja": [
+          "教師",
+          "講師"
+        ],
+        "es": [
+          "profesor",
+          "profesora",
+          "maestro",
+          "maestra"
+        ],
+        "fr": [
+          "professeur",
+          "enseignant",
+          "enseignante"
+        ],
+        "de": [
+          "lehrer",
+          "lehrerin"
+        ],
+        "tr": [
+          "öğretmen*"
+        ],
+        "ar": [
+          "مدرس",
+          "معلمة"
+        ],
+        "pt": [
+          "professora"
+        ]
+      }
+    },
+    {
+      "id": "academy",
+      "ko": "학원",
+      "surface": {
+        "vi": [
+          "trung tâm ngoại ngữ",
+          "trung tâm tiếng anh",
+          "trung tâm dạy thêm"
+        ],
+        "th": [
+          "โรงเรียนกวดวิชา",
+          "สถาบันสอนภาษา"
+        ],
+        "id": [
+          "tempat les",
+          "lembaga kursus",
+          "bimbel"
+        ],
+        "ja": [
+          "塾",
+          "語学学校",
+          "英会話教室"
+        ],
+        "es": [
+          "academia de idiomas",
+          "academia de inglés"
+        ],
+        "de": [
+          "sprachschule",
+          "nachhilfe"
+        ],
+        "tr": [
+          "dershane*"
+        ]
+      }
+    },
+    {
+      "id": "school",
+      "ko": "학교",
+      "surface": {
+        "vi": [
+          "trường học"
+        ],
+        "th": [
+          "โรงเรียน"
+        ],
+        "id": [
+          "sekolah"
+        ],
+        "tl": [
+          "paaralan"
+        ],
+        "ru": [
+          "школ"
+        ],
+        "mn": [
+          "сургууль"
+        ],
+        "uz": [
+          "maktab*"
+        ],
+        "ne": [
+          "विद्यालय"
+        ],
+        "hi": [
+          "स्कूल",
+          "विद्यालय"
+        ],
+        "ja": [
+          "学校"
+        ],
+        "es": [
+          "escuela",
+          "colegio"
+        ],
+        "fr": [
+          "école"
+        ],
+        "de": [
+          "schule"
+        ],
+        "tr": [
+          "okul*"
+        ],
+        "ar": [
+          "مدرسة"
+        ]
+      }
+    },
+    {
+      "id": "interpreter",
+      "ko": "통역",
+      "surface": {
+        "vi": [
+          "phiên dịch",
+          "thông dịch"
+        ],
+        "th": [
+          "ล่าม"
+        ],
+        "id": [
+          "juru bahasa"
+        ],
+        "ja": [
+          "通訳"
+        ],
+        "es": [
+          "intérprete"
+        ],
+        "fr": [
+          "interprète"
+        ],
+        "de": [
+          "dolmetscher"
+        ],
+        "tr": [
+          "tercüman*"
+        ],
+        "hi": [
+          "दुभाषिया"
+        ],
+        "ne": [
+          "दोभाषे"
+        ]
+      }
+    },
+    {
+      "id": "translator",
+      "ko": "번역",
+      "surface": {
+        "vi": [
+          "biên dịch",
+          "dịch thuật"
+        ],
+        "th": [
+          "นักแปล",
+          "แปลภาษา"
+        ],
+        "id": [
+          "penerjemah",
+          "menerjemahkan"
+        ],
+        "tl": [
+          "tagasalin",
+          "tagapagsalin"
+        ],
+        "ru": [
+          "переводчик",
+          "перевод"
+        ],
+        "mn": [
+          "орчуулагч",
+          "орчуулга"
+        ],
+        "uz": [
+          "tarjimon*"
+        ],
+        "ne": [
+          "अनुवादक"
+        ],
+        "hi": [
+          "अनुवादक"
+        ],
+        "ja": [
+          "翻訳"
+        ],
+        "es": [
+          "traductor",
+          "traductora"
+        ],
+        "fr": [
+          "traducteur",
+          "traductrice"
+        ],
+        "de": [
+          "übersetzer",
+          "übersetzerin"
+        ],
+        "tr": [
+          "çevirmen*"
+        ],
+        "ar": [
+          "مترجم",
+          "ترجمة"
+        ]
+      }
+    },
+    {
+      "id": "software_developer",
+      "ko": "소프트웨어 개발자",
+      "surface": {
+        "vi": [
+          "lập trình viên",
+          "lập trình",
+          "phát triển phần mềm"
+        ],
+        "th": [
+          "โปรแกรมเมอร์",
+          "นักพัฒนาซอฟต์แวร์",
+          "เขียนโปรแกรม"
+        ],
+        "id": [
+          "pengembang perangkat lunak",
+          "pemrograman"
+        ],
+        "ru": [
+          "программист",
+          "разработчик"
+        ],
+        "uk": [
+          "програміст",
+          "розробник"
+        ],
+        "mn": [
+          "програмист"
+        ],
+        "uz": [
+          "dasturchi*"
+        ],
+        "ne": [
+          "प्रोग्रामर"
+        ],
+        "hi": [
+          "प्रोग्रामर",
+          "सॉफ्टवेयर"
+        ],
+        "ja": [
+          "プログラマー",
+          "ソフトウェア開発",
+          "開発者"
+        ],
+        "es": [
+          "programador",
+          "programadora",
+          "desarrollador",
+          "desarrolladora"
+        ],
+        "fr": [
+          "développeur",
+          "développeuse",
+          "programmeur"
+        ],
+        "de": [
+          "programmierer",
+          "softwareentwickler",
+          "entwickler"
+        ],
+        "tr": [
+          "yazılımcı*",
+          "yazılım*"
+        ],
+        "ar": [
+          "مبرمج",
+          "مطور برمجيات"
+        ]
+      }
+    },
+    {
+      "id": "engineer",
+      "ko": "엔지니어",
+      "surface": {
+        "vi": [
+          "kỹ sư"
+        ],
+        "th": [
+          "วิศวกร"
+        ],
+        "id": [
+          "insinyur"
+        ],
+        "tl": [
+          "inhinyero"
+        ],
+        "ru": [
+          "инженер"
+        ],
+        "mn": [
+          "инженер"
+        ],
+        "uz": [
+          "muhandis*"
+        ],
+        "ne": [
+          "इन्जिनियर"
+        ],
+        "hi": [
+          "इंजीनियर"
+        ],
+        "ja": [
+          "エンジニア",
+          "技術者"
+        ],
+        "es": [
+          "ingeniero",
+          "ingeniera"
+        ],
+        "fr": [
+          "ingénieur",
+          "ingénieure"
+        ],
+        "de": [
+          "ingenieur",
+          "ingenieurin"
+        ],
+        "tr": [
+          "mühendis*"
+        ],
+        "ar": [
+          "مهندس"
+        ]
+      }
+    },
+    {
+      "id": "researcher",
+      "ko": "연구원",
+      "surface": {
+        "vi": [
+          "nghiên cứu viên",
+          "nghiên cứu"
+        ],
+        "th": [
+          "นักวิจัย"
+        ],
+        "id": [
+          "peneliti"
+        ],
+        "tl": [
+          "mananaliksik"
+        ],
+        "ru": [
+          "исследовател",
+          "научный сотрудник"
+        ],
+        "mn": [
+          "судлаач"
+        ],
+        "uz": [
+          "tadqiqotchi*"
+        ],
+        "ja": [
+          "研究員",
+          "研究者"
+        ],
+        "es": [
+          "investigador",
+          "investigadora"
+        ],
+        "fr": [
+          "chercheur",
+          "chercheuse"
+        ],
+        "de": [
+          "forscher",
+          "forscherin",
+          "wissenschaftler"
+        ],
+        "tr": [
+          "araştırmacı*"
+        ],
+        "ar": [
+          "باحث"
+        ]
+      }
+    },
+    {
+      "id": "office_worker",
+      "ko": "사무원",
+      "surface": {
+        "vi": [
+          "nhân viên văn phòng",
+          "văn phòng"
+        ],
+        "th": [
+          "พนักงานออฟฟิศ",
+          "งานออฟฟิศ"
+        ],
+        "id": [
+          "pegawai kantor",
+          "staf kantor",
+          "kerja kantoran"
+        ],
+        "tl": [
+          "opisina"
+        ],
+        "ru": [
+          "офис"
+        ],
+        "uz": [
+          "ofis*"
+        ],
+        "ja": [
+          "事務",
+          "会社員",
+          "オフィス"
+        ],
+        "es": [
+          "oficina",
+          "administrativo",
+          "administrativa"
+        ],
+        "fr": [
+          "employé de bureau",
+          "employée de bureau"
+        ],
+        "de": [
+          "büro",
+          "bürokaufmann",
+          "bürokauffrau"
+        ],
+        "tr": [
+          "ofis*",
+          "büro*"
+        ],
+        "ar": [
+          "موظف مكتب",
+          "مكتب"
+        ]
+      }
+    },
+    {
+      "id": "sales_clerk",
+      "ko": "판매원",
+      "surface": {
+        "vi": [
+          "nhân viên bán hàng",
+          "bán hàng"
+        ],
+        "th": [
+          "พนักงานขาย",
+          "ขายของ"
+        ],
+        "id": [
+          "pramuniaga",
+          "penjual"
+        ],
+        "tl": [
+          "tindera",
+          "tindero",
+          "saleslady"
+        ],
+        "ru": [
+          "продав"
+        ],
+        "mn": [
+          "худалдагч"
+        ],
+        "uz": [
+          "sotuvchi*"
+        ],
+        "ja": [
+          "販売",
+          "店員"
+        ],
+        "es": [
+          "vendedor",
+          "vendedora",
+          "dependiente",
+          "dependienta"
+        ],
+        "fr": [
+          "vendeur",
+          "vendeuse"
+        ],
+        "de": [
+          "verkäufer",
+          "verkäuferin"
+        ],
+        "tr": [
+          "tezgahtar*",
+          "satış*"
+        ],
+        "ar": [
+          "بائع"
+        ]
+      }
+    },
+    {
+      "id": "cashier",
+      "ko": "계산원",
+      "surface": {
+        "vi": [
+          "thu ngân"
+        ],
+        "th": [
+          "แคชเชียร์"
+        ],
+        "id": [
+          "kasir"
+        ],
+        "tl": [
+          "kahera",
+          "kahero"
+        ],
+        "ru": [
+          "кассир"
+        ],
+        "mn": [
+          "кассчин"
+        ],
+        "uz": [
+          "kassir*"
+        ],
+        "ja": [
+          "レジ"
+        ],
+        "es": [
+          "cajero",
+          "cajera"
+        ],
+        "fr": [
+          "caissier",
+          "caissière"
+        ],
+        "de": [
+          "kassierer",
+          "kassiererin"
+        ],
+        "tr": [
+          "kasiyer*"
+        ],
+        "ar": [
+          "أمين صندوق",
+          "كاشير"
+        ]
+      }
+    },
+    {
+      "id": "convenience_store",
+      "ko": "편의점",
+      "surface": {
+        "vi": [
+          "cửa hàng tiện lợi"
+        ],
+        "th": [
+          "ร้านสะดวกซื้อ"
+        ],
+        "id": [
+          "minimarket"
+        ],
+        "ru": [
+          "магазин у дома"
+        ],
+        "ja": [
+          "コンビニ"
+        ],
+        "es": [
+          "tienda de conveniencia"
+        ],
+        "fr": [
+          "supérette"
+        ]
+      }
+    },
+    {
+      "id": "supermarket",
+      "ko": "마트",
+      "surface": {
+        "vi": [
+          "siêu thị"
+        ],
+        "th": [
+          "ซูเปอร์มาร์เก็ต"
+        ],
+        "id": [
+          "swalayan"
+        ],
+        "ru": [
+          "супермаркет",
+          "магазин"
+        ],
+        "uk": [
+          "супермаркет",
+          "магазин"
+        ],
+        "mn": [
+          "дэлгүүр",
+          "супермаркет"
+        ],
+        "uz": [
+          "do'kon*"
+        ],
+        "ne": [
+          "पसल"
+        ],
+        "hi": [
+          "दुकान"
+        ],
+        "ja": [
+          "スーパー"
+        ],
+        "es": [
+          "supermercado"
+        ],
+        "fr": [
+          "supermarché"
+        ],
+        "de": [
+          "supermarkt"
+        ],
+        "tr": [
+          "süpermarket*",
+          "markette",
+          "markete",
+          "marketi"
+        ],
+        "ar": [
+          "سوبرماركت",
+          "بقالة"
+        ],
+        "pt": [
+          "supermercado"
+        ]
+      }
+    },
+    {
+      "id": "hair_salon",
+      "ko": "미용실 미용사",
+      "surface": {
+        "vi": [
+          "tiệm tóc",
+          "thợ cắt tóc",
+          "cắt tóc",
+          "làm tóc"
+        ],
+        "th": [
+          "ร้านทำผม",
+          "ช่างทำผม",
+          "ตัดผม"
+        ],
+        "id": [
+          "salon rambut",
+          "potong rambut",
+          "penata rambut"
+        ],
+        "tl": [
+          "gupit",
+          "parlor"
+        ],
+        "ru": [
+          "парикмахер"
+        ],
+        "mn": [
+          "үсчин"
+        ],
+        "uz": [
+          "sartarosh*"
+        ],
+        "ne": [
+          "सैलुन"
+        ],
+        "hi": [
+          "सैलून",
+          "नाई"
+        ],
+        "ja": [
+          "美容室",
+          "美容院",
+          "美容師"
+        ],
+        "es": [
+          "peluquería",
+          "peluquero",
+          "peluquera"
+        ],
+        "fr": [
+          "salon de coiffure",
+          "coiffeur",
+          "coiffeuse"
+        ],
+        "de": [
+          "friseursalon",
+          "friseur",
+          "friseurin"
+        ],
+        "tr": [
+          "kuaför*",
+          "berber*"
+        ],
+        "ar": [
+          "صالون حلاقة",
+          "مصفف شعر",
+          "حلاق"
+        ]
+      }
+    },
+    {
+      "id": "nail",
+      "ko": "네일",
+      "surface": {
+        "vi": [
+          "làm móng",
+          "tiệm nail"
+        ],
+        "th": [
+          "ทำเล็บ"
+        ],
+        "id": [
+          "manikur"
+        ],
+        "tl": [
+          "manikurista"
+        ],
+        "ru": [
+          "маникюр"
+        ],
+        "mn": [
+          "хумс"
+        ],
+        "ja": [
+          "ネイル"
+        ],
+        "es": [
+          "manicura",
+          "uñas"
+        ],
+        "fr": [
+          "manucure",
+          "ongles"
+        ],
+        "de": [
+          "nagelstudio",
+          "maniküre"
+        ],
+        "tr": [
+          "manikür*"
+        ],
+        "ar": [
+          "أظافر"
+        ]
+      }
+    },
+    {
+      "id": "car_mechanic",
+      "ko": "자동차 정비",
+      "surface": {
+        "vi": [
+          "thợ sửa xe",
+          "sửa xe",
+          "sửa ô tô"
+        ],
+        "th": [
+          "ช่างซ่อมรถ",
+          "ซ่อมรถ"
+        ],
+        "id": [
+          "montir",
+          "bengkel"
+        ],
+        "tl": [
+          "mekaniko"
+        ],
+        "ru": [
+          "автомехани",
+          "автосервис"
+        ],
+        "uz": [
+          "avtomexanik*"
+        ],
+        "ja": [
+          "整備士",
+          "自動車整備"
+        ],
+        "es": [
+          "mecánico",
+          "taller mecánico"
+        ],
+        "fr": [
+          "mécanicien",
+          "garagiste"
+        ],
+        "de": [
+          "kfz mechaniker",
+          "mechaniker"
+        ],
+        "tr": [
+          "oto tamir*",
+          "tamirci*"
+        ],
+        "ar": [
+          "ميكانيكي"
+        ]
+      }
+    },
+    {
+      "id": "housekeeper",
+      "ko": "가사 도우미",
+      "surface": {
+        "ko": [
+          "가정부"
+        ],
+        "vi": [
+          "giúp việc nhà",
+          "người giúp việc",
+          "osin"
+        ],
+        "id": [
+          "pembantu rumah tangga",
+          "asisten rumah tangga"
+        ],
+        "tl": [
+          "kasambahay",
+          "katulong"
+        ],
+        "ru": [
+          "домработниц"
+        ],
+        "ja": [
+          "家政婦",
+          "家事代行"
+        ],
+        "es": [
+          "empleada doméstica",
+          "trabajadora del hogar"
+        ],
+        "fr": [
+          "aide ménagère",
+          "femme de ménage"
+        ],
+        "de": [
+          "haushaltshilfe"
+        ],
+        "tr": [
+          "ev hizmetli*"
+        ],
+        "ar": [
+          "عاملة منزلية",
+          "خادمة"
+        ]
+      }
+    },
+    {
+      "id": "security_guard",
+      "ko": "경비원",
+      "surface": {
+        "vi": [
+          "nhân viên bảo vệ",
+          "bảo vệ"
+        ],
+        "th": [
+          "พนักงานรักษาความปลอดภัย",
+          "รปภ"
+        ],
+        "id": [
+          "satpam"
+        ],
+        "tl": [
+          "guwardiya",
+          "sekyu"
+        ],
+        "ru": [
+          "охранник"
+        ],
+        "mn": [
+          "харуул"
+        ],
+        "uz": [
+          "qorovul*"
+        ],
+        "ja": [
+          "警備員"
+        ],
+        "es": [
+          "guardia de seguridad",
+          "vigilante"
+        ],
+        "fr": [
+          "agent de sécurité",
+          "vigile"
+        ],
+        "de": [
+          "wachmann",
+          "sicherheitsdienst"
+        ],
+        "tr": [
+          "güvenlik görevlisi"
+        ],
+        "ar": [
+          "حارس أمن"
+        ]
+      }
+    },
+    {
+      "id": "part_time",
+      "ko": "알바",
+      "surface": {
+        "vi": [
+          "làm thêm",
+          "việc làm thêm",
+          "bán thời gian"
+        ],
+        "th": [
+          "พาร์ทไทม์",
+          "งานพิเศษ"
+        ],
+        "id": [
+          "paruh waktu"
+        ],
+        "ru": [
+          "подработк"
+        ],
+        "ja": [
+          "アルバイト",
+          "バイト"
+        ],
+        "es": [
+          "medio tiempo",
+          "tiempo parcial"
+        ],
+        "fr": [
+          "temps partiel",
+          "petit boulot"
+        ],
+        "de": [
+          "nebenjob",
+          "minijob",
+          "teilzeit"
+        ],
+        "tr": [
+          "yarı zamanlı"
+        ],
+        "ar": [
+          "دوام جزئي"
+        ]
+      }
+    }
+  ]
+}
