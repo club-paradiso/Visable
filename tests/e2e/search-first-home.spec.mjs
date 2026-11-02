@@ -85,7 +85,7 @@ test.describe('query matrix', () => {
     ['G-1-5', /^G-1-5 난민신청자/, '세부 자격'],
     ['C-3 비자 발급', /^C-3 사증발급/, '절차'],
     ['E-7-4 소득', /^E-7-4 /, '세부 자격'],
-    ['통합신청서', /필수 서류 작성/, '도구'],
+    ['통합신청서', /신청서 작성/, '도구'],
   ];
   for (const [query, label, kind] of CASES) {
     test(`"${query}" → ${label}`, async ({ page }) => {
