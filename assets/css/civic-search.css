@@ -584,7 +584,7 @@ html[dir="rtl"] .cs-service:hover > .cs-icon { transform: translateX(-3px) scale
   margin-bottom: 18px;
   letter-spacing: -.035em;
 }
-#civicLanding .cs-tools-core .cs-tool-grid { gap: 12px; }
+#civicLanding .cs-tools-core .cs-tool-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
 #civicLanding .cs-tools-core .cs-tool {
   margin: 0;
   padding: 20px;
@@ -608,6 +608,41 @@ html[dir="rtl"] .cs-service:hover > .cs-icon { transform: translateX(-3px) scale
 }
 #civicLanding .cs-tools-core .cs-tool strong { font-size: 16px; }
 #civicLanding .cs-tools-core .cs-tool small { font-size: 13px; line-height: 1.55; margin-top: 7px; }
+#civicLanding .cs-waymaker-entry {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 22px;
+  margin-bottom: 24px;
+  border: 1px solid var(--cs-line);
+  border-radius: 16px;
+  background: var(--cs-soft);
+  color: var(--cs-ink);
+}
+#civicLanding .cs-waymaker-entry strong { font-size: 17px; line-height: 1.5; }
+#civicLanding .cs-waymaker-entry small { margin-top: 6px; font-size: 14px; line-height: 1.6; color: var(--cs-muted); }
+#civicLanding .cs-waymaker-entry > .cs-icon { margin-inline-start: auto; flex-shrink: 0; }
+#civicLanding .cs-waymaker-entry:hover { border-color: var(--cs-green); }
+#civicLanding .cs-references { padding-block: 0 24px; }
+#civicLanding .cs-references h2 { margin: 0 0 8px; font-size: 14px; color: var(--cs-muted); }
+#civicLanding .cs-reference-links { display: flex; flex-wrap: wrap; gap: 8px 24px; }
+#civicLanding .cs-reference-links > :is(a, button) {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 8px 0;
+  border: 0;
+  background: transparent;
+  text-align: start;
+  font-size: 14px;
+  font-weight: 600;
+}
+#civicLanding .cs-reference-links .cs-icon { width: 18px; height: 18px; }
+@media (max-width: 680px) {
+  #civicLanding .cs-waymaker-entry { align-items: flex-start; padding: 18px; gap: 12px; }
+  #civicLanding .cs-waymaker-entry > .cs-icon-circle { display: none; }
+}
 #civicLanding .cs-directory {
   margin-block: 0 36px;
   padding-top: 0;

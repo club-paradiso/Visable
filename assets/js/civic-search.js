@@ -11,14 +11,16 @@
    * scripts/check_landing_shell.mjs asserts ko/en here == ko/en packs. */
   var copy = {
     ko: {
-      checklists: '서류 준비 목록', checklistsSub: '상황별 질문에 답하고 필요한 체류 서류를 확인해요.',
-      directoryIntro: "필요한 일을 고르면, 바로 시작할 수 있어요.", toolSearch: "도구 이름이나 필요한 일을 검색하세요", groupPrepare: "신청·서류", groupStay: "체류·생활", groupHelp: "상담·기관", toolEmpty: "맞는 도구가 없어요. 다른 이름으로 검색하거나 전체를 선택해 보세요.", browseSub: "체류자격과 업무를 골라 필요한 안내를 찾아요.", shortSub: "단기 방문의 목적에 맞는 입국 경로를 살펴봐요.", agenciesSub: "가까운 등록 민원대행기관을 찾아요.", hospitalsSub: "법무부 지정 의료기관과 위치를 확인해요.", jobsSub: "직업·산업분류 코드를 검색하고 확인해요.", pathwaysSub: "한국 생활에서 필요한 절차를 상황별로 살펴봐요.", remindersSub: "체류 관련 날짜를 계산하고 알림을 준비해요.", enforcementSub: "사실을 확인한 뒤 법령 기준과 AI 예상을 구분해 살펴봐요.",
+      checklists: "내게 필요한 서류", checklistsSub: '상황별 질문에 답하고 필요한 체류 서류를 확인해요.',
+      directoryIntro: "필요한 일을 고르면, 바로 시작할 수 있어요.", toolSearch: "도구 이름이나 필요한 일을 검색하세요", groupPrepare: "신청·서류", groupStay: "체류·생활", groupHelp: "상담·기관", toolEmpty: "맞는 도구가 없어요. 다른 이름으로 검색하거나 전체를 선택해 보세요.", browseSub: "체류자격과 업무를 골라 필요한 안내를 찾아요.", shortSub: "단기 방문의 목적에 맞는 입국 경로를 살펴봐요.", agenciesSub: "가까운 등록 민원대행기관을 찾아요.", hospitalsSub: "법무부 지정 의료기관과 위치를 확인해요.", jobsSub: "실제 하는 일을 입력하고 직업·산업분류 코드 후보를 확인해요.", pathwaysSub: "한국 생활에서 필요한 절차를 상황별로 살펴봐요.", remindersSub: "체류 관련 날짜를 계산하고 알림을 준비해요.", enforcementSub: "사실을 확인한 뒤 법령 기준과 AI 예상을 구분해 살펴봐요.",
       search: '비자·체류 검색', forms: '서류 작성', about: '이용 안내', submit: '검색', preparing: '검색을 준비하고 있습니다.', unavailable: '안내 데이터를 불러오지 못했습니다. 페이지를 새로고침해 주세요.',
       title: '답이 <em>보이는</em> 한국 생활.', sub: '비자 코드, 절차 이름, 지금 상황을 그대로 입력하세요.',
       placeholder: '예: F-6 연장, 이사했어요', pre: '입국 전 · 사증 발급', post: '입국 후 · 체류 관리',
       browse: '목적별로 둘러보기', journeyClose: '닫기',
+      waymakerPrompt: "어떤 절차부터 해야 할지 모르겠나요? 상황을 설명해 주세요.",
+      officialResources: "공식 자료 확인",
       coreTools: '바로 쓰는 도구',
-      paperwork: '필수 서류 작성', paperworkSub: '통합신청서 등 공식 서식을 단계별로 채우고 PDF로 내려받아요.',
+      paperwork: "신청서 작성", paperworkSub: '통합신청서 등 공식 서식을 단계별로 채우고 PDF로 내려받아요.',
       waymaker: 'Waymaker', waymakerSub: '복잡한 상황을 설명하면 필요한 절차와 근거를 단계별로 정리하는 AI 안내예요.',
       newHome: 'New Home', newHomeSub: '국적·귀화와 한국 정착 준비를 한곳에서 안내해요.',
       reservation: '방문예약 안내', reservationSub: '하이코리아 방문예약 방법과 준비사항을 확인하세요.',
@@ -50,7 +52,7 @@
       unknownCode: '{code}는 현재 수록된 공식 안내에서 찾을 수 없는 코드예요. 오타가 없는지 확인하거나 상위 코드를 살펴보세요.',
       notACode: '{code}는 공식 안내에 있는 체류자격 코드가 아니에요. 코드 대신 지금 상황을 입력해 보세요.',
       waymakerAsk: '상황을 설명하면 절차와 근거를 단계별로 정리해요',
-      short: '단기입국 경로', jobs: '직업·산업분류', office: '관할 출입국관서', agencies: '등록 민원대행기관', hospitals: '법무부지정 병원',
+      short: '단기입국 경로', jobs: "직업신고 코드 찾기", office: "관할 출입국 찾기", agencies: '등록 민원대행기관', hospitals: '법무부지정 병원',
       pathways: '생활 경로 8종', reminders: '체류 기한 계산·알림', naturalization: '국적·귀화 안내', enforcement: '출입국 사범처리 예상',
       pendingInfo: '2026년 10월판 공식 안내 원문은 검색용으로 반영되어 있고, 일부 항목의 내용 검토는 별도로 진행 중이에요. 구조화된 안내에는 각 근거의 기준일이 함께 표시됩니다.',
       bootFailed: '화면을 준비하지 못했어요. 새로고침하면 대부분 해결돼요.', reload: '새로고침',
@@ -58,14 +60,16 @@
       noscript: 'JavaScript가 꺼져 있으면 검색과 안내를 사용할 수 없어요. 공식 원문 PDF는 아래 링크에서 바로 열 수 있어요.'
     },
     en: {
-      checklists: 'Document checklists', checklistsSub: 'Answer a few questions to find the residence documents for your situation.',
-      directoryIntro: "Choose what you need to do. Start here.", toolSearch: "Search services or tasks", groupPrepare: "Applications & forms", groupStay: "Stay & daily life", groupHelp: "Advice & offices", toolEmpty: "No services match. Try another name or choose All results.", browseSub: "Choose a status and procedure to find the relevant guide.", shortSub: "Explore entry routes for a short visit.", agenciesSub: "Find a registered immigration agency near you.", hospitalsSub: "Find Ministry of Justice designated medical institutions.", jobsSub: "Search occupation and industry classification codes.", pathwaysSub: "Explore procedures for common situations in Korea.", remindersSub: "Calculate dates and prepare reminders for your stay.", enforcementSub: "Confirm the facts, then review legal criteria and AI estimates separately.",
+      checklists: "Documents for my situation", checklistsSub: 'Answer a few questions to find the residence documents for your situation.',
+      directoryIntro: "Choose what you need to do. Start here.", toolSearch: "Search services or tasks", groupPrepare: "Applications & forms", groupStay: "Stay & daily life", groupHelp: "Advice & offices", toolEmpty: "No services match. Try another name or choose All results.", browseSub: "Choose a status and procedure to find the relevant guide.", shortSub: "Explore entry routes for a short visit.", agenciesSub: "Find a registered immigration agency near you.", hospitalsSub: "Find Ministry of Justice designated medical institutions.", jobsSub: "Describe your work to find occupation and industry code candidates.", pathwaysSub: "Explore procedures for common situations in Korea.", remindersSub: "Calculate dates and prepare reminders for your stay.", enforcementSub: "Confirm the facts, then review legal criteria and AI estimates separately.",
       search: 'Visa & stay search', forms: 'Forms', about: 'About', submit: 'Search', preparing: 'Preparing your search…', unavailable: 'Could not load the guides. Please reload the page.',
       title: 'Life in Korea, made <img class="cs-hero-wordmark" src="assets/brand/visable-wordmark-green.svg" alt="VISABLE">', sub: 'Type a visa code, a procedure, or just describe your situation.',
       placeholder: 'e.g. F-6 extension, I moved', pre: 'Before entry · Visa issuance', post: 'After entry · Managing your stay',
       browse: 'Browse by purpose', journeyClose: 'Close',
+      waymakerPrompt: "Not sure where to start? Describe your situation.",
+      officialResources: "Check official sources",
       coreTools: 'Tools you can use now',
-      paperwork: 'Prepare documents', paperworkSub: 'Fill official forms such as the integrated application step by step and download a PDF.',
+      paperwork: "Fill in application forms", paperworkSub: 'Fill official forms such as the integrated application step by step and download a PDF.',
       waymaker: 'Waymaker', waymakerSub: 'Describe a complex situation and get the steps and sources laid out in order, with AI assistance.',
       newHome: 'New Home', newHomeSub: 'Nationality, naturalization and settling in Korea, guided in one place.',
       reservation: 'Visit reservations', reservationSub: 'Find the steps and preparation for a HiKorea appointment.',
@@ -97,7 +101,7 @@
       unknownCode: '{code} is not a code in the October 2026 official guidance. Check for a typo, or look at the parent code.',
       notACode: '{code} is not a status code in the official guidance. Try describing your situation instead.',
       waymakerAsk: 'Describe your situation and get the steps and sources in order',
-      short: 'Short-stay entry routes', jobs: 'Occupation & industry codes', office: 'Immigration offices', agencies: 'Registered agencies', hospitals: 'Designated hospitals',
+      short: 'Short-stay entry routes', jobs: "Find employment reporting codes", office: "Find my immigration office", agencies: 'Registered agencies', hospitals: 'Designated hospitals',
       pathways: 'Eight life pathways', reminders: 'Dates & reminders', naturalization: 'Nationality & naturalization', enforcement: 'Immigration enforcement',
       pendingInfo: 'The October 2026 official guidance is indexed for search; its content review is a separate step. Structured guidance shows the basis date of each source.',
       bootFailed: 'The page could not finish loading. Reloading usually fixes it.', reload: 'Reload',
@@ -428,13 +432,16 @@
       '<a class="cs-example-link" href="form-helper.html">' + icon('file-text') + '<span>' + esc(T('exForms')) + '</span></a></div>' +
       '<p class="cs-basis">' + esc(T('currentSource')) + '</p></section>' +
       '<section class="cs-tools cs-tools-core" aria-labelledby="csCoreTitle"><h2 id="csCoreTitle">' + esc(T('coreTools')) + '</h2><div class="cs-tool-grid">' +
+      toolLink(T, 'immigration-checklists.html', 'id-card', 'checklists', 'checklistsSub', ' data-cs-tool="checklists"') +
       toolLink(T, 'form-helper.html', 'file-text', 'paperwork', 'paperworkSub', ' data-cs-tool="forms"') +
-      toolLink(T, 'ai.html', 'compass', 'waymaker', 'waymakerSub', ' data-cs-tool="waymaker"') +
-      toolLink(T, 'new-home.html', 'house', 'newHome', 'newHomeSub', ' data-cs-tool="newhome"') +
+      toolButton(T, 'data-action="reveal-home-section" data-target="reminderSection" data-cs-tool="reminders"', 'calendar-days', 'reminders', 'remindersSub') +
       toolButton(T, 'data-action="open-hikorea-guide" data-cs-tool="reservation"', 'calendar-days', 'reservation', 'reservationSub') +
-      toolButton(T, 'data-cs-focus data-cs-manual data-cs-tool="manuals"', 'search', 'manuals', 'manualsSub') +
-      toolLink(T, 'manual.html', 'book-open', 'reader', 'readerSub', ' data-cs-tool="reader"') +
-      toolButton(T, 'data-action="open-jurisdiction-modal" data-cs-tool="office"', 'landmark', 'office', 'officeSub') + '</div></section>' +
+      toolButton(T, 'data-action="open-jurisdiction-modal" data-cs-tool="office"', 'landmark', 'office', 'officeSub') +
+      toolButton(T, 'data-action="open-jobcode-modal" data-cs-tool="jobs"', 'search', 'jobs', 'jobsSub') + '</div></section>' +
+      '<a class="cs-waymaker-entry" href="ai.html" data-cs-tool="waymaker"><span class="cs-icon-circle">' + icon('compass') + '</span><span class="cs-tool-body"><strong>' + esc(T('waymakerPrompt')) + '</strong><small>Waymaker · ' + esc(T('waymakerSub')) + '</small></span>' + icon('chevron-right') + '</a>' +
+      '<section class="cs-references" aria-labelledby="csReferenceTitle"><h2 id="csReferenceTitle">' + esc(T('officialResources')) + '</h2><div class="cs-reference-links">' +
+      '<button type="button" data-cs-focus data-cs-manual data-cs-tool="manuals">' + icon('search') + '<span>' + esc(T('manuals')) + '</span>' + icon('chevron-right') + '</button>' +
+      '<a href="manual.html" data-cs-tool="reader">' + icon('book-open') + '<span>' + esc(T('reader')) + '</span>' + icon('chevron-right') + '</a></div></section>' +
       directoryHtml(T) +
       '<div class="cs-source-strip"><span class="cs-source-strip-label">' + esc(T('sourceLabel')) + '</span><a href="' + VISA_PDF + '" target="_blank" rel="noopener">' + icon('file-text') + '<span>' + esc(T('visa')) + ' · 2026.10.19</span>' + icon('external-link') + '</a>' +
       '<a href="' + STAY_PDF + '" target="_blank" rel="noopener">' + icon('file-text') + '<span>' + esc(T('stay')) + ' · 2026.10.19</span>' + icon('external-link') + '</a></div>' +

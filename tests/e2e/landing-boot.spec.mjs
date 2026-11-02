@@ -10,8 +10,8 @@
 //     CLOSED → PRE → POST (tabs) → CLOSED, keyboard, ARIA state, focus return;
 //   * the directory entry and the legacy reveal action route through the same
 //     state machine;
-//   * Waymaker and New Home entries are visible on the home, navigate to the
-//     right pages, and the browser Back restores the landing;
+//   * Waymaker's direct entry and the nationality directory entry navigate to
+//     the right pages, and the browser Back restores the landing;
 //   * a failed civic script load shows the reload row instead of a dead page.
 import { test, expect } from '@playwright/test';
 
@@ -103,7 +103,7 @@ test('a failed civic script load leaves a usable page with a reload row, not a b
   // the static shell still offers the search field and the tools, never the old journey cards
   await expect(page.locator('#civicLanding #civicQuery')).toBeVisible();
   await expect(page.locator('#civicLanding .cs-route')).toHaveCount(0);
-  await expect(page.locator('#civicLanding .cs-tool')).toHaveCount(7);
+  await expect(page.locator('#civicLanding .cs-tool')).toHaveCount(6);
 });
 
 test.describe('purpose browse panel (the former journey content, reached from the directory)', () => {
@@ -205,11 +205,15 @@ test.describe('purpose browse panel (the former journey content, reached from th
 });
 
 test.describe('Waymaker and New Home entries', () => {
-  test('both are visible core tools on the home and are not only inside the collapsed directory', async ({ page }) => {
+  test('six preparation tools lead to separate AI assistance and the nationality directory entry', async ({ page }) => {
     await bootHome(page);
-    const waymaker = page.locator('.cs-tools-core .cs-tool[data-cs-tool="waymaker"]');
-    const newHome = page.locator('.cs-tools-core .cs-tool[data-cs-tool="newhome"]');
+    await expect(page.locator('.cs-tools-core .cs-tool strong')).toHaveText(['내게 필요한 서류', '신청서 작성', '체류 기한 계산·알림', '방문예약 안내', '관할 출입국 찾기', '직업신고 코드 찾기']);
+    await expect(page.locator('.cs-directory')).not.toHaveAttribute('open', /.*/);
+    const waymaker = page.locator('.cs-waymaker-entry');
+    const newHome = page.locator('.cs-directory a[href="new-home.html"]');
     const forms = page.locator('.cs-tools-core .cs-tool[data-cs-tool="forms"]');
+    await expect(waymaker).toBeVisible();
+    await page.locator('.cs-directory summary').click();
     for (const el of [waymaker, newHome, forms]) {
       await el.scrollIntoViewIfNeeded();
       await expect(el).toBeVisible();
@@ -218,7 +222,7 @@ test.describe('Waymaker and New Home entries', () => {
     }
     await expect(waymaker).toContainText('Waymaker');
     await expect(waymaker.locator('small')).not.toHaveText('');
-    await expect(newHome).toContainText('New Home');
+    await expect(newHome).toContainText('국적·귀화 안내');
     await expect(newHome.locator('small')).toContainText(/국적|Nationality/);
     await expect(waymaker).toHaveAttribute('href', 'ai.html');
     await expect(newHome).toHaveAttribute('href', 'new-home.html');
@@ -235,7 +239,7 @@ test.describe('Waymaker and New Home entries', () => {
 
   test('Waymaker opens the Waymaker workspace and Back restores the landing', async ({ page }) => {
     await bootHome(page);
-    await page.locator('.cs-tools-core .cs-tool[data-cs-tool="waymaker"]').click();
+    await page.locator('.cs-waymaker-entry').click();
     await expect(page).toHaveURL(/ai\.html$/);
     await expect(page.locator('body')).toHaveClass(/product-waymaker/);
     await expect(page.locator('.vf-product-wordmark.product-wordmark-light')).toBeVisible();
@@ -250,7 +254,8 @@ test.describe('Waymaker and New Home entries', () => {
 
   test('New Home opens the nationality hub and Back restores the landing', async ({ page }) => {
     await bootHome(page);
-    await page.locator('.cs-tools-core .cs-tool[data-cs-tool="newhome"]').click();
+    await page.locator('.cs-directory summary').click();
+    await page.locator('.cs-directory a[href="new-home.html"]').click();
     await expect(page).toHaveURL(/new-home\.html$/);
     await expect(page.locator('body')).toHaveClass(/product-new-home/);
     await expect(page.locator('.vf-product-wordmark.product-wordmark-light')).toBeVisible();
