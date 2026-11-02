@@ -612,6 +612,34 @@
         "audits/manual-refresh-20261019/stay_hwp_260918_to_261019.json"
       ],
       "review_record": "audits/manual-refresh-20261019/same-method-review.md"
+    },
+    {
+      "role": "stay_residence_manual",
+      "file": "docs/source-manuals/2026-11-02/extracted/full_text/stay_manual_261102.txt",
+      "file_sha256": "5e7acd91211a22ff7b800eb725a759f18b40980873f31fbd139f4f48f07a0e31",
+      "extracted_text_file": "docs/source-manuals/2026-11-02/extracted/full_text/stay_manual_261102.txt",
+      "extracted_text_sha256": "5e7acd91211a22ff7b800eb725a759f18b40980873f31fbd139f4f48f07a0e31",
+      "version": "2026.11 (unverified file-date edition)",
+      "source_date": "2026-11-02",
+      "source_date_basis": "filename date and cover month (2026. 11.); not verified as legal effective date",
+      "status": "pending_review",
+      "registry_id_when_promoted": "stay_manual_2026_11_02_hwp",
+      "verification_status": "owner_supplied_same_method_extraction_unreviewed",
+      "original_hwp_sha256": "cb9f30f76effdb6fc8aeaae1b41b0fd115b7ba1aa2378fcd9dff9e4af9c52d1c",
+      "original_file_stored": true,
+      "warning": "Parsed HWP text is NOT an approved, page-faithful edition. Do not promote to runtime legal grounding or use table relationships without checking source.",
+      "change_review_artifact": "audits/manual-refresh-20261102/README.md",
+      "original_file": "docs/source-manuals/2026-11-02/stay_manual_261102.hwp",
+      "same_method_extraction": {
+        "file": "docs/source-manuals/2026-11-02/extracted/full_text/stay_manual_261102.txt",
+        "file_sha256": "5e7acd91211a22ff7b800eb725a759f18b40980873f31fbd139f4f48f07a0e31",
+        "method": "scripts/decrypt_hwp_distribution.py (same script that reproduces the approved 2026-10-19 stay HWP extraction byte for byte)"
+      },
+      "same_method_diff": [
+        "audits/manual-refresh-20261102/stay_hwp_261019_to_261102.md",
+        "audits/manual-refresh-20261102/stay_hwp_261019_to_261102.json"
+      ],
+      "review_record": "audits/manual-refresh-20261102/README.md"
     }
   ]
 }

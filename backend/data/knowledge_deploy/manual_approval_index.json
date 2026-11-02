@@ -568,6 +568,32 @@
         "Tables are rendered from the converter's HTML/pipe tables as '열이름: 값' or '행 제목: 값' lines, with rowspans carried. Header detection is heuristic (short all-<th> leading rows); multi-level headers can be joined imperfectly, so a table row must be checked against the cited PDF page before it is quoted as a requirement."
       ],
       "approval_note": "Not a new approval. Recorded 2026-10-23 so the derived text is tracked: it inherits the owner's 2026-10-23 edition decision for stay_manual_2026_10_19_pdf only where a chunk is page-mapped to that approved PDF."
+    },
+    "stay_manual_2026_11_02_hwp": {
+      "approval_state": "needs_review",
+      "effective_date": "",
+      "parser": "scripts/decrypt_hwp_distribution.py (배포용 HWP ViewText AES)",
+      "reviewer": "",
+      "reviewed_at": "",
+      "source_confidence": "unreviewed",
+      "has_tables_or_annexes": true,
+      "section_locator": "paragraph",
+      "source_path": "docs/source-manuals/2026-11-02/stay_manual_261102.hwp",
+      "source_sha256": "cb9f30f76effdb6fc8aeaae1b41b0fd115b7ba1aa2378fcd9dff9e4af9c52d1c",
+      "extracted_text_path": "docs/source-manuals/2026-11-02/extracted/full_text/stay_manual_261102.txt",
+      "would_supersede": "stay_manual_2026_10_19_pdf",
+      "manifest_slot": "pending_review_editions",
+      "change_review_artifact": "audits/manual-refresh-20261102/README.md",
+      "extraction_warnings": [
+        "Extracted from the 배포용 HWP ViewText stream via scripts/decrypt_hwp_distribution.py. The same script re-reads the approved 2026-10-19 stay HWP byte-for-byte, so the method is verified; no human has compared this edition's CONTENT against the original.",
+        "NOT APPROVED, and deliberately not recorded as the current edition. The 2026-10-19 stay edition stays approved and current until a named reviewer records approval.",
+        "Paragraph-based, not page-based. It shares no locators with the 2026-10-19 PDF page corpus. Never merge paragraph locators and page numbers.",
+        "Do not interpret the date embedded in the filename or the cover month as a verified legal effective date.",
+        "The 2026-10-19 → 2026-11-02 change set is summarised in the change_review_artifact: 34 hunks. Review concentrates on E-7-4 / E-7-4R (장기근속 점수, 감점 벌금 기준, 연장 제출서류, 한국어능력 특례 경과조치, 시행일) and one new G-1-3 line in 성폭력 피해자 등 체류자격외 활동허가."
+      ],
+      "table_extraction_warnings": [
+        "별표/첨부서류 tables are flattened to paragraph text; cell and column boundaries are NOT preserved and must not be read as a structured table. This holds regardless of approval state."
+      ]
     }
   }
 }
