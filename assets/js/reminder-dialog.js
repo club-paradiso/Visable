@@ -65,10 +65,14 @@
     if (dialog.open && event.key === 'Tab') {
       var controls = Array.from(dialog.querySelectorAll('a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])'))
         .filter(function (el) { return !el.hidden && el.getClientRects().length > 0; });
-      var first = controls[0], last = controls[controls.length - 1];
-      if (first && (!dialog.contains(document.activeElement) || (event.shiftKey && document.activeElement === first) || (!event.shiftKey && document.activeElement === last))) {
+      if (controls.length) {
+        // Safari can skip buttons in its default Tab order. Keep every popup
+        // control reachable and prevent focus from escaping to browser chrome.
+        var current = controls.indexOf(document.activeElement);
+        var next = current < 0 ? (event.shiftKey ? controls.length - 1 : 0) : (current + (event.shiftKey ? -1 : 1) + controls.length) % controls.length;
         event.preventDefault();
-        (event.shiftKey ? last : first).focus({ preventScroll: true });
+        controls[next].focus({ preventScroll: true });
+        controls[next].scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'instant' });
       }
     }
     if (dialog.open && event.key === 'Escape') {
