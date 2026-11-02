@@ -114,6 +114,15 @@ Owner decision after 005-N: an expected conflict counts as resolved (critical) b
 not by the status label. An answer that gives every side's value and cites every record
 in conflict without preferring one is a status error. `conflict_resolution.py` holds the
 rule. Gate v10 will use it, and the frozen 005-M and 005-N decisions stand.
+Mission 005-O: gate v10 (the content conflict rule, and a raw category passes with 2 of 3
+cases, both owner decisions), a new locked 81-case suite, system and contract v11 unchanged,
+frozen before inference (commit `2891cea`). On a free T4 the gate **passed**, the first pass
+since 005-F: no critical release, no trust bypass, end-to-end 78/81, raw 59/63. At the old 0.75
+category bar two categories would have failed. The model labelled all three conflicts
+`conflict`, so the new rule was not exercised. The three misses are Korean answers to
+Vietnamese questions, which the guard withheld. DEV-20 then ran and withheld all 20 items
+before the model, because no real-world registry exists (fail closed, not an accuracy result).
+See the [Mission 005-O report](runs/mission005o/MISSION-005-O-REPORT.ko.md).
 
 Recovery status, 2026-10-29: checkpoint metadata verified; new MLX-VLM weight
 loading and generation **not executed** on this M1 8GB machine. The runtime is
