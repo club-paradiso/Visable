@@ -1157,6 +1157,10 @@
 
   // Tab order drives both the tablist and the prev/next tab navigation.
   var TAB_ORDER = ['overview', 'signup', 'login', 'reservation', 'manage', 'trouble'];
+  var TAB_ICON = {
+    overview: 'compass', signup: 'user', login: 'lock',
+    reservation: 'calendar-check', manage: 'clipboard', trouble: 'life-buoy'
+  };
   var TAB_LABEL_KEY = {
     overview: 'tabOverview', signup: 'tabSignup', login: 'tabLogin',
     reservation: 'tabReservation', manage: 'tabManage', trouble: 'tabTrouble'
@@ -1236,8 +1240,12 @@
       '#hikoreaGuideBody .prh-section-full{grid-column:1/-1;}',
 
       /* ---- tabbed photo guide ---- */
-      '#hikoreaGuideBody .prh-tabs{position:sticky;top:0;z-index:4;display:flex;gap:.35rem;flex-wrap:wrap;background:var(--bg1);padding:.15rem 0 .55rem;margin:-.25rem 0 0;border-bottom:1px solid var(--bd2);}',
-      '#hikoreaGuideBody .prh-tab{appearance:none;border:1.5px solid var(--bd2);background:var(--bg0);color:var(--t2);font-family:inherit;font-size:.82rem;font-weight:800;padding:.5rem .8rem;border-radius:999px;cursor:pointer;min-height:40px;white-space:nowrap;transition:border-color .15s,color .15s,background .15s;}',
+      '#hikoreaGuideBody .prh-tabs{position:sticky;top:0;z-index:4;display:flex;gap:.35rem;flex-wrap:nowrap;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:none;-webkit-overflow-scrolling:touch;background:var(--bg1);padding:.15rem 0 .55rem;margin:-.25rem 0 0;border-bottom:1px solid var(--bd2);}',
+      '#hikoreaGuideBody .prh-tab{appearance:none;border:1.5px solid var(--bd2);background:var(--bg0);color:var(--t2);font-family:inherit;font-size:.82rem;font-weight:800;padding:.5rem .8rem;border-radius:999px;cursor:pointer;min-height:44px;white-space:nowrap;flex:0 0 auto;scroll-snap-align:center;display:inline-flex;align-items:center;transition:border-color .15s,color .15s,background .15s;}',
+      '#hikoreaGuideBody .prh-tabs::-webkit-scrollbar{display:none;}',
+      '#hikoreaGuideBody .prh-tab[data-pg]::before{width:1.05em;height:1.05em;margin-inline-end:.38em;vertical-align:0;}',
+      '#hikoreaGuideBody .prh-qp strong{display:flex;align-items:center;}',
+      '#hikoreaGuideBody .prh-qp strong[data-pg]::before{width:1.25em;height:1.25em;margin-inline-end:.5em;color:var(--ac);vertical-align:0;}',
       '#hikoreaGuideBody .prh-tab:hover{border-color:var(--ac);color:var(--ac);}',
       '#hikoreaGuideBody .prh-tab:focus-visible{outline:3px solid color-mix(in srgb,var(--ac) 45%,transparent);outline-offset:2px;}',
       '#hikoreaGuideBody .prh-tab.is-active{background:color-mix(in srgb,var(--ac) 14%,var(--bg1));border-color:var(--ac);color:var(--ac2,var(--ac));}',
@@ -1443,7 +1451,7 @@
         var sel = state.tab === id;
         return '<button type="button" role="tab" id="prhtab-' + id + '" aria-selected="' + (sel ? 'true' : 'false') +
           '" tabindex="' + (sel ? '0' : '-1') + '" class="prh-tab' + (sel ? ' is-active' : '') +
-          '" data-prh-action="go-tab" data-prh-tab="' + id + '">' + esc(STR[TAB_LABEL_KEY[id]]) + '</button>';
+          '" data-pg="' + TAB_ICON[id] + '" data-prh-action="go-tab" data-prh-tab="' + id + '">' + esc(STR[TAB_LABEL_KEY[id]]) + '</button>';
       }).join('') + '</div>';
   }
 
@@ -1465,7 +1473,7 @@
   /* ------------------------------------------------------ overview (tab 1) */
   function quickCard(tab, titleKey, subKey) {
     return '<button type="button" class="prh-qp" data-prh-action="go-tab" data-prh-tab="' + tab + '">' +
-      '<strong>' + esc(STR[titleKey]) + '</strong><small>' + esc(STR[subKey]) + '</small></button>';
+      '<strong data-pg="' + (TAB_ICON[tab] || 'compass') + '">' + esc(STR[titleKey]) + '</strong><small>' + esc(STR[subKey]) + '</small></button>';
   }
 
   function overviewHtml() {
@@ -1502,7 +1510,7 @@
     // The full instruction is still conveyed by the do/caution text below.
     return '<figure class="prh-shot"><div class="prh-shot-ph" role="img" aria-label="' +
       esc(alt + ' — ' + STR.shotPending) + '">' +
-      '<span class="prh-shot-ph-icon" aria-hidden="true">🖼️</span>' +
+      '<span class="prh-shot-ph-icon" aria-hidden="true"><span class="pg pg-image pg-solo"></span></span>' +
       '<span class="prh-shot-ph-title">' + esc(STR.shotPending) + '</span>' +
       '<span class="prh-shot-ph-sub">' + esc(STR.shotPendingSub) + '</span>' +
       '</div></figure>';
@@ -1741,21 +1749,21 @@
     var clickLis = model.hikoreaClickSteps.map(function (id, i) {
       return '<li>' + esc(STR['click' + (i + 1)]) + '</li>';
     }).join('');
-    html += '<div class="prh-section prh-section-full"><h4>🖱️ ' + esc(STR.secClick) + '</h4><ol>' + clickLis + '</ol></div>';
+    html += '<div class="prh-section prh-section-full"><h4 data-pg="pointer">' + esc(STR.secClick) + '</h4><ol>' + clickLis + '</ol></div>';
 
     // 2. Before booking
     var beforeLis = model.beforeBookingChecklist.map(function (id) {
       var k = { identity: 'bIdentity', realNameAcct: 'bRealNameAcct', docsReady: 'bDocsReady', addressKnown: 'bAddressKnown', officeKnown: 'bOfficeKnown' }[id];
       return k ? '<li>' + esc(STR[k]) + '</li>' : '';
     }).join('');
-    html += '<div class="prh-section"><h4>🎒 ' + esc(STR.secBefore) + '</h4><ul>' + beforeLis + '</ul></div>';
+    html += '<div class="prh-section"><h4 data-pg="backpack">' + esc(STR.secBefore) + '</h4><ul>' + beforeLis + '</ul></div>';
 
     // 3. After booking
     var afterLis = model.afterBookingChecklist.map(function (id) {
       var k = { saveConfirm: 'aSaveConfirm', checkDateOffice: 'aCheckDateOffice', visitorName: 'aVisitorName', sameDayReminder: 'aSameDayReminder' }[id];
       return k ? '<li>' + esc(STR[k]) + '</li>' : '';
     }).join('');
-    html += '<div class="prh-section"><h4>✅ ' + esc(STR.secAfter) + '</h4><ul>' + afterLis + '</ul></div>';
+    html += '<div class="prh-section"><h4 data-pg="circle-check">' + esc(STR.secAfter) + '</h4><ul>' + afterLis + '</ul></div>';
 
     html += '</div>'; // .prh-sections
 
@@ -1770,7 +1778,7 @@
       if (!pair) return '';
       return '<details><summary>' + esc(STR[pair[0]]) + '</summary><p class="prh-blocked-body">' + esc(STR[pair[1]]) + '</p></details>';
     }).join('');
-    html += '<div class="prh-section prh-blocked prh-section-full"><h4>🛟 ' + esc(STR.secBlocked) + '</h4>' + blkHtml + '</div>';
+    html += '<div class="prh-section prh-blocked prh-section-full"><h4 data-pg="life-buoy">' + esc(STR.secBlocked) + '</h4>' + blkHtml + '</div>';
 
     // CTAs (hierarchy: Go to HiKorea · View docs (if code) · Save result · Start over)
     html += '<div class="prh-ctas">';
@@ -1820,6 +1828,17 @@
     if (!body) return;
     var inner = tabBarHtml() + '<div class="prh-tabpanel" id="prhTabPanel">' + tabPanelHtml() + '</div>' + lightboxHtml();
     body.innerHTML = '<div class="prh-root" data-prh-root>' + inner + '</div>';
+    centerActiveTab(body);
+  }
+
+  /* On phones the tab bar is a single scrolling row; keep the active tab visible. */
+  function centerActiveTab(body) {
+    try {
+      var bar = body.querySelector('.prh-tabs');
+      var tab = bar && bar.querySelector('.prh-tab.is-active');
+      if (!bar || !tab || bar.scrollWidth <= bar.clientWidth) return;
+      bar.scrollLeft = Math.max(0, tab.offsetLeft - (bar.clientWidth - tab.offsetWidth) / 2);
+    } catch (e) { /* cosmetic only */ }
   }
 
   /* ---------------------------------------------------------- transitions */

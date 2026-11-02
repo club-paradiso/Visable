@@ -58,6 +58,9 @@ body.civic-refresh::before, body.civic-refresh::after { display: none !important
 .cs-manual-results :focus-visible, #civicPageDialog :focus-visible { outline: 3px solid var(--cs-green); outline-offset: 4px; }
 .cs-nav { max-width: 1600px; margin: 0 auto; height: 92px; padding: 0 68px; display: flex; align-items: center; justify-content: space-between; gap: 32px; }
 .cs-brand img { display: block; width: 120px; height: auto; }
+/* 로고·메뉴가 본문(.cs-home)과 같은 좌우 라인에 서도록 상단 바 폭 제한을 해제 */
+#civicLanding .cs-nav { max-width: none; margin: 0; }
+#civicLanding .cs-brand { display: inline-flex; align-items: center; flex: 0 0 auto; }
 .cs-nav nav { display: flex; align-items: center; gap: 30px; font-size: 15px; font-weight: 650; }
 .cs-nav nav > button { border: 0; padding: 8px 0; background: none; }
 .cs-languages { display: flex; gap: 12px; border-left: 1px solid var(--cs-line); padding-left: 28px; }

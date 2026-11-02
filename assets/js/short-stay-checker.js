@@ -1619,7 +1619,7 @@
 '.ssc-details summary{cursor:pointer;font-size:.8rem;font-weight:700;color:var(--t2,#4f5552);min-height:32px;}' +
 '.ssc-srcline{font-size:.74rem;color:var(--t3,#757a76);margin-top:.55rem;}' +
 '.ssc-verdict{display:flex;gap:.6rem;align-items:flex-start;border-radius:12px;padding:.8rem .9rem;margin:.2rem 0 .7rem;border:1px solid var(--bd,#d1c6b4);}' +
-'.ssc-verdict-icon{font-size:1.45rem;line-height:1.15;flex:0 0 auto;}' +
+'.ssc-verdict-icon{font-size:1.45rem;line-height:1.15;flex:0 0 auto;display:inline-flex;}' +
 '.ssc-verdict-head{font-size:1.08rem;font-weight:800;margin:0 0 .2rem;color:var(--t1,#202221);word-break:keep-all;}' +
 '.ssc-verdict-sum{font-size:.85rem;line-height:1.6;margin:0;color:var(--t2,#4f5552);word-break:keep-all;}' +
 '.ssc-verdict-go{background:var(--acG,rgba(14,163,123,.10));border-color:var(--cSt,#0EA37B);}' +
@@ -1727,10 +1727,10 @@
       : '';
     var v = result.verdict || { tone: 'check', headline: result.primary.path, summary: '' };
     var toneClass = { go: 'ssc-verdict-go', jeju: 'ssc-verdict-jeju', transit: 'ssc-verdict-transit', visa: 'ssc-verdict-visa', check: 'ssc-verdict-check' }[v.tone] || 'ssc-verdict-check';
-    var toneIcon = { go: '✅', jeju: '🛫', transit: '✈️', visa: '📋', check: '⚠️' }[v.tone] || '⚠️';
+    var toneIcon = { go: 'circle-check', jeju: 'plane', transit: 'plane', visa: 'clipboard', check: 'alert' }[v.tone] || 'alert';
     return '' +
       '<div class="ssc-verdict ' + toneClass + '" role="status">' +
-        '<span class="ssc-verdict-icon" aria-hidden="true">' + toneIcon + '</span>' +
+        '<span class="ssc-verdict-icon" aria-hidden="true"><span class="pg pg-' + toneIcon + ' pg-solo"></span></span>' +
         '<div><p class="ssc-verdict-head">' + esc(v.headline) + statusBadge(result.primary.status) + '</p>' +
           (v.summary ? '<p class="ssc-verdict-sum">' + esc(v.summary) + '</p>' : '') +
         '</div>' +
@@ -1938,7 +1938,8 @@
       cta.type = 'button';
       cta.className = 'ssc-btn ssc-btn-ghost ssc-cta';
       cta.style.cssText = 'margin:.5rem 0;width:100%;text-align:left;';
-      cta.textContent = '🧭 ' + STR.title + STR.ctaSuffix;
+      cta.setAttribute('data-pg', 'compass');
+      cta.textContent = STR.title + STR.ctaSuffix;
       cta.addEventListener('click', openShortStayUI);
       slot.appendChild(cta);
     }
@@ -2006,7 +2007,8 @@
       try { renderShortStayChecker(section); } catch (e) { /* noop */ }
     }
     document.querySelectorAll('.ssc-cta').forEach(function (cta) {
-      cta.textContent = '🧭 ' + STR.title + STR.ctaSuffix;
+      cta.setAttribute('data-pg', 'compass');
+      cta.textContent = STR.title + STR.ctaSuffix;
     });
   });
 
