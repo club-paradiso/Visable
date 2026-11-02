@@ -82,9 +82,15 @@ const examples = [...current.matchAll(/<button type="button" data-cs-query="([^"
 ok(examples.length >= 3 && examples.length <= 5, `a restrained set of example searches (${examples.length})`);
 ok(/class="cs-examples" role="group" aria-labelledby="csExamplesLabel"/.test(current) && !/자주 찾는|인기|popular/i.test(current.slice(at('class="cs-examples"'), at('class="cs-basis"'))), 'examples are a labelled group and do not claim popularity');
 ok(/<a class="cs-example-link" href="form-helper\.html">/.test(current), 'the integrated application example opens Form Helper directly');
-for (const href of ['form-helper.html', 'ai.html', 'new-home.html', 'manual.html']) ok(new RegExp(`<a class="cs-tool" href="${href}"`).test(current), `tool entry links to ${href}`);
-for (const action of ['open-hikorea-guide', 'open-jurisdiction-modal']) ok(new RegExp(`<button type="button" class="cs-tool" data-action="${action}"`).test(current), `tool entry opens ${action}`);
-ok((current.match(/class="cs-tool"/g) || []).length === 7, 'seven tools, in one secondary grid');
+for (const href of ['immigration-checklists.html', 'form-helper.html']) ok(new RegExp(`<a class="cs-tool" href="${href}"`).test(current), `core tool links to ${href}`);
+for (const action of ['open-hikorea-guide', 'open-jurisdiction-modal', 'open-jobcode-modal']) ok(new RegExp(`<button type="button" class="cs-tool" data-action="${action}"`).test(current), `core tool opens ${action}`);
+ok(/class="cs-tool" data-action="reveal-home-section" data-target="reminderSection"/.test(current), 'core deadline tool reaches the existing date calculator');
+const core = current.slice(at('class="cs-tools cs-tools-core"'), at('class="cs-waymaker-entry"'));
+ok(JSON.stringify([...core.matchAll(/data-cs-tool="([^"]+)"/g)].map(m => m[1])) === JSON.stringify(['checklists', 'forms', 'reminders', 'reservation', 'office', 'jobs']), 'six core tools follow application preparation order');
+ok((current.match(/class="cs-tool"/g) || []).length === 6, 'six tools in the core grid');
+ok(/<a class="cs-waymaker-entry" href="ai.html"/.test(current) && at('class="cs-waymaker-entry"') < at('class="cs-directory"'), 'Waymaker remains directly accessible below the core tools');
+ok(/<a href="new-home.html" class="cs-service"/.test(current), 'nationality guidance remains available in the full directory');
+ok(/class="cs-references"[\s\S]*data-cs-manual[\s\S]*href="manual.html"/.test(current), 'official source search and manual reader share a reference section');
 ok(at('<h1>') < at('id="civicSearchForm"') && at('id="civicSearchForm"') < at('class="cs-examples"') && at('class="cs-examples"') < at('id="csCoreTitle"') && at('id="csCoreTitle"') < at('class="cs-source-strip"') && at('class="cs-source-strip"') < at('class="cs-footer"'), 'hierarchy: headline → search → examples → tools → sources → disclaimer');
 ok(/<footer class="cs-footer">[\s\S]*Visable은 공식 정부 서비스가 아닙니다/.test(current), 'the not-a-government-service disclaimer stays in the shell');
 ok(/visa_manual_261019\.pdf/.test(current) && /stay_manual_261019\.pdf/.test(current) && (current.match(/2026\.10\.19/g) || []).length >= 2, 'official source PDFs and their basis dates stay on the home');
