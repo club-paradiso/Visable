@@ -101,6 +101,15 @@ conflicting values under status "answered", one correct answer hit a faulty suit
 pattern). Location words inside a document name and a narrow method-question pattern
 also surfaced. DEV-20 was not run. See the
 [Mission 005-M report](runs/mission005m/MISSION-005-M-REPORT.ko.md).
+Mission 005-N: thresholds kept; document and office names in the question are not read
+as the user's location, procedure or asked items, "how can … apply" allows several words,
+claim support does not read an age as a period, an opening language request is removed,
+contract v11 and gate v9, frozen before inference (commit `b74210c`). On a free T4 every
+system fix held: pre-inference 81/81 and end-to-end 78/81. The gate failed on three
+releases counted as critical by the frozen rules: two answers again gave both conflicting
+values under status "answered" (the v11 sentence did not change this), and one correct
+answer hit a faulty suite pattern. The conflict-status rule is left to the owner. DEV-20 was
+not run. See the [Mission 005-N report](runs/mission005n/MISSION-005-N-REPORT.ko.md).
 
 Recovery status, 2026-10-29: checkpoint metadata verified; new MLX-VLM weight
 loading and generation **not executed** on this M1 8GB machine. The runtime is
