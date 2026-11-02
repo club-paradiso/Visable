@@ -70,6 +70,27 @@ function stripKoSuffix(token) {
   return token;
 }
 
+// Spoken/chat-style Korean endings that KO_SUFFIX_RE does not cover. People type
+// "공장에서일합니당" or "식당주방보조해여" with no spaces and a playful ending;
+// without this, the whole sentence stayed one token and short words like 공장
+// (2 syllables, so not substring-matched) were never found.
+const KO_COLLOQUIAL_END_RE = /(하고\s?있어요|하고있습니다|하는중이에요|하는중|중이에요|중입니다|합니당|합니다|했습니다|했었어요|했어요|해여|해용|해욤|했음|입니당|입니다|다녀요|다닙니다|근무해요|근무합니다|일해요|일합니다|일하고)$/;
+// Postpositions that join two nouns inside an unspaced run: "공장에서일" → 공장 + 일.
+const KO_JOIN_SPLIT_RE = /에서|에게|한테|으로/;
+
+function koreanSubTokens(token) {
+  if (!/^[가-힣]{4,}$/.test(token)) return [];
+  const out = [];
+  token.split(KO_JOIN_SPLIT_RE).forEach((part) => {
+    let p = part.replace(KO_COLLOQUIAL_END_RE, '');
+    p = stripKoSuffix(p);
+    if (p && p !== token) out.push(p);
+  });
+  const whole = token.replace(KO_COLLOQUIAL_END_RE, '');
+  if (whole && whole !== token) out.push(whole, stripKoSuffix(whole));
+  return out;
+}
+
 /** Turn raw text into a de-duplicated list of useful query tokens. */
 export function tokenize(text) {
   const norm = normalize(text);
@@ -78,11 +99,141 @@ export function tokenize(text) {
   norm.split(' ').forEach((raw) => {
     const t = raw.trim();
     if (!t) return;
-    [t, stripKoSuffix(t)].forEach((cand) => {
+    [t, stripKoSuffix(t), ...koreanSubTokens(t)].forEach((cand) => {
       if (cand && cand.length >= 2 && !STOP_TERMS.has(cand)) out.add(cand);
     });
   });
   return [...out];
+}
+
+/* --------------------------------------------------------------------------
+ * 1b. Multilingual pivot (data/employment/multilingual_pivot.json)
+ *
+ * People describe their work in Vietnamese, Thai, Russian, Nepali, Japanese…
+ * A matched phrase is mapped to a short Korean pivot term that the Korean
+ * lexicon already resolves; the rest of the pipeline then runs unchanged on
+ * Korean. The pivot file carries no codes — retrieval still goes through
+ * searchTrack over the official table, so nothing can be invented here.
+ * ------------------------------------------------------------------------ */
+
+const PIVOT_APOSTROPHE_RE = /['’‘ʻʼ`´]/g;
+const PIVOT_PUNCT_RE = /[(){}\[\],.\/|·•∙:;!?"~_+\-=*&^%$#@<>「」『』【】、。！？，]/g;
+
+/** Lowercase, drop apostrophes (o'qituvchi → oqituvchi), fold Latin accents
+ * (nhà hàng → nha hang, İngilizce → ingilizce). Accents on non-Latin scripts
+ * (Thai vowels, Devanagari matras, Japanese dakuten) are meaningful and kept. */
+export function pivotNormalize(value) {
+  return String(value == null ? '' : value)
+    .normalize('NFC')
+    .toLowerCase()
+    .replace(PIVOT_APOSTROPHE_RE, '')
+    .replace(PIVOT_PUNCT_RE, ' ')
+    .normalize('NFD')
+    .replace(/(\p{Script=Latin})\p{M}+/gu, '$1')
+    .normalize('NFC')
+    .replace(/ı/g, 'i')
+    .replace(/đ/g, 'd')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+const PIVOT_BOUNDARY = '(^|[^\\p{L}\\p{M}\\p{N}])';
+const PIVOT_END = '(?![\\p{L}\\p{M}\\p{N}])';
+const escapeRegExp = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+/** Compile the pivot lexicon once into matchers, longest phrase first. */
+export function compileMultilingualPivot(pivot) {
+  const entries = pivot && Array.isArray(pivot.entries) ? pivot.entries : [];
+  const matchers = [];
+  for (const entry of entries) {
+    if (!entry || typeof entry.ko !== 'string' || !entry.ko.trim()) continue;
+    for (const [lang, list] of Object.entries(entry.surface || {})) {
+      for (const raw of Array.isArray(list) ? list : []) {
+        const display = String(raw || '').replace(/\*$/, '').trim();
+        const prefix = /\*$/.test(String(raw || ''));
+        const s = pivotNormalize(display);
+        if (!s) continue;
+        let kind;
+        let re = null;
+        if (/^[\p{Script=Latin}0-9 ]+$/u.test(s)) {
+          // Whole words; '*' lets a suffix follow (Turkish fabrikada, Uzbek zavodda).
+          kind = 'word';
+          re = new RegExp(PIVOT_BOUNDARY + escapeRegExp(s) + (prefix ? '' : PIVOT_END), 'u');
+        } else if (/[\p{Script=Cyrillic}\p{Script=Devanagari}\p{Script=Bengali}]/u.test(s)) {
+          // Spaced scripts that inflect the ending: match from a word start, so
+          // "отель" never fires inside "хотел" but "заводе" still finds "завод".
+          kind = 'word_start';
+          re = new RegExp(PIVOT_BOUNDARY + escapeRegExp(s), 'u');
+        } else {
+          // Unspaced scripts (Thai, Japanese, Khmer, Myanmar) and Arabic, whose
+          // article and conjunction attach to the front of the noun.
+          kind = 'substring';
+        }
+        matchers.push({ id: entry.id, ko: entry.ko.trim(), lang, surface: display, needle: s, kind, re });
+      }
+    }
+  }
+  matchers.sort((a, b) => b.needle.length - a.needle.length);
+  return matchers;
+}
+
+/**
+ * Find pivot phrases in the text. The longest phrase wins and its span is
+ * blanked out, so "đầu bếp" (cook) is never also read as "bếp" (kitchen).
+ * Returns the hits and the Korean pivot text to append to the analysis input.
+ */
+export function matchMultilingualPivot(text, matchers) {
+  let work = pivotNormalize(text);
+  const hits = [];
+  if (!work || !Array.isArray(matchers) || !matchers.length) return { hits, koText: '' };
+  for (const m of matchers) {
+    let start = -1;
+    let length = m.needle.length;
+    if (m.kind === 'substring') {
+      start = work.indexOf(m.needle);
+    } else {
+      const found = m.re.exec(work);
+      if (found) { start = found.index + found[1].length; length = found[0].length - found[1].length; }
+    }
+    if (start < 0) continue;
+    work = work.slice(0, start) + ' '.repeat(length) + work.slice(start + length);
+    if (!hits.some((h) => h.id === m.id)) hits.push({ id: m.id, lang: m.lang, surface: m.surface, ko: m.ko });
+  }
+  const koText = [...new Set(hits.map((h) => h.ko))].join(' ');
+  return { hits, koText };
+}
+
+/**
+ * The language the person typed in, independent of the UI language. Script
+ * decides where it is unambiguous; otherwise the pivot hits vote.
+ */
+export function detectInputLanguage(text, hits = []) {
+  const t = String(text || '');
+  const hasLatin = /[a-z]/i.test(t);
+  if (/[가-힣]/.test(t)) return hasLatin ? 'mixed' : 'ko';
+  if (/[぀-ヿ]/.test(t)) return 'ja';
+  if (/[一-鿿]/.test(t)) return 'zh';
+  if (/[฀-๿]/.test(t)) return 'th';
+  if (/[ក-៿]/.test(t)) return 'km';
+  if (/[က-႟]/.test(t)) return 'my';
+  if (/[ঀ-৿]/.test(t)) return 'bn';
+  if (/[؀-ۿ]/.test(t)) return 'ar';
+  const votes = Object.create(null);
+  for (const h of hits) if (h.lang !== 'ko') votes[h.lang] = (votes[h.lang] || 0) + 1;
+  const ranked = Object.entries(votes).sort((a, b) => b[1] - a[1]);
+  if (/[Ѐ-ӿ]/.test(t)) {
+    if (/[өүҮӨ]/.test(t)) return 'mn';
+    if (/[іїєґІЇЄҐ]/.test(t)) return 'uk';
+    return ranked.length && ['ru', 'uk', 'mn'].includes(ranked[0][0]) ? ranked[0][0] : 'ru';
+  }
+  if (/[ऀ-ॿ]/.test(t)) return ranked.length && ['ne', 'hi'].includes(ranked[0][0]) ? ranked[0][0] : 'hi';
+  if (/[ăâđêôơưạảấầẩẫậắằẳẵặẹẻẽếềểễệỉịọỏốồổỗộớờởỡợụủứừửữựỳỵỷỹ]/i.test(t)) return 'vi';
+  if (/[ğışİ]/.test(t)) return 'tr';
+  if (ranked.length) {
+    const foreign = ranked.find(([lang]) => lang !== 'en');
+    return foreign ? foreign[0] : 'en';
+  }
+  return hasLatin ? 'en' : 'unknown';
 }
 
 /* --------------------------------------------------------------------------
@@ -894,8 +1045,12 @@ const SPECIAL_STATE_SPECS = [
     action: 'confirm_with_office'
   },
   {
+    // Foreign or mixed-language input that still produced no official
+    // candidate. Inputs the pivot understood are not flagged: asking someone to
+    // rewrite a sentence that already worked would only add friction.
     id: 'mixed_language',
-    test: (r) => r.detectedLanguage === 'mixed',
+    test: (r) => r.noOfficialCodeFound === true
+      && !!r.inputLanguage && r.inputLanguage !== 'ko',
     action: 'rewrite_in_korean'
   },
   {
@@ -1007,6 +1162,8 @@ export function createEmploymentAnalyzer(deps = {}) {
   const fieldLex = deps.fieldTerms || { ko: { signals: [] }, en: { signals: [] } };
   const disambiguationRules = (deps.disambiguation && Array.isArray(deps.disambiguation.rules)) ? deps.disambiguation.rules : [];
   const incomeBrackets = deps.incomeBrackets || null;
+  // Multilingual pivot: foreign phrases → Korean retrieval words. Optional.
+  const pivotMatchers = compileMultilingualPivot(deps.pivot);
   const index = buildIndex(dataset);
   const conceptPool = Object.values(lexicon).flatMap((v) => v.concepts || []);
   const surfaces = [...conceptPool.flatMap((c) => c.surface || []),
@@ -1028,17 +1185,23 @@ export function createEmploymentAnalyzer(deps = {}) {
         roleText = roleText.replace(new RegExp(term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'), ' ');
       }
     }
-    const analyzedInput = { ...safeInput, text: understanding.text };
+    // Translate recognisable foreign phrases into Korean pivot words and run the
+    // normal pipeline on the original text plus those words. The original stays
+    // in so English/Chinese pools and mixed input keep matching as before.
+    const pivot = matchMultilingualPivot(understanding.text, pivotMatchers);
+    const inputLanguage = detectInputLanguage(safeInput.text, pivot.hits);
+    const workText = pivot.koText ? `${understanding.text} ${pivot.koText}`.trim() : understanding.text;
+    const analyzedInput = { ...safeInput, text: workText };
     const entities = extractEntities(analyzedInput, lexicon);
 
     // Umbrella / ambiguous inputs (아이돌, 댄서, 타투이스트, 반영구화장, 알바, ...):
     // decompose into real sub-role terms, never a single invented code, and carry
     // their legal sensitivity + confidence cap into retrieval.
-    const tokenSet = new Set(tokenize(understanding.text));
+    const tokenSet = new Set(tokenize(workText));
     const ambiguousMatches = matchAmbiguous(entities.normalizedInput, tokenSet, ambiguousEntries);
 
     // Field-labor place/object/action/tool signals (장소 + 대상 + 작업).
-    const fieldSig = extractFieldSignals(understanding.text, fieldLex);
+    const fieldSig = extractFieldSignals(workText, fieldLex);
 
     let occTerms = entities.occupationTerms.slice();
     let indTerms = entities.industryTerms.slice();
@@ -1077,10 +1240,10 @@ export function createEmploymentAnalyzer(deps = {}) {
       ...ambiguousMatches.map((m) => m.entry.candidate_caveat_industry || m.entry.candidate_caveat)
     ]);
 
-    const occupationCandidates = searchTrack(index, 'occupation', roleText || understanding.text, occTerms, {
+    const occupationCandidates = searchTrack(index, 'occupation', roleText || workText, occTerms, {
       limit: 5, sourceMeta: occMeta, confidenceCap, caveats: occCaveats
     });
-    const industryCandidates = searchTrack(index, 'industry', extraction && extraction.employerMainBusiness || understanding.text, indTerms, {
+    const industryCandidates = searchTrack(index, 'industry', extraction && extraction.employerMainBusiness || workText, indTerms, {
       limit: 5, sourceMeta: indMeta, confidenceCap: understanding.employerUnclear ? 'low' : confidenceCap, caveats: indCaveats
     });
 
@@ -1138,10 +1301,14 @@ export function createEmploymentAnalyzer(deps = {}) {
 
     const payload = {
       input: safeInput.text,
-      searchText: understanding.text,
+      searchText: workText,
       excludedMentions: understanding.excluded,
       normalizedInput: entities.normalizedInput,
       detectedLanguage: entities.language,
+      // The language actually typed (UI language aside) and the phrases the
+      // multilingual pivot translated, so the UI can show "nhà hàng → 식당".
+      inputLanguage,
+      translatedTerms: pivot.hits,
       mode,
       parsedInterpretation: parsedInterpretation || undefined,
       // Structured field-labor signals (spec: parsedSignals).
@@ -1208,6 +1375,10 @@ if (typeof window !== 'undefined') {
     normalize,
     tokenize,
     detectLanguage,
+    detectInputLanguage,
+    pivotNormalize,
+    compileMultilingualPivot,
+    matchMultilingualPivot,
     extractEntities,
     extractFieldSignals,
     detectMode,
@@ -1223,6 +1394,10 @@ export default {
   normalize,
   tokenize,
   detectLanguage,
+  detectInputLanguage,
+  pivotNormalize,
+  compileMultilingualPivot,
+  matchMultilingualPivot,
   extractEntities,
   extractFieldSignals,
   detectMode,
