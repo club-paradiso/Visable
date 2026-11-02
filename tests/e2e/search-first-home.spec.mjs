@@ -185,8 +185,8 @@ test.describe('combobox behaviour', () => {
     await expect(page.locator('#civicQuery')).not.toBeFocused();
     await typeQuery(page, 'F-6');
     await expect(options(page).first()).toBeVisible();
-    // outside the field and the panel (the headline is folded away in the phone search sheet)
-    await page.locator('.cs-hero > .cs-basis').click();
+    // outside the field and the panel (the headline and examples fold away while typing)
+    await page.locator('#csCoreTitle').click();
     await expect(page.locator('.cs-suggest')).toBeHidden();
   });
 
