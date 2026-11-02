@@ -123,6 +123,15 @@ category bar two categories would have failed. The model labelled all three conf
 Vietnamese questions, which the guard withheld. DEV-20 then ran and withheld all 20 items
 before the model, because no real-world registry exists (fail closed, not an accuracy result).
 See the [Mission 005-O report](runs/mission005o/MISSION-005-O-REPORT.ko.md).
+Mission 005-P: when the reply language is the guard's only objection, the system asks once
+more with a `language_retry` note (contract v12, gate v11; raw scoring keeps the first answer).
+A new locked 81-case suite was frozen before inference (commit `158e797`). On a free T4 the gate
+failed on one reason, raw partial_response 1/3. One of those two misses is a correct answer that
+a too-narrow suite mention group rejected (A05P-41); without it the gate would have passed, but
+the frozen decision stands. All 63 answers were in the reply language, so the retry never ran.
+A new system gap: claim support reads the Vietnamese date "ngày 1 tháng 6 năm 2026" as two periods
+and withheld a correct answer (A05P-24). DEV-20 was not run. See the
+[Mission 005-P report](runs/mission005p/MISSION-005-P-REPORT.ko.md).
 
 Recovery status, 2026-10-29: checkpoint metadata verified; new MLX-VLM weight
 loading and generation **not executed** on this M1 8GB machine. The runtime is
