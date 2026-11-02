@@ -46,8 +46,7 @@ body[data-theme="dark"] .vs-brand-logo { content: url('../brand/visable-wordmark
 }
 .brandline:has(.vs-brand-logo) { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px; }
 @media print { .vs-brand-logo { content: url('../brand/visable-wordmark.svg') !important; } }
-:root { scrollbar-gutter: stable; }
-:root.vs-reminder-open { overflow: hidden; }
+:root.vs-reminder-open { overflow: hidden; scrollbar-gutter: stable; }
 .vs-reminder-dialog {
   box-sizing: border-box;
   position: fixed;
@@ -88,7 +87,7 @@ body[data-theme="dark"] #reminderDialog :is(input, select) { color-scheme: dark;
   .vs-reminder-content { padding: 18px 16px; }
   #reminderDialog .p-reminder-form { grid-template-columns: minmax(0, 1fr); }
 }
-:root.vs-overlay-open { overflow: hidden; }
+:root.vs-overlay-open { overflow: hidden; scrollbar-gutter: stable; }
 .modal-body { overscroll-behavior: contain; min-height: 0; }
 .fh-brand, .cs-header .cs-brand-link { min-height: 44px; display: inline-flex; align-items: center; }
 .topbar-brand-area .brand img { height: auto; display: block; flex-shrink: 0; }
