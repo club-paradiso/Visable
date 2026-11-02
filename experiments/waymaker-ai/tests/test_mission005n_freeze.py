@@ -33,9 +33,10 @@ def test_thresholds_are_the_005m_thresholds_unchanged():
     assert gate9.load_manifest()["thresholds"] == gate8.load_manifest()["thresholds"]
 
 
-#: Files Mission 005-O changed after the 005-N freeze. The 005-N manifest records them as they
+#: Files Missions 005-O and 005-P changed after the 005-N freeze. The 005-N manifest records them as they
 #: were at that freeze; the 005-N decision is re-derived with that run commit's code (test_mission005n_real_run).
-CHANGED_AFTER_005N = {"artemis_bootstrap/trusted_evidence_spec.md"}
+CHANGED_AFTER_005N = {"artemis_bootstrap/trusted_evidence_spec.md", "artemis_bootstrap/grounding_guard.py",
+                      "artemis_bootstrap/gemma4_runtime.py", "waymaker_ai/response_contract.py", "waymaker_ai/inference_input.py"}
 FREEZE_COMMIT_005N = "b74210c5cc06b059323efe3d27e7ea381f9669b0"
 
 

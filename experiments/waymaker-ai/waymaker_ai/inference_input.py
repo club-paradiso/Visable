@@ -21,8 +21,10 @@ SOURCE_PROVENANCE_VALUES = frozenset({"official_manual", "official_notice", "com
 # v5 (Mission 005-H) and later send uncovered_items as item names in the reply language; v7 (005-J)
 # adds scope_status_code when the system asks one sub-code at a time; v8 (005-K) adds scope_location
 # (one applicant situation at a time) and as_of (the date the question is about); v10 (005-M) adds
-# uncovered_sentence (the system's sentence naming the uncovered items in the reply language).
-SYSTEM_FIELDS = ("reply_language", "uncovered_items", "scope_status_code", "scope_location", "as_of", "uncovered_sentence")
+# uncovered_sentence (the system's sentence naming the uncovered items in the reply language); v12 (005-P)
+# adds language_retry (the system's note that the previous answer was not in the reply language).
+SYSTEM_FIELDS = ("reply_language", "uncovered_items", "scope_status_code", "scope_location", "as_of", "uncovered_sentence",
+                 "language_retry")
 REPLY_LANGUAGES = frozenset({"ko", "en", "vi"})
 
 
@@ -82,4 +84,9 @@ def project_inference_item(item: Mapping) -> dict:
             if not isinstance(text, str) or not text.strip() or len(text) > 300 or "\n" in text:
                 raise ValueError("System uncovered_sentence must be one short line")
             projected["system"]["uncovered_sentence"] = text
+        if "language_retry" in system:
+            text = system["language_retry"]
+            if not isinstance(text, str) or not text.strip() or len(text) > 300 or "\n" in text:
+                raise ValueError("System language_retry must be one short line")
+            projected["system"]["language_retry"] = text
     return projected

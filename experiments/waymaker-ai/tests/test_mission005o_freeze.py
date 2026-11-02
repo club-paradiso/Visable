@@ -40,9 +40,28 @@ def test_thresholds_are_the_005n_thresholds_except_the_category_rate():
            {k: v for k, v in old.items() if k != "min_raw_category_pass_rate"}
 
 
+#: Files Mission 005-P changed after the 005-O freeze. The 005-O manifest records them as they
+#: were at that freeze; the 005-O decision is re-derived with that run commit's code (test_mission005o_real_run).
+CHANGED_AFTER_005O = {"artemis_bootstrap/grounding_guard.py", "artemis_bootstrap/gemma4_runtime.py",
+                      "waymaker_ai/response_contract.py", "waymaker_ai/inference_input.py",
+                      "artemis_bootstrap/trusted_evidence_spec.md"}
+FREEZE_COMMIT_005O = "2891cea7fdfafb6841bc77ebfda231127bcbeb00"
+
+
 def test_offline_preconditions_pass():
     checks = gate10.offline_preconditions(gate10.load_manifest())
-    assert all(c["passed"] for c in checks), [c for c in checks if not c["passed"]]
+    assert all(c["passed"] for c in checks if c["check"] != "evaluator_files_unchanged"), checks
+    files = next(c for c in checks if c["check"] == "evaluator_files_unchanged")
+    assert set(files["detail"] or {}) <= CHANGED_AFTER_005O, files
+
+
+def test_005o_manifest_matches_the_files_at_its_freeze_commit():
+    for rel, digest in gate10.load_manifest()["evaluator_files_sha256"].items():
+        shown = subprocess.run(["git", "show", f"{FREEZE_COMMIT_005O}:experiments/waymaker-ai/{rel}"],
+                               cwd=BOOT, capture_output=True)
+        if shown.returncode:
+            pytest.skip("needs git history for the 005-O freeze commit")
+        assert hashlib.sha256(shown.stdout).hexdigest() == digest, rel
 
 
 def test_the_conflict_rule_and_gate_v10_are_frozen():

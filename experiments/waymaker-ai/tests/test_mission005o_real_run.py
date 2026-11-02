@@ -67,21 +67,40 @@ def test_recorded_gate_decision_is_intact_and_pass():
                                         "false_blocks": 0, "system_notice_repairs": 1}
 
 
-def test_decision_and_results_reproduce_byte_for_byte(tmp_path):
-    out = tmp_path / "acc"
-    out.mkdir()
-    for name in ("generations.jsonl", "sessions.jsonl", "pipeline.jsonl"):
-        shutil.copy(ACC / name, out / name)
-    results_, record = gate10.score_dir(out)
-    gate10.write(out, results_, record)
-    assert sha(out / "gate_decision.json") == COLAB_DECISION_SHA256
-    assert sha(out / "synthetic_acceptance_results.json") == RAW_SHA256[ACC / "synthetic_acceptance_results.json"]
+RUN_COMMIT_005O = "a2f986a"
 
 
-def test_the_stored_pass_still_unlocks_dev20_and_only_for_contract_v11():
-    assert gate10.require_passing_gate(ACC / "gate_decision.json", "v11")["decision"] == "pass"
-    with pytest.raises(gate10.GateBlocked, match="not v10"):
-        gate10.require_passing_gate(ACC / "gate_decision.json", "v10")
+def test_decision_and_results_reproduce_byte_for_byte_with_the_005o_code(tmp_path):
+    """Mission 005-P later changed files the 005-O manifest froze, so the decision is re-derived
+    with the code of the 005-O run commit, extracted from git; that code's DEV-20 unlock check
+    accepts the stored pass for contract v11."""
+    import subprocess
+    repo = Path(subprocess.run(["git", "rev-parse", "--show-toplevel"], cwd=BOOT, capture_output=True, text=True).stdout.strip() or "/nonexistent")
+    if not (repo / ".git").exists() or shutil.which("tar") is None or subprocess.run(
+            ["git", "cat-file", "-e", f"{RUN_COMMIT_005O}^{{commit}}"], cwd=repo, capture_output=True).returncode:
+        pytest.skip("needs git history for the 005-O run commit")
+    archive = subprocess.run(["git", "archive", RUN_COMMIT_005O, "experiments/waymaker-ai"], cwd=repo,
+                             capture_output=True, check=True).stdout
+    subprocess.run(["tar", "-x", "-C", str(tmp_path)], input=archive, check=True)
+    root = tmp_path / "experiments" / "waymaker-ai"
+    run = root / "artemis_bootstrap" / "runs" / "mission005o" / "synthetic_acceptance"
+    (run / "gate_decision.json").unlink()
+    (run / "synthetic_acceptance_results.json").unlink()
+    result = subprocess.run([sys.executable, "-I", "artemis_bootstrap/synthetic_safety_gate_v10.py", "score", "--out-dir", str(run)],
+                            cwd=root, capture_output=True, text=True)
+    assert result.returncode == 0, result.stderr[-800:]
+    assert sha(run / "gate_decision.json") == COLAB_DECISION_SHA256
+    assert sha(run / "synthetic_acceptance_results.json") == RAW_SHA256[ACC / "synthetic_acceptance_results.json"]
+    unlock = subprocess.run([sys.executable, "-I", "-c", "import sys; sys.path.insert(0, 'artemis_bootstrap'); "
+                             "import synthetic_safety_gate_v10 as g; "
+                             f"print(g.require_passing_gate(g.Path({str(run / 'gate_decision.json')!r}), 'v11')['decision'])"],
+                            cwd=root, capture_output=True, text=True)
+    assert unlock.stdout.strip() == "pass", unlock.stderr[-800:]
+
+
+def test_the_stored_pass_cannot_unlock_another_contract():
+    with pytest.raises(gate10.GateBlocked, match="not v12"):
+        gate10.require_passing_gate(ACC / "gate_decision.json", "v12")
 
 
 def test_the_pass_depends_on_the_two_of_three_category_bar():

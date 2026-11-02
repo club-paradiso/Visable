@@ -153,7 +153,7 @@ def test_neighbours_keep_their_question(question):
 
 # --- contract v11 and gate v9 ----------------------------------------------------------------------------
 def test_v11_changes_only_the_conflict_line():
-    assert CONTRACT_VERSIONS[-1] == "v11" and guard.CONTRACT_VERSION == "v11"
+    assert "v11" in CONTRACT_VERSIONS and guard.CONTRACT_VERSION in ("v11", "v12")   # 005-P: v12
     v10, v11 = SYSTEM_PROMPTS["v10"].splitlines(), SYSTEM_PROMPTS["v11"].splitlines()
     changed = [(a, b) for a, b in zip(v10, v11) if a != b]
     assert len(v10) == len(v11) and len(changed) == 1

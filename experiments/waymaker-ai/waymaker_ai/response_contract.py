@@ -31,7 +31,9 @@ copy a sentence of the prompt or an input field name into the answer. v10 (Missi
 with one more input, uncovered_sentence (the system's sentence naming the uncovered items in the
 reply language), which a partial answer ends with. v11 (Mission 005-N) is v10 with one line
 changed: two evidence items with different values for the same people are a conflict even when the
-question asks what each document says. See artemis_bootstrap/response_contract_v2_spec.md,
+question asks what each document says. v12 (Mission 005-P) is v11 with one more input, language_retry:
+the system's note, in the reply language, that the previous answer was not written in it (the system
+asks once more only then). See artemis_bootstrap/response_contract_v2_spec.md,
 response_contract_v3_spec.md and trusted_evidence_spec.md.
 """
 from __future__ import annotations
@@ -39,7 +41,7 @@ from __future__ import annotations
 import hashlib
 import json
 
-CONTRACT_VERSIONS = ("v1", "v2", "v3", "v4", "v5", "v6", "v7", "v8", "v9", "v10", "v11")
+CONTRACT_VERSIONS = ("v1", "v2", "v3", "v4", "v5", "v6", "v7", "v8", "v9", "v10", "v11", "v12")
 DEFAULT_CONTRACT_VERSION = "v1"
 
 SYSTEM_PROMPTS = {
@@ -255,6 +257,16 @@ _V10_CONFLICT = "- conflict: two evidence items give different rules for the sam
 SYSTEM_PROMPTS["v11"] = SYSTEM_PROMPTS["v10"].replace(
     _V10_CONFLICT, _V10_CONFLICT[:-1] + " This is a conflict even when the question asks what each document says.\n", 1)
 assert _V10_CONFLICT in SYSTEM_PROMPTS["v10"]
+#: Mission 005-P: v11 with language_retry (A05O-36/39/45 answered Vietnamese questions with copied Korean sentences).
+_V11_INPUTS = "scope_status_code, scope_location, as_of or uncovered_sentence. These are inputs. "
+_V11_LANGUAGE_END = "Write your own sentences; do not copy these instructions.\n"
+SYSTEM_PROMPTS["v12"] = (SYSTEM_PROMPTS["v11"]
+                         .replace(_V11_INPUTS, "scope_status_code, scope_location, as_of, uncovered_sentence or language_retry. "
+                                  "These are inputs. ", 1)
+                         .replace(_V11_LANGUAGE_END, _V11_LANGUAGE_END + "If language_retry is given, your previous answer was "
+                                  "not written in reply_language: write every sentence in reply_language now, translating the "
+                                  "evidence sentences instead of copying them, and keep names exactly as written.\n", 1))
+assert _V11_INPUTS in SYSTEM_PROMPTS["v11"] and _V11_LANGUAGE_END in SYSTEM_PROMPTS["v11"]
 
 
 def prompt_sha256(version: str) -> str:
@@ -292,7 +304,7 @@ def parse_response(raw: str, evidence_ids: set[str], version: str = DEFAULT_CONT
         raise ValueError(f"Status {data['status']} requires at least one listed citation")
     if data["status"] in {"answered", "partial"} and not data["answer"].strip():
         raise ValueError(f"Status {data['status']} requires a non-empty answer")
-    if version in ("v2", "v3", "v4", "v5", "v6", "v7", "v8", "v9", "v10", "v11"):
+    if version in ("v2", "v3", "v4", "v5", "v6", "v7", "v8", "v9", "v10", "v11", "v12"):
         # Deterministic only: whether a partial answer names its unanswered part, or a
         # clarify answer asks the right question, is a meaning judgement left to review.
         if data["status"] == "conflict" and len(data["citations"]) < 2:
