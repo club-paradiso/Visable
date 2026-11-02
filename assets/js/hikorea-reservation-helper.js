@@ -1502,7 +1502,7 @@
     // The full instruction is still conveyed by the do/caution text below.
     return '<figure class="prh-shot"><div class="prh-shot-ph" role="img" aria-label="' +
       esc(alt + ' — ' + STR.shotPending) + '">' +
-      '<span class="prh-shot-ph-icon" aria-hidden="true">🖼️</span>' +
+      '<span class="prh-shot-ph-icon" aria-hidden="true"><span class="pg pg-image pg-solo"></span></span>' +
       '<span class="prh-shot-ph-title">' + esc(STR.shotPending) + '</span>' +
       '<span class="prh-shot-ph-sub">' + esc(STR.shotPendingSub) + '</span>' +
       '</div></figure>';
@@ -1741,21 +1741,21 @@
     var clickLis = model.hikoreaClickSteps.map(function (id, i) {
       return '<li>' + esc(STR['click' + (i + 1)]) + '</li>';
     }).join('');
-    html += '<div class="prh-section prh-section-full"><h4>🖱️ ' + esc(STR.secClick) + '</h4><ol>' + clickLis + '</ol></div>';
+    html += '<div class="prh-section prh-section-full"><h4 data-pg="pointer">' + esc(STR.secClick) + '</h4><ol>' + clickLis + '</ol></div>';
 
     // 2. Before booking
     var beforeLis = model.beforeBookingChecklist.map(function (id) {
       var k = { identity: 'bIdentity', realNameAcct: 'bRealNameAcct', docsReady: 'bDocsReady', addressKnown: 'bAddressKnown', officeKnown: 'bOfficeKnown' }[id];
       return k ? '<li>' + esc(STR[k]) + '</li>' : '';
     }).join('');
-    html += '<div class="prh-section"><h4>🎒 ' + esc(STR.secBefore) + '</h4><ul>' + beforeLis + '</ul></div>';
+    html += '<div class="prh-section"><h4 data-pg="backpack">' + esc(STR.secBefore) + '</h4><ul>' + beforeLis + '</ul></div>';
 
     // 3. After booking
     var afterLis = model.afterBookingChecklist.map(function (id) {
       var k = { saveConfirm: 'aSaveConfirm', checkDateOffice: 'aCheckDateOffice', visitorName: 'aVisitorName', sameDayReminder: 'aSameDayReminder' }[id];
       return k ? '<li>' + esc(STR[k]) + '</li>' : '';
     }).join('');
-    html += '<div class="prh-section"><h4>✅ ' + esc(STR.secAfter) + '</h4><ul>' + afterLis + '</ul></div>';
+    html += '<div class="prh-section"><h4 data-pg="circle-check">' + esc(STR.secAfter) + '</h4><ul>' + afterLis + '</ul></div>';
 
     html += '</div>'; // .prh-sections
 
@@ -1770,7 +1770,7 @@
       if (!pair) return '';
       return '<details><summary>' + esc(STR[pair[0]]) + '</summary><p class="prh-blocked-body">' + esc(STR[pair[1]]) + '</p></details>';
     }).join('');
-    html += '<div class="prh-section prh-blocked prh-section-full"><h4>🛟 ' + esc(STR.secBlocked) + '</h4>' + blkHtml + '</div>';
+    html += '<div class="prh-section prh-blocked prh-section-full"><h4 data-pg="life-buoy">' + esc(STR.secBlocked) + '</h4>' + blkHtml + '</div>';
 
     // CTAs (hierarchy: Go to HiKorea · View docs (if code) · Save result · Start over)
     html += '<div class="prh-ctas">';

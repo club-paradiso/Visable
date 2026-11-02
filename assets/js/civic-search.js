@@ -304,19 +304,19 @@
       [['all','all'],['prepare','groupPrepare'],['stay','groupStay'],['help','groupHelp']].map(function (x) { return '<button type="button" data-cs-tool-group="' + x[0] + '" aria-pressed="' + (x[0] === 'all') + '">' + esc(T(x[1])) + '</button>'; }).join('') + '</div></div>' +
       '<div class="cs-service-grid">' +
       tile('paperwork','paperworkSub','file-text','href="form-helper.html"','prepare') +
-      tile('checklists','checklistsSub','id-card','href="immigration-checklists.html"','prepare') +
-      tile('browse','browseSub','id-card','data-action="reveal-home-section" data-target="visaManualSection" aria-controls="civicBrowsePanel" aria-expanded="false"','prepare') +
+      tile('checklists','checklistsSub','clipboard-list','href="immigration-checklists.html"','prepare') +
+      tile('browse','browseSub','layout-grid','data-action="reveal-home-section" data-target="visaManualSection" aria-controls="civicBrowsePanel" aria-expanded="false"','prepare') +
       tile('short','shortSub','plane','data-action="open-short-stay"','prepare') +
-      tile('reservation','reservationSub','calendar-days','data-action="open-hikorea-guide"','prepare') +
+      tile('reservation','reservationSub','calendar-check','data-action="open-hikorea-guide"','prepare') +
       tile('reader','readerSub','book-open','href="manual.html"','prepare') +
       tile('office','officeSub','landmark','data-action="open-jurisdiction-modal"','help') +
-      tile('agencies','agenciesSub','user-round','data-action="open-agent-finder"','help') +
-      tile('hospitals','hospitalsSub','house','data-action="open-med-finder"','help') +
-      tile('jobs','jobsSub','search','data-action="open-jobcode-modal"','stay') +
-      tile('pathways','pathwaysSub','compass','data-action="reveal-home-section" data-target="pathwaySection"','stay') +
+      tile('agencies','agenciesSub','users','data-action="open-agent-finder"','help') +
+      tile('hospitals','hospitalsSub','hospital','data-action="open-med-finder"','help') +
+      tile('jobs','jobsSub','briefcase','data-action="open-jobcode-modal"','stay') +
+      tile('pathways','pathwaysSub','route','data-action="reveal-home-section" data-target="pathwaySection"','stay') +
       tile('reminders','remindersSub','calendar-days','data-action="reveal-home-section" data-target="reminderSection"','stay') +
-      tile('naturalization','newHomeSub','house','href="new-home.html"','stay') +
-      tile('enforcement','enforcementSub','landmark','href="enforcement.html"','help') +
+      tile('naturalization','newHomeSub','flag','href="new-home.html"','stay') +
+      tile('enforcement','enforcementSub','scale','href="enforcement.html"','help') +
       tile('waymaker','waymakerSub','compass','href="ai.html"','help') +
       '</div><p class="cs-tool-empty" hidden>' + esc(T('toolEmpty')) + '</p><p class="cs-sr" data-cs-tool-status role="status" aria-live="polite"></p>' +
       '<div class="cs-tool-settings"><button type="button" data-action="toggle-easy-mode" aria-pressed="' + easyModeOn() + '">' + esc(T('easyModeEasy')) + '</button></div></div></details>';
