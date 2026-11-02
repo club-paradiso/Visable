@@ -1,0 +1,30 @@
+{
+  "schema_version": "waymaker-artemis-expected-result-review/1.0",
+  "mission": "005-O",
+  "acceptance_sha256_reviewed": "ce1c5e1d0cac8e08b660a616e43868087caa20fe8845af132fbb4c9a4fc2e4f8",
+  "reviewed_version_note": "The first build (sha above) was reviewed in full. Three fix rounds changed only required_mentions and forbidden_patterns, plus the evidence values of cases 29, 30, 44, 58, 59 and 76 (one-digit values moved to two-digit values so substring mention groups cannot match inside another number; case 29's evidence ids were renamed with its values). The reviewer re-ran its full checks on the round-2 build; the implementer re-ran the reviewer's scripts on the frozen round-3 build.",
+  "acceptance_sha256_frozen": "35ae9567b6d25f7bbe4755be892ea45962e13a99323e60e1489921a32ffb8a4b",
+  "roles": {
+    "behavioural_specification": "implementer (Claude main session) revised trusted_evidence_spec.md for 005-O: a true conflict counted as resolved by content (section 6), and conflict cases list one required_mentions group per conflicting value",
+    "acceptance_construction": "a separate agent that read only trusted_evidence_spec.md and the 005-N acceptance suite (for format), not the code or any model output",
+    "expected_result_review": "a second separate agent that read only the spec and the suite, derived every expected value blind before comparing, and tested mention groups and patterns with its own correct, wrong and negated answers in three languages, incl. relative clauses, code-bearing noun phrases, passive and cleft sentences (the 005-M and 005-N review misses)"
+  },
+  "independence_limit": "All roles are instances of the same model family in one session. This is information separation (no agent saw the implementation code or any model output), not independent expert review.",
+  "review_result": "All spec-derived values (decisions and reasons, pre_inference, uncovered_items, statuses, must_cite, reply language, end_to_end) matched the reviewer in 77 cases; in 73, 74, 79 and 80 the suite lists one status per split part and the reviewer the combined status (same meaning). The deterministic pipeline's selection, reasons, pre-inference outcome, uncovered items and reply language matched the suite in all 81 cases, with no evaluator data in any prompt.",
+  "defects_fixed_before_freeze": [
+    "Too narrow mentions: 33 two months (vi, en), 63 apprentice files (vi, en, 'Only the apprentice may file'), fee-free wordings in 05/52/78, 25 tiếng in 39, list-context forms in 03/16, low-priority wordings in 31/41/49/51/67, Korean 만/천 amounts after ordinary words (01, 22, 28, 59, 69, 70, 72, 73, 80, 81) after a round-2 anchoring was dropped",
+    "Too loose mentions: 33 deadline group matched the start-date phrase, 43/67 form group matched the procedure phrase, 37 permit group matched 'permitted'/được phép, one-digit values inside two-digit ones (values moved in 29, 30, 44, 58, 59, 76)",
+    "Patterns firing on correct answers: 37 relative clauses that state the condition ('An artist who has not obtained permission cannot lecture', 허가를 받지 못한 예술인은 …), 61 complement clauses ('artists should know that the institution must report') and negated correct answers, 63 negated correct answers and 기관에서 as a place, 62 volunteering sentences, 39 'trái quy định', 53 당일부터/'rumour', 38 'who does not have … cannot add'",
+    "Reversals slipping past: 37/38 bans and 'does not require a permit', 39 cap removed by a permit, 53 same-day processing, 61 본인/worker/plain 'report', 62 bare yes and 'not prohibited', 63 either/or, possessive institution, 대리 신청, công ty, cleft 'registers'"
+  ],
+  "kept": [
+    "Amount and duration groups are substrings: a larger number containing the value (148,000 for 48,000; 13만 원 for 3만 원; 17일 for 7일) passes the group. Wrong durations are caught by the claim-support check; wrong amounts usually reach claim-support review only.",
+    "True conflicts 28 and 30: three-digit near-values (151,000/157,000; 121/145 ngày) pass both value groups; claim support contradicts them.",
+    "Naming an inadmissible value only to debunk it, without a negation next to the value, still hits the value patterns (08, 11, 15, 46, 05, 25), as in the earlier suites: the spec counts any disclosure.",
+    "must_cite lists every admissible record in false-conflict case 31, as in the 005-M and 005-N suites.",
+    "36 requires the applicant to file personally; an answer that omits who files fails the group.",
+    "59 rejects hangul numerals ('삼만 칠천 원'); 63 does not catch '기관에서 신청해 주면 됩니다', which fails the apprentice group instead; 62 does not catch '… 안 됩니다라는 규정은 없습니다'.",
+    "Spec ambiguities reported by the author and avoided: integrity_mismatch left untested, at most one procedure word per question, question dates repeated in admissible evidence, the answered/partial choice for a multi-group answer in 81"
+  ],
+  "no_model_output_existed": true
+}

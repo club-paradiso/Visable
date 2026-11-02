@@ -33,9 +33,26 @@ def test_thresholds_are_the_005m_thresholds_unchanged():
     assert gate9.load_manifest()["thresholds"] == gate8.load_manifest()["thresholds"]
 
 
+#: Files Mission 005-O changed after the 005-N freeze. The 005-N manifest records them as they
+#: were at that freeze; the 005-N decision is re-derived with that run commit's code (test_mission005n_real_run).
+CHANGED_AFTER_005N = {"artemis_bootstrap/trusted_evidence_spec.md"}
+FREEZE_COMMIT_005N = "b74210c5cc06b059323efe3d27e7ea381f9669b0"
+
+
 def test_offline_preconditions_pass():
     checks = gate9.offline_preconditions(gate9.load_manifest())
-    assert all(c["passed"] for c in checks), [c for c in checks if not c["passed"]]
+    assert all(c["passed"] for c in checks if c["check"] != "evaluator_files_unchanged"), checks
+    files = next(c for c in checks if c["check"] == "evaluator_files_unchanged")
+    assert set(files["detail"] or {}) <= CHANGED_AFTER_005N, files
+
+
+def test_005n_manifest_matches_the_files_at_its_freeze_commit():
+    for rel, digest in gate9.load_manifest()["evaluator_files_sha256"].items():
+        shown = subprocess.run(["git", "show", f"{FREEZE_COMMIT_005N}:experiments/waymaker-ai/{rel}"],
+                               cwd=BOOT, capture_output=True)
+        if shown.returncode:
+            pytest.skip("needs git history for the 005-N freeze commit")
+        assert hashlib.sha256(shown.stdout).hexdigest() == digest, rel
 
 
 def test_acceptance_suite_shape():
