@@ -497,11 +497,33 @@ main {
 .task-card:active {
   transform: translateY(0);
 }
+.document-icon-defs { position: absolute; overflow: hidden; pointer-events: none; }
+.document-pictogram {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  vertical-align: middle;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
 .task-card-icon {
-  font-size: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  color: var(--green);
+  background: var(--pale);
+  border: 1px solid var(--line);
+  border-radius: 12px;
   line-height: 1;
   margin-bottom: 14px;
 }
+.task-card-icon .document-pictogram { width: 26px; height: 26px; }
 .task-pill {
   display: inline-block;
   font-size: 11px;
@@ -545,7 +567,8 @@ main {
   border-radius: var(--radius);
   padding: 16px 20px;
 }
-.task-help-icon { font-size: 24px; }
+.task-help-icon { display: flex; align-items: center; color: var(--green); }
+.task-help-icon .document-pictogram { width: 24px; height: 24px; }
 .task-help-text { flex: 1; min-width: 0; }
 .task-help-text strong { display: block; font-size: 14px; color: var(--ink); }
 .task-help-text span { font-size: 12px; color: var(--quiet); }
@@ -788,7 +811,7 @@ main {
   font-size: 10px;
   color: #557966;
 }
-.photo-icon { font-size: 26px; }
+.photo-icon .document-pictogram { width: 32px; height: 32px; }
 .arc-fields { display: flex; flex-direction: column; gap: 5px; }
 .arc-field { display: flex; flex-direction: column; font-size: 11px; }
 .arc-field .lbl { font-size: 9px; color: #5a7d6c; font-weight: 700; }
@@ -802,6 +825,9 @@ main {
   box-shadow: 0 2px 8px rgba(189, 150, 20, 0.25);
 }
 .arc-target-pin {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   position: absolute;
   top: -24px;
   left: 0;
@@ -813,6 +839,7 @@ main {
   border-radius: 4px;
   white-space: nowrap;
 }
+.arc-target-pin .document-pictogram { width: 12px; height: 12px; }
 .highlight-val { color: #8f5800 !important; font-size: 13px !important; }
 .arc-card-footer {
   margin-top: 12px;
@@ -1029,7 +1056,7 @@ main {
   align-items: center;
   gap: 10px;
 }
-.group-icon { font-size: 20px; }
+.group-icon { display: inline-flex; color: var(--green); }
 .group-header h3 {
   margin: 0;
   font-size: 18px;

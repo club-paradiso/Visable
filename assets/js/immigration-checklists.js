@@ -117,6 +117,19 @@ function element(tag, cls, textContent) {
   return e;
 }
 
+function pictogram(name, cls) {
+  var ns = 'http://www.w3.org/2000/svg';
+  var svg = document.createElementNS(ns, 'svg');
+  svg.setAttribute('class', 'document-pictogram' + (cls ? ' ' + cls : ''));
+  svg.setAttribute('viewBox', '0 0 24 24');
+  svg.setAttribute('aria-hidden', 'true');
+  svg.setAttribute('focusable', 'false');
+  var use = document.createElementNS(ns, 'use');
+  use.setAttribute('href', '#document-icon-' + name);
+  svg.appendChild(use);
+  return svg;
+}
+
 function append(parent, children) {
   children.forEach(function (x) { if (x) parent.appendChild(x); });
   return parent;
@@ -1016,7 +1029,7 @@ function renderBaselineChecklist(item) {
   if (structured.restrictions.length) {
     var resCard = element('div', 'restriction-card');
     var resHead = element('div', 'restriction-head');
-    resHead.appendChild(element('span', 'restriction-icon', '⛔'));
+    resHead.appendChild(pictogram('ban', 'restriction-icon'));
     resHead.appendChild(element('h4', '', t('restrictionTitle', null, '신청 불가 또는 별도 절차 대상 안내')));
     resCard.appendChild(resHead);
 
@@ -1039,7 +1052,7 @@ function renderBaselineChecklist(item) {
   if (structured.unlisted) {
     var unCard = element('div', 'unlisted-card');
     var unHead = element('div', 'unlisted-head');
-    unHead.appendChild(element('span', 'unlisted-icon', 'ℹ️'));
+    unHead.appendChild(pictogram('info', 'unlisted-icon'));
     unHead.appendChild(element('h4', '', t('unlistedTitle', null, '원문 매뉴얼 상 독립 제출서류 목록 미기재')));
     unCard.appendChild(unHead);
     unCard.appendChild(element('p', '', structured.unlistedText || t('unlistedDesc', null, '2026년 9월 공식 매뉴얼에 독립된 제출서류 목록이 수록되어 있지 않습니다. 관할 출입국관서 또는 1345에 확인하세요.')));
@@ -1128,7 +1141,7 @@ function renderBaselineChecklist(item) {
 
   // Statutory supremacy legal warning banner
   var legalNote = element('div', 'legal-warning-banner');
-  legalNote.appendChild(element('span', 'legal-warning-icon', '⚖️'));
+  legalNote.appendChild(pictogram('scale', 'legal-warning-icon'));
   legalNote.appendChild(element('p', '', t('legalWarningNote')));
   container.appendChild(legalNote);
 
@@ -1676,8 +1689,8 @@ function updateLanguage(locale) {
   if (arcHikoreaLink) arcHikoreaLink.textContent = t('arcGuideHikoreaLink', null, '하이코리아 체류만료일 및 자격 조회 바로가기 ↗');
   var arc1345 = document.querySelector('.call-1345-note');
   if (arc1345) arc1345.textContent = t('arcGuideCall1345', null, '또는 법무부 출입국종합안내센터 국번 없이 1345 (20개 국어 무료 상담)');
-  var arcTargetPin = document.querySelector('.arc-target-pin');
-  if (arcTargetPin) arcTargetPin.textContent = t('arcGuidePinText', null, '👈 이 위치를 확인하세요!');
+  var arcTargetPinLabel = document.querySelector('[data-arc-pin-label]');
+  if (arcTargetPinLabel) arcTargetPinLabel.textContent = t('arcGuidePinText', null, '이 위치를 확인하세요!');
   var switchToPickerBtn = $('switch-to-picker-btn');
   if (switchToPickerBtn) switchToPickerBtn.textContent = t('arcGuideCta', null, '체류자격 코드를 확인했어요 → 목록에서 선택하기');
 
