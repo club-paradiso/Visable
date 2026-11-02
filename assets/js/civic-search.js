@@ -176,7 +176,7 @@
     return '<button type="button" class="cs-theme-toggle ' + (cls || '') + '" data-vt-open aria-haspopup="dialog" aria-expanded="false" aria-controls="vtCivicPop" aria-label="' + label + '" title="' + label + '">' +
       '<span class="vt-coin" data-c="' + esc(currentSkin()) + '" aria-hidden="true"></span><span class="cs-theme-label">' + label + '</span></button>';
   }
-  var langDialog = null, langOpener = null, langTrack = null;
+  var langDialog = null, langOpener = null, langTrack = null, langChoicePending = false;
   function langPopover() { return window.matchMedia ? window.matchMedia('(min-width: 681px)').matches : window.innerWidth > 680; }
   function langOpenerFallback() {
     var kind = langOpener && langOpener.classList.contains('cs-lang-searched') ? '.cs-lang-searched' : '.cs-lang-home';
@@ -202,7 +202,10 @@
         var back = langOpener && langOpener.isConnected ? langOpener : langOpenerFallback();
         if (back) back.focus();
       });
-      langDialog.addEventListener('click', function (e) { if (e.target === langDialog) langDialog.close(); });
+      langDialog.addEventListener('click', function (e) {
+        if (e.target.closest('[data-action="apply-language"]')) langChoicePending = true;
+        if (e.target === langDialog) langDialog.close();
+      });
       // Escape closes the sheet even when a page-level key handler would otherwise swallow the dialog's cancel.
       langDialog.addEventListener('keydown', function (e) {
         if (e.key === 'Escape' || e.key === 'Esc') { e.preventDefault(); e.stopPropagation(); langDialog.close(); return; }
@@ -314,7 +317,7 @@
       tile('hospitals','hospitalsSub','hospital','data-action="open-med-finder"','help') +
       tile('jobs','jobsSub','briefcase','data-action="open-jobcode-modal"','stay') +
       tile('pathways','pathwaysSub','route','data-action="reveal-home-section" data-target="pathwaySection"','stay') +
-      tile('reminders','remindersSub','calendar-days','data-action="reveal-home-section" data-target="reminderSection"','stay') +
+      tile('reminders','remindersSub','calendar-days','data-action="reveal-home-section" data-target="reminderSection" aria-haspopup="dialog" aria-controls="reminderDialog"','stay') +
       tile('naturalization','newHomeSub','flag','href="new-home.html"','stay') +
       tile('enforcement','enforcementSub','scale','href="enforcement.html"','help') +
       tile('waymaker','waymakerSub','compass','href="ai.html"','help') +
@@ -434,7 +437,7 @@
       '<section class="cs-tools cs-tools-core" aria-labelledby="csCoreTitle"><h2 id="csCoreTitle">' + esc(T('coreTools')) + '</h2><div class="cs-tool-grid">' +
       toolLink(T, 'immigration-checklists.html', 'id-card', 'checklists', 'checklistsSub', ' data-cs-tool="checklists"') +
       toolLink(T, 'form-helper.html', 'file-text', 'paperwork', 'paperworkSub', ' data-cs-tool="forms"') +
-      toolButton(T, 'data-action="reveal-home-section" data-target="reminderSection" data-cs-tool="reminders"', 'calendar-days', 'reminders', 'remindersSub') +
+      toolButton(T, 'data-action="reveal-home-section" data-target="reminderSection" aria-haspopup="dialog" aria-controls="reminderDialog" data-cs-tool="reminders"', 'calendar-days', 'reminders', 'remindersSub') +
       toolButton(T, 'data-action="open-hikorea-guide" data-cs-tool="reservation"', 'calendar-days', 'reservation', 'reservationSub') +
       toolButton(T, 'data-action="open-jurisdiction-modal" data-cs-tool="office"', 'landmark', 'office', 'officeSub') +
       toolButton(T, 'data-action="open-jobcode-modal" data-cs-tool="jobs"', 'search', 'jobs', 'jobsSub') + '</div></section>' +
@@ -943,6 +946,10 @@
       home();
     });
     window.addEventListener('paradiso-language-applied', function () {
+      // Deferred startup can apply the current language again while the user is
+      // reading the picker. Only a choice or a changed locale should dismiss it.
+      if (langDialog && langDialog.open && uiLang() === homeLanguage && !langChoicePending) return;
+      langChoicePending = false;
       if (langDialog && langDialog.open) langDialog.close();
       refreshLangButtons();
       if (uiLang() === homeLanguage) return;

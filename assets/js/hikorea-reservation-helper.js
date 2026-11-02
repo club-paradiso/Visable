@@ -1479,7 +1479,7 @@
   function overviewHtml() {
     var html = '<section class="prh-hero">' +
       '<span class="prh-hero-kicker">' + esc(STR.notOfficialChip) + '</span>' +
-      '<h3 class="prh-hero-title">' + esc(STR.ovTitle) + '</h3>' +
+      '<h3 class="prh-hero-title"><svg class="vs-pictogram" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 11h18m-13 5 3 3 5-5"/></svg> ' + esc(STR.ovTitle) + '</h3>' +
       '<p class="prh-hero-lead">' + esc(STR.ovLead) + '</p>' +
       '<div class="prh-hero-actions"><button type="button" class="prh-btn prh-primary" data-prh-action="go-tab" data-prh-tab="signup">' + esc(STR.ovStart) + '</button>' +
       '<a class="prh-cta" href="https://www.hikorea.go.kr" target="_blank" rel="noopener noreferrer">' + esc(STR.goHikorea) + '</a></div>' +
