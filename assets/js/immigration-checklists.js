@@ -1497,6 +1497,15 @@ function validateData(data, type) {
   }
 }
 
+// Validate the whole release before replacing any of the compiled baseline.
+// Empty arrays are truthy: an empty active release must not erase all three
+// public checklists, and a partly valid release must not mix editions.
+function applyReleaseDatasets(release) {
+  var procedures = ['extension', 'change', 'registration'];
+  procedures.forEach(function (type) { validateData(release && release[type], type); });
+  procedures.forEach(function (type) { state.datasets[type] = release[type]; });
+}
+
 /* ------------------------------------------------------------------------- */
 /* MULTILINGUAL LOCALIZATION CONTROLLER (R4)                                 */
 /* ------------------------------------------------------------------------- */
@@ -1973,11 +1982,7 @@ async function load() {
         if (prevRes.ok) {
           var prevData = await prevRes.json();
           if (prevData && prevData.extension && prevData.change && prevData.registration) {
-            ['extension', 'change', 'registration'].forEach(function (t) {
-              if (prevData[t] && prevData[t].items) {
-                state.datasets[t] = prevData[t];
-              }
-            });
+            applyReleaseDatasets(prevData);
             renderPreviewBanner(prevData);
           }
         }
@@ -1993,11 +1998,7 @@ async function load() {
         if (pubRes.ok) {
           var pubData = await pubRes.json();
           if (pubData && pubData.extension && pubData.change && pubData.registration) {
-            ['extension', 'change', 'registration'].forEach(function (t) {
-              if (pubData[t] && pubData[t].items) {
-                state.datasets[t] = pubData[t];
-              }
-            });
+            applyReleaseDatasets(pubData);
           }
         }
       } catch (_) {
