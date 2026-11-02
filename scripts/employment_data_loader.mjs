@@ -49,6 +49,10 @@ export function loadEmploymentAnalyzerDeps() {
   };
   const disambiguation = readJson('data/employment/disambiguation_rules.json');
   const incomeBrackets = readJson('data/employment/income_brackets.json');
+  // Multilingual pivot: everyday work phrases in other languages → Korean
+  // retrieval words (no codes). Lets Vietnamese/Thai/Russian/… input reach the
+  // same official rows the Korean wording reaches.
+  const pivot = readJson('data/employment/multilingual_pivot.json');
 
   return {
     data,
@@ -59,6 +63,7 @@ export function loadEmploymentAnalyzerDeps() {
     context: data.employment_reporting_context,
     fieldTerms,
     disambiguation,
-    incomeBrackets
+    incomeBrackets,
+    pivot
   };
 }
