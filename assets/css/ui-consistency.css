@@ -1,0 +1,95 @@
+/* Shared icon sizing and brand geometry, independent of page re-renders. */
+svg.vs-pictogram {
+  display: inline-block;
+  width: 1.1em;
+  height: 1.1em;
+  flex: 0 0 1.1em;
+  vertical-align: -.15em;
+  color: inherit;
+  line-height: 1;
+  pointer-events: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.vs-pictogram-source { display: none !important; }
+.vs-brand-home {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex: 0 0 auto;
+  min-height: 44px;
+  text-decoration: none;
+}
+.vs-brand-logo {
+  display: block;
+  width: 104px;
+  height: auto;
+  max-width: none;
+  flex: 0 0 auto;
+  object-fit: contain;
+}
+body[data-theme="dark"] .vs-brand-logo { content: url('../brand/visable-wordmark-white.svg'); }
+.fh-brand { align-items: center; flex-shrink: 0; }
+.ni-brand-group, .pv-brand-group { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; min-width: 0; }
+.cs-header .cs-brand, .ks-header .ks-brand { min-width: 0; }
+.cs-header .cs-brand > div, .ks-header .ks-brand > div { min-width: 0; overflow-wrap: anywhere; }
+@media (max-width: 680px) {
+  .vs-brand-logo { width: 84px; }
+  .ks-brand { flex-wrap: wrap; }
+}
+@media (max-width: 360px) {
+  .fh-top { flex-wrap: wrap; }
+  .fh-top-left, .fh-top-right { min-width: 0; }
+  .fh-top-right { flex: 1 1 auto; justify-content: flex-end; }
+}
+.brandline:has(.vs-brand-logo) { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px; }
+@media print { .vs-brand-logo { content: url('../brand/visable-wordmark.svg') !important; } }
+:root { scrollbar-gutter: stable; }
+:root.vs-reminder-open { overflow: hidden; }
+.vs-reminder-dialog {
+  box-sizing: border-box;
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: min(760px, calc(100% - 32px));
+  max-width: none;
+  max-height: calc(100dvh - 32px);
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--vs-line, var(--bd, #d9dce2));
+  border-radius: 22px;
+  background: var(--vs-surface, var(--bg1, #fff));
+  color: var(--vs-ink, var(--t1, #17231d));
+  box-shadow: 0 24px 80px rgba(15, 20, 35, .2);
+}
+.vs-reminder-dialog[open] { display: flex; flex-direction: column; }
+.vs-reminder-dialog::backdrop { background: rgba(15, 20, 35, .48); backdrop-filter: blur(5px); }
+.vs-reminder-bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 24px; border-bottom: 1px solid var(--vs-line, #d9dce2); flex: none; }
+.vs-reminder-close { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; padding: 10px; border: 1px solid var(--vs-line, #d9dce2); border-radius: 50%; background: transparent; color: inherit; cursor: pointer; }
+.vs-reminder-close svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; }
+.vs-reminder-close:hover { background: var(--vs-bg, #f2f1ee); }
+.vs-reminder-close:focus-visible { outline: 3px solid var(--vs-ac, #4e5fba); outline-offset: 2px; }
+.vs-reminder-content { padding: 24px; overflow: auto; overscroll-behavior: contain; min-height: 0; }
+#reminderDialog #reminderSection { display: block !important; margin: 0 !important; padding: 0 !important; width: 100%; max-width: none; border: 0; background: transparent; box-shadow: none; }
+#reminderDialog .p-section-title { font-size: clamp(22px, 3vw, 30px) !important; }
+#reminderDialog .p-section-head { display: block; }
+#reminderDialog .p-section-copy { max-width: none; margin-top: 12px; }
+#reminderDialog .p-reminder-form { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+#reminderDialog .p-reminder-field, #reminderDialog input, #reminderDialog select { min-width: 0; max-width: 100%; }
+#reminderDialog :is(input, select) { background: var(--vs-bg, var(--bg1, #fff)) !important; color: var(--vs-ink, var(--t1, #17231d)) !important; border-color: var(--vs-line, var(--bd, #d9dce2)) !important; color-scheme: light; }
+#reminderDialog input::placeholder { color: var(--vs-ink, var(--t1, #17231d)); opacity: .7; }
+body[data-theme="dark"] #reminderDialog :is(input, select) { color-scheme: dark; }
+#reminderDialog .p-reminder-item__actions { flex-wrap: wrap; }
+@media (max-width: 680px) {
+  .vs-reminder-dialog { width: calc(100% - 24px); max-height: calc(100dvh - 24px); border-radius: 18px; }
+  .vs-reminder-bar { padding: 10px 16px; }
+  .vs-reminder-content { padding: 18px 16px; }
+  #reminderDialog .p-reminder-form { grid-template-columns: minmax(0, 1fr); }
+}
+:root.vs-overlay-open { overflow: hidden; }
+.modal-body { overscroll-behavior: contain; min-height: 0; }
+.fh-brand, .cs-header .cs-brand-link { min-height: 44px; display: inline-flex; align-items: center; }
+.topbar-brand-area .brand img { height: auto; display: block; flex-shrink: 0; }

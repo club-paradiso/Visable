@@ -225,6 +225,8 @@
         if (!target) return;
         var action = target.getAttribute('data-action');
         if (!action) return;
+        // Reminders are local-only and their dialog can act before visa data loads.
+        if (action === 'reveal-home-section' && target.getAttribute('data-target') === 'reminderSection' && global.VisableReminderDialog) return;
         // While the short-stay bootstrap is installed, race 2 owns this tap and
         // replays it on module publish without needing the delegation. Keeping
         // the two disjoint is what stops the checker opening twice.

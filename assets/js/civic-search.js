@@ -314,7 +314,7 @@
       tile('hospitals','hospitalsSub','house','data-action="open-med-finder"','help') +
       tile('jobs','jobsSub','search','data-action="open-jobcode-modal"','stay') +
       tile('pathways','pathwaysSub','compass','data-action="reveal-home-section" data-target="pathwaySection"','stay') +
-      tile('reminders','remindersSub','calendar-days','data-action="reveal-home-section" data-target="reminderSection"','stay') +
+      tile('reminders','remindersSub','calendar-days','data-action="reveal-home-section" data-target="reminderSection" aria-haspopup="dialog" aria-controls="reminderDialog"','stay') +
       tile('naturalization','newHomeSub','house','href="new-home.html"','stay') +
       tile('enforcement','enforcementSub','landmark','href="enforcement.html"','help') +
       tile('waymaker','waymakerSub','compass','href="ai.html"','help') +
@@ -434,7 +434,7 @@
       '<section class="cs-tools cs-tools-core" aria-labelledby="csCoreTitle"><h2 id="csCoreTitle">' + esc(T('coreTools')) + '</h2><div class="cs-tool-grid">' +
       toolLink(T, 'immigration-checklists.html', 'id-card', 'checklists', 'checklistsSub', ' data-cs-tool="checklists"') +
       toolLink(T, 'form-helper.html', 'file-text', 'paperwork', 'paperworkSub', ' data-cs-tool="forms"') +
-      toolButton(T, 'data-action="reveal-home-section" data-target="reminderSection" data-cs-tool="reminders"', 'calendar-days', 'reminders', 'remindersSub') +
+      toolButton(T, 'data-action="reveal-home-section" data-target="reminderSection" aria-haspopup="dialog" aria-controls="reminderDialog" data-cs-tool="reminders"', 'calendar-days', 'reminders', 'remindersSub') +
       toolButton(T, 'data-action="open-hikorea-guide" data-cs-tool="reservation"', 'calendar-days', 'reservation', 'reservationSub') +
       toolButton(T, 'data-action="open-jurisdiction-modal" data-cs-tool="office"', 'landmark', 'office', 'officeSub') +
       toolButton(T, 'data-action="open-jobcode-modal" data-cs-tool="jobs"', 'search', 'jobs', 'jobsSub') + '</div></section>' +
