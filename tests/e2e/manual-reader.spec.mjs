@@ -48,8 +48,8 @@ test('search finds manual text and opens the section with the term marked', asyn
 
 test('landing offers the reader as a supporting tool', async ({ page }) => {
   await page.goto('/index.html');
-  // one secondary tools grid on the search-first home
-  const link = page.locator('.cs-tools a.cs-tool[href="manual.html"]');
+  // Official references stay directly accessible outside the full directory.
+  const link = page.locator('.cs-references a[href="manual.html"]');
   await expect(link).toBeVisible();
   await link.click();
   await expect(page).toHaveURL(/manual\.html/);
