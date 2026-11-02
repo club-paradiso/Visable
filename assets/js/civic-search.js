@@ -176,7 +176,7 @@
     return '<button type="button" class="cs-theme-toggle ' + (cls || '') + '" data-vt-open aria-haspopup="dialog" aria-expanded="false" aria-controls="vtCivicPop" aria-label="' + label + '" title="' + label + '">' +
       '<span class="vt-coin" data-c="' + esc(currentSkin()) + '" aria-hidden="true"></span><span class="cs-theme-label">' + label + '</span></button>';
   }
-  var langDialog = null, langOpener = null, langTrack = null;
+  var langDialog = null, langOpener = null, langTrack = null, langChoicePending = false;
   function langPopover() { return window.matchMedia ? window.matchMedia('(min-width: 681px)').matches : window.innerWidth > 680; }
   function langOpenerFallback() {
     var kind = langOpener && langOpener.classList.contains('cs-lang-searched') ? '.cs-lang-searched' : '.cs-lang-home';
@@ -202,7 +202,10 @@
         var back = langOpener && langOpener.isConnected ? langOpener : langOpenerFallback();
         if (back) back.focus();
       });
-      langDialog.addEventListener('click', function (e) { if (e.target === langDialog) langDialog.close(); });
+      langDialog.addEventListener('click', function (e) {
+        if (e.target.closest('[data-action="apply-language"]')) langChoicePending = true;
+        if (e.target === langDialog) langDialog.close();
+      });
       // Escape closes the sheet even when a page-level key handler would otherwise swallow the dialog's cancel.
       langDialog.addEventListener('keydown', function (e) {
         if (e.key === 'Escape' || e.key === 'Esc') { e.preventDefault(); e.stopPropagation(); langDialog.close(); return; }
@@ -943,6 +946,10 @@
       home();
     });
     window.addEventListener('paradiso-language-applied', function () {
+      // Deferred startup can apply the current language again while the user is
+      // reading the picker. Only a choice or a changed locale should dismiss it.
+      if (langDialog && langDialog.open && uiLang() === homeLanguage && !langChoicePending) return;
+      langChoicePending = false;
       if (langDialog && langDialog.open) langDialog.close();
       refreshLangButtons();
       if (uiLang() === homeLanguage) return;

@@ -39,10 +39,9 @@ body[data-theme="dark"] .vs-brand-logo { content: url('../brand/visable-wordmark
 @media (max-width: 680px) {
   .vs-brand-logo { width: 84px; }
   .ks-brand { flex-wrap: wrap; }
-}
-@media (max-width: 360px) {
-  .fh-top { flex-wrap: wrap; }
-  .fh-top-left, .fh-top-right { min-width: 0; }
+  .fh-top { flex-wrap: wrap; column-gap: 12px; row-gap: 6px; }
+  .fh-top-left { flex: 0 0 auto; }
+  .fh-top-right { min-width: 0; }
   .fh-top-right { flex: 1 1 auto; justify-content: flex-end; }
 }
 .brandline:has(.vs-brand-logo) { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px; }

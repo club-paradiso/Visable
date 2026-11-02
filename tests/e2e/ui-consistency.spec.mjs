@@ -200,6 +200,11 @@ for (const [path, selector] of brands) {
     expect(Math.abs(box.width / box.height - naturalRatio)).toBeLessThan(0.1);
     expect(box.x).toBeGreaterThanOrEqual(-1);
     expect(box.x + box.width).toBeLessThanOrEqual(page.viewportSize().width + 1);
+    if (path === 'form-helper.html') {
+      const actions = await page.locator('.fh-top-right').boundingBox();
+      const overlapsVertically = box.y < actions.y + actions.height && box.y + box.height > actions.y;
+      if (overlapsVertically) expect(box.x + box.width + 6).toBeLessThanOrEqual(actions.x);
+    }
     expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
     expect(errors).toEqual([]);
   });
