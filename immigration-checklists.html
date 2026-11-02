@@ -20,6 +20,26 @@
 <script src="assets/js/visable-theme.js?v=20261028-anchor"></script>
 </head>
 <body data-mode="guided" data-operator="false">
+<!-- Shared monochrome pictograms for document guidance. -->
+<svg class="document-icon-defs" xmlns="http://www.w3.org/2000/svg" width="0" height="0" aria-hidden="true" focusable="false"><defs>
+ <symbol id="document-icon-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+ <symbol id="document-icon-change" viewBox="0 0 24 24"><path d="M4 7h16m-4-4 4 4-4 4M20 17H4m4-4-4 4 4 4"/></symbol>
+ <symbol id="document-icon-id-card" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8" cy="10" r="2"/><path d="M5 16a3 3 0 0 1 6 0m3-7h4m-4 4h4"/></symbol>
+ <symbol id="document-icon-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a17 17 0 0 1 0 18 17 17 0 0 1 0-18"/></symbol>
+ <symbol id="document-icon-lightbulb" viewBox="0 0 24 24"><path d="M9 18h6m-5 3h4M8 14a6 6 0 1 1 8 0c-1 1-1 2-1 4H9c0-2 0-3-1-4Z"/></symbol>
+ <symbol id="document-icon-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2"/></symbol>
+ <symbol id="document-icon-arrow-left" viewBox="0 0 24 24"><path d="M20 12H4m6-6-6 6 6 6"/></symbol>
+ <symbol id="document-icon-clipboard" viewBox="0 0 24 24"><rect x="7" y="3" width="10" height="4" rx="1"/><path d="M7 5H5a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M8 12h8m-8 5h8"/></symbol>
+ <symbol id="document-icon-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="7.5"/><path d="m16 16 5 5"/></symbol>
+ <symbol id="document-icon-landmark" viewBox="0 0 24 24"><path d="m3 9 9-6 9 6H3Zm2 1v8m5-8v8m4-8v8m5-8v8M3 21h18M3 18h18"/></symbol>
+ <symbol id="document-icon-warning" viewBox="0 0 24 24"><path d="m10.3 3.9-8 14a2 2 0 0 0 1.7 3h16a2 2 0 0 0 1.7-3l-8-14a2 2 0 0 0-3.4 0ZM12 9v4m0 4h.01"/></symbol>
+ <symbol id="document-icon-printer" viewBox="0 0 24 24"><path d="M6 8V3h12v5M6 17H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v7H6Zm12-3h.01"/></symbol>
+ <symbol id="document-icon-link" viewBox="0 0 24 24"><path d="m10 13 4-4m-6 6-2 2a3.5 3.5 0 0 1-5-5l4-4a3.5 3.5 0 0 1 5 0m4 2 2-2a3.5 3.5 0 0 1 5 5l-4 4a3.5 3.5 0 0 1-5 0"/></symbol>
+ <symbol id="document-icon-ban" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m6 6 12 12"/></symbol>
+ <symbol id="document-icon-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10h.01"/></symbol>
+ <symbol id="document-icon-scale" viewBox="0 0 24 24"><path d="M12 3v18m-5 0h10M4 7l8-2 8 2M4 7l-3 7h6L4 7Zm16 0-3 7h6l-3-7Z"/></symbol>
+</defs></svg>
+
 <a class="skip" href="#main-content">본문 바로가기</a>
 <a class="skip" href="#results">전체 검색 결과로 이동</a>
 
@@ -174,7 +194,7 @@
 
    <div class="task-grid">
     <button type="button" class="task-card" data-procedure="extension">
-     <div class="task-card-icon" aria-hidden="true">⏱️</div>
+     <div class="task-card-icon" aria-hidden="true"><svg class="document-pictogram" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#document-icon-clock"></use></svg></div>
      <div class="task-card-body">
       <div class="task-pill">체류기간 연장</div>
       <h4 class="task-title">한국에 더 머물고 싶어요</h4>
@@ -184,7 +204,7 @@
     </button>
 
     <button type="button" class="task-card" data-procedure="change">
-     <div class="task-card-icon" aria-hidden="true">🔄</div>
+     <div class="task-card-icon" aria-hidden="true"><svg class="document-pictogram" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#document-icon-change"></use></svg></div>
      <div class="task-card-body">
       <div class="task-pill">체류자격 변경</div>
       <h4 class="task-title">한국에서 하는 일이 바뀌었어요</h4>
@@ -194,7 +214,7 @@
     </button>
 
     <button type="button" class="task-card" data-procedure="registration">
-     <div class="task-card-icon" aria-hidden="true">🪪</div>
+     <div class="task-card-icon" aria-hidden="true"><svg class="document-pictogram" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#document-icon-id-card"></use></svg></div>
      <div class="task-card-body">
       <div class="task-pill">외국인등록</div>
       <h4 class="task-title">외국인등록증을 처음 만들고 싶어요</h4>
@@ -204,7 +224,7 @@
     </button>
 
     <button type="button" class="task-card" data-procedure="registration" data-sub="residence">
-     <div class="task-card-icon" aria-hidden="true">🌏</div>
+     <div class="task-card-icon" aria-hidden="true"><svg class="document-pictogram" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#document-icon-globe"></use></svg></div>
      <div class="task-card-body">
       <div class="task-pill">국내거소신고</div>
       <h4 class="task-title">재외동포로 거소신고를 하고 싶어요</h4>
@@ -215,7 +235,7 @@
    </div>
 
    <div class="task-help-banner">
-    <div class="task-help-icon" aria-hidden="true">💡</div>
+    <div class="task-help-icon" aria-hidden="true"><svg class="document-pictogram" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#document-icon-lightbulb"></use></svg></div>
     <div class="task-help-text">
      <strong>어떤 절차에 해당하는지 잘 모르겠나요?</strong>
      <span>상황별 차이점과 하이코리아·1345 공식 상담 번호를 확인하세요.</span>
@@ -312,14 +332,14 @@
       </div>
       <div class="arc-card-inner">
        <div class="arc-photo-placeholder" aria-hidden="true">
-        <div class="photo-icon">👤</div>
+        <div class="photo-icon"><svg class="document-pictogram" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#document-icon-user"></use></svg></div>
         <span>예시 사진</span>
        </div>
        <div class="arc-fields">
         <div class="arc-field"><span class="lbl">성명/NAME</span><span class="val">HONG GILDONG</span></div>
         <div class="arc-field"><span class="lbl">등록번호/REG. NO</span><span class="val">950101-0000000 (모의 예시)</span></div>
         <div class="arc-field arc-highlighted-field" tabindex="0" aria-label="체류자격 표시 위치">
-         <div class="arc-target-pin" aria-hidden="true">👈 이 위치를 확인하세요!</div>
+         <div class="arc-target-pin" aria-hidden="true"><svg class="document-pictogram" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#document-icon-arrow-left"></use></svg><span data-arc-pin-label>이 위치를 확인하세요!</span></div>
          <span class="lbl">체류자격 / SOJOURN STATUS</span>
          <span class="val highlight-val">E-7-1 (특정활동)</span>
         </div>
@@ -414,7 +434,7 @@
     <section class="doc-group baseline-group" aria-labelledby="baseline-group-title">
      <div class="group-header">
       <div class="group-title-wrap">
-       <span class="group-icon" aria-hidden="true">📋</span>
+       <span class="group-icon" aria-hidden="true"><svg class="document-pictogram" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#document-icon-clipboard"></use></svg></span>
        <h4 id="baseline-group-title">기본 제출서류</h4>
       </div>
       <span class="group-badge required-badge">반드시 준비</span>
@@ -427,7 +447,7 @@
     <section class="doc-group conditional-group" id="conditional-group-sec" aria-labelledby="conditional-group-title">
      <div class="group-header">
       <div class="group-title-wrap">
-       <span class="group-icon" aria-hidden="true">🔍</span>
+       <span class="group-icon" aria-hidden="true"><svg class="document-pictogram" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#document-icon-search"></use></svg></span>
        <h4 id="conditional-group-title">상황에 따라 필요한 서류 (해당자 제출)</h4>
       </div>
       <span class="group-badge conditional-badge">조건부 확인</span>
@@ -440,7 +460,7 @@
     <section class="doc-group application-group" id="application-group-sec" aria-labelledby="application-group-title">
      <div class="group-header">
       <div class="group-title-wrap">
-       <span class="group-icon" aria-hidden="true">👤</span>
+       <span class="group-icon" aria-hidden="true"><svg class="document-pictogram" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#document-icon-user"></use></svg></span>
        <h4 id="application-group-title">방문 및 대리 신청 안내</h4>
       </div>
       <span class="group-badge info-badge">출석·대리 절차</span>
@@ -453,7 +473,7 @@
     <section class="doc-group office-group" id="office-group-sec" aria-labelledby="office-group-title">
      <div class="group-header">
       <div class="group-title-wrap">
-       <span class="group-icon" aria-hidden="true">🏛️</span>
+       <span class="group-icon" aria-hidden="true"><svg class="document-pictogram" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#document-icon-landmark"></use></svg></span>
        <h4 id="office-group-title">관할 출입국관서별 안내</h4>
       </div>
       <span class="group-badge office-badge" id="office-status-badge">지역별 안내</span>
@@ -465,7 +485,7 @@
     <section class="doc-group cautions-group" aria-labelledby="cautions-group-title">
      <div class="group-header">
       <div class="group-title-wrap">
-       <span class="group-icon" aria-hidden="true">⚠️</span>
+       <span class="group-icon" aria-hidden="true"><svg class="document-pictogram" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#document-icon-warning"></use></svg></span>
        <h4 id="cautions-group-title">방문 전 확인사항 및 법적 한계</h4>
       </div>
       <span class="group-badge warning-badge">유의사항</span>
@@ -495,11 +515,11 @@
    <div class="checklist-actions-bar">
     <div class="actions-left">
      <button type="button" id="checklist-print-btn" class="primary-button action-btn">
-      <span aria-hidden="true">🖨️</span>
+      <span aria-hidden="true"><svg class="document-pictogram" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#document-icon-printer"></use></svg></span>
       <span>체크리스트 인쇄 / PDF 저장</span>
      </button>
      <button type="button" id="checklist-copy-link-btn" class="outline-button action-btn">
-      <span aria-hidden="true">🔗</span>
+      <span aria-hidden="true"><svg class="document-pictogram" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#document-icon-link"></use></svg></span>
       <span>결과 링크 복사</span>
      </button>
     </div>
