@@ -326,7 +326,7 @@ body.civic-refresh.searched #hero .logo-area:not(#vt-a) { border: 0 !important; 
 }
 
 /* Centre the desktop home introduction within each theme's content area. */
-@media (min-width: 1024px) {
+@media (min-width: 681px) {
   :root[data-vt] #civicLanding .cs-hero { margin-inline: auto; text-align: center; }
   :root[data-vt] #civicLanding .cs-hero > p { margin-inline: auto; }
   :root[data-vt] body:not(.cs-sheet) #civicLanding #civicSearchForm { margin-inline: auto; }
