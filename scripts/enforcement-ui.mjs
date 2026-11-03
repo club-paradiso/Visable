@@ -580,6 +580,27 @@ function likelihoodMeter(level) {
 
 function disposition(item, primary = false) {
   if (!item) return '<p class="subtle">현재 공개된 근거만으로 가장 유력한 처분을 특정하기 어렵습니다.</p>';
+  return dispositionHtml(item, primary);
+}
+
+// When there is no AI disposition, say why, and show what the law allows for this
+// violation (repo rule data, not a ranking) instead of an empty box.
+function emptyDispositionHtml(baseline, prediction) {
+  const allowed = baseline.legallyAvailableDispositions || [];
+  const reason = baseline.status !== 'AVAILABLE'
+    ? (needsExactDates(baseline) ? '위 “다음 단계”에서 날짜를 넣으면 처분 예상도 함께 계산해요.' : '위반 유형과 기간이 정해지면 처분 예상도 함께 계산해요.')
+    : prediction.status === 'UNAVAILABLE'
+      ? 'AI 예상을 이번에 받지 못해 처분 가능성 순위는 비워 두었어요. 아래 “AI 예상 다시 확인”으로 다시 시도할 수 있어요.'
+      : '이 사실관계만으로는 가장 유력한 처분을 하나로 좁히기 어려웠어요.';
+  return `<p class="subtle">${escapeHtml(reason)}</p>
+    ${allowed.length ? `<div class="legal-dispositions">
+      <strong>이 위반에 법령상 가능한 처분</strong>
+      <ul>${allowed.map((type) => `<li><b>${escapeHtml(dispositionLabels[type] || type)}</b> · ${escapeHtml(dispositionHelp[type] || '')}</li>`).join('')}</ul>
+      <p class="subtle">가능성 순위가 아니라, 법령상 선택될 수 있는 처분의 범위예요.</p>
+    </div>` : ''}`;
+}
+
+function dispositionHtml(item, primary = false) {
   return `<div class="disposition${primary ? ' disposition--primary' : ''}">
     <strong><span>${primary ? '가장 유력 · ' : '다른 가능성 · '}${escapeHtml(dispositionLabels[item.type] || item.type)}</span><span class="disposition-likelihood">${likelihoodMeter(item.likelihood)} ${escapeHtml(likelihoodLabels[item.likelihood] || item.likelihood)}</span></strong>
     ${dispositionHelp[item.type] ? `<p class="subtle">${escapeHtml(dispositionHelp[item.type])}</p>` : ''}
@@ -717,7 +738,7 @@ function renderResult(data) {
     <article class="result-lead">
       <p class="card-kicker">처분 예상</p>
       <h3>예상 행정처분</h3>
-      ${data.analysisPending ? '<p class="subtle">AI 예상 결과를 확인하고 있어요.</p>' : disposition(prediction.primaryDisposition, true)}
+      ${data.analysisPending ? '<p class="subtle">AI 예상 결과를 확인하고 있어요.</p>' : prediction.primaryDisposition ? disposition(prediction.primaryDisposition, true) : emptyDispositionHtml(baseline, prediction)}
       ${(prediction.alternativeDispositions || []).map((item) => disposition(item)).join('')}
     </article>
 

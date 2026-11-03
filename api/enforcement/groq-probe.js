@@ -60,7 +60,7 @@ module.exports = async function handler(request, response) {
     const started = Date.now();
     const rows = await Promise.all(cases.map(async ({ id, ...facts }) => {
       try {
-        const result = await analyzeGroundedCase({ schemaVersion: '1', assessmentDate: today, ...facts }, { timeoutMs: 22000 });
+        const result = await analyzeGroundedCase({ schemaVersion: '1', assessmentDate: today, ...facts }, { timeoutMs: 22000, debug: true });
         const prediction = result.prediction || {};
         return {
           id,
@@ -74,6 +74,7 @@ module.exports = async function handler(request, response) {
           hasMoney: Boolean(prediction.monetaryPrediction),
           stayImpact: (prediction.stayImpact || []).length,
           validationNotes: prediction.validationNotes || [],
+          ...(!prediction.primaryDisposition && result.debug?.rawModelText ? { rawHead: result.debug.rawModelText.slice(0, 240) } : {}),
         };
       } catch (error) {
         return { id, error: String(error?.message || error).slice(0, 120) };
