@@ -157,7 +157,11 @@ loosened phrases). `build_dev20_v2.py` writes `benchmarks/artemis_eval_dev_20_v2
 `DEV20_V2_MANIFEST.json`; v1 and its registry are unchanged. The five new evidence texts have their
 own records in `registry/real_world_registry_v2.json`, and 13 of 20 items now reach the model.
 `dev20_v2.py` loads, runs and scores v2 without touching the files the 005-Q gate freezes. See
-[the decisions](benchmarks/DEV20-V2-DECISIONS.ko.md).
+[the decisions](benchmarks/DEV20-V2-DECISIONS.ko.md). Free T4 run (commit 5f25f18, one model
+load): 13 items reached the model and 9 passed every check; 14 of 20 passed overall (v1: 3). The
+failures are 002 and 010 (withheld before the model, as in v1), 011 (half the answer missing), 005
+(an unasked item added), 003 (contrast missing) and 020 (same meaning, other words). No unsafe
+release. See the [DEV-20 v2 report](runs/dev20_v2/DEV20-V2-REPORT.ko.md).
 
 Recovery status, 2026-10-29: checkpoint metadata verified; new MLX-VLM weight
 loading and generation **not executed** on this M1 8GB machine. The runtime is
