@@ -112,3 +112,22 @@ try {
 }
 
 console.log('Enforcement prediction shape-unwrap and retry checks passed.');
+
+// ---- No HIGH likelihood without outcome evidence, in either direction -------------
+{
+  const severe = JSON.parse(captured);
+  severe.primaryDisposition = { ...severe.primaryDisposition, type: 'DEPORTATION', likelihood: 'HIGH' };
+  severe.alternativeDispositions = [{ type: 'STAY_PERMISSION_DISADVANTAGE', likelihood: 'VERY_HIGH', rationale: [] }];
+  const capped = validatePrediction(JSON.stringify(severe), caseData, baseline, evidence, [], { status: 'UNAVAILABLE', limitations: [] }, 'groq/test');
+  assert.equal(capped.primaryDisposition.type, 'DEPORTATION');
+  assert.equal(capped.primaryDisposition.likelihood, 'MODERATE');
+  assert.equal(capped.primaryDisposition.likelihoodCappedFrom, 'HIGH');
+  assert.equal(capped.alternativeDispositions[0].likelihood, 'MODERATE');
+  assert.ok(capped.validationNotes.includes('LIKELIHOOD_CAPPED:DEPORTATION:HIGH'));
+  const low = JSON.parse(captured);
+  low.primaryDisposition = { ...low.primaryDisposition, likelihood: 'LOW' };
+  const kept = validatePrediction(JSON.stringify(low), caseData, baseline, evidence, [], { status: 'UNAVAILABLE', limitations: [] }, 'groq/test');
+  assert.equal(kept.primaryDisposition.likelihood, 'LOW');
+  assert.equal(kept.primaryDisposition.likelihoodCappedFrom, undefined);
+  console.log('Enforcement likelihood cap checks passed.');
+}

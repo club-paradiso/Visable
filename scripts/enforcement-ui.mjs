@@ -604,6 +604,7 @@ function dispositionHtml(item, primary = false) {
   return `<div class="disposition${primary ? ' disposition--primary' : ''}">
     <strong><span>${primary ? '가장 유력 · ' : '다른 가능성 · '}${escapeHtml(dispositionLabels[item.type] || item.type)}</span><span class="disposition-likelihood">${likelihoodMeter(item.likelihood)} ${escapeHtml(likelihoodLabels[item.likelihood] || item.likelihood)}</span></strong>
     ${dispositionHelp[item.type] ? `<p class="subtle">${escapeHtml(dispositionHelp[item.type])}</p>` : ''}
+    ${item.likelihoodCappedFrom ? '<p class="likelihood-cap-note">공개된 처분 사례 근거가 부족해, 가능성은 “중간”까지만 표시해요.</p>' : ''}
     ${(item.rationale || []).length ? factors(item.rationale) : ''}
   </div>`;
 }
