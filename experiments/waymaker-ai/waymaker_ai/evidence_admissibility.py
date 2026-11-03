@@ -54,9 +54,10 @@ _PROCEDURE = {
 }
 _PROCEDURE_RE = {k: re.compile(v, re.I) for k, v in _PROCEDURE.items()}
 # A personal determination needs a first-person reference AND a request for a decision.
+# Mission 005-T: "am I permitted / able" is a request for a decision like "am I allowed" (A05T-35).
 _FIRST_PERSON = re.compile(r"제가|저는|저의|제\s|내가|나는|\bI\b|\bI'm\b|\bmy\b|\bme\b|\btôi\b|\bem\b|\bmình\b", re.I)
 _DECISION = re.compile(r"할\s*수\s*있|해야\s*(?:하|되|합)|하나요|되나요|대상인가|대상이\s*되|가능한가|가능할까|필요한가|필요하나요|"
-                       r"\bcan\s+i\b|\bmay\s+i\b|\bdo\s+i\s+(?:need|have)\b|\bmust\s+i\b|\bam\s+i\s+(?:eligible|allowed|required)\b|"
+                       r"\bcan\s+i\b|\bmay\s+i\b|\bdo\s+i\s+(?:need|have)\b|\bmust\s+i\b|\bam\s+i\s+(?:eligible|allowed|permitted|required|able)\b|"
                        r"\bshould\s+i\b|\bwhere\s+do\s+i\b|có\s+thể|có\s+cần|có\s+phải|phải\s+.*không|được\s+không", re.I)
 _DATE_FULL = re.compile(r"(\d{4})\s*(?:년|[.\-/])\s*(\d{1,2})\s*(?:월|[.\-/])\s*(\d{1,2})")
 _DATE_MONTH = re.compile(r"(\d{4})\s*년\s*(\d{1,2})\s*월|tháng\s*(\d{1,2})\s*(?:/|năm)\s*(\d{4})")

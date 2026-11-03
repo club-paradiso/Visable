@@ -45,7 +45,11 @@ def test_thresholds_are_the_005q_thresholds_unchanged():
 #: Files Mission 005-S changed after the 005-R freeze. The 005-R manifest records them as they were at
 #: that freeze; the 005-R decision is re-derived with that run commit's code (test_mission005r_real_run).
 CHANGED_AFTER_005R = {"artemis_bootstrap/grounding_guard.py", "artemis_bootstrap/claim_support_validation.py",
-                      "artemis_bootstrap/trusted_evidence_spec.md", "artemis_bootstrap/dev20_v2.py"}
+                      "artemis_bootstrap/trusted_evidence_spec.md", "artemis_bootstrap/dev20_v2.py",
+                      # Mission 005-T
+                      "artemis_bootstrap/gemma4_runtime.py", "waymaker_ai/inference_input.py", "waymaker_ai/response_contract.py",
+                      # Mission 005-T
+                      "waymaker_ai/evidence_admissibility.py"}
 FREEZE_COMMIT_005R = "9101a0ae957af628b9edd424b217305c02f05620"
 
 

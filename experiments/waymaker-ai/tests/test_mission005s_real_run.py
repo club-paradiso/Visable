@@ -64,24 +64,56 @@ def test_recorded_gate_decision_is_intact_and_pass():
     assert (c["end_to_end_correct"], c["critical_unsafe_released"], c["trust_bypass"], c["false_blocks"]) == (79, 0, 0, 0)
 
 
-def test_decision_and_both_results_reproduce_byte_for_byte(tmp_path):
-    acc, dev = tmp_path / "acc", tmp_path / "dev"
-    acc.mkdir(), dev.mkdir()
+RUN_COMMIT_005S = "e12f8f5"
+
+
+def _005s_tree(tmp_path):
+    """Mission 005-T later changed files the 005-S manifest froze, so the 005-S gate runs on the code of the
+    005-S run commit, extracted from git."""
+    import subprocess
+    repo = Path(subprocess.run(["git", "rev-parse", "--show-toplevel"], cwd=BOOT, capture_output=True, text=True).stdout.strip() or "/nonexistent")
+    if not (repo / ".git").exists() or shutil.which("tar") is None or subprocess.run(
+            ["git", "cat-file", "-e", f"{RUN_COMMIT_005S}^{{commit}}"], cwd=repo, capture_output=True).returncode:
+        pytest.skip("needs git history for the 005-S run commit")
+    archive = subprocess.run(["git", "archive", RUN_COMMIT_005S, "experiments/waymaker-ai"], cwd=repo,
+                             capture_output=True, check=True).stdout
+    subprocess.run(["tar", "-x", "-C", str(tmp_path)], input=archive, check=True)
+    root = tmp_path / "experiments" / "waymaker-ai"
+    run = root / "artemis_bootstrap" / "runs" / "mission005s" / "synthetic_acceptance"
+    run.mkdir(parents=True, exist_ok=True)
+    for name in ("generations.jsonl", "sessions.jsonl", "pipeline.jsonl", "gate_decision.json"):
+        shutil.copy(ACC / name, run / name)
+    return root, run
+
+
+def test_decision_and_both_results_reproduce_byte_for_byte_with_the_005s_code(tmp_path):
+    import subprocess
+    root, run = _005s_tree(tmp_path)
+    (run / "gate_decision.json").unlink()
+    result = subprocess.run([sys.executable, "-I", "artemis_bootstrap/synthetic_safety_gate_v14.py", "score", "--out-dir", str(run)],
+                            cwd=root, capture_output=True, text=True)
+    assert result.returncode == 0, result.stderr[-800:]
+    assert sha(run / "gate_decision.json") == RAW_SHA256[ACC / "gate_decision.json"]
+    assert sha(run / "synthetic_acceptance_results.json") == RAW_SHA256[ACC / "synthetic_acceptance_results.json"]
+    dev = tmp_path / "dev"
+    dev.mkdir()
     for name in ("generations.jsonl", "sessions.jsonl", "pipeline.jsonl"):
-        shutil.copy(ACC / name, acc / name)
         shutil.copy(DEV / name, dev / name)
-    results, record = gate14.score_dir(acc)
-    gate14.write(acc, results, record)
-    assert sha(acc / "gate_decision.json") == RAW_SHA256[ACC / "gate_decision.json"]
-    assert sha(acc / "synthetic_acceptance_results.json") == RAW_SHA256[ACC / "synthetic_acceptance_results.json"]
     assert dev20_v2.main(["--out-dir", str(dev)]) == 0
     assert sha(dev / "dev20_v2_results.json") == RAW_SHA256[DEV / "dev20_v2_results.json"]
 
 
-def test_the_stored_pass_unlocks_dev20_only_for_contract_v13():
-    assert gate14.require_passing_gate(ACC / "gate_decision.json", "v13")["decision"] == "pass"
-    with pytest.raises(gate14.GateBlocked, match="not v12"):
-        gate14.require_passing_gate(ACC / "gate_decision.json", "v12")
+def test_the_stored_pass_unlocks_dev20_only_for_contract_v13_and_only_with_the_005s_code(tmp_path):
+    import subprocess
+    root, run = _005s_tree(tmp_path)
+    probe = ("import sys; sys.path[:0] = ['.', 'artemis_bootstrap']; import synthetic_safety_gate_v14 as g; from pathlib import Path; "
+             f"d = Path({str(run / 'gate_decision.json')!r}); print(g.require_passing_gate(d, 'v13')['decision'])\n"
+             "try:\n    g.require_passing_gate(d, 'v12')\nexcept g.GateBlocked as e:\n    print('blocked', e)")
+    result = subprocess.run([sys.executable, "-I", "-c", probe], cwd=root, capture_output=True, text=True)
+    assert result.returncode == 0, result.stderr[-800:]
+    assert result.stdout.splitlines() == ["pass", "blocked Gate passed contract v13, not v12"]
+    with pytest.raises(gate14.GateBlocked, match="do not re-score to the same passing decision"):
+        gate14.require_passing_gate(ACC / "gate_decision.json", "v13")
 
 
 def test_every_cap_case_passed():

@@ -37,7 +37,9 @@ def test_thresholds_are_the_005m_thresholds_unchanged():
 #: were at that freeze; the 005-N decision is re-derived with that run commit's code (test_mission005n_real_run).
 CHANGED_AFTER_005N = {"artemis_bootstrap/trusted_evidence_spec.md", "artemis_bootstrap/grounding_guard.py",
                       "artemis_bootstrap/gemma4_runtime.py", "waymaker_ai/response_contract.py", "waymaker_ai/inference_input.py",
-                      "artemis_bootstrap/claim_support_validation.py"}
+                      "artemis_bootstrap/claim_support_validation.py",
+                      # Mission 005-T
+                      "waymaker_ai/evidence_admissibility.py"}
 FREEZE_COMMIT_005N = "b74210c5cc06b059323efe3d27e7ea381f9669b0"
 
 

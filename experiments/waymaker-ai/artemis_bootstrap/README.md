@@ -191,6 +191,15 @@ only one of its two cases; the branch retry quoted the other, and the retried an
 released and passes, the first time the retry fired on the real model. All nine cap cases and three
 cap-negatives passed. Remaining: 005 (unasked item added), 020 (literal 내야), 003, and 002/010 withheld
 before the model. See the [Mission 005-S report](runs/mission005s/MISSION-005-S-REPORT.ko.md).
+Mission 005-T (frozen 2026-11-03, not run yet): a released answer whose status or form is visibly wrong
+is asked once more with `status_retry` (contract v14; `status_check.py`): two cited records that differ
+only in their numbers answered as answered/partial (A05M/N-28·29, A05Q/R/S-28), partial with nothing
+uncovered (A05P/R/S-60), or an input field name in the answer (A05K-41, A05R/S-60). Across the recorded
+answers it fires on exactly those. Nothing is withheld for it. "am I permitted / able" now counts as a
+decision request (spec 2; the new suite's A05T-35 found the gap; no recorded result changes). Gate v15 =
+gate v14 with the 005-T manifest; thresholds unchanged. New locked 81-case suite (J-7 family) with seven
+conflict-template cases, three not-conflicts and three partial traps, re-derived blind (81/81).
+DEV-20 item 005 is not this habit: the question-item reader put 'method' in uncovered_items.
 
 Recovery status, 2026-10-29: checkpoint metadata verified; new MLX-VLM weight
 loading and generation **not executed** on this M1 8GB machine. The runtime is

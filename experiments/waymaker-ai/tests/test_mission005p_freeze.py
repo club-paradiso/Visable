@@ -42,7 +42,9 @@ def test_thresholds_are_the_005o_thresholds_unchanged():
 CHANGED_AFTER_005P = {"artemis_bootstrap/grounding_guard.py", "artemis_bootstrap/claim_support_validation.py",
                       "artemis_bootstrap/trusted_evidence_spec.md",
                       # Mission 005-R
-                      "artemis_bootstrap/gemma4_runtime.py", "waymaker_ai/inference_input.py", "waymaker_ai/response_contract.py"}
+                      "artemis_bootstrap/gemma4_runtime.py", "waymaker_ai/inference_input.py", "waymaker_ai/response_contract.py",
+                      # Mission 005-T
+                      "waymaker_ai/evidence_admissibility.py"}
 FREEZE_COMMIT_005P = "158e797477b456894ca1d98527f7edea275c8eba"
 
 

@@ -23,9 +23,10 @@ SOURCE_PROVENANCE_VALUES = frozenset({"official_manual", "official_notice", "com
 # (one applicant situation at a time) and as_of (the date the question is about); v10 (005-M) adds
 # uncovered_sentence (the system's sentence naming the uncovered items in the reply language); v12 (005-P)
 # adds language_retry (the system's note that the previous answer was not in the reply language); v13 (005-R)
-# adds branch_retry (the system's note quoting a case of the cited evidence the previous answer left out).
+# adds branch_retry (the system's note quoting a case of the cited evidence the previous answer left out); v14
+# (005-T) adds status_retry (the system's note naming a status or form problem of the previous answer).
 SYSTEM_FIELDS = ("reply_language", "uncovered_items", "scope_status_code", "scope_location", "as_of", "uncovered_sentence",
-                 "language_retry", "branch_retry")
+                 "language_retry", "branch_retry", "status_retry")
 REPLY_LANGUAGES = frozenset({"ko", "en", "vi"})
 
 
@@ -95,4 +96,9 @@ def project_inference_item(item: Mapping) -> dict:
             if not isinstance(text, str) or not text.strip() or len(text) > 600 or "\n" in text:
                 raise ValueError("System branch_retry must be one line of at most 600 characters")
             projected["system"]["branch_retry"] = text
+        if "status_retry" in system:
+            text = system["status_retry"]
+            if not isinstance(text, str) or not text.strip() or len(text) > 600 or "\n" in text:
+                raise ValueError("System status_retry must be one line of at most 600 characters")
+            projected["system"]["status_retry"] = text
     return projected

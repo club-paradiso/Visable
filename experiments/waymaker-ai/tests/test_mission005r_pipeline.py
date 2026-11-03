@@ -94,7 +94,7 @@ def test_recorded_answers_of_earlier_runs_trigger_only_dev20_v2_item_011():
 
 
 def test_v13_adds_only_the_input_name_and_the_retry_line():
-    assert CONTRACT_VERSIONS[-1] == "v13" and guard.CONTRACT_VERSION == "v13"
+    assert "v13" in CONTRACT_VERSIONS and guard.CONTRACT_VERSION in ("v13", "v14")   # 005-T: v14
     v12, v13 = SYSTEM_PROMPTS["v12"].splitlines(), SYSTEM_PROMPTS["v13"].splitlines()
     assert len(v13) == len(v12) + 1
     added = [line for line in v13 if line not in v12]
@@ -107,7 +107,7 @@ def test_branch_retry_is_an_allowlisted_one_line_v13_input():
     assert project_inference_item(item)["system"]["branch_retry"] == note
     assert list(json.loads(build_messages(item, "v13")[1]["content"])) == [
         "question", "reply_language", "uncovered_items", "branch_retry", "evidence"]
-    with pytest.raises(ValueError, match="v13 input"):
+    with pytest.raises(ValueError, match=r"v13\+ input"):
         build_messages(item, "v12")
     with pytest.raises(ValueError, match="one line"):
         project_inference_item({**item, "system": {**item["system"], "branch_retry": "a\nb"}})
