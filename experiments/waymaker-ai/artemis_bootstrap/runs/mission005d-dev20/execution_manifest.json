@@ -1,0 +1,34 @@
+{
+  "mission": "005-D",
+  "label": "Development Candidate Diagnostic Performance",
+  "benchmark": "artemis_bootstrap/benchmarks/artemis_eval_dev_20.json",
+  "dataset_sha256": "c204497731b637d31da221a468ca2a4c2537d275a974234f41aefe7da4313c5f",
+  "target_cases": 20,
+  "model": "google/gemma-4-E4B-it",
+  "revision": "ee0ef6023621cff504d758262d4e04895a5af4a2",
+  "runtime": "transformers_cuda",
+  "code": {
+    "git_commit": "6dfe161165852922db592e6a1a76578c07e7fada",
+    "code_files_modified_from_commit": false,
+    "files_sha256": {
+      "artemis_bootstrap/gemma4_cuda_runtime.py": "62c9e55d5889ded2dc29c56e9774a9044867941bda40e2e604496619513541c4",
+      "artemis_bootstrap/probe_gemma4_cuda.py": "daef06dea0a217b3a8c334dec05cd3b59e4e5a775e6b8cb9a33e87dd9899bd69",
+      "waymaker_ai/cuda_policy.py": "b830995264919d450356a978bd1188125ad90781a7202faae64027ca5bfe6720",
+      "waymaker_ai/response_contract.py": "5024c6bd95eb03d5abf91ad34e0a1088c8f6971734d89095789e416bc2e55047",
+      "waymaker_ai/inference_input.py": "7500df5cac4f8182103a70184a6f95420509150c4f36fea7c93256ee530a32d3",
+      "configs/artemis_cuda_runtime.json": "5eee1c2f2249ca59b113d37d6674ce12c9afa855c8e4d0fae711301867021039"
+    }
+  },
+  "sessions": [
+    {
+      "session_id": "colab-t4-90759d24",
+      "started_at": "2026-10-30T04:57:03.937190+00:00",
+      "model_loaded": true,
+      "previous_sessions": 0
+    }
+  ],
+  "max_new_tokens": 256,
+  "heldout_used": false,
+  "official_gold_accuracy": null,
+  "independent_legal_review": "not_verified"
+}
