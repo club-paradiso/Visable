@@ -7,6 +7,7 @@
     "validate": "bash scripts/check_repo.sh",
     "build": "vite build",
     "preview": "vite preview",
+    "typecheck": "tsc -p tsconfig.json",
     "test:i18n": "node scripts/check_i18n.js && node scripts/smoke_static_i18n.mjs",
     "test:popup-i18n": "node scripts/check_popup_i18n.mjs",
     "test:document-help": "node scripts/check_document_help.mjs",
@@ -51,6 +52,7 @@
   "devDependencies": {
     "@playwright/test": "^1.61.0",
     "jsdom": "^24.1.0",
+    "typescript": "^7.0.2",
     "vite": "^8.3.5"
   }
 }

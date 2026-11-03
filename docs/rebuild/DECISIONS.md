@@ -149,3 +149,48 @@ the options considered, the evidence, and the reason.
   keeps images as files. Hashing is applied in Phase 2 only to the `type="module"` scripts and to image
   assets referenced from HTML/CSS (the raw copies under `assets/` also stay, so old URLs keep working).
   CSS hashing moves to Phase 4, where the visual baselines are the gate.
+
+## ADR-009 — Phase 3 extraction mechanics: ES modules under src/, one `window.Visable` bridge
+- Date: 2026-11-03
+- Context: index.html's main inline block (lines 16104–26318) is a classic script that runs at
+  parse time and shares ~487 functions and many `const` data tables through the global scope with
+  24 classic `assets/js` scripts, 4 inline shims and the e2e specs (phase0-legacy-checks.md §G).
+  ES modules are always deferred and have their own scope, so extracted code cannot simply be
+  "moved" without an explicit hand-off.
+- Options: (a) extract into classic scripts (keeps globals, defeats the goal); (b) ES modules plus
+  dozens of ad-hoc `window.x = …` globals (violates "no new globals"); (c) ES modules under `src/`
+  bundled by Vite, exposing exactly one bridge object `window.Visable` during the transition,
+  with the inline code delegating to it function by function.
+- Decision: (c). `src/main.js` is the single module entry for index.html; it imports the extracted
+  modules and assigns `window.Visable = { data, state, render, … }` (one global, documented, removed
+  or frozen in Phase 7). Inline functions are first turned into thin delegations
+  (`function fetchJson(url) { return Visable.data.fetchJson(url); }`), the golden suite runs, then
+  the inline function is deleted once nothing calls it. Timing is safe because every data load,
+  storage read and render happens in `DOMContentLoaded`/event handlers (verified in the structure
+  map), which fire after module scripts execute; anything found to run at parse time stays inline.
+  The compatibility surface the e2e specs and `assets/js` scripts use (`VISA_DATA`, `renderResults`,
+  `executeSearch`, `applyLanguage`, `openVisaDrawer`, `tx`, `escapeHtml`, `API_BASE`, …) stays on
+  `window` until Phase 7, each removal recorded.
+- Typing: TypeScript 7.0.2 with `tsconfig.json` scoped to `src/**` (`allowJs`, `checkJs`, `strict`);
+  new modules are `.ts` where they have a stable contract (data layer, state layer), `.js` with JSDoc
+  where they are moved legacy code. `npm run typecheck` gates CI alongside the golden suite.
+- Order (brief): data loading → state/storage (with key migration = keep every existing key name
+  unchanged; no renames) → rendering helpers (escaping) → features, lowest coupling first.
+
+## ADR-010 — Phase 3 modules are plain ES modules with JSDoc types, not `.ts`
+- Date: 2026-11-03
+- Context: the brief prefers `.ts` for new modules. The first data-layer modules were written as
+  `.ts`; the build and the golden suite against `dist/` passed. But the legacy CI jobs
+  (repo-validation.yml `landing-restoration-e2e`, `webkit-e2e`, mobile QA; immigration-checklists
+  workflow) and `playwright.config.mjs` serve the **source tree** with `python3 -m http.server`,
+  with no build step. A `<script type="module" src="src/main.js">` that imports `.ts` files fails
+  in a browser served that way, so every inline delegation to the bridge would break those jobs.
+- Options: (a) rewrite every legacy CI job and config to build first (touches workflows the brief
+  told Phase 0 to leave alone, and makes the repo un-runnable without a build); (b) `.ts` plus a
+  committed compiled copy (two sources of truth); (c) `.js` ES modules with `// @ts-check` + JSDoc,
+  type-checked by `tsc` (`checkJs`, `strict`) — runnable natively from the source tree and bundled
+  by Vite in production.
+- Decision: (c) for Phase 3–5. `npm run typecheck` runs in `golden-local` before the build. `.ts`
+  can be adopted file by file once the legacy jobs serve `dist/` (Phase 7 decision).
+- Evidence: with `.js` modules the golden suite passes both against the source tree (100 passed)
+  and against `dist/` (100 passed); `window.Visable.data` is present when served from source.

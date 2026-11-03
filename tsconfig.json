@@ -1,0 +1,19 @@
+{
+  "// ": "Phase 3 of the frontend rebuild (docs/rebuild/DECISIONS.md ADR-009). Type-checks the new ES modules under src/ (plain .js + JSDoc so the source tree still runs without a build, ADR-010); the legacy inline code and assets/js are not type-checked yet. Run: npm run typecheck",
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "allowJs": true,
+    "checkJs": true,
+    "noEmit": true,
+    "strict": true,
+    "noImplicitAny": false,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "allowImportingTsExtensions": true,
+    "types": []
+  },
+  "include": ["src/**/*.js", "src/**/*.ts"]
+}
