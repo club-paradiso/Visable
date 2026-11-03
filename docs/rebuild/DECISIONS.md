@@ -194,3 +194,13 @@ the options considered, the evidence, and the reason.
   can be adopted file by file once the legacy jobs serve `dist/` (Phase 7 decision).
 - Evidence: with `.js` modules the golden suite passes both against the source tree (100 passed)
   and against `dist/` (100 passed); `window.Visable.data` is present when served from source.
+
+### ADR-009 correction (2026-11-03, from docs/rebuild/phase3-structure-map.md §2)
+- The claim "every data load, storage read and render happens in DOMContentLoaded/event handlers"
+  is **wrong** for: `initCity` (reads/writes `paradiso_city` at parse time), `globalEasyMode`
+  (reads `paradiso:easyMode`), `I18N_DEV_WARNINGS` (reads `paradiso:i18n-debug`), the agent and
+  medical finder IIFEs (fetch at parse time), the reminders IIFE (reads storage, renders), the
+  scroll-reveal and anagram IIFEs, and the global-settings shim. The module entry runs after the
+  whole document is parsed, so **parse-time code cannot call `window.Visable`**. Rule: parse-time
+  code stays inline until a step deliberately defers it with a visual-golden check. The two finder
+  fetch sites that were delegated in the first D2 pass were reverted to raw `fetch` for this reason.
