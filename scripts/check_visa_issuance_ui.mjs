@@ -55,6 +55,7 @@ const issuance = readJson('data/visa_issuance_records.json');
 const evidence = readJson('data/procedure_evidence_bindings.json');
 const koPack = readJson('data/i18n/ko.json');
 const indexHtml = readText('index.html');
+const docsJs = readText('src/docs/normalize.js'); // Phase 3: normalizeVisaCode() moved out of index.html
 
 const records = Array.isArray(issuance.records) ? issuance.records : [];
 const bindings = (Array.isArray(evidence.records) ? evidence.records : [])
@@ -166,7 +167,7 @@ ok(/GENERIC_VISA_ISSUANCE_EXCLUDED_CODES\s*=\s*new Set\(\[\s*'F-4'/.test(indexHt
 ok(/function renderVisaIssuanceSection[\s\S]*?isGenericVisaIssuanceExcluded\(\s*v\.code\s*\)/.test(indexHtml),
   'renderVisaIssuanceSection short-circuits excluded codes before rendering');
 // Execute the real exclusion guard to prove it filters F-4 (all spellings).
-const normSrc = extractFunction(indexHtml, 'normalizeVisaCode');
+const normSrc = extractFunction(docsJs, 'normalizeVisaCode');
 const guardSrc = extractFunction(indexHtml, 'isGenericVisaIssuanceExcluded');
 const setSrc = (indexHtml.match(/const GENERIC_VISA_ISSUANCE_EXCLUDED_CODES = new Set\(\[[^\]]*\]\);/) || [''])[0];
 try {

@@ -18,7 +18,10 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 
 const ROOT = path.resolve(__dirname, '..');
-const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+// The frontend source corpus: index.html plus the module that Phase 3 of the rebuild moved the
+// document-normalisation helpers (isDocPlaceholder, dedupeDocs, renderDocGroup, DOC_PLACEHOLDER_TOKENS) into.
+// The module comes first so extractFunction() finds the real definitions, not the inline delegating stubs.
+const html = fs.readFileSync(path.join(ROOT, 'src', 'docs', 'normalize.js'), 'utf8') + '\n' + fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
 const aiHtml = fs.readFileSync(path.join(ROOT, 'ai.html'), 'utf8');
 
 const failures = [];

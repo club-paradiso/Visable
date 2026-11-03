@@ -28,8 +28,15 @@ class I18nSweepRouteWizardTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.html = (REPO_ROOT / "index.html").read_text(encoding="utf-8")
+        # Procedure-label helpers (moved out of index.html in Phase 3 of the frontend rebuild).
+        cls.docs_js = (REPO_ROOT / "src" / "docs" / "normalize.js").read_text(encoding="utf-8")
         cls.packs = load_packs()
         cls.blobs = pack_blobs()
+
+    def _slice_docs(self, start_marker: str, end_marker: str) -> str:
+        start = self.docs_js.index(start_marker)
+        end = self.docs_js.index(end_marker, start)
+        return self.docs_js[start:end]
 
     def _slice(self, start_marker: str, end_marker: str) -> str:
         start = self.html.index(start_marker)
@@ -89,7 +96,7 @@ class I18nSweepRouteWizardTests(unittest.TestCase):
         self.assertNotIn('aria-label="구비서류"', tabs)
 
     def test_known_procedure_keys_map_to_localized_labels(self):
-        idx = self._slice("const PROCEDURE_LABEL_INDEX", "}")
+        idx = self._slice_docs("const PROCEDURE_LABEL_INDEX", "}")
         for key in ("visaIssuance", "statusChange", "extension", "registration"):
             self.assertIn("%s:" % key, idx)
         # Localized procedureLabels arrays exist for every supported locale.
@@ -98,7 +105,7 @@ class I18nSweepRouteWizardTests(unittest.TestCase):
         self.assertIn("签证签发", localized(self.packs, "zh-CN", "procedureLabels"))
 
     def test_unknown_procedure_key_has_localized_fallback(self):
-        fn = self._slice("function getProcedureLabelByKey", "function getProcedureLabel(")
+        fn = self._slice_docs("function getProcedureLabelByKey", "function getProcedureLabel(")
         # Falls back to txAt(...) / the provided fallback rather than crashing.
         self.assertIn("txAt('procedureLabels'", fn)
         self.assertIn("fallback || key", fn)

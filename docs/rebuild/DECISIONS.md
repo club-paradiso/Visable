@@ -221,3 +221,16 @@ the options considered, the evidence, and the reason.
 - **DOMContentLoaded wiring that assigns a cluster's state moves with the cluster** as an exported
   `wire*()` function that the inline handler calls at the same position, so the state stays
   module-private and no new global is introduced.
+
+### ADR-009 addendum 2 (2026-11-03, normalisation clusters)
+- **Stub shape:** inline delegating stubs are `function name(...args) { return Visable.docs.name(...args); }` —
+  one line each, generated from the list of moved functions that are still referenced outside the moved
+  range (computed by word-boundary search over the rest of index.html plus the runtime `typeof` guards in
+  assets/js and tests/e2e). Functions referenced only inside the moved range get no stub.
+- **Legacy slicers that brace-match a function by name read a corpus with the module FIRST**
+  (`read(module) + '\n' + read('index.html')`), because the stub in index.html has the same
+  `function name(` signature and a slicer that scans index.html first would silently test the
+  one-line stub. Slicers that look for a single literal read the module alone.
+- **One module per cluster group, not the four-file split** suggested in the structure map (same as the
+  job-code decision): cross-references inside the group are by bare name, which only one module scope can
+  keep verbatim. Splitting is a follow-up refactor once the stubs are gone.

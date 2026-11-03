@@ -14,6 +14,9 @@ const { execFileSync } = require('child_process');
 
 const ROOT = path.resolve(__dirname, '..');
 const HTML = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+// Phase 3 of the frontend rebuild moved the normalisation helpers to src/docs/normalize.js;
+// the pure helpers are evaluated from there (the ?q= wiring stays in index.html).
+const DOCS_JS = fs.readFileSync(path.join(ROOT, 'src', 'docs', 'normalize.js'), 'utf8');
 
 const failures = [];
 const passed = [];
@@ -85,7 +88,7 @@ check('14. ?q= path removes landing class and sets searched',
     // Inline-evaluate the function from the HTML source
     let ok = false;
     try {
-        const match = HTML.match(/function normalizeCodeLikeQuery\(value\)\s*\{[\s\S]*?\n\}/);
+        const match = DOCS_JS.match(/function normalizeCodeLikeQuery\(value\)\s*\{[\s\S]*?\n\}/);
         if (match) {
             // eslint-disable-next-line no-new-func
             const fn = new Function('value', match[0].replace(/^function normalizeCodeLikeQuery\(value\)\s*/, ''));

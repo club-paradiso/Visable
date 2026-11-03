@@ -136,12 +136,14 @@ Kinds: D = data constant, C = config, S = state, P = pure function, R = DOM rend
 - P (HTML): `renderProcedureFeeBox` 19306–19346.
 
 ### C14 Code normalisation and visa naming — 19347–19578
+**Moved** (2026-11-03) to `src/docs/normalize.js` (one module for C14–C16; `renderProcedureVariant` onward stays inline). 55 stubs remain inline; see DECISIONS ADR-009 addendum 2.
 - P: `normalizeVisaCode`, `normalizeCodeLikeQuery`, `isCodeLikeQuery`, `getPrimaryCodeLikeQuery`, `getExactQueryMatchRank` (19406), `isEnglishMode`, `getVisaNameKo/En`, `getLocalizedVisaName`, `getSecondaryVisaName`, `getVisaSubcodes`, `getLocalizedSubcodeName`.
 - D: `PROCEDURE_LABEL_INDEX` 19485–19497.
 - P: `getProcedureLabelByKey/Label`, `isF5ResidenceCardReissuance`, `getProcedureDisplayLabel`, `localizeResultCount`, `getRecordSearchText`, `keywordMatchesCode`, `getMatchingSubcodes`, `getManualDomains`.
 - P (HTML): `renderDomainBadges`, `renderReviewBadge`.
 
 ### C15 Document-requirement normalisation — 19579–20528, about 950 lines
+**Moved** (2026-11-03) to `src/docs/normalize.js` (one module for C14–C16; `renderProcedureVariant` onward stays inline). 55 stubs remain inline; see DECISIONS ADR-009 addendum 2.
 Mostly pure functions. Contents:
 - `SOURCE_CONFIRMED_PROCEDURE_KEY_MAP` 19579–19599, `procedureKeyForSourceConfirmedType`, `getSourceConfirmedEntriesForProcedure`.
 - `F4_OVERSEAS_KOREANS_FORM_PROCEDURES`, `PARADISO_APP_FORM_PIECE_RE`, `paradisoCanonicalAppFormPiece`, **`paradisoCanonicalAppFormText` (19642)**, `paradisoGlossaryLabelForAppForm`, `canonicalizeSourceConfirmedDocText`, `groupSourceConfirmedDocuments`, `sourceConfirmedManualRefs`, `mergeManualRefs`.
@@ -152,6 +154,7 @@ Mostly pure functions. Contents:
 - R: `renderDocGroup` 20524.
 
 ### C16 Manual text and procedure rendering — 20529–20926
+**Moved** (2026-11-03) to `src/docs/normalize.js` (one module for C14–C16; `renderProcedureVariant` onward stays inline). 55 stubs remain inline; see DECISIONS ADR-009 addendum 2.
 - P: `MANUAL_*` and `PARADISO_*_NOTE_RE` regexes, `paradisoFilterProcedureNotes`, `paradisoStripInternalReviewArtifacts` (20596), `stripManualArtifacts`, `normalizeManualText`, `paradisoSplitSentences`, `makeManualPreview`, `isLongManualText`.
 - R: `renderManualDetailBlock`, `renderLabeledManualBlock`, `renderProcedureSummaryBlock`.
 - `PROCEDURE_FEE_TILE_KEYS`; R: `renderProcedureDocGroups`, `renderDocDiscretionaryNote`, `renderDocGroupingSourceNote`.

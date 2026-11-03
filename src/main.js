@@ -10,6 +10,7 @@ import * as data from './data/fetch-json.js';
 import { DATA_PATHS, API_ROUTES } from './data/paths.js';
 import * as state from './state/storage.js';
 import * as render from './render/escape.js';
+import * as docs from './docs/normalize.js';
 import * as jurisdiction from './features/jurisdiction.js';
 import * as jobcode from './features/jobcode.js';
 import * as deadline from './features/deadline.js';
@@ -23,6 +24,7 @@ const bridge = Object.freeze({
   data: Object.freeze({ ...data, DATA_PATHS, API_ROUTES }),
   state: Object.freeze({ ...state }),
   render: Object.freeze({ ...render }),
+  docs: Object.freeze({ ...docs }),
   features: Object.freeze({ jurisdiction: Object.freeze({ ...jurisdiction }), jobcode: Object.freeze({ ...jobcode }), deadline: Object.freeze({ ...deadline }) })
 });
 

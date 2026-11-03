@@ -161,3 +161,5 @@ Missed by the original map; found when the `validate` CI job went red after the 
 - `backend/tests/test_waymaker_answer_state_polish.py`
 
 Repointed so far: `test_core_journey_ux_hardening.py`, `test_grounding_readiness_transparency.py`, `test_route_aware_deadline_i18n.py` (deadline calculator → `src/features/deadline.js`; `/api/ask` call → `Visable.data.postRaw`), `test_i18n_law_fallback_live_smoke.py` (jurisdiction → `src/features/jurisdiction.js`), `test_i18n_sweep_route_wizard.py`, `test_scenario_procedure_variants.py` (`/api/ask` call).
+
+Repointed with the C14–C16 move (`src/docs/normalize.js`): `scripts/check_exact_code_search.js`, `scripts/check_placeholder_suppression.js`, `scripts/check_static_visa_result_cards.js`, `scripts/validate_visa_issuance_enrichment.js`, `scripts/check_visa_issuance_ui.mjs`, `scripts/check_status_variant_indexing.py`, `backend/tests/test_i18n_sweep_route_wizard.py`, `backend/tests/test_scenario_procedure_variants.py`. Rule: a corpus for brace-matching slicers puts the module before index.html (the inline stub has the same signature).
