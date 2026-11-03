@@ -162,9 +162,11 @@ Mostly pure functions. Contents:
 - Source-evidence helpers 20757–20857, then R: `renderProcedureHeader`, `renderScenarioSelectedContextBanner`, `renderProcedureVariant` (20893).
 
 ### C17 Scenario picker — 20927–21100
+**Moved** (2026-11-03) to `src/render/cards/procedure-panels.js` together with `renderProcedureVariant(s)` from the C16 tail; `isF4RouteWizardTarget` onward stays inline for now.
 S: `scenarioPickerActiveSelector`, `scenarioPickerActivePanel`. E / R: `closeScenarioPicker`, `openScenarioPicker`, `chooseScenarioVariant`, `clearScenarioSelection`, `applyScenarioSelection`, `renderProcedureVariants` (21059).
 
 ### C18 Scenario checklist — 21101–21354 (localStorage)
+**Moved** (2026-11-03) to `src/render/cards/procedure-panels.js` together with `renderProcedureVariant(s)` from the C16 tail; `isF4RouteWizardTarget` onward stays inline for now.
 - `SCENARIO_CHECKLIST_STORAGE_PREFIX` 21105, `SCENARIO_CHECKLIST_GROUPS` 21108–21111.
 - P: `hashScenarioChecklistItem`, key builders.
 - Storage wrappers: `scenarioChecklistStoreGet/Set/Remove` 21134–21143.
@@ -172,6 +174,7 @@ S: `scenarioPickerActiveSelector`, `scenarioPickerActivePanel`. E / R: `closeSce
 - E: persist, sync, hydrate, collect, build text and print HTML, status, copy, print, reset (21196–21354).
 
 ### C19 Procedure panels — 21355–21439
+**Moved** (2026-11-03) to `src/render/cards/procedure-panels.js` together with `renderProcedureVariant(s)` from the C16 tail; `isF4RouteWizardTarget` onward stays inline for now.
 R: `renderProcedurePanel`, `renderProcedures`. D: `PROCEDURE_FALLBACK_SUMMARY_KEYS`. R: `renderProcedureFallbackSummary`.
 
 ### C20 F-4 route wizard — 21440–21700

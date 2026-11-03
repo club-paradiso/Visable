@@ -1,0 +1,14 @@
+{
+  "_comment": "ES modules that Phase 3 of the frontend rebuild moved out of the inline script of index.html, in the inline code's former document order. Legacy source-slicing checks (scripts/, backend/tests) read these BEFORE index.html so a brace-matching extractor finds the real definition rather than the one-line delegating stub index.html keeps. Maintained by hand with every move (docs/rebuild/STATUS.md).",
+  "modules": [
+    "src/features/jobcode.js",
+    "src/features/jurisdiction-data.js",
+    "src/features/jurisdiction.js",
+    "src/docs/normalize.js",
+    "src/render/cards/procedure-panels.js",
+    "src/features/deadline.js",
+    "src/features/landing-animation.js",
+    "src/features/finders.js",
+    "src/features/reminders.js"
+  ]
+}

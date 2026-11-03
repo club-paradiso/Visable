@@ -79,3 +79,17 @@ def localized(packs: dict, locale: str, key: str) -> str:
     if isinstance(value, list):
         return "\n".join(str(item) for item in value)
     return str(value)
+
+
+# Phase 3 of the frontend rebuild moves inline index.html code into ES modules under src/
+# (list: scripts/frontend_modules.json). Static frontend tests that slice function source by
+# name read this corpus: the modules FIRST (so a slice finds the real definition, not the
+# one-line delegating stub index.html keeps for it), then index.html.
+FRONTEND_MODULES = tuple(json.loads((REPO_ROOT / "scripts" / "frontend_modules.json").read_text(encoding="utf-8"))["modules"])
+
+
+def frontend_source() -> str:
+    """index.html plus every extracted module, modules first (see FRONTEND_MODULES)."""
+    parts = [(REPO_ROOT / rel).read_text(encoding="utf-8") for rel in FRONTEND_MODULES if (REPO_ROOT / rel).exists()]
+    parts.append((REPO_ROOT / "index.html").read_text(encoding="utf-8"))
+    return "\n".join(parts)

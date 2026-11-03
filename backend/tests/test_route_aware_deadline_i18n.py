@@ -26,7 +26,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 
 # Import the shared external-locale-pack helper regardless of pytest import mode.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from _i18n_pack_support import SUPPORTED_LOCALES, load_packs, pack_blobs  # noqa: E402
+from _i18n_pack_support import SUPPORTED_LOCALES, frontend_source, load_packs, pack_blobs  # noqa: E402
 
 
 def _extract_function(html: str, name: str) -> str:
@@ -41,7 +41,7 @@ def _extract_function(html: str, name: str) -> str:
 class _IndexHtml(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.html = (REPO_ROOT / "index.html").read_text(encoding="utf-8")
+        cls.html = frontend_source()  # index.html + the modules Phase 3 moved code into (modules first)
         # Deadline calculator source (moved out of index.html in Phase 3 of the frontend rebuild).
         cls.deadline_js = (REPO_ROOT / "src" / "features" / "deadline.js").read_text(encoding="utf-8")
         cls.packs = load_packs()

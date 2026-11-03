@@ -17,7 +17,7 @@ SMOKE = REPO_ROOT / "scripts" / "smoke_ai_live_quality.py"
 DOC = REPO_ROOT / "docs" / "data" / "I18N_SWEEP_ROUTE_WIZARD_F6_G1_2026_05.md"
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from _i18n_pack_support import SUPPORTED_LOCALES, load_packs, localized, pack_blobs  # noqa: E402
+from _i18n_pack_support import SUPPORTED_LOCALES, frontend_source, load_packs, localized, pack_blobs  # noqa: E402
 
 # Localized UI copy now lives in external per-locale JSON packs (data/i18n/*.json);
 # Traditional Chinese (zh-Hant) aliases to zh-CN, so the actively supported display
@@ -27,7 +27,7 @@ from _i18n_pack_support import SUPPORTED_LOCALES, load_packs, localized, pack_bl
 class I18nSweepRouteWizardTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.html = (REPO_ROOT / "index.html").read_text(encoding="utf-8")
+        cls.html = frontend_source()  # index.html + the modules Phase 3 moved code into (modules first)
         # Procedure-label helpers (moved out of index.html in Phase 3 of the frontend rebuild).
         cls.docs_js = (REPO_ROOT / "src" / "docs" / "normalize.js").read_text(encoding="utf-8")
         cls.packs = load_packs()

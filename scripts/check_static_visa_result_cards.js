@@ -16,7 +16,7 @@ const path = require('path');
 const ROOT = path.resolve(__dirname, '..');
 const INDEX = path.join(ROOT, 'index.html');
 // Phase 3 of the frontend rebuild moved getProcedure() and the source-confirmed helpers here.
-const DOCS_JS = path.join(ROOT, 'src', 'docs', 'normalize.js');
+const FRONTEND_MODULES = JSON.parse(read(path.join(ROOT, 'scripts', 'frontend_modules.json'))).modules; // see that file
 const VISA_DATA = path.join(ROOT, 'visa_data.json');
 const BACKEND_VISAS = path.join(ROOT, 'backend', 'data', 'visas.json');
 const STRUCTURED = path.join(ROOT, 'backend', 'data', 'manual_grounding', 'structured_requirements_2026_06_01.json');
@@ -54,7 +54,7 @@ function extractFunction(src, name) {
 
 // Frontend source corpus; the module comes first so extractFunction() finds the real definitions,
 // not the inline delegating stubs that index.html keeps for them.
-const html = read(DOCS_JS) + '\n' + read(INDEX);
+const html = FRONTEND_MODULES.filter(rel => fs.existsSync(path.join(ROOT, rel))).map(rel => read(path.join(ROOT, rel))).concat(read(INDEX)).join('\n');
 const renderResults = extractFunction(html, 'renderResults');
 const getProcedure = extractFunction(html, 'getProcedure');
 const insertFeeNotice = extractFunction(html, 'insertFeeNotice');

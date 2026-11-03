@@ -13,7 +13,7 @@
  *
  * Run: node scripts/check_visa_route_guide.mjs
  */
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
@@ -32,7 +32,9 @@ function section(t) { console.log(`\n== ${t}`); }
 
 const RG = require('../assets/js/visa-route-guide.js');
 const visas = JSON.parse(read('visa_data.json'));
-const indexHtml = read('index.html');
+// Frontend source corpus (scripts/frontend_modules.json modules first, then index.html): the procedure-tab and
+// procedure-panel markup moved to src/render/cards/procedure-panels.js in Phase 3 of the rebuild.
+const indexHtml = JSON.parse(read('scripts/frontend_modules.json')).modules.filter((rel) => existsSync(join(ROOT, rel))).map((rel) => read(rel)).concat(read('index.html')).join('\n');
 const byCode = (c) => visas.find((v) => v.code === c);
 const subsOf = (v) => (Array.isArray(v.subcodes) ? v.subcodes : (Array.isArray(v.subCodes) ? v.subCodes : []));
 

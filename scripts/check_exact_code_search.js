@@ -13,7 +13,10 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 
 const ROOT = path.resolve(__dirname, '..');
-const HTML = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+// Frontend source corpus: the modules Phase 3 of the rebuild moved inline code into (scripts/frontend_modules.json),
+// then index.html — the procedure-tab markup now lives in src/render/cards/procedure-panels.js.
+const FRONTEND_MODULES = JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts', 'frontend_modules.json'), 'utf8')).modules;
+const HTML = FRONTEND_MODULES.filter(rel => fs.existsSync(path.join(ROOT, rel))).map(rel => fs.readFileSync(path.join(ROOT, rel), 'utf8')).concat(fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8')).join('\n');
 // Phase 3 of the frontend rebuild moved the normalisation helpers to src/docs/normalize.js;
 // the pure helpers are evaluated from there (the ?q= wiring stays in index.html).
 const DOCS_JS = fs.readFileSync(path.join(ROOT, 'src', 'docs', 'normalize.js'), 'utf8');

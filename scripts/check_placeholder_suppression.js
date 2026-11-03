@@ -21,7 +21,8 @@ const ROOT = path.resolve(__dirname, '..');
 // The frontend source corpus: index.html plus the module that Phase 3 of the rebuild moved the
 // document-normalisation helpers (isDocPlaceholder, dedupeDocs, renderDocGroup, DOC_PLACEHOLDER_TOKENS) into.
 // The module comes first so extractFunction() finds the real definitions, not the inline delegating stubs.
-const html = fs.readFileSync(path.join(ROOT, 'src', 'docs', 'normalize.js'), 'utf8') + '\n' + fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+const FRONTEND_MODULES = JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts', 'frontend_modules.json'), 'utf8')).modules;
+const html = FRONTEND_MODULES.filter(rel => fs.existsSync(path.join(ROOT, rel))).map(rel => fs.readFileSync(path.join(ROOT, rel), 'utf8')).concat(fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8')).join('\n');
 const aiHtml = fs.readFileSync(path.join(ROOT, 'ai.html'), 'utf8');
 
 const failures = [];

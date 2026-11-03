@@ -19,7 +19,7 @@ for path in (str(BACKEND_DIR), str(SCRIPTS_DIR)):
         sys.path.insert(0, path)
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from _i18n_pack_support import load_packs, localized, pack_blobs  # noqa: E402
+from _i18n_pack_support import frontend_source, load_packs, localized, pack_blobs  # noqa: E402
 from check_required_documents_coverage import validate_procedure_variants  # noqa: E402
 import audit_manual_ref_editions_2026_11 as manual_ref_audit  # noqa: E402
 
@@ -227,7 +227,7 @@ class ScenarioProcedureVariantApiTests(unittest.TestCase):
 
 class ScenarioProcedureVariantFrontendTests(unittest.TestCase):
     def test_variants_render_before_generic_fallback_when_parent_docs_empty(self):
-        html = (REPO_ROOT / "index.html").read_text(encoding="utf-8")
+        html = frontend_source()  # index.html + the modules Phase 3 moved code into (modules first)
         docs_js = (REPO_ROOT / "src" / "docs" / "normalize.js").read_text(encoding="utf-8")  # getProcedure() moved here in Phase 3
         blobs = pack_blobs()
         self.assertIn("variants: normalizeProcedureVariants(raw?.variants)", docs_js)
@@ -244,7 +244,7 @@ class ScenarioProcedureVariantFrontendTests(unittest.TestCase):
         self.assertIn("시나리오별 서류 근거", blobs["ko"])
 
     def test_multilingual_selector_source_panel_and_handoff_copy_is_present(self):
-        html = (REPO_ROOT / "index.html").read_text(encoding="utf-8")
+        html = frontend_source()  # index.html + the modules Phase 3 moved code into (modules first)
         blobs = pack_blobs()
         # Selector + handoff + source-panel copy now lives in the locale packs.
         self.assertIn("Choose the scenario closest to your situation", blobs["en"])
@@ -279,7 +279,7 @@ class SelectedScenarioAiHandoffHardeningTests(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.html = (REPO_ROOT / "index.html").read_text(encoding="utf-8")
+        cls.html = frontend_source()  # index.html + the modules Phase 3 moved code into (modules first)
         # Renderers moved out of index.html in Phase 3 of the frontend rebuild (ends with its `export {` block).
         cls.docs_js = (REPO_ROOT / "src" / "docs" / "normalize.js").read_text(encoding="utf-8")
         cls.ai = (REPO_ROOT / "ai.html").read_text(encoding="utf-8")
@@ -395,7 +395,7 @@ class ScenarioPickerBackdropRegressionTests(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.html = (REPO_ROOT / "index.html").read_text(encoding="utf-8")
+        cls.html = frontend_source()  # index.html + the modules Phase 3 moved code into (modules first)
         cls.blobs = pack_blobs()
 
     def _css_block(self, selector):
@@ -461,7 +461,7 @@ class SelectedScenarioActionChecklistFrontendTests(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.html = (REPO_ROOT / "index.html").read_text(encoding="utf-8")
+        cls.html = frontend_source()  # index.html + the modules Phase 3 moved code into (modules first)
         cls.packs = load_packs()
         cls.blobs = pack_blobs()
 
