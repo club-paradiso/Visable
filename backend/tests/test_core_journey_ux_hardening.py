@@ -35,6 +35,8 @@ class CoreJourneyUxHardeningFrontendTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.html = (REPO_ROOT / "index.html").read_text(encoding="utf-8")
+        # Deadline calculator source (moved out of index.html in Phase 3 of the frontend rebuild).
+        cls.deadline_js = (REPO_ROOT / "src" / "features" / "deadline.js").read_text(encoding="utf-8")
         cls.packs = load_packs()
         cls.blobs = pack_blobs()
 
@@ -171,7 +173,9 @@ class CoreJourneyUxHardeningFrontendTests(unittest.TestCase):
         # /api/ask fetch literal so other POSTs (e.g. the jobcode keyword helper)
         # and the /api/ask comments are not picked up.
         ask_region = self.html.split("${API_BASE}/api/ask`", 1)[1]
-        body = ask_region.split("body: JSON.stringify({", 1)[1].split("}),", 1)[0]
+        # The call is Visable.data.postRaw(`${API_BASE}/api/ask`, { ...body... }, { signal })
+        # since the Phase 3 data layer (src/data/fetch-json.js); the body object follows the URL.
+        body = ask_region.split(", {", 1)[1].split("}, { signal:", 1)[0]
         self.assertNotIn("checklist", body)
         self.assertNotIn("reminder", body)
         self.assertNotIn("scenario-checklist", body)
@@ -288,7 +292,8 @@ class CoreJourneyUxHardeningFrontendTests(unittest.TestCase):
         self.assertNotIn("hikoreaAck", self.html)
 
     def test_external_calendar_links_use_safe_attributes(self):
-        row = self._slice("function deadlineRowHtml", "function computeDeadlines")
+        start = self.deadline_js.index("function deadlineRowHtml")
+        row = self.deadline_js[start:self.deadline_js.index("function computeDeadlines", start)]
         self.assertIn('target="_blank" rel="noopener noreferrer"', row)
 
 

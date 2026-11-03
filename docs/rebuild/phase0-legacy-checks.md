@@ -138,3 +138,26 @@ CI (repo-validation): scripts/mobile_render_qa.mjs (puppeteer), scripts/mobile_w
 | check_exact_code_search.js (manual) | search.spec: `?q=D-2` opens the searched state; exact code D-2 / subcode E-7-1 interpretation | pending golden |
 | check_live_feature_surface.mjs dispatcher-key half | home.spec: every landing tool opens (dialog/page) in ko+en | pending golden |
 | check_landing_shell.mjs script/CSS tag regexes | fail-closed.spec: civic script load failure → reload row | pending golden |
+
+## Addendum (2026-11-03) — backend/tests modules that slice index.html source
+
+Missed by the original map; found when the `validate` CI job went red after the first Phase 3 moves. These `unittest` modules read `index.html` (and some read `ai.html`, `assets/js/*.js`) as text and anchor on function names, fetch literals and `tx('…')` keys. Each Phase 3 move must re-run `python3 scripts/run_backend_tests.py` and repoint anchors at the module file the code moved to (never weaken the assertion).
+
+- `backend/tests/_i18n_pack_support.py`
+- `backend/tests/test_ai_answer_regression_source_subcode_2026_06.py`
+- `backend/tests/test_ai_shell_source_semantics.py`
+- `backend/tests/test_core_journey_ux_hardening.py`
+- `backend/tests/test_expanded_route_wizard.py`
+- `backend/tests/test_grounding_readiness_transparency.py`
+- `backend/tests/test_i18n_law_fallback_live_smoke.py`
+- `backend/tests/test_i18n_sweep_route_wizard.py`
+- `backend/tests/test_law_tools.py`
+- `backend/tests/test_openrouter_model_candidates.py`
+- `backend/tests/test_paradiso_backend.py`
+- `backend/tests/test_reentry_procedure_coverage.py`
+- `backend/tests/test_route_aware_deadline_i18n.py`
+- `backend/tests/test_scenario_procedure_variants.py`
+- `backend/tests/test_waymaker_answer_product_quality.py`
+- `backend/tests/test_waymaker_answer_state_polish.py`
+
+Repointed so far: `test_core_journey_ux_hardening.py`, `test_grounding_readiness_transparency.py`, `test_route_aware_deadline_i18n.py` (deadline calculator → `src/features/deadline.js`; `/api/ask` call → `Visable.data.postRaw`), `test_i18n_law_fallback_live_smoke.py` (jurisdiction → `src/features/jurisdiction.js`), `test_i18n_sweep_route_wizard.py`, `test_scenario_procedure_variants.py` (`/api/ask` call).

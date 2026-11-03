@@ -177,6 +177,7 @@ R: `renderProcedurePanel`, `renderProcedures`. D: `PROCEDURE_FALLBACK_SUMMARY_KE
 - S: `routePicker*`. Then `openRoutePicker`, `chooseRoute`, `resetF4Route`.
 
 ### C21 Deadline calculator — 21701–21840 (no storage)
+**Moved** (2026-11-03) to `src/features/deadline.js`; stubs `computeDeadlines`, `downloadDeadlineIcs` stay inline. `renderDeadlineCalculator` has no caller (unreachable UI; STATUS.md owner decision 5).
 - P: `paradisoDeadlineAddDays/DaysFromToday/DdayLabel`, `buildDeadlineIcs` (local `esc` at 21730 is an ICS escaper), `deadlineGoogleCalUrl`.
 - E: `downloadDeadlineIcs`.
 - R: `deadlineRowHtml`, `computeDeadlines`, `renderDeadlineCalculator`.
