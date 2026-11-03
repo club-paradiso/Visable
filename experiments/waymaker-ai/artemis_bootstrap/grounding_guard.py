@@ -39,6 +39,9 @@ Mission 005-T: when a released answer's status or form is visibly wrong (status_
 only in their numbers answered as answered/partial, partial with nothing uncovered, an input field name in the answer),
 the system asks that part once more with a status_retry note (contract v14). The retried answer is released when the
 guard releases it; otherwise the earlier answer stays. Nothing is withheld for it.
+Mission 005-U: the first call already names, as conflict_records (contract v15), each pair of a part's admissible
+records whose texts differ only in their numbers (status_check's rule), so the model can state them as a conflict
+before any retry. The status retry stays as a second line.
 Research-only; nothing here is wired into the production backend.
 """
 from __future__ import annotations
@@ -63,7 +66,7 @@ from waymaker_ai.evidence_admissibility import (ITEM_LABELS, parent_code, reques
 from waymaker_ai.evidence_registry import TrustRegistry
 from waymaker_ai.response_contract import parse_response
 
-CONTRACT_VERSION = "v14"
+CONTRACT_VERSION = "v15"
 PROVENANCE = ("model_generated", "model_generated_with_system_notice", "system_withheld", "system_clarification",
               "review_required", "post_generation_blocked", "invalid_response")
 #: Mission 005-J: worst guard decision first, for joining per-sub-code parts.
@@ -262,6 +265,13 @@ def system_response(kind: str, lang: str) -> dict:
     return {"status": status, "answer": FALLBACK[kind][lang], "citations": []}
 
 
+def conflict_records(evidence: list) -> list:
+    """Mission 005-U: each pair of records whose texts differ only in their numbers, as [[id_a, id_b], ...] in
+    evidence order (status_check's rule: leading [title] removed, status codes kept)."""
+    return [[a["id"], b["id"]] for i, a in enumerate(evidence) for b in evidence[i + 1:]
+            if status_check.conflicting_values([a.get("text", ""), b.get("text", "")])]
+
+
 def prepare(question: str, intake: Optional[Mapping], candidates: list, registry: Optional[TrustRegistry],
             evaluation_date: str) -> dict:
     """Pre-inference: admissibility, outcome, and the exact items the model would receive (one per part)."""
@@ -289,6 +299,9 @@ def prepare(question: str, intake: Optional[Mapping], candidates: list, registry
                 system["scope_location"] = loc
             if ctx.get("as_of_source") in ("question", "intake"):
                 system["as_of"] = ctx["as_of"]
+            pairs = conflict_records(evidence)
+            if pairs:
+                system["conflict_records"] = pairs
             items.append({"question": cleaned["question"], "evidence": evidence, "system": system})
             parts.append({"status_code": sub, "location": loc, "evidence": evidence, "uncovered_items": keys})
     return {"selection": selection, "reply_language": lang, "question": question,

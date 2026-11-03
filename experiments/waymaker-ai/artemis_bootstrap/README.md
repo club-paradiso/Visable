@@ -200,6 +200,14 @@ decision request (spec 2; the new suite's A05T-35 found the gap; no recorded res
 gate v14 with the 005-T manifest; thresholds unchanged. New locked 81-case suite (J-7 family) with seven
 conflict-template cases, three not-conflicts and three partial traps, re-derived blind (81/81).
 DEV-20 item 005 is not this habit: the question-item reader put 'method' in uncovered_items.
+Mission 005-U (frozen 2026-11-03, not run yet): the first model call names the records in conflict as
+`conflict_records` (contract v15): each pair of a part's admissible records whose texts differ only in their
+numbers (status_check's rule). In 005-T five conflict cases asking what each record says were answered first
+and fixed only by the status retry, which the raw channel does not score. The status retry stays as the
+second line. Across the 14 earlier suites the mark falls on 33 cases, all expected conflicts, and on no
+DEV-20 v2 item. Gate v16 = gate v15 with the 005-U manifest; thresholds unchanged. New locked 81-case suite
+(N-6 family) with seven conflict-template cases (six asking what each text says), re-derived blind (81/81);
+the review changed only five patterns and one mention group.
 Free T4 run (commit 83f5f27): gate v15 **failed** on raw true_conflict 0/3 alone; end to end was 81/81
 for the first time, with no critical, no unsafe release and no trust bypass. In five conflict cases
 asking what each record says the first answer was status answered; the status retry turned all five

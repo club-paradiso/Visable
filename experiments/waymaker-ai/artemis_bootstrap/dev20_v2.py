@@ -8,7 +8,7 @@ re-scores byte for byte with artemis_eval as it stands, so v2 lives here instead
   - `run` is the gate's run_dev20 with the v2 items and registry/real_world_registry_v2.json. It refuses to
     run without a passing decision of that gate. The 2026-11-03 run used gate v12 (code 5f25f18); since
     Mission 005-R changed files the 005-Q gate froze, a newer gate's pass is needed: gate v13 (005-R, failed) and
-    gate v14 (005-S, passed; run 299ddf8) and then gate v15 (005-T), the default.
+    gate v14 (005-S, passed; run 299ddf8), gate v15 (005-T, failed; run 69ddac0) and then gate v16 (005-U), the default.
   - `score` scores every released response with artemis_eval unchanged. artemis_eval reads
     must_clarify=false as "a clarification is wrong"; a v2 rubric that lists clarify among its allowed
     statuses (DEV-001, 011, 015, 016) accepts one, so when the released status is clarify such an item is
@@ -51,14 +51,15 @@ def load_items(path: Path = build_dev20_v2.DEV20_V2) -> tuple[list, str]:
 
 
 def run(prepared, out_dir: Path, decision_path: Path, registry_path: Path = REGISTRY_V2,
-        session_label: str = "colab-t4", gate_version: str = "v15") -> dict:
+        session_label: str = "colab-t4", gate_version: str = "v16") -> dict:
     """DEV-20 v2 through the guarded pipeline, only after a passing decision of the named gate (its run_dev20 steps)."""
     import importlib
     import artemis_runner
     import grounding_guard
     import run_dev20_cuda
     gate = importlib.import_module({"v12": "synthetic_safety_gate_v12", "v13": "synthetic_safety_gate_v13",
-                                   "v14": "synthetic_safety_gate_v14", "v15": "synthetic_safety_gate_v15"}[gate_version])
+                                   "v14": "synthetic_safety_gate_v14", "v15": "synthetic_safety_gate_v15",
+                                   "v16": "synthetic_safety_gate_v16"}[gate_version])
     from waymaker_ai.evidence_registry import load_real_world_registry
     gate.require_passing_gate(decision_path, gate.load_manifest(gate.MANIFEST)["contract_version"], prepared, gate.MANIFEST)
     items, digest = load_items()

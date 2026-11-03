@@ -76,7 +76,7 @@ def test_recorded_answers_of_earlier_runs_fire_only_on_the_known_habits():
 
 
 def test_v14_adds_only_the_input_name_and_the_retry_line():
-    assert CONTRACT_VERSIONS[-1] == "v14" and guard.CONTRACT_VERSION == "v14"
+    assert "v14" in CONTRACT_VERSIONS and guard.CONTRACT_VERSION in ("v14", "v15")   # 005-U: v15
     v13, v14 = SYSTEM_PROMPTS["v13"].splitlines(), SYSTEM_PROMPTS["v14"].splitlines()
     assert len(v14) == len(v13) + 1
     added = [line for line in v14 if line not in v13]
@@ -89,7 +89,7 @@ def test_status_retry_is_an_allowlisted_one_line_v14_input():
     assert project_inference_item(item)["system"]["status_retry"] == note
     assert list(json.loads(build_messages(item, "v14")[1]["content"])) == [
         "question", "reply_language", "uncovered_items", "status_retry", "evidence"]
-    with pytest.raises(ValueError, match="v14 input"):
+    with pytest.raises(ValueError, match=r"v14\+? input"):
         build_messages(item, "v13")
 
 
@@ -106,7 +106,7 @@ def _run(case, outputs):
 
     def generate(item):
         seen.append(item)
-        build_messages(item, "v14")
+        build_messages(item, guard.CONTRACT_VERSION)   # 005-U: the first call also carries conflict_records (v15)
         return outs.pop(0)
     record = guard.run_case(case["question"], case["intake"], case["evidence"], gate15.registry_for(case, "acceptance"),
                             "2026-11-02", generate)

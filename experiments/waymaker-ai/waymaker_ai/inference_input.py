@@ -24,9 +24,10 @@ SOURCE_PROVENANCE_VALUES = frozenset({"official_manual", "official_notice", "com
 # uncovered_sentence (the system's sentence naming the uncovered items in the reply language); v12 (005-P)
 # adds language_retry (the system's note that the previous answer was not in the reply language); v13 (005-R)
 # adds branch_retry (the system's note quoting a case of the cited evidence the previous answer left out); v14
-# (005-T) adds status_retry (the system's note naming a status or form problem of the previous answer).
+# (005-T) adds status_retry (the system's note naming a status or form problem of the previous answer); v15
+# (005-U) adds conflict_records (pairs of evidence IDs whose texts differ only in their numbers).
 SYSTEM_FIELDS = ("reply_language", "uncovered_items", "scope_status_code", "scope_location", "as_of", "uncovered_sentence",
-                 "language_retry", "branch_retry", "status_retry")
+                 "language_retry", "branch_retry", "status_retry", "conflict_records")
 REPLY_LANGUAGES = frozenset({"ko", "en", "vi"})
 
 
@@ -101,4 +102,12 @@ def project_inference_item(item: Mapping) -> dict:
             if not isinstance(text, str) or not text.strip() or len(text) > 600 or "\n" in text:
                 raise ValueError("System status_retry must be one line of at most 600 characters")
             projected["system"]["status_retry"] = text
+        if "conflict_records" in system:
+            pairs = system["conflict_records"]
+            ids = {e["id"] for e in projected["evidence"]}
+            if not isinstance(pairs, list) or not pairs or len(pairs) > 10 or not all(
+                    isinstance(p, list) and len(p) == 2 and all(isinstance(i, str) and i in ids for i in p) and p[0] != p[1]
+                    for p in pairs):
+                raise ValueError("System conflict_records must be pairs of two different evidence IDs of this item")
+            projected["system"]["conflict_records"] = [list(p) for p in pairs]
     return projected
