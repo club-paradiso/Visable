@@ -171,6 +171,12 @@ fires only on 011. Spec section 5 states the rule; gate v13 = gate v12 with the 
 the released retry end to end. A new locked 81-case suite (Q-4 family) has nine two-case positives,
 three sub-code exceptions and two cross-language passages; its expected values were re-derived blind,
 and the deterministic pipeline matches it in all 81 cases. DEV-20 v2 now runs only after a gate v13 pass.
+Free T4 run (commit 9101a0a): gate v13 **failed** on one raw critical, A05R-37, a correct answer
+("must obtain permission … must not exceed 18 hours per week") that the existing polarity reader takes
+for a prohibition; the guard withheld it. Raw 59/63, end to end 78/81, no unsafe release, no trust
+bypass. The model gave both cases in all nine two-case positives, so no branch retry happened; the
+retry itself is so far shown only by unit tests. DEV-20 v2 did not run. See the
+[Mission 005-R report](runs/mission005r/MISSION-005-R-REPORT.ko.md).
 
 Recovery status, 2026-10-29: checkpoint metadata verified; new MLX-VLM weight
 loading and generation **not executed** on this M1 8GB machine. The runtime is
