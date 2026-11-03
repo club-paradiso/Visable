@@ -271,7 +271,7 @@
     // status_change guidance is keyed by the target, so the target must come first;
     // without this the first-typed code (the current status) was answered as if
     // the user wanted to change INTO it.
-    var changeVerb = /변경|바꾸|바꿀|바꿔|바꿨|전환|->|→|\bchange\b|\bswitch\b|chuyển\s*đổi|ganti|ubah|变更|换签|変更|تغيير/i.test(q);
+    var changeVerb = /변경|바꾸|바꿀|바꿔|바꿨|전환|->|→|\bchange\b|\bswitch\b|chuyển\s*đổi|chuyen\s*doi|ganti|ubah|变更|换签|換簽|変更|تغيير|смен|змін|changer|changement|cambiar|cambio|wechsel|ändern|değiş|degis|palit/i.test(q);
     var distinctParents = out.codes.length >= 2 && out.codes.some(function (c) { return parentOf(c.code) !== parentOf(out.codes[0].code); });
     if (changeVerb && distinctParents) {
       var targetIdx = -1, fromIdx = -1;

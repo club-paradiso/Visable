@@ -366,6 +366,8 @@ echo "[9d-5/14] Validating post-search status guidance (coverage manifest + docu
 #   * check_status_resolver.mjs → resolver flows A–H + cross-status matrix;
 #   * check_search_router.mjs → procedure-first routing (외국인등록증 재발급 never
 #     dead-ends on "체류자격을 찾지 못했어요"; context requirements come from the registry);
+#   * check_search_multilingual.mjs → the home search in all 15 UI languages (procedures, tools,
+#     typing without tones/accents, Traditional Chinese)
 #   * check_search_suggest.mjs → home search suggestions: the derived index is current
 #     and reads like the bundle, every suggested code exists, every suggestion reads
 #     back as the status/procedure its label promises, unknown codes are never matched;
@@ -389,6 +391,7 @@ if command -v node >/dev/null 2>&1; then
   node scripts/check_search_router.mjs
   node scripts/check_question_understanding.mjs
   node scripts/check_search_suggest.mjs
+  node scripts/check_search_multilingual.mjs
   node scripts/check_document_physical_form.mjs
   echo "[13c/14] Validating the Form Helper (inventory, exclusions, template drift, engine, exports)..."
   node scripts/check_form_helper.mjs

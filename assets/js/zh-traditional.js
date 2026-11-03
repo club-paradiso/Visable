@@ -73,5 +73,22 @@
     try { observer.observe(document.body, { subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ATTRS }); } catch (e) {}
   }
   function stop() { if (observer) { try { observer.disconnect(); } catch (e) {} observer = null; } active = false; }
-  global.ParadisoZhT = { convert: convert, start: start, stop: stop, isActive: function () { return active; } };
+  var T2S_EXTRA = '簽签證证續续換换護护罰罚醫医診诊檢检體体驅驱滯滞違违預预約约種种類类職职業业碼码號号補补辦办遺遗損损壞坏變变請请書书資资歸归國国冊册結结務务處处轄辖機机構构線线費费錢钱間间屆届滿满計计單单準准備备經经濟济學学長长開开發发認认錄录記记離离時时臨临訪访問问遊游觀观電电許许強强執执達达戶户聯联絡络須须麼么嗎吗幾几該该樣样東东會会個个們们這这還还現现後后從从為为對对與与關关係系員员傭佣動动勞劳實实習习練练專专門门術术營营產产親亲屬属兒儿誕诞輔辅導导課课試试驗验際际詢询諮咨議议駐驻館馆紙纸張张辭辞僱雇轉转換换區区縣县鄉乡鎮镇濟济島岛館馆話话聽听說说讀读寫写語语譯译義义權权規规則则條条例例圍围額额稅税銀银貨货幣币購购買买賣卖價价廣广場场車车鐵铁飛飞機机鳥鸟魚鱼雞鸡門门問问間间悶闷頭头臉脸腦脑髮发鬆松氣气熱热冷冷暖暖燈灯陽阳陰阴雲云風风雨雨雪雪電电話话療疗藥药針针傷伤殘残癒愈餘余黃黄綠绿藍蓝紅红紫紫銷销鑰钥匙匙鎖锁鏈链網网絡络鍵键盤盘號号碼码';
+  // Traditional -> Simplified, character level, for search matching only (the search lexicons
+  // are written in Simplified; a zh-TW user types Traditional). Built lazily from C.
+  var INV = null;
+  function toSimplified(text) {
+    if (!text) return text;
+    if (!INV) {
+      INV = {};
+      var put = function (t, s2) { if (t !== s2 && !Object.prototype.hasOwnProperty.call(INV, t)) INV[t] = s2; };
+      // 1. common Traditional forms typed in immigration searches (C/P cover only the UI corpus)
+      for (var e = 0; e + 1 < T2S_EXTRA.length; e += 2) put(T2S_EXTRA[e], T2S_EXTRA[e + 1]);
+      // 2. the display tables, character by character (phrases only when lengths align)
+      for (var k in C) { if (Object.prototype.hasOwnProperty.call(C, k)) put(C[k], k); }
+      for (var ph in P) { if (Object.prototype.hasOwnProperty.call(P, ph) && P[ph].length === ph.length) { for (var j = 0; j < ph.length; j++) put(P[ph][j], ph[j]); } }
+    }
+    return String(text).replace(RUN, function (run) { var o = ''; for (var i = 0; i < run.length; i++) { o += Object.prototype.hasOwnProperty.call(INV, run[i]) ? INV[run[i]] : run[i]; } return o; });
+  }
+  global.ParadisoZhT = { convert: convert, toSimplified: toSimplified, start: start, stop: stop, isActive: function () { return active; } };
 })(typeof window !== 'undefined' ? window : this);
