@@ -141,6 +141,15 @@ conflict rule judged its first real case (A05Q-28, both values under status "ans
 status error. The pass depends on the 2-of-3 category bar (true_conflict and partial_response
 2/3). DEV-20 ran and withheld all 20 items before the model, because no real-world registry
 exists. See the [Mission 005-Q report](runs/mission005q/MISSION-005-Q-REPORT.ko.md).
+DEV-20 with a real-world registry (2026-11-03): the owner delegated the registry decisions; Claude
+applied one stated rule (approve only items whose concrete claims match current statute text or the
+261019 manuals, reject contradictions, leave out what cannot be checked) and recorded it in every
+record. 10 approved, 5 rejected, 8 left out (`registry/dev20_decisions.json`). On a free T4, after
+re-checking the 005-Q pass, 8 of 20 items reached the model and 3 passed every rubric check; 3 more
+missed a literal contrast phrase and 2 answered where the 2026-10 rubric expects clarify. 12 were
+withheld before the model. Five of those had evidence that contradicts current law, though the rubric
+takes each item's own evidence as true. No unsafe release. See the
+[DEV-20 registry report](runs/dev20_registry/DEV20-REGISTRY-REPORT.ko.md).
 
 Recovery status, 2026-10-29: checkpoint metadata verified; new MLX-VLM weight
 loading and generation **not executed** on this M1 8GB machine. The runtime is
