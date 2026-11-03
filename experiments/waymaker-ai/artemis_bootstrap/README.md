@@ -132,6 +132,15 @@ the frozen decision stands. All 63 answers were in the reply language, so the re
 A new system gap: claim support reads the Vietnamese date "ngày 1 tháng 6 năm 2026" as two periods
 and withheld a correct answer (A05P-24). DEV-20 was not run. See the
 [Mission 005-P report](runs/mission005p/MISSION-005-P-REPORT.ko.md).
+Mission 005-Q: claim support reads Vietnamese dates ("ngày 1 tháng 6 năm 2026") as dates, not
+periods (gate v12; contract v12 unchanged); a new locked 81-case suite was frozen before
+inference (commit `541cee6`). On a free T4 the gate **passed**: end-to-end 80/81, raw 60/63, no
+critical release, no trust bypass, no false block. Four correct Vietnamese answers repeated an
+evidence date and were released; the 005-P reading would have withheld all four. The content
+conflict rule judged its first real case (A05Q-28, both values under status "answered") as a
+status error. The pass depends on the 2-of-3 category bar (true_conflict and partial_response
+2/3). DEV-20 ran and withheld all 20 items before the model, because no real-world registry
+exists. See the [Mission 005-Q report](runs/mission005q/MISSION-005-Q-REPORT.ko.md).
 
 Recovery status, 2026-10-29: checkpoint metadata verified; new MLX-VLM weight
 loading and generation **not executed** on this M1 8GB machine. The runtime is
