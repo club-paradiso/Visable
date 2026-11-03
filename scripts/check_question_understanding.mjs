@@ -48,7 +48,12 @@ const misleadingAI = analyzer.analyze({ text: '병원 전산 담당이고 간호
 assert.equal(misleadingAI.occupationCandidates[0].officialName, '정보 시스템 운영자');
 const translated = analyzer.analyze({ text: 'Tôi hái quýt ở trang trại', facts: { role: '귤 수확', tasks: ['귤 따요'], workplace: '농장' } });
 assert.ok(translated.occupationCandidates.some((c) => /농업|과수|채소/.test(c.officialName)));
-assert.ok(!analyzer.analyze({ text: 'Tôi hái quýt ở trang trại' }).clarificationQuestion.includes('너무 짧'));
+// Without the AI layer, a foreign-language sentence is never told it is "too
+// short": the multilingual pivot reads it (trang trại → 농장), so it gets
+// candidates, and any remaining question is about the work, not the length.
+const untranslated = analyzer.analyze({ text: 'Tôi hái quýt ở trang trại' });
+assert.ok(!(untranslated.clarificationQuestion || '').includes('너무 짧'));
+assert.ok(untranslated.occupationCandidates.length > 0, 'Vietnamese farm sentence gets occupation candidates without the AI layer');
 
 let called = '';
 const facts = await interpretEmploymentInput({ text: '병원 전산 담당', apiBase: 'https://backend.invalid', fetchImpl: async (url, options) => {

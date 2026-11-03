@@ -32,8 +32,8 @@ const pages = catalog.sources.flatMap(source => {
   assert.ok(!(manifest.pending_review_editions || []).some(s => s.registry_id_when_promoted === source.id));
   return rows;
 });
-assert.equal(pages.length, 1331);
-assert.deepEqual(catalog.sources.map(s => s.pages), [519, 812]);
+assert.equal(pages.length, 1332);
+assert.deepEqual(catalog.sources.map(s => s.pages), [519, 813]);
 const context = vm.createContext({});
 vm.runInContext(fs.readFileSync('assets/js/manual-corpus-search.js', 'utf8'), context);
 const api = context.VisableManualSearch;
@@ -47,7 +47,7 @@ assert.equal(api.search(index, 'E–7–4').length, exact.length);
 const stay = api.search(index, 'F-6 연장', {domain:'stay'});
 assert.ok(stay.length > 0);
 assert.ok(stay.every(hit => hit.source.domain === 'stay' && hit.page.status_codes_detected.some(code => code === 'F-6' || code.startsWith('F-6-')) && hit.page.text.includes('연장')));
-assert.ok(stay.some(hit => hit.page.page === 498), 'Parent searches must retrieve extension pages naming F-6-1');
+assert.ok(stay.some(hit => hit.page.page === 499), 'Parent searches must retrieve extension pages naming F-6-1');
 assert.equal(api.search(index, '').length, 0);
 assert.equal(api.search(index, 'ZZZZnonexistentmanualterm').length, 0);
 assert.ok(api.excerpt(stay[0].page.text, 'F-6 연장', index).length <= 222);
@@ -118,6 +118,6 @@ for (const entry of Object.values(manifest.current)) {
 // Pinned so a converter or mapping change shows up as a reviewed diff.
 assert.deepEqual(derivedCounts, {
   visa_manual_2026_10_19_md: [1078, 831],
-  stay_manual_2026_10_19_md: [1531, 1175],
+  stay_manual_2026_11_02_md: [1507, 1137],
 });
 console.log(`PASS current manual corpus: ${pages.length} pinned pages; code aliases, exact subcodes, AND keywords, domain filter, empty state, immutability; Markdown derived texts ${JSON.stringify(derivedCounts)} [chunks, page-mapped]`);

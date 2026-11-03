@@ -18,7 +18,7 @@ import sys
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 OUT = os.path.join(ROOT, 'data', 'guidance-rules-202609.json')
 
-STAY = 'stay_manual_2026_10_19'
+STAY = 'stay_manual_2026_11_02'
 VISA = 'visa_manual_2026_10_19'
 
 # --------------------------------------------------------------------------

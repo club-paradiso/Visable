@@ -130,7 +130,8 @@ test('Current-edition original search preserves source scope, page links and exa
   await expect(page.locator('#statusGuidance[data-sg-kind]')).toBeVisible({ timeout: 20_000 });
   await expect(raw).not.toHaveAttribute('open', /.*/);
   await raw.locator('summary').click();
-  await expect(results).toContainText('2026-10-19');
+  // E-7-4 is a stay-manual subject: its hits cite the current stay edition (2026.11, file date 2026-11-02).
+  await expect(results).toContainText('2026-11-02');
   // 3 hits to start; 결과 더 보기 loads more.
   await expect(results.locator('.cs-manual-list li')).toHaveCount(3);
   await expect(results.locator('.cs-more')).toHaveCount(1);

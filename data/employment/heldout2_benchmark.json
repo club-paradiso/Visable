@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0",
+  "kind": "employment_realistic_benchmark",
+  "purpose": "Second held-out check, written after every analyzer change of 2026-11 and scored once on old and new code with no tuning afterwards. Same format and scorer as realistic_benchmark.json.",
+  "important": [
+    "Expected codes were looked up by name in data/jobcode_master.json.",
+    "Do not tune against this file. When it is used for tuning, write a new held-out set."
+  ],
+  "cases": [
+    { "id": "h2-1", "text": "헬스장 트레이너", "occ": ["2964"], "ind": ["91132"] },
+    { "id": "h2-2", "text": "떡집에서 떡 만들어요", "occ": ["7102"], "ind": ["10601", "1060"] },
+    { "id": "h2-3", "text": "신문사 기자", "occ": ["2913"] },
+    { "id": "h2-4", "text": "웹툰 작가", "occ": ["2943", "2911"] },
+    { "id": "h2-5", "text": "게임 회사 개발자", "occ": ["2222", "2223", "2229"], "ind": ["5821*"] },
+    { "id": "h2-6", "text": "마트에서 시식 판촉", "occ": ["5105"] },
+    { "id": "h2-7", "text": "보험 설계사", "occ": ["5103"] },
+    { "id": "h2-8", "text": "은행 창구 직원", "occ": ["3403"], "ind": ["6412*"] },
+    { "id": "h2-9", "text": "부동산 중개 보조", "occ": ["2845"], "ind": ["6822*"] },
+    { "id": "h2-10", "text": "유치원 선생님", "occ": ["2630"] },
+    { "id": "h2-11", "text": "초등학교 원어민 교사", "occ": ["2622", "2641"] },
+    { "id": "h2-12", "text": "가구 공장에서 조립", "occ": ["9301", "7302"], "ind": ["320*"] },
+    { "id": "h2-13", "text": "인쇄소에서 기계 돌려요", "occ": ["8921"], "ind": ["181*"] },
+    { "id": "h2-14", "text": "염색 공장", "occ": ["8212"], "ind": ["1340*"] },
+    { "id": "h2-15", "text": "옷 수선집", "occ": ["7224"] },
+    { "id": "h2-16", "text": "귀금속 세공", "occ": ["7912"] },
+    { "id": "h2-17", "text": "애견샵 미용", "occ": ["4333"] },
+    { "id": "h2-18", "text": "장례식장 직원", "occ": ["4323"], "ind": ["9692*"] },
+    { "id": "h2-19", "text": "택배 터미널 분류", "occ": ["9212", "9211"] },
+    { "id": "h2-20", "text": "고깃집 불판 닦기", "occ": ["9522", "9411", "9419"], "ind": ["56113", "5611"] },
+    { "id": "h2-21", "text": "모텔 청소", "occ": ["9411"], "ind": ["551*", "559*"] },
+    { "id": "h2-22", "text": "양식장 먹이주기", "occ": ["6301", "9913"], "ind": ["0321*"] },
+    { "id": "h2-23", "text": "감귤 따는 일", "occ": ["6113", "9911"], "ind": ["0113*", "011*"] },
+    { "id": "h2-24", "text": "굴착기 운전", "occ": ["8740"] },
+    { "id": "h2-25", "text": "I teach yoga", "occ": ["2964"] },
+    { "id": "h2-26", "text": "bank teller", "occ": ["3403"] },
+    { "id": "h2-27", "text": "I work at a funeral home", "ind": ["9692*"] },
+    { "id": "h2-28", "text": "Tôi làm ở xưởng may", "occ": ["7213", "72*", "82*"], "ind": ["14*"] },
+    { "id": "h2-29", "text": "Я работаю на стройке", "occ": ["9100", "78*"], "ind": ["41*", "42*"] },
+    { "id": "h2-30", "text": "我在工厂做包装", "occ": ["93*", "9211"] }
+  ]
+}

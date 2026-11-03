@@ -5,7 +5,7 @@
  *
  * For every displayed document it asserts that it
  *   - belongs to the correct procedure and status/substatus/path (entry-level target)
- *   - has a valid 2026.10 source reference (page inside the manual, near the section page)
+ *   - has a valid current-edition (stay 2026.11, visa 2026.10) source reference (page inside the manual, near the section page)
  *   - has a requirement level from the enum and an applicant role
  *   - carries conditional logic when its level is conditional / applicable / alternative
  * and that
@@ -36,11 +36,11 @@ function assert(c, m) { if (!c) throw new Error(m || 'assertion failed'); }
 const LEVELS = new Set(rules.enums.requirement_levels);
 const ROLES = new Set(rules.enums.roles);
 const CONDITIONAL_LEVELS = new Set(['CONDITIONAL_REQUIRED', 'ADDITIONAL_IF_APPLICABLE', 'ALTERNATIVE_DOCUMENT']);
-const corpusPages = { stay_manual_2026_10_19: 812, visa_manual_2026_10_19: 519 };
+const corpusPages = { stay_manual_2026_11_02: 813, visa_manual_2026_10_19: 519 };
 // Page text, whitespace-insensitive, to confirm an item's own phrase is on the page it cites.
 const flat = (t) => String(t || '').normalize('NFKC').replace(/[\uE000-\uF8FF\u{F0000}-\u{FFFFD}]/gu, '').replace(/\s+/g, '');
 const pageText = {};
-for (const [id, file] of [['stay_manual_2026_10_19', 'data/manual-corpus/stay_manual_2026_10_19_pdf.json'], ['visa_manual_2026_10_19', 'data/manual-corpus/visa_manual_2026_10_19_pdf.json']]) {
+for (const [id, file] of [['stay_manual_2026_11_02', 'data/manual-corpus/stay_manual_2026_11_02_pdf.json'], ['visa_manual_2026_10_19', 'data/manual-corpus/visa_manual_2026_10_19_pdf.json']]) {
   pageText[id] = new Map(JSON.parse(readFileSync(join(ROOT, file), 'utf8')).map((r) => [r.page, flat(r.text)]));
 }
 const onPage = (manual, page, anchor) => {
@@ -77,7 +77,7 @@ for (const g of bundle.guidance) {
         assert(d.source.quote && d.source.quote.length > 10, 'regulation item must carry the quoted clause');
         assert(d.review_state === 'REGULATION_TEXT_20260922', 'review state must name the regulation reading');
       } else {
-        assert(d.source && Number.isInteger(d.source.pdf_page) && d.source.pdf_page >= 1 && d.source.pdf_page <= corpusPages[g.source.manual], 'no valid 2026.10 page');
+        assert(d.source && Number.isInteger(d.source.pdf_page) && d.source.pdf_page >= 1 && d.source.pdf_page <= corpusPages[g.source.manual], 'no valid current-edition page');
         // COMMON rules cite the 공통사항 fee table and the 별지 제34호 form page, which are far apart by design.
         // An item sits near its section: within 3 pages, or within the window the rule's author declared
         // for sections whose shared document block is apart from the subtype text (e.g. F-5, F-2) — and

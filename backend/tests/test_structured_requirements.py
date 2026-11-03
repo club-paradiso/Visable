@@ -350,7 +350,7 @@ class SourceConfirmedProcedureCoverageExpansionTests(unittest.TestCase):
         ("E-5", "registration", (205, 206), 3),
         ("E-6", "registration", (213, 213), 4),
         ("E-7", "registration", (230, 230), 4),
-        ("E-10", "registration", (341, 341), 6),
+        ("E-10", "registration", (342, 342), 6),
     ]
     # Statuses inspected but deliberately NOT promoted this pass.
     STILL_BLOCKED = ["E-9", "F-1", "F-6", "G-1", "H-2", "C-3", "D-10"]
@@ -374,7 +374,7 @@ class SourceConfirmedProcedureCoverageExpansionTests(unittest.TestCase):
             self.assertEqual(e["manualSource"]["pageEnd"], page[1])
             self.assertEqual(e["evidenceSource"], "pdf_verified")
             self.assertTrue(
-                e["manualSource"]["file"].endswith("stay_manual_261019.pdf")
+                e["manualSource"]["file"].endswith("stay_manual_261102.pdf")
             )
             self.assertEqual(len(e["documents"]), ndocs)
             # Conditions stay at document level; no doc carries a non-parent

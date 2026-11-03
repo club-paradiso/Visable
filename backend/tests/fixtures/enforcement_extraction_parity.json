@@ -215,6 +215,23 @@
         ],
         "durationDays": null
       }
+    },
+    {
+      "name": "colloquial visa-expiry wording is recognised as overstay",
+      "text": "D-10 비자 만료되고 열흘 동안 더 있었어요",
+      "expect": {
+        "statusOfStay": "D-10",
+        "violationCode": "OVERSTAY_ART25",
+        "durationDays": 10
+      }
+    },
+    {
+      "name": "expiry mentioned only as a future point is not overstay",
+      "text": "D-2 비자 만료되기 전에 연장 신청을 했어요",
+      "expect": {
+        "statusOfStay": "D-2",
+        "violationCode": null
+      }
     }
   ]
 }

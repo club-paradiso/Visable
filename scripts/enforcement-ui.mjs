@@ -214,28 +214,32 @@ function deterministicSummary(caseData) {
     return parts.length ? `${parts.join(', ')}.` : 'I could only identify part of the situation you described.';
   }
 
-  const clauses = [];
-  if (status) clauses.push(`현재 ${status} 체류자격`);
-
+  // Short, complete Korean sentences. The previous comma-joined fragments read as
+  // "음식점에서 필요한 허가 없이 취업활동 그 기간은 30일" and users could not parse them.
+  const sentences = [];
+  const subject = status ? `${status} 체류자격으로 ` : '';
   if (caseData.violationCode === 'OVERSTAY_ART25') {
-    clauses.push(days != null ? `허가된 체류기간이 지난 뒤 ${days}일 동안 더 체류한 상황` : '허가된 체류기간이 지난 뒤에도 계속 체류한 상황');
+    sentences.push(days != null
+      ? `${subject}허가된 체류기간이 지난 뒤 ${days}일 동안 더 머문 상황이에요.`
+      : `${subject}허가된 체류기간이 지난 뒤에도 계속 머문 상황이에요.`);
   } else if (activity || workplace || caseData.authorizationObtained === false) {
-    let work = workplace ? `${workplace}에서 ` : '';
-    if (caseData.authorizationObtained === false) work += '필요한 허가 없이 ';
-    work += activity || '일을 했고';
-    if (days != null) work += ` 그 기간은 ${days}일`;
-    clauses.push(work.replace(/했고 그 기간은/, '했으며 그 기간은'));
+    const place = workplace ? `${workplace}에서 ` : '';
+    const permission = caseData.authorizationObtained === false ? '필요한 허가 없이 ' : '';
+    const period = days != null ? `${days}일 동안 ` : '';
+    sentences.push(`${subject}${place}${permission}${period}일한 상황이에요.`);
   } else if (caseData.violationCode) {
-    clauses.push(violationLabels[caseData.violationCode] || '출입국 관련 위반 상황');
+    sentences.push(`${subject}${violationLabels[caseData.violationCode] || '출입국 관련 위반 상황'}이에요.`);
+  } else if (status) {
+    sentences.push(`현재 체류자격은 ${status}예요.`);
   }
 
-  if (caseData.priorViolations === 0) clauses.push('이번이 첫 위반');
-  else if (Number(caseData.priorViolations) > 0) clauses.push(`과거 위반 전력이 ${Number(caseData.priorViolations)}회`);
-  if (caseData.voluntaryDisclosure === true) clauses.push('본인이 먼저 신고하거나 출입국관서에 자진 방문');
-  if (caseData.investigationStarted === true && caseData.voluntaryDisclosure !== true) clauses.push('이미 적발되었거나 조사가 시작된 상태');
+  if (caseData.priorViolations === 0) sentences.push('이번이 첫 위반이에요.');
+  else if (Number(caseData.priorViolations) > 0) sentences.push(`과거 위반 전력이 ${Number(caseData.priorViolations)}회 있어요.`);
+  if (caseData.voluntaryDisclosure === true) sentences.push('본인이 먼저 신고하거나 출입국관서에 자진 방문했어요.');
+  if (caseData.investigationStarted === true && caseData.voluntaryDisclosure !== true) sentences.push('이미 적발되었거나 조사가 시작됐어요.');
 
-  if (!clauses.length) return '입력한 내용 중 일부 사실만 확인할 수 있었어요.';
-  return `${clauses.join(', ')}인 것으로 이해했어요.`;
+  if (!sentences.length) return '입력한 내용 중 일부 사실만 확인할 수 있었어요. 아래 질문에 답해 주세요.';
+  return sentences.join(' ');
 }
 
 function displayValue(value, fallback = '확인되지 않음') {
@@ -251,7 +255,7 @@ function renderFactList(caseData) {
     ['상황', caseData.violationCode ? (violationLabels[caseData.violationCode] || caseData.violationCode) : '정확한 유형을 더 확인해야 함'],
     ['기간', caseData.durationDays == null ? '확인되지 않음' : `${Number(caseData.durationDays)}일`],
     ['허가 여부', caseData.authorizationObtained == null ? '확인되지 않음' : (caseData.authorizationObtained ? '필요한 허가를 받은 것으로 입력됨' : '필요한 허가를 받지 않은 것으로 입력됨')],
-    ['과거 위반', caseData.priorViolations == null ? '확인되지 않음' : (Number(caseData.priorViolations) === 0 ? '첫 위반으로 입력됨' : `${Number(caseData.priorViolations)}회`)],
+    ['과거 위반', caseData.priorViolations == null ? '확인되지 않음' : (Number(caseData.priorViolations) === 0 ? '첫 위반으로 입력됨' : `${Number(caseData.priorViolations)}회${Number(caseData.priorViolations) >= 2 ? ' 이상' : ''}`)],
     ['자진신고·자진방문', caseData.voluntaryDisclosure == null ? '확인되지 않음' : (caseData.voluntaryDisclosure ? '예' : '아니요')],
     ['적발·사범조사 시작', caseData.investigationStarted == null ? '확인되지 않음' : (caseData.investigationStarted ? '예' : '아니요')],
   ];
@@ -274,8 +278,13 @@ function clarificationFor(caseData) {
     return {
       kind: 'statusOfStay',
       type: 'text',
-      question: '현재 체류자격이 무엇인가요?',
+      question: '위반 당시 체류자격이 무엇인가요?',
       hint: '예: D-2, E-7-4, F-2',
+      // Common codes only as shortcuts; the user still picks, nothing is inferred.
+      quickPicks: [
+        ['D-2', '유학 D-2'], ['D-4', '어학연수 D-4'], ['D-10', '구직 D-10'], ['E-9', '비전문취업 E-9'],
+        ['E-7', '특정활동 E-7'], ['H-2', '방문취업 H-2'], ['B-1', '무비자 B-1'], ['B-2', '관광통과 B-2'], ['C-3', '단기방문 C-3'],
+      ],
     };
   }
 
@@ -328,7 +337,8 @@ function renderClarification(caseData) {
   } else {
     const type = question.type === 'number' ? 'number' : 'text';
     const attrs = type === 'number' ? 'min="0" max="36500" inputmode="numeric"' : 'maxlength="20" autocomplete="off"';
-    answers.innerHTML = `<div class="clarification-input-row"><input id="clarification-input" type="${type}" ${attrs} placeholder="${escapeHtml(question.hint || '')}" aria-label="${escapeHtml(question.question)}"><button type="button" class="primary-button secondary-button--small" id="clarification-apply">확인</button></div>
+    const picks = (question.quickPicks || []).map(([value, label]) => `<button type="button" class="clarification-chip" data-clarify-value="${escapeHtml(value)}">${escapeHtml(label)}</button>`).join('');
+    answers.innerHTML = `${picks ? `<div class="clarification-chips" role="group" aria-label="자주 쓰는 체류자격">${picks}</div><p class="field-hint">목록에 없으면 직접 입력하세요. 관광으로 들어왔다면 여권·사증에 적힌 코드(B-1, B-2, C-3 등)를 확인해 주세요.</p>` : ''}<div class="clarification-input-row"><input id="clarification-input" type="${type}" ${attrs} placeholder="${escapeHtml(question.hint || '')}" aria-label="${escapeHtml(question.question)}"><button type="button" class="primary-button secondary-button--small" id="clarification-apply">확인</button></div>
       <button type="button" class="clarification-option clarification-option--muted" data-clarify-skip="${escapeHtml(question.kind)}">잘 모르겠어요</button>`;
   }
 
@@ -388,11 +398,61 @@ function applyClarification(kind, rawValue) {
   renderConfirmation(structuredCase);
 }
 
+// Facts that move the outcome inside the legal range. Optional: the user can always
+// leave them unknown, and an unknown fact is never treated as a "no".
+const accuracyQuestions = [
+  { key: 'priorViolations', unknown: '과거 위반 전력', question: '예전에 출입국 관련 위반으로 처분받은 적이 있나요?', options: [[0, '처음이에요'], [1, '1번 있어요'], [2, '2번 이상']] },
+  { key: 'voluntaryDisclosure', unknown: '자진신고 여부', question: '적발되기 전에 스스로 출입국관서에 알리거나 찾아갔나요?', options: [[true, '네, 스스로 했어요'], [false, '아니요']] },
+  { key: 'investigationStarted', unknown: '사범조사 시작 여부', question: '이미 단속되거나 조사 연락을 받았나요?', options: [[true, '네, 받았어요'], [false, '아직 아니에요']] },
+];
+
+function openAccuracyQuestions(caseData) {
+  return accuracyQuestions.filter((item) => caseData?.[item.key] === null || caseData?.[item.key] === undefined);
+}
+
+function accuracyQuestionsHtml(caseData) {
+  return openAccuracyQuestions(caseData).map((item) => `
+    <div class="accuracy-question" role="group" aria-label="${escapeHtml(item.question)}">
+      <p>${escapeHtml(item.question)}</p>
+      <div class="clarification-chips">${item.options.map(([value, label]) => `<button type="button" class="clarification-chip" data-accuracy-key="${item.key}" data-accuracy-value="${escapeHtml(JSON.stringify(value))}">${escapeHtml(label)}</button>`).join('')}</div>
+    </div>`).join('');
+}
+
+function applyAccuracyAnswer(caseData, key, rawValue) {
+  const question = accuracyQuestions.find((item) => item.key === key);
+  if (!question) return caseData;
+  let value;
+  try { value = JSON.parse(rawValue); } catch { return caseData; }
+  if (!question.options.some(([allowed]) => allowed === value)) return caseData;
+  const next = { ...caseData, [key]: value };
+  next.unknownFacts = (next.unknownFacts || []).filter((item) => item !== question.unknown);
+  return next;
+}
+
+function wireAccuracyButtons(root, onAnswer) {
+  $$('[data-accuracy-key]', root).forEach((button) => button.addEventListener('click', () => {
+    onAnswer(button.dataset.accuracyKey, button.dataset.accuracyValue);
+  }));
+}
+
+function renderAccuracyCard(caseData) {
+  const card = $('#accuracy-card');
+  if (!card) return;
+  const html = accuracyQuestionsHtml(caseData);
+  card.hidden = !html;
+  $('#accuracy-questions').innerHTML = html;
+  wireAccuracyButtons(card, (key, value) => {
+    structuredCase = applyAccuracyAnswer(structuredCase, key, value);
+    renderConfirmation(structuredCase);
+  });
+}
+
 function renderConfirmation(caseData) {
   $('#confirmation-summary').textContent = deterministicSummary(caseData);
   renderFactList(caseData);
   renderConfirmationNotes(caseData);
   renderClarification(caseData);
+  renderAccuracyCard(caseData);
 }
 
 function analysisFingerprint(caseData) {
@@ -417,14 +477,162 @@ const dispositionLabels = {
   CRIMINAL_REFERRAL: '형사절차 회부'
 };
 
+const basisLabels = { SUPPORTED: '근거 확인', INFERRED: '추론', UNKNOWN: '미확인' };
+
 function factors(items = []) {
   if (!items.length) return '<p class="subtle">확인된 요인이 없습니다.</p>';
-  return `<ul>${items.map((item) => `<li>${escapeHtml(item.label)} <span class="tag">${escapeHtml(item.basis)}</span></li>`).join('')}</ul>`;
+  return `<ul>${items.map((item) => `<li>${escapeHtml(item.label)} <span class="tag" data-basis="${escapeHtml(item.basis)}">${escapeHtml(basisLabels[item.basis] || item.basis)}</span></li>`).join('')}</ul>`;
+}
+
+// Server limitations are written for operators ("OpenRouter prediction unavailable:
+// http_404", "Vercel에 ... 환경변수"). Keep every notice, but say it in plain Korean.
+const providerReasonLabels = {
+  provider_rate_limit: '무료 AI 호출 한도 도달', timeout: '응답 시간 초과', network_error: '네트워크 오류',
+  no_compatible_endpoint: '사용할 수 있는 AI 모델 없음', http_404: '사용할 수 있는 AI 모델 없음',
+  empty_response: 'AI가 빈 응답을 보냄', openrouter_not_configured: 'AI 서버 설정 필요', provider_auth_error: 'AI 서버 인증 오류',
+};
+function plainLimitation(text) {
+  const value = String(text || '');
+  const provider = value.match(/^OpenRouter prediction unavailable:\s*(\S+)/i);
+  if (provider) return `AI 예상을 받지 못했습니다 (${providerReasonLabels[provider[1]] || '일시적 오류'}). 법령 기준은 그대로 유효합니다.`;
+  if (/^OpenRouter prediction rejected/i.test(value)) return 'AI 응답이 근거·형식 검증을 통과하지 못해 표시하지 않았습니다.';
+  if (/Vercel에 지원되는 법령 API 인증/.test(value)) return '실시간 법령 조회를 쓸 수 없어, 저장된 법령 기준(검증 스냅샷)으로 계산했습니다.';
+  if (/법령 API 인증값이 없어/.test(value)) return '실시간 판례 조회를 쓸 수 없어 공식 판례 본문은 검색하지 않았습니다.';
+  return value;
+}
+
+function needsExactDates(baseline) {
+  return (baseline.missingFacts || []).some((item) => /시작일|종료일|위반기간/.test(item));
+}
+
+function nextStepCard(baseline) {
+  if (baseline.status === 'AVAILABLE') return '';
+  if (needsExactDates(baseline)) {
+    const today = localTodayIso();
+    const start = structuredCase?.violationStartDate || '';
+    const end = structuredCase?.violationEndDate || '';
+    return `<section class="next-step-card" aria-labelledby="next-step-title">
+      <p class="card-kicker">다음 단계 · 날짜만 알려 주세요</p>
+      <h3 id="next-step-title">정확한 기간이 있어야 범칙금 기준을 계산할 수 있어요.</h3>
+      <p>범칙금은 “개월” 단위로 구간이 나뉩니다. 30일처럼 경계에 걸리면 날짜에 따라 금액 구간이 달라져서, 추측하지 않고 계산을 멈췄습니다.</p>
+      <form class="date-range-form" id="date-range-form" novalidate>
+        <label>시작한 날<input type="date" id="violation-start" max="${today}" value="${escapeHtml(start)}" required></label>
+        <label>끝난 날 (계속 중이면 오늘)<input type="date" id="violation-end" max="${today}" value="${escapeHtml(end)}" required></label>
+        <button type="submit" class="primary-button">이 날짜로 다시 계산</button>
+      </form>
+      <p class="form-error" id="date-range-error" role="alert" hidden></p>
+    </section>`;
+  }
+  if (baseline.status === 'HISTORICAL_RULE_UNAVAILABLE' || baseline.status === 'UNSUPPORTED') {
+    return `<section class="next-step-card next-step-card--stop" aria-labelledby="next-step-title">
+      <p class="card-kicker">계산하지 않음</p>
+      <h3 id="next-step-title">이 경우는 검증된 법령 기준이 없어 금액을 계산하지 않았어요.</h3>
+      <p>${baseline.status === 'UNSUPPORTED' ? '이 위반 유형은 아직 Visable 계산 규칙에 없습니다.' : '입력한 기간에 적용되는 법령 기준을 Visable이 검증해 두지 않았습니다.'} 추측한 금액 대신, 외국인종합안내센터(☎1345)나 관할 출입국·외국인관서에 확인해 주세요.</p>
+    </section>`;
+  }
+  return `<section class="next-step-card" aria-labelledby="next-step-title">
+      <p class="card-kicker">다음 단계</p>
+      <h3 id="next-step-title">어떤 상황인지 하나만 더 골라 주세요.</h3>
+      <p>위반 유형이 정해져야 법령 기준을 계산할 수 있습니다.${(baseline.missingFacts || []).length ? ` 부족한 정보: ${escapeHtml(baseline.missingFacts.join(', '))}` : ''}</p>
+      <button type="button" class="primary-button" data-next-step-back>상황 다시 고르기</button>
+    </section>`;
+}
+
+function wireNextStep() {
+  const form = $('#date-range-form');
+  if (form) {
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const start = $('#violation-start').value;
+      const end = $('#violation-end').value;
+      const error = $('#date-range-error');
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(start) || !/^\d{4}-\d{2}-\d{2}$/.test(end)) return setError(error, '시작한 날과 끝난 날을 모두 골라 주세요.');
+      if (end < start) return setError(error, '끝난 날이 시작한 날보다 빠릅니다.');
+      if (end > localTodayIso()) return setError(error, '미래 날짜는 쓸 수 없어요.');
+      setError(error);
+      const next = { ...structuredCase, violationStartDate: start, violationEndDate: end };
+      next.durationDays = Math.round((Date.parse(`${end}T00:00:00Z`) - Date.parse(`${start}T00:00:00Z`)) / 86400000) + 1;
+      next.unknownFacts = (next.unknownFacts || []).filter((item) => item !== '위반기간' && item !== '위반 시작일');
+      analyzeCase(next);
+    });
+  }
+  $('[data-next-step-back]')?.addEventListener('click', () => {
+    analysisSequence++;
+    skippedClarifications.delete('violationCode');
+    renderConfirmation(structuredCase);
+    showStep(2);
+  });
+}
+
+const likelihoodSteps = { VERY_LOW: 1, LOW: 2, MODERATE: 3, HIGH: 4, VERY_HIGH: 5 };
+const directionLabels = { MITIGATED: '기준보다 낮은 쪽', BASELINE: '기준 금액 근처', AGGRAVATED: '기준보다 높은 쪽', UNCERTAIN: '방향 불확실' };
+const dispositionHelp = {
+  STAY_PERMISSION_DISADVANTAGE: '범칙금 납부 후 체류는 이어가지만, 다음 연장·변경 심사에서 불리하게 볼 수 있다는 뜻이에요.',
+  DEPARTURE_ORDER: '정해진 기한 안에 스스로 출국하라는 명령이에요.',
+  DEPORTATION: '강제로 출국시키는 처분이에요.',
+  CRIMINAL_REFERRAL: '범칙금이 아니라 형사절차(고발 등)로 넘어갈 수 있다는 뜻이에요.',
+};
+
+function likelihoodMeter(level) {
+  const step = likelihoodSteps[level] || 0;
+  return `<span class="likelihood-meter" role="img" aria-label="가능성 ${escapeHtml(likelihoodLabels[level] || '특정 어려움')}">${[1, 2, 3, 4, 5].map((index) => `<i class="${index <= step ? 'is-on' : ''}"></i>`).join('')}</span>`;
 }
 
 function disposition(item, primary = false) {
   if (!item) return '<p class="subtle">현재 공개된 근거만으로 가장 유력한 처분을 특정하기 어렵습니다.</p>';
-  return `<div class="disposition"><strong><span>${primary ? '가장 유력 · ' : ''}${escapeHtml(dispositionLabels[item.type] || item.type)}</span><span>${escapeHtml(likelihoodLabels[item.likelihood] || item.likelihood)}</span></strong>${factors(item.rationale)}</div>`;
+  return dispositionHtml(item, primary);
+}
+
+// When there is no AI disposition, say why, and show what the law allows for this
+// violation (repo rule data, not a ranking) instead of an empty box.
+function emptyDispositionHtml(baseline, prediction) {
+  const allowed = baseline.legallyAvailableDispositions || [];
+  const reason = baseline.status !== 'AVAILABLE'
+    ? (needsExactDates(baseline) ? '위 “다음 단계”에서 날짜를 넣으면 처분 예상도 함께 계산해요.' : '위반 유형과 기간이 정해지면 처분 예상도 함께 계산해요.')
+    : prediction.status === 'UNAVAILABLE'
+      ? 'AI 예상을 이번에 받지 못해 처분 가능성 순위는 비워 두었어요. 아래 “AI 예상 다시 확인”으로 다시 시도할 수 있어요.'
+      : '이 사실관계만으로는 가장 유력한 처분을 하나로 좁히기 어려웠어요.';
+  return `<p class="subtle">${escapeHtml(reason)}</p>
+    ${allowed.length ? `<div class="legal-dispositions">
+      <strong>이 위반에 법령상 가능한 처분</strong>
+      <ul>${allowed.map((type) => `<li><b>${escapeHtml(dispositionLabels[type] || type)}</b> · ${escapeHtml(dispositionHelp[type] || '')}</li>`).join('')}</ul>
+      <p class="subtle">가능성 순위가 아니라, 법령상 선택될 수 있는 처분의 범위예요.</p>
+    </div>` : ''}`;
+}
+
+function dispositionHtml(item, primary = false) {
+  return `<div class="disposition${primary ? ' disposition--primary' : ''}">
+    <strong><span>${primary ? '가장 유력 · ' : '다른 가능성 · '}${escapeHtml(dispositionLabels[item.type] || item.type)}</span><span class="disposition-likelihood">${likelihoodMeter(item.likelihood)} ${escapeHtml(likelihoodLabels[item.likelihood] || item.likelihood)}</span></strong>
+    ${dispositionHelp[item.type] ? `<p class="subtle">${escapeHtml(dispositionHelp[item.type])}</p>` : ''}
+    ${item.likelihoodCappedFrom ? '<p class="likelihood-cap-note">공개된 처분 사례 근거가 부족해, 가능성은 “중간”까지만 표시해요.</p>' : ''}
+    ${(item.rationale || []).length ? factors(item.rationale) : ''}
+  </div>`;
+}
+
+// One plain-language paragraph built only from validated values. Nothing new is inferred here.
+function verdictSentence(baseline, prediction) {
+  const parts = [];
+  if (baseline.status === 'AVAILABLE') parts.push(`법령상 기준 범칙금은 <strong>${won(baseline.baselineAmountKrw)}</strong>이에요.`);
+  const money = prediction.monetaryPrediction;
+  if (money) {
+    const direction = directionLabels[money.predictedDirection];
+    parts.push(`Visable AI는 <strong>${range(money.predictedLikelyRange)}</strong>${direction && money.predictedDirection !== 'UNCERTAIN' ? `(${direction})` : ''} 정도로 예상해요.`);
+  }
+  const primary = prediction.primaryDisposition;
+  if (primary) parts.push(`가장 유력한 처분은 <strong>${escapeHtml(dispositionLabels[primary.type] || primary.type)}</strong>(가능성 ${escapeHtml(likelihoodLabels[primary.likelihood] || '특정 어려움')})이에요.`);
+  if (!money && !primary) parts.push('AI 예상은 이번에 검증을 통과하지 못해, 법령 기준만 확정적으로 보여드려요.');
+  return parts.join(' ');
+}
+
+function accuracyBoostCard(caseData) {
+  const html = accuracyQuestionsHtml(caseData);
+  if (!html) return '';
+  return `<section class="accuracy-card accuracy-card--result" id="result-accuracy" aria-labelledby="result-accuracy-title">
+    <p class="card-kicker">예상 정확도 올리기</p>
+    <h3 id="result-accuracy-title">아래에 답하면 바로 다시 계산해요.</h3>
+    <p class="subtle">모르는 사실은 “모름”으로 남겨 두고, 그만큼 신뢰도를 낮춰 계산하고 있어요.</p>
+    ${html}
+  </section>`;
 }
 
 function resultNotice(className, title, body) {
@@ -461,12 +669,19 @@ function renderResult(data) {
     network_error: ['AI 네트워크 연결 실패', 'AI 제공자 연결에 문제가 발생했습니다.'],
     invalid_structured_prediction: ['AI 응답 형식 검증 실패', 'AI의 응답이 법적 근거 또는 데이터 형식 검증을 통과하지 못했습니다.'],
     openrouter_not_configured: ['AI 제공자 설정 필요', '서버의 AI 제공자 인증 설정을 확인해야 합니다.'],
+    no_compatible_endpoint: ['AI 모델 일시 사용 불가', '지금 쓸 수 있는 무료 AI 모델이 없습니다. 법령 기준은 그대로 유효하며, 잠시 후 다시 시도할 수 있습니다.'],
+    http_404: ['AI 모델 일시 사용 불가', '지금 쓸 수 있는 무료 AI 모델이 없습니다. 법령 기준은 그대로 유효하며, 잠시 후 다시 시도할 수 있습니다.'],
+    provider_auth_error: ['AI 서버 인증 오류', 'AI 제공자 인증에 실패했습니다. 운영자가 API 키 설정을 확인해야 합니다. 법령 기준은 그대로 유효합니다.'],
+    empty_response: ['AI 빈 응답', 'AI가 내용 없는 응답을 보내 표시하지 않았습니다. 잠시 후 다시 시도해 주세요.'],
   };
   const failureNotice = failureMessages[prediction.failureCategory]
     || ['AI 추정 근거 부족', '안전하게 표시할 수 있는 검증된 AI 예측이 없습니다.'];
   const modelLabel = data.analysisPending ? 'AI 예상 확인 중' : prediction.modelId ? '검증된 AI 예상' : '검증된 AI 결과 없음';
   const durationDays = Number(data.case?.durationDays ?? structuredCase?.durationDays);
-  const boundaryNotice = durationDays === 30
+  // When the next-step card asks for dates, it already carries this explanation.
+  const datesRequested = !data.analysisPending && !baselineReady && needsExactDates(baseline);
+  const exactDates = Boolean((data.case || structuredCase)?.violationStartDate && (data.case || structuredCase)?.violationEndDate);
+  const boundaryNotice = durationDays === 30 && !exactDates && !datesRequested
     ? resultNotice('baseline-boundary-note', '30일은 월 단위 경계에 걸릴 수 있습니다', '별표 7은 “개월” 단위 기준을 사용합니다. 정확한 시작일·종료일을 적으면 경계 판단이 더 정확해집니다.')
     : '';
   const degradedNotice = data.analysisPending
@@ -477,37 +692,63 @@ function renderResult(data) {
       baselineReady ? failureNotice[0] : '법령 기준 산출에 필요한 사실 부족',
       baselineReady ? failureNotice[1] : '먼저 위반 유형과 정확한 시작·종료일을 확인해 주세요. 검증되지 않은 범칙금은 표시하지 않습니다.');
 
+  const aiBody = !baselineReady && !data.analysisPending
+    ? '법령 기준이 정해지면 AI 예상도 이어서 계산합니다. 위 “다음 단계”를 먼저 진행해 주세요.'
+    : null;
+
+  const showVerdict = !data.analysisPending && baselineReady;
+  const caseForQuestions = data.case || structuredCase;
+  const stayImpact = (prediction.stayImpact || []).filter(Boolean);
+  const moneyReasons = monetary?.rationale || [];
+
   $('#result-root').innerHTML = `
-    <div class="result-summary">
+    ${data.analysisPending ? '' : nextStepCard(baseline)}
+    ${showVerdict ? `<section class="verdict-card" aria-labelledby="verdict-title">
+      <p class="card-kicker" id="verdict-title">한눈에 보기</p>
+      <p class="verdict-text">${verdictSentence(baseline, prediction)}</p>
+      <p class="verdict-confidence">예측 신뢰도 <strong>${escapeHtml(confidenceLabels[confidence.level] || confidence.level)}</strong>${(prediction.unresolvedFactors || []).length ? ` · 확인 안 된 사실 ${(prediction.unresolvedFactors || []).length}개` : ''}</p>
+    </section>` : ''}
+    <div class="result-summary${baselineReady ? '' : ' result-summary--blocked'}">
       <article class="result-card baseline">
-        <p class="card-kicker">DETERMINISTIC LEGAL BASELINE</p>
+        <p class="card-kicker">법령 기준 · 계산식으로 산출</p>
         <h3>법령 기준</h3>
         <p class="subtle">법령상 기준 범칙금</p>
         <p class="amount">${won(baseline.baselineAmountKrw)}</p>
         <p>법정 조정 가능 범위: <strong>${range(baseline.legallyAdjustableRange)}</strong></p>
         ${baseline.violationLabel ? `<p class="subtle">적용 기준: ${escapeHtml(baseline.violationLabel)}</p>` : ''}
         <p><span class="tag">${escapeHtml(groundingLabel)}</span></p>
-        ${(baseline.missingFacts || []).length ? `<div class="baseline-boundary-note" role="status"><strong>추가 확인 필요</strong><ul>${baseline.missingFacts.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul></div>` : ''}
+        ${(baseline.missingFacts || []).length && !datesRequested ? `<div class="baseline-boundary-note" role="status"><strong>추가 확인 필요</strong><ul>${baseline.missingFacts.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul></div>` : ''}
         ${(baseline.assumptions || []).length ? `<ul class="baseline-assumptions">${baseline.assumptions.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>` : ''}
         ${boundaryNotice}
       </article>
       <article class="result-card prediction">
-        <p class="card-kicker">VISABLE AI PREDICTION</p>
+        <p class="card-kicker">AI 예상 · 법정 범위 안에서만</p>
         <h3>Visable AI 예상</h3>
         <p class="subtle">예상 범칙금</p>
-        <p class="amount">${data.analysisPending ? '확인 중' : monetary ? range(monetary.predictedLikelyRange) : 'AI 추정 보류'}</p>
-        <p>${data.analysisPending ? '법령 기준은 먼저 확인할 수 있어요. AI 예상은 검증 후 표시해요.' : monetary?.pointEstimateKrw != null ? `대표 추정액: <strong>${won(monetary.pointEstimateKrw)}</strong>` : monetary ? '근거가 충분하지 않아 대표 추정액을 표시하지 않습니다.' : '유효성 검증을 통과한 구조화 예측이 없어 금액을 임의로 만들지 않았습니다.'}</p>
+        <p class="amount">${data.analysisPending ? '확인 중' : monetary ? range(monetary.predictedLikelyRange) : aiBody ? '대기 중' : 'AI 추정 보류'}</p>
+        <p>${aiBody ? aiBody : data.analysisPending ? '법령 기준은 먼저 확인할 수 있어요. AI 예상은 검증 후 표시해요.' : monetary?.pointEstimateKrw != null ? `대표 추정액: <strong>${won(monetary.pointEstimateKrw)}</strong>` : monetary ? '근거가 충분하지 않아 대표 추정액을 표시하지 않습니다.' : '유효성 검증을 통과한 구조화 예측이 없어 금액을 임의로 만들지 않았습니다.'}</p>
+        ${monetary && directionLabels[monetary.predictedDirection] ? `<p><span class="tag tag--direction" data-direction="${escapeHtml(monetary.predictedDirection)}">${escapeHtml(directionLabels[monetary.predictedDirection])}</span></p>` : ''}
+        ${moneyReasons.length ? `<div class="money-reasons"><strong>이 범위인 이유</strong>${factors(moneyReasons)}</div>` : ''}
         <p class="subtle">${escapeHtml(modelLabel)}</p>
-        ${degradedNotice}
+        ${aiBody ? '' : degradedNotice}
       </article>
     </div>
 
+    ${showVerdict ? accuracyBoostCard(caseForQuestions) : ''}
+
     <article class="result-lead">
-      <p class="card-kicker">DISPOSITION</p>
+      <p class="card-kicker">처분 예상</p>
       <h3>예상 행정처분</h3>
-      ${data.analysisPending ? '<p class="subtle">AI 예상 결과를 확인하고 있어요.</p>' : disposition(prediction.primaryDisposition, true)}
+      ${data.analysisPending ? '<p class="subtle">AI 예상 결과를 확인하고 있어요.</p>' : prediction.primaryDisposition ? disposition(prediction.primaryDisposition, true) : emptyDispositionHtml(baseline, prediction)}
       ${(prediction.alternativeDispositions || []).map((item) => disposition(item)).join('')}
     </article>
+
+    ${!data.analysisPending && stayImpact.length ? `<article class="result-lead stay-impact">
+      <p class="card-kicker">체류에 미치는 영향 · AI 예상</p>
+      <h3>앞으로의 체류에는 이런 영향이 있을 수 있어요</h3>
+      <ul>${stayImpact.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>
+      <p class="subtle">가능성을 설명한 것이며 확정된 결과가 아니에요. 실제 심사는 관할 출입국·외국인관서가 판단해요.</p>
+    </article>` : ''}
 
     <div class="result-details">
       <details>
@@ -518,16 +759,16 @@ function renderResult(data) {
         </div>
       </details>
 
-      <details>
+      <details${showVerdict ? ' open' : ''}>
         <summary>왜 이런 예상이 나왔나요?</summary>
         <div class="detail-body">
-          <p class="card-kicker">WHY THIS PREDICTION?</p>
+          <p class="card-kicker">왜 이런 예상인가요?</p>
           <h3>예상 근거</h3>
           <div class="result-grid">
             <div><strong>가중 방향 요인</strong>${factors(prediction.aggravatingFactors)}</div>
             <div><strong>감경 방향 요인</strong>${factors(prediction.mitigatingFactors)}</div>
             <div><strong>미확인 요인</strong>${factors(prediction.unresolvedFactors)}</div>
-            <div><strong>한계</strong>${limitations.length ? `<ul>${limitations.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>` : '<p class="subtle">추가 한계 없음</p>'}</div>
+            <div><strong>한계</strong>${limitations.length ? `<ul>${[...new Set(limitations.map(plainLimitation))].map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>` : '<p class="subtle">추가 한계 없음</p>'}</div>
           </div>
         </div>
       </details>
@@ -545,7 +786,7 @@ function renderResult(data) {
       <details>
         <summary>법적 근거와 공식 출처</summary>
         <div class="detail-body">
-          <p class="card-kicker">OFFICIAL SOURCES</p>
+          <p class="card-kicker">공식 출처</p>
           <h3>법적 근거</h3>
           <p class="subtle">${escapeHtml(groundingLabel)}${grounding.credentialSource ? ` · ${escapeHtml(grounding.credentialSource)}` : ''}</p>
           <p class="subtle">적용 규칙: ${escapeHtml((baseline.appliedRules || []).join(' · ') || '표시할 규칙 없음')}</p>
@@ -557,6 +798,13 @@ function renderResult(data) {
       </details>
     </div>
     <p class="subtle">${escapeHtml(data.disclaimer || '')}</p>`;
+  if (!data.analysisPending) {
+    wireNextStep();
+    const boost = $('#result-accuracy');
+    if (boost) wireAccuracyButtons(boost, (key, value) => {
+      analyzeCase(applyAccuracyAnswer(structuredCase, key, value));
+    });
+  }
 }
 
 async function analyzeCase(caseData, { form, errorTarget } = {}) {
@@ -578,6 +826,12 @@ async function analyzeCase(caseData, { form, errorTarget } = {}) {
     baselineResponse = await request('/api/enforcement/analyze', { caseData: normalizedCase, baselineOnly: true }, { timeoutMs: 10000 });
     if (generation !== analysisSequence) return;
     if (!baselineResponse.legalBaseline) throw new Error('법령 기준 응답이 비어 있습니다. 다시 시도해 주세요.');
+    if (baselineResponse.legalBaseline.status !== 'AVAILABLE') {
+      // The server never asks the AI without a verified legal baseline, so waiting up
+      // to 28 s for the full request only delays the "what to do next" card.
+      renderResult({ ...baselineResponse, analysisPending: false });
+      return;
+    }
     renderResult({ ...baselineResponse, analysisPending: true });
     const response = await request('/api/enforcement/analyze', { caseData: normalizedCase }, { timeoutMs: 28000 });
     if (generation !== analysisSequence) return;
@@ -607,7 +861,7 @@ async function analyzeCase(caseData, { form, errorTarget } = {}) {
 
 function addAnalysisRetry() {
   const button = document.createElement('button');
-  button.type = 'button'; button.className = 'button secondary'; button.textContent = 'AI 예상 다시 확인';
+  button.type = 'button'; button.className = 'secondary-button analysis-retry'; button.textContent = 'AI 예상 다시 확인';
   button.addEventListener('click', () => { button.disabled = true; analyzeCase(structuredCase); }, { once: true });
   $('#result-root').append(button);
 }

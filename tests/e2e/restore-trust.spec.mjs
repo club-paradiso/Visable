@@ -67,23 +67,24 @@ test('F-4 → 사증발급 lists the transcribed documents and cites pages 393�
   await info.attach('f4-visa-issuance', { body: await page.screenshot({ fullPage: true }), contentType: 'image/png' });
 });
 
-test('F-4 → 체류자격 부여 (no list in the manual) shows page 532 verbatim from the F-4 lines', async ({ page }) => {
+// The 2026.11 stay edition adds one page ahead of this passage: the same text that was p.532 in 2026.10 is p.533.
+test('F-4 → 체류자격 부여 (no list in the manual) shows page 533 verbatim from the F-4 lines', async ({ page }) => {
   await boot(page);
   const sg = await chooser(page);
   await sg.locator('.sg-option[data-sg-value="status_grant"]').click();
   const ans = page.locator('#statusGuidance[data-sg-kind="source-only"]');
   await expect(ans).toBeVisible({ timeout: 20_000 });
   await expect(ans.locator('.sg-source-only .sg-lead')).toContainText('정리된 안내가 아직 없어요');
-  await expect(ans.locator('.sg-btn-source')).toHaveAttribute('data-sg-page', '532');
+  await expect(ans.locator('.sg-btn-source')).toHaveAttribute('data-sg-page', '533');
   const prev = ans.locator('.sg-source-preview');
   await expect(prev).toBeVisible({ timeout: 15_000 });
-  await expect(prev.locator('.sg-preview-title')).toContainText('532');
+  await expect(prev.locator('.sg-preview-title')).toContainText('533');
   await expect(prev.locator('.sg-preview-note')).toContainText('공식 원문 그대로');
   const lines = (await prev.locator('.sg-source-excerpt p').allInnerTexts()).filter((x) => x !== '…');
   expect(lines[0], 'the excerpt starts at the F-4 lines, not the H-2 text above them').toContain('F-4');
-  const pageText = await page.evaluate(() => fetch('data/manual-corpus/stay_manual_2026_10_19_pdf.json').then((r) => r.json()).then((rows) => rows.find((r) => r.page === 532).text.replace(/[\uE000-\uF8FF\u{F0000}-\u{FFFFD}]/gu, '').replace(/\s+/g, ' ')));
-  for (const l of lines) expect(pageText, `not on p.532: ${l}`).toContain(l.replace(/\s+/g, ' ').trim());
-  await expect(ans.locator('[data-sg-action="open-page"][data-sg-page="532"]')).toHaveCount(2);
+  const pageText = await page.evaluate(() => fetch('data/manual-corpus/stay_manual_2026_11_02_pdf.json').then((r) => r.json()).then((rows) => rows.find((r) => r.page === 533).text.replace(/[\uE000-\uF8FF\u{F0000}-\u{FFFFD}]/gu, '').replace(/\s+/g, ' ')));
+  for (const l of lines) expect(pageText, `not on p.533: ${l}`).toContain(l.replace(/\s+/g, ' ').trim());
+  await expect(ans.locator('[data-sg-action="open-page"][data-sg-page="533"]')).toHaveCount(2);
 });
 
 test('the verbatim excerpt stays readable in every skin', async ({ page }) => {
