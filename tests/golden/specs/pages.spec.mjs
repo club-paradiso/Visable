@@ -85,7 +85,10 @@ test.describe('new-home.html — nationality landing', () => {
       await page.addInitScript((l) => { try { localStorage.setItem('paradiso:language', l); } catch (e) {} }, locale);
       const errors = await boot(page, { path: '/new-home.html', waitForSearch: false });
       const hero = NATIONALITY_CONTENT.hero;
+      const notice = normalize(NATIONALITY_CONTENT.notice[locale]);
       await expect(page.getByText(normalize(hero.kicker[locale]), { exact: false }).first()).toBeVisible({ timeout: 30_000 });
+      // The notice block renders after the hero; wait for it instead of reading the body early.
+      await expect(page.getByText(notice.slice(0, 40), { exact: false }).first()).toBeVisible({ timeout: 30_000 });
       const text = normalize(await bodyText(page));
       expect(text).toContain(normalize(hero.title[locale]));
       expect(text).toContain(normalize(NATIONALITY_CONTENT.notice[locale]));
