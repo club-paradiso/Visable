@@ -11,7 +11,9 @@ itself:
   - `build_registry` turns the owner's decisions into `registry/real_world_registry.json`. Every evidence
     item needs a decision: "approve" (verification verified, review approved), "reject" (verification
     rejected, review rejected) or "no_record" (left out, so the item is rejected as no_registry_record).
-    The owner may change scope fields before approving. Records use method authorized_review.
+    The owner may change scope fields before approving. Records use method authorized_review. A decisions
+    file may carry `_meta` naming who decided and on what authority; it becomes each record's
+    decision_provenance (for example decisions Claude made by a stated rule because the owner delegated them).
 
 No model is called. The drafts are a reading aid, not a legal check.
 """
@@ -156,8 +158,13 @@ def evidence_items(items: list) -> dict:
     return out
 
 
+OWNER_SHEET = ("Owner decision in the DEV-20 registry review sheet; record drafted by Claude from the evidence item's own "
+               "source fields and compared against current statute text and the 261019 manuals. Claude did not approve legal "
+               "content.")
+
+
 def draft_record(evidence: dict, proposal: dict, decision: str, reviewer_fields: dict | None = None,
-                 decided_at: str = "pending") -> dict:
+                 decided_at: str = "pending", provenance: str = OWNER_SHEET) -> dict:
     """A complete registry record for one evidence item. `decision` is approve or reject."""
     base = {"subject": None, "status_scope": [], "all_subcategories_of": [], "jurisdiction": ["national"],
             "procedures": ["any"], "applicant_scope": ["any"], "published": None, "effective_until": None,
@@ -185,9 +192,7 @@ def draft_record(evidence: dict, proposal: dict, decision: str, reviewer_fields:
         "effective_until": record["effective_until"],
         "superseded_by": record["superseded_by"],
         "review_state": "approved" if approved else "rejected",
-        "decision_provenance": ("Owner decision in the DEV-20 registry review sheet; record drafted by Claude from the "
-                                "evidence item's own source fields and compared against current statute text and the "
-                                "261019 manuals. Claude did not approve legal content."),
+        "decision_provenance": provenance,
     }
 
 
@@ -231,9 +236,12 @@ def build_drafts(manual_candidates: dict | None = None) -> dict:
 
 
 def build_registry(decisions: dict) -> dict:
-    """The real-world registry from the owner's decisions: {evidence_id: {decision, fields?, decided_at}}."""
+    """The real-world registry from the owner's decisions: {evidence_id: {decision, fields?, decided_at}, _meta?}."""
     items = dev20_items()
     evs = evidence_items(items)
+    meta = decisions.get("_meta") or {}
+    provenance = meta.get("provenance") or OWNER_SHEET
+    decisions = {k: v for k, v in decisions.items() if k != "_meta"}
     missing = sorted(set(evs) - set(decisions))
     if missing:
         raise ValueError(f"no owner decision for {missing}")
@@ -252,13 +260,14 @@ def build_registry(decisions: dict) -> dict:
                            "procedures", "applicant_scope", "published", "effective_from", "effective_until")}
         proposal = PROPOSALS[eid] if PROPOSALS[eid]["record"] else {"record": {
             "source_locator": evs[eid]["evidence"].get("source", {}).get("document_id") or eid, "document_type": "unknown"}}
-        record = draft_record(evs[eid]["evidence"], proposal, d["decision"], fields, d["decided_at"])
+        record = draft_record(evs[eid]["evidence"], proposal, d["decision"], fields, d["decided_at"], provenance)
         problems = record_problems(record)
         if problems:
             raise ValueError(f"{eid}: {problems}")
         records[eid] = record
     return {"schema_version": "waymaker-artemis-real-world-registry/1.0", "kind": "real_world",
-            "evidence_set": "DEV-20 (artemis_eval_dev_20.json)", "records": records}
+            "evidence_set": "DEV-20 (artemis_eval_dev_20.json)", "decided_by": meta.get("decided_by", "owner"),
+            "records": records}
 
 
 def main(argv=None) -> int:

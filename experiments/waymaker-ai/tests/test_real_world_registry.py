@@ -38,8 +38,31 @@ def test_the_committed_drafts_are_what_the_module_builds_and_are_pending():
     assert all(d["content_sha256"] == content_sha256(EVIDENCE[d["evidence_id"]]["evidence"]["text"]) for d in committed["drafts"])
 
 
-def test_no_registry_exists_until_the_owner_decides():
-    assert not rwr.REGISTRY.exists()
+DECISIONS = BOOT / "registry" / "dev20_decisions.json"
+
+
+def test_the_committed_registry_is_built_from_the_committed_decisions():
+    decisions = json.loads(DECISIONS.read_text())
+    assert json.loads(rwr.REGISTRY.read_text()) == rwr.build_registry(decisions)
+
+
+def test_the_decisions_name_who_decided_on_what_authority_and_by_which_rule():
+    meta = json.loads(DECISIONS.read_text())["_meta"]
+    assert meta["decided_by"] == "Claude (rule-based check) under owner delegation"
+    assert "너가 알아서 해줘" in meta["delegation"] and "not a legal review" in meta["rule"]
+    registry = json.loads(rwr.REGISTRY.read_text())
+    assert registry["decided_by"] == meta["decided_by"]
+    assert all(r["decision_provenance"] == meta["provenance"] for r in registry["records"].values())
+    assert all(d.get("basis") for k, d in json.loads(DECISIONS.read_text()).items() if k != "_meta")
+
+
+def test_items_that_contradict_current_text_are_rejected_and_unchecked_ones_left_out():
+    registry = json.loads(rwr.REGISTRY.read_text())["records"]
+    rejected = sorted(e for e, r in registry.items() if r["verification"]["result"] == "rejected")
+    approved = sorted(e for e, r in registry.items() if r["verification"]["result"] == "verified")
+    assert rejected == ["EV-DEV-001-A", "EV-DEV-005-A", "EV-DEV-011-A", "EV-DEV-017-A", "EV-DEV-020-OFFICIAL"]
+    assert len(approved) == 10 and "EV-DEV-007-CURRENT" not in registry and "EV-DEV-009-A" not in registry
+    assert registry["EV-DEV-002-A"]["source_locator"] == "출입국관리법 제9조(사증발급인정서)"
 
 
 def test_the_registry_refuses_missing_or_unknown_decisions():
