@@ -31,7 +31,9 @@ assert(tx('en', 'heroTitle') !== tx('zh-CN', 'heroTitle'), 'hero title should ch
 assert(tx('en', 'dataReady', { count: 39, source: 'static' }).includes('39'), 'interpolation should substitute {count}');
 assert(tx('missing-locale', 'qPlaceholder') === tx('ko', 'qPlaceholder'), 'missing locale should fall back to ko');
 
-const html = fs.readFileSync(path.join(repoRoot, 'index.html'), 'utf8');
+// Frontend source corpus (scripts/frontend_modules.json modules first, then index.html): Phase 3 of the rebuild
+// moved the i18n runtime functions to src/i18n/runtime.js; the state owners and BOOTSTRAP_KO_FALLBACK stay in index.html.
+const html = [...JSON.parse(fs.readFileSync(path.join(repoRoot, 'scripts', 'frontend_modules.json'), 'utf8')).modules.map((rel) => fs.readFileSync(path.join(repoRoot, rel), 'utf8')), fs.readFileSync(path.join(repoRoot, 'index.html'), 'utf8')].join('\n');
 assert(html.includes('BOOTSTRAP_KO_FALLBACK'), 'index.html should include a built-in bootstrap fallback for failed i18n fetches');
 assert(html.includes('hasFullKoI18nPack()'), 'index.html should guard full language binding when packs fail to load');
 assert(!html.includes('UI_TRANSLATIONS.ko.landingHints[idx]'), 'landing hints must not assume ko landingHints exists during fallback');

@@ -234,6 +234,7 @@ R: `renderProcedurePanel`, `renderProcedures`. D: `PROCEDURE_FALLBACK_SUMMARY_KE
 - S: `dt`. E: `handleInput`, `handleAutocompleteKeydown`, `clearSearch`, `setSearchMode` 23571.
 
 ### C27 i18n runtime — 23573–24350
+**Moved** (2026-11-03) functions to `src/i18n/runtime.js` (`Visable.i18n`); all lets/consts of this cluster stay inline (read by bare name from assets/js and the e2e specs).
 | Lines | Contents |
 |---|---|
 | 23573 | `LANGUAGE_STORAGE_KEY` |

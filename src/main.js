@@ -12,6 +12,7 @@ import * as state from './state/storage.js';
 import * as render from './render/escape.js';
 import * as docs from './docs/normalize.js';
 import * as procedurePanels from './render/cards/procedure-panels.js';
+import * as runtime from './i18n/runtime.js';
 import * as modalsAi from './features/modals-ai.js';
 import * as results from './search/results.js';
 import * as fees from './render/cards/fees.js';
@@ -35,6 +36,7 @@ const bridge = Object.freeze({
   cards: Object.freeze({ ...procedurePanels, ...sections, ...docTabsEasyMode, ...fees }),
   search: Object.freeze({ ...results }),
   modals: Object.freeze({ ...modalsAi }),
+  i18n: Object.freeze({ ...runtime }),
   features: Object.freeze({ jurisdiction: Object.freeze({ ...jurisdiction }), jobcode: Object.freeze({ ...jobcode }), deadline: Object.freeze({ ...deadline }) })
 });
 

@@ -169,3 +169,5 @@ Repointed with the C14–C16 move (`src/docs/normalize.js`): `scripts/check_exac
 Switched to the corpus with the sections move: check_hikorea_reservation_helper.mjs, check_subcode_modal.mjs, check_visa_issuance_ui.mjs, check_f4_route_guide.mjs, check_complex_status_guide.mjs, check_visa_issuance_scenario_guide.mjs, validate_visa_issuance_enrichment.js.
 
 Switched with the modals/AI move: `scripts/check_document_help.mjs` (corpus); backend tests `test_i18n_law_fallback_live_smoke.py` (`cls.frontend` for moved-function slices; `cls.html` stays raw index.html for the hardcoded-text leak probe), `test_openrouter_model_candidates.py`, `test_waymaker_answer_product_quality.py`, `test_ai_answer_regression_source_subcode_2026_06.py`. CI-only misses fixed the same day: `check_complex_status_guide_qa.mjs`, `check_official_external_sources.mjs` (e39458e, 8c8ea00) — the local loop now runs every check_repo.sh script that reads index.html.
+
+With the i18n move: `scripts/check_index_hardcoded_text.mjs` scans `src/i18n/runtime.js` in addition to the index.html region; `scripts/smoke_static_i18n.mjs` reads the corpus.

@@ -174,6 +174,24 @@ for (const block of scriptBlocks) {
   }
 }
 
+// Phase 3 of the frontend rebuild moved the i18n runtime functions to src/i18n/runtime.js; the
+// region above now holds only the state owners and delegating stubs, so the module gets the same
+// literal scan (comments stripped, same allowlist). Reported as "<module>:<line>".
+{
+  const i18nModulePath = path.join(repoRoot, 'src', 'i18n', 'runtime.js');
+  if (fs.existsSync(i18nModulePath)) {
+    const moduleSrc = fs.readFileSync(i18nModulePath, 'utf8');
+    const script = moduleSrc.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '');
+    for (const literal of scanStringLiterals(script)) {
+      const value = literal.value;
+      if (!textRe.test(value)) continue;
+      if (isAllowed(value)) continue;
+      const line = script.slice(0, literal.index).split('\n').length;
+      suspicious.push(`src/i18n/runtime.js:${line}: ${value.slice(0, 120).replace(/\s+/g, ' ')}`);
+    }
+  }
+}
+
 if (suspicious.length) {
   console.error('[check_index_hardcoded_text] Suspicious inline UI strings remain:');
   suspicious.slice(0, 80).forEach((item) => console.error(`- ${item}`));
