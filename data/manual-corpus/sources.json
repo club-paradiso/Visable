@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-23",
+  "updated_at": "2026-11-03",
   "sources": [
     {
       "id": "visa_manual_2026_10_19_pdf",
@@ -14,15 +14,15 @@
       "sha256": "a2547f04ee484b77e1058ac15969127404c1c700db9fdc5e6127fa3b16cb6f68"
     },
     {
-      "id": "stay_manual_2026_10_19_pdf",
+      "id": "stay_manual_2026_11_02_pdf",
       "domain": "stay",
       "title": "외국인체류 안내매뉴얼",
       "title_en": "Foreigner Stay/Residence Guide Manual",
-      "date": "2026-10-19",
-      "version": "2026.10",
-      "pages": 812,
-      "file": "docs/source-manuals/2026-10-19/stay_manual_261019.pdf",
-      "sha256": "4b176173f4c09ca1522f74e9a3e58cc0477a69aa6a28142bd675ca103f60397d"
+      "date": "2026-11-02",
+      "version": "2026.11",
+      "pages": 813,
+      "file": "docs/source-manuals/2026-11-02/stay_manual_261102.pdf",
+      "sha256": "00037cc5c47d23b21c26dbd9f679a75af41a0b0bdea98342dcb49758e44dc933"
     }
   ]
 }

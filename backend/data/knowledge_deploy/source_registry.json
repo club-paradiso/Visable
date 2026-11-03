@@ -396,8 +396,9 @@
       ],
       "confidence": "high",
       "update_frequency": "irregular",
-      "status": "active",
-      "notes": "Reference edition chosen by the owner on 2026-10-23 (approved in data/manual_approval_index.json). Page-anchored PDF printed from the 배포용 HWP of the same edition; runtime citations use these PDF pages. Filename date 2026-10-19; cover month 2026.10 verified, legal effective date not verified."
+      "status": "deprecated",
+      "notes": "Superseded 2026-11-02 by stay_manual_2026_11_02_pdf (owner edition decision 2026-11-03). Retained for point-in-time questions. Reference edition chosen by the owner on 2026-10-23 (approved in data/manual_approval_index.json). Page-anchored PDF printed from the 배포용 HWP of the same edition; runtime citations use these PDF pages. Filename date 2026-10-19; cover month 2026.10 verified, legal effective date not verified.",
+      "superseded_by": "stay_manual_2026_11_02_pdf"
     },
     {
       "id": "visa_manual_2026_10_19_hwp",
@@ -436,8 +437,55 @@
       ],
       "confidence": "high",
       "update_frequency": "irregular",
+      "status": "deprecated",
+      "notes": "Superseded 2026-11-02 by stay_manual_2026_11_02_hwp (owner edition decision 2026-11-03). Retained for point-in-time questions. 배포용 HWP original of the 2026-10-19 edition, read with scripts/decrypt_hwp_distribution.py. Approved with the PDF of the same edition on 2026-10-23. Paragraph-anchored; NOT indexed into the searchable corpus, which carries the page-anchored PDF. Locators are never merged across the two containers.",
+      "superseded_by": "stay_manual_2026_11_02_hwp"
+    },
+    {
+      "id": "stay_manual_2026_11_02_pdf",
+      "type": "pdf_manual",
+      "title": "외국인체류 안내매뉴얼 (2026.11; 2026-11-02 PDF)",
+      "title_en": "Foreigner Stay/Residence Guide Manual (2026.11; 2026-11-02 PDF)",
+      "authority": "법무부 출입국·외국인정책본부",
+      "version": "2026.11",
+      "source_date": "2026-11-02",
+      "local_path": "docs/source-manuals/2026-11-02/stay_manual_261102.pdf",
+      "url": "https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&BBS_GB_CD=BS10&NTCCTT_SEQ=1062&page=1",
+      "last_known_hash": "sha256:00037cc5c47d23b21c26dbd9f679a75af41a0b0bdea98342dcb49758e44dc933",
+      "last_checked_at": "2026-11-03T00:00:00+09:00",
+      "language": [
+        "ko"
+      ],
+      "confidence": "high",
+      "update_frequency": "irregular",
       "status": "active",
-      "notes": "배포용 HWP original of the 2026-10-19 edition, read with scripts/decrypt_hwp_distribution.py. Approved with the PDF of the same edition on 2026-10-23. Paragraph-anchored; NOT indexed into the searchable corpus, which carries the page-anchored PDF. Locators are never merged across the two containers."
+      "notes": "Reference edition chosen by the owner on 2026-11-03 (approved in data/manual_approval_index.json). Page-anchored PDF (813 pages) printed from the 배포용 HWP of the same edition with Hancom Office HWP Viewer 12.31; runtime citations use these PDF pages. Filename date 2026-11-02; cover month 2026.11 verified, legal effective date not verified."
+    },
+    {
+      "id": "stay_manual_2026_11_02_hwp",
+      "type": "hwp_manual",
+      "title": "외국인체류 안내매뉴얼 (2026.11; 2026-11-02 배포용 HWP)",
+      "title_en": "Foreigner Stay/Residence Guide Manual (2026.11; 2026-11-02 distribution HWP)",
+      "authority": "법무부 출입국·외국인정책본부",
+      "version": "2026.11",
+      "source_date": "2026-11-02",
+      "local_path": "docs/source-manuals/2026-11-02/stay_manual_261102.hwp",
+      "url": "https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&BBS_GB_CD=BS10&NTCCTT_SEQ=1062&page=1",
+      "original_format": "HWP 5.0 distribution document",
+      "original_sha256": "sha256:cb9f30f76effdb6fc8aeaae1b41b0fd115b7ba1aa2378fcd9dff9e4af9c52d1c",
+      "extraction_method": "scripts/decrypt_hwp_distribution.py (ViewText AES), same method as the approved 2026-10-19 stay HWP extraction",
+      "last_known_hash": "sha256:cb9f30f76effdb6fc8aeaae1b41b0fd115b7ba1aa2378fcd9dff9e4af9c52d1c",
+      "last_checked_at": "2026-11-03T00:00:00+09:00",
+      "language": [
+        "ko"
+      ],
+      "confidence": "high",
+      "update_frequency": "irregular",
+      "status": "active",
+      "notes": "배포용 HWP original of the 2026-11-02 edition, read with scripts/decrypt_hwp_distribution.py. Approved with the PDF of the same edition on 2026-11-03. Paragraph-anchored; NOT indexed into the searchable corpus, which carries the page-anchored PDF. Locators are never merged across the two containers. Filename date 2026-11-02; cover month 2026.11 verified, legal effective date not verified.",
+      "original_binary_path": "docs/source-manuals/2026-11-02/stay_manual_261102.hwp",
+      "extracted_text_path": "docs/source-manuals/2026-11-02/extracted/full_text/stay_manual_261102.txt",
+      "original_binary_in_repository": true
     }
   ]
 }

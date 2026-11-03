@@ -55,6 +55,7 @@ DEFAULT_OUT = REPO_ROOT / "build" / "manual_search_index.sqlite3"
 # them to the current edition would misdate every stay-manual search hit.
 SECTION_SOURCES: Tuple[Tuple[str, str], ...] = (
     ("visa_manual_2026_10_19_pdf", "data/manual-corpus/visa_manual_2026_10_19_pdf.json"),
+    ("stay_manual_2026_11_02_pdf", "data/manual-corpus/stay_manual_2026_11_02_pdf.json"),
     ("stay_manual_2026_10_19_pdf", "data/manual-corpus/stay_manual_2026_10_19_pdf.json"),
     ("visa_manual_2026_09_01_pdf", "data/manual-corpus/visa_manual_2026_09_01_pdf.json"),
     ("visa_manual_2026_10_19_hwp_text", "data/manual-corpus/visa_manual_2026_10_19_hwp_text.json"),
@@ -80,6 +81,7 @@ OCTOBER_REVIEW_ONLY = frozenset({
 
 MARKDOWN_SOURCES: Tuple[str, ...] = (
     "data/manual-corpus/visa_manual_2026_10_19_md.json",
+    "data/manual-corpus/stay_manual_2026_11_02_md.json",
     "data/manual-corpus/stay_manual_2026_10_19_md.json",
     "data/manual-corpus/visa_manual_2026_09_01_md.json",
     "data/manual-corpus/stay_manual_2026_09_18_md.json",

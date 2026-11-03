@@ -64,6 +64,68 @@
   var WORKPLACE_MOVE = /(직장|회사|일자리|근무지|일터)\s*(을|를|이|가)?\s*(바꾸|바꿨|바꿔|바뀌|바뀐|옮기|옮겼|옮겨|옮길|변경)|\b(change|changed|changing|switch|switched|switching)\s+(my\s+|of\s+)?(job|jobs|employer|company)\b|换工作|换雇主|chuyển\s+(nơi\s+làm\s+việc|công\s+việc)|pindah\s+kerja|تغيير\s+مكان\s+العمل/i;
   var FIRST_ARRIVAL = /처음|최초|입국\s*(후|하고|해서|했)|한국에\s*(와서|왔|도착)|막\s*왔|\bfirst\b|just arrived|newly arrived|after arriving/i;
 
+  /* ---------------------------------------------- more UI languages ------ */
+  // ru · fr · es · de · tr · uk · tl. Search vocabulary only (how people name a card, a move, an
+  // extension); the procedures, documents and sources stay those of the bundle.
+  var MORE_OBJECTS = {
+    card: ['вид на жительство', 'карта иностранца', 'карточка иностранца', 'регистрационная карта', 'посвідка на проживання', 'картка іноземця', 'реєстраційна картка', 'carte de séjour', 'titre de séjour', "carte d'étranger", "carte d'enregistrement", 'tarjeta de residencia', 'tarjeta de extranjero', 'tarjeta de registro', 'aufenthaltskarte', 'aufenthaltstitel', 'ausländerausweis', 'registrierungskarte', 'ikamet kartı', 'oturma kartı', 'yabancı kartı', 'kayıt kartı', 'kard ng paninirahan', 'arc card'],
+    registration_info: ['регистрационные данные', 'данные регистрации', 'реєстраційні дані', "informations d'enregistrement", "données d'enregistrement", 'datos de registro', 'registrierungsdaten', 'meldedaten', 'kayıt bilgileri', 'impormasyon sa rehistro'],
+    passport: ['паспорт', 'passeport', 'pasaporte', 'reisepass', 'pasaport'],
+    address: ['адрес', 'место жительства', 'адреса', 'місце проживання', 'adresse', 'dirección', 'domicilio', 'wohnort', 'wohnsitz', 'adres', 'tirahan'],
+    school: ['школа', 'университет', 'учебное заведение', 'університет', 'навчальний заклад', 'école', 'université', 'établissement scolaire', 'escuela', 'universidad', 'institución educativa', 'schule', 'universität', 'hochschule', 'okul', 'üniversite', 'paaralan', 'unibersidad', 'eskwelahan'],
+    name: ['смена имени', 'фамилия', 'дата рождения', 'смена гражданства', 'зміна імені', 'прізвище', 'дата народження', 'changement de nom', 'date de naissance', 'changement de nationalité', 'cambio de nombre', 'fecha de nacimiento', 'cambio de nacionalidad', 'namensänderung', 'geburtsdatum', 'isim değişikliği', 'doğum tarihi', 'uyruk değişikliği', 'pangalan', 'petsa ng kapanganakan'],
+    residence_proof: ['договор аренды', 'подтверждение места жительства', 'договір оренди', 'підтвердження місця проживання', 'contrat de location', 'justificatif de domicile', "attestation d'hébergement", 'contrato de alquiler', 'contrato de arrendamiento', 'comprobante de domicilio', 'mietvertrag', 'wohnungsgeberbestätigung', 'wohnsitznachweis', 'kira sözleşmesi', 'ikamet belgesi', 'kontrata ng upa', 'patunay ng tirahan']
+  };
+  var MORE_ACTIONS = {
+    reissue: ['перевыпуск', 'повторная выдача', 'потерял', 'потеряла', 'утерян', 'утеря', 'повреждён', 'поврежден', 'восстановить карт', 'повторна видача', 'перевипуск', 'загубив', 'загубила', 'втрачен', 'пошкоджен', 'perdu', 'perdue', 'perte', 'duplicata', 'remplacement', 'endommagé', 'endommagée', 'volé', 'volée', 'perdí', 'pérdida', 'extravío', 'reposición', 'duplicado', 'dañada', 'dañado', 'robada', 'robado', 'verloren', 'verlust', 'neuausstellung', 'ersatzkarte', 'beschädigt', 'gestohlen', 'kaybettim', 'kayboldu', 'kayıp', 'hasarlı', 'çalındı', 'nawala', 'nawawala', 'nasira', 'napinsala', 'kapalit'],
+    register: ['регистрация иностранца', 'зарегистрироваться', 'первичная регистрация', 'получить карту', 'реєстрація іноземця', 'зареєструватися', 'отримати картку', 'enregistrement des étrangers', "s'enregistrer", 'première carte', 'obtenir une carte', 'registro de extranjeros', 'registrarme', 'registrarse', 'primera tarjeta', 'obtener la tarjeta', 'ausländerregistrierung', 'registrieren', 'erste karte', 'yabancı kaydı', 'kayıt olmak', 'kayıt yaptırmak', 'ilk kart', 'magparehistro', 'pagpaparehistro', 'unang card'],
+    change: ['изменение', 'изменить', 'смена', 'сменить', 'поменять', 'зміна', 'змінити', 'поміняти', 'changement', 'changer', 'modifier', 'modification', 'déclarer', 'cambio', 'cambiar', 'modificar', 'notificar', 'änderung', 'ändern', 'wechsel', 'wechseln', 'melden', 'değişiklik', 'değiştirmek', 'değiştirme', 'değiştirdim', 'bildirim', 'palitan', 'pagbabago', 'baguhin', 'iulat'],
+    extend: ['продление', 'продлить', 'продлевать', 'продовження', 'продовжити', 'prolongation', 'prolonger', 'renouvellement', 'renouveler', 'prórroga', 'prorrogar', 'renovación', 'renovar', 'extensión', 'verlängerung', 'verlängern', 'uzatma', 'uzatmak', 'süre uzatımı', 'pagpapalawig', 'palawigin'],
+    move: ['переезд', 'переехал', 'переехала', 'переїзд', 'переїхав', 'переїхала', 'déménagement', 'déménagé', 'déménager', 'mudanza', 'me mudé', 'mudarme', 'umzug', 'umgezogen', 'umziehen', 'taşındım', 'taşınma', 'taşınmak', 'lumipat ng bahay', 'lumipat ako']
+  };
+  Object.keys(MORE_OBJECTS).forEach(function (k) { OBJECTS[k] = OBJECTS[k].concat(MORE_OBJECTS[k]); });
+  Object.keys(MORE_ACTIONS).forEach(function (k) { ACTIONS[k] = ACTIONS[k].concat(MORE_ACTIONS[k]); });
+  var MORE_QUESTION = /как |как$|что нужно|сколько|можно ли|какие |як |скільки|чи можна|які |comment |combien|quels|quelles|puis-je|est-ce que|cómo|cuánto|cuánta|qué |puedo|necesito|\bwie\b|\bwas\b|kann ich|welche|brauche ich|nasıl|ne kadar|hangi|gerekir mi|mıyım|miyim|paano|magkano|ano ang|pwede ba|kailangan ba|lam sao|the nao|can gi|bao nhieu|duoc khong|co duoc khong/i;
+  QUESTION_RE = new RegExp(QUESTION_RE.source + '|' + MORE_QUESTION.source, 'i');
+  var MORE_FACETS = {
+    fee: 'пошлин|стоимост|сколько стоит|збір|вартість|скільки коштує|frais|coût|combien coûte|tarif|tasa|costo|cuánto cuesta|gebühr|kosten|was kostet|harç|ücret|ne kadar tutar|bayad|magkano|le phi|chi phi',
+    documents: 'документ|справк|документи|документів|pièces|justificatif|documents requis|documentos|requisitos|unterlagen|dokumente|belge|evrak|dokumento|requirements|ho so|giay to',
+    deadline: 'срок|до какого|термін|до якого|délai|date limite|plazo|fecha límite|frist|bis wann|süre|son tarih|deadline|hanggang kailan|thoi han|han chot',
+    eligibility: 'можно ли|разрешено|чи можна|дозволено|puis-je|ai-je le droit|autorisé|puedo|está permitido|darf ich|ist es erlaubt|yapabilir miyim|izin var mı|pwede ba|maaari ba|duoc khong',
+    how: 'как |порядок|процедур|як |порядок дій|comment |procédure|démarche|cómo|procedimiento|trámite|\\bwie\\b|ablauf|verfahren|nasıl|prosedür|işlem|paano|proseso|lam sao|the nao|thu tuc'
+  };
+  FACETS.forEach(function (f) { if (MORE_FACETS[f[0]]) f[1] = new RegExp(f[1].source + '|' + MORE_FACETS[f[0]], 'i'); });
+  WORKPLACE_MOVE = new RegExp(WORKPLACE_MOVE.source + '|сменить работ|смена работодател|поменять работ|змінити робот|зміна роботодавц|changer d.employeur|changer de travail|changer d.emploi|cambiar de trabajo|cambiar de empleador|cambio de empleador|arbeitgeber wechseln|arbeitgeberwechsel|job wechseln|stelle wechseln|iş değiştir|işveren değiştir|işyeri değiş|lumipat ng trabaho|magpalit ng trabaho|palit ng employer|chuyen noi lam viec|chuyen cong viec|doi cong ty|nhay viec', 'i');
+  FIRST_ARRIVAL = new RegExp(FIRST_ARRIVAL.source + '|впервые|только приехал|только что приехал|вперше|щойно приїхав|première fois|je viens d.arriver|primera vez|acabo de llegar|zum ersten mal|gerade angekommen|neu angekommen|ilk kez|yeni geldim|unang beses|kararating|lan dau|moi den', 'i');
+
+  /* ------------------------------------------------------------- folding -- */
+  // Lets the same lexicon match how people actually type: no Vietnamese tones ("gia han"), no
+  // accents (prorroga, verlangerung), Turkish dotless i, ß, ё, Arabic without hamza/harakat, and
+  // Traditional Chinese (folded to the Simplified lexicon via ParadisoZhT when it is loaded).
+  // A query whose fold is itself (Korean, plain English) is matched exactly as before.
+  function fold(text) {
+    var s = String(text == null ? '' : text);
+    if (typeof s.normalize === 'function') s = s.normalize('NFKC');
+    s = s.toLowerCase();
+    var Z = root.ParadisoZhT;
+    if (Z && typeof Z.toSimplified === 'function') s = Z.toSimplified(s);
+    if (typeof s.normalize === 'function') s = s.normalize('NFD').replace(/([a-z])[̀-ͯ]+/g, '$1').normalize('NFC');
+    return s.replace(/đ/g, 'd').replace(/ı/g, 'i').replace(/ß/g, 'ss').replace(/ё/g, 'е')
+      .replace(/[ً-ْـ]/g, '').replace(/[أإآٱ]/g, 'ا').replace(/ى/g, 'ي').replace(/ة/g, 'ه');
+  }
+  // The text the lexicons see: the query, plus its folded form when that differs.
+  function matchText(text) { var f = fold(text); return f === text ? text : text + '\n' + f; }
+  // Every lexicon also carries the folded spelling of each term.
+  function withFolded(list) {
+    var out = list.slice(), seen = {};
+    list.forEach(function (t) { seen[lower(t)] = true; });
+    list.forEach(function (t) { var f = fold(t); if (!seen[f]) { seen[f] = true; out.push(f); } });
+    return out;
+  }
+  Object.keys(OBJECTS).forEach(function (k) { OBJECTS[k] = withFolded(OBJECTS[k]); });
+  Object.keys(ACTIONS).forEach(function (k) { ACTIONS[k] = withFolded(ACTIONS[k]); });
+  USER_PROGRAMS.forEach(function (p) { p.terms = withFolded(p.terms); });
+
   function lower(s) { return String(s || '').toLowerCase(); }
   function hasTerm(text, term) { return text.indexOf(lower(term)) >= 0; }
   function findTerms(text, list) { var hits = []; list.forEach(function (t) { if (hasTerm(text, t)) hits.push(t); }); return hits; }
@@ -110,6 +172,11 @@
     status_change: ['자격 변경 후', '자격변경 후', 'after status change', '变更加签后', 'sau khi đổi visa', 'setelah ganti visa', 'بعد تغيير الإقامة'],
     info_change: ['이름 바뀌', '개명', '국적 변경', '국적이 바뀌', 'name change', '改名', 'đổi tên', 'ganti nama', 'تغيير الاسم']
   };
+  [['lost', ['потерял', 'потеряла', 'утерян', 'утеря', 'загубив', 'загубила', 'втрачен', 'perdu', 'perdue', 'perte', 'perdí', 'pérdida', 'extravío', 'verloren', 'verlust', 'kaybettim', 'kayboldu', 'kayıp', 'nawala', 'nawawala', 'volé', 'robada', 'robado', 'gestohlen', 'çalındı', 'украден', 'вкраден']],
+   ['damaged', ['повреждён', 'поврежден', 'пошкоджен', 'endommagé', 'endommagée', 'dañada', 'dañado', 'beschädigt', 'hasarlı', 'nasira', 'napinsala']]].forEach(function (x) {
+    REISSUE_REASON_FALLBACK[x[0]] = REISSUE_REASON_FALLBACK[x[0]].concat(x[1]);
+  });
+  Object.keys(REISSUE_REASON_FALLBACK).forEach(function (k) { REISSUE_REASON_FALLBACK[k] = withFolded(REISSUE_REASON_FALLBACK[k]); });
 
   function extractReissueReason(text, bundle) {
     var dim = bundle && bundle.reissue_reason;
@@ -164,8 +231,8 @@
     }
 
     // 2. Status change intent: requires explicit status/visa change phrase
-    var STATUS_CHANGE_TERMS = /换签|换签证|chuyển\s*đổi\s*visa|chuyển\s*đổi\s*tư\s*cách|ganti\s*visa|ubah\s*status|تغيير\s*(وضع\s*الإقامة|التأشيرة|الإقامة)|체류자격\s*변경|자격\s*변경|在留資格変更|資格変更|\bstatus\s*change\b|\bchange\s*status\b|\bchange\s*visa\b|\bswitch\s*visa\b/i;
-    var hasVisaOrStatusWord = /비자|체류자격|자격|visa|status|tư\s*cách|إقامة|تأشيرة|滞留资格|签证|在留資格|在留/i.test(text);
+    var STATUS_CHANGE_TERMS = /换签|换签证|chuyển\s*đổi\s*visa|chuyển\s*đổi\s*tư\s*cách|chuyen\s*doi\s*(visa|tu\s*cach)|смена\s*(статуса|визы)|изменение\s*статуса|сменить\s*визу|зміна\s*(статусу|візи)|змінити\s*візу|changement\s*de\s*(statut|visa)|changer\s*de\s*(statut|visa)|cambio\s*de\s*(estatus|visa|visado)|cambiar\s*de\s*(estatus|visa|visado)|statuswechsel|visumwechsel|statusänderung|statusanderung|(statü|statu|vize)\s*değişikliği|(statu|vize)\s*degisikligi|palit\s*ng\s*(visa|status)|pagpapalit\s*ng\s*(visa|status)|ganti\s*visa|ubah\s*status|تغيير\s*(وضع\s*الإقامة|التأشيرة|الإقامة)|체류자격\s*변경|자격\s*변경|在留資格変更|資格変更|\bstatus\s*change\b|\bchange\s*status\b|\bchange\s*visa\b|\bswitch\s*visa\b/i;
+    var hasVisaOrStatusWord = /비자|체류자격|자격|visa|status|tư\s*cách|tu\s*cach|виз|статус|віз|visado|visum|vize|statut|estatus|statü|إقامة|تأشيرة|滞留资格|签证|在留資格|在留/i.test(text);
     if (STATUS_CHANGE_TERMS.test(text) || (actions.change && hasVisaOrStatusWord && !objects.card && !objects.passport && !objects.school && !objects.name && !objects.address)) {
       return { procedure: 'status_change', candidates: ['status_change'], why: 'action:change_status' };
     }
@@ -184,7 +251,7 @@
     opts = opts || {};
     var SG = root.VisableStatusGuidance;
     var q = String(query || '').trim();
-    var text = lower(SG && SG.positiveQuery ? SG.positiveQuery(q) : q);
+    var text = matchText(lower(SG && SG.positiveQuery ? SG.positiveQuery(q) : q));
     var interp = SG && typeof SG.interpret === 'function' ? SG.interpret(q, bundle, { noRouter: true }) : { codes: [], aliasCandidates: [], aliasQuestion: null, procedure: null, program: null, preAnswers: {}, keywords: [], confidence: 'LOW', unknownCodes: [] };
     var objects = extractObjects(text);
     // Actions are matched on the text with the object words removed, so "외국인등록증" never yields the
@@ -207,7 +274,7 @@
     }
     var office = extractOffice(text, opts.localPractice || (bundle && bundle.local_practice) || null);
     var userProgram = extractUserProgram(text);
-    var isQuestion = QUESTION_RE.test(q) || (q.length > 18 && /[가-힣]{2,}(요|죠|어|까|나)\s*$/.test(q));
+    var isQuestion = QUESTION_RE.test(q) || QUESTION_RE.test(text) || (q.length > 18 && /[가-힣]{2,}(요|죠|어|까|나)\s*$/.test(q));
     var facet = isQuestion ? facetOf(text) : facetOf(text);
     var status = interp.codes.length ? interp.codes[0].code : null;
     var statusExact = !!(interp.codes.length && interp.codes[0].exact);
@@ -285,7 +352,7 @@
     return { complex: complex, reason: complex ? (compare ? 'comparison' : exception ? 'exception' : 'multiple_procedures') : 'single_lookup', topics: topics };
   }
 
-  var api = { route: route, assessComplexity: assessComplexity, INTENTS: INTENTS, WORKPLACE_MOVE: WORKPLACE_MOVE, FIRST_ARRIVAL: FIRST_ARRIVAL, OBJECTS: OBJECTS, ACTIONS: ACTIONS, facetOf: facetOf, extractOffice: extractOffice, composeProcedure: composeProcedure, registryFor: registryFor };
+  var api = { fold: fold, route: route, assessComplexity: assessComplexity, INTENTS: INTENTS, WORKPLACE_MOVE: WORKPLACE_MOVE, FIRST_ARRIVAL: FIRST_ARRIVAL, OBJECTS: OBJECTS, ACTIONS: ACTIONS, facetOf: facetOf, extractOffice: extractOffice, composeProcedure: composeProcedure, registryFor: registryFor };
   root.VisableSearchRouter = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this);

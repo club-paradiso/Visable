@@ -255,7 +255,7 @@ function renderFactList(caseData) {
     ['상황', caseData.violationCode ? (violationLabels[caseData.violationCode] || caseData.violationCode) : '정확한 유형을 더 확인해야 함'],
     ['기간', caseData.durationDays == null ? '확인되지 않음' : `${Number(caseData.durationDays)}일`],
     ['허가 여부', caseData.authorizationObtained == null ? '확인되지 않음' : (caseData.authorizationObtained ? '필요한 허가를 받은 것으로 입력됨' : '필요한 허가를 받지 않은 것으로 입력됨')],
-    ['과거 위반', caseData.priorViolations == null ? '확인되지 않음' : (Number(caseData.priorViolations) === 0 ? '첫 위반으로 입력됨' : `${Number(caseData.priorViolations)}회`)],
+    ['과거 위반', caseData.priorViolations == null ? '확인되지 않음' : (Number(caseData.priorViolations) === 0 ? '첫 위반으로 입력됨' : `${Number(caseData.priorViolations)}회${Number(caseData.priorViolations) >= 2 ? ' 이상' : ''}`)],
     ['자진신고·자진방문', caseData.voluntaryDisclosure == null ? '확인되지 않음' : (caseData.voluntaryDisclosure ? '예' : '아니요')],
     ['적발·사범조사 시작', caseData.investigationStarted == null ? '확인되지 않음' : (caseData.investigationStarted ? '예' : '아니요')],
   ];
@@ -398,11 +398,61 @@ function applyClarification(kind, rawValue) {
   renderConfirmation(structuredCase);
 }
 
+// Facts that move the outcome inside the legal range. Optional: the user can always
+// leave them unknown, and an unknown fact is never treated as a "no".
+const accuracyQuestions = [
+  { key: 'priorViolations', unknown: '과거 위반 전력', question: '예전에 출입국 관련 위반으로 처분받은 적이 있나요?', options: [[0, '처음이에요'], [1, '1번 있어요'], [2, '2번 이상']] },
+  { key: 'voluntaryDisclosure', unknown: '자진신고 여부', question: '적발되기 전에 스스로 출입국관서에 알리거나 찾아갔나요?', options: [[true, '네, 스스로 했어요'], [false, '아니요']] },
+  { key: 'investigationStarted', unknown: '사범조사 시작 여부', question: '이미 단속되거나 조사 연락을 받았나요?', options: [[true, '네, 받았어요'], [false, '아직 아니에요']] },
+];
+
+function openAccuracyQuestions(caseData) {
+  return accuracyQuestions.filter((item) => caseData?.[item.key] === null || caseData?.[item.key] === undefined);
+}
+
+function accuracyQuestionsHtml(caseData) {
+  return openAccuracyQuestions(caseData).map((item) => `
+    <div class="accuracy-question" role="group" aria-label="${escapeHtml(item.question)}">
+      <p>${escapeHtml(item.question)}</p>
+      <div class="clarification-chips">${item.options.map(([value, label]) => `<button type="button" class="clarification-chip" data-accuracy-key="${item.key}" data-accuracy-value="${escapeHtml(JSON.stringify(value))}">${escapeHtml(label)}</button>`).join('')}</div>
+    </div>`).join('');
+}
+
+function applyAccuracyAnswer(caseData, key, rawValue) {
+  const question = accuracyQuestions.find((item) => item.key === key);
+  if (!question) return caseData;
+  let value;
+  try { value = JSON.parse(rawValue); } catch { return caseData; }
+  if (!question.options.some(([allowed]) => allowed === value)) return caseData;
+  const next = { ...caseData, [key]: value };
+  next.unknownFacts = (next.unknownFacts || []).filter((item) => item !== question.unknown);
+  return next;
+}
+
+function wireAccuracyButtons(root, onAnswer) {
+  $$('[data-accuracy-key]', root).forEach((button) => button.addEventListener('click', () => {
+    onAnswer(button.dataset.accuracyKey, button.dataset.accuracyValue);
+  }));
+}
+
+function renderAccuracyCard(caseData) {
+  const card = $('#accuracy-card');
+  if (!card) return;
+  const html = accuracyQuestionsHtml(caseData);
+  card.hidden = !html;
+  $('#accuracy-questions').innerHTML = html;
+  wireAccuracyButtons(card, (key, value) => {
+    structuredCase = applyAccuracyAnswer(structuredCase, key, value);
+    renderConfirmation(structuredCase);
+  });
+}
+
 function renderConfirmation(caseData) {
   $('#confirmation-summary').textContent = deterministicSummary(caseData);
   renderFactList(caseData);
   renderConfirmationNotes(caseData);
   renderClarification(caseData);
+  renderAccuracyCard(caseData);
 }
 
 function analysisFingerprint(caseData) {
@@ -514,9 +564,75 @@ function wireNextStep() {
   });
 }
 
+const likelihoodSteps = { VERY_LOW: 1, LOW: 2, MODERATE: 3, HIGH: 4, VERY_HIGH: 5 };
+const directionLabels = { MITIGATED: '기준보다 낮은 쪽', BASELINE: '기준 금액 근처', AGGRAVATED: '기준보다 높은 쪽', UNCERTAIN: '방향 불확실' };
+const dispositionHelp = {
+  STAY_PERMISSION_DISADVANTAGE: '범칙금 납부 후 체류는 이어가지만, 다음 연장·변경 심사에서 불리하게 볼 수 있다는 뜻이에요.',
+  DEPARTURE_ORDER: '정해진 기한 안에 스스로 출국하라는 명령이에요.',
+  DEPORTATION: '강제로 출국시키는 처분이에요.',
+  CRIMINAL_REFERRAL: '범칙금이 아니라 형사절차(고발 등)로 넘어갈 수 있다는 뜻이에요.',
+};
+
+function likelihoodMeter(level) {
+  const step = likelihoodSteps[level] || 0;
+  return `<span class="likelihood-meter" role="img" aria-label="가능성 ${escapeHtml(likelihoodLabels[level] || '특정 어려움')}">${[1, 2, 3, 4, 5].map((index) => `<i class="${index <= step ? 'is-on' : ''}"></i>`).join('')}</span>`;
+}
+
 function disposition(item, primary = false) {
   if (!item) return '<p class="subtle">현재 공개된 근거만으로 가장 유력한 처분을 특정하기 어렵습니다.</p>';
-  return `<div class="disposition"><strong><span>${primary ? '가장 유력 · ' : ''}${escapeHtml(dispositionLabels[item.type] || item.type)}</span><span>${escapeHtml(likelihoodLabels[item.likelihood] || item.likelihood)}</span></strong>${factors(item.rationale)}</div>`;
+  return dispositionHtml(item, primary);
+}
+
+// When there is no AI disposition, say why, and show what the law allows for this
+// violation (repo rule data, not a ranking) instead of an empty box.
+function emptyDispositionHtml(baseline, prediction) {
+  const allowed = baseline.legallyAvailableDispositions || [];
+  const reason = baseline.status !== 'AVAILABLE'
+    ? (needsExactDates(baseline) ? '위 “다음 단계”에서 날짜를 넣으면 처분 예상도 함께 계산해요.' : '위반 유형과 기간이 정해지면 처분 예상도 함께 계산해요.')
+    : prediction.status === 'UNAVAILABLE'
+      ? 'AI 예상을 이번에 받지 못해 처분 가능성 순위는 비워 두었어요. 아래 “AI 예상 다시 확인”으로 다시 시도할 수 있어요.'
+      : '이 사실관계만으로는 가장 유력한 처분을 하나로 좁히기 어려웠어요.';
+  return `<p class="subtle">${escapeHtml(reason)}</p>
+    ${allowed.length ? `<div class="legal-dispositions">
+      <strong>이 위반에 법령상 가능한 처분</strong>
+      <ul>${allowed.map((type) => `<li><b>${escapeHtml(dispositionLabels[type] || type)}</b> · ${escapeHtml(dispositionHelp[type] || '')}</li>`).join('')}</ul>
+      <p class="subtle">가능성 순위가 아니라, 법령상 선택될 수 있는 처분의 범위예요.</p>
+    </div>` : ''}`;
+}
+
+function dispositionHtml(item, primary = false) {
+  return `<div class="disposition${primary ? ' disposition--primary' : ''}">
+    <strong><span>${primary ? '가장 유력 · ' : '다른 가능성 · '}${escapeHtml(dispositionLabels[item.type] || item.type)}</span><span class="disposition-likelihood">${likelihoodMeter(item.likelihood)} ${escapeHtml(likelihoodLabels[item.likelihood] || item.likelihood)}</span></strong>
+    ${dispositionHelp[item.type] ? `<p class="subtle">${escapeHtml(dispositionHelp[item.type])}</p>` : ''}
+    ${item.likelihoodCappedFrom ? '<p class="likelihood-cap-note">공개된 처분 사례 근거가 부족해, 가능성은 “중간”까지만 표시해요.</p>' : ''}
+    ${(item.rationale || []).length ? factors(item.rationale) : ''}
+  </div>`;
+}
+
+// One plain-language paragraph built only from validated values. Nothing new is inferred here.
+function verdictSentence(baseline, prediction) {
+  const parts = [];
+  if (baseline.status === 'AVAILABLE') parts.push(`법령상 기준 범칙금은 <strong>${won(baseline.baselineAmountKrw)}</strong>이에요.`);
+  const money = prediction.monetaryPrediction;
+  if (money) {
+    const direction = directionLabels[money.predictedDirection];
+    parts.push(`Visable AI는 <strong>${range(money.predictedLikelyRange)}</strong>${direction && money.predictedDirection !== 'UNCERTAIN' ? `(${direction})` : ''} 정도로 예상해요.`);
+  }
+  const primary = prediction.primaryDisposition;
+  if (primary) parts.push(`가장 유력한 처분은 <strong>${escapeHtml(dispositionLabels[primary.type] || primary.type)}</strong>(가능성 ${escapeHtml(likelihoodLabels[primary.likelihood] || '특정 어려움')})이에요.`);
+  if (!money && !primary) parts.push('AI 예상은 이번에 검증을 통과하지 못해, 법령 기준만 확정적으로 보여드려요.');
+  return parts.join(' ');
+}
+
+function accuracyBoostCard(caseData) {
+  const html = accuracyQuestionsHtml(caseData);
+  if (!html) return '';
+  return `<section class="accuracy-card accuracy-card--result" id="result-accuracy" aria-labelledby="result-accuracy-title">
+    <p class="card-kicker">예상 정확도 올리기</p>
+    <h3 id="result-accuracy-title">아래에 답하면 바로 다시 계산해요.</h3>
+    <p class="subtle">모르는 사실은 “모름”으로 남겨 두고, 그만큼 신뢰도를 낮춰 계산하고 있어요.</p>
+    ${html}
+  </section>`;
 }
 
 function resultNotice(className, title, body) {
@@ -580,8 +696,18 @@ function renderResult(data) {
     ? '법령 기준이 정해지면 AI 예상도 이어서 계산합니다. 위 “다음 단계”를 먼저 진행해 주세요.'
     : null;
 
+  const showVerdict = !data.analysisPending && baselineReady;
+  const caseForQuestions = data.case || structuredCase;
+  const stayImpact = (prediction.stayImpact || []).filter(Boolean);
+  const moneyReasons = monetary?.rationale || [];
+
   $('#result-root').innerHTML = `
     ${data.analysisPending ? '' : nextStepCard(baseline)}
+    ${showVerdict ? `<section class="verdict-card" aria-labelledby="verdict-title">
+      <p class="card-kicker" id="verdict-title">한눈에 보기</p>
+      <p class="verdict-text">${verdictSentence(baseline, prediction)}</p>
+      <p class="verdict-confidence">예측 신뢰도 <strong>${escapeHtml(confidenceLabels[confidence.level] || confidence.level)}</strong>${(prediction.unresolvedFactors || []).length ? ` · 확인 안 된 사실 ${(prediction.unresolvedFactors || []).length}개` : ''}</p>
+    </section>` : ''}
     <div class="result-summary${baselineReady ? '' : ' result-summary--blocked'}">
       <article class="result-card baseline">
         <p class="card-kicker">법령 기준 · 계산식으로 산출</p>
@@ -601,17 +727,28 @@ function renderResult(data) {
         <p class="subtle">예상 범칙금</p>
         <p class="amount">${data.analysisPending ? '확인 중' : monetary ? range(monetary.predictedLikelyRange) : aiBody ? '대기 중' : 'AI 추정 보류'}</p>
         <p>${aiBody ? aiBody : data.analysisPending ? '법령 기준은 먼저 확인할 수 있어요. AI 예상은 검증 후 표시해요.' : monetary?.pointEstimateKrw != null ? `대표 추정액: <strong>${won(monetary.pointEstimateKrw)}</strong>` : monetary ? '근거가 충분하지 않아 대표 추정액을 표시하지 않습니다.' : '유효성 검증을 통과한 구조화 예측이 없어 금액을 임의로 만들지 않았습니다.'}</p>
+        ${monetary && directionLabels[monetary.predictedDirection] ? `<p><span class="tag tag--direction" data-direction="${escapeHtml(monetary.predictedDirection)}">${escapeHtml(directionLabels[monetary.predictedDirection])}</span></p>` : ''}
+        ${moneyReasons.length ? `<div class="money-reasons"><strong>이 범위인 이유</strong>${factors(moneyReasons)}</div>` : ''}
         <p class="subtle">${escapeHtml(modelLabel)}</p>
         ${aiBody ? '' : degradedNotice}
       </article>
     </div>
 
+    ${showVerdict ? accuracyBoostCard(caseForQuestions) : ''}
+
     <article class="result-lead">
       <p class="card-kicker">처분 예상</p>
       <h3>예상 행정처분</h3>
-      ${data.analysisPending ? '<p class="subtle">AI 예상 결과를 확인하고 있어요.</p>' : disposition(prediction.primaryDisposition, true)}
+      ${data.analysisPending ? '<p class="subtle">AI 예상 결과를 확인하고 있어요.</p>' : prediction.primaryDisposition ? disposition(prediction.primaryDisposition, true) : emptyDispositionHtml(baseline, prediction)}
       ${(prediction.alternativeDispositions || []).map((item) => disposition(item)).join('')}
     </article>
+
+    ${!data.analysisPending && stayImpact.length ? `<article class="result-lead stay-impact">
+      <p class="card-kicker">체류에 미치는 영향 · AI 예상</p>
+      <h3>앞으로의 체류에는 이런 영향이 있을 수 있어요</h3>
+      <ul>${stayImpact.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>
+      <p class="subtle">가능성을 설명한 것이며 확정된 결과가 아니에요. 실제 심사는 관할 출입국·외국인관서가 판단해요.</p>
+    </article>` : ''}
 
     <div class="result-details">
       <details>
@@ -622,7 +759,7 @@ function renderResult(data) {
         </div>
       </details>
 
-      <details>
+      <details${showVerdict ? ' open' : ''}>
         <summary>왜 이런 예상이 나왔나요?</summary>
         <div class="detail-body">
           <p class="card-kicker">왜 이런 예상인가요?</p>
@@ -661,7 +798,13 @@ function renderResult(data) {
       </details>
     </div>
     <p class="subtle">${escapeHtml(data.disclaimer || '')}</p>`;
-  if (!data.analysisPending) wireNextStep();
+  if (!data.analysisPending) {
+    wireNextStep();
+    const boost = $('#result-accuracy');
+    if (boost) wireAccuracyButtons(boost, (key, value) => {
+      analyzeCase(applyAccuracyAnswer(structuredCase, key, value));
+    });
+  }
 }
 
 async function analyzeCase(caseData, { form, errorTarget } = {}) {

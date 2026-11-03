@@ -67,12 +67,12 @@ test.describe('F-4 status grant result (source-only)', () => {
     await expect(sg.locator('.sg-source-only .sg-lead')).toContainText('정리된 안내가 아직 없어요');
     const srcBtn = sg.locator('.sg-answer .sg-btn-source');
     await expect(srcBtn).toBeVisible();
-    await expect(srcBtn).toContainText('공식 원문 532쪽 보기');
+    await expect(srcBtn).toContainText('공식 원문 533쪽 보기');
 
     const overview = sg.locator('.sg-overview');
     await expect(overview).toBeVisible();
     await expect(overview.locator('.sg-ov-confirmed')).toContainText('수수료 ₩80,000');
-    await expect(overview.locator('.sg-ov-source')).toContainText('532쪽');
+    await expect(overview.locator('.sg-ov-source')).toContainText('533쪽');
     await expect(overview).toContainText('참고용 안내예요 · 신청 전 공식 원문을 확인하세요');
     await expect(sg).not.toContainText(/검토 전|대조 검토|needs_review/);
     await expect(sg).not.toContainText('9월판');
@@ -93,7 +93,7 @@ test.describe('F-4 status grant result (source-only)', () => {
     const ev = sg.locator('#sgEvidence');
     await expect(ev).toHaveAttribute('open', /.*/);
     await expect(ev.locator('.sg-ev-group')).toContainText('이 절차의 공식 안내');
-    await expect(ev.locator('.sg-ev-primary')).toContainText('532쪽');
+    await expect(ev.locator('.sg-ev-primary')).toContainText('533쪽');
     const more = ev.locator('.sg-ev-more');
     await expect(more).toHaveJSProperty('open', false);
     await expect(more.locator('> summary')).toContainText(/수수료·법령 근거 \d+건/);
@@ -109,7 +109,7 @@ test.describe('F-4 status grant result (source-only)', () => {
     const rows = sg.locator('.sg-next .sg-actions li > .sg-action');
     await expect(rows).toHaveCount(4);
     // one call to action each: the page lives in the answer head, Waymaker in its own block
-    await expect(sg.locator('[data-sg-action="open-page"][data-sg-page="532"]')).toHaveCount(2);
+    await expect(sg.locator('[data-sg-action="open-page"][data-sg-page="533"]')).toHaveCount(2);
     await expect(sg.locator('[data-sg-action="followup"]')).toHaveCount(1);
     await expect(rows.first()).toContainText('방문예약 안내');
     await page.waitForSelector('#statusGuidance[data-sg-state="ready"], body[data-sg-state="ready"]');
@@ -148,7 +148,7 @@ test.describe('F-4 status grant result (source-only)', () => {
     const sg = page.locator('#statusGuidance');
     await expect(sg.locator('.sg-overview h3')).toHaveText('At a glance', { timeout: 10_000 });
     await expect(sg.locator('.sg-overview')).toContainText('Reference guidance');
-    await expect(sg.locator('.sg-answer .sg-btn-source')).toContainText('Open the source, p.532');
+    await expect(sg.locator('.sg-answer .sg-btn-source')).toContainText('Open the source, p.533');
     await expect(sg.locator('.sg-next .sg-action').first()).toContainText('Visit reservation guide');
     await expect(sg).not.toContainText('September');
     await noHorizontalScroll(page);

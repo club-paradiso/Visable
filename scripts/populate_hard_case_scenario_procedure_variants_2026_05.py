@@ -36,7 +36,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from audit_manual_ref_editions_2026_10 import anchored_ref
+from audit_manual_ref_editions_2026_11 import anchored_ref
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "visa_data.json"

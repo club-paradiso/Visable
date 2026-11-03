@@ -133,7 +133,7 @@ function intentFor(query, extra = {}) {
   const proc = bundle.procedures.find((p) => p.id === r.model.procedure);
   return { status: r.model.status, procedure: r.model.procedure, chapters, anchors, domain: proc ? (proc.domain === 'visa' ? 'visa_issuance' : 'stay') : null };
 }
-const STAY = 'stay_manual_2026_10_19_pdf';
+const STAY = 'stay_manual_2026_11_02_pdf';
 check('D-2 연장 evidence: D-2 extension pages first; D-2 → E-1 (p.174) and D-2 → D-10 (p.211) out of the top results', () => {
   const intent = intentFor('D-2 연장');
   const hits = MS.search(index, 'D-2 연장', { intent });
@@ -181,7 +181,7 @@ for (const q of MATRIX) {
   }
 }
 check('evidence rows use human manual titles, never the internal id, even when a title is missing', () => {
-  assert(SG.manualTitle('ko', { manual: 'stay_manual_2026_10_19', title_ko: '' }) === '외국인체류 안내매뉴얼', 'stay fallback');
+  assert(SG.manualTitle('ko', { manual: 'stay_manual_2026_11_02', title_ko: '' }) === '외국인체류 안내매뉴얼', 'stay fallback');
   assert(SG.manualTitle('en', { manual: 'visa_manual_2026_10_19', title_en: '' }) === 'Visa issuance manual', 'visa fallback');
 });
 
