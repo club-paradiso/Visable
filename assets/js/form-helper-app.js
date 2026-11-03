@@ -165,7 +165,7 @@
     document.body.classList.toggle('fh-in-form', st.screen === 'edit');
   }
   function renderChrome() {
-    els.backLink.textContent = t('back');
+    els.backLink.setAttribute('aria-label', t('back'));
     els.privacy.textContent = t('privacyShort');
     els.langSelect.setAttribute('aria-label', t('langLabel'));
     els.themeBtn.setAttribute('aria-label', t('themeToggle'));
