@@ -39,6 +39,8 @@ test.describe('form-helper.html — official forms', () => {
     const fh = pack('ko').fh;
     const errors = await boot(page, { path: '/form-helper.html', waitForSearch: false });
     await expect(page.getByText(normalize(fh.privacyShort), { exact: false }).first()).toBeVisible({ timeout: 30_000 });
+    // The form list renders after data/form_definitions.json loads; wait for the first form.
+    await expect(page.getByText(FORMS.forms.F01.name.ko, { exact: false }).first()).toBeVisible({ timeout: 30_000 });
     const text = normalize(await bodyText(page));
     for (const f of Object.values(FORMS.forms)) expect(text, f.name.ko).toContain(normalize(f.name.ko));
     expect(text).toContain(normalize(fh.legal));
