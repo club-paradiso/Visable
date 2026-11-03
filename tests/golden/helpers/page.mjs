@@ -29,6 +29,13 @@ export async function waitForSearchReady(page) {
   // Either the home search field or the searched-state field is usable.
   const field = page.locator('#civicQuery:visible, #q:visible:not([disabled])').first();
   await expect(field).toBeVisible({ timeout: 30_000 });
+  // The home ships a static first-paint shell; its search field only handles Enter once
+  // civic-search.js has hydrated it (data-cs-hydrated flips from "static" to "rendered"/"reused").
+  // Under CI load a keypress before that point hits a plain <form> instead of the search.
+  const landing = page.locator('#civicLanding');
+  if (await landing.count()) {
+    await expect(landing).not.toHaveAttribute('data-cs-hydrated', 'static', { timeout: 30_000 });
+  }
 }
 
 export async function search(page, query) {

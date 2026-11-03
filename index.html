@@ -16982,9 +16982,9 @@ async function loadJobcodeData() {
         if (window.location.protocol === 'data:' || window.location.protocol === 'about:') throw new Error("현재 샌드박스 환경에서는 파일 접근 불가");
         for (const path of JOBCODE_JSON_PATHS) {
             try {
-                const res = await fetch(path, { cache: 'default' });
-                if (!res.ok) { errors.push(`${path}: HTTP ${res.status}`); continue; }
-                const json = await res.json();
+                // Data layer (src/data/fetch-json.js): a non-2xx status throws `HTTP <status>`,
+                // which the catch below records exactly as before.
+                const json = await Visable.data.fetchJson(path, { cache: 'default' });
                 if (!json.data || !Array.isArray(json.data)) { errors.push(`${path}: 데이터 형식 오류`); continue; }
                 _jobcodeData = json; return json;
             } catch (err) { errors.push(`${path}: ${err.message}`); }
@@ -17567,7 +17567,7 @@ async function ensureEmploymentAnalyzer() {
     if (_empLoadPromise) return _empLoadPromise;
     _empLoadPromise = (async () => {
         if (!_jobcodeData) { try { await loadJobcodeData(); } catch (_) { _empLoadPromise = null; return null; } }
-        const grab = (p) => fetch(p, { cache: 'default' }).then(r => r.ok ? r.json() : null).catch(() => null);
+        const grab = (p) => Visable.data.fetchJson(p, { cache: 'default' }).catch(() => null);
         // Base aliases + entertainment + tattoo alias packs + umbrella/ambiguous
         // inputs + field-labor place/object/action lexicon + fork disambiguation
         // rules + income reminder + source/legal metadata, merged the same way the
@@ -18854,10 +18854,7 @@ async function submitAiAnalysis(actionType, btnEl) {
     let _didTimeout = false;
     const _timeoutId = setTimeout(() => { _didTimeout = true; _aiController.abort(); }, AI_REQUEST_TIMEOUT_MS);
     try {
-        const response = await fetch(`${API_BASE}/api/ask`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
+        const response = await Visable.data.postRaw(`${API_BASE}/api/ask`, {
                 question: userInput,
                 consent: true,
                 context: actionDirective,
@@ -18879,9 +18876,7 @@ async function submitAiAnalysis(actionType, btnEl) {
                     selected_procedure_key: currentAiSelectedProcedureKey,
                     selected_procedure_variant_id: currentAiSelectedProcedureVariantId
                 } : {})
-            }),
-            signal: currentAiController.signal
-        });
+            }, { signal: currentAiController.signal });
         // A 503 here is a safe provider state: either no LLM provider is
         // configured, or all OpenRouter model candidates are temporarily
         // unavailable. Show localized, user-friendly copy with sanitized
@@ -18931,9 +18926,8 @@ let documentHelpLastTrigger = null;
 
 async function loadDocumentHelp() {
     try {
-        const res = await fetch('./data/document_help.json', { cache: 'no-store' });
-        if (!res.ok) return;
-        const json = await res.json();
+        const json = await Visable.data.fetchJson(Visable.data.DATA_PATHS.documentHelp).catch(() => null);
+        if (!json) return;
         if (!Array.isArray(json) || !window.ParadisoDocumentHelp) return;
         documentHelpData = json;
         documentHelpMatcher = window.ParadisoDocumentHelp.createMatcher(json);
@@ -18992,9 +18986,8 @@ function closeDocumentHelp() {
 let docGuideData = null;
 async function loadDocGuide() {
     try {
-        const res = await fetch('./data/doc_guide.json', { cache: 'no-store' });
-        if (!res.ok) return;
-        const json = await res.json();
+        const json = await Visable.data.fetchJson(Visable.data.DATA_PATHS.docGuide).catch(() => null);
+        if (!json) return;
         if (json && typeof json === 'object' && !Array.isArray(json)) docGuideData = json;
     } catch (e) { /* optional enhancement — checklist must keep working without it */ }
     // The guide load runs in parallel with visa/API data and is not awaited
@@ -23672,11 +23665,7 @@ function normalizeLocaleCode(code) {
 }
 
 async function loadI18nTranslations() {
-    const fetchJson = async (url) => {
-        const res = await fetch(url, { cache: 'no-store' });
-        if (!res.ok) throw new Error('i18n load failed: ' + url);
-        return res.json();
-    };
+    const fetchJson = (url) => Visable.data.fetchJson(url, { errorMessage: 'i18n load failed: ' + url });
     try {
         I18N_MANIFEST = await fetchJson(I18N_MANIFEST_PATH);
     } catch (err) {
@@ -24627,15 +24616,9 @@ function buildProcedureEvidenceIndex(records) {
     return map;
 }
 
-async function fetchOptionalJson(path) {
-    try {
-        const res = await fetch(path, { cache: 'no-store' });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return await res.json();
-    } catch (e) {
-        console.warn(`Optional Visable data not loaded: ${path}`, e);
-        return null;
-    }
+function fetchOptionalJson(path) {
+    // Data layer (src/data/fetch-json.js) — same warn-and-null semantics.
+    return Visable.data.fetchOptionalJson(path);
 }
 
 async function loadVisaIssuanceData() {
@@ -24665,20 +24648,12 @@ async function loadVisaData() {
         if (!API_BASE) throw new Error("Local");
         // Hard ceiling: a cold or hung backend must never keep search locked.
         // On timeout we fall through to the committed ./visa_data.json below.
-        const apiCtl = new AbortController();
-        const apiTimer = setTimeout(() => apiCtl.abort(), VISA_DATA_API_TIMEOUT_MS);
-        let apiJson;
-        try {
-            const res = await fetch(`${API_BASE}/api/visas`, { cache: 'no-store', signal: apiCtl.signal });
-            if (!res.ok) throw new Error(`API Fail`);
-            apiJson = await res.json(); // the timer also covers a stalled response body
-        } finally { clearTimeout(apiTimer); }
+        // Data layer: the timer also covers a stalled response body.
+        const apiJson = await Visable.data.fetchJsonWithTimeout(`${API_BASE}${Visable.data.API_ROUTES.visas}`, VISA_DATA_API_TIMEOUT_MS, { errorMessage: 'API Fail' });
         await applySuccess(parse(apiJson), tx('sourceApi')); return;
     } catch (e) {
         try {
-            const res = await fetch('./visa_data.json', { cache: 'no-store' });
-            if (!res.ok) throw new Error(`JSON Fail`);
-            await applySuccess(parse(await res.json()), tx('sourceStatic'));
+            await applySuccess(parse(await Visable.data.fetchJson(Visable.data.DATA_PATHS.visaData, { errorMessage: 'JSON Fail' })), tx('sourceStatic'));
         } catch (err) {
             dataReady = false;
             if (rcEl) rcEl.textContent = tx('visaDataLoadError');
@@ -25783,6 +25758,7 @@ function showVisaDocForAction(visaCode) {
     loadingEl.hidden = false;
     promptEl.hidden = true;
     errorEl.hidden = true;
+    // Parse-time IIFE: runs before the module entry, so it cannot use window.Visable (ADR-009 note).
     fetch('data/agent_registry_2026-04-30.json', { cache: 'no-cache' })
       .then(function (res) {
         if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -25986,6 +25962,7 @@ function showVisaDocForAction(visaCode) {
     loadingEl.hidden = false;
     promptEl.hidden = true;
     errorEl.hidden = true;
+    // Parse-time IIFE: runs before the module entry, so it cannot use window.Visable (ADR-009 note).
     fetch('data/designated_medical_institutions_2026_04_30.json', { cache: 'no-cache' })
       .then(function (res) {
         if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -26349,11 +26326,7 @@ function showVisaDocForAction(visaCode) {
   function warmFallbackRecords() {
     if (window.__paradisoDetailAliasData) return;
     try {
-      fetch("visa_data.json", { cache: "no-store" })
-        .then(function (res) {
-          if (!res.ok) throw new Error("visa_data.json fetch failed: " + res.status);
-          return res.json();
-        })
+      Visable.data.fetchJson("visa_data.json", { errorMessage: function (status) { return "visa_data.json fetch failed: " + status; } })
         .then(function (data) {
           window.__paradisoDetailAliasData = Array.isArray(data) ? data : [];
         })
