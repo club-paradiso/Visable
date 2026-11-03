@@ -74,6 +74,97 @@ test.describe('search-first hierarchy', () => {
   });
 });
 
+test.describe('intent words reach the existing tools', () => {
+  test('"벌금 계산" suggests the enforcement page and opens it', async ({ page }) => {
+    await bootHome(page);
+    const first = await firstOption(page, '벌금 계산');
+    await expect(first.locator('.cs-sug-label')).toHaveText('출입국 사범처리 예상');
+    await expect(first.locator('.cs-sug-kind')).toHaveText('도구');
+    await first.click();
+    await expect(page).toHaveURL(/enforcement\.html$/);
+  });
+
+  test('"제주 무사증 국가" suggests the short-stay checker and opens it in place', async ({ page }) => {
+    await bootHome(page);
+    const first = await firstOption(page, '제주 무사증 국가');
+    await expect(first.locator('.cs-sug-label')).toHaveText('단기입국 경로');
+    await expect(first).toHaveAttribute('data-action', 'open-short-stay');
+    await page.keyboard.press('ArrowDown');
+    await page.keyboard.press('Enter');
+    const modal = page.locator('#shortStayModalOverlay');
+    await expect(modal).toBeVisible();
+    await expect(modal.locator('#shortStayChecker')).toBeVisible();
+    await expect(page.locator('body')).not.toHaveClass(/searched/);
+  });
+
+  test('a reveal tool carries its allow-listed target', async ({ page }) => {
+    await bootHome(page);
+    const first = await firstOption(page, '만료일 계산');
+    await expect(first).toHaveAttribute('data-action', 'reveal-home-section');
+    await expect(first).toHaveAttribute('data-target', 'reminderSection');
+  });
+
+  test('Enter on a tool-shaped query offers the tool above the result', async ({ page }) => {
+    await bootHome(page);
+    await typeQuery(page, '불법체류 벌금');
+    await page.locator('#civicSearchForm .cs-submit').click();
+    await expect(page.locator('body')).toHaveClass(/searched/);
+    const match = page.locator('#csToolMatch');
+    await expect(match).toBeVisible();
+    await expect(match.locator('a[href="enforcement.html"]')).toContainText('출입국 사범처리 예상');
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
+    expect(overflow).toBeLessThanOrEqual(1);
+  });
+
+  test('a status code query gets no tool card (its guidance is the answer)', async ({ page }) => {
+    await bootHome(page);
+    await typeQuery(page, 'F-6 체류기간 연장');
+    await page.locator('#civicSearchForm .cs-submit').click();
+    await expect(page.locator('#statusGuidance[data-sg-kind]')).toBeVisible({ timeout: 20_000 });
+    await expect(page.locator('#csToolMatch')).toHaveCount(0);
+  });
+});
+
+test.describe('every UI language', () => {
+  // One query per language in the real page (zh-TW goes through the live ParadisoZhT layer).
+  const LANGS = [
+    ['ko', '벌금 계산', 'enforcement'], ['en', 'overstay fine', 'enforcement'], ['zh-CN', '济州免签国家', 'short'],
+    ['zh-TW', '濟州免簽國家', 'short'], ['ja', '罰金', 'enforcement'], ['vi', 'tien phat', 'enforcement'],
+    ['tl', 'walang visa', 'short'], ['id', 'bebas visa jeju', 'short'], ['ru', 'без визы', 'short'],
+    ['fr', 'sans visa', 'short'], ['es', 'paises sin visa', 'short'], ['ar', 'غرامه', 'enforcement'],
+    ['de', 'visumfrei', 'short'], ['tr', 'vize cezasi', 'enforcement'], ['uk', 'без візи', 'short'],
+  ];
+  test('tool queries resolve in all 15 languages, labelled in that language', async ({ page }, testInfo) => {
+    test.skip(testInfo.project.name !== 'desktop-1280', 'one viewport is enough for a language sweep');
+    test.setTimeout(120_000);
+    for (const [lang, query, tool] of LANGS) {
+      await bootHome(page, '/index.html?lang=' + lang);
+      await typeQuery(page, query);
+      const first = options(page).first();
+      await expect(first, `${lang} "${query}"`).toBeVisible();
+      const label = (await first.locator('.cs-sug-label').textContent()).trim();
+      const want = await page.evaluate(([key]) => {
+        var t = window.VisableCivicSearch && window.VisableCivicSearch.copy;
+        var loc = document.documentElement.lang;
+        var packs = typeof UI_TRANSLATIONS !== 'undefined' ? UI_TRANSLATIONS : null; // top-level const, not a window property
+        var pack = packs && packs[loc === 'zh-TW' ? 'zh-CN' : loc] && packs[loc === 'zh-TW' ? 'zh-CN' : loc].civic;
+        var raw = (pack && pack[key]) || (t && (t[loc === 'ko' ? 'ko' : 'en'] || {})[key]) || '';
+        return window.ParadisoZhT && loc === 'zh-TW' ? window.ParadisoZhT.convert(raw) : raw;
+      }, [tool]);
+      expect(label, `${lang} "${query}" label`).toBe(want);
+      if (tool === 'short') await expect(first).toHaveAttribute('data-action', 'open-short-stay');
+    }
+  });
+  test('procedure queries without tones or accents (vi, es, de)', async ({ page }) => {
+    await bootHome(page, '/index.html?lang=vi');
+    for (const query of ['F-6 gia han', 'F-6 prorroga', 'F-6 Verlangerung']) {
+      await typeQuery(page, query);
+      await expect(options(page).first().locator('.cs-sug-label'), query).toHaveText(/^F-6 /);
+      await expect(page.locator('#civicSuggest [role="option"][data-kind="status_procedure"]').first(), query).toBeVisible();
+    }
+  });
+});
+
 test.describe('query matrix', () => {
   const CASES = [
     ['E-7-1', /^E-7-1 전문인력/, '세부 자격'],
@@ -85,7 +176,7 @@ test.describe('query matrix', () => {
     ['G-1-5', /^G-1-5 난민신청자/, '세부 자격'],
     ['C-3 비자 발급', /^C-3 사증발급/, '절차'],
     ['E-7-4 소득', /^E-7-4 /, '세부 자격'],
-    ['통합신청서', /신청서 작성/, '도구'],
+    ['통합신청서', /^신청서 작성$/, '도구'],
   ];
   for (const [query, label, kind] of CASES) {
     test(`"${query}" → ${label}`, async ({ page }) => {
@@ -185,8 +276,8 @@ test.describe('combobox behaviour', () => {
     await expect(page.locator('#civicQuery')).not.toBeFocused();
     await typeQuery(page, 'F-6');
     await expect(options(page).first()).toBeVisible();
-    // outside the field and the panel (the headline is folded away in the phone search sheet)
-    await page.locator('.cs-hero > .cs-basis').click();
+    // outside the field and the panel (the headline and examples fold away while typing)
+    await page.locator('#csCoreTitle').click();
     await expect(page.locator('.cs-suggest')).toBeHidden();
   });
 

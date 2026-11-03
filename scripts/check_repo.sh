@@ -242,6 +242,14 @@ if command -v node >/dev/null 2>&1; then
   # Guided-checklist state model + real DOM render smoke (candidate≠confirmed,
   # ambiguous/공식 코드 확인 필요 never complete, HiKorea never complete).
   node scripts/check_employment_checklist.mjs
+  # Any-language input: foreign phrases reach the same official codes as the
+  # Korean wording; look-alike words are not mistranslated; no codes in the pivot.
+  node scripts/check_employment_multilingual.mjs
+  # Realistic-input benchmark: top-1/top-3 accuracy and how often a question
+  # hides the candidates. The main set is gated; held-out sets report only.
+  node scripts/check_employment_benchmark.mjs
+  node scripts/check_employment_benchmark.mjs --report-only --file data/employment/heldout_benchmark.json
+  node scripts/check_employment_benchmark.mjs --report-only --file data/employment/heldout2_benchmark.json
 else
   echo "INFO: Node.js not found; skipping employment-reporting helper UI logic test."
 fi
@@ -358,6 +366,8 @@ echo "[9d-5/14] Validating post-search status guidance (coverage manifest + docu
 #   * check_status_resolver.mjs → resolver flows A–H + cross-status matrix;
 #   * check_search_router.mjs → procedure-first routing (외국인등록증 재발급 never
 #     dead-ends on "체류자격을 찾지 못했어요"; context requirements come from the registry);
+#   * check_search_multilingual.mjs → the home search in all 15 UI languages (procedures, tools,
+#     typing without tones/accents, Traditional Chinese)
 #   * check_search_suggest.mjs → home search suggestions: the derived index is current
 #     and reads like the bundle, every suggested code exists, every suggestion reads
 #     back as the status/procedure its label promises, unknown codes are never matched;
@@ -381,6 +391,7 @@ if command -v node >/dev/null 2>&1; then
   node scripts/check_search_router.mjs
   node scripts/check_question_understanding.mjs
   node scripts/check_search_suggest.mjs
+  node scripts/check_search_multilingual.mjs
   node scripts/check_document_physical_form.mjs
   echo "[13c/14] Validating the Form Helper (inventory, exclusions, template drift, engine, exports)..."
   node scripts/check_form_helper.mjs

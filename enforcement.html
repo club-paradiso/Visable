@@ -15,6 +15,8 @@
 <link rel="stylesheet" href="assets/css/visable-theme-legacy.css?v=20261023">
 <script src="assets/js/anchored-overlay.js?v=20261028"></script>
 <script src="assets/js/visable-theme.js?v=20261028-anchor"></script>
+<link rel="stylesheet" href="assets/css/ui-consistency.css?v=20261102-ui2">
+<script defer src="assets/js/ui-pictograms.js"></script>
 </head>
 <body class="product-enforcement">
   <a class="skip-link" href="#main">본문으로 건너뛰기</a>
@@ -59,7 +61,7 @@
         <textarea id="case-text" maxlength="3000" required autocomplete="off" placeholder="예: D-2 유학생인데 음식점에서 시간제취업 허가 없이 약 3주 동안 아르바이트를 했어요. 이번이 처음입니다."></textarea>
         <div class="example-row" role="group" aria-labelledby="example-label">
           <span class="example-label" id="example-label">예시 넣기</span>
-          <button type="button" class="example-chip" aria-pressed="false" data-example="D-2 유학생인데 시간제취업 허가를 안 받고 음식점에서 한 달 동안 아르바이트를 했어요. 이번이 처음입니다.">유학생 알바</button>
+          <button type="button" class="example-chip" aria-pressed="false" data-example="D-2 유학생인데 시간제취업 허가를 안 받고 음식점에서 3주 동안 아르바이트를 했어요. 이번이 처음입니다.">유학생 알바</button>
           <button type="button" class="example-chip" aria-pressed="false" data-example="E-7-4 비자인데 근무처 변경 허가를 안 받고 2개월 3일 동안 다른 회사에서 일했습니다.">근무처 변경</button>
           <button type="button" class="example-chip" aria-pressed="false" data-example="D-10 구직비자인데 체류기간 만료 후 엿새 지났어요. 이번이 처음이고 스스로 출입국관서에 자진 방문했습니다.">체류기간 초과</button>
         </div>
@@ -101,6 +103,12 @@
           <p class="confirmation-label">한 가지만 더 확인할게요</p>
           <h3 id="clarification-question"></h3>
           <div class="clarification-answers" id="clarification-answers"></div>
+        </section>
+
+        <section class="accuracy-card" id="accuracy-card" aria-labelledby="accuracy-title" hidden>
+          <p class="confirmation-label">선택 · 답할수록 예상이 정확해져요</p>
+          <h3 id="accuracy-title">처분 수준에 영향을 주는 사실이에요</h3>
+          <div id="accuracy-questions"></div>
         </section>
 
         <details class="understood-details">

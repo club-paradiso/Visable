@@ -80,7 +80,7 @@ ok(/role="status" aria-live="polite" data-cs-suggest-status/.test(current), 'a p
 ok(/<button type="button" class="cs-clear" data-cs-clear aria-label="[^"]+" hidden>/.test(current), 'clear button is labelled and hidden until there is text');
 const examples = [...current.matchAll(/<button type="button" data-cs-query="([^"]+)">/g)].map((m) => m[1]);
 ok(examples.length >= 3 && examples.length <= 5, `a restrained set of example searches (${examples.length})`);
-ok(/class="cs-examples" role="group" aria-labelledby="csExamplesLabel"/.test(current) && !/자주 찾는|인기|popular/i.test(current.slice(at('class="cs-examples"'), at('class="cs-basis"'))), 'examples are a labelled group and do not claim popularity');
+ok(/class="cs-examples" role="group" aria-labelledby="csExamplesLabel"/.test(current) && !/자주 찾는|인기|popular/i.test(current.slice(at('class="cs-examples"'), current.indexOf('</section>', at('class="cs-examples"')))), 'examples are a labelled group and do not claim popularity');
 ok(/<a class="cs-example-link" href="form-helper\.html">/.test(current), 'the integrated application example opens Form Helper directly');
 for (const href of ['immigration-checklists.html', 'form-helper.html']) ok(new RegExp(`<a class="cs-tool" href="${href}"`).test(current), `core tool links to ${href}`);
 for (const action of ['open-hikorea-guide', 'open-jurisdiction-modal', 'open-jobcode-modal']) ok(new RegExp(`<button type="button" class="cs-tool" data-action="${action}"`).test(current), `core tool opens ${action}`);

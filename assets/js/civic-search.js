@@ -176,7 +176,7 @@
     return '<button type="button" class="cs-theme-toggle ' + (cls || '') + '" data-vt-open aria-haspopup="dialog" aria-expanded="false" aria-controls="vtCivicPop" aria-label="' + label + '" title="' + label + '">' +
       '<span class="vt-coin" data-c="' + esc(currentSkin()) + '" aria-hidden="true"></span><span class="cs-theme-label">' + label + '</span></button>';
   }
-  var langDialog = null, langOpener = null, langTrack = null;
+  var langDialog = null, langOpener = null, langTrack = null, langChoicePending = false;
   function langPopover() { return window.matchMedia ? window.matchMedia('(min-width: 681px)').matches : window.innerWidth > 680; }
   function langOpenerFallback() {
     var kind = langOpener && langOpener.classList.contains('cs-lang-searched') ? '.cs-lang-searched' : '.cs-lang-home';
@@ -202,7 +202,10 @@
         var back = langOpener && langOpener.isConnected ? langOpener : langOpenerFallback();
         if (back) back.focus();
       });
-      langDialog.addEventListener('click', function (e) { if (e.target === langDialog) langDialog.close(); });
+      langDialog.addEventListener('click', function (e) {
+        if (e.target.closest('[data-action="apply-language"]')) langChoicePending = true;
+        if (e.target === langDialog) langDialog.close();
+      });
       // Escape closes the sheet even when a page-level key handler would otherwise swallow the dialog's cancel.
       langDialog.addEventListener('keydown', function (e) {
         if (e.key === 'Escape' || e.key === 'Esc') { e.preventDefault(); e.stopPropagation(); langDialog.close(); return; }
@@ -304,19 +307,19 @@
       [['all','all'],['prepare','groupPrepare'],['stay','groupStay'],['help','groupHelp']].map(function (x) { return '<button type="button" data-cs-tool-group="' + x[0] + '" aria-pressed="' + (x[0] === 'all') + '">' + esc(T(x[1])) + '</button>'; }).join('') + '</div></div>' +
       '<div class="cs-service-grid">' +
       tile('paperwork','paperworkSub','file-text','href="form-helper.html"','prepare') +
-      tile('checklists','checklistsSub','id-card','href="immigration-checklists.html"','prepare') +
-      tile('browse','browseSub','id-card','data-action="reveal-home-section" data-target="visaManualSection" aria-controls="civicBrowsePanel" aria-expanded="false"','prepare') +
+      tile('checklists','checklistsSub','clipboard-list','href="immigration-checklists.html"','prepare') +
+      tile('browse','browseSub','layout-grid','data-action="reveal-home-section" data-target="visaManualSection" aria-controls="civicBrowsePanel" aria-expanded="false"','prepare') +
       tile('short','shortSub','plane','data-action="open-short-stay"','prepare') +
-      tile('reservation','reservationSub','calendar-days','data-action="open-hikorea-guide"','prepare') +
+      tile('reservation','reservationSub','calendar-check','data-action="open-hikorea-guide"','prepare') +
       tile('reader','readerSub','book-open','href="manual.html"','prepare') +
       tile('office','officeSub','landmark','data-action="open-jurisdiction-modal"','help') +
-      tile('agencies','agenciesSub','user-round','data-action="open-agent-finder"','help') +
-      tile('hospitals','hospitalsSub','house','data-action="open-med-finder"','help') +
-      tile('jobs','jobsSub','search','data-action="open-jobcode-modal"','stay') +
-      tile('pathways','pathwaysSub','compass','data-action="reveal-home-section" data-target="pathwaySection"','stay') +
-      tile('reminders','remindersSub','calendar-days','data-action="reveal-home-section" data-target="reminderSection"','stay') +
-      tile('naturalization','newHomeSub','house','href="new-home.html"','stay') +
-      tile('enforcement','enforcementSub','landmark','href="enforcement.html"','help') +
+      tile('agencies','agenciesSub','users','data-action="open-agent-finder"','help') +
+      tile('hospitals','hospitalsSub','hospital','data-action="open-med-finder"','help') +
+      tile('jobs','jobsSub','briefcase','data-action="open-jobcode-modal"','stay') +
+      tile('pathways','pathwaysSub','route','data-action="reveal-home-section" data-target="pathwaySection"','stay') +
+      tile('reminders','remindersSub','calendar-days','data-action="reveal-home-section" data-target="reminderSection" aria-haspopup="dialog" aria-controls="reminderDialog"','stay') +
+      tile('naturalization','newHomeSub','flag','href="new-home.html"','stay') +
+      tile('enforcement','enforcementSub','scale','href="enforcement.html"','help') +
       tile('waymaker','waymakerSub','compass','href="ai.html"','help') +
       '</div><p class="cs-tool-empty" hidden>' + esc(T('toolEmpty')) + '</p><p class="cs-sr" data-cs-tool-status role="status" aria-live="polite"></p>' +
       '<div class="cs-tool-settings"><button type="button" data-action="toggle-easy-mode" aria-pressed="' + easyModeOn() + '">' + esc(T('easyModeEasy')) + '</button></div></div></details>';
@@ -430,11 +433,11 @@
       '<div class="cs-examples" role="group" aria-labelledby="csExamplesLabel"><span class="cs-examples-label" id="csExamplesLabel">' + esc(T('examples')) + '</span>' +
       EXAMPLES.map(function (ex) { return '<button type="button" data-cs-query="' + esc(ex[0]) + '">' + icon('search') + '<span>' + esc(T(ex[1])) + '</span></button>'; }).join('') +
       '<a class="cs-example-link" href="form-helper.html">' + icon('file-text') + '<span>' + esc(T('exForms')) + '</span></a></div>' +
-      '<p class="cs-basis">' + esc(T('currentSource')) + '</p></section>' +
+      '</section>' +
       '<section class="cs-tools cs-tools-core" aria-labelledby="csCoreTitle"><h2 id="csCoreTitle">' + esc(T('coreTools')) + '</h2><div class="cs-tool-grid">' +
       toolLink(T, 'immigration-checklists.html', 'id-card', 'checklists', 'checklistsSub', ' data-cs-tool="checklists"') +
       toolLink(T, 'form-helper.html', 'file-text', 'paperwork', 'paperworkSub', ' data-cs-tool="forms"') +
-      toolButton(T, 'data-action="reveal-home-section" data-target="reminderSection" data-cs-tool="reminders"', 'calendar-days', 'reminders', 'remindersSub') +
+      toolButton(T, 'data-action="reveal-home-section" data-target="reminderSection" aria-haspopup="dialog" aria-controls="reminderDialog" data-cs-tool="reminders"', 'calendar-days', 'reminders', 'remindersSub') +
       toolButton(T, 'data-action="open-hikorea-guide" data-cs-tool="reservation"', 'calendar-days', 'reservation', 'reservationSub') +
       toolButton(T, 'data-action="open-jurisdiction-modal" data-cs-tool="office"', 'landmark', 'office', 'officeSub') +
       toolButton(T, 'data-action="open-jobcode-modal" data-cs-tool="jobs"', 'search', 'jobs', 'jobsSub') + '</div></section>' +
@@ -444,7 +447,7 @@
       '<a href="manual.html" data-cs-tool="reader">' + icon('book-open') + '<span>' + esc(T('reader')) + '</span>' + icon('chevron-right') + '</a></div></section>' +
       directoryHtml(T) +
       '<div class="cs-source-strip"><span class="cs-source-strip-label">' + esc(T('sourceLabel')) + '</span><a href="' + VISA_PDF + '" target="_blank" rel="noopener">' + icon('file-text') + '<span>' + esc(T('visa')) + ' · 2026.10.19</span>' + icon('external-link') + '</a>' +
-      '<a href="' + STAY_PDF + '" target="_blank" rel="noopener">' + icon('file-text') + '<span>' + esc(T('stay')) + ' · 2026.10.19</span>' + icon('external-link') + '</a></div>' +
+      '<a href="' + STAY_PDF + '" target="_blank" rel="noopener">' + icon('file-text') + '<span>' + esc(T('stay')) + ' · 2026.11.02</span>' + icon('external-link') + '</a></div>' +
       '<footer class="cs-footer"><img src="assets/brand/visable-wordmark.svg" alt="Visable"><p>' + esc(T('disclaimer')) + '</p></footer>' +
       '<section id="civicBrowsePanel" class="cs-browse" aria-labelledby="csBrowseTitle" hidden><div class="cs-browse-head"><h2 id="csBrowseTitle">' + esc(T('browse')) + '</h2>' +
       '<div class="cs-browse-tabs" role="group" aria-labelledby="csBrowseTitle"><button type="button" data-cs-journey="pre" aria-pressed="false">' + esc(T('pre')) + '</button><button type="button" data-cs-journey="post" aria-pressed="false">' + esc(T('post')) + '</button></div>' +
@@ -541,8 +544,15 @@
     return esc(label.slice(0, i)) + '<mark>' + esc(label.slice(i, i + q.length)) + '</mark>' + esc(label.slice(i + q.length));
   }
   var KIND_KEY = { status: 'kindStatus', substatus: 'kindSubstatus', status_procedure: 'kindProcedure', procedure: 'kindProcedure', tool: 'kindTool' };
-  var SAFE_TOOL_HREF = /^(form-helper|ai|new-home|manual)\.html$/;
-  var SAFE_TOOL_ACTION = { 'open-hikorea-guide': true, 'open-jurisdiction-modal': true };
+  var SAFE_TOOL_HREF = /^(form-helper|ai|new-home|manual|enforcement|immigration-checklists)\.html$/;
+  var SAFE_TOOL_ACTION = { 'open-hikorea-guide': true, 'open-jurisdiction-modal': true, 'open-short-stay': true, 'open-jobcode-modal': true, 'open-agent-finder': true, 'open-med-finder': true, 'reveal-home-section': true };
+  var SAFE_TOOL_TARGET = { reminderSection: true, pathwaySection: true, visaManualSection: true };
+  // data-action attributes for a tool row: index.html's delegated click handler opens the dialog.
+  function toolActionAttrs(item) {
+    if (!item.action || !SAFE_TOOL_ACTION[item.action]) return '';
+    if (item.action === 'reveal-home-section') return item.target && SAFE_TOOL_TARGET[item.target] ? ' data-action="reveal-home-section" data-target="' + esc(item.target) + '"' : '';
+    return ' data-action="' + esc(item.action) + '"';
+  }
   function optionHtml(item, i, query) {
     var label = item.kind === 'tool' ? t(item.labelKey) : item.label;
     var labelLang = item.kind === 'tool' ? '' : ' lang="' + (item.labelLang === 'ko' ? 'ko' : 'en') + '"';
@@ -550,8 +560,7 @@
     // Phones fold the type badge into the sub line, so a row is one label and one quiet line.
     var kindText = esc(t(KIND_KEY[item.kind] || 'kindTool'));
     var subHtml = '<span class="cs-sug-sub"><span class="cs-sug-kind-inline">' + kindText + '</span>' + (sub ? '<span class="cs-sug-sep" aria-hidden="true"> · </span>' + sub : '') + '</span>';
-    var attrs = '';
-    if (item.kind === 'tool' && item.action && SAFE_TOOL_ACTION[item.action]) attrs = ' data-action="' + esc(item.action) + '"';
+    var attrs = item.kind === 'tool' ? toolActionAttrs(item) : '';
     return '<li id="civicSuggest-' + i + '" class="cs-sug" role="option" aria-selected="false" data-cs-sug="' + i + '" data-kind="' + esc(item.kind) + '" data-match="' + esc(item.match) + '"' + attrs + '>' +
       '<span class="cs-sug-kind">' + kindText + '</span>' +
       '<span class="cs-sug-main"><span class="cs-sug-label" dir="auto"' + labelLang + '>' + highlight(label, query) + '</span>' + subHtml + '</span>' +
@@ -631,6 +640,8 @@
     if (!item || !input) return;
     if (item.kind === 'tool') {
       closeSuggest();
+      // The phone search sheet would otherwise stay pinned over the dialog that opens.
+      if (item.action) { document.body.classList.remove('cs-sheet'); input.blur(); }
       if (item.href && SAFE_TOOL_HREF.test(item.href)) location.href = item.href;
       // data-action tools are handled by index.html's delegated click handler on the option itself.
       return;
@@ -840,8 +851,47 @@
     var select = panel.querySelector('select'); select.value = domain;
     select.addEventListener('change', function () { domain = select.value; shown = 3; renderResults(); });
   }
+  /* Tool match on the result page: Enter on "벌금 계산" or "제주 무사증 국가" must not end on an empty
+   * answer when an existing tool does the job. The same deterministic matcher as the suggestions
+   * (VisableSearchSuggest.matchTools) offers at most two tools above the guidance, and only when the
+   * query names no status code (a code's own guidance stays the answer). Navigation only: the tool
+   * owns its sources and cautions. Home sections hidden on the result page are not offered. */
+  var TOOL_ICON = { forms: 'file-text', reservation: 'calendar-check', enforcement: 'scale', short: 'plane', jobs: 'briefcase', reminders: 'calendar-days', office: 'landmark', agencies: 'users', hospitals: 'hospital', checklists: 'clipboard-list', reader: 'book-open', newhome: 'flag', waymaker: 'compass' };
+  function toolMatchItems(q) {
+    var engine = window.VisableSearchSuggest;
+    if (!q || !engine || typeof engine.matchTools !== 'function') return [];
+    var SG = window.VisableStatusGuidance;
+    if (suggestIndex && SG && typeof SG.interpret === 'function') {
+      try { var I = SG.interpret(q, suggestIndex); if (I.codes && I.codes.length) return []; } catch (e) { return []; }
+    } else if (/\b[A-Ha-h]\s?-?\s?\d{1,2}\b/.test(q)) return [];
+    return engine.matchTools(q).map(function (hit) { return hit.tool; }).filter(function (tool) {
+      if (!TOOL_ICON[tool.id]) return false;
+      if (tool.href) return SAFE_TOOL_HREF.test(tool.href);
+      return SAFE_TOOL_ACTION[tool.action] && (tool.action !== 'reveal-home-section' || tool.target === 'reminderSection');
+    }).slice(0, 2);
+  }
+  function placeToolMatch(box) {
+    var results = document.getElementById('mainContent'); if (!results) return;
+    var sg = document.getElementById('statusGuidance');
+    if (sg && sg.parentNode === results) { if (sg.previousElementSibling !== box) results.insertBefore(box, sg); }
+    else if (results.firstElementChild !== box) results.prepend(box);
+  }
+  function renderToolMatch(q) {
+    var box = document.getElementById('csToolMatch');
+    var tools = toolMatchItems(q);
+    if (!tools.length) { if (box) box.remove(); return; }
+    if (!box) { box = document.createElement('section'); box.id = 'csToolMatch'; box.className = 'cs-tool-match'; box.setAttribute('aria-labelledby', 'csToolMatchTitle'); }
+    box.innerHTML = '<h2 id="csToolMatchTitle">' + esc(t('coreTools')) + '</h2><div class="cs-tool-match-list">' + tools.map(function (tool) {
+      var inner = '<span class="cs-service-icon">' + icon(TOOL_ICON[tool.id]) + '</span><span><strong>' + esc(t(tool.label)) + '</strong><small>' + esc(t(tool.sub)) + '</small></span>' + icon('chevron-right');
+      if (tool.href) return '<a class="cs-service" href="' + esc(tool.href) + '" data-cs-tool-match="' + esc(tool.id) + '">' + inner + '</a>';
+      return '<button type="button" class="cs-service"' + toolActionAttrs(tool) + ' data-cs-tool-match="' + esc(tool.id) + '">' + inner + '</button>';
+    }).join('') + '</div>';
+    placeToolMatch(box);
+  }
   function find(queryValue, nextIntent) {
     var q = String(queryValue || '').trim();
+    renderToolMatch(q);
+    if (!suggestIndex && q && !suggestFailed) loadSuggestIndex().then(function () { if (q === query) renderToolMatch(q); }).catch(function () {});
     if (q !== query) intent = null;
     if (nextIntent !== undefined) intent = nextIntent;
     query = q; shown = 3;
@@ -936,13 +986,19 @@
     window.addEventListener('hashchange', openDirectoryForHash);
     document.addEventListener('paradiso:data-ready', function () { if (queuedQuery) searchFromHome(queuedQuery); });
     document.addEventListener('paradiso:data-failed', function () { if (queuedQuery) homeStatus(t('unavailable')); });
+    document.addEventListener('visable:guidance-rendered', function () { var box = document.getElementById('csToolMatch'); if (box) placeToolMatch(box); });
     document.addEventListener('paradiso:landing-reset', function () {
+      var match = document.getElementById('csToolMatch'); if (match) match.remove();
       ++sequence; query = ''; queuedQuery = ''; intent = null; rawFirst = false; domain = ''; panel.innerHTML = ''; rawSummary(null); raw.open = false;
       document.body.classList.remove('cs-sheet');
       var url = new URL(location.href); url.searchParams.delete('q'); history.replaceState(null, '', url);
       home();
     });
     window.addEventListener('paradiso-language-applied', function () {
+      // Deferred startup can apply the current language again while the user is
+      // reading the picker. Only a choice or a changed locale should dismiss it.
+      if (langDialog && langDialog.open && uiLang() === homeLanguage && !langChoicePending) return;
+      langChoicePending = false;
       if (langDialog && langDialog.open) langDialog.close();
       refreshLangButtons();
       if (uiLang() === homeLanguage) return;

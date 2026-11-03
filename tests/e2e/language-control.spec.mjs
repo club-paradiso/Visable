@@ -55,6 +55,20 @@ test('the control lists 15 languages in their native names, filters, closes on E
   await noHorizontalScroll(page);
 });
 
+test('a repeated language-ready event preserves an open picker until the user chooses', async ({ page }) => {
+  await boot(page);
+  const { opener, dialog } = await openDialog(page);
+  await dialog.locator('[data-cs-lang-filter]').fill('한국');
+  // Initial data loading can apply the current language again after the picker opens.
+  await page.evaluate(() => window.dispatchEvent(new CustomEvent('paradiso-language-applied')));
+  await expect(dialog).toBeVisible();
+  await expect(opener).toHaveAttribute('aria-expanded', 'true');
+  await expect(dialog.locator('[data-cs-lang-filter]')).toHaveValue('한국');
+  await dialog.locator('[data-action="apply-language"][data-lang="ko"]').click();
+  await expect(page.locator('#csLangDialog[open]')).toHaveCount(0);
+  await expect(page.locator('[data-cs-lang-open]:visible').first()).toBeFocused();
+});
+
 test('desktop shows a popover under the button; mobile shows a bottom sheet', async ({ page }) => {
   await boot(page);
   const { opener, dialog } = await openDialog(page);
