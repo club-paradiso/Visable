@@ -87,8 +87,8 @@ test.describe('new-home.html — nationality landing', () => {
       const hero = NATIONALITY_CONTENT.hero;
       const notice = normalize(NATIONALITY_CONTENT.notice[locale]);
       await expect(page.getByText(normalize(hero.kicker[locale]), { exact: false }).first()).toBeVisible({ timeout: 30_000 });
-      // The notice block renders after the hero; wait for it instead of reading the body early.
-      await expect(page.getByText(notice.slice(0, 40), { exact: false }).first()).toBeVisible({ timeout: 30_000 });
+      // The notice block renders after the hero; poll the page text instead of reading it early.
+      await expect.poll(async () => normalize(await bodyText(page)), { timeout: 30_000 }).toContain(notice);
       const text = normalize(await bodyText(page));
       expect(text).toContain(normalize(hero.title[locale]));
       expect(text).toContain(normalize(NATIONALITY_CONTENT.notice[locale]));
