@@ -365,3 +365,8 @@ footer { padding: 1.8rem 1rem 3rem; color: var(--muted); text-align: center; fon
 }
 .accuracy-card .clarification-chip { border-color: #b9cff5; }
 .accuracy-card .clarification-chip:hover { border-color: var(--blue); background: #f5f9ff; }
+.legal-dispositions { margin-top: .6rem; padding: .8rem .9rem; border-radius: .7rem; background: var(--canvas); }
+.legal-dispositions ul { margin: .4rem 0 .3rem; padding-left: 1.1rem; }
+.legal-dispositions li { margin: .25rem 0; }
+.legal-dispositions p.subtle { margin: 0; font-size: .85rem; }
+.likelihood-cap-note { margin: .3rem 0 .2rem; font-size: .85rem; color: var(--amber); }

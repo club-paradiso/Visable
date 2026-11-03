@@ -229,6 +229,15 @@ test.describe('query matrix', () => {
       const first = await firstOption(page, query);
       await expect(first.locator('.cs-sug-kind')).toHaveText('도구');
       await page.keyboard.press('ArrowDown');
+      // WebKit (like Safari with a Korean IME) can still hold the last syllable in an
+      // open composition; the first arrow then only commits it, and arrows during a
+      // composition are deliberately ignored (they pick candidates in ja/zh IMEs; see
+      // "Korean IME composition never selects a suggestion or submits"). A second
+      // arrow is what a real Safari user presses too. The option must be active
+      // before Enter either way.
+      const input = page.locator('#civicQuery');
+      if ((await input.getAttribute('aria-activedescendant')) !== 'civicSuggest-0') await page.keyboard.press('ArrowDown');
+      await expect(input).toHaveAttribute('aria-activedescendant', 'civicSuggest-0');
       await page.keyboard.press('Enter');
       await expect(page.locator(overlay)).toHaveClass(/active/);
       await page.evaluate((id) => closeModal(id), overlay.slice(1));

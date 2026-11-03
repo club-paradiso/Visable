@@ -6,6 +6,9 @@
   "functions": {
     "api/enforcement/analyze.js": {
       "maxDuration": 30
+    },
+    "api/enforcement/groq-probe.js": {
+      "maxDuration": 30
     }
   },
   "headers": [

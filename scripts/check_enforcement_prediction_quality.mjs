@@ -74,3 +74,60 @@ assert.equal(restatesViolation({ direction: 'MITIGATING', label: '허가 없이 
 assert.equal(restatesViolation({ direction: 'AGGRAVATING', label: '근무처 변경 허가 없이 다른 회사에서 일했습니다' }), true);
 
 console.log('Enforcement prediction quality guards passed (captured gpt-oss output).');
+
+// ---- Shape slips are unwrapped, not thrown away ----------------------------------
+const { unwrapPredictionPayload, analyzeGroundedCase } = require('../lib/enforcement-grounded-ai.js');
+const inner = JSON.parse(captured);
+assert.equal(unwrapPredictionPayload([inner]).primaryDisposition.type, 'STAY_PERMISSION_DISADVANTAGE');
+assert.equal(unwrapPredictionPayload({ prediction: inner }).primaryDisposition.type, 'STAY_PERMISSION_DISADVANTAGE');
+assert.equal(unwrapPredictionPayload(inner), inner, 'a correct payload is left alone');
+const fromArray = validatePrediction(JSON.stringify([inner]), caseData, baseline, evidence, [], { status: 'UNAVAILABLE', limitations: [] }, 'groq/test');
+assert.equal(fromArray.primaryDisposition.type, 'STAY_PERMISSION_DISADVANTAGE');
+
+// ---- One retry on a different model when the first answer is unusable -----------
+const saved = { ...process.env };
+const realFetch = globalThis.fetch;
+try {
+  process.env.GROQ_API_KEY = 'synthetic-test-only';
+  process.env.ENFORCEMENT_GROQ_MODELS = 'test/broken-model,test/good-model';
+  delete process.env.OPENROUTER_API_KEY;
+  for (const name of ['LAW_API_OC', 'LAW_OC', 'OPEN_LAW_ID', 'LAW_API_KEY']) delete process.env[name];
+  const asked = [];
+  globalThis.fetch = async (url, init) => {
+    if (new URL(url).host !== 'api.groq.com') return { ok: false, status: 503, json: async () => ({}), text: async () => '' };
+    const { model } = JSON.parse(init.body);
+    asked.push(model);
+    const content = model === 'test/broken-model' ? '"not an object"' : captured;
+    return { ok: true, status: 200, json: async () => ({ model, choices: [{ message: { content } }] }) };
+  };
+  const result = await analyzeGroundedCase(caseData, { timeoutMs: 20000 });
+  assert.deepEqual(asked, ['test/broken-model', 'test/good-model'], 'the second attempt must skip the model that failed');
+  assert.equal(result.prediction.primaryDisposition?.type, 'STAY_PERMISSION_DISADVANTAGE');
+  assert.equal(result.prediction.modelId, 'groq/test/good-model');
+  assert.ok(result.prediction.validationNotes.some((note) => note.startsWith('RETRY_REJECTED:invalid_prediction_object')));
+} finally {
+  globalThis.fetch = realFetch;
+  for (const key of Object.keys(process.env)) if (!(key in saved)) delete process.env[key];
+  Object.assign(process.env, saved);
+}
+
+console.log('Enforcement prediction shape-unwrap and retry checks passed.');
+
+// ---- No HIGH likelihood without outcome evidence, in either direction -------------
+{
+  const severe = JSON.parse(captured);
+  severe.primaryDisposition = { ...severe.primaryDisposition, type: 'DEPORTATION', likelihood: 'HIGH' };
+  severe.alternativeDispositions = [{ type: 'STAY_PERMISSION_DISADVANTAGE', likelihood: 'VERY_HIGH', rationale: [] }];
+  const capped = validatePrediction(JSON.stringify(severe), caseData, baseline, evidence, [], { status: 'UNAVAILABLE', limitations: [] }, 'groq/test');
+  assert.equal(capped.primaryDisposition.type, 'DEPORTATION');
+  assert.equal(capped.primaryDisposition.likelihood, 'MODERATE');
+  assert.equal(capped.primaryDisposition.likelihoodCappedFrom, 'HIGH');
+  assert.equal(capped.alternativeDispositions[0].likelihood, 'MODERATE');
+  assert.ok(capped.validationNotes.includes('LIKELIHOOD_CAPPED:DEPORTATION:HIGH'));
+  const low = JSON.parse(captured);
+  low.primaryDisposition = { ...low.primaryDisposition, likelihood: 'LOW' };
+  const kept = validatePrediction(JSON.stringify(low), caseData, baseline, evidence, [], { status: 'UNAVAILABLE', limitations: [] }, 'groq/test');
+  assert.equal(kept.primaryDisposition.likelihood, 'LOW');
+  assert.equal(kept.primaryDisposition.likelihoodCappedFrom, undefined);
+  console.log('Enforcement likelihood cap checks passed.');
+}
