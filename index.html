@@ -16928,7 +16928,9 @@ let _jcResultCounts = { occupation: null, industry: null };
 let _jcClarificationAnswered = false;
 // Guided-flow state: idle | analyzing | needs_clarification | showing_candidates.
 let _jcFlow = { state: 'idle', revealed: false };
-const JOBCODE_JSON_PATHS = ['./data/jobcode_master.json', './data/output.json', './jobcode_master.json', './output.json'];
+// Canonical job-code dataset (docs/rebuild/phase0-data-canon.md). The former fallbacks
+// ./data/output.json, ./jobcode_master.json and ./output.json no longer exist in the repo.
+const JOBCODE_JSON_PATHS = ['./data/jobcode_master.json'];
 const JOBCODE_STOP_TERMS = new Set(['일','일함','일하는','하는','사람','직원','알바','파트타임','업무','관련','분야','직무','job','work','worker','staff','person','employee','part','time']);
 // Terms that legitimately match BOTH a 직종(person's job) and 업종(employer activity).
 const JC_AMBIGUOUS_TERMS = new Set(['카페','커피','음식점','식당','레스토랑','학원','호텔','병원','미용실','농장','공장','마트','편의점','술집','주점']);
