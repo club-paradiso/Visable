@@ -89,3 +89,23 @@ the options considered, the evidence, and the reason.
   stays committed (Railway reads it; moving it to build time needs an owner-run deploy, hard stop 6).
 - Verification plan: golden suite green locally; after push, the Vercel preview build log shows the
   smaller upload and `golden-deployment` runs when the bypass secret exists.
+
+
+## ADR-007 — Generated data files stay committed; CI proves they are current
+- Date: 2026-11-03 (Phase 1)
+- Context: several deploy-path files are script outputs: `data/search-suggest-index.json`
+  (`npm run build:search-suggest`), `data/status-guidance-202609.json` and
+  `data/status-coverage-202609.json` (`npm run build:status-guidance`, Python),
+  `data/manual-reader/**` (`npm run build:manual-reader`, Python with pinned parsers),
+  `data/manual-corpus/*.json` and `backend/data/manual_search_index.sqlite3`
+  (`npm run build:current-manuals`). The brief allows generating them at build time only
+  when the output is provably identical.
+- Evidence: `scripts/check_repo.sh` already runs every builder in `--check` mode
+  (`build_status_coverage_manifest.py --check`, `author_rules.py --check`,
+  `build_manual_reader.py --check`, `check_search_suggest.mjs` "index is current"), so a
+  committed file that drifts from its generator fails CI today.
+- Options: (a) generate in the Vercel build (needs Python + pinned deps on the builder, and
+  turns legal-content generation into a deploy-time step that could change what users see
+  without a reviewed commit); (b) keep committed, keep the `--check` gates.
+- Decision: (b). Generated **content** stays reviewable in git; the deploy-time build (Phase 2)
+  only bundles code. Exception candidates (the SQLite index) are owner decisions (STATUS.md #4).
