@@ -753,11 +753,8 @@
     },
     {
       "id": "shipyard",
-      "ko": "선박 건조",
+      "ko": "조선소",
       "surface": {
-        "ko": [
-          "조선소"
-        ],
         "en": [
           "shipyard",
           "shipbuilding"
@@ -1497,9 +1494,6 @@
       "id": "sewing",
       "ko": "재봉",
       "surface": {
-        "ko": [
-          "미싱"
-        ],
         "vi": [
           "thợ may",
           "xưởng may",
@@ -2716,11 +2710,8 @@
     },
     {
       "id": "housekeeper",
-      "ko": "가사 도우미",
+      "ko": "가사도우미",
       "surface": {
-        "ko": [
-          "가정부"
-        ],
         "vi": [
           "giúp việc nhà",
           "người giúp việc",

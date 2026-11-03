@@ -433,7 +433,7 @@
       '<div class="cs-examples" role="group" aria-labelledby="csExamplesLabel"><span class="cs-examples-label" id="csExamplesLabel">' + esc(T('examples')) + '</span>' +
       EXAMPLES.map(function (ex) { return '<button type="button" data-cs-query="' + esc(ex[0]) + '">' + icon('search') + '<span>' + esc(T(ex[1])) + '</span></button>'; }).join('') +
       '<a class="cs-example-link" href="form-helper.html">' + icon('file-text') + '<span>' + esc(T('exForms')) + '</span></a></div>' +
-      '<p class="cs-basis">' + esc(T('currentSource')) + '</p></section>' +
+      '</section>' +
       '<section class="cs-tools cs-tools-core" aria-labelledby="csCoreTitle"><h2 id="csCoreTitle">' + esc(T('coreTools')) + '</h2><div class="cs-tool-grid">' +
       toolLink(T, 'immigration-checklists.html', 'id-card', 'checklists', 'checklistsSub', ' data-cs-tool="checklists"') +
       toolLink(T, 'form-helper.html', 'file-text', 'paperwork', 'paperworkSub', ' data-cs-tool="forms"') +
