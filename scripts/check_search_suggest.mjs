@@ -145,6 +145,29 @@ check('tools by what people type (intent words, not tool names)', () => {
     for (const [k, v] of Object.entries(want)) assert(t[k] === v, `${q}: ${k}=${t[k]} (want ${v}) · ${show(run(q, lang))}`);
   }
 });
+check('tool discovery words in every other UI language', () => {
+  const E = { href: 'enforcement.html' }, SH = { action: 'open-short-stay' }, HO = { action: 'open-med-finder' }, CL = { href: 'immigration-checklists.html' }, OF = { action: 'open-jurisdiction-modal' };
+  const cases = [
+    ['罚款怎么计算', E], ['济州免签国家', SH], ['免簽國家', SH], ['指定医院', HO],
+    ['罰金', E], ['済州 ビザなし 国', SH], ['必要書類', CL],
+    ['tiền phạt', E], ['miễn thị thực jeju', SH], ['bệnh viện chỉ định', HO],
+    ['multa sa overstay', E], ['walang visa', SH],
+    ['denda overstay', E], ['bebas visa jeju', SH], ['kantor imigrasi', OF],
+    ['штраф за просрочку', E], ['без визы чеджу', SH], ['необходимые документы', CL],
+    ['amende séjour', E], ['sans visa corée', SH], ['hôpital désigné', HO],
+    ['multa por estancia', E], ['países sin visa', SH], ['oficina de inmigración', OF],
+    ['غرامة الإقامة', E], ['دخول بدون تأشيرة', SH], ['مستشفى معتمد', HO],
+    ['geldstrafe berechnen', E], ['visumfrei einreisen', SH], ['ausländerbehörde', OF],
+    ['vize cezası hesaplama', E], ['vizesiz ülkeler', SH], ['hastane', HO],
+    ['штраф', E], ['без візи', SH], ['необхідні документи', CL],
+  ];
+  for (const [q, want] of cases) {
+    const t = top(q, 'en');
+    assert(t && t.kind === 'tool', `${q}: ${show(run(q, 'en'))}`);
+    for (const [k, v] of Object.entries(want)) assert(t[k] === v, `${q}: ${k}=${t[k]} (want ${v}) · ${show(run(q, 'en'))}`);
+  }
+  for (const q of ['السلام عليكم', 'Manuel Garcia visa', 'terminal 2']) assert(!run(q, 'en').items.some((i) => i.kind === 'tool' && i.tool !== 'waymaker' && i.tool !== 'reader'), `${q}: no tool expected · ${show(run(q, 'en'))}`);
+});
 check('a typed code stays the answer; a matching tool only follows it', () => {
   const r = run('F-6 범칙금');
   assert(r.items[0].code === 'F-6', show(r));
