@@ -109,3 +109,32 @@ the options considered, the evidence, and the reason.
   without a reviewed commit); (b) keep committed, keep the `--check` gates.
 - Decision: (b). Generated **content** stays reviewable in git; the deploy-time build (Phase 2)
   only bundles code. Exception candidates (the SQLite index) are owner decisions (STATUS.md #4).
+
+## ADR-008 — Phase 2 build: Vite multi-page, staged (classic scripts stay classic until Phase 3)
+- Date: 2026-11-03 (design; implementation starts after Phase 1 exit)
+- Context: 12 HTML pages, all asset references relative (`assets/…`, `data/…`, `scripts/…`), no
+  `<base>`, no absolute `/` paths (verified by grep). index.html loads 24 classic
+  `<script src>` IIFEs that publish globals, 2 `type="module"` scripts, 8 CSS files with
+  `?v=` cache busters, and 11 inline scripts. Legacy checks load `assets/js/*.js` with
+  `new Function`/`vm` and therefore need them to stay IIFE sources (phase0-legacy-checks.md §D).
+  Vite processes `<script type="module">` and `<link rel="stylesheet">` in HTML entries; it
+  leaves classic `<script src>` and inline classic scripts untouched (and does not copy their
+  files unless they are static assets).
+- Options: (a) convert every classic script to an ES module in Phase 2 (big-bang; breaks the
+  `new Function` checks and the implicit-global contracts the CI e2e specs rely on, §G);
+  (b) Vite MPA now, with classic scripts and all `data/`, `scripts/*.mjs`-loaded-as-URL,
+  `docs/source-manuals/<current>` PDFs, `assets/forms`, `assets/manual-reader` copied as static
+  files to their public paths; CSS and the two module scripts become hashed bundles; classic
+  scripts are converted one by one in Phase 3 and gain hashing as they move; (c) no bundler.
+- Decision: (b). Static copies keep every public URL (data JSON, PDFs, `scripts/*.mjs` loaded by
+  `import()` at runtime) byte-identical; `vercel.json` headers for `/assets/js/civic-search.js`
+  and `/assets/css/civic-search.css` keep working because those files are still served at the
+  same paths until Phase 3 hashes them (then the header rules are updated in the same commit).
+  Golden suite runs against `dist/` via `GOLDEN_SERVE_DIR=dist` locally and in CI; the Vercel
+  build command becomes `npm run build` with `outputDirectory: dist`.
+- Measured constraint: npm registry reachable (vite 8.3.5, typescript 7.0.2 available).
+- Risks to verify in Phase 2: Vite's handling of `href="assets/css/x.css?v=…"` (query on a
+  local asset), Google Fonts `media="print" onload=` links (external, untouched), the static
+  landing shell equality check (`check_landing_shell.mjs` must run against the built
+  `dist/index.html` or the source — decide when wiring), and `.vercelignore` vs. build inputs
+  (`tests/`, `.github/` are not build inputs; `scripts/` is).
