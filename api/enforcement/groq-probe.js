@@ -45,6 +45,14 @@ module.exports = async function handler(request, response) {
     });
   }
 
+  // Official precedent search health, per violation query (no case data involved).
+  if (mode === 'precedent') {
+    const { diagnosePrecedentSearch } = require('../../lib/enforcement-precedent-grounding');
+    const started = Date.now();
+    const report = await diagnosePrecedentSearch();
+    return response.status(200).json({ ...base, status: 'precedent', elapsedMs: Date.now() - started, ...report });
+  }
+
   // Several fixed synthetic cases, one per violation type, run in parallel. Shows how
   // often each result section (money, disposition, stay impact) survives validation.
   if (mode === 'matrix') {
@@ -74,6 +82,11 @@ module.exports = async function handler(request, response) {
           hasMoney: Boolean(prediction.monetaryPrediction),
           stayImpact: (prediction.stayImpact || []).length,
           validationNotes: prediction.validationNotes || [],
+          lawGrounding: result.lawGrounding?.status || null,
+          precedentStatus: result.precedentGrounding?.status || null,
+          precedentsFound: result.precedentGrounding?.retrievedCases ?? null,
+          precedentLimitations: (result.precedentGrounding?.limitations || []).slice(0, 2),
+          confidence: prediction.confidence?.level || null,
           ...(!prediction.primaryDisposition && result.debug?.rawModelText ? { rawHead: result.debug.rawModelText.slice(0, 240) } : {}),
         };
       } catch (error) {
