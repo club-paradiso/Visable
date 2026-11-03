@@ -162,6 +162,15 @@ load): 13 items reached the model and 9 passed every check; 14 of 20 passed over
 failures are 002 and 010 (withheld before the model, as in v1), 011 (half the answer missing), 005
 (an unasked item added), 003 (contrast missing) and 020 (same meaning, other words). No unsafe
 release. See the [DEV-20 v2 report](runs/dev20_v2/DEV20-V2-REPORT.ko.md).
+Mission 005-R (frozen 2026-11-03, not run yet): DEV-20 v2 item 011 released only one of the two
+cases its evidence states. `branch_coverage.py` finds an answer that gives one case of a two-case
+passage (markers such as `; any other`, `다만`, `trừ trường hợp`; a lexical word rule). The pipeline
+asks that part once more with `branch_retry` (contract v13), and quotes a case still left out in a
+labelled system notice; nothing is withheld for it. Across the 666 answers released by earlier runs it
+fires only on 011. Spec section 5 states the rule; gate v13 = gate v12 with the 005-R manifest, scoring
+the released retry end to end. A new locked 81-case suite (Q-4 family) has nine two-case positives,
+three sub-code exceptions and two cross-language passages; its expected values were re-derived blind,
+and the deterministic pipeline matches it in all 81 cases. DEV-20 v2 now runs only after a gate v13 pass.
 
 Recovery status, 2026-10-29: checkpoint metadata verified; new MLX-VLM weight
 loading and generation **not executed** on this M1 8GB machine. The runtime is

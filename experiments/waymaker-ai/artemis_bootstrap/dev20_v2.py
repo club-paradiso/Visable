@@ -5,8 +5,9 @@ re-scores byte for byte with artemis_eval as it stands, so v2 lives here instead
 
   - `load_items` reads benchmarks/artemis_eval_dev_20_v2.json only when its digest matches
     DEV20_V2_MANIFEST.json (built by build_dev20_v2.py).
-  - `run` is synthetic_safety_gate_v12.run_dev20 with the v2 items and registry/real_world_registry_v2.json.
-    It refuses to run without a passing v12 decision, like v1.
+  - `run` is the gate's run_dev20 with the v2 items and registry/real_world_registry_v2.json. It refuses to
+    run without a passing decision of that gate. The 2026-11-03 run used gate v12 (code 5f25f18); since
+    Mission 005-R changed files the 005-Q gate froze, only a gate v13 pass unlocks a run with the current code.
   - `score` scores every released response with artemis_eval unchanged. artemis_eval reads
     must_clarify=false as "a clarification is wrong"; a v2 rubric that lists clarify among its allowed
     statuses (DEV-001, 011, 015, 016) accepts one, so when the released status is clarify such an item is
@@ -49,12 +50,13 @@ def load_items(path: Path = build_dev20_v2.DEV20_V2) -> tuple[list, str]:
 
 
 def run(prepared, out_dir: Path, decision_path: Path, registry_path: Path = REGISTRY_V2,
-        session_label: str = "colab-t4") -> dict:
-    """DEV-20 v2 through the guarded pipeline, only after a passing v12 decision (same steps as v12.run_dev20)."""
+        session_label: str = "colab-t4", gate_version: str = "v13") -> dict:
+    """DEV-20 v2 through the guarded pipeline, only after a passing decision of the named gate (its run_dev20 steps)."""
+    import importlib
     import artemis_runner
     import grounding_guard
     import run_dev20_cuda
-    import synthetic_safety_gate_v12 as gate
+    gate = importlib.import_module({"v12": "synthetic_safety_gate_v12", "v13": "synthetic_safety_gate_v13"}[gate_version])
     from waymaker_ai.evidence_registry import load_real_world_registry
     gate.require_passing_gate(decision_path, gate.load_manifest(gate.MANIFEST)["contract_version"], prepared, gate.MANIFEST)
     items, digest = load_items()
@@ -82,7 +84,7 @@ def run(prepared, out_dir: Path, decision_path: Path, registry_path: Path = REGI
                                           manifest["evaluation_date"], generate)
         run_dev20_cuda.append_line(out_dir / "pipeline.jsonl", {"case_id": item["id"], "registry_status": registry_status,
                                                                  **record})
-    return {"registry_status": registry_status, "cases": len(items), "dev20_version": "v2"}
+    return {"registry_status": registry_status, "cases": len(items), "dev20_version": "v2", "gate": gate_version}
 
 
 def scoring_item(item: dict, status: str | None) -> dict:

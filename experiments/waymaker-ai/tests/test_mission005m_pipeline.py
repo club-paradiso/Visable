@@ -126,7 +126,7 @@ def test_only_v10_takes_the_sentence_and_it_is_validated():
 
 
 def test_v10_changes_only_the_inputs_line_and_the_partial_line():
-    assert "v10" in CONTRACT_VERSIONS and guard.CONTRACT_VERSION in ("v10", "v11", "v12")   # 005-N: v11, 005-P: v12
+    assert "v10" in CONTRACT_VERSIONS and guard.CONTRACT_VERSION in ("v10", "v11", "v12", "v13")   # 005-N: v11, 005-P: v12, 005-R: v13
     assert prompt_sha256("v9").startswith("807c2b41914a") and len({prompt_sha256(v) for v in CONTRACT_VERSIONS}) == len(CONTRACT_VERSIONS)
     v9, v10 = SYSTEM_PROMPTS["v9"].splitlines(), SYSTEM_PROMPTS["v10"].splitlines()
     changed = [(a, b) for a, b in zip(v9, v10) if a != b]
