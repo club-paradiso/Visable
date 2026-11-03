@@ -57,6 +57,13 @@ from the first unfinished step. Never redo a phase recorded as done and verified
 - [x] `.github/workflows/golden.yml` (golden-local on PRs, golden-visual baseline generation, golden-deployment on Vercel deployment_status / dispatch). Not yet observed running (push pending).
 - [ ] Exit: golden suite green 3× in a row against the unmodified site
 
+## Phase 1 — Repo diet and data canon (planned; starts after Phase 0 exit)
+Pre-measurements (verified 2026-11-03):
+- Tracked files: 3,218 / 647.0 MB (`git ls-files` sizes). Vercel git deployments upload all of it today (no `.vercelignore`).
+- Planned `.vercelignore` (archive docs, superseded manual editions, experiments, tests, audits, reports, backend except `backend/data/enforcement/` which `lib/enforcement-fallback.js` requires) → **871 files / 133.5 MB** (data 54.6, docs 44.4, assets 25.5, scripts 4.6, root 4.0).
+- Runtime paths that MUST stay deployed (grep of shipped HTML/JS/api): `docs/source-manuals/2026-10-19/visa_manual_261019.pdf`, `docs/source-manuals/2026-11-02/stay_manual_261102.pdf`, `docs/forms_official/FORM_HELPER_COVERAGE_20260923.md`, `scripts/employment_*.mjs`, `scripts/enforcement-ui.mjs`, `lib/**`, `backend/data/enforcement/legal_rules.json`, `data/**`, `assets/**`, `agency-directory/` (unlinked but harmless, 0.4 MB).
+- Steps: (1) trim `JOBCODE_JSON_PATHS` to the canonical path (behaviour-preserving; golden procedure/search tests + check_employment_* guard it); (2) add `.vercelignore` + a measurement script; (3) history-rewrite-plan.md written (done, not executed); (4) generated-artefact decision for `backend/data/manual_search_index.sqlite3` → Railway deploy dependency, owner decision.
+
 ## Owner decisions needed
 1. **Vercel preview access for CI** — the project has `ssoProtection: all_except_custom_domains`, so preview URLs return 401/SSO to GitHub Actions. To satisfy the "golden suite 3× against the preview" merge rule the owner must create a *Protection Bypass for Automation* secret in Vercel (Project → Settings → Deployment Protection) and add it as the repository secret `VERCEL_AUTOMATION_BYPASS_SECRET`. Hard stop 6 (Vercel settings / secrets) — not done by this session. Recommendation: do it; it is read-only for the site and scoped to automation.
 2. **Branching** — this session may only push to `claude/visable-frontend-rebuild-0289z4` (ADR-001). The brief's one-branch-per-phase + self-merge rule cannot be followed without permission. Recommendation: review/merge the Phase 0 PR, then grant `rebuild/phase-N-*` branches or keep one long-lived PR per phase re-targeted from this branch.

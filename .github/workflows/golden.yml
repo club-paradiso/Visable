@@ -1,0 +1,144 @@
+name: Golden Suite
+
+# Behaviour contract for the frontend rebuild (tests/golden/README.md).
+# Separate from repo-validation.yml on purpose: the existing workflows stay untouched.
+on:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: 'Run against this deployment URL instead of a local static server (e.g. https://visable-mu.vercel.app)'
+        required: false
+        default: ''
+  deployment_status:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: golden-${{ github.workflow }}-${{ github.event.pull_request.number || github.event.deployment_status.deployment.id || github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  golden-local:
+    # Local static server over the checkout (later phases: GOLDEN_SERVE_DIR=dist).
+    if: github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && github.event.inputs.base_url == '')
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Node test dependencies
+        run: npm install --ignore-scripts --package-lock=false --no-audit --no-fund
+      - name: Install Chromium
+        run: ./node_modules/.bin/playwright install --with-deps chromium
+      - name: Run the golden suite (desktop + phone)
+        env:
+          CI: '1'
+        run: ./node_modules/.bin/playwright test -c playwright.golden.config.mjs --project=desktop-1280 --project=mobile-390
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: golden-local-${{ github.run_id }}-${{ github.run_attempt }}
+          path: test-results/
+          if-no-files-found: ignore
+          retention-days: 14
+
+  golden-visual:
+    # Visual baselines are generated on this runner the first time (ADR-005) and
+    # uploaded as an artifact; once committed under tests/golden/__screenshots__
+    # they are compared with the configured anti-aliasing tolerance.
+    if: github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && github.event.inputs.base_url == '')
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Node test dependencies
+        run: npm install --ignore-scripts --package-lock=false --no-audit --no-fund
+      - name: Install Chromium
+        run: ./node_modules/.bin/playwright install --with-deps chromium
+      - name: Compare (or create) visual baselines
+        env:
+          CI: '1'
+        run: |
+          if [ -d tests/golden/__screenshots__ ]; then
+            ./node_modules/.bin/playwright test -c playwright.golden.config.mjs --project=visual-desktop --project=visual-mobile
+          else
+            echo "::notice::No committed baselines yet — generating them on this runner (download the artifact and commit tests/golden/__screenshots__)."
+            ./node_modules/.bin/playwright test -c playwright.golden.config.mjs --project=visual-desktop --project=visual-mobile --update-snapshots
+          fi
+      - name: Upload baselines / diffs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: golden-visual-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            tests/golden/__screenshots__/
+            test-results/
+          if-no-files-found: ignore
+          retention-days: 30
+
+  golden-deployment:
+    # Against a Vercel preview (deployment_status success) or any URL on demand.
+    # Previews are SSO-protected; VERCEL_AUTOMATION_BYPASS_SECRET must be a repository
+    # secret (owner decision, see docs/rebuild/STATUS.md). Without it this job stops
+    # with a clear notice instead of a misleading green.
+    if: >-
+      (github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success' && github.event.deployment_status.target_url != '')
+      || (github.event_name == 'workflow_dispatch' && github.event.inputs.base_url != '')
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.deployment.sha || github.sha }}
+      - name: Resolve target
+        id: target
+        env:
+          BASE_URL: ${{ github.event.inputs.base_url || github.event.deployment_status.target_url }}
+          HAS_BYPASS: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET != '' }}
+        run: |
+          echo "base_url=$BASE_URL" >> "$GITHUB_OUTPUT"
+          echo "has_bypass=$HAS_BYPASS" >> "$GITHUB_OUTPUT"
+          echo "Target: $BASE_URL (bypass secret present: $HAS_BYPASS)"
+      - name: Probe the target
+        id: probe
+        env:
+          BASE_URL: ${{ steps.target.outputs.base_url }}
+          BYPASS: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
+        run: |
+          code=$(curl -s -o /dev/null -w '%{http_code}' -H "x-vercel-protection-bypass: ${BYPASS}" "$BASE_URL/index.html" || true)
+          echo "http=$code" >> "$GITHUB_OUTPUT"
+          echo "GET $BASE_URL/index.html → $code"
+      - name: Stop when the deployment is not reachable
+        if: steps.probe.outputs.http != '200'
+        run: |
+          echo "::error::Deployment returned HTTP ${{ steps.probe.outputs.http }}. Vercel SSO protection needs the VERCEL_AUTOMATION_BYPASS_SECRET repository secret (Vercel → Project → Settings → Deployment Protection → Protection Bypass for Automation)."
+          exit 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Node test dependencies
+        run: npm install --ignore-scripts --package-lock=false --no-audit --no-fund
+      - name: Install Chromium
+        run: ./node_modules/.bin/playwright install --with-deps chromium
+      - name: Run the golden suite against the deployment
+        env:
+          CI: '1'
+          GOLDEN_BASE_URL: ${{ steps.target.outputs.base_url }}
+          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
+        run: ./node_modules/.bin/playwright test -c playwright.golden.config.mjs --project=desktop-1280 --project=mobile-390
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: golden-deployment-${{ github.run_id }}-${{ github.run_attempt }}
+          path: test-results/
+          if-no-files-found: ignore
+          retention-days: 14

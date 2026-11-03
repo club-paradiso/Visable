@@ -28,6 +28,8 @@
     "test:feature-surface": "node scripts/check_live_feature_surface.mjs",
     "test:official-sources": "node scripts/check_official_external_sources.mjs && node scripts/validate_visa_issuance_enrichment.js",
     "test:e2e": "playwright test",
+    "test:golden": "playwright test -c playwright.golden.config.mjs --project=desktop-1280 --project=mobile-390",
+    "test:golden:visual": "playwright test -c playwright.golden.config.mjs --project=visual-desktop --project=visual-mobile",
     "test:waymaker-navigator": "node scripts/check_waymaker_navigator.mjs && node scripts/check_waymaker_navigator_dom.mjs",
     "test:nationality-services": "node scripts/check_nationality_services_data.mjs && node scripts/check_naturalization_interview_data.mjs",
     "test:preview": "node scripts/check_preview_mvp.mjs",
