@@ -37,7 +37,7 @@ w.fetch = async () => ({ ok: true, json: async () => ({ sources: [], entries: []
 w.eval(readFileSync(new URL('../assets/js/civic-search.js', import.meta.url), 'utf8'));
 w.document.dispatchEvent(new w.Event('DOMContentLoaded'));
 const doc = w.document;
-assert.equal(doc.querySelectorAll('.cs-service').length, 15);
+assert.equal(doc.querySelectorAll('.cs-service').length, 16);
 // The full catalogue starts collapsed: the search field and the core tools own the first screen.
 const directory = doc.querySelector('.cs-directory');
 assert.equal(directory.open, false, 'the full tools directory is collapsed on a fresh visit');
@@ -64,8 +64,8 @@ doc.querySelector('[data-cs-tool-group="stay"]').click();
 assert([...doc.querySelectorAll('.cs-service')].filter(x => !x.hidden).every(x => x.dataset.serviceGroup === 'stay'));
 assert.equal(doc.querySelector('[data-cs-tool-group="stay"]').getAttribute('aria-pressed'), 'true');
 doc.querySelector('[data-cs-tool-group="all"]').click();
-assert.equal([...doc.querySelectorAll('.cs-service')].filter(x => !x.hidden).length, 15);
-assert.equal(doc.querySelector('.cs-result-count').textContent, '15개 도구');
+assert.equal([...doc.querySelectorAll('.cs-service')].filter(x => !x.hidden).length, 16);
+assert.equal(doc.querySelector('.cs-result-count').textContent, '16개 도구');
 filter.value = 'appointment'; filter.dispatchEvent(new w.Event('input'));
 assert.equal([...doc.querySelectorAll('.cs-service')].filter(x => !x.hidden).length, 1, 'English synonyms should find the reservation helper');
 filter.value = '체류기간연장'; filter.dispatchEvent(new w.Event('input'));

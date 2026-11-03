@@ -41,7 +41,8 @@
     "test:immigration-checklists": "node scripts/check_immigration_checklists.mjs",
     "build:manual-reader": "python3 scripts/build_manual_reader.py",
     "test:manual-reader": "node scripts/check_manual_reader.mjs && python3 scripts/build_manual_reader.py --check",
-    "test:search-tools": "node scripts/check_search_tools_reliability.mjs"
+    "test:search-tools": "node scripts/check_search_tools_reliability.mjs",
+    "test:address-helper": "node --test tests/unit/address-helper.test.js && node scripts/check_address_helper.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.61.0",
