@@ -45,6 +45,12 @@ original evaluator). The gain is mostly status selection on cases the contract w
 written against; the independent synthetic set passed 11/15. See the
 [Mission 005-E report](runs/mission005e/MISSION-005-E-REPORT.ko.md) and
 [005-F recommendations](runs/mission005e/MISSION-005-F-RECOMMENDATIONS.ko.md).
+Mission 005-F: response contract v3, language and claim-support checks, and a
+code-enforced synthetic safety gate frozen before inference (commit `9332333`). On a
+free T4 the locked 48-case acceptance set passed 28/48 with 12 critical failures
+(unverified or forged sources treated as official), so the gate failed and DEV-20 was
+not run. See the [Mission 005-F report](runs/mission005f/MISSION-005-F-REPORT.ko.md) and
+[005-G recommendations](runs/mission005f/MISSION-005-G-RECOMMENDATIONS.ko.md).
 
 Recovery status, 2026-10-29: checkpoint metadata verified; new MLX-VLM weight
 loading and generation **not executed** on this M1 8GB machine. The runtime is

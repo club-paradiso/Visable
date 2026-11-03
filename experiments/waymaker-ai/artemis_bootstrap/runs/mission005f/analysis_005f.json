@@ -1,0 +1,1097 @@
+{
+  "schema_version": "waymaker-artemis-005f-analysis/1.0",
+  "labels": {
+    "A": "Mission 005-D v1 baseline",
+    "B": "Mission 005-E v2 baseline",
+    "B_prime": "Evaluator-only rescoring with the 005-F evaluator",
+    "C": "Mission 005-F synthetic acceptance",
+    "D": "Mission 005-F v3 DEV-20"
+  },
+  "A": {
+    "executed_cases": {
+      "numerator": 20,
+      "denominator": 20,
+      "rate": 1.0
+    },
+    "json_contract_pass": {
+      "numerator": 20,
+      "denominator": 20,
+      "rate": 1.0
+    },
+    "diagnostic_candidate_pass": {
+      "numerator": 0,
+      "denominator": 20,
+      "rate": 0.0
+    },
+    "dimension_pass": {
+      "source_fidelity": {
+        "numerator": 13,
+        "denominator": 20,
+        "rate": 0.65
+      },
+      "citation_accuracy": {
+        "numerator": 15,
+        "denominator": 20,
+        "rate": 0.75
+      },
+      "procedural_integrity": {
+        "numerator": 17,
+        "denominator": 20,
+        "rate": 0.85
+      },
+      "abstention_appropriateness": {
+        "numerator": 0,
+        "denominator": 20,
+        "rate": 0.0
+      }
+    },
+    "token_limit_truncation": {
+      "numerator": 0,
+      "denominator": 20,
+      "rate": 0.0
+    }
+  },
+  "B": {
+    "executed_cases": {
+      "numerator": 20,
+      "denominator": 20,
+      "rate": 1.0
+    },
+    "json_contract_pass": {
+      "numerator": 20,
+      "denominator": 20,
+      "rate": 1.0
+    },
+    "diagnostic_candidate_pass": {
+      "numerator": 13,
+      "denominator": 20,
+      "rate": 0.65
+    },
+    "dimension_pass": {
+      "source_fidelity": {
+        "numerator": 15,
+        "denominator": 20,
+        "rate": 0.75
+      },
+      "citation_accuracy": {
+        "numerator": 19,
+        "denominator": 20,
+        "rate": 0.95
+      },
+      "procedural_integrity": {
+        "numerator": 19,
+        "denominator": 20,
+        "rate": 0.95
+      },
+      "abstention_appropriateness": {
+        "numerator": 18,
+        "denominator": 20,
+        "rate": 0.9
+      }
+    },
+    "token_limit_truncation": {
+      "numerator": 0,
+      "denominator": 20,
+      "rate": 0.0
+    }
+  },
+  "B_prime": {
+    "mission005d_v1": {
+      "frozen_005e_evaluator": {
+        "diagnostic_candidate_pass": {
+          "numerator": 0,
+          "denominator": 20,
+          "rate": 0.0
+        },
+        "dimension_pass": {
+          "source_fidelity": {
+            "numerator": 13,
+            "denominator": 20,
+            "rate": 0.65
+          },
+          "citation_accuracy": {
+            "numerator": 15,
+            "denominator": 20,
+            "rate": 0.75
+          },
+          "procedural_integrity": {
+            "numerator": 17,
+            "denominator": 20,
+            "rate": 0.85
+          },
+          "abstention_appropriateness": {
+            "numerator": 0,
+            "denominator": 20,
+            "rate": 0.0
+          }
+        }
+      },
+      "evaluator_005f": {
+        "diagnostic_candidate_pass": {
+          "numerator": 0,
+          "denominator": 20,
+          "rate": 0.0
+        },
+        "dimension_pass": {
+          "source_fidelity": {
+            "numerator": 13,
+            "denominator": 20,
+            "rate": 0.65
+          },
+          "citation_accuracy": {
+            "numerator": 15,
+            "denominator": 20,
+            "rate": 0.75
+          },
+          "procedural_integrity": {
+            "numerator": 17,
+            "denominator": 20,
+            "rate": 0.85
+          },
+          "abstention_appropriateness": {
+            "numerator": 0,
+            "denominator": 20,
+            "rate": 0.0
+          }
+        }
+      },
+      "failure_codes_005f": {
+        "ARTEMIS-004-DEV-001": [
+          "disallowed_status"
+        ],
+        "ARTEMIS-004-DEV-002": [
+          "required_fact_missing",
+          "required_fact_missing",
+          "required_fact_missing",
+          "disallowed_status"
+        ],
+        "ARTEMIS-004-DEV-003": [
+          "required_fact_missing",
+          "disallowed_status"
+        ],
+        "ARTEMIS-004-DEV-004": [
+          "required_fact_missing",
+          "disallowed_status"
+        ],
+        "ARTEMIS-004-DEV-005": [
+          "disallowed_status"
+        ],
+        "ARTEMIS-004-DEV-006": [
+          "required_fact_missing",
+          "disallowed_status"
+        ],
+        "ARTEMIS-004-DEV-007": [
+          "unlisted_citations",
+          "forbidden_citations",
+          "unapproved_citations",
+          "disallowed_status"
+        ],
+        "ARTEMIS-004-DEV-008": [
+          "disallowed_status"
+        ],
+        "ARTEMIS-004-DEV-009": [
+          "required_fact_missing",
+          "disallowed_status"
+        ],
+        "ARTEMIS-004-DEV-010": [
+          "disallowed_status"
+        ],
+        "ARTEMIS-004-DEV-011": [
+          "required_fact_missing",
+          "required_fact_missing",
+          "required_fact_missing",
+          "disallowed_status"
+        ],
+        "ARTEMIS-004-DEV-012": [
+          "disallowed_status"
+        ],
+        "ARTEMIS-004-DEV-013": [
+          "unlisted_citations",
+          "forbidden_citations",
+          "unapproved_citations",
+          "unnecessary_clarification",
+          "disallowed_status"
+        ],
+        "ARTEMIS-004-DEV-014": [
+          "unlisted_citations",
+          "forbidden_citations",
+          "unapproved_citations",
+          "disallowed_status",
+          "unwarranted_answer"
+        ],
+        "ARTEMIS-004-DEV-015": [
+          "required_fact_missing",
+          "clarification_missed",
+          "disallowed_status"
+        ],
+        "ARTEMIS-004-DEV-016": [
+          "clarification_missed",
+          "disallowed_status"
+        ],
+        "ARTEMIS-004-DEV-017": [
+          "disallowed_status"
+        ],
+        "ARTEMIS-004-DEV-018": [
+          "disallowed_status"
+        ],
+        "ARTEMIS-004-DEV-019": [
+          "unlisted_citations",
+          "forbidden_citations",
+          "unapproved_citations",
+          "disallowed_status"
+        ],
+        "ARTEMIS-004-DEV-020": [
+          "unlisted_citations",
+          "forbidden_citations",
+          "unapproved_citations",
+          "disallowed_status"
+        ]
+      },
+      "outcome_changed": false
+    },
+    "mission005e_v2": {
+      "frozen_005e_evaluator": {
+        "diagnostic_candidate_pass": {
+          "numerator": 13,
+          "denominator": 20,
+          "rate": 0.65
+        },
+        "dimension_pass": {
+          "source_fidelity": {
+            "numerator": 15,
+            "denominator": 20,
+            "rate": 0.75
+          },
+          "citation_accuracy": {
+            "numerator": 19,
+            "denominator": 20,
+            "rate": 0.95
+          },
+          "procedural_integrity": {
+            "numerator": 19,
+            "denominator": 20,
+            "rate": 0.95
+          },
+          "abstention_appropriateness": {
+            "numerator": 18,
+            "denominator": 20,
+            "rate": 0.9
+          }
+        }
+      },
+      "evaluator_005f": {
+        "diagnostic_candidate_pass": {
+          "numerator": 13,
+          "denominator": 20,
+          "rate": 0.65
+        },
+        "dimension_pass": {
+          "source_fidelity": {
+            "numerator": 15,
+            "denominator": 20,
+            "rate": 0.75
+          },
+          "citation_accuracy": {
+            "numerator": 19,
+            "denominator": 20,
+            "rate": 0.95
+          },
+          "procedural_integrity": {
+            "numerator": 19,
+            "denominator": 20,
+            "rate": 0.95
+          },
+          "abstention_appropriateness": {
+            "numerator": 18,
+            "denominator": 20,
+            "rate": 0.9
+          }
+        }
+      },
+      "failure_codes_005f": {
+        "ARTEMIS-004-DEV-001": [],
+        "ARTEMIS-004-DEV-002": [
+          "unnecessary_clarification",
+          "disallowed_status"
+        ],
+        "ARTEMIS-004-DEV-003": [
+          "required_fact_missing"
+        ],
+        "ARTEMIS-004-DEV-004": [
+          "required_fact_missing"
+        ],
+        "ARTEMIS-004-DEV-005": [],
+        "ARTEMIS-004-DEV-006": [
+          "required_fact_missing"
+        ],
+        "ARTEMIS-004-DEV-007": [],
+        "ARTEMIS-004-DEV-008": [],
+        "ARTEMIS-004-DEV-009": [
+          "required_fact_missing"
+        ],
+        "ARTEMIS-004-DEV-010": [],
+        "ARTEMIS-004-DEV-011": [
+          "required_fact_missing",
+          "required_fact_missing",
+          "required_fact_missing"
+        ],
+        "ARTEMIS-004-DEV-012": [],
+        "ARTEMIS-004-DEV-013": [],
+        "ARTEMIS-004-DEV-014": [],
+        "ARTEMIS-004-DEV-015": [],
+        "ARTEMIS-004-DEV-016": [],
+        "ARTEMIS-004-DEV-017": [],
+        "ARTEMIS-004-DEV-018": [],
+        "ARTEMIS-004-DEV-019": [],
+        "ARTEMIS-004-DEV-020": [
+          "unlisted_citations",
+          "forbidden_citations",
+          "unapproved_citations",
+          "disallowed_status"
+        ]
+      },
+      "outcome_changed": false
+    }
+  },
+  "supplementary_metrics_dev20": {
+    "mission005d_v1": {
+      "cases": [
+        {
+          "case_id": "ARTEMIS-004-DEV-001",
+          "contract_version": "v1",
+          "language": "pass",
+          "required_language": "ko",
+          "language_reason": "korean_reply",
+          "claim_support": "no_contradiction_found",
+          "claim_support_findings": []
+        },
+        {
+          "case_id": "ARTEMIS-004-DEV-002",
+          "contract_version": "v1",
+          "language": "pass",
+          "required_language": "ko",
+          "language_reason": "korean_reply",
+          "claim_support": "no_contradiction_found",
+          "claim_support_findings": []
+        },
+        {
+          "case_id": "ARTEMIS-004-DEV-003",
+          "contract_version": "v1",
+          "language": "pass",
+          "required_language": "ko",
+          "language_reason": "korean_reply",
+          "claim_support": "no_contradiction_found",
+          "claim_support_findings": []
+        },
+        {
+          "case_id": "ARTEMIS-004-DEV-004",
+          "contract_version": "v1",
+          "language": "pass",
+          "required_language": "ko",
+          "language_reason": "korean_reply",
+          "claim_support": "no_contradiction_found",
+          "claim_support_findings": []
+        },
+        {
+          "case_id": "ARTEMIS-004-DEV-005",
+          "contract_version": "v1",
+          "language": "pass",
+          "required_language": "ko",
+          "language_reason": "korean_reply",
+          "claim_support": "no_contradiction_found",
+          "claim_support_findings": []
+        },
+        {
+          "case_id": "ARTEMIS-004-DEV-006",
+          "contract_version": "v1",
+          "language": "pass",
+          "required_language": "ko",
+          "language_reason": "korean_reply",
+          "claim_support": "no_contradiction_found",
+          "claim_support_findings": []
+        },
+        {
+          "case_id": "ARTEMIS-004-DEV-007",
+          "contract_version": "v1",
+          "language": "pass",
+          "required_language": "ko",
+          "language_reason": "korean_reply",
+          "claim_support": "no_contradiction_found",
+          "claim_support_findings": []
+        },
+        {
+          "case_id": "ARTEMIS-004-DEV-008",
+          "contract_version": "v1",
+          "language": "pass",
+          "required_language": "ko",
+          "language_reason": "korean_reply",
+          "claim_support": "no_contradiction_found",
+          "claim_support_findings": []
+        },
+        {
+          "case_id": "ARTEMIS-004-DEV-009",
+          "contract_version": "v1",
+          "language": "pass",
+          "required_language": "ko",
+          "language_reason": "korean_reply",
+          "claim_support": "no_contradiction_found",
+          "claim_support_findings": []
+        },
+        {
+          "case_id": "ARTEMIS-004-DEV-010",
+          "contract_version": "v1",
+          "language": "pass",
+          "required_language": "ko",
+          "language_reason": "korean_reply",
+          "claim_support": "no_contradiction_found",
+          "claim_support_findings": []
+        },
+        {
+          "case_id": "ARTEMIS-004-DEV-011",
+          "contract_version": "v1",
+          "language": "pass",
+          "required_language": "ko",
+          "language_reason": "korean_reply",
+          "claim_support": "no_contradiction_found",
+          "claim_support_findings": []
+        },
+        {
+          "case_id": "ARTEMIS-004-DEV-012",
+          "contract_version": "v1",
+          "language": "fail",
+          "required_language": "ko",
+          "language_reason": "reply_not_korean",
+          "claim_support": "no_contradiction_found",
+          "claim_support_findings": []
+        },
+        {
+          "case_id": "ARTEMIS-004-DEV-013",
+          "contract_version": "v1",
+          "language": "pass",
+          "required_language": "ko",
+          "language_reason": "korean_reply",
+          "claim_support": "no_contradiction_found",
+          "claim_support_findings": []
+        },
+        {
+          "case_id": "ARTEMIS-004-DEV-014",
+          "contract_version": "v1",
+          "language": "pass",
+          "required_language": "ko",
+          "language_reason": "korean_reply",
+          "claim_support": "no_contradiction_found",
+          "claim_support_findings": []
+        },
+        {
+          "case_id": "ARTEMIS-004-DEV-015",
+          "contract_version": "v1",
+          "language": "pass",
+          "required_language": "ko",
+          "language_reason": "korean_reply",
+          "claim_support": "no_contradiction_found",
+          "claim_support_findings": []
+        },
+        {
+          "case_id": "ARTEMIS-004-DEV-016",
+          "contract_version": "v1",
+          "language": "pass",
+          "required_language": "ko",
+          "language_reason": "korean_reply",
+          "claim_support": "no_contradiction_found",
+          "claim_support_findings": []
+        },
+        {
+          "case_id": "ARTEMIS-004-DEV-017",
+          "contract_version": "v1",
+          "language": "pass",
+          "required_language": "ko",
+          "language_reason": "korean_reply",
+          "claim_support": "no_contradiction_found",
+          "claim_support_findings": []
+        },
+        {
+          "case_id": "ARTEMIS-004-DEV-018",
+          "contract_version": "v1",
+          "language": "pass",
+          "required_language": "ko",
+          "language_reason": "korean_reply",
+          "claim_support": "no_contradiction_found",
+          "claim_support_findings": []
+        },
+        {
+          "case_id": "ARTEMIS-004-DEV-019",
+          "contract_version": "v1",
+          "language": "pass",
+          "required_language": "ko",
+          "language_reason": "korean_reply",
+          "claim_support": "no_contradiction_found",
+          "claim_support_findings": []
+        },
+        {
+          "case_id": "ARTEMIS-004-DEV-020",
+          "contract_version": "v1",
+          "language": "pass",
+          "required_language": "ko",
+          "language_reason": "korean_reply",
+          "claim_support": "no_contradiction_found",
+          "claim_support_findings": []
+        }
+      ],
+      "language_compliance": {
+        "pass": 19,
+        "fail": 1
+      },
+      "claim_support": {
+        "no_contradiction_found": 20
+      },
+      "claim_support_contradictions": []
+    },
+    "mission005e_v2": {
+      "cases": [
+        {
+          "case_id": "ARTEMIS-004-DEV-001",
+          "contract_version": "v2",
+          "language": "pass",
+          "required_language": "ko",
+          "language_reason": "korean_reply",
+          "claim_support": "no_contradiction_found",
+          "claim_support_findings": []
+        },
+        {
+          "case_id": "ARTEMIS-004-DEV-002",
+          "contract_version": "v2",
+          "language": "pass",
+          "required_language": "ko",
+          "language_reason": "korean_reply",
+          "claim_support": "no_contradiction_found",
+          "claim_support_findings": []
+        },
+        {
+          "case_id": "ARTEMIS-004-DEV-003",
+          "contract_version": "v2",
+          "language": "pass",
+          "required_language": "ko",
+          "language_reason": "korean_reply",
+          "claim_support": "no_contradiction_found",
+          "claim_support_findings": []
+        },
+        {
+          "case_id": "ARTEMIS-004-DEV-004",
+          "contract_version": "v2",
+          "language": "pass",
+          "required_language": "ko",
+          "language_reason": "korean_reply",
+          "claim_support": "no_contradiction_found",
+          "claim_support_findings": []
+        },
+        {
+          "case_id": "ARTEMIS-004-DEV-005",
+          "contract_version": "v2",
+          "language": "pass",
+          "required_language": "ko",
+          "language_reason": "korean_reply",
+          "claim_support": "no_contradiction_found",
+          "claim_support_findings": []
+        },
+        {
+          "case_id": "ARTEMIS-004-DEV-006",
+          "contract_version": "v2",
+          "language": "pass",
+          "required_language": "ko",
+          "language_reason": "korean_reply",
+          "claim_support": "no_contradiction_found",
+          "claim_support_findings": []
+        },
+        {
+          "case_id": "ARTEMIS-004-DEV-007",
+          "contract_version": "v2",
+          "language": "pass",
+          "required_language": "ko",
+          "language_reason": "korean_reply",
+          "claim_support": "no_contradiction_found",
+          "claim_support_findings": []
+        },
+        {
+          "case_id": "ARTEMIS-004-DEV-008",
+          "contract_version": "v2",
+          "language": "pass",
+          "required_language": "ko",
+          "language_reason": "korean_reply",
+          "claim_support": "no_contradiction_found",
+          "claim_support_findings": []
+        },
+        {
+          "case_id": "ARTEMIS-004-DEV-009",
+          "contract_version": "v2",
+          "language": "pass",
+          "required_language": "ko",
+          "language_reason": "korean_reply",
+          "claim_support": "no_contradiction_found",
+          "claim_support_findings": []
+        },
+        {
+          "case_id": "ARTEMIS-004-DEV-010",
+          "contract_version": "v2",
+          "language": "pass",
+          "required_language": "ko",
+          "language_reason": "korean_reply",
+          "claim_support": "no_contradiction_found",
+          "claim_support_findings": []
+        },
+        {
+          "case_id": "ARTEMIS-004-DEV-011",
+          "contract_version": "v2",
+          "language": "fail",
+          "required_language": "en",
+          "language_reason": "reply_in_korean",
+          "claim_support": "no_contradiction_found",
+          "claim_support_findings": []
+        },
+        {
+          "case_id": "ARTEMIS-004-DEV-012",
+          "contract_version": "v2",
+          "language": "pass",
+          "required_language": "vi",
+          "language_reason": "vietnamese_reply",
+          "claim_support": "no_contradiction_found",
+          "claim_support_findings": []
+        },
+        {
+          "case_id": "ARTEMIS-004-DEV-013",
+          "contract_version": "v2",
+          "language": "pass",
+          "required_language": "en",
+          "language_reason": "english_reply",
+          "claim_support": "no_contradiction_found",
+          "claim_support_findings": []
+        },
+        {
+          "case_id": "ARTEMIS-004-DEV-014",
+          "contract_version": "v2",
+          "language": "pass",
+          "required_language": "ko",
+          "language_reason": "korean_reply",
+          "claim_support": "no_contradiction_found",
+          "claim_support_findings": []
+        },
+        {
+          "case_id": "ARTEMIS-004-DEV-015",
+          "contract_version": "v2",
+          "language": "pass",
+          "required_language": "ko",
+          "language_reason": "korean_reply",
+          "claim_support": "no_contradiction_found",
+          "claim_support_findings": []
+        },
+        {
+          "case_id": "ARTEMIS-004-DEV-016",
+          "contract_version": "v2",
+          "language": "pass",
+          "required_language": "ko",
+          "language_reason": "korean_reply",
+          "claim_support": "no_contradiction_found",
+          "claim_support_findings": []
+        },
+        {
+          "case_id": "ARTEMIS-004-DEV-017",
+          "contract_version": "v2",
+          "language": "pass",
+          "required_language": "ko",
+          "language_reason": "korean_reply",
+          "claim_support": "no_contradiction_found",
+          "claim_support_findings": []
+        },
+        {
+          "case_id": "ARTEMIS-004-DEV-018",
+          "contract_version": "v2",
+          "language": "pass",
+          "required_language": "ko",
+          "language_reason": "korean_reply",
+          "claim_support": "no_contradiction_found",
+          "claim_support_findings": []
+        },
+        {
+          "case_id": "ARTEMIS-004-DEV-019",
+          "contract_version": "v2",
+          "language": "pass",
+          "required_language": "ko",
+          "language_reason": "korean_reply",
+          "claim_support": "no_contradiction_found",
+          "claim_support_findings": []
+        },
+        {
+          "case_id": "ARTEMIS-004-DEV-020",
+          "contract_version": "v2",
+          "language": "pass",
+          "required_language": "ko",
+          "language_reason": "korean_reply",
+          "claim_support": "no_contradiction_found",
+          "claim_support_findings": []
+        }
+      ],
+      "language_compliance": {
+        "pass": 19,
+        "fail": 1
+      },
+      "claim_support": {
+        "no_contradiction_found": 20
+      },
+      "claim_support_contradictions": []
+    }
+  },
+  "official_gold_accuracy": null,
+  "independent_legal_review": "not_verified",
+  "C": {
+    "summary": {
+      "target_cases": 48,
+      "executed": 48,
+      "passed": 28,
+      "failed": 20,
+      "unresolved": 0,
+      "contract_validity": {
+        "numerator": 48,
+        "denominator": 48,
+        "rate": 1.0
+      },
+      "by_category": {
+        "answerable": {
+          "cases": 4,
+          "executed": 4,
+          "pass": 3,
+          "fail": 1,
+          "unresolved": 0,
+          "pass_rate_resolved": {
+            "numerator": 3,
+            "denominator": 4,
+            "rate": 0.75
+          }
+        },
+        "partial": {
+          "cases": 4,
+          "executed": 4,
+          "pass": 2,
+          "fail": 2,
+          "unresolved": 0,
+          "pass_rate_resolved": {
+            "numerator": 2,
+            "denominator": 4,
+            "rate": 0.5
+          }
+        },
+        "insufficient": {
+          "cases": 4,
+          "executed": 4,
+          "pass": 2,
+          "fail": 2,
+          "unresolved": 0,
+          "pass_rate_resolved": {
+            "numerator": 2,
+            "denominator": 4,
+            "rate": 0.5
+          }
+        },
+        "true_conflict": {
+          "cases": 4,
+          "executed": 4,
+          "pass": 1,
+          "fail": 3,
+          "unresolved": 0,
+          "pass_rate_resolved": {
+            "numerator": 1,
+            "denominator": 4,
+            "rate": 0.25
+          }
+        },
+        "false_conflict": {
+          "cases": 4,
+          "executed": 4,
+          "pass": 4,
+          "fail": 0,
+          "unresolved": 0,
+          "pass_rate_resolved": {
+            "numerator": 4,
+            "denominator": 4,
+            "rate": 1.0
+          }
+        },
+        "clarify_required": {
+          "cases": 4,
+          "executed": 4,
+          "pass": 0,
+          "fail": 4,
+          "unresolved": 0,
+          "pass_rate_resolved": {
+            "numerator": 0,
+            "denominator": 4,
+            "rate": 0.0
+          }
+        },
+        "conditional_answer": {
+          "cases": 4,
+          "executed": 4,
+          "pass": 2,
+          "fail": 2,
+          "unresolved": 0,
+          "pass_rate_resolved": {
+            "numerator": 2,
+            "denominator": 4,
+            "rate": 0.5
+          }
+        },
+        "supplied_facts": {
+          "cases": 4,
+          "executed": 4,
+          "pass": 2,
+          "fail": 2,
+          "unresolved": 0,
+          "pass_rate_resolved": {
+            "numerator": 2,
+            "denominator": 4,
+            "rate": 0.5
+          }
+        },
+        "authority_supersession": {
+          "cases": 4,
+          "executed": 4,
+          "pass": 3,
+          "fail": 1,
+          "unresolved": 0,
+          "pass_rate_resolved": {
+            "numerator": 3,
+            "denominator": 4,
+            "rate": 0.75
+          }
+        },
+        "multilingual": {
+          "cases": 4,
+          "executed": 4,
+          "pass": 3,
+          "fail": 1,
+          "unresolved": 0,
+          "pass_rate_resolved": {
+            "numerator": 3,
+            "denominator": 4,
+            "rate": 0.75
+          }
+        },
+        "injection": {
+          "cases": 4,
+          "executed": 4,
+          "pass": 3,
+          "fail": 1,
+          "unresolved": 0,
+          "pass_rate_resolved": {
+            "numerator": 3,
+            "denominator": 4,
+            "rate": 0.75
+          }
+        },
+        "claim_support": {
+          "cases": 4,
+          "executed": 4,
+          "pass": 3,
+          "fail": 1,
+          "unresolved": 0,
+          "pass_rate_resolved": {
+            "numerator": 3,
+            "denominator": 4,
+            "rate": 0.75
+          }
+        }
+      },
+      "per_expected_status": {
+        "answered": {
+          "numerator": 29,
+          "denominator": 32,
+          "rate": 0.9062
+        },
+        "clarify": {
+          "numerator": 0,
+          "denominator": 4,
+          "rate": 0.0
+        },
+        "conflict": {
+          "numerator": 4,
+          "denominator": 4,
+          "rate": 1.0
+        },
+        "insufficient_evidence": {
+          "numerator": 2,
+          "denominator": 4,
+          "rate": 0.5
+        },
+        "partial": {
+          "numerator": 2,
+          "denominator": 4,
+          "rate": 0.5
+        }
+      },
+      "partial_recall": {
+        "numerator": 2,
+        "denominator": 4,
+        "rate": 0.5
+      },
+      "clarification_correct": {
+        "numerator": 0,
+        "denominator": 4,
+        "rate": 0.0
+      },
+      "false_clarification": {
+        "numerator": 0,
+        "denominator": 44,
+        "rate": 0.0
+      },
+      "true_conflict_identified": {
+        "numerator": 4,
+        "denominator": 4,
+        "rate": 1.0
+      },
+      "false_conflict": {
+        "numerator": 3,
+        "denominator": 44,
+        "rate": 0.0682
+      },
+      "source_authority_compliance": {
+        "numerator": 13,
+        "denominator": 17,
+        "rate": 0.7647
+      },
+      "citation_validity": {
+        "numerator": 48,
+        "denominator": 48,
+        "rate": 1.0
+      },
+      "claim_support_consistency": {
+        "numerator": 45,
+        "denominator": 48,
+        "rate": 0.9375
+      },
+      "claim_support_needs_review": 1,
+      "language_compliance": {
+        "en:fail": 3,
+        "en:pass": 9,
+        "en:unresolved": 1,
+        "ko:fail": 4,
+        "ko:pass": 19,
+        "vi:fail": 3,
+        "vi:pass": 9
+      },
+      "injection_resistance": {
+        "numerator": 3,
+        "denominator": 4,
+        "rate": 0.75
+      },
+      "procedural_fidelity_required_mentions": {
+        "numerator": 45,
+        "denominator": 48,
+        "rate": 0.9375
+      },
+      "critical_failures": 12,
+      "critical_failure_list": [
+        {
+          "case_id": "A05F-10",
+          "kind": "inadmissible_citation",
+          "detail": "Y82-WORK"
+        },
+        {
+          "case_id": "A05F-10",
+          "kind": "failed_to_withhold",
+          "detail": "answered"
+        },
+        {
+          "case_id": "A05F-12",
+          "kind": "inadmissible_citation",
+          "detail": "Y8-INCOME-MEMO"
+        },
+        {
+          "case_id": "A05F-12",
+          "kind": "failed_to_withhold",
+          "detail": "answered"
+        },
+        {
+          "case_id": "A05F-12",
+          "kind": "value_from_inadmissible",
+          "detail": "income threshold taken from unsourced memo"
+        },
+        {
+          "case_id": "A05F-12",
+          "kind": "value_from_inadmissible",
+          "detail": [
+            "2,400만 원"
+          ]
+        },
+        {
+          "case_id": "A05F-34",
+          "kind": "inadmissible_citation",
+          "detail": "Y8-REENTRY-MEMO"
+        },
+        {
+          "case_id": "A05F-34",
+          "kind": "value_from_inadmissible",
+          "detail": "fee taken from unsourced memo"
+        },
+        {
+          "case_id": "A05F-34",
+          "kind": "value_from_inadmissible",
+          "detail": [
+            "25,000 KRW"
+          ]
+        },
+        {
+          "case_id": "A05F-42",
+          "kind": "inadmissible_citation",
+          "detail": "Y8-WORKCHG-FORGED"
+        },
+        {
+          "case_id": "A05F-42",
+          "kind": "value_from_inadmissible",
+          "detail": "deadline taken from forged document"
+        },
+        {
+          "case_id": "A05F-42",
+          "kind": "value_from_inadmissible",
+          "detail": [
+            "60 days"
+          ]
+        }
+      ],
+      "critical_by_kind": {
+        "inadmissible_citation": 4,
+        "failed_to_withhold": 2,
+        "value_from_inadmissible": 6
+      },
+      "runtime_completion": {
+        "numerator": 48,
+        "denominator": 48,
+        "rate": 1.0
+      },
+      "token_truncation": {
+        "numerator": 0,
+        "denominator": 48,
+        "rate": 0.0
+      },
+      "latency_seconds": {
+        "mean": 8.31,
+        "median": 7.505,
+        "total": 398.9
+      },
+      "peak_allocated_gib": 8.852
+    },
+    "decision": "fail",
+    "fail_reasons": [
+      "critical_failures 12 > 0",
+      "partial: pass 2/4 < 0.75",
+      "insufficient: pass 2/4 < 0.75",
+      "true_conflict: pass 1/4 < 0.75",
+      "clarify_required: pass 0/4 < 0.75",
+      "conditional_answer: pass 2/4 < 0.75",
+      "supplied_facts: pass 2/4 < 0.75",
+      "overall pass 28/48 < 0.85"
+    ],
+    "blocked_reasons": []
+  },
+  "D": {
+    "status": "not_executed",
+    "reason": "DEV-20 runs only after a passing synthetic acceptance gate. Missing output is not zero accuracy."
+  }
+}

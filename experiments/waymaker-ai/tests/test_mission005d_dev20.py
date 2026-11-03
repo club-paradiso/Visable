@@ -180,7 +180,12 @@ def test_artifacts_are_written(tmp_path):
     assert manifest["heldout_used"] is False and manifest["official_gold_accuracy"] is None
 
 
-def test_pilot_and_rest_in_one_loaded_session_log_one_session(tmp_path):
+def test_pilot_and_rest_in_one_loaded_session_log_one_session(tmp_path, monkeypatch):
+    """Resume behaviour only. Since Mission 005-F a DEV-20 run also needs a passing gate
+    decision; that check is tested in test_mission005f_gate.py and stubbed here."""
+    import synthetic_safety_gate
+    monkeypatch.setattr(synthetic_safety_gate, "require_passing_gate", lambda *a, **k: {"decision": "pass"})
+
     class Prepared:
         session = object()
         blocker = None
