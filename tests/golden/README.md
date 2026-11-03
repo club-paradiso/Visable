@@ -47,6 +47,11 @@ Layout
 - `specs/procedure.spec.mjs` — documents, fees, conditions, uncertainty notices
 - `specs/fail-closed.spec.mjs` — missing data/scripts/AI, hallucination rejection
 - `specs/pages.spec.mjs` — manual, form helper, checklists, new-home, preview, ai, enforcement, studios
+- `specs/tools.spec.mjs` — employment code finder (canonical dataset, occupation lookup)
+- `specs/reminders.spec.mjs` — deadline reminders (seeded storage, banner, dialog, save)
+- `specs/finders.spec.mjs` — registered-agent and designated-hospital finders
+- `specs/jurisdiction.spec.mjs` — 관할 출입국 finder (시·도 → 시·군·구 → office)
+- `specs/legacy-card.spec.mjs` — the legacy per-status result card behind "기존 체류자격 카드 보기": header, subcodes, procedure tabs, extension documents (ko); English keyword query → empty state
 - `specs/visual.spec.mjs` — screenshots (visual-* projects only)
 
 CI: `.github/workflows/golden.yml` runs the suite on every pull request against a

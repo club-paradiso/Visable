@@ -63,3 +63,16 @@ export const GUIDANCE_STR = {
 export const fill = (tpl, vars) => String(tpl).replace(/\{(\w+)\}/g, (m, k) => (vars[k] == null ? m : String(vars[k])));
 // '2026.11' → '2026년 11월' as rendered in the unknown-code notice ("2026년 11월판").
 export const editionKo = (edition) => { const [y, m] = String(edition).split('.'); return `${y}년 ${Number(m)}월`; };
+
+// Strings the legacy per-status result card (index.html `renderResults` and the
+// procedure renderers) hard-codes in source rather than reading from the i18n packs.
+// Recorded from index.html at commit 1c7fb16 (line numbers in comments) and verified
+// against the rendered card on 2026-11-03 (tests/golden/specs/legacy-card.spec.mjs).
+export const LEGACY_CARD_STR = {
+  // paradisoCanonicalAppFormText(): every "통합신청서 …" document row is rewritten to this (index.html:17979).
+  canonicalAppForm: '통합신청서 (신고서) [별지 제34호서식]',
+  // Fee tile heading inside a procedure panel (index.html:17680; ko / en / zh-CN literals).
+  feeTile: { ko: '공통 수수료 참고', en: 'Common fee reference' },
+  // Status-guidance "Next steps" row that opens this card (assets/js/status-guidance.js `nextLegacy`, lines 73 / 142).
+  openLegacy: { ko: '기존 체류자격 카드 보기', en: 'Open the existing status card' }
+};
