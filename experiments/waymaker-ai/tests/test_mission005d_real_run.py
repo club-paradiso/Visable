@@ -3,8 +3,8 @@
 The generations are model output from one free Colab T4 session, stored
 unmodified. Scores are Development Candidate Diagnostic Performance, never
 Official Gold Accuracy. The xfail tests pin evaluator defects found in this run
-without changing any expected answer; they turn into failures once fixed so the
-fix gets reviewed.
+without changing any expected answer. Mission 005-E fixed E1-E3, so they now pass
+as ordinary tests.
 """
 import hashlib
 import json
@@ -48,12 +48,23 @@ def test_twenty_real_generations_from_one_verified_session():
     assert sessions[0]["code"]["git_commit"] == "6dfe161165852922db592e6a1a76578c07e7fada"
 
 
-def test_scoring_the_real_run_reproduces_the_committed_artifacts():
+def test_original_baseline_is_preserved_and_frozen():
+    """The 005-D artifacts were scored by the original evaluator; 005-E froze them before any repair."""
+    committed = json.loads((RUN / "performance_metrics.json").read_text())
+    freeze = json.loads((BOOT / "runs" / "mission005e" / "baseline_freeze.json").read_text())
+    assert freeze["reproduced_equals_committed_metrics"] is True
+    for key, value in freeze["metrics"].items():
+        assert committed[key] == value, key
+    assert committed["diagnostic_candidate_pass"]["numerator"] == 0 and committed["official_gold_accuracy"] is None
+
+
+def test_rescoring_the_real_run_reproduces_the_evaluator_only_artifacts():
+    """Same raw outputs, repaired evaluator (Mission 005-E part B)."""
     result = score_dev20.score(RUN)
     assert result["integrity"]["passed"] is True
-    committed = json.loads((RUN / "performance_metrics.json").read_text())
+    committed = json.loads((BOOT / "runs" / "mission005e" / "evaluator_only_rescoring" / "performance_metrics.json").read_text())
+    result["metrics"]["label"] = committed["label"]
     assert result["metrics"] == committed
-    assert result["metrics"]["official_gold_accuracy"] is None
     assert result["metrics"]["executed_cases"]["numerator"] == 20
 
 
@@ -64,19 +75,19 @@ def test_every_case_has_an_analyst_root_cause():
 
 # --- evaluator defects found in this run (expected answers untouched) --------
 
-@pytest.mark.xfail(strict=True, reason="E1: permission_flips flags '엄격히 금지됩니다' though the evidence also prohibits")
+# E1 fixed in Mission 005-E; kept as an ordinary regression test.
 def test_e1_prohibition_restated_is_not_a_permission_flip():
     answer = generations()["ARTEMIS-004-DEV-009"]["response"]["answer"]
     assert trust_gate.permission_flips(answer, trusted_text("ARTEMIS-004-DEV-009")) == []
 
 
-@pytest.mark.xfail(strict=True, reason="E2: role_mismatches reads '재발급' in evidence as role 'issue' against '제출'")
+# E2 fixed in Mission 005-E; kept as an ordinary regression test.
 def test_e2_submitting_a_photo_for_reissue_is_not_a_role_swap():
     answer = generations()["ARTEMIS-004-DEV-020"]["response"]["answer"]
     assert trust_gate.role_mismatches(answer, trusted_text("ARTEMIS-004-DEV-020")) == []
 
 
-@pytest.mark.xfail(strict=True, reason="E3: required_facts are exact substrings; an inserted adverb fails them")
+# E3 fixed in Mission 005-E; kept as an ordinary regression test.
 def test_e3_required_fact_survives_an_inserted_adverb():
     item = ITEMS["ARTEMIS-004-DEV-007"]
     answer = generations()["ARTEMIS-004-DEV-007"]["response"]["answer"]

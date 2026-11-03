@@ -38,6 +38,13 @@ Diagnostic Performance 0/20, driven by status selection (17 `partial`) and by
 prompt-contract and evaluator defects more than by model reasoning. See the
 [Mission 005-D report](runs/mission005d-dev20/MISSION-005-D-REPORT.ko.md) and
 [005-E recommendations](runs/mission005d-dev20/MISSION-005-E-RECOMMENDATIONS.ko.md).
+Mission 005-E: response contract v2, evaluator repairs E1-E3 and one free T4 run
+(one model load, commit `f7c751b`). Kept apart: Original DEV-20 baseline 0/20,
+Evaluator-only rescoring 0/20, Contract-v2 model re-evaluation 13/20 (12/20 under the
+original evaluator). The gain is mostly status selection on cases the contract was
+written against; the independent synthetic set passed 11/15. See the
+[Mission 005-E report](runs/mission005e/MISSION-005-E-REPORT.ko.md) and
+[005-F recommendations](runs/mission005e/MISSION-005-F-RECOMMENDATIONS.ko.md).
 
 Recovery status, 2026-10-29: checkpoint metadata verified; new MLX-VLM weight
 loading and generation **not executed** on this M1 8GB machine. The runtime is

@@ -1,0 +1,19 @@
+{
+  "dataset_sha256": "c204497731b637d31da221a468ca2a4c2537d275a974234f41aefe7da4313c5f",
+  "dataset_matches_isolation_manifest": true,
+  "heldout_used": false,
+  "generations_sha256": "158ad2db00d8d63114fbcee14f6a842bca22b84017e1f2aaf198eaa8295b7389",
+  "sessions_sha256": "b1fff321f364357d257a42cad4e361104178e7661035ec694c8ca83db9f9dad2",
+  "sessions": 1,
+  "model_loads": 1,
+  "input_hash_mismatches": [],
+  "raw_output_hash_mismatches": [],
+  "prompt_leakage": {},
+  "session_provenance_checks": [
+    {
+      "session_id": "colab-t4-cd3b9d49",
+      "passed": true
+    }
+  ],
+  "passed": true
+}

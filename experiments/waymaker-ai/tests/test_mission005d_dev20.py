@@ -190,7 +190,7 @@ def test_pilot_and_rest_in_one_loaded_session_log_one_session(tmp_path):
             return valid_session()["metadata"]
 
     class Adapter(FakeAdapter):
-        def __init__(self, max_tokens, prepared):
+        def __init__(self, max_tokens, prepared, contract_version="v1"):
             super().__init__()
 
         def check_availability(self):

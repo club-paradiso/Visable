@@ -193,7 +193,8 @@ def _validate_case(case: Mapping[str, Any]) -> None:
     ids = case.get("evidence_ids")
     _require(isinstance(ids, list) and all(isinstance(i, str) for i in ids), f"Evidence IDs not recorded: {name}")
     try:
-        parsed = parse_response(case["raw_output"], set(ids))
+        # Judge each case by the contract it was generated under; records before 005-E are v1.
+        parsed = parse_response(case["raw_output"], set(ids), case.get("contract_version", "v1"))
     except (ValueError, TypeError):
         parsed = None
     # Re-judge the raw text: a stored flag alone cannot make output valid.

@@ -1,0 +1,47 @@
+{
+  "label": "Evaluator-only rescoring (Mission 005-D outputs, repaired evaluator)",
+  "official_gold_accuracy": null,
+  "executed_cases": {
+    "numerator": 20,
+    "denominator": 20,
+    "rate": 1.0
+  },
+  "json_contract_pass": {
+    "numerator": 20,
+    "denominator": 20,
+    "rate": 1.0
+  },
+  "diagnostic_candidate_pass": {
+    "numerator": 0,
+    "denominator": 20,
+    "rate": 0.0
+  },
+  "dimension_pass": {
+    "source_fidelity": {
+      "numerator": 13,
+      "denominator": 20,
+      "rate": 0.65
+    },
+    "citation_accuracy": {
+      "numerator": 15,
+      "denominator": 20,
+      "rate": 0.75
+    },
+    "procedural_integrity": {
+      "numerator": 17,
+      "denominator": 20,
+      "rate": 0.85
+    },
+    "abstention_appropriateness": {
+      "numerator": 0,
+      "denominator": 20,
+      "rate": 0.0
+    }
+  },
+  "token_limit_truncation": {
+    "numerator": 0,
+    "denominator": 20,
+    "rate": 0.0
+  },
+  "evaluation_integrity_passed": true
+}

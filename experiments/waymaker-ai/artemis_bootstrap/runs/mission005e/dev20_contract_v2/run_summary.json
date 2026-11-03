@@ -1,0 +1,47 @@
+{
+  "label": "Contract-v2 model re-evaluation (Mission 005-E, DEV-20)",
+  "official_gold_accuracy": null,
+  "executed_cases": {
+    "numerator": 20,
+    "denominator": 20,
+    "rate": 1.0
+  },
+  "json_contract_pass": {
+    "numerator": 20,
+    "denominator": 20,
+    "rate": 1.0
+  },
+  "diagnostic_candidate_pass": {
+    "numerator": 13,
+    "denominator": 20,
+    "rate": 0.65
+  },
+  "dimension_pass": {
+    "source_fidelity": {
+      "numerator": 15,
+      "denominator": 20,
+      "rate": 0.75
+    },
+    "citation_accuracy": {
+      "numerator": 19,
+      "denominator": 20,
+      "rate": 0.95
+    },
+    "procedural_integrity": {
+      "numerator": 19,
+      "denominator": 20,
+      "rate": 0.95
+    },
+    "abstention_appropriateness": {
+      "numerator": 18,
+      "denominator": 20,
+      "rate": 0.9
+    }
+  },
+  "token_limit_truncation": {
+    "numerator": 0,
+    "denominator": 20,
+    "rate": 0.0
+  },
+  "evaluation_integrity_passed": true
+}
