@@ -204,3 +204,20 @@ the options considered, the evidence, and the reason.
   whole document is parsed, so **parse-time code cannot call `window.Visable`**. Rule: parse-time
   code stays inline until a step deliberately defers it with a visual-golden check. The two finder
   fetch sites that were delegated in the first D2 pass were reverted to raw `fetch` for this reason.
+
+### ADR-009 addendum (2026-11-03, job-code finder move)
+- **Legacy checks that slice index.html by source markers are rewritten to slice the module file**
+  (`// --- Job Code Modal · HiKorea` → `\nexport {`) rather than kept alive with a copy of the code in
+  index.html. A module that is plain script apart from its trailing `export {…}` block evaluates in the
+  `vm` sandbox exactly as the inline slice did, so the checks still exercise the real functions. The
+  marker string is deliberately **not** repeated in index.html, so any other slicer finds nothing and
+  fails loudly instead of silently testing an empty region.
+- **Dynamic `import()` inside moved code is resolved against the document.** Inside the inline classic
+  script `import('./scripts/x.mjs')` resolved against `/index.html`; inside `src/features/*.js` it would
+  resolve against the module and Vite would bundle it. Moved code uses
+  `import(/* @vite-ignore */ new URL('scripts/x.mjs', document.baseURI).href)`, which keeps the request
+  URL and the lazy timing identical (checked in the built bundle). This is the one non-verbatim edit
+  allowed in a "verbatim move", and it is called out in the module header.
+- **DOMContentLoaded wiring that assigns a cluster's state moves with the cluster** as an exported
+  `wire*()` function that the inline handler calls at the same position, so the state stays
+  module-private and no new global is introduced.

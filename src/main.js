@@ -11,6 +11,7 @@ import { DATA_PATHS, API_ROUTES } from './data/paths.js';
 import * as state from './state/storage.js';
 import * as render from './render/escape.js';
 import * as jurisdiction from './features/jurisdiction.js';
+import * as jobcode from './features/jobcode.js';
 // Feature modules that run on load (moved legacy IIFEs); order follows their old document order.
 import './features/landing-animation.js';
 import './features/finders.js';
@@ -21,7 +22,7 @@ const bridge = Object.freeze({
   data: Object.freeze({ ...data, DATA_PATHS, API_ROUTES }),
   state: Object.freeze({ ...state }),
   render: Object.freeze({ ...render }),
-  features: Object.freeze({ jurisdiction: Object.freeze({ ...jurisdiction }) })
+  features: Object.freeze({ jurisdiction: Object.freeze({ ...jurisdiction }), jobcode: Object.freeze({ ...jobcode }) })
 });
 
 if (typeof window !== 'undefined') {

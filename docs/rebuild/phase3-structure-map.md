@@ -95,6 +95,7 @@ Kinds: D = data constant, C = config, S = state, P = pure function, R = DOM rend
 - E: `window.verifyFaqWithAi` 16876.
 
 ### C09 Job-code finder (KSCO/KSIC) — 16903–18157, about 1,255 lines
+**Moved** (2026-11-03) to `src/features/jobcode.js` as one module (not the four-file split suggested in §8 row 10; a split is a later refactor with the module in place). Inline stubs remain for the names in §8 row 10.
 | Lines | Contents | Kind |
 |---|---|---|
 | 16903–16916 | `jcIcon`, `jcEnLike`, `jcLanguageName` | P |
