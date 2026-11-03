@@ -147,13 +147,45 @@
   // Every tool whose discovery words appear in the query, strongest first. Strength is the
   // length of the longest word that matched (capped), so "제주 무사증" beats a stray "예약";
   // ties keep TOOLS order. Pure and deterministic.
+  // Same folding as VisableSearchRouter.fold (no tones/accents, Traditional → Simplified), so
+  // "tien phat", "multa por estancia" without accents or "罰款" in Traditional find the tool.
+  function fold(text) {
+    var R = root.VisableSearchRouter;
+    if (R && typeof R.fold === 'function') return R.fold(text);
+    var s = lower(normalize(text));
+    var Z = root.ParadisoZhT;
+    if (Z && typeof Z.toSimplified === 'function') s = Z.toSimplified(s);
+    if (typeof s.normalize === 'function') s = s.normalize('NFD').replace(/([a-z])[\u0300-\u036f]+/g, '$1').normalize('NFC');
+    return s.replace(/đ/g, 'd').replace(/ı/g, 'i').replace(/ß/g, 'ss').replace(/ё/g, 'е')
+      .replace(/[\u064B-\u0652\u0640]/g, '').replace(/[أإآٱ]/g, 'ا').replace(/ى/g, 'ي').replace(/ة/g, 'ه');
+  }
+  var foldedTerms = null;
+  function toolTerms() {
+    if (foldedTerms) return foldedTerms;
+    foldedTerms = TOOLS.map(function (tool) {
+      var seenTerm = {}, out = [];
+      tool.terms.forEach(function (t) { seenTerm[t] = true; out.push(t); });
+      tool.terms.forEach(function (t) { var f = fold(t); if (!seenTerm[f]) { seenTerm[f] = true; out.push(f); } });
+      return out;
+    });
+    return foldedTerms;
+  }
   function matchTools(rawQuery) {
-    var text = lower(normalize(rawQuery));
-    if (!text) return [];
+    var plain = lower(normalize(rawQuery));
+    if (!plain) return [];
+    var folded = fold(plain);
+    var text = folded === plain ? plain : plain + '\n' + folded;
+    var terms = toolTerms();
     var hits = [];
     TOOLS.forEach(function (tool, order) {
       var best = 0, words = [];
-      tool.terms.forEach(function (term) { if (hasTerm(text, term)) { words.push(term); if (term.length > best) best = term.length; } });
+      var matched = {};
+      terms[order].forEach(function (term) {
+        if (!hasTerm(text, term)) return;
+        var key = fold(term);
+        if (matched[key]) return;
+        matched[key] = true; words.push(term); if (term.length > best) best = term.length;
+      });
       if (!best) return;
       hits.push({ tool: tool, order: order, strength: Math.min(9, best) + Math.min(3, words.length - 1), words: words });
     });
@@ -354,7 +386,7 @@
     return out;
   }
 
-  var api = { normalize: normalize, hydrate: hydrate, suggest: suggest, matchTools: matchTools, compareCodes: compareCodes, TOOLS: TOOLS, TOOL_TARGETS: TOOL_TARGETS, PROCEDURE_ORDER: PROCEDURE_ORDER };
+  var api = { normalize: normalize, fold: fold, hydrate: hydrate, suggest: suggest, matchTools: matchTools, compareCodes: compareCodes, TOOLS: TOOLS, TOOL_TARGETS: TOOL_TARGETS, PROCEDURE_ORDER: PROCEDURE_ORDER };
   root.VisableSearchSuggest = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this);

@@ -125,6 +125,46 @@ test.describe('intent words reach the existing tools', () => {
   });
 });
 
+test.describe('every UI language', () => {
+  // One query per language in the real page (zh-TW goes through the live ParadisoZhT layer).
+  const LANGS = [
+    ['ko', '벌금 계산', 'enforcement'], ['en', 'overstay fine', 'enforcement'], ['zh-CN', '济州免签国家', 'short'],
+    ['zh-TW', '濟州免簽國家', 'short'], ['ja', '罰金', 'enforcement'], ['vi', 'tien phat', 'enforcement'],
+    ['tl', 'walang visa', 'short'], ['id', 'bebas visa jeju', 'short'], ['ru', 'без визы', 'short'],
+    ['fr', 'sans visa', 'short'], ['es', 'paises sin visa', 'short'], ['ar', 'غرامه', 'enforcement'],
+    ['de', 'visumfrei', 'short'], ['tr', 'vize cezasi', 'enforcement'], ['uk', 'без візи', 'short'],
+  ];
+  test('tool queries resolve in all 15 languages, labelled in that language', async ({ page }, testInfo) => {
+    test.skip(testInfo.project.name !== 'desktop-1280', 'one viewport is enough for a language sweep');
+    test.setTimeout(120_000);
+    for (const [lang, query, tool] of LANGS) {
+      await bootHome(page, '/index.html?lang=' + lang);
+      await typeQuery(page, query);
+      const first = options(page).first();
+      await expect(first, `${lang} "${query}"`).toBeVisible();
+      const label = (await first.locator('.cs-sug-label').textContent()).trim();
+      const want = await page.evaluate(([key]) => {
+        var t = window.VisableCivicSearch && window.VisableCivicSearch.copy;
+        var loc = document.documentElement.lang;
+        var packs = typeof UI_TRANSLATIONS !== 'undefined' ? UI_TRANSLATIONS : null; // top-level const, not a window property
+        var pack = packs && packs[loc === 'zh-TW' ? 'zh-CN' : loc] && packs[loc === 'zh-TW' ? 'zh-CN' : loc].civic;
+        var raw = (pack && pack[key]) || (t && (t[loc === 'ko' ? 'ko' : 'en'] || {})[key]) || '';
+        return window.ParadisoZhT && loc === 'zh-TW' ? window.ParadisoZhT.convert(raw) : raw;
+      }, [tool]);
+      expect(label, `${lang} "${query}" label`).toBe(want);
+      if (tool === 'short') await expect(first).toHaveAttribute('data-action', 'open-short-stay');
+    }
+  });
+  test('procedure queries without tones or accents (vi, es, de)', async ({ page }) => {
+    await bootHome(page, '/index.html?lang=vi');
+    for (const query of ['F-6 gia han', 'F-6 prorroga', 'F-6 Verlangerung']) {
+      await typeQuery(page, query);
+      await expect(options(page).first().locator('.cs-sug-label'), query).toHaveText(/^F-6 /);
+      await expect(page.locator('#civicSuggest [role="option"][data-kind="status_procedure"]').first(), query).toBeVisible();
+    }
+  });
+});
+
 test.describe('query matrix', () => {
   const CASES = [
     ['E-7-1', /^E-7-1 전문인력/, '세부 자격'],
