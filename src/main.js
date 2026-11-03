@@ -10,6 +10,7 @@ import * as data from './data/fetch-json.js';
 import { DATA_PATHS, API_ROUTES } from './data/paths.js';
 import * as state from './state/storage.js';
 import * as render from './render/escape.js';
+import * as jurisdiction from './features/jurisdiction.js';
 // Feature modules that run on load (moved legacy IIFEs); order follows their old document order.
 import './features/landing-animation.js';
 import './features/finders.js';
@@ -19,7 +20,8 @@ const bridge = Object.freeze({
   version: 1,
   data: Object.freeze({ ...data, DATA_PATHS, API_ROUTES }),
   state: Object.freeze({ ...state }),
-  render: Object.freeze({ ...render })
+  render: Object.freeze({ ...render }),
+  features: Object.freeze({ jurisdiction: Object.freeze({ ...jurisdiction }) })
 });
 
 if (typeof window !== 'undefined') {
