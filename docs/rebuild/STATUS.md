@@ -9,7 +9,7 @@ from the first unfinished step. Never redo a phase recorded as done and verified
 - Working branch: `claude/visable-frontend-rebuild-0289z4` (harness-designated; see DECISIONS.md ADR-001)
 - Base: `origin/main` @ 5082d9d (Merge PR #757, address helper tool)
 - Open PRs by this effort: **#758** https://github.com/club-paradiso/Visable/pull/758 (draft; Phase 0)
-- Current phase: **Phase 0 — Safety net** (in progress)
+- Current phase: **Phase 1 — Repo diet and data canon** (in progress; Phase 0 done)
 
 ## Environment facts (verified this session)
 - Node v22.23.4, npm 10.9.9, Python 3.13.18
@@ -55,7 +55,11 @@ from the first unfinished step. Never redo a phase recorded as done and verified
 - [x] docs/rebuild/phase0-data-canon.md (no duplicate pair exists; canon = data/jobcode_master.json)
 - [ ] tests/golden/ Playwright suite (every Critical feature, all shipped UI languages, desktop + mobile, fail-closed cases, visual baselines)
 - [x] `.github/workflows/golden.yml` (golden-local on PRs, golden-visual baseline generation, golden-deployment on Vercel deployment_status / dispatch). Not yet observed running (push pending).
-- [ ] Exit: golden suite green 3× in a row against the unmodified site
+- [x] **Exit met (2026-11-03):** golden suite green 3× in a row against the unmodified site, served from a detached worktree at 2b22766 (pre-Phase-1 code) with the final specs:
+  `GOLDEN_SERVE_DIR=<worktree> GOLDEN_PORT=4330 PARADISO_PW_EXECUTABLE=/opt/pw-browsers/chromium npx playwright test -c playwright.golden.config.mjs --project=desktop-1280 --project=mobile-390` → run 1: 100 passed / 6 skipped; run 2: 100 passed / 6 skipped; run 3: 100 passed / 6 skipped (2.1 min each). The 6 skipped are the BLOCKED `test.fixme` markers (live keys / operator token).
+  CI: Golden Suite run 41701563795 at f3bb0d7 → `golden-local` success (desktop + phone, 2.0 min), `golden-visual` success (baselines generated on the runner, artifact `golden-visual-41701563795-1`), `golden-deployment` skipped by the GOLDEN_PREVIEW_ENABLED gate.
+  Earlier flakes and their root causes (all test-side, none product-side): new-home locale set after load (fixed with addInitScript), new-home notice read before render (fixed with a text poll; a substring locator matched a hidden duplicate span), finder test read the body before candidates rendered (fixed by waiting for the code).
+- Phase 0 status: **done and verified.**
 
 ## Phase 1 — Repo diet and data canon (in progress)
 Done (verified 2026-11-03):
