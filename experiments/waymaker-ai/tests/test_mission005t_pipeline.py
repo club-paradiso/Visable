@@ -52,6 +52,8 @@ def test_recorded_answers_of_earlier_runs_fire_only_on_the_known_habits():
     fired = {}
     for run in sorted(BOOT.glob("runs/mission005*/synthetic_acceptance/pipeline.jsonl")):
         mission = run.parts[-3][-1]
+        if mission >= "t":   # runs made with the status retry itself
+            continue
         suite = BOOT / "validation" / f"mission005{mission}_synthetic_acceptance.json"
         cases = {c["id"]: c for c in json.loads(suite.read_text())["cases"]}
         for line in run.read_text().splitlines():
