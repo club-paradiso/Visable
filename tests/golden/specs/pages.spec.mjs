@@ -80,10 +80,10 @@ test.describe('immigration-checklists.html — checklists by situation', () => {
 test.describe('new-home.html — nationality landing', () => {
   for (const locale of ['ko', 'en']) {
     test(`hero, notice and caution from data/nationality_content.json (${locale})`, async ({ page }) => {
-      // The page picks its locale from the shared `paradiso:language` key, else the browser language.
+      // The page reads the shared `paradiso:language` key once at init (else the browser
+      // language), so the returning-user state is set before the first navigation.
+      await page.addInitScript((l) => { try { localStorage.setItem('paradiso:language', l); } catch (e) {} }, locale);
       const errors = await boot(page, { path: '/new-home.html', waitForSearch: false });
-      await page.evaluate((l) => localStorage.setItem('paradiso:language', l), locale);
-      await page.reload();
       const hero = NATIONALITY_CONTENT.hero;
       await expect(page.getByText(normalize(hero.kicker[locale]), { exact: false }).first()).toBeVisible({ timeout: 30_000 });
       const text = normalize(await bodyText(page));
