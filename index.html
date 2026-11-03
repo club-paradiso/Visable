@@ -18963,7 +18963,7 @@ function toggleDocGuide(btn) {
     btn.classList.toggle('is-open', open);
 }
 
-function renderDocTags(docKeys, keywords, isSubCode = false, visaCode = '') {
+function renderDocTags(docKeys, keywords, isSubCode = false, visaCode = '', procedureKey = '') {
     // Defense-in-depth: never emit placeholder/diagnostic stand-ins as checklist
     // rows even if an upstream path bypassed dedupeDocs().
     const dedupedSections = dedupeDocumentSectionsForDisplay([{ key: 'flat', docs: docKeys || [] }]);
@@ -18991,6 +18991,12 @@ function renderDocTags(docKeys, keywords, isSubCode = false, visaCode = '') {
                 officialName = split.label;
                 if (split.note) relocatedNotes.push(split.note);
             }
+        }
+        // Application-form wording ("신청서" → "통합신청서 …", F-4 → 재외동포
+        // 통합신청서 별지 제1호) is applied here, at the render source, using the
+        // procedure the tile belongs to. Source data is never mutated.
+        if (!isUnresolvedId && typeof paradisoCanonicalAppFormText === 'function') {
+            officialName = paradisoCanonicalAppFormText(officialName, procedureKey, normalizeVisaCode(visaCode));
         }
         // Non-Korean locales: append a glossary translation after the
         // canonical Korean name (data/i18n/official-terms.json) — official
@@ -19506,22 +19512,57 @@ const F4_OVERSEAS_KOREANS_FORM_PROCEDURES = new Set([
     'statusChange', 'registration', 'activitiesOutsideStatus', 'extension'
 ]);
 
+/* Single application-form wording rule (stay procedures only).
+   One piece = one document name, e.g. "신청서", "통합신청서 (별지 제34호 서식)",
+   "통합신청서(별지 제1호 서식)", "재외동포(F-4) 통합신청서(별지 제1호 서식)".
+   Whitespace between 호/서식 and the optional 재외동포 prefix are tolerated.
+   Already-canonical wording ("통합신청서 (신고서) [별지 제34호서식]") does not
+   match, so the function is idempotent. */
+const PARADISO_APP_FORM_PIECE_RE = /^(재외동포(?:\s*\(\s*F-4\s*\))?\s*)?(?:통합\s*)?신청서\s*(?:\(\s*(?:시행규칙\s*)?별지\s*제?\s*(34|1)\s*호\s*서식\s*\))?$/;
+
+function paradisoCanonicalAppFormPiece(piece, procedureKey, statusCode) {
+    const value = String(piece || '').trim();
+    if (!value || procedureKey === 'visaIssuance') return value;
+    const m = value.match(PARADISO_APP_FORM_PIECE_RE);
+    if (!m) return value;
+    const formNo = m[2] || '';
+    const isF4 = statusCode === 'F-4';
+    const f4Stay = isF4 && (F4_OVERSEAS_KOREANS_FORM_PROCEDURES.has(procedureKey) || (!procedureKey && (formNo === '1' || m[1])));
+    if (f4Stay) return tx('f4ApplicationForm');
+    // 별지 제1호 / 재외동포 접두어는 F-4 문맥이 아니면 임의로 바꾸지 않는다.
+    if (formNo === '1' || m[1]) return value;
+    return '통합신청서 (신고서) [별지 제34호서식]';
+}
+
+/* Splits on top-level commas only (commas inside parentheses stay) and applies
+   the application-form rule to every piece, so a combined row such as
+   "신청서, 여권, 외국인등록증(소지자), 사진 1매" is handled too. */
+function paradisoCanonicalAppFormText(text, procedureKey, statusCode) {
+    const value = String(text || '').trim();
+    if (!value || procedureKey === 'visaIssuance') return value;
+    if (value.indexOf(',') < 0) return paradisoCanonicalAppFormPiece(value, procedureKey, statusCode);
+    const parts = [];
+    let depth = 0, cur = '';
+    for (const ch of value) {
+        if (ch === '(' || ch === '（') depth++;
+        else if (ch === ')' || ch === '）') depth = Math.max(0, depth - 1);
+        if (ch === ',' && depth === 0) { parts.push(cur); cur = ''; continue; }
+        cur += ch;
+    }
+    parts.push(cur);
+    let changed = false;
+    const out = parts.map(p => {
+        const next = paradisoCanonicalAppFormPiece(p, procedureKey, statusCode);
+        if (next !== p.trim()) changed = true;
+        return next;
+    });
+    return changed ? out.join(', ') : value;
+}
+
 function canonicalizeSourceConfirmedDocText(text, procedureKey, statusCode) {
     const value = String(text || '').replace(/^\s*[①-⑳]\s*/g, '').trim();
     if (!value || isDocPlaceholder(value)) return '';
-    if (procedureKey !== 'visaIssuance') {
-        const isGenericForm = value === '신청서' || value === '통합신청서'
-            || /^신청서\s*\(?별지\s*제?34호\s*서식\)?$/.test(value)
-            || /^통합신청서\s*\(별지\s*제?34호\s*서식\)$/.test(value)
-            || /^재외동포\s+통합신청서\s*\(별지\s*제1호서식\)$/.test(value);
-        if (isGenericForm) {
-            if (statusCode === 'F-4' && F4_OVERSEAS_KOREANS_FORM_PROCEDURES.has(procedureKey)) {
-                return tx('f4ApplicationForm');
-            }
-            return '통합신청서 (신고서) [별지 제34호서식]';
-        }
-    }
-    return value;
+    return paradisoCanonicalAppFormText(value, procedureKey, statusCode);
 }
 
 function groupSourceConfirmedDocuments(entries, procedureKey, statusCode) {
@@ -20368,9 +20409,9 @@ function normalizeProcedureVariants(rawVariants) {
     }).filter(item => item.available && item.label && hasAnyDocs(item.docs));
 }
 
-function renderDocGroup(title, docs, keywords, groupType = '', visaCode = '') {
+function renderDocGroup(title, docs, keywords, groupType = '', visaCode = '', procedureKey = '') {
     if (!docs || !docs.length) return '';
-    return `<div class="doc-group ${groupType}"><h5 class="doc-group-title">${title}</h5>${renderDocTags(docs, keywords, false, visaCode)}</div>`;
+    return `<div class="doc-group ${groupType}"><h5 class="doc-group-title">${title}</h5>${renderDocTags(docs, keywords, false, visaCode, procedureKey)}</div>`;
 }
 
 const MANUAL_LONG_TEXT_THRESHOLD = 150;
@@ -20540,12 +20581,12 @@ function renderProcedureSummaryBlock(value, keywords) {
 // the procedure checklist only; the fee box stays canonical and now also
 // carries the fee-exemption note relocated from doc_fee (예외 보존).
 const PROCEDURE_FEE_TILE_KEYS = new Set(['doc_fee', 'doc_fee_new', 'doc_fee_ext', 'doc_fee_generic']);
-function renderProcedureDocGroups(groups, keywords, visaCode = '') {
+function renderProcedureDocGroups(groups, keywords, visaCode = '', procedureKey = '') {
     const display = paradisoBuildDocDisplayGroups(groups);
     const stripFeeTile = arr => (arr || []).filter(doc => !PROCEDURE_FEE_TILE_KEYS.has(doc));
     return [
-        renderDocGroup(txAt('docUxGroupLabels', 0, '항상 확인할 서류'), stripFeeTile(display.basic), keywords, 'group-basic', visaCode),
-        renderDocGroup(txAt('docUxGroupLabels', 1, '상황별 추가 서류'), stripFeeTile(display.situational), keywords, 'group-situational', visaCode),
+        renderDocGroup(txAt('docUxGroupLabels', 0, '항상 확인할 서류'), stripFeeTile(display.basic), keywords, 'group-basic', visaCode, procedureKey),
+        renderDocGroup(txAt('docUxGroupLabels', 1, '상황별 추가 서류'), stripFeeTile(display.situational), keywords, 'group-situational', visaCode, procedureKey),
         renderDocDiscretionaryNote(display.discretionary, keywords)
     ].filter(Boolean).join('');
 }
@@ -20741,7 +20782,7 @@ function renderProcedureVariant(visaCode, procedureKey, variant, keywords, selec
     const effectiveDocs = alreadyShownDocs
         ? subtractDocGroupsForRender(variant.docs, alreadyShownDocs)
         : variant.docs;
-    const docsHtml = renderProcedureDocGroups(effectiveDocs, keywords, visaCode);
+    const docsHtml = renderProcedureDocGroups(effectiveDocs, keywords, visaCode, procedureKey);
     const docCount = countRenderableDocs(effectiveDocs);
     const checklistVariant = { ...variant, docs: effectiveDocs };
     const statusCode = variant.statusCode ? `<span class="manual-subcode-code">${escapeHtml(variant.statusCode)}</span>` : '';
@@ -21001,7 +21042,8 @@ function renderScenarioChecklist(visaCode, procedureKey, variant) {
             const rawText = String(item || '').trim();
             if (!rawText) return '';
             const isDocId = rawText.startsWith('doc_');
-            const text = isDocId ? (DOC_DICT[rawText] || tx('docDefinitionNeeded')) : rawText;
+            const textBase = isDocId ? (DOC_DICT[rawText] || tx('docDefinitionNeeded')) : rawText;
+            const text = paradisoCanonicalAppFormText(textBase, procedureKey, normalizeVisaCode(visaCode));
             const storageKey = scenarioChecklistItemStorageKey(visaCode, procedureKey, variantId, group.key, rawText);
             const checked = scenarioChecklistStoreGet(storageKey) === '1' ? ' checked' : '';
             const helpButton = renderDocumentHelpButton(rawText, text);
@@ -21201,7 +21243,7 @@ function resetScenarioChecklist(button) {
 function renderProcedurePanel(v, proc, keywords, isActive) {
     const hasVariants = !!(proc.variants && proc.variants.length);
     const totalDocCount = countRenderableDocs(proc.docs);
-    let docsHtml = renderProcedureDocGroups(proc.docs, keywords, v.code);
+    let docsHtml = renderProcedureDocGroups(proc.docs, keywords, v.code, proc.key);
     const variantsHtml = renderProcedureVariants(v, proc, keywords, proc.docs);
     // 사증발급 시나리오 안내(팝업)를 쓰는 자격(E-8·E-9·E-10 등)은 팝업이 서류의
     // 단일 출처가 되도록 상단 기본 서류 그리드·서류 수·요약·검토 안내를 생략합니다
@@ -22505,7 +22547,8 @@ function renderDocumentTabPanel(v, cfg, isActive) {
     const bodyHtml = !items.length
         ? `<div class="docs-missing-notice" role="note">${escapeHtml(getDocumentMissingNotice(cfg.key))}</div>`
         : `<ol class="docs-list">${items.map(item => {
-            const rawName = (item && item.name) || '';
+            const rawName = paradisoCanonicalAppFormText((item && item.name) || '',
+                cfg.key === 'initial' ? 'visaIssuance' : cfg.key, normalizeVisaCode(v && v.code));
             const rawNote = (item && item.note) || '';
             const nameIsMissing = !rawName || rawName === 'DATA_MISSING';
             // Prose that carried no concrete document name is rendered as a
@@ -22713,11 +22756,13 @@ const EASY_MODE_DOCS_PER_STAGE = 5;
    asserts a requirement the source data does not already carry. */
 function getEasyModeDocGroups(v) {
     const groups = [];
-    const addGroup = (label, rawNames) => {
+    // procKey: 'initial' tabs are pre-entry (사증발급) documents, so they keep
+    // their own wording ('visaIssuance' is skipped by the form-wording rule).
+    const addGroup = (label, rawNames, procKey = '') => {
         const seen = new Set();
         const names = [];
         for (const raw of rawNames) {
-            const name = cleanEasyModeDocName(raw);
+            const name = paradisoCanonicalAppFormText(cleanEasyModeDocName(raw), procKey, normalizeVisaCode(v && v.code));
             if (!name || seen.has(name) || isDocPlaceholder(name) || isEasyModeNonDocRow(name)) continue;
             seen.add(name);
             names.push(name);
@@ -22730,7 +22775,8 @@ function getEasyModeDocGroups(v) {
         });
     };
     for (const cfg of DOCUMENT_TAB_CONFIG) {
-        addGroup(getDocumentTabLabel(cfg), getDocumentTabItems(v, cfg).map(item => item && item.name));
+        addGroup(getDocumentTabLabel(cfg), getDocumentTabItems(v, cfg).map(item => item && item.name),
+            cfg.key === 'initial' ? 'visaIssuance' : cfg.key);
     }
     if (!groups.length && Array.isArray(PROCEDURE_CONFIG)) {
         for (const cfg of PROCEDURE_CONFIG) {
@@ -22743,7 +22789,7 @@ function getEasyModeDocGroups(v) {
             addGroup(proc.label, flattenDocGroups(proc.docs).map(id => {
                 const label = paradisoResolveDocDisplayLabel(id);
                 return label.indexOf('doc_') === 0 ? '' : label;
-            }));
+            }), cfg.key);
         }
     }
     return groups;
@@ -23628,6 +23674,12 @@ function indexOfficialTerms() {
         specific numbered form (별지 제34호) can never be over-generalized
         from a generic family match. */
 function findOfficialTermIdForKoreanLabel(koreanLabel) {
+    // The canonical display wording of the generic application form is the same
+    // document as the glossary's 별지 제34호 entry; reuse that existing term
+    // instead of inventing a new translation.
+    if (String(koreanLabel || '').replace(/\s+/g, '') === '통합신청서(신고서)[별지제34호서식]') {
+        koreanLabel = '통합신청서(별지 제34호 서식)';
+    }
     const directKey = normalizeOfficialTermMatchText(koreanLabel);
     if (directKey && OFFICIAL_TERM_BY_KO_TEXT[directKey]) return OFFICIAL_TERM_BY_KO_TEXT[directKey];
     if (typeof normalizeDocumentRequirementKey === 'function') {
@@ -26419,10 +26471,7 @@ function showVisaDocForAction(visaCode) {
   ];
 
   const TERM_REPLACEMENTS = [
-    [/^신청서$/, "통합신청서 (신고서) [별지 제34호서식]"],
-    [/^통합신청서$/, "통합신청서 (신고서) [별지 제34호서식]"],
-    [/^신청서\s*\(?별지\s*제?34호\s*서식\)?$/, "통합신청서 (신고서) [별지 제34호서식]"],
-    [/^통합신청서\s*\(별지\s*제?34호\s*서식\)$/, "통합신청서 (신고서) [별지 제34호서식]"],
+    // 신청서/통합신청서 wording is handled by paradisoCanonicalAppFormText (above).
     [/^여권$/, "여권 원본 및 사본"],
     [/^표준규격사진\s*1매$/, "표준규격사진 1매(3.5×4.5cm, 최근 6개월)"],
     [/^수수료$/, "수수료(절차별 금액 아래 수수료 안내 확인)"],
@@ -26444,14 +26493,11 @@ function showVisaDocForAction(visaCode) {
   function normalizeTerm(value, statusCode, procedureKey) {
     let text = clean(value);
 
-    // F-4: route through 재외동포법 시행규칙 별지 제1호서식 for stay procedures
-    if (statusCode === 'F-4' && procedureKey && F4_FORM_PROCEDURE_KEYS.has(procedureKey)) {
-      if (/^신청서$/.test(text) || /^통합신청서$/.test(text)
-          || /^신청서\s*\(?별지\s*제?34호\s*서식\)?$/.test(text)
-          || /^통합신청서\s*\(별지\s*제?34호\s*서식\)$/.test(text)
-          || /^재외동포\s+통합신청서\s*\(별지\s*제1호서식\)$/.test(text)) {
-        return typeof tx === 'function' ? tx('f4ApplicationForm') : '재외동포(F-4) 통합신청서(별지 제1호서식)';
-      }
+    // Application-form wording (single rule shared with the source-confirmed
+    // renderer): handles exact rows, F-4 별지 제1호 variants and comma-joined rows.
+    if (typeof paradisoCanonicalAppFormText === 'function') {
+      const formFixed = paradisoCanonicalAppFormText(text, procedureKey, statusCode);
+      if (formFixed !== text) return formFixed;
     }
 
     for (const pair of TERM_REPLACEMENTS) {
@@ -26489,15 +26535,29 @@ function showVisaDocForAction(visaCode) {
     for (const el of candidates) {
       if (el.dataset.paradisoDocTermNormalized === "1") continue;
       const text = clean(el.textContent);
-      if (!text || text.length > 90) continue;
+      if (!text || text.length > 200) continue;
 
       const procedureKey = el.closest('[data-procedure-panel]')?.dataset?.procedurePanel
           || el.closest('[data-docs-panel]')?.dataset?.docsPanel || '';
-      const normalized = normalizeTerm(text, statusCode, procedureKey);
-      if (normalized && normalized !== text) {
-        el.textContent = normalized;
-        el.dataset.paradisoDocTermNormalized = "1";
+      if (el.children.length === 0) {
+        const normalized = normalizeTerm(text, statusCode, procedureKey);
+        if (normalized && normalized !== text) {
+          el.textContent = normalized;
+          el.dataset.paradisoDocTermNormalized = "1";
+        }
+        continue;
       }
+      // Element has child markup (e.g. bilingual spans): rewrite text nodes only.
+      const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+      let node, changedAny = false;
+      while ((node = walker.nextNode())) {
+        const raw = node.nodeValue || '';
+        const t = clean(raw);
+        if (!t) continue;
+        const n = paradisoCanonicalAppFormText(t, procedureKey, statusCode);
+        if (n && n !== t) { node.nodeValue = n; changedAny = true; }
+      }
+      if (changedAny) el.dataset.paradisoDocTermNormalized = "1";
     }
   }
 
