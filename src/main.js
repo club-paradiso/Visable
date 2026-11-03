@@ -9,11 +9,13 @@
 import * as data from './data/fetch-json.js';
 import { DATA_PATHS, API_ROUTES } from './data/paths.js';
 import * as state from './state/storage.js';
+import * as render from './render/escape.js';
 
 const bridge = Object.freeze({
   version: 1,
   data: Object.freeze({ ...data, DATA_PATHS, API_ROUTES }),
-  state: Object.freeze({ ...state })
+  state: Object.freeze({ ...state }),
+  render: Object.freeze({ ...render })
 });
 
 if (typeof window !== 'undefined') {
