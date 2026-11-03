@@ -57,3 +57,6 @@ Layout
 CI: `.github/workflows/golden.yml` runs the suite on every pull request against a
 local static server, against the Vercel preview when a deployment becomes ready
 (needs the bypass secret), and on demand against any URL.
+
+## Readiness
+`boot()` waits for the search field, for `#civicLanding[data-cs-hydrated]` to leave `static`, and for the first `paradiso-language-applied` event (the bootstrap fires it after the i18n packs load; civic-search re-renders the landing in its handler). Typing before that event can hit the element being replaced — this was the only flake the suite has shown.

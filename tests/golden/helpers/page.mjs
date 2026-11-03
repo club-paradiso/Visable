@@ -17,6 +17,10 @@ export function trackErrors(page) {
  */
 export async function boot(page, { path = '/index.html', query = {}, routes = [], blockApi = true, waitForSearch = true } = {}) {
   if (blockApi) await page.route(API_GLOB, (route) => route.abort());
+  // Count the page's `paradiso-language-applied` events (installed before any page script runs).
+  // The home re-renders its search form on the first one, after the i18n packs load; typing before
+  // that can land on the element that is about to be replaced (seen under CI load, see waitForSearchReady).
+  await page.addInitScript(() => { window.addEventListener('paradiso-language-applied', () => { window.__goldenLanguageApplied = (window.__goldenLanguageApplied || 0) + 1; }); });
   for (const [pattern, handler] of routes) await page.route(pattern, handler);
   const errors = trackErrors(page);
   const qs = new URLSearchParams(query).toString();
@@ -35,6 +39,11 @@ export async function waitForSearchReady(page) {
   const landing = page.locator('#civicLanding');
   if (await landing.count()) {
     await expect(landing).not.toHaveAttribute('data-cs-hydrated', 'static', { timeout: 30_000 });
+    // The bootstrap applies the initial language once the i18n packs have loaded and civic-search.js
+    // re-renders the landing (a new #civicQuery) in that event's handler. Wait for that first event so a
+    // keypress cannot hit the element being replaced. Tolerant: pages whose packs never load (fail-closed
+    // specs) continue after the timeout instead of failing here.
+    await page.waitForFunction(() => (window.__goldenLanguageApplied || 0) >= 1, null, { timeout: 15_000 }).catch(() => {});
   }
 }
 
