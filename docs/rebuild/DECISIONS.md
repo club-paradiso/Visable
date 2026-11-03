@@ -234,3 +234,12 @@ the options considered, the evidence, and the reason.
 - **One module per cluster group, not the four-file split** suggested in the structure map (same as the
   job-code decision): cross-references inside the group are by bare name, which only one module scope can
   keep verbatim. Splitting is a follow-up refactor once the stubs are gone.
+
+### ADR-009 addendum 3 (2026-11-03, cross-module bare names)
+- Moved code resolves the names it calls through the global object (window functions / global lexical
+  scope). A function that moved to module B is **not** visible to module A by bare name, even though it was
+  when both were inline. Therefore the inline stub set for a move must include every moved function that
+  any *other extracted module* references, not only those index.html references. The mover scans
+  `src/**/*.js` for this; the golden suite is the safety net (it caught the first miss before commit).
+- Once the stubs are gone (end of Phase 3), these cross-module references become explicit `import`s; until
+  then the stubs are the documented seam.

@@ -12,6 +12,7 @@ import * as state from './state/storage.js';
 import * as render from './render/escape.js';
 import * as docs from './docs/normalize.js';
 import * as procedurePanels from './render/cards/procedure-panels.js';
+import * as sections from './render/cards/sections.js';
 import * as jurisdiction from './features/jurisdiction.js';
 import * as jobcode from './features/jobcode.js';
 import * as deadline from './features/deadline.js';
@@ -27,7 +28,7 @@ const bridge = Object.freeze({
   render: Object.freeze({ ...render }),
   docs: Object.freeze({ ...docs }),
   // Result-card renderers, merged from one module per cluster (names are unique across the inline code).
-  cards: Object.freeze({ ...procedurePanels }),
+  cards: Object.freeze({ ...procedurePanels, ...sections }),
   features: Object.freeze({ jurisdiction: Object.freeze({ ...jurisdiction }), jobcode: Object.freeze({ ...jobcode }), deadline: Object.freeze({ ...deadline }) })
 });
 

@@ -178,6 +178,7 @@ S: `scenarioPickerActiveSelector`, `scenarioPickerActivePanel`. E / R: `closeSce
 R: `renderProcedurePanel`, `renderProcedures`. D: `PROCEDURE_FALLBACK_SUMMARY_KEYS`. R: `renderProcedureFallbackSummary`.
 
 ### C20 F-4 route wizard — 21440–21700
+**Moved** (2026-11-03) to `src/render/cards/sections.js` (`Visable.cards`).
 - D: `ROUTE_WIZARD_CONFIG` 21440–21534 (95 lines).
 - `getRouteWizardConfig`, `isF4RouteWizardTarget`, `renderF4RouteChooser`, `selectF4Route`, `applyRouteSelection`.
 - S: `routePicker*`. Then `openRoutePicker`, `chooseRoute`, `resetF4Route`.
@@ -189,12 +190,14 @@ R: `renderProcedurePanel`, `renderProcedures`. D: `PROCEDURE_FALLBACK_SUMMARY_KE
 - R: `deadlineRowHtml`, `computeDeadlines`, `renderDeadlineCalculator`.
 
 ### C22 Result-card sections — 21841–22196
+**Moved** (2026-11-03) to `src/render/cards/sections.js` (`Visable.cards`).
 - R: `renderSourceConfirmedRequirements`, `subcodeSourceChip`.
 - P: `getParentVisaCode`, `isSubcodeOf`, `groupSearchResultsByParent`, `shouldAutoExpandSubcodeGroup`.
 - R: `renderSubcodePreview`, `renderExpandableSubcodeGroup`, `renderSubcodes` (21955–22081), `renderParentScopeNotice`, `renderCommonWarnings`, `renderSourceReferences`.
 - `openHikoreaGuide`, `renderHikoreaGuide`, `renderManualActions`, `renderNextActionArea`, `renderCardSummary`.
 
 ### C23 Visa issuance — 22197–22568
+**Moved** (2026-11-03) to `src/render/cards/sections.js` (`Visable.cards`).
 - Getters: `getVisaIssuanceRecord/Binding/Overlays`, `pickLocalizedManualText`.
 - R: `renderIssuance*` (doc list, groups, steps, warnings, overlay selector).
 - D / P: `GENERIC_VISA_ISSUANCE_EXCLUDED_CODES`, `isGenericVisaIssuanceExcluded`, `VISA_ISSUANCE_NOT_APPLICABLE_*`, `isVisaIssuanceNotApplicable`, `ISSUANCE_ROUTE_CHIP_INDEX` 22333–22340, `deriveIssuanceRouteChips`.

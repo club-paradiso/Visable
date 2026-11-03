@@ -98,7 +98,9 @@ const visaData = readJson('visa_data.json') || [];
 const issuance = readJson('data/visa_issuance_records.json') || {};
 const evidence = readJson('data/procedure_evidence_bindings.json') || {};
 const overlays = readJson('data/official_web_overlays.json') || {};
-const indexHtml = readText('index.html');
+// Frontend source corpus (scripts/frontend_modules.json modules first, then index.html): Phase 3 of the rebuild
+// moves inline index.html code into ES modules; a brace-matching slice must find the real definition, not the stub.
+const indexHtml = [...JSON.parse(readText('scripts/frontend_modules.json')).modules.map((rel) => readText(rel)), readText('index.html')].join('\n');
 const docsJs = readText('src/docs/normalize.js'); // Phase 3: normalisation/render helpers moved out of index.html
 
 const canonicalCodes = visaData
