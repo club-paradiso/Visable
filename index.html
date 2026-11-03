@@ -1457,6 +1457,63 @@ body.searched .ft { opacity: 1; }
 .jc2-sources { display: flex; flex-direction: column; gap: 0.4rem; border-top: 1px solid var(--bd2); padding-top: var(--sp-3); }
 .jc2-sources + .jc2-disclaimer { border-top: 0; padding-top: 0; }
 .jc2-pane { scroll-margin-top: 0.75rem; }
+/* ── 직종·업종 찾기 2차 단순화 (2026-11) ───────────────────────────
+   읽을 순서 = 할 순서: 질문 → 진행 단계 → ① 직종 고르기 → ② 업종 고르기
+   → 최종 확인·주의 → 소득 선택·메모 복사. */
+/* 진행 단계: 단계명과 상태만. 주의가 필요한 단계만 이유 한 줄을 남긴다. */
+.jc2:not(.jc2--answered) .jc2-stepper-wrap { display: none; }
+.jc2-stepper-wrap { padding: 0.55rem 0.65rem; }
+.jc2-stepper-h { margin-bottom: 0.4rem; font-size: 0.8rem; }
+.jc2-checklist { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.35rem; }
+@media (min-width: 720px) { .jc2-checklist { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.jc2-cl-item { padding: 0.45rem 0.55rem; gap: 0.4rem; border-left-width: 3px; }
+.jc2-cl-tx { font-size: 0.78rem; }
+.jc2-cl-plain { display: none; }
+.jc2-cl-reason { display: none; }
+.jc2-cl-top { flex-direction: column; align-items: flex-start; gap: 0.2rem; }
+/* ── 두 화면 구조 ─────────────────────────────────────────────
+   ask    : 질문 + 입력창 + 예시 + 짧은 안내문만
+   result : 내가 적은 내용 · 이해한 내용 · (필요하면) 확인 질문 · 직종 1개 · 업종 1개
+            · 경고 · 소득 · 메모 복사. 입력창은 숨기고 "다시 적기"로만 돌아간다. */
+.jc2[data-jc-step="ask"] :is(#jcInterpret, #jcWeakHelp, #jcRefine, #jcFollowup, #jcResultsGate, #jcSpecialStates,
+  #jcAmbiguity, #jcBoundaryWarn, #jcAiHint, .jc2-stepper-wrap, .jc2-trust, .jc2-summary, #jcFinalCheck, #jcTips, .jc2-sources) { display: none !important; }
+/* 직접 코드 찾기(고급)를 연 사람에게만 검색 화면에서 목록을 보여준다 */
+.jc2[data-jc-step="ask"] .jc2-results { display: none; }
+.jc2[data-jc-step="ask"]:has(.jc2-advanced[open]) .jc2-results { display: grid; }
+.jc2[data-jc-step="result"] :is(.jc2-hero, .jc2-searchpanel, .jc2-stepper-wrap) { display: none !important; }
+.jc2-stepbar { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; padding: 0.55rem 0.7rem; border-radius: var(--radius-md); background: var(--bg2); border: 1px solid var(--bd2); }
+.jc2-stepbar[hidden] { display: none; }
+.jc2-back { display: inline-flex; align-items: center; gap: 0.35rem; min-height: 44px; padding: 0.45rem 0.9rem; border-radius: var(--radius-full); border: 1.5px solid var(--ac); background: var(--bg1); color: var(--ac2); font: inherit; font-weight: 800; font-size: 0.9rem; cursor: pointer; }
+.jc2-back:hover { background: color-mix(in srgb, var(--ac) 10%, var(--bg1)); }
+.jc2-back:focus-visible { outline: 2px solid var(--ac); outline-offset: 2px; }
+.jc2-you-said { margin: 0; flex: 1 1 12rem; min-width: 0; font-size: 0.9rem; color: var(--t1); font-weight: 700; word-break: keep-all; overflow-wrap: anywhere; }
+.jc2-you-said-k { display: block; font-size: 0.74rem; font-weight: 600; color: var(--t3); }
+.jc2-you-said q { quotes: "“" "”"; }
+/* 결과 화면: 이해한 내용은 한 줄만, 세부는 접힘 그대로 */
+.jc2[data-jc-step="result"] .jc2-pane-tag { display: none; }
+.jc2[data-jc-step="result"] .jc2-interpret { padding: 0.6rem 0.75rem; }
+/* ① 직종 ② 업종 — 패널 제목 앞에 순서 번호 */
+.jc2-results { counter-reset: jcstep; }
+.jc2-pane { counter-increment: jcstep; }
+.jc2-pane-h .jc2-pane-ic { display: none; }
+.jc2-pane-h::before { content: counter(jcstep); display: inline-grid; place-items: center; flex: none; width: 1.6rem; height: 1.6rem; border-radius: 50%; background: var(--ac); color: #fff; font-size: 0.85rem; font-weight: 800; }
+[data-theme="dark"] .jc2-pane-h::before { color: #0f172a; }
+.jc2-pane-h .jc2-pane-tag { flex-basis: 100%; margin-left: 2rem; }
+.jc2.jc-filter-occupation .jc2-pane-h::before, .jc2.jc-filter-industry .jc2-pane-h::before { content: none; }
+/* 카드: 코드·이름·가까움·이유·선택만 바로 보이게 */
+.jc2-card-more .jc2-card-meta, .jc2-card-more .jc2-card-fit { margin-top: 0.35rem; }
+/* 입력 팁은 접힘 (같은 주의 문구가 아래 경고·안내에 항상 보임). 법적 주의 배너는 펼친 채 유지 */
+.jc2-tips-fold > summary { cursor: pointer; list-style: none; margin-bottom: 0; min-height: 32px; display: flex; align-items: center; gap: 0.35rem; }
+.jc2-tips-fold > summary::-webkit-details-marker { display: none; }
+.jc2-tips-fold > summary::after { content: ' ⌄'; }
+.jc2-tips-fold[open] > summary::after { content: ' ⌃'; }
+.jc2-tips-fold[open] > summary { margin-bottom: 0.5rem; }
+.jc2-legal-banner + .jc2-tips-fold { margin-top: 0.6rem; }
+/* 최종 확인: 4줄 목록 → 촘촘한 2열 */
+.jc2-final { padding: 0.6rem 0.75rem; }
+.jc2-final-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.3rem 0.8rem; }
+.jc2-final-list li:last-child { grid-column: 1 / -1; }
+@media (max-width: 420px) { .jc2-final-list { grid-template-columns: 1fr; } }
 /* After a search the starter helpers fold away (jcRevealAnswer); a "show
    examples again" affordance is the search box itself — clearing it restores them. */
 .jc2--answered .jc2-examples-label, .jc2--answered #jcChips, .jc2--answered .jc2-explain { display: none; }
@@ -15536,6 +15593,13 @@ html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important
                 <symbol id="jc-i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
             </svg>
 
+            <!-- Two screens: ask (input only) → result (one recommendation per side +
+                 memo). The bar shows what was typed and is the only way back. -->
+            <div class="jc2-stepbar" id="jcStepbar" hidden>
+                <button type="button" class="jc2-back" data-action="jobcode-back"><svg class="jc-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#jc-i-pencil"/></svg><span data-i18n="jobCodeBack">다시 적기</span></button>
+                <p class="jc2-you-said"><span class="jc2-you-said-k" data-i18n="jobCodeYouWrote">내가 적은 내용</span> <q id="jcYouSaid"></q></p>
+            </div>
+
             <!-- 1 · Ask + search first: the one action everyone needs -->
             <div class="jc2-hero">
                 <h3 class="jc2-ask" id="jcAskHeading">어떤 일을 하나요?</h3>
@@ -15592,15 +15656,6 @@ html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important
                 </details>
             </div>
 
-            <!-- 2 · Trust + scope. UX-08 `Annotation / Employment` (node 442:99):
-                 "신고 대상 ≠ 취업 가능 — AMBER 경고 필수". Finding a code tells you
-                 how to *report* work, never that the work is permitted for your
-                 status. That needs 체류자격외활동허가 or an equivalent, which this
-                 tool does not assess. Shown always, not only for legally
-                 sensitive inputs. -->
-            <div class="jc2-trust">
-                <p class="jc2-scope-warn" id="jcScopeWarn" role="note"><svg class="jc-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#jc-i-alert"/></svg><span data-i18n="jobCodeScopeWarning">코드를 찾았다고 해서 그 일을 할 수 있다는 뜻은 아니에요. 신고 대상인지와 취업이 허용되는지는 서로 다른 문제이며, 체류자격에 따라 별도 허가가 필요할 수 있어요. 반드시 관할 출입국·외국인관서나 1345에서 확인하세요.</span></p>
-            </div>
 
             <!-- guidance / status notes -->
             <div id="jcAmbiguity" class="jc2-note jc2-note--ambig" role="status" hidden></div>
@@ -15629,6 +15684,14 @@ html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important
                  다음 행동을 안내해요". Rendered by renderEmploymentSpecialStates(). -->
             <div id="jcSpecialStates" class="jc2-special" role="status" aria-live="polite" hidden></div>
 
+            <!-- 3.8 · Guided stepper — a compact progress strip that updates with
+                 every search/selection. Rendered by renderEmploymentChecklist()
+                 from buildEmploymentChecklistState(). -->
+            <div class="jc2-stepper-wrap">
+                <p class="jc2-stepper-h"><svg class="jc-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#jc-i-list-checks"/></svg><span id="jcStepperH">신고 준비 4단계</span></p>
+                <ol class="jc2-checklist" id="jcChecklist" aria-label="신고 준비 단계" aria-live="polite"></ol>
+            </div>
+
             <!-- 4 · Results (Step 4: candidates, shown after interpretation/clarification) -->
             <div class="jc2-results" id="jcResults">
                 <section class="jc2-pane" data-pane="occupation">
@@ -15641,13 +15704,6 @@ html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important
                 </section>
             </div>
 
-            <!-- 3.8 · Guided stepper — a compact progress strip that updates with
-                 every search/selection. Rendered by renderEmploymentChecklist()
-                 from buildEmploymentChecklistState(). -->
-            <div class="jc2-stepper-wrap">
-                <p class="jc2-stepper-h"><svg class="jc-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#jc-i-list-checks"/></svg><span id="jcStepperH">신고 준비 4단계</span></p>
-                <ol class="jc2-checklist" id="jcChecklist" aria-label="신고 준비 단계" aria-live="polite"></ol>
-            </div>
 
             <!-- 4.5 · 연간소득 reminder — official reporting includes annual income -->
             <div class="jc2-income-card" id="jcIncomeReminder" hidden>
@@ -15656,41 +15712,25 @@ html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important
                 <span id="jcIncomeReminderBody">하이코리아 신고 화면에서 실제 연간소득 구간을 선택해야 합니다.</span></span>
             </div>
 
-            <!-- 4.8 · Step 5 · Final HiKorea checklist (plain reminder; never "completed") -->
-            <div class="jc2-final" id="jcFinalCheck" hidden>
-                <p class="jc2-final-h"><svg class="jc-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#jc-i-flag"/></svg><span id="jcFinalCheckH">하이코리아에서 마지막으로 확인할 것</span></p>
-                <ul class="jc2-final-list">
-                    <li><span class="jc2-final-ic" aria-hidden="true"><svg class="jc-ic" viewBox="0 0 24 24" focusable="false"><use href="#jc-i-briefcase"/></svg></span><span id="jcFinalOcc">직종 — 내가 하는 일</span></li>
-                    <li><span class="jc2-final-ic" aria-hidden="true"><svg class="jc-ic" viewBox="0 0 24 24" focusable="false"><use href="#jc-i-factory"/></svg></span><span id="jcFinalInd">업종 — 회사나 사업장이 하는 일</span></li>
-                    <li><span class="jc2-final-ic" aria-hidden="true"><svg class="jc-ic" viewBox="0 0 24 24" focusable="false"><use href="#jc-i-wallet"/></svg></span><span id="jcFinalIncome">연간소득 구간 — 하이코리아에서 선택</span></li>
-                    <li><span class="jc2-final-ic" aria-hidden="true"><svg class="jc-ic" viewBox="0 0 24 24" focusable="false"><use href="#jc-i-check-circle"/></svg></span><span id="jcFinalConfirm">최종 신고는 하이코리아에서 직접 — Visable은 신고를 대신 완료하지 않아요.</span></li>
-                </ul>
-            </div>
 
-            <!-- 5.5 · 하이코리아 입력 팁 + 공식 기준 (analyzer warnings + tips) -->
-            <div id="jcTips" class="jc2-tips" role="note" hidden></div>
 
-            <!-- 6 · Warnings (pictograms come from CSS so the i18n HTML stays plain) -->
-            <!-- 기준 배지·데이터 범위는 결과를 읽는 데 필요 없어 아래 출처 영역으로 옮김 -->
-            <div class="jc2-sources">
-                <div class="jc2-badges">
-                    <span class="jc2-badge jc2-badge--trust"><svg class="jc-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#jc-i-check-circle"/></svg><span id="jcBadgeTrust" data-i18n="jobCodeBadgeTrust">기준: KSCO8 · KSIC11</span></span>
-                    <span class="jc2-badge jc2-badge--caution"><svg class="jc-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#jc-i-alert"/></svg><span id="jcBadgeCaution" data-i18n="jobCodeBadgeCaution">최종 신고 전 HiKorea에서 재확인</span></span>
-                </div>
-                <div id="jcCoverageNote" class="jc2-coverage" aria-live="polite"></div>
-            </div>
-            <div class="jc2-disclaimer" data-i18n-html="jobCodeDisclaimer">
-                <p>이 검색은 <b>취업정보 신고용 분류 참고</b>입니다. 체류자격 허가 가능성, E-7 직종 적합성, 자격외활동 허가 여부를 판단하지 않습니다.</p>
-                <p>최종 신고 코드는 <b>HiKorea 신고 화면 또는 1345</b>에서 반드시 확인하세요.</p>
-                <p>직종·업종 공식 목록은 <b>국가데이터처 통계분류포털</b>에서 확인할 수 있습니다 → <a href="https://kssc.mods.go.kr" target="_blank" rel="noopener">kssc.mods.go.kr</a></p>
-                <p>여러 곳에서 일하면 <b>주된 직장</b>(근로시간이 가장 많은 곳) 1곳을 기준으로 신고합니다.</p>
+
+
+            <!-- Trust + scope — sits next to the copy action, where the codes are used. UX-08 `Annotation / Employment` (node 442:99):
+                 "신고 대상 ≠ 취업 가능 — AMBER 경고 필수". Finding a code tells you
+                 how to *report* work, never that the work is permitted for your
+                 status. That needs 체류자격외활동허가 or an equivalent, which this
+                 tool does not assess. Shown always, not only for legally
+                 sensitive inputs. -->
+            <div class="jc2-trust">
+                <p class="jc2-scope-warn" id="jcScopeWarn" role="note"><svg class="jc-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#jc-i-alert"/></svg><span data-i18n="jobCodeScopeWarning">코드를 찾았다고 해서 그 일을 할 수 있다는 뜻은 아니에요. 신고 대상인지와 취업이 허용되는지는 서로 다른 문제이며, 체류자격에 따라 별도 허가가 필요할 수 있어요. 반드시 관할 출입국·외국인관서나 1345에서 확인하세요.</span></p>
             </div>
 
             <!-- 5 · Selected summary. Static until something is picked, then a
                  slim sticky bar — it no longer covers the results while the
                  person is still reading candidates. -->
             <div class="jc2-summary" id="jcSummary" aria-label="선택 요약" data-i18n-attr="aria-label:jobCodeSummaryAria">
-                <div class="jc2-sum-grid">
+                <div class="jc2-sum-grid" role="status" aria-live="polite">
                     <div class="jc2-sum-row"><span class="jc2-sum-k"><svg class="jc-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#jc-i-briefcase"/></svg><span data-i18n="jobCodeSelectedOcc">선택한 직종</span></span><span class="jc2-sum-v" id="jcSelOcc" data-i18n="jobCodeNotSelected">아직 선택 안 함</span></div>
                     <div class="jc2-sum-row"><span class="jc2-sum-k"><svg class="jc-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#jc-i-factory"/></svg><span data-i18n="jobCodeSelectedInd">선택한 업종</span></span><span class="jc2-sum-v" id="jcSelInd" data-i18n="jobCodeNotSelected">아직 선택 안 함</span></div>
                     <div class="jc2-sum-row">
@@ -15710,6 +15750,37 @@ html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important
                     </div>
                 </div>
                 <button type="button" class="jc2-copy" id="jcCopyBtn" data-action="copy-jobcode-memo"><svg class="jc-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#jc-i-clipboard"/></svg><span id="jcCopyLabel" data-i18n="jobCodeCopyMemo">HiKorea 입력용 메모 복사</span></button>
+            </div>
+
+            <!-- 4.8 · Step 5 · Final HiKorea checklist (plain reminder; never "completed") -->
+            <div class="jc2-final" id="jcFinalCheck" hidden>
+                <p class="jc2-final-h"><svg class="jc-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#jc-i-flag"/></svg><span id="jcFinalCheckH">하이코리아에서 마지막으로 확인할 것</span></p>
+                <ul class="jc2-final-list">
+                    <li><span class="jc2-final-ic" aria-hidden="true"><svg class="jc-ic" viewBox="0 0 24 24" focusable="false"><use href="#jc-i-briefcase"/></svg></span><span id="jcFinalOcc">직종 — 내가 하는 일</span></li>
+                    <li><span class="jc2-final-ic" aria-hidden="true"><svg class="jc-ic" viewBox="0 0 24 24" focusable="false"><use href="#jc-i-factory"/></svg></span><span id="jcFinalInd">업종 — 회사나 사업장이 하는 일</span></li>
+                    <li><span class="jc2-final-ic" aria-hidden="true"><svg class="jc-ic" viewBox="0 0 24 24" focusable="false"><use href="#jc-i-wallet"/></svg></span><span id="jcFinalIncome">연간소득 구간 — 하이코리아에서 선택</span></li>
+                    <li><span class="jc2-final-ic" aria-hidden="true"><svg class="jc-ic" viewBox="0 0 24 24" focusable="false"><use href="#jc-i-check-circle"/></svg></span><span id="jcFinalConfirm">최종 신고는 하이코리아에서 직접 — Visable은 신고를 대신 완료하지 않아요.</span></li>
+                </ul>
+            </div>
+
+            <!-- 5.5 · 하이코리아 입력 팁 + 공식 기준 (analyzer warnings + tips) -->
+            <div id="jcTips" class="jc2-tips" role="note" hidden></div>
+
+            <!-- 기준 배지·데이터 범위는 결과를 읽는 데 필요 없어 아래 출처 영역으로 옮김 -->
+            <div class="jc2-sources">
+                <div class="jc2-badges">
+                    <span class="jc2-badge jc2-badge--trust"><svg class="jc-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#jc-i-check-circle"/></svg><span id="jcBadgeTrust" data-i18n="jobCodeBadgeTrust">기준: KSCO8 · KSIC11</span></span>
+                    <span class="jc2-badge jc2-badge--caution"><svg class="jc-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#jc-i-alert"/></svg><span id="jcBadgeCaution" data-i18n="jobCodeBadgeCaution">최종 신고 전 HiKorea에서 재확인</span></span>
+                </div>
+                <div id="jcCoverageNote" class="jc2-coverage" aria-live="polite"></div>
+            </div>
+
+            <!-- 6 · Warnings (pictograms come from CSS so the i18n HTML stays plain) -->
+            <div class="jc2-disclaimer" data-i18n-html="jobCodeDisclaimer">
+                <p>이 검색은 <b>취업정보 신고용 분류 참고</b>입니다. 체류자격 허가 가능성, E-7 직종 적합성, 자격외활동 허가 여부를 판단하지 않습니다.</p>
+                <p>최종 신고 코드는 <b>HiKorea 신고 화면 또는 1345</b>에서 반드시 확인하세요.</p>
+                <p>직종·업종 공식 목록은 <b>국가데이터처 통계분류포털</b>에서 확인할 수 있습니다 → <a href="https://kssc.mods.go.kr" target="_blank" rel="noopener">kssc.mods.go.kr</a></p>
+                <p>여러 곳에서 일하면 <b>주된 직장</b>(근로시간이 가장 많은 곳) 1곳을 기준으로 신고합니다.</p>
             </div>
         </div>
     </div>
@@ -17129,7 +17200,9 @@ function renderJobcodeCard(row, query, terms, opts = {}) {
     const fit = `<div class="jc2-card-fit">${jcIcon('check-circle')}<span><b>${escapeHtml(h.fitLabel)}</b>: ${escapeHtml(h.fitText)}</span></div>`;
     const path = row.path_ko ? `<div class="jc2-card-path">${escapeHtml(row.path_ko)}</div>` : '';
     // Progressive disclosure: the longer caveat + path hide behind "자세히 보기".
+    const meta = `<div class="jc2-card-meta">${escapeHtml(lvLabel)} · ${srcChip}${leafTag ? ' ' + leafTag : ''}</div>`;
     const details = `<details class="jc2-card-more"><summary>${escapeHtml(jcChecklistCopy('card.detail'))}</summary>`
+        + meta + fit
         + `<div class="jc2-card-other">${jcIcon('swap')}<span><b>${escapeHtml(h.otherLabel)}</b>: ${escapeHtml(h.otherText)}</span></div>${path}</details>`;
     const isSel = jcSelectedCode(type) === code;
     // Non-Korean UI shows the translated name first; the Korean official name
@@ -17137,10 +17210,9 @@ function renderJobcodeCard(row, query, terms, opts = {}) {
     const koName = jcName(row);
     const koLine = name !== koName ? `<div class="jc2-card-name-ko" lang="ko">${escapeHtml(koName)}</div>` : '';
     return `<div class="jc2-card${isLeaf ? ' jc2-card--leaf' : ''}" role="listitem" data-type="${type}" data-code="${escapeHtml(code)}">
-        <div class="jc2-card-top"><span class="jc2-code">${escapeHtml(code)}</span>${badge}${confChip}${leafTag}</div>
+        <div class="jc2-card-top"><span class="jc2-code">${escapeHtml(code)}</span>${badge}${confChip}</div>
         <div class="jc2-card-name">${hl(name, terms || [])}</div>${koLine}
-        <div class="jc2-card-meta">${escapeHtml(lvLabel)} · ${srcChip}</div>
-        ${why}${fit}${details}
+        ${why}${details}
         <button type="button" class="jc2-select${isSel ? ' is-sel' : ''}" data-action="select-jobcode" data-type="${type}" data-code="${escapeHtml(code)}" aria-pressed="${isSel}">${jcSelectLabel(isSel)}</button>
     </div>`;
 }
@@ -17148,7 +17220,7 @@ function jcSelectLabel(selected) {
     const zh = currentLanguage === 'zh-CN', en = jcEnLike();
     return selected
         ? jcIcon('check') + escapeHtml(zh ? '已选择' : en ? 'Selected' : '선택됨')
-        : escapeHtml(zh ? '选择' : en ? 'Select' : '선택');
+        : escapeHtml(zh ? '选这个' : en ? 'Choose this' : '이걸로 선택');
 }
 function jobcodeEmptyHtml(type) {
     const en = jcEnLike();
@@ -17177,9 +17249,11 @@ function renderJobcodeList(rows, box, type, query, terms, opts = {}) {
     if (opts.collapse) {
         // Reporting-level (leaf) codes first; show top 2, hide the rest under "더 보기".
         const ordered = [...rows.filter(jcIsLeaf), ...rows.filter(r => !jcIsLeaf(r))].slice(0, MAX);
-        const visible = ordered.slice(0, 2);
-        const hidden = ordered.slice(2);
         const ambiguous = !!opts.ambiguous;
+        // One recommendation when the reading is clear; two when it genuinely isn't.
+        const nVisible = ambiguous ? 2 : 1;
+        const visible = ordered.slice(0, nVisible);
+        const hidden = ordered.slice(nVisible);
         let html = '', othersShown = false;
         if (ambiguous) {
             // Avoid false certainty: don't single out a "closest" candidate.
@@ -17191,7 +17265,7 @@ function renderJobcodeList(rows, box, type, query, terms, opts = {}) {
             if (visible[1]) { html += groupHead(jcChecklistCopy('group.others')); othersShown = true; html += card(visible[1]); }
         }
         if (hidden.length) {
-            html += `<button type="button" class="jc2-more-btn" aria-expanded="false">${escapeHtml(jcChecklistCopy('more.show'))} (${hidden.length})</button>`;
+            html += `<button type="button" class="jc2-more-btn" aria-expanded="false">${escapeHtml(jcChecklistCopy('more.show'))}</button>`;
             html += `<div class="jc2-more" hidden>` + ((!ambiguous && !othersShown) ? groupHead(jcChecklistCopy('group.others')) : '') + hidden.map(card).join('') + `</div>`;
         }
         box.innerHTML = html;
@@ -17200,7 +17274,7 @@ function renderJobcodeList(rows, box, type, query, terms, opts = {}) {
             const more = box.querySelector('.jc2-more');
             const show = more.hidden; more.hidden = !show;
             moreBtn.setAttribute('aria-expanded', String(show));
-            moreBtn.textContent = show ? jcChecklistCopy('more.hide') : `${jcChecklistCopy('more.show')} (${hidden.length})`;
+            moreBtn.textContent = show ? jcChecklistCopy('more.hide') : jcChecklistCopy('more.show');
         };
         return;
     }
@@ -17261,6 +17335,7 @@ async function openJobCodeModal() {
     _jcAnalysis = null; _jcResultCounts = { occupation: null, industry: null }; _jcClarificationAnswered = false;
     _jcFlow = { state: 'idle', revealed: false };
     jcResetAnswered();
+    jcSetStep('ask');
     setJobcodeFilter('all');
     setJobcodeLevel('all');
     const input = document.getElementById('jcSearchInput');
@@ -17326,21 +17401,42 @@ function renderJobcodeGuidance(query, jobRows, indRows) {
 function jcRevealAnswer() {
     const root = document.querySelector('#jobCodeModalOverlay .jc2');
     if (!root) return;
-    root.classList.add('jc2--answered');
-    const target = ['jcRefine', 'jcInterpret', 'jcResults']
-        .map((id) => document.getElementById(id))
-        .find((el) => el && !el.hidden);
-    if (target && typeof target.scrollIntoView === 'function') {
-        const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        try { target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }); } catch (_) {}
-    }
+    root.classList.add('jc2--answered', 'jc2--has-query');
+    jcSetStep('result');
+}
+// Two screens. 'ask' = the question and the input, nothing else. 'result' =
+// what Visable understood, one recommendation per side, the memo. The input
+// is hidden on 'result' so a slow typist never sees the screen change under
+// them; "다시 적기" is the one way back.
+function jcSetStep(step) {
+    const root = document.querySelector('#jobCodeModalOverlay .jc2');
+    if (!root) return;
+    root.dataset.jcStep = step === 'result' ? 'result' : 'ask';
+    if (step !== 'result') root.classList.remove('jc2--answered');
+    const bar = document.getElementById('jcStepbar');
+    if (bar) bar.hidden = step !== 'result';
+    const said = document.getElementById('jcYouSaid');
+    const input = document.getElementById('jcSearchInput');
+    if (said) said.textContent = input ? input.value.trim() : '';
+    const body = root.closest('.modal-body') || root;
+    if (body && typeof body.scrollTo === 'function') { try { body.scrollTo({ top: 0 }); } catch (_) { body.scrollTop = 0; } }
+}
+function jcGoBackToAsk() {
+    jcSetStep('ask');
+    const input = document.getElementById('jcSearchInput');
+    if (input) { input.focus(); if (typeof input.select === 'function') input.select(); }
 }
 function jcResetAnswered() {
     const root = document.querySelector('#jobCodeModalOverlay .jc2');
     if (root) root.classList.remove('jc2--answered');
 }
+function jcSetHasQuery(on) {
+    const root = document.querySelector('#jobCodeModalOverlay .jc2');
+    if (root) root.classList.toggle('jc2--has-query', !!on);
+}
 function renderJobcodeResults(query) {
     if (!(query || '').trim()) jcResetAnswered();
+    jcSetHasQuery((query || '').trim());
     const jobBox = document.getElementById('jcJobResults'), indBox = document.getElementById('jcIndResults'), badge = document.getElementById('jcCountBadge');
     if (!jobBox || !indBox || !_jobcodeData) return;
     const q = (query || '').trim();
@@ -17393,11 +17489,10 @@ function selectJobcode(type, code) {
         btn.setAttribute('aria-pressed', String(on));
         btn.innerHTML = jcSelectLabel(on);
     });
-    const typeLabel = currentLanguage === 'zh-CN' ? (JC_TYPE_LABEL_ZH[type] || type) : jcEnLike() ? (JC_TYPE_LABEL_EN[type] || type) : JC_TYPE_LABEL[type];
     const bothPicked = _jcSelected.occupation && _jcSelected.industry;
-    showToast(bothPicked
-        ? (currentLanguage === 'zh-CN' ? '职业·行业都选好了！请在下方摘要中复制 HiKorea 备忘录。' : jcEnLike() ? 'Occupation & industry both picked! Copy the HiKorea memo from the summary below.' : '직종·업종 모두 선택 완료! 아래 요약에서 HiKorea 입력용 메모를 복사하세요.')
-        : (currentLanguage === 'zh-CN' ? `已选择${typeLabel}：${code} ${jcName(row)}` : jcEnLike() ? `${typeLabel} selected: ${code} ${jcName(row)}` : `${typeLabel} 선택: ${code} ${jcName(row)}`), 'success');
+    // No toast — on a phone it covered the income select and the copy button.
+    // The pressed button reads "✓ 선택됨", the summary row (role=status) updates,
+    // and the screen moves to the next thing to pick.
     // 한쪽만 골랐으면 나머지(직종↔업종) 후보로 바로 이동 — 휴대폰에서 스크롤로 찾지 않아도 된다.
     if (!bothPicked && _jcFilter === 'all') {
         const otherType = type === 'occupation' ? 'industry' : 'occupation';
@@ -17742,6 +17837,7 @@ function runEmploymentSpecialAction(action) {
     const input = document.getElementById('jcSearchInput');
     const focusInput = (select) => {
         if (!input) return;
+        jcSetStep('ask');
         input.focus();
         if (select && typeof input.select === 'function') input.select();
     };
@@ -17839,8 +17935,11 @@ function renderEmploymentTips(analysis) {
         html += `<div class="jc2-legal-banner"><div class="jc2-legal-h">${jcIcon('alert')}<span>${zh ? '注意 — 有代码并不代表该工作·施术被许可' : en ? 'Caution — having a code does not mean the job/procedure is permitted' : '주의사항 — 코드가 있다고 취업·시술이 허용되는 것은 아닙니다'}</span></div>`
             + `<ul class="jc2-tips-list">` + legal.map((w) => `<li>${escapeHtml(w)}</li>`).join('') + `</ul></div>`;
     }
-    html += `<div class="jc2-tips-h">${jcIcon('pin')}<span>${zh ? 'HiKorea 录入提示 · 官方标准' : en ? 'HiKorea input tips · official standards' : '하이코리아 입력 팁 · 공식 기준'}</span></div>`
-        + `<ul class="jc2-tips-list">` + (sens.length && legal.length ? rest : warns).map((w) => `<li>${escapeHtml(w)}</li>`).join('') + `</ul>`;
+    const tipItems = (sens.length && legal.length ? rest : warns);
+    if (tipItems.length) {
+        html += `<details class="jc2-tips-fold"><summary class="jc2-tips-h">${jcIcon('pin')}<span>${zh ? 'HiKorea 录入提示 · 官方标准' : en ? 'HiKorea input tips · official standards' : '하이코리아 입력 팁 · 공식 기준'}</span></summary>`
+            + `<ul class="jc2-tips-list">` + tipItems.map((w) => `<li>${escapeHtml(w)}</li>`).join('') + `</ul></details>`;
+    }
     el.hidden = false;
     el.innerHTML = html;
 }
@@ -17949,6 +18048,7 @@ async function searchJobcodeWithAI() {
     const inputEl = document.getElementById('jcSearchInput');
     const input = inputEl ? inputEl.value.trim() : '';
     if (!input) { showToast(currentLanguage === 'zh-CN' ? '请在搜索框中填写您的工作或营业场所（例：中餐厅厨师长）。' : jcEnLike() ? 'Please describe your job or workplace in the search box (e.g. Chinese-restaurant head chef).' : "검색창에 본인의 일이나 사업장을 적어주세요 (예: 중식당 주방장)."); return; }
+    jcSetStep('result');
     const requestId = ++_jcAnalysisRequest;
     const isCurrentRequest = () => requestId === _jcAnalysisRequest && inputEl.value.trim() === input;
     const jobBox = document.getElementById('jcJobResults'), indBox = document.getElementById('jcIndResults'), spinner = document.getElementById('jcAiSpinner');
@@ -18024,7 +18124,7 @@ async function searchJobcodeWithAI() {
             if (jobBox && !jobRows.length) jobBox.innerHTML = pendHtml;
             if (indBox && !indRows.length) indBox.innerHTML = pendHtml;
             document.querySelectorAll('.jc2-needcode-btn[data-jc-research]').forEach((b) => {
-                b.onclick = () => { const inp = document.getElementById('jcSearchInput'); if (inp) { inp.value = ''; inp.focus(); } };
+                b.onclick = () => { jcSetStep('ask'); const inp = document.getElementById('jcSearchInput'); if (inp) { inp.value = ''; inp.focus(); } };
             });
         }
         // Update the guided checklist + weak-input help from what's actually shown.
@@ -18035,7 +18135,7 @@ async function searchJobcodeWithAI() {
         jcApplyFlow();
         jcRevealAnswer();
         const badge = document.getElementById('jcCountBadge');
-        if (badge) badge.hidden = false;
+        if (badge) badge.hidden = true;
         if (badge) badge.textContent = currentLanguage === 'zh-CN' ? `职业 ${jobRows.length} · 行业 ${indRows.length}` : jcEnLike() ? `Occupation ${jobRows.length} · Industry ${indRows.length}` : `직종 ${jobRows.length} · 업종 ${indRows.length}`;
         if (fallbackNote) {
             const noteHtml = `<div class="jc2-empty" style="color:var(--color-warning);padding:0.6rem;">${escapeHtml(fallbackNote)}</div>`;
@@ -24626,14 +24726,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             clearTimeout(_jcSearchDebounce); clearTimeout(_jcAutoAnalyzeDebounce);
             const v = e.target.value;
             _jcSearchDebounce = setTimeout(() => renderJobcodeResults(v), 200);
-            // 자연어처럼 보이는 입력은 타이핑이 멈추면 자동으로 심층 분석 실행 —
-            // 사용자가 'AI 검색' 버튼을 몰라도 해석·후보·확인질문까지 보이게 한다.
-            if (jcLooksNaturalQuery(v)) {
-                _jcAutoAnalyzeDebounce = setTimeout(() => {
-                    const cur = jcSearchInput.value.trim();
-                    if (cur && cur === v.trim() && (!_jcAnalysis || _jcAnalysis.input !== cur)) searchJobcodeWithAI();
-                }, 900);
-            }
+            // 타이핑이 멈췄다고 자동 분석하지 않는다 — 결과 화면으로 넘어가 버리면
+            // 천천히 입력하는 사람은 쓰던 문장을 잃는다. Enter 또는 버튼으로만 찾는다.
         });
         jcSearchInput.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') { clearTimeout(_jcSearchDebounce); clearTimeout(_jcAutoAnalyzeDebounce); searchJobcodeWithAI(); }
@@ -24807,6 +24901,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 },
                 'search-jobcode-ai': () => searchJobcodeWithAI(),
+                'jobcode-back': () => jcGoBackToAsk(),
                 'set-jobcode-filter': () => setJobcodeFilter(actionBtn.dataset.jcFilter),
                 'set-jobcode-level': () => setJobcodeLevel(actionBtn.dataset.jcLevel),
                 'search-jobcode-chip': () => searchJobcodeChip(actionBtn.dataset.jcChip),
