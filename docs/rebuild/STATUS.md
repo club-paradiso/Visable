@@ -9,7 +9,7 @@ from the first unfinished step. Never redo a phase recorded as done and verified
 - Working branch: `claude/visable-frontend-rebuild-0289z4` (harness-designated; see DECISIONS.md ADR-001)
 - Base: `origin/main` @ 5082d9d (Merge PR #757, address helper tool)
 - Open PRs by this effort: **#758** https://github.com/club-paradiso/Visable/pull/758 (draft; Phase 0)
-- Current phase: **Phase 1 — Repo diet and data canon** (in progress; Phase 0 done)
+- Current phase: **Phase 2 — Build tooling (Vite)** (in progress; Phases 0–1 done)
 
 ## Environment facts (verified this session)
 - Node v22.23.4, npm 10.9.9, Python 3.13.18
@@ -67,7 +67,8 @@ Done (verified 2026-11-03):
 - Preview spot checks on that deployment via the Vercel MCP fetch (SSO-protected URL, share link): `/manual.html` 200 with the two PDF links, `/docs/forms_official/FORM_HELPER_COVERAGE_20260923.md` 200, `/data/i18n/manifest.json` 200, `/api/enforcement/law-probe` 200 JSON (function bundles `backend/data/enforcement/legal_rules.json` correctly).
 - `JOBCODE_JSON_PATHS` trimmed to `./data/jobcode_master.json` (f3bb0d7) with a new golden test `tests/golden/specs/tools.spec.mjs` (finder loads the canonical file only; occupation 2970 found). Verified locally 5/5 runs on desktop-1280 + mobile-390.
 - history-rewrite-plan.md written (not executed).
-Open: `backend/data/manual_search_index.sqlite3` stays committed (Railway dependency, owner decision 4); golden suite must be green against the modified tree before Phase 1 is closed.
+- **Exit met (2026-11-03):** golden suite against the modified working tree (5f325b8 / b9cfad5, repo root served) 3× in a row: 100 passed / 6 skipped each (2.1–2.2 min). Deploy size before/after: 3,230 files / 647.1 MB → 783 files / 117.9 MB (Vercel: "Removed 2447 ignored files"). Checkout size unchanged (nothing deleted from git; history rewrite is the owner's call, history-rewrite-plan.md).
+- Phase 1 status: **done and verified.** Left open by design: `backend/data/manual_search_index.sqlite3` stays committed (owner decision 4).
 
 Pre-measurements (verified 2026-11-03):
 Pre-measurements (verified 2026-11-03):
