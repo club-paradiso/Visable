@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
-"""Build the readable manual reader (manual.html) from the 2026.10 Markdown sources.
+"""Build the readable manual reader (manual.html) from the current Markdown sources (visa 2026.10, stay 2026.11).
 
 Sources (digest-pinned in data/manual-reader/catalog.json):
   docs/source-manuals/2026-10-19/markdown/visa_manual_261019.md  사증발급 안내매뉴얼 2026.10 (2026-10-19)
-  docs/source-manuals/2026-10-19/markdown/stay_manual_261019.md  외국인체류 안내매뉴얼 2026.10 (2026-10-19)
+  docs/source-manuals/2026-11-02/markdown/stay_manual_261102.md  외국인체류 안내매뉴얼 2026.11 (2026-11-02)
 
 The two Markdown files are `npx kordoc@^4` (4.24.1) conversions of the 배포용 HWPs
-(docs/source-manuals/2026-10-19/*.hwp), made the same way as the 2026.9 ones: same
-images, same layout, same chapter start lines (only the changed passages differ).
+(docs/source-manuals/2026-10-19/*.hwp, docs/source-manuals/2026-11-02/*.hwp), made the same way as the 2026.9 ones: same
+images, same layout (only the changed passages differ; the stay chapter start lines move down where text was added). `npx kordoc@4.24.1` reproduces the committed 2026.10
+stay Markdown byte for byte (image folder renamed), which is how the 2026.11 file was checked.
 
 What this does: split each manual into status chapters, turn the HWP layout tables
 (label cell | content cell) into labelled sections, classify each <br>-line by its
@@ -30,16 +31,16 @@ from bs4 import BeautifulSoup, NavigableString, Tag
 from markdown_it import MarkdownIt
 
 ROOT = Path(__file__).resolve().parents[1]
-SRC_DIR = ROOT / 'docs/source-manuals/2026-10-19/markdown'
+SRC_DIRS = {'v': ROOT / 'docs/source-manuals/2026-10-19/markdown', 's': ROOT / 'docs/source-manuals/2026-11-02/markdown'}
 OUT_DIR = ROOT / 'data/manual-reader'
 IMG_OUT = ROOT / 'assets/manual-reader/img'
 SOURCES = {
     'v': {'id': 'visa_manual_2026_10_19_reader_md', 'file': 'visa_manual_261019.md', 'images': 'images/261019-visa',
           'title': '사증발급 안내매뉴얼', 'title_en': 'Visa Issuance Guide Manual', 'date': '2026-10-19', 'version': '2026.10',
           'pdf': 'docs/source-manuals/2026-10-19/visa_manual_261019.pdf', 'pdf_text': 'docs/source-manuals/2026-10-19/extracted/visa_manual_2026_10_19_pdf.txt'},
-    's': {'id': 'stay_manual_2026_10_19_reader_md', 'file': 'stay_manual_261019.md', 'images': 'images/261019-stay',
-          'title': '외국인체류 안내매뉴얼', 'title_en': 'Foreigner Stay/Residence Guide Manual', 'date': '2026-10-19', 'version': '2026.10',
-          'pdf': 'docs/source-manuals/2026-10-19/stay_manual_261019.pdf', 'pdf_text': 'docs/source-manuals/2026-10-19/extracted/stay_manual_2026_10_19_pdf.txt'},
+    's': {'id': 'stay_manual_2026_11_02_reader_md', 'file': 'stay_manual_261102.md', 'images': 'images/261102-stay',
+          'title': '외국인체류 안내매뉴얼', 'title_en': 'Foreigner Stay/Residence Guide Manual', 'date': '2026-11-02', 'version': '2026.11',
+          'pdf': 'docs/source-manuals/2026-11-02/stay_manual_261102.pdf', 'pdf_text': 'docs/source-manuals/2026-11-02/extracted/stay_manual_2026_11_02_pdf.txt'},
 }
 OFFICIAL_URL = 'https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&BBS_GB_CD=BS10&NTCCTT_SEQ=1062&page=1'
 # Chapter starts (1-based line numbers in each Markdown file). A chapter runs to the next start.
@@ -65,11 +66,11 @@ CHAPTERS_S = [
     (1428, 'D-5', None), (1448, 'D-6', None), (1468, 'D-7', None), (1512, 'D-8', None),
     (1609, 'D-9', None), (1814, 'D-10', None), (2018, 'E-1', None), (2047, 'E-2', None),
     (2097, 'E-3', None), (2138, 'E-4', None), (2161, 'E-5', None), (2184, 'E-6', None),
-    (2215, 'E-7', None), (5537, 'E-8', None), (5547, 'E-9', None), (5627, 'E-10', None),
-    (5647, 'F-1', None), (5695, 'F-2', None), (5871, 'F-3', None), (5904, 'F-5', None),
-    (6178, 'F-6', None), (6432, 'G-1', None), (6455, 'H-1', None),
-    (6492, 'dongpo', None), (7974, 'regional', None), (10077, 'youth', None),
-    (10505, 'toptier', None), (11588, 'metro', None), (13573, 'kstar', None),
+    (2215, 'E-7', None), (5570, 'E-8', None), (5580, 'E-9', None), (5660, 'E-10', None),
+    (5680, 'F-1', None), (5728, 'F-2', None), (5904, 'F-3', None), (5937, 'F-5', None),
+    (6211, 'F-6', None), (6465, 'G-1', None), (6488, 'H-1', None),
+    (6525, 'dongpo', None), (8007, 'regional', None), (10135, 'youth', None),
+    (10563, 'toptier', None), (11646, 'metro', None), (13631, 'kstar', None),
 ]
 
 
@@ -612,7 +613,7 @@ def build():
     sources = {}
     for tag in ('v', 's'):
         meta = SOURCES[tag]
-        path = SRC_DIR / meta['file']
+        path = SRC_DIRS[tag] / meta['file']
         raw = path.read_bytes()
         text_all = raw.decode('utf-8')
         lines = text_all.split('\n')
@@ -623,7 +624,7 @@ def build():
         probes = [c for c in (compact(l) for l in md_plain.split('\n')) if len(c) >= 15]
         matched = sum(1 for c in probes if c[:15] in pdf_compact)
         sources[tag] = dict({k: v for k, v in meta.items() if k not in ('images',)},
-                            markdown=f'docs/source-manuals/2026-10-19/markdown/{meta["file"]}',
+                            markdown=f'{SRC_DIRS[tag].relative_to(ROOT).as_posix()}/{meta["file"]}',
                             sha256=hashlib.sha256(raw).hexdigest(), official_url=OFFICIAL_URL,
                             approval_state='needs_review',
                             pdf_crosscheck={'probes': len(probes), 'matched': matched,
@@ -647,7 +648,7 @@ def image_files():
     out = {}
     for key in sorted(USED_IMG):
         tag, name = key.split('_', 1)
-        folder = SRC_DIR / SOURCES[tag]['images']
+        folder = SRC_DIRS[tag] / SOURCES[tag]['images']
         f = sorted(folder.glob(name + '.*'))[0]
         from PIL import Image
         im = Image.open(f)
@@ -667,7 +668,7 @@ def dumps(v):
 def outputs():
     sources, chapters, reports, search = build()
     files = {}
-    catalog = {'schema_version': 1, 'edition': '2026.10', 'generated_by': 'scripts/build_manual_reader.py',
+    catalog = {'schema_version': 1, 'edition': '2026.10 (visa) / 2026.11 (stay)', 'generated_by': 'scripts/build_manual_reader.py',
                'note': '원문 문장은 바꾸지 않음. 쪽 넘김 때문에 반복된 항목명·목차 링크·장 제목 줄·표지 이미지만 제외.',
                'sources': sources, 'chapters': []}
     for key, by in chapters.items():

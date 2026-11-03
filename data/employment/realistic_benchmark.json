@@ -1,0 +1,820 @@
+{
+  "schema_version": "1.0",
+  "kind": "employment_realistic_benchmark",
+  "purpose": "End-to-end accuracy benchmark written the way people actually type: short, chatty, unspaced, slang, typos, English and other languages. Each case lists the official rows (data/jobcode_master.json) a knowledgeable person would accept as correct. Used by scripts/check_employment_benchmark.mjs to measure top-1 / top-3 accuracy and how often the person is stopped by a question before seeing candidates.",
+  "important": [
+    "Expected codes were looked up by name in data/jobcode_master.json, not typed from memory.",
+    "occ / ind list every acceptable code. A code ending in '*' accepts any code with that prefix (e.g. '56*' = any 음식점·주점업 row).",
+    "An empty or missing list means that track is not scored for the case (the sentence does not say enough).",
+    "This file scores retrieval against the table as shipped. It does not prove the table itself matches the official KSCO8/KSIC11 publication."
+  ],
+  "cases": [
+    {
+      "id": "ko-dish-1",
+      "text": "식당에서 설거지해요",
+      "occ": [
+        "9522"
+      ],
+      "ind": [
+        "56*"
+      ]
+    },
+    {
+      "id": "ko-dish-2",
+      "text": "식당 설겆이 알바",
+      "occ": [
+        "9522"
+      ],
+      "ind": [
+        "56*"
+      ]
+    },
+    {
+      "id": "ko-dish-3",
+      "text": "식당주방보조해여",
+      "occ": [
+        "9522"
+      ],
+      "ind": [
+        "56*"
+      ]
+    },
+    {
+      "id": "ko-serve-1",
+      "text": "고깃집 홀서빙",
+      "occ": [
+        "4531",
+        "4539"
+      ],
+      "ind": [
+        "56113",
+        "5611",
+        "56111"
+      ]
+    },
+    {
+      "id": "ko-serve-2",
+      "text": "홀알바해요",
+      "occ": [
+        "4531",
+        "4539"
+      ]
+    },
+    {
+      "id": "ko-serve-3",
+      "text": "중식당에서 서빙해요",
+      "occ": [
+        "4531",
+        "4539"
+      ],
+      "ind": [
+        "56121"
+      ]
+    },
+    {
+      "id": "ko-cook-1",
+      "text": "중국집 주방장",
+      "occ": [
+        "2970",
+        "4512"
+      ],
+      "ind": [
+        "56121"
+      ]
+    },
+    {
+      "id": "ko-cook-2",
+      "text": "한식당에서 요리해요",
+      "occ": [
+        "4511"
+      ],
+      "ind": [
+        "56111",
+        "5611"
+      ]
+    },
+    {
+      "id": "ko-cafe-1",
+      "text": "카페 바리스타",
+      "occ": [
+        "4521"
+      ],
+      "ind": [
+        "56221"
+      ]
+    },
+    {
+      "id": "ko-cafe-2",
+      "text": "카페에서 커피 만들어요",
+      "occ": [
+        "4521"
+      ],
+      "ind": [
+        "56221"
+      ]
+    },
+    {
+      "id": "ko-bake",
+      "text": "빵집에서 빵 굽는 일",
+      "occ": [
+        "7101"
+      ]
+    },
+    {
+      "id": "ko-chicken",
+      "text": "치킨집에서 튀기고 포장해요",
+      "ind": [
+        "56162",
+        "5616"
+      ]
+    },
+    {
+      "id": "ko-pub",
+      "text": "술집 서빙 알바",
+      "occ": [
+        "4531",
+        "4539"
+      ],
+      "ind": [
+        "5621*"
+      ]
+    },
+    {
+      "id": "ko-cvs-1",
+      "text": "편의점 알바",
+      "occ": [
+        "5214",
+        "5212"
+      ],
+      "ind": [
+        "47122"
+      ]
+    },
+    {
+      "id": "ko-cvs-2",
+      "text": "편의점에서 계산해요",
+      "occ": [
+        "5214"
+      ],
+      "ind": [
+        "47122"
+      ]
+    },
+    {
+      "id": "ko-mart",
+      "text": "마트 계산원",
+      "occ": [
+        "5214"
+      ],
+      "ind": [
+        "4711*",
+        "47121"
+      ]
+    },
+    {
+      "id": "ko-shop",
+      "text": "옷가게 점원",
+      "occ": [
+        "5212"
+      ]
+    },
+    {
+      "id": "ko-hotel-1",
+      "text": "호텔 객실 청소",
+      "occ": [
+        "9411"
+      ],
+      "ind": [
+        "55101",
+        "551*"
+      ]
+    },
+    {
+      "id": "ko-hotel-2",
+      "text": "호텔 하우스키핑",
+      "occ": [
+        "9411"
+      ],
+      "ind": [
+        "55101",
+        "551*"
+      ]
+    },
+    {
+      "id": "ko-clean-1",
+      "text": "건물 청소해요",
+      "occ": [
+        "9411"
+      ]
+    },
+    {
+      "id": "ko-clean-2",
+      "text": "골프장 청소해요",
+      "occ": [
+        "9411",
+        "9419",
+        "9413"
+      ]
+    },
+    {
+      "id": "ko-parcel-1",
+      "text": "택배 상하차",
+      "occ": [
+        "9211"
+      ]
+    },
+    {
+      "id": "ko-parcel-2",
+      "text": "까대기 해요",
+      "occ": [
+        "9211"
+      ]
+    },
+    {
+      "id": "ko-parcel-3",
+      "text": "물류센터에서 분류 작업",
+      "occ": [
+        "9212",
+        "9211"
+      ],
+      "ind": [
+        "52*"
+      ]
+    },
+    {
+      "id": "ko-courier",
+      "text": "택배 기사",
+      "occ": [
+        "9222"
+      ],
+      "ind": [
+        "49401"
+      ]
+    },
+    {
+      "id": "ko-delivery-1",
+      "text": "배달 라이더",
+      "occ": [
+        "9223"
+      ]
+    },
+    {
+      "id": "ko-delivery-2",
+      "text": "배민 배달해요",
+      "occ": [
+        "9223"
+      ]
+    },
+    {
+      "id": "ko-care-1",
+      "text": "요양원 요양보호사",
+      "occ": [
+        "4221"
+      ],
+      "ind": [
+        "87111",
+        "8711"
+      ]
+    },
+    {
+      "id": "ko-care-2",
+      "text": "병원에서 간병해요",
+      "occ": [
+        "4222"
+      ],
+      "ind": [
+        "861*"
+      ]
+    },
+    {
+      "id": "ko-nurse",
+      "text": "종합병원 간호사",
+      "occ": [
+        "2440"
+      ],
+      "ind": [
+        "86101"
+      ]
+    },
+    {
+      "id": "ko-weld-1",
+      "text": "공장에서 용접해요",
+      "occ": [
+        "7406",
+        "8413"
+      ]
+    },
+    {
+      "id": "ko-weld-2",
+      "text": "조선소 용접공",
+      "occ": [
+        "7406",
+        "8413"
+      ],
+      "ind": [
+        "311*"
+      ]
+    },
+    {
+      "id": "ko-auto-1",
+      "text": "자동차 부품 공장에서 조립",
+      "occ": [
+        "8542"
+      ],
+      "ind": [
+        "303*"
+      ]
+    },
+    {
+      "id": "ko-factory-1",
+      "text": "공장에서일합니당",
+      "occ": [
+        "8*",
+        "9*"
+      ]
+    },
+    {
+      "id": "ko-factory-2",
+      "text": "공장에서 박스 포장해요",
+      "occ": [
+        "93*",
+        "9211"
+      ]
+    },
+    {
+      "id": "ko-sew",
+      "text": "봉제공장 미싱",
+      "occ": [
+        "7213"
+      ],
+      "ind": [
+        "14*"
+      ]
+    },
+    {
+      "id": "ko-fish-1",
+      "text": "오징어배 타요",
+      "occ": [
+        "6302",
+        "9913"
+      ],
+      "ind": [
+        "0311*"
+      ]
+    },
+    {
+      "id": "ko-fish-2",
+      "text": "어선에서 그물 걷어요",
+      "occ": [
+        "6302",
+        "9913"
+      ],
+      "ind": [
+        "0311*"
+      ]
+    },
+    {
+      "id": "ko-aqua",
+      "text": "김 양식장에서 일해요",
+      "occ": [
+        "6301",
+        "9913"
+      ],
+      "ind": [
+        "03211",
+        "0321"
+      ]
+    },
+    {
+      "id": "ko-farm-1",
+      "text": "비닐하우스에서 딸기 따요",
+      "occ": [
+        "6112",
+        "6113",
+        "9911"
+      ],
+      "ind": [
+        "0115*",
+        "0112*",
+        "0113*"
+      ]
+    },
+    {
+      "id": "ko-farm-2",
+      "text": "농장에서 일해요",
+      "occ": [
+        "61*",
+        "9911"
+      ],
+      "ind": [
+        "01*"
+      ]
+    },
+    {
+      "id": "ko-pig",
+      "text": "돼지농장에서 일해요",
+      "occ": [
+        "6133",
+        "6139",
+        "9911"
+      ],
+      "ind": [
+        "0122*"
+      ]
+    },
+    {
+      "id": "ko-const-1",
+      "text": "건설현장 노가다",
+      "occ": [
+        "9100"
+      ],
+      "ind": [
+        "41*",
+        "42*"
+      ]
+    },
+    {
+      "id": "ko-const-2",
+      "text": "공사장에서 철근 일 해요",
+      "occ": [
+        "7821"
+      ],
+      "ind": [
+        "41*",
+        "42*"
+      ]
+    },
+    {
+      "id": "ko-const-3",
+      "text": "아파트 도배 도장",
+      "occ": [
+        "7836",
+        "7834"
+      ],
+      "ind": [
+        "4241*"
+      ]
+    },
+    {
+      "id": "ko-mech",
+      "text": "카센터 정비사",
+      "occ": [
+        "7510"
+      ],
+      "ind": [
+        "9521*"
+      ]
+    },
+    {
+      "id": "ko-taxi",
+      "text": "택시 기사",
+      "occ": [
+        "8721"
+      ],
+      "ind": [
+        "49231"
+      ]
+    },
+    {
+      "id": "ko-truck",
+      "text": "화물차 운전해요",
+      "occ": [
+        "8723"
+      ],
+      "ind": [
+        "4930*"
+      ]
+    },
+    {
+      "id": "ko-guard",
+      "text": "아파트 경비",
+      "occ": [
+        "4123"
+      ]
+    },
+    {
+      "id": "ko-teach-1",
+      "text": "학원에서 영어 가르쳐요",
+      "occ": [
+        "2641"
+      ],
+      "ind": [
+        "85631",
+        "8563"
+      ]
+    },
+    {
+      "id": "ko-teach-2",
+      "text": "대학교 원어민 강사",
+      "occ": [
+        "2612",
+        "2641"
+      ],
+      "ind": [
+        "85302",
+        "853*"
+      ]
+    },
+    {
+      "id": "ko-teach-3",
+      "text": "영어 과외 선생님",
+      "occ": [
+        "2641",
+        "2642",
+        "2648"
+      ]
+    },
+    {
+      "id": "ko-trans",
+      "text": "통번역 프리랜서",
+      "occ": [
+        "2914"
+      ],
+      "ind": [
+        "73902"
+      ]
+    },
+    {
+      "id": "ko-dev-1",
+      "text": "IT회사 앱 개발자",
+      "occ": [
+        "2223"
+      ],
+      "ind": [
+        "5822*",
+        "62*"
+      ]
+    },
+    {
+      "id": "ko-dev-2",
+      "text": "프로그래머",
+      "occ": [
+        "2222",
+        "2223",
+        "2229"
+      ]
+    },
+    {
+      "id": "ko-hair",
+      "text": "미용실 헤어디자이너",
+      "occ": [
+        "4312"
+      ],
+      "ind": [
+        "96112"
+      ]
+    },
+    {
+      "id": "ko-nail",
+      "text": "네일샵에서 네일해요",
+      "occ": [
+        "4313"
+      ],
+      "ind": [
+        "9611*"
+      ]
+    },
+    {
+      "id": "ko-video",
+      "text": "유튜브 영상 편집",
+      "occ": [
+        "2936",
+        "2938"
+      ]
+    },
+    {
+      "id": "ko-house",
+      "text": "가사도우미",
+      "occ": [
+        "9511"
+      ],
+      "ind": [
+        "9700*"
+      ]
+    },
+    {
+      "id": "ko-callcenter",
+      "text": "콜센터 상담원",
+      "occ": [
+        "3620",
+        "5313"
+      ],
+      "ind": [
+        "75991"
+      ]
+    },
+    {
+      "id": "ko-trade",
+      "text": "무역회사 사무직",
+      "occ": [
+        "3223"
+      ]
+    },
+    {
+      "id": "ko-account",
+      "text": "회계 사무 봐요",
+      "occ": [
+        "3311"
+      ]
+    },
+    {
+      "id": "ko-research",
+      "text": "대학 연구실 연구원",
+      "occ": [
+        "21*",
+        "22*",
+        "23*"
+      ]
+    },
+    {
+      "id": "ko-model",
+      "text": "패션 모델",
+      "occ": [
+        "2932"
+      ]
+    },
+    {
+      "id": "en-1",
+      "text": "I wash dishes at a restaurant",
+      "occ": [
+        "9522"
+      ],
+      "ind": [
+        "56*"
+      ]
+    },
+    {
+      "id": "en-2",
+      "text": "barista at a coffee shop",
+      "occ": [
+        "4521"
+      ],
+      "ind": [
+        "56221"
+      ]
+    },
+    {
+      "id": "en-3",
+      "text": "English teacher at a hagwon",
+      "occ": [
+        "2641"
+      ],
+      "ind": [
+        "85631",
+        "8563"
+      ]
+    },
+    {
+      "id": "en-4",
+      "text": "software engineer",
+      "occ": [
+        "2222",
+        "2223",
+        "2229"
+      ]
+    },
+    {
+      "id": "en-5",
+      "text": "factory worker assembling car parts",
+      "occ": [
+        "8542"
+      ],
+      "ind": [
+        "303*"
+      ]
+    },
+    {
+      "id": "en-6",
+      "text": "hotel housekeeping",
+      "occ": [
+        "9411"
+      ],
+      "ind": [
+        "55101",
+        "551*"
+      ]
+    },
+    {
+      "id": "en-7",
+      "text": "caregiver at a nursing home",
+      "occ": [
+        "4221",
+        "4222"
+      ],
+      "ind": [
+        "8711*",
+        "87111"
+      ]
+    },
+    {
+      "id": "en-8",
+      "text": "delivery rider",
+      "occ": [
+        "9223"
+      ]
+    },
+    {
+      "id": "en-9",
+      "text": "construction worker",
+      "occ": [
+        "9100"
+      ],
+      "ind": [
+        "41*",
+        "42*"
+      ]
+    },
+    {
+      "id": "en-10",
+      "text": "translator",
+      "occ": [
+        "2914"
+      ]
+    },
+    {
+      "id": "mix-1",
+      "text": "cafe에서 barista로 일해요",
+      "occ": [
+        "4521"
+      ],
+      "ind": [
+        "56221"
+      ]
+    },
+    {
+      "id": "vi-1",
+      "text": "Tôi làm phụ bếp ở nhà hàng",
+      "occ": [
+        "9522"
+      ],
+      "ind": [
+        "56*"
+      ]
+    },
+    {
+      "id": "vi-2",
+      "text": "toi lam cong nhan nha may",
+      "occ": [
+        "8*",
+        "9*"
+      ]
+    },
+    {
+      "id": "id-1",
+      "text": "Saya bekerja di pabrik",
+      "occ": [
+        "8*",
+        "9*"
+      ]
+    },
+    {
+      "id": "ru-1",
+      "text": "Я повар в ресторане",
+      "occ": [
+        "45*",
+        "2970"
+      ],
+      "ind": [
+        "56*"
+      ]
+    },
+    {
+      "id": "th-1",
+      "text": "ฉันเป็นพนักงานเสิร์ฟ",
+      "occ": [
+        "4531",
+        "4539"
+      ]
+    },
+    {
+      "id": "ne-1",
+      "text": "म फ्याक्ट्री मा काम गर्छु",
+      "occ": [
+        "8*",
+        "9*"
+      ]
+    },
+    {
+      "id": "ja-1",
+      "text": "ホテルで客室清掃をしています",
+      "occ": [
+        "9411"
+      ],
+      "ind": [
+        "55101",
+        "551*"
+      ]
+    },
+    {
+      "id": "zh-1",
+      "text": "我在餐厅做服务员",
+      "occ": [
+        "4531",
+        "4539"
+      ],
+      "ind": [
+        "56*"
+      ]
+    }
+  ]
+}

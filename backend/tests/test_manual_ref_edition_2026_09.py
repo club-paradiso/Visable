@@ -1,12 +1,13 @@
-"""visa_data.json manualRefs relabelled to the 2026.9 / 2026.10 manuals stay anchored.
+"""visa_data.json manualRefs relabelled to the 2026.9 / 2026.10 / 2026.11 manuals stay anchored.
 
-Two relabel stages moved refs off the 2026.6 export: 2026-10-19 (2026.9,
-audits/manual-ref-edition-2026-09) and 2026-10-23 (2026.10,
-audits/manual-ref-edition-2026-10). Each stage checked a ref's section wording
+Three relabel stages moved refs off the 2026.6 export: 2026-10-19 (2026.9,
+audits/manual-ref-edition-2026-09), 2026-10-23 (2026.10,
+audits/manual-ref-edition-2026-10) and 2026-11-03 (2026.11, stay refs only,
+audits/manual-ref-edition-2026-11). Each stage checked a ref's section wording
 on the cited old page and on the content-matched page of the new edition. These
-tests keep that true: a ref may only cite 2026.9 or 2026.10 if its wording is on
-its cited page of its own manual, the relabel never crossed the stay/visa
-boundary, and refs the audit could not verify were left untouched.
+tests keep that true: a ref may only cite 2026.9, 2026.10 or 2026.11 if its
+wording is on its cited page of its own manual, the relabel never crossed the
+stay/visa boundary, and refs the audit could not verify were left untouched.
 """
 from __future__ import annotations
 
@@ -18,7 +19,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO_ROOT / "scripts"))
 
-import audit_manual_ref_editions_2026_10 as audit  # noqa: E402
+import audit_manual_ref_editions_2026_11 as audit  # noqa: E402
 
 
 def _refs(path: Path):
@@ -35,7 +36,7 @@ class ManualRefEditionTests(unittest.TestCase):
         cls.report = json.loads(audit.REPORT_JSON.read_text(encoding="utf-8"))
 
     def test_relabel_is_present(self):
-        self.assertGreaterEqual(len(self.current), 956)
+        self.assertGreaterEqual(len(self.current), 653)
 
     def test_every_relabelled_ref_is_anchored_on_its_cited_page(self):
         for path, ref in self.current + self.previous:
@@ -43,7 +44,10 @@ class ManualRefEditionTests(unittest.TestCase):
                 self.assertTrue(audit.anchored_ref(ref), (ref.get("manualVersion"), ref.get("pageRange"), ref.get("section")))
 
     def test_relabelled_refs_keep_stay_and_visa_apart(self):
-        for editions, version in ((self.current, audit.NEW), (self.previous, audit.PREVIOUS)):
+        # 2026.11 is the stay edition only; the visa manual is still 2026.10, and stay refs
+        # that stayed on 2026.10 cite the 2026.10 stay text.
+        previous = {"stay": audit.PREVIOUS["stay"], "visa": audit.VISA_CURRENT}
+        for editions, version in ((self.current, audit.NEW), (self.previous, previous)):
             for path, ref in editions:
                 where = "/".join(map(str, path))
                 with self.subTest(path=where):
@@ -55,7 +59,7 @@ class ManualRefEditionTests(unittest.TestCase):
                         self.assertEqual(ref["manualType"], expected)
 
     def test_relabel_kept_review_flags_and_left_unverified_refs_alone(self):
-        # The 2026.10 stage changes edition, file and page only. Every verified ref keeps
+        # The 2026.11 stage changes edition, file and page only. Every verified ref keeps
         # the needsManualReview and section the audit recorded, none becomes "verified",
         # and every ref the audit could not verify is exactly as the audit saw it.
         by_path = {"/".join(map(str, p)): r for p, r in self.refs}

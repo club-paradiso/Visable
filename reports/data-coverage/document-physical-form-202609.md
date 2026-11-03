@@ -24,16 +24,16 @@ Full document accuracy is **not** claimed: most rules are silent on physical for
 
 | Target | Procedure | Document | Form | Basis | Source |
 | --- | --- | --- | --- | --- | --- |
-| F-1~domestic-helper#domestic-helper | extension | 외국인투자신고서(법인등기사항전부증명서 또는 사업자등록증 사본) 또는 투자기업등록증 사본 | VARIES_BY_ITEM | SOURCE_PHRASE | p.358 |
-| F-1-12 | extension | 주체류자와 그 배우자의 여권 및 외국인등록증 사본 | VARIES_BY_ITEM | SOURCE_PHRASE | p.360 |
+| F-1~domestic-helper#domestic-helper | extension | 외국인투자신고서(법인등기사항전부증명서 또는 사업자등록증 사본) 또는 투자기업등록증 사본 | VARIES_BY_ITEM | SOURCE_PHRASE | p.359 |
+| F-1-12 | extension | 주체류자와 그 배우자의 여권 및 외국인등록증 사본 | VARIES_BY_ITEM | SOURCE_PHRASE | p.361 |
 | D-2 | part_time_work | 사업자등록증 사본 및 고용주 신분증 사본 | COPY_ONLY | SOURCE_PHRASE | p.39 |
 | D-2 | part_time_work | 표준근로계약서 사본(시급·근무내용·시간 포함) | COPY_ONLY | SOURCE_PHRASE | p.39 |
 | D-2 | registration | 여권 및 사본 1부 | ORIGINAL_AND_COPY ×1 | SOURCE_PHRASE | p.44 |
-| E-9 | extension | 고용허가서 사본 | COPY_ONLY | SOURCE_PHRASE | p.330 |
-| E-9 | extension | 표준근로계약서 사본 | COPY_ONLY | SOURCE_PHRASE | p.330 |
-| E-9 | extension | 사업자등록증 사본 | COPY_ONLY | SOURCE_PHRASE | p.331 |
-| E-9 | workplace_change | 고용허가서 사본 | COPY_ONLY | SOURCE_PHRASE | p.330 |
-| E-9 | workplace_change | 표준근로계약서 사본 | COPY_ONLY | SOURCE_PHRASE | p.330 |
+| E-9 | extension | 고용허가서 사본 | COPY_ONLY | SOURCE_PHRASE | p.331 |
+| E-9 | extension | 표준근로계약서 사본 | COPY_ONLY | SOURCE_PHRASE | p.331 |
+| E-9 | extension | 사업자등록증 사본 | COPY_ONLY | SOURCE_PHRASE | p.332 |
+| E-9 | workplace_change | 고용허가서 사본 | COPY_ONLY | SOURCE_PHRASE | p.331 |
+| E-9 | workplace_change | 표준근로계약서 사본 | COPY_ONLY | SOURCE_PHRASE | p.331 |
 | E-7 | extension | 사업자등록증 사본 또는 법인등기부등본 | VARIES_BY_ITEM | SOURCE_PHRASE | p.228 |
 | E-7 | extension | 신원보증서 원본 | ORIGINAL_ONLY | SOURCE_PHRASE | p.228 |
 | G-1-3 | extension | 소장 사본, 소송제기 증명원, 법률구조결정서 사본 등 청구권 존재 확인 서류 | VARIES_BY_ITEM | SOURCE_PHRASE | p.520 |
@@ -75,9 +75,9 @@ Full document accuracy is **not** claimed: most rules are silent on physical for
 | E-2 | extension | 학원설립운영등록증 사본(해당자) | COPY_ONLY | SOURCE_PHRASE | p.185 |
 | E-5 | extension | 여권 원본 | ORIGINAL_ONLY | SOURCE_PHRASE | p.205 |
 | E-6 | extension | 사업자등록증 사본 | COPY_ONLY | SOURCE_PHRASE | p.212 |
-| E-10 | extension | 사업자등록증 사본 | COPY_ONLY | SOURCE_PHRASE | p.339 |
-| E-10#reemployment | extension | 사업자등록증 사본 | COPY_ONLY | SOURCE_PHRASE | p.340 |
-| F-4 | registration | 여권 및 사본 | ORIGINAL_AND_COPY | SOURCE_PHRASE | p.540 |
+| E-10 | extension | 사업자등록증 사본 | COPY_ONLY | SOURCE_PHRASE | p.340 |
+| E-10#reemployment | extension | 사업자등록증 사본 | COPY_ONLY | SOURCE_PHRASE | p.341 |
+| F-4 | registration | 여권 및 사본 | ORIGINAL_AND_COPY | SOURCE_PHRASE | p.541 |
 | D-1 | registration | 여권 원본 | ORIGINAL_ONLY | SOURCE_PHRASE | p.34 |
 | D-5 | registration | 여권 원본 | ORIGINAL_ONLY | SOURCE_PHRASE | p.105 |
 | D-6 | registration | 여권 원본 | ORIGINAL_ONLY | SOURCE_PHRASE | p.108 |
@@ -92,12 +92,12 @@ Full document accuracy is **not** claimed: most rules are silent on physical for
 | E-5 | registration | 여권 원본 | ORIGINAL_ONLY | SOURCE_PHRASE | p.205 |
 | E-6 | registration | 여권 원본 | ORIGINAL_ONLY | SOURCE_PHRASE | p.213 |
 | E-7 | registration | 여권 원본 | ORIGINAL_ONLY | SOURCE_PHRASE | p.230 |
-| E-9 | registration | 여권 원본 | ORIGINAL_ONLY | SOURCE_PHRASE | p.332 |
-| E-9 | registration | 사업자등록증 사본 | COPY_ONLY | SOURCE_PHRASE | p.331 |
-| E-10 | registration | 여권 원본 | ORIGINAL_ONLY | SOURCE_PHRASE | p.341 |
-| F-1 | registration | 여권 원본 | ORIGINAL_ONLY | SOURCE_PHRASE | p.365 |
-| F-3 | registration | 가족관계 입증서류(연장 등 추가 체류허가가 필요한 경우에만 제출, 공적확인 불요, 사본 제출 가능) | VARIES_BY_ITEM | SOURCE_PHRASE | p.432 |
-| H-1 | registration | 근무처의 사업자등록증 사본 및 계약서 등(취업중인 경우) | VARIES_BY_ITEM | SOURCE_PHRASE | p.527 |
+| E-9 | registration | 여권 원본 | ORIGINAL_ONLY | SOURCE_PHRASE | p.333 |
+| E-9 | registration | 사업자등록증 사본 | COPY_ONLY | SOURCE_PHRASE | p.332 |
+| E-10 | registration | 여권 원본 | ORIGINAL_ONLY | SOURCE_PHRASE | p.342 |
+| F-1 | registration | 여권 원본 | ORIGINAL_ONLY | SOURCE_PHRASE | p.366 |
+| F-3 | registration | 가족관계 입증서류(연장 등 추가 체류허가가 필요한 경우에만 제출, 공적확인 불요, 사본 제출 가능) | VARIES_BY_ITEM | SOURCE_PHRASE | p.433 |
+| H-1 | registration | 근무처의 사업자등록증 사본 및 계약서 등(취업중인 경우) | VARIES_BY_ITEM | SOURCE_PHRASE | p.528 |
 | COMMON | card_reissue | 원래의 외국인등록증 | ORIGINAL_ONLY (kept) | REGULATION | 출입국관리법 시행령 제42조 |
 | COMMON | residence_report | 외국인등록증 | ORIGINAL_ONLY (returned) | REGULATION | 출입국관리법 제36조 |
 | D-1 | status_change | 여권 원본 | ORIGINAL_ONLY | SOURCE_PHRASE | p.33 |
@@ -323,8 +323,8 @@ Full document accuracy is **not** claimed: most rules are silent on physical for
 | E-9 | visa_issuance_confirmation | 사업자등록증 사본 | COPY_ONLY | SOURCE_PHRASE | p.288 |
 | E-9 | visa_issuance_confirmation | 고용허가서 및 표준근로계약서 사본 | VARIES_BY_ITEM | SOURCE_PHRASE | p.288 |
 | E-9 | visa_issuance_confirmation | 천일염 생산 및 암염 채취업: 염제조업허가증 사본 | VARIES_BY_ITEM | SOURCE_PHRASE | p.289 |
-| E-9 | workplace_report | 외국인등록증 사본 | COPY_ONLY | SOURCE_PHRASE | p.333 |
-| E-9 | workplace_report | 사업자등록증 사본 | COPY_ONLY | SOURCE_PHRASE | p.333 |
+| E-9 | workplace_report | 외국인등록증 사본 | COPY_ONLY | SOURCE_PHRASE | p.334 |
+| E-9 | workplace_report | 사업자등록증 사본 | COPY_ONLY | SOURCE_PHRASE | p.334 |
 | E-6 | visa_issuance_confirmation | 사업자등록증 사본 | COPY_ONLY | SOURCE_PHRASE | p.166 |
 | E-6 | visa_issuance_confirmation | 고용계약서 사본 | COPY_ONLY | SOURCE_PHRASE | p.166 |
 | E-6 | visa_issuance_confirmation | 위임장, 대리인 재직증명서, 대리인 신분증 사본 | VARIES_BY_ITEM | SOURCE_PHRASE | p.169 |
@@ -359,35 +359,35 @@ Full document accuracy is **not** claimed: most rules are silent on physical for
 | F-1-22 | visa_issuance_confirmation | 고용중인 내국인 상시근로자 입증 서류 (근로소득 원천징수 영수증, 소득금액 증명원, 급여명세서, 통장사본 등) | VARIES_BY_ITEM | SOURCE_PHRASE | p.309 |
 | F-1-21 | visa_issuance_confirmation | 고용계약서 사본 | COPY_ONLY | SOURCE_PHRASE | p.309 |
 | F-1-21 | visa_issuance_confirmation | 고용인의 외교관신분증 사본 | COPY_ONLY | SOURCE_PHRASE | p.310 |
-| F-1-21 | status_change | 고용인의 외교관신분증명서 사본 | COPY_ONLY | SOURCE_PHRASE | p.348 |
-| F-1-12 | status_change | 주체류자와 그 배우자의 여권 및 외국인등록증 사본 | VARIES_BY_ITEM | SOURCE_PHRASE | p.348 |
-| F-1-51 | status_change | 양국의 국제입양성립(진행)을 입증할 수 있는 서류 (국제입양절차 진행 협의서 사본 또는 협약준수입양증명서, 해당 시 임시양육 허가 증명서 사본) | VARIES_BY_ITEM | SOURCE_PHRASE | p.353 |
-| F-1-52 | status_change | 미성년 외국인 자녀의 여권, 관련 국가에서 발급한 출생 관련 공적 증명서류 원본 및 사본 (예: 중국 호구부, 출생증명서 등) | ORIGINAL_AND_COPY | SOURCE_PHRASE | p.354 |
-| F-1-12 | status_grant | 주체류자와 그 배우자의 여권 및 외국인등록증 사본 | VARIES_BY_ITEM | SOURCE_PHRASE | p.348 |
-| F-1#e2-e7-teacher | activities_outside_status | 해당국교원 자격증 원본 (교원자격증이 없는 경우 '학위증 및 경력증명서') | ORIGINAL_ONLY | SOURCE_PHRASE | p.344 |
-| F-1#e7-proofreader | activities_outside_status | 사업자등록증 사본 | COPY_ONLY | SOURCE_PHRASE | p.344 |
-| F-1#e7-proofreader | activities_outside_status | 학위증 (원본 및 사본) | VARIES_BY_ITEM | SOURCE_PHRASE | p.344 |
-| F-1 | reentry | 여권 원본 | ORIGINAL_ONLY | SOURCE_PHRASE | p.365 |
-| F-2-5 | status_change | 투자기업등록증 사본 | COPY_ONLY | SOURCE_PHRASE | p.374 |
-| F-2-5 | status_change | 외국인 투자신고서 또는 투자기업등록증 사본 | VARIES_BY_ITEM | SOURCE_PHRASE | p.374 |
-| F-2-12 | status_change | 여권 사본 | COPY_ONLY | SOURCE_PHRASE | p.392 |
-| F-2-12 | extension | 여권 사본 | COPY_ONLY | SOURCE_PHRASE | p.420 |
-| F-2-6 | extension | 최근 1년 이상 2천만 원 이상의 예금잔고가 유지되었음을 증명할 수 있는 서류 또는 2천만 원 이상에 해당하는 부동산등기부등본·부동산전세계약서 사본 | VARIES_BY_ITEM | SOURCE_PHRASE | p.424 |
-| F-2 | reentry | 여권 원본 | ORIGINAL_ONLY | SOURCE_PHRASE | p.427 |
+| F-1-21 | status_change | 고용인의 외교관신분증명서 사본 | COPY_ONLY | SOURCE_PHRASE | p.349 |
+| F-1-12 | status_change | 주체류자와 그 배우자의 여권 및 외국인등록증 사본 | VARIES_BY_ITEM | SOURCE_PHRASE | p.349 |
+| F-1-51 | status_change | 양국의 국제입양성립(진행)을 입증할 수 있는 서류 (국제입양절차 진행 협의서 사본 또는 협약준수입양증명서, 해당 시 임시양육 허가 증명서 사본) | VARIES_BY_ITEM | SOURCE_PHRASE | p.354 |
+| F-1-52 | status_change | 미성년 외국인 자녀의 여권, 관련 국가에서 발급한 출생 관련 공적 증명서류 원본 및 사본 (예: 중국 호구부, 출생증명서 등) | ORIGINAL_AND_COPY | SOURCE_PHRASE | p.355 |
+| F-1-12 | status_grant | 주체류자와 그 배우자의 여권 및 외국인등록증 사본 | VARIES_BY_ITEM | SOURCE_PHRASE | p.349 |
+| F-1#e2-e7-teacher | activities_outside_status | 해당국교원 자격증 원본 (교원자격증이 없는 경우 '학위증 및 경력증명서') | ORIGINAL_ONLY | SOURCE_PHRASE | p.345 |
+| F-1#e7-proofreader | activities_outside_status | 사업자등록증 사본 | COPY_ONLY | SOURCE_PHRASE | p.345 |
+| F-1#e7-proofreader | activities_outside_status | 학위증 (원본 및 사본) | VARIES_BY_ITEM | SOURCE_PHRASE | p.345 |
+| F-1 | reentry | 여권 원본 | ORIGINAL_ONLY | SOURCE_PHRASE | p.366 |
+| F-2-5 | status_change | 투자기업등록증 사본 | COPY_ONLY | SOURCE_PHRASE | p.375 |
+| F-2-5 | status_change | 외국인 투자신고서 또는 투자기업등록증 사본 | VARIES_BY_ITEM | SOURCE_PHRASE | p.375 |
+| F-2-12 | status_change | 여권 사본 | COPY_ONLY | SOURCE_PHRASE | p.393 |
+| F-2-12 | extension | 여권 사본 | COPY_ONLY | SOURCE_PHRASE | p.421 |
+| F-2-6 | extension | 최근 1년 이상 2천만 원 이상의 예금잔고가 유지되었음을 증명할 수 있는 서류 또는 2천만 원 이상에 해당하는 부동산등기부등본·부동산전세계약서 사본 | VARIES_BY_ITEM | SOURCE_PHRASE | p.425 |
+| F-2 | reentry | 여권 원본 | ORIGINAL_ONLY | SOURCE_PHRASE | p.428 |
 | F-3-19 | visa_issuance | 재외동포(F-4) 자격을 취득한 사람의 국내거소신고증 또는 사증발급 사항 사본(여권사본 포함) | VARIES_BY_ITEM | SOURCE_PHRASE | p.318 |
 | F-3-20 | visa_issuance | 방문취업(H-2) 자격을 취득한 사람의 외국인등록증 또는 사증발급 사항 사본(여권사본 포함) | VARIES_BY_ITEM | SOURCE_PHRASE | p.318 |
 | F-3-18 | visa_issuance | 주체류자의 고용계약서 사본, 재직증명서, 사업자등록증, 법인등기부등본, 소득금액증명, 학위취득(예정)증명서, 졸업(예정)증명서 등(해당자) | VARIES_BY_ITEM | SOURCE_PHRASE | p.319 |
 | F-3 | visa_issuance_confirmation | 여권 사본 | COPY_ONLY | SOURCE_PHRASE | p.319 |
-| F-3-18 | status_change | 공통서류(신청서, 표준규격 사진, 여권 사본, 체류지 입증서류, 수수료 등) | VARIES_BY_ITEM | SOURCE_PHRASE | p.405 |
-| F-3-18 | status_change | 주 자격자의 여권 사본 및 외국인등록증 | VARIES_BY_ITEM | SOURCE_PHRASE | p.405 |
-| F-3-18 | status_grant | 공통서류(신청서, 표준규격 사진, 여권 사본, 체류지 입증서류, 수수료 등) | VARIES_BY_ITEM | SOURCE_PHRASE | p.405 |
-| F-3-18 | status_grant | 주 자격자의 여권 사본 및 외국인등록증 | VARIES_BY_ITEM | SOURCE_PHRASE | p.405 |
-| F-3 | activities_outside_status | 고용주 신분증 사본 | COPY_ONLY | SOURCE_PHRASE | p.428 |
-| F-3 | activities_outside_status | 사업자등록증 사본 | COPY_ONLY | SOURCE_PHRASE | p.428 |
-| F-3 | activities_outside_status | 학위증(원본 및 사본) | VARIES_BY_ITEM | SOURCE_PHRASE | p.429 |
-| F-3 | activities_outside_status | 해당국교원 자격증 원본(교원자격증이 없는 경우 '학위증 및 경력증명서') | ORIGINAL_ONLY | SOURCE_PHRASE | p.429 |
-| F-3 | activities_outside_status | 여권 원본 및 사본 | ORIGINAL_AND_COPY | SOURCE_PHRASE | p.430 |
-| F-3 | reentry | 여권 원본 | ORIGINAL_ONLY | SOURCE_PHRASE | p.432 |
+| F-3-18 | status_change | 공통서류(신청서, 표준규격 사진, 여권 사본, 체류지 입증서류, 수수료 등) | VARIES_BY_ITEM | SOURCE_PHRASE | p.406 |
+| F-3-18 | status_change | 주 자격자의 여권 사본 및 외국인등록증 | VARIES_BY_ITEM | SOURCE_PHRASE | p.406 |
+| F-3-18 | status_grant | 공통서류(신청서, 표준규격 사진, 여권 사본, 체류지 입증서류, 수수료 등) | VARIES_BY_ITEM | SOURCE_PHRASE | p.406 |
+| F-3-18 | status_grant | 주 자격자의 여권 사본 및 외국인등록증 | VARIES_BY_ITEM | SOURCE_PHRASE | p.406 |
+| F-3 | activities_outside_status | 고용주 신분증 사본 | COPY_ONLY | SOURCE_PHRASE | p.429 |
+| F-3 | activities_outside_status | 사업자등록증 사본 | COPY_ONLY | SOURCE_PHRASE | p.429 |
+| F-3 | activities_outside_status | 학위증(원본 및 사본) | VARIES_BY_ITEM | SOURCE_PHRASE | p.430 |
+| F-3 | activities_outside_status | 해당국교원 자격증 원본(교원자격증이 없는 경우 '학위증 및 경력증명서') | ORIGINAL_ONLY | SOURCE_PHRASE | p.430 |
+| F-3 | activities_outside_status | 여권 원본 및 사본 | ORIGINAL_AND_COPY | SOURCE_PHRASE | p.431 |
+| F-3 | reentry | 여권 원본 | ORIGINAL_ONLY | SOURCE_PHRASE | p.433 |
 | F-6-1 | visa_issuance | 신청인(외국인 배우자) 여권 원본 | ORIGINAL_ONLY | SOURCE_PHRASE | p.328 |
 | F-6-1 | visa_issuance | 신청인 여권 사본 1부 | COPY_ONLY ×1 | SOURCE_PHRASE | p.328 |
 | F-6-1 | visa_issuance | 한국인 배우자 여권 사본 1부 | COPY_ONLY ×1 | SOURCE_PHRASE | p.328 |
@@ -396,15 +396,15 @@ Full document accuracy is **not** claimed: most rules are silent on physical for
 | F-6-1 | visa_issuance | 결혼증명서 원본(정식 명칭 병기) | ORIGINAL_ONLY | SOURCE_PHRASE | p.328 |
 | F-6-1 | visa_issuance | 외국인 배우자의 범죄경력증명서 원본(정식명칭 병기) | ORIGINAL_ONLY | SOURCE_PHRASE | p.328 |
 | F-6-1 | visa_issuance | 외국인 배우자의 건강진단서 원본 | ORIGINAL_ONLY | SOURCE_PHRASE | p.328 |
-| F-6-1 | status_change | 신청인(외국인 배우자) 여권 원본 | ORIGINAL_ONLY | SOURCE_PHRASE | p.486 |
-| F-6-1 | status_change | 신청인 여권 사본 1부 | COPY_ONLY ×1 | SOURCE_PHRASE | p.486 |
-| F-6-1 | status_change | 한국인 배우자 여권 사본 1부 | COPY_ONLY ×1 | SOURCE_PHRASE | p.486 |
-| F-6-1 | status_change | 한국인 배우자의 주민등록등본 원본 | ORIGINAL_ONLY | SOURCE_PHRASE | p.486 |
-| F-6-1 | status_change | 한국인 배우자의 건강진단서 원본 | ORIGINAL_ONLY | SOURCE_PHRASE | p.486 |
-| F-6-1 | status_change | 결혼증명서 원본(정식 명칭 병기) | ORIGINAL_ONLY | SOURCE_PHRASE | p.486 |
-| F-6-1 | status_change | 외국인 배우자의 범죄경력증명서 원본(정식명칭 병기) | ORIGINAL_ONLY | SOURCE_PHRASE | p.486 |
-| F-6-1 | status_change | 외국인 배우자의 건강진단서 원본 | ORIGINAL_ONLY | SOURCE_PHRASE | p.486 |
-| F-4 | status_change | 여권 및 사본 1부 | ORIGINAL_AND_COPY ×1 | SOURCE_PHRASE | p.539 |
+| F-6-1 | status_change | 신청인(외국인 배우자) 여권 원본 | ORIGINAL_ONLY | SOURCE_PHRASE | p.487 |
+| F-6-1 | status_change | 신청인 여권 사본 1부 | COPY_ONLY ×1 | SOURCE_PHRASE | p.487 |
+| F-6-1 | status_change | 한국인 배우자 여권 사본 1부 | COPY_ONLY ×1 | SOURCE_PHRASE | p.487 |
+| F-6-1 | status_change | 한국인 배우자의 주민등록등본 원본 | ORIGINAL_ONLY | SOURCE_PHRASE | p.487 |
+| F-6-1 | status_change | 한국인 배우자의 건강진단서 원본 | ORIGINAL_ONLY | SOURCE_PHRASE | p.487 |
+| F-6-1 | status_change | 결혼증명서 원본(정식 명칭 병기) | ORIGINAL_ONLY | SOURCE_PHRASE | p.487 |
+| F-6-1 | status_change | 외국인 배우자의 범죄경력증명서 원본(정식명칭 병기) | ORIGINAL_ONLY | SOURCE_PHRASE | p.487 |
+| F-6-1 | status_change | 외국인 배우자의 건강진단서 원본 | ORIGINAL_ONLY | SOURCE_PHRASE | p.487 |
+| F-4 | status_change | 여권 및 사본 1부 | ORIGINAL_AND_COPY ×1 | SOURCE_PHRASE | p.540 |
 | C-1 | visa_issuance_confirmation | 여권 사본 | COPY_ONLY | SOURCE_PHRASE | p.26 |
 | C-1 | visa_issuance_confirmation | 위임장, 대리인 재직증명서, 대리인 신분증 사본 (대리인 신청 시) | VARIES_BY_ITEM | SOURCE_PHRASE | p.26 |
 | C-3-4 | visa_issuance | 초청장(초청회사의 사업자등록증 또는 등기부등본 사본 포함) 등 상용목적 입증서류 | VARIES_BY_ITEM | SOURCE_PHRASE | p.31 |
@@ -426,38 +426,38 @@ Full document accuracy is **not** claimed: most rules are silent on physical for
 | C-4-5 | status_change | 여권 원본 | ORIGINAL_ONLY | SOURCE_PHRASE | p.30 |
 | F-5-5 | visa_issuance | 외국인투자기업 등록증명서 사본 | COPY_ONLY | SOURCE_PHRASE | p.322 |
 | F-5-5 | visa_issuance | 사업자 등록증 사본 및 법인 등기사항전부증명서 | VARIES_BY_ITEM | SOURCE_PHRASE | p.323 |
-| F-5-9 | status_change | 박사 학위증 사본 | COPY_ONLY | SOURCE_PHRASE | p.464 |
-| F-5-9 | status_change | 소속기업 사업자등록증 사본, 재직증명서 | VARIES_BY_ITEM | SOURCE_PHRASE | p.464 |
-| F-5-15 | status_change | 박사 학위증 사본 | COPY_ONLY | SOURCE_PHRASE | p.464 |
-| F-5-15 | status_change | 소속기업 사업자등록증 사본, 재직증명서 | VARIES_BY_ITEM | SOURCE_PHRASE | p.464 |
-| F-5-10 | status_change | 학위증 또는 자격증 사본 | VARIES_BY_ITEM | SOURCE_PHRASE | p.466 |
-| F-5-10 | status_change | 소속기업 사업자등록증 사본, 재직증명서 | VARIES_BY_ITEM | SOURCE_PHRASE | p.466 |
-| F-5-13 | status_change | 연금증서 사본 및 연금입금통장 | VARIES_BY_ITEM | SOURCE_PHRASE | p.471 |
-| F-5-16 | status_change | 소속기업 사업자등록증 사본, 고용계약서 사본, 재직증명서 | VARIES_BY_ITEM | SOURCE_PHRASE | p.472 |
-| F-5-26 | status_change | 연구개발시설 지정서(산업통상자원부 공문) 사본, 파견명령서 또는 재직증명서, 소득금액증명 등 | VARIES_BY_ITEM | SOURCE_PHRASE | p.479 |
-| F-5-6 | status_change | 연금증서(사본) 및 연금입금통장 | VARIES_BY_ITEM | SOURCE_PHRASE | p.548 |
-| F-5-6 | status_change | 재직증명서, 등기부등본 또는 사업자등록증 사본, 수출입 실적 증명서(선하증권 또는 송장 등), 연간 납세 증명서 | VARIES_BY_ITEM | SOURCE_PHRASE | p.548 |
-| F-5-6 | status_change | 사업자 등록증사본 또는 등기부 등본, 사업장 및 주택임대차계약서 기타 외국인투자기업증명서 등 국내투자 증빙자료 | VARIES_BY_ITEM | SOURCE_PHRASE | p.548 |
-| F-5-7 | status_change | 여권 및 본국 신분증 사본(원본 제시) 등 외국국적동포 입증서류 | VARIES_BY_ITEM | SOURCE_PHRASE | p.549 |
-| F-5-T | status_change | 공통서류(신청서, 표준규격 사진, 여권 사본, 체류지 입증서류, 수수료 등) | VARIES_BY_ITEM | SOURCE_PHRASE | p.691 |
-| F-5-T1 | status_change | 공통서류(신청서, 표준규격 사진, 여권 사본, 체류지 입증서류, 수수료 등) | VARIES_BY_ITEM | SOURCE_PHRASE | p.706 |
-| F-5-T1 | status_change | 주 자격자의 여권 사본 및 외국인등록증 | VARIES_BY_ITEM | SOURCE_PHRASE | p.706 |
-| G-1-3 | status_change | 소장 사본, 소송제기 증명원, 법률구조결정서 사본 등 청구권 존재 확인 서류 | VARIES_BY_ITEM | SOURCE_PHRASE | p.515 |
-| G-1-4 | status_change | 노동부 제출 진정서 사본 | COPY_ONLY | SOURCE_PHRASE | p.516 |
-| G-1-7 | activities_outside_status | 사업자등록증 사본 | COPY_ONLY | SOURCE_PHRASE | p.509 |
-| G-1-11 | activities_outside_status | 사업자등록증 사본 | COPY_ONLY | SOURCE_PHRASE | p.509 |
-| G-1-99 | activities_outside_status | 사업자등록증 사본 | COPY_ONLY | SOURCE_PHRASE | p.509 |
-| G-1-5 | activities_outside_status | 사업자등록증 사본 등 사업장 관련 서류 | COPY_ONLY | SOURCE_PHRASE | p.512 |
-| G-1-6 | activities_outside_status | 사업자등록증 사본 등 사업장 관련 서류 | COPY_ONLY | SOURCE_PHRASE | p.512 |
-| G-1-12 | activities_outside_status | 사업자등록증 사본 등 사업장 관련 서류 | COPY_ONLY | SOURCE_PHRASE | p.512 |
+| F-5-9 | status_change | 박사 학위증 사본 | COPY_ONLY | SOURCE_PHRASE | p.465 |
+| F-5-9 | status_change | 소속기업 사업자등록증 사본, 재직증명서 | VARIES_BY_ITEM | SOURCE_PHRASE | p.465 |
+| F-5-15 | status_change | 박사 학위증 사본 | COPY_ONLY | SOURCE_PHRASE | p.465 |
+| F-5-15 | status_change | 소속기업 사업자등록증 사본, 재직증명서 | VARIES_BY_ITEM | SOURCE_PHRASE | p.465 |
+| F-5-10 | status_change | 학위증 또는 자격증 사본 | VARIES_BY_ITEM | SOURCE_PHRASE | p.467 |
+| F-5-10 | status_change | 소속기업 사업자등록증 사본, 재직증명서 | VARIES_BY_ITEM | SOURCE_PHRASE | p.467 |
+| F-5-13 | status_change | 연금증서 사본 및 연금입금통장 | VARIES_BY_ITEM | SOURCE_PHRASE | p.472 |
+| F-5-16 | status_change | 소속기업 사업자등록증 사본, 고용계약서 사본, 재직증명서 | VARIES_BY_ITEM | SOURCE_PHRASE | p.473 |
+| F-5-26 | status_change | 연구개발시설 지정서(산업통상자원부 공문) 사본, 파견명령서 또는 재직증명서, 소득금액증명 등 | VARIES_BY_ITEM | SOURCE_PHRASE | p.480 |
+| F-5-6 | status_change | 연금증서(사본) 및 연금입금통장 | VARIES_BY_ITEM | SOURCE_PHRASE | p.549 |
+| F-5-6 | status_change | 재직증명서, 등기부등본 또는 사업자등록증 사본, 수출입 실적 증명서(선하증권 또는 송장 등), 연간 납세 증명서 | VARIES_BY_ITEM | SOURCE_PHRASE | p.549 |
+| F-5-6 | status_change | 사업자 등록증사본 또는 등기부 등본, 사업장 및 주택임대차계약서 기타 외국인투자기업증명서 등 국내투자 증빙자료 | VARIES_BY_ITEM | SOURCE_PHRASE | p.549 |
+| F-5-7 | status_change | 여권 및 본국 신분증 사본(원본 제시) 등 외국국적동포 입증서류 | VARIES_BY_ITEM | SOURCE_PHRASE | p.550 |
+| F-5-T | status_change | 공통서류(신청서, 표준규격 사진, 여권 사본, 체류지 입증서류, 수수료 등) | VARIES_BY_ITEM | SOURCE_PHRASE | p.692 |
+| F-5-T1 | status_change | 공통서류(신청서, 표준규격 사진, 여권 사본, 체류지 입증서류, 수수료 등) | VARIES_BY_ITEM | SOURCE_PHRASE | p.707 |
+| F-5-T1 | status_change | 주 자격자의 여권 사본 및 외국인등록증 | VARIES_BY_ITEM | SOURCE_PHRASE | p.707 |
+| G-1-3 | status_change | 소장 사본, 소송제기 증명원, 법률구조결정서 사본 등 청구권 존재 확인 서류 | VARIES_BY_ITEM | SOURCE_PHRASE | p.516 |
+| G-1-4 | status_change | 노동부 제출 진정서 사본 | COPY_ONLY | SOURCE_PHRASE | p.517 |
+| G-1-7 | activities_outside_status | 사업자등록증 사본 | COPY_ONLY | SOURCE_PHRASE | p.510 |
+| G-1-11 | activities_outside_status | 사업자등록증 사본 | COPY_ONLY | SOURCE_PHRASE | p.510 |
+| G-1-99 | activities_outside_status | 사업자등록증 사본 | COPY_ONLY | SOURCE_PHRASE | p.510 |
+| G-1-5 | activities_outside_status | 사업자등록증 사본 등 사업장 관련 서류 | COPY_ONLY | SOURCE_PHRASE | p.513 |
+| G-1-6 | activities_outside_status | 사업자등록증 사본 등 사업장 관련 서류 | COPY_ONLY | SOURCE_PHRASE | p.513 |
+| G-1-12 | activities_outside_status | 사업자등록증 사본 등 사업장 관련 서류 | COPY_ONLY | SOURCE_PHRASE | p.513 |
 | G-1-10 | visa_issuance_confirmation | 여권 사본 | COPY_ONLY | SOURCE_PHRASE | p.340 |
 | G-1-10 | visa_issuance_confirmation | 사업자등록증 사본 및 유치기관 등록증 사본 | COPY_ONLY | SOURCE_PHRASE | p.340 |
-| H-2 | workplace_report | 특례고용가능확인서 사본 | COPY_ONLY | SOURCE_PHRASE | p.536 |
-| H-2 | workplace_report | 표준근로계약서 사본 | COPY_ONLY | SOURCE_PHRASE | p.536 |
-| H-2 | workplace_report | 사업자등록증 사본 | COPY_ONLY | SOURCE_PHRASE | p.536 |
-| H-2 | workplace_report | 방문취업 동포 취업개시 등 신고서 및 외국인등록증 사본 | VARIES_BY_ITEM | SOURCE_PHRASE | p.536 |
-| H-2 | workplace_change | 특례고용가능확인서 사본 | COPY_ONLY | SOURCE_PHRASE | p.536 |
-| H-2 | workplace_change | 표준근로계약서 사본 | COPY_ONLY | SOURCE_PHRASE | p.536 |
-| H-2 | workplace_change | 사업자등록증 사본 | COPY_ONLY | SOURCE_PHRASE | p.536 |
-| H-2 | workplace_change | 방문취업 동포 취업개시 등 신고서 및 외국인등록증 사본 | VARIES_BY_ITEM | SOURCE_PHRASE | p.536 |
-| F-4 | activities_outside_status | 여권 및 사본 | ORIGINAL_AND_COPY | SOURCE_PHRASE | p.542 |
+| H-2 | workplace_report | 특례고용가능확인서 사본 | COPY_ONLY | SOURCE_PHRASE | p.537 |
+| H-2 | workplace_report | 표준근로계약서 사본 | COPY_ONLY | SOURCE_PHRASE | p.537 |
+| H-2 | workplace_report | 사업자등록증 사본 | COPY_ONLY | SOURCE_PHRASE | p.537 |
+| H-2 | workplace_report | 방문취업 동포 취업개시 등 신고서 및 외국인등록증 사본 | VARIES_BY_ITEM | SOURCE_PHRASE | p.537 |
+| H-2 | workplace_change | 특례고용가능확인서 사본 | COPY_ONLY | SOURCE_PHRASE | p.537 |
+| H-2 | workplace_change | 표준근로계약서 사본 | COPY_ONLY | SOURCE_PHRASE | p.537 |
+| H-2 | workplace_change | 사업자등록증 사본 | COPY_ONLY | SOURCE_PHRASE | p.537 |
+| H-2 | workplace_change | 방문취업 동포 취업개시 등 신고서 및 외국인등록증 사본 | VARIES_BY_ITEM | SOURCE_PHRASE | p.537 |
+| F-4 | activities_outside_status | 여권 및 사본 | ORIGINAL_AND_COPY | SOURCE_PHRASE | p.543 |

@@ -21,11 +21,12 @@
  * natural code order):
  *   1000 the whole query is a status code        950 a code typed in a longer query
  *    990 the whole query is a subcode             900 code × procedure both typed
- *    860 a tool named outright (no status/procedure in the query)
+ *    860+ a tool named outright (no status/procedure in the query; +strength of the match)
+ *    760+ a tool next to a procedure typed without a code ("체류기간 만료 알림")
  *    800/750 a procedure on its own (status-independent / status needed)
  *    650 a status reached through an alias         600 code × likely procedure
  *    500 subcodes / codes continuing the typed prefix
- *    450 alias candidates       400 name matches       300 tools alongside
+ *    450 alias candidates       400 name matches       300+ tools alongside a code
  *
  * Pure: no DOM. Exposed on globalThis.VisableSearchSuggest for Node tests.
  * ========================================================================== */
@@ -39,15 +40,62 @@
   var LISTABLE_KINDS = { status: true, substatus: true };
 
   /* Product navigation, not immigration content: each tool is an existing page or
-   * an existing dialog on the home (index.html data-action handlers). */
+   * an existing dialog on the home (index.html data-action handlers, the same
+   * destinations as the "전체 도구" directory in civic-search.js). `terms` are
+   * discovery words only — what people type when they look for the tool
+   * ("벌금 계산" → the enforcement page, "제주 무사증 국가" → the short-stay
+   * checker). They never become an answer: choosing the row opens the tool,
+   * which owns its own sources and cautions. Order = tie-break order. */
   var TOOLS = [
-    { id: 'forms', href: 'form-helper.html', label: 'paperwork', sub: 'paperworkSub', terms: ['통합신청서', '신청서', '서식', '양식', '서류 작성', 'application form', 'integrated application', 'form helper', 'forms', 'form'] },
-    { id: 'reservation', action: 'open-hikorea-guide', label: 'reservation', sub: 'reservationSub', terms: ['방문예약', '방문 예약', '예약', '하이코리아', 'hikorea', 'hi korea', 'reservation', 'appointment', 'booking'] },
-    { id: 'office', action: 'open-jurisdiction-modal', label: 'office', sub: 'officeSub', terms: ['관할', '출입국관서', '출입국 관서', '출입국사무소', '출입국 사무소', '외국인관서', 'immigration office', 'jurisdiction', 'which office'] },
+    { id: 'forms', href: 'form-helper.html', label: 'paperwork', sub: 'paperworkSub', terms: ['통합신청서', '신청서', '서식', '양식', '서류 작성', '서류작성', 'application form', 'integrated application', 'form helper', 'forms', 'form', '申请书', '申请表'] },
+    { id: 'reservation', action: 'open-hikorea-guide', label: 'reservation', sub: 'reservationSub', terms: ['방문예약', '방문 예약', '예약', '하이코리아', 'hikorea', 'hi korea', 'reservation', 'appointment', 'booking', '预约'] },
+    { id: 'enforcement', href: 'enforcement.html', label: 'enforcement', sub: 'enforcementSub', terms: ['범칙금', '벌금', '과태료', '통고처분', '처벌', '사범', '불법체류', '불법 체류', '불체', '오버스테이', '초과체류', '초과 체류', '체류기간 초과', '체류 기간 초과', '체류기간을 넘', '강제퇴거', '강제 퇴거', '출국명령', '출국 명령', '보호명령', '입국금지', '입국 금지', '처분', '위반', 'overstay', 'overstayed', 'over stay', 'immigration fine', 'fines', 'penalty', 'penalties', 'violation', 'deportation', 'deported', 'enforcement', '罚款', '罚金', '非法滞留', '逾期滞留', '驱逐出境'] },
+    { id: 'short', action: 'open-short-stay', label: 'short', sub: 'shortSub', terms: ['무사증', '무비자', '비자 면제', '비자면제', '비자 없이', '비자없이', '사증면제', '사증 면제', '사증 없이', '단기입국', '단기 입국', '단기방문', '단기 방문', '단기체류', '단기 체류', '입국 경로', '입국경로', '입국 가능 국가', '입국가능국가', '관광비자', '관광 비자', '여행 비자', '전자여행허가', 'k-eta', 'keta', 'visa waiver', 'visa-free', 'visa free', 'visa exemption', 'without a visa', 'short stay', 'short-stay', 'short-term visit', 'tourist visa', 'travel to korea', 'entry route', '免签', '免签证', '无签证', 'miễn thị thực', 'bebas visa'] },
+    { id: 'jobs', action: 'open-jobcode-modal', label: 'jobs', sub: 'jobsSub', terms: ['직종코드', '직종 코드', '직업코드', '직업 코드', '직업분류', '직업 분류', '산업분류', '산업 분류', '업종코드', '업종 코드', '직종', '업종', '취업정보 신고', '취업 정보 신고', '고용정보 신고', 'job code', 'occupation code', 'occupational code', 'industry code', 'ksco', 'ksic', '职业代码', '行业代码'] },
+    { id: 'reminders', action: 'reveal-home-section', target: 'reminderSection', label: 'reminders', sub: 'remindersSub', terms: ['만료일', '만료 날짜', '만료 알림', '만료일 계산', '기한 계산', '기한계산', '날짜 계산', '날짜계산', '체류기간 계산', '며칠 남', '디데이', 'd-day', '알림', '리마인더', 'reminder', 'reminders', 'expiry date', 'expiration date', 'days left', 'deadline calculator', '到期提醒', '到期日'] },
+    { id: 'office', action: 'open-jurisdiction-modal', label: 'office', sub: 'officeSub', terms: ['관할', '출입국관서', '출입국 관서', '출입국사무소', '출입국 사무소', '출입국외국인청', '출입국·외국인청', '출입국 외국인청', '외국인관서', '출입국 위치', '출입국 주소', 'immigration office', 'jurisdiction', 'which office', '出入境管理局', '出入境事务所'] },
+    { id: 'agencies', action: 'open-agent-finder', label: 'agencies', sub: 'agenciesSub', terms: ['행정사', '대행기관', '대행 기관', '민원대행', '민원 대행', '신청 대행', '대행', 'agency', 'agencies', 'immigration agent', 'representative', '代办', '行政士'] },
+    { id: 'hospitals', action: 'open-med-finder', label: 'hospitals', sub: 'hospitalsSub', terms: ['지정병원', '지정 병원', '병원', '의료기관', '건강진단', '건강 진단', '건강검진', '건강 검진', '신체검사', '결핵', '마약검사', '마약 검사', 'hospital', 'hospitals', 'medical check', 'health check', 'health certificate', 'tb test', 'tuberculosis', '医院', '体检'] },
+    { id: 'checklists', href: 'immigration-checklists.html', label: 'checklists', sub: 'checklistsSub', terms: ['준비서류', '준비 서류', '필요서류', '필요 서류', '구비서류', '구비 서류', '제출서류', '제출 서류', '서류 목록', '체크리스트', 'checklist', 'checklists', 'required documents', 'document list', 'documents checklist', '材料清单'] },
+    { id: 'pathways', action: 'reveal-home-section', target: 'pathwaySection', label: 'pathways', sub: 'pathwaysSub', terms: ['생활 경로', '생활경로', '체류 경로', '정착 경로', '진로', 'life pathway', 'pathway', 'pathways'] },
+    { id: 'browse', action: 'reveal-home-section', target: 'visaManualSection', label: 'browse', sub: 'browseSub', terms: ['목적별', '둘러보기', '비자 종류', '비자종류', '체류자격 종류', '체류자격 목록', '비자 목록', '전체 비자', 'visa types', 'types of visa', 'all visas', 'browse'] },
     { id: 'reader', href: 'manual.html', label: 'reader', sub: 'readerSub', terms: ['매뉴얼', '원문 읽기', '원문읽기', '매뉴얼 원문', 'manual', 'manuals', 'read the manual'] },
-    { id: 'newhome', href: 'new-home.html', label: 'newHome', sub: 'newHomeSub', terms: ['귀화', '국적취득', '국적 취득', '국적', 'naturalization', 'naturalisation', 'citizenship'] },
+    { id: 'newhome', href: 'new-home.html', label: 'newHome', sub: 'newHomeSub', terms: ['귀화', '국적취득', '국적 취득', '국적회복', '국적 회복', '국적', '귀화시험', '귀화 면접', 'naturalization', 'naturalisation', 'citizenship', '入籍', '归化'] },
     { id: 'waymaker', href: 'ai.html', label: 'waymaker', sub: 'waymakerSub', terms: ['waymaker', '웨이메이커', 'ai 상담', 'ai 안내'] }
   ];
+  /* Discovery words in the other UI languages (zh-CN with common zh-TW forms, ja, vi, tl, id,
+   * ru, fr, es, ar, de, tr, uk). Same rule as above: words people type to look for the tool,
+   * never immigration content. Scripts without Latin letters match as substrings, Latin words
+   * as whole words (so plurals are listed). Bare "nationality" words are left out on purpose:
+   * they also appear in short-stay questions ("visa-free for my nationality"). */
+  var TERMS_I18N = {
+    forms: ['申请书', '申請書', '申请表', '申請表', '填写表格', '統合申請書', '書類作成', 'đơn đăng ký', 'mẫu đơn', 'điền đơn', 'pormularyo', 'form ng aplikasyon', 'formulir', 'formulir permohonan', 'isi formulir', 'анкета', 'бланк заявления', 'форма заявления', 'formulaire', 'formulaires', 'formulaire de demande', 'formulario', 'formularios', 'formulario de solicitud', 'استمارة', 'نموذج طلب', 'formular', 'formulare', 'antragsformular', 'başvuru formu', 'form doldurma', 'dilekçe', 'анкета', 'бланк заяви', 'форма заяви'],
+    reservation: ['预约', '預約', '网上预约', '予約', '来庁予約', 'ハイコリア', 'đặt lịch', 'đặt hẹn', 'hẹn lịch', 'mag-book', 'magpa-appointment', 'reservasi', 'janji temu', 'запись на прием', 'записаться', 'бронирование', 'rendez-vous', 'réservation', 'prendre rendez-vous', 'cita', 'cita previa', 'reserva', 'حجز موعد', 'موعد', 'termin', 'terminbuchung', 'termin buchen', 'randevu', 'randevusu', 'randevu al', 'rezervasyon', 'запис на прийом', 'записатися', 'бронювання'],
+    enforcement: ['罚款', '罰款', '罚金', '罰金', '非法滞留', '非法滯留', '逾期滞留', '逾期滯留', '逾期居留', '黑户', '驱逐出境', '驅逐出境', '强制出境', '強制出境', '违法', '違法', '反則金', '過料', '不法滞在', 'オーバーステイ', '超過滞在', '退去強制', '強制送還', '出国命令', '違反', 'tiền phạt', 'nộp phạt', 'bị phạt', 'phạt tiền', 'quá hạn visa', 'cư trú bất hợp pháp', 'ở lậu', 'trục xuất', 'vi phạm', 'multa', 'multas', 'deportasyon', 'paglabag', 'denda', 'tinggal ilegal', 'deportasi', 'pelanggaran', 'sanksi', 'штраф', 'нелегальн', 'просрочка визы', 'просрочил визу', 'просроченная виза', 'депортац', 'выдворен', 'нарушени', 'amende', 'amendes', 'séjour irrégulier', 'sans papiers', 'dépassement de séjour', 'expulsion', 'infraction', 'sanction', 'sanción', 'estancia irregular', 'situación irregular', 'sin papeles', 'deportación', 'expulsión', 'infracción', 'غرامة', 'مخالفة', 'إقامة غير قانونية', 'تجاوز مدة الإقامة', 'ترحيل', 'geldstrafe', 'bußgeld', 'strafe', 'illegaler aufenthalt', 'abschiebung', 'ausweisung', 'verstoß', 'ceza', 'cezası', 'cezasi', 'para cezası', 'vize cezası', 'cezalar', 'kaçak', 'vize ihlali', 'sınır dışı', 'ihlal', 'нелегальн', 'прострочена віза', 'прострочив візу', 'депортац', 'видворен', 'порушен'],
+    short: ['免簽', '免簽證', '无签证', '無簽證', '济州免签', '濟州免簽', '短期访问', '短期訪問', '入境途径', '电子旅行许可', '電子旅行許可', 'ビザなし', 'ビザ免除', '査証免除', 'ノービザ', '短期滞在', '短期訪問', 'miễn visa', 'không cần visa', 'du lịch hàn quốc', 'nhập cảnh ngắn hạn', 'visa du lịch', 'walang visa', 'turista visa', 'tanpa visa', 'visa turis', 'kunjungan singkat', 'без визы', 'безвиз', 'туристическая виза', 'краткосрочн', 'электронное разрешение на въезд', 'sans visa', 'exemption de visa', 'visa touristique', 'court séjour', 'sin visa', 'sin visado', 'exención de visa', 'exención de visado', 'visa de turista', 'estancia corta', 'بدون تأشيرة', 'إعفاء من التأشيرة', 'تأشيرة سياحية', 'إقامة قصيرة', 'visumfrei', 'ohne visum', 'visumbefreiung', 'touristenvisum', 'kurzaufenthalt', 'vizesiz', 'vize muafiyeti', 'turist vizesi', 'kısa süreli', 'без візи', 'безвіз', 'туристична віза', 'короткостроков'],
+    jobs: ['职业代码', '職業代碼', '行业代码', '行業代碼', '职业分类', '職業分類', '职种代码', '職業コード', '職種コード', '業種コード', 'mã nghề', 'mã ngành', 'mã nghề nghiệp', 'code ng trabaho', 'kode pekerjaan', 'kode jabatan', 'kode industri', 'код профессии', 'код отрасли', 'классификатор профессий', 'code métier', 'code profession', "code d'activité", 'código de ocupación', 'código de profesión', 'código de actividad', 'رمز المهنة', 'رمز النشاط', 'تصنيف المهن', 'berufscode', 'berufsschlüssel', 'branchencode', 'meslek kodu', 'sektör kodu', 'код професії', 'код галузі'],
+    reminders: ['到期日', '到期提醒', '期限计算', '期限計算', '提醒', '倒计时', '剩几天', '満了日', 'リマインダー', '期限通知', 'あと何日', 'ngày hết hạn', 'nhắc hạn', 'nhắc nhở', 'tính ngày', 'paalala', 'petsa ng pag-expire', 'pengingat', 'tanggal kedaluwarsa', 'hitung tanggal', 'sisa hari', 'напоминание', 'срок истечения', 'дата окончания', 'сколько дней', 'rappel', "date d'expiration", 'date limite', 'compte à rebours', 'recordatorio', 'fecha de vencimiento', 'fecha de caducidad', 'cuenta regresiva', 'تذكير', 'تاريخ الانتهاء', 'تنبيه', 'erinnerung', 'ablaufdatum', 'fristrechner', 'frist berechnen', 'hatırlatıcı', 'hatırlatma', 'bitiş tarihi', 'нагадування', 'дата закінчення', 'скільки днів'],
+    office: ['管辖', '管轄', '出入境办公室', '移民局', '入管', '出入国在留管理', '出入国管理事務所', 'cục xuất nhập cảnh', 'văn phòng xuất nhập cảnh', 'sở xuất nhập cảnh', 'opisina ng immigration', 'kantor imigrasi', 'иммиграционная служба', 'миграционная служба', 'иммиграционный офис', 'миграционный офис', "bureau d'immigration", "bureau de l'immigration", "service d'immigration", 'oficina de inmigración', 'oficina de migración', 'oficina de extranjería', 'extranjería', 'مكتب الهجرة', 'دائرة الهجرة', 'مكتب الجوازات', 'ausländerbehörde', 'einwanderungsbehörde', 'immigrationsbehörde', 'göç idaresi', 'göç ofisi', 'göçmenlik bürosu', 'міграційна служба', 'імміграційна служба', 'міграційний офіс'],
+    agencies: ['代辦', '行政书士', '行政書士', '代理机构', '代理機構', '中介', '代行', '申請代行', 'dịch vụ làm hồ sơ', 'đại lý', 'làm giấy tờ hộ', 'ahensya', 'ahente', 'agen', 'agensi', 'biro jasa', 'jasa pengurusan', 'агентство', 'посредник', 'представитель', 'agence', 'mandataire', 'représentant', 'intermédiaire', 'agencia', 'gestor', 'gestoría', 'representante', 'tramitador', 'وكالة', 'وكيل', 'معقب', 'agentur', 'vermittler', 'bevollmächtigter', 'visaagentur', 'ajans', 'vize danışmanı', 'temsilci', 'посередник', 'представник'],
+    hospitals: ['醫院', '指定医院', '指定醫院', '體檢', '健康检查', '健康檢查', '结核', '結核', '病院', '指定病院', '医療機関', '健康診断', '麻薬検査', 'bệnh viện', 'khám sức khỏe', 'giấy khám sức khỏe', 'xét nghiệm lao', 'ospital', 'pagsusuri sa kalusugan', 'rumah sakit', 'pemeriksaan kesehatan', 'cek kesehatan', 'tes tbc', 'больниц', 'медосмотр', 'медицинский осмотр', 'медицинская справка', 'туберкулез', 'hôpital', 'hôpitaux', 'examen médical', 'certificat médical', 'tuberculose', 'hospitales', 'examen médico', 'certificado médico', 'tuberculosis', 'مستشفى', 'فحص طبي', 'شهادة صحية', 'فحص السل', 'krankenhaus', 'klinik', 'gesundheitszeugnis', 'ärztliche untersuchung', 'tuberkulose', 'hastane', 'hastanesi', 'hastaneler', 'sağlık raporu', 'sağlık kontrolü', 'tüberküloz', 'лікарн', 'медогляд', 'медична довідка', 'туберкульоз'],
+    checklists: ['所需材料', '材料清單', '必备材料', '准备材料', '需要什么材料', '文件清单', '必要書類', '提出書類', '書類一覧', 'チェックリスト', 'giấy tờ cần thiết', 'hồ sơ cần chuẩn bị', 'danh sách giấy tờ', 'cần những giấy tờ gì', 'mga kailangang dokumento', 'listahan ng dokumento', 'dokumen yang diperlukan', 'daftar dokumen', 'persyaratan dokumen', 'berkas yang dibutuhkan', 'необходимые документы', 'список документов', 'перечень документов', 'какие документы', 'documents nécessaires', 'pièces justificatives', 'liste des documents', 'documents requis', 'documentos necesarios', 'documentos requeridos', 'lista de documentos', 'requisitos', 'المستندات المطلوبة', 'الوثائق المطلوبة', 'قائمة المستندات', 'erforderliche unterlagen', 'benötigte unterlagen', 'checkliste', 'gerekli belgeler', 'belge listesi', 'istenen evraklar', 'необхідні документи', 'список документів', 'перелік документів', 'які документи'],
+    pathways: ['生活路径', '定居路径', '生活ルート', '定住ルート', 'lộ trình cư trú', 'lộ trình định cư', 'jalur menetap', 'путь к постоянному проживанию', "parcours d'installation", 'ruta de residencia', 'مسار الإقامة', 'aufenthaltsweg', 'yerleşim yolu', 'шлях до проживання'],
+    browse: ['签证种类', '簽證種類', '签证类型', '簽證類型', '全部签证', 'ビザの種類', '在留資格一覧', 'ビザ一覧', 'các loại visa', 'loại thị thực', 'danh sách visa', 'mga uri ng visa', 'jenis visa', 'daftar visa', 'виды виз', 'типы виз', 'список виз', 'types de visa', 'liste des visas', 'tipos de visa', 'tipos de visado', 'lista de visas', 'أنواع التأشيرات', 'قائمة التأشيرات', 'visaarten', 'visumarten', 'vize türleri', 'vize çeşitleri', 'види віз', 'типи віз'],
+    reader: ['手册', '手冊', 'マニュアル', 'sổ tay hướng dẫn', 'manwal', 'buku panduan', 'методичка', 'manuel', 'guide officiel', 'guía oficial', 'الدليل الرسمي', 'دليل الهجرة', 'handbuch', 'leitfaden', 'el kitabı', 'kılavuz', 'посібник'],
+    newhome: ['歸化', '加入韩国国籍', '加入韓國國籍', '帰化', '国籍取得', 'nhập quốc tịch', 'naturalisasyon', 'pagkamamamayan', 'naturalisasi', 'kewarganegaraan indonesia', 'гражданство', 'натурализац', 'naturalisation', 'citoyenneté', 'naturalización', 'ciudadanía', 'التجنس', 'الحصول على الجنسية', 'einbürgerung', 'staatsbürgerschaft', 'vatandaşlık', 'vatandaşlığa geçiş', 'громадянство', 'натуралізац']
+  };
+  // Merged once: NFKC + lower case like the query, duplicates dropped (one word, one count).
+  TOOLS.forEach(function (tool) {
+    var seenTerm = {};
+    tool.terms = tool.terms.concat(TERMS_I18N[tool.id] || []).map(function (term) {
+      var t = String(term);
+      if (typeof t.normalize === 'function') t = t.normalize('NFKC');
+      return t.toLowerCase();
+    }).filter(function (term) { if (seenTerm[term]) return false; seenTerm[term] = true; return true; });
+  });
+
+  // The only home sections a tool row may reveal (index.html reveal-home-section).
+  var TOOL_TARGETS = { reminderSection: true, pathwaySection: true, visaManualSection: true };
 
   /* ------------------------------------------------------------ normalize -- */
   // Width, dash and space variants only. Code recognition itself stays in interpret().
@@ -93,6 +141,60 @@
     (index.procedure_registry || []).forEach(function (r) { registry[r.procedure] = r.context_requirement; });
     Object.defineProperty(index, '__hydrated', { value: { parents: parents, children: children, procedures: procedures, registry: registry }, enumerable: false });
     return index;
+  }
+
+  /* --------------------------------------------------------------- tools --- */
+  // Every tool whose discovery words appear in the query, strongest first. Strength is the
+  // length of the longest word that matched (capped), so "제주 무사증" beats a stray "예약";
+  // ties keep TOOLS order. Pure and deterministic.
+  // Same folding as VisableSearchRouter.fold (no tones/accents, Traditional → Simplified), so
+  // "tien phat", "multa por estancia" without accents or "罰款" in Traditional find the tool.
+  function fold(text) {
+    var R = root.VisableSearchRouter;
+    if (R && typeof R.fold === 'function') return R.fold(text);
+    var s = lower(normalize(text));
+    var Z = root.ParadisoZhT;
+    if (Z && typeof Z.toSimplified === 'function') s = Z.toSimplified(s);
+    if (typeof s.normalize === 'function') s = s.normalize('NFD').replace(/([a-z])[\u0300-\u036f]+/g, '$1').normalize('NFC');
+    return s.replace(/đ/g, 'd').replace(/ı/g, 'i').replace(/ß/g, 'ss').replace(/ё/g, 'е')
+      .replace(/[\u064B-\u0652\u0640]/g, '').replace(/[أإآٱ]/g, 'ا').replace(/ى/g, 'ي').replace(/ة/g, 'ه');
+  }
+  var foldedTerms = null;
+  function toolTerms() {
+    if (foldedTerms) return foldedTerms;
+    foldedTerms = TOOLS.map(function (tool) {
+      var seenTerm = {}, out = [];
+      tool.terms.forEach(function (t) { seenTerm[t] = true; out.push(t); });
+      tool.terms.forEach(function (t) { var f = fold(t); if (!seenTerm[f]) { seenTerm[f] = true; out.push(f); } });
+      return out;
+    });
+    return foldedTerms;
+  }
+  function matchTools(rawQuery) {
+    var plain = lower(normalize(rawQuery));
+    if (!plain) return [];
+    var folded = fold(plain);
+    var text = folded === plain ? plain : plain + '\n' + folded;
+    var terms = toolTerms();
+    var hits = [];
+    TOOLS.forEach(function (tool, order) {
+      var best = 0, words = [];
+      var matched = {};
+      terms[order].forEach(function (term) {
+        if (!hasTerm(text, term)) return;
+        var key = fold(term);
+        if (matched[key]) return;
+        matched[key] = true; words.push(term); if (term.length > best) best = term.length;
+      });
+      if (!best) return;
+      hits.push({ tool: tool, order: order, strength: Math.min(9, best) + Math.min(3, words.length - 1), words: words });
+    });
+    hits.sort(function (a, b) { return (b.strength - a.strength) || (a.order - b.order); });
+    return hits;
+  }
+  function toolRow(hit, score) {
+    var tool = hit.tool;
+    return { kind: 'tool', tool: tool.id, href: tool.href || null, action: tool.action || null, target: tool.target || null, labelKey: tool.label, sub: [{ key: tool.sub }], match: 'tool', score: score };
   }
 
   /* ------------------------------------------------------------- labels --- */
@@ -153,7 +255,7 @@
     var text = lower(q);
     var rows = [], seen = {};
     function add(row) {
-      var key = row.kind + '|' + (row.query || row.href || row.action);
+      var key = row.kind + '|' + (row.query || row.href || (row.action + (row.target ? '#' + row.target : '')));
       if (seen[key]) { if (row.score > seen[key].score) seen[key].score = row.score; return; }
       if (row.query) {
         if (!interp || !readsAs(interp, index, row.query, row.code || null, row.procedure || null)) {
@@ -262,15 +364,13 @@
       }
     }
 
-    // 5. tools — named outright, or alongside an interpreted query
-    var interpreted = !!(primary || procedure || (I.aliasCandidates || []).length);
-    TOOLS.forEach(function (tool, i) {
-      if (!tool.terms.some(function (t) { return hasTerm(text, t); })) return;
-      add({ kind: 'tool', tool: tool.id, href: tool.href || null, action: tool.action || null, labelKey: tool.label, sub: [{ key: tool.sub }], match: 'tool', score: (interpreted ? 300 : 860) - i });
-    });
+    // 5. tools — named outright (above everything but a typed code), next to a procedure the
+    //    user typed without a code, or quietly alongside a code
+    var bandTool = primary ? 300 : ((procedure || (I.aliasCandidates || []).length) ? 760 : 860);
+    matchTools(q).forEach(function (hit) { add(toolRow(hit, bandTool + hit.strength)); });
     // a question or a long description: Waymaker explains the situation step by step
     if (!seen['tool|ai.html'] && (I.isQuestion || q.length >= 24)) {
-      add({ kind: 'tool', tool: 'waymaker', href: 'ai.html', action: null, labelKey: 'waymaker', sub: [{ key: 'waymakerAsk' }], match: 'tool', score: 100 });
+      add({ kind: 'tool', tool: 'waymaker', href: 'ai.html', action: null, target: null, labelKey: 'waymaker', sub: [{ key: 'waymakerAsk' }], match: 'tool', score: 100 });
     }
 
     // 6. a code-shaped token the sources do not know ("XYZ-999") is said, never matched
@@ -286,7 +386,7 @@
     return out;
   }
 
-  var api = { normalize: normalize, hydrate: hydrate, suggest: suggest, compareCodes: compareCodes, TOOLS: TOOLS, PROCEDURE_ORDER: PROCEDURE_ORDER };
+  var api = { normalize: normalize, fold: fold, hydrate: hydrate, suggest: suggest, matchTools: matchTools, compareCodes: compareCodes, TOOLS: TOOLS, TOOL_TARGETS: TOOL_TARGETS, PROCEDURE_ORDER: PROCEDURE_ORDER };
   root.VisableSearchSuggest = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this);

@@ -152,7 +152,7 @@ textarea:focus, input:focus, select:focus { border-color: var(--blue); box-shado
 .result-card { border: 1px solid var(--line); border-radius: .9rem; padding: 1.15rem; background: #fff; min-width: 0; }
 .result-card.baseline { background: var(--blue-soft); border-color: #c8dcfb; }
 .result-card.prediction { background: var(--mint-soft); border-color: #c3e9df; }
-.card-kicker { margin: 0; font-size: .7rem; font-weight: 800; letter-spacing: .09em; color: var(--muted); }
+.card-kicker { margin: 0; font-size: .76rem; font-weight: 800; letter-spacing: .02em; color: var(--muted); }
 .result-card h3 { margin: .18rem 0 .7rem; font-size: 1.12rem; }
 .amount { margin: .18rem 0; font-size: clamp(1.7rem, 4vw, 2.55rem); font-weight: 800; letter-spacing: -.045em; }
 .subtle { color: var(--muted); font-size: .86rem; }
@@ -309,3 +309,64 @@ footer { padding: 1.8rem 1rem 3rem; color: var(--muted); text-align: center; fon
   }
   .panel[data-step="2"] .confirmation-actions button { width: 100%; }
 }
+
+/* 2026-11-02: "what to do next" when the legal baseline cannot be computed.
+   Users previously hit two "산출 불가" cards with no way to supply the missing dates. */
+.next-step-card { margin: 0 0 1rem; padding: 1.15rem; border: 2px solid var(--blue); border-radius: .9rem; background: #fff; box-shadow: var(--shadow); }
+.next-step-card h3 { margin: .2rem 0 .5rem; font-size: 1.12rem; line-height: 1.4; }
+.next-step-card p { margin: 0 0 .8rem; color: var(--muted); }
+.next-step-card .card-kicker { color: var(--blue); }
+.next-step-card--stop { border-color: var(--amber); }
+.next-step-card--stop .card-kicker { color: var(--amber); }
+.date-range-form { display: grid; grid-template-columns: 1fr 1fr auto; gap: .75rem; align-items: end; }
+.date-range-form label { display: grid; gap: .3rem; font-size: .88rem; font-weight: 700; color: var(--ink); }
+.date-range-form input { min-height: 48px; padding: .55rem .7rem; border: 1px solid var(--line); border-radius: .65rem; background: #fff; color: var(--ink); width: 100%; }
+.date-range-form input:focus-visible { outline: 3px solid rgba(33,102,209,.42); outline-offset: 2px; }
+.date-range-form .primary-button { min-height: 48px; }
+.result-summary--blocked .result-card { opacity: .78; }
+.result-summary--blocked .result-card .amount { font-size: 1.35rem; }
+.clarification-chips { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: .4rem; }
+.clarification-chip { min-height: 44px; padding: .45rem .85rem; border: 1px solid #d7c47f; border-radius: 999px; background: #fff; color: var(--ink); font-weight: 700; }
+.clarification-chip:hover { border-color: var(--amber); background: #fffdf6; }
+.analysis-retry { margin-top: .75rem; }
+@media (max-width: 680px) {
+  .date-range-form { grid-template-columns: 1fr; }
+  .date-range-form .primary-button { width: 100%; }
+}
+
+/* 2026-11-03: richer result. Summary first, then reasons, then stay impact. */
+.verdict-card { margin: 0 0 1rem; padding: 1.2rem 1.25rem; border-radius: .9rem; background: var(--navy); color: #fff; }
+.verdict-card .card-kicker { color: rgba(255,255,255,.72); }
+.verdict-text { margin: .35rem 0 .55rem; font-size: 1.12rem; line-height: 1.62; }
+.verdict-text strong { color: #fff; }
+.verdict-confidence { margin: 0; font-size: .9rem; color: rgba(255,255,255,.82); }
+.accuracy-card { margin-top: 1rem; padding: 1.05rem; border: 1px solid #c8dcfb; border-radius: .9rem; background: var(--blue-soft); }
+.accuracy-card h3 { margin: .15rem 0 .6rem; font-size: 1.04rem; line-height: 1.5; }
+.accuracy-card--result { margin: 0 0 1rem; background: #fff; border-width: 2px; border-color: var(--blue); }
+.accuracy-question { padding: .55rem 0; border-top: 1px solid rgba(33,102,209,.16); }
+.accuracy-question:first-of-type { border-top: 0; }
+.accuracy-question p { margin: 0 0 .45rem; font-weight: 700; }
+.likelihood-meter { display: inline-flex; gap: 3px; vertical-align: middle; }
+.likelihood-meter i { width: 14px; height: 6px; border-radius: 3px; background: var(--line); }
+.likelihood-meter i.is-on { background: var(--blue); }
+.disposition-likelihood { display: inline-flex; align-items: center; gap: .4rem; white-space: nowrap; font-weight: 700; }
+.disposition--primary { padding-top: .2rem; }
+.disposition p.subtle { margin: .35rem 0 .2rem; }
+.tag--direction { background: var(--mint-soft); color: var(--mint); }
+.tag--direction[data-direction="AGGRAVATED"] { background: #fdecea; color: var(--danger); }
+.tag--direction[data-direction="UNCERTAIN"] { background: #edf0f4; color: var(--muted); }
+.money-reasons { margin-top: .6rem; padding-top: .6rem; border-top: 1px solid rgba(21,118,103,.18); font-size: .92rem; }
+.money-reasons ul { margin: .35rem 0 0; padding-left: 1.1rem; }
+.stay-impact ul { margin: .4rem 0 .5rem; padding-left: 1.15rem; }
+.stay-impact li { margin: .25rem 0; }
+@media (max-width: 680px) {
+  .verdict-text { font-size: 1.02rem; }
+  .disposition strong { flex-direction: column; gap: .3rem; }
+}
+.accuracy-card .clarification-chip { border-color: #b9cff5; }
+.accuracy-card .clarification-chip:hover { border-color: var(--blue); background: #f5f9ff; }
+.legal-dispositions { margin-top: .6rem; padding: .8rem .9rem; border-radius: .7rem; background: var(--canvas); }
+.legal-dispositions ul { margin: .4rem 0 .3rem; padding-left: 1.1rem; }
+.legal-dispositions li { margin: .25rem 0; }
+.legal-dispositions p.subtle { margin: 0; font-size: .85rem; }
+.likelihood-cap-note { margin: .3rem 0 .2rem; font-size: .85rem; color: var(--amber); }

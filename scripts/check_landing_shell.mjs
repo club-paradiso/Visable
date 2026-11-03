@@ -80,7 +80,7 @@ ok(/role="status" aria-live="polite" data-cs-suggest-status/.test(current), 'a p
 ok(/<button type="button" class="cs-clear" data-cs-clear aria-label="[^"]+" hidden>/.test(current), 'clear button is labelled and hidden until there is text');
 const examples = [...current.matchAll(/<button type="button" data-cs-query="([^"]+)">/g)].map((m) => m[1]);
 ok(examples.length >= 3 && examples.length <= 5, `a restrained set of example searches (${examples.length})`);
-ok(/class="cs-examples" role="group" aria-labelledby="csExamplesLabel"/.test(current) && !/자주 찾는|인기|popular/i.test(current.slice(at('class="cs-examples"'), at('class="cs-basis"'))), 'examples are a labelled group and do not claim popularity');
+ok(/class="cs-examples" role="group" aria-labelledby="csExamplesLabel"/.test(current) && !/자주 찾는|인기|popular/i.test(current.slice(at('class="cs-examples"'), current.indexOf('</section>', at('class="cs-examples"')))), 'examples are a labelled group and do not claim popularity');
 ok(/<a class="cs-example-link" href="form-helper\.html">/.test(current), 'the integrated application example opens Form Helper directly');
 for (const href of ['immigration-checklists.html', 'form-helper.html']) ok(new RegExp(`<a class="cs-tool" href="${href}"`).test(current), `core tool links to ${href}`);
 for (const action of ['open-hikorea-guide', 'open-jurisdiction-modal', 'open-jobcode-modal']) ok(new RegExp(`<button type="button" class="cs-tool" data-action="${action}"`).test(current), `core tool opens ${action}`);
@@ -93,7 +93,7 @@ ok(/<a href="new-home.html" class="cs-service"/.test(current), 'nationality guid
 ok(/class="cs-references"[\s\S]*data-cs-manual[\s\S]*href="manual.html"/.test(current), 'official source search and manual reader share a reference section');
 ok(at('<h1>') < at('id="civicSearchForm"') && at('id="civicSearchForm"') < at('class="cs-examples"') && at('class="cs-examples"') < at('id="csCoreTitle"') && at('id="csCoreTitle"') < at('class="cs-source-strip"') && at('class="cs-source-strip"') < at('class="cs-footer"'), 'hierarchy: headline → search → examples → tools → sources → disclaimer');
 ok(/<footer class="cs-footer">[\s\S]*Visable은 공식 정부 서비스가 아닙니다/.test(current), 'the not-a-government-service disclaimer stays in the shell');
-ok(/visa_manual_261019\.pdf/.test(current) && /stay_manual_261019\.pdf/.test(current) && (current.match(/2026\.10\.19/g) || []).length >= 2, 'official source PDFs and their basis dates stay on the home');
+ok(/visa_manual_261019\.pdf/.test(current) && /stay_manual_261102\.pdf/.test(current) && /2026\.10\.19/.test(current) && /2026\.11\.02/.test(current), 'official source PDFs and their basis dates stay on the home');
 ok(/<section id="civicBrowsePanel" class="cs-browse" aria-labelledby="csBrowseTitle" hidden>/.test(current) && at('class="cs-directory"') < at('id="civicBrowsePanel"'), 'the purpose pickers live in a hidden browse panel after the directory');
 ok(/<button type="button" data-action="reveal-home-section" data-target="visaManualSection" aria-controls="civicBrowsePanel" aria-expanded="false"[^>]*>/.test(current), 'the directory entry still reaches the purpose pickers (reveal-home-section → browse panel)');
 ok((current.match(/<button type="button" data-cs-journey="(pre|post)" aria-pressed="false">/g) || []).length === 2, 'browse panel tabs switch tracks (aria-pressed)');
