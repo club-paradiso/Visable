@@ -60,6 +60,7 @@ SYNCED_PAIRS: Tuple[Tuple[Path, Path], ...] = (
         for name in (
             "catalog.json",
             "sources.json",
+            "stay_manual_2026_11_02_pdf.json",
             "stay_manual_2026_10_19_pdf.json",
             "visa_manual_2026_10_19_pdf.json",
             "stay_manual_2026_09_18_pdf.json",

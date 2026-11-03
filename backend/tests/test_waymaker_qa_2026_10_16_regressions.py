@@ -226,7 +226,7 @@ class ModelAnswerManualLocationTests(unittest.TestCase):
         body = _ask_answered("F-6 결혼이민 체류기간 연장하려면 어떻게 해야 하나요?")
         self.assertTrue(body["answer"].startswith(MODEL_ANSWER_KO[:20]))
         self.assertIn("공식 매뉴얼 위치", body["answer"])
-        self.assertIn("p.500", body["answer"])  # F-6 extension, 2026.10 PDF (p.498 in 2026.9)
+        self.assertIn("p.501", body["answer"])  # F-6 extension, 2026.11 PDF (p.500 in 2026.10, p.498 in 2026.9)
         refs = body["manual_location_references"]
         self.assertTrue(refs)
         self.assertTrue(all(r["role"] == "location_reference" and r["reviewed"] is False for r in refs))

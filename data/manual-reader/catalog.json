@@ -1,6 +1,6 @@
 {
  "schema_version": 1,
- "edition": "2026.10",
+ "edition": "2026.10 (visa) / 2026.11 (stay)",
  "generated_by": "scripts/build_manual_reader.py",
  "note": "원문 문장은 바꾸지 않음. 쪽 넘김 때문에 반복된 항목명·목차 링크·장 제목 줄·표지 이미지만 제외.",
  "sources": {
@@ -24,21 +24,21 @@
    }
   },
   "s": {
-   "id": "stay_manual_2026_10_19_reader_md",
-   "file": "stay_manual_261019.md",
+   "id": "stay_manual_2026_11_02_reader_md",
+   "file": "stay_manual_261102.md",
    "title": "외국인체류 안내매뉴얼",
    "title_en": "Foreigner Stay/Residence Guide Manual",
-   "date": "2026-10-19",
-   "version": "2026.10",
-   "pdf": "docs/source-manuals/2026-10-19/stay_manual_261019.pdf",
-   "pdf_text": "docs/source-manuals/2026-10-19/extracted/stay_manual_2026_10_19_pdf.txt",
-   "markdown": "docs/source-manuals/2026-10-19/markdown/stay_manual_261019.md",
-   "sha256": "461368133bde8b495ef96d473af004ddcf6706e56b9b7d93aee3c9c891696cd9",
+   "date": "2026-11-02",
+   "version": "2026.11",
+   "pdf": "docs/source-manuals/2026-11-02/stay_manual_261102.pdf",
+   "pdf_text": "docs/source-manuals/2026-11-02/extracted/stay_manual_2026_11_02_pdf.txt",
+   "markdown": "docs/source-manuals/2026-11-02/markdown/stay_manual_261102.md",
+   "sha256": "adace2cea4ad705d393fd8ff58494d19edfad5cbf0e29a4b46d9958331cfdda1",
    "official_url": "https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&BBS_GB_CD=BS10&NTCCTT_SEQ=1062&page=1",
    "approval_state": "needs_review",
    "pdf_crosscheck": {
-    "probes": 9996,
-    "matched": 9854,
+    "probes": 10015,
+    "matched": 9873,
     "ratio": 0.9858
    }
   }
@@ -2249,7 +2249,7 @@
    },
    "s": {
     "title": "특정활동(E-7)",
-    "bytes": 197370,
+    "bytes": 198427,
     "sections": [
      {
       "t": "sec",
@@ -3084,7 +3084,7 @@
    },
    "s": {
     "title": "기타(G-1)",
-    "bytes": 23397,
+    "bytes": 23538,
     "sections": [
      {
       "t": "sec",
@@ -3327,7 +3327,7 @@
    "key": "regional",
    "s": {
     "title": "지역특화형비자 체류제도 주요내용 알림",
-    "bytes": 97647,
+    "bytes": 98393,
     "sections": [
      {
       "t": "html",
@@ -3825,7 +3825,7 @@
   {
    "src": "s",
    "key": "E-7",
-   "chars": 82360,
+   "chars": 82863,
    "missing": 90,
    "added": 0
   },
@@ -3888,7 +3888,7 @@
   {
    "src": "s",
    "key": "G-1",
-   "chars": 8242,
+   "chars": 8322,
    "missing": 67,
    "added": 0
   },
@@ -3909,7 +3909,7 @@
   {
    "src": "s",
    "key": "regional",
-   "chars": 36082,
+   "chars": 36535,
    "missing": 0,
    "added": 0
   },

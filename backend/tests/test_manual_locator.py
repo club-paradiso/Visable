@@ -142,7 +142,7 @@ class PreparationNoteTests(unittest.TestCase):
 
     def test_f4_extension_note_points_at_the_f4_section_not_h2(self):
         answer = self._ask("F-4 연장 서류")["answer"]
-        self.assertIn("* F-4: p.540", answer)
+        self.assertIn("* F-4: p.541", answer)
         self.assertNotIn("p.537", answer)
 
     def test_verified_structured_answer_is_unchanged(self):

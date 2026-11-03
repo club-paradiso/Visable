@@ -64,7 +64,7 @@ class SchemaShapeTests(unittest.TestCase):
         # editions (visa and stay, both 2026-10-19) on 2026-10-23; they
         # superseded the 2026.9 pair (visa 2026-09-01, stay 2026-09-18).
         self.assertEqual(inv["visa_issuance_manual"]["published_or_updated_at"], "2026-10-19")
-        self.assertEqual(inv["stay_residence_manual"]["published_or_updated_at"], "2026-10-19")
+        self.assertEqual(inv["stay_residence_manual"]["published_or_updated_at"], "2026-11-02")
 
 
 class RegistryConsistencyTests(unittest.TestCase):
@@ -90,8 +90,8 @@ class RegistryConsistencyTests(unittest.TestCase):
                     by_kw["visa"] = src
         self.assertIn("stay", by_kw, "active stay manual must be registered")
         self.assertIn("visa", by_kw, "active visa manual must be registered")
-        self.assertEqual(by_kw["stay"]["version"], "2026.10")
-        self.assertEqual(by_kw["stay"]["source_date"], "2026-10-19")
+        self.assertEqual(by_kw["stay"]["version"], "2026.11")
+        self.assertEqual(by_kw["stay"]["source_date"], "2026-11-02")
         self.assertEqual(by_kw["visa"]["version"], "2026.10")
         self.assertEqual(by_kw["visa"]["source_date"], "2026-10-19")
 
