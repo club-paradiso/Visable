@@ -74,6 +74,57 @@ test.describe('search-first hierarchy', () => {
   });
 });
 
+test.describe('intent words reach the existing tools', () => {
+  test('"벌금 계산" suggests the enforcement page and opens it', async ({ page }) => {
+    await bootHome(page);
+    const first = await firstOption(page, '벌금 계산');
+    await expect(first.locator('.cs-sug-label')).toHaveText('출입국 사범처리 예상');
+    await expect(first.locator('.cs-sug-kind')).toHaveText('도구');
+    await first.click();
+    await expect(page).toHaveURL(/enforcement\.html$/);
+  });
+
+  test('"제주 무사증 국가" suggests the short-stay checker and opens it in place', async ({ page }) => {
+    await bootHome(page);
+    const first = await firstOption(page, '제주 무사증 국가');
+    await expect(first.locator('.cs-sug-label')).toHaveText('단기입국 경로');
+    await expect(first).toHaveAttribute('data-action', 'open-short-stay');
+    await page.keyboard.press('ArrowDown');
+    await page.keyboard.press('Enter');
+    const modal = page.locator('#shortStayModalOverlay');
+    await expect(modal).toBeVisible();
+    await expect(modal.locator('#shortStayChecker')).toBeVisible();
+    await expect(page.locator('body')).not.toHaveClass(/searched/);
+  });
+
+  test('a reveal tool carries its allow-listed target', async ({ page }) => {
+    await bootHome(page);
+    const first = await firstOption(page, '만료일 계산');
+    await expect(first).toHaveAttribute('data-action', 'reveal-home-section');
+    await expect(first).toHaveAttribute('data-target', 'reminderSection');
+  });
+
+  test('Enter on a tool-shaped query offers the tool above the result', async ({ page }) => {
+    await bootHome(page);
+    await typeQuery(page, '불법체류 벌금');
+    await page.locator('#civicSearchForm .cs-submit').click();
+    await expect(page.locator('body')).toHaveClass(/searched/);
+    const match = page.locator('#csToolMatch');
+    await expect(match).toBeVisible();
+    await expect(match.locator('a[href="enforcement.html"]')).toContainText('출입국 사범처리 예상');
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
+    expect(overflow).toBeLessThanOrEqual(1);
+  });
+
+  test('a status code query gets no tool card (its guidance is the answer)', async ({ page }) => {
+    await bootHome(page);
+    await typeQuery(page, 'F-6 체류기간 연장');
+    await page.locator('#civicSearchForm .cs-submit').click();
+    await expect(page.locator('#statusGuidance[data-sg-kind]')).toBeVisible({ timeout: 20_000 });
+    await expect(page.locator('#csToolMatch')).toHaveCount(0);
+  });
+});
+
 test.describe('query matrix', () => {
   const CASES = [
     ['E-7-1', /^E-7-1 전문인력/, '세부 자격'],

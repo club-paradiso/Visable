@@ -21,11 +21,12 @@
  * natural code order):
  *   1000 the whole query is a status code        950 a code typed in a longer query
  *    990 the whole query is a subcode             900 code × procedure both typed
- *    860 a tool named outright (no status/procedure in the query)
+ *    860+ a tool named outright (no status/procedure in the query; +strength of the match)
+ *    760+ a tool next to a procedure typed without a code ("체류기간 만료 알림")
  *    800/750 a procedure on its own (status-independent / status needed)
  *    650 a status reached through an alias         600 code × likely procedure
  *    500 subcodes / codes continuing the typed prefix
- *    450 alias candidates       400 name matches       300 tools alongside
+ *    450 alias candidates       400 name matches       300+ tools alongside a code
  *
  * Pure: no DOM. Exposed on globalThis.VisableSearchSuggest for Node tests.
  * ========================================================================== */
@@ -39,15 +40,31 @@
   var LISTABLE_KINDS = { status: true, substatus: true };
 
   /* Product navigation, not immigration content: each tool is an existing page or
-   * an existing dialog on the home (index.html data-action handlers). */
+   * an existing dialog on the home (index.html data-action handlers, the same
+   * destinations as the "전체 도구" directory in civic-search.js). `terms` are
+   * discovery words only — what people type when they look for the tool
+   * ("벌금 계산" → the enforcement page, "제주 무사증 국가" → the short-stay
+   * checker). They never become an answer: choosing the row opens the tool,
+   * which owns its own sources and cautions. Order = tie-break order. */
   var TOOLS = [
-    { id: 'forms', href: 'form-helper.html', label: 'paperwork', sub: 'paperworkSub', terms: ['통합신청서', '신청서', '서식', '양식', '서류 작성', 'application form', 'integrated application', 'form helper', 'forms', 'form'] },
-    { id: 'reservation', action: 'open-hikorea-guide', label: 'reservation', sub: 'reservationSub', terms: ['방문예약', '방문 예약', '예약', '하이코리아', 'hikorea', 'hi korea', 'reservation', 'appointment', 'booking'] },
-    { id: 'office', action: 'open-jurisdiction-modal', label: 'office', sub: 'officeSub', terms: ['관할', '출입국관서', '출입국 관서', '출입국사무소', '출입국 사무소', '외국인관서', 'immigration office', 'jurisdiction', 'which office'] },
+    { id: 'forms', href: 'form-helper.html', label: 'paperwork', sub: 'paperworkSub', terms: ['통합신청서', '신청서', '서식', '양식', '서류 작성', '서류작성', 'application form', 'integrated application', 'form helper', 'forms', 'form', '申请书', '申请表'] },
+    { id: 'reservation', action: 'open-hikorea-guide', label: 'reservation', sub: 'reservationSub', terms: ['방문예약', '방문 예약', '예약', '하이코리아', 'hikorea', 'hi korea', 'reservation', 'appointment', 'booking', '预约'] },
+    { id: 'enforcement', href: 'enforcement.html', label: 'enforcement', sub: 'enforcementSub', terms: ['범칙금', '벌금', '과태료', '통고처분', '처벌', '사범', '불법체류', '불법 체류', '불체', '오버스테이', '초과체류', '초과 체류', '체류기간 초과', '체류 기간 초과', '체류기간을 넘', '강제퇴거', '강제 퇴거', '출국명령', '출국 명령', '보호명령', '입국금지', '입국 금지', '처분', '위반', 'overstay', 'overstayed', 'over stay', 'immigration fine', 'fines', 'penalty', 'penalties', 'violation', 'deportation', 'deported', 'enforcement', '罚款', '罚金', '非法滞留', '逾期滞留', '驱逐出境'] },
+    { id: 'short', action: 'open-short-stay', label: 'short', sub: 'shortSub', terms: ['무사증', '무비자', '비자 면제', '비자면제', '비자 없이', '비자없이', '사증면제', '사증 면제', '사증 없이', '단기입국', '단기 입국', '단기방문', '단기 방문', '단기체류', '단기 체류', '입국 경로', '입국경로', '입국 가능 국가', '입국가능국가', '관광비자', '관광 비자', '여행 비자', '전자여행허가', 'k-eta', 'keta', 'visa waiver', 'visa-free', 'visa free', 'visa exemption', 'without a visa', 'short stay', 'short-stay', 'short-term visit', 'tourist visa', 'travel to korea', 'entry route', '免签', '免签证', '无签证', 'miễn thị thực', 'bebas visa'] },
+    { id: 'jobs', action: 'open-jobcode-modal', label: 'jobs', sub: 'jobsSub', terms: ['직종코드', '직종 코드', '직업코드', '직업 코드', '직업분류', '직업 분류', '산업분류', '산업 분류', '업종코드', '업종 코드', '직종', '업종', '취업정보 신고', '취업 정보 신고', '고용정보 신고', 'job code', 'occupation code', 'occupational code', 'industry code', 'ksco', 'ksic', '职业代码', '行业代码'] },
+    { id: 'reminders', action: 'reveal-home-section', target: 'reminderSection', label: 'reminders', sub: 'remindersSub', terms: ['만료일', '만료 날짜', '만료 알림', '만료일 계산', '기한 계산', '기한계산', '날짜 계산', '날짜계산', '체류기간 계산', '며칠 남', '디데이', 'd-day', '알림', '리마인더', 'reminder', 'reminders', 'expiry date', 'expiration date', 'days left', 'deadline calculator', '到期提醒', '到期日'] },
+    { id: 'office', action: 'open-jurisdiction-modal', label: 'office', sub: 'officeSub', terms: ['관할', '출입국관서', '출입국 관서', '출입국사무소', '출입국 사무소', '출입국외국인청', '출입국·외국인청', '출입국 외국인청', '외국인관서', '출입국 위치', '출입국 주소', 'immigration office', 'jurisdiction', 'which office', '出入境管理局', '出入境事务所'] },
+    { id: 'agencies', action: 'open-agent-finder', label: 'agencies', sub: 'agenciesSub', terms: ['행정사', '대행기관', '대행 기관', '민원대행', '민원 대행', '신청 대행', '대행', 'agency', 'agencies', 'immigration agent', 'representative', '代办', '行政士'] },
+    { id: 'hospitals', action: 'open-med-finder', label: 'hospitals', sub: 'hospitalsSub', terms: ['지정병원', '지정 병원', '병원', '의료기관', '건강진단', '건강 진단', '건강검진', '건강 검진', '신체검사', '결핵', '마약검사', '마약 검사', 'hospital', 'hospitals', 'medical check', 'health check', 'health certificate', 'tb test', 'tuberculosis', '医院', '体检'] },
+    { id: 'checklists', href: 'immigration-checklists.html', label: 'checklists', sub: 'checklistsSub', terms: ['준비서류', '준비 서류', '필요서류', '필요 서류', '구비서류', '구비 서류', '제출서류', '제출 서류', '서류 목록', '체크리스트', 'checklist', 'checklists', 'required documents', 'document list', 'documents checklist', '材料清单'] },
+    { id: 'pathways', action: 'reveal-home-section', target: 'pathwaySection', label: 'pathways', sub: 'pathwaysSub', terms: ['생활 경로', '생활경로', '체류 경로', '정착 경로', '진로', 'life pathway', 'pathway', 'pathways'] },
+    { id: 'browse', action: 'reveal-home-section', target: 'visaManualSection', label: 'browse', sub: 'browseSub', terms: ['목적별', '둘러보기', '비자 종류', '비자종류', '체류자격 종류', '체류자격 목록', '비자 목록', '전체 비자', 'visa types', 'types of visa', 'all visas', 'browse'] },
     { id: 'reader', href: 'manual.html', label: 'reader', sub: 'readerSub', terms: ['매뉴얼', '원문 읽기', '원문읽기', '매뉴얼 원문', 'manual', 'manuals', 'read the manual'] },
-    { id: 'newhome', href: 'new-home.html', label: 'newHome', sub: 'newHomeSub', terms: ['귀화', '국적취득', '국적 취득', '국적', 'naturalization', 'naturalisation', 'citizenship'] },
+    { id: 'newhome', href: 'new-home.html', label: 'newHome', sub: 'newHomeSub', terms: ['귀화', '국적취득', '국적 취득', '국적회복', '국적 회복', '국적', '귀화시험', '귀화 면접', 'naturalization', 'naturalisation', 'citizenship', '入籍', '归化'] },
     { id: 'waymaker', href: 'ai.html', label: 'waymaker', sub: 'waymakerSub', terms: ['waymaker', '웨이메이커', 'ai 상담', 'ai 안내'] }
   ];
+  // The only home sections a tool row may reveal (index.html reveal-home-section).
+  var TOOL_TARGETS = { reminderSection: true, pathwaySection: true, visaManualSection: true };
 
   /* ------------------------------------------------------------ normalize -- */
   // Width, dash and space variants only. Code recognition itself stays in interpret().
@@ -93,6 +110,28 @@
     (index.procedure_registry || []).forEach(function (r) { registry[r.procedure] = r.context_requirement; });
     Object.defineProperty(index, '__hydrated', { value: { parents: parents, children: children, procedures: procedures, registry: registry }, enumerable: false });
     return index;
+  }
+
+  /* --------------------------------------------------------------- tools --- */
+  // Every tool whose discovery words appear in the query, strongest first. Strength is the
+  // length of the longest word that matched (capped), so "제주 무사증" beats a stray "예약";
+  // ties keep TOOLS order. Pure and deterministic.
+  function matchTools(rawQuery) {
+    var text = lower(normalize(rawQuery));
+    if (!text) return [];
+    var hits = [];
+    TOOLS.forEach(function (tool, order) {
+      var best = 0, words = [];
+      tool.terms.forEach(function (term) { if (hasTerm(text, term)) { words.push(term); if (term.length > best) best = term.length; } });
+      if (!best) return;
+      hits.push({ tool: tool, order: order, strength: Math.min(9, best) + Math.min(3, words.length - 1), words: words });
+    });
+    hits.sort(function (a, b) { return (b.strength - a.strength) || (a.order - b.order); });
+    return hits;
+  }
+  function toolRow(hit, score) {
+    var tool = hit.tool;
+    return { kind: 'tool', tool: tool.id, href: tool.href || null, action: tool.action || null, target: tool.target || null, labelKey: tool.label, sub: [{ key: tool.sub }], match: 'tool', score: score };
   }
 
   /* ------------------------------------------------------------- labels --- */
@@ -153,7 +192,7 @@
     var text = lower(q);
     var rows = [], seen = {};
     function add(row) {
-      var key = row.kind + '|' + (row.query || row.href || row.action);
+      var key = row.kind + '|' + (row.query || row.href || (row.action + (row.target ? '#' + row.target : '')));
       if (seen[key]) { if (row.score > seen[key].score) seen[key].score = row.score; return; }
       if (row.query) {
         if (!interp || !readsAs(interp, index, row.query, row.code || null, row.procedure || null)) {
@@ -262,15 +301,13 @@
       }
     }
 
-    // 5. tools — named outright, or alongside an interpreted query
-    var interpreted = !!(primary || procedure || (I.aliasCandidates || []).length);
-    TOOLS.forEach(function (tool, i) {
-      if (!tool.terms.some(function (t) { return hasTerm(text, t); })) return;
-      add({ kind: 'tool', tool: tool.id, href: tool.href || null, action: tool.action || null, labelKey: tool.label, sub: [{ key: tool.sub }], match: 'tool', score: (interpreted ? 300 : 860) - i });
-    });
+    // 5. tools — named outright (above everything but a typed code), next to a procedure the
+    //    user typed without a code, or quietly alongside a code
+    var bandTool = primary ? 300 : ((procedure || (I.aliasCandidates || []).length) ? 760 : 860);
+    matchTools(q).forEach(function (hit) { add(toolRow(hit, bandTool + hit.strength)); });
     // a question or a long description: Waymaker explains the situation step by step
     if (!seen['tool|ai.html'] && (I.isQuestion || q.length >= 24)) {
-      add({ kind: 'tool', tool: 'waymaker', href: 'ai.html', action: null, labelKey: 'waymaker', sub: [{ key: 'waymakerAsk' }], match: 'tool', score: 100 });
+      add({ kind: 'tool', tool: 'waymaker', href: 'ai.html', action: null, target: null, labelKey: 'waymaker', sub: [{ key: 'waymakerAsk' }], match: 'tool', score: 100 });
     }
 
     // 6. a code-shaped token the sources do not know ("XYZ-999") is said, never matched
@@ -286,7 +323,7 @@
     return out;
   }
 
-  var api = { normalize: normalize, hydrate: hydrate, suggest: suggest, compareCodes: compareCodes, TOOLS: TOOLS, PROCEDURE_ORDER: PROCEDURE_ORDER };
+  var api = { normalize: normalize, hydrate: hydrate, suggest: suggest, matchTools: matchTools, compareCodes: compareCodes, TOOLS: TOOLS, TOOL_TARGETS: TOOL_TARGETS, PROCEDURE_ORDER: PROCEDURE_ORDER };
   root.VisableSearchSuggest = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this);

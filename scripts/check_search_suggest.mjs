@@ -119,6 +119,48 @@ check('매뉴얼 / manual → the manual reader', () => {
     assert(t && t.kind === 'tool' && t.href === 'manual.html', `${q}: ${show(run(q, 'en'))}`);
   }
 });
+check('tools by what people type (intent words, not tool names)', () => {
+  const cases = [
+    ['벌금 계산', 'ko', { href: 'enforcement.html' }],
+    ['범칙금', 'ko', { href: 'enforcement.html' }],
+    ['불법체류 벌금 얼마', 'ko', { href: 'enforcement.html' }],
+    ['오버스테이 했어요', 'ko', { href: 'enforcement.html' }],
+    ['overstay fine', 'en', { href: 'enforcement.html' }],
+    ['제주 무사증 국가', 'ko', { action: 'open-short-stay' }],
+    ['무비자 입국', 'ko', { action: 'open-short-stay' }],
+    ['비자 없이 한국 여행', 'ko', { action: 'open-short-stay' }],
+    ['visa free countries', 'en', { action: 'open-short-stay' }],
+    ['K-ETA', 'en', { action: 'open-short-stay' }],
+    ['직종코드 찾기', 'ko', { action: 'open-jobcode-modal' }],
+    ['지정병원', 'ko', { action: 'open-med-finder' }],
+    ['결핵 검사 병원', 'ko', { action: 'open-med-finder' }],
+    ['행정사', 'ko', { action: 'open-agent-finder' }],
+    ['만료일 계산', 'ko', { action: 'reveal-home-section', target: 'reminderSection' }],
+    ['필요 서류 체크리스트', 'ko', { href: 'immigration-checklists.html' }],
+    ['제주 출입국 위치', 'ko', { action: 'open-jurisdiction-modal' }],
+  ];
+  for (const [q, lang, want] of cases) {
+    const t = top(q, lang);
+    assert(t && t.kind === 'tool', `${q}: ${show(run(q, lang))}`);
+    for (const [k, v] of Object.entries(want)) assert(t[k] === v, `${q}: ${k}=${t[k]} (want ${v}) · ${show(run(q, lang))}`);
+  }
+});
+check('a typed code stays the answer; a matching tool only follows it', () => {
+  const r = run('F-6 범칙금');
+  assert(r.items[0].code === 'F-6', show(r));
+  const tool = r.items.find((i) => i.kind === 'tool');
+  assert(tool && tool.href === 'enforcement.html' && tool.score < r.items[0].score, show(r));
+});
+check('a procedure typed without a code keeps its row next to the tool', () => {
+  const r = run('체류기간 만료 알림');
+  assert(r.items.some((i) => i.kind === 'procedure' && i.procedure === 'extension'), show(r));
+  assert(r.items.some((i) => i.kind === 'tool' && i.target === 'reminderSection'), show(r));
+});
+check('matchTools is pure, ordered and empty for unrelated text', () => {
+  assert(S.matchTools('').length === 0 && S.matchTools('안녕하세요').length === 0, 'no tool for unrelated text');
+  const hits = S.matchTools('병원 예약');
+  assert(hits.length === 2 && hits.every((h, i) => !i || hits[i - 1].strength >= h.strength), JSON.stringify(hits.map((h) => h.tool.id)));
+});
 check('XYZ-999 → nothing matched, a not-a-code note', () => {
   for (const q of ['XYZ-999', 'Z-3', 'K-99']) {
     const r = run(q);
@@ -174,11 +216,15 @@ check('English UI: labels in English, queries the search reads', () => {
 });
 
 /* 3. invariants over a corpus -------------------------------------------- */
-const corpus = new Set(['E', 'E-', 'E-7', 'E-7-', 'E-7-S', 'F-', 'F-2-7', 'D-10-T', 'F-5-T', 'E-7-T', 'F-2-T', 'D-1', 'A-3', 'H-2', 'B-2-2', 'G-1', '난민', '결혼이민', '유학', '취업비자', '배우자 연장', '외국인등록증', '등록증 재발급', '재입국', '시간제 취업', '아르바이트', '체류자격 변경', 'D-2에서 E-7으로 변경', 'F-4 동포', '하이코리아 예약', '관할 출입국관서', '귀화', 'Waymaker', 'passport renewal', '여권 재발급', 'e-visa', 'K-ETA', 'student visa extension', 'E-9 이직', '근무처 변경', 'D-8 visa', 'what documents for F-6 extension?', '수수료 얼마', '체류지 변경']);
+const corpus = new Set(['E', 'E-', 'E-7', 'E-7-', 'E-7-S', 'F-', 'F-2-7', 'D-10-T', 'F-5-T', 'E-7-T', 'F-2-T', 'D-1', 'A-3', 'H-2', 'B-2-2', 'G-1', '난민', '결혼이민', '유학', '취업비자', '배우자 연장', '외국인등록증', '등록증 재발급', '재입국', '시간제 취업', '아르바이트', '체류자격 변경', 'D-2에서 E-7으로 변경', 'F-4 동포', '하이코리아 예약', '관할 출입국관서', '귀화', 'Waymaker', 'passport renewal', '여권 재발급', 'e-visa', 'K-ETA', 'student visa extension', 'E-9 이직', '근무처 변경', 'D-8 visa', 'what documents for F-6 extension?', '수수료 얼마', '체류지 변경', '벌금 계산', '제주 무사증 국가', '범칙금', '불법체류 벌금', 'F-6 범칙금', '무비자 입국', '병원 예약', '체류기간 만료 알림', '행정사', '직종코드', 'overstay fine', 'visa free countries', 'K-ETA 신청']);
 for (const code of Object.keys(bundle.codes)) if (/^[A-H]-\d/.test(code) && !code.includes('~')) { corpus.add(code); corpus.add(code.toLowerCase().replace(/-/g, ' ')); }
 for (const p of bundle.procedures) { corpus.add(p.ko); corpus.add(p.en); corpus.add('F-6 ' + p.ko); corpus.add('E-7-1 ' + p.en); }
-const TOOL_HREFS = new Set(['form-helper.html', 'ai.html', 'new-home.html', 'manual.html']);
-const TOOL_ACTIONS = new Set(['open-hikorea-guide', 'open-jurisdiction-modal']);
+const TOOL_HREFS = new Set(['form-helper.html', 'ai.html', 'new-home.html', 'manual.html', 'enforcement.html', 'immigration-checklists.html']);
+const TOOL_ACTIONS = new Set(['open-hikorea-guide', 'open-jurisdiction-modal', 'open-short-stay', 'open-jobcode-modal', 'open-agent-finder', 'open-med-finder', 'reveal-home-section']);
+const TOOL_TARGETS = new Set(['reminderSection', 'pathwaySection', 'visaManualSection']);
+check('every tool destination is allow-listed', () => {
+  for (const tool of S.TOOLS) assert(tool.href ? TOOL_HREFS.has(tool.href) : (TOOL_ACTIONS.has(tool.action) && (tool.action !== 'reveal-home-section' || TOOL_TARGETS.has(tool.target))), `${tool.id} destination allow-listed`);
+});
 let rows = 0;
 for (const q of corpus) {
   for (const lang of ['ko', 'en']) {
@@ -208,6 +254,7 @@ for (const q of corpus) {
           assert(!back.unknownCodes.length, `"${it.query}" has no unknown code`);
         }
         if (it.kind === 'tool') assert((it.href && TOOL_HREFS.has(it.href)) || (it.action && TOOL_ACTIONS.has(it.action)), 'tool destination allow-listed');
+        if (it.kind === 'tool' && it.action === 'reveal-home-section') assert(TOOL_TARGETS.has(it.target), 'reveal target allow-listed');
         assert(!/[<>]/.test(it.label || ''), 'labels are plain text');
       }
     });
