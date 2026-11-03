@@ -1497,6 +1497,15 @@ function validateData(data, type) {
   }
 }
 
+// Validate the whole release before replacing any of the compiled baseline.
+// Empty arrays are truthy: an empty active release must not erase all three
+// public checklists, and a partly valid release must not mix editions.
+function applyReleaseDatasets(release) {
+  var procedures = ['extension', 'change', 'registration'];
+  procedures.forEach(function (type) { validateData(release && release[type], type); });
+  procedures.forEach(function (type) { state.datasets[type] = release[type]; });
+}
+
 /* ------------------------------------------------------------------------- */
 /* MULTILINGUAL LOCALIZATION CONTROLLER (R4)                                 */
 /* ------------------------------------------------------------------------- */
@@ -1973,12 +1982,13 @@ async function load() {
         if (prevRes.ok) {
           var prevData = await prevRes.json();
           if (prevData && prevData.extension && prevData.change && prevData.registration) {
-            ['extension', 'change', 'registration'].forEach(function (t) {
-              if (prevData[t] && prevData[t].items) {
-                state.datasets[t] = prevData[t];
-              }
-            });
-            renderPreviewBanner(prevData);
+            // The operator is in preview mode either way, so the banner (and its
+            // exit link) always shows. An empty or malformed candidate keeps the
+            // compiled baseline on screen, and the banner says so.
+            var previewRejected = null;
+            try { applyReleaseDatasets(prevData); } catch (applyErr) { previewRejected = applyErr; }
+            renderPreviewBanner(prevData, { fallback: !!previewRejected });
+            if (previewRejected) console.warn('Candidate preview rejected, showing baseline:', previewRejected);
           }
         }
       } catch (prevErr) {
@@ -1993,11 +2003,7 @@ async function load() {
         if (pubRes.ok) {
           var pubData = await pubRes.json();
           if (pubData && pubData.extension && pubData.change && pubData.registration) {
-            ['extension', 'change', 'registration'].forEach(function (t) {
-              if (pubData[t] && pubData[t].items) {
-                state.datasets[t] = pubData[t];
-              }
-            });
+            applyReleaseDatasets(pubData);
           }
         }
       } catch (_) {
@@ -2052,7 +2058,8 @@ async function load() {
   }
 }
 
-function renderPreviewBanner(data) {
+function renderPreviewBanner(data, opts) {
+  opts = opts || {};
   var existing = document.getElementById('release-preview-banner');
   if (existing) existing.remove();
 
@@ -2089,6 +2096,15 @@ function renderPreviewBanner(data) {
     checkSpan.textContent = 'SHA: ' + data.checksum_sha256.substring(0, 10) + '...';
     info.appendChild(document.createTextNode(' · '));
     info.appendChild(checkSpan);
+  }
+
+  if (opts.fallback) {
+    var fallbackNote = document.createElement('span');
+    fallbackNote.className = 'release-preview-fallback';
+    fallbackNote.textContent = '이 후보 릴리스는 비어 있거나 형식이 맞지 않아 기본 자료를 표시합니다.';
+    info.appendChild(document.createTextNode(' · '));
+    info.appendChild(fallbackNote);
+    banner.setAttribute('data-preview-fallback', 'true');
   }
 
   content.appendChild(badge);
