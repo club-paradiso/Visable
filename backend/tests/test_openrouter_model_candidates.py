@@ -30,7 +30,7 @@ if str(BACKEND_DIR) not in sys.path:
     sys.path.insert(0, str(BACKEND_DIR))
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from _i18n_pack_support import SUPPORTED_LOCALES, load_packs, localized  # noqa: E402
+from _i18n_pack_support import SUPPORTED_LOCALES, frontend_source, load_packs, localized  # noqa: E402
 
 # Localized UI copy now lives in external per-locale JSON packs (data/i18n/*.json);
 # supported display locales are ko, en, zh-CN (zh-Hant aliases to zh-CN).
@@ -951,7 +951,7 @@ class HealthCandidateExposureTests(unittest.TestCase):
 class ProviderErrorUxFrontendTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.html = INDEX.read_text(encoding="utf-8")
+        cls.html = frontend_source()  # index.html + the modules Phase 3 moved code into (modules first)
         cls.packs = load_packs()
 
     def test_provider_error_helper_does_not_render_raw_json(self):

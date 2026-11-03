@@ -450,6 +450,15 @@ class FrontendContractTests(unittest.TestCase):
             cls.ai = fh.read()
         with open(os.path.join(REPO_ROOT, "index.html"), encoding="utf-8") as fh:
             cls.index = fh.read()
+        # Phase 3 of the frontend rebuild moves inline index.html code into ES modules (scripts/frontend_modules.json);
+        # the static guards below read those modules too, modules first.
+        with open(os.path.join(REPO_ROOT, "scripts", "frontend_modules.json"), encoding="utf-8") as fh:
+            modules = json.load(fh)["modules"]
+        parts = []
+        for rel in modules:
+            with open(os.path.join(REPO_ROOT, rel), encoding="utf-8") as fh:
+                parts.append(fh.read())
+        cls.index = "\n".join(parts + [cls.index])
 
     def test_no_public_model_label_renderers(self):
         for html in (self.ai, self.index):

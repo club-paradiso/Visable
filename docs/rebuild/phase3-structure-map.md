@@ -68,15 +68,18 @@ Kinds: D = data constant, C = config, S = state, P = pure function, R = DOM rend
 | 16435 / 16436 / 16437 | `CC` / `CL` / `getLabels` | D / D / P | Category colours and labels |
 
 ### C05 Modal core — 16439–16498
+**Moved** (2026-11-03) to `src/features/modals-ai.js` (`Visable.modals`); `let docGuideData` stays inline.
 - S: `lastFocusedElement`, `activeModal`.
 - P: `modalFocusables`.
 - E: `syncModalScrollLock`, `trapModalFocus`.
 - E: `openModal` (16463) and `closeModal` (16477). Used by visa-route-guide, short-stay-checker (via `window.`) and e2e.
 
 ### C06 Visa drawer — 16499–16567
+**Moved** (2026-11-03) to `src/features/modals-ai.js` (`Visable.modals`); `let docGuideData` stays inline.
 `openVisaDrawer` (16499) and `closeVisaDrawer` (16543), both R/E. They move the rendered card into `#visaDrawerOverlay`.
 
 ### C07 AI modal and Waymaker handoff — 16568–16682
+**Moved** (2026-11-03) to `src/features/modals-ai.js` (`Visable.modals`); `let docGuideData` stays inline.
 | Lines | Name | Kind | Purpose |
 |---|---|---|---|
 | 16568–16573 | `currentAiVisaCode`, `currentAiController`, `currentAiSelectedProcedureKey`, `currentAiSelectedProcedureVariantId`, `currentAiAnswerMode` | S | |
@@ -89,6 +92,7 @@ Kinds: D = data constant, C = config, S = state, P = pure function, R = DOM rend
 | 16675 | `handleScenarioAiHandoff` | E | |
 
 ### C08 Document, subcode and FAQ modals — 16683–16902
+**Moved** (2026-11-03) to `src/features/modals-ai.js` (`Visable.modals`); `let docGuideData` stays inline.
 - R: `openDocModal` 16683, `renderSubcodeProcedureVariants` 16736, `openSubcodeModal` 16823, `openFaqModal` 16886.
 - P: `buildSubcodeModalView` 16760 (returns HTML).
 - R: `renderModalFeeBox` 16847–16875. **Contains hard-coded fee strings at 16865–16866.**
@@ -115,10 +119,12 @@ Kinds: D = data constant, C = config, S = state, P = pure function, R = DOM rend
 - E: `openJurisdictionModal` 18580.
 
 ### C11 AI analysis call — 18583–18925
+**Moved** (2026-11-03) to `src/features/modals-ai.js` (`Visable.modals`); `let docGuideData` stays inline.
 - P: `isAiDevDiagnosticsEnabled` 18587 (reads localStorage), `formatAiModalAnswer` 18598 (escapes first), `buildProviderErrorHtml` 18610, `mapLawWarningToFriendly` 18635, `sourcePanelCopyForState` 18651, `lawSourcePanelText` 18669, `renderGroundingSourcePanel` 18693.
 - L / R: `submitAiAnalysis` 18832–18924.
 
 ### C12 Document help, document guide, doc tags — 18926–19169
+**Moved** (2026-11-03) to `src/features/modals-ai.js` (`Visable.modals`); `let docGuideData` stays inline.
 | Lines | Name | Kind |
 |---|---|---|
 | 18926–18928 | `documentHelpData`, `documentHelpMatcher`, `documentHelpLastTrigger` | S |
