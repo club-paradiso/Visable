@@ -275,18 +275,25 @@ function surfaceHits(surface, normalizedText, tokenSet) {
   return tokenSet.has(s) || (s.length >= 3 && normalizedText.includes(s));
 }
 
-/** Find every concept whose surface phrase appears in the normalized text. */
+/**
+ * Find every concept whose surface phrase appears in the normalized text.
+ * Each concept reports its LONGEST matching phrase, and a concept whose phrase
+ * sits inside a longer phrase matched by another concept is dropped: in
+ * "헤어디자이너" the person is a hairdresser, not also a product designer, and
+ * in "주방보조" a kitchen assistant, not also a head cook.
+ */
 function matchConcepts(normalizedText, tokenSet, concepts) {
   const matched = [];
   for (const concept of concepts) {
-    const surfaces = conceptSurfaces(concept);
     let hit = null;
-    for (const s of surfaces) {
-      if (s && surfaceHits(s, normalizedText, tokenSet)) { hit = s; break; }
+    for (const s of conceptSurfaces(concept)) {
+      if (s && (!hit || s.length > hit.length) && surfaceHits(s, normalizedText, tokenSet)) hit = s;
     }
     if (hit) matched.push({ concept, matchedSurface: hit });
   }
-  return matched;
+  return matched.filter((m) => !matched.some((o) => o !== m
+    && o.matchedSurface.length > m.matchedSurface.length
+    && o.matchedSurface.includes(m.matchedSurface)));
 }
 
 /**
@@ -612,6 +619,26 @@ export function detectMode(entities, fieldSig) {
  * question into a clearly aquaculture/factory input. Ranked by how many signals
  * agree on the fork, then by static priority.
  */
+/**
+ * True when the input already evidences exactly one branch of a fork rule, so
+ * asking would only repeat what the person wrote. Evidence per branch comes
+ * from data (disambiguation_rules.json → branches[].answered_by): matched field
+ * signal ids, sectors, or plain phrases. Rules without that data are kept.
+ */
+export function isForkAnswered(rule, fieldSig, normalizedText) {
+  const branches = Array.isArray(rule && rule.branches) ? rule.branches.filter((b) => b && b.answered_by) : [];
+  if (branches.length < 2) return false;
+  const ids = new Set((fieldSig.matched || []).map((m) => m.id));
+  const text = normalize(normalizedText || '');
+  const evidenced = branches.filter((b) => {
+    const a = b.answered_by;
+    return (a.signals || []).some((id) => ids.has(id))
+      || (a.sectors || []).some((sec) => fieldSig.sectors && fieldSig.sectors.has(sec))
+      || (a.surfaces || []).some((sf) => sf && text.includes(normalize(sf)));
+  });
+  return evidenced.length === 1;
+}
+
 export function evaluateDisambiguation(fieldSig, rules) {
   const fired = [];
   for (const rule of rules || []) {
@@ -817,15 +844,98 @@ function toCandidate(entry, scored, classificationType, sourceMeta, topScore, op
 }
 
 /** Rank the dataset for one track and return the top N candidates. */
+/**
+ * How distinctive a word is inside one track's official names, 0–1. A word in
+ * one name ("금형") scores near 1; a word in hundreds ("사무원", "제조") near 0.
+ * Cached per track on the index.
+ */
+function nameIdf(index, type, token) {
+  if (!index._df) index._df = { occupation: new Map(), industry: new Map(), n: {} };
+  const cache = index._df[type] || (index._df[type] = new Map());
+  if (!index._df.n[type]) index._df.n[type] = index.indexed.filter((e) => e.type === type).length;
+  if (!cache.has(token)) {
+    let df = 0;
+    for (const e of index.indexed) if (e.type === type && e.normName.includes(token)) df++;
+    cache.set(token, df);
+  }
+  const n = index._df.n[type];
+  const df = cache.get(token);
+  return df ? Math.log((n + 1) / (df + 1)) / Math.log(n + 1) : 0;
+}
+
+// Place/organization endings glued onto the distinctive word in everyday
+// Korean: 김치공장, 도축장, 세탁소, 정육점, 인사팀, 미용실. The stem before them
+// is what an official name contains (김치류 제조업, 도축원, 세탁업, 정육 가공원).
+const KO_PLACE_SUFFIX_RE = /(공장|회사|업체|센터|가게|매장|샵|팀|부서|실|소|점|장|집|원|관)$/;
+function withPlaceStems(tokens) {
+  const out = [...tokens];
+  for (const t of tokens) {
+    if (!/^[가-힣]{3,}$/.test(t)) continue;
+    const stem = t.replace(KO_PLACE_SUFFIX_RE, '');
+    if (stem.length >= 2 && stem !== t) out.push(stem);
+  }
+  return out;
+}
+
+/**
+ * The person's own words, scored against official names. Concept hint terms
+ * describe a whole family of jobs; the words someone typed are often more
+ * specific than any hint ("웹 개발자", "버스 운전", "금형", "도축", "인사팀"),
+ * and the official name that contains them should win. Weight follows how
+ * rare the word is across the track; covering every distinctive word of a
+ * name adds a further bonus.
+ */
+function ownWordsBonus(index, entry, ownWords) {
+  let bonus = 0;
+  for (const t of ownWords) {
+    if (entry.normName.includes(t)) bonus += Math.round(150 * nameIdf(index, entry.type, t));
+  }
+  if (bonus > 0 && entry.nameWords.length) {
+    const covered = entry.nameWords.filter((w) => ownWords.some((t) => w.includes(t) || (t.length >= 3 && t.includes(w)))).length;
+    if (covered === entry.nameWords.length) bonus += 120;
+  }
+  return bonus;
+}
+
 export function searchTrack(index, classificationType, rawQuery, terms, options = {}) {
   const limit = options.limit || 5;
   const sourceMeta = options.sourceMeta || null;
   const normalizedQuery = normalize(rawQuery);
+  const ownWords = [...new Set((options.ownWords || []).filter((t) => t && t.length >= 2 && !t.includes(' ')
+    && !STOP_TERMS.has(t) && !/^[0-9]+$/.test(t)))];
   const scoredRows = [];
   for (const entry of index.indexed) {
     if (entry.type !== classificationType) continue;
     const scored = scoreRow(entry, rawQuery, terms, normalizedQuery);
+    if (ownWords.length) {
+      const bonus = ownWordsBonus(index, entry, ownWords);
+      if (bonus > 0) {
+        // A row reached only through the person's own words still gets the
+        // same level/leaf preference as one reached through hint terms.
+        if (scored.score === 0) scored.score += entry.levelRank * 24 + (entry.isLeaf ? 80 : 0);
+        scored.score += bonus;
+      }
+    }
     if (scored.score > 0) scoredRows.push({ entry, scored });
+  }
+  // A strong broad (non-leaf) match pulls its own detailed child codes up just
+  // behind it (below anything that matched on its own). The person can only
+  // report a detailed code, and the UI lists
+  // detailed codes first, so without this an unrelated detailed code would sit
+  // above the right family ("카센터" → 9521 자동차 수리 및 세차업 → 95211…).
+  const byCode = new Map(scoredRows.map((s) => [s.entry.code, s]));
+  const best = scoredRows.reduce((m, s) => Math.max(m, s.scored.score), 0);
+  for (const parent of scoredRows.filter((s) => !s.entry.isLeaf && s.scored.score >= best * 0.6)) {
+    for (const entry of index.indexed) {
+      if (entry.type !== classificationType || !entry.isLeaf || String(entry.row.parent_code) !== parent.entry.code) continue;
+      const inherited = Math.round(parent.scored.score * 0.7);
+      const existing = byCode.get(entry.code);
+      if (existing) existing.scored.score = Math.max(existing.scored.score, inherited);
+      else {
+        const s = { entry, scored: { score: inherited, matchedTerms: parent.scored.matchedTerms } };
+        scoredRows.push(s); byCode.set(entry.code, s);
+      }
+    }
   }
   scoredRows.sort((a, b) => {
     if (b.scored.score !== a.scored.score) return b.scored.score - a.scored.score;
@@ -1240,11 +1350,14 @@ export function createEmploymentAnalyzer(deps = {}) {
       ...ambiguousMatches.map((m) => m.entry.candidate_caveat_industry || m.entry.candidate_caveat)
     ]);
 
+    // The person's own words (particles stripped), for the literal-name signal.
+    const occOwnWords = withPlaceStems(tokenize(roleText || workText));
+    const indOwnWords = withPlaceStems(tokenize(extraction && extraction.employerMainBusiness || workText));
     const occupationCandidates = searchTrack(index, 'occupation', roleText || workText, occTerms, {
-      limit: 5, sourceMeta: occMeta, confidenceCap, caveats: occCaveats
+      limit: 5, sourceMeta: occMeta, confidenceCap, caveats: occCaveats, ownWords: occOwnWords
     });
     const industryCandidates = searchTrack(index, 'industry', extraction && extraction.employerMainBusiness || workText, indTerms, {
-      limit: 5, sourceMeta: indMeta, confidenceCap: understanding.employerUnclear ? 'low' : confidenceCap, caveats: indCaveats
+      limit: 5, sourceMeta: indMeta, confidenceCap: understanding.employerUnclear ? 'low' : confidenceCap, caveats: indCaveats, ownWords: indOwnWords
     });
 
     // Analyzer mode (field_labor / arts_entertainment / service / professional /
@@ -1255,14 +1368,22 @@ export function createEmploymentAnalyzer(deps = {}) {
 
     // Field-labor fork questions come first (one targeted question at a time), then
     // the concept-driven ambiguity follow-ups.
-    const firedRules = evaluateDisambiguation(fieldSig, disambiguationRules);
+    // A fork question whose answer is already in the sentence is not asked:
+    // "어선에서 그물 걷어요" names the vessel, so "어선에 승선하나요?" only adds a tap.
+    const firedRules = evaluateDisambiguation(fieldSig, disambiguationRules)
+      .filter((r) => !isForkAnswered(r, fieldSig, entities.normalizedInput));
     const fieldQuestions = firedRules.map((r) => ({
       flag: r.id,
       topic: r.topic,
+      forks: Array.isArray(r.forks) && r.forks.length ? r.forks : ['occupation', 'industry'],
       question: (locale === 'en' && r.question_en) ? r.question_en : r.question_ko,
       chips: r.chips || []
     }));
-    const conceptQuestions = buildAmbiguity(entities, occupationCandidates, industryCandidates, lexicon, ambiguousMatches);
+    // The generic "고용주의 주된 사업은?" question is noise when the industry is
+    // already clear from the sentence (택시 기사 → 택시 운송업).
+    const industryClear = !!(industryCandidates[0] && industryCandidates[0].confidence === 'high');
+    const conceptQuestions = buildAmbiguity(entities, occupationCandidates, industryCandidates, lexicon, ambiguousMatches)
+      .filter((q) => !(industryClear && q.flag === 'workplace'));
     // Show the single most relevant field fork up front; keep concept follow-ups too,
     // but never flood the user — cap the whole list.
     const employerQuestion = understanding.employerUnclear ? [{ flag: 'employer_business', topic: 'employer_business',
@@ -1289,6 +1410,14 @@ export function createEmploymentAnalyzer(deps = {}) {
     const parsedInterpretation = buildParsedInterpretation(entities, fieldSig, mode, locale);
     const clarificationRequired = ambiguityQuestions.length > 0;
     const clarificationQuestion = clarificationRequired ? ambiguityQuestions[0].question : null;
+    // Hold candidates back only when the open question can change WHAT THE
+    // PERSON DOES (an occupation fork such as vessel vs. land processing), or
+    // the input touches a legally sensitive umbrella term. Questions about the
+    // employer's business are shown next to the candidates instead: the
+    // occupation is already known, and the industry list stays visible.
+    const occupationFork = fieldQuestions.some((q) => q.forks.includes('occupation') && ambiguityQuestions.includes(q));
+    const sensitiveUmbrella = ambiguousMatches.some((m) => m.entry.legal_sensitivity);
+    const clarificationBlocking = clarificationRequired && (occupationFork || sensitiveUmbrella);
 
     const incomeReportingNote = incomeBrackets
       ? (locale === 'en' ? incomeBrackets.reminder_en : incomeBrackets.reminder_ko)
@@ -1340,6 +1469,7 @@ export function createEmploymentAnalyzer(deps = {}) {
       industryCandidates,
       incomeReportingNote,
       clarificationRequired,
+      clarificationBlocking,
       clarificationQuestion,
       ambiguityQuestions,
       followUpChips,

@@ -242,6 +242,14 @@ if command -v node >/dev/null 2>&1; then
   # Guided-checklist state model + real DOM render smoke (candidate≠confirmed,
   # ambiguous/공식 코드 확인 필요 never complete, HiKorea never complete).
   node scripts/check_employment_checklist.mjs
+  # Any-language input: foreign phrases reach the same official codes as the
+  # Korean wording; look-alike words are not mistranslated; no codes in the pivot.
+  node scripts/check_employment_multilingual.mjs
+  # Realistic-input benchmark: top-1/top-3 accuracy and how often a question
+  # hides the candidates. The main set is gated; held-out sets report only.
+  node scripts/check_employment_benchmark.mjs
+  node scripts/check_employment_benchmark.mjs --report-only --file data/employment/heldout_benchmark.json
+  node scripts/check_employment_benchmark.mjs --report-only --file data/employment/heldout2_benchmark.json
 else
   echo "INFO: Node.js not found; skipping employment-reporting helper UI logic test."
 fi

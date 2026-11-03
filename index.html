@@ -1435,6 +1435,10 @@ body.searched .ft { opacity: 1; }
   .jc2-income { width: 100%; }
   .jc2-copy { width: auto; flex: none; padding: 0.65rem 1.1rem; }
 }
+/* After a search the starter helpers fold away (jcRevealAnswer); a "show
+   examples again" affordance is the search box itself — clearing it restores them. */
+.jc2--answered .jc2-examples-label, .jc2--answered #jcChips, .jc2--answered .jc2-explain { display: none; }
+.jc2-interpret, .jc2-refine, .jc2-results { scroll-margin-top: 0.75rem; }
 /* On phones a sticky bar would eat a third of the screen; selecting scrolls to it instead. */
 @media (max-width: 719px) { .jc2-summary.is-active { position: static; } }
 @media (max-width: 560px) {
@@ -15598,14 +15602,6 @@ html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important
             <!-- 3.7 · 후속 선택 칩 (general/entertainment/tattoo follow-up chips) -->
             <div id="jcFollowup" class="jc2-refine jc2-followup" role="group" aria-label="후속 선택" hidden></div>
 
-            <!-- 3.8 · Guided stepper — a compact progress strip that updates with
-                 every search/selection. Rendered by renderEmploymentChecklist()
-                 from buildEmploymentChecklistState(). -->
-            <div class="jc2-stepper-wrap">
-                <p class="jc2-stepper-h"><svg class="jc-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#jc-i-list-checks"/></svg><span id="jcStepperH">신고 준비 4단계</span></p>
-                <ol class="jc2-checklist" id="jcChecklist" aria-label="신고 준비 단계" aria-live="polite"></ol>
-            </div>
-
             <!-- 4.0 · Candidate gate — when a fork question is pending, candidates are
                  held behind it so only one action shows at a time. Rendered by JS. -->
             <div id="jcResultsGate" class="jc2-gate" role="status" hidden></div>
@@ -15626,6 +15622,14 @@ html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important
                     <h3 class="jc2-pane-h"><span class="jc2-pane-ic" aria-hidden="true"><svg class="jc-ic" viewBox="0 0 24 24" focusable="false"><use href="#jc-i-factory"/></svg></span> <span class="jc2-pane-title" data-i18n-html="jobCodePaneInd">업종 후보 <span class="jc2-pane-plain">회사나 사업장이 하는 일에 가까운 항목이에요</span></span> <span class="jc2-pane-badge jc2-pane-badge--ind" data-i18n="jobCodePaneIndBadge">이건 업종이에요</span><span class="jc2-pane-tag" data-i18n="jobCodePaneIndTag">KSIC11 · 표준산업분류</span></h3>
                     <div id="jcIndResults" class="jc2-list" role="list" aria-live="polite"><div class="jc2-empty" data-i18n="jobCodeStartHint">검색어를 입력하거나 추천 칩을 눌러 시작하세요.</div></div>
                 </section>
+            </div>
+
+            <!-- 3.8 · Guided stepper — a compact progress strip that updates with
+                 every search/selection. Rendered by renderEmploymentChecklist()
+                 from buildEmploymentChecklistState(). -->
+            <div class="jc2-stepper-wrap">
+                <p class="jc2-stepper-h"><svg class="jc-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#jc-i-list-checks"/></svg><span id="jcStepperH">신고 준비 4단계</span></p>
+                <ol class="jc2-checklist" id="jcChecklist" aria-label="신고 준비 단계" aria-live="polite"></ol>
             </div>
 
             <!-- 4.5 · 연간소득 reminder — official reporting includes annual income -->
@@ -17231,6 +17235,7 @@ async function openJobCodeModal() {
     _jcFilter = 'all'; _jcLevel = 'all'; _jcSelected = { occupation: null, industry: null }; _jcIncome = '';
     _jcAnalysis = null; _jcResultCounts = { occupation: null, industry: null }; _jcClarificationAnswered = false;
     _jcFlow = { state: 'idle', revealed: false };
+    jcResetAnswered();
     setJobcodeFilter('all');
     setJobcodeLevel('all');
     const input = document.getElementById('jcSearchInput');
@@ -17290,7 +17295,27 @@ function renderJobcodeGuidance(query, jobRows, indRows) {
         } else ambEl.hidden = true;
     }
 }
+// After a search, the starter helpers (examples, explainer) have done their job:
+// fold them away and bring the answer into view. On a phone the first result
+// otherwise sits below several screens of help text.
+function jcRevealAnswer() {
+    const root = document.querySelector('#jobCodeModalOverlay .jc2');
+    if (!root) return;
+    root.classList.add('jc2--answered');
+    const target = ['jcRefine', 'jcInterpret', 'jcResults']
+        .map((id) => document.getElementById(id))
+        .find((el) => el && !el.hidden);
+    if (target && typeof target.scrollIntoView === 'function') {
+        const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        try { target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }); } catch (_) {}
+    }
+}
+function jcResetAnswered() {
+    const root = document.querySelector('#jobCodeModalOverlay .jc2');
+    if (root) root.classList.remove('jc2--answered');
+}
 function renderJobcodeResults(query) {
+    if (!(query || '').trim()) jcResetAnswered();
     const jobBox = document.getElementById('jcJobResults'), indBox = document.getElementById('jcIndResults'), badge = document.getElementById('jcCountBadge');
     if (!jobBox || !indBox || !_jobcodeData) return;
     const q = (query || '').trim();
@@ -17544,7 +17569,14 @@ function renderEmploymentFollowupChips(analysis) {
     const el = document.getElementById('jcFollowup');
     if (!el) return;
     const chips = analysis && Array.isArray(analysis.followUpChips) ? analysis.followUpChips : [];
-    if (!chips.length) { el.hidden = true; el.innerHTML = ''; return; }
+    // Generic refine chips ("직원이에요", "연습생이에요") only help when the input
+    // was not understood well, or touches entertainment/tattoo work where the
+    // role genuinely needs pinning down. For a clear "미용실 헤어디자이너" they
+    // just push the candidates further down the screen.
+    const weakRead = analysis && (analysis.mode === 'ambiguous_mode'
+        || ((analysis.extracted || {}).legalSensitivity || []).length > 0
+        || (!(analysis.occupationCandidates || []).length && !(analysis.industryCandidates || []).length));
+    if (!chips.length || !weakRead) { el.hidden = true; el.innerHTML = ''; return; }
     el.hidden = false;
     el.innerHTML = `<div class="jc2-refine-h">${jcIcon('plus')}<span>${currentLanguage === 'zh-CN' ? '后续选择 — 点击以进一步细化' : jcEnLike() ? 'Follow-up — tap to narrow further' : '후속 선택 — 눌러서 더 구체화'}</span></div>`
         + `<div class="jc2-refine-chips">`
@@ -17947,6 +17979,7 @@ async function searchJobcodeWithAI() {
         renderEmploymentWeakHelp(analysis, jobRows.length, indRows.length);
         // Progressive flow: gate candidates behind a pending fork question.
         jcApplyFlow();
+        jcRevealAnswer();
         const badge = document.getElementById('jcCountBadge');
         if (badge) badge.hidden = false;
         if (badge) badge.textContent = currentLanguage === 'zh-CN' ? `职业 ${jobRows.length} · 行业 ${indRows.length}` : jcEnLike() ? `Occupation ${jobRows.length} · Industry ${indRows.length}` : `직종 ${jobRows.length} · 업종 ${indRows.length}`;

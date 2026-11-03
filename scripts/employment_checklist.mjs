@@ -37,7 +37,11 @@ export function employmentFlowState(opts = {}) {
   if (opts.analyzing) return 'analyzing';
   const r = opts.analyzerResult;
   if (!r) return 'idle';
-  const needsClar = !!r.clarificationRequired && !opts.clarificationAnswered;
+  // clarificationBlocking (analyzer ≥ 2026-11) says whether the open question
+  // must be answered before candidates make sense; older results fall back to
+  // "any question gates".
+  const blocking = typeof r.clarificationBlocking === 'boolean' ? r.clarificationBlocking : !!r.clarificationRequired;
+  const needsClar = blocking && !opts.clarificationAnswered;
   if (needsClar && opts.hasCandidates && !opts.candidatesRevealed) return 'needs_clarification';
   return 'showing_candidates';
 }

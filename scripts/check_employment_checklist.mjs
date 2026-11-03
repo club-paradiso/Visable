@@ -88,8 +88,13 @@ function assertInvariants(id, st) {
   expect('ambig-sep', stepById(st, 'occupation').status !== stepById(st, 'industry').status || true, 'tracks evaluated independently');
   expect('ambig', !st.steps.some((s) => (s.id === 'occupation' || s.id === 'industry') && s.status === 'complete'), 'ambiguous never marks tracks complete');
 
-  // a fork that changes BOTH tracks holds both back
-  const vessel = analyze('한치잡이 배에서 한치잡아요', 'ko');
+  // a fork that changes BOTH tracks holds both back. "오징어 일" is genuinely
+  // open (on a boat, or in a processing plant?); a sentence that names the boat
+  // already answers the fork and must not be asked again.
+  const vessel = analyze('오징어 일 해요', 'ko');
+  const named = analyze('한치잡이 배에서 한치잡아요', 'ko');
+  expect('ambig-answered', !named.ambiguityQuestions.some((q) => q.flag === 'vessel_vs_land_processing'),
+    'a sentence that names the boat is not asked whether it works on a boat');
   const stv = buildEmploymentChecklistState({ analyzerResult: vessel });
   expect('ambig-both', stepById(stv, 'occupation').status === 'needs_confirmation', 'vessel: occupation needs confirmation');
   expect('ambig-both', stepById(stv, 'industry').status === 'needs_confirmation', 'vessel: industry needs confirmation');
@@ -130,7 +135,7 @@ function assertInvariants(id, st) {
 
 /* 7 · clarification answered → forked tracks can progress to ready */
 {
-  const r = analyze('한치잡이 배에서 한치잡아요', 'ko');
+  const r = analyze('오징어 일 해요', 'ko');
   const before = buildEmploymentChecklistState({ analyzerResult: r });
   const after = buildEmploymentChecklistState({ analyzerResult: r, clarificationState: { answered: true } });
   expect('clar-answer', before.concepts.clarificationPending === true, 'pending before answer');
@@ -199,12 +204,17 @@ function assertInvariants(id, st) {
   // idle before any search
   expect('flow', employmentFlowState({ analyzerResult: null }) === 'idle', 'no result → idle');
   expect('flow', employmentFlowState({ analyzing: true }) === 'analyzing', 'analyzing flag → analyzing');
-  // a fork with candidates is gated until answered/revealed
+  // an OCCUPATION fork with candidates is gated until answered/revealed
+  const squid = analyze('오징어 일 해요', 'ko');
+  expect('flow', squid.clarificationRequired === true && squid.clarificationBlocking === true, 'squid work: occupation fork blocks');
+  expect('flow', employmentFlowState({ analyzerResult: squid, hasCandidates: true, clarificationAnswered: false, candidatesRevealed: false }) === 'needs_clarification', 'pending occupation fork + candidates → gated');
+  expect('flow', employmentFlowState({ analyzerResult: squid, hasCandidates: true, clarificationAnswered: true }) === 'showing_candidates', 'answered → candidates show');
+  expect('flow', employmentFlowState({ analyzerResult: squid, hasCandidates: true, candidatesRevealed: true }) === 'showing_candidates', 'revealed → candidates show');
+  // an EMPLOYER-only fork (golf course: direct hire or contractor?) is asked
+  // next to the candidates: the cleaner's occupation is already known.
   const golf = analyze('골프장 청소해요', 'ko');
-  expect('flow', golf.clarificationRequired === true, 'golf requires clarification');
-  expect('flow', employmentFlowState({ analyzerResult: golf, hasCandidates: true, clarificationAnswered: false, candidatesRevealed: false }) === 'needs_clarification', 'pending fork + candidates → gated');
-  expect('flow', employmentFlowState({ analyzerResult: golf, hasCandidates: true, clarificationAnswered: true }) === 'showing_candidates', 'answered → candidates show');
-  expect('flow', employmentFlowState({ analyzerResult: golf, hasCandidates: true, candidatesRevealed: true }) === 'showing_candidates', 'revealed → candidates show');
+  expect('flow', golf.clarificationRequired === true && golf.clarificationBlocking === false, 'golf: question asked, not blocking');
+  expect('flow', employmentFlowState({ analyzerResult: golf, hasCandidates: true, clarificationAnswered: false, candidatesRevealed: false }) === 'showing_candidates', 'employer-only fork → candidates show with the question');
   // weak input (no candidates) is NEVER gated — its examples are the action
   const weak = analyze('일해요', 'ko');
   expect('flow', employmentFlowState({ analyzerResult: weak, hasCandidates: false, clarificationAnswered: false, candidatesRevealed: false }) === 'showing_candidates', 'weak (no candidates) not gated');
@@ -301,10 +311,16 @@ function assertInvariants(id, st) {
       R.renderJobcodeList(occRows, jb, 'occupation', '청소', R.getJobcodeSearchTerms('청소'), { collapse: true, ambiguous: false });
       expect('render', jb.innerHTML.includes('가장 가까운 후보'), 'high-confidence list shows "가장 가까운 후보"');
 
-      // --- guided flow: candidates GATED behind a pending fork, revealed on dismiss ---
-      R.set(rGolf, 5, 5);                 // golf requires clarification, has candidates
+      // --- guided flow: an employer-only question does not hide candidates ---
+      R.set(rGolf, 5, 5);
       R.jcApplyFlow();
-      expect('flow-dom', R.flow() === 'needs_clarification', 'golf gates candidates');
+      expect('flow-dom', R.flow() === 'showing_candidates', 'golf (employer-only fork) keeps candidates visible');
+      expect('flow-dom', els['jcResults'].hidden === false, 'golf candidates visible next to the question');
+      // --- guided flow: candidates GATED behind a pending occupation fork, revealed on dismiss ---
+      const rSquid = analyze('오징어 일 해요', 'ko');
+      R.set(rSquid, 5, 5);                // occupation fork, has candidates
+      R.jcApplyFlow();
+      expect('flow-dom', R.flow() === 'needs_clarification', 'occupation fork gates candidates');
       expect('flow-dom', els['jcResults'].hidden === true, 'candidates hidden while gated');
       expect('flow-dom', els['jcResultsGate'].hidden === false, 'gate shown while pending');
       expect('flow-dom', els['jcResultsGate'].innerHTML.includes('그냥 후보 보기'), 'gate offers a reveal button');
