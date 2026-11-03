@@ -9,7 +9,7 @@ from the first unfinished step. Never redo a phase recorded as done and verified
 - Working branch: `claude/visable-frontend-rebuild-0289z4` (harness-designated; see DECISIONS.md ADR-001)
 - Base: `origin/main` @ 5082d9d (Merge PR #757, address helper tool)
 - Open PRs by this effort: **#758** https://github.com/club-paradiso/Visable/pull/758 (draft; Phase 0)
-- Current phase: **Phase 2 — Build tooling (Vite)** (in progress; Phases 0–1 done)
+- Current phase: **Phase 3 — Extract inline JavaScript** (starting; Phases 0–2 done, Phase 2 preview-run criterion blocked on owner decision 1)
 
 ## Environment facts (verified this session)
 - Node v22.23.4, npm 10.9.9, Python 3.13.18
@@ -86,7 +86,9 @@ Done (verified 2026-11-03 locally):
 - `.github/workflows/golden.yml`: golden-local and golden-visual now build and serve `dist/`; parity check added.
 - CLAUDE.md: only the stack sentence changed; every protected-file rule and constraint kept word for word.
 - Vercel preview for 5f29c04 (dpl_931aU2H7HbWCRBaPynDW1RjPtpAj, READY): build log shows `Running "install" command`, `> vite build`, `vite v8.3.5 building…`; clone 59.6 s (cached) and "Removed 2449 ignored files defined in .vercelignore". Spot checks through the Vercel MCP fetch: `/manual.html` 200 served from dist (hashed favicon `/assets/visable-favicon-1BviKxHB.svg`, raw stylesheet links intact, PDF links intact), `/api/enforcement/law-probe` 200 JSON, `/scripts/employment_interpret_client.mjs` (recorded below).
-Open: CI golden-local on dist for 5f29c04; local dist 3× run (in progress).
+- **Local exit evidence (2026-11-03):** golden suite against `dist/` (built from 5f29c04) 3× in a row: 100 passed / 6 skipped each (2.2 min). URL parity 218/0. Vercel preview built with Vite and serves dist.
+- **Not verified / blocked:** the brief's "golden suite green on the Vercel preview 3×" needs the SSO bypass secret (owner decision 1); until then the preview is only spot-checked through the Vercel MCP fetch. CI `golden-local` now builds and serves dist — result recorded below once the run for 5f29c04 completes.
+- Phase 2 status: **done locally and verified; preview-run criterion blocked on owner decision 1.**
 
 ## CI notes (PR #758)
 - `webkit-e2e` (Repo Validation) is red on this PR at fe338a3 and 1acc5d6 with exactly one failure:
