@@ -17,14 +17,16 @@ module.exports = async function handler(request, response) {
 
   // Full pipeline on ONE fixed synthetic case (never caller input): legal baseline ->
   // Groq -> server validation. Returns only statuses, never the model's text.
-  if (mode === 'analysis') {
+  if (mode === 'analysis' || mode === 'raw') {
     const { analyzeGroundedCase } = require('../../lib/enforcement-grounded-ai');
     const started = Date.now();
+    // 'raw' also returns the model's unvalidated text for THIS synthetic case only,
+    // so an operator can see which fields the validator dropped and why.
     const result = await analyzeGroundedCase({
       schemaVersion: '1', statusOfStay: 'D-2', violationCode: 'STATUS_OUTSIDE_ACTIVITY_ART20',
       durationDays: 18, authorizationObtained: false, priorViolations: 0,
       assessmentDate: new Date().toISOString().slice(0, 10),
-    });
+    }, { debug: mode === 'raw' });
     const prediction = result.prediction || {};
     return response.status(200).json({
       ...base,
@@ -36,6 +38,10 @@ module.exports = async function handler(request, response) {
       failureCategory: prediction.failureCategory || null,
       hasMonetaryRange: Boolean(prediction.monetaryPrediction?.predictedLikelyRange),
       primaryDisposition: prediction.primaryDisposition?.type || null,
+      stayImpactCount: (prediction.stayImpact || []).length,
+      moneyRationaleCount: (prediction.monetaryPrediction?.rationale || []).length,
+      validationNotes: prediction.validationNotes || [],
+      ...(mode === 'raw' ? { rawModelText: result.debug?.rawModelText || null } : {}),
     });
   }
 
