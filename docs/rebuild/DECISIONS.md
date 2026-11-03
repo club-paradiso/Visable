@@ -69,3 +69,23 @@ the options considered, the evidence, and the reason.
   Tolerance `maxDiffPixelRatio: 0.02`, animations disabled, caret hidden, font CDNs aborted.
 - Consequence: the first CI run on the PR produces the baselines; they are committed in a
   follow-up commit after inspection, and only then does the job start to compare.
+
+## ADR-006 — `.vercelignore` with explicit paths instead of `docs/**` + negations
+- Date: 2026-11-03 (Phase 1)
+- Context: Vercel git deployments upload every tracked file (3,230 files / 647.1 MB measured
+  with `node scripts/measure_deploy_set.mjs --no-ignore`). Only a small set is needed at runtime:
+  `data/**`, `assets/**`, the HTML pages, `scripts/*.mjs` loaded by pages, `lib/**`, `api/**`,
+  the two current manual PDFs, `docs/forms_official/`, and `backend/data/enforcement/legal_rules.json`
+  (required by `lib/enforcement-fallback.js`, which the enforcement functions bundle).
+- Options: (a) `docs/**` + `!docs/source-manuals/…pdf` — gitignore semantics cannot re-include a
+  file under an excluded directory, so the PDFs would vanish; (b) explicit directory list; (c) move
+  archives to another repository (hard stop 2 territory for anything not regenerable).
+- Decision: (b). Explicit directories and file patterns; superseded manual editions, HWP sources and
+  conversion by-products excluded; `backend/` excluded piecewise so `backend/data/enforcement/` stays.
+  Result: **783 files / 117.9 MB**. Verified with the matcher in `scripts/measure_deploy_set.mjs`
+  that every runtime path above is still included and `docs/source-manuals/2026-10-19/stay_manual_261019.pdf`
+  (superseded, unlinked) is excluded.
+- Not done: nothing is deleted from the repository (hard stop 2); `backend/data/manual_search_index.sqlite3`
+  stays committed (Railway reads it; moving it to build time needs an owner-run deploy, hard stop 6).
+- Verification plan: golden suite green locally; after push, the Vercel preview build log shows the
+  smaller upload and `golden-deployment` runs when the bypass secret exists.

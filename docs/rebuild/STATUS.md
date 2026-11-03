@@ -8,7 +8,7 @@ from the first unfinished step. Never redo a phase recorded as done and verified
 - Date: 2026-11-03
 - Working branch: `claude/visable-frontend-rebuild-0289z4` (harness-designated; see DECISIONS.md ADR-001)
 - Base: `origin/main` @ 5082d9d (Merge PR #757, address helper tool)
-- Open PRs by this effort: none yet
+- Open PRs by this effort: **#758** https://github.com/club-paradiso/Visable/pull/758 (draft; Phase 0)
 - Current phase: **Phase 0 — Safety net** (in progress)
 
 ## Environment facts (verified this session)
