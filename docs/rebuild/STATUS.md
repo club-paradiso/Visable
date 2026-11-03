@@ -1,0 +1,66 @@
+# Visable frontend rebuild — STATUS
+
+This file is the resume point. A fresh session must read it first, verify the
+"Last verified state" against the real repo (branch, open PRs, CI), and continue
+from the first unfinished step. Never redo a phase recorded as done and verified.
+
+## Last verified state
+- Date: 2026-11-03
+- Working branch: `claude/visable-frontend-rebuild-0289z4` (harness-designated; see DECISIONS.md ADR-001)
+- Base: `origin/main` @ 5082d9d (Merge PR #757, address helper tool)
+- Open PRs by this effort: none yet
+- Current phase: **Phase 0 — Safety net** (in progress)
+
+## Environment facts (verified this session)
+- Node v22.23.4, npm 10.9.9, Python 3.13.18
+- `npm install --ignore-scripts --package-lock=false` installs @playwright/test 1.64.1 (package.json pins ^1.61.0)
+- Pre-installed Chromium is build 1243 at `/opt/pw-browsers/chromium`; Playwright 1.64.1 wants 1248 and
+  cannot download. Run every Playwright suite with
+  `PARADISO_PW_EXECUTABLE=/opt/pw-browsers/chromium` (playwright.config.mjs already honours it).
+  Verified: `PARADISO_PW_EXECUTABLE=/opt/pw-browsers/chromium npx playwright test tests/e2e/landing-boot.spec.mjs --project=desktop-1280` → 14 passed (25.6s).
+- Git clone is shallow (161 commits); history-based checks are limited.
+
+## Baseline measurements (verified 2026-11-03, commands in phase0 report)
+| Metric | Prompt claim | Measured | Command |
+|---|---|---|---|
+| index.html lines | 26,908 | 26,908 | `wc -l index.html` |
+| inline `<script>` blocks (logic) | 11 | 11 (8 bare `<script>` + 3 `<script id=...SHIM...>` / settings) | `grep -o '<script[^>]*>' index.html \| sort \| uniq -c` |
+| external scripts | 25 | 26 (24 classic + 2 `type=module`) | same |
+| inline `<style>` blocks | 6 | 6 | `grep -c '<style' index.html` |
+| `!important` in index.html | — | 1,406 | `grep -o '!important' index.html \| wc -l` |
+| `!important` index.html + assets/css | 3,307 | 3,307 | `cat index.html assets/css/*.css \| grep -o '!important' \| wc -l` |
+| function declarations in index.html | ~487 | 487 | `grep -cE '^\s*(async\s+)?function\s+\w+' index.html` |
+| `innerHTML` uses | 112 | 112 | `grep -o innerHTML index.html \| wc -l` |
+| `localStorage` uses | 41 | 41 | `grep -o localStorage index.html \| wc -l` |
+| `fetch(` calls | 12 | 12 | `grep -o 'fetch(' index.html \| wc -l` |
+| linked CSS files | 9 | 8 local + 3 font CDN | `grep -o '<link[^>]*stylesheet[^>]*>' index.html` |
+| assets/js modules | 36 / ~31,600 | 36 / 31,642 | `ls assets/js \| wc -l; wc -l assets/js/*.js` |
+| other HTML pages | 10 | 10 | `ls *.html` |
+| scripts/tests files referencing index.html | 64 | 84 files (incl. e2e specs + README) | `grep -l index.html scripts/* tests/e2e/* \| wc -l` |
+| docs/ | ~404 MB | 404M | `du -sh docs` |
+| backend/data/ | ~120 MB | 120M (manual_search_index.sqlite3 = 43,618,304 B) | `du -sh backend/data; ls -la backend/data/manual_search_index.sqlite3` |
+| data/ | ~56 MB | 56M | `du -sh data` |
+| experiments/ | ~22 MB | 22M | `du -sh experiments` |
+| .git | ~287 MB | 287M (shallow clone) | `du -sh .git` |
+| backend/paradiso_backend.py | ~9,196 | 9,196 | `wc -l` |
+| duplicate JSON pairs | jobcode_master.json vs data/, output.json vs data/ | **Only `data/jobcode_master.json` exists.** `jobcode_master.json`, `output.json`, `data/output.json` do not exist. index.html:16931 still lists all four as a fallback chain. | `ls -la jobcode_master.json data/jobcode_master.json output.json data/output.json` |
+
+## Phase 0 — Safety net (in progress)
+- [x] Baseline measurements (above)
+- [x] Playwright runs in this sandbox (see Environment facts)
+- [x] Existing e2e baseline: `PARADISO_PW_EXECUTABLE=/opt/pw-browsers/chromium npx playwright test --project=desktop-1280 --project=mobile-390 --workers=4` → **563 passed, 69 skipped, 0 failed (8.3m)**
+- [x] Production/preview `*.vercel.app` URLs are NOT reachable from this sandbox (curl → 000). Preview verification must run in GitHub Actions (ADR-004).
+- [x] docs/rebuild/phase0-inventory.md (46 index features: C20/I18/P8; 11 other pages inventoried; address-helper.html added by PR #757 noted)
+- [x] docs/rebuild/phase0-legacy-checks.md (38 index-reading checks classified; retire mapping started)
+- [x] docs/rebuild/phase0-data-canon.md (no duplicate pair exists; canon = data/jobcode_master.json)
+- [ ] tests/golden/ Playwright suite (every Critical feature, all shipped UI languages, desktop + mobile, fail-closed cases, visual baselines)
+- [x] `.github/workflows/golden.yml` (golden-local on PRs, golden-visual baseline generation, golden-deployment on Vercel deployment_status / dispatch). Not yet observed running (push pending).
+- [ ] Exit: golden suite green 3× in a row against the unmodified site
+
+## Owner decisions needed
+1. **Vercel preview access for CI** — the project has `ssoProtection: all_except_custom_domains`, so preview URLs return 401/SSO to GitHub Actions. To satisfy the "golden suite 3× against the preview" merge rule the owner must create a *Protection Bypass for Automation* secret in Vercel (Project → Settings → Deployment Protection) and add it as the repository secret `VERCEL_AUTOMATION_BYPASS_SECRET`. Hard stop 6 (Vercel settings / secrets) — not done by this session. Recommendation: do it; it is read-only for the site and scoped to automation.
+2. **Branching** — this session may only push to `claude/visable-frontend-rebuild-0289z4` (ADR-001). The brief's one-branch-per-phase + self-merge rule cannot be followed without permission. Recommendation: review/merge the Phase 0 PR, then grant `rebuild/phase-N-*` branches or keep one long-lived PR per phase re-targeted from this branch.
+3. **Visual baselines** — generated on the CI runner (ADR-005) and uploaded as an artifact; someone must download and commit `tests/golden/__screenshots__/` (this sandbox cannot download Actions artifacts). Recommendation: owner commits them after a glance, or grants a CI commit-back step (contents: write).
+
+## Next step
+Finish the three Phase 0 documents from subagent output, then author tests/golden/.
