@@ -206,11 +206,13 @@ R: `renderProcedurePanel`, `renderProcedures`. D: `PROCEDURE_FALLBACK_SUMMARY_KE
 - `visaIssuanceProcedureAvailable`, `renderStandaloneVisaIssuanceSection`, `renderCautionBlock` (22565).
 
 ### C24 Document tabs and source-evidence panel — 22569–22813
+**Moved** (2026-11-03) to `src/render/cards/doc-tabs-easy-mode.js` (`Visable.cards`); `DOCUMENT_TAB_CONFIG`, `EASY_MODE_*` consts and `let globalEasyMode` stay inline.
 - D: `DOCUMENT_TAB_CONFIG` 22569–22573, `DOCUMENT_DATA_MISSING_NOTICE` 22580, `DOCUMENT_REGISTRATION_MISSING_NOTICE` 22581.
 - Helpers: `getDocumentTabLabel`, `isDocFieldMissing`, `formatDocumentTabRefNote`, `normalizeDocumentTabItems`, `getRegistrationProcedureTabItems`, `getDocumentTabItems`, `getDocumentMissingNotice`.
 - R: `renderDocumentTabPanel` 22653, `procedureSectionOwnsDocuments`, `renderDocumentTabs` 22717, `activateDocsTab`, `renderSourceEvidencePanel` 22765.
 
 ### C25 Easy mode and card view modes — 22814–23093
+**Moved** (2026-11-03) to `src/render/cards/doc-tabs-easy-mode.js` (`Visable.cards`); `DOCUMENT_TAB_CONFIG`, `EASY_MODE_*` consts and `let globalEasyMode` stay inline.
 - `EASY_MODE_*` constants.
 - `globalEasyMode` 22820: **IIFE that reads localStorage at parse time.**
 - `easyModeApplies`, `renderViewModeToggle`, `isEasyModeNonDocRow`, `cleanEasyModeDocName`, `getEasyModeDocGroups`, `renderEasyModePanel`.
