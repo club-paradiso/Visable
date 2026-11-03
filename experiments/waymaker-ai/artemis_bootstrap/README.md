@@ -185,6 +185,12 @@ only A05R-37, which the 005-S guard releases and gate v14 scores correct. Gate v
 005-S manifest; contract v13 and thresholds unchanged. A new locked 81-case suite (M-8 family) has nine
 cap cases, three cap-negatives, six two-case positives and four role-reversal cases; its expected values
 were re-derived blind, and the review's natural cap wordings were added to the rule before freezing.
+Free T4 run (commit e12f8f5): gate v14 **passed** (raw 60/63, no critical, end to end 79/81, no unsafe
+release), and DEV-20 v2 ran: 15 of 20 passed every check (first v2 run: 14). Item 011 again first gave
+only one of its two cases; the branch retry quoted the other, and the retried answer stating both was
+released and passes, the first time the retry fired on the real model. All nine cap cases and three
+cap-negatives passed. Remaining: 005 (unasked item added), 020 (literal 내야), 003, and 002/010 withheld
+before the model. See the [Mission 005-S report](runs/mission005s/MISSION-005-S-REPORT.ko.md).
 
 Recovery status, 2026-10-29: checkpoint metadata verified; new MLX-VLM weight
 loading and generation **not executed** on this M1 8GB machine. The runtime is
