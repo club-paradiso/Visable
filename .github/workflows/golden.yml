@@ -86,11 +86,13 @@ jobs:
 
   golden-deployment:
     # Against a Vercel preview (deployment_status success) or any URL on demand.
-    # Previews are SSO-protected; VERCEL_AUTOMATION_BYPASS_SECRET must be a repository
-    # secret (owner decision, see docs/rebuild/STATUS.md). Without it this job stops
-    # with a clear notice instead of a misleading green.
+    # Previews are SSO-protected, so the automatic path is gated on the repository
+    # variable GOLDEN_PREVIEW_ENABLED=true, which the owner sets together with the
+    # VERCEL_AUTOMATION_BYPASS_SECRET repository secret (docs/rebuild/STATUS.md,
+    # owner decision 1). Until then the job is skipped, not red. A manual dispatch
+    # with base_url always runs and fails loudly when the target is unreachable.
     if: >-
-      (github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success' && github.event.deployment_status.target_url != '')
+      (github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success' && github.event.deployment_status.target_url != '' && vars.GOLDEN_PREVIEW_ENABLED == 'true')
       || (github.event_name == 'workflow_dispatch' && github.event.inputs.base_url != '')
     runs-on: ubuntu-latest
     timeout-minutes: 30
