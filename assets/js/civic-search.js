@@ -21,6 +21,7 @@
       officialResources: "공식 자료 확인",
       coreTools: '바로 쓰는 도구',
       paperwork: "신청서 작성", paperworkSub: '통합신청서 등 공식 서식을 단계별로 채우고 PDF로 내려받아요.',
+      address: "주소 도우미", addressSub: '서류 사진을 읽고 공식 도로명주소와 대조해 한글·영문 주소를 옮겨 적어요.',
       waymaker: 'Waymaker', waymakerSub: '복잡한 상황을 설명하면 필요한 절차와 근거를 단계별로 정리하는 AI 안내예요.',
       newHome: 'New Home', newHomeSub: '국적·귀화와 한국 정착 준비를 한곳에서 안내해요.',
       reservation: '방문예약 안내', reservationSub: '하이코리아 방문예약 방법과 준비사항을 확인하세요.',
@@ -70,6 +71,7 @@
       officialResources: "Check official sources",
       coreTools: 'Tools you can use now',
       paperwork: "Fill in application forms", paperworkSub: 'Fill official forms such as the integrated application step by step and download a PDF.',
+      address: "Address helper", addressSub: 'Read a document photo and check it against the official road-name address to copy your Korean and English address.',
       waymaker: 'Waymaker', waymakerSub: 'Describe a complex situation and get the steps and sources laid out in order, with AI assistance.',
       newHome: 'New Home', newHomeSub: 'Nationality, naturalization and settling in Korea, guided in one place.',
       reservation: 'Visit reservations', reservationSub: 'Find the steps and preparation for a HiKorea appointment.',
@@ -307,6 +309,7 @@
       [['all','all'],['prepare','groupPrepare'],['stay','groupStay'],['help','groupHelp']].map(function (x) { return '<button type="button" data-cs-tool-group="' + x[0] + '" aria-pressed="' + (x[0] === 'all') + '">' + esc(T(x[1])) + '</button>'; }).join('') + '</div></div>' +
       '<div class="cs-service-grid">' +
       tile('paperwork','paperworkSub','file-text','href="form-helper.html"','prepare') +
+      tile('address','addressSub','house','href="address-helper.html"','prepare') +
       tile('checklists','checklistsSub','clipboard-list','href="immigration-checklists.html"','prepare') +
       tile('browse','browseSub','layout-grid','data-action="reveal-home-section" data-target="visaManualSection" aria-controls="civicBrowsePanel" aria-expanded="false"','prepare') +
       tile('short','shortSub','plane','data-action="open-short-stay"','prepare') +
@@ -335,6 +338,7 @@
     // Synonyms are metadata for discovery, never a substitute for the actual tools.
     var keywords = [
       '서류 양식 pdf 신청서 paperwork form document',
+      '주소 도로명 우편번호 영문주소 사진 인식 address road name zip postal ocr photo jusoyuno',
       '준비서류 체류기간 연장 자격변경 등록 checklist documents',
       '목적별 비자 유학 취업 결혼 이민 browse visa',
       '단기체류 무사증 입국 자격 여행 short stay visa waiver',
