@@ -33,6 +33,13 @@ Mission 005-Q: with `vi_dates=True`, a Vietnamese date is read as a date, not as
 "(ngày) 1 tháng 6 năm 2026" becomes the date 2026-06-01, "ngày 1 tháng 6" the date 6월 1일, and a
 month-year "tháng 6 năm 2026" is not compared at all. A05P-24 withheld a correct answer that wrote
 "ngày 1 tháng 6 năm 2026" because "1 tháng" and "6 năm" were read as periods against 18일.
+
+Mission 005-S: with `caps_apart=True`, a cap on an amount is not read as a prohibition or a permission.
+"must not exceed 18 hours", "no more than 18 hours", "18시간을 넘지 않는", "초과할 수 없는 20일",
+"không được vượt quá 18 giờ" limit a number; the activity itself is still allowed. A05R-37 withheld a
+correct answer ("must obtain permission … which must not exceed 18 hours per week") as a reversal of
+"…넘지 않는 범위에서 … 할 수 있다". The cap is blanked in the answer and the evidence before polarity is read;
+values are still compared as before.
 """
 from __future__ import annotations
 
@@ -84,9 +91,33 @@ def _nfc(text: str) -> str:
     return _DOT_THOUSANDS_RE.sub(lambda m: m.group(1) + m.group(2).replace(".", ","), text)
 
 
-def polarity(text: str) -> set:
-    """{'prohibited', 'permitted'} signals in text, prohibition read first."""
+#: Mission 005-S: a negated "exceed / more than" next to a number is a cap on that number, not a polarity.
+_NUM = (r"(?:\d[\d,.]*|(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|"
+        r"sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred)\b)")
+_NEG_EN = (r"(?:\b(?:must|may|shall|should|will|can|could|does|do|did|is|are)\s+not\b|\bcannot\b"
+           r"|\b(?:can|must|may|does|do|did|is|are|should|could|wo|won)?n['’]t\b|\bca\s*n['’]t\b|\bnot\b)")
+#: Korean verbs of exceeding an amount, negated: a cap even when the number is in an earlier sentence ("이 금액을 넘으면 안").
+_KO_EXCEED = r"(?:넘지\s*않|초과하지\s*않|넘을\s*수\s*없|초과할\s*수\s*없|넘어서는\s*안|초과해서는\s*안|넘으면\s*안|초과하면\s*안|넘겨(?:서는|서도|도)?\s*(?:안|않|못))"
+_CAP_RE = re.compile(
+    _NEG_EN + r"\s+(?:[A-Za-z]+\s+){0,4}?(?:(?:go(?:ing)?\s+beyond|be\s+(?:more|longer)\s+than|more\s+than|longer\s+than|over|beyond|above|in\s+excess\s+of)"
+    r"\s+(?:a\s+total\s+of\s+|the\s+)?" + _NUM + r"|exceed\w*)"
+    r"|\bno\s+(?:more|longer)\s+than\s+" + _NUM +
+    r"|" + _KO_EXCEED +
+    r"|\d[\d,.]*[^.?!\n\d]{0,12}?(?:넘게|(?:많|길|오래|더)\w*)[^.?!\n]{0,20}?(?:없|안\s*(?:됩|돼|된|되)|않|못)"
+    r"|(?:không\s+được|không\s+thể|không)\s+(?:\S+\s+){0,6}?(?:vượt\s+quá|quá|nhiều\s+hơn|hơn|trên)\s+\d[\d,.]*",
+    re.IGNORECASE)
+
+
+def _without_caps(text: str) -> str:
+    return _CAP_RE.sub(" ", text)
+
+
+def polarity(text: str, caps_apart: bool = False) -> set:
+    """{'prohibited', 'permitted'} signals in text, prohibition read first. With caps_apart (005-S),
+    a cap on an amount is left out first."""
     text = _nfc(text)
+    if caps_apart:
+        text = _without_caps(text)
     found = set()
     if _PROHIBITED.search(text):
         found.add("prohibited")
@@ -108,10 +139,10 @@ def obligation(text: str) -> set:
     return found
 
 
-def polarity_reversed(answer: str, expected: str) -> bool:
+def polarity_reversed(answer: str, expected: str, caps_apart: bool = False) -> bool:
     """The answer states only the opposite of the expected 'prohibited'/'permitted'."""
     other = {"prohibited": "permitted", "permitted": "prohibited"}[expected]
-    return polarity(answer) == {other}
+    return polarity(answer, caps_apart) == {other}
 
 
 def _codes(text: str) -> set:
@@ -147,7 +178,7 @@ def _item_text(e: Mapping, with_source: bool) -> str:
 
 def check(answer: str, question: str, evidence: Iterable[Mapping], cited: Iterable[str],
           admissible: Mapping[str, bool], with_source: bool = False, ages_apart: bool = False,
-          vi_dates: bool = False) -> dict:
+          vi_dates: bool = False, caps_apart: bool = False) -> dict:
     """Compare answer claims with cited admissible evidence.
 
     `admissible` maps evidence id -> bool (from the evaluator-side trust record, never
@@ -196,7 +227,7 @@ def check(answer: str, question: str, evidence: Iterable[Mapping], cited: Iterab
         add("code_not_in_cited_evidence", code, "review")
 
     if cited_ok:
-        page, said = polarity(cited_ok), polarity(answer)
+        page, said = polarity(cited_ok, caps_apart), polarity(answer, caps_apart)
         if page == {"prohibited"} and said == {"permitted"}:
             add("polarity_reversal", "evidence prohibits; answer permits", "critical")
         elif page == {"permitted"} and said == {"prohibited"}:

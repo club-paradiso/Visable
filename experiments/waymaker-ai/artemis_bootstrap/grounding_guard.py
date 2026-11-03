@@ -33,6 +33,8 @@ Mission 005-R: when a released answer gives only one case of a two-case evidence
 the system asks that part once more with a branch_retry note quoting the left-out case (contract v13). If the
 retried answer still leaves it out, or cannot be released, the released answer carries a labelled system notice
 quoting the case; nothing is withheld for it, and the model's sentences are never edited.
+Mission 005-S: claim support reads a cap on an amount ("must not exceed 18 hours") as a cap, not a prohibition
+(caps_apart=True).
 Research-only; nothing here is wired into the production backend.
 """
 from __future__ import annotations
@@ -324,7 +326,7 @@ def validate_generated_answer(raw: Optional[str], prepared: Mapping, candidates:
                          "effect": "withhold"})
     if status in SUBSTANTIVE:
         support = claim_support_validation.check(answer, question, candidates, cites, admissible_map, with_source=True,
-                                                 ages_apart=True, vi_dates=True)
+                                                 ages_apart=True, vi_dates=True, caps_apart=True)
         for f in support["findings"]:
             kind = f["kind"]
             if kind in ("value_from_inadmissible", "polarity_reversal", "obligation_negated") or kind.endswith("_mismatch") \

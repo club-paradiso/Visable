@@ -177,6 +177,14 @@ for a prohibition; the guard withheld it. Raw 59/63, end to end 78/81, no unsafe
 bypass. The model gave both cases in all nine two-case positives, so no branch retry happened; the
 retry itself is so far shown only by unit tests. DEV-20 v2 did not run. See the
 [Mission 005-R report](runs/mission005r/MISSION-005-R-REPORT.ko.md).
+Mission 005-S (frozen 2026-11-03, not run yet): claim support reads a cap on an amount as a cap, not a
+prohibition (`caps_apart=True` in the guard and gate v14): "must not exceed 18 hours", "not allowed to
+work more than twenty", "18시간을 넘지 않는", "이 금액을 넘으면 안", "không được vượt quá 25 giờ".
+Number-less negations stay prohibitions. Across the 829 answers recorded by earlier runs it changes
+only A05R-37, which the 005-S guard releases and gate v14 scores correct. Gate v14 = gate v13 with the
+005-S manifest; contract v13 and thresholds unchanged. A new locked 81-case suite (M-8 family) has nine
+cap cases, three cap-negatives, six two-case positives and four role-reversal cases; its expected values
+were re-derived blind, and the review's natural cap wordings were added to the rule before freezing.
 
 Recovery status, 2026-10-29: checkpoint metadata verified; new MLX-VLM weight
 loading and generation **not executed** on this M1 8GB machine. The runtime is

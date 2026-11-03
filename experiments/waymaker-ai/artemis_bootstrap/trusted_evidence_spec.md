@@ -258,6 +258,16 @@ Mission 005-Q 개정: 근거 대조에서 베트남어 날짜를 날짜로 읽�
 그래서 `ngày 1 tháng 6 năm 2026`의 `1 tháng`·`6 năm`을 기간(1개월·6년)으로 보지 않습니다. 이 꼴 밖의 `N tháng`·`N năm`은 지금처럼 기간입니다.
 "모순 없음"은 모든 주장이 뒷받침된다는 증명이 아닙니다.
 
+**수량의 상한(005-S).** 허가·금지 반전을 볼 때, 수를 넘지 말라는 말은 금지나 허가로 읽지 않습니다. 그 수의 상한일 뿐이고 그 활동 자체는 여전히 허용될 수 있기 때문입니다.
+보는 꼴은 다음과 같습니다. 영어는 부정(`must not`·`may not`·`cannot`·`not` 등)과 상한 낱말 사이에 다른 낱말이 넷까지 끼고(`not allowed to work more than`),
+상한 낱말(`go beyond`·`more than`·`longer than`·`over`·`beyond`·`above`·`in excess of`) 뒤에 수가 오는 꼴, 부정된 `exceed`(뒤에 수가 없어도), `no more than N`입니다.
+영어의 수에는 `six`·`twenty` 같은 수 낱말도 듭니다. 부정에는 `can't`·`mustn't` 같은 줄임꼴도 듭니다.
+한국어는 `넘지 않`·`초과하지 않`·`넘을 수 없`·`초과할 수 없`·`넘어서는 안`·`초과해서는 안`·`넘으면 안`·`초과하면 안`·`넘겨서는 안`입니다. 넘는 대상이 앞 문장의 수여도(`이 금액을 넘으면 안 됩니다`) 상한으로 봅니다.
+또 수 뒤 열두 자 안의 `넘게`나 `많`·`길`·`오래`·`더`로 시작하는 말 뒤에 스무 자 안에서 `없`·`안 됩`·`않`·`못`이 오는 꼴(`120만 원보다 많으면 안 됩니다`)도 상한입니다.
+베트남어는 `không`(`không được`·`không thể` 포함) 뒤 여섯 낱말 안에 `vượt quá`·`quá`·`nhiều hơn`·`hơn`·`trên`이 오고 그 뒤에 수가 오는 꼴입니다(`không quá 18 giờ` 포함).
+이 부분은 답과 근거 양쪽에서 빼고 허가·금지를 봅니다. 그래서 `must obtain permission … which must not exceed 18 hours per week`는 `…18시간을 넘지 않는 범위에서 … 할 수 있다`를 뒤집은 답이 아닙니다.
+수 자체가 근거와 맞는지는 지금처럼 값 대조로 봅니다. 수가 없는 부정(`You cannot work part-time`)은 지금처럼 금지입니다.
+
 **질문 속 답변 지시(005-I).** 질문 글 안의 문장이 답하는 방식을 지시하면 그 문장을 "답변 지시"로 봅니다.
 보는 표현: 지시·규칙을 무시하라(ignore/disregard/forget … instructions·rules, 이전·앞의·위의·모든 지시·규칙·지침 … 무시, bỏ qua mọi·tất cả·các hướng dẫn·chỉ dẫn·quy tắc),
 답을 어떤 말로 시작·끝내라(start/begin/end/prefix your reply·answer·response with, 답·대답·답변 … (으)로 시작, bắt đầu (câu) trả lời bằng),
