@@ -85,7 +85,8 @@ Done (verified 2026-11-03 locally):
 - Golden suite against `dist/`: first run 100 passed / 6 skipped (3× run in progress at the time of writing; result recorded below when done).
 - `.github/workflows/golden.yml`: golden-local and golden-visual now build and serve `dist/`; parity check added.
 - CLAUDE.md: only the stack sentence changed; every protected-file rule and constraint kept word for word.
-Open: Vercel preview build with the new `buildCommand` must succeed (checked after push); CI golden-local on dist.
+- Vercel preview for 5f29c04 (dpl_931aU2H7HbWCRBaPynDW1RjPtpAj, READY): build log shows `Running "install" command`, `> vite build`, `vite v8.3.5 building…`; clone 59.6 s (cached) and "Removed 2449 ignored files defined in .vercelignore". Spot checks through the Vercel MCP fetch: `/manual.html` 200 served from dist (hashed favicon `/assets/visable-favicon-1BviKxHB.svg`, raw stylesheet links intact, PDF links intact), `/api/enforcement/law-probe` 200 JSON, `/scripts/employment_interpret_client.mjs` (recorded below).
+Open: CI golden-local on dist for 5f29c04; local dist 3× run (in progress).
 
 ## CI notes (PR #758)
 - `webkit-e2e` (Repo Validation) is red on this PR at fe338a3 and 1acc5d6 with exactly one failure:
