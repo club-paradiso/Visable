@@ -40,11 +40,11 @@ def test_thresholds_are_the_005n_thresholds_except_the_category_rate():
            {k: v for k, v in old.items() if k != "min_raw_category_pass_rate"}
 
 
-#: Files Mission 005-P changed after the 005-O freeze. The 005-O manifest records them as they
+#: Files Missions 005-P and 005-Q changed after the 005-O freeze. The 005-O manifest records them as they
 #: were at that freeze; the 005-O decision is re-derived with that run commit's code (test_mission005o_real_run).
 CHANGED_AFTER_005O = {"artemis_bootstrap/grounding_guard.py", "artemis_bootstrap/gemma4_runtime.py",
                       "waymaker_ai/response_contract.py", "waymaker_ai/inference_input.py",
-                      "artemis_bootstrap/trusted_evidence_spec.md"}
+                      "artemis_bootstrap/trusted_evidence_spec.md", "artemis_bootstrap/claim_support_validation.py"}
 FREEZE_COMMIT_005O = "2891cea7fdfafb6841bc77ebfda231127bcbeb00"
 
 

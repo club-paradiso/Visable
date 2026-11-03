@@ -37,9 +37,27 @@ def test_thresholds_are_the_005o_thresholds_unchanged():
     assert gate11.load_manifest()["thresholds"] == gate10.load_manifest()["thresholds"]
 
 
+#: Files Mission 005-Q changed after the 005-P freeze. The 005-P manifest records them as they
+#: were at that freeze; the 005-P decision is re-derived with that run commit's code (test_mission005p_real_run).
+CHANGED_AFTER_005P = {"artemis_bootstrap/grounding_guard.py", "artemis_bootstrap/claim_support_validation.py",
+                      "artemis_bootstrap/trusted_evidence_spec.md"}
+FREEZE_COMMIT_005P = "158e797477b456894ca1d98527f7edea275c8eba"
+
+
 def test_offline_preconditions_pass():
     checks = gate11.offline_preconditions(gate11.load_manifest())
-    assert all(c["passed"] for c in checks), [c for c in checks if not c["passed"]]
+    assert all(c["passed"] for c in checks if c["check"] != "evaluator_files_unchanged"), checks
+    files = next(c for c in checks if c["check"] == "evaluator_files_unchanged")
+    assert set(files["detail"] or {}) <= CHANGED_AFTER_005P, files
+
+
+def test_005p_manifest_matches_the_files_at_its_freeze_commit():
+    for rel, digest in gate11.load_manifest()["evaluator_files_sha256"].items():
+        shown = subprocess.run(["git", "show", f"{FREEZE_COMMIT_005P}:experiments/waymaker-ai/{rel}"],
+                               cwd=BOOT, capture_output=True)
+        if shown.returncode:
+            pytest.skip("needs git history for the 005-P freeze commit")
+        assert hashlib.sha256(shown.stdout).hexdigest() == digest, rel
 
 
 def test_the_retry_pipeline_and_gate_v11_are_frozen():

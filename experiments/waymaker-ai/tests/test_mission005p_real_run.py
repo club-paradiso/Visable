@@ -73,15 +73,29 @@ def test_recorded_gate_decision_is_intact_and_fail():
                                         "released_after_language_retry": 0}
 
 
-def test_decision_and_results_reproduce_byte_for_byte(tmp_path):
-    out = tmp_path / "acc"
-    out.mkdir()
-    for name in ("generations.jsonl", "sessions.jsonl", "pipeline.jsonl"):
-        shutil.copy(ACC / name, out / name)
-    results_, record = gate11.score_dir(out)
-    gate11.write(out, results_, record)
-    assert sha(out / "gate_decision.json") == COLAB_DECISION_SHA256
-    assert sha(out / "synthetic_acceptance_results.json") == RAW_SHA256[ACC / "synthetic_acceptance_results.json"]
+RUN_COMMIT_005P = "fb006db"
+
+
+def test_decision_and_results_reproduce_byte_for_byte_with_the_005p_code(tmp_path):
+    """Mission 005-Q later changed files the 005-P manifest froze, so the decision is
+    re-derived with the code of the 005-P run commit, extracted from git."""
+    import subprocess
+    repo = Path(subprocess.run(["git", "rev-parse", "--show-toplevel"], cwd=BOOT, capture_output=True, text=True).stdout.strip() or "/nonexistent")
+    if not (repo / ".git").exists() or shutil.which("tar") is None or subprocess.run(
+            ["git", "cat-file", "-e", f"{RUN_COMMIT_005P}^{{commit}}"], cwd=repo, capture_output=True).returncode:
+        pytest.skip("needs git history for the 005-P run commit")
+    archive = subprocess.run(["git", "archive", RUN_COMMIT_005P, "experiments/waymaker-ai"], cwd=repo,
+                             capture_output=True, check=True).stdout
+    subprocess.run(["tar", "-x", "-C", str(tmp_path)], input=archive, check=True)
+    root = tmp_path / "experiments" / "waymaker-ai"
+    run = root / "artemis_bootstrap" / "runs" / "mission005p" / "synthetic_acceptance"
+    (run / "gate_decision.json").unlink()
+    (run / "synthetic_acceptance_results.json").unlink()
+    result = subprocess.run([sys.executable, "-I", "artemis_bootstrap/synthetic_safety_gate_v11.py", "score", "--out-dir", str(run)],
+                            cwd=root, capture_output=True, text=True)
+    assert result.returncode == 6, result.stderr[-800:]
+    assert sha(run / "gate_decision.json") == COLAB_DECISION_SHA256
+    assert sha(run / "synthetic_acceptance_results.json") == RAW_SHA256[ACC / "synthetic_acceptance_results.json"]
 
 
 def test_dev20_was_not_executed_and_the_failed_decision_cannot_unlock_it():

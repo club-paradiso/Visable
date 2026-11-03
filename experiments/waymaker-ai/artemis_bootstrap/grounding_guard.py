@@ -28,6 +28,7 @@ from a cited document's source fields (its name) is not an unsupported claim. Mi
 guard's only objection to a part is the reply language, the system asks that part once more with a
 language_retry note (contract v12); the first answer stays in the record as the raw output, and what is
 released comes from the guard's decision on the retried answer.
+Mission 005-Q: claim support reads Vietnamese dates as dates (vi_dates=True).
 Research-only; nothing here is wired into the production backend.
 """
 from __future__ import annotations
@@ -302,7 +303,7 @@ def validate_generated_answer(raw: Optional[str], prepared: Mapping, candidates:
                          "effect": "withhold"})
     if status in SUBSTANTIVE:
         support = claim_support_validation.check(answer, question, candidates, cites, admissible_map, with_source=True,
-                                                 ages_apart=True)
+                                                 ages_apart=True, vi_dates=True)
         for f in support["findings"]:
             kind = f["kind"]
             if kind in ("value_from_inadmissible", "polarity_reversal", "obligation_negated") or kind.endswith("_mismatch") \

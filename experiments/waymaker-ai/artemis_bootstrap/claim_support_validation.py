@@ -28,6 +28,11 @@ The default keeps the 005-F..005-L behaviour (title and text only).
 Mission 005-N: with `ages_apart=True`, an age ("17 years of age", "aged 17", "만 17세", "17 tuổi") is not
 read as a period, in the answer or the evidence. A05M-38 withheld a correct answer that wrote "17 years
 of age" because it was compared with the evidence's 90일.
+
+Mission 005-Q: with `vi_dates=True`, a Vietnamese date is read as a date, not as periods.
+"(ngày) 1 tháng 6 năm 2026" becomes the date 2026-06-01, "ngày 1 tháng 6" the date 6월 1일, and a
+month-year "tháng 6 năm 2026" is not compared at all. A05P-24 withheld a correct answer that wrote
+"ngày 1 tháng 6 năm 2026" because "1 tháng" and "6 năm" were read as periods against 18일.
 """
 from __future__ import annotations
 
@@ -121,6 +126,18 @@ def _without_ages(text: str) -> str:
     return _AGE_RE.sub(" ", text)
 
 
+_VI_DATE_FULL_RE = re.compile(r"(?:\bngày\s+)?\b(\d{1,2})\s+tháng\s+(\d{1,2})\s+năm\s+(\d{4})\b", re.IGNORECASE)
+_VI_DATE_MD_RE = re.compile(r"\bngày\s+(\d{1,2})\s+tháng\s+(\d{1,2})\b", re.IGNORECASE)
+_VI_MONTH_YEAR_RE = re.compile(r"\btháng\s+\d{1,2}\s+năm\s+\d{4}\b", re.IGNORECASE)
+
+
+def _with_vi_dates(text: str) -> str:
+    """Mission 005-Q: Vietnamese dates in a form trust_gate reads as dates; month-years blanked."""
+    text = _VI_DATE_FULL_RE.sub(lambda m: f"{m.group(3)}-{int(m.group(2)):02d}-{int(m.group(1)):02d}", text)
+    text = _VI_DATE_MD_RE.sub(lambda m: f"{int(m.group(2))}월 {int(m.group(1))}일", text)
+    return _VI_MONTH_YEAR_RE.sub(" ", text)
+
+
 def _item_text(e: Mapping, with_source: bool) -> str:
     parts = [e.get("title", ""), e.get("text", "")]
     if with_source and isinstance(e.get("source"), Mapping):
@@ -129,7 +146,8 @@ def _item_text(e: Mapping, with_source: bool) -> str:
 
 
 def check(answer: str, question: str, evidence: Iterable[Mapping], cited: Iterable[str],
-          admissible: Mapping[str, bool], with_source: bool = False, ages_apart: bool = False) -> dict:
+          admissible: Mapping[str, bool], with_source: bool = False, ages_apart: bool = False,
+          vi_dates: bool = False) -> dict:
     """Compare answer claims with cited admissible evidence.
 
     `admissible` maps evidence id -> bool (from the evaluator-side trust record, never
@@ -142,6 +160,9 @@ def check(answer: str, question: str, evidence: Iterable[Mapping], cited: Iterab
     if ages_apart:
         answer, question = _without_ages(answer), _without_ages(question)
         by_id = {i: _without_ages(t) for i, t in by_id.items()}
+    if vi_dates:
+        answer, question = _with_vi_dates(answer), _with_vi_dates(question)
+        by_id = {i: _with_vi_dates(t) for i, t in by_id.items()}
     cited_ok = "\n".join(t for i, t in by_id.items() if i in cited and admissible.get(i))
     other_ok = "\n".join(t for i, t in by_id.items() if i not in cited and admissible.get(i))
     bad = "\n".join(t for i, t in by_id.items() if not admissible.get(i))
