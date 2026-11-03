@@ -171,7 +171,9 @@
     els.themeBtn.setAttribute('aria-label', t('themeToggle'));
     els.footerLegal.textContent = t('legal');
     els.footerLine.textContent = t('footer');
-    els.skip.textContent = t('back');
+    var skipLabel = packFor(st.lang).skipToContent || data.packs.ko.skipToContent;
+    els.skip.textContent = st.lang === 'zh-TW' && window.ParadisoZhT
+      ? window.ParadisoZhT.convert(skipLabel) : skipLabel;
     els.brandTitle.textContent = t('title');
   }
 

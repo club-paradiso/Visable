@@ -1556,9 +1556,14 @@ function updateLanguage(locale) {
   var jumpSearch = document.querySelector('#jump-search-btn span:last-child');
   if (jumpSearch) jumpSearch.textContent = t('navSearch', null, '전체 검색');
 
-  var formHelperLink = document.querySelector('.header-link span:first-child');
+  var feedbackButton = $('open-feedback-btn');
+  if (feedbackButton) {
+    feedbackButton.querySelector('span').textContent = t('navFeedback', null, '의견 보내기');
+    feedbackButton.title = t('navFeedback', null, '의견 보내기');
+  }
+  var formHelperAnchor = document.querySelector('a.header-link[href^="form-helper.html"]');
+  var formHelperLink = formHelperAnchor && formHelperAnchor.querySelector('span:first-child');
   if (formHelperLink) formHelperLink.textContent = t('navFormHelper', null, '서식 작성');
-  var formHelperAnchor = document.querySelector('.header-link');
   if (formHelperAnchor) {
     formHelperAnchor.href = 'form-helper.html' + (loc !== 'ko' ? ('?lang=' + encodeURIComponent(loc)) : '');
   }

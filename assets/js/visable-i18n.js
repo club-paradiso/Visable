@@ -88,6 +88,23 @@
       ru: 'Общий поиск',
       ar: 'البحث الشامل'
     },
+    navFeedback: {
+      ko: '의견 보내기',
+      en: 'Send feedback',
+      'zh-CN': '发送反馈',
+      'zh-TW': '傳送意見',
+      vi: 'Gửi phản hồi',
+      id: 'Kirim masukan',
+      ja: 'フィードバックを送信',
+      tl: 'Magpadala ng puna',
+      ru: 'Отправить отзыв',
+      ar: 'إرسال ملاحظات',
+      fr: 'Envoyer un avis',
+      es: 'Enviar comentarios',
+      de: 'Feedback senden',
+      tr: 'Geri bildirim gönder',
+      uk: 'Надіслати відгук'
+    },
     navFormHelper: {
       ko: '서식 작성',
       en: 'Form Helper',
