@@ -2,7 +2,7 @@
 
 ## Project
 Korean visa/status-of-stay information platform. 39 체류자격 categories.
-Stack: vanilla HTML/CSS/JS, single-file, no build system.
+Stack: vanilla HTML/CSS/JS pages built with Vite (multi-page; `npm run build` → `dist/`, deployed by Vercel). index.html is being split out of its single-file form in phases — see docs/rebuild/STATUS.md before touching frontend structure. Data JSON and the classic `assets/js` scripts are served at their original public paths.
 
 ## Protected files (NEVER broadly rewrite or modify during data work)
 - `visa_data.json`

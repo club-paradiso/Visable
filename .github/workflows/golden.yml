@@ -34,9 +34,14 @@ jobs:
         run: npm install --ignore-scripts --package-lock=false --no-audit --no-fund
       - name: Install Chromium
         run: ./node_modules/.bin/playwright install --with-deps chromium
-      - name: Run the golden suite (desktop + phone)
+      - name: Build (Vite multi-page, Phase 2)
+        run: npm run build
+      - name: URL status parity (source vs dist)
+        run: node scripts/check_url_parity.mjs
+      - name: Run the golden suite against the build output (desktop + phone)
         env:
           CI: '1'
+          GOLDEN_SERVE_DIR: dist
         run: ./node_modules/.bin/playwright test -c playwright.golden.config.mjs --project=desktop-1280 --project=mobile-390
       - name: Upload evidence
         if: always()
@@ -63,9 +68,12 @@ jobs:
         run: npm install --ignore-scripts --package-lock=false --no-audit --no-fund
       - name: Install Chromium
         run: ./node_modules/.bin/playwright install --with-deps chromium
+      - name: Build (Vite multi-page, Phase 2)
+        run: npm run build
       - name: Compare (or create) visual baselines
         env:
           CI: '1'
+          GOLDEN_SERVE_DIR: dist
         run: |
           if [ -d tests/golden/__screenshots__ ]; then
             ./node_modules/.bin/playwright test -c playwright.golden.config.mjs --project=visual-desktop --project=visual-mobile

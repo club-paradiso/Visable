@@ -77,6 +77,16 @@ Pre-measurements (verified 2026-11-03):
 - Runtime paths that MUST stay deployed (grep of shipped HTML/JS/api): `docs/source-manuals/2026-10-19/visa_manual_261019.pdf`, `docs/source-manuals/2026-11-02/stay_manual_261102.pdf`, `docs/forms_official/FORM_HELPER_COVERAGE_20260923.md`, `scripts/employment_*.mjs`, `scripts/enforcement-ui.mjs`, `lib/**`, `backend/data/enforcement/legal_rules.json`, `data/**`, `assets/**`, `agency-directory/` (unlinked but harmless, 0.4 MB).
 - Steps: (1) trim `JOBCODE_JSON_PATHS` to the canonical path (behaviour-preserving; golden procedure/search tests + check_employment_* guard it); (2) add `.vercelignore` + a measurement script; (3) history-rewrite-plan.md written (done, not executed); (4) generated-artefact decision for `backend/data/manual_search_index.sqlite3` → Railway deploy dependency, owner decision.
 
+## Phase 2 — Build tooling (in progress)
+Done (verified 2026-11-03 locally):
+- `vite@8.3.5` devDependency; `vite.config.mjs` (12 HTML entries, static copies, CSS kept raw — ADR-008 addendum); `npm run build` → `dist/` in ~1 s; `.gitignore` ignores `dist/`.
+- `vercel.json`: `buildCommand`, `outputDirectory: dist`, `installCommand`; headers/functions unchanged.
+- `scripts/check_url_parity.mjs`: 218 referenced URLs, 0 status mismatches source vs dist (phase2-url-parity.md).
+- Golden suite against `dist/`: first run 100 passed / 6 skipped (3× run in progress at the time of writing; result recorded below when done).
+- `.github/workflows/golden.yml`: golden-local and golden-visual now build and serve `dist/`; parity check added.
+- CLAUDE.md: only the stack sentence changed; every protected-file rule and constraint kept word for word.
+Open: Vercel preview build with the new `buildCommand` must succeed (checked after push); CI golden-local on dist.
+
 ## CI notes (PR #758)
 - `webkit-e2e` (Repo Validation) is red on this PR at fe338a3 and 1acc5d6 with exactly one failure:
   `tests/e2e/search-first-home.spec.mjs:226 › dialog tools open the existing dialogs from the keyboard` on

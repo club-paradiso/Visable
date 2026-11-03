@@ -2,9 +2,11 @@
   "name": "visable",
   "version": "0.0.0",
   "private": true,
-  "description": "Visable — Korean visa/status-of-stay information platform (vanilla HTML/CSS/JS, no build system). This package.json only wraps existing Node scripts so common checks have npm aliases; the site itself needs no build. NOTE: no \"type\":\"module\" — the repo's .js scripts are CommonJS; analyzer modules are .mjs (ES) by extension.",
+  "description": "Visable — Korean visa/status-of-stay information platform (vanilla HTML/CSS/JS, built with Vite since the Phase 2 rebuild: `npm run build` → dist/, see docs/rebuild/). The remaining scripts wrap existing Node checks. NOTE: no \"type\":\"module\" — the repo's .js scripts are CommonJS; analyzer modules are .mjs (ES) by extension.",
   "scripts": {
     "validate": "bash scripts/check_repo.sh",
+    "build": "vite build",
+    "preview": "vite preview",
     "test:i18n": "node scripts/check_i18n.js && node scripts/smoke_static_i18n.mjs",
     "test:popup-i18n": "node scripts/check_popup_i18n.mjs",
     "test:document-help": "node scripts/check_document_help.mjs",
@@ -48,6 +50,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.61.0",
-    "jsdom": "^24.1.0"
+    "jsdom": "^24.1.0",
+    "vite": "^8.3.5"
   }
 }

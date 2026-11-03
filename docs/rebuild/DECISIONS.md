@@ -138,3 +138,14 @@ the options considered, the evidence, and the reason.
   landing shell equality check (`check_landing_shell.mjs` must run against the built
   `dist/index.html` or the source — decide when wiring), and `.vercelignore` vs. build inputs
   (`tests/`, `.github/` are not build inputs; `scripts/` is).
+
+### ADR-008 addendum (2026-11-03, after the first build)
+- Observed: Vite merged index.html's 8 local stylesheets into 3 hashed chunks and reordered them
+  (`visable-product-2026.css` moved from first to second), and minified the 6 inline `<style>` blocks
+  (14,511 differing lines). The golden suite still passed (it asserts text, not style), which is exactly
+  why this is not acceptable as a behaviour-preserving step.
+- Decision: a `transformIndexHtml` pre-plugin marks every local stylesheet link `vite-ignore` so the CSS
+  stays raw, separate and in order; `build.cssMinify: false` keeps inline CSS unminified; `assetsInlineLimit: 0`
+  keeps images as files. Hashing is applied in Phase 2 only to the `type="module"` scripts and to image
+  assets referenced from HTML/CSS (the raw copies under `assets/` also stay, so old URLs keep working).
+  CSS hashing moves to Phase 4, where the visual baselines are the gate.
