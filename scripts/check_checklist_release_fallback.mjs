@@ -35,6 +35,8 @@ for(const [name,payload,expected] of cases){
  app.dom.window.close();
 }
 for(const [name,opts] of [['network failure',{offline:true}],['empty preview',{preview:true}]]){
- const app=await boot(cases[0][1],opts);assert.deepEqual(app.counts(),{extension:224,change:251,registration:172},name);app.dom.window.close();console.log(name,'PASS');
+ const app=await boot(cases[0][1],opts);assert.deepEqual(app.counts(),{extension:224,change:251,registration:172},name);
+ if(opts.preview){const b=app.w.document.querySelector('#release-preview-banner');assert.ok(b,'empty preview still shows the preview banner');assert.equal(b.getAttribute('data-preview-fallback'),'true','empty preview banner says the baseline is shown');assert.ok(b.querySelector('.release-preview-exit'),'empty preview banner keeps its exit link');}
+ app.dom.window.close();console.log(name,'PASS');
 }
 console.log('Checklist release fallback: 7 DOM integration scenarios passed. No network or live AI.');

@@ -1982,8 +1982,13 @@ async function load() {
         if (prevRes.ok) {
           var prevData = await prevRes.json();
           if (prevData && prevData.extension && prevData.change && prevData.registration) {
-            applyReleaseDatasets(prevData);
-            renderPreviewBanner(prevData);
+            // The operator is in preview mode either way, so the banner (and its
+            // exit link) always shows. An empty or malformed candidate keeps the
+            // compiled baseline on screen, and the banner says so.
+            var previewRejected = null;
+            try { applyReleaseDatasets(prevData); } catch (applyErr) { previewRejected = applyErr; }
+            renderPreviewBanner(prevData, { fallback: !!previewRejected });
+            if (previewRejected) console.warn('Candidate preview rejected, showing baseline:', previewRejected);
           }
         }
       } catch (prevErr) {
@@ -2053,7 +2058,8 @@ async function load() {
   }
 }
 
-function renderPreviewBanner(data) {
+function renderPreviewBanner(data, opts) {
+  opts = opts || {};
   var existing = document.getElementById('release-preview-banner');
   if (existing) existing.remove();
 
@@ -2090,6 +2096,15 @@ function renderPreviewBanner(data) {
     checkSpan.textContent = 'SHA: ' + data.checksum_sha256.substring(0, 10) + '...';
     info.appendChild(document.createTextNode(' · '));
     info.appendChild(checkSpan);
+  }
+
+  if (opts.fallback) {
+    var fallbackNote = document.createElement('span');
+    fallbackNote.className = 'release-preview-fallback';
+    fallbackNote.textContent = '이 후보 릴리스는 비어 있거나 형식이 맞지 않아 기본 자료를 표시합니다.';
+    info.appendChild(document.createTextNode(' · '));
+    info.appendChild(fallbackNote);
+    banner.setAttribute('data-preview-fallback', 'true');
   }
 
   content.appendChild(badge);
