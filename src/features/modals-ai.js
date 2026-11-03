@@ -1042,6 +1042,31 @@ function renderDocTags(docKeys, keywords, isSubCode = false, visaCode = '', proc
 }
 
 
+// Modal focus trap + scroll lock (moved verbatim from index.html; the two `let`s are assigned by openModal/closeModal above).
+let lastFocusedElement = null;
+let activeModal = null;
+function modalFocusables(modal) {
+    return Array.from(modal.querySelectorAll('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'))
+        .filter(el => !el.hidden && !el.closest('[inert]') && el.getClientRects().length > 0);
+}
+function syncModalScrollLock() {
+    document.documentElement.classList.toggle('vs-overlay-open', !!document.querySelector('.modal-overlay.active') || document.body.classList.contains('drawer-open'));
+}
+function trapModalFocus(e) {
+    if (e.key !== 'Tab' || !activeModal) return;
+    const focusables = modalFocusables(activeModal);
+    if (!focusables.length) return;
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+    }
+}
+
 export {
     openModal, closeModal, openVisaDrawer, closeVisaDrawer, setupAiModeSelector, findProcedureVariant,
     openAiModal, buildWaymakerHandoffUrl, syncWaymakerFab, setSelectedScenarioHandoff, clearSelectedScenarioHandoff, handleScenarioAiHandoff,

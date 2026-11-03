@@ -16107,26 +16107,12 @@ html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important
 // (Legacy hero spotlight pointer-tracking removed 2026-06.)
 
 // --- UI Helpers ---
-function escapeHtml(s) { const d = document.createElement('div'); d.textContent = s ?? ''; return d.innerHTML; }
-function escapeRegExp(s) { return String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
-function hl(t,k) {
-    const text = String(t ?? '');
-    if(!k || !k.length) return escapeHtml(text);
-    return escapeHtml(text).replace(new RegExp(`(${k.map(escapeRegExp).join('|')})`,'gi'),'<mark class="h">$1</mark>');
-}
-function showToast(message, type = 'warning') {
-    const toast = document.createElement('div');
-    toast.className = `toast toast-${type}`;
-    toast.setAttribute('role', 'status');
-    toast.setAttribute('aria-live', 'polite');
-    toast.textContent = message;
-    document.body.appendChild(toast);
-    setTimeout(() => toast.classList.add('show'), 10);
-    setTimeout(() => {
-        toast.classList.remove('show');
-        setTimeout(() => toast.remove(), 300);
-    }, 4000);
-}
+// Escaping helpers: identical implementations live in src/render/escape.js (Visable.render); the toast moved to
+// src/core/helpers.js (Phase 3, ADR-009). The stubs keep the names the inline code and assets/js call.
+function escapeHtml(...args) { return Visable.render.escapeHtml(...args); }
+function escapeRegExp(...args) { return Visable.render.escapeRegExp(...args); }
+function hl(...args) { return Visable.render.hl(...args); }
+function showToast(...args) { return Visable.core.showToast(...args); }
 
 // --- Data Configs ---
 const COMMON_NEW = ['doc_app_form', 'doc_passport_org', 'doc_passport_copy', 'doc_photo', 'doc_id', 'doc_fee_new', 'doc_arc_fee'];
@@ -16384,86 +16370,18 @@ const SEARCH_DEBUG_ENABLED = (() => {
     }
 })();
 
-function getSearchDebugSnapshot(label){
-    const sf = document.getElementById('searchForm');
-    const stb = document.getElementById('searchToggleBtn');
-    const xb = document.getElementById('xb');
-    const activeEl = document.activeElement;
-    return {
-        label,
-        bodyClassName: document.body.className,
-        searchFormComputedDisplay: sf ? getComputedStyle(sf).display : '(missing)',
-        searchFormInlineDisplay: sf ? sf.style.display : '(missing)',
-        searchToggleAriaExpanded: stb ? stb.getAttribute('aria-expanded') : '(missing)',
-        searchToggleText: stb ? stb.textContent.replace(/\s+/g, ' ').trim() : '(missing)',
-        searchToggleClassName: stb ? stb.className : '(missing)',
-        xbComputedDisplay: xb ? getComputedStyle(xb).display : '(missing)',
-        xbClassName: xb ? xb.className : '(missing)',
-        qValue: qEl ? qEl.value : '(missing)',
-        activeElement: activeEl ? `${activeEl.tagName.toLowerCase()}#${activeEl.id || ''}.${activeEl.className || ''}` : '(none)'
-    };
-}
-
-function ensureSearchDebugPanel(){
-    if (!SEARCH_DEBUG_ENABLED || document.getElementById('searchDebugPanel')) return;
-    const panel = document.createElement('aside');
-    panel.id = 'searchDebugPanel';
-    panel.style.cssText = 'position:fixed;right:12px;bottom:12px;z-index:99999;max-width:min(90vw,360px);background:rgba(0,0,0,.86);color:#9fffb0;font:12px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;padding:10px 12px;border:1px solid rgba(159,255,176,.5);border-radius:10px;box-shadow:0 10px 24px rgba(0,0,0,.45);white-space:pre-wrap;word-break:break-word;pointer-events:none;';
-    panel.textContent = 'search debug panel';
-    document.body.appendChild(panel);
-}
-
-function debugSearchState(label){
-    const snapshot = getSearchDebugSnapshot(label);
-    window.__PARADISO_SEARCH_DEBUG__ = snapshot;
-    if (!SEARCH_DEBUG_ENABLED) return snapshot;
-    ensureSearchDebugPanel();
-    console.table(snapshot);
-    const panel = document.getElementById('searchDebugPanel');
-    if (panel) {
-        panel.textContent = [
-            `label: ${snapshot.label}`,
-            `body: ${snapshot.bodyClassName}`,
-            `searchForm(display): ${snapshot.searchFormComputedDisplay} / inline=${snapshot.searchFormInlineDisplay || '(empty)'}`,
-            `toggle(aria-expanded): ${snapshot.searchToggleAriaExpanded}`,
-            `toggle(text): ${snapshot.searchToggleText}`,
-            `xb(display): ${snapshot.xbComputedDisplay}`,
-            `input(length): ${typeof snapshot.qValue === 'string' ? snapshot.qValue.length : 0}`
-        ].join('\n');
-    }
-    return snapshot;
-}
+// Search debug panel: moved to src/core/helpers.js (Phase 3, ADR-009); SEARCH_DEBUG_ENABLED stays inline (parse-time URL read).
+function debugSearchState(...args) { return Visable.core.debugSearchState(...args); }
+function ensureSearchDebugPanel(...args) { return Visable.core.ensureSearchDebugPanel(...args); } // called by bare name from src/boot.js
 
 const rcEl = document.getElementById('rc');
 let currentSearchMode = 'and';
 const CC = {short:'var(--cSh)',study:'var(--cSt)',work:'var(--cWk)',invest:'var(--cIn)',family:'var(--cFm)',other:'var(--cOt)',diplo:'var(--cDp)',nhis:'var(--cNh)',faq:'var(--cFq)',scn:'var(--cSc)'};
 const CL = { short:['안내사항','연장/제한','FAQ'], study:['안내사항','안내사항','FAQ'], work:['안내사항','안내사항','FAQ'], invest:['안내사항','안내사항','FAQ'], family:['안내사항','안내사항','FAQ'], other:['안내사항','안내사항','FAQ'], diplo:['부여 요건','유지','FAQ'], nhis:['적용 대상','신청 절차','FAQ'], faq:['개요','절차/유의','FAQ'], scn:['적용 기준','상세/대상','FAQ'] };
-function getLabels(v){return v.labels||CL[v.cat]||['개요','상세','FAQ'];}
+function getLabels(...args) { return Visable.core.getLabels(...args); }
 
 // --- Modals Core Logic ---
-let lastFocusedElement = null;
-let activeModal = null;
-function modalFocusables(modal) {
-    return Array.from(modal.querySelectorAll('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'))
-        .filter(el => !el.hidden && !el.closest('[inert]') && el.getClientRects().length > 0);
-}
-function syncModalScrollLock() {
-    document.documentElement.classList.toggle('vs-overlay-open', !!document.querySelector('.modal-overlay.active') || document.body.classList.contains('drawer-open'));
-}
-function trapModalFocus(e) {
-    if (e.key !== 'Tab' || !activeModal) return;
-    const focusables = modalFocusables(activeModal);
-    if (!focusables.length) return;
-    const first = focusables[0];
-    const last = focusables[focusables.length - 1];
-    if (e.shiftKey && document.activeElement === first) {
-        e.preventDefault();
-        last.focus();
-    } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault();
-        first.focus();
-    }
-}
+// Modal focus trap + scroll lock: moved into src/features/modals-ai.js (Phase 3, ADR-009); no inline callers remain.
 // Moved to src/features/modals-ai.js (Phase 3, ADR-009) and exposed as Visable.modals; the stubs keep the names
 // that the remaining inline code (and runtime guards in assets/js or tests) still call.
 function openModal(...args) { return Visable.modals.openModal(...args); }

@@ -252,3 +252,13 @@ the options considered, the evidence, and the reason.
   would reverse that order. Decision: the handler body moves to `src/boot.js` as the exported
   `onDomReady()`, and index.html keeps a one-line parse-time registration that calls it. Listener
   order is unchanged; the body is verbatim. This is the one inline statement Phase 3 adds on purpose.
+
+### ADR-009 addendum 5 (2026-11-03, module-evaluation time vs. the bridge)
+- `src/main.js` builds `window.Visable` *after* its static imports have evaluated. Feature modules that run
+  code at import time (reminders, finders, landing animation — the former parse-time IIFEs) therefore
+  execute before the bridge exists. Any inline stub they call at that moment throws `ReferenceError:
+  Visable is not defined`. Today this is safe by construction: the finders call nothing until their
+  fetch resolves; the reminders IIFE wraps `tx()` in try/catch and falls back to its own labels, which
+  is also what happened before the move (at parse time `tx()` returned the key). Rule: a module that
+  runs at import time must not depend on a stub, and the test for it is the golden suite's page-error
+  assertion plus the reminders spec. The clean fix (bridge before side-effect imports) is a Phase 7 item.
