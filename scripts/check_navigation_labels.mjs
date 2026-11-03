@@ -30,7 +30,7 @@ for(const locale of locales){
  assert.equal(skip.textContent,expected,locale+' describes skip target');
  assert.equal(skip.getAttribute('href'),'#fhMain');
  const homeLabel=locale==='zh-TW'?forms.w.ParadisoZhT.convert(pack.fh.back):pack.fh.back;
- assert.equal(forms.w.document.querySelector('#fhBack').textContent,homeLabel,locale+' home label kept');
+ assert.equal(forms.w.document.querySelector('#fhBack').getAttribute('aria-label'),homeLabel,locale+' home label kept'); // icon link: label lives in aria-label (ab1d076)
 }
 forms.dom.window.close();
 const lists=page('immigration-checklists.html');
