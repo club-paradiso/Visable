@@ -24548,6 +24548,7 @@ async function loadVisaIssuanceData() {
     OFFICIAL_WEB_OVERLAY_POLICY = overlays?.policy && typeof overlays.policy === 'object' ? overlays.policy : {};
 }
 
+const VISA_DATA_API_TIMEOUT_MS = 4000;
 async function loadVisaData() {
     const parse = (raw) => injectLocalData(Array.isArray(raw) ? raw : (Array.isArray(raw?.data) ? raw.data : (Array.isArray(raw?.visas) ? raw.visas : [])));
     const applySuccess = async (arr, label) => {
@@ -24558,9 +24559,17 @@ async function loadVisaData() {
     };
     try {
         if (!API_BASE) throw new Error("Local");
-        const res = await fetch(`${API_BASE}/api/visas`, { cache: 'no-store' });
-        if (!res.ok) throw new Error(`API Fail`);
-        await applySuccess(parse(await res.json()), tx('sourceApi')); return;
+        // Hard ceiling: a cold or hung backend must never keep search locked.
+        // On timeout we fall through to the committed ./visa_data.json below.
+        const apiCtl = new AbortController();
+        const apiTimer = setTimeout(() => apiCtl.abort(), VISA_DATA_API_TIMEOUT_MS);
+        let apiJson;
+        try {
+            const res = await fetch(`${API_BASE}/api/visas`, { cache: 'no-store', signal: apiCtl.signal });
+            if (!res.ok) throw new Error(`API Fail`);
+            apiJson = await res.json(); // the timer also covers a stalled response body
+        } finally { clearTimeout(apiTimer); }
+        await applySuccess(parse(apiJson), tx('sourceApi')); return;
     } catch (e) {
         try {
             const res = await fetch('./visa_data.json', { cache: 'no-store' });
