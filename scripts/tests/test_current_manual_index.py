@@ -44,8 +44,8 @@ class CurrentManualIndexTest(unittest.TestCase):
             self.assertTrue(hit['excerpt'].strip())
             self.assertTrue(hit['usable_as_direct_evidence'])
             # PDF pages, or Markdown chunks page-mapped onto those PDF pages.
-            self.assertIn(hit['source_id'], ('visa_manual_2026_10_19_pdf', 'stay_manual_2026_10_19_pdf',
-                                             'visa_manual_2026_10_19_md', 'stay_manual_2026_10_19_md'))
+            self.assertIn(hit['source_id'], ('visa_manual_2026_10_19_pdf', 'stay_manual_2026_11_02_pdf',
+                                             'visa_manual_2026_10_19_md', 'stay_manual_2026_11_02_md'))
             self.assertGreater(hit['page'], 0)
         # Superseded editions are never offered as direct evidence.
         for bucket in ('needs_review', 'superseded'):
@@ -53,14 +53,14 @@ class CurrentManualIndexTest(unittest.TestCase):
                 self.assertFalse(hit['usable_as_direct_evidence'])
 
     def test_markdown_chunks_cite_a_page_of_their_own_approved_edition(self):
-        """Owner-supplied HWP→Markdown chunks (2026-10-19) are direct evidence
+        """HWP→Markdown chunks (visa 2026-10-19, stay 2026-11-02) are direct evidence
         only where they were page-mapped; everything else is needs_review with
         no page, and stay and visa chunks never share a domain."""
         manifest = json.loads((ROOT / 'docs/source-manuals/source_manifest.json').read_text())
         catalog = {s['id']: s for s in json.loads((ROOT / 'data/manual-corpus/catalog.json').read_text())['sources']}
         derived = [d for e in manifest['current'].values() for d in e.get('derived_texts') or []]
         self.assertEqual(sorted(d['id'] for d in derived),
-                         ['stay_manual_2026_10_19_md', 'visa_manual_2026_10_19_md'])
+                         ['stay_manual_2026_11_02_md', 'visa_manual_2026_10_19_md'])
         with sqlite3.connect(manual_search.BACKEND_INDEX_PATH) as conn:
             for d in derived:
                 corpus = json.loads((ROOT / d['page_map']).read_text())

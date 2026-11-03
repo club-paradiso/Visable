@@ -106,7 +106,7 @@ def _pages(body):
 
 
 def _cited_titles(prompt: str):
-    return set(re.findall(r"「(외국인체류 안내매뉴얼|사증발급 안내매뉴얼) 2026\.10」 p\.\d+", prompt))
+    return set(re.findall(r"「(외국인체류 안내매뉴얼(?= 2026\.11」)|사증발급 안내매뉴얼(?= 2026\.10」)) 2026\.1[01]」 p\.\d+", prompt))
 
 
 @unittest.skipUnless(_index_has_approved_evidence(), "manual search index with approved chunks not present")
@@ -122,12 +122,12 @@ class StayProcedureEvidenceTests(unittest.TestCase):
         for src in sources:
             self.assertEqual(src["manual_scope"], me.SCOPE_STAY)
             self.assertEqual(src["source_title"], STAY_TITLE)
-            self.assertEqual(src["source_date"], "2026.10")
+            self.assertEqual(src["source_date"], "2026.11")
             self.assertRegex(src["page_range"], r"^\d+$")
             self.assertEqual(src["procedure_type"], "근무처 변경·추가")
             self.assertFalse(src["reviewed_for_question"])
             self.assertTrue(all(c == "E-7" or c.startswith("E-7-") for c in src["applies_to"]))
-        # The 근무처 변경·추가 section of the E-7 chapter (p.222-223 in the 2026.10 PDF;
+        # The 근무처 변경·추가 section of the E-7 chapter (p.222-223 in the 2026.11 PDF;
         # p.221-222 in the 2026.9 PDF, one page earlier).
         self.assertTrue(any(221 <= p <= 224 for p in _pages(body)), _pages(body))
 
@@ -154,7 +154,7 @@ class StayProcedureEvidenceTests(unittest.TestCase):
         body, prompts = _ask(F6_EXTENSION)
         self.assertEqual(body["manual_evidence_scopes"], [me.SCOPE_STAY])
         pages = _pages(body)
-        self.assertTrue(any(500 <= p <= 505 for p in pages), pages)  # 2026.10 PDF (498-503 in 2026.9)
+        self.assertTrue(any(501 <= p <= 506 for p in pages), pages)  # 2026.11 PDF (500-505 in 2026.10, 498-503 in 2026.9)
         for src in body["manual_evidence_sources"]:
             self.assertEqual(src["manual_scope"], me.SCOPE_STAY)
             self.assertTrue(all(c.startswith("F-6") for c in src["applies_to"]), src["applies_to"])
@@ -165,7 +165,7 @@ class StayProcedureEvidenceTests(unittest.TestCase):
     def test_the_manual_location_lines_are_still_appended(self):
         body, _ = _ask(F6_EXTENSION)
         self.assertIn("공식 매뉴얼 위치", body["answer"])
-        self.assertIn("p.500", body["answer"])  # F-6 extension, 2026.10 PDF (p.498 in 2026.9)
+        self.assertIn("p.501", body["answer"])  # F-6 extension, 2026.11 PDF (p.500 in 2026.10, p.498 in 2026.9)
 
 
 @unittest.skipUnless(_index_has_approved_evidence(), "manual search index with approved chunks not present")
@@ -346,7 +346,8 @@ class MarkdownPreferenceTests(unittest.TestCase):
                     seen_md = True
                     self.assertEqual(ex["text_kind"], "markdown", (question, ex["page"]))
                 # The citation is the edition + the chunk's PDF page either way.
-                self.assertTrue(ex["citation"].endswith(f"2026.10」 p.{ex['page']}"))
+                edition = "2026.11" if ex["source_id"].startswith("stay_manual") else "2026.10"
+                self.assertTrue(ex["citation"].endswith(f"{edition}」 p.{ex['page']}"))
         self.assertTrue(seen_md)
 
 
@@ -357,7 +358,7 @@ class DeterministicNoteTests(unittest.TestCase):
         answer = body["answer"]
         self.assertTrue(body["deterministic_fallback_answer_used"])
         self.assertIn("공식 매뉴얼 발췌", answer)
-        self.assertRegex(answer, r"「외국인체류 안내매뉴얼 2026\.10」 p\.(50[0-5])")
+        self.assertRegex(answer, r"「외국인체류 안내매뉴얼 2026\.11」 p\.(50[1-6])")
         self.assertIn("참고용, 신청 전 공식 원문 확인", answer)
         self.assertNotIn("승인된", answer)
         # Uncertainty notices stay.
@@ -367,7 +368,7 @@ class DeterministicNoteTests(unittest.TestCase):
     def test_fallback_note_for_visa_issuance_cites_the_visa_manual(self):
         body, _ = _ask(E9_CCVI, live=False)
         self.assertIn(f"「{VISA_TITLE} 2026.10」 p.", body["answer"])
-        self.assertNotIn(f"「{STAY_TITLE} 2026.10」 p.", body["answer"])
+        self.assertNotIn(f"「{STAY_TITLE} 2026.11」 p.", body["answer"])
 
     def test_note_snippet_never_quotes_a_phrase_the_confidence_gate_rewrites(self):
         lines = me.note_lines([{

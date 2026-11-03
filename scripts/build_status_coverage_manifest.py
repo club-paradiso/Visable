@@ -32,11 +32,11 @@ REPORT_JSON = os.path.join(ROOT, 'reports', 'data-coverage', 'status-coverage-20
 REPORT_MD = os.path.join(ROOT, 'reports', 'data-coverage', 'status-coverage-202609.md')
 
 SOURCES = {
-    'stay_manual_2026_10_19': {
-        'id': 'stay_manual_2026_10_19', 'domain': 'stay', 'title_ko': '외국인체류 안내매뉴얼', 'title_en': 'Foreigner Stay/Residence Guide Manual',
-        'edition': '2026.10', 'date': '2026-10-19', 'authority': '법무부 출입국·외국인정책본부',
-        'pdf': 'docs/source-manuals/2026-10-19/stay_manual_261019.pdf', 'corpus': 'data/manual-corpus/stay_manual_2026_10_19_pdf.json', 'corpus_source_id': 'stay_manual_2026_10_19_pdf',
-        'hwp': 'docs/source-manuals/2026-10-19/stay_manual_261019.hwp', 'text': 'docs/source-manuals/2026-10-19/extracted/full_text/stay_manual_261019.txt',
+    'stay_manual_2026_11_02': {
+        'id': 'stay_manual_2026_11_02', 'domain': 'stay', 'title_ko': '외국인체류 안내매뉴얼', 'title_en': 'Foreigner Stay/Residence Guide Manual',
+        'edition': '2026.11', 'date': '2026-11-02', 'authority': '법무부 출입국·외국인정책본부',
+        'pdf': 'docs/source-manuals/2026-11-02/stay_manual_261102.pdf', 'corpus': 'data/manual-corpus/stay_manual_2026_11_02_pdf.json', 'corpus_source_id': 'stay_manual_2026_11_02_pdf',
+        'hwp': 'docs/source-manuals/2026-11-02/stay_manual_261102.hwp', 'text': 'docs/source-manuals/2026-11-02/extracted/full_text/stay_manual_261102.txt',
         'review_state': 'needs_review', 'official_url': 'https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&BBS_GB_CD=BS10&NTCCTT_SEQ=1062&page=1',
     },
     'visa_manual_2026_10_19': {
@@ -102,11 +102,11 @@ PROCEDURE_SECTION_LABELS = {  # stay manual section headings per procedure
     'registration_info_report': ['등록사항 변경신고', '외국인등록사항 변경신고'], 'residence_report': ['체류지 변경'], 'card_reissue': ['재발급'], 'workplace_report': ['취업개시 신고', '고용주 신고'],
     'program_condition_change': ['허가조건'],
 }
-# Compatriot handbook pages read and confirmed per status (2026-10-19 stay manual).
+# Compatriot handbook pages read and confirmed per status (2026-11-02 stay manual; one page later than in 2026.10 because text was added earlier in the manual).
 DONGPO_CONFIRMED_PAGES = {
-    ('H-2', 'workplace_report'): 535,   # □ 방문취업 동포는 취업개시 신고를 하여야 합니다
-    ('H-2', 'workplace_change'): 532,   # 근무처 변경도 신고만으로 가능
-    ('F-4', 'status_grant'): 532,       # □ 재외동포(F-4) 체류자격 부여
+    ('H-2', 'workplace_report'): 536,   # □ 방문취업 동포는 취업개시 신고를 하여야 합니다
+    ('H-2', 'workplace_change'): 533,   # 근무처 변경도 신고만으로 가능
+    ('F-4', 'status_grant'): 533,       # □ 재외동포(F-4) 체류자격 부여
     # 2026-10-19 visa manual, same handbook (read 2026-10-28; the chapter start 383 is its cover page).
     ('F-4', 'visa_issuance'): 393,      # 나. 재외동포(F-4) 자격 사증발급 등 절차
     ('H-2', 'visa_issuance'): 386,      # □ 동포 체류자격 통합에 따라 방문취업(H-2) 사증의 신규 발급 중단
@@ -346,8 +346,8 @@ def main():
     legacy = load_json('visa_data.json')
     names = load_json('data/i18n/visa-names.json')['names']
     manuals = {k: Manual(v) for k, v in SOURCES.items()}
-    stay, visa = manuals['stay_manual_2026_10_19'], manuals['visa_manual_2026_10_19']
-    chapters = {'stay_manual_2026_10_19': detect_chapters(stay, STAY_CHAPTERS), 'visa_manual_2026_10_19': detect_chapters(visa, VISA_CHAPTERS)}
+    stay, visa = manuals['stay_manual_2026_11_02'], manuals['visa_manual_2026_10_19']
+    chapters = {'stay_manual_2026_11_02': detect_chapters(stay, STAY_CHAPTERS), 'visa_manual_2026_10_19': detect_chapters(visa, VISA_CHAPTERS)}
     errors = []
     for mid, ch in chapters.items():
         for k, c in ch.items():
@@ -418,13 +418,13 @@ def main():
 
     # temporal / legacy markers read from the text
     LEGACY_RULES = {
-        'H-2': {'new_application_allowed': False, 'existing_holder_only': True, 'effective_to': '2026-02-12', 'superseded_by': 'F-4', 'anchor': '‘26. 2. 12.자로 방문취업(H-2) 사증의 신규 발급이 중단됩니다', 'manual': 'stay_manual_2026_10_19', 'note_ko': '2026-02-12부터 신규 사증 발급 중단(동포 체류자격 F-4 통합). 기존 소지자 체류관리는 계속됩니다.', 'note_en': 'New visas stopped 2026-02-12 (merged into F-4); existing holders continue to be managed.'},
-        'D-3-1': {'new_application_allowed': False, 'existing_holder_only': True, 'effective_to': '2006-12-31', 'superseded_by': 'D-3-11', 'anchor': '‘06.12.31.까지 D-3-1 자격 등록자', 'manual': 'stay_manual_2026_10_19', 'note_ko': '2006-12-31까지 등록자에게만 남아 있는 구 약호입니다.', 'note_en': 'Legacy subcode kept only for holders registered by 2006-12-31.'},
-        'E-7-91': {'legacy_alias': 'T6', 'anchor': 'T6(구약호)', 'manual': 'stay_manual_2026_10_19', 'note_ko': '구약호 T6에서 이어지는 FTA 독립전문가 약호입니다.', 'note_en': 'FTA independent professional subcode continuing legacy code T6.'},
-        'F-2-6': {'new_application_allowed': False, 'existing_holder_only': False, 'effective_to': '2019-10-01', 'superseded_by': 'F-2-99', 'anchor': '숙련생산기능 거주인력 체류자격은 ‘19. 10. 1.부로 폐지되었기에', 'manual': 'stay_manual_2026_10_19', 'note_ko': '2019-10-01 폐지, 기존 허가자는 기타 장기체류자(F-2-99)로 직권 정정되었습니다.', 'note_en': 'Abolished 2019-10-01; existing holders were converted to F-2-99.'},
-        'F-1-1': {'legacy_holder_rule': True, 'superseded_by': 'F-2-2', 'anchor': '기존 방문동거(F-1-1)자격으로 체류하고 있는 국민의 미성년 외국인 자녀에 대해서는 확인즉시 수수료 없이 거주(F-2-2)자격 변경', 'manual': 'stay_manual_2026_10_19', 'note_ko': '기존 F-1-1로 체류 중인 국민의 미성년 외국인 자녀는 확인 즉시 수수료 없이 F-2-2로 변경됩니다.', 'note_en': 'Legacy F-1-1 minor children of nationals are converted to F-2-2 without fee.'},
-        'F-2-1': {'legacy_alias': 'F-6', 'anchor': '결혼이민(F-6, 기존 F-2-1, F-2-10 포함)', 'manual': 'stay_manual_2026_10_19', 'note_ko': '결혼이민(F-6)의 구 약호입니다.', 'note_en': 'Legacy code now covered by F-6.'},
-        'F-2-10': {'legacy_alias': 'F-6', 'anchor': '결혼이민(F-6, 기존 F-2-1, F-2-10 포함)', 'manual': 'stay_manual_2026_10_19', 'note_ko': '결혼이민(F-6)의 구 약호입니다.', 'note_en': 'Legacy code now covered by F-6.'},
+        'H-2': {'new_application_allowed': False, 'existing_holder_only': True, 'effective_to': '2026-02-12', 'superseded_by': 'F-4', 'anchor': '‘26. 2. 12.자로 방문취업(H-2) 사증의 신규 발급이 중단됩니다', 'manual': 'stay_manual_2026_11_02', 'note_ko': '2026-02-12부터 신규 사증 발급 중단(동포 체류자격 F-4 통합). 기존 소지자 체류관리는 계속됩니다.', 'note_en': 'New visas stopped 2026-02-12 (merged into F-4); existing holders continue to be managed.'},
+        'D-3-1': {'new_application_allowed': False, 'existing_holder_only': True, 'effective_to': '2006-12-31', 'superseded_by': 'D-3-11', 'anchor': '‘06.12.31.까지 D-3-1 자격 등록자', 'manual': 'stay_manual_2026_11_02', 'note_ko': '2006-12-31까지 등록자에게만 남아 있는 구 약호입니다.', 'note_en': 'Legacy subcode kept only for holders registered by 2006-12-31.'},
+        'E-7-91': {'legacy_alias': 'T6', 'anchor': 'T6(구약호)', 'manual': 'stay_manual_2026_11_02', 'note_ko': '구약호 T6에서 이어지는 FTA 독립전문가 약호입니다.', 'note_en': 'FTA independent professional subcode continuing legacy code T6.'},
+        'F-2-6': {'new_application_allowed': False, 'existing_holder_only': False, 'effective_to': '2019-10-01', 'superseded_by': 'F-2-99', 'anchor': '숙련생산기능 거주인력 체류자격은 ‘19. 10. 1.부로 폐지되었기에', 'manual': 'stay_manual_2026_11_02', 'note_ko': '2019-10-01 폐지, 기존 허가자는 기타 장기체류자(F-2-99)로 직권 정정되었습니다.', 'note_en': 'Abolished 2019-10-01; existing holders were converted to F-2-99.'},
+        'F-1-1': {'legacy_holder_rule': True, 'superseded_by': 'F-2-2', 'anchor': '기존 방문동거(F-1-1)자격으로 체류하고 있는 국민의 미성년 외국인 자녀에 대해서는 확인즉시 수수료 없이 거주(F-2-2)자격 변경', 'manual': 'stay_manual_2026_11_02', 'note_ko': '기존 F-1-1로 체류 중인 국민의 미성년 외국인 자녀는 확인 즉시 수수료 없이 F-2-2로 변경됩니다.', 'note_en': 'Legacy F-1-1 minor children of nationals are converted to F-2-2 without fee.'},
+        'F-2-1': {'legacy_alias': 'F-6', 'anchor': '결혼이민(F-6, 기존 F-2-1, F-2-10 포함)', 'manual': 'stay_manual_2026_11_02', 'note_ko': '결혼이민(F-6)의 구 약호입니다.', 'note_en': 'Legacy code now covered by F-6.'},
+        'F-2-10': {'legacy_alias': 'F-6', 'anchor': '결혼이민(F-6, 기존 F-2-1, F-2-10 포함)', 'manual': 'stay_manual_2026_11_02', 'note_ko': '결혼이민(F-6)의 구 약호입니다.', 'note_en': 'Legacy code now covered by F-6.'},
     }
     for code, rule in LEGACY_RULES.items():
         m = manuals[rule['manual']]
@@ -567,7 +567,7 @@ def main():
         return pages, line
 
     def resolve_simple(obj, anchor_key='anchor', manual_key='manual', code_for_chapter=None, label=''):
-        mid = obj.get(manual_key, 'stay_manual_2026_10_19')
+        mid = obj.get(manual_key, 'stay_manual_2026_11_02')
         ch = chapter_for(mid, code_for_chapter) if code_for_chapter else None
         lo = ch['pdf_start'] if ch and ch['pdf_start'] else 1
         hi = ch['pdf_end'] if ch and ch['pdf_end'] else None
@@ -644,7 +644,7 @@ def main():
             if ex.get('law') and ex['law'] not in law_sources:
                 errors.append(f'fee {f["id"]} exemption {ex.get("id")}: unknown law source {ex["law"]}')
             if ex.get('manual_anchor'):
-                ex.setdefault('manual', f.get('manual', 'stay_manual_2026_10_19'))
+                ex.setdefault('manual', f.get('manual', 'stay_manual_2026_11_02'))
                 resolve_simple(ex, anchor_key='manual_anchor', label=f'fee {f["id"]} exemption {ex.get("id") or ex.get("topic")}')
         if f.get('online_reduction') and f['online_reduction'].get('law') not in law_sources:
             errors.append(f'fee {f["id"]}: online reduction cites unknown law source')
@@ -737,7 +737,7 @@ def main():
 
     def procedure_states(code, parent):
         states = {}
-        stay_ch = chapter_for('stay_manual_2026_10_19', code)
+        stay_ch = chapter_for('stay_manual_2026_11_02', code)
         visa_ch = chapter_for('visa_manual_2026_10_19', code)
         for pid in proc_ids:
             entries = guidance_index.get((code, pid)) or []
@@ -774,7 +774,7 @@ def main():
                 if pg:
                     rec['state'] = 'SOURCE_ONLY'
                     rec['document_guidance'] = 'SOURCE_ONLY'
-                    rec['source'] = {'manual': 'stay_manual_2026_10_19', 'pdf_page': pg, 'section': PROCEDURE_SECTION_LABELS[pid][0]}
+                    rec['source'] = {'manual': 'stay_manual_2026_11_02', 'pdf_page': pg, 'section': PROCEDURE_SECTION_LABELS[pid][0]}
                 elif stay_ch and stay_ch['pdf_start'] and pid in ('card_reissue', 'residence_report', 'workplace_report', 'program_condition_change', 'part_time_work', 'registration_info_report'):
                     rec['state'] = 'UNVERIFIED'
                 elif not stay_ch:
@@ -815,7 +815,7 @@ def main():
     ordered_parents = [c for c, *_ in STAY_CHAPTERS if c and c not in ('preamble-notes', 'preamble-common') and _[0] and STAY_CHAPTERS] 
     parent_codes = [k for k, code, *_ in STAY_CHAPTERS if code] + ['F-4', 'H-2']
     for parent in parent_codes:
-        stay_ch = chapters['stay_manual_2026_10_19'].get(parent) or (chapters['stay_manual_2026_10_19']['DONGPO'] if parent in ('F-4', 'H-2') else None)
+        stay_ch = chapters['stay_manual_2026_11_02'].get(parent) or (chapters['stay_manual_2026_11_02']['DONGPO'] if parent in ('F-4', 'H-2') else None)
         visa_ch = chapters['visa_manual_2026_10_19'].get(parent)
         in_stay, in_visa = code_in_manual(parent, 'stay'), code_in_manual(parent, 'visa')
         states = procedure_states(parent, parent)
@@ -825,9 +825,9 @@ def main():
             'kind': 'status', 'code': parent, 'parent': None, 'substatus': None,
             'name_ko': (lg or {}).get('name') or next((t for k, c, t, *_ in STAY_CHAPTERS if c == parent), parent), 'name_en': (names.get(parent) or {}).get('en'),
             'description_ko': None, 'description_en': None,
-            'source': {'stay': {'manual': 'stay_manual_2026_10_19', 'edition': '2026.10', 'chapter': stay_ch['key'] if stay_ch else None, 'chapter_title_ko': stay_ch['title_ko'] if stay_ch else None, 'pdf_page_start': stay_ch['pdf_start'] if stay_ch else None, 'pdf_page_end': stay_ch['pdf_end'] if stay_ch else None, 'hwp_line_start': stay_ch['hwp_start'] if stay_ch else None, 'page_detection': stay_ch['detection'] if stay_ch else 'missing'} if in_stay else None,
+            'source': {'stay': {'manual': 'stay_manual_2026_11_02', 'edition': '2026.11', 'chapter': stay_ch['key'] if stay_ch else None, 'chapter_title_ko': stay_ch['title_ko'] if stay_ch else None, 'pdf_page_start': stay_ch['pdf_start'] if stay_ch else None, 'pdf_page_end': stay_ch['pdf_end'] if stay_ch else None, 'hwp_line_start': stay_ch['hwp_start'] if stay_ch else None, 'page_detection': stay_ch['detection'] if stay_ch else 'missing'} if in_stay else None,
                        'visa': {'manual': 'visa_manual_2026_10_19', 'edition': '2026.10', 'chapter': visa_ch['key'] if visa_ch else None, 'chapter_title_ko': visa_ch['title_ko'] if visa_ch else None, 'pdf_page_start': visa_ch['pdf_start'] if visa_ch else None, 'pdf_page_end': visa_ch['pdf_end'] if visa_ch else None, 'hwp_line_start': visa_ch['hwp_start'] if visa_ch else None, 'page_detection': visa_ch['detection'] if visa_ch else 'missing'} if in_visa else None},
-            'temporal': {'effective_from': None, 'effective_to': (lr or {}).get('effective_to'), 'new_application_allowed': (lr or {}).get('new_application_allowed', True), 'existing_holder_only': (lr or {}).get('existing_holder_only', False), 'legacy_holder_rule': (lr or {}).get('note_ko'), 'supersedes': None, 'superseded_by': (lr or {}).get('superseded_by'), 'pilot_program': False, 'sunset_rule': None, 'source_edition': '2026.10', 'legacy_source': {'pdf_page': lr.get('pdf_page'), 'hwp_line': lr.get('hwp_line'), 'anchor': lr.get('anchor')} if lr else None},
+            'temporal': {'effective_from': None, 'effective_to': (lr or {}).get('effective_to'), 'new_application_allowed': (lr or {}).get('new_application_allowed', True), 'existing_holder_only': (lr or {}).get('existing_holder_only', False), 'legacy_holder_rule': (lr or {}).get('note_ko'), 'supersedes': None, 'superseded_by': (lr or {}).get('superseded_by'), 'pilot_program': False, 'sunset_rule': None, 'source_edition': '2026.11', 'legacy_source': {'pdf_page': lr.get('pdf_page'), 'hwp_line': lr.get('hwp_line'), 'anchor': lr.get('anchor')} if lr else None},
             'lifecycle': 'legacy_holders_only' if (lr and lr.get('existing_holder_only')) else 'active',
             'procedures': states,
             'clarification_dimensions': [d['id'] for d in rules['families'].get(parent, {}).get('dimensions', [])],
@@ -850,7 +850,7 @@ def main():
         if parent not in parent_codes:
             continue
         in_stay, in_visa = code_in_manual(code, 'stay'), code_in_manual(code, 'visa')
-        stay_ch = chapter_for('stay_manual_2026_10_19', code)
+        stay_ch = chapter_for('stay_manual_2026_11_02', code)
         visa_ch = chapter_for('visa_manual_2026_10_19', code)
         states = procedure_states(code, parent)
         lr = LEGACY_RULES.get(code)
@@ -866,10 +866,10 @@ def main():
             'kind': 'substatus', 'code': code, 'parent': parent, 'substatus': code.split('-', 2)[2],
             'name_ko': ko, 'name_en': en, 'name_en_state': 'AVAILABLE' if en else 'NOT_AVAILABLE', 'name_quality': name_quality,
             'description_ko': None, 'description_en': None,
-            'source': {'stay': {'manual': 'stay_manual_2026_10_19', 'edition': '2026.10', 'chapter': stay_ch['key'] if stay_ch else None, 'pdf_pages': stay_pages, 'table_cell_line': stay_cells[code][0] if code in stay_cells else None} if in_stay else None,
+            'source': {'stay': {'manual': 'stay_manual_2026_11_02', 'edition': '2026.11', 'chapter': stay_ch['key'] if stay_ch else None, 'pdf_pages': stay_pages, 'table_cell_line': stay_cells[code][0] if code in stay_cells else None} if in_stay else None,
                        'visa': {'manual': 'visa_manual_2026_10_19', 'edition': '2026.10', 'chapter': visa_ch['key'] if visa_ch else None, 'pdf_pages': visa_pages, 'table_cell_line': visa_cells[code][0] if code in visa_cells else None} if in_visa else None},
             'taxonomy_evidence': 'table' if cell else ('mention' if (code in stay_mentions or code in visa_mentions or in_stay or in_visa) else 'legacy_only'),
-            'temporal': {'effective_from': None, 'effective_to': (lr or {}).get('effective_to'), 'new_application_allowed': (lr or {}).get('new_application_allowed', True), 'existing_holder_only': (lr or {}).get('existing_holder_only', False), 'legacy_holder_rule': (lr or {}).get('note_ko'), 'supersedes': None, 'superseded_by': (lr or {}).get('superseded_by'), 'legacy_alias': (lr or {}).get('legacy_alias'), 'pilot_program': any(p.get('pilot_program') and code in p['codes'] for p in programs), 'sunset_rule': None, 'source_edition': '2026.10', 'legacy_source': {'pdf_page': lr.get('pdf_page'), 'hwp_line': lr.get('hwp_line'), 'anchor': lr.get('anchor')} if lr else None},
+            'temporal': {'effective_from': None, 'effective_to': (lr or {}).get('effective_to'), 'new_application_allowed': (lr or {}).get('new_application_allowed', True), 'existing_holder_only': (lr or {}).get('existing_holder_only', False), 'legacy_holder_rule': (lr or {}).get('note_ko'), 'supersedes': None, 'superseded_by': (lr or {}).get('superseded_by'), 'legacy_alias': (lr or {}).get('legacy_alias'), 'pilot_program': any(p.get('pilot_program') and code in p['codes'] for p in programs), 'sunset_rule': None, 'source_edition': '2026.11', 'legacy_source': {'pdf_page': lr.get('pdf_page'), 'hwp_line': lr.get('hwp_line'), 'anchor': lr.get('anchor')} if lr else None},
             'lifecycle': 'abolished' if (lr and lr.get('new_application_allowed') is False and not lr.get('existing_holder_only')) else ('legacy_holders_only' if (lr and lr.get('existing_holder_only')) else ('unverified' if not (in_stay or in_visa) else 'active')),
             'procedures': states,
             'clarification_dimensions': [],
@@ -910,14 +910,14 @@ def main():
                 continue
             records.append({'kind': 'scenario', 'code': g['target'], 'parent': parent, 'substatus': None, 'scenario': scen, 'name_ko': g['source']['section'].split(' — ')[0], 'name_en': None, 'name_en_state': 'NOT_AVAILABLE',
                             'source': {'stay': {'manual': g['source']['manual'], 'edition': g['source']['edition'], 'chapter': g['source']['chapter'], 'pdf_pages': [g['source']['pdf_page']]}, 'visa': None},
-                            'taxonomy_evidence': 'section', 'temporal': {'source_edition': '2026.10', 'new_application_allowed': True, 'existing_holder_only': False}, 'lifecycle': 'active',
+                            'taxonomy_evidence': 'section', 'temporal': {'source_edition': '2026.11', 'new_application_allowed': True, 'existing_holder_only': False}, 'lifecycle': 'active',
                             'procedures': {g['procedure']: {'state': g['state'], 'document_guidance': g['completeness'], 'source': {'manual': g['source']['manual'], 'pdf_page': g['source']['pdf_page'], 'section': g['source']['section']}, 'inherited_from_parent': False}},
                             'clarification_dimensions': [], 'has_resolver': True, 'structured_guidance': g['completeness'] == 'FULLY_STRUCTURED', 'document_guidance': g['completeness'], 'source_verification': 'SEPT_2026_ORIGINAL_UNREVIEWED',
                             'coverage_state': 'SUPPORTED' if g['completeness'] == 'FULLY_STRUCTURED' and g['state'] == 'SUPPORTED' else 'PARTIAL', 'programs': [], 'legacy_record': {'present': False}})
     for p in programs:
         records.append({'kind': 'program', 'code': 'PROGRAM:' + p['id'], 'parent': None, 'substatus': None, 'name_ko': p['name_ko'], 'name_en': p['name_en'], 'description_ko': p['summary_ko'], 'description_en': p['summary_en'],
-                        'source': {'stay': {'manual': p['manual'], 'edition': '2026.10', 'chapter': p['chapter_key'], 'pdf_pages': [p['pdf_page']], 'pdf_page_start': (p['chapter']['stay'] or {}).get('pdf_start'), 'pdf_page_end': (p['chapter']['stay'] or {}).get('pdf_end')}, 'visa': {'manual': 'visa_manual_2026_10_19', 'edition': '2026.10', 'chapter': p['chapter_key'], 'pdf_page_start': (p['chapter']['visa'] or {}).get('pdf_start'), 'pdf_page_end': (p['chapter']['visa'] or {}).get('pdf_end')} if p['chapter']['visa'] else None},
-                        'codes': p['codes'], 'temporal': {'effective_from': p.get('effective_from'), 'pilot_program': bool(p.get('pilot_program')), 'source_edition': '2026.10', 'new_application_allowed': True, 'existing_holder_only': False}, 'lifecycle': 'active',
+                        'source': {'stay': {'manual': p['manual'], 'edition': '2026.11', 'chapter': p['chapter_key'], 'pdf_pages': [p['pdf_page']], 'pdf_page_start': (p['chapter']['stay'] or {}).get('pdf_start'), 'pdf_page_end': (p['chapter']['stay'] or {}).get('pdf_end')}, 'visa': {'manual': 'visa_manual_2026_10_19', 'edition': '2026.10', 'chapter': p['chapter_key'], 'pdf_page_start': (p['chapter']['visa'] or {}).get('pdf_start'), 'pdf_page_end': (p['chapter']['visa'] or {}).get('pdf_end')} if p['chapter']['visa'] else None},
+                        'codes': p['codes'], 'temporal': {'effective_from': p.get('effective_from'), 'pilot_program': bool(p.get('pilot_program')), 'source_edition': '2026.11', 'new_application_allowed': True, 'existing_holder_only': False}, 'lifecycle': 'active',
                         'procedures': {}, 'clarification_dimensions': p['dimensions_ko'], 'has_resolver': False, 'structured_guidance': True, 'document_guidance': 'SOURCE_ONLY', 'source_verification': 'SEPT_2026_ORIGINAL_UNREVIEWED',
                         'coverage_state': 'PARTIAL', 'programs': [p['id']], 'legacy_record': {'present': p['id'] in ('regional', 'k-star', 'youth')}})
 
@@ -1026,7 +1026,7 @@ def render_report(summary, records, chapters, conflicts):
     lines = ['# Status coverage report — September 2026 manuals', '',
              'Generated by `scripts/build_status_coverage_manifest.py` from `data/guidance-rules-202609.json` and the two September 2026 manual corpora. Every figure below is computed; nothing is hand-counted.', '',
              '| Metric | Value |', '| --- | --- |',
-             f"| TOTAL MANUAL CHAPTERS | stay {summary['total_manual_chapters']['stay']} (detected {summary['chapters_detected']['stay_manual_2026_10_19']}) · visa {summary['total_manual_chapters']['visa']} (detected {summary['chapters_detected']['visa_manual_2026_10_19']}) |",
+             f"| TOTAL MANUAL CHAPTERS | stay {summary['total_manual_chapters']['stay']} (detected {summary['chapters_detected']['stay_manual_2026_11_02']}) · visa {summary['total_manual_chapters']['visa']} (detected {summary['chapters_detected']['visa_manual_2026_10_19']}) |",
              f"| TOTAL STATUS RECORDS | {summary['total_status_records']} |", f"| TOTAL SUBSTATUS RECORDS | {summary['total_substatus_records']} |", f"| TOTAL SCENARIO RECORDS | {summary['total_scenario_records']} |", f"| TOTAL SPECIAL PROGRAM RECORDS | {summary['total_special_program_records']} |", '']
     lines += ['## Coverage states (all records)', '', '| State | Count |', '| --- | --- |']
     for st in ['SUPPORTED', 'PARTIAL', 'SOURCE_ONLY', 'UNVERIFIED', 'NOT_APPLICABLE', 'LEGACY_ONLY']:
