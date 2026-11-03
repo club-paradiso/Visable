@@ -16284,6 +16284,8 @@ function formatTzTime(tz) {
 }
 function applyCity(city) {
     SELECTED_CITY = city;
+    // Parse-time path: initCity() calls applyCity() while the block is still parsing, before the
+    // module entry runs, so this site keeps raw storage access (ADR-009 correction).
     try { localStorage.setItem('paradiso_city', JSON.stringify(city)); } catch(e) {}
     document.getElementById('cityBtnFlag').textContent = city.flag;
     document.getElementById('cityBtnLabel').textContent = city.n;
@@ -18589,7 +18591,7 @@ function openJurisdictionModal() { openModal('jurisdictionModalOverlay'); initJu
 function isAiDevDiagnosticsEnabled() {
     try {
         if (typeof window !== 'undefined' && window.PARADISO_DEV_DIAGNOSTICS) return true;
-        if (typeof localStorage !== 'undefined' && localStorage.getItem && localStorage.getItem('paradisoDevDiagnostics') === '1') return true;
+        if (Visable.state.read(Visable.state.KEYS.devDiagnostics) === '1') return true;
         if (typeof location !== 'undefined' && location.search && /[?&](?:debug|dev)=1(?:&|$)/.test(location.search)) return true;
     } catch (e) { return false; }
     return false;
@@ -18820,7 +18822,7 @@ function renderGroundingSourcePanel(metadata) {
     let devDiagnosticsEnabled = false;
     try {
         if (typeof window !== 'undefined' && window.PARADISO_DEV_DIAGNOSTICS) devDiagnosticsEnabled = true;
-        else if (typeof localStorage !== 'undefined' && localStorage.getItem && localStorage.getItem('paradisoDevDiagnostics') === '1') devDiagnosticsEnabled = true;
+        else if (Visable.state.read(Visable.state.KEYS.devDiagnostics) === '1') devDiagnosticsEnabled = true;
         else if (typeof location !== 'undefined' && location.search && /[?&](?:debug|dev)=1(?:&|$)/.test(location.search)) devDiagnosticsEnabled = true;
     } catch (e) { devDiagnosticsEnabled = false; }
     const familyStatuses = (m.source_family_statuses && typeof m.source_family_statuses === 'object') ? m.source_family_statuses : {};
@@ -21126,15 +21128,9 @@ function scenarioChecklistItemStorageKey(visaCode, procedureKey, variantId, grou
     return scenarioChecklistScopePrefix(visaCode, procedureKey, variantId) + group + ':' + hashScenarioChecklistItem(itemText);
 }
 
-function scenarioChecklistStoreGet(key) {
-    try { return window.localStorage.getItem(key); } catch (e) { return null; }
-}
-function scenarioChecklistStoreSet(key, value) {
-    try { window.localStorage.setItem(key, value); return true; } catch (e) { return false; }
-}
-function scenarioChecklistStoreRemove(key) {
-    try { window.localStorage.removeItem(key); } catch (e) { /* localStorage unavailable */ }
-}
+function scenarioChecklistStoreGet(key) { return Visable.state.read(key); }
+function scenarioChecklistStoreSet(key, value) { return Visable.state.write(key, value); }
+function scenarioChecklistStoreRemove(key) { Visable.state.remove(key); }
 
 function renderScenarioChecklist(visaCode, procedureKey, variant) {
     if (!variant) return '';
@@ -21332,11 +21328,7 @@ function resetScenarioChecklist(button) {
     if (!root) return;
     const scope = scenarioChecklistScopePrefix(root.getAttribute('data-visa-code') || '', root.getAttribute('data-procedure-key') || '', root.getAttribute('data-variant-id') || '');
     try {
-        const toRemove = [];
-        for (let i = 0; i < window.localStorage.length; i++) {
-            const k = window.localStorage.key(i);
-            if (k && k.indexOf(scope) === 0) toRemove.push(k);
-        }
+        const toRemove = Visable.state.keysWithPrefix(scope);
         toRemove.forEach(scenarioChecklistStoreRemove);
     } catch (e) { /* localStorage unavailable — visible boxes are still cleared below */ }
     root.querySelectorAll('input[type="checkbox"][data-scenario-checklist-item]').forEach(cb => {
@@ -23062,7 +23054,7 @@ function updateEasyModeButton() {
 }
 function toggleGlobalEasyMode() {
     globalEasyMode = !globalEasyMode;
-    try { localStorage.setItem(EASY_MODE_PREF_KEY, globalEasyMode ? '1' : '0'); } catch (e) {}
+    Visable.state.write(EASY_MODE_PREF_KEY, globalEasyMode ? '1' : '0');
     EASY_MODE_CARD_STATE.clear();
     updateEasyModeButton();
     if (document.body.classList.contains('searched') && dataReady) renderResults(qEl ? qEl.value : '');
@@ -23963,7 +23955,7 @@ function getLanguageOption(code = currentLanguage) {
 
 function getStoredLanguage() {
     try {
-        const stored = normalizeLocaleCode(localStorage.getItem(LANGUAGE_STORAGE_KEY));
+        const stored = normalizeLocaleCode(Visable.state.read(LANGUAGE_STORAGE_KEY));
         return isLanguageSelectable(stored) ? stored : 'ko';
     } catch (e) {
         return 'ko';
@@ -24088,7 +24080,7 @@ function applyLanguage(code, options = {}) {
     const lang = getLanguageOption(code);
     document.documentElement.lang = lang.html;
     document.documentElement.dir = lang.dir || 'ltr';
-    try { localStorage.setItem(LANGUAGE_STORAGE_KEY, code); } catch (e) {}
+    Visable.state.write(LANGUAGE_STORAGE_KEY, code);
     applyTraditionalChineseMode(code === 'zh-TW');
     // Supplementary leak fallback for the 9 non-ko/en/zh locales (inactive otherwise).
     if (typeof window !== 'undefined' && window.ParadisoIndexFallback) window.ParadisoIndexFallback.setLang(currentLanguage);
@@ -24354,7 +24346,7 @@ function toggleTheme(){
     // Persist the brightness choice so it survives reloads and carries across
     // the other Visable pages (shared key). Brightness is independent of the
     // editorial style theme (paradiso:editorial-theme).
-    try { localStorage.setItem('paradiso:brightness', newTheme); } catch (e) {}
+    Visable.state.write(Visable.state.KEYS.brightness, newTheme);
     updateThemeLabel();
     updateThemeColorMeta();
 }
@@ -24416,7 +24408,7 @@ const EDITORIAL_THEMES = ['civic_editorial', 'archive_diary'];
 
 function getStoredEditorialTheme() {
     try {
-        const stored = localStorage.getItem(EDITORIAL_THEME_STORAGE_KEY);
+        const stored = Visable.state.read(EDITORIAL_THEME_STORAGE_KEY);
         return EDITORIAL_THEMES.includes(stored) ? stored : 'civic_editorial';
     } catch (e) { return 'civic_editorial'; }
 }
@@ -24438,7 +24430,7 @@ function updateEditorialThemeLabel() {
 function applyEditorialTheme(theme, { persist = true } = {}) {
     if (!EDITORIAL_THEMES.includes(theme)) theme = 'civic_editorial';
     document.documentElement.setAttribute('data-theme', theme);
-    if (persist) { try { localStorage.setItem(EDITORIAL_THEME_STORAGE_KEY, theme); } catch (e) {} }
+    if (persist) Visable.state.write(EDITORIAL_THEME_STORAGE_KEY, theme);
     updateEditorialThemeLabel();
     updateThemeColorMeta();
 }

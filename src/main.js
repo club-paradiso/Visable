@@ -8,10 +8,12 @@
 // @ts-check
 import * as data from './data/fetch-json.js';
 import { DATA_PATHS, API_ROUTES } from './data/paths.js';
+import * as state from './state/storage.js';
 
 const bridge = Object.freeze({
   version: 1,
-  data: Object.freeze({ ...data, DATA_PATHS, API_ROUTES })
+  data: Object.freeze({ ...data, DATA_PATHS, API_ROUTES }),
+  state: Object.freeze({ ...state })
 });
 
 if (typeof window !== 'undefined') {

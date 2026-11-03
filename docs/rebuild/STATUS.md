@@ -87,8 +87,17 @@ Done (verified 2026-11-03 locally):
 - CLAUDE.md: only the stack sentence changed; every protected-file rule and constraint kept word for word.
 - Vercel preview for 5f29c04 (dpl_931aU2H7HbWCRBaPynDW1RjPtpAj, READY): build log shows `Running "install" command`, `> vite build`, `vite v8.3.5 building…`; clone 59.6 s (cached) and "Removed 2449 ignored files defined in .vercelignore". Spot checks through the Vercel MCP fetch: `/manual.html` 200 served from dist (hashed favicon `/assets/visable-favicon-1BviKxHB.svg`, raw stylesheet links intact, PDF links intact), `/api/enforcement/law-probe` 200 JSON, `/scripts/employment_interpret_client.mjs` (recorded below).
 - **Local exit evidence (2026-11-03):** golden suite against `dist/` (built from 5f29c04) 3× in a row: 100 passed / 6 skipped each (2.2 min). URL parity 218/0. Vercel preview built with Vite and serves dist.
-- **Not verified / blocked:** the brief's "golden suite green on the Vercel preview 3×" needs the SSO bypass secret (owner decision 1); until then the preview is only spot-checked through the Vercel MCP fetch. CI `golden-local` now builds and serves dist — result recorded below once the run for 5f29c04 completes.
+- **Not verified / blocked:** the brief's "golden suite green on the Vercel preview 3×" needs the SSO bypass secret (owner decision 1); until then the preview is only spot-checked through the Vercel MCP fetch. CI `golden-local` (build + parity + suite on dist) **success** at 0c666eb (run 41705628635: build 2 s, parity ok, suite 2.4 min); `golden-visual` success.
 - Phase 2 status: **done locally and verified; preview-run criterion blocked on owner decision 1.**
+
+## Phase 3 — Extract the inline JavaScript (in progress)
+Mechanics: ADR-009/010; structure map docs/rebuild/phase3-structure-map.md (35 clusters, parse-time list, compatibility surface, extraction order).
+Done (each step: typecheck + build + golden against source AND dist = 100 passed / 6 skipped, verified 2026-11-03):
+- D1 `src/main.js` module entry + `src/data/` (fetch-json.js, paths.js) behind the single `window.Visable` bridge.
+- D2 all 12 event-time fetch sites in index.html delegate to `Visable.data` (visa API w/ timeout + static fallback, i18n packs, doc help/guide, optional data, job codes, employment lexicon, /api/ask via postRaw, S8 shim fallback). Parse-time finders keep raw fetch. `fetch(` in index.html: 12 → 2 (both parse-time).
+- S3 `src/state/storage.js` owns every key name; event-time sites delegate (scenario checklist get/set/remove/reset, easy mode write, language read/write, brightness write, editorial theme read/write, dev-diagnostics reads). Parse-time sites stay raw: `initCity`/`applyCity` (16287/16340), `globalEasyMode` (22815), `I18N_DEV_WARNINGS` (23861), reminders IIFE, global-settings shim. `localStorage` in index.html: 41 → 23 occurrences (incl. comments).
+Lessons recorded: two parse-time hits (finders fetch; `initCity → applyCity`) each broke the whole inline block with a ReferenceError — the golden home spec's page-error assertion caught both at once (68 failures), both reverted the same hour. Rule: never delegate a call reachable at parse time.
+Next: S4 escape helpers module (`src/render/escape.js`; inline copies stay until the parse-time IIFEs that use them are deferred), S5 i18n runtime, S6 modal/theme, then features (jobcode, jurisdiction, deadline, docs normalisation, procedure card renderers, modals/AI, search/boot) per the map §8 — adding golden coverage for the legacy result cards, finders, jurisdiction, city, reminders and settings before touching them.
 
 ## CI notes (PR #758)
 - `webkit-e2e` (Repo Validation) is red on this PR at fe338a3 and 1acc5d6 with exactly one failure:
