@@ -439,7 +439,7 @@ function factors(items = []) {
 const providerReasonLabels = {
   provider_rate_limit: '무료 AI 호출 한도 도달', timeout: '응답 시간 초과', network_error: '네트워크 오류',
   no_compatible_endpoint: '사용할 수 있는 AI 모델 없음', http_404: '사용할 수 있는 AI 모델 없음',
-  empty_response: 'AI가 빈 응답을 보냄', openrouter_not_configured: 'AI 서버 설정 필요',
+  empty_response: 'AI가 빈 응답을 보냄', openrouter_not_configured: 'AI 서버 설정 필요', provider_auth_error: 'AI 서버 인증 오류',
 };
 function plainLimitation(text) {
   const value = String(text || '');
@@ -555,6 +555,7 @@ function renderResult(data) {
     openrouter_not_configured: ['AI 제공자 설정 필요', '서버의 AI 제공자 인증 설정을 확인해야 합니다.'],
     no_compatible_endpoint: ['AI 모델 일시 사용 불가', '지금 쓸 수 있는 무료 AI 모델이 없습니다. 법령 기준은 그대로 유효하며, 잠시 후 다시 시도할 수 있습니다.'],
     http_404: ['AI 모델 일시 사용 불가', '지금 쓸 수 있는 무료 AI 모델이 없습니다. 법령 기준은 그대로 유효하며, 잠시 후 다시 시도할 수 있습니다.'],
+    provider_auth_error: ['AI 서버 인증 오류', 'AI 제공자 인증에 실패했습니다. 운영자가 API 키 설정을 확인해야 합니다. 법령 기준은 그대로 유효합니다.'],
     empty_response: ['AI 빈 응답', 'AI가 내용 없는 응답을 보내 표시하지 않았습니다. 잠시 후 다시 시도해 주세요.'],
   };
   const failureNotice = failureMessages[prediction.failureCategory]

@@ -68,6 +68,8 @@ const checks = [
   ['runtime rejects numeric probabilities', groundedRuntime.includes('numeric_probability_prohibited')],
   ['runtime bounds monetary prediction', groundedRuntime.includes('sanitizeMoneyRange') && groundedRuntime.includes('legallyAdjustableRange')],
   ['runtime forbids random OpenRouter routing', groundedRuntime.includes('RANDOM_MODEL_IDS')],
+  ['Groq is tried first and goes through the same validation', groundedRuntime.includes('async function callPredictionProviders(') && groundedRuntime.includes('await callPredictionProviders([') && groundedRuntime.includes("process.env.GROQ_API_KEY")],
+  ['Groq probe is GET-only and never echoes the key', fs.readFileSync(new URL('../api/enforcement/groq-probe.js', import.meta.url), 'utf8').includes("request.method !== 'GET'") && fs.readFileSync(new URL('../api/enforcement/groq-probe.js', import.meta.url), 'utf8').includes("split(key).join('[redacted]')")],
   ['runtime factor ids remain deterministic', groundedRuntime.includes('deterministicFactorCode') && !groundedRuntime.includes('Math.random')],
   ['precedent bodies are retrieved before prediction', groundedRuntime.includes('retrieveOfficialPrecedents') && groundedRuntime.includes('similarCases') && groundedRuntime.indexOf('retrieveOfficialPrecedents') < groundedRuntime.lastIndexOf('predictionPrompt(')],
   ['precedent runtime uses official list and body endpoints', precedentRuntime.includes("target: 'prec'") && precedentRuntime.includes('/DRF/lawSearch.do') && precedentRuntime.includes('/DRF/lawService.do')],
