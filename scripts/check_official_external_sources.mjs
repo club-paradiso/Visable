@@ -13,7 +13,9 @@ const nationalityContent = readJson('data/nationality_content.json');
 const nationalityPaths = readJson('data/nationality_paths.json');
 const overlays = readJson('data/official_web_overlays.json');
 const newHomeHtml = readText('new-home.html');
-const indexHtml = readText('index.html');
+// Frontend source corpus (scripts/frontend_modules.json modules first, then index.html): Phase 3 of the rebuild
+// moves inline index.html code into ES modules (the visa-issuance section now lives in src/render/cards/sections.js).
+const indexHtml = [...JSON.parse(readText('scripts/frontend_modules.json')).modules.map((rel) => readText(rel)), readText('index.html')].join('\n');
 
 const failures = [];
 const passes = [];
