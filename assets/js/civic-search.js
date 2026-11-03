@@ -524,7 +524,7 @@
    * request leaves the browser while typing, and nothing typed is stored. */
   var SUGGEST_INDEX_URL = 'data/search-suggest-index.json';
   var suggestIndex = null, suggestLoading = null, suggestFailed = false;
-  var sugg = { items: [], active: -1, frame: 0, announce: 0, composing: false, lastRender: 0, renderMs: 0 };
+  var sugg = { items: [], active: -1, frame: 0, announce: 0, composing: false, composingAt: 0, lastRender: 0, renderMs: 0 };
   function loadSuggestIndex() {
     if (suggestIndex) return Promise.resolve(suggestIndex);
     if (suggestLoading) return suggestLoading;
@@ -650,10 +650,19 @@
     closeSuggest(); syncTyping();
     searchFromHome(item.query);
   }
+  /* "Composing" is only trusted while the IME has recently shown activity. Some browsers never send
+   * compositionend (value set programmatically, a cancelled composition), which used to leave the flag
+   * stuck on and silently swallow every later Enter. A stale flag is treated as not composing. */
+  function composingNow() {
+    if (!sugg.composing) return false;
+    if (Date.now() - sugg.composingAt < 1500) return true;
+    sugg.composing = false;
+    return false;
+  }
   function onQueryKeydown(event) {
     // Korean (and every other IME) composition: arrows move the candidate window and
     // Enter commits the syllable — never a suggestion selection or a search.
-    if (event.isComposing || event.keyCode === 229 || sugg.composing) return;
+    if (event.isComposing || event.keyCode === 229 || composingNow()) return;
     if (event.key === 'ArrowDown' || event.key === 'Down' || event.key === 'ArrowUp' || event.key === 'Up' || event.key === 'Enter' || event.key === 'Escape' || event.key === 'Esc' || event.key === 'Tab') {
       cancelAnimationFrame(sugg.frame);
     }
@@ -696,14 +705,14 @@
   function bindSuggest() {
     var form = el('#civicSearchForm'), input = el('#civicQuery'), list = el('#civicSuggest');
     if (!form || !input || !list) return;
-    input.addEventListener('input', function () { setActive(-1); scheduleSuggest(); });
+    input.addEventListener('input', function (event) { if (event.isComposing) sugg.composingAt = Date.now(); setActive(-1); scheduleSuggest(); });
     // A composition cancelled by blur may never send compositionend; focus starts clean.
     input.addEventListener('focus', function () { sugg.composing = false; openSheet(); loadSuggestIndex().catch(function () {}); if (input.value.trim()) scheduleSuggest(); });
     var sheetClose = el('[data-cs-sheet-close]');
     if (sheetClose) sheetClose.addEventListener('click', closeSheet);
     input.addEventListener('blur', function () { sugg.composing = false; });
     input.addEventListener('keydown', onQueryKeydown);
-    input.addEventListener('compositionstart', function () { sugg.composing = true; });
+    input.addEventListener('compositionstart', function () { sugg.composing = true; sugg.composingAt = Date.now(); });
     // compositionend can precede the committing Enter's keydown (Safari): stay "composing" for that one task.
     input.addEventListener('compositionend', function () { setTimeout(function () { sugg.composing = false; scheduleSuggest(); }, 0); });
     // Leaving the field and the panel closes the panel; clicks inside it keep focus (mousedown below).
@@ -722,7 +731,7 @@
     var form = root.querySelector('#civicSearchForm');
     form.addEventListener('submit', function (event) {
       event.preventDefault();
-      if (sugg.composing) return;
+      if (composingNow()) return;
       closeSuggest();
       searchFromHome(root.querySelector('#civicQuery').value);
     });

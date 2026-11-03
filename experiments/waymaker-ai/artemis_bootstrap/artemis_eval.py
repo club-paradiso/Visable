@@ -525,6 +525,41 @@ def _parse_incoming_response(response: Union[str, Mapping[str, Any]]) -> Optiona
     return None
 
 
+#: Mission 005-E (E3): degree and emphasis adverbs that may sit inside a required-fact
+#: phrase in an answer without changing what it asserts. Removed from the answer only,
+#: never from the fact, so a fact that itself says "반드시" still needs it. Timing words
+#: ("즉시"), quantities and negations are deliberately absent.
+FACT_NEUTRAL_ADVERBS = ("완전히", "전부", "모두", "엄격히", "반드시", "명확히", "분명히", "확실히")
+_NEGATED_AFTER_RE = re.compile(r"\s*(?:되|하)?지\s*(?:않|아니|못)|\s*(?:이|가)?\s*아니|\s*않")
+
+#: Mission 005-F: a required fact that is only a bare prohibition ("할 수 없") is met by
+#: another bare prohibition form ("금지됩니다"), never by a qualified one. The answer must
+#: state a prohibition that is not negated ("금지되지 않") and must not also grant the act
+#: ("허가를 받으면 할 수 있습니다"). Facts that carry anything else still need exact text.
+PROHIBITION_FACTS = ("할 수 없", "할 수 없다", "금지", "금지된다", "금지됩니다", "불가", "허용되지 않")
+_PROHIBITION_RE = re.compile(r"할\s*수\s*없|금지(?!\s*(?:되|하)?지\s*(?:않|아니))|불가(?!피)|허용되지\s*않")
+_GRANT_RE = re.compile(r"할\s*수\s*있|가능합니다|가능하다|허용됩니다|허용된다")
+
+
+def required_fact_present(fact: str, answer: str) -> Tuple[bool, str]:
+    """(present, how). Exact substring first. A bare prohibition fact accepts another bare
+    prohibition form (PROHIBITION_FACTS). Otherwise drop FACT_NEUTRAL_ADVERBS from the
+    answer and look again, refusing a match that is negated right after ("폐기되지 않")."""
+    if fact in answer:
+        return True, "exact"
+    if fact.strip() in PROHIBITION_FACTS:
+        if _PROHIBITION_RE.search(answer) and not _GRANT_RE.search(_PROHIBITION_RE.sub(" ", answer)):
+            return True, "prohibition_equivalent"
+        return False, "absent"
+    stripped = re.sub(r"(?:%s)\s+" % "|".join(FACT_NEUTRAL_ADVERBS), "", answer)
+    at = stripped.find(fact)
+    if at < 0:
+        return False, "absent"
+    if _NEGATED_AFTER_RE.match(stripped, at + len(fact)):
+        return False, "negated_after_normalization"
+    return True, "neutral_adverb_removed"
+
+
 def score_source_fidelity(
     item: Mapping[str, Any],
     parsed: Optional[Mapping[str, Any]],
@@ -612,9 +647,12 @@ def score_source_fidelity(
     if status in ("answered", "partial"):
         required_facts = exp_fidelity.get("required_facts") or []
         for req in required_facts:
-            if req not in folded_answer:
+            present, how = required_fact_present(req, folded_answer)
+            if not present:
                 failures.append(f"required_fact_missing:{req}")
                 details.setdefault("missing_facts", []).append(req)
+            elif how != "exact":
+                details.setdefault("normalized_fact_matches", []).append(req)
 
     passed = (len(failures) == 0)
     outcome = CORRECT if passed else WRONG

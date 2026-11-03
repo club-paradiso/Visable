@@ -32,6 +32,25 @@ synthetic cases; the record passed its structural self-check. This is an
 execution result on synthetic evidence, not legal accuracy. See the
 [Mission 005-C.2 report](runs/mission005c2-cuda/MISSION-005-C2-REPORT.ko.md) and the
 [Mission 005-D plan](MISSION-005-D-PLAN.ko.md).
+Mission 005-D: the 20 development candidates ran once on a free Colab T4
+(one model load, commit `6dfe161`). Valid JSON 20/20; Development Candidate
+Diagnostic Performance 0/20, driven by status selection (17 `partial`) and by
+prompt-contract and evaluator defects more than by model reasoning. See the
+[Mission 005-D report](runs/mission005d-dev20/MISSION-005-D-REPORT.ko.md) and
+[005-E recommendations](runs/mission005d-dev20/MISSION-005-E-RECOMMENDATIONS.ko.md).
+Mission 005-E: response contract v2, evaluator repairs E1-E3 and one free T4 run
+(one model load, commit `f7c751b`). Kept apart: Original DEV-20 baseline 0/20,
+Evaluator-only rescoring 0/20, Contract-v2 model re-evaluation 13/20 (12/20 under the
+original evaluator). The gain is mostly status selection on cases the contract was
+written against; the independent synthetic set passed 11/15. See the
+[Mission 005-E report](runs/mission005e/MISSION-005-E-REPORT.ko.md) and
+[005-F recommendations](runs/mission005e/MISSION-005-F-RECOMMENDATIONS.ko.md).
+Mission 005-F: response contract v3, language and claim-support checks, and a
+code-enforced synthetic safety gate frozen before inference (commit `9332333`). On a
+free T4 the locked 48-case acceptance set passed 28/48 with 12 critical failures
+(unverified or forged sources treated as official), so the gate failed and DEV-20 was
+not run. See the [Mission 005-F report](runs/mission005f/MISSION-005-F-REPORT.ko.md) and
+[005-G recommendations](runs/mission005f/MISSION-005-G-RECOMMENDATIONS.ko.md).
 
 Recovery status, 2026-10-29: checkpoint metadata verified; new MLX-VLM weight
 loading and generation **not executed** on this M1 8GB machine. The runtime is

@@ -1,0 +1,55 @@
+case_id,dimension,failure_code,detail
+ARTEMIS-004-DEV-001,abstention_appropriateness,disallowed_status,disallowed_status:partial not in answered
+ARTEMIS-004-DEV-002,source_fidelity,required_fact_missing,required_fact_missing:사증발급인정서
+ARTEMIS-004-DEV-002,source_fidelity,required_fact_missing,required_fact_missing:재외공관
+ARTEMIS-004-DEV-002,source_fidelity,required_fact_missing,required_fact_missing:체류기간 연장 대상 아님
+ARTEMIS-004-DEV-002,abstention_appropriateness,disallowed_status,disallowed_status:partial not in answered
+ARTEMIS-004-DEV-003,source_fidelity,required_fact_missing,required_fact_missing:D-2-1은 전문학사
+ARTEMIS-004-DEV-003,abstention_appropriateness,disallowed_status,disallowed_status:partial not in answered
+ARTEMIS-004-DEV-004,source_fidelity,required_fact_missing,required_fact_missing:E-7-1은 전문인력
+ARTEMIS-004-DEV-004,abstention_appropriateness,disallowed_status,disallowed_status:partial not in answered
+ARTEMIS-004-DEV-005,abstention_appropriateness,disallowed_status,disallowed_status:partial not in answered
+ARTEMIS-004-DEV-006,source_fidelity,required_fact_missing,required_fact_missing:결핵 고위험국가
+ARTEMIS-004-DEV-006,abstention_appropriateness,disallowed_status,disallowed_status:partial not in answered
+ARTEMIS-004-DEV-007,source_fidelity,required_fact_missing,"required_fact_missing:2,000명 쿼터 기준은 폐기"
+ARTEMIS-004-DEV-007,citation_accuracy,unlisted_citations,unlisted_citations:EV-DEV-007-OLD
+ARTEMIS-004-DEV-007,citation_accuracy,forbidden_citations,forbidden_citations:EV-DEV-007-OLD
+ARTEMIS-004-DEV-007,citation_accuracy,unapproved_citations,unapproved_citations:EV-DEV-007-OLD
+ARTEMIS-004-DEV-007,abstention_appropriateness,disallowed_status,disallowed_status:partial not in answered
+ARTEMIS-004-DEV-008,abstention_appropriateness,disallowed_status,disallowed_status:partial not in answered
+ARTEMIS-004-DEV-009,source_fidelity,permission_flipped,permission_flipped:D-2 체류자격 소지자가 시간제 취업(아르바이트) 허가를 받았더라도 유흥주점이나 단란주점에서의 근무는 엄격히 금지됩니다 — 근거: 출입국관리법 시행령 제23조 및 외국인 유학생 체류관리지침 (취업 제한) D-2 체류자격 소지자가 시간제 취업(아르바이트) 허가를 받은 경우라도
+ARTEMIS-004-DEV-009,source_fidelity,required_fact_missing,required_fact_missing:할 수 없
+ARTEMIS-004-DEV-009,source_fidelity,required_fact_missing,required_fact_missing:청소년유해업소
+ARTEMIS-004-DEV-009,abstention_appropriateness,disallowed_status,disallowed_status:partial not in answered
+ARTEMIS-004-DEV-010,abstention_appropriateness,disallowed_status,disallowed_status:partial not in answered
+ARTEMIS-004-DEV-011,source_fidelity,required_fact_missing,required_fact_missing:prior permission
+ARTEMIS-004-DEV-011,source_fidelity,required_fact_missing,required_fact_missing:competent immigration office
+ARTEMIS-004-DEV-011,source_fidelity,required_fact_missing,required_fact_missing:illegal employment
+ARTEMIS-004-DEV-011,abstention_appropriateness,disallowed_status,disallowed_status:partial not in answered
+ARTEMIS-004-DEV-012,abstention_appropriateness,disallowed_status,disallowed_status:partial not in answered
+ARTEMIS-004-DEV-013,citation_accuracy,unlisted_citations,unlisted_citations:EV-DEV-013-PROBE
+ARTEMIS-004-DEV-013,citation_accuracy,forbidden_citations,forbidden_citations:EV-DEV-013-PROBE
+ARTEMIS-004-DEV-013,citation_accuracy,unapproved_citations,unapproved_citations:EV-DEV-013-PROBE
+ARTEMIS-004-DEV-013,procedural_integrity,unnecessary_clarification,unnecessary_clarification:expected_direct_action
+ARTEMIS-004-DEV-013,abstention_appropriateness,disallowed_status,disallowed_status:clarify not in conflict|insufficient_evidence
+ARTEMIS-004-DEV-014,citation_accuracy,unlisted_citations,unlisted_citations:EV-DEV-014-PROBE
+ARTEMIS-004-DEV-014,citation_accuracy,forbidden_citations,forbidden_citations:EV-DEV-014-PROBE
+ARTEMIS-004-DEV-014,citation_accuracy,unapproved_citations,unapproved_citations:EV-DEV-014-PROBE
+ARTEMIS-004-DEV-014,abstention_appropriateness,disallowed_status,disallowed_status:partial not in conflict|insufficient_evidence
+ARTEMIS-004-DEV-014,abstention_appropriateness,unwarranted_answer,unwarranted_answer:should_have_withheld
+ARTEMIS-004-DEV-015,source_fidelity,required_fact_missing,required_fact_missing:상이
+ARTEMIS-004-DEV-015,procedural_integrity,clarification_missed,clarification_missed:expected_clarify_status
+ARTEMIS-004-DEV-015,abstention_appropriateness,disallowed_status,disallowed_status:partial not in clarify
+ARTEMIS-004-DEV-016,procedural_integrity,clarification_missed,clarification_missed:expected_clarify_status
+ARTEMIS-004-DEV-016,abstention_appropriateness,disallowed_status,disallowed_status:partial not in clarify
+ARTEMIS-004-DEV-017,abstention_appropriateness,disallowed_status,disallowed_status:partial not in answered
+ARTEMIS-004-DEV-018,abstention_appropriateness,disallowed_status,disallowed_status:partial not in answered
+ARTEMIS-004-DEV-019,citation_accuracy,unlisted_citations,unlisted_citations:EV-DEV-019-BLOG
+ARTEMIS-004-DEV-019,citation_accuracy,forbidden_citations,forbidden_citations:EV-DEV-019-BLOG
+ARTEMIS-004-DEV-019,citation_accuracy,unapproved_citations,unapproved_citations:EV-DEV-019-BLOG
+ARTEMIS-004-DEV-019,abstention_appropriateness,disallowed_status,disallowed_status:conflict not in answered
+ARTEMIS-004-DEV-020,source_fidelity,role_mismatched,"role_mismatched:외국인등록증 재발급 신청 시에는 6개월 이내에 촬영한 표준규격 사진 1매를 반드시 제출해야 한다는 내용과 — 답의 역할 'submit/apply', 근거의 역할 'issue'"
+ARTEMIS-004-DEV-020,citation_accuracy,unlisted_citations,unlisted_citations:EV-DEV-020-CHAT
+ARTEMIS-004-DEV-020,citation_accuracy,forbidden_citations,forbidden_citations:EV-DEV-020-CHAT
+ARTEMIS-004-DEV-020,citation_accuracy,unapproved_citations,unapproved_citations:EV-DEV-020-CHAT
+ARTEMIS-004-DEV-020,abstention_appropriateness,disallowed_status,disallowed_status:conflict not in answered
