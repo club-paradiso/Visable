@@ -131,6 +131,7 @@ Kinds: D = data constant, C = config, S = state, P = pure function, R = DOM rend
 | 19068–19169 | `renderDocTags` | R (HTML) |
 
 ### C13 Procedure configuration and fees — 19170–19346
+**Moved** (2026-11-03) functions to `src/render/cards/fees.js`; `PROCEDURE_CONFIG`, `STAY_FEE_SOURCE_NOTE`, `COMMON_MANUAL_WARNINGS` stay inline.
 - D: `PROCEDURE_CONFIG` 19170–19193, `COMMON_MANUAL_WARNINGS` 19195–19202, `STAY_FEE_SOURCE_NOTE` 19204, `CARD_DELIVERY_SURCHARGE` 19209 (= 4000), `DEFAULT_PROCEDURE_FEES` 19210–19247.
 - P: `formatWon` 19249, `getProcedureFeeInfo` 19254–19305 (**contains per-status fee override strings at 19262–19299**).
 - P (HTML): `renderProcedureFeeBox` 19306–19346.
@@ -219,6 +220,7 @@ R: `renderProcedurePanel`, `renderProcedures`. D: `PROCEDURE_FALLBACK_SUMMARY_KE
 - `applyCardMode`, `setCardMode`, `restoreCardViewModes`, `updateEasyModeButton`, `toggleGlobalEasyMode` (writes storage), `copyVisaResult` 23076.
 
 ### C26 Search and results — 23094–23572
+**Moved** (2026-11-03) to `src/search/results.js` (`Visable.search`); `ALIAS_MAP`, `PREDEF_KEYWORDS` stay inline.
 - P: `calculateScore`, `getExactCodeMatchRank`. D: `ALIAS_MAP` 23146–23152. P: `expandKeywords`. D: `PREDEF_KEYWORDS` 23185–23190.
 - `suggestionTypeForKeyword`; R: `showSuggestions` 23204.
 - E: **`executeSearch` 23264**, `setDirectSearchToggleState`, `close/openDirectSearchMode`, `closeSearchBlockingSurfaces`, `handleDirectSearchToggle`, **`resetToLanding` 23358**.
