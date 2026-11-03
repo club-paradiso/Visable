@@ -30,6 +30,7 @@ from waymaker_ai.evidence_admissibility import select_admissible_evidence
 from waymaker_ai.evidence_registry import TrustRegistry, content_sha256, record_problems
 
 DEV20 = BOOT / "benchmarks" / "artemis_eval_dev_20.json"
+DEV20_V2 = BOOT / "benchmarks" / "artemis_eval_dev_20_v2.json"
 DRAFTS = BOOT / "registry" / "dev20_record_drafts.json"
 REGISTRY = BOOT / "registry" / "real_world_registry.json"
 EVALUATION_DATE = "2026-11-02"   # the 005-Q manifest's evaluation_date, used by run_dev20
@@ -144,6 +145,34 @@ PROPOSALS = {
     "EV-DEV-020-CHAT": dict(action="no_record", record={}, statutes=[], notes=["출처 표시가 익명 오픈채팅입니다."]),
 }
 
+#: DEV-20 v2 (build_dev20_v2.py) rewrites five evidence texts after the 2026-11-03 rubric review; each new
+#: text gets its own evidence id and record. The other v2 evidence keeps its v1 proposal.
+PROPOSALS_V2 = {**PROPOSALS, **{
+    "EV-DEV-001-A2": dict(action="approve_candidate", record=dict(
+        source_locator="체류민원 자격별 안내 매뉴얼(261019) · 유학(D-2) 체류자격 변경허가 가. 기본원칙", document_type="official_manual",
+        subject="D-2", status_scope=["B-1", "B-2", "D-2"], procedures=["change", "issuance"], applicant_scope=["domestic"],
+        effective_from="2026-10-19"), statutes=[],
+        notes=["질문의 '비자로 바꿀'은 발급 절차로 읽히므로, v1 기록 초안처럼 발급(issuance)도 범위에 넣습니다."]),
+    "EV-DEV-005-A2": dict(action="approve_candidate", record=dict(
+        source_locator="출입국관리법 시행규칙 제72조 6호·10호(수수료)", document_type="statute",
+        subject=None, status_scope=[], procedures=["extension", "registration"], applicant_scope=["any"],
+        effective_from="2026-10-23"), statutes=["규칙 제72조"], notes=[]),
+    "EV-DEV-011-A2": dict(action="approve_candidate", record=dict(
+        source_locator="출입국관리법 제21조 제1항 · 시행령 제26조의2 제1항", document_type="statute",
+        subject="E-7", status_scope=["E-1", "E-2", "E-3", "E-4", "E-5", "E-6", "E-7", "E-7-1"],
+        all_subcategories_of=["E-1", "E-2", "E-3", "E-4", "E-5", "E-6", "E-7"],
+        procedures=["workplace"], applicant_scope=["domestic"], effective_from="2026-10-02"),
+        statutes=["법 제21조", "영 제26조의2"], notes=[]),
+    "EV-DEV-017-A2": dict(action="approve_candidate", record=dict(
+        source_locator="체류민원 자격별 안내 매뉴얼(261019) · 유학(D-2) 체류기간 상한", document_type="official_manual",
+        subject="D-2", status_scope=["D-2", "D-2-1", "D-2-2"], all_subcategories_of=["D-2"], procedures=["any"],
+        applicant_scope=["any"], effective_from="2026-10-19"), statutes=[], notes=[]),
+    "EV-DEV-020-OFFICIAL-A2": dict(action="approve_candidate", record=dict(
+        source_locator="출입국관리법 시행규칙 제72조 10호 · 통합신청서 사진 규격(사증민원 자격별 안내 매뉴얼 261019)",
+        document_type="statute", subject=None, status_scope=[], procedures=["registration"], applicant_scope=["any"],
+        effective_from="2026-10-23"), statutes=["규칙 제72조"], notes=[]),
+}}
+
 
 def dev20_items(path: Path = DEV20) -> list:
     return json.loads(path.read_text(encoding="utf-8"))["items"]
@@ -235,9 +264,9 @@ def build_drafts(manual_candidates: dict | None = None) -> dict:
             "drafts": drafts}
 
 
-def build_registry(decisions: dict) -> dict:
+def build_registry(decisions: dict, benchmark: Path = DEV20, proposals: dict = PROPOSALS) -> dict:
     """The real-world registry from the owner's decisions: {evidence_id: {decision, fields?, decided_at}, _meta?}."""
-    items = dev20_items()
+    items = dev20_items(benchmark)
     evs = evidence_items(items)
     meta = decisions.get("_meta") or {}
     provenance = meta.get("provenance") or OWNER_SHEET
@@ -258,7 +287,7 @@ def build_registry(decisions: dict) -> dict:
         fields = {k: v for k, v in (d.get("fields") or {}).items()
                   if k in ("source_locator", "issuing_organization", "subject", "status_scope", "all_subcategories_of",
                            "procedures", "applicant_scope", "published", "effective_from", "effective_until")}
-        proposal = PROPOSALS[eid] if PROPOSALS[eid]["record"] else {"record": {
+        proposal = proposals[eid] if proposals[eid]["record"] else {"record": {
             "source_locator": evs[eid]["evidence"].get("source", {}).get("document_id") or eid, "document_type": "unknown"}}
         record = draft_record(evs[eid]["evidence"], proposal, d["decision"], fields, d["decided_at"], provenance)
         problems = record_problems(record)
@@ -266,7 +295,7 @@ def build_registry(decisions: dict) -> dict:
             raise ValueError(f"{eid}: {problems}")
         records[eid] = record
     return {"schema_version": "waymaker-artemis-real-world-registry/1.0", "kind": "real_world",
-            "evidence_set": "DEV-20 (artemis_eval_dev_20.json)", "decided_by": meta.get("decided_by", "owner"),
+            "evidence_set": f"DEV-20 ({benchmark.name})", "decided_by": meta.get("decided_by", "owner"),
             "records": records}
 
 
@@ -277,15 +306,18 @@ def main(argv=None) -> int:
     d.add_argument("--manual-candidates", type=Path)
     b = sub.add_parser("build")
     b.add_argument("--decisions", type=Path, required=True)
+    b.add_argument("--benchmark", choices=["v1", "v2"], default="v1", help="DEV-20 version whose evidence the decisions cover")
+    b.add_argument("--out", type=Path, default=REGISTRY)
     args = parser.parse_args(argv)
     if args.command == "drafts":
         cands = json.loads(args.manual_candidates.read_text()) if args.manual_candidates else None
         DRAFTS.write_text(json.dumps(build_drafts(cands), ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
         print(DRAFTS)
     else:
-        REGISTRY.write_text(json.dumps(build_registry(json.loads(args.decisions.read_text())), ensure_ascii=False, indent=1) + "\n",
-                            encoding="utf-8")
-        print(REGISTRY)
+        benchmark, proposals = (DEV20, PROPOSALS) if args.benchmark == "v1" else (DEV20_V2, PROPOSALS_V2)
+        registry = build_registry(json.loads(args.decisions.read_text()), benchmark, proposals)
+        args.out.write_text(json.dumps(registry, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+        print(args.out)
     return 0
 
 

@@ -150,6 +150,14 @@ missed a literal contrast phrase and 2 answered where the 2026-10 rubric expects
 withheld before the model. Five of those had evidence that contradicts current law, though the rubric
 takes each item's own evidence as true. No unsafe release. See the
 [DEV-20 registry report](runs/dev20_registry/DEV20-REGISTRY-REPORT.ko.md).
+DEV-20 v2 (2026-11-03, not run yet): the owner delegated the 13 rubric decisions; Claude decided them
+by the rule in `benchmarks/dev20_rubric_review.json` (5 rewritten from current statute text or the
+261019 manuals, 3 where withholding is the right answer, 2 that accept a conditional answer, 3
+loosened phrases). `build_dev20_v2.py` writes `benchmarks/artemis_eval_dev_20_v2.json`, pinned by
+`DEV20_V2_MANIFEST.json`; v1 and its registry are unchanged. The five new evidence texts have their
+own records in `registry/real_world_registry_v2.json`, and 13 of 20 items now reach the model.
+`dev20_v2.py` loads, runs and scores v2 without touching the files the 005-Q gate freezes. See
+[the decisions](benchmarks/DEV20-V2-DECISIONS.ko.md).
 
 Recovery status, 2026-10-29: checkpoint metadata verified; new MLX-VLM weight
 loading and generation **not executed** on this M1 8GB machine. The runtime is
