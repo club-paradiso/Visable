@@ -9,6 +9,7 @@
     "src/render/cards/sections.js",
     "src/render/cards/doc-tabs-easy-mode.js",
     "src/render/cards/fees.js",
+    "src/boot.js",
     "src/i18n/runtime.js",
     "src/features/modals-ai.js",
     "src/search/results.js",

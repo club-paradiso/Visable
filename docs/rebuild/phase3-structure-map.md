@@ -256,11 +256,13 @@ R: `renderProcedurePanel`, `renderProcedures`. D: `PROCEDURE_FALLBACK_SUMMARY_KE
 | 24087–24347 | **`applyLanguage`** (261 lines: about 190 `tx`, 95 `setText` calls; re-renders results and `initUI`, dispatches `paradiso-language-applied`) |
 
 ### C28 Theme and region labels — 24351–24459
+**Moved** (2026-11-03) to `src/boot.js` (`Visable.boot`); the DOMContentLoaded registration stays inline as a one-liner calling `Visable.boot.onDomReady()`.
 - `updateThemeColorMeta`, `toggleTheme` (writes storage).
 - D: `REGION_I18N` 24377–24396; `localizeRegion`, `localizeFinderRegions`.
 - Editorial theme: `EDITORIAL_THEME_STORAGE_KEY`, `EDITORIAL_THEMES`, then get, current, label, apply, toggle (24421–24458).
 
 ### C29 Boot helpers and data load — 24460–24688
+**Moved** (2026-11-03) to `src/boot.js` (`Visable.boot`); the DOMContentLoaded registration stays inline as a one-liner calling `Visable.boot.onDomReady()`.
 - `toggleAccordions`.
 - **`initUI` 24462**: renders landing hints and quick filters (with `?q=` bootstrap), then `renderCmdChips`.
 - `injectLocalData` (adds a hard-coded FAQ-0 record, 24510–24518), `setSearchEnabled`, `coverageBucket`, `coverageCodeSortKey`, `updateCategoryCounts`.
@@ -268,6 +270,7 @@ R: `renderProcedurePanel`, `renderProcedures`. D: `PROCEDURE_FALLBACK_SUMMARY_KE
 - L: **`fetchOptionalJson` 24628**, `loadVisaIssuanceData` 24639, `VISA_DATA_API_TIMEOUT_MS` 24653 (= 4000), **`loadVisaData` 24654–24687**.
 
 ### C30 DOMContentLoaded bootstrap and global event delegation — 24689–25138
+**Moved** (2026-11-03) to `src/boot.js` (`Visable.boot`); the DOMContentLoaded registration stays inline as a one-liner calling `Visable.boot.onDomReady()`.
 - The single `[data-action]` dispatcher sits at 24783–24935. It handles about 75 actions; full list at 24787–24929.
 - Overlay-backdrop close, outside-click close, keyboard handlers (24967 and 24975), `toggle` listener.
 - Archive-diary masthead and random passport stamp at 25039–25136.
@@ -278,6 +281,7 @@ R: `renderProcedurePanel`, `renderProcedures`. D: `PROCEDURE_FALLBACK_SUMMARY_KE
 - **`initFigmaAnagram` IIFE 25224–25326 runs at parse time.** It uses `load`, `resize`, `orientationchange`, a ResizeObserver and `setInterval`.
 
 ### C32 Visa manual journey tracks — 25328–25603
+**Moved** (2026-11-03) to `src/boot.js` (`Visable.boot`); the DOMContentLoaded registration stays inline as a one-liner calling `Visable.boot.onDomReady()`.
 `startPreEntryTrack` 25331, `startInKoreaTrack` 25371, `PURPOSE_TO_CAT`, `ACTION_CAT_LABELS[_EN/_ZH]` 25411–25434, `DOC_MODAL_ACTION_MAP`, `_currentInKoreaAction`, `showVisaRecommendations`, `selectInKoreaAction`, `getCurrentInKoreaAction`, `filterInKoreaVisaList`, `searchInKoreaVisa`, `showVisaDocForAction`.
 
 ### C33 Agent finder — 25603–25805

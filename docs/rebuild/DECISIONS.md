@@ -243,3 +243,12 @@ the options considered, the evidence, and the reason.
   `src/**/*.js` for this; the golden suite is the safety net (it caught the first miss before commit).
 - Once the stubs are gone (end of Phase 3), these cross-module references become explicit `import`s; until
   then the stubs are the documented seam.
+
+### ADR-009 addendum 4 (2026-11-03, DOMContentLoaded registration stays inline)
+- The three inline shims (`DETAIL_CODE_RESOLVER_SHIM_2026_05`, `DOC_SECTION_UNIFICATION_SHIM_2026_05`,
+  `DOC_TERM_FEE_UI_SHIM_2026_05`) and the global-settings block register their own `DOMContentLoaded`
+  handlers while the document is parsed. The main bootstrap handler used to be registered earlier in
+  the same parse, so it ran first. A module registers only after parsing, i.e. after the shims, which
+  would reverse that order. Decision: the handler body moves to `src/boot.js` as the exported
+  `onDomReady()`, and index.html keeps a one-line parse-time registration that calls it. Listener
+  order is unchanged; the body is verbatim. This is the one inline statement Phase 3 adds on purpose.

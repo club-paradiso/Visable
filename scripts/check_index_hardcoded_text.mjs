@@ -26,7 +26,8 @@ const requiredRuntimeMarkers = [
 const suspicious = [];
 const scriptBlocks = [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)];
 const i18nStart = html.indexOf('const LANGUAGE_STORAGE_KEY');
-const i18nEnd = html.indexOf('function toggleTheme()', i18nStart);
+// `toggleTheme(` (no closing paren): since Phase 3 of the rebuild the inline toggleTheme is a `(...args)` stub.
+const i18nEnd = html.indexOf('function toggleTheme(', i18nStart);
 const textRe = /[가-힯\u3400-\u9fff]|\b(?:search|find|loading|error|source|document|deadline|hospital|agency|visa|residence|official)\b/i;
 const bootstrapFallbackRe = /const BOOTSTRAP_KO_FALLBACK\s*=\s*\{[\s\S]*?\n\};/;
 

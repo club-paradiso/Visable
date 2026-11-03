@@ -16,7 +16,9 @@ import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repo = path.resolve(__dirname, '..');
-const html = fs.readFileSync(path.join(repo, 'index.html'), 'utf8');
+// Frontend source corpus (scripts/frontend_modules.json modules first, then index.html): the data-action dispatcher
+// that wires the helper's actions lives in src/boot.js since Phase 3 of the rebuild; the markup stays in index.html.
+const html = [...JSON.parse(fs.readFileSync(path.join(repo, 'scripts', 'frontend_modules.json'), 'utf8')).modules.map((rel) => fs.readFileSync(path.join(repo, rel), 'utf8')), fs.readFileSync(path.join(repo, 'index.html'), 'utf8')].join('\n');
 const js = fs.readFileSync(path.join(repo, 'src', 'features', 'jobcode.js'), 'utf8');
 const data = JSON.parse(fs.readFileSync(path.join(repo, 'data', 'jobcode_master.json'), 'utf8'));
 const ko = JSON.parse(fs.readFileSync(path.join(repo, 'data', 'i18n', 'ko.json'), 'utf8'));
