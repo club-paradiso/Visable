@@ -23,7 +23,7 @@ module.exports = async function handler(request, response) {
     return response.status(200).json({
       service: 'visable-enforcement-analyze',
       status: 'ok',
-      mode: runtime.openrouterConfigured ? 'grounded-ai-v2' : 'deterministic-fallback',
+      mode: runtime.openrouterConfigured || runtime.groqConfigured ? 'grounded-ai-v2' : 'deterministic-fallback',
       runtime,
     });
   }
