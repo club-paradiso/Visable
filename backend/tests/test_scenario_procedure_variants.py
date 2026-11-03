@@ -550,7 +550,7 @@ class SelectedScenarioActionChecklistFrontendTests(unittest.TestCase):
     def test_checklist_does_not_send_checkbox_state_to_api_ask(self):
         # Isolate the /api/ask request body and assert it carries no checklist
         # / checkbox state of any kind.
-        start = self.html.index("await fetch(`${API_BASE}/api/ask`")
+        start = self.html.index("Visable.data.postRaw(`${API_BASE}/api/ask`")
         end = self.html.index("signal: currentAiController.signal", start)
         body = self.html[start:end]
         for forbidden in (
@@ -564,7 +564,7 @@ class SelectedScenarioActionChecklistFrontendTests(unittest.TestCase):
             self.assertNotIn(forbidden, body, f"/api/ask body unexpectedly references {forbidden!r}")
 
     def test_selected_ai_payload_still_includes_required_fields(self):
-        start = self.html.index("await fetch(`${API_BASE}/api/ask`")
+        start = self.html.index("Visable.data.postRaw(`${API_BASE}/api/ask`")
         end = self.html.index("signal: currentAiController.signal", start)
         body = self.html[start:end]
         self.assertIn("lang: currentLanguage", body)

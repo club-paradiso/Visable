@@ -261,7 +261,9 @@ class I18nSweepRouteWizardTests(unittest.TestCase):
         # and the /api/ask comments would otherwise pull in unrelated code that
         # mentions "checklist".
         ask_region = self.html.split("${API_BASE}/api/ask`", 1)[1]
-        body = ask_region.split("body: JSON.stringify({", 1)[1].split("}),", 1)[0]
+        # The call is Visable.data.postRaw(`${API_BASE}/api/ask`, { ...body... }, { signal })
+        # since the Phase 3 data layer (src/data/fetch-json.js); the body object follows the URL.
+        body = ask_region.split(", {", 1)[1].split("}, { signal:", 1)[0]
         self.assertNotIn("checklist", body)
         self.assertNotIn("reminder", body)
         self.assertNotIn("scenario-checklist", body)
