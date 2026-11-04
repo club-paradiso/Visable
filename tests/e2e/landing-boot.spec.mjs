@@ -103,7 +103,11 @@ test('a failed civic script load leaves a usable page with a reload row, not a b
   // the static shell still offers the search field and the tools, never the old journey cards
   await expect(page.locator('#civicLanding #civicQuery')).toBeVisible();
   await expect(page.locator('#civicLanding .cs-route')).toHaveCount(0);
-  await expect(page.locator('#civicLanding .cs-tool')).toHaveCount(6);
+  await expect(page.locator('#civicLanding .cs-tools-core .cs-tool')).toHaveCount(5);
+  // The boot-failure shell must keep the revised five-tool layout and still
+  // expose the full checklist service, even without civic-search.js.
+  await expect(page.locator('#civicLanding .cs-tools-core [data-cs-tool="checklists"]')).toHaveCount(0);
+  await expect(page.locator('#civicLanding .cs-directory a[href="immigration-checklists.html"]')).toHaveCount(1);
 });
 
 test.describe('purpose browse panel (the former journey content, reached from the directory)', () => {
