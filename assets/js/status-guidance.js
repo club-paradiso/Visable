@@ -821,13 +821,35 @@
     model.relatedPrograms = (programInfo.related_programs || (programCode !== status ? codeInfo.related_programs : []) || []).map(byId).filter(Boolean);
     var entries = step.entries || [];
     var entry = entries[0] || null;
-    model.entry = entry;
+    // Operational preparation correction (2026-11-04): the generated COMMON card-reissue
+    // bundle only lists the application, photograph, and old card. Do not mutate it or
+    // fabricate a citation to Decree Art. 42, which does not list passport copy format.
+    // Show both passport forms in the visitor's checklist, with explicitly labelled
+    // practical preparation guidance; remove this bridge once authoring is regenerated.
+    var docsEntry = entry;
+    if (entry && procedure === 'card_reissue') {
+      var reissueDocs = (entry.documents || []).slice();
+      if (!reissueDocs.some(function (d) { return d.ref === 'passport_original' || d.ref === 'passport'; })) {
+        reissueDocs.push({ ref: 'passport_original', name_ko: '여권 원본', name_en: 'Original passport',
+          applicant_role: 'applicant', requirement_level: 'REQUIRED_BASELINE',
+          notes_ko: '방문 시 신원 확인을 위해 원본을 지참하세요. 실무 준비 안내이며 제출 형태의 공식 근거는 관할관서에서 확인하세요.',
+          notes_en: 'Bring the original for identity verification. Confirm the submission format with your immigration office.' });
+      }
+      if (!reissueDocs.some(function (d) { return d.ref === 'passport_copy'; })) {
+        reissueDocs.push({ ref: 'passport_copy', name_ko: '여권 인적사항면 사본', name_en: 'Copy of passport bio-data page',
+          applicant_role: 'applicant', requirement_level: 'REQUIRED_BASELINE',
+          notes_ko: '사진·성명·여권번호가 보이는 인적사항면을 복사해 준비하세요.',
+          notes_en: 'Prepare a copy of the photo/bio-data page showing your name and passport number.' });
+      }
+      docsEntry = Object.assign({}, entry, { documents: reissueDocs });
+    }
+    model.entry = docsEntry;
     model.target = entry && entry.target !== 'COMMON' ? entry.target.split('~')[0] : status;
     model.targetInfo = entry && entry.target !== 'COMMON' ? bundle.codes[entry.target] || bundle.codes[model.target] || {} : codeInfo;
     model.state = entry ? entry.state : (step.state || null);
     model.completeness = entry ? entry.completeness : (step.kind === 'unresolved' ? 'REQUIRES_CLARIFICATION' : 'SOURCE_ONLY');
     model.reason = step.reason || null;
-    model.documentGroups = entry ? groupDocuments(entry, { reason: model.reason }) : [];
+    model.documentGroups = docsEntry ? groupDocuments(docsEntry, { reason: model.reason }) : [];
     model.docCounts = { required: 0, conditional: 0 };
     model.documentGroups.forEach(function (g) { if (g.key === 'required') model.docCounts.required += g.items.length; else if (g.key === 'conditional' || g.key === 'applicable' || g.key === 'alternative') model.docCounts.conditional += g.items.length; });
     model.overlays = procedure && (status || step.common) ? applicableOverlays(bundle, status, procedure, entry) : [];
