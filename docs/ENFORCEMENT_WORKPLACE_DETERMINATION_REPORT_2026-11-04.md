@@ -160,11 +160,36 @@
 
 ## 3. 품질 검증
 
-(최종 실행 결과로 채운다 — §6 참조)
+로컬 실행 결과(2026-11-04, 최종 헤드 261ae3a 기준):
+
+- 백엔드: `pytest tests/test_enforcement_*.py` → **160 passed, 101 subtests passed**. 신규 `test_enforcement_workplace.py`는 공유 픽스처 22건 + 서사 추출·AI 격리·편집 재평가·PII 테스트를 포함.
+- 법령 코퍼스: `backend/tests/test_legal_corpus_data.py` + `test_legal_corpus_units.py` → **28 passed**.
+- Node 정적/패리티 체크 전부 통과: `check_enforcement_ui.mjs`(86개 정적 체크 + 런타임 단언), `check_enforcement_workplace.mjs`(공유 픽스처 22건 Python/JS 패리티 + 서사 단언), `check_enforcement_extraction_quality.mjs`(공유 패리티 26건), `check_enforcement_calendar_boundary.mjs`, `check_enforcement_law_validity.mjs`, `check_enforcement_nl_ux.mjs`, `check_enforcement_prediction_quality.mjs`, `check_enforcement_provider_reliability.mjs`.
+- 엔진 스모크(수동 확인): REPORT 확정 → ADMINISTRATIVE_FINE_TRACK·금액 없음·법정 상한 2,000,000원·기한 산정(변경 2026-09-05 → 기한 2026-09-20); 제외 직종 441 → PERMIT·기준액 1,000,000원(63일); 사실 부족 → UNRESOLVED/MISSING_FACTS·금액 없음; E-6-2 → PERMIT; 기존 사용자 확인 PERMIT(단일 조문) → AVAILABLE 1,000,000원(USER_CONFIRMED).
+
+수정한 버그:
+
+1. **위반유형 선택 시 자동 false**(브리프 지적 버그): 제21조 유형 선택만으로 `workplaceChangeAuthorized=false`·`authorizationObtained=false`가 설정되던 문제 제거(양쪽 구현 동일 수정).
+2. **PII 탐지 우회**: 한국어 조사가 붙으면 `\b` 경계가 동작하지 않아 전화번호·여권번호가 탐지되지 않던 문제 → 룩어라운드로 교체(양쪽 구현). "신고하지 않았/신고 없이" 명시 진술이 절차 누락 신호로 분류되지 않던 문제도 함께 수정.
+3. **게이트 순서(독립 리뷰 블로커)**: 판별보다 범칙금 스냅샷 해소가 먼저라, 기한 내 신고한 2025년 사건이 HISTORICAL_RULE_UNAVAILABLE로 가려지던 문제 → 판별을 스냅샷보다 먼저 실행하도록 재배열(양쪽 구현). 회귀 픽스처 추가.
+4. **공유 후보 우회(독립 리뷰 블로커)**: 조문 미확정 + 사용자 확인 PERMIT만으로 동일 구간 단축 계산이 금액을 내던 문제 → MISSING_FACTS로 차단(양쪽 구현). 회귀 픽스처 추가.
+5. **절차 답변의 이중 사실화**: 절차 질문 답변이 별도 허가 사실로 번역되던 UI 부수효과 제거 — 엔진이 procedureStatus를 직접 읽는다.
+6. JS baseline의 `workplaceDetermination` 키 누락(omit) → Python 모델과 동일하게 항상 포함.
+
+독립 코드 리뷰(서브에이전트, 2026-11-04): 법령 인코딩 정확성·15일 기한 산정·REPORT/UNRESOLVED 금액 경로 부재·AI 격리를 검증했고, 위 3·4번 블로커를 포함해 지적된 사항을 모두 수정·테스트했다.
+
+CI(PR #768, 최종 헤드 261ae3a): validate ×2, golden-local, golden-visual, mobile-render-qa ×2, mobile-webkit-qa, webkit-e2e, landing-restoration-e2e ×2, Vercel Preview — **전부 pass, 실패 0건**. 풀 백엔드 스위트는 로컬 sparse 체크아웃 한계로 CI를 권위 있는 결과로 삼는다.
+
+미해결로 남는 기존 이슈: Issue #764(Artemis 테스트 출처)는 이번 변경과 무관한 기존 이슈로 건드리지 않았다.
 
 ## 4. GitHub 결과
 
-(최종 실행 결과로 채운다 — §6 참조)
+- PR: [#768](https://github.com/club-paradiso/Visable/pull/768) — "feat(enforcement): 근무처 변경·추가 사실 기반 자동 판별 (사전허가/사후신고) + 범칙금·과태료 분리"
+- 상태: **MERGED** (2026-11-04T09:07:31Z), merge commit `6e259008f272ad76f75708dec51a680986214048`
+- 브랜치: `feat/enforcement-workplace-determination-20261104`, base main `dce3dc0`
+- 구성 커밋: `275571e`(P1 엔진), `e455bda`(P0/P2 UI), `0ec252c`(REPORT 기대값 정합 테스트), `261ae3a`(리뷰 블로커 수정)
+- 의존성: PR #763(법령 코퍼스)은 본 작업 시작 전에 이미 main에 머지되어 있었음을 확인하고 그 위에서 작업했다(별도 머지 불필요).
+- 배포/라이브: 머지 후 라이브 검증 완료 — https://visable-mu.vercel.app/enforcement.html HTTP 200, 프로덕션 JS 번들(`/assets/enforcement-ui-*.js`)에 신규 판별 UI("판별 결과", "법무부고시 제2020-212호", 과태료 트랙 문구)가 포함된 것을 확인.
 
 ## 5. 남은 위험
 
