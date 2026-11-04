@@ -61,7 +61,12 @@ assert.equal(e2.statusOfStay, 'E-2');
 assert.equal(e2.durationDays, 63);
 const e2Unknown = { ...e2, violationCode: 'UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1', violationCandidates: ['UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1'] };
 assert.equal(calculateLegalBaseline(e2Unknown).status, 'MISSING_FACTS');
-assert.equal(calculateLegalBaseline({ ...e2Unknown, workplaceRegime: 'REPORT' }).status, 'UNSUPPORTED');
+// Workplace-determination upgrade: a confirmed REPORT case gets its own
+// administrative-fine track (statutory maximum only, never a fine amount).
+const e2Report = calculateLegalBaseline({ ...e2Unknown, workplaceRegime: 'REPORT' });
+assert.equal(e2Report.status, 'ADMINISTRATIVE_FINE_TRACK');
+assert.equal(e2Report.baselineAmountKrw ?? null, null);
+assert.equal(e2Report.statutoryMaximumKrw, 2000000);
 const e2Permit = calculateLegalBaseline({ ...e2Unknown, workplaceRegime: 'PERMIT' });
 assert.equal(e2Permit.status, 'AVAILABLE');
 assert.equal(e2Permit.baselineAmountKrw, 1000000);
