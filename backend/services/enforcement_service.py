@@ -213,7 +213,7 @@ def _classify_violation(clean: str, status: Optional[str], include_overstay: boo
     )
     work = bool(
         re.search(
-            r"일했|일함|일하고|일하다|근무|아르바이트|알바|취업|고용|돈\s*벌|"
+            r"일했|일함|일한|일하고|일하다|근무|아르바이트|알바|취업|고용|돈\s*벌|"
             r"사업장|근무처|음식점|공장|건설|회사|업체",
             clean,
             re.I,
