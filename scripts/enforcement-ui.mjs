@@ -516,7 +516,7 @@ const providerReasonLabels = {
 };
 function plainLimitation(text) {
   const value = String(text || '').trim();
-  if (/법령.*API 조회 실패|no_exact_law_match|실시간 법령 API에서 인용 가능한 조문|law_api|LAW_API_OC/i.test(value)) {
+  if (/법령.*API 조회 실패|no_exact_law_match|실시간 법령 API에서 인용 가능한 조문|law_api|LAW_API_OC|historical_version_unavailable|upstream_authorization_or_registration_error/i.test(value)) {
     return '실시간 법령 원문 대조가 완료되지 않았습니다. 저장된 기준과 최신 공식 법령을 비교해 주세요.';
   }
   if (/정확한 위반 시작일·종료일|사건 당시 법령과 현재/.test(value)) {
@@ -537,6 +537,25 @@ function plainLimitation(text) {
   if (/Vercel에 지원되는 법령 API 인증/.test(value)) return '실시간 법령 조회를 쓸 수 없어, 저장된 법령 기준(검증 스냅샷)으로 계산했습니다.';
   if (/법령 API 인증값이 없어/.test(value)) return '실시간 판례 조회를 쓸 수 없어 공식 판례 본문은 검색하지 않았습니다.';
   return value;
+}
+
+// A duration such as "63 days" is enough for many tier calculations but not
+// to verify the law version that was in force at the time. Offer a nonblocking
+// date check instead of repeatedly telling users what is missing.
+function optionalLawDateCard(caseData, baseline, grounding) {
+  if (baseline.status !== 'AVAILABLE' || grounding.status === 'VERIFIED') return '';
+  if (caseData?.violationStartDate && caseData?.violationEndDate) return '';
+  const today = localTodayIso();
+  return `<details class="next-step-card law-date-check">
+    <summary>위반 날짜를 입력하고 당시 적용 법령도 확인하기</summary>
+    <p class="subtle">지금 입력한 일수만으로도 기준 계산은 가능할 수 있지만, 발생 날짜가 없어 사건 당시 시행 법령까지 확인할 수는 없어요. 날짜를 모르면 입력하지 않아도 됩니다.</p>
+    <form class="date-range-form" id="date-range-form" novalidate>
+      <label>시작한 날<input type="date" id="violation-start" max="${today}" value="${escapeHtml(caseData?.violationStartDate || '')}" required></label>
+      <label>끝난 날<input type="date" id="violation-end" max="${today}" value="${escapeHtml(caseData?.violationEndDate || '')}" required></label>
+      <button type="submit" class="primary-button">해당 날짜의 법령으로 다시 확인</button>
+    </form>
+    <p class="form-error" id="date-range-error" role="alert" hidden></p>
+  </details>`;
 }
 
 function needsExactDates(baseline) {
@@ -764,6 +783,7 @@ function renderResult(data) {
       <p class="verdict-text">${verdictSentence(baseline, prediction)}</p>
       <p class="verdict-confidence">예측 신뢰도 <strong>${escapeHtml(confidenceLabels[confidence.level] || confidence.level)}</strong>${(prediction.unresolvedFactors || []).length ? ` · 확인 안 된 사실 ${(prediction.unresolvedFactors || []).length}개` : ''}</p>
     </section>` : ''}
+    ${!data.analysisPending ? optionalLawDateCard(data.case || structuredCase, baseline, grounding) : ''}
     <div class="result-summary${baselineReady ? '' : ' result-summary--blocked'}">
       <article class="result-card baseline">
         <p class="card-kicker">법령 기준 · 계산식으로 산출</p>
