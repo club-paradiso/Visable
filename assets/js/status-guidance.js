@@ -1035,16 +1035,42 @@
     return '';
   }
 
+  // Display-only labels for the shared stay-procedure application form. Do not
+  // rewrite verbatim source excerpts, visa issuance/confirmation forms or legal anchors.
+  // For a status change the destination status determines which form is filed.
+  function canonicalStayFormLabels(d, model) {
+    if (!d || !/^(?:app_form|app_form_34|app_form_dongpo)$/.test(String(d.ref || ''))) return null;
+    if (/^visa_issuance/.test(String(model.procedure || ''))) return null;
+    var code = model.procedure === 'status_change' ? (model.target || model.status) : (model.status || model.target);
+    var isF4 = d.ref === 'app_form_dongpo' || /^F-4(?:-|$)/i.test(String(code || ''));
+    return isF4
+      ? { ko: '재외동포 통합신청서 (별지 제1호서식)', en: 'Overseas Korean Integrated Application Form (Form 1)' }
+      : { ko: '통합신청서 (별지 제34호 서식)', en: 'Integrated Application Form (Form 34)' };
+  }
+
+  function canonicalStaySummary(value, model) {
+    var text = String(value || '');
+    if (model.lang !== 'ko' || /^visa_issuance/.test(String(model.procedure || ''))) return text;
+    var code = model.procedure === 'status_change' ? (model.target || model.status) : (model.status || model.target);
+    var label = /^F-4(?:-|$)/i.test(String(code || '')) ? '재외동포 통합신청서' : '통합신청서';
+    // Only standalone generic form references, not words such as 사증발급신청서,
+    // 신원보증신청서, or the verb 신청. Keep surrounding grammatical particles.
+    return text.replace(/(^|[\s·,;([{])(?:통합)?신청서(?=$|[\s·,;.)\]}]|와|과|를|은|는|도|에)/g,
+      function (_m, prefix) { return prefix + label; });
+  }
+
   /* One document row, in the order a person scans it: name · requirement (the
    * group heading) · submission form · who prepares it · issuer · condition.
    * Source, validity and the other particulars sit behind the row's disclosure.
    * A silent-source preparation label is a short dashed tag; the one explanation
    * of that tag is the section note, never repeated per row. */
-  function renderDocItem(d, lang, bundle, entry) {
+  function renderDocItem(d, lang, bundle, entry, model) {
     var role = tr(lang, 'roles')[d.applicant_role] || d.applicant_role;
     var where = d.where_to_obtain ? (tr(lang, 'where_labels')[d.where_to_obtain] || d.where_to_obtain) : '';
-    var name = lang === 'en' ? d.name_en : d.name_ko;
-    var sub = lang === 'en' && d.name_ko ? '<span class="sg-doc-ko" lang="ko">' + esc(d.name_ko) + '</span>' : '';
+    var labels = canonicalStayFormLabels(d, model);
+    var nameKo = labels ? labels.ko : d.name_ko;
+    var name = labels ? (lang === 'en' ? labels.en : labels.ko) : (lang === 'en' ? d.name_en : d.name_ko);
+    var sub = lang === 'en' && nameKo ? '<span class="sg-doc-ko" lang="ko">' + esc(nameKo) + '</span>' : '';
     var prep = preparation(d);
     var form = preparationLabel(lang, d);
     var who = [];
@@ -1091,7 +1117,7 @@
     var recommended = false;
     model.documentGroups.forEach(function (g) {
       g.items.forEach(function (d) { if (preparation(d).kind === 'PREPARATION_RECOMMENDATION') recommended = true; });
-      html += '<div class="sg-doc-group sg-doc-group-' + g.key + '"><h4>' + esc(tr(lang, g.labelKey)) + ' <span class="sg-doc-group-n">' + g.items.length + '</span></h4><ul class="sg-doc-list">' + g.items.map(function (d) { return renderDocItem(d, lang, bundle, entry); }).join('') + '</ul></div>';
+      html += '<div class="sg-doc-group sg-doc-group-' + g.key + '"><h4>' + esc(tr(lang, g.labelKey)) + ' <span class="sg-doc-group-n">' + g.items.length + '</span></h4><ul class="sg-doc-list">' + g.items.map(function (d) { return renderDocItem(d, lang, bundle, entry, model); }).join('') + '</ul></div>';
     });
     if (recommended) html += '<p class="sg-doc-prep-note">' + esc(tr(lang, 'prepSection')) + '</p>';
     if (!full) html += '<p class="sg-muted">' + esc(tr(lang, hasSubtypeQuestion(bundle, model.status, model.procedure) ? 'docsClarify' : 'docsPartialFlat')) + '</p>';
@@ -1443,7 +1469,7 @@
       var key = model.state === 'NOT_APPLICABLE' ? 'notApplicable' : model.state === 'GENERALLY_NOT_PERMITTED' ? 'notPermitted' : model.state === 'EXCEPTION_ONLY' ? 'exceptionOnly' : model.state === 'CONDITIONAL' ? 'conditional' : null;
       if (key) html += '<p class="sg-warn">' + stateBadge(lang, model.state) + ' ' + esc(tr(lang, key, { status: targetCode })) + '</p>';
     }
-    if (e) html += '<p class="sg-summary">' + esc(L(lang, e, 'summary')) + '</p>';
+    if (e) html += '<p class="sg-summary">' + esc(canonicalStaySummary(L(lang, e, 'summary'), model)) + '</p>';
     html += renderFacts(model) + answerActions(model);
     html += '</section>' + detailSections(model, step, bundle, state);
     return html;
@@ -1453,7 +1479,7 @@
     var lang = model.lang; var e = model.entry;
     var lead = model.status ? tr(lang, 'commonLeadWithStatus', { status: model.status }) : tr(lang, 'commonLead');
     var html = '<section class="sg-answer sg-common" aria-labelledby="sgAnswerTitle"><p class="sg-kicker">' + esc(tr(lang, 'commonKicker')) + '</p><h2 id="sgAnswerTitle" class="sg-answer-title" tabindex="-1">' + esc(model.procedureLabel) + '</h2><p class="sg-lead">' + esc(lead) + '</p>';
-    if (e) html += '<p class="sg-summary">' + esc(L(lang, e, 'summary')) + '</p>';
+    if (e) html += '<p class="sg-summary">' + esc(canonicalStaySummary(L(lang, e, 'summary'), model)) + '</p>';
     html += renderFacts(model) + renderReason(model, step, bundle);
     if (step.optionalStatus && model.registry) html += '<div class="sg-optional"><button type="button" class="sg-link" data-sg-action="ask-status">' + esc(tr(lang, 'optionalStatus')) + '</button><span class="sg-muted">' + esc(L(lang, model.registry, 'status_optional_note') || tr(lang, 'optionalStatusWhy')) + '</span></div>';
     html += answerActions(model);
