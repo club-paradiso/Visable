@@ -47,10 +47,13 @@ test('jurisdiction map includes corrected branch areas, service counters and off
     ['경상남도', '거제시', '창원출입국·외국인사무소 거제출장소'],
     ['경기도', '안산시', '안산출입국·외국인사무소 종합민원센터'],
     ['경기도', '가평군', '춘천출입국·외국인사무소'],
-    ['전라남도', '광양시', '여수출입국·외국인사무소 광양출장소'],
-    ['전라남도', '해남군', '광주출입국·외국인사무소 목포출장소'],
+    ['전남광주통합특별시', '광양시', '여수출입국·외국인사무소 광양출장소'],
+    ['전남광주통합특별시', '해남군', '광주출입국·외국인사무소 목포출장소'],
     ['전북특별자치도', '군산시', '전주출입국·외국인사무소 군산출장소'],
     ['부산광역시', '중구', '부산출입국·외국인청 별관'],
+    ['인천광역시', '서해구', '인천출입국·외국인청'],
+    ['인천광역시', '제물포구', '인천출입국·외국인청'],
+    ['전남광주통합특별시', '광산구', '광주출입국·외국인사무소'],
   ];
   for (const [sido, district, expected] of cases) {
     expect(JUR_DB[sido][district], `${sido}/${district}`).toBe(expected);
@@ -63,6 +66,10 @@ test('jurisdiction map includes corrected branch areas, service counters and off
     ['대전출입국·외국인사무소', '대전광역시 중구 목중로26번길 7'],
   ];
   for (const [office, address] of addresses) expect(OFFICE_INFO[office].addr).toBe(address);
+  expect(JUR_DB).toHaveProperty('전남광주통합특별시');
+  expect(JUR_DB).not.toHaveProperty('광주광역시');
+  expect(JUR_DB).not.toHaveProperty('전라남도');
+  for (const obsolete of ['중구', '동구', '서구']) expect(JUR_DB['인천광역시']).not.toHaveProperty(obsolete);
   for (const [sido, districts] of Object.entries(JUR_DB)) {
     expect(JUR_SOURCE_URL[sido], `source for ${sido}`).toMatch(/^https:\/\/www\.immigration\.go\.kr\/immigration\/20\d{2}\/subview\.do$/);
     for (const [district, office] of Object.entries(districts)) {
