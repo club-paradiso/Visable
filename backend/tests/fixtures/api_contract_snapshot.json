@@ -1,0 +1,5191 @@
+{
+ "exception_handlers": [
+  "HTTPException",
+  "RequestValidationError",
+  "WebSocketRequestValidationError"
+ ],
+ "middleware": [
+  "CORSMiddleware"
+ ],
+ "openapi": {
+  "components": {
+   "schemas": {
+    "AskRequest": {
+     "properties": {
+      "answer_mode": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Answer Mode"
+      },
+      "consent": {
+       "anyOf": [
+        {
+         "type": "boolean"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Consent"
+      },
+      "context": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Context"
+      },
+      "diagnostics": {
+       "anyOf": [
+        {
+         "type": "boolean"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Diagnostics"
+      },
+      "history": {
+       "anyOf": [
+        {
+         "items": {
+          "type": "object"
+         },
+         "type": "array"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "History"
+      },
+      "lang": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Lang"
+      },
+      "message": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Message"
+      },
+      "model": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Model"
+      },
+      "query": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Query"
+      },
+      "question": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Question"
+      },
+      "selected_procedure_key": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Selected Procedure Key"
+      },
+      "selected_procedure_variant_id": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Selected Procedure Variant Id"
+      },
+      "stream": {
+       "anyOf": [
+        {
+         "type": "boolean"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Stream"
+      },
+      "visa_code": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Visa Code"
+      },
+      "visa_data": {
+       "anyOf": [
+        {
+         "type": "object"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Visa Data"
+      }
+     },
+     "title": "AskRequest",
+     "type": "object"
+    },
+    "ConditionKind": {
+     "enum": [
+      "always",
+      "conditional",
+      "applicant_specific",
+      "office_discretion"
+     ],
+     "title": "ConditionKind",
+     "type": "string"
+    },
+    "ConflictResolution": {
+     "properties": {
+      "keep_fact_id": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Keep Fact Id"
+      },
+      "reason": {
+       "maxLength": 2000,
+       "minLength": 3,
+       "title": "Reason",
+       "type": "string"
+      }
+     },
+     "required": [
+      "reason"
+     ],
+     "title": "ConflictResolution",
+     "type": "object"
+    },
+    "DashboardMetricsOut": {
+     "properties": {
+      "change_count": {
+       "title": "Change Count",
+       "type": "integer"
+      },
+      "extension_count": {
+       "title": "Extension Count",
+       "type": "integer"
+      },
+      "lacking_evidence_count": {
+       "title": "Lacking Evidence Count",
+       "type": "integer"
+      },
+      "office_pending_count": {
+       "title": "Office Pending Count",
+       "type": "integer"
+      },
+      "pending_review_count": {
+       "title": "Pending Review Count",
+       "type": "integer"
+      },
+      "recent_audit": {
+       "items": {
+        "type": "object"
+       },
+       "title": "Recent Audit",
+       "type": "array"
+      },
+      "recent_drafts": {
+       "items": {
+        "type": "object"
+       },
+       "title": "Recent Drafts",
+       "type": "array"
+      },
+      "registration_count": {
+       "title": "Registration Count",
+       "type": "integer"
+      },
+      "reviewed_count": {
+       "title": "Reviewed Count",
+       "type": "integer"
+      },
+      "stale_count": {
+       "title": "Stale Count",
+       "type": "integer"
+      },
+      "suspected_conflicts_count": {
+       "title": "Suspected Conflicts Count",
+       "type": "integer"
+      },
+      "total_scenarios": {
+       "title": "Total Scenarios",
+       "type": "integer"
+      }
+     },
+     "required": [
+      "total_scenarios",
+      "extension_count",
+      "change_count",
+      "registration_count",
+      "reviewed_count",
+      "pending_review_count",
+      "lacking_evidence_count",
+      "suspected_conflicts_count",
+      "stale_count",
+      "office_pending_count",
+      "recent_drafts",
+      "recent_audit"
+     ],
+     "title": "DashboardMetricsOut",
+     "type": "object"
+    },
+    "DebugLawGroundingRequest": {
+     "properties": {
+      "question": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Question"
+      },
+      "status": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Status"
+      },
+      "text": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Text"
+      },
+      "visa_code": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Visa Code"
+      }
+     },
+     "title": "DebugLawGroundingRequest",
+     "type": "object"
+    },
+    "DraftActionIn": {
+     "properties": {
+      "action": {
+       "pattern": "^(submit|start_review|request_changes|approve|reject|publish)$",
+       "title": "Action",
+       "type": "string"
+      },
+      "allow_self_approval": {
+       "default": false,
+       "title": "Allow Self Approval",
+       "type": "boolean"
+      },
+      "comment": {
+       "default": "",
+       "maxLength": 2000,
+       "title": "Comment",
+       "type": "string"
+      },
+      "human_decision": {
+       "anyOf": [
+        {
+         "maxLength": 100,
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Human Decision"
+      }
+     },
+     "required": [
+      "action"
+     ],
+     "title": "DraftActionIn",
+     "type": "object"
+    },
+    "DraftCreateIn": {
+     "properties": {
+      "application_text": {
+       "default": "",
+       "maxLength": 12000,
+       "title": "Application Text",
+       "type": "string"
+      },
+      "conditional_text": {
+       "default": "",
+       "maxLength": 12000,
+       "title": "Conditional Text",
+       "type": "string"
+      },
+      "editor_note": {
+       "maxLength": 2000,
+       "minLength": 3,
+       "title": "Editor Note",
+       "type": "string"
+      },
+      "effective_end": {
+       "anyOf": [
+        {
+         "maxLength": 50,
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Effective End"
+      },
+      "effective_start": {
+       "anyOf": [
+        {
+         "maxLength": 50,
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Effective Start"
+      },
+      "evidence_date": {
+       "default": "",
+       "maxLength": 50,
+       "title": "Evidence Date",
+       "type": "string"
+      },
+      "evidence_issuer": {
+       "default": "",
+       "maxLength": 200,
+       "title": "Evidence Issuer",
+       "type": "string"
+      },
+      "evidence_title": {
+       "default": "",
+       "maxLength": 500,
+       "title": "Evidence Title",
+       "type": "string"
+      },
+      "evidence_url": {
+       "default": "",
+       "maxLength": 1000,
+       "title": "Evidence Url",
+       "type": "string"
+      },
+      "item_id": {
+       "title": "Item Id",
+       "type": "string"
+      },
+      "note_text": {
+       "default": "",
+       "maxLength": 12000,
+       "title": "Note Text",
+       "type": "string"
+      },
+      "required_text": {
+       "maxLength": 12000,
+       "minLength": 1,
+       "title": "Required Text",
+       "type": "string"
+      },
+      "source_edition": {
+       "anyOf": [
+        {
+         "maxLength": 100,
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Source Edition"
+      },
+      "source_locator": {
+       "anyOf": [
+        {
+         "maxLength": 100,
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Source Locator"
+      },
+      "source_section": {
+       "anyOf": [
+        {
+         "maxLength": 200,
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Source Section"
+      }
+     },
+     "required": [
+      "item_id",
+      "required_text",
+      "editor_note"
+     ],
+     "title": "DraftCreateIn",
+     "type": "object"
+    },
+    "EmploymentInterpretRequest": {
+     "properties": {
+      "lang": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Lang"
+      },
+      "text": {
+       "default": "",
+       "title": "Text",
+       "type": "string"
+      }
+     },
+     "title": "EmploymentInterpretRequest",
+     "type": "object"
+    },
+    "EnforcementAnalyzeRequest": {
+     "properties": {
+      "caseData": {
+       "title": "Casedata",
+       "type": "object"
+      }
+     },
+     "required": [
+      "caseData"
+     ],
+     "title": "EnforcementAnalyzeRequest",
+     "type": "object"
+    },
+    "EnforcementExtractRequest": {
+     "properties": {
+      "assessmentDate": {
+       "anyOf": [
+        {
+         "format": "date",
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Assessmentdate"
+      },
+      "text": {
+       "default": "",
+       "maxLength": 3000,
+       "title": "Text",
+       "type": "string"
+      }
+     },
+     "title": "EnforcementExtractRequest",
+     "type": "object"
+    },
+    "EvalAssertion": {
+     "properties": {
+      "type": {
+       "$ref": "#/components/schemas/EvalAssertionType"
+      },
+      "value": {
+       "title": "Value"
+      }
+     },
+     "required": [
+      "type"
+     ],
+     "title": "EvalAssertion",
+     "type": "object"
+    },
+    "EvalAssertionType": {
+     "enum": [
+      "MUST_INCLUDE_FACT",
+      "MUST_NOT_INCLUDE_FACT",
+      "SOURCE_MUST_BE",
+      "SOURCE_MUST_NOT_BE",
+      "EXPECTED_STATUS",
+      "EXPECTED_SUBCODE",
+      "EXPECTED_PROCEDURE",
+      "EXPECTED_INTENT",
+      "EXPECTED_COVERAGE_STATE",
+      "EXPECTED_BUCKET",
+      "MUST_CLARIFY",
+      "MUST_NOT_CLARIFY",
+      "MUST_RECORD_GAP",
+      "MUST_NOT_RECORD_GAP",
+      "MUST_NOT_CLAIM_CERTAINTY",
+      "MUST_NOT_LEAK_INTERNAL_METADATA",
+      "MUST_NOT_LEAK_MODEL_PROVIDER",
+      "LANGUAGE_EXPECTED"
+     ],
+     "title": "EvalAssertionType",
+     "type": "string"
+    },
+    "EvalCaseIn": {
+     "properties": {
+      "assertions": {
+       "items": {
+        "$ref": "#/components/schemas/EvalAssertion"
+       },
+       "title": "Assertions",
+       "type": "array"
+      },
+      "case_key": {
+       "maxLength": 120,
+       "minLength": 3,
+       "pattern": "^[a-z0-9_.:-]+$",
+       "title": "Case Key",
+       "type": "string"
+      },
+      "depends_on_slots": {
+       "items": {
+        "type": "string"
+       },
+       "title": "Depends On Slots",
+       "type": "array"
+      },
+      "expected": {
+       "title": "Expected",
+       "type": "object"
+      },
+      "language": {
+       "default": "ko",
+       "maxLength": 12,
+       "title": "Language",
+       "type": "string"
+      },
+      "payload_visa_code": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Payload Visa Code"
+      },
+      "query": {
+       "maxLength": 1000,
+       "minLength": 1,
+       "title": "Query",
+       "type": "string"
+      },
+      "risk_category": {
+       "default": "standard",
+       "title": "Risk Category",
+       "type": "string"
+      },
+      "tags": {
+       "items": {
+        "type": "string"
+       },
+       "title": "Tags",
+       "type": "array"
+      }
+     },
+     "required": [
+      "case_key",
+      "query"
+     ],
+     "title": "EvalCaseIn",
+     "type": "object"
+    },
+    "EvalRunRequest": {
+     "properties": {
+      "selector": {
+       "default": "all",
+       "maxLength": 120,
+       "title": "Selector",
+       "type": "string"
+      }
+     },
+     "title": "EvalRunRequest",
+     "type": "object"
+    },
+    "EvalStateUpdate": {
+     "properties": {
+      "reason": {
+       "default": "",
+       "maxLength": 1000,
+       "title": "Reason",
+       "type": "string"
+      },
+      "state": {
+       "pattern": "^(draft|approved|retired)$",
+       "title": "State",
+       "type": "string"
+      }
+     },
+     "required": [
+      "state"
+     ],
+     "title": "EvalStateUpdate",
+     "type": "object"
+    },
+    "FeedbackIn": {
+     "properties": {
+      "answer_ref": {
+       "anyOf": [
+        {
+         "maxLength": 64,
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Answer Ref"
+      },
+      "comment": {
+       "default": "",
+       "maxLength": 1000,
+       "title": "Comment",
+       "type": "string"
+      },
+      "coverage_state": {
+       "anyOf": [
+        {
+         "maxLength": 40,
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Coverage State"
+      },
+      "intent": {
+       "anyOf": [
+        {
+         "maxLength": 40,
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Intent"
+      },
+      "language": {
+       "default": "",
+       "maxLength": 12,
+       "title": "Language",
+       "type": "string"
+      },
+      "procedure": {
+       "anyOf": [
+        {
+         "maxLength": 40,
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Procedure"
+      },
+      "reason": {
+       "$ref": "#/components/schemas/FeedbackReason"
+      },
+      "status_code": {
+       "anyOf": [
+        {
+         "maxLength": 16,
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Status Code"
+      }
+     },
+     "required": [
+      "reason"
+     ],
+     "title": "FeedbackIn",
+     "type": "object"
+    },
+    "FeedbackReason": {
+     "enum": [
+      "INCORRECT",
+      "MISSING_INFORMATION",
+      "TOO_LONG",
+      "HARD_TO_UNDERSTAND",
+      "SOURCE_PROBLEM",
+      "MISUNDERSTOOD_QUESTION",
+      "OUTDATED",
+      "OTHER",
+      "HELPFUL"
+     ],
+     "title": "FeedbackReason",
+     "type": "string"
+    },
+    "FieldDiffItem": {
+     "properties": {
+      "baseline_value": {
+       "title": "Baseline Value",
+       "type": "string"
+      },
+      "changed": {
+       "title": "Changed",
+       "type": "boolean"
+      },
+      "draft_value": {
+       "title": "Draft Value",
+       "type": "string"
+      },
+      "field_name": {
+       "title": "Field Name",
+       "type": "string"
+      },
+      "label": {
+       "title": "Label",
+       "type": "string"
+      }
+     },
+     "required": [
+      "field_name",
+      "label",
+      "baseline_value",
+      "draft_value",
+      "changed"
+     ],
+     "title": "FieldDiffItem",
+     "type": "object"
+    },
+    "GapUpdate": {
+     "properties": {
+      "linked_task_id": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Linked Task Id"
+      },
+      "note": {
+       "default": "",
+       "maxLength": 2000,
+       "title": "Note",
+       "type": "string"
+      },
+      "resolution_status": {
+       "pattern": "^(open|investigating|resolved|wont_fix)$",
+       "title": "Resolution Status",
+       "type": "string"
+      }
+     },
+     "required": [
+      "resolution_status"
+     ],
+     "title": "GapUpdate",
+     "type": "object"
+    },
+    "HTTPValidationError": {
+     "properties": {
+      "detail": {
+       "items": {
+        "$ref": "#/components/schemas/ValidationError"
+       },
+       "title": "Detail",
+       "type": "array"
+      }
+     },
+     "title": "HTTPValidationError",
+     "type": "object"
+    },
+    "IngestRequest": {
+     "properties": {
+      "adapter": {
+       "pattern": "^(status_guidance|proposals)$",
+       "title": "Adapter",
+       "type": "string"
+      },
+      "mode": {
+       "default": "dry_run",
+       "pattern": "^(dry_run|validate|apply)$",
+       "title": "Mode",
+       "type": "string"
+      },
+      "procedures": {
+       "items": {
+        "type": "string"
+       },
+       "maxItems": 10,
+       "title": "Procedures",
+       "type": "array"
+      },
+      "proposals": {
+       "items": {
+        "type": "object"
+       },
+       "maxItems": 500,
+       "title": "Proposals",
+       "type": "array"
+      },
+      "statuses": {
+       "items": {
+        "type": "string"
+       },
+       "maxItems": 50,
+       "title": "Statuses",
+       "type": "array"
+      }
+     },
+     "required": [
+      "adapter"
+     ],
+     "title": "IngestRequest",
+     "type": "object"
+    },
+    "JobCodeKeywordsRequest": {
+     "properties": {
+      "query": {
+       "minLength": 1,
+       "title": "Query",
+       "type": "string"
+      }
+     },
+     "required": [
+      "query"
+     ],
+     "title": "JobCodeKeywordsRequest",
+     "type": "object"
+    },
+    "JobCodeKeywordsResponse": {
+     "properties": {
+      "keywords": {
+       "items": {
+        "type": "string"
+       },
+       "title": "Keywords",
+       "type": "array"
+      },
+      "query": {
+       "title": "Query",
+       "type": "string"
+      }
+     },
+     "required": [
+      "query",
+      "keywords"
+     ],
+     "title": "JobCodeKeywordsResponse",
+     "type": "object"
+    },
+    "LegalResearchRequest": {
+     "properties": {
+      "depth": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Depth"
+      },
+      "includeManuals": {
+       "anyOf": [
+        {
+         "type": "boolean"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Includemanuals"
+      },
+      "includePrecedents": {
+       "anyOf": [
+        {
+         "type": "boolean"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Includeprecedents"
+      },
+      "locale": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "default": "ko",
+       "title": "Locale"
+      },
+      "mode": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Mode"
+      },
+      "question": {
+       "default": "",
+       "title": "Question",
+       "type": "string"
+      },
+      "synthesis": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Synthesis"
+      },
+      "visaStatusHint": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Visastatushint"
+      }
+     },
+     "title": "LegalResearchRequest",
+     "type": "object"
+    },
+    "NationalityCoachRequest": {
+     "properties": {
+      "answer": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Answer"
+      },
+      "category": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Category"
+      },
+      "difficulty": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Difficulty"
+      },
+      "lang": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Lang"
+      },
+      "message": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Message"
+      },
+      "mode": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Mode"
+      },
+      "question": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Question"
+      }
+     },
+     "title": "NationalityCoachRequest",
+     "type": "object"
+    },
+    "OfficeOverrideIn": {
+     "properties": {
+      "confirmed_date": {
+       "default": "",
+       "maxLength": 50,
+       "title": "Confirmed Date",
+       "type": "string"
+      },
+      "diff_type": {
+       "pattern": "^(additional_required|conditional_added|exemption_granted|procedural_notice)$",
+       "title": "Diff Type",
+       "type": "string"
+      },
+      "effective_end": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Effective End"
+      },
+      "effective_start": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Effective Start"
+      },
+      "evidence_issuer": {
+       "default": "",
+       "maxLength": 200,
+       "title": "Evidence Issuer",
+       "type": "string"
+      },
+      "evidence_title": {
+       "default": "",
+       "maxLength": 500,
+       "title": "Evidence Title",
+       "type": "string"
+      },
+      "evidence_url": {
+       "maxLength": 1000,
+       "minLength": 8,
+       "title": "Evidence Url",
+       "type": "string"
+      },
+      "item_id": {
+       "title": "Item Id",
+       "type": "string"
+      },
+      "office_id": {
+       "maxLength": 50,
+       "minLength": 2,
+       "title": "Office Id",
+       "type": "string"
+      },
+      "override_text": {
+       "maxLength": 12000,
+       "minLength": 2,
+       "title": "Override Text",
+       "type": "string"
+      },
+      "procedure": {
+       "pattern": "^(extension|change|registration)$",
+       "title": "Procedure",
+       "type": "string"
+      },
+      "status_code": {
+       "title": "Status Code",
+       "type": "string"
+      }
+     },
+     "required": [
+      "office_id",
+      "item_id",
+      "procedure",
+      "status_code",
+      "diff_type",
+      "override_text",
+      "evidence_url"
+     ],
+     "title": "OfficeOverrideIn",
+     "type": "object"
+    },
+    "PublishValidationReport": {
+     "properties": {
+      "approved_drafts_count": {
+       "default": 0,
+       "title": "Approved Drafts Count",
+       "type": "integer"
+      },
+      "checked_at": {
+       "title": "Checked At",
+       "type": "string"
+      },
+      "checks": {
+       "items": {
+        "type": "object"
+       },
+       "title": "Checks",
+       "type": "array"
+      },
+      "dataset_checksum": {
+       "default": "",
+       "title": "Dataset Checksum",
+       "type": "string"
+      },
+      "durable_storage": {
+       "default": true,
+       "title": "Durable Storage",
+       "type": "boolean"
+      },
+      "errors": {
+       "items": {
+        "type": "string"
+       },
+       "title": "Errors",
+       "type": "array"
+      },
+      "passed": {
+       "title": "Passed",
+       "type": "boolean"
+      },
+      "pending_drafts_count": {
+       "default": 0,
+       "title": "Pending Drafts Count",
+       "type": "integer"
+      },
+      "procedure_counts": {
+       "additionalProperties": {
+        "type": "integer"
+       },
+       "title": "Procedure Counts",
+       "type": "object"
+      },
+      "total_items": {
+       "title": "Total Items",
+       "type": "integer"
+      },
+      "total_scenarios": {
+       "title": "Total Scenarios",
+       "type": "integer"
+      },
+      "valid": {
+       "title": "Valid",
+       "type": "boolean"
+      },
+      "warnings": {
+       "items": {
+        "type": "string"
+       },
+       "title": "Warnings",
+       "type": "array"
+      }
+     },
+     "required": [
+      "valid",
+      "passed",
+      "total_items",
+      "total_scenarios",
+      "checked_at"
+     ],
+     "title": "PublishValidationReport",
+     "type": "object"
+    },
+    "RefreshStateUpdate": {
+     "properties": {
+      "reason": {
+       "default": "",
+       "maxLength": 1000,
+       "title": "Reason",
+       "type": "string"
+      },
+      "refresh_state": {
+       "pattern": "^(current|refresh_due|superseded|unavailable)$",
+       "title": "Refresh State",
+       "type": "string"
+      }
+     },
+     "required": [
+      "refresh_state"
+     ],
+     "title": "RefreshStateUpdate",
+     "type": "object"
+    },
+    "ReleaseRequestIn": {
+     "properties": {
+      "release_note": {
+       "default": "운영 배포 릴리스",
+       "maxLength": 2000,
+       "minLength": 3,
+       "title": "Release Note",
+       "type": "string"
+      },
+      "release_tag": {
+       "anyOf": [
+        {
+         "maxLength": 64,
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Release Tag"
+      },
+      "target_procedure": {
+       "default": "all",
+       "pattern": "^(all|extension|change|registration)$",
+       "title": "Target Procedure",
+       "type": "string"
+      }
+     },
+     "title": "ReleaseRequestIn",
+     "type": "object"
+    },
+    "RequirementLevel": {
+     "description": "Presentation bucket of a document fact (matches structured_answer buckets).",
+     "enum": [
+      "common",
+      "required",
+      "conditional",
+      "additional"
+     ],
+     "title": "RequirementLevel",
+     "type": "string"
+    },
+    "ReviewAction": {
+     "enum": [
+      "start_review",
+      "approve",
+      "verify",
+      "publish",
+      "reject",
+      "needs_evidence",
+      "edit",
+      "withdraw"
+     ],
+     "title": "ReviewAction",
+     "type": "string"
+    },
+    "ReviewActionRequest": {
+     "properties": {
+      "action": {
+       "$ref": "#/components/schemas/ReviewAction"
+      },
+      "condition_kind": {
+       "anyOf": [
+        {
+         "$ref": "#/components/schemas/ConditionKind"
+        },
+        {
+         "type": "null"
+        }
+       ]
+      },
+      "condition_text": {
+       "anyOf": [
+        {
+         "maxLength": 1000,
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Condition Text"
+      },
+      "effective_from": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Effective From"
+      },
+      "reason": {
+       "default": "",
+       "maxLength": 2000,
+       "title": "Reason",
+       "type": "string"
+      },
+      "requirement_level": {
+       "anyOf": [
+        {
+         "$ref": "#/components/schemas/RequirementLevel"
+        },
+        {
+         "type": "null"
+        }
+       ]
+      },
+      "supersedes_fact_id": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Supersedes Fact Id"
+      },
+      "value_text": {
+       "anyOf": [
+        {
+         "maxLength": 2000,
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Value Text"
+      }
+     },
+     "required": [
+      "action"
+     ],
+     "title": "ReviewActionRequest",
+     "type": "object"
+    },
+    "RollbackRequestIn": {
+     "properties": {
+      "rollback_note": {
+       "default": "직전 정상 버전으로 긴급 롤백",
+       "maxLength": 2000,
+       "minLength": 3,
+       "title": "Rollback Note",
+       "type": "string"
+      }
+     },
+     "title": "RollbackRequestIn",
+     "type": "object"
+    },
+    "ScenarioDiffOut": {
+     "properties": {
+      "created_at": {
+       "title": "Created At",
+       "type": "string"
+      },
+      "created_by": {
+       "title": "Created By",
+       "type": "string"
+      },
+      "draft_id": {
+       "title": "Draft Id",
+       "type": "string"
+      },
+      "editor_note": {
+       "title": "Editor Note",
+       "type": "string"
+      },
+      "evidence_title": {
+       "title": "Evidence Title",
+       "type": "string"
+      },
+      "evidence_url": {
+       "title": "Evidence Url",
+       "type": "string"
+      },
+      "fields": {
+       "items": {
+        "$ref": "#/components/schemas/FieldDiffItem"
+       },
+       "title": "Fields",
+       "type": "array"
+      },
+      "has_legal_impact": {
+       "title": "Has Legal Impact",
+       "type": "boolean"
+      },
+      "item_id": {
+       "title": "Item Id",
+       "type": "string"
+      },
+      "legal_impact_notes": {
+       "items": {
+        "type": "string"
+       },
+       "title": "Legal Impact Notes",
+       "type": "array"
+      },
+      "lifecycle_state": {
+       "title": "Lifecycle State",
+       "type": "string"
+      },
+      "procedure": {
+       "title": "Procedure",
+       "type": "string"
+      },
+      "reviewed_at": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Reviewed At"
+      },
+      "reviewed_by": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Reviewed By"
+      },
+      "scenario": {
+       "title": "Scenario",
+       "type": "string"
+      },
+      "status_code": {
+       "title": "Status Code",
+       "type": "string"
+      }
+     },
+     "required": [
+      "draft_id",
+      "item_id",
+      "procedure",
+      "status_code",
+      "scenario",
+      "lifecycle_state",
+      "created_by",
+      "created_at",
+      "fields",
+      "evidence_url",
+      "evidence_title",
+      "editor_note",
+      "has_legal_impact",
+      "legal_impact_notes"
+     ],
+     "title": "ScenarioDiffOut",
+     "type": "object"
+    },
+    "UnifiedAiOverviewRequest": {
+     "properties": {
+      "detectedVisaCodes": {
+       "anyOf": [
+        {
+         "items": {
+          "type": "string"
+         },
+         "type": "array"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Detectedvisacodes"
+      },
+      "intent": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Intent"
+      },
+      "lang": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Lang"
+      },
+      "query": {
+       "default": "",
+       "title": "Query",
+       "type": "string"
+      }
+     },
+     "title": "UnifiedAiOverviewRequest",
+     "type": "object"
+    },
+    "UnifiedSearchRequest": {
+     "properties": {
+      "includeManualEvidence": {
+       "anyOf": [
+        {
+         "type": "boolean"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "default": true,
+       "title": "Includemanualevidence"
+      },
+      "lang": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Lang"
+      },
+      "limit": {
+       "anyOf": [
+        {
+         "type": "integer"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Limit"
+      },
+      "query": {
+       "default": "",
+       "title": "Query",
+       "type": "string"
+      }
+     },
+     "title": "UnifiedSearchRequest",
+     "type": "object"
+    },
+    "ValidationError": {
+     "properties": {
+      "loc": {
+       "items": {
+        "anyOf": [
+         {
+          "type": "string"
+         },
+         {
+          "type": "integer"
+         }
+        ]
+       },
+       "title": "Location",
+       "type": "array"
+      },
+      "msg": {
+       "title": "Message",
+       "type": "string"
+      },
+      "type": {
+       "title": "Error Type",
+       "type": "string"
+      }
+     },
+     "required": [
+      "loc",
+      "msg",
+      "type"
+     ],
+     "title": "ValidationError",
+     "type": "object"
+    }
+   }
+  },
+  "info": {
+   "title": "Paradiso Backend",
+   "version": "0.1.0"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+   "/": {
+    "get": {
+     "description": "Service-info page for humans who hit the bare backend URL.\n\nThe Visable backend is API-only; the human-facing frontend is\nserved elsewhere (currently GitHub Pages). Without this route,\nFastAPI returns a bare `{\"detail\":\"Not Found\"}` for `GET /`, which\nis confusing for anyone (especially mobile users) who opens the\nRailway URL directly. Returns a small JSON descriptor instead.",
+     "operationId": "root__get",
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "title": "Response Root  Get",
+          "type": "object"
+         }
+        }
+       },
+       "description": "Successful Response"
+      }
+     },
+     "summary": "Root"
+    }
+   },
+   "/api/ask": {
+    "post": {
+     "operationId": "ask_api_ask_post",
+     "requestBody": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/AskRequest"
+        }
+       }
+      },
+      "required": true
+     },
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {}
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Ask"
+    }
+   },
+   "/api/checklists/preview": {
+    "get": {
+     "operationId": "preview_checklists_api_checklists_preview_get",
+     "parameters": [
+      {
+       "in": "query",
+       "name": "release_id",
+       "required": true,
+       "schema": {
+        "minLength": 1,
+        "title": "Release Id",
+        "type": "string"
+       }
+      }
+     ],
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "title": "Response Preview Checklists Api Checklists Preview Get",
+          "type": "object"
+         }
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Preview Checklists"
+    }
+   },
+   "/api/checklists/published": {
+    "get": {
+     "operationId": "published_checklists_api_checklists_published_get",
+     "parameters": [
+      {
+       "in": "query",
+       "name": "procedure",
+       "required": false,
+       "schema": {
+        "anyOf": [
+         {
+          "type": "string"
+         },
+         {
+          "type": "null"
+         }
+        ],
+        "title": "Procedure"
+       }
+      }
+     ],
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "title": "Response Published Checklists Api Checklists Published Get",
+          "type": "object"
+         }
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Published Checklists"
+    }
+   },
+   "/api/debug/law-grounding": {
+    "post": {
+     "description": "Development/debug endpoint only, not a legal-advice production route.\n\nGated behind PARADISO_ENABLE_DEBUG_ENDPOINTS (default OFF -> 404, M-10).\nAlways includes a non-secret `preflight` readiness block. When a question\nis supplied, also returns the (mode-gated, non-crashing) grounding context.",
+     "operationId": "debug_law_grounding_api_debug_law_grounding_post",
+     "requestBody": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/DebugLawGroundingRequest"
+        }
+       }
+      },
+      "required": true
+     },
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "title": "Response Debug Law Grounding Api Debug Law Grounding Post",
+          "type": "object"
+         }
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Debug Law Grounding"
+    }
+   },
+   "/api/debug/law-grounding/netdiag": {
+    "get": {
+     "description": "Deep, read-only network diagnostic for the Open Law API host.\n\nGated behind PARADISO_ENABLE_DEBUG_ENDPOINTS (default OFF -> 404): it\nreturns resolved outbound IPs / network topology and triggers external\nprobes, which must not be available to anonymous callers (M-10).\n\nWhen the selftest reports UNREACHABLE (HTTP status 0 / law_api_bad_response)\nthe failure is below HTTP and could be DNS, a fully-blocked egress, the\nKorean government server refusing this server's (foreign / cloud) IP, a\nport-80-only block, or an HTTP-layer issue. This endpoint runs a small set\nof layered probes and returns the precise, secret-free cause plus a\nrecommended remediation.\n\nThe OC is NEVER sent in any probe and NEVER returned. Each probe is bounded\nby ``LAW_NETDIAG_TIMEOUT_SECONDS`` (default 4s). Never raises (beyond the\navailability gate above).",
+     "operationId": "debug_law_grounding_netdiag_api_debug_law_grounding_netdiag_get",
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "title": "Response Debug Law Grounding Netdiag Api Debug Law Grounding Netdiag Get",
+          "type": "object"
+         }
+        }
+       },
+       "description": "Successful Response"
+      }
+     },
+     "summary": "Debug Law Grounding Netdiag"
+    }
+   },
+   "/api/debug/law-grounding/preflight": {
+    "get": {
+     "description": "Operator-safe law-grounding readiness preflight (no external call, no secrets).\n\nReports the resolved mode, whether the API key / endpoint are configured\n(booleans only), whether a sample question would trigger grounding, the\nstatutory query that would be issued, and explicit warning markers\n(LAW_GROUNDING_DISABLED / LAW_GROUNDING_AUDIT_ONLY / LAW_API_KEY_MISSING /\nLAW_API_ENDPOINT_MISSING). Useful even when external calls are disabled.",
+     "operationId": "debug_law_grounding_preflight_api_debug_law_grounding_preflight_get",
+     "parameters": [
+      {
+       "in": "query",
+       "name": "question",
+       "required": false,
+       "schema": {
+        "anyOf": [
+         {
+          "type": "string"
+         },
+         {
+          "type": "null"
+         }
+        ],
+        "title": "Question"
+       }
+      }
+     ],
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "title": "Response Debug Law Grounding Preflight Api Debug Law Grounding Preflight Get",
+          "type": "object"
+         }
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Debug Law Grounding Preflight"
+    }
+   },
+   "/api/debug/law-grounding/selftest": {
+    "get": {
+     "description": "Browser-friendly, one-call LIVE check of Open Law API grounding.\n\nGated behind PARADISO_ENABLE_DEBUG_ENDPOINTS (default OFF -> 404): it can\ntrigger a live outbound call and reveals deployment readiness detail that\nanonymous callers have no business probing (M-10).\n\nUnlike the preflight (which makes NO external call), this performs the same\nmode-gated, secret-free law.go.kr search the answer path uses — against a\ndefault statute query — and returns a plain-language verdict. An operator\ncan open this single URL on the deployed host (e.g. Railway) to confirm\nwhether law grounding actually works, distinguishing the common failure\nmodes: grounding disabled, no credential, HTTP 403 (OC valid but the\ncalling IP is not allow-listed on open.law.go.kr), unreachable host\n(outbound/egress blocked), timeout, or reachable-but-no-results.\n\nThe OC value is NEVER returned; the source URL is sanitized at the tool\nboundary. Read-only; never raises (beyond the availability gate above).",
+     "operationId": "debug_law_grounding_selftest_api_debug_law_grounding_selftest_get",
+     "parameters": [
+      {
+       "in": "query",
+       "name": "question",
+       "required": false,
+       "schema": {
+        "anyOf": [
+         {
+          "type": "string"
+         },
+         {
+          "type": "null"
+         }
+        ],
+        "title": "Question"
+       }
+      }
+     ],
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "title": "Response Debug Law Grounding Selftest Api Debug Law Grounding Selftest Get",
+          "type": "object"
+         }
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Debug Law Grounding Selftest"
+    }
+   },
+   "/api/employment/interpret": {
+    "post": {
+     "description": "Extract structured job facts from free text for the 취업정보 신고 helper.\n\nThis endpoint NEVER returns a KSCO8 직종 code or a KSIC11 업종 code and never\ndecides whether reporting is required. It returns validated *facts* which the\nfrontend feeds into the existing deterministic analyzer — the only component\nthat may produce a code, because it retrieves codes from the official tables.\n\nAnything the model emits outside the fixed schema is dropped, and every\nremoval is reported in ``warnings`` so the sanitization is auditable.",
+     "operationId": "employment_interpret_api_employment_interpret_post",
+     "requestBody": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/EmploymentInterpretRequest"
+        }
+       }
+      },
+      "required": true
+     },
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "title": "Response Employment Interpret Api Employment Interpret Post"
+         }
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Employment Interpret"
+    }
+   },
+   "/api/enforcement/analyze": {
+    "post": {
+     "description": "Calculate the law first, then request a bounded outcome prediction.",
+     "operationId": "enforcement_analyze_api_enforcement_analyze_post",
+     "requestBody": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/EnforcementAnalyzeRequest"
+        }
+       }
+      },
+      "required": true
+     },
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "title": "Response Enforcement Analyze Api Enforcement Analyze Post"
+         }
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Enforcement Analyze"
+    }
+   },
+   "/api/enforcement/extract": {
+    "post": {
+     "description": "Convert a sensitive narrative into non-identifying structured facts.",
+     "operationId": "enforcement_extract_api_enforcement_extract_post",
+     "requestBody": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/EnforcementExtractRequest"
+        }
+       }
+      },
+      "required": true
+     },
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "title": "Response Enforcement Extract Api Enforcement Extract Post"
+         }
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Enforcement Extract"
+    }
+   },
+   "/api/enforcement/provider-probe": {
+    "get": {
+     "description": "Fixed synthetic probe. Accepts no case input and never returns model text.",
+     "operationId": "enforcement_provider_probe_api_enforcement_provider_probe_get",
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "title": "Response Enforcement Provider Probe Api Enforcement Provider Probe Get"
+         }
+        }
+       },
+       "description": "Successful Response"
+      }
+     },
+     "summary": "Enforcement Provider Probe"
+    }
+   },
+   "/api/feedback": {
+    "post": {
+     "operationId": "submit_feedback_api_feedback_post",
+     "requestBody": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/FeedbackIn"
+        }
+       }
+      },
+      "required": true
+     },
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "title": "Response Submit Feedback Api Feedback Post",
+          "type": "object"
+         }
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Submit Feedback"
+    }
+   },
+   "/api/health/ai": {
+    "get": {
+     "description": "AI readiness — what an operator needs to answer \"is the AI actually up?\".\n\n/health answers \"is the web server alive?\". That is a different question,\nand conflating them is how a deployment can look healthy while every AI\nfeature is failing. This endpoint reports readiness per feature.\n\nIt performs NO provider calls: a health probe that costs a completion is a\nhealth probe nobody runs often enough to be useful, and it would bill the\naccount on every check. Everything here is configuration and registry state,\nso it is cheap enough to poll.\n\nReadiness is NOT proof of a working answer. `liveVerification` says so\nexplicitly, and names the smoke script that can actually prove it — so this\nendpoint can never be mistaken for the live check.\n\nNon-secret by construction: booleans, public model ids, classified states.\nNo credential value, no authorization header, no raw provider body.",
+     "operationId": "health_ai_api_health_ai_get",
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "title": "Response Health Ai Api Health Ai Get",
+          "type": "object"
+         }
+        }
+       },
+       "description": "Successful Response"
+      }
+     },
+     "summary": "Health Ai"
+    }
+   },
+   "/api/jobcodekeywords": {
+    "post": {
+     "operationId": "job_code_keywords_api_jobcodekeywords_post",
+     "requestBody": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/JobCodeKeywordsRequest"
+        }
+       }
+      },
+      "required": true
+     },
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "$ref": "#/components/schemas/JobCodeKeywordsResponse"
+         }
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Job Code Keywords"
+    }
+   },
+   "/api/knowledge/published": {
+    "get": {
+     "operationId": "published_export_api_knowledge_published_get",
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "title": "Response Published Export Api Knowledge Published Get",
+          "type": "object"
+         }
+        }
+       },
+       "description": "Successful Response"
+      }
+     },
+     "summary": "Published Export"
+    }
+   },
+   "/api/knowledge/studio/audit": {
+    "get": {
+     "operationId": "audit_api_knowledge_studio_audit_get",
+     "parameters": [
+      {
+       "in": "query",
+       "name": "limit",
+       "required": false,
+       "schema": {
+        "default": 100,
+        "maximum": 500,
+        "title": "Limit",
+        "type": "integer"
+       }
+      }
+     ],
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {}
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Audit"
+    }
+   },
+   "/api/knowledge/studio/checklists/auth/me": {
+    "get": {
+     "operationId": "auth_me_api_knowledge_studio_checklists_auth_me_get",
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "title": "Response Auth Me Api Knowledge Studio Checklists Auth Me Get",
+          "type": "object"
+         }
+        }
+       },
+       "description": "Successful Response"
+      }
+     },
+     "summary": "Auth Me"
+    }
+   },
+   "/api/knowledge/studio/checklists/dashboard": {
+    "get": {
+     "operationId": "dashboard_api_knowledge_studio_checklists_dashboard_get",
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "$ref": "#/components/schemas/DashboardMetricsOut"
+         }
+        }
+       },
+       "description": "Successful Response"
+      }
+     },
+     "summary": "Dashboard"
+    }
+   },
+   "/api/knowledge/studio/checklists/diff/{draft_id}": {
+    "get": {
+     "operationId": "get_diff_api_knowledge_studio_checklists_diff__draft_id__get",
+     "parameters": [
+      {
+       "in": "path",
+       "name": "draft_id",
+       "required": true,
+       "schema": {
+        "title": "Draft Id",
+        "type": "string"
+       }
+      }
+     ],
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "$ref": "#/components/schemas/ScenarioDiffOut"
+         }
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Get Diff"
+    }
+   },
+   "/api/knowledge/studio/checklists/drafts": {
+    "post": {
+     "operationId": "create_draft_api_knowledge_studio_checklists_drafts_post",
+     "requestBody": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/DraftCreateIn"
+        }
+       }
+      },
+      "required": true
+     },
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "title": "Response Create Draft Api Knowledge Studio Checklists Drafts Post",
+          "type": "object"
+         }
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Create Draft"
+    }
+   },
+   "/api/knowledge/studio/checklists/drafts/{draft_id}/action": {
+    "post": {
+     "operationId": "draft_action_api_knowledge_studio_checklists_drafts__draft_id__action_post",
+     "parameters": [
+      {
+       "in": "path",
+       "name": "draft_id",
+       "required": true,
+       "schema": {
+        "title": "Draft Id",
+        "type": "string"
+       }
+      }
+     ],
+     "requestBody": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/DraftActionIn"
+        }
+       }
+      },
+      "required": true
+     },
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "title": "Response Draft Action Api Knowledge Studio Checklists Drafts  Draft Id  Action Post",
+          "type": "object"
+         }
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Draft Action"
+    }
+   },
+   "/api/knowledge/studio/checklists/offices": {
+    "get": {
+     "operationId": "get_offices_api_knowledge_studio_checklists_offices_get",
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "title": "Response Get Offices Api Knowledge Studio Checklists Offices Get",
+          "type": "object"
+         }
+        }
+       },
+       "description": "Successful Response"
+      }
+     },
+     "summary": "Get Offices"
+    }
+   },
+   "/api/knowledge/studio/checklists/offices/overrides": {
+    "post": {
+     "operationId": "create_office_override_api_knowledge_studio_checklists_offices_overrides_post",
+     "requestBody": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/OfficeOverrideIn"
+        }
+       }
+      },
+      "required": true
+     },
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "title": "Response Create Office Override Api Knowledge Studio Checklists Offices Overrides Post",
+          "type": "object"
+         }
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Create Office Override"
+    }
+   },
+   "/api/knowledge/studio/checklists/publish/release": {
+    "post": {
+     "operationId": "release_publish_api_knowledge_studio_checklists_publish_release_post",
+     "requestBody": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ReleaseRequestIn"
+        }
+       }
+      },
+      "required": true
+     },
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "title": "Response Release Publish Api Knowledge Studio Checklists Publish Release Post",
+          "type": "object"
+         }
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Release Publish"
+    }
+   },
+   "/api/knowledge/studio/checklists/publish/validate": {
+    "post": {
+     "operationId": "validate_publish_api_knowledge_studio_checklists_publish_validate_post",
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "$ref": "#/components/schemas/PublishValidationReport"
+         }
+        }
+       },
+       "description": "Successful Response"
+      }
+     },
+     "summary": "Validate Publish"
+    }
+   },
+   "/api/knowledge/studio/checklists/releases": {
+    "get": {
+     "operationId": "get_releases_list_api_knowledge_studio_checklists_releases_get",
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "title": "Response Get Releases List Api Knowledge Studio Checklists Releases Get",
+          "type": "object"
+         }
+        }
+       },
+       "description": "Successful Response"
+      }
+     },
+     "summary": "Get Releases List"
+    }
+   },
+   "/api/knowledge/studio/checklists/releases/{release_id}/preview": {
+    "get": {
+     "operationId": "get_release_preview_endpoint_api_knowledge_studio_checklists_releases__release_id__preview_get",
+     "parameters": [
+      {
+       "in": "path",
+       "name": "release_id",
+       "required": true,
+       "schema": {
+        "title": "Release Id",
+        "type": "string"
+       }
+      }
+     ],
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "title": "Response Get Release Preview Endpoint Api Knowledge Studio Checklists Releases  Release Id  Preview Get",
+          "type": "object"
+         }
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Get Release Preview Endpoint"
+    }
+   },
+   "/api/knowledge/studio/checklists/releases/{release_id}/rollback": {
+    "post": {
+     "operationId": "rollback_release_endpoint_api_knowledge_studio_checklists_releases__release_id__rollback_post",
+     "parameters": [
+      {
+       "in": "path",
+       "name": "release_id",
+       "required": true,
+       "schema": {
+        "title": "Release Id",
+        "type": "string"
+       }
+      }
+     ],
+     "requestBody": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/RollbackRequestIn"
+        }
+       }
+      },
+      "required": true
+     },
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "title": "Response Rollback Release Endpoint Api Knowledge Studio Checklists Releases  Release Id  Rollback Post",
+          "type": "object"
+         }
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Rollback Release Endpoint"
+    }
+   },
+   "/api/knowledge/studio/checklists/scenarios": {
+    "get": {
+     "operationId": "get_scenarios_api_knowledge_studio_checklists_scenarios_get",
+     "parameters": [
+      {
+       "in": "query",
+       "name": "procedure",
+       "required": false,
+       "schema": {
+        "anyOf": [
+         {
+          "maxLength": 20,
+          "type": "string"
+         },
+         {
+          "type": "null"
+         }
+        ],
+        "title": "Procedure"
+       }
+      },
+      {
+       "in": "query",
+       "name": "status_code",
+       "required": false,
+       "schema": {
+        "anyOf": [
+         {
+          "maxLength": 20,
+          "type": "string"
+         },
+         {
+          "type": "null"
+         }
+        ],
+        "title": "Status Code"
+       }
+      },
+      {
+       "in": "query",
+       "name": "query",
+       "required": false,
+       "schema": {
+        "anyOf": [
+         {
+          "maxLength": 100,
+          "type": "string"
+         },
+         {
+          "type": "null"
+         }
+        ],
+        "title": "Query"
+       }
+      },
+      {
+       "in": "query",
+       "name": "review_state",
+       "required": false,
+       "schema": {
+        "anyOf": [
+         {
+          "maxLength": 40,
+          "type": "string"
+         },
+         {
+          "type": "null"
+         }
+        ],
+        "title": "Review State"
+       }
+      },
+      {
+       "in": "query",
+       "name": "limit",
+       "required": false,
+       "schema": {
+        "default": 50,
+        "maximum": 200,
+        "title": "Limit",
+        "type": "integer"
+       }
+      },
+      {
+       "in": "query",
+       "name": "offset",
+       "required": false,
+       "schema": {
+        "default": 0,
+        "minimum": 0,
+        "title": "Offset",
+        "type": "integer"
+       }
+      }
+     ],
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "title": "Response Get Scenarios Api Knowledge Studio Checklists Scenarios Get",
+          "type": "object"
+         }
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Get Scenarios"
+    }
+   },
+   "/api/knowledge/studio/checklists/scenarios/{item_id}": {
+    "get": {
+     "operationId": "scenario_detail_api_knowledge_studio_checklists_scenarios__item_id__get",
+     "parameters": [
+      {
+       "in": "path",
+       "name": "item_id",
+       "required": true,
+       "schema": {
+        "title": "Item Id",
+        "type": "string"
+       }
+      }
+     ],
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "title": "Response Scenario Detail Api Knowledge Studio Checklists Scenarios  Item Id  Get",
+          "type": "object"
+         }
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Scenario Detail"
+    }
+   },
+   "/api/knowledge/studio/conflicts": {
+    "get": {
+     "operationId": "conflicts_api_knowledge_studio_conflicts_get",
+     "parameters": [
+      {
+       "in": "query",
+       "name": "status",
+       "required": false,
+       "schema": {
+        "default": "open",
+        "pattern": "^(open|resolved|dismissed)$",
+        "title": "Status",
+        "type": "string"
+       }
+      }
+     ],
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {}
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Conflicts"
+    }
+   },
+   "/api/knowledge/studio/conflicts/{conflict_id}/resolve": {
+    "post": {
+     "operationId": "resolve_conflict_api_knowledge_studio_conflicts__conflict_id__resolve_post",
+     "parameters": [
+      {
+       "in": "path",
+       "name": "conflict_id",
+       "required": true,
+       "schema": {
+        "title": "Conflict Id",
+        "type": "string"
+       }
+      }
+     ],
+     "requestBody": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ConflictResolution"
+        }
+       }
+      },
+      "required": true
+     },
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {}
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Resolve Conflict"
+    }
+   },
+   "/api/knowledge/studio/diff": {
+    "get": {
+     "operationId": "source_diff_api_knowledge_studio_diff_get",
+     "parameters": [
+      {
+       "in": "query",
+       "name": "from_version",
+       "required": true,
+       "schema": {
+        "title": "From Version",
+        "type": "string"
+       }
+      },
+      {
+       "in": "query",
+       "name": "to_version",
+       "required": true,
+       "schema": {
+        "title": "To Version",
+        "type": "string"
+       }
+      },
+      {
+       "in": "query",
+       "name": "status_code",
+       "required": false,
+       "schema": {
+        "anyOf": [
+         {
+          "type": "string"
+         },
+         {
+          "type": "null"
+         }
+        ],
+        "title": "Status Code"
+       }
+      },
+      {
+       "in": "query",
+       "name": "procedure",
+       "required": false,
+       "schema": {
+        "anyOf": [
+         {
+          "type": "string"
+         },
+         {
+          "type": "null"
+         }
+        ],
+        "title": "Procedure"
+       }
+      },
+      {
+       "in": "query",
+       "name": "include_unchanged",
+       "required": false,
+       "schema": {
+        "default": true,
+        "title": "Include Unchanged",
+        "type": "boolean"
+       }
+      },
+      {
+       "in": "query",
+       "name": "property",
+       "required": false,
+       "schema": {
+        "default": "required_document",
+        "maxLength": 40,
+        "title": "Property",
+        "type": "string"
+       }
+      }
+     ],
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {}
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Source Diff"
+    }
+   },
+   "/api/knowledge/studio/evals": {
+    "get": {
+     "operationId": "evals_api_knowledge_studio_evals_get",
+     "parameters": [
+      {
+       "in": "query",
+       "name": "state",
+       "required": false,
+       "schema": {
+        "anyOf": [
+         {
+          "pattern": "^(draft|approved|retired)$",
+          "type": "string"
+         },
+         {
+          "type": "null"
+         }
+        ],
+        "title": "State"
+       }
+      },
+      {
+       "in": "query",
+       "name": "tag",
+       "required": false,
+       "schema": {
+        "anyOf": [
+         {
+          "type": "string"
+         },
+         {
+          "type": "null"
+         }
+        ],
+        "title": "Tag"
+       }
+      }
+     ],
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {}
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Evals"
+    },
+    "post": {
+     "operationId": "create_eval_api_knowledge_studio_evals_post",
+     "requestBody": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/EvalCaseIn"
+        }
+       }
+      },
+      "required": true
+     },
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {}
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Create Eval"
+    }
+   },
+   "/api/knowledge/studio/evals/run": {
+    "post": {
+     "operationId": "run_evals_api_knowledge_studio_evals_run_post",
+     "requestBody": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/EvalRunRequest"
+        }
+       }
+      },
+      "required": true
+     },
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {}
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Run Evals"
+    }
+   },
+   "/api/knowledge/studio/evals/{case_id}/state": {
+    "post": {
+     "operationId": "eval_state_api_knowledge_studio_evals__case_id__state_post",
+     "parameters": [
+      {
+       "in": "path",
+       "name": "case_id",
+       "required": true,
+       "schema": {
+        "title": "Case Id",
+        "type": "string"
+       }
+      }
+     ],
+     "requestBody": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/EvalStateUpdate"
+        }
+       }
+      },
+      "required": true
+     },
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {}
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Eval State"
+    }
+   },
+   "/api/knowledge/studio/evidence/{fact_id}": {
+    "get": {
+     "operationId": "evidence_api_knowledge_studio_evidence__fact_id__get",
+     "parameters": [
+      {
+       "in": "path",
+       "name": "fact_id",
+       "required": true,
+       "schema": {
+        "title": "Fact Id",
+        "type": "string"
+       }
+      }
+     ],
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {}
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Evidence"
+    }
+   },
+   "/api/knowledge/studio/export": {
+    "get": {
+     "operationId": "export_all_api_knowledge_studio_export_get",
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {}
+        }
+       },
+       "description": "Successful Response"
+      }
+     },
+     "summary": "Export All"
+    }
+   },
+   "/api/knowledge/studio/facts": {
+    "get": {
+     "operationId": "list_facts_api_knowledge_studio_facts_get",
+     "parameters": [
+      {
+       "in": "query",
+       "name": "state",
+       "required": false,
+       "schema": {
+        "default": "PUBLISHED",
+        "maxLength": 40,
+        "title": "State",
+        "type": "string"
+       }
+      },
+      {
+       "in": "query",
+       "name": "status_code",
+       "required": false,
+       "schema": {
+        "anyOf": [
+         {
+          "type": "string"
+         },
+         {
+          "type": "null"
+         }
+        ],
+        "title": "Status Code"
+       }
+      },
+      {
+       "in": "query",
+       "name": "procedure",
+       "required": false,
+       "schema": {
+        "anyOf": [
+         {
+          "type": "string"
+         },
+         {
+          "type": "null"
+         }
+        ],
+        "title": "Procedure"
+       }
+      },
+      {
+       "in": "query",
+       "name": "limit",
+       "required": false,
+       "schema": {
+        "default": 200,
+        "maximum": 1000,
+        "title": "Limit",
+        "type": "integer"
+       }
+      }
+     ],
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {}
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "List Facts"
+    },
+    "post": {
+     "description": "Manual operator proposal: always origin=operator_manual, enters review.",
+     "operationId": "create_manual_fact_api_knowledge_studio_facts_post",
+     "requestBody": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "title": "Body",
+         "type": "object"
+        }
+       }
+      },
+      "required": true
+     },
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {}
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Create Manual Fact"
+    }
+   },
+   "/api/knowledge/studio/facts/{fact_id}": {
+    "get": {
+     "operationId": "fact_detail_api_knowledge_studio_facts__fact_id__get",
+     "parameters": [
+      {
+       "in": "path",
+       "name": "fact_id",
+       "required": true,
+       "schema": {
+        "title": "Fact Id",
+        "type": "string"
+       }
+      }
+     ],
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {}
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Fact Detail"
+    }
+   },
+   "/api/knowledge/studio/facts/{fact_id}/actions": {
+    "post": {
+     "operationId": "fact_action_api_knowledge_studio_facts__fact_id__actions_post",
+     "parameters": [
+      {
+       "in": "path",
+       "name": "fact_id",
+       "required": true,
+       "schema": {
+        "title": "Fact Id",
+        "type": "string"
+       }
+      }
+     ],
+     "requestBody": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ReviewActionRequest"
+        }
+       }
+      },
+      "required": true
+     },
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {}
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Fact Action"
+    }
+   },
+   "/api/knowledge/studio/gaps": {
+    "get": {
+     "operationId": "gaps_api_knowledge_studio_gaps_get",
+     "parameters": [
+      {
+       "in": "query",
+       "name": "status",
+       "required": false,
+       "schema": {
+        "default": "open",
+        "pattern": "^(open|investigating|resolved|wont_fix|all)$",
+        "title": "Status",
+        "type": "string"
+       }
+      },
+      {
+       "in": "query",
+       "name": "kind",
+       "required": false,
+       "schema": {
+        "default": "all",
+        "pattern": "^(all|unknown|feedback)$",
+        "title": "Kind",
+        "type": "string"
+       }
+      }
+     ],
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {}
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Gaps"
+    }
+   },
+   "/api/knowledge/studio/gaps/{gap_id}": {
+    "get": {
+     "operationId": "gap_detail_api_knowledge_studio_gaps__gap_id__get",
+     "parameters": [
+      {
+       "in": "path",
+       "name": "gap_id",
+       "required": true,
+       "schema": {
+        "title": "Gap Id",
+        "type": "string"
+       }
+      }
+     ],
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {}
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Gap Detail"
+    },
+    "post": {
+     "operationId": "update_gap_api_knowledge_studio_gaps__gap_id__post",
+     "parameters": [
+      {
+       "in": "path",
+       "name": "gap_id",
+       "required": true,
+       "schema": {
+        "title": "Gap Id",
+        "type": "string"
+       }
+      }
+     ],
+     "requestBody": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/GapUpdate"
+        }
+       }
+      },
+      "required": true
+     },
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {}
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Update Gap"
+    }
+   },
+   "/api/knowledge/studio/gaps/{gap_id}/promote": {
+    "post": {
+     "operationId": "promote_gap_api_knowledge_studio_gaps__gap_id__promote_post",
+     "parameters": [
+      {
+       "in": "path",
+       "name": "gap_id",
+       "required": true,
+       "schema": {
+        "title": "Gap Id",
+        "type": "string"
+       }
+      }
+     ],
+     "requestBody": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/EvalCaseIn"
+        }
+       }
+      },
+      "required": true
+     },
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {}
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Promote Gap"
+    }
+   },
+   "/api/knowledge/studio/ingest": {
+    "post": {
+     "operationId": "ingest_api_knowledge_studio_ingest_post",
+     "requestBody": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/IngestRequest"
+        }
+       }
+      },
+      "required": true
+     },
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {}
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Ingest"
+    }
+   },
+   "/api/knowledge/studio/overview": {
+    "get": {
+     "operationId": "overview_api_knowledge_studio_overview_get",
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "title": "Response Overview Api Knowledge Studio Overview Get",
+          "type": "object"
+         }
+        }
+       },
+       "description": "Successful Response"
+      }
+     },
+     "summary": "Overview"
+    }
+   },
+   "/api/knowledge/studio/review-queue": {
+    "get": {
+     "operationId": "review_queue_api_knowledge_studio_review_queue_get",
+     "parameters": [
+      {
+       "in": "query",
+       "name": "status",
+       "required": false,
+       "schema": {
+        "default": "open",
+        "pattern": "^(open|needs_evidence|resolved|rejected|all)$",
+        "title": "Status",
+        "type": "string"
+       }
+      },
+      {
+       "in": "query",
+       "name": "status_code",
+       "required": false,
+       "schema": {
+        "anyOf": [
+         {
+          "type": "string"
+         },
+         {
+          "type": "null"
+         }
+        ],
+        "title": "Status Code"
+       }
+      },
+      {
+       "in": "query",
+       "name": "limit",
+       "required": false,
+       "schema": {
+        "default": 100,
+        "maximum": 500,
+        "title": "Limit",
+        "type": "integer"
+       }
+      }
+     ],
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {}
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Review Queue"
+    }
+   },
+   "/api/knowledge/studio/review-queue/{task_id}": {
+    "get": {
+     "operationId": "review_task_api_knowledge_studio_review_queue__task_id__get",
+     "parameters": [
+      {
+       "in": "path",
+       "name": "task_id",
+       "required": true,
+       "schema": {
+        "title": "Task Id",
+        "type": "string"
+       }
+      }
+     ],
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {}
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Review Task"
+    }
+   },
+   "/api/knowledge/studio/sources": {
+    "get": {
+     "operationId": "sources_api_knowledge_studio_sources_get",
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "title": "Response Sources Api Knowledge Studio Sources Get",
+          "type": "object"
+         }
+        }
+       },
+       "description": "Successful Response"
+      }
+     },
+     "summary": "Sources"
+    }
+   },
+   "/api/knowledge/studio/sources/{source_id}/refresh-state": {
+    "post": {
+     "operationId": "set_refresh_api_knowledge_studio_sources__source_id__refresh_state_post",
+     "parameters": [
+      {
+       "in": "path",
+       "name": "source_id",
+       "required": true,
+       "schema": {
+        "title": "Source Id",
+        "type": "string"
+       }
+      }
+     ],
+     "requestBody": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/RefreshStateUpdate"
+        }
+       }
+      },
+      "required": true
+     },
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {}
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Set Refresh"
+    }
+   },
+   "/api/legal/laws/search": {
+    "get": {
+     "description": "Search immigration-related statutes / decrees / rules on the Open Law API.\n\nRead-only proxy. Returns ``{ok, kind, query, count, results}`` (results are\nLegalLawResult objects) or a safe ``{ok:false, error}`` envelope. The OC\ncredential is never exposed; upstream URLs are OC-redacted by the adapter.",
+     "operationId": "legal_laws_search_api_legal_laws_search_get",
+     "parameters": [
+      {
+       "in": "query",
+       "name": "q",
+       "required": false,
+       "schema": {
+        "default": "",
+        "title": "Q",
+        "type": "string"
+       }
+      }
+     ],
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "title": "Response Legal Laws Search Api Legal Laws Search Get"
+         }
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Legal Laws Search"
+    }
+   },
+   "/api/legal/precedents/detail": {
+    "get": {
+     "description": "Return bounded official precedent body fields for one stable source ID.",
+     "operationId": "legal_precedent_detail_api_legal_precedents_detail_get",
+     "parameters": [
+      {
+       "in": "query",
+       "name": "id",
+       "required": false,
+       "schema": {
+        "default": "",
+        "title": "Id",
+        "type": "string"
+       }
+      }
+     ],
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "title": "Response Legal Precedent Detail Api Legal Precedents Detail Get"
+         }
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Legal Precedent Detail"
+    }
+   },
+   "/api/legal/precedents/search": {
+    "get": {
+     "description": "Search court precedent (판례) on the Open Law API (``target=prec``).\n\nRead-only list search. Returns ``{ok, kind, query, count, results}``\n(LegalPrecedentResult objects) or a safe ``{ok:false, error}`` envelope.\nBody/detail lookup is deferred to the official source link by design.",
+     "operationId": "legal_precedents_search_api_legal_precedents_search_get",
+     "parameters": [
+      {
+       "in": "query",
+       "name": "q",
+       "required": false,
+       "schema": {
+        "default": "",
+        "title": "Q",
+        "type": "string"
+       }
+      }
+     ],
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "title": "Response Legal Precedents Search Api Legal Precedents Search Get"
+         }
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Legal Precedents Search"
+    }
+   },
+   "/api/legal/research": {
+    "post": {
+     "description": "Deterministic, source-grounded legal research scaffold (no LLM).\n\nPlans retrieval by research depth (fast / basic / pro), runs the budgeted\nlaw/precedent searches via the OC-safe adapters, and returns a depth-\nstructured result: issues to verify, source-strength-labelled cards (grouped\nby source type in pro), risk flags, missing facts, next checks, limitations,\nand a disclaimer. It never fabricates citations, never states a legal\nconclusion, and never infers facts the user did not provide.",
+     "operationId": "legal_research_endpoint_api_legal_research_post",
+     "requestBody": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/LegalResearchRequest"
+        }
+       }
+      },
+      "required": true
+     },
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "title": "Response Legal Research Endpoint Api Legal Research Post"
+         }
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Legal Research Endpoint"
+    }
+   },
+   "/api/legal/research/stream": {
+    "post": {
+     "description": "The same research run as /api/legal/research, reported as it happens.\n\nFrames: ``start`` -> ``step`` per stage -> ``done`` with the identical\npayload the buffered endpoint returns. Both drain\n`_legal_research_pipeline`, so the two cannot answer the same question\ndifferently.\n\n``status`` separates ``done`` (sources found), ``no_results`` (the search\nran cleanly), ``failed`` (upstream/parse failure), ``skipped`` (the caller\nturned it off), and ``unavailable`` (the law API is not configured) —\nbecause \"found nothing\", \"search failed\", and \"never ran\" are different\nclaims about our coverage.",
+     "operationId": "legal_research_stream_endpoint_api_legal_research_stream_post",
+     "requestBody": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/LegalResearchRequest"
+        }
+       }
+      },
+      "required": true
+     },
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "title": "Response Legal Research Stream Endpoint Api Legal Research Stream Post"
+         }
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Legal Research Stream Endpoint"
+    }
+   },
+   "/api/nationality-coach": {
+    "post": {
+     "operationId": "nationality_coach_api_nationality_coach_post",
+     "requestBody": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/NationalityCoachRequest"
+        }
+       }
+      },
+      "required": true
+     },
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "title": "Response Nationality Coach Api Nationality Coach Post",
+          "type": "object"
+         }
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Nationality Coach"
+    }
+   },
+   "/api/preview/mission": {
+    "get": {
+     "description": "Pre-arrival mission lookup for PreView (외교부_국가·지역별 재외공관 정보).\n\nRead-only proxy: validates the query, resolves the portal service key\n(MOFA_EMBASSY_SERVICE_KEY -> PUBLIC_DATA_SERVICE_KEY), and returns a safe\nenvelope in every case. The frontend falls back to labeled MVP sample\ndata whenever ``ok`` is false or ``items`` is empty.\n\nDeliberately a sync route: the upstream call uses a blocking httpx\nclient, so FastAPI must run it in the threadpool instead of stalling\nthe event loop while data.go.kr responds.",
+     "operationId": "preview_mission_api_preview_mission_get",
+     "parameters": [
+      {
+       "in": "query",
+       "name": "country",
+       "required": false,
+       "schema": {
+        "default": "",
+        "title": "Country",
+        "type": "string"
+       }
+      },
+      {
+       "in": "query",
+       "name": "countryName",
+       "required": false,
+       "schema": {
+        "default": "",
+        "title": "Countryname",
+        "type": "string"
+       }
+      }
+     ],
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "title": "Response Preview Mission Api Preview Mission Get"
+         }
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Preview Mission"
+    }
+   },
+   "/api/procedure-packet": {
+    "get": {
+     "description": "Build a source-graded procedure preparation packet (deterministic).\n\nInputs are non-personal only: ``status`` (a status/visa code, parent or\nexact sub-code) and ``procedure`` (a procedure key such as\n``registration``/``extension``/``statusChange`` or a public packet type such\nas ``foreigner_registration``). No personal field values are accepted or\nstored, no LLM is called, and the output carries only public-safe source\nlabels (never raw developer diagnostics). The packet's\n``applicationTypingHelper`` is typing-guide-only and never holds values.",
+     "operationId": "get_procedure_packet_endpoint_api_procedure_packet_get",
+     "parameters": [
+      {
+       "in": "query",
+       "name": "status",
+       "required": true,
+       "schema": {
+        "title": "Status",
+        "type": "string"
+       }
+      },
+      {
+       "in": "query",
+       "name": "procedure",
+       "required": true,
+       "schema": {
+        "title": "Procedure",
+        "type": "string"
+       }
+      },
+      {
+       "in": "query",
+       "name": "locale",
+       "required": false,
+       "schema": {
+        "default": "ko",
+        "title": "Locale",
+        "type": "string"
+       }
+      }
+     ],
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "title": "Response Get Procedure Packet Endpoint Api Procedure Packet Get",
+          "type": "object"
+         }
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Get Procedure Packet Endpoint"
+    }
+   },
+   "/api/search/manual-evidence-state": {
+    "get": {
+     "description": "Operator-safe snapshot of the manual approval layer. No secrets, no bodies.",
+     "operationId": "manual_evidence_state_endpoint_api_search_manual_evidence_state_get",
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "title": "Response Manual Evidence State Endpoint Api Search Manual Evidence State Get",
+          "type": "object"
+         }
+        }
+       },
+       "description": "Successful Response"
+      }
+     },
+     "summary": "Manual Evidence State Endpoint"
+    }
+   },
+   "/api/search/unified": {
+    "post": {
+     "description": "Deterministic unified search. Local data only — no LLM, no outbound HTTP.\n\nReturns the organic result set, the detected intent, and an editable\ninterpretation. ``aiOverview`` is always ``null`` here and\n``aiOverviewStatus`` is ``pending``: the overview is fetched separately by\n``/api/search/unified/ai-overview`` so rendering never waits on it.",
+     "operationId": "search_unified_api_search_unified_post",
+     "requestBody": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/UnifiedSearchRequest"
+        }
+       }
+      },
+      "required": true
+     },
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "title": "Response Search Unified Api Search Unified Post"
+         }
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Search Unified"
+    }
+   },
+   "/api/search/unified/ai-overview": {
+    "post": {
+     "description": "AI Overview for a unified search result. Optional by construction.\n\nFailure is a first-class, *quiet* outcome: a provider outage returns\n``status=\"unavailable\"`` with a friendly reason and no answer text, so the\nfrontend hides the overview card and leaves the organic results untouched.\n\nThe model is never allowed to introduce a statute, article, case number or\nvisa code that is not already grounded — anything it emits is put through the\nstatute-citation guard against the retrieved evidence before it is returned.",
+     "operationId": "search_unified_ai_overview_api_search_unified_ai_overview_post",
+     "requestBody": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/UnifiedAiOverviewRequest"
+        }
+       }
+      },
+      "required": true
+     },
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "title": "Response Search Unified Ai Overview Api Search Unified Ai Overview Post"
+         }
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Search Unified Ai Overview"
+    }
+   },
+   "/api/search/unified/ai-overview/stream": {
+    "post": {
+     "description": "SSE variant of the AI Overview — emits `streaming` deltas, then `done`.\n\nExists so the design's `Streaming` state (Figma UX-03, node 406:92) is a real\nstate and not decoration: without a producer the frontend could render it but\nnothing would ever trigger it.\n\nThe citation guard runs on the ACCUMULATED text at the end, never per delta —\na half-written statute reference would otherwise be judged incomplete and\nwrongly flagged. Until `done` arrives the client shows the text as provisional.",
+     "operationId": "search_unified_ai_overview_stream_api_search_unified_ai_overview_stream_post",
+     "requestBody": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/UnifiedAiOverviewRequest"
+        }
+       }
+      },
+      "required": true
+     },
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "title": "Response Search Unified Ai Overview Stream Api Search Unified Ai Overview Stream Post"
+         }
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Search Unified Ai Overview Stream"
+    }
+   },
+   "/api/visas": {
+    "get": {
+     "description": "Return the visa catalog.\n\nResponse shape preserves backwards-compatibility with frontend\nconsumers that read either a bare array or `{data: [...]}`:\n\n- `data`: list of visa records (frontend's `parse()` reads this)\n- `visas`: same list under the explicit name used by newer code\n- `count`: convenience integer\n- `warning`: present only when DEFAULT_VISAS fallback is in use\n\nRecords for statuses with source-confirmed (HIGH / STRUCTURED_EVIDENCE_READY)\nstructured requirements carry an additive\n``sourceConfirmedStructuredRequirements`` field; all other records are\nunchanged. Needs-review candidate evidence is never exposed here.",
+     "operationId": "list_visas_api_visas_get",
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "title": "Response List Visas Api Visas Get",
+          "type": "object"
+         }
+        }
+       },
+       "description": "Successful Response"
+      }
+     },
+     "summary": "List Visas"
+    }
+   },
+   "/api/visas/{status_code}/packets": {
+    "get": {
+     "description": "List preparation packets buildable for a status (deterministic, no LLM).",
+     "operationId": "get_available_packets_endpoint_api_visas__status_code__packets_get",
+     "parameters": [
+      {
+       "in": "path",
+       "name": "status_code",
+       "required": true,
+       "schema": {
+        "title": "Status Code",
+        "type": "string"
+       }
+      },
+      {
+       "in": "query",
+       "name": "locale",
+       "required": false,
+       "schema": {
+        "default": "ko",
+        "title": "Locale",
+        "type": "string"
+       }
+      }
+     ],
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "title": "Response Get Available Packets Endpoint Api Visas  Status Code  Packets Get",
+          "type": "object"
+         }
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Get Available Packets Endpoint"
+    }
+   },
+   "/api/visas/{status_code}/structured-requirements": {
+    "get": {
+     "description": "Return structured requirements for a status.\n\nDefault: ONLY source-confirmed (HIGH / STRUCTURED_EVIDENCE_READY) entries,\nprojected to the safe user-facing shape. ``include_needs_review=1`` is an\nINTERNAL/debug flag that returns raw candidate entries too — these must not\nbe shown to end users.",
+     "operationId": "get_structured_requirements_endpoint_api_visas__status_code__structured_requirements_get",
+     "parameters": [
+      {
+       "in": "path",
+       "name": "status_code",
+       "required": true,
+       "schema": {
+        "title": "Status Code",
+        "type": "string"
+       }
+      },
+      {
+       "in": "query",
+       "name": "include_needs_review",
+       "required": false,
+       "schema": {
+        "default": false,
+        "title": "Include Needs Review",
+        "type": "boolean"
+       }
+      }
+     ],
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "title": "Response Get Structured Requirements Endpoint Api Visas  Status Code  Structured Requirements Get",
+          "type": "object"
+         }
+        }
+       },
+       "description": "Successful Response"
+      },
+      "422": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/HTTPValidationError"
+         }
+        }
+       },
+       "description": "Validation Error"
+      }
+     },
+     "summary": "Get Structured Requirements Endpoint"
+    }
+   },
+   "/health": {
+    "get": {
+     "operationId": "health_health_get",
+     "responses": {
+      "200": {
+       "content": {
+        "application/json; charset=utf-8": {
+         "schema": {
+          "title": "Response Health Health Get",
+          "type": "object"
+         }
+        }
+       },
+       "description": "Successful Response"
+      }
+     },
+     "summary": "Health"
+    }
+   }
+  }
+ },
+ "routes": [
+  {
+   "endpoint": "openapi",
+   "include_in_schema": false,
+   "methods": [
+    "GET",
+    "HEAD"
+   ],
+   "name": "openapi",
+   "path": "/openapi.json"
+  },
+  {
+   "endpoint": "swagger_ui_html",
+   "include_in_schema": false,
+   "methods": [
+    "GET",
+    "HEAD"
+   ],
+   "name": "swagger_ui_html",
+   "path": "/docs"
+  },
+  {
+   "endpoint": "swagger_ui_redirect",
+   "include_in_schema": false,
+   "methods": [
+    "GET",
+    "HEAD"
+   ],
+   "name": "swagger_ui_redirect",
+   "path": "/docs/oauth2-redirect"
+  },
+  {
+   "endpoint": "redoc_html",
+   "include_in_schema": false,
+   "methods": [
+    "GET",
+    "HEAD"
+   ],
+   "name": "redoc_html",
+   "path": "/redoc"
+  },
+  {
+   "endpoint": "root",
+   "include_in_schema": true,
+   "methods": [
+    "GET"
+   ],
+   "name": "root",
+   "path": "/"
+  },
+  {
+   "endpoint": "health",
+   "include_in_schema": true,
+   "methods": [
+    "GET"
+   ],
+   "name": "health",
+   "path": "/health"
+  },
+  {
+   "endpoint": "health_ai",
+   "include_in_schema": true,
+   "methods": [
+    "GET"
+   ],
+   "name": "health_ai",
+   "path": "/api/health/ai"
+  },
+  {
+   "endpoint": "list_visas",
+   "include_in_schema": true,
+   "methods": [
+    "GET"
+   ],
+   "name": "list_visas",
+   "path": "/api/visas"
+  },
+  {
+   "endpoint": "get_structured_requirements_endpoint",
+   "include_in_schema": true,
+   "methods": [
+    "GET"
+   ],
+   "name": "get_structured_requirements_endpoint",
+   "path": "/api/visas/{status_code}/structured-requirements"
+  },
+  {
+   "endpoint": "get_procedure_packet_endpoint",
+   "include_in_schema": true,
+   "methods": [
+    "GET"
+   ],
+   "name": "get_procedure_packet_endpoint",
+   "path": "/api/procedure-packet"
+  },
+  {
+   "endpoint": "get_available_packets_endpoint",
+   "include_in_schema": true,
+   "methods": [
+    "GET"
+   ],
+   "name": "get_available_packets_endpoint",
+   "path": "/api/visas/{status_code}/packets"
+  },
+  {
+   "endpoint": "ask",
+   "include_in_schema": true,
+   "methods": [
+    "POST"
+   ],
+   "name": "ask",
+   "path": "/api/ask"
+  },
+  {
+   "endpoint": "job_code_keywords",
+   "include_in_schema": true,
+   "methods": [
+    "POST"
+   ],
+   "name": "job_code_keywords",
+   "path": "/api/jobcodekeywords"
+  },
+  {
+   "endpoint": "legal_laws_search",
+   "include_in_schema": true,
+   "methods": [
+    "GET"
+   ],
+   "name": "legal_laws_search",
+   "path": "/api/legal/laws/search"
+  },
+  {
+   "endpoint": "legal_precedents_search",
+   "include_in_schema": true,
+   "methods": [
+    "GET"
+   ],
+   "name": "legal_precedents_search",
+   "path": "/api/legal/precedents/search"
+  },
+  {
+   "endpoint": "legal_precedent_detail",
+   "include_in_schema": true,
+   "methods": [
+    "GET"
+   ],
+   "name": "legal_precedent_detail",
+   "path": "/api/legal/precedents/detail"
+  },
+  {
+   "endpoint": "legal_research_endpoint",
+   "include_in_schema": true,
+   "methods": [
+    "POST"
+   ],
+   "name": "legal_research_endpoint",
+   "path": "/api/legal/research"
+  },
+  {
+   "endpoint": "legal_research_stream_endpoint",
+   "include_in_schema": true,
+   "methods": [
+    "POST"
+   ],
+   "name": "legal_research_stream_endpoint",
+   "path": "/api/legal/research/stream"
+  },
+  {
+   "endpoint": "debug_law_grounding_preflight",
+   "include_in_schema": true,
+   "methods": [
+    "GET"
+   ],
+   "name": "debug_law_grounding_preflight",
+   "path": "/api/debug/law-grounding/preflight"
+  },
+  {
+   "endpoint": "debug_law_grounding_selftest",
+   "include_in_schema": true,
+   "methods": [
+    "GET"
+   ],
+   "name": "debug_law_grounding_selftest",
+   "path": "/api/debug/law-grounding/selftest"
+  },
+  {
+   "endpoint": "debug_law_grounding_netdiag",
+   "include_in_schema": true,
+   "methods": [
+    "GET"
+   ],
+   "name": "debug_law_grounding_netdiag",
+   "path": "/api/debug/law-grounding/netdiag"
+  },
+  {
+   "endpoint": "debug_law_grounding",
+   "include_in_schema": true,
+   "methods": [
+    "POST"
+   ],
+   "name": "debug_law_grounding",
+   "path": "/api/debug/law-grounding"
+  },
+  {
+   "endpoint": "nationality_coach",
+   "include_in_schema": true,
+   "methods": [
+    "POST"
+   ],
+   "name": "nationality_coach",
+   "path": "/api/nationality-coach"
+  },
+  {
+   "endpoint": "preview_mission",
+   "include_in_schema": true,
+   "methods": [
+    "GET"
+   ],
+   "name": "preview_mission",
+   "path": "/api/preview/mission"
+  },
+  {
+   "endpoint": "search_unified",
+   "include_in_schema": true,
+   "methods": [
+    "POST"
+   ],
+   "name": "search_unified",
+   "path": "/api/search/unified"
+  },
+  {
+   "endpoint": "search_unified_ai_overview",
+   "include_in_schema": true,
+   "methods": [
+    "POST"
+   ],
+   "name": "search_unified_ai_overview",
+   "path": "/api/search/unified/ai-overview"
+  },
+  {
+   "endpoint": "search_unified_ai_overview_stream",
+   "include_in_schema": true,
+   "methods": [
+    "POST"
+   ],
+   "name": "search_unified_ai_overview_stream",
+   "path": "/api/search/unified/ai-overview/stream"
+  },
+  {
+   "endpoint": "enforcement_provider_probe",
+   "include_in_schema": true,
+   "methods": [
+    "GET"
+   ],
+   "name": "enforcement_provider_probe",
+   "path": "/api/enforcement/provider-probe"
+  },
+  {
+   "endpoint": "enforcement_extract",
+   "include_in_schema": true,
+   "methods": [
+    "POST"
+   ],
+   "name": "enforcement_extract",
+   "path": "/api/enforcement/extract"
+  },
+  {
+   "endpoint": "enforcement_analyze",
+   "include_in_schema": true,
+   "methods": [
+    "POST"
+   ],
+   "name": "enforcement_analyze",
+   "path": "/api/enforcement/analyze"
+  },
+  {
+   "endpoint": "employment_interpret",
+   "include_in_schema": true,
+   "methods": [
+    "POST"
+   ],
+   "name": "employment_interpret",
+   "path": "/api/employment/interpret"
+  },
+  {
+   "endpoint": "manual_evidence_state_endpoint",
+   "include_in_schema": true,
+   "methods": [
+    "GET"
+   ],
+   "name": "manual_evidence_state_endpoint",
+   "path": "/api/search/manual-evidence-state"
+  },
+  {
+   "endpoint": "submit_feedback",
+   "include_in_schema": true,
+   "methods": [
+    "POST"
+   ],
+   "name": "submit_feedback",
+   "path": "/api/feedback"
+  },
+  {
+   "endpoint": "published_export",
+   "include_in_schema": true,
+   "methods": [
+    "GET"
+   ],
+   "name": "published_export",
+   "path": "/api/knowledge/published"
+  },
+  {
+   "endpoint": "overview",
+   "include_in_schema": true,
+   "methods": [
+    "GET"
+   ],
+   "name": "overview",
+   "path": "/api/knowledge/studio/overview"
+  },
+  {
+   "endpoint": "sources",
+   "include_in_schema": true,
+   "methods": [
+    "GET"
+   ],
+   "name": "sources",
+   "path": "/api/knowledge/studio/sources"
+  },
+  {
+   "endpoint": "set_refresh",
+   "include_in_schema": true,
+   "methods": [
+    "POST"
+   ],
+   "name": "set_refresh",
+   "path": "/api/knowledge/studio/sources/{source_id}/refresh-state"
+  },
+  {
+   "endpoint": "source_diff",
+   "include_in_schema": true,
+   "methods": [
+    "GET"
+   ],
+   "name": "source_diff",
+   "path": "/api/knowledge/studio/diff"
+  },
+  {
+   "endpoint": "list_facts",
+   "include_in_schema": true,
+   "methods": [
+    "GET"
+   ],
+   "name": "list_facts",
+   "path": "/api/knowledge/studio/facts"
+  },
+  {
+   "endpoint": "fact_detail",
+   "include_in_schema": true,
+   "methods": [
+    "GET"
+   ],
+   "name": "fact_detail",
+   "path": "/api/knowledge/studio/facts/{fact_id}"
+  },
+  {
+   "endpoint": "create_manual_fact",
+   "include_in_schema": true,
+   "methods": [
+    "POST"
+   ],
+   "name": "create_manual_fact",
+   "path": "/api/knowledge/studio/facts"
+  },
+  {
+   "endpoint": "fact_action",
+   "include_in_schema": true,
+   "methods": [
+    "POST"
+   ],
+   "name": "fact_action",
+   "path": "/api/knowledge/studio/facts/{fact_id}/actions"
+  },
+  {
+   "endpoint": "review_queue",
+   "include_in_schema": true,
+   "methods": [
+    "GET"
+   ],
+   "name": "review_queue",
+   "path": "/api/knowledge/studio/review-queue"
+  },
+  {
+   "endpoint": "review_task",
+   "include_in_schema": true,
+   "methods": [
+    "GET"
+   ],
+   "name": "review_task",
+   "path": "/api/knowledge/studio/review-queue/{task_id}"
+  },
+  {
+   "endpoint": "evidence",
+   "include_in_schema": true,
+   "methods": [
+    "GET"
+   ],
+   "name": "evidence",
+   "path": "/api/knowledge/studio/evidence/{fact_id}"
+  },
+  {
+   "endpoint": "conflicts",
+   "include_in_schema": true,
+   "methods": [
+    "GET"
+   ],
+   "name": "conflicts",
+   "path": "/api/knowledge/studio/conflicts"
+  },
+  {
+   "endpoint": "resolve_conflict",
+   "include_in_schema": true,
+   "methods": [
+    "POST"
+   ],
+   "name": "resolve_conflict",
+   "path": "/api/knowledge/studio/conflicts/{conflict_id}/resolve"
+  },
+  {
+   "endpoint": "ingest",
+   "include_in_schema": true,
+   "methods": [
+    "POST"
+   ],
+   "name": "ingest",
+   "path": "/api/knowledge/studio/ingest"
+  },
+  {
+   "endpoint": "gaps",
+   "include_in_schema": true,
+   "methods": [
+    "GET"
+   ],
+   "name": "gaps",
+   "path": "/api/knowledge/studio/gaps"
+  },
+  {
+   "endpoint": "gap_detail",
+   "include_in_schema": true,
+   "methods": [
+    "GET"
+   ],
+   "name": "gap_detail",
+   "path": "/api/knowledge/studio/gaps/{gap_id}"
+  },
+  {
+   "endpoint": "update_gap",
+   "include_in_schema": true,
+   "methods": [
+    "POST"
+   ],
+   "name": "update_gap",
+   "path": "/api/knowledge/studio/gaps/{gap_id}"
+  },
+  {
+   "endpoint": "promote_gap",
+   "include_in_schema": true,
+   "methods": [
+    "POST"
+   ],
+   "name": "promote_gap",
+   "path": "/api/knowledge/studio/gaps/{gap_id}/promote"
+  },
+  {
+   "endpoint": "evals",
+   "include_in_schema": true,
+   "methods": [
+    "GET"
+   ],
+   "name": "evals",
+   "path": "/api/knowledge/studio/evals"
+  },
+  {
+   "endpoint": "create_eval",
+   "include_in_schema": true,
+   "methods": [
+    "POST"
+   ],
+   "name": "create_eval",
+   "path": "/api/knowledge/studio/evals"
+  },
+  {
+   "endpoint": "eval_state",
+   "include_in_schema": true,
+   "methods": [
+    "POST"
+   ],
+   "name": "eval_state",
+   "path": "/api/knowledge/studio/evals/{case_id}/state"
+  },
+  {
+   "endpoint": "run_evals",
+   "include_in_schema": true,
+   "methods": [
+    "POST"
+   ],
+   "name": "run_evals",
+   "path": "/api/knowledge/studio/evals/run"
+  },
+  {
+   "endpoint": "audit",
+   "include_in_schema": true,
+   "methods": [
+    "GET"
+   ],
+   "name": "audit",
+   "path": "/api/knowledge/studio/audit"
+  },
+  {
+   "endpoint": "export_all",
+   "include_in_schema": true,
+   "methods": [
+    "GET"
+   ],
+   "name": "export_all",
+   "path": "/api/knowledge/studio/export"
+  },
+  {
+   "endpoint": "auth_me",
+   "include_in_schema": true,
+   "methods": [
+    "GET"
+   ],
+   "name": "auth_me",
+   "path": "/api/knowledge/studio/checklists/auth/me"
+  },
+  {
+   "endpoint": "dashboard",
+   "include_in_schema": true,
+   "methods": [
+    "GET"
+   ],
+   "name": "dashboard",
+   "path": "/api/knowledge/studio/checklists/dashboard"
+  },
+  {
+   "endpoint": "get_scenarios",
+   "include_in_schema": true,
+   "methods": [
+    "GET"
+   ],
+   "name": "get_scenarios",
+   "path": "/api/knowledge/studio/checklists/scenarios"
+  },
+  {
+   "endpoint": "scenario_detail",
+   "include_in_schema": true,
+   "methods": [
+    "GET"
+   ],
+   "name": "scenario_detail",
+   "path": "/api/knowledge/studio/checklists/scenarios/{item_id}"
+  },
+  {
+   "endpoint": "create_draft",
+   "include_in_schema": true,
+   "methods": [
+    "POST"
+   ],
+   "name": "create_draft",
+   "path": "/api/knowledge/studio/checklists/drafts"
+  },
+  {
+   "endpoint": "draft_action",
+   "include_in_schema": true,
+   "methods": [
+    "POST"
+   ],
+   "name": "draft_action",
+   "path": "/api/knowledge/studio/checklists/drafts/{draft_id}/action"
+  },
+  {
+   "endpoint": "get_diff",
+   "include_in_schema": true,
+   "methods": [
+    "GET"
+   ],
+   "name": "get_diff",
+   "path": "/api/knowledge/studio/checklists/diff/{draft_id}"
+  },
+  {
+   "endpoint": "get_offices",
+   "include_in_schema": true,
+   "methods": [
+    "GET"
+   ],
+   "name": "get_offices",
+   "path": "/api/knowledge/studio/checklists/offices"
+  },
+  {
+   "endpoint": "create_office_override",
+   "include_in_schema": true,
+   "methods": [
+    "POST"
+   ],
+   "name": "create_office_override",
+   "path": "/api/knowledge/studio/checklists/offices/overrides"
+  },
+  {
+   "endpoint": "validate_publish",
+   "include_in_schema": true,
+   "methods": [
+    "POST"
+   ],
+   "name": "validate_publish",
+   "path": "/api/knowledge/studio/checklists/publish/validate"
+  },
+  {
+   "endpoint": "release_publish",
+   "include_in_schema": true,
+   "methods": [
+    "POST"
+   ],
+   "name": "release_publish",
+   "path": "/api/knowledge/studio/checklists/publish/release"
+  },
+  {
+   "endpoint": "get_releases_list",
+   "include_in_schema": true,
+   "methods": [
+    "GET"
+   ],
+   "name": "get_releases_list",
+   "path": "/api/knowledge/studio/checklists/releases"
+  },
+  {
+   "endpoint": "get_release_preview_endpoint",
+   "include_in_schema": true,
+   "methods": [
+    "GET"
+   ],
+   "name": "get_release_preview_endpoint",
+   "path": "/api/knowledge/studio/checklists/releases/{release_id}/preview"
+  },
+  {
+   "endpoint": "rollback_release_endpoint",
+   "include_in_schema": true,
+   "methods": [
+    "POST"
+   ],
+   "name": "rollback_release_endpoint",
+   "path": "/api/knowledge/studio/checklists/releases/{release_id}/rollback"
+  },
+  {
+   "endpoint": "published_checklists",
+   "include_in_schema": true,
+   "methods": [
+    "GET"
+   ],
+   "name": "published_checklists",
+   "path": "/api/checklists/published"
+  },
+  {
+   "endpoint": "preview_checklists",
+   "include_in_schema": true,
+   "methods": [
+    "GET"
+   ],
+   "name": "preview_checklists",
+   "path": "/api/checklists/preview"
+  }
+ ],
+ "title": "Paradiso Backend",
+ "version": "0.1.0"
+}
