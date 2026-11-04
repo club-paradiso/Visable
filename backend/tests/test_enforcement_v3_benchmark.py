@@ -55,6 +55,14 @@ class EnforcementV3BenchmarkSeedTests(unittest.IsolatedAsyncioTestCase):
                 if "baselineAmountKrw" in expected:
                     self.assertEqual(baseline.status, "AVAILABLE")
                     self.assertEqual(baseline.baseline_amount_krw, expected["baselineAmountKrw"])
+                if row["id"] in {"nl-002", "nl-007", "nl-008"}:
+                    # '허가 없이' does not establish whether the E-7 worker is
+                    # under the prior-permit or post-report regime.
+                    self.assertEqual(baseline.status, "MISSING_FACTS")
+                    self.assertIsNone(baseline.baseline_amount_krw)
+                    self.assertIsNone(baseline.legally_adjustable_range)
+                    self.assertTrue(any("사전허가 대상인지 사후신고 대상인지" in fact
+                                        for fact in baseline.missing_facts))
                 if expected.get("boundaryAssumptionExpected"):
                     self.assertTrue(baseline.assumptions)
 
