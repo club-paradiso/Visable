@@ -67,7 +67,10 @@ test.describe('외국인등록증 재발급 (status-independent procedure)', () 
     expect(text).toContain(normalize(reissue.summary_ko));
     const required = docsByLevel(reissue, 'REQUIRED_BASELINE');
     const conditional = docsByLevel(reissue, 'CONDITIONAL_REQUIRED');
-    expect(text).toContain(`${fill(STR.ko.docsCount, { n: required.length })} · ${fill(STR.ko.docsCountCond, { n: conditional.length })}`);
+    // The generated bundle still has the baseline list; the UI adds two passport forms.
+    const extraPassportDocs = ['여권 원본', '여권 인적사항면 사본'];
+    expect(text).toContain(`${fill(STR.ko.docsCount, { n: required.length + extraPassportDocs.length })} · ${fill(STR.ko.docsCountCond, { n: conditional.length })}`);
+    for (const name of extraPassportDocs) expect(text).toContain(name);
     for (const d of [...required, ...conditional]) expect(text, d.ref).toContain(normalize(d.name_ko));
     expect(text).toContain(won(reissueFee.amount));
     expect(text).toContain(reissueFee.label_ko);
