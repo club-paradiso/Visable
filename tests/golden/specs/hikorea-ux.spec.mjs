@@ -64,7 +64,7 @@ test('HiKorea: reservation finder prioritizes the next action and collapses long
   const details = body.locator('.prh-result-details');
   await expect(details).toBeVisible();
   await expect(details.locator('.prh-sections')).toBeHidden();
-  await details.locator('summary').click();
+  await details.locator(':scope > summary').click();
   await expect(details.locator('.prh-sections')).toBeVisible();
   expect(errors).toEqual([]);
 });
