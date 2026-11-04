@@ -100,6 +100,37 @@ try {
   }, baseline);
   assert.ok(apiRejected.limitations.some((item) => item.includes('upstream_authorization_or_registration_error')));
   assert.notEqual(apiRejected.status, 'VERIFIED');
+
+  // Searching two short variants improves recall but never promotes an
+  // unrelated immigration ruling to a "similar case".
+  const { retrieveOfficialPrecedents } = require('../lib/enforcement-precedent-grounding.js');
+  const precedentQueries = [];
+  globalThis.fetch = async (url) => {
+    const u = new URL(url);
+    if (u.pathname.includes('lawSearch')) {
+      precedentQueries.push(u.searchParams.get('query'));
+      const isRelevant = u.searchParams.get('query') === '근무처 추가';
+      return { ok: true, text: async () => JSON.stringify({
+        PrecSearch: { prec: [{
+          판례일련번호: isRelevant ? 'MATCH-21' : 'UNRELATED-3',
+          사건명: isRelevant ? '근무처 변경 허가 사건' : '다른 출입국 사건',
+        }] },
+      }) };
+    }
+    const relevant = u.searchParams.get('ID') === 'MATCH-21';
+    return { ok: true, text: async () => JSON.stringify({
+      판례정보일련번호: relevant ? 'MATCH-21' : 'UNRELATED-3',
+      사건명: relevant ? '근무처 변경 허가 사건' : '다른 출입국 사건',
+      판시사항: relevant ? '출입국관리법 제21조 근무처 변경 허가 문제' : '출입국관리법 제3조 관련 문제',
+      판결요지: relevant ? '근무처 변경 관련 판단' : '출입국 허가 외의 절차',
+    }) };
+  };
+  const precedentResult = await retrieveOfficialPrecedents({
+    violationCode: 'UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1', statusOfStay: 'E-2',
+  }, baseline);
+  assert.equal(precedentQueries.length, 2);
+  assert.equal(precedentResult.similarCases.length, 1);
+  assert.equal(precedentResult.similarCases[0].id, 'similar:MATCH-21');
 } finally {
   globalThis.fetch = savedFetch;
   for (const [key, value] of Object.entries(savedEnv)) {
